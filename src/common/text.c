@@ -1625,13 +1625,22 @@ text_emit (int index, session *sess, char *a, char *b, char *c, char *d)
 	char *word[PDIWORDS];
 	int i;
 
+	if (!a)
+		a = "\000";
+	if (!b)
+		b = "\000";
+	if (!c)
+		c = "\000";
+	if (!d)
+		d = "\000";
+
 	word[0] = te[index].name;
 	word[1] = a;
 	word[2] = b;
 	word[3] = c;
 	word[4] = d;
 	for (i = 5; i < PDIWORDS; i++)
-		word[i] = NULL;
+		word[i] = "\000";
 
 	if (plugin_emit_print (sess, word))
 		return;
