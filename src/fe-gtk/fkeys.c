@@ -242,9 +242,24 @@ key_handle_key_pressAFTER (GtkWidget *wid, GdkEventKey *evt, session *sess)
 	struct key_binding *kb, *last = NULL;
 	int keyval = evt->keyval;
 	int mod, n;
+	GSList *list;
 
-	if (!sess)
-		sess = current_sess;
+	/* where did this event come from? */
+	list = sess_list;
+	while (list)
+	{
+		sess = list->data;
+		if (sess->gui->input_box == wid)
+		{
+			if (sess->gui->is_tab)
+				sess = current_tab;
+			break;
+		}
+		list = list->next;
+	}
+	if (!list)
+		return FALSE;
+	current_sess = sess;
 
 	mod = evt->state & (STATE_CTRL | STATE_ALT | STATE_SHIFT);
 
