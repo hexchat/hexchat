@@ -190,8 +190,9 @@ win32_draw_bg (GtkXText *xtext, int x, int y, int width, int height)
 
 	if (xtext->shaded)
 	{
-		gdk_draw_drawable (xtext->draw_buf, xtext->bgc, xtext->pixmap,
-								 x, y, x, y, width, height);
+		/* xtext->pixmap is really a GdkImage, created in win32_tint() */
+		gdk_draw_image (xtext->draw_buf, xtext->bgc, (GdkImage*)xtext->pixmap,
+							 x, y, x, y, width, height);
 	} else
 	{
 		hwnd = GDK_WINDOW_HWND (xtext->draw_buf);
@@ -1205,7 +1206,7 @@ gtk_xtext_paint (GtkWidget *widget, GdkRectangle *area)
 		{
 			xtext->last_win_x = x;
 			xtext->last_win_y = y;
-#ifndef USE_SHM
+#if !defined(USE_SHM) && !defined(WIN32)
 			if (xtext->shaded)
 			{
 				xtext->recycle = TRUE;
@@ -3334,16 +3335,11 @@ shade_pixmap (GtkXText * xtext, Pixmap p, int x, int y, int w, int h)
 	}
 
 #ifdef USE_SHM
-	if (xtext->shm)
-	{
-		xtext->ximg = ximg;
-	} else
+	if (!xtext->shm)
 #endif
-	{
 		XPutImage (xdisplay, GDK_WINDOW_XWINDOW (shaded_pix),
 					  GDK_GC_XGC (xtext->fgc), ximg, 0, 0, 0, 0, w, h);
-		XDestroyImage (ximg);
-	}
+	XDestroyImage (ximg);
 
 	return shaded_pix;
 }
@@ -3364,7 +3360,6 @@ gtk_xtext_free_trans (GtkXText * xtext)
 			XFreePixmap (GDK_WINDOW_XDISPLAY (xtext->pixmap),
 							 GDK_WINDOW_XWINDOW (xtext->pixmap));
 			XShmDetach (GDK_WINDOW_XDISPLAY (xtext->draw_buf), &xtext->shminfo);
-			XDestroyImage (xtext->ximg);
 			shmdt (xtext->shminfo.shmaddr);
 		}
 #endif
@@ -3486,12 +3481,8 @@ here:
 						 xtext->palette[19], visual->depth);
 	}
 
-	if (xtext->recycle)
-		pix = xtext->pixmap;
-	else
-		pix = gdk_pixmap_new (GTK_WIDGET (xtext)->window, width, height,
-									 xtext->depth);
-	gdk_draw_image (pix, xtext->bgc, img, 0, 0, 0, 0, width, height);
+	/* no need to dump it to a Pixmap, it's one and the same on win32 */
+	pix = (GdkPixmap *)img;
 
 	return pix;
 }
@@ -3520,10 +3511,8 @@ gtk_xtext_load_trans (GtkXText * xtext)
 	ReleaseDC (hwnd, hdc);
 
 	gdk_window_get_size (GTK_WIDGET (xtext)->window, &width, &height);
-	width += 105;
-	img = gdk_image_get (GTK_WIDGET (xtext)->window, 0, 0, width, height);
+	img = gdk_image_get (GTK_WIDGET (xtext)->window, 0, 0, width+128, height);
 	xtext->pixmap = win32_tint (xtext, img, img->width, img->height);
-	gdk_image_unref (img);
 
 #else
 

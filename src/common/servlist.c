@@ -63,7 +63,7 @@ static const struct defaultserver def[] =
 
 	{"Aitvaras",	0},
 #ifdef USE_IPV6
-	{0,			"irc6.ktu.lt"},
+	{0,			"irc6.ktu.lt/7666"},
 #endif
 	{0,			"irc.delfi.lt"},
 	{0,			"irc.ktu.lt"},

@@ -73,7 +73,6 @@ struct _GtkXText
 
 #ifdef USE_SHM
 	XShmSegmentInfo shminfo;
-	XImage *ximg;
 #endif
 
 	GtkAdjustment *adj;
