@@ -251,6 +251,20 @@ sub Xchat::commandf {
   Xchat::command( sprintf( $format, @_ ) );
 }
 
+sub Xchat::get_info {
+  my $id = shift;
+  my $info;
+  
+  if( defined( $id ) ) {
+    if( grep { $id eq $_ } qw(state_cursor) ) {
+      $info = Xchat::get_prefs( $id );
+    } else {
+      $info = Xchat::_get_info( $id );
+    }
+  }
+  return $info;
+}
+
 sub Xchat::user_info {
   my $nick = shift @_ || Xchat::get_info( "nick" );
   my $user;
