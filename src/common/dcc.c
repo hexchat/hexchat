@@ -1488,7 +1488,7 @@ is_resumable (struct DCC *dcc)
 		{
 			if (st.st_size < dcc->size)
 			{
-				dcc->resumable = 1;
+				dcc->resumable = st.st_size;
 				dcc->pos = st.st_size;
 			}
 			else

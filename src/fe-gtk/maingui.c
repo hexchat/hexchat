@@ -561,7 +561,9 @@ mg_set_topic_tip (session *sess)
 			add_tip (sess->gui->topic_entry, _("No topic is set"));
 		break;
 	default:
-		add_tip (sess->gui->topic_entry, GTK_ENTRY (sess->gui->topic_entry)->text);
+		if (GTK_ENTRY (sess->gui->topic_entry)->text &&
+			 GTK_ENTRY (sess->gui->topic_entry)->text[0])
+			add_tip (sess->gui->topic_entry, GTK_ENTRY (sess->gui->topic_entry)->text);
 	}
 }
 
@@ -2070,8 +2072,6 @@ mg_create_entry (session *sess, GtkWidget *box)
 	gui->input_box = entry = gtk_entry_new ();
 	gtk_widget_set_name (entry, "xchat-inputbox");
 	gtk_entry_set_max_length (GTK_ENTRY (gui->input_box), 2048);
-	g_signal_connect_after (G_OBJECT (entry), "key_press_event",
-							G_CALLBACK (key_handle_key_pressAFTER), NULL);
 	g_signal_connect (G_OBJECT (entry), "key_press_event",
 							G_CALLBACK (key_handle_key_press), NULL);
 	g_signal_connect (G_OBJECT (entry), "focus_in_event",

@@ -303,6 +303,17 @@ process_numeric (session * sess, int n,
 	{
 	case 1:
 		inbound_login_start (sess, word[3], word[1]);
+		/* if network is PTnet then you must get your IP address
+			from "001" server message */
+		if ((strncmp(word[7], "PTnet", 5) == 0) &&
+			(strncmp(word[8], "IRC", 3) == 0) &&
+			(strncmp(word[9], "Network", 7) == 0) &&
+			(strchr(word[10], '@') != NULL))
+		{
+			serv->use_who = FALSE;
+			if (prefs.ip_from_server)
+				inbound_foundip (sess, strchr(word[10], '@')+1);
+		}
 		goto def;
 
 	case 4:	/* check the ircd type */

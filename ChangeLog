@@ -6,17 +6,21 @@
  2.0.8
 ----------------------------------------------------------------------
 
- - Updated translations (es, fi, mk, nl, ru, sk, sr, sv, zh_CN).
- - Added color, flash and iconify args to /GUI command (for plugins).
+ - Updated translations (az, es, fi, lt, mk, nl, ru, sk, sl, sr, sv,
+   zh_CN).
+ - Added color, flash and iconify args to /GUI command (this is for
+   use in scripts and plugins only).
  - Plugin API: Added "notify" list.
  - Plugin API: Added id, users, flags fields for "channels" list.
  - Win32: Better error messages for file i/o and winsock errors.
  - New Perl interface (with backward compatibility)! (Lian Situ).
- - Fixed cmd_char buglet [].
- - Win32: Fixed incorrect CPS display.
- - 
- - 
-
+ - Fixed command-character buglet [873541].
+ - Win32: Improved incorrect CPS display for file transfers.
+ - Added "Copy Selected URL" option to URL popupmenu (Mike Battersby).
+ - Added work-around for "Get my IP from server" not working on PTNet
+   (Monguer).
+ - Fixed: Alt+numbers do not work with X Input Method [896968] (Marius
+   Gedminas).
 
 ----------------------------------------------------------------------
  2.0.7

@@ -1155,7 +1155,7 @@ inbound_login_end (session *sess, char *text)
 
 	if (!serv->end_of_motd)
 	{
-		if (prefs.ip_from_server)
+		if (prefs.ip_from_server && serv->use_who)
 		{
 			serv->skip_next_who = TRUE;
 			serv->p_get_ip (serv, serv->nick);	/* sends WHO mynick */

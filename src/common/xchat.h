@@ -437,6 +437,7 @@ typedef struct server
 	int supports_watch:1;		/* supports the WATCH command */
 	int bad_prefix:1;				/* gave us a bad PREFIX= 005 number */
 	unsigned int have_whox:1;	/* have undernet's WHOX features */
+	int use_who:1;				/* whether to use WHO command to get dcc_ip */
 #ifdef USE_OPENSSL
 	int use_ssl:1;					  /* is server SSL capable? */
 	int accept_invalid_cert:1;	  /* ignore result of server's cert. verify */

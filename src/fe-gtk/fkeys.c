@@ -202,7 +202,9 @@ key_get_key_name (int keyval)
 
 /* Ok, here are the NOTES
 
-   key_handle_key_press now handles all the key presses and history_keypress is now defunct. It goes thru the linked list keys_root and finds a matching key. It runs the action func and switches on these values:
+   key_handle_key_press now handles all the key presses and history_keypress is
+   now defunct. It goes thru the linked list keys_root and finds a matching
+   key. It runs the action func and switches on these values:
    0) Return
    1) Find next
    2) stop signal and return
@@ -236,7 +238,7 @@ key_get_key_name (int keyval)
  */
 
 gboolean
-key_handle_key_pressAFTER (GtkWidget *wid, GdkEventKey *evt, session *sess)
+key_handle_key_press (GtkWidget *wid, GdkEventKey *evt, session *sess)
 {
 	struct key_binding *kb, *last = NULL;
 	int keyval = evt->keyval;
@@ -303,16 +305,6 @@ key_handle_key_pressAFTER (GtkWidget *wid, GdkEventKey *evt, session *sess)
 		gtk_signal_emit_stop_by_name (GTK_OBJECT (wid), "key_press_event");*/
 
 	return 0;
-}
-
-gboolean
-key_handle_key_press (GtkWidget *wid, GdkEventKey *evt, session *sess)
-{
-	if (evt->keyval == GDK_space || evt->keyval == GDK_Return ||
-		 evt->keyval == GDK_KP_Enter)
-		return key_handle_key_pressAFTER (wid, evt, sess);
-
-	return FALSE;
 }
 
 /* Walks keys_root and free()'s everything */

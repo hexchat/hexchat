@@ -169,6 +169,9 @@ static const struct defaultserver def[] =
 	{0,			"irc.inn.at.euirc.net"},
 	{0,			"irc.bas.ch.euirc.net"},
 
+	{"EU-IRC",	0},
+	{0,			"irc.eu-irc.net"},
+
 	{"FDFNet",	0},
 	{0,			"irc.fdfnet.net"},
 	{0,			"irc.eu.fdfnet.net"},
@@ -373,6 +376,16 @@ static const struct defaultserver def[] =
 
 	{"RebelChat",	0},
 	{0,			"irc.rebelchat.org"},
+
+	{"Recycled-IRC",  0},
+	{0,			"irc.recycled-irc.org"},
+	{0,			"vermin.recycled-irc.org"},
+	{0,			"waste.recycled-irc.org"},
+	{0,			"lumber.recycled-irc.org"},
+	{0,			"trash.recycled-irc.org"},
+	{0,			"unwashed.recycled-irc.org"},
+	{0,			"garbage.recycled-irc.org"},
+	{0,			"dustbin.recycled-irc.org"},
 
 	{"RedeBrasilIRC",	0},
 	{0,			"irc.redebrasilirc.org"},

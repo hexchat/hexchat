@@ -638,6 +638,12 @@ open_url_cb (GtkWidget *item, char *url)
 }
 #endif
 
+static void
+copy_to_clipboard_cb (GtkWidget *item, char *url)
+{
+	gtkutil_copy_to_clipboard (item, NULL, url);
+}
+
 void
 menu_urlmenu (GdkEventButton *event, char *url)
 {
@@ -688,6 +694,7 @@ menu_urlmenu (GdkEventButton *event, char *url)
 	}
 	menu_quick_item (0, 0, menu, 1, 0);
 
+	menu_quick_item_with_callback (copy_to_clipboard_cb, _("Copy selected URL"), menu, str_copy);
 #ifdef WIN32
 	menu_quick_item_with_callback (open_url_cb, "Open URL", menu, str_copy);
 #endif
