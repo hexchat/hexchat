@@ -15,7 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#define VERSION "1.0.30"
+#define VERSION "1.0.32"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -265,7 +265,7 @@ static int insert_timer(int seconds, char *script)
         if (timers[x].timerid == 0) {
             if (SourceInternalProc(id, "", script) == TCL_ERROR) {
                 errorInfo = Tcl_GetVar(interp, "errorInfo", TCL_GLOBAL_ONLY);
-                xchat_printf(ph, "\0039Tcl plugin\003\tERROR (timer %d) %s \n", timers[x].timerid, errorInfo);
+                xchat_printf(ph, "\0039TCL plugin\003\tERROR (timer %d) %s \n", timers[x].timerid, errorInfo);
                 return (-1);
             }
             timers[x].timerid = (nexttimerid++ % INT_MAX) + 1;
@@ -298,7 +298,7 @@ static void do_timer()
     origctx = xchat_get_context(ph);
     if (EvalInternalProc(timers[index].procPtr, 0) == TCL_ERROR) {
         errorInfo = Tcl_GetVar(interp, "errorInfo", TCL_GLOBAL_ONLY);
-        xchat_printf(ph, "\0039Tcl plugin\003\tERROR (timer) %s \n", errorInfo);
+        xchat_printf(ph, "\0039TCL plugin\003\tERROR (timer) %s \n", errorInfo);
     }
     xchat_set_context(ph, origctx);
 
@@ -425,7 +425,7 @@ static int Server_raw_line(char *word[], char *word_eol[], void *userdata)
                 origctx = xchat_get_context(ph);
                 if (EvalInternalProc(proc_argv[1], 7, src, dest, cmd, rest, word_eol[1], proc_argv[0], myitoa(private)) == TCL_ERROR) {
                     errorInfo = Tcl_GetVar(interp, "errorInfo", TCL_GLOBAL_ONLY);
-                    xchat_printf(ph, "\0039Tcl plugin\003\tERROR (on %s %s) %s \n", cmd, proc_argv[0], errorInfo);
+                    xchat_printf(ph, "\0039TCL plugin\003\tERROR (on %s %s) %s \n", cmd, proc_argv[0], errorInfo);
                 }
                 xchat_set_context(ph, origctx);
 
@@ -491,7 +491,7 @@ static int Print_Hook(char *word[], void *userdata)
                     Tcl_DStringAppend(&ds, word[1], strlen(word[1]));
                     if (EvalInternalProc(proc_argv[1], 7, ds.string, word[2], xc[(int) userdata].event, word[4], "", proc_argv[0], "0") == TCL_ERROR) {
                         errorInfo = Tcl_GetVar(interp, "errorInfo", TCL_GLOBAL_ONLY);
-                        xchat_printf(ph, "\0039Tcl plugin\003\tERROR (on %s %s) %s \n", xc[(int) userdata].event, proc_argv[0], errorInfo);
+                        xchat_printf(ph, "\0039TCL plugin\003\tERROR (on %s %s) %s \n", xc[(int) userdata].event, proc_argv[0], errorInfo);
                     }
                 } else {
                     if (xc[(int) userdata].argc > 0) {
@@ -2022,7 +2022,7 @@ int xchat_plugin_init(xchat_plugin * plugin_handle, char **plugin_name, char **p
 #ifdef WIN32
     lib = LoadLibraryA(TCL_DLL);
     if (!lib) {
-        xchat_print(ph, "You must have ActiveTCL installed in order to run TCL scripts.\n" "http://aspn.activestate.com/ASPN/Tcl/\n" "Make sure TCL's bin directory is in your PATH.\n\n");
+        xchat_print(ph, "You must have ActiveTCL installed in order to run Tcl scripts.\n" "http://aspn.activestate.com/ASPN/Tcl/\n" "Make sure Tcl's bin directory is in your PATH.\n\n");
         return 0;
     }
     FreeLibrary(lib);
@@ -2037,7 +2037,7 @@ int xchat_plugin_init(xchat_plugin * plugin_handle, char **plugin_name, char **p
     initialized = 1;
 
     *plugin_name = "Tcl plugin";
-    *plugin_desc = "TCL scripting interface";
+    *plugin_desc = "Tcl scripting interface";
     *plugin_version = VERSION;
 
     Tcl_Plugin_Init();
