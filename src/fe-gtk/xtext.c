@@ -3686,6 +3686,10 @@ gtk_xtext_render_ents (GtkXText * xtext, textentry * enta, textentry * entb)
 	orig_ent = xtext->buffer->pagetop_ent;
 	subline = xtext->buffer->pagetop_subline;
 
+	/* used before a complete page is in buffer */
+	if (orig_ent == NULL)
+		orig_ent = xtext->buffer->text_first;
+
 	/* check if enta is before the start of this page */
 	if (entb)
 	{
@@ -4075,6 +4079,16 @@ gtk_xtext_append_entry (xtext_buffer *buf, textentry * ent)
 		/* this could be improved */
 		if ((buf->num_lines - 1) <= buf->xtext->adj->page_size)
 			dontscroll (buf);
+		if (buf->num_lines <= buf->xtext->adj->page_size)
+		{
+			gtk_xtext_render_ents (buf->xtext, ent, NULL);
+			if (buf->xtext->add_io_tag)
+			{
+				g_source_remove (buf->xtext->add_io_tag);
+				buf->xtext->add_io_tag = 0;
+			}
+			return;
+		}
 #endif
 
 		if (!buf->xtext->add_io_tag)
