@@ -104,7 +104,7 @@ static const setting textbox_settings[] =
 	{ST_HEADER,	N_("Time Stamps"),0,0,0},
 	{ST_ENTRY,  N_("Time stamp format:"), P_OFFSETNL(stamp_format),
 					N_("See strftime manpage for details."),0,sizeof prefs.stamp_format},
-	{ST_TOGGLE, N_("Enable Time stamps"), P_OFFINTNL(timestamp),0,0,0},
+	{ST_TOGGLE, N_("Enable time stamps"), P_OFFINTNL(timestamp),0,0,0},
 
 	{ST_END, 0, 0, 0, 0, 0}
 };
@@ -182,12 +182,20 @@ static char *tabpos[] =
 	NULL
 };
 
+static char *focusnewtabsmenu[] =
+{
+	N_("Never"),
+	N_("Always"),
+	N_("Only requested tabs"),
+	NULL
+};
+
 static const setting tabs_settings[] =
 {
 	{ST_HEADER,	N_("Tabs"),0,0,0},
 	{ST_TOGGLE, N_("Open an extra tab for server messages"), P_OFFINTNL(use_server_tab), 0, 0, 0},
 	{ST_TOGGLE, N_("Open an extra tab for server notices"), P_OFFINTNL(notices_tabs), 0, 0, 0},
-	{ST_TOGGLE, N_("Pop new tabs to front"), P_OFFINTNL(newtabstofront), 0, 0, 0},
+	{ST_MENU,	N_("Focus new tabs:"), P_OFFINTNL(newtabstofront), 0, focusnewtabsmenu, 0},
 	{ST_NUMBER,	N_("Shorten tab labels to:"), P_OFFINTNL(truncchans), 0, (char **)N_("letters."), 99},
 
 	{ST_HEADER,	N_("Tabs Location"),0,0,0},
@@ -219,13 +227,13 @@ static const setting filexfer_settings[] =
 					N_("Asks the IRC server for your real address. Use this if you have a 192.168.*.* address!"), 0, 0},
 
 	{ST_HEADER, N_("Maximum File Transfer Speeds (bytes per second)"), 0, 0, 0},
-	{ST_NUMBER,	N_("Sends:"), P_OFFINTNL(dcc_max_send_cps), 
+	{ST_NUMBER,	N_("One upload:"), P_OFFINTNL(dcc_max_send_cps), 
 					N_("Maximum speed for one transfer"), 0, 1000000},
-	{ST_NUMBER,	N_("Receives:"), P_OFFINTNL(dcc_max_get_cps),
+	{ST_NUMBER,	N_("One download:"), P_OFFINTNL(dcc_max_get_cps),
 					N_("Maximum speed for one transfer"), 0, 1000000},
-	{ST_NUMBER,	N_("All sends:"), P_OFFINTNL(dcc_global_max_send_cps),
+	{ST_NUMBER,	N_("All uploads combined:"), P_OFFINTNL(dcc_global_max_send_cps),
 					N_("Maximum speed for all files"), 0, 1000000},
-	{ST_NUMBER,	N_("All receives:"), P_OFFINTNL(dcc_global_max_get_cps),
+	{ST_NUMBER,	N_("All downloads combined:"), P_OFFINTNL(dcc_global_max_get_cps),
 					N_("Maximum speed for all files"), 0, 1000000},
 
 	{ST_END, 0, 0, 0, 0, 0}
@@ -400,7 +408,7 @@ setup_create_spin (GtkWidget *table, int row, const setting *set)
 	gtk_table_attach (GTK_TABLE (table), label, 2, 3+add, row, row + 1,
 							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, LABEL_INDENT, 0);
 
-	align = gtk_alignment_new (0.0, 1.0, 0.0, 0.0);
+	align = gtk_alignment_new (0.0, 0.5, 0.0, 0.0);
 	gtk_table_attach_defaults (GTK_TABLE (table), align, 3+add, 4+add, row, row + 1);
 
 	rbox = gtk_hbox_new (0, 0);
@@ -472,8 +480,8 @@ setup_create_radio (GtkWidget *table, int row, setting *set)
 	GSList *group;
 
 	wid = gtk_label_new (set->label);
-	gtk_misc_set_alignment (GTK_MISC (wid), 1.0, 0.5);
-	gtk_table_attach (GTK_TABLE (table), wid, 0, 1, row, row + 1,
+	gtk_misc_set_alignment (GTK_MISC (wid), 0.0, 0.5);
+	gtk_table_attach (GTK_TABLE (table), wid, 2, 3, row, row + 1,
 							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
 
 	i = 0;
@@ -481,8 +489,10 @@ setup_create_radio (GtkWidget *table, int row, setting *set)
 	while (text[i])
 	{
 		wid = gtk_radio_button_new_with_label (group, text[i]);
+		if (set->tooltip)
+			add_tip (wid, _(set->tooltip));
 		group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (wid));
-		gtk_table_attach_defaults (GTK_TABLE (table), wid, 2, 3, row, row + 1);
+		gtk_table_attach_defaults (GTK_TABLE (table), wid, 3, 5, row, row + 1);
 		if (i == setup_get_int (&setup_prefs, set))
 			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (wid), TRUE);
 		i++;
@@ -551,9 +561,9 @@ setup_create_menu (GtkWidget *table, int row, const setting *set)
 	gtk_option_menu_set_history (GTK_OPTION_MENU (wid),
 										  setup_get_int (&setup_prefs, set));
 
-	align = gtk_alignment_new (0.0, 0.5, 0.0, 0.0);
+	align = gtk_alignment_new (0.0, 0.5, 0.6, 0.0);
 	gtk_container_add (GTK_CONTAINER (align), wid);
-	gtk_table_attach (GTK_TABLE (table), align, 3, 6, row, row + 1,
+	gtk_table_attach (GTK_TABLE (table), align, 3, 4, row, row + 1,
 							GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
 }
 
@@ -724,7 +734,7 @@ setup_create_header (GtkWidget *table, int row, char *labeltext)
 }
 
 static GtkWidget *
-setup_create_frame (GtkWidget **left, GtkWidget **right, GtkWidget *box)
+setup_create_frame (GtkWidget **left, GtkWidget *box)
 {
 	GtkWidget *tab, *hbox, *inbox = box;
 
@@ -739,9 +749,6 @@ setup_create_frame (GtkWidget **left, GtkWidget **right, GtkWidget *box)
 
 	*left = gtk_vbox_new (FALSE, 0);
 	gtk_container_add (GTK_CONTAINER (hbox), *left);
-
-	*right = gtk_vbox_new (FALSE, 0);
-	gtk_container_add (GTK_CONTAINER (hbox), *right);
 
 	return tab;
 }
@@ -758,12 +765,12 @@ static GtkWidget *
 setup_create_page (const setting *set)
 {
 	int i, j, row;
-	GtkWidget *tab, *box, *left, *right;
+	GtkWidget *tab, *box, *left;
 
 	box = gtk_vbox_new (FALSE, 20);
 	gtk_container_set_border_width (GTK_CONTAINER (box), 4);
 
-	tab = setup_create_frame (&left, &right, box);
+	tab = setup_create_frame (&left, box);
 
 	i = j = row = 0;
 	while (set[i].type != ST_END)
@@ -885,7 +892,7 @@ setup_create_color_button (GtkWidget *table, int num, int row, int col)
 	char buf[64];
 
 	if (num > 31)
-		strcpy (buf, " ");
+		buf[0] = 0;
 	else
 						/* 12345678901 23456789 01  23456789 */
 		sprintf (buf, "<span size=\"x-small\">%d</span>", num);
@@ -901,6 +908,18 @@ setup_create_color_button (GtkWidget *table, int num, int row, int col)
 	style->bg[GTK_STATE_NORMAL] = colors[num];
 	gtk_widget_set_style (but, style);
 	g_object_unref (style);
+}
+
+static void
+setup_create_other_colorR (char *text, int num, int row, GtkWidget *tab)
+{
+	GtkWidget *label;
+
+	label = gtk_label_new (text);
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_table_attach (GTK_TABLE (tab), label, 5, 8, row, row + 1,
+							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, LABEL_INDENT, 0);
+	setup_create_color_button (tab, num, row, 9);
 }
 
 static void
@@ -930,7 +949,7 @@ setup_create_color_page (void)
 	gtk_table_set_col_spacings (GTK_TABLE (tab), 3);
 	gtk_container_add (GTK_CONTAINER (box), tab);
 
-	setup_create_header (tab, 0, N_("Text colors"));
+	setup_create_header (tab, 0, N_("Text Colors"));
 
 	label = gtk_label_new (_("mIRC colors:"));
 	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
@@ -949,20 +968,20 @@ setup_create_color_page (void)
 		setup_create_color_button (tab, i, 2, (i+3) - 16);
 
 	setup_create_other_color (_("Foreground:"), COL_FG, 3, tab);
-	setup_create_other_color (_("Background:"), COL_BG, 4, tab);
+	setup_create_other_colorR (_("Background:"), COL_BG, 3, tab);
 
-	setup_create_header (tab, 5, N_("Marking text"));
+	setup_create_header (tab, 5, N_("Marking Text"));
 
 	setup_create_other_color (_("Foreground:"), COL_MARK_FG, 6, tab);
-	setup_create_other_color (_("Background:"), COL_MARK_BG, 7, tab);
+	setup_create_other_colorR (_("Background:"), COL_MARK_BG, 6, tab);
 
-	setup_create_header (tab, 8, N_("Interface colors"));
+	setup_create_header (tab, 8, N_("Interface Colors"));
 
-	setup_create_other_color (_("Away User:"), COL_AWAY, 9, tab);
-	setup_create_other_color (_("New Data:"), COL_NEW_DATA, 10, tab);
-	setup_create_other_color (_("New Message:"), COL_NEW_MSG, 11, tab);
-	setup_create_other_color (_("Highlight:"), COL_HILIGHT, 12, tab);
-	setup_create_other_color (_("Marker Line:"), COL_MARKER, 13, tab);
+	setup_create_other_color (_("New data:"), COL_NEW_DATA, 9, tab);
+	setup_create_other_colorR (_("Marker line:"), COL_MARKER, 9, tab);
+	setup_create_other_color (_("New message:"), COL_NEW_MSG, 10, tab);
+	setup_create_other_colorR (_("Away user:"), COL_AWAY, 10, tab);
+	setup_create_other_color (_("Highlight:"), COL_HILIGHT, 11, tab);
 
 	return box;
 }

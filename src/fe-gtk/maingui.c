@@ -62,7 +62,7 @@
 #include "xtext.h"
 
 static void mg_create_entry (session *sess, GtkWidget *box);
-static void mg_link_irctab (session *sess);
+static void mg_link_irctab (session *sess, int focus);
 
 static session_gui static_mg_gui;
 static session_gui *mg_gui = NULL;	/* the shared irc tab */
@@ -976,7 +976,7 @@ mg_close_sess (session *sess)
 static void
 mg_detach_tab_cb (GtkWidget *item, session *sess)
 {
-	mg_link_irctab (sess);
+	mg_link_irctab (sess, 0);
 }
 
 static void
@@ -1342,12 +1342,12 @@ mg_changui_destroy (session *sess)
 }
 
 static void
-mg_link_irctab (session *sess)
+mg_link_irctab (session *sess, int focus)
 {
 	if (sess->gui->is_tab)
 	{
 		mg_changui_destroy (sess);
-		mg_changui_new (sess, sess->res, 0);
+		mg_changui_new (sess, sess->res, 0, focus);
 		mg_populate (sess);
 		xchat_is_quitting = FALSE;
 		return;
@@ -1355,7 +1355,7 @@ mg_link_irctab (session *sess)
 
 	mg_unpopulate (sess);
 	mg_changui_destroy (sess);
-	mg_changui_new (sess, sess->res, 1);
+	mg_changui_new (sess, sess->res, 1, focus);
 }
 
 static void
@@ -1378,7 +1378,7 @@ mg_link_cb (GtkWidget *but, gpointer userdata)
 		return;
 	}
 
-	mg_link_irctab (current_sess);
+	mg_link_irctab (current_sess, 0);
 }
 
 static int
@@ -2571,7 +2571,7 @@ fe_set_channel (session *sess)
 }
 
 void
-mg_changui_new (session *sess, restore_gui *res, int tab)
+mg_changui_new (session *sess, restore_gui *res, int tab, int focus)
 {
 	int first_run = FALSE;
 	session_gui *gui;
@@ -2625,7 +2625,8 @@ mg_changui_new (session *sess, restore_gui *res, int tab)
 
 	mg_add_chan (sess);
 
-	if (first_run || prefs.newtabstofront)
+	if (first_run || (prefs.newtabstofront == FOCUS_NEW_ONLY_ASKED && focus)
+			|| prefs.newtabstofront == FOCUS_NEW_ALL )
 		tab_focus (res->tab);
 
 /*	while (g_main_pending ())

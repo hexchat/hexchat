@@ -305,7 +305,7 @@ irc_init (session *sess)
 }
 
 static session *
-new_session (server *serv, char *from, int type)
+new_session (server *serv, char *from, int type, int focus)
 {
 	session *sess;
 
@@ -322,7 +322,7 @@ new_session (server *serv, char *from, int type)
 
 	sess_list = g_slist_prepend (sess_list, sess);
 
-	fe_new_window (sess);
+	fe_new_window (sess, focus);
 
 	return sess;
 }
@@ -382,7 +382,7 @@ new_server (void)
 }
 
 session *
-new_ircwindow (server *serv, char *name, int type)
+new_ircwindow (server *serv, char *name, int type, int focus)
 {
 	session *sess;
 
@@ -394,17 +394,17 @@ new_ircwindow (server *serv, char *name, int type)
 		{
 			register unsigned int oldh = prefs.hideuserlist;
 			prefs.hideuserlist = 1;
-			sess = new_session (serv, name, SESS_SERVER);
+			sess = new_session (serv, name, SESS_SERVER, focus);
 			prefs.hideuserlist = oldh;
 		} else
 		{
-			sess = new_session (serv, name, SESS_CHANNEL);
+			sess = new_session (serv, name, SESS_CHANNEL, focus);
 		}
 		serv->server_session = sess;
 		serv->front_session = sess;
 		break;
 	case SESS_DIALOG:
-		sess = new_session (serv, name, type);
+		sess = new_session (serv, name, type, focus);
 		if (prefs.logging)
 			log_open (sess);
 		break;
@@ -412,7 +412,7 @@ new_ircwindow (server *serv, char *name, int type)
 /*	case SESS_CHANNEL:
 	case SESS_NOTICES:
 	case SESS_SNOTICES:*/
-		sess = new_session (serv, name, type);
+		sess = new_session (serv, name, type, focus);
 		break;
 	}
 
@@ -1034,7 +1034,7 @@ xchat_init (void)
 			/* and no serverlist gui ... */
 			if (prefs.slist_skip || connect_url)
 				/* we'll have to open one. */
-				new_ircwindow (NULL, NULL, SESS_SERVER);
+				new_ircwindow (NULL, NULL, SESS_SERVER, 0);
 		} else
 		{
 			fe_idle_add (xchat_auto_connect, NULL);
@@ -1042,7 +1042,7 @@ xchat_init (void)
 	} else
 	{
 		if (prefs.slist_skip)
-			new_ircwindow (NULL, NULL, SESS_SERVER);
+			new_ircwindow (NULL, NULL, SESS_SERVER, 0);
 	}
 }
 

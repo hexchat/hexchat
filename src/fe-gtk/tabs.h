@@ -13,3 +13,7 @@ void tab_remove (GtkWidget *tab);
 void tab_move (GtkWidget *tab, int delta);
 void tab_family_move (GtkWidget *tab, int delta);
 void tab_set_attrlist (GtkWidget *tab, PangoAttrList *list);
+
+#define FOCUS_NEW_ALL 1
+#define FOCUS_NEW_ONLY_ASKED 2
+#define FOCUS_NEW_NONE 0

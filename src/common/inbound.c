@@ -149,7 +149,7 @@ inbound_privmsg (server *serv, char *from, char *ip, char *text)
 		if (!sess)
 		{
 			if (flood_check (from, ip, serv, current_sess, 1))
-				sess = new_ircwindow (serv, from, SESS_DIALOG);	/* Create a dialog session */
+				sess = new_ircwindow (serv, from, SESS_DIALOG, 0);	/* Create a dialog session */
 			else
 				sess = serv->server_session;
 		}
@@ -266,7 +266,7 @@ inbound_action (session *sess, char *chan, char *from, char *text, int fromme)
 			sess = find_dialog (serv, from);
 			/* if non found, open a new one */
 			if (!sess && prefs.autodialog)
-				sess = new_ircwindow (serv, from, SESS_DIALOG);
+				sess = new_ircwindow (serv, from, SESS_DIALOG, 0);
 		}
 	}
 
@@ -481,7 +481,7 @@ inbound_ujoin (server *serv, char *chan, char *nick, char *ip)
 			sess = find_unused_session (serv);
 			if (!sess)
 				/* last resort, open a new tab/window */
-				sess = new_ircwindow (serv, chan, SESS_CHANNEL);
+				sess = new_ircwindow (serv, chan, SESS_CHANNEL, 1);
 		}
 	}
 
@@ -833,9 +833,9 @@ inbound_notice (server *serv, char *to, char *nick, char *msg, char *ip)
 				register unsigned int oldh = prefs.hideuserlist;
 				prefs.hideuserlist = 1;
 				if (stype == SESS_NOTICES)
-					sess = new_ircwindow (serv, "(notices)", SESS_NOTICES);
+					sess = new_ircwindow (serv, "(notices)", SESS_NOTICES, 0);
 				else
-					sess = new_ircwindow (serv, "(snotices)", SESS_SNOTICES);
+					sess = new_ircwindow (serv, "(snotices)", SESS_SNOTICES, 0);
 				prefs.hideuserlist = oldh;
 				fe_set_channel (sess);
 				fe_set_title (sess);

@@ -82,7 +82,7 @@ read_stdin (void)
 static int done_intro = 0;
 
 void
-fe_new_window (struct session *sess)
+fe_new_window (struct session *sess, int focus)
 {
 	char buf[512];
 
@@ -443,7 +443,7 @@ fe_main (void)
 	guint64 shortest, delay;
 
 	if (!sess_list)
-		new_ircwindow (NULL, NULL, SESS_SERVER);
+		new_ircwindow (NULL, NULL, SESS_SERVER, 0);
 
 #ifdef ENABLE_NLS
 	bindtextdomain (PACKAGE, PREFIX"/share/locale");

@@ -313,7 +313,7 @@ log_handler (const gchar   *log_domain,
 
 	sess = find_dialog (serv_list->data, "(warnings)");
 	if (!sess)
-		sess = new_ircwindow (serv_list->data, "(warnings)", SESS_DIALOG);
+		sess = new_ircwindow (serv_list->data, "(warnings)", SESS_DIALOG, 0);
 
 	PrintTextf (sess, "%s\t%s\n", log_domain, message);
 	if (getenv ("XCHAT_WARNING_ABORT"))
@@ -323,7 +323,7 @@ log_handler (const gchar   *log_domain,
 #endif
 
 void
-fe_new_window (session *sess)
+fe_new_window (session *sess, int focus)
 {
 	int tab = FALSE;
 
@@ -337,7 +337,7 @@ fe_new_window (session *sess)
 			tab = TRUE;
 	}
 
-	mg_changui_new (sess, NULL, tab);
+	mg_changui_new (sess, NULL, tab, focus);
 
 #ifdef WIN32
 	g_log_set_handler ("GLib", G_LOG_LEVEL_CRITICAL|G_LOG_LEVEL_WARNING, (GLogFunc)log_handler, 0);

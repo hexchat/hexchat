@@ -1825,7 +1825,7 @@ lastlog (session *sess, char *search)
 
 	lastlog_sess = find_dialog (sess->server, "(lastlog)");
 	if (!lastlog_sess)
-		lastlog_sess = new_ircwindow (sess->server, "(lastlog)", SESS_DIALOG);
+		lastlog_sess = new_ircwindow (sess->server, "(lastlog)", SESS_DIALOG, 0);
 	lastlog_sess->lastlog_sess = sess;
 
 	fe_text_clear (lastlog_sess);
@@ -2077,7 +2077,7 @@ static int
 cmd_newserver (struct session *sess, char *tbuf, char *word[],
 					char *word_eol[])
 {
-	sess = new_ircwindow (NULL, NULL, SESS_SERVER);
+	sess = new_ircwindow (NULL, NULL, SESS_SERVER, 0);
 	cmd_server (sess, tbuf, word, word_eol);
 	return TRUE;
 }
@@ -2191,7 +2191,7 @@ cmd_query (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	if (*nick && !is_channel (sess->server, nick))
 	{
 		if (!find_dialog (sess->server, nick))
-			new_ircwindow (sess->server, nick, SESS_DIALOG);
+			new_ircwindow (sess->server, nick, SESS_DIALOG, 1);
 		return TRUE;
 	}
 	return FALSE;

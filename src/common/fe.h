@@ -11,7 +11,7 @@ void fe_cleanup (void);
 void fe_exit (void);
 int fe_timeout_add (int interval, void *callback, void *userdata);
 void fe_timeout_remove (int tag);
-void fe_new_window (struct session *sess);
+void fe_new_window (struct session *sess, int focus);
 void fe_new_server (struct server *serv);
 void fe_add_rawlog (struct server *serv, char *text, int len, int outbound);
 void fe_message (char *msg, int wait);

@@ -497,7 +497,7 @@ servlist_connect (session *sess, ircnet *net)
 	server *serv;
 
 	if (!sess)
-		sess = new_ircwindow (NULL, NULL, SESS_SERVER);
+		sess = new_ircwindow (NULL, NULL, SESS_SERVER, 0);
 
 	serv = sess->server;
 

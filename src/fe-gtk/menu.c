@@ -844,7 +844,7 @@ menu_newserver_window (GtkWidget * wid, gpointer none)
 	int old = prefs.tabchannels;
 
 	prefs.tabchannels = 0;
-	new_ircwindow (NULL, NULL, SESS_SERVER);
+	new_ircwindow (NULL, NULL, SESS_SERVER, 0);
 	prefs.tabchannels = old;
 }
 
@@ -854,7 +854,7 @@ menu_newchannel_window (GtkWidget * wid, gpointer none)
 	int old = prefs.tabchannels;
 
 	prefs.tabchannels = 0;
-	new_ircwindow (current_sess->server, NULL, SESS_CHANNEL);
+	new_ircwindow (current_sess->server, NULL, SESS_CHANNEL, 0);
 	prefs.tabchannels = old;
 }
 
@@ -864,7 +864,7 @@ menu_newserver_tab (GtkWidget * wid, gpointer none)
 	int old = prefs.tabchannels;
 
 	prefs.tabchannels = 1;
-	new_ircwindow (NULL, NULL, SESS_SERVER);
+	new_ircwindow (NULL, NULL, SESS_SERVER, 0);
 	prefs.tabchannels = old;
 }
 
@@ -874,7 +874,7 @@ menu_newchannel_tab (GtkWidget * wid, gpointer none)
 	int old = prefs.tabchannels;
 
 	prefs.tabchannels = 1;
-	new_ircwindow (current_sess->server, NULL, SESS_CHANNEL);
+	new_ircwindow (current_sess->server, NULL, SESS_CHANNEL, 0);
 	prefs.tabchannels = old;
 }
 

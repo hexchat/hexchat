@@ -521,7 +521,7 @@ const struct prefs vars[] = {
 	{"tab_chans", P_OFFINT (tabchannels), TYPE_BOOL},
 	{"tab_dialogs", P_OFFINT (privmsgtab), TYPE_BOOL},
 	{"tab_dnd",  P_OFFINT (tab_dnd), TYPE_BOOL},
-	{"tab_new_to_front", P_OFFINT (newtabstofront), TYPE_BOOL},
+	{"tab_new_to_front", P_OFFINT (newtabstofront), TYPE_INT},
 	{"tab_notices", P_OFFINT (notices_tabs), TYPE_BOOL},
 	{"tab_position", P_OFFINT (tabs_position), TYPE_INT},
 	{"tab_server", P_OFFINT (use_server_tab), TYPE_BOOL},
@@ -610,7 +610,7 @@ load_config (void)
 	prefs.recon_delay = 10;
 	prefs.tabchannels = 1;
 	prefs.paned_userlist = 1;
-	prefs.newtabstofront = 1;
+	prefs.newtabstofront = 2;
 	prefs.use_server_tab = 1;
 	/*prefs.windows_as_tabs = 1;*/
 	prefs.privmsgtab = 1;
