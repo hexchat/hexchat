@@ -664,7 +664,7 @@ tab_group_add (GtkWidget *group, char *name, void *family, void *userdata,
 	char *new_name;
 	static const GtkTargetEntry targets[] =
 	{
-		{"text/x-xchat-tab", 0, 1}
+		{"application/x-xchat-tab", 0, 1}
 	};
 
 	new_name = truncate_tab_name (name, trunc_len);

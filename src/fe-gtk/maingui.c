@@ -1901,6 +1901,8 @@ mg_create_entry (session *sess, GtkWidget *box)
 	gtk_widget_set_name (entry, "xchat-inputbox");
 	gtk_entry_set_max_length (GTK_ENTRY (gui->input_box), 2048);
 	g_signal_connect_after (G_OBJECT (entry), "key_press_event",
+							G_CALLBACK (key_handle_key_pressAFTER), NULL);
+	g_signal_connect (G_OBJECT (entry), "key_press_event",
 							G_CALLBACK (key_handle_key_press), NULL);
 	g_signal_connect (G_OBJECT (entry), "focus_in_event",
 							G_CALLBACK (mg_inputbox_focus), gui);
@@ -2449,7 +2451,10 @@ mg_changui_new (session *sess, restore_gui *res, int tab)
 	if (first_run || prefs.newtabstofront)
 		tab_focus (res->tab);
 
-	g_idle_add ((GSourceFunc)tab_group_resize, mg_gui->tabs_box);
+	while (g_main_pending ())
+		g_main_iteration (TRUE);
+	tab_group_resize (mg_gui->tabs_box);
+	/*g_idle_add ((GSourceFunc)tab_group_resize, mg_gui->tabs_box);*/
 }
 
 GtkWidget *

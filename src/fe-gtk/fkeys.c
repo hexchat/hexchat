@@ -237,7 +237,7 @@ key_get_key_name (int keyval)
  */
 
 gboolean
-key_handle_key_press (GtkWidget *wid, GdkEventKey *evt, session *sess)
+key_handle_key_pressAFTER (GtkWidget *wid, GdkEventKey *evt, session *sess)
 {
 	struct key_binding *kb, *last = NULL;
 	int keyval = evt->keyval;
@@ -289,6 +289,15 @@ key_handle_key_press (GtkWidget *wid, GdkEventKey *evt, session *sess)
 		gtk_signal_emit_stop_by_name (GTK_OBJECT (wid), "key_press_event");*/
 
 	return 0;
+}
+
+gboolean
+key_handle_key_press (GtkWidget *wid, GdkEventKey *evt, session *sess)
+{
+	if (evt->keyval == GDK_space)
+		return key_handle_key_pressAFTER (wid, evt, sess);
+
+	return FALSE;
 }
 
 /* Walks keys_root and free()'s everything */
