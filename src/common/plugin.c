@@ -532,8 +532,16 @@ plugin_insert_hook (xchat_hook *new_hook)
 static gboolean
 plugin_fd_cb (GIOChannel *source, GIOCondition condition, xchat_hook *hook)
 {
-	/* FIXME: condition is always 0 on fe-text */
-	return ((xchat_fd_cb *)hook->callback) (hook->fd, condition, hook->userdata);
+	int flags = 0;
+
+	if (condition & G_IO_IN)
+		flags |= 1;
+	if (condition & G_IO_OUT)
+		flags |= 2;
+	if (condition & G_IO_PRI)
+		flags |= 4;
+
+	return ((xchat_fd_cb *)hook->callback) (hook->fd, flags, hook->userdata);
 }
 
 /* allocate and add a hook to our list. Used for all 4 types */
@@ -665,10 +673,17 @@ xchat_hook_fd (xchat_plugin *ph, int fd, int flags,
 					xchat_fd_cb *callb, void *userdata)
 {
 	xchat_hook *hook;
+	int read = 0;
+
+	if (flags&1)
+		read = 1;
+
+	if (flags&8)	/* for WIN32 fds */
+		read = 3;
 
 	hook = plugin_add_hook (ph, HOOK_FD, 0, 0, 0, callb, 0, userdata);
 	hook->fd = fd;
-	hook->tag = fe_input_add (fd, flags&1, flags&2, flags&4, plugin_fd_cb, hook);
+	hook->tag = fe_input_add (fd, read, flags&2, flags&4, plugin_fd_cb, hook);
 
 	return hook;
 }

@@ -33,6 +33,7 @@ body {
 <h2>Functions:</h2>
 <blockquote>
 <a href="#xchat_hook_command">xchat_hook_command</a>
+<br><a href="#xchat_hook_fd">xchat_hook_fd</a>
 <br><a href="#xchat_hook_print">xchat_hook_print</a>
 <br><a href="#xchat_hook_server">xchat_hook_server</a>
 <br><a href="#xchat_hook_timer">xchat_hook_timer</a>
@@ -80,43 +81,44 @@ This simple plugin adds one extra command: /LS. When executed with a parameter, 
 execute /exec ls &lt;parameter>. When executed without any paramaters it will execute
 /exec ls. All XChat plugins must define a "xchat_plugin_init" function! Defining
 a xchat_plugin_deinit is optional.
-<br><br>
+<br>
 <pre>
-#include "xchat-plugin.h"
+<font color="#a020f0">#include </font><font color="#f800f8">&quot;xchat-plugin.h&quot;</font>
 
-static xchat_plugin *ph;	/* plugin handle */
+<font color="#288850"><b>static</b></font> xchat_plugin *ph;   <font color="#0000f8">/*</font><font color="#0000f8"> plugin handle */</font>
 
-static int ls_cb(char *word[], char *word_eol[], void *userdata)
+<font color="#288850"><b>static</b></font> <font color="#288850"><b>int</b></font> ls_cb(<font color="#288850"><b>char</b></font> *word[], <font color="#288850"><b>char</b></font> *word_eol[], <font color="#288850"><b>void</b></font> *userdata)
 {
-	char *dir;
+   <font color="#288850"><b>char</b></font> *dir;
 
-	dir = word[2];	/* the directory is the 1st arg (2nd word) */
-	if(dir[0])
-		xchat_commandf(ph, "exec ls %s", dir);
-	else
-		xchat_command(ph, "exec ls");
+   dir = word[<font color="#f800f8">2</font>]; <font color="#0000f8">/*</font><font color="#0000f8"> the directory is the 1st arg (2nd word) */</font>
+   <font color="#a02828"><b>if</b></font>(dir[<font color="#f800f8">0</font>])
+      xchat_commandf(ph, <font color="#f800f8">&quot;exec ls </font><font color="#6858c8">%s</font><font color="#f800f8">&quot;</font>, dir);
+   <font color="#a02828"><b>else</b></font>
+      xchat_command(ph, <font color="#f800f8">&quot;exec ls&quot;</font>);
 
-	return EAT_ALL;	/* eat this command so xchat and other plugins can't process it */
+   <font color="#a02828"><b>return</b></font> EAT_ALL;   <font color="#0000f8">/*</font><font color="#0000f8"> eat this command so xchat and other plugins can't process it */</font>
 }
 
-int xchat_plugin_init(xchat_plugin *plugin_handle,
-                      char **plugin_name,
-                      char **plugin_desc,
-                      char **plugin_version,
-                      char *arg)
+<font color="#288850"><b>int</b></font> xchat_plugin_init(xchat_plugin *plugin_handle,
+                      <font color="#288850"><b>char</b></font> **plugin_name,
+                      <font color="#288850"><b>char</b></font> **plugin_desc,
+                      <font color="#288850"><b>char</b></font> **plugin_version,
+                      <font color="#288850"><b>char</b></font> *arg)
 {
-	/* we need to save this for use with any xchat_* functions */
-	ph = plugin_handle;
+   <font color="#0000f8">/*</font><font color="#0000f8"> we need to save this for use with any xchat_* functions */</font>
+   ph = plugin_handle;
 
-	*plugin_name = "LS plugin";
-	*plugin_desc = "Adds an /LS command to give a directory listing";
-	*plugin_version = "0.1";
+   *plugin_name = <font color="#f800f8">&quot;LS plugin&quot;</font>;
+   *plugin_desc = <font color="#f800f8">&quot;Adds an /LS command to give a directory listing&quot;</font>;
+   *plugin_version = <font color="#f800f8">&quot;0.1&quot;</font>;
 
-	xchat_hook_command(ph, "ls", PRI_NORM, ls_cb, "Usage: LS [dir], Does a directory listing", 0);
-	xchat_print(ph, "LS Plugin loaded successfully!\n");
+   xchat_hook_command(ph, <font color="#f800f8">&quot;ls&quot;</font>, PRI_NORM, ls_cb, <font color="#f800f8">&quot;Usage: LS [dir], Does a directory listing&quot;</font>, <font color="#f800f8">0</font>);
+   xchat_print(ph, <font color="#f800f8">&quot;LS Plugin loaded successfully!</font><font color="#6858c8">\n</font><font color="#f800f8">&quot;</font>);
 
-	return 1;       /* return 1 for success */
+   <font color="#a02828"><b>return</b></font> <font color="#f800f8">1</font>;       <font color="#0000f8">/*</font><font color="#0000f8"> return 1 for success */</font>
 }
+
 </pre>
 <h3><a name="word">What's word and word_eol?</a></h3>
 
@@ -251,6 +253,20 @@ xchat_hook_command(ph, "ONOTICE", PRI_NORM, onotice_cb, "Usage: ONOTICE &lt;mess
 </pre>
 </blockquote>
 <br>
+
+<h3><a class="cmd" name="xchat_hook_fd">&nbsp;xchat_hook_fd()&nbsp;</a></h3>
+<b>Prototype:</b> xchat_hook *xchat_hook_fd(xchat_plugin *ph, int fd, int flags, xchat_fd_cb *callb, void *userdata);
+<br>
+<br><b>Description:</b> Hooks a socket or file descriptor.
+<br>
+<br><b>Arguments:</b>
+<blockquote><b>ph:</b> Plugin handle (as given to xchat_plugin_init).
+<br><b>fd:</b> The file descriptor or socket.
+<br><b>flags:</b> Bit field: 0-read 1-write 2-exception
+<br><b>callb:</b> Callback function. This will be called when the socket is available for reading/writing or exception (depending on your chosen <b>flags</b>)
+<br><b>userdata:</b> Pointer passed to the callback function.</blockquote>
+<b>Returns:</b> Pointer to the hook. Can be passed to xchat_unhook.
+<br><br><br>
 
 <h3><a class="cmd" name="xchat_hook_print">&nbsp;xchat_hook_print()&nbsp;</a></h3>
 <b>Prototype:</b> <font color="#f8a400"><b>xchat_hook</b></font> *xchat_hook_print(<font color="#f8a400"><b>xchat_plugin</b></font> *ph, <font color="#f8a400"><b>char</b></font> *name, <font color="#f8a400"><b>int</b></font> pri, <font color="#f8a400"><b>xchat_print_cb</b></font> *callb, <font color="#f8a400"><b>void</b></font> *userdata);

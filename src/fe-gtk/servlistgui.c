@@ -45,6 +45,7 @@ static GtkWidget *servers_tree;	/* list of servers */
 static GtkWidget *networks_tree;	/* network TreeView */
 static GtkWidget *connect_button;
 static GtkWidget *connectnew_button;
+static int ignore_changed = FALSE;
 
 /* global user info */
 static GtkWidget *entry_nick1;
@@ -98,9 +99,11 @@ static const char *pages[]=
 static void
 servlist_entries_populate (ircnet *net)
 {
-	void *old = selected_net;
 	static GList *cbitems = NULL;
 	int i;
+
+	/* avoid the "changed" callback */
+	ignore_changed = TRUE;
 
 	gtk_entry_set_text (GTK_ENTRY (entry_nick), net->nick ? net->nick : "");
 	gtk_entry_set_text (GTK_ENTRY (entry_user), net->user ? net->user : "");
@@ -121,11 +124,9 @@ servlist_entries_populate (ircnet *net)
 		gtk_combo_set_popdown_strings (GTK_COMBO (combo_encoding), cbitems);
 	}
 
-	/* avoid the "changed" callback */
-	old = selected_net;
-	selected_net = NULL;
 	gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (combo_encoding)->entry), net->encoding ? net->encoding : "System default");
-	selected_net = old;
+
+	ignore_changed = FALSE;
 
 	if (net->flags & FLAG_USE_GLOBAL)
 	{
@@ -745,8 +746,11 @@ servlist_entry_cb (GtkWidget *entry, gpointer userdata)
 	if (!selected_net)
 		return;
 
-	free (*str);
-	*str = strdup (GTK_ENTRY (entry)->text);
+	if (!ignore_changed)
+	{
+		free (*str);
+		*str = strdup (GTK_ENTRY (entry)->text);
+	}
 }
 
 static GtkWidget *
@@ -938,9 +942,12 @@ servlist_combo_cb (GtkEntry *entry, gpointer userdata)
 	if (!selected_net)
 		return;
 
-	if (selected_net->encoding)
-		free (selected_net->encoding);
-	selected_net->encoding = strdup (entry->text);
+	if (!ignore_changed)
+	{
+		if (selected_net->encoding)
+			free (selected_net->encoding);
+		selected_net->encoding = strdup (entry->text);
+	}
 }
 
 static GtkWidget *
@@ -969,7 +976,6 @@ servlist_create_charsetcombo (GtkTable *table)
 
 	cb = gtk_combo_new ();
 	gtk_combo_set_popdown_strings (GTK_COMBO (cb), cbitems);
-	/*gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (cb)->entry), _("System default"));*/
 	g_signal_connect (G_OBJECT (GTK_COMBO (cb)->entry), "changed",
 							G_CALLBACK (servlist_combo_cb), NULL);
 	gtk_table_attach (GTK_TABLE (table), cb, 1, 2, 7, 8,
@@ -1082,14 +1088,14 @@ servlist_create_list (GtkWidget *box)
 	return tree;
 }
 
-static void
+/*static void
 skip_motd (GtkWidget * igad, gpointer serv)
 {
 	if (GTK_TOGGLE_BUTTON (igad)->active)
 		prefs.skipmotd = TRUE;
 	else
 		prefs.skipmotd = FALSE;
-}
+}*/
 
 static void
 no_servlist (GtkWidget * igad, gpointer serv)
