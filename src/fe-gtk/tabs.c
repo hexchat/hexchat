@@ -613,7 +613,8 @@ tab_rename (GtkWidget *tab, char *name, int trunc_len)
 	} else
 		gtk_button_set_label (GTK_BUTTON (tab), name);
 
-	gtk_label_set_attributes (GTK_LABEL (GTK_BIN (tab)->child), attr);
+	if (attr)
+		gtk_label_set_attributes (GTK_LABEL (GTK_BIN (tab)->child), attr);
 }
 
 void
