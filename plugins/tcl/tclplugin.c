@@ -15,7 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#define VERSION "1.0.51"
+#define VERSION "1.0.52"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -405,7 +405,7 @@ static int Server_raw_line(char *word[], char *word_eol[], void *userdata)
         return XCHAT_EAT_NONE;
 
     complete_level++;
-    complete[complete_level].defresult = XCHAT_EAT_PLUGIN;
+    complete[complete_level].defresult = XCHAT_EAT_NONE;     /* XCHAT_EAT_PLUGIN; */
     complete[complete_level].result = XCHAT_EAT_NONE;
 
     if (word[1][0] == ':') {
@@ -497,7 +497,7 @@ static int Server_raw_line(char *word[], char *word_eol[], void *userdata)
 
                 Tcl_Free((char *) proc_argv);
 
-                if (complete[complete_level].result)
+                if ((complete[complete_level].result ==  XCHAT_EAT_PLUGIN) || (complete[complete_level].result == XCHAT_EAT_ALL))
                     break;
 
             }
@@ -533,7 +533,7 @@ static int Print_Hook(char *word[], void *userdata)
         return XCHAT_EAT_NONE;
 
     complete_level++;
-    complete[complete_level].defresult = XCHAT_EAT_PLUGIN;
+    complete[complete_level].defresult = XCHAT_EAT_NONE;     /* XCHAT_EAT_PLUGIN; */
     complete[complete_level].result = XCHAT_EAT_NONE;
 
     if ((entry = Tcl_FindHashEntry(&cmdTablePtr, xc[(int) userdata].event)) != NULL) {
@@ -576,7 +576,7 @@ static int Print_Hook(char *word[], void *userdata)
 
                 Tcl_Free((char *) proc_argv);
 
-                if (complete[complete_level].result)
+                if ((complete[complete_level].result ==  XCHAT_EAT_PLUGIN) || (complete[complete_level].result ==  XCHAT_EAT_ALL))
                     break;
 
             }
@@ -765,8 +765,9 @@ static int tcl_on(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
                     Tcl_DStringAppendElement(&ds, proc_argv[0]);
                     Tcl_DStringAppendElement(&ds, proc_argv[1]);
                     Tcl_DStringEndSublist(&ds);
-                } else
+                } else {
                     DeleteInternalProc(proc_argv[1]);
+                }
                 Tcl_Free((char *) proc_argv);
             }
             Tcl_Free((char *) list_argv);
@@ -856,6 +857,7 @@ static int tcl_off(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
                     if (strcmp(xc[index].event, token) == 0) {
                         if (xc[index].hook != NULL) {
                             xchat_unhook(ph, xc[index].hook);
+                            xc[index].hook = NULL;
                             break;
                         }
                     }
@@ -925,7 +927,7 @@ static int tcl_alias(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
             if (aliasPtr->hook)
                 xchat_unhook(ph, aliasPtr->hook);
             Tcl_Free((char *) aliasPtr);
-            Tcl_DeleteHashEntry(entry);	    
+            Tcl_DeleteHashEntry(entry);
         }
     }
 
@@ -2205,3 +2207,4 @@ int xchat_plugin_deinit()
 
     return 1;
 }
+
