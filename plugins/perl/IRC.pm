@@ -1,3 +1,4 @@
+{ package IRC;
 sub IRC::register {
   my ($script_name, $version, $callback) = @_;
   my $package = caller;
@@ -15,7 +16,7 @@ sub IRC::add_command_handler {
   # starting index for word_eol array
   # this is for compatibility with '' as the command
   my $start_index = $command ? 1 : 0;
-  
+
   Xchat::hook_command( $command,
 		       sub {
 			 no strict 'refs';
@@ -251,3 +252,4 @@ sub IRC::sub_user_list {}
 sub IRC::clear_user_list {}
 sub IRC::notify_list {}
 sub IRC::perl_script_list {}
+}

@@ -43,18 +43,17 @@ BEGIN {
 			       ],
 		     );
 
-}
-
 sub Xchat::register {
   my ($name, $version, $description, $callback) = @_;
   $description = "" unless defined $description;
   $callback = undef unless $callback;
   my $filename = caller;
+  ($filename) = caller(1) if $filename eq 'IRC';
   $filename =~ s/.*:://;
-
   $filename =~ s/_([[:xdigit:]]{2})/+pack('H*',$1)/eg;
   Xchat::_register( $name, $version, $description, $callback, $filename );
 }
+
 sub Xchat::hook_server {
   return undef unless @_ >= 2;
 
@@ -345,7 +344,7 @@ sub Xchat::_fix_callback {
   }
   return $callback;
 }
-
+}
 $SIG{__WARN__} = sub {
   my ($package, $file, $line, $sub) = caller(1);
   $sub =~ s/^Xchat::Embed//;
