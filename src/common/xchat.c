@@ -669,7 +669,7 @@ find_away_message (struct server *serv, char *nick)
 	return 0;
 }
 
-#define XTERM "gnome-terminal"
+#define XTERM "gnome-terminal -x "
 
 #define defaultconf_ctcp \
 	"NAME TIME\n"				"CMD nctcp %s TIME %t\n\n"\
@@ -744,14 +744,14 @@ find_away_message (struct server *serv, char *nick)
 	"NAME ENDSUB\n"							"CMD \n\n"\
 	"NAME SUB\n"								"CMD Send URL to...\n\n"\
 		"NAME Gnome URL Handler\n"			"CMD !gnome-moz-remote %s\n\n"\
-		"NAME Lynx\n"							"CMD !"XTERM" -x lynx %s\n\n"\
-		"NAME Links\n"							"CMD !"XTERM" -x links %s\n\n"\
-		"NAME w3m\n"							"CMD !"XTERM" -x w3m %s\n\n"\
-		"NAME lFTP\n" 							"CMD !"XTERM" -x lftp %s\n\n"\
+		"NAME Lynx\n"							"CMD !"XTERM"lynx %s\n\n"\
+		"NAME Links\n"							"CMD !"XTERM"links %s\n\n"\
+		"NAME w3m\n"							"CMD !"XTERM"w3m %s\n\n"\
+		"NAME lFTP\n" 							"CMD !"XTERM"lftp %s\n\n"\
 		"NAME gFTP\n"							"CMD !gftp %s\n\n"\
 		"NAME Konqueror\n"					"CMD !konqueror %s\n\n"\
-		"NAME Telnet\n"						"CMD !"XTERM" -x telnet %s\n\n"\
-		"NAME Ping\n"							"CMD !"XTERM" -x ping -c 4 %s\n\n"\
+		"NAME Telnet\n"						"CMD !"XTERM"telnet %s\n\n"\
+		"NAME Ping\n"							"CMD !"XTERM"ping -c 4 %s\n\n"\
 	"NAME ENDSUB\n"							"CMD \n\n"\
 	"NAME Connect as IRC server\n"		"CMD newserver %s\n\n"
 #endif
@@ -894,9 +894,9 @@ xchat_init (void)
 		"NAME %s\n"				"CMD quote USERHOST %%s\n\n"\
 	"NAME ENDSUB\n"			"CMD \n\n"\
 	"NAME SUB\n"				"CMD %s\n\n"\
-		"NAME %s\n"				"CMD !"XTERM" -x /bin/sh -c \"/usr/sbin/traceroute %%h ; sleep 30\"\n\n"\
-		"NAME %s\n"				"CMD !"XTERM" -x /bin/sh -c \"ping -c 4 %%h ; sleep 30\"\n\n"\
-		"NAME %s\n"				"CMD !"XTERM" -x telnet %%h\n\n"\
+		"NAME %s\n"				"CMD !"XTERM"/bin/sh -c \"/usr/sbin/traceroute %%h ; sleep 30\"\n\n"\
+		"NAME %s\n"				"CMD !"XTERM"/bin/sh -c \"ping -c 4 %%h ; sleep 30\"\n\n"\
+		"NAME %s\n"				"CMD !"XTERM"telnet %%h\n\n"\
 	"NAME ENDSUB\n"			"CMD \n\n"\
 	"NAME %s\n"					"CMD query %%s\n\n",
 		_("Direct client-to-client"),

@@ -356,6 +356,35 @@ toggle_cb (GtkWidget *item, char *pref_name)
 	handle_command (current_sess, buf, FALSE);
 }
 
+static int
+is_in_path (char *cmd)
+{
+	char *prog = strdup (cmd + 1);	/* 1st char is "!" */
+	char *space, *path, *orig;
+
+	orig = prog; /* save for free()ing */
+	/* special-case these default entries. */
+	/*                  123456789012345678 */
+	if (strncmp (prog, "gnome-terminal -x ", 18) == 0)
+	/* don't check for gnome-terminal, but the thing it's executing! */
+		prog += 18;
+
+	space = strchr (prog, ' ');	/* this isn't 100% but good enuf */
+	if (space)
+		*space = 0;
+
+	path = g_find_program_in_path (prog);
+	if (path)
+	{
+		g_free (path);
+		g_free (orig);
+		return 1;
+	}
+
+	g_free (orig);
+	return 0;
+}
+
 /* append items to "menu" using the (struct popup*) list provided */
 
 static void
@@ -398,27 +427,14 @@ menu_create (GtkWidget *menu, GSList *list, char *target, int check_path)
 
 		} else
 		{
-			if (!check_path)
+			if (!check_path || pop->cmd[0] != '!')
 			{
 				menu_quick_item (pop->cmd, pop->name, tempmenu, 0, target);
-			} else
+			/* check if the program is in path, if not, leave it out! */
+			} else if (is_in_path (pop->cmd))
 			{
-				/* check if the program is in path, if not, leave it out! */
-				char *prog = strdup (pop->cmd + 1);	/* 1st char is "!" */
-				char *space = strchr (prog, ' ');	/* this isn't 100% */
-				char *path;
-
-				if (space)
-					*space = 0;
-
-				path = g_find_program_in_path (prog);
-				if (path)
-				{
-					g_free (path);
-					childcount++;
-					menu_quick_item (pop->cmd, pop->name, tempmenu, 0, target);
-				}
-				g_free (prog);
+				childcount++;
+				menu_quick_item (pop->cmd, pop->name, tempmenu, 0, target);
 			}
 		}
 

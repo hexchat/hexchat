@@ -172,10 +172,6 @@ static const struct defaultserver def[] =
 	{0,			"irc.inn.at.euirc.net"},
 	{0,			"irc.bas.ch.euirc.net"},
 
-	{"Evolnet",	0},/*undersized*/
-	{0,			"irc.evolnet.org"},
-	{0,			"blender.evolnet.org"},
-
 	{"FDFNet",	0},
 	{0,			"irc.fdfnet.net"},
 	{0,			"irc.eu.fdfnet.net"},
@@ -209,10 +205,6 @@ static const struct defaultserver def[] =
 	{0,				"irc.ca.gamesnet.net"},
 	{0,				"irc.eu.gamesnet.net"},
 
-	{"Gamma Force",	0},/*undersized*/
-	{0,			"irc.gammaforce.org"},
-	{0,			"sphinx.or.us.gammaforce.org"},
-
 	{"German-Elite",	0},
 	{0,			"dominion.german-elite.net"},
 	{0,			"komatu.german-elite.net"},
@@ -237,9 +229,6 @@ static const struct defaultserver def[] =
 
 	{"IRCDZone",		0},
 	{0,			"irc.ircdzone.net"},
-
-	{"ircfr",			0},
-	{0,			"irc.ircfr.org"},
 
 	{"IrcLink",	0},
 	{0,			"irc.irclink.net"},
@@ -273,16 +262,6 @@ static const struct defaultserver def[] =
 	{0,			"random.irc.kewl.org"},
 	{0,			"la.defense.fr.eu.kewl.org"},
 	{0,			"nanterre.fr.eu.kewl.org"},
-
-	{"KrushNet",	0},
-	{0,			"Jeffersonville.IN.US.KrushNet.Org"},
-	{0,			"Auckland.NZ.KrushNet.Org"},
-	{0,			"Hastings.NZ.KrushNet.Org"},
-	{0,			"Seattle-R.WA.US.KrushNet.Org"},
-	{0,			"Minneapolis.MN.US.KrushNet.Org"},
-	{0,			"Cullowhee.NC.US.KrushNet.Org"},
-	{0,			"Asheville-R.NC.US.KrushNet.Org"},
-	{0,			"San-Antonio.TX.US.KrushNet.Org"},
 
 	{"Librenet",	0},
 	{0,			"irc.librenet.net"},
@@ -320,7 +299,6 @@ static const struct defaultserver def[] =
 	{0,			"us.pa.nixhelp.org"},
 
 	{"NullusNet",	0},
-	{0,			"irc.spot.org"},/*refused*/
 	{0,			"irc.nullus.net"},
 
 	{"OFTC",	0},

@@ -6,7 +6,7 @@
  2.0.6
 ----------------------------------------------------------------------
 
- - Updated translations (de, sl).
+ - Updated translations (de, sl, sr).
  - Fixed detection of Python on amd64 (Mads Martin Joergensen).
  - Don't loose editbox contents when pressing up, then down arrow
    (Ricky Clarkson).
@@ -28,7 +28,7 @@
  - Restored compatibility with older Perl that lacks call_pv().
  - Use sigaction inplace of signal() for better compatibility.
  - Win32: Don't try to open logfiles with a "\" in them, windows wont
-   allow it.
+   allow it. Instead, the "\" is replaced by a "_".
  - Backported HTTP authentication code from 1.8.11 (you can now
    specify a username and password for HTTP proxies).
  - When beep on highlight is on, beep on channel actions too
@@ -36,10 +36,9 @@
  - Added active dcc send feature (/dcc PSEND). More info here:
    http://mail.nl.linux.org/xchat-discuss/2003-10/msg00124.html
    (Daniel Dubois and Emmanuel Jeandel).
- - 
- - 
- - 
- - Smaller bug fixes: [822199] [786267] [783172] [811971] [756048].
+ - URL Handlers menu now removes programs that arn't in PATH.
+ - Smaller bug fixes: [822199] [786267] [783172] [811971] [756048]
+                      [844919].
 
 
 ----------------------------------------------------------------------
