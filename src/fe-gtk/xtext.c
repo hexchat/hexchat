@@ -2578,8 +2578,9 @@ gtk_xtext_reset (GtkXText * xtext, int mark, int attribs)
 /* render a single line, which WONT wrap, and parse mIRC colors */
 
 static int
-gtk_xtext_render_str (GtkXText * xtext, int y, textentry * ent, unsigned char *str,
-							 int len, int win_width, int indent, int line)
+gtk_xtext_render_str (GtkXText * xtext, int y, textentry * ent,
+							 unsigned char *str, int len, int win_width, int indent,
+							 int line, int left_only)
 {
 	GdkGC *gc;
 	int i = 0, x = indent, j = 0;
@@ -2887,7 +2888,7 @@ gtk_xtext_render_str (GtkXText * xtext, int y, textentry * ent, unsigned char *s
 	/* draw separator now so it doesn't appear to flicker */
 	gtk_xtext_draw_sep (xtext, y - xtext->font->ascent);
 	/* draw background to the right of the text */
-	if (!xtext->skip_border_fills)
+	if (!left_only && !xtext->skip_border_fills)
 		xtext_draw_bg (xtext, x, y - xtext->font->ascent,
 							(win_width + MARGIN) - x, xtext->fontsize);
 
@@ -3483,8 +3484,9 @@ gtk_xtext_render_line (GtkXText * xtext, textentry * ent, int line,
 		char *time_str;
 		int stamp_size = xtext_get_stamp_str (ent->stamp, &time_str);
 		y = (xtext->fontsize * line) + xtext->font->ascent - xtext->pixel_offset;
+
 		gtk_xtext_render_str (xtext, y, ent, time_str, stamp_size,
-									 win_width, 2, line);
+									 win_width, 2, line, TRUE);
 		g_free (time_str);
 	}
 #endif
@@ -3514,7 +3516,7 @@ gtk_xtext_render_line (GtkXText * xtext, textentry * ent, int line,
 		if (!subline)
 		{
 			if (!gtk_xtext_render_str (xtext, y, ent, str, len, win_width,
-												indent, line))
+												indent, line, FALSE))
 			{
 				/* small optimization */
 				return ent->lines_taken - subline;
@@ -3523,7 +3525,7 @@ gtk_xtext_render_line (GtkXText * xtext, textentry * ent, int line,
 		{
 			xtext->dont_render = TRUE;
 			gtk_xtext_render_str (xtext, y, ent, str, len, win_width,
-										 indent, line);
+										 indent, line, FALSE);
 			xtext->dont_render = FALSE;
 			subline--;
 			line--;
