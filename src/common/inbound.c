@@ -686,7 +686,12 @@ set_server_name (struct server *serv, char *name)
 	if (name[0] == 0)
 		name = serv->hostname;
 
-	safe_strcpy (serv->servername, name, sizeof (serv->servername));
+	/* strncpy parameters must NOT overlap */
+	if (name != serv->servername)
+	{
+		safe_strcpy (serv->servername, name, sizeof (serv->servername));
+	}
+
 	while (list)
 	{
 		sess = (session *) list->data;
@@ -1161,6 +1166,15 @@ inbound_banlist (session *sess, time_t stamp, char *chan, char *mask, char *bann
 		fe_add_ban_list (sess, mask, banner, time_str);
 }
 
+/* execute 1 end-of-motd command */
+
+static int
+inbound_exec_eom_cmd (char *str, void *sess)
+{
+	handle_command (sess, (str[0] == '/') ? str + 1 : str, TRUE);
+	return 1;
+}
+
 void
 inbound_login_end (session *sess, char *text)
 {
@@ -1174,8 +1188,11 @@ inbound_login_end (session *sess, char *text)
 			serv->p_get_ip_uh (serv, serv->nick);	/* sends USERHOST mynick */
 		}
 		set_default_modes (serv);
+
+		/* there may be more than 1, separated by \n */
 		if (serv->eom_cmd)
-			handle_command (sess, serv->eom_cmd, TRUE);
+			token_foreach (serv->eom_cmd, '\n', inbound_exec_eom_cmd, sess);
+
 		check_willjoin_channels (serv);
 		if (serv->supports_watch)
 			notify_send_watches (serv);

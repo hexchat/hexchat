@@ -33,7 +33,7 @@ extern GSList *network_list;
 #define FLAG_COUNT				6
 
 void servlist_init (void);
-void servlist_save (void);
+int servlist_save (void);
 int servlist_cycle (server *serv);
 void servlist_connect (session *sess, ircnet *net);
 int servlist_connect_by_netname (session *sess, char *network);

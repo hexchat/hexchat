@@ -581,7 +581,7 @@ servlist_connect (session *sess, ircnet *net)
 	{
 		if (serv->eom_cmd)
 			free (serv->eom_cmd);
-		serv->eom_cmd = strdup (net->command[0] == '/' ? net->command+1 : net->command);
+		serv->eom_cmd = strdup (net->command);
 	}
 
 	if (serv->encoding)
@@ -877,6 +877,7 @@ servlist_load (void)
 	FILE *fp;
 	char buf[258];
 	int len;
+	char *tmp;
 	ircnet *net = NULL;
 
 	snprintf (buf, sizeof (buf), "%s/servlist_.conf", get_xdir_fs ());
@@ -909,7 +910,17 @@ servlist_load (void)
 				net->autojoin = strdup (buf + 2);
 				break;
 			case 'C':
-				net->command = strdup (buf + 2);
+				if (net->command)
+				{
+					/* concat extra commands with a \n separator */
+					tmp = net->command;
+					net->command = malloc (strlen (tmp) + strlen (buf + 2) + 2);
+					strcpy (net->command, tmp);
+					strcat (net->command, "\n");
+					strcat (net->command, buf + 2);
+					free (tmp);
+				} else
+					net->command = strdup (buf + 2);
 				break;
 			case 'F':
 				net->flags = atoi (buf + 2);
@@ -966,7 +977,49 @@ servlist_check_encoding (char *charset)
 	return FALSE;
 }
 
-void
+static int
+servlist_write_ccmd (char *str, void *fp)
+{
+	return fprintf (fp, "C=%s\n", (str[0] == '/') ? str + 1 : str);
+}
+
+/* separates a string according to a 'sep' char, then calls the callback
+   function for each token found */
+
+int
+token_foreach (char *str, char sep,
+					int (*callback) (char *str, void *ud), void *ud)
+{
+	char t, *start = str;
+
+	while (1)
+	{
+		if (*str == sep || *str == 0)
+		{
+			t = *str;
+			*str = 0;
+			if (callback (start, ud) < 1)
+			{
+				*str = t;
+				return FALSE;
+			}
+			*str = t;
+
+			if (*str == 0)
+				break;
+			str++;
+			start = str;
+
+		} else
+		{
+			str += g_utf8_skip[*((unsigned char *)str)];
+		}
+	}
+
+	return TRUE;
+}
+
+int
 servlist_save (void)
 {
 	FILE *fp;
@@ -982,7 +1035,7 @@ servlist_save (void)
 		first = TRUE;
 	fp = fopen (buf, "w");
 	if (!fp)
-		return;
+		return FALSE;
 
 #ifndef WIN32
 	if (first)
@@ -1017,8 +1070,10 @@ servlist_save (void)
 				fe_message (buf, FALSE);
 			}
 		}
+
 		if (net->command)
-			fprintf (fp, "C=%s\n", net->command[0] == '/' ? net->command+1 : net->command);
+			token_foreach (net->command, '\n', servlist_write_ccmd, fp);
+
 		fprintf (fp, "F=%d\nD=%d\n", net->flags, net->selected);
 
 		hlist = net->servlist;
@@ -1028,10 +1083,16 @@ servlist_save (void)
 			fprintf (fp, "S=%s\n", serv->hostname);
 			hlist = hlist->next;
 		}
-		fprintf (fp, "\n");
+
+		if (fprintf (fp, "\n") < 1)
+		{
+			fclose (fp);
+			return FALSE;
+		}
 
 		list = list->next;
 	}
 
 	fclose (fp);
+	return TRUE;
 }

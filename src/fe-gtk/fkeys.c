@@ -1562,13 +1562,17 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 						g_free(result);
 					while (list)
 					{
-						if (strlen (buf) + strlen(list->data) >= COMP_BUF)
+						len = strlen (buf);	/* current buffer */
+						elen = strlen (list->data);	/* next item to add */
+						if (len + elen >= COMP_BUF)
 						{
 							PrintText (sess, buf);
 							buf[0] = 0;
+							len = 0;
 						}
-						sprintf (buf, "%s%s ", buf, (char*)list->data);
-						list = g_list_next (list);
+						strcpy (buf + len, (char *) list->data);
+						strcpy (buf + len + elen, " ");
+						list = list->next;
 					}
 					PrintText (sess, buf);
 					g_completion_free(gcomp);
