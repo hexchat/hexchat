@@ -169,7 +169,11 @@ inbound_privmsg (server *serv, char *from, char *ip, char *text)
 
 	sess = find_session_from_nick (from, serv);
 	if (!sess)
+	{
 		sess = serv->front_session;
+		EMIT_SIGNAL (XP_TE_PRIVMSG, sess, from, text, NULL, NULL, 0);
+		return;
+	}
 
 	if (sess->type == SESS_DIALOG)
 		EMIT_SIGNAL (XP_TE_DPRIVMSG, sess, from, text, NULL, NULL, 0);

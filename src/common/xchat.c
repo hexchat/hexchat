@@ -756,7 +756,7 @@ find_away_message (struct server *serv, char *nick)
 	"NAME Connect as IRC server\n"		"CMD newserver %s\n\n"
 #endif
 
-#ifndef WIN32
+#ifdef USE_SIGACTION
 /* Close and open log files on SIGUSR1. Usefull for log rotating */
 
 static void 
@@ -812,9 +812,10 @@ xchat_init (void)
 	}
 #else
 	WSAStartup(0x0101, &wsadata);
-#endif
+#endif	/* !USE_IPV6 */
+#endif	/* !WIN32 */
 
-#else
+#ifdef USE_SIGACTION
 	struct sigaction act;
 
 	/* ignore SIGPIPE's */
@@ -833,6 +834,11 @@ xchat_init (void)
 	act.sa_flags = 0;
 	sigemptyset (&act.sa_mask);
 	sigaction (SIGUSR2, &act, NULL);
+#else
+#ifndef WIN32
+	/* good enough for these old systems */
+	signal (SIGPIPE, SIG_IGN);
+#endif
 #endif
 
 	if (g_get_charset (&cs))

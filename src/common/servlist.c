@@ -132,9 +132,6 @@ static const struct defaultserver def[] =
 	{0,			"unix.coolchat.net"},
 	{0,			"toronto.coolchat.net"},
 
-	{"CyberArmy",	0},
-	{0,			"irc.cyberarmy.com"},
-
 	{"DALnet",	0},
 	{0,			"irc.dal.net"},
 	{0,			"irc.eu.dal.net"},

@@ -157,12 +157,9 @@ notify_gui_update (void)
 		{
 			servnot = (struct notify_per_server *) slist->data;
 			if (servnot->ison)
-			{
-				if (servnot->laston > lastseen)
-					lastseen = servnot->lastseen;
-				if (servnot->ison)
-					online = TRUE;
-			}
+				online = TRUE;
+			if (servnot->lastseen > lastseen)
+				lastseen = servnot->lastseen;
 			slist = slist->next;
 		}
 
@@ -192,11 +189,11 @@ notify_gui_update (void)
 			{
 				servnot = (struct notify_per_server *) slist->data;
 				if (servnot->ison)
-        {
+				{
 					if (servcount > 0)
 						name = "";
 					server = servnot->server->servername;
-					seen = ctime (&servnot->laston);
+					seen = ctime (&servnot->lastseen);
 					seen[strlen (seen) - 1] = 0; /* remove the \n */
 
 					if (!valid)	/* create new tree row if required */

@@ -2168,6 +2168,14 @@ tab_nick_comp (session *sess, GtkWidget *t, int shift)
 		}
 	}
 
+	{
+		/* This fixes invalid UTF-8 sequence by completion of
+		   a multibyte nick. -- FIXME: only a bandaid solution -- */
+		char *valid_end;
+		g_utf8_validate (buf, -1, (const gchar **)&valid_end);
+		(*valid_end) = 0;
+	}
+
 	gtk_entry_set_text (GTK_ENTRY (t), buf);
 	/* GeEkMaN: Restore the last cursor position */
 	gtk_editable_set_position (GTK_EDITABLE (t), cursor_pos);
