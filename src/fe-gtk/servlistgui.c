@@ -581,10 +581,17 @@ servlist_network_row_cb (GtkTreeSelection *sel, gpointer user_data)
 		selected_net = net;
 }
 
-static void
+static int
 servlist_savegui (void)
 {
 	char *sp;
+
+	/* check for blank username, ircd will not allow this */
+	if (GTK_ENTRY (entry_guser)->text[0] == 0)
+		return 1;
+
+	if (GTK_ENTRY (entry_greal)->text[0] == 0)
+		return 1;
 
 	strcpy (prefs.nick1, GTK_ENTRY (entry_nick1)->text);
 	strcpy (prefs.nick2, GTK_ENTRY (entry_nick2)->text);
@@ -595,12 +602,18 @@ servlist_savegui (void)
 		sp[0] = 0;	/* spaces will break the login */
 	strcpy (prefs.realname, GTK_ENTRY (entry_greal)->text);
 	servlist_save ();
+
+	return 0;
 }
 
 static void
 servlist_connectnew_cb (GtkWidget *button, gpointer userdata)
 {
-	servlist_savegui ();		/* why doesn't the delete_event trigger this? */
+	if (servlist_savegui () != 0)
+	{
+		gtkutil_simpledialog (_("User name and Real name cannot be left blank."));
+		return;
+	}
 
 	/* give it a NULL sess and it'll open a new tab for us */
 	servlist_connect (NULL, selected_net);
@@ -612,7 +625,11 @@ servlist_connectnew_cb (GtkWidget *button, gpointer userdata)
 static void
 servlist_connect_cb (GtkWidget *button, gpointer userdata)
 {
-	servlist_savegui ();		/* why doesn't the delete_event trigger this? */
+	if (servlist_savegui () != 0)
+	{
+		gtkutil_simpledialog (_("User name and Real name cannot be left blank."));
+		return;
+	}
 
 	if (!is_session (servlist_sess))
 		servlist_sess = NULL;

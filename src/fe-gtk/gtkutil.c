@@ -242,6 +242,7 @@ gtkutil_file_req (char *title, void *callback, void *userdata, char *filter,
 {
 	struct file_req *freq;
 	GtkWidget *dialog;
+	extern char *get_xdir_fs (void);
 
 #if GTK_CHECK_VERSION(2,4,0)
 	/* == GTK 2.4 uses the new GtkFileChooser, which is much nicer! */
@@ -263,7 +264,7 @@ gtkutil_file_req (char *title, void *callback, void *userdata, char *filter,
 		gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), last_dir);
 	if (flags & FRF_ADDFOLDER)
 		gtk_file_chooser_add_shortcut_folder (GTK_FILE_CHOOSER (dialog),
-														  (char *)get_xdir_fs (), NULL);
+														  get_xdir_fs (), NULL);
 
 	freq = malloc (sizeof (struct file_req));
 	freq->dialog = dialog;

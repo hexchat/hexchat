@@ -857,6 +857,12 @@ inbound_notice (server *serv, char *to, char *nick, char *msg, char *ip, int id)
 		sess = find_channel (serv, ptr);
 	}
 
+	if (!sess && ptr[0] == '%')
+	{
+		ptr++;
+		sess = find_channel (serv, ptr);
+	}
+
 	if (!sess && ptr[0] == '+')
 	{
 		ptr++;
