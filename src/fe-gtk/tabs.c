@@ -254,6 +254,7 @@ tab_group_new (void *callback, gboolean vertical)
 	} else
 		group = gtk_hbox_new (0, 0);
 	g_object_set_data (G_OBJECT (group), "c", callback);
+	gtk_container_set_border_width (GTK_CONTAINER (group), 2);
 	gtk_widget_show (group);
 
 	viewport = gtk_viewport_new (0, 0);

@@ -265,6 +265,27 @@ fe_timeout_remove (int tag)
 	g_source_remove (tag);
 }
 
+#ifdef WIN32
+
+static void
+log_handler (const gchar   *log_domain,
+		       GLogLevelFlags log_level,
+		       const gchar   *message,
+		       gpointer	      unused_data)
+{
+	session *sess;
+
+	sess = find_dialog (serv_list->data, "(warnings)");
+	if (!sess)
+		sess = new_ircwindow (serv_list->data, "(warnings)", SESS_DIALOG);
+
+	PrintTextf (sess, "%s\t%s\n", log_domain, message);
+	if (getenv ("XCHAT_WARNING_ABORT"))
+		abort ();
+}
+
+#endif
+
 void
 fe_new_window (session *sess)
 {
@@ -281,6 +302,13 @@ fe_new_window (session *sess)
 	}
 
 	mg_changui_new (sess, NULL, tab);
+
+#ifdef WIN32
+	g_log_set_handler ("Glib", G_LOG_LEVEL_CRITICAL|G_LOG_LEVEL_WARNING, (GLogFunc)log_handler, 0);
+	g_log_set_handler ("GLib-GObject", G_LOG_LEVEL_CRITICAL|G_LOG_LEVEL_WARNING, (GLogFunc)log_handler, 0);
+	g_log_set_handler ("Gdk", G_LOG_LEVEL_CRITICAL|G_LOG_LEVEL_WARNING, (GLogFunc)log_handler, 0);
+	g_log_set_handler ("Gtk", G_LOG_LEVEL_CRITICAL|G_LOG_LEVEL_WARNING, (GLogFunc)log_handler, 0);
+#endif
 }
 
 void

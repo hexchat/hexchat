@@ -23,6 +23,7 @@
 #include <stdio.h>
 #include <ctype.h>
 
+#include <gtk/gtkarrow.h>
 #include <gtk/gtktogglebutton.h>
 #include <gtk/gtkhbox.h>
 #include <gtk/gtkvbox.h>
@@ -1487,16 +1488,21 @@ mg_update_xtext (GtkWidget *wid)
 static void
 mg_create_textarea (session_gui *gui, GtkWidget *box)
 {
-	GtkWidget *hbox, *frame;
+	GtkWidget *inbox, *hbox, *frame;
 	GtkXText *xtext;
 
-	hbox = gtk_hbox_new (FALSE, 0);
+	hbox = gtk_vbox_new (FALSE, 1);
 	gtk_container_add (GTK_CONTAINER (box), hbox);
+//	gtk_container_set_border_width (GTK_CONTAINER (hbox), 0);
+
+	inbox = gtk_hbox_new (FALSE, 1);
+	gtk_container_add (GTK_CONTAINER (hbox), inbox);
+//	gtk_container_set_border_width (GTK_CONTAINER (inbox), 1);
 
 	frame = gtk_frame_new (NULL);
 	gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
-	gtk_container_set_border_width (GTK_CONTAINER (frame), 1);
-	gtk_container_add (GTK_CONTAINER (hbox), frame);
+//	gtk_container_set_border_width (GTK_CONTAINER (frame), 1);
+	gtk_container_add (GTK_CONTAINER (inbox), frame);
 
 	gui->xtext = gtk_xtext_new (colors, TRUE);
 	xtext = GTK_XTEXT (gui->xtext);
@@ -1513,7 +1519,7 @@ mg_create_textarea (session_gui *gui, GtkWidget *box)
 							G_CALLBACK (mg_word_clicked), NULL);
 
 	gui->vscrollbar = gtk_vscrollbar_new (GTK_XTEXT (xtext)->adj);
-	gtk_box_pack_start (GTK_BOX (hbox), gui->vscrollbar, FALSE, FALSE, 1);
+	gtk_box_pack_start (GTK_BOX (inbox), gui->vscrollbar, FALSE, TRUE, 1);
 }
 
 static GtkWidget *
@@ -1575,14 +1581,14 @@ mg_create_userlist (session_gui *gui, GtkWidget *box, int pack)
 {
 	GtkWidget *frame, *ulist, *vbox;
 
-	vbox = gtk_vbox_new (0, 0);
+	vbox = gtk_vbox_new (0, 2);
 	if (pack)
 		gtk_box_pack_start (GTK_BOX (box), vbox, 0, 0, 0);
 	else
 		gtk_container_add (GTK_CONTAINER (box), vbox);
 
 	frame = gtk_frame_new (NULL);
-	gtk_box_pack_start (GTK_BOX (vbox), frame, 0, 0, 1);
+	gtk_box_pack_start (GTK_BOX (vbox), frame, 0, 0, 0);
 
 	gui->namelistinfo = gtk_label_new (NULL);
 	gtk_container_add (GTK_CONTAINER (frame), gui->namelistinfo);
@@ -1608,7 +1614,7 @@ mg_create_center (session *sess, session_gui *gui, GtkWidget *box)
 {
 	GtkWidget *vbox, *hbox, *paned;
 
-	hbox = gtk_hbox_new (FALSE, 1);
+	hbox = gtk_hbox_new (FALSE, 3);
 
 	if (prefs.paned_userlist)
 	{
@@ -1818,7 +1824,7 @@ mg_set_tabs_pos (session_gui *gui, int pos)
 static void
 mg_create_entry (session *sess, GtkWidget *box)
 {
-	GtkWidget *hbox, *but, *entry;
+	GtkWidget *hbox, *but, *entry, *arrow;
 	session_gui *gui = sess->gui;
 
 	hbox = gtk_hbox_new (FALSE, 0);
@@ -1840,7 +1846,7 @@ mg_create_entry (session *sess, GtkWidget *box)
 	gui->input_box = entry = gtk_entry_new ();
 	gtk_widget_set_name (entry, "xchat-inputbox");
 	gtk_entry_set_max_length (GTK_ENTRY (gui->input_box), 2048);
-	g_signal_connect (G_OBJECT (entry), "key_press_event",
+	g_signal_connect_after (G_OBJECT (entry), "key_press_event",
 							G_CALLBACK (key_handle_key_press), NULL);
 	g_signal_connect (G_OBJECT (entry), "focus_in_event",
 							G_CALLBACK (mg_inputbox_focus), gui);
@@ -1852,9 +1858,16 @@ mg_create_entry (session *sess, GtkWidget *box)
 	if (prefs.style_inputbox)
 		mg_apply_entry_style (entry);
 
-	but = gtkutil_button (hbox, GTK_STOCK_GO_UP, _("Channel Options"),
-								 mg_upbutton_cb, 0, 0);
-	gtk_widget_set_size_request (but, 14, 8);
+	but = gtk_button_new ();
+	arrow = gtk_arrow_new (GTK_ARROW_DOWN, GTK_SHADOW_NONE);
+	gtk_container_add (GTK_CONTAINER (but), arrow);
+	gtk_button_set_relief (GTK_BUTTON (but), GTK_RELIEF_NONE);
+	gtk_box_pack_end (GTK_BOX (hbox), but, 0, 0, 0);
+	g_signal_connect (G_OBJECT (but), "clicked",
+							G_CALLBACK (mg_upbutton_cb), 0);
+	add_tip (but, _("Channel Options"));
+	gtk_widget_set_size_request (but, 18, 8);
+	gtk_widget_show_all (but);
 }
 
 static void
@@ -1948,7 +1961,7 @@ mg_create_topwindow (session *sess)
 	vbox = gtk_vbox_new (FALSE, 1);
 	gtk_container_add (GTK_CONTAINER (win), vbox);
 
-	vvbox = gtk_vbox_new (FALSE, 1);
+	vvbox = gtk_vbox_new (FALSE, 3);
 	gtk_container_add (GTK_CONTAINER (vbox), vvbox);
 
 	mg_create_topicbar (sess, vvbox, sess->channel);
@@ -1993,7 +2006,7 @@ mg_create_irctab (session *sess, GtkWidget *book)
 	GtkWidget *vbox;
 	session_gui *gui = sess->gui;
 
-	vbox = gtk_vbox_new (FALSE, 0);
+	vbox = gtk_vbox_new (FALSE, 3);
 
 	mg_create_topicbar (sess, vbox, NULL);
 	mg_create_center (sess, gui, vbox);

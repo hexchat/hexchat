@@ -764,7 +764,7 @@ inbound_notice (server *serv, char *outbuf, char *to, char *nick, char *msg,
 		ptr = 0;
 		if (prefs.notices_tabs)
 		{
-			int stype = server_notice ? SESS_NOTICES : SESS_SNOTICES;
+			int stype = server_notice ? SESS_SNOTICES : SESS_NOTICES;
 			sess = find_session_from_type (stype, serv);
 			if (!sess)
 			{
