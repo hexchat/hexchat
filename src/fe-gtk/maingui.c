@@ -2125,6 +2125,24 @@ mg_switch_tab_cb (GtkWidget *tab, session *sess, gpointer family)
 		mg_show_generic_tab (active_tab);
 }
 
+/* compare two tabs (for tab sorting function) */
+
+static int
+mg_tabs_compare (session *a, session *b)
+{
+	/* server tabs always go first */
+	if (a->type == SESS_SERVER)
+		return -1;
+
+	/* then channels */
+	if (a->type == SESS_CHANNEL && b->type != SESS_CHANNEL)
+		return -1;
+	if (a->type != SESS_CHANNEL && b->type == SESS_CHANNEL)
+		return 1;
+
+	return strcasecmp (a->channel, b->channel);
+}
+
 static void
 mg_create_tabs (session_gui *gui, GtkWidget *box)
 {
@@ -2133,7 +2151,8 @@ mg_create_tabs (session_gui *gui, GtkWidget *box)
 	if (prefs.tabs_position == 2 || prefs.tabs_position == 3)
 		vert = TRUE;
 
-	gui->tabs_box = tab_group_new (mg_switch_tab_cb, vert, prefs.tab_sort);
+	gui->tabs_box = tab_group_new (mg_switch_tab_cb, mg_tabs_compare,
+											 vert, prefs.tab_sort);
 	gtk_table_attach (GTK_TABLE (gui->main_table), gui->tabs_box,
 						1, 2, 0, 1, GTK_FILL, GTK_FILL, 0, 0);
 }

@@ -32,6 +32,7 @@ static int tab_right_is_moving = 0;
  *
  * group:
  *   "c" tab-focus callback function
+ *   "o" compare function
  *   "foc" currently focused tab
  *   "i" inner hbox (inside the viewport)
  *   "s" sorted (boolean)
@@ -266,7 +267,7 @@ tab_pressed_cb (GtkToggleButton *tab, GtkWidget *group)
 }
 
 GtkWidget *
-tab_group_new (void *callback, gboolean vertical, gboolean sorted)
+tab_group_new (void *callback, void *compare, gboolean vertical, gboolean sorted)
 {
 	GtkWidget *box;
 	GtkWidget *viewport;
@@ -281,6 +282,7 @@ tab_group_new (void *callback, gboolean vertical, gboolean sorted)
 	} else
 		group = gtk_hbox_new (0, 0);
 	g_object_set_data (G_OBJECT (group), "c", callback);
+	g_object_set_data (G_OBJECT (group), "o", compare);
 	g_signal_connect (G_OBJECT (group), "size_allocate",
 							G_CALLBACK (tab_group_resize), NULL);
 	gtk_container_set_border_width (GTK_CONTAINER (group), 2);
@@ -523,6 +525,8 @@ tab_add_sorted (GtkWidget *group, GtkWidget *box, GtkWidget *tab)
 	GtkBoxChild *child;
 	char *name;
 	int i = 0;
+	int (*cmp) (void *a, void *b);
+	void *b;
 
 	if (!GPOINTER_TO_INT (g_object_get_data (G_OBJECT (group), "s")))
 	{
@@ -532,26 +536,24 @@ tab_add_sorted (GtkWidget *group, GtkWidget *box, GtkWidget *tab)
 	}
 
 	/* sorting TODO:
-    *   - always put servertab first (dialogs get mixed in)
-    *   - move tab if renamed */
-	name = GTK_BUTTON (tab)->label_text;
+    *   - move tab if renamed (dialogs) */
+
+	/* userdata, passed to mg_tabs_compare() */
+	b = g_object_get_data (G_OBJECT (tab), "u");
+
+	/* compare function, as set by tab_group_new() */
+	cmp = g_object_get_data (G_OBJECT (group), "o");
+
 	list = GTK_BOX (box)->children;
 	while (list)
 	{
 		child = list->data;
 		if (!GTK_IS_SEPARATOR (child->widget))
 		{
-			gboolean insert_now = FALSE;
 			char *label_text = GTK_BUTTON (child->widget)->label_text;
+			void *a = g_object_get_data (G_OBJECT (child->widget), "u");
 
-			if (strcasecmp (label_text, name) > 0)
-				insert_now = TRUE;
-
-			/* channels get a lower priority, and are placed last */
-			if (name[0] == '#' && label_text[0] != '#')
-				insert_now = FALSE;
-
-			if (insert_now)
+			if (cmp (a, b) > 0)
 			{
 				gtk_box_pack_start (GTK_BOX (box), tab, 0, 0, 0);
 				gtk_box_reorder_child (GTK_BOX (box), tab, i);
@@ -887,6 +889,7 @@ tab_group_set_orientation (GtkWidget *group, gboolean vertical)
 		return group;
 
 	new_group = tab_group_new (g_object_get_data (G_OBJECT (group), "c"),
+										g_object_get_data (G_OBJECT (group), "o"),
 										vertical,
 						/* sort: boolean */
 						GPOINTER_TO_INT (g_object_get_data (G_OBJECT (group), "s")));

@@ -7,7 +7,7 @@ pevt_generic_nick_help
 Ban List
 XP_TE_BANLIST
 pevt_banlist_help
-%C22*%O$t$1 Banlist:%C19 $4%C20 $2%C21 $3%O
+%C22*%O$t$1 Banlist:%C19 $4%C20 $2%C21 $3
 4
 
 Banned
@@ -25,13 +25,13 @@ pevt_changenick_help
 Channel Action
 XP_TE_CHANACTION
 pevt_chanaction_help
-%C18*$t$1%O%C18 $2%O
+%C18*$t$1%O $2
 2
 
 Channel Action Hilight
 XP_TE_HCHANACTION
 pevt_chanaction_help
-%C23*%O$t%C23%B$1%B%O%C23 $2%O
+%C21*%O$t%C21%B%B$1%O%C21 $2
 2
 
 Channel Ban
@@ -85,13 +85,13 @@ pevt_chaninvite_help
 Channel List
 XP_TE_CHANLISTHEAD
 pevt_generic_none_help
-%UChannel          Users   Topic%O
+%UChannel          Users   Topic
 0
 
 Channel Message
 XP_TE_CHANMSG
 pevt_chanmsg_help
-%C18<$1%O%C18>%O$t$2%O
+%C18%B%B$1%O%C18%O$t$2
 3
 
 Channel Mode Generic
@@ -109,13 +109,13 @@ pevt_chanmodes_help
 Channel Msg Hilight
 XP_TE_HCHANMSG
 pevt_chanmsg_help
-%C23<%C23%B$1%B%C23>%O$t%C23$2%O
+%C21%B%B$1%O$t%C21$2
 3
 
 Channel Notice
 XP_TE_CHANNOTICE
 pevt_channotice_help
-%C28-%C29$1/$2%C28-%O$t$3%O
+%C28-%C29$1/$2%C28-%O$t$3
 3
 
 Channel Operator
@@ -205,7 +205,7 @@ pevt_ctcpgenc_help
 CTCP Send
 XP_TE_CTCPSEND
 pevt_ctcpsend_help
-%C19>%O$1%C19<%O$tCTCP $2%O
+%C19>%O$1%C19<%O$tCTCP $2
 2
 
 CTCP Sound
@@ -223,7 +223,7 @@ pevt_dccchatabort_help
 DCC CHAT Connect
 XP_TE_DCCCONCHAT
 pevt_dccchatcon_help
-%C22*%O$tDCC CHAT connection established to %C26$1 %C30[%O$2%C30]%O
+%C22*%O$tDCC CHAT connection established to %C26$1 %C30[%O$2%C30]
 2
 
 DCC CHAT Failed
@@ -265,7 +265,7 @@ pevt_dccgenericoffer_help
 DCC Header
 XP_TE_DCCHEAD
 pevt_generic_none_help
-%C24,18 Type  To/From    Status  Size    Pos     File      %O%010%B%C25----------------------------------------------------%O
+%C24,18 Type  To/From    Status  Size    Pos     File         
 0
 
 DCC Malformed
@@ -277,7 +277,7 @@ pevt_malformed_help
 DCC Offer
 XP_TE_DCCOFFER
 pevt_dccoffer_help
-%C22*%O$tOffering%C26 $1%O to%C26 $2%O
+%C22*%O$tOffering%C26 $1%O to%C26 $2
 3
 
 DCC Offer Not Valid
@@ -301,7 +301,7 @@ pevt_dccrecvcomp_help
 DCC RECV Connect
 XP_TE_DCCCONRECV
 pevt_dcccon_help
-%C22*%O$tDCC RECV connection established to%C26 $1 %C30[%O$2%C30]%O
+%C22*%O$tDCC RECV connection established to%C26 $1 %C30[%O$2%C30]
 3
 
 DCC RECV Failed
@@ -343,7 +343,7 @@ pevt_dccsendcomp_help
 DCC SEND Connect
 XP_TE_DCCCONSEND
 pevt_dcccon_help
-%C22*%O$tDCC SEND connection established to%C26 $1 %C30[%O$2%C30]%O
+%C22*%O$tDCC SEND connection established to%C26 $1 %C30[%O$2%C30]
 3
 
 DCC SEND Failed
@@ -409,13 +409,13 @@ Ignore on %C26$1%O changed.
 Ignore Footer
 XP_TE_IGNOREFOOTER
 pevt_generic_none_help
-%C24,18                                                              %O
+%C24,18                                                              
 0
 
 Ignore Header
 XP_TE_IGNOREHEADER
 pevt_generic_none_help
-%C24,18 Hostmask                  PRIV NOTI CHAN CTCP DCC  INVI UNIG %O
+%C24,18 Hostmask                  PRIV NOTI CHAN CTCP DCC  INVI UNIG 
 0
 
 Ignore Remove
@@ -511,25 +511,25 @@ pevt_generic_none_help
 Notice
 XP_TE_NOTICE
 pevt_notice_help
-%C28-%C29$1%C28-%O$t$2%O
+%C28-%C29$1%C28-%O$t$2
 2
 
 Notice Send
 XP_TE_NOTICESEND
 pevt_ctcpsend_help
-%C19>%O$1%C19<%O$t$2%O
+%C19>%O$1%C19<%O$t$2
 2
 
 Notify Empty
 XP_TE_NOTIFYEMPTY
 pevt_generic_none_help
-%C22*%O$tNotify list is empty.
+$tNotify list is empty.
 0
 
 Notify Header
 XP_TE_NOTIFYHEAD
 pevt_generic_none_help
-%C24,18 %B-- Notify List --------------- %O
+%C24,18 %B  Notify List                           
 0
 
 Notify Number
@@ -553,13 +553,13 @@ pevt_generic_nick_help
 Part
 XP_TE_PART
 pevt_part_help
-%C21*%O$t%C21$1 (%O%C21$2) has left $3
+%C23*%O$t%C23$1 (%O%C23$2) has left $3
 3
 
 Part with Reason
 XP_TE_PARTREASON
 pevt_partreason_help
-%C21*%O$t%C21$1 (%O%C21$2) has left $3 (%O%C21$4)%O
+%C23*%O$t%C23$1 (%O%C23$2) has left $3 (%O%C23$4)
 4
 
 Ping Reply
@@ -577,13 +577,13 @@ pevt_pingtimeout_help
 Private Message
 XP_TE_PRIVMSG
 pevt_privmsg_help
-%C28*%C29$1%C28*$t%O$2%O
+%C28*%C29$1%C28*$t%O$2
 2
 
 Private Message to Dialog
 XP_TE_DPRIVMSG
 pevt_dprivmsg_help
-%C18<%O$1%C18>%O$t$2%O
+%C18%B%B$1%O$t$2
 2
 
 Process Already Running
@@ -595,19 +595,19 @@ pevt_generic_none_help
 Quit
 XP_TE_QUIT
 pevt_quit_help
-%C21*%O$t%C21$1 has quit (%O%C21$2)
+%C23*%O$t%C23$1 has quit (%O%C23$2)
 3
 
 Raw Modes
 XP_TE_RAWMODES
 pevt_rawmodes_help
-%C22*%O$t$1 sets modes%B %C30[%O$2%B%C30]%O
+%C22*%O$t$1 sets modes%B %C30[%O$2%B%C30]
 2
 
 Receive Wallops
 XP_TE_WALLOPS
 pevt_dprivmsg_help
-%C28-%C29$1/Wallops%C28-%O$t$2%O
+%C28-%C29$1/Wallops%C28-%O$t$2
 2
 
 Resolving User
@@ -625,25 +625,25 @@ pevt_generic_none_help
 Server Error
 XP_TE_SERVERERROR
 pevt_servererror_help
-%C22*%O$t$1%O
+%C22*%O$t$1
 1
 
 Server Lookup
 XP_TE_SERVERLOOKUP
 pevt_serverlookup_help
-%C22*%O$t%C22Looking up $1%O
+%C22*%O$t%C22Looking up $1
 1
 
 Server Notice
 XP_TE_SERVNOTICE
 pevt_servertext_help
-%C22*%O$t$1%O
+%C22*%O$t$1
 2
 
 Server Text
 XP_TE_SERVTEXT
 pevt_servertext_help
-%C22*%O$t$1%O
+%C22*%O$t$1
 2
 
 Stop Connection
@@ -655,19 +655,19 @@ pevt_sconnect_help
 Topic
 XP_TE_TOPIC
 pevt_topic_help
-%C29*%O$t%C29Topic for $1%C %C29is: $2%O
+%C29*%O$t%C29Topic for $1%C %C29is: $2
 2
 
 Topic Creation
 XP_TE_TOPICDATE
 pevt_topicdate_help
-%C29*%O$t%C29Topic for $1%C %C29set by $2%C %C29at $3%O
+%C29*%O$t%C29Topic for $1%C %C29set by $2%C %C29at $3
 3
 
 Topic Change
 XP_TE_NEWTOPIC
 pevt_newtopic_help
-%C22*%O$t$1 has changed the topic to: $2%O
+%C22*%O$t$1 has changed the topic to: $2
 3
 
 Unknown Host
@@ -715,31 +715,31 @@ pevt_whoisid_help
 WhoIs Authenticated
 XP_TE_WHOIS_AUTH
 pevt_whoisauth_help
-%C22*%O$t%C28[%O$1%C28] %O$2%C27 $3%O
+%C22*%O$t%C28[%O$1%C28] %O$2%C27 $3
 3
 
 WhoIs Real Host
 XP_TE_WHOIS_REALHOST
 pevt_whoisrealhost_help
-%C22*%O$t%C28[%O$1%C28] %Oreal user@host%C27 $2%O, real IP%C27 $3%O
+%C22*%O$t%C28[%O$1%C28] %Oreal user@host%C27 $2%O, real IP%C27 $3
 4
 
 WhoIs Idle Line
 XP_TE_WHOIS4
 pevt_whois4_help
-%C22*%O$t%C28[%O$1%C28]%O idle%C26 $2%O
+%C22*%O$t%C28[%O$1%C28]%O idle%C26 $2
 2
 
 WhoIs Idle Line with Signon
 XP_TE_WHOIS4T
 pevt_whois4t_help
-%C22*%O$t%C28[%O$1%C28]%O idle%C26 $2%O, signon:%C26 $3%O
+%C22*%O$t%C28[%O$1%C28]%O idle%C26 $2%O, signon:%C26 $3
 3
 
 WhoIs Name Line
 XP_TE_WHOIS1
 pevt_whois1_help
-%C22*%O$t%C28[%O$1%C28] %C30(%O$2@$3%C30) %O: $4%O
+%C22*%O$t%C28[%O$1%C28] %C30(%O$2@$3%C30) %O: $4
 4
 
 WhoIs Server Line
@@ -751,25 +751,25 @@ pevt_whois3_help
 You Join
 XP_TE_UJOIN
 pevt_join_help
-%C19*%O$t%C19Now talking on $2%O
+%C19*%O$t%C19Now talking on $2
 3
 
 You Part
 XP_TE_UPART
 pevt_part_help
-%C22*%O$tYou have left channel $3
+%C23*$tYou have left channel $3
 3
 
 You Part with Reason
 XP_TE_UPARTREASON
 pevt_partreason_help
-%C21*%O$t%C21You have left channel $3 (%O%C21$4%O%C21)%O
+%C23*$tYou have left channel $3 (%O%C23$4%O%C23)
 4
 
 You Kicked
 XP_TE_UKICK
 pevt_ukick_help
-%C22*%O$tYou have been kicked from $2 by $3 ($4%O)
+%C23*$tYou have been kicked from $2 by $3 ($4%O%C23)
 4
 
 Your Invitation
@@ -781,7 +781,7 @@ pevt_uinvite_help
 Your Message
 XP_TE_UCHANMSG
 pevt_chanmsg_help
-%C23[%O$1%O%C23]%O$t$2%O
+%C31%B%B$1%O$t%C30$2
 3
 
 Your Nick Changing

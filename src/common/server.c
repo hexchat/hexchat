@@ -440,24 +440,8 @@ server_read (GIOChannel *source, GIOCondition condition, server *serv)
 static void
 server_connected (server * serv)
 {
-	char outbuf[512];
-
-	serv->ping_recv = time (0);
-
-#ifdef WIN32
-	if (prefs.identd)
-		identd_start ((serv->username) ? serv->username : prefs.username);
-#else
-	sprintf (outbuf, "%s/auth/xchat_auth", g_get_home_dir ());
-	if (access (outbuf, X_OK) == 0)
-	{
-		sprintf (outbuf, "exec -d %s/auth/xchat_auth %s", g_get_home_dir (),
-					prefs.username);
-		handle_command (serv->server_session, outbuf, FALSE);
-	}
-#endif
-
 	prefs.wait_on_exit = TRUE;
+	serv->ping_recv = time (0);
 	serv->connected = TRUE;
 	set_nonblocking (serv->sok);
 	serv->iotag = fe_input_add (serv->sok, FIA_READ|FIA_EX, server_read, serv);
@@ -897,6 +881,19 @@ server_read_child (GIOChannel *source, GIOCondition condition, server *serv)
 		waitline2 (source, ip, sizeof ip);
 		waitline2 (source, outbuf, sizeof outbuf);
 		EMIT_SIGNAL (XP_TE_CONNECT, sess, host, ip, outbuf, NULL, 0);
+#ifdef WIN32
+		if (prefs.identd)
+			identd_start ((serv->username) ? serv->username : prefs.username);
+#else
+		snprintf (outbuf, sizeof (outbuf), "%s/auth/xchat_auth",
+					 g_get_home_dir ());
+		if (access (outbuf, X_OK) == 0)
+		{
+			snprintf (outbuf, sizeof (outbuf), "exec -d %s/auth/xchat_auth %s",
+						 g_get_home_dir (), prefs.username);
+			handle_command (serv->server_session, outbuf, FALSE);
+		}
+#endif
 		break;
 	case '4':						  /* success */
 		waitline2 (source, tbuf, sizeof (tbuf));
@@ -999,6 +996,11 @@ server_disconnect (session * sess, int sendquit, int err)
 			serv->eom_cmd = NULL;
 		}
 		server_sendquit (sess);
+		if (serv->networkname)
+		{
+			free (serv->networkname);
+			serv->networkname = NULL;
+		}
 	}
 
 	/* close all sockets & io tags */
@@ -1034,11 +1036,6 @@ server_disconnect (session * sess, int sendquit, int err)
 	serv->motd_skipped = FALSE;
 	serv->no_login = FALSE;
 	serv->servername[0] = 0;
-	if (serv->networkname)
-	{
-		free (serv->networkname);
-		serv->networkname = NULL;
-	}
 	serv->lag_sent = 0;
 
 	notify_cleanup ();

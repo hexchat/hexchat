@@ -615,6 +615,7 @@ load_config (void)
 	prefs.autoreconnect = 1;
 	prefs.recon_delay = 10;
 	prefs.tabchannels = 1;
+	prefs.tab_sort = 1;
 	prefs.paned_userlist = 1;
 	prefs.newtabstofront = 2;
 	prefs.use_server_tab = 1;
