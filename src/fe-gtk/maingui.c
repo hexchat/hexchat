@@ -164,6 +164,8 @@ mg_inputbox_cb (GtkWidget *igad, session_gui *gui)
 				break;
 			list = list->next;
 		}
+		if (!list)
+			sess = NULL;
 	}
 
 	if (sess)
