@@ -30,7 +30,6 @@
 
 #include "../common/xchat.h"
 #include "../common/xchatc.h"
-#include "../pixmaps/xchat.h"
 #include "../common/servlist.h"
 #include "../common/cfgfiles.h"
 #include "gtkutil.h"
