@@ -221,15 +221,7 @@ dcc_check_timeouts (void)
 		{
 		case STAT_ACTIVE:
 			dcc_calc_cps (dcc);
-			switch (dcc->type)
-			{
-			case TYPE_SEND:
-				fe_dcc_update_send (dcc);
-				break;
-			case TYPE_RECV:
-				fe_dcc_update_recv (dcc);
-				break;
-			}
+			fe_dcc_update (dcc);
 
 			if (dcc->type == TYPE_SEND || dcc->type == TYPE_RECV)
 			{
@@ -294,28 +286,8 @@ dcc_connect_sok (struct DCC *dcc)
 }
 
 static void
-update_dcc_window (int type)
-{
-	switch (type)
-	{
-	case TYPE_SEND:
-		fe_dcc_update_send_win ();
-		break;
-	case TYPE_RECV:
-		fe_dcc_update_recv_win ();
-		break;
-	case TYPE_CHATRECV:
-	case TYPE_CHATSEND:
-		fe_dcc_update_chat_win ();
-		break;
-	}
-}
-
-static void
 dcc_close (struct DCC *dcc, int dccstat, int destroy)
 {
-	char type = dcc->type;
-
 	if (dcc->wiotag)
 	{
 		fe_input_remove (dcc->wiotag);
@@ -366,6 +338,7 @@ dcc_close (struct DCC *dcc, int dccstat, int destroy)
 	if (destroy)
 	{
 		dcc_list = g_slist_remove (dcc_list, dcc);
+		fe_dcc_remove (dcc);
 		if (dcc->file)
 			free (dcc->file);
 		if (dcc->destfile)
@@ -374,21 +347,10 @@ dcc_close (struct DCC *dcc, int dccstat, int destroy)
 			g_free (dcc->destfile_fs);
 		free (dcc->nick);
 		free (dcc);
-		update_dcc_window (type);
 		return;
 	}
 
-	switch (type)
-	{
-	case TYPE_SEND:
-		fe_dcc_update_send (dcc);
-		break;
-	case TYPE_RECV:
-		fe_dcc_update_recv (dcc);
-		break;
-	default:
-		update_dcc_window (type);
-	}
+	fe_dcc_update (dcc);
 }
 
 void
@@ -476,7 +438,7 @@ dcc_write_chat (char *nick, char *text)
 		dcc->size += len;
 		send (dcc->sok, text, len, 0);
 		send (dcc->sok, "\n", 1, 0);
-		fe_dcc_update_chat_win ();
+		fe_dcc_update (dcc);
 		if (locale)
 			g_free (locale);
 		return dcc;
@@ -631,7 +593,7 @@ dcc_read_chat (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 
 				dcc->pos += dcc->dccchat->pos;
 				dcc->dccchat->pos = 0;
-				fe_dcc_update_chat_win ();
+				fe_dcc_update (dcc);
 				break;
 			default:
 				dcc->dccchat->linebuf[dcc->dccchat->pos] = lbuf[i];
@@ -781,7 +743,7 @@ dcc_connect_finished (GIOChannel *source, GIOCondition condition, struct DCC *dc
 						 dcctypes[dcc->type], dcc->nick, errorstring (er),
 						 NULL, 0);
 		dcc->dccstat = STAT_FAILED;
-		update_dcc_window (dcc->type);
+		fe_dcc_update (dcc);
 		return TRUE;
 	}
 
@@ -805,7 +767,7 @@ dcc_connect_finished (GIOChannel *source, GIOCondition condition, struct DCC *dc
 							 dcctypes[dcc->type], dcc->nick, errorstring (er),
 							 NULL, 0);
 			dcc->dccstat = STAT_FAILED;
-			update_dcc_window (dcc->type);
+			fe_dcc_update (dcc);
 			return TRUE;
 		}
 	}
@@ -830,9 +792,9 @@ dcc_connect_finished (GIOChannel *source, GIOCondition condition, struct DCC *dc
 						 dcc->nick, host, NULL, NULL, 0);
 		break;
 	}
-	update_dcc_window (dcc->type);
 	dcc->starttime = time (0);
 	dcc->lasttime = dcc->starttime;
+	fe_dcc_update (dcc);
 
 	return TRUE;
 }
@@ -876,16 +838,13 @@ dcc_connect (struct DCC *dcc)
 		if (dcc->sok == -1)
 		{
 			dcc->dccstat = STAT_FAILED;
-			update_dcc_window (dcc->type);
+			fe_dcc_update (dcc);
 			return;
 		}
 		dcc->iotag = fe_input_add (dcc->sok, FIA_WRITE|FIA_EX, dcc_connect_finished, dcc);
 	}
 	
-	if (dcc->type == TYPE_RECV)
-		fe_dcc_update_recv (dcc);
-	else
-		fe_dcc_update_chat_win ();
+	fe_dcc_update (dcc);
 }
 
 static gboolean
@@ -1069,7 +1028,7 @@ dcc_accept (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 		break;
 	}
 
-	update_dcc_window (dcc->type);
+	fe_dcc_update (dcc);
 
 	return TRUE;
 }
@@ -1254,9 +1213,11 @@ dcc_send (struct session *sess, char *tbuf, char *to, char *file, int maxcps)
 						}
 						dcc->nick = strdup (to);
 						if (prefs.autoopendccsendwindow)
-							fe_dcc_open_send_win (TRUE);
-						else
-							fe_dcc_update_send_win ();
+						{
+							if (fe_dcc_open_send_win (TRUE))	/* already open? add */
+								fe_dcc_add (dcc);
+						} else
+							fe_dcc_add (dcc);
 
 						snprintf (outbuf, sizeof (outbuf), (havespaces) ? 
 								"DCC SEND \"%s\" %lu %d %u" :
@@ -1454,9 +1415,11 @@ dcc_chat (struct session *sess, char *nick)
 	if (dcc_listen_init (dcc, sess))
 	{
 		if (prefs.autoopendccchatwindow)
-			fe_dcc_open_chat_win (TRUE);
-		else
-			fe_dcc_update_chat_win ();
+		{
+			if (fe_dcc_open_chat_win (TRUE))	/* already open? add only */
+				fe_dcc_add (dcc);
+		} else
+			fe_dcc_add (dcc);
 		snprintf (outbuf, sizeof (outbuf), "DCC CHAT chat %lu %d",
 						dcc->addr, dcc->port);
 		dcc->serv->p_ctcp (dcc->serv, nick, outbuf);
@@ -1542,10 +1505,14 @@ handle_dcc (struct session *sess, char *nick, char *word[],
 
 			EMIT_SIGNAL (XP_TE_DCCCHATOFFER, sess->server->front_session, nick,
 							 NULL, NULL, NULL, 0);
+
 			if (prefs.autoopendccchatwindow)
-				fe_dcc_open_chat_win (TRUE);
-			else
-				fe_dcc_update_chat_win ();
+			{
+				if (fe_dcc_open_chat_win (TRUE))	/* already open? add only */
+					fe_dcc_add (dcc);
+			} else
+				fe_dcc_add (dcc);
+
 			if (prefs.autodccchat)
 				dcc_connect (dcc);
 		}
@@ -1699,9 +1666,11 @@ dontresume:
 				}
 			}
 			if (prefs.autoopendccrecvwindow)
-				fe_dcc_open_recv_win (TRUE);
-			else
-				fe_dcc_update_recv_win ();
+			{
+				if (fe_dcc_open_recv_win (TRUE))	/* was already open? just add*/
+					fe_dcc_add (dcc);
+			} else
+				fe_dcc_add (dcc);
 		}
 		sprintf (tbuf, "%lu", size);
 		snprintf (tbuf + 24, 300, "%s:%d", net_ip (dcc->addr), dcc->port);

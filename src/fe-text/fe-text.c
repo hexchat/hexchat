@@ -681,23 +681,15 @@ fe_userlist_clear (struct session *sess)
 {
 }
 void
-fe_dcc_update_recv_win (void)
+fe_dcc_add (struct DCC *dcc)
 {
 }
 void
-fe_dcc_update_send_win (void)
+fe_dcc_update (struct DCC *dcc)
 {
 }
 void
-fe_dcc_update_chat_win (void)
-{
-}
-void
-fe_dcc_update_send (struct DCC *dcc)
-{
-}
-void
-fe_dcc_update_recv (struct DCC *dcc)
+fe_dcc_remove (struct DCC *dcc)
 {
 }
 void
@@ -756,17 +748,20 @@ void
 fe_ignore_update (int level)
 {
 }
-void
+int
 fe_dcc_open_recv_win (int passive)
 {
+	return FALSE;
 }
-void
+int
 fe_dcc_open_send_win (int passive)
 {
+	return FALSE;
 }
-void
+int
 fe_dcc_open_chat_win (int passive)
 {
+	return FALSE;
 }
 void
 fe_userlist_hide (session * sess)

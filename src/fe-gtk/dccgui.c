@@ -117,66 +117,38 @@ fe_dcc_send_filereq (struct session *sess, char *nick, int maxcps)
 	gtkutil_file_req (tbuf, dcc_send_filereq_file, mdc, NULL, FRF_MULTIPLE);
 }
 
-void
-fe_dcc_update_recv (struct DCC *dcc)
+static void
+dcc_prepare_row_chat (struct DCC *dcc, char *col[])
 {
-	char pos[16], kbs[14], perc[14], eta[14];
-	gint row;
-	int to_go;
-	float per;
+	static char pos[16], siz[16];
 
-	if (!dccrwin.window)
-		return;
-
-	row =
-		gtk_clist_find_row_from_data (GTK_CLIST (dccrwin.list), (gpointer) dcc);
-
-	/* percentage done */
-	per = (float) ((dcc->pos * 100.00) / dcc->size);
+	col[0] = _(dccstat[dcc->dccstat].name);
+	col[1] = dcc->nick;
+	col[2] = pos;
+	col[3] = siz;
+	col[4] = ctime (&dcc->starttime);
+	col[4][strlen (col[4]) - 1] = 0;	/* remove the \n */
 
 	proper_unit (dcc->pos, pos, sizeof (pos));
-	snprintf (kbs, sizeof (kbs), "%.1f", ((float)dcc->cps) / 1024);
-	snprintf (perc, sizeof (perc), "%.0f%%", per);
-
-	gtk_clist_freeze (GTK_CLIST (dccrwin.list));
-	gtk_clist_set_text (GTK_CLIST (dccrwin.list), row, 0,
-							  _(dccstat[dcc->dccstat].name));
-	gtk_clist_set_text (GTK_CLIST (dccrwin.list), row, 3, pos);
-	gtk_clist_set_text (GTK_CLIST (dccrwin.list), row, 4, perc);
-	gtk_clist_set_text (GTK_CLIST (dccrwin.list), row, 5, kbs);
-	if (dcc->cps != 0)
-	{
-		to_go = (dcc->size - dcc->pos) / dcc->cps;
-		snprintf (eta, sizeof (eta), "%.2d:%.2d:%.2d",
-					 to_go / 3600, (to_go / 60) % 60, to_go % 60);
-	} else
-		strcpy (eta, "--:--:--");
-	gtk_clist_set_text (GTK_CLIST (dccrwin.list), row, 6, eta);
-	if (dccstat[dcc->dccstat].color != 1)
-		gtk_clist_set_foreground
-			(GTK_CLIST (dccrwin.list), row,
-			 colors + dccstat[dcc->dccstat].color);
-#ifdef USE_GNOME
-	if (dcc->dccstat == STAT_DONE)
-		gtk_clist_set_text (GTK_CLIST (dccrwin.list), row, 8,
-								  (char *) gnome_vfs_get_mime_type (dcc->destfile));
-#endif
-	gtk_clist_thaw (GTK_CLIST (dccrwin.list));
+	proper_unit (dcc->size, siz, sizeof (siz));
 }
 
-void
-fe_dcc_update_send (struct DCC *dcc)
+static void
+dcc_prepare_row_send (struct DCC *dcc, char *col[])
 {
-	char pos[16], kbs[14], ack[16], perc[14], eta[14];
-	gint row;
+	static char pos[16], size[16], kbs[14], ack[16], perc[14], eta[14];
 	int to_go;
 	float per;
 
-	if (!dccswin.window)
-		return;
-
-	row =
-		gtk_clist_find_row_from_data (GTK_CLIST (dccswin.list), (gpointer) dcc);
+	col[0] = _(dccstat[dcc->dccstat].name);
+	col[1] = file_part (dcc->file);
+	col[2] = size;
+	col[3] = pos;
+	col[4] = ack;
+	col[5] = perc;
+	col[6] = kbs;
+	col[7] = eta;
+	col[8] = dcc->nick;
 
 	/* percentage ack'ed */
 	per = (float) ((dcc->ack * 100.00) / dcc->size);
@@ -191,18 +163,123 @@ fe_dcc_update_send (struct DCC *dcc)
 					 to_go / 3600, (to_go / 60) % 60, to_go % 60);
 	} else
 		strcpy (eta, "--:--:--");
+}
+
+static void
+dcc_prepare_row_recv (struct DCC *dcc, char *col[])
+{
+	static char size[16], pos[16], kbs[16], perc[14], eta[16];
+	float per;
+	int to_go;
+
+	col[0] = _(dccstat[dcc->dccstat].name);
+	col[1] = dcc->file;
+	col[2] = size;
+	col[3] = pos;
+	col[4] = perc;
+	col[5] = kbs;
+	col[6] = eta;
+	col[7] = dcc->nick;
+#ifdef USE_GNOME
+	if (dcc->dccstat == STAT_DONE)
+		col[8] = (char *) gnome_vfs_get_mime_type (dcc->destfile);
+	else
+		col[8] = "";
+#endif
+	proper_unit (dcc->size, size, sizeof (size));
+	if (dcc->dccstat == STAT_QUEUED)
+		proper_unit (dcc->resumable, pos, sizeof (pos));
+	else
+		proper_unit (dcc->pos, pos, sizeof (pos));
+	snprintf (kbs, sizeof (kbs), "%.1f", ((float)dcc->cps) / 1024);
+	/* percentage recv'ed */
+	per = (float) ((dcc->pos * 100.00) / dcc->size);
+	snprintf (perc, sizeof (perc), "%.0f%%", per);
+	if (dcc->cps != 0)
+	{
+		to_go = (dcc->size - dcc->pos) / dcc->cps;
+		snprintf (eta, sizeof (eta), "%.2d:%.2d:%.2d",
+					 to_go / 3600, (to_go / 60) % 60, to_go % 60);
+	} else
+		strcpy (eta, "--:--:--");
+}
+
+static void
+dcc_update_recv (struct DCC *dcc)
+{
+	gint row;
+	char *col[9];
+
+	if (!dccrwin.window)
+		return;
+
+	row = gtk_clist_find_row_from_data (GTK_CLIST (dccrwin.list), dcc);
+
+	dcc_prepare_row_recv (dcc, col);
+
+	gtk_clist_freeze (GTK_CLIST (dccrwin.list));
+	gtk_clist_set_text (GTK_CLIST (dccrwin.list), row, 0, col[0]);
+	gtk_clist_set_text (GTK_CLIST (dccrwin.list), row, 3, col[3]);
+	gtk_clist_set_text (GTK_CLIST (dccrwin.list), row, 4, col[4]);
+	gtk_clist_set_text (GTK_CLIST (dccrwin.list), row, 5, col[5]);
+	gtk_clist_set_text (GTK_CLIST (dccrwin.list), row, 6, col[6]);
+#ifdef USE_GNOME
+	gtk_clist_set_text (GTK_CLIST (dccrwin.list), row, 8, col[8]);
+#endif
+
+	if (dccstat[dcc->dccstat].color != 1)
+		gtk_clist_set_foreground (GTK_CLIST (dccrwin.list), row,
+										  colors + dccstat[dcc->dccstat].color);
+
+	gtk_clist_thaw (GTK_CLIST (dccrwin.list));
+}
+
+static void
+dcc_update_chat (struct DCC *dcc)
+{
+	gint row;
+	char *col[5];
+
+	if (!dcccwin.window)
+		return;
+
+	row = gtk_clist_find_row_from_data (GTK_CLIST (dcccwin.list), dcc);
+
+	dcc_prepare_row_chat (dcc, col);
+
+	gtk_clist_freeze (GTK_CLIST (dcccwin.list));
+	gtk_clist_set_text (GTK_CLIST (dcccwin.list), row, 0, col[0]);
+	gtk_clist_set_text (GTK_CLIST (dcccwin.list), row, 2, col[2]);
+	gtk_clist_set_text (GTK_CLIST (dcccwin.list), row, 3, col[3]);
+	gtk_clist_thaw (GTK_CLIST (dcccwin.list));
+}
+
+static void
+dcc_update_send (struct DCC *dcc)
+{
+	gint row;
+	char *col[9];
+
+	if (!dccswin.window)
+		return;
+
+	row = gtk_clist_find_row_from_data (GTK_CLIST (dccswin.list), dcc);
+
+	dcc_prepare_row_send (dcc, col);
+
 	gtk_clist_freeze (GTK_CLIST (dccswin.list));
 	gtk_clist_set_text (GTK_CLIST (dccswin.list), row, 0,
 							  _(dccstat[dcc->dccstat].name));
+	gtk_clist_set_text (GTK_CLIST (dccswin.list), row, 3, col[3]);
+	gtk_clist_set_text (GTK_CLIST (dccswin.list), row, 4, col[4]);
+	gtk_clist_set_text (GTK_CLIST (dccswin.list), row, 5, col[5]);
+	gtk_clist_set_text (GTK_CLIST (dccswin.list), row, 6, col[6]);
+	gtk_clist_set_text (GTK_CLIST (dccswin.list), row, 7, col[7]);
+
 	if (dccstat[dcc->dccstat].color != 1)
-		gtk_clist_set_foreground
-			(GTK_CLIST (dccswin.list), row,
-			 colors + dccstat[dcc->dccstat].color);
-	gtk_clist_set_text (GTK_CLIST (dccswin.list), row, 3, pos);
-	gtk_clist_set_text (GTK_CLIST (dccswin.list), row, 4, ack);
-	gtk_clist_set_text (GTK_CLIST (dccswin.list), row, 5, perc);
-	gtk_clist_set_text (GTK_CLIST (dccswin.list), row, 6, kbs);
-	gtk_clist_set_text (GTK_CLIST (dccswin.list), row, 7, eta);
+		gtk_clist_set_foreground (GTK_CLIST (dccswin.list), row,
+					 colors + dccstat[dcc->dccstat].color);
+
 	gtk_clist_thaw (GTK_CLIST (dccswin.list));
 }
 
@@ -212,66 +289,25 @@ close_dcc_recv_window (void)
 	dccrwin.window = 0;
 }
 
-void
-fe_dcc_update_recv_win (void)
+static void
+dcc_update_recv_win (void)
 {
 	struct DCC *dcc;
 	GSList *list = dcc_list;
 	gchar *nnew[9];
-	char size[16];
-	char pos[16];
-	char kbs[16];
-	char perc[14];
-	char eta[16];
 	gint row;
-	int selrow;
-	int to_go;
-	float per;
 
-	if (!dccrwin.window)
-		return;
-
-	selrow = gtkutil_clist_selection (dccrwin.list);
-
-	gtk_clist_clear ((GtkCList *) dccrwin.list);
-	nnew[2] = size;
-	nnew[3] = pos;
-	nnew[4] = perc;
-	nnew[5] = kbs;
-	nnew[6] = eta;
+	gtk_clist_freeze (GTK_CLIST (dccrwin.list));
+	gtk_clist_clear (GTK_CLIST (dccrwin.list));
 	while (list)
 	{
-		dcc = (struct DCC *) list->data;
+		dcc = list->data;
 		if (dcc->type == TYPE_RECV)
 		{
-			nnew[0] = _(dccstat[dcc->dccstat].name);
-			nnew[1] = dcc->file;
-			nnew[7] = dcc->nick;
-#ifdef USE_GNOME
-			if (dcc->dccstat == STAT_DONE)
-				nnew[8] = (char *) gnome_vfs_get_mime_type (dcc->destfile);
-			else
-				nnew[8] = "";
-#endif
-			proper_unit (dcc->size, size, sizeof (size));
-			if (dcc->dccstat == STAT_QUEUED)
-				proper_unit (dcc->resumable, pos, sizeof (pos));
-			else
-				proper_unit (dcc->pos, pos, sizeof (pos));
-			snprintf (kbs, sizeof (kbs), "%.1f", ((float)dcc->cps) / 1024);
-			/* percentage recv'ed */
-			per = (float) ((dcc->pos * 100.00) / dcc->size);
-			snprintf (perc, sizeof (perc), "%.0f%%", per);
-			if (dcc->cps != 0)
-			{
-				to_go = (dcc->size - dcc->pos) / dcc->cps;
-				snprintf (eta, sizeof (eta), "%.2d:%.2d:%.2d",
-							 to_go / 3600, (to_go / 60) % 60, to_go % 60);
-			} else
-				strcpy (eta, "--:--:--");
+			dcc_prepare_row_recv (dcc, nnew);
+
 			row = gtk_clist_append (GTK_CLIST (dccrwin.list), nnew);
-			gtk_clist_set_row_data (GTK_CLIST (dccrwin.list), row,
-											(gpointer) dcc);
+			gtk_clist_set_row_data (GTK_CLIST (dccrwin.list), row, dcc);
 			if (dccstat[dcc->dccstat].color != 1)
 				gtk_clist_set_foreground (GTK_CLIST (dccrwin.list), row,
 												  colors +
@@ -279,8 +315,7 @@ fe_dcc_update_recv_win (void)
 		}
 		list = list->next;
 	}
-	if (selrow != -1)
-		gtk_clist_select_row ((GtkCList *) dccrwin.list, selrow, 0);
+	gtk_clist_thaw (GTK_CLIST (dccrwin.list));
 }
 
 static void
@@ -414,7 +449,7 @@ recv_row_selected (GtkWidget * clist, gint row, gint column,
 		accept_clicked (0, 0);
 }
 
-void
+int
 fe_dcc_open_recv_win (int passive)
 {
 	GtkWidget *vbox, *bbox;
@@ -437,10 +472,9 @@ fe_dcc_open_recv_win (int passive)
 
 	if (dccrwin.window)
 	{
-		fe_dcc_update_recv_win ();
 		if (!passive)
 			mg_bring_tofront (dccrwin.window);
-		return;
+		return TRUE;
 	}
 	dccrwin.window =
 			  mg_create_generic_tab ("dccrecv", _("X-Chat: File Receive List"),
@@ -482,7 +516,9 @@ fe_dcc_open_recv_win (int passive)
 	gtkutil_button (bbox, GTK_STOCK_OPEN, 0, open_clicked, 0, _("Open"));
 #endif
 	gtk_widget_show (dccrwin.window);
-	fe_dcc_update_recv_win ();
+	dcc_update_recv_win ();
+
+	return FALSE;
 }
 
 static void
@@ -491,60 +527,24 @@ close_dcc_send_window (void)
 	dccswin.window = 0;
 }
 
-void
-fe_dcc_update_send_win (void)
+static void
+dcc_update_send_win (void)
 {
 	struct DCC *dcc;
 	GSList *list = dcc_list;
 	gchar *nnew[9];
-	char size[16];
-	char pos[16];
-	char kbs[14];
-	char ack[16];
-	char perc[14];
-	char eta[14];
 	gint row;
-	int selrow;
-	int to_go;
-	float per;
 
-	if (!dccswin.window)
-		return;
-
-	selrow = gtkutil_clist_selection (dccswin.list);
-
+	gtk_clist_freeze (GTK_CLIST (dccswin.list));
 	gtk_clist_clear ((GtkCList *) dccswin.list);
-	nnew[2] = size;
-	nnew[3] = pos;
-	nnew[4] = ack;
-	nnew[5] = perc;
-	nnew[6] = kbs;
 	while (list)
 	{
-		nnew[7] = eta;
-		dcc = (struct DCC *) list->data;
+		dcc = list->data;
 		if (dcc->type == TYPE_SEND)
 		{
-			nnew[0] = _(dccstat[dcc->dccstat].name);
-			nnew[1] = file_part (dcc->file);
-			nnew[8] = dcc->nick;
-			/* percentage ack'ed */
-			per = (float) ((dcc->ack * 100.00) / dcc->size);
-			proper_unit (dcc->size, size, sizeof (size));
-			proper_unit (dcc->pos, pos, sizeof (pos));
-			snprintf (kbs, sizeof (kbs), "%.1f", ((float)dcc->cps) / 1024);
-			snprintf (perc, sizeof (perc), "%.0f%%", per);
-			proper_unit (dcc->ack, ack, sizeof (ack));
-			if (dcc->cps != 0)
-			{
-				to_go = (dcc->size - dcc->ack) / dcc->cps;
-				snprintf (eta, sizeof (eta), "%.2d:%.2d:%.2d",
-							 to_go / 3600, (to_go / 60) % 60, to_go % 60);
-			} else
-				strcpy (eta, "--:--:--");
+			dcc_prepare_row_send (dcc, nnew);
 			row = gtk_clist_append (GTK_CLIST (dccswin.list), nnew);
-			gtk_clist_set_row_data (GTK_CLIST (dccswin.list), row,
-											(gpointer) dcc);
+			gtk_clist_set_row_data (GTK_CLIST (dccswin.list), row, dcc);
 			if (dccstat[dcc->dccstat].color != 1)
 				gtk_clist_set_foreground
 					(GTK_CLIST (dccswin.list), row,
@@ -552,8 +552,7 @@ fe_dcc_update_send_win (void)
 		}
 		list = list->next;
 	}
-	if (selrow != -1)
-		gtk_clist_select_row ((GtkCList *) dccswin.list, selrow, 0);
+	gtk_clist_thaw (GTK_CLIST (dccswin.list));
 }
 
 static void
@@ -607,7 +606,7 @@ abort_send_clicked (GtkWidget * wid, gpointer none)
 	}
 }
 
-void
+int
 fe_dcc_open_send_win (int passive)
 {
 	GtkWidget *vbox, *bbox;
@@ -624,10 +623,9 @@ fe_dcc_open_send_win (int passive)
 
 	if (dccswin.window)
 	{
-		fe_dcc_update_send_win ();
 		if (!passive)
 			mg_bring_tofront (dccswin.window);
-		return;
+		return TRUE;
 	}
 
 	dccswin.window =
@@ -657,7 +655,9 @@ fe_dcc_open_send_win (int passive)
 	gtkutil_button (bbox, GTK_STOCK_DIALOG_INFO, 0, info_send_clicked, 0, _("Info"));
 
 	gtk_widget_show (dccswin.window);
-	fe_dcc_update_send_win ();
+	dcc_update_send_win ();
+
+	return FALSE;
 }
 
 
@@ -700,53 +700,37 @@ chat_row_selected (GtkWidget * clist, gint row, gint column,
 		accept_chat_clicked (0, 0);
 }
 
-void
-fe_dcc_update_chat_win (void)
-{
-	struct DCC *dcc;
-	GSList *list = dcc_list;
-	gchar *nnew[5];
-	char pos[16];
-	char siz[16];
-	gint row;
-	int selrow;
-
-	if (!dcccwin.window)
-		return;
-
-	selrow = gtkutil_clist_selection (dcccwin.list);
-
-	gtk_clist_clear ((GtkCList *) dcccwin.list);
-	nnew[2] = pos;
-	nnew[3] = siz;
-	while (list)
-	{
-		dcc = (struct DCC *) list->data;
-		if ((dcc->type == TYPE_CHATSEND || dcc->type == TYPE_CHATRECV))
-		{
-			nnew[0] = _(dccstat[dcc->dccstat].name);
-			nnew[1] = dcc->nick;
-			proper_unit (dcc->pos, pos, sizeof (pos));
-			proper_unit (dcc->size, siz, sizeof (siz));
-			nnew[4] = ctime (&dcc->starttime);
-			nnew[4][strlen (nnew[4]) - 1] = 0;	/* remove the \n */
-			row = gtk_clist_append (GTK_CLIST (dcccwin.list), nnew);
-			gtk_clist_set_row_data (GTK_CLIST (dcccwin.list), row,
-											(gpointer) dcc);
-		}
-		list = list->next;
-	}
-	if (selrow != -1)
-		gtk_clist_select_row ((GtkCList *) dcccwin.list, selrow, 0);
-}
-
 static void
 close_dcc_chat_window (void)
 {
 	dcccwin.window = 0;
 }
 
-void
+static void
+dcc_update_chat_win (void)
+{
+	struct DCC *dcc;
+	GSList *list = dcc_list;
+	gchar *col[5];
+	gint row;
+
+	gtk_clist_freeze (GTK_CLIST (dcccwin.list));
+	gtk_clist_clear ((GtkCList *) dcccwin.list);
+	while (list)
+	{
+		dcc = list->data;
+		if ((dcc->type == TYPE_CHATSEND || dcc->type == TYPE_CHATRECV))
+		{
+			dcc_prepare_row_chat (dcc, col);
+			row = gtk_clist_append (GTK_CLIST (dcccwin.list), col);
+			gtk_clist_set_row_data (GTK_CLIST (dcccwin.list), row, dcc);
+		}
+		list = list->next;
+	}
+	gtk_clist_thaw (GTK_CLIST (dcccwin.list));
+}
+
+int
 fe_dcc_open_chat_win (int passive)
 {
 	GtkWidget *vbox, *bbox;
@@ -760,10 +744,9 @@ fe_dcc_open_chat_win (int passive)
 
 	if (dcccwin.window)
 	{
-		fe_dcc_update_chat_win ();
 		if (!passive)
 			mg_bring_tofront (dcccwin.window);
-		return;
+		return TRUE;
 	}
 
 	dcccwin.window =
@@ -787,5 +770,96 @@ fe_dcc_open_chat_win (int passive)
 	gtkutil_button (bbox, GTK_STOCK_APPLY, 0, accept_chat_clicked, 0, _("Accept"));
 
 	gtk_widget_show (dcccwin.window);
-	fe_dcc_update_chat_win ();
+	dcc_update_chat_win ();
+
+	return FALSE;
+}
+
+void
+fe_dcc_add (struct DCC *dcc)
+{
+	int row;
+	char *col[9];
+
+	switch (dcc->type)
+	{
+	case TYPE_RECV:
+		if (!dccrwin.window)
+			return;
+		dcc_prepare_row_recv (dcc, col);
+		row = gtk_clist_prepend (GTK_CLIST (dccrwin.list), col);
+		gtk_clist_set_row_data (GTK_CLIST (dccrwin.list), row, dcc);
+		if (dccstat[dcc->dccstat].color != 1)
+			gtk_clist_set_foreground (GTK_CLIST (dccrwin.list), row,
+											  colors + dccstat[dcc->dccstat].color);
+		break;
+
+	case TYPE_SEND:
+		if (!dccswin.window)
+			return;
+		dcc_prepare_row_send (dcc, col);
+		row = gtk_clist_prepend (GTK_CLIST (dccswin.list), col);
+		gtk_clist_set_row_data (GTK_CLIST (dccswin.list), row, dcc);
+		if (dccstat[dcc->dccstat].color != 1)
+			gtk_clist_set_foreground (GTK_CLIST (dccswin.list), row,
+											  colors + dccstat[dcc->dccstat].color);
+		break;
+
+	default: /* chat */
+		if (!dcccwin.window)
+			return;
+		dcc_prepare_row_chat (dcc, col);
+		row = gtk_clist_prepend (GTK_CLIST (dcccwin.list), col);
+		gtk_clist_set_row_data (GTK_CLIST (dcccwin.list), row, dcc);
+	}
+}
+
+void
+fe_dcc_update (struct DCC *dcc)
+{
+	switch (dcc->type)
+	{
+	case TYPE_SEND:
+		dcc_update_send (dcc);
+		break;
+
+	case TYPE_RECV:
+		dcc_update_recv (dcc);
+		break;
+
+	default:
+		dcc_update_chat (dcc);
+	}
+}
+
+void
+fe_dcc_remove (struct DCC *dcc)
+{
+	GtkCList *list = NULL;
+	int row;
+
+	switch (dcc->type)
+	{
+	case TYPE_SEND:
+		if (dccswin.window)
+			list = GTK_CLIST (dccswin.list);
+		break;
+
+	case TYPE_RECV:
+		if (dccrwin.window)
+			list = GTK_CLIST (dccrwin.list);
+		break;
+
+	default:	/* chat */
+		if (dcccwin.window)
+			list = GTK_CLIST (dcccwin.list);
+		break;
+	}
+
+	if (list)
+	{
+		row = gtk_clist_find_row_from_data (list, dcc);
+		if (row != -1)
+			gtk_clist_remove (list, row);
+	}
 }
