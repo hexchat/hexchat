@@ -15,7 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#define VERSION "1.0.50"
+#define VERSION "1.0.51"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -1120,6 +1120,7 @@ static int tcl_getlist(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
     const char *sattr;
     int iattr;
     int i;
+    time_t t;
     Tcl_DString ds;
     xchat_context *origctx;
     xchat_context *ctx = NULL;
@@ -1178,6 +1179,10 @@ static int tcl_getlist(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
             case 'i':
                 iattr = xchat_list_int(ph, list, (char *) field);
                 Tcl_DStringAppendElement(&ds, myitoa((long)iattr));
+                break;
+            case 't':
+                t = xchat_list_time(ph, list, (char *) field);
+                Tcl_DStringAppendElement(&ds, myitoa((long)t));
                 break;
             case 'p':
                 sattr = xchat_list_str(ph, list, (char *) field);
