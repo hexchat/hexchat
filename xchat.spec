@@ -52,7 +52,7 @@ mv $RPM_BUILD_ROOT%{_libdir}/python.so $RPM_BUILD_ROOT%{_libdir}/xchat/plugins
 
 %files -f %{name}.lang
 %defattr(-,root,root)
-%doc README ChangeLog faq.html COPYING plugins/plugin20.html plugins/perl/xchatdox2.html
+%doc README ChangeLog faq.html COPYING plugins/plugin20.html plugins/perl/xchat-perl18.html
 %{_bindir}/xchat
 %{_datadir}/applications/xchat.desktop
 %{_datadir}/pixmaps/xchat.png
