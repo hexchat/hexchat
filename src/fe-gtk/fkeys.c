@@ -1393,8 +1393,6 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 		{
 			skip_len++;
 		}
-		else
-			return 2;
 	}
 
 	comp = skip_len;

@@ -917,7 +917,7 @@ setup_create_other_colorR (char *text, int num, int row, GtkWidget *tab)
 
 	label = gtk_label_new (text);
 	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-	gtk_table_attach (GTK_TABLE (tab), label, 5, 8, row, row + 1,
+	gtk_table_attach (GTK_TABLE (tab), label, 5, 9, row, row + 1,
 							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, LABEL_INDENT, 0);
 	setup_create_color_button (tab, num, row, 9);
 }

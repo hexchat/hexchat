@@ -720,29 +720,30 @@ gtkutil_create_list (GtkWidget *box, char *title,
 	GtkWidget *hbox, *sw;
 	GtkCellRenderer *renderer;
 	GtkListStore *store;
-	GtkWidget *frame, *vbox, *but, *but2 = NULL;
+	GtkWidget *vbox, *but, *but2 = NULL;
 	GtkTreeViewColumn *col;
+	char buf[128];
 
 	vbox = gtk_vbox_new (0, 0);
 	gtk_container_add (GTK_CONTAINER (box), vbox);
 
-	frame = gtk_frame_new (NULL);
-	gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
-	gtk_box_pack_start (GTK_BOX (vbox), frame, 0, 0, 0);
-
 	hbox = gtk_hbox_new (0, 0);
-	gtk_container_add (GTK_CONTAINER (frame), hbox);
+	gtk_box_pack_start (GTK_BOX (vbox), hbox, 0, 0, 1);
 
 	but = gtk_label_new (title);
 	gtk_misc_set_alignment (GTK_MISC (but), 0.1, 0.5);
 	gtk_container_add (GTK_CONTAINER (hbox), but);
 
-	but = gtk_button_new_with_label (_("Add"));
+	but = gtk_button_new_with_label (" ");
+	snprintf (buf, sizeof (buf), "<small>%s</small>", _("Add"));
+	gtk_label_set_markup (GTK_LABEL (GTK_BIN (but)->child), buf);
 	gtk_box_pack_start (GTK_BOX (hbox), but, 0, 0, 0);
 
 	if(sort_callback!=NULL)
 	{
-		but2 = gtk_button_new_with_label (_("Sort"));
+		but2 = gtk_button_new_with_label (" ");
+		snprintf (buf, sizeof (buf), "<small>%s</small>", _("Sort"));
+		gtk_label_set_markup (GTK_LABEL (GTK_BIN (but2)->child), buf);
 		gtk_box_pack_start (GTK_BOX (hbox), but2, 0, 0, 0);
 	}
 
@@ -868,9 +869,10 @@ servlist_create_infobox (GtkWidget *box)
 
 	table = gtk_table_new (2, 5, FALSE);
 	gtk_container_set_border_width (GTK_CONTAINER (table), 5);
+	gtk_table_set_row_spacings (GTK_TABLE (table), 2);
 
 	img = gtk_image_new_from_pixbuf (pix_xchat);
-	gtk_table_attach (GTK_TABLE (table), img, 4, 5, 0, 2, 0, 0, 0, 0);
+	gtk_table_attach (GTK_TABLE (table), img, 4, 5, 0, 2, 0, 0, 4, 0);
 
 	label = gtk_label_new (_("Nick Names:"));
 	gtk_table_attach (GTK_TABLE (table), label, 0, 1, 0, 1,
@@ -1092,7 +1094,7 @@ servlist_create_charsetcombo (GtkTable *table)
 #endif
 
 	gtk_table_attach (GTK_TABLE (table), cb, 1, 2, 7, 8,
-						   GTK_FILL|GTK_EXPAND, 0, 0, 0);
+						   GTK_FILL|GTK_EXPAND, 0, 0, 1);
 
 	return cb;
 }
@@ -1108,7 +1110,7 @@ servlist_create_editbox (GtkWidget *box)
 	hbox = gtk_hbox_new (FALSE, 3);
 	gtk_container_add (GTK_CONTAINER (vbox), hbox);
 
-	table = gtk_table_new (10, 2, FALSE);
+	table = gtk_table_new (8, 2, FALSE);
 	gtk_container_set_border_width (GTK_CONTAINER (table), 5);
 
 	entry_nick = servlist_create_entry (table, _("Nick Name:"), 1,
@@ -1146,7 +1148,7 @@ servlist_create_editbox (GtkWidget *box)
 
 	servers_tree = servlist_create_servlistbox (hbox);
 
-	editbox = frame = gtk_frame_new (_("Settings for Selected Network"));
+	editbox = frame = gtk_frame_new ("Settings for %s");
 	gtk_widget_set_sensitive (frame, FALSE);
 	gtk_container_add (GTK_CONTAINER (frame), vbox);
 	gtk_paned_add2 (GTK_PANED (box), frame);
@@ -1282,12 +1284,12 @@ fe_serverlist_open (session *sess)
 	servlist_create_buttons (vbox);
 	servlist_skip (vbox);
 
+	/* force selection */
+	servlist_network_row_cb (gtk_tree_view_get_selection (GTK_TREE_VIEW (networks_tree)), NULL);
+
 	gtk_widget_show_all (win);
 	if (!prefs.slist_edit)
 		gtk_widget_hide (editbox);
-
-	/* force selection */
-	servlist_network_row_cb (gtk_tree_view_get_selection (GTK_TREE_VIEW (networks_tree)), NULL);
 
 	g_signal_connect (G_OBJECT (gtk_tree_view_get_selection (GTK_TREE_VIEW (networks_tree))),
 							"changed", G_CALLBACK (servlist_network_row_cb), NULL);
