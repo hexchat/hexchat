@@ -58,6 +58,7 @@ for file in *; do
 		cp $intldir/$file $olddir/intl/
 	fi
 done
+cp -f $try/gettext/po/Makefile.in.in $olddir/po/
 cd $olddir
 if test -f intl/plural.c; then
 	sleep 2

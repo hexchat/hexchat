@@ -178,8 +178,6 @@ fe_args (int argc, char *argv[])
 	if (argc > (offset + 1))
 		connect_url = strdup (argv[offset + 1]);
 
-	gtk_set_locale ();
-
 	gtk_init (&argc, &argv);
 
 #ifdef USE_XLIB

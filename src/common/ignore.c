@@ -249,6 +249,8 @@ ignore_read_next_entry (char *my_cfg, struct ignore *ignore)
 	if (my_cfg)
 	{
 		my_cfg = cfg_get_str (my_cfg, "mask", tbuf);
+		if (!my_cfg)
+			return NULL;
 		ignore->mask = strdup (tbuf);
 	}
 	if (my_cfg)

@@ -1948,6 +1948,8 @@ tab_nick_comp (session *sess, GtkWidget *t, int shift)
 	gtk_editable_set_position (GTK_EDITABLE (t), cursor_pos);
 
 compdone:
+	if (match_list)
+		g_slist_free (match_list);
 	if (b4)
 		free (b4);
 	if (c5)
