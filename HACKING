@@ -18,6 +18,8 @@ routine (void)
 
 	(vertically aligned braces, a space after if, while, functions etc).
 
+* Don't use "//" C++ style comments, some compilers don't like them.
+
 * When opening a file with unix level functions (open, read/write, close)
   as opposed to the C-level functions (fopen, fwrite/fread, fclose), use
   the OFLAGS macro. This makes sure it'll work on Win32 aswell as unix e.g:

@@ -816,7 +816,7 @@ servlist_net_add (char *name, char *comment)
 static void
 servlist_load_defaults (void)
 {
-	int i = 0;
+	int i = 0, j = 0;
 	ircnet *net = NULL;
 
 	while (1)
@@ -826,6 +826,9 @@ servlist_load_defaults (void)
 			net = servlist_net_add (def[i].network, def[i].host);
 			if (def[i].channel)
 				net->autojoin = strdup (def[i].channel);
+			if (!strcmp (def[i].network, "ChatJunkies"))
+				prefs.slist_select = j;
+			j++;
 		} else
 		{
 			servlist_server_add (net, def[i].host);

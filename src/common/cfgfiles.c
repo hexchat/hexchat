@@ -539,7 +539,7 @@ load_config (void)
 	/*prefs.windows_as_tabs = 1;*/
 	prefs.privmsgtab = 1;
 	prefs.style_inputbox = 1;
-	prefs.slist_select = 9;
+	/*prefs.slist_select = 99;*/
 	prefs.nu_color = 4;
 	prefs.dccpermissions = 0600;
 	prefs.max_lines = 300;
