@@ -1,6 +1,6 @@
 Summary: Graphical IRC (chat) client
 Name: xchat
-Version: 2.0.1
+Version: 2.0.2
 Release: 0
 Epoch: 1
 Group: Applications/Internet
@@ -8,8 +8,8 @@ License: GPL
 URL: http://xchat.org
 Source: http://xchat.org/files/source/2.0/xchat-%{version}.tar.bz2
 Buildroot: %{_tmppath}/%{name}-%{version}-root
-Requires: gtk2 >= 2.0.6
-Requires: openssl >= 0.9.6b
+Requires: gtk2 >= 2.2.1
+Requires: openssl >= 0.9.7a
 
 %description
 A GUI IRC client with DCC file transfers, C plugin interface, Perl
