@@ -506,6 +506,7 @@ static XS (XS_Xchat_emit_print)
 {
 	char *event_name;
 	int RETVAL;
+	int count;
 
 	dXSARGS;
 	if (items < 1) {
@@ -513,8 +514,16 @@ static XS (XS_Xchat_emit_print)
 	} else {
 		event_name = (char *)SvPV_nolen (ST (0));
 		RETVAL = 0;
-	  
-		switch  (items) {
+		
+		/* we need to figure out the number of defined values passed in */
+		for( count = 0; count < items; count++ ) {
+		  if (!SvOK (ST (count) )) {
+			 break;
+		  }
+		}
+
+		/*		switch  (items) {*/
+		switch (count) {
 		case 1:
 			RETVAL = xchat_emit_print (ph, event_name, NULL);
 			break;
