@@ -1839,6 +1839,12 @@ gtk_xtext_set_clip_owner (GtkWidget * xtext, GdkEventButton * event)
 	char *str;
 	int len;
 
+	if (GTK_XTEXT (xtext)->selection_buffer &&
+		GTK_XTEXT (xtext)->selection_buffer != GTK_XTEXT (xtext)->buffer)
+		gtk_xtext_selection_clear (GTK_XTEXT (xtext)->selection_buffer);
+
+	GTK_XTEXT (xtext)->selection_buffer = GTK_XTEXT (xtext)->buffer;
+
 	str = gtk_xtext_selection_get_text (GTK_XTEXT (xtext), &len);
 	if (str)
 	{
@@ -1853,12 +1859,6 @@ gtk_xtext_set_clip_owner (GtkWidget * xtext, GdkEventButton * event)
 	}
 
 	gtk_selection_owner_set (xtext, GDK_SELECTION_PRIMARY, event->time);
-
-	if (GTK_XTEXT (xtext)->selection_buffer &&
-		GTK_XTEXT (xtext)->selection_buffer != GTK_XTEXT (xtext)->buffer)
-		gtk_xtext_selection_clear (GTK_XTEXT (xtext)->selection_buffer);
-
-	GTK_XTEXT (xtext)->selection_buffer = GTK_XTEXT (xtext)->buffer;
 }
 
 static void

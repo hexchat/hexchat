@@ -155,7 +155,11 @@ pevent_dialog_update_sound (GtkWidget * wid, GtkWidget * clist)
 	if (te[sig].sound)
 		free (te[sig].sound);
 
-	te[sig].sound = strdup (gtk_entry_get_text (GTK_ENTRY (wid)));
+	/* set it back to NULL if it's an empty string */
+	if (GTK_ENTRY (wid)->text[0] == 0)
+		te[sig].sound = NULL;
+	else	/* otherwise copy */
+		te[sig].sound = strdup (GTK_ENTRY (wid)->text);
 }
 
 static void

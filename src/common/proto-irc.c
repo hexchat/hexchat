@@ -286,8 +286,8 @@ irc_raw (server *serv, char *raw)
 static void
 channel_date (session *sess, char *chan, char *timestr)
 {
-	long n = atol (timestr);
-	char *tim = ctime (&n);
+	time_t timestamp = (time_t) atol (timestr);
+	char *tim = ctime (&timestamp);
 	tim[19] = 0;	/* get rid of the \n */
 	EMIT_SIGNAL (XP_TE_CHANDATE, sess, chan, tim, NULL, NULL, 0);
 }
@@ -364,7 +364,7 @@ process_numeric (session * sess, int n,
 
 	case 317:
 		{
-			long nn = atol (word[6]);
+			time_t timestamp = (time_t) atol (word[6]);
 			long idle = atol (word[5]);
 			char *tim;
 			char outbuf[64];
@@ -372,12 +372,12 @@ process_numeric (session * sess, int n,
 			snprintf (outbuf, sizeof (outbuf),
 						"%02ld:%02ld:%02ld", idle / 3600, (idle / 60) % 60,
 						idle % 60);
-			if (nn == 0)
+			if (timestamp == 0)
 				EMIT_SIGNAL (XP_TE_WHOIS4, serv->server_session, word[4],
 								 outbuf, NULL, NULL, 0);
 			else
 			{
-				tim = ctime (&nn);
+				tim = ctime (&timestamp);
 				tim[19] = 0; 	/* get rid of the \n */
 				EMIT_SIGNAL (XP_TE_WHOIS4T, serv->server_session, word[4],
 								 outbuf, tim, NULL, 0);
