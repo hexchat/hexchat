@@ -181,7 +181,7 @@ tree_foreach (tree *t, tree_traverse_func *func, void *data)
 {
 	int j;
 
-	if (!t)
+	if (!t || !t->array)
 		return;
 
 	for (j = 0; j < t->elements; j++)
@@ -195,6 +195,9 @@ int
 tree_insert (tree *t, void *key)
 {
 	int pos, done;
+
+	if (!t)
+		return -1;
 
 	if (t->array_size < t->elements + 1)
 	{
