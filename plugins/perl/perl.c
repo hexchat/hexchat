@@ -912,7 +912,7 @@ static XS (XS_Xchat_find_context)
 
 	dXSARGS;
 	if (items > 2)
-		xchat_print (ph, "Usage: Xchat::find_context (channel, server)");
+		xchat_print (ph, "Usage: Xchat::find_context ([channel, [server]])");
 	{
 
 	switch (items)
@@ -921,27 +921,27 @@ static XS (XS_Xchat_find_context)
 		/* nothing to do, server and chan are already NULL */
 		break;
 	case 1: /* channel name only */
-		/* change channel value only if it is defined */
+		/* change channel value only if it is true or 0*/
 		/* otherwise leave it as null */
-		if (ST (0) != &PL_sv_undef){
+		if (SvTRUE (ST (0)) || SvNIOK (ST (0))) {
 			chan = SvPV_nolen (ST (0));
 /* 			xchat_printf( ph, "XSUB - find_context( %s, NULL )", chan ); */
-		}/*  else { xchat_print( ph, "XSUB - find_context( NULL, NULL )" ); } */
+		} /* else { xchat_print( ph, "XSUB - find_context( NULL, NULL )" ); } */
 		/* chan is already NULL */
 		break;
 	case 2: /* server and channel */
-		/* change channel value only if it is defined */
+		/* change channel value only if it is true or 0 */
 		/* otherwise leave it as NULL */
-		if (ST (0) != &PL_sv_undef){
+		if (SvTRUE (ST (0)) || SvNIOK (ST (0)) ) {
 			chan = SvPV_nolen (ST (0));
-/* 			xchat_print( ph, "XSUB - 2 arg NULL chan" ); */
-		}
-		/* change server value only if it is defined */
+/* 			xchat_printf( ph, "XSUB - find_context( %s, NULL )", SvPV_nolen(ST(0) )); */
+		} /* else { xchat_print( ph, "XSUB - 2 arg NULL chan" ); } */
+		/* change server value only if it is true or 0 */
 		/* otherwise leave it as NULL */
-		if (ST (1) != &PL_sv_undef){
+		if (SvTRUE (ST (1)) || SvNIOK (ST (1)) ){
 			server = SvPV_nolen (ST (1));
-/* 			xchat_print( ph, "XSUB - 2 arg NULL server" ); */
-		}
+/* 			xchat_printf( ph, "XSUB - find_context( NULL, %s )", SvPV_nolen(ST(1) )); */
+		}/*  else { xchat_print( ph, "XSUB - 2 arg NULL server" ); } */
 
 		break;
 	}
@@ -954,7 +954,7 @@ static XS (XS_Xchat_find_context)
 	}
 	else
 	{
-/*  		xchat_print (ph, "XSUB - context not found"); */
+ /* 		xchat_print (ph, "XSUB - context not found"); */
 		XSRETURN_UNDEF;
 	}
 	}
@@ -2191,7 +2191,7 @@ perl_init (void)
 "\n"
 "sub Xchat::print {\n"
 "\n"
-"  my $text = shift;\n"
+"  my $text = shift @_;\n"
 "  if( ref( $text ) eq 'ARRAY' ) {\n"
 "    if( $, ) {\n"
 "      $text = join $, , @$text;\n"
@@ -2202,7 +2202,8 @@ perl_init (void)
 "\n"
 "  \n"
 "  if( @_ >= 1 ) {\n"
-"    my ($channel, $server) = @_;\n"
+"    my $channel = shift @_;\n"
+"	 my $server = shift @_;\n"
 "    my $old_ctx = Xchat::get_context();\n"
 "    my $ctx = Xchat::find_context( $channel, $server );\n"
 "    \n"
@@ -2296,6 +2297,8 @@ perl_init (void)
 "\n"
 "  return 0;\n"
 "}\n"
+
+
 
 	};
 #ifdef ENABLE_NLS
