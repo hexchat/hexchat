@@ -616,7 +616,7 @@ char *pntevts[NUM_XP];
 #define pevt_generic_none_help NULL
 
 static char *pevt_genmsg_help[] = {
-	N_("Left message "),
+	N_("Left message"),
 	N_("Right message"),
 };
 

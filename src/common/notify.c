@@ -170,7 +170,15 @@ notify_announce_online (server * serv, struct notify_per_server *servnot,
 	fe_notify_update (0);
 
 	if (prefs.whois_on_notifyonline)
-		serv->p_whois (serv, nick);
+	{
+
+	    /* Let's do whois with idle time (like in /quote WHOIS %s %s) */
+
+	    char *wii_str = malloc (strlen (nick) * 2 + 2);
+	    sprintf (wii_str, "%s %s", nick, nick);
+	    serv->p_whois (serv, wii_str);
+	    free (wii_str);
+	}
 }
 
 /* handles numeric 601 */
