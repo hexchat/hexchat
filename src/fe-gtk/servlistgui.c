@@ -90,9 +90,9 @@ static const char *pages[]=
 	"ISO-8859-7 (Greek)",
 	"ISO-8859-8 (Hebrew)",
 	"ISO-8859-9 (Turkish)",
+	"CP1251 (Cyrillic)",
 	"CP1256 (Arabic)",
 	"GB18030 (Chinese)",
-	"KOI8-R (Cyrillic)",
 	"SJIS (Japanese)",
 	NULL
 };

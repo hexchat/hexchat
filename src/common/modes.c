@@ -565,7 +565,7 @@ inbound_005 (server * serv, char *word[])
 				serv->p_cmp = (void *)strcasecmp;
 		} else if (strncmp (word[w], "CHARSET=", 8) == 0)
 		{
-			if (strcmp (word[w] + 8, "UTF-8") == 0)
+			if (strcasecmp (word[w] + 8, "UTF-8") == 0)
 			{
 				if (serv->encoding)
 					free (serv->encoding);

@@ -659,7 +659,7 @@ failedabort:
 static gboolean
 dcc_connect_finished (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 {
-	int er, sok = dcc->sok;
+	int er;
 	char host[128];
 	struct sockaddr_in addr;
 
@@ -675,7 +675,7 @@ dcc_connect_finished (GIOChannel *source, GIOCondition condition, struct DCC *dc
 	addr.sin_addr.s_addr = htonl (dcc->addr);
 
 	/* check if it's already connected */
-	if (connect (sok, (struct sockaddr *) &addr, sizeof (addr)) != 0)
+	if (connect (dcc->sok, (struct sockaddr *) &addr, sizeof (addr)) != 0)
 	{
 		er = sock_error ();
 #ifndef WIN32

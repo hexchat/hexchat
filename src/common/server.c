@@ -292,7 +292,7 @@ static void
 server_inline (server *serv, char *line, int len)
 {
 	char *utf;
-	char *conv = NULL;
+	char *conv;
 #ifdef USE_JCODE
 	char *oline;
 

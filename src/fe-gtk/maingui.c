@@ -1584,52 +1584,12 @@ mg_color_insert (GtkWidget *item, gpointer userdata)
 	key_action_insert (current_sess->gui->input_box, 0, buf, 0, 0);
 }
 
-/*
-static const char *pages[]=
-{
-	"UTF-8",
-	"ISO-8859-1 (Western Europe)",
-	"ISO-8859-2 (Central Europe)",
-	"ISO-8859-7 (Greek)",
-	"ISO-8859-9 (Turkish)",
-	"CP1256 (Arabic)",
-	"KOI8-R (Cyrillic)",
-	"SJIS (Japanese)",
-	NULL
-};
-
-static void
-mg_encoding_cb (GtkCheckMenuItem *item, gpointer num)
-{
-	if (item->active)
-		current_sess->server->encoding = GPOINTER_TO_INT (num);
-}
-
-static GSList *
-mg_create_code_item (server *serv, GtkWidget *menu, GSList *group,
-						   int num, const char *name)
-{
-	GtkWidget *item;
-
-	item = gtk_radio_menu_item_new_with_label (group, name);
-	if (serv->encoding == num)
-		gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (item), TRUE);
-	group = gtk_radio_menu_item_get_group (GTK_RADIO_MENU_ITEM (item));
-	g_signal_connect (G_OBJECT (item), "toggled",
-							G_CALLBACK (mg_encoding_cb), GINT_TO_POINTER (num));
-	gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
-	gtk_widget_show (item);
-
-	return group;
-}*/
-
 static void
 mg_upbutton_cb (GtkButton *but, gpointer userdata)
 {
 	GtkWidget *menu, *item;
 	session *sess = current_sess;
 	GtkWidget *submenu;
-	/*GSList *group;*/
 	char buf[256];
 	int i;
 
@@ -1671,28 +1631,6 @@ mg_upbutton_cb (GtkButton *but, gpointer userdata)
 							sess->hide_join_part);
 	menu_toggle_item (_("Color paste"), submenu, mg_colorpaste_cb, sess,
 							sess->color_paste);
-
-/*
-	snprintf (buf, sizeof (buf), _("(%s) Network encoding"),
-				 sess->server->networkname ? sess->server->networkname :
-				 sess->server->servername);
-	item = gtk_menu_item_new_with_label (buf);
-	gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
-	gtk_widget_show (item);
-
-	submenu = gtk_menu_new ();
-	gtk_menu_item_set_submenu (GTK_MENU_ITEM (item), submenu);
-	gtk_widget_show (submenu);
-
-	group = mg_create_code_item (sess->server, submenu, NULL, 0,
-										  _("System default"));
-	i = 1;
-	while (pages[i - 1])
-	{
-		group = mg_create_code_item (sess->server, submenu, group, i,
-											  pages[i - 1]);
-		i++;
-	}*/
 
 	g_signal_connect (G_OBJECT (menu), "selection-done",
 							G_CALLBACK (mg_menu_destroy), menu);

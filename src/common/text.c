@@ -321,7 +321,7 @@ text_validate (unsigned char **text)
 void
 PrintText (session *sess, unsigned char *text)
 {
-	char *conv = NULL;
+	char *conv;
 
 	if (!sess)
 	{
