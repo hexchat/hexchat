@@ -24,6 +24,8 @@
 
 /* ignore "toggled" signal? */
 static int ignore_toggle = FALSE;
+static int tab_left_is_moving = 0;
+static int tab_right_is_moving = 0;
 
 
 /* userdata for gobjects used here:
@@ -130,14 +132,25 @@ tab_scroll_left_up_clicked (GtkWidget *widget, GtkWidget *group)
 	if (new_value + viewport_size > adj->upper)
 		new_value = adj->upper - viewport_size;
 
-	for (i = adj->value; i > new_value; i -= 0.1)
+	if (!tab_left_is_moving)
 	{
-		gtk_adjustment_set_value (adj, i);
-		while (g_main_pending ())
-			g_main_iteration (TRUE);
-	}
+		tab_left_is_moving = 1;
 
-	gtk_adjustment_set_value (adj, new_value);
+		for (i = adj->value; ((i > new_value) && (tab_left_is_moving)); i -= 0.1)
+		{
+			gtk_adjustment_set_value (adj, i);
+			while (g_main_pending ())
+				g_main_iteration (TRUE);
+		}
+
+		gtk_adjustment_set_value (adj, new_value);
+
+		tab_left_is_moving = 0;		/* hSP: set to false in case we didnt get stopped (the normal case) */
+	}
+	else
+	{
+		tab_left_is_moving = 0;		/* hSP: jump directly to next element if user is clicking faster than we can scroll.. */
+	}
 }
 
 static void
@@ -168,14 +181,25 @@ tab_scroll_right_down_clicked (GtkWidget *widget, GtkWidget *group)
 	if (new_value == 0 || new_value + viewport_size > adj->upper)
 		new_value = adj->upper - viewport_size;
 
-	for (i = adj->value; i < new_value; i += 0.1)
+	if (!tab_right_is_moving)
 	{
-		gtk_adjustment_set_value (adj, i);
-		while (g_main_pending ())
-			g_main_iteration (TRUE);
-	}
+		tab_right_is_moving = 1;
 
-	gtk_adjustment_set_value (adj, new_value);
+		for (i = adj->value; ((i < new_value) && (tab_right_is_moving)); i += 0.1)
+		{
+			gtk_adjustment_set_value (adj, i);
+			while (g_main_pending ())
+				g_main_iteration (TRUE);
+		}
+
+		gtk_adjustment_set_value (adj, new_value);
+
+		tab_right_is_moving = 0;		/* hSP: set to false in case we didnt get stopped (the normal case) */
+	}
+	else
+	{
+		tab_right_is_moving = 0;		/* hSP: jump directly to next element if user is clicking faster than we can scroll.. */
+	}
 }
 
 static void
@@ -504,7 +528,7 @@ tab_add_sorted (GtkWidget *group, GtkWidget *box, GtkWidget *tab)
 	}
 
 	/* sorting TODO:
-    *   - always put servertab first
+    *   - always put servertab first (dialogs get mixed in)
     *   - move tab if renamed */
 	name = GTK_BUTTON (tab)->label_text;
 	list = GTK_BOX (box)->children;
@@ -513,7 +537,17 @@ tab_add_sorted (GtkWidget *group, GtkWidget *box, GtkWidget *tab)
 		child = list->data;
 		if (!GTK_IS_SEPARATOR (child->widget))
 		{
-			if (strcasecmp (GTK_BUTTON (child->widget)->label_text, name) > 0)
+			gboolean insert_now = FALSE;
+			char *label_text = GTK_BUTTON (child->widget)->label_text;
+
+			if (strcasecmp (label_text, name) > 0)
+				insert_now = TRUE;
+
+			/* channels get a lower priority, and are placed last */
+			if (name[0] == '#' && label_text[0] != '#')
+				insert_now = FALSE;
+
+			if (insert_now)
 			{
 				gtk_box_pack_start (GTK_BOX (box), tab, 0, 0, 0);
 				gtk_box_reorder_child (GTK_BOX (box), tab, i);
@@ -524,6 +558,10 @@ tab_add_sorted (GtkWidget *group, GtkWidget *box, GtkWidget *tab)
 		i++;
 		list = list->next;
 	}
+
+	/* append */
+	gtk_box_pack_end (GTK_BOX (box), tab, 0, 0, 0);
+	gtk_widget_show (tab);
 }
 
 static void
@@ -838,7 +876,9 @@ tab_group_set_orientation (GtkWidget *group, gboolean vertical)
 		return group;
 
 	new_group = tab_group_new (g_object_get_data (G_OBJECT (group), "c"),
-								vertical, FALSE);
+										vertical,
+						/* sort: boolean */
+						GPOINTER_TO_INT (g_object_get_data (G_OBJECT (group), "s")));
 	g_object_set_data (G_OBJECT (new_group), "foc",
 						g_object_get_data (G_OBJECT (group), "foc"));
 	box = g_object_get_data (G_OBJECT (group), "i");

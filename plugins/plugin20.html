@@ -15,7 +15,7 @@ color: #990066
 .bbox {
 font-family: monospace;
 color: #fdfdfd;
-background-color: #000000;
+background-color: #000;
 border: 1px solid #00f;
 padding: 4px;
 text-align: left;
@@ -33,7 +33,7 @@ margin-right: 32px;
 -->
 </style>
 </head>
-<body bgcolor="#FFFBF0" text="#000000" link="#607060" vlink="#607060" alink="#607060">
+<body bgcolor="#FFFBF0" text="#000" link="#607060" vlink="#607060" alink="#607060">
 
 <h1>XChat 2.0 Plugin Interface</h1>
 
@@ -198,16 +198,16 @@ needed for a long time after calling xchat_list_str. The types of lists and fiel
 
 "channels" - list of channels, querys and their servers.
 <blockquote><table border=1>
-<tr bgcolor="#dddddd"><td>Name</td><td>Description</td><td>Type</td></tr>
+<tr bgcolor="#ddddd"><td>Name</td><td>Description</td><td>Type</td></tr>
 <tr><td>channel</td><td>Channel or query name</td><td>string</td></tr>
-<tr><td>chantypes</td><td>Channel types e.g. "#!&amp;"<br><small>(Added in version 2.0.9. Older versions will return NULL)</td><td>string</td>
+<tr><td>chantypes</td><td>Channel types e.g. "#!&amp;"<br><small>(Added in version 2.0.9. Older versions will return NULL)</small></td><td>string</td>
 <tr><td>context</td><td>(xchat_context *) pointer. Can be used with xchat_set_context</td><td>string</td></tr>
 <tr><td>flags</td><td>Server Bits: 0=Connected 1=Connecting 2=Away 3=EndOfMotd (Login complete) 4=Has WHOX<br><small>(Added in version 2.0.8. Older version will return -1)</small></td><td>int</td></tr>
 <tr><td>id</td><td>Unique server ID<br><small>(Added in version 2.0.8. Older version will return -1)</small></td><td>int</td></tr>
-<tr><td>maxmodes</td><td>Maximum modes per line<br><small>(Added in version 2.0.9. Older versions will return -1)</td><td>int</td>
+<tr><td>maxmodes</td><td>Maximum modes per line<br><small>(Added in version 2.0.9. Older versions will return -1)</small></td><td>int</td>
 <tr><td>network</td><td>Network name to which this channel belongs<br><small>(Added in version 2.0.2. Older versions will return NULL)</small></td><td>string</td></tr>
-<tr><td>nickprefixes</td><td>Nickname prefixes e.g. "+@"<br><small>(Added in version 2.0.9. Older versions will return NULL)</td><td>string</td>
-<tr><td>nickmodes</td><td>Nickname mode chars e.g. "vo"<br><small>(Added in version 2.0.9. Older versions will return NULL)</td><td>string</td>
+<tr><td>nickprefixes</td><td>Nickname prefixes e.g. "+@"<br><small>(Added in version 2.0.9. Older versions will return NULL)</small></td><td>string</td>
+<tr><td>nickmodes</td><td>Nickname mode chars e.g. "vo"<br><small>(Added in version 2.0.9. Older versions will return NULL)</small></td><td>string</td>
 <tr><td>server</td><td>Server name to which this channel belongs</td><td>string</td></tr>
 <tr><td>type</td><td>Type of context this is: 1-Server 2-Channel 3-Dialog<br><small>(Added in version 2.0.2. Older versions will return -1)</small></td><td>int</td></tr>
 <tr><td>users</td><td>Number of users in this channel<br><small>(Added in version 2.0.8. Older version will return -1)</small></td><td>int</td></tr>
@@ -337,13 +337,12 @@ xchat_command(ph, "GUI .....");.
 	<tr><td>GUI FLASH</td><td>Flash the taskbar button (win32 only). It will flash only if the window isn't focused and will stop when it is focused by the user.</td></tr>
 	<tr><td>GUI ICONIFY</td><td>Iconify (minimize to taskbar) the current xchat window.</td></tr>
 	<tr><td>GUI COLOR n</td><td>Change the tab color of the current context,
-where n is a number from 0 to 3.
-</td></tr>
+where n is a number from 0 to 3.</td></tr>
 	</table>
 </blockquote>
-Note, the FLASH, ICONIFY and COLOR args were added in xchat 2.0.8, they will not work
-with previous versions.
-<br><br></p>
+Note, the FLASH, ICONIFY and COLOR args were added in xchat 2.0.8, they
+will not work with previous versions.
+</p><br><br>
 
 <h1>Functions</h1>
 
@@ -630,7 +629,7 @@ xchat_emit_print(ph, "Channel Message", "John", "Hi there", "@", NULL);
 	<tr><td>version</td><td>xchat version number.</td></tr>
 	<tr><td>win_status</td><td>window status: "active", "hidden" or "normal" (since 2.0.9).</td>
 	<tr><td>xchatdir</td><td>xchat config directory, e.g.: /home/user/.xchat2 <small>This string is encoded in UTF-8, which means you _should_ to convert it to "locale" encoding before using functions like open() or OpenFile().</small></td></tr>
-	<tr><td>xchatdirfs</td><td>xchat config directory, e.g.: /home/user/.xchat2 (since 2.0.9).<small>This string is encoded in local file system encoding, making it ideal for direct use with functions like open() or OpenFile().</td></tr>
+	<tr><td>xchatdirfs</td><td>xchat config directory, e.g.: /home/user/.xchat2 (since 2.0.9).<small>This string is encoded in local file system encoding, making it ideal for direct use with functions like open() or OpenFile().</small></td></tr>
 	</table>
 	</blockquote>
 </blockquote>

@@ -7,6 +7,7 @@
 ----------------------------------------------------------------------
 
  - Updated translations (cs, de, en_GB, eu, ru, uk, wa).
+ - Fix for Socks5 overflow.
  - DCC IP address can now be a hostname too (Flavio Chierichetti)
    [773229].
  - Don't try random DCC ports when a range is set (mib) [889987].
@@ -15,9 +16,15 @@
  - Fix: Sometimes messes up the tab order on reconnect (Gabor Szeder)
    [941773].
  - Fix: Crashes when setting CHARSET to non-existant charset [945855].
- - Added some fields to the "channels" list for the plugin API.
+ - Plugin API: Added some fields to the "channels" list.
+ - Plugin API: Added "win_status" and "xchatdirfs" fields to
+   xchat_get_info.
+ - Fix: Unload, then reload a plugin on FreeBSD fails (Kevin Leung).
+ - Plugins should now work on HPUX too.
+ - Perl-plugin changes <fixme> (Lian Situ).
  - 
  - 
+ - Smaller bug fixes [950353] [945617] (Frederic Krueger).
 
 
 ----------------------------------------------------------------------

@@ -298,8 +298,8 @@ fe_set_title (session *sess)
 	switch (type)
 	{
 	case SESS_DIALOG:
-		snprintf (tbuf, sizeof (tbuf), "X-Chat ["VERSION"]: Dialog with %s @ %s",
-					 sess->channel, sess->server->servername);
+		snprintf (tbuf, sizeof (tbuf), "X-Chat ["VERSION"]: %s %s @ %s",
+					 _("Dialog with"), sess->channel, sess->server->servername);
 		break;
 	case SESS_SERVER:
 		snprintf (tbuf, sizeof (tbuf), "X-Chat ["VERSION"]: %s @ %s",
@@ -564,6 +564,8 @@ mg_set_topic_tip (session *sess)
 		if (GTK_ENTRY (sess->gui->topic_entry)->text &&
 			 GTK_ENTRY (sess->gui->topic_entry)->text[0])
 			add_tip (sess->gui->topic_entry, GTK_ENTRY (sess->gui->topic_entry)->text);
+		else
+			add_tip (sess->gui->topic_entry, ""); /* hSP: set topic to empty in case it isn't set.. */
 	}
 }
 
@@ -2114,7 +2116,7 @@ mg_create_tabs (session_gui *gui, GtkWidget *box)
 	if (prefs.tabs_position == 2 || prefs.tabs_position == 3)
 		vert = TRUE;
 
-	gui->tabs_box = tab_group_new (mg_switch_tab_cb, vert, FALSE);
+	gui->tabs_box = tab_group_new (mg_switch_tab_cb, vert, prefs.tab_sort);
 	gtk_table_attach (GTK_TABLE (gui->main_table), gui->tabs_box,
 						1, 2, 0, 1, GTK_FILL, GTK_FILL, 0, 0);
 }
