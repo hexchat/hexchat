@@ -3806,6 +3806,9 @@ gtk_xtext_render_page (GtkXText * xtext)
 	int pos, overlap;
 	GdkRectangle area;
 
+	if (xtext->buffer->num_lines <= xtext->adj->page_size)
+		dontscroll (xtext->buffer);
+
 #ifdef SMOOTH_SCROLL
 	pos = xtext->adj->value * xtext->fontsize;
 #else
@@ -4026,7 +4029,6 @@ static int
 gtk_xtext_render_page_timeout (GtkXText * xtext)
 {
 	GtkAdjustment *adj = xtext->adj;
-/*	gfloat val;*/
 
 	xtext->add_io_tag = 0;
 
@@ -4042,9 +4044,7 @@ gtk_xtext_render_page_timeout (GtkXText * xtext)
 		gtk_adjustment_set_value (adj, adj->upper - adj->page_size);
 	} else
 	{
-/*		val = adj->value;*/
 		gtk_xtext_adjustment_set (xtext->buffer, TRUE);
-/*		gtk_adjustment_set_value (adj, val);*/
 	}
 
 	return 0;
