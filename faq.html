@@ -5,11 +5,15 @@
 <style type="text/css">
 <!--
 body {
-	font-family: sans-serif;
-	background-color: #FFFBF0;
+font-family: sans-serif;
+background-color: #FFFBF0;
 }
-h2 { color: #336701 }
-h3 { color: #005A9C }
+h2 { color: #336701;
+background-color: #F4F0E5;
+}
+h3 { color: #005A9C;
+background-color: #F0EAE1;
+}
 a:link { color: blue; }
 p { margin: 3% }
 -->
@@ -17,15 +21,15 @@ p { margin: 3% }
 </head>
 <body text="#000000" link="#000077" vlink="#660055">
 
-<h1>X-Chat Frequently Asked Questions</h1>
+<h1>X-Chat 2 Frequently Asked Questions</h1>
+
+<small>Some of these answers may be relevant to 1.8.x, but you're on your own!</small>
 
 <h2>1. Section One: Compiling and Installing.</h2>
 <p>
 <a href="faq.html#q11">1. I get this error: /bin/sh: no: command not found</a>
 <br><br>
-<a href="faq.html#q12">2. Why doesn't ./configure find GTK+ on my FreeBSD system?</a>
-<br><br>
-<a href="faq.html#q13">3. How do I compile X-Chat on my Sun OS system?</a>
+<a href="faq.html#q12">2. How do I compile X-Chat on my Sun OS system?</a>
 <br><br>
 </p>
 
@@ -41,9 +45,9 @@ p { margin: 3% }
 <br><br>
 <a href="faq.html#q25">5. How do I connect through a proxy?</a>
 <br><br>
-<a href="faq.html#q26">6. Why does X-Chat open a listen port?</a>
+<a href="faq.html#q26">6. How do I show @ and + infront of nicknames that are Op and Voice when they talk?</a>
 <br><br>
-<a href="faq.html#q27">7. Why is the "Tint Transparency" option shaded out?</a>
+<a href="faq.html#q27">7. What happened to question 7?</a>
 <br><br>
 <a href="faq.html#q28">8. How do I set different ban types?</a>
 <br><br>
@@ -61,13 +65,16 @@ p { margin: 3% }
 <br><br>
 <a href="faq.html#q215">15. How do I enable Emacs keybindings in XChat 2.0?</a>
 <br><br>
+
 </p>
 
-<h2>3. Section Three: Crashes, Bugs and other problems.</h2>
+<h2>3. Section Three: Contributions, Development and Bugs.</h2>
 <p>
 <a href="faq.html#q31">1. Why does X-Chat leak so much memory?</a>
 <br><br>
 <a href="faq.html#q32">2. My copy of X-Chat crashes, what can I do?</a>
+<br><br>
+<a href="faq.html#q33">3. Can I write a new language translation for X-Chat?</a>
 </p>
 
 <br><br>
@@ -99,27 +106,7 @@ It means you don't have GNU gettext installed. There are two solutions:
 language support and all menus and GUI will be in english only.</li>
 </ul>
 
-<br><h3><a name="q12">2. Why doesn't ./configure find GTK+ on my FreeBSD system?</a></h3>
-<p>
-FreeBSD usually comes with glib12-config and gtk12-config, so you'll need
-to set the GLIB_CONFIG and GTK_CONFIG environment variables, e.g:
-</p>
-<pre>
-       setenv GLIB_CONFIG /usr/local/bin/glib12-config
-       setenv GTK_CONFIG /usr/X11R6/bin/gtk12-config
-       rm config.cache
-       ./configure
-</pre>
-
-<p>Or if you are using a bash shell:</p>
-<pre>
-       export GLIB_CONFIG=/usr/local/bin/glib12-config
-       export GTK_CONFIG=/usr/X11R6/bin/gtk12-config
-       rm config.cache
-       ./configure
-</pre>
-
-<br><h3><a name="q13">3. How do I compile X-Chat on my Sun OS system?</a></h3>
+<br><h3><a name="q12">2. How do I compile X-Chat on my Sun OS system?</a></h3>
 <p>
    X-Chat uses GNU gettext which in turn requires gmake, either install that
    and or use ./configure --disable-nls with Sun's own make.
@@ -156,50 +143,37 @@ to set the GLIB_CONFIG and GTK_CONFIG environment variables, e.g:
 
 <br><h3><a name="q23">3. How do I autoconnect and join a channel when X-Chat loads?</a></h3>
 <p>
-In the Serverlist's Edit Window, check the checkbox "Autoconnect"
-of the entries you want to auto-connect/join. When you restart xchat
-it should automatically connect to these servers, and join the channels.
+In the Serverlist, enable "Edit Mode", select the Network to want to auto-connect to,
+and turn ON the "Auto connect at startup" checkbox.
 </p>
 
 <br><h3><a name="q24">4. How do I cut and paste in X-Chat?</a></h3>
 <p>
-   It's exactly the same as any other X application. You simply mark the text
-   you want, and then press middle mouse button to paste (if you only have a
-   2 button mouse, press left and right buttons at once).
+It's exactly the same as any other X application. You simply mark the text
+you want, and then press middle mouse button to paste (if you only have a
+2 button mouse, press left and right buttons at once).
 </p>
 
 <br><h3><a name="q25">5. How do I connect through a proxy?</a></h3>
 <p>
-   Go to the menus, Settings -> Preferences -> Network Setup and fill in the requested
-   information there. There is currently no support for using a username and
-   password to authenticate to proxies.
+Go to the menus, Settings -> Preferences -> Network Setup and fill in the requested
+information there. There is currently no support for using a username and
+password to authenticate to proxies.
 </p>
 
-<br><h3><a name="q26">6. Why does X-Chat open a listen port?</a></h3>
+<br><h3><a name="q26">6. How do I show @ and + infront of nicknames that are Op and Voice when they talk?</a></h3>
 <p>
-   Normally, X-Chat will not open a listen port, unless you are offering
-   a file by DCC. If you compiled X-Chat with the --enable-panel option,
-   ORBit (a library that is apart of Gnome) will open a port. X-Chat cannot
-   prevent this. If it really bothers you, compile X-Chat with --disable-panel.
+To display @ and + characters next to nicknames as they talk, do the following:
 </p>
-
-<br><h3><a name="q27">7. Why is the "Tint Transparency" option shaded out?</a></h3>
 <p>
-   It means you've compiled without gdk-pixbuf available. The configure script
-   looks for gdk-pixbuf-config to find out if you have it installed. On a
-   redhat or mandrake system you should have something like:
-</p>
-
-<blockquote><pre>
-$ rpm -qa | grep gdk-pix
-gdk-pixbuf-0.11.0
-gdk-pixbuf-devel-0.11.0
-</pre></blockquote>
-
-<p>
-   The "devel" package is also necessary! You should be able to find these
-   packages on your Linux CDROM or local GNOME ftp site. Once you install
-   gdk-pixbuf, try recompiling xchat.
+In the menus, open up Settings -> Lists -> Text Events. Find the
+<i>Channel Message</i> event in the list. The $3 code can be inserted to
+print the user's mode-character (e.g. @ or +). For example, you might want
+to change the default:
+<br><br>%C2&lt;%O$1%C2>%O$t$2%O<br><br>To:
+<br><br>%C2&lt;<b>%O$3</b>%O$1%C2>%O$t$2%O
+<br><br>Don't forget to press Enter, so the changes take effect in the
+list at the top of the window.
 </p>
 
 <br><h3><a name="q28">8. How do I set different ban types?</a></h3>
@@ -220,11 +194,6 @@ gdk-pixbuf-devel-0.11.0
 </li>
 
 <li>
-         Version: 1.8 or earlier:
-           /set ban_type &lt;bantype>
-</li>
-<li>
-         Version: 2.0:
            /set irc_ban_type &lt;bantype>
       sets the default ban type to use for all bans. The different types are:
 
@@ -240,49 +209,30 @@ gdk-pixbuf-devel-0.11.0
 
 <br><h3><a name="q29">9. Why can't I see accented-letters/umlauts/upper-ascii-chars in X-Chat?</a></h3>
 <p>
-Version 1.8:
-   Firstly, you should disable fontsets. The setting is in Settings ->
-   Setup -> Channel Windows -> Use a FontSet. There is no reason to have
-   this setting ON, unless you know you need it. Some versions of X-Chat
-   require a restart for this setting to take affect.
-   If that doesn't fix the problem, try using a different font, some
-   fonts simply don't have the characters you want.
-</p>
-
-<p>
-
-Version 2.0:
-   Refer to <a href="http://xchat.org/encoding.html">http://xchat.org/encoding.html</a>.
-   Note: Log files are written in UTF-8/Unicode.
+Refer to <a href="http://xchat.org/encoding.html">http://xchat.org/encoding.html</a>.<br>
+Note: Log files are always written in UTF-8/Unicode.
 </p>
 
 <br><h3><a name="q210">10. Why does the timestamp overlap some nicknames?</a></h3>
 <p>
-   Some networks allow very long nicknames (up to 32 letters). It can be annoying to have
-   the separator bar move too far to the right, just for one long nick. Therefore, it has
-   a set limit for the distance it will move to the right. If you use a large font, you
-   may need to adjust this distance. It is set in pixels, for example:
+Some networks allow very long nicknames (up to 32 letters). It can be annoying to have
+the separator bar move too far to the right, just for one long nick. Therefore, it has
+a set limit for the distance it will move to the right. If you use a large font, you
+may need to adjust this distance. It is set in pixels, for example:
 </p>
 <blockquote><pre>
       /set max_auto_indent 320
 </pre></blockquote>
 
 <p>
-   Once you adjust this setting high enough, overlapping timestamps and nicknames should
-   not occur. The adjustment will not take effect immediately, a restart may be needed.
+Once you adjust this setting high enough, overlapping timestamps and nicknames should
+not occur. The adjustment will not take effect immediately, a restart may be needed.
 </p>
 
 <br><h3><a name="q211">11. How do I turn on Conference mode where I will not see join or part messages?</a></h3>
 <p>
-<u>Version 1.8</u>:<br>
-   At the bottom right of the X-Chat screen there is a "&lt;" button.
-   Click that then also click the "Conf" button that will pop up.
-</p>
-
-<p>
-<u>Version 2.0.1+</u>:<br>
-   Right-click on the tab you want to change. In the submenu of the channel
-   name, there's a toggle-item "Show join/part messages", simply turn this off.
+Right-click on the tab you want to change. In the submenu of the channel
+name, there's a toggle-item "Show join/part messages", simply turn this off.
 </p>
 
 <br><h3><a name="q212">12. How can I run the /dccserver command?</a></h3>
@@ -331,8 +281,13 @@ If you don't use Gnome 2, but still want Emacs keybindings, it's beyond the
 scope of this document. You might find some hints here:
 <a href="http://www.gtk.org/gtk-2.2.0-notes.html">GTK+ 2.2.0 release notes</a>.
 </p>
+<p>
+Note, X-Chat versions 2.0.0 and 2.0.1 used the ctrl-w key for "Close Tab". Ctrl-w is recommended by the H.I.G for this purpose, but it conflicts with Emacs bindings. Version 2.0.2 changed the "Close Tab" binding to shift-ctrl-w, to avoid this conflict. Current CVS (and to be 2.0.3 in the future), uses ctrl-w for
+"Close Tab" when Emacs key bindings are disabled, and shift-ctrl-w when they are enabled. This solution should satisfy everyone.
+</p>
 
-<br><h2>3. Section Three: Crashes, Bugs and other problems.</h2>
+
+<br><h2>3. Section Three: Contributions, Development and Bugs.</h2>
 
 <br><h3><a name="q31">1. Why does X-Chat leak so much memory?</a></h3>
 <p>
@@ -351,6 +306,12 @@ problem. X-Chat itself only allocates about 40kb of memory through malloc()!
    will help us find a fix quickly, and it's easy to do! See <a href="gdb.html">here</a>.
 </p>
 
+<br><h3><a name="q33">3. Can I write a new language translation for X-Chat?</a></h3>
+<p>
+You sure can, but I don't accept translations directly. They must be done through the
+<a href="http://www.iro.umontreal.ca/contrib/po/HTML/index.html">Translation Project</a>.
+All the relevant information should be on that page.
+</p>
+
 </body>
 </html>
-

@@ -1455,11 +1455,11 @@ replace_handle (GtkWidget *t)
 }
 
 static int
-nick_comp_get_nick (char *tx, char *n)
+nick_comp_get_nick (char *tx, char *n, int n_size)
 {
 	int c, len = strlen (tx);
 
-	for (c = 0; c < len; c++)
+	for (c = 0; c < len && c < n_size; c++)
 	{
       if (tx[c] == ':' || tx[c] == ',' || tx[c] == prefs.nick_suffix[0])
 		{
@@ -1483,7 +1483,7 @@ nick_comp_chng (session *sess, GtkWidget * t, int updown)
 	GSList *head, *list;
 
 	text = gtk_entry_get_text (GTK_ENTRY (t));
-	if (nick_comp_get_nick ((char *)text, nick) == -1)
+	if (nick_comp_get_nick ((char *)text, nick, sizeof (nick)) == -1)
 		return;
 
 	len = strlen (nick);

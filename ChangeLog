@@ -13,7 +13,10 @@
  - Fixed corrupt left margin with indent-nicks off and timestamp on.
  - Remove invalid chars from inbound text when conversion fails. Fall
    back to ISO-8859-1 when using UTF-8 only (Ilya Konstantinov).
- - Fixed perl IRC::get_info(3) crash when not connected. 
+ - Fixed perl IRC::get_info(3) crash when not connected [732496].
+ - Fixed crash on long output lines for /exec -o [731187].
+ - Make "Move completed files to:" and "Save nickname in filenames"
+   work at the same time (Matthew Gabeler-Lee).
  - 
  - 
 

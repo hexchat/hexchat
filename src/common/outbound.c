@@ -3062,10 +3062,11 @@ handle_say (session *sess, char *text, int check_spch)
 	char pdibuf_static[1024];
 	char newcmd_static[1024];
 	char tbuf_static[4096];
-	char *pdibuf;
-	char *newcmd;
-	char *tbuf;
+	char *pdibuf = pdibuf_static;
+	char *newcmd = newcmd_static;
+	char *tbuf = tbuf_static;
 	int len;
+	int newcmdlen = sizeof newcmd_static;
 
 	if (strcmp (sess->channel, "(lastlog)") == 0)
 	{
@@ -3074,20 +3075,14 @@ handle_say (session *sess, char *text, int check_spch)
 	}
 
 	len = strlen (text);
-	if (len >= sizeof (pdibuf_static))
+	if (len >= sizeof pdibuf_static)
 		pdibuf = malloc (len + 1);
-	else
-		pdibuf = pdibuf_static;
 
-	if ((len + NICKLEN) >= sizeof (newcmd_static))
-		newcmd = malloc (len + NICKLEN + 1);
-	else
-		newcmd = newcmd_static;
+	if (len + NICKLEN >= newcmdlen)
+		newcmd = malloc (newcmdlen = len + NICKLEN + 1);
 
-	if ((len * 2) >= sizeof (tbuf_static))
-		tbuf = malloc ((len * 2) + 1);
-	else
-		tbuf = tbuf_static;
+	if (len * 2 >= sizeof tbuf_static)
+		tbuf = malloc (len * 2 + 1);
 
 	if (check_spch && prefs.perc_color)
 		check_special_chars (text, prefs.perc_ascii);
@@ -3108,7 +3103,7 @@ handle_say (session *sess, char *text, int check_spch)
 	if (prefs.nickcompletion)
 		perform_nick_completion (sess, text, newcmd);
 	else
-		safe_strcpy (newcmd, text, sizeof (newcmd));
+		safe_strcpy (newcmd, text, newcmdlen);
 
 	text = newcmd;
 

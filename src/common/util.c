@@ -1236,10 +1236,13 @@ download_move_to_completed_dir (char *dcc_dir, char *dcc_completed_dir,
 	char *output_name, int dccpermissions)
 {
 	/* Move a complete file to move_file_path */
+	/* mgl: this used to take just a filename and move it between dirs */
+	/* now it takes the full path of the target download and moves it */
 
 	char dl_src[4096];
 	char dl_dest[4096];
 	char dl_tmp[4096];
+	char *output_fname;
 	int return_tmp, return_tmp2;
 	struct stat buf;
 
@@ -1248,9 +1251,23 @@ download_move_to_completed_dir (char *dcc_dir, char *dcc_completed_dir,
 		 0 == dcc_completed_dir[0])
 		return;			/* Already in "completed dir" */
 
-	snprintf (dl_src, sizeof (dl_src), "%s/%s", dcc_dir, output_name);
+	/* mgl: since output_name is a full path, we just copy it */
+	strncpy (dl_src, output_name, sizeof(dl_src));
+	/* snprintf (dl_src, sizeof (dl_src), "%s/%s", dcc_dir, output_name); */
+	
+	/* mgl: output_name being a full path, we need to extract the filename */
+	/* off the end of it before continuing */
+
+	/* no path sep or no file after pathsep?  very suspicious, bail now! */
+	if ((NULL == (output_fname = strrchr(output_name, '/')))
+			|| !*(output_fname + 1))
+		return;
+	/* get the next char after the pathsep */
+	++output_fname;
+	/* throw the filename onto the directory name of the completed directory */
 	snprintf (dl_dest, sizeof (dl_dest), "%s/%s", dcc_completed_dir,
-			   output_name);
+			   output_fname);
+	/* the rest should continue as before, but use output_fname */
 
 	dl_src[sizeof(dl_src)-1] = '\0';
 	dl_dest[sizeof(dl_dest)-1] = '\0';
@@ -1279,7 +1296,7 @@ download_move_to_completed_dir (char *dcc_dir, char *dcc_completed_dir,
 		if (destlen >= sizeof (dl_dest) - 4)
 		{
 			fprintf(stderr, "Found '%s' in completed dir, and path already too long",
-				output_name);
+				output_fname);
 			return;
 		}
 
@@ -1300,7 +1317,7 @@ download_move_to_completed_dir (char *dcc_dir, char *dcc_completed_dir,
 		{
 			fprintf (stderr, "Found '%s' in completed dir, "
 				"and was unable to find another unique name",
-				output_name);
+				output_fname);
 			return;
 		}
 

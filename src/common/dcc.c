@@ -343,8 +343,10 @@ dcc_close (struct DCC *dcc, int dccstat, int destroy)
 			/* completed file to the completed directory */
 			if(dcc->type == TYPE_RECV)
 			{			
+				/* mgl: change this to use destfile_fs for correctness and to */
+				/* handle the case where dccwithnick is set */
 				download_move_to_completed_dir(prefs.dccdir, prefs.dcc_completed_dir, 
-					dcc->file, prefs.dccpermissions);
+					dcc->destfile_fs, prefs.dccpermissions);
 			}
 
 		}
