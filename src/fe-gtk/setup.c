@@ -943,6 +943,8 @@ setup_ok_cb (GtkWidget *but, GtkWidget *win)
 {
 	gtk_widget_destroy (win);
 	setup_apply (&setup_prefs);
+	save_config ();
+	palette_save ();
 }
 
 static GtkWidget *

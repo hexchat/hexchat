@@ -1,9 +1,50 @@
-This is a development version of xchat!
+XChat 1.9.7 RELEASE NOTES:
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-DELETE ANY PERL PLUGIN THAT IS OLDER THAN 1.9.5!!!
-BEFORE 1.9.5 IT HAD MAJOR CRASH BUGS. The file may be:
-	/usr/lib/xchat/plugins/perl.so
-	/usr/local/lib/xchat/plugins/perl.so
+* The perl plugin before version 1.9.5 was very buggy and almost always
+  crashed. Delete this file if it's still hanging around:
+    /usr/lib/xchat/plugins/perl.so
+    /usr/local/lib/xchat/plugins/perl.so
+  If you build the perl plugin from this archive, perl.so should be
+  overwritten and run ok.
+
+* You might want to ./configure --disable-xft
+  Disadvantages:
+    It's a little slower (with pango 1.1 and Xft2 it's hardly noticeable).
+  Advantages:
+    Better i18n. Falling back to pango will support multiple fonts
+    (i.e. when a particular character is not available in your selected
+     font, it'll try to find it in another font).
+    Bidi/reverse-text works.
+
+* If you use Xft directly (not --disable-xft), you need to make sure pango
+  is compiled with Xft support and GDK_USE_XFT=1.
+
+  /usr/lib$ ldd libpangoxft-1.0.so | grep -i Xft
+	libXft.so.2 => /usr/lib/libXft.so.2 (0x4005d000)
+
+* If you used very early 1.9 versions (1.9.0/1/2), you might want to
+  delete ~/.xchat2/ to get new defaults (backup your servlist_.conf if
+  you made major changes).
+
+* Having trouble with character sets, umlauts, upper ascii etc?
+  Refer to: http://xchat.org/encoding.html
+
+
+Notes for packagers:
+~~~~~~~~~~~~~~~~~~~~
+
+* If you need your packages to work on i386, you don't need to compile with
+  --disable-mmx, because it's also checked at run-time.
+
+* If you don't use --disable-xft, make sure xchat is built using the same
+  version of Xft as pango! If pango is using Xft1 and xchat Xft2, bad things
+  will happen (like holes in space-time etc).
+
+
+Crashes:
+~~~~~~~~
+  They're easy to debug: http://xchat.org/gdb.html
 
 
 TODO/BUGS before releasing 2.0.0pre1:

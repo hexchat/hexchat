@@ -396,8 +396,10 @@ static void
 backend_create_layout (GtkXText *xtext)
 {
 	if (xtext->layout == NULL)
+	{
 		xtext->layout = gtk_widget_create_pango_layout (GTK_WIDGET (xtext), 0); 
-	pango_layout_set_font_description (xtext->layout, xtext->font->font);
+		pango_layout_set_font_description (xtext->layout, xtext->font->font);
+	}
 }
 
 static void
@@ -416,6 +418,7 @@ backend_font_open (GtkXText *xtext, char *name)
 	else
 	{
 		backend_create_layout (xtext);
+		pango_layout_set_font_description (xtext->layout, xtext->font->font);
 
 		/* oooh, good kludge */
 		pango_layout_set_text (xtext->layout, "jy", 2);
@@ -2301,6 +2304,9 @@ gtk_xtext_strip_color (unsigned char *text, int len, unsigned char *outbuf,
 
 	while (len > 0)
 	{
+		if (*text & 0x80)
+			mb = TRUE;
+
 		if ((col && isdigit (*text) && nc < 2) ||
 			 (col && *text == ',' && isdigit (*(text+1)) && nc < 3))
 		{
@@ -2335,14 +2341,22 @@ single:
 #endif
 					new_str[i] = *text;
 					i++;
+					text++;
+					len--;
 				} else if (mbl > 0)
 				{
 					mb = TRUE;
+
+					len -= mbl;
+					/* safe-guard against invalid utf8 */
+					if (len < 0)
+						/* avoid memcpy beyond buffer */
+						mbl += len;
 					memcpy (&new_str[i], text, mbl);
 					i += mbl;
-					text += mbl - 1; /* -1 -> text++ */
-					len -= mbl - 1; /* -1 -> len-- */
+					text += mbl;
 				}
+				continue;
 			}
 		}
 		text++;
@@ -2757,10 +2771,17 @@ gtk_xtext_render_str (GtkXText * xtext, int y, textentry * ent, unsigned char *s
 				j = 0;
 				break;
 			default:
-				j += charlen (str + i);	/* move to the next utf8 char */
+				tmp = charlen (str + i);
+				/* invalid utf8 safe guard */
+				if (tmp + i > len)
+					tmp = len - i;
+				j += tmp;	/* move to the next utf8 char */
 			}
 		}
 		i += charlen (str + i);	/* move to the next utf8 char */
+		/* invalid utf8 safe guard */
+		if (i > len)
+			i = len;
 
 		/* have we been told to stop rendering at this point? */
 		if (xtext->jump_out_offset > 0 && xtext->jump_out_offset <= (i + offset))
