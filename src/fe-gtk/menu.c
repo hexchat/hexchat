@@ -401,6 +401,11 @@ menu_destroy (GtkObject *object, gpointer objtounref)
 static void
 menu_popup (GtkWidget *menu, GdkEventButton *event, gpointer objtounref)
 {
+#if (GTK_MAJOR_VERSION != 2) || (GTK_MINOR_VERSION != 0)
+	if (event && event->window)
+		gtk_menu_set_screen (GTK_MENU (menu), gdk_drawable_get_screen (event->window));
+#endif
+
 	g_signal_connect (G_OBJECT (menu), "selection-done",
 							G_CALLBACK (menu_destroy), objtounref);
 	if (event == NULL)

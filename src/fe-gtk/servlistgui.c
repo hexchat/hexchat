@@ -420,6 +420,10 @@ servlist_server_popmenu (ircserver *serv, GtkTreeView *treeview, GdkEventButton 
 
 	g_signal_connect (G_OBJECT (menu), "selection-done",
 							G_CALLBACK (servlist_menu_destroy), menu);
+#if (GTK_MAJOR_VERSION != 2) || (GTK_MINOR_VERSION != 0)
+	if (event && event->window)
+		gtk_menu_set_screen (GTK_MENU (menu), gdk_drawable_get_screen (event->window));
+#endif
 	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL, 0, event->time);
 }
 
@@ -464,6 +468,10 @@ servlist_network_popmenu (ircnet *net, GtkTreeView *treeview, GdkEventButton *ev
 
 	g_signal_connect (G_OBJECT (menu), "selection-done",
 							G_CALLBACK (servlist_menu_destroy), menu);
+#if (GTK_MAJOR_VERSION != 2) || (GTK_MINOR_VERSION != 0)
+	if (event && event->window)
+		gtk_menu_set_screen (GTK_MENU (menu), gdk_drawable_get_screen (event->window));
+#endif
 	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL, 0, event->time);
 }
 
