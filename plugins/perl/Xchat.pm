@@ -313,10 +313,13 @@ sub Xchat::_fix_callback {
 }
 
 $SIG{__WARN__} = sub {
-  local $, = "\n";
   my ($package, $file, $line, $sub) = caller(1);
+  $sub =~ s/^Xchat::Embed//;
+  $sub =~ s/^(.+)::.+$/$1/;
+  $sub =~ s/_([[:xdigit:]]+)/pack("H*",$1)/eg;
+  $sub =~ s[::][/]g;
   Xchat::print( "Warning from ${sub}." );
-  Xchat::print( @_ );
+  Xchat::print( $_[0] );
 };
 
 sub Xchat::Embed::load {
