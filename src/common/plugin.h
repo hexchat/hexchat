@@ -92,8 +92,12 @@ struct _xchat_plugin
 		  int modes_per_line,
 		  char sign,
 		  char mode);
-	void *(*xchat_dummy6) (xchat_plugin *ph);
-	void *(*xchat_dummy5) (xchat_plugin *ph);
+	char *(*xchat_strip) (xchat_plugin *ph,
+	     const char *str,
+	     int len,
+	     int flags);
+	void (*xchat_free) (xchat_plugin *ph,
+	    void *ptr);
 	void *(*xchat_dummy4) (xchat_plugin *ph);
 	void *(*xchat_dummy3) (xchat_plugin *ph);
 	void *(*xchat_dummy2) (xchat_plugin *ph);

@@ -263,10 +263,10 @@ plugin_add (session *sess, char *filename, void *handle, void *init_func,
 		pl->xchat_list_time = xchat_list_time;
 		pl->xchat_gettext = xchat_gettext;
 		pl->xchat_send_modes = xchat_send_modes;
+		pl->xchat_strip = xchat_strip;
+		pl->xchat_free = xchat_free;
 
 		/* incase new plugins are loaded on older xchat */
-		pl->xchat_dummy6 = xchat_dummy;
-		pl->xchat_dummy5 = xchat_dummy;
 		pl->xchat_dummy4 = xchat_dummy;
 		pl->xchat_dummy3 = xchat_dummy;
 		pl->xchat_dummy2 = xchat_dummy;
