@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2002-12-13 19:35+1100\n"
+"POT-Creation-Date: 2002-12-15 19:23+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -15,15 +15,15 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/common/cfgfiles.c:275
+#: src/common/cfgfiles.c:271
 msgid "Cannot create ~/.xchat"
 msgstr ""
 
-#: src/common/cfgfiles.c:546
+#: src/common/cfgfiles.c:543
 msgid "I'm busy"
 msgstr ""
 
-#: src/common/cfgfiles.c:596
+#: src/common/cfgfiles.c:593
 msgid ""
 "* Running IRC as root is stupid! You should\n"
 "  create a User Account and use that to login.\n"
@@ -486,14 +486,14 @@ msgstr ""
 msgid "No xchat_plugin_init symbol; is this really an xchat plugin?"
 msgstr ""
 
-#: src/common/server.c:885
+#: src/common/server.c:875
 #, c-format
 msgid ""
 "Cannot resolve hostname %s\n"
 "Check your IP Settings!\n"
 msgstr ""
 
-#: src/common/server.c:890
+#: src/common/server.c:880
 msgid "Proxy traversal failed.\n"
 msgstr ""
 
@@ -2350,7 +2350,7 @@ msgstr ""
 
 #: src/fe-gtk/fkeys.c:392 src/fe-gtk/fkeys.c:671 src/fe-gtk/fkeys.c:677
 #: src/fe-gtk/fkeys.c:682 src/fe-gtk/maingui.c:606 src/fe-gtk/maingui.c:627
-#: src/fe-gtk/maingui.c:674 src/fe-gtk/maingui.c:2106
+#: src/fe-gtk/maingui.c:674 src/fe-gtk/maingui.c:2107
 msgid "<none>"
 msgstr ""
 
@@ -2616,7 +2616,7 @@ msgstr ""
 msgid "Enter new nickname:"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1776
+#: src/fe-gtk/maingui.c:1777
 msgid "Channel Options"
 msgstr ""
 
@@ -3343,68 +3343,68 @@ msgid "Tint blue:"
 msgstr ""
 
 #: src/fe-gtk/setup.c:96
-msgid "Automatic nick completion"
-msgstr ""
-
-#: src/fe-gtk/setup.c:97
-msgid "Use the Text box font"
-msgstr ""
-
-#: src/fe-gtk/setup.c:98
 #, c-format
 msgid "Interpret %nnn as an ASCII value"
 msgstr ""
 
+#: src/fe-gtk/setup.c:97
+msgid "Automatic nick completion"
+msgstr ""
+
+#: src/fe-gtk/setup.c:98
+msgid "Interpret %C, %B as Color, Bold etc"
+msgstr ""
+
 #: src/fe-gtk/setup.c:99
+msgid "Use the Text box font"
+msgstr ""
+
+#: src/fe-gtk/setup.c:100
 msgid "Nick completion suffix:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:105
+#: src/fe-gtk/setup.c:106
 msgid "Off"
 msgstr ""
 
-#: src/fe-gtk/setup.c:106
+#: src/fe-gtk/setup.c:107
 msgid "Graph"
 msgstr ""
 
-#: src/fe-gtk/setup.c:107
+#: src/fe-gtk/setup.c:108
 msgid "Info text"
 msgstr ""
 
-#: src/fe-gtk/setup.c:108
+#: src/fe-gtk/setup.c:109
 msgid "Both"
 msgstr ""
 
-#: src/fe-gtk/setup.c:114
+#: src/fe-gtk/setup.c:115
 msgid "A-Z, Ops first"
 msgstr ""
 
-#: src/fe-gtk/setup.c:115
+#: src/fe-gtk/setup.c:116
 msgid "A-Z"
 msgstr ""
 
-#: src/fe-gtk/setup.c:116
+#: src/fe-gtk/setup.c:117
 msgid "Z-A, Ops last"
 msgstr ""
 
-#: src/fe-gtk/setup.c:117
+#: src/fe-gtk/setup.c:118
 msgid "Z-A"
 msgstr ""
 
-#: src/fe-gtk/setup.c:118
+#: src/fe-gtk/setup.c:119
 msgid "Unsorted"
 msgstr ""
 
-#: src/fe-gtk/setup.c:124
-msgid "Show hostnames in userlist"
-msgstr ""
-
 #: src/fe-gtk/setup.c:125
-msgid "Userlist buttons enabled"
+msgid "Lag meter:"
 msgstr ""
 
 #: src/fe-gtk/setup.c:126
-msgid "Double-click command:"
+msgid "Throttle meter:"
 msgstr ""
 
 #: src/fe-gtk/setup.c:127
@@ -3412,391 +3412,403 @@ msgid "Userlist sorted by:"
 msgstr ""
 
 #: src/fe-gtk/setup.c:128
-msgid "Lag meter:"
+msgid "Double-click command:"
 msgstr ""
 
 #: src/fe-gtk/setup.c:129
-msgid "Throttle meter:"
+msgid "Show hostnames in userlist"
 msgstr ""
 
-#: src/fe-gtk/setup.c:135
+#: src/fe-gtk/setup.c:130
+msgid "Userlist buttons enabled"
+msgstr ""
+
+#: src/fe-gtk/setup.c:136
 msgid "Windows"
 msgstr ""
 
-#: src/fe-gtk/setup.c:136 src/fe-gtk/setup.c:744
+#: src/fe-gtk/setup.c:137 src/fe-gtk/setup.c:752
 msgid "Tabs"
 msgstr ""
 
-#: src/fe-gtk/setup.c:142
+#: src/fe-gtk/setup.c:143
 msgid "Bottom"
 msgstr ""
 
-#: src/fe-gtk/setup.c:143
+#: src/fe-gtk/setup.c:144
 msgid "Top"
 msgstr ""
 
 #. N_("Left"),
 #. N_("Right"),
-#: src/fe-gtk/setup.c:146
+#: src/fe-gtk/setup.c:147
 msgid "Hidden"
 msgstr ""
 
-#: src/fe-gtk/setup.c:152
-msgid "Open channels in:"
-msgstr ""
-
 #: src/fe-gtk/setup.c:153
-msgid "Open dialogs in:"
-msgstr ""
-
-#: src/fe-gtk/setup.c:154
-msgid "Open utilities in:"
-msgstr ""
-
-#: src/fe-gtk/setup.c:154
-msgid "Open DCC, Ignore, Notify etc, in tabs or windows?"
-msgstr ""
-
-#: src/fe-gtk/setup.c:155
 msgid "Show tabs at:"
 msgstr ""
 
+#: src/fe-gtk/setup.c:154
+msgid "Open channels in:"
+msgstr ""
+
+#: src/fe-gtk/setup.c:155
+msgid "Open dialogs in:"
+msgstr ""
+
 #: src/fe-gtk/setup.c:156
-msgid "Open tab for server messages"
+msgid "Open utilities in:"
+msgstr ""
+
+#: src/fe-gtk/setup.c:156
+msgid "Open DCC, Ignore, Notify etc, in tabs or windows?"
 msgstr ""
 
 #: src/fe-gtk/setup.c:157
-msgid "Only highlight tabs on channel messages"
+msgid "Shorten tabs to:"
+msgstr ""
+
+#: src/fe-gtk/setup.c:157
+msgid "letters."
 msgstr ""
 
 #: src/fe-gtk/setup.c:158
-msgid "Open tab for server notices"
+msgid "Open tab for server messages"
 msgstr ""
 
 #: src/fe-gtk/setup.c:159
+msgid "Only highlight tabs on channel messages"
+msgstr ""
+
+#: src/fe-gtk/setup.c:160
+msgid "Open tab for server notices"
+msgstr ""
+
+#: src/fe-gtk/setup.c:161
 msgid "Pop new tabs to front"
 msgstr ""
 
-#: src/fe-gtk/setup.c:165
+#: src/fe-gtk/setup.c:167
 msgid "Download files to:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:166
+#: src/fe-gtk/setup.c:168
 msgid "Move completed files to:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:167
+#: src/fe-gtk/setup.c:169
 msgid "DCC IP address:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:168
+#: src/fe-gtk/setup.c:170
 msgid "Claim you are at this address when offering files."
 msgstr ""
 
-#: src/fe-gtk/setup.c:169
+#: src/fe-gtk/setup.c:171
 msgid "First DCC send port:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:170
+#: src/fe-gtk/setup.c:172
 msgid "Last DCC send port:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:171
+#: src/fe-gtk/setup.c:173
 msgid "(Leave ports at zero for full range)."
 msgstr ""
 
-#: src/fe-gtk/setup.c:172
+#: src/fe-gtk/setup.c:174
 msgid "Auto open DCC send list"
 msgstr ""
 
-#: src/fe-gtk/setup.c:173
+#: src/fe-gtk/setup.c:175
 msgid "Convert spaces to underscore"
 msgstr ""
 
-#: src/fe-gtk/setup.c:174
+#: src/fe-gtk/setup.c:176
 msgid "In filenames, before sending"
 msgstr ""
 
-#: src/fe-gtk/setup.c:175
+#: src/fe-gtk/setup.c:177
 msgid "Auto open DCC chat list"
 msgstr ""
 
-#: src/fe-gtk/setup.c:176
+#: src/fe-gtk/setup.c:178
 msgid "Save nickname in filenames"
 msgstr ""
 
-#: src/fe-gtk/setup.c:177
+#: src/fe-gtk/setup.c:179
 msgid "Auto open DCC receive list"
 msgstr ""
 
-#: src/fe-gtk/setup.c:178
+#: src/fe-gtk/setup.c:180
 msgid "Get my IP from IRC server"
 msgstr ""
 
-#: src/fe-gtk/setup.c:179
+#: src/fe-gtk/setup.c:181
 msgid ""
 "/WHOIS yourself to find your real address. Use this if you have a 192.168.*."
 "* address!"
 msgstr ""
 
-#: src/fe-gtk/setup.c:180
+#: src/fe-gtk/setup.c:182
 msgid "Max. send CPS:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:181 src/fe-gtk/setup.c:183
+#: src/fe-gtk/setup.c:183 src/fe-gtk/setup.c:185
 msgid "Max. speed for one transfer"
 msgstr ""
 
-#: src/fe-gtk/setup.c:182
+#: src/fe-gtk/setup.c:184
 msgid "Max. receive CPS:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:184
+#: src/fe-gtk/setup.c:186
 msgid "Max. global send CPS:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:185 src/fe-gtk/setup.c:187
+#: src/fe-gtk/setup.c:187 src/fe-gtk/setup.c:189
 msgid "Max. speed for all traffic"
 msgstr ""
 
-#: src/fe-gtk/setup.c:186
+#: src/fe-gtk/setup.c:188
 msgid "Max. global receive CPS:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:188
+#: src/fe-gtk/setup.c:190
 msgid "(Leave at zero for full speed file transfers)."
 msgstr ""
 
-#: src/fe-gtk/setup.c:194
+#: src/fe-gtk/setup.c:196
 msgid "Default quit message:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:195
+#: src/fe-gtk/setup.c:197
 msgid "Default part message:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:196
+#: src/fe-gtk/setup.c:198
 msgid "Default away message:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:198
+#: src/fe-gtk/setup.c:200
 msgid "(Can be a text file relative to ~/.xchat2/)."
 msgstr ""
 
-#: src/fe-gtk/setup.c:200
+#: src/fe-gtk/setup.c:202
 msgid "(Can be a text file relative to conf\\)."
 msgstr ""
 
-#: src/fe-gtk/setup.c:202
+#: src/fe-gtk/setup.c:204
 msgid "Extra words to highlight on:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:203
+#: src/fe-gtk/setup.c:205
 msgid "(Separate multiple words with commas)."
 msgstr ""
 
-#: src/fe-gtk/setup.c:204
+#: src/fe-gtk/setup.c:206
 msgid "Show away once"
 msgstr ""
 
-#: src/fe-gtk/setup.c:204
+#: src/fe-gtk/setup.c:206
 msgid "Show identical away messages only once"
 msgstr ""
 
-#: src/fe-gtk/setup.c:205
+#: src/fe-gtk/setup.c:207
 msgid "Beep on private messages"
 msgstr ""
 
-#: src/fe-gtk/setup.c:206
+#: src/fe-gtk/setup.c:208
 msgid "Automatically unmark away"
 msgstr ""
 
-#: src/fe-gtk/setup.c:206
+#: src/fe-gtk/setup.c:208
 msgid "Unmark yourself as away before sending messages"
 msgstr ""
 
-#: src/fe-gtk/setup.c:207
+#: src/fe-gtk/setup.c:209
 msgid "Beep on channel messages"
 msgstr ""
 
-#: src/fe-gtk/setup.c:208
+#: src/fe-gtk/setup.c:210
 msgid "Announce away messages"
 msgstr ""
 
-#: src/fe-gtk/setup.c:208
+#: src/fe-gtk/setup.c:210
 msgid "Announce your away messages to all channels"
 msgstr ""
 
-#: src/fe-gtk/setup.c:209
+#: src/fe-gtk/setup.c:211
 msgid "Display MODEs in raw form"
 msgstr ""
 
-#: src/fe-gtk/setup.c:210
+#: src/fe-gtk/setup.c:212
 msgid "Auto reconnect delay:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:216
+#: src/fe-gtk/setup.c:218
 msgid "Log filename mask:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:217
+#: src/fe-gtk/setup.c:219
 #, c-format
 msgid "(%s=Server %c=Channel %n=Network)."
 msgstr ""
 
-#: src/fe-gtk/setup.c:218
+#: src/fe-gtk/setup.c:220
 msgid "Log timestamp format:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:219
+#: src/fe-gtk/setup.c:221
 msgid "(See strftime manpage for details)."
 msgstr ""
 
-#: src/fe-gtk/setup.c:220
+#: src/fe-gtk/setup.c:222
 msgid "Enable logging of conversations"
 msgstr ""
 
-#: src/fe-gtk/setup.c:221
+#: src/fe-gtk/setup.c:223
 msgid "Insert timestamps in logs"
 msgstr ""
 
-#: src/fe-gtk/setup.c:227
+#: src/fe-gtk/setup.c:229
 msgid "(Disabled)"
 msgstr ""
 
-#: src/fe-gtk/setup.c:228
+#: src/fe-gtk/setup.c:230
 msgid "Wingate"
 msgstr ""
 
-#: src/fe-gtk/setup.c:229
+#: src/fe-gtk/setup.c:231
 msgid "Socks4"
 msgstr ""
 
-#: src/fe-gtk/setup.c:230
+#: src/fe-gtk/setup.c:232
 msgid "Socks5"
 msgstr ""
 
-#: src/fe-gtk/setup.c:231
+#: src/fe-gtk/setup.c:233
 msgid "HTTP"
 msgstr ""
 
-#: src/fe-gtk/setup.c:237
+#: src/fe-gtk/setup.c:239
 msgid "Address to bind to:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:238
+#: src/fe-gtk/setup.c:240
 msgid "(Only useful for computers with multiple addresses)."
 msgstr ""
 
-#: src/fe-gtk/setup.c:239
+#: src/fe-gtk/setup.c:241
 msgid "Proxy server:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:240
+#: src/fe-gtk/setup.c:242
 msgid "Proxy port:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:241
+#: src/fe-gtk/setup.c:243
 msgid "Proxy type:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:422
+#: src/fe-gtk/setup.c:430
 msgid "Choose File"
 msgstr ""
 
-#: src/fe-gtk/setup.c:449
+#: src/fe-gtk/setup.c:457
 msgid "Select font"
 msgstr ""
 
-#: src/fe-gtk/setup.c:505
+#: src/fe-gtk/setup.c:513
 msgid "Browse..."
 msgstr ""
 
-#: src/fe-gtk/setup.c:625
+#: src/fe-gtk/setup.c:633
 msgid "Select color"
 msgstr ""
 
-#: src/fe-gtk/setup.c:689
+#: src/fe-gtk/setup.c:697
 msgid "mIRC colors:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:697
+#: src/fe-gtk/setup.c:705
 msgid "Foreground:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:698
+#: src/fe-gtk/setup.c:706
 msgid "Background:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:700
+#: src/fe-gtk/setup.c:708
 msgid "Mark fore:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:701
+#: src/fe-gtk/setup.c:709
 msgid "Mark back:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:703
+#: src/fe-gtk/setup.c:711
 msgid "New Data:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:704
+#: src/fe-gtk/setup.c:712
 msgid "New Message:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:705
+#: src/fe-gtk/setup.c:713
 msgid "Highlight:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:740
+#: src/fe-gtk/setup.c:748
 msgid "Interface"
 msgstr ""
 
-#: src/fe-gtk/setup.c:741
+#: src/fe-gtk/setup.c:749
 msgid "Text box"
 msgstr ""
 
-#: src/fe-gtk/setup.c:742
+#: src/fe-gtk/setup.c:750
 msgid "Input box"
 msgstr ""
 
-#: src/fe-gtk/setup.c:743
+#: src/fe-gtk/setup.c:751
 msgid "User list"
 msgstr ""
 
-#: src/fe-gtk/setup.c:745
+#: src/fe-gtk/setup.c:753
 msgid "Colors"
 msgstr ""
 
-#: src/fe-gtk/setup.c:747
+#: src/fe-gtk/setup.c:755
 msgid "Chatting"
 msgstr ""
 
-#: src/fe-gtk/setup.c:748
+#: src/fe-gtk/setup.c:756
 msgid "General"
 msgstr ""
 
-#: src/fe-gtk/setup.c:749
+#: src/fe-gtk/setup.c:757
 msgid "Logging"
 msgstr ""
 
-#: src/fe-gtk/setup.c:751
+#: src/fe-gtk/setup.c:759
 msgid "Network"
 msgstr ""
 
-#: src/fe-gtk/setup.c:752
+#: src/fe-gtk/setup.c:760
 msgid "Network setup"
 msgstr ""
 
-#: src/fe-gtk/setup.c:753
+#: src/fe-gtk/setup.c:761
 msgid "File transfers"
 msgstr ""
 
-#: src/fe-gtk/setup.c:858
+#: src/fe-gtk/setup.c:866
 msgid "Categories"
 msgstr ""
 
-#: src/fe-gtk/setup.c:955
+#: src/fe-gtk/setup.c:963
 msgid "X-Chat: Preferences"
 msgstr ""
 
