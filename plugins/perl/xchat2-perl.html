@@ -14,6 +14,7 @@
 	<li><a href="#xchat_2_perl_interface">X-Chat 2 Perl Interface</a></li>
 	<li><ul>
 
+		<li><a href="#introduction">Introduction</a></li>
 		<li><a href="#constants">Constants</a></li>
 		<li><ul>
 
@@ -53,6 +54,7 @@
 			<li><a href="#xchat::user_info(_[$nick]_)"><code>Xchat::user_info( [$nick] )</code></a></li>
 		</ul></li>
 
+		<li><a href="#contact_information">Contact Information</a></li>
 	</ul></li>
 
 </ul>
@@ -62,6 +64,14 @@
 <p>
 </p>
 <h1><a name="xchat_2_perl_interface">X-Chat 2 Perl Interface</a></h1>
+<p>
+</p>
+<h2><a name="introduction">Introduction</a></h2>
+<p>This is the new Perl interface for X-Chat 2.  However, due to changes in
+xchat's plugin code you will need xchat 2.0.8 or above to load this.  Scripts
+written using the old interface will continue to work. If there are any
+problems, questions, comments or suggestions please email them to the address
+on the bottom of this page.</p>
 <p>
 </p>
 <h2><a name="constants">Constants</a></h2>
@@ -241,7 +251,7 @@ Timer callbacks<br>
 </p>
 <h4><a name="callback_return_values">Callback return values</a></h4>
 <p>All server, command and print  callbacks should return one of
-the <code>Xchat::EAT_*</code> constants.&lt;br&gt;
+the <code>Xchat::EAT_*</code> constants.
 Timer callbacks can return 0 to remove
 the timer or 1 to keep it going</p>
 <p>
@@ -587,8 +597,11 @@ to retrieve some information about only one user in a channel. Otherwise it
 is probably a better idea to use <a href="#xchat::get_list(_$name_)">get_list</a>.
 If <code>$nick</code> is found a hash reference containing the same keys as those in the
 ``users'' list of <a href="#xchat::get_list(_$name_)">get_list</a>.</p>
+<p>
+</p>
+<h2><a name="contact_information">Contact Information</a></h2>
 <p>Contact Lian Situ at &lt;<a href="mailto:atmcmnky@yahoo.com">atmcmnky@yahoo.com</a>&gt; for questions, comments and
-corrections about this or the Perl plugin itself.</p>
+corrections about this page or the Perl plugin itself.</p>
 
 </body>
 
