@@ -2007,7 +2007,8 @@ xs_init (pTHX)
 	newCONSTSUB (stash, "EAT_XCHAT", newSViv (XCHAT_EAT_XCHAT));
 	newCONSTSUB (stash, "EAT_PLUGIN", newSViv (XCHAT_EAT_PLUGIN));
 	newCONSTSUB (stash, "EAT_ALL", newSViv (XCHAT_EAT_ALL));
-
+	newCONSTSUB (stash, "KEEP", newSViv(1));
+	newCONSTSUB (stash, "REMOVE", newSViv(0));
 }
 
 static void
@@ -2277,12 +2278,6 @@ perl_init (void)
 "	 my $data = do {local $/; <FH>};\n"
 "	 close FH;\n"
 "\n"
-"# 	 my $package = Xchat::Embed::valid_package( $file );\n"
-"# 	 if( $data =~ m/^\\s*package .*?;/m ) {\n"
-"# 		$data =~ s/^\\s*package .*?;/package $package;/m;\n"
-"# 	 } else {\n"
-"# 		$data = \"package $package;\" . $data;\n"
-"# 	 }\n"
 "	 eval $data;\n"
 "\n"
 "	 if( $@ ) {\n"
@@ -2300,19 +2295,6 @@ perl_init (void)
 "  return 0;\n"
 "}\n"
 "\n"
-"# sub Xchat::Embed::valid_package {\n"
-"\n"
-"#   my $string = shift @_;\n"
-"#   $string =~ s/\\.pl$//i;\n"
-"#   $string =~ s/([^A-Za-z0-9\\/])/sprintf(\"_%2x\",unpack(\"C\",$1))/eg;\n"
-"#   # second pass only for words starting with a digit\n"
-"#   $string =~ s|/(\\d)|sprintf(\"/_%2x\",unpack(\"C\",$1))|eg;\n"
-"\n"
-"#   # Dress it up as a real package name\n"
-"#   $string =~ s|/|::|g;\n"
-"#   return \"Xchat::Embed\" . $string;\n"
-"# }\n"
-
 
 	};
 #ifdef ENABLE_NLS
