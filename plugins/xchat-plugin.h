@@ -281,6 +281,7 @@ xchat_emit_print (xchat_plugin *ph,
 #define xchat_list_fields ((XCHAT_PLUGIN_HANDLE)->xchat_list_fields)
 #define xchat_list_str ((XCHAT_PLUGIN_HANDLE)->xchat_list_str)
 #define xchat_list_int ((XCHAT_PLUGIN_HANDLE)->xchat_list_int)
+#define xchat_list_time ((XCHAT_PLUGIN_HANDLE)->xchat_list_time)
 #define xchat_list_next ((XCHAT_PLUGIN_HANDLE)->xchat_list_next)
 #define xchat_plugingui_add ((XCHAT_PLUGIN_HANDLE)->xchat_plugingui_add)
 #define xchat_plugingui_remove ((XCHAT_PLUGIN_HANDLE)->xchat_plugingui_remove)
