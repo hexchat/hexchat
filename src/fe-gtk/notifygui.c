@@ -270,7 +270,7 @@ notify_remove_clicked (GtkWidget * igad)
 static void
 notifygui_add (int cancel, char *text, gpointer userdata)
 {
-	if (!cancel)
+	if (!cancel && text[0])
 		notify_adduser (text);
 }
 
