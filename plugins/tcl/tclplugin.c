@@ -15,7 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#define VERSION "1.0.27"
+#define VERSION "1.0.28"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -1286,13 +1286,20 @@ static int tcl_channels(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
     char *server, *channel;
     xchat_list *list;
     Tcl_DString ds;
+    xchat_context *origctx;
+    xchat_context *ctx;
+
+    origctx = xchat_get_context(ph);
 
     BADARGS(1, 2, " ?server|network?");
 
-    if (argc == 1)
-        server = (char *) xchat_get_info(ph, "server");
-    else
-        server = argv[1];
+    if (argc == 2) {
+        ctx = xchat_find_context(ph, argv[1], NULL);
+        CHECKCTX(ctx);
+        xchat_set_context(ph, ctx);
+    }
+
+    server = (char *) xchat_get_info(ph, "server");
 
     Tcl_DStringInit(&ds);
 
@@ -1314,6 +1321,8 @@ static int tcl_channels(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
     Tcl_AppendResult(irp, ds.string, NULL);
 
     Tcl_DStringFree(&ds);
+
+    xchat_set_context(ph, origctx);
 
     return TCL_OK;
 }
@@ -1352,13 +1361,20 @@ static int tcl_queries(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
     char *server, *channel;
     xchat_list *list;
     Tcl_DString ds;
+    xchat_context *origctx;
+    xchat_context *ctx;
+
+    origctx = xchat_get_context(ph);
 
     BADARGS(1, 2, " ?server|network?");
 
-    if (argc == 1)
-        server = (char *) xchat_get_info(ph, "network");
-    else
-        server = argv[1];
+    if (argc == 2) {
+        ctx = xchat_find_context(ph, argv[1], NULL);
+        CHECKCTX(ctx);
+        xchat_set_context(ph, ctx);
+    }
+    
+    server = (char *) xchat_get_info(ph, "server");
 
     Tcl_DStringInit(&ds);
 
@@ -1379,6 +1395,8 @@ static int tcl_queries(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
     Tcl_AppendResult(irp, ds.string, NULL);
 
     Tcl_DStringFree(&ds);
+
+    xchat_set_context(ph, origctx);
 
     return TCL_OK;
 }
