@@ -454,7 +454,8 @@ process_numeric (session * sess, char *outbuf, int n,
 		{
 			if (!inbound_user_info (sess, outbuf, word[4], word[5], word[6],
 											word[7], word[8], word_eol[11]))
-				goto def;
+				EMIT_SIGNAL (XP_TE_SERVTEXT, serv->server_session, text, word[1],
+								 NULL, NULL, 0);
 		} else
 		{
 			if (!serv->p_cmp (word[8], serv->nick))

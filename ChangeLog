@@ -6,7 +6,7 @@
  2.0.2
 ----------------------------------------------------------------------
 
- - Updated translations (lt, nl, pt, sv, zh_CN).
+ - Updated translations (lt, ms, nl, pt, sv, zh_CN).
  - Fixed a few minor mem leaks in the server and user list.
  - Changes to: UrlGrabber, Notify, Plugins, Ignore and Banlist GUIs.
    Changed GtkCList to GtkTreeview, and general enhancement to these
@@ -23,7 +23,7 @@
  - Made all toplevel dialog windows transients of the main window.
  - Show filesize/pos in DCC window as KB and MB (Aaron Chernosky).
  - Added /set tab_dnd 0/1 option.
- - Fixed userlist insertion and deletion performance problem [704233].
+ - Fixed userlist insertion/deletion GUI performance problem [704233].
  - Each toplevel window now has a "role".
  - Smaller bugs fixed: [698449] [718851].
  - TCL plugin fixes for context lookups (Daniel P. Stasinski).
@@ -31,7 +31,6 @@
    emacs editing.
  - Used a new algorithm for Userlist and UrlGrabber. This one does
    insertion, lookup and deletion in O(log n).
- - 
 
 
 ----------------------------------------------------------------------

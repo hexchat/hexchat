@@ -8,6 +8,10 @@ body {
 	font-family: sans-serif;
 	background-color: #FFFBF0;
 }
+h2 { color: #336701 }
+h3 { color: #005A9C }
+a:link { color: blue; }
+p { margin: 3% }
 -->
 </style>
 </head>
@@ -15,18 +19,18 @@ body {
 
 <h1>X-Chat Frequently Asked Questions</h1>
 
-<h3>1. Section One: Compiling and Installing.</h3>
-<blockquote>
+<h2>1. Section One: Compiling and Installing.</h2>
+<p>
 <a href="faq.html#q11">1. I get this error: /bin/sh: no: command not found</a>
 <br><br>
 <a href="faq.html#q12">2. Why doesn't ./configure find GTK+ on my FreeBSD system?</a>
 <br><br>
 <a href="faq.html#q13">3. How do I compile X-Chat on my Sun OS system?</a>
 <br><br>
-</blockquote>
+</p>
 
-<h3>2. Section Two: Using X-Chat.</h3>
-<blockquote>
+<h2>2. Section Two: Using X-Chat.</h2>
+<p>
 <a href="faq.html#q21">1. How do I enable identd in X-Chat? (How do I get rid of the ~ infront of my username?)</a>
 <br><br>
 <a href="faq.html#q22">2. How do I auto join more than one channel with keys?</a>
@@ -51,74 +55,79 @@ body {
 <br><br>
 <a href="faq.html#q212">12. How can I run the /dccserver command?</a>
 <br><br>
-<a href="faq.html#q213">13. How do I execute multiple commands in one line?<a>
+<a href="faq.html#q213">13. Why doesn't DCC send work behind IPNat or IPMasq?</a>
 <br><br>
-</blockquote>
+<a href="faq.html#q214">14. How do I execute multiple commands in one line?</a>
+<br><br>
+</p>
 
-<h3>3. Section Three: Crashes, Bugs and other problems.</h3>
-<blockquote>
+<h2>3. Section Three: Crashes, Bugs and other problems.</h2>
+<p>
 <a href="faq.html#q31">1. Why does X-Chat leak so much memory?</a>
 <br><br>
 <a href="faq.html#q32">2. My copy of X-Chat crashes, what can I do?</a>
-</blockquote>
+</p>
 
-<br><br><br><br>
+<br><br>
 
-<h3>1. Section One: Compiling and Installing.</h3>
-<b><a name="q11">1. I get this error: /bin/sh: no: command not found</a></b>
+<h2>1. Section One: Compiling and Installing.</h2>
+
+<br><h3><a name="q11">1. I get this error: /bin/sh: no: command not found</a></h3>
+<p>
+If you get an error something like:
+</p>
+<blockquote><pre>
+Making all in po
+make[2]: Entering directory `/home/zed/xchat/files/xchat-1.8.7/po'
+file=./`echo ca | sed 's,.*/,,'`.gmo \
+  && rm -f $file && PATH=../src:$PATH no -o $file ca.po
+/bin/sh: no: command not found
+make[2]: *** [ca.gmo] Error 127
+make[2]: Leaving directory `/home/zed/xchat/files/xchat-1.8.7/po'
+make[1]: *** [all-recursive] Error 1
+make[1]: Leaving directory `/home/zed/xchat/files/xchat-1.8.7'
+make: *** [all-recursive-am] Error 2
+</pre></blockquote>
+<p>
+It means you don't have GNU gettext installed. There are two solutions:
+</p>
+<ul>
+<li>Install GNU gettext and try again.</li>
+<li>Use <i>./configure --disable-nls</i>. This will disable foreign
+language support and all menus and GUI will be in english only.</li>
+</ul>
+
+<br><h3><a name="q12">2. Why doesn't ./configure find GTK+ on my FreeBSD system?</a></h3>
+<p>
+FreeBSD usually comes with glib12-config and gtk12-config, so you'll need
+to set the GLIB_CONFIG and GTK_CONFIG environment variables, e.g:
+</p>
 <pre>
-   If you get an error something like:
-
-   Making all in po
-   make[2]: Entering directory `/home/zed/xchat/files/xchat-1.8.7/po'
-   file=./`echo ca | sed 's,.*/,,'`.gmo \
-     && rm -f $file && PATH=../src:$PATH no -o $file ca.po
-   /bin/sh: no: command not found
-   make[2]: *** [ca.gmo] Error 127
-   make[2]: Leaving directory `/home/zed/xchat/files/xchat-1.8.7/po'
-   make[1]: *** [all-recursive] Error 1
-   make[1]: Leaving directory `/home/zed/xchat/files/xchat-1.8.7'
-   make: *** [all-recursive-am] Error 2
-
-   It means you don't have GNU gettext installed. There are two solutions:
-
-       a) Install GNU gettext and try again.
-
-       b) Use <i>./configure --disable-nls</i>. This will disable foreign
-          language support and all menus and GUI will be in english only.
-
-</pre>
-
-<b><a name="q12">2. Why doesn't ./configure find GTK+ on my FreeBSD system?</a></b>
-<pre>
-   FreeBSD usually comes with glib12-config and gtk12-config, so you'll need
-   to set the GLIB_CONFIG and GTK_CONFIG environment variables, e.g:
-
        setenv GLIB_CONFIG /usr/local/bin/glib12-config
        setenv GTK_CONFIG /usr/X11R6/bin/gtk12-config
        rm config.cache
        ./configure
+</pre>
 
-   Or if you are using a bash shell:
-
+<p>Or if you are using a bash shell:</p>
+<pre>
        export GLIB_CONFIG=/usr/local/bin/glib12-config
        export GTK_CONFIG=/usr/X11R6/bin/gtk12-config
        rm config.cache
        ./configure
-
 </pre>
 
-<b><a name="q13">3. How do I compile X-Chat on my Sun OS system?</a></b>
-<pre>
+<br><h3><a name="q13">3. How do I compile X-Chat on my Sun OS system?</a></h3>
+<p>
    X-Chat uses GNU gettext which in turn requires gmake, either install that
    and or use ./configure --disable-nls with Sun's own make.
+</p>
 
-</pre>
+<br><h2>2. Section Two: Using X-Chat.</h2>
 
-<h3>2. Section Two: Using X-Chat.</h3>
-<b><a name="q21">1. How do I enable identd in X-Chat?</a></b>
-<pre>
-   <u>UNIX:</u>
+<br><h3><a name="q21">1. How do I enable identd in X-Chat?</a></h3>
+<p>
+<u>UNIX:</u><br>
     Identd isn't actually apart of X-Chat. You will need to download and install 
     your own ident server. Most distributions, including RedHat, come with an 
     ident server program called pidentd. Make sure it is enabled in
@@ -126,99 +135,109 @@ body {
 
     As an alternative, you can try this experimental identd server: <a href="auth/index.html">xchat_auth</a>
 
-   <u>WINDOWS:</u>
+<br><br><u>WINDOWS:</u><br>
     The win32 version of X-Chat comes with a builtin identd server. It is
     enabled by default, but can be disabled with <i>/set identd 0</i>.
+</p>
 
-</pre>
-
-<b><a name="q22">2. How do I auto join more than one channel with keys?</a></b>
-<pre>
+<br><h3><a name="q22">2. How do I auto join more than one channel with keys?</a></h3>
+<p>
    In the Serverlist's channel column enter multiple channels and separate 
    them by commas, eg:  "#linux,#warez,#chat". Do not put spaces between the
    channels. If the channels also have keys (passwords), then the syntax is:
    "#channel1,#channel2,#channel3 key1,key2,key3"
+</p>
+<p>
+   Example: If you want to join #abc and #talk without keys, but #linux with
+   a key of "secret", you would enter: "#linux,#abc,#talk secret".
+</p>
 
-</pre>
+<br><h3><a name="q23">3. How do I autoconnect and join a channel when X-Chat loads?</a></h3>
+<p>
+In the Serverlist's Edit Window, check the checkbox "Autoconnect"
+of the entries you want to auto-connect/join. When you restart xchat
+it should automatically connect to these servers, and join the channels.
+</p>
 
-<b><a name="q23">3. How do I autoconnect and join a channel when X-Chat loads?</a></b>
-<pre>
-   In the Serverlist's Edit Window, check the checkbox "Autoconnect"
-   of the entries you want to auto-connect/join. When you restart xchat
-   it should automatically connect to these servers, and join the channels.
-
-</pre>
-
-<b><a name="q24">4. How do I cut and paste in X-Chat?</a></b>
-<pre>
+<br><h3><a name="q24">4. How do I cut and paste in X-Chat?</a></h3>
+<p>
    It's exactly the same as any other X application. You simply mark the text
    you want, and then press middle mouse button to paste (if you only have a
    2 button mouse, press left and right buttons at once).
+</p>
 
-</pre>
-
-<b><a name="q25">5. How do I connect through a proxy?</a></b>
-<pre>
-   Go to the menus, Settings -> Setup -> Proxy Server and fill in the requested
+<br><h3><a name="q25">5. How do I connect through a proxy?</a></h3>
+<p>
+   Go to the menus, Settings -> Preferences -> Network Setup and fill in the requested
    information there. There is currently no support for using a username and
-   password to authenticate to socks proxies. Version 1.8.10 and above supports
-   authenticating to HTTPD proxies.
+   password to authenticate to proxies.
+</p>
 
-</pre>
-
-<b><a name="q26">6. Why does X-Chat open a listen port?</a></b>
-<pre>
+<br><h3><a name="q26">6. Why does X-Chat open a listen port?</a></h3>
+<p>
    Normally, X-Chat will not open a listen port, unless you are offering
    a file by DCC. If you compiled X-Chat with the --enable-panel option,
    ORBit (a library that is apart of Gnome) will open a port. X-Chat cannot
    prevent this. If it really bothers you, compile X-Chat with --disable-panel.
+</p>
 
-</pre>
-
-<b><a name="q27">7. Why is the "Tint Transparency" option shaded out?</a></b>
-<pre>
+<br><h3><a name="q27">7. Why is the "Tint Transparency" option shaded out?</a></h3>
+<p>
    It means you've compiled without gdk-pixbuf available. The configure script
    looks for gdk-pixbuf-config to find out if you have it installed. On a
    redhat or mandrake system you should have something like:
+</p>
 
-      $ rpm -qa | grep gdk-pix
-      gdk-pixbuf-0.11.0
-      gdk-pixbuf-devel-0.11.0
+<blockquote><pre>
+$ rpm -qa | grep gdk-pix
+gdk-pixbuf-0.11.0
+gdk-pixbuf-devel-0.11.0
+</pre></blockquote>
 
+<p>
    The "devel" package is also necessary! You should be able to find these
    packages on your Linux CDROM or local GNOME ftp site. Once you install
    gdk-pixbuf, try recompiling xchat.
+</p>
 
-</pre>
-
-<b><a name="q28">8. How do I set different ban types?</a></b>
-<pre>
+<br><h3><a name="q28">8. How do I set different ban types?</a></h3>
+<p>
    Three ways:
-
+</p>
+<ul>
+<li>
       Right click the nickname in the userlist, and choose a bantype from the
-      "Kick/Ban" submenu. This menu is only available by default in version
-      1.6.x or above. You can also do it manually:
+      "Kick/Ban" submenu.
+</li>
+<li>
+		You can also do it manually:
 
          /ban &lt;nick> &lt;bantype>
 
       where the &lt;bantype> is a number from 0 to 3.
+</li>
 
+<li>
          Version: 1.8 or earlier:
            /set ban_type &lt;bantype>
-         Version: 1.9 or 2.0:
+</li>
+<li>
+         Version: 2.0:
            /set irc_ban_type &lt;bantype>
-
       sets the default ban type to use for all bans. The different types are:
 
-        0 *!*@*.host
-        1 *!*@domain
-        2 *!*user@*.host
-        3 *!*user@domain
+<ul>
+<li>0 *!*@*.host</li>
+<li>1 *!*@domain</li>
+<li>2 *!*user@*.host</li>
+<li>3 *!*user@domain</li>
+</ul>
 
-</pre>
+</li>
+</ul>
 
-<b><a name="q29">9. Why can't I see accented-letters/umlauts/upper-ascii-chars in X-Chat?</a></b>
-<pre>
+<br><h3><a name="q29">9. Why can't I see accented-letters/umlauts/upper-ascii-chars in X-Chat?</a></h3>
+<p>
 Version 1.8:
    Firstly, you should disable fontsets. The setting is in Settings ->
    Setup -> Channel Windows -> Use a FontSet. There is no reason to have
@@ -226,81 +245,95 @@ Version 1.8:
    require a restart for this setting to take affect.
    If that doesn't fix the problem, try using a different font, some
    fonts simply don't have the characters you want.
+</p>
 
-Version 1.9/2.0:
+<p>
+
+Version 2.0:
    Refer to <a href="http://xchat.org/encoding.html">http://xchat.org/encoding.html</a>.
-
    Note: Log files are written in UTF-8/Unicode.
+</p>
 
-</pre>
-
-<b><a name="q210">10. Why does the timestamp overlap some nicknames?</a></b>
-<pre>
+<br><h3><a name="q210">10. Why does the timestamp overlap some nicknames?</a></h3>
+<p>
    Some networks allow very long nicknames (up to 32 letters). It can be annoying to have
    the separator bar move too far to the right, just for one long nick. Therefore, it has
    a set limit for the distance it will move to the right. If you use a large font, you
    may need to adjust this distance. It is set in pixels, for example:
-
+</p>
+<blockquote><pre>
       /set max_auto_indent 320
+</pre></blockquote>
 
+<p>
    Once you adjust this setting high enough, overlapping timestamps and nicknames should
    not occur. The adjustment will not take effect immediately, a restart may be needed.
+</p>
 
-</pre>
-
-<b><a name="q211">11. How do I turn on Conference mode where I will not see join or part messages?</a></b>
-<pre>
-   <u>Version 1.8</u>:
-
+<br><h3><a name="q211">11. How do I turn on Conference mode where I will not see join or part messages?</a></h3>
+<p>
+<u>Version 1.8</u>:<br>
    At the bottom right of the X-Chat screen there is a "&lt;" button.
    Click that then also click the "Conf" button that will pop up.
+</p>
 
-   <u>Version 1.9/2.0</u>:
+<p>
+<u>Version 2.0.1+</u>:<br>
+   Right-click on the tab you want to change. In the submenu of the channel
+   name, there's a toggle-item "Show join/part messages", simply turn this off.
+</p>
 
-   At the bottom right of the X-Chat screen, click the little up-arrow
-   button. A menu will appear, with a "Channel settings" submenu. In this
-   menu you may turn ON/OFF "Hide join/parts".
+<br><h3><a name="q212">12. How can I run the /dccserver command?</a></h3>
+<p>
+In short you can not do this (easily). This is a mIRC only propriotory feature
+that is quite nonstandard. There is no code for doing this, mainly because
+/dccserver runs on port 59 which in turn would require running X-Chat as
+root. Why do you need this anyway? Just use normal DCC.
+</p>
 
-</pre>
+<br><h3><a name="q213">13. Why doesn't DCC send work behind IPNat or IPMasq?</a></h3>
+<p>
+   If you are behind a IP-NAT or IP-Masqeraude system, you will most likely have
+   an address like 192.168.0.0. This address is not useable on the internet, and
+   must be translated.
+</p><p>
+   When offering a DCC file, xchat will tell the receiver your address. If it says
+   192.168.0.0, the receiver will not be able to connect. One way to make it send
+   your "real" address is to enable the "Get my IP from IRC Server" option in xchat.
+   In version 2.0, it's available in Prefereces -> File Transfers. When you turn
+   this option ON, you will have to relogin to the server before it'll take effect.
+</p>
 
-<b><a name="q212">12. How can I run the /dccserver command?</a></b>
-<pre>
-   In short you can not do this (easily). This is a mIRC only propriotory feature
-   that is quite nonstandard. There is no code for doing this, mainly because
-   /dccserver runs on port 59 which in turn would require running X-Chat as
-   root. Why do you need this anyway? Just use normal DCC.
-
-</pre>
-<b><a name="q213">13. How do I execute multiple commands in one line?</a></b>
-<pre>
+<br><h3><a name="q214">14. How do I execute multiple commands in one line?</a></h3>
+<p>
    There are two ways to do this:
-
-   1) You can create two UserCommands, with the same name, and then execute
+</p>
+<ul>
+<li>You can create two UserCommands, with the same name, and then execute
       the UserCommand. It will be executed in the same order as it's written
-      in the UserCommands gui.
+      in the UserCommands gui.</li>
+<li>/LOAD -e &lt;textfile>, where &lt;textfile> is a full pathname to a file
+      containing commands on each line.</li>
+</ul>
 
-   2) /LOAD -e &lt;textfile>, where &lt;textfile> is a full pathname to a file
-      containing commands on each line.
+<br><h2>3. Section Three: Crashes, Bugs and other problems.</h2>
 
-</pre>
-<h3>3. Section Three: Crashes, Bugs and other problems.</h3>
-<b><a name="q31">1. Why does X-Chat leak so much memory?</a></b>
-<pre>
-   The simple answer is, it doesn't! There are some GTK+ pixmap based themes around that
-   leak alot of memory. Please try using a different theme and see if that resolves the
-   problem. X-Chat itself only allocates about 40kb of memory through malloc()!
+<br><h3><a name="q31">1. Why does X-Chat leak so much memory?</a></h3>
+<p>
+The simple answer is, it doesn't! There are some GTK+ pixmap based themes around that
+leak alot of memory. Please try using a different theme and see if that resolves the
+problem. X-Chat itself only allocates about 40kb of memory through malloc()!
+</p>
 
-</pre>
-
-<b><a name="q32">2. My copy of X-Chat crashes, what can I do?</a></b>
-<pre>
+<br><h3><a name="q32">2. My copy of X-Chat crashes, what can I do?</a></h3>
+<p>
    Firstly, make sure it's the latest stable version of X-Chat. Stable versions have
-   an EVEN middle number, e.g.: 1.8.10 or 1.8.11. Often late fixes are placed in this
-   directory: <a href="http://xchat.org/files/source/1.8/patches/">1.8.x patches</a>
-
+   an EVEN middle number, e.g.: 2.0.1 or 2.0.2. Often late fixes are placed in this
+   directory: <a href="http://xchat.org/files/source/2.0/patches/">2.0.x patches</a>
+</p><p>
    If you still experience crashes, you should consider running it through GDB. This
    will help us find a fix quickly, and it's easy to do! See <a href="gdb.html">here</a>.
-</pre>
+</p>
 
 </body>
 </html>
