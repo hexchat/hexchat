@@ -22,10 +22,6 @@
 #include <sys/stat.h>
 #include <unistd.h>
 #include <string.h>
-#include "../../config.h"
-#ifdef HAVE_STRINGS_H
-#include <strings.h>
-#endif
 #include <fcntl.h>
 #include <ctype.h>
 

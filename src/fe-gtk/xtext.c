@@ -33,12 +33,6 @@
 #define REFRESH_TIMEOUT 20
 #define WORDWRAP_LIMIT 24
 
-#ifdef XCHAT
-#include "../../config.h"			/* can define USE_XLIB here */
-#else
-#define USE_XLIB
-#endif
-
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
@@ -49,6 +43,12 @@
 #include <gtk/gtkselection.h>
 #include <gtk/gtkclipboard.h>
 #include <gtk/gtkversion.h>
+
+#ifdef XCHAT
+#include "../../config.h"			/* can define USE_XLIB here */
+#else
+#define USE_XLIB
+#endif
 
 #ifdef USE_XLIB
 #include <gdk/gdkx.h>
