@@ -103,6 +103,7 @@ userlist_add_hostname (struct session *sess, char *nick, char *hostname,
 							  char *realname, char *servername)
 {
 	struct User *user;
+	int pos;
 
 	user = find_name (sess, nick);
 	if (user && !user->hostname)
@@ -112,8 +113,11 @@ userlist_add_hostname (struct session *sess, char *nick, char *hostname,
 			user->realname = strdup (realname);
 		if (!user->servername)
 			user->servername = strdup (servername);
-	/*	if (prefs.showhostname_in_userlist)
-			update_entry (sess, user);*/
+		if (prefs.showhostname_in_userlist)
+		{
+			tree_remove (sess->usertree, user, &pos);
+			fe_userlist_move (sess, user, tree_insert (sess->usertree, user));
+		}
 		return 1;
 	}
 	return 0;
