@@ -2273,7 +2273,7 @@ perl_init (void)
 "  Xchat::print( @_ );\n"
 "};\n"
 "\n"
-"sub load {\n"
+"sub Embed::load {\n"
 "  my $file = shift @_;\n"
 "\n"
 "  if( open FH, $file ) {\n"
@@ -2358,7 +2358,7 @@ perl_load_file (char *script_name)
 	if (my_perl == NULL)
 		perl_init ();
 
-	return execute_perl (newSVpvn ("load", 11), script_name);
+	return execute_perl (newSVpvn ("Embed::load", 11), script_name);
 }
 
 /* checks for "~" in a file and expands */
