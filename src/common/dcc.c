@@ -1567,7 +1567,7 @@ handle_dcc (struct session *sess, char *nick, char *word[],
 		if (port == 0)
 			pasvid = atoi (word[10]);
 
-		if (!addr || !size || (port < 1024 && port != 0)
+		if (!addr || !size /*|| (port < 1024 && port != 0)*/
 			|| port > 0xffff || (port == 0 && pasvid == 0))
 		{
 			dcc_malformed (sess, nick, word_eol[4] + 2);

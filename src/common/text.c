@@ -190,6 +190,7 @@ text_word_check (char *word)
 {
 	session *sess = current_sess;
 	char *at, *dot;
+	int i, dots;
 	int len = strlen (word);
 
 	if(q3link(word))
@@ -243,6 +244,21 @@ text_word_check (char *word)
 				return WORD_EMAIL;
 		}
 	}
+ 
+	/* check if it's an IP number */
+	dots = 0;
+	for (i = 0; i < len; i++)
+	{
+		if (word[i] == '.')
+			dots++;
+		else if (!isdigit (word[i]))
+		{
+			dots = 0;
+			break;
+		}
+	}
+	if (dots == 3)
+		return WORD_HOST;
 
 	if (!strncasecmp (word + len - 5, ".html", 5))
 		return WORD_HOST;

@@ -408,6 +408,7 @@ fe_set_topic (session *sess, char *topic)
 }
 
 #ifdef WIN32
+#define WINVER 0x0501	/* needed for vc6? */
 #include <windows.h>
 #include <gdk/gdkwin32.h>
 
