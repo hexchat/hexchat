@@ -900,7 +900,7 @@ mg_color_insert (GtkWidget *item, gpointer userdata)
 {
 	char buf[32];
 
-	sprintf (buf, "%%C%d", GPOINTER_TO_INT (userdata));
+	sprintf (buf, "%%C%02d", GPOINTER_TO_INT (userdata));
 	key_action_insert (current_sess->gui->input_box, 0, buf, 0, 0);
 }
 

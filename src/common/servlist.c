@@ -442,6 +442,7 @@ static const struct defaultserver def[] =
 	{0,			"irc.subcult.ch"},
 	{0,			"irc.phuncrew.ch"},
 	{0,			"irc.mgz.ch"},
+	{0,			"irc.nazgul.ch/6666"},
 
 	{"TNI3",			0},
 	{0,			"irc.tni3.com"},
