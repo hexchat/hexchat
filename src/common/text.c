@@ -615,6 +615,11 @@ char *pntevts[NUM_XP];
 
 #define pevt_generic_none_help NULL
 
+static char *pevt_genmsg_help[] = {
+	N_("Left message "),
+	N_("Right message"),
+};
+
 static char *pevt_join_help[] = {
 	N_("The nick of the joining person"),
 	N_("The channel being joined"),

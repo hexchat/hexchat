@@ -197,7 +197,7 @@ N_("-%C10-%C11-%O$tDisconnected ($1).")},
 {"Found IP", pevt_foundip_help, 1, 0,
 N_("-%C10-%C11-%O$tFound your IP: [$1]")},
 
-{"Generic Message", pevt_generic_none_help, 2, 0,
+{"Generic Message", pevt_genmsg_help, 2, 0,
 N_("$1$t$2")},
 
 {"Ignore Add", pevt_ignoreaddremove_help, 1, 0,
