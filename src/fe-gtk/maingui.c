@@ -1509,15 +1509,12 @@ mg_create_textarea (session_gui *gui, GtkWidget *box)
 
 	hbox = gtk_vbox_new (FALSE, 1);
 	gtk_container_add (GTK_CONTAINER (box), hbox);
-//	gtk_container_set_border_width (GTK_CONTAINER (hbox), 0);
 
 	inbox = gtk_hbox_new (FALSE, 1);
 	gtk_container_add (GTK_CONTAINER (hbox), inbox);
-//	gtk_container_set_border_width (GTK_CONTAINER (inbox), 1);
 
 	frame = gtk_frame_new (NULL);
 	gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_IN);
-//	gtk_container_set_border_width (GTK_CONTAINER (frame), 1);
 	gtk_container_add (GTK_CONTAINER (inbox), frame);
 
 	gui->xtext = gtk_xtext_new (colors, TRUE);
@@ -1646,7 +1643,7 @@ mg_create_center (session *sess, session_gui *gui, GtkWidget *box)
 		mg_create_entry (sess, vbox);
 
 		hbox = gtk_hbox_new (FALSE, 1);
-		gtk_paned_pack2 (GTK_PANED (paned), hbox, FALSE, FALSE);
+		gtk_paned_pack2 (GTK_PANED (paned), hbox, FALSE, TRUE);
 
 		mg_create_userlist (gui, hbox, FALSE);
 
