@@ -86,10 +86,15 @@ ctcp_handle (session *sess, char *to, char *nick,
 	server *serv = sess->server;
 	char outbuf[1024];
 
+	/* consider DCC to be different from other CTCPs */
 	if (!strncasecmp (msg, "DCC", 3))
 	{
-		if (!ignore_check (word[1], IG_DCC))
-			handle_dcc (sess, nick, word, word_eol);
+		/* but still let CTCP replies override it */
+		if (!ctcp_check (sess, outbuf, nick, word, word_eol, word[4] + 2))
+		{
+			if (!ignore_check (word[1], IG_DCC))
+				handle_dcc (sess, nick, word, word_eol);
+		}
 		return;
 	}
 
