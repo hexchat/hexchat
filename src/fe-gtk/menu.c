@@ -107,6 +107,16 @@ goto_url (char *url)
 #else
 	char tbuf[512], *moz;
 
+	/* gnome 2.4+ has this */
+	moz = g_find_program_in_path ("gnome-open");
+	if (moz)
+	{
+		snprintf (tbuf, sizeof (tbuf), "%s %s", moz, url);
+		g_free (moz);
+		xchat_exec (tbuf);
+		return;
+	}
+
 	moz = g_find_program_in_path ("gnome-moz-remote");
 	if (moz)
 	{

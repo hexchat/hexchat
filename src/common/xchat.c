@@ -714,6 +714,11 @@ find_away_message (struct server *serv, char *nick)
 	"NAME Connect as IRC server\n"		"CMD newserver %s\n\n"
 #else
 #define defaultconf_urlhandlers \
+	"NAME SUB\n"								"CMD Epiphany...\n\n"\
+		"NAME Open\n"							"CMD !epiphany '%s'\n\n"\
+		"NAME Open in new tab\n"			"CMD !epiphany -n '%s'\n\n"\
+		"NAME Open in new window\n"		"CMD !epiphany -w '%s'\n\n"\
+	"NAME ENDSUB\n"							"CMD \n\n"\
 	"NAME SUB\n"								"CMD Netscape...\n\n"\
 		"NAME Open in existing\n"			"CMD !netscape -remote 'openURL(%s)'\n\n"\
 		"NAME Open in new window\n"		"CMD !netscape -remote 'openURL(%s,new-window)'\n\n"\

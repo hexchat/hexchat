@@ -40,6 +40,9 @@
 #include <gtk/gtktreeselection.h>
 #include <gtk/gtkcellrenderertext.h>
 #include <gtk/gtkhscale.h>
+#ifdef WIN32
+#include <windows.h>
+#endif
 
 
 GtkStyle *create_input_style (void);
@@ -56,6 +59,7 @@ enum
 	ST_ENTRY,
 	ST_EFONT,
 	ST_EFILE,
+	ST_EOPEN,
 	ST_MENU,
 	ST_RADIO,
 	ST_NUMBER,
@@ -169,8 +173,8 @@ static const setting tabs_settings[] =
 
 static const setting filexfer_settings[] =
 {
-	{ST_ENTRY,	N_("Download files to:"), P_OFFSETNL(dccdir), 0, 0, sizeof prefs.dccdir},
-	{ST_ENTRY,	N_("Move completed files to:"), P_OFFSETNL(dcc_completed_dir), 0, 0, sizeof prefs.dcc_completed_dir},
+	{ST_EOPEN,	N_("Download files to:"), P_OFFSETNL(dccdir), 0, 0, sizeof prefs.dccdir},
+	{ST_EOPEN,	N_("Move completed files to:"), P_OFFSETNL(dcc_completed_dir), 0, 0, sizeof prefs.dcc_completed_dir},
 	{ST_ENTRY,	N_("DCC IP address:"), P_OFFSETNL(dcc_ip_str),
 					N_("Claim you are at this address when offering files."), 0, sizeof prefs.dcc_ip_str},
 	{ST_NUMBER,	N_("First DCC send port:"), P_OFFINTNL(first_dcc_send_port), 0, 0, 65535},
@@ -497,6 +501,26 @@ setup_fontsel_cancel (GtkWidget *button, GtkFontSelectionDialog *dialog)
 	gtk_widget_destroy (GTK_WIDGET (dialog));
 }
 
+#ifdef WIN32
+static void
+setup_browse_folder (char *dir)
+{
+	dir = g_locale_from_utf8 (dir, -1, 0, 0, 0);
+	if (dir)
+	{
+		ShellExecute (0, "open", dir, NULL, NULL, SW_SHOWNORMAL);
+		g_free (dir);
+	}
+}
+
+static void
+setup_browsefolder_cb (GtkWidget *button, GtkWidget *entry)
+{
+	if (GTK_ENTRY (entry)->text[0])
+		setup_browse_folder (GTK_ENTRY (entry)->text);
+}
+#endif
+
 static void
 setup_browsefont_cb (GtkWidget *button, GtkWidget *entry)
 {
@@ -582,6 +606,11 @@ setup_create_entry (GtkWidget *table, int row, const setting *set)
 		if (set->type == ST_EFONT)
 			g_signal_connect (G_OBJECT (bwid), "clicked",
 									G_CALLBACK (setup_browsefont_cb), wid);
+#ifdef WIN32
+		if (set->type == ST_EOPEN)
+			g_signal_connect (G_OBJECT (bwid), "clicked",
+									G_CALLBACK (setup_browsefolder_cb), wid);
+#endif
 	}
 }
 
@@ -617,6 +646,14 @@ setup_create_frame (char *label, GtkWidget **left, GtkWidget **right, GtkWidget 
 	return tab;
 }
 
+#ifdef WIN32
+static void
+open_data_cb (GtkWidget *button, gpointer data)
+{
+	ShellExecute (0, "open", get_xdir_fs (), NULL, NULL, SW_SHOWNORMAL);
+}
+#endif
+
 static GtkWidget *
 setup_create_page (const setting *set)
 {
@@ -639,6 +676,7 @@ setup_create_page (const setting *set)
 		case ST_EFONT:
 		case ST_ENTRY:
 		case ST_EFILE:
+		case ST_EOPEN:
 			setup_create_entry (tab, row, &set[i]);
 			break;
 		case ST_TOGGLE:
@@ -668,6 +706,12 @@ setup_create_page (const setting *set)
 		i++;
 		row++;
 	}
+
+#ifdef WIN32
+	if (set == logging_settings)
+
+		gtkutil_button (left, GTK_STOCK_OPEN, 0, open_data_cb, 0, "Open Data Folder");
+#endif
 
 	return box;
 }

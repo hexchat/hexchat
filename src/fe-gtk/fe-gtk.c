@@ -164,6 +164,25 @@ fe_args (int argc, char *argv[])
 		}
 	}
 
+#ifdef WIN32
+	/* this is mainly for irc:// URL handling. When windows calls us from */
+	/* I.E, it doesn't give an option of "Start in" directory, like short */
+	/* cuts can. So we have to set the current dir manually, to the path  */
+	/* of the exe. */
+	{
+		char *tmp = strdup (argv[0]);
+		char *sl;
+
+		sl = strrchr (tmp, '\\');
+		if (sl)
+		{
+			*sl = 0;
+			chdir (tmp);
+		}
+		free (tmp);
+	}
+#endif
+
 	if (argc > 2 + offset)
 	{
 		if (!strcasecmp (argv[1+offset], "-d") || !strcasecmp (argv[1+offset], "--cfgdir"))
