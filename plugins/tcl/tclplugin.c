@@ -2030,7 +2030,7 @@ int xchat_plugin_init(xchat_plugin * plugin_handle, char **plugin_name, char **p
 
     if (initialized != 0) {
         banner();
-        xchat_print(ph, "Tcl plugin already loaded.");
+        xchat_print(ph, "Tcl plugin already loaded");
         reinit_tried++;
         return 0;
     }
@@ -2051,7 +2051,7 @@ int xchat_plugin_init(xchat_plugin * plugin_handle, char **plugin_name, char **p
     Null_Command_hook = xchat_hook_command(ph, "", XCHAT_PRI_NORM, Null_Command_Alias, "", 0);
 
     banner();
-    xchat_print(ph, "Tcl interface loaded.\n");
+    xchat_print(ph, "Tcl interface loaded\n");
 
     return 1;                   /* return 1 for success */
 }
@@ -2073,7 +2073,7 @@ int xchat_plugin_deinit()
 
     Tcl_Plugin_DeInit();
 
-    xchat_print(ph, "Tcl interface unloaded.\n");
+    xchat_print(ph, "Tcl interface unloaded\n");
     initialized = 0;
 
     return 1;
