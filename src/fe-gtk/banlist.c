@@ -71,14 +71,13 @@ fe_add_ban_list (struct session *sess, char *mask, char *who, char *when, int is
 	GtkListStore *store;
 	GtkTreeIter iter;
 
-	store = get_store (sess);
-	gtk_list_store_append (store, &iter);
-
-	if (!is_exempt)
+	if (is_exempt)
 	{
-		gtk_list_store_set (store, &iter, 0, mask, 1, who, 2, when, -1);
 	} else
 	{
+		store = get_store (sess);
+		gtk_list_store_append (store, &iter);
+		gtk_list_store_set (store, &iter, 0, mask, 1, who, 2, when, -1);
 	}
 }
 

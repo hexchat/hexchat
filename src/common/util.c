@@ -1109,7 +1109,7 @@ country_search (char *pattern, void *ud, void (*print)(void *, char *, ...))
 	for (i = 0; i < sizeof (domain) / sizeof (domain_t); i++)
 	{
 		dom = &domain[i];
-		if (match (pattern, dom->country))
+		if (match (pattern, dom->country) || match (pattern, _(dom->country)))
 		{
 			print (ud, "%s = %s\n", dom->code, _(dom->country));
 		}
