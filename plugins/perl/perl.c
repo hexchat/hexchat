@@ -1823,6 +1823,16 @@ perl_command_load (char *word[], char *word_eol[], void *userdata)
 }
 
 
+void xchat_plugin_get_info(char **name, char **desc, char **version, void **reserved)
+{
+   *name = "Perl";
+   *desc = "Perl scripting interface";
+   *version = VERSION;
+   if (reserved)
+      *reserved = NULL;
+}
+
+
 /* Reinit safeguard */
 
 static int initialized = 0;
@@ -1843,9 +1853,7 @@ xchat_plugin_init (xchat_plugin *plugin_handle,
 	}
 	initialized = 1;
 
-	*plugin_name = "Perl";
-	*plugin_version = VERSION;
-	*plugin_desc = "Perl scripting interface";
+	xchat_plugin_get_info (plugin_name, plugin_desc, plugin_version, NULL);
 
 	xchat_hook_command (ph, "load", XCHAT_PRI_NORM, perl_command_load, 0, 0);
 	xchat_hook_command (ph, "unload", XCHAT_PRI_NORM, perl_command_unload, 0,
