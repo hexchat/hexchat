@@ -288,6 +288,9 @@ banlist_opengui (struct session *sess)
 		return;
 	}
 
+	if (sess->type != SESS_CHANNEL)
+		return;
+
 	snprintf (tbuf, sizeof tbuf, _("X-Chat: Ban List (%s)"),
 					sess->server->servername);
 

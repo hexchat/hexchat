@@ -626,7 +626,7 @@ dcc_read_chat (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 					dead = dcc_chat_line (dcc, dcc->dccchat->linebuf, tbuf);
 				}
 
-				if (dead) /* the dcc has been closed, don't use (DCC *)! */
+				if (dead || !dcc->dccchat) /* the dcc has been closed, don't use (DCC *)! */
 					return TRUE;
 
 				dcc->pos += dcc->dccchat->pos;
