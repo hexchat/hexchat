@@ -744,7 +744,8 @@ setup_create_color_button (GtkWidget *table, int num, int row, int col)
 	else
 		sprintf (buf, "%d", num);
 	but = gtk_button_new_with_label (buf);
-	g_object_set_data (G_OBJECT (but), "xchat-color", 0);
+	/* win32 build uses this to turn off themeing */
+	g_object_set_data (G_OBJECT (but), "xchat-color", (gpointer)1);
 	gtk_table_attach (GTK_TABLE (table), but, col, col+1, row, row+1,
 							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
 	g_signal_connect (G_OBJECT (but), "clicked",

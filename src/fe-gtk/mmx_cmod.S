@@ -522,7 +522,7 @@ HAVE_MMX:
 	popl	%ebx
 	ret
 
-#ifdef __GNUC__
+#if defined(__GNUC__) && !defined(_WIN32)
 .section .note.GNU-stack, "", @progbits
 .previous
 #endif

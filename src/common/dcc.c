@@ -1749,7 +1749,7 @@ handle_dcc (struct session *sess, char *nick, char *word[],
 				} else
 				{
 dontresume:
-					dcc->resume_error = 3;
+					/*dcc->resume_error = 3;*/
 					dcc->resumable = 0;
 					dcc->pos = 0;
 					dcc_connect (dcc);
