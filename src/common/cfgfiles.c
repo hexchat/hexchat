@@ -578,7 +578,7 @@ load_config (void)
 	strcpy (prefs.username, username);
 #ifdef WIN32
 	strcpy (prefs.sounddir, "./sound");
-	if (strcmp (get_xdir (), "./config") == 0)
+	if (strcmp (get_xdir (), "./config") != 0)
 		sprintf (prefs.dccdir, "%s\\download", get_xdir ());
 	else
 		strcpy (prefs.dccdir, "./download");
