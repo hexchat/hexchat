@@ -1,5 +1,5 @@
 /* X-Chat
- * Copyright (C) 2004 Peter Zelezny.
+ * Copyright (C) 2004-2005 Peter Zelezny.
  */
 
 #include <stdio.h>
@@ -85,7 +85,7 @@ typedef struct
 	char *label;
 	int offset;
 	char *tooltip;
-	char **list;
+	char const *const *list;
 	int extra;
 } setting;
 
@@ -135,7 +135,7 @@ static const setting inputbox_settings[] =
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
-static char *lagmenutext[] = 
+static const char *const lagmenutext[] = 
 {
 	N_("Off"),
 	N_("Graph"),
@@ -144,7 +144,7 @@ static char *lagmenutext[] =
 	NULL
 };
 
-static char *ulmenutext[] = 
+static const char *const ulmenutext[] = 
 {
 	N_("A-Z, Ops first"),
 	N_("A-Z"),
@@ -177,14 +177,14 @@ static const setting userlist_settings[] =
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
-static char *tabwin[] =
+static const char *const tabwin[] =
 {
 	N_("Windows"),
 	N_("Tabs"),
 	NULL
 };
 
-static char *tabpos[] =
+static const char *const tabpos[] =
 {
 	N_("Bottom"),
 	N_("Top"),
@@ -194,7 +194,7 @@ static char *tabpos[] =
 	NULL
 };
 
-static char *focusnewtabsmenu[] =
+static const char *const focusnewtabsmenu[] =
 {
 	N_("Never"),
 	N_("Always"),
@@ -210,7 +210,7 @@ static const setting tabs_settings[] =
 	{ST_TOGGLE, N_("Small tabs"), P_OFFINTNL(tab_small), 0, 0, 0},
 	{ST_TOGGLE, N_("Sort tabs in alphabetical order"), P_OFFINTNL(tab_sort), 0, 0, 0},
 	{ST_MENU,	N_("Focus new tabs:"), P_OFFINTNL(newtabstofront), 0, focusnewtabsmenu, 0},
-	{ST_NUMBER,	N_("Shorten tab labels to:"), P_OFFINTNL(truncchans), 0, (char **)N_("letters."), 99},
+	{ST_NUMBER,	N_("Shorten tab labels to:"), P_OFFINTNL(truncchans), 0, (const char **)N_("letters."), 99},
 
 	{ST_HEADER,	N_("Tabs Location"),0,0,0},
 	{ST_MENU,	N_("Show tabs at:"), P_OFFINTNL(tabs_position), 0, tabpos, 0},
@@ -236,7 +236,7 @@ static const setting filexfer_settings[] =
 					N_("Claim you are at this address when offering files."), 0, sizeof prefs.dcc_ip_str},
 	{ST_NUMBER,	N_("First DCC send port:"), P_OFFINTNL(first_dcc_send_port), 0, 0, 65535},
 	{ST_NUMBER,	N_("Last DCC send port:"), P_OFFINTNL(last_dcc_send_port), 0, 
-		(char **)N_("(Leave ports at zero for full range)."), 65535},
+		(const char **)N_("(Leave ports at zero for full range)."), 65535},
 	{ST_TOGGLE, N_("Get my address from the IRC server"), P_OFFINTNL(ip_from_server),
 					N_("Asks the IRC server for your real address. Use this if you have a 192.168.*.* address!"), 0, 0},
 
@@ -317,7 +317,7 @@ static const setting logging_settings[] =
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
-static char *proxytypes[] =
+static const char *const proxytypes[] =
 {
 	N_("(Disabled)"),
 	N_("Wingate"),
@@ -613,7 +613,7 @@ setup_create_menu (GtkWidget *table, int row, const setting *set)
 {
 	GtkWidget *wid, *menu, *item;
 	int i;
-	char **text = set->list;
+	const char **text = (const char **)set->list;
 
 	wid = gtk_label_new (_(set->label));
 	gtk_misc_set_alignment (GTK_MISC (wid), 0.0, 0.5);
@@ -1437,7 +1437,7 @@ setup_add_page (const char *title, GtkWidget *book, GtkWidget *tab)
 	gtk_notebook_append_page (GTK_NOTEBOOK (book), oframe, NULL);
 }
 
-static const char *cata[] =
+static const char *const cata[] =
 {
 	N_("Interface"),
 		N_("Text box"),

@@ -1130,33 +1130,33 @@ xchat_list_next (xchat_plugin *ph, xchat_list *xlist)
 	return 1;
 }
 
-const char **
+const char * const *
 xchat_list_fields (xchat_plugin *ph, const char *name)
 {
-	static const char *dcc_fields[] =
+	static const char * const dcc_fields[] =
 	{
 		"iaddress32","icps",		"sdestfile","sfile",		"snick",	"iport",
 		"ipos",		"iresume",	"isize",		"istatus", 	"itype",		NULL
 	};
-	static const char *channels_fields[] =
+	static const char * const channels_fields[] =
 	{
 		"schannel",	"schantypes", "pcontext", "iflags", "iid", "imaxmodes",
 		"snetwork", "snickmodes", "snickprefixes", "sserver", "itype", "iusers",
 		NULL
 	};
-	static const char *ignore_fields[] =
+	static const char * const ignore_fields[] =
 	{
 		"iflags", "smask", NULL
 	};
-	static const char *notify_fields[] =
+	static const char * const notify_fields[] =
 	{
 		"iflags", "snick", "toff", "ton", "tseen", NULL
 	};
-	static const char *users_fields[] =
+	static const char * const users_fields[] =
 	{
 		"iaway", "shost", "tlasttalk", "snick", "sprefix", NULL
 	};
-	static const char *list_of_lists[] =
+	static const char * const list_of_lists[] =
 	{
 		"channels",	"dcc", "ignore", "notify", "users", NULL
 	};

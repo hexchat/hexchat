@@ -96,7 +96,7 @@ struct _xchat_plugin
 		const char *name);
 	void (*xchat_list_free) (xchat_plugin *ph,
 		 xchat_list *xlist);
-	const char ** (*xchat_list_fields) (xchat_plugin *ph,
+	const char * const * (*xchat_list_fields) (xchat_plugin *ph,
 		   const char *name);
 	int (*xchat_list_next) (xchat_plugin *ph,
 		 xchat_list *xlist);
@@ -231,7 +231,7 @@ void
 xchat_list_free (xchat_plugin *ph,
 		 xchat_list *xlist);
 
-const char **
+const char * const *
 xchat_list_fields (xchat_plugin *ph,
 		   const char *name);
 

@@ -14,7 +14,7 @@
 struct text_event
 {
 	char *name;
-	char **help;
+	char * const *help;
 	int num_args;
 	char *def;
 };
