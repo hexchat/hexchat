@@ -12,11 +12,8 @@ License: GPL
 URL: http://xchat.org
 Source: http://xchat.org/files/source/2.4/xchat-%{version}.tar.bz2
 Buildroot: %{_tmppath}/%{name}-%{version}-root
-Requires: gtk2
-Requires: openssl
-BuildRequires: gettext
-BuildRequires: openssl-devel
-BuildRequires: gtk2-devel
+Requires: gtk2 openssl
+BuildRequires: gettext openssl-devel gtk2-devel
 
 %description
 A GUI IRC client with DCC file transfers, C plugin interface, Perl
@@ -27,7 +24,8 @@ tabbed channels and more.
 Summary: XChat Perl plugin
 Group: Applications/Internet
 Requires: xchat >= 2.0.9
-Requires: perl
+# Ensure that a compatible libperl is installed
+Requires: perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 %description perl
 Provides Perl scripting capability to XChat.
 

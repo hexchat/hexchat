@@ -581,6 +581,7 @@ load_config (void)
 	memset (&prefs, 0, sizeof (struct xchatprefs));
 
 	/* put in default values, anything left out is automatically zero */
+	prefs.local_ip = 0xffffffff;
 	prefs.completion_amount = 5;
 	prefs.away_timeout = 60;
 	prefs.away_size_max = 300;

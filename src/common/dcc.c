@@ -1079,7 +1079,7 @@ dcc_listen_init (struct DCC *dcc, session *sess)
 	SAddr.sin_family = AF_INET;
 
 	/*if local_ip is specified use that*/
-	if (prefs.local_ip != 0)
+	if (prefs.local_ip != 0xffffffff)
 	{
 		my_addr = prefs.local_ip;
 		SAddr.sin_addr.s_addr = prefs.local_ip;

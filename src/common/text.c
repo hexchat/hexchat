@@ -1557,7 +1557,9 @@ text_emit (int index, session *sess, char *a, char *b, char *c, char *d)
 
 	sound_play_event (index);
 
-	display_event (pntevts[index], sess, te[index].num_args, word);
+	/* If a plugin's callback executes "/close", 'sess' may be invalid */
+	if (is_session (sess))
+		display_event (pntevts[index], sess, te[index].num_args, word);
 }
 
 int
