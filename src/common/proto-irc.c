@@ -443,7 +443,7 @@ process_numeric (session * sess, int n,
 
 	case 321:
 		if (!fe_is_chanwindow (sess->server))
-			EMIT_SIGNAL (XP_TE_CHANLISTHEAD, sess, NULL, NULL, NULL, NULL, 0);
+			EMIT_SIGNAL (XP_TE_CHANLISTHEAD, serv->server_session, NULL, NULL, NULL, NULL, 0);
 		break;
 
 	case 322:
@@ -452,14 +452,14 @@ process_numeric (session * sess, int n,
 			fe_add_chan_list (sess->server, word[4], word[5], word_eol[6] + 1);
 		} else
 		{
-			PrintTextf (sess, "%-16s %-7d %s\017\n",
+			PrintTextf (serv->server_session, "%-16s %-7d %s\017\n",
 							word[4], atoi (word[5]), word_eol[6] + 1);
 		}
 		break;
 
 	case 323:
 		if (!fe_is_chanwindow (sess->server))
-			EMIT_SIGNAL (XP_TE_SERVTEXT, sess, text, word[1], NULL, NULL, 0);
+			EMIT_SIGNAL (XP_TE_SERVTEXT, serv->server_session, text, word[1], NULL, NULL, 0);
 		else
 			fe_chan_list_end (sess->server);
 		break;

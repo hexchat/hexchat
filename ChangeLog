@@ -6,18 +6,24 @@
  2.0.10
 ----------------------------------------------------------------------
 
- - Updated translations (ru).
+ - Updated translations (ru, sr).
  - Fixed compiling on systems other than linux/freebsd [969643].
    (Samuel Mimram).
  - Fixed compiling with an old version of GTK (2.0.x).
  - Further BiDi fixes in xtext (Ilya Konstantinov).
- - Brand-new tab completion code (Ian Kumlien).
- - Plugin commands can now be tab-completed too (Frank Thieme).
+ - Brand-new tab completion code (Ian Kumlien). This also fixes:
+   Tab expansion not working behind umlauts [956127].
+   Plugin commands can now be tab-completed too (Frank Thieme).
  - Fixed parsing URIs on userlist drag-n-drop (Jonas Heylen).
  - Added Sort button to the server list window (David Oftedal and
    Tim-Philipp Mueller).
- - Tab button selection fix [] (Guillaume Knispel).
+ - Tab button selection fix (Guillaume Knispel).
  - Added marker-line feature (Thomas Kockerbauer).
+ - The "Get my IP from Server" feature now works on networks that
+   hide your hostname too (by using the USERHOST command).
+ - Win32: Fixed CPS calculation for file transfers [824934].
+ - Fixed: Ping timeout when the system clock changes [789140].
+ - 
  - 
  - 
 

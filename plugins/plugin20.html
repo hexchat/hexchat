@@ -38,7 +38,7 @@ margin-right: 32px;
 <h1>XChat 2.0 Plugin Interface</h1>
 
 <small>
-<font size="-12">plugin20.html revision 1.02</font>
+<font size="-12">plugin20.html revision 1.03</font>
 <br>Latest version of this document is available at: <a href="http://xchat.org/docs/plugin20.html">http://xchat.org/docs/plugin20.html</a></small>
 
 <h2>Information:</h2>
@@ -99,9 +99,14 @@ all your global variables and functions <i>static</i>, so that a symbol
 is not exported. There is no harm in exporting these symbols, but they
 are not necessary and only pollute the name-space. Plugins are compiled as shared objects
 (.so files), for example:
-<pre>
+<br><br>
+Most UNIX systems:<pre>
 	gcc -Wl,--export-dynamic -Wall -O1 -shared -fPIC myplugin.c -o myplugin.so
 </pre>
+MacOSX:<pre>
+	gcc -no-cpp-precomp -g -O2 -Wall -bundle -flat_namespace -undefined suppress -o myplugin.so myplugin.c
+</pre>
+
 See the <a href="#win32">Windows section</a> on how to compile a plugin
 using visual studio.
 <p>
@@ -517,7 +522,8 @@ xchat_hook_command(ph, "STOP", XCHAT_PRI_NORM, stop_cb, NULL, NULL);
 <h3><a class="cmd" name="xchat_unhook">&nbsp;xchat_unhook()&nbsp;</a></h3>
 <b>Prototype:</b> void *xchat_unhook(xchat_plugin *ph, xchat_hook *hook);
 <br>
-<br><b>Description:</b> Unhooks any hook registered with xchat_hook_print/server/timer/command.
+<br><b>Description:</b> Unhooks any hook registered with xchat_hook_print/server/timer/command. When plugins are unloaded, all of its hooks are automatically
+removed, so you don't need to call this within your xchat_plugin_deinit() function.
 <br>
 <br><b>Arguments:</b>
 <blockquote><b>ph:</b> Plugin handle (as given to xchat_plugin_init).
