@@ -375,7 +375,7 @@ backend_draw_text (GtkXText *xtext, int dofill, GdkGC *gc, int x, int y,
 		draw_func (xtext->xftdraw, xtext->xft_fg, xtext->font, x + 1, y, str, len);
 }
 
-static void
+/*static void
 backend_set_clip (GtkXText *xtext, GdkRectangle *area)
 {
 	gdk_gc_set_clip_rectangle (xtext->fgc, area);
@@ -387,7 +387,7 @@ backend_clear_clip (GtkXText *xtext)
 {
 	gdk_gc_set_clip_rectangle (xtext->fgc, NULL);
 	gdk_gc_set_clip_rectangle (xtext->bgc, NULL);
-}
+}*/
 
 /*static void
 backend_set_clip (GtkXText *xtext, GdkRectangle *area)
@@ -558,7 +558,7 @@ backend_draw_text (GtkXText *xtext, int dofill, GdkGC *gc, int x, int y,
 													 0, 0);
 }
 
-static void
+/*static void
 backend_set_clip (GtkXText *xtext, GdkRectangle *area)
 {
 	gdk_gc_set_clip_rectangle (xtext->fgc, area);
@@ -570,7 +570,7 @@ backend_clear_clip (GtkXText *xtext)
 {
 	gdk_gc_set_clip_rectangle (xtext->fgc, NULL);
 	gdk_gc_set_clip_rectangle (xtext->bgc, NULL);
-}
+}*/
 
 #endif /* !USE_PANGO */
 
@@ -631,6 +631,8 @@ gtk_xtext_init (GtkXText * xtext)
 	xtext->jump_in_offset = 0;
 	xtext->ts_x = 0;
 	xtext->ts_y = 0;
+	xtext->clip_x2 = 1000000;
+	xtext->clip_y2 = 1000000;
 	xtext->error_function = NULL;
 	xtext->urlcheck_function = NULL;
 	xtext->color_paste = FALSE;
@@ -1236,7 +1238,13 @@ gtk_xtext_paint (GtkWidget *widget, GdkRectangle *area)
 	if (!ent_end)
 		ent_end = xtext->buffer->text_last;
 
-	backend_set_clip (xtext, area);
+	/* can't set a clip here, because fgc/bgc are used to draw the DB too */
+/*	backend_set_clip (xtext, area);*/
+	xtext->clip_x = area->x;
+	xtext->clip_x2 = area->x + area->width;
+	xtext->clip_y = area->y;
+	xtext->clip_y2 = area->y + area->height;
+
 	/* y is the last pixel y location it rendered text at */
 	y = gtk_xtext_render_ents (xtext, ent_start, ent_end);
 
@@ -1255,7 +1263,11 @@ gtk_xtext_paint (GtkWidget *widget, GdkRectangle *area)
 			xtext_draw_bg (xtext, rect.x, rect.y, rect.width, rect.height);
 	}
 
-	backend_clear_clip (xtext);
+	/*backend_clear_clip (xtext);*/
+	xtext->clip_x = 0;
+	xtext->clip_x2 = 1000000;
+	xtext->clip_y = 0;
+	xtext->clip_y2 = 1000000;
 
 xit:
 	x = xtext->buffer->indent - ((xtext->space_width + 1) / 2);
@@ -2446,6 +2458,12 @@ gtk_xtext_render_flush (GtkXText * xtext, int x, int y, unsigned char *str,
 	if (xtext->dont_render2)
 		return str_width;
 
+	/* roll-your-own clipping (avoiding XftDrawString is always good!) */
+	if (x > xtext->clip_x2 || x + str_width < xtext->clip_x)
+		return str_width;
+	if (y - xtext->font->ascent > xtext->clip_y2 || (y + xtext->fontsize) - xtext->font->ascent < xtext->clip_y)
+		return str_width;
+
 	if (xtext->render_hilights_only)
 	{
 		if (!xtext->in_hilight)	/* is it a hilight prefix? */
@@ -2500,7 +2518,7 @@ gtk_xtext_render_flush (GtkXText * xtext, int x, int y, unsigned char *str,
 #ifdef USE_XFT
 		XftDrawChange (xtext->xftdraw, GDK_WINDOW_XWINDOW (xtext->draw_buf));
 #endif
-		gdk_draw_drawable (xtext->draw_buf, xtext->fgc, pix, 0, 0, dest_x,
+		gdk_draw_drawable (xtext->draw_buf, xtext->bgc, pix, 0, 0, dest_x,
 								 dest_y, str_width, xtext->fontsize);
 		g_object_unref (pix);
 	}

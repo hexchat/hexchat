@@ -197,6 +197,9 @@ N_("-%C10-%C11-%O$tDisconnected ($1).")},
 {"Found IP", pevt_foundip_help, 1, 0,
 N_("-%C10-%C11-%O$tFound your IP: [$1]")},
 
+{"Generic Message", pevt_generic_none_help, 2, 0,
+N_("$1$t$2")},
+
 {"Ignore Add", pevt_ignoreaddremove_help, 1, 0,
 N_("%O%C11$1%O added to ignore list.")},
 
@@ -354,12 +357,12 @@ N_("-%C10-%C11-%O$t%C12[%O$1%C12]%C $2")},
 N_("-%C10-%C11-%O$t%C12[%O$1%C12] %CEnd of WHOIS list.")},
 
 {"WhoIs Identified", pevt_whoisid_help, 2, 0,
-N_("-%C10-%C11-%O$t%C12[%O$1%C12] %C$2")},
+N_("-%C10-%C11-%O$t%C12[%O$1%C12] %O$2")},
 
-{"WhoIs Authenticated", pevt_whoisauth_help, 3, 0,
+{"WhoIs Authenticated", pevt_whoisid_help, 3, 0,
 N_("-%C10-%C11-%O$t%C12[%O$1%C12] %O$2 %C11$3%O")},
 
-{"WhoIs Real Host", pevt_whoisrealhost_help, 4, 0,
+{"WhoIs Real Host", pevt_whoisid_help, 4, 0,
 N_("-%C10-%C11-%O$t%C12[%O$1%C12] %Oreal user@host %C11$2%O, real IP %C11$3%O")},
 
 {"WhoIs Idle Line", pevt_whois4_help, 2, 0,

@@ -142,12 +142,6 @@ static const struct defaultserver def[] =
 	{0,			"nc.d-t-net.de"},
 	{0,			"wakka.d-t-net.de"},
 
-	{"DwarfStarNet",	0},/*undersized*/
-	{0,			"IRC.dwarfstar.net"},
-	{0,			"US.dwarfstar.net"},
-	{0,			"EU.dwarfstar.net"},
-	{0,			"AU.dwarfstar.net"},
-
 	{"EFnet",	0},
 	{0,			"irc.Prison.NET"},
 	{0,			"irc.Qeast.net"},

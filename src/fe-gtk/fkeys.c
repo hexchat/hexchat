@@ -57,9 +57,12 @@
 #include "fkeys.h"
 
 
+static void tab_comp_chan (session *sess, GtkWidget * t);
+static void tab_comp_cmd (session *sess, GtkWidget * t);
 static int tab_nick_comp (session *sess, GtkWidget * t, int shift);
 static void nick_comp_chng (session *sess, GtkWidget * t, int updown);
 static void replace_handle (GtkWidget * wid);
+static gint alpha_string_compare (gconstpointer, gconstpointer);
 
 
 /***************** Key Binding Code ******************/
@@ -1306,15 +1309,54 @@ static int
 key_action_tab_comp (GtkWidget * wid, GdkEventKey * ent, char *d1, char *d2,
 							struct session *sess)
 {
-	if (d1 && d1[0])
+	const char *text;
+	int chan_start, cursor_pos;
+
+	/* obtain the entered text and cursor position */
+	text = gtk_entry_get_text (GTK_ENTRY (wid));
+	cursor_pos = gtk_editable_get_position (GTK_EDITABLE (wid));
+
+	/* if no text has been entered, do nothing */
+	if (cursor_pos == 0)
+		return 1;
+
+	/* search backwards to find the /, #, space or start */
+	for (chan_start = cursor_pos; chan_start >= 0; --chan_start)
 	{
-		if (tab_nick_comp (sess, wid, 1) == -1)
-			return 1;
-	} else
-	{
-		if (tab_nick_comp (sess, wid, 0) == -1)
-			return 1;
+		/* check if we can match a channel */
+		if (text[chan_start] == '#')
+		{
+			if (chan_start == 0 || text[chan_start - 1] == ' ')
+			{
+				tab_comp_chan (sess, wid);
+				return 2;
+			}
+		}
+
+		/* check if we can match a command */
+		else if (chan_start == 0 && text[0] == '/')
+		{
+			tab_comp_cmd (sess, wid);
+			return 2;
+		}
+
+		/* check if we can match a nick */
+		else if (chan_start == 0 || text[chan_start] == ' ')
+		{
+			if (d1 && d1[0])
+			{
+				if (tab_nick_comp (sess, wid, 1) == -1)
+					return 1;
+			}
+
+			else
+			{
+				if (tab_nick_comp (sess, wid, 0) == -1)
+					return 1;
+			}
+		}
 	}
+
 	return 2;
 }
 
@@ -1678,6 +1720,173 @@ tab_comp_cmd (session *sess, GtkWidget * t)
 	gtk_editable_set_position (GTK_EDITABLE (t), -1);
 }
 
+/* handles tab completion for channel names */
+static void
+tab_comp_chan (session *sess, GtkWidget * t)
+{
+	char buf[2048], choices[2048], lchan[2048];
+	char *chan, *last = NULL, *postfix = NULL;
+	char exact_match = 0;
+	const char *text;
+	int chan_start, choices_pos = 0, len, num_matches = 0, prefix_len, slen;
+	gint cursor_pos;
+	GSList *list, *sorted_chanlist = NULL;
+	session *tmp_sess;
+
+	/* obtain the entered text and cursor position */
+	text = gtk_entry_get_text (GTK_ENTRY (t));
+	if (text[0] == 0)
+		return;
+
+	cursor_pos = gtk_editable_get_position (GTK_EDITABLE (t));
+
+	/* store the text following the cursor for reinsertion later */
+	if (cursor_pos < strlen(text))
+		postfix = (char *)&text[cursor_pos];
+
+	/* search backwards to find the # (we are guaranteed to find it */
+	for (chan_start = cursor_pos; ; --chan_start)
+	{
+		if (text[chan_start] == '#')
+		{
+			if (chan_start == 0 || text[chan_start - 1] == ' ')
+				break;
+		}
+	}
+
+	/* store the amount of text preceding the cursor for reinsertion later */
+	prefix_len = chan_start;
+
+	/* form an alphabetically sorted list of the channel names */
+	for (list = sess_list; list; list = list->next)
+	{
+		tmp_sess = list->data;
+
+		if (tmp_sess->type == SESS_CHANNEL)
+		{
+			if (tmp_sess->channel[0] != '\0' && g_slist_find_custom (sorted_chanlist, tmp_sess->channel, alpha_string_compare) == NULL)
+				sorted_chanlist = g_slist_insert_sorted (sorted_chanlist, tmp_sess->channel, alpha_string_compare);
+		}
+	}
+
+	/* completing "#" displays the first channel */
+	list = sorted_chanlist;
+
+	if (chan_start == cursor_pos - 1)
+	{
+		/* if we are in no channels do nothing */
+		if (!list)
+			return;
+
+		else
+			safe_strcpy (lchan, list->data, sizeof (lchan));
+	}
+
+	else
+	{
+		/* find candidates for partial channel name completion */
+		len = cursor_pos - chan_start;
+
+		while (list)
+		{
+			/* quick check on string lengths to eliminate short channel names */
+			chan = (char *)list->data;
+			slen = strlen (chan);
+
+			if (len > slen)
+			{
+				list = list->next;
+				continue;
+			}
+
+			/* check if the entered text matches the channel name so far */
+			if (strncasecmp (chan, (char *)&text[chan_start], len) == 0)
+			{
+				++ num_matches;
+
+				/* if the channel matches exactly, and we've not found another
+				   matching channel, remember it */
+				if (exact_match == 0 && len == slen )
+					exact_match = 1;
+
+				/* if we had an exact matching channel, but have now found a
+				   longer matching one, forget the exact match */
+				else if (exact_match == 1 && len < slen)
+					exact_match = 2;
+
+				/* add the channel name to our list of potential matches */
+				if (choices_pos + strlen (chan) + 1 >= sizeof (choices))
+				{
+					PrintText (sess, choices);
+					choices_pos = 0;
+				}
+
+				snprintf (&choices[choices_pos], sizeof (choices) - choices_pos, "%s ", chan);
+				choices_pos += strlen (chan) + 1;
+
+				/* store the most matching amount of the channel name so far */
+				if (last == NULL)
+					safe_strcpy (lchan, chan, sizeof (lchan));
+
+				last = chan;
+				tab_comp_find_common (lchan, last);
+			}
+
+			list = list->next;
+		}
+
+		/* do nothing if no matches were found */
+
+		if (num_matches == 0)
+		{
+			if (sorted_chanlist)
+				g_slist_free (sorted_chanlist);
+
+			return;
+		}
+
+		/* on tabbing an already complete channel, cycle to the next */
+		if (exact_match)
+		{
+			GSList *this_chan = g_slist_find_custom (sorted_chanlist, lchan, alpha_string_compare);
+
+			if (g_slist_next (this_chan) || exact_match == 2)
+				this_chan = g_slist_next (this_chan);
+
+			else
+				this_chan = sorted_chanlist;
+
+			safe_strcpy (lchan, this_chan->data, sizeof (lchan));
+		}
+
+		/* display the potential channel names if appropriate */
+		if (num_matches > 1 && exact_match != 2)
+			PrintText (sess, choices);
+	}
+
+	/* build the completed channel name with preceding and succeeding text */
+	safe_strcpy (buf, text, sizeof (buf));
+
+	if (postfix == NULL)
+		snprintf (&buf[prefix_len], sizeof (buf) - prefix_len - 1, "%s", lchan);
+	else
+		snprintf (&buf[prefix_len], sizeof (buf) - prefix_len - strlen (postfix) - 1, "%s%s", lchan, postfix);
+
+	/* update the text entry widget */
+	gtk_entry_set_text (GTK_ENTRY (t), buf);
+	gtk_editable_set_position (GTK_EDITABLE (t), prefix_len + strlen (lchan));
+
+	/* free the list we allocated */
+	g_slist_free (sorted_chanlist);
+}
+
+/* a sort comparison function for alphabetical ordering */
+
+static gint alpha_string_compare (gconstpointer str1, gconstpointer str2)
+{
+	return (strcmp (str1, str2));
+}
+
 /* In the following 'b4' is *before* the text (just say b4 and before out loud)
    and c5 is *after* (because c5 is next after b4, get it??) --AGL */
 
@@ -1756,18 +1965,7 @@ tab_nick_comp (session *sess, GtkWidget *t, int shift)
 	GSList *head = NULL, *list, *match_list = NULL, *first_match = NULL;
 	int ret = 0;	/* return value */
 
-	if (sess->type == SESS_DIALOG)
-		return 0;
-
 	origtext = gtk_entry_get_text (GTK_ENTRY (t));
-	if (origtext[0] == '/')
-	{
-		if (!strchr (origtext, ' '))
-		{
-			tab_comp_cmd (sess, t);
-			return 0;
-		}
-	}
 
 	/* make a copy, since we use this buffer */
 	text = strdup (origtext);
@@ -1853,20 +2051,31 @@ tab_nick_comp (session *sess, GtkWidget *t, int shift)
 	len = strlen (text);
 	head = list = userlist_flat_list (sess);
 
-	/* make a list of matches */
-	while (list)
+	if (sess->type == SESS_DIALOG)
 	{
-		user = (struct User *) list->data;
-		slen = strlen (user->nick);
-		if (len > slen)
-		{
-			list = list->next;
-			continue;
-		}
-		if (rfc_ncasecmp (user->nick, text, len) == 0)
-			match_list = g_slist_prepend (match_list, user->nick);
-		list = list->next;
+		/* tab in a dialog completes the other person's name */
+		if (rfc_ncasecmp (sess->channel, text, len) == 0)
+			match_list = g_slist_prepend (match_list, sess->channel);
 	}
+
+	else
+	{
+		/* make a list of matches */
+		while (list)
+		{
+			user = (struct User *) list->data;
+			slen = strlen (user->nick);
+			if (len > slen)
+			{
+				list = list->next;
+				continue;
+			}
+			if (rfc_ncasecmp (user->nick, text, len) == 0)
+				match_list = g_slist_prepend (match_list, user->nick);
+			list = list->next;
+		}
+	}
+
 	match_list = g_slist_reverse (match_list); /* faster then _append */
 	match_count = g_slist_length (match_list);
 

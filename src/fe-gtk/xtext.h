@@ -146,6 +146,12 @@ struct _GtkXText
 	int ts_x;			/* ts origin for ->bgc GC */
 	int ts_y;
 
+	int clip_x;			/* clipping (x directions) */
+	int clip_x2;		/* from x to x2 */
+
+	int clip_y;			/* clipping (y directions) */
+	int clip_y2;		/* from y to y2 */
+
 	unsigned int auto_indent:1;
 	unsigned int moving_separator:1;
 	unsigned int word_or_line_select:1;
