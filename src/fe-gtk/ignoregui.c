@@ -247,23 +247,6 @@ ignore_delete_entry_clicked (GtkWidget * wid, struct session *sess)
 }
 
 static void
-ignore_delete_all_clicked (GtkWidget * wid, struct session *sess)
-{
-	GtkTreeView *view = g_object_get_data (G_OBJECT (ignorewin), "view");
-	GtkListStore *store = GTK_LIST_STORE (gtk_tree_view_get_model (view));
-	GtkTreeIter iter;
-	char *mask = NULL;
-
-	while (gtk_tree_model_get_iter_first (GTK_TREE_MODEL(store), &iter))
-	{
-		gtk_tree_model_get (GTK_TREE_MODEL(store), &iter, MASK_COLUMN, &mask,-1);
-		gtk_list_store_remove (GTK_LIST_STORE(store), &iter);
-		ignore_del (mask, NULL);
-		g_free (mask);
-	}
-}
-
-static void
 ignore_store_new (int cancel, char *mask, gpointer data)
 {
 	GtkTreeView *view = g_object_get_data (G_OBJECT (ignorewin), "view");
@@ -292,6 +275,30 @@ ignore_store_new (int cancel, char *mask, gpointer data)
 	gtk_tree_view_scroll_to_cell (view, path, NULL, TRUE, 1.0, 0.0);
 	gtk_tree_view_set_cursor (view, path, NULL, FALSE);
 	gtk_tree_path_free (path);
+}
+
+static void
+ignore_clear_entry_clicked (GtkWidget * wid, gpointer unused)
+{
+	GtkListStore *store = GTK_LIST_STORE (get_store ());
+	GtkTreeIter iter;
+	char *mask;
+
+	if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (store), &iter))
+	{
+		/* remove from ignore_list */
+		do
+		{
+			mask = NULL;
+			gtk_tree_model_get (GTK_TREE_MODEL (store), &iter, MASK_COLUMN, &mask, -1);
+			ignore_del (mask, NULL);
+			g_free (mask);
+		}
+		while (gtk_tree_model_iter_next (GTK_TREE_MODEL (store), &iter));
+
+		/* remove from GUI */
+		gtk_list_store_clear (store);
+	}
 }
 
 static void
@@ -374,11 +381,11 @@ ignore_gui_open ()
 	gtk_widget_show (box);
 
 	gtkutil_button (box, GTK_STOCK_NEW, 0, ignore_new_entry_clicked, 0,
-						 _("New"));
+						 _("Add"));
 	gtkutil_button (box, GTK_STOCK_CLOSE, 0, ignore_delete_entry_clicked,
 						 0, _("Delete"));
-	gtkutil_button (box, GTK_STOCK_CLEAR, 0, ignore_delete_all_clicked,
-						 0, _("Delete All"));
+	gtkutil_button (box, GTK_STOCK_CLOSE, 0, ignore_clear_entry_clicked,
+						 0, _("Clear"));
 
 	store = GTK_LIST_STORE (gtk_tree_view_get_model (GTK_TREE_VIEW (view)));
 

@@ -45,8 +45,8 @@ static const struct defaultserver def[] =
 {
 	{"2600net",	0},
 	{0,			"irc.2600.net"},
-	{0,			"irc.dc2600.com"},
-	{0,			"irc.nyc2600.com"},
+	{0,			"ptolomea.2600.net"},
+	{0,			"collective.2600.net"},
 
 	{"AbleNET",	0},
 	{0,			"california.ablenet.org"},
