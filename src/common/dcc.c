@@ -37,6 +37,10 @@
 #define WANTARPA
 #include "inet.h"
 
+#ifdef WIN32
+#include <windows.h>
+#endif
+
 #include "xchat.h"
 #include "util.h"
 #include "fe.h"
@@ -100,21 +104,6 @@ dcc_unthrottle (struct DCC *dcc)
 		dcc_send_data (NULL, 0, dcc);
 }
 
-#ifdef WIN32
-#include <windows.h>
-
-/* g_get_current_time is giving bad CPS results, let's try this instead */
-static void
-g_get_current_time_win32 (GTimeVal *tv)
-{
-	SYSTEMTIME current;
-
-	GetLocalTime (&current);
-	tv->tv_sec = current.wSecond;
-	tv->tv_usec = current.wMilliseconds * 1000;
-}
-#endif
-
 static void
 dcc_calc_cps (struct DCC *dcc)
 {
@@ -125,11 +114,7 @@ dcc_calc_cps (struct DCC *dcc)
 	int *cpssum, glob_limit;
 	unsigned int pos, posdiff;
 
-#ifdef WIN32
-	g_get_current_time_win32 (&now);
-#else
 	g_get_current_time (&now);
-#endif
 
 	/* the pos we use for sends is an average
 		between pos and ack */
@@ -149,7 +134,7 @@ dcc_calc_cps (struct DCC *dcc)
 		glob_limit = prefs.dcc_global_max_get_cps;
 	}
 
-	if (!dcc->firstcpstv.tv_sec)
+	if (!dcc->firstcpstv.tv_sec && !dcc->firstcpstv.tv_usec)
 		dcc->firstcpstv = now;
 	else
 	{
