@@ -396,10 +396,6 @@ typedef struct server
 	int pos;								/* current position in linebuf */
 	int nickcount;
 
-	char *username;
-	char *realname;
-	char *networkname;
-
 	char *chantypes;					/* for 005 numeric - free me */
 	char *chanmodes;					/* for 005 numeric - free me */
 	char *nick_prefixes;				/* e.g. "*@%+" */
@@ -407,8 +403,7 @@ typedef struct server
 	char *bad_nick_prefixes;		/* for ircd that doesn't give the modes */
 	int modes_per_line;				/* 6 on undernet, 4 on efnet etc... */
 
-	char *eom_cmd;						/* end-of-motd command, free it! */
-	void *network;						/* for servlistgui.c */
+	void *network;						/* points to entry in servlist.c or NULL! */
 
 	GSList *outbound_queue;
 	time_t next_send;						/* cptr->since in ircu */

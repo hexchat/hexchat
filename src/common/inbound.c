@@ -37,6 +37,7 @@
 #include "outbound.h"
 #include "inbound.h"
 #include "server.h"
+#include "servlist.h"
 #include "text.h"
 #include "ctcp.h"
 #include "plugin.h"
@@ -699,11 +700,12 @@ set_server_name (struct server *serv, char *name)
 			fe_set_title (sess);
 		list = list->next;
 	}
+
 	if (serv->server_session->type == SESS_SERVER)
 	{
-		if (serv->networkname)
+		if (serv->network)
 		{
-			safe_strcpy (serv->server_session->channel, serv->networkname, CHANLEN);
+			safe_strcpy (serv->server_session->channel, ((ircnet *)serv->network)->name, CHANLEN);
 		} else
 		{
 			safe_strcpy (serv->server_session->channel, name, CHANLEN);
@@ -1189,9 +1191,18 @@ inbound_login_end (session *sess, char *text)
 		}
 		set_default_modes (serv);
 
-		/* there may be more than 1, separated by \n */
-		if (serv->eom_cmd)
-			token_foreach (serv->eom_cmd, '\n', inbound_exec_eom_cmd, sess);
+		if (serv->network)
+		{
+			/* there may be more than 1, separated by \n */
+			if (((ircnet *)serv->network)->command)
+				token_foreach (((ircnet *)serv->network)->command, '\n',
+									inbound_exec_eom_cmd, sess);
+
+			/* send nickserv password */
+			if (((ircnet *)serv->network)->nickserv)
+				tcp_sendf (serv, "PRIVMSG NickServ :identify %s\r\n",
+							  ((ircnet *)serv->network)->nickserv);
+		}
 
 		check_willjoin_channels (serv);
 		if (serv->supports_watch)

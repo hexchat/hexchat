@@ -422,6 +422,15 @@ new_ircwindow (server *serv, char *name, int type, int focus)
 	return sess;
 }
 
+char *
+get_network (session *sess)
+{
+	if (sess->server->network)
+		return ((ircnet *)sess->server->network)->name;
+
+	return sess->server->servername;
+}
+
 static void
 free_away_messages (server *serv)
 {
@@ -488,14 +497,6 @@ kill_server_callback (server * serv)
 		free (serv->bad_nick_prefixes);
 	if (serv->last_away_reason)
 		free (serv->last_away_reason);
-	if (serv->eom_cmd)
-		free (serv->eom_cmd);
-	if (serv->username)
-		free (serv->username);
-	if (serv->realname)
-		free (serv->realname);
-	if (serv->networkname)
-		free (serv->networkname);
 	if (serv->encoding)
 		free (serv->encoding);
 

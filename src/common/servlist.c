@@ -516,17 +516,6 @@ servlist_connect (session *sess, ircnet *net)
 	if (net->pass)
 		safe_strcpy (serv->password, net->pass, sizeof (serv->password));
 
-	if (serv->username)
-	{
-		free (serv->username);
-		serv->username = NULL;
-	}
-	if (serv->realname)
-	{
-		free (serv->realname);
-		serv->realname = NULL;
-	}
-
 	if (net->flags & FLAG_USE_GLOBAL)
 	{
 		strcpy (serv->nick, prefs.nick1);
@@ -534,10 +523,6 @@ servlist_connect (session *sess, ircnet *net)
 	{
 		if (net->nick)
 			strcpy (serv->nick, net->nick);
-		if (net->user)
-			serv->username = strdup (net->user);
-		if (net->real)
-			serv->realname = strdup (net->real);
 	}
 
 	serv->dont_use_proxy = (net->flags & FLAG_USE_PROXY) ? FALSE : TRUE;
@@ -548,13 +533,7 @@ servlist_connect (session *sess, ircnet *net)
 		(net->flags & FLAG_ALLOW_INVALID) ? TRUE : FALSE;
 #endif
 
-	if (net->flags & FLAG_CYCLE)
-		/* needed later to do cycling */
-		serv->network = net;
-	else
-		serv->network = NULL;
-
-	serv->networkname = strdup (net->name);
+	serv->network = net;
 
 	port = strrchr (ircserv->hostname, '/');
 	if (port)
@@ -576,13 +555,6 @@ servlist_connect (session *sess, ircnet *net)
 		*port = '/';
 	} else
 		serv->connect (serv, ircserv->hostname, 6667, FALSE);
-
-	if (net->command)
-	{
-		if (serv->eom_cmd)
-			free (serv->eom_cmd);
-		serv->eom_cmd = strdup (net->command);
-	}
 
 	if (serv->encoding)
 	{

@@ -523,7 +523,6 @@ tab_add_sorted (GtkWidget *group, GtkWidget *box, GtkWidget *tab)
 {
 	GList *list;
 	GtkBoxChild *child;
-	char *name;
 	int i = 0;
 	int (*cmp) (void *a, void *b);
 	void *b;
@@ -550,7 +549,6 @@ tab_add_sorted (GtkWidget *group, GtkWidget *box, GtkWidget *tab)
 		child = list->data;
 		if (!GTK_IS_SEPARATOR (child->widget))
 		{
-			char *label_text = GTK_BUTTON (child->widget)->label_text;
 			void *a = g_object_get_data (G_OBJECT (child->widget), "u");
 
 			if (cmp (a, b) > 0)

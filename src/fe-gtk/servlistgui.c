@@ -181,12 +181,6 @@ servlist_networks_populate (GtkWidget *treeview, GSList *netlist)
 }
 
 static void
-servlist_menu_destroy (GtkMenuShell *menushell, GtkWidget *menu)
-{
-	gtk_widget_destroy (menu);
-}
-
-static void
 servlist_server_row_cb (GtkTreeSelection *sel, gpointer user_data)
 {
 	GtkTreeModel *model;
@@ -352,18 +346,6 @@ servlist_sort (GtkWidget *button, gpointer none)
 	servlist_networks_populate (networks_tree, network_list);
 }
 
-static void
-servlist_movedownnet_cb (GtkWidget *item, ircnet *net)
-{
-	servlist_move_network (net, +1);
-}
-
-static void
-servlist_moveupnet_cb (GtkWidget *item, ircnet *net)
-{
-	servlist_move_network (net, -1);
-}
-
 static gboolean
 servlist_has_selection (GtkTreeView *tree)
 {
@@ -501,84 +483,6 @@ servlist_deleteserver_cb (GtkWidget *item, gpointer none)
 	}
 }
 
-static void
-servlist_server_popmenu (ircserver *serv, GtkTreeView *treeview, GdkEventButton *event)
-{
-	GtkWidget *item, *menu;
-	char buf[256];
-
-	menu = gtk_menu_new ();
-
-	snprintf (buf, sizeof (buf), _("_Remove \"%s\""), serv->hostname);
-	item = create_icon_menu (buf, GTK_STOCK_DELETE, TRUE);
-	g_signal_connect (G_OBJECT (item), "activate",
-							G_CALLBACK (servlist_deleteserver_cb), serv);
-	gtk_menu_shell_prepend (GTK_MENU_SHELL (menu), item);
-	gtk_widget_show (item);
-
-	item = create_icon_menu (_("_Add new server"), GTK_STOCK_NEW, TRUE);
-	g_signal_connect (G_OBJECT (item), "activate",
-							G_CALLBACK (servlist_addserver_cb), treeview);
-	gtk_menu_shell_prepend (GTK_MENU_SHELL (menu), item);
-	gtk_widget_show (item);
-
-	g_signal_connect (G_OBJECT (menu), "selection-done",
-							G_CALLBACK (servlist_menu_destroy), menu);
-#if (GTK_MAJOR_VERSION != 2) || (GTK_MINOR_VERSION != 0)
-	if (event && event->window)
-		gtk_menu_set_screen (GTK_MENU (menu), gdk_drawable_get_screen (event->window));
-#endif
-	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL, 0, event->time);
-}
-
-static void
-servlist_network_popmenu (ircnet *net, GtkTreeView *treeview, GdkEventButton *event)
-{
-	GtkWidget *item, *menu;
-	char buf[256];
-
-	menu = gtk_menu_new ();
-
-	snprintf (buf, sizeof (buf), _("_Remove \"%s\""), net->name);
-	item = create_icon_menu (buf, GTK_STOCK_DELETE, TRUE);
-	g_signal_connect (G_OBJECT (item), "activate",
-							G_CALLBACK (servlist_deletenet_cb), net);
-	gtk_menu_shell_prepend (GTK_MENU_SHELL (menu), item);
-	gtk_widget_show (item);
-
-	snprintf (buf, sizeof (buf), _("Move \"%s\" _down"), net->name);
-	item = create_icon_menu (buf, GTK_STOCK_GO_DOWN, TRUE);
-	g_signal_connect (G_OBJECT (item), "activate",
-							G_CALLBACK (servlist_movedownnet_cb), net);
-	gtk_menu_shell_prepend (GTK_MENU_SHELL (menu), item);
-	gtk_widget_show (item);
-
-	snprintf (buf, sizeof (buf), _("Move \"%s\" _up"), net->name);
-	item = create_icon_menu (buf, GTK_STOCK_GO_UP, TRUE);
-	g_signal_connect (G_OBJECT (item), "activate",
-							G_CALLBACK (servlist_moveupnet_cb), net);
-	gtk_menu_shell_prepend (GTK_MENU_SHELL (menu), item);
-	gtk_widget_show (item);
-
-	item = gtk_menu_item_new ();
-	gtk_menu_shell_prepend (GTK_MENU_SHELL (menu), item);
-	gtk_widget_show (item);
-
-	item = create_icon_menu (_("_Add new network"), GTK_STOCK_NEW, TRUE);
-	g_signal_connect (G_OBJECT (item), "activate",
-							G_CALLBACK (servlist_addnet_cb), treeview);
-	gtk_menu_shell_prepend (GTK_MENU_SHELL (menu), item);
-	gtk_widget_show (item);
-
-	g_signal_connect (G_OBJECT (menu), "selection-done",
-							G_CALLBACK (servlist_menu_destroy), menu);
-#if (GTK_MAJOR_VERSION != 2) || (GTK_MINOR_VERSION != 0)
-	if (event && event->window)
-		gtk_menu_set_screen (GTK_MENU (menu), gdk_drawable_get_screen (event->window));
-#endif
-	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL, 0, event->time);
-}
-
 static ircnet *
 servlist_find_selected_net (GtkTreeSelection *sel)
 {
@@ -652,43 +556,6 @@ servlist_connect_cb (GtkWidget *button, gpointer userdata)
 
 	gtk_widget_destroy (serverlist_win);
 	serverlist_win = NULL;
-}
-
-static gboolean
-servlist_net_press_cb (GtkWidget *widget, GdkEventButton *event,
-							  gpointer user_data)
-{
-	GtkTreeSelection *sel;
-	GtkTreePath *path;
-	ircnet *net;
-
-	if (event->type == GDK_2BUTTON_PRESS)
-	{
-		if (selected_net != NULL)
-			servlist_connect_cb (widget, user_data);
-	}
-
-	if (event->button == 3)
-	{
-		sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (widget));
-		if (gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (widget),
-			 event->x, event->y, &path, 0, 0, 0))
-		{
-			gtk_tree_selection_unselect_all (sel);
-			gtk_tree_selection_select_path (sel, path);
-			gtk_tree_path_free (path);
-			net = servlist_find_selected_net (sel);
-			if (net)
-				servlist_network_popmenu (net, GTK_TREE_VIEW (widget), event);
-		} else
-		{
-			gtk_tree_selection_unselect_all (sel);
-		}
-
-		return TRUE;
-	}
-
-	return FALSE;
 }
 
 static void
@@ -1088,7 +955,7 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 	edit_entry_cmd =
 		servlist_create_entry (table3, _("Connect command:"), 13,
 									  net->command, 0,
-					_("Extra command to execute after connecting."));
+					_("Extra command to execute after connecting. If you need more than one, set this to LOAD -e <filename>, where <filename> is a text-file full of commands to execute."));
 
 	edit_entry_nickserv =
 		servlist_create_entry (table3, _("Nickserv password:"), 14,

@@ -449,9 +449,19 @@ server_connected (server * serv)
 	{
 		EMIT_SIGNAL (XP_TE_CONNECTED, serv->server_session, NULL, NULL, NULL,
 						 NULL, 0);
-		serv->p_login (serv,
-							(serv->username) ? serv->username : prefs.username,
-							(serv->realname) ? serv->realname : prefs.realname);
+		if (serv->network)
+		{
+			serv->p_login (serv,
+								(((ircnet *)serv->network)->user) ?
+								(((ircnet *)serv->network)->user) :
+								prefs.username,
+								(((ircnet *)serv->network)->real) ?
+								(((ircnet *)serv->network)->real) :
+								prefs.realname);
+		} else
+		{
+			serv->p_login (serv, prefs.username, prefs.realname);
+		}
 	} else
 	{
 		EMIT_SIGNAL (XP_TE_SERVERCONNECTED, serv->server_session, NULL, NULL,
@@ -883,7 +893,14 @@ server_read_child (GIOChannel *source, GIOCondition condition, server *serv)
 		EMIT_SIGNAL (XP_TE_CONNECT, sess, host, ip, outbuf, NULL, 0);
 #ifdef WIN32
 		if (prefs.identd)
-			identd_start ((serv->username) ? serv->username : prefs.username);
+		{
+			if (serv->network)
+				identd_start ((((ircnet *)serv->network)->user) ?
+									(((ircnet *)serv->network)->user) :
+									prefs.username);
+			else
+				identd_start (prefs.username);
+		}
 #else
 		snprintf (outbuf, sizeof (outbuf), "%s/auth/xchat_auth",
 					 g_get_home_dir ());
@@ -990,17 +1007,7 @@ server_disconnect (session * sess, int sendquit, int err)
 	/* send our QUIT reason */
 	if (sendquit && serv->connected)
 	{
-		if (serv->eom_cmd)
-		{
-			free (serv->eom_cmd);
-			serv->eom_cmd = NULL;
-		}
 		server_sendquit (sess);
-		if (serv->networkname)
-		{
-			free (serv->networkname);
-			serv->networkname = NULL;
-		}
 	}
 
 	/* close all sockets & io tags */

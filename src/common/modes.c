@@ -627,13 +627,13 @@ inbound_005 (server * serv, char *word[])
 			serv->supports_watch = TRUE;
 		} else if (strncmp (word[w], "NETWORK=", 8) == 0)
 		{
-			if (serv->networkname)
+/*			if (serv->networkname)
 				free (serv->networkname);
-			serv->networkname = strdup (word[w] + 8);
+			serv->networkname = strdup (word[w] + 8);*/
 
 			if (serv->server_session->type == SESS_SERVER)
 			{
-				safe_strcpy (serv->server_session->channel, serv->networkname, CHANLEN);
+				safe_strcpy (serv->server_session->channel, word[w] + 8, CHANLEN);
 				fe_set_channel (serv->server_session);
 			}
 

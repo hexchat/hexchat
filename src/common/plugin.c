@@ -866,6 +866,7 @@ xchat_find_context (xchat_plugin *ph, const char *servname, const char *channel)
 	GSList *slist, *clist;
 	server *serv;
 	session *sess;
+	char *netname;
 
 	if (servname == NULL && channel == NULL)
 		return current_sess;
@@ -874,10 +875,12 @@ xchat_find_context (xchat_plugin *ph, const char *servname, const char *channel)
 	while (slist)
 	{
 		serv = slist->data;
+		netname = get_network (serv->front_session);
+
 		if (servname == NULL ||
 			 rfc_casecmp (servname, serv->servername) == 0 ||
 			 strcasecmp (servname, serv->hostname) == 0 ||
-			 (serv->networkname && strcasecmp (servname, serv->networkname) == 0))
+			 strcasecmp (servname, netname) == 0)
 		{
 			if (channel == NULL)
 				return serv->front_session;
@@ -926,7 +929,7 @@ xchat_get_info (xchat_plugin *ph, const char *id)
 		return sess->server->hostname;
 
 	case 0x6de15a2e:	/* network */
-		return sess->server->networkname;
+		return get_network (sess);
 
 	case 0x339763: /* nick */
 		return sess->server->nick;
@@ -1166,7 +1169,7 @@ xchat_list_str (xchat_plugin *ph, xchat_list *xlist, const char *name)
 		case 0x38b735af: /* context */
 			return data;	/* this is a session * */
 		case 0x6de15a2e: /* network */
-			return ((session *)data)->server->networkname;
+			return get_network ((session *)data);
 		case 0x8455e723: /* nickprefixes */
 			return ((session *)data)->server->nick_prefixes;
 		case 0x829689ad: /* nickmodes */
