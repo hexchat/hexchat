@@ -1399,16 +1399,25 @@ void
 play_wave (const char *file)
 {
 	char buf[512];
+	char wavfile[512];
 
-	snprintf (buf, sizeof (buf), "%s/%s", prefs.sounddir, file);
-	if (access (buf, R_OK) == 0)
+	memset (buf, 0, sizeof (buf));
+	memset (wavfile, 0, sizeof (wavfile));
+	if (file[0] != '/')
 	{
-		snprintf (buf, sizeof (buf), "%s %s/%s", prefs.soundcmd, prefs.sounddir, file);
+		snprintf (wavfile, sizeof (wavfile), "%s/%s", prefs.sounddir, file);
+	} else
+	{
+		strncpy (wavfile, file, sizeof (wavfile));
+	}
+	if (access (wavfile, R_OK) == 0)
+	{
+		snprintf (buf, sizeof (buf), "%s %s", prefs.soundcmd, wavfile);
 		buf[sizeof (buf) - 1] = '\0';
 		xchat_exec (buf);
 	} else
 	{
-		snprintf (buf, sizeof (buf), "Cannot read %s/%s", prefs.sounddir, file);
+		snprintf (buf, sizeof (buf), "Cannot read %s", wavfile);
 		fe_message (buf, FALSE);
 	}
 }
