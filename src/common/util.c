@@ -115,7 +115,7 @@ xchat_realloc (char *old, int len, char *file, int line)
 	if (ret)
 	{
 		strcpy (ret, old);
-		xchat_free (old, file, line);
+		xchat_dfree (old, file, line);
 	}
 	return ret;
 }
@@ -193,7 +193,7 @@ xchat_mem_list (void)
 }
 
 void
-xchat_free (void *buf, char *file, int line)
+xchat_dfree (void *buf, char *file, int line)
 {
 	struct mem_block *cur, *last;
 
@@ -233,7 +233,7 @@ xchat_free (void *buf, char *file, int line)
 
 #define malloc(n) xchat_malloc(n, __FILE__, __LINE__)
 #define realloc(n, m) xchat_realloc(n, m, __FILE__, __LINE__)
-#define free(n) xchat_free(n, __FILE__, __LINE__)
+#define free(n) xchat_dfree(n, __FILE__, __LINE__)
 #define strdup(n) xchat_strdup(n, __FILE__, __LINE__)
 
 #endif /* MEMORY_DEBUG */
