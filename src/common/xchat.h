@@ -163,6 +163,7 @@ struct xchatprefs
 	int mainwindow_top;
 	int mainwindow_width;
 	int mainwindow_height;
+	int gui_win_state;
 	int dialog_left;
 	int dialog_top;
 	int dialog_width;

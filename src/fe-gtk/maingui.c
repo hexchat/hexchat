@@ -326,24 +326,29 @@ fe_set_title (session *sess)
 }
 
 static gboolean
+mg_windowstate_cb (GtkWidget *wid, GdkEvent *event, gpointer userdata)
+{
+	prefs.gui_win_state = 0;
+	if (gdk_window_get_state (wid->window) & GDK_WINDOW_STATE_MAXIMIZED)
+		prefs.gui_win_state = 1;
+
+	return FALSE;
+}
+
+static gboolean
 mg_configure_cb (GtkWidget *wid, GdkEventConfigure *event, session *sess)
 {
 	if (sess == NULL)			/* for the main_window */
 	{
 		if (mg_gui)
 		{
-/*			g_idle_add ((GSourceFunc)tab_group_resize, mg_gui->tabs_box);*/
 			if (prefs.mainwindow_save)
 			{
 				sess = current_sess;
 				gtk_window_get_position (GTK_WINDOW (wid), &prefs.mainwindow_left,
 												 &prefs.mainwindow_top);
 				gtk_window_get_size (GTK_WINDOW (wid), &prefs.mainwindow_width,
-												 &prefs.mainwindow_height);
-				/*prefs.mainwindow_left = event->x;
-				prefs.mainwindow_top = event->y;
-				prefs.mainwindow_width = event->width;
-				prefs.mainwindow_height = event->height;*/
+											&prefs.mainwindow_height);
 			}
 		}
 	}
@@ -356,10 +361,6 @@ mg_configure_cb (GtkWidget *wid, GdkEventConfigure *event, session *sess)
 											 &prefs.dialog_top);
 			gtk_window_get_size (GTK_WINDOW (wid), &prefs.dialog_width,
 										&prefs.dialog_height);
-			/*prefs.dialog_left = event->x;
-			prefs.dialog_top = event->y;
-			prefs.dialog_width = event->width;
-			prefs.dialog_height = event->height;*/
 		}
 
 		if (((GtkXText *) sess->gui->xtext)->transparent)
@@ -2305,8 +2306,8 @@ mg_create_tabwindow (session *sess)
 	sess->gui->window = win;
 	gtk_window_move (GTK_WINDOW (win), prefs.mainwindow_left,
 						  prefs.mainwindow_top);
-/*	gtk_window_set_default_size (GTK_WINDOW (win), prefs.mainwindow_width,
-										  prefs.mainwindow_height);*/
+	if (prefs.gui_win_state)
+		gtk_window_maximize (GTK_WINDOW (win));
 	gtk_container_set_border_width (GTK_CONTAINER (win), 2);
 
 	g_signal_connect (G_OBJECT (win), "delete_event",
@@ -2317,6 +2318,8 @@ mg_create_tabwindow (session *sess)
 							G_CALLBACK (mg_tabwin_focus_cb), NULL);
 	g_signal_connect (G_OBJECT (win), "configure_event",
 							G_CALLBACK (mg_configure_cb), NULL);
+	g_signal_connect (G_OBJECT (win), "window_state_event",
+							G_CALLBACK (mg_windowstate_cb), NULL);
 
 	palette_alloc (win);
 

@@ -3,9 +3,14 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <gtk/gtkversion.h>
 #include <gtk/gtkcheckbutton.h>
 #include <gtk/gtkcellrenderertext.h>
+#if GTK_CHECK_VERSION(2,4,0)
+#include <gtk/gtkcomboboxentry.h>
+#else
 #include <gtk/gtkcombo.h>
+#endif
 #include <gtk/gtkentry.h>
 #include <gtk/gtkframe.h>
 #include <gtk/gtkhbox.h>
@@ -25,7 +30,6 @@
 #include <gtk/gtktreeview.h>
 #include <gtk/gtkvbox.h>
 #include <gtk/gtkwindow.h>
-#include <gtk/gtkversion.h>
 
 #include "../common/xchat.h"
 #include "../common/xchatc.h"
@@ -93,6 +97,7 @@ static const char *pages[]=
 	"ISO-2022-JP (Japanese)",
 	"SJIS (Japanese)",
 	"CP949 (Korean)",
+	"KOI8-R (Cyrillic)",
 	"CP1251 (Cyrillic)",
 	"CP1256 (Arabic)",
 	"GB18030 (Chinese)",
@@ -102,9 +107,6 @@ static const char *pages[]=
 static void
 servlist_entries_populate (ircnet *net)
 {
-	static GList *cbitems = NULL;
-	int i;
-
 	/* avoid the "changed" callback */
 	ignore_changed = TRUE;
 
@@ -115,19 +117,11 @@ servlist_entries_populate (ircnet *net)
 	gtk_entry_set_text (GTK_ENTRY (entry_join), net->autojoin ? net->autojoin : "");
 	gtk_entry_set_text (GTK_ENTRY (entry_cmd), net->command ? net->command : "");
 
-	if (cbitems == NULL)
-	{
-		cbitems = g_list_append (cbitems, "System default");
-		i = 0;
-		while (pages[i])
-		{
-			cbitems = g_list_append (cbitems, (char *)pages[i]);
-			i++;
-		}
-		gtk_combo_set_popdown_strings (GTK_COMBO (combo_encoding), cbitems);
-	}
-
+#if GTK_CHECK_VERSION(2,4,0)
+	gtk_entry_set_text (GTK_ENTRY (GTK_BIN (combo_encoding)->child), net->encoding ? net->encoding : "System default");
+#else
 	gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (combo_encoding)->entry), net->encoding ? net->encoding : "System default");
+#endif
 
 	ignore_changed = FALSE;
 
@@ -351,6 +345,31 @@ servlist_move_network (ircnet *net, int delta)
 	}
 }
 
+static gint
+servlist_compare (ircnet *net1, ircnet *net2)
+{
+	gchar *net1_casefolded, *net2_casefolded;
+	int result=0;
+
+	net1_casefolded=g_utf8_casefold(net1->name,-1),
+	net2_casefolded=g_utf8_casefold(net2->name,-1),
+
+	result=g_utf8_collate(net1_casefolded,net2_casefolded);
+
+	g_free(net1_casefolded);
+	g_free(net2_casefolded);
+
+	return result;
+
+}
+
+static void
+servlist_sort ()
+{
+	network_list=g_slist_sort(network_list,(GCompareFunc)servlist_compare);
+	servlist_networks_populate (networks_tree, network_list, FALSE);
+}
+
 static void
 servlist_movedownnet_cb (GtkWidget *item, ircnet *net)
 {
@@ -480,20 +499,21 @@ servlist_network_popmenu (ircnet *net, GtkTreeView *treeview, GdkEventButton *ev
 }
 
 static ircnet *
-servlist_find_selected_net (GtkTreeSelection *sel, int *pos)
+servlist_find_selected_net (GtkTreeSelection *sel)
 {
 	GtkTreeModel *model;
 	GtkTreeIter iter;
 	char *netname;
+	int pos;
 	ircnet *net = NULL;
 
 	if (gtk_tree_selection_get_selected (sel, &model, &iter))
 	{
 		gtk_tree_model_get (model, &iter, 0, &netname, -1);
-		net = servlist_net_find (netname, pos);
+		net = servlist_net_find (netname, &pos);
 		g_free (netname);
 		if (net)
-			prefs.slist_select = *pos;
+			prefs.slist_select = pos;
 	}
 
 	return net;
@@ -503,11 +523,10 @@ static void
 servlist_network_row_cb (GtkTreeSelection *sel, gpointer user_data)
 {
 	ircnet *net;
-	int pos;
 
 	selected_net = NULL;
 
-	net = servlist_find_selected_net (sel, &pos);
+	net = servlist_find_selected_net (sel);
 	if (net)
 	{
 		selected_net = net;
@@ -585,7 +604,6 @@ servlist_net_press_cb (GtkWidget *widget, GdkEventButton *event,
 {
 	GtkTreeSelection *sel;
 	GtkTreePath *path;
-	int pos;
 	ircnet *net;
 
 	if (event->type == GDK_2BUTTON_PRESS)
@@ -603,7 +621,7 @@ servlist_net_press_cb (GtkWidget *widget, GdkEventButton *event,
 			gtk_tree_selection_unselect_all (sel);
 			gtk_tree_selection_select_path (sel, path);
 			gtk_tree_path_free (path);
-			net = servlist_find_selected_net (sel, &pos);
+			net = servlist_find_selected_net (sel);
 			if (net)
 				servlist_network_popmenu (net, GTK_TREE_VIEW (widget), event);
 		} else
@@ -693,16 +711,16 @@ servlist_celledit_cb (GtkCellRendererText *cell, gchar *arg1, gchar *arg2,
 }
 
 static GtkWidget *
-gtkutil_create_list (GtkWidget *box, char *title, void *select_callback,
+gtkutil_create_list (GtkWidget *box, char *title,
 							void *edit_callback, void *click_callback,
-							void *add_callback)
+							void *add_callback, void *sort_callback)
 {
 	GtkTreeModel *model;
 	GtkWidget *treeview;
 	GtkWidget *hbox, *sw;
 	GtkCellRenderer *renderer;
 	GtkListStore *store;
-	GtkWidget *frame, *vbox, *but;
+	GtkWidget *frame, *vbox, *but, *but2 = NULL;
 	GtkTreeViewColumn *col;
 
 	vbox = gtk_vbox_new (0, 0);
@@ -721,6 +739,12 @@ gtkutil_create_list (GtkWidget *box, char *title, void *select_callback,
 
 	but = gtk_button_new_with_label (_("Add"));
 	gtk_box_pack_start (GTK_BOX (hbox), but, 0, 0, 0);
+
+	if(sort_callback!=NULL)
+	{
+		but2 = gtk_button_new_with_label (_("Sort"));
+		gtk_box_pack_start (GTK_BOX (hbox), but2, 0, 0, 0);
+	}
 
 	hbox = gtk_hbox_new (0, 0);
 	gtk_container_add (GTK_CONTAINER (vbox), hbox);
@@ -750,6 +774,13 @@ gtkutil_create_list (GtkWidget *box, char *title, void *select_callback,
 							G_CALLBACK (click_callback), model);
 	g_signal_connect (G_OBJECT (but), "clicked",
 							G_CALLBACK (add_callback), treeview);
+
+	if(sort_callback!=NULL)
+	{
+		g_signal_connect (G_OBJECT (but2), "clicked",
+			G_CALLBACK (sort_callback), treeview);
+	}
+
    gtk_container_add (GTK_CONTAINER (sw), treeview);
 	g_object_unref (G_OBJECT (model));
 
@@ -951,7 +982,8 @@ servlist_editserver_cb (GtkCellRendererText *cell, gchar *arg1, gchar *arg2,
 	if (!selected_net)
 		return;
 
-	gtk_tree_model_get_iter (model, &iter, path);
+	if (!gtk_tree_model_get_iter (model, &iter, path))
+		return;
 	gtk_tree_model_get (model, &iter, 0, &servname, -1);
 
 	serv = servlist_server_find (selected_net, servname, NULL);
@@ -983,9 +1015,9 @@ servlist_create_servlistbox (GtkWidget *box)
 	vbox = gtk_vbox_new (FALSE, 0);
 	gtk_container_add (GTK_CONTAINER (box), vbox);
 
-	tree = gtkutil_create_list (vbox, _("Servers"), servlist_server_row_cb,
+	tree = gtkutil_create_list (vbox, _("Servers"),
 										 servlist_editserver_cb, servlist_serv_press_cb,
-										 servlist_addserver_cb);
+										 servlist_addserver_cb, NULL);
 #if 0
 	hbox = gtk_hbox_new (FALSE, 2);
 	gtk_box_pack_end (GTK_BOX (vbox), hbox, 0, 0, 0);
@@ -1019,13 +1051,29 @@ servlist_create_charsetcombo (GtkTable *table)
 	GtkWidget *cb;
 	GtkWidget *label;
 	int i;
+#if GTK_CHECK_VERSION(2,4,0)
+#else
 	static GList *cbitems = NULL;
+#endif
 
 	label = gtk_label_new (_("Character Set:"));
 	gtk_table_attach (GTK_TABLE (table), label, 0, 1, 7, 8,
 							GTK_FILL|GTK_SHRINK, GTK_FILL, 4, 1);
 	gtk_misc_set_alignment (GTK_MISC (label), 1, 0.5);
 
+#if GTK_CHECK_VERSION(2,4,0)
+	cb = gtk_combo_box_entry_new_text ();
+	gtk_combo_box_append_text (GTK_COMBO_BOX (cb), "System default");
+	i = 0;
+	while (pages[i])
+	{
+		gtk_combo_box_append_text (GTK_COMBO_BOX (cb), (char *)pages[i]);
+		i++;
+	}
+	g_signal_connect (G_OBJECT (GTK_BIN (cb)->child), "changed",
+							G_CALLBACK (servlist_combo_cb), NULL);
+#else
+	/* === OLD GTK 2.0/2.2 code === */
 	if (cbitems == NULL)
 	{
 		cbitems = g_list_append (cbitems, "System default");
@@ -1041,6 +1089,8 @@ servlist_create_charsetcombo (GtkTable *table)
 	gtk_combo_set_popdown_strings (GTK_COMBO (cb), cbitems);
 	g_signal_connect (G_OBJECT (GTK_COMBO (cb)->entry), "changed",
 							G_CALLBACK (servlist_combo_cb), NULL);
+#endif
+
 	gtk_table_attach (GTK_TABLE (table), cb, 1, 2, 7, 8,
 						   GTK_FILL|GTK_EXPAND, 0, 0, 0);
 
@@ -1125,7 +1175,7 @@ servlist_create_list (GtkWidget *box)
 
 	pane = gtk_hpaned_new ();
 	gtk_container_add (GTK_CONTAINER (box), pane);
-	gtk_paned_set_position (GTK_PANED (pane), 120);
+	gtk_paned_set_position (GTK_PANED (pane), 132);
 
 	hbox = gtk_hbox_new (FALSE, 3);
 	gtk_paned_pack1 (GTK_PANED (pane), hbox, TRUE, TRUE);
@@ -1143,9 +1193,9 @@ servlist_create_list (GtkWidget *box)
 							G_CALLBACK (servlist_editmode_cb), 0);
 	gtk_box_pack_start (GTK_BOX (hbox), but, 0, 0, 0);
 
-	tree = gtkutil_create_list (vbox, _("Networks"), servlist_network_row_cb,
+	tree = gtkutil_create_list (vbox, _("Networks"),
 										 servlist_celledit_cb, servlist_net_press_cb,
-										 servlist_addnet_cb);
+										 servlist_addnet_cb, servlist_sort);
 	servlist_networks_populate (tree, network_list, prefs.slist_edit);
 
 	servlist_create_editbox (pane);
