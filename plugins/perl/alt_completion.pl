@@ -6,7 +6,7 @@ my $previous_pos = 0;
 my @completions;
 my $completion_idx = 0;
 
-Xchat::register( "Tab Completion", "1.0",
+Xchat::register( "Tab Completion", "1.0001",
                  "Alternative tab completion behavior" );
 Xchat::hook_print( "Key Press", \&tab_complete );
 sub tab_complete {
@@ -67,16 +67,18 @@ sub tab_complete {
     } else {
       @completions = map { $_->{nick} }
         sort { $b->{lasttalk} <=> $a->{lasttalk}}
-#          grep { $_->{nick} =~ /^\Q$word/i }
           grep { $_->{nick} =~ /^$word/i }
             Xchat::get_list( "users" );
       $completion_idx = 0;
       $completed = $completions[ $completion_idx ];
     }
 
+    my $completion_amount = Xchat::get_prefs( "completion_amount" );
     # don't cycle if the number of possible completions is greater than
     # completion_amount
-    if( @completions > Xchat::get_prefs( "completion_amount" ) ) {
+    if( @completions > $completion_amount && @completions != 1 ) {
+      # don't print if we tabbed in the beginning and the list of possible
+      # completions includes all nicks in the channel
       if( @completions < Xchat::get_list("users") ) {
         Xchat::print [join " ", @completions];
       }
