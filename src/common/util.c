@@ -954,7 +954,7 @@ country (char *hostname)
 		p = hostname;
 	for (i = 0; domain[i].code; i++)
 		if (!strcasecmp (p, domain[i].code))
-			return domain[i].country;
+			return _(domain[i].country);
 	return _("Unknown");
 }
 
