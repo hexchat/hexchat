@@ -6,7 +6,7 @@ my $previous_pos = 0;
 my @completions;
 my $completion_idx = 0;
 
-Xchat::register( "Tab Completion", 1.0,
+Xchat::register( "Tab Completion", "1.0",
                  "Alternative tab completion behavior" );
 Xchat::hook_print( "Key Press", \&tab_complete );
 sub tab_complete {
