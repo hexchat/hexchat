@@ -4260,6 +4260,8 @@ gtk_xtext_buffer_show (GtkXText *xtext, xtext_buffer *buf, int render)
 	/* now change to the new buffer */
 	xtext->buffer = buf;
 	dontscroll (buf);	/* force scrolling off */
+	if (buf->text_last)
+		buf->text_last->new = 0;
 	xtext->adj->value = buf->old_value;
 	xtext->adj->upper = buf->num_lines;
 	if (xtext->adj->upper == 0)
