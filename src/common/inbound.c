@@ -204,7 +204,11 @@ SearchNick (char *text, char *nicks)
 		ns = strlen (n);
 		while ((p = nocasestrstr (t, n)))
 		{
-			if ((p == text || !isalnum (*(p - 1))) && !isalnum (*(p + ns)))
+			char *prev_char = (p == text) ? NULL : g_utf8_prev_char (p);
+			char *next_char = g_utf8_next_char (p + ns);
+			if ((!prev_char ||
+			     !g_unichar_isalnum (g_utf8_get_char(prev_char))) &&
+			    !g_unichar_isalnum (g_utf8_get_char(next_char)))
 			{
 				free (text);
 				return 1;

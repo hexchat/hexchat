@@ -1432,8 +1432,9 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 		{
 			result =  sess->channel;
 			is_nick = 0;
-			goto compdone;
 		}
+		else
+			return 2;
 	}
 	else
 	{
@@ -1475,7 +1476,10 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 #endif
 		
 		if (result == NULL) /* No matches found */
+		{
+			g_completion_free(gcomp);
 			return 2;
+		}
 
 		if (comp) /* existing completion */
 		{
@@ -1505,11 +1509,12 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 					else
 						list = g_list_previous(list);
 				}
+				g_free(result);
 				result = (char*)list->data;
-				goto compdone;
 			}
 			else
 			{
+				g_free(result);
 				g_completion_free(gcomp);
 				return 2;
 			}
@@ -1521,7 +1526,10 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 
 			/* Get the first nick and put out the data for future nickcompletes */
 			if (prefs.completion_amount && g_list_length (list) <= prefs.completion_amount)
-					result = (char*)list->data;
+			{
+				g_free(result);
+				result = (char*)list->data;
+			}
 			else
 			{
 				/* bash style completion */
@@ -1531,9 +1539,10 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 						g_utf8_strncpy (buf, text, prefix_len);
 					strncat (buf, result, COMP_BUF - prefix_len);
 					cursor_pos = strlen (buf);
+					g_free(result);
 #if !GLIB_CHECK_VERSION(2,4,0)
 					g_utf8_validate (buf, -1, (const gchar **)&result);
-					(*valid_end) = 0;
+					(*result) = 0;
 #endif
 					if (postfix)
 					{
@@ -1561,7 +1570,6 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 		}
 	}
 	
-compdone:
 	if(result)
 	{
 		if (prefix_len)
