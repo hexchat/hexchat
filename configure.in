@@ -316,16 +316,11 @@ if test "$tcl" != "no"; then
 	for try in $dirs; do
 		if test -f $try/tclConfig.sh; then
 			found=1
-			AC_MSG_RESULT($try/tclConfig.sh)
 			. $try/tclConfig.sh
 			TCL_LIBS="$TCL_LIB_SPEC $TCL_LIBS"
-			TCL_CFLAGS="${TCL_PREFIX}/include"
-			if test -f "${TCL_CFLAGS}/tcl.h"; then
-				TCL_CFLAGS="-I$TCL_CFLAGS"
-				tcl=yes
-			else
-				AC_MSG_RESULT(Could not find tcl.h in $TCL_CFLAGS)
-			fi
+			TCL_CFLAGS="-I${TCL_PREFIX}/include $TCL_INCLUDE_SPEC"
+			tcl=yes
+			AC_MSG_RESULT($try/tclConfig.sh)
 			break
 		fi
 	done

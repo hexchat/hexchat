@@ -12422,18 +12422,12 @@ if test "$tcl" != "no"; then
 	for try in $dirs; do
 		if test -f $try/tclConfig.sh; then
 			found=1
-			echo "$as_me:$LINENO: result: $try/tclConfig.sh" >&5
-echo "${ECHO_T}$try/tclConfig.sh" >&6
 			. $try/tclConfig.sh
 			TCL_LIBS="$TCL_LIB_SPEC $TCL_LIBS"
-			TCL_CFLAGS="${TCL_PREFIX}/include"
-			if test -f "${TCL_CFLAGS}/tcl.h"; then
-				TCL_CFLAGS="-I$TCL_CFLAGS"
-				tcl=yes
-			else
-				echo "$as_me:$LINENO: result: Could not find tcl.h in $TCL_CFLAGS" >&5
-echo "${ECHO_T}Could not find tcl.h in $TCL_CFLAGS" >&6
-			fi
+			TCL_CFLAGS="-I${TCL_PREFIX}/include $TCL_INCLUDE_SPEC"
+			tcl=yes
+			echo "$as_me:$LINENO: result: $try/tclConfig.sh" >&5
+echo "${ECHO_T}$try/tclConfig.sh" >&6
 			break
 		fi
 	done
