@@ -896,6 +896,10 @@ xchat_exit (void)
 	ignore_save ();
 	free_sessions ();
 	fe_exit ();
+
+#ifdef WIN32
+	WSACleanup ();
+#endif
 }
 
 #ifndef WIN32
