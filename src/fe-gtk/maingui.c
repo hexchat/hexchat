@@ -2513,7 +2513,6 @@ mg_changui_new (session *sess, restore_gui *res, int tab)
 
 /*	while (g_main_pending ())
 		g_main_iteration (TRUE);*/
-	tab_group_resize (mg_gui->tabs_box);
 	/*g_idle_add ((GSourceFunc)tab_group_resize, mg_gui->tabs_box);*/
 }
 

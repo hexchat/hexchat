@@ -178,8 +178,8 @@ tab_scroll_right_down_clicked (GtkWidget *widget, GtkWidget *group)
 	gtk_adjustment_set_value (adj, new_value);
 }
 
-int
-tab_group_resize (GtkWidget *group)
+static void
+tab_group_resize (GtkWidget *group, GtkAllocation *allocation, gpointer user_data)
 {
 	GtkAdjustment *adj;
 	GtkWidget *inner;
@@ -208,8 +208,6 @@ tab_group_resize (GtkWidget *group)
 		gtk_widget_show (g_object_get_data (G_OBJECT (group), "b1"));
 		gtk_widget_show (g_object_get_data (G_OBJECT (group), "b2"));
 	}
-
-	return 0;
 }
 
 /* called when a tab is clicked (button down) */
@@ -255,6 +253,8 @@ tab_group_new (void *callback, gboolean vertical, gboolean sorted)
 	} else
 		group = gtk_hbox_new (0, 0);
 	g_object_set_data (G_OBJECT (group), "c", callback);
+	g_signal_connect (G_OBJECT (group), "size_allocate",
+							G_CALLBACK (tab_group_resize), NULL);
 	gtk_container_set_border_width (GTK_CONTAINER (group), 2);
 	gtk_widget_show (group);
 
@@ -408,8 +408,6 @@ tab_group_switch (GtkWidget *group, int relative, int num)
 
 	/*while (g_main_pending ())
 		g_main_iteration (TRUE);*/
-
-	tab_group_resize (group);
 
 	if (relative)
 	{

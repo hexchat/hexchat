@@ -5,7 +5,6 @@ int tab_group_get_size (GtkWidget *group);
 GtkWidget *tab_group_add (GtkWidget *group, char *name, void *family, void *userdata, void *click_cb, void *delink_cb, int trunc_len, int dnd);
 GtkOrientation tab_group_get_orientation (GtkWidget *group);
 GtkWidget *tab_group_set_orientation (GtkWidget *group, gboolean vertical);
-int tab_group_resize (GtkWidget *group);
 GtkWidget *tab_group_get_focused (GtkWidget *group);
 
 void tab_focus (GtkWidget *tab);
