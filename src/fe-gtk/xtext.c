@@ -3994,8 +3994,8 @@ gtk_xtext_render_page_timeout (GtkXText * xtext)
 		gtk_adjustment_set_value (adj, val);
 	}
 
-/*	if (adj->value >= adj->upper - adj->page_size || adj->value < 1)
-		gtk_xtext_render_page (xtext);*/
+	if (adj->value >= adj->upper - adj->page_size || adj->value < 1)
+		gtk_xtext_render_page (xtext);
 
 	xtext->add_io_tag = 0;
 
