@@ -395,7 +395,7 @@ flood_check (char *nick, char *ip, server *serv, session *sess, int what)	/*0=ct
 				if (serv->msg_counter == prefs.msg_number_limit)	/*if we reached the maximun numbers of ctcp in the seconds limits */
 				{
 					snprintf (buf, sizeof (buf),
-					 _("You are being MSG flooded from %s, setting autodialog OFF.\n"),
+					 _("You are being MSG flooded from %s, setting gui_auto_open_dialog OFF.\n"),
 								 ip);
 					PrintText (sess, buf);
 					serv->msg_last_time = current_time;	/*we got the flood, restore all the vars for next one */
