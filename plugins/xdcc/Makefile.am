@@ -1,4 +1,3 @@
-
 libdir = $(xchatdir)/plugins
 
 lib_LTLIBRARIES = xdcc.la
