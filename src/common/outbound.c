@@ -547,21 +547,24 @@ cmd_close (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 static int
 cmd_ctcp (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
+	int mbl;
 	char *to = word[2];
 	if (*to)
 	{
 		char *msg = word_eol[3];
 		if (*msg)
 		{
-			char *cmd = msg;
+			unsigned char *cmd = msg;
 
+			/* make the first word upper case (as per RFC) */
 			while (1)
 			{
-				/* FIXME: utf8 */
 				if (*cmd == ' ' || *cmd == 0)
 					break;
-				*cmd = toupper (*cmd);
-				cmd++;
+				mbl = g_utf8_skip[*cmd];
+				if (mbl == 1)
+					*cmd = toupper (*cmd);
+				cmd += mbl;
 			}
 
 			sess->server->p_ctcp (sess->server, to, msg);
