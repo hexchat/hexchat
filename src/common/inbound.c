@@ -205,7 +205,7 @@ SearchNick (char *text, char *nicks)
 		while ((p = nocasestrstr (t, n)))
 		{
 			char *prev_char = (p == text) ? NULL : g_utf8_prev_char (p);
-			char *next_char = g_utf8_next_char (p + ns);
+			char *next_char = p + ns;
 			if ((!prev_char ||
 			     !g_unichar_isalnum (g_utf8_get_char(prev_char))) &&
 			    !g_unichar_isalnum (g_utf8_get_char(next_char)))
@@ -228,11 +228,17 @@ is_hilight (char *text, session *sess, server *serv)
 {
 	if ((SearchNick (text, serv->nick)) || SearchNick (text, prefs.bluestring))
 	{
+#ifdef WIN32
+		if (sess != current_tab)
+			sess->nick_said = TRUE;
+		fe_set_hilight (sess);
+#else
 		if (sess != current_tab)
 		{
 			sess->nick_said = TRUE;
 			fe_set_hilight (sess);
 		}
+#endif
 		return 1;
 	}
 	return 0;

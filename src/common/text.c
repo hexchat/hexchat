@@ -513,9 +513,18 @@ text_validate (char **text, int *len)
 	if (g_utf8_validate (*text, *len, 0))
 		return NULL;
 
-	/* maybe it's iso-8859-1 */
-	utf = g_convert (*text, *len, "UTF-8", "ISO-8859-1", 0, &utf_len, &error);
-	if (!utf)       /* should never happen; all text is iso-8859-1 valid */
+	if (prefs.utf8_locale)
+		/* fallback to iso-8859-1 */
+		utf = g_convert (*text, *len, "UTF-8", "ISO-8859-1", 0, &utf_len, &error);
+	else
+	{
+		/* fallback to locale */
+		utf = g_locale_to_utf8 (*text, *len, 0, &utf_len, NULL);
+		if (!utf)
+			utf = g_convert (*text, *len, "UTF-8", "ISO-8859-1", 0, &utf_len, &error);
+	}
+
+	if (!utf) 
 	{
 		if (error)
 		{

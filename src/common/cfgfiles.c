@@ -863,9 +863,17 @@ int
 cmd_set (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	int wild = FALSE;
+	int quiet = FALSE;
 	int i = 0, finds = 0, found;
 	char *var = word[2];
 	char *val = word_eol[3];
+
+	if (strcasecmp (word[2], "-quiet") == 0)
+	{
+		var = word[3];
+		val = word_eol[4];
+		quiet = TRUE;
+	}
 
 	if (!*var)
 	{
@@ -896,7 +904,8 @@ cmd_set (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 				{
 					strncpy ((char *) &prefs + vars[i].offset, val, vars[i].len);
 					((char *) &prefs)[vars[i].offset + vars[i].len - 1] = 0;
-					PrintTextf (sess, "%s set to: %s\n", var, (char *) &prefs + vars[i].offset);
+					if (!quiet)
+						PrintTextf (sess, "%s set to: %s\n", var, (char *) &prefs + vars[i].offset);
 				} else
 				{
 					set_showval (sess, &vars[i], tbuf);
@@ -920,8 +929,9 @@ cmd_set (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 					{
 						*((int *) &prefs + vars[i].offset) = atoi (val);
 					}
-					PrintTextf (sess, "%s set to: %d\n", var,
-									*((int *) &prefs + vars[i].offset));
+					if (!quiet)
+						PrintTextf (sess, "%s set to: %d\n", var,
+										*((int *) &prefs + vars[i].offset));
 				} else
 				{
 					set_showval (sess, &vars[i], tbuf);
@@ -933,7 +943,7 @@ cmd_set (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	}
 	while (vars[i].name);
 
-	if (!finds)
+	if (!finds && !quiet)
 		PrintText (sess, "No such variable.\n");
 
 	return TRUE;

@@ -2741,7 +2741,7 @@ const struct commands xc_cmds[] = {
 	{"SERVER", cmd_server, 0, 0,
 	 N_("SERVER <host> [<port>] [<password>], connects to a server, the default port is 6667")},
 #endif
-	{"SET", cmd_set, 0, 0, N_("SET <variable> [<value>]")},
+	{"SET", cmd_set, 0, 0, N_("SET [-quiet] <variable> [<value>]")},
 	{"SETTAB", cmd_settab, 0, 0, 0},
 	{"TOPIC", cmd_topic, 1, 1,
 	 N_("TOPIC [<topic>], sets the topic if one is given, else shows the current topic")},
