@@ -68,6 +68,7 @@ static int ignore_chanmode = FALSE;
 static const char chan_flags[] = { 't', 'n', 's', 'i', 'p', 'm', 'l', 'k' };
 
 static GtkWidget *active_tab = NULL;	/* active tab - toggle button */
+GtkWidget *parent_window = NULL;			/* the master window */
 
 GtkStyle *input_style;
 
@@ -707,6 +708,7 @@ mg_ircdestroy (GtkWidget *tab, session *sess)
 	gtk_widget_destroy (mg_gui->window);
 	active_tab = NULL;
 	mg_gui = NULL;
+	parent_window = NULL;
 }
 
 /* a tab has been destroyed */
@@ -2036,7 +2038,7 @@ mg_create_topwindow (session *sess)
 	GtkWidget *vvbox;
 
 	win = gtkutil_window_new ("X-Chat ["VERSION"]", prefs.mainwindow_width,
-									  prefs.mainwindow_height, FALSE);
+									  prefs.mainwindow_height, 0);
 	sess->gui->window = win;
 	gtk_container_set_border_width (GTK_CONTAINER (win), 2);
 	g_signal_connect (G_OBJECT (win), "focus_in_event",
@@ -2135,6 +2137,7 @@ mg_tabwindow_kill_cb (GtkWidget *win, gpointer userdata)
 	current_tab = NULL;
 	active_tab = NULL;
 	mg_gui = NULL;
+	parent_window = NULL;
 }
 
 static gboolean
@@ -2169,7 +2172,7 @@ mg_create_tabwindow (session *sess)
 	GtkWidget *book;
 
 	win = gtkutil_window_new ("X-Chat ["VERSION"]", prefs.mainwindow_width,
-									  prefs.mainwindow_height, FALSE);
+									  prefs.mainwindow_height, 0);
 	sess->gui->window = win;
 	gtk_window_move (GTK_WINDOW (win), prefs.mainwindow_left,
 						  prefs.mainwindow_top);
@@ -2464,6 +2467,7 @@ mg_changui_new (session *sess, restore_gui *res, int tab)
 		sess->gui = gui;
 		mg_create_tabwindow (sess);
 		mg_gui = gui;
+		parent_window = gui->window;
 	} else
 	{
 		sess->gui = gui = mg_gui;
@@ -2492,7 +2496,7 @@ mg_create_generic_tab (char *name, char *title, int force_toplevel,
 
 	if (force_toplevel || !prefs.windows_as_tabs)
 	{
-		win = gtkutil_window_new (title, width, height, TRUE);
+		win = gtkutil_window_new (title, width, height, 3);
 		vbox = gtk_vbox_new (0, 0);
 		*vbox_ret = vbox;
 		gtk_container_add (GTK_CONTAINER (win), vbox);

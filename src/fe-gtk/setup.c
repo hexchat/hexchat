@@ -1011,7 +1011,7 @@ setup_window_open (void)
 {
 	GtkWidget *wid, *win, *vbox, *hbox, *hbbox;
 
-	win = gtkutil_window_new (_("X-Chat: Preferences"), 0, 0, TRUE);
+	win = gtkutil_window_new (_("X-Chat: Preferences"), 0, 0, 3);
 
 	vbox = gtk_vbox_new (FALSE, 5);
 	gtk_container_set_border_width (GTK_CONTAINER (vbox), 6);

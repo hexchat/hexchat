@@ -3328,7 +3328,7 @@ gtk_xtext_render_line (GtkXText * xtext, textentry * ent, int line,
 
 #ifdef XCHAT
 	/* draw the timestamp */
-	if (xtext->buffer->time_stamp && !xtext->skip_stamp)
+	if (xtext->auto_indent && xtext->buffer->time_stamp && !xtext->skip_stamp)
 	{
 		char *time_str;
 		int stamp_size = xtext_get_stamp_str (ent->stamp, &time_str);

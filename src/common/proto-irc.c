@@ -690,7 +690,7 @@ process_named_msg (session *sess, char *type, char *outbuf,
 	}
 	if (!strcmp ("PONG", type))
 	{
-		inbound_ping_reply (sess, outbuf,
+		inbound_ping_reply (serv->server_session, outbuf,
 							 (word[4][0] == ':') ? word[4] + 1 : word[4], word[3]);
 		return;
 	}

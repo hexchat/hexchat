@@ -441,8 +441,10 @@ gtkutil_set_icon (GtkWidget *win)
 	gtk_window_set_icon (GTK_WINDOW (win), pix_xchat);
 }
 
+extern GtkWidget *parent_window;	/* maingui.c */
+
 GtkWidget *
-gtkutil_window_new (char *title, int width, int height, int mouse_pos)
+gtkutil_window_new (char *title, int width, int height, int flags)
 {
 	GtkWidget *win;
 
@@ -450,8 +452,13 @@ gtkutil_window_new (char *title, int width, int height, int mouse_pos)
 	gtkutil_set_icon (win);
 	gtk_window_set_title (GTK_WINDOW (win), title);
 	gtk_window_set_default_size (GTK_WINDOW (win), width, height);
-	if (mouse_pos)
+	if (flags & 1)
 		gtk_window_set_position (GTK_WINDOW (win), GTK_WIN_POS_MOUSE);
+	if ((flags & 2) && parent_window)
+	{
+		gtk_window_set_type_hint (GTK_WINDOW (win), GDK_WINDOW_TYPE_HINT_DIALOG);
+		gtk_window_set_transient_for (GTK_WINDOW (win), GTK_WINDOW (parent_window));
+	}
 
 	return win;
 }
