@@ -1,5 +1,7 @@
 #define GTK_DISABLE_DEPRECATED
 
+#include <string.h>
+
 #include <gtk/gtkhbox.h>
 #include <gtk/gtktogglebutton.h>
 #include <gtk/gtkwidget.h>
@@ -15,6 +17,7 @@
 
 #include "tabs.h"
 
+#define ALPHA_SORT
 
 /* ignore "toggled" signal? */
 static int ignore_toggle = FALSE;
@@ -398,6 +401,38 @@ tab_group_cleanup (GtkWidget *group)
 }
 
 static void
+tab_add_sorted (GtkWidget *box, GtkWidget *tab)
+{
+#ifdef ALPHA_SORT
+	GList *list;
+	GtkBoxChild *child;
+	char *name = GTK_BUTTON (tab)->label_text;
+	int i = 0;
+
+	list = GTK_BOX (box)->children;
+	while (list)
+	{
+		child = list->data;
+		if (!GTK_IS_SEPARATOR (child->widget))
+		{
+			if (strcasecmp (GTK_BUTTON (child->widget)->label_text, name) > 0)
+			{
+				gtk_box_pack_start (GTK_BOX (box), tab, 0, 0, 0);
+				gtk_box_reorder_child (GTK_BOX (box), tab, i);
+				gtk_widget_show (tab);
+				return;
+			}
+		}
+		i++;
+		list = list->next;
+	}
+#endif
+
+	gtk_box_pack_start (GTK_BOX (box), tab, 0, 0, 0);
+	gtk_widget_show (tab);
+}
+
+static void
 tab_add_real (GtkWidget *group, GtkWidget *tab, void *family)
 {
 	GList *boxes, *children;
@@ -415,8 +450,7 @@ tab_add_real (GtkWidget *group, GtkWidget *tab, void *family)
 
 		if (g_object_get_data (G_OBJECT (box), "f") == family)
 		{
-			gtk_box_pack_start (GTK_BOX (box), tab, 0, 0, 0);
-			gtk_widget_show (tab);
+			tab_add_sorted (box, tab);
 			return;
 		}
 
