@@ -2,18 +2,18 @@
 use strict;
 use warnings;
 
-Xchat::register( "Tab Completion", "1.0100",
+Xchat::register( "Tab Completion", "1.0101",
                  "Alternative tab completion behavior" );
 Xchat::hook_print( "Key Press", \&complete );
 Xchat::hook_print( "Close Context", \&close_context );
 
 my %completions;
-my %case_map = ( "[" => "[\\\\[{]",
-                 "{" => "[\\\\[{]",
-                 "}" => "[\\\\]}]",
-                 "]" => "[\\\\]}]",
-                 "\\" => "[\\\\|]",
-                 "|" => "[\\\\|]"
+my %case_map = ( "[" => qr![\\\[{]!,
+                 "{" => qr![\\\[{]!,
+                 "}" => qr![\\\]}]!,
+                 "]" => qr![\\\]}]!,
+                 "\\" => qr![\\\|]!,
+                 "|" => qr![\\\|]!,
                );
 
 sub complete {
@@ -55,7 +55,7 @@ sub complete {
 
   # fix $word so { equals [, ] equals }, \ equals |
   $word =~ s/([[\]{}|])/$case_map{$1}/g;
-
+  Xchat::print ["<",$word,">\n"];
 
   # ignore channels and commands
   if ( $word !~ m{^[/&#]} ) {
