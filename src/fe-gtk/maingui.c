@@ -421,7 +421,7 @@ mg_focus (session *sess)
 	/* dirty trick to avoid auto-selection */
 	GTK_ENTRY (sess->gui->input_box)->editable = 0;
 	gtk_widget_grab_focus (sess->gui->input_box);
-	GTK_ENTRY (sess->gui->input_box)->editable = 1;
+	gtk_editable_set_editable (GTK_EDITABLE (sess->gui->input_box), TRUE);
 
 	sess->server->front_session = sess;
 
@@ -1639,7 +1639,7 @@ mg_dialog_button_cb (GtkWidget *wid, char *cmd)
 	/* dirty trick to avoid auto-selection */
 	GTK_ENTRY (current_sess->gui->input_box)->editable = 0;
 	gtk_widget_grab_focus (current_sess->gui->input_box);
-	GTK_ENTRY (current_sess->gui->input_box)->editable = 1;
+	gtk_editable_set_editable (GTK_EDITABLE (current_sess->gui->input_box), TRUE);
 }
 
 static void
