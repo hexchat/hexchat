@@ -1323,6 +1323,12 @@ mg_word_clicked (GtkWidget *xtext, char *word, GdkEventButton *even,
 
 	if (even->button == 1)			/* left button */
 	{
+		if (word == NULL)
+		{
+			mg_focus (sess);
+			return;
+		}
+
 		if (even->state & GDK_CONTROL_MASK)
 		{
 			switch (mg_word_check (xtext, word))

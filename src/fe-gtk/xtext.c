@@ -1833,17 +1833,12 @@ gtk_xtext_button_release (GtkWidget * widget, GdkEventButton * event)
 
 				xtext->buffer->last_ent_start = NULL;
 				xtext->buffer->last_ent_end = NULL;
-			}
-		} else
-		{
-			word = gtk_xtext_get_word (xtext, event->x, event->y, 0, 0, 0);
-			if (word)
-			{
-				g_signal_emit (G_OBJECT (xtext), xtext_signals[WORD_CLICK], 0,
-									word, event);
 				return FALSE;
 			}
 		}
+		word = gtk_xtext_get_word (xtext, event->x, event->y, 0, 0, 0);
+		g_signal_emit (G_OBJECT (xtext), xtext_signals[WORD_CLICK], 0,
+							word ? word : NULL, event);
 	}
 
 	return FALSE;

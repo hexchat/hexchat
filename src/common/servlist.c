@@ -396,6 +396,9 @@ static const struct defaultserver def[] =
 	{0,			"rebel.rebelchat.org"},
 	{0,			"bigcove.rebelchat.org"},
 
+	{"RedeBrasilIRC",	0},
+	{0,			"irc.redebrasilirc.org"},
+
 	{"SceneNet",	0},
 	{0,			"irc.scene.org"},
 	{0,			"irc.eu.scene.org"},
