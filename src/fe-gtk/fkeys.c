@@ -1296,7 +1296,7 @@ static int
 key_action_move_tab_left (GtkWidget * wid, GdkEventKey * ent, char *d1,
 								  char *d2, struct session *sess)
 {
-	mg_move_tab (sess->gui->window, +1);
+	mg_move_tab (sess->res->tab, +1);
 	return 2;						  /* don't allow default action */
 }
 
@@ -1304,7 +1304,7 @@ static int
 key_action_move_tab_right (GtkWidget * wid, GdkEventKey * ent, char *d1,
 									char *d2, struct session *sess)
 {
-	mg_move_tab (sess->gui->window, -1);
+	mg_move_tab (sess->res->tab, -1);
 	return 2;						  /* -''- */
 }
 

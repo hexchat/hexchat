@@ -1,7 +1,7 @@
-extern GtkStyle *newmsg_style;
-extern GtkStyle *nickseen_style;
-extern GtkStyle *newdata_style;
 extern GtkStyle *input_style;
+extern PangoAttrList *newdata_list;
+extern PangoAttrList *nickseen_list;
+extern PangoAttrList *newmsg_list;
 
 void mg_changui_new (session *sess, restore_gui *res, int tab);
 void mg_update_xtext (GtkWidget *wid);

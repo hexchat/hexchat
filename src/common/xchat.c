@@ -717,13 +717,13 @@ find_away_message (struct server *serv, char *nick)
 	"NAME WALLOPS\n"		"CMD quote WALLOPS :&2\n\n"\
 	"NAME WII\n"			"CMD quote WHOIS %2 %2\n\n"
 
-#define defaultconf_usermenu \
+#define defaultconf_usermenu _(\
 	"NAME Disconnect\n"			"CMD discon\n\n"\
 	"NAME Reconnect\n"			"CMD reconnect\n\n"\
 	"NAME Leave Channel\n"		"CMD part\n\n"\
 	"NAME Server Links\n"		"CMD quote LINKS\n\n"\
 	"NAME Ping Server\n"			"CMD ping\n\n"\
-	"NAME TOGGLE Hide Version\n""CMD irc_hide_version\n\n"
+	"NAME TOGGLE Hide Version\n""CMD irc_hide_version\n\n")
 
 #ifdef WIN32
 #define defaultconf_urlhandlers \

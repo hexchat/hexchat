@@ -4,6 +4,7 @@
 #include <gtk/gtktogglebutton.h>
 #include <gtk/gtkwidget.h>
 #include <gtk/gtkcontainer.h>
+#include <gtk/gtklabel.h>
 #include <gtk/gtksignal.h>
 #include <gtk/gtkviewport.h>
 #include <gtk/gtkvseparator.h>
@@ -516,15 +517,36 @@ tab_group_add (GtkWidget *group, char *name, void *family, void *userdata,
 }
 
 void
-tab_style (GtkWidget *tab, GtkStyle *style)
+tab_set_attrlist (GtkWidget *tab, PangoAttrList *list)
 {
-	gtk_widget_set_style (GTK_BIN (tab)->child, style);
+	gtk_label_set_attributes (GTK_LABEL (GTK_BIN (tab)->child), list);
 }
 
 void
 tab_rename (GtkWidget *tab, char *new_name)
 {
 	gtk_button_set_label (GTK_BUTTON (tab), new_name);
+}
+
+void
+tab_move (GtkWidget *tab, int delta)
+{
+	int i, pos = 0;
+	GList *list;
+
+	i = 0;
+	for (list = GTK_BOX (tab->parent)->children; list; list = list->next)
+	{
+		GtkBoxChild *child_entry;
+
+		child_entry = list->data;
+		if (child_entry->widget == tab)
+			pos = i;
+		i++;
+	}
+
+	pos = (pos - delta) % i;
+	gtk_box_reorder_child (GTK_BOX (tab->parent), tab, pos);
 }
 
 void

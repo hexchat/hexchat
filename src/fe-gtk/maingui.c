@@ -57,6 +57,8 @@
 #include "tabs.h"
 #include "xtext.h"
 
+static void mg_create_entry (session *sess, GtkWidget *box);
+
 
 static session_gui static_mg_gui;
 static session_gui *mg_gui = NULL;	/* the shared irc tab */
@@ -65,26 +67,46 @@ static const char chan_flags[] = { 't', 'n', 's', 'i', 'p', 'm', 'l', 'k' };
 
 static GtkWidget *active_tab = NULL;	/* active tab - toggle button */
 
-GtkStyle *newmsg_style = NULL;
-GtkStyle *nickseen_style;
-GtkStyle *newdata_style;
 GtkStyle *input_style;
 
+PangoAttrList *newdata_list;
+PangoAttrList *nickseen_list;
+PangoAttrList *newmsg_list = NULL;
+static PangoAttrList *plain_list = NULL;
 
-static void mg_create_entry (session *sess, GtkWidget *box);
 
+static PangoAttrList *
+mg_attr_list_create (GdkColor *col)
+{
+	PangoAttribute *attr;
+	PangoAttrList *list;
+
+	attr = pango_attr_foreground_new (col->red, col->green, col->blue);
+	attr->start_index = 0;
+	attr->end_index = 0xffff;
+
+	list = pango_attr_list_new ();
+	pango_attr_list_insert (list, attr);
+
+	return list;
+}
 
 static void
-mg_init_color_styles (GtkStyle *style)
+mg_create_tab_colors (void)
 {
-	newmsg_style = gtk_style_copy (style);
-	newmsg_style->fg[0] = colors[22];
+	if (newmsg_list)
+	{
+		pango_attr_list_unref (newmsg_list);
+		pango_attr_list_unref (newdata_list);
+		pango_attr_list_unref (nickseen_list);
+	}
 
-	nickseen_style = gtk_style_copy (style);
-	nickseen_style->fg[0] = colors[21];
+	newdata_list = mg_attr_list_create (&colors[20]);
+	nickseen_list = mg_attr_list_create (&colors[21]);
+	newmsg_list = mg_attr_list_create (&colors[22]);
 
-	newdata_style = gtk_style_copy (style);
-	newdata_style->fg[0] = colors[20];
+	if (!plain_list)
+		plain_list = pango_attr_list_new ();
 }
 
 /* change the little icon to the left of your nickname */
@@ -245,7 +267,7 @@ mg_focus (session *sess)
 		sess->nick_said = FALSE;
 		sess->msg_said = FALSE;
 		sess->new_data = FALSE;
-		tab_style (sess->res->tab, NULL);
+		tab_set_attrlist (sess->res->tab, plain_list);
 	}
 }
 
@@ -733,8 +755,8 @@ mg_add_chan (session *sess)
 											  sess, mg_tab_press_cb);
 	g_object_set_data (G_OBJECT (sess->res->tab), "sess", sess);
 
-	if (newmsg_style == NULL)
-		mg_init_color_styles (gtk_widget_get_style (sess->res->tab));
+	if (newmsg_list == NULL)
+		mg_create_tab_colors ();
 
 	g_signal_connect (G_OBJECT (sess->res->tab), "destroy",
 					      G_CALLBACK (mg_tabdestroy_cb), sess);
@@ -2032,6 +2054,8 @@ mg_apply_setup (void)
 	GSList *list = sess_list;
 	session *sess;
 
+	mg_create_tab_colors ();
+
 	while (list)
 	{
 		sess = list->data;
@@ -2350,7 +2374,7 @@ mg_showhide_topic (session *sess)
 void
 mg_move_tab (GtkWidget *button, int delta)
 {
-
+	tab_move (button, delta);
 }
 
 void

@@ -1620,7 +1620,7 @@ gtk_xtext_get_word (GtkXText * xtext, int x, int y, textentry ** ret_ent,
 	if (offset < 1)
 		return 0;
 
-	offset--;	/* FIXME: not all chars are 1 byte */
+	/*offset--;*/	/* FIXME: not all chars are 1 byte */
 
 	str = ent->str + offset;
 

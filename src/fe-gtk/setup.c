@@ -835,13 +835,13 @@ setup_create_tree (GtkWidget *box, GtkWidget *book)
 	do
 	{
 		gtk_tree_store_append (model, &iter, NULL);
-		gtk_tree_store_set (model, &iter, 0, cata[i], 1, -1, -1);
+		gtk_tree_store_set (model, &iter, 0, _(cata[i]), 1, -1, -1);
 		i++;
 
 		do
 		{
 			gtk_tree_store_append (model, &child_iter, &iter);
-			gtk_tree_store_set (model, &child_iter, 0, cata[i], 1, page, -1);
+			gtk_tree_store_set (model, &child_iter, 0, _(cata[i]), 1, page, -1);
 			if (page == last_selected_page)
 				sel_iter = gtk_tree_iter_copy (&child_iter);
 			page++;

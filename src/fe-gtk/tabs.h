@@ -7,4 +7,4 @@ GtkWidget *tab_group_add (GtkWidget *group, char *name, void *family, void *user
 void tab_focus (GtkWidget *tab);
 void tab_rename (GtkWidget *tab, char *new_name);
 void tab_remove (GtkWidget *tab);
-void tab_style (GtkWidget *tab, GtkStyle *style);
+void tab_set_attrlist (GtkWidget *tab, PangoAttrList *list);

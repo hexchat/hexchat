@@ -345,7 +345,7 @@ fe_set_hilight (struct session *sess)
 	if (sess->gui->is_tab)
 	{
 		sess->nick_said = TRUE;
-		tab_style (sess->res->tab, nickseen_style);
+		tab_set_attrlist (sess->res->tab, nickseen_list);
 	}
 }
 
@@ -478,9 +478,9 @@ fe_print_text (struct session *sess, char *text)
 	{
 		sess->new_data = TRUE;
 		if (sess->msg_said)
-			tab_style (sess->res->tab, newmsg_style);
+			tab_set_attrlist (sess->res->tab, newmsg_list);
 		else
-			tab_style (sess->res->tab, newdata_style);
+			tab_set_attrlist (sess->res->tab, newdata_list);
 	}
 }
 
