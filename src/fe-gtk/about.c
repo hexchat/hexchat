@@ -88,6 +88,7 @@ menu_about (GtkWidget * wid, gpointer sess)
 	GtkWidget *vbox, *label, *hbox;
 	char buf[512];
 	const char *locale = NULL;
+	extern GtkWindow *parent_window;      /* maingui.c */
 
 	if (about)
 	{
@@ -99,6 +100,8 @@ menu_about (GtkWidget * wid, gpointer sess)
 	gtk_window_set_position (GTK_WINDOW (about), GTK_WIN_POS_CENTER);
 	gtk_window_set_resizable (GTK_WINDOW (about), FALSE);
 	gtk_window_set_title (GTK_WINDOW (about), _("About X-Chat"));
+	if (parent_window)
+		gtk_window_set_transient_for (GTK_WINDOW (about), parent_window);
 	g_signal_connect (G_OBJECT (about), "destroy",
 							G_CALLBACK (about_close), 0);
 
