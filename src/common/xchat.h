@@ -137,6 +137,7 @@ struct xchatprefs
 	int tint_green;
 	int tint_blue;
 
+	int away_size_max;
 	int paned_pos;
 	int tabs_position;
 	int max_auto_indent;
@@ -332,6 +333,7 @@ typedef struct server
 	void (*p_chan_mode)(struct server *, char *channel, char *mode);
 	void (*p_nick_mode)(struct server *, char *nick, char *mode);
 	void (*p_user_list)(struct server *, char *channel);
+	void (*p_away_status)(struct server *, char *channel);
 	void (*p_whois)(struct server *, char *nicks);
 	void (*p_get_ip)(struct server *, char *nick);
 	void (*p_set_back)(struct server *);
@@ -421,6 +423,7 @@ typedef struct server
 	int dont_use_proxy:1;		/* to proxy or not to proxy */
 	int supports_watch:1;		/* supports the WATCH command */
 	int bad_prefix:1;				/* gave us a bad PREFIX= 005 number */
+	int have_whox:1;				/* have undernet's WHOX features */
 #ifdef USE_OPENSSL
 	int use_ssl:1;					  /* is server SSL capable? */
 	int accept_invalid_cert:1;	  /* ignore result of server's cert. verify */

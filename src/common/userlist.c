@@ -94,26 +94,47 @@ userlist_insertname (session *sess, struct User *newuser)
 	return tree_insert (sess->usertree, newuser);
 }
 
-int
-userlist_add_hostname (struct session *sess, char *nick, char *hostname,
-							  char *realname, char *servername)
+void
+userlist_set_away (struct session *sess, char *nick, unsigned int away)
 {
 	struct User *user;
 	int pos;
 
 	user = find_name (sess, nick);
-	if (user && !user->hostname)
+	if (user)
 	{
-		user->hostname = strdup (hostname);
-		if (!user->realname)
-			user->realname = strdup (realname);
-		if (!user->servername)
-			user->servername = strdup (servername);
-		if (prefs.showhostname_in_userlist)
+		if (user->away != away)
 		{
+			user->away = away;
+			/* rehash GUI */
 			tree_remove (sess->usertree, user, &pos);
 			fe_userlist_move (sess, user, tree_insert (sess->usertree, user));
 		}
+	}
+}
+
+int
+userlist_add_hostname (struct session *sess, char *nick, char *hostname,
+							  char *realname, char *servername, unsigned int away)
+{
+	struct User *user;
+
+	user = find_name (sess, nick);
+	if (user)
+	{
+		if (!user->hostname && hostname)
+			user->hostname = strdup (hostname);
+		if (!user->realname && realname)
+			user->realname = strdup (realname);
+		if (!user->servername && servername)
+			user->servername = strdup (servername);
+
+		if (prefs.showhostname_in_userlist || user->away != away)
+		{
+			user->away = away;
+			fe_userlist_rehash (sess, user);
+		}
+		user->away = away;
 		return 1;
 	}
 	return 0;
@@ -380,24 +401,17 @@ add_name (struct session *sess, char *name, char *hostname)
 	fe_userlist_numbers (sess);
 }
 
-void
-update_all_of (char *name)
+static int
+rehash_cb (struct User *user, session *sess)
 {
-#if 0
-	struct User *user;
-	struct session *sess;
-	GSList *list = sess_list;
-	while (list)
-	{
-		sess = (struct session *) list->data;
-		user = find_name (sess, name);
-		if (user)
-		{
-			update_entry (sess, user);
-		}
-		list = list->next;
-	}
-#endif
+	fe_userlist_rehash (sess, user);
+	return TRUE;
+}
+
+void
+userlist_rehash (session *sess)
+{
+	tree_foreach (sess->usertree_alpha, (tree_traverse_func *)rehash_cb, sess);
 }
 
 static int

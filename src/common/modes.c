@@ -645,6 +645,9 @@ inbound_005 (server * serv, char *word[])
 		{
 									/* 12345678901234567 */
 			tcp_send_len (serv, "PROTOCTL NAMESX\r\n", 17);
+		} else if (strcmp (word[w], "WHOX") == 0)
+		{
+			serv->have_whox = TRUE;
 		}
 
 		w++;

@@ -838,6 +838,7 @@ inbound_away (server *serv, char *nick, char *msg)
 {
 	struct away_msg *away = find_away_message (serv, nick);
 	session *sess = NULL;
+	GSList *list;
 
 	if (away && !strcmp (msg, away->message))	/* Seen the msg before? */
 	{
@@ -854,6 +855,15 @@ inbound_away (server *serv, char *nick, char *msg)
 		sess = serv->server_session;
 
 	EMIT_SIGNAL (XP_TE_WHOIS5, sess, nick, msg, NULL, NULL, 0);
+
+	list = sess_list;
+	while (list)
+	{
+		sess = list->data;
+		if (sess->server == serv)
+			userlist_set_away (sess, nick, TRUE);
+		list = list->next;
+	}
 }
 
 int
@@ -987,12 +997,30 @@ inbound_login_start (session *sess, char *nick, char *servname)
 	}
 }
 
+static void
+inbound_set_all_away_status (server *serv, char *nick, unsigned int status)
+{
+	GSList *list;
+	session *sess;
+
+	list = sess_list;
+	while (list)
+	{
+		sess = list->data;
+		if (sess->server == serv)
+			userlist_set_away (sess, nick, status);
+		list = list->next;
+	}
+}
+
 void
 inbound_uaway (server *serv)
 {
 	serv->is_away = TRUE;
 	serv->away_time = time (NULL);
 	fe_set_away (serv);
+
+	inbound_set_all_away_status (serv, serv->nick, 1);
 }
 
 void
@@ -1001,6 +1029,8 @@ inbound_uback (server *serv)
 	serv->is_away = FALSE;
 	serv->reconnect_away = FALSE;
 	fe_set_away (serv);
+
+	inbound_set_all_away_status (serv, serv->nick, 0);
 }
 
 void
@@ -1018,9 +1048,17 @@ inbound_foundip (session *sess, char *ip)
 	}
 }
 
+void
+inbound_user_info_start (session *sess, char *nick)
+{
+	/* set away to FALSE now, 301 may turn it back on */
+	inbound_set_all_away_status (sess->server, nick, 0);
+}
+
 int
 inbound_user_info (session *sess, char *outbuf, char *chan, char *user,
-						 char *host, char *servname, char *nick, char *realname)
+						 char *host, char *servname, char *nick, char *realname,
+						 unsigned int away)
 {
 	server *serv = sess->server;
 	session *who_sess;
@@ -1028,17 +1066,28 @@ inbound_user_info (session *sess, char *outbuf, char *chan, char *user,
 	who_sess = find_channel (serv, chan);
 	if (who_sess)
 	{
-		snprintf (outbuf, 2048, "%s@%s", user, host);
-		if (!userlist_add_hostname (who_sess, nick, outbuf, realname, servname))
+		if (user && host)
 		{
-			if (!who_sess->doing_who)
-				return 0;
+			snprintf (outbuf, 2048, "%s@%s", user, host);
+			if (!userlist_add_hostname (who_sess, nick, outbuf, realname, servname, away))
+			{
+				if (!who_sess->doing_who)
+					return 0;
+			}
+		} else
+		{
+			if (!userlist_add_hostname (who_sess, nick, NULL, realname, servname, away))
+			{
+				if (!who_sess->doing_who)
+					return 0;
+			}
 		}
 	} else
 	{
 		if (!serv->doing_who)
 			return 0;
-		do_dns (sess, outbuf, nick, host);
+		if (host)
+			do_dns (sess, outbuf, nick, host);
 	}
 	return 1;
 }

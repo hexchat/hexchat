@@ -665,6 +665,10 @@ fe_userlist_remove (struct session *sess, struct User *user)
 	return 0;
 }
 void
+fe_userlist_rehash (struct session *sess, struct User *user)
+{
+}
+void
 fe_userlist_move (struct session *sess, struct User *user, int new_row)
 {
 }

@@ -164,6 +164,15 @@ irc_user_list (server *serv, char *channel)
 	tcp_sendf (serv, "WHO %s\r\n", channel);
 }
 
+static void
+irc_away_status (server *serv, char *channel)
+{
+	if (serv->have_whox)
+		tcp_sendf (serv, "WHO %s %%cnf\r\n", channel);
+	else
+		tcp_sendf (serv, "WHO %s\r\n", channel);
+}
+
 /*static void
 irc_get_ip (server *serv, char *nick)
 {
@@ -346,6 +355,7 @@ process_numeric (session * sess, char *outbuf, int n,
 		/* FALL THROUGH */
 
 	case 314:
+		inbound_user_info_start (sess, word[4]);
 		EMIT_SIGNAL (XP_TE_WHOIS1, serv->server_session, word[4], word[5],
 						 word[6], word_eol[8] + 1, 0);
 		break;
@@ -459,8 +469,11 @@ process_numeric (session * sess, char *outbuf, int n,
 	case 352:						  /* WHO */
 		if (!serv->skip_next_who)
 		{
+			unsigned int away = 0;
+			if (strchr (word[9], 'G'))
+				away = 1;
 			if (!inbound_user_info (sess, outbuf, word[4], word[5], word[6],
-											word[7], word[8], word_eol[11]))
+											word[7], word[8], word_eol[11], away))
 				EMIT_SIGNAL (XP_TE_SERVTEXT, serv->server_session, text, word[1],
 								 NULL, NULL, 0);
 		} else
@@ -468,6 +481,22 @@ process_numeric (session * sess, char *outbuf, int n,
 			if (!serv->p_cmp (word[8], serv->nick))
 				inbound_foundip (sess, word[6]);
 		}
+		break;
+
+	case 354:	/* undernet WHOX: used as a reply for irc_away_status */
+		if (sess->doing_who)
+		{
+			unsigned int away = 0;
+
+			if (strchr (word[6], 'G'))
+				away = 1;
+			/* :SanJose.CA.us.undernet.org 354 z1 #zed1 z1 H@ */
+			if (!inbound_user_info (sess, outbuf, word[4], NULL, NULL,
+											NULL, word[5], NULL, away))
+				EMIT_SIGNAL (XP_TE_SERVTEXT, serv->server_session, text, word[1],
+								 NULL, NULL, 0);
+		} else
+			goto def;
 		break;
 
 	case 315:						  /* END OF WHO */
@@ -872,6 +901,7 @@ proto_fill_her_up (server *serv)
 	serv->p_chan_mode = irc_chan_mode;
 	serv->p_nick_mode = irc_nick_mode;
 	serv->p_user_list = irc_user_list;
+	serv->p_away_status = irc_away_status;
 	/*serv->p_get_ip = irc_get_ip;*/
 	serv->p_whois = irc_user_whois;
 	serv->p_get_ip = irc_user_list;

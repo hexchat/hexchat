@@ -154,11 +154,13 @@ void
 lag_check (void)
 {
 	server *serv;
+	session *sess;
 	GSList *list = serv_list;
 	unsigned long tim;
 	char tbuf[128];
 	time_t now = time (0);
 	int lag;
+	static int count = 0;
 
 	tim = make_ping_time ();
 
@@ -180,6 +182,55 @@ lag_check (void)
 				serv->p_ping (serv, "", tbuf);
 				serv->lag_sent = tim;
 				fe_set_lag (serv, -1);
+			}
+		}
+		list = list->next;
+	}
+
+	if (prefs.away_size_max < 1)
+		return;
+
+	count++;
+	if (count >= 9)
+		count = 1;
+
+	/* request an update of AWAY status of all channels every 60 seconds */
+	list = sess_list;
+	while (list)
+	{
+		sess = list->data;
+		if (sess->server->connected &&
+			 sess->type == SESS_CHANNEL &&
+			 sess->channel[0] &&
+			 sess->total <= prefs.away_size_max)
+		{
+			int do_it = FALSE;
+
+			if (sess->total < 400)
+			{
+				switch (count)
+				{
+				case 1:
+				case 3:
+				case 5:
+				case 7:
+					do_it = TRUE;
+				}
+			} else
+			{
+				switch (count)	/* less often for large channels (120s) */
+				{
+				case 2:
+				case 6:
+					do_it = TRUE;
+				}
+			}
+
+			if (do_it)
+			{
+				sess->doing_who = TRUE;
+				/* this'll send a WHO #channel */
+				sess->server->p_away_status (sess->server, sess->channel);
 			}
 		}
 		list = list->next;

@@ -481,9 +481,7 @@ fe_chan_list_end (struct server *serv)
 void
 fe_notify_update (char *name)
 {
-	if (name)
-		update_all_of (name);
-	else
+	if (!name)
 		notify_gui_update ();
 }
 

@@ -233,6 +233,25 @@ fe_userlist_remove (session *sess, struct User *user)
 }
 
 void
+fe_userlist_rehash (session *sess, struct User *user)
+{
+	GtkTreeIter *iter;
+	int sel;
+
+	iter = find_row (GTK_TREE_VIEW (sess->gui->user_tree),
+						  sess->res->user_model, user, &sel);
+	if (!iter)
+		return;
+
+	gtk_list_store_set (GTK_LIST_STORE (sess->res->user_model), iter,
+							  2, user->hostname,
+							  4, (prefs.away_size_max > 0)
+									?	(user->away ? &colors[23] : NULL)
+									:	(NULL),
+							  -1);
+}
+
+void
 fe_userlist_insert (session *sess, struct User *newuser, int row, int sel)
 {
 	GtkTreeModel *model = sess->res->user_model;
@@ -257,6 +276,9 @@ fe_userlist_insert (session *sess, struct User *newuser, int row, int sel)
 							  1, newuser->nick,
 							  2, newuser->hostname,
 							  3, newuser,
+							  4, (prefs.away_size_max > 0)
+									?	(newuser->away ? &colors[23] : NULL)
+									:	(NULL),
 							  -1);
 
 	/* is it me? */
@@ -369,8 +391,8 @@ userlist_dnd_leave (GtkTreeView *widget, GdkDragContext *context, guint ttime)
 void *
 userlist_create_model (void)
 {
-	return gtk_list_store_new (4, GDK_TYPE_PIXBUF, G_TYPE_STRING, G_TYPE_STRING,
-										G_TYPE_POINTER);
+	return gtk_list_store_new (5, GDK_TYPE_PIXBUF, G_TYPE_STRING, G_TYPE_STRING,
+										G_TYPE_POINTER, GDK_TYPE_COLOR);
 }
 
 static void
@@ -388,7 +410,7 @@ userlist_add_columns (GtkTreeView * treeview)
 	renderer = gtk_cell_renderer_text_new ();
 	gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (treeview),
 																-1, NULL, renderer,
-																"text", 1, NULL);
+													"text", 1, "foreground-gdk", 4, NULL);
 
 	if (prefs.showhostname_in_userlist)
 	{

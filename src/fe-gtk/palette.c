@@ -56,7 +56,9 @@ GdkColor colors[] = {
 	{0, 0x8c8c, 0x1010, 0x1010}, /* 20 tab New Data (dark red) */
 	{0, 0x0000, 0x0000, 0xffff}, /* 21 tab Nick Mentioned (blue) */
 	{0, 0xf5f5, 0x0000, 0x0000}, /* 22 tab New Message (red) */
+	{0, 0x9999, 0x9999, 0x9999}, /* 23 away user (grey) */
 };
+#define MAX_COL 23
 
 void
 palette_alloc (GtkWidget * widget)
@@ -69,7 +71,7 @@ palette_alloc (GtkWidget * widget)
 	{
 		done_alloc = TRUE;
 		cmap = gtk_widget_get_colormap (widget);
-		for (i = 22; i >= 0; i--)
+		for (i = MAX_COL; i >= 0; i--)
 			gdk_colormap_alloc_color (cmap, &colors[i], TRUE, TRUE);
 	}
 }
@@ -96,7 +98,7 @@ palette_load (void)
 			if (l >= 0)
 				cfg[l] = '\0';
 
-			for (i = 0; i < 23; i++)
+			for (i = 0; i < MAX_COL+1; i++)
 			{
 				snprintf (prefname, sizeof prefname, "color_%d_red", i);
 				red = cfg_get_int (cfg, prefname);
@@ -130,7 +132,7 @@ palette_save (void)
    fh = open (prefname, O_TRUNC | O_WRONLY | O_CREAT | OFLAGS, 0600);
 	if (fh != -1)
 	{
-		for (i = 0; i < 23; i++)
+		for (i = 0; i < MAX_COL+1; i++)
 		{
 			snprintf (prefname, sizeof prefname, "color_%d_red", i);
 			cfg_put_int (fh, colors[i].red, prefname);

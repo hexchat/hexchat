@@ -47,6 +47,7 @@ GtkStyle *create_input_style (void);
 
 
 static int last_selected_page = 0;
+static gboolean color_change;
 static struct xchatprefs setup_prefs;
 
 enum
@@ -132,6 +133,7 @@ static const setting userlist_settings[] =
 	{ST_TOGGLE, N_("Userlist buttons enabled"), P_OFFINT(userlistbuttons), 0, 0, 0},
 	{ST_TOGGLE, N_("Use the Text box font and colors"), P_OFFINT(style_namelistgad),0,0,0},
 	{ST_TOGGLE, N_("Resizable userlist"), P_OFFINT(paned_userlist),0,0,0},
+	{ST_NUMBER, N_("Do not track away-status on channels larger than:"), P_OFFINT(away_size_max),0,0,10000},
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
@@ -288,14 +290,18 @@ static void
 setup_create_spin (GtkWidget *table, int row, const setting *set)
 {
 	GtkWidget *label, *wid, *rbox, *align;
+	int add = 0;
+
+	if (strlen (set->label) > 30)
+		add = 2;
 
 	label = gtk_label_new (_(set->label));
 	gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
-	gtk_table_attach (GTK_TABLE (table), label, 0, 1, row, row + 1,
+	gtk_table_attach (GTK_TABLE (table), label, 0, 1+add, row, row + 1,
 							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
 
 	align = gtk_alignment_new (0.0, 1.0, 0.0, 0.0);
-	gtk_table_attach_defaults (GTK_TABLE (table), align, 1, 2, row, row + 1);
+	gtk_table_attach_defaults (GTK_TABLE (table), align, 1+add, 2+add, row, row + 1);
 
 	rbox = gtk_hbox_new (0, 0);
 	gtk_container_add (GTK_CONTAINER (align), rbox);
@@ -612,6 +618,8 @@ setup_color_ok_cb (GtkWidget *button, GtkWidget *dialog)
 		return;
 	}
 
+	color_change = TRUE;
+
 	gtk_color_selection_get_current_color (GTK_COLOR_SELECTION (cdialog->colorsel), col);
 
 	gdk_colormap_alloc_color (gtk_widget_get_colormap (button), col, TRUE, TRUE);
@@ -718,6 +726,7 @@ setup_create_color_page (void)
 	setup_create_other_color (_("New Data:"), 20, 10, tab);
 	setup_create_other_color (_("New Message:"), 22, 11, tab);
 	setup_create_other_color (_("Highlight:"), 21, 12, tab);
+	setup_create_other_color (_("Away User:"), 23, 13, tab);
 
 	return box;
 }
@@ -921,6 +930,7 @@ setup_apply (struct xchatprefs *pr)
 	GtkStyle *old_style;
 	int new_pix = FALSE;
 	int noapply = FALSE;
+	int do_ulist = FALSE;
 
 	if (strcmp (pr->background, prefs.background) != 0)
 		new_pix = TRUE;
@@ -935,6 +945,9 @@ setup_apply (struct xchatprefs *pr)
 		noapply = TRUE;
 	if (DIFF (showhostname_in_userlist))
 		noapply = TRUE;
+
+	if (color_change || (DIFF (away_size_max)))
+		do_ulist = TRUE;
 
 	memcpy (&prefs, pr, sizeof (prefs));
 
@@ -977,6 +990,9 @@ setup_apply (struct xchatprefs *pr)
 			log_open (sess);
 		else
 			log_close (sess);
+
+		if (do_ulist)
+			userlist_rehash (sess);
 
 		list = list->next;
 	}
@@ -1078,6 +1094,7 @@ setup_open (void)
 
 	memcpy (&setup_prefs, &prefs, sizeof (prefs));
 
+	color_change = FALSE;
 	setup_window = setup_window_open ();
 
 	g_signal_connect (G_OBJECT (setup_window), "destroy",
