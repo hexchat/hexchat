@@ -940,6 +940,16 @@ mg_tab_press_cb (GtkWidget *wid, GdkEventButton *event, session *sess)
 {
 	GtkWidget *menu, *submenu, *item;
 
+	/* shift-click to close a tab */
+	if (event->state & GDK_SHIFT_MASK)
+	{
+		if (sess)
+			mg_close_sess (sess);
+		else
+			gtk_widget_destroy (wid);
+		return FALSE;
+	}
+
 	if (event->button != 3)
 		return FALSE;
 

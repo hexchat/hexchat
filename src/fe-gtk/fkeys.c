@@ -1917,6 +1917,11 @@ tab_nick_comp (session *sess, GtkWidget *t, int shift)
 		nick_buf[0] = 0;
 		while (match_list)
 		{
+			if (strlen (nick_buf) + strlen (match_list->data) >= sizeof (nick_buf))
+			{
+				PrintText (sess, nick_buf);
+				nick_buf[0] = 0;		
+			}
 			sprintf (nick_buf, "%s%s ", nick_buf, (char *)match_list->data);
 			match_list = match_list->next;
 		}
