@@ -2974,6 +2974,7 @@ handle_say (session *sess, char *text, int check_spch)
 
 		if (strlen (text) > max)
 		{
+			/* FIXME: utf8 */
 			t = text[max];
 			text[max] = 0;			  /* insert a NULL terminator to shorten it */
 		}

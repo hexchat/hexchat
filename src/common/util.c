@@ -1386,28 +1386,3 @@ play_wave (const char *file)
 		fe_message (buf, FALSE);
 	}
 }
-
-char *
-text_validate (char **text, int *len)
-{
-	char *utf;
-	int utf_len;
-
-	/* valid utf8? */
-	if (g_utf8_validate (*text, *len, 0))
-		return NULL;
-
-	/* maybe it's iso-8859-1 */
-	utf = g_convert (*text, *len, "UTF-8", "ISO-8859-1", 0, &utf_len, 0);
-	if (!utf)       /* should never happen; all text is iso-8859-1 valid */
-	{
-		*text = g_strdup ("%INVALID%");
-		*len = 8;
-	} else
-	{
-		*text = utf;
-		*len = utf_len;
-	}
-
-	return utf;
-}
