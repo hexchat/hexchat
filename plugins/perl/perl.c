@@ -105,7 +105,6 @@ typedef struct
   char *name;
   char *version;
   char *desc;
-  HookType type;
   SV *shutdowncallback;
   void *gui_entry;
 } PerlScript;
@@ -115,6 +114,7 @@ typedef struct
   SV *name;
   SV *callback;
   SV *userdata;
+  HookType type;
   xchat_hook *hook;
   
 } HookData;
@@ -211,6 +211,7 @@ timer_cb (void *userdata)
 				hook_list = g_slist_remove (hook_list,
 								data->hook);
 				SvREFCNT_dec (data->callback);
+
 				if (data->userdata) {
 				  SvREFCNT_dec (data->userdata);
 				}
