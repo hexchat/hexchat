@@ -475,13 +475,8 @@ servlist_connect (session *sess, ircnet *net)
 	server_fill_her_up (sess->server);
 
 	if (net->autojoin)
-	{
 		safe_strcpy (sess->willjoinchannel, net->autojoin,
 						 sizeof (sess->willjoinchannel));
-		space = strchr (sess->willjoinchannel, ' ');
-		if (space)
-			space[0] = 0;
-	}
 	if (net->pass)
 		safe_strcpy (serv->password, net->pass, sizeof (serv->password));
 

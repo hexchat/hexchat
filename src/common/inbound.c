@@ -887,6 +887,9 @@ check_willjoin_channels (server *serv)
 				po = strchr (sess->waitchannel, ',');
 				if (po)
 					*po = 0;
+				po = strchr (sess->waitchannel, ' ');
+				if (po)
+					*po = 0;
 			}
 		}
 		list = list->next;
