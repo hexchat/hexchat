@@ -964,7 +964,7 @@ static XS (XS_Xchat_get_list)
 	SV *	name;
 	HV * hash;
 	xchat_list *list;
-	const char ** fields;
+	const char * const * fields;
 	const char *field;
 	int i = 0; /* field index */
 	int count = 0; /* return value for scalar context */
