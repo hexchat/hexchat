@@ -1,5 +1,6 @@
 # X-Chat german translation file
-# Copyright (C) 2000 Free Software Foundation, Inc.
+# Copyright (C) 2000, 2003 Free Software Foundation, Inc.
+# Karl Eichwalder <ke@gnu.franken.de>, 2003.
 # Benedikt Roth <Benedikt.Roth@gmx.net>, 2000.
 # Christian Meyer <linux@chrisim.de>, 2000.
 # Matthias Warkus <mawa@iname.com>, 1999.
@@ -7,18 +8,18 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: xchat 1.6.x\n"
+"Project-Id-Version: xchat 2.0.0pre1\n"
 "POT-Creation-Date: 2003-01-26 19:59+1100\n"
-"PO-Revision-Date: 2001-02-01 15:57+01:00\n"
-"Last-Translator: Christian Meyer <cm@ggtt.de>\n"
-"Language-Team: German <gnome-de@gnome.org>\n"
+"PO-Revision-Date: 2003-01-31 21:09+0100\n"
+"Last-Translator: Karl Eichwalder <ke@gnu.franken.de>\n"
+"Language-Team: German <de@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: src/common/cfgfiles.c:315
 msgid "Cannot create ~/.xchat2"
-msgstr ""
+msgstr "Es ist nicht möglich ~/.xchat2 zu erzeugen."
 
 #: src/common/cfgfiles.c:590
 msgid "I'm busy"
@@ -53,7 +54,7 @@ msgstr ""
 #. red
 #: src/common/dcc.c:57
 msgid "Done"
-msgstr ""
+msgstr "Fertig"
 
 #. green
 #: src/common/dcc.c:58
@@ -78,12 +79,12 @@ msgstr ""
 #: src/common/ignore.c:112 src/common/ignore.c:116 src/common/ignore.c:120
 #: src/common/ignore.c:124 src/common/ignore.c:128 src/common/ignore.c:132
 msgid "YES  "
-msgstr ""
+msgstr "JA   "
 
 #: src/common/ignore.c:114 src/common/ignore.c:118 src/common/ignore.c:122
 #: src/common/ignore.c:126 src/common/ignore.c:130 src/common/ignore.c:134
 msgid "NO   "
-msgstr ""
+msgstr "NEIN "
 
 #: src/common/notify.c:396
 #, c-format
@@ -160,10 +161,7 @@ msgid "AWAY [<reason>], sets you away"
 msgstr ""
 
 #: src/common/outbound.c:2459
-msgid ""
-"BAN <mask> [<bantype>], bans everyone matching the mask from the current "
-"channel. If they are already on the channel this doesn't kick them (needs "
-"chanop)"
+msgid "BAN <mask> [<bantype>], bans everyone matching the mask from the current channel. If they are already on the channel this doesn't kick them (needs chanop)"
 msgstr ""
 
 #: src/common/outbound.c:2461
@@ -179,9 +177,7 @@ msgid "CLOSE, Closes the current window/tab"
 msgstr ""
 
 #: src/common/outbound.c:2466
-msgid ""
-"CTCP <nick> <message>, send the CTCP message to nick, common messages are "
-"VERSION and USERINFO"
+msgid "CTCP <nick> <message>, send the CTCP message to nick, common messages are VERSION and USERINFO"
 msgstr ""
 
 #: src/common/outbound.c:2468
@@ -208,21 +204,15 @@ msgid "DELBUTTON <name>, deletes a button from under the user-list"
 msgstr ""
 
 #: src/common/outbound.c:2484
-msgid ""
-"DEHOP <nick>, removes chanhalf-op status from the nick on the current "
-"channel (needs chanop)"
+msgid "DEHOP <nick>, removes chanhalf-op status from the nick on the current channel (needs chanop)"
 msgstr ""
 
 #: src/common/outbound.c:2486
-msgid ""
-"DEOP <nick>, removes chanop status from the nick on the current channel "
-"(needs chanop)"
+msgid "DEOP <nick>, removes chanop status from the nick on the current channel (needs chanop)"
 msgstr ""
 
 #: src/common/outbound.c:2488
-msgid ""
-"DEVOICE <nick>, removes voice status from the nick on the current channel "
-"(needs chanop)"
+msgid "DEVOICE <nick>, removes voice status from the nick on the current channel (needs chanop)"
 msgstr ""
 
 #: src/common/outbound.c:2489
@@ -238,15 +228,11 @@ msgid "ECHO <text>, Prints text locally"
 msgstr ""
 
 #: src/common/outbound.c:2494
-msgid ""
-"EXEC [-o] <command>, runs the command. If -o flag is used then output is "
-"sent to current channel, else is printed to current text box"
+msgid "EXEC [-o] <command>, runs the command. If -o flag is used then output is sent to current channel, else is printed to current text box"
 msgstr ""
 
 #: src/common/outbound.c:2496
-msgid ""
-"EXECKILL [-9], kills a running exec in the current session. If -9 is given "
-"the process is SIGKILL'ed"
+msgid "EXECKILL [-9], kills a running exec in the current session. If -9 is given the process is SIGKILL'ed"
 msgstr ""
 
 #: src/common/outbound.c:2498
@@ -283,9 +269,7 @@ msgid ""
 msgstr ""
 
 #: src/common/outbound.c:2520
-msgid ""
-"INVITE <nick> [<channel>], invites someone to a channel, by default the "
-"current channel (needs chanop)"
+msgid "INVITE <nick> [<channel>], invites someone to a channel, by default the current channel (needs chanop)"
 msgstr ""
 
 #: src/common/outbound.c:2521
@@ -297,9 +281,7 @@ msgid "KICK <nick>, kicks the nick from the current channel (needs chanop)"
 msgstr ""
 
 #: src/common/outbound.c:2525
-msgid ""
-"KICKBAN <nick>, bans then kicks the nick from the current channel (needs "
-"chanop)"
+msgid "KICKBAN <nick>, bans then kicks the nick from the current channel (needs chanop)"
 msgstr ""
 
 #: src/common/outbound.c:2527
@@ -316,8 +298,7 @@ msgid "LOAD <file>, loads a plugin or script"
 msgstr "Python-Skript laden..."
 
 #: src/common/outbound.c:2534
-msgid ""
-"MDEHOP, Mass deop's all chanhalf-ops in the current channel (needs chanop)"
+msgid "MDEHOP, Mass deop's all chanhalf-ops in the current channel (needs chanop)"
 msgstr ""
 
 #: src/common/outbound.c:2536
@@ -325,14 +306,11 @@ msgid "MDEOP, Mass deop's all chanops in the current channel (needs chanop)"
 msgstr ""
 
 #: src/common/outbound.c:2538
-msgid ""
-"MKICK, Mass kicks everyone except you in the current channel (needs chanop)"
+msgid "MKICK, Mass kicks everyone except you in the current channel (needs chanop)"
 msgstr ""
 
 #: src/common/outbound.c:2540
-msgid ""
-"ME <action>, sends the action to the current channel (actions are written in "
-"the 3rd person, like /me jumps)"
+msgid "ME <action>, sends the action to the current channel (actions are written in the 3rd person, like /me jumps)"
 msgstr ""
 
 #: src/common/outbound.c:2541
@@ -356,9 +334,7 @@ msgid "NICK <nickname>, sets your nick"
 msgstr ""
 
 #: src/common/outbound.c:2551
-msgid ""
-"NOTICE <nick/channel> <message>, sends a notice. Notices are a type of "
-"message that should be auto reacted to"
+msgid "NOTICE <nick/channel> <message>, sends a notice. Notices are a type of message that should be auto reacted to"
 msgstr ""
 
 #: src/common/outbound.c:2553
@@ -370,8 +346,7 @@ msgid "OP <nick>, gives chanop status to the nick (needs chanop)"
 msgstr ""
 
 #: src/common/outbound.c:2557
-msgid ""
-"PART [<channel>] [<reason>], leaves the channel, by default the current one"
+msgid "PART [<channel>] [<reason>], leaves the channel, by default the current one"
 msgstr ""
 
 #: src/common/outbound.c:2559
@@ -391,23 +366,15 @@ msgid "QUOTE <text>, sends the text in raw form to the server"
 msgstr ""
 
 #: src/common/outbound.c:2568
-msgid ""
-"RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as /"
-"RECONNECT to reconnect to the current server or with /RECONNECT ALL to "
-"reconnect to all the open servers"
+msgid "RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as /RECONNECT to reconnect to the current server or with /RECONNECT ALL to reconnect to all the open servers"
 msgstr ""
 
 #: src/common/outbound.c:2571
-msgid ""
-"RECONNECT [<host>] [<port>] [<password>], Can be called just as /RECONNECT "
-"to reconnect to the current server or with /RECONNECT ALL to reconnect to "
-"all the open servers"
+msgid "RECONNECT [<host>] [<port>] [<password>], Can be called just as /RECONNECT to reconnect to the current server or with /RECONNECT ALL to reconnect to all the open servers"
 msgstr ""
 
 #: src/common/outbound.c:2573
-msgid ""
-"RECV <text>, send raw data to xchat, as if it was received from the irc "
-"server"
+msgid "RECV <text>, send raw data to xchat, as if it was received from the irc server"
 msgstr ""
 
 #: src/common/outbound.c:2576
@@ -427,20 +394,15 @@ msgid "SERVCHAN <host> <port> <channel>, connects and joins a channel"
 msgstr ""
 
 #: src/common/outbound.c:2588
-msgid ""
-"SERVER [-ssl] <host> [<port>] [<password>], connects to a server, the "
-"default port is 6667 for normal connections, and 9999 for ssl connections"
+msgid "SERVER [-ssl] <host> [<port>] [<password>], connects to a server, the default port is 6667 for normal connections, and 9999 for ssl connections"
 msgstr ""
 
 #: src/common/outbound.c:2591
-msgid ""
-"SERVER <host> [<port>] [<password>], connects to a server, the default port "
-"is 6667"
+msgid "SERVER <host> [<port>] [<password>], connects to a server, the default port is 6667"
 msgstr ""
 
 #: src/common/outbound.c:2594
-msgid ""
-"TOPIC [<topic>], sets the topic if one is given, else shows the current topic"
+msgid "TOPIC [<topic>], sets the topic if one is given, else shows the current topic"
 msgstr ""
 
 #: src/common/outbound.c:2595
@@ -453,8 +415,7 @@ msgid "UNLOAD <name>, unloads a plugin or script"
 msgstr "Python-Skript laden..."
 
 #: src/common/outbound.c:2599
-msgid ""
-"WALLCHOP <message>, sends the message to all chanops on the current channel"
+msgid "WALLCHOP <message>, sends the message to all chanops on the current channel"
 msgstr ""
 
 #: src/common/outbound.c:2601
@@ -2398,69 +2359,43 @@ msgid "Search buffer is empty.\n"
 msgstr "Im Puffer suchen.."
 
 #: src/fe-gtk/fkeys.c:148
-msgid ""
-"The Run Command action runs the data in Data 1 as if it has been typed into "
-"the entry box where you pressed the key sequence. Thus it can contain text "
-"(which will be sent to the channel/person), commands or user commands. When "
-"run all \\n characters in Data 1 are used to deliminate seperate commands so "
-"it is possible to run more than one command. If you want a \\ in the actual "
-"text run then enter \\\\"
+msgid "The Run Command action runs the data in Data 1 as if it has been typed into the entry box where you pressed the key sequence. Thus it can contain text (which will be sent to the channel/person), commands or user commands. When run all \\n characters in Data 1 are used to deliminate seperate commands so it is possible to run more than one command. If you want a \\ in the actual text run then enter \\\\"
 msgstr ""
 
 #: src/fe-gtk/fkeys.c:150
-msgid ""
-"The Change Page command switches between pages in the notebook. Set Data 1 "
-"to the page you want to switch to. If Data 2 is set to anything then the "
-"switch will be relative to the current position"
+msgid "The Change Page command switches between pages in the notebook. Set Data 1 to the page you want to switch to. If Data 2 is set to anything then the switch will be relative to the current position"
 msgstr ""
 
 #: src/fe-gtk/fkeys.c:152
-msgid ""
-"The Insert in Buffer command will insert the contents of Data 1 into the "
-"entry where the key sequence was pressed at the current cursor position"
+msgid "The Insert in Buffer command will insert the contents of Data 1 into the entry where the key sequence was pressed at the current cursor position"
 msgstr ""
 
 #: src/fe-gtk/fkeys.c:154
-msgid ""
-"The Scroll Page command scrolls the text widget up or down one page. If Data "
-"1 is set to anything the page scrolls up, else it scrolls down"
+msgid "The Scroll Page command scrolls the text widget up or down one page. If Data 1 is set to anything the page scrolls up, else it scrolls down"
 msgstr ""
 
 #: src/fe-gtk/fkeys.c:156
-msgid ""
-"The Set Buffer command sets the entry where the key sequence was entered to "
-"the contents of Data 1"
+msgid "The Set Buffer command sets the entry where the key sequence was entered to the contents of Data 1"
 msgstr ""
 
 #: src/fe-gtk/fkeys.c:158
-msgid ""
-"The Last Command command sets the entry to contain the last command entered "
-"- the same as pressing up in a shell"
+msgid "The Last Command command sets the entry to contain the last command entered - the same as pressing up in a shell"
 msgstr ""
 
 #: src/fe-gtk/fkeys.c:160
-msgid ""
-"The Next Command command sets the entry to contain the next command entered "
-"- the same as pressing down in a shell"
+msgid "The Next Command command sets the entry to contain the next command entered - the same as pressing down in a shell"
 msgstr ""
 
 #: src/fe-gtk/fkeys.c:162
-msgid ""
-"This command changes the text in the entry to finish an incomplete nickname "
-"or command. If Data 1 is set then double-tabbing in a string will select the "
-"last nick, not the next"
+msgid "This command changes the text in the entry to finish an incomplete nickname or command. If Data 1 is set then double-tabbing in a string will select the last nick, not the next"
 msgstr ""
 
 #: src/fe-gtk/fkeys.c:164
-msgid ""
-"This command scrolls up and down through the list of nicks. If Data 1 is set "
-"to anything it will scroll up, else it scrolls down"
+msgid "This command scrolls up and down through the list of nicks. If Data 1 is set to anything it will scroll up, else it scrolls down"
 msgstr ""
 
 #: src/fe-gtk/fkeys.c:166
-msgid ""
-"This command checks the last work entered in the entry against the replace "
-"list and replaces it if it finds a match"
+msgid "This command checks the last work entered in the entry against the replace list and replaces it if it finds a match"
 msgstr ""
 
 #: src/fe-gtk/fkeys.c:168
@@ -3445,8 +3380,7 @@ msgid "Connect Command:"
 msgstr "Hinweis-Zeitbegrenzungen"
 
 #: src/fe-gtk/servlistgui.c:1047
-msgid ""
-"Command to execute after connecting. Can be used to authenticate to NickServ"
+msgid "Command to execute after connecting. Can be used to authenticate to NickServ"
 msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1055
@@ -3801,9 +3735,7 @@ msgid "Get my IP from IRC server"
 msgstr ""
 
 #: src/fe-gtk/setup.c:184
-msgid ""
-"/WHOIS yourself to find your real address. Use this if you have a 192.168.*."
-"* address!"
+msgid "/WHOIS yourself to find your real address. Use this if you have a 192.168.*.* address!"
 msgstr ""
 
 #: src/fe-gtk/setup.c:185
@@ -3902,8 +3834,7 @@ msgstr "Abwesenheits-Meldungen ankündigen"
 #: src/fe-gtk/setup.c:213
 #, fuzzy
 msgid "Announce your away messages to all channels"
-msgstr ""
-"Ihre Abwesenheits-Meldung den Kanälen, in denen Sie sich aufhalten, verkünden"
+msgstr "Ihre Abwesenheits-Meldung den Kanälen, in denen Sie sich aufhalten, verkünden"
 
 #: src/fe-gtk/setup.c:214
 msgid "Display MODEs in raw form"
@@ -4394,8 +4325,7 @@ msgstr ""
 #~ msgstr "Einstellbare Benutzerliste einschalten"
 
 #~ msgid "Use paned user list instead of a fixed width one"
-#~ msgstr ""
-#~ "Eine Benutzerliste mit verstellbarer Breite statt der festen benutzen"
+#~ msgstr "Eine Benutzerliste mit verstellbarer Breite statt der festen benutzen"
 
 #~ msgid "Complete nicknames when a partial one is entered"
 #~ msgstr "Spitznamen vervollständigen, wenn sie teilweise eingegeben werden"
@@ -4596,9 +4526,7 @@ msgstr ""
 #~ msgstr "Hostname des Proxy Servers:"
 
 #~ msgid "Only show away messages the first time they're seen"
-#~ msgstr ""
-#~ "Abwesenheits-Nachrichten nur beim ersten Mal, zu dem man sie sieht, "
-#~ "anzeigen"
+#~ msgstr "Abwesenheits-Nachrichten nur beim ersten Mal, zu dem man sie sieht, anzeigen"
 
 #~ msgid "Your away settings"
 #~ msgstr "Ihre Away-Einstellungen"
@@ -4801,8 +4729,7 @@ msgstr ""
 #~ msgstr "Spitznamen anzeigen"
 
 #~ msgid "Show nickname and op/voice icon before the input box"
-#~ msgstr ""
-#~ "Den eigenen Spitznamen und op/voice Icons vor der Eingabezeile anzeigen"
+#~ msgstr "Den eigenen Spitznamen und op/voice Icons vor der Eingabezeile anzeigen"
 
 #, fuzzy
 #~ msgid " Apply "

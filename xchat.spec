@@ -20,7 +20,7 @@ tabbed channels and more.
 Summary: XChat Perl plugin
 Group: Applications/Internet
 Requires: xchat >= 1.9.5
-Requires: perl = 5.8.0
+Requires: perl
 %description perl
 Provides Perl scripting capability to XChat.
 
@@ -28,7 +28,7 @@ Provides Perl scripting capability to XChat.
 Summary: XChat Python plugin
 Group: Applications/Internet
 Requires: xchat >= 1.9.5
-Requires: python >= 2.2.1
+Requires: python2 >= 2.2.0
 %description python
 Provides Python scripting capability to XChat.
 
@@ -36,7 +36,7 @@ Provides Python scripting capability to XChat.
 Summary: XChat TCL plugin
 Group: Applications/Internet
 Requires: xchat >= 1.9.8
-Requires: tcl >= 8.3.3
+Requires: tcl
 %description tcl
 Provides TCL scripting capability to XChat.
 
