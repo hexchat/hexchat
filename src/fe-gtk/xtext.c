@@ -666,6 +666,9 @@ gtk_xtext_adjustment_set (xtext_buffer *buf, int fire_signal)
 		if (adj->value > adj->upper - adj->page_size)
 			adj->value = adj->upper - adj->page_size;
 
+		if (adj->value < 0)
+			adj->value = 0;
+
 		if (fire_signal)
 			gtk_adjustment_changed (adj);
 	}
@@ -4101,16 +4104,6 @@ gtk_xtext_append_entry (xtext_buffer *buf, textentry * ent)
 		/* this could be improved */
 		if ((buf->num_lines - 1) <= buf->xtext->adj->page_size)
 			dontscroll (buf);
-/*		if (buf->num_lines <= buf->xtext->adj->page_size)
-		{
-			gtk_xtext_render_ents (buf->xtext, ent, NULL);
-			if (buf->xtext->add_io_tag)
-			{
-				g_source_remove (buf->xtext->add_io_tag);
-				buf->xtext->add_io_tag = 0;
-			}
-			return;
-		}*/
 #endif
 
 		if (!buf->xtext->add_io_tag)
@@ -4123,7 +4116,8 @@ gtk_xtext_append_entry (xtext_buffer *buf, textentry * ent)
 	} else if (buf->scrollbar_down)
 	{
 		buf->old_value = buf->num_lines - buf->xtext->adj->page_size;
-/*		buf->pagetop_ent = NULL;*/
+		if (buf->old_value < 0)
+			buf->old_value = 0;
 	}
 }
 
