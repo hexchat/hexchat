@@ -397,9 +397,9 @@ notify_showlist (struct session *sess)
 		notify = (struct notify *) list->data;
 		servnot = notify_find_server_entry (notify, sess->server);
 		if (servnot && servnot->ison)
-			sprintf (outbuf, _("  %-20s online\n"), notify->name);
+			snprintf (outbuf, sizeof (outbuf), _("  %-20s online\n"), notify->name);
 		else
-			sprintf (outbuf, _("  %-20s offline\n"), notify->name);
+			snprintf (outbuf, sizeof (outbuf), _("  %-20s offline\n"), notify->name);
 		PrintText (sess, outbuf);
 		list = list->next;
 	}
@@ -451,7 +451,14 @@ notify_adduser (char *name)
 	if (notify)
 	{
 		memset (notify, 0, sizeof (struct notify));
-		notify->name = strdup (name);
+		if (strlen (name) >= NICKLEN)
+		{
+			notify->name = malloc (NICKLEN);
+			safe_strcpy (notify->name, name, NICKLEN);
+		} else
+		{
+			notify->name = strdup (name);
+		}
 		notify->server_list = 0;
 		notify_list = g_slist_prepend (notify_list, notify);
 		notify_checklist ();

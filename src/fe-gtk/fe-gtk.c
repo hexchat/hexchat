@@ -735,6 +735,9 @@ fe_ctrl_gui (session *sess, int action, int arg)
 		fe_set_tab_color (sess, arg, FALSE); break;
 	case 5:
 		gtk_window_iconify (GTK_WINDOW (sess->gui->window)); break;
+	case 6:
+		menu_bar_toggle ();	/* toggle menubar on/off */
+		break;
 	}
 }
 

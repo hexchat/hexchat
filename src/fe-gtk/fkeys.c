@@ -409,7 +409,8 @@ key_load_defaults ()
 		"A\nLeft\nMove front tab left\nD1!\nD2!\n\n"\
 		"A\nRight\nMove front tab right\nD1!\nD2!\n\n"\
 		"CS\nPrior\nMove tab family left\nD1!\nD2!\n\n"\
-		"CS\nNext\nMove tab family right\nD1!\nD2!\n\n"
+		"CS\nNext\nMove tab family right\nD1!\nD2!\n\n"\
+		"None\nF9\nRun Command\nD1:/GUI MENU TOGGLE\nD2!\n\n"
 	char buf[512];
 	int fd;
 

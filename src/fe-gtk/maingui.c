@@ -634,6 +634,8 @@ mg_populate (session *sess)
 		gtk_widget_hide (gui->topicbutton_box);
 		/* hide the userlist */
 		mg_userlist_showhide (sess, FALSE);
+		/* shouldn't edit the topic */
+		gtk_editable_set_editable (GTK_EDITABLE (gui->topic_entry), FALSE);
 		break;
 	case SESS_SERVER:
 		if (prefs.chanmodebuttons)
@@ -642,6 +644,8 @@ mg_populate (session *sess)
 		gtk_widget_hide (gui->dialogbutton_box);
 		/* hide the userlist */
 		mg_userlist_showhide (sess, FALSE);
+		/* shouldn't edit the topic */
+		gtk_editable_set_editable (GTK_EDITABLE (gui->topic_entry), FALSE);
 		break;
 	default:
 		/* hide the dialog buttons */
@@ -650,6 +654,8 @@ mg_populate (session *sess)
 			gtk_widget_show (gui->topicbutton_box);
 		/* show the userlist */
 		mg_userlist_showhide (sess, TRUE);
+		/* let the topic be editted */
+		gtk_editable_set_editable (GTK_EDITABLE (gui->topic_entry), TRUE);
 	}
 
 	/* move to THE irc tab */
@@ -1240,7 +1246,7 @@ mg_topic_cb (GtkWidget *entry, gpointer userdata)
 	session *sess = current_sess;
 	char *text;
 
-	if (sess->channel[0] && sess->server->connected)
+	if (sess->channel[0] && sess->server->connected && sess->type == SESS_CHANNEL)
 	{
 		text = GTK_ENTRY (entry)->text;
 		if (text[0] == 0)

@@ -1,12 +1,12 @@
-# Vietnamese translation for xchat-2.4.1pre1.
+# Vietnamese translation for xchat-2.4.2.
 # This file is put in the public domain.
 # Clytie Siddall <clytie@riverland.net.au>, 2005.
 msgid ""
 msgstr ""
-"Project-Id-Version: xchat 2.4.1pre1\n"
+"Project-Id-Version: xchat 2.4.2\n"
 "Report-Msgid-Bugs-To: www.xchat.org\n"
 "POT-Creation-Date: 2005-03-07 18:50+1100\n"
-"PO-Revision-Date: 2005-03-06 23:21+1000\n"
+"PO-Revision-Date: 2005-03-09 15:30+1000\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <gnomevi-list@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -87,9 +87,7 @@ msgstr "Bây giờ bạn tràn ngập CTCP từ %s nên bỏ qua %s\n"
 #: src/common/ignore.c:398
 #, c-format
 msgid "You are being MSG flooded from %s, setting gui_auto_open_dialog OFF.\n"
-msgstr ""
-"Bây giờ bạn tràn ngập MSG từ %s nên TẮT tùy chọn tự động mở đôi thoại giao "
-"diện  (gui_auto_open_dialog).\n"
+msgstr "Bây giờ bạn tràn ngập MSG từ %s nên TẮT tùy chọn tự động mở đôi thoại giao diện  (gui_auto_open_dialog).\n"
 
 #: src/common/notify.c:400
 #, c-format
@@ -134,8 +132,7 @@ msgid ""
 msgstr ""
 "\n"
 "\n"
-"Hãy gõ lệnh /HELP <lệnh> để xem thông tin thêm (help - trợ giúp), hay /HELP -"
-"l\n"
+"Hãy gõ lệnh /HELP <lệnh> để xem thông tin thêm (help - trợ giúp), hay /HELP -l\n"
 "\n"
 
 #: src/common/outbound.c:1654
@@ -163,9 +160,7 @@ msgstr "Trình cầm phít ấy không bỏ nạp đươc.\n"
 
 #: src/common/outbound.c:2686
 msgid "ADDBUTTON <name> <action>, adds a button under the user-list"
-msgstr ""
-"Lệnh ADDBUTTON <tên> <hành_động> thì _thêm_ một _cái nút_ ở dưới danh sách "
-"người dùng"
+msgstr "Lệnh ADDBUTTON <tên> <hành_động> thì _thêm_ một _cái nút_ ở dưới danh sách người dùng"
 
 #: src/common/outbound.c:2688
 msgid "ALLCHAN <cmd>, sends a command to all channels you're in"
@@ -180,14 +175,8 @@ msgid "AWAY [<reason>], sets you away"
 msgstr "Lệnh AWAY [<lý do>] lập trang thái của bạn thành _Vắng mặt_"
 
 #: src/common/outbound.c:2693
-msgid ""
-"BAN <mask> [<bantype>], bans everyone matching the mask from the current "
-"channel. If they are already on the channel this doesn't kick them (needs "
-"chanop)"
-msgstr ""
-"Lệnh BAN <mặt_nạ> [<cách_đuổi>] thì _đuổi_ mọi người khớp với mặt nạ ấy ra "
-"kênh hiện có. Cần đến quyền Thao tác (chanop) để đuổi ra người nào trên kênh "
-"rồi."
+msgid "BAN <mask> [<bantype>], bans everyone matching the mask from the current channel. If they are already on the channel this doesn't kick them (needs chanop)"
+msgstr "Lệnh BAN <mặt_nạ> [<cách_đuổi>] thì _đuổi_ mọi người khớp với mặt nạ ấy ra kênh hiện có. Cần đến quyền Thao tác (chanop) để đuổi ra người nào trên kênh rồi."
 
 #: src/common/outbound.c:2695
 msgid "CLEAR, Clears the current text window"
@@ -198,17 +187,12 @@ msgid "CLOSE, Closes the current window/tab"
 msgstr "Lệnh CLOSE thi _đóng_ cửa sổ/thanh hiện có"
 
 #: src/common/outbound.c:2699
-#, fuzzy
 msgid "COUNTRY [-s] <code|wildcard>, finds a country code, eg: au = australia"
-msgstr "Lệnh COUNTRY <mã> thì tìm thấy _quốc gia_, v.d. mã au = Úc"
+msgstr "Lệnh COUNTRY  [-s] <mã|đại_diện> thì tìm thấy _quốc gia_, v.d. mã au = Úc"
 
 #: src/common/outbound.c:2701
-msgid ""
-"CTCP <nick> <message>, send the CTCP message to nick, common messages are "
-"VERSION and USERINFO"
-msgstr ""
-"Lệnh CTCP <tên_hiệu> <tin_nhẳn> thì gởi cho tên hiệu ấy tin nhẳn CTCP ấy: "
-"hai tin nhẳn thường là VERSION (phiên bản) và USERINFO (thông tin người dùng)"
+msgid "CTCP <nick> <message>, send the CTCP message to nick, common messages are VERSION and USERINFO"
+msgstr "Lệnh CTCP <tên_hiệu> <tin_nhẳn> thì gởi cho tên hiệu ấy tin nhẳn CTCP ấy: hai tin nhẳn thường là VERSION (phiên bản) và USERINFO (thông tin người dùng)"
 
 #: src/common/outbound.c:2703
 msgid "CYCLE, parts current channel and immediately rejoins"
@@ -228,45 +212,27 @@ msgstr ""
 "Lệnh DCC (Trò chuyện trực tiếp) thường dụng:\n"
 "\n"
 "Lệnh DCC GET <tên_hiệu> \t\tthì chấp nhận tập tin đã đưa ra (_gọi_)\n"
-"Lệnh DCC SEND [-maxcps=#] <tên_hiệu> [tập_tin]      thì _gởi_ tập tin ấy cho "
-"người ấy\n"
+"Lệnh DCC SEND [-maxcps=#] <tên_hiệu> [tập_tin]      thì _gởi_ tập tin ấy cho người ấy\n"
 "Lệnh DCC LIST   \t\t\t\tthì hiển thị _danh sách_ DCC\n"
 "Lệnh DCC CHAT <tên_hiệu> \tthì đưa ra _trò chuyện_ DCC với người ấy\n"
 "Lệnh DCC CLOSE <loại> <tên_hiệu> <tập_tin>   (_đóng_)      thí dụ:\n"
-"         /dcc close send nguyenvan tập_tin.tar.gz (gởi cho người nguyenvan "
-"tập_tin.tar.gz)"
+"         /dcc close send nguyenvan tập_tin.tar.gz (gởi cho người nguyenvan tập_tin.tar.gz)"
 
 #: src/common/outbound.c:2715
-msgid ""
-"DEHOP <nick>, removes chanhalf-op status from the nick on the current "
-"channel (needs chanop)"
-msgstr ""
-"Lệnh DEHOP <tên_hiệu> thì bỏ ra tên hiệu ấy trạng thái Thao tác kênh nửa "
-"(chanhalf-op) trên kênh hiện có (cần đến trạng thái Thao tác kênh) - DE (bỏ "
-"ra) Half (nửa) OPerator (Thao tác viên)"
+msgid "DEHOP <nick>, removes chanhalf-op status from the nick on the current channel (needs chanop)"
+msgstr "Lệnh DEHOP <tên_hiệu> thì bỏ ra tên hiệu ấy trạng thái Thao tác kênh nửa (chanhalf-op) trên kênh hiện có (cần đến trạng thái Thao tác kênh) - DE (bỏ ra) Half (nửa) OPerator (Thao tác viên)"
 
 #: src/common/outbound.c:2717
 msgid "DELBUTTON <name>, deletes a button from under the user-list"
-msgstr ""
-"Lệnh DELBUTTON <tên> thi _xóa bỏ cái nút_ ấy ra dưới danh sách người dùng "
-"(DELete - xóa bỏ)"
+msgstr "Lệnh DELBUTTON <tên> thi _xóa bỏ cái nút_ ấy ra dưới danh sách người dùng (DELete - xóa bỏ)"
 
 #: src/common/outbound.c:2719
-msgid ""
-"DEOP <nick>, removes chanop status from the nick on the current channel "
-"(needs chanop)"
-msgstr ""
-"Lệnh DEOP <tên_hiệu> thì bỏ ra tên hiệu ấy trạng thái Thao tác kênh (chanop) "
-"trên kênh hiện có (cần đến trạng thái Thao tác kênh (chanop)) - DE (bỏ) "
-"OPerator (Thao tác viên)"
+msgid "DEOP <nick>, removes chanop status from the nick on the current channel (needs chanop)"
+msgstr "Lệnh DEOP <tên_hiệu> thì bỏ ra tên hiệu ấy trạng thái Thao tác kênh (chanop) trên kênh hiện có (cần đến trạng thái Thao tác kênh (chanop)) - DE (bỏ) OPerator (Thao tác viên)"
 
 #: src/common/outbound.c:2721
-msgid ""
-"DEVOICE <nick>, removes voice status from the nick on the current channel "
-"(needs chanop)"
-msgstr ""
-"Lệnh DEVOICE <tên_hiệu> thì _bỏ ra_ tên hiệu ấy trạng thái _nói tiếng_ trên "
-"kênh hiện có (cần đến trạng thái Thao tác kênh (chanop))"
+msgid "DEVOICE <nick>, removes voice status from the nick on the current channel (needs chanop)"
+msgstr "Lệnh DEVOICE <tên_hiệu> thì _bỏ ra_ tên hiệu ấy trạng thái _nói tiếng_ trên kênh hiện có (cần đến trạng thái Thao tác kênh (chanop))"
 
 #: src/common/outbound.c:2722
 msgid "DISCON, Disconnects from server"
@@ -274,34 +240,23 @@ msgstr "Lệnh DISCON thì ngắt kết nối ra máy chủ - DISCONnect (ngắt
 
 #: src/common/outbound.c:2723
 msgid "DNS <nick|host|ip>, Finds a users IP number"
-msgstr ""
-"Lệnh DNS <tên_hiệu|máy_chủ|ip> thì tìm thấy địa chỉ IP của người dùng ấy - "
-"Domain Name System (Hệ thống tên miền)"
+msgstr "Lệnh DNS <tên_hiệu|máy_chủ|ip> thì tìm thấy địa chỉ IP của người dùng ấy - Domain Name System (Hệ thống tên miền)"
 
 #: src/common/outbound.c:2724
 msgid "ECHO <text>, Prints text locally"
 msgstr "Lệnh ECHO <câu> thì in ra câu ấy địa phương (_vọng_)"
 
 #: src/common/outbound.c:2727
-msgid ""
-"EXEC [-o] <command>, runs the command. If -o flag is used then output is "
-"sent to current channel, else is printed to current text box"
-msgstr ""
-"Lệnh EXEC [-o] <lệnh> thì chạy lệnh ấy. Nếu sử dụng cờ -o thì gởi dữ liệu "
-"xuất cho kênh hiện có, không thì in ra dữ liệu xuất vào hộp câu hiện có - "
-"EXECute (thi hành)"
+msgid "EXEC [-o] <command>, runs the command. If -o flag is used then output is sent to current channel, else is printed to current text box"
+msgstr "Lệnh EXEC [-o] <lệnh> thì chạy lệnh ấy. Nếu sử dụng cờ -o thì gởi dữ liệu xuất cho kênh hiện có, không thì in ra dữ liệu xuất vào hộp câu hiện có - EXECute (thi hành)"
 
 #: src/common/outbound.c:2729
 msgid "EXECCONT, sends the process SIGCONT"
 msgstr "Lệnh EXECCONT thì gởi tiến trình SIGCONT"
 
 #: src/common/outbound.c:2732
-msgid ""
-"EXECKILL [-9], kills a running exec in the current session. If -9 is given "
-"the process is SIGKILL'ed"
-msgstr ""
-"Lệnh EXECKILL [-9] thì buộc kết thức tiến trình exec đang chạy trong phiên "
-"hiện có. Nếu sử dụng cờ -9 thì SIGKILL tiến trình ấy"
+msgid "EXECKILL [-9], kills a running exec in the current session. If -9 is given the process is SIGKILL'ed"
+msgstr "Lệnh EXECKILL [-9] thì buộc kết thức tiến trình exec đang chạy trong phiên hiện có. Nếu sử dụng cờ -9 thì SIGKILL tiến trình ấy"
 
 #: src/common/outbound.c:2734
 msgid "EXECSTOP, sends the process SIGSTOP"
@@ -309,27 +264,19 @@ msgstr "Lệnh EXECSTOP thì gởi tiến trình SIGSTOP"
 
 #: src/common/outbound.c:2735
 msgid "EXECWRITE, sends data to the processes stdin"
-msgstr ""
-"Lệnh EXECWRITE thi gởi dữ liệu cho thiết bị gõ chuẩn (stdin) của tiến trình "
-"- EXECute (thi hành) WRITE (ghi)"
+msgstr "Lệnh EXECWRITE thi gởi dữ liệu cho thiết bị gõ chuẩn (stdin) của tiến trình - EXECute (thi hành) WRITE (ghi)"
 
 #: src/common/outbound.c:2739
 msgid "FLUSHQ, flushes the current server's send queue"
-msgstr ""
-"Lệnh FLUSHQ thì _xóa sạch hàng đợi_ gởi của máy chủ hiện có - Queue (hàng "
-"đời)"
+msgstr "Lệnh FLUSHQ thì _xóa sạch hàng đợi_ gởi của máy chủ hiện có - Queue (hàng đời)"
 
 #: src/common/outbound.c:2741
 msgid "GATE <host> [<port>], proxies through a host, port defaults to 23"
-msgstr ""
-"Lệnh GATE <máy_chủ> [<cổng>] thì sử dụng máy chủ ủy nhiệm; _cổng_ mặc định "
-"là 23"
+msgstr "Lệnh GATE <máy_chủ> [<cổng>] thì sử dụng máy chủ ủy nhiệm; _cổng_ mặc định là 23"
 
 #: src/common/outbound.c:2747
 msgid "HOP <nick>, gives chanhalf-op status to the nick (needs chanop)"
-msgstr ""
-"Lệnh HOP <tên_hiệu> thì đưa ra tên hiệu ấy trạng thái Thao tác kênh nửa (cần "
-"đến trạng thái Thao tác kênh [chanop]) - Half (nửa) OPerator (Thao tac viên)"
+msgstr "Lệnh HOP <tên_hiệu> thì đưa ra tên hiệu ấy trạng thái Thao tác kênh nửa (cần đến trạng thái Thao tác kênh [chanop]) - Half (nửa) OPerator (Thao tac viên)"
 
 #: src/common/outbound.c:2749
 msgid ""
@@ -343,17 +290,12 @@ msgstr ""
 "    IGNORE - bỏ ra\n"
 "    mặt nạ - mặt nạ máy chủ để bỏ qua, v.d.: *!*@*.aol.com\n"
 "    loại - loại dữ liệu để bỏ qua, là một hay tất cả của:\n"
-"            PRIV (riêng), CHAN (kênh), NOTI (thông báo), CTCP, DCC (trò "
-"chuyện trực tiếp), INVI (mời), ALL (tất cả)\n"
+"            PRIV (riêng), CHAN (kênh), NOTI (thông báo), CTCP, DCC (trò chuyện trực tiếp), INVI (mời), ALL (tất cả)\n"
 "    tùy chọn - NOSAVE (không lưu), QUIET (im)"
 
 #: src/common/outbound.c:2756
-msgid ""
-"INVITE <nick> [<channel>], invites someone to a channel, by default the "
-"current channel (needs chanop)"
-msgstr ""
-"Lệnh INVITE <tên_hiệu> [<kênh>] thì _mời_ người ấy vào kênh ấy; mặc định là "
-"kênh hiện có (cần đến trạng thái Thao tác kênh [chanop])"
+msgid "INVITE <nick> [<channel>], invites someone to a channel, by default the current channel (needs chanop)"
+msgstr "Lệnh INVITE <tên_hiệu> [<kênh>] thì _mời_ người ấy vào kênh ấy; mặc định là kênh hiện có (cần đến trạng thái Thao tác kênh [chanop])"
 
 #: src/common/outbound.c:2757
 msgid "JOIN <channel>, joins the channel"
@@ -361,17 +303,11 @@ msgstr "Lệnh JOIN <kênh> thi _vào_ kênh ấy"
 
 #: src/common/outbound.c:2759
 msgid "KICK <nick>, kicks the nick from the current channel (needs chanop)"
-msgstr ""
-"Lệnh KICK <tên_hiệu> thi _đá_ người ấy ra kênh hiện có (cần đến trạng thái "
-"Thao tác kênh [chanop])"
+msgstr "Lệnh KICK <tên_hiệu> thi _đá_ người ấy ra kênh hiện có (cần đến trạng thái Thao tác kênh [chanop])"
 
 #: src/common/outbound.c:2761
-msgid ""
-"KICKBAN <nick>, bans then kicks the nick from the current channel (needs "
-"chanop)"
-msgstr ""
-"Lệnh KICKBAN <tên_hiệu> thì _đuổi_ rồi _đá_ người ấy ra kênh hiện có (cần "
-"đến trạng thái Thao tác kênh [chanop])"
+msgid "KICKBAN <nick>, bans then kicks the nick from the current channel (needs chanop)"
+msgstr "Lệnh KICKBAN <tên_hiệu> thì _đuổi_ rồi _đá_ người ấy ra kênh hiện có (cần đến trạng thái Thao tác kênh [chanop])"
 
 #: src/common/outbound.c:2764
 msgid "LAGCHECK, forces a new lag check"
@@ -386,46 +322,28 @@ msgid "LOAD <file>, loads a plugin or script"
 msgstr "Lệnh LOAD <tập_tin> thì _nạp_ trình cầm phít hay tập lệnh"
 
 #: src/common/outbound.c:2771
-msgid ""
-"MDEHOP, Mass deop's all chanhalf-ops in the current channel (needs chanop)"
-msgstr ""
-"Lệnh MDEHOP thì bỏ trạng thái Thao tác kênh nửa (chanhalf-op) ra mọi người "
-"trên kênh hiện có (cần đến trạng thái Thao tác kênh [chanop]) - Mass (số "
-"nhiều) DE (bỏ) Half (nửa) OPerator (Thao tác viên)"
+msgid "MDEHOP, Mass deop's all chanhalf-ops in the current channel (needs chanop)"
+msgstr "Lệnh MDEHOP thì bỏ trạng thái Thao tác kênh nửa (chanhalf-op) ra mọi người trên kênh hiện có (cần đến trạng thái Thao tác kênh [chanop]) - Mass (số nhiều) DE (bỏ) Half (nửa) OPerator (Thao tác viên)"
 
 #: src/common/outbound.c:2773
 msgid "MDEOP, Mass deop's all chanops in the current channel (needs chanop)"
-msgstr ""
-"Lệnh MDEOP thì bỏ trạng thái Thao tác kênh (chanop) ra mọi người trên kênh "
-"hiện có (cần đến trạng thái Thao tác kênh [chanop]) - Mass (số nhiều) DE "
-"(bỏ) OPerator (Thao tác viên)"
+msgstr "Lệnh MDEOP thì bỏ trạng thái Thao tác kênh (chanop) ra mọi người trên kênh hiện có (cần đến trạng thái Thao tác kênh [chanop]) - Mass (số nhiều) DE (bỏ) OPerator (Thao tác viên)"
 
 #: src/common/outbound.c:2775
-msgid ""
-"ME <action>, sends the action to the current channel (actions are written in "
-"the 3rd person, like /me jumps)"
-msgstr ""
-"Lệnh ME <hành_động> thì gởi hành động ấy cho kênh hiện có (v.d. \"ME jumps\" "
-"có nghĩa là «Tôi nhảy») - ME (tôi)"
+msgid "ME <action>, sends the action to the current channel (actions are written in the 3rd person, like /me jumps)"
+msgstr "Lệnh ME <hành_động> thì gởi hành động ấy cho kênh hiện có (v.d. \"ME jumps\" có nghĩa là «Tôi nhảy») - ME (tôi)"
 
 #: src/common/outbound.c:2777
-msgid ""
-"MKICK, Mass kicks everyone except you in the current channel (needs chanop)"
-msgstr ""
-"Lệnh MKICK thì _đá_ mọi người (trừ bạn) ra kênh hiện có (cần đến trạng thái "
-"Thao tác kênh [chanop]) - Mass (số nhiều)"
+msgid "MKICK, Mass kicks everyone except you in the current channel (needs chanop)"
+msgstr "Lệnh MKICK thì _đá_ mọi người (trừ bạn) ra kênh hiện có (cần đến trạng thái Thao tác kênh [chanop]) - Mass (số nhiều)"
 
 #: src/common/outbound.c:2780
 msgid "MOP, Mass op's all users in the current channel (needs chanop)"
-msgstr ""
-"Lệnh MOP thì đưa ra mọi người dùng trạng thái Thao tác kênh (chanop) trên "
-"kênh hiện có (cần đến trạng thái Thao tác kênh [chanop]) - Mass (số nhiều) "
-"OPerator (Thao tác viên)"
+msgstr "Lệnh MOP thì đưa ra mọi người dùng trạng thái Thao tác kênh (chanop) trên kênh hiện có (cần đến trạng thái Thao tác kênh [chanop]) - Mass (số nhiều) OPerator (Thao tác viên)"
 
 #: src/common/outbound.c:2781
 msgid "MSG <nick> <message>, sends a private message"
-msgstr ""
-"Lệnh MSG <tên_hiệu> <tin_nhẳn> thì gởi _tin nhẳn_ riêng - MeSsaGe (tin nhẳn)"
+msgstr "Lệnh MSG <tên_hiệu> <tin_nhẳn> thì gởi _tin nhẳn_ riêng - MeSsaGe (tin nhẳn)"
 
 #: src/common/outbound.c:2784
 msgid "NAMES, Lists the nicks on the current channel"
@@ -433,8 +351,7 @@ msgstr "Lệnh NAMES thì liệt kê mọi _tên_ hiệu trên kênh hiện có"
 
 #: src/common/outbound.c:2786
 msgid "NCTCP <nick> <message>, Sends a CTCP notice"
-msgstr ""
-"Lệnh NCTCP <tên_hiệu> <tin_nhẳn> thì gởi thông báo CTCP - Notice (thông báo)"
+msgstr "Lệnh NCTCP <tên_hiệu> <tin_nhẳn> thì gởi thông báo CTCP - Notice (thông báo)"
 
 #: src/common/outbound.c:2787
 msgid "NEWSERVER <hostname> [<port>]"
@@ -442,48 +359,31 @@ msgstr "Lệnh NEWSERVER <tên_máy_chủ> [<cổng>] thì lập _máy chủ m�
 
 #: src/common/outbound.c:2788
 msgid "NICK <nickname>, sets your nick"
-msgstr ""
-"Lệnh NICK <tên_hiệu> thì lập _tên hiệu_ của bạn - NICKname (tên hiệu: viết "
-"tắt)"
+msgstr "Lệnh NICK <tên_hiệu> thì lập _tên hiệu_ của bạn - NICKname (tên hiệu: viết tắt)"
 
 #: src/common/outbound.c:2791
-msgid ""
-"NOTICE <nick/channel> <message>, sends a notice. Notices are a type of "
-"message that should be auto reacted to"
-msgstr ""
-"Lệnh NOTICE <tên_hiệu/kênh> <tin_nhản> thì gởi _thông báo_: thông báo là "
-"loại tin nhẳn sẽ nhận trả lời tự động"
+msgid "NOTICE <nick/channel> <message>, sends a notice. Notices are a type of message that should be auto reacted to"
+msgstr "Lệnh NOTICE <tên_hiệu/kênh> <tin_nhản> thì gởi _thông báo_: thông báo là loại tin nhẳn sẽ nhận trả lời tự động"
 
 #: src/common/outbound.c:2793
 msgid "NOTIFY [<nick>], lists your notify list or adds someone to it"
-msgstr ""
-"Lệnh NOTIFY [<tên_hiệu>] thì liệt kê danh sách _thông báo_ của bạn, hay thêm "
-"người nào vào nó"
+msgstr "Lệnh NOTIFY [<tên_hiệu>] thì liệt kê danh sách _thông báo_ của bạn, hay thêm người nào vào nó"
 
 #: src/common/outbound.c:2795
 msgid "OP <nick>, gives chanop status to the nick (needs chanop)"
-msgstr ""
-"Lệnh OP <tên_hiệu> thì đưa ra tên hiệu ấy trạng thái Thao tác kênh (chanop) "
-"(cần đến trạng thái Thao tác kênh [chanop]) - OPerator (Thao tác viên)"
+msgstr "Lệnh OP <tên_hiệu> thì đưa ra tên hiệu ấy trạng thái Thao tác kênh (chanop) (cần đến trạng thái Thao tác kênh [chanop]) - OPerator (Thao tác viên)"
 
 #: src/common/outbound.c:2797
-msgid ""
-"PART [<channel>] [<reason>], leaves the channel, by default the current one"
-msgstr ""
-"Lệnh PART [<kênh>] [<lý_do>] thì rời kênh ấy đi; mặc định là kênh hiện có - "
-"dePART (rời đi)"
+msgid "PART [<channel>] [<reason>], leaves the channel, by default the current one"
+msgstr "Lệnh PART [<kênh>] [<lý_do>] thì rời kênh ấy đi; mặc định là kênh hiện có - dePART (rời đi)"
 
 #: src/common/outbound.c:2799
 msgid "PING <nick | channel>, CTCP pings nick or channel"
-msgstr ""
-"Lệnh PING <tên_hiệu | kênh> thì thi hành tiến trình ping CTCP với tên hiêu "
-"hay kênh ấy"
+msgstr "Lệnh PING <tên_hiệu | kênh> thì thi hành tiến trình ping CTCP với tên hiêu hay kênh ấy"
 
 #: src/common/outbound.c:2801
 msgid "QUERY <nick>, opens up a new privmsg window to someone"
-msgstr ""
-"Lệnh QUERY <tên_hiệu> thì mở một cửa sổ tin nhẳn riêng mới cho người ấy "
-"(_câu hỏi_)"
+msgstr "Lệnh QUERY <tên_hiệu> thì mở một cửa sổ tin nhẳn riêng mới cho người ấy (_câu hỏi_)"
 
 #: src/common/outbound.c:2803
 msgid "QUIT [<reason>], disconnects from the current server"
@@ -494,98 +394,60 @@ msgid "QUOTE <text>, sends the text in raw form to the server"
 msgstr "Lệnh QUOTE <câu> thì gởi câu ấy dạng thô cho máy chủ (_trích dẫn_)"
 
 #: src/common/outbound.c:2808
-msgid ""
-"RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as /"
-"RECONNECT to reconnect to the current server or with /RECONNECT ALL to "
-"reconnect to all the open servers"
+msgid "RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as /RECONNECT to reconnect to the current server or with /RECONNECT ALL to reconnect to all the open servers"
 msgstr ""
 "Lệnh RECONNECT [-ssl] [<máy_chủ>] [<cổng>] [<mật_khẩu>]\n"
-"có thể kết nối lại đến mấy chủ hiện có giống như chỉ đơn giản sử dụng /"
-"RECONNECT, hay kết nối lại đến mọi máy chủ mở với /RECONNECT ALL (phương "
-"pháp SSL bảo vậ dữ liệu sẽ chuyển giao)"
+"có thể kết nối lại đến mấy chủ hiện có giống như chỉ đơn giản sử dụng /RECONNECT, hay kết nối lại đến mọi máy chủ mở với /RECONNECT ALL (phương pháp SSL bảo vậ dữ liệu sẽ chuyển giao)"
 
 #: src/common/outbound.c:2811
-msgid ""
-"RECONNECT [<host>] [<port>] [<password>], Can be called just as /RECONNECT "
-"to reconnect to the current server or with /RECONNECT ALL to reconnect to "
-"all the open servers"
+msgid "RECONNECT [<host>] [<port>] [<password>], Can be called just as /RECONNECT to reconnect to the current server or with /RECONNECT ALL to reconnect to all the open servers"
 msgstr ""
 "Lệnh RECONNECT [<máy_chủ>] [<cổng>] [<mật_khẩu>]\n"
-"có thể kết nối lại đến mấy chủ hiện có giống như chỉ đơn giản sử dụng /"
-"RECONNECT, hay kết nối lại đến mọi máy chủ mở với /RECONNECT ALL (không có "
-"bảo vệ dữ liệu với SSL)"
+"có thể kết nối lại đến mấy chủ hiện có giống như chỉ đơn giản sử dụng /RECONNECT, hay kết nối lại đến mọi máy chủ mở với /RECONNECT ALL (không có bảo vệ dữ liệu với SSL)"
 
 #: src/common/outbound.c:2813
-msgid ""
-"RECV <text>, send raw data to xchat, as if it was received from the irc "
-"server"
-msgstr ""
-"Lệnh RECV <câu> thì gởi dữ liệu thô vào trình xchat, như máy chủ irc có thể "
-"gởi - RECeiVe (nhận)"
+msgid "RECV <text>, send raw data to xchat, as if it was received from the irc server"
+msgstr "Lệnh RECV <câu> thì gởi dữ liệu thô vào trình xchat, như máy chủ irc có thể gởi - RECeiVe (nhận)"
 
 #: src/common/outbound.c:2816
 msgid "SAY <text>, sends the text to the object in the current window"
-msgstr ""
-"Lệnh SAY <câu> thì gởi câu ấy cho đối tượng trong cửa sổ hiện có (_nói_)"
+msgstr "Lệnh SAY <câu> thì gởi câu ấy cho đối tượng trong cửa sổ hiện có (_nói_)"
 
 #: src/common/outbound.c:2819
 msgid "SERVCHAN [-ssl] <host> <port> <channel>, connects and joins a channel"
-msgstr ""
-"Lệnh SERVCHAN [-ssl] <máy_chủ> <cổng> <kênh> thì kết nối đến kênh ấy và vào "
-"nó (phương pháp SSL bảo vệ dữ liệu sẽ chuyển giao) (phương pháp SSL bảo vệ "
-"dữ liệu sẽ chuyển giao) - SERVer (máy chủ) CHANnel (kênh)"
+msgstr "Lệnh SERVCHAN [-ssl] <máy_chủ> <cổng> <kênh> thì kết nối đến kênh ấy và vào nó (phương pháp SSL bảo vệ dữ liệu sẽ chuyển giao) (phương pháp SSL bảo vệ dữ liệu sẽ chuyển giao) - SERVer (máy chủ) CHANnel (kênh)"
 
 #: src/common/outbound.c:2822
 msgid "SERVCHAN <host> <port> <channel>, connects and joins a channel"
-msgstr ""
-"Lệnh SERVCHAN <máy_chủ> <cổng> <kênh> thì kết nối đến kênh ấy và vào nó "
-"(không có bảo vệ dữ liệu với SSL) - SERVer (máy chủ) CHANnel (kênh)"
+msgstr "Lệnh SERVCHAN <máy_chủ> <cổng> <kênh> thì kết nối đến kênh ấy và vào nó (không có bảo vệ dữ liệu với SSL) - SERVer (máy chủ) CHANnel (kênh)"
 
 #: src/common/outbound.c:2826
-msgid ""
-"SERVER [-ssl] <host> [<port>] [<password>], connects to a server, the "
-"default port is 6667 for normal connections, and 9999 for ssl connections"
-msgstr ""
-"Lệnh SERVER [-ssl] <máy_chủ> [<cổng>] [<mật_khẩu>] thì kết nối đến _máy chủ_ "
-"ấy: cổng mặc định là số 6667 cho kết nối thường, và số 9999 cho kết nối loại "
-"ssl (phương pháp SSL bảo vệ dữ liệu sẽ chuyển giao)"
+msgid "SERVER [-ssl] <host> [<port>] [<password>], connects to a server, the default port is 6667 for normal connections, and 9999 for ssl connections"
+msgstr "Lệnh SERVER [-ssl] <máy_chủ> [<cổng>] [<mật_khẩu>] thì kết nối đến _máy chủ_ ấy: cổng mặc định là số 6667 cho kết nối thường, và số 9999 cho kết nối loại ssl (phương pháp SSL bảo vệ dữ liệu sẽ chuyển giao)"
 
 #: src/common/outbound.c:2829
-msgid ""
-"SERVER <host> [<port>] [<password>], connects to a server, the default port "
-"is 6667"
-msgstr ""
-"Lệnh SERVER <máy_chủ> [<cổng>] [<mật_khẩu>] thì kết nối đến _mấy chủ_ ấy; "
-"cổng mặc định là số 6667 (không có bảo vệ dữ liệu với SSL)"
+msgid "SERVER <host> [<port>] [<password>], connects to a server, the default port is 6667"
+msgstr "Lệnh SERVER <máy_chủ> [<cổng>] [<mật_khẩu>] thì kết nối đến _mấy chủ_ ấy; cổng mặc định là số 6667 (không có bảo vệ dữ liệu với SSL)"
 
 #: src/common/outbound.c:2831
 msgid "SET [-quiet] <variable> [<value>]"
-msgstr ""
-"Lệnh SET [-quiet] <biến> [<giá_trị>] thì _lập_ giá trị cho biến ấy; tùy chọn "
-"-quiet (im) có nghĩa là không in ra chi tiết"
+msgstr "Lệnh SET [-quiet] <biến> [<giá_trị>] thì _lập_ giá trị cho biến ấy; tùy chọn -quiet (im) có nghĩa là không in ra chi tiết"
 
 #: src/common/outbound.c:2832
 msgid "SETCURSOR [-|+]<position>"
 msgstr "Lệnh SETCURSOR [-|+]<vị_trí> thi _lập_ vị trí cho _con trỏ_"
 
 #: src/common/outbound.c:2836
-msgid ""
-"TOPIC [<topic>], sets the topic if one is given, else shows the current topic"
-msgstr ""
-"Lệnh TOPIC [<chủ_đè>], thì lập _chủ đề_ nếu đưa ra nó, nếu không thì hiển "
-"thị chủ đề hiện có"
+msgid "TOPIC [<topic>], sets the topic if one is given, else shows the current topic"
+msgstr "Lệnh TOPIC [<chủ_đè>], thì lập _chủ đề_ nếu đưa ra nó, nếu không thì hiển thị chủ đề hiện có"
 
 #: src/common/outbound.c:2838
 msgid "UNBAN <mask> [<mask>...], unbans the specified masks."
-msgstr ""
-"Lệnh UNBAN <mặt_nạ> [<mặt_nạ>...] thì _bỏ_ trạng thái _bị đuổi ra_ những mặt "
-"nạ được ghi rõ"
+msgstr "Lệnh UNBAN <mặt_nạ> [<mặt_nạ>...] thì _bỏ_ trạng thái _bị đuổi ra_ những mặt nạ được ghi rõ"
 
 #: src/common/outbound.c:2839
 msgid "UNIGNORE <mask> [QUIET]"
-msgstr ""
-"Lệnh UNIGNORE <mặt_nạ> [QUIET] thì _bỏ_ trạng thái _bị bỏ qua ra_ mặt nạ ấy "
-"(tùy chọn QUIET (im) có nghĩa là không in ra chi tiết)"
+msgstr "Lệnh UNIGNORE <mặt_nạ> [QUIET] thì _bỏ_ trạng thái _bị bỏ qua ra_ mặt nạ ấy (tùy chọn QUIET (im) có nghĩa là không in ra chi tiết)"
 
 #: src/common/outbound.c:2840
 msgid "UNLOAD <name>, unloads a plugin or script"
@@ -593,27 +455,19 @@ msgstr "Lệnh UNLOAD <tên> thi _bỏ nạp_ trình cầm phít hay tập lện
 
 #: src/common/outbound.c:2841
 msgid "URL <url>, opens a URL in your browser"
-msgstr ""
+msgstr "URL <url> thì  mở _địa chỉ Mạng_ ấy trong trình duyệt Mạng của bạn"
 
 #: src/common/outbound.c:2844
 msgid "VOICE <nick>, gives voice status to someone (needs chanop)"
-msgstr ""
-"Lệnh VOICE <tên_hiệu> thì đưa ra người ấy trạng thái _nói tiếng_ (cần đến "
-"trạng thái Thao tác kênh [chanop])"
+msgstr "Lệnh VOICE <tên_hiệu> thì đưa ra người ấy trạng thái _nói tiếng_ (cần đến trạng thái Thao tác kênh [chanop])"
 
 #: src/common/outbound.c:2846
 msgid "WALLCHAN <message>, writes the message to all channels"
-msgstr ""
-"Lệnh WALLCHAN <tin_nhẳn> thì ghi tin nhẳn ấy vào mọi kênh - Write (ghi) ALL "
-"(mọị) CHANnel (kênh)"
+msgstr "Lệnh WALLCHAN <tin_nhẳn> thì ghi tin nhẳn ấy vào mọi kênh - Write (ghi) ALL (mọị) CHANnel (kênh)"
 
 #: src/common/outbound.c:2848
-msgid ""
-"WALLCHOP <message>, sends the message to all chanops on the current channel"
-msgstr ""
-"Lệnh WALLCHOP <tin_nhẳn> thì gởi tin nhẳn ấy cho _mọi người Thao tác kênh "
-"[chanop]_ trên kênh hiện có - Write (ghi) ALL (mọi) CHannel (kênh) OPerator "
-"(Thao tác viên)"
+msgid "WALLCHOP <message>, sends the message to all chanops on the current channel"
+msgstr "Lệnh WALLCHOP <tin_nhẳn> thì gởi tin nhẳn ấy cho _mọi người Thao tác kênh [chanop]_ trên kênh hiện có - Write (ghi) ALL (mọi) CHannel (kênh) OPerator (Thao tác viên)"
 
 #: src/common/outbound.c:2881
 #, c-format
@@ -646,9 +500,7 @@ msgstr "Không biết lệnh ấy: bạn hãy thử lệnh /help (trợ giúp)\n
 
 #: src/common/plugin.c:359 src/common/plugin.c:400
 msgid "No xchat_plugin_init symbol; is this really an xchat plugin?"
-msgstr ""
-"Không có ký hiệu xchat_plugin_init (khởi động trình cầm phít xchat): đây "
-"thật là trình cầm phít xchat không?"
+msgstr "Không có ký hiệu xchat_plugin_init (khởi động trình cầm phít xchat): đây thật là trình cầm phít xchat không?"
 
 #: src/common/server.c:586
 msgid "Are you sure this is a SSL capable server and port?\n"
@@ -674,12 +526,8 @@ msgstr "Sẽ quay lại đến mấy chủ tới sau %s...\n"
 
 #: src/common/servlist.c:1056
 #, c-format
-msgid ""
-"Warning: \"%s\" character set is unknown. No conversion will be applied for "
-"network %s."
-msgstr ""
-"Cảnh báo: không biết bộ ký tự \"%s\" nên sẽ không áp dụng chuyển đổi vào "
-"mạng %s."
+msgid "Warning: \"%s\" character set is unknown. No conversion will be applied for network %s."
+msgstr "Cảnh báo: không biết bộ ký tự \"%s\" nên sẽ không áp dụng chuyển đổi vào mạng %s."
 
 #: src/common/textevents.h:6
 msgid "%C22*%O$t$1 added to notify list."
@@ -831,9 +679,7 @@ msgstr "%C22*%O$tTrò chuyện trực tiếp (DCC) với %C26$1%O bị hủy b�
 
 #: src/common/textevents.h:120
 msgid "%C22*%O$tDCC CHAT connection established to %C26$1 %C30[%O$2%C30]"
-msgstr ""
-"%C22*%O$tMới kết nối được để trò chuyện trực tiếp (DCC) với %C26$1 %C30[%O$2%"
-"C30]"
+msgstr "%C22*%O$tMới kết nối được để trò chuyện trực tiếp (DCC) với %C26$1 %C30[%O$2%C30]"
 
 #: src/common/textevents.h:123
 msgid "%C22*%O$tDCC CHAT to %C26$1%O lost ($4)."
@@ -853,8 +699,7 @@ msgstr "%C22*%O$tĐã mời $1 trò chuyện rồi"
 
 #: src/common/textevents.h:135
 msgid "%C22*%O$tDCC $1 connect attempt to%C26 $2%O failed (err=$3)."
-msgstr ""
-"%C22*%O$tDCC $1 việc cố kết nối đến%C26 $2%O không thành công (lỗi=$3)."
+msgstr "%C22*%O$tDCC $1 việc cố kết nối đến%C26 $2%O không thành công (lỗi=$3)."
 
 #: src/common/textevents.h:138
 msgid "%C22*%O$tReceived '$1%O' from $2"
@@ -866,12 +711,8 @@ msgid "%C24,18 Type  To/From    Status  Size    Pos     File         "
 msgstr "%C24,18 Loại    Cho/Từ    TrThái  Cỡ     Vị trí    Tệp         "
 
 #: src/common/textevents.h:144
-msgid ""
-"%C22*%O$tReceived a malformed DCC request from %C26$1%O.%010%C22*%O"
-"$tContents of packet: $2"
-msgstr ""
-"%C22*%O$tMới nhận yêu cầu khuyết tật trò chuyện trực tiếp (DCC) từ %C26$1%O.%"
-"010%C22*%O$tNội dung gói: $2"
+msgid "%C22*%O$tReceived a malformed DCC request from %C26$1%O.%010%C22*%O$tContents of packet: $2"
+msgstr "%C22*%O$tMới nhận yêu cầu khuyết tật trò chuyện trực tiếp (DCC) từ %C26$1%O.%010%C22*%O$tNội dung gói: $2"
 
 #: src/common/textevents.h:147
 msgid "%C22*%O$tOffering%C26 $1%O to%C26 $2"
@@ -886,10 +727,8 @@ msgid "%C22*%O$tDCC RECV%C26 $2%O to%C26 $1%O aborted."
 msgstr "%C22*%O$tNHẬN DCC%C26 $2%O cho%C26 $1%O bị hủy bỏ."
 
 #: src/common/textevents.h:156
-msgid ""
-"%C22*%O$tDCC RECV%C26 $1%O from%C26 $3%O complete %C30[%C26$4%O cps%C30]%O."
-msgstr ""
-"%C22*%O$tNHẬN DCC%C26 $1%O từ%C26 $3%O hoàn thành %C30[%C26$4%O cps%C30]%O."
+msgid "%C22*%O$tDCC RECV%C26 $1%O from%C26 $3%O complete %C30[%C26$4%O cps%C30]%O."
+msgstr "%C22*%O$tNHẬN DCC%C26 $1%O từ%C26 $3%O hoàn thành %C30[%C26$4%O cps%C30]%O."
 
 #: src/common/textevents.h:159
 msgid "%C22*%O$tDCC RECV connection established to%C26 $1 %C30[%O$2%C30]"
@@ -904,8 +743,7 @@ msgid "%C22*%O$tDCC RECV: Cannot open $1 for writing ($2)."
 msgstr "%C22*%O$tNHẬN DCC: Không mở được $1 để ghi ($2)."
 
 #: src/common/textevents.h:168
-msgid ""
-"%C22*%O$tThe file%C26 $1%C already exists, saving it as%C26 $2%O instead."
+msgid "%C22*%O$tThe file%C26 $1%C already exists, saving it as%C26 $2%O instead."
 msgstr "%C22*%O$tCó tập tin%C26 $1%C rồi: sẽ lưu nó như là %C26 $2%O thay thế."
 
 #: src/common/textevents.h:171
@@ -917,10 +755,8 @@ msgid "%C22*%O$tDCC SEND%C26 $2%O to%C26 $1%O aborted."
 msgstr "%C22*%O$tGỞI DCC%C26 $2%O cho%C26 $1%O bị hủy bỏ."
 
 #: src/common/textevents.h:177
-msgid ""
-"%C22*%O$tDCC SEND%C26 $1%O to%C26 $2%O complete %C30[%C26$3%O cps%C30]%O."
-msgstr ""
-"%C22*%O$tGỞI DCC%C26 $1%O cho%C26 $2%O hoàn thành %C30[%C26$3%O cps%C30]%O."
+msgid "%C22*%O$tDCC SEND%C26 $1%O to%C26 $2%O complete %C30[%C26$3%O cps%C30]%O."
+msgstr "%C22*%O$tGỞI DCC%C26 $1%O cho%C26 $2%O hoàn thành %C30[%C26$3%O cps%C30]%O."
 
 #: src/common/textevents.h:180
 msgid "%C22*%O$tDCC SEND connection established to%C26 $1 %C30[%O$2%C30]"
@@ -1018,8 +854,7 @@ msgstr "%C16*%O$t$1%O"
 
 #: src/common/textevents.h:249
 msgid "%C22*%O$t%C22MOTD Skipped."
-msgstr ""
-"Đã bỏ qua %C22*%O$t%C22MOTD (Message Of The Day - Thông điệp của hôm nay)."
+msgstr "Đã bỏ qua %C22*%O$t%C22MOTD (Message Of The Day - Thông điệp của hôm nay)."
 
 #: src/common/textevents.h:252
 msgid "%C22*%O$t$1 already in use. Retrying with $2..."
@@ -1027,9 +862,7 @@ msgstr "Sử dụng %C22*%O$t$1 rồi nên thử lái vơi $2..."
 
 #: src/common/textevents.h:255
 msgid "%C22*%O$tNickname already in use. Use /NICK to try another."
-msgstr ""
-"%C22*%O$tTên hiệu đã chọn nên hay sử dụng lệnh /NICK để thử môt tên hiệu "
-"khác."
+msgstr "%C22*%O$tTên hiệu đã chọn nên hay sử dụng lệnh /NICK để thử môt tên hiệu khác."
 
 #: src/common/textevents.h:258
 msgid "%C22*%O$tNo such DCC."
@@ -1183,9 +1016,7 @@ msgstr "%C22*%O$t%C28[%O$1%C28] %C30(%O$2@$3%C30)%O: $4"
 
 #: src/common/textevents.h:381
 msgid "%C22*%O$t%C28[%O$1%C28] %Oreal user@host%C27 $2%O, real IP%C27 $3"
-msgstr ""
-"%C22*%O$t%C28[%O$1%C28] %Ongươi dùng thật@máy chủ%C27 $2%O, địạ chỉ IP thật%"
-"C27 $3"
+msgstr "%C22*%O$t%C28[%O$1%C28] %Ongươi dùng thật@máy chủ%C27 $2%O, địạ chỉ IP thật%C27 $3"
 
 #: src/common/textevents.h:390
 msgid "%C19*%O$t%C19Now talking on $2"
@@ -1437,26 +1268,19 @@ msgstr "Tên hiệu đã bỏ tối đa ra"
 
 #: src/common/text.c:728
 msgid "The nick of the person of did the deop'ing"
-msgstr ""
-"Tên hiệu của người đã bỏ trạng thái Thao tác - DE (bỏ) OPerator (Thao tác "
-"viên)"
+msgstr "Tên hiệu của người đã bỏ trạng thái Thao tác - DE (bỏ) OPerator (Thao tác viên)"
 
 #: src/common/text.c:729
 msgid "The nick of the person who has been deop'ed"
-msgstr ""
-"Tên hiệu của người mất trạng thái Thao tác - DE (bỏ) OPerator (Thao tác viên)"
+msgstr "Tên hiệu của người mất trạng thái Thao tác - DE (bỏ) OPerator (Thao tác viên)"
 
 #: src/common/text.c:732
 msgid "The nick of the person of did the dehalfop'ing"
-msgstr ""
-"Tên hiệu của người đã bỏ trạng thái Thao tác nửa - DE (bỏ) Half (nửa) "
-"OPerator (Thao tác viên)"
+msgstr "Tên hiệu của người đã bỏ trạng thái Thao tác nửa - DE (bỏ) Half (nửa) OPerator (Thao tác viên)"
 
 #: src/common/text.c:733
 msgid "The nick of the person who has been dehalfop'ed"
-msgstr ""
-"Tên hiệu của người mất trạng thái Thao tác nửa - DE (bỏ) Half (nửa) OPerator "
-"(Thao tác viên)"
+msgstr "Tên hiệu của người mất trạng thái Thao tác nửa - DE (bỏ) Half (nửa) OPerator (Thao tác viên)"
 
 #: src/common/text.c:737
 msgid "The nick of the person of did the devoice'ing"
@@ -1906,7 +1730,7 @@ msgstr "Quần đảo Cocox"
 
 #: src/common/util.c:861
 msgid "Democratic Republic of Congo"
-msgstr ""
+msgstr "Cộng hoà Dân chủ Công-gô"
 
 #: src/common/util.c:862
 msgid "Central African Republic"
@@ -1954,7 +1778,7 @@ msgstr "Cốt-x-tha Ri-ca"
 
 #: src/common/util.c:873
 msgid "Serbia and Montenegro"
-msgstr ""
+msgstr "Xéc-bi và Mon-te-ne-gợ-rô"
 
 #: src/common/util.c:874
 msgid "Cuba"
@@ -2505,9 +2329,8 @@ msgid "Puerto Rico"
 msgstr "Bu-éc-thô Ri-cô"
 
 #: src/common/util.c:1011
-#, fuzzy
 msgid "Palestinian Territory"
-msgstr "Miền Đại dương Ấn-độ Anh"
+msgstr "Hạt Pa-le-xtin"
 
 #: src/common/util.c:1012
 msgid "Portugal"
@@ -3136,12 +2959,8 @@ msgstr ""
 "Không tiếp tục được."
 
 #: src/fe-gtk/dccgui.c:390
-msgid ""
-"File in download directory is larger than file offered. Resuming not "
-"possible."
-msgstr ""
-"Tập tin trong thư mục tải về là lớn hơn tập tin đã cho nên không tiếp tục "
-"được."
+msgid "File in download directory is larger than file offered. Resuming not possible."
+msgstr "Tập tin trong thư mục tải về là lớn hơn tập tin đã cho nên không tiếp tục được."
 
 #: src/fe-gtk/dccgui.c:394
 msgid "Cannot resume the same file from two people."
@@ -3286,12 +3105,11 @@ msgstr "không tự động tải trình cầm phít nào"
 
 #: src/fe-gtk/fe-gtk.c:175
 msgid "show plugin auto-load dir"
-msgstr ""
+msgstr "hiển thị thư mục của trình cầm phít sẽ tự động nạp"
 
 #: src/fe-gtk/fe-gtk.c:176
-#, fuzzy
 msgid "show user config dir"
-msgstr "sử dụng một tập tin cấu hình khác"
+msgstr "hiển thị thư mục cấu hình của người dung"
 
 #: src/fe-gtk/fe-gtk.c:177
 msgid "show version information"
@@ -3318,94 +3136,44 @@ msgid "%d bytes"
 msgstr "%d bytes"
 
 #: src/fe-gtk/fkeys.c:155
-msgid ""
-"The Run Command action runs the data in Data 1 as if it has been typed into "
-"the entry box where you pressed the key sequence. Thus it can contain text "
-"(which will be sent to the channel/person), commands or user commands. When "
-"run all \\n characters in Data 1 are used to deliminate seperate commands so "
-"it is possible to run more than one command. If you want a \\ in the actual "
-"text run then enter \\\\"
-msgstr ""
-"Hành động Chạy lệnh thì thi hành dữ liệu trong Dữ liệu 1 giống như đã gõ nó "
-"trong hộp nhập nơi nào bạn đã bấm dãy phím ấy. Vậy nó có thể bao gồm câu (sẽ "
-"gởi câu ấy cho kênh/người), lệnh hay lệnh của người dùng. Khi thi hành thì "
-"sử dụng mọi ký tự \\n trong Dữ liệu 1 để phân cách những lệnh khác để mà có "
-"thể chạy nhiều lệnh. Nếu muốn ký tự \\ trong câu thật thì hãy gõ \\\\."
+msgid "The Run Command action runs the data in Data 1 as if it has been typed into the entry box where you pressed the key sequence. Thus it can contain text (which will be sent to the channel/person), commands or user commands. When run all \\n characters in Data 1 are used to deliminate seperate commands so it is possible to run more than one command. If you want a \\ in the actual text run then enter \\\\"
+msgstr "Hành động Chạy lệnh thì thi hành dữ liệu trong Dữ liệu 1 giống như đã gõ nó trong hộp nhập nơi nào bạn đã bấm dãy phím ấy. Vậy nó có thể bao gồm câu (sẽ gởi câu ấy cho kênh/người), lệnh hay lệnh của người dùng. Khi thi hành thì sử dụng mọi ký tự \\n trong Dữ liệu 1 để phân cách những lệnh khác để mà có thể chạy nhiều lệnh. Nếu muốn ký tự \\ trong câu thật thì hãy gõ \\\\."
 
 #: src/fe-gtk/fkeys.c:157
-msgid ""
-"The Change Page command switches between pages in the notebook. Set Data 1 "
-"to the page you want to switch to. If Data 2 is set to anything then the "
-"switch will be relative to the current position"
-msgstr ""
-"Lệnh Đổi trang thì trao đổi giữa trang khác nhau trong cuốn vở. Hãy lập Dữ "
-"liệụ 1 thành trang mà bạn muốn trao đổi tới nó. Nếu đã lập Dữ liêu 2 thành "
-"gì, thì việc trao đổi sẽ cân xứng với vị trí hiện có."
+msgid "The Change Page command switches between pages in the notebook. Set Data 1 to the page you want to switch to. If Data 2 is set to anything then the switch will be relative to the current position"
+msgstr "Lệnh Đổi trang thì trao đổi giữa trang khác nhau trong cuốn vở. Hãy lập Dữ liệụ 1 thành trang mà bạn muốn trao đổi tới nó. Nếu đã lập Dữ liêu 2 thành gì, thì việc trao đổi sẽ cân xứng với vị trí hiện có."
 
 #: src/fe-gtk/fkeys.c:159
-msgid ""
-"The Insert in Buffer command will insert the contents of Data 1 into the "
-"entry where the key sequence was pressed at the current cursor position"
-msgstr ""
-"Lệnh Chèn vào bộ đệm thì chèn nội dung của Dữ liệu 1 vào trường nơi mà bạn "
-"đã bấm phím, tại vị tri con trỏ hiện có."
+msgid "The Insert in Buffer command will insert the contents of Data 1 into the entry where the key sequence was pressed at the current cursor position"
+msgstr "Lệnh Chèn vào bộ đệm thì chèn nội dung của Dữ liệu 1 vào trường nơi mà bạn đã bấm phím, tại vị tri con trỏ hiện có."
 
 #: src/fe-gtk/fkeys.c:161
-msgid ""
-"The Scroll Page command scrolls the text widget up or down one page or one "
-"line. Set Data 1 to either Up, Down, +1 or -1."
-msgstr ""
-"Lệnh Cuộn trang thì cuộn thành phần văn bản lên hay xuống một trang hay một "
-"dòng. Hãy lập Dữ liệu 1 thành Lên, Xuống, +1 hay -1."
+msgid "The Scroll Page command scrolls the text widget up or down one page or one line. Set Data 1 to either Up, Down, +1 or -1."
+msgstr "Lệnh Cuộn trang thì cuộn thành phần văn bản lên hay xuống một trang hay một dòng. Hãy lập Dữ liệu 1 thành Lên, Xuống, +1 hay -1."
 
 #: src/fe-gtk/fkeys.c:163
-msgid ""
-"The Set Buffer command sets the entry where the key sequence was entered to "
-"the contents of Data 1"
-msgstr ""
-"Lệnh Lập bộ đệm thì lập trường nơi mà đã gõ dãy phím thành nội bộ Dữ liệu 1."
+msgid "The Set Buffer command sets the entry where the key sequence was entered to the contents of Data 1"
+msgstr "Lệnh Lập bộ đệm thì lập trường nơi mà đã gõ dãy phím thành nội bộ Dữ liệu 1."
 
 #: src/fe-gtk/fkeys.c:165
-msgid ""
-"The Last Command command sets the entry to contain the last command entered "
-"- the same as pressing up in a shell"
-msgstr ""
-"Lệnh Lệnh trước thì lập trường để chứa lệnh mới gõ - giống như khi bấm phím "
-"mũi lên trong hệ vỏ."
+msgid "The Last Command command sets the entry to contain the last command entered - the same as pressing up in a shell"
+msgstr "Lệnh Lệnh trước thì lập trường để chứa lệnh mới gõ - giống như khi bấm phím mũi lên trong hệ vỏ."
 
 #: src/fe-gtk/fkeys.c:167
-msgid ""
-"The Next Command command sets the entry to contain the next command entered "
-"- the same as pressing down in a shell"
-msgstr ""
-"Lệnh Lệnh sau thì lập trường để chứa lệnh sẽ gõ sau này - giống như khi bấm "
-"phím mũi xuống trong hệ vỏ."
+msgid "The Next Command command sets the entry to contain the next command entered - the same as pressing down in a shell"
+msgstr "Lệnh Lệnh sau thì lập trường để chứa lệnh sẽ gõ sau này - giống như khi bấm phím mũi xuống trong hệ vỏ."
 
 #: src/fe-gtk/fkeys.c:169
-msgid ""
-"This command changes the text in the entry to finish an incomplete nickname "
-"or command. If Data 1 is set then double-tabbing in a string will select the "
-"last nick, not the next"
-msgstr ""
-"Lệnh này thì thay đổi câu trong trường để nhập xong một tên hiệu hay lệnh "
-"chưa hoàn thành. Nếu đã lập Dữ liệu 1 thế khi bám phím Tab hai lần trong "
-"chuỗi nào sẽ chọn tên hiệu trước, không phải tên hiệu sau."
+msgid "This command changes the text in the entry to finish an incomplete nickname or command. If Data 1 is set then double-tabbing in a string will select the last nick, not the next"
+msgstr "Lệnh này thì thay đổi câu trong trường để nhập xong một tên hiệu hay lệnh chưa hoàn thành. Nếu đã lập Dữ liệu 1 thế khi bám phím Tab hai lần trong chuỗi nào sẽ chọn tên hiệu trước, không phải tên hiệu sau."
 
 #: src/fe-gtk/fkeys.c:171
-msgid ""
-"This command scrolls up and down through the list of nicks. If Data 1 is set "
-"to anything it will scroll up, else it scrolls down"
-msgstr ""
-"Lệnh này cuộn lên và xuống danh sách tên hiệu. Nếu đã lập Dữ liệu 1 thành gì "
-"thì sẽ cuộn lên, không nếu thi sẽ cuộn xuống."
+msgid "This command scrolls up and down through the list of nicks. If Data 1 is set to anything it will scroll up, else it scrolls down"
+msgstr "Lệnh này cuộn lên và xuống danh sách tên hiệu. Nếu đã lập Dữ liệu 1 thành gì thì sẽ cuộn lên, không nếu thi sẽ cuộn xuống."
 
 #: src/fe-gtk/fkeys.c:173
-msgid ""
-"This command checks the last word entered in the entry against the replace "
-"list and replaces it if it finds a match"
-msgstr ""
-"Lệnh này so từ đã nhập trước trong trường với danh sách thay thế, rồi thay "
-"thế được nếu tìm thấy từ khớp được."
+msgid "This command checks the last word entered in the entry against the replace list and replaces it if it finds a match"
+msgstr "Lệnh này so từ đã nhập trước trong trường với danh sách thay thế, rồi thay thế được nếu tìm thấy từ khớp được."
 
 #: src/fe-gtk/fkeys.c:175
 msgid "This command moves the front tab left by one"
@@ -4281,7 +4049,7 @@ msgstr "Bạn thật muốn bỏ mạng \"%s\" và tất cả máy chủ của n
 
 #: src/fe-gtk/servlistgui.c:614 src/fe-gtk/servlistgui.c:630
 msgid "User name and Real name cannot be left blank."
-msgstr ""
+msgstr "Không cho phép trường Tên đăng nhập và Tên thật trống không."
 
 #: src/fe-gtk/servlistgui.c:981
 #, c-format
@@ -4354,14 +4122,8 @@ msgid "Connect command:"
 msgstr "Lệnh kết nối:"
 
 #: src/fe-gtk/servlistgui.c:1062
-msgid ""
-"Extra command to execute after connecting. If you need more than one, set "
-"this to LOAD -e <filename>, where <filename> is a text-file full of commands "
-"to execute."
-msgstr ""
-"Lệnh thêm để thi hành sau kết nối được. Nếu cần nhiều lệnh thì hãy lập lệnh "
-"này thành LOAD -e <tên_tập_tin>, mà tập tin ấy chứa danh sách lệnh để thi "
-"hành. (load - nạp)"
+msgid "Extra command to execute after connecting. If you need more than one, set this to LOAD -e <filename>, where <filename> is a text-file full of commands to execute."
+msgstr "Lệnh thêm để thi hành sau kết nối được. Nếu cần nhiều lệnh thì hãy lập lệnh này thành LOAD -e <tên_tập_tin>, mà tập tin ấy chứa danh sách lệnh để thi hành. (load - nạp)"
 
 #: src/fe-gtk/servlistgui.c:1065
 msgid "Nickserv password:"
@@ -4722,8 +4484,7 @@ msgstr "Mở tiện ích trong:"
 
 #: src/fe-gtk/setup.c:221
 msgid "Open DCC, Ignore, Notify etc, in tabs or windows?"
-msgstr ""
-"Mở trò chuyện trực tiếp (DCC), Bỏ qua, Thông báo v.v. trong thanh hay cửa sổ?"
+msgstr "Mở trò chuyện trực tiếp (DCC), Bỏ qua, Thông báo v.v. trong thanh hay cửa sổ?"
 
 #: src/fe-gtk/setup.c:228
 msgid "Files and Directories"
@@ -4774,12 +4535,8 @@ msgid "Get my address from the IRC server"
 msgstr "Gọi địa chỉ tôi từ máy chủ IRC"
 
 #: src/fe-gtk/setup.c:241
-msgid ""
-"Asks the IRC server for your real address. Use this if you have a 192.168.*."
-"* address!"
-msgstr ""
-"Gọi địa chỉ thật của bạn từ máy chủ IRC. Hãy sử dụng tùy chon này nếu có địa "
-"chỉ số 192.168.*.*"
+msgid "Asks the IRC server for your real address. Use this if you have a 192.168.*.* address!"
+msgstr "Gọi địa chỉ thật của bạn từ máy chủ IRC. Hãy sử dụng tùy chon này nếu có địa chỉ số 192.168.*.*"
 
 #: src/fe-gtk/setup.c:243
 msgid "Maximum File Transfer Speeds (bytes per second)"
@@ -4907,9 +4664,7 @@ msgstr "Sử dụng dịch vụ Whois (là ai?) khi thông báol"
 
 #: src/fe-gtk/setup.c:294
 msgid "Sends a /WHOIS when a user comes online in your notify list"
-msgstr ""
-"Gởi một lệnh /WHOIS khi người dùng mới trực tuyến trong danh sách thông báo "
-"của bạn"
+msgstr "Gởi một lệnh /WHOIS khi người dùng mới trực tuyến trong danh sách thông báo của bạn"
 
 #: src/fe-gtk/setup.c:295
 msgid "Hide join and part messages"
@@ -5206,9 +4961,7 @@ msgstr "Loại"
 
 #: src/fe-gtk/setup.c:1694
 msgid "Some settings were changed that require a restart to take full effect."
-msgstr ""
-"Đã thay đổi một sô thiết lập nên cần phải khởi động lại để sử dụng chúng cho "
-"đúng."
+msgstr "Đã thay đổi một sô thiết lập nên cần phải khởi động lại để sử dụng chúng cho đúng."
 
 #: src/fe-gtk/setup.c:1722
 msgid "X-Chat: Preferences"
@@ -5275,12 +5028,3 @@ msgstr "Lưu danh sách vào tập tin"
 #, c-format
 msgid "%d ops, %d total"
 msgstr "%d thao tác viên, %d tổng số"
-
-#~ msgid "%C22*%O$t%C28[%O$1%C28] %O$2"
-#~ msgstr "%C22*%O$t%C28[%O$1%C28] %O$2"
-
-#~ msgid "Former Czechoslovakia"
-#~ msgstr "Tiệp khắc trước"
-
-#~ msgid "Zaire"
-#~ msgstr "Dai-i-re"

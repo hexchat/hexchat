@@ -532,17 +532,20 @@ menu_showhide (void)
 	}
 }
 
+void
+menu_bar_toggle (void)
+{
+	prefs.hidemenu = !prefs.hidemenu;
+	menu_showhide ();
+}
+
 static void
 menu_middle_cb (GtkWidget *item, gpointer userdata)
 {
 	switch (GPOINTER_TO_INT (userdata))
 	{
 	case 0:
-		if (prefs.hidemenu)
-			prefs.hidemenu = 0;
-		else
-			prefs.hidemenu = 1;
-		menu_showhide ();
+		menu_bar_toggle ();
 		break;
 	case 1:
 		mg_topic_showhide (current_sess);
