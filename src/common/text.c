@@ -298,7 +298,7 @@ log_create_filename (char *buf, char *servname, char *channame, char *netname)
 #else
 		mkdir (buf, S_IRUSR | S_IWUSR | S_IXUSR);
 #endif
-	auto_insert (fn, prefs.logmask, NULL, NULL, "", channame, "", "", netname, servname);
+	auto_insert (fn, sizeof (fn), prefs.logmask, NULL, NULL, "", channame, "", "", netname, servname);
 	g_free (channame);
 
 	snprintf (buf, 512, "%s/xchatlogs/%s", get_xdir (), fn);

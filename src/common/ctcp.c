@@ -41,7 +41,7 @@ ctcp_reply (session *sess, char *tbuf, char *nick, char *word[],
 	conf = strdup (conf);
 	/* process %C %B etc */
 	check_special_chars (conf, TRUE);
-	auto_insert (tbuf, conf, word, word_eol, "", "", word_eol[5], "", "", nick);
+	auto_insert (tbuf, 2048, conf, word, word_eol, "", "", word_eol[5], "", "", nick);
 	free (conf);
 	handle_command (sess, tbuf, FALSE);
 }

@@ -139,6 +139,7 @@ nick_command_parse (session *sess, char *cmd, char *nick, char *allnick)
 	char *buf;
 	char *host = _("Host unknown");
 	struct User *user;
+	int len;
 
 /*	if (sess->type == SESS_DIALOG)
 	{
@@ -154,9 +155,10 @@ nick_command_parse (session *sess, char *cmd, char *nick, char *allnick)
 	}
 
 	/* this can't overflow, since popup->cmd is only 256 */
-	buf = malloc (strlen (cmd) + strlen (nick) + strlen (allnick) + 512);
+	len = strlen (cmd) + strlen (nick) + strlen (allnick) + 512;
+	buf = malloc (len);
 
-	auto_insert (buf, cmd, 0, 0, allnick, sess->channel, "", host,
+	auto_insert (buf, len, cmd, 0, 0, allnick, sess->channel, "", host,
 						sess->server->nick, nick);
 
 	nick_command (sess, buf);

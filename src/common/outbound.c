@@ -2697,22 +2697,26 @@ help (session *sess, char *tbuf, char *helpcmd, int quiet)
 }
 
 /* inserts %a, %c, %d etc into buffer. Also handles &x %x for word/word_eol. *
+ *   returns 2 on buffer overflow
  *   returns 1 on success                                                    *
  *   returns 0 on bad-args-for-user-command                                  *
  * - word/word_eol args might be NULL                                        *
  * - this beast is used for UserCommands, UserlistButtons and CTCP replies   */
 
 int
-auto_insert (char *dest, unsigned char *src, char *word[], char *word_eol[],
-				 char *a, char *c, char *d, char *h, char *n, char *s)
+auto_insert (char *dest, int destlen, unsigned char *src, char *word[],
+				 char *word_eol[], char *a, char *c, char *d, char *h, char *n,
+				 char *s)
 {
 	int num;
-	char buf[4];
+	char buf[32];
 	time_t now;
 	struct tm *tm_ptr;
 	char *utf;
 	gsize utf_len;
 	char *orig = dest;
+
+	destlen--;
 
 	while (src[0])
 	{
@@ -2730,6 +2734,12 @@ auto_insert (char *dest, unsigned char *src, char *word[], char *word_eol[],
 					utf = g_locale_to_utf8 (dest, 1, 0, &utf_len, 0);
 					if (utf)
 					{
+						if ((dest - orig) + utf_len >= destlen)
+						{
+							g_free (utf);
+							return 2;
+						}
+
 						memcpy (dest, utf, utf_len);
 						g_free (utf);
 						dest += utf_len;
@@ -2750,11 +2760,8 @@ auto_insert (char *dest, unsigned char *src, char *word[], char *word_eol[],
 							utf = word_eol[num];
 
 						/* avoid recusive usercommand overflow */
-						if ((dest - orig) + strlen (utf) >= 2048)
-						{
-							PrintText (0, "UserCommand buffer overflow.\n");
-							return 0;
-						}
+						if ((dest - orig) + strlen (utf) >= destlen)
+							return 2;
 
 						strcpy (dest, utf);
 						dest += strlen (dest);
@@ -2765,57 +2772,66 @@ auto_insert (char *dest, unsigned char *src, char *word[], char *word_eol[],
 				if (src[0] == '&')
 					goto lamecode;
 				src++;
+				utf = NULL;
 				switch (src[0])
 				{
 				case '%':
+					if ((dest - orig) + 2 >= destlen)
+						return 2;
 					dest[0] = '%';
 					dest[1] = 0;
 					break;
 				case 'a':
-					strcpy (dest, a);
-					break;
+					utf = a; break;
 				case 'c':
-					strcpy (dest, c);
-					break;
+					utf = c; break;
 				case 'd':
-					strcpy (dest, d);
-					break;
+					utf = d; break;
 				case 'h':
-					strcpy (dest, h);
-					break;
+					utf = h; break;
 				case 'm':
-					strcpy (dest, get_cpu_str ());
-					break;
+					utf = get_cpu_str (); break;
 				case 'n':
-					strcpy (dest, n);
-					break;
+					utf = n; break;
 				case 's':
-					strcpy (dest, s);
-					break;
+					utf = s; break;
 				case 't':
 					now = time (0);
-					memcpy (dest, ctime (&now), 19);
-					dest[19] = 0;
+					utf = ctime (&now);
+					utf[19] = 0;
 					break;
 				case 'v':
-					strcpy (dest, VERSION);
+					utf = VERSION; break;
 					break;
 				case 'y':
 					now = time (0);
 					tm_ptr = localtime (&now);
-					sprintf (dest, "%4d%02d%02d", 1900 + tm_ptr->tm_year,
-								1 + tm_ptr->tm_mon, tm_ptr->tm_mday);
+					snprintf (buf, sizeof (buf), "%4d%02d%02d", 1900 +
+								 tm_ptr->tm_year, 1 + tm_ptr->tm_mon, tm_ptr->tm_mday);
+					utf = buf;
 					break;
 				default:
 					src--;
 					goto lamecode;
 				}
-				dest += strlen (dest);
+
+				if (utf)
+				{
+					if ((dest - orig) + strlen (utf) >= destlen)
+						return 2;
+					strcpy (dest, utf);
+					dest += strlen (dest);
+				}
+
 			}
 			src++;
 		} else
 		{
 			utf_len = g_utf8_skip[src[0]];
+
+			if ((dest - orig) + utf_len >= destlen)
+				return 2;
+
 			if (utf_len == 1)
 			{
 		 lamecode:
@@ -2976,7 +2992,7 @@ static void
 user_command (session * sess, char *tbuf, char *cmd, char *word[],
 				  char *word_eol[])
 {
-	if (!auto_insert (tbuf, cmd, word, word_eol, "",
+	if (!auto_insert (tbuf, 2048, cmd, word, word_eol, "",
 							sess->channel, "", "", sess->server->nick, ""))
 	{
 		PrintText (sess, _("Bad arguments for user command.\n"));

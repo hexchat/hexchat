@@ -1489,7 +1489,7 @@ mg_dialog_button_cb (GtkWidget *wid, char *cmd)
 	if (topic)
 		host = topic + 1;
 
-	auto_insert (buf, cmd, 0, 0, "", "", "", host, "", current_sess->channel);
+	auto_insert (buf, sizeof (buf), cmd, 0, 0, "", "", "", host, "", current_sess->channel);
 
 	handle_command (current_sess, buf, TRUE);
 
