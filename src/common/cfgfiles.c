@@ -273,16 +273,16 @@ get_reg_str (const char *sub, const char *name, char *out, DWORD len)
 char *
 get_xdir_fs (void)
 {
-	if (!xdir)
+	if (!xdir_fs)
 	{
 		char out[256];
 
 		if (!get_reg_str ("Software\\Microsoft\\Windows\\CurrentVersion\\"
 				"Explorer\\Shell Folders", "AppData", out, sizeof (out)))
 			return "./config";
-		xdir = g_strdup_printf ("%s\\" XCHAT_DIR, out);
+		xdir_fs = g_strdup_printf ("%s\\" XCHAT_DIR, out);
 	}
-	return xdir;
+	return xdir_fs;
 }
 
 #else

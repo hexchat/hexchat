@@ -1619,9 +1619,9 @@ handle_dcc (struct session *sess, char *nick, char *word[],
 	if (!strcasecmp (type, "SEND"))
 	{
 		char *file = file_part (word[6]);
-		port = atoi (word[8]);
 		int psend = 0;
 
+		port = atoi (word[8]);
 		sscanf (word[7], "%lu", &addr);
 		sscanf (word[9], "%lu", &size);
 
