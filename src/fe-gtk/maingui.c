@@ -1958,15 +1958,12 @@ mg_create_entry (session *sess, GtkWidget *box)
 	gui->nick_box = gtk_hbox_new (FALSE, 0);
 	gtk_box_pack_start (GTK_BOX (hbox), gui->nick_box, 0, 0, 0);
 
-	gui->nick_label = but = gtk_button_new_with_label (prefs.nick1);
+	gui->nick_label = but = gtk_button_new_with_label (sess->server->nick);
 	gtk_button_set_relief (GTK_BUTTON (but), GTK_RELIEF_NONE);
 	GTK_WIDGET_UNSET_FLAGS (but, GTK_CAN_FOCUS);
 	gtk_box_pack_end (GTK_BOX (gui->nick_box), but, 0, 0, 0);
 	g_signal_connect (G_OBJECT (but), "clicked",
 							G_CALLBACK (mg_nickclick_cb), NULL);
-
-	if (gui->is_tab)
-		sess = NULL;	/* pass NULL to key_handle_key_press for tabs */
 
 	gui->input_box = entry = gtk_entry_new ();
 	gtk_widget_set_name (entry, "xchat-inputbox");
@@ -1984,17 +1981,6 @@ mg_create_entry (session *sess, GtkWidget *box)
 
 	if (prefs.style_inputbox)
 		mg_apply_entry_style (entry);
-
-/*	but = gtk_button_new ();
-	arrow = gtk_arrow_new (GTK_ARROW_DOWN, GTK_SHADOW_NONE);
-	gtk_container_add (GTK_CONTAINER (but), arrow);
-	gtk_button_set_relief (GTK_BUTTON (but), GTK_RELIEF_NONE);
-	gtk_box_pack_end (GTK_BOX (hbox), but, 0, 0, 0);
-	g_signal_connect (G_OBJECT (but), "clicked",
-							G_CALLBACK (mg_upbutton_cb), 0);
-	add_tip (but, _("Channel Options"));
-	gtk_widget_set_size_request (but, 18, 8);
-	gtk_widget_show_all (but);*/
 }
 
 static void
