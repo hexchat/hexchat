@@ -148,7 +148,7 @@ execute_perl( SV *function, char *args)
 	XPUSHs ( sv_2mortal (newSVpvn (args, strlen (args))));
 	PUTBACK;
 
-	count = call_sv(function, G_EVAL | G_KEEPERR| G_SCALAR);
+	count = call_sv(function, G_EVAL | G_SCALAR);
 	SPAGAIN;
 
 	sv = GvSV(gv_fetchpv("@", TRUE, SVt_PV));
@@ -184,7 +184,7 @@ timer_cb (void *userdata)
 	XPUSHs (data->userdata);
 	PUTBACK;
 
-	count =	call_sv (data->callback, G_EVAL | G_KEEPERR);
+	count =	call_sv (data->callback, G_EVAL);
 	SPAGAIN;
 	if (SvTRUE (ERRSV))
 	{
@@ -269,7 +269,7 @@ server_cb (char *word[], char *word_eol[], void *userdata)
 	XPUSHs (data->userdata);
 	PUTBACK;
 
-	count =	call_sv (data->callback, G_EVAL | G_KEEPERR);
+	count =	call_sv (data->callback, G_EVAL);
 	SPAGAIN;
 	if (SvTRUE (ERRSV))
 	{
@@ -341,7 +341,7 @@ command_cb (char* word[], char* word_eol[], void *userdata)
 	XPUSHs (data->userdata);
 	PUTBACK;
 
-	count =	call_sv (data->callback, G_EVAL | G_KEEPERR);
+	count =	call_sv (data->callback, G_EVAL);
 	SPAGAIN;
 	if (SvTRUE (ERRSV))
 	{
@@ -402,7 +402,7 @@ print_cb (char *word[], void *userdata)
 	XPUSHs (data->userdata);
 	PUTBACK;
 
-	count =	call_sv (data->callback, G_EVAL | G_KEEPERR);
+	count =	call_sv (data->callback, G_EVAL);
 	SPAGAIN;
 	if (SvTRUE (ERRSV))
 	{
@@ -1085,7 +1085,7 @@ perl_print_cb (char *word[], void *perl_callback)
 	}
 	PUTBACK;
 
-	count = call_pv( (char*)perl_callback, G_EVAL | G_KEEPERR );
+	count = call_pv( (char*)perl_callback, G_EVAL);
 
 	SPAGAIN;
 
