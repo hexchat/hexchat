@@ -46,6 +46,30 @@
 #include <libgnomevfs/gnome-vfs-mime-utils.h>
 #endif
 
+/*** UNIT PATCH ***/
+
+#define KILOBYTE 1024
+#define MEGABYTE (KILOBYTE * 1024)
+#define GIGABYTE (MEGABYTE * 1024)
+
+static void proper_unit (int size, char *buf, int buf_len)
+{
+	if (size <= KILOBYTE)
+	{
+		snprintf (buf, buf_len, "%uB", size);
+	}
+	else if (size > KILOBYTE && size <= MEGABYTE)
+	{
+		snprintf (buf, buf_len, "%ukB", size / KILOBYTE);
+	}
+	else
+	{
+		snprintf (buf, buf_len, "%.2fMB", (float)size / MEGABYTE);
+	}
+}
+
+/*** UNIT PATCH ***/
+
 struct dccwindow
 {
 	GtkWidget *window;
@@ -93,7 +117,7 @@ fe_dcc_send_filereq (struct session *sess, char *nick, int maxcps)
 void
 fe_dcc_update_recv (struct DCC *dcc)
 {
-	char pos[14], kbs[14], perc[14], eta[14];
+	char pos[16], kbs[14], perc[14], eta[14];
 	gint row;
 	int to_go;
 	float per;
@@ -107,7 +131,7 @@ fe_dcc_update_recv (struct DCC *dcc)
 	/* percentage done */
 	per = (float) ((dcc->pos * 100.00) / dcc->size);
 
-	snprintf (pos, sizeof (pos), "%u", dcc->pos);
+	proper_unit (dcc->pos, pos, sizeof (pos));
 	snprintf (kbs, sizeof (kbs), "%.1f", ((float)dcc->cps) / 1024);
 	snprintf (perc, sizeof (perc), "%.0f%%", per);
 
@@ -140,7 +164,7 @@ fe_dcc_update_recv (struct DCC *dcc)
 void
 fe_dcc_update_send (struct DCC *dcc)
 {
-	char pos[14], kbs[14], ack[14], perc[14], eta[14];
+	char pos[16], kbs[14], ack[14], perc[14], eta[14];
 	gint row;
 	int to_go;
 	float per;
@@ -154,7 +178,7 @@ fe_dcc_update_send (struct DCC *dcc)
 	/* percentage ack'ed */
 	per = (float) ((dcc->ack * 100.00) / dcc->size);
 
-	snprintf (pos, sizeof (pos), "%u", dcc->pos);
+	proper_unit (dcc->pos, pos, sizeof (pos));
 	snprintf (kbs, sizeof (kbs), "%.1f", ((float)dcc->cps) / 1024);
 	snprintf (ack, sizeof (ack), "%u", dcc->ack);
 	snprintf (perc, sizeof (perc), "%.0f%%", per);
@@ -227,11 +251,11 @@ fe_dcc_update_recv_win (void)
 			else
 				nnew[8] = "";
 #endif
-			sprintf (size, "%u", dcc->size);
+			proper_unit (dcc->size, size, sizeof (size));
 			if (dcc->dccstat == STAT_QUEUED)
-				sprintf (pos, "%u", dcc->resumable);
+				proper_unit (dcc->resumable, pos, sizeof (pos));
 			else
-				sprintf (pos, "%u", dcc->pos);
+				proper_unit (dcc->pos, pos, sizeof (pos));
 			snprintf (kbs, sizeof (kbs), "%.1f", ((float)dcc->cps) / 1024);
 			/* percentage recv'ed */
 			per = (float) ((dcc->pos * 100.00) / dcc->size);
@@ -473,8 +497,8 @@ fe_dcc_update_send_win (void)
 			nnew[8] = dcc->nick;
 			/* percentage ack'ed */
 			per = (float) ((dcc->ack * 100.00) / dcc->size);
-			snprintf (size, sizeof (size), "%u", dcc->size);
-			snprintf (pos, sizeof (pos), "%u", dcc->pos);
+			proper_unit (dcc->size, size, sizeof (size));
+			proper_unit (dcc->pos, pos, sizeof (pos));
 			snprintf (kbs, sizeof (kbs), "%.1f", ((float)dcc->cps) / 1024);
 			snprintf (perc, sizeof (perc), "%.0f%%", per);
 			snprintf (ack, sizeof (ack), "%u", dcc->ack);
@@ -641,8 +665,8 @@ fe_dcc_update_chat_win (void)
 	struct DCC *dcc;
 	GSList *list = dcc_list;
 	gchar *nnew[5];
-	char pos[14];
-	char siz[14];
+	char pos[16];
+	char siz[16];
 	gint row;
 	int selrow;
 
@@ -661,8 +685,8 @@ fe_dcc_update_chat_win (void)
 		{
 			nnew[0] = _(dccstat[dcc->dccstat].name);
 			nnew[1] = dcc->nick;
-			sprintf (pos, "%u", dcc->pos);
-			sprintf (siz, "%u", dcc->size);
+			proper_unit (dcc->pos, pos, sizeof (pos));
+			proper_unit (dcc->size, siz, sizeof (siz));
 			nnew[4] = ctime (&dcc->starttime);
 			nnew[4][strlen (nnew[4]) - 1] = 0;	/* remove the \n */
 			row = gtk_clist_append (GTK_CLIST (dcccwin.list), nnew);

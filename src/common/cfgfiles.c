@@ -528,7 +528,7 @@ load_config (void)
 	prefs.paned_userlist = 1;
 	prefs.newtabstofront = 1;
 	prefs.use_server_tab = 1;
-	prefs.windows_as_tabs = 1;
+	/*prefs.windows_as_tabs = 1;*/
 	prefs.privmsgtab = 1;
 	prefs.nickcompletion = 1;
 	prefs.style_inputbox = 1;
