@@ -510,7 +510,8 @@ mg_populate (session *sess)
 		mg_userlist_showhide (sess, FALSE);
 		break;
 	case SESS_SERVER:
-		gtk_widget_show (gui->topicbutton_box);
+		if (prefs.chanmodebuttons)
+			gtk_widget_show (gui->topicbutton_box);
 		/* hide the dialog buttons */
 		gtk_widget_hide (gui->dialogbutton_box);
 		/* hide the userlist */
@@ -1714,7 +1715,7 @@ mg_create_center (session *sess, session_gui *gui, GtkWidget *box)
 			if (gui->pane_pos == 0)
 				gui->pane_pos = prefs.paned_pos;
 			if (gui->pane_pos == 0)
-				gui->pane_pos = prefs.mainwindow_width - 150;
+				gui->pane_pos = prefs.mainwindow_width - 140;
 			gtk_paned_set_position (GTK_PANED (gui->pane), gui->pane_pos);
 		}
 
