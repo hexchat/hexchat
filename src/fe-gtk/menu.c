@@ -862,10 +862,15 @@ static void
 menu_newserver_tab (GtkWidget * wid, gpointer none)
 {
 	int old = prefs.tabchannels;
+	int oldf = prefs.newtabstofront;
 
 	prefs.tabchannels = 1;
+	/* force focus if setting is "only requested tabs" */
+	if (prefs.newtabstofront == 2)
+		prefs.newtabstofront = 1;
 	new_ircwindow (NULL, NULL, SESS_SERVER, 0);
 	prefs.tabchannels = old;
+	prefs.newtabstofront = oldf;
 }
 
 static void
