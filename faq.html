@@ -59,6 +59,8 @@ p { margin: 3% }
 <br><br>
 <a href="faq.html#q214">14. How do I execute multiple commands in one line?</a>
 <br><br>
+<a href="faq.html#q215">15. How do I enable Emacs keybindings in XChat 2.0?</a>
+<br><br>
 </p>
 
 <h2>3. Section Three: Crashes, Bugs and other problems.</h2>
@@ -285,10 +287,12 @@ Version 2.0:
 
 <br><h3><a name="q212">12. How can I run the /dccserver command?</a></h3>
 <p>
-In short you can not do this (easily). This is a mIRC only propriotory feature
+In short you can not do this (easily). This is a mIRC only proprietary feature
 that is quite nonstandard. There is no code for doing this, mainly because
 /dccserver runs on port 59 which in turn would require running X-Chat as
 root. Why do you need this anyway? Just use normal DCC.
+<br><br>
+Unofficial <a href="http://dfx.at/xchat/">patches are available here</a>.
 </p>
 
 <br><h3><a name="q213">13. Why doesn't DCC send work behind IPNat or IPMasq?</a></h3>
@@ -315,6 +319,18 @@ root. Why do you need this anyway? Just use normal DCC.
 <li>/LOAD -e &lt;textfile>, where &lt;textfile> is a full pathname to a file
       containing commands on each line.</li>
 </ul>
+
+<br><h3><a name="q215">15. How do I enable Emacs keybindings in XChat 2.0?</a></h3>
+<p>
+The standard Emacs keybindings, such as ctrl-w, ctrl-u etc, are supported by
+GTK+ 2.0, but normally disabled. If you run Gnome 2, you can reenable them in
+your Gnome menu under: Preferences -> Keyboard Shortcuts.
+</p>
+<p>
+If you don't use Gnome 2, but still want Emacs keybindings, it's beyond the
+scope of this document. You might find some hints here:
+<a href="http://www.gtk.org/gtk-2.2.0-notes.html">GTK+ 2.2.0 release notes</a>.
+</p>
 
 <br><h2>3. Section Three: Crashes, Bugs and other problems.</h2>
 

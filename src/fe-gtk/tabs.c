@@ -282,7 +282,7 @@ tab_group_new (void *callback, gboolean vertical)
 	g_signal_connect (G_OBJECT (button), "clicked",
 							G_CALLBACK (tab_scroll_right_down_clicked), group);
 	gtk_box_pack_end (GTK_BOX (group), button, 0, 0, 0);
-	gtk_widget_show_all (button);
+	gtk_widget_show (arrow);
 
 	button = gtk_button_new ();
 	g_object_set_data (G_OBJECT (group), "b2", button);
@@ -293,7 +293,7 @@ tab_group_new (void *callback, gboolean vertical)
 	g_signal_connect (G_OBJECT (button), "clicked",
 							G_CALLBACK (tab_scroll_left_up_clicked), group);
 	gtk_box_pack_end (GTK_BOX (group), button, 0, 0, 0);
-	gtk_widget_show_all (button);
+	gtk_widget_show (arrow);
 
 	return group;
 }

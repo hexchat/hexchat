@@ -105,7 +105,7 @@ fe_userlist_numbers (session *sess)
 	{
 		if (sess->total)
 		{
-			sprintf (tbuf, "%d ops, %d total", sess->ops, sess->total);
+			sprintf (tbuf, _("%d ops, %d total"), sess->ops, sess->total);
 			gtk_label_set_text (GTK_LABEL (sess->gui->namelistinfo), tbuf);
 		} else
 		{
