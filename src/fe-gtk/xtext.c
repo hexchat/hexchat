@@ -28,6 +28,7 @@
 #define SCROLL_HACK					/* use XCopyArea scroll, or full redraw? */
 #undef COLOR_HILIGHT				/* Color instead of underline? */
 #define USE_GDK_PIXBUF
+#define GDK_MULTIHEAD_SAFE
 
 #define MARGIN 2						/* dont touch. */
 #define REFRESH_TIMEOUT 20
@@ -226,13 +227,14 @@ xtext_draw_bg (GtkXText *xtext, int x, int y, int width, int height)
 
 #ifdef USE_XFT
 
-#define backend_font_close(f) XftFontClose(GDK_DISPLAY(),f)
+#define backend_font_close(d,f) XftFontClose(d,f)
 
 static void
 backend_init (GtkXText *xtext)
 {
 	if (xtext->xftdraw == NULL)
-		xtext->xftdraw = XftDrawCreate (GDK_DISPLAY (),
+		xtext->xftdraw = XftDrawCreate (
+			GDK_WINDOW_XDISPLAY (xtext->draw_buf),
 			GDK_WINDOW_XWINDOW (xtext->draw_buf),
 			GDK_VISUAL_XVISUAL (gdk_drawable_get_visual (xtext->draw_buf)),
 			GDK_COLORMAP_XCOLORMAP (gdk_drawable_get_colormap (xtext->draw_buf)));
@@ -253,7 +255,7 @@ backend_font_open (GtkXText *xtext, char *name)
 {
 	XftFont *font = NULL;
 	PangoFontDescription *fontd;
-	Display *xdisplay = GDK_DISPLAY ();
+	Display *xdisplay = GDK_WINDOW_XDISPLAY (xtext->draw_buf);
 	int weight, slant, screen = DefaultScreen (xdisplay);
 
 	if (*name == '-')
@@ -321,7 +323,7 @@ backend_get_char_width (GtkXText *xtext, unsigned char *str, int *mbl_ret)
 	}
 
 	*mbl_ret = charlen (str);
-	XftTextExtentsUtf8 (GDK_DISPLAY (), xtext->font, str, *mbl_ret, &ext);
+	XftTextExtentsUtf8 (GDK_WINDOW_XDISPLAY (xtext->draw_buf), xtext->font, str, *mbl_ret, &ext);
 
 	return ext.xOff;
 }
@@ -334,7 +336,7 @@ backend_get_text_width (GtkXText *xtext, char *str, int len, int is_mb)
 	if (!is_mb)
 		return gtk_xtext_text_width_8bit (xtext, str, len);
 
-	XftTextExtentsUtf8 (GDK_DISPLAY (), xtext->font, str, len, &ext);
+	XftTextExtentsUtf8 (GDK_WINDOW_XDISPLAY (xtext->draw_buf), xtext->font, str, len, &ext);
 	return ext.xOff;
 }
 
@@ -399,7 +401,7 @@ backend_clear_clip (GtkXText *xtext)
 /* ============ PANGO BACKEND ============ */
 /* ======================================= */
 
-#define backend_font_close(f) pango_font_description_free(f->font)
+#define backend_font_close(d,f) pango_font_description_free(f->font)
 
 static void
 backend_init (GtkXText *xtext)
@@ -407,7 +409,8 @@ backend_init (GtkXText *xtext)
 	if (xtext->layout == NULL)
 	{
 		xtext->layout = gtk_widget_create_pango_layout (GTK_WIDGET (xtext), 0); 
-		pango_layout_set_font_description (xtext->layout, xtext->font->font);
+		if (xtext->font)
+			pango_layout_set_font_description (xtext->layout, xtext->font->font);
 	}
 }
 
@@ -768,7 +771,7 @@ gtk_xtext_destroy (GtkObject * object)
 
 	if (xtext->font)
 	{
-		backend_font_close (xtext->font);
+		backend_font_close (GDK_WINDOW_XDISPLAY (xtext->draw_buf), xtext->font);
 		xtext->font = NULL;
 	}
 
@@ -920,7 +923,7 @@ gtk_xtext_realize (GtkWidget * widget)
 		gdk_gc_set_fill (xtext->bgc, GDK_TILED);
 	}
 
-	xtext->hand_cursor = gdk_cursor_new (GDK_HAND1);
+	xtext->hand_cursor = gdk_cursor_new_for_display (gdk_drawable_get_display (widget->window), GDK_HAND1);
 
 	gdk_window_set_back_pixmap (widget->window, NULL, FALSE);
 
@@ -2081,8 +2084,10 @@ gtk_xtext_selection_get (GtkWidget * widget,
 			gint format;
 			gint new_length;
 
-			gdk_string_to_compound_text (stripped, &encoding, &format, &new_text,
-												  &new_length);
+			gdk_string_to_compound_text_for_display (
+												gdk_drawable_get_display (widget->window),
+												stripped, &encoding, &format, &new_text,
+												&new_length);
 			gtk_selection_data_set (selection_data_ptr, encoding, format,
 											new_text, new_length);
 			gdk_free_compound_text (new_text);
@@ -2792,7 +2797,7 @@ gtk_xtext_render_str (GtkXText * xtext, int y, textentry * ent, unsigned char *s
 static Window desktop_window = None;
 
 static Window
-get_desktop_window (Window the_window)
+get_desktop_window (Display *xdisplay, Window the_window)
 {
 	Atom prop, type;
 	int format;
@@ -2801,24 +2806,24 @@ get_desktop_window (Window the_window)
 	unsigned int nchildren;
 	Window w, root, *children, parent;
 
-	prop = XInternAtom (GDK_DISPLAY (), "_XROOTPMAP_ID", True);
+	prop = XInternAtom (xdisplay, "_XROOTPMAP_ID", True);
 	if (prop == None)
 	{
-		prop = XInternAtom (GDK_DISPLAY (), "_XROOTCOLOR_PIXEL", True);
+		prop = XInternAtom (xdisplay, "_XROOTCOLOR_PIXEL", True);
 		if (prop == None)
 			return None;
 	}
 
 	for (w = the_window; w; w = parent)
 	{
-		if ((XQueryTree (GDK_DISPLAY (), w, &root, &parent, &children,
+		if ((XQueryTree (xdisplay, w, &root, &parent, &children,
 				&nchildren)) == False)
 			return None;
 
 		if (nchildren)
 			XFree (children);
 
-		XGetWindowProperty (GDK_DISPLAY (), w, prop, 0L, 1L, False,
+		XGetWindowProperty (xdisplay, w, prop, 0L, 1L, False,
 								  AnyPropertyType, &type, &format, &length, &after,
 								  &data);
 		if (data)
@@ -2834,7 +2839,7 @@ get_desktop_window (Window the_window)
 /* find the root window (backdrop) Pixmap */
 
 static Pixmap
-get_pixmap_prop (Window the_window)
+get_pixmap_prop (Display *xdisplay, Window the_window)
 {
 	Atom type;
 	int format;
@@ -2844,16 +2849,16 @@ get_pixmap_prop (Window the_window)
 	static Atom prop = None;
 
 	if (desktop_window == None)
-		desktop_window = get_desktop_window (the_window);
+		desktop_window = get_desktop_window (xdisplay, the_window);
 	if (desktop_window == None)
-		desktop_window = GDK_ROOT_WINDOW ();
+		desktop_window = DefaultRootWindow (xdisplay);
 
 	if (prop == None)
-		prop = XInternAtom (GDK_DISPLAY (), "_XROOTPMAP_ID", True);
+		prop = XInternAtom (xdisplay, "_XROOTPMAP_ID", True);
 	if (prop == None)
 		return None;
 
-	XGetWindowProperty (GDK_DISPLAY (), desktop_window, prop, 0L, 1L, False,
+	XGetWindowProperty (xdisplay, desktop_window, prop, 0L, 1L, False,
 							  AnyPropertyType, &type, &format, &length, &after,
 							  &data);
 	if (data)
@@ -2881,28 +2886,29 @@ shade_pixmap_mmx (GtkXText * xtext, Pixmap p, int x, int y, int w, int h)
 	XImage *ximg;
 	XGCValues gcv;
 	GC tgc;
+	Display *xdisplay = GDK_WINDOW_XDISPLAY (xtext->draw_buf);
 
-	XGetGeometry (GDK_DISPLAY (), p, &root, &dummy, &dummy, &width, &height,
+	XGetGeometry (xdisplay, p, &root, &dummy, &dummy, &width, &height,
 					  &dummy, &depth);
 
 	if (width < x + w || height < y + h || x < 0 || y < 0)
 	{
 		gcv.subwindow_mode = IncludeInferiors;
 		gcv.graphics_exposures = False;
-		tgc = XCreateGC (GDK_DISPLAY (), p, GCGraphicsExposures|GCSubwindowMode,
+		tgc = XCreateGC (xdisplay, p, GCGraphicsExposures|GCSubwindowMode,
 							  &gcv);
-		tmp = XCreatePixmap (GDK_DISPLAY (), p, w, h, depth);
-		XSetTile (GDK_DISPLAY (), tgc, p);
-		XSetFillStyle (GDK_DISPLAY (), tgc, FillTiled);
-		XSetTSOrigin (GDK_DISPLAY (), tgc, -x, -y);
-		XFillRectangle (GDK_DISPLAY (), tmp, tgc, 0, 0, w, h);
-		XFreeGC (GDK_DISPLAY (), tgc);
+		tmp = XCreatePixmap (xdisplay, p, w, h, depth);
+		XSetTile (xdisplay, tgc, p);
+		XSetFillStyle (xdisplay, tgc, FillTiled);
+		XSetTSOrigin (xdisplay, tgc, -x, -y);
+		XFillRectangle (xdisplay, tmp, tgc, 0, 0, w, h);
+		XFreeGC (xdisplay, tgc);
 
-		ximg = XGetImage (GDK_DISPLAY (), tmp, 0, 0, w, h, -1, ZPixmap);
-		XFreePixmap (GDK_DISPLAY (), tmp);
+		ximg = XGetImage (xdisplay, tmp, 0, 0, w, h, -1, ZPixmap);
+		XFreePixmap (xdisplay, tmp);
 	} else
 	{
-		ximg = XGetImage (GDK_DISPLAY (), p, x, y, w, h, -1, ZPixmap);
+		ximg = XGetImage (xdisplay, p, x, y, w, h, -1, ZPixmap);
 	}
 
 	switch (depth)
@@ -2930,7 +2936,7 @@ shade_pixmap_mmx (GtkXText * xtext, Pixmap p, int x, int y, int w, int h)
 	else
 		shaded_pix = gdk_pixmap_new (GTK_WIDGET (xtext)->window, w, h, depth);
 
-	XPutImage (GDK_DISPLAY (), GDK_WINDOW_XWINDOW (shaded_pix),
+	XPutImage (xdisplay, GDK_WINDOW_XWINDOW (shaded_pix),
 				  GDK_GC_XGC (xtext->fgc), ximg, 0, 0, 0, 0, w, h);
 
 	XDestroyImage (ximg);
@@ -2959,7 +2965,7 @@ shade_pixmap_gdk (GtkXText * xtext, Pixmap p, int x, int y, int w, int h)
 	int offset;
 	int r, g, b, a;
 
-	pp = gdk_pixmap_foreign_new (p);
+	pp = gdk_pixmap_foreign_new_for_display (gdk_drawable_get_display (GTK_WIDGET (xtext)->window), p);
 	cmap = gtk_widget_get_colormap (GTK_WIDGET (xtext));
 	gdk_drawable_get_size (pp, &width, &height);
 	depth = gdk_drawable_get_depth (pp);
@@ -3023,7 +3029,7 @@ shade_pixmap_gdk (GtkXText * xtext, Pixmap p, int x, int y, int w, int h)
 												 0, 0, w, h, GDK_RGB_DITHER_NORMAL, 0, 0);
 	} else
 	{
-		gdk_pixbuf_render_pixmap_and_mask (pixbuf, &shaded_pixmap, NULL, 0);
+		gdk_pixbuf_render_pixmap_and_mask_for_colormap (pixbuf, cmap, &shaded_pixmap, NULL, 0);
 	}
 	g_object_unref (pixbuf);
 
@@ -3146,7 +3152,7 @@ gtk_xtext_load_trans (GtkXText * xtext)
 	GtkWidget *widget = GTK_WIDGET (xtext);
 	int x, y;
 
-	rootpix = get_pixmap_prop (GDK_WINDOW_XWINDOW (widget->window));
+	rootpix = get_pixmap_prop (GDK_WINDOW_XDISPLAY (widget->window), GDK_WINDOW_XWINDOW (widget->window));
 	if (rootpix == None)
 	{
 		if (xtext->error_function)
@@ -3176,7 +3182,7 @@ gtk_xtext_load_trans (GtkXText * xtext)
 	{
 noshade:
 #endif
-		xtext->pixmap = gdk_pixmap_foreign_new (rootpix);
+		xtext->pixmap = gdk_pixmap_foreign_new_for_display (gdk_drawable_get_display (GTK_WIDGET (xtext)->window), rootpix);
 		gdk_gc_set_tile (xtext->bgc, xtext->pixmap);
 		gdk_gc_set_ts_origin (xtext->bgc, -x, -y);
 #if defined(USE_GDK_PIXBUF) || defined(USE_MMX)
@@ -3472,7 +3478,10 @@ gtk_xtext_set_font (GtkXText *xtext, char *name)
 	unsigned char c;
 
 	if (xtext->font)
-		backend_font_close (xtext->font);
+		backend_font_close (GDK_WINDOW_XDISPLAY (xtext->draw_buf), xtext->font);
+
+	/* realize now, so that font_open has a XDisplay */
+	gtk_widget_realize (GTK_WIDGET (xtext));
 
 	backend_font_open (xtext, name);
 	if (xtext->font == NULL)

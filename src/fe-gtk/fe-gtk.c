@@ -97,11 +97,14 @@ root_event_cb (GdkXEvent *xev, GdkEventProperty *event, gpointer data)
 	Atom at = None;
 	XEvent *xevent = (XEvent *)xev;
 
-	if (at == None)
-		at = XInternAtom (GDK_DISPLAY (), "_XROOTPMAP_ID", True);
+	if (xevent->type == PropertyNotify)
+	{
+		if (at == None)
+			at = XInternAtom (xevent->xproperty.display, "_XROOTPMAP_ID", True);
 
-	if (xevent->type == PropertyNotify && at == xevent->xproperty.atom)
-		redraw_trans_xtexts ();
+		if (at == xevent->xproperty.atom)
+			redraw_trans_xtexts ();
+	}
 
 	return GDK_FILTER_CONTINUE;
 }
