@@ -2,13 +2,13 @@
 # Copyright (C) 2000, 2001, 2002 Free Software Foundation, Inc.
 # Christian Rose <menthos@menthos.com>, 2000, 2001, 2002.
 #
-# $Id: sv.po,v 1.6 2002-12-13 02:56:00 zed Exp $
+# $Id: sv.po,v 1.7 2002-12-13 04:42:32 zed Exp $
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: xchat\n"
 "POT-Creation-Date: 2002-12-12 21:03+1100\n"
-"PO-Revision-Date: 2002-11-26 03:47+0100\n"
+"PO-Revision-Date: 2002-12-13 05:22+0100\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -204,7 +204,6 @@ msgid "CYCLE, parts current channel and immediately rejoins"
 msgstr "CYCLE, lämnar aktuell kanal och går omedelbart in i den igen"
 
 #: src/common/outbound.c:2453
-#, fuzzy
 msgid ""
 "\n"
 "DCC GET <nick>                     - accept an offered file\n"
@@ -215,11 +214,11 @@ msgid ""
 "         /dcc close send johnsmith file.tar.gz"
 msgstr ""
 "\n"
-"DCC GET <smeknamn>         - ta emot en erbjuden fil\n"
-"/DCC SEND <smeknamn> <fil>  - skicka en fil till någon\n"
-"/DCC LIST                   - visa DCC-lista\n"
-"/DCC CHAT <smeknamn>        - erbjud någon DCC-chatt\n"
-"/DCC CLOSE <typ> <smeknamn> <fil>       exempel:\n"
+"DCC GET <smeknamn>                     - ta emot en erbjuden fil\n"
+"DCC SEND [-maxcps=#] <smeknamn> [fil]  - skicka en fil till någon\n"
+"DCC LIST                               - visa DCC-lista\n"
+"DCC CHAT <smeknamn>                    - erbjud någon DCC-chatt\n"
+"DCC CLOSE <typ> <smeknamn> <fil>            exempel:\n"
 "         /dcc close send nisse fil.tar.gz"
 
 #: src/common/outbound.c:2463
@@ -2118,9 +2117,8 @@ msgstr "Om X-Chat"
 #. gdk_font_ref (font_normal);
 #. }
 #: src/fe-gtk/ascii.c:79
-#, fuzzy
 msgid "Character Chart"
-msgstr "Teckentabell..."
+msgstr "Teckenkarta"
 
 #: src/fe-gtk/banlist.c:173 src/fe-gtk/ignoregui.c:342
 msgid "Mask"
@@ -2677,7 +2675,7 @@ msgstr "Ämnet för %s är: %s"
 
 #: src/fe-gtk/maingui.c:330
 msgid "No topic is set"
-msgstr ""
+msgstr "Inget ämne är satt"
 
 #: src/fe-gtk/maingui.c:807
 msgid "Some file transfers still active, quit xchat?"
@@ -2729,7 +2727,7 @@ msgstr "Stäng denna flik/detta fönster"
 
 #: src/fe-gtk/maingui.c:1121
 msgid "Attach/Detach this tab"
-msgstr ""
+msgstr "Fäst/Lösgör denna flik"
 
 #: src/fe-gtk/maingui.c:1197
 msgid "Show/Hide userlist"
@@ -3033,12 +3031,11 @@ msgstr "Ny skalflik..."
 
 #: src/fe-gtk/menu.c:1167
 msgid "Detach Tab"
-msgstr ""
+msgstr "Ta loss flik"
 
 #: src/fe-gtk/menu.c:1168
-#, fuzzy
 msgid "Close Tab"
-msgstr "Stäng verktygslåda"
+msgstr "Stäng flik"
 
 #: src/fe-gtk/menu.c:1170
 msgid "Quit"
@@ -3067,12 +3064,10 @@ msgstr "Märkt som frånvarande"
 
 #. 24
 #: src/fe-gtk/menu.c:1179
-#, fuzzy
 msgid "Auto Rejoin when Kicked"
-msgstr "Gå in automatiskt vid kick"
+msgstr "Gå in igen automatiskt vid kick"
 
 #: src/fe-gtk/menu.c:1180
-#, fuzzy
 msgid "Auto Reconnect to Server"
 msgstr "Automatisk återanslutning till server"
 
@@ -3086,14 +3081,12 @@ msgid "Auto Open Dialog Windows"
 msgstr "Öppna dialogfönster automatiskt"
 
 #: src/fe-gtk/menu.c:1184
-#, fuzzy
 msgid "Auto Accept Direct Chat"
-msgstr "Acceptera DCC-chattar automatiskt"
+msgstr "Acceptera direktchattar automatiskt"
 
 #: src/fe-gtk/menu.c:1185
-#, fuzzy
 msgid "Auto Accept Files"
-msgstr "Acceptera DCC-sändningar automatiskt"
+msgstr "Acceptera filer automatiskt"
 
 #: src/fe-gtk/menu.c:1187
 msgid "_Server"
@@ -3253,9 +3246,8 @@ msgid "Online"
 msgstr "Ansluten"
 
 #: src/fe-gtk/notifygui.c:157
-#, fuzzy
 msgid "Enter nickname to add:"
-msgstr "Ange nytt smeknamn:"
+msgstr "Ange smeknamn att lägga till:"
 
 #: src/fe-gtk/notifygui.c:164
 msgid "User"
@@ -3412,9 +3404,8 @@ msgid "Servers"
 msgstr "Servrar"
 
 #: src/fe-gtk/servlistgui.c:954
-#, fuzzy
 msgid "Character Set:"
-msgstr "Teckentabell..."
+msgstr "Teckentabell:"
 
 #: src/fe-gtk/servlistgui.c:995
 msgid "Nick Name:"
@@ -3437,10 +3428,11 @@ msgid "Connect Command:"
 msgstr "Anslutningskommando:"
 
 #: src/fe-gtk/servlistgui.c:1007
-#, fuzzy
 msgid ""
 "Command to execute after connecting. Can be used to authenticate to NickServ"
-msgstr "Kommando att utföra efter anslutning"
+msgstr ""
+"Kommando att utföra efter anslutning. Kan användas för autentisering till "
+"NickServ"
 
 #: src/fe-gtk/servlistgui.c:1015
 msgid "Cycle until connected"
@@ -3489,7 +3481,6 @@ msgstr "Nätverk"
 #. add_tip (but, _("Don't display the message-of-the-day when logging in"));
 #.
 #: src/fe-gtk/servlistgui.c:1120
-#, fuzzy
 msgid "No server list on startup"
 msgstr "Ingen serverlista vid uppstart"
 
@@ -4067,15 +4058,11 @@ msgstr "Välj en fil att spara till"
 msgid "X-Chat: URL Grabber"
 msgstr "X-Chat: URL-fångare"
 
-#~ msgid "Skip MOTD"
-#~ msgstr "Hoppa över MOTD"
+#~ msgid "Ascii Chart"
+#~ msgstr "ASCII-tabell"
 
-#~ msgid "Don't display the message-of-the-day when logging in"
-#~ msgstr "Visa inte dagens meddelande vid inloggning"
-
-#, fuzzy
-#~ msgid "No Server List on Startup"
-#~ msgstr "Ingen serverlista vid uppstart"
+#~ msgid "Link/DeLink this tab"
+#~ msgstr "Länka/Avlänka denna flik"
 
 #~ msgid "(%s) Network encoding"
 #~ msgstr "(%s) Nätverkskodning"
@@ -4085,12 +4072,6 @@ msgstr "X-Chat: URL-fångare"
 
 #~ msgid "Auto ReJoin on Kick"
 #~ msgstr "Gå in automatiskt vid kick"
-
-#~ msgid "Link/DeLink this tab"
-#~ msgstr "Länka/Avlänka denna flik"
-
-#~ msgid "Ascii Chart"
-#~ msgstr "ASCII-tabell"
 
 #~ msgid "Server settings"
 #~ msgstr "Serverinställningar"
@@ -5730,6 +5711,12 @@ msgstr "X-Chat: URL-fångare"
 #~ msgid "Connect New"
 #~ msgstr "Anslut ny"
 
+#~ msgid "Skip MOTD"
+#~ msgstr "Hoppa över MOTD"
+
+#~ msgid "Don't display the message-of-the-day when logging in"
+#~ msgstr "Visa inte dagens meddelande vid inloggning"
+
 #~ msgid "Show channels"
 #~ msgstr "Visa kanaler"
 
@@ -5786,6 +5773,9 @@ msgstr "X-Chat: URL-fångare"
 
 #~ msgid "Startup and Shutdown"
 #~ msgstr "Uppstart och avslut"
+
+#~ msgid "No Server List On Startup"
+#~ msgstr "Ingen serverlista vid uppstart"
 
 #~ msgid "Don't display the server list on X-Chat startup"
 #~ msgstr "Visa inte serverlistan då X-Chat startar"

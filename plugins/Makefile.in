@@ -134,6 +134,15 @@ unamepath = @unamepath@
 xchatlibdir = @xchatlibdir@
 xchatsharedir = @xchatsharedir@
 
+# temp. solution while mailcheck & xdcc arn't in SUBDIRS
+EXTRA_DIST = plugin20.html Make.plugin plugin-conf.in \
+				mailcheck/mailcheck.c \
+				mailcheck/mailcheck-config.h.in \
+				mailcheck/Makefile.am \
+				xdcc/xdcc.c \
+				xdcc/Makefile.am
+
+
 noinst_HEADERS = xchat-plugin.h
 
 @DO_PYTHON_TRUE@pythondir = python
@@ -276,6 +285,7 @@ top_distdir = ..
 distdir = $(top_distdir)/$(PACKAGE)-$(VERSION)
 
 distdir: $(DISTFILES)
+	$(mkinstalldirs) $(distdir)/mailcheck $(distdir)/xdcc
 	@list='$(DISTFILES)'; for file in $$list; do \
 	  if test -f $$file || test -d $$file; then d=.; else d=$(srcdir); fi; \
 	  dir=`echo "$$file" | sed -e 's,/[^/]*$$,,'`; \
@@ -393,12 +403,6 @@ uninstall-info: uninstall-info-recursive
 	tags tags-recursive uninstall uninstall-am uninstall-info-am \
 	uninstall-info-recursive uninstall-recursive
 
-# temp. solution while mailcheck & xdcc arn't in SUBDIRS
-				mailcheck/mailcheck.c \
-				mailcheck/mailcheck-config.h.in \
-				mailcheck/Makefile.am \
-				xdcc/xdcc.c \
-				xdcc/Makefile.am
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:
