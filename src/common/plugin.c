@@ -368,6 +368,7 @@ plugin_auto_load (session *sess)
 	ps = sess;
 #ifdef WIN32
 	for_files ("./plugins", "*.dll", plugin_auto_load_cb);
+	for_files (get_xdir (), "*.dll", plugin_auto_load_cb);
 #else
 	for_files (XCHATLIBDIR"/plugins", "*.so", plugin_auto_load_cb);
 	for_files (get_xdir (), "*.so", plugin_auto_load_cb);

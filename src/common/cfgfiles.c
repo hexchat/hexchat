@@ -243,20 +243,63 @@ cfg_get_int (char *cfg, char *var)
 
 char *xdir = 0;
 
+#ifdef WIN32
+
+#include <windows.h>
+
+static gboolean
+get_reg_str (const char *sub, const char *name, char *out, DWORD len)
+{
+	HKEY hKey;
+	DWORD t;
+
+	if (RegOpenKeyEx (HKEY_CURRENT_USER, sub, 0, KEY_READ, &hKey) ==
+			ERROR_SUCCESS)
+	{
+		if (RegQueryValueEx (hKey, name, NULL, &t, out, &len) != ERROR_SUCCESS ||
+			 t != REG_SZ)
+		{
+			RegCloseKey (hKey);
+			return FALSE;
+		}
+		out[len-1] = 0;
+		RegCloseKey (hKey);
+		return TRUE;
+	}
+
+	return FALSE;
+}
+
 char *
 get_xdir (void)
 {
-#ifndef WIN32
+	if (!xdir)
+	{
+		char out[256];
+
+		if (!get_reg_str ("Software\\Microsoft\\Windows\\CurrentVersion\\"
+				"Explorer\\Shell Folders", "AppData", out, sizeof (out)))
+			return "./config";
+		xdir = malloc (strlen (out) + 8);
+		sprintf (xdir, "%s\\X-Chat", out);
+	}
+	return xdir;
+}
+
+#else
+
+char *
+get_xdir (void)
+{
 	if (!xdir)
 	{
 		xdir = malloc (strlen (g_get_home_dir ()) + 9);
 		sprintf (xdir, "%s/.xchat2", g_get_home_dir ());
 	}
 	return xdir;
-#else
-	return "./config";
-#endif
 }
+
+#endif	/* !WIN32 */
 
 static void
 check_prefs_dir (void)
@@ -535,12 +578,13 @@ load_config (void)
 	strcpy (prefs.username, username);
 #ifdef WIN32
 	strcpy (prefs.sounddir, "./sound");
-	strcpy (prefs.dccdir, "./download");
-	/*strcpy (prefs.dcc_completed_dir, "./dcc");*/
+	if (strcmp (get_xdir (), "./config") == 0)
+		sprintf (prefs.dccdir, "%s\\download", get_xdir ());
+	else
+		strcpy (prefs.dccdir, "./download");
 #else
 	sprintf (prefs.sounddir, "%s/sound", g_get_home_dir ());
 	sprintf (prefs.dccdir, "%s/dcc", g_get_home_dir ());
-	/*strcpy (prefs.dcc_completed_dir, prefs.dccdir);*/
 #endif
 	strcpy (prefs.doubleclickuser, "QUOTE WHOIS %s");
 	strcpy (prefs.awayreason, _("I'm busy"));

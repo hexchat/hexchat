@@ -1219,7 +1219,7 @@ static struct mymenu mymenu[] = {
 	{N_("File Send..."), menu_dcc_send_win, 0, M_MENU, 0, 1},
 	{N_("Ignore List..."), ignore_gui_open, 0, M_MENU, 0, 1},
 	{N_("Notify List..."), notify_opengui, 0, M_MENU, 0, 1},
-	{N_("Plugin List..."), menu_pluginlist, 0, M_MENU, 0, 1},
+	{N_("Plugins and Scripts..."), menu_pluginlist, 0, M_MENU, 0, 1},
 	{N_("Raw Log..."), menu_rawlog, 0, M_MENU, 0, 1},	/* 51 */
 	{N_("URL Grabber..."), url_opengui, 0, M_MENU, 0, 1},
 	{0, 0, 0, M_SEP, 0, 0},
