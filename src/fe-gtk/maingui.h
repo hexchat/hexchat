@@ -2,7 +2,6 @@ extern GtkStyle *newmsg_style;
 extern GtkStyle *nickseen_style;
 extern GtkStyle *newdata_style;
 extern GtkStyle *input_style;
-extern GtkWidget *main_menu;
 
 void mg_changui_new (session *sess, restore_gui *res, int tab);
 void mg_update_xtext (GtkWidget *wid);

@@ -474,28 +474,20 @@ menu_showhide (void)
 {
 	session *sess;
 	GSList *list;
-	GtkWidget *menu;
 
 	list = sess_list;
 	while (list)
 	{
 		sess = list->data;
 
-		if (sess->gui->is_tab)
+		if (sess->gui->menu)
 		{
-			menu = main_menu;
-		} else
-		{
-			if (!sess->gui->menu)
-				goto cont;
-			menu = sess->gui->menu;
+			if (prefs.hidemenu)
+				gtk_widget_hide (sess->gui->menu);
+			else
+				gtk_widget_show (sess->gui->menu);
 		}
 
-		if (prefs.hidemenu)
-			gtk_widget_hide (menu);
-		else
-			gtk_widget_show (menu);
-cont:
 		list = list->next;
 	}
 }

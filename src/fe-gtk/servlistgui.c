@@ -1107,7 +1107,7 @@ servlist_skip (GtkWidget *box)
 
 	hbox = gtk_hbox_new (FALSE, 5);
 	gtk_box_pack_start (GTK_BOX (box), hbox, 0, 0, 0);
-
+/*
 	but = gtk_check_button_new_with_label (_("Skip MOTD"));
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (but),
 											prefs.skipmotd);
@@ -1116,8 +1116,8 @@ servlist_skip (GtkWidget *box)
 	gtk_box_pack_start (GTK_BOX (hbox), but, TRUE, FALSE, 0);
 	gtk_widget_show (but);
 	add_tip (but, _("Don't display the message-of-the-day when logging in"));
-
-	but = gtk_check_button_new_with_label (_("No Server List on Startup"));
+*/
+	but = gtk_check_button_new_with_label (_("No server list on startup"));
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (but),
 											prefs.slist_skip);
 	g_signal_connect (G_OBJECT (but), "toggled",

@@ -558,6 +558,28 @@ servlist_connect (session *sess, ircnet *net)
 }
 
 int
+servlist_connect_by_netname (session *sess, char *network)
+{
+	ircnet *net;
+	GSList *list = network_list;
+
+	while (list)
+	{
+		net = list->data;
+
+		if (strcasecmp (net->name, network) == 0)
+		{
+			servlist_connect (sess, net);
+			return 1;
+		}
+
+		list = list->next;
+	}
+
+	return 0;
+}
+
+int
 servlist_have_auto (void)
 {
 	GSList *list = network_list;

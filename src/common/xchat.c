@@ -349,6 +349,7 @@ new_ircwindow (server *serv, char *name, int type)
 	}
 
 	irc_init (sess);
+	plugin_emit_dummy_print (sess, "Open Context");
 
 	return sess;
 }

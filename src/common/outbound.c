@@ -2147,6 +2147,13 @@ cmd_server (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	}
 #endif
 
+	/* connect by Network name */
+	if (word[3][0] == 0)
+	{
+		if (servlist_connect_by_netname (sess, word[2]))
+			return TRUE;
+	}
+
 	server_name = word[2 + offset];
 	port = word[3 + offset];
 	pass = word[4 + offset];
