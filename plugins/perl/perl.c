@@ -979,7 +979,7 @@ static XS (XS_Xchat_nickcmp)
 	}
 }
 
-static XS (XS_Xchat_list_get)
+static XS (XS_Xchat_get_list)
 {
 	SV *	name;
 	HV * hash;
@@ -991,8 +991,7 @@ static XS (XS_Xchat_list_get)
 	dXSARGS;
 
 	if (items != 1) {
-		xchat_print (ph, "Usage: Xchat::list_get(name)");
-
+		xchat_print (ph, "Usage: Xchat::get_list(name)");
 	} else {
 		SP -= items;  /*remove the argument list from the stack*/
 
@@ -1046,6 +1045,10 @@ static XS (XS_Xchat_list_get)
 /* 				xchat_printf (ph, "int: %s - %d",fields[i]+1, */
 /* 				       xchat_list_int (ph, list, fields[i]+1) */
 /* 						); */
+					break;
+				case 't':
+					hv_store (hash, fields[i]+1, strlen (fields[i]+1),
+								newSVnv(xchat_list_time(ph,list,fields[i]+1)), 0);
 					break;
 				}
 				i++;
@@ -2020,7 +2023,7 @@ xs_init (pTHX)
 	newXS("Xchat::get_prefs", XS_Xchat_get_prefs, "Xchat");
 	newXS("Xchat::emit_print", XS_Xchat_emit_print, "Xchat");
 	newXS("Xchat::nickcmp", XS_Xchat_nickcmp, "Xchat");
-	newXS("Xchat::list_get", XS_Xchat_list_get, "Xchat");
+	newXS("Xchat::get_list", XS_Xchat_get_list, "Xchat");
 	
 #ifdef OLD_PERL
 	/* for old interface compatibility */
@@ -2082,8 +2085,8 @@ perl_init (void)
 	     value. Just a question of style:) 
 	     We also redefine the $SIG{__WARN__} handler to have XChat
 	     printing warnings in the main window. (TheHobbit)*/
-	  "use strict;\n"
-	  "use warnings;\n"
+	  "#use strict;\n"
+	  "#use warnings;\n"
 
 "sub Xchat::hook_server {\n"
 "  return undef unless @_ >= 2;\n"
