@@ -26,14 +26,15 @@
 
 #include <gtk/gtkbox.h>
 #include <gtk/gtklabel.h>
-#include <gtk/gtkpixmap.h>
 #include <gtk/gtkdnd.h>
+#include <gtk/gtkentry.h>
 #include <gtk/gtktreeview.h>
 #include <gtk/gtktreeselection.h>
 #include <gtk/gtkscrolledwindow.h>
 #include <gtk/gtkcellrendererpixbuf.h>
 #include <gtk/gtkcellrenderertext.h>
 #include <gtk/gtkliststore.h>
+#include <gdk/gdkkeysyms.h>
 
 #include "../common/xchat.h"
 #include "../common/util.h"
@@ -265,7 +266,7 @@ fe_userlist_insert (session *sess, struct User *newuser, int row, int sel)
 							  -1);
 
 	/* is it me? */
-	if (!rfc_casecmp (newuser->nick, sess->server->nick) && sess->gui->nick_box)
+	if (!sess->server->p_cmp (newuser->nick, sess->server->nick) && sess->gui->nick_box)
 	{
 		sess->res->myself = newuser;
 		if (!sess->gui->is_tab || sess == current_tab)
@@ -333,7 +334,12 @@ userlist_dnd_drop (GtkTreeView *widget, GdkDragContext *context,
 		{
 			if (next)
 				*next = 0;
-			dcc_send (current_sess, tbuf, user->nick, p + 5, prefs.dcc_max_send_cps);
+			p += 5;
+#ifdef WIN32
+			if (strncmp (p, "///", 3) == 0)
+				p += 3;
+#endif
+			dcc_send (current_sess, tbuf, user->nick, p, prefs.dcc_max_send_cps);
 		}
 		if (!next)
 			break;
@@ -466,6 +472,22 @@ userlist_click_cb (GtkWidget *widget, GdkEventButton *event, gpointer userdata)
 	return FALSE;
 }
 
+static gboolean
+userlist_key_cb (GtkWidget *wid, GdkEventKey *evt, gpointer userdata)
+{
+	if (evt->keyval >= GDK_asterisk && evt->keyval <= GDK_z)
+	{
+		/* dirty trick to avoid auto-selection */
+		GTK_ENTRY (current_sess->gui->input_box)->editable = 0;
+		gtk_widget_grab_focus (current_sess->gui->input_box);
+		GTK_ENTRY (current_sess->gui->input_box)->editable = 1;
+		gtk_widget_event (current_sess->gui->input_box, (GdkEvent *)evt);
+		return TRUE;
+	}
+
+	return FALSE;
+}
+
 GtkWidget *
 userlist_create (GtkWidget *box)
 {
@@ -487,6 +509,7 @@ userlist_create (GtkWidget *box)
 	gtk_widget_show (sw);
 
 	treeview = gtk_tree_view_new ();
+	gtk_widget_set_name (treeview, "xchat-userlist");
 	gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (treeview), FALSE);
 	gtk_tree_selection_set_mode (gtk_tree_view_get_selection
 										  (GTK_TREE_VIEW (treeview)),
@@ -504,6 +527,8 @@ userlist_create (GtkWidget *box)
 							G_CALLBACK (userlist_dnd_drop), 0);
 	g_signal_connect (G_OBJECT (treeview), "button_press_event",
 							G_CALLBACK (userlist_click_cb), 0);
+	g_signal_connect (G_OBJECT (treeview), "key_press_event",
+							G_CALLBACK (userlist_key_cb), 0);
 
 	userlist_add_columns (GTK_TREE_VIEW (treeview));
 

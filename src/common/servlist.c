@@ -253,6 +253,10 @@ static const struct defaultserver def[] =
 	{"IRCSoulZ",	0},
 	{0,			"irc.ircsoulz.net"},
 
+	{"Irctoo.net",	0},
+	{0,			"irc.canadian.net"},
+	{0,			"irc.irctoo.net"},
+
 	{"KewlNet",	0},
 	{0,			"random.irc.kewl.org"},
 	{0,			"la.defense.fr.eu.kewl.org"},

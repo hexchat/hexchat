@@ -33,12 +33,14 @@ MS Visual C
 	  c) paste the output of `pkg-config gtk+-2.0 --msvc-syntax --libs`
 	     to the LIBS = ... line.
 
-	2) Type this:
+	2) In MSVC's includes directory, copy io.h to unistd.h.
+
+	3) Type this:
 
 		cd src
 		nmake -f makefile.msc
 
-	3) Use your superior debugging skills to fix the compile errors.
+	4) Use your superior debugging skills to fix the compile errors.
 
-	4) Copy fe-gtk\xchat.exe where ever you need it.
+	5) Copy fe-gtk\xchat.exe where ever you need it.
 

@@ -3764,7 +3764,6 @@ gtk_xtext_render_page (GtkXText * xtext)
 	xtext->pixel_offset = 0;
 #endif
 
-	lines_max = ((height + xtext->pixel_offset) / xtext->fontsize) + 1;
 	subline = line = 0;
 	ent = xtext->buffer->text_first;
 
@@ -3780,7 +3779,11 @@ gtk_xtext_render_page (GtkXText * xtext)
 	int pos, overlap;
 	GdkRectangle area;
 
+#ifdef SMOOTH_SCROLL
 	pos = xtext->adj->value * xtext->fontsize;
+#else
+	pos = startline * xtext->fontsize;
+#endif
 	overlap = xtext->buffer->last_pixel_pos - pos;
 	xtext->buffer->last_pixel_pos = pos;
 
@@ -3795,14 +3798,10 @@ gtk_xtext_render_page (GtkXText * xtext)
 
 			gdk_draw_drawable (xtext->draw_buf, xtext->fgc, xtext->draw_buf,
 									 0, -overlap, 0, 0, width, height + overlap);
-		/*	area.y = (height + overlap) - (xtext->fontsize * 2);
-			area.height = (-overlap) + (xtext->fontsize * 2);*/
-
 			remainder = ((height - xtext->font->descent) % xtext->fontsize) +
 							xtext->fontsize;
 			area.y = (height + overlap) - remainder;
 			area.height = remainder - overlap;
-
 		} else
 		{
 			gdk_draw_drawable (xtext->draw_buf, xtext->fgc, xtext->draw_buf,
@@ -3827,6 +3826,8 @@ gtk_xtext_render_page (GtkXText * xtext)
 
 	xtext->buffer->grid_dirty = FALSE;
 	width -= MARGIN;
+	lines_max = ((height + xtext->pixel_offset) / xtext->fontsize) + 1;
+
 	while (ent)
 	{
 		gtk_xtext_reset (xtext, FALSE, TRUE);
@@ -3907,6 +3908,7 @@ gtk_xtext_clear (xtext_buffer *buf)
 {
 	textentry *next;
 
+	buf->scrollbar_down = TRUE;
 	buf->last_ent_start = NULL;
 	buf->last_ent_end = NULL;
 	dontscroll (buf);

@@ -491,6 +491,7 @@ tab_group_add (GtkWidget *group, char *name, void *family, void *userdata,
 	GtkWidget *but;
 
 	but = gtk_toggle_button_new_with_label (name);
+	gtk_widget_set_name (but, "xchat-tab");
 	/* used to trap right-clicks */
 	g_signal_connect (G_OBJECT (but), "button-press-event",
 						 	G_CALLBACK (click_cb), NULL);

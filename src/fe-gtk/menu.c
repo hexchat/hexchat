@@ -1303,7 +1303,7 @@ menu_create_main (void *accel_group, int bar, int away,
 			goto normalitem;
 
 		case M_MENU:
-			item = gtk_menu_item_new_with_label (_(mymenu[i].text));
+			item = gtk_menu_item_new_with_mnemonic (_(mymenu[i].text));
 normalitem:
 			if (mymenu[i].key != 0)
 				gtk_widget_add_accelerator (item, "activate", accel_group,
