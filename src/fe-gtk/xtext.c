@@ -65,6 +65,7 @@
 #ifdef WIN32
 #include <windows.h>
 #include <gdk/gdkwin32.h>
+#include <gtk/gtkclipboard.h>
 #endif
 
 /* is delimiter */

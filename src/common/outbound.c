@@ -53,7 +53,7 @@
 #include "outbound.h"
 
 
-#ifdef MEMORY_DEBUG
+#ifdef USE_DEBUG
 extern int current_mem_usage;
 #endif
 
@@ -788,7 +788,7 @@ cmd_debug (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 				"current_tab: %p\n\n",
 				sess->server->front_session, current_tab);
 	PrintText (sess, tbuf);
-#ifdef MEMORY_DEBUG
+#ifdef USE_DEBUG
 	sprintf (tbuf, "current mem: %d\n\n", current_mem_usage);
 	PrintText (sess, tbuf);
 #endif  /* !MEMORY_DEBUG */

@@ -55,9 +55,9 @@ dnl *********************************************************************
 dnl ** configure switches ***********************************************
 dnl *********************************************************************
 
-AC_ARG_ENABLE(debug,
+AC_ARG_ENABLE(memdebug,
 [  --enable-memdebug       enable use of Memory Debug (default: no)],
-        debug=$enableval, debug=no)
+        memdebug=$enableval, memdebug=no)
 
 AC_ARG_ENABLE(socks,
 [  --enable-socks          enable use of SOCKS5 (default: no)],
@@ -124,7 +124,7 @@ dnl *********************************************************************
 dnl ** DEBUG ************************************************************
 dnl *********************************************************************
 
-if test "$debug" = yes; then
+if test "$memdebug" = yes; then
 	AC_DEFINE(USE_DEBUG)
 fi
 

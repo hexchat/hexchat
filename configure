@@ -11169,12 +11169,12 @@ _ACEOF
 fi
 
 
-# Check whether --enable-debug or --disable-debug was given.
-if test "${enable_debug+set}" = set; then
-  enableval="$enable_debug"
-  debug=$enableval
+# Check whether --enable-memdebug or --disable-memdebug was given.
+if test "${enable_memdebug+set}" = set; then
+  enableval="$enable_memdebug"
+  memdebug=$enableval
 else
-  debug=no
+  memdebug=no
 fi;
 
 # Check whether --enable-socks or --disable-socks was given.
@@ -11285,7 +11285,7 @@ fi;
 
 
 
-if test "$debug" = yes; then
+if test "$memdebug" = yes; then
 	cat >>confdefs.h <<\_ACEOF
 #define USE_DEBUG 1
 _ACEOF

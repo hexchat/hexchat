@@ -2402,6 +2402,8 @@ mg_changui_new (session *sess, restore_gui *res, int tab)
 
 	if (first_run || prefs.newtabstofront)
 		tab_focus (res->tab);
+
+	g_idle_add ((GSourceFunc)tab_group_resize, mg_gui->tabs_box);
 }
 
 GtkWidget *
