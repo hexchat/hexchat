@@ -1228,7 +1228,7 @@ xit:
 		free (ip);
 	if (real_hostname)
 		free (real_hostname);
-	fclose (fd);
+	/*fclose (fd);*/
 #endif
 
 	return 0;
