@@ -1356,6 +1356,19 @@ create_icon_menu (char *labeltext, void *stock_name, int is_stock)
 	return item;
 }
 
+#if GTK_CHECK_VERSION(2,4,0)
+
+/* Override the default GTK2.4 handler, which would make menu
+   bindings not work when the menu-bar is hidden. */
+static gboolean
+menu_canacaccel (GtkWidget *widget, guint signal_id, gpointer user_data)
+{
+	/* GTK2.2 behaviour */
+	return GTK_WIDGET_IS_SENSITIVE (widget);
+}
+
+#endif
+
 GtkWidget *
 menu_create_main (void *accel_group, int bar, int away, int toplevel,
 						GtkWidget **away_item_ret, GtkWidget **user_menu_ret)
@@ -1375,6 +1388,11 @@ menu_create_main (void *accel_group, int bar, int away, int toplevel,
 		menu_bar = gtk_menu_bar_new ();
 	else
 		menu_bar = gtk_menu_new ();
+
+#if GTK_CHECK_VERSION(2,4,0)
+	g_signal_connect (G_OBJECT (menu_bar), "can-activate-accel",
+							G_CALLBACK (menu_canacaccel), 0);
+#endif
 
 	mymenu[19-menuoffset].state = prefs.invisible;
 	mymenu[20-menuoffset].state = prefs.wallops;

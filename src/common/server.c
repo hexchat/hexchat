@@ -581,6 +581,9 @@ ssl_do_connect (server * serv)
 			EMIT_SIGNAL (XP_TE_CONNFAIL, serv->server_session, buf, NULL,
 							 NULL, NULL, 0);
 
+			if (ERR_GET_REASON (err) == SSL_R_WRONG_VERSION_NUMBER)
+				PrintText (serv->server_session, _("Are you sure this is a SSL capable server and port?\n"));
+
 			server_cleanup (serv);
 
 			if (prefs.autoreconnectonfail)
