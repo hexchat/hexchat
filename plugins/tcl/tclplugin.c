@@ -651,25 +651,29 @@ static int tcl_alias(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
     alias *aliasPtr;
     Tcl_HashEntry *entry;
     char *string;
+    char *help = NULL;
     int dummy;
 
-    BADARGS(3, 3, " name {script | procname ?args?}");
+    BADARGS(3, 4, " name ?help? {script | procname ?args?}");
 
     string = StrDup(argv[1], &dummy);
     Tcl_UtfToUpper(string);
 
-    proclen = strlen(argv[2]);
+    if (argc == 4)
+        help = argv[2];
+
+    proclen = strlen(argv[argc - 1]);
 
     entry = Tcl_CreateHashEntry(&aliasTablePtr, string, &newentry);
     if (newentry) {
         aliasPtr = (alias *) Tcl_Alloc(sizeof(alias));
-        aliasPtr->hook = xchat_hook_command(ph, string, XCHAT_PRI_NORM, Command_Alias, 0, 0);
+        aliasPtr->hook = xchat_hook_command(ph, string, XCHAT_PRI_NORM, Command_Alias, help, 0);
     } else {
         aliasPtr = Tcl_GetHashValue(entry);
         Tcl_Free(aliasPtr->procPtr);
     }
 
-    aliasPtr->procPtr = StrDup(argv[2], &dummy);
+    aliasPtr->procPtr = StrDup(argv[argc - 1], &dummy);
 
     Tcl_SetHashValue(entry, aliasPtr);
 
