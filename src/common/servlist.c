@@ -117,7 +117,6 @@ static const struct defaultserver def[] =
 	{"CoolChat",	0},
 	{0,			"irc.coolchat.net"},
 	{0,			"unix.coolchat.net"},
-	{0,			"south.coolchat.net"},
 	{0,			"toronto.coolchat.net"},
 
 	{"CyberArmy",	0},
@@ -165,7 +164,6 @@ static const struct defaultserver def[] =
 
 	{"Evolnet",	0},
 	{0,			"irc.evolnet.org"},
-	{0,			"bean.evolnet.org"},
 	{0,			"blender.evolnet.org"},
 
 	{"FDFNet",	0},
@@ -177,13 +175,6 @@ static const struct defaultserver def[] =
 	{0,			"irc.villagenet.com"},
 	{0,			"irc.ggn.net"},
 	{0,			"irc.vendetta.com"},
-
-	{"FoxChat",	0},
-	{0,			"ircd.FoxChat.net"},
-	{0,			"irc.ac6.org"},
-	{0,			"beastie.ac6.org"},
-	{0,			"roadkill.FoxChat.net"},
-	{0,			"slick.FoxChat.net"},
 
 	{"FreeNode",	0},
 	{0,				"irc.freenode.net"},
@@ -202,7 +193,6 @@ static const struct defaultserver def[] =
 	{"Gamma Force",	0},
 	{0,			"irc.gammaforce.org"},
 	{0,			"sphinx.or.us.gammaforce.org"},
-	{0,			"monolith.ok.us.gammaforce.org"},
 
 	{"German-Elite",	0},
 	{0,			"dominion.german-elite.net"},
@@ -223,9 +213,7 @@ static const struct defaultserver def[] =
 	{"Infinity-IRC",	0},
 	{0,			"Atlanta.GA.US.Infinity-IRC.Org"},
 	{0,			"Babylon.NY.US.Infinity-IRC.Org"},
-	{0,			"Dewspeak.TX.US.Infinity-IRC.Org"},
 	{0,			"Sunshine.Ca.US.Infinity-IRC.Org"},
-	{0,			"MNC.MD.Infinity-IRC.Org"},
 	{0,			"IRC.Infinity-IRC.Org"},
 
 	{"IRCDZone",		0},
@@ -240,8 +228,6 @@ static const struct defaultserver def[] =
 
 	{"IRCNet",		0},
 	{0,				"irc.stealth.net/5550"},
-	{0,				"irc.bt.net"},
-	{0,				"irc.funet.fi"},
 	{0,				"ircnet.demon.co.uk"},
 	{0,				"ircnet.hinet.hr"},
 	{0,				"irc.datacomm.ch"},
@@ -274,15 +260,12 @@ static const struct defaultserver def[] =
 
 	{"Librenet",	0},
 	{0,			"irc.librenet.net"},
-	{0,			"famipow.fr.librenet.net"},
 	{0,			"ielf.fr.librenet.net"},
 
 	{"LinkNet",	0},
 	{0,			"irc.link-net.org"},
-	{0,			"irc.c-com.org"},
 	{0,			"irc.no.link-net.org"},
 	{0,			"irc.gamesden.net.au"},
-	{0,			"irc.socalsys.com"},
 	{0,			"irc.bahnhof.se"},
 	{0,			"irc.kinexuseurope.co.uk"},
 	{0,			"irc.gamiix.com"},
@@ -335,17 +318,7 @@ static const struct defaultserver def[] =
 
 	{"PTlink",	0},
 	{0,			"irc.PTlink.net"},
-	{0,			"dark.PTlink.net"},
-	{0,			"uc.PTlink.net"},
-	{0,			"kungfoo.PTlink.net"},
-	{0,			"matrix.PTlink.net"},
-	{0,			"illusion.PTlink.net"},
-	{0,			"Cibercultura.PTlink.net"},
 	{0,			"aaia.PTlink.net"},
-	{0,			"gaesi.PTlink.net"},
-	{0,			"BuBix.PTlink.net"},
-	{0,			"montijo.PTlink.net"},
-	{0,			"queima.PTlink.net"},
 
 	{"PTNet, ISP's",	0},
 	{0,			"irc.PTNet.org"},
@@ -354,10 +327,7 @@ static const struct defaultserver def[] =
 	{0,			"madinfo.PTnet.org"},
 	{0,			"netc2.PTnet.org"},
 	{0,			"netc1.PTnet.org"},
-	{0,			"teleweb.PTnet.org"},
-	{0,			"netway.PTnet.org"},
 	{0,			"telepac1.ptnet.org"},
-	{0,			"services.ptnet.org"},
 	{0,			"esoterica.PTnet.org"},
 	{0,			"ip-hub.ptnet.org"},
 	{0,			"telepac1.ptnet.org"},
@@ -402,9 +372,6 @@ static const struct defaultserver def[] =
 
 	{"RebelChat",	0},
 	{0,			"irc.rebelchat.org"},
-	{0,			"interquad.rebelchat.org"},
-	{0,			"rebel.rebelchat.org"},
-	{0,			"bigcove.rebelchat.org"},
 
 	{"RedeBrasilIRC",	0},
 	{0,			"irc.redebrasilirc.org"},
@@ -426,7 +393,6 @@ static const struct defaultserver def[] =
 	{0,			"area51.slashnet.org"},
 	{0,			"moo.slashnet.org"},
 	{0,			"radon.slashnet.org"},
-	{0,			"devnull.slashnet.org"},
 
 	{"Spidernet",	0},
 	{0,			"us.spidernet.org"},
@@ -458,9 +424,6 @@ static const struct defaultserver def[] =
 
 	{"Unsecurity",	0},
 	{0,			"irc.unsecurity.org"},
-	{0,			"wc.unsecurity.org"},
-	{0,			"thegift.unsecurity.org"},
-	{0,			"sysgate.unsecurity.org"},
 
 	{"Xentonix.net",	0},
 	{0,			"irc.ffm.de.eu.xentonix.net"},
@@ -473,8 +436,6 @@ static const struct defaultserver def[] =
 	{"XWorld",	0},
 	{0,			"Buffalo.NY.US.XWorld.org"},
 	{0,			"Minneapolis.MN.US.Xworld.Org"},
-	{0,			"PalmSprings.CA.US.XWorld.Org"},
-	{0,			"Quebec.QC.CA.XWorld.Org"},
 	{0,			"Rochester.NY.US.XWorld.org"},
 	{0,			"Bayern.DE.EU.XWorld.Org"},
 	{0,			"Chicago.IL.US.XWorld.Org"},
