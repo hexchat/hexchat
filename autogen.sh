@@ -40,7 +40,7 @@ done
 if test "$found" != 1; then
 	echo ERROR: Cannot find gettext/intl directory.
 	echo ERROR: Install GNU gettext in /usr or /usr/local prefix.
-	exit 6
+	exit 7
 fi;
 
 echo copying gettext intl files...
@@ -72,22 +72,28 @@ if test "$?" != "0"; then
 	exit 2
 fi
 echo running libtoolize...
-libtoolize
+libtoolize --force
 if test "$?" != "0"; then
 	echo libtoolize failed, stopping.
 	exit 3
+fi
+echo running autoheader...
+autoheader
+if test "$?" != "0"; then
+	echo autoheader failed, stopping.
+	exit 4
 fi
 echo running $AUTOMAKE...
 $AUTOMAKE -a --foreign
 if test "$?" != "0"; then
 	echo automake failed, stopping.
-	exit 4
+	exit 5
 fi
 echo running autoconf...
 autoconf
 if test "$?" != "0"; then
 	echo autoconf failed, stopping.
-	exit 5
+	exit 6
 fi
 
 echo if no errors occured, run ./configure --enable-maintainer-mode
