@@ -65,7 +65,7 @@
 
 #define VERSION_MAJOR 0
 #define VERSION_MINOR 1
-#define VERSION "0.2"
+#define VERSION "0.3"
 
 #ifdef WIN32
 #undef WITH_THREAD /* Thread support locks up xchat on Win32. */
@@ -562,7 +562,7 @@ Callback_Timer(void *userdata)
 
 	/* Returning 0 for this callback unhooks itself. */
 	if (ret == 0)
-		Plugin_RemoveHook(hook->plugin, hook);
+		Plugin_RemoveHook(plugin, hook);
 
 	END_PLUGIN(plugin);
 
