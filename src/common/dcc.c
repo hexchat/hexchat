@@ -216,7 +216,7 @@ dcc_check_timeouts (void)
 						&& tim - dcc->lasttime > prefs.dccstalltimeout)
 					{
 						EMIT_SIGNAL (XP_TE_DCCSTALL, dcc->serv->front_session,
-										 dcctypes[(int) dcc->type],
+										 dcctypes[dcc->type],
 										 file_part (dcc->file), dcc->nick, NULL, 0);
 						dcc_close (dcc, STAT_ABORTED, FALSE);
 					}
@@ -231,7 +231,7 @@ dcc_check_timeouts (void)
 					if (prefs.dcctimeout > 0)
 					{
 						EMIT_SIGNAL (XP_TE_DCCTOUT, dcc->serv->front_session,
-										 dcctypes[(int) dcc->type],
+										 dcctypes[dcc->type],
 										 file_part (dcc->file), dcc->nick, NULL, 0);
 						dcc_close (dcc, STAT_ABORTED, FALSE);
 					}
@@ -753,7 +753,7 @@ dcc_connect_finished (GIOChannel *source, GIOCondition condition, struct DCC *dc
 		len = sizeof (er);
 		getsockopt (dcc->sok, SOL_SOCKET, SO_ERROR, (char *)&er, &len);
 		EMIT_SIGNAL (XP_TE_DCCCONFAIL, dcc->serv->front_session,
-						 dcctypes[(int) dcc->type], dcc->nick, errorstring (er),
+						 dcctypes[dcc->type], dcc->nick, errorstring (er),
 						 NULL, 0);
 		dcc->dccstat = STAT_FAILED;
 		update_dcc_window (dcc->type);
@@ -777,7 +777,7 @@ dcc_connect_finished (GIOChannel *source, GIOCondition condition, struct DCC *dc
 #endif
 		{
 			EMIT_SIGNAL (XP_TE_DCCCONFAIL, dcc->serv->front_session,
-							 dcctypes[(int) dcc->type], dcc->nick, errorstring (er),
+							 dcctypes[dcc->type], dcc->nick, errorstring (er),
 							 NULL, 0);
 			dcc->dccstat = STAT_FAILED;
 			update_dcc_window (dcc->type);
@@ -1676,8 +1676,8 @@ dcc_show_list (struct session *sess, char *outbuf)
 		dcc = (struct DCC *) list->data;
 		i++;
 		PrintTextf (sess, " %s  %-10.10s %-7.7s %-7u %-7u %s\n",
-					 dcctypes[(int) dcc->type], dcc->nick,
-					 _(dccstat[(int) dcc->dccstat].name), dcc->size, dcc->pos,
+					 dcctypes[dcc->type], dcc->nick,
+					 _(dccstat[dcc->dccstat].name), dcc->size, dcc->pos,
 					 file_part (dcc->file));
 		list = list->next;
 	}

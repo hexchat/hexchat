@@ -315,7 +315,7 @@ backend_get_char_width (GtkXText *xtext, unsigned char *str, int *mbl_ret)
 	if (*str < 128)
 	{
 		*mbl_ret = 1;
-		return xtext->fontwidth[(int)*str];
+		return xtext->fontwidth[*str];
 	}
 
 	*mbl_ret = charlen (str);
@@ -487,7 +487,7 @@ backend_get_char_width (GtkXText *xtext, unsigned char *str, int *mbl_ret)
 	if (*str < 128)
 	{
 		*mbl_ret = 1;
-		return xtext->fontwidth[(int)*str];
+		return xtext->fontwidth[*str];
 	}
 
 	*mbl_ret = charlen (str);
@@ -4108,6 +4108,12 @@ gtk_xtext_append_entry (xtext_buffer *buf, textentry * ent)
 
 		if (!buf->xtext->add_io_tag)
 		{
+			/* remove scrolling events */
+			if (buf->xtext->io_tag)
+			{
+				g_source_remove (buf->xtext->io_tag);
+				buf->xtext->io_tag = 0;
+			}
 			buf->xtext->add_io_tag = g_timeout_add (REFRESH_TIMEOUT * 2,
 															(GSourceFunc)
 															gtk_xtext_render_page_timeout,
@@ -4303,6 +4309,18 @@ gtk_xtext_buffer_show (GtkXText *xtext, xtext_buffer *buf, int render)
 		return;
 
 /*printf("text_buffer_show: xtext=%p buffer=%p\n", xtext, buf);*/
+
+	if (xtext->add_io_tag)
+	{
+		g_source_remove (xtext->add_io_tag);
+		xtext->add_io_tag = 0;
+	}
+
+	if (xtext->io_tag)
+	{
+		g_source_remove (xtext->io_tag);
+		xtext->io_tag = 0;
+	}
 
 	if (!GTK_WIDGET_REALIZED (GTK_WIDGET (xtext)))
 		gtk_widget_realize (GTK_WIDGET (xtext));

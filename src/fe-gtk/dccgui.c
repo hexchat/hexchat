@@ -113,7 +113,7 @@ fe_dcc_update_recv (struct DCC *dcc)
 
 	gtk_clist_freeze (GTK_CLIST (dccrwin.list));
 	gtk_clist_set_text (GTK_CLIST (dccrwin.list), row, 0,
-							  _(dccstat[(int) dcc->dccstat].name));
+							  _(dccstat[dcc->dccstat].name));
 	gtk_clist_set_text (GTK_CLIST (dccrwin.list), row, 3, pos);
 	gtk_clist_set_text (GTK_CLIST (dccrwin.list), row, 4, perc);
 	gtk_clist_set_text (GTK_CLIST (dccrwin.list), row, 5, kbs);
@@ -125,10 +125,10 @@ fe_dcc_update_recv (struct DCC *dcc)
 	} else
 		strcpy (eta, "--:--:--");
 	gtk_clist_set_text (GTK_CLIST (dccrwin.list), row, 6, eta);
-	if (dccstat[(int) dcc->dccstat].color != 1)
+	if (dccstat[dcc->dccstat].color != 1)
 		gtk_clist_set_foreground
 			(GTK_CLIST (dccrwin.list), row,
-			 colors + dccstat[(int) dcc->dccstat].color);
+			 colors + dccstat[dcc->dccstat].color);
 #ifdef USE_GNOME
 	if (dcc->dccstat == STAT_DONE)
 		gtk_clist_set_text (GTK_CLIST (dccrwin.list), row, 8,
@@ -167,11 +167,11 @@ fe_dcc_update_send (struct DCC *dcc)
 		strcpy (eta, "--:--:--");
 	gtk_clist_freeze (GTK_CLIST (dccswin.list));
 	gtk_clist_set_text (GTK_CLIST (dccswin.list), row, 0,
-							  _(dccstat[(int) dcc->dccstat].name));
-	if (dccstat[(int) dcc->dccstat].color != 1)
+							  _(dccstat[dcc->dccstat].name));
+	if (dccstat[dcc->dccstat].color != 1)
 		gtk_clist_set_foreground
 			(GTK_CLIST (dccswin.list), row,
-			 colors + dccstat[(int) dcc->dccstat].color);
+			 colors + dccstat[dcc->dccstat].color);
 	gtk_clist_set_text (GTK_CLIST (dccswin.list), row, 3, pos);
 	gtk_clist_set_text (GTK_CLIST (dccswin.list), row, 4, ack);
 	gtk_clist_set_text (GTK_CLIST (dccswin.list), row, 5, perc);
@@ -218,7 +218,7 @@ fe_dcc_update_recv_win (void)
 		dcc = (struct DCC *) list->data;
 		if (dcc->type == TYPE_RECV)
 		{
-			nnew[0] = _(dccstat[(int) dcc->dccstat].name);
+			nnew[0] = _(dccstat[dcc->dccstat].name);
 			nnew[1] = dcc->file;
 			nnew[7] = dcc->nick;
 #ifdef USE_GNOME
@@ -246,10 +246,10 @@ fe_dcc_update_recv_win (void)
 			row = gtk_clist_append (GTK_CLIST (dccrwin.list), nnew);
 			gtk_clist_set_row_data (GTK_CLIST (dccrwin.list), row,
 											(gpointer) dcc);
-			if (dccstat[(int) dcc->dccstat].color != 1)
+			if (dccstat[dcc->dccstat].color != 1)
 				gtk_clist_set_foreground (GTK_CLIST (dccrwin.list), row,
 												  colors +
-												  dccstat[(int) dcc->dccstat].color);
+												  dccstat[dcc->dccstat].color);
 		}
 		list = list->next;
 	}
@@ -468,7 +468,7 @@ fe_dcc_update_send_win (void)
 		dcc = (struct DCC *) list->data;
 		if (dcc->type == TYPE_SEND)
 		{
-			nnew[0] = _(dccstat[(int) dcc->dccstat].name);
+			nnew[0] = _(dccstat[dcc->dccstat].name);
 			nnew[1] = file_part (dcc->file);
 			nnew[8] = dcc->nick;
 			/* percentage ack'ed */
@@ -488,10 +488,10 @@ fe_dcc_update_send_win (void)
 			row = gtk_clist_append (GTK_CLIST (dccswin.list), nnew);
 			gtk_clist_set_row_data (GTK_CLIST (dccswin.list), row,
 											(gpointer) dcc);
-			if (dccstat[(int) dcc->dccstat].color != 1)
+			if (dccstat[dcc->dccstat].color != 1)
 				gtk_clist_set_foreground
 					(GTK_CLIST (dccswin.list), row,
-					 colors + dccstat[(int) dcc->dccstat].color);
+					 colors + dccstat[dcc->dccstat].color);
 		}
 		list = list->next;
 	}
@@ -659,7 +659,7 @@ fe_dcc_update_chat_win (void)
 		dcc = (struct DCC *) list->data;
 		if ((dcc->type == TYPE_CHATSEND || dcc->type == TYPE_CHATRECV))
 		{
-			nnew[0] = _(dccstat[(int) dcc->dccstat].name);
+			nnew[0] = _(dccstat[dcc->dccstat].name);
 			nnew[1] = dcc->nick;
 			sprintf (pos, "%u", dcc->pos);
 			sprintf (siz, "%u", dcc->size);

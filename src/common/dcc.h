@@ -44,8 +44,8 @@ struct DCC
 	char *destfile;			/* utf8 */
 	char *destfile_fs;		/* local filesystem encoding */
 	char *nick;
-	char type;				  /* 0 = SEND  1 = RECV  2 = CHAT */
-	char dccstat;			  /* 0 = QUEUED  1 = ACTIVE  2 = FAILED  3 = DONE */
+	unsigned char type;		  /* 0 = SEND  1 = RECV  2 = CHAT */
+	unsigned char dccstat;	  /* 0 = QUEUED  1 = ACTIVE  2 = FAILED  3 = DONE */
 	unsigned int fastsend:1;
 	unsigned int ackoffset:1;	/* is reciever sending acks as an offset from */
 										/* the resume point? */
