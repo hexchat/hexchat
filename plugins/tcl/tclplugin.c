@@ -15,7 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#define VERSION "1.0.16"
+#define VERSION "1.0.17"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -70,7 +70,7 @@ static char unknown[] = {
 };
 
 static char sourcedirs[] = {
-    "set files [lsort [glob [xchatdir]/*.tcl]]\n"
+    "set files [lsort [glob -nocomplain -join [xchatdir] \"*.tcl\"]]\n"
         "set init [lsearch -glob $files \"*/init.tcl\"]\n"
         "if { $init > 0 } {\n"
         "set initfile [lindex $files $init]\n"
