@@ -385,7 +385,7 @@ inbound_newnick (server *serv, char *nick, char *newnick, int quiet)
 										 NULL, 0);
 				}
 			}
-			if (!serv->p_cmp (sess->channel, nick))
+			if (sess->type == SESS_DIALOG && !serv->p_cmp (sess->channel, nick))
 			{
 				safe_strcpy (sess->channel, newnick, CHANLEN);
 				fe_set_channel (sess);

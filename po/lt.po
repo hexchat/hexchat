@@ -6,7 +6,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: xchat 2.0.4\n"
-"POT-Creation-Date: 2003-07-23 22:42+0300\n"
+"POT-Creation-Date: 2003-07-25 09:46+0300\n"
 "PO-Revision-Date: 2003-07-24 01:21+0300\n"
 "Last-Translator: Vaidrius Petrauskas <vaidrius@delfi.lt>\n"
 "Language-Team: Lithuanian <komp_lt@konf.lt>\n"
@@ -19,15 +19,15 @@ msgstr ""
 msgid "Cannot create ~/.xchat2"
 msgstr "Nepavyko sukurti „~/.xchat2“"
 
-#: src/common/cfgfiles.c:600
+#: src/common/cfgfiles.c:602
 msgid "I'm busy"
 msgstr "Aš užsiėmęs"
 
-#: src/common/cfgfiles.c:601
+#: src/common/cfgfiles.c:603
 msgid "Leaving"
 msgstr "Išeinu"
 
-#: src/common/cfgfiles.c:644
+#: src/common/cfgfiles.c:646
 msgid ""
 "* Running IRC as root is stupid! You should\n"
 "  create a User Account and use that to login.\n"
@@ -612,7 +612,7 @@ msgstr "-%C10-%C11-%O$t$1 Banų sąrašas: %C3$4 %C4$2 %C5$3%O"
 
 #: src/common/textevents.h:12
 msgid "-%C10-%C11-%O$tCannot join%C11 %B$1 %O(You are banned)."
-msgstr "-%C10-%C11-%O$tNepavyko įeiti%C11 %B$1 %O(Jūs užbanintas)."
+msgstr "-%C10-%C11-%O$tNepavyko įeiti į%C11 %B$1 %O(Jūs užbanintas)."
 
 #: src/common/textevents.h:15
 msgid "-%C10-%C11-%O$t$1 is now known as $2"
@@ -1015,7 +1015,7 @@ msgstr "%C12*%C13$1%C12*$t%O$2%O"
 
 #: src/common/textevents.h:297
 msgid "-%C10-%C11-%O$tA process is already running"
-msgstr "-%C10-%C11-%O$tA procesas jau veikia"
+msgstr "-%C10-%C11-%O$tProcesas jau veikia"
 
 #: src/common/textevents.h:300
 msgid "<%C10-%C11-%O$t$1 has quit %C14(%O$2%O%C14)%O"
@@ -1094,7 +1094,8 @@ msgstr "-%C10-%C11-%O$t%C12[%O$1%C12] %O$2 %C11$3%O"
 msgid ""
 "-%C10-%C11-%O$t%C12[%O$1%C12] %Oreal user@host %C11$2%O, real IP %C11$3%O"
 msgstr ""
-"-%C10-%C11-%O$t%C12[%O$1%C12] %Otikrasis varttojas@adresas %C11$2%O, tikrasis IP %C11$3%O"
+"-%C10-%C11-%O$t%C12[%O$1%C12] %Otikrasis vartotojas@adresas %C11$2%O, "
+"tikrasis IP %C11$3%O"
 
 #: src/common/textevents.h:366
 msgid "-%C10-%C11-%O$t%C12[%O$1%C12]%O idle %C11$2%O"
@@ -3149,7 +3150,7 @@ msgstr "įskiepių automatiškai neįkelti"
 msgid "show version information"
 msgstr "rodyti versiją"
 
-#: src/fe-gtk/fe-gtk.c:216
+#: src/fe-gtk/fe-gtk.c:214
 #, c-format
 msgid ""
 "Failed to open font:\n"
@@ -3160,7 +3161,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/fe-gtk/fe-gtk.c:575
+#: src/fe-gtk/fe-gtk.c:573
 msgid "Search buffer is empty.\n"
 msgstr "Paieškos buferis tuščias.\n"
 
@@ -3173,12 +3174,11 @@ msgid ""
 "it is possible to run more than one command. If you want a \\ in the actual "
 "text run then enter \\\\"
 msgstr ""
-"Run Command veiksmas paleidžia „Duomenis nr. 1“, lyg jie būtų įvesti į laukelį, "
-"kuriame buvo nuspausta klavišų seka. Taigi duomenys gali būti tekstas "
-"(bus nusiųstas į kanalą/asmeniui), komandos ar vartotojo komandos. Visi "
-"\\n simboliai „Duomenyse nr. 1“ yra naudojami atskirti kelioms komandoms "
-"Jei norite \\ kaip teksto, "
-"įveskite \\\\"
+"Run Command veiksmas paleidžia „Duomenis nr. 1“, lyg jie būtų įvesti į "
+"laukelį, kuriame buvo nuspausta klavišų seka. Taigi duomenys gali būti "
+"tekstas (bus nusiųstas į kanalą/asmeniui), komandos ar vartotojo komandos. "
+"Visi \\n simboliai „Duomenyse nr. 1“ yra naudojami atskirti kelioms "
+"komandoms Jei norite \\ kaip teksto, įveskite \\\\"
 
 #: src/fe-gtk/fkeys.c:152
 msgid ""
@@ -3186,8 +3186,8 @@ msgid ""
 "to the page you want to switch to. If Data 2 is set to anything then the "
 "switch will be relative to the current position"
 msgstr ""
-"Change Page komanda perjungia tarp kortelių. Nustatykite „Duomenis nr. 1“ "
-"į kortelės nr. Jei „Duomenys nr. 2“ netušti, tai skaičius bus suprantamas kaip "
+"Change Page komanda perjungia tarp kortelių. Nustatykite „Duomenis nr. 1“ į "
+"kortelės nr. Jei „Duomenys nr. 2“ netušti, tai skaičius bus suprantamas kaip "
 "reliatyvus poslinkis nuo dabartinės pozicijos"
 
 #: src/fe-gtk/fkeys.c:154
@@ -3195,8 +3195,8 @@ msgid ""
 "The Insert in Buffer command will insert the contents of Data 1 into the "
 "entry where the key sequence was pressed at the current cursor position"
 msgstr ""
-"Insert in Buffer komanda įterpia „Duomenis nr. 1“ į dabartinę žymeklio poziciją "
-"laukelyje, kuriame buvo paspausta klavišų seka"
+"Insert in Buffer komanda įterpia „Duomenis nr. 1“ į dabartinę žymeklio "
+"poziciją laukelyje, kuriame buvo paspausta klavišų seka"
 
 #: src/fe-gtk/fkeys.c:156
 msgid ""
@@ -3219,16 +3219,16 @@ msgid ""
 "The Last Command command sets the entry to contain the last command entered "
 "- the same as pressing up in a shell"
 msgstr ""
-"Last Command komanda nustato laukelyje paskutinę įvestą komandą "
-"- taip pat, kaip klavišo su rodykle aukštyn paspaudimas aplinkoje"
+"Last Command komanda nustato laukelyje paskutinę įvestą komandą - taip pat, "
+"kaip klavišo su rodykle aukštyn paspaudimas aplinkoje"
 
 #: src/fe-gtk/fkeys.c:162
 msgid ""
 "The Next Command command sets the entry to contain the next command entered "
 "- the same as pressing down in a shell"
 msgstr ""
-"Next Command komanda nustato įvedimo laukelyje paskesnę įvestą komandą  "
-"- taip pat, kaip klavišo su rodykle žemyn paspaudimas aplinkoje"
+"Next Command komanda nustato įvedimo laukelyje paskesnę įvestą komandą  - "
+"taip pat, kaip klavišo su rodykle žemyn paspaudimas aplinkoje"
 
 #: src/fe-gtk/fkeys.c:164
 msgid ""
@@ -3236,9 +3236,9 @@ msgid ""
 "or command. If Data 1 is set then double-tabbing in a string will select the "
 "last nick, not the next"
 msgstr ""
-"Ši komanda užbaigia tekstą įvedimo laukelyje kaip nepilną slapyvardį "
-"ar komandą. Jei „Duomenys nr. 1“ yra, tai dukart paspaudus tabuliacijos "
-"klavišą bus pažymėtas ankstesnis slapyvardis, priešingu atveju paskesnis"
+"Ši komanda užbaigia tekstą įvedimo laukelyje kaip nepilną slapyvardį ar "
+"komandą. Jei „Duomenys nr. 1“ yra, tai dukart paspaudus tabuliacijos klavišą "
+"bus pažymėtas ankstesnis slapyvardis, priešingu atveju paskesnis"
 
 #: src/fe-gtk/fkeys.c:166
 msgid ""
