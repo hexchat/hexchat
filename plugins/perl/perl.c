@@ -210,6 +210,11 @@ timer_cb (void *userdata)
 				*/
 				hook_list = g_slist_remove (hook_list,
 								data->hook);
+				SvREFCNT_dec (data->callback);
+				if (data->userdata) {
+				  SvREFCNT_dec (data->userdata);
+				}
+				free (data);
 			}
 		}
 
@@ -728,6 +733,7 @@ static XS (XS_Xchat_hook_timer)
 			XSRETURN_UNDEF;
 		}
 
+		data->name = NULL;
 		data->callback = sv_mortalcopy (callback);
 		SvREFCNT_inc (data->callback);
 		data->userdata = sv_mortalcopy (userdata);
@@ -744,6 +750,7 @@ static XS(XS_Xchat_unhook)
 {
 	xchat_hook *	hook;
 	HookData *userdata;
+	int retCount = 0;
 	dXSARGS;
 	if (items != 1) {
 		xchat_print (ph, "Usage: Xchat::unhook(hook)");
@@ -754,8 +761,19 @@ static XS(XS_Xchat_unhook)
 		 if(g_slist_find( hook_list, hook ) != NULL ) {
 			userdata = (HookData*)xchat_unhook (ph, hook);
 			hook_list = g_slist_remove (hook_list, hook);
-			XPUSHs(userdata->userdata);
-			XSRETURN(1);
+			if (userdata->name) {
+			  SvREFCNT_dec (userdata->name);
+			}
+			if (userdata->callback) {
+			  SvREFCNT_dec (userdata->callback);
+			}
+			if (userdata->userdata) {
+			  XPUSHs(sv_mortalcopy (userdata->userdata));
+			  SvREFCNT_dec (userdata->userdata);
+			  retCount = 1;
+			}
+			free (userdata);
+			XSRETURN(retCount);
 		 }
 	  }
 	  XSRETURN_EMPTY;
