@@ -360,9 +360,6 @@ typedef struct server
 	int childread;
 	int childwrite;
 	int childpid;
-#ifdef WIN32
-	int childhandle;
-#endif
 	int iotag;
 	int recondelay_tag;				/* reconnect delay timeout */
 	char hostname[128];				/* real ip number */

@@ -484,7 +484,6 @@ server_stopconnecting (server * serv)
 	waitpid (serv->childpid, NULL, 0);
 #else
 	PostThreadMessage (serv->childpid, WM_QUIT, 0, 0);
-	CloseHandle ((HANDLE)serv->childhandle);
 #endif
 
 	close (serv->childwrite);
@@ -1355,9 +1354,9 @@ server_connect (server *serv, char *hostname, int port, int no_login)
 	net_sockets (&serv->sok4, &serv->sok6);
 
 #ifdef WIN32
-	serv->childhandle = (int)CreateThread (NULL, 0,
-													(LPTHREAD_START_ROUTINE)server_child,
-													serv, 0, (DWORD *)&pid);
+	CloseHandle (CreateThread (NULL, 0,
+										(LPTHREAD_START_ROUTINE)server_child,
+										serv, 0, (DWORD *)&pid));
 #else
 	switch (pid = fork ())
 	{

@@ -447,6 +447,7 @@ text_validate (char **text, int *len)
 			FILE *fp = fopen ("./error.txt", "w");
 			if (fp)
 			{
+				fprintf (fp, "len=%d\n", *len);
 				fwrite (error->message, strlen (error->message), 1, fp);
 				fwrite (*text, *len, 1, fp);
 				fclose (fp);
