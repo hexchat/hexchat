@@ -27,6 +27,7 @@
 #include "outbound.h"
 #include "cfgfiles.h"
 #include "ignore.h"
+#include "notify.h"
 #include "text.h"
 #define PLUGIN_C
 typedef struct session xchat_context;
@@ -66,7 +67,8 @@ struct _xchat_list
 	int type;			/* LIST_* */
 	GSList *pos;		/* current pos */
 	GSList *next;		/* next pos */
-	GSList *head;
+	GSList *head;		/* for LIST_USERS only */
+	GSList *notifyps;	/* notify_per_server * */
 };
 
 typedef int (xchat_cmd_cb) (char *word[], char *word_eol[], void *user_data);
@@ -82,6 +84,7 @@ enum
 	LIST_CHANNELS,
 	LIST_DCC,
 	LIST_IGNORE,
+	LIST_NOTIFY,
 	LIST_USERS
 };
 
@@ -250,11 +253,11 @@ plugin_add (session *sess, char *filename, void *handle, void *init_func,
 		pl->xchat_emit_print = xchat_emit_print;
 		/* incase new plugins are loaded on older xchat */
 #ifdef WIN32
-		pl->xchat_dummy8 = (void *) xchat_read_fd;
+		pl->xchat_read_fd = (void *) xchat_read_fd;
 #else
-		pl->xchat_dummy8 = xchat_dummy;
+		pl->xchat_read_fd = xchat_dummy;
 #endif
-		pl->xchat_dummy7 = xchat_dummy;
+		pl->xchat_list_time = xchat_list_time;
 		pl->xchat_dummy6 = xchat_dummy;
 		pl->xchat_dummy5 = xchat_dummy;
 		pl->xchat_dummy4 = xchat_dummy;
@@ -960,6 +963,12 @@ xchat_list_get (xchat_plugin *ph, const char *name)
 		list->next = ignore_list;
 		break;
 
+	case 0xc2079749:	/* notify */
+		list->type = LIST_NOTIFY;
+		list->next = notify_list;
+		list->head = (void *)ph->context;	/* reuse this pointer */
+		break;
+
 	case 0x6a68e08: /* users */
 		if (is_session (ph->context))
 		{
@@ -987,11 +996,37 @@ xchat_list_free (xchat_plugin *ph, xchat_list *xlist)
 int
 xchat_list_next (xchat_plugin *ph, xchat_list *xlist)
 {
+	GSList *list;
+
 	if (xlist->next == NULL)
 		return 0;
 
 	xlist->pos = xlist->next;
 	xlist->next = xlist->pos->next;
+
+	/* NOTIFY LIST: Find the entry which matches the context
+		of the plugin when list_get was originally called. */
+	if (xlist->type == LIST_NOTIFY)
+	{
+		xlist->notifyps = NULL;
+		/* this is the list of notify_per_server structures */
+		list = ((struct notify *)xlist->pos->data)->server_list;
+
+		while (list)
+		{
+			/* "head" is actually reused as a (session *) for LIST_NOTIFY!
+				(yay! we save 4 bytes and write ugly code) */
+			if (((struct notify_per_server *)list->data)->server ==
+				 ((session *)xlist->head)->server)
+			{
+				xlist->notifyps = list->data;
+				return 1;
+			}
+			list = list->next;
+		}
+		return 0;
+	}
+
 	return 1;
 }
 
@@ -1011,13 +1046,17 @@ xchat_list_fields (xchat_plugin *ph, const char *name)
 	{
 		"iflags", "smask", NULL
 	};
+	static const char *notify_fields[] =
+	{
+		"iflags", "snick", "toff", "ton", "tseen", NULL
+	};
 	static const char *users_fields[] =
 	{
 		"iaway", "shost", "snick", "sprefix", NULL
 	};
 	static const char *list_of_lists[] =
 	{
-		"channels",	"dcc", "ignore", "users", NULL
+		"channels",	"dcc", "ignore", "notify", "users", NULL
 	};
 
 	switch (str_hash (name))
@@ -1028,6 +1067,8 @@ xchat_list_fields (xchat_plugin *ph, const char *name)
 		return dcc_fields;
 	case 0xb90bfdd2:	/* ignore */
 		return ignore_fields;
+	case 0xc2079749:	/* notify */
+		return notify_fields;
 	case 0x6a68e08:	/* users */
 		return users_fields;
 	case 0x6236395:	/* lists */
@@ -1035,6 +1076,32 @@ xchat_list_fields (xchat_plugin *ph, const char *name)
 	}
 
 	return NULL;
+}
+
+time_t
+xchat_list_time (xchat_plugin *ph, xchat_list *xlist, const char *name)
+{
+	guint32 hash = str_hash (name);
+	gpointer data = xlist->pos->data;
+
+	switch (xlist->type)
+	{
+	case LIST_NOTIFY:
+		data = xlist->notifyps->data;
+		if (!data)
+			return (time_t) -1;
+		switch (hash)
+		{
+		case 0x1ad6f:	/* off */
+			return ((struct notify_per_server *)data)->lastoff;
+		case 0xddf:	/* on */
+			return ((struct notify_per_server *)data)->laston;
+		case 0x35ce7b:	/* seen */
+			return ((struct notify_per_server *)data)->lastseen;
+		}
+	}
+
+	return (time_t) -1;
 }
 
 const char *
@@ -1076,6 +1143,14 @@ xchat_list_str (xchat_plugin *ph, xchat_list *xlist, const char *name)
 		{
 		case 0x3306ec:	/* mask */
 			return ((struct ignore *)data)->mask;
+		}
+		break;
+
+	case LIST_NOTIFY:
+		switch (hash)
+		{
+		case 0x339763: /* nick */
+			return ((struct notify *)data)->name;
 		}
 		break;
 
@@ -1140,6 +1215,15 @@ xchat_list_int (xchat_plugin *ph, xchat_list *xlist, const char *name)
 			return ((struct session *)data)->type;
 		}
 		break;
+
+	case LIST_NOTIFY:
+		if (!xlist->notifyps)
+			return -1;
+		switch (hash)
+		{
+		case 0x5cfee87: /* flags */
+			return ((struct notify_per_server *)xlist->notifyps)->ison;
+		}
 
 	case LIST_USERS:
 		switch (hash)

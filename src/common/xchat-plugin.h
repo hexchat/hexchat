@@ -2,6 +2,8 @@
 #ifndef XCHAT_PLUGIN_H
 #define XCHAT_PLUGIN_H
 
+#include <time.h>
+
 #define XCHAT_IFACE_MAJOR	1
 #define XCHAT_IFACE_MINOR	9
 #define XCHAT_IFACE_MICRO	9
@@ -114,6 +116,10 @@ struct _xchat_plugin
 			void *handle);
 	int (*xchat_emit_print) (xchat_plugin *ph,
 			char *event_name, ...);
+	void *dummy8;
+	time_t (*xchat_list_time) (xchat_plugin *ph,
+		xchat_list *xlist,
+		const char *name);
 };
 #endif
 
@@ -225,6 +231,11 @@ int
 xchat_list_int (xchat_plugin *ph,
 		xchat_list *xlist,
 		const char *name);
+
+time_t
+xchat_list_time (xchat_plugin *ph,
+		 xchat_list *xlist,
+		 const char *name);
 
 void *
 xchat_plugingui_add (xchat_plugin *ph,

@@ -290,7 +290,9 @@ errorstring (int err)
 		return "";
 	case 0:
 		return _("Remote host closed socket");
-#ifdef WIN32
+#ifndef WIN32
+	}
+#else
 	case WSAECONNREFUSED:
 		return _("Connection refused");
 	case WSAENETUNREACH:
@@ -302,17 +304,53 @@ errorstring (int err)
 		return _("Cannot assign that address");
 	case WSAECONNRESET:
 		return _("Connection reset by peer");
-	default:
-		{
-			static char tbuf[16];
-			sprintf (tbuf, "(%d)", err);
-			return tbuf;
-		}
-#else
-	default:
-		return strerror (err);
-#endif
 	}
+
+	/* can't use strerror() on Winsock errors! */
+	if (err >= WSABASEERR)
+	{
+		static char tbuf[384];
+		OSVERSIONINFO osvi;
+
+		osvi.dwOSVersionInfoSize = sizeof (OSVERSIONINFO);
+		GetVersionEx (&osvi);
+
+		/* FormatMessage works on WSA*** errors starting from Win2000 */
+		if (osvi.dwMajorVersion >= 5)
+		{
+			if (FormatMessageA (FORMAT_MESSAGE_FROM_SYSTEM |
+									  FORMAT_MESSAGE_IGNORE_INSERTS |
+									  FORMAT_MESSAGE_MAX_WIDTH_MASK,
+									  NULL, err,
+									  MAKELANGID (LANG_NEUTRAL, SUBLANG_DEFAULT),
+									  tbuf, sizeof (tbuf), NULL))
+			{
+				int len;
+				char *utf;
+
+				tbuf[sizeof (tbuf) - 1] = 0;
+				len = strlen (tbuf);
+				if (len >= 2)
+					tbuf[len - 2] = 0;	/* remove the cr-lf */
+
+				/* now convert to utf8 */
+				utf = g_locale_to_utf8 (tbuf, -1, 0, 0, 0);
+				if (utf)
+				{
+					safe_strcpy (tbuf, utf, sizeof (tbuf));
+					g_free (utf);
+					return tbuf;
+				}
+			}
+		}	/* ! if (osvi.dwMajorVersion >= 5) */
+
+		/* fallback to error number */
+		sprintf (tbuf, "%s %d", _("Error"), err);
+		return tbuf;
+	} /* ! if (err >= WSABASEERR) */
+#endif	/* ! WIN32 */
+
+	return strerror (err);
 }
 
 int

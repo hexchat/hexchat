@@ -745,6 +745,7 @@ find_away_message (struct server *serv, char *nick)
 	"NAME SUB\n"								"CMD Opera...\n\n"\
 		"NAME Open in existing\n"			"CMD !opera -remote 'openURL(%s)'\n\n"\
 		"NAME Open in new window\n"		"CMD !opera -remote 'openURL(%s,new-window)'\n\n"\
+		"NAME Open in new tab\n"			"CMD !opera -remote 'openURL(%s,new-page)'\n\n"\
 		"NAME Run new Opera\n"				"CMD !opera %s\n\n"\
 	"NAME ENDSUB\n"							"CMD \n\n"\
 	"NAME SUB\n"								"CMD Send URL to...\n\n"\

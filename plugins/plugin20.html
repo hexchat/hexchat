@@ -70,6 +70,7 @@ margin-right: 32px;
 <br><a href="#lists">xchat_list_next</a>
 <br><a href="#lists">xchat_list_str</a>
 <br><a href="#lists">xchat_list_int</a>
+<br><a href="#lists">xchat_list_time</a>
 <br>
 <br><a href="#xchat_plugingui_add">xchat_plugingui_add</a> (not documented yet)
 <br><a href="#xchat_plugingui_remove">xchat_plugingui_remove</a> (not documented yet)
@@ -222,6 +223,22 @@ needed for a long time after calling xchat_list_str. The types of lists and fiel
 </table>
 </blockquote>
 
+"notify" - list of people on notify.
+<blockquote> <table border=1>
+<tr bgcolor="#dddddd"><td>Name</td><td>Description</td><td>Type</td></tr>
+<tr><td>nick</td><td>Nickname</td><td>string</td></tr>
+<tr><td>flags</td><td>0=Is online.</td><td>int</td></tr>
+<tr><td>on</td><td>Time when user came online.</td><td>time_t</td></tr>
+<tr><td>off</td><td>Time when user went offline.</td><td>time_t</td></tr>
+<tr><td>seen</td><td>Time when user the user was last verified still online.</td><td>time_t</td></tr>
+</table>
+<small>The entire "notify" list was added in xchat 2.0.8. Fields are
+only valid for the context when xchat_list_get() was called
+(i.e. you get information about the user ON THAT ONE SERVER ONLY). You
+may cycle through the "channels" list to find notify information for every
+server.</small>
+</blockquote>
+
 "users" - list of users in the current channel.
 <blockquote> <table border=1>
 <tr bgcolor="#dddddd"><td>Name</td><td>Description</td><td>Type</td></tr>
@@ -279,10 +296,11 @@ function. Then, to compile:
 	cl -O1 -MD -G5 -DWIN32 -c plugin.c
 	link /DLL /out:plugin.dll /SUBSYSTEM:WINDOWS plugin.obj /def:plugin.def
 </pre>
+For a complete example, have a look at the source code of the <a href="http://xchat.org/win32/testing/xcdns-src.zip">DNS Plugin</a>, which also contains a Makefile.
+<br><br>
 <font color=red>Caveat:</font> Plugins compiled on Win32 MUST have a
 global variable called <b>ph</b>, which is the plugin_handle, much like
 in the <a href="#sample">sample plugin</a> above.
-
 <br><br>
 
 <h3><a name="gui">Controlling the GUI</a></h3>

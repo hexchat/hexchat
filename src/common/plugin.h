@@ -77,8 +77,10 @@ struct _xchat_plugin
 			void *handle);
 	int (*xchat_emit_print) (xchat_plugin *ph,
 			char *event_name, ...);
-	void (*xchat_dummy8) (xchat_plugin *ph);
-	void (*xchat_dummy7) (xchat_plugin *ph);
+	void (*xchat_read_fd) (xchat_plugin *ph);
+	time_t (*xchat_list_time) (xchat_plugin *ph,
+		xchat_list *xlist,
+		const char *name);
 	void (*xchat_dummy6) (xchat_plugin *ph);
 	void (*xchat_dummy5) (xchat_plugin *ph);
 	void (*xchat_dummy4) (xchat_plugin *ph);

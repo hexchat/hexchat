@@ -10,7 +10,7 @@ struct notify_per_server
 	time_t laston;
 	time_t lastseen;
 	time_t lastoff;
-	int ison:1;
+	unsigned int ison:1;
 };
 
 extern GSList *notify_list;
