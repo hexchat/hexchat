@@ -1005,7 +1005,7 @@ xchat_list_fields (xchat_plugin *ph, const char *name)
 	};
 	static const char *channels_fields[] =
 	{
-		"schannel",	"pcontext", "snetwork", "sserver",	"stype",	NULL
+		"schannel",	"pcontext", "snetwork", "sserver",	"itype",	NULL
 	};
 	static const char *ignore_fields[] =
 	{
