@@ -107,9 +107,13 @@ AC_ARG_ENABLE(perl,
 [  --disable-perl          don't build the perl plugin],
         perl=$enableval, perl=yes)
 
-AC_ARG_ENABLE(tclcfg_path,
-	      [  --enable-tcl=DIR        directory with Tcl config file: tclConfig.sh],
-	      [ tclcnf="${withval}"])
+AC_ARG_ENABLE(openssl,
+[  --enable-openssl[=PATH]   enable use of openSSL],
+        openssl=$enableval, openssl=yes)
+
+AC_ARG_ENABLE(tcl,
+[  --enable-tcl[=PATH]       directory with Tcl config file: tclConfig.sh],
+        tcl=$enableval, tcl=yes)
 
 AC_ARG_ENABLE(plugin,
 [  --disable-plugin        disable plugin support],
@@ -309,10 +313,10 @@ dnl ** TCL **************************************************************
 dnl *********************************************************************
 
 AC_MSG_CHECKING(for location of tclConfig.sh)
-dirs="$tclcnf /lib /usr/lib /usr/local/lib /usr/local/tcl-8.0/lib /usr/local/tcl/lib"
+dirs="$tcl /lib /usr/lib /usr/tcl/lib /usr/local/lib /usr/local/tcl-8.4/lib /usr/local/tcl/lib /opt/lib"
 found=0
-tcl=no
-if test "$withval" != "no"; then
+if test "$tcl" != "no"; then
+	tcl=no
 	for try in $dirs; do
 		if test -f $try/tclConfig.sh; then
 			found=1
