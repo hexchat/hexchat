@@ -2404,7 +2404,6 @@ perl_end (void)
 			execute_perl (scp->shutdowncallback, "");
 		}
 		xchat_plugingui_remove (ph, scp->gui_entry);
-		free (scp->gui_entry);
 		free (scp->name);
 		free (scp->version);
 		free (scp->desc);
