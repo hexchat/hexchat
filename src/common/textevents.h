@@ -113,7 +113,7 @@ N_("-%C10-%C11-%O$tReceived a CTCP Sound $1 from $2")},
 {"DCC CHAT Abort", pevt_dccchatabort_help, 1, 0,
 N_("-%C10-%C11-%O$tDCC CHAT to %C11$1%O aborted.")},
 
-{"DCC CHAT Connect", pevt_dccchatcon_help, 1, 0,
+{"DCC CHAT Connect", pevt_dccchatcon_help, 2, 0,
 N_("-%C10-%C11-%O$tDCC CHAT connection established to %C11$1 %C14[%O$2%C14]%O")},
 
 {"DCC CHAT Failed", pevt_dccchaterr_help, 4, 0,
