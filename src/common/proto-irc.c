@@ -767,14 +767,19 @@ process_named_servermsg (session *sess, char *buf, char *word_eol[])
 /* irc_inline() - 1 single line received from serv */
 
 static void
-irc_inline (server *serv, char *buf)
+irc_inline (server *serv, char *buf, int len)
 {
 	session *sess, *tmp;
 	char *type, *text;
 	char *word[PDIWORDS];
 	char *word_eol[PDIWORDS];
 	char outbuf[4096];
-	char pdibuf[522];				  /* 1 line can't exceed 512 bytes!! */
+	char pdibuf_static[522]; /* 1 line can potentially be 512*6 in utf8 */
+	char *pdibuf = pdibuf_static;
+
+	/* need more than 522? fall back to malloc */
+	if (len >= sizeof (pdibuf_static))
+		pdibuf = malloc (len + 1);
 
 	sess = serv->front_session;
 
@@ -797,7 +802,7 @@ irc_inline (server *serv, char *buf)
 		word[0] = type;
 		word_eol[1] = buf;	/* keep the ":" for plugins */
 		if (plugin_emit_server (sess, type, word, word_eol))
-			return;
+			goto xit;
 		word[1]++;
 		word_eol[1] = buf + 1;	/* but not for xchat internally */
 
@@ -806,13 +811,13 @@ irc_inline (server *serv, char *buf)
 		process_data_init (pdibuf, buf, word, word_eol, FALSE);
 		word[0] = type = word[1];
 		if (plugin_emit_server (sess, type, word, word_eol))
-			return;
+			goto xit;
 	}
 
 	if (buf[0] != ':')
 	{
 		process_named_servermsg (sess, buf, word_eol);
-		return;
+		goto xit;
 	}
 
 	/* see if the second word is a numeric */
@@ -820,13 +825,17 @@ irc_inline (server *serv, char *buf)
 	{
 		text = word_eol[4];
 		if (*text == ':')
-				text++;
+			text++;
 
 		process_numeric (sess, outbuf, atoi (word[2]), word, word_eol, text);
-		return;
+		goto xit;
 	}
 
-	process_named_msg (sess, type, outbuf, word, word_eol);	
+	process_named_msg (sess, type, outbuf, word, word_eol);
+
+xit:
+	if (pdibuf != pdibuf_static)
+		free (pdibuf);
 }
 
 void

@@ -35,4 +35,4 @@ int waitline (int sok, char *buf, int bufsize);
 unsigned long make_ping_time (void);
 void download_move_to_completed_dir (char *dcc_dir, char *dcc_completed_dir, char *output_name, int dccpermissions);
 void play_wave (const char *file);
-char *text_validate (char **text);
+char *text_validate (char **text, int *len);

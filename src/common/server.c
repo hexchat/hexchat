@@ -245,23 +245,27 @@ server_inline (server *serv, char *line, int len)
 {
 	char *utf;
 	char *conv;
+	int utf_len;
 
 	if (serv->encoding == NULL)	/* system */
-		utf = g_locale_to_utf8 (line, len, NULL, NULL, NULL);
+		utf = g_locale_to_utf8 (line, len, NULL, &utf_len, NULL);
 	else
-		utf = g_convert (line, len, "UTF-8", serv->encoding, 0, 0, 0);
+		utf = g_convert (line, len, "UTF-8", serv->encoding, 0, &utf_len, 0);
 
 	if (utf)
+	{
 		line = utf;
+		len = utf_len;
+	}
 
 	/* we really need valid UTF-8 now */
-	conv = text_validate (&line);
+	conv = text_validate (&line, &len);
 
-	fe_add_rawlog (serv, line, strlen (line), FALSE);
+	fe_add_rawlog (serv, line, len, FALSE);
 	url_check (line);
 
 	/* let proto-irc.c handle it */
-	serv->p_inline (serv, line);
+	serv->p_inline (serv, line, len);
 
 	if (utf)
 		g_free (utf);

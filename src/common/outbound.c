@@ -148,13 +148,14 @@ server_sendquit (session * sess)
 }
 
 void
-process_data_init (unsigned char *buf, char *cmd, char *word[],
+process_data_init (unsigned char *buf, unsigned char *cmd, char *word[],
 						 char *word_eol[], int handle_quotes)
 {
 	int wordcount = 2;
 	int space = FALSE;
 	int quote = FALSE;
 	int j = 0;
+	int len;
 
 	word[1] = buf;
 	word_eol[1] = cmd;
@@ -179,6 +180,7 @@ process_data_init (unsigned char *buf, char *cmd, char *word[],
 				quote = FALSE;
 			else
 				quote = TRUE;
+			cmd++;
 			break;
 		case ' ':
 			if (!quote)
@@ -197,15 +199,26 @@ process_data_init (unsigned char *buf, char *cmd, char *word[],
 
 					space = TRUE;
 				}
+				cmd++;
 				break;
 			}
 		default:
 def:
 			space = FALSE;
-			buf[j] = *cmd;
-			j++;
+			len = g_utf8_skip[*cmd];
+			if (len == 1)
+			{
+				buf[j] = *cmd;
+				j++;
+				cmd++;
+			} else
+			{
+				/* skip past a multi-byte utf8 char */
+				memcpy (buf + j, cmd, len);
+				j += len;
+				cmd += len;
+			}
 		}
-		cmd++;
 	}
 }
 
@@ -360,7 +373,7 @@ ban (session * sess, char *tbuf, char *mask, char *bantypestr, int deop)
 
 		mask = user->hostname;
 
-		at = strchr (mask, '@');
+		at = strchr (mask, '@');	/* FIXME: utf8 */
 		if (!at)
 			return;					  /* can't happen? */
 		*at = 0;
@@ -544,6 +557,7 @@ cmd_ctcp (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 
 			while (1)
 			{
+				/* FIXME: utf8 */
 				if (*cmd == ' ' || *cmd == 0)
 					break;
 				*cmd = toupper (*cmd);
@@ -2095,7 +2109,7 @@ cmd_recv (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	if (*word_eol[2])
 	{
-		sess->server->p_inline (sess->server, word_eol[2]);
+		sess->server->p_inline (sess->server, word_eol[2], strlen (word_eol[2]));
 		return TRUE;
 	}
 
@@ -2623,7 +2637,7 @@ help (session *sess, char *tbuf, char *helpcmd, int quiet)
  * - this beast is used for UserCommands, UserlistButtons and CTCP replies   */
 
 int
-auto_insert (char *dest, char *src, char *word[], char *word_eol[],
+auto_insert (char *dest, unsigned char *src, char *word[], char *word_eol[],
 				 char *a, char *c, char *d, char *h, char *n, char *s)
 {
 	int num;
@@ -2721,13 +2735,23 @@ auto_insert (char *dest, char *src, char *word[], char *word_eol[],
 				}
 				dest += strlen (dest);
 			}
+			src++;
 		} else
 		{
+			utf_len = g_utf8_skip[src[0]];
+			if (utf_len == 1)
+			{
 		 lamecode:
-			dest[0] = src[0];
-			dest++;
+				dest[0] = src[0];
+				dest++;
+				src++;
+			} else
+			{
+				memcpy (dest, src, utf_len);
+				dest += utf_len;
+				src += utf_len;
+			}
 		}
-		src++;
 	}
 
 	dest[0] = 0;

@@ -415,7 +415,10 @@ PrintText (session *sess, unsigned char *text)
 		text = "\n";
 		conv = NULL;
 	} else
-		conv = text_validate ((char **)&text);
+	{
+		int len = -1;
+		conv = text_validate ((char **)&text, &len);
+	}
 
 	log_write (sess, text);
 

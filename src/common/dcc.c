@@ -466,20 +466,23 @@ dcc_chat_line (struct DCC *dcc, char *line, char *tbuf)
 	char *utf;
 	char *conv;
 	int ret, i;
-	int len;
+	int len, utf_len;
 
 	len = strlen (line);
 
 	if (dcc->serv->encoding == NULL)     /* system */
-		utf = g_locale_to_utf8 (line, len, NULL, NULL, NULL);
+		utf = g_locale_to_utf8 (line, len, NULL, &utf_len, NULL);
 	else
-		utf = g_convert (line, len, "UTF-8", dcc->serv->encoding, 0, 0, 0);
+		utf = g_convert (line, len, "UTF-8", dcc->serv->encoding, 0, &utf_len, 0);
 
 	if (utf)
+	{
 		line = utf;
+		len = utf_len;
+	}
 
 	/* we really need valid UTF-8 now */
-	conv = text_validate (&line);
+	conv = text_validate (&line, &len);
 
 	sess = find_dialog (dcc->serv, dcc->nick);
 	if (!sess)

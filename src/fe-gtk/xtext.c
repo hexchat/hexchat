@@ -2213,7 +2213,7 @@ gtk_xtext_strip_color (unsigned char *text, int len, unsigned char *outbuf,
 					i++;
 					text++;
 					len--;
-				} else if (mbl > 0)
+				} else
 				{
 					mb = TRUE;
 
@@ -2304,7 +2304,7 @@ gtk_xtext_conv_color (unsigned char *text, int len, int *newlen)
 				new_str[j] = text[i];
 				j++;
 				i++;
-			} else if (mbl > 0)
+			} else
 			{
 				/* invalid utf8 safe guard */
 				if (i + mbl > len)
