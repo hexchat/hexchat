@@ -563,10 +563,15 @@ inbound_topic (server *serv, char *chan, char *topic_text)
 void
 inbound_topicnew (server *serv, char *nick, char *chan, char *topic)
 {
-	session *sess = find_channel (serv, chan);
+	session *sess;
+	char *new_topic;
+
+	sess = find_channel (serv, chan);
 	if (sess)
 	{
-		set_topic (sess, topic);
+		new_topic = strip_color (topic);
+		set_topic (sess, new_topic);
+		free (new_topic);
 		EMIT_SIGNAL (XP_TE_NEWTOPIC, sess, nick, topic, chan, NULL, 0);
 	}
 }
