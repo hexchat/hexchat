@@ -989,19 +989,19 @@ xchat_list_fields (xchat_plugin *ph, const char *name)
 	};
 	static const char *channels_fields[] =
 	{
-		"schannel",	"pcontext",	"sserver",	"stype",	"snetwork",	NULL
+		"schannel",	"pcontext", "snetwork", "sserver",	"stype",	NULL
 	};
 	static const char *ignore_fields[] =
 	{
-		"smask",		"iflags",	NULL
+		"iflags", "smask", NULL
 	};
 	static const char *users_fields[] =
 	{
-		"snick",		"shost",		"sprefix",	NULL
+		"shost", "snick", "sprefix", NULL
 	};
 	static const char *list_of_lists[] =
 	{
-		"channels",	"dcc",		"ignore",	"users",		NULL
+		"channels",	"dcc", "ignore", "users", NULL
 	};
 
 	switch (str_hash (name))
