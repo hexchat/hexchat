@@ -839,6 +839,11 @@ servlist_load_defaults (void)
 		if (def[i].network)
 		{
 			net = servlist_net_add (def[i].network, def[i].host);
+#ifdef WIN32
+			/* Windows gets UTF-8 for new users. Unix gets "System Default",
+				which is often UTF-8 anyway! */
+			net->encoding = strdup ("UTF-8");
+#endif
 			if (def[i].channel)
 				net->autojoin = strdup (def[i].channel);
 			if (!strcmp (def[i].network, "ChatJunkies"))
@@ -909,7 +914,7 @@ servlist_load (void)
 			}
 		}
 		if (buf[0] == 'N')
-			net = servlist_net_add (buf + 2, /* comment */ "");
+			net = servlist_net_add (buf + 2, /* comment */ NULL);
 	}
 	fclose (fp);
 

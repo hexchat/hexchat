@@ -574,7 +574,7 @@ setup_create_entry (GtkWidget *table, int row, const setting *set)
 		gtk_entry_set_visibility (GTK_ENTRY (wid), FALSE);
 	if (set->tooltip)
 		add_tip (wid, _(set->tooltip));
-	gtk_entry_set_max_length (GTK_ENTRY (wid), set->extra);
+	gtk_entry_set_max_length (GTK_ENTRY (wid), set->extra - 1);
 	gtk_entry_set_text (GTK_ENTRY (wid), setup_get_str (&setup_prefs, set));
 	g_signal_connect (G_OBJECT (wid), "changed",
 							G_CALLBACK (setup_entry_cb), (gpointer)set);
