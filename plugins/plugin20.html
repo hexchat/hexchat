@@ -20,7 +20,7 @@ color: #990066
 <h1>XChat 2.0 Plugin Interface</h1>
 
 <small>
-<font size="-12">plugin20.html revision 0.92</font>
+<font size="-12">plugin20.html revision 0.93</font>
 <br>Latest version of this document is available at: <a href="http://xchat.org/docs/plugin20.html">http://xchat.org/docs/plugin20.html</a></small>
 
 <h2>Information:</h2>
@@ -494,7 +494,7 @@ xchat_hook_command(ph, "STOP", XCHAT_PRI_NORM, stop_cb, NULL, NULL);
 <h3><a class="cmd" name="xchat_find_context">&nbsp;xchat_find_context()&nbsp;</a></h3>
 <b>Prototype:</b> xchat_context *xchat_find_context(xchat_plugin *ph, char *servname, char *channel);
 <br>
-<br><b>Description:</b> Finds a context based on a channel and servername. If servname is NULL, it finds any channel (or query) by the given name. If channel is NULL, it finds the front-most tab/window of the given servname.
+<br><b>Description:</b> Finds a context based on a channel and servername. If servname is NULL, it finds any channel (or query) by the given name. If channel is NULL, it finds the front-most tab/window of the given servname. If NULL is given for both arguments, the currently focused tab/window will be returned.
 <br>
 <br><b>Arguments:</b>
 <blockquote><b>ph:</b> Plugin handle (as given to xchat_plugin_init).

@@ -178,6 +178,7 @@ static const struct defaultserver def[] =
 
 	{"FreeNode",	0},
 	{0,				"irc.freenode.net"},
+	{0,				"irc.eu.freenode.net"},
 	{0,				"irc.au.freenode.net"},
 	{0,				"irc.us.freenode.net"},
 

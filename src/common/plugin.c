@@ -795,6 +795,9 @@ xchat_find_context (xchat_plugin *ph, char *servname, char *channel)
 	server *serv;
 	session *sess;
 
+	if (servname == NULL && channel == NULL)
+		return current_sess;
+
 	slist = serv_list;
 	while (slist)
 	{
