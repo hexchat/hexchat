@@ -1056,7 +1056,7 @@ static XS (XS_Xchat_get_list)
 					hv_store (hash, fields[i]+1, strlen (fields[i]+1),
 								newSVuv(PTR2UV ( xchat_list_str (ph, list,
 																				fields[i]+1)
-									)), 0);cd 
+									)), 0);
 					break;
 				case 'i': 
 					hv_store (hash, fields[i]+1, strlen (fields[i]+1),
@@ -2404,8 +2404,10 @@ perl_end (void)
 			execute_perl (scp->shutdowncallback, "");
 		}
 		xchat_plugingui_remove (ph, scp->gui_entry);
+		free (scp->gui_entry);
 		free (scp->name);
 		free (scp->version);
+		free (scp->desc);
 		SvREFCNT_dec(scp->shutdowncallback);
 		free (scp);
 	}
