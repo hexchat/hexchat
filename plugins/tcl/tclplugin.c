@@ -15,7 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#define VERSION "1.0.42"
+#define VERSION "1.0.44"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -274,7 +274,7 @@ static void queue_nexttimer()
     time_t then;
 
     nexttimerindex = 0;
-    then = (time_t) 9999999999;
+    then = (time_t) 0xffffffff;
 
     for (x = 1; x < MAX_TIMERS; x++) {
         if (timers[x].timerid) {
