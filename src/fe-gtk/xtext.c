@@ -985,8 +985,7 @@ gtk_xtext_realize (GtkWidget * widget)
 	gdk_gc_set_foreground (xtext->thin_gc, &col);
 
 	/* for the marker bar (marker) */
-	col.red = 0xdddd; col.green = 0x0000; col.blue = 0x0000;
-	gdk_colormap_alloc_color (cmap, &col, FALSE, TRUE);
+	col.pixel = xtext->palette[XTEXT_MARKER];
 	gdk_gc_set_foreground (xtext->marker_gc, &col);
 
 	xtext_set_fg (xtext, xtext->fgc, XTEXT_FG);
