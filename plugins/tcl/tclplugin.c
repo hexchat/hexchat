@@ -15,7 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#define VERSION "1.0.18"
+#define VERSION "1.0.21"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -240,9 +240,9 @@ static int insert_timer(int seconds, char *script)
     for (x = 1; x < MAX_TIMERS; x++) {
         if (timers[x].timerid == 0) {
             if (SourceInternalProc(id, "", script) == TCL_ERROR) {
-               errorInfo = Tcl_GetVar(interp, "errorInfo", TCL_GLOBAL_ONLY);
-               xchat_printf(ph, "\0039Tcl plugin\003\tERROR (timer %d) %s \n", timers[x].timerid, errorInfo);
-               return (-1);
+                errorInfo = Tcl_GetVar(interp, "errorInfo", TCL_GLOBAL_ONLY);
+                xchat_printf(ph, "\0039Tcl plugin\003\tERROR (timer %d) %s \n", timers[x].timerid, errorInfo);
+                return (-1);
             }
             timers[x].timerid = (nexttimerid++ % INT_MAX) + 1;
             timers[x].timestamp = now + seconds;
@@ -949,7 +949,10 @@ static int tcl_getlist(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
     int iattr;
     int i;
     Tcl_DString ds;
-    xchat_context *ctx;
+    xchat_context *origctx;
+    xchat_context *ctx = NULL;
+
+    origctx = xchat_get_context(ph);
 
     BADARGS(1, 2, " list");
 
@@ -1008,6 +1011,7 @@ static int tcl_getlist(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
                 sattr = xchat_list_str(ph, list, (char *) field);
                 if (strcmp(field, "context") == 0) {
                     ctx = (xchat_context *) sattr;
+                    xchat_set_context(ph, ctx);
                     Tcl_DStringStartSublist(&ds);
                     Tcl_DStringAppendElement(&ds, "ctx");
                     Tcl_DStringAppendElement(&ds, xchat_get_info(ph, "server"));
@@ -1029,6 +1033,8 @@ static int tcl_getlist(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
     xchat_list_free(ph, list);
 
   done:
+
+    xchat_set_context(ph, origctx);
 
     Tcl_AppendResult(irp, ds.string, NULL);
 
@@ -1843,8 +1849,9 @@ static void Tcl_Plugin_Init()
     char *xchatdir;
 
     interp = Tcl_CreateInterp();
+
     Tcl_Init(interp);
-    
+
     nextprocid = 0x1000;
 
     Tcl_CreateCommand(interp, "alias", tcl_alias, NULL, NULL);
