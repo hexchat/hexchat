@@ -1,8 +1,7 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
 <head>
 <title>X-Chat 2 Perl Interface</title>
-<link rev="made" href="mailto:root@localhost" />
 </head>
 
 <body style="background-color: white">
@@ -13,30 +12,30 @@
 <ul>
 
 	<li><a href="#xchat_2_perl_interface">X-Chat 2 Perl Interface</a></li>
-	<ul>
+	<li><ul>
 
 		<li><a href="#constants">Constants</a></li>
-		<ul>
+		<li><ul>
 
 			<li><a href="#priorities">Priorities</a></li>
-			<li><a href="#callback_return_values">Callback return values</a></li>
-		</ul>
+			<li><a href="#return_values">Return values</a></li>
+		</ul></li>
 
 		<li><a href="#functions">Functions</a></li>
-		<ul>
+		<li><ul>
 
 			<li><a href="#xchat::register(_$name,_$version,_[$description,[$callback]]_)"><code>Xchat::register( $name, $version, [$description,[$callback]] )</code></a></li>
 			<li><a href="#xchat::hook_server(_$message,_$callback,_[\%options]_)"><code>Xchat::hook_server( $message, $callback, [\%options] )</code></a></li>
 			<li><a href="#xchat::hook_command(_$command,_$callback,_[\%options]_)"><code>Xchat::hook_command( $command, $callback, [\%options] )</code></a></li>
 			<li><a href="#xchat::hook_print(_$event,$callback,_[\%options]_)"><code>Xchat::hook_print( $event,$callback, [\%options] )</code></a></li>
 			<li><a href="#xchat::hook_timer(_$timeout,$callback,_[\%options_|_$data]_)"><code>Xchat::hook_timer( $timeout,$callback, [\%options | $data] )</code></a></li>
-			<ul>
+			<li><ul>
 
 				<li><a href="#when_callbacks_are_invoked">When callbacks are invoked</a></li>
 				<li><a href="#callback_arguments">Callback Arguments</a></li>
 				<li><a href="#callback_return_values">Callback return values</a></li>
 				<li><a href="#addtional_information">Addtional Information</a></li>
-			</ul>
+			</ul></li>
 
 			<li><a href="#xchat::unhook(_$hook_)"><code>Xchat::unhook( $hook )</code></a></li>
 			<li><a href="#xchat::print(_$text,_[$channel,[$server]]_)"><code>Xchat::print( $text, [$channel,[$server]] )</code></a></li>
@@ -52,9 +51,9 @@
 			<li><a href="#xchat::nickcmp(_$nick1,_$nick2_)"><code>Xchat::nickcmp( $nick1, $nick2 )</code></a></li>
 			<li><a href="#xchat::get_list(_$name_)"><code>Xchat::get_list( $name )</code></a></li>
 			<li><a href="#xchat::user_info(_[$nick]_)"><code>Xchat::user_info( [$nick] )</code></a></li>
-		</ul>
+		</ul></li>
 
-	</ul>
+	</ul></li>
 
 </ul>
 <!-- INDEX END -->
@@ -83,7 +82,7 @@
 </ul>
 <p>
 </p>
-<h3><a name="callback_return_values">Callback return values</a></h3>
+<h3><a name="return_values">Return values</a></h3>
 <ul>
 <li><strong><a name="item_c%3cxchat%3a%3aeat_none%3e_pass_the_event_along"><code>Xchat::EAT_NONE</code> 		pass the event along</a></strong><br />
 </li>
@@ -142,7 +141,8 @@
 </li>
 <li><strong><a name="item_%5c%25options_%2d_a_hash_reference_containing_addi">\%options	-	a hash reference containing addional options for the hooks</a></strong><br />
 </li>
-Valid keys for \%options:
+</ul>
+<p>Valid keys for \%options:</p>
 <table border=1>	<tr>
 	<td>data</td>	<td>Additional data that is to be associated with the<br>
 						hook. For timer hooks this value can be provided either as<br>
@@ -177,8 +177,7 @@ Valid keys for \%options:
 									Default is "".
 									</td>
 	</tr>
-</table><p></p></ul>
-<p>
+</table><p>
 </p>
 <h4><a name="when_callbacks_are_invoked">When callbacks are invoked</a></h4>
 <p>Each of the hooks will be triggered at different times depending on the type
@@ -456,7 +455,8 @@ found respectively, to be less than, to match, or be greater than
 </ul>
 <p>This function will return a list of hash references.  The hash references
 will have different keys depend on the list.  An empty list is returned
-if there is not such list.<p>"channels"	-	list of channels, querys and their server<table border=1>	<tr bgcolor="#DDDDDD">
+if there is not such list.</p>
+"channels"	-	list of channels, querys and their server<table border=1>	<tr bgcolor="#DDDDDD">
 		<td>Key</td>	<td>Description</td>
 	</tr>	<tr>
 		<td>channel</td>	<td>channel or query</td>
@@ -528,13 +528,9 @@ if there is not such list.<p>"channels"	-	list of channels, querys and their ser
 <br>"ignore"		-	current ignore list
 <table border=1>	<tr bgcolor="#DDDDDD">
 		<td>Key</td> <td>Value</td>
-	</tr>
-	
-	<tr>
+	</tr>	<tr>
 		<td>mask</td>	<td>ignore mask. e.g: *!*@*.aol.com</td>
-	</tr>
-	
-	<tr>
+	</tr>	<tr>
 		<td>flags</td>	<td>Bit field of flags.<br>
 							0 - private<br>
 							1 - notice<br>
