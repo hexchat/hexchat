@@ -42,6 +42,10 @@
 #include "palette.h"
 #include "maingui.h"
 
+#ifdef USE_GNOME
+#include <libgnomevfs/gnome-vfs-mime-utils.h>
+#endif
+
 struct dccwindow
 {
 	GtkWidget *window;
@@ -128,7 +132,7 @@ fe_dcc_update_recv (struct DCC *dcc)
 #ifdef USE_GNOME
 	if (dcc->dccstat == STAT_DONE)
 		gtk_clist_set_text (GTK_CLIST (dccrwin.list), row, 8,
-								  (char *) gnome_mime_type_of_file (dcc->destfile));
+								  (char *) gnome_vfs_get_mime_type (dcc->destfile));
 #endif
 	gtk_clist_thaw (GTK_CLIST (dccrwin.list));
 }
@@ -219,7 +223,7 @@ fe_dcc_update_recv_win (void)
 			nnew[7] = dcc->nick;
 #ifdef USE_GNOME
 			if (dcc->dccstat == STAT_DONE)
-				nnew[8] = (char *) gnome_mime_type_of_file (dcc->destfile);
+				nnew[8] = (char *) gnome_vfs_get_mime_type (dcc->destfile);
 			else
 				nnew[8] = "";
 #endif
@@ -339,37 +343,16 @@ open_clicked (void)
 {
 	int row;
 	struct DCC *dcc;
-	char *mime_type;
-	char *mime_prog;
-	char *tmp;
 
 	row = gtkutil_clist_selection (dccrwin.list);
-	if (row != -1)
-	{
-		dcc = gtk_clist_get_row_data (GTK_CLIST (dccrwin.list), row);
-		if (dcc && dcc->dccstat == STAT_DONE)
-		{
-			mime_type = (char *) gnome_mime_type (dcc->destfile);
-			if (mime_type)
-			{
-				mime_prog = (char *) gnome_mime_program (mime_type);
-				if (mime_prog)
-				{
-					mime_prog = strdup (mime_prog);
-					tmp = strstr (mime_prog, "%f");
-					if (tmp)
-					{
-						tmp[1] = 's';
-						tmp = malloc (strlen (dcc->destfile) + strlen (mime_prog));
-						sprintf (tmp, mime_prog, dcc->destfile);
-						xchat_exec (tmp);
-						free (tmp);
-					}
-					free (mime_prog);
-				}
-			}
-		}
-	}
+	if (row == -1)
+		return;
+
+	dcc = gtk_clist_get_row_data (GTK_CLIST (dccrwin.list), row);
+	if (dcc || dcc->dccstat == STAT_DONE)
+		return;
+
+	/* do something with dcc->destfile */
 }
 
 #endif

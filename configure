@@ -12050,27 +12050,69 @@ _ACEOF
 fi
 
 
+GUI_LIBS="$GUI_LIBS $GTK_LIBS"
+GUI_CFLAGS="$GUI_CFLAGS $GTK_CFLAGS"
+
 gnome=no
-#if test "$gnome" = yes; then
-#	AC_PATH_PROG(gnomepath, gnome-config)
-#	AC_MSG_CHECKING(for Gnome compile flags)
-#	GNOME_CFLAGS=`$gnomepath gnomeui --cflags 2>/dev/null`
-#	if test "_$GNOME_CFLAGS" = _ ; then
-#		gnome=no
-#		AC_MSG_RESULT([Gnome not found, building without it.])
-#		GUI_LIBS="$GUI_LIBS $GTK_LIBS"
-#		GUI_CFLAGS="$GUI_CFLAGS $GTK_CFLAGS"
-#	else
-#		GNOME_VER=`$gnomepath --version |$sedpath 's/gnome-libs //' 2>/dev/null`
-#		AC_MSG_RESULT(ok)
-#		GUI_LIBS="$GUI_LIBS `$gnomepath gnomeui --libs 2>/dev/null`"
-#		GUI_CFLAGS="$GUI_CFLAGS $GNOME_CFLAGS"
-#		AC_DEFINE(USE_GNOME)
-#	fi
-#else
-	GUI_LIBS="$GUI_LIBS $GTK_LIBS"
-	GUI_CFLAGS="$GUI_CFLAGS $GTK_CFLAGS"
-#fi
+if test "$gnome" = yes; then
+	# Extract the first word of "pkg-config", so it can be a program name with args.
+set dummy pkg-config; ac_word=$2
+echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+if test "${ac_cv_path_pkgconfigpath+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  case $pkgconfigpath in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_pkgconfigpath="$pkgconfigpath" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_path_pkgconfigpath="$as_dir/$ac_word$ac_exec_ext"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+
+  ;;
+esac
+fi
+pkgconfigpath=$ac_cv_path_pkgconfigpath
+
+if test -n "$pkgconfigpath"; then
+  echo "$as_me:$LINENO: result: $pkgconfigpath" >&5
+echo "${ECHO_T}$pkgconfigpath" >&6
+else
+  echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
+fi
+
+	echo "$as_me:$LINENO: checking Gnome2 compile flags" >&5
+echo $ECHO_N "checking Gnome2 compile flags... $ECHO_C" >&6
+	GNOME_CFLAGS="`$pkgconfigpath libgnome-2.0 --cflags 2>/dev/null`"
+	if test "_$GNOME_CFLAGS" = _ ; then
+		gnome=no
+		echo "$as_me:$LINENO: result: Gnome not found, building without it." >&5
+echo "${ECHO_T}Gnome not found, building without it." >&6
+	else
+		GNOME_VER="`$pkgconfigpath libgnome-2.0 --modversion`"
+		GUI_LIBS="$GUI_LIBS `$pkgconfigpath libgnome-2.0 --libs`"
+		GUI_CFLAGS="$GUI_CFLAGS $GNOME_CFLAGS"
+		cat >>confdefs.h <<\_ACEOF
+#define USE_GNOME 1
+_ACEOF
+
+		echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6
+	fi
+fi
 
 
 zvt=no
@@ -15110,6 +15152,7 @@ s,@GOBJECT_QUERY@,$GOBJECT_QUERY,;t t
 s,@GLIB_MKENUMS@,$GLIB_MKENUMS,;t t
 s,@GTK_CFLAGS@,$GTK_CFLAGS,;t t
 s,@GTK_LIBS@,$GTK_LIBS,;t t
+s,@pkgconfigpath@,$pkgconfigpath,;t t
 s,@perlpath@,$perlpath,;t t
 s,@pythonpath@,$pythonpath,;t t
 s,@USE_OPENSSL_TRUE@,$USE_OPENSSL_TRUE,;t t
@@ -15836,11 +15879,10 @@ echo
 echo Building GTK+ Interface .... : $gtkfe
 echo Building TEXT Interface .... : $textfe
 echo
-#echo gnome-libs .......... : $gnome $GNOME_VER
+#echo libgnome ............ : $gnome $GNOME_VER
 echo perl ................ : $perl
 echo python .............. : $python $PY_VERSION
 echo mmx tinting ......... : $mmx
-#echo zvt shell tab ....... : $zvt
 echo plugin interface .... : $plugin\	nls/gettext ......... : $USE_NLS
 if test "$xft" = no; then
   echo link with socks5 .... : $socks\	text backend ........ : pango
@@ -15849,7 +15891,6 @@ else
 fi
 echo openssl support ..... : $openssl
 echo ipv6 support ........ : $ipv6
-#\	hebrew support ...... : $hebrew
 echo
 echo The binary will be installed in $prefix/bin
 echo

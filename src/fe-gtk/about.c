@@ -47,7 +47,7 @@
 #include "about.h"
 
 
-#ifdef USE_GNOME
+#if 0 /*def USE_GNOME*/
 
 void
 menu_about (GtkWidget * wid, gpointer sess)

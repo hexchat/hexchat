@@ -113,7 +113,7 @@ goto_url (char *url)
 		g_free (moz);
 	} else
 	{
-		snprintf (tbuf, sizeof (tbuf), "netscape -remote 'openURL(%s)'", url);
+		snprintf (tbuf, sizeof (tbuf), "mozilla -remote 'openURL(%s)'", url);
 	}
 	xchat_exec (tbuf);
 #endif
@@ -1115,11 +1115,11 @@ menu_docs (GtkWidget *wid, gpointer none)
 	goto_url ("http://xchat.org/docs.html");
 }
 
-static void
+/*static void
 menu_webpage (GtkWidget *wid, gpointer none)
 {
 	goto_url ("http://xchat.org");
-}
+}*/
 
 static void
 menu_dcc_recv_win (GtkWidget *wid, gpointer none)
@@ -1228,10 +1228,8 @@ static struct mymenu mymenu[] = {
 	{N_("Save Text..."), menu_savebuffer, GTK_STOCK_SAVE, M_MENUSTOCK, 0, 1},
 
 	{N_("_Help"), 0, 0, M_NEWMENU, 0, 1},	/* 62 */
-	{N_("X-Chat Homepage..."), menu_webpage, GTK_STOCK_HOME, M_MENUSTOCK, 0, 1},
-	{N_("Online Docs..."), menu_docs, GTK_STOCK_DND_MULTIPLE, M_MENUSTOCK, 0, 1},
-	{0, 0, 0, M_SEP, 0, 0},
-	{N_("About X-Chat..."), menu_about, GTK_STOCK_HELP, M_MENUSTOCK, 0, 1},
+	{N_("Contents"), menu_docs, GTK_STOCK_HELP, M_MENUSTOCK, 0, 1, GDK_F1},
+	{N_("About"), menu_about, 0, M_MENU, 0, 1},
 
 	{0, 0, 0, M_END, 0, 0},
 };
@@ -1309,7 +1307,9 @@ menu_create_main (void *accel_group, int bar, int away,
 normalitem:
 			if (mymenu[i].key != 0)
 				gtk_widget_add_accelerator (item, "activate", accel_group,
-									mymenu[i].key, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
+										mymenu[i].key,
+										mymenu[i].key == GDK_F1 ? 0 : GDK_CONTROL_MASK,
+										GTK_ACCEL_VISIBLE);
 			if (mymenu[i].callback)
 				g_signal_connect (G_OBJECT (item), "activate",
 										G_CALLBACK (mymenu[i].callback), 0);

@@ -49,5 +49,5 @@ libxchatcommon_a_SOURCES = cfgfiles.c ctcp.c dcc.c history.c ignore.c \
 textevents: make-te
 	./make-te < textevents.in > textevents.h 2> textenums.h
 
-plugin.o: $(srcdir)/plugin.c
+plugin.o: $(srcdir)/plugin.c xchat-plugin.h
 	$(COMPILE) -DXCHATLIBDIR=\"$(xchatlibdir)\" -c $(srcdir)/plugin.c
