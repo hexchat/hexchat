@@ -2,20 +2,29 @@
 use strict;
 use warnings;
 
-Xchat::register( "Tab Completion", "1.0101",
+Xchat::register( "Tab Completion", "1.0102",
                  "Alternative tab completion behavior" );
 Xchat::hook_print( "Key Press", \&complete );
 Xchat::hook_print( "Close Context", \&close_context );
 
 my %completions;
-my %case_map = ( "[" => qr![\\\[{]!,
-                 "{" => qr![\\\[{]!,
-                 "}" => qr![\\\]}]!,
-                 "]" => qr![\\\]}]!,
-                 "\\" => qr![\\\|]!,
-                 "|" => qr![\\\|]!,
-                 "^" => qr!\^!,
+my %escape_map = ( '[' => qr![\\\[{]!,
+                   '{' => qr![\\\[{]!,
+                   '}' => qr![\\\]}]!,
+                   ']' => qr![\\\]}]!,
+                   '\\' => qr![\\\|]!,
+                   '|' => qr![\\\|]!,
+                   '.' => qr!\.!,
+                   '^' => qr!\^!,
+                   '$' => qr!\$!,
+                   '*' => qr!\*!,
+                   '+' => qr!\+!,
+                   '?' => qr!\?!,
+                   '(' => qr!\(!,
+                   ')' => qr!\)!,
                );
+my $escapes = join "", keys %escape_map;
+$escapes = qr/[\Q$escapes\E]/;
 
 sub complete {
   # if $_[0][0] contains the value of the key pressed
@@ -54,11 +63,10 @@ sub complete {
   my $word = substr( $left, $word_start );
   $left = substr( $left, 0, -length $word );
 
-  # fix $word so { equals [, ] equals }, \ equals |
-  $word =~ s/([[\]{}|])/$case_map{$1}/g;
+  my $command_char = Xchat::get_prefs( "input_command_char" );
 
   # ignore channels and commands
-  if ( $word !~ m{^[/&#]} ) {
+  if ( $word !~ m{^[${command_char}&#]} ) {
     # this is going to be the "completed" word
     my $completed;
 
@@ -67,11 +75,15 @@ sub complete {
 
     # continuing from a previous completion
     if ( exists $completions->{nicks} && @{$completions->{nicks}}
-         && $cursor_pos == $completions->{pos} ) {
+         && $cursor_pos == $completions->{pos}
+         && $word =~ /^\Q$completions->{nicks}[$completions->{index}]/ ) {
       $completions->{index} =
         ( $completions->{index} + 1 ) % @{$completions->{nicks}};
       $completed = $completions->{nicks}[ $completions->{index} ];
     } else {
+      # fix $word so { equals [, ] equals }, \ equals |
+      # and escape regex metacharacters
+      $word =~ s/($escapes)/$escape_map{$1}/g;
       $completions->{nicks} = [ map { $_->{nick} }
                                 sort { $b->{lasttalk} <=> $a->{lasttalk}}
                                 grep { $_->{nick} =~ /^$word/i }
