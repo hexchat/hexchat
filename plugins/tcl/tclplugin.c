@@ -1617,10 +1617,7 @@ static int Command_Source(char *word[], char *word_eol[], void *userdata)
 
         Tcl_DStringFree(&ds);
 
-        if (strcasecmp("LOAD", word[1]) == 0)
-            return XCHAT_EAT_XCHAT;
-        else
-            return XCHAT_EAT_ALL;
+        return XCHAT_EAT_XCHAT;
 
     } else
         return XCHAT_EAT_NONE;
