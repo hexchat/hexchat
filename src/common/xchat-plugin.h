@@ -139,10 +139,10 @@ xchat_hook_timer (xchat_plugin *ph,
 
 xchat_hook *
 xchat_hook_fd (xchat_plugin *ph,
-		   int fd,
-		   int flags,
-		   int (*callback) (int fd, int flags, void *user_data),
-		   void *userdata);
+		int fd,
+		int flags,
+		int (*callback) (int fd, int flags, void *user_data),
+		void *userdata);
 
 void *
 xchat_unhook (xchat_plugin *ph,

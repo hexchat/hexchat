@@ -2443,6 +2443,9 @@ single:
 				i++;
 			} else if (mbl > 0)
 			{
+				/* invalid utf8 safe guard */
+				if (i + mbl > len)
+					mbl = len - i;
 				memcpy (new_str + j, text + i, mbl);
 				j += mbl;
 				i += mbl;

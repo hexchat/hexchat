@@ -289,7 +289,7 @@ text_validate (char **text)
 	/* maybe it's iso-8859-1 */
 	utf = g_convert (*text, -1, "UTF-8", "ISO-8859-1", 0, 0, 0);
 	if (!utf)	/* should never happen; all text is iso-8859-1 valid */
-		*text = "%INVALID%";
+		*text = g_strdup ("%INVALID%");
 	else
 		*text = utf;
 

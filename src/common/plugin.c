@@ -761,7 +761,8 @@ xchat_find_context (xchat_plugin *ph, char *servname, char *channel)
 		serv = slist->data;
 		if (servname == NULL ||
 			 rfc_casecmp (servname, serv->servername) == 0 ||
-			 strcasecmp (servname, serv->hostname) == 0)
+			 strcasecmp (servname, serv->hostname) == 0 ||
+			 (serv->networkname && strcasecmp (servname, serv->networkname) == 0))
 		{
 			if (channel == NULL)
 				return serv->front_session;

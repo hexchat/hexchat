@@ -27,6 +27,10 @@
 
 #include "xchat.h"
 
+#ifdef WIN32
+#include "inet.h"	/* for gethostname() */
+#endif
+
 #include "ctcp.h"
 #include "fe.h"
 #include "ignore.h"
