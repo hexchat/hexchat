@@ -40,8 +40,9 @@ struct DCC
 	time_t starttime;
 	time_t offertime;
 	time_t lasttime;
-	char *file;
-	char *destfile;
+	char *file;					/* utf8 */
+	char *destfile;			/* utf8 */
+	char *destfile_fs;		/* local filesystem encoding */
 	char *nick;
 	char type;				  /* 0 = SEND  1 = RECV  2 = CHAT */
 	char dccstat;			  /* 0 = QUEUED  1 = ACTIVE  2 = FAILED  3 = DONE */

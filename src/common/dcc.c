@@ -344,7 +344,9 @@ dcc_close (struct DCC *dcc, int dccstat, int destroy)
 		if (dcc->file)
 			free (dcc->file);
 		if (dcc->destfile)
-			free (dcc->destfile);
+			g_free (dcc->destfile);
+		if (dcc->destfile_fs)
+			g_free (dcc->destfile_fs);
 		free (dcc->nick);
 		free (dcc);
 		update_dcc_window (type);
@@ -560,6 +562,7 @@ dcc_read_chat (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 static gboolean
 dcc_read (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 {
+	char *old;
 	char buf[4096];
 	guint32 pos;
 	int n;
@@ -568,27 +571,33 @@ dcc_read (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 	{
 		if (dcc->resumable)
 		{
-			dcc->fp = open (dcc->destfile, O_WRONLY | O_APPEND | OFLAGS);
+			dcc->fp = open (dcc->destfile_fs, O_WRONLY | O_APPEND | OFLAGS);
 			dcc->pos = dcc->resumable;
 			dcc->ack = dcc->resumable;
 		} else
 		{
-			if (access (dcc->destfile, F_OK) == 0)
+			if (access (dcc->destfile_fs, F_OK) == 0)
 			{
 				n = 0;
 				do
 				{
 					n++;
-					sprintf (buf, "%s.%d", dcc->destfile, n);
+					sprintf (buf, "%s.%d", dcc->destfile_fs, n);
 				}
 				while (access (buf, F_OK) == 0);
+
+				g_free (dcc->destfile_fs);
+				dcc->destfile_fs = g_strdup (buf);
+
+				old = dcc->destfile;
+				dcc->destfile = g_filename_to_utf8 (buf, -1, 0, 0, 0);
+
 				EMIT_SIGNAL (XP_TE_DCCRENAME, dcc->serv->front_session,
-								 dcc->destfile, buf, NULL, NULL, 0);
-				free (dcc->destfile);
-				dcc->destfile = strdup (buf);
+								 old, dcc->destfile, NULL, NULL, 0);
+				g_free (old);
 			}
 			dcc->fp =
-				open (dcc->destfile, OFLAGS | O_TRUNC | O_WRONLY | O_CREAT,
+				open (dcc->destfile_fs, OFLAGS | O_TRUNC | O_WRONLY | O_CREAT,
 						prefs.dccpermissions);
 		}
 	}
@@ -1048,7 +1057,9 @@ dcc_send (struct session *sess, char *tbuf, char *to, char *file, int maxcps)
 	char outbuf[512];
 	struct stat st;
 	struct DCC *dcc;
+	char *file_fs;
 
+	/* this is utf8 */
 	file = expand_homedir (file);
 
 	if (!recursive && (strchr (file, '*') || strchr (file, '?')))
@@ -1081,9 +1092,12 @@ dcc_send (struct session *sess, char *tbuf, char *to, char *file, int maxcps)
 	dcc->file = file;
 	dcc->maxcps = maxcps;
 
-	if (stat (file, &st) != -1)
+	/* get the local filesystem encoding */
+	file_fs = g_filename_from_utf8 (file, -1, 0, 0, 0);
+
+	if (stat (file_fs, &st) != -1)
 	{
-		if (*file_part (file) && !S_ISDIR (st.st_mode))
+		if (*file_part (file_fs) && !S_ISDIR (st.st_mode))
 		{
 			if (st.st_size > 0)
 			{
@@ -1092,9 +1106,10 @@ dcc_send (struct session *sess, char *tbuf, char *to, char *file, int maxcps)
 				dcc->dccstat = STAT_QUEUED;
 				dcc->size = st.st_size;
 				dcc->type = TYPE_SEND;
-				dcc->fp = open (file, OFLAGS | O_RDONLY);
+				dcc->fp = open (file_fs, OFLAGS | O_RDONLY);
 				if (dcc->fp != -1)
 				{
+					g_free (file_fs);
 					if (dcc_listen_init (dcc, sess))
 					{
 						char havespaces = 0;
@@ -1134,6 +1149,7 @@ dcc_send (struct session *sess, char *tbuf, char *to, char *file, int maxcps)
 			}
 		}
 	}
+	g_free (file_fs);
 	PrintTextf (sess, _("Cannot access %s\n"), dcc->file);
 	dcc_close (dcc, 0, TRUE);
 }
@@ -1466,9 +1482,8 @@ handle_dcc (struct session *sess, char *outbuf, char *nick, char *word[],
 
 			dcc->file = strdup (file);
 
-			dcc->destfile =
-				malloc (strlen (prefs.dccdir) + strlen (nick) + strlen (file) +
-						  4);
+			dcc->destfile = g_malloc (strlen (prefs.dccdir) + strlen (nick) +
+											  strlen (file) + 4);
 
 			strcpy (dcc->destfile, prefs.dccdir);
 			if (prefs.dccdir[strlen (prefs.dccdir) - 1] != '/')
@@ -1491,8 +1506,11 @@ handle_dcc (struct session *sess, char *outbuf, char *nick, char *word[],
 			}
 			strcat (dcc->destfile, file);
 
+			/* get the local filesystem encoding */
+			dcc->destfile_fs = g_filename_from_utf8 (dcc->destfile, -1, 0, 0, 0);
+
 			dcc->resumable = 0;
-			if (stat (dcc->destfile, &st) != -1)
+			if (stat (dcc->destfile_fs, &st) != -1)
 			{
 				if (st.st_size < size)
 					dcc->resumable = st.st_size;
