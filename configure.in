@@ -19,7 +19,7 @@ AH_VERBATIM([PREFIX],[#undef PREFIX])
 AH_VERBATIM([SOCKS],[#undef SOCKS])
 AH_VERBATIM([USE_DEBUG],[#undef USE_DEBUG])
 AH_VERBATIM([USE_GNOME],[#undef USE_GNOME])
-dnl AH_VERBATIM([USE_HEBREW],[#undef USE_HEBREW])
+AH_VERBATIM([USE_SHM],[#undef USE_SHM])
 AH_VERBATIM([USE_IPV6],[#undef USE_IPV6])
 AH_VERBATIM([USE_MMX],[#undef USE_MMX])
 AH_VERBATIM([USE_OPENSSL],[#undef USE_OPENSSL])
@@ -62,10 +62,6 @@ AC_ARG_ENABLE(memdebug,
 AC_ARG_ENABLE(socks,
 [  --enable-socks          enable use of SOCKS5 (default: no)],
         socks=$enableval, socks=no)
-
-dnl AC_ARG_ENABLE(hebrew,
-dnl [  --enable-hebrew         enable Hebrew support (default: no)],
-dnl        hebrew=$enableval, hebrew=no)
 
 AC_ARG_ENABLE(ipv6,
 [  --enable-ipv6           enable IPv6 (default: no)],
@@ -119,6 +115,9 @@ AC_ARG_ENABLE(mmx,
 [  --disable-mmx           disable MMX assembly routines],
         mmx=$enableval, mmx=yes)
 
+AC_ARG_ENABLE(shm,
+[  --enable-shm            enable use of XShm for fast tinting (default: no)],
+        shm=$enableval, shm=no)
 
 dnl *********************************************************************
 dnl ** DEBUG ************************************************************
@@ -165,11 +164,17 @@ dnl ** XFT **************************************************************
 dnl *********************************************************************
 
 if test "$xft" = yes; then
-	xft=no
-	oldCPPFLAGS=$CPPFLAGS
-	CPPFLAGS="$CPPFLAGS $GTK_CFLAGS"
-	AC_CHECK_HEADERS(X11/Xft/Xft.h, xft=yes)
-	CPPFLAGS=$oldCPPFLAGS
+	AC_PATH_PROG(pkgconfigpath, pkg-config)
+	if $pkgconfigpath xft --exists; then
+		GUI_CFLAGS="$GUI_CFLAGS `$pkgconfigpath xft --cflags`"
+		LIBS="$LIBS `$pkgconfigpath xft --libs`"
+	else
+		xft=no
+		oldCPPFLAGS=$CPPFLAGS
+		CPPFLAGS="$CPPFLAGS $GTK_CFLAGS"
+		AC_CHECK_HEADERS(X11/Xft/Xft.h, xft=yes)
+		CPPFLAGS=$oldCPPFLAGS
+	fi
 	if test "$xft" = yes; then
 		AC_DEFINE(USE_XFT)
 	fi
@@ -208,6 +213,8 @@ if test "$xlib" = yes; then
 	if test "$system" = "SunOS"; then
 		LIBS="$LIBS -L/usr/openwin/lib -lX11"
 	fi
+else
+	shm=no
 fi
 
 dnl *********************************************************************
@@ -467,12 +474,33 @@ if test "$socks" = yes; then
 fi
 
 dnl *********************************************************************
-dnl ** Hebrew support ***************************************************
+dnl ** XShm *************************************************************
 dnl *********************************************************************
 
-dnl if test "$hebrew" = yes; then
-dnl 	AC_DEFINE(USE_HEBREW)
-dnl fi
+if test "$shm" = yes; then
+	oldl=$LIBS
+	oldc=$CPPFLAGS
+	LIBS="$LIBS `$pkgconfigpath --libs-only-L xft`"
+	CPPFLAGS="$CPPFLAGS `$pkgconfigpath --cflags-only-I xft`"
+	shm=no
+	AC_CHECK_LIB(Xext, XShmAttach, shm=yes)
+	if test "$shm" = yes; then
+		shm=no
+		AC_CHECK_HEADERS(sys/ipc.h, shm=yes)
+		if test "$shm" = yes; then
+			shm=no
+			AC_CHECK_HEADERS(sys/shm.h, shm=yes)
+		fi
+	fi
+
+	if test "$shm" = yes; then
+		LIBS="$LIBS -lX11 -lXext"
+		AC_DEFINE(USE_SHM)
+	else
+		LIBS=$oldl
+		CPPFLAGS=$oldc
+	fi
+fi
 
 dnl *********************************************************************
 dnl ** MMX **************************************************************
@@ -533,9 +561,6 @@ dnl if we don't have this, use g_snprintf instead
 AC_CHECK_FUNCS(snprintf)
 AC_CHECK_FUNCS(vsnprintf)
 AC_CHECK_FUNCS(memrchr)
-
-dnl old solaris doesn't have this
-AC_CHECK_FUNCS(setenv)
 
 AC_CHECK_FUNC(gethostbyname, ,
 	AC_CHECK_LIB(resolv, gethostbyname, ,
@@ -614,11 +639,11 @@ echo
 echo PLUGINS: Perl: $perl Python: $python TCL: $tcl
 echo
 echo mmx tinting ......... : $mmx
-echo plugin interface .... : $plugin\	nls/gettext ......... : $USE_NLS
+echo XShm tinting ........ : $shm\	plugin interface .... : $plugin
 if test "$xft" = no; then
-  echo link with socks5 .... : $socks\	text backend ........ : pango
+  echo text backend ........ : pango\	nls/gettext ......... : $USE_NLS
 else
-  echo link with socks5 .... : $socks\	text backend ........ : xft
+  echo text backend ........ : xft\	nls/gettext ......... : $USE_NLS
 fi
 echo openssl support ..... : $openssl\	ipv6 support ........ : $ipv6
 echo

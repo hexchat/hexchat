@@ -6,6 +6,13 @@
 #include <X11/Xft/Xft.h>
 #endif
 
+#ifdef USE_SHM
+#include <X11/Xlib.h>
+#include <sys/ipc.h>
+#include <sys/shm.h>
+#include <X11/extensions/XShm.h>
+#endif
+
 #define GTK_TYPE_XTEXT              (gtk_xtext_get_type ())
 #define GTK_XTEXT(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), GTK_TYPE_XTEXT, GtkXText))
 #define GTK_XTEXT_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), GTK_TYPE_XTEXT, GtkXTextClass))
@@ -63,6 +70,11 @@ struct _GtkXText
 	xtext_buffer *buffer;
 	xtext_buffer *orig_buffer;
 	xtext_buffer *selection_buffer;
+
+#ifdef USE_SHM
+	XShmSegmentInfo shminfo;
+	XImage *ximg;
+#endif
 
 	GtkAdjustment *adj;
 	GdkPixmap *pixmap;				/* 0 = use palette[19] */
@@ -179,6 +191,7 @@ struct _GtkXText
 	unsigned int avoid_trans:1;
 	unsigned int overdraw:1;
 	unsigned int indent_changed:1;
+	unsigned int shm:1;
 };
 
 struct _GtkXTextClass

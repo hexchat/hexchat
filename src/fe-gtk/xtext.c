@@ -1205,12 +1205,14 @@ gtk_xtext_paint (GtkWidget *widget, GdkRectangle *area)
 		{
 			xtext->last_win_x = x;
 			xtext->last_win_y = y;
+#ifndef USE_SHM
 			if (xtext->shaded)
 			{
 				xtext->recycle = TRUE;
 				gtk_xtext_load_trans (xtext);
 				xtext->recycle = FALSE;
 			} else
+#endif
 			{
 				gtk_xtext_free_trans (xtext);
 				gtk_xtext_load_trans (xtext);
@@ -3191,6 +3193,64 @@ generic:
 
 #ifdef USE_XLIB
 
+#ifdef USE_SHM
+
+static XImage *
+get_shm_image (Display *xdisplay, XShmSegmentInfo *shminfo, int x, int y,
+					int w, int h, int depth, Pixmap pix)
+{
+	XImage *ximg;
+
+	shminfo->shmid = -1;
+	shminfo->shmaddr = (char*) -1;
+	ximg = XShmCreateImage (xdisplay, 0, depth, ZPixmap, 0, shminfo, w, h);
+	if (!ximg)
+		return NULL;
+
+	shminfo->shmid = shmget (IPC_PRIVATE, ximg->bytes_per_line * ximg->height,
+									 IPC_CREAT|0600);
+	if (shminfo->shmid == -1)
+	{
+		XDestroyImage (ximg);
+		return NULL;
+	}
+
+	shminfo->readOnly = False;
+	ximg->data = shminfo->shmaddr = (char *)shmat (shminfo->shmid, 0, 0);
+	if (shminfo->shmaddr == ((char *)-1))
+	{
+		shmctl (shminfo->shmid, IPC_RMID, 0);
+		XDestroyImage (ximg);
+		return NULL;
+	}
+
+	XShmAttach (xdisplay, shminfo);
+	XSync (xdisplay, False);
+	shmctl (shminfo->shmid, IPC_RMID, 0);
+	XShmGetImage (xdisplay, pix, ximg, x, y, AllPlanes);
+
+	return ximg;
+}
+
+static XImage *
+get_image (GtkXText *xtext, Display *xdisplay, XShmSegmentInfo *shminfo,
+			  int x, int y, int w, int h, int depth, Pixmap pix)
+{
+	XImage *ximg;
+
+	xtext->shm = 1;
+	ximg = get_shm_image (xdisplay, shminfo, x, y, w, h, depth, pix);
+	if (!ximg)
+	{
+		xtext->shm = 0;
+		ximg = XGetImage (xdisplay, pix, x, y, w, h, -1, ZPixmap);
+	}
+
+	return ximg;
+}
+
+#endif
+
 static GdkPixmap *
 shade_pixmap (GtkXText * xtext, Pixmap p, int x, int y, int w, int h)
 {
@@ -3219,11 +3279,19 @@ shade_pixmap (GtkXText * xtext, Pixmap p, int x, int y, int w, int h)
 		XFillRectangle (xdisplay, tmp, tgc, 0, 0, w, h);
 		XFreeGC (xdisplay, tgc);
 
+#ifdef USE_SHM
+		ximg = get_image (xtext, xdisplay, &xtext->shminfo, 0, 0, w, h, depth, tmp);
+#else
 		ximg = XGetImage (xdisplay, tmp, 0, 0, w, h, -1, ZPixmap);
+#endif
 		XFreePixmap (xdisplay, tmp);
 	} else
 	{
+#ifdef USE_SHM
+		ximg = get_image (xtext, xdisplay, &xtext->shminfo, x, y, w, h, depth, p);
+#else
 		ximg = XGetImage (xdisplay, p, x, y, w, h, -1, ZPixmap);
+#endif
 	}
 
 	if (!ximg)
@@ -3246,12 +3314,36 @@ shade_pixmap (GtkXText * xtext, Pixmap p, int x, int y, int w, int h)
 	if (xtext->recycle)
 		shaded_pix = xtext->pixmap;
 	else
-		shaded_pix = gdk_pixmap_new (GTK_WIDGET (xtext)->window, w, h, depth);
+	{
+#ifdef USE_SHM
+		if (xtext->shm)
+		{
+#if (GTK_MAJOR_VERSION == 2) && (GTK_MINOR_VERSION == 0)
+			shaded_pix = gdk_pixmap_foreign_new (
+				XShmCreatePixmap (xdisplay, p, ximg->data, &xtext->shminfo, w, h, depth));
+#else
+			shaded_pix = gdk_pixmap_foreign_new_for_display (
+				gdk_drawable_get_display (xtext->draw_buf),
+				XShmCreatePixmap (xdisplay, p, ximg->data, &xtext->shminfo, w, h, depth));
+#endif
+		} else
+#endif
+		{
+			shaded_pix = gdk_pixmap_new (GTK_WIDGET (xtext)->window, w, h, depth);
+		}
+	}
 
-	XPutImage (xdisplay, GDK_WINDOW_XWINDOW (shaded_pix),
-				  GDK_GC_XGC (xtext->fgc), ximg, 0, 0, 0, 0, w, h);
-
-	XDestroyImage (ximg);
+#ifdef USE_SHM
+	if (xtext->shm)
+	{
+		xtext->ximg = ximg;
+	} else
+#endif
+	{
+		XPutImage (xdisplay, GDK_WINDOW_XWINDOW (shaded_pix),
+					  GDK_GC_XGC (xtext->fgc), ximg, 0, 0, 0, 0, w, h);
+		XDestroyImage (ximg);
+	}
 
 	return shaded_pix;
 }
@@ -3266,8 +3358,19 @@ gtk_xtext_free_trans (GtkXText * xtext)
 {
 	if (xtext->pixmap)
 	{
+#ifdef USE_SHM
+		if (xtext->shm)
+		{
+			XFreePixmap (GDK_WINDOW_XDISPLAY (xtext->pixmap),
+							 GDK_WINDOW_XWINDOW (xtext->pixmap));
+			XShmDetach (GDK_WINDOW_XDISPLAY (xtext->draw_buf), &xtext->shminfo);
+			XDestroyImage (xtext->ximg);
+			shmdt (xtext->shminfo.shmaddr);
+		}
+#endif
 		g_object_unref (xtext->pixmap);
 		xtext->pixmap = NULL;
+		xtext->shm = 0;
 	}
 }
 

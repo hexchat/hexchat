@@ -6,7 +6,7 @@
  2.0.5
 ----------------------------------------------------------------------
 
- - Updated translations (fi, lt, nl, sk, sv).
+ - Updated translations (ca, fi, lt, nl, sk, sv).
  - Fixed detection of Python 2.3 in configure script (anonymous).
  - DCC Send file-selection dialog now supports multi-select.
  - Reset away status after auto-reconnect from a ping timeout.
@@ -17,7 +17,7 @@
  - Removed buggy numeric 338 support [783945].
  - Nick completion in dialogs and channel completion (Jay Cornwall).
  - Print informative error messages when dcc resume isn't possible.
- - Speed up dcc recv, send and chat windows.
+ - Fixed performance of dcc recv, send and chat windows.
  - Fixed tab-arrow buttons show/hide (Lloyd Williams) [783681].
  - Fixed lastlog bugs [791220].
  - win32: Faster tinting, and uses MMX when in 16 or 32bit color.
@@ -29,8 +29,9 @@
  - Connect to URL given on commandline even if 'No Serverlist on
    Startup' is off [804648].
  - Fixed problem in allocating colors while in 8bit PseudoColor.
- -
- - 
+ - xtext: tinting now shades towards your background color, making it
+   usable with white backgrounds. Tints can also use XShm for extra
+   speed with --enable-shm at ./configure time (experimental).
  - Smaller bug fixes: [798655].
 
 
