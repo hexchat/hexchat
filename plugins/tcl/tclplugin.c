@@ -15,7 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#define VERSION "1.0.12"
+#define VERSION "1.0.15"
 
 #ifdef WIN32
 #define strcasecmp stricmp
@@ -818,7 +818,7 @@ static int tcl_complete(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
     BADARGS(1, 2, " ?EAT_NONE|EAT_XCHAT|EAT_PLUGIN|EAT_ALL?");
 
     if (argc == 2) {
-        if (Tcl_GetInt(irp, argv[1], &complete) != TCL_OK) {
+        if (Tcl_GetInt(irp, argv[1], &complete[complete_level].result) != TCL_OK) {
             if (strcasecmp("EAT_NONE", argv[1]) == 0)
                 complete[complete_level].result = XCHAT_EAT_NONE;
             else if (strcasecmp("EAT_XCHAT", argv[1]) == 0)
@@ -1850,6 +1850,8 @@ static void Tcl_Plugin_Init()
 
     interp = Tcl_CreateInterp();
     Tcl_Init(interp);
+    
+    nextprocid = 0x1000;
 
     Tcl_CreateCommand(interp, "alias", tcl_alias, NULL, NULL);
     Tcl_CreateCommand(interp, "away", tcl_away, NULL, NULL);
@@ -1968,13 +1970,14 @@ static void banner()
 
 int xchat_plugin_init(xchat_plugin * plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg)
 {
-
 #ifdef WIN32
     static int have_lib = 0;
     HINSTANCE lib;
-    
+#endif
+
     ph = plugin_handle;
 
+#ifdef WIN32
     if (!have_lib) {
         lib = LoadLibrary("tcl84.dll");
         if (!lib) {
@@ -1989,8 +1992,6 @@ int xchat_plugin_init(xchat_plugin * plugin_handle, char **plugin_name, char **p
         have_lib++;
         FreeLibrary(lib);
     }
-#else
-    ph = plugin_handle;
 #endif
 
     if (initialized != 0) {
@@ -2043,4 +2044,3 @@ int xchat_plugin_deinit()
 
     return 1;
 }
-
