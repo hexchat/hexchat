@@ -2,7 +2,7 @@
                           tclplugin.c  -  Tcl plugin for xchat 1.9.x / 2.x.x
                           --------------------------------------------------
     begin                : Sat Nov 19 17:31:20 MST 2002
-    copyright            : Copyright 2002-2003 Daniel P. Stasinski
+    copyright            : Copyright 2002-2004 Daniel P. Stasinski
     email                : mooooooo@avenues.org
  ***************************************************************************/
 
