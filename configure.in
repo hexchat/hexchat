@@ -104,6 +104,10 @@ AC_ARG_ENABLE(perl,
 [  --disable-perl          don't build the perl plugin],
         perl=$enableval, perl=yes)
 
+AC_ARG_ENABLE(perl_old,
+[  --disable-perl_old      no backwards compatibility for perl plugin],
+        perl_old=$enableval, perl_old=yes)
+
 AC_ARG_ENABLE(tcl,
 [  --enable-tcl[=PATH]       directory with Tcl config file: tclConfig.sh],
         tcl=$enableval, tcl=yes)
@@ -260,19 +264,27 @@ if test "$perl" = yes; then
 		PERL_LDFLAGS=`echo $PERL_LDFLAGS |$sedpath 's/-lc //'`
 		AC_MSG_RESULT(ok)
 
-		oldLIBS=$LIBS
-		LIBS="$LIBS $PERL_LDFLAGS"
-		AC_CHECK_FUNC(eval_pv)
-		AC_CHECK_FUNC(call_pv)
-		LIBS=$oldLIBS
+#		oldLIBS=$LIBS
+#		LIBS="$LIBS $PERL_LDFLAGS"
+#		AC_CHECK_FUNC(eval_pv)
+#		AC_CHECK_FUNC(call_pv)
+#		LIBS=$oldLIBS
 
-		AC_MSG_CHECKING(for old perl)
-		PERL_OLD=`$perlpath -e 'if($]<5.006){printf"yes\n";}else{printf"no\n";}'`
-		if test "$PERL_OLD" = "yes"; then
-			AC_DEFINE(OLD_PERL)
+		AC_MSG_CHECKING(for perl >= 5.6.0)
+		PERL_VER=`$perlpath -e 'print $]>= 5.006?"yes":"no"'`
+		if test "$PERL_VER" = "yes"; then
 			AC_MSG_RESULT(yes)
+			AC_MSG_CHECKING(if perl plugin will be backward compatible)
+			if test "$perl_old" = "yes"; then
+					  AC_MSG_RESULT(yes)
+					  AC_DEFINE(OLD_PERL)
+			else
+					  AC_MSG_RESULT(no)
+			fi
 		else
 			AC_MSG_RESULT(no)
+			echo "perl version too old, building without perl."
+			perl=no
 		fi
 	fi
 fi
