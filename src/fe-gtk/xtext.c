@@ -863,13 +863,64 @@ gtk_xtext_unrealize (GtkWidget * widget)
 		(* GTK_WIDGET_CLASS (parent_class)->unrealize) (widget);
 }
 
+GdkColor *
+gtk_xtext_find_color (GdkColormap *cmap, GdkColor *col)
+{
+	int i, best, diff;
+	GdkColor *best_col;
+	GdkVisual *vis = gdk_colormap_get_visual (cmap);
+
+	/* cmap->colors can only be accessed when in PseudoColor */
+	if (vis && vis->type != GDK_VISUAL_PSEUDO_COLOR)
+		return NULL;
+
+	/* find the next closest color to the one we want */
+	best = 0x7ffffff;
+	best_col = NULL;
+	for (i = 0; i < cmap->size; i++)
+	{
+		/* roughly how far away is this color? */
+		diff = abs (col->red - cmap->colors[i].red) +
+				 abs (col->green - cmap->colors[i].green) +
+			 	 abs (col->blue - cmap->colors[i].blue);
+		if (diff < best)
+		{
+			/* that's the closest so far */
+			best_col = &cmap->colors[i];
+			best = diff;
+			if (best == 0)	/* perfect match */
+				break;
+		}
+	}
+
+	return best_col;
+}
+
+static void
+gtk_xtext_alloc_color (GdkColormap *cmap, GdkGC *gc, int red, int green, int blue)
+{
+	GdkColor col;
+	GdkColor *fcol;
+
+	col.red = red;
+	col.green = green;
+	col.blue = blue;
+
+	if (!gdk_colormap_alloc_color (cmap, &col, TRUE, TRUE))
+	{
+		fcol = gtk_xtext_find_color (cmap, &col);
+		if (fcol)
+			col = *fcol;
+	}
+	gdk_gc_set_foreground (gc, &col);
+}
+
 static void
 gtk_xtext_realize (GtkWidget * widget)
 {
 	GtkXText *xtext;
 	GdkWindowAttr attributes;
 	GdkGCValues val;
-	GdkColor col;
 	GdkColormap *cmap;
 
 	GTK_WIDGET_SET_FLAGS (widget, GTK_REALIZED);
@@ -916,19 +967,11 @@ gtk_xtext_realize (GtkWidget * widget)
 											GDK_GC_EXPOSURES | GDK_GC_SUBWINDOW);
 
 	/* for the separator bar (light) */
-	col.red = 0xffff; col.green = 0xffff; col.blue = 0xffff;
-	gdk_colormap_alloc_color (cmap, &col, TRUE, TRUE);
-	gdk_gc_set_foreground (xtext->light_gc, &col);
-
+	gtk_xtext_alloc_color (cmap, xtext->light_gc, 0xffff, 0xffff, 0xffff);
 	/* for the separator bar (dark) */
-	col.red = 0x1111; col.green = 0x1111; col.blue = 0x1111;
-	gdk_colormap_alloc_color (cmap, &col, TRUE, TRUE);
-	gdk_gc_set_foreground (xtext->dark_gc, &col);
-
+	gtk_xtext_alloc_color (cmap, xtext->dark_gc, 0x1111, 0x1111, 0x1111);
 	/* for the separator bar (thinline) */
-	col.red = 0x8e38; col.green = 0x8e38; col.blue = 0x9f38;
-	gdk_colormap_alloc_color (cmap, &col, TRUE, TRUE);
-	gdk_gc_set_foreground (xtext->thin_gc, &col);
+	gtk_xtext_alloc_color (cmap, xtext->thin_gc, 0x8e38, 0x8e38, 0x9f38);
 
 	xtext_set_fg (xtext, xtext->fgc, 18);
 	xtext_set_bg (xtext, xtext->fgc, 19);

@@ -26,6 +26,7 @@
 #include <fcntl.h>
 
 #include "fe-gtk.h"
+#include "xtext.h"	/* for gtk_xtext_find_color */
 
 #include "../common/xchat.h"
 #include "../common/util.h"
@@ -61,60 +62,26 @@ GdkColor colors[] = {
 #define MAX_COL 23
 
 
-static GdkColor *
-palette_find_closest (GdkColormap *cmap, GdkColor *col)
-{
-	int i, best, diff;
-	GdkColor *best_col;
-
-	/* find the next closest color to the one we want */
-	best = 0x7ffffff;
-	best_col = NULL;
-	for (i = 0; i < cmap->size; i++)
-	{
-		/* roughly how far away is this color? */
-		diff = abs (col->red - cmap->colors[i].red) +
-				 abs (col->green - cmap->colors[i].green) +
-			 	 abs (col->blue - cmap->colors[i].blue);
-		if (diff < best)
-		{
-			/* that's the closest so far */
-			best_col = &cmap->colors[i];
-			best = diff;
-			if (best == 0)	/* perfect match */
-				break;
-		}
-	}
-
-	return best_col;
-}
-
 void
 palette_alloc (GtkWidget * widget)
 {
 	int i;
 	static int done_alloc = FALSE;
 	GdkColormap *cmap;
-	GdkVisual *vis;
 	GdkColor *best_col;
 
 	if (!done_alloc)		  /* don't do it again */
 	{
 		done_alloc = TRUE;
-		vis = gtk_widget_get_visual (widget);
 		cmap = gtk_widget_get_colormap (widget);
 		for (i = MAX_COL; i >= 0; i--)
 		{
 			if (!gdk_colormap_alloc_color (cmap, &colors[i], TRUE, TRUE))
 			{
-				/* cmap->colors can only be accessed when in PseudoColor */
-				if (vis && vis->type == GDK_VISUAL_PSEUDO_COLOR)
-				{
-					/* find a color that's in the cmap and close enough */
-					best_col = palette_find_closest (cmap, &colors[i]);
-					if (best_col)
-						colors[i] = *best_col;
-				}
+				/* find a color that's in the cmap and close enough */
+				best_col = gtk_xtext_find_color (cmap, &colors[i]);
+				if (best_col)
+					colors[i] = *best_col;
 			}
 		}
 	}
