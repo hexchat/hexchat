@@ -80,7 +80,7 @@ struct _xchat_plugin
 			void *handle);
 	int (*xchat_emit_print) (xchat_plugin *ph,
 			const char *event_name, ...);
-	void (*xchat_read_fd) (xchat_plugin *ph);
+	void *(*xchat_read_fd) (xchat_plugin *ph);
 	time_t (*xchat_list_time) (xchat_plugin *ph,
 		xchat_list *xlist,
 		const char *name);

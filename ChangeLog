@@ -6,11 +6,18 @@
  2.0.9
 ----------------------------------------------------------------------
 
- - Updated translations (cs, eu, uk, wa).
+ - Updated translations (cs, de, en_GB, eu, ru, uk, wa).
+ - DCC IP address can now be a hostname too (Flavio Chierichetti)
+   [773229].
+ - Don't try random DCC ports when a range is set (mib) [889987].
+ - Fix: Spurious nick completion (mib) [916944].
+ - Serverlist passwd box is now masked (Cristian Peraferrer) [920113].
+ - Fix: Sometimes messes up the tab order on reconnect (Gabor Szeder)
+   [941773].
+ - Fix: Crashes when setting CHARSET to non-existant charset [945855].
+ - 
+ - 
 
-TODO:
- add non-numeric DCC IP patch (remove -1).
- check double-free during close-tab on win32.
 
 ----------------------------------------------------------------------
  2.0.8

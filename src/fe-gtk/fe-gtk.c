@@ -31,6 +31,7 @@
 #include <gtk/gtkbox.h>
 #include <gtk/gtklabel.h>
 #include <gtk/gtktogglebutton.h>
+#include <gtk/gtkversion.h>
 
 #include "../common/xchat.h"
 #include "../common/fe.h"
@@ -694,7 +695,9 @@ fe_ctrl_gui (session *sess, int action, int arg)
 	case 0:
 		gtk_widget_hide (sess->gui->window); break;
 	case 1:
-		gtk_widget_show (sess->gui->window); break;
+		gtk_widget_show (sess->gui->window);
+		gtk_window_present (GTK_WINDOW (sess->gui->window));
+		break;
 	case 2:
 		mg_bring_tofront (sess->res->tab); break;
 	case 3:
@@ -709,4 +712,25 @@ fe_ctrl_gui (session *sess, int action, int arg)
 void
 fe_confirm (const char *message, void (*yesproc)(void *), void (*noproc)(void *), void *ud)
 {
+}
+
+int
+fe_gui_info (session *sess, int info_type)
+{
+	switch (info_type)
+	{
+	case 0:	/* window status */
+		if (!GTK_WIDGET_VISIBLE (GTK_WINDOW (sess->gui->window)))
+			return 2;	/* hidden (iconified or systray) */
+#if GTK_CHECK_VERSION(2,4,0)
+		if (gtk_window_is_active (GTK_WINDOW (sess->gui->window)))
+#else
+		if (GTK_WINDOW (sess->gui->window)->is_active)
+#endif
+			return 1;	/* active/focused */
+
+		return 0;		/* normal (no keyboard focus or behind a window) */
+	}
+
+	return -1;
 }

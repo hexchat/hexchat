@@ -6,7 +6,8 @@ It is not easy! Be warned! You need either one of these compilers:
 	* MS Visual C
 
 You also need GTK+ 2.0 for win32. Get it from http://www.gimp.org/win32/
-Install all the binary and development packages.
+or http://www.dropline.net/gtk/. Install all the binary and development
+packages. The dropline packages are probably easier to install.
 
 
 Mingw
@@ -44,3 +45,12 @@ MS Visual C
 
 	5) Copy fe-gtk\xchat.exe where ever you need it.
 
+
+Common problems:
+~~~~~~~~~~~~~~~~
+
+ * gdk-pixbuf-csource must be in PATH.
+
+ * You might need to install dirent.zip manually.
+
+ * Include path to libintl.h should be in GLIB= (makeinc.msc).

@@ -551,7 +551,8 @@ load_config (void)
 	if (!username)
 	{
 		/* this can happen if CHARSET envvar is set wrong */
-		fprintf (stderr, "g_locale_to_utf8() failed, bad CHARSET.\n");
+		fe_message ("g_locale_to_utf8() failed.\n"
+				"Your locale or charset appears to be missconfigured.", TRUE);
 		exit (1);
 	}
 	realname = g_locale_to_utf8 (realname, -1, 0, 0, 0);

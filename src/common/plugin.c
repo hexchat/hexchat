@@ -395,6 +395,7 @@ plugin_load (session *sess, char *filename, char *arg)
 
 	/* find the plugin's deinit routine, if any */
 	deinit_func = dlsym (handle, "xchat_plugin_deinit");
+	error = dlerror ();
 #endif
 
 	/* add it to our linked list */
@@ -921,6 +922,15 @@ xchat_get_info (xchat_plugin *ph, const char *id)
 	case 0x14f51cd8: /* version */
 		return VERSION;
 
+	case 0x6d3431b5: /* win_status */
+		switch (fe_gui_info (sess, 0))	/* check window status */
+		{
+		case 0: return "normal";
+		case 1: return "active";
+		case 2: return "hidden";
+		}
+		return NULL;
+
 	case 0xdd9b1abd:	/* xchatdir */
 		return get_xdir_utf8 ();
 	}
@@ -1050,8 +1060,9 @@ xchat_list_fields (xchat_plugin *ph, const char *name)
 	};
 	static const char *channels_fields[] =
 	{
-		"schannel",	"pcontext", "iflags", "iid", "snetwork", "sserver",
-		"itype", "iusers", NULL
+		"schannel",	"schantypes", "pcontext", "iflags", "iid", "imaxmodes",
+		"snetwork", "snickmodes", "snickprefixes", "sserver", "itype", "iusers",
+		NULL
 	};
 	static const char *ignore_fields[] =
 	{
@@ -1127,6 +1138,12 @@ xchat_list_str (xchat_plugin *ph, xchat_list *xlist, const char *name)
 		{
 		case 0x2c0b7d03: /* channel */
 			return ((session *)data)->channel;
+		case 0x577e0867: /* chantypes */
+			return ((session *)data)->server->chantypes;
+		case 0x8455e723: /* nickprefixes */
+			return ((session *)data)->server->nick_prefixes;
+		case 0x829689ad: /* nickmodes */
+			return ((session *)data)->server->nick_modes;
 		case 0x38b735af: /* context */
 			return data;	/* this is a session * */
 		case 0xca022f43: /* server */
@@ -1229,6 +1246,8 @@ xchat_list_int (xchat_plugin *ph, xchat_list *xlist, const char *name)
 					 ((((struct session *)data)->server->is_away << 2) & 2) ||
 					 ((((struct session *)data)->server->end_of_motd << 3) & 4) ||
 					 ((((struct session *)data)->server->have_whox << 4) & 8);
+		case 0x1916144c: /* maxmodes */
+			return ((struct DCC *)data)->serv->modes_per_line;
 		case 0x368f3a:	/* type */
 			return ((struct session *)data)->type;
 		case 0x6a68e08: /* users */

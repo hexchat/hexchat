@@ -70,6 +70,8 @@ p { margin: 3% }
 <br/><br/>
 <a href="#q217">17. How do I play sound files on certain events?</a>
 <br/><br/>
+<a href="#q218">18. How do I auto-load scripts at startup?</a>
+<br/><br/>
 </p>
 
 <h2>3. Section Three: Contributions, Development and Bugs.</h2>
@@ -332,6 +334,26 @@ is printed. By default, it will use the "esdplay" program to play sound files. I
 	/set sound_command soxplay
 <br/><br/>On Windows, you do not need to nominate a sound playing program, it will work automatically,
 if you have xchat 2.0.6b or higher.</p>
+
+<br/><h3><a name="q218">18. How do I auto-load scripts at startup?</a></h3>
+<p>
+You just have to place the scripts into XChat's data directory. XChat
+will auto-load scripts if they have the right extention .e.g If a filename
+ends in .pl, it will be loaded as a Perl script.
+This data directory is different on each platform:
+<br/><br/>
+<u>Windows</u>
+<br/><br/>
+It depends on your version of Windows and where it stores the
+<i><b>Application Data</b></i> folder. On Windows XP it is usually:
+<br/><br/>
+C:\Documents and Settings\<i><b>username</b></i>\Application Data\X-Chat 2\
+<br/><br/><br/>
+<u>UNIX</u>
+<br/><br/>
+~/.xchat2/
+Where "~" represents your home directory i.e.: $HOME/.xchat2/
+</p>
 
 <br/><h2>3. Section Three: Contributions, Development and Bugs.</h2>
 
