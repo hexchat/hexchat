@@ -1588,34 +1588,44 @@ static int Command_Source(char *word[], char *word_eol[], void *userdata)
     Tcl_DString ds;
     struct stat dummy;
 
+    int result;
+
     if (!strlen(word_eol[2]))
-        return XCHAT_EAT_ALL;
+        return XCHAT_EAT_NONE;
 
-    (const char *) xchatdir = xchat_get_info(ph, "xchatdir");
+    int len = strlen(word[2]);
 
-    Tcl_DStringInit(&ds);
+    if (len > 4 && strcasecmp(".tcl", word[2] + len - 4) == 0) {
 
-    if (stat(word_eol[2], &dummy) == 0) {
-        Tcl_DStringAppend(&ds, word_eol[2], strlen(word_eol[2]));
-    } else {
-        if (!strchr(word_eol[2], '/')) {
-            Tcl_DStringAppend(&ds, xchatdir, strlen(xchatdir));
-            Tcl_DStringAppend(&ds, "/", 1);
+        (const char *) xchatdir = xchat_get_info(ph, "xchatdir");
+
+        Tcl_DStringInit(&ds);
+
+        if (stat(word_eol[2], &dummy) == 0) {
             Tcl_DStringAppend(&ds, word_eol[2], strlen(word_eol[2]));
+        } else {
+            if (!strchr(word_eol[2], '/')) {
+                Tcl_DStringAppend(&ds, xchatdir, strlen(xchatdir));
+                Tcl_DStringAppend(&ds, "/", 1);
+                Tcl_DStringAppend(&ds, word_eol[2], strlen(word_eol[2]));
+            }
         }
-    }
 
-    if (Tcl_EvalFile(interp, ds.string) == TCL_ERROR)
-        xchat_printf(ph, "\0039Tcl plugin:\003\tERROR: %s\n", Tcl_GetStringResult(interp));
-    else
-        xchat_printf(ph, "\0039Tcl plugin:\003\tSourced %s\n", ds.string);
+        if (Tcl_EvalFile(interp, ds.string) == TCL_ERROR)
+            xchat_printf(ph, "\0039Tcl plugin:\003\tERROR: %s\n", Tcl_GetStringResult(interp));
+        else
+            xchat_printf(ph, "\0039Tcl plugin:\003\tSourced %s\n", ds.string);
 
-    Tcl_DStringFree(&ds);
+        Tcl_DStringFree(&ds);
 
-    if (strcasecmp("LOAD", word[1]) == 0)
-        return XCHAT_EAT_XCHAT;
-    else
-        return XCHAT_EAT_ALL;
+        if (strcasecmp("LOAD", word[1]) == 0)
+            return XCHAT_EAT_XCHAT;
+        else
+            return XCHAT_EAT_ALL;
+
+    } else
+        return XCHAT_EAT_NONE;
+
 }
 
 static int Command_Rehash(char *word[], char *word_eol[], void *userdata)
