@@ -725,7 +725,9 @@ fe_gui_info (session *sess, int info_type)
 #if GTK_CHECK_VERSION(2,4,0)
 		if (gtk_window_is_active (GTK_WINDOW (sess->gui->window)))
 #else
+#if GTK_CHECK_VERSION(2,2,0)
 		if (GTK_WINDOW (sess->gui->window)->is_active)
+#endif
 #endif
 			return 1;	/* active/focused */
 

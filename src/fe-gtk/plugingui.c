@@ -149,7 +149,7 @@ void
 plugingui_load (void)
 {
 	gtkutil_file_req (_("Select a Plugin or Script to load"), plugingui_load_cb,
-							current_sess, NULL, 0);
+							current_sess, NULL, FRF_ADDFOLDER);
 }
 
 static void

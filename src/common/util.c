@@ -580,8 +580,8 @@ get_cpu_str (void)
 {
 #if defined (USING_LINUX) || defined (USING_FREEBSD)
 	double mhz;
-	int cpus = 1;
 #endif
+	int cpus = 1;
 	struct utsname un;
 	static char *buf = NULL;
 
