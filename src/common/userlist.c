@@ -318,6 +318,9 @@ sub_name (struct session *sess, char *name)
 	fe_userlist_numbers (sess);
 	fe_userlist_remove (sess, user);
 
+	if (user == sess->me)
+		sess->me = NULL;
+
 	tree_remove (sess->usertree, user, &pos);
 	tree_remove (sess->usertree_alpha, user, &pos);
 	free_user (user, NULL);
@@ -373,6 +376,9 @@ add_name (struct session *sess, char *name, char *hostname)
 		name++;
 		prefix_chars--;
 	}
+
+	if (user->me)
+		sess->me = user;
 
 	fe_userlist_insert (sess, user, row, FALSE);
 	fe_userlist_numbers (sess);

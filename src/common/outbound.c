@@ -3141,9 +3141,18 @@ handle_say (session *sess, char *text, int check_spch)
 		unsigned char t = 0;
 
 		/* maximum allowed message text */
-		/* PRIVMSG #channel :text\r\n */
-		/* 12345678        90    12 */
-		max = 437 - strlen (sess->channel);
+		/* :nickname!username@host.com PRIVMSG #channel :text\r\n */
+		max = 512;
+		max -= 16;	/* :, !, @, " PRIVMSG ", " ", :, \r, \n */
+		max -= strlen (sess->server->nick);
+		max -= strlen (sess->channel);
+		if (sess->me)
+			max -= strlen (sess->me->hostname);
+		else
+		{
+			max -= 9;	/* username */
+			max -= 65;	/* max possible hostname and '@' */
+		}
 
 		if (strlen (text) > max)
 		{
