@@ -1964,29 +1964,8 @@ static void banner()
 
 int xchat_plugin_init(xchat_plugin * plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg)
 {
-#ifdef WIN32
-    static int have_lib = 0;
-    HINSTANCE lib;
-#endif
 
     ph = plugin_handle;
-
-#ifdef WIN32
-    if (!have_lib) {
-        lib = LoadLibrary("tcl84.dll");
-        if (!lib) {
-            banner();
-            xchat_print(ph, "---\t---\n");
-            xchat_print(ph, "Cannot open tcl84.dll.\n");
-            xchat_print(ph, "You must have ActiveTcl 8.4 installed in order to run Tcl scripts.\n");
-            xchat_print(ph, "http://www.activestate.com/ActiveTcl/\n");
-            xchat_print(ph, "Make sure Tcl's bin directory is in your PATH.\n");
-            return 0;
-        }
-        have_lib++;
-        FreeLibrary(lib);
-    }
-#endif
 
     if (initialized != 0) {
         banner();
