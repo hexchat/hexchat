@@ -273,11 +273,11 @@ set_server_defaults (server *serv)
 		free (serv->nick_prefixes);
 	if (serv->nick_modes)
 		free (serv->nick_modes);
-	if (serv->encoding)
+	/*if (serv->encoding)
 	{
 		free (serv->encoding);
 		serv->encoding = NULL;
-	}
+	}*/
 
 	serv->chantypes = strdup ("#&!+");
 	serv->chanmodes = strdup ("beI,k,l");
