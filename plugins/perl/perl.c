@@ -95,22 +95,25 @@ perl_auto_load (void)
 #include <XSUB.h>
 #include <glib.h>
 
+typedef enum { PRINT_HOOK, SERVER_HOOK, COMMAND_HOOK, TIMER_HOOK } HookType;
+
 typedef struct
 {
-	char *name;
-	char *version;
-	char *desc;
-	SV *shutdowncallback;
-	void *gui_entry;
+  char *name;
+  char *version;
+  char *desc;
+  HookType type;
+  SV *shutdowncallback;
+  void *gui_entry;
 } PerlScript;
 
 typedef struct
 {
-	SV *name;
-	SV *callback;
-	SV *userdata;
-	xchat_hook *hook;
-	
+  SV *name;
+  SV *callback;
+  SV *userdata;
+  xchat_hook *hook;
+  
 } HookData;
 
 static PerlInterpreter *my_perl = NULL;
@@ -2308,6 +2311,15 @@ perl_command_unloadall (char *word[], char *word_eol[], void *userdata)
 }
 
 static int
+perl_command_reloadall (char *word[], char *word_eol[], void *userdata)
+{
+	perl_end ();
+	perl_auto_load ();
+
+	return XCHAT_EAT_XCHAT;
+}
+
+static int
 perl_command_unload (char *word[], char *word_eol[], void *userdata)
 {
 	int len;
@@ -2390,8 +2402,12 @@ xchat_plugin_init (xchat_plugin *plugin_handle,
 	*plugin_desc = "Perl scripting interface";
 
 	xchat_hook_command (ph, "load", XCHAT_PRI_NORM, perl_command_load, 0, 0);
-	xchat_hook_command (ph, "unload", XCHAT_PRI_NORM, perl_command_unload, 0, 0);
-	xchat_hook_command (ph, "unloadall", XCHAT_PRI_NORM, perl_command_unloadall, 0, 0);
+	xchat_hook_command (ph, "unload", XCHAT_PRI_NORM, perl_command_unload, 0,
+							  0);
+	xchat_hook_command (ph, "unloadall", XCHAT_PRI_NORM, perl_command_unloadall,
+							  0, 0);
+	xchat_hook_command (ph, "reloadall", XCHAT_PRI_NORM, perl_command_reloadall,
+							  0, 0);
 
 	perl_auto_load ();
 
