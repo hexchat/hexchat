@@ -214,6 +214,7 @@ static const setting general_settings[] =
 	{ST_TOGGLE,	N_("Beep on highlighted messages"), P_OFFINT(beephilight), 0, 0, 0},
 	{ST_TOGGLE,	N_("Display MODEs in raw form"), P_OFFINT(raw_modes), 0, 0, 0},
 	{ST_TOGGLE,	N_("Whois on notify"), P_OFFINT(whois_on_notifyonline), N_("Sends a /WHOIS when a user comes online in your notify list"), 0, 0},
+	{ST_TOGGLE,	N_("Hide join/part messages"), P_OFFINT(confmode), N_("Hide channel join/part messages by default"), 0, 0},
 	{ST_NUMBER,	N_("Auto reconnect delay:"), P_OFFINT(recon_delay), 0, 0, 9999},
 	{ST_END, 0, 0, 0, 0, 0}
 };

@@ -2188,8 +2188,8 @@ mg_create_tabwindow (session *sess)
 	sess->gui->window = win;
 	gtk_window_move (GTK_WINDOW (win), prefs.mainwindow_left,
 						  prefs.mainwindow_top);
-	gtk_window_set_default_size (GTK_WINDOW (win), prefs.mainwindow_width,
-										  prefs.mainwindow_height);
+/*	gtk_window_set_default_size (GTK_WINDOW (win), prefs.mainwindow_width,
+										  prefs.mainwindow_height);*/
 	gtk_container_set_border_width (GTK_CONTAINER (win), 2);
 
 	g_signal_connect (G_OBJECT (win), "delete_event",

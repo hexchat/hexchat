@@ -241,6 +241,23 @@ ignore_delete_entry_clicked (GtkWidget * wid, struct session *sess)
 }
 
 static void
+ignore_delete_all_clicked (GtkWidget * wid, struct session *sess)
+{
+	GtkTreeView *view = g_object_get_data (G_OBJECT (ignorewin), "view");
+	GtkListStore *store = GTK_LIST_STORE (gtk_tree_view_get_model (view));
+	GtkTreeIter iter;
+	char *mask = NULL;
+
+	while (gtk_tree_model_get_iter_first (GTK_TREE_MODEL(store), &iter))
+	{
+		gtk_tree_model_get (GTK_TREE_MODEL(store), &iter, MASK_COLUMN, &mask,-1);
+		gtk_list_store_remove (GTK_LIST_STORE(store), &iter);
+		ignore_del (mask, NULL);
+		g_free (mask);
+	}
+}
+
+static void
 ignore_store_new (int cancel, char *mask, gpointer data)
 {
 	GtkTreeView *view = g_object_get_data (G_OBJECT (ignorewin), "view");
@@ -354,6 +371,8 @@ ignore_gui_open ()
 						 _("New"));
 	gtkutil_button (box, GTK_STOCK_CLOSE, 0, ignore_delete_entry_clicked,
 						 0, ("Delete"));
+        gtkutil_button (box, GTK_STOCK_CLEAR, 0, ignore_delete_all_clicked,
+                                                 0, ("Delete All"));
 
 	store = GTK_LIST_STORE (gtk_tree_view_get_model (GTK_TREE_VIEW (view)));
 
