@@ -53,7 +53,7 @@ struct _xchat_plugin
 		  int timeout,
 		  int (*callback) (void *user_data),
 		  void *userdata);
-	xchat_hook *(*xchat_hook_socket) (xchat_plugin *ph,
+	xchat_hook *(*xchat_hook_fd) (xchat_plugin *ph,
 		   int fd,
 		   int flags,
 		   int (*callback) (int fd, int flags, void *user_data),
@@ -138,7 +138,7 @@ xchat_hook_timer (xchat_plugin *ph,
 		  void *userdata);
 
 xchat_hook *
-xchat_hook_socket (xchat_plugin *ph,
+xchat_hook_fd (xchat_plugin *ph,
 		   int fd,
 		   int flags,
 		   int (*callback) (int fd, int flags, void *user_data),
@@ -234,6 +234,7 @@ xchat_plugingui_remove (xchat_plugin *ph,
 #define xchat_hook_server ((ph)->xchat_hook_server)
 #define xchat_hook_print ((ph)->xchat_hook_print)
 #define xchat_hook_timer ((ph)->xchat_hook_timer)
+#define xchat_hook_fd ((ph)->xchat_hook_fd)
 #define xchat_unhook ((ph)->xchat_unhook)
 #define xchat_print ((ph)->xchat_print)
 #define xchat_printf ((ph)->xchat_printf)

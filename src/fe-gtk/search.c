@@ -36,11 +36,12 @@
 #include "maingui.h"
 
 
+static void *last;	/* FIXME */
+
+
 static void
 search_search (session * sess, const char *text)
 {
-	static void *last = NULL;
-
 	if (!is_session (sess))
 	{
 		gtkutil_simpledialog (_("The window you opened this Search "
@@ -86,6 +87,7 @@ search_open (session * sess)
 {
 	GtkWidget *win, *hbox, *vbox, *entry, *wid;
 
+	last = NULL;
 	win = mg_create_generic_tab ("search", _("X-Chat: Search"), TRUE, FALSE,
 								 NULL, NULL, 0, 0, &vbox, 0);
 

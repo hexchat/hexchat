@@ -1004,6 +1004,7 @@ servlist_create_editbox (GtkWidget *box)
 	add_tip (entry_join, _("Channels to join, separated by commas, but not spaces!"));
 	entry_cmd = servlist_create_entry (table, _("Connect Command:"), 6,
 											G_STRUCT_OFFSET (ircnet, command));
+	add_tip (entry_cmd, _("Command to execute after connecting. Can be used to authenticate to NickServ"));
 
 	combo_encoding = servlist_create_charsetcombo (GTK_TABLE (table));
 

@@ -3,6 +3,7 @@ struct _xchat_plugin
 {
 #ifdef WIN32
 	/* Keep these insync with xchat-plugin.h */
+	/* !!don't change the order, to keep binary compat!! */
 	xchat_hook *(*xchat_hook_command) (xchat_plugin *ph,
 		    char *name,
 		    int pri,
@@ -23,7 +24,7 @@ struct _xchat_plugin
 		  int timeout,
 		  int (*callback) (void *user_data),
 		  void *userdata);
-	xchat_hook *(*xchat_hook_socket) (xchat_plugin *ph,
+	xchat_hook *(*xchat_hook_fd) (xchat_plugin *ph,
 		   int fd,
 		   int flags,
 		   int (*callback) (int fd, int flags, void *user_data),

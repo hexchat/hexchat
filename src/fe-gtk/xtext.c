@@ -3978,6 +3978,17 @@ gtk_xtext_search (GtkXText * xtext, const unsigned char *text, void *start)
 	xtext->buffer->last_ent_start = NULL;
 	xtext->buffer->last_ent_end = NULL;
 
+	/* validate 'start' */
+	ent = xtext->buffer->text_first;
+	while (ent)
+	{
+		if (ent == start)
+			break;
+		ent = ent->next;
+	}
+	if (!ent)
+		start = NULL;
+
 	if (start)
 		ent = ((textentry *) start)->next;
 	else

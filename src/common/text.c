@@ -960,13 +960,13 @@ pevent_find (char *name, int *i_i)
 	{
 		if (j == NUM_XP)
 			j = 0;
-		if (j == i)
-			return -1;
 		if (strcmp (te[j].name, name) == 0)
 		{
 			*i_i = j;
 			return j;
 		}
+		if (j == i)
+			return -1;
 		j++;
 	}
 }
@@ -1018,7 +1018,7 @@ pevent_load (char *filename)
 
 		if (strcmp (buf, "event_name") == 0)
 		{
-			if (penum)
+			if (penum >= 0)
 				pevent_trigger_load (&penum, &text, &snd);
 			penum = pevent_find (ofs, &i);
 			continue;

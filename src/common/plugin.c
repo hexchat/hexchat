@@ -55,10 +55,10 @@ struct _xchat_hook
 	void *callback;	/* pointer to xdcc_callback */
 	char *help_text;	/* help_text for commands only */
 	void *userdata;	/* passed to the callback */
-	int tag;				/* for timers & sockets only */
+	int tag;				/* for timers & FDs only */
 	int type;			/* HOOK_* */
 	int pri;				/* priority */
-	int fd;				/* fd for HOOK_SOCKET only */
+	int fd;				/* fd for HOOK_FD only */
 };
 
 struct _xchat_list
@@ -71,7 +71,7 @@ struct _xchat_list
 typedef int (xchat_cmd_cb) (char *word[], char *word_eol[], void *user_data);
 typedef int (xchat_serv_cb) (char *word[], char *word_eol[], void *user_data);
 typedef int (xchat_print_cb) (char *word[], void *user_data);
-typedef int (xchat_socket_cb) (int fd, int flags, void *user_data);
+typedef int (xchat_fd_cb) (int fd, int flags, void *user_data);
 typedef int (xchat_timer_cb) (void *user_data);
 typedef int (xchat_init_func) (xchat_plugin *, char **, char **, char **, char *);
 typedef int (xchat_deinit_func) (xchat_plugin *);
@@ -90,7 +90,7 @@ enum
 	HOOK_SERVER,	/* PRIVMSG, NOTICE, numerics */
 	HOOK_PRINT,		/* All print events */
 	HOOK_TIMER,		/* timeouts */
-	HOOK_SOCKET		/* sockets & fds */
+	HOOK_FD			/* sockets & fds */
 };
 
 GSList *plugin_list = NULL;	/* export for plugingui.c */
@@ -209,12 +209,11 @@ plugin_add (session *sess, char *filename, void *handle, void *init_func,
 	if (!fake)
 	{
 #ifdef WIN32
-		/* don't change the order, to keep binary compat */
 		pl->xchat_hook_command = xchat_hook_command;
 		pl->xchat_hook_server = xchat_hook_server;
 		pl->xchat_hook_print = xchat_hook_print;
 		pl->xchat_hook_timer = xchat_hook_timer;
-		pl->xchat_hook_socket = xchat_hook_socket;
+		pl->xchat_hook_fd = xchat_hook_fd;
 		pl->xchat_unhook = xchat_unhook;
 		pl->xchat_print = xchat_print;
 		pl->xchat_printf = xchat_printf;
@@ -531,10 +530,10 @@ plugin_insert_hook (xchat_hook *new_hook)
 }
 
 static gboolean
-plugin_socket_cb (GIOChannel *source, GIOCondition condition, xchat_hook *hook)
+plugin_fd_cb (GIOChannel *source, GIOCondition condition, xchat_hook *hook)
 {
 	/* FIXME: condition is always 0 on fe-text */
-	return ((xchat_socket_cb *)hook->callback) (hook->fd, condition, hook->userdata);
+	return ((xchat_fd_cb *)hook->callback) (hook->fd, condition, hook->userdata);
 }
 
 /* allocate and add a hook to our list. Used for all 4 types */
@@ -617,14 +616,14 @@ xchat_unhook (xchat_plugin *ph, xchat_hook *hook)
 	if (hook->type == HOOK_TIMER && hook->tag != 0)
 		fe_timeout_remove (hook->tag);
 
-	if (hook->type == HOOK_SOCKET)
+	if (hook->type == HOOK_FD)
 		fe_input_remove (hook->tag);
 
 	hook_list = g_slist_remove (hook_list, hook);
 
 	userdata = hook->userdata;
 	if (hook->name)
-		free (hook->name);	/* NULL for timers & sockets */
+		free (hook->name);	/* NULL for timers & fds */
 	if (hook->help_text)
 		free (hook->help_text);	/* NULL for non-commands */
 	free (hook);
@@ -662,14 +661,14 @@ xchat_hook_timer (xchat_plugin *ph, int timeout, xchat_timer_cb *callb,
 }
 
 xchat_hook *
-xchat_hook_socket (xchat_plugin *ph, int fd, int flags,
-						 xchat_socket_cb *callb, void *userdata)
+xchat_hook_fd (xchat_plugin *ph, int fd, int flags,
+					xchat_fd_cb *callb, void *userdata)
 {
 	xchat_hook *hook;
 
-	hook = plugin_add_hook (ph, HOOK_SOCKET, 0, 0, 0, callb, 0, userdata);
+	hook = plugin_add_hook (ph, HOOK_FD, 0, 0, 0, callb, 0, userdata);
 	hook->fd = fd;
-	hook->tag = fe_input_add (fd, flags&1, flags&2, flags&4, plugin_socket_cb, hook);
+	hook->tag = fe_input_add (fd, flags&1, flags&2, flags&4, plugin_fd_cb, hook);
 
 	return hook;
 }
