@@ -15,7 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#define VERSION "1.0.23"
+#define VERSION "1.0.25"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -178,6 +178,7 @@ static char *myitoa(int value)
 
 static xchat_context *xchat_smart_context(char *arg1, char *arg2)
 {
+    xchat_context *origctx;
     xchat_context *result = NULL;
 
     if (arg1 == NULL)
@@ -189,9 +190,18 @@ static xchat_context *xchat_smart_context(char *arg1, char *arg2)
             result = xchat_find_context(ph, arg2, arg1);
         return result;
     } else {
-        result = xchat_find_context(ph, xchat_get_info(ph, "server"), arg1);
-        if (result == NULL)
-            result = xchat_find_context(ph, xchat_get_info(ph, "network"), arg1);
+		/* is this chan/msg/tab on the current network? */
+        result = xchat_find_context(ph, xchat_get_info(ph, "network"), arg1);
+        if (result == NULL) {
+			/* is this a server/network? */
+            result = xchat_find_context(ph, arg1, NULL);
+            if (result != NULL) {
+                origctx = xchat_get_context(ph);
+                xchat_set_context(ph, result);
+                result = xchat_find_context(ph, arg1, xchat_get_info(ph, "network"));
+                xchat_set_context(ph, origctx);
+            }
+        }
         return result;
     }
 
