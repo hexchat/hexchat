@@ -701,11 +701,12 @@ dcc_read (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 					return TRUE;
 				}
 			}
-			if (need_ack)
-				dcc_send_ack (dcc);
 			EMIT_SIGNAL (XP_TE_DCCRECVERR, dcc->serv->front_session, dcc->file,
 							 dcc->destfile, dcc->nick,
 							 errorstring ((n < 0) ? sock_error () : 0), 0);
+			/* send ack here? but the socket is dead */
+			/*if (need_ack)
+				dcc_send_ack (dcc);*/
 			dcc_close (dcc, STAT_FAILED, FALSE);
 			return TRUE;
 		}
