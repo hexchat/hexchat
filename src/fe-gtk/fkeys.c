@@ -1386,6 +1386,9 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 	{
 		skip_len++;
 		ch = g_utf8_find_prev_char(text, ch);
+		if (!ch)
+			return 2;
+
 		cursor_pos = g_utf8_pointer_to_offset(text, ch);
 		if (cursor_pos && (g_utf8_get_char_validated(ch, -1) == ':' || 
 					g_utf8_get_char_validated(ch, -1) == ',' ||
@@ -1393,6 +1396,8 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 		{
 			skip_len++;
 		}
+		else
+			cursor_pos = g_utf8_pointer_to_offset(text, g_utf8_offset_to_pointer(ch, 1));
 	}
 
 	comp = skip_len;
