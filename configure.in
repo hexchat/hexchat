@@ -191,21 +191,21 @@ GUI_LIBS="$GUI_LIBS $GTK_LIBS"
 GUI_CFLAGS="$GUI_CFLAGS $GTK_CFLAGS"
 
 gnome=no
-if test "$gnome" = yes; then
-	AC_PATH_PROG(pkgconfigpath, pkg-config)
-	AC_MSG_CHECKING(Gnome2 compile flags)
-	GNOME_CFLAGS="`$pkgconfigpath libgnome-2.0 --cflags 2>/dev/null`"
-	if test "_$GNOME_CFLAGS" = _ ; then
-		gnome=no
-		AC_MSG_RESULT([Gnome not found, building without it.])
-	else
-		GNOME_VER="`$pkgconfigpath libgnome-2.0 --modversion`"
-		GUI_LIBS="$GUI_LIBS `$pkgconfigpath libgnome-2.0 --libs`"
-		GUI_CFLAGS="$GUI_CFLAGS $GNOME_CFLAGS"
-		AC_DEFINE(USE_GNOME)
-		AC_MSG_RESULT(ok)
-	fi
-fi
+#if test "$gnome" = yes; then
+#	AC_PATH_PROG(pkgconfigpath, pkg-config)
+#	AC_MSG_CHECKING(Gnome2 compile flags)
+#	GNOME_CFLAGS="`$pkgconfigpath libgnome-2.0 --cflags 2>/dev/null`"
+#	if test "_$GNOME_CFLAGS" = _ ; then
+#		gnome=no
+#		AC_MSG_RESULT([Gnome not found, building without it.])
+#	else
+#		GNOME_VER="`$pkgconfigpath libgnome-2.0 --modversion`"
+#		GUI_LIBS="$GUI_LIBS `$pkgconfigpath libgnome-2.0 --libs`"
+#		GUI_CFLAGS="$GUI_CFLAGS $GNOME_CFLAGS"
+#		AC_DEFINE(USE_GNOME)
+#		AC_MSG_RESULT(ok)
+#	fi
+#fi
 
 dnl *********************************************************************
 dnl ** ZVT/SHELLTAB *****************************************************
