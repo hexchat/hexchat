@@ -455,6 +455,11 @@ process_numeric (session * sess, int n,
 		}
 		break;
 
+	case 330:
+		EMIT_SIGNAL (XP_TE_WHOIS_AUTH, serv->server_session, word[4],
+			word_eol[6] + 1, word[5], NULL, 0);
+                break;
+
 	case 332:
 		inbound_topic (serv, word[4],
 						(word_eol[5][0] == ':') ? word_eol[5] + 1 : word_eol[5]);
@@ -462,6 +467,11 @@ process_numeric (session * sess, int n,
 
 	case 333:
 		inbound_topictime (serv, word[4], word[5], atol (word[6]));
+		break;
+
+	case 338:  /* Undernet Real user@host, Real IP */
+		EMIT_SIGNAL (XP_TE_WHOIS_REALHOST, sess, word[4], word[5], word[6], 
+			(word_eol[7][0]==':') ? word_eol[7]+1 : word_eol[7], 0);
 		break;
 
 	case 341:						  /* INVITE ACK */

@@ -190,7 +190,6 @@ text_word_check (char *word)
 {
 	session *sess = current_sess;
 	char *at, *dot;
-	int i, dots;
 	int len = strlen (word);
 
 	if(q3link(word))
@@ -229,7 +228,7 @@ text_word_check (char *word)
 	if (!strncasecmp (word, "gopher://", 9) && word[9] != 0)
 		return WORD_URL;
 
-	if (find_name (sess, word))
+	if (( (word[0]=='@' || word[0]=='+') && find_name (sess, word+1)) || find_name (sess, word))
 		return WORD_NICK;
 
 	at = strchr (word, '@');	  /* check for email addy */
@@ -242,19 +241,6 @@ text_word_check (char *word)
 				return WORD_HOST;
 			else
 				return WORD_EMAIL;
-		}
-	}
-
-	/* check if it's an IP number */
-	dots = 0;
-	for (i = 0; i < len; i++)
-	{
-		if (word[i] == '.')
-			dots++;
-		else if (!isdigit (word[i]))
-		{
-			dots = 0;
-			break;
 		}
 	}
 
@@ -876,6 +862,19 @@ static char *pevt_whois6_help[] = {
 
 static char *pevt_whoisid_help[] = {
 	N_("Nickname"),
+	N_("Message"),
+};
+
+static char *pevt_whoisauth_help[] = {
+	N_("Nickname"),
+	N_("Message"),
+	N_("Account"),
+};
+
+static char *pevt_whoisrealhost_help[] = {
+	N_("Nickname"),
+	N_("Real user@host"),
+	N_("Real IP"),
 	N_("Message"),
 };
 

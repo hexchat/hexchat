@@ -356,6 +356,12 @@ N_("-%C10-%C11-%O$t%C12[%O$1%C12] %CEnd of WHOIS list.")},
 {"WhoIs Identified", pevt_whoisid_help, 2, 0,
 N_("-%C10-%C11-%O$t%C12[%O$1%C12] %C$2")},
 
+{"WhoIs Authenticated", pevt_whoisauth_help, 3, 0,
+N_("-%C10-%C11-%O$t%C12[%O$1%C12] %O$2 %C11$3%O")},
+
+{"WhoIs Real Host", pevt_whoisrealhost_help, 4, 0,
+N_("-%C10-%C11-%O$t%C12[%O$1%C12] %Oreal user@host %C11$2%O, real IP %C11$3%O")},
+
 {"WhoIs Idle Line", pevt_whois4_help, 2, 0,
 N_("-%C10-%C11-%O$t%C12[%O$1%C12]%O idle %C11$2%O")},
 
