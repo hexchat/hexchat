@@ -15,7 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#define VERSION "1.0.17"
+#define VERSION "1.0.18"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -1966,7 +1966,7 @@ int xchat_plugin_init(xchat_plugin * plugin_handle, char **plugin_name, char **p
 {
 #ifdef WIN32
     static int have_lib = 0;
-    HINSTANCE lib;
+    HANDLE lib;
 #endif
 
     ph = plugin_handle;
@@ -1974,7 +1974,7 @@ int xchat_plugin_init(xchat_plugin * plugin_handle, char **plugin_name, char **p
 #ifdef WIN32
     if (!have_lib) {
         lib = LoadLibrary("tcl84.dll");
-        if (!lib) {
+        if (lib <= HINSTANCE_ERROR)
             banner();
             xchat_print(ph, "---\t---\n");
             xchat_print(ph, "Cannot open tcl84.dll.\n");
