@@ -357,12 +357,13 @@ typedef struct server
 	void (*p_ping)(struct server *, char *to, char *timestring);
 /*	void (*p_set_away)(struct server *);*/
 	int (*p_raw)(struct server *, char *raw);
-	int (*p_cmp)(char *s1, char *s2);
+	int (*p_cmp)(const char *s1, const char *s2);
 
 	int port;
 	int sok;					/* is equal to sok4 or sok6 (the one we are using) */
 	int sok4;				/* tcp4 socket */
 	int sok6;				/* tcp6 socket */
+	int id;					/* unique ID number (for plugin API) */
 #ifdef USE_OPENSSL
 	SSL *ssl;
 	int ssl_do_connect_tag;
@@ -418,21 +419,21 @@ typedef struct server
 	char *encoding;					/* NULL for system */
 
 	int motd_skipped:1;
-	int connected:1;
-	int connecting:1;
+	unsigned int connected:1;
+	unsigned int connecting:1;
 	int no_login:1;
-	int skip_next_who:1;			  /* used for "get my ip from server" */
+	int skip_next_who:1;			/* used for "get my ip from server" */
 	int inside_whois:1;
-	int doing_dns:1;				  /* /dns has been done */
-	int end_of_motd:1;			  /* end of motd reached (logged in) */
-	int sent_quit:1;				  /* sent a QUIT already? */
+	int doing_dns:1;				/* /dns has been done */
+	unsigned int end_of_motd:1;	/* end of motd reached (logged in) */
+	int sent_quit:1;				/* sent a QUIT already? */
 	int use_listargs:1;			/* undernet and dalnet need /list >0,<10000 */
-	int is_away:1;
+	unsigned int is_away:1;
 	int reconnect_away:1;		/* whether to reconnect in is_away state */
 	int dont_use_proxy:1;		/* to proxy or not to proxy */
 	int supports_watch:1;		/* supports the WATCH command */
 	int bad_prefix:1;				/* gave us a bad PREFIX= 005 number */
-	int have_whox:1;				/* have undernet's WHOX features */
+	unsigned int have_whox:1;	/* have undernet's WHOX features */
 #ifdef USE_OPENSSL
 	int use_ssl:1;					  /* is server SSL capable? */
 	int accept_invalid_cert:1;	  /* ignore result of server's cert. verify */

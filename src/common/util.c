@@ -1197,7 +1197,7 @@ make_ping_time (void)
  */
 
 int
-rfc_casecmp (char *s1, char *s2)
+rfc_casecmp (const char *s1, const char *s2)
 {
 	register unsigned char *str1 = (unsigned char *) s1;
 	register unsigned char *str2 = (unsigned char *) s2;

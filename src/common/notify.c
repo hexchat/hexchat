@@ -39,7 +39,7 @@ GSList *notify_list = 0;
 int notify_tag = 0;
 
 
-static struct notify_per_server *
+struct notify_per_server *
 notify_find_server_entry (struct notify *notify, struct server *serv)
 {
 	GSList *list = notify->server_list;
@@ -520,6 +520,7 @@ notify_cleanup ()
 			{
 				notify->server_list =
 					g_slist_remove (notify->server_list, servnot);
+				free (servnot);
 				nslist = notify->server_list;
 			} else
 			{

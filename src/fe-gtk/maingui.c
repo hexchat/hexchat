@@ -155,29 +155,35 @@ flash_window (GtkWidget *win)
 void
 fe_set_tab_color (struct session *sess, int col, int flash)
 {
-	switch (col)
+	if (sess->gui->is_tab && (col == 0 || sess != current_tab))
 	{
-	case 0:	/* no particular color (theme default) */
-		sess->new_data = FALSE;
-		sess->msg_said = FALSE;
-		tab_set_attrlist (sess->res->tab, plain_list);
-		break;
-	case 1:	/* new data has been displayed (dark red) */
-		sess->new_data = TRUE;
-		sess->msg_said = FALSE;
-		tab_set_attrlist (sess->res->tab, newdata_list);
-		break;
-	case 2:	/* new message arrived in channel (light red) */
-		sess->new_data = FALSE;
-		sess->msg_said = TRUE;
-		tab_set_attrlist (sess->res->tab, newmsg_list);
-		break;
-	case 3:	/* your nick has been seen (blue) */
-		sess->new_data = FALSE;
-		sess->msg_said = FALSE;
-		sess->nick_said = TRUE;
-		tab_set_attrlist (sess->res->tab, nickseen_list);
-		break;
+		switch (col)
+		{
+		case 0:	/* no particular color (theme default) */
+			sess->new_data = FALSE;
+			sess->msg_said = FALSE;
+			sess->nick_said = FALSE;
+			tab_set_attrlist (sess->res->tab, plain_list);
+			break;
+		case 1:	/* new data has been displayed (dark red) */
+			sess->new_data = TRUE;
+			sess->msg_said = FALSE;
+			sess->nick_said = FALSE;
+			tab_set_attrlist (sess->res->tab, newdata_list);
+			break;
+		case 2:	/* new message arrived in channel (light red) */
+			sess->new_data = FALSE;
+			sess->msg_said = TRUE;
+			sess->nick_said = FALSE;
+			tab_set_attrlist (sess->res->tab, newmsg_list);
+			break;
+		case 3:	/* your nick has been seen (blue) */
+			sess->new_data = FALSE;
+			sess->msg_said = FALSE;
+			sess->nick_said = TRUE;
+			tab_set_attrlist (sess->res->tab, nickseen_list);
+			break;
+		}
 	}
 
 #ifdef WIN32

@@ -701,5 +701,7 @@ fe_ctrl_gui (session *sess, int action, int arg)
 		fe_set_tab_color (sess, -1, TRUE); break; /* flash */
 	case 4:
 		fe_set_tab_color (sess, arg, FALSE); break;
+	case 5:
+		gtk_window_iconify (GTK_WINDOW (sess->gui->window)); break;
 	}
 }

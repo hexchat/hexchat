@@ -28,7 +28,7 @@ margin-right: 32px;
 <h1>XChat 2.0 Plugin Interface</h1>
 
 <small>
-<font size="-12">plugin20.html revision 0.99</font>
+<font size="-12">plugin20.html revision 1.00</font>
 <br>Latest version of this document is available at: <a href="http://xchat.org/docs/plugin20.html">http://xchat.org/docs/plugin20.html</a></small>
 
 <h2>Information:</h2>
@@ -191,6 +191,8 @@ needed for a long time after calling xchat_list_str. The types of lists and fiel
 <tr bgcolor="#dddddd"><td>Name</td><td>Description</td><td>Type</td></tr>
 <tr><td>channel</td><td>Channel or query name</td><td>string</td></tr>
 <tr><td>context</td><td>(xchat_context *) pointer. Can be used with xchat_set_context</td><td>string</td></tr>
+<tr><td>flags</td><td>Server Bits: 0=Connected 1=Connecting 2=Away 3=EndOfMotd (Login complete) 4=Has WHOX<br><small>(Added in version 2.0.8. Older version will return -1)</small></td><td>int</td></tr>
+<tr><td>id</td><td>Unique server ID<br><small>(Added in version 2.0.8. Older version will return -1)</small></td><td>int</td></tr>
 <tr><td>network</td><td>Network name to which this channel belongs<br><small>(Added in version 2.0.2. Older versions will return NULL)</small></td><td>string</td></tr>
 <tr><td>server</td><td>Server name to which this channel belongs</td><td>string</td></tr>
 <tr><td>type</td><td>Type of context this is: 1-Server 2-Channel 3-Dialog<br><small>(Added in version 2.0.2. Older versions will return -1)</small></td><td>int</td></tr>
@@ -227,7 +229,7 @@ needed for a long time after calling xchat_list_str. The types of lists and fiel
 <blockquote> <table border=1>
 <tr bgcolor="#dddddd"><td>Name</td><td>Description</td><td>Type</td></tr>
 <tr><td>nick</td><td>Nickname</td><td>string</td></tr>
-<tr><td>flags</td><td>0=Is online.</td><td>int</td></tr>
+<tr><td>flags</td><td>Bit field of flags. 0=Is online.</td><td>int</td></tr>
 <tr><td>on</td><td>Time when user came online.</td><td>time_t</td></tr>
 <tr><td>off</td><td>Time when user went offline.</td><td>time_t</td></tr>
 <tr><td>seen</td><td>Time when user the user was last verified still online.</td><td>time_t</td></tr>
@@ -316,19 +318,20 @@ xchat_command(ph, "GUI .....");.
 	<tr><td>GUI SHOW</td><td>Show it again.</td></tr>
 	<tr><td>GUI FOCUS</td><td>Focus the current window or tab.</td></tr>
 	<tr><td>GUI FLASH</td><td>Flash the taskbar button (win32 only). It will flash only if the window isn't focused and will stop when it is focused by the user.</td></tr>
+	<tr><td>GUI ICONIFY</td><td>Iconify (minimize to taskbar) the current xchat window.</td></tr>
 	<tr><td>GUI COLOR n</td><td>Change the tab color of the current context,
 where n is a number from 0 to 3.
 </td></tr>
 	</table>
 </blockquote>
-Note, the FLASH and COLOR args were added in xchat 2.0.8, they will not work
+Note, the FLASH, ICONIFY and COLOR args were added in xchat 2.0.8, they will not work
 with previous versions.
 <br><br></p>
 
 <h1>Functions</h1>
 
 <h3><a class="cmd" name="xchat_hook_command">&nbsp;xchat_hook_command()&nbsp;</a></h3>
-<b>Prototype:</b> xchat_hook *xchat_hook_command(xchat_plugin *ph, char *name, int pri, xchat_cmd_cb *callb, char *help_text, void *userdata);
+<b>Prototype:</b> xchat_hook *xchat_hook_command(xchat_plugin *ph, const char *name, int pri, xchat_cmd_cb *callb, const char *help_text, void *userdata);
 <br>
 <br><b>Description:</b> Adds a new /command. This allows your program to
 handle commands entered at the input box. To capture text without a "/" at 
@@ -381,7 +384,7 @@ This is only relevant on Windows, where network sockets are distinguished from f
 <br><br><br>
 
 <h3><a class="cmd" name="xchat_hook_print">&nbsp;xchat_hook_print()&nbsp;</a></h3>
-<b>Prototype:</b> <font color="#f8a400"><b>xchat_hook</b></font> *xchat_hook_print(<font color="#f8a400"><b>xchat_plugin</b></font> *ph, <font color="#f8a400"><b>char</b></font> *name, <font color="#f8a400"><b>int</b></font> pri, <font color="#f8a400"><b>xchat_print_cb</b></font> *callb, <font color="#f8a400"><b>void</b></font> *userdata);
+<b>Prototype:</b> <font color="#f8a400"><b>xchat_hook</b></font> *xchat_hook_print(<font color="#f8a400"><b>xchat_plugin</b></font> *ph, <font color="#f8a400"><b>const char</b></font> *name, <font color="#f8a400"><b>int</b></font> pri, <font color="#f8a400"><b>xchat_print_cb</b></font> *callb, <font color="#f8a400"><b>void</b></font> *userdata);
 <br>
 <br><b>Description:</b> Registers a function to trap any print events.
 The event names may be any available in the "Edit Event Texts" window.
@@ -421,7 +424,7 @@ xchat_hook_print(ph, "You Part", XCHAT_PRI_NORM, youpart_cb, NULL);
 <br>
 
 <h3><a class="cmd" name="xchat_hook_server">&nbsp;xchat_hook_server()&nbsp;</a></h3>
-<b>Prototype:</b> xchat_hook *xchat_hook_server(xchat_plugin *ph, char *name, int pri, xchat_serv_cb *callb, void *userdata);
+<b>Prototype:</b> xchat_hook *xchat_hook_server(xchat_plugin *ph, const char *name, int pri, xchat_serv_cb *callb, void *userdata);
 <br>
 <br><b>Description:</b> Registers a function to be called when a certain server event occurs. You can
 use this to trap PRIVMSG, NOTICE, PART, a server numeric etc... If you want to
@@ -502,7 +505,7 @@ xchat_hook_command(ph, "STOP", XCHAT_PRI_NORM, stop_cb, NULL, NULL);
 <br><br>
 
 <h3><a class="cmd" name="xchat_command">&nbsp;xchat_command()&nbsp;</a></h3>
-<b>Prototype:</b> void xchat_command(xchat_plugin *ph, char *command);
+<b>Prototype:</b> void xchat_command(xchat_plugin *ph, const char *command);
 <br>
 <br><b>Description:</b> Executes a command as if it were typed in xchat's input box.
 <br>
@@ -513,7 +516,7 @@ xchat_hook_command(ph, "STOP", XCHAT_PRI_NORM, stop_cb, NULL, NULL);
 </blockquote>
 
 <h3><a class="cmd" name="xchat_commandf">&nbsp;xchat_commandf()&nbsp;</a></h3>
-<b>Prototype:</b> void xchat_commandf(xchat_plugin *ph, char *format, ...);
+<b>Prototype:</b> void xchat_commandf(xchat_plugin *ph, const char *format, ...);
 <br>
 <br><b>Description:</b> Executes a command as if it were typed in xchat's input box and provides string formating like printf.
 <br>
@@ -524,7 +527,7 @@ xchat_hook_command(ph, "STOP", XCHAT_PRI_NORM, stop_cb, NULL, NULL);
 </blockquote>
 
 <h3><a class="cmd" name="xchat_print">&nbsp;xchat_print()&nbsp;</a></h3>
-<b>Prototype:</b> void xchat_print(xchat_plugin *ph, char *text);
+<b>Prototype:</b> void xchat_print(xchat_plugin *ph, const char *text);
 <br>
 <br><b>Description:</b> Prints some text to the current tab/window.
 <br>
@@ -535,7 +538,7 @@ xchat_hook_command(ph, "STOP", XCHAT_PRI_NORM, stop_cb, NULL, NULL);
 </blockquote>
 
 <h3><a class="cmd" name="xchat_printf">&nbsp;xchat_printf()&nbsp;</a></h3>
-<b>Prototype:</b> void xchat_printf(xchat_plugin *ph, char *format, ...);
+<b>Prototype:</b> void xchat_printf(xchat_plugin *ph, const char *format, ...);
 <br>
 <br><b>Description:</b> Prints some text to the current tab/window and provides formating like printf.
 <br>
@@ -546,7 +549,7 @@ xchat_hook_command(ph, "STOP", XCHAT_PRI_NORM, stop_cb, NULL, NULL);
 </blockquote>
 
 <h3><a class="cmd" name="xchat_emit_print">&nbsp;xchat_emit_print()&nbsp;</a></h3>
-<b>Prototype:</b> int xchat_emit_print(xchat_plugin *ph, char *event_name, ...);
+<b>Prototype:</b> int xchat_emit_print(xchat_plugin *ph, const char *event_name, ...);
 <br>
 <br><b>Description:</b> Generates a print event. This can be any
 event found in the Preferences > Lists > Text Events window.
@@ -565,7 +568,7 @@ xchat_emit_print(ph, "Channel Message", "John", "Hi there", "@", NULL);
 <br><br>
 
 <h3><a class="cmd" name="xchat_find_context">&nbsp;xchat_find_context()&nbsp;</a></h3>
-<b>Prototype:</b> xchat_context *xchat_find_context(xchat_plugin *ph, char *servname, char *channel);
+<b>Prototype:</b> xchat_context *xchat_find_context(xchat_plugin *ph, const char *servname, const char *channel);
 <br>
 <br><b>Description:</b> Finds a context based on a channel and servername. If servname is NULL, it finds any channel (or query) by the given name. If channel is NULL, it finds the front-most tab/window of the given servname. If NULL is given for both arguments, the currently focused tab/window will be returned.
 <br>
@@ -591,7 +594,7 @@ xchat_emit_print(ph, "Channel Message", "John", "Hi there", "@", NULL);
 <br><br><br>
 
 <h3><a class="cmd" name="xchat_get_info">&nbsp;xchat_get_info()&nbsp;</a></h3>
-<b>Prototype:</b> const char *xchat_get_info(xchat_plugin *ph, char *id);
+<b>Prototype:</b> const char *xchat_get_info(xchat_plugin *ph, const char *id);
 <br>
 <br><b>Description:</b> Returns information based on your current context.
 <br>
@@ -658,7 +661,7 @@ not be freed and must be copied if needed after the call to xchat_get_info.
 <br><br><br>
 
 <h3><a class="cmd" name="xchat_nickcmp">&nbsp;xchat_nickcmp()&nbsp;</a></h3>
-<b>Prototype:</b> int xchat_nickcmp(xchat_plugin *ph, char *s1, char *s2);
+<b>Prototype:</b> int xchat_nickcmp(xchat_plugin *ph, const char *s1, const char *s2);
 <br>
 <br><b>Description:</b> Performs a nick name comparision, based on the current server connection. This might be a RFC1459 compliant string compare, or
 plain ascii (in the case of DALNet). Use this to compare channels and nicknames. The function works the same way as strcasecmp.

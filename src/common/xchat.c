@@ -358,6 +358,7 @@ set_server_defaults (server *serv)
 static server *
 new_server (void)
 {
+	static int id = 0;
 	server *serv;
 
 	serv = malloc (sizeof (struct server));
@@ -366,6 +367,7 @@ new_server (void)
 	/* use server.c and proto-irc.c functions */
 	server_fill_her_up (serv);
 
+	serv->id = id++;
 	serv->sok = -1;
 	strcpy (serv->nick, prefs.nick1);
 	set_server_defaults (serv);

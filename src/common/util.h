@@ -21,7 +21,7 @@ void path_part (char *file, char *path, int pathlen);
 int match (const char *mask, const char *string);
 char *file_part (char *file);
 void for_files (char *dirname, char *mask, void callback (char *file));
-int rfc_casecmp (char *, char *);
+int rfc_casecmp (const char *, const char *);
 int rfc_ncasecmp (char *, char *, int);
 int buf_get_line (char *, char **, int *, int len);
 char *nocasestrstr (char *text, char *tofind);

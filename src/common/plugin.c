@@ -68,7 +68,7 @@ struct _xchat_list
 	GSList *pos;		/* current pos */
 	GSList *next;		/* next pos */
 	GSList *head;		/* for LIST_USERS only */
-	GSList *notifyps;	/* notify_per_server * */
+	struct notify_per_server *notifyps;	/* notify_per_server * */
 };
 
 typedef int (xchat_cmd_cb) (char *word[], char *word_eol[], void *user_data);
@@ -162,7 +162,7 @@ plugin_free (xchat_plugin *pl, int do_deinit, int allow_refuse)
 
 xit:
 	if (pl->filename)
-		free (pl->filename);
+		free ((char *)pl->filename);
 	free (pl);
 
 	plugin_list = g_slist_remove (plugin_list, pl);
@@ -175,8 +175,9 @@ xit:
 }
 
 static xchat_plugin *
-plugin_list_add (xchat_context *ctx, char *filename, char *name, char *desc,
-					  char *version, void *handle, void *deinit_func, int fake)
+plugin_list_add (xchat_context *ctx, char *filename, const char *name,
+					  const char *desc, const char *version, void *handle,
+					  void *deinit_func, int fake)
 {
 	xchat_plugin *pl;
 
@@ -184,9 +185,9 @@ plugin_list_add (xchat_context *ctx, char *filename, char *name, char *desc,
 	pl->handle = handle;
 	pl->filename = filename;
 	pl->context = ctx;
-	pl->name = name;
-	pl->desc = desc;
-	pl->version = version;
+	pl->name = (char *)name;
+	pl->desc = (char *)desc;
+	pl->version = (char *)version;
 	pl->deinit_callback = deinit_func;
 	pl->fake = fake;
 
@@ -608,8 +609,8 @@ plugin_fd_cb (GIOChannel *source, GIOCondition condition, xchat_hook *hook)
 /* allocate and add a hook to our list. Used for all 4 types */
 
 static xchat_hook *
-plugin_add_hook (xchat_plugin *pl, int type, int pri, char *name,
-					  char *help_text, void *callb, int timeout, void *userdata)
+plugin_add_hook (xchat_plugin *pl, int type, int pri, const char *name,
+					  const  char *help_text, void *callb, int timeout, void *userdata)
 {
 	xchat_hook *hook;
 
@@ -697,23 +698,23 @@ xchat_unhook (xchat_plugin *ph, xchat_hook *hook)
 }
 
 xchat_hook *
-xchat_hook_command (xchat_plugin *ph, char *name, int pri, xchat_cmd_cb *callb,
-					 	  char *help_text, void *userdata)
+xchat_hook_command (xchat_plugin *ph, const char *name, int pri,
+						  xchat_cmd_cb *callb, const char *help_text, void *userdata)
 {
 	return plugin_add_hook (ph, HOOK_COMMAND, pri, name, help_text, callb, 0,
 									userdata);
 }
 
 xchat_hook *
-xchat_hook_server (xchat_plugin *ph, char *name, int pri, xchat_serv_cb *callb,
-					 	 void *userdata)
+xchat_hook_server (xchat_plugin *ph, const char *name, int pri,
+						 xchat_serv_cb *callb, void *userdata)
 {
 	return plugin_add_hook (ph, HOOK_SERVER, pri, name, 0, callb, 0, userdata);
 }
 
 xchat_hook *
-xchat_hook_print (xchat_plugin *ph, char *name, int pri, xchat_print_cb *callb,
-					   void *userdata)
+xchat_hook_print (xchat_plugin *ph, const char *name, int pri,
+						xchat_print_cb *callb, void *userdata)
 {
 	return plugin_add_hook (ph, HOOK_PRINT, pri, name, 0, callb, 0, userdata);
 }
@@ -740,7 +741,7 @@ xchat_hook_fd (xchat_plugin *ph, int fd, int flags,
 }
 
 void
-xchat_print (xchat_plugin *ph, char *text)
+xchat_print (xchat_plugin *ph, const char *text)
 {
 	if (!is_session (ph->context))
 	{
@@ -748,11 +749,11 @@ xchat_print (xchat_plugin *ph, char *text)
 		return;
 	}
 
-	PrintText (ph->context, text);
+	PrintText (ph->context, (char *)text);
 }
 
 void
-xchat_printf (xchat_plugin *ph, char *format, ...)
+xchat_printf (xchat_plugin *ph, const char *format, ...)
 {
 	va_list args;
 	char *buf;
@@ -766,7 +767,7 @@ xchat_printf (xchat_plugin *ph, char *format, ...)
 }
 
 void
-xchat_command (xchat_plugin *ph, char *command)
+xchat_command (xchat_plugin *ph, const char *command)
 {
 	if (!is_session (ph->context))
 	{
@@ -774,11 +775,11 @@ xchat_command (xchat_plugin *ph, char *command)
 		return;
 	}
 
-	handle_command (ph->context, command, FALSE);
+	handle_command (ph->context, (char *)command, FALSE);
 }
 
 void
-xchat_commandf (xchat_plugin *ph, char *format, ...)
+xchat_commandf (xchat_plugin *ph, const char *format, ...)
 {
 	va_list args;
 	char *buf;
@@ -792,7 +793,7 @@ xchat_commandf (xchat_plugin *ph, char *format, ...)
 }
 
 int
-xchat_nickcmp (xchat_plugin *ph, char *s1, char *s2)
+xchat_nickcmp (xchat_plugin *ph, const char *s1, const char *s2)
 {
 	return ((session *)ph->context)->server->p_cmp (s1, s2);
 }
@@ -815,7 +816,7 @@ xchat_set_context (xchat_plugin *ph, xchat_context *context)
 }
 
 xchat_context *
-xchat_find_context (xchat_plugin *ph, char *servname, char *channel)
+xchat_find_context (xchat_plugin *ph, const char *servname, const char *channel)
 {
 	GSList *slist, *clist;
 	server *serv;
@@ -996,8 +997,6 @@ xchat_list_free (xchat_plugin *ph, xchat_list *xlist)
 int
 xchat_list_next (xchat_plugin *ph, xchat_list *xlist)
 {
-	GSList *list;
-
 	if (xlist->next == NULL)
 		return 0;
 
@@ -1008,23 +1007,10 @@ xchat_list_next (xchat_plugin *ph, xchat_list *xlist)
 		of the plugin when list_get was originally called. */
 	if (xlist->type == LIST_NOTIFY)
 	{
-		xlist->notifyps = NULL;
-		/* this is the list of notify_per_server structures */
-		list = ((struct notify *)xlist->pos->data)->server_list;
-
-		while (list)
-		{
-			/* "head" is actually reused as a (session *) for LIST_NOTIFY!
-				(yay! we save 4 bytes and write ugly code) */
-			if (((struct notify_per_server *)list->data)->server ==
-				 ((session *)xlist->head)->server)
-			{
-				xlist->notifyps = list->data;
-				return 1;
-			}
-			list = list->next;
-		}
-		return 0;
+		xlist->notifyps = notify_find_server_entry (xlist->pos->data,
+													((session *)xlist->head)->server);
+		if (!xlist->notifyps)
+			return 0;
 	}
 
 	return 1;
@@ -1040,7 +1026,7 @@ xchat_list_fields (xchat_plugin *ph, const char *name)
 	};
 	static const char *channels_fields[] =
 	{
-		"schannel",	"pcontext", "snetwork", "sserver",	"itype",	NULL
+		"schannel",	"pcontext", "iflags", "iid", "snetwork", "sserver", "itype", NULL
 	};
 	static const char *ignore_fields[] =
 	{
@@ -1082,22 +1068,21 @@ time_t
 xchat_list_time (xchat_plugin *ph, xchat_list *xlist, const char *name)
 {
 	guint32 hash = str_hash (name);
-	gpointer data = xlist->pos->data;
+/*	gpointer data = xlist->pos->data;*/
 
 	switch (xlist->type)
 	{
 	case LIST_NOTIFY:
-		data = xlist->notifyps->data;
-		if (!data)
+		if (!xlist->notifyps)
 			return (time_t) -1;
 		switch (hash)
 		{
 		case 0x1ad6f:	/* off */
-			return ((struct notify_per_server *)data)->lastoff;
+			return xlist->notifyps->lastoff;
 		case 0xddf:	/* on */
-			return ((struct notify_per_server *)data)->laston;
+			return xlist->notifyps->laston;
 		case 0x35ce7b:	/* seen */
-			return ((struct notify_per_server *)data)->lastseen;
+			return xlist->notifyps->lastseen;
 		}
 	}
 
@@ -1211,6 +1196,14 @@ xchat_list_int (xchat_plugin *ph, xchat_list *xlist, const char *name)
 	case LIST_CHANNELS:
 		switch (hash)
 		{
+		case 0xd1b:	/* id */
+			return ((struct session *)data)->server->id;
+		case 0x5cfee87:	/* flags */
+			return ((((struct session *)data)->server->connected) & 1) ||
+					 ((((struct session *)data)->server->connecting << 1) & 1) ||
+					 ((((struct session *)data)->server->is_away << 2) & 2) ||
+					 ((((struct session *)data)->server->end_of_motd << 3) & 4) ||
+					 ((((struct session *)data)->server->have_whox << 4) & 8);
 		case 0x368f3a:	/* type */
 			return ((struct session *)data)->type;
 		}
@@ -1222,7 +1215,7 @@ xchat_list_int (xchat_plugin *ph, xchat_list *xlist, const char *name)
 		switch (hash)
 		{
 		case 0x5cfee87: /* flags */
-			return ((struct notify_per_server *)xlist->notifyps)->ison;
+			return xlist->notifyps->ison;
 		}
 
 	case LIST_USERS:
@@ -1239,8 +1232,9 @@ xchat_list_int (xchat_plugin *ph, xchat_list *xlist, const char *name)
 }
 
 void *
-xchat_plugingui_add (xchat_plugin *ph, char *filename, char *name, char *desc,
-							char *version, char *reserved)
+xchat_plugingui_add (xchat_plugin *ph, const char *filename,
+							const char *name, const char *desc,
+							const char *version, char *reserved)
 {
 #ifdef USE_PLUGIN
 	ph = plugin_list_add (NULL, strdup (filename), name, desc, version, NULL,
@@ -1260,7 +1254,7 @@ xchat_plugingui_remove (xchat_plugin *ph, void *handle)
 }
 
 int
-xchat_emit_print (xchat_plugin *ph, char *event_name, ...)
+xchat_emit_print (xchat_plugin *ph, const char *event_name, ...)
 {
 	va_list args;
 	char *argv[4] = {NULL, NULL, NULL, NULL};
@@ -1278,7 +1272,7 @@ xchat_emit_print (xchat_plugin *ph, char *event_name, ...)
 			break;
 	}
 
-	i = text_emit_by_name (event_name, ph->context, argv[0], argv[1],
+	i = text_emit_by_name ((char *)event_name, ph->context, argv[0], argv[1],
 								  argv[2], argv[3]);
 	va_end (args);
 

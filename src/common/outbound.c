@@ -1563,6 +1563,9 @@ cmd_gui (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	} else if (!strcasecmp (word[2], "COLOR"))
 	{
 		fe_ctrl_gui (sess, 4, atoi (word[3]));
+	} else if (!strcasecmp (word[2], "ICONIFY"))
+	{
+		fe_ctrl_gui (sess, 5, 0);
 	} else
 	{
 		return FALSE;
@@ -2637,7 +2640,7 @@ const struct commands xc_cmds[] = {
 	 N_("GATE <host> [<port>], proxies through a host, port defaults to 23")},
 	{"GETINT", cmd_getint, 0, 0, "GETINT <default> <command> <prompt>"},
 	{"GETSTR", cmd_getstr, 0, 0, "GETSTR <default> <command> <prompt>"},
-	{"GUI", cmd_gui, 0, 0, "GUI [SHOW|HIDE|FOCUS|FLASH|COLOR <n>]"},
+	{"GUI", cmd_gui, 0, 0, "GUI [SHOW|HIDE|FOCUS|FLASH|ICONIFY|COLOR <n>]"},
 	{"HELP", cmd_help, 0, 0, 0},
 	{"HOP", cmd_hop, 1, 1,
 	 N_("HOP <nick>, gives chanhalf-op status to the nick (needs chanop)")},

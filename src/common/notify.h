@@ -29,6 +29,7 @@ void notify_load (void);
 void notify_save (void);
 void notify_showlist (session *sess);
 int notify_isnotify (session *sess, char *name);
+struct notify_per_server *notify_find_server_entry (struct notify *notify, struct server *serv);
 
 /* the old ISON stuff - remove me? */
 void notify_markonline (server *serv, char *word[]);
