@@ -430,6 +430,11 @@ userlist_click_cb (GtkWidget *widget, GdkEventButton *event, gpointer userdata)
 		{
 			nick_command_parse (current_sess, prefs.doubleclickuser, nicks[0],
 									  nicks[0]);
+			while (i)
+			{
+				i--;
+				g_free (nicks[i]);
+			}
 			free (nicks);
 		}
 		return TRUE;
@@ -442,6 +447,11 @@ userlist_click_cb (GtkWidget *widget, GdkEventButton *event, gpointer userdata)
 		if (nicks && i > 1)
 		{
 			menu_nickmenu (current_sess, event, nicks[0], i);
+			while (i)
+			{
+				i--;
+				g_free (nicks[i]);
+			}
 			free (nicks);
 			return TRUE;
 		}
@@ -459,6 +469,11 @@ userlist_click_cb (GtkWidget *widget, GdkEventButton *event, gpointer userdata)
 			if (nicks)
 			{
 				menu_nickmenu (current_sess, event, nicks[0], i);
+				while (i)
+				{
+					i--;
+					g_free (nicks[i]);
+				}
 				free (nicks);
 			}
 		} else

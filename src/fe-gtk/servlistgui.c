@@ -477,6 +477,7 @@ servlist_find_selected_net (GtkTreeSelection *sel, int *pos)
 	{
 		gtk_tree_model_get (model, &iter, 0, &netname, -1);
 		net = servlist_net_find (netname, pos);
+		g_free (netname);
 		if (net)
 			prefs.slist_select = *pos;
 	}
@@ -516,6 +517,7 @@ servlist_server_row_cb (GtkTreeSelection *sel, gpointer user_data)
 	{
 		gtk_tree_model_get (model, &iter, 0, &servname, -1);
 		serv = servlist_server_find (selected_net, servname, &pos);
+		g_free (servname);
 		if (serv)
 			selected_net->selected = pos;
 	}
@@ -628,6 +630,7 @@ servlist_serv_press_cb (GtkWidget *widget, GdkEventButton *event,
 			{
 				gtk_tree_model_get (model, &iter, 0, &servname, -1);
 				serv = servlist_server_find (selected_net, servname, &pos);
+				g_free (servname);
 				if (serv)
 					servlist_server_popmenu (serv, GTK_TREE_VIEW (servers_tree), event);
 			}
@@ -657,6 +660,7 @@ servlist_celledit_cb (GtkCellRendererText *cell, gchar *arg1, gchar *arg2,
 	gtk_tree_model_get (model, &iter, 0, &netname, -1);
 
 	net = servlist_net_find (netname, NULL);
+	g_free (netname);
 	if (net)
 	{
 		netname = net->name;
@@ -928,9 +932,14 @@ servlist_editserver_cb (GtkCellRendererText *cell, gchar *arg1, gchar *arg2,
 	gtk_tree_model_get (model, &iter, 0, &servname, -1);
 
 	if (!selected_net)
+	{
+		g_free (servname);
 		return;
+	}
 
 	serv = servlist_server_find (selected_net, servname, NULL);
+	g_free (servname);
+
 	if (serv)
 	{
 		/* delete empty item */
