@@ -4082,7 +4082,7 @@ gtk_xtext_append_entry (xtext_buffer *buf, textentry * ent)
 		/* this could be improved */
 		if ((buf->num_lines - 1) <= buf->xtext->adj->page_size)
 			dontscroll (buf);
-		if (buf->num_lines <= buf->xtext->adj->page_size)
+/*		if (buf->num_lines <= buf->xtext->adj->page_size)
 		{
 			gtk_xtext_render_ents (buf->xtext, ent, NULL);
 			if (buf->xtext->add_io_tag)
@@ -4091,7 +4091,7 @@ gtk_xtext_append_entry (xtext_buffer *buf, textentry * ent)
 				buf->xtext->add_io_tag = 0;
 			}
 			return;
-		}
+		}*/
 #endif
 
 		if (!buf->xtext->add_io_tag)
