@@ -699,7 +699,6 @@ dcc_read (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 				if (would_block_again ())
 					return TRUE;
 			}
-failedabort:
 			EMIT_SIGNAL (XP_TE_DCCRECVERR, dcc->serv->front_session, dcc->file,
 							 dcc->destfile, dcc->nick,
 							 errorstring ((n < 0) ? sock_error () : 0), 0);
@@ -708,7 +707,12 @@ failedabort:
 		}
 
 		if (write (dcc->fp, buf, n) == -1) /* could be out of hdd space */
-			goto failedabort;
+		{
+			EMIT_SIGNAL (XP_TE_DCCRECVERR, dcc->serv->front_session, dcc->file,
+							 dcc->destfile, dcc->nick, errorstring (errno), 0);
+			dcc_close (dcc, STAT_FAILED, FALSE);
+			return TRUE;
+		}
 		dcc->pos += n;
 		pos = htonl (dcc->pos);
 		send (dcc->sok, (char *) &pos, 4, 0);
@@ -1145,8 +1149,6 @@ dcc_send_wild (char *file)
 {
 	dcc_send (dccsess, dccto, file, dccmaxcps, 0);
 }
-
-/* tbuf is at least 400 bytes */
 
 void
 dcc_send (struct session *sess, char *to, char *file, int maxcps, int passive)

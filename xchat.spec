@@ -1,6 +1,8 @@
 Summary: Graphical IRC (chat) client
+Summary(fr): Client IRC (chat) avec interface graphique
+Summary(de): IRC-Client (Chat) mit grafischer Oberfläche
 Name: xchat
-Version: 2.0.5
+Version: 2.0.6
 Release: 0
 Epoch: 1
 Group: Applications/Internet
@@ -28,7 +30,7 @@ Provides Perl scripting capability to XChat.
 %package python
 Summary: XChat Python plugin
 Group: Applications/Internet
-Requires: xchat >= 1.9.5
+Requires: xchat >= 2.0.0
 Requires: python2 >= 2.2.0
 %description python
 Provides Python scripting capability to XChat.
@@ -36,7 +38,7 @@ Provides Python scripting capability to XChat.
 %package tcl
 Summary: XChat TCL plugin
 Group: Applications/Internet
-Requires: xchat >= 1.9.8
+Requires: xchat >= 2.0.0
 Requires: tcl
 %description tcl
 Provides TCL scripting capability to XChat.
@@ -45,7 +47,7 @@ Provides TCL scripting capability to XChat.
 %setup -q
 
 %build
-%configure --disable-textfe --disable-dependency-tracking
+%configure --disable-dependency-tracking
 make
 
 %install

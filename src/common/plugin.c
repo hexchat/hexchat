@@ -1013,7 +1013,7 @@ xchat_list_fields (xchat_plugin *ph, const char *name)
 	};
 	static const char *users_fields[] =
 	{
-		"shost", "snick", "sprefix", NULL
+		"iaway", "shost", "snick", "sprefix", NULL
 	};
 	static const char *list_of_lists[] =
 	{
@@ -1138,6 +1138,14 @@ xchat_list_int (xchat_plugin *ph, xchat_list *xlist, const char *name)
 		{
 		case 0x368f3a:	/* type */
 			return ((struct session *)data)->type;
+		}
+		break;
+
+	case LIST_USERS:
+		switch (hash)
+		{
+		case 0x2de2ee:	/* away */
+			return ((struct User *)data)->away;
 		}
 		break;
 

@@ -894,8 +894,8 @@ xchat_init (void)
 		"NAME %s\n"				"CMD quote USERHOST %%s\n\n"\
 	"NAME ENDSUB\n"			"CMD \n\n"\
 	"NAME SUB\n"				"CMD %s\n\n"\
-		"NAME %s\n"				"CMD !"XTERM"/bin/sh -c \"/usr/sbin/traceroute %%h ; sleep 30\"\n\n"\
-		"NAME %s\n"				"CMD !"XTERM"/bin/sh -c \"ping -c 4 %%h ; sleep 30\"\n\n"\
+		"NAME %s\n"				"CMD !"XTERM"/usr/sbin/traceroute %%h\n\n"\
+		"NAME %s\n"				"CMD !"XTERM"ping -c 4 %%h\n\n"\
 		"NAME %s\n"				"CMD !"XTERM"telnet %%h\n\n"\
 	"NAME ENDSUB\n"			"CMD \n\n"\
 	"NAME %s\n"					"CMD query %%s\n\n",
