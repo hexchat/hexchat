@@ -112,10 +112,11 @@ static void
 dcc_calc_cps (struct DCC *dcc)
 {
 	GTimeVal now;
-	int pos, posdiff, oldcps;
+	int oldcps;
 	double timediff, startdiff;
 	int glob_throttle_bit, wasthrottled;
 	int *cpssum, glob_limit;
+	unsigned int pos, posdiff;
 
 #ifdef WIN32
 	g_get_current_time_win32 (&now);
@@ -127,7 +128,8 @@ dcc_calc_cps (struct DCC *dcc)
 		between pos and ack */
 	if (dcc->type == TYPE_SEND)
 	{
-		pos = (dcc->pos + dcc->ack) / 2;
+		/*pos = (dcc->pos + dcc->ack) / 2;*/
+		pos = (dcc->pos / 2) + (dcc->ack / 2);
 		glob_throttle_bit = 0x1;
 		cpssum = &dcc_sendcpssum;
 		glob_limit = prefs.dcc_global_max_send_cps;

@@ -30,7 +30,7 @@ struct DCC
 	int cps;
 
 	GTimeVal lastcpstv, firstcpstv;
-	int lastcpspos;
+	unsigned int lastcpspos;
 	int maxcps;
 
 	unsigned int size;
