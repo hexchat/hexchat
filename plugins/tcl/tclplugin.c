@@ -1969,11 +1969,11 @@ static void banner()
 int xchat_plugin_init(xchat_plugin * plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg)
 {
 
-    ph = plugin_handle;
-
 #ifdef WIN32
     static int have_lib = 0;
     HINSTANCE lib;
+    
+    ph = plugin_handle;
 
     if (!have_lib) {
         lib = LoadLibrary("tcl84.dll");
@@ -1989,6 +1989,8 @@ int xchat_plugin_init(xchat_plugin * plugin_handle, char **plugin_name, char **p
         have_lib++;
         FreeLibrary(lib);
     }
+#else
+    ph = plugin_handle;
 #endif
 
     if (initialized != 0) {
