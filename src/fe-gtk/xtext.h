@@ -168,6 +168,7 @@ struct _GtkXText
 	unsigned int un_hilight:1;
 	unsigned int recycle:1;
 	unsigned int avoid_trans:1;
+	unsigned int overdraw:1;
 };
 
 struct _GtkXTextClass

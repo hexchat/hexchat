@@ -358,11 +358,8 @@ backend_draw_text (GtkXText *xtext, int dofill, GdkGC *gc, int x, int y,
 	}
 
 	draw_func (xtext->xftdraw, xtext->xft_fg, xtext->font, x, y, str, len);
-	/* if (~black_background) */
-/*	if (xtext->xft_bg->color.red < 0x2000 ||
-		 xtext->xft_bg->color.green < 0x2000 ||
-		 xtext->xft_bg->color.blue < 0x2000)
-		draw_func (xtext->xftdraw, xtext->xft_fg, xtext->font, x, y, str, len);*/
+	if (xtext->overdraw)
+		draw_func (xtext->xftdraw, xtext->xft_fg, xtext->font, x, y, str, len);
 
 	if (xtext->bold)
 		draw_func (xtext->xftdraw, xtext->xft_fg, xtext->font, x + 1, y, str, len);
@@ -532,6 +529,9 @@ backend_draw_text (GtkXText *xtext, int dofill, GdkGC *gc, int x, int y,
 	GSList *list = pango_layout_get_lines (xtext->layout);
 	gdk_draw_layout_line_with_colors (xtext->draw_buf, gc, x, y +
 												 xtext->font->ascent, list->data, 0, 0);
+	if (xtext->overdraw)
+		gdk_draw_layout_line_with_colors (xtext->draw_buf, gc, x, y +
+													 xtext->font->ascent, list->data, 0, 0);
 }
 #else
 	gdk_draw_layout (xtext->draw_buf, gc, x, y, xtext->layout);
@@ -623,6 +623,7 @@ gtk_xtext_init (GtkXText * xtext)
 	xtext->recycle = FALSE;
 	xtext->dont_render = FALSE;
 	xtext->dont_render2 = FALSE;
+	xtext->overdraw = FALSE;
 	xtext->tint_red = xtext->tint_green = xtext->tint_blue = TINT_VALUE;
 
 	xtext->adj = (GtkAdjustment *) gtk_adjustment_new (0, 0, 1, 1, 1, 1);
@@ -643,6 +644,9 @@ gtk_xtext_init (GtkXText * xtext)
 		gtk_selection_add_targets (GTK_WIDGET (xtext), GDK_SELECTION_PRIMARY,
 											targets, n_targets);
 	}
+
+	if (getenv ("XCHAT_OVERDRAW"))
+		xtext->overdraw = TRUE;
 }
 
 static void

@@ -87,10 +87,17 @@ tcp_send_real (server *serv, char *buf, int len)
 	{
 		locale = NULL;
 		if (!prefs.utf8_locale)
-			locale = g_locale_from_utf8 (buf, len, NULL, &loc_len, NULL);
+		{
+			const gchar *charset;
+
+			g_get_charset (&charset);
+			locale = g_convert_with_fallback (buf, len, charset, "UTF-8",
+														 "?", 0, &loc_len, 0);
+		}
 	} else
 	{
-		locale = g_convert (buf, len, serv->encoding, "UTF-8", 0, &loc_len, 0);
+		locale = g_convert_with_fallback (buf, len, serv->encoding, "UTF-8",
+													 "?", 0, &loc_len, 0);
 	}
 
 	if (locale)
