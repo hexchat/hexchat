@@ -15,7 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#define VERSION "1.0.48"
+#define VERSION "1.0.49"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -23,6 +23,7 @@
 #include <time.h>
 #include <limits.h>
 #include <ctype.h>
+#include <stdarg.h>
 #include <tcl.h>
 #include <tclDecls.h>
 #include <sys/stat.h>
