@@ -807,3 +807,6 @@ void
 fe_ctrl_gui (session *sess, int action, int arg)
 {
 }
+void fe_confirm (const char *message, void (*yesproc)(void *), void (*noproc)(void *), void *ud)
+{
+}

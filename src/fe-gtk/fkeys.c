@@ -1706,18 +1706,18 @@ tab_comp_cmd (session *sess, GtkWidget * t)
 		if (strlen (last) > (sizeof (buf) - 1))
 			return;
 		if (postfix == NULL)
-			snprintf (buf, sizeof (buf), "/%s ", last);
+			snprintf (buf, sizeof (buf), "%c%s ", prefs.cmdchar[0], last);
 		else
-			snprintf (buf, sizeof (buf), "/%s %s", last, postfix);
+			snprintf (buf, sizeof (buf), "%c%s %s", prefs.cmdchar[0], last, postfix);
 		gtk_entry_set_text (GTK_ENTRY (t), buf);
 		gtk_editable_set_position (GTK_EDITABLE (t), -1);
 		return;
 	} else if (strlen (lcmd) > (sizeof (buf) - 1))
 		return;
 	if (postfix == NULL)
-		snprintf (buf, sizeof (buf), "/%s", lcmd);
+		snprintf (buf, sizeof (buf), "%c%s", prefs.cmdchar[0], lcmd);
 	else
-		snprintf (buf, sizeof (buf), "/%s %s", lcmd, postfix);
+		snprintf (buf, sizeof (buf), "%c%s %s", prefs.cmdchar[0], lcmd, postfix);
 	gtk_entry_set_text (GTK_ENTRY (t), buf);
 	gtk_editable_set_position (GTK_EDITABLE (t), -1);
 }

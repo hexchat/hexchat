@@ -705,3 +705,8 @@ fe_ctrl_gui (session *sess, int action, int arg)
 		gtk_window_iconify (GTK_WINDOW (sess->gui->window)); break;
 	}
 }
+
+void
+fe_confirm (const char *message, void (*yesproc)(void *), void (*noproc)(void *), void *ud)
+{
+}

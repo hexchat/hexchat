@@ -373,9 +373,9 @@ const struct prefs vars[] = {
 	{"completion_old", P_OFFINT (old_nickcompletion), TYPE_BOOL},
 	{"completion_suffix", P_OFFSET (nick_suffix), TYPE_STR},
 
-	{"dcc_auto_chat", P_OFFINT (autodccchat), TYPE_BOOL},
+	{"dcc_auto_chat", P_OFFINT (autodccchat), TYPE_INT},
 	{"dcc_auto_resume", P_OFFINT (autoresume), TYPE_BOOL},
-	{"dcc_auto_send", P_OFFINT (autodccsend), TYPE_BOOL},
+	{"dcc_auto_send", P_OFFINT (autodccsend), TYPE_INT},
 	{"dcc_blocksize", P_OFFINT (dcc_blocksize), TYPE_INT},
 	{"dcc_completed_dir", P_OFFSET (dcc_completed_dir), TYPE_STR},
 	{"dcc_dir", P_OFFSET (dccdir), TYPE_STR},
@@ -534,7 +534,7 @@ void
 load_config (void)
 {
 	struct stat st;
-	char *cfg;
+	char *cfg, *sp;
 	const char *username, *realname;
 	int res, val, i, fh;
 
@@ -696,6 +696,10 @@ load_config (void)
 
 	g_free ((char *)username);
 	g_free ((char *)realname);
+
+	sp = strchr (prefs.username, ' ');
+	if (sp)
+		sp[0] = 0;	/* spaces in username would break the login */
 }
 
 int

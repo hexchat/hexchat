@@ -68,7 +68,7 @@ menu_about (GtkWidget * wid, gpointer sess)
 #endif
 
 	gtk_widget_show (gnome_about_new ("X-Chat", VERSION,
-							"(C) 1998-2003 Peter Zelezny", author, buf, 0));
+							"(C) 1998-2004 Peter Zelezny", author, buf, 0));
 }
 
 #else
@@ -120,7 +120,7 @@ menu_about (GtkWidget * wid, gpointer sess)
 				"%s\n"
 				"<b>Charset</b>: %s <b>Renderer</b>: %s\n"
 				"<b>Compiled</b>: "__DATE__"\n\n"
-				"\302\251 1998-2003 Peter \305\275elezn\303\275 &lt;zed@xchat.org>",
+				"\302\251 1998-2004 Peter \305\275elezn\303\275 &lt;zed@xchat.org>",
 					_("A multiplatform IRC Client"),
 					get_cpu_str(),
 					locale,

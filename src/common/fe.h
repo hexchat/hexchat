@@ -72,3 +72,4 @@ void fe_serverlist_open (session *sess);
 void fe_get_str (char *prompt, char *def, void *callback, void *ud);
 void fe_get_int (char *prompt, int def, void *callback, void *ud);
 void fe_ctrl_gui (session *sess, int action, int arg);
+void fe_confirm (const char *message, void (*yesproc)(void *), void (*noproc)(void *), void *ud);

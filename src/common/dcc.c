@@ -1362,9 +1362,16 @@ dcc_get (struct DCC *dcc)
 	case STAT_QUEUED:
 		if (dcc->type != TYPE_CHATSEND)
 		{
-			dcc->resumable = 0;
-			dcc->pos = 0;
-			dcc_connect (dcc);
+			if (dcc->type == TYPE_RECV && prefs.autoresume && dcc->resumable)
+			{
+				dcc_resume (dcc);
+			}
+			else
+			{
+				dcc->resumable = 0;
+				dcc->pos = 0;
+				dcc_connect (dcc);
+			}
 		}
 		break;
 	case STAT_DONE:
@@ -1482,6 +1489,62 @@ dcc_malformed (struct session *sess, char *nick, char *data)
 	EMIT_SIGNAL (XP_TE_MALFORMED, sess, nick, data, NULL, NULL, 0);
 }
 
+static int
+is_resumable (struct DCC *dcc)
+{
+	dcc->resumable = 0;
+
+	/* Check the file size */
+	if (access (dcc->destfile_fs, W_OK) == 0)
+	{
+		struct stat st;
+
+		if (stat (dcc->destfile_fs, &st) != -1)
+		{
+			if (st.st_size < dcc->size)
+			{
+				dcc->resumable = 1;
+				dcc->pos = st.st_size;
+			}
+			else
+				dcc->resume_error = 2;
+		} else
+		{
+			dcc->resume_errno = errno;
+			dcc->resume_error = 1;
+		}
+	} else
+	{
+		dcc->resume_errno = errno;
+		dcc->resume_error = 1;
+	}
+
+	/* Now verify that this DCC is not already in progress from someone else */
+
+	if (dcc->resumable)
+	{
+		GSList *list = dcc_list;
+		struct DCC *d;
+		while (list)
+		{
+			d = list->data;
+			if (d->type == TYPE_RECV && d->dccstat != STAT_ABORTED &&
+				 d->dccstat != STAT_DONE && d->dccstat != STAT_FAILED)
+			{
+				if (d != dcc && strcmp (d->destfile, dcc->destfile) == 0)
+				{
+					dcc->resumable = 0;
+					dcc->pos = 0;
+					break;
+				}
+			}
+			list = list->next;
+		}
+	}
+
+	return dcc->resumable;
+}
+
 int
 dcc_resume (struct DCC *dcc)
 {
@@ -1503,6 +1566,34 @@ dcc_resume (struct DCC *dcc)
 	}
 
 	return 0;
+}
+
+static void
+dcc_confirm_send (void *ud)
+{
+	struct DCC *dcc = (struct DCC *) ud;
+	dcc_get (dcc);
+}
+
+static void
+dcc_deny_send (void *ud)
+{
+	struct DCC *dcc = (struct DCC *) ud;
+	dcc_abort (dcc->serv->front_session, dcc);
+}
+
+static void
+dcc_confirm_chat (void *ud)
+{
+	struct DCC *dcc = (struct DCC *) ud;
+	dcc_connect (dcc);
+}
+
+static void
+dcc_deny_chat (void *ud)
+{
+	struct DCC *dcc = (struct DCC *) ud;
+	dcc_abort (dcc->serv->front_session, dcc);
 }
 
 void
@@ -1559,8 +1650,14 @@ handle_dcc (struct session *sess, char *nick, char *word[],
 			} else
 				fe_dcc_add (dcc);
 
-			if (prefs.autodccchat)
+			if (prefs.autodccchat == 1)
 				dcc_connect (dcc);
+			else if (prefs.autodccchat == 2)
+			{
+				char buff[128];
+				snprintf (buff, sizeof (buff), "%s is offering DCC Chat.  Do you want to accept?", nick);
+				fe_confirm (buff, dcc_confirm_chat, dcc_deny_chat, dcc);
+			}
 		}
 		return;
 	}
@@ -1674,8 +1771,6 @@ handle_dcc (struct session *sess, char *nick, char *word[],
 		dcc = new_dcc ();
 		if (dcc)
 		{
-			struct stat st;
-
 			dcc->file = strdup (file);
 
 			dcc->destfile = g_malloc (strlen (prefs.dccdir) + strlen (nick) +
@@ -1706,26 +1801,7 @@ handle_dcc (struct session *sess, char *nick, char *word[],
 			dcc->destfile_fs = g_filename_from_utf8 (dcc->destfile, -1, 0, 0, 0);
 
 			dcc->resumable = 0;
-			if (access (dcc->destfile_fs, W_OK) == 0)
-			{
-				if (stat (dcc->destfile_fs, &st) != -1)
-				{
-					if (st.st_size < size)
-						dcc->resumable = st.st_size;
-					else
-						dcc->resume_error = 2;
-				} else
-				{
-					dcc->resume_errno = errno;
-					dcc->resume_error = 1;
-				}
-			} else
-			{
-				dcc->resume_errno = errno;
-				dcc->resume_error = 1;
-			}
-
-			dcc->pos = dcc->resumable;
+			dcc->pos = 0;
 			dcc->serv = sess->server;
 			dcc->type = TYPE_RECV;
 			dcc->dccstat = STAT_QUEUED;
@@ -1735,33 +1811,20 @@ handle_dcc (struct session *sess, char *nick, char *word[],
 			dcc->size = size;
 			dcc->nick = strdup (nick);
 			dcc->maxcps = prefs.dcc_max_get_cps;
-			if (prefs.autodccsend)
+
+			is_resumable (dcc);
+
+			/* autodccsend is really autodccrecv.. right? */
+
+			if (prefs.autodccsend == 1)
 			{
-				if (prefs.autoresume && dcc->resumable)
-				{
-					/* don't resume the same file from two people! */
-					GSList *list = dcc_list;
-					struct DCC *d;
-					while (list)
-					{
-						d = list->data;
-						if (d->type == TYPE_RECV && d->dccstat != STAT_ABORTED &&
-							 d->dccstat != STAT_DONE && d->dccstat != STAT_FAILED)
-						{
-							if (d != dcc && strcmp (d->destfile, dcc->destfile) == 0)
-								goto dontresume;
-						}
-						list = list->next;
-					}
-					dcc_resume (dcc);
-				} else
-				{
-dontresume:
-					/*dcc->resume_error = 3;*/
-					dcc->resumable = 0;
-					dcc->pos = 0;
-					dcc_connect (dcc);
-				}
+				dcc_get (dcc);
+			}
+			else if (prefs.autodccsend == 2)
+			{
+				char buff[128];
+				snprintf (buff, sizeof (buff), "%s is offering \"%s\" via DCC.  Do you want to accept the transfer?", nick, file);
+				fe_confirm (buff, dcc_confirm_send, dcc_deny_send, dcc);
 			}
 			if (prefs.autoopendccrecvwindow)
 			{

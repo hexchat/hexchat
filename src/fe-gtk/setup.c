@@ -815,7 +815,7 @@ setup_create_other_color (char *text, int num, int row, GtkWidget *tab)
 static GtkWidget *
 setup_create_color_page (void)
 {
-	GtkWidget *tab, *box, *label;
+	GtkWidget *tab, *box, *label, *frame;
 	int i;
 
 	box = gtk_vbox_new (FALSE, 0);
@@ -835,16 +835,29 @@ setup_create_color_page (void)
 	for (i = 0; i < 16; i++)
 		setup_create_color_button (tab, i, 0, i+1);
 
+
 	setup_create_other_color (_("Foreground:"), 18, 1, tab);
 	setup_create_other_color (_("Background:"), 19, 2, tab);
 
 	setup_create_other_color (_("Mark fore:"), 17, 6, tab);
 	setup_create_other_color (_("Mark back:"), 16, 7, tab);
 
+	setup_create_other_color (_("Away User:"), 23, 13, tab);
+
+	frame = gtk_frame_new (_("Tab colors"));
+	gtk_container_set_border_width (GTK_CONTAINER (frame), 8);
+	gtk_table_attach (GTK_TABLE (tab), frame, 3, 15, 1, 18,
+							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
+
+	tab = gtk_table_new (9, 2, FALSE);
+	gtk_container_set_border_width (GTK_CONTAINER (tab), 8);
+	gtk_table_set_row_spacings (GTK_TABLE (tab), 2);
+	gtk_table_set_col_spacings (GTK_TABLE (tab), 3);
+	gtk_container_add (GTK_CONTAINER (frame), tab);
+
 	setup_create_other_color (_("New Data:"), 20, 10, tab);
 	setup_create_other_color (_("New Message:"), 22, 11, tab);
 	setup_create_other_color (_("Highlight:"), 21, 12, tab);
-	setup_create_other_color (_("Away User:"), 23, 13, tab);
 
 	return box;
 }
