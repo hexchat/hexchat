@@ -2017,6 +2017,16 @@ Command_Unload(char *word[], char *word_eol[], void *userdata)
 static int initialized = 0;
 static int reinit_tried = 0;
 
+void
+xchat_plugin_get_info(char **name, char **desc, char **version, void **reserved)
+{
+	*name = "Python";
+	*version = VERSION;
+	*desc = "Python scripting interface";
+   if (reserved)
+      *reserved = NULL;
+}
+
 int
 xchat_plugin_init(xchat_plugin *plugin_handle,
 		  char **plugin_name,
@@ -2038,9 +2048,7 @@ xchat_plugin_init(xchat_plugin *plugin_handle,
 	}
 	initialized = 1;
 
-	*plugin_name = "Python";
-	*plugin_version = VERSION;
-	*plugin_desc = "Python scripting interface";
+	xchat_plugin_get_info (plugin_name, plugin_desc, plugin_version, NULL);
 
 	/* Initialize python. */
 	Py_SetProgramName("xchat");
