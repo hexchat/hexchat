@@ -404,7 +404,7 @@ flat_cb (struct User *user, GSList **list)
 GSList *
 userlist_flat_list (session *sess)
 {
-	GSList *list;
+	GSList *list = NULL;
 
 	tree_foreach (sess->usertree, (tree_traverse_func *)flat_cb, &list);
 	return g_slist_reverse (list);
