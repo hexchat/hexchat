@@ -53,13 +53,18 @@ static xchat_plugin *ph;
 static xchat_hook *raw_line_hook;
 static xchat_hook *Command_TCL_hook;
 static xchat_hook *Command_Source_hook;
-static xchat_hook *Command_Rehash_hook;
+static xchat_hook *Command_Reload_hook;
 static xchat_hook *Command_Load_hook;
 static xchat_hook *Event_Handler_hook;
+static xchat_hook *Null_Command_hook;
 
-static int complete = 0;
+static int complete_level = 0;
+static t_complete complete[128 + 1];
 static Tcl_HashTable cmdTablePtr;
 static Tcl_HashTable aliasTablePtr;
+
+static int nextprocid = 0x1000;
+#define PROCPREFIX "__xctcl_"
 
 static char unknown[] = {
     "proc ::unknown {args} {\n"
@@ -75,6 +80,81 @@ static char sourcedirs[] = {
         "set files [lreplace $files $init $init]\n"
         "set files [linsert $files 0 $initfile]\n" "}\n" "foreach f $files {\n" "if { [catch { source $f } errMsg] } {\n" "puts \"Tcl plugin\\tError sourcing \\\"$f\\\" ($errMsg)\"\n" "} else {\n" "puts \"Tcl plugin\\tSourced \\\"$f\\\"\"\n" "}\n" "}\n"
 };
+
+static void Tcl_MyDStringAppend(Tcl_DString * ds, char *string)
+{
+    Tcl_DStringAppend(ds, string, strlen(string));
+}
+
+static char *InternalProcName(int value)
+{
+    static char result[32];
+    sprintf(result, "%s%08x", PROCPREFIX, value);
+    return result;
+}
+
+static int SourceInternalProc(int id, char *args, char *source)
+{
+    Tcl_DString ds;
+    int result;
+    Tcl_DStringInit(&ds);
+
+    Tcl_MyDStringAppend(&ds, "proc ");
+    Tcl_MyDStringAppend(&ds, InternalProcName(id));
+    Tcl_MyDStringAppend(&ds, " { ");
+    Tcl_MyDStringAppend(&ds, args);
+    Tcl_MyDStringAppend(&ds, " } {\n");
+    Tcl_MyDStringAppend(&ds, source);
+    Tcl_MyDStringAppend(&ds, "\n}\n\n");
+
+    result = Tcl_Eval(interp, ds.string);
+
+    Tcl_DStringFree(&ds);
+
+    return result;
+}
+
+static int EvalInternalProc(char *procname, int ct, ...)
+{
+    Tcl_DString ds;
+    int result;
+    va_list ap;
+    char *buf;
+
+    Tcl_DStringInit(&ds);
+
+    Tcl_MyDStringAppend(&ds, procname);
+
+    if (ct) {
+        va_start(ap, ct);
+        while (ct--) {
+            if ((buf = va_arg(ap, char *)) != NULL)
+                 Tcl_DStringAppendElement(&ds, buf);
+            else
+                Tcl_MyDStringAppend(&ds, " \"\"");
+        }
+        va_end(ap);
+    }
+
+    result = Tcl_Eval(interp, ds.string);
+
+    Tcl_DStringFree(&ds);
+
+    return result;
+}
+
+
+static void DeleteInternalProc(char *proc)
+{
+    Tcl_DString ds;
+
+    Tcl_DStringInit(&ds);
+    Tcl_MyDStringAppend(&ds, "rename ");
+    Tcl_MyDStringAppend(&ds, proc);
+    Tcl_MyDStringAppend(&ds, " {}");
+    Tcl_Eval(interp, ds.string);
+    Tcl_DStringFree(&ds);
+}
 
 static char *StrDup(char *string, int *length)
 {
@@ -105,19 +185,16 @@ static xchat_context *xchat_smart_context(char *arg1, char *arg2)
     char *server = NULL;
     char *channel = NULL;
 
-    if (arg1) {
-        if (strchr(arg1, '.'))
+    if (arg1 && !arg2) {
+        if (xchat_find_context(ph, arg1, arg1))
             server = arg1;
         else
             channel = arg1;
-    }
-
-    if (arg2) {
-        if (strchr(arg2, '.'))
-            server = arg2;
-        else
-            channel = arg2;
-    }
+    } else if (arg1 && arg2) {
+        server = arg1;
+        channel = arg2;
+    } else
+        return NULL;
 
     if (server && channel)
         return xchat_find_context(ph, server, channel);
@@ -126,7 +203,7 @@ static xchat_context *xchat_smart_context(char *arg1, char *arg2)
     else if (!server && channel)
         return xchat_find_context(ph, (char *) xchat_get_info(ph, "server"), channel);
     else
-        return xchat_get_context(ph);
+        return NULL;
 
 }
 
@@ -153,17 +230,26 @@ static int insert_timer(int seconds, char *script)
     int x;
     int dummy;
     time_t now;
+    char *errorInfo;
+    int id;
 
     if (script == NULL)
         return (-1);
+
+    id = (nextprocid++ % INT_MAX) + 1;
 
     now = time(NULL);
 
     for (x = 1; x < MAX_TIMERS; x++) {
         if (timers[x].timerid == 0) {
+            if (SourceInternalProc(id, "", script) == TCL_ERROR) {
+               errorInfo = Tcl_GetVar(interp, "errorInfo", TCL_GLOBAL_ONLY);
+               xchat_printf(ph, "\0039Tcl plugin\003\tERROR (timer %d) %s \n", timers[x].timerid, errorInfo);
+               return (-1);
+            }
             timers[x].timerid = (nexttimerid++ % INT_MAX) + 1;
             timers[x].timestamp = now + seconds;
-            timers[x].procPtr = StrDup(script, &dummy);
+            timers[x].procPtr = StrDup(InternalProcName(id), &dummy);
             queue_nexttimer();
             return (timers[x].timerid);
         }
@@ -177,6 +263,7 @@ static void do_timer()
     xchat_context *origctx;
     time_t now;
     int index;
+    char *errorInfo;
 
     if (!nexttimerindex)
         return;
@@ -187,16 +274,18 @@ static void do_timer()
         return;
 
     index = nexttimerindex;
-
     origctx = xchat_get_context(ph);
-    if (Tcl_Eval(interp, timers[index].procPtr) == TCL_ERROR) {
-        xchat_printf(ph, "\0039Tcl plugin:\003\tTIMER ERROR %s \n", Tcl_GetStringResult(interp));
+    if (EvalInternalProc(timers[index].procPtr, 0) == TCL_ERROR) {
+        errorInfo = Tcl_GetVar(interp, "errorInfo", TCL_GLOBAL_ONLY);
+        xchat_printf(ph, "\0039Tcl plugin\003\tERROR (timer) %s \n", errorInfo);
     }
     xchat_set_context(ph, origctx);
 
     timers[index].timerid = 0;
-    if (timers[index].procPtr != NULL)
+    if (timers[index].procPtr != NULL) {
+        DeleteInternalProc(timers[index].procPtr);
         Tcl_Free(timers[index].procPtr);
+    }
     timers[index].procPtr = NULL;
 
     queue_nexttimer();
@@ -216,16 +305,21 @@ static int Server_raw_line(char *word[], char *word_eol[], void *userdata)
     int dummy;
     char *string = NULL;
     int ctcp = 0;
-    char *label = NULL;
     int count;
     int list_argc, proc_argc;
     char **list_argv, **proc_argv;
     int private = 0;
-
-    complete = XCHAT_EAT_NONE;
+    char *errorInfo;
 
     if (word[0][0] == 0)
-      return complete;
+        return XCHAT_EAT_NONE;
+
+    if (complete_level == 128)
+        return XCHAT_EAT_NONE;
+
+    complete_level++;
+    complete[complete_level].defresult = XCHAT_EAT_PLUGIN;
+    complete[complete_level].result = XCHAT_EAT_NONE;
 
     if (word[1][0] == ':') {
         src = word[1];
@@ -307,28 +401,16 @@ static int Server_raw_line(char *word[], char *word_eol[], void *userdata)
                 if (Tcl_SplitList(interp, list_argv[count], &proc_argc, &proc_argv) != TCL_OK)
                     continue;
 
-                label = proc_argv[0];
-
-                Tcl_SetVar(interp, "_label", label, TCL_NAMESPACE_ONLY);
-                Tcl_SetVar(interp, "_private", myitoa(private), TCL_NAMESPACE_ONLY);
-                Tcl_SetVar(interp, "_raw", word_eol[1], TCL_NAMESPACE_ONLY);
-                Tcl_SetVar(interp, "_src", src, TCL_NAMESPACE_ONLY);
-                Tcl_SetVar(interp, "_cmd", cmd, TCL_NAMESPACE_ONLY);
-                Tcl_SetVar(interp, "_dest", dest, TCL_NAMESPACE_ONLY);
-
-                if (rest == NULL)
-                    Tcl_SetVar(interp, "_rest", "", TCL_NAMESPACE_ONLY);
-                else
-                    Tcl_SetVar(interp, "_rest", rest, TCL_NAMESPACE_ONLY);
-
                 origctx = xchat_get_context(ph);
-                if (Tcl_Eval(interp, proc_argv[1]) == TCL_ERROR)
-                    xchat_printf(ph, "\0039Tcl plugin:\003\tERROR (%s:%s) %s \n", cmd, label, Tcl_GetStringResult(interp));
+                if (EvalInternalProc(proc_argv[1], 7, src, dest, cmd, rest, word_eol[1], proc_argv[0], myitoa(private)) == TCL_ERROR) {
+                    errorInfo = Tcl_GetVar(interp, "errorInfo", TCL_GLOBAL_ONLY);
+                    xchat_printf(ph, "\0039Tcl plugin\003\tERROR (on %s %s) %s \n", cmd, proc_argv[0], errorInfo);
+                }
                 xchat_set_context(ph, origctx);
 
                 Tcl_Free((char *) proc_argv);
 
-                if (complete)
+                if (complete[complete_level].result)
                     break;
 
             }
@@ -344,7 +426,7 @@ static int Server_raw_line(char *word[], char *word_eol[], void *userdata)
     if (string)
         Tcl_Free(string);
 
-    return complete;            /* see 'tcl_complete */
+    return complete[complete_level--].result;
 
 }
 
@@ -354,13 +436,18 @@ static int Print_Hook(char *word[], void *userdata)
     Tcl_HashEntry *entry;
     xchat_context *origctx;
     int count;
-    char *label;
     int list_argc, proc_argc;
     char **list_argv, **proc_argv;
     Tcl_DString ds;
     int x;
+    char *errorInfo;
 
-    complete = XCHAT_EAT_NONE;
+    if (complete_level == 128)
+        return XCHAT_EAT_NONE;
+
+    complete_level++;
+    complete[complete_level].defresult = XCHAT_EAT_PLUGIN;
+    complete[complete_level].result = XCHAT_EAT_NONE;
 
     if ((entry = Tcl_FindHashEntry(&cmdTablePtr, xc[(int) userdata].event)) != NULL) {
 
@@ -373,38 +460,36 @@ static int Print_Hook(char *word[], void *userdata)
                 if (Tcl_SplitList(interp, list_argv[count], &proc_argc, &proc_argv) != TCL_OK)
                     continue;
 
-                label = proc_argv[0];
+                origctx = xchat_get_context(ph);
 
                 Tcl_DStringInit(&ds);
+
                 if ((int) userdata == CHAT) {
                     Tcl_DStringAppend(&ds, word[3], strlen(word[3]));
                     Tcl_DStringAppend(&ds, "!*@", 3);
                     Tcl_DStringAppend(&ds, word[1], strlen(word[1]));
-                    Tcl_SetVar(interp, "_src", ds.string, TCL_NAMESPACE_ONLY);
-                    Tcl_SetVar(interp, "_dest", word[2], TCL_NAMESPACE_ONLY);
-                    Tcl_SetVar(interp, "_rest", word[4], TCL_NAMESPACE_ONLY);
-                    Tcl_SetVar(interp, "_raw", "", TCL_NAMESPACE_ONLY);
+                    if (EvalInternalProc(proc_argv[1], 7, ds.string, word[2], xc[(int) userdata].event, word[4], "", proc_argv[0], "0") == TCL_ERROR) {
+                        errorInfo = Tcl_GetVar(interp, "errorInfo", TCL_GLOBAL_ONLY);
+                        xchat_printf(ph, "\0039Tcl plugin\003\tERROR (on %s %s) %s \n", xc[(int) userdata].event, proc_argv[0], errorInfo);
+                    }
                 } else {
                     if (xc[(int) userdata].argc > 0) {
                         for (x = 0; x <= xc[(int) userdata].argc; x++)
                             Tcl_DStringAppendElement(&ds, word[x]);
                     }
-                    Tcl_SetVar(interp, "_raw", ds.string, TCL_NAMESPACE_ONLY);
+                    if (EvalInternalProc(proc_argv[1], 7, "", "", xc[(int) userdata].event, "", ds.string, proc_argv[0], "0") == TCL_ERROR) {
+                        errorInfo = Tcl_GetVar(interp, "errorInfo", TCL_GLOBAL_ONLY);
+                        xchat_printf(ph, "\0039Tcl plugin\003\tERROR (on %s %s) %s \n", xc[(int) userdata].event, proc_argv[0], errorInfo);
+                    }
                 }
+
                 Tcl_DStringFree(&ds);
 
-                Tcl_SetVar(interp, "_label", label, TCL_NAMESPACE_ONLY);
-                Tcl_SetVar(interp, "_cmd", xc[(int) userdata].event, TCL_NAMESPACE_ONLY);
-
-                origctx = xchat_get_context(ph);
-                if (Tcl_Eval(interp, proc_argv[1]) == TCL_ERROR) {
-                    xchat_printf(ph, "\0039Tcl plugin:\003\tERROR (%s:%s) %s \n", xc[(int) userdata].event, label, Tcl_GetStringResult(interp));
-                }
                 xchat_set_context(ph, origctx);
 
                 Tcl_Free((char *) proc_argv);
 
-                if (complete)
+                if (complete[complete_level].result)
                     break;
 
             }
@@ -414,7 +499,7 @@ static int Print_Hook(char *word[], void *userdata)
         }
     }
 
-    return complete;
+    return complete[complete_level--].result;
 }
 
 
@@ -460,8 +545,10 @@ static int tcl_killtimer(ClientData cd, Tcl_Interp * irp, int argc, char *argv[]
         for (x = 1; x < MAX_TIMERS; x++) {
             if (timers[x].timerid == timerid) {
                 timers[x].timerid = 0;
-                if (timers[x].procPtr != NULL)
+                if (timers[x].procPtr != NULL) {
+                    DeleteInternalProc(timers[x].procPtr);
                     Tcl_Free(timers[x].procPtr);
+                }
                 timers[x].procPtr = NULL;
                 break;
             }
@@ -538,9 +625,19 @@ static int tcl_on(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
     int index;
     int count;
     int list_argc, proc_argc;
+    int id;
     char **list_argv, **proc_argv;
+    char *errorInfo;
 
     BADARGS(4, 4, " token label {script | procname ?args?}");
+
+    id = (nextprocid++ % INT_MAX) + 1;
+
+    if (SourceInternalProc(id, "_src _dest _cmd _rest _raw _label _private", argv[3]) == TCL_ERROR) {
+        errorInfo = Tcl_GetVar(interp, "errorInfo", TCL_GLOBAL_ONLY);
+        xchat_printf(ph, "\0039Tcl plugin\003\tERROR (on %s:%s) %s \n", argv[1], argv[2], errorInfo);
+        return TCL_OK;
+    }
 
     token = StrDup(argv[1], &dummy);
     Tcl_UtfToUpper(token);
@@ -559,7 +656,8 @@ static int tcl_on(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
                     Tcl_DStringAppendElement(&ds, proc_argv[0]);
                     Tcl_DStringAppendElement(&ds, proc_argv[1]);
                     Tcl_DStringEndSublist(&ds);
-                }
+                } else
+                    DeleteInternalProc(proc_argv[1]);
                 Tcl_Free((char *) proc_argv);
             }
             Tcl_Free((char *) list_argv);
@@ -569,7 +667,7 @@ static int tcl_on(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
 
     Tcl_DStringStartSublist(&ds);
     Tcl_DStringAppendElement(&ds, argv[2]);
-    Tcl_DStringAppendElement(&ds, argv[3]);
+    Tcl_DStringAppendElement(&ds, InternalProcName(id));
     Tcl_DStringEndSublist(&ds);
 
     procList = StrDup(ds.string, &dummy);
@@ -626,7 +724,8 @@ static int tcl_off(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
                         Tcl_DStringAppendElement(&ds, proc_argv[0]);
                         Tcl_DStringAppendElement(&ds, proc_argv[1]);
                         Tcl_DStringEndSublist(&ds);
-                    }
+                    } else
+                        DeleteInternalProc(proc_argv[1]);
                     Tcl_Free((char *) proc_argv);
                 }
                 Tcl_Free((char *) list_argv);
@@ -671,8 +770,18 @@ static int tcl_alias(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
     char *string;
     char *help = NULL;
     int dummy;
+    int id;
+    char *errorInfo;
 
     BADARGS(3, 4, " name ?help? {script | procname ?args?}");
+
+    id = (nextprocid++ % INT_MAX) + 1;
+
+    if (SourceInternalProc(id, "_cmd _rest", argv[argc - 1]) == TCL_ERROR) {
+        errorInfo = Tcl_GetVar(interp, "errorInfo", TCL_GLOBAL_ONLY);
+        xchat_printf(ph, "\0039Tcl plugin\003\tERROR (alias %s) %s \n", argv[1], errorInfo);
+        return TCL_OK;
+    }
 
     string = StrDup(argv[1], &dummy);
     Tcl_UtfToUpper(string);
@@ -685,13 +794,17 @@ static int tcl_alias(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
     entry = Tcl_CreateHashEntry(&aliasTablePtr, string, &newentry);
     if (newentry) {
         aliasPtr = (alias *) Tcl_Alloc(sizeof(alias));
-        aliasPtr->hook = xchat_hook_command(ph, string, XCHAT_PRI_NORM, Command_Alias, help, 0);
+        if (string[0] == '@')
+            aliasPtr->hook = NULL;
+        else
+            aliasPtr->hook = xchat_hook_command(ph, string, XCHAT_PRI_NORM, Command_Alias, help, 0);
     } else {
         aliasPtr = Tcl_GetHashValue(entry);
+        DeleteInternalProc(aliasPtr->procPtr);
         Tcl_Free(aliasPtr->procPtr);
     }
 
-    aliasPtr->procPtr = StrDup(argv[argc - 1], &dummy);
+    aliasPtr->procPtr = StrDup(InternalProcName(id), &dummy);
 
     Tcl_SetHashValue(entry, aliasPtr);
 
@@ -707,22 +820,21 @@ static int tcl_complete(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
     if (argc == 2) {
         if (Tcl_GetInt(irp, argv[1], &complete) != TCL_OK) {
             if (strcasecmp("EAT_NONE", argv[1]) == 0)
-                complete = XCHAT_EAT_NONE;
+                complete[complete_level].result = XCHAT_EAT_NONE;
             else if (strcasecmp("EAT_XCHAT", argv[1]) == 0)
-                complete = XCHAT_EAT_XCHAT;
+                complete[complete_level].result = XCHAT_EAT_XCHAT;
             else if (strcasecmp("EAT_PLUGIN", argv[1]) == 0)
-                complete = XCHAT_EAT_PLUGIN;
+                complete[complete_level].result = XCHAT_EAT_PLUGIN;
             else if (strcasecmp("EAT_ALL", argv[1]) == 0)
-                complete = XCHAT_EAT_ALL;
+                complete[complete_level].result = XCHAT_EAT_ALL;
             else
                 BADARGS(1, 2, " ?EAT_NONE|EAT_XCHAT|EAT_PLUGIN|EAT_ALL?");
         }
     } else
-        complete = XCHAT_EAT_PLUGIN;
+        complete[complete_level].result = complete[complete_level].defresult;
 
     return TCL_RETURN;
 }
-
 
 static int tcl_command(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
 {
@@ -1068,7 +1180,7 @@ static int tcl_setcontext(ClientData cd, Tcl_Interp * irp, int argc, char *argv[
             Tcl_AppendResult(irp, "Invalid context", NULL);
             return TCL_ERROR;
         }
-        ctx = xchat_smart_context(list_argv[1], list_argv[2]);
+        ctx = xchat_find_context(ph, list_argv[1], list_argv[2]);
     }
 
     CHECKCTX(ctx);
@@ -1094,6 +1206,8 @@ static int tcl_findcontext(ClientData cd, Tcl_Interp * irp, int argc, char *argv
         break;
     default:;
     }
+
+    CHECKCTX(ctx);
 
     Tcl_DStringInit(&ds);
 
@@ -1578,34 +1692,91 @@ static int Command_Alias(char *word[], char *word_eol[], void *userdata)
     xchat_context *origctx;
     int dummy;
     char *string;
+    char *errorInfo;
 
-    complete = XCHAT_EAT_NONE;
+    if (complete_level == 128)
+        return XCHAT_EAT_NONE;
+
+    complete_level++;
+    complete[complete_level].defresult = XCHAT_EAT_ALL;
+    complete[complete_level].result = XCHAT_EAT_NONE;
 
     string = StrDup(word[1], &dummy);
+
     Tcl_UtfToUpper(string);
 
     if ((entry = Tcl_FindHashEntry(&aliasTablePtr, string)) != NULL) {
         aliasPtr = Tcl_GetHashValue(entry);
         origctx = xchat_get_context(ph);
-        Tcl_SetVar(interp, "_cmd", word[1], TCL_NAMESPACE_ONLY);
-        Tcl_SetVar(interp, "_rest", word_eol[2], TCL_NAMESPACE_ONLY);
-        if (Tcl_Eval(interp, aliasPtr->procPtr) == TCL_ERROR) {
-            xchat_printf(ph, "\0039Tcl plugin:\003\tERROR (%s) %s \n", string, Tcl_GetStringResult(interp));
+        if (EvalInternalProc(aliasPtr->procPtr, 2, string, word_eol[2]) == TCL_ERROR) {
+            errorInfo = Tcl_GetVar(interp, "errorInfo", TCL_GLOBAL_ONLY);
+            xchat_printf(ph, "\0039Tcl plugin\003\tERROR (alias %s) %s \n", string, errorInfo);
         }
         xchat_set_context(ph, origctx);
-        complete = XCHAT_EAT_ALL;
     }
 
     Tcl_Free(string);
 
-    return complete;            /* see 'tcl_complete */
+    return complete[complete_level--].result;
+}
+
+static int Null_Command_Alias(char *word[], char *word_eol[], void *userdata)
+{
+    alias *aliasPtr;
+    Tcl_HashEntry *entry;
+    xchat_context *origctx;
+    int dummy;
+    char *channel;
+    char *string;
+    Tcl_DString ds;
+    char *errorInfo;
+    static int recurse = 0;
+
+    if (recurse)
+        return XCHAT_EAT_NONE;
+
+    if (complete_level == 128)
+        return XCHAT_EAT_NONE;
+
+    complete_level++;
+    complete[complete_level].defresult = XCHAT_EAT_ALL;
+    complete[complete_level].result = XCHAT_EAT_NONE;
+
+    recurse++;
+
+    channel = xchat_get_info(ph, "channel");
+    Tcl_DStringInit(&ds);
+    Tcl_DStringAppend(&ds, "@", 1);
+    Tcl_DStringAppend(&ds, channel, strlen(channel));
+    string = StrDup(ds.string, &dummy);
+    Tcl_DStringFree(&ds);
+
+    Tcl_UtfToUpper(string);
+
+    if ((entry = Tcl_FindHashEntry(&aliasTablePtr, string)) != NULL) {
+        aliasPtr = Tcl_GetHashValue(entry);
+        origctx = xchat_get_context(ph);
+        if (EvalInternalProc(aliasPtr->procPtr, 2, string, word_eol[1]) == TCL_ERROR) {
+            errorInfo = Tcl_GetVar(interp, "errorInfo", TCL_GLOBAL_ONLY);
+            xchat_printf(ph, "\0039Tcl plugin\003\tERROR (alias %s) %s \n", string, errorInfo);
+        }
+        xchat_set_context(ph, origctx);
+    }
+
+    Tcl_Free(string);
+
+    recurse--;
+
+    return complete[complete_level--].result;
 }
 
 static int Command_TCL(char *word[], char *word_eol[], void *userdata)
 {
-    if (Tcl_Eval(interp, word_eol[2]) == TCL_ERROR)
-        xchat_printf(ph, "\0039Tcl plugin\003\tERROR: %s\n", Tcl_GetStringResult(interp));
-    else
+    char *errorInfo;
+    if (Tcl_Eval(interp, word_eol[2]) == TCL_ERROR) {
+        errorInfo = Tcl_GetVar(interp, "errorInfo", TCL_GLOBAL_ONLY);
+        xchat_printf(ph, "\0039Tcl plugin\003\tERROR: %s\n", errorInfo);
+    } else
         xchat_printf(ph, "\0039Tcl plugin\003\tRESULT: %s\n", Tcl_GetStringResult(interp));
     return XCHAT_EAT_ALL;
 }
@@ -1616,6 +1787,7 @@ static int Command_Source(char *word[], char *word_eol[], void *userdata)
     Tcl_DString ds;
     struct stat dummy;
     int len;
+    char *errorInfo;
 
     if (!strlen(word_eol[2]))
         return XCHAT_EAT_NONE;
@@ -1638,10 +1810,11 @@ static int Command_Source(char *word[], char *word_eol[], void *userdata)
             }
         }
 
-        if (Tcl_EvalFile(interp, ds.string) == TCL_ERROR)
-            xchat_printf(ph, "\0039Tcl plugin:\003\tERROR: %s\n", Tcl_GetStringResult(interp));
-        else
-            xchat_printf(ph, "\0039Tcl plugin:\003\tSourced %s\n", ds.string);
+        if (Tcl_EvalFile(interp, ds.string) == TCL_ERROR) {
+            errorInfo = Tcl_GetVar(interp, "errorInfo", TCL_GLOBAL_ONLY);
+            xchat_printf(ph, "\0039Tcl plugin\003\tERROR: %s\n", errorInfo);
+        } else
+            xchat_printf(ph, "\0039Tcl plugin\003\tSourced %s\n", ds.string);
 
         Tcl_DStringFree(&ds);
 
@@ -1652,11 +1825,11 @@ static int Command_Source(char *word[], char *word_eol[], void *userdata)
 
 }
 
-static int Command_Rehash(char *word[], char *word_eol[], void *userdata)
+static int Command_Reload(char *word[], char *word_eol[], void *userdata)
 {
     Tcl_Plugin_DeInit();
     Tcl_Plugin_Init();
-    xchat_print(ph, "\0039Tcl plugin:\003\tRehashed\n");
+    xchat_print(ph, "\0039Tcl plugin\003\tRehashed\n");
     return XCHAT_EAT_ALL;
 }
 
@@ -1730,7 +1903,6 @@ static void Tcl_Plugin_Init()
     if (Tcl_Eval(interp, sourcedirs) == TCL_ERROR) {
         xchat_printf(ph, "Error sourcing internal 'sourcedirs' (%s)\n", Tcl_GetStringResult(interp));
     }
-
 }
 
 static void Tcl_Plugin_DeInit()
@@ -1756,7 +1928,8 @@ static void Tcl_Plugin_DeInit()
     while (entry != NULL) {
         aliasPtr = Tcl_GetHashValue(entry);
         Tcl_Free(aliasPtr->procPtr);
-        xchat_unhook(ph, aliasPtr->hook);
+        if (aliasPtr->hook)
+            xchat_unhook(ph, aliasPtr->hook);
         Tcl_Free((char *) aliasPtr);
         entry = Tcl_NextHashEntry(&search);
     }
@@ -1831,9 +2004,10 @@ int xchat_plugin_init(xchat_plugin * plugin_handle, char **plugin_name, char **p
     raw_line_hook = xchat_hook_server(ph, "RAW LINE", XCHAT_PRI_NORM, Server_raw_line, NULL);
     Command_TCL_hook = xchat_hook_command(ph, "tcl", XCHAT_PRI_NORM, Command_TCL, 0, 0);
     Command_Source_hook = xchat_hook_command(ph, "source", XCHAT_PRI_NORM, Command_Source, 0, 0);
-    Command_Rehash_hook = xchat_hook_command(ph, "rehash", XCHAT_PRI_NORM, Command_Rehash, 0, 0);
+    Command_Reload_hook = xchat_hook_command(ph, "Reload", XCHAT_PRI_NORM, Command_Reload, 0, 0);
     Command_Load_hook = xchat_hook_command(ph, "LOAD", XCHAT_PRI_NORM, Command_Source, 0, 0);
     Event_Handler_hook = xchat_hook_timer(ph, 100, TCL_Event_Handler, 0);
+    Null_Command_hook = xchat_hook_command(ph, "", XCHAT_PRI_NORM, Null_Command_Alias, "", 0);
 
     banner();
     xchat_print(ph, "Tcl plugin loaded successfully!\n");
@@ -1851,9 +2025,10 @@ int xchat_plugin_deinit()
     xchat_unhook(ph, raw_line_hook);
     xchat_unhook(ph, Command_TCL_hook);
     xchat_unhook(ph, Command_Source_hook);
-    xchat_unhook(ph, Command_Rehash_hook);
+    xchat_unhook(ph, Command_Reload_hook);
     xchat_unhook(ph, Command_Load_hook);
     xchat_unhook(ph, Event_Handler_hook);
+    xchat_unhook(ph, Null_Command_hook);
 
     Tcl_Plugin_DeInit();
 

@@ -39,6 +39,11 @@ typedef struct {
     char *procPtr;
 } timer;
 
+typedef struct {
+    int result;
+    int defresult;
+} t_complete;
+
 #define MAX_TIMERS 256
 
 static char *StrDup(char *string, int *length);
@@ -79,9 +84,10 @@ static int tcl_version(ClientData cd, Tcl_Interp * irp, int argc, char *argv[]);
 static int tcl_xchatdir(ClientData cd, Tcl_Interp * irp, int argc, char *argv[]);
 static int tcl_xchat_nickcmp(ClientData cd, Tcl_Interp * irp, int argc, char *argv[]);
 static int Command_Alias(char *word[], char *word_eol[], void *userdata);
+static int Null_Command_Alias(char *word[], char *word_eol[], void *userdata);
 static int Command_TCL(char *word[], char *word_eol[], void *userdata);
 static int Command_Source(char *word[], char *word_eol[], void *userdata);
-static int Command_Rehash(char *word[], char *word_eol[], void *userdata);
+static int Command_Reload(char *word[], char *word_eol[], void *userdata);
 static int TCL_Event_Handler(void *userdata);
 static void Tcl_Plugin_Init();
 static void Tcl_Plugin_DeInit();
