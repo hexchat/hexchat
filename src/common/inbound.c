@@ -645,7 +645,13 @@ set_server_name (struct server *serv, char *name)
 	}
 	if (serv->server_session->type == SESS_SERVER)
 	{
-		safe_strcpy (serv->server_session->channel, name, CHANLEN);
+		if (serv->networkname)
+		{
+			safe_strcpy (serv->server_session->channel, serv->networkname, CHANLEN);
+		} else
+		{
+			safe_strcpy (serv->server_session->channel, name, CHANLEN);
+		}
 		fe_set_channel (serv->server_session);
 	}
 }

@@ -619,6 +619,13 @@ inbound_005 (server * serv, char *word[])
 			if (serv->networkname)
 				free (serv->networkname);
 			serv->networkname = strdup (word[w] + 8);
+
+			if (serv->server_session->type == SESS_SERVER)
+			{
+				safe_strcpy (serv->server_session->channel, serv->networkname, CHANLEN);
+				fe_set_channel (serv->server_session);
+			}
+
 		} else if (strncmp (word[w], "CASEMAPPING=", 12) == 0)
 		{
 			if (strcmp (word[w] + 12, "ascii") == 0)	/* bahamut */
