@@ -19,6 +19,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 
 #include "xchat.h"
 
@@ -926,12 +929,19 @@ servlist_save (void)
 	ircserver *serv;
 	GSList *list;
 	GSList *hlist;
+	int first = FALSE;
 
 	snprintf (buf, sizeof (buf), "%s/servlist_.conf", get_xdir ());
+	if (access (buf, F_OK) != 0)
+		first = TRUE;
 	fp = fopen (buf, "w");
 	if (!fp)
 		return;
 
+#ifndef WIN32
+	if (first)
+		chmod (buf, 0600);
+#endif
 	fprintf (fp, "v="VERSION"\n\n");
 
 	list = network_list;

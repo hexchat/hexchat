@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: X-Chat 1.8.8\n"
-"POT-Creation-Date: 2002-12-13 20:39+1100\n"
+"POT-Creation-Date: 2002-12-27 20:14+1100\n"
 "PO-Revision-Date: 2002-03-28 09:12+0100\n"
 "Last-Translator: Olivier Berger <olberger@club-internet.fr>\n"
 "Language-Team: GNOME French Team <gnomefr@traduc.org>\n"
@@ -15,15 +15,21 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/common/cfgfiles.c:271
-msgid "Cannot create ~/.xchat"
+#: src/common/cfgfiles.c:268
+#, fuzzy
+msgid "Cannot create ~/.xchat2"
 msgstr "Impossible de créer ~/.xchat"
 
-#: src/common/cfgfiles.c:542
+#: src/common/cfgfiles.c:537
 msgid "I'm busy"
 msgstr "Occupé"
 
-#: src/common/cfgfiles.c:592
+#: src/common/cfgfiles.c:538
+#, fuzzy
+msgid "Client exiting"
+msgstr "Fermeture du client"
+
+#: src/common/cfgfiles.c:581
 #, fuzzy
 msgid ""
 "* Running IRC as root is stupid! You should\n"
@@ -66,12 +72,12 @@ msgstr "Connexion"
 msgid "Aborted"
 msgstr "Interrompu"
 
-#: src/common/dcc.c:1137
+#: src/common/dcc.c:1226
 #, c-format
 msgid "Cannot access %s\n"
 msgstr "Impossible d'accéder à %s\n"
 
-#: src/common/dcc.c:1570
+#: src/common/dcc.c:1661
 msgid "No active DCCs\n"
 msgstr "Aucun DCC actif\n"
 
@@ -103,11 +109,11 @@ msgstr "Pas encore dans un canal. Essayez /join #<canal>\n"
 msgid "Not connected. Try /server <host> [<port>]\n"
 msgstr "Pas encore connecté. Essayez /server <hote> [<port>]\n"
 
-#: src/common/outbound.c:1282
+#: src/common/outbound.c:1296
 msgid "I need /bin/sh to run!\n"
 msgstr "J'ai besoin de /bin/sh pour tourner !\n"
 
-#: src/common/outbound.c:1494
+#: src/common/outbound.c:1508
 msgid ""
 "\n"
 "Commands Available:\n"
@@ -119,7 +125,7 @@ msgstr ""
 "\n"
 "  "
 
-#: src/common/outbound.c:1529
+#: src/common/outbound.c:1543
 msgid ""
 "\n"
 "\n"
@@ -131,7 +137,7 @@ msgstr ""
 "Taper /HELP <commande> pour plus d'informations, ou /HELP -l\n"
 "\n"
 
-#: src/common/outbound.c:1530
+#: src/common/outbound.c:1544
 msgid ""
 "User defined commands:\n"
 "\n"
@@ -141,47 +147,47 @@ msgstr ""
 "\n"
 "  "
 
-#: src/common/outbound.c:1620
+#: src/common/outbound.c:1634
 #, c-format
 msgid "Unknown arg '%s' ignored."
 msgstr "Argument inconnu '%s' ignoré."
 
-#: src/common/outbound.c:2294
+#: src/common/outbound.c:2308
 #, fuzzy
 msgid "No such plugin found.\n"
 msgstr "Aucune commande correspondante.\n"
 
-#: src/common/outbound.c:2299 src/fe-gtk/plugingui.c:132
+#: src/common/outbound.c:2313 src/fe-gtk/plugingui.c:132
 msgid "That plugin is refusing to unload.\n"
 msgstr ""
 
-#: src/common/outbound.c:2433
+#: src/common/outbound.c:2447
 #, fuzzy
 msgid "ADDBUTTON <name> <action>, adds a button under the user-list"
 msgstr ""
 "/ADDBUTTON <nom> <action>, ajoute un bouton en-dessous de la liste des "
 "utilisateurs\n"
 
-#: src/common/outbound.c:2435
+#: src/common/outbound.c:2449
 #, fuzzy
 msgid "ALLCHAN <cmd>, sends a command to all channels you're in"
 msgstr ""
 "/ALLCHAN <cmd>, envoie une commande à tous les canaux dans lesquels vous "
 "êtes présent\n"
 
-#: src/common/outbound.c:2437
+#: src/common/outbound.c:2451
 #, fuzzy
 msgid "ALLSERV <cmd>, sends a command to all servers you're in"
 msgstr ""
 "/ALLSERV <cmd>, envoie une commande à tous les serveurs sur lesquels vous "
 "êtes connecté\n"
 
-#: src/common/outbound.c:2438
+#: src/common/outbound.c:2452
 #, fuzzy
 msgid "AWAY [<reason>], sets you away"
 msgstr "/AWAY [<raison>], vous signale comme absent\n"
 
-#: src/common/outbound.c:2440
+#: src/common/outbound.c:2454
 #, fuzzy
 msgid ""
 "BAN <mask> [<bantype>], bans everyone matching the mask from the current "
@@ -192,22 +198,22 @@ msgstr ""
 "le canal en cours. S'ils sont déjà sur le canal ça ne les met pas dehors "
 "(kick) (nécessite chanop)\n"
 
-#: src/common/outbound.c:2442
+#: src/common/outbound.c:2456
 #, fuzzy
 msgid "UNBAN <mask> [<mask>...], unbans the specified masks."
 msgstr "/UNBAN <masque> [<masque>...], unban le masques fournis.\n"
 
-#: src/common/outbound.c:2443
+#: src/common/outbound.c:2457
 #, fuzzy
 msgid "CLEAR, Clears the current text window"
 msgstr "/CLEAR, Vide la fenêtre de texte courante\n"
 
-#: src/common/outbound.c:2444
+#: src/common/outbound.c:2458
 #, fuzzy
 msgid "CLOSE, Closes the current window/tab"
 msgstr "/CLOSE, Ferme l'onglet/fenêtre courant\n"
 
-#: src/common/outbound.c:2447
+#: src/common/outbound.c:2461
 #, fuzzy
 msgid ""
 "CTCP <nick> <message>, send the CTCP message to nick, common messages are "
@@ -216,18 +222,18 @@ msgstr ""
 "/CTCP <pseudo> <message>, envoie le message CTCP au pseudo, les messages "
 "courants sont VERSION et USERINFO\n"
 
-#: src/common/outbound.c:2449
+#: src/common/outbound.c:2463
 #, fuzzy
 msgid "COUNTRY <code>, finds a country code, eg: au = australia"
 msgstr ""
 "/COUNTRY <code>, recherche un code de pays, par exemple : au = australie\n"
 
-#: src/common/outbound.c:2451
+#: src/common/outbound.c:2465
 #, fuzzy
 msgid "CYCLE, parts current channel and immediately rejoins"
 msgstr "/CYCLE, sort du canal courant et revient immédiatement\n"
 
-#: src/common/outbound.c:2453
+#: src/common/outbound.c:2467
 #, fuzzy
 msgid ""
 "\n"
@@ -246,13 +252,13 @@ msgstr ""
 "/DCC CLOSE <type> <pseudo> <fichier>     exemple:\n"
 "         /dcc close send rogerdupont fichier.tar.gz\n"
 
-#: src/common/outbound.c:2463
+#: src/common/outbound.c:2477
 #, fuzzy
 msgid "DELBUTTON <name>, deletes a button from under the user-list"
 msgstr ""
 "/DELBUTTON <nom>, supprime un bouton de sous la liste des utilisateurs\n"
 
-#: src/common/outbound.c:2465
+#: src/common/outbound.c:2479
 #, fuzzy
 msgid ""
 "DEHOP <nick>, removes chanhalf-op status from the nick on the current "
@@ -261,7 +267,7 @@ msgstr ""
 "/DEHOP <pseudo>, supprime le statut chanhalf-op d'un pseudo sur le canal "
 "courant (nécessite chanop)\n"
 
-#: src/common/outbound.c:2467
+#: src/common/outbound.c:2481
 #, fuzzy
 msgid ""
 "DEOP <nick>, removes chanop status from the nick on the current channel "
@@ -270,7 +276,7 @@ msgstr ""
 "/DEOP <pseudo>, supprime le statut chanop d'un pseudo sur le canal courant "
 "(nécessite chanop)\n"
 
-#: src/common/outbound.c:2469
+#: src/common/outbound.c:2483
 #, fuzzy
 msgid ""
 "DEVOICE <nick>, removes voice status from the nick on the current channel "
@@ -279,22 +285,22 @@ msgstr ""
 "/DEVOICE <pseudo>, supprime le statut voice d'un pseudo sur le canal courant "
 "(nécessite chanop)\n"
 
-#: src/common/outbound.c:2470
+#: src/common/outbound.c:2484
 #, fuzzy
 msgid "DISCON, Disconnects from server"
 msgstr "/DISCON, Se déconnecte du serveur\n"
 
-#: src/common/outbound.c:2471
+#: src/common/outbound.c:2485
 #, fuzzy
 msgid "DNS <nick|host|ip>, Finds a users IP number"
 msgstr "/DNS <pseudo|hote|ip>, trouve l'adresse IP d'un utilisateur\n"
 
-#: src/common/outbound.c:2472
+#: src/common/outbound.c:2486
 #, fuzzy
 msgid "ECHO <text>, Prints text locally"
 msgstr "/ECHO <texte>, Affiche un texte en local\n"
 
-#: src/common/outbound.c:2475
+#: src/common/outbound.c:2489
 #, fuzzy
 msgid ""
 "EXEC [-o] <command>, runs the command. If -o flag is used then output is "
@@ -304,7 +310,7 @@ msgstr ""
 "sortie est envoyée sur le canal courant, sinon elle est affichée dans la "
 "zone de texte courante\n"
 
-#: src/common/outbound.c:2477
+#: src/common/outbound.c:2491
 #, fuzzy
 msgid ""
 "EXECKILL [-9], kills a running exec in the current session. If -9 is given "
@@ -313,40 +319,40 @@ msgstr ""
 "/EXECKILL [-9], tue une exécution en cours dans la session courante. Si -9 "
 "est fourni, le processus est tué par SIGKILL\n"
 
-#: src/common/outbound.c:2479
+#: src/common/outbound.c:2493
 #, fuzzy
 msgid "EXECSTOP, sends the process SIGSTOP"
 msgstr "/EXECSTOP, envoie un SIGSTOP au processus\n"
 
-#: src/common/outbound.c:2480
+#: src/common/outbound.c:2494
 #, fuzzy
 msgid "EXECCONT, sends the process SIGCONT"
 msgstr "/EXECCONT, envoie un SIGCONT au processus\n"
 
-#: src/common/outbound.c:2481
+#: src/common/outbound.c:2495
 #, fuzzy
 msgid "EXECWRITE, sends data to the processes stdin"
 msgstr "/EXECWRITE, envoie des données à l'entrée standard du processus\n"
 
-#: src/common/outbound.c:2485
+#: src/common/outbound.c:2499
 #, fuzzy
 msgid "FLUSHQ, flushes the current server's send queue"
 msgstr "/FLUSHQ, vide la queue d'envoi du serveur courant\n"
 
-#: src/common/outbound.c:2487
+#: src/common/outbound.c:2501
 #, fuzzy
 msgid "GATE <host> [<port>], proxies through a host, port defaults to 23"
 msgstr ""
 "/GATE <hote> [<port>], utilise un hote comme proxy, le port est 23 par "
 "défaut\n"
 
-#: src/common/outbound.c:2492
+#: src/common/outbound.c:2506
 #, fuzzy
 msgid "HOP <nick>, gives chanhalf-op status to the nick (needs chanop)"
 msgstr ""
 "/HOP <pseudo>, donne le statut chanhalf-op au pseudo (nécessite chanop)\n"
 
-#: src/common/outbound.c:2494
+#: src/common/outbound.c:2508
 #, fuzzy
 msgid ""
 "IGNORE <mask> <types..> <options..>\n"
@@ -361,7 +367,7 @@ msgstr ""
 "              PRIV, CHAN, NOTI, CTCP, INVI, ALL\n"
 "    options - NOSAVE, QUIET\n"
 
-#: src/common/outbound.c:2501
+#: src/common/outbound.c:2515
 #, fuzzy
 msgid ""
 "INVITE <nick> [<channel>], invites someone to a channel, by default the "
@@ -370,19 +376,19 @@ msgstr ""
 "/INVITE <pseudo> [<canal>], invite quelqu'un sur un canal, par défaut le "
 "canal courant (nécessite chanop)\n"
 
-#: src/common/outbound.c:2502
+#: src/common/outbound.c:2516
 #, fuzzy
 msgid "JOIN <channel>, joins the channel"
 msgstr "/JOIN <canal>, rejoint le canal\n"
 
-#: src/common/outbound.c:2504
+#: src/common/outbound.c:2518
 #, fuzzy
 msgid "KICK <nick>, kicks the nick from the current channel (needs chanop)"
 msgstr ""
 "/KICK <pseudo>, kicke le pseudo (met dehors) du canal courant (nécessite "
 "chanop)\n"
 
-#: src/common/outbound.c:2506
+#: src/common/outbound.c:2520
 #, fuzzy
 msgid ""
 "KICKBAN <nick>, bans then kicks the nick from the current channel (needs "
@@ -391,22 +397,22 @@ msgstr ""
 "/KICKBAN <pseudo>, bannit puis kicke (met dehors) le pseudo du canal courant "
 "(nécessite chanop)\n"
 
-#: src/common/outbound.c:2508
+#: src/common/outbound.c:2522
 #, fuzzy
 msgid "LAGCHECK, forces a new lag check"
 msgstr "/LAGCHECK, force une nouvelle vérification de lag (délai)\n"
 
-#: src/common/outbound.c:2510
+#: src/common/outbound.c:2524
 #, fuzzy
 msgid "LASTLOG <string>, searches for a string in the buffer"
 msgstr "/LASTLOG <chaine>, recherche une chaine dans le buffer (tampon).\n"
 
-#: src/common/outbound.c:2512
+#: src/common/outbound.c:2526
 #, fuzzy
 msgid "LOAD <file>, loads a plugin or script"
 msgstr "/LOAD <fichier>, charge un script Perl\n"
 
-#: src/common/outbound.c:2515
+#: src/common/outbound.c:2529
 #, fuzzy
 msgid ""
 "MDEHOP, Mass deop's all chanhalf-ops in the current channel (needs chanop)"
@@ -414,14 +420,14 @@ msgstr ""
 "/MDEHOP, fait un deop massif sur tous les chanhalf-ops du canal courant "
 "(nécessite chanop)\n"
 
-#: src/common/outbound.c:2517
+#: src/common/outbound.c:2531
 #, fuzzy
 msgid "MDEOP, Mass deop's all chanops in the current channel (needs chanop)"
 msgstr ""
 "/MDEOP, fait un deop massif sur tous les chanops du canal courant (nécessite "
 "chanop)\n"
 
-#: src/common/outbound.c:2519
+#: src/common/outbound.c:2533
 #, fuzzy
 msgid ""
 "MKICK, Mass kicks everyone except you in the current channel (needs chanop)"
@@ -429,7 +435,7 @@ msgstr ""
 "/MKICK, fait un kick massif de tout le monde sauf vous dans le canal courant "
 "(nécessite chanop)\n"
 
-#: src/common/outbound.c:2521
+#: src/common/outbound.c:2535
 #, fuzzy
 msgid ""
 "ME <action>, sends the action to the current channel (actions are written in "
@@ -438,32 +444,32 @@ msgstr ""
 "/ME <action>, envoie l'action dans le canal courant (les actions sont "
 "écrites à la 3ème personne, comme /me est content)\n"
 
-#: src/common/outbound.c:2522
+#: src/common/outbound.c:2536
 #, fuzzy
 msgid "MSG <nick> <message>, sends a private message"
 msgstr "/MSG <pseudo> <message>, envoie un message privé\n"
 
-#: src/common/outbound.c:2525
+#: src/common/outbound.c:2539
 #, fuzzy
 msgid "NAMES, Lists the nicks on the current channel"
 msgstr "/NAMES, Liste les pseudos sur le canal courant\n"
 
-#: src/common/outbound.c:2527
+#: src/common/outbound.c:2541
 #, fuzzy
 msgid "NCTCP <nick> <message>, Sends a CTCP notice"
 msgstr "/NCTCP <pseudo> <message>, Envoie une notice CTCP\n"
 
-#: src/common/outbound.c:2528
+#: src/common/outbound.c:2542
 #, fuzzy
 msgid "NEWSERVER <hostname> [<port>]"
 msgstr "/NEWSERVER <nomhote> [<port>]\n"
 
-#: src/common/outbound.c:2529
+#: src/common/outbound.c:2543
 #, fuzzy
 msgid "NICK <nickname>, sets your nick"
 msgstr "/NICK <pseudonyme>, définit votre pseudo\n"
 
-#: src/common/outbound.c:2532
+#: src/common/outbound.c:2546
 #, fuzzy
 msgid ""
 "NOTICE <nick/channel> <message>, sends a notice. Notices are a type of "
@@ -472,47 +478,47 @@ msgstr ""
 "/NOTICE <pseudo/canal> <message>, envoie une notice. Les notices sont un "
 "type de message auquel on devrait réagir automatiquement\n"
 
-#: src/common/outbound.c:2534
+#: src/common/outbound.c:2548
 #, fuzzy
 msgid "NOTIFY [<nick>], lists your notify list or adds someone to it"
 msgstr ""
 "/NOTIFY [<pseudo>], liste votre liste de notifications et y ajoute "
 "quelqu'un\n"
 
-#: src/common/outbound.c:2536
+#: src/common/outbound.c:2550
 #, fuzzy
 msgid "OP <nick>, gives chanop status to the nick (needs chanop)"
 msgstr "/OP <pseudo>, donne le statut chanop au pseudo (nécessite chanop)\n"
 
-#: src/common/outbound.c:2538
+#: src/common/outbound.c:2552
 #, fuzzy
 msgid ""
 "PART [<channel>] [<reason>], leaves the channel, by default the current one"
 msgstr ""
 "/PART [<canal>] [<raison>], quitte le canal, par défaut le canal courant\n"
 
-#: src/common/outbound.c:2540
+#: src/common/outbound.c:2554
 #, fuzzy
 msgid "PING <nick | channel>, CTCP pings nick or channel"
 msgstr "/PING <pseudo | canal>, envoie un ping CTCP au pseudo ou au canal\n"
 
-#: src/common/outbound.c:2542
+#: src/common/outbound.c:2556
 #, fuzzy
 msgid "QUERY <nick>, opens up a new privmsg window to someone"
 msgstr ""
 "/QUERY <pseudo>, ouvre une nouvelle fenêtre de message privé avec quelqu'un\n"
 
-#: src/common/outbound.c:2544
+#: src/common/outbound.c:2558
 #, fuzzy
 msgid "QUIT [<reason>], disconnects from the current server"
 msgstr "/QUIT [<raison>], déconnecte du seveur courant\n"
 
-#: src/common/outbound.c:2546
+#: src/common/outbound.c:2560
 #, fuzzy
 msgid "QUOTE <text>, sends the text in raw form to the server"
 msgstr "/QUOTE <texte>, transmet le texte sous forme brute au serveur\n"
 
-#: src/common/outbound.c:2549
+#: src/common/outbound.c:2563
 #, fuzzy
 msgid ""
 "RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as /"
@@ -523,7 +529,7 @@ msgstr ""
 "avec /RECONNECT pour se reconnecter au serveur courant ou avec /RECONNECT "
 "ALL pour se reconnecter à tous les serveurs ouverts\n"
 
-#: src/common/outbound.c:2552
+#: src/common/outbound.c:2566
 #, fuzzy
 msgid ""
 "RECONNECT [<host>] [<port>] [<password>], Can be called just as /RECONNECT "
@@ -534,35 +540,35 @@ msgstr ""
 "RECONNECT pour se reconnecter au serveur courant ou avec /RECONNECT ALL pour "
 "se reconnecter à tous les serveurs ouverts\n"
 
-#: src/common/outbound.c:2554
+#: src/common/outbound.c:2568
 #, fuzzy
 msgid ""
 "RECV <text>, send raw data to xchat, as if it was received from the irc "
 "server"
 msgstr "/QUOTE <texte>, transmet le texte sous forme brute au serveur\n"
 
-#: src/common/outbound.c:2557
+#: src/common/outbound.c:2571
 #, fuzzy
 msgid "SAY <text>, sends the text to the object in the current window"
 msgstr "/SAY <texte>, envoie un texte à l'objet de la fenêtre courante\n"
 
-#: src/common/outbound.c:2558
+#: src/common/outbound.c:2572
 #, fuzzy
 msgid "SET <variable> [<value>]"
 msgstr "/SET <variable> [<valeur>]\n"
 
-#: src/common/outbound.c:2562
+#: src/common/outbound.c:2576
 #, fuzzy
 msgid "SERVCHAN [-ssl] <host> <port> <channel>, connects and joins a channel"
 msgstr ""
 "/SERVCHAN [-ssl] <hote> <port> <canal>, se connecte et rejoint un canal\n"
 
-#: src/common/outbound.c:2565
+#: src/common/outbound.c:2579
 #, fuzzy
 msgid "SERVCHAN <host> <port> <channel>, connects and joins a channel"
 msgstr "/SERVCHAN <hote> <port> <canal>, se connecte et rejoint un canal\n"
 
-#: src/common/outbound.c:2569
+#: src/common/outbound.c:2583
 #, fuzzy
 msgid ""
 "SERVER [-ssl] <host> [<port>] [<password>], connects to a server, the "
@@ -572,7 +578,7 @@ msgstr ""
 "port par défaut est 6667 pour les connexions normales, et 994 pour les "
 "connexions ssl.\n"
 
-#: src/common/outbound.c:2572
+#: src/common/outbound.c:2586
 #, fuzzy
 msgid ""
 "SERVER <host> [<port>] [<password>], connects to a server, the default port "
@@ -581,7 +587,7 @@ msgstr ""
 "/SERVER <hote> [<port>] [<motpasse>], se connecte à un serveur, le port par "
 "défaut est 6667.\n"
 
-#: src/common/outbound.c:2575
+#: src/common/outbound.c:2589
 #, fuzzy
 msgid ""
 "TOPIC [<topic>], sets the topic if one is given, else shows the current topic"
@@ -589,40 +595,40 @@ msgstr ""
 "/TOPIC [<sujet>], définit le sujet si on en fourni un, sinon affiche le "
 "sujet actuel\n"
 
-#: src/common/outbound.c:2576
+#: src/common/outbound.c:2590
 #, fuzzy
 msgid "UNIGNORE <mask> [QUIET]"
 msgstr "/UNIGNORE <masque> [QUIET]\n"
 
-#: src/common/outbound.c:2577
+#: src/common/outbound.c:2591
 #, fuzzy
 msgid "UNLOAD <name>, unloads a plugin or script"
 msgstr "/LOAD <fichier>, charge un script Perl\n"
 
-#: src/common/outbound.c:2580
+#: src/common/outbound.c:2594
 #, fuzzy
 msgid ""
 "WALLCHOP <message>, sends the message to all chanops on the current channel"
 msgstr ""
 "/WALLCHOP <message>, envoie le message à tous les chanops du canal courant\n"
 
-#: src/common/outbound.c:2582
+#: src/common/outbound.c:2596
 #, fuzzy
 msgid "WALLCHAN <message>, writes the message to all channels"
 msgstr "/WALLCHAN <message>, écrit le message sur tous les canaux\n"
 
-#: src/common/outbound.c:2584
+#: src/common/outbound.c:2598
 #, fuzzy
 msgid "VOICE <nick>, gives voice status to someone (needs chanop)"
 msgstr ""
 "/VOICE <pseudo>, donne le statut voice à quelqu'un (nécessite chanop)\n"
 
-#: src/common/outbound.c:2604
+#: src/common/outbound.c:2618
 #, fuzzy, c-format
 msgid "Usage: %s\n"
 msgstr "Usage:\n"
 
-#: src/common/outbound.c:2609
+#: src/common/outbound.c:2623
 msgid ""
 "\n"
 "No help available on that command.\n"
@@ -630,494 +636,494 @@ msgstr ""
 "\n"
 "Aucune aide disponible pour cette commande.\n"
 
-#: src/common/outbound.c:2616
+#: src/common/outbound.c:2630
 msgid "No such command.\n"
 msgstr "Aucune commande correspondante.\n"
 
-#: src/common/outbound.c:2880
+#: src/common/outbound.c:2904
 msgid "Bad arguments for user command.\n"
 msgstr "Arguments erronés pour la commande utilisateur.\n"
 
-#: src/common/outbound.c:2989
+#: src/common/outbound.c:3014
 msgid "Too many recursive usercommands, aborting."
 msgstr "Trop de commandes utilisateur récursives, arrêt."
 
-#: src/common/outbound.c:3055
+#: src/common/outbound.c:3080
 msgid "Unknown Command. Try /help\n"
 msgstr "Commande inconnue. Essayez /help\n"
 
-#: src/common/plugin.c:322 src/common/plugin.c:343
+#: src/common/plugin.c:323 src/common/plugin.c:344
 msgid "No xchat_plugin_init symbol; is this really an xchat plugin?"
 msgstr ""
 
-#: src/common/server.c:885
+#: src/common/server.c:826
 #, c-format
 msgid ""
 "Cannot resolve hostname %s\n"
 "Check your IP Settings!\n"
 msgstr ""
 
-#: src/common/server.c:890
+#: src/common/server.c:831
 msgid "Proxy traversal failed.\n"
 msgstr ""
 
-#: src/common/text.c:154
+#: src/common/text.c:253
 #, c-format
 msgid "**** ENDING LOGGING AT %s\n"
 msgstr "**** FIN DU LOG A %s\n"
 
-#: src/common/text.c:265
+#: src/common/text.c:364
 #, c-format
 msgid "**** BEGIN LOGGING AT %s\n"
 msgstr "**** DEBUT DU LOG A %s\n"
 
-#: src/common/text.c:412
+#: src/common/text.c:552
 msgid "The nick of the joining person"
 msgstr "Le pseudo de la personne qui arrive"
 
-#: src/common/text.c:413
+#: src/common/text.c:553
 msgid "The channel being joined"
 msgstr "Le canal à rejoindre"
 
-#: src/common/text.c:414 src/common/text.c:458 src/common/text.c:514
+#: src/common/text.c:554 src/common/text.c:598 src/common/text.c:654
 msgid "The host of the person"
 msgstr "L'hôte de la personne"
 
-#: src/common/text.c:418 src/common/text.c:423 src/common/text.c:429
-#: src/common/text.c:496 src/common/text.c:620 src/common/text.c:627
-#: src/common/text.c:632 src/common/text.c:637 src/common/text.c:642
-#: src/common/text.c:648 src/common/text.c:653 src/common/text.c:696
-#: src/common/text.c:705 src/common/text.c:710 src/common/text.c:715
-#: src/common/text.c:723 src/common/text.c:733 src/common/text.c:739
-#: src/common/text.c:745 src/common/text.c:750 src/common/text.c:755
-#: src/common/text.c:762 src/common/text.c:767 src/common/text.c:773
-#: src/common/text.c:778 src/common/text.c:783 src/common/text.c:787
-#: src/common/text.c:793 src/common/text.c:800 src/common/text.c:834
-#: src/common/text.c:839
+#: src/common/text.c:558 src/common/text.c:563 src/common/text.c:569
+#: src/common/text.c:636 src/common/text.c:760 src/common/text.c:767
+#: src/common/text.c:772 src/common/text.c:777 src/common/text.c:782
+#: src/common/text.c:788 src/common/text.c:793 src/common/text.c:836
+#: src/common/text.c:845 src/common/text.c:850 src/common/text.c:855
+#: src/common/text.c:863 src/common/text.c:873 src/common/text.c:879
+#: src/common/text.c:885 src/common/text.c:890 src/common/text.c:895
+#: src/common/text.c:902 src/common/text.c:907 src/common/text.c:913
+#: src/common/text.c:918 src/common/text.c:923 src/common/text.c:927
+#: src/common/text.c:933 src/common/text.c:940 src/common/text.c:974
+#: src/common/text.c:979
 msgid "Nickname"
 msgstr "Pseudonyme"
 
-#: src/common/text.c:419
+#: src/common/text.c:559
 msgid "The action"
 msgstr "L'action"
 
-#: src/common/text.c:424
+#: src/common/text.c:564
 msgid "The text"
 msgstr "Le texte"
 
-#: src/common/text.c:425
+#: src/common/text.c:565
 msgid "Mode char"
 msgstr "Caractère de mode"
 
-#: src/common/text.c:430 src/common/text.c:486 src/common/text.c:492
-#: src/common/text.c:497
+#: src/common/text.c:570 src/common/text.c:626 src/common/text.c:632
+#: src/common/text.c:637
 msgid "The message"
 msgstr "Le message"
 
-#: src/common/text.c:434 src/common/text.c:501
+#: src/common/text.c:574 src/common/text.c:641
 msgid "Old nickname"
 msgstr "Ancien pseusonyme"
 
-#: src/common/text.c:435 src/common/text.c:502
+#: src/common/text.c:575 src/common/text.c:642
 msgid "New nickname"
 msgstr "Nouveau pseudonyme"
 
-#: src/common/text.c:439
+#: src/common/text.c:579
 msgid "Nick of person who changed the topic"
 msgstr "Pseudo de la personne qui a changé le sujet"
 
-#: src/common/text.c:440 src/common/text.c:446 src/fe-gtk/chanlist.c:582
-#: src/fe-gtk/chanlist.c:712
+#: src/common/text.c:580 src/common/text.c:586 src/fe-gtk/chanlist.c:583
+#: src/fe-gtk/chanlist.c:686
 msgid "Topic"
 msgstr "Sujet"
 
-#: src/common/text.c:441 src/common/text.c:445 src/common/text.c:854
-#: src/fe-gtk/chanlist.c:582 src/fe-gtk/chanlist.c:704
+#: src/common/text.c:581 src/common/text.c:585 src/common/text.c:994
+#: src/fe-gtk/chanlist.c:583 src/fe-gtk/chanlist.c:677
 #: src/fe-gtk/ignoregui.c:394
 msgid "Channel"
 msgstr "Canal"
 
-#: src/common/text.c:450 src/common/text.c:508
+#: src/common/text.c:590 src/common/text.c:648
 msgid "The nickname of the kicker"
 msgstr "Le pseudonyme de celui qui a kické"
 
-#: src/common/text.c:451 src/common/text.c:506
+#: src/common/text.c:591 src/common/text.c:646
 msgid "The person being kicked"
 msgstr "La personne qui se fait kicker"
 
-#: src/common/text.c:452 src/common/text.c:459 src/common/text.c:463
-#: src/common/text.c:468 src/common/text.c:507 src/common/text.c:515
+#: src/common/text.c:592 src/common/text.c:599 src/common/text.c:603
+#: src/common/text.c:608 src/common/text.c:647 src/common/text.c:655
 msgid "The channel"
 msgstr "Le canal"
 
-#: src/common/text.c:453 src/common/text.c:509 src/common/text.c:516
+#: src/common/text.c:593 src/common/text.c:649 src/common/text.c:656
 msgid "The reason"
 msgstr "La raison"
 
-#: src/common/text.c:457 src/common/text.c:513
+#: src/common/text.c:597 src/common/text.c:653
 msgid "The nick of the person leaving"
 msgstr "La pseudo de la personne qui part"
 
-#: src/common/text.c:464 src/common/text.c:470
+#: src/common/text.c:604 src/common/text.c:610
 msgid "The time"
 msgstr "L'heure"
 
-#: src/common/text.c:469
+#: src/common/text.c:609
 msgid "The creator"
 msgstr "Le créateur"
 
-#: src/common/text.c:474
+#: src/common/text.c:614
 msgid "Nick"
 msgstr "Pseudonymes"
 
-#: src/common/text.c:475 src/common/text.c:711
+#: src/common/text.c:615 src/common/text.c:851
 msgid "Reason"
 msgstr "Raison"
 
-#: src/common/text.c:476 src/common/text.c:622 src/common/text.c:686
+#: src/common/text.c:616 src/common/text.c:762 src/common/text.c:826
 msgid "Host"
 msgstr "Hôte"
 
-#: src/common/text.c:480 src/common/text.c:485 src/common/text.c:490
+#: src/common/text.c:620 src/common/text.c:625 src/common/text.c:630
 msgid "Who it's from"
 msgstr "De qui ça vient"
 
-#: src/common/text.c:481
+#: src/common/text.c:621
 msgid "The time in x.x format (see below)"
 msgstr "L'heure en format x.x (voir ci-dessous)"
 
-#: src/common/text.c:491 src/common/text.c:532
+#: src/common/text.c:631 src/common/text.c:672
 msgid "The Channel it's going to"
 msgstr "Le canal vers lequel ça va"
 
-#: src/common/text.c:520
+#: src/common/text.c:660
 msgid "The sound"
 msgstr "Le son"
 
-#: src/common/text.c:521 src/common/text.c:526 src/common/text.c:531
+#: src/common/text.c:661 src/common/text.c:666 src/common/text.c:671
 msgid "The nick of the person"
 msgstr "Le pseudo de la personne"
 
-#: src/common/text.c:525 src/common/text.c:530
+#: src/common/text.c:665 src/common/text.c:670
 msgid "The CTCP event"
 msgstr "L'événement CTCP"
 
-#: src/common/text.c:536
+#: src/common/text.c:676
 msgid "The nick of the person who set the key"
 msgstr "Le pseudo de la personne qui a défini la touche"
 
-#: src/common/text.c:537
+#: src/common/text.c:677
 msgid "The key"
 msgstr "La touche"
 
-#: src/common/text.c:541
+#: src/common/text.c:681
 msgid "The nick of the person who set the limit"
 msgstr "Le pseudo de la personne qui a défini la limite"
 
-#: src/common/text.c:542
+#: src/common/text.c:682
 msgid "The limit"
 msgstr "La limite"
 
-#: src/common/text.c:546
+#: src/common/text.c:686
 msgid "The nick of the person who did the op'ing"
 msgstr "Le pseudo de la personne qui a fait le op"
 
-#: src/common/text.c:547
+#: src/common/text.c:687
 msgid "The nick of the person who has been op'ed"
 msgstr "Le pseudo de la personne qui a été opée"
 
-#: src/common/text.c:551
+#: src/common/text.c:691
 msgid "The nick of the person who has been halfop'ed"
 msgstr "Le pseudo de la personne qui a été halfopée"
 
-#: src/common/text.c:552
+#: src/common/text.c:692
 msgid "The nick of the person who did the halfop'ing"
 msgstr "Le pseudo de la personne qui a fait le halfop"
 
-#: src/common/text.c:556
+#: src/common/text.c:696
 msgid "The nick of the person who did the voice'ing"
 msgstr "Le pseudo de la personne qui a fait le voice"
 
-#: src/common/text.c:557
+#: src/common/text.c:697
 msgid "The nick of the person who has been voice'ed"
 msgstr "Le pseudo de la personne qui a été voicée"
 
-#: src/common/text.c:561
+#: src/common/text.c:701
 msgid "The nick of the person who did the banning"
 msgstr "Le pseudo de la personne qui a fait le ban"
 
-#: src/common/text.c:562 src/common/text.c:589
+#: src/common/text.c:702 src/common/text.c:729
 msgid "The ban mask"
 msgstr "Le masque de ban"
 
-#: src/common/text.c:566
+#: src/common/text.c:706
 msgid "The nick who removed the key"
 msgstr "Le pseudo qui a enlevé la touche"
 
-#: src/common/text.c:570
+#: src/common/text.c:710
 msgid "The nick who removed the limit"
 msgstr "Le pseudo qui a enlevé la limite"
 
-#: src/common/text.c:574
+#: src/common/text.c:714
 msgid "The nick of the person of did the deop'ing"
 msgstr "Le pseudo de la personne qui a fait le deop"
 
-#: src/common/text.c:575
+#: src/common/text.c:715
 msgid "The nick of the person who has been deop'ed"
 msgstr "Le pseudo de la personne qui a été deopée"
 
-#: src/common/text.c:578
+#: src/common/text.c:718
 msgid "The nick of the person of did the dehalfop'ing"
 msgstr "Le pseudo de la personne qui a fait le dehalfop"
 
-#: src/common/text.c:579
+#: src/common/text.c:719
 msgid "The nick of the person who has been dehalfop'ed"
 msgstr "Le pseudo de la personne qui a été dehalfopée"
 
-#: src/common/text.c:583
+#: src/common/text.c:723
 msgid "The nick of the person of did the devoice'ing"
 msgstr "Le pseudo de la personne qui a fait de devoice"
 
-#: src/common/text.c:584
+#: src/common/text.c:724
 msgid "The nick of the person who has been devoice'ed"
 msgstr "Le pseudo de la personne qui a été devoiceée"
 
-#: src/common/text.c:588
+#: src/common/text.c:728
 msgid "The nick of the person of did the unban'ing"
 msgstr "Le pseudo de la personne qui a fait le unban"
 
-#: src/common/text.c:593
+#: src/common/text.c:733
 msgid "The nick of the person who did the exempt"
 msgstr "Le pseudo de la personne qui a fat le exempt"
 
-#: src/common/text.c:594 src/common/text.c:599
+#: src/common/text.c:734 src/common/text.c:739
 msgid "The exempt mask"
 msgstr "Le masque d'exempt"
 
-#: src/common/text.c:598
+#: src/common/text.c:738
 msgid "The nick of the person removed the exempt"
 msgstr "Le pseudo de la personne qui a supprimé le exempt"
 
-#: src/common/text.c:603
+#: src/common/text.c:743
 msgid "The nick of the person who did the invite"
 msgstr "Le pseudo de la personne qui a fait l'invite"
 
-#: src/common/text.c:604 src/common/text.c:609
+#: src/common/text.c:744 src/common/text.c:749
 msgid "The invite mask"
 msgstr "Le masque d'invite"
 
-#: src/common/text.c:608
+#: src/common/text.c:748
 msgid "The nick of the person removed the invite"
 msgstr "Le pseudo de la personne qui a enlevé l'invite"
 
-#: src/common/text.c:613
+#: src/common/text.c:753
 msgid "The nick of the person setting the mode"
 msgstr "Le pseudo de la personne qui a défini le mode"
 
-#: src/common/text.c:614
+#: src/common/text.c:754
 msgid "The mode's sign (+/-)"
 msgstr "Le signe du mode (+/-)"
 
-#: src/common/text.c:615
+#: src/common/text.c:755
 msgid "The mode letter"
 msgstr "La touche de mode"
 
-#: src/common/text.c:616
+#: src/common/text.c:756
 msgid "The channel it's being set on"
 msgstr "Le canal sur lequel c'est mis"
 
-#: src/common/text.c:621
+#: src/common/text.c:761
 msgid "Username"
 msgstr "Nom d'utilisateur"
 
-#: src/common/text.c:623
+#: src/common/text.c:763
 msgid "Full name"
 msgstr "Nom complet"
 
-#: src/common/text.c:628
+#: src/common/text.c:768
 msgid "Channel Membership/\"is an IRC operator\""
 msgstr "Appartenance au canal/\"est un opérateur IRC\""
 
-#: src/common/text.c:633
+#: src/common/text.c:773
 msgid "Server Information"
 msgstr "Information serveur"
 
-#: src/common/text.c:638 src/common/text.c:643
+#: src/common/text.c:778 src/common/text.c:783
 msgid "Idle time"
 msgstr "Durée d'inactivité"
 
-#: src/common/text.c:644
+#: src/common/text.c:784
 msgid "Signon time"
 msgstr "Heure de connexion"
 
-#: src/common/text.c:649
+#: src/common/text.c:789
 msgid "Away reason"
 msgstr "Raison de l'absence"
 
-#: src/common/text.c:657 src/common/text.c:666 src/common/text.c:672
-#: src/common/text.c:849
+#: src/common/text.c:797 src/common/text.c:806 src/common/text.c:812
+#: src/common/text.c:989
 msgid "Channel Name"
 msgstr "Nom de canal"
 
-#: src/common/text.c:661 src/common/text.c:812 src/fe-gtk/textgui.c:373
+#: src/common/text.c:801 src/common/text.c:952 src/fe-gtk/textgui.c:373
 msgid "Text"
 msgstr "Texte"
 
-#: src/common/text.c:662 src/common/text.c:668 src/common/text.c:850
+#: src/common/text.c:802 src/common/text.c:808 src/common/text.c:990
 msgid "Server Name"
 msgstr "Nom de serveur"
 
-#: src/common/text.c:667
+#: src/common/text.c:807
 msgid "Nick of person who invited you"
 msgstr "Pseudo de la personne qui vous a invité"
 
-#: src/common/text.c:673 src/fe-gtk/chanlist.c:582
+#: src/common/text.c:813 src/fe-gtk/chanlist.c:583
 msgid "Users"
 msgstr "Utilisateurs"
 
-#: src/common/text.c:677
+#: src/common/text.c:817
 msgid "Nickname in use"
 msgstr "Pseudonyme déjà utilisé"
 
-#: src/common/text.c:678
+#: src/common/text.c:818
 msgid "Nick being tried"
 msgstr "Pseudo en essai"
 
-#: src/common/text.c:682
+#: src/common/text.c:822
 msgid "Error String"
 msgstr "Chaine d'erreur"
 
-#: src/common/text.c:687 src/common/text.c:816
+#: src/common/text.c:827 src/common/text.c:956
 msgid "IP"
 msgstr "IP"
 
-#: src/common/text.c:688
+#: src/common/text.c:828
 msgid "Port"
 msgstr "Port"
 
-#: src/common/text.c:692
+#: src/common/text.c:832
 msgid "PID"
 msgstr "PID"
 
-#: src/common/text.c:700
+#: src/common/text.c:840
 msgid "Channel name"
 msgstr "Nom de canal"
 
-#: src/common/text.c:701 src/common/text.c:706
+#: src/common/text.c:841 src/common/text.c:846
 msgid "Modes string"
 msgstr "Chaines de modes"
 
-#: src/common/text.c:716 src/common/text.c:751 src/common/text.c:756
+#: src/common/text.c:856 src/common/text.c:891 src/common/text.c:896
 msgid "IP address"
 msgstr "Adresse IP"
 
-#: src/common/text.c:717
+#: src/common/text.c:857
 msgid "port"
 msgstr "port"
 
-#: src/common/text.c:721 src/common/text.c:744
+#: src/common/text.c:861 src/common/text.c:884
 msgid "DCC Type"
 msgstr "Type DCC"
 
-#: src/common/text.c:722 src/common/text.c:727 src/common/text.c:731
-#: src/common/text.c:737 src/common/text.c:757 src/common/text.c:761
-#: src/common/text.c:766 src/common/text.c:772 src/common/text.c:779
-#: src/common/text.c:788 src/common/text.c:794
+#: src/common/text.c:862 src/common/text.c:867 src/common/text.c:871
+#: src/common/text.c:877 src/common/text.c:897 src/common/text.c:901
+#: src/common/text.c:906 src/common/text.c:912 src/common/text.c:919
+#: src/common/text.c:928 src/common/text.c:934
 msgid "Filename"
 msgstr "Nom de fichier"
 
-#: src/common/text.c:732 src/common/text.c:738
+#: src/common/text.c:872 src/common/text.c:878
 msgid "Destination filename"
 msgstr "Nom du fichier de destination"
 
-#: src/common/text.c:740 src/common/text.c:768
+#: src/common/text.c:880 src/common/text.c:908
 msgid "CPS"
 msgstr "CPS"
 
-#: src/common/text.c:746
+#: src/common/text.c:886
 msgid "Error string"
 msgstr "Chaine d'erreur"
 
-#: src/common/text.c:774
+#: src/common/text.c:914
 #, fuzzy
 msgid "Pathname"
 msgstr "Panama"
 
-#: src/common/text.c:789 src/fe-gtk/dccgui.c:391 src/fe-gtk/dccgui.c:395
-#: src/fe-gtk/dccgui.c:575
+#: src/common/text.c:929 src/fe-gtk/dccgui.c:374 src/fe-gtk/dccgui.c:378
+#: src/fe-gtk/dccgui.c:558
 msgid "Position"
 msgstr "Position"
 
-#: src/common/text.c:795 src/fe-gtk/dccgui.c:391 src/fe-gtk/dccgui.c:395
-#: src/fe-gtk/dccgui.c:575
+#: src/common/text.c:935 src/fe-gtk/dccgui.c:374 src/fe-gtk/dccgui.c:378
+#: src/fe-gtk/dccgui.c:558
 msgid "Size"
 msgstr "Taille"
 
-#: src/common/text.c:799
+#: src/common/text.c:939
 msgid "DCC String"
 msgstr "Chaîne DCC"
 
-#: src/common/text.c:804
+#: src/common/text.c:944
 msgid "Number of notify items"
 msgstr "Nombre de notifications"
 
-#: src/common/text.c:808
+#: src/common/text.c:948
 msgid "Servername"
 msgstr "Nom de Serveur"
 
-#: src/common/text.c:820
+#: src/common/text.c:960
 msgid "Old Filename"
 msgstr "Ancien nom de fichier"
 
-#: src/common/text.c:821
+#: src/common/text.c:961
 msgid "New Filename"
 msgstr "Nouveau nom de fichier"
 
-#: src/common/text.c:825
+#: src/common/text.c:965
 msgid "Receiver"
 msgstr "Destinataire"
 
-#: src/common/text.c:826
+#: src/common/text.c:966
 msgid "Message"
 msgstr "Message"
 
-#: src/common/text.c:830
+#: src/common/text.c:970
 msgid "Hostmask"
 msgstr "Masque d'hôte"
 
-#: src/common/text.c:835
+#: src/common/text.c:975
 msgid "Hostname"
 msgstr "Nom d'hôte"
 
-#: src/common/text.c:840
+#: src/common/text.c:980
 msgid "The Packet"
 msgstr "Le paquet"
 
-#: src/common/text.c:844
+#: src/common/text.c:984
 msgid "Seconds"
 msgstr "Secondes"
 
-#: src/common/text.c:848
+#: src/common/text.c:988
 msgid "Nick of person who have been invited"
 msgstr "Pseudo de la personne qui a été invitée"
 
-#: src/common/text.c:855
+#: src/common/text.c:995
 msgid "Banmask"
 msgstr "Masque de ban"
 
-#: src/common/text.c:856
+#: src/common/text.c:996
 msgid "Who set the ban"
 msgstr "Qui défini le ban"
 
-#: src/common/text.c:857
+#: src/common/text.c:997
 msgid "Ban time"
 msgstr "Heure du ban"
 
-#: src/common/text.c:861
+#: src/common/text.c:1001
 msgid "Error"
 msgstr "Erreur"
 
-#: src/common/text.c:895
+#: src/common/text.c:1035
 #, c-format
 msgid ""
 "Error parsing event %s.\n"
@@ -2176,21 +2182,87 @@ msgstr "DNS inverse"
 msgid "Unknown"
 msgstr "Inconnu"
 
-#: src/fe-gtk/about.c:99
+#: src/common/xchat.c:819
+#, fuzzy
+msgid "Disconnect"
+msgstr "Connexion"
+
+#: src/common/xchat.c:820
+#, fuzzy
+msgid "Reconnect"
+msgstr "Connexion"
+
+#: src/common/xchat.c:821
+#, fuzzy
+msgid "Leave Channel"
+msgstr "Partir du canal"
+
+#: src/common/xchat.c:822
+#, fuzzy
+msgid "Join Channel..."
+msgstr "Rejoindre le canal"
+
+#: src/common/xchat.c:823
+#, fuzzy
+msgid "Enter Channel to Join:"
+msgstr "Le canal vers lequel ça va"
+
+#: src/common/xchat.c:824
+#, fuzzy
+msgid "Server Links"
+msgstr "Liste des serveurs..."
+
+#: src/common/xchat.c:825
+#, fuzzy
+msgid "Ping Server"
+msgstr "Serveur"
+
+#: src/common/xchat.c:826
+msgid "Hide Version"
+msgstr "Cacher la version"
+
+#: src/common/xchat.c:836
+#, fuzzy
+msgid "Op"
+msgstr "Ouvrir"
+
+#: src/common/xchat.c:837
+msgid "DeOp"
+msgstr ""
+
+#: src/common/xchat.c:838
+#, fuzzy
+msgid "Ban"
+msgstr "Bhoutan"
+
+#: src/common/xchat.c:839
+#, fuzzy
+msgid "Kick"
+msgstr "Pseudonymes"
+
+#: src/common/xchat.c:840
+msgid "bye"
+msgstr ""
+
+#: src/common/xchat.c:841
+#, c-format
+msgid "Enter reason to kick %s:"
+msgstr ""
+
+#: src/common/xchat.c:842
+#, fuzzy
+msgid "Sendfile"
+msgstr "Fichier son :"
+
+#: src/common/xchat.c:843
+msgid "Dialog"
+msgstr ""
+
+#: src/fe-gtk/about.c:100
 msgid "About X-Chat"
 msgstr "À propos de X-Chat"
 
-#. gdk_font_unref (style->font);
-#. if (menu_sess && menu_sess->type == SESS_DIALOG)
-#. {
-#. style->font = dialog_font_normal;
-#. gdk_font_ref (dialog_font_normal);
-#. } else
-#. {
-#. style->font = font_normal;
-#. gdk_font_ref (font_normal);
-#. }
-#: src/fe-gtk/ascii.c:79
+#: src/fe-gtk/ascii.c:131
 #, fuzzy
 msgid "Character Chart"
 msgstr "Caractères"
@@ -2199,7 +2271,7 @@ msgstr "Caractères"
 msgid "Mask"
 msgstr "Masque"
 
-#: src/fe-gtk/banlist.c:173 src/fe-gtk/dccgui.c:391 src/fe-gtk/dccgui.c:395
+#: src/fe-gtk/banlist.c:173 src/fe-gtk/dccgui.c:374 src/fe-gtk/dccgui.c:378
 msgid "From"
 msgstr "De"
 
@@ -2232,17 +2304,17 @@ msgstr ""
 msgid "Refresh"
 msgstr "Rafraîchir la liste"
 
-#: src/fe-gtk/chanlist.c:123
+#: src/fe-gtk/chanlist.c:124
 #, c-format
 msgid "User and Channel Statistics: %d/%d Users on %d/%d Channels"
 msgstr ""
 "Statistiques des utilisateurs et canaux : %d/%d Utilisateurs sur %d/%d Canaux"
 
-#: src/fe-gtk/chanlist.c:525
+#: src/fe-gtk/chanlist.c:526
 msgid "I can't save an empty list!"
 msgstr "Je ne peux enregistrer une liste vide !"
 
-#: src/fe-gtk/chanlist.c:528 src/fe-gtk/menu.c:841
+#: src/fe-gtk/chanlist.c:529 src/fe-gtk/menu.c:842
 msgid "Select an output filename"
 msgstr "Sélectionnez un nom de fichier de sortie"
 
@@ -2251,44 +2323,51 @@ msgstr "Sélectionnez un nom de fichier de sortie"
 msgid "X-Chat: Channel List (%s)"
 msgstr "X-Chat : Liste des canaux (%s)"
 
-#: src/fe-gtk/chanlist.c:609
+#: src/fe-gtk/chanlist.c:608
 msgid "List display options:"
 msgstr "Options d'affichage de la liste :"
 
-#: src/fe-gtk/chanlist.c:627
-msgid "Minimum Users: "
+#: src/fe-gtk/chanlist.c:620
+#, fuzzy
+msgid "Minimum Users:"
 msgstr "Minimum d'utilisateurs : "
 
-#: src/fe-gtk/chanlist.c:646
-msgid "Maximum Users: "
+#: src/fe-gtk/chanlist.c:635
+#, fuzzy
+msgid "Maximum Users:"
 msgstr "Maximum d'utilisateurs : "
 
-#: src/fe-gtk/chanlist.c:676
-msgid "Regex Match: "
+#: src/fe-gtk/chanlist.c:650
+#, fuzzy
+msgid "Regex Match:"
 msgstr "Correspondance regex : "
 
-#: src/fe-gtk/chanlist.c:721
+#: src/fe-gtk/chanlist.c:671
+msgid "Apply Match to:"
+msgstr ""
+
+#: src/fe-gtk/chanlist.c:695
 msgid "Apply"
 msgstr "Appliquer"
 
-#: src/fe-gtk/chanlist.c:764
+#: src/fe-gtk/chanlist.c:737
 msgid "Refresh the list"
 msgstr "Rafraîchir la liste"
 
-#: src/fe-gtk/chanlist.c:766
+#: src/fe-gtk/chanlist.c:739
 msgid "Save the list"
 msgstr "Enregistrer la liste"
 
-#: src/fe-gtk/chanlist.c:768 src/fe-gtk/menu.c:650
+#: src/fe-gtk/chanlist.c:741 src/fe-gtk/menu.c:650
 msgid "Join Channel"
 msgstr "Rejoindre le canal"
 
-#: src/fe-gtk/dccgui.c:85
+#: src/fe-gtk/dccgui.c:89
 #, c-format
 msgid "Send file to %s"
 msgstr "Envoyer le fichier à %s"
 
-#: src/fe-gtk/dccgui.c:260
+#: src/fe-gtk/dccgui.c:264
 #, fuzzy, c-format
 msgid ""
 "      File: %s\n"
@@ -2305,77 +2384,77 @@ msgstr ""
 "  Numéro IP: %s\n"
 "Heure Début: %s"
 
-#: src/fe-gtk/dccgui.c:391 src/fe-gtk/dccgui.c:395 src/fe-gtk/dccgui.c:575
-#: src/fe-gtk/dccgui.c:706 src/fe-gtk/notifygui.c:164
+#: src/fe-gtk/dccgui.c:374 src/fe-gtk/dccgui.c:378 src/fe-gtk/dccgui.c:558
+#: src/fe-gtk/dccgui.c:689 src/fe-gtk/notifygui.c:164
 msgid "Status"
 msgstr "État"
 
-#: src/fe-gtk/dccgui.c:391 src/fe-gtk/dccgui.c:395 src/fe-gtk/dccgui.c:575
+#: src/fe-gtk/dccgui.c:374 src/fe-gtk/dccgui.c:378 src/fe-gtk/dccgui.c:558
 #: src/fe-gtk/plugingui.c:146
 msgid "File"
 msgstr "Fichier"
 
-#: src/fe-gtk/dccgui.c:391 src/fe-gtk/dccgui.c:395 src/fe-gtk/dccgui.c:575
+#: src/fe-gtk/dccgui.c:374 src/fe-gtk/dccgui.c:378 src/fe-gtk/dccgui.c:558
 msgid "ETA"
 msgstr "ETA"
 
-#: src/fe-gtk/dccgui.c:392
+#: src/fe-gtk/dccgui.c:375
 msgid "MIME Type"
 msgstr "Type MIME"
 
-#: src/fe-gtk/dccgui.c:406
+#: src/fe-gtk/dccgui.c:389
 msgid "X-Chat: File Receive List"
 msgstr "X-Chat : Liste de réception de fichiers"
 
-#: src/fe-gtk/dccgui.c:434 src/fe-gtk/dccgui.c:608 src/fe-gtk/dccgui.c:733
+#: src/fe-gtk/dccgui.c:417 src/fe-gtk/dccgui.c:591 src/fe-gtk/dccgui.c:716
 msgid "Abort"
 msgstr "Interrompre"
 
-#: src/fe-gtk/dccgui.c:436 src/fe-gtk/dccgui.c:734
+#: src/fe-gtk/dccgui.c:419 src/fe-gtk/dccgui.c:717
 msgid "Accept"
 msgstr "Accepter"
 
-#: src/fe-gtk/dccgui.c:438
+#: src/fe-gtk/dccgui.c:421
 msgid "Resume"
 msgstr "Reprendre"
 
-#: src/fe-gtk/dccgui.c:440 src/fe-gtk/dccgui.c:609
+#: src/fe-gtk/dccgui.c:423 src/fe-gtk/dccgui.c:592
 msgid "Info"
 msgstr "Info"
 
-#: src/fe-gtk/dccgui.c:442
+#: src/fe-gtk/dccgui.c:425
 msgid "Open"
 msgstr "Ouvrir"
 
-#: src/fe-gtk/dccgui.c:575
+#: src/fe-gtk/dccgui.c:558
 msgid "Ack"
 msgstr "Ack"
 
-#: src/fe-gtk/dccgui.c:575
+#: src/fe-gtk/dccgui.c:558
 msgid "To"
 msgstr "À"
 
-#: src/fe-gtk/dccgui.c:586
+#: src/fe-gtk/dccgui.c:569
 msgid "X-Chat: File Send List"
 msgstr "X-Chat : Liste d'envoi de fichiers"
 
-#: src/fe-gtk/dccgui.c:706
+#: src/fe-gtk/dccgui.c:689
 msgid "To/From"
 msgstr "A/De"
 
-#: src/fe-gtk/dccgui.c:706
+#: src/fe-gtk/dccgui.c:689
 msgid "Recv"
 msgstr "Recv"
 
-#: src/fe-gtk/dccgui.c:706
+#: src/fe-gtk/dccgui.c:689
 msgid "Sent"
 msgstr "Envoyé"
 
-#: src/fe-gtk/dccgui.c:706
+#: src/fe-gtk/dccgui.c:689
 msgid "StartTime"
 msgstr "HeureDébut"
 
-#: src/fe-gtk/dccgui.c:717
+#: src/fe-gtk/dccgui.c:700
 msgid "X-Chat: DCC Chat List"
 msgstr "X-Chat : Liste de Chat DCC"
 
@@ -2415,7 +2494,7 @@ msgstr "Enregistrer"
 msgid "Add New"
 msgstr "Ajouter nouveau"
 
-#: src/fe-gtk/editlist.c:355 src/fe-gtk/fkeys.c:698
+#: src/fe-gtk/editlist.c:355 src/fe-gtk/fkeys.c:700
 msgid "Delete"
 msgstr "Effacer"
 
@@ -2445,7 +2524,18 @@ msgstr ""
 "   --noauto       -a\t : ne pas se connecter automatiquement\n"
 "   --version      -v\t : affiche les informations de version\n"
 
-#: src/fe-gtk/fe-gtk.c:570
+#: src/fe-gtk/fe-gtk.c:194
+#, fuzzy, c-format
+msgid ""
+"Failed to open font:\n"
+"\n"
+"%s"
+msgstr ""
+"Impossible d'ouviri la police :\n"
+"\n"
+"%s"
+
+#: src/fe-gtk/fe-gtk.c:523
 #, fuzzy
 msgid "Search buffer is empty.\n"
 msgstr "Rechercher dans le tampon..."
@@ -2565,57 +2655,57 @@ msgstr ""
 "Il y a eu une erreur au chargement de la configuration des associations de "
 "touches"
 
-#: src/fe-gtk/fkeys.c:392 src/fe-gtk/fkeys.c:671 src/fe-gtk/fkeys.c:677
-#: src/fe-gtk/fkeys.c:682 src/fe-gtk/maingui.c:606 src/fe-gtk/maingui.c:627
-#: src/fe-gtk/maingui.c:674 src/fe-gtk/maingui.c:2106
+#: src/fe-gtk/fkeys.c:394 src/fe-gtk/fkeys.c:673 src/fe-gtk/fkeys.c:679
+#: src/fe-gtk/fkeys.c:684 src/fe-gtk/maingui.c:681 src/fe-gtk/maingui.c:702
+#: src/fe-gtk/maingui.c:749 src/fe-gtk/maingui.c:2030
 msgid "<none>"
 msgstr "<aucun>"
 
-#: src/fe-gtk/fkeys.c:635
+#: src/fe-gtk/fkeys.c:637
 msgid "Mod"
 msgstr "Mod"
 
-#: src/fe-gtk/fkeys.c:635 src/fe-gtk/fkeys.c:731
+#: src/fe-gtk/fkeys.c:637 src/fe-gtk/fkeys.c:733
 msgid "Key"
 msgstr "Touche"
 
-#: src/fe-gtk/fkeys.c:635
+#: src/fe-gtk/fkeys.c:637
 msgid "Action"
 msgstr "Action"
 
-#: src/fe-gtk/fkeys.c:646
+#: src/fe-gtk/fkeys.c:648
 msgid "X-Chat: Edit Key Bindings"
 msgstr "X-Chat : édition de l'association des touches"
 
-#: src/fe-gtk/fkeys.c:693
+#: src/fe-gtk/fkeys.c:695
 msgid "Add new"
 msgstr "Ajouter nouveau"
 
-#: src/fe-gtk/fkeys.c:724
+#: src/fe-gtk/fkeys.c:726
 msgid "Shift"
 msgstr "Shift"
 
-#: src/fe-gtk/fkeys.c:726
+#: src/fe-gtk/fkeys.c:728
 msgid "Alt"
 msgstr "Alt"
 
-#: src/fe-gtk/fkeys.c:728
+#: src/fe-gtk/fkeys.c:730
 msgid "Ctrl"
 msgstr "Ctrl"
 
-#: src/fe-gtk/fkeys.c:735
+#: src/fe-gtk/fkeys.c:737
 msgid "Data 1"
 msgstr "Données 1"
 
-#: src/fe-gtk/fkeys.c:738
+#: src/fe-gtk/fkeys.c:740
 msgid "Data 2"
 msgstr "Données 2"
 
-#: src/fe-gtk/fkeys.c:781
+#: src/fe-gtk/fkeys.c:783
 msgid "Error opening keys config file\n"
 msgstr "Erreur d'ouverture du fichier de config des touches\n"
 
-#: src/fe-gtk/fkeys.c:952
+#: src/fe-gtk/fkeys.c:954
 #, c-format
 msgid ""
 "Unknown keyname %s in key bindings config file\n"
@@ -2625,7 +2715,7 @@ msgstr ""
 "touches\n"
 "Chargement interrompu, veuillez régler ~/.xchat/keybindings.conf\n"
 
-#: src/fe-gtk/fkeys.c:990
+#: src/fe-gtk/fkeys.c:992
 #, c-format
 msgid ""
 "Unknown action %s in key bindings config file\n"
@@ -2634,7 +2724,7 @@ msgstr ""
 "Action %s inconnue dans le fichier de config des associations de touches\n"
 "Chargement interrompu, veuillez régler ~/.xchat/keybindings\n"
 
-#: src/fe-gtk/fkeys.c:1011
+#: src/fe-gtk/fkeys.c:1013
 #, c-format
 msgid ""
 "Expecting Data line (beginning Dx{:|!}) but got:\n"
@@ -2692,7 +2782,7 @@ msgid "CTCP"
 msgstr "CTCP"
 
 #: src/fe-gtk/ignoregui.c:342 src/fe-gtk/ignoregui.c:388
-#: src/fe-gtk/maingui.c:1094
+#: src/fe-gtk/maingui.c:1169
 msgid "Private"
 msgstr "Privé"
 
@@ -2748,105 +2838,105 @@ msgstr "Invite:"
 msgid "OK"
 msgstr "OK"
 
-#: src/fe-gtk/ignoregui.c:445 src/fe-gtk/menu.c:1146
+#: src/fe-gtk/ignoregui.c:445 src/fe-gtk/menu.c:1147
 msgid "New"
 msgstr "Nouveau"
 
-#: src/fe-gtk/maingui.c:326
+#: src/fe-gtk/maingui.c:402
 #, c-format
 msgid "Topic for %s is: %s"
 msgstr "Le sujet de %s est : %s"
 
-#: src/fe-gtk/maingui.c:330
+#: src/fe-gtk/maingui.c:406
 msgid "No topic is set"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:807
+#: src/fe-gtk/maingui.c:882
 msgid "Some file transfers still active, quit xchat?"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:843
+#: src/fe-gtk/maingui.c:918
 msgid "No other tabs open, quit xchat?"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:964 src/fe-gtk/maingui.c:1070
+#: src/fe-gtk/maingui.c:1039 src/fe-gtk/maingui.c:1145
 msgid "User limit must be a number!\n"
 msgstr "La limite d'utilisateurs doit être un nombre !\n"
 
-#: src/fe-gtk/maingui.c:1090
+#: src/fe-gtk/maingui.c:1165
 msgid "Topic Protection"
 msgstr "Protection Topic (sujet)"
 
-#: src/fe-gtk/maingui.c:1091
+#: src/fe-gtk/maingui.c:1166
 msgid "No outside messages"
 msgstr "Aucun message de l'extérieur"
 
-#: src/fe-gtk/maingui.c:1092
+#: src/fe-gtk/maingui.c:1167
 msgid "Secret"
 msgstr "Secret"
 
-#: src/fe-gtk/maingui.c:1093
+#: src/fe-gtk/maingui.c:1168
 msgid "Invite Only"
 msgstr "Invite seulement"
 
-#: src/fe-gtk/maingui.c:1095
+#: src/fe-gtk/maingui.c:1170
 msgid "Moderated"
 msgstr "Modéré"
 
-#: src/fe-gtk/maingui.c:1096
+#: src/fe-gtk/maingui.c:1171
 msgid "Ban List"
 msgstr "Liste de Bannissement"
 
-#: src/fe-gtk/maingui.c:1098
+#: src/fe-gtk/maingui.c:1173
 msgid "Keyword"
 msgstr "Mot-clé"
 
-#: src/fe-gtk/maingui.c:1106
+#: src/fe-gtk/maingui.c:1181
 msgid "User Limit"
 msgstr "Limite d'utilisateurs"
 
-#: src/fe-gtk/maingui.c:1118
+#: src/fe-gtk/maingui.c:1193
 msgid "Close this tab/window"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1121
+#: src/fe-gtk/maingui.c:1197
 msgid "Attach/Detach this tab"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1197
+#: src/fe-gtk/maingui.c:1273
 #, fuzzy
 msgid "Show/Hide userlist"
 msgstr "Afficher l'hôte d'utilisateur"
 
-#: src/fe-gtk/maingui.c:1629
+#: src/fe-gtk/maingui.c:1567
 msgid "Insert color code"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1649
+#: src/fe-gtk/maingui.c:1587
 #, fuzzy, c-format
 msgid "(%s) Channel settings"
 msgstr "Paramètres du tableau de bord"
 
-#: src/fe-gtk/maingui.c:1659
+#: src/fe-gtk/maingui.c:1597
 #, fuzzy
 msgid "Beep on message"
 msgstr "Bip pour les messages"
 
-#: src/fe-gtk/maingui.c:1661
+#: src/fe-gtk/maingui.c:1599
 msgid "Hide join/parts"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1663
+#: src/fe-gtk/maingui.c:1601
 #, fuzzy
 msgid "Color paste"
 msgstr "Colle Couleur"
 
-#: src/fe-gtk/maingui.c:1708
+#: src/fe-gtk/maingui.c:1624
 #, fuzzy
 msgid "Enter new nickname:"
 msgstr "Nouveau pseudonyme"
 
-#: src/fe-gtk/maingui.c:1776
+#: src/fe-gtk/maingui.c:1695
 #, fuzzy
 msgid "Channel Options"
 msgstr "Canaux"
@@ -2901,17 +2991,17 @@ msgstr "Partir du canal"
 msgid "Cycle Channel"
 msgstr "Cycler canal"
 
-#: src/fe-gtk/menu.c:678
+#: src/fe-gtk/menu.c:679
 msgid "X-Chat: User menu"
 msgstr "X-Chat : Menu utilisateur"
 
 #. sep
-#: src/fe-gtk/menu.c:687
+#: src/fe-gtk/menu.c:688
 #, fuzzy
 msgid "Edit This Menu..."
 msgstr "Éditer le menu utilisateur..."
 
-#: src/fe-gtk/menu.c:789
+#: src/fe-gtk/menu.c:790
 msgid ""
 "*WARNING*\n"
 "Auto accepting DCC to your home directory\n"
@@ -2923,11 +3013,11 @@ msgstr ""
 "peut être dangereux et peut être exploité. Par exemple :\n"
 "quelqu'un pourrait vous envoyer un .bash_profile"
 
-#: src/fe-gtk/menu.c:911
+#: src/fe-gtk/menu.c:912
 msgid "Settings saved."
 msgstr "Configuration enregistrée"
 
-#: src/fe-gtk/menu.c:948
+#: src/fe-gtk/menu.c:949
 #, fuzzy
 msgid ""
 "User Commands - Special codes:\n"
@@ -2960,7 +3050,7 @@ msgstr ""
 "%2 donnerait \"john\"\n"
 "&2 donnerait \"john salut\"."
 
-#: src/fe-gtk/menu.c:963
+#: src/fe-gtk/menu.c:964
 msgid ""
 "Userlist Buttons - Special codes:\n"
 "\n"
@@ -2982,7 +3072,7 @@ msgstr ""
 "%s  =  pseudo sélectionné\n"
 "%t  =  heure/date\n"
 
-#: src/fe-gtk/menu.c:972
+#: src/fe-gtk/menu.c:973
 msgid ""
 "Dialog Buttons - Special codes:\n"
 "\n"
@@ -3004,7 +3094,7 @@ msgstr ""
 "%s  =  pseudo sélectionné\n"
 "%t  =  heure/date\n"
 
-#: src/fe-gtk/menu.c:981
+#: src/fe-gtk/menu.c:982
 msgid ""
 "CTCP Replies - Special codes:\n"
 "\n"
@@ -3030,7 +3120,7 @@ msgstr ""
 "&3  =  du mot 3 jusqu'à la fin de la ligne\n"
 "\n"
 
-#: src/fe-gtk/menu.c:991
+#: src/fe-gtk/menu.c:992
 #, c-format
 msgid ""
 "URL Handlers - Special codes:\n"
@@ -3049,319 +3139,309 @@ msgstr ""
 "indique qu'elle devrait être\n"
 "envoyée à un shell au lieu de X-Chat"
 
-#: src/fe-gtk/menu.c:1000
+#: src/fe-gtk/menu.c:1001
 msgid "X-Chat: User Defined Commands"
 msgstr "X-Chat : Commandes définies par l'utilisateur"
 
-#: src/fe-gtk/menu.c:1007
+#: src/fe-gtk/menu.c:1008
 msgid "X-Chat: Userlist Popup menu"
 msgstr "X-Chat : Menu contextuel de la liste d'utilisateurs"
 
-#: src/fe-gtk/menu.c:1014
+#: src/fe-gtk/menu.c:1015
 msgid "X-Chat: Replace"
 msgstr "X-Chat : Remplacer"
 
-#: src/fe-gtk/menu.c:1021
+#: src/fe-gtk/menu.c:1022
 msgid "X-Chat: URL Handlers"
 msgstr "X-Chat : Manipulateurs d'URL"
 
-#: src/fe-gtk/menu.c:1040
+#: src/fe-gtk/menu.c:1041
 msgid "X-Chat: Userlist buttons"
 msgstr "X-Chat : Boutons de la liste d'utilisateurs"
 
-#: src/fe-gtk/menu.c:1047
+#: src/fe-gtk/menu.c:1048
 msgid "X-Chat: Dialog buttons"
 msgstr "X-Chat : Boutons de dialogue"
 
-#: src/fe-gtk/menu.c:1054
+#: src/fe-gtk/menu.c:1055
 msgid "X-Chat: CTCP Replies"
 msgstr "X-Chat : Réponses CTCP"
 
-#: src/fe-gtk/menu.c:1142
+#: src/fe-gtk/menu.c:1143
 msgid "_X-Chat"
 msgstr "_X-Chat"
 
-#: src/fe-gtk/menu.c:1143
+#: src/fe-gtk/menu.c:1144
 #, fuzzy
 msgid "Server List..."
 msgstr "Liste des serveurs..."
 
-#: src/fe-gtk/menu.c:1147
+#: src/fe-gtk/menu.c:1148
 #, fuzzy
 msgid "Server Tab..."
 msgstr "Nouvel onglet de serveur..."
 
-#: src/fe-gtk/menu.c:1148
+#: src/fe-gtk/menu.c:1149
 #, fuzzy
 msgid "Channel Tab..."
 msgstr "Nouvel onglet de canal..."
 
-#: src/fe-gtk/menu.c:1149
+#: src/fe-gtk/menu.c:1150
 #, fuzzy
 msgid "Server Window..."
 msgstr "Nouvelle fenêtre de serveur..."
 
-#: src/fe-gtk/menu.c:1150
+#: src/fe-gtk/menu.c:1151
 #, fuzzy
 msgid "Channel Window..."
 msgstr "Nouvelle fenêtre de canal..."
 
-#: src/fe-gtk/menu.c:1155
-#, fuzzy
-msgid "Load plugin..."
-msgstr "Charger un greffon (*.so)..."
-
-#: src/fe-gtk/menu.c:1157
+#: src/fe-gtk/menu.c:1156 src/fe-gtk/menu.c:1158
 #, fuzzy
 msgid "Load Plugin..."
 msgstr "Charger un greffon (*.so)..."
 
-#: src/fe-gtk/menu.c:1161
+#: src/fe-gtk/menu.c:1162
 #, fuzzy
 msgid "New Shell Tab..."
 msgstr "Nouvel onglet de shell..."
 
-#: src/fe-gtk/menu.c:1167
+#: src/fe-gtk/menu.c:1168
 msgid "Detach Tab"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1168
+#: src/fe-gtk/menu.c:1169
 #, fuzzy
 msgid "Close Tab"
 msgstr "Fermer la boîte à outils"
 
-#: src/fe-gtk/menu.c:1170
+#: src/fe-gtk/menu.c:1171
 msgid "Quit"
 msgstr "Quitter"
 
 #. 17
-#: src/fe-gtk/menu.c:1172
+#: src/fe-gtk/menu.c:1173
 #, fuzzy
 msgid "_IRC"
 msgstr "IRC"
 
-#: src/fe-gtk/menu.c:1173
+#: src/fe-gtk/menu.c:1174
 msgid "Invisible"
 msgstr "Invisible"
 
-#: src/fe-gtk/menu.c:1174
+#: src/fe-gtk/menu.c:1175
 msgid "Receive Wallops"
 msgstr "Recevoir les « Wallops »"
 
-#: src/fe-gtk/menu.c:1175
+#: src/fe-gtk/menu.c:1176
 msgid "Receive Server Notices"
 msgstr "Recevoir les notices du serveur"
 
-#: src/fe-gtk/menu.c:1177
+#: src/fe-gtk/menu.c:1178
 msgid "Marked Away"
 msgstr "Marqué absent (Away)"
 
 #. 24
-#: src/fe-gtk/menu.c:1179
+#: src/fe-gtk/menu.c:1180
 #, fuzzy
 msgid "Auto Rejoin when Kicked"
 msgstr "Reconnexion automatique en cas de Kick"
 
-#: src/fe-gtk/menu.c:1180
+#: src/fe-gtk/menu.c:1181
 #, fuzzy
 msgid "Auto Reconnect to Server"
 msgstr "Reconnexion automatique au serveur"
 
-#: src/fe-gtk/menu.c:1181
+#: src/fe-gtk/menu.c:1182
 msgid "Never-give-up ReConnect"
 msgstr "Ne jamais abandonner un ReConnect"
 
 # Ne jamais abandonner un ReConnect ???
 #. 28
-#: src/fe-gtk/menu.c:1183
+#: src/fe-gtk/menu.c:1184
 msgid "Auto Open Dialog Windows"
 msgstr "Ouvrir automatiquement la fenêtre de dialogue"
 
-#: src/fe-gtk/menu.c:1184
+#: src/fe-gtk/menu.c:1185
 #, fuzzy
 msgid "Auto Accept Direct Chat"
 msgstr "Accepter automatiquement les DCC Chat"
 
-#: src/fe-gtk/menu.c:1185
+#: src/fe-gtk/menu.c:1186
 #, fuzzy
 msgid "Auto Accept Files"
 msgstr "Accepter automatiquement les DCC Send"
 
-#: src/fe-gtk/menu.c:1187
+#: src/fe-gtk/menu.c:1188
 #, fuzzy
 msgid "_Server"
 msgstr "Serveur"
 
 #. 32
-#: src/fe-gtk/menu.c:1189
+#: src/fe-gtk/menu.c:1190
 #, fuzzy
 msgid "S_ettings"
 msgstr "Paramètres"
 
 #. 33
-#: src/fe-gtk/menu.c:1190
+#: src/fe-gtk/menu.c:1191
 #, fuzzy
 msgid "Preferences..."
 msgstr "X-Chat : Préférences"
 
-#: src/fe-gtk/menu.c:1192
+#: src/fe-gtk/menu.c:1193
 #, fuzzy
 msgid "Lists"
 msgstr "Liste de Bannissement"
 
-#: src/fe-gtk/menu.c:1193
+#: src/fe-gtk/menu.c:1194
 #, fuzzy
 msgid "User Commands..."
 msgstr "Commandes utilisateurs..."
 
-#: src/fe-gtk/menu.c:1194
+#: src/fe-gtk/menu.c:1195
 #, fuzzy
 msgid "CTCP Replies..."
 msgstr "Reponses CTCP..."
 
-#: src/fe-gtk/menu.c:1195
+#: src/fe-gtk/menu.c:1196
 #, fuzzy
 msgid "Userlist Buttons..."
 msgstr "Boutons de la liste d'utilisateurs..."
 
-#: src/fe-gtk/menu.c:1196
+#: src/fe-gtk/menu.c:1197
 #, fuzzy
 msgid "Userlist Popup..."
 msgstr "Menu contextuel de la liste d'utilisateurs..."
 
-#: src/fe-gtk/menu.c:1197
+#: src/fe-gtk/menu.c:1198
 #, fuzzy
 msgid "Dialog Buttons..."
 msgstr "Boutons de dialogue..."
 
-#: src/fe-gtk/menu.c:1198
+#: src/fe-gtk/menu.c:1199
 #, fuzzy
 msgid "Replace Popup..."
 msgstr "Fenêtre de remplacement automatique..."
 
-#: src/fe-gtk/menu.c:1199
+#: src/fe-gtk/menu.c:1200
 #, fuzzy
 msgid "URL Handlers..."
 msgstr "Manipulateurs d'URL..."
 
-#: src/fe-gtk/menu.c:1200
+#: src/fe-gtk/menu.c:1201
 #, fuzzy
 msgid "Event Texts..."
 msgstr "Éditer les événements textuels..."
 
-#: src/fe-gtk/menu.c:1201
+#: src/fe-gtk/menu.c:1202
 #, fuzzy
 msgid "Key Bindings..."
 msgstr "Éditer les associations des touches..."
 
 #. 56
-#: src/fe-gtk/menu.c:1206
+#: src/fe-gtk/menu.c:1207
 msgid "Reload Settings"
 msgstr "Recharger la configuration"
 
-#: src/fe-gtk/menu.c:1208
+#: src/fe-gtk/menu.c:1209
 msgid "Save Settings now"
 msgstr "Enregistrer la configuration maintenant"
 
-#: src/fe-gtk/menu.c:1209
+#: src/fe-gtk/menu.c:1210
 msgid "Save Settings on exit"
 msgstr "Enregistrer la configuration à la sortie"
 
-#: src/fe-gtk/menu.c:1212
+#: src/fe-gtk/menu.c:1213
 #, fuzzy
 msgid "_Window"
 msgstr "_Fenêtres"
 
-#: src/fe-gtk/menu.c:1213
+#: src/fe-gtk/menu.c:1214
 #, fuzzy
 msgid "Channel List..."
 msgstr "Fenêtre de liste des canaux..."
 
-#: src/fe-gtk/menu.c:1214
+#: src/fe-gtk/menu.c:1215
 #, fuzzy
 msgid "File Send..."
 msgstr "Fenêtre d'envoi de fichiers..."
 
-#: src/fe-gtk/menu.c:1215
+#: src/fe-gtk/menu.c:1216
 #, fuzzy
 msgid "File Receive..."
 msgstr "Fenêtre de réception de fichiers..."
 
-#: src/fe-gtk/menu.c:1216
+#: src/fe-gtk/menu.c:1217
 #, fuzzy
 msgid "Direct Chat..."
 msgstr "Fenêtre DCC Chat..."
 
-#: src/fe-gtk/menu.c:1217
+#: src/fe-gtk/menu.c:1218
 #, fuzzy
 msgid "Raw Log..."
 msgstr "Fenêtre de logs bruts..."
 
 #. 51
-#: src/fe-gtk/menu.c:1218
+#: src/fe-gtk/menu.c:1219
 #, fuzzy
 msgid "URL Grabber..."
 msgstr "Fenêtre de Capture d'URL..."
 
-#: src/fe-gtk/menu.c:1219
+#: src/fe-gtk/menu.c:1220
 #, fuzzy
 msgid "Notify List..."
 msgstr "Fenêtre de liste de notification..."
 
-#: src/fe-gtk/menu.c:1220
+#: src/fe-gtk/menu.c:1221
 #, fuzzy
 msgid "Ignore List..."
 msgstr "Fenêtre d'ignorance..."
 
-#: src/fe-gtk/menu.c:1221
+#: src/fe-gtk/menu.c:1222
 #, fuzzy
 msgid "Ban List..."
 msgstr "Liste de Bannissement"
 
-#: src/fe-gtk/menu.c:1222
+#: src/fe-gtk/menu.c:1223
 #, fuzzy
 msgid "Character Chart..."
 msgstr "Caractères"
 
-#: src/fe-gtk/menu.c:1223
+#: src/fe-gtk/menu.c:1224
 #, fuzzy
 msgid "Plugin List..."
 msgstr "Liste des greffons"
 
-#: src/fe-gtk/menu.c:1225
+#: src/fe-gtk/menu.c:1226
 #, fuzzy
 msgid "C_lear Text"
 msgstr "Texte normal"
 
-#: src/fe-gtk/menu.c:1226
+#: src/fe-gtk/menu.c:1227
 #, fuzzy
 msgid "Search Text..."
 msgstr "Rechercher dans le tampon..."
 
-#: src/fe-gtk/menu.c:1227
+#: src/fe-gtk/menu.c:1228
 #, fuzzy
 msgid "Save Text..."
 msgstr "Éditer les événements textuels..."
 
-#: src/fe-gtk/menu.c:1229
+#: src/fe-gtk/menu.c:1230
 msgid "_Help"
 msgstr "_Aide"
 
 #. 62
-#: src/fe-gtk/menu.c:1230
-#, fuzzy
-msgid "X-Chat Homepage..."
-msgstr "Page principale de X-Chat..."
-
 #: src/fe-gtk/menu.c:1231
 #, fuzzy
-msgid "Online Docs..."
-msgstr "Documentation en ligne..."
+msgid "Contents"
+msgstr "Connexion"
 
-#: src/fe-gtk/menu.c:1233
+#: src/fe-gtk/menu.c:1232
 #, fuzzy
-msgid "About X-Chat..."
-msgstr "À propos de X-Chat..."
+msgid "About"
+msgstr "Interrompre"
 
 #: src/fe-gtk/notifygui.c:94
 msgid "Offline"
@@ -3650,77 +3730,69 @@ msgstr "Pas de Liste de Serveurs au démarrage"
 msgid "X-Chat: Server List"
 msgstr "X-Chat : Liste des serveurs"
 
-#: src/fe-gtk/setup.c:77
+#: src/fe-gtk/setup.c:79
 msgid "Font:"
 msgstr "Police:"
 
-#: src/fe-gtk/setup.c:78
+#: src/fe-gtk/setup.c:80
 #, fuzzy
 msgid "Background image:"
 msgstr "Image de Fond:"
 
-#: src/fe-gtk/setup.c:79
+#: src/fe-gtk/setup.c:81
 #, fuzzy
 msgid "Time stamp format:"
 msgstr "Format d'horodatage :"
 
-#: src/fe-gtk/setup.c:80
+#: src/fe-gtk/setup.c:82
 msgid "See strftime manpage for details."
 msgstr ""
 
-#: src/fe-gtk/setup.c:81
+#: src/fe-gtk/setup.c:83
 #, fuzzy
 msgid "Time stamp text"
 msgstr "Afficher l'heure de chaque message"
 
-#: src/fe-gtk/setup.c:82
+#: src/fe-gtk/setup.c:84
 #, fuzzy
 msgid "Transparent background"
 msgstr "Fond Transparent"
 
-#: src/fe-gtk/setup.c:83
+#: src/fe-gtk/setup.c:85
 #, fuzzy
 msgid "Indent nicks"
 msgstr "Pseudonymes en Retrait"
 
-#: src/fe-gtk/setup.c:84
+#: src/fe-gtk/setup.c:86
 #, fuzzy
 msgid "Tint transparency"
 msgstr "Teinte Transparente"
 
-#: src/fe-gtk/setup.c:85
+#: src/fe-gtk/setup.c:87
 #, fuzzy
 msgid "Colored nicks"
 msgstr "Pseudonymes colorés"
 
-#: src/fe-gtk/setup.c:86
+#: src/fe-gtk/setup.c:88
 #, fuzzy
 msgid "Strip mIRC color"
 msgstr "Éliminer les couleurs mIRC"
 
-#: src/fe-gtk/setup.c:87
+#: src/fe-gtk/setup.c:89
 msgid "Scrollback lines:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:88
+#: src/fe-gtk/setup.c:90
 msgid "Tint red:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:89
+#: src/fe-gtk/setup.c:91
 #, fuzzy
 msgid "Tint green:"
 msgstr "Paramètres de la Teinte"
 
-#: src/fe-gtk/setup.c:90
+#: src/fe-gtk/setup.c:92
 msgid "Tint blue:"
-msgstr ""
-
-#: src/fe-gtk/setup.c:96
-msgid "Automatic nick completion"
-msgstr ""
-
-#: src/fe-gtk/setup.c:97
-msgid "Use the Text box font"
 msgstr ""
 
 #: src/fe-gtk/setup.c:98
@@ -3729,114 +3801,106 @@ msgid "Interpret %nnn as an ASCII value"
 msgstr ""
 
 #: src/fe-gtk/setup.c:99
+msgid "Automatic nick completion"
+msgstr ""
+
+#: src/fe-gtk/setup.c:100
+msgid "Interpret %C, %B as Color, Bold etc"
+msgstr ""
+
+#: src/fe-gtk/setup.c:101
+msgid "Use the Text box font"
+msgstr ""
+
+#: src/fe-gtk/setup.c:102
 #, fuzzy
 msgid "Nick completion suffix:"
 msgstr "Compléter automatiquement les pseudonymes"
 
-#: src/fe-gtk/setup.c:105
+#: src/fe-gtk/setup.c:108
 msgid "Off"
 msgstr "Arrêt"
 
-#: src/fe-gtk/setup.c:106
+#: src/fe-gtk/setup.c:109
 msgid "Graph"
 msgstr ""
 
-#: src/fe-gtk/setup.c:107
+#: src/fe-gtk/setup.c:110
 msgid "Info text"
 msgstr "Texte d'info"
 
-#: src/fe-gtk/setup.c:108
+#: src/fe-gtk/setup.c:111
 msgid "Both"
 msgstr "Les deux"
 
-#: src/fe-gtk/setup.c:114
+#: src/fe-gtk/setup.c:117
 msgid "A-Z, Ops first"
 msgstr "A-Z, les OPs en premier"
 
-#: src/fe-gtk/setup.c:115
+#: src/fe-gtk/setup.c:118
 msgid "A-Z"
 msgstr "A-Z"
 
-#: src/fe-gtk/setup.c:116
+#: src/fe-gtk/setup.c:119
 msgid "Z-A, Ops last"
 msgstr "A-Z, les OPs en dernier"
 
-#: src/fe-gtk/setup.c:117
+#: src/fe-gtk/setup.c:120
 msgid "Z-A"
 msgstr "Z-A"
 
-#: src/fe-gtk/setup.c:118
+#: src/fe-gtk/setup.c:121
 msgid "Unsorted"
 msgstr "Non classé"
 
-#: src/fe-gtk/setup.c:124
-#, fuzzy
-msgid "Show hostnames in userlist"
-msgstr "Afficher l'hôte des utilisateurs dans la liste d'utilisateurs du canal"
+#: src/fe-gtk/setup.c:127
+msgid "Lag meter:"
+msgstr "Indicateur de lag :"
 
-#: src/fe-gtk/setup.c:125
-#, fuzzy
-msgid "Userlist buttons enabled"
-msgstr "Boutons de la liste d'utilisateurs..."
+#: src/fe-gtk/setup.c:128
+msgid "Throttle meter:"
+msgstr "Indicateur de puissance :"
 
-#: src/fe-gtk/setup.c:126
+#: src/fe-gtk/setup.c:129
+msgid "Userlist sorted by:"
+msgstr "Liste d'utilisateurs classée par :"
+
+#: src/fe-gtk/setup.c:130
 #, fuzzy
 msgid "Double-click command:"
 msgstr "Commande du double click :"
 
-#: src/fe-gtk/setup.c:127
-msgid "Userlist sorted by:"
-msgstr "Liste d'utilisateurs classée par :"
+#: src/fe-gtk/setup.c:131
+#, fuzzy
+msgid "Show hostnames in userlist"
+msgstr "Afficher l'hôte des utilisateurs dans la liste d'utilisateurs du canal"
 
-#: src/fe-gtk/setup.c:128
-msgid "Lag meter:"
-msgstr "Indicateur de lag :"
+#: src/fe-gtk/setup.c:132
+#, fuzzy
+msgid "Userlist buttons enabled"
+msgstr "Boutons de la liste d'utilisateurs..."
 
-#: src/fe-gtk/setup.c:129
-msgid "Throttle meter:"
-msgstr "Indicateur de puissance :"
-
-#: src/fe-gtk/setup.c:135
+#: src/fe-gtk/setup.c:138
 msgid "Windows"
 msgstr "Fenêtres"
 
-#: src/fe-gtk/setup.c:136 src/fe-gtk/setup.c:744
+#: src/fe-gtk/setup.c:139 src/fe-gtk/setup.c:754
 msgid "Tabs"
 msgstr "Onglets"
 
-#: src/fe-gtk/setup.c:142
+#: src/fe-gtk/setup.c:145
 msgid "Bottom"
 msgstr "Bas"
 
-#: src/fe-gtk/setup.c:143
+#: src/fe-gtk/setup.c:146
 msgid "Top"
 msgstr "Haut"
 
 #. N_("Left"),
 #. N_("Right"),
-#: src/fe-gtk/setup.c:146
+#: src/fe-gtk/setup.c:149
 msgid "Hidden"
 msgstr "Cachés"
-
-#: src/fe-gtk/setup.c:152
-#, fuzzy
-msgid "Open channels in:"
-msgstr "Le sujet du canal"
-
-# Ne jamais abandonner un ReConnect ???
-#: src/fe-gtk/setup.c:153
-#, fuzzy
-msgid "Open dialogs in:"
-msgstr "Ouvrir automatiquement la fenêtre de dialogue"
-
-#: src/fe-gtk/setup.c:154
-msgid "Open utilities in:"
-msgstr ""
-
-#: src/fe-gtk/setup.c:154
-#, fuzzy
-msgid "Open DCC, Ignore, Notify etc, in tabs or windows?"
-msgstr "Utiliser des onglets pour les fenêtres DCC, Ignore, Notify, etc"
 
 #: src/fe-gtk/setup.c:155
 msgid "Show tabs at:"
@@ -3844,389 +3908,419 @@ msgstr ""
 
 #: src/fe-gtk/setup.c:156
 #, fuzzy
+msgid "Open channels in:"
+msgstr "Le sujet du canal"
+
+# Ne jamais abandonner un ReConnect ???
+#: src/fe-gtk/setup.c:157
+#, fuzzy
+msgid "Open dialogs in:"
+msgstr "Ouvrir automatiquement la fenêtre de dialogue"
+
+#: src/fe-gtk/setup.c:158
+msgid "Open utilities in:"
+msgstr ""
+
+#: src/fe-gtk/setup.c:158
+#, fuzzy
+msgid "Open DCC, Ignore, Notify etc, in tabs or windows?"
+msgstr "Utiliser des onglets pour les fenêtres DCC, Ignore, Notify, etc"
+
+#: src/fe-gtk/setup.c:159
+msgid "Shorten tabs to:"
+msgstr ""
+
+#: src/fe-gtk/setup.c:159
+#, fuzzy
+msgid "letters."
+msgstr "Indicateurs"
+
+#: src/fe-gtk/setup.c:160
+#, fuzzy
 msgid "Open tab for server messages"
 msgstr "Utiliser un onglet (ou fenêtre) différent pour les messages du serveur"
 
-#: src/fe-gtk/setup.c:157
+#: src/fe-gtk/setup.c:161
 #, fuzzy
 msgid "Only highlight tabs on channel messages"
 msgstr ""
 "Surbrillance des onglets de canaux seulement pour les messages de canaux et "
 "les actions"
 
-#: src/fe-gtk/setup.c:158
+#: src/fe-gtk/setup.c:162
 #, fuzzy
 msgid "Open tab for server notices"
 msgstr ""
 "Utiliser un onglet/fenêtre séparé pour les NOTICEs et NOTICEs du serveur"
 
-#: src/fe-gtk/setup.c:159
+#: src/fe-gtk/setup.c:163
 #, fuzzy
 msgid "Pop new tabs to front"
 msgstr "Nouveaux onglets en avant"
 
-#: src/fe-gtk/setup.c:165
+#: src/fe-gtk/setup.c:169
 #, fuzzy
 msgid "Download files to:"
 msgstr "Envoyer le fichier à %s"
 
-#: src/fe-gtk/setup.c:166
+#: src/fe-gtk/setup.c:170
 #, fuzzy
 msgid "Move completed files to:"
 msgstr "Envoyer le fichier à %s"
 
-#: src/fe-gtk/setup.c:167
+#: src/fe-gtk/setup.c:171
 #, fuzzy
 msgid "DCC IP address:"
 msgstr "Adresse IP DCC :"
 
-#: src/fe-gtk/setup.c:168
+#: src/fe-gtk/setup.c:172
 msgid "Claim you are at this address when offering files."
 msgstr ""
 
-#: src/fe-gtk/setup.c:169
+#: src/fe-gtk/setup.c:173
 #, fuzzy
 msgid "First DCC send port:"
 msgstr "Premier port DCC Send :"
 
-#: src/fe-gtk/setup.c:170
+#: src/fe-gtk/setup.c:174
 #, fuzzy
 msgid "Last DCC send port:"
 msgstr "Dernier port DCC Send :"
 
-#: src/fe-gtk/setup.c:171
+#: src/fe-gtk/setup.c:175
 msgid "(Leave ports at zero for full range)."
 msgstr ""
 
-#: src/fe-gtk/setup.c:172
+#: src/fe-gtk/setup.c:176
 #, fuzzy
 msgid "Auto open DCC send list"
 msgstr "Ouvrir automatiquement la fenêtre DCC Send"
 
-#: src/fe-gtk/setup.c:173
+#: src/fe-gtk/setup.c:177
 msgid "Convert spaces to underscore"
 msgstr ""
 
-#: src/fe-gtk/setup.c:174
+#: src/fe-gtk/setup.c:178
 msgid "In filenames, before sending"
 msgstr ""
 
-#: src/fe-gtk/setup.c:175
+#: src/fe-gtk/setup.c:179
 #, fuzzy
 msgid "Auto open DCC chat list"
 msgstr "Ouvrir automatiquement la fenêtre DCC Chat"
 
-#: src/fe-gtk/setup.c:176
+#: src/fe-gtk/setup.c:180
 #, fuzzy
 msgid "Save nickname in filenames"
 msgstr "Nom du fichier de destination"
 
-#: src/fe-gtk/setup.c:177
+#: src/fe-gtk/setup.c:181
 #, fuzzy
 msgid "Auto open DCC receive list"
 msgstr "Ouvrir automatiquement la fenêtre DCC Recv"
 
-#: src/fe-gtk/setup.c:178
+#: src/fe-gtk/setup.c:182
 msgid "Get my IP from IRC server"
 msgstr ""
 
-#: src/fe-gtk/setup.c:179
+#: src/fe-gtk/setup.c:183
 msgid ""
 "/WHOIS yourself to find your real address. Use this if you have a 192.168.*."
 "* address!"
 msgstr ""
 
-#: src/fe-gtk/setup.c:180
+#: src/fe-gtk/setup.c:184
 msgid "Max. send CPS:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:181 src/fe-gtk/setup.c:183
+#: src/fe-gtk/setup.c:185 src/fe-gtk/setup.c:187
 msgid "Max. speed for one transfer"
 msgstr ""
 
-#: src/fe-gtk/setup.c:182
+#: src/fe-gtk/setup.c:186
 msgid "Max. receive CPS:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:184
+#: src/fe-gtk/setup.c:188
 msgid "Max. global send CPS:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:185 src/fe-gtk/setup.c:187
+#: src/fe-gtk/setup.c:189 src/fe-gtk/setup.c:191
 msgid "Max. speed for all traffic"
 msgstr ""
 
-#: src/fe-gtk/setup.c:186
+#: src/fe-gtk/setup.c:190
 msgid "Max. global receive CPS:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:188
+#: src/fe-gtk/setup.c:192
 msgid "(Leave at zero for full speed file transfers)."
 msgstr ""
 
-#: src/fe-gtk/setup.c:194
+#: src/fe-gtk/setup.c:198
 #, fuzzy
 msgid "Default quit message:"
 msgstr "Message de fin :"
 
-#: src/fe-gtk/setup.c:195
+#: src/fe-gtk/setup.c:199
 #, fuzzy
 msgid "Default part message:"
 msgstr "Message de déPART :"
 
-#: src/fe-gtk/setup.c:196
+#: src/fe-gtk/setup.c:200
 #, fuzzy
 msgid "Default away message:"
 msgstr "Annoncer les messages d'absence"
 
-#: src/fe-gtk/setup.c:198
+#: src/fe-gtk/setup.c:202
 msgid "(Can be a text file relative to ~/.xchat2/)."
 msgstr ""
 
-#: src/fe-gtk/setup.c:200
-msgid "(Can be a text file relative to conf\\)."
+#: src/fe-gtk/setup.c:204
+msgid "(Can be a text file relative to config\\)."
 msgstr ""
 
-#: src/fe-gtk/setup.c:202
+#: src/fe-gtk/setup.c:206
 #, fuzzy
 msgid "Extra words to highlight on:"
 msgstr "Mots à mettre en surbrillance :"
 
-#: src/fe-gtk/setup.c:203
+#: src/fe-gtk/setup.c:207
 #, fuzzy
 msgid "(Separate multiple words with commas)."
 msgstr "(séparer avec des virgules)"
 
-#: src/fe-gtk/setup.c:204
+#: src/fe-gtk/setup.c:208
 msgid "Show away once"
 msgstr "Afficher le message d'absence une seule fois"
 
-#: src/fe-gtk/setup.c:204
+#: src/fe-gtk/setup.c:208
 msgid "Show identical away messages only once"
 msgstr ""
 
-#: src/fe-gtk/setup.c:205
+#: src/fe-gtk/setup.c:209
 #, fuzzy
 msgid "Beep on private messages"
 msgstr "Bip sur les messages privés"
 
-#: src/fe-gtk/setup.c:206
+#: src/fe-gtk/setup.c:210
 #, fuzzy
 msgid "Automatically unmark away"
 msgstr "Enlève la marque d'absence automatiquement"
 
-#: src/fe-gtk/setup.c:206
+#: src/fe-gtk/setup.c:210
 msgid "Unmark yourself as away before sending messages"
 msgstr ""
 
-#: src/fe-gtk/setup.c:207
+#: src/fe-gtk/setup.c:211
 #, fuzzy
 msgid "Beep on channel messages"
 msgstr "Bip sur les messages de canal"
 
-#: src/fe-gtk/setup.c:208
+#: src/fe-gtk/setup.c:212
 msgid "Announce away messages"
 msgstr "Annoncer les messages d'absence"
 
-#: src/fe-gtk/setup.c:208
+#: src/fe-gtk/setup.c:212
 #, fuzzy
 msgid "Announce your away messages to all channels"
 msgstr ""
 "Annoncer vos messages d'absence dans le(s) canal(aux) où vous êtes connecté"
 
-#: src/fe-gtk/setup.c:209
+#: src/fe-gtk/setup.c:213
 msgid "Display MODEs in raw form"
 msgstr ""
 
-#: src/fe-gtk/setup.c:210
+#: src/fe-gtk/setup.c:214
 #, fuzzy
 msgid "Auto reconnect delay:"
 msgstr "Délai de reconnexion automatique:"
 
-#: src/fe-gtk/setup.c:216
+#: src/fe-gtk/setup.c:220
 #, fuzzy
 msgid "Log filename mask:"
 msgstr "Masque pour le nom du Log:"
 
-#: src/fe-gtk/setup.c:217
+#: src/fe-gtk/setup.c:221
 #, c-format
 msgid "(%s=Server %c=Channel %n=Network)."
 msgstr ""
 
-#: src/fe-gtk/setup.c:218
+#: src/fe-gtk/setup.c:222
 msgid "Log timestamp format:"
 msgstr "Format d'horodatage de log :"
 
-#: src/fe-gtk/setup.c:219
+#: src/fe-gtk/setup.c:223
 msgid "(See strftime manpage for details)."
 msgstr ""
 
-#: src/fe-gtk/setup.c:220
+#: src/fe-gtk/setup.c:224
 #, fuzzy
 msgid "Enable logging of conversations"
 msgstr "Activer le Log des conversations sur le disque"
 
-#: src/fe-gtk/setup.c:221
+#: src/fe-gtk/setup.c:225
 #, fuzzy
 msgid "Insert timestamps in logs"
 msgstr "Toujours horodater les logs"
 
-#: src/fe-gtk/setup.c:227
+#: src/fe-gtk/setup.c:231
 msgid "(Disabled)"
 msgstr "(Désactivé)"
 
-#: src/fe-gtk/setup.c:228
+#: src/fe-gtk/setup.c:232
 msgid "Wingate"
 msgstr "Wingate"
 
-#: src/fe-gtk/setup.c:229
+#: src/fe-gtk/setup.c:233
 msgid "Socks4"
 msgstr "Socks4"
 
-#: src/fe-gtk/setup.c:230
+#: src/fe-gtk/setup.c:234
 msgid "Socks5"
 msgstr "Socks5"
 
-#: src/fe-gtk/setup.c:231
+#: src/fe-gtk/setup.c:235
 msgid "HTTP"
 msgstr "HTTP"
 
-#: src/fe-gtk/setup.c:237
+#: src/fe-gtk/setup.c:241
 msgid "Address to bind to:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:238
+#: src/fe-gtk/setup.c:242
 msgid "(Only useful for computers with multiple addresses)."
 msgstr ""
 
-#: src/fe-gtk/setup.c:239
+#: src/fe-gtk/setup.c:243
 #, fuzzy
 msgid "Proxy server:"
 msgstr "Serveur proxy"
 
-#: src/fe-gtk/setup.c:240
+#: src/fe-gtk/setup.c:244
 #, fuzzy
 msgid "Proxy port:"
 msgstr "Type de proxy :"
 
-#: src/fe-gtk/setup.c:241
+#: src/fe-gtk/setup.c:245
 #, fuzzy
 msgid "Proxy type:"
 msgstr "Type de proxy :"
 
-#: src/fe-gtk/setup.c:422
-msgid "Choose File"
-msgstr "Choisissez le Fichier"
+#: src/fe-gtk/setup.c:431
+#, fuzzy
+msgid "Select an Image File"
+msgstr "Sélectionnez un nom de fichier de sortie"
 
-#: src/fe-gtk/setup.c:449
+#: src/fe-gtk/setup.c:458
 #, fuzzy
 msgid "Select font"
 msgstr "Choisissez la Police"
 
-#: src/fe-gtk/setup.c:505
+#: src/fe-gtk/setup.c:515
 msgid "Browse..."
 msgstr "Parcourir..."
 
-#: src/fe-gtk/setup.c:625
+#: src/fe-gtk/setup.c:635
 msgid "Select color"
 msgstr "Choisissez la couleur"
 
-#: src/fe-gtk/setup.c:689
+#: src/fe-gtk/setup.c:699
 msgid "mIRC colors:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:697
+#: src/fe-gtk/setup.c:707
 #, fuzzy
 msgid "Foreground:"
 msgstr "Texte"
 
-#: src/fe-gtk/setup.c:698
+#: src/fe-gtk/setup.c:708
 #, fuzzy
 msgid "Background:"
 msgstr "Fond"
 
-#: src/fe-gtk/setup.c:700
+#: src/fe-gtk/setup.c:710
 #, fuzzy
 msgid "Mark fore:"
 msgstr "Texte Sélectionné"
 
-#: src/fe-gtk/setup.c:701
+#: src/fe-gtk/setup.c:711
 #, fuzzy
 msgid "Mark back:"
 msgstr "Fond Sélection"
 
-#: src/fe-gtk/setup.c:703
+#: src/fe-gtk/setup.c:713
 msgid "New Data:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:704
+#: src/fe-gtk/setup.c:714
 #, fuzzy
 msgid "New Message:"
 msgstr "Message"
 
-#: src/fe-gtk/setup.c:705
+#: src/fe-gtk/setup.c:715
 #, fuzzy
 msgid "Highlight:"
 msgstr "Surbrillance"
 
-#: src/fe-gtk/setup.c:740
+#: src/fe-gtk/setup.c:750
 msgid "Interface"
 msgstr "Interface"
 
-#: src/fe-gtk/setup.c:741
+#: src/fe-gtk/setup.c:751
 #, fuzzy
 msgid "Text box"
 msgstr "Texte"
 
-#: src/fe-gtk/setup.c:742
+#: src/fe-gtk/setup.c:752
 #, fuzzy
 msgid "Input box"
 msgstr "Boîte de saisie"
 
-#: src/fe-gtk/setup.c:743
+#: src/fe-gtk/setup.c:753
 #, fuzzy
 msgid "User list"
 msgstr "Liste Utilisateur"
 
-#: src/fe-gtk/setup.c:745
+#: src/fe-gtk/setup.c:755
 #, fuzzy
 msgid "Colors"
 msgstr "Comores"
 
 # Non traduit pour garder signification /DCC send
-#: src/fe-gtk/setup.c:747
+#: src/fe-gtk/setup.c:757
 #, fuzzy
 msgid "Chatting"
 msgstr "Chat"
 
-#: src/fe-gtk/setup.c:748
+#: src/fe-gtk/setup.c:758
 msgid "General"
 msgstr "Général"
 
-#: src/fe-gtk/setup.c:749
+#: src/fe-gtk/setup.c:759
 msgid "Logging"
 msgstr "Logguer"
 
-#: src/fe-gtk/setup.c:751
+#: src/fe-gtk/setup.c:761
 #, fuzzy
 msgid "Network"
 msgstr "Internic réseau"
 
-#: src/fe-gtk/setup.c:752
+#: src/fe-gtk/setup.c:762
 msgid "Network setup"
 msgstr ""
 
-#: src/fe-gtk/setup.c:753
+#: src/fe-gtk/setup.c:763
 #, fuzzy
 msgid "File transfers"
 msgstr "Transfert de fichiers"
 
-#: src/fe-gtk/setup.c:858
+#: src/fe-gtk/setup.c:868
 #, fuzzy
 msgid "Categories"
 msgstr "Catégories"
 
-#: src/fe-gtk/setup.c:955
+#: src/fe-gtk/setup.c:973
 msgid "X-Chat: Preferences"
 msgstr "X-Chat : Préférences"
 
@@ -4282,6 +4376,25 @@ msgstr "Choisir un fichier de sauvegarde"
 #: src/fe-gtk/urlgrab.c:118
 msgid "X-Chat: URL Grabber"
 msgstr "X-Chat : Récupération d'URL"
+
+#, fuzzy
+#~ msgid "Load plugin..."
+#~ msgstr "Charger un greffon (*.so)..."
+
+#, fuzzy
+#~ msgid "X-Chat Homepage..."
+#~ msgstr "Page principale de X-Chat..."
+
+#, fuzzy
+#~ msgid "Online Docs..."
+#~ msgstr "Documentation en ligne..."
+
+#, fuzzy
+#~ msgid "About X-Chat..."
+#~ msgstr "À propos de X-Chat..."
+
+#~ msgid "Choose File"
+#~ msgstr "Choisissez le Fichier"
 
 #~ msgid "Skip MOTD"
 #~ msgstr "Sauter le MOTD"
@@ -4420,18 +4533,6 @@ msgstr "X-Chat : Récupération d'URL"
 
 #~ msgid "Python List"
 #~ msgstr "Liste Python"
-
-#~ msgid "Client Exiting"
-#~ msgstr "Fermeture du client"
-
-#~ msgid ""
-#~ "Cannot open font:\n"
-#~ "\n"
-#~ "%s"
-#~ msgstr ""
-#~ "Impossible d'ouviri la police :\n"
-#~ "\n"
-#~ "%s"
 
 #~ msgid "gdk_font_load failed"
 #~ msgstr "échec gdk_font_load"
@@ -4723,9 +4824,6 @@ msgstr "X-Chat : Récupération d'URL"
 #~ msgid "Show the buttons below the user list"
 #~ msgstr "Afficher les boutons au dessous de la liste d'utilisateurs"
 
-#~ msgid "Meters"
-#~ msgstr "Indicateurs"
-
 #~ msgid "Tabs Located at:"
 #~ msgstr "Onglets situés :"
 
@@ -4998,9 +5096,6 @@ msgstr "X-Chat : Récupération d'URL"
 
 #~ msgid "Built-in Replies"
 #~ msgstr "Réponses internes"
-
-#~ msgid "Hide Version"
-#~ msgstr "Cacher la version"
 
 #~ msgid "Do not reply to CTCP version"
 #~ msgstr "Ne pas répondre à un CTCP version"

@@ -3314,7 +3314,7 @@ gtk_xtext_set_palette (GtkXText * xtext, GdkColor palette[])
 {
 	int i;
 
-	for (i = 19; i; i--)
+	for (i = 19; i >= 0; i--)
 	{
 #ifdef USE_XFT
 		xtext->color[i].color.red = palette[i].red;
