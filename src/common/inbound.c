@@ -1022,7 +1022,7 @@ set_default_modes (server *serv)
 
 	if (modes[1] != '\0')
 	{
-		serv->p_nick_mode (serv, serv->nick, modes);
+		serv->p_mode (serv, serv->nick, modes);
 	}
 }
 

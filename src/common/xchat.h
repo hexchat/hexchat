@@ -347,8 +347,7 @@ typedef struct server
 	void (*p_join)(struct server *, char *channel, char *key);
 	void (*p_login)(struct server *, char *user, char *realname);
 	void (*p_join_info)(struct server *, char *channel);
-	void (*p_chan_mode)(struct server *, char *channel, char *mode);
-	void (*p_nick_mode)(struct server *, char *nick, char *mode);
+	void (*p_mode)(struct server *, char *target, char *mode);
 	void (*p_user_list)(struct server *, char *channel);
 	void (*p_away_status)(struct server *, char *channel);
 	void (*p_whois)(struct server *, char *nicks);

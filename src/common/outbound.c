@@ -468,7 +468,7 @@ ban (session * sess, char *tbuf, char *mask, char *bantypestr, int deop)
 	{
 		sprintf (tbuf, "+b %s", mask);
 	}
-	serv->p_chan_mode (serv, sess->channel, tbuf);
+	serv->p_mode (serv, sess->channel, tbuf);
 }
 
 static int
@@ -481,7 +481,7 @@ cmd_ban (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		ban (sess, tbuf, mask, word[3], 0);
 	} else
 	{
-		sess->server->p_chan_mode (sess->server, sess->channel, "+b");	/* banlist */
+		sess->server->p_mode (sess->server, sess->channel, "+b");	/* banlist */
 	}
 
 	return TRUE;
@@ -1951,6 +1951,23 @@ cmd_me (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 }
 
 static int
+cmd_mode (struct session *sess, char *tbuf, char *word[], char *word_eol[])
+{
+	/* +channel channels are dying, let those servers whine about modes.
+	 * return info about current channel if available and no info is given */
+	if ((*word[2] == '+') || (*word[2] == 0) || (!is_channel(sess->server, word[2]) && 
+				!(rfc_casecmp(sess->server->nick, word[2]) == 0)))
+	{
+		if(sess->channel[0] == 0)
+			return FALSE;
+		sess->server->p_mode (sess->server, sess->channel, word_eol[2]);
+	}	
+	else
+		sess->server->p_mode (sess->server, word[2], word_eol[3]);
+	return TRUE;
+}
+
+static int
 mop_cb (struct User *user, multidata *data)
 {
 	if (!user->op)
@@ -2695,6 +2712,7 @@ const struct commands xc_cmds[] = {
 	 N_("ME <action>, sends the action to the current channel (actions are written in the 3rd person, like /me jumps)")},
 	{"MKICK", cmd_mkick, 1, 1,
 	 N_("MKICK, Mass kicks everyone except you in the current channel (needs chanop)")},
+	{"MODE", cmd_mode, 1, 0, 0},
 	{"MOP", cmd_mop, 1, 1,
 	 N_("MOP, Mass op's all users in the current channel (needs chanop)")},
 	{"MSG", cmd_msg, 0, 0, N_("MSG <nick> <message>, sends a private message")},

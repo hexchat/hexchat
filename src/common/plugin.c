@@ -364,6 +364,7 @@ plugin_load (session *sess, char *filename, char *arg)
 
 #else
 	char *error;
+	char *filepart;
 
 /* OpenBSD lacks this! */
 #ifndef RTLD_GLOBAL
@@ -374,10 +375,20 @@ plugin_load (session *sess, char *filename, char *arg)
 #define RTLD_NOW 0
 #endif
 
+	/* get the filename without path */
+	filepart = file_part (filename);
+
 	/* load the plugin */
-	handle = dlopen (filename, RTLD_GLOBAL | RTLD_NOW);
+	if (filepart &&
+		 /* xsys draws in libgtk-1.2, causing crashes, so force RTLD_LOCAL */
+		 (strstr (filepart, "local") || strncmp (filepart, "libxsys-1", 9) == 0)
+		)
+		handle = dlopen (filename, RTLD_NOW);
+	else
+		handle = dlopen (filename, RTLD_GLOBAL | RTLD_NOW);
 	if (handle == NULL)
 		return dlerror ();
+	dlerror ();		/* Clear any existing error */
 
 	/* find the init routine xchat_plugin_init */
 	init_func = dlsym (handle, "xchat_plugin_init");

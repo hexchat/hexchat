@@ -1405,7 +1405,7 @@ mg_change_flag (GtkWidget * wid, session *sess, char flag)
 			mode[0] = '+';
 		else
 			mode[0] = '-';
-		serv->p_chan_mode (serv, sess->channel, mode);
+		serv->p_mode (serv, sess->channel, mode);
 		serv->p_join_info (serv, sess->channel);
 		sess->ignore_mode = TRUE;
 		sess->ignore_date = TRUE;
@@ -1432,7 +1432,7 @@ flagl_hit (GtkWidget * wid, struct session *sess)
 				return;
 			}
 			snprintf (modes, sizeof (modes), "+l %d", atoi (limit_str));
-			serv->p_chan_mode (serv, sess->channel, modes);
+			serv->p_mode (serv, sess->channel, modes);
 			serv->p_join_info (serv, sess->channel);
 		}
 	} else
@@ -1453,7 +1453,7 @@ flagk_hit (GtkWidget * wid, struct session *sess)
 		if (GTK_TOGGLE_BUTTON (wid)->active)
 			modes[0] = '+';
 
-		serv->p_chan_mode (serv, sess->channel, modes);
+		serv->p_mode (serv, sess->channel, modes);
 	}
 }
 
@@ -1515,7 +1515,7 @@ mg_key_entry_cb (GtkWidget * igad, gpointer userdata)
 	{
 		snprintf (modes, sizeof (modes), "+k %s",
 				gtk_entry_get_text (GTK_ENTRY (igad)));
-		serv->p_chan_mode (serv, sess->channel, modes);
+		serv->p_mode (serv, sess->channel, modes);
 		serv->p_join_info (serv, sess->channel);
 	}
 }
@@ -1538,7 +1538,7 @@ mg_limit_entry_cb (GtkWidget * igad, gpointer userdata)
 		}
 		snprintf (modes, sizeof(modes), "+l %d", 
 				atoi (gtk_entry_get_text (GTK_ENTRY (igad))));
-		serv->p_chan_mode (serv, sess->channel, modes);
+		serv->p_mode (serv, sess->channel, modes);
 		serv->p_join_info (serv, sess->channel);
 	}
 }

@@ -102,7 +102,7 @@ send_channel_modes (session *sess, char *tbuf, char *word[], int wpos,
 			strcat (tbuf, " ");
 			strcat (tbuf, word[wpos + i]);
 		}
-		serv->p_chan_mode (serv, sess->channel, tbuf);
+		serv->p_mode (serv, sess->channel, tbuf);
 
 		wpos += usable_modes;
 	}

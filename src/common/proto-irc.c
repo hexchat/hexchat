@@ -137,15 +137,9 @@ irc_invite (server *serv, char *channel, char *nick)
 }
 
 static void
-irc_chan_mode (server *serv, char *channel, char *mode)
+irc_mode (server *serv, char *target, char *mode)
 {
-	tcp_sendf (serv, "MODE %s %s\r\n", channel, mode);
-}
-
-static void
-irc_nick_mode (server *serv, char *nick, char *mode)
-{
-	tcp_sendf (serv, "MODE %s %s\r\n", nick, mode);
+	tcp_sendf (serv, "MODE %s %s\r\n", target, mode);
 }
 
 /* find channel info when joined */
@@ -956,8 +950,7 @@ proto_fill_her_up (server *serv)
 	serv->p_join = irc_join;
 	serv->p_login = irc_login;
 	serv->p_join_info = irc_join_info;
-	serv->p_chan_mode = irc_chan_mode;
-	serv->p_nick_mode = irc_nick_mode;
+	serv->p_mode = irc_mode;
 	serv->p_user_list = irc_user_list;
 	serv->p_away_status = irc_away_status;
 	/*serv->p_get_ip = irc_get_ip;*/

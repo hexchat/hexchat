@@ -969,7 +969,7 @@ menu_wallops (GtkWidget * wid, gpointer none)
 			mode[0] = '+';
 		else
 			mode[0] = '-';
-		serv->p_nick_mode (serv, serv->nick, mode);
+		serv->p_mode (serv, serv->nick, mode);
 	}
 }
 
@@ -987,7 +987,7 @@ menu_servernotice (GtkWidget * wid, gpointer none)
 			mode[0] = '+';
 		else
 			mode[0] = '-';
-		serv->p_nick_mode (serv, serv->nick, mode);
+		serv->p_mode (serv, serv->nick, mode);
 	}
 }
 
@@ -1011,7 +1011,7 @@ menu_invisible (GtkWidget * wid, gpointer none)
 			mode[0] = '+';
 		else
 			mode[0] = '-';
-		serv->p_nick_mode (serv, serv->nick, mode);
+		serv->p_mode (serv, serv->nick, mode);
 	}
 }
 
