@@ -400,8 +400,9 @@ process_numeric (session * sess, char *outbuf, int n,
 
 	case 323:
 		if (!fe_is_chanwindow (sess->server))
-			goto def;
-		fe_chan_list_end (sess->server);
+			EMIT_SIGNAL (XP_TE_SERVTEXT, sess, text, word[1], NULL, NULL, 0);
+		else
+			fe_chan_list_end (sess->server);
 		break;
 
 	case 324:
