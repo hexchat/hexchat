@@ -332,6 +332,15 @@ dnl *********************************************************************
 dnl ** IPv6 *************************************************************
 dnl *********************************************************************
 
+dnl purely for Solaris
+AC_CHECK_FUNC(select, ,
+	AC_CHECK_LIB(socket, select, ,
+		AC_CHECK_LIB(nsl, select, ,
+			AC_CHECK_LIB(inet, select, ,
+				AC_CHECK_LIB(cposix, select, ,
+					AC_CHECK_LIB(net, select, ,
+						AC_MSG_WARN(i can not find select.  you might need to help me)))))))
+
 if test "$ipv6" = yes; then
 	AC_CHECK_FUNCS(getaddrinfo, have_getaddrinfo=yes)
 	AC_MSG_CHECKING(whether to enable IPv6 support)
@@ -522,15 +531,6 @@ AC_CHECK_FUNCS(stat64)
 
 dnl old solaris doesn't have this
 AC_CHECK_FUNCS(setenv)
-
-dnl purely for Solaris
-AC_CHECK_FUNC(select, ,
-	AC_CHECK_LIB(socket, select, ,
-		AC_CHECK_LIB(nsl, select, ,
-			AC_CHECK_LIB(inet, select, ,
-				AC_CHECK_LIB(cposix, select, ,
-					AC_CHECK_LIB(net, select, ,
-						AC_MSG_WARN(i can not find select.  you might need to help me)))))))
 
 dnl purely for Solaris
 AC_CHECK_LIB(socket, select)
