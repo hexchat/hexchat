@@ -725,6 +725,12 @@ find_away_message (struct server *serv, char *nick)
 		"NAME Open in new tab\n"			"CMD !mozilla -remote 'openURL(%s,new-tab)'\n\n"\
 		"NAME Run new Mozilla\n"			"CMD !mozilla %s\n\n"\
 	"NAME ENDSUB\n"							"CMD \n\n"\
+	"NAME SUB\n"								"CMD Mozilla Firebird...\n\n"\
+		"NAME Open in existing\n"			"CMD !MozillaFirebird -remote 'openURL(%s)'\n\n"\
+		"NAME Open in new window\n"		"CMD !MozillaFirebird -remote 'openURL(%s,new-window)'\n\n"\
+		"NAME Open in new tab\n"			"CMD !MozillaFirebird -remote 'openURL(%s,new-tab)'\n\n"\
+		"NAME Run new Mozilla Firebird\n"	"CMD !MozillaFirebird %s\n\n"\
+	"NAME ENDSUB\n"							"CMD \n\n"\
 	"NAME SUB\n"								"CMD Galeon...\n\n"\
 		"NAME Open in existing\n"			"CMD !galeon -x '%s'\n\n"\
 		"NAME Open in new window\n"		"CMD !galeon -w '%s'\n\n"\
@@ -738,14 +744,14 @@ find_away_message (struct server *serv, char *nick)
 	"NAME ENDSUB\n"							"CMD \n\n"\
 	"NAME SUB\n"								"CMD Send URL to...\n\n"\
 		"NAME Gnome URL Handler\n"			"CMD !gnome-moz-remote %s\n\n"\
-		"NAME Lynx\n"							"CMD !"XTERM" -e lynx %s\n\n"\
-		"NAME Links\n"							"CMD !"XTERM" -e links %s\n\n"\
-		"NAME w3m\n"							"CMD !"XTERM" -e w3m %s\n\n"\
-		"NAME NcFTP\n" 						"CMD !"XTERM" -e ncftp %s\n\n"\
+		"NAME Lynx\n"							"CMD !"XTERM" -x lynx %s\n\n"\
+		"NAME Links\n"							"CMD !"XTERM" -x links %s\n\n"\
+		"NAME w3m\n"							"CMD !"XTERM" -x w3m %s\n\n"\
+		"NAME lFTP\n" 							"CMD !"XTERM" -x lftp %s\n\n"\
 		"NAME gFTP\n"							"CMD !gftp %s\n\n"\
 		"NAME Konqueror\n"					"CMD !konqueror %s\n\n"\
-		"NAME Telnet\n"						"CMD !"XTERM" -e telnet %s\n\n"\
-		"NAME Ping\n"							"CMD !"XTERM" -e ping -c 4 %s\n\n"\
+		"NAME Telnet\n"						"CMD !"XTERM" -x telnet %s\n\n"\
+		"NAME Ping\n"							"CMD !"XTERM" -x ping -c 4 %s\n\n"\
 	"NAME ENDSUB\n"							"CMD \n\n"\
 	"NAME Connect as IRC server\n"		"CMD newserver %s\n\n"
 #endif
@@ -888,9 +894,9 @@ xchat_init (void)
 		"NAME %s\n"				"CMD quote USERHOST %%s\n\n"\
 	"NAME ENDSUB\n"			"CMD \n\n"\
 	"NAME SUB\n"				"CMD %s\n\n"\
-		"NAME %s\n"				"CMD !"XTERM" -e /bin/sh -c \"/usr/sbin/traceroute %%h ; sleep 30\"\n\n"\
-		"NAME %s\n"				"CMD !"XTERM" -e /bin/sh -c \"ping -c 4 %%h ; sleep 30\"\n\n"\
-		"NAME %s\n"				"CMD !"XTERM" -e telnet %%h\n\n"\
+		"NAME %s\n"				"CMD !"XTERM" -x /bin/sh -c \"/usr/sbin/traceroute %%h ; sleep 30\"\n\n"\
+		"NAME %s\n"				"CMD !"XTERM" -x /bin/sh -c \"ping -c 4 %%h ; sleep 30\"\n\n"\
+		"NAME %s\n"				"CMD !"XTERM" -x telnet %%h\n\n"\
 	"NAME ENDSUB\n"			"CMD \n\n"\
 	"NAME %s\n"					"CMD query %%s\n\n",
 		_("Direct client-to-client"),

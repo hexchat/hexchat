@@ -982,6 +982,14 @@ setup_apply_to_sess (session_gui *gui)
 
 	if (prefs.style_inputbox)
 	{
+		extern char cursor_color_rc[];
+		char buf[256];
+		sprintf (buf, cursor_color_rc,
+				(colors[18].red >> 8),
+				(colors[18].green >> 8),
+				(colors[18].blue >> 8));
+		gtk_rc_parse_string (buf);
+
 		setup_apply_entry_style (gui->input_box);
 		setup_apply_entry_style (gui->limit_entry);
 		setup_apply_entry_style (gui->key_entry);

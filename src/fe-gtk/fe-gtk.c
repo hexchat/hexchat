@@ -190,7 +190,7 @@ fe_args (int argc, char *argv[])
 	return 1;
 }
 
-static const char rc[] =
+const char cursor_color_rc[] =
 	"style \"xc-ib-st\""
 	"{"
 		"GtkEntry::cursor-color=\"#%02x%02x%02x\""
@@ -220,8 +220,8 @@ create_input_style (void)
 	if (prefs.style_inputbox && !done_rc)
 	{
 		done_rc = TRUE;
-		sprintf (buf, rc, (colors[18].red >> 8), (colors[18].green >> 8),
-					(colors[18].blue >> 8));
+		sprintf (buf, cursor_color_rc, (colors[18].red >> 8),
+			(colors[18].green >> 8), (colors[18].blue >> 8));
 		gtk_rc_parse_string (buf);
 	}
 

@@ -307,7 +307,7 @@ menu_quick_item_with_callback (void *callback, char *label, GtkWidget * menu,
 }
 
 static GtkWidget *
-menu_quick_sub (char *name, GtkWidget * menu)
+menu_quick_sub (char *name, GtkWidget *menu, GtkWidget **sub_item_ret)
 {
 	GtkWidget *sub_menu;
 	GtkWidget *sub_item;
@@ -322,9 +322,12 @@ menu_quick_sub (char *name, GtkWidget * menu)
 	gtk_widget_show (sub_item);
 	gtk_menu_item_set_submenu (GTK_MENU_ITEM (sub_item), sub_menu);
 
+	if (sub_item_ret)
+		*sub_item_ret = sub_item;
+
 	/* We create a new element in the list */
 	submenu_list = g_slist_prepend (submenu_list, sub_menu);
-	return (sub_menu);
+	return sub_menu;
 }
 
 static GtkWidget *
@@ -356,34 +359,70 @@ toggle_cb (GtkWidget *item, char *pref_name)
 /* append items to "menu" using the (struct popup*) list provided */
 
 static void
-menu_create (GtkWidget *menu, GSList *list, char *target)
+menu_create (GtkWidget *menu, GSList *list, char *target, int check_path)
 {
 	struct popup *pop;
-	GtkWidget *tempmenu = menu;
+	GtkWidget *tempmenu = menu, *subitem = NULL;
+	int childcount = 0;
 
 	submenu_list = g_slist_prepend (0, menu);
 	while (list)
 	{
 		pop = (struct popup *) list->data;
+
 		if (!strncasecmp (pop->name, "SUB", 3))
-			tempmenu = menu_quick_sub (pop->cmd, tempmenu);
-		else if (!strncasecmp (pop->name, "TOGGLE", 6))
 		{
+			childcount = 0;
+			tempmenu = menu_quick_sub (pop->cmd, tempmenu, &subitem);
+
+		} else if (!strncasecmp (pop->name, "TOGGLE", 6))
+		{
+			childcount++;
 			menu_toggle_item (pop->name + 7, tempmenu, toggle_cb, pop->cmd,
 									cfg_get_bool (pop->cmd));
-		}
-		else if (!strncasecmp (pop->name, "ENDSUB", 6))
+
+		} else if (!strncasecmp (pop->name, "ENDSUB", 6))
 		{
+			/* empty sub menu due to no programs in PATH? */
+			if (check_path && childcount < 1)
+				gtk_widget_destroy (subitem);
+			subitem = NULL;
+
 			if (tempmenu != menu)
 				tempmenu = menu_quick_endsub ();
 			/* If we get here and tempmenu equals menu that means we havent got any submenus to exit from */
+
 		} else if (!strncasecmp (pop->name, "SEP", 3))
+		{
 			menu_quick_item (0, 0, tempmenu, 1, 0);
-		else
-			menu_quick_item (pop->cmd, pop->name, tempmenu, 0, target);
+
+		} else
+		{
+			if (!check_path)
+			{
+				menu_quick_item (pop->cmd, pop->name, tempmenu, 0, target);
+			} else
+			{
+				/* check if the program is in path, if not, leave it out! */
+				char *prog = strdup (pop->cmd + 1);	/* 1st char is "!" */
+				char *space = strchr (prog, ' ');	/* this isn't 100% */
+				char *path;
+
+				if (space)
+					*space = 0;
+
+				path = g_find_program_in_path (prog);
+				if (path)
+				{
+					g_free (path);
+					childcount++;
+					menu_quick_item (pop->cmd, pop->name, tempmenu, 0, target);
+				}
+				g_free (prog);
+			}
+		}
 
 		list = list->next;
-
 	}
 
 	/* Let's clean up the linked list from mem */
@@ -442,7 +481,7 @@ menu_nickmenu (session *sess, GdkEventButton *event, char *nick, int num_sel)
 		user = find_name_global (current_sess->server, nick);
 		if (user)
 		{
-			submenu = menu_quick_sub (nick, menu);
+			submenu = menu_quick_sub (nick, menu, NULL);
 
 			snprintf (buf, sizeof (buf), _("User: %s"),
 						user->hostname ? user->hostname : _("Unknown"));
@@ -473,9 +512,9 @@ menu_nickmenu (session *sess, GdkEventButton *event, char *nick, int num_sel)
 	}
 
 	if (num_sel > 1)
-		menu_create (menu, popup_list, NULL);
+		menu_create (menu, popup_list, NULL, FALSE);
 	else
-		menu_create (menu, popup_list, str_copy);
+		menu_create (menu, popup_list, str_copy, FALSE);
 	menu_popup (menu, event, NULL);
 }
 
@@ -627,7 +666,7 @@ menu_urlmenu (GdkEventButton *event, char *url)
 	menu_quick_item_with_callback (open_url_cb, "Open URL", menu, str_copy);
 #endif
 
-	menu_create (menu, urlhandler_list, str_copy);
+	menu_create (menu, urlhandler_list, str_copy, TRUE);
 	menu_popup (menu, event, NULL);
 }
 
@@ -717,7 +756,7 @@ menu_usermenu (void)
 static void
 usermenu_create (GtkWidget *menu)
 {
-	menu_create (menu, usermenu_list, "");
+	menu_create (menu, usermenu_list, "", FALSE);
 	menu_quick_item (0, 0, menu, 1, 0);	/* sep */
 	menu_quick_item_with_callback (menu_usermenu, _("Edit This Menu..."), menu, 0);
 }
