@@ -10,15 +10,18 @@
  - Updated Spanish translation (Pablo del Campo).
  - Added /GETSTR and /GETINT.
  - Misc. serverlist bug fixes (Shaun Guth).
- - Added xchat_get_info("network") to plugin interface.
- - Added xchat_hook_fd to plugin interface.
+ - Plugin changes/fixes:
+   * Added xchat_get_info("network").
+   * Added new function: xchat_hook_fd().
+   * Fixed "DCC Chat Text" event (Daniel P. Stasinski).
+   * Fixed implementation of EAT_ return codes.
+   * Keep the leading ":" in server events passed to plugins.
+   * Added hack to make plugins possible on win32.
+   * Fixed /unload <plugin_file_name> crash.
  - Fixed changing tabs via keyboard.
  - Added a few keyboard accelerators to the menubar.
  - Fixed close-tab-0 crash.
- - Fixed /unload <plugin_file_name> crash.
  - Fixed userlist popup menu disappearing on button-release.
- - Added hack to make plugins possible on win32.
- - Keep the leading ":" in server events passed to plugins.
  - Fixed color paste.
  - Added a character set selector to the serverlist.
  - Send DCC filenames in system encoding (gets converted if a charset

@@ -460,7 +460,7 @@ dcc_chat_line (struct DCC *dcc, char *line, char *tbuf)
 	for (i = 5; i < PDIWORDS; i++)
 		word[i] = "\000";
 
-	ret = plugin_emit_server (sess, word[0], word, word);
+	ret = plugin_emit_print (sess, word);
 
 	/* did the plugin close it? */
 	if (!g_slist_find (dcc_list, dcc))

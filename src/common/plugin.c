@@ -434,7 +434,7 @@ plugin_hook_run (session *sess, char *name, char *word[], char *word_eol[], int 
 			break;
 		}
 
-		if (ret & EAT_ALL)
+		if ((ret & EAT_XCHAT) && (ret & EAT_PLUGIN))
 			return 1;
 		if (ret & EAT_PLUGIN)
 			return eat;	/* stop running plugins */
