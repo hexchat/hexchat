@@ -1244,7 +1244,6 @@ download_move_to_completed_dir (char *dcc_dir, char *dcc_completed_dir,
 	char dl_tmp[4096];
 	char *output_fname;
 	int return_tmp, return_tmp2;
-	struct stat buf;
 
 	/* if dcc_dir and dcc_completed_dir are the same then we are done */
 	if (0 == strcmp (dcc_dir, dcc_completed_dir) ||
@@ -1253,8 +1252,8 @@ download_move_to_completed_dir (char *dcc_dir, char *dcc_completed_dir,
 
 	/* mgl: since output_name is a full path, we just copy it */
 	strncpy (dl_src, output_name, sizeof(dl_src));
-	/* snprintf (dl_src, sizeof (dl_src), "%s/%s", dcc_dir, output_name); */
-	
+	dl_src[sizeof(dl_src)-1] = '\0';
+
 	/* mgl: output_name being a full path, we need to extract the filename */
 	/* off the end of it before continuing */
 
@@ -1265,11 +1264,11 @@ download_move_to_completed_dir (char *dcc_dir, char *dcc_completed_dir,
 	/* get the next char after the pathsep */
 	++output_fname;
 	/* throw the filename onto the directory name of the completed directory */
+	/* FIXME: dcc_completed_dir is UTF8, not fs encoding! */
 	snprintf (dl_dest, sizeof (dl_dest), "%s/%s", dcc_completed_dir,
 			   output_fname);
 	/* the rest should continue as before, but use output_fname */
 
-	dl_src[sizeof(dl_src)-1] = '\0';
 	dl_dest[sizeof(dl_dest)-1] = '\0';
 
 	/*
@@ -1283,10 +1282,11 @@ download_move_to_completed_dir (char *dcc_dir, char *dcc_completed_dir,
 	 *		--RAM, 03/11/2001
 	 */
 
-	if (-1 != stat (dl_dest, &buf))
+	if (access (dl_dest, F_OK) == 0)
 	{
 		int destlen = strlen (dl_dest);
 		int i;
+		struct stat buf;
 
 		/*
 		 * There must be enough room for us to append the ".xx" extensions.
