@@ -65,7 +65,7 @@
 
 #define VERSION_MAJOR 0
 #define VERSION_MINOR 1
-#define VERSION "0.3"
+#define VERSION "0.4"
 
 #ifdef WIN32
 #undef WITH_THREAD /* Thread support locks up xchat on Win32. */
@@ -1726,6 +1726,7 @@ Module_xchat_get_list(PyObject *self, PyObject *args)
 						(xchat_context*)sattr);
 					break;
 				}
+			default: /* ignore unknown (newly added?) types */
 				continue;
 			}
 			if (attr == NULL)

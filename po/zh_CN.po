@@ -6,6 +6,7 @@
 # Sarah Smith <sarahs@redhat.com>, 2003
 # Rongjun Mu <elanmu@sina.com>, 2003
 # Rongjun Mu <rongjunmu+i18n@gmail.com>, 2004
+# Zhuyuan Liu <gtkdict@yahoo.com.cn>, 2005
 # 
 # 
 msgid ""
@@ -13,7 +14,7 @@ msgstr ""
 "Project-Id-Version: xchat 2.4.2\n"
 "Report-Msgid-Bugs-To: www.xchat.org\n"
 "POT-Creation-Date: 2005-03-07 18:50+1100\n"
-"PO-Revision-Date: 2005-03-07 23:03+0800\n"
+"PO-Revision-Date: 2005-03-28 22:10+0800\n"
 "Last-Translator: Rongjun Mu <rongjunmu+i18n@gmail.com>\n"
 "Language-Team: Chinese (simplified) <i18n-translation@lists.linux.net.cn>\n"
 "MIME-Version: 1.0\n"
@@ -181,13 +182,8 @@ msgid "AWAY [<reason>], sets you away"
 msgstr "AWAY [<reason>]，设置您为暂离状态"
 
 #: src/common/outbound.c:2693
-msgid ""
-"BAN <mask> [<bantype>], bans everyone matching the mask from the current "
-"channel. If they are already on the channel this doesn't kick them (needs "
-"chanop)"
-msgstr ""
-"BAN <mask> [<bantype>]，禁止所有匹配 mask 的用户进入当前的聊天室。如果他们已"
-"在该聊天室，这个命令不会把他们踢出去(需要有 chanop 身份)"
+msgid "BAN <mask> [<bantype>], bans everyone matching the mask from the current channel. If they are already on the channel this doesn't kick them (needs chanop)"
+msgstr "BAN <mask> [<bantype>]，禁止所有匹配 mask 的用户进入当前的聊天室。如果他们已在该聊天室，这个命令不会把他们踢出去(需要有 chanop 身份)"
 
 #: src/common/outbound.c:2695
 msgid "CLEAR, Clears the current text window"
@@ -202,12 +198,8 @@ msgid "COUNTRY [-s] <code|wildcard>, finds a country code, eg: au = australia"
 msgstr "COUNTRY [-s] <code|wildcard>，查找国家代码，比如：cn = 中国"
 
 #: src/common/outbound.c:2701
-msgid ""
-"CTCP <nick> <message>, send the CTCP message to nick, common messages are "
-"VERSION and USERINFO"
-msgstr ""
-"CTCP <nick> <message>，给昵称为 <nick> 者发送 CTCP 消息，常用消息是 VERSION "
-"和 USERINFO"
+msgid "CTCP <nick> <message>, send the CTCP message to nick, common messages are VERSION and USERINFO"
+msgstr "CTCP <nick> <message>，给昵称为 <nick> 者发送 CTCP 消息，常用消息是 VERSION 和 USERINFO"
 
 #: src/common/outbound.c:2703
 msgid "CYCLE, parts current channel and immediately rejoins"
@@ -232,30 +224,20 @@ msgstr ""
 "         /DCC CLOSE SEND johnsmith file.tar.gz"
 
 #: src/common/outbound.c:2715
-msgid ""
-"DEHOP <nick>, removes chanhalf-op status from the nick on the current "
-"channel (needs chanop)"
-msgstr ""
-"DEHOP <nick>，取消当前聊天室内昵称为 <nick> 者的 chanhalf-op 身份(需要有 "
-"chanop 身份)"
+msgid "DEHOP <nick>, removes chanhalf-op status from the nick on the current channel (needs chanop)"
+msgstr "DEHOP <nick>，取消当前聊天室内昵称为 <nick> 者的 chanhalf-op 身份(需要有 chanop 身份)"
 
 #: src/common/outbound.c:2717
 msgid "DELBUTTON <name>, deletes a button from under the user-list"
 msgstr "DELBUTTON <name>，删除用户列表下的一个按钮"
 
 #: src/common/outbound.c:2719
-msgid ""
-"DEOP <nick>, removes chanop status from the nick on the current channel "
-"(needs chanop)"
-msgstr ""
-"DEOP <nick>，取消昵称为 <nick> 者在本聊天室的 chanop 身份(需要有 chanop 身份)"
+msgid "DEOP <nick>, removes chanop status from the nick on the current channel (needs chanop)"
+msgstr "DEOP <nick>，取消昵称为 <nick> 者在本聊天室的 chanop 身份(需要有 chanop 身份)"
 
 #: src/common/outbound.c:2721
-msgid ""
-"DEVOICE <nick>, removes voice status from the nick on the current channel "
-"(needs chanop)"
-msgstr ""
-"DEVOICE <nick>，取消昵称为 <nick> 者在本聊天室的发言权(需要有 chanop 身份)"
+msgid "DEVOICE <nick>, removes voice status from the nick on the current channel (needs chanop)"
+msgstr "DEVOICE <nick>，取消昵称为 <nick> 者在本聊天室的发言权(需要有 chanop 身份)"
 
 #: src/common/outbound.c:2722
 msgid "DISCON, Disconnects from server"
@@ -270,24 +252,16 @@ msgid "ECHO <text>, Prints text locally"
 msgstr "ECHO <text>，只在本地显示文本"
 
 #: src/common/outbound.c:2727
-msgid ""
-"EXEC [-o] <command>, runs the command. If -o flag is used then output is "
-"sent to current channel, else is printed to current text box"
-msgstr ""
-"EXEC [-o] <command>，运行命令。如果使用了 -o 选项则输出到当前聊天室，否则输出"
-"到当前文本框"
+msgid "EXEC [-o] <command>, runs the command. If -o flag is used then output is sent to current channel, else is printed to current text box"
+msgstr "EXEC [-o] <command>，运行命令。如果使用了 -o 选项则输出到当前聊天室，否则输出到当前文本框"
 
 #: src/common/outbound.c:2729
 msgid "EXECCONT, sends the process SIGCONT"
 msgstr "EXECCONT，向进程发送 SIGCONT 信号"
 
 #: src/common/outbound.c:2732
-msgid ""
-"EXECKILL [-9], kills a running exec in the current session. If -9 is given "
-"the process is SIGKILL'ed"
-msgstr ""
-"EXECKILL [-9]，杀死当前会话中的某运行进程。如果使用 -9 选项，则用 SIGKILL 杀"
-"死该进程"
+msgid "EXECKILL [-9], kills a running exec in the current session. If -9 is given the process is SIGKILL'ed"
+msgstr "EXECKILL [-9]，杀死当前会话中的某运行进程。如果使用 -9 选项，则用 SIGKILL 杀死该进程"
 
 #: src/common/outbound.c:2734
 msgid "EXECSTOP, sends the process SIGSTOP"
@@ -324,12 +298,8 @@ msgstr ""
 "    options - NOSAVE, QUIET"
 
 #: src/common/outbound.c:2756
-msgid ""
-"INVITE <nick> [<channel>], invites someone to a channel, by default the "
-"current channel (needs chanop)"
-msgstr ""
-"INVITE <nick> [<channel>]，邀请昵称为 <nick> 者加入聊天室，默认为当前聊天室"
-"(需要有 chanop 身份)"
+msgid "INVITE <nick> [<channel>], invites someone to a channel, by default the current channel (needs chanop)"
+msgstr "INVITE <nick> [<channel>]，邀请昵称为 <nick> 者加入聊天室，默认为当前聊天室(需要有 chanop 身份)"
 
 #: src/common/outbound.c:2757
 msgid "JOIN <channel>, joins the channel"
@@ -340,12 +310,8 @@ msgid "KICK <nick>, kicks the nick from the current channel (needs chanop)"
 msgstr "KICK <nick>，把昵称为 <nick> 者踢出当前聊天室(需要有 chanop 身份)"
 
 #: src/common/outbound.c:2761
-msgid ""
-"KICKBAN <nick>, bans then kicks the nick from the current channel (needs "
-"chanop)"
-msgstr ""
-"KICKBAN <nick>，踢出昵称为 <nick> 者当前聊天室，并禁止他再进入(需要有 chanop "
-"身份)"
+msgid "KICKBAN <nick>, bans then kicks the nick from the current channel (needs chanop)"
+msgstr "KICKBAN <nick>，踢出昵称为 <nick> 者当前聊天室，并禁止他再进入(需要有 chanop 身份)"
 
 #: src/common/outbound.c:2764
 msgid "LAGCHECK, forces a new lag check"
@@ -360,8 +326,7 @@ msgid "LOAD <file>, loads a plugin or script"
 msgstr "LOAD <file>，加载插件或脚本"
 
 #: src/common/outbound.c:2771
-msgid ""
-"MDEHOP, Mass deop's all chanhalf-ops in the current channel (needs chanop)"
+msgid "MDEHOP, Mass deop's all chanhalf-ops in the current channel (needs chanop)"
 msgstr "MDEHOP，取消当前聊天室中所有 chanhalf-op 的权限 (需要有 chanop 身份)"
 
 #: src/common/outbound.c:2773
@@ -369,16 +334,11 @@ msgid "MDEOP, Mass deop's all chanops in the current channel (needs chanop)"
 msgstr "MDEOP，取消当前聊天室中所有 chanop 的权限 (需要有 chanop 身份)"
 
 #: src/common/outbound.c:2775
-msgid ""
-"ME <action>, sends the action to the current channel (actions are written in "
-"the 3rd person, like /me jumps)"
-msgstr ""
-"ME <action>，向当前聊天室中发送一个动作 (动作使用第三人称陈述，例如 /me "
-"jumps)"
+msgid "ME <action>, sends the action to the current channel (actions are written in the 3rd person, like /me jumps)"
+msgstr "ME <action>，向当前聊天室中发送一个动作 (动作使用第三人称陈述，例如 /me jumps)"
 
 #: src/common/outbound.c:2777
-msgid ""
-"MKICK, Mass kicks everyone except you in the current channel (needs chanop)"
+msgid "MKICK, Mass kicks everyone except you in the current channel (needs chanop)"
 msgstr "MKICK，踢出当前聊天室中除你自己之外的所有用户 (需要有 chanop 身份)"
 
 #: src/common/outbound.c:2780
@@ -406,11 +366,8 @@ msgid "NICK <nickname>, sets your nick"
 msgstr "NICK <nickname>，设置您的昵称"
 
 #: src/common/outbound.c:2791
-msgid ""
-"NOTICE <nick/channel> <message>, sends a notice. Notices are a type of "
-"message that should be auto reacted to"
-msgstr ""
-"NOTICE <nick/channel> <message>，发送一则通知。通知是一种能被自动回应的消息"
+msgid "NOTICE <nick/channel> <message>, sends a notice. Notices are a type of message that should be auto reacted to"
+msgstr "NOTICE <nick/channel> <message>，发送一则通知。通知是一种能被自动回应的消息"
 
 #: src/common/outbound.c:2793
 msgid "NOTIFY [<nick>], lists your notify list or adds someone to it"
@@ -421,8 +378,7 @@ msgid "OP <nick>, gives chanop status to the nick (needs chanop)"
 msgstr "OP <nick>，给予昵称为 <nick> 者 chanop 身份 (需要有 chanop 身份)"
 
 #: src/common/outbound.c:2797
-msgid ""
-"PART [<channel>] [<reason>], leaves the channel, by default the current one"
+msgid "PART [<channel>] [<reason>], leaves the channel, by default the current one"
 msgstr "PART [<channel>] [<reason>]，离开聊天室，默认为当前的聊天室"
 
 #: src/common/outbound.c:2799
@@ -442,29 +398,16 @@ msgid "QUOTE <text>, sends the text in raw form to the server"
 msgstr "QUOTE <text>，向服务器发送原始格式的文本"
 
 #: src/common/outbound.c:2808
-msgid ""
-"RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as /"
-"RECONNECT to reconnect to the current server or with /RECONNECT ALL to "
-"reconnect to all the open servers"
-msgstr ""
-"RECONNECT [-ssl] [<host>] [<port>] [<password>]，可用 /RECONNECT 重新连接当前"
-"服务器或用 /RECONNECT ALL 重新连接所有服务器"
+msgid "RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as /RECONNECT to reconnect to the current server or with /RECONNECT ALL to reconnect to all the open servers"
+msgstr "RECONNECT [-ssl] [<host>] [<port>] [<password>]，可用 /RECONNECT 重新连接当前服务器或用 /RECONNECT ALL 重新连接所有服务器"
 
 #: src/common/outbound.c:2811
-msgid ""
-"RECONNECT [<host>] [<port>] [<password>], Can be called just as /RECONNECT "
-"to reconnect to the current server or with /RECONNECT ALL to reconnect to "
-"all the open servers"
-msgstr ""
-"RECONNECT [<host>] [<port>] [<password>]，可用 /RECONNECT 重新连接当前服务器"
-"或用 /RECONNECT ALL 重新连接所有服务器"
+msgid "RECONNECT [<host>] [<port>] [<password>], Can be called just as /RECONNECT to reconnect to the current server or with /RECONNECT ALL to reconnect to all the open servers"
+msgstr "RECONNECT [<host>] [<port>] [<password>]，可用 /RECONNECT 重新连接当前服务器或用 /RECONNECT ALL 重新连接所有服务器"
 
 #: src/common/outbound.c:2813
-msgid ""
-"RECV <text>, send raw data to xchat, as if it was received from the irc "
-"server"
-msgstr ""
-"RECV <text>，向 xchat 发送原始数据，就好像它是从 irc 服务器上接收到的一样"
+msgid "RECV <text>, send raw data to xchat, as if it was received from the irc server"
+msgstr "RECV <text>，向 xchat 发送原始数据，就好像它是从 irc 服务器上接收到的一样"
 
 #: src/common/outbound.c:2816
 msgid "SAY <text>, sends the text to the object in the current window"
@@ -479,17 +422,11 @@ msgid "SERVCHAN <host> <port> <channel>, connects and joins a channel"
 msgstr "SERVCHAN <host> <port> <channel>，连接服务器并加入某聊天室"
 
 #: src/common/outbound.c:2826
-msgid ""
-"SERVER [-ssl] <host> [<port>] [<password>], connects to a server, the "
-"default port is 6667 for normal connections, and 9999 for ssl connections"
-msgstr ""
-"SERVER [-ssl] <host> [<port>] [<password>]，连接服务器。普通连接默认端口为"
-"6667，SSL 加密连接默认端口为9999"
+msgid "SERVER [-ssl] <host> [<port>] [<password>], connects to a server, the default port is 6667 for normal connections, and 9999 for ssl connections"
+msgstr "SERVER [-ssl] <host> [<port>] [<password>]，连接服务器。普通连接默认端口为6667，SSL 加密连接默认端口为9999"
 
 #: src/common/outbound.c:2829
-msgid ""
-"SERVER <host> [<port>] [<password>], connects to a server, the default port "
-"is 6667"
+msgid "SERVER <host> [<port>] [<password>], connects to a server, the default port is 6667"
 msgstr "SERVER <host> [<port>] [<password>]，连接服务器。默认端口为6667"
 
 #: src/common/outbound.c:2831
@@ -501,8 +438,7 @@ msgid "SETCURSOR [-|+]<position>"
 msgstr "SETCURSOR [-|+]<position>"
 
 #: src/common/outbound.c:2836
-msgid ""
-"TOPIC [<topic>], sets the topic if one is given, else shows the current topic"
+msgid "TOPIC [<topic>], sets the topic if one is given, else shows the current topic"
 msgstr "TOPIC [<topic>]，设置话题为指定话题，如果未指定则显示当前话题"
 
 #: src/common/outbound.c:2838
@@ -530,8 +466,7 @@ msgid "WALLCHAN <message>, writes the message to all channels"
 msgstr "WALLCHAN <message>，发送消息到所有的聊天室"
 
 #: src/common/outbound.c:2848
-msgid ""
-"WALLCHOP <message>, sends the message to all chanops on the current channel"
+msgid "WALLCHOP <message>, sends the message to all chanops on the current channel"
 msgstr "WALLCHOP <message>，给当前聊天室中所有 chanop 发送消息"
 
 #: src/common/outbound.c:2881
@@ -591,9 +526,7 @@ msgstr "跳转至 %s 中下一个服务器中...\n"
 
 #: src/common/servlist.c:1056
 #, c-format
-msgid ""
-"Warning: \"%s\" character set is unknown. No conversion will be applied for "
-"network %s."
+msgid "Warning: \"%s\" character set is unknown. No conversion will be applied for network %s."
 msgstr "警告：未知的字符设置“%s”。对网络 %s 将不应用字符转换。"
 
 #: src/common/textevents.h:6
@@ -654,7 +587,7 @@ msgstr "%C22*%O$t$1 给 $2 设置了邀请权"
 
 #: src/common/textevents.h:51
 msgid "%UChannel          Users   Topic"
-msgstr "$U 聊天室          用户     话题"
+msgstr "%U 聊天室          用户     话题"
 
 #: src/common/textevents.h:54
 msgid "%C18%B%B$4$1%O%C18%O$t$2"
@@ -730,7 +663,7 @@ msgstr "%C22*%O$t收到来自 $2 的CTCP $1"
 
 #: src/common/textevents.h:108
 msgid "%C22*%O$tReceived a CTCP $1 from $2 (to $3)"
-msgstr "%C22*%O$从 $2 处接收到一个(到 $3 的)CTCP $1"
+msgstr "%C22*%O$t从 $2 处接收到一个(到 $3 的)CTCP $1"
 
 #: src/common/textevents.h:111
 msgid "%C19>%O$1%C19<%O$tCTCP $2"
@@ -742,7 +675,7 @@ msgstr "%C22*%O$t收到来自 $2 的 CTCP 声音 $1"
 
 #: src/common/textevents.h:117
 msgid "%C22*%O$tDCC CHAT to %C26$1%O aborted."
-msgstr "%C22*%O$t和  %C26$1%O 的密谈中止。"
+msgstr "%C22*%O$t和 %C26$1%O 的密谈中止。"
 
 #: src/common/textevents.h:120
 msgid "%C22*%O$tDCC CHAT connection established to %C26$1 %C30[%O$2%C30]"
@@ -750,7 +683,7 @@ msgstr "%C22*%O$t和 %C26$1 %C30[%O$2%C30] 开始密谈了"
 
 #: src/common/textevents.h:123
 msgid "%C22*%O$tDCC CHAT to %C26$1%O lost ($4)."
-msgstr "%C22*%O$$t和 %C26$1%O 的密谈丢失($4)。"
+msgstr "%C22*%O$t和 %C26$1%O 的密谈丢失($4)。"
 
 #: src/common/textevents.h:126
 msgid "%C22*%O$tReceived a DCC CHAT offer from $1"
@@ -778,11 +711,8 @@ msgid "%C24,18 Type  To/From    Status  Size    Pos     File         "
 msgstr "%C24,18 类型   到/来自       状态    大小    位置     文件         "
 
 #: src/common/textevents.h:144
-msgid ""
-"%C22*%O$tReceived a malformed DCC request from %C26$1%O.%010%C22*%O"
-"$tContents of packet: $2"
-msgstr ""
-"%C22*%O$t收到来自 %C26$1%O 的有错的 DCC 请求。%010%C22*%O$t数据包内容：$2"
+msgid "%C22*%O$tReceived a malformed DCC request from %C26$1%O.%010%C22*%O$tContents of packet: $2"
+msgstr "%C22*%O$t收到来自 %C26$1%O 的有错的 DCC 请求。%010%C22*%O$t数据包内容：$2"
 
 #: src/common/textevents.h:147
 msgid "%C22*%O$tOffering%C26 $1%O to%C26 $2"
@@ -797,10 +727,8 @@ msgid "%C22*%O$tDCC RECV%C26 $2%O to%C26 $1%O aborted."
 msgstr "%C22*%O$t到 %C26$1%O 的 DCC RECV %C26 $2%O 中止。"
 
 #: src/common/textevents.h:156
-msgid ""
-"%C22*%O$tDCC RECV%C26 $1%O from%C26 $3%O complete %C30[%C26$4%O cps%C30]%O."
-msgstr ""
-"%C22*%O$t从 %C26$3%O DCC RECV %C26$1%O 已完成 %C30[%C26$4%O cps%C30]%O。"
+msgid "%C22*%O$tDCC RECV%C26 $1%O from%C26 $3%O complete %C30[%C26$4%O cps%C30]%O."
+msgstr "%C22*%O$t从 %C26$3%O DCC RECV %C26$1%O 已完成 %C30[%C26$4%O cps%C30]%O。"
 
 #: src/common/textevents.h:159
 msgid "%C22*%O$tDCC RECV connection established to%C26 $1 %C30[%O$2%C30]"
@@ -815,8 +743,7 @@ msgid "%C22*%O$tDCC RECV: Cannot open $1 for writing ($2)."
 msgstr "%C22*%O$tDCC RECV：不能打开 $1 进行写操作($2)。 "
 
 #: src/common/textevents.h:168
-msgid ""
-"%C22*%O$tThe file%C26 $1%C already exists, saving it as%C26 $2%O instead."
+msgid "%C22*%O$tThe file%C26 $1%C already exists, saving it as%C26 $2%O instead."
 msgstr "%C22*%O$t文件 %C11$1%C 已存在，请另存为 %C26$2%O。"
 
 #: src/common/textevents.h:171
@@ -828,10 +755,8 @@ msgid "%C22*%O$tDCC SEND%C26 $2%O to%C26 $1%O aborted."
 msgstr "%C22*%O$t到 %C26$1%O 的 DCC SEND %C26$2%O 中止。"
 
 #: src/common/textevents.h:177
-msgid ""
-"%C22*%O$tDCC SEND%C26 $1%O to%C26 $2%O complete %C30[%C26$3%O cps%C30]%O."
-msgstr ""
-"%C22*%O$t到 %C26$2%O 的 DCC SEND %C26$1%O  已完成  %C30[%C26$3%O cps%C30]%O。"
+msgid "%C22*%O$tDCC SEND%C26 $1%O to%C26 $2%O complete %C30[%C26$3%O cps%C30]%O."
+msgstr "%C22*%O$t到 %C26$2%O 的 DCC SEND %C26$1%O  已完成  %C30[%C26$3%O cps%C30]%O。"
 
 #: src/common/textevents.h:180
 msgid "%C22*%O$tDCC SEND connection established to%C26 $1 %C30[%O$2%C30]"
@@ -3034,9 +2959,7 @@ msgstr ""
 "无法续传。"
 
 #: src/fe-gtk/dccgui.c:390
-msgid ""
-"File in download directory is larger than file offered. Resuming not "
-"possible."
+msgid "File in download directory is larger than file offered. Resuming not possible."
 msgstr "下载目录中的文件比提供的文件大，无法续传。"
 
 #: src/fe-gtk/dccgui.c:394
@@ -3213,83 +3136,43 @@ msgid "%d bytes"
 msgstr "%d 字节"
 
 #: src/fe-gtk/fkeys.c:155
-msgid ""
-"The Run Command action runs the data in Data 1 as if it has been typed into "
-"the entry box where you pressed the key sequence. Thus it can contain text "
-"(which will be sent to the channel/person), commands or user commands. When "
-"run all \\n characters in Data 1 are used to deliminate seperate commands so "
-"it is possible to run more than one command. If you want a \\ in the actual "
-"text run then enter \\\\"
-msgstr ""
-"“Run Command”会运行数据 1 中的数据，就如同你是在按了键序列后出现的输入箱中键"
-"入这些数据一样。这样，它就会包含文本 (这些文本会被发送给聊天室或某人)、命令或"
-"用户命令。运行时，数据 1 中所有“\\n”字符 被用来分隔命令，因此您可以运行不止一"
-"个命令。如果您想在运行的文本中包含字符“\\”，您应该输入“\\\\”"
+msgid "The Run Command action runs the data in Data 1 as if it has been typed into the entry box where you pressed the key sequence. Thus it can contain text (which will be sent to the channel/person), commands or user commands. When run all \\n characters in Data 1 are used to deliminate seperate commands so it is possible to run more than one command. If you want a \\ in the actual text run then enter \\\\"
+msgstr "“Run Command”会运行数据 1 中的数据，就如同你是在按了键序列后出现的输入箱中键入这些数据一样。这样，它就会包含文本(这些文本会被发送给聊天室或某人)、命令或用户命令。运行时，数据 1 中所有“\\n”字符被用来分隔命令，因此您可以运行不止一个命令。如果您想在运行的文本中包含字符“\\”，您应该输入“\\\\”"
 
 #: src/fe-gtk/fkeys.c:157
-msgid ""
-"The Change Page command switches between pages in the notebook. Set Data 1 "
-"to the page you want to switch to. If Data 2 is set to anything then the "
-"switch will be relative to the current position"
-msgstr ""
-"“Change Page”命令在您的笔记本中的页码间切换。将数据 1 设置成您要切换成的页"
-"码。如果数据 2 被设置成任意值，切换页码数将相对于当前位置而言"
+msgid "The Change Page command switches between pages in the notebook. Set Data 1 to the page you want to switch to. If Data 2 is set to anything then the switch will be relative to the current position"
+msgstr "“Change Page”命令在您的笔记本中的页码间切换。将数据 1 设置成您要切换成的页码。如果数据 2 被设置成任意值，切换页码数将相对于当前位置而言"
 
 #: src/fe-gtk/fkeys.c:159
-msgid ""
-"The Insert in Buffer command will insert the contents of Data 1 into the "
-"entry where the key sequence was pressed at the current cursor position"
-msgstr ""
-"“Insert in Buffer”命令在当前光标处把数据 1 中的内容插入到按了键序列的输入中"
+msgid "The Insert in Buffer command will insert the contents of Data 1 into the entry where the key sequence was pressed at the current cursor position"
+msgstr "“Insert in Buffer”命令在当前光标处把数据 1 中的内容插入到按了键序列的输入中"
 
 #: src/fe-gtk/fkeys.c:161
-msgid ""
-"The Scroll Page command scrolls the text widget up or down one page or one "
-"line. Set Data 1 to either Up, Down, +1 or -1."
-msgstr ""
-"“Scroll Page”命令在文本构件中上下滚动一页或一行。设置数据 1 为 Up，DOWN，+1"
-"或-1。"
+msgid "The Scroll Page command scrolls the text widget up or down one page or one line. Set Data 1 to either Up, Down, +1 or -1."
+msgstr "“Scroll Page”命令在文本构件中上下滚动一页或一行。设置数据 1 为 Up，DOWN，+1或-1。"
 
 #: src/fe-gtk/fkeys.c:163
-msgid ""
-"The Set Buffer command sets the entry where the key sequence was entered to "
-"the contents of Data 1"
+msgid "The Set Buffer command sets the entry where the key sequence was entered to the contents of Data 1"
 msgstr "“Set Buffer”命令把按了键序列后的输入设置成数据 1 中的内容"
 
 #: src/fe-gtk/fkeys.c:165
-msgid ""
-"The Last Command command sets the entry to contain the last command entered "
-"- the same as pressing up in a shell"
-msgstr ""
-"“Last Command”命令把文本设为所输入的前一个命令 - 和在终端中按向上箭头效果相同"
+msgid "The Last Command command sets the entry to contain the last command entered - the same as pressing up in a shell"
+msgstr "“Last Command”命令把文本设为所输入的前一个命令 - 和在终端中按向上箭头效果相同"
 
 #: src/fe-gtk/fkeys.c:167
-msgid ""
-"The Next Command command sets the entry to contain the next command entered "
-"- the same as pressing down in a shell"
-msgstr ""
-"“Next Command”命令把文本设为所输入的下一个命令 - 和在终端中按向下箭头效果相同"
+msgid "The Next Command command sets the entry to contain the next command entered - the same as pressing down in a shell"
+msgstr "“Next Command”命令把文本设为所输入的下一个命令 - 和在终端中按向下箭头效果相同"
 
 #: src/fe-gtk/fkeys.c:169
-msgid ""
-"This command changes the text in the entry to finish an incomplete nickname "
-"or command. If Data 1 is set then double-tabbing in a string will select the "
-"last nick, not the next"
-msgstr ""
-"该命令改变输入的文本来完成未输入完毕的用户昵称或命令。如果数据 1 被设置，那"
-"么，双击 tab 键会选择最后一个昵称，而非下一个"
+msgid "This command changes the text in the entry to finish an incomplete nickname or command. If Data 1 is set then double-tabbing in a string will select the last nick, not the next"
+msgstr "该命令改变输入的文本来完成未输入完毕的用户昵称或命令。如果数据 1 被设置，那么，双击 tab 键会选择最后一个昵称，而非下一个"
 
 #: src/fe-gtk/fkeys.c:171
-msgid ""
-"This command scrolls up and down through the list of nicks. If Data 1 is set "
-"to anything it will scroll up, else it scrolls down"
-msgstr ""
-"该命令在昵称列表中上下移动。如果数据 1 被设置成任意值，它会上移，否则下移"
+msgid "This command scrolls up and down through the list of nicks. If Data 1 is set to anything it will scroll up, else it scrolls down"
+msgstr "该命令在昵称列表中上下移动。如果数据 1 被设置成任意值，它会上移，否则下移"
 
 #: src/fe-gtk/fkeys.c:173
-msgid ""
-"This command checks the last word entered in the entry against the replace "
-"list and replaces it if it finds a match"
+msgid "This command checks the last word entered in the entry against the replace list and replaces it if it finds a match"
 msgstr "该命令对照替换列表来检查输入的最后一词，若找到匹配则代替它"
 
 #: src/fe-gtk/fkeys.c:175
@@ -4238,13 +4121,8 @@ msgid "Connect command:"
 msgstr "连接命令："
 
 #: src/fe-gtk/servlistgui.c:1062
-msgid ""
-"Extra command to execute after connecting. If you need more than one, set "
-"this to LOAD -e <filename>, where <filename> is a text-file full of commands "
-"to execute."
-msgstr ""
-"连接后执行的额外的命令。如果您使用多个命令，请设置为 LOAD -e <文件名>，其中 <"
-"文件名> 是一个包含要执行的命令的文本文件。"
+msgid "Extra command to execute after connecting. If you need more than one, set this to LOAD -e <filename>, where <filename> is a text-file full of commands to execute."
+msgstr "连接后执行的额外的命令。如果您使用多个命令，请设置为 LOAD -e <文件名>，其中 <文件名> 是一个包含要执行的命令的文本文件。"
 
 #: src/fe-gtk/servlistgui.c:1065
 msgid "Nickserv password:"
@@ -4656,12 +4534,8 @@ msgid "Get my address from the IRC server"
 msgstr "从 IRC 服务器获取我的 地址"
 
 #: src/fe-gtk/setup.c:241
-msgid ""
-"Asks the IRC server for your real address. Use this if you have a 192.168.*."
-"* address!"
-msgstr ""
-"向 IRC 服务器查询您的真实地址。如果您具有 192.168.*.* 这样的地址时，请使用此"
-"命令。"
+msgid "Asks the IRC server for your real address. Use this if you have a 192.168.*.* address!"
+msgstr "向 IRC 服务器查询您的真实地址。如果您具有 192.168.*.* 这样的地址时，请使用此命令。"
 
 #: src/fe-gtk/setup.c:243
 msgid "Maximum File Transfer Speeds (bytes per second)"
@@ -5172,12 +5046,8 @@ msgstr "%d 个管理员，共 %d 人"
 #~ msgid "Key Bindings..."
 #~ msgstr "键盘映射..."
 
-#~ msgid ""
-#~ "%C8,2 Type  To/From    Status  Size    Pos     File      %O%010%B%"
-#~ "C9----------------------------------------------------%O"
-#~ msgstr ""
-#~ "%C8,2 类型  到/从      状态     大小    位置     文件      %O%010%B%"
-#~ "C9----------------------------------------------------%O"
+#~ msgid "%C8,2 Type  To/From    Status  Size    Pos     File      %O%010%B%C9----------------------------------------------------%O"
+#~ msgstr "%C8,2 类型  到/从      状态     大小    位置     文件      %O%010%B%C9----------------------------------------------------%O"
 
 #~ msgid "-%C10-%C11-%O$t$1%O"
 #~ msgstr "-%C10-%C11-%O$t$1%O"
@@ -5227,9 +5097,7 @@ msgstr "%d 个管理员，共 %d 人"
 #~ msgid "Join Channels:"
 #~ msgstr "加入聊天室："
 
-#~ msgid ""
-#~ "Command to execute after connecting. Can be used to authenticate to "
-#~ "NickServ"
+#~ msgid "Command to execute after connecting. Can be used to authenticate to NickServ"
 #~ msgstr "连接后执行的命令。可用来进行 NickServ 验证密码"
 
 #~ msgid "Cycle until connected"
