@@ -743,6 +743,12 @@ inbound_notice (server *serv, char *outbuf, char *to, char *nick, char *msg,
 		sess = find_channel (serv, ptr);
 	}
 
+	if (!sess && ptr[0] == '+')
+	{
+		ptr++;
+		sess = find_channel (serv, ptr);
+	}
+
 	if (strcmp (nick, ip) == 0)
 		server_notice = TRUE;
 
