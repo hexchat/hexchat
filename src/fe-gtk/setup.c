@@ -1,3 +1,6 @@
+/* X-Chat
+ * Copyright (C) 2004 Peter Zelezny.
+ */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -27,6 +30,7 @@
 #include <gtk/gtkframe.h>
 #include <gtk/gtkfontsel.h>
 #include <gtk/gtkcheckbutton.h>
+#include <gtk/gtkscrolledwindow.h>
 #include <gtk/gtkspinbutton.h>
 #include <gtk/gtkstock.h>
 #include <gtk/gtktreeview.h>
@@ -52,6 +56,7 @@ GtkStyle *create_input_style (void);
 static int last_selected_page = 0;
 static gboolean color_change;
 static struct xchatprefs setup_prefs;
+static GtkWidget *cancel_button;
 
 enum
 {
@@ -411,7 +416,8 @@ setup_create_spin (GtkWidget *table, int row, const setting *set)
 							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, LABEL_INDENT, 0);
 
 	align = gtk_alignment_new (0.0, 0.5, 0.0, 0.0);
-	gtk_table_attach_defaults (GTK_TABLE (table), align, 3+add, 4+add, row, row + 1);
+	gtk_table_attach (GTK_TABLE (table), align, 3+add, 4+add, row, row + 1,
+							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
 
 	rbox = gtk_hbox_new (0, 0);
 	gtk_container_add (GTK_CONTAINER (align), rbox);
@@ -705,7 +711,7 @@ setup_create_entry (GtkWidget *table, int row, const setting *set)
 								GTK_EXPAND | GTK_FILL, GTK_FILL, 0, 0);
 		bwid = gtk_button_new_with_label (_("Browse..."));
 		gtk_table_attach (GTK_TABLE (table), bwid, 5, 6, row, row + 1,
-								GTK_SHRINK, GTK_SHRINK, 0, 0);
+								GTK_SHRINK | GTK_FILL, GTK_SHRINK, 0, 0);
 		if (set->type == ST_EFILE)
 			g_signal_connect (G_OBJECT (bwid), "clicked",
 									G_CALLBACK (setup_browsefile_cb), wid);
@@ -988,8 +994,326 @@ setup_create_color_page (void)
 	return box;
 }
 
+/* === GLOBALS for sound GUI === */
+
+static GtkWidget *sndprog_entry;
+static GtkWidget *sndfile_entry;
+static GtkWidget *snddir_entry;
+static int ignore_changed = FALSE;
+
+extern struct text_event te[]; /* text.c */
+extern char *sound_files[];
+
 static void
-setup_add_page (char *title, GtkWidget *book, GtkWidget *tab)
+setup_snd_apply (void)
+{
+	strcpy (setup_prefs.sounddir, GTK_ENTRY (snddir_entry)->text);
+	strcpy (setup_prefs.soundcmd, GTK_ENTRY (sndprog_entry)->text);
+}
+
+static void
+setup_snd_populate (GtkTreeView * treeview)
+{
+	GtkListStore *store;
+	GtkTreeIter iter;
+	GtkTreeSelection *sel;
+	int i;
+
+	sel = gtk_tree_view_get_selection (treeview);
+	store = (GtkListStore *)gtk_tree_view_get_model (treeview);
+
+	for (i = NUM_XP-1; i >= 0; i--)
+	{
+		gtk_list_store_prepend (store, &iter);
+		if (sound_files[i])
+			gtk_list_store_set (store, &iter, 0, te[i].name, 1, sound_files[i], 2, i, -1);
+		else
+			gtk_list_store_set (store, &iter, 0, te[i].name, 1, "", 2, i, -1);
+		if (i == 0)
+			gtk_tree_selection_select_iter (sel, &iter);
+	}
+}
+
+static int
+setup_snd_get_selected (GtkTreeSelection *sel, GtkTreeIter *iter)
+{
+	int n;
+	GtkTreeModel *model;
+
+	if (!gtk_tree_selection_get_selected (sel, &model, iter))
+		return -1;
+
+	gtk_tree_model_get (model, iter, 2, &n, -1);
+	return n;
+}
+
+static void
+setup_snd_row_cb (GtkTreeSelection *sel, gpointer user_data)
+{
+	int n;
+	GtkTreeIter iter;
+
+	n = setup_snd_get_selected (sel, &iter);
+	if (n == -1)
+		return;
+
+	ignore_changed = TRUE;
+	if (sound_files[n])
+		gtk_entry_set_text (GTK_ENTRY (sndfile_entry), sound_files[n]);
+	else
+		gtk_entry_set_text (GTK_ENTRY (sndfile_entry), "");
+	ignore_changed = FALSE;
+}
+
+static void
+setup_snd_add_columns (GtkTreeView * treeview)
+{
+	GtkCellRenderer *renderer;
+	GtkTreeModel *model;
+
+	/* event column */
+	renderer = gtk_cell_renderer_text_new ();
+	gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (treeview),
+																-1, _("Event"), renderer,
+																"text", 0, NULL);
+
+	/* file column */
+	renderer = gtk_cell_renderer_text_new ();
+	gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (treeview),
+																-1, _("Sound file"), renderer,
+																"text", 1, NULL);
+
+	model = GTK_TREE_MODEL (gtk_list_store_new (3, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_INT));
+	gtk_tree_view_set_model (GTK_TREE_VIEW (treeview), model);
+	g_object_unref (model);
+}
+
+static void
+setup_autotoggle_cb (GtkToggleButton *but, GtkToggleButton *ext)
+{
+	if (but->active)
+	{
+		setup_prefs.soundcmd[0] = 0;
+		gtk_entry_set_text (GTK_ENTRY (sndprog_entry), "");
+		gtk_widget_set_sensitive (sndprog_entry, FALSE);
+	} else
+	{
+		gtk_widget_set_sensitive (sndprog_entry, TRUE);
+	}
+}
+
+static void
+setup_snd_filereq_cb (GtkWidget *entry, char *file)
+{
+	if (file)
+	{
+		if (file[0])
+			gtk_entry_set_text (GTK_ENTRY (entry), file);
+	}
+}
+
+static void
+setup_snd_browse_cb (GtkWidget *button, GtkEntry *entry)
+{
+	gtkutil_file_req (_("Select a sound file"), setup_snd_filereq_cb, entry, NULL, 0);
+}
+
+static void
+setup_snd_play_cb (GtkWidget *button, GtkEntry *entry)
+{
+	sound_play (entry->text);
+}
+
+static void
+setup_snd_changed_cb (GtkEntry *ent, GtkTreeView *tree)
+{
+	int n;
+	GtkTreeIter iter;
+	GtkListStore *store;
+	GtkTreeSelection *sel;
+
+	if (ignore_changed)
+		return;
+
+	sel = gtk_tree_view_get_selection (tree);
+	n = setup_snd_get_selected (sel, &iter);
+	if (n == -1)
+		return;
+
+	/* get the new sound file */
+	if (sound_files[n])
+		free (sound_files[n]);
+	sound_files[n] = strdup (GTK_ENTRY (ent)->text);
+
+	/* update the TreeView list */
+	store = (GtkListStore *)gtk_tree_view_get_model (tree);
+	gtk_list_store_set (store, &iter, 1, sound_files[n], -1);
+
+	gtk_widget_set_sensitive (cancel_button, FALSE);
+}
+
+static GtkWidget *
+setup_create_sound_page (void)
+{
+	GtkWidget *vbox1;
+	GtkWidget *vbox2;
+	GtkWidget *table2;
+	GtkWidget *label2;
+	GtkWidget *label3;
+	GtkWidget *radio_external;
+	GSList *radio_group = NULL;
+	GtkWidget *radio_auto;
+	GtkWidget *label4;
+	GtkWidget *entry3;
+	GtkWidget *scrolledwindow1;
+	GtkWidget *sound_tree;
+	GtkWidget *table1;
+	GtkWidget *sound_label;
+	GtkWidget *sound_browse;
+	GtkWidget *sound_play;
+	GtkTreeSelection *sel;
+
+	vbox1 = gtk_vbox_new (FALSE, 0);
+	gtk_container_set_border_width (GTK_CONTAINER (vbox1), 6);
+	gtk_widget_show (vbox1);
+
+	vbox2 = gtk_vbox_new (FALSE, 0);
+	gtk_widget_show (vbox2);
+	gtk_container_add (GTK_CONTAINER (vbox1), vbox2);
+
+	table2 = gtk_table_new (4, 3, FALSE);
+	gtk_widget_show (table2);
+	gtk_box_pack_start (GTK_BOX (vbox2), table2, FALSE, TRUE, 8);
+	gtk_table_set_row_spacings (GTK_TABLE (table2), 2);
+	gtk_table_set_col_spacings (GTK_TABLE (table2), 4);
+
+	label2 = gtk_label_new (_("Sound playing method:"));
+	gtk_widget_show (label2);
+	gtk_table_attach (GTK_TABLE (table2), label2, 0, 1, 0, 1,
+							(GtkAttachOptions) (GTK_FILL),
+							(GtkAttachOptions) (0), 0, 0);
+	gtk_misc_set_alignment (GTK_MISC (label2), 0, 0.5);
+
+	label3 =
+		gtk_label_new_with_mnemonic (_("External sound playing _program:"));
+	gtk_widget_show (label3);
+	gtk_table_attach (GTK_TABLE (table2), label3, 0, 1, 2, 3,
+							(GtkAttachOptions) (GTK_FILL),
+							(GtkAttachOptions) (0), 0, 0);
+	gtk_misc_set_alignment (GTK_MISC (label3), 0, 0.5);
+
+	sndprog_entry = gtk_entry_new ();
+	if (setup_prefs.soundcmd[0] == 0)
+		gtk_widget_set_sensitive (sndprog_entry, FALSE);
+	else
+		gtk_entry_set_text (GTK_ENTRY (sndprog_entry), setup_prefs.soundcmd);
+	gtk_widget_show (sndprog_entry);
+	gtk_table_attach (GTK_TABLE (table2), sndprog_entry, 1, 3, 2, 3,
+							(GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
+							(GtkAttachOptions) (0), 0, 0);
+
+	radio_external =
+		gtk_radio_button_new_with_mnemonic (NULL, _("_External program"));
+	gtk_widget_show (radio_external);
+	gtk_table_attach (GTK_TABLE (table2), radio_external, 1, 3, 1, 2,
+							(GtkAttachOptions) (GTK_FILL),
+							(GtkAttachOptions) (0), 0, 0);
+	gtk_radio_button_set_group (GTK_RADIO_BUTTON (radio_external),
+										 radio_group);
+	radio_group =
+		gtk_radio_button_get_group (GTK_RADIO_BUTTON (radio_external));
+
+	radio_auto = gtk_radio_button_new_with_mnemonic (NULL, _("_Automatic"));
+	g_signal_connect (G_OBJECT (radio_auto), "toggled",
+							G_CALLBACK (setup_autotoggle_cb), radio_external);
+	gtk_widget_show (radio_auto);
+	gtk_table_attach (GTK_TABLE (table2), radio_auto, 1, 3, 0, 1,
+							(GtkAttachOptions) (GTK_FILL),
+							(GtkAttachOptions) (0), 0, 0);
+	gtk_radio_button_set_group (GTK_RADIO_BUTTON (radio_auto),
+										 radio_group);
+	radio_group =
+		gtk_radio_button_get_group (GTK_RADIO_BUTTON (radio_auto));
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (radio_auto), setup_prefs.soundcmd[0] == 0);
+
+	label4 = gtk_label_new_with_mnemonic (_("Sound files _directory:"));
+	gtk_widget_show (label4);
+	gtk_table_attach (GTK_TABLE (table2), label4, 0, 1, 3, 4,
+							(GtkAttachOptions) (GTK_FILL),
+							(GtkAttachOptions) (0), 0, 0);
+	gtk_misc_set_alignment (GTK_MISC (label4), 0, 0.5);
+
+	snddir_entry = entry3 = gtk_entry_new ();
+	gtk_entry_set_text (GTK_ENTRY (entry3), setup_prefs.sounddir);
+	gtk_widget_show (entry3);
+	gtk_table_attach (GTK_TABLE (table2), entry3, 1, 3, 3, 4,
+							(GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
+							(GtkAttachOptions) (0), 0, 0);
+
+	scrolledwindow1 = gtk_scrolled_window_new (NULL, NULL);
+	gtk_widget_show (scrolledwindow1);
+	gtk_container_add (GTK_CONTAINER (vbox2), scrolledwindow1);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow1),
+											  GTK_POLICY_AUTOMATIC, GTK_POLICY_ALWAYS);
+	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolledwindow1),
+													 GTK_SHADOW_IN);
+
+	sound_tree = gtk_tree_view_new ();
+	sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (sound_tree));
+	gtk_tree_selection_set_mode (sel, GTK_SELECTION_SINGLE);
+	setup_snd_add_columns (GTK_TREE_VIEW (sound_tree));
+	setup_snd_populate (GTK_TREE_VIEW (sound_tree));
+	g_signal_connect (G_OBJECT (sel), "changed",
+							G_CALLBACK (setup_snd_row_cb), NULL);
+	gtk_widget_show (sound_tree);
+	gtk_container_add (GTK_CONTAINER (scrolledwindow1), sound_tree);
+	gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (sound_tree), TRUE);
+
+	table1 = gtk_table_new (2, 3, FALSE);
+	gtk_widget_show (table1);
+	gtk_box_pack_start (GTK_BOX (vbox2), table1, FALSE, TRUE, 8);
+	gtk_table_set_row_spacings (GTK_TABLE (table1), 2);
+	gtk_table_set_col_spacings (GTK_TABLE (table1), 4);
+
+	sound_label = gtk_label_new_with_mnemonic (_("Sound file:"));
+	gtk_widget_show (sound_label);
+	gtk_table_attach (GTK_TABLE (table1), sound_label, 0, 1, 0, 1,
+							(GtkAttachOptions) (GTK_FILL),
+							(GtkAttachOptions) (0), 0, 0);
+	gtk_misc_set_alignment (GTK_MISC (sound_label), 0, 0.5);
+
+	sndfile_entry = gtk_entry_new ();
+	g_signal_connect (G_OBJECT (sndfile_entry), "changed",
+							G_CALLBACK (setup_snd_changed_cb), sound_tree);
+	gtk_widget_show (sndfile_entry);
+	gtk_table_attach (GTK_TABLE (table1), sndfile_entry, 0, 1, 1, 2,
+							(GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
+							(GtkAttachOptions) (0), 0, 0);
+
+	sound_browse = gtk_button_new_with_mnemonic (_("_Browse..."));
+	g_signal_connect (G_OBJECT (sound_browse), "clicked",
+							G_CALLBACK (setup_snd_browse_cb), sndfile_entry);
+	gtk_widget_show (sound_browse);
+	gtk_table_attach (GTK_TABLE (table1), sound_browse, 1, 2, 1, 2,
+							(GtkAttachOptions) (GTK_FILL),
+							(GtkAttachOptions) (0), 0, 0);
+
+	sound_play = gtk_button_new_with_mnemonic (_("_Play"));
+	g_signal_connect (G_OBJECT (sound_play), "clicked",
+							G_CALLBACK (setup_snd_play_cb), sndfile_entry);
+	gtk_widget_show (sound_play);
+	gtk_table_attach (GTK_TABLE (table1), sound_play, 2, 3, 1, 2,
+							(GtkAttachOptions) (GTK_FILL),
+							(GtkAttachOptions) (0), 0, 0);
+
+	gtk_label_set_mnemonic_widget (GTK_LABEL (label3), sndprog_entry);
+	gtk_label_set_mnemonic_widget (GTK_LABEL (label4), entry3);
+
+	return vbox1;
+}
+
+static void
+setup_add_page (const char *title, GtkWidget *book, GtkWidget *tab)
 {
 	GtkWidget *oframe, *frame, *label, *vvbox;
 	char buf[128];
@@ -1014,12 +1338,12 @@ setup_add_page (char *title, GtkWidget *book, GtkWidget *tab)
 	gtk_misc_set_padding (GTK_MISC (label), 2, 1);
 	gtk_container_add (GTK_CONTAINER (frame), label);
 
-	gtk_box_pack_start (GTK_BOX (vvbox), tab, FALSE, FALSE, 0);
+	gtk_container_add (GTK_CONTAINER (vvbox), tab);
 
 	gtk_notebook_append_page (GTK_NOTEBOOK (book), oframe, NULL);
 }
 
-static char *cata[] =
+static const char *cata[] =
 {
 	N_("Interface"),
 		N_("Text box"),
@@ -1031,6 +1355,7 @@ static char *cata[] =
 	N_("Chatting"),
 		N_("General"),
 		N_("Logging"),
+		N_("Sound"),
 		N_("Advanced"),
 		NULL,
 	N_("Network"),
@@ -1054,9 +1379,10 @@ setup_create_pages (GtkWidget *box)
 	setup_add_page (cata[5], book, setup_create_color_page ());
 	setup_add_page (cata[8], book, setup_create_page (general_settings));
 	setup_add_page (cata[9], book, setup_create_page (logging_settings));
-	setup_add_page (cata[10], book, setup_create_page (advanced_settings));
-	setup_add_page (cata[13], book, setup_create_page (network_settings));
-	setup_add_page (cata[14], book, setup_create_page (filexfer_settings));
+	setup_add_page (cata[10], book, setup_create_sound_page ());
+	setup_add_page (cata[11], book, setup_create_page (advanced_settings));
+	setup_add_page (cata[14], book, setup_create_page (network_settings));
+	setup_add_page (cata[15], book, setup_create_page (filexfer_settings));
 
 	gtk_notebook_set_show_tabs (GTK_NOTEBOOK (book), FALSE);
 	gtk_notebook_set_show_border (GTK_NOTEBOOK (book), FALSE);
@@ -1283,6 +1609,7 @@ setup_apply_cb (GtkWidget *but, GtkWidget *win)
 static void
 setup_ok_cb (GtkWidget *but, GtkWidget *win)
 {
+	setup_snd_apply ();
 	gtk_widget_destroy (win);
 	setup_apply (&setup_prefs);
 	save_config ();
@@ -1322,7 +1649,7 @@ setup_window_open (void)
 	gtk_box_pack_start (GTK_BOX (hbbox), wid, FALSE, FALSE, 0);
 #endif
 
-	wid = gtk_button_new_from_stock (GTK_STOCK_CANCEL);
+	cancel_button = wid = gtk_button_new_from_stock (GTK_STOCK_CANCEL);
 	g_signal_connect (G_OBJECT (wid), "clicked",
 							G_CALLBACK (gtkutil_destroy), win);
 	gtk_box_pack_start (GTK_BOX (hbbox), wid, FALSE, FALSE, 0);

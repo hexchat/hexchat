@@ -13,7 +13,7 @@ int main()
 	char *defines[512];
   	int i = 0, max;
 
-	printf("/* this file is auto generated, edit textevents.in instead! */\n\nstruct text_event te[] = {\n");
+	printf("/* this file is auto generated, edit textevents.in instead! */\n\nconst struct text_event te[] = {\n");
 	while(fgets(name, sizeof(name), stdin))
 	{
 		name[strlen(name)-1] = 0;
@@ -27,7 +27,7 @@ int main()
 		args[strlen(args)-1] = 0;
 		fgets(buf, sizeof(buf), stdin);
 
-		printf("\n{\"%s\", %s, %d, 0,\nN_(\"%s\")},\n",
+		printf("\n{\"%s\", %s, %d, \nN_(\"%s\")},\n",
 							 name, help, atoi(args), def);
 		defines[i] = strdup (num);
 		i++;

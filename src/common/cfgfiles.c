@@ -685,7 +685,6 @@ load_config (void)
 	strcpy (prefs.quitreason, _("Leaving"));
 	strcpy (prefs.partreason, prefs.quitreason);
 	strcpy (prefs.font_normal, DEF_FONT);
-	strcpy (prefs.soundcmd, "esdplay");
 	strcpy (prefs.dnsprogram, "host");
 
 	g_free ((char *)username);

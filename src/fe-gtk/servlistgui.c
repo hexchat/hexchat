@@ -1004,6 +1004,7 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 	model = GTK_TREE_MODEL (store);
 
 	edit_tree = treeview_servers = gtk_tree_view_new_with_model (model);
+	g_object_unref (model);
 	gtk_widget_show (treeview_servers);
 	gtk_container_add (GTK_CONTAINER (scrolledwindow2), treeview_servers);
 	gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (treeview_servers),
@@ -1238,6 +1239,7 @@ servlist_open_networks (void)
 	model = GTK_TREE_MODEL (store);
 
 	networks_tree = treeview_networks = gtk_tree_view_new_with_model (model);
+	g_object_unref (model);
 	gtk_widget_show (treeview_networks);
 	gtk_container_add (GTK_CONTAINER (scrolledwindow3), treeview_networks);
 	gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (treeview_networks),

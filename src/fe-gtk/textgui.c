@@ -49,7 +49,7 @@ extern char *pntevts_text[];
 extern char *pntevts[];
 
 static GtkWidget *pevent_dialog = NULL, *pevent_dialog_twid,
-	*pevent_dialog_entry, *pevent_dialog_sound_entry,
+	*pevent_dialog_entry,
 	*pevent_dialog_list, *pevent_dialog_hlist;
 
 
@@ -139,33 +139,6 @@ pevent_dialog_close (GtkWidget *wid, gpointer arg)
 }
 
 static void
-pevent_dialog_update_sound (GtkWidget * wid, GtkWidget * clist)
-{
-	int row, sig;
-
-	row = gtkutil_clist_selection (pevent_dialog_list);
-	if (row == -1)
-		return;
-
-	gtk_clist_set_text (GTK_CLIST (clist), row, 2,
-							  gtk_entry_get_text (GTK_ENTRY (wid)));
-
-	sig = GPOINTER_TO_INT(gtk_clist_get_row_data (GTK_CLIST (clist), row));
-
-	if (te[sig].sound)
-		free (te[sig].sound);
-
-	/* set it back to NULL if it's an empty string */
-	if (GTK_ENTRY (wid)->text[0] == 0)
-		te[sig].sound = NULL;
-	else	/* otherwise copy */
-		te[sig].sound = strdup (GTK_ENTRY (wid)->text);
-
-	/* save this when we exit */
-	prefs.save_pevents = 1;
-}
-
-static void
 pevent_dialog_update (GtkWidget * wid, GtkWidget * twid)
 {
 	int row, len, m;
@@ -226,7 +199,6 @@ static void
 pevent_dialog_unselect (GtkWidget * clist, gint row, gint column,
 								GdkEventButton * even, gpointer none)
 {
-	gtk_entry_set_text (GTK_ENTRY (pevent_dialog_sound_entry), "");
 	gtk_entry_set_text (GTK_ENTRY (pevent_dialog_entry), "");
 	gtk_clist_clear (GTK_CLIST (pevent_dialog_hlist));
 }
@@ -256,7 +228,7 @@ static void
 pevent_dialog_select (GtkWidget * clist, gint row, gint column,
 							 GdkEventButton * even, gpointer none)
 {
-	char *cmd, *snd;
+	char *cmd;
 	int sig;
 
 	row = gtkutil_clist_selection (pevent_dialog_list);
@@ -264,8 +236,6 @@ pevent_dialog_select (GtkWidget * clist, gint row, gint column,
 	{
 		gtk_clist_get_text (GTK_CLIST (clist), row, 1, &cmd);
 		gtk_entry_set_text (GTK_ENTRY (pevent_dialog_entry), cmd);
-		gtk_clist_get_text (GTK_CLIST (clist), row, 2, &snd);
-		gtk_entry_set_text (GTK_ENTRY (pevent_dialog_sound_entry), snd);
 		sig = GPOINTER_TO_INT(gtk_clist_get_row_data (GTK_CLIST (clist), row));
 		pevent_dialog_hfill (pevent_dialog_hlist, sig);
 	} else
@@ -286,10 +256,6 @@ pevent_dialog_fill (GtkWidget * list)
 	{
 		nnew[0] = te[i].name;
 		nnew[1] = pntevts_text[i];
-		if (te[i].sound)
-			nnew[2] = te[i].sound;
-		else
-			nnew[2] = "";
 		row = gtk_clist_append (GTK_CLIST (list), nnew);
 		gtk_clist_set_row_data (GTK_CLIST (list), row, GINT_TO_POINTER(i));
 	}
@@ -361,34 +327,15 @@ pevent_test_cb (GtkWidget * wid, GtkWidget * twid)
 	}
 }
 
-/* from settings.c - but its not there anymore */
-static void
-gui_entry (char *label, int max, GtkWidget * box, GtkWidget ** entry)
-{
-	GtkWidget *wid, *hbox;
-
-	hbox = gtk_hbox_new (0, 0);
-	gtk_widget_show (hbox);
-
-	gtkutil_label_new (label, hbox);
-
-	*entry = wid = gtk_entry_new_with_max_length (max);
-	gtk_container_add (GTK_CONTAINER (hbox), wid);
-	gtk_widget_show (wid);
-
-	gtk_box_pack_start (GTK_BOX (box), hbox, 0, 0, 0);
-}
-
 void
 pevent_dialog_show ()
 {
 	GtkWidget *vbox, *vbox2, *hbox, *tbox, *wid, *bh, *th;
-	gchar *titles[3];
+	gchar *titles[2];
 	gchar *help_titles[2];
 
 	titles[0] = _("Event");
 	titles[1] = _("Text");
-	titles[2] = _("Sound");
 
 	help_titles[0] = _("$ Number");
 	help_titles[1] = _("Description");
@@ -416,7 +363,7 @@ pevent_dialog_show ()
 	gtk_paned_pack2 (GTK_PANED (wid), bh, 0, 1);
 	gtk_box_pack_start (GTK_BOX (vbox), wid, 1, 1, 0);
 	gtk_widget_show (wid);
-	pevent_dialog_list = gtkutil_clist_new (3, titles, th, GTK_POLICY_ALWAYS,
+	pevent_dialog_list = gtkutil_clist_new (2, titles, th, GTK_POLICY_ALWAYS,
 														 pevent_dialog_select, 0,
 														 pevent_dialog_unselect, 0,
 														 GTK_SELECTION_BROWSE);
@@ -437,11 +384,6 @@ pevent_dialog_show ()
 
 	gtk_box_pack_start (GTK_BOX (bh), pevent_dialog_entry, 0, 0, 0);
 	gtk_widget_show (pevent_dialog_entry);
-
-	gui_entry (_("Sound file: "), 64, bh, &pevent_dialog_sound_entry);
-	gtk_signal_connect (GTK_OBJECT (pevent_dialog_sound_entry), "activate",
-							  GTK_SIGNAL_FUNC (pevent_dialog_update_sound),
-							  pevent_dialog_list);
 
 	tbox = gtk_hbox_new (0, 0);
 	gtk_container_add (GTK_CONTAINER (bh), tbox);

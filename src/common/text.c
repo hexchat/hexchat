@@ -1183,7 +1183,7 @@ pevent_make_pntevts ()
 		if (pevt_build_string (pntevts_text[i], &(pntevts[i]), &m) != 0)
 		{
 			snprintf (out, sizeof (out),
-						 _("Error parsing event %s.\nLoading default"), te[i].name);
+						 _("Error parsing event %s.\nLoading default."), te[i].name);
 			fe_message (out, FALSE);
 			free (pntevts_text[i]);
 			len = strlen (te[i].def) + 1;
@@ -1221,15 +1221,6 @@ pevent_trigger_load (int *i_penum, char **i_text, char **i_snd)
 			free (pntevts_text[penum]);
 		pntevts_text[penum] = malloc (len);
 		memcpy (pntevts_text[penum], text, len);
-		if (te[penum].sound)
-			free (te[penum].sound);
-		if (snd)
-		{
-			len = strlen (snd) + 1;
-			te[penum].sound = malloc (len);
-			memcpy (te[penum].sound, snd, len);
-		} else
-			te[penum].sound = NULL;
 	}
 
 	if (text)
@@ -1345,13 +1336,13 @@ pevent_load (char *filename)
 			}
 
 			continue;
-		} else if (strcmp (buf, "event_sound") == 0)
+		}/* else if (strcmp (buf, "event_sound") == 0)
 		{
 			if (snd)
 				free (snd);
 			snd = strdup (ofs);
 			continue;
-		}
+		}*/
 
 		continue;
 	}
@@ -1644,62 +1635,6 @@ pevt_build_string (const char *input, char **output, int *max_arg)
 	return 0;
 }
 
-static void
-play_wave (const char *file)
-{
-	char buf[512];
-	char wavfile[512];
-	char *file_fs;
-
-	/* the pevents GUI editor triggers this after removing a soundfile */
-	if (!file[0])
-		return;
-
-	memset (buf, 0, sizeof (buf));
-	memset (wavfile, 0, sizeof (wavfile));
-
-#ifdef WIN32
-	/* check for fullpath, windows style */
-	if (strlen (file) > 3 &&
-		 file[1] == ':' && (file[2] == '\\' || file[2] == '/') )
-	{
-		strncpy (wavfile, file, sizeof (wavfile));
-	} else
-#endif
-	if (file[0] != '/')
-	{
-		snprintf (wavfile, sizeof (wavfile), "%s/%s", prefs.sounddir, file);
-	} else
-	{
-		strncpy (wavfile, file, sizeof (wavfile));
-	}
-
-	file_fs = g_filename_from_utf8 (wavfile, -1, 0, 0, 0);
-	if (!file_fs)
-		return;
-
-	if (access (file_fs, R_OK) == 0)
-	{
-#ifdef WIN32
-		if (strcmp (prefs.soundcmd, "esdplay") == 0)
-		{
-			PlaySound (file_fs, NULL, SND_NODEFAULT|SND_FILENAME|SND_ASYNC);
-		} else
-#endif
-		{
-			snprintf (buf, sizeof (buf), "%s %s", prefs.soundcmd, file_fs);
-			buf[sizeof (buf) - 1] = '\0';
-			xchat_exec (buf);
-		}
-	} else
-	{
-		snprintf (buf, sizeof (buf), _("Cannot read sound file:\n%s"), wavfile);
-		fe_message (buf, FALSE);
-	}
-
-	g_free (file_fs);
-}
-
 /* called by EMIT_SIGNAL macro */
 
 void
@@ -1728,8 +1663,7 @@ text_emit (int index, session *sess, char *a, char *b, char *c, char *d)
 	if (plugin_emit_print (sess, word))
 		return;
 
-	if (te[index].sound)
-		play_wave (te[index].sound);
+	sound_play_event (index);
 
 	display_event (pntevts[index], sess, te[index].num_args, word);
 }
@@ -1777,11 +1711,179 @@ pevent_save (char *fn)
 		write (fd, buf, snprintf (buf, sizeof (buf),
 										  "event_name=%s\n", te[i].name));
 		write (fd, buf, snprintf (buf, sizeof (buf),
-										  "event_text=%s\n", pntevts_text[i]));
-		if (te[i].sound && te[i].sound[0])
+										  "event_text=%s\n\n", pntevts_text[i]));
+	}
+
+	close (fd);
+}
+
+/* =========================== */
+/* ========== SOUND ========== */
+/* =========================== */
+
+char *sound_files[NUM_XP];
+
+static char *
+sound_find_command (void)
+{
+	static const char *progs[] = {"esdplay", "soxplay", NULL};
+	char *cmd;
+	int i = 0;
+
+	if (prefs.soundcmd[0])
+		return g_strdup (prefs.soundcmd);
+
+	while (progs[i])
+	{
+		cmd = g_find_program_in_path (progs[i]);
+		if (cmd)
+			return cmd;
+		i++;
+	}
+
+	return NULL;
+}
+
+void
+sound_play (const char *file)
+{
+	char buf[512];
+	char wavfile[512];
+	char *file_fs;
+	char *cmd;
+
+	/* the pevents GUI editor triggers this after removing a soundfile */
+	if (!file[0])
+		return;
+
+	memset (buf, 0, sizeof (buf));
+	memset (wavfile, 0, sizeof (wavfile));
+
+#ifdef WIN32
+	/* check for fullpath, windows style */
+	if (strlen (file) > 3 &&
+		 file[1] == ':' && (file[2] == '\\' || file[2] == '/') )
+	{
+		strncpy (wavfile, file, sizeof (wavfile));
+	} else
+#endif
+	if (file[0] != '/')
+	{
+		snprintf (wavfile, sizeof (wavfile), "%s/%s", prefs.sounddir, file);
+	} else
+	{
+		strncpy (wavfile, file, sizeof (wavfile));
+	}
+
+	file_fs = g_filename_from_utf8 (wavfile, -1, 0, 0, 0);
+	if (!file_fs)
+		return;
+
+	if (access (file_fs, R_OK) == 0)
+	{
+		cmd = sound_find_command ();
+
+#ifdef WIN32
+		if (cmd == NULL || strcmp (cmd, "esdplay") == 0)
+		{
+			PlaySound (file_fs, NULL, SND_NODEFAULT|SND_FILENAME|SND_ASYNC);
+		} else
+#endif
+		{
+			if (cmd)
+			{
+				snprintf (buf, sizeof (buf), "%s %s", cmd, file_fs);
+				buf[sizeof (buf) - 1] = '\0';
+				xchat_exec (buf);
+			}
+		}
+
+		if (cmd)
+			g_free (cmd);
+
+	} else
+	{
+		snprintf (buf, sizeof (buf), _("Cannot read sound file:\n%s"), wavfile);
+		fe_message (buf, FALSE);
+	}
+
+	g_free (file_fs);
+}
+
+void
+sound_play_event (int i)
+{
+	if (sound_files[i])
+		sound_play (sound_files[i]);
+}
+
+static void
+sound_load_event (char *evt, char *file)
+{
+	int i = 0;
+
+	if (file[0] && pevent_find (evt, &i) != -1)
+	{
+		if (sound_files[i])
+			free (sound_files[i]);
+		sound_files[i] = strdup (file);
+	}
+}
+
+void
+sound_load ()
+{
+	int fd;
+	char buf[512];
+	char evt[128];
+
+	memset (&sound_files, 0, sizeof (char *) * (NUM_XP));
+
+	snprintf (buf, sizeof (buf), "%s/sound.conf", get_xdir_fs ());
+	fd = open (buf, O_RDONLY | OFLAGS);
+	if (fd == -1)
+		return;
+
+	evt[0] = 0;
+	while (waitline (fd, buf, sizeof buf) != -1)
+	{
+		if (strncmp (buf, "event=", 6) == 0)
+		{
+			safe_strcpy (evt, buf + 6, sizeof (evt));
+		}
+		else if (strncmp (buf, "sound=", 6) == 0)
+		{
+			if (evt[0] != 0)
+			{
+				sound_load_event (evt, buf + 6);
+				evt[0] = 0;
+			}
+		}
+	}
+
+	close (fd);
+}
+
+void
+sound_save ()
+{
+	int fd, i;
+	char buf[512];
+
+	snprintf (buf, sizeof (buf), "%s/sound.conf", get_xdir_fs ());
+	fd = open (buf, O_CREAT | O_TRUNC | O_WRONLY | OFLAGS, 0x180);
+	if (fd == -1)
+		return;
+
+	for (i = 0; i < NUM_XP; i++)
+	{
+		if (sound_files[i] && sound_files[i][0])
+		{
 			write (fd, buf, snprintf (buf, sizeof (buf),
-											  "event_sound=%s\n", te[i].sound));
-		write (fd, "\n", 1);
+											  "event=%s\n", te[i].name));
+			write (fd, buf, snprintf (buf, sizeof (buf),
+											  "sound=%s\n\n", sound_files[i]));
+		}
 	}
 
 	close (fd);

@@ -972,7 +972,6 @@ static int
 cmd_discon (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	sess->server->disconnect (sess, TRUE, -1);
-	sess->server->network = NULL;
 	return TRUE;
 }
 
@@ -2322,6 +2321,8 @@ cmd_server (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 
 	if (!(*server_name))
 		return FALSE;
+
+	sess->server->network = NULL;
 
 	/* dont clear it for /servchan */
 	if (strncasecmp (word_eol[1], "SERVCHAN ", 9))
