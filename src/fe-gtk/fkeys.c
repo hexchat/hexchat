@@ -365,6 +365,7 @@ key_load_defaults ()
 		"None\nTab\nComplete nick/command\nD1!\nD2!\n\n"\
 		"None\nspace\nCheck For Replace\nD1!\nD2!\n\n"\
 		"None\nReturn\nCheck For Replace\nD1!\nD2!\n\n"\
+		"None\nKP_Enter\nCheck For Replace\nD1!\nD2!\n\n"\
 		"C\nTab\nComplete nick/command\nD1:Up\nD2!\n\n"\
 		"A\nLeft\nMove front tab left\nD1!\nD2!\n\n"\
 		"A\nRight\nMove front tab right\nD1!\nD2!\n\n"

@@ -707,7 +707,9 @@ save_config (void)
 		return 0;
 	}
 
+#ifdef WIN32
 	unlink (config);	/* win32 can't rename to an existing file */
+#endif
 	if (rename (new_config, config) == -1)
 	{
 		free (new_config);

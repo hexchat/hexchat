@@ -191,6 +191,13 @@ plugin_list_add (xchat_context *ctx, char *filename, char *name, char *desc,
 	return pl;
 }
 
+#ifdef WIN32
+static void
+xchat_dummy (xchat_plugin *ph)
+{
+}
+#endif
+
 /* Load a static plugin */
 
 void
@@ -234,6 +241,11 @@ plugin_add (session *sess, char *filename, void *handle, void *init_func,
 		pl->xchat_list_int = xchat_list_int;
 		pl->xchat_plugingui_add = xchat_plugingui_add;
 		pl->xchat_plugingui_remove = xchat_plugingui_remove;
+		/* incase new plugins are loaded on older xchat */
+		pl->xchat_dummy1 = xchat_dummy;
+		pl->xchat_dummy2 = xchat_dummy;
+		pl->xchat_dummy3 = xchat_dummy;
+		pl->xchat_dummy4 = xchat_dummy;
 #endif
 
 		/* run xchat_plugin_init, if it returns 0, close the plugin */

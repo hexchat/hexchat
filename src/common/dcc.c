@@ -756,7 +756,7 @@ dcc_connect_finished (GIOChannel *source, GIOCondition condition, struct DCC *dc
 						ret, val);
 		if (ret == -1)
 			PrintTextf (0, "\0034DEBUG\t\017WSAGetLastError() returned %d\n",
-							WSAGetLastError ());
+							sock_error ());
 		EMIT_SIGNAL (XP_TE_DCCCONFAIL, dcc->serv->front_session,
 						 dcctypes[(int) dcc->type], dcc->nick, errorstring (val),
 						 NULL, 0);
