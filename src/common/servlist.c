@@ -228,6 +228,9 @@ static const struct defaultserver def[] =
 	{0,			"MNC.MD.Infinity-IRC.Org"},
 	{0,			"IRC.Infinity-IRC.Org"},
 
+	{"IRCDZone",		0},
+	{0,			"irc.ircdzone.net"},
+
 	{"IrcLink",	0},
 	{0,			"irc.irclink.net"},
 	{0,			"Alesund.no.eu.irclink.net"},
