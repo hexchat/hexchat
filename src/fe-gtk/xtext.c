@@ -3117,7 +3117,7 @@ gtk_xtext_load_trans (GtkXText * xtext)
 	{
 		int width, height;
 		gdk_drawable_get_size (GTK_WIDGET (xtext)->window, &width, &height);
-		xtext->pixmap = shade_pixmap (xtext, rootpix, x, y, width, height);
+		xtext->pixmap = shade_pixmap (xtext, rootpix, x, y, width+105, height);
 		if (xtext->pixmap == NULL)
 		{
 			xtext->shaded = 0;

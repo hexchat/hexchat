@@ -14,6 +14,10 @@
 #undef TABS_SPREAD		/* left justify tabs instead */
 
 
+/* ignore "toggled" signal? */
+static int ignore_toggle = FALSE;
+
+
 /* userdata for gobjects used here:
  *
  * group:
@@ -143,12 +147,14 @@ tab_pressed_cb (GtkToggleButton *tab, GtkWidget *group)
 	void (*callback) (GtkWidget *tab, gpointer userdata, gpointer family);
 	GtkWidget *old_tab;
 
+	ignore_toggle = TRUE;
 	gtk_toggle_button_set_active (tab, TRUE);
 
 	/* de-activate the old tab */
 	old_tab = g_object_get_data (G_OBJECT (group), "foc");
 	if (old_tab)
 		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (old_tab), FALSE);
+	ignore_toggle = FALSE;
 
 	if (tab->active)
 	{
@@ -448,13 +454,33 @@ static void
 tab_release_cb (GtkToggleButton *widget, gpointer user_data)
 {
 	/* don't let all tabs be OFF at the same time */
+	ignore_toggle = TRUE;
 	gtk_toggle_button_set_active (widget, TRUE);
+	ignore_toggle = FALSE;
 }
 
 static gboolean
 tab_ignore_cb (GtkWidget *widget, GdkEventCrossing *event, gpointer user_data)
 {
 	return TRUE;
+}
+
+/* called for keyboard tab toggles only */
+static void
+tab_toggled_cb (GtkToggleButton *tab, gpointer user_data)
+{
+	if (ignore_toggle)
+		return;
+
+	if (tab->active)
+	{
+		/* activated a tab via keyboard */
+		tab_pressed_cb (tab, g_object_get_data (G_OBJECT (tab), "g"));
+		return;
+	}
+
+	/* activate it */
+	tab_release_cb (tab, NULL);
 }
 
 GtkWidget *
@@ -476,6 +502,9 @@ tab_group_add (GtkWidget *group, char *name, void *family, void *userdata,
 							G_CALLBACK (tab_pressed_cb), group);
 	g_signal_connect (G_OBJECT (but), "released",
 						 	G_CALLBACK (tab_release_cb), NULL);
+	/* for keyboard */
+	g_signal_connect (G_OBJECT (but), "toggled",
+						 	G_CALLBACK (tab_toggled_cb), NULL);
 
 	g_object_set_data (G_OBJECT (but), "f", family);
 	g_object_set_data (G_OBJECT (but), "g", group);

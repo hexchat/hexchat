@@ -192,7 +192,8 @@ servlist_populate (ircnet *net)
 	servlist_entries_populate (net);
 	servlist_toggles_populate (net);
 	gtk_widget_set_sensitive (connect_button, TRUE);
-	gtk_widget_set_sensitive (connectnew_button, TRUE);
+	if (connectnew_button)
+		gtk_widget_set_sensitive (connectnew_button, TRUE);
 	gtk_widget_set_sensitive (editbox, TRUE);
 }
 
@@ -264,7 +265,8 @@ servlist_deletenetdialog_cb (GtkDialog *dialog, gint arg1, ircnet *net)
 
 		/* don't allow user to play with freed memory */
 		gtk_widget_set_sensitive (connect_button, FALSE);
-		gtk_widget_set_sensitive (connectnew_button, FALSE);
+		if (connectnew_button)
+			gtk_widget_set_sensitive (connectnew_button, FALSE);
 		gtk_widget_set_sensitive (editbox, FALSE);
 		store = (GtkListStore *)gtk_tree_view_get_model (GTK_TREE_VIEW (servers_tree));
 		gtk_list_store_clear (store);
@@ -352,7 +354,7 @@ servlist_deleteserver_cb (GtkWidget *item, ircserver *serv)
 }
 
 static void
-servlist_server_popmenu (ircserver *serv, GtkTreeView *treeview)
+servlist_server_popmenu (ircserver *serv, GtkTreeView *treeview, GdkEventButton *event)
 {
 	GtkWidget *item, *menu;
 	char buf[256];
@@ -374,11 +376,11 @@ servlist_server_popmenu (ircserver *serv, GtkTreeView *treeview)
 
 	g_signal_connect (G_OBJECT (menu), "selection-done",
 							G_CALLBACK (servlist_menu_destroy), menu);
-	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL, 0, 0);
+	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL, event->button, event->time);
 }
 
 static void
-servlist_network_popmenu (ircnet *net, GtkTreeView *treeview)
+servlist_network_popmenu (ircnet *net, GtkTreeView *treeview, GdkEventButton *event)
 {
 	GtkWidget *item, *menu;
 	char buf[256];
@@ -418,7 +420,7 @@ servlist_network_popmenu (ircnet *net, GtkTreeView *treeview)
 
 	g_signal_connect (G_OBJECT (menu), "selection-done",
 							G_CALLBACK (servlist_menu_destroy), menu);
-	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL, 0, 0);
+	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL, event->button, event->time);
 }
 
 static ircnet *
@@ -538,7 +540,7 @@ servlist_net_press_cb (GtkWidget *widget, GdkEventButton *event,
 			gtk_tree_path_free (path);
 			net = servlist_find_selected_net (sel, &pos);
 			if (net)
-				servlist_network_popmenu (net, GTK_TREE_VIEW (networks_tree));
+				servlist_network_popmenu (net, GTK_TREE_VIEW (networks_tree), event);
 		} else
 		{
 			gtk_tree_selection_unselect_all (sel);
@@ -583,7 +585,7 @@ servlist_serv_press_cb (GtkWidget *widget, GdkEventButton *event,
 				gtk_tree_model_get (model, &iter, 0, &servname, -1);
 				serv = servlist_server_find (selected_net, servname, &pos);
 				if (serv)
-					servlist_server_popmenu (serv, GTK_TREE_VIEW (servers_tree));
+					servlist_server_popmenu (serv, GTK_TREE_VIEW (servers_tree), event);
 			}
 
 		} else
@@ -823,11 +825,14 @@ servlist_create_buttons (GtkWidget *box)
 	gtk_widget_set_sensitive (but, FALSE);
 	gtk_box_pack_start (GTK_BOX (hbox), but, 0, 0, 0);
 
-	connectnew_button = but = gtk_button_new_with_mnemonic (_("Connect in a _new tab"));
-	g_signal_connect (G_OBJECT (but), "clicked",
-							G_CALLBACK (servlist_connectnew_cb), 0);
-	gtk_widget_set_sensitive (but, FALSE);
-	gtk_box_pack_start (GTK_BOX (hbox), but, 0, 0, 0);
+	if (servlist_sess)
+	{
+		connectnew_button = but = gtk_button_new_with_mnemonic (_("Connect in a _new tab"));
+		g_signal_connect (G_OBJECT (but), "clicked",
+								G_CALLBACK (servlist_connectnew_cb), 0);
+		gtk_widget_set_sensitive (but, FALSE);
+		gtk_box_pack_start (GTK_BOX (hbox), but, 0, 0, 0);
+	}
 
 	but = gtk_button_new_from_stock (GTK_STOCK_CLOSE);
 	g_signal_connect (G_OBJECT (but), "clicked",
@@ -1000,6 +1005,7 @@ fe_serverlist_open (session *sess)
 	}
 
 	servlist_sess = sess;
+	connectnew_button = NULL;
 
 	serverlist_win = win = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gtk_window_set_title (GTK_WINDOW (win), _("X-Chat: Server List"));
