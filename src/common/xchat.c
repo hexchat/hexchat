@@ -250,6 +250,7 @@ new_session (server *serv, char *from, int type)
 	sess->server = serv;
 	sess->logfd = -1;
 	sess->type = type;
+	sess->hide_join_part = prefs.confmode;
 
 	if (from != NULL)
 		safe_strcpy (sess->channel, from, CHANLEN);

@@ -362,6 +362,7 @@ const struct prefs vars[] = {
 
 	{"irc_auto_rejoin", P_OFFINT (autorejoin), TYPE_BOOL},
 	{"irc_ban_type", P_OFFINT (bantype), TYPE_INT},
+	{"irc_conf_mode", P_OFFINT (confmode), TYPE_BOOL},
 	{"irc_extra_hilight", P_OFFSET (bluestring), TYPE_STR},
 	{"irc_invisible", P_OFFINT (invisible), TYPE_BOOL},
 	{"irc_logging", P_OFFINT (logging), TYPE_BOOL},
