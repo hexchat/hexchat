@@ -129,6 +129,29 @@ mg_set_access_icon (session_gui *gui, GdkPixbuf *pix)
 	}
 }
 
+static gboolean
+mg_inputbox_focus (GtkWidget *widget, GdkEventFocus *event, session_gui *gui)
+{
+	GSList *list;
+	session *sess;
+
+	list = sess_list;
+	while (list)
+	{
+		sess = list->data;
+		if (sess->gui == gui)
+		{
+			current_sess = sess;
+			if (!sess->server->server_session)
+				sess->server->server_session = sess;
+			break;
+		}
+		list = list->next;
+	}
+
+	return FALSE;
+}
+
 static void
 mg_inputbox_cb (GtkWidget *igad, session_gui *gui)
 {
@@ -1744,6 +1767,8 @@ mg_create_entry (session *sess, GtkWidget *box)
 	gtk_entry_set_max_length (GTK_ENTRY (gui->input_box), 2048);
 	g_signal_connect (G_OBJECT (entry), "key_press_event",
 							G_CALLBACK (key_handle_key_press), NULL);
+	g_signal_connect (G_OBJECT (entry), "focus_in_event",
+							G_CALLBACK (mg_inputbox_focus), gui);
 	g_signal_connect (G_OBJECT (entry), "activate",
 							G_CALLBACK (mg_inputbox_cb), gui);
 	gtk_container_add (GTK_CONTAINER (hbox), entry);

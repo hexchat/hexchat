@@ -190,25 +190,29 @@ cfg_get_str (char *cfg, char *var, char *dest)
 	}
 }
 
-static void
+static int
 cfg_put_str (int fh, char *var, char *value)
 {
 	char buf[512];
+	int len;
 
 	snprintf (buf, sizeof buf, "%s = %s\n", var, value);
-	write (fh, buf, strlen (buf));
+	len = strlen (buf);
+	return (write (fh, buf, len) == len);
 }
 
-void
+int
 cfg_put_int (int fh, int value, char *var)
 {
 	char buf[400];
+	int len;
 
 	if (value == -1)
 		value = 1;
 
 	snprintf (buf, sizeof buf, "%s = %d\n", var, value);
-	write (fh, buf, strlen (buf));
+	len = strlen (buf);
+	return (write (fh, buf, len) == len);
 }
 
 int
@@ -607,31 +611,64 @@ int
 save_config (void)
 {
 	int fh, i;
+	char *new_config, *config;
 
 	check_prefs_dir ();
 
-	fh = open (default_file (), OFLAGS | O_TRUNC | O_WRONLY | O_CREAT, 0600);
+	config = default_file ();
+	new_config = malloc (strlen (config) + 5);
+	strcpy (new_config, config);
+	strcat (new_config, ".new");
+	
+	fh = open (new_config, OFLAGS | O_TRUNC | O_WRONLY | O_CREAT, 0600);
 	if (fh == -1)
+	{
+		free (new_config);
 		return 0;
+	}
 
-	cfg_put_str (fh, "version", VERSION);
+	if (!cfg_put_str (fh, "version", VERSION))
+	{
+		free (new_config);
+		return 0;
+	}
+		
 	i = 0;
 	do
 	{
 		switch (vars[i].type)
 		{
 		case TYPE_STR:
-			cfg_put_str (fh, vars[i].name, (char *) &prefs + vars[i].offset);
+			if (!cfg_put_str (fh, vars[i].name, (char *) &prefs + vars[i].offset))
+			{
+				free (new_config);
+				return 0;
+			}
 			break;
 		case TYPE_INT:
 		case TYPE_BOOL:
-			cfg_put_int (fh, *((int *) &prefs + vars[i].offset), vars[i].name);
+			if (!cfg_put_int (fh, *((int *) &prefs + vars[i].offset), vars[i].name))
+			{
+				free (new_config);
+				return 0;
+			}
 		}
 		i++;
 	}
 	while (vars[i].name);
 
-	close (fh);
+	if (close (fh) == -1)
+	{
+		free (new_config);
+		return 0;
+	}
+
+	if (rename (new_config, config) == -1)
+	{
+		free (new_config);
+		return 0;
+	}
+	free (new_config);
 
 	return 1;
 }
