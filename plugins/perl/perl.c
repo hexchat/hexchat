@@ -221,7 +221,11 @@ perl_print_cb (char *word[], void *perl_callback)
 	}
 	PUTBACK;
 
+#ifdef HAVE_CALL_PV
 	count = call_pv( (char*)perl_callback, G_EVAL | G_KEEPERR );
+#else
+	count = perl_call_pv( (char*)perl_callback, G_EVAL | G_KEEPERR ); /* deprecated */
+#endif
 
 	SPAGAIN;
 

@@ -967,7 +967,7 @@ xchat_init (void)
 	list_loadconf ("buttons.conf", &button_list, buf);
 
 	snprintf (buf, sizeof (buf),
-		"NAME %s\n"				"CMD whois %%s\n\n"
+		"NAME %s\n"				"CMD whois %%s %%s\n\n"
 		"NAME %s\n"				"CMD dcc send %%s\n\n"
 		"NAME %s\n"				"CMD dcc chat %%s\n\n"
 		"NAME %s\n"				"CMD ping %%s\n\n"

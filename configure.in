@@ -261,7 +261,8 @@ if test "$perl" = yes; then
 
 		oldLIBS=$LIBS
 		LIBS="$LIBS $PERL_LDFLAGS"
-		AC_CHECK_FUNCS(eval_pv)
+		AC_CHECK_FUNC(eval_pv)
+		AC_CHECK_FUNC(call_pv)
 		LIBS=$oldLIBS
 
 		AC_MSG_CHECKING(for old perl)
