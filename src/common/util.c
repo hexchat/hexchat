@@ -26,6 +26,8 @@
 #include <sys/timeb.h>
 #include <process.h>
 #else
+#include <sys/types.h>
+#include <pwd.h>
 #include <sys/time.h>
 #include <sys/utsname.h>
 #endif
@@ -334,12 +336,32 @@ char *
 expand_homedir (char *file)
 {
 #ifndef WIN32
-	char *ret;
+	char *ret, *user;
+	struct passwd *pw;
 
 	if (*file == '~')
 	{
-		ret = malloc (strlen (file) + strlen (g_get_home_dir ()) + 1);
-		sprintf (ret, "%s%s", g_get_home_dir (), file + 1);
+		if (file[1] != '\0' && file[1] != '/')
+		{
+			user = strdup(file);
+			if (strchr(user,'/') != NULL)
+				*(strchr(user,'/')) = '\0';
+			if ((pw = getpwnam(user + 1)) == NULL)
+			{
+				free(user);
+				return strdup(file);
+			}
+			free(user);
+			user = strchr(file, '/') != NULL ? strchr(file,'/') : file;
+			ret = malloc(strlen(user) + strlen(pw->pw_dir) + 1);
+			strcpy(ret, pw->pw_dir);
+			strcat(ret, user);
+		}
+		else
+		{
+			ret = malloc (strlen (file) + strlen (g_get_home_dir ()) + 1);
+			sprintf (ret, "%s%s", g_get_home_dir (), file + 1);
+		}
 		return ret;
 	}
 #endif
