@@ -20,7 +20,7 @@ color: #990066
 <h1>XChat 2.0 Plugin Interface</h1>
 
 <small>
-<font size="-12">plugin20.html revision 0.91</font>
+<font size="-12">plugin20.html revision 0.92</font>
 <br>Latest version of this document is available at: <a href="http://xchat.org/docs/plugin20.html">http://xchat.org/docs/plugin20.html</a></small>
 
 <h2>Information:</h2>
@@ -49,6 +49,7 @@ color: #990066
 <br><a href="#xchat_find_context">xchat_find_context</a>
 <br><a href="#xchat_get_context">xchat_get_context</a>
 <br><a href="#xchat_get_info">xchat_get_info</a>
+<br><a href="#xchat_get_prefs">xchat_get_prefs</a>
 <br><a href="#xchat_set_context">xchat_set_context</a>
 <br>
 <br><a href="#xchat_nickcmp">xchat_nickcmp</a>
@@ -157,7 +158,8 @@ word_eol[3] is hi there
 word_eol[4] is there
 </pre>
 These arrays are simply provided for your convenience. You are NOT allowed
-to alter them. Both arrays are limited to 32 elements (index 31).
+to alter them. Both arrays are limited to 32 elements (index 31). word[0] and
+word_eol[0] are reserved and should not be read.
 <br><br><br>
 <h3><a name="lists">Lists and Fields</a></h3>
 Lists of information (DCCs, Channels, Userlist etc) can be retreived
@@ -182,7 +184,7 @@ needed for a long time after calling xchat_list_str. The types of lists and fiel
 <tr><td>destfile</td><td>Destination full pathname</td><td>string</td></tr>
 <tr><td>file</td><td>File name</td><td>string</td></tr>
 <tr><td>nick</td><td>Nickname of person who the file is from/to</td><td>string</td></tr>
-<tr><td>port</td><td>Remote TCP port used</td><td>int</td></tr>
+<tr><td>port</td><td>TCP port number</td><td>int</td></tr>
 <tr><td>pos</td><td>Bytes sent/received</td><td>int</td></tr>
 <tr><td>resume</td><td>Point at which this file was resumed (or zero if it was not resumed)</td><td>int</td></tr>
 <tr><td>size</td><td>File size in bytes</td><td>int</td></tr>
@@ -528,6 +530,34 @@ xchat_hook_command(ph, "STOP", XCHAT_PRI_NORM, stop_cb, NULL, NULL);
 <b>Returns:</b> A string of the requested information, or NULL. This string must
 not be freed and must be copied if needed after the call to xchat_get_info.
 <br><br><br>
+
+<h3><a class="cmd" name="xchat_get_prefs">&nbsp;xchat_get_prefs()&nbsp;</a></h3>
+<b>Prototype:</b> int xchat_get_prefs(xchat_plugin *ph, const char *name, const char **string, int *integer);
+<br>
+<br><b>Description:</b> Provides xchat's setting information (that which is available through the /set command).
+<br>
+<br><b>Arguments:</b>
+<blockquote><b>ph:</b> Plugin handle (as given to xchat_plugin_init).
+<br><b>name:</b> Setting name required.
+<br><b>string:</b> Pointer-pointer which to set.
+<br><b>integer:</b> Pointer to an integer to set, if setting is a Boolean or Integer type.
+</blockquote>
+<b>Returns:</b> 0-Failed 1-Returned a string 2-Returned an Integer 3-Returned a Boolean.
+<br><br><b>Example:</b>
+<blockquote>
+<pre>
+{
+	int i;
+	char *str;
+
+	if (xchat_get_prefs (ph, "irc_nick1", &str, &i) == 1)
+	{
+		xchat_printf (ph, "Current nickname setting: %s\n", str);
+	}
+}</pre>
+</blockquote>
+<br><br>
+
 
 <h3><a class="cmd" name="xchat_set_context">&nbsp;xchat_set_context()&nbsp;</a></h3>
 <b>Prototype:</b> int xchat_set_context(xchat_plugin *ph, xchat_context *ctx);
