@@ -38,6 +38,7 @@
 #include <gtk/gtkmenu.h>
 #include <gtk/gtkmenubar.h>
 #include <gtk/gtkstock.h>
+#include <gtk/gtkversion.h>
 #include <gdk/gdkkeysyms.h>
 
 #include "../common/xchat.h"

@@ -27,6 +27,7 @@
 #include <gtk/gtktreeview.h>
 #include <gtk/gtkvbox.h>
 #include <gtk/gtkwindow.h>
+#include <gtk/gtkversion.h>
 
 #include "../common/xchat.h"
 #include "../common/xchatc.h"
