@@ -420,7 +420,7 @@ strip_color (char *text)
 #if defined (USING_LINUX) || defined (USING_FREEBSD)
 
 static void
-get_cpu_info (int *mhz, int *cpus)
+get_cpu_info (double *mhz, int *cpus)
 {
 
 #ifdef USING_LINUX
@@ -513,7 +513,7 @@ get_cpu_str (void)
 	static char verbuf[64];
 	OSVERSIONINFO osvi;
 	SYSTEM_INFO si;
-	int mhz;
+	double mhz;
 
 	osvi.dwOSVersionInfoSize = sizeof (OSVERSIONINFO);
 	GetVersionEx (&osvi);
@@ -521,9 +521,13 @@ get_cpu_str (void)
 
 	mhz = get_mhz ();
 	if (mhz)
-		sprintf (verbuf, "Windows %ld.%ld [i%d86/%dMHz]",
-			osvi.dwMajorVersion, osvi.dwMinorVersion, si.wProcessorLevel, mhz);
-	else
+	{
+		int cpuspeed = ( mhz > 1000 ) ? mhz / 1000 : mhz;
+		const char *cpuspeedstr = ( mhz > 1000 ) ? "GHz" : "MHz";
+		sprintf (verbuf, "Windows %ld.%ld [i%d86/%.2f%s]",
+					osvi.dwMajorVersion, osvi.dwMinorVersion, si.wProcessorLevel, 
+					cpuspeed, cpuspeedstr);
+	} else
 		sprintf (verbuf, "Windows %ld.%ld [i%d86]",
 			osvi.dwMajorVersion, osvi.dwMinorVersion, si.wProcessorLevel);
 
@@ -536,7 +540,8 @@ char *
 get_cpu_str (void)
 {
 #if defined (USING_LINUX) || defined (USING_FREEBSD)
-	int mhz, cpus;
+	double mhz;
+	int cpus;
 #endif
 	struct utsname un;
 	static char *buf = NULL;
@@ -551,10 +556,14 @@ get_cpu_str (void)
 #if defined (USING_LINUX) || defined (USING_FREEBSD)
 	get_cpu_info (&mhz, &cpus);
 	if (mhz)
+	{
+		double cpuspeed = ( mhz > 1000 ) ? mhz / 1000 : mhz;
+		const char *cpuspeedstr = ( mhz > 1000 ) ? "GHz" : "MHz";
 		snprintf (buf, 128,
-					 (cpus == 1) ? "%s %s [%s/%dMHz]" : "%s %s [%s/%dMHz/SMP]",
-					 un.sysname, un.release, un.machine, mhz);
-	else
+					(cpus == 1) ? "%s %s [%s/%.2f%s]" : "%s %s [%s/%.2f%s/SMP]",
+					un.sysname, un.release, un.machine,
+					cpuspeed, cpuspeedstr);
+	} else
 #endif
 		snprintf (buf, 128, "%s %s [%s]", un.sysname, un.release, un.machine);
 

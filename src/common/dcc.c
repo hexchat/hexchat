@@ -972,13 +972,7 @@ dcc_read_ack (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 	if (dcc->ackoffset)
 		dcc->ack += dcc->resumable;
 
-	if (!dcc->fastsend)
-	{
-		if (dcc->ack < dcc->pos)
-			return TRUE;
-		dcc_send_data (NULL, 0, (gpointer)dcc);
-	}
-
+	/* DCC complete check */
 	if (dcc->pos >= dcc->size && dcc->ack >= dcc->size)
 	{
 		dcc_calc_average_cps (dcc);
@@ -986,6 +980,10 @@ dcc_read_ack (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 		sprintf (buf, "%d", dcc->cps);
 		EMIT_SIGNAL (XP_TE_DCCSENDCOMP, dcc->serv->front_session,
 						 file_part (dcc->file), dcc->nick, buf, NULL, 0);
+	}
+	else if ((!dcc->fastsend) && (dcc->ack >= dcc->pos))
+	{
+		dcc_send_data (NULL, 0, (gpointer)dcc);
 	}
 
 	return TRUE;

@@ -159,7 +159,7 @@ get_nick_prefix (server * serv, unsigned int access)
 			return c;
 	}
 
-	return ' ';
+	return 0;
 }
 
 /* returns the access bitfield for a nickname. E.g.
