@@ -2664,8 +2664,8 @@ gtk_xtext_render_str (GtkXText * xtext, int y, textentry * ent,
 			/* fill the indent area with background gc */
 			if (indent >= xtext->clip_x)
 			{
-				xtext_draw_bg (xtext, 0, y - xtext->font->ascent, indent,
-									xtext->fontsize);
+				xtext_draw_bg (xtext, 0, y - xtext->font->ascent,
+									MIN (indent, xtext->clip_x2), xtext->fontsize);
 			}
 		}
 	}

@@ -1351,7 +1351,7 @@ static int tcl_channels(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
                 continue;
             if (strcasecmp(server, xchat_list_str(ph, list, "server")) != 0)
                 continue;
-            (const char *) channel = xchat_list_str(ph, list, "channel");
+            channel = xchat_list_str(ph, list, "channel");
             Tcl_DStringAppendElement(&ds, channel);
         }
         xchat_list_free(ph, list);
@@ -1382,7 +1382,7 @@ static int tcl_servers(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
     if (list != NULL) {
         while (xchat_list_next(ph, list)) {
             if (xchat_list_int(ph, list, "type") == 1) {
-                (const char *) server = xchat_list_str(ph, list, "server");
+                server = xchat_list_str(ph, list, "server");
                 Tcl_DStringAppendElement(&ds, server);
             }
         }
@@ -1426,7 +1426,7 @@ static int tcl_queries(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
                 continue;
             if (strcasecmp(server, xchat_list_str(ph, list, "server")) != 0)
                 continue;
-            (const char *) channel = xchat_list_str(ph, list, "channel");
+            channel = xchat_list_str(ph, list, "channel");
             Tcl_DStringAppendElement(&ds, channel);
         }
         xchat_list_free(ph, list);
@@ -1885,7 +1885,7 @@ static int Command_Source(char *word[], char *word_eol[], void *userdata)
 
     if (len > 4 && strcasecmp(".tcl", word[2] + len - 4) == 0) {
 
-        (const char *) xchatdir = xchat_get_info(ph, "xchatdir");
+        xchatdir = xchat_get_info(ph, "xchatdir");
 
         Tcl_DStringInit(&ds);
 
@@ -1992,7 +1992,7 @@ static void Tcl_Plugin_Init()
         xchat_printf(ph, "Error sourcing internal 'unknown' (%s)\n", Tcl_GetStringResult(interp));
     }
 
-    (const char *) xchatdir = xchat_get_info(ph, "xchatdir");
+    xchatdir = xchat_get_info(ph, "xchatdir");
 
     if (Tcl_Eval(interp, sourcedirs) == TCL_ERROR) {
         xchat_printf(ph, "Error sourcing internal 'sourcedirs' (%s)\n", Tcl_GetStringResult(interp));
