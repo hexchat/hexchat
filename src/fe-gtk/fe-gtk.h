@@ -146,6 +146,7 @@ typedef struct session_gui
 	int pane_pos;	/*last position of the pane*/
 
 	unsigned int is_tab:1;	/* is tab or toplevel? */
+	unsigned int ul_hidden:1;	/* userlist hidden? */
 
 } session_gui;
 

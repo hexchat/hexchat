@@ -497,7 +497,10 @@ mg_populate (session *sess)
 	restore_gui *res = sess->res;
 	int i, vis, render = TRUE;
 
-	vis = GTK_WIDGET_VISIBLE (gui->user_box);
+	if (gui->pane)
+		vis = gui->ul_hidden;
+	else
+		vis = GTK_WIDGET_VISIBLE (gui->user_box);
 
 	switch (sess->type)
 	{
@@ -530,11 +533,19 @@ mg_populate (session *sess)
 	if (gui->is_tab)
 		gtk_notebook_set_current_page (GTK_NOTEBOOK (gui->note_book), 0);
 
-	/* userlist CHANGED? Let the pending exposure draw the xtext */
-	if (vis && !GTK_WIDGET_VISIBLE (gui->user_box))
-		render = FALSE;
-	if (!vis && GTK_WIDGET_VISIBLE (gui->user_box))
-		render = FALSE;
+	if (gui->pane)
+	{
+		/* no change? then there will be no expose, so render now */
+		if (vis != gui->ul_hidden)
+			render = FALSE;
+	} else
+	{
+		/* userlist CHANGED? Let the pending exposure draw the xtext */
+		if (vis && !GTK_WIDGET_VISIBLE (gui->user_box))
+			render = FALSE;
+		if (!vis && GTK_WIDGET_VISIBLE (gui->user_box))
+			render = FALSE;
+	}
 
 	gtk_xtext_buffer_show (GTK_XTEXT (gui->xtext), res->buffer, render);
 	GTK_XTEXT (gui->xtext)->color_paste = sess->color_paste;
@@ -870,6 +881,45 @@ mg_destroy_tab_cb (GtkWidget *item, GtkWidget *tab)
 		gtk_widget_destroy (tab);
 }
 
+static void
+mg_color_insert (GtkWidget *item, gpointer userdata)
+{
+	char buf[32];
+
+	sprintf (buf, "%%C%d", GPOINTER_TO_INT (userdata));
+	key_action_insert (current_sess->gui->input_box, 0, buf, 0, 0);
+}
+
+static void
+mg_create_color_menu (GtkWidget *menu, session *sess)
+{
+	GtkWidget *item;
+	GtkWidget *submenu;
+	char buf[256];
+	int i;
+
+	item = gtk_menu_item_new_with_label (_("Insert color code"));
+	gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+	gtk_widget_show (item);
+
+	submenu = gtk_menu_new ();
+	gtk_menu_item_set_submenu (GTK_MENU_ITEM (item), submenu);
+	gtk_widget_show (submenu);
+
+	for (i = 0; i < 16; i++)
+	{
+		item = gtk_menu_item_new_with_label ("");
+		sprintf (buf, "<sup>%02d</sup> <span background=\"#%02x%02x%02x\">"
+					"            </span>",
+				i, colors[i].red >> 8, colors[i].green >> 8, colors[i].blue >> 8);
+		gtk_label_set_markup (GTK_LABEL (GTK_BIN (item)->child), buf);
+		g_signal_connect (G_OBJECT (item), "activate",
+								G_CALLBACK (mg_color_insert), GINT_TO_POINTER (i));
+		gtk_menu_shell_append (GTK_MENU_SHELL (submenu), item);
+		gtk_widget_show (item);
+	}
+}
+
 static gboolean
 mg_tab_press_cb (GtkWidget *wid, GdkEventButton *event, session *sess)
 {
@@ -909,6 +959,9 @@ mg_tab_press_cb (GtkWidget *wid, GdkEventButton *event, session *sess)
 		gtk_menu_item_set_submenu (GTK_MENU_ITEM (item), submenu);
 		gtk_widget_show (item);
 	}
+
+	if (sess)
+		mg_create_color_menu (menu, sess);
 
 	item = gtk_menu_item_new_with_label (_("Move to tab"));
 	gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
@@ -1020,11 +1073,13 @@ mg_userlist_showhide (session *sess, int show)
 		if (gui->pane)
 			gtk_paned_set_position (GTK_PANED (gui->pane), 9999);
 		gtk_widget_hide (gui->user_box);
+		sess->gui->ul_hidden = 1;
 	} else
 	{
 		if (gui->pane)
 			gtk_paned_set_position (GTK_PANED (gui->pane), gui->pane_pos);
 		gtk_widget_show (gui->user_box);
+		sess->gui->ul_hidden = 0;
 	}
 }
 
@@ -1167,6 +1222,7 @@ mg_link_irctab (session *sess)
 		mg_changui_destroy (sess);
 		mg_changui_new (sess, sess->res, 0);
 		mg_populate (sess);
+		xchat_is_quitting = FALSE;
 		return;
 	}
 
@@ -1774,72 +1830,6 @@ mg_create_center (session *sess, session_gui *gui, GtkWidget *box)
 		mg_create_entry (sess, vbox);
 	}
 }
-
-#if 0
-static void
-mg_color_insert (GtkWidget *item, gpointer userdata)
-{
-	char buf[32];
-
-	sprintf (buf, "%%C%d", GPOINTER_TO_INT (userdata));
-	key_action_insert (current_sess->gui->input_box, 0, buf, 0, 0);
-}
-#endif
-
-#if 0
-static void
-mg_upbutton_cb (GtkButton *but, gpointer userdata)
-{
-	GtkWidget *menu, *item;
-	session *sess = current_sess;
-	GtkWidget *submenu;
-	char buf[256];
-	int i;
-
-	menu = gtk_menu_new ();
-
-	item = gtk_menu_item_new_with_label (_("Insert color code"));
-	gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
-	gtk_widget_show (item);
-
-	submenu = gtk_menu_new ();
-	gtk_menu_item_set_submenu (GTK_MENU_ITEM (item), submenu);
-	gtk_widget_show (submenu);
-
-	for (i = 0; i < 16; i++)
-	{
-		item = gtk_menu_item_new_with_label ("");
-		sprintf (buf, "<span background=\"#%02x%02x%02x\">            </span>",
-					colors[i].red >> 8, colors[i].green >> 8, colors[i].blue >> 8);
-		gtk_label_set_markup (GTK_LABEL (GTK_BIN (item)->child), buf);
-		g_signal_connect (G_OBJECT (item), "activate",
-								G_CALLBACK (mg_color_insert), GINT_TO_POINTER (i));
-		gtk_menu_shell_append (GTK_MENU_SHELL (submenu), item);
-		gtk_widget_show (item);
-	}
-
-	snprintf (buf, sizeof (buf), _("(%s) Channel settings"),
-				 sess->channel);
-	item = gtk_menu_item_new_with_label (buf);
-	gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
-	gtk_widget_show (item);
-
-	submenu = gtk_menu_new ();
-	gtk_menu_item_set_submenu (GTK_MENU_ITEM (item), submenu);
-	gtk_widget_show (submenu);
-
-	menu_toggle_item (_("Beep on message"), submenu, mg_beepmsg_cb, sess,
-							sess->beep);
-	menu_toggle_item (_("Hide join/parts"), submenu, mg_hidejp_cb, sess,
-							sess->hide_join_part);
-	menu_toggle_item (_("Color paste"), submenu, mg_colorpaste_cb, sess,
-							sess->color_paste);
-
-	g_signal_connect (G_OBJECT (menu), "selection-done",
-							G_CALLBACK (mg_menu_destroy), menu);
-	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL, 0, 0);
-}
-#endif
 
 static void
 mg_change_nick (int cancel, char *text, gpointer userdata)
