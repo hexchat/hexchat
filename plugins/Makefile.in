@@ -133,7 +133,6 @@ sedpath = @sedpath@
 unamepath = @unamepath@
 xchatlibdir = @xchatlibdir@
 xchatsharedir = @xchatsharedir@
-EXTRA_DIST = plugin20.html Make.plugin plugin-conf.in
 
 noinst_HEADERS = xchat-plugin.h
 
@@ -394,6 +393,12 @@ uninstall-info: uninstall-info-recursive
 	tags tags-recursive uninstall uninstall-am uninstall-info-am \
 	uninstall-info-recursive uninstall-recursive
 
+# temp. solution while mailcheck & xdcc arn't in SUBDIRS
+				mailcheck/mailcheck.c \
+				mailcheck/mailcheck-config.h.in \
+				mailcheck/Makefile.am \
+				xdcc/xdcc.c \
+				xdcc/Makefile.am
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

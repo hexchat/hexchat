@@ -1,4 +1,10 @@
-EXTRA_DIST = plugin20.html Make.plugin plugin-conf.in
+EXTRA_DIST = plugin20.html Make.plugin plugin-conf.in \
+# temp. solution while mailcheck & xdcc arn't in SUBDIRS
+				mailcheck/mailcheck.c \
+				mailcheck/mailcheck-config.h.in \
+				mailcheck/Makefile.am \
+				xdcc/xdcc.c \
+				xdcc/Makefile.am
 
 noinst_HEADERS = xchat-plugin.h
 

@@ -2438,10 +2438,11 @@ const struct commands xc_cmds[] = {
 	{"CYCLE", cmd_cycle, 1, 1,
 	 N_("CYCLE, parts current channel and immediately rejoins")},
 	{"DCC", cmd_dcc, 0, 0,
-	 N_("\n" "DCC GET <nick>          - receive an offered file\n"
-	 "DCC SEND <nick> <file>  - send a file to someone\n"
-	 "DCC LIST                - show DCC list\n"
-	 "DCC CHAT <nick>         - offer DCC CHAT to someone\n"
+	 N_("\n"
+	 "DCC GET <nick>                     - accept an offered file\n"
+	 "DCC SEND [-maxcps=#] <nick> [file] - send a file to someone\n"
+	 "DCC LIST                           - show DCC list\n"
+	 "DCC CHAT <nick>                    - offer DCC CHAT to someone\n"
 	 "DCC CLOSE <type> <nick> <file>         example:\n"
 	 "         /dcc close send johnsmith file.tar.gz")},
 	{"DEBUG", cmd_debug, 0, 0, 0},

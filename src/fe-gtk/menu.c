@@ -1429,7 +1429,7 @@ menu_create_main (GtkWidget *window, int bar, int away,
 	{
 		accel_group = gtk_accel_group_new ();
 		gtk_window_add_accel_group (GTK_WINDOW (window), accel_group);
-  	   g_object_unref (accel_group);
+		g_object_unref (accel_group);
 	}
 
 	if (bar)
