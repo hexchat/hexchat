@@ -1153,7 +1153,7 @@ static struct mymenu mymenu[] = {
 	{0, 0, 0, M_SEP, 0, 0},
 
 #ifdef USE_PLUGIN
-	{N_("Load plugin..."), menu_loadplugin, GTK_STOCK_REVERT_TO_SAVED, M_MENUSTOCK, 0, 1},
+	{N_("Load Plugin..."), menu_loadplugin, GTK_STOCK_REVERT_TO_SAVED, M_MENUSTOCK, 0, 1},
 #else
 	{N_("Load Plugin..."), 0, GTK_STOCK_REVERT_TO_SAVED, M_MENUSTOCK, 0, 0},
 #endif

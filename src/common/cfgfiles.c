@@ -268,7 +268,7 @@ check_prefs_dir (void)
 #else
 		if (mkdir (xdir, S_IRUSR | S_IWUSR | S_IXUSR) != 0)
 #endif
-			fe_message (_("Cannot create ~/.xchat"), FALSE);
+			fe_message (_("Cannot create ~/.xchat2"), FALSE);
 	}
 }
 

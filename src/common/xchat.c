@@ -717,14 +717,6 @@ find_away_message (struct server *serv, char *nick)
 	"NAME WALLOPS\n"		"CMD quote WALLOPS :&2\n\n"\
 	"NAME WII\n"			"CMD quote WHOIS %2 %2\n\n"
 
-#define defaultconf_usermenu _(\
-	"NAME Disconnect\n"			"CMD discon\n\n"\
-	"NAME Reconnect\n"			"CMD reconnect\n\n"\
-	"NAME Leave Channel\n"		"CMD part\n\n"\
-	"NAME Server Links\n"		"CMD quote LINKS\n\n"\
-	"NAME Ping Server\n"			"CMD ping\n\n"\
-	"NAME TOGGLE Hide Version\n""CMD irc_hide_version\n\n")
-
 #ifdef WIN32
 #define defaultconf_urlhandlers \
 	"NAME Connect as IRC server\n"		"CMD newserver %s\n\n"
@@ -798,6 +790,8 @@ xchat_auto_connect (gpointer userdata)
 static void
 xchat_init (void)
 {
+	char buf[512];
+
 #ifdef WIN32
 	WSADATA wsadata;
 
@@ -818,13 +812,46 @@ xchat_init (void)
 	load_text_events ();
 	notify_load ();
 	ignore_load ();
+
+	snprintf (buf, sizeof (buf),
+		"NAME %s\n"				"CMD discon\n\n"
+		"NAME %s\n"				"CMD reconnect\n\n"
+		"NAME %s\n"				"CMD part\n\n"
+		"NAME %s\n"				"CMD getstr # join \"%s\"\n\n"
+		"NAME %s\n"				"CMD quote LINKS\n\n"
+		"NAME %s\n"				"CMD ping\n\n"
+		"NAME TOGGLE %s\n"	"CMD irc_hide_version\n\n",
+				_("Disconnect"),
+				_("Reconnect"),
+				_("Leave Channel"),
+				_("Join Channel..."),
+				_("Enter Channel to Join:"),
+				_("Server Links"),
+				_("Ping Server"),
+				_("Hide Version"));
+	list_loadconf ("usermenu.conf", &usermenu_list, buf);
+
+	snprintf (buf, sizeof (buf),
+		"NAME %s\n"		"CMD op %%a\n\n"
+		"NAME %s\n"		"CMD deop %%a\n\n"
+		"NAME %s\n"		"CMD ban %%s\n\n"
+		"NAME %s\n"		"CMD getstr bye \"kick %%s\" \"%s\"\n\n"
+		"NAME %s\n"		"CMD dcc send %%s\n\n"
+		"NAME %s\n"		"CMD query %%s\n\n",
+				_("Op"),
+				_("DeOp"),
+				_("Ban"),
+				_("Kick"),
+				_("Enter reason to kick %s:"),
+				_("Sendfile"),
+				_("Dialog"));
+	list_loadconf ("buttons.conf", &button_list, buf);
+
 	list_loadconf ("popup.conf", &popup_list, defaultconf_popup);
 	list_loadconf ("ctcpreply.conf", &ctcp_list, defaultconf_ctcp);
-	list_loadconf ("buttons.conf", &button_list, defaultconf_buttons);
 	list_loadconf ("dlgbuttons.conf", &dlgbutton_list, defaultconf_dlgbuttons);
 	list_loadconf ("commands.conf", &command_list, defaultconf_commands);
 	list_loadconf ("replace.conf", &replace_list, defaultconf_replace);
-	list_loadconf ("usermenu.conf", &usermenu_list, defaultconf_usermenu);
 	list_loadconf ("urlhandlers.conf", &urlhandler_list,
 						defaultconf_urlhandlers);
 

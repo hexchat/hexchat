@@ -342,7 +342,7 @@ static void
 backend_draw_text (GtkXText *xtext, int dofill, GdkGC *gc, int x, int y,
 						 char *str, int len, int str_width, int is_mb)
 {
-	Display *xdisplay = GDK_WINDOW_XDISPLAY (xtext->draw_buf);
+	/*Display *xdisplay = GDK_WINDOW_XDISPLAY (xtext->draw_buf);*/
 	void (*draw_func) (XftDraw *, XftColor *, XftFont *, int, int, XftChar8 *, int) = XftDrawString8;
 
 	/* if all ascii, use String8 to avoid the conversion penalty */
@@ -351,18 +351,20 @@ backend_draw_text (GtkXText *xtext, int dofill, GdkGC *gc, int x, int y,
 
 	if (dofill)
 	{
-		register GC xgc = GDK_GC_XGC (gc);
+/*		register GC xgc = GDK_GC_XGC (gc);
 		XSetForeground (xdisplay, xgc, xtext->xft_bg->pixel);
 		XFillRectangle (xdisplay, GDK_WINDOW_XWINDOW (xtext->draw_buf), xgc, x,
-							 y - xtext->font->ascent, str_width, xtext->fontsize);
+							 y - xtext->font->ascent, str_width, xtext->fontsize);*/
+		XftDrawRect (xtext->xftdraw, xtext->xft_bg, x,
+						 y - xtext->font->ascent, str_width, xtext->fontsize);
 	}
 
 	draw_func (xtext->xftdraw, xtext->xft_fg, xtext->font, x, y, str, len);
 	/* if (~black_background) */
-	if (xtext->xft_bg->color.red < 0x2000 ||
+/*	if (xtext->xft_bg->color.red < 0x2000 ||
 		 xtext->xft_bg->color.green < 0x2000 ||
 		 xtext->xft_bg->color.blue < 0x2000)
-		draw_func (xtext->xftdraw, xtext->xft_fg, xtext->font, x, y, str, len);
+		draw_func (xtext->xftdraw, xtext->xft_fg, xtext->font, x, y, str, len);*/
 
 	if (xtext->bold)
 		draw_func (xtext->xftdraw, xtext->xft_fg, xtext->font, x + 1, y, str, len);
@@ -2143,7 +2145,7 @@ gtk_xtext_class_init (GtkXTextClass * class)
 	widget_class->button_press_event = gtk_xtext_button_press;
 	widget_class->button_release_event = gtk_xtext_button_release;
 	widget_class->motion_notify_event = gtk_xtext_motion_notify;
-	widget_class->selection_clear_event = gtk_xtext_selection_kill;
+	widget_class->selection_clear_event = (void *)gtk_xtext_selection_kill;
 #ifdef MOTION_MONITOR
 	widget_class->leave_notify_event = gtk_xtext_leave_notify;
 #endif
@@ -3760,9 +3762,8 @@ gtk_xtext_render_page (GtkXText * xtext)
 		xtext->buffer->indent = MARGIN;	  /* 2 pixels is our left margin */
 
 	gdk_drawable_get_size (GTK_WIDGET (xtext)->window, &width, &height);
-	width -= MARGIN;
 
-	if (width < 32 || height < xtext->fontsize || width < xtext->buffer->indent + 30)
+	if (width < 34 || height < xtext->fontsize || width < xtext->buffer->indent + 32)
 		return;
 
 #ifdef SMOOTH_SCROLL
@@ -3798,26 +3799,27 @@ gtk_xtext_render_page (GtkXText * xtext)
 		if (overlap < 0)	/* DOWN */
 		{
 			gdk_draw_drawable (xtext->draw_buf, xtext->fgc, xtext->draw_buf,
-									 0, -overlap, 0, 0, width+MARGIN, height + overlap);
+									 0, -overlap, 0, 0, width, height + overlap);
 			remainder = height % xtext->fontsize;
 			event.area.y = (height + overlap) - remainder;
 			event.area.height = -overlap + remainder;
 		} else
 		{
 			gdk_draw_drawable (xtext->draw_buf, xtext->fgc, xtext->draw_buf,
-									 0, 0, 0, overlap, width+MARGIN, height - overlap);
+									 0, 0, 0, overlap, width, height - overlap);
 			event.area.y = 0;
 			event.area.height = overlap;
 		}
 
 		event.area.x = 0;
-		event.area.width = width + MARGIN;
+		event.area.width = width;
 		gtk_xtext_expose (GTK_WIDGET (xtext), &event);
 		return;
 	}
 }
 #endif
 
+	width -= MARGIN;
 	while (ent)
 	{
 		gtk_xtext_reset (xtext, FALSE, TRUE);
