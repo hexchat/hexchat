@@ -13,6 +13,7 @@ extern int ignored_invi;
 #define IG_INVI	16
 #define IG_UNIG	32
 #define IG_NOSAVE	64
+#define IG_DCC		128
 
 struct ignore
 {

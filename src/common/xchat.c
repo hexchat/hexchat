@@ -770,6 +770,16 @@ sighup_handler (int signal)
 	}
 }
 
+/* Execute /SIGUSR2 when SIGUSR2 received */
+
+static void
+sigusr2_handler (int signal)
+{
+	session *sess = current_sess;
+
+	if (sess)
+		handle_command (sess, "SIGUSR2", FALSE);
+}
 #endif
 
 static gint
@@ -807,8 +817,9 @@ xchat_init (void)
 	sigemptyset (&act.sa_mask);
 	sigaction (SIGPIPE, &act, NULL);
 
-	/* Deal with SIGUSR1's */
+	/* Deal with SIGUSR1's & SIGUSR2's */
 	signal (SIGUSR1, sighup_handler);
+	signal (SIGUSR2, sigusr2_handler);
 #endif
 
 	if (g_get_charset (&cs))

@@ -1691,7 +1691,7 @@ cmd_ignore (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		if (!strcasecmp (word[i], "UNIGNORE"))
 			type |= IG_UNIG;
 		else if (!strcasecmp (word[i], "ALL"))
-			type |= IG_PRIV | IG_NOTI | IG_CHAN | IG_CTCP | IG_INVI;
+			type |= IG_PRIV | IG_NOTI | IG_CHAN | IG_CTCP | IG_INVI | IG_DCC;
 		else if (!strcasecmp (word[i], "PRIV"))
 			type |= IG_PRIV;
 		else if (!strcasecmp (word[i], "NOTI"))
@@ -1706,6 +1706,8 @@ cmd_ignore (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			quiet = 1;
 		else if (!strcasecmp (word[i], "NOSAVE"))
 			type |= IG_NOSAVE;
+		else if (!strcasecmp (word[i], "DCC"))
+			type |= IG_DCC;
 		else
 		{
 			sprintf (tbuf, _("Unknown arg '%s' ignored."), word[i]);
@@ -2634,7 +2636,7 @@ const struct commands xc_cmds[] = {
 	 N_("IGNORE <mask> <types..> <options..>\n"
 	 "    mask - host mask to ignore, eg: *!*@*.aol.com\n"
 	 "    types - types of data to ignore, one or all of:\n"
-	 "            PRIV, CHAN, NOTI, CTCP, INVI, ALL\n"
+	 "            PRIV, CHAN, NOTI, CTCP, DCC, INVI, ALL\n"
 	 "    options - NOSAVE, QUIET")},
 
 	{"INVITE", cmd_invite, 1, 0,

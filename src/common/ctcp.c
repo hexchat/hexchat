@@ -26,6 +26,7 @@
 #include "util.h"
 #include "modes.h"
 #include "outbound.h"
+#include "ignore.h"
 #include "inbound.h"
 #include "dcc.h"
 #include "text.h"
@@ -85,6 +86,16 @@ ctcp_handle (session *sess, char *to, char *nick,
 	server *serv = sess->server;
 	char outbuf[1024];
 
+	if (!strncasecmp (msg, "DCC", 3))
+	{
+		if (!ignore_check (word[1], IG_DCC))
+			handle_dcc (sess, nick, word, word_eol);
+		return;
+	}
+
+	if (ignore_check (word[1], IG_CTCP))
+		return;
+
 	if (!strcasecmp (msg, "VERSION") && !prefs.hidever)
 	{
 		snprintf (outbuf, sizeof (outbuf), "VERSION xchat "VERSION" %s",
@@ -97,11 +108,6 @@ ctcp_handle (session *sess, char *to, char *nick,
 		if (!strncasecmp (msg, "ACTION", 6))
 		{
 			inbound_action (sess, to, nick, msg + 7, FALSE);
-			return;
-		}
-		if (!strncasecmp (msg, "DCC", 3))
-		{
-			handle_dcc (sess, nick, word, word_eol);
 			return;
 		}
 		if (!strncasecmp (msg, "SOUND", 5))

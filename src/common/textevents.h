@@ -210,7 +210,7 @@ N_("Ignore on %C11$1%O changed.")},
 N_("%C08,02                                                         %O")},
 
 {"Ignore Header", pevt_generic_none_help, 0, 0,
-N_("%C08,02 Hostmask                  PRIV NOTI CHAN CTCP INVI UNIG %O")},
+N_("%C08,02 Hostmask                  PRIV NOTI CHAN CTCP DCC  INVI UNIG %O")},
 
 {"Ignore Remove", pevt_ignoreaddremove_help, 1, 0,
 N_("%O%C11$1%O removed from ignore list.")},

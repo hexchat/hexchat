@@ -408,9 +408,22 @@ log_open_file (char *servname, char *channame, char *netname)
 void
 log_open (session *sess)
 {
+	static gboolean log_error = FALSE;
+
 	log_close (sess);
 	sess->logfd = log_open_file (sess->server->servername, sess->channel,
 										  sess->server->networkname);
+
+	if (!log_error && sess->logfd == -1)
+	{
+		char message[512];
+		snprintf (message, sizeof (message),
+					_("* Can't open log file(s) for writing. Check the\n" \
+					  "  permissions on %s/xchatlogs"), get_xdir());
+		fe_message (message, TRUE);
+
+		log_error = TRUE;
+	}
 }
 
 int
