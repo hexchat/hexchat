@@ -500,16 +500,15 @@ backend_draw_text (GtkXText *xtext, int dofill, GdkGC *gc, int x, int y,
 {
 	GdkGCValues val;
 	GdkColor col;
+	PangoLayoutLine *line;
 
 	pango_layout_set_text (xtext->layout, str, len);
-
-	y -= xtext->font->ascent;
 
 	if (dofill)
 	{
 #ifdef WIN32
 		if (xtext->transparent && !xtext->backcolor)
-			win32_draw_bg (xtext, x, y - xtext->font->ascent, str_width,
+			win32_draw_bg (xtext, x, y - (xtext->font->ascent * 2), str_width,
 								xtext->fontsize);
 		else
 #endif
@@ -517,28 +516,21 @@ backend_draw_text (GtkXText *xtext, int dofill, GdkGC *gc, int x, int y,
 			gdk_gc_get_values (gc, &val);
 			col.pixel = val.background.pixel;
 			gdk_gc_set_foreground (gc, &col);
-			gdk_draw_rectangle (xtext->draw_buf, gc, 1, x, y, str_width,
-									  xtext->fontsize);
+			gdk_draw_rectangle (xtext->draw_buf, gc, 1, x, y -
+									  xtext->font->ascent, str_width, xtext->fontsize);
 			col.pixel = val.foreground.pixel;
 			gdk_gc_set_foreground (gc, &col);
 		}
 	}
 
-#if 1
-{
-	GSList *list = pango_layout_get_lines (xtext->layout);
-	gdk_draw_layout_line_with_colors (xtext->draw_buf, gc, x, y +
-												 xtext->font->ascent, list->data, 0, 0);
+	line = pango_layout_get_lines (xtext->layout)->data;
+	gdk_draw_layout_line_with_colors (xtext->draw_buf, gc, x, y, line, 0, 0);
 	if (xtext->overdraw)
-		gdk_draw_layout_line_with_colors (xtext->draw_buf, gc, x, y +
-													 xtext->font->ascent, list->data, 0, 0);
-}
-#else
-	gdk_draw_layout (xtext->draw_buf, gc, x, y, xtext->layout);
-#endif
+		gdk_draw_layout_line_with_colors (xtext->draw_buf, gc, x, y, line, 0, 0);
 
 	if (xtext->bold)
-		gdk_draw_layout (xtext->draw_buf, gc, x + 1, y, xtext->layout);
+		gdk_draw_layout_line_with_colors (xtext->draw_buf, gc, x + 1, y, line,
+													 0, 0);
 }
 
 static void
