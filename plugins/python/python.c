@@ -1114,7 +1114,7 @@ Plugin_New(char *filename, PyMethodDef *xchat_methods, PyObject *xcoobj)
 		fp = fopen(plugin->filename, "r");
 		if (fp == NULL) {
 			xchat_printf(ph, "Can't open file %s: %s\n",
-				     filename, strerror(errno));
+				     plugin->filename, strerror(errno));
 			goto error;
 		}
 
