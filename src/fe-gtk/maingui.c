@@ -2192,7 +2192,7 @@ mg_create_tabwindow (session *sess)
 										  prefs.mainwindow_height);
 	gtk_container_set_border_width (GTK_CONTAINER (win), 2);
 
-	g_signal_connect (G_OBJECT (win), "delete-event",
+	g_signal_connect (G_OBJECT (win), "delete_event",
 						   G_CALLBACK (mg_tabwindow_de_cb), 0);
 	g_signal_connect (G_OBJECT (win), "destroy",
 						   G_CALLBACK (mg_tabwindow_kill_cb), 0);

@@ -35,13 +35,66 @@ Requirements:
 	* Windows 9x/ME/NT/XP/2000
 
 
-Updates?
-~~~~~~~~
- Latest version is available at:
+Release Notes:
+~~~~~~~~~~~~~~
 
- http://xchat.org
+* See http://xchat.org/cvs.html#bugs for a list of outstanding bugs.
 
- Please refer your suggestions/bug reports to zed at xchat dot org.
+* If you used early 1.9 versions (1.9.0/1/2), you might want to delete
+  ~/.xchat2/ to get new defaults (backup your servlist_.conf if you made
+  major changes).
+
+* By default, xchat will use Pango to render text. This is usually quite
+  fast, if you have Pango 1.1 and Xft2 on your system. If you need to use
+  Pango 1.0, or find text rendering slow, you can use the ./configure switch
+  --enable-xft, which will bypass Pango. NB: --enable-xft will also remove
+  some of Pango's nice i18n features, such as multiple fonts and bidi.
+  If the text is still unbearably slow, disable font smoothing in Gnome2
+  Font Preferences.
+
+* Having trouble with character sets, umlauts, accented characters etc?
+  Refer to: http://xchat.org/encoding.html
+
+
+Notes for packagers:
+~~~~~~~~~~~~~~~~~~~~
+
+ If you need your packages to work on i386, you don't need to compile with
+ --disable-mmx, because it's also checked at run-time.
+
+
+Python Scripts:
+~~~~~~~~~~~~~~~
+ Scripts for 1.8.x are not compatible, and a brand new interface has be
+ written. Documentation can be found here: http://xchat.org/docs.html.
+ Consider using the Python interface for your scripts, it's a very nice
+ API, allows for loading/unloading individual scripts, and gives you
+ almost all the features of the C-Plugin API.
+
+
+Perl Scripts:
+~~~~~~~~~~~~~
+ Scripts for 1.8.x are compatible with the following exceptions:
+
+* IRC::command will not interpret %C, %B, %U etc.
+
+* user_list and user_list_short:
+  If a user has both op and voice, only the op flag will be 1.
+
+* add_user_list/sub_user_list/clear_user_list
+  These functions do nothing.
+
+* notify_list
+  Not implemented. Always returns an empty list.
+
+* server_list
+  Lists servers that are not connected aswell.
+
+* Some print events may have new names and some were added.
+
+* Text printed by scripts must now be UTF8.
+
+* Text passed to scripts (via add_message_handler) will be encoded in UTF8.
 
 
 Autoloading Perl Scripts and Plugins

@@ -1001,6 +1001,7 @@ server_disconnect (session * sess, int sendquit, int err)
 	serv->motd_skipped = FALSE;
 	serv->no_login = FALSE;
 	serv->servername[0] = 0;
+	serv->lag_sent = 0;
 
 	notify_cleanup ();
 }

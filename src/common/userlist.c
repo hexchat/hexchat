@@ -398,7 +398,7 @@ update_all_of (char *name)
 #endif
 }
 
-static gboolean
+static int
 flat_cb (struct User *user, GSList **list)
 {
 	*list = g_slist_prepend (*list, user);
@@ -410,6 +410,6 @@ userlist_flat_list (session *sess)
 {
 	GSList *list = NULL;
 
-	tree_foreach (sess->usertree, (tree_traverse_func *)flat_cb, &list);
+	tree_foreach (sess->usertree_alpha, (tree_traverse_func *)flat_cb, &list);
 	return g_slist_reverse (list);
 }

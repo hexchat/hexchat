@@ -99,7 +99,7 @@ url_treeview_new (GtkWidget *box)
 
 	view = gtkutil_treeview_new (box, GTK_TREE_MODEL (store), NULL,
 	                             URL_COLUMN, _("URL"), -1);
-	g_signal_connect (G_OBJECT (view), "button-press-event",
+	g_signal_connect (G_OBJECT (view), "button_press_event",
 	                  G_CALLBACK (url_treeview_url_clicked_cb), NULL);
 	/* don't want column headers */
 	gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (view), FALSE);

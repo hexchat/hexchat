@@ -155,7 +155,7 @@ ascii_open (void)
 		gtk_widget_set_size_request (but, 28, -1);
 		g_signal_connect (G_OBJECT (but), "clicked",
 								G_CALLBACK (ascii_click), NULL);
-		g_signal_connect (G_OBJECT (but), "enter-notify-event",
+		g_signal_connect (G_OBJECT (but), "enter_notify_event",
 								G_CALLBACK (ascii_enter), label);
 		gtk_box_pack_start (GTK_BOX (hbox), but, 0, 0, 0);
 		gtk_widget_show (but);
