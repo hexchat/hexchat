@@ -72,6 +72,8 @@ p { margin: 3% }
 <br/><br/>
 <a href="#q219">19. Where are the log files saved to?</a>
 <br/><br/>
+<a href="#q220">20. How do I minimize X-Chat to the System Tray (Notification Area)?</a>
+<br/><br/>
 </p>
 
 <h2>3. Section Three: Contributions, Development and Bugs.</h2>
@@ -248,7 +250,9 @@ not occur. The adjustment will not take effect immediately, a restart may be nee
 <p>
 Right-click on the tab you want to change. In the submenu of the channel
 name, there's a toggle-item "Show join/part messages", simply turn this off.
-</p>
+</p><p>If you want to turn this option on globally, type:</p>
+<blockquote><pre>/set irc_conf_mode 1</pre></blockquote>
+<p>Then all channels you join after setting this will start with "Show join/part messages" turned off.</p>
 
 <br/><h3><a name="q212">12. How can I run the /dccserver command?</a></h3>
 <p>
@@ -258,6 +262,7 @@ that is quite nonstandard. There is no code for doing this, mainly because
 root. Why do you need this anyway? Just use normal DCC.
 <br/><br/>
 Unofficial <a href="http://dfx.at/xchat/">patches are available here</a>.
+<br/><br/><u><b>Update</b></u>: DCC Server feature has been added in the official Windows release 2.4.1b.
 </p>
 
 <br/><h3><a name="q213">13. Why doesn't DCC send work behind IPNat or IPMasq?</a></h3>
@@ -356,6 +361,12 @@ Where "~" represents your home directory i.e.: $HOME/.xchat2/
 <br/><b>Windows XP/2000</b>: C:\Documents and Settings\<i><b>username</b></i>\Application Data\X-Chat 2\xchatlogs
 </p>
 
+<br/><h3><a name="q220">20. How do I minimize X-Chat to the System Tray (Notification Area)?</a></h3>
+<p>
+There are two plugins available that allow this:
+<br/>Unix: <a href="http://www.blight.tk/">SysTray Plugin</a>
+<br/>Windows: <a href="http://www.sinisterdevelopments.com/">xTray</a>
+</p>
 
 <br/><h2>3. Section Three: Contributions, Development and Bugs.</h2>
 

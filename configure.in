@@ -645,6 +645,10 @@ else
 	AC_DEFINE_UNQUOTED(XCHATSHAREDIR, "${prefix}/share/xchat")
 fi
 
+dnl for plugins/xxx/Makefile.am
+xchatlibdir=${libdir}/xchat
+AC_SUBST(xchatlibdir)
+
 AC_OUTPUT([
 Makefile
 src/Makefile
