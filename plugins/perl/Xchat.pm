@@ -282,7 +282,7 @@ sub Xchat::context_info {
   my $ctx = shift @_;
   my $old_ctx = Xchat::get_context;
   my @fields = (qw(away channel host inputbox libdirfs network nick server),
-		qw(topic version win_status xchatdir xchatdirfs),
+		qw(topic version win_status xchatdir xchatdirfs state_cursor),
 	       );
 
   if(Xchat::set_context( $ctx )) {

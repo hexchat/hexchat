@@ -1332,7 +1332,7 @@ perl_init (void)
           "my $ctx = shift @_;\n"
           "my $old_ctx = Xchat::get_context;\n"
           "my @fields = (qw(away channel host inputbox libdirfs network nick server),\n"
-          "qw(topic version win_status xchatdir xchatdirfs),\n"
+          "qw(topic version win_status xchatdir xchatdirfs state_cursor),\n"
           ");\n"
           "if(Xchat::set_context( $ctx )) {\n"
           "my %info;\n"
