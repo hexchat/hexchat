@@ -114,6 +114,7 @@ perl_auto_load (void)
 }
 
 #include <EXTERN.h>
+#define WIN32IOP_H
 #include <perl.h>
 #include <XSUB.h>
 #include <glib.h>
@@ -1025,10 +1026,10 @@ perl_load_file (char *script_name)
 
 	if (!have_lib)
 	{
-		lib = LoadLibrary (PERLDLL);
+		lib = LoadLibrary (PERL_DLL);
 		if (!lib)
 		{
-			thread_mbox ("Cannot open " PERLDLL "\n\n"
+			thread_mbox ("Cannot open " PERL_DLL "\n\n"
 							 "You must have ActivePerl installed in order to\n"
 							 "run perl scripts.\n\n"
 							 "http://www.activestate.com/ActivePerl/\n\n"
