@@ -11,5 +11,5 @@ BUILT_SOURCES = xchat.pm.h
 #CFLAGS = @CFLAGS@ -Wno-unused
 INCLUDES = $(PERL_CFLAGS) $(COMMON_CFLAGS) -I$(srcdir)/..
 CLEANFILES = xchat.pm.h
-xchat.pm.h: Makefile
+xchat.pm.h: Xchat.pm IRC.pm
 	perl generate_header
