@@ -691,6 +691,7 @@ static char *pevt_chanmsg_help[] = {
 	N_("Nickname"),
 	N_("The text"),
 	N_("Mode char"),
+	N_("Identified text"),
 };
 
 static char *pevt_privmsg_help[] = {
@@ -763,6 +764,7 @@ static char *pevt_channotice_help[] = {
 static char *pevt_dprivmsg_help[] = {
 	N_("Nickname"),
 	N_("The message"),
+	N_("Identified text"),
 };
 
 static char *pevt_uchangenick_help[] = {

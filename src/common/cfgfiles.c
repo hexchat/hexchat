@@ -481,6 +481,8 @@ const struct prefs vars[] = {
 	{"irc_conf_mode", P_OFFINT (confmode), TYPE_BOOL},
 	{"irc_extra_hilight", P_OFFSET (bluestring), TYPE_STR},
 	{"irc_hide_version", P_OFFINT (hidever), TYPE_BOOL},
+	{"irc_id_ytext", P_OFFSET (irc_id_ytext), TYPE_STR},
+	{"irc_id_ntext", P_OFFSET (irc_id_ntext), TYPE_STR},
 	{"irc_invisible", P_OFFINT (invisible), TYPE_BOOL},
 	{"irc_logging", P_OFFINT (logging), TYPE_BOOL},
 	{"irc_logmask", P_OFFSET (logmask), TYPE_STR},

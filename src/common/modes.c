@@ -656,6 +656,12 @@ inbound_005 (server * serv, char *word[])
 		} else if (strcmp (word[w], "WHOX") == 0)
 		{
 			serv->have_whox = TRUE;
+		} else if (strcmp (word[w], "CAPAB") == 0)
+		{
+			serv->have_capab = TRUE;
+									/* 12345678901234567890 */
+			tcp_send_len (serv, "CAPAB IDENTIFY-MSG\r\n", 20);
+			/* now wait for numeric 290 */	
 		}
 
 		w++;

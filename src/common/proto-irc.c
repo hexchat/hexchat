@@ -343,6 +343,15 @@ process_numeric (session * sess, int n,
 			fe_chan_list_end (sess->server);
 		goto def;
 
+	case 290:	/* CAPAB reply */
+		if (strstr (word_eol[1], "IDENTIFY-MSG"))
+		{
+			serv->have_idmsg = TRUE;
+			break;
+		}
+		serv->have_idmsg = FALSE;
+		goto def;
+
 	case 301:
 		inbound_away (serv, word[4],
 						(word_eol[5][0] == ':') ? word_eol[5] + 1 : word_eol[5]);
@@ -727,9 +736,24 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 	}
 	if (!strcmp ("NOTICE", type))
 	{
+		int id = FALSE;	/* identified */
+
+		text = word_eol[4];
+		if (*text == ':')
+			text++;
+
+		if (serv->have_idmsg)
+		{
+			if (*text == '+')
+			{
+				id = TRUE;
+				text++;
+			} else if (*text == '-')
+				text++;
+		}
+
 		if (!ignore_check (word[1], IG_NOTI))
-			inbound_notice (serv, word[3], nick,
-					(word_eol[4][0] == ':') ? word_eol[4] + 1 : word_eol[4], ip);
+			inbound_notice (serv, word[3], nick, text, ip, id);
 		return;
 	}
 	if (!strcmp ("PART", type))
@@ -751,11 +775,21 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 	{
 		char *to = word[3];
 		int len;
+		int id = FALSE;	/* identified */
 		if (*to)
 		{
 			text = word_eol[4];
 			if (*text == ':')
 				text++;
+			if (serv->have_idmsg)
+			{
+				if (*text == '+')
+				{
+					id = TRUE;
+					text++;
+				} else if (*text == '-')
+					text++;
+			}
 			len = strlen (text);
 			if (text[0] == 1 && text[len - 1] == 1)	/* ctcp */
 			{
@@ -773,12 +807,12 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 				{
 					if (ignore_check (word[1], IG_CHAN))
 						return;
-					inbound_chanmsg (serv, NULL, to, nick, text, FALSE);
+					inbound_chanmsg (serv, NULL, to, nick, text, FALSE, id);
 				} else
 				{
 					if (ignore_check (word[1], IG_PRIV))
 						return;
-					inbound_privmsg (serv, nick, ip, text);
+					inbound_privmsg (serv, nick, ip, text, id);
 				}
 			}
 		}

@@ -536,6 +536,75 @@ setup_menu_cb (GtkWidget *item, const setting *set)
 	}
 }
 
+#if 0
+static const char *id_strings[] =
+{
+	"",
+	"*",
+	"%C4*%C18%B%B",
+	"%U"
+};
+
+static void
+setup_id_menu_cb (GtkWidget *item, char *dest)
+{
+	int n = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (item), "n"));
+
+	strcpy (dest, id_strings[n]);
+}
+
+static void
+setup_create_id_menu (GtkWidget *table, char *label, int row, char *dest)
+{
+	GtkWidget *wid, *menu, *item;
+	int i, def = 0;
+	static const char *text[] =
+	{
+		N_("(disabled)"),
+		N_("A star (*)"),
+		N_("A red star (*)"),
+		N_("Underlined")
+	};
+
+	wid = gtk_label_new (label);
+	gtk_misc_set_alignment (GTK_MISC (wid), 0.0, 0.5);
+	gtk_table_attach (GTK_TABLE (table), wid, 2, 3, row, row + 1,
+							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, LABEL_INDENT, 0);
+
+	wid = gtk_option_menu_new ();
+	menu = gtk_menu_new ();
+
+	for (i = 0; i < 4; i++)
+	{
+		if (strcmp (id_strings[i], dest) == 0)
+		{
+			def = i;
+			break;
+		}
+	}
+
+	i = 0;
+	while (text[i])
+	{
+		item = gtk_menu_item_new_with_label (_(text[i]));
+		g_object_set_data (G_OBJECT (item), "n", GINT_TO_POINTER (i));
+
+		gtk_widget_show (item);
+		gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+		g_signal_connect (G_OBJECT (item), "activate",
+								G_CALLBACK (setup_id_menu_cb), dest);
+		i++;
+	}
+
+	gtk_option_menu_set_menu (GTK_OPTION_MENU (wid), menu);
+	gtk_option_menu_set_history (GTK_OPTION_MENU (wid), def);
+
+	gtk_table_attach (GTK_TABLE (table), wid, 3, 4, row, row + 1,
+							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
+}
+
+#endif
+
 static void
 setup_create_menu (GtkWidget *table, int row, const setting *set)
 {
@@ -825,6 +894,16 @@ setup_create_page (const setting *set)
 		i++;
 		row++;
 	}
+
+#if 0
+	if (set == general_settings)
+	{
+		setup_create_id_menu (tab, _("Mark identified users with:"),	
+									 row, setup_prefs.irc_id_ytext);
+		setup_create_id_menu (tab, _("Mark not-identified users with:"),	
+									 row + 1, setup_prefs.irc_id_ntext);
+	}
+#endif
 
 #ifdef WIN32
 	if (set == logging_settings)
@@ -1311,6 +1390,7 @@ setup_create_sound_page (void)
 
 	gtk_label_set_mnemonic_widget (GTK_LABEL (label3), sndprog_entry);
 	gtk_label_set_mnemonic_widget (GTK_LABEL (label4), entry3);
+	setup_snd_row_cb (sel, NULL);
 
 	return vbox1;
 }
@@ -1543,6 +1623,10 @@ setup_apply (struct xchatprefs *pr)
 	if (DIFF (throttlemeter))
 		noapply = TRUE;
 	if (DIFF (showhostname_in_userlist))
+		noapply = TRUE;
+	if (DIFF (tab_small))
+		noapply = TRUE;
+	if (DIFF (tab_sort))
 		noapply = TRUE;
 
 	if (color_change || (DIFF (away_size_max)))

@@ -130,6 +130,8 @@ struct xchatprefs
 	char logmask[256];
 	char stamp_format[64];
 	char timestamp_log_format[64];
+	char irc_id_ytext[64];
+	char irc_id_ntext[64];
 
 	char proxy_host[64];
 	int proxy_port;
@@ -446,6 +448,8 @@ typedef struct server
 	int supports_watch:1;		/* supports the WATCH command */
 	int bad_prefix:1;				/* gave us a bad PREFIX= 005 number */
 	unsigned int have_whox:1;	/* have undernet's WHOX features */
+	unsigned int have_capab:1;	/* supports CAPAB (005 tells us) */
+	unsigned int have_idmsg:1;	/* freenode's IDENTIFY-MSG */
 	int use_who:1;				/* whether to use WHO command to get dcc_ip */
 #ifdef USE_OPENSSL
 	int use_ssl:1;					  /* is server SSL capable? */

@@ -516,7 +516,7 @@ dcc_chat_line (struct DCC *dcc, char *line, char *tbuf)
 		inbound_action (sess, dcc->serv->nick, dcc->nick, line + 8, FALSE);
 	} else
 	{
-		inbound_privmsg (dcc->serv, dcc->nick, "", line);
+		inbound_privmsg (dcc->serv, dcc->nick, "", line, FALSE);
 	}
 	if (utf)
 		g_free (utf);

@@ -135,9 +135,10 @@ find_session_from_nick (char *nick, server *serv)
 }
 
 void
-inbound_privmsg (server *serv, char *from, char *ip, char *text)
+inbound_privmsg (server *serv, char *from, char *ip, char *text, int id)
 {
 	session *sess;
+	char idtext[64];
 
 	sess = find_dialog (serv, from);
 
@@ -165,22 +166,32 @@ inbound_privmsg (server *serv, char *from, char *ip, char *text)
 			}
 			set_topic (sess, ip);
 		}
-		inbound_chanmsg (serv, NULL, NULL, from, text, FALSE);
+		inbound_chanmsg (serv, NULL, NULL, from, text, FALSE, id);
 		return;
 	}
+
+	if (id)
+	{
+		safe_strcpy (idtext, prefs.irc_id_ytext, sizeof (idtext));
+	} else
+	{
+		safe_strcpy (idtext, prefs.irc_id_ntext, sizeof (idtext));
+	}
+	/* convert codes like %C,%U to the proper ones */
+	check_special_chars (idtext, TRUE);
 
 	sess = find_session_from_nick (from, serv);
 	if (!sess)
 	{
 		sess = serv->front_session;
-		EMIT_SIGNAL (XP_TE_PRIVMSG, sess, from, text, NULL, NULL, 0);
+		EMIT_SIGNAL (XP_TE_PRIVMSG, sess, from, text, idtext, NULL, 0);
 		return;
 	}
 
 	if (sess->type == SESS_DIALOG)
-		EMIT_SIGNAL (XP_TE_DPRIVMSG, sess, from, text, NULL, NULL, 0);
+		EMIT_SIGNAL (XP_TE_DPRIVMSG, sess, from, text, idtext, NULL, 0);
 	else
-		EMIT_SIGNAL (XP_TE_PRIVMSG, sess, from, text, NULL, NULL, 0);
+		EMIT_SIGNAL (XP_TE_PRIVMSG, sess, from, text, idtext, NULL, 0);
 }
 
 static int
@@ -315,11 +326,13 @@ inbound_action (session *sess, char *chan, char *from, char *text, int fromme)
 }
 
 void
-inbound_chanmsg (server *serv, session *sess, char *chan, char *from, char *text, char fromme)
+inbound_chanmsg (server *serv, session *sess, char *chan, char *from, char *text, char fromme, int id)
 {
 	struct User *user;
 	int hilight = FALSE;
 	char nickchar[2] = "\000";
+	char idtext[64];
+	char *idtextptr = NULL;
 
 	if (!sess)
 	{
@@ -357,6 +370,16 @@ inbound_chanmsg (server *serv, session *sess, char *chan, char *from, char *text
 		return;
 	}
 
+	if (id)
+	{
+		safe_strcpy (idtext, prefs.irc_id_ytext, sizeof (idtext));
+	} else
+	{
+		safe_strcpy (idtext, prefs.irc_id_ntext, sizeof (idtext));
+	}
+	/* convert codes like %C,%U to the proper ones */
+	check_special_chars (idtext, TRUE);
+
 	if (sess->type != SESS_DIALOG)
 		if (prefs.beepchans || sess->beep)
 			fe_beep ();
@@ -368,17 +391,17 @@ inbound_chanmsg (server *serv, session *sess, char *chan, char *from, char *text
 			fe_beep ();
 	}
 	if (sess->type == SESS_DIALOG)
-		EMIT_SIGNAL (XP_TE_DPRIVMSG, sess, from, text, NULL, NULL, 0);
+		EMIT_SIGNAL (XP_TE_DPRIVMSG, sess, from, text, idtextptr, NULL, 0);
 	else if (hilight)
-		EMIT_SIGNAL (XP_TE_HCHANMSG, sess, from, text, nickchar, NULL, 0);
+		EMIT_SIGNAL (XP_TE_HCHANMSG, sess, from, text, nickchar, idtextptr, 0);
 	else if (prefs.colorednicks)
 	{
 		char tbuf[NICKLEN + 4];
 		snprintf (tbuf, sizeof (tbuf), "\003%d%s", color_of (from), from);
-		EMIT_SIGNAL (XP_TE_CHANMSG, sess, tbuf, text, nickchar, NULL, 0);
+		EMIT_SIGNAL (XP_TE_CHANMSG, sess, tbuf, text, nickchar, idtextptr, 0);
 	}
 	else
-		EMIT_SIGNAL (XP_TE_CHANMSG, sess, from, text, nickchar, NULL, 0);
+		EMIT_SIGNAL (XP_TE_CHANMSG, sess, from, text, nickchar, idtextptr, 0);
 }
 
 void
@@ -799,7 +822,7 @@ find_session_from_type (int type, server *serv)
 }
 
 void
-inbound_notice (server *serv, char *to, char *nick, char *msg, char *ip)
+inbound_notice (server *serv, char *to, char *nick, char *msg, char *ip, int id)
 {
 	char *po,*ptr=to;
 	session *sess = 0;

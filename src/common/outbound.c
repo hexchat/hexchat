@@ -2035,7 +2035,7 @@ cmd_msg (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 				newsess = find_channel (sess->server, nick);
 			if (newsess)
 				inbound_chanmsg (newsess->server, NULL, newsess->channel,
-									  newsess->server->nick, msg, TRUE);
+									  newsess->server->nick, msg, TRUE, FALSE);
 			else
 			{
 				/* mask out passwords */
@@ -2572,7 +2572,7 @@ cmd_wallchan (struct session *sess, char *tbuf, char *word[],
 			if (sess->type == SESS_CHANNEL)
 			{
 				inbound_chanmsg (sess->server, NULL, sess->channel,
-									  sess->server->nick, word_eol[2], TRUE);
+									  sess->server->nick, word_eol[2], TRUE, FALSE);
 				sess->server->p_message (sess->server, sess->channel, word_eol[2]);
 			}
 			list = list->next;
@@ -3222,7 +3222,7 @@ handle_say (session *sess, char *text, int check_spch)
 		if (dcc)
 		{
 			inbound_chanmsg (sess->server, NULL, sess->channel,
-								  sess->server->nick, text, TRUE);
+								  sess->server->nick, text, TRUE, FALSE);
 			set_topic (sess, net_ip (dcc->addr));
 			goto xit;
 		}
@@ -3266,7 +3266,7 @@ handle_say (session *sess, char *text, int check_spch)
 		}
 
 		inbound_chanmsg (sess->server, sess, sess->channel, sess->server->nick,
-							  text, TRUE);
+							  text, TRUE, FALSE);
 		sess->server->p_message (sess->server, sess->channel, text);
 
 		if (t)
