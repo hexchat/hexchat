@@ -1,5 +1,5 @@
 
-EXTRA_DIST=dp_misc.pl ignore.pl sample_script.pl xchat-perl18.html makefile.msc
+EXTRA_DIST=dp_misc.pl ignore.pl sample_script.pl xchat2-perldocs.html makefile.msc
 
 libdir = $(xchatlibdir)/plugins
 

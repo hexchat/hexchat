@@ -1,0 +1,496 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html><head><title>XChat - IRC (chat) client for UNIX</title>
+<style type="text/css">
+body{font-family:sans-serif;background-color:#FFFBF0;}
+:link{color:#00C;}
+:visited{color:#609;}
+:active{color:#C00;}
+.date{background-color:#dddddd;font-family:terminal;font-size:small;}
+th,td{font-family:sans-serif;}
+h2{font-family:sans-serif;color:#990066;}
+</style></head>
+
+<body>
+
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
+<tbody><tr>
+
+<td align="center" valign="top">
+
+<table width="90%" cellpadding="0" cellspacing="0" border="0">
+<tbody><tr>
+
+<td align="left" valign="top">
+<blockquote>
+<h2>Xchat Perl Docs</h2>
+
+<p>
+<table width="95%" cellpadding="0" cellspacing="3" border="0" align="center">
+<tbody><tr><td bgcolor="#000000">
+<table width="100%" cellpadding="2" cellspacing="1" border="0"><tbody><tr>
+<td width="20%" align="left" bgcolor="#dddddd">
+<font face="Lucida, Helvetica, Arial" color="#990066;">
+Introduction
+</font></td>
+</tr></tbody></table>
+</td></tr></tbody></table>
+</p>
+
+<blockquote>
+<p>Good Hello!</p>
+<p>The purpose of this page is to give people some quick documentation on the
+things that they will encounter when they try to code scripts for X-Chat.
+It is <strong>not</strong> meant to be a comprehensive programming tutorial,
+by any means.  If that's what you're looking for, then you can just keep on
+looking.</p>
+<p>If you're going to do any scripting with X-Chat at all, you will
+need to know perl.  It also won't hurt to have had experience writing tcl for
+eggdrops or ircII scripts.  Otherwise you're going to have to be very careful
+to avoid creating conditions which could flood you offline or do other
+not-so-optimal things.  ;)  Thankfully, it shouldn't take most intelligent
+people more than a week (month on the outside) enough perl to do some nice
+things in it.
+<a HREF="http://www.perl.com">Perl</a> is a very flexible language.</p>
+<p>You should probably also go read (or at least skim over and then carefully
+bookmark this copy of the thing that defines how IRC works: <a HREF="http://www.irchelp.org/irchelp/rfc1459.html">RFC 1459</a>.
+Other documents that scripters might find useful would be this
+<a HREF="http://www.irchelp.org/irchelp/ircd/numerics.html">nice list of server
+numerics</a>, and this list of <a HREF="http://www.irchelp.org/irchelp/ircd/hybrid6.html">changes
+for Hybrid 6</a> which is something everyone on EFNet should read.  In fact, I
+<strong>strongly</strong> suggest saving copies of these documents to your local
+hard drive, because you <i>will</i> be back to look at them again soon.</p>
+<p>One last thing...  While you may hear that RFC 1459 isn't being followed very
+well, and this is partly true, do your absolute best to stick with RFC-compliant
+behaviours anyway because otherwise there's a good chance that your script will
+never interoperate properly with others, or at least just piss off a lot of other
+people.  <i>Pay special attention to section 2.2 of the RFC.</i></p>
+</blockquote>
+
+<p>
+<table ALIGN=CENTER WIDTH="75%" CELLPADDING=5 CELLSPACING=0><tr><td ALIGN=CENTER BGCOLOR="#FF7070"><font COLOR="#FFFFFF" FACE="Verdana, Helvetica, Arial, Sans"><b>Standard Disclaimer</b></font></td></tr><td BGCOLOR="#FFCECE" ALIGN=CENTER><font COLOR="#800000" FACE="Helvetica, Lucida, Arial, Sans">This documentation is provided on an "as-is" basis and comes with no warranty of accuracy or usefulness, either expressed or implied.  It is subject to change without any notice, and may contain omissions or errors which could cause your genitalia to shrivel and fall off, or spontaneously combust.  If you have any further questions,<br>please feel free to seek professional help.</font></td></tr></table>
+</p>
+
+<p>
+<table width="95%" cellpadding="0" cellspacing="3" border="0" align="center">
+<tbody><tr><td bgcolor="#000000">
+<table width="100%" cellpadding="2" cellspacing="1" border="0"><tbody><tr>
+<td width="20%" align="left" bgcolor="#dddddd">
+<font face="Lucida, Helvetica, Arial" color="#990066;">
+About Handlers
+</font></td>
+</tr></tbody></table>
+</td></tr></tbody></table>
+</p>
+
+<blockquote>
+There are [currently] four basic ways to make things call the subroutines you write for X-Chat and they are:
+<ul><li>message handlers - Triggered by messagse sent from the IRC server to your client</li>
+<li>command handlers - triggered by / commands typed in by the user at the keyboard</li>
+<li>timeout handlers - triggered by gtk+</li>
+<li>print handlers - triggered just before xchat calls its built in print handlers for events</li></ul>
+</blockquote>
+
+<p>
+<table width="95%" cellpadding="0" cellspacing="3" border="0" align="center">
+<tbody><tr><td bgcolor="#000000">
+<table width="100%" cellpadding="2" cellspacing="1" border="0"><tbody><tr>
+<td width="20%" align="left" bgcolor="#dddddd">
+<font face="Lucida, Helvetica, Arial" color="#990066;">
+About Exit Codes
+</font></td>
+</tr></tbody></table>
+</td></tr></tbody></table>
+</p>
+
+<blockquote>
+These are very important. Every time you set up a handler, it takes precedent over the built-in functions and commands of X-Chat. That is, whatever thing which triggered your subroutine will go to your code before it goes to X-Chat to be dealt with. In this way you can replace almost every built-in function that the client has with your own routines. The thing to remember is that if your code exits by hitting the end of your subroutine, or by a plain 'return' statement, processing of the event will go on to whatever other things have set up hooks for the event, and then (provided nothing else exits with a return value of 1) to X-Chat itself. There is only one problem with this, (which is solved by the brokering handler that I'll explain that later) and that is that you cannot really control what order the custom routines get called. Normally they will execute in order of which ones were installed first, but a single script has no real way of knowing this. Beware.
+</blockquote>
+
+<p>
+<table width="95%" cellpadding="0" cellspacing="3" border="0" align="center">
+<tbody><tr><td bgcolor="#000000">
+<table width="100%" cellpadding="2" cellspacing="1" border="0"><tbody><tr>
+<td width="20%" align="left" bgcolor="#dddddd">
+<font face="Lucida, Helvetica, Arial" color="#990066;">
+About @_
+</font></td>
+</tr></tbody></table>
+</td></tr></tbody></table>
+</p>
+
+<blockquote>
+If you've never heard of @_ before, then you've obviously not coded in perl. When a message handler triggers, the raw line from the IRC server is passed to the subroutine you specify in @_. When a command handler is triggered, only the arguments are passed to the routine through @_ and they are not broken into a list, but left as one long string. You'll have to parse those yourself with split. (I advise using s/\s+/ /g to collapse the blank space to single space first.) When a timer handler is triggered, I *think* absolutely nothing is passed in @_, but it's not like anything terrifically important could be passed along anyway. Be especially careful when setting up message handlers for mode changes, since the modes are not broken up into individual events like they are with eggdrop. The upside of this is that X-Chat has no mode hooks of it's own, so you don't have to worry about it too much. (This is not the case with the brokering handler, however.)
+</blockquote>
+
+<p>
+<table width="95%" cellpadding="0" cellspacing="3" border="0" align="center">
+<tbody><tr><td bgcolor="#000000">
+<table width="100%" cellpadding="2" cellspacing="1" border="0"><tbody><tr>
+<td width="20%" align="left" bgcolor="#dddddd">
+<font face="Lucida, Helvetica, Arial" color="#990066;">
+About Context
+</font></td>
+</tr></tbody></table>
+</td></tr></tbody></table>
+</p>
+
+<blockquote>
+There are some really nice things about coding for X-Chat, and the biggest one is that it's fairly good about determining the proper context for things. If a server sends something that triggers a message handler, then you can be sure that unless you specify otherwise, that your IRC::print or IRC::command function call will go back to that server and that server alone. If you really really need to know what the current context is, use the IRC::get_info function as detailed below.
+</blockquote>
+
+<hr width=95%>
+
+<p>
+<table width="95%" cellpadding="0" cellspacing="3" border="0" align="center">
+<tbody><tr><td bgcolor="#000000">
+<table width="100%" cellpadding="2" cellspacing="1" border="0"><tbody><tr>
+<td width="20%" align="left" bgcolor="#dddddd">
+<font face="Lucida, Helvetica, Arial" color="#990066;">
+script initialization commands
+</font></td>
+</tr></tbody></table>
+</td></tr></tbody></table>
+</p>
+
+<table width="95%" cellpadding="0" cellspacing="3" border="0" align="center">
+<tbody><tr><td bgcolor="#000000">
+<table width="100%" cellpadding="2" cellspacing="1" border="0"><tbody><tr>
+<td width="20%" align="left" bgcolor="#dddddd">
+<font face="Lucida, Helvetica, Arial">
+IRC::register(scriptname, version, shutdownroutine, unused); 
+</font></td>
+</tr></tbody></table>
+</td></tr></tbody></table>
+
+<blockquote>
+<p>This is the first function your script should call, example:</p>
+<blockquote><p>IRC::register ("my script", "1.0", "", "");</p></blockquote>
+<p>The "shutdownroutine" arg is a function that will be called when X-Chat shuts down, so you get a chance to save config files etc. You can omit this arg, it is optional. The "unused" arg is reserved for future use, for now just provide "". This function also returns X-Chat's version number. </p>
+</blockquote>
+
+<p>
+<table width="95%" cellpadding="0" cellspacing="3" border="0" align="center">
+<tbody><tr><td bgcolor="#000000">
+<table width="100%" cellpadding="2" cellspacing="1" border="0"><tbody><tr>
+<td width="20%" align="left" bgcolor="#dddddd">
+<font face="Lucida, Helvetica, Arial" color="#990066;">
+Handler initialization commands
+</font></td>
+</tr></tbody></table>
+</td></tr></tbody></table>
+</p>
+
+<table width="95%" cellpadding="0" cellspacing="3" border="0" align="center">
+<tbody><tr><td bgcolor="#000000">
+<table width="100%" cellpadding="2" cellspacing="1" border="0"><tbody><tr>
+<td width="20%" align="left" bgcolor="#dddddd">
+<font face="Lucida, Helvetica, Arial">
+IRC::add_message_handler(message, subroutine_name);
+</font></td>
+</tr></tbody></table>
+</td></tr></tbody></table>
+
+<blockquote>
+<p>This function allows you to set up hooks to subroutines so that when a particular message arrives from the IRC server that you are connected to, it can be passed to a subroutine to be dealt with appropriately. The message argument is essentially the second solid token from the raw line sent by the IRC server, and X-Chat doesn't know that some numeric messages have associated text messages, so for now set up a handler for both if you want to be sure odd servers don't screw up your expectations. (Read: fear IRCNet.) The entire line sent by the IRC server will be passed to your subroutine in @_. For the completely uninitiated, messages are things like 'PRIVMSG', 'NOTICE', '372', etc.</p>
+</blockquote>
+
+<table width="95%" cellpadding="0" cellspacing="3" border="0" align="center">
+<tbody><tr><td bgcolor="#000000">
+<table width="100%" cellpadding="2" cellspacing="1" border="0"><tbody><tr>
+<td width="20%" align="left" bgcolor="#dddddd">
+<font face="Lucida, Helvetica, Arial">
+IRC::add_command_handler(command, subroutine_name);
+</font></td>
+</tr></tbody></table>
+</td></tr></tbody></table>
+
+<blockquote>
+<p>This function allows you to set up hooks for actual commands that the user can type into the text window. The arguments are passed to the subroutine via @_, and arrive as a single string. @_ will be null if no arguments are supplied. It's recommended that you be sure and collapse the excess whitespace with s/\s+/ /g before attempting to chop the line up with split. As mentioned earlier, exiting with an undefined return value will allow the command to be parsed by other handlers, while using a return value of 1 will signal the program that no further parsing needs to be done with this command.</p>
+</blockquote>
+
+<table width="95%" cellpadding="0" cellspacing="3" border="0" align="center">
+<tbody><tr><td bgcolor="#000000">
+<table width="100%" cellpadding="2" cellspacing="1" border="0"><tbody><tr>
+<td width="20%" align="left" bgcolor="#dddddd">
+<font face="Lucida, Helvetica, Arial">
+IRC::add_timeout_handler(interval, subroutine_name);
+</font></td>
+</tr></tbody></table>
+</td></tr></tbody></table>
+
+<blockquote>
+<p>This function allows you to set up hooks for subroutines to be called at a particular interval. The interval is measured in milliseconds, so don't use a particularly small value unless you wish to drive the CPU load through the roof. 1000ms = 1 second. No values will be passed to the routine via @_ and return values don't affect anything either.</p>
+</blockquote>
+
+<table width="95%" cellpadding="0" cellspacing="3" border="0" align="center">
+<tbody><tr><td bgcolor="#000000">
+<table width="100%" cellpadding="2" cellspacing="1" border="0"><tbody><tr>
+<td width="20%" align="left" bgcolor="#dddddd">
+<font face="Lucida, Helvetica, Arial">
+IRC::add_print_handler(message, subroutine_name);
+</font></td>
+</tr></tbody></table>
+</td></tr></tbody></table>
+
+<blockquote>
+<p>This function allows you to catch the system messages (those who generally start by three stars) and to execute a function each time an event appear. The events are those you can see in "Settings->Edit Events Texts". message is the name of the event (you can find it in the Edit Events box, "Events" column) , subroutine_name is the name of the function that will get messages. Be carrful: all the arguments are sent to function in $_[0] separated by spaces. </p>
+</blockquote>
+
+<p>
+<table width="95%" cellpadding="0" cellspacing="3" border="0" align="center">
+<tbody><tr><td bgcolor="#000000">
+<table width="100%" cellpadding="2" cellspacing="1" border="0"><tbody><tr>
+<td width="20%" align="left" bgcolor="#dddddd">
+<font face="Lucida, Helvetica, Arial" color="#990066;">
+Output commands
+</font></td>
+</tr></tbody></table>
+</td></tr></tbody></table>
+</p>
+
+<table width="95%" cellpadding="0" cellspacing="3" border="0" align="center">
+<tbody><tr><td bgcolor="#000000">
+<table width="100%" cellpadding="2" cellspacing="1" border="0"><tbody><tr>
+<td width="20%" align="left" bgcolor="#dddddd">
+<font face="Lucida, Helvetica, Arial">
+IRC::print(text);
+</font></td>
+</tr></tbody></table>
+</td></tr></tbody></table>
+
+<blockquote>
+This is a very simple routine. All it does is put the contents of the text string to the current window. The current window will be whichever window a command was typed into when called from a command handler, or in whichever window the message command is appropriate to if it is called from within a message handler. As with any perl program, newlines are not assumed, so don't forget to end the line with \n if you don't want things to look screwey.
+</blockquote>
+
+<table width="95%" cellpadding="0" cellspacing="3" border="0" align="center">
+<tbody><tr><td bgcolor="#000000">
+<table width="100%" cellpadding="2" cellspacing="1" border="0"><tbody><tr>
+<td width="20%" align="left" bgcolor="#dddddd">
+<font face="Lucida, Helvetica, Arial">
+IRC::print_with_channel( text, channelname, servername );
+</font></td>
+</tr></tbody></table>
+</td></tr></tbody></table>
+
+<blockquote>
+This routine does the same thing as IRC::Print does, except it allows you to direct the output to a specific window. It returns 1 on success, 0 on fail.
+</blockquote>
+
+<table width="95%" cellpadding="0" cellspacing="3" border="0" align="center">
+<tbody><tr><td bgcolor="#000000">
+<table width="100%" cellpadding="2" cellspacing="1" border="0"><tbody><tr>
+<td width="20%" align="left" bgcolor="#dddddd">
+<font face="Lucida, Helvetica, Arial">
+IRC::command(text);
+</font></td>
+</tr></tbody></table>
+</td></tr></tbody></table>
+
+<blockquote>
+This routine allows you to execute commands in the current context. The text string containing the command will be parsed by everything that would normally parse a command, including your own command handlers, so be careful. Newlines are assumed, thankfully.
+</blockquote>
+
+<table width="95%" cellpadding="0" cellspacing="3" border="0" align="center">
+<tbody><tr><td bgcolor="#000000">
+<table width="100%" cellpadding="2" cellspacing="1" border="0"><tbody><tr>
+<td width="20%" align="left" bgcolor="#dddddd">
+<font face="Lucida, Helvetica, Arial">
+IRC::command_with_server(text, servername);
+</font></td>
+</tr></tbody></table>
+</td></tr></tbody></table>
+
+<blockquote>
+This routine allows you to specify the context of the server for which the command will be executed. It's not particularly useful unless you're managing a connection manually, yet the command still exists for it's usefulness in doing things like managing a bnc connection, etc. Newlines are assumed here as well.
+</blockquote>
+
+<table width="95%" cellpadding="0" cellspacing="3" border="0" align="center">
+<tbody><tr><td bgcolor="#000000">
+<table width="100%" cellpadding="2" cellspacing="1" border="0"><tbody><tr>
+<td width="20%" align="left" bgcolor="#dddddd">
+<font face="Lucida, Helvetica, Arial">
+IRC::send_raw(text);
+</font></td>
+</tr></tbody></table>
+</td></tr></tbody></table>
+
+<blockquote>
+This routine is very useful in that it allows you to send a string directly to the IRC server you are connected to. It is assumed that the server will be the one you first connected to if there is no clear context for the command, otherwise it will go to whatever server triggered the message handler or command handler window. You must specify newlines here always or you can be guaranteed that strange things will happen. The text message you specify should be a proper RAW IRC message, so don't play with it if you don't know how to do these. Additionally, while newlines are also not assumed here as with the IRC::print function, the RFC specifies that newlines are a CR+LF pair, even if most servers will accept a mere newline. It's best to play it safe and use \r\n instead of just \n.
+</blockquote>
+
+<p>
+<table width="95%" cellpadding="0" cellspacing="3" border="0" align="center">
+<tbody><tr><td bgcolor="#000000">
+<table width="100%" cellpadding="2" cellspacing="1" border="0"><tbody><tr>
+<td width="20%" align="left" bgcolor="#dddddd">
+<font face="Lucida, Helvetica, Arial" color="#990066;">
+Information retrieval commands
+</font></td>
+</tr></tbody></table>
+</td></tr></tbody></table>
+</p>
+
+<table width="95%" cellpadding="0" cellspacing="3" border="0" align="center">
+<tbody><tr><td bgcolor="#000000">
+<table width="100%" cellpadding="2" cellspacing="1" border="0"><tbody><tr>
+<td width="20%" align="left" bgcolor="#dddddd">
+<font face="Lucida, Helvetica, Arial">
+IRC::get_info(integer);
+</font></td>
+</tr></tbody></table>
+</td></tr></tbody></table>
+
+<blockquote>
+This function returns a bit of selected information depending on what the value of the integer is.
+Here's a list of the currently supported values:
+<ul><li>0 - xchat version</li>
+<li>1 - your nickname</li>
+<li>2 - channel</li>
+<li>3 - server</li>
+<li>4 - xchatdir</li>
+<li>5 - away status</li>
+<li>6 - network name</li>
+<li>7 - server hostname</li>
+<li>8 - channel topic</li></ul>
+<p>If you are requesting information that isn't available in the current context, then it will return null.</p>
+<p>Any numbers other than the above will return an error message.</p>
+</blockquote>
+
+<table width="95%" cellpadding="0" cellspacing="3" border="0" align="center">
+<tbody><tr><td bgcolor="#000000">
+<table width="100%" cellpadding="2" cellspacing="1" border="0"><tbody><tr>
+<td width="20%" align="left" bgcolor="#dddddd">
+<font face="Lucida, Helvetica, Arial">
+IRC::get_prefs(var);
+</font></td>
+</tr></tbody></table>
+</td></tr></tbody></table>
+
+<blockquote>
+This command lets you read the preferences that are set in the xchat configuration file. Just look at the xchat.conf dir to see what variables are available to use with this command. Returns the value of the variable requested or "Unknown Variable" if the variable isn't available.
+</blockquote>
+
+<table width="95%" cellpadding="0" cellspacing="3" border="0" align="center">
+<tbody><tr><td bgcolor="#000000">
+<table width="100%" cellpadding="2" cellspacing="1" border="0"><tbody><tr>
+<td width="20%" align="left" bgcolor="#dddddd">
+<font face="Lucida, Helvetica, Arial">
+IRC::user_info( nickname );
+</font></td>
+</tr></tbody></table>
+</td></tr></tbody></table>
+
+<blockquote>
+Returns a flat list of information on the nickname specified consisting of... nickname, nick host, and whether they have op or voice in the current context.
+</blockquote>
+
+<table width="95%" cellpadding="0" cellspacing="3" border="0" align="center">
+<tbody><tr><td bgcolor="#000000">
+<table width="100%" cellpadding="2" cellspacing="1" border="0"><tbody><tr>
+<td width="20%" align="left" bgcolor="#dddddd">
+<font face="Lucida, Helvetica, Arial">
+IRC::channel_list( );
+</font></td>
+</tr></tbody></table>
+</td></tr></tbody></table>
+
+<blockquote>
+This command returns a flat list which contains the current channel, server, and nickname for all channels the client is currently in. You'll have to break the list up into groups of three yourself. No arguments are necessary, or used [currently].
+</blockquote>
+
+<table width="95%" cellpadding="0" cellspacing="3" border="0" align="center">
+<tbody><tr><td bgcolor="#000000">
+<table width="100%" cellpadding="2" cellspacing="1" border="0"><tbody><tr>
+<td width="20%" align="left" bgcolor="#dddddd">
+<font face="Lucida, Helvetica, Arial">
+IRC::server_list( );
+</font></td>
+</tr></tbody></table>
+</td></tr></tbody></table>
+
+<blockquote>
+This command returns a flat list of servers. (Note, it is incompatible with xchat 1.8 in that it also returns a list of servers you are NOT connected to as well.)
+</blockquote>
+
+<table width="95%" cellpadding="0" cellspacing="3" border="0" align="center">
+<tbody><tr><td bgcolor="#000000">
+<table width="100%" cellpadding="2" cellspacing="1" border="0"><tbody><tr>
+<td width="20%" align="left" bgcolor="#dddddd">
+<font face="Lucida, Helvetica, Arial">
+IRC::user_list(channel, server);
+</font></td>
+</tr></tbody></table>
+</td></tr></tbody></table>
+
+<blockquote>
+<p>Works very much like the dcc_list command below, except that is returns information about the users on the channel provided as first argument. The second argument is the server and is optional.</p>
+<p>NOTE: If a user has both op and voice, only the op flag will be set to 1 by this command in xchat2.</p>
+</blockquote>
+
+<table width="95%" cellpadding="0" cellspacing="3" border="0" align="center">
+<tbody><tr><td bgcolor="#000000">
+<table width="100%" cellpadding="2" cellspacing="1" border="0"><tbody><tr>
+<td width="20%" align="left" bgcolor="#dddddd">
+<font face="Lucida, Helvetica, Arial">
+IRC::user_list_short(channel, server);
+</font></td>
+</tr></tbody></table>
+</td></tr></tbody></table>
+
+<blockquote>
+<p>A simpler version of IRC::user_list that returns pairs of nick & user@host suitable for assigning to a hash.</p>
+<p>NOTE: If a user has both op and voice, only the op flag will be set to 1 by this command in xchat2.</p>
+</blockquote>
+
+<table width="95%" cellpadding="0" cellspacing="3" border="0" align="center">
+<tbody><tr><td bgcolor="#000000">
+<table width="100%" cellpadding="2" cellspacing="1" border="0"><tbody><tr>
+<td width="20%" align="left" bgcolor="#dddddd">
+<font face="Lucida, Helvetica, Arial">
+IRC::dcc_list( );
+</font></td>
+</tr></tbody></table>
+</td></tr></tbody></table>
+
+<blockquote>
+This command does essentially the same thing as channel_list, giving you the details of each DCC connection currently in progress. I have no idea exactly what is returned because I haven't had a chance to poke at this one much, but suffice it to say that it's a flat list, and the first time you play with it the meaning of the returned values should be pretty obvious.
+</blockquote>
+
+<table width="95%" cellpadding="0" cellspacing="3" border="0" align="center">
+<tbody><tr><td bgcolor="#000000">
+<table width="100%" cellpadding="2" cellspacing="1" border="0"><tbody><tr>
+<td width="20%" align="left" bgcolor="#dddddd">
+<font face="Lucida, Helvetica, Arial">
+IRC::ignore_list( );
+</font></td>
+</tr></tbody></table>
+</td></tr></tbody></table>
+
+<blockquote>
+This command returns a flat list of the contents of your ignore list. You'll have to play with it a little as I have not had a chance to yet. Works basically the same as the other list commands.
+</blockquote>
+
+<p>
+<table width="95%" cellpadding="0" cellspacing="3" border="0" align="center">
+<tbody><tr><td bgcolor="#000000">
+<table width="100%" cellpadding="2" cellspacing="1" border="0"><tbody><tr>
+<td width="20%" align="left" bgcolor="#dddddd">
+<font face="Lucida, Helvetica, Arial" color="#990066;">
+Unimplemented commands that were available in xchat 1.8.x
+</font></td>
+</tr></tbody></table>
+</td></tr></tbody></table>
+</p>
+
+<blockquote>
+add_user_list , sub_user_list , clear_user_list, notify_list were available in xchat 1.8.x but are not implemented in xchat 2 at this time.
+</blockquote>
+
+</blockquote>
+</td>
+</tr>
+</tbody></table>
+<br><hr>
+<font size="-10">This document originally written by Dagmar d'Surreal on March 26th, 1998 for xchat 1.4<br>
+Updated on July 30th, 1999 by Peter Zelezny<br>
+Updated on May 16th, 2003 by DaNumber8 to comply with the perl plugin for xchat2 version 2.0.3</font>
+</body></html>
