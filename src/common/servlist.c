@@ -57,9 +57,8 @@ static const struct defaultserver def[] =
 
 	{"AfterNET",	0},
 	{0,			"irc.afternet.org"},
-	{0,			"ic5.eu.afternet.org"},
-	{0,			"baltimore.md.us.afternet.org"},
-	{0,			"boston.afternet.org"},
+	{0,			"us.afternet.org"},
+	{0,			"eu.afternet.org"},
 
 	{"Aitvaras",	0},
 #ifdef USE_IPV6

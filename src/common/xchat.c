@@ -65,6 +65,7 @@ GSList *dcc_list = 0;
 GSList *ignore_list = 0;
 GSList *usermenu_list = 0;
 GSList *urlhandler_list = 0;
+GSList *tabmenu_list = 0;
 static GSList *away_list = 0;
 
 static int in_xchat_exit = FALSE;
@@ -1006,6 +1007,7 @@ xchat_init (void)
 				_("Clear"));
 	list_loadconf ("dlgbuttons.conf", &dlgbutton_list, buf);
 
+	list_loadconf ("tabmenu.conf", &tabmenu_list, NULL);
 	list_loadconf ("ctcpreply.conf", &ctcp_list, defaultconf_ctcp);
 	list_loadconf ("commands.conf", &command_list, defaultconf_commands);
 	list_loadconf ("replace.conf", &replace_list, defaultconf_replace);

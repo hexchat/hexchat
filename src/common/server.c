@@ -628,7 +628,7 @@ ssl_do_connect (server * serv)
 		}
 
 		chiper_info = _SSL_get_cipher_info (serv->ssl);	/* static buffer */
-		snprintf (buf, sizeof (buf), "* Chiper info:");
+		snprintf (buf, sizeof (buf), "* Cipher info:");
 		EMIT_SIGNAL (XP_TE_SERVTEXT, serv->server_session, buf, NULL, NULL, NULL,
 						 0);
 		snprintf (buf, sizeof (buf), "  Version: %s, cipher %s (%u bits)",
@@ -648,6 +648,7 @@ ssl_do_connect (server * serv)
 		case X509_V_ERR_UNABLE_TO_VERIFY_LEAF_SIGNATURE:
 		case X509_V_ERR_DEPTH_ZERO_SELF_SIGNED_CERT:
 		case X509_V_ERR_SELF_SIGNED_CERT_IN_CHAIN:
+		case X509_V_ERR_CERT_HAS_EXPIRED:
 			if (serv->accept_invalid_cert)
 			{
 				snprintf (buf, sizeof (buf), "* Verify E: %s.? (%d) -- Ignored",

@@ -76,6 +76,8 @@ list_loadconf (char *file, GSList ** list, char *defaultconf)
 	fh = open (filebuf, O_RDONLY | OFLAGS);
 	if (fh == -1)
 	{
+		if (!defaultconf)
+			return;
 		fh = open (filebuf, O_TRUNC | O_WRONLY | O_CREAT | OFLAGS, 0600);
 		if (fh != -1)
 		{

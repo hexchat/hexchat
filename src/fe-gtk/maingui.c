@@ -1084,6 +1084,9 @@ mg_tab_press_cb (GtkWidget *wid, GdkEventButton *event, session *sess)
 	gtk_menu_item_set_submenu (GTK_MENU_ITEM (item), submenu);
 	gtk_widget_show (item);
 
+	if (sess && tabmenu_list)
+		menu_create (menu, tabmenu_list, sess->channel, FALSE);
+
 	g_signal_connect (G_OBJECT (menu), "selection-done",
 							G_CALLBACK (mg_menu_destroy), menu);
 	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL, 0, event->time);

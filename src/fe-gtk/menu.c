@@ -397,7 +397,7 @@ is_in_path (char *cmd)
 
 /* append items to "menu" using the (struct popup*) list provided */
 
-static void
+void
 menu_create (GtkWidget *menu, GSList *list, char *target, int check_path)
 {
 	struct popup *pop;

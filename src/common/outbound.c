@@ -2663,7 +2663,7 @@ const struct commands xc_cmds[] = {
 	 N_("LAGCHECK, forces a new lag check")},
 	{"LASTLOG", cmd_lastlog, 0, 0,
 	 N_("LASTLOG <string>, searches for a string in the buffer")},
-	{"LIST", cmd_list, 1, 0, ""},
+	{"LIST", cmd_list, 1, 0, 0},
 	{"LOAD", cmd_load, 0, 0, N_("LOAD <file>, loads a plugin or script")},
 
 	{"MDEHOP", cmd_mdehop, 1, 1,
@@ -2727,7 +2727,7 @@ const struct commands xc_cmds[] = {
 	 N_("SERVER <host> [<port>] [<password>], connects to a server, the default port is 6667")},
 #endif
 	{"SET", cmd_set, 0, 0, N_("SET <variable> [<value>]")},
-	{"SETTAB", cmd_settab, 0, 0, ""},
+	{"SETTAB", cmd_settab, 0, 0, 0},
 	{"TOPIC", cmd_topic, 1, 1,
 	 N_("TOPIC [<topic>], sets the topic if one is given, else shows the current topic")},
 	{"UNBAN", cmd_unban, 1, 1,

@@ -20,6 +20,7 @@ extern GSList *dcc_list;
 extern GSList *ignore_list;
 extern GSList *usermenu_list;
 extern GSList *urlhandler_list;
+extern GSList *tabmenu_list;
 
 session * find_channel (server *serv, char *chan);
 session * find_dialog (server *serv, char *nick);
