@@ -38,7 +38,7 @@ margin-right: 32px;
 <h1>XChat 2.0 Plugin Interface</h1>
 
 <small>
-<font size="-12">plugin20.html revision 1.03</font>
+<font size="-12">plugin20.html revision 1.04</font>
 <br>Latest version of this document is available at: <a href="http://xchat.org/docs/plugin20.html">http://xchat.org/docs/plugin20.html</a></small>
 
 <h2>Information:</h2>
@@ -657,6 +657,7 @@ xchat_send_modes(ph, names_to_Op, 3, 0, '+', 'o');
 	<tr><td width="18%">away</td><td>away reason or NULL if you are not away.</td></tr>
 	<tr><td>channel</td><td>current channel name.</td></tr>
 	<tr><td>host</td><td>real hostname of the server you connected to.</td></tr>
+	<tr><td>inputbox</td><td>the input-box contents (what the user has typed).</td></tr>
 	<tr><td>libdirfs</td><td>library directory. e.g. /usr/lib/xchat. The same directory used for auto-loading plugins (since 2.4.0).<small>This string isn't necessarily UTF-8, but local file system encoding.</small></td></tr>
 	<tr><td>network</td><td>current network name or NULL.</td></tr>
 	<tr><td>nick</td><td>your current nick name.</td></tr>

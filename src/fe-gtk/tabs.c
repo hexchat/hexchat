@@ -266,6 +266,18 @@ tab_pressed_cb (GtkToggleButton *tab, GtkWidget *group)
 	}
 }
 
+static gboolean
+tab_scroll_cb (GtkWidget *widget, GdkEventScroll *event, gpointer group)
+{
+	/* mouse wheel scrolling */
+	if (event->direction == GDK_SCROLL_UP)
+		tab_scroll_left_up_clicked (widget, group);
+	else if (event->direction == GDK_SCROLL_DOWN)
+		tab_scroll_right_down_clicked (widget, group);
+
+	return FALSE;
+}
+
 GtkWidget *
 tab_group_new (void *callback, void *compare, gboolean vertical, gboolean sorted)
 {
@@ -313,6 +325,8 @@ tab_group_new (void *callback, void *compare, gboolean vertical, gboolean sorted
 	gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
 	g_signal_connect (G_OBJECT (button), "clicked",
 							G_CALLBACK (tab_scroll_right_down_clicked), group);
+	g_signal_connect (G_OBJECT (button), "scroll_event",
+							G_CALLBACK (tab_scroll_cb), group);
 	gtk_box_pack_end (GTK_BOX (group), button, 0, 0, 0);
 	gtk_widget_show (arrow);
 
@@ -324,6 +338,8 @@ tab_group_new (void *callback, void *compare, gboolean vertical, gboolean sorted
 	gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
 	g_signal_connect (G_OBJECT (button), "clicked",
 							G_CALLBACK (tab_scroll_left_up_clicked), group);
+	g_signal_connect (G_OBJECT (button), "scroll_event",
+							G_CALLBACK (tab_scroll_cb), group);
 	gtk_box_pack_end (GTK_BOX (group), button, 0, 0, 0);
 	gtk_widget_show (arrow);
 

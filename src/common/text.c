@@ -1751,7 +1751,7 @@ sound_load ()
 		return;
 
 	evt[0] = 0;
-	while (waitline (fd, buf, sizeof buf) != -1)
+	while (waitline (fd, buf, sizeof buf, FALSE) != -1)
 	{
 		if (strncmp (buf, "event=", 6) == 0)
 		{

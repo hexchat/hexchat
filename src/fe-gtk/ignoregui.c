@@ -384,7 +384,7 @@ ignore_gui_open ()
 						 _("Add"));
 	gtkutil_button (box, GTK_STOCK_CLOSE, 0, ignore_delete_entry_clicked,
 						 0, _("Delete"));
-	gtkutil_button (box, GTK_STOCK_CLOSE, 0, ignore_clear_entry_clicked,
+	gtkutil_button (box, GTK_STOCK_CLEAR, 0, ignore_clear_entry_clicked,
 						 0, _("Clear"));
 
 	store = GTK_LIST_STORE (gtk_tree_view_get_model (GTK_TREE_VIEW (view)));

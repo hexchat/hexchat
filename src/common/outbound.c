@@ -2282,6 +2282,22 @@ cmd_say (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 }
 
 static int
+cmd_setcursor (struct session *sess, char *tbuf, char *word[], char *word_eol[])
+{
+	int delta = FALSE;
+
+	if (*word[2])
+	{
+		if (word[2][0] == '-' || word[2][0] == '+')
+			delta = TRUE;
+		fe_set_inputbox_cursor (sess, delta, atoi (word[2]));
+		return TRUE;
+	}
+
+	return FALSE;
+}
+
+static int
 cmd_settab (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	if (*word_eol[2])
@@ -2293,6 +2309,18 @@ cmd_settab (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	}
 
 	return TRUE;
+}
+
+static int
+cmd_settext (struct session *sess, char *tbuf, char *word[], char *word_eol[])
+{
+	if (*word_eol[2])
+	{
+		fe_set_inputbox_contents (sess, word_eol[2]);
+		return TRUE;
+	}
+
+	return FALSE;
 }
 
 static int
@@ -2767,7 +2795,9 @@ const struct commands xc_cmds[] = {
 	 N_("SERVER <host> [<port>] [<password>], connects to a server, the default port is 6667")},
 #endif
 	{"SET", cmd_set, 0, 0, N_("SET [-quiet] <variable> [<value>]")},
+	{"SETCURSOR", cmd_setcursor, 0, 0, N_("SETCURSOR [-|+]<position>")},
 	{"SETTAB", cmd_settab, 0, 0, 0},
+	{"SETTEXT", cmd_settext, 0, 0, 0},
 	{"TOPIC", cmd_topic, 1, 1,
 	 N_("TOPIC [<topic>], sets the topic if one is given, else shows the current topic")},
 	{"UNBAN", cmd_unban, 1, 1,

@@ -43,6 +43,7 @@
 #include "util.h"
 #include "../../config.h"
 
+#define WANTSOCKET
 #include "inet.h"
 
 #if defined (USING_FREEBSD) || defined (__APPLE__)
@@ -357,14 +358,21 @@ errorstring (int err)
 }
 
 int
-waitline (int sok, char *buf, int bufsize)
+waitline (int sok, char *buf, int bufsize, int use_recv)
 {
 	int i = 0;
 
 	while (1)
 	{
-		if (read (sok, &buf[i], 1) < 1)
-			return -1;
+		if (use_recv)
+		{
+			if (recv (sok, &buf[i], 1, 0) < 1)
+				return -1;
+		} else
+		{
+			if (read (sok, &buf[i], 1) < 1)
+				return -1;
+		}
 		if (buf[i] == '\n' || bufsize == i + 1)
 		{
 			buf[i] = 0;
@@ -481,7 +489,7 @@ get_cpu_info (double *mhz, int *cpus)
 
 	while (1)
 	{
-		if (waitline (fh, buf, sizeof buf) < 0)
+		if (waitline (fh, buf, sizeof buf, FALSE) < 0)
 			break;
 		if (!strncmp (buf, "cycle frequency [Hz]\t:", 22))	/* alpha */
 		{

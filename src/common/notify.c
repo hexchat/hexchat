@@ -97,7 +97,7 @@ notify_load (void)
 	fh = open (buf, O_RDONLY | OFLAGS);
 	if (fh != -1)
 	{
-		while (waitline (fh, buf, sizeof buf) != -1)
+		while (waitline (fh, buf, sizeof buf, FALSE) != -1)
 		{
 			if (buf[0] != '#' && buf[0] != 0)
 				notify_adduser (buf);

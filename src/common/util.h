@@ -33,7 +33,7 @@ char *get_cpu_str (void);
 int util_exec (char *cmd);
 char *strip_color (char *text);
 char *errorstring (int err);
-int waitline (int sok, char *buf, int bufsize);
+int waitline (int sok, char *buf, int bufsize, int);
 unsigned long make_ping_time (void);
 void download_move_to_completed_dir (char *dcc_dir, char *dcc_completed_dir, char *output_name, int dccpermissions);
 int mkdir_utf8 (char *dir);

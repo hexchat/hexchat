@@ -737,3 +737,42 @@ fe_gui_info (session *sess, int info_type)
 
 	return -1;
 }
+
+char *
+fe_get_inputbox_contents (session *sess)
+{
+	/* not the current tab */
+	if (sess->res->input_text)
+		return sess->res->input_text;
+
+	/* current focused tab */
+	return GTK_ENTRY (sess->gui->input_box)->text;
+}
+
+void
+fe_set_inputbox_cursor (session *sess, int delta, int pos)
+{
+	if (!sess->gui->is_tab || sess == current_tab)
+	{
+		if (delta)
+			pos += gtk_editable_get_position (GTK_EDITABLE (sess->gui->input_box));
+		gtk_editable_set_position (GTK_EDITABLE (sess->gui->input_box), pos);
+	} else
+	{
+		/* we don't support changing non-front tabs yet */
+	}
+}
+
+void
+fe_set_inputbox_contents (session *sess, char *text)
+{
+	if (!sess->gui->is_tab || sess == current_tab)
+	{
+		gtk_entry_set_text (GTK_ENTRY (sess->gui->input_box), text);
+	} else
+	{
+		if (sess->res->topic_text)
+			free (sess->res->topic_text);
+		sess->res->topic_text = strdup (text);
+	}
+}
