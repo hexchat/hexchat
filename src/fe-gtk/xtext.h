@@ -62,7 +62,8 @@ typedef struct {
 	unsigned int scrollbar_down:1;
 	unsigned int needs_recalc:1;
 	unsigned int grid_dirty:1;
-	unsigned int marker_drawn:1;
+	unsigned int marker_seen:1;
+	unsigned int reset_marker_pos:1;
 } xtext_buffer;
 
 struct _GtkXText
@@ -216,7 +217,8 @@ void gtk_xtext_clear (xtext_buffer *buf);
 void gtk_xtext_save (GtkXText * xtext, int fh);
 void gtk_xtext_refresh (GtkXText * xtext, int do_trans);
 void *gtk_xtext_search (GtkXText * xtext, const unsigned char *text, void *start);
-void gtk_xtext_clear_marker_pos (GtkXText *xtext);
+void gtk_xtext_reset_marker_pos (GtkXText *xtext);
+void gtk_xtext_check_marker_visibility(GtkXText *xtext);
 
 gboolean gtk_xtext_is_empty (xtext_buffer *buf);
 typedef void (*GtkXTextForeach) (GtkXText *xtext, unsigned char *text, void *data);

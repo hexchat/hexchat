@@ -923,7 +923,7 @@ menu_search ()
 static void
 menu_resetmarker (GtkWidget * wid, gpointer none)
 {
-	gtk_xtext_clear_marker_pos (GTK_XTEXT (current_sess->gui->xtext));
+	gtk_xtext_reset_marker_pos (GTK_XTEXT (current_sess->gui->xtext));
 }
 
 static void

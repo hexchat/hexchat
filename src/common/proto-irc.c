@@ -164,6 +164,14 @@ irc_user_list (server *serv, char *channel)
 	tcp_sendf (serv, "WHO %s\r\n", channel);
 }
 
+/* userhost */
+
+static void
+irc_userhost (server *serv, char *nick)
+{
+	tcp_sendf (serv, "USERHOST %s\r\n", nick);
+}
+
 static void
 irc_away_status (server *serv, char *channel)
 {
@@ -308,11 +316,11 @@ process_numeric (session * sess, int n,
 		if ((strncmp(word[7], "PTnet", 5) == 0) &&
 			(strncmp(word[8], "IRC", 3) == 0) &&
 			(strncmp(word[9], "Network", 7) == 0) &&
-			(strchr(word[10], '@') != NULL))
+			(strrchr(word[10], '@') != NULL))
 		{
 			serv->use_who = FALSE;
 			if (prefs.ip_from_server)
-				inbound_foundip (sess, strchr(word[10], '@')+1);
+				inbound_foundip (sess, strrchr(word[10], '@')+1);
 		}
 		goto def;
 
@@ -345,6 +353,25 @@ process_numeric (session * sess, int n,
 		inbound_away (serv, word[4],
 						(word_eol[5][0] == ':') ? word_eol[5] + 1 : word_eol[5]);
 		break;
+
+	case 302:
+		if (serv->skip_next_userhost)
+		{
+			char *eq = strchr (word[4], '=');
+			if (eq)
+			{
+				*eq = 0;
+				if (!serv->p_cmp (word[4] + 1, serv->nick))
+				{
+					char *at = strrchr (eq + 1, '@');
+					if (at)
+						inbound_foundip (sess, at + 1);
+				}
+			}
+
+			serv->skip_next_userhost = FALSE;
+		}
+		else goto def;
 
 	case 303:
 		word[4]++;
@@ -495,7 +522,6 @@ process_numeric (session * sess, int n,
 		break;
 
 	case 352:						  /* WHO */
-		if (!serv->skip_next_who)
 		{
 			unsigned int away = 0;
 			session *who_sess = find_channel (serv, word[4]);
@@ -510,10 +536,6 @@ process_numeric (session * sess, int n,
 			if (!who_sess || !who_sess->doing_who)
 				EMIT_SIGNAL (XP_TE_SERVTEXT, serv->server_session, text, word[1],
 								 NULL, NULL, 0);
-		} else
-		{
-			if (!serv->p_cmp (word[8], serv->nick))
-				inbound_foundip (sess, word[6]);
 		}
 		break;
 
@@ -543,10 +565,6 @@ process_numeric (session * sess, int n,
 		break;
 
 	case 315:						  /* END OF WHO */
-		if (serv->skip_next_who)
-		{
-			serv->skip_next_who = FALSE;
-		} else
 		{
 			session *who_sess;
 			who_sess = find_channel (serv, word[4]);
@@ -945,6 +963,7 @@ proto_fill_her_up (server *serv)
 	/*serv->p_get_ip = irc_get_ip;*/
 	serv->p_whois = irc_user_whois;
 	serv->p_get_ip = irc_user_list;
+	serv->p_get_ip_uh = irc_userhost;
 	serv->p_set_back = irc_set_back;
 	serv->p_set_away = irc_set_away;
 	serv->p_message = irc_message;

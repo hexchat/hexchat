@@ -715,8 +715,6 @@ dcc_read (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 							 dcc->file, dcc->destfile, dcc->nick, buf, 0);
 			return TRUE;
 		}
-
-		dcc_calc_cps (dcc);
 	}
 }
 
@@ -908,7 +906,6 @@ abortit:
 	{
 		dcc->pos += sent;
 		dcc->lasttime = time (0);
-		dcc_calc_cps (dcc);
 	}
 
 	/* have we sent it all yet? */

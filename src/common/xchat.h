@@ -353,6 +353,7 @@ typedef struct server
 	void (*p_away_status)(struct server *, char *channel);
 	void (*p_whois)(struct server *, char *nicks);
 	void (*p_get_ip)(struct server *, char *nick);
+	void (*p_get_ip_uh)(struct server *, char *nick);
 	void (*p_set_back)(struct server *);
 	void (*p_set_away)(struct server *, char *reason);
 	void (*p_message)(struct server *, char *channel, char *text);
@@ -430,7 +431,7 @@ typedef struct server
 	unsigned int connected:1;
 	unsigned int connecting:1;
 	int no_login:1;
-	int skip_next_who:1;			/* used for "get my ip from server" */
+	int skip_next_userhost:1;			/* used for "get my ip from server" */
 	int inside_whois:1;
 	int doing_dns:1;				/* /dns has been done */
 	unsigned int end_of_motd:1;	/* end of motd reached (logged in) */

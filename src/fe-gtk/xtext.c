@@ -1231,7 +1231,7 @@ gtk_xtext_draw_marker (GtkXText * xtext, textentry * ent, int y)
 	if (GTK_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (xtext)))->has_focus)
 #endif
 	{
-		xtext->buffer->marker_drawn = 1;
+		xtext->buffer->marker_seen = TRUE;
 	}
 }
 
@@ -4578,6 +4578,32 @@ gtk_xtext_render_page_timeout (GtkXText * xtext)
 	return 0;
 }
 
+void
+gtk_xtext_check_marker_visibility(GtkXText * xtext)
+{
+	textentry *ent;
+	int lines_max;
+	int line = 0;
+	int width;
+	int height;
+	
+	gdk_drawable_get_size (GTK_WIDGET (xtext)->window, &width, &height);
+	
+	lines_max = ((height + xtext->pixel_offset) / xtext->fontsize) + 1;
+	ent = xtext->buffer->pagetop_ent;
+	
+	while (ent && line < lines_max)
+	{
+		if (xtext->buffer->marker_pos == ent)
+		{
+			xtext->buffer->marker_seen = TRUE;
+			return;
+		}
+		line += ent->lines_taken;
+		ent = ent->next;
+	}
+}
+
 /* append a textentry to our linked list */
 
 static void
@@ -4618,19 +4644,18 @@ gtk_xtext_append_entry (xtext_buffer *buf, textentry * ent)
 	ent->lines_taken = gtk_xtext_lines_taken (buf, ent);
 	buf->num_lines += ent->lines_taken;
 
-	if (buf->marker_pos == NULL || buf->marker_drawn)
-	{
-		if (buf->xtext->buffer != buf ||
+	if (buf->reset_marker_pos || 
+		((buf->marker_pos == NULL || buf->marker_seen) && (buf->xtext->buffer != buf || 
 #if GTK_CHECK_VERSION(2,4,0)
-		!gtk_window_has_toplevel_focus (GTK_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (buf->xtext)))))
+		!gtk_window_has_toplevel_focus (GTK_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (buf->xtext)))))))
 #else
-		!(GTK_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (buf->xtext)))->has_focus))
+		!(GTK_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (buf->xtext))))->has_focus)))
 #endif
-		{
-			buf->marker_pos = ent;
-			dontscroll (buf); /* force scrolling off */
-			buf->marker_drawn = 0;
-		}
+	{
+		buf->marker_pos = ent;
+		dontscroll (buf); /* force scrolling off */
+		buf->marker_seen = FALSE;
+		buf->reset_marker_pos = FALSE;
 	}
 
 	if (buf->xtext->max_lines > 2 && buf->xtext->max_lines < buf->num_lines)
@@ -4846,11 +4871,12 @@ gtk_xtext_set_wordwrap (GtkXText *xtext, gboolean wordwrap)
 }
 
 void
-gtk_xtext_clear_marker_pos (GtkXText *xtext)
+gtk_xtext_reset_marker_pos (GtkXText *xtext)
 {
 	xtext->buffer->marker_pos = NULL;
 	dontscroll (xtext->buffer); /* force scrolling off */
 	gtk_xtext_render_page (xtext);
+	xtext->buffer->reset_marker_pos = TRUE;
 }
 
 void

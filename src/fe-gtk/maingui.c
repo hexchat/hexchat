@@ -2127,6 +2127,7 @@ static gboolean
 mg_tabwin_focus_cb (GtkWindow * win, GdkEventFocus *event, gpointer userdata)
 {
 	current_sess = current_tab;
+	gtk_xtext_check_marker_visibility(GTK_XTEXT (current_sess->gui->xtext));
 	plugin_emit_dummy_print (current_sess, "Focus Window");
 	return FALSE;
 }
@@ -2137,6 +2138,7 @@ mg_topwin_focus_cb (GtkWindow * win, GdkEventFocus *event, session *sess)
 	current_sess = sess;
 	if (!sess->server->server_session)
 		sess->server->server_session = sess;
+	gtk_xtext_check_marker_visibility(GTK_XTEXT (current_sess->gui->xtext));
 	plugin_emit_dummy_print (sess, "Focus Window");
 	return FALSE;
 }
