@@ -15,7 +15,11 @@
  *                                                                         *
  ***************************************************************************/
 
-#define VERSION "1.0.9"
+#define VERSION "1.0.10"
+
+#ifdef WIN32
+#define strcasecmp stricmp
+#endif
 
 #include <stdio.h>
 #include <stdlib.h>
