@@ -359,9 +359,9 @@ log_open_file (char *servname, char *channame, char *netname)
 
 	log_create_filename (buf, servname, channame, netname);
 #ifdef WIN32
-	fd = open (buf, O_CREAT | O_APPEND | O_WRONLY | OFLAGS, S_IREAD|S_IWRITE);
+	fd = open (buf, O_CREAT | O_APPEND | O_WRONLY, S_IREAD|S_IWRITE);
 #else
-	fd = open (buf, O_CREAT | O_APPEND | O_WRONLY | OFLAGS, 0644);
+	fd = open (buf, O_CREAT | O_APPEND | O_WRONLY, 0644);
 #endif
 	if (fd == -1)
 		return -1;

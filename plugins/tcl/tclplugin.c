@@ -23,11 +23,7 @@
 #include <time.h>
 #include <limits.h>
 #include <ctype.h>
-#ifndef WIN32
-#include <glob.h>
-#else
 #include <dirent.h>
-#endif
 #include <tcl.h>
 #include <tclDecls.h>
 #include <sys/stat.h>
@@ -67,59 +63,31 @@ static char unknown[] = { "proc ::unknown {args} {\n \
 
 static void SourceScriptFiles(char *dirname)
 {
-#ifdef WIN32	/* Windows doesn't have glob() */
-	DIR *dir;
-	struct dirent *ent;
-	int len;
+    DIR *dir;
+    struct dirent *ent;
+    int len;
 
-	dir = opendir(dirname);
+    dir = opendir(dirname);
 
-	if (dir) {
-		while ((ent = readdir(dir))) {
-			len = strlen(ent->d_name);
-			if (len > 4 && strcasecmp(".tcl", ent->d_name + len - 4) == 0) {
-				char *file = malloc (len + strlen(dirname) + 2);
-				sprintf(file, "%s/%s", dirname, ent->d_name);
+    if (dir) {
+        while ((ent = readdir(dir))) {
+            len = strlen(ent->d_name);
+            if (len > 4 && strcasecmp(".tcl", ent->d_name + len - 4) == 0) {
 
-            if(Tcl_EvalFile(interp, file) == TCL_ERROR)
-                xchat_printf(ph, "\0039Tcl plugin:\003\tError sourcing: %s (%s)\n", file, Tcl_GetStringResult(interp));
-            else
-                xchat_printf(ph, "\0039Tcl plugin:\003\tSourced %s\n", file);
+                char *file = Tcl_Alloc(len + strlen(dirname) + 2);
+                sprintf(file, "%s/%s", dirname, ent->d_name);
 
-				free(file);
-			}
-		}
+                if (Tcl_EvalFile(interp, file) == TCL_ERROR)
+                    xchat_printf(ph, "\0039Tcl plugin:\003\tError sourcing: %s (%s)\n", file, Tcl_GetStringResult(interp));
+                else
+                    xchat_printf(ph, "\0039Tcl plugin:\003\tSourced %s\n", file);
 
-		closedir(dir);
-	}
-#else
-    glob_t paths;
-    int idx;
-    Tcl_DString ds;
-
-    Tcl_DStringInit(&ds);
-
-    Tcl_DStringAppend(&ds, dirname, strlen(dirname));
-    Tcl_DStringAppend(&ds, "/*.tcl", 6);
-
-    paths.gl_pathc = 0;
-    paths.gl_pathv = NULL;
-    paths.gl_offs = 0;
-
-    if (glob(ds.string, GLOB_NOCHECK, NULL, &paths) == 0) {
-        for (idx = 0; idx < paths.gl_pathc; idx++) {
-            if (Tcl_EvalFile(interp, paths.gl_pathv[idx]) == TCL_ERROR)
-                xchat_printf(ph, "\0039Tcl plugin:\003\tError sourcing: %s (%s)\n", paths.gl_pathv[idx], Tcl_GetStringResult(interp));
-            else
-                xchat_printf(ph, "\0039Tcl plugin:\003\tSourced %s\n", paths.gl_pathv[idx]);
+                Tcl_Free(file);
+            }
         }
-        globfree(&paths);
+
+        closedir(dir);
     }
-
-    Tcl_DStringFree(&ds);
-
-    return;
-#endif
 }
 
 static char *StrDup(char *string, int *length)

@@ -1,5 +1,5 @@
 
-EXTRA_DIST=makefile.msc printevents.h tclplugin.h
+EXTRA_DIST=makefile.msc printevents.h tclplugin.h README
 
 libdir = $(xchatlibdir)/plugins
 

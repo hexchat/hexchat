@@ -138,7 +138,7 @@ unamepath = @unamepath@
 xchatlibdir = @xchatlibdir@
 xchatsharedir = @xchatsharedir@
 
-EXTRA_DIST = makefile.msc printevents.h tclplugin.h
+EXTRA_DIST = makefile.msc printevents.h tclplugin.h README
 
 lib_LTLIBRARIES = tcl.la
 tcl_la_SOURCES = tclplugin.c
@@ -172,7 +172,7 @@ LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
 CFLAGS = @CFLAGS@
 DIST_SOURCES = $(tcl_la_SOURCES)
-DIST_COMMON = Makefile.am Makefile.in
+DIST_COMMON = README Makefile.am Makefile.in
 SOURCES = $(tcl_la_SOURCES)
 
 all: all-am
