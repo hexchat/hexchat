@@ -502,6 +502,7 @@ Callback_ThreadTimer(void *userdata)
 
 /* We keep this information global, so we can reset it when the
  * deinit function is called. */
+/* XXX This should be somehow bound to the printing context. */
 static char *xchatout_buffer = NULL;
 static int xchatout_buffer_size = 0;
 static int xchatout_buffer_pos = 0;
@@ -528,20 +529,25 @@ XChatOut_dealloc(PyObject *self)
 static PyObject *
 XChatOut_write(PyObject *self, PyObject *args)
 {
-	int new_buffer_pos, data_size, print_limit;
+	int new_buffer_pos, data_size, print_limit, add_space;
 	char *data, *pos;
 	if (!PyArg_ParseTuple(args, "s#:write", &data, &data_size))
 		return NULL;
-	((XChatOutObject *)self)->softspace = 0;
 	BEGIN_XCHAT_CALLS();
 	RESTORE_CONTEXT();
-	if (xchatout_buffer_size-xchatout_buffer_pos < data_size) {
+	if (((XChatOutObject *)self)->softspace) {
+		add_space = 1;
+		((XChatOutObject *)self)->softspace = 0;
+	} else {
+		add_space = 0;
+	}
+	if (xchatout_buffer_size-xchatout_buffer_pos < data_size+add_space) {
 		char *new_buffer;
 		/* This buffer grows whenever needed, and does not
 		 * shrink. If we ever implement unloading of the
 		 * python interface, we must find some way to free
 		 * this buffer as well. */
-		xchatout_buffer_size += data_size*2;
+		xchatout_buffer_size += data_size*2+16;
 		new_buffer = g_realloc(xchatout_buffer, xchatout_buffer_size);
 		if (new_buffer == NULL) {
 			xchat_print(ph, "Not enough memory to print");
@@ -561,6 +567,11 @@ XChatOut_write(PyObject *self, PyObject *args)
 	memcpy(xchatout_buffer+xchatout_buffer_pos, data, data_size);
 	print_limit = new_buffer_pos = xchatout_buffer_pos+data_size;
 	pos = xchatout_buffer+print_limit;
+	if (add_space) {
+		*pos = ' ';
+		*(pos+1) = 0;
+		new_buffer_pos++;
+	}
 	while (*pos != '\n' && print_limit > xchatout_buffer_pos) {
 		pos--;
 		print_limit--;
@@ -568,11 +579,16 @@ XChatOut_write(PyObject *self, PyObject *args)
 	if (*pos == '\n') {
 		/* Crop it, inserting the string limiter there. */
 		*pos = 0;
-		print_limit += 1; /* Include the limiter. */
-		xchatout_buffer_pos = new_buffer_pos-print_limit;
-		memmove(xchatout_buffer, xchatout_buffer+print_limit,
-			xchatout_buffer_pos);
 		xchat_print(ph, xchatout_buffer);
+		if (print_limit < new_buffer_pos) {
+			/* There's still data to be printed. */
+			print_limit += 1; /* Include the limiter. */
+			xchatout_buffer_pos = new_buffer_pos-print_limit;
+			memmove(xchatout_buffer, xchatout_buffer+print_limit,
+				xchatout_buffer_pos);
+		} else {
+			xchatout_buffer_pos = 0;
+		}
 	} else {
 		xchatout_buffer_pos = new_buffer_pos;
 	}
