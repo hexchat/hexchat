@@ -1302,7 +1302,7 @@ static struct mymenu mymenu[] = {
 	{N_("S_ettings"), 0, 0, M_NEWMENU, 0, 1},	/* 33 */
 	{N_("Preferences..."), menu_settings, GTK_STOCK_PREFERENCES, M_MENUSTOCK, 0, 1},
 
-	{N_("Lists"), 0, GTK_STOCK_JUSTIFY_LEFT, M_MENUSUB, 0, 1},
+	{N_("Advanced"), 0, GTK_STOCK_JUSTIFY_LEFT, M_MENUSUB, 0, 1},
 	{N_("Auto Replace..."), menu_rpopup, 0, M_MENU, 0, 1},
 	{N_("CTCP Replies..."), menu_ctcpguiopen, 0, M_MENU, 0, 1},
 	{N_("Dialog Buttons..."), menu_dlgbuttons, 0, M_MENU, 0, 1},

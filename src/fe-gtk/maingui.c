@@ -106,9 +106,9 @@ mg_create_tab_colors (void)
 		pango_attr_list_unref (nickseen_list);
 	}
 
-	newdata_list = mg_attr_list_create (&colors[20]);
-	nickseen_list = mg_attr_list_create (&colors[21]);
-	newmsg_list = mg_attr_list_create (&colors[22]);
+	newdata_list = mg_attr_list_create (&colors[COL_NEW_DATA]);
+	nickseen_list = mg_attr_list_create (&colors[COL_HILIGHT]);
+	newmsg_list = mg_attr_list_create (&colors[COL_NEW_MSG]);
 
 	if (!plain_list)
 		plain_list = pango_attr_list_new ();
@@ -1548,8 +1548,8 @@ mg_limit_entry_cb (GtkWidget * igad, gpointer userdata)
 static void
 mg_apply_entry_style (GtkWidget *entry)
 {
-	gtk_widget_modify_base (entry, GTK_STATE_NORMAL, &colors[19]);
-	gtk_widget_modify_text (entry, GTK_STATE_NORMAL, &colors[18]);
+	gtk_widget_modify_base (entry, GTK_STATE_NORMAL, &colors[COL_BG]);
+	gtk_widget_modify_text (entry, GTK_STATE_NORMAL, &colors[COL_FG]);
 	gtk_widget_modify_font (entry, input_style->font_desc);
 }
 
@@ -1922,7 +1922,7 @@ mg_create_userlist (session_gui *gui, GtkWidget *box, int pack)
 	if (prefs.style_namelistgad)
 	{
 		gtk_widget_set_style (ulist, input_style);
-		gtk_widget_modify_base (ulist, GTK_STATE_NORMAL, &colors[19]);
+		gtk_widget_modify_base (ulist, GTK_STATE_NORMAL, &colors[COL_BG]);
 	}
 
 	mg_create_meters (gui, vbox);

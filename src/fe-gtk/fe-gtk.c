@@ -240,14 +240,14 @@ create_input_style (void)
 	if (prefs.style_inputbox && !done_rc)
 	{
 		done_rc = TRUE;
-		sprintf (buf, cursor_color_rc, (colors[18].red >> 8),
-			(colors[18].green >> 8), (colors[18].blue >> 8));
+		sprintf (buf, cursor_color_rc, (colors[COL_FG].red >> 8),
+			(colors[COL_FG].green >> 8), (colors[COL_FG].blue >> 8));
 		gtk_rc_parse_string (buf);
 	}
 
-	style->bg[GTK_STATE_NORMAL] = colors[18];
-	style->base[GTK_STATE_NORMAL] = colors[19];
-	style->text[GTK_STATE_NORMAL] = colors[18];
+	style->bg[GTK_STATE_NORMAL] = colors[COL_FG];
+	style->base[GTK_STATE_NORMAL] = colors[COL_BG];
+	style->text[GTK_STATE_NORMAL] = colors[COL_FG];
 
 	return style;
 }

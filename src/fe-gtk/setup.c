@@ -47,6 +47,7 @@
 
 GtkStyle *create_input_style (void);
 
+#define LABEL_INDENT 6
 
 static int last_selected_page = 0;
 static gboolean color_change;
@@ -56,6 +57,7 @@ enum
 {
 	ST_END,
 	ST_TOGGLE,
+	ST_TOGGLR,
 	ST_ENTRY,
 	ST_EFONT,
 	ST_EFILE,
@@ -64,7 +66,7 @@ enum
 	ST_RADIO,
 	ST_NUMBER,
 	ST_HSCALE,
-	ST_FRAME,
+	ST_HEADER,
 	ST_LABEL
 };
 
@@ -81,32 +83,46 @@ typedef struct
 
 static const setting textbox_settings[] =
 {
+	{ST_HEADER,	N_("Text Box Appearance"),0,0,0},
 	{ST_EFONT,  N_("Font:"), P_OFFSETNL(font_normal), 0, 0, sizeof prefs.font_normal},
 	{ST_EFILE,  N_("Background image:"), P_OFFSETNL(background), 0, 0, sizeof prefs.background},
+	{ST_NUMBER,	N_("Scrollback lines:"), P_OFFINTNL(max_lines),0,0,100000},
+	{ST_TOGGLE, N_("Transparent background"), P_OFFINTNL(transparent),0,0,0},
+	{ST_TOGGLR, N_("Indent nick names"), P_OFFINTNL(indent_nicks),
+					N_("Make nick names right-justified"),0,0},
+	{ST_TOGGLE, N_("Tint (shade) transparency"), P_OFFINTNL(tint),0,0,0},
+	{ST_TOGGLR, N_("Colored nick names"), P_OFFINTNL(colorednicks),
+					N_("Give each person on IRC a different color"),0,0},
+	{ST_TOGGLE, N_("Strip mIRC colors"), P_OFFINTNL(stripcolor),0,0,0},
+	{ST_TOGGLR, N_("Show marker line"), P_OFFINTNL(show_marker),
+					N_("Insert a red line after the last read text."),0,0},
+	{ST_HEADER, N_("Tint Settings"), 0,0,0},
+	{ST_HSCALE, N_("Red:"), P_OFFINTNL(tint_red),0,0,0},
+	{ST_HSCALE, N_("Green:"), P_OFFINTNL(tint_green),0,0,0},
+	{ST_HSCALE, N_("Blue:"), P_OFFINTNL(tint_blue),0,0,0},
+
+	{ST_HEADER,	N_("Time Stamps"),0,0,0},
 	{ST_ENTRY,  N_("Time stamp format:"), P_OFFSETNL(stamp_format),
 					N_("See strftime manpage for details."),0,sizeof prefs.stamp_format},
-	{ST_TOGGLE, N_("Time stamp text"), P_OFFINTNL(timestamp),0,0,0},
-	{ST_TOGGLE, N_("Transparent background"), P_OFFINTNL(transparent),0,0,0},
-	{ST_TOGGLE, N_("Indent nicks"), P_OFFINTNL(indent_nicks),0,0,0},
-	{ST_TOGGLE, N_("Tint transparency"), P_OFFINTNL(tint),0,0,0},
-	{ST_TOGGLE, N_("Colored nicks"), P_OFFINTNL(colorednicks),0,0,0},
-	{ST_TOGGLE, N_("Strip mIRC color"), P_OFFINTNL(stripcolor),0,0,0},
-	{ST_TOGGLE, N_("Show marker line"), P_OFFINTNL(show_marker),
-					N_("Insert a red line after the last read text."),0,0},
-	{ST_NUMBER,	N_("Scrollback lines:"), P_OFFINTNL(max_lines),0,0,100000},
-	{ST_HSCALE, N_("Tint red:"), P_OFFINTNL(tint_red),0,0,0},
-	{ST_HSCALE, N_("Tint green:"), P_OFFINTNL(tint_green),0,0,0},
-	{ST_HSCALE, N_("Tint blue:"), P_OFFINTNL(tint_blue),0,0,0},
+	{ST_TOGGLE, N_("Enable Time stamps"), P_OFFINTNL(timestamp),0,0,0},
+
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
 static const setting inputbox_settings[] =
 {
+	{ST_HEADER, N_("Nick Completion"),0,0,0},
+	{ST_TOGGLE, N_("Automatic nick completion"), P_OFFINTNL(nickcompletion),
+					N_("Completes nick names without using the TAB key"),0,0},
+	{ST_ENTRY,	N_("Nick completion suffix:"), P_OFFSETNL(nick_suffix),0,0,sizeof prefs.nick_suffix},
+
+	{ST_HEADER, N_("Input Box Codes"),0,0,0},
 	{ST_TOGGLE, N_("Interpret %nnn as an ASCII value"), P_OFFINTNL(perc_ascii),0,0,0},
-	{ST_TOGGLE, N_("Automatic nick completion"), P_OFFINTNL(nickcompletion),0,0,0},
 	{ST_TOGGLE, N_("Interpret %C, %B as Color, Bold etc"), P_OFFINTNL(perc_color),0,0,0},
+
+	{ST_HEADER, N_("Input Box Appearance"),0,0,0},
 	{ST_TOGGLE, N_("Use the Text box font and colors"), P_OFFINTNL(style_inputbox),0,0,0},
-	{ST_ENTRY, N_("Nick completion suffix:"), P_OFFSETNL(nick_suffix),0,0,sizeof prefs.nick_suffix},
+
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
@@ -131,15 +147,21 @@ static char *ulmenutext[] =
 
 static const setting userlist_settings[] =
 {
+	{ST_HEADER,	N_("User List"),0,0,0},
+	{ST_MENU,	N_("User list sorted by:"), P_OFFINTNL(userlist_sort), 0, ulmenutext, 0},
+	{ST_TOGGLE, N_("Show hostnames in user list"), P_OFFINTNL(showhostname_in_userlist), 0, 0, 0},
+	{ST_TOGGLE, N_("User list buttons enabled"), P_OFFINTNL(userlistbuttons), 0, 0, 0},
+	{ST_TOGGLE, N_("Use the Text box font and colors"), P_OFFINTNL(style_namelistgad),0,0,0},
+	{ST_TOGGLE, N_("Resizable user list"), P_OFFINTNL(paned_userlist),0,0,0},
+	{ST_NUMBER, N_("Track away-status on channels smaller than:"), P_OFFINTNL(away_size_max),0,0,10000},
+
+	{ST_HEADER,	N_("Action Upon Double Click"),0,0,0},
+	{ST_ENTRY,	N_("Execute command:"), P_OFFSETNL(doubleclickuser), 0, 0, sizeof prefs.doubleclickuser},
+
+	{ST_HEADER,	N_("Extra Gadgets"),0,0,0},
 	{ST_MENU,	N_("Lag meter:"), P_OFFINTNL(lagometer), 0, lagmenutext, 0},
 	{ST_MENU,	N_("Throttle meter:"), P_OFFINTNL(throttlemeter), 0, lagmenutext, 0},
-	{ST_MENU,	N_("Userlist sorted by:"), P_OFFINTNL(userlist_sort), 0, ulmenutext, 0},
-	{ST_ENTRY,	N_("Double-click command:"), P_OFFSETNL(doubleclickuser), 0, 0, sizeof prefs.doubleclickuser},
-	{ST_TOGGLE, N_("Show hostnames in userlist"), P_OFFINTNL(showhostname_in_userlist), 0, 0, 0},
-	{ST_TOGGLE, N_("Userlist buttons enabled"), P_OFFINTNL(userlistbuttons), 0, 0, 0},
-	{ST_TOGGLE, N_("Use the Text box font and colors"), P_OFFINTNL(style_namelistgad),0,0,0},
-	{ST_TOGGLE, N_("Resizable userlist"), P_OFFINTNL(paned_userlist),0,0,0},
-	{ST_NUMBER, N_("Track away-status on channels smaller than:"), P_OFFINTNL(away_size_max),0,0,10000},
+
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
@@ -162,79 +184,109 @@ static char *tabpos[] =
 
 static const setting tabs_settings[] =
 {
+	{ST_HEADER,	N_("Tabs"),0,0,0},
+	{ST_TOGGLE, N_("Open an extra tab for server messages"), P_OFFINTNL(use_server_tab), 0, 0, 0},
+	{ST_TOGGLE, N_("Open an extra tab for server notices"), P_OFFINTNL(notices_tabs), 0, 0, 0},
+	{ST_TOGGLE, N_("Pop new tabs to front"), P_OFFINTNL(newtabstofront), 0, 0, 0},
+	{ST_NUMBER,	N_("Shorten tab labels to:"), P_OFFINTNL(truncchans), 0, (char **)N_("letters."), 99},
+
+	{ST_HEADER,	N_("Tabs Location"),0,0,0},
 	{ST_MENU,	N_("Show tabs at:"), P_OFFINTNL(tabs_position), 0, tabpos, 0},
+
+	{ST_HEADER,	N_("Tabs or Windows"),0,0,0},
 	{ST_MENU,	N_("Open channels in:"), P_OFFINTNL(tabchannels), 0, tabwin, 0},
 	{ST_MENU,	N_("Open dialogs in:"), P_OFFINTNL(privmsgtab), 0, tabwin, 0},
 	{ST_MENU,	N_("Open utilities in:"), P_OFFINTNL(windows_as_tabs), N_("Open DCC, Ignore, Notify etc, in tabs or windows?"), tabwin, 0},
-	{ST_TOGGLE, N_("Open tab for server messages"), P_OFFINTNL(use_server_tab), 0, 0, 0},
-	{ST_TOGGLE, N_("Open tab for server notices"), P_OFFINTNL(notices_tabs), 0, 0, 0},
-	{ST_TOGGLE, N_("Pop new tabs to front"), P_OFFINTNL(newtabstofront), 0, 0, 0},
-	{ST_NUMBER,	N_("Shorten tabs to:"), P_OFFINTNL(truncchans), 0, (char **)N_("letters."), 99},
+
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
 static const setting filexfer_settings[] =
 {
+	{ST_HEADER, N_("Files and Directories"), 0, 0, 0},
 	{ST_EOPEN,	N_("Download files to:"), P_OFFSETNL(dccdir), 0, 0, sizeof prefs.dccdir},
 	{ST_EOPEN,	N_("Move completed files to:"), P_OFFSETNL(dcc_completed_dir), 0, 0, sizeof prefs.dcc_completed_dir},
+	{ST_TOGGLE, N_("Save nick name in filenames"), P_OFFINTNL(dccwithnick), 0, 0, 0},
+	{ST_TOGGLE, N_("Convert spaces to underscore before sending"), P_OFFINTNL(dcc_send_fillspaces),0,0,0},
+
+	{ST_HEADER, N_("Network Settings"), 0, 0, 0},
 	{ST_ENTRY,	N_("DCC IP address:"), P_OFFSETNL(dcc_ip_str),
 					N_("Claim you are at this address when offering files."), 0, sizeof prefs.dcc_ip_str},
 	{ST_NUMBER,	N_("First DCC send port:"), P_OFFINTNL(first_dcc_send_port), 0, 0, 65535},
-	{ST_NUMBER,	N_("Last DCC send port:"), P_OFFINTNL(last_dcc_send_port), 0, 0, 65535},
-	{ST_LABEL,	N_("(Leave ports at zero for full range).")},
-	{ST_TOGGLE, N_("Auto open DCC send list"), P_OFFINTNL(autoopendccsendwindow), 0, 0, 0},
-	{ST_TOGGLE, N_("Convert spaces to underscore"), P_OFFINTNL(dcc_send_fillspaces),
-					N_("In filenames, before sending"), 0, 0},
-	{ST_TOGGLE, N_("Auto open DCC chat list"), P_OFFINTNL(autoopendccchatwindow), 0, 0, 0},
-	{ST_TOGGLE, N_("Save nickname in filenames"), P_OFFINTNL(dccwithnick), 0, 0, 0},
-	{ST_TOGGLE, N_("Auto open DCC receive list"), P_OFFINTNL(autoopendccrecvwindow), 0, 0, 0},
-	{ST_TOGGLE, N_("Get my IP from IRC server"), P_OFFINTNL(ip_from_server),
-					N_("/WHOIS yourself to find your real address. Use this if you have a 192.168.*.* address!"), 0, 0},
-	{ST_NUMBER,	N_("Max. send CPS:"), P_OFFINTNL(dcc_max_send_cps), 
-					N_("Max. speed for one transfer"), 0, 1000000},
-	{ST_NUMBER,	N_("Max. receive CPS:"), P_OFFINTNL(dcc_max_get_cps),
-					N_("Max. speed for one transfer"), 0, 1000000},
-	{ST_NUMBER,	N_("Max. global send CPS:"), P_OFFINTNL(dcc_global_max_send_cps),
-					N_("Max. speed for all traffic"), 0, 1000000},
-	{ST_NUMBER,	N_("Max. global receive CPS:"), P_OFFINTNL(dcc_global_max_get_cps),
-					N_("Max. speed for all traffic"), 0, 1000000},
-	{ST_LABEL,	N_("(Leave at zero for full speed file transfers).")},
+	{ST_NUMBER,	N_("Last DCC send port:"), P_OFFINTNL(last_dcc_send_port), 0, 
+		(char **)N_("(Leave ports at zero for full range)."), 65535},
+	{ST_TOGGLE, N_("Get my address from the IRC server"), P_OFFINTNL(ip_from_server),
+					N_("Asks the IRC server for your real address. Use this if you have a 192.168.*.* address!"), 0, 0},
+
+	{ST_HEADER, N_("Maximum File Transfer Speeds (bytes per second)"), 0, 0, 0},
+	{ST_NUMBER,	N_("Sends:"), P_OFFINTNL(dcc_max_send_cps), 
+					N_("Maximum speed for one transfer"), 0, 1000000},
+	{ST_NUMBER,	N_("Receives:"), P_OFFINTNL(dcc_max_get_cps),
+					N_("Maximum speed for one transfer"), 0, 1000000},
+	{ST_NUMBER,	N_("All sends:"), P_OFFINTNL(dcc_global_max_send_cps),
+					N_("Maximum speed for all files"), 0, 1000000},
+	{ST_NUMBER,	N_("All receives:"), P_OFFINTNL(dcc_global_max_get_cps),
+					N_("Maximum speed for all files"), 0, 1000000},
+
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
 static const setting general_settings[] =
 {
-	{ST_ENTRY,	N_("Default quit message:"), P_OFFSETNL(quitreason), 0, 0, sizeof prefs.quitreason},
-	{ST_ENTRY,	N_("Default part message:"), P_OFFSETNL(partreason), 0, 0, sizeof prefs.partreason},
-	{ST_ENTRY,	N_("Default away message:"), P_OFFSETNL(awayreason), 0, 0, sizeof prefs.awayreason},
+	{ST_HEADER,	N_("Default Messages"),0,0,0},
+	{ST_ENTRY,	N_("Quit:"), P_OFFSETNL(quitreason), 0, 0, sizeof prefs.quitreason},
+	{ST_ENTRY,	N_("Leave channel:"), P_OFFSETNL(partreason), 0, 0, sizeof prefs.partreason},
+	{ST_ENTRY,	N_("Away:"), P_OFFSETNL(awayreason), 0, 0, sizeof prefs.awayreason},
+
+	{ST_HEADER,	N_("Away"),0,0,0},
+	{ST_TOGGLE,	N_("Announce away messages"), P_OFFINTNL(show_away_message),
+					N_("Announce your away messages to all channels"), 0, 0},
+	{ST_TOGGLE,	N_("Show away once"), P_OFFINTNL(show_away_once), N_("Show identical away messages only once"), 0, 0},
+	{ST_TOGGLE,	N_("Automatically unmark away"), P_OFFINTNL(auto_unmark_away), N_("Unmark yourself as away before sending messages"), 0, 0},
+#if 0
 #ifndef WIN32
 	{ST_LABEL,	N_("(Can be a text file relative to ~/.xchat2/).")},
 #else
 	{ST_LABEL,	N_("(Can be a text file relative to config dir).")},
 #endif
+#endif
+
+	{ST_HEADER,	N_("Alerts"),0,0,0},
+	{ST_TOGGLE,	N_("Beep on highlighted messages"), P_OFFINTNL(beephilight), 0, 0, 0},
+	{ST_TOGGLE,	N_("Beep on private messages"), P_OFFINTNL(beepmsg), 0, 0, 0},
+	{ST_TOGGLE,	N_("Beep on channel messages"), P_OFFINTNL(beepchans), 0, 0, 0},
+	{ST_END, 0, 0, 0, 0, 0}
+};
+
+static const setting advanced_settings[] =
+{
+	{ST_HEADER,	N_("Advanced Settings"),0,0,0},
+	{ST_NUMBER,	N_("Auto reconnect delay:"), P_OFFINTNL(recon_delay), 0, 0, 9999},
 	{ST_ENTRY,	N_("Extra words to highlight on:"), P_OFFSETNL(bluestring), 0, 0, sizeof prefs.bluestring},
 	{ST_LABEL,	N_("(Separate multiple words with commas).")},
-	{ST_TOGGLE,	N_("Show away once"), P_OFFINTNL(show_away_once), N_("Show identical away messages only once"), 0, 0},
-	{ST_TOGGLE,	N_("Beep on private messages"), P_OFFINTNL(beepmsg), 0, 0, 0},
-	{ST_TOGGLE,	N_("Automatically unmark away"), P_OFFINTNL(auto_unmark_away), N_("Unmark yourself as away before sending messages"), 0, 0},
-	{ST_TOGGLE,	N_("Beep on channel messages"), P_OFFINTNL(beepchans), 0, 0, 0},
-	{ST_TOGGLE,	N_("Announce away messages"), P_OFFINTNL(show_away_message), N_("Announce your away messages to all channels"), 0, 0},
-	{ST_TOGGLE,	N_("Beep on highlighted messages"), P_OFFINTNL(beephilight), 0, 0, 0},
 	{ST_TOGGLE,	N_("Display MODEs in raw form"), P_OFFINTNL(raw_modes), 0, 0, 0},
 	{ST_TOGGLE,	N_("Whois on notify"), P_OFFINTNL(whois_on_notifyonline), N_("Sends a /WHOIS when a user comes online in your notify list"), 0, 0},
-	{ST_TOGGLE,	N_("Hide join/part messages"), P_OFFINTNL(confmode), N_("Hide channel join/part messages by default"), 0, 0},
-	{ST_NUMBER,	N_("Auto reconnect delay:"), P_OFFINTNL(recon_delay), 0, 0, 9999},
+	{ST_TOGGLE,	N_("Hide join and part messages"), P_OFFINTNL(confmode), N_("Hide channel join/part messages by default"), 0, 0},
+	{ST_HEADER,	N_("Auto Open DCC Windows"),0,0,0},
+	{ST_TOGGLE, N_("Send window"), P_OFFINTNL(autoopendccsendwindow), 0, 0, 0},
+	{ST_TOGGLE, N_("Receive window"), P_OFFINTNL(autoopendccrecvwindow), 0, 0, 0},
+	{ST_TOGGLE, N_("Chat window"), P_OFFINTNL(autoopendccchatwindow), 0, 0, 0},
+
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
 static const setting logging_settings[] =
 {
+	{ST_HEADER,	N_("Logging"),0,0,0},
+	{ST_TOGGLE,	N_("Enable logging of conversations"), P_OFFINTNL(logging), 0, 0, 0},
 	{ST_ENTRY,	N_("Log filename mask:"), P_OFFSETNL(logmask), 0, 0, sizeof prefs.logmask},
 	{ST_LABEL,	N_("(%s=Server %c=Channel %n=Network).")},
+
+	{ST_HEADER,	N_("Time Stamps"),0,0,0},
+	{ST_TOGGLE,	N_("Insert timestamps in logs"), P_OFFINTNL(timestamp_logs), 0, 0, 0},
 	{ST_ENTRY,	N_("Log timestamp format:"), P_OFFSETNL(timestamp_log_format), 0, 0, sizeof prefs.timestamp_log_format},
 	{ST_LABEL,	N_("(See strftime manpage for details).")},
-	{ST_TOGGLE,	N_("Enable logging of conversations"), P_OFFINTNL(logging), 0, 0, 0},
-	{ST_TOGGLE,	N_("Insert timestamps in logs"), P_OFFINTNL(timestamp_logs), 0, 0, 0},
+
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
@@ -250,9 +302,11 @@ static char *proxytypes[] =
 
 static const setting network_settings[] =
 {
-	{ST_ENTRY,	N_("Address to bind to:"), P_OFFSETNL(hostname), 0, 0, sizeof prefs.hostname},
+	{ST_HEADER,	N_("Your Address"), 0, 0, 0, 0},
+	{ST_ENTRY,	N_("Bind to:"), P_OFFSETNL(hostname), 0, 0, sizeof prefs.hostname},
 	{ST_LABEL,	N_("(Only useful for computers with multiple addresses).")},
-	{ST_FRAME,	N_("Proxy server"), 0, 0, 0, 0},
+
+	{ST_HEADER,	N_("Proxy Server"), 0, 0, 0, 0},
 	{ST_ENTRY,	N_("Hostname:"), P_OFFSETNL(proxy_host), 0, 0, sizeof prefs.proxy_host},
 	{ST_ENTRY,	N_("Username:"), P_OFFSETNL(proxy_user), 0, 0, sizeof prefs.proxy_user},
 	{ST_ENTRY,	N_("Password:"), P_OFFSETNL(proxy_pass), 0, GINT_TO_POINTER(1), sizeof prefs.proxy_pass},
@@ -278,6 +332,39 @@ setup_toggle_cb (GtkToggleButton *but, const setting *set)
 }
 
 static void
+setup_create_toggleR (GtkWidget *tab, int row, const setting *set)
+{
+	GtkWidget *wid;
+
+	wid = gtk_check_button_new_with_label (_(set->label));
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (wid),
+											setup_get_int (&setup_prefs, set));
+	g_signal_connect (G_OBJECT (wid), "toggled",
+							G_CALLBACK (setup_toggle_cb), (gpointer)set);
+	if (set->tooltip)
+		add_tip (wid, _(set->tooltip));
+	gtk_table_attach (GTK_TABLE (tab), wid, 4, 5, row, row + 1,
+							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
+}
+
+static void
+setup_create_toggleL (GtkWidget *tab, int row, const setting *set)
+{
+	GtkWidget *wid;
+
+	wid = gtk_check_button_new_with_label (_(set->label));
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (wid),
+											setup_get_int (&setup_prefs, set));
+	g_signal_connect (G_OBJECT (wid), "toggled",
+							G_CALLBACK (setup_toggle_cb), (gpointer)set);
+	if (set->tooltip)
+		add_tip (wid, _(set->tooltip));
+	gtk_table_attach (GTK_TABLE (tab), wid, 2, 4, row, row + 1,
+							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, LABEL_INDENT, 0);
+}
+
+#if 0
+static void
 setup_create_toggle (GtkWidget *box, int row, const setting *set)
 {
 	GtkWidget *wid;
@@ -291,6 +378,7 @@ setup_create_toggle (GtkWidget *box, int row, const setting *set)
 		add_tip (wid, _(set->tooltip));
 	gtk_box_pack_start (GTK_BOX (box), wid, 0, 0, 0);
 }
+#endif
 
 static void
 setup_spin_cb (GtkSpinButton *spin, const setting *set)
@@ -305,15 +393,15 @@ setup_create_spin (GtkWidget *table, int row, const setting *set)
 	int add = 0;
 
 	if (strlen (set->label) > 30)
-		add = 2;
+		add = 3;
 
 	label = gtk_label_new (_(set->label));
-	gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
-	gtk_table_attach (GTK_TABLE (table), label, 0, 1+add, row, row + 1,
-							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_table_attach (GTK_TABLE (table), label, 2, 3+add, row, row + 1,
+							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, LABEL_INDENT, 0);
 
 	align = gtk_alignment_new (0.0, 1.0, 0.0, 0.0);
-	gtk_table_attach_defaults (GTK_TABLE (table), align, 1+add, 2+add, row, row + 1);
+	gtk_table_attach_defaults (GTK_TABLE (table), align, 3+add, 4+add, row, row + 1);
 
 	rbox = gtk_hbox_new (0, 0);
 	gtk_container_add (GTK_CONTAINER (align), rbox);
@@ -361,16 +449,16 @@ setup_create_hscale (GtkWidget *table, int row, const setting *set)
 	GtkWidget *wid;
 
 	wid = gtk_label_new (_(set->label));
-	gtk_misc_set_alignment (GTK_MISC (wid), 1.0, 0.5);
-	gtk_table_attach (GTK_TABLE (table), wid, 0, 1, row, row + 1,
-							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
+	gtk_misc_set_alignment (GTK_MISC (wid), 0.0, 0.5);
+	gtk_table_attach (GTK_TABLE (table), wid, 2, 3, row, row + 1,
+							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, LABEL_INDENT, 0);
 
 	wid = gtk_hscale_new_with_range (0., 255., 1.);
 	gtk_scale_set_value_pos (GTK_SCALE (wid), GTK_POS_RIGHT);
 	gtk_range_set_value (GTK_RANGE (wid), setup_get_int (&setup_prefs, set));
 	g_signal_connect (G_OBJECT(wid), "value_changed",
 							G_CALLBACK (setup_hscale_cb), (gpointer)set);
-	gtk_table_attach (GTK_TABLE (table), wid, 1, 5, row, row + 1,
+	gtk_table_attach (GTK_TABLE (table), wid, 3, 6, row, row + 1,
 							GTK_EXPAND | GTK_FILL, GTK_FILL, 0, 0);
 }
 
@@ -433,9 +521,9 @@ setup_create_menu (GtkWidget *table, int row, const setting *set)
 	char **text = set->list;
 
 	wid = gtk_label_new (_(set->label));
-	gtk_misc_set_alignment (GTK_MISC (wid), 1.0, 0.5);
-	gtk_table_attach (GTK_TABLE (table), wid, 0, 1, row, row + 1,
-							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
+	gtk_misc_set_alignment (GTK_MISC (wid), 0.0, 0.5);
+	gtk_table_attach (GTK_TABLE (table), wid, 2, 3, row, row + 1,
+							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, LABEL_INDENT, 0);
 
 	wid = gtk_option_menu_new ();
 	if (set->tooltip)
@@ -465,7 +553,7 @@ setup_create_menu (GtkWidget *table, int row, const setting *set)
 
 	align = gtk_alignment_new (0.0, 0.5, 0.0, 0.0);
 	gtk_container_add (GTK_CONTAINER (align), wid);
-	gtk_table_attach (GTK_TABLE (table), align, 1, 4, row, row + 1,
+	gtk_table_attach (GTK_TABLE (table), align, 3, 6, row, row + 1,
 							GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
 }
 
@@ -556,7 +644,7 @@ static void
 setup_create_label (GtkWidget *table, int row, const setting *set)
 {
 	gtk_table_attach (GTK_TABLE (table), gtk_label_new (_(set->label)),
-							1, 2, row, row + 1, GTK_SHRINK | GTK_FILL,
+							3, 4, row, row + 1, GTK_SHRINK | GTK_FILL,
 							GTK_SHRINK | GTK_FILL, 0, 0);
 }
 
@@ -567,9 +655,9 @@ setup_create_entry (GtkWidget *table, int row, const setting *set)
 	GtkWidget *wid, *bwid;
 
 	label = gtk_label_new (_(set->label));
-	gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
-	gtk_table_attach (GTK_TABLE (table), label, 0, 1, row, row + 1,
-							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_table_attach (GTK_TABLE (table), label, 2, 3, row, row + 1,
+							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, LABEL_INDENT, 0);
 
 	wid = gtk_entry_new ();
 	if (set->list)
@@ -597,14 +685,14 @@ setup_create_entry (GtkWidget *table, int row, const setting *set)
 #else
 	if (set->type == ST_ENTRY || set->type == ST_EOPEN)
 #endif
-		gtk_table_attach (GTK_TABLE (table), wid, 1, 5, row, row + 1,
+		gtk_table_attach (GTK_TABLE (table), wid, 3, 6, row, row + 1,
 								GTK_EXPAND | GTK_FILL, GTK_FILL, 0, 0);
 	else
 	{
-		gtk_table_attach (GTK_TABLE (table), wid, 1, 4, row, row + 1,
+		gtk_table_attach (GTK_TABLE (table), wid, 3, 5, row, row + 1,
 								GTK_EXPAND | GTK_FILL, GTK_FILL, 0, 0);
 		bwid = gtk_button_new_with_label (_("Browse..."));
-		gtk_table_attach (GTK_TABLE (table), bwid, 4, 5, row, row + 1,
+		gtk_table_attach (GTK_TABLE (table), bwid, 5, 6, row, row + 1,
 								GTK_SHRINK, GTK_SHRINK, 0, 0);
 		if (set->type == ST_EFILE)
 			g_signal_connect (G_OBJECT (bwid), "clicked",
@@ -620,19 +708,25 @@ setup_create_entry (GtkWidget *table, int row, const setting *set)
 	}
 }
 
-static GtkWidget *
-setup_create_frame (char *label, GtkWidget **left, GtkWidget **right, GtkWidget *box)
+static void
+setup_create_header (GtkWidget *table, int row, char *labeltext)
 {
-	GtkWidget *tab, *hbox, *frame, *inbox = box;
+	GtkWidget *label;
+	char buf[128];
 
-	if (label)
-	{
-		frame = gtk_frame_new (label);
-		inbox = gtk_vbox_new (FALSE, 3);
-		gtk_container_set_border_width (GTK_CONTAINER (inbox), 5);
-		gtk_container_add (GTK_CONTAINER (frame), inbox);
-		gtk_container_add (GTK_CONTAINER (box), frame);
-	}
+	snprintf (buf, sizeof (buf), "<b>%s</b>", _(labeltext));
+
+	label = gtk_label_new (NULL);
+	gtk_label_set_markup (GTK_LABEL (label), buf);
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_table_attach (GTK_TABLE (table), label, 0, 4, row, row + 1,
+							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 5);
+}
+
+static GtkWidget *
+setup_create_frame (GtkWidget **left, GtkWidget **right, GtkWidget *box)
+{
+	GtkWidget *tab, *hbox, *inbox = box;
 
 	tab = gtk_table_new (3, 2, FALSE);
 	gtk_container_set_border_width (GTK_CONTAINER (tab), 2);
@@ -663,21 +757,21 @@ open_data_cb (GtkWidget *button, gpointer data)
 static GtkWidget *
 setup_create_page (const setting *set)
 {
-	int i, row;
+	int i, j, row;
 	GtkWidget *tab, *box, *left, *right;
 
 	box = gtk_vbox_new (FALSE, 20);
 	gtk_container_set_border_width (GTK_CONTAINER (box), 4);
 
-	tab = setup_create_frame (NULL, &left, &right, box);
+	tab = setup_create_frame (&left, &right, box);
 
-	i = row = 0;
+	i = j = row = 0;
 	while (set[i].type != ST_END)
 	{
 		switch (set[i].type)
 		{
-		case ST_FRAME:
-			tab = setup_create_frame (_(set[i].label), &left, &right, box);
+		case ST_HEADER:
+			setup_create_header (tab, row, set[i].label);
 			break;
 		case ST_EFONT:
 		case ST_ENTRY:
@@ -685,11 +779,12 @@ setup_create_page (const setting *set)
 		case ST_EOPEN:
 			setup_create_entry (tab, row, &set[i]);
 			break;
+		case ST_TOGGLR:
+			row--;
+			setup_create_toggleR (tab, row, &set[i]);
+			break;
 		case ST_TOGGLE:
-			if (i % 2)
-				setup_create_toggle (right, row, &set[i]);
-			else
-				setup_create_toggle (left, row, &set[i]);
+			setup_create_toggleL (tab, row, &set[i]);
 			break;
 		case ST_MENU:
 			setup_create_menu (tab, row, &set[i]);
@@ -787,13 +882,15 @@ setup_create_color_button (GtkWidget *table, int num, int row, int col)
 {
 	GtkWidget *but;
 	GtkStyle *style;
-	char buf[16];
+	char buf[64];
 
-	if (num > 15)
+	if (num > 31)
 		strcpy (buf, " ");
 	else
-		sprintf (buf, "%d", num);
-	but = gtk_button_new_with_label (buf);
+						/* 12345678901 23456789 01  23456789 */
+		sprintf (buf, "<span size=\"x-small\">%d</span>", num);
+	but = gtk_button_new_with_label (" ");
+	gtk_label_set_markup (GTK_LABEL (GTK_BIN (but)->child), buf);
 	/* win32 build uses this to turn off themeing */
 	g_object_set_data (G_OBJECT (but), "xchat-color", (gpointer)1);
 	gtk_table_attach (GTK_TABLE (table), but, col, col+1, row, row+1,
@@ -812,16 +909,16 @@ setup_create_other_color (char *text, int num, int row, GtkWidget *tab)
 	GtkWidget *label;
 
 	label = gtk_label_new (text);
-	gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
-	gtk_table_attach (GTK_TABLE (tab), label, 0, 1, row, row + 1,
-							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
-	setup_create_color_button (tab, num, row, 1);
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_table_attach (GTK_TABLE (tab), label, 2, 3, row, row + 1,
+							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, LABEL_INDENT, 0);
+	setup_create_color_button (tab, num, row, 3);
 }
 
 static GtkWidget *
 setup_create_color_page (void)
 {
-	GtkWidget *tab, *box, *label, *frame;
+	GtkWidget *tab, *box, *label;
 	int i;
 
 	box = gtk_vbox_new (FALSE, 0);
@@ -833,37 +930,39 @@ setup_create_color_page (void)
 	gtk_table_set_col_spacings (GTK_TABLE (tab), 3);
 	gtk_container_add (GTK_CONTAINER (box), tab);
 
+	setup_create_header (tab, 0, N_("Text colors"));
+
 	label = gtk_label_new (_("mIRC colors:"));
-	gtk_misc_set_alignment (GTK_MISC (label), 1.0, 0.5);
-	gtk_table_attach (GTK_TABLE (tab), label, 0, 1, 0, 1,
-							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_table_attach (GTK_TABLE (tab), label, 2, 3, 1, 2,
+							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, LABEL_INDENT, 0);
 
 	for (i = 0; i < 16; i++)
-		setup_create_color_button (tab, i, 0, i+1);
+		setup_create_color_button (tab, i, 1, i+3);
 
+	label = gtk_label_new (_("Extra colors:"));
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_table_attach (GTK_TABLE (tab), label, 2, 3, 2, 3,
+							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, LABEL_INDENT, 0);
 
-	setup_create_other_color (_("Foreground:"), 18, 1, tab);
-	setup_create_other_color (_("Background:"), 19, 2, tab);
+	for (i = 16; i < 32; i++)
+		setup_create_color_button (tab, i, 2, (i+3) - 16);
 
-	setup_create_other_color (_("Mark fore:"), 17, 6, tab);
-	setup_create_other_color (_("Mark back:"), 16, 7, tab);
+	setup_create_other_color (_("Foreground:"), COL_FG, 3, tab);
+	setup_create_other_color (_("Background:"), COL_BG, 4, tab);
 
-	setup_create_other_color (_("Away User:"), 23, 13, tab);
+	setup_create_header (tab, 5, N_("Marking text"));
 
-	frame = gtk_frame_new (_("Tab colors"));
-	gtk_container_set_border_width (GTK_CONTAINER (frame), 8);
-	gtk_table_attach (GTK_TABLE (tab), frame, 3, 15, 1, 18,
-							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
+	setup_create_other_color (_("Foreground:"), COL_MARK_FG, 6, tab);
+	setup_create_other_color (_("Background:"), COL_MARK_BG, 7, tab);
 
-	tab = gtk_table_new (9, 2, FALSE);
-	gtk_container_set_border_width (GTK_CONTAINER (tab), 8);
-	gtk_table_set_row_spacings (GTK_TABLE (tab), 2);
-	gtk_table_set_col_spacings (GTK_TABLE (tab), 3);
-	gtk_container_add (GTK_CONTAINER (frame), tab);
+	setup_create_header (tab, 8, N_("Interface colors"));
 
-	setup_create_other_color (_("New Data:"), 20, 10, tab);
-	setup_create_other_color (_("New Message:"), 22, 11, tab);
-	setup_create_other_color (_("Highlight:"), 21, 12, tab);
+	setup_create_other_color (_("Away User:"), COL_AWAY, 9, tab);
+	setup_create_other_color (_("New Data:"), COL_NEW_DATA, 10, tab);
+	setup_create_other_color (_("New Message:"), COL_NEW_MSG, 11, tab);
+	setup_create_other_color (_("Highlight:"), COL_HILIGHT, 12, tab);
+	setup_create_other_color (_("Marker Line:"), COL_MARKER, 13, tab);
 
 	return box;
 }
@@ -911,6 +1010,7 @@ static char *cata[] =
 	N_("Chatting"),
 		N_("General"),
 		N_("Logging"),
+		N_("Advanced"),
 		NULL,
 	N_("Network"),
 		N_("Network setup"),
@@ -933,8 +1033,9 @@ setup_create_pages (GtkWidget *box)
 	setup_add_page (cata[5], book, setup_create_color_page ());
 	setup_add_page (cata[8], book, setup_create_page (general_settings));
 	setup_add_page (cata[9], book, setup_create_page (logging_settings));
-	setup_add_page (cata[12], book, setup_create_page (network_settings));
-	setup_add_page (cata[13], book, setup_create_page (filexfer_settings));
+	setup_add_page (cata[10], book, setup_create_page (advanced_settings));
+	setup_add_page (cata[13], book, setup_create_page (network_settings));
+	setup_add_page (cata[14], book, setup_create_page (filexfer_settings));
 
 	gtk_notebook_set_show_tabs (GTK_NOTEBOOK (book), FALSE);
 	gtk_notebook_set_show_border (GTK_NOTEBOOK (book), FALSE);
@@ -1034,8 +1135,8 @@ setup_create_tree (GtkWidget *box, GtkWidget *book)
 static void
 setup_apply_entry_style (GtkWidget *entry)
 {
-	gtk_widget_modify_base (entry, GTK_STATE_NORMAL, &colors[19]);
-	gtk_widget_modify_text (entry, GTK_STATE_NORMAL, &colors[18]);
+	gtk_widget_modify_base (entry, GTK_STATE_NORMAL, &colors[COL_BG]);
+	gtk_widget_modify_text (entry, GTK_STATE_NORMAL, &colors[COL_FG]);
 	gtk_widget_modify_font (entry, input_style->font_desc);
 }
 
@@ -1052,9 +1153,9 @@ setup_apply_to_sess (session_gui *gui)
 		extern char cursor_color_rc[];
 		char buf[256];
 		sprintf (buf, cursor_color_rc,
-				(colors[18].red >> 8),
-				(colors[18].green >> 8),
-				(colors[18].blue >> 8));
+				(colors[COL_FG].red >> 8),
+				(colors[COL_FG].green >> 8),
+				(colors[COL_FG].blue >> 8));
 		gtk_rc_parse_string (buf);
 
 		setup_apply_entry_style (gui->input_box);

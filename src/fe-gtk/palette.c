@@ -33,32 +33,54 @@
 
 
 GdkColor colors[] = {
-	{0, 0xcf3c, 0xcf3c, 0xcf3c}, /* 0  white */
+	/* colors for xtext */
+	{0, 0xcccc, 0xcccc, 0xcccc}, /* 0  white */
 	{0, 0x0000, 0x0000, 0x0000}, /* 1  black */
 	{0, 0x0000, 0x0000, 0xcccc}, /* 2  blue */
-	{0, 0x0000, 0xcccc, 0x0000}, /* 3  green */
-	{0, 0xdddd, 0x0000, 0x0000}, /* 4  red */
+	{0, 0x0000, 0x9999, 0x0000}, /* 3  green */
+	{0, 0xcccc, 0x0000, 0x0000}, /* 4  red */
 	{0, 0xaaaa, 0x0000, 0x0000}, /* 5  light red */
-	{0, 0xbbbb, 0x0000, 0xbbbb}, /* 6  purple */
-	{0, 0xffff, 0xaaaa, 0x0000}, /* 7  orange */
-	{0, 0xeeee, 0xdddd, 0x2222}, /* 8  yellow */
-	{0, 0x3333, 0xdede, 0x5555}, /* 9  green */
-	{0, 0x0000, 0xcccc, 0xcccc}, /* 10 aqua */
-	{0, 0x3333, 0xeeee, 0xffff}, /* 11 light aqua */
+	{0, 0xaaaa, 0x0000, 0xaaaa}, /* 6  purple */
+	{0, 0x9999, 0x3333, 0x0000}, /* 7  orange */
+	{0, 0xffff, 0xaaaa, 0x0000}, /* 8  yellow */
+	{0, 0x0000, 0xffff, 0x0000}, /* 9  green */
+	{0, 0x0000, 0x5555, 0x5555}, /* 10 aqua */
+	{0, 0x3333, 0x9999, 0x7f7f}, /* 11 light aqua */
 	{0, 0x0000, 0x0000, 0xffff}, /* 12 blue */
-	{0, 0xeeee, 0x2222, 0xeeee}, /* 13 light purple */
-	{0, 0x7777, 0x7777, 0x7777}, /* 14 grey */
-	{0, 0x9999, 0x9999, 0x9999}, /* 15 light grey */
-	{0, 0xa4a4, 0xdfdf, 0xffff}, /* 16 marktext Back (blue) */
-	{0, 0x0000, 0x0000, 0x0000}, /* 17 marktext Fore (black) */
-	{0, 0xdf3c, 0xdf3c, 0xdf3c}, /* 18 foreground (white) */
-	{0, 0x0000, 0x0000, 0x0000}, /* 19 background (black) */
-	{0, 0x8c8c, 0x1010, 0x1010}, /* 20 tab New Data (dark red) */
-	{0, 0x0000, 0x0000, 0xffff}, /* 21 tab Nick Mentioned (blue) */
-	{0, 0xf5f5, 0x0000, 0x0000}, /* 22 tab New Message (red) */
-	{0, 0x9999, 0x9999, 0x9999}, /* 23 away user (grey) */
+	{0, 0xffff, 0x3333, 0xffff}, /* 13 light purple */
+	{0, 0x7f7f, 0x7f7f, 0x7f7f}, /* 14 grey */
+	{0, 0x9595, 0x9595, 0x9595}, /* 15 light grey */
+
+	{0, 0xcccc, 0xcccc, 0xcccc}, /* 16 white */
+	{0, 0x0000, 0x0000, 0x0000}, /* 17 black */
+	{0, 0x0000, 0x0000, 0xcccc}, /* 18 blue */
+	{0, 0x0000, 0x9999, 0x0000}, /* 19 green */
+	{0, 0xcccc, 0x0000, 0x0000}, /* 20 red */
+	{0, 0xaaaa, 0x0000, 0x0000}, /* 21 light red */
+	{0, 0xaaaa, 0x0000, 0xaaaa}, /* 22 purple */
+	{0, 0x9999, 0x3333, 0x0000}, /* 23 orange */
+	{0, 0xffff, 0xaaaa, 0x0000}, /* 24 yellow */
+	{0, 0x0000, 0xffff, 0x0000}, /* 25 green */
+	{0, 0x0000, 0x5555, 0x5555}, /* 26 aqua */
+	{0, 0x3333, 0x9999, 0x7f7f}, /* 27 light aqua */
+	{0, 0x0000, 0x0000, 0xffff}, /* 28 blue */
+	{0, 0xffff, 0x3333, 0xffff}, /* 29 light purple */
+	{0, 0x7f7f, 0x7f7f, 0x7f7f}, /* 30 grey */
+	{0, 0x9595, 0x9595, 0x9595}, /* 31 light grey */
+
+	{0, 0x0000, 0x0000, 0x0000}, /* 32 marktext Fore (black) */
+	{0, 0x9999, 0xcccc, 0xffff}, /* 33 marktext Back (blue) */
+	{0, 0x0000, 0x0000, 0x0000}, /* 34 foreground (black) */
+	{0, 0xf0f0, 0xf0f0, 0xf0f0}, /* 35 background (white) */
+	{0, 0xcccc, 0x0000, 0x0000}, /* 36 marker line (red) */
+
+	/* colors for GUI */
+	{0, 0x9999, 0x0000, 0x0000}, /* 37 tab New Data (dark red) */
+	{0, 0x0000, 0x0000, 0xffff}, /* 38 tab Nick Mentioned (blue) */
+	{0, 0xffff, 0x0000, 0x0000}, /* 39 tab New Message (red) */
+	{0, 0x9595, 0x9595, 0x9595}, /* 40 away user (grey) */
 };
-#define MAX_COL 23
+#define MAX_COL 40
 
 
 void
@@ -86,7 +108,7 @@ palette_load (void)
 	char *cfg;
 	unsigned long red, green, blue;
 
-   snprintf (prefname, sizeof (prefname), "%s/palette.conf", get_xdir_fs ());
+   snprintf (prefname, sizeof (prefname), "%s/colors.conf", get_xdir_fs ());
    fh = open (prefname, O_RDONLY | OFLAGS);
 	if (fh != -1)
 	{
@@ -129,7 +151,7 @@ palette_save (void)
 	int i, fh;
 	char prefname[256];
 
-   snprintf (prefname, sizeof (prefname), "%s/palette.conf", get_xdir_fs ());
+   snprintf (prefname, sizeof (prefname), "%s/colors.conf", get_xdir_fs ());
    fh = open (prefname, O_TRUNC | O_WRONLY | O_CREAT | OFLAGS, 0600);
 	if (fh != -1)
 	{

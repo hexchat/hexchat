@@ -285,7 +285,7 @@ fe_userlist_rehash (session *sess, struct User *user)
 	gtk_list_store_set (GTK_LIST_STORE (sess->res->user_model), iter,
 							  2, user->hostname,
 							  4, (prefs.away_size_max > 0)
-									?	(user->away ? &colors[23] : NULL)
+									?	(user->away ? &colors[COL_AWAY] : NULL)
 									:	(NULL),
 							  -1);
 }
@@ -316,7 +316,7 @@ fe_userlist_insert (session *sess, struct User *newuser, int row, int sel)
 							  2, newuser->hostname,
 							  3, newuser,
 							  4, (prefs.away_size_max > 0)
-									?	(newuser->away ? &colors[23] : NULL)
+									?	(newuser->away ? &colors[COL_AWAY] : NULL)
 									:	(NULL),
 							  -1);
 

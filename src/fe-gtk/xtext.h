@@ -27,6 +27,15 @@
 #define ATTR_REVERSE '\026'
 #define ATTR_UNDERLINE '\037'
 
+/* these match palette.h */
+#define XTEXT_MIRC_COLS 32
+#define XTEXT_COLS 37		/* 32 plus 5 for extra stuff below */
+#define XTEXT_MARK_FG 32	/* for marking text */
+#define XTEXT_MARK_BG 33
+#define XTEXT_FG 34
+#define XTEXT_BG 35
+#define XTEXT_MARKER 36		/* for marker line */
+
 typedef struct _GtkXText GtkXText;
 typedef struct _GtkXTextClass GtkXTextClass;
 typedef struct textentry textentry;
@@ -100,7 +109,7 @@ struct _GtkXText
 	GdkGC *dark_gc;
 	GdkGC *thin_gc;
 	GdkGC *marker_gc;
-	gulong palette[20];
+	gulong palette[XTEXT_COLS];
 
 	gint io_tag;					  /* for delayed refresh events */
 	gint add_io_tag;				  /* "" when adding new text */
@@ -130,7 +139,7 @@ struct _GtkXText
 	guint16 fontwidth[128];	  /* each char's width, only the ASCII ones */
 
 #ifdef USE_XFT
-	XftColor color[20];
+	XftColor color[XTEXT_COLS];
 	XftColor *xft_fg;
 	XftColor *xft_bg;				/* both point into color[20] */
 	XftDraw *xftdraw;
