@@ -103,7 +103,7 @@ notify_load (void)
 	{
 		while (waitline (fh, buf, sizeof buf) != -1)
 		{
-			if (*buf != '#')
+			if (buf[0] != '#' && buf[0] != 0)
 				notify_adduser (buf);
 		}
 		close (fh);
