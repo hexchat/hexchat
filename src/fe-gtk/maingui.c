@@ -489,7 +489,6 @@ mg_populate_userlist (session *sess)
 	if (is_session (sess))
 	{
 		gui = sess->gui;
-		mg_restore_entry (gui->topic_entry, &sess->res->topic_text);
 		if (sess->type == SESS_DIALOG)
 			mg_set_access_icon (sess->gui, NULL);
 		else
@@ -568,7 +567,7 @@ mg_populate (session *sess)
 		gtk_widget_set_sensitive (gui->menu, TRUE);
 
 	/* restore all the GtkEntry's */
-	/*mg_restore_entry (gui->topic_entry, &res->topic_text);*/
+	mg_restore_entry (gui->topic_entry, &res->topic_text);
 	mg_restore_entry (gui->input_box, &res->input_text);
 	mg_restore_entry (gui->key_entry, &res->key_text);
 	mg_restore_entry (gui->limit_entry, &res->limit_text);
