@@ -199,7 +199,7 @@ text_word_check (char *word)
 	if(q3link(word))
 		return WORD_URL;
 
-	if ((word[0] == '@' || word[0] == '+') && word[1] == '#')
+	if ((word[0] == '@' || word[0] == '+' || word[0] == '^' || word[0] == '%' || word[0] == '*' ) && word[1] == '#')
 		return WORD_CHANNEL;
 
 	if ((word[0] == '#' || word[0] == '&') && word[1] != '#' && word[1] != 0)

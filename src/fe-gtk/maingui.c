@@ -1747,7 +1747,7 @@ mg_word_clicked (GtkWidget *xtext, char *word, GdkEventButton *even,
 			word+1 : word, FALSE);
 		break;
 	case WORD_CHANNEL:
-		if (*word == '@' || *word == '+')
+		if (*word == '@' || *word == '+' || *word=='^' || *word=='%' || *word=='*')
 			word++;
 		menu_chanmenu (sess, even, word);
 		break;
