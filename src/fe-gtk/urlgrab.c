@@ -169,6 +169,13 @@ fe_url_add (char *urltext)
 	}
 }
 
+static int
+populate_cb (char *urltext, gpointer userdata)
+{
+	fe_url_add (urltext);
+	return TRUE;
+}
+
 void
 url_opengui ()
 {
@@ -202,5 +209,5 @@ url_opengui ()
 
 	gtk_widget_show (urlgrabberwindow);
 
-	tree_foreach (url_tree, (tree_traverse_func *)fe_url_add, NULL);
+	tree_foreach (url_tree, (tree_traverse_func *)populate_cb, NULL);
 }
