@@ -1,120 +1,115 @@
-# X-Chat german translation file
-# Copyright (C) 2000, 2003 Free Software Foundation, Inc.
-# Hauke Hagenhoff <Hauke.Hagenhoff@gmx.de>, 2003,2004.
-# Karl Eichwalder <ke@gnu.franken.de>, 2003.
-# Benedikt Roth <Benedikt.Roth@gmx.net>, 2000.
-# Christian Meyer <linux@chrisim.de>, 2000.
-# Matthias Warkus <mawa@iname.com>, 1999.
-# Tamer Fahmy <e9526976@stud2.tuwien.ac.at>, 1999.
+# Translation of `xchat' messages to Korean.
+# Copyright (C) 1999-2000 Free Software Foundation, Inc.
+# Michael Kim <lavnrose@e.sarang.net>, 1999-2004.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: xchat 2.4.0pre2\n"
+"Project-Id-Version: xchat-2.4.0pre2\n"
 "Report-Msgid-Bugs-To: www.xchat.org\n"
 "POT-Creation-Date: 2004-08-05 16:05+1000\n"
-"PO-Revision-Date: 2004-08-07 12:54+0100\n"
-"Last-Translator: Hauke Hagenhoff <Hauke.Hagenhoff@gmx.de>\n"
-"Language-Team: German <de@li.org>\n"
+"PO-Revision-Date: 2004-08-10 07:37 +0900\n"
+"Last-Translator: Michael Kim <lavnrose@e.sarang.net>\n"
+"Language-Team: Korean <translation-team-ko@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: src/common/cfgfiles.c:350
 msgid "Cannot create ~/.xchat2"
-msgstr "Kann ~/.xchat2 nicht erzeugen"
+msgstr "~/.xchat2 디렉토리를 생성 할 수 없습니다."
 
 #: src/common/cfgfiles.c:667
 msgid "I'm busy"
-msgstr "Ich bin beschäftigt"
+msgstr "바뻐요~"
 
 #: src/common/cfgfiles.c:668
 msgid "Leaving"
-msgstr "Verlassend"
+msgstr "전 이만 갑니다."
 
 #: src/common/cfgfiles.c:714
 msgid ""
 "* Running IRC as root is stupid! You should\n"
 "  create a User Account and use that to login.\n"
 msgstr ""
-"* IRC als Root laufen zu lassen ist dumm! Sie sollten\n"
-"  ein Benutzerkonto anlegen und dieses zum Einloggen verwenden.\n"
+"* IRC를 루트계정으로 실행했습니다!!\n"
+"  새로운 사용자 어카운트를 생성하고 그것을 이용하십시오.\n"
 
 #: src/common/dcc.c:61
 msgid "Waiting"
-msgstr "Wartend"
+msgstr "잠시만 기다려주십시오"
 
 #: src/common/dcc.c:62
 msgid "Active"
-msgstr "Aktiv"
+msgstr "활성"
 
 #: src/common/dcc.c:63
 msgid "Failed"
-msgstr "Gescheitert"
+msgstr "실패"
 
 #: src/common/dcc.c:64
 msgid "Done"
-msgstr "Erledigt"
+msgstr "확인"
 
 #: src/common/dcc.c:65
 msgid "Connect"
-msgstr "Verbindung"
+msgstr "접속"
 
 #: src/common/dcc.c:66
 msgid "Aborted"
-msgstr "Abgebrochen"
+msgstr "취소됨"
 
 #: src/common/dcc.c:1279
 #, c-format
 msgid "Cannot access %s\n"
-msgstr "Kann nicht auf %s zugreifen\n"
+msgstr "%s에 접근할 수 없습니다\n"
 
 #: src/common/dcc.c:1874
 msgid "No active DCCs\n"
-msgstr "Keine aktiven DCCs\n"
+msgstr "DCC가 활성화되지 않았습니다\n"
 
 #: src/common/ignore.c:120 src/common/ignore.c:124 src/common/ignore.c:128
 #: src/common/ignore.c:132 src/common/ignore.c:136 src/common/ignore.c:140
 #: src/common/ignore.c:144
 msgid "YES  "
-msgstr "JA   "
+msgstr "예  "
 
 #: src/common/ignore.c:122 src/common/ignore.c:126 src/common/ignore.c:130
 #: src/common/ignore.c:134 src/common/ignore.c:138 src/common/ignore.c:142
 #: src/common/ignore.c:146
 msgid "NO   "
-msgstr "NEIN "
+msgstr "아니오  "
 
 #: src/common/ignore.c:373
 #, c-format
 msgid "You are being CTCP flooded from %s, ignoring %s\n"
-msgstr "CTCP-Flut von %s, ignoriere %s\n"
+msgstr "%s님으로부터 많은 CTCP요청을 받아서, %s 님을 무시합니다.\n"
 
 #: src/common/ignore.c:398
 #, c-format
 msgid "You are being MSG flooded from %s, setting autodialog OFF.\n"
-msgstr "MSG-Flut von %s, deaktiviere automatische Dialoge.\n"
+msgstr "현재 %s 님으로 부터 많은 메세지가 왔으므로, 자동 창 기능을 해제합니다.\n"
 
 #: src/common/notify.c:400
 #, c-format
 msgid "  %-20s online\n"
-msgstr "  %-20s online\n"
+msgstr "  %-20s 접속됨\n"
 
 #: src/common/notify.c:402
 #, c-format
 msgid "  %-20s offline\n"
-msgstr "  %-20s offline\n"
+msgstr "  %-20s 종료함\n"
 
 #: src/common/outbound.c:70
 msgid "No channel joined. Try /join #<channel>\n"
-msgstr "Kein Channel betreten. Versuche /join #<channel>\n"
+msgstr "대화에 참여하고 있지 않습니다. \"/join #대화방명\"으로 대화에 참여하세요\n"
 
 #: src/common/outbound.c:76
 msgid "Not connected. Try /server <host> [<port>]\n"
-msgstr "Nicht verbunden. Versuche /server <Host> [<Port>]\n"
+msgstr "접속되어 있지 않습니다. \"/server <서버주소> [<포트>]\"명령으로 접속하세요.\n"
 
 #: src/common/outbound.c:1355
 msgid "I need /bin/sh to run!\n"
-msgstr "/bin/sh wird benötigt!\n"
+msgstr "실행을 위해서 /bin/sh 가 필요합니다!\n"
 
 #: src/common/outbound.c:1596
 msgid ""
@@ -124,7 +119,7 @@ msgid ""
 "  "
 msgstr ""
 "\n"
-"Verfügbare Kommandos:\n"
+"사용 가능한 명령:\n"
 "\n"
 "  "
 
@@ -136,8 +131,8 @@ msgid ""
 "\n"
 msgstr ""
 "\n"
-"\n"
-"Geben Sie /HELP <Kommando> für mehr Informationen ein, oder /HELP -l\n"
+"\"/HELP <명령어>\"를 이용하시면 보다 많은 정보를 얻을 수 있으며,\n"
+"\"/HELP -l\" 명령으로 명령어 목록을 확인 할 수 있습니다.\n"
 "\n"
 
 #: src/common/outbound.c:1632
@@ -146,62 +141,62 @@ msgid ""
 "\n"
 "  "
 msgstr ""
-"Benutzerdefinierte Kommandos:\n"
+"사용자 정의 명령:\n"
 "\n"
 "  "
 
 #: src/common/outbound.c:1724
 #, c-format
 msgid "Unknown arg '%s' ignored."
-msgstr "Unbekanntes Argument '%s' ignoriert."
+msgstr "'%s'는 알 수 없으므로 무시합니다."
 
 #: src/common/outbound.c:2474
 msgid "No such plugin found.\n"
-msgstr "Kein solches Plugin gefunden.\n"
+msgstr "확장기능을 찾을 수 없습니다.\n"
 
 #: src/common/outbound.c:2479 src/fe-gtk/plugingui.c:186
 msgid "That plugin is refusing to unload.\n"
-msgstr "Dieses Plugin kann nicht entladen werden.\n"
+msgstr "해당 확장기능을 제거 했습니다.\n"
 
 #: src/common/outbound.c:2624
 msgid "ADDBUTTON <name> <action>, adds a button under the user-list"
-msgstr "ADDBUTTON <Name> <Aktion>, fügt einen Knopf unter der Benutzerliste hinzu"
+msgstr "ADDBUTTON <단추명> <동작>, 사용자목록에 단추를 추가 합니다. "
 
 #: src/common/outbound.c:2626
 msgid "ALLCHAN <cmd>, sends a command to all channels you're in"
-msgstr "ALLCHAN <Kommando>, sendet ein Kommando an alle Channels in denen Sie sind"
+msgstr "ALLCHAN <명령>, 대화중인 모든 대화방에 명령을 수행합니다."
 
 #: src/common/outbound.c:2628
 msgid "ALLSERV <cmd>, sends a command to all servers you're in"
-msgstr "ALLSERV <Kommando>, sendet ein Kommando an alle Server auf denen Sie sind"
+msgstr "ALLSERV <명령>. 접속중인 모든 서버에서 명령을 수행합니다."
 
 #: src/common/outbound.c:2629
 msgid "AWAY [<reason>], sets you away"
-msgstr "AWAY [<Grund>], setzt Sie auf abwesend"
+msgstr "AWAY [<이유>], 자리비움으로 표시합니다."
 
 #: src/common/outbound.c:2631
 msgid "BAN <mask> [<bantype>], bans everyone matching the mask from the current channel. If they are already on the channel this doesn't kick them (needs chanop)"
-msgstr "BAN <Maske> [<Banntyp>], bannt jeden mit der entsprechenden Maske aus dem aktuellen Channel. Wenn diese bereits im Channel sind, werden sie nicht gekickt (Erfordert Op-Status)"
+msgstr "BAN <매스크> [<형태>], 현재 대화방에서 해당되는 매스크에 속한 모든 사람을 참여하지 못하게합니다. 만약 이미 대화방에 있다면,  강제퇴장 시키면 그 사람은 다시 참여 할 수 없습니다.(대화방 관리권한 필요)"
 
 #: src/common/outbound.c:2633
 msgid "CLEAR, Clears the current text window"
-msgstr "CLEAR, Löscht das aktuelle Textfenster"
+msgstr "CLEAR, 현재 창의 글월을 삭제 합니다."
 
 #: src/common/outbound.c:2634
 msgid "CLOSE, Closes the current window/tab"
-msgstr "CLOSE, Schließt das aktuelle Textfenster/Reiter"
+msgstr "CLOSE, 현재 창이나 탭을 닫습니다."
 
 #: src/common/outbound.c:2637
 msgid "COUNTRY <code>, finds a country code, eg: au = australia"
-msgstr "COUNTRY <Kode>, findet einen Länderkode, z.B.: de = Bundesrepublik Deutschland"
+msgstr "COUNTRY <번호>, 친근한 국가 코드, 예: au = 오스트레일리아"
 
 #: src/common/outbound.c:2639
 msgid "CTCP <nick> <message>, send the CTCP message to nick, common messages are VERSION and USERINFO"
-msgstr "CTCP <Nick> <Nachricht>, sendet die CTCP-Nachricht an den Nick, übliche Nachrichten sind VERSION und USERINFO"
+msgstr "CTCP <대화명> <메세지>, CTCP 메세지를 해당 사요자에게 보냅니다, 널리 쓰이는 메세지는 VERSION 과 USERINFO 입니다."
 
 #: src/common/outbound.c:2641
 msgid "CYCLE, parts current channel and immediately rejoins"
-msgstr "CYCLE, verläßt den aktuellen Channel und betritt ihn direkt wieder"
+msgstr "CYCLE, 현재 대화방을 나갔다가 다시 들어 옵니다."
 
 #: src/common/outbound.c:2643
 msgid ""
@@ -214,72 +209,72 @@ msgid ""
 "         /dcc close send johnsmith file.tar.gz"
 msgstr ""
 "\n"
-"     DCC GET <Nick>                      - akzeptiere eine angebotene Datei\n"
-"     DCC SEND [-maxcps=#] <Nick> [Datei] - Sendet eine Datei an jemanden\n"
-"     DCC LIST                            - zeigt die DCC-Liste\n"
-"     DCC CHAT <Nick>                     - bietet jemandem einen DCC-CHAT an\n"
-"     DCC CLOSE <Typ> <Nick> <Datei>      - Schließt einen DCC-Transfer\n"
-"         Beispiel: /dcc close send markus datei.zip"
+"DCC GET <대화명>                     - 화일을 받습니다.\n"
+"DCC SEND [-maxcps=#] <대화명> [화일] - 해당 사용자에게 화일을 전송합니다.\n"
+"DCC LIST                           - DCC 목록을 출력합니다.\n"
+"DCC CHAT <대화명>                    - 해당 사용자와 대화를 시도 합니다.\n"
+"DCC CLOSE <형태> <대화명> <화일>         예:\n"
+"         /dcc close send johnsmith file.tar.gz"
 
 #: src/common/outbound.c:2653
 msgid "DEHOP <nick>, removes chanhalf-op status from the nick on the current channel (needs chanop)"
-msgstr "DEHOP <Nick>, entfernt den HalbOp-Status bei Nick im aktuellen Channel (Erfordert Op-Status)"
+msgstr "DEHOP <대화명>, 현재 대화방에서 관리 권한을 박탈합니다.(관리권한 필요)"
 
 #: src/common/outbound.c:2655
 msgid "DELBUTTON <name>, deletes a button from under the user-list"
-msgstr "DELBUTTON <Name>, entfernt einen Knopf unter der Benutzerliste"
+msgstr "DELBUTTON <단추명>, 사용자목록의 단추를 삭제합니다."
 
 #: src/common/outbound.c:2657
 msgid "DEOP <nick>, removes chanop status from the nick on the current channel (needs chanop)"
-msgstr "DEOP <Nick>, entfernt den Op-Status bei Nick im aktuellen Channel (Erfordert Op-Status)"
+msgstr "DEOP <대화명>, 현재 대화방에서 관리권한을 박탈합니다.(관리권한 필요)"
 
 #: src/common/outbound.c:2659
 msgid "DEVOICE <nick>, removes voice status from the nick on the current channel (needs chanop)"
-msgstr "DEVOICE <Nick>, entfernt den Voice-Status bei Nick im aktuellen Channel (Erfordert Op-Status)"
+msgstr "DEVOICE <대화명>, 현재 대화방에서 해당 사용자의 발언권을 박탈 합니다.(관리권한 필요)"
 
 #: src/common/outbound.c:2660
 msgid "DISCON, Disconnects from server"
-msgstr "DISCON, Trennt die Server-Verbindung"
+msgstr "DISCON, 서버와 연결을 끊습니다"
 
 #: src/common/outbound.c:2661
 msgid "DNS <nick|host|ip>, Finds a users IP number"
-msgstr "DNS <Nick|Host|IP>, Findet die IP-Adresse eines Nutzers"
+msgstr "DNS <대화명|호스트|ip>, 해당 사용자의 IP주소를 찾습니다."
 
 #: src/common/outbound.c:2662
 msgid "ECHO <text>, Prints text locally"
-msgstr "ECHO <Text>, Zeigt Text lokal an"
+msgstr "ECHO <글월>, 글월을 대화창에 출력합니다."
 
 #: src/common/outbound.c:2665
 msgid "EXEC [-o] <command>, runs the command. If -o flag is used then output is sent to current channel, else is printed to current text box"
-msgstr "EXEC [-o] <Kommando>, führt das Kommando aus. Wenn -o angegeben wurde, wird die Ausgabe in das aktuelle Fenster gesendet, ansonsten wird sie lokal gezeigt"
+msgstr "EXEC [-o] <명령>, 명령을 실행합니다. 만약 -o 인수가 사용되면 결과를 현재 대화방에 출력하고,그렇지 않을 경우 자신에게만 보여 줍니다."
 
 #: src/common/outbound.c:2667
 msgid "EXECCONT, sends the process SIGCONT"
-msgstr "EXECCONT, sendet das Signal SIGCONT"
+msgstr "EXECCONT, 프로세스 SIGCONT를 보냅니다."
 
 #: src/common/outbound.c:2670
 msgid "EXECKILL [-9], kills a running exec in the current session. If -9 is given the process is SIGKILL'ed"
-msgstr "EXECKILL [-9], killt einen laufenden exec in der aktuellen Sitzung. Wenn -9 angegeben wurde, wird der Prozess SIGKILLed"
+msgstr "EXECKILL [-9], 현재 실행중인 세션을 종료시킵니다. 만약 -9 가 주어진다면 프로세스는 SIGKILL 을 받아 강제 종료됩니다."
 
 #: src/common/outbound.c:2672
 msgid "EXECSTOP, sends the process SIGSTOP"
-msgstr "EXECSTOP, sendet dem Prozess das Signal SIGSTOP"
+msgstr "EXECSTOP, 프로세스 SIGSTOP을 보냅니다."
 
 #: src/common/outbound.c:2673
 msgid "EXECWRITE, sends data to the processes stdin"
-msgstr "EXECWRITE, sendet Daten an den stdin des Prozesses"
+msgstr "EXECWRITE, 프로세스의 표준입력으로 데이터를 보냅니다."
 
 #: src/common/outbound.c:2677
 msgid "FLUSHQ, flushes the current server's send queue"
-msgstr "FLUSHQ, löscht die Sendewarteschlange des aktuellen Servers"
+msgstr "FLUSHQ, 현재 서버에 보낼 목록을 제거 합니다."
 
 #: src/common/outbound.c:2679
 msgid "GATE <host> [<port>], proxies through a host, port defaults to 23"
-msgstr "GATE <Host> [<Port>], verbindet durch einen Proxy, Standardport ist 23"
+msgstr "GATE <호스트> [<포트>], 해당 호스트를 프록시로 사용하고, 포트의 기본값은 23 입니다."
 
 #: src/common/outbound.c:2685
 msgid "HOP <nick>, gives chanhalf-op status to the nick (needs chanop)"
-msgstr "HOP <Nick>, gibt Nick HalbOp-Status (Erfordert Op-Status)"
+msgstr "HOP <대화명>, 해당 사용자에게 관리권한을 부여합니다 (관리권한 필요)"
 
 #: src/common/outbound.c:2687
 msgid ""
@@ -289,180 +284,180 @@ msgid ""
 "            PRIV, CHAN, NOTI, CTCP, DCC, INVI, ALL\n"
 "    options - NOSAVE, QUIET"
 msgstr ""
-"IGNORE <Maske> <Typen> <Optionen>\n"
-"    Maske    - Hostmaske, die zu ignorieren ist, z.B.: *!*@*.aol.com\n"
-"    Typen    - Datentypen, die zu ignorieren sind, einer oder alle von:\n"
-"               PRIV, CHAN, NOTI, CTCP, DCC, INVI, ALL\n"
-"    Optionen - NOSAVE, QUIET"
+"IGNORE <매스크> <형태..> <추가인수..>\n"
+"    매스크 - 무시할 호스트 매스크, 예: *!*@*.aol.com\n"
+"    형태 - 무시할 형태,  사용가능한 값:\n"
+"            PRIV, CHAN, NOTI, CTCP, DCC, INVI, ALL\n"
+"    추가인수 - NOSAVE, QUIET"
 
 #: src/common/outbound.c:2694
 msgid "INVITE <nick> [<channel>], invites someone to a channel, by default the current channel (needs chanop)"
-msgstr "INVITE <Nick> [<Channel>], lädt jemanden in einen Channel ein, standardmäßig den aktuellen (Erfordert Op-Status)"
+msgstr "INVITE <대화명> [<대화방>], 누군가를 대화방에 초대합니다. 대화방의 기본값은 현재 대화방 입니다.(관리권한 필요)"
 
 #: src/common/outbound.c:2695
 msgid "JOIN <channel>, joins the channel"
-msgstr "JOIN <Channel>, betritt einen Channel"
+msgstr "JOIN <대화방> [<암호>], 대화방에 참여 합니다."
 
 #: src/common/outbound.c:2697
 msgid "KICK <nick>, kicks the nick from the current channel (needs chanop)"
-msgstr "KICK <Nick>, kickt den Nick aus dem aktuellen Channel (Erfordert Op-Status)"
+msgstr "KICK <대화명>, 해당 사용자를 현재 대화방에서 강제 퇴장 시킵니다 (관리권한 필요)"
 
 #: src/common/outbound.c:2699
 msgid "KICKBAN <nick>, bans then kicks the nick from the current channel (needs chanop)"
-msgstr "KICKBAN <Nick>, bannt den Nick und kickt dann den Nick aus dem aktuellen Channel (Erfordert Op-Status)"
+msgstr "KICKBAN <대화명>, 해당 사용자를 대화방에서 강제 퇴장시키고 다시 참여하지 못하게 합니다.(관리권한 필요)"
 
 #: src/common/outbound.c:2702
 msgid "LAGCHECK, forces a new lag check"
-msgstr "LAGCHECK, erzwingt eine neue Lag-Prüfung"
+msgstr "LAGCHECK, 새로운 lag 확인"
 
 #: src/common/outbound.c:2704
 msgid "LASTLOG <string>, searches for a string in the buffer"
-msgstr "LASTLOG <Zeichenkette>, sucht im Puffer nach einer Zeichenkette"
+msgstr "LASTLOG <문자열>, 기억공간에서 해당 문자열을 검색합니다"
 
 #: src/common/outbound.c:2706
 msgid "LOAD <file>, loads a plugin or script"
-msgstr "LOAD <Datei>, lädt ein Plugin oder ein Skript"
+msgstr "LOAD <화일>, 추가기능이나 혼자말을 읽어 들입니다."
 
 #: src/common/outbound.c:2709
 msgid "MDEHOP, Mass deop's all chanhalf-ops in the current channel (needs chanop)"
-msgstr "MDEHOP, Nimmt allen HalbOps im aktuellen Channel den HalbOp-Status (Erfordert Op-Status)"
+msgstr "MDEHOP, 현재 대화방에서  모든 관리자의 권한을 박탈합니다. (관리권한 필요)"
 
 #: src/common/outbound.c:2711
 msgid "MDEOP, Mass deop's all chanops in the current channel (needs chanop)"
-msgstr "MDEOP, Nimmt allen Ops im aktuellen Channel den Op-Status (Erfordert Op-Status)"
+msgstr "MDEOP, 현재 대화방에서  모든 관리자의 권한을 박탈합니다. (관리권한 필요)"
 
 #: src/common/outbound.c:2713
 msgid "ME <action>, sends the action to the current channel (actions are written in the 3rd person, like /me jumps)"
-msgstr "ME <Aktion>, sendet die Aktion in den aktuellen Channel (Aktionen werden in der 3. Person geschrieben, wie /me springt)"
+msgstr "ME <행동>, 현재 대화방에서  행동을 취합니다. (행동은 3자에게 사용합니다. 예: /me 후다다닭==33 )"
 
 #: src/common/outbound.c:2715
 msgid "MKICK, Mass kicks everyone except you in the current channel (needs chanop)"
-msgstr "MKICK, Kickt alle außer Sie im aktuellen Channel (Erfordert Op-Status)"
+msgstr "MKICK, 현재 대화방에서 모든 사람을 강제 퇴장 시킵니다. (관리권한 필요)"
 
 #: src/common/outbound.c:2718
 msgid "MOP, Mass op's all users in the current channel (needs chanop)"
-msgstr "MOP, gibt allen Benutzern im aktuellen Channel Op (Erfordert Op-Status)"
+msgstr "MOP, 현재 대화방의 모든 사용자에게 관리 권한을 부여합니다 (관리권한 필요)"
 
 #: src/common/outbound.c:2719
 msgid "MSG <nick> <message>, sends a private message"
-msgstr "MSG <Nick> <Nachricht>, sendet eine private Nachricht"
+msgstr "MSG <대화명> <메세지>, 귓속말을 보냅니다."
 
 #: src/common/outbound.c:2722
 msgid "NAMES, Lists the nicks on the current channel"
-msgstr "NAMES, Listet die Nicks im aktuellen Channel auf"
+msgstr "NAMES, 현재 대화방에 참여하고 있는 모든 대화명을 출력합니다."
 
 #: src/common/outbound.c:2724
 msgid "NCTCP <nick> <message>, Sends a CTCP notice"
-msgstr "NCTCP <Nick> <Nachricht>, Sendet eine CTCP-Notiz"
+msgstr "NCTCP <대화명> <메세지>, CTCP 알림 메세지를 보냅니다."
 
 #: src/common/outbound.c:2725
 msgid "NEWSERVER <hostname> [<port>]"
-msgstr "NEWSERVER <Hostname> [<Port>], verbindet mit einem Server in einem neuen Reiter"
+msgstr "NEWSERVER <호스트명> [<포트>], 새로운 서버에 접속합니다."
 
 #: src/common/outbound.c:2726
 msgid "NICK <nickname>, sets your nick"
-msgstr "NICK <Nickname>, setzt Ihren Nick"
+msgstr "NICK <대화명>, 당신의 대화명을 설정하거나 변경합니다."
 
 #: src/common/outbound.c:2729
 msgid "NOTICE <nick/channel> <message>, sends a notice. Notices are a type of message that should be auto reacted to"
-msgstr "NOTICE <Nick/Channel> <Nachricht>, sendet eine Notiz. Notizen sind Nachrichten, auf die automatisch reagiert werden sollte"
+msgstr "NOTICE <대화명/대화방> <메세지>, 공지를 보냅니다. 공지사항은 자동으로 취해지는 메세지의형태 입니다."
 
 #: src/common/outbound.c:2731
 msgid "NOTIFY [<nick>], lists your notify list or adds someone to it"
-msgstr "NOTIFY [<nick>], zeigt Ihre Benachrichtigungsliste oder fügt jemanden hinzu"
+msgstr "NOTIFY [<대화명>], 당신의 알림 목록에 사용자를 추가 하거나 목록을 봅니다."
 
 #: src/common/outbound.c:2733
 msgid "OP <nick>, gives chanop status to the nick (needs chanop)"
-msgstr "OP <Nick>, gibt Nick Op-Status (Erfordert Op-Status)"
+msgstr "OP <대화명>, 해당 사용자에게 대화방 관리권한을 부여 합니다. (관리권한 필요)"
 
 #: src/common/outbound.c:2735
 msgid "PART [<channel>] [<reason>], leaves the channel, by default the current one"
-msgstr "PART [<Channel>] [<Grund>], verläßt den Channel, standardmäßig den aktuellen"
+msgstr "PART [<대화방>] [<이유>], 대화방을 나갑니다, 대화방의 기본 값은 현재 대화방 입니다."
 
 #: src/common/outbound.c:2737
 msgid "PING <nick | channel>, CTCP pings nick or channel"
-msgstr "PING <Nick | Channel>, pingt den Nick oder Channel per CTCP an"
+msgstr "PING <대화명 | 대화방>, 사용자나 대화방에 CTCP 핑을 보냅니다."
 
 #: src/common/outbound.c:2739
 msgid "QUERY <nick>, opens up a new privmsg window to someone"
-msgstr "QUERY <Nick>, öffnet ein neues Dialogfenster mit jemandem"
+msgstr "QUERY <대화명>, 해당 사용자와 새 귓속말 창을 엽니다."
 
 #: src/common/outbound.c:2741
 msgid "QUIT [<reason>], disconnects from the current server"
-msgstr "QUIT [<Grund>], trennt XChat vom aktuellen Server"
+msgstr "QUIT [<이유>], 서버와 접속을 종료 합니다."
 
 #: src/common/outbound.c:2743
 msgid "QUOTE <text>, sends the text in raw form to the server"
-msgstr "QUOTE <Text>, sendet den Text im Rohformat an den Server"
+msgstr "QUOTE <글월>, 서버에 원시 메세지를 보냅니다."
 
 #: src/common/outbound.c:2746
 msgid "RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as /RECONNECT to reconnect to the current server or with /RECONNECT ALL to reconnect to all the open servers"
-msgstr "RECONNECT [-ssl] [<Host>] [<Port>] [<Passwort>], Kann einfach als /RECONNECT aufgerufen werden um sich mit dem aktuellen Server wiederzuverbinden, oder als /RECONNECT ALL um sich mit allen aktiven Servern wiederzuverbinden"
+msgstr "RECONNECT [-ssl] [<호스트>] [<포트>] [<암호>], 그냥 /RECONNECT 는 현재 서버를 재 접속 하고  /RECONNECT ALL 을 사용하면  접속되어 있는 모든 서버에 재 접속 합니다."
 
 #: src/common/outbound.c:2749
 msgid "RECONNECT [<host>] [<port>] [<password>], Can be called just as /RECONNECT to reconnect to the current server or with /RECONNECT ALL to reconnect to all the open servers"
-msgstr "RECONNECT [<Host>] [<Port>] [<Passwort>], Kann einfach als /RECONNECT aufgerufen werden um sich mit dem aktuellen Server wiederzuverbinden, oder als /RECONNECT ALL um sich mit allen aktiven Servern wiederzuverbinden"
+msgstr "RECONNECT [<호스트>] [<포트>] [<암호>], 그냥 /RECONNECT 는 현재 서버를 재 접속 하고  /RECONNECT ALL 을 사용하면  접속되어 있는 모든 서버에 재 접속 합니다."
 
 #: src/common/outbound.c:2751
 msgid "RECV <text>, send raw data to xchat, as if it was received from the irc server"
-msgstr "RECV <Text>, sendet Rohdaten an XChat, als ob sie vom IRC-Server empfangen wurden"
+msgstr "RECV <글월>, xchat에 원시 자료를 보냈을때, 만약 IRC 서버로부터 받은자료가 있다면 수신 합니다"
 
 #: src/common/outbound.c:2754
 msgid "SAY <text>, sends the text to the object in the current window"
-msgstr "SAY <Text>, sendet den Text ans Ziel im aktuellen Fenster"
+msgstr "SAY <글월>, 현재 창의 객체에게 글월을 보냅니다."
 
 #: src/common/outbound.c:2757
 msgid "SERVCHAN [-ssl] <host> <port> <channel>, connects and joins a channel"
-msgstr "SERVCHAN [-ssl] <Host> <Port> <Channel>, verbindet und betritt einen Channel"
+msgstr "SERVCHAN [-ssl] <호스트> <포트> <대화방>, 접속후, 대화방에 자동 참여 하거나 대화방을 개설합니다."
 
 #: src/common/outbound.c:2760
 msgid "SERVCHAN <host> <port> <channel>, connects and joins a channel"
-msgstr "SERVCHAN <Host> <Port> <Channel>, verbindet und betritt einen Channel"
+msgstr "SERVCHAN <호스트> <포트> <대화방>, 접속후, 대화방에 자동 참여 하거나 대화방을 개설합니다."
 
 #: src/common/outbound.c:2764
 msgid "SERVER [-ssl] <host> [<port>] [<password>], connects to a server, the default port is 6667 for normal connections, and 9999 for ssl connections"
-msgstr "SERVER [-ssl] <Host> [<Port>] [<Passwort>], verbindet mit einem Server, der Standard-Port ist 6667 für normale Verbindungen und 9999 für SSL-Verbindungen"
+msgstr "SERVER [-ssl] <호스트> [<포트>] [<암호>], 서버에 접속합니다, 일반적인 접속의 포트는 6667 이며ssl 접속을 위해 9999 를 사용합니다."
 
 #: src/common/outbound.c:2767
 msgid "SERVER <host> [<port>] [<password>], connects to a server, the default port is 6667"
-msgstr "SERVER <Host> [<Port>] [<Passwort>], verbindet mit einem Server, der Standard-Port ist 6667"
+msgstr "SERVER [-ssl] <호스트> [<포트>] [<암호>], 서버에 접속합니다, 일반적인 접속의 포트는 6667 입니다."
 
 #: src/common/outbound.c:2769
 msgid "SET [-quiet] <variable> [<value>]"
-msgstr "SET [-quiet] <Variable> [<Wert>], setzt eine Variable oder zeigt ihren Wert"
+msgstr "SET [-quiet] <변수> [<값>]"
 
 #: src/common/outbound.c:2772
 msgid "TOPIC [<topic>], sets the topic if one is given, else shows the current topic"
-msgstr "TOPIC [<Thema>], setzt das Thema, wenn eins angegeben wurde, oder zeigt das aktuelle"
+msgstr "TOPIC [<주제>], 주제가 주어지면 주어진 주제를 설정하고, 아닐경우 현재 주제를 보여 줍니다."
 
 #: src/common/outbound.c:2774
 msgid "UNBAN <mask> [<mask>...], unbans the specified masks."
-msgstr "UNBAN <Maske> [<Maske>...], entfernt den Bann für eine spezielle Hostmaske"
+msgstr "UNBAN <매스크> [<매스크>...], 정의된 매스크를 추방목록에서 해제 합니다."
 
 #: src/common/outbound.c:2775
 msgid "UNIGNORE <mask> [QUIET]"
-msgstr "UNIGNORE <Maske> [QUIET], hört auf, die angegebene Hostmaske zu ignorieren"
+msgstr "UNIGNORE <매스크> [QUIET]"
 
 #: src/common/outbound.c:2776
 msgid "UNLOAD <name>, unloads a plugin or script"
-msgstr "UNLOAD <Name>, entfernt ein Plugin oder Skript"
+msgstr "UNLOAD <이름>, 추가기능이나 혼자말의 사용을 중지합니다."
 
 #: src/common/outbound.c:2779
 msgid "VOICE <nick>, gives voice status to someone (needs chanop)"
-msgstr "VOICE <Nick>, gibt jemandem Voice-Status (Erfordert Op-Status)"
+msgstr "VOICE <대화명>, 해당 사용자에게 발언권을 부여합니다 (관리권한 필요)"
 
 #: src/common/outbound.c:2781
 msgid "WALLCHAN <message>, writes the message to all channels"
-msgstr "WALLCHAN <Nachricht>, schreibt eine Nachricht in alle Channels"
+msgstr "WALLCHAN <메세지>, 모든 대화방에 메세지를 보냅니다."
 
 #: src/common/outbound.c:2783
 msgid "WALLCHOP <message>, sends the message to all chanops on the current channel"
-msgstr "WALLCHOP <Nachricht>, sendet eine Nachricht an alle Ops im aktuellen Channel"
+msgstr "WALLCHOP <메세지>, 현재 대화방의 모든 관리자에게 메세지를 보냅니다."
 
 #: src/common/outbound.c:2816
 #, c-format
 msgid "Usage: %s\n"
-msgstr "Benutzung: %s\n"
+msgstr "사용법: %s\n"
 
 #: src/common/outbound.c:2821
 msgid ""
@@ -470,31 +465,31 @@ msgid ""
 "No help available on that command.\n"
 msgstr ""
 "\n"
-"Keine Hilfe für dieses Kommando verfügbar.\n"
+"이 명령은 도움말이 없습니다..\n"
 
 #: src/common/outbound.c:2827
 msgid "No such command.\n"
-msgstr "Kein solches Kommando.\n"
+msgstr "해당 명령이 존재하지 않습니다.\n"
 
 #: src/common/outbound.c:3151
 msgid "Bad arguments for user command.\n"
-msgstr "Ungültige Argumente für das Benutzerkommando.\n"
+msgstr "사용자명령에 잘못된 인수.\n"
 
 #: src/common/outbound.c:3315
 msgid "Too many recursive usercommands, aborting."
-msgstr "Zu viele rekursive Benutzerkommandos - Abbruch."
+msgstr "너무 많은 사용자 명령, 취소됨."
 
 #: src/common/outbound.c:3388
 msgid "Unknown Command. Try /help\n"
-msgstr "Unbekanntes Kommando. Versuchen Sie /help\n"
+msgstr "알 수 없는 명령. /help 를 사용하세요.\n"
 
 #: src/common/plugin.c:359 src/common/plugin.c:400
 msgid "No xchat_plugin_init symbol; is this really an xchat plugin?"
-msgstr "Kein xchat_plugin_init Symbol; ist dies wirklich ein XChat-Plugin?"
+msgstr "xchat_plugin_init 기호가 없음; 정말 xchat의 추가기능 입니까?"
 
 #: src/common/server.c:586
 msgid "Are you sure this is a SSL capable server and port?\n"
-msgstr "Sind Sie sicher, daß dies ein SSL-fähiger Server und Port ist?\n"
+msgstr "정말 SSL이 사용가능한 서버와 포트 입니까?\n"
 
 #: src/common/server.c:933
 #, c-format
@@ -502,553 +497,553 @@ msgid ""
 "Cannot resolve hostname %s\n"
 "Check your IP Settings!\n"
 msgstr ""
-"Kann Hostname %s nicht auflösen\n"
-"Prüfen Sie Ihre IP-Einstellungen!\n"
+"호스트명 %s 를(을) 해석 할 수 없습니다.\n"
+"당신의 IP 설정을 확인 하십시오.!\n"
 
 #: src/common/server.c:938
 msgid "Proxy traversal failed.\n"
-msgstr "Durchlaufen der Proxies gescheitert.\n"
+msgstr "Proxy 연결 실패.\n"
 
 #: src/common/servlist.c:642
 #, c-format
 msgid "Cycling to next server in %s...\n"
-msgstr "Springe zum nächsten Server in %s...\n"
+msgstr "%s 의 다음 서버로 진행....\n"
 
 #: src/common/servlist.c:1050
 #, c-format
 msgid "Warning: \"%s\" character set is unknown. No conversion will be applied for network %s."
-msgstr "Warnung: Zeichensatz \"%s\" ist unbekannt. Es wird keine Konvertierung für Netzwerk %s vorgenommen."
+msgstr "경고: \"%s\" 문자는 알 수 없는 문자열 입니다. %s 네트워크에서는 문자열 변환이적용 되지  않습니다."
 
 #: src/common/textevents.h:6
 msgid "%C22*%O$t$1 added to notify list."
-msgstr "%C22*%O$t$1 zur Benachrichtigungsliste hinzugefügt."
+msgstr "%C22*%O$t$1 님을 알림 목록에 추가 했습니다."
 
 #: src/common/textevents.h:9
 msgid "%C22*%O$t$1 Banlist:%C19 $4%C20 $2%C21 $3"
-msgstr "%C22*%O$t$1 Bannliste:%C19 $4%C20 $2%C21 $3"
+msgstr "%C22*%O$t$1의 추방목록:%C19 $4%C20 $2%C21 $3"
 
 #: src/common/textevents.h:12
 msgid "%C22*%O$tCannot join%C26 %B$1 %O(You are banned)."
-msgstr "%C22*%O$tKann%C26 %B$1%O$t nicht betreten %O(Du bist gebannt)."
+msgstr "%C22*%O$t참여 할 수 없음%C26 %B$1 %O(당신은 추방당했습니다)."
 
 #: src/common/textevents.h:18
 msgid "%C22*%O$t$1 is now known as $2"
-msgstr "%C22*%O$t$1 ist jetzt bekannt als $2"
+msgstr "%C22*%O$t$1님의 대화명은 이제 $2 입니다."
 
 #: src/common/textevents.h:21
 msgid "%C18*$t$1%O $2"
-msgstr "%C18*$t$1%O $2"
+msgstr ""
 
 #: src/common/textevents.h:24
 msgid "%C21*%O$t%C21%B$1%O%C21 $2"
-msgstr "%C21*%O$t%C21%B$1%O%C21 $2"
+msgstr ""
 
 #: src/common/textevents.h:27
 msgid "%C22*%O$t$1 sets ban on $2"
-msgstr "%C22*%O$t$1 setzt einen Bann auf $2"
+msgstr "%C22*%O$t$1님께서 $2 에 추방 하셨습니다."
 
 #: src/common/textevents.h:30
 msgid "%C22*%O$tChannel $1 created on $2"
-msgstr "%C22*%O$tChannel $1 erzeugt am $2"
+msgstr "%C22*%O$t대화방 $1 은(는) $2 에 만들어 졌습니다."
 
 #: src/common/textevents.h:33
 msgid "%C22*%O$t%C26$1%O removes channel half-operator status from%C26 $2"
-msgstr "%C22*%O$t%C26$1%O entfernt Halb-Op-Status bei%C26 $2"
+msgstr "%C22*%O$t%C26$1%O 님께서 %C26$2%C 님에게 대화방 관리권한을 부여 했습니다."
 
 #: src/common/textevents.h:36
 msgid "%C22*%O$t%C26$1%O removes channel operator status from%C26 $2"
-msgstr "%C22*%O$t%C26$1%O entfernt Op-Status bei%C26 $2"
+msgstr "%C22*%O$t%C26$1%O 님께서 %C26$2%C 님에게 대화방 관리권한을 부여 했습니다."
 
 #: src/common/textevents.h:39
 msgid "%C22*%O$t%C26$1%O removes voice from%C26 $2"
-msgstr "%C22*%O$t%C26$1%O entfernt Voice-Status bei%C26 $2"
+msgstr "%C22*%O$t%C26$1%O님께서 %C26 $2 님의 발언권을 박탈 하셨습니다."
 
 #: src/common/textevents.h:42
 msgid "%C22*%O$t$1 sets exempt on $2"
-msgstr "%C22*%O$t$1 setzt Ausnahme auf $2"
+msgstr ""
 
 #: src/common/textevents.h:45
 msgid "%C22*%O$t%C26$1%O gives channel half-operator status to%C26 $2"
-msgstr "%C22*%O$t%C26$1%O gibt Halb-Op-Status an%C26 $2"
+msgstr "%C22*%O$t%C26$1%O 님께서 %C26$2%C 님에게 대화방 관리권한을 부여 했습니다."
 
 #: src/common/textevents.h:48
 msgid "%C22*%O$t$1 sets invite on $2"
-msgstr "%C22*%O$t$1 setzt Einladung für $2"
+msgstr "%C22*%O$t$1 의 초대 상태는 $2 에 설정 되었습니다."
 
 #: src/common/textevents.h:51
 msgid "%UChannel          Users   Topic"
-msgstr "%UChannel          Nutzer  Thema%O"
+msgstr "%U대화방           사용자   제목"
 
 #: src/common/textevents.h:54
 msgid "%C18%B%B$4$1%O%C18%O$t$2"
-msgstr "%C18%B%B$4$1%O%C18%O$t$2"
+msgstr ""
 
 #: src/common/textevents.h:57
 msgid "%C22*%O$t$1 sets mode $2$3 $4"
-msgstr "%C22*%O$t$1 setzt Modus $2$3 $4"
+msgstr "%C22*%O$t$1 님께서  설정 $2$3 $4"
 
 #: src/common/textevents.h:60
 msgid "%C22*%O$t%C22Channel $1 modes: $2"
-msgstr "%C22*%O$t%C22Channel $1 Modi: $2"
+msgstr "%C22*%O$t%C22대화방 $1 의 상태: $2"
 
 #: src/common/textevents.h:63
 msgid "$4%C21%B$1%O$t%C21$2"
-msgstr "$4%C21%B$1%O$t%C21$2"
+msgstr ""
 
 #: src/common/textevents.h:66
 msgid "%C28-%C29$1/$2%C28-%O$t$3"
-msgstr "%C28-%C29$1/$2%C28-%O$t$3"
+msgstr ""
 
 #: src/common/textevents.h:69
 msgid "%C22*%O$t%C26$1%O gives channel operator status to%C26 $2"
-msgstr "%C22*%O$t%C26$1%O gibt Op-Status an%C26 $2"
+msgstr "%C22*%O$t%C26$1%O님께서 %C26$2님에게 대화방 관리권한을 부여 했습니다."
 
 #: src/common/textevents.h:72
 msgid "%C22*%O$t$1 removes exempt on $2"
-msgstr "%C22*%O$t$1 entfernt Ausnahme von $2"
+msgstr ""
 
 #: src/common/textevents.h:75
 msgid "%C22*%O$t$1 removes invite on $2"
-msgstr "%C22*%O$t$1 entfernt Einladung für $2"
+msgstr "%C22*%O$t$1 님께서 $2 대화방의 초대가능 상태를 해제 하셨습니다."
 
 #: src/common/textevents.h:78
 msgid "%C22*%O$t$1 removes channel keyword"
-msgstr "%C22*%O$t$1 entfernt das Channel-Schlüsselwort"
+msgstr "%C22*%O$t$1 님께서 대화방 암호를 제거 하셨습니다."
 
 #: src/common/textevents.h:81
 msgid "%C22*%O$t$1 removes user limit"
-msgstr "%C22*%O$t$1 entfernt die Benutzerobergrenze"
+msgstr "%C22*%O$t$1 님께서 사용자 제한을 해제 하셨습니다."
 
 #: src/common/textevents.h:84
 msgid "%C22*%O$t$1 sets channel keyword to $2"
-msgstr "%C22*%O$t$1 setzt das Channel-Schlüsselwort auf $2"
+msgstr "%C22*%O$t$1 님께서 대화방 암호를 \"$2\"로 설정 하셨습니다."
 
 #: src/common/textevents.h:87
 msgid "%C22*%O$t$1 sets channel limit to $2"
-msgstr "%C22*%O$t$1 setzt die Benutzerobergrenze auf $2"
+msgstr "%C22*%O$t$1 님께서 대화방의 참여자 수를 $2 명으로 제한 하셨습니다."
 
 #: src/common/textevents.h:90
 msgid "%C22*%O$t$1 removes ban on $2"
-msgstr "%C22*%O$t$1 entfernt den Bann auf $2"
+msgstr "%C22*%O$t$1 님께서 대화방 $2 의 추방목록을 제거 하셨습니다."
 
 #: src/common/textevents.h:93
 msgid "%C22*%O$t%C26$1%O gives voice to%C26 $2"
-msgstr "%C22*%O$t%C26$1%O gibt Voice-Status an%C26 $2"
+msgstr "%C22*%O$t%C26$1%O 님께서 %C26 $2 님에게 발언권을 부여 하셨습니다."
 
 #: src/common/textevents.h:96
 msgid "%C22*%O$t%C22Connected. Now logging in..."
-msgstr "%C22*%O$t%C22Verbunden. Anmeldevorgang läuft..."
+msgstr "%C22*%O$t%C22접속되었습니다. 로그인 중입니다...."
 
 #: src/common/textevents.h:99
 msgid "%C22*%O$t%C22Connecting to $1 ($2) port $3%O..."
-msgstr "%C22*%O$t%C22Verbinde mit $1 ($2) Port $3%O..."
+msgstr "%C22*%O$t%C22 $1($2)의 포트 $3%O으로 접속중입니다..."
 
 #: src/common/textevents.h:102
 msgid "%C21*%O$t%C21Connection failed. Error: $1"
-msgstr "%C21*%O$t%C21Verbindung gescheitert. Fehler: $1"
+msgstr "%C21*%O$t%C21접속 실패. 오류: $1"
 
 #: src/common/textevents.h:105
 msgid "%C22*%O$tReceived a CTCP $1 from $2"
-msgstr "%C22*%O$tCTCP $1 von $2 empfangen"
+msgstr "%C22*%O$t$2 님으로 부터 CTCP $1을 받았습니다."
 
 #: src/common/textevents.h:108
 msgid "%C22*%O$tReceived a CTCP $1 from $2 (to $3)"
-msgstr "%C22*%O$tCTCP $1 von $2 empfangen (An $3)"
+msgstr "%C22*%O$t$2 님으로 부터 CTCP $1을 받았습니다.($3)"
 
 #: src/common/textevents.h:111
 msgid "%C19>%O$1%C19<%O$tCTCP $2"
-msgstr "%C19>%O$1%C19<%O$tCTCP $2"
+msgstr ""
 
 #: src/common/textevents.h:114
 msgid "%C22*%O$tReceived a CTCP Sound $1 from $2"
-msgstr "%C22*%O$tCTCP-Sound $1 von $2 empfangen"
+msgstr "%C22*%O$t$2 님으로 부터 CTCP Sound $1을 받았습니다."
 
 #: src/common/textevents.h:117
 msgid "%C22*%O$tDCC CHAT to %C26$1%O aborted."
-msgstr "%C22*%O$DCC CHAT mit %C26$1%O abgebrochen."
+msgstr "%C22*%O$t%C26$1님과 %ODCC CHAT이 취소 되었습니다."
 
 #: src/common/textevents.h:120
 msgid "%C22*%O$tDCC CHAT connection established to %C26$1 %C30[%O$2%C30]"
-msgstr "%C22*%O$tDCC-CHAT-Verbindung mit %C26$1 %C30[%O$2%C30]%O aufgebaut%O"
+msgstr "%C22*%O$t%C26$1님과 DCC CHAT접속되었습니다 %C30[%O$2%C30]"
 
 #: src/common/textevents.h:123
 msgid "%C22*%O$tDCC CHAT to %C26$1%O lost ($4)."
-msgstr "%C22*%O$tDCC CHAT mit %C26$1%O verloren. ($4)."
+msgstr "%C22*%O$t%C26$1님과%O DCC CHAT의 접속이 끊김 ($4)."
 
 #: src/common/textevents.h:126
 msgid "%C22*%O$tReceived a DCC CHAT offer from $1"
-msgstr "%C22*%O$tDCC-CHAT-Angebot von $1 empfangen"
+msgstr "%C22*%O$t$1 님으로 부터 DCC CHAT 요청을 받았습니다."
 
 #: src/common/textevents.h:129
 msgid "%C22*%O$tOffering DCC CHAT to $1"
-msgstr "%C22*%O$tDCC-CHAT an $1 angeboten"
+msgstr "%C22*%O$t$1님에게 DCC CHAT 요청중입니다"
 
 #: src/common/textevents.h:132
 msgid "%C22*%O$tAlready offering CHAT to $1"
-msgstr "%C22*%O$tBiete $1 bereits einen DCC-CHAT an"
+msgstr "%C22*%O$t이미 $1 님에게 요청 중입니다."
 
 #: src/common/textevents.h:135
 msgid "%C22*%O$tDCC $1 connect attempt to%C26 $2%O failed (err=$3)."
-msgstr "%C22*%O$tDCC $1 Verbindung mit%C26 $2%O gescheitert (Fehler=$3)."
+msgstr ""
 
 #: src/common/textevents.h:138
 msgid "%C22*%O$tReceived '$1%O' from $2"
-msgstr "%C22*%O$t '$1%O' von $2 empfangen"
+msgstr "%C22*%O$t$2님으로부터 '$1%O'을(를) 받았습니다."
 
 #: src/common/textevents.h:141
 #, c-format
 msgid "%C24,18 Type  To/From    Status  Size    Pos     File         "
-msgstr "%C24,18 Typ   Zu/Von     Status  Größe   Pos     Datei"
+msgstr "%C24,18 형태  송/수신    상태  크기    위치    화일         "
 
 #: src/common/textevents.h:144
 msgid "%C22*%O$tReceived a malformed DCC request from %C26$1%O.%010%C22*%O$tContents of packet: $2"
-msgstr "%C22*%O$tFehlformatierte DCC Anforderung von %C26$1%O.%010%C22*%O$tInhalt des Pakets: $2"
+msgstr ""
 
 #: src/common/textevents.h:147
 msgid "%C22*%O$tOffering%C26 $1%O to%C26 $2"
-msgstr "%C22*%O$tBiete%C26 $2%O %C26 $1 %O$tan"
+msgstr "%C22*%O$t%C26$2%O님에게  %C26$1%O을 전송 합니다."
 
 #: src/common/textevents.h:150
 msgid "%C22*%O$tNo such DCC offer."
-msgstr "%C22*%O$tKein solches DCC-Angebot."
+msgstr "%C22*%O$tDCC 제공자를 찾을 수 없습니다."
 
 #: src/common/textevents.h:153
 msgid "%C22*%O$tDCC RECV%C26 $2%O to%C26 $1%O aborted."
-msgstr "%C22*%O$tDCC RECV%C26 $2%O von%C26 $1%O abgebrochen."
+msgstr "%C22*%O$tDCC 받기%C26 $1%O님으로 부터 %C26$2%O 받기가 취소 되었습니다."
 
 #: src/common/textevents.h:156
 msgid "%C22*%O$tDCC RECV%C26 $1%O from%C26 $3%O complete %C30[%C26$4%O cps%C30]%O."
-msgstr "%C22*%O$tDCC RECV%C26 $1%O von%C26 $3%O vollständig %C30[%C26$4%O cps%C30]%O."
+msgstr "%C22*%O$tDCC 받기%C26$3%O님으로 부터 %C26$1%O받기 완료 %C30[%C26$4%O cps%C30]%O."
 
 #: src/common/textevents.h:159
 msgid "%C22*%O$tDCC RECV connection established to%C26 $1 %C30[%O$2%C30]"
-msgstr "%C22*%O$tDCC RECV Verbindung aufgebaut mit%C26 $1 %C30[%O$2%C30]"
+msgstr "%C22*%O$tDCC 받기%C26 $1%O님과 접속됨 %C30[%O$2%C30]"
 
 #: src/common/textevents.h:162
 msgid "%C22*%O$tDCC RECV%C26 $1%O from%C26 $3%O failed ($4)."
-msgstr "%C22*%O$tDCC RECV%C26 $1%O von%C26 $3%O gescheitert. ($4)."
+msgstr "%C22*%O$tDCC 받기%C26$3%O님에게 %C26$1%O 받기 실패 ($4)."
 
 #: src/common/textevents.h:165
 msgid "%C22*%O$tDCC RECV: Cannot open $1 for writing ($2)."
-msgstr "%C22*%O$tDCC RECV: Kann $1 nicht schreiben ($2)."
+msgstr "%C22*%O$tDCC 받기: $1 을 쓸 수 없습니다 ($2)."
 
 #: src/common/textevents.h:168
 msgid "%C22*%O$tThe file%C26 $1%C already exists, saving it as%C26 $2%O instead."
-msgstr "%C22*%O$tDie Datei%C26 $1%C existiert bereits, speichere stattdessen als%C26 $2%O."
+msgstr "%C22*%O$t화일%C26 $1%C은(는) 이미 있습니다. 이름에 %C26$2%O(을)를  추가합니다."
 
 #: src/common/textevents.h:171
 msgid "%C22*%O$t%C26$1 %Ohas requested to resume%C26 $2 %Cfrom%C26 $3%C."
-msgstr "%C22*%O$t%C26$1 %Ohat angefordert,%C26 $2 %Cvon%C26 $3%C an fortzusetzen."
+msgstr "%C22*%O$t%C26$1%O님께서 화일 %C26$2%C를 %C26$3%C부터 이어 받기를 요청 하셨습니다."
 
 #: src/common/textevents.h:174
 msgid "%C22*%O$tDCC SEND%C26 $2%O to%C26 $1%O aborted."
-msgstr "%C22*%O$tDCC SEND%C26 $2%O an%C26 $1%O abgebrochen."
+msgstr "%C22*%O$tDCC 보내기%C26$1%O님에게 %C26$2%O 보내기 취소됨."
 
 #: src/common/textevents.h:177
 msgid "%C22*%O$tDCC SEND%C26 $1%O to%C26 $2%O complete %C30[%C26$3%O cps%C30]%O."
-msgstr "%C22*%O$tDCC SEND%C26 $1%O an%C26 $2%O vollständig %C30[%C26$3%O cps%C30]%O."
+msgstr "%C22*%O$tDCC 보내기%C26$2%O님에게 화일 %C26$1%O 보내기 완료 %C30[%C26$3%O cps%C30]%O."
 
 #: src/common/textevents.h:180
 msgid "%C22*%O$tDCC SEND connection established to%C26 $1 %C30[%O$2%C30]"
-msgstr "%C22*%O$tDCC SEND Verbindung aufgebaut mit%C26 $1 %C30[%O$2%C30]"
+msgstr "%C22*%O$tDCC 보내기 %C26$1%C님과 접속됨.%C30[%O$2%C30]"
 
 #: src/common/textevents.h:183
 msgid "%C22*%O$tDCC SEND%C26 $1%O to%C26 $2%O failed. $3"
-msgstr "%C22*%O$tDCC SEND%C26 $1%O an%C26 $2%O gescheitert. $3"
+msgstr "%C22*%O$tDCC 보내기%C26 $1%O을(를) %C26$2%O님에게 보내기 실패. $3"
 
 #: src/common/textevents.h:186
 msgid "%C22*%O$t%C26$1 %Ohas offered%C26 $2 %O(%C26$3 %Obytes)"
-msgstr "%C22*%O$t%C26$1 %Ohat uns%C26 $2 %Oangeboten (%C26$3 %Obytes)"
+msgstr "%C22*%O$t%C26$1%O님께서 %C26$2%O를 보내셨습니다.(%C26$3 %Obytes)"
 
 #: src/common/textevents.h:189
 msgid "%C22*%O$tDCC $1%C26 $2 %Oto%C26 $3 %Cstalled - aborting."
-msgstr "%C22*%O$tDCC $1%C26 $2 %Oan%C26 $3 %Chängt - Abbruch."
+msgstr "%C22*%O$tDCC $1%C26 $2 %Oto%C26 $3 %C지연됨 - 취소됨."
 
 #: src/common/textevents.h:192
 msgid "%C22*%O$tDCC $1%C26 $2 %Oto%C26 $3 %Otimed out - aborting."
-msgstr "%C22*%O$tDCC $1%C26 $2 %Oan%C26 $3%O: Zeitüberschreitung - Abbruch."
+msgstr "%C22*%O$tDCC $1%C26 $2 %Oto%C26 $3 %O시간제한 - 취소됨."
 
 #: src/common/textevents.h:195
 msgid "%C22*%O$t$1 deleted from notify list."
-msgstr "%C22*%O$t$1 von der Benachrichtigungsliste gelöscht."
+msgstr "%C22*%O$t$1님은 알림 목록에서 삭제 되었습니다."
 
 #: src/common/textevents.h:198
 msgid "%C22*%O$tDisconnected ($1)."
-msgstr "%C22*%O$tGetrennt ($1)."
+msgstr "%C22*%O$t접속 종료됨 ($1)."
 
 #: src/common/textevents.h:201
 msgid "%C22*%O$tFound your IP: [$1]"
-msgstr "%C22*%O$tHabe Deine IP gefunden: [$1]"
+msgstr "%C22*%O$t당신의 IP를 찾았습니다: [$1]"
 
 #: src/common/textevents.h:204
 msgid "$1$t$2"
-msgstr "$1$t$2"
+msgstr ""
 
 #: src/common/textevents.h:207
 msgid "%O%C26$1%O added to ignore list."
-msgstr "%O%C26$1%O wird jetzt ignoriert."
+msgstr "%O%C26$1%O님을 무시목록에 추가 했습니다."
 
 #: src/common/textevents.h:210
 msgid "Ignore on %C26$1%O changed."
-msgstr "Ignorierung von %C26$1%O geändert."
+msgstr "모시목록의 %C26$1%O이(가) 변경됨."
 
 #: src/common/textevents.h:213
 #, c-format
 msgid "%C24,18                                                              "
-msgstr "%C24,18                                                              "
+msgstr ""
 
 #: src/common/textevents.h:216
 #, c-format
 msgid "%C24,18 Hostmask                  PRIV NOTI CHAN CTCP DCC  INVI UNIG "
-msgstr "%C24,18 Hostmaske                 DIAL NOTI CHAN CTCP DCC  EINL UNIG "
+msgstr "%C24,18 호스트 매스크              귓말 알림 대화 CTCP 연결 초대 무시안함 "
 
 #: src/common/textevents.h:219
 msgid "%O%C26$1%O removed from ignore list."
-msgstr "%O%C26$1%O wird nicht mehr ignoriert."
+msgstr "%O%C26$1%O님을 무시목록에서 제거 했습니다."
 
 #: src/common/textevents.h:222
 msgid "  Ignore list is empty."
-msgstr "  Niemand wird ignoriert."
+msgstr "  무시 목록이 비어 있습니다."
 
 #: src/common/textevents.h:225
 msgid "%C22*%O$tCannot join%C26 %B$1 %O(Channel is invite only)."
-msgstr "%C22*%O$tKann%C26 %B$1 %O$tnicht betreten %O(Channel ist nur auf Einladung zu betreten)."
+msgstr "%C22*%O$t대화방%C26 %B$1에 참여 할 수 없습니다. %O(대화방이 초대만 가능한 상태입니다)."
 
 #: src/common/textevents.h:228
 msgid "%C22*%O$tYou have been invited to%C26 $1%O by%C26 $2%C (%C26$3%C)"
-msgstr "%C22*%O$tDu wurdest von%C26 $2%C nach %C26 $1%O eingeladen (%C26$3%C)"
+msgstr "%C22*%O$t%C26$2%C님께서 대화방 %C26$1%C으로 당신을 초대 하셨습니다. (%C26$3%C)"
 
 #: src/common/textevents.h:231
 msgid "%C19*%O$t%C19%B$1 %B($3) has joined $2"
-msgstr "%C19*%O$t%C19%B$1 %B($3) hat $2 betreten"
+msgstr "%C19*%O$t%C19%B$1 %B($3) 님께서 대화방 $2에 참여하셨습니다."
 
 #: src/common/textevents.h:234
 msgid "%C22*%O$tCannot join%C26 %B$1 %O(Requires keyword)."
-msgstr "%C22*%O$tKann%C26 %B$1 %Onicht betreten (Erfordert ein Schlüsselwort)."
+msgstr "%C22*%O$t대화방%C26 %B$1에 참여 할 수 없습니다. %O(암호가 필요합니다)."
 
 #: src/common/textevents.h:237
 msgid "%C21*%O$t%C21$1 has kicked $2 from $3 ($4%O%C21)"
-msgstr "%C21*%O$t%C21$1 hat $2 aus $3 gekickt ($4%O%C21)"
+msgstr "%C21*%O$t%C21$1님께서 $3에서 $2님을 추방 하셨습니다. (이유:$4%O%C21)"
 
 #: src/common/textevents.h:240
 msgid "%C22*%O$tYou have been killed by $1 ($2%O%C22)"
-msgstr "%C22*%O$tSie sind von $1 gekillt worden ($2%O%C22)"
+msgstr "%C22*%O$t당신은 $1님으로부터 죽임을 당했습니다 (이유:$2%O%C22)"
 
 #: src/common/textevents.h:243
 msgid "%C19>%O$1%C19<%O$t$2%O"
-msgstr "%C19>%O$1%C19<%O$t$2%O"
+msgstr ""
 
 #: src/common/textevents.h:246
 msgid "%C16*%O$t$1%O"
-msgstr "%C16*%O$t$1%O"
+msgstr ""
 
 #: src/common/textevents.h:249
 msgid "%C22*%O$t%C22MOTD Skipped."
-msgstr "%C22*%O$t%C22MOTD übersprungen."
+msgstr "%C22*%O$t%C22공지사항 무시됨."
 
 #: src/common/textevents.h:252
 msgid "%C22*%O$t$1 already in use. Retrying with $2..."
-msgstr "%C22*%O$t$1 bereits in Benutzung. Erneuter Versuch mit $2..."
+msgstr "%C22*%O$t대화명 \"$1\"이 이미 사용중입니다. \"$2\"로 재시도 합니다..."
 
 #: src/common/textevents.h:255
 msgid "%C22*%O$tNickname already in use. Use /NICK to try another."
-msgstr "%C22*%O$tNickname bereits in Benutzung, benutzen Sie /NICK um einen anderen zu probieren."
+msgstr "%C22*%O$t대화명이 이미 사용중입니다. /NICK 명령으로 다른 대화명으로 변경 하십시오."
 
 #: src/common/textevents.h:258
 msgid "%C22*%O$tNo such DCC."
-msgstr "%C22*%O$tKein solcher DCC."
+msgstr "%C22*%O$t요청된 DCC가 없습니다."
 
 #: src/common/textevents.h:261
 msgid "%C22*%O$tNo process is currently running"
-msgstr "%C22*%O$tKein solcher Prozess läuft derzeit"
+msgstr "%C22*%O$t현재 실행중인 프로세스가 없습니다."
 
 #: src/common/textevents.h:264
 msgid "%C28-%C29$1%C28-%O$t$2"
-msgstr "%C28-%C29$1%C28-%O$t$2"
+msgstr ""
 
 #: src/common/textevents.h:267
 msgid "%C19>%O$1%C19<%O$t$2"
-msgstr "%C19>%O$1%C19<%O$t$2"
+msgstr ""
 
 #: src/common/textevents.h:270
 msgid "$tNotify list is empty."
-msgstr "$tDie Benachrichtigungsliste ist leer."
+msgstr "$t알림 목록은 비어 있습니다."
 
 #: src/common/textevents.h:273
 msgid "%C24,18 %B  Notify List                           "
-msgstr "%C24,18 %B  Benachrichtigungsliste        "
+msgstr "%C24,18 %B  알림 목록"
 
 #: src/common/textevents.h:276
 msgid "%C22*%O$t$1 users in notify list."
-msgstr "%C22*%O$t$1 Nutzer in der Benachrichtigungsliste."
+msgstr "%C22*%O$t$1명의 사용자가 알림 몰록에 있습니다."
 
 #: src/common/textevents.h:279
 msgid "%C22*%O$tNotify: $1 is offline ($2)."
-msgstr "%C22*%O$tBenachrichtigung: $1 ist offline ($2)."
+msgstr "%C22*%O$t알림: $1님이 종료하셨습니다. ($2)."
 
 #: src/common/textevents.h:282
 msgid "%C22*%O$tNotify: $1 is online ($2)."
-msgstr "%C22*%O$tBenachrichtigung: $1 ist online ($2)."
+msgstr "%C22*%O$t알림: $1님이 접속 하셨습니다. ($2)."
 
 #: src/common/textevents.h:288
 msgid "%C23*%O$t%C23$1 (%O%C23$2) has left $3"
-msgstr "%C23*%O$t%C23$1 (%O%C23$2) hat $3 verlassen"
+msgstr "%C23*%O$t%C23$1님(%O%C23$2)께서 대화방 $3에서 퇴장 하셨습니다."
 
 #: src/common/textevents.h:291
 msgid "%C23*%O$t%C23$1 (%O%C23$2) has left $3 (%O%C23$4)"
-msgstr "%C23*%O$t%C23$1 (%O%C23$2) hat $3 verlassen (%O%C23$4)"
+msgstr "%C23*%O$t%C23$1님(%O%C23$2)께서 $3에서 퇴장 하셨습니다. (이유:%O%C23$4)"
 
 #: src/common/textevents.h:294
 msgid "%C22*%O$tPing reply from $1: $2 second(s)"
-msgstr "%C22*%O$tPing-Antwort von $1: $2 Sekunde(n)"
+msgstr "%C22*%O$t$1 으로부터 핑 회신: $2 초"
 
 #: src/common/textevents.h:297
 msgid "%C22*%O$tNo ping reply for $1 seconds, disconnecting."
-msgstr "%C22*%O$tKeine Ping-Antwort seit $1 Sekunden, trenne."
+msgstr "%C22*%O$t$1초 동안 핑의 회신이 없으므로, 접속이 종료 되었습니다."
 
 #: src/common/textevents.h:300
 msgid "%C28*%C29$3$1%C28*$t%O$2"
-msgstr "%C28*%C29$3$1%C28*$t%O$2"
+msgstr ""
 
 #: src/common/textevents.h:303
 msgid "%C18%B%B$3$1%O$t$2"
-msgstr "%C18%B%B$3$1%O$t$2"
+msgstr ""
 
 #: src/common/textevents.h:306
 msgid "%C22*%O$tA process is already running"
-msgstr "%C22*%O$tEin Prozess läuft bereits"
+msgstr "%C22*%O$t프로세스가 이미 실행중입니다."
 
 #: src/common/textevents.h:309
 msgid "%C23*%O$t%C23$1 has quit (%O%C23$2)"
-msgstr "%C23*%O$t%C23$1 hat die Verbindung getrennt (%O%C23$2)"
+msgstr "%C23*%O$t%C23$1 님께서 종료하셨습니다. (%O%C23$2)"
 
 #: src/common/textevents.h:312
 msgid "%C22*%O$t$1 sets modes%B %C30[%O$2%B%C30]"
-msgstr "%C22*%O$t$1 setzt die Modi%B %C30[%O$2%B%C30]"
+msgstr "%C22*%O$t$1님께서 상태를 설정하셨습니다.%B %C30[%O$2%B%C30]"
 
 #: src/common/textevents.h:315
 msgid "%C28-%C29$1/Wallops%C28-%O$t$2"
-msgstr "%C28-%C29$1/Wallops%C28-%O$t$2"
+msgstr ""
 
 #: src/common/textevents.h:318
 msgid "%C22*%O$tLooking up IP number for%C26 $1%O..."
-msgstr "%C22*%O$tSuche nach IP-Nummer für%C26 $1%O..."
+msgstr "%C22*%O$tIP 주소 %C26 $1 를 찾는중%O.."
 
 #: src/common/textevents.h:321
 msgid "%C22*%O$t%C22Connected."
-msgstr "%C22*%O$t%C22Verbunden."
+msgstr "%C22*%O$t%C22접속되었습니다."
 
 #: src/common/textevents.h:324 src/common/textevents.h:330
 #: src/common/textevents.h:333
 msgid "%C22*%O$t$1"
-msgstr "%C22*%O$t$1"
+msgstr ""
 
 #: src/common/textevents.h:327
 msgid "%C22*%O$t%C22Looking up $1"
-msgstr "%C22*%O$t%C22Suche nach $1"
+msgstr "%C22*%O$t%C22찾는중 $1.."
 
 #: src/common/textevents.h:336
 msgid "%C22*%O$tStopped previous connection attempt (pid=$1)"
-msgstr "%C22*%O$tVorhergehender Verbindungsversuch (PID=$1) abgebrochen"
+msgstr "%C22*%O$t이전 접속이 중지됨 (pid=$1)"
 
 #: src/common/textevents.h:339
 msgid "%C29*%O$t%C29Topic for $1%C %C29is: $2"
-msgstr "%C29*%O$t%C29Das Thema für $1%C %C29ist: $2"
+msgstr "%C29*%O$t%C29 대화방 $1%C %C29의 주제는 $2 입니다."
 
 #: src/common/textevents.h:342
 msgid "%C29*%O$t%C29Topic for $1%C %C29set by $2%C %C29at $3"
-msgstr "%C29*%O$t%C29Das Thema für $1%C %C29wurde gesetzt durch $2%C %C29um $3"
+msgstr "%C29*%O$t%C29대화방 $1%C %C29의 주제는 $2%C %C29님께서 설정하셨습니다. ($3)"
 
 #: src/common/textevents.h:345
 msgid "%C22*%O$t$1 has changed the topic to: $2"
-msgstr "%C22*%O$t$1 hat das Thema geändert zu: $2"
+msgstr "%C22*%O$t$1 님께서 주제를 $2(으)로 변경하셨습니다."
 
 #: src/common/textevents.h:348
 msgid "%C22*%O$tUnknown host. Maybe you misspelled it?"
-msgstr "%C22*%O$tUnbekannter Host. Vielleicht haben Sie ihn falsch geschrieben?"
+msgstr "%C22*%O$t알 수 없는 호스트. 잘못 입력 하신것이 아닙니까?"
 
 #: src/common/textevents.h:351
 msgid "%C22*%O$tCannot join%C26 %B$1 %O(User limit reached)."
-msgstr "%C22*%O$tKann%C26 %B$1 %Onicht betreten (Benutzerobergrenze erreicht)."
+msgstr "%C22*%O$t대화방 %C26%B$1%C에 참여 할 수 없습니다. %O(참여인원수 제한)."
 
 #: src/common/textevents.h:354
 msgid "%C22*%O$t%C26Users on $1:%C $2"
-msgstr "%C22*%O$t%C26Benutzer in $1:%C $2"
+msgstr "%C22*%O$t%C26대화방 $1의 사용자:%C $2"
 
 #: src/common/textevents.h:357
 msgid "%C22*%O$t%C28[%O$1%C28] %Cis away %C30(%O$2%O%C30)"
-msgstr "%C22*%O$t%C28[%O$1%C28] %Cist abwesend %C30(%O$2%O%C30)"
+msgstr "%C22*%O$t%C28[%O$1%C28] %C님께서 자리를 비우셨습니다. %C30(%O$2%O%C30)"
 
 #: src/common/textevents.h:360 src/common/textevents.h:384
 msgid "%C22*%O$t%C28[%O$1%C28]%O $2"
-msgstr "%C22*%O$t%C28[%O$1%C28]%O $2"
+msgstr ""
 
 #: src/common/textevents.h:363
 msgid "%C22*%O$t%C28[%O$1%C28] %OEnd of WHOIS list."
-msgstr "%C22*%O$t%C28[%O$1%C28] %OEnde der WHOIS-Liste."
+msgstr "%C22*%O$t%C28[%O$1%C28] %OWHOIS 목록의 끝."
 
 #: src/common/textevents.h:366
 msgid "%C22*%O$t%C28[%O$1%C28] %O$2"
-msgstr "%C22*%O$t%C28[%O$1%C28] %O$2"
+msgstr ""
 
 #: src/common/textevents.h:369
 msgid "%C22*%O$t%C28[%O$1%C28] %O$2%C27 $3"
-msgstr "%C22*%O$t%C28[%O$1%C28] %O$2%C27 $3"
+msgstr ""
 
 #: src/common/textevents.h:372
 msgid "%C22*%O$t%C28[%O$1%C28] %Oreal user@host%C27 $2%O, real IP%C27 $3"
-msgstr "%C22*%O$t%C28[%O$1%C28] %Owahrer Nutzer@Host%C27 $2%O, wahre IP%C27 $3"
+msgstr "%C22*%O$t%C28[%O$1%C28] %O실제사용자@호스트%C27 $2%O, 실제 IP%C27 $3"
 
 #: src/common/textevents.h:375
 msgid "%C22*%O$t%C28[%O$1%C28]%O idle%C26 $2"
-msgstr "%C22*%O$t%C28[%O$1%C28]%O untätig%C26 $2"
+msgstr "%C22*%O$t%C28[%O$1%C28]%O 잠수%C26 $2"
 
 #: src/common/textevents.h:378
 msgid "%C22*%O$t%C28[%O$1%C28]%O idle%C26 $2%O, signon:%C26 $3"
-msgstr "%C22*%O$t%C28[%O$1%C28]%O untätig%C26 $2%O, Online seit:%C26 $3"
+msgstr "%C22*%O$t%C28[%O$1%C28]%O 잠수%C26 $2%O, 접속:%C26 $3"
 
 #: src/common/textevents.h:381
 msgid "%C22*%O$t%C28[%O$1%C28] %C30(%O$2@$3%C30)%O: $4"
-msgstr "%C22*%O$t%C28[%O$1%C28] %C30(%O$2@$3%C30)%O: $4"
+msgstr ""
 
 #: src/common/textevents.h:387
 msgid "%C19*%O$t%C19Now talking on $2"
-msgstr "%C19*%O$t%C19Du sprichst jetzt in $2"
+msgstr "%C19*%O$t%C19당신은 대화방 $2 에 참여합니다."
 
 #: src/common/textevents.h:390
 #, c-format
 msgid "%C23*$tYou have left channel $3"
-msgstr "%C23*$tDu hast Channel $3 verlassen"
+msgstr "%C23*$t당신은 $3에서 퇴장 하셨습니다."
 
 #: src/common/textevents.h:393
 msgid "%C23*$tYou have left channel $3 (%O%C23$4%O%C23)"
-msgstr "%C23*$tDu hast Channel $3 verlassen (%O%C23$4%O%C23)"
+msgstr "%C23*$t당신은 대화방 $3 에서 퇴장 하셨습니다. (이유:%O%C23$4%O%C23)"
 
 #: src/common/textevents.h:396
 msgid "%C23*$tYou have been kicked from $2 by $3 ($4%O%C23)"
-msgstr "%C23*$tDu wurdest durch $3 aus $2 gekickt ($4%O%C23)"
+msgstr "%C23*$t당신은 $3님으로부터 $2 대화방에서 강제 퇴장 당했습니다. (이유:$4%O%C23)"
 
 #: src/common/textevents.h:399
 msgid "%C22*%O$tYou've invited%C26 $1%O to%C26 $2%O (%C26$3%O)"
-msgstr "%C22*%O$tDu hast %C26 $1%O nach%C26 $2%O$t eingeladen %O(%C26$3%O)"
+msgstr "%C22*%O$t%C26$1%O님께서 당신을 대화방 %C26$2%O로 초대 하고 계십니다. (%C26$3%O)"
 
 #: src/common/textevents.h:402
 msgid "%C31%B%B$4$1%O$t%C30$2"
-msgstr "%C31%B%B$4$1%O$t%C30$2"
+msgstr ""
 
 #: src/common/textevents.h:405
 msgid "%C22*%O$tYou are now known as $2"
-msgstr "%C22*%O$tDu bist jetzt bekannt als $2"
+msgstr "%C22*%O$t당신의 대화명은 $2 입니다."
 
 #: src/common/text.c:207
 #, c-format
 msgid "**** ENDING LOGGING AT %s\n"
-msgstr "**** BEENDE LOGBUCH UM %s\n"
+msgstr "**** 기록 종료 : %s\n"
 
 #: src/common/text.c:324
 #, c-format
 msgid "**** BEGIN LOGGING AT %s\n"
-msgstr "**** BEGINNE LOGBUCH UM %s\n"
+msgstr "**** 기록 시작 : %s\n"
 
 #: src/common/text.c:343
 #, c-format
@@ -1056,28 +1051,28 @@ msgid ""
 "* Can't open log file(s) for writing. Check the\n"
 "  permissions on %s/xchatlogs"
 msgstr ""
-"* Kann Logbuchdatei(en) nicht zum Schreiben öffnen. Prüfen Sie\n"
-"  die Berechtigungen von %s/xchatlogs"
+"* 기록 화일을 열 수 없습니다. 먼저\n"
+"  %s/xchatlogs 화일의 권한을 확인 하십시오"
 
 #: src/common/text.c:558
 msgid "Left message"
-msgstr "Linke Nachricht"
+msgstr "왼쪽 메세지"
 
 #: src/common/text.c:559
 msgid "Right message"
-msgstr "Rechte Nachricht"
+msgstr "오른쪽 메세지"
 
 #: src/common/text.c:563
 msgid "The nick of the joining person"
-msgstr "Der Nick der Person, die den Channel betritt"
+msgstr "참여하는 사용자의 대화명"
 
 #: src/common/text.c:564
 msgid "The channel being joined"
-msgstr "Der Channel, der betreten wird"
+msgstr "참여한 대화방"
 
 #: src/common/text.c:565 src/common/text.c:610 src/common/text.c:667
 msgid "The host of the person"
-msgstr "Die Hostmask der Person"
+msgstr "사용자의 호스트"
 
 #: src/common/text.c:569 src/common/text.c:574 src/common/text.c:581
 #: src/common/text.c:648 src/common/text.c:773 src/common/text.c:780
@@ -1092,432 +1087,432 @@ msgstr "Die Hostmask der Person"
 #: src/common/text.c:968 src/common/text.c:976 src/common/text.c:1010
 #: src/common/text.c:1015
 msgid "Nickname"
-msgstr "Nickname"
+msgstr "대화명"
 
 #: src/common/text.c:570
 msgid "The action"
-msgstr "Die Aktion"
+msgstr "행동"
 
 #: src/common/text.c:575
 msgid "The text"
-msgstr "Der Text"
+msgstr "글월"
 
 #: src/common/text.c:576
 msgid "Mode char"
-msgstr "Moduszeichen"
+msgstr "상태"
 
 #: src/common/text.c:577 src/common/text.c:650
 msgid "Identified text"
-msgstr "Identifierter Text"
+msgstr "정보 글월"
 
 #: src/common/text.c:582 src/common/text.c:638 src/common/text.c:644
 #: src/common/text.c:649
 msgid "The message"
-msgstr "Die Nachricht"
+msgstr "메세지"
 
 #: src/common/text.c:586 src/common/text.c:654
 msgid "Old nickname"
-msgstr "Alter Nickname"
+msgstr "이전 대화명"
 
 #: src/common/text.c:587 src/common/text.c:655
 msgid "New nickname"
-msgstr "Neuer Nickname"
+msgstr "새 대화명"
 
 #: src/common/text.c:591
 msgid "Nick of person who changed the topic"
-msgstr "Nick der Person, die das Thema geändert hat"
+msgstr "주제를 변경한 사용자의 대화명"
 
 #: src/common/text.c:592 src/common/text.c:598 src/fe-gtk/chanlist.c:599
 #: src/fe-gtk/chanlist.c:700
 msgid "Topic"
-msgstr "Thema"
+msgstr "주제"
 
 #: src/common/text.c:593 src/common/text.c:597 src/common/text.c:1030
 #: src/fe-gtk/chanlist.c:597 src/fe-gtk/chanlist.c:691
 #: src/fe-gtk/ignoregui.c:176
 msgid "Channel"
-msgstr "Channel"
+msgstr "대화방"
 
 #: src/common/text.c:602 src/common/text.c:661
 msgid "The nickname of the kicker"
-msgstr "Der Nickname des Kickenden"
+msgstr "추방한 사람의 대화명"
 
 #: src/common/text.c:603 src/common/text.c:659
 msgid "The person being kicked"
-msgstr "Die Person, die gekickt wird"
+msgstr "퇴장시킨 사람"
 
 #: src/common/text.c:604 src/common/text.c:611 src/common/text.c:615
 #: src/common/text.c:620 src/common/text.c:660 src/common/text.c:668
 msgid "The channel"
-msgstr "Der Channel"
+msgstr "대화방"
 
 #: src/common/text.c:605 src/common/text.c:662 src/common/text.c:669
 msgid "The reason"
-msgstr "Der Grund"
+msgstr "이유"
 
 #: src/common/text.c:609 src/common/text.c:666
 msgid "The nick of the person leaving"
-msgstr "Der Nick der Person, die den Channel verläßt"
+msgstr "퇴장하는 사람의 대화명"
 
 #: src/common/text.c:616 src/common/text.c:622
 msgid "The time"
-msgstr "Die Zeit"
+msgstr "시간"
 
 #: src/common/text.c:621
 msgid "The creator"
-msgstr "Der Erzeuger"
+msgstr "만든이"
 
 #: src/common/text.c:626
 msgid "Nick"
-msgstr "Nick"
+msgstr "대화명"
 
 #: src/common/text.c:627 src/common/text.c:882
 msgid "Reason"
-msgstr "Grund"
+msgstr "이유"
 
 #: src/common/text.c:628 src/common/text.c:775 src/common/text.c:857
 msgid "Host"
-msgstr "Host"
+msgstr "호스트"
 
 #: src/common/text.c:632 src/common/text.c:637 src/common/text.c:642
 msgid "Who it's from"
-msgstr "Von wem es ist"
+msgstr ""
 
 #: src/common/text.c:633
 msgid "The time in x.x format (see below)"
-msgstr "Die Zeit im x.x-Format (siehe unten)"
+msgstr "x.x 형태의 시간 (아래를 보십시오)"
 
 #: src/common/text.c:643 src/common/text.c:685
 msgid "The Channel it's going to"
-msgstr "Der Channel an den es geht"
+msgstr "대화방 이동"
 
 #: src/common/text.c:673
 msgid "The sound"
-msgstr "Der Klang"
+msgstr "소리"
 
 #: src/common/text.c:674 src/common/text.c:679 src/common/text.c:684
 msgid "The nick of the person"
-msgstr "Der Nick der Person"
+msgstr "사용자의 대화명"
 
 #: src/common/text.c:678 src/common/text.c:683
 msgid "The CTCP event"
-msgstr "Das CTCP-Ereignis"
+msgstr "CTCP 이벤트"
 
 #: src/common/text.c:689
 msgid "The nick of the person who set the key"
-msgstr "Der Nick der Person, die den Schlüssel gesetzt hat"
+msgstr "암호를 설정한 사용자의 대화명"
 
 #: src/common/text.c:690
 msgid "The key"
-msgstr "Der Schlüssel"
+msgstr "암호"
 
 #: src/common/text.c:694
 msgid "The nick of the person who set the limit"
-msgstr "Der Nick der Person, die das Limit gesetzt hat"
+msgstr "인원 제한을 한 사용자의 대화명"
 
 #: src/common/text.c:695
 msgid "The limit"
-msgstr "Das Limit"
+msgstr "인원제한"
 
 #: src/common/text.c:699
 msgid "The nick of the person who did the op'ing"
-msgstr "Der Nick der Person, die Op-Status erteilte"
+msgstr "관리 권한을 주는 사용자의 대화명"
 
 #: src/common/text.c:700
 msgid "The nick of the person who has been op'ed"
-msgstr "Der Nick der Person, die Op-Status erhielt"
+msgstr "관리 권한을 받는 사용자의 대화명"
 
 #: src/common/text.c:704
 msgid "The nick of the person who has been halfop'ed"
-msgstr "Der Nick der Person, die HalfOp-Status erhielt"
+msgstr "일부 관리권한을 받은 사용자의 대화명"
 
 #: src/common/text.c:705
 msgid "The nick of the person who did the halfop'ing"
-msgstr "Der Nick der Person, die HalfOp-Status erteilte"
+msgstr "일부 관리권한을 주는 사용자의 대화명"
 
 #: src/common/text.c:709
 msgid "The nick of the person who did the voice'ing"
-msgstr "Der Nick der Person, die Voice erteilte"
+msgstr "발언권을 주는 사용자의 대화명"
 
 #: src/common/text.c:710
 msgid "The nick of the person who has been voice'ed"
-msgstr "Der Nick der Person, die Voice erhielt"
+msgstr "발언권을 받는 사용자의 대화명"
 
 #: src/common/text.c:714
 msgid "The nick of the person who did the banning"
-msgstr "Der Nick der Person, die bannte"
+msgstr "추방설정을 한 사용자의 대화명"
 
 #: src/common/text.c:715 src/common/text.c:742
 msgid "The ban mask"
-msgstr "Die Bannmaske"
+msgstr "추방 매스크"
 
 #: src/common/text.c:719
 msgid "The nick who removed the key"
-msgstr "Der Nick, der den Schlüssel entfernte"
+msgstr "암호를 해제한 사용자의 대화명"
 
 #: src/common/text.c:723
 msgid "The nick who removed the limit"
-msgstr "Der Nick, der das Limit entfernte"
+msgstr "인원제한을 해제한 사용자의 대화명"
 
 #: src/common/text.c:727
 msgid "The nick of the person of did the deop'ing"
-msgstr "Der Nick der Person, die Op nahm"
+msgstr "관리권한을 박탈한 사용자의 대화명"
 
 #: src/common/text.c:728
 msgid "The nick of the person who has been deop'ed"
-msgstr "Der Nick der Person, die Op abgenommen bekam"
+msgstr "관리권한을 박탈 당한 사용자의 대화명"
 
 #: src/common/text.c:731
 msgid "The nick of the person of did the dehalfop'ing"
-msgstr "Der Nick der Person, die HalfOp nahm"
+msgstr "일부 관리권한을 박탈한 사용자의 대화명"
 
 #: src/common/text.c:732
 msgid "The nick of the person who has been dehalfop'ed"
-msgstr "Der Nick der Person, die HalfOp abgenommen bekam"
+msgstr "일부 관리권한을 박탈당한 사용자의 대화명"
 
 #: src/common/text.c:736
 msgid "The nick of the person of did the devoice'ing"
-msgstr "Der Nick der Person, die Voice nahm"
+msgstr "발언권을 박탈한 사용자의 대화명"
 
 #: src/common/text.c:737
 msgid "The nick of the person who has been devoice'ed"
-msgstr "Der Nick der Person, die Voice abgenommen bekam"
+msgstr "발언권을 박탈당한 사용자의 대화명"
 
 #: src/common/text.c:741
 msgid "The nick of the person of did the unban'ing"
-msgstr "Der Nick der Person, die den Bann entfernte"
+msgstr "추방을 해제한 사용자의 대화명"
 
 #: src/common/text.c:746
 msgid "The nick of the person who did the exempt"
-msgstr "Der Nick der Person, die die Ausnahme setzte"
+msgstr "제외된 사용자의 대화명"
 
 #: src/common/text.c:747 src/common/text.c:752
 msgid "The exempt mask"
-msgstr "Die Ausnahme-Maske"
+msgstr "제외 매스크"
 
 #: src/common/text.c:751
 msgid "The nick of the person removed the exempt"
-msgstr "Der Nick der Person, die die Ausnahme entfernte"
+msgstr "제외를 제거한 사용자의 대화명"
 
 #: src/common/text.c:756
 msgid "The nick of the person who did the invite"
-msgstr "Der Nick der Person, die die Einladung aussprach"
+msgstr "초대한 사용자의 대화명"
 
 #: src/common/text.c:757 src/common/text.c:762
 msgid "The invite mask"
-msgstr "Die Einladungs-Maske"
+msgstr "초대할 매스크"
 
 #: src/common/text.c:761
 msgid "The nick of the person removed the invite"
-msgstr "Der Nick der Person, die die Einladung zurücknahm"
+msgstr "초대전용 설정을 해제한 사용자의 대화명"
 
 #: src/common/text.c:766
 msgid "The nick of the person setting the mode"
-msgstr "Der Nick der Person, die den Modus setzte"
+msgstr "대화방 상태를 설정한 사용자의 대화명"
 
 #: src/common/text.c:767
 msgid "The mode's sign (+/-)"
-msgstr "Die Moduszeichen (+/-)"
+msgstr "상태 설정은 (+/-) 입니다."
 
 #: src/common/text.c:768
 msgid "The mode letter"
-msgstr "Der Modusbuchstabe"
+msgstr "상태 기호"
 
 #: src/common/text.c:769
 msgid "The channel it's being set on"
-msgstr "Der Channel, der eingestellt wird"
+msgstr "대화방 설정 변경"
 
 #: src/common/text.c:774
 msgid "Username"
-msgstr "Benutzername"
+msgstr "사용자명"
 
 #: src/common/text.c:776
 msgid "Full name"
-msgstr "Voller Name"
+msgstr "전체 이름"
 
 #: src/common/text.c:781
 msgid "Channel Membership/\"is an IRC operator\""
-msgstr "Channelinformation/\"ist ein IRC-Operator\""
+msgstr "대화방 이용자는 /\"IRC 관리자\""
 
 #: src/common/text.c:786
 msgid "Server Information"
-msgstr "Server-Information"
+msgstr "서버 정보"
 
 #: src/common/text.c:791 src/common/text.c:796
 msgid "Idle time"
-msgstr "Untätig"
+msgstr "잠수 시간"
 
 #: src/common/text.c:797
 msgid "Signon time"
-msgstr "Zeitpunkt der Einwahl"
+msgstr "접속 시간"
 
 #: src/common/text.c:802
 msgid "Away reason"
-msgstr "Abwesenheitsgrund"
+msgstr "자리비우는 이유"
 
 #: src/common/text.c:811 src/common/text.c:816 src/common/text.c:824
 #: src/common/text.c:1002
 msgid "Message"
-msgstr "Nachricht"
+msgstr "메세지"
 
 #: src/common/text.c:817
 msgid "Account"
-msgstr "Konto"
+msgstr "계정"
 
 #: src/common/text.c:822
 msgid "Real user@host"
-msgstr "Echter Benutzer@Host"
+msgstr "실제 user@host"
 
 #: src/common/text.c:823
 msgid "Real IP"
-msgstr "Echte IP"
+msgstr "실제 IP"
 
 #: src/common/text.c:828 src/common/text.c:837 src/common/text.c:843
 #: src/common/text.c:1025
 msgid "Channel Name"
-msgstr "Channel-Name"
+msgstr "대화방명"
 
 #: src/common/text.c:832 src/common/text.c:988 src/fe-gtk/textgui.c:338
 msgid "Text"
-msgstr "Text"
+msgstr "글월"
 
 #: src/common/text.c:833 src/common/text.c:839 src/common/text.c:1026
 msgid "Server Name"
-msgstr "Server-Name"
+msgstr "서버명"
 
 #: src/common/text.c:838
 msgid "Nick of person who invited you"
-msgstr "Nick der Person, die Sie einlud"
+msgstr "당신을 초대한 사용자의 대화명"
 
 #: src/common/text.c:844 src/fe-gtk/chanlist.c:598
 msgid "Users"
-msgstr "Benutzer"
+msgstr "참여자"
 
 #: src/common/text.c:848
 msgid "Nickname in use"
-msgstr "Nickname in Benutzung"
+msgstr "사용할 대화명"
 
 #: src/common/text.c:849
 msgid "Nick being tried"
-msgstr "Nick wird versucht"
+msgstr "대화명 다시 시도"
 
 #: src/common/text.c:853 src/common/text.c:889 src/common/text.c:900
 #: src/common/text.c:907 src/common/text.c:920 src/common/text.c:937
 #: src/common/text.c:1037 src/common/util.c:351
 msgid "Error"
-msgstr "Fehler"
+msgstr "오류"
 
 #: src/common/text.c:858 src/common/text.c:992
 msgid "IP"
-msgstr "IP"
+msgstr ""
 
 #: src/common/text.c:859 src/common/text.c:888
 msgid "Port"
-msgstr "Port"
+msgstr "포트"
 
 #: src/common/text.c:863
 msgid "PID"
-msgstr "Prozess ID"
+msgstr ""
 
 #: src/common/text.c:871
 msgid "Channel name"
-msgstr "Channel-Name"
+msgstr "대화방 이름"
 
 #: src/common/text.c:872 src/common/text.c:877
 msgid "Modes string"
-msgstr "Modusfolge"
+msgstr "상태 기호"
 
 #: src/common/text.c:887 src/common/text.c:925 src/common/text.c:930
 #: src/common/text.c:971
 msgid "IP address"
-msgstr "IP-Adresse"
+msgstr "IP 주소"
 
 #: src/common/text.c:893 src/common/text.c:918
 msgid "DCC Type"
-msgstr "DCC-Typ"
+msgstr "DCC 형태"
 
 #: src/common/text.c:894 src/common/text.c:899 src/common/text.c:904
 #: src/common/text.c:911 src/common/text.c:931 src/common/text.c:935
 #: src/common/text.c:941 src/common/text.c:947 src/common/text.c:954
 #: src/common/text.c:963 src/common/text.c:969
 msgid "Filename"
-msgstr "Dateiname"
+msgstr "화일명"
 
 #: src/common/text.c:905 src/common/text.c:912
 msgid "Destination filename"
-msgstr "Zieldateiname"
+msgstr "받을 위치"
 
 #: src/common/text.c:914 src/common/text.c:943
 msgid "CPS"
-msgstr "CPS"
+msgstr ""
 
 #: src/common/text.c:949
 msgid "Pathname"
-msgstr "Pfadname"
+msgstr "경로"
 
 #: src/common/text.c:964 src/fe-gtk/dccgui.c:490 src/fe-gtk/dccgui.c:647
 msgid "Position"
-msgstr "Position"
+msgstr "위치"
 
 #: src/common/text.c:970 src/fe-gtk/dccgui.c:489 src/fe-gtk/dccgui.c:646
 msgid "Size"
-msgstr "Größe"
+msgstr "크기"
 
 #: src/common/text.c:975
 msgid "DCC String"
-msgstr "DCC Zeichenfolge"
+msgstr "DCC 문자"
 
 #: src/common/text.c:980
 msgid "Number of notify items"
-msgstr "Anzahl der Notify-Einträge"
+msgstr "알림항목의 수"
 
 #: src/common/text.c:984
 msgid "Servername"
-msgstr "Servername"
+msgstr "서버명"
 
 #: src/common/text.c:996
 msgid "Old Filename"
-msgstr "Alter Dateiname"
+msgstr "이전 화일명"
 
 #: src/common/text.c:997
 msgid "New Filename"
-msgstr "Neuer Dateiname"
+msgstr "새 화일명"
 
 #: src/common/text.c:1001
 msgid "Receiver"
-msgstr "Empfänger"
+msgstr "받는이"
 
 #: src/common/text.c:1006
 msgid "Hostmask"
-msgstr "Hostmaske"
+msgstr "호스트 매스크"
 
 #: src/common/text.c:1011
 msgid "Hostname"
-msgstr "Hostname"
+msgstr "호스트"
 
 #: src/common/text.c:1016
 msgid "The Packet"
-msgstr "Das Paket"
+msgstr "패킷"
 
 #: src/common/text.c:1020
 msgid "Seconds"
-msgstr "Sekunden"
+msgstr "초"
 
 #: src/common/text.c:1024
 msgid "Nick of person who have been invited"
-msgstr "Nick der Person, die eingeladen wurde"
+msgstr "초대할 사용자의 대화명"
 
 #: src/common/text.c:1031
 msgid "Banmask"
-msgstr "Bann-Maske"
+msgstr ""
 
 #: src/common/text.c:1032
 msgid "Who set the ban"
-msgstr "Wer setzte den Bann"
+msgstr "추방설정한 사람"
 
 #: src/common/text.c:1033
 msgid "Ban time"
-msgstr "Bannzeit"
+msgstr "추방 시간"
 
 #: src/common/text.c:1073
 #, c-format
@@ -1525,8 +1520,8 @@ msgid ""
 "Error parsing event %s.\n"
 "Loading default."
 msgstr ""
-"Fehler beim Abarbeiten von Ereignis %s.\n"
-"Lade Standard"
+"상황 %s 설정 오류.\n"
+"기본값을 사용합니다."
 
 #: src/common/text.c:1708
 #, c-format
@@ -1534,1386 +1529,1386 @@ msgid ""
 "Cannot read sound file:\n"
 "%s"
 msgstr ""
-"Kann diese Sounddatei nicht lesen:\n"
+"소리 화일을 읽지 못함:\n"
 "%s"
 
 #: src/common/util.c:295
 msgid "Remote host closed socket"
-msgstr "Gegenseite hat den Socket geschlossen"
+msgstr "원격 호스트에서 소켓이 닫힘"
 
 #: src/common/util.c:300
 msgid "Connection refused"
-msgstr "Verbindung verweigert"
+msgstr "접속이 거부됨"
 
 #: src/common/util.c:303
 msgid "No route to host"
-msgstr "Keine Route zum Host"
+msgstr "호스트로갈 경로가 없음"
 
 #: src/common/util.c:305
 msgid "Connection timed out"
-msgstr "Verbindung wegen Zeitüberschreitung geschlossen"
+msgstr "접속 시간 제한"
 
 #: src/common/util.c:307
 msgid "Cannot assign that address"
-msgstr "Kann diese Adresse nicht zuteilen"
+msgstr "해당 주소로 접근 할 수 없음"
 
 #: src/common/util.c:309
 msgid "Connection reset by peer"
-msgstr "Verbindung von der Gegenseite zurückgesetzt"
+msgstr "접속이 초기화됨"
 
 #: src/common/util.c:800
 msgid "Andorra"
-msgstr "Andorra"
+msgstr "안도라"
 
 #: src/common/util.c:801
 msgid "United Arab Emirates"
-msgstr "Vereinigte Arabische Emirate"
+msgstr "아랍 국가 연합"
 
 #: src/common/util.c:802
 msgid "Afghanistan"
-msgstr "Afghanistan"
+msgstr "아프카니스탄"
 
 #: src/common/util.c:803
 msgid "Antigua and Barbuda"
-msgstr "Antigua und Barbuda"
+msgstr "안티과와 바부다"
 
 #: src/common/util.c:804
 msgid "Anguilla"
-msgstr "Anguilla"
+msgstr "앙귈라"
 
 #: src/common/util.c:805
 msgid "Albania"
-msgstr "Albanien"
+msgstr "알바니아"
 
 #: src/common/util.c:806
 msgid "Armenia"
-msgstr "Armenien"
+msgstr "아르메니아"
 
 #: src/common/util.c:807
 msgid "Netherlands Antilles"
-msgstr "Niederländische Antillen"
+msgstr "네덜란드"
 
 #: src/common/util.c:808
 msgid "Angola"
-msgstr "Angola"
+msgstr "앙골라"
 
 #: src/common/util.c:809
 msgid "Antarctica"
-msgstr "Antarktis"
+msgstr "안타티카"
 
 #: src/common/util.c:810
 msgid "Argentina"
-msgstr "Argentinien"
+msgstr "아르헨티나"
 
 #: src/common/util.c:811
 msgid "Reverse DNS"
-msgstr "Reverse DNS"
+msgstr "DNS 역추적"
 
 #: src/common/util.c:812
 msgid "American Samoa"
-msgstr "Amerikanisch Samoa"
+msgstr "아메리칸 사모아"
 
 #: src/common/util.c:813
 msgid "Austria"
-msgstr "Österreich"
+msgstr "오스트리아"
 
 #: src/common/util.c:814
 msgid "Nato Fiel"
-msgstr "NATO"
+msgstr "북대서양 조약기구"
 
 #: src/common/util.c:815
 msgid "Australia"
-msgstr "Australien"
+msgstr "오스트레일리아"
 
 #: src/common/util.c:816
 msgid "Aruba"
-msgstr "Aruba"
+msgstr "아루바"
 
 #: src/common/util.c:817
 msgid "Azerbaijan"
-msgstr "Aserbaidschan"
+msgstr "아케르바이젠"
 
 #: src/common/util.c:818
 msgid "Bosnia and Herzegovina"
-msgstr "Bosnien und Herzegowina"
+msgstr "보스니아와 헬제고비나"
 
 #: src/common/util.c:819
 msgid "Barbados"
-msgstr "Barbados"
+msgstr "발바도스"
 
 #: src/common/util.c:820
 msgid "Bangladesh"
-msgstr "Bangladesch"
+msgstr "방글라데쉬"
 
 #: src/common/util.c:821
 msgid "Belgium"
-msgstr "Belgien"
+msgstr "벨기에"
 
 #: src/common/util.c:822
 msgid "Burkina Faso"
-msgstr "Burkina Faso"
+msgstr "버키나 패소"
 
 #: src/common/util.c:823
 msgid "Bulgaria"
-msgstr "Bulgarien"
+msgstr "불가리아"
 
 #: src/common/util.c:824
 msgid "Bahrain"
-msgstr "Bahrain"
+msgstr "바레인"
 
 #: src/common/util.c:825
 msgid "Burundi"
-msgstr "Burundi"
+msgstr "버런디"
 
 #: src/common/util.c:826
 msgid "Businesses"
-msgstr "Geschäftsdomain"
+msgstr "비지니스"
 
 #: src/common/util.c:827
 msgid "Benin"
-msgstr "Benin"
+msgstr "베닌"
 
 #: src/common/util.c:828
 msgid "Bermuda"
-msgstr "Bermuda"
+msgstr "버뮤다"
 
 #: src/common/util.c:829
 msgid "Brunei Darussalam"
-msgstr "Brunei Darussalam"
+msgstr "브루나이 달루살람"
 
 #: src/common/util.c:830
 msgid "Bolivia"
-msgstr "Bolivien"
+msgstr "볼리비아"
 
 #: src/common/util.c:831
 msgid "Brazil"
-msgstr "Brasilien"
+msgstr "브라질"
 
 #: src/common/util.c:832
 msgid "Bahamas"
-msgstr "Bahamas"
+msgstr "바하마"
 
 #: src/common/util.c:833
 msgid "Bhutan"
-msgstr "Bhutan"
+msgstr "부탄"
 
 #: src/common/util.c:834
 msgid "Bouvet Island"
-msgstr "Bouvet-Insel"
+msgstr "부벳섬"
 
 #: src/common/util.c:835
 msgid "Botswana"
-msgstr "Botsuana"
+msgstr "보스와나"
 
 #: src/common/util.c:836
 msgid "Belarus"
-msgstr "Belarus (Weißrussland)"
+msgstr "베라루스"
 
 #: src/common/util.c:837
 msgid "Belize"
-msgstr "Belize"
+msgstr "베리제"
 
 #: src/common/util.c:838
 msgid "Canada"
-msgstr "Kanada"
+msgstr "카나다"
 
 #: src/common/util.c:839
 msgid "Cocos Islands"
-msgstr "Kokos-Inseln"
+msgstr "코코스 섬"
 
 #: src/common/util.c:840
 msgid "Central African Republic"
-msgstr "Zentralafrikanische Republik"
+msgstr "중앙 아프리카 공화국"
 
 #: src/common/util.c:841
 msgid "Congo"
-msgstr "Kongo"
+msgstr "콩고"
 
 #: src/common/util.c:842
 msgid "Switzerland"
-msgstr "Schweiz"
+msgstr "스위스"
 
 #: src/common/util.c:843
 msgid "Cote d'Ivoire"
-msgstr "Côte d'Ivoire"
+msgstr "코테  드이보르"
 
 #: src/common/util.c:844
 msgid "Cook Islands"
-msgstr "Cook-Inseln"
+msgstr "쿡 섬"
 
 #: src/common/util.c:845
 msgid "Chile"
-msgstr "Chile"
+msgstr "칠레"
 
 #: src/common/util.c:846
 msgid "Cameroon"
-msgstr "Kamerun"
+msgstr "카메룬"
 
 #: src/common/util.c:847
 msgid "China"
-msgstr "China"
+msgstr "중국"
 
 #: src/common/util.c:848
 msgid "Colombia"
-msgstr "Kolumbien"
+msgstr "콜롬비아"
 
 #: src/common/util.c:849
 msgid "Internic Commercial"
-msgstr "Internic geschäftlich"
+msgstr "상업용 인터닉"
 
 #: src/common/util.c:850
 msgid "Costa Rica"
-msgstr "Costa Rica"
+msgstr "코스타리카"
 
 #: src/common/util.c:851
 msgid "Former Czechoslovakia"
-msgstr "Frühere Tschechoslowakei"
+msgstr "체코슬로바키아"
 
 #: src/common/util.c:852
 msgid "Cuba"
-msgstr "Kuba"
+msgstr "쿠바"
 
 #: src/common/util.c:853
 msgid "Cape Verde"
-msgstr "Kap Verde"
+msgstr ""
 
 #: src/common/util.c:854
 msgid "Christmas Island"
-msgstr "Weihnachtsinsel"
+msgstr "크리스마스 섬"
 
 #: src/common/util.c:855
 msgid "Cyprus"
-msgstr "Zypern"
+msgstr ""
 
 #: src/common/util.c:856
 msgid "Czech Republic"
-msgstr "Tschechische Republik"
+msgstr "체코 공화국"
 
 #: src/common/util.c:857
 msgid "Germany"
-msgstr "Bundesrepublik Deutschland"
+msgstr "독일"
 
 #: src/common/util.c:858
 msgid "Djibouti"
-msgstr "Dschibuti"
+msgstr ""
 
 #: src/common/util.c:859
 msgid "Denmark"
-msgstr "Dänemark"
+msgstr "덴마크"
 
 #: src/common/util.c:860
 msgid "Dominica"
-msgstr "Dominica"
+msgstr "도미니카"
 
 #: src/common/util.c:861
 msgid "Dominican Republic"
-msgstr "Dominikanische Republik"
+msgstr "도미니카 공확국"
 
 #: src/common/util.c:862
 msgid "Algeria"
-msgstr "Algerien"
+msgstr "알제리아"
 
 #: src/common/util.c:863
 msgid "Ecuador"
-msgstr "Ecuador"
+msgstr "에콰도르"
 
 #: src/common/util.c:864
 msgid "Educational Institution"
-msgstr "Bildungseinrichtung"
+msgstr "교육 재단"
 
 #: src/common/util.c:865
 msgid "Estonia"
-msgstr "Estland"
+msgstr "에스토니아"
 
 #: src/common/util.c:866
 msgid "Egypt"
-msgstr "Arabische Republik Ägypten"
+msgstr "이집트"
 
 #: src/common/util.c:867
 msgid "Western Sahara"
-msgstr "Westliche Sahara"
+msgstr "서 사하라"
 
 #: src/common/util.c:868
 msgid "Eritrea"
-msgstr "Eritrea"
+msgstr "에리트리아"
 
 #: src/common/util.c:869
 msgid "Spain"
-msgstr "Spanien"
+msgstr "스페인"
 
 #: src/common/util.c:870
 msgid "Ethiopia"
-msgstr "Äthiopien"
+msgstr "에디오피아"
 
 #: src/common/util.c:871
 msgid "Finland"
-msgstr "Finnland"
+msgstr "핀란드"
 
 #: src/common/util.c:872
 msgid "Fiji"
-msgstr "Fidschi"
+msgstr "피지"
 
 #: src/common/util.c:873
 msgid "Falkland Islands"
-msgstr "Falkland-Inseln"
+msgstr ""
 
 #: src/common/util.c:874
 msgid "Micronesia"
-msgstr "Mikronesien"
+msgstr "마이크로네시아"
 
 #: src/common/util.c:875
 msgid "Faroe Islands"
-msgstr "Färör-Inseln"
+msgstr ""
 
 #: src/common/util.c:876
 msgid "France"
-msgstr "Frankreich"
+msgstr "프랑스"
 
 #: src/common/util.c:877
 msgid "France, Metropolitan"
-msgstr "Frankreich, Metropolitan"
+msgstr ""
 
 #: src/common/util.c:878
 msgid "Gabon"
-msgstr "Gabun"
+msgstr "가봉"
 
 #: src/common/util.c:879
 msgid "Great Britain"
-msgstr "Großbritannien"
+msgstr ""
 
 #: src/common/util.c:880
 msgid "Grenada"
-msgstr "Grenada"
+msgstr ""
 
 #: src/common/util.c:881
 msgid "Georgia"
-msgstr "Georgien"
+msgstr "죠지아"
 
 #: src/common/util.c:882
 msgid "French Guiana"
-msgstr "Französisch Guyana"
+msgstr "프랑스령 귀아나"
 
 #: src/common/util.c:883
 msgid "British Channel Isles"
-msgstr "Britische Kanalinseln"
+msgstr ""
 
 #: src/common/util.c:884
 msgid "Ghana"
-msgstr "Ghana"
+msgstr "가나"
 
 #: src/common/util.c:885
 msgid "Gibraltar"
-msgstr "Gibraltar"
+msgstr "지브랄터"
 
 #: src/common/util.c:886
 msgid "Greenland"
-msgstr "Grönland"
+msgstr "그린랜드"
 
 #: src/common/util.c:887
 msgid "Gambia"
-msgstr "Gambia"
+msgstr "잠비아"
 
 #: src/common/util.c:888
 msgid "Guinea"
-msgstr "Guinea"
+msgstr "귀니아"
 
 #: src/common/util.c:889
 msgid "Government"
-msgstr "Amerikanische Regierung"
+msgstr "정부"
 
 #: src/common/util.c:890
 msgid "Guadeloupe"
-msgstr "Guadeloupe"
+msgstr ""
 
 #: src/common/util.c:891
 msgid "Equatorial Guinea"
-msgstr "Äquatorial-Guinea"
+msgstr ""
 
 #: src/common/util.c:892
 msgid "Greece"
-msgstr "Griechenland"
+msgstr "그리스"
 
 #: src/common/util.c:893
 msgid "S. Georgia and S. Sandwich Isles"
-msgstr "S. Georgia- und S. Sandwich-Inseln"
+msgstr "성 죠지아와 성 샌드위치 섬"
 
 #: src/common/util.c:894
 msgid "Guatemala"
-msgstr "Guatemala"
+msgstr "과테말라"
 
 #: src/common/util.c:895
 msgid "Guam"
-msgstr "Guam"
+msgstr "괌"
 
 #: src/common/util.c:896
 msgid "Guinea-Bissau"
-msgstr "Guinea-Bissau"
+msgstr ""
 
 #: src/common/util.c:897
 msgid "Guyana"
-msgstr "Guyana"
+msgstr ""
 
 #: src/common/util.c:898
 msgid "Hong Kong"
-msgstr "Hong Kong"
+msgstr "홍콩"
 
 #: src/common/util.c:899
 msgid "Heard and McDonald Islands"
-msgstr "Heard- und McDonald-Inseln"
+msgstr "맥도날드 섬과 허드"
 
 #: src/common/util.c:900
 msgid "Honduras"
-msgstr "Honduras"
+msgstr ""
 
 #: src/common/util.c:901
 msgid "Croatia"
-msgstr "Kroatien"
+msgstr "크로아티아"
 
 #: src/common/util.c:902
 msgid "Haiti"
-msgstr "Haiti"
+msgstr "하이티"
 
 #: src/common/util.c:903
 msgid "Hungary"
-msgstr "Ungarn"
+msgstr "헝가리"
 
 #: src/common/util.c:904
 msgid "Indonesia"
-msgstr "Indonesien"
+msgstr "인도네시아"
 
 #: src/common/util.c:905
 msgid "Ireland"
-msgstr "Irland"
+msgstr "아일랜드"
 
 #: src/common/util.c:906
 msgid "Israel"
-msgstr "Israel"
+msgstr "이스라엘"
 
 #: src/common/util.c:907
 msgid "India"
-msgstr "Indien"
+msgstr "인도"
 
 #: src/common/util.c:908
 msgid "Informational"
-msgstr "Informative Domain"
+msgstr "정보"
 
 #: src/common/util.c:909
 msgid "International"
-msgstr "International"
+msgstr "국제"
 
 #: src/common/util.c:910
 msgid "British Indian Ocean Territory"
-msgstr "Britische Gebiete im indischen Ozean"
+msgstr "인도양"
 
 #: src/common/util.c:911
 msgid "Iraq"
-msgstr "Irak"
+msgstr "이라크"
 
 #: src/common/util.c:912
 msgid "Iran"
-msgstr "Iran"
+msgstr "이란"
 
 #: src/common/util.c:913
 msgid "Iceland"
-msgstr "Island"
+msgstr "아이스랜드"
 
 #: src/common/util.c:914
 msgid "Italy"
-msgstr "Italien"
+msgstr "이탈리아"
 
 #: src/common/util.c:915
 msgid "Jamaica"
-msgstr "Jamaika"
+msgstr "자메이카"
 
 #: src/common/util.c:916
 msgid "Jordan"
-msgstr "Jordanien"
+msgstr "죠단"
 
 #: src/common/util.c:917
 msgid "Japan"
-msgstr "Japan"
+msgstr "일본"
 
 #: src/common/util.c:918
 msgid "Kenya"
-msgstr "Kenia"
+msgstr "케냐"
 
 #: src/common/util.c:919
 msgid "Kyrgyzstan"
-msgstr "Kirgisistan"
+msgstr ""
 
 #: src/common/util.c:920
 msgid "Cambodia"
-msgstr "Kambodscha"
+msgstr "캄보디아"
 
 #: src/common/util.c:921
 msgid "Kiribati"
-msgstr "Kiribati"
+msgstr "키리바티"
 
 #: src/common/util.c:922
 msgid "Comoros"
-msgstr "Komoren"
+msgstr "코모로스"
 
 #: src/common/util.c:923
 msgid "St. Kitts and Nevis"
-msgstr "St. Kitts und Nevis"
+msgstr "성 키티와 네비스"
 
 #: src/common/util.c:924
 msgid "North Korea"
-msgstr "Nordkorea"
+msgstr "조선 민주주의 인민 공화국"
 
 #: src/common/util.c:925
 msgid "South Korea"
-msgstr "Südkorea"
+msgstr "대한민국"
 
 #: src/common/util.c:926
 msgid "Kuwait"
-msgstr "Kuwait"
+msgstr "쿠웨이트"
 
 #: src/common/util.c:927
 msgid "Cayman Islands"
-msgstr "Cayman-Inseln"
+msgstr ""
 
 #: src/common/util.c:928
 msgid "Kazakhstan"
-msgstr "Kasachstan"
+msgstr "카자흐스탄"
 
 #: src/common/util.c:929
 msgid "Laos"
-msgstr "Laos"
+msgstr "라오스"
 
 #: src/common/util.c:930
 msgid "Lebanon"
-msgstr "Libanon"
+msgstr "레바논"
 
 #: src/common/util.c:931
 msgid "Saint Lucia"
-msgstr "Saint Lucia"
+msgstr "성 루시아"
 
 #: src/common/util.c:932
 msgid "Liechtenstein"
-msgstr "Liechtenstein"
+msgstr ""
 
 #: src/common/util.c:933
 msgid "Sri Lanka"
-msgstr "Sri Lanka"
+msgstr "스리랑카"
 
 #: src/common/util.c:934
 msgid "Liberia"
-msgstr "Liberia"
+msgstr "리베리아"
 
 #: src/common/util.c:935
 msgid "Lesotho"
-msgstr "Lesotho"
+msgstr "레소토"
 
 #: src/common/util.c:936
 msgid "Lithuania"
-msgstr "Litauen"
+msgstr "리투아니아"
 
 #: src/common/util.c:937
 msgid "Luxembourg"
-msgstr "Luxemburg"
+msgstr "룩셈부르크"
 
 #: src/common/util.c:938
 msgid "Latvia"
-msgstr "Lettland"
+msgstr "라비타"
 
 #: src/common/util.c:939
 msgid "Libya"
-msgstr "Libyen"
+msgstr "리비아"
 
 #: src/common/util.c:940
 msgid "Morocco"
-msgstr "Marokko"
+msgstr "모로코"
 
 #: src/common/util.c:941
 msgid "Monaco"
-msgstr "Monaco"
+msgstr "모나코"
 
 #: src/common/util.c:942
 msgid "Moldova"
-msgstr "Moldawien"
+msgstr ""
 
 #: src/common/util.c:943
 msgid "United States Medical"
-msgstr "Vereinigte Staaten medizinisch"
+msgstr "미국 의료"
 
 #: src/common/util.c:944
 msgid "Madagascar"
-msgstr "Madagaskar"
+msgstr ""
 
 #: src/common/util.c:945
 msgid "Marshall Islands"
-msgstr "Marshallinseln"
+msgstr "마샬 섬"
 
 #: src/common/util.c:946
 msgid "Military"
-msgstr "Militärisch"
+msgstr "국방"
 
 #: src/common/util.c:947
 msgid "Macedonia"
-msgstr "Mazedonien"
+msgstr "마케도니아"
 
 #: src/common/util.c:948
 msgid "Mali"
-msgstr "Mali"
+msgstr "말리"
 
 #: src/common/util.c:949
 msgid "Myanmar"
-msgstr "Myanmar"
+msgstr ""
 
 #: src/common/util.c:950
 msgid "Mongolia"
-msgstr "Mongolei"
+msgstr "몽고"
 
 #: src/common/util.c:951
 msgid "Macau"
-msgstr "Macau"
+msgstr ""
 
 #: src/common/util.c:952
 msgid "Northern Mariana Islands"
-msgstr "Nördliche Mariana-Inseln"
+msgstr "노턴 마리아나 섬"
 
 #: src/common/util.c:953
 msgid "Martinique"
-msgstr "Martinique"
+msgstr ""
 
 #: src/common/util.c:954
 msgid "Mauritania"
-msgstr "Mauretanien"
+msgstr ""
 
 #: src/common/util.c:955
 msgid "Montserrat"
-msgstr "Montserrat"
+msgstr ""
 
 #: src/common/util.c:956
 msgid "Malta"
-msgstr "Malta"
+msgstr "말타"
 
 #: src/common/util.c:957
 msgid "Mauritius"
-msgstr "Mauritius"
+msgstr ""
 
 #: src/common/util.c:958
 msgid "Maldives"
-msgstr "Malediven"
+msgstr "말디브"
 
 #: src/common/util.c:959
 msgid "Malawi"
-msgstr "Malawi"
+msgstr ""
 
 #: src/common/util.c:960
 msgid "Mexico"
-msgstr "Mexiko"
+msgstr "멕시코"
 
 #: src/common/util.c:961
 msgid "Malaysia"
-msgstr "Malaysia"
+msgstr "말레이지아"
 
 #: src/common/util.c:962
 msgid "Mozambique"
-msgstr "Mosambik"
+msgstr "모잠비크"
 
 #: src/common/util.c:963
 msgid "Namibia"
-msgstr "Namibia"
+msgstr "나미비아"
 
 #: src/common/util.c:964
 msgid "New Caledonia"
-msgstr "Neu Kaledonien"
+msgstr "뉴 칼레도니아"
 
 #: src/common/util.c:965
 msgid "Niger"
-msgstr "Niger"
+msgstr "나이제르"
 
 #: src/common/util.c:966
 msgid "Internic Network"
-msgstr "Internic Netzwerk"
+msgstr "인터닉 네트워크"
 
 #: src/common/util.c:967
 msgid "Norfolk Island"
-msgstr "Norfolk-Insel"
+msgstr ""
 
 #: src/common/util.c:968
 msgid "Nigeria"
-msgstr "Nigeria"
+msgstr "나이지리아"
 
 #: src/common/util.c:969
 msgid "Nicaragua"
-msgstr "Nicaragua"
+msgstr "니카르과"
 
 #: src/common/util.c:970
 msgid "Netherlands"
-msgstr "Niederlande"
+msgstr ""
 
 #: src/common/util.c:971
 msgid "Norway"
-msgstr "Norwegen"
+msgstr "노르웨이"
 
 #: src/common/util.c:972
 msgid "Nepal"
-msgstr "Nepal"
+msgstr "네팔"
 
 #: src/common/util.c:973
 msgid "Nauru"
-msgstr "Nauru"
+msgstr ""
 
 #: src/common/util.c:974
 msgid "Neutral Zone"
-msgstr "Neutrale Zone"
+msgstr "뉴트랄 존"
 
 #: src/common/util.c:975
 msgid "Niue"
-msgstr "Niue"
+msgstr ""
 
 #: src/common/util.c:976
 msgid "New Zealand"
-msgstr "Neuseeland"
+msgstr "뉴질랜드"
 
 #: src/common/util.c:977
 msgid "Oman"
-msgstr "Oman"
+msgstr "오만"
 
 #: src/common/util.c:978
 msgid "Internic Non-Profit Organization"
-msgstr "Internic Non-Profit-Organisation"
+msgstr "인터닉 공공기관"
 
 #: src/common/util.c:979
 msgid "Panama"
-msgstr "Panama"
+msgstr "파나마"
 
 #: src/common/util.c:980
 msgid "Peru"
-msgstr "Peru"
+msgstr "페루"
 
 #: src/common/util.c:981
 msgid "French Polynesia"
-msgstr "Französisch Polynesien"
+msgstr "프랑스령 폴리네시아"
 
 #: src/common/util.c:982
 msgid "Papua New Guinea"
-msgstr "Papua-Neuguinea"
+msgstr "파푸아 뉴기니"
 
 #: src/common/util.c:983
 msgid "Philippines"
-msgstr "Philippinen"
+msgstr "필리핀"
 
 #: src/common/util.c:984
 msgid "Pakistan"
-msgstr "Pakistan"
+msgstr "파키스탄"
 
 #: src/common/util.c:985
 msgid "Poland"
-msgstr "Polen"
+msgstr "폴란드"
 
 #: src/common/util.c:986
 msgid "St. Pierre and Miquelon"
-msgstr "St. Pierre und Miquelon"
+msgstr "성 피에르와 미퀘론"
 
 #: src/common/util.c:987
 msgid "Pitcairn"
-msgstr "Pitcairn"
+msgstr ""
 
 #: src/common/util.c:988
 msgid "Puerto Rico"
-msgstr "Puerto Rico"
+msgstr ""
 
 #: src/common/util.c:989
 msgid "Portugal"
-msgstr "Portugal"
+msgstr "포르투칼"
 
 #: src/common/util.c:990
 msgid "Palau"
-msgstr "Palau"
+msgstr "팔라우"
 
 #: src/common/util.c:991
 msgid "Paraguay"
-msgstr "Paraguay"
+msgstr "파라과이"
 
 #: src/common/util.c:992
 msgid "Qatar"
-msgstr "Katar"
+msgstr ""
 
 #: src/common/util.c:993
 msgid "Reunion"
-msgstr "Reunion"
+msgstr ""
 
 #: src/common/util.c:994
 msgid "Romania"
-msgstr "Rumänien"
+msgstr "로마니아"
 
 #: src/common/util.c:995
 msgid "Old School ARPAnet"
-msgstr "Old School ARPAnet"
+msgstr "옛 ARPAnet"
 
 #: src/common/util.c:996
 msgid "Russian Federation"
-msgstr "Russische Föderation"
+msgstr "러시아 연합"
 
 #: src/common/util.c:997
 msgid "Rwanda"
-msgstr "Ruanda"
+msgstr ""
 
 #: src/common/util.c:998
 msgid "Saudi Arabia"
-msgstr "Saudi-Arabien"
+msgstr "사우디 아라비아"
 
 #: src/common/util.c:999
 msgid "Solomon Islands"
-msgstr "Solomon-Inseln"
+msgstr "솔로몬 섬"
 
 #: src/common/util.c:1000
 msgid "Seychelles"
-msgstr "Seychellen"
+msgstr ""
 
 #: src/common/util.c:1001
 msgid "Sudan"
-msgstr "Sudan"
+msgstr "수단"
 
 #: src/common/util.c:1002
 msgid "Sweden"
-msgstr "Schweden"
+msgstr "스웨덴"
 
 #: src/common/util.c:1003
 msgid "Singapore"
-msgstr "Singapur"
+msgstr "싱가폴"
 
 #: src/common/util.c:1004
 msgid "St. Helena"
-msgstr "St. Helena"
+msgstr "성 헬레네"
 
 #: src/common/util.c:1005
 msgid "Slovenia"
-msgstr "Slowenien"
+msgstr "슬로베니아"
 
 #: src/common/util.c:1006
 msgid "Svalbard and Jan Mayen Islands"
-msgstr "Svalbard- und Jan Mayen-Inseln"
+msgstr ""
 
 #: src/common/util.c:1007
 msgid "Slovak Republic"
-msgstr "Slowakische Republik"
+msgstr "슬로바키아 공화국"
 
 #: src/common/util.c:1008
 msgid "Sierra Leone"
-msgstr "Sierra Leone"
+msgstr ""
 
 #: src/common/util.c:1009
 msgid "San Marino"
-msgstr "San Marino"
+msgstr "산마리노"
 
 #: src/common/util.c:1010
 msgid "Senegal"
-msgstr "Senegal"
+msgstr "세네갈"
 
 #: src/common/util.c:1011
 msgid "Somalia"
-msgstr "Somalia"
+msgstr "소말리아"
 
 #: src/common/util.c:1012
 msgid "Suriname"
-msgstr "Suriname"
+msgstr "수리남"
 
 #: src/common/util.c:1013
 msgid "Sao Tome and Principe"
-msgstr "São Tomé und Príncipe"
+msgstr ""
 
 #: src/common/util.c:1014
 msgid "Former USSR"
-msgstr "Frühere UdSSR"
+msgstr ""
 
 #: src/common/util.c:1015
 msgid "El Salvador"
-msgstr "El Salvador"
+msgstr "엘살바도르"
 
 #: src/common/util.c:1016
 msgid "Syria"
-msgstr "Syrien"
+msgstr "시리아"
 
 #: src/common/util.c:1017
 msgid "Swaziland"
-msgstr "Swasiland"
+msgstr ""
 
 #: src/common/util.c:1018
 msgid "Turks and Caicos Islands"
-msgstr "Turks und Caicoc Inseln"
+msgstr ""
 
 #: src/common/util.c:1019
 msgid "Chad"
-msgstr "Tschad"
+msgstr ""
 
 #: src/common/util.c:1020
 msgid "French Southern Territories"
-msgstr "Südliche französische Gebiete"
+msgstr ""
 
 #: src/common/util.c:1021
 msgid "Togo"
-msgstr "Togo"
+msgstr ""
 
 #: src/common/util.c:1022
 msgid "Thailand"
-msgstr "Thailand"
+msgstr ""
 
 #: src/common/util.c:1023
 msgid "Tajikistan"
-msgstr "Tadschikistan"
+msgstr ""
 
 #: src/common/util.c:1024
 msgid "Tokelau"
-msgstr "Tokelau"
+msgstr ""
 
 #: src/common/util.c:1025
 msgid "Turkmenistan"
-msgstr "Turkmenistan"
+msgstr ""
 
 #: src/common/util.c:1026
 msgid "Tunisia"
-msgstr "Tunesien"
+msgstr ""
 
 #: src/common/util.c:1027
 msgid "Tonga"
-msgstr "Tonga"
+msgstr ""
 
 #: src/common/util.c:1028
 msgid "East Timor"
-msgstr "Ost-Timor"
+msgstr ""
 
 #: src/common/util.c:1029
 msgid "Turkey"
-msgstr "Türkei"
+msgstr ""
 
 #: src/common/util.c:1030
 msgid "Trinidad and Tobago"
-msgstr "Trinidad und Tobago"
+msgstr ""
 
 #: src/common/util.c:1031
 msgid "Tuvalu"
-msgstr "Tuvalu"
+msgstr ""
 
 #: src/common/util.c:1032
 msgid "Taiwan"
-msgstr "Taiwan"
+msgstr "대만"
 
 #: src/common/util.c:1033
 msgid "Tanzania"
-msgstr "Tansania"
+msgstr "탄자니아"
 
 #: src/common/util.c:1034
 msgid "Ukraine"
-msgstr "Ukraine"
+msgstr "우크라이나"
 
 #: src/common/util.c:1035
 msgid "Uganda"
-msgstr "Uganda"
+msgstr ""
 
 #: src/common/util.c:1036
 msgid "United Kingdom"
-msgstr "Vereinigtes Königreich"
+msgstr "영국"
 
 #: src/common/util.c:1037
 msgid "US Minor Outlying Islands"
-msgstr "Kleinere, auswärtige US-Inseln"
+msgstr ""
 
 #: src/common/util.c:1038
 msgid "United States of America"
-msgstr "Vereinigte Staaten von Amerika"
+msgstr "미국"
 
 #: src/common/util.c:1039
 msgid "Uruguay"
-msgstr "Uruguay"
+msgstr "우르과이"
 
 #: src/common/util.c:1040
 msgid "Uzbekistan"
-msgstr "Usbekistan"
+msgstr "우즈베키스탄"
 
 #: src/common/util.c:1041
 msgid "Vatican City State"
-msgstr "Vatikanstadt"
+msgstr "바티칸 시국"
 
 #: src/common/util.c:1042
 msgid "St. Vincent and the Grenadines"
-msgstr "St. Vincent und die Grenadinen"
+msgstr ""
 
 #: src/common/util.c:1043
 msgid "Venezuela"
-msgstr "Venezuela"
+msgstr "베네주엘라"
 
 #: src/common/util.c:1044
 msgid "British Virgin Islands"
-msgstr "Britische Jungferninseln"
+msgstr "영국령 버진 섬"
 
 #: src/common/util.c:1045
 msgid "US Virgin Islands"
-msgstr "Amerikanische Jungferninseln"
+msgstr "미국 버진 섬"
 
 #: src/common/util.c:1046
 msgid "Vietnam"
-msgstr "Vietnam"
+msgstr "베트남"
 
 #: src/common/util.c:1047
 msgid "Vanuatu"
-msgstr "Vanuatu"
+msgstr ""
 
 #: src/common/util.c:1048
 msgid "Wallis and Futuna Islands"
-msgstr "Wallis- und Futuna-Inseln"
+msgstr ""
 
 #: src/common/util.c:1049
 msgid "Samoa"
-msgstr "Samoa"
+msgstr "시모아"
 
 #: src/common/util.c:1050
 msgid "Yemen"
-msgstr "Jemen"
+msgstr "예멘"
 
 #: src/common/util.c:1051
 msgid "Mayotte"
-msgstr "Mayotte"
+msgstr ""
 
 #: src/common/util.c:1052
 msgid "Yugoslavia"
-msgstr "Jugoslawien"
+msgstr "유고슬라비아"
 
 #: src/common/util.c:1053
 msgid "South Africa"
-msgstr "Südafrika"
+msgstr "남아프리카 공화국"
 
 #: src/common/util.c:1054
 msgid "Zambia"
-msgstr "Sambia"
+msgstr "잠비아"
 
 #: src/common/util.c:1055
 msgid "Zaire"
-msgstr "Zaire"
+msgstr "자이르"
 
 #: src/common/util.c:1056
 msgid "Zimbabwe"
-msgstr "Simbabwe"
+msgstr ""
 
 #: src/common/util.c:1062 src/common/util.c:1072 src/fe-gtk/menu.c:513
 #: src/fe-gtk/menu.c:517 src/fe-gtk/menu.c:521 src/fe-gtk/menu.c:525
 #: src/fe-gtk/menu.c:529
 msgid "Unknown"
-msgstr "Unbekannt"
+msgstr "알수없음"
 
 #: src/common/xchat.c:923
 msgid "Direct client-to-client"
-msgstr "Direkt Client2Client"
+msgstr "직접 연결"
 
 #: src/common/xchat.c:924
 msgid "Send File"
-msgstr "Sende Datei"
+msgstr "화일 전송"
 
 #: src/common/xchat.c:925
 msgid "Offer Chat"
-msgstr "Biete Chat an"
+msgstr "대화"
 
 #: src/common/xchat.c:926
 msgid "Abort Chat"
-msgstr "Chat abbrechen"
+msgstr "대화 취소"
 
 #: src/common/xchat.c:927 src/fe-gtk/plugingui.c:74
 msgid "Version"
-msgstr "Version"
+msgstr "판번호"
 
 #: src/common/xchat.c:928
 msgid "Userinfo"
-msgstr "Benutzerinformation"
+msgstr "사용자 정보"
 
 #: src/common/xchat.c:929
 msgid "Clientinfo"
-msgstr "Clientinformation"
+msgstr "클라이언트 정보"
 
 #: src/common/xchat.c:930 src/common/xchat.c:964 src/common/xchat.c:1015
 msgid "Ping"
-msgstr "Ping"
+msgstr ""
 
 #: src/common/xchat.c:931
 msgid "Time"
-msgstr "Zeit"
+msgstr "시간"
 
 #: src/common/xchat.c:932
 msgid "Finger"
-msgstr "Finger"
+msgstr ""
 
 #: src/common/xchat.c:933
 msgid "Oper"
-msgstr "Oper"
+msgstr "서버관리자"
 
 #: src/common/xchat.c:934
 msgid "Kill this user"
-msgstr "Benutzer killen"
+msgstr "이 사용자 죽이기"
 
 #: src/common/xchat.c:935
 msgid "Mode"
-msgstr "Modus"
+msgstr "상태"
 
 #: src/common/xchat.c:936
 msgid "Give Ops"
-msgstr "Op geben"
+msgstr "관리권한 주기"
 
 #: src/common/xchat.c:937
 msgid "Take Ops"
-msgstr "Op nehmen"
+msgstr "관리권한 박탈"
 
 #: src/common/xchat.c:938
 msgid "Give Half-Ops"
-msgstr "Half-Op geben"
+msgstr "관리권한 주기"
 
 #: src/common/xchat.c:939
 msgid "Take Half-Ops"
-msgstr "Half-Op nehmen"
+msgstr "관리권한 박탈"
 
 #: src/common/xchat.c:940
 msgid "Give Voice"
-msgstr "Voice geben"
+msgstr "발언권 주기"
 
 #: src/common/xchat.c:941
 msgid "Take Voice"
-msgstr "Voice nehmen"
+msgstr "발언권 뺏기"
 
 #: src/common/xchat.c:942
 msgid "Ignore"
-msgstr "Ignorieren"
+msgstr "무시"
 
 #: src/common/xchat.c:943
 msgid "Ignore User"
-msgstr "Ignoriere Benutzer"
+msgstr "사용자 무시"
 
 #: src/common/xchat.c:944
 msgid "UnIgnore User"
-msgstr "Benutzer nicht mehr ignorieren"
+msgstr "무시 해제"
 
 #: src/common/xchat.c:945
 msgid "Kick/Ban"
-msgstr "Kicken/Bannen"
+msgstr "퇴장/추방"
 
 #: src/common/xchat.c:946 src/common/xchat.c:998
 msgid "Kick"
-msgstr "Kicken"
+msgstr "강제퇴장"
 
 #: src/common/xchat.c:947 src/common/xchat.c:948 src/common/xchat.c:949
 #: src/common/xchat.c:950 src/common/xchat.c:951 src/common/xchat.c:997
 msgid "Ban"
-msgstr "Bannen"
+msgstr "추방"
 
 #: src/common/xchat.c:952 src/common/xchat.c:953 src/common/xchat.c:954
 #: src/common/xchat.c:955
 msgid "KickBan"
-msgstr "KickBannen"
+msgstr "지금추방"
 
 #: src/common/xchat.c:956 src/fe-gtk/dccgui.c:535 src/fe-gtk/dccgui.c:683
 msgid "Info"
-msgstr "Info"
+msgstr "정보"
 
 #: src/common/xchat.c:957
 msgid "Who"
-msgstr "Who"
+msgstr ""
 
 #: src/common/xchat.c:958 src/common/xchat.c:1011
 msgid "WhoIs"
-msgstr "WhoIs"
+msgstr ""
 
 #: src/common/xchat.c:959
 msgid "DNS Lookup"
-msgstr "DNS-Suche"
+msgstr "DNS 보기"
 
 #: src/common/xchat.c:960
 msgid "Trace"
-msgstr "Verfolgung"
+msgstr "추적"
 
 #: src/common/xchat.c:961
 msgid "UserHost"
-msgstr "BenutzerHost"
+msgstr "호스트"
 
 #: src/common/xchat.c:962
 msgid "External"
-msgstr "Extern"
+msgstr "외부도구"
 
 #: src/common/xchat.c:963
 msgid "Traceroute"
-msgstr "Traceroute (Verfolgung)"
+msgstr "경로추적"
 
 #: src/common/xchat.c:965
 msgid "Telnet"
-msgstr "Telnet"
+msgstr ""
 
 #: src/common/xchat.c:966
 msgid "Open Dialog Window"
-msgstr "Dialogfenster öffnen"
+msgstr "대화창 열기"
 
 #: src/common/xchat.c:978
 msgid "Disconnect"
-msgstr "Trennen"
+msgstr "접속해제"
 
 #: src/common/xchat.c:979
 msgid "Reconnect"
-msgstr "Neuverbindung"
+msgstr "재접속"
 
 #: src/common/xchat.c:980
 msgid "Leave Channel"
-msgstr "Channel verlassen"
+msgstr "대화방 나가기"
 
 #: src/common/xchat.c:981
 msgid "Join Channel..."
-msgstr "Betrete Channel..."
+msgstr "대화 참여..."
 
 #: src/common/xchat.c:982
 msgid "Enter Channel to Join:"
-msgstr "Zu betretender Channel:"
+msgstr "참여할 대화방을 입력하세요:"
 
 #: src/common/xchat.c:983
 msgid "Server Links"
-msgstr "Serververbindungen"
+msgstr "서버 연결"
 
 #: src/common/xchat.c:984
 msgid "Ping Server"
-msgstr "Server anpingen"
+msgstr "서버에 핑"
 
 #: src/common/xchat.c:985
 msgid "Hide Version"
-msgstr "Version verstecken"
+msgstr "판번호 숨김"
 
 #: src/common/xchat.c:995
 msgid "Op"
-msgstr "Op"
+msgstr "관리권한"
 
 #: src/common/xchat.c:996
 msgid "DeOp"
-msgstr "DeOp"
+msgstr "관리권 뺐기"
 
 #: src/common/xchat.c:999
 msgid "bye"
-msgstr "bye"
+msgstr "안녕"
 
 #: src/common/xchat.c:1000
 #, c-format
 msgid "Enter reason to kick %s:"
-msgstr "Kickgrund für %s eingeben:"
+msgstr "%s님을 추방하는 이유:"
 
 #: src/common/xchat.c:1001
 msgid "Sendfile"
-msgstr "Dateiversand"
+msgstr "화일보내기"
 
 #: src/common/xchat.c:1002
 msgid "Dialog"
-msgstr "Dialog"
+msgstr "귓속말"
 
 #: src/common/xchat.c:1012
 msgid "Send"
-msgstr "Sende"
+msgstr "보내기"
 
 #: src/common/xchat.c:1013
 msgid "Chat"
-msgstr "Chat"
+msgstr "대화"
 
 #: src/common/xchat.c:1014 src/fe-gtk/banlist.c:314 src/fe-gtk/search.c:117
 #: src/fe-gtk/urlgrab.c:200
 msgid "Clear"
-msgstr "Lösche"
+msgstr "삭제"
 
 #: src/fe-gtk/about.c:102
 msgid "About X-Chat"
-msgstr "Über X-Chat"
+msgstr "X-Chat에 대하여"
 
 #: src/fe-gtk/about.c:124
 msgid "A multiplatform IRC Client"
-msgstr "Ein portabler IRC-Client"
+msgstr "다중 환경의 IRC 클라이언트"
 
 #: src/fe-gtk/ascii.c:131
 msgid "Character Chart"
-msgstr "Zeichentabelle"
+msgstr "문자표"
 
 #: src/fe-gtk/banlist.c:148 src/fe-gtk/banlist.c:232
 msgid "You must select some bans."
-msgstr "Sie müssen Bans auswählen"
+msgstr "먼저 추방된 목록에서 선택 하십시오."
 
 #: src/fe-gtk/banlist.c:248 src/fe-gtk/ignoregui.c:175
 msgid "Mask"
-msgstr "Maske"
+msgstr ""
 
 #: src/fe-gtk/banlist.c:249 src/fe-gtk/dccgui.c:492
 msgid "From"
-msgstr "Von"
+msgstr "보낸이"
 
 #: src/fe-gtk/banlist.c:250
 msgid "Date"
-msgstr "Datum"
+msgstr "날짜"
 
 #: src/fe-gtk/banlist.c:294
 #, c-format
 msgid "X-Chat: Ban List (%s)"
-msgstr "X-Chat: Bannliste (%s)"
+msgstr "X-Chat: 추방 목록 (%s)"
 
 #: src/fe-gtk/banlist.c:310
 msgid "Unban"
-msgstr "Bann entfernen"
+msgstr ""
 
 #: src/fe-gtk/banlist.c:312
 msgid "Crop"
-msgstr "Abschneiden"
+msgstr ""
 
 #: src/fe-gtk/banlist.c:316
 msgid "Refresh"
-msgstr "Aktualisieren"
+msgstr "다시"
 
 #: src/fe-gtk/chanlist.c:120
 #, c-format
 msgid "User and Channel Statistics: %d/%d Users on %d/%d Channels"
-msgstr "Benutzer und Channel Statistik: %d/%d Benutzer in %d%d Channels"
+msgstr "사용자와 대화방의 통계: %d/%d 사용자 %d/%d 대화방에 있습니다."
 
 #: src/fe-gtk/chanlist.c:536
 msgid "I can't save an empty list!"
-msgstr "Kann keine leere Liste abspeichern!"
+msgstr "빈 목록은 저장 할 수 없습니다.!!"
 
 #: src/fe-gtk/chanlist.c:539 src/fe-gtk/menu.c:954
 msgid "Select an output filename"
-msgstr "Geben Sie einen Dateinamen für die Ausgabe an"
+msgstr "출력할 화일을 선택하세요."
 
 #: src/fe-gtk/chanlist.c:607
 #, c-format
 msgid "X-Chat: Channel List (%s)"
-msgstr "X-Chat: Channel-Liste (%s)"
+msgstr "X-Chat: 대화방 목록 (%s)"
 
 #: src/fe-gtk/chanlist.c:622
 msgid "List display options:"
-msgstr "Listenausgabeoptionen:"
+msgstr "출력 설정 목록:"
 
 #: src/fe-gtk/chanlist.c:634
 msgid "Minimum Users:"
-msgstr "Minimale Benutzer:"
+msgstr "최소 사용자:"
 
 #: src/fe-gtk/chanlist.c:649
 msgid "Maximum Users:"
-msgstr "Maximale Benutzer:"
+msgstr "최대 사용자:"
 
 #: src/fe-gtk/chanlist.c:664
 msgid "Regex Match:"
-msgstr "Regex-Entsprechung:"
+msgstr "정규식:"
 
 #: src/fe-gtk/chanlist.c:685
 msgid "Apply Match to:"
-msgstr "Entsprechung anwenden auf:"
+msgstr "적용할 규칙:"
 
 #: src/fe-gtk/chanlist.c:709
 msgid "Apply"
-msgstr "Anwenden"
+msgstr "적용"
 
 #: src/fe-gtk/chanlist.c:751
 msgid "Refresh the list"
-msgstr "Liste aktualisieren"
+msgstr "목록 다시읽기"
 
 #: src/fe-gtk/chanlist.c:753
 msgid "Save the list"
-msgstr "Liste speichern"
+msgstr "목록 저장"
 
 #: src/fe-gtk/chanlist.c:755 src/fe-gtk/menu.c:756
 msgid "Join Channel"
-msgstr "Channel betreten"
+msgstr "대화 참여"
 
 #: src/fe-gtk/dccgui.c:126
 #, c-format
 msgid "Send file to %s"
-msgstr "Sende Datei an %s"
+msgstr "%s 님에게 화일 보내기"
 
 #: src/fe-gtk/dccgui.c:346
 #, c-format
@@ -2925,17 +2920,16 @@ msgid ""
 " IP Number: %s\n"
 "Start Time: %s   Max CPS: %d\n"
 msgstr ""
-"     Datei: %s\n"
-"    Zu/Von: %s\n"
-"     Größe: %u\n"
-"      Port: %d\n"
-" IP-Nummer: %s\n"
-" Startzeit: %s\n"
-" Max. CPS: %d\n"
+"       화일: %s\n"
+"보낸/받는이: %s\n"
+"       크기: %u\n"
+"       포트: %d\n"
+"    IP 주소: %s\n"
+"   시작시간: %s   최대속도: %d CPS\n"
 
 #: src/fe-gtk/dccgui.c:379
 msgid "That file is not resumable."
-msgstr "Diese Datei ist nicht fortsetzbar"
+msgstr "그 화일은 이어 받을 수 없습니다."
 
 #: src/fe-gtk/dccgui.c:383
 #, c-format
@@ -2944,158 +2938,158 @@ msgid ""
 "%s.\n"
 "Resuming not possible."
 msgstr ""
-"Kann nicht auf die Datei %s zugreifen\n"
+"화일에 접근 할 수 없습니다: %s\n"
 "%s.\n"
-"Fortsetzen nicht möglich."
+"이어받기가 불가능 합니다."
 
 #: src/fe-gtk/dccgui.c:390
 msgid "File in download directory is larger than file offered. Resuming not possible."
-msgstr "Datei im Downloadverzeichnis ist größer als die angebotene Datei. Fortsetzen nicht möglich."
+msgstr "받을 디렉토리의 화일이 전송 받을 화일 보다 큽니다. 이어 받기는 불가능 합니다."
 
 #: src/fe-gtk/dccgui.c:394
 msgid "Cannot resume the same file from two people."
-msgstr "Kann dieselbe Datei nicht von zwei Leuten fortsetzen."
+msgstr "두사람에게서 같은 화일을 받을경우 이어 받을 수 없습니다."
 
 #: src/fe-gtk/dccgui.c:481
 msgid "MIME Type"
-msgstr "MIME-Typ"
+msgstr "MIME 형태"
 
 #: src/fe-gtk/dccgui.c:487 src/fe-gtk/dccgui.c:644 src/fe-gtk/dccgui.c:767
 #: src/fe-gtk/notifygui.c:110
 msgid "Status"
-msgstr "Status"
+msgstr "상태"
 
 #: src/fe-gtk/dccgui.c:488 src/fe-gtk/dccgui.c:645 src/fe-gtk/plugingui.c:75
 msgid "File"
-msgstr "Datei"
+msgstr "화일"
 
 #: src/fe-gtk/dccgui.c:491 src/fe-gtk/dccgui.c:649
 msgid "ETA"
-msgstr "ETA"
+msgstr ""
 
 #: src/fe-gtk/dccgui.c:501
 msgid "X-Chat: File Receive List"
-msgstr "X-Chat: Dateieingangsliste"
+msgstr "X-Chat: 화일 받기 목록"
 
 #: src/fe-gtk/dccgui.c:529 src/fe-gtk/dccgui.c:682 src/fe-gtk/dccgui.c:797
 msgid "Abort"
-msgstr "Abbrechen"
+msgstr "취소"
 
 #: src/fe-gtk/dccgui.c:531 src/fe-gtk/dccgui.c:798
 msgid "Accept"
-msgstr "Annehmen"
+msgstr "허용"
 
 #: src/fe-gtk/dccgui.c:533
 msgid "Resume"
-msgstr "Fortsetzen"
+msgstr "이어받기"
 
 #: src/fe-gtk/dccgui.c:537
 msgid "Open"
-msgstr "Öffnen"
+msgstr "열기"
 
 #: src/fe-gtk/dccgui.c:648
 msgid "Ack"
-msgstr "ACK"
+msgstr ""
 
 #: src/fe-gtk/dccgui.c:650
 msgid "To"
-msgstr "Zu"
+msgstr "받는이"
 
 #: src/fe-gtk/dccgui.c:660
 msgid "X-Chat: File Send List"
-msgstr "X-Chat: Dateiausgangsliste"
+msgstr "X-Chat: 화일 전송 목록"
 
 #: src/fe-gtk/dccgui.c:768
 msgid "To/From"
-msgstr "Zu/Von"
+msgstr "수신/송신"
 
 #: src/fe-gtk/dccgui.c:769
 msgid "Recv"
-msgstr "Rein "
+msgstr "받음"
 
 #: src/fe-gtk/dccgui.c:770
 msgid "Sent"
-msgstr "Raus"
+msgstr "보냄"
 
 #: src/fe-gtk/dccgui.c:771
 msgid "StartTime"
-msgstr "Startzeit"
+msgstr "시작시간"
 
 #: src/fe-gtk/dccgui.c:781
 msgid "X-Chat: DCC Chat List"
-msgstr "X-Chat: DCC Chatliste"
+msgstr "X-Chat: DCC 대화 목록"
 
 #: src/fe-gtk/editlist.c:139
 msgid "*NEW*"
-msgstr "*NEU*"
+msgstr "*새로만듬*"
 
 #: src/fe-gtk/editlist.c:140
 msgid "EDIT ME"
-msgstr "ÄNDERE MICH"
+msgstr "수정 해 주세요"
 
 #: src/fe-gtk/editlist.c:305 src/fe-gtk/plugingui.c:73
 msgid "Name"
-msgstr "Name"
+msgstr "이름"
 
 #: src/fe-gtk/editlist.c:306
 msgid "Command"
-msgstr "Kommando"
+msgstr "명령"
 
 #: src/fe-gtk/editlist.c:333
 msgid "Move Up"
-msgstr "Hochbewegen"
+msgstr "위로"
 
 #: src/fe-gtk/editlist.c:337
 msgid "Move Dn"
-msgstr "Runterbewegen"
+msgstr "아래로"
 
 #: src/fe-gtk/editlist.c:345
 msgid "Cancel"
-msgstr "Abbruch"
+msgstr "취소"
 
 #: src/fe-gtk/editlist.c:349 src/fe-gtk/textgui.c:413 src/fe-gtk/urlgrab.c:204
 msgid "Save"
-msgstr "Speichern"
+msgstr "저장"
 
 #: src/fe-gtk/editlist.c:357
 msgid "Add New"
-msgstr "Hinzufügen"
+msgstr "새로 추가"
 
 #: src/fe-gtk/editlist.c:361 src/fe-gtk/fkeys.c:744 src/fe-gtk/ignoregui.c:379
 msgid "Delete"
-msgstr "Löschen"
+msgstr "삭제"
 
 #: src/fe-gtk/editlist.c:369
 msgid "Sort"
-msgstr "Sortiere"
+msgstr "정렬"
 
 #: src/fe-gtk/editlist.c:373
 msgid "Help"
-msgstr "Hilfe"
+msgstr "도움말"
 
 #: src/fe-gtk/fe-gtk.c:144
 msgid "Options"
-msgstr "Optionen"
+msgstr "설정"
 
 #: src/fe-gtk/fe-gtk.c:145
 msgid "DIRECTORY"
-msgstr "VERZEICHNIS"
+msgstr "디렉토리"
 
 #: src/fe-gtk/fe-gtk.c:146
 msgid "use a different config dir"
-msgstr "benutze ein anderes Konfigurationsverzeichnis"
+msgstr "다른 설정 디렉토리 사용"
 
 #: src/fe-gtk/fe-gtk.c:147
 msgid "don't auto connect"
-msgstr "nicht automatisch verbinden"
+msgstr "자동으로 접속하지 않음"
 
 #: src/fe-gtk/fe-gtk.c:148
 msgid "don't auto load any plugins"
-msgstr "Plugins nicht automatisch laden"
+msgstr "추가기능을 사용하지 않음"
 
 #: src/fe-gtk/fe-gtk.c:149
 msgid "show version information"
-msgstr "Versionsinformationen anzeigen"
+msgstr "판번호 정보 표시"
 
 #: src/fe-gtk/fe-gtk.c:234
 #, c-format
@@ -3104,82 +3098,82 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
-"Kann Schriftartdatei nicht öffnen:\n"
+"글꼴 읽기 실패:\n"
 "\n"
 "%s"
 
 #: src/fe-gtk/fe-gtk.c:594
 msgid "Search buffer is empty.\n"
-msgstr "Suchpuffer ist leer.\n"
+msgstr "검색할 기억공간이 비어 있습니다.\n"
 
 #: src/fe-gtk/fe-gtk.c:671
 #, c-format
 msgid "%d bytes"
-msgstr "%d Bytes"
+msgstr "%d 바이트"
 
 #: src/fe-gtk/fkeys.c:155
 msgid "The Run Command action runs the data in Data 1 as if it has been typed into the entry box where you pressed the key sequence. Thus it can contain text (which will be sent to the channel/person), commands or user commands. When run all \\n characters in Data 1 are used to deliminate seperate commands so it is possible to run more than one command. If you want a \\ in the actual text run then enter \\\\"
-msgstr "Die Run Command Aktion führt die Daten in \"Daten 1\" aus, als ob sie in die Eingabezeile eingegeben worden wären, in der die Tastenfolge gedrückt wurde. Daher kann \"Daten 1\" Text, der in den Channel/Dialog gesendet wird, Kommandos oder benutzerdefinierte Kommandos enthalten. \\n trennt Kommandos, so daß es möglich ist, mehrere Kommandos auszuführen. Wenn Sie ein \\ im Text benötigen, geben Sie \\\\ ein."
+msgstr ""
 
 #: src/fe-gtk/fkeys.c:157
 msgid "The Change Page command switches between pages in the notebook. Set Data 1 to the page you want to switch to. If Data 2 is set to anything then the switch will be relative to the current position"
-msgstr "Die Change Page Aktion schaltet zwischen Reitern um. Tragen Sie in \"Daten 1\" den Reiter ein, zu dem Sie wechseln wollen. Wenn in \"Daten 2\" irgendetwas steht, dann ist die Umschaltung relativ zur aktuellen Position"
+msgstr ""
 
 #: src/fe-gtk/fkeys.c:159
 msgid "The Insert in Buffer command will insert the contents of Data 1 into the entry where the key sequence was pressed at the current cursor position"
-msgstr "Die Insert in Buffer Aktion fügt den Inhalt von \"Daten 1\" in die Zeile der Historie in dem die Tastenfolge gedrückt wurde an der gegenwärtigen Cursor-Position ein."
+msgstr ""
 
 #: src/fe-gtk/fkeys.c:161
 msgid "The Scroll Page command scrolls the text widget up or down one page or one line. Set Data 1 to either Up, Down, +1 or -1."
-msgstr "Die Scroll Page Aktion rollt den Text eine Seite auf oder ab. Mögliche Werte für \"Daten 1\": Up, Down, +1 oder -1."
+msgstr ""
 
 #: src/fe-gtk/fkeys.c:163
 msgid "The Set Buffer command sets the entry where the key sequence was entered to the contents of Data 1"
-msgstr "Die Set Buffer Aktion setzt die Zeile der Historie in der die Tastenkombination gedrückt wurde auf den Wert von \"Daten 1\"."
+msgstr ""
 
 #: src/fe-gtk/fkeys.c:165
 msgid "The Last Command command sets the entry to contain the last command entered - the same as pressing up in a shell"
-msgstr "Die Last Command Aktion blättert eine Zeile in der Historie hoch."
+msgstr ""
 
 #: src/fe-gtk/fkeys.c:167
 msgid "The Next Command command sets the entry to contain the next command entered - the same as pressing down in a shell"
-msgstr "Die Next Command Aktion blättert eine Zeile in der Historie abwärts."
+msgstr ""
 
 #: src/fe-gtk/fkeys.c:169
 msgid "This command changes the text in the entry to finish an incomplete nickname or command. If Data 1 is set then double-tabbing in a string will select the last nick, not the next"
-msgstr "Diese Aktion vervollständigt einen unvöllständigen Nick oder Befehl. Wenn \"Daten 1\" gesetzt ist, springt 2x [Tab] auf die letzte, nicht die nächste Möglichkeit."
+msgstr ""
 
 #: src/fe-gtk/fkeys.c:171
 msgid "This command scrolls up and down through the list of nicks. If Data 1 is set to anything it will scroll up, else it scrolls down"
-msgstr "Diese Aktion blättert durch die Liste der Nicknamen. Wenn \"Daten 1\" gesetzt ist, wird hochgeblättert, sonst runter. "
+msgstr ""
 
 #: src/fe-gtk/fkeys.c:173
 msgid "This command checks the last word entered in the entry against the replace list and replaces it if it finds a match"
-msgstr "Diese Aktion vergleicht das zuletzt Eingegebene mit der Textersetzungsliste und ersetzt es, wenn sie eine Entsprechung findet."
+msgstr "이명령은 검색하고자 하는 목록의 단어와 일치하면 모두 검색해서변경합니다."
 
 #: src/fe-gtk/fkeys.c:175
 msgid "This command moves the front tab left by one"
-msgstr "Diese Aktion bewegt den aktiven Reiter eine Position nach links."
+msgstr "이 명령은 앞의 탭을 왼쪽으로 이동 시킵니다."
 
 #: src/fe-gtk/fkeys.c:177
 msgid "This command moves the front tab right by one"
-msgstr "Diese Aktion bewegt den aktiven Reiter eine Position nach rechts."
+msgstr "이 명령은 앞의 탭을  오른쪽으로 이동 시킵니다."
 
 #: src/fe-gtk/fkeys.c:179
 msgid "This command moves the current tab family to the left"
-msgstr "Diese Aktion bewegt die aktuelle Reitergruppe nach links."
+msgstr "이 명령은 현재 탭을 왼쪽으로 이동 시킵니다."
 
 #: src/fe-gtk/fkeys.c:181
 msgid "This command moves the current tab family to the right"
-msgstr "Diese Aktion bewegt die aktuelle Reitergruppe nach rechts."
+msgstr "이 명령은 현재 탭을 오른쪽으로 이동 시킵니다."
 
 #: src/fe-gtk/fkeys.c:183
 msgid "Push input line into history but doesn't send to server"
-msgstr "Eingabezeile in der Historie speichern, aber nicht absenden."
+msgstr "입력된 줄은 기록은 했지만 서버로 전송하지 못했습니다."
 
 #: src/fe-gtk/fkeys.c:195
 msgid "There was an error loading key bindings configuration"
-msgstr "Fehler beim Laden der Tastaturkürzel-Konfiguration"
+msgstr "글쇠 연결 설정 읽는중 오류가 발생 했습니다."
 
 #: src/fe-gtk/fkeys.c:432 src/fe-gtk/fkeys.c:433 src/fe-gtk/fkeys.c:434
 #: src/fe-gtk/fkeys.c:435 src/fe-gtk/fkeys.c:717 src/fe-gtk/fkeys.c:723
@@ -3187,51 +3181,51 @@ msgstr "Fehler beim Laden der Tastaturkürzel-Konfiguration"
 #: src/fe-gtk/maingui.c:1064 src/fe-gtk/maingui.c:1117
 #: src/fe-gtk/maingui.c:2494
 msgid "<none>"
-msgstr "<leer>"
+msgstr "<없음>"
 
 #: src/fe-gtk/fkeys.c:681
 msgid "Mod"
-msgstr "Mod"
+msgstr "상태"
 
 #: src/fe-gtk/fkeys.c:682 src/fe-gtk/fkeys.c:777
 msgid "Key"
-msgstr "Taste"
+msgstr "글쇠"
 
 #: src/fe-gtk/fkeys.c:683
 msgid "Action"
-msgstr "Aktion"
+msgstr "동작"
 
 #: src/fe-gtk/fkeys.c:692
 msgid "X-Chat: Keyboard Shortcuts"
-msgstr "X-Chat: Tastenkürzel"
+msgstr "X-Chat: 단축 글쇠"
 
 #: src/fe-gtk/fkeys.c:739
 msgid "Add new"
-msgstr "Neu..."
+msgstr "새로 추가"
 
 #: src/fe-gtk/fkeys.c:770
 msgid "Shift"
-msgstr "Umschalt"
+msgstr ""
 
 #: src/fe-gtk/fkeys.c:772
 msgid "Alt"
-msgstr "Alt"
+msgstr ""
 
 #: src/fe-gtk/fkeys.c:774
 msgid "Ctrl"
-msgstr "Strg"
+msgstr ""
 
 #: src/fe-gtk/fkeys.c:781
 msgid "Data 1"
-msgstr "Daten 1"
+msgstr "자료 1"
 
 #: src/fe-gtk/fkeys.c:784
 msgid "Data 2"
-msgstr "Daten 2"
+msgstr "자료 2"
 
 #: src/fe-gtk/fkeys.c:827
 msgid "Error opening keys config file\n"
-msgstr "Fehler beim Öffnen der Konfigurationsdatei fr die Tastatur\n"
+msgstr "글쇠 설정화일 열기 실패\n"
 
 #: src/fe-gtk/fkeys.c:998
 #, c-format
@@ -3239,9 +3233,8 @@ msgid ""
 "Unknown keyname %s in key bindings config file\n"
 "Load aborted, please fix %s/keybindings.conf\n"
 msgstr ""
-"Unbekannter Tastenname %s in der Tastenbindungs-\n"
-"Konfigurationsdatei. Ladevorgang abgebrochen,\n"
-"bitte korrigieren Sie %s/keybindings.conf\n"
+"글쇠 연결 설정화일의 %s는 알 수 없는 글쇠 입니다.\n"
+"읽기가 취소되었습니다. %s/keybindings 화일을 수정 하십시오.\n"
 
 #: src/fe-gtk/fkeys.c:1036
 #, c-format
@@ -3249,9 +3242,8 @@ msgid ""
 "Unknown action %s in key bindings config file\n"
 "Load aborted, Please fix %s/keybindings\n"
 msgstr ""
-"Unbekannte Aktion %s in der Tastenbindungs-\n"
-"Konfigurationsdatei. Ladevorgang abgebrochen,\n"
-"bitte korrigieren Sie %s/keybindings.conf\n"
+"글쇠 연결 설정화일의 %s는 알 수 없는 행동입니다.\n"
+"읽기가 취소되었습니다. %s/keybindings 화일을 수정 하십시오.\n"
 
 #: src/fe-gtk/fkeys.c:1057
 #, c-format
@@ -3261,10 +3253,10 @@ msgid ""
 "\n"
 "Load aborted, Please fix %s/keybindings\n"
 msgstr ""
-"Erwarte Datenzeile (beginnend mit Dx{:|!}), aber bekam:\n"
+"데이터 는 (Dx{:|!}로 시작되는) 기대한 것과 같지만 :\n"
 "%s\n"
 "\n"
-"Ladevorgang abgebrochen, bitte korrigieren Sie %s/keybindings\n"
+"읽기가 취소되었습니다.  %s/keybindings 화일을 수정 하십시오.\n"
 
 #: src/fe-gtk/fkeys.c:1126
 #, c-format
@@ -3272,177 +3264,177 @@ msgid ""
 "Key bindings config file is corrupt, load aborted\n"
 "Please fix %s/keybindings.conf\n"
 msgstr ""
-"Tastenbindungs-Konfigurationsdatei ist defekt,\n"
-"Ladevorgang abgebrochen, bitte korrigieren Sie %s/keybindings\n"
+"글쇠 연결 설정화일이 올바르지 않아서, 읽기를 취소 했습니다.\n"
+"%s/keybindings.conf 화일을 수정 하십시오.\n"
 
 #: src/fe-gtk/gtkutil.c:148
 msgid "Cannot write to that file."
-msgstr "Kann in diese Datei nicht schreiben."
+msgstr "해당 화일을 쓸 수 없습니다."
 
 #: src/fe-gtk/gtkutil.c:150
 msgid "Cannot read that file."
-msgstr "Kann diese Datei nicht lesen."
+msgstr "해당 화일은 열 수 없습니다."
 
 #: src/fe-gtk/ignoregui.c:117 src/fe-gtk/ignoregui.c:280
 msgid "That mask already exists."
-msgstr "Diese Maske gibt es bereits."
+msgstr "해당 매스크가 이미 존재합니다."
 
 #: src/fe-gtk/ignoregui.c:177 src/fe-gtk/maingui.c:1573
 msgid "Private"
-msgstr "Privat"
+msgstr "개인:"
 
 #: src/fe-gtk/ignoregui.c:178
 msgid "Notice"
-msgstr "Notiz"
+msgstr "알림"
 
 #: src/fe-gtk/ignoregui.c:179
 msgid "CTCP"
-msgstr "CTCP"
+msgstr ""
 
 #: src/fe-gtk/ignoregui.c:180
 msgid "DCC"
-msgstr "DCC"
+msgstr ""
 
 #: src/fe-gtk/ignoregui.c:181
 msgid "Invite"
-msgstr "Einlad."
+msgstr "초대"
 
 #: src/fe-gtk/ignoregui.c:182
 msgid "Unignore"
-msgstr "Unignore"
+msgstr "무시해제"
 
 #: src/fe-gtk/ignoregui.c:300
 msgid "Enter mask to ignore:"
-msgstr "Maske zum Ignorieren eingeben:"
+msgstr "무시할 매스크 입력:"
 
 #: src/fe-gtk/ignoregui.c:347
 msgid "X-Chat: Ignore list"
-msgstr "X-Chat: Ignoranzliste"
+msgstr "X-Chat: 무시 목록"
 
 #: src/fe-gtk/ignoregui.c:354
 msgid "Ignore Stats:"
-msgstr "Ignore-Status"
+msgstr "무시 상태:"
 
 #: src/fe-gtk/ignoregui.c:362
 msgid "Channel:"
-msgstr "Channel:"
+msgstr "대화방:"
 
 #: src/fe-gtk/ignoregui.c:363
 msgid "Private:"
-msgstr "Privat:"
+msgstr "개인:"
 
 #: src/fe-gtk/ignoregui.c:364
 msgid "Notice:"
-msgstr "Notiz:"
+msgstr "알림:"
 
 #: src/fe-gtk/ignoregui.c:365
 msgid "CTCP:"
-msgstr "CTCP:"
+msgstr ""
 
 #: src/fe-gtk/ignoregui.c:366
 msgid "Invite:"
-msgstr "Einladungen"
+msgstr "초대:"
 
 #: src/fe-gtk/ignoregui.c:377 src/fe-gtk/menu.c:1259
 msgid "New"
-msgstr "Neu"
+msgstr "새로만들기"
 
 #: src/fe-gtk/ignoregui.c:381
 msgid "Delete All"
-msgstr "Alle löschen"
+msgstr "모두 삭제"
 
 #: src/fe-gtk/maingui.c:318
 msgid "Dialog with"
-msgstr "Dialog mit"
+msgstr "귓속말"
 
 #: src/fe-gtk/maingui.c:574
 #, c-format
 msgid "Topic for %s is: %s"
-msgstr "Thema für %s ist: %s"
+msgstr "대화방 %s 의 주제는 %s 입니다."
 
 #: src/fe-gtk/maingui.c:578
 msgid "No topic is set"
-msgstr "Kein Thema gesetzt"
+msgstr "주제가 정해져 있지 않습니다."
 
 #: src/fe-gtk/maingui.c:974
 msgid "No other tabs open, quit xchat?"
-msgstr "Keine anderen Reiter offen, XChat beenden?"
+msgstr "열린 탭이 없습니다. 종료하시겠습니까?"
 
 #: src/fe-gtk/maingui.c:1020
 msgid "Insert color code"
-msgstr "Farbkode einsetzen"
+msgstr "색상코드 삽입"
 
 #: src/fe-gtk/maingui.c:1069
 msgid "Beep on message"
-msgstr "Bei Nachricht piepsen"
+msgstr "메세지에 삑소리"
 
 #: src/fe-gtk/maingui.c:1072
 msgid "Show join/part messages"
-msgstr "Join/Part-Nachrichten anzeigen"
+msgstr "참여/퇴장 메세지 표시"
 
 #: src/fe-gtk/maingui.c:1074
 msgid "Color paste"
-msgstr "Farbiges Einfügen"
+msgstr "색상추출"
 
 #: src/fe-gtk/maingui.c:1084
 msgid "Go to"
-msgstr "Gehe zu"
+msgstr "이동"
 
 #: src/fe-gtk/maingui.c:1097 src/fe-gtk/menu.c:1281
 msgid "Close Tab"
-msgstr "Reiter schließen"
+msgstr "탭 닫기"
 
 #: src/fe-gtk/maingui.c:1100 src/fe-gtk/menu.c:1430
 msgid "Detach Tab"
-msgstr "Reiter lösen"
+msgstr "탭 분리"
 
 #: src/fe-gtk/maingui.c:1291
 msgid "Some file transfers still active, quit xchat?"
-msgstr "Einige Dateitransfers sind noch aktiv, XChat beenden?"
+msgstr "화일전송이 진행 중입니다. 종료 하시겠습니까?"
 
 #: src/fe-gtk/maingui.c:1441 src/fe-gtk/maingui.c:1547
 msgid "User limit must be a number!\n"
-msgstr "Benutzerlimit muß eine Zahl sein!\n"
+msgstr "사용자 제한은 숫자만 입력 가능합니다.\n"
 
 #: src/fe-gtk/maingui.c:1569
 msgid "Topic Protection"
-msgstr "Themenschutz"
+msgstr "주제 잠금"
 
 #: src/fe-gtk/maingui.c:1570
 msgid "No outside messages"
-msgstr "Keine Nachrichten von Außen"
+msgstr "외부 메세지 받지않음"
 
 #: src/fe-gtk/maingui.c:1571
 msgid "Secret"
-msgstr "Geheim"
+msgstr "비밀방"
 
 #: src/fe-gtk/maingui.c:1572
 msgid "Invite Only"
-msgstr "Nur auf Einladung"
+msgstr "초대만 가능"
 
 #: src/fe-gtk/maingui.c:1574
 msgid "Moderated"
-msgstr "Moderiert"
+msgstr "중재식 대화"
 
 #: src/fe-gtk/maingui.c:1575
 msgid "Ban List"
-msgstr "Bannliste"
+msgstr "추방 목록"
 
 #: src/fe-gtk/maingui.c:1577
 msgid "Keyword"
-msgstr "Schlüsselwort"
+msgstr "암호"
 
 #: src/fe-gtk/maingui.c:1589
 msgid "User Limit"
-msgstr "Benutzerlimit"
+msgstr "사용자 제한"
 
 #: src/fe-gtk/maingui.c:1605
 msgid "Close this tab/window"
-msgstr "Dieses Fenster/Reiter schließen"
+msgstr "이 창/탭을 닫습니다."
 
 #: src/fe-gtk/maingui.c:1702
 msgid "Show/Hide userlist"
-msgstr "Benutzerliste zeigen/verstecken"
+msgstr "사용자목록을 표시하거나 숨깁니다."
 
 #: src/fe-gtk/maingui.c:1815
 msgid ""
@@ -3451,83 +3443,83 @@ msgid ""
 "You may be using a non-compliant window\n"
 "manager that is not currently supported.\n"
 msgstr ""
-"Transparenter Hintergrund nicht aktivierbar!\n"
+"배경을 투명하게 할 수 없습니다!\n"
 "\n"
-"Eventuell benutzen Sie einen nicht\n"
-"unterstützten Windowmanager.\n"
+"당신이 사용하는 창 관리자는  호환되지 않습니다.\n"
+"현재로서는 해당 창관리자는 지원하지 않습니다.\n"
 
 #: src/fe-gtk/maingui.c:2008
 msgid "Enter new nickname:"
-msgstr "Neuen Nicknamen eingeben:"
+msgstr "새로운 대화명:"
 
 #: src/fe-gtk/menu.c:151
 msgid "Host unknown"
-msgstr "Host unbekannt"
+msgstr "알수없는 호스트"
 
 #: src/fe-gtk/menu.c:512
 #, c-format
 msgid "User: %s"
-msgstr "Benutzer: %s"
+msgstr "사용자: %s"
 
 #: src/fe-gtk/menu.c:516
 #, c-format
 msgid "Country: %s"
-msgstr "Land: %s"
+msgstr "국가: %s"
 
 #: src/fe-gtk/menu.c:520
 #, c-format
 msgid "Realname: %s"
-msgstr "Echter Name: %s"
+msgstr "본명: %s"
 
 #: src/fe-gtk/menu.c:524
 #, c-format
 msgid "Server: %s"
-msgstr "Server: %s"
+msgstr "서버: %s"
 
 #: src/fe-gtk/menu.c:528
 #, c-format
 msgid "Last Msg: %s"
-msgstr "Letzte Nachricht: %s"
+msgstr "마지막 메세지: %s"
 
 #: src/fe-gtk/menu.c:613
 msgid "Menu Bar"
-msgstr "Menüzeile"
+msgstr "메뉴 막대"
 
 #: src/fe-gtk/menu.c:614
 msgid "Topic Bar"
-msgstr "Themenzeile"
+msgstr "주제 막대"
 
 #: src/fe-gtk/menu.c:618 src/fe-gtk/setup.c:158
 msgid "User List"
-msgstr "Benutzerliste"
+msgstr "사용자 목록"
 
 #: src/fe-gtk/menu.c:621
 msgid "Mode Buttons"
-msgstr "Modusknöpfe"
+msgstr "설정 단추"
 
 #: src/fe-gtk/menu.c:627
 msgid "User List Buttons"
-msgstr "Benutzerlistenknöpfe"
+msgstr "사용자 목록단추"
 
 #: src/fe-gtk/menu.c:697 src/fe-gtk/urlgrab.c:202
 msgid "Copy selected URL"
-msgstr "Ausgewählte URL kopieren"
+msgstr "선택된 URL을 복사"
 
 #: src/fe-gtk/menu.c:760
 msgid "Part Channel"
-msgstr "Channel verlassen"
+msgstr "대화방 나가기"
 
 #: src/fe-gtk/menu.c:762
 msgid "Cycle Channel"
-msgstr "Channel rotieren"
+msgstr "나갔다 들어오기"
 
 #: src/fe-gtk/menu.c:785
 msgid "X-Chat: User menu"
-msgstr "X-Chat: Benutzermenü"
+msgstr "X-Chat: 사용자 메뉴"
 
 #: src/fe-gtk/menu.c:794
 msgid "Edit This Menu..."
-msgstr "Dieses Menü ändern..."
+msgstr "이 항목 편집..."
 
 #: src/fe-gtk/menu.c:896
 msgid ""
@@ -3536,15 +3528,14 @@ msgid ""
 "can be dangerous and is exploitable. Eg:\n"
 "Someone could send you a .bash_profile"
 msgstr ""
-"*WARNUNG*\n"
-"Automatisches Annehmen von DCCs in Ihr home-\n"
-"Verzeichnis kann gefährlich sein und ist\n"
-"ausnutzbar. Zum Beispiel könnte Ihnen jemand\n"
-"ein .bash_profile schicken"
+"*경고*\n"
+"당신의 홈 디렉토리로 자동 받기를 할 경우  상당히 위험 합니다.\n"
+"예:\n"
+"어떤 사용자가 당신에게 .bash_profile 을 전송 했을 경우와 같이.."
 
 #: src/fe-gtk/menu.c:1024
 msgid "Settings saved."
-msgstr "Einstellungen gespeichert."
+msgstr "설정이 저장되었습니다."
 
 #: src/fe-gtk/menu.c:1061
 msgid ""
@@ -3566,23 +3557,23 @@ msgid ""
 "%2 would be \"john\"\n"
 "&2 would be \"john hello\"."
 msgstr ""
-"Benutzerkommandos - Spezielle Kodes:\n"
+"사용자 명령 - 특수 기호:\n"
 "\n"
-"%c  =  aktueller Channel\n"
-"%m  =  Computerinfo\n"
-"%n  =  Ihr Nick\n"
-"%t  =  Zeit/Datum\n"
-"%v  =  XChat Version\n"
-"%2  =  Wort 2\n"
-"%3  =  Wort 3\n"
-"&2  =  Wort 2 bis zum Ende der Zeile\n"
-"&3  =  Wort 3 bis zum Ende der Zeile\n"
+"%c  =  현재 대화방\n"
+"%m  =  시스템 정보\n"
+"%n  =  당신의 대화명\n"
+"%t  =  날짜/시간\n"
+"%v  =  xchat 판번호\n"
+"%2   =    단어 2\n"
+"%3   =    단어 3\n"
+"&2    =   단어 2 에서 줄 끝 까지\n"
+"&3    =   단어 3 에서 줄끝까지\n"
 "\n"
-"z.B.:\n"
-"/cmd john hallo\n"
+"예:\n"
+"/cmd 홍길동 안녕하세요\n"
 "\n"
-"%2 wäre \"john\"\n"
-"&2 wäre \"john hallo\"."
+"%2 는  \"홍길동\"으로 변환 됩니다.\n"
+"&2 는 \"홍길동 안녕하세요\"으로 변환 됩니다."
 
 #: src/fe-gtk/menu.c:1076
 msgid ""
@@ -3596,15 +3587,15 @@ msgid ""
 "%s  =  selected nick\n"
 "%t  =  time/date\n"
 msgstr ""
-"Benutzerlisten-Knöpfe - Spezielle Kodes:\n"
+"사용자  목록 단추 - 특수기호:\n"
 "\n"
-"%a  =  alle ausgewählten Nicks\n"
-"%c  =  aktueller Channel\n"
-"%h  =  die Hostmaske des ausgewählten Nicks\n"
-"%m  =  Computerinfo\n"
-"%n  =  Ihr Nick\n"
-"%s  =  ausgewählter Nick\n"
-"%t  =  Zeit/Datum\n"
+"%a  =  선택된 대화명\n"
+"%c  =  현재 대화방\n"
+"%h  =  선택된 사용자의 호스트명\n"
+"%m  =  시스템 정보\n"
+"%n  =  당신의 대화명\n"
+"%s  =  선택된 대화명\n"
+"%t  =  날짜/시간\n"
 
 #: src/fe-gtk/menu.c:1085
 msgid ""
@@ -3618,15 +3609,15 @@ msgid ""
 "%s  =  selected nick\n"
 "%t  =  time/date\n"
 msgstr ""
-"Dialog-Knöpfe - Spezielle Kodes:\n"
+"대화상자 단추 - 특수기호:\n"
 "\n"
-"%a  =  alle ausgewählten Nicks\n"
-"%c  =  aktueller Channel\n"
-"%h  =  die Hostmaske des ausgewählten Nicks\n"
-"%m  =  Computerinfo\n"
-"%n  =  Ihr Nick\n"
-"%s  =  ausgewählter Nick\n"
-"%t  =  Zeit/Datum\n"
+"%a  =  선택된 대화명\n"
+"%c  =  현재 대화방\n"
+"%h  =  선택된 사용자의 호스트명\n"
+"%m  =  시스템 정보\n"
+"%n  =  당신의 대화명\n"
+"%s  =  선택된 대화명\n"
+"%t  =  날짜/시간\n"
 
 #: src/fe-gtk/menu.c:1094
 msgid ""
@@ -3642,16 +3633,16 @@ msgid ""
 "&3  =  word 3 to the end of line\n"
 "\n"
 msgstr ""
-"CTCP-Antworten - Spezielle Kodes:\n"
+"CTCP 회신 - 특수 기호:\n"
 "\n"
-"%d  =  Daten (Der gesamte CTCP)\n"
-"%m  =  Computerinfo\n"
-"%s  =  Der Nick des Absenders\n"
-"%t  =  Zeit/Datum\n"
-"%2  =  Wort 2\n"
-"%3  =  Wort 3\n"
-"&2  =  Wort 2 bis zum Ende der Zeile\n"
-"&3  =  Wort 3 bis zum Ende der Zeile\n"
+"%d  =  자료 (the whole ctcp)\n"
+"%m  =  시스템 정보\n"
+"%s  =  보낸 사람의 대화명\n"
+"%t  =  날짜/시간\n"
+"%2   =    단어 2\n"
+"%3   =    단어 3\n"
+"&2    =   단어 2 에서 줄 끝 까지\n"
+"&3    =   단어 3 에서 줄끝까지\n"
 "\n"
 
 #: src/fe-gtk/menu.c:1104
@@ -3665,1334 +3656,1334 @@ msgid ""
 "indicates it should be sent to a\n"
 "shell instead of X-Chat"
 msgstr ""
-"URL-Handling - Spezielle Kodes:\n"
+"URL 관리기 - 특수 문자:\n"
 "\n"
-"%s  =  die URL\n"
+"%s  =  URL 주소\n"
 "\n"
-"Ein ! am Anfang des Kommandos sagt,\n"
-"daß das Kommando auf der Shell statt\n"
-"in X-Chat gestartet wird"
+"Putting a ! infront of the command\n"
+"indicates it should be sent to a\n"
+"shell instead of X-Chat"
 
 #: src/fe-gtk/menu.c:1113
 msgid "X-Chat: User Defined Commands"
-msgstr "X-Chat: Benutzerdefinierte Kommandos"
+msgstr "X-Chat: 사용자 정의 명령"
 
 #: src/fe-gtk/menu.c:1120
 msgid "X-Chat: Userlist Popup menu"
-msgstr "X-Chat: Benutzerlistenmenü"
+msgstr "X-Chat: 사용자 팝업 메뉴"
 
 #: src/fe-gtk/menu.c:1127
 msgid "X-Chat: Replace"
-msgstr "X-Chat: Ersetzen"
+msgstr "X-Chat: 바꾸기"
 
 #: src/fe-gtk/menu.c:1134
 msgid "X-Chat: URL Handlers"
-msgstr "X-Chat: URL-Handling"
+msgstr "X-Chat: URL 관리기"
 
 #: src/fe-gtk/menu.c:1153
 msgid "X-Chat: Userlist buttons"
-msgstr "X-Chat: Benutzerlistenknöpfe"
+msgstr "X-Chat: 사용자 목록단추"
 
 #: src/fe-gtk/menu.c:1160
 msgid "X-Chat: Dialog buttons"
-msgstr "X-Chat: Dialogknöpfe"
+msgstr "X-Chat: 단추"
 
 #: src/fe-gtk/menu.c:1167
 msgid "X-Chat: CTCP Replies"
-msgstr "X-Chat: CTCP-Antworten"
+msgstr "X-Chat: CTCP 회신"
 
 #: src/fe-gtk/menu.c:1255
 msgid "_X-Chat"
-msgstr "_X-Chat"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1256
 msgid "Server List..."
-msgstr "Serverliste..."
+msgstr "서버 목록..."
 
 #: src/fe-gtk/menu.c:1260
 msgid "Server Tab..."
-msgstr "Serverreiter..."
+msgstr "서버 탭..."
 
 #: src/fe-gtk/menu.c:1261
 msgid "Channel Tab..."
-msgstr "Channelreiter..."
+msgstr "대화방 탭..."
 
 #: src/fe-gtk/menu.c:1262
 msgid "Server Window..."
-msgstr "Serverfenster..."
+msgstr "서버 창..."
 
 #: src/fe-gtk/menu.c:1263
 msgid "Channel Window..."
-msgstr "Channelfenster..."
+msgstr "대화방 창..."
 
 #: src/fe-gtk/menu.c:1268 src/fe-gtk/menu.c:1270
 msgid "Load Plugin or Script..."
-msgstr "Lade Plugins oder Skripte..."
+msgstr "추가기능이나 혼자말 열기..."
 
 #: src/fe-gtk/menu.c:1274
 msgid "New Shell Tab..."
-msgstr "Neuer Kommandozeilenreiter..."
+msgstr "새 명령탭"
 
 #: src/fe-gtk/menu.c:1283
 msgid "Quit"
-msgstr "Ende"
+msgstr "종료"
 
 #: src/fe-gtk/menu.c:1285
 msgid "_IRC"
-msgstr "_IRC"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1286
 msgid "Invisible"
-msgstr "Unsichtbar"
+msgstr "숨김상태"
 
 #: src/fe-gtk/menu.c:1287
 msgid "Receive Wallops"
-msgstr "Empfange Wallops"
+msgstr "서버공지 표시"
 
 #: src/fe-gtk/menu.c:1288
 msgid "Receive Server Notices"
-msgstr "Empfange Servernotizen"
+msgstr "서버 알림 표시"
 
 #: src/fe-gtk/menu.c:1290
 msgid "Marked Away"
-msgstr "Als abwesend markiert"
+msgstr "자리비움으로 표시"
 
 #: src/fe-gtk/menu.c:1292
 msgid "Auto Rejoin when Kicked"
-msgstr "Automatisches Wiederbetreten bei Kick"
+msgstr "퇴장당하면 다시 참여"
 
 #: src/fe-gtk/menu.c:1293
 msgid "Auto Reconnect to Server"
-msgstr "Automatisches Wiederverbinden mit Server"
+msgstr "자동으로 서버에 재 접속"
 
 #: src/fe-gtk/menu.c:1294
 msgid "Never-give-up ReConnect"
-msgstr "Wiederverbinden niemals aufgeben"
+msgstr "계속 접속 시도"
 
 #: src/fe-gtk/menu.c:1296
 msgid "Auto Open Dialog Windows"
-msgstr "Dialogfenster automatisch öffnen"
+msgstr "자동으로 대화창 열기"
 
 #: src/fe-gtk/menu.c:1297
 msgid "Auto Accept Direct Chat"
-msgstr "DCC Chat automatisch annehmen"
+msgstr "귓속말 허용"
 
 #: src/fe-gtk/menu.c:1298
 msgid "Auto Accept Files"
-msgstr "Dateitransfers automatisch annehmen"
+msgstr "화일 자동 받기"
 
 #: src/fe-gtk/menu.c:1300
 msgid "_Server"
-msgstr "_Server"
+msgstr "서버(_S)"
 
 #: src/fe-gtk/menu.c:1302
 msgid "S_ettings"
-msgstr "_Einstellungen"
+msgstr "설정(_e)"
 
 #: src/fe-gtk/menu.c:1303
 msgid "Preferences..."
-msgstr "Optionen..."
+msgstr "환경설정...."
 
 #: src/fe-gtk/menu.c:1305
 msgid "Advanced"
-msgstr "Fortgeschritten"
+msgstr "고급기능"
 
 #: src/fe-gtk/menu.c:1306
 msgid "Auto Replace..."
-msgstr "Automatisches Ersetzen..."
+msgstr "자동 변경..."
 
 #: src/fe-gtk/menu.c:1307
 msgid "CTCP Replies..."
-msgstr "CTCP-Antworten..."
+msgstr "CTCP 회신..."
 
 #: src/fe-gtk/menu.c:1308
 msgid "Dialog Buttons..."
-msgstr "Dialog-Knöpfe..."
+msgstr "단추..."
 
 #: src/fe-gtk/menu.c:1309
 msgid "Keyboard Shortcuts..."
-msgstr "Tastenkürzel..."
+msgstr "단축글쇠..."
 
 #: src/fe-gtk/menu.c:1310
 msgid "Text Events..."
-msgstr "Textereignisse"
+msgstr "글월 이벤트..."
 
 #: src/fe-gtk/menu.c:1311
 msgid "URL Handlers..."
-msgstr "URL-Handling..."
+msgstr "URL 관리기..."
 
 #: src/fe-gtk/menu.c:1312
 msgid "User Commands..."
-msgstr "Benutzerkommandos..."
+msgstr "사용자 명령..."
 
 #: src/fe-gtk/menu.c:1313
 msgid "Userlist Buttons..."
-msgstr "Benutzerlisten-Knöpfe..."
+msgstr "사용자 목록단추..."
 
 #: src/fe-gtk/menu.c:1314
 msgid "Userlist Popup..."
-msgstr "Benutzerlisten-Menü..."
+msgstr "사용자 메뉴..."
 
 #: src/fe-gtk/menu.c:1319
 msgid "Reload Settings"
-msgstr "Einstellungen neu laden"
+msgstr "설정 다시 읽기"
 
 #: src/fe-gtk/menu.c:1321
 msgid "Save Settings now"
-msgstr "Einstellungen speichern"
+msgstr "지금 설정 저장"
 
 #: src/fe-gtk/menu.c:1322
 msgid "Save Settings on exit"
-msgstr "Einstellungen beim Beenden speichern"
+msgstr "종료시 설정 저장"
 
 #: src/fe-gtk/menu.c:1325
 msgid "_Window"
-msgstr "_Fenster"
+msgstr "창(_W)"
 
 #: src/fe-gtk/menu.c:1326
 msgid "Ban List..."
-msgstr "Bannliste..."
+msgstr "추방 목록..."
 
 #: src/fe-gtk/menu.c:1327
 msgid "Channel List..."
-msgstr "Channelliste..."
+msgstr "대화방 목록..."
 
 #: src/fe-gtk/menu.c:1328
 msgid "Character Chart..."
-msgstr "Zeichentabelle..."
+msgstr "문자표..."
 
 #: src/fe-gtk/menu.c:1329
 msgid "Direct Chat..."
-msgstr "DCC Chat..."
+msgstr "대화 직접연결..."
 
 #: src/fe-gtk/menu.c:1330
 msgid "File Receive..."
-msgstr "Dateiempfang..."
+msgstr "화일 받기..."
 
 #: src/fe-gtk/menu.c:1331
 msgid "File Send..."
-msgstr "Dateiversand..."
+msgstr "화일 보내기..."
 
 #: src/fe-gtk/menu.c:1332
 msgid "Ignore List..."
-msgstr "Ignoranzliste..."
+msgstr "무시 목록..."
 
 #: src/fe-gtk/menu.c:1333
 msgid "Notify List..."
-msgstr "Benachrichtigungs-Liste..."
+msgstr "알림 목록..."
 
 #: src/fe-gtk/menu.c:1334
 msgid "Plugins and Scripts..."
-msgstr "Plugins und Skripte..."
+msgstr "추가기능과 혼자말..."
 
 #: src/fe-gtk/menu.c:1335
 msgid "Raw Log..."
-msgstr "Rohdaten-Logbuch..."
+msgstr "원시 기록..."
 
 #: src/fe-gtk/menu.c:1336
 msgid "URL Grabber..."
-msgstr "URL-Grabber..."
+msgstr "URL 잡기도구..."
 
 #: src/fe-gtk/menu.c:1338
 msgid "Reset Marker Line"
-msgstr "Markierungslinie zurücksetzen"
+msgstr "표시된줄 초기화"
 
 #: src/fe-gtk/menu.c:1339
 msgid "C_lear Text"
-msgstr "_Lösche Text"
+msgstr "글월 삭제(_l)"
 
 #: src/fe-gtk/menu.c:1340
 msgid "Search Text..."
-msgstr "Suche Text..."
+msgstr "글월 찾기..."
 
 #: src/fe-gtk/menu.c:1341
 msgid "Save Text..."
-msgstr "Speichere Text..."
+msgstr "글월 저장..."
 
 #: src/fe-gtk/menu.c:1343
 msgid "_Help"
-msgstr "_Hilfe"
+msgstr "도움말(_H)"
 
 #: src/fe-gtk/menu.c:1344
 msgid "_Contents"
-msgstr "_Inhalt"
+msgstr "내용(_C)"
 
 #: src/fe-gtk/menu.c:1345
 msgid "_About"
-msgstr "Ü_ber"
+msgstr "대하여(_A)"
 
 #: src/fe-gtk/menu.c:1432
 msgid "Attach Tab"
-msgstr "Reiter verbinden"
+msgstr "탭에 추가"
 
 #: src/fe-gtk/notifygui.c:109
 msgid "User"
-msgstr "Benutzer"
+msgstr "사용자"
 
 #: src/fe-gtk/notifygui.c:111
 msgid "Server"
-msgstr "Server"
+msgstr "서버"
 
 #: src/fe-gtk/notifygui.c:112
 msgid "Last Seen"
-msgstr "Zuletzt gesehen"
+msgstr "최근접속"
 
 #: src/fe-gtk/notifygui.c:149
 msgid "Offline"
-msgstr "Offline"
+msgstr "접속종료"
 
 #: src/fe-gtk/notifygui.c:169 src/fe-gtk/setup.c:198
 msgid "Never"
-msgstr "Niemals"
+msgstr "결코"
 
 #: src/fe-gtk/notifygui.c:187
 msgid "Online"
-msgstr "Online"
+msgstr "접속"
 
 #: src/fe-gtk/notifygui.c:277
 msgid "Enter nickname to add:"
-msgstr "Hinzuzufügenden Nickname eingeben:"
+msgstr "추가할 대화명:"
 
 #: src/fe-gtk/notifygui.c:293
 msgid "X-Chat: Notify List"
-msgstr "X-Chat: Benachrichtigungs-Liste"
+msgstr "X-Chat: 알림 목록"
 
 #: src/fe-gtk/notifygui.c:306
 msgid "Add"
-msgstr "Hinzufügen"
+msgstr "추가"
 
 #: src/fe-gtk/notifygui.c:308
 msgid "Remove"
-msgstr "Entfernen"
+msgstr "제거"
 
 #: src/fe-gtk/plugingui.c:76 src/fe-gtk/textgui.c:341
 msgid "Description"
-msgstr "Beschreibung"
+msgstr "참고"
 
 #: src/fe-gtk/plugingui.c:151
 msgid "Select a Plugin or Script to load"
-msgstr "Wählen Sie ein Plugin oder Skript zum Laden"
+msgstr "읽을 추가기능이나 혼자말을 선택하십시오"
 
 #: src/fe-gtk/plugingui.c:223
 msgid "X-Chat: Plugins and Scripts"
-msgstr "X-Chat: Plugins und Skripte"
+msgstr "X-Chat: 추가기능과 혼자말"
 
 #: src/fe-gtk/plugingui.c:229
 msgid "_Load..."
-msgstr "_Laden..."
+msgstr "열기(_L).."
 
 #: src/fe-gtk/plugingui.c:232
 msgid "_UnLoad"
-msgstr "_Entladen"
+msgstr "사용안함(_U)"
 
 #: src/fe-gtk/plugingui.c:236
 msgid "_Close"
-msgstr "S_chließen"
+msgstr "닫기(_C)"
 
 #: src/fe-gtk/rawlog.c:78
 msgid "Save rawlog"
-msgstr "Rohdatenlog speichern"
+msgstr "원시 기록 저장"
 
 #: src/fe-gtk/rawlog.c:94
 #, c-format
 msgid "X-Chat: Rawlog (%s)"
-msgstr "X-Chat: Rohdatenlog (%s)"
+msgstr "X-Chat: 원시 메세지(%s)"
 
 #: src/fe-gtk/rawlog.c:123
 msgid "Clear rawlog"
-msgstr "Rohdatenlog löschen"
+msgstr "원시 기록을 삭제합니다"
 
 #: src/fe-gtk/rawlog.c:126
 msgid "Save rawlog..."
-msgstr "Rohdatenlog speichern..."
+msgstr "원시 기록 저장"
 
 #: src/fe-gtk/search.c:47
 msgid "The window you opened this Search for doesn't exist anymore."
-msgstr "Das Fenster für das diese Suche geöffnet wurde existiert nicht mehr."
+msgstr "더이상 검색할 항목이  없습니다."
 
 #: src/fe-gtk/search.c:91
 msgid "X-Chat: Search"
-msgstr "X-Chat: Suche"
+msgstr "X-Chat: 검색"
 
 #: src/fe-gtk/search.c:100
 msgid "Find:"
-msgstr "Finde:"
+msgstr "찾기:"
 
 #: src/fe-gtk/search.c:114
 msgid "Find"
-msgstr "Finde"
+msgstr "찾기"
 
 #: src/fe-gtk/search.c:119
 msgid "Close"
-msgstr "Schließen"
+msgstr "닫기"
 
 #: src/fe-gtk/servlistgui.c:159 src/fe-gtk/servlistgui.c:257
 msgid "New Network"
-msgstr "Neues Netzwerk"
+msgstr "새 네트워크"
 
 #: src/fe-gtk/servlistgui.c:428
 #, c-format
 msgid "Really remove network \"%s\" and all its servers?"
-msgstr "Wirklich das Netzwerk \"%s\" und alle seine Server löschen?"
+msgstr "\"%s\" 네트워크를 정말 삭제 하시겠습니까?"
 
 #: src/fe-gtk/servlistgui.c:889
 #, c-format
 msgid "X-Chat: Edit %s"
-msgstr "X-Chat: Editiere %s"
+msgstr "X-Chat: %s 편집"
 
 #: src/fe-gtk/servlistgui.c:908
 #, c-format
 msgid "Servers for %s"
-msgstr "Server für %s"
+msgstr "서버: %s"
 
 #: src/fe-gtk/servlistgui.c:918
 msgid "Your Details"
-msgstr "Deine Details"
+msgstr "자세한 내용"
 
 #: src/fe-gtk/servlistgui.c:924
 msgid "Use global user information"
-msgstr "Globale Benutzerinformationen benutzen"
+msgstr "기본 사용자 정보를 사용합니다."
 
 #: src/fe-gtk/servlistgui.c:927 src/fe-gtk/servlistgui.c:1159
 msgid "_Nick name:"
-msgstr "_Nickname:"
+msgstr "(_N)대화명:"
 
 #: src/fe-gtk/servlistgui.c:931 src/fe-gtk/servlistgui.c:1180
 msgid "_User name:"
-msgstr "Ben_utzer:"
+msgstr "(_U)사용자명:"
 
 #: src/fe-gtk/servlistgui.c:935
 msgid "Real na_me:"
-msgstr "Wahrer Na_me:"
+msgstr "(_m)실제 이름:"
 
 #: src/fe-gtk/servlistgui.c:938
 msgid "Connecting"
-msgstr "Verbinde"
+msgstr "접속"
 
 #: src/fe-gtk/servlistgui.c:944
 msgid "Auto connect to this network at startup"
-msgstr "Automatisches Verbinden mit diesem Netzwerk beim Start"
+msgstr "시작시 자동 접속"
 
 #: src/fe-gtk/servlistgui.c:946
 msgid "Use a proxy server"
-msgstr "Proxy-Server benutzen"
+msgstr "프록시 서버 사용"
 
 #: src/fe-gtk/servlistgui.c:948
 msgid "Use SSL for all the servers on this network"
-msgstr "SSL für alle Server dieses Netzes benutzen"
+msgstr "이 네트워크의 모든 서버에 SSL 사용"
 
 #: src/fe-gtk/servlistgui.c:953
 msgid "Accept invalid SSL certificate"
-msgstr "Ungültiges SSL-Zertifikat akzeptieren"
+msgstr "유효하지 않은 인증서 허용"
 
 #: src/fe-gtk/servlistgui.c:959
 msgid "C_hannels to join:"
-msgstr "Zu betretende C_hannels:"
+msgstr "참여할 대화방을 입력하세요:"
 
 #: src/fe-gtk/servlistgui.c:961
 msgid "Channels to join, separated by commas, but not spaces!"
-msgstr "Zu betretende Channels getrennt durch Kommata, nicht durch Leerzeichen!"
+msgstr "참여할 대화방. 콤마(,)로 여러개의 대화방을 지정 할 수 있으나 공백은 사용할 수 없습니다."
 
 #: src/fe-gtk/servlistgui.c:964
 msgid "Connect command:"
-msgstr "Verbindungskommando:"
+msgstr "접속 명령:"
 
 #: src/fe-gtk/servlistgui.c:966
 msgid "Extra command to execute after connecting. If you need more than one, set this to LOAD -e <filename>, where <filename> is a text-file full of commands to execute."
-msgstr "Kommando, das nach der Verbindung ausgeführt werden soll. Für mehrere Kommandos benutze LOAD -e <Dateiname>, wobei <Dateiname> eine Textdatei mit den auszuführenden Kommandos ist."
+msgstr "접속 후에 사용될 기타  명령. 만약  한가지 이상 명령을 사용하시려면 , 이것을  LOAD -e <화일명> 으로 설정하십시오. <화일명>은  텍스트 화일로  실행할 모든 명령을입력 해 두시면 됩니다."
 
 #: src/fe-gtk/servlistgui.c:969
 msgid "Nickserv password:"
-msgstr "NickServ-Passwort:"
+msgstr "Nickserv 암호:"
 
 #: src/fe-gtk/servlistgui.c:974
 msgid "Server password:"
-msgstr "Server-Passwort:"
+msgstr "서버 암호:"
 
 #: src/fe-gtk/servlistgui.c:976
 msgid "Password for the server, if in doubt, leave blank."
-msgstr "Serverpasswort. Im Zweifel freilassen."
+msgstr "서버에 사용할 암호. 만약 필요하지 않다면 비워 두십시오."
 
 #: src/fe-gtk/servlistgui.c:979
 msgid "Character set:"
-msgstr "Zeichensatz:"
+msgstr "문자설정:"
 
 #: src/fe-gtk/servlistgui.c:1052
 msgid "_Edit"
-msgstr "_Editieren"
+msgstr "(_E)편집"
 
 #: src/fe-gtk/servlistgui.c:1133
 msgid "X-Chat: Server List"
-msgstr "X-Chat: Serverliste"
+msgstr "X-Chat: 서버목록"
 
 #: src/fe-gtk/servlistgui.c:1166
 msgid "Second choice:"
-msgstr "Zweite Wahl:"
+msgstr "두번째 선택:"
 
 #: src/fe-gtk/servlistgui.c:1173
 msgid "Third choice:"
-msgstr "Dritte Wahl:"
+msgstr "세번째 선택:"
 
 #: src/fe-gtk/servlistgui.c:1187
 msgid "Rea_l name:"
-msgstr "Wahrer Name:"
+msgstr "실제 이름:"
 
 #: src/fe-gtk/servlistgui.c:1274
 msgid "Skip server list on startup"
-msgstr "Keine Serverliste beim Start"
+msgstr "시작할때 서버목록을 표시하지 않습니다"
 
 #: src/fe-gtk/servlistgui.c:1305
 msgid "_Edit..."
-msgstr "_Editiere..."
+msgstr "편집(_E).."
 
 #: src/fe-gtk/servlistgui.c:1312
 msgid "_Sort"
-msgstr "Sortiere"
+msgstr "정렬(_S)"
 
 #: src/fe-gtk/servlistgui.c:1328
 msgid "C_onnect"
-msgstr "_Verbinde"
+msgstr "접속(_o)"
 
 #: src/fe-gtk/servlistgui.c:1337
 msgid "Connect in new tab"
-msgstr "Verbinde in einem _neuen Reiter"
+msgstr "새 탭으로 접속(_n)"
 
 #: src/fe-gtk/setup.c:94
 msgid "Text Box Appearance"
-msgstr "Textfeld-Aussehen"
+msgstr "글월 상자 모양"
 
 #: src/fe-gtk/setup.c:95
 msgid "Font:"
-msgstr "Schriftart:"
+msgstr "글꼴:"
 
 #: src/fe-gtk/setup.c:96
 msgid "Background image:"
-msgstr "Hintergrundbild:"
+msgstr "배경이미지:"
 
 #: src/fe-gtk/setup.c:97
 msgid "Scrollback lines:"
-msgstr "Textpufferzeilen:"
+msgstr "스크롤할 줄수:"
 
 #: src/fe-gtk/setup.c:98
 msgid "Transparent background"
-msgstr "Transparenter Hintergrund"
+msgstr "투명한 배경 효과"
 
 #: src/fe-gtk/setup.c:99
 msgid "Indent nick names"
-msgstr "Nicks einrücken"
+msgstr "대화명 자동완성"
 
 #: src/fe-gtk/setup.c:100
 msgid "Make nick names right-justified"
-msgstr "Nicknamen rechts ausrichten"
+msgstr "대화명을 오른쪽 으로 정렬"
 
 #: src/fe-gtk/setup.c:101
 msgid "Tint (shade) transparency"
-msgstr "Transparenz einfärben"
+msgstr "투명한 배경 흐리게"
 
 #: src/fe-gtk/setup.c:102
 msgid "Colored nick names"
-msgstr "Farbige Nicks"
+msgstr "대화명에 색상 사용"
 
 #: src/fe-gtk/setup.c:103
 msgid "Give each person on IRC a different color"
-msgstr "Jeder Person im IRC eine Farbe zuordnen"
+msgstr "IRC의 각 사용자에게 다른 색상 사용"
 
 #: src/fe-gtk/setup.c:104
 msgid "Strip mIRC colors"
-msgstr "mIRC-Farben entfernen"
+msgstr "mIRC 색상 제거"
 
 #: src/fe-gtk/setup.c:105
 msgid "Show marker line"
-msgstr "Markierungslinie zeigen"
+msgstr "자리비움 한번만 표시"
 
 #: src/fe-gtk/setup.c:106
 msgid "Insert a red line after the last read text."
-msgstr "Eine rote Linie nach dem zuletzt gelesenen Text einfügen"
+msgstr "마지막으로 읽은 글월 뒤에 적색 줄 삽입"
 
 #: src/fe-gtk/setup.c:107
 msgid "Tint Settings"
-msgstr "Einfärbungseinstellungen"
+msgstr "설정(_e)"
 
 #: src/fe-gtk/setup.c:108
 msgid "Red:"
-msgstr "Rot:"
+msgstr "적색:"
 
 #: src/fe-gtk/setup.c:109
 msgid "Green:"
-msgstr "Grün:"
+msgstr "녹색:"
 
 #: src/fe-gtk/setup.c:110
 msgid "Blue:"
-msgstr "Blau:"
+msgstr "청색:"
 
 #: src/fe-gtk/setup.c:112 src/fe-gtk/setup.c:311
 msgid "Time Stamps"
-msgstr "Zeitstempel"
+msgstr "시간 글월"
 
 #: src/fe-gtk/setup.c:113
 msgid "Time stamp format:"
-msgstr "Zeitstempelformat:"
+msgstr "표시할 시간 형태:"
 
 #: src/fe-gtk/setup.c:114
 msgid "See strftime manpage for details."
-msgstr "strftime man-Seite für Details"
+msgstr "자세한 내용은 strftime의 도움말을 보십시오."
 
 #: src/fe-gtk/setup.c:115
 msgid "Enable time stamps"
-msgstr "Datumsstempel aktivieren"
+msgstr "기록에 시간 삽입"
 
 #: src/fe-gtk/setup.c:122
 msgid "Nick Completion"
-msgstr "Nickvervollständigung"
+msgstr "자동구성에 추가할 문자:"
 
 #: src/fe-gtk/setup.c:123
 msgid "Automatic nick completion"
-msgstr "Automatische Nickvervollständigung"
+msgstr "대화명 자동 완성"
 
 #: src/fe-gtk/setup.c:124
 msgid "Completes nick names without using the TAB key"
-msgstr "Vervollständigt Nicknamen ohne Benutzung der TAB-Taste"
+msgstr "탭 글쇠 사용 없이 대화명 자동 완성"
 
 #: src/fe-gtk/setup.c:125
 msgid "Nick completion suffix:"
-msgstr "Anhang für Nickvervollständigung:"
+msgstr "자동구성에 추가할 문자:"
 
 #: src/fe-gtk/setup.c:127
 msgid "Input Box Codes"
-msgstr "Kodes für Eingabezeile"
+msgstr "입력창 코드"
 
 #: src/fe-gtk/setup.c:128
 #, c-format
 msgid "Interpret %nnn as an ASCII value"
-msgstr "%nnn als ASCII-Werte auswerten"
+msgstr "%nnn 을 아스키 값으로 변환"
 
 #: src/fe-gtk/setup.c:129
 msgid "Interpret %C, %B as Color, Bold etc"
-msgstr "%C, %B als Farbe, Fettschrift usw. auswerten"
+msgstr "%C, %B 는 색상, 진하게로 변환"
 
 #: src/fe-gtk/setup.c:131
 msgid "Input Box Appearance"
-msgstr "Eingabefeld-Aussehen"
+msgstr "입력 상자 모양"
 
 #: src/fe-gtk/setup.c:132 src/fe-gtk/setup.c:162
 msgid "Use the Text box font and colors"
-msgstr "Textfenster-Schrift und -Farben nutzen"
+msgstr "입력상자에 지정 글꼴과 색상 사용"
 
 #: src/fe-gtk/setup.c:139
 msgid "Off"
-msgstr "Aus"
+msgstr "끔"
 
 #: src/fe-gtk/setup.c:140
 msgid "Graph"
-msgstr "Grafisch"
+msgstr "그래프"
 
 #: src/fe-gtk/setup.c:141
 msgid "Info text"
-msgstr "Infotext"
+msgstr "정보 글월"
 
 #: src/fe-gtk/setup.c:142
 msgid "Both"
-msgstr "Beides"
+msgstr "함께"
 
 #: src/fe-gtk/setup.c:148
 msgid "A-Z, Ops first"
-msgstr "A-Z, Ops zuerst"
+msgstr "이름순, 관리자먼저"
 
 #: src/fe-gtk/setup.c:149
 msgid "A-Z"
-msgstr "A-Z"
+msgstr "이름순"
 
 #: src/fe-gtk/setup.c:150
 msgid "Z-A, Ops last"
-msgstr "Z-A, Ops zuletzt"
+msgstr "이름역순, 관리자 나중에"
 
 #: src/fe-gtk/setup.c:151
 msgid "Z-A"
-msgstr "Z-A"
+msgstr "이름역순"
 
 #: src/fe-gtk/setup.c:152
 msgid "Unsorted"
-msgstr "Unsortiert"
+msgstr "정렬안됨"
 
 #: src/fe-gtk/setup.c:159
 msgid "User list sorted by:"
-msgstr "Benutzerliste sortiert nach:"
+msgstr "사용자 목록 정렬:"
 
 #: src/fe-gtk/setup.c:160
 msgid "Show hostnames in user list"
-msgstr "Hostnamen in Benutzerliste zeigen"
+msgstr "사용자목록에 호스트명을 표시합니다"
 
 #: src/fe-gtk/setup.c:161
 msgid "User list buttons enabled"
-msgstr "Benutzerlistenknöpfe aktiviert"
+msgstr "사용자목록 단추를 사용합니다."
 
 #: src/fe-gtk/setup.c:163
 msgid "Resizable user list"
-msgstr "Größe der Benutzerliste änderbar"
+msgstr "사용자 목록 크기를 변경합니다."
 
 #: src/fe-gtk/setup.c:165
 msgid "Away tracking"
-msgstr "Abwesenheitsverfolgung"
+msgstr "자리비움 추적"
 
 #: src/fe-gtk/setup.c:166
 msgid "Enable away tracking"
-msgstr "Abwesenheitsverfolgung einschalten"
+msgstr "자리비움 추적 사용"
 
 #: src/fe-gtk/setup.c:167
 msgid "On channels smaller than:"
-msgstr "In Channels mit weniger Nutzern als:"
+msgstr "대화방의 자리비움 상태가 다음보다 작을경우:"
 
 #: src/fe-gtk/setup.c:169
 msgid "Action Upon Double Click"
-msgstr "Aktion bei Doppelklick"
+msgstr "두번 클릭시 동작"
 
 #: src/fe-gtk/setup.c:170
 msgid "Execute command:"
-msgstr "Kommando ausführen:"
+msgstr "접속시 명령:"
 
 #: src/fe-gtk/setup.c:172
 msgid "Extra Gadgets"
-msgstr "Extras"
+msgstr "기타  장치"
 
 #: src/fe-gtk/setup.c:173
 msgid "Lag meter:"
-msgstr "Verzögerungsmesser:"
+msgstr "레그 미터:"
 
 #: src/fe-gtk/setup.c:174
 msgid "Throttle meter:"
-msgstr "Throttle-Messer:"
+msgstr "스로틀 미터:"
 
 #: src/fe-gtk/setup.c:181
 msgid "Windows"
-msgstr "Fenster"
+msgstr "창"
 
 #: src/fe-gtk/setup.c:182 src/fe-gtk/setup.c:206 src/fe-gtk/setup.c:1456
 msgid "Tabs"
-msgstr "Reiter"
+msgstr "탭"
 
 #: src/fe-gtk/setup.c:188
 msgid "Bottom"
-msgstr "Unten"
+msgstr "아래"
 
 #: src/fe-gtk/setup.c:189
 msgid "Top"
-msgstr "Oben"
+msgstr "위"
 
 #: src/fe-gtk/setup.c:190
 msgid "Left"
-msgstr "Links"
+msgstr "왼쪽"
 
 #: src/fe-gtk/setup.c:191
 msgid "Right"
-msgstr "Rechts"
+msgstr "오른쪽"
 
 #: src/fe-gtk/setup.c:192
 msgid "Hidden"
-msgstr "Versteckt"
+msgstr "숨김"
 
 #: src/fe-gtk/setup.c:199
 msgid "Always"
-msgstr "Immer"
+msgstr "자리비운 사용자:"
 
 #: src/fe-gtk/setup.c:200
 msgid "Only requested tabs"
-msgstr "Nur angeforderte Reiter"
+msgstr "오직 요청된 탭만"
 
 #: src/fe-gtk/setup.c:207
 msgid "Open an extra tab for server messages"
-msgstr "Öffne Reiter für Servermeldungen"
+msgstr "서버 메세지를 탭으로 표시합니다."
 
 #: src/fe-gtk/setup.c:208
 msgid "Open an extra tab for server notices"
-msgstr "Öffne Reiter für Servernotizen"
+msgstr "서버 알림을 탭으로 표시합니다."
 
 #: src/fe-gtk/setup.c:209
 msgid "Small tabs"
-msgstr "Kleine Reiter"
+msgstr "작은 탭"
 
 #: src/fe-gtk/setup.c:210
 msgid "Sort tabs in alphabetical order"
-msgstr "Reiter alphabetisch sortieren"
+msgstr "탭을 알파벳 으로 정렬합니다"
 
 #: src/fe-gtk/setup.c:211
 msgid "Focus new tabs:"
-msgstr "Neue Reiter im Vordergrund:"
+msgstr "새 탭에  초점:"
 
 #: src/fe-gtk/setup.c:212
 msgid "Shorten tab labels to:"
-msgstr "Reiternamen kürzen auf:"
+msgstr "탭의 제목을 짧게:"
 
 #: src/fe-gtk/setup.c:212
 msgid "letters."
-msgstr "Zeichen."
+msgstr "글자 보다 작게."
 
 #: src/fe-gtk/setup.c:214
 msgid "Tabs Location"
-msgstr "Reiter-Position"
+msgstr "탭 위치"
 
 #: src/fe-gtk/setup.c:215
 msgid "Show tabs at:"
-msgstr "Zeige Reiter:"
+msgstr "탭을 표시할곳:"
 
 #: src/fe-gtk/setup.c:217
 msgid "Tabs or Windows"
-msgstr "Reiter oder Fenster"
+msgstr "창이나 탭"
 
 #: src/fe-gtk/setup.c:218
 msgid "Open channels in:"
-msgstr "Öffne Channels in:"
+msgstr "대화방 표시:"
 
 #: src/fe-gtk/setup.c:219
 msgid "Open dialogs in:"
-msgstr "Öffne Dialoge in:"
+msgstr "귓속말 위치:"
 
 #: src/fe-gtk/setup.c:220
 msgid "Open utilities in:"
-msgstr "Öffne Hilfsmittel in:"
+msgstr "도구 표시:"
 
 #: src/fe-gtk/setup.c:220
 msgid "Open DCC, Ignore, Notify etc, in tabs or windows?"
-msgstr "Öffne DCC, Ignore, Notify usw. in Reitern oder Fenstern?"
+msgstr "DCC, 목록, 알림등을 탭으로 열지 창으로 열지 선택하세요."
 
 #: src/fe-gtk/setup.c:227
 msgid "Files and Directories"
-msgstr "Dateien und Verzeichnisse"
+msgstr "화일과 디렉토리"
 
 #: src/fe-gtk/setup.c:228
 msgid "Download files to:"
-msgstr "Dateien ziehen nach:"
+msgstr "받을 화일 위치:"
 
 #: src/fe-gtk/setup.c:229
 msgid "Move completed files to:"
-msgstr "Fertige Downloads bewegen nach:"
+msgstr "완료된 화일을 이동:"
 
 #: src/fe-gtk/setup.c:230
 msgid "Save nick name in filenames"
-msgstr "Speichere Nick in Dateinamen"
+msgstr "화일이름에 대화명을 포함해서 저장"
 
 #: src/fe-gtk/setup.c:231
 msgid "Convert spaces to underscore before sending"
-msgstr "Leerstellen vor dem Senden in Unterstriche umwandeln"
+msgstr "공백(\" \")을 밑줄(\"_\")로 변환"
 
 #: src/fe-gtk/setup.c:233
 msgid "Network Settings"
-msgstr "Netzwerkeinstellungen"
+msgstr "네트워크 설정"
 
 #: src/fe-gtk/setup.c:234
 msgid "DCC IP address:"
-msgstr "DCC IP-Adresse:"
+msgstr "DCC IP 주소:"
 
 #: src/fe-gtk/setup.c:235
 msgid "Claim you are at this address when offering files."
-msgstr "Behaupten, Sie seien an dieser Adresse, wenn Sie Dateien anbieten."
+msgstr "화일을 전송할때 이 주소를 사용하게 됩니다."
 
 #: src/fe-gtk/setup.c:236
 msgid "First DCC send port:"
-msgstr "Erster DCC-Versand-Port:"
+msgstr "DCC보내기에 사용할 처음포트:"
 
 #: src/fe-gtk/setup.c:237
 msgid "Last DCC send port:"
-msgstr "Letzter DCC-Versand-Port:"
+msgstr "DCC보내기에 사용할 마지막포트:"
 
 #: src/fe-gtk/setup.c:238
 msgid "(Leave ports at zero for full range)."
-msgstr "(Belassen Sie die Ports bei 0 für die gesamte Breite)"
+msgstr "(0으로 설정하면 모든 포트를 사용 가능합니다)."
 
 #: src/fe-gtk/setup.c:239
 msgid "Get my address from the IRC server"
-msgstr "Hole meine IP vom IRC-Server"
+msgstr "IRC 서버로부터 내 IP를 가져옵니다."
 
 #: src/fe-gtk/setup.c:240
 msgid "Asks the IRC server for your real address. Use this if you have a 192.168.*.* address!"
-msgstr "Fragt den IRC-Server nach Deiner wahren IP-Adresse. Benutze dies, wenn Du eine 192.168.*.*-Adresse hast!"
+msgstr "만약 당신이 가상 IP를 사용하고 있다면 \"/WHOIS 당신의대화명\"으로 당신의 실제 주소를 찾게 됩니다. 일부 HanIRC에서 숨김 상태 서비스에서는 사용 할 수 없습니다."
 
 #: src/fe-gtk/setup.c:242
 msgid "Maximum File Transfer Speeds (bytes per second)"
-msgstr "Maximale Dateitransfergeschwindigkeiten (Bytes/s)"
+msgstr "최대 화일 전송 속도 (초당 Byte 전송속도)"
 
 #: src/fe-gtk/setup.c:243
 msgid "One upload:"
-msgstr "Ein Upload:"
+msgstr "보내기 하나당:"
 
 #: src/fe-gtk/setup.c:244 src/fe-gtk/setup.c:246
 msgid "Maximum speed for one transfer"
-msgstr "Max. Geschw. für einen Transfer"
+msgstr "보내기 하나당 최대 속도"
 
 #: src/fe-gtk/setup.c:245
 msgid "One download:"
-msgstr "Ein Download:"
+msgstr "받기 하나당:"
 
 #: src/fe-gtk/setup.c:247
 msgid "All uploads combined:"
-msgstr "Alle Uploads zusammen:"
+msgstr "모든 올리기를 합친 속도:"
 
 #: src/fe-gtk/setup.c:248 src/fe-gtk/setup.c:250
 msgid "Maximum speed for all files"
-msgstr "Max. Geschw. für alle Transfers"
+msgstr "전체  속도"
 
 #: src/fe-gtk/setup.c:249
 msgid "All downloads combined:"
-msgstr "Alle Downloads zusammen:"
+msgstr "모든 받기를  합친 속도:"
 
 #: src/fe-gtk/setup.c:257
 msgid "Default Messages"
-msgstr "Standardnachrichten"
+msgstr "기본  메세지:"
 
 #: src/fe-gtk/setup.c:258
 msgid "Quit:"
-msgstr "Beenden:"
+msgstr "종료"
 
 #: src/fe-gtk/setup.c:259
 msgid "Leave channel:"
-msgstr "Channel verlassen:"
+msgstr "대화방 나가기"
 
 #: src/fe-gtk/setup.c:260
 msgid "Away:"
-msgstr "Abwesend:"
+msgstr "자리비움:"
 
 #: src/fe-gtk/setup.c:262
 msgid "Away"
-msgstr "Abwesend"
+msgstr "자리비움"
 
 #: src/fe-gtk/setup.c:263
 msgid "Announce away messages"
-msgstr "Abwesenheitsnachrichten öffentlich"
+msgstr "자리비움 메세지 알림"
 
 #: src/fe-gtk/setup.c:264
 msgid "Announce your away messages to all channels"
-msgstr "Abwesenheitsnachrichten in allen Channels öffentlich"
+msgstr "자리를 비울때 참여중인 모든 대화방에 메세지로 알립니다."
 
 #: src/fe-gtk/setup.c:265
 msgid "Show away once"
-msgstr "Abwesenheit einmal zeigen"
+msgstr "자리비움 한번만 표시"
 
 #: src/fe-gtk/setup.c:265
 msgid "Show identical away messages only once"
-msgstr "Zeige identische Abwesenheitsnachrichten nur einmal"
+msgstr "자리비움 메세지를 한번만 표시합니다."
 
 #: src/fe-gtk/setup.c:266
 msgid "Automatically unmark away"
-msgstr "Automatisch Abwesenheit beenden"
+msgstr "자동으로 자리비움 해제"
 
 #: src/fe-gtk/setup.c:266
 msgid "Unmark yourself as away before sending messages"
-msgstr "Automatisch Abwesenheit beenden vor dem Versand von Nachrichten"
+msgstr "대화를 시작하면 자동으로 자리비움상태를 해제 합니다."
 
 #: src/fe-gtk/setup.c:269
 msgid "(Can be a text file relative to ~/.xchat2/)."
-msgstr "(Kann eine Textdatei relativ zu ~.xchat2/ sein)"
+msgstr "(~/.xchat2/에 둘 수 있습니다.)"
 
 #: src/fe-gtk/setup.c:271
 msgid "(Can be a text file relative to config dir)."
-msgstr "(Kann eine Textdateu relativ zum Konfigurationsverzeichnis sein)"
+msgstr "(설정 디렉토리에 둘 수 있습니다.)"
 
 #: src/fe-gtk/setup.c:275
 msgid "Alerts"
-msgstr "Warnungen"
+msgstr "알림"
 
 #: src/fe-gtk/setup.c:277
 msgid "Flash taskbar on highlighted messages"
-msgstr "Bei hervorgehobenen Nachrichten in Taskleiste blinken"
+msgstr "강조 문자열에 삑 소리"
 
 #: src/fe-gtk/setup.c:279
 msgid "Beep on highlighted messages"
-msgstr "Bei hervorgehobenen Nachrichten piepen"
+msgstr "강조 문자열에 삑 소리"
 
 #: src/fe-gtk/setup.c:280
 msgid "Extra words to highlight on:"
-msgstr "Extra Wörter zum Hervorheben:"
+msgstr "강조할 문자:"
 
 #: src/fe-gtk/setup.c:281
 msgid "(Separate multiple words with commas)."
-msgstr "(Mehrere Wörter durch Kommata trennen)."
+msgstr "(콤마(,)로 여러개의 단어를 설정할 수 있습니다.)"
 
 #: src/fe-gtk/setup.c:282
 msgid "Beep on private messages"
-msgstr "Bei privaten Nachrichten piepen"
+msgstr "귓속말에 삑소리"
 
 #: src/fe-gtk/setup.c:283
 msgid "Beep on channel messages"
-msgstr "Bei Channelnachrichten piepen"
+msgstr "대화방 메세지에 삑 소리"
 
 #: src/fe-gtk/setup.c:290
 msgid "Advanced Settings"
-msgstr "Erweiterte Einstellungen"
+msgstr "고급 설정"
 
 #: src/fe-gtk/setup.c:291
 msgid "Auto reconnect delay:"
-msgstr "Wiederverbindungsverzögerung:"
+msgstr "자동 접속 지연시간:"
 
 #: src/fe-gtk/setup.c:292
 msgid "Display MODEs in raw form"
-msgstr "Modi in Rohform anzeigen"
+msgstr "raw 폼에서 MODE 를 표시함"
 
 #: src/fe-gtk/setup.c:293
 msgid "Whois on notify"
-msgstr "WHOIS bei Notify"
+msgstr "Whois 에 알림"
 
 #: src/fe-gtk/setup.c:293
 msgid "Sends a /WHOIS when a user comes online in your notify list"
-msgstr "Sendet ein /WHOIS wenn ein Nutzer aus der Notify-Liste kommt"
+msgstr "알림 목록에 사용자가 접속하면 /WHOIS 명령을 실행합니다."
 
 #: src/fe-gtk/setup.c:294
 msgid "Hide join and part messages"
-msgstr "Join/Part-Nachrichten verstecken"
+msgstr "입장/퇴장 메세지 숨김"
 
 #: src/fe-gtk/setup.c:294
 msgid "Hide channel join/part messages by default"
-msgstr "Join/Part-Nachrichten standardmäßig verstecken"
+msgstr "기본적으로 대화방에 입장/퇴장 메세지를 숨깁니다."
 
 #: src/fe-gtk/setup.c:295
 msgid "Auto Open DCC Windows"
-msgstr "DCC-Fenster automatisch öffnen"
+msgstr "자동으로 대화창 열기"
 
 #: src/fe-gtk/setup.c:296
 msgid "Send window"
-msgstr "Versandfenster"
+msgstr "화일 전송창"
 
 #: src/fe-gtk/setup.c:297
 msgid "Receive window"
-msgstr "Empfangsfenster"
+msgstr "받는이"
 
 #: src/fe-gtk/setup.c:298
 msgid "Chat window"
-msgstr "Chatfenster"
+msgstr "대화방 창"
 
 #: src/fe-gtk/setup.c:306 src/fe-gtk/setup.c:1461
 msgid "Logging"
-msgstr "Logbücher"
+msgstr "기록"
 
 #: src/fe-gtk/setup.c:307
 msgid "Enable logging of conversations"
-msgstr "Konversationen loggen"
+msgstr "기록"
 
 #: src/fe-gtk/setup.c:308
 msgid "Log filename mask:"
-msgstr "Maske für Logbuchnamen:"
+msgstr "화일명 매스크:"
 
 #: src/fe-gtk/setup.c:309
 #, c-format
 msgid "(%s=Server %c=Channel %n=Network)."
-msgstr "(%s=Server %c=Channel %n=Netzwerk)."
+msgstr "(%s=서버 %c=대화방 %n=네트워크))"
 
 #: src/fe-gtk/setup.c:312
 msgid "Insert timestamps in logs"
-msgstr "Datumsstempel in Logs einfügen"
+msgstr "기록에 시간 삽입"
 
 #: src/fe-gtk/setup.c:313
 msgid "Log timestamp format:"
-msgstr "Datumsstempelformat:"
+msgstr "기록에 사용할 시간형태:"
 
 #: src/fe-gtk/setup.c:314
 msgid "(See strftime manpage for details)."
-msgstr "(Siehe strftime man-Seite für Details)."
+msgstr "(strftime 도움말을 참조하세요.)"
 
 #: src/fe-gtk/setup.c:321
 msgid "(Disabled)"
-msgstr "(Deaktiviert)"
+msgstr "(사용안함)"
 
 #: src/fe-gtk/setup.c:322
 msgid "Wingate"
-msgstr "Wingate"
+msgstr ""
 
 #: src/fe-gtk/setup.c:323
 msgid "Socks4"
-msgstr "Socks4"
+msgstr ""
 
 #: src/fe-gtk/setup.c:324
 msgid "Socks5"
-msgstr "Socks5"
+msgstr ""
 
 #: src/fe-gtk/setup.c:325
 msgid "HTTP"
-msgstr "HTTP"
+msgstr ""
 
 #: src/fe-gtk/setup.c:331
 msgid "Your Address"
-msgstr "Deine Adresse"
+msgstr "IP 주소"
 
 #: src/fe-gtk/setup.c:332
 msgid "Bind to:"
-msgstr "Binden an:"
+msgstr "바인딩할 주소:"
 
 #: src/fe-gtk/setup.c:333
 msgid "(Only useful for computers with multiple addresses)."
-msgstr "(Nur für Computer mit mehreren Adressen)."
+msgstr "(오직 여러개의 아이피를 가진 컴퓨터에만 해당됩니다.)"
 
 #: src/fe-gtk/setup.c:335
 msgid "Proxy Server"
-msgstr "Proxy-Server:"
+msgstr "프록시 서버"
 
 #: src/fe-gtk/setup.c:336
 msgid "Hostname:"
-msgstr "Hostname:"
+msgstr "호스트:"
 
 #: src/fe-gtk/setup.c:337
 msgid "Username:"
-msgstr "Benutzer:"
+msgstr "사용자명:"
 
 #: src/fe-gtk/setup.c:338
 msgid "Password:"
-msgstr "Passwort:"
+msgstr "암호:"
 
 #: src/fe-gtk/setup.c:339
 msgid "Port:"
-msgstr "Port:"
+msgstr "포트:"
 
 #: src/fe-gtk/setup.c:340
 msgid "Type:"
-msgstr "Typ:"
+msgstr "형태:"
 
 #: src/fe-gtk/setup.c:342
 msgid "Authenticate to the proxy server (HTTP and Socks5)"
-msgstr "Authentifikation mit dem Proxy-Server (HTTP und Socks v5)"
+msgstr "프록시 서버에 인증 (HTTP와 Socks5)"
 
 #: src/fe-gtk/setup.c:565
 msgid "(disabled)"
-msgstr "(Deaktiviert)"
+msgstr "(사용안함)"
 
 #: src/fe-gtk/setup.c:566
 msgid "A star (*)"
-msgstr "Ein Asterisk (*)"
+msgstr "별 (*)"
 
 #: src/fe-gtk/setup.c:567
 msgid "A red star (*)"
-msgstr "Ein roter Asterisk (*)"
+msgstr "빨간 별(*)"
 
 #: src/fe-gtk/setup.c:568
 msgid "Underlined"
-msgstr "Unterstrichen"
+msgstr "접속"
 
 #: src/fe-gtk/setup.c:665
 msgid "Select an Image File"
-msgstr "Bilddatei auswählen"
+msgstr "이미지화일 선택"
 
 #: src/fe-gtk/setup.c:712
 msgid "Select font"
-msgstr "Schriftart auswählen"
+msgstr "글꼴 선택"
 
 #: src/fe-gtk/setup.c:786
 msgid "Browse..."
-msgstr "Suche..."
+msgstr "찾아보기..."
 
 #: src/fe-gtk/setup.c:903
 msgid "Mark identified users with:"
-msgstr "Identifzierte Benutzer markieren durch:"
+msgstr "인증된 사용자를 다음으로 표시:"
 
 #: src/fe-gtk/setup.c:905
 msgid "Mark not-identified users with:"
-msgstr "Nicht identifizierte Benutzer markieren durch:"
+msgstr "인증되지 않은 사용자를 다음으로 표시:"
 
 #: src/fe-gtk/setup.c:968
 msgid "Select color"
-msgstr "Farbe wählen"
+msgstr "색상 선택"
 
 #: src/fe-gtk/setup.c:1048
 msgid "Text Colors"
-msgstr "Textfarben"
+msgstr "색상"
 
 #: src/fe-gtk/setup.c:1050
 msgid "mIRC colors:"
-msgstr "mIRC-Farben:"
+msgstr "mIRC 색상:"
 
 #: src/fe-gtk/setup.c:1058
 msgid "Extra colors:"
-msgstr "Extra Farben:"
+msgstr "mIRC 색상:"
 
 #: src/fe-gtk/setup.c:1066 src/fe-gtk/setup.c:1071
 msgid "Foreground:"
-msgstr "Vordergrund:"
+msgstr "전경:"
 
 #: src/fe-gtk/setup.c:1067 src/fe-gtk/setup.c:1072
 msgid "Background:"
-msgstr "Hintergrund:"
+msgstr "배경:"
 
 #: src/fe-gtk/setup.c:1069
 msgid "Marking Text"
-msgstr "Markierungstext"
+msgstr "선택 글월"
 
 #: src/fe-gtk/setup.c:1074
 msgid "Interface Colors"
-msgstr "Schnittstellenfarben"
+msgstr "사용자환경 색상"
 
 #: src/fe-gtk/setup.c:1076
 msgid "New data:"
-msgstr "Neue Daten:"
+msgstr "새 날자:"
 
 #: src/fe-gtk/setup.c:1077
 msgid "Marker line:"
-msgstr "Markierungslinie:"
+msgstr "이후 표시:"
 
 #: src/fe-gtk/setup.c:1078
 msgid "New message:"
-msgstr "Neue Nachricht:"
+msgstr "새 메세지:"
 
 #: src/fe-gtk/setup.c:1079
 msgid "Away user:"
-msgstr "Abwesender Benutzer:"
+msgstr "자리비운 사용자:"
 
 #: src/fe-gtk/setup.c:1080
 msgid "Highlight:"
-msgstr "Hervorhebung:"
+msgstr "강조:"
 
 #: src/fe-gtk/setup.c:1176 src/fe-gtk/textgui.c:337
 msgid "Event"
-msgstr "Ereignis"
+msgstr "상황"
 
 #: src/fe-gtk/setup.c:1182
 msgid "Sound file"
-msgstr "Klangdatei:"
+msgstr "소리 화일:"
 
 #: src/fe-gtk/setup.c:1217
 msgid "Select a sound file"
-msgstr "Wähle eine Klangdatei aus"
+msgstr "출력할 화일을 선택하세요."
 
 #: src/fe-gtk/setup.c:1289
 msgid "Sound playing method:"
-msgstr "Klangabspielmethode:"
+msgstr "소리 재생  방법:"
 
 #: src/fe-gtk/setup.c:1297
 msgid "External sound playing _program:"
-msgstr "Externer Klangspieler:"
+msgstr "외부 소리 재생 프로그램(_p):"
 
 #: src/fe-gtk/setup.c:1315
 msgid "_External program"
-msgstr "_Externes Programm"
+msgstr "외부도구(_E)"
 
 #: src/fe-gtk/setup.c:1325
 msgid "_Automatic"
-msgstr "_Automatisch"
+msgstr "자동(_A)"
 
 #: src/fe-gtk/setup.c:1338
 msgid "Sound files _directory:"
-msgstr "Verzeichnis für Klang_dateien:"
+msgstr "받을 화일 위치:"
 
 #: src/fe-gtk/setup.c:1377
 msgid "Sound file:"
-msgstr "Klangdatei:"
+msgstr "소리 화일:"
 
 #: src/fe-gtk/setup.c:1392
 msgid "_Browse..."
-msgstr "_Durchsuche"
+msgstr "찾아보기(_B)..."
 
 #: src/fe-gtk/setup.c:1403
 msgid "_Play"
-msgstr "Abs_pielen"
+msgstr "재생(_P)"
 
 #: src/fe-gtk/setup.c:1452
 msgid "Interface"
-msgstr "Schnittstelle"
+msgstr "사용자환경"
 
 #: src/fe-gtk/setup.c:1453
 msgid "Text box"
-msgstr "Textfenster"
+msgstr "글월창"
 
 #: src/fe-gtk/setup.c:1454
 msgid "Input box"
-msgstr "Eingabezeile"
+msgstr "입력창"
 
 #: src/fe-gtk/setup.c:1455
 msgid "User list"
-msgstr "Benutzerliste"
+msgstr "사용자 목록"
 
 #: src/fe-gtk/setup.c:1457
 msgid "Colors"
-msgstr "Farben"
+msgstr "색상"
 
 #: src/fe-gtk/setup.c:1459
 msgid "Chatting"
-msgstr "Chatten"
+msgstr "대화"
 
 #: src/fe-gtk/setup.c:1460
 msgid "General"
-msgstr "Allgemein"
+msgstr "일반"
 
 #: src/fe-gtk/setup.c:1462
 msgid "Sound"
-msgstr "Klang"
+msgstr "소리"
 
 #: src/fe-gtk/setup.c:1465
 msgid "Network"
-msgstr "Netzwerk"
+msgstr "네트워크"
 
 #: src/fe-gtk/setup.c:1466
 msgid "Network setup"
-msgstr "Netzwerk-Setup"
+msgstr "네트워크 설정"
 
 #: src/fe-gtk/setup.c:1467
 msgid "File transfers"
-msgstr "Dateitransfers"
+msgstr "화일 전송"
 
 #: src/fe-gtk/setup.c:1574
 msgid "Categories"
-msgstr "Kategorien"
+msgstr "항목"
 
 #: src/fe-gtk/setup.c:1704
 msgid "Some settings were changed that require a restart to take full effect."
-msgstr "Einige Einstellungen wurden geändert, die einen Neustart erfordern."
+msgstr "어떤 설정은 재시작해야 효과를 볼 수 있습니다."
 
 #: src/fe-gtk/setup.c:1732
 msgid "X-Chat: Preferences"
-msgstr "X-Chat: Optionen"
+msgstr "X-Chat: 환경설정"
 
 #: src/fe-gtk/textgui.c:160
 msgid "There was an error parsing the string"
-msgstr "Fehler beim Auswerten des Strings"
+msgstr "글월 분석 오류"
 
 #: src/fe-gtk/textgui.c:168
 #, c-format
 msgid "This signal is only passed %d args, $%d is invalid"
-msgstr "Diesem Signal werden nur %d Argumente übergeben, $%d ist ungültig"
+msgstr "이 신호는 오직 %d 인수에서 동작됩니다, $%d 는 올바르지 않습니다."
 
 #: src/fe-gtk/textgui.c:276 src/fe-gtk/textgui.c:299
 msgid "Print Texts File"
-msgstr "Textdatei drucken"
+msgstr "문서 화일 출력"
 
 #: src/fe-gtk/textgui.c:340
 msgid "$ Number"
-msgstr "$ Nummer"
+msgstr "% 숫자"
 
 #: src/fe-gtk/textgui.c:350
 msgid "Edit Events"
-msgstr "Ereignis ändern"
+msgstr "상황 편집"
 
 #: src/fe-gtk/textgui.c:418
 msgid "Save As"
-msgstr "Speichern als"
+msgstr "다른이름으로 저장"
 
 #: src/fe-gtk/textgui.c:423
 msgid "Load From"
-msgstr "Lade von"
+msgstr "가져오기"
 
 #: src/fe-gtk/textgui.c:428
 msgid "Test All"
-msgstr "Alle testen"
+msgstr "모두 시험"
 
 #: src/fe-gtk/urlgrab.c:97
 msgid "URL"
-msgstr "URL"
+msgstr "주소"
 
 #: src/fe-gtk/urlgrab.c:147
 msgid "Select a file to save to"
-msgstr "Datei zum Speichern auswählen"
+msgstr "저장할 화일을 선택 하십시오"
 
 #: src/fe-gtk/urlgrab.c:187
 msgid "X-Chat: URL Grabber"
-msgstr "X-Chat: URL Grabber"
+msgstr "X-Chat: URL 잡기도구"
 
 #: src/fe-gtk/urlgrab.c:200
 msgid "Clear list"
-msgstr "Liste löschen"
+msgstr "목록 삭제"
 
 #: src/fe-gtk/urlgrab.c:202
 msgid "Copy"
-msgstr "Kopiere"
+msgstr "복사"
 
 #: src/fe-gtk/urlgrab.c:204
 msgid "Save list to a file"
-msgstr "Liste in Datei speichern"
+msgstr "목록을 화일로 저장합니다"
 
 #: src/fe-gtk/userlistgui.c:108
 #, c-format
 msgid "%d ops, %d total"
-msgstr "%d Ops, %d Gesamt"
+msgstr "%d 명의 관리자, 총 %d 명"

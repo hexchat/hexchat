@@ -736,9 +736,9 @@ static char defaultconf_urlhandlers[] =
 		"NAME Run new Mozilla\n"			"CMD !mozilla %s\n\n"\
 	"NAME ENDSUB\n"							"CMD \n\n"\
 	"NAME SUB\n"								"CMD Mozilla FireFox...\n\n"\
-		"NAME Open in existing\n"			"CMD !firefox -remote 'openURL(%s)'\n\n"\
-		"NAME Open in new window\n"		"CMD !firefox -remote 'openURL(%s,new-window)'\n\n"\
-		"NAME Open in new tab\n"			"CMD !firefox -remote 'openURL(%s,new-tab)'\n\n"\
+		"NAME Open in existing\n"			"CMD !firefox -a firefox -remote 'openURL(%s)'\n\n"\
+		"NAME Open in new window\n"		"CMD !firefox -a firefox -remote 'openURL(%s,new-window)'\n\n"\
+		"NAME Open in new tab\n"			"CMD !firefox -a firefox -remote 'openURL(%s,new-tab)'\n\n"\
 		"NAME Run new Mozilla FireFox\n"	"CMD !firefox %s\n\n"\
 	"NAME ENDSUB\n"							"CMD \n\n"\
 	"NAME SUB\n"								"CMD Galeon...\n\n"\

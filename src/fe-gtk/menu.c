@@ -1342,7 +1342,11 @@ static struct mymenu mymenu[] = {
 
 	{N_("_Help"), 0, 0, M_NEWMENU, 0, 1},	/* 62 */
 	{N_("_Contents"), menu_docs, GTK_STOCK_HELP, M_MENUSTOCK, 0, 1, GDK_F1},
+#ifdef GTK_STOCK_ABOUT
+	{N_("_About"), menu_about, GTK_STOCK_ABOUT, M_MENUSTOCK, 0, 1},
+#else
 	{N_("_About"), menu_about, (char *)&pix_about, M_MENUPIX, 0, 1},
+#endif
 
 	{0, 0, 0, M_END, 0, 0},
 };
