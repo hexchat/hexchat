@@ -2245,20 +2245,44 @@ perl_init (void)
 "  return $user;\n"
 "}\n"
 "\n"
+"sub Xchat::context_info {\n"
+"  my $ctx = shift @_;\n"
+"  my $old_ctx = Xchat::get_context;\n"
+"  my @fields = (qw(away channel host network nick server topic version),\n"
+"					 qw(win_status xchatdir xchatdirfs),\n"
+"					);\n"
+"\n"
+"  Xchat::set_context( $ctx );\n"
+"  my %info;\n"
+"  for my $field ( @fields ) {\n"
+"	 $info{$field} = Xchat::get_info( $field );\n"
+"  }\n"
+"  Xchat::set_context( $old_ctx );\n"
+"\n"
+"  return %info if wantarray;\n"
+"  return \\%info;\n"
+"}\n"
+"\n"
 "$SIG{__WARN__} = sub {\n"
 "  local $, = \"\\n\";\n"
-"  my ($package, $line, $sub) = caller(1);\n"
-"  Xchat::print( \"Warning from ${package}::${sub} at line $line.\" );\n"
+"  my ($package, $file, $line, $sub) = caller(1);\n"
+"  Xchat::print( \"Warning from ${sub}.\" );\n"
 "  Xchat::print( @_ );\n"
 "};\n"
 "\n"
-"sub Embed::load {\n"
+"sub Xchat::Embed::load {\n"
 "  my $file = shift @_;\n"
 "\n"
 "  if( open FH, $file ) {\n"
 "	 my $data = do {local $/; <FH>};\n"
 "	 close FH;\n"
 "\n"
+"# 	 my $package = Xchat::Embed::valid_package( $file );\n"
+"# 	 if( $data =~ m/^\\s*package .*?;/m ) {\n"
+"# 		$data =~ s/^\\s*package .*?;/package $package;/m;\n"
+"# 	 } else {\n"
+"# 		$data = \"package $package;\" . $data;\n"
+"# 	 }\n"
 "	 eval $data;\n"
 "\n"
 "	 if( $@ ) {\n"
@@ -2275,6 +2299,20 @@ perl_init (void)
 "\n"
 "  return 0;\n"
 "}\n"
+"\n"
+"# sub Xchat::Embed::valid_package {\n"
+"\n"
+"#   my $string = shift @_;\n"
+"#   $string =~ s/\\.pl$//i;\n"
+"#   $string =~ s/([^A-Za-z0-9\\/])/sprintf(\"_%2x\",unpack(\"C\",$1))/eg;\n"
+"#   # second pass only for words starting with a digit\n"
+"#   $string =~ s|/(\\d)|sprintf(\"/_%2x\",unpack(\"C\",$1))|eg;\n"
+"\n"
+"#   # Dress it up as a real package name\n"
+"#   $string =~ s|/|::|g;\n"
+"#   return \"Xchat::Embed\" . $string;\n"
+"# }\n"
+
 
 	};
 #ifdef ENABLE_NLS
@@ -2338,7 +2376,7 @@ perl_load_file (char *script_name)
 		perl_init ();
 	}
 
-	return execute_perl (sv_2mortal (newSVpvn ("Embed::load", 11)),
+	return execute_perl (sv_2mortal (newSVpv ("Xchat::Embed::load", 0)),
 								  script_name);
 	
 }
