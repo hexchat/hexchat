@@ -41,7 +41,7 @@ typedef struct {
 
 #define MAX_TIMERS 256
 
-static void SourceScriptFiles(char *dirname);
+static void SourceScriptFiles();
 static char *StrDup(char *string, int *length);
 static char *itoa(int value);
 static xchat_context *xchat_smart_context(char *arg1, char *arg2);

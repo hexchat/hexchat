@@ -15,7 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#define VERSION "1.0.0"
+#define VERSION "1.0.3"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -23,7 +23,6 @@
 #include <time.h>
 #include <limits.h>
 #include <ctype.h>
-#include <dirent.h>
 #include <tcl.h>
 #include <tclDecls.h>
 #include <sys/stat.h>
@@ -61,33 +60,34 @@ static char unknown[] = { "proc ::unknown {args} {\n \
 }"
 };
 
-static void SourceScriptFiles(char *dirname)
+static char sourcedirs[] = { "
+set files [lsort [glob [xchatdir]/*.tcl]]\n \
+set init [lsearch -glob $files \"*/init.tcl\"]\n \
+if { $init > 0 } {\n \
+ set initfile [lindex $files $init]\n \
+ set files [lreplace $files $init $init]\n \
+ set files [linsert $files 0 $initfile]\n \
+}\n \
+foreach f $files {\n \
+ if { [catch { source $f } errMsg] } {\n \
+  puts \"Tcl plugin\\tError sourcing \\\"$f\\\" ($errMsg)\"\n \
+ } else {\n \
+  puts \"Tcl plugin\\tSourced \\\"$f\\\"\"\n \
+ }\n \
+}\n" };
+
+static void SourceScriptFiles ()
 {
-    DIR *dir;
-    struct dirent *ent;
-    int len;
+    /*
+     * Sourcing of user scripts is done in via an internal tcl script.  This was easier to 
+     * implement than adding scandir() for WIN32
+     *
+     */
 
-    dir = opendir(dirname);
-
-    if (dir) {
-        while ((ent = readdir(dir))) {
-            len = strlen(ent->d_name);
-            if (len > 4 && strcasecmp(".tcl", ent->d_name + len - 4) == 0) {
-
-                char *file = Tcl_Alloc(len + strlen(dirname) + 2);
-                sprintf(file, "%s/%s", dirname, ent->d_name);
-
-                if (Tcl_EvalFile(interp, file) == TCL_ERROR)
-                    xchat_printf(ph, "\0039Tcl plugin:\003\tError sourcing: %s (%s)\n", file, Tcl_GetStringResult(interp));
-                else
-                    xchat_printf(ph, "\0039Tcl plugin:\003\tSourced %s\n", file);
-
-                Tcl_Free(file);
-            }
-        }
-
-        closedir(dir);
+    if (Tcl_Eval(interp, sourcedirs) == TCL_ERROR) {
+        xchat_printf(ph, "Error sourcing internal 'sourcedirs' (%s)\n", Tcl_GetStringResult(interp));
     }
+
 }
 
 static char *StrDup(char *string, int *length)
@@ -1710,12 +1710,12 @@ static void Tcl_Plugin_Init()
         xc[x].hook = NULL;
 
     if (Tcl_Eval(interp, unknown) == TCL_ERROR) {
-        xchat_printf(ph, "Error sourcing internal 'unknown'\n", Tcl_GetStringResult(interp));
+        xchat_printf(ph, "Error sourcing internal 'unknown' (%s)\n", Tcl_GetStringResult(interp));
     }
 
     (const char *) xchatdir = xchat_get_info(ph, "xchatdir");
 
-    SourceScriptFiles(xchatdir);
+    SourceScriptFiles();
 
 }
 
