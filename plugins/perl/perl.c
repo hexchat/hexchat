@@ -710,7 +710,10 @@ static XS (XS_IRC_dcc_list)
 		while (xchat_list_next (ph, list))
 		{
 			/* Make sure there is room on the stack */
-			EXTEND (SP, i + 10);
+			EXTEND (SP, i + 11);
+
+			XST_mPV (i, xchat_list_str (ph, list, "nick"));
+			i++;
 
 			file = xchat_list_str (ph, list, "file");
 			if (!file)
