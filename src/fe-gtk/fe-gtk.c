@@ -407,6 +407,43 @@ fe_set_topic (session *sess, char *topic)
 	}
 }
 
+#ifdef WIN32
+#include <windows.h>
+#include <gdk/gdkwin32.h>
+
+/* Flash the taskbar button on Windows when there's a highlight event. */
+
+static void
+flash_window (GtkWidget *win)
+{
+	FLASHWINFO fi;
+	static HMODULE user = NULL;
+	static BOOL (*flash) (PFLASHWINFO) = NULL;
+
+	if (!user)
+	{
+		user = GetModuleHandleA ("USER32");
+		if (!user)
+			return;	/* this should never fail */
+	}
+
+	if (!flash)
+	{
+		flash = (void *)GetProcAddress (user, "FlashWindowEx");
+		if (!flash)
+			return;	/* this fails on NT4.0 and Win95 */
+	}
+
+	fi.cbSize = sizeof (fi);
+	fi.hwnd = GDK_WINDOW_HWND (win->window);
+	fi.dwFlags = FLASHW_ALL | FLASHW_TIMERNOFG;
+	fi.uCount = 0;
+	fi.dwTimeout = 500;
+	flash (&fi);
+	/*FlashWindowEx (&fi);*/
+}
+#endif
+
 void
 fe_set_hilight (struct session *sess)
 {
@@ -414,6 +451,9 @@ fe_set_hilight (struct session *sess)
 	{
 		sess->nick_said = TRUE;
 		tab_set_attrlist (sess->res->tab, nickseen_list);
+#ifdef WIN32
+		flash_window (sess->gui->window);
+#endif
 	}
 }
 

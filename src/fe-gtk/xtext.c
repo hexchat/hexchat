@@ -57,6 +57,10 @@
 #include <X11/Xatom.h>
 #endif
 
+#ifdef USE_MMX
+#include "mmx_cmod.h"
+#endif
+
 #include "xtext.h"
 
 #define charlen(str) g_utf8_skip[*(guchar *)(str)]
@@ -3158,10 +3162,6 @@ shade_ximage_32 (void *data, int bpl, int w, int h, int rm, int gm, int bm)
     }
 }
 
-#ifdef USE_MMX
-#include "mmx_cmod.h"
-#endif
-
 static GdkPixmap *
 shade_pixmap (GtkXText * xtext, Pixmap p, int x, int y, int w, int h)
 {
@@ -3225,7 +3225,7 @@ shade_pixmap (GtkXText * xtext, Pixmap p, int x, int y, int w, int h)
 				break;
 			case 24:
 				if (ximg->bits_per_pixel != 32)
-					break;
+					goto generic;
 			case 32:
 				shade_ximage_32_mmx (ximg->data, ximg->bytes_per_line, w, h,
 											xtext->tint_red,
@@ -3233,6 +3233,7 @@ shade_pixmap (GtkXText * xtext, Pixmap p, int x, int y, int w, int h)
 			}
 		} else
 		{
+generic:
 #endif
 			switch (depth)
 			{
@@ -3299,28 +3300,131 @@ gtk_xtext_free_trans (GtkXText * xtext)
 static GdkPixmap *
 win32_tint (GtkXText *xtext, GdkImage *img, int width, int height)
 {
+	guchar *pixelp;
 	int x, y;
 	GdkPixmap *pix;
-	GdkVisual *visual = img->visual;
+	GdkVisual *visual = gdk_drawable_get_visual (GTK_WIDGET (xtext)->window);
 	guint32 pixel;
 	int r, g, b;
 
-	for (y = 0; y < height; y++)
+#ifdef USE_MMX
+	if (have_mmx ())
 	{
-		for (x = 0; x < width; x++)
+		switch (img->depth)
 		{
-			pixel = gdk_image_get_pixel (img, x, y);
+		case 16:
+			shade_ximage_16_mmx (img->mem, img->bpl, width, height,
+		 					xtext->tint_red, xtext->tint_green, xtext->tint_blue);
+			break;
 
-			r = (pixel & visual->red_mask) >> visual->red_shift;
-			g = (pixel & visual->green_mask) >> visual->green_shift;
-			b = (pixel & visual->blue_mask) >> visual->blue_shift;
+		case 24:
+			if (img->bpp != 32)
+				goto generic;
 
-			gdk_image_put_pixel (img, x, y,
-						((r * xtext->tint_red) >> 8) << visual->red_shift |
-						((g * xtext->tint_green) >> 8) << visual->green_shift |
-						((b * xtext->tint_blue) >> 8) << visual->blue_shift);
+		case 32:
+			shade_ximage_32_mmx (img->mem, img->bpl, width, height,
+		 					xtext->tint_red, xtext->tint_green, xtext->tint_blue);
+			break;
+
+		default:
+			goto generic;
 		}
+	} else
+	{
+generic:
+#endif	/* !USE_MMX */
+
+		for (y = 0; y < height; y++)
+		{
+			for (x = 0; x < width; x++)
+			{
+					if (img->depth == 1)
+			{
+					pixel = (((guchar *) img->mem)[y * img->bpl + (x >> 3)] & (1 << (7 - (x & 0x7)))) != 0;
+					goto here;
+				}
+
+				if (img->depth == 4)
+				{
+					pixelp = (guchar *) img->mem + y * img->bpl + (x >> 1);
+					if (x&1)
+					{
+						pixel = (*pixelp) & 0x0F;
+						goto here;
+					}
+
+					pixel = (*pixelp) >> 4;
+					goto here;
+				}
+
+				pixelp = (guchar *) img->mem + y * img->bpl + x * img->bpp;
+
+				switch (img->bpp)
+				{
+				case 1:
+					pixel = *pixelp; break;
+
+				/* Windows is always LSB, no need to check img->byte_order. */
+				case 2:
+					pixel = pixelp[0] | (pixelp[1] << 8); break;
+
+				case 3:
+					pixel = pixelp[0] | (pixelp[1] << 8) | (pixelp[2] << 16); break;
+
+				case 4:
+					pixel = pixelp[0] | (pixelp[1] << 8) | (pixelp[2] << 16); break;
+				}
+
+here:
+				r = (pixel & visual->red_mask) >> visual->red_shift;
+				g = (pixel & visual->green_mask) >> visual->green_shift;
+				b = (pixel & visual->blue_mask) >> visual->blue_shift;
+
+				/* actual tinting is only these 3 lines */
+				pixel = ((r * xtext->tint_red) >> 8) << visual->red_shift |
+							((g * xtext->tint_green) >> 8) << visual->green_shift |
+							((b * xtext->tint_blue) >> 8) << visual->blue_shift;
+
+				if (img->depth == 1)
+					if (pixel & 1)
+						((guchar *) img->mem)[y * img->bpl + (x >> 3)] |= (1 << (7 - (x & 0x7)));
+					else
+						((guchar *) img->mem)[y * img->bpl + (x >> 3)] &= ~(1 << (7 - (x & 0x7)));
+				else if (img->depth == 4)
+				{
+					pixelp = (guchar *) img->mem + y * img->bpl + (x >> 1);
+
+					if (x&1)
+					{
+						*pixelp &= 0xF0;
+						*pixelp |= (pixel & 0x0F);
+					} else
+					{
+						*pixelp &= 0x0F;
+						*pixelp |= (pixel << 4);
+					}
+				} else
+				{
+					pixelp = (guchar *) img->mem + y * img->bpl + x * img->bpp;
+
+					/* Windows is always LSB, no need to check img->byte_order. */
+					switch (img->bpp)
+					{
+					case 4:
+						pixelp[3] = 0;
+					case 3:
+						pixelp[2] = ((pixel >> 16) & 0xFF);
+					case 2:
+						pixelp[1] = ((pixel >> 8) & 0xFF);
+					case 1:
+						pixelp[0] = (pixel & 0xFF);
+					}
+				}
+			}
+		}
+#ifdef USE_MMX
 	}
+#endif
 
 	if (xtext->recycle)
 		pix = xtext->pixmap;
@@ -3358,7 +3462,7 @@ gtk_xtext_load_trans (GtkXText * xtext)
 	gdk_window_get_size (GTK_WIDGET (xtext)->window, &width, &height);
 	width += 105;
 	img = gdk_image_get (GTK_WIDGET (xtext)->window, 0, 0, width, height);
-	xtext->pixmap = win32_tint (xtext, img, width, height);
+	xtext->pixmap = win32_tint (xtext, img, img->width, img->height);
 	gdk_image_unref (img);
 
 #else

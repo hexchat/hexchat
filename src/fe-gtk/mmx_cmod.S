@@ -35,14 +35,22 @@
 #define gm	28(%ebp)
 #define bm	32(%ebp)
 
-.global shade_ximage_15_mmx
-        .type shade_ximage_15_mmx,@function
-.global shade_ximage_16_mmx
-        .type shade_ximage_16_mmx,@function
-.global shade_ximage_32_mmx
-        .type shade_ximage_32_mmx,@function
-.global have_mmx
-        .type have_mmx,@function
+#ifdef UNDERSCORE_SYMBOLS /* need this to link with msvc */
+#define SHADE_XIMAGE_15 _shade_ximage_15_mmx
+#define SHADE_XIMAGE_16 _shade_ximage_16_mmx
+#define SHADE_XIMAGE_32 _shade_ximage_32_mmx
+#define HAVE_MMX _have_mmx
+#else
+#define SHADE_XIMAGE_15 shade_ximage_15_mmx
+#define SHADE_XIMAGE_16 shade_ximage_16_mmx
+#define SHADE_XIMAGE_32 shade_ximage_32_mmx
+#define HAVE_MMX have_mmx
+#endif
+
+.globl SHADE_XIMAGE_15
+.globl SHADE_XIMAGE_16
+.globl SHADE_XIMAGE_32
+.globl HAVE_MMX
 
 .bss
 .text
@@ -73,7 +81,7 @@
         ret
 
 
-shade_ximage_15_mmx:
+SHADE_XIMAGE_15:
         ENTER
 
         leal -6(%esi, %ebx, 2), %esi
@@ -255,7 +263,7 @@ shade_ximage_15_mmx_saturate:
         LEAVE
 
 
-shade_ximage_16_mmx:
+SHADE_XIMAGE_16:
         ENTER
 
         leal -6(%esi, %ebx, 2), %esi
@@ -439,7 +447,7 @@ shade_ximage_16_mmx_saturate:
         LEAVE
 
 
-shade_ximage_32_mmx:
+SHADE_XIMAGE_32:
         ENTER
 
         leal (%esi, %ebx, 4), %esi
@@ -482,7 +490,7 @@ shade_ximage_32_mmx:
         LEAVE
 
 
-have_mmx:
+HAVE_MMX:
 	push	%ebx
 # Check if bit 21 in flags word is writeable
 	pushfl	
