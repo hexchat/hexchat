@@ -537,7 +537,7 @@ chanlist_save (GtkWidget * wid, struct server *serv)
 		return;
 	}
 	gtkutil_file_req (_("Select an output filename"), chanlist_filereq_done,
-							serv, NULL, NULL, FRF_WRITE);
+							serv, NULL, FRF_WRITE);
 }
 
 static void

@@ -59,8 +59,7 @@ struct file_req
 {
 	GtkWidget *dialog;
 	void *userdata;
-	filereqcallback file_callback;
-	filereqcallback clean_callback;
+	filereqcallback callback;
 	int write;
 };
 
@@ -84,11 +83,16 @@ gtkutil_simpledialog (char *msg)
 }
 
 static void
+gtkutil_file_req_destroy (GtkWidget * wid, struct file_req *freq)
+{
+	freq->callback (freq->userdata, NULL);
+	free (freq);
+}
+
+static void
 gtkutil_file_req_cancel (GtkWidget * wid, struct file_req *freq)
 {
 	gtk_widget_destroy (freq->dialog);
-	freq->file_callback (freq->userdata, NULL);
-	free (freq);
 }
 
 static int
@@ -134,7 +138,7 @@ gtkutil_check_file (char *file, struct file_req *freq)
 		/* convert to UTF8. It might be converted back to locale by
 			server.c's g_convert */
 		utf8_file = g_filename_to_utf8 (file, -1, NULL, NULL, NULL);
-		freq->file_callback (freq->userdata, utf8_file);
+		freq->callback (freq->userdata, utf8_file);
 		g_free (utf8_file);
 	} else
 	{
@@ -171,18 +175,13 @@ gtkutil_file_req_done (GtkWidget * wid, struct file_req *freq)
 		kill |= gtkutil_check_file ((char *)gtk_file_selection_get_filename (fs), freq);
 	}
 
-	if (kill)
-	{
-		if (freq->clean_callback)
-			freq->clean_callback (freq->userdata, NULL);
+	if (kill)	/* this should call the "destroy" cb, where we free(freq) */
 		gtk_widget_destroy (freq->dialog);
-		free (freq);
-	}
 }
 
 void
-gtkutil_file_req (char *title, void *file_callback, void *userdata,
-						void *clean_callback, char *filter, int flags)
+gtkutil_file_req (char *title, void *callback, void *userdata, char *filter,
+						int flags)
 {
 	struct file_req *freq;
 	GtkWidget *dialog;
@@ -196,8 +195,7 @@ gtkutil_file_req (char *title, void *file_callback, void *userdata,
 	freq = malloc (sizeof (struct file_req));
 	freq->dialog = dialog;
 	freq->write = (flags & FRF_WRITE);
-	freq->file_callback = file_callback;
-	freq->clean_callback = clean_callback;
+	freq->callback = callback;
 	freq->userdata = userdata;
 
 	g_signal_connect (G_OBJECT
@@ -207,6 +205,8 @@ gtkutil_file_req (char *title, void *file_callback, void *userdata,
 	g_signal_connect (G_OBJECT (GTK_FILE_SELECTION (dialog)->ok_button),
 							  "clicked", G_CALLBACK (gtkutil_file_req_done),
 							  (gpointer) freq);
+	g_signal_connect (G_OBJECT (dialog), "destroy",
+						   G_CALLBACK (gtkutil_file_req_destroy), (gpointer) freq);
 	gtk_widget_show (dialog);
 }
 

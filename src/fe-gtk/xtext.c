@@ -3104,7 +3104,7 @@ win32_tint (GtkXText *xtext, GdkImage *img, int width, int height)
 	int x, y;
 	GdkPixmap *pix;
 	GdkVisual *visual = img->visual;
-	gulong pixel;
+	guint32 pixel;
 	int r, g, b;
 
 	for (y = 0; y < height; y++)
@@ -3161,7 +3161,7 @@ gtk_xtext_load_trans (GtkXText * xtext)
 	width += 105;
 	img = gdk_image_get (GTK_WIDGET (xtext)->window, 0, 0, width, height);
 	xtext->pixmap = win32_tint (xtext, img, width, height);
-	gdk_image_destroy (img);
+	gdk_image_unref (img);
 
 #else
 

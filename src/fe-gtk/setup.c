@@ -61,7 +61,7 @@ enum
 	ST_RADIO,
 	ST_NUMBER,
 	ST_HSCALE,
-	ST_LABEL,
+	ST_LABEL
 };
 
 typedef struct
@@ -438,7 +438,7 @@ setup_filereq_cb (GtkWidget *entry, char *file)
 static void
 setup_browsefile_cb (GtkWidget *button, GtkWidget *entry)
 {
-	gtkutil_file_req (_("Select an Image File"), setup_filereq_cb, entry, NULL, NULL, 0);
+	gtkutil_file_req (_("Select an Image File"), setup_filereq_cb, entry, NULL, 0);
 }
 
 static void

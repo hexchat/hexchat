@@ -24,6 +24,9 @@
 #include "fe.h"
 #include "tree.h"
 #include "url.h"
+#ifdef HAVE_STRINGS_H
+#include <strings.h>
+#endif
 
 void *url_tree = NULL;
 

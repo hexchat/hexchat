@@ -26,7 +26,9 @@
 #include "server.h"
 #include "text.h"
 #include "fe.h"
-
+#ifdef HAVE_STRINGS_H
+#include <strings.h>
+#endif
 
 typedef struct
 {
