@@ -280,6 +280,7 @@ if test "$python" = yes; then
                 AC_MSG_CHECKING(Python version)
                 changequote(<<, >>)dnl
                 PY_VERSION=`$pythonpath -c 'import sys; print sys.version[:3]'`
+                PY_PATH=`$pythonpath -c 'import sys ; print sys.path[1][5:]'`
                 $pythonpath -c "import sys; map(int,sys.version[:3].split('.')) >= [2,2] or sys.exit(1)"
                 changequote([, ])dnl
                 AC_MSG_RESULT($PY_VERSION)
@@ -288,7 +289,7 @@ if test "$python" = yes; then
                         PY_PREFIX=`$pythonpath -c 'import sys; print sys.prefix'`
                         PY_EXEC_PREFIX=`$pythonpath -c 'import sys; print sys.exec_prefix'`
                         if test -f $PY_PREFIX/include/python$PY_VERSION/Python.h; then
-                                PY_LIBS="-L$PY_EXEC_PREFIX/lib/python$PY_VERSION/config -lpython$PY_VERSION -lpthread -lutil"
+                                PY_LIBS="-L$PY_EXEC_PREFIX/$PY_PATH/config -lpython$PY_VERSION -lpthread -lutil"
                                 PY_CFLAGS="-I$PY_PREFIX/include/python$PY_VERSION"
                                 AC_MSG_RESULT(ok)
                         else

@@ -252,7 +252,7 @@ mg_configure_cb (GtkWidget *wid, GdkEventConfigure *event, session *sess)
 	{
 		if (mg_gui)
 		{
-			g_idle_add ((GSourceFunc)tab_group_resize, mg_gui->tabs_box);
+/*			g_idle_add ((GSourceFunc)tab_group_resize, mg_gui->tabs_box);*/
 			if (prefs.mainwindow_save)
 			{
 				sess = current_sess;
@@ -2487,8 +2487,8 @@ mg_changui_new (session *sess, restore_gui *res, int tab)
 	if (first_run || prefs.newtabstofront)
 		tab_focus (res->tab);
 
-	while (g_main_pending ())
-		g_main_iteration (TRUE);
+/*	while (g_main_pending ())
+		g_main_iteration (TRUE);*/
 	tab_group_resize (mg_gui->tabs_box);
 	/*g_idle_add ((GSourceFunc)tab_group_resize, mg_gui->tabs_box);*/
 }

@@ -12799,6 +12799,7 @@ fi
                 echo "$as_me:$LINENO: checking Python version" >&5
 echo $ECHO_N "checking Python version... $ECHO_C" >&6
                                 PY_VERSION=`$pythonpath -c 'import sys; print sys.version[:3]'`
+                PY_PATH=`$pythonpath -c 'import sys ; print sys.path[1][5:]'`
                 $pythonpath -c "import sys; map(int,sys.version[:3].split('.')) >= [2,2] or sys.exit(1)"
                                 echo "$as_me:$LINENO: result: $PY_VERSION" >&5
 echo "${ECHO_T}$PY_VERSION" >&6
@@ -12808,7 +12809,7 @@ echo $ECHO_N "checking Python compile flags... $ECHO_C" >&6
                         PY_PREFIX=`$pythonpath -c 'import sys; print sys.prefix'`
                         PY_EXEC_PREFIX=`$pythonpath -c 'import sys; print sys.exec_prefix'`
                         if test -f $PY_PREFIX/include/python$PY_VERSION/Python.h; then
-                                PY_LIBS="-L$PY_EXEC_PREFIX/lib/python$PY_VERSION/config -lpython$PY_VERSION -lpthread -lutil"
+                                PY_LIBS="-L$PY_EXEC_PREFIX/$PY_PATH/config -lpython$PY_VERSION -lpthread -lutil"
                                 PY_CFLAGS="-I$PY_PREFIX/include/python$PY_VERSION"
                                 echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6

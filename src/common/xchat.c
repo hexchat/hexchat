@@ -626,6 +626,7 @@ find_away_message (struct server *serv, char *nick)
 #define defaultconf_commands \
 	"NAME ACTION\n"		"CMD me &2\n\n"\
 	"NAME AME\n"			"CMD allchan me &2\n\n"\
+	"NAME ANICK\n"			"CMD allserv nick &2\n\n"\
 	"NAME AMSG\n"			"CMD allchan say &2\n\n"\
 	"NAME BACK\n"			"CMD away\n\n"\
 	"NAME BANLIST\n"		"CMD quote MODE %c +b\n\n"\
