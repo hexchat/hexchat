@@ -667,16 +667,36 @@ servlist_celledit_cb (GtkCellRendererText *cell, gchar *arg1, gchar *arg2,
 
 static GtkWidget *
 gtkutil_create_list (GtkWidget *box, char *title, void *select_callback,
-							void *edit_callback, void *click_callback)
+							void *edit_callback, void *click_callback,
+							void *add_callback)
 {
 	GtkTreeModel *model;
 	GtkWidget *treeview;
 	GtkWidget *hbox, *sw;
 	GtkCellRenderer *renderer;
 	GtkListStore *store;
+	GtkWidget *frame, *vbox, *but;
+	GtkTreeViewColumn *col;
+
+	vbox = gtk_vbox_new (0, 0);
+	gtk_container_add (GTK_CONTAINER (box), vbox);
+
+	frame = gtk_frame_new (NULL);
+	gtk_frame_set_shadow_type (GTK_FRAME (frame), GTK_SHADOW_OUT);
+	gtk_box_pack_start (GTK_BOX (vbox), frame, 0, 0, 0);
 
 	hbox = gtk_hbox_new (0, 0);
-	gtk_container_add (GTK_CONTAINER (box), hbox);
+	gtk_container_add (GTK_CONTAINER (frame), hbox);
+
+	but = gtk_label_new (title);
+	gtk_misc_set_alignment (GTK_MISC (but), 0.1, 0.5);
+	gtk_container_add (GTK_CONTAINER (hbox), but);
+
+	but = gtk_button_new_with_label (_("Add"));
+	gtk_box_pack_start (GTK_BOX (hbox), but, 0, 0, 0);
+
+	hbox = gtk_hbox_new (0, 0);
+	gtk_container_add (GTK_CONTAINER (vbox), hbox);
 
 	sw = gtk_scrolled_window_new (NULL, NULL);
 	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (sw),
@@ -701,8 +721,13 @@ gtkutil_create_list (GtkWidget *box, char *title, void *select_callback,
 							G_CALLBACK (edit_callback), model);
 	g_signal_connect (G_OBJECT (treeview), "button_press_event",
 							G_CALLBACK (click_callback), model);
+	g_signal_connect (G_OBJECT (but), "clicked",
+							G_CALLBACK (add_callback), treeview);
    gtk_container_add (GTK_CONTAINER (sw), treeview);
 	g_object_unref (G_OBJECT (model));
+
+	col = gtk_tree_view_get_column (GTK_TREE_VIEW (treeview), 0);
+	gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (treeview), FALSE);
 
 	return treeview;
 }
@@ -905,6 +930,13 @@ servlist_editserver_cb (GtkCellRendererText *cell, gchar *arg1, gchar *arg2,
 	serv = servlist_server_find (selected_net, servname, NULL);
 	if (serv)
 	{
+		/* delete empty item */
+		if (arg2[0] == 0)
+		{
+			servlist_deleteserver_cb (NULL, serv);
+			return;
+		}
+
 		servname = serv->hostname;
 		serv->hostname = strdup (arg2);
 		gtk_list_store_set (GTK_LIST_STORE (model), &iter, 0, serv->hostname, -1);
@@ -923,7 +955,8 @@ servlist_create_servlistbox (GtkWidget *box)
 	gtk_container_add (GTK_CONTAINER (box), vbox);
 
 	tree = gtkutil_create_list (vbox, _("Servers"), servlist_server_row_cb,
-										 servlist_editserver_cb, servlist_serv_press_cb);
+										 servlist_editserver_cb, servlist_serv_press_cb,
+										 servlist_addserver_cb);
 #if 0
 	hbox = gtk_hbox_new (FALSE, 2);
 	gtk_box_pack_end (GTK_BOX (vbox), hbox, 0, 0, 0);
@@ -1081,7 +1114,8 @@ servlist_create_list (GtkWidget *box)
 	gtk_box_pack_start (GTK_BOX (hbox), but, 0, 0, 0);
 
 	tree = gtkutil_create_list (vbox, _("Networks"), servlist_network_row_cb,
-										 servlist_celledit_cb, servlist_net_press_cb);
+										 servlist_celledit_cb, servlist_net_press_cb,
+										 servlist_addnet_cb);
 	servlist_networks_populate (tree, network_list, prefs.slist_edit);
 
 	servlist_create_editbox (pane);

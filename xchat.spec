@@ -28,7 +28,7 @@ Provides Perl scripting capability to XChat.
 Summary: XChat Python plugin
 Group: Applications/Internet
 Requires: xchat >= 1.9.5
-Requires: python = 2.2.1
+Requires: python >= 2.2.1
 %description python
 Provides Python scripting capability to XChat.
 
@@ -36,7 +36,7 @@ Provides Python scripting capability to XChat.
 Summary: XChat TCL plugin
 Group: Applications/Internet
 Requires: xchat >= 1.9.8
-Requires: tcl
+Requires: tcl >= 8.3.3
 %description python
 Provides TCL scripting capability to XChat.
 
