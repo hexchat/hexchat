@@ -56,6 +56,9 @@
 #include <gtk/gtkinvisible.h>
 #endif
 
+#ifdef WIN32
+#include <windows.h>
+#endif
 
 GdkPixmap *channelwin_pix;
 

@@ -48,6 +48,7 @@
 #include <gtk/gtkhscale.h>
 #ifdef WIN32
 #include <windows.h>
+#include "../common/fe.h"
 #endif
 
 

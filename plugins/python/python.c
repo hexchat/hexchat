@@ -327,6 +327,9 @@ Util_BuildList(char *word[])
 static void
 Util_Autoload()
 {
+#ifndef PATH_MAX
+#define PATH_MAX 1024	/* Hurd doesn't define it */
+#endif
 	char oldcwd[PATH_MAX];
 	const char *dir_name;
 	struct dirent *ent;
