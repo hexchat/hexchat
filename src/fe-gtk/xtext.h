@@ -143,6 +143,9 @@ struct _GtkXText
 	int jump_out_offset;	/* point at which to stop rendering */
 	int jump_in_offset;	/* "" start rendering */
 
+	int ts_x;			/* ts origin for ->bgc GC */
+	int ts_y;
+
 	unsigned int auto_indent:1;
 	unsigned int moving_separator:1;
 	unsigned int word_or_line_select:1;
@@ -161,7 +164,6 @@ struct _GtkXText
 	unsigned int dont_render:1;
 	unsigned int dont_render2:1;
 	unsigned int cursor_hand:1;
-	unsigned int skip_fills:1;
 	unsigned int skip_border_fills:1;
 	unsigned int skip_stamp:1;
 	unsigned int render_hilights_only:1;
