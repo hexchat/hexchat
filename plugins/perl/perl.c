@@ -42,6 +42,9 @@ incompatibilities from 1.8.x:
 #ifdef ENABLE_NLS
 #include <locale.h>
 #endif
+#ifdef WIN32
+#include <windows.h>
+#endif
 
 #undef PACKAGE
 #include "../../config.h"	/* for #define OLD_PERL */
@@ -66,6 +69,26 @@ static xchat_plugin *ph; /* plugin handle */
 static int perl_load_file (char *script_name);
 
 
+#ifdef WIN32
+
+static DWORD
+child (char *str)
+{
+	MessageBoxA (0, str, "Perl DLL Error",
+					 MB_OK|MB_ICONHAND|MB_SETFOREGROUND|MB_TASKMODAL);
+	return 0;
+}
+
+static void
+thread_mbox (char *str)
+{
+	DWORD tid;
+
+	CloseHandle (CreateThread (NULL, 0, (LPTHREAD_START_ROUTINE) child,
+					 str, 0, &tid));
+}
+
+#endif
 
 /* leave this before XSUB.h, to avoid readdir() being redefined */
 static void
@@ -1000,6 +1023,27 @@ perl_init (void)
 static int
 perl_load_file (char *script_name)
 {
+#ifdef WIN32
+	static int have_lib = FALSE;
+	HINSTANCE lib;
+
+	if (!have_lib)
+	{
+		lib = LoadLibrary (PERLDLL);
+		if (!lib)
+		{
+			thread_mbox ("Cannot open " PERLDLL "\n\n"
+							 "You must have ActivePerl installed in order to\n"
+							 "run perl scripts.\n\n"
+							 "http://www.activestate.com/ActivePerl/\n\n"
+							 "Make sure perl's bin directory is in your PATH.");
+			return FALSE;
+		}
+		have_lib = TRUE;
+		FreeLibrary (lib);
+	}
+#endif
+
 	if (my_perl == NULL)
 		perl_init ();
 
