@@ -3181,7 +3181,7 @@ handle_user_input (session *sess, char *text, int history, int nocommand)
 }
 
 /* changed by Steve Green. Macs sometimes paste with imbedded \r */
-/*void
+void
 handle_multiline (session *sess, char *cmd, int history, int nocommand)
 {
 	while (*cmd)
@@ -3195,9 +3195,9 @@ handle_multiline (session *sess, char *cmd, int history, int nocommand)
 			break;
 		cmd = cr + 1;
 	}
-}*/
+}
 
-void
+/*void
 handle_multiline (session *sess, char *cmd, int history, int nocommand)
 {
 	char *cr;
@@ -3222,4 +3222,4 @@ handle_multiline (session *sess, char *cmd, int history, int nocommand)
 	{
 		handle_user_input (sess, cmd, history, nocommand);
 	}
-}
+}*/
