@@ -728,6 +728,43 @@ mg_tree_cb (GtkWidget *item, session *sess)
 }
 
 static void
+mg_colorpaste_cb (GtkCheckMenuItem *item, session *sess)
+{
+	sess->color_paste = FALSE;
+	if (item->active)
+		sess->color_paste = TRUE;
+	GTK_XTEXT (sess->gui->xtext)->color_paste = sess->color_paste;
+}
+
+static void
+mg_beepmsg_cb (GtkCheckMenuItem *item, session *sess)
+{
+	sess->beep = FALSE;
+	if (item->active)
+		sess->beep = TRUE;
+}
+
+static void
+mg_hidejp_cb (GtkCheckMenuItem *item, session *sess)
+{
+	sess->hide_join_part = TRUE;
+	if (item->active)
+		sess->hide_join_part = FALSE;
+}
+
+static void
+mg_create_chan_options_menu (GtkWidget *menu, session *sess)
+{
+	menu_toggle_item (_("Beep on message"), menu, mg_beepmsg_cb, sess,
+							sess->beep);
+	if (sess->type != SESS_DIALOG)
+		menu_toggle_item (_("Show join/part messages"), menu, mg_hidejp_cb, sess,
+								!sess->hide_join_part);
+	menu_toggle_item (_("Color paste"), menu, mg_colorpaste_cb, sess,
+							sess->color_paste);
+}
+
+static void
 mg_create_sess_tree (GtkWidget *menu)
 {
 	GtkWidget *top_item, *item, *submenu;
@@ -785,23 +822,36 @@ mg_menu_destroy (GtkMenuShell *menushell, GtkWidget *menu)
 	gtk_widget_destroy (menu);
 }
 
-static gint
-mg_tab_press_cb (GtkWidget *wid, GdkEventButton *event, gpointer userdata)
+static gboolean
+mg_tab_press_cb (GtkWidget *wid, GdkEventButton *event, session *sess)
 {
-	GtkWidget *menu;
+	GtkWidget *menu, *submenu, *item;
 
-	if (event->button == 3)
-	{
-		menu = gtk_menu_new ();
+	if (event->button != 3)
+		return FALSE;
 
-		mg_create_sess_tree (menu);
+	menu = gtk_menu_new ();
 
-		g_signal_connect (G_OBJECT (menu), "selection-done",
-								G_CALLBACK (mg_menu_destroy), menu);
-		gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL, 3, 0);
-		return TRUE;
-	}
-	return FALSE;
+	item = gtk_menu_item_new_with_label (sess->channel[0] ? sess->channel : _("<none>"));
+	gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+
+	submenu = gtk_menu_new ();
+	mg_create_chan_options_menu (submenu, sess);
+	gtk_menu_item_set_submenu (GTK_MENU_ITEM (item), submenu);
+	gtk_widget_show (item);
+
+	item = gtk_menu_item_new_with_label (_("Move to tab"));
+	gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+
+	submenu = gtk_menu_new ();
+	mg_create_sess_tree (submenu);
+	gtk_menu_item_set_submenu (GTK_MENU_ITEM (item), submenu);
+	gtk_widget_show (item);
+
+	g_signal_connect (G_OBJECT (menu), "selection-done",
+							G_CALLBACK (mg_menu_destroy), menu);
+	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL, 3, 0);
+	return TRUE;
 }
 
 /* add a tabbed channel */
@@ -1682,31 +1732,7 @@ mg_create_center (session *sess, session_gui *gui, GtkWidget *box)
 	}
 }
 
-static void
-mg_colorpaste_cb (GtkCheckMenuItem *item, session *sess)
-{
-	sess->color_paste = FALSE;
-	if (item->active)
-		sess->color_paste = TRUE;
-	GTK_XTEXT (sess->gui->xtext)->color_paste = sess->color_paste;
-}
-
-static void
-mg_beepmsg_cb (GtkCheckMenuItem *item, session *sess)
-{
-	sess->beep = FALSE;
-	if (item->active)
-		sess->beep = TRUE;
-}
-
-static void
-mg_hidejp_cb (GtkCheckMenuItem *item, session *sess)
-{
-	sess->hide_join_part = FALSE;
-	if (item->active)
-		sess->hide_join_part = TRUE;
-}
-
+#if 0
 static void
 mg_color_insert (GtkWidget *item, gpointer userdata)
 {
@@ -1715,7 +1741,9 @@ mg_color_insert (GtkWidget *item, gpointer userdata)
 	sprintf (buf, "%%C%d", GPOINTER_TO_INT (userdata));
 	key_action_insert (current_sess->gui->input_box, 0, buf, 0, 0);
 }
+#endif
 
+#if 0
 static void
 mg_upbutton_cb (GtkButton *but, gpointer userdata)
 {
@@ -1768,6 +1796,7 @@ mg_upbutton_cb (GtkButton *but, gpointer userdata)
 							G_CALLBACK (mg_menu_destroy), menu);
 	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL, 0, 0);
 }
+#endif
 
 static void
 mg_change_nick (int cancel, char *text, gpointer userdata)
@@ -1850,7 +1879,7 @@ mg_set_tabs_pos (session_gui *gui, int pos)
 static void
 mg_create_entry (session *sess, GtkWidget *box)
 {
-	GtkWidget *hbox, *but, *entry, *arrow;
+	GtkWidget *hbox, *but, *entry;
 	session_gui *gui = sess->gui;
 
 	hbox = gtk_hbox_new (FALSE, 0);
@@ -1884,7 +1913,7 @@ mg_create_entry (session *sess, GtkWidget *box)
 	if (prefs.style_inputbox)
 		mg_apply_entry_style (entry);
 
-	but = gtk_button_new ();
+/*	but = gtk_button_new ();
 	arrow = gtk_arrow_new (GTK_ARROW_DOWN, GTK_SHADOW_NONE);
 	gtk_container_add (GTK_CONTAINER (but), arrow);
 	gtk_button_set_relief (GTK_BUTTON (but), GTK_RELIEF_NONE);
@@ -1893,7 +1922,7 @@ mg_create_entry (session *sess, GtkWidget *box)
 							G_CALLBACK (mg_upbutton_cb), 0);
 	add_tip (but, _("Channel Options"));
 	gtk_widget_set_size_request (but, 18, 8);
-	gtk_widget_show_all (but);
+	gtk_widget_show_all (but);*/
 }
 
 static void
