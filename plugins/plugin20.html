@@ -20,6 +20,7 @@ color: #990066
 <h1>XChat 2.0 Plugin Interface</h1>
 
 <small>
+<font size="-12">plugin20.html revision 0.9</font>
 <br>Latest version of this document is available at: <a href="http://xchat.org/docs/plugin20.html">http://xchat.org/docs/plugin20.html</a></small>
 
 <h2>Information:</h2>
@@ -96,7 +97,7 @@ is the normal entry point. xchat_plugin_deinit is optional.
       xchat_commandf(ph, <font color="#f800f8">&quot;OP </font><font color="#6858c8">%s</font><font color="#f800f8">&quot;</font>, word[<font color="#f800f8">1</font>]);
    <font color="#0000f8">/*</font><font color="#0000f8"> word[1] is the nickname, as in the Settings-&gt;Lists-&gt;EventTexts window in xchat */</font>
 
-   <font color="#a02828"><b>return</b></font> EAT_NONE;  <font color="#0000f8">/*</font><font color="#0000f8"> don't eat this event, xchat needs to see it! */</font>
+   <font color="#a02828"><b>return</b></font> XCHAT_EAT_NONE;  <font color="#0000f8">/*</font><font color="#0000f8"> don't eat this event, xchat needs to see it! */</font>
 }
 
 <font color="#288850"><b>static</b></font> <font color="#288850"><b>int</b></font> autooptoggle_cb(<font color="#288850"><b>char</b></font> *word[], <font color="#288850"><b>char</b></font> *word_eol[], <font color="#288850"><b>void</b></font> *userdata)
@@ -111,7 +112,7 @@ is the normal entry point. xchat_plugin_deinit is optional.
       xchat_print(ph, <font color="#f800f8">&quot;AutoOping now disabled!</font><font color="#6858c8">\n</font><font color="#f800f8">&quot;</font>);
    }
 
-   <font color="#a02828"><b>return</b></font> EAT_ALL;   <font color="#0000f8">/*</font><font color="#0000f8"> eat this command so xchat and other plugins can't process it */</font>
+   <font color="#a02828"><b>return</b></font> XCHAT_EAT_ALL;   <font color="#0000f8">/*</font><font color="#0000f8"> eat this command so xchat and other plugins can't process it */</font>
 }
 
 <font color="#288850"><b>int</b></font> xchat_plugin_init(xchat_plugin *plugin_handle,
@@ -127,8 +128,8 @@ is the normal entry point. xchat_plugin_deinit is optional.
    *plugin_desc = <font color="#f800f8">&quot;Auto Ops anyone that joins&quot;</font>;
    *plugin_version = <font color="#f800f8">&quot;0.1&quot;</font>;
 
-   xchat_hook_command(ph, <font color="#f800f8">&quot;AutoOpToggle&quot;</font>, PRI_NORM, autooptoggle_cb, <font color="#f800f8">&quot;Usage: AUTOOPTOGGLE, Turns OFF/ON Auto Oping&quot;</font>, <font color="#f800f8">0</font>);
-   xchat_hook_print(ph, <font color="#f800f8">&quot;Join&quot;</font>, PRI_NORM, join_cb, <font color="#f800f8">0</font>);
+   xchat_hook_command(ph, <font color="#f800f8">&quot;AutoOpToggle&quot;</font>, XCHAT_PRI_NORM, autooptoggle_cb, <font color="#f800f8">&quot;Usage: AUTOOPTOGGLE, Turns OFF/ON Auto Oping&quot;</font>, <font color="#f800f8">0</font>);
+   xchat_hook_print(ph, <font color="#f800f8">&quot;Join&quot;</font>, XCHAT_PRI_NORM, join_cb, <font color="#f800f8">0</font>);
 
    xchat_print(ph, <font color="#f800f8">&quot;AutoOpPlugin loaded successfully!</font><font color="#6858c8">\n</font><font color="#f800f8">&quot;</font>);
 
@@ -267,7 +268,7 @@ in the <a href="#sample">sample plugin</a> above.
 <br><b>Arguments:</b>
 <blockquote><b>ph:</b> Plugin handle (as given to xchat_plugin_init).
 <br><b>name:</b> Name of the command (without the forward slash).
-<br><b>pri:</b> Priority of this command. Use PRI_NORM.
+<br><b>pri:</b> Priority of this command. Use XCHAT_PRI_NORM.
 <br><b>callb:</b> Callback function. This will be called when the user executes the given command name.
 <br><b>help_text:</b> String of text to display when the user executes /help for this command. May be NULL if you're lazy.
 <br><b>userdata:</b> Pointer passed to the callback function.</blockquote>
@@ -281,14 +282,14 @@ static int onotice_cb(char *word[], char *word_eol[], void *userdata)
 	if(word_eol[2][0] == 0)
 	{
 		xchat_printf(ph, "Second arg must be the message!\n");
-		return EAT_ALL;
+		return XCHAT_EAT_ALL;
 	}
 
 	xchat_commandf(ph, "NOTICE @%s :%s", xchat_get_info(ph, "channel"), word_eol[2]);
-	return EAT_ALL;
+	return XCHAT_EAT_ALL;
 }
 
-xchat_hook_command(ph, "ONOTICE", PRI_NORM, onotice_cb, "Usage: ONOTICE &lt;message> Sends a notice to all ops", NULL);
+xchat_hook_command(ph, "ONOTICE", XCHAT_PRI_NORM, onotice_cb, "Usage: ONOTICE &lt;message> Sends a notice to all ops", NULL);
 </pre>
 </blockquote>
 <br>
@@ -301,7 +302,7 @@ xchat_hook_command(ph, "ONOTICE", PRI_NORM, onotice_cb, "Usage: ONOTICE &lt;mess
 <br><b>Arguments:</b>
 <blockquote><b>ph:</b> Plugin handle (as given to xchat_plugin_init).
 <br><b>fd:</b> The file descriptor or socket.
-<br><b>flags:</b> Bit field: 0-read 1-write 2-exception
+<br><b>flags:</b> One or more of XCHAT_FD_READ, XCHAT_FD_WRITE, XCHAT_FD_EXCEPTION. Use bitwise OR to combine them.
 <br><b>callb:</b> Callback function. This will be called when the socket is available for reading/writing or exception (depending on your chosen <b>flags</b>)
 <br><b>userdata:</b> Pointer passed to the callback function.</blockquote>
 <b>Returns:</b> Pointer to the hook. Can be passed to xchat_unhook.
@@ -328,7 +329,7 @@ tab-window is focused by the window manager.
 <br><b>Arguments:</b>
 <blockquote><b>ph:</b> Plugin handle (as given to xchat_plugin_init).
 <br><b>name:</b> Name of the print event (as in Edit Event Texts Window).
-<br><b>pri:</b> Priority of this command. Use PRI_NORM.
+<br><b>pri:</b> Priority of this command. Use XCHAT_PRI_NORM.
 <br><b>callb:</b> Callback function. This will be called when this event name is printed.
 <br><b>userdata:</b> Pointer passed to the callback function.</blockquote>
 <b>Returns:</b> Pointer to the hook. Can be passed to xchat_unhook.
@@ -339,10 +340,10 @@ tab-window is focused by the window manager.
 static int youpart_cb(char *word[], void *userdata)
 {
 	xchat_printf(ph, "You have left channel %s\n", word[3]);
-	return EAT_XCHAT;	/* dont let xchat do its normal printing */
+	return XCHAT_EAT_XCHAT;	/* dont let xchat do its normal printing */
 }
 
-xchat_hook_print(ph, "You Part", PRI_NORM, youpart_cb, NULL);
+xchat_hook_print(ph, "You Part", XCHAT_PRI_NORM, youpart_cb, NULL);
 </pre>
 </blockquote>
 <br>
@@ -357,7 +358,7 @@ hook every line that comes from the IRC server, you may use the special name of 
 <br><b>Arguments:</b>
 <blockquote><b>ph:</b> Plugin handle (as given to xchat_plugin_init).
 <br><b>name:</b> Name of the server event.
-<br><b>pri:</b> Priority of this command. Use PRI_NORM.
+<br><b>pri:</b> Priority of this command. Use XCHAT_PRI_NORM.
 <br><b>callb:</b> Callback function. This will be called when this event is received from the server.
 <br><b>userdata:</b> Pointer passed to the callback function.</blockquote>
 <b>Returns:</b> Pointer to the hook. Can be passed to xchat_unhook.
@@ -368,10 +369,10 @@ hook every line that comes from the IRC server, you may use the special name of 
 static int kick_cb(char *word[], char *word_eol[], void *userdata)
 {
 	xchat_printf(ph, "%s was kicked from %s (reason=%s)\n", word[4], word[3], word_eol[5]);
-	return EAT_NONE;	/* don't eat this event, let other plugins and xchat see it too */
+	return XCHAT_EAT_NONE;	/* don't eat this event, let other plugins and xchat see it too */
 }
 
-xchat_hook_server(ph, "KICK", PRI_NORM, kick_cb, NULL);
+xchat_hook_server(ph, "KICK", XCHAT_PRI_NORM, kick_cb, NULL);
 </pre>
 </blockquote>
 <br>
@@ -402,7 +403,7 @@ static int stop_cb(char *word[], char *word_eol[], void *userdata)
 		xchat_print(ph, "Timeout removed!\n");
 	}
 
-	return EAT_ALL;
+	return XCHAT_EAT_ALL;
 }
 
 static int timeout_cb(void *userdata)
@@ -412,7 +413,7 @@ static int timeout_cb(void *userdata)
 }
 
 myhook = xchat_hook_timer(ph, 5000, timeout_cb, NULL);
-xchat_hook_command(ph, "STOP", PRI_NORM, stop_cb, NULL, NULL);
+xchat_hook_command(ph, "STOP", XCHAT_PRI_NORM, stop_cb, NULL, NULL);
 </pre><br>
 </blockquote>
 
@@ -561,7 +562,5 @@ not be freed and must be copied if needed after the call to xchat_get_info.
        respectively, to be less than, to match, or be greater than s2.
 <br><br><br>
 
-
 </body>
 </html>
-

@@ -2,21 +2,26 @@
 
 #define XCHAT_IFACE_MAJOR	1
 #define XCHAT_IFACE_MINOR	9
-#define XCHAT_IFACE_MICRO	7
+#define XCHAT_IFACE_MICRO	8
 #define XCHAT_IFACE_VERSION	((XCHAT_IFACE_MAJOR * 10000) + \
 				 (XCHAT_IFACE_MINOR * 100) + \
 				 (XCHAT_IFACE_MICRO))
 
-#define PRI_HIGHEST	127
-#define PRI_HIGH	64
-#define PRI_NORM	0
-#define PRI_LOW		-64
-#define PRI_LOWEST	-128
+#define XCHAT_PRI_HIGHEST	127
+#define XCHAT_PRI_HIGH		64
+#define XCHAT_PRI_NORM		0
+#define XCHAT_PRI_LOW		(-64)
+#define XCHAT_PRI_LOWEST	(-128)
 
-#define EAT_NONE	(0)	/* pass it on through! */
-#define EAT_XCHAT	(1)	/* don't let xchat see this event */
-#define EAT_PLUGIN	(2)	/* don't let other plugins see this event */
-#define EAT_ALL		(EAT_XCHAT|EAT_PLUGIN)	/* don't let anything see this event */
+#define XCHAT_FD_READ		1
+#define XCHAT_FD_WRITE		2
+#define XCHAT_FD_EXCEPTION	4
+#define XCHAT_FD_NOTSOCKET	8
+
+#define XCHAT_EAT_NONE		0	/* pass it on through! */
+#define XCHAT_EAT_XCHAT		1	/* don't let xchat see this event */
+#define XCHAT_EAT_PLUGIN	2	/* don't let other plugins see this event */
+#define XCHAT_EAT_ALL		(XCHAT_EAT_XCHAT|XCHAT_EAT_PLUGIN)	/* don't let anything see this event */
 
 #ifdef __cplusplus
 extern "C" {

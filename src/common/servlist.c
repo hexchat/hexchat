@@ -732,7 +732,7 @@ servlist_server_remove (ircnet *net, ircserver *serv)
 	net->servlist = g_slist_remove (net->servlist, serv);
 }
 
-void
+static void
 servlist_server_remove_all (ircnet *net)
 {
 	ircserver *serv;

@@ -385,7 +385,7 @@ process_numeric (session * sess, char *outbuf, int n,
 			fe_add_chan_list (sess->server, word[4], word[5], word_eol[6] + 1);
 		} else
 		{
-			sprintf (outbuf, "%-16.16s %-7d %s\017\n",
+			sprintf (outbuf, "%-16s %-7d %s\017\n",
 						word[4], atoi (word[5]), word_eol[6] + 1);
 			PrintText (sess, outbuf);
 		}

@@ -19,7 +19,7 @@
  - Final fix for filenames' encoding in DCC.
  - New unicode character chart window.
  - xtext: properly recalculate text widths after a font change.
- - Fixed IRC::dcc_list 1.8.x incompatibility (Charles Lopes).
+ - Fixed perl IRC::dcc_list 1.8.x incompatibility (Charles Lopes).
  - xtext: Implemented scrolling instead of full redraws when not using
    a background image or transparency. This improves scrolling on
    machines that draw AA text very slowly.
@@ -31,6 +31,9 @@
  - Apply character set conversions to DCC Chat aswell (Steve Green).
  - xtext: Fixed hilight-text in scrollback after new addition bug.
  - Channellist gui cleanup.
+ - Renamed a few defines in xchat-plugin.h to avoid namespace
+   pollution.
+ - Fixed loading background image crash (from 1.9.7).
  - 
 
 

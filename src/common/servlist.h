@@ -42,6 +42,5 @@ void servlist_net_remove (ircnet *net);
 ircnet *servlist_net_find (char *name, int *pos);
 
 void servlist_server_remove (ircnet *net, ircserver *serv);
-void servlist_server_remove_all (ircnet *net);
 ircserver *servlist_server_add (ircnet *net, char *name);
 ircserver *servlist_server_find (ircnet *net, char *name, int *pos);

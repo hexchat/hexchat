@@ -377,7 +377,7 @@ server_connected (server * serv)
 	prefs.wait_on_exit = TRUE;
 	serv->connected = TRUE;
 	set_nonblocking (serv->sok);
-	serv->iotag = fe_input_add (serv->sok, 1, 0, 1, server_read, serv);
+	serv->iotag = fe_input_add (serv->sok, FIA_READ|FIA_EX, server_read, serv);
 	if (!serv->no_login)
 	{
 		EMIT_SIGNAL (XP_TE_CONNECTED, serv->server_session, NULL, NULL, NULL,
@@ -430,7 +430,7 @@ server_stopconnecting (server * serv)
 
 #ifdef USE_OPENSSL
 #define	SSLTMOUT	10				  /* seconds */
-void
+static void
 ssl_cb_info (SSL * s, int where, int ret)
 {
 /*	char buf[128];*/
@@ -1297,9 +1297,8 @@ server_connect (server *serv, char *hostname, int port, int no_login)
 	}
 #endif
 	serv->childpid = pid;
-	/* the 3 tells input_add that it's a fd, not a socket */
 	serv->iotag =
-		fe_input_add (serv->childread, 3, 0, 0, server_read_child, serv);
+		fe_input_add (serv->childread, FIA_READ|FIA_FD, server_read_child, serv);
 }
 
 void server_fill_her_up (server *serv)

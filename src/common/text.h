@@ -1,6 +1,12 @@
 #include "textenums.h"
 
 #define EMIT_SIGNAL(i, sess, a, b, c, d, e) text_emit(i, sess, a, b, c, d)
+#define WORD_URL     1
+#define WORD_NICK    2
+#define WORD_CHANNEL 3
+#define WORD_HOST    4
+#define WORD_EMAIL   5
+#define WORD_DIALOG  -1
 
 struct text_event
 {
@@ -11,6 +17,7 @@ struct text_event
 	char *def;
 };
 
+int text_word_check (char *word);
 void PrintText (session *sess, unsigned char *text);
 void PrintTextf (session *sess, char *format, ...);
 void log_close (session *sess);

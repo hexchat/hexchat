@@ -535,7 +535,7 @@ load_config (void)
 #endif
 	strcpy (prefs.doubleclickuser, "QUOTE WHOIS %s");
 	strcpy (prefs.awayreason, _("I'm busy"));
-	strcpy (prefs.quitreason, "I like core dumps");
+	strcpy (prefs.quitreason, _("Client exiting"));
 	strcpy (prefs.partreason, prefs.quitreason);
 	strcpy (prefs.font_normal, DEF_FONT);
 	strcpy (prefs.soundcmd, "esdplay");

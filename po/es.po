@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: es\n"
 "POT-Creation-Date: 2002-12-12 21:03+1100\n"
-"PO-Revision-Date: 2002-12-16 11:20-0300\n"
+"PO-Revision-Date: 2002-12-23 16:39-0300\n"
 "Last-Translator: Pablo Gonzalo del Campo <pablodc@bigfoot.com>\n"
 "Language-Team: Spanish <traductores@es.gnome.org>\n"
 "MIME-Version: 1.0\n"
@@ -156,11 +156,15 @@ msgstr "ADDBUTTON <nombre> <acción>, agrega un botón debajo de la lista de usu
 
 #: src/common/outbound.c:2435
 msgid "ALLCHAN <cmd>, sends a command to all channels you're in"
-msgstr "ALLCHAN <cmd>, envía un comando a todos los canales adonde se encuentra conectado"
+msgstr ""
+"ALLCHAN <cmd>, envía un comando a todos los canales adonde se encuentra "
+"conectado"
 
 #: src/common/outbound.c:2437
 msgid "ALLSERV <cmd>, sends a command to all servers you're in"
-msgstr "ALLSERV <cmd>, envía un comando a todos los servidores adonde se encuentra conectado"
+msgstr ""
+"ALLSERV <cmd>, envía un comando a todos los servidores adonde se encuentra "
+"conectado"
 
 #: src/common/outbound.c:2438
 msgid "AWAY [<reason>], sets you away"
@@ -219,7 +223,7 @@ msgstr ""
 "DCC SEND [-maxcps=#] <apodo> [archivo]  - envía un archivo a una persona\n"
 "DCC LIST                                - muestra la lista DCC\n"
 "DCC CHAT <apodo>                        - ofrece el DCC CHAT a alguien\n"
-"DCC CLOSE <tipo> <apodo> <archivo>         ejemplo:\n"
+"DCC CLOSE <tipo> <apodo> <archivo>          ejemplo:\n"
 "         /dcc close send juanperez archivo.tar.gz"
 
 #: src/common/outbound.c:2463
@@ -268,7 +272,7 @@ msgid ""
 "sent to current channel, else is printed to current text box"
 msgstr ""
 "EXEC [-o] <comando>, ejecuta el comando. Si se usa la bandera -o entonces la "
-"salida es enviada al canal actual, sino es impresa en la caja de texto actual"
+"salida es enviada al canal actual, sino es impresa en el cuadro de texto actual"
 
 #: src/common/outbound.c:2477
 msgid ""
@@ -2264,7 +2268,7 @@ msgstr "Abrir"
 
 #: src/fe-gtk/dccgui.c:575
 msgid "Ack"
-msgstr "Conocer"
+msgstr "Acuse"
 
 #: src/fe-gtk/dccgui.c:575
 msgid "To"
@@ -2312,11 +2316,11 @@ msgstr "Comando"
 
 #: src/fe-gtk/editlist.c:327
 msgid "Move Up"
-msgstr "Mover hacia arriba"
+msgstr "Subir"
 
 #: src/fe-gtk/editlist.c:331
 msgid "Move Dn"
-msgstr "Mover hacia abajo"
+msgstr "Bajar"
 
 #: src/fe-gtk/editlist.c:339 src/fe-gtk/ignoregui.c:451
 msgid "Cancel"
@@ -2376,7 +2380,7 @@ msgid ""
 "text run then enter \\\\"
 msgstr ""
 "La acción «Run Command» ejecuta los datos en Data 1 como si hubiesen sido "
-"escritos en la caja de texto donde presionó la secuencia de teclas. No "
+"escritos en el cuadro de texto donde presionó la secuencia de teclas. No "
 "obstante puede contener comandos de texto (los cuales serán enviados al "
 "canal o persona), o comandos de usuario. Cuando se ejecuten todos los "
 "caracteres en Data 1 son usados para delimitar comandos separados de ese "
@@ -2667,7 +2671,7 @@ msgstr "Aceptar"
 
 #: src/fe-gtk/ignoregui.c:445 src/fe-gtk/menu.c:1146
 msgid "New"
-msgstr "Nuevo"
+msgstr "Nueva"
 
 #: src/fe-gtk/maingui.c:326
 #, c-format
@@ -3095,7 +3099,7 @@ msgstr "_Servidor"
 #. 32
 #: src/fe-gtk/menu.c:1189
 msgid "S_ettings"
-msgstr "Configuracion_es"
+msgstr "C_onfiguración"
 
 #. 33
 #: src/fe-gtk/menu.c:1190
@@ -3429,7 +3433,9 @@ msgstr "Comando de conexión:"
 
 #: src/fe-gtk/servlistgui.c:1007
 msgid "Command to execute after connecting. Can be used to authenticate to NickServ"
-msgstr "Comando a ejecutar luego de conectarse. Puede ser usado para autenticarse en el NickServ"
+msgstr ""
+"Comando a ejecutar luego de conectarse. Puede ser usado para autenticarse en "
+"el NickServ"
 
 #: src/fe-gtk/servlistgui.c:1015
 msgid "Cycle until connected"
@@ -3503,7 +3509,7 @@ msgstr "Vea la página del manual de strftime para obtener mas detalles."
 
 #: src/fe-gtk/setup.c:81
 msgid "Time stamp text"
-msgstr "Texto de inserción de hora"
+msgstr "Insertar tiempo como texto"
 
 #: src/fe-gtk/setup.c:82
 msgid "Transparent background"
@@ -3543,16 +3549,16 @@ msgstr "Tinta azul:"
 
 #: src/fe-gtk/setup.c:96
 msgid "Automatic nick completion"
-msgstr "Completar apodo automáticamente"
+msgstr "Completar el apodo automáticamente"
 
 #: src/fe-gtk/setup.c:97
 msgid "Use the Text box font"
-msgstr "Usar la tipografía de la caja de texto"
+msgstr "Usar la tipografía del cuadro de texto"
 
 #: src/fe-gtk/setup.c:98
 #, c-format
 msgid "Interpret %nnn as an ASCII value"
-msgstr "Interpretar %nnn como una valor ASCII"
+msgstr "Interpretar %nnn como un valor ASCII"
 
 #: src/fe-gtk/setup.c:99
 msgid "Nick completion suffix:"
@@ -3584,7 +3590,7 @@ msgstr "A-Z"
 
 #: src/fe-gtk/setup.c:116
 msgid "Z-A, Ops last"
-msgstr "Z-A, Operadores abajo"
+msgstr "Z-A, Operadores al final"
 
 #: src/fe-gtk/setup.c:117
 msgid "Z-A"
@@ -3604,7 +3610,7 @@ msgstr "Botones de lista de usuarios habilitados"
 
 #: src/fe-gtk/setup.c:126
 msgid "Double-click command:"
-msgstr "Comando de doble clic:"
+msgstr "Comando del doble clic:"
 
 #: src/fe-gtk/setup.c:127
 msgid "Userlist sorted by:"
@@ -3642,15 +3648,15 @@ msgstr "Oculto"
 
 #: src/fe-gtk/setup.c:152
 msgid "Open channels in:"
-msgstr "Abrir canales en:"
+msgstr "Abrir los canales en:"
 
 #: src/fe-gtk/setup.c:153
 msgid "Open dialogs in:"
-msgstr "Abrir diálogos en:"
+msgstr "Abrir los diálogos en:"
 
 #: src/fe-gtk/setup.c:154
 msgid "Open utilities in:"
-msgstr "Abrir utilidades en:"
+msgstr "Abrir las utilidades en:"
 
 #: src/fe-gtk/setup.c:154
 msgid "Open DCC, Ignore, Notify etc, in tabs or windows?"
@@ -3658,7 +3664,7 @@ msgstr "¿Abrir DCC, Ignorar, Notificar etc en pestañas o en ventanas?"
 
 #: src/fe-gtk/setup.c:155
 msgid "Show tabs at:"
-msgstr "Mostrar pestañas en:"
+msgstr "Mostrar las pestañas:"
 
 #: src/fe-gtk/setup.c:156
 msgid "Open tab for server messages"
@@ -3955,11 +3961,11 @@ msgstr "Interfase"
 
 #: src/fe-gtk/setup.c:741
 msgid "Text box"
-msgstr "Caja de texto"
+msgstr "Cuadro de texto"
 
 #: src/fe-gtk/setup.c:742
 msgid "Input box"
-msgstr "Caja de entrada"
+msgstr "Cuadro de entrada"
 
 #: src/fe-gtk/setup.c:743
 msgid "User list"

@@ -1106,8 +1106,8 @@ gtk_xtext_find_char (GtkXText * xtext, int x, int y, int *off,
 	int line;
 	int subline;
 
-	line = (y - xtext->font->descent + xtext->pixel_offset) / xtext->fontsize;
-	ent = gtk_xtext_nth (xtext, line + xtext->adj->value, &subline);
+	line = (y + xtext->pixel_offset) / xtext->fontsize;
+	ent = gtk_xtext_nth (xtext, line + (int)xtext->adj->value, &subline);
 	if (!ent)
 		return 0;
 
@@ -1163,8 +1163,8 @@ gtk_xtext_draw_sep (GtkXText * xtext, int y)
 	}
 }
 
-static gboolean
-gtk_xtext_expose (GtkWidget * widget, GdkEventExpose * event)
+static void
+gtk_xtext_paint (GtkWidget *widget, GdkRectangle *area)
 {
 	GtkXText *xtext = GTK_XTEXT (widget);
 	textentry *ent_start, *ent_end;
@@ -1194,30 +1194,27 @@ gtk_xtext_expose (GtkWidget * widget, GdkEventExpose * event)
 	}
 #endif
 
-	if (event->area.x == 0 && event->area.y == 0 &&
-		 event->area.height == widget->allocation.height &&
-		 event->area.width == widget->allocation.width)
+	if (area->x == 0 && area->y == 0 &&
+		 area->height == widget->allocation.height &&
+		 area->width == widget->allocation.width)
 	{
 		dontscroll (xtext->buffer);	/* force scrolling off */
 		gtk_xtext_render_page (xtext);
-		return FALSE;
+		return;
 	}
 
-	xtext_draw_bg (xtext, event->area.x, event->area.y,
-						event->area.width, event->area.height);
+	xtext_draw_bg (xtext, area->x, area->y, area->width, area->height);
 
-	ent_start = gtk_xtext_find_char (xtext, event->area.x, event->area.y,
-												NULL, NULL);
+	ent_start = gtk_xtext_find_char (xtext, area->x, area->y, NULL, NULL);
 	if (!ent_start)
 		goto xit;
-	ent_end = gtk_xtext_find_char (xtext, event->area.x + event->area.width,
-						event->area.y + event->area.height /*+ xtext->font->descent*/,
-						NULL, NULL);
+	ent_end = gtk_xtext_find_char (xtext, area->x + area->width,
+											 area->y + area->height, NULL, NULL);
 	if (!ent_end)
 		ent_end = xtext->buffer->text_last;
 
 	/* can't over-write the same text with xft, or the AA will change */
-	backend_set_clip (xtext, &event->area);
+	backend_set_clip (xtext, area);
 
 	xtext->skip_fills = TRUE;
 	xtext->skip_border_fills = TRUE;
@@ -1231,9 +1228,14 @@ gtk_xtext_expose (GtkWidget * widget, GdkEventExpose * event)
 
 xit:
 	x = xtext->buffer->indent - ((xtext->space_width + 1) / 2);
-	if (event->area.x <= x)
+	if (area->x <= x)
 		gtk_xtext_draw_sep (xtext, -1);
+}
 
+static gboolean
+gtk_xtext_expose (GtkWidget * widget, GdkEventExpose * event)
+{
+	gtk_xtext_paint (widget, &event->area);
 	return FALSE;
 }
 
@@ -1582,7 +1584,7 @@ gtk_xtext_selection_update (GtkXText * xtext, GdkEventMotion * event, int p_y)
 		return;
 	}
 
-	moved = xtext->adj->value - xtext->select_start_adj;
+	moved = (int)xtext->adj->value - xtext->select_start_adj;
 	xtext->select_start_y -= (moved * xtext->fontsize);
 	xtext->select_start_adj = xtext->adj->value;
 	gtk_xtext_selection_draw (xtext, event);
@@ -3761,7 +3763,7 @@ gtk_xtext_render_page (GtkXText * xtext)
 #ifdef SCROLL_HACK
 {
 	int pos, overlap, remainder;
-	GdkEventExpose event;
+	GdkRectangle area;
 
 	pos = xtext->adj->value * xtext->fontsize;
 	overlap = xtext->buffer->last_pixel_pos - pos;
@@ -3775,21 +3777,22 @@ gtk_xtext_render_page (GtkXText * xtext)
 		{
 			gdk_draw_drawable (xtext->draw_buf, xtext->fgc, xtext->draw_buf,
 									 0, -overlap, 0, 0, width, height + overlap);
+			/* to fill the area below the last line */
 			remainder = height % xtext->fontsize;
-			event.area.y = (height + overlap) - remainder;
-			event.area.height = -overlap + remainder;
+			area.y = (height + overlap) - remainder;
+			area.height = -overlap + remainder;
 		} else
 		{
 			gdk_draw_drawable (xtext->draw_buf, xtext->fgc, xtext->draw_buf,
 									 0, 0, 0, overlap, width, height - overlap);
-			event.area.y = 0;
-			event.area.height = overlap;
+			area.y = 0;
+			area.height = overlap;
 		}
 		gdk_gc_set_exposures (xtext->fgc, FALSE);
 
-		event.area.x = 0;
-		event.area.width = width;
-		gtk_xtext_expose (GTK_WIDGET (xtext), &event);
+		area.x = 0;
+		area.width = width;
+		gtk_xtext_paint (GTK_WIDGET (xtext), &area);
 		return;
 	}
 }

@@ -154,13 +154,13 @@ static int xdcc_command(char *word[], char *word_eol[], void *userdata)
 			else
 				xchat_printf(ph, "Cannot read %s\n", word[4]);
 		}
-		return EAT_XCHAT;
+		return XCHAT_EAT_XCHAT;
 	}
 
 	if(strcasecmp(word[2], "DEL") == 0)
 	{
 		xdcc_del(word[3]);
-		return EAT_XCHAT;
+		return XCHAT_EAT_XCHAT;
 	}
 
 	if(strcasecmp(word[2], "SLOTS") == 0)
@@ -173,27 +173,27 @@ static int xdcc_command(char *word[], char *word_eol[], void *userdata)
 		{
 			xchat_printf(ph, "XDCC slots: %d\n", xdcc_slots);
 		}
-		return EAT_XCHAT;
+		return XCHAT_EAT_XCHAT;
 	}
 
 	if(strcasecmp(word[2], "ON") == 0)
 	{
 		xdcc_on = TRUE;
 		xchat_print(ph, "XDCC now ON\n");
-		return EAT_XCHAT;
+		return XCHAT_EAT_XCHAT;
 	}
 
 	if(strcasecmp(word[2], "LIST") == 0)
 	{
 		xdcc_list("", "", "", "echo");
-		return EAT_XCHAT;
+		return XCHAT_EAT_XCHAT;
 	}
 
 	if(strcasecmp(word[2], "OFF") == 0)
 	{
 		xdcc_on = FALSE;
 		xchat_print(ph, "XDCC now OFF\n");
-		return EAT_XCHAT;
+		return XCHAT_EAT_XCHAT;
 	}
 
 	xchat_print(ph, "Syntax: XDCC ADD <name> <fullpath> <description>\n"
@@ -203,7 +203,7 @@ static int xdcc_command(char *word[], char *word_eol[], void *userdata)
 						 "        XDCC ON\n"
 						 "        XDCC OFF\n\n");
 
-	return EAT_XCHAT;
+	return XCHAT_EAT_XCHAT;
 }
 
 static void xdcc_remote(char *from, char *msg)
@@ -239,7 +239,7 @@ static int ctcp_cb(char *word[], void *userdata)
 	if(strncasecmp(msg, "XDCC ", 5) == 0)
 		xdcc_remote(from, msg + 5);
 
-	return EAT_NONE;
+	return XCHAT_EAT_NONE;
 }
 
 static void xdcc_save(void)
@@ -316,9 +316,9 @@ int xchat_plugin_init(xchat_plugin *plugin_handle,
 	*plugin_desc = "Very simple XDCC server";
 	*plugin_version = "0.1";
 
-	xchat_hook_command(ph, "XDCC", PRI_NORM, xdcc_command, 0, 0);
-	xchat_hook_print(ph, "CTCP Generic", PRI_NORM, ctcp_cb, 0);
-	xchat_hook_print(ph, "CTCP Generic to Channel", PRI_NORM, ctcp_cb, 0);
+	xchat_hook_command(ph, "XDCC", XCHAT_PRI_NORM, xdcc_command, 0, 0);
+	xchat_hook_print(ph, "CTCP Generic", XCHAT_PRI_NORM, ctcp_cb, 0);
+	xchat_hook_print(ph, "CTCP Generic to Channel", XCHAT_PRI_NORM, ctcp_cb, 0);
 
 	xdcc_load();
 	xchat_print(ph, "XDCC loaded. Type /XDCC for help.\n");

@@ -345,7 +345,7 @@ static XS (XS_IRC_add_message_handler)
 	if (strcasecmp (name, "inbound") == 0)	/* xchat 1.x.x compat */
 		name = "RAW LINE";
 
-	hook = xchat_hook_server (ph, name, PRI_NORM, perl_server_cb, tmp);
+	hook = xchat_hook_server (ph, name, XCHAT_PRI_NORM, perl_server_cb, tmp);
 
 	hook_list = g_slist_prepend (hook_list, hook);
 
@@ -363,7 +363,7 @@ static XS (XS_IRC_add_command_handler)
 
 	tmp = strdup (SvPV (ST (1), junk));
 
-	hook = xchat_hook_command (ph, SvPV (ST (0), junk), PRI_NORM,
+	hook = xchat_hook_command (ph, SvPV (ST (0), junk), XCHAT_PRI_NORM,
 										perl_command_cb, NULL, tmp);
 
 	hook_list = g_slist_prepend (hook_list, hook);
@@ -382,7 +382,7 @@ static XS (XS_IRC_add_print_handler)
 
 	tmp = strdup (SvPV (ST (1), junk));
 
-	hook = xchat_hook_print (ph, SvPV (ST (0), junk), PRI_NORM, perl_print_cb,
+	hook = xchat_hook_print (ph, SvPV (ST (0), junk), XCHAT_PRI_NORM, perl_print_cb,
 									 tmp);
 
 	hook_list = g_slist_prepend (hook_list, hook);
@@ -1049,7 +1049,7 @@ perl_command_unloadall (char *word[], char *word_eol[], void *userdata)
 {
 	perl_end ();
 
-	return EAT_XCHAT;
+	return XCHAT_EAT_XCHAT;
 }
 
 static int
@@ -1064,11 +1064,11 @@ perl_command_unload (char *word[], char *word_eol[], void *userdata)
 
 		/* if only unloading was possible with this shitty interface :( */
 
-		return EAT_XCHAT;
+		return XCHAT_EAT_XCHAT;
 	}
 #endif
 
-	return EAT_NONE;
+	return XCHAT_EAT_NONE;
 }
 
 static int
@@ -1090,10 +1090,10 @@ perl_command_load (char *word[], char *word_eol[], void *userdata)
 			xchat_print (ph, "Error Loading file\n");
 		}
 		free (file);
-		return EAT_XCHAT;
+		return XCHAT_EAT_XCHAT;
 	}
 
-	return EAT_NONE;
+	return XCHAT_EAT_NONE;
 }
 
 int
@@ -1107,9 +1107,9 @@ xchat_plugin_init (xchat_plugin *plugin_handle,
 	*plugin_version = VERSION;
 	*plugin_desc = "Perl scripting interface";
 
-	xchat_hook_command (ph, "load", PRI_NORM, perl_command_load, 0, 0);
-	xchat_hook_command (ph, "unload", PRI_NORM, perl_command_unload, 0, 0);
-	xchat_hook_command (ph, "unloadall", PRI_NORM, perl_command_unloadall, 0, 0);
+	xchat_hook_command (ph, "load", XCHAT_PRI_NORM, perl_command_load, 0, 0);
+	xchat_hook_command (ph, "unload", XCHAT_PRI_NORM, perl_command_unload, 0, 0);
+	xchat_hook_command (ph, "unloadall", XCHAT_PRI_NORM, perl_command_unloadall, 0, 0);
 
 	perl_auto_load ();
 

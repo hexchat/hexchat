@@ -12,8 +12,11 @@ void fe_new_window (struct session *sess);
 void fe_new_server (struct server *serv);
 void fe_add_rawlog (struct server *serv, char *text, int len, int outbound);
 void fe_message (char *msg, int wait);
-int fe_input_add (int sok, int read, int write, int ex, void *func,
-						void *data);
+#define FIA_READ 1
+#define FIA_WRITE 2
+#define FIA_EX 4
+#define FIA_FD 8
+int fe_input_add (int sok, int flags, void *func, void *data);
 void fe_input_remove (int tag);
 void fe_idle_add (void *func, void *data);
 void fe_set_topic (struct session *sess, char *topic);

@@ -556,11 +556,11 @@ plugin_fd_cb (GIOChannel *source, GIOCondition condition, xchat_hook *hook)
 	int flags = 0;
 
 	if (condition & G_IO_IN)
-		flags |= 1;
+		flags |= XCHAT_FD_READ;
 	if (condition & G_IO_OUT)
-		flags |= 2;
+		flags |= XCHAT_FD_WRITE;
 	if (condition & G_IO_PRI)
-		flags |= 4;
+		flags |= XCHAT_FD_EXCEPTION;
 
 	return ((xchat_fd_cb *)hook->callback) (hook->pri, flags, hook->userdata);
 }
@@ -690,17 +690,11 @@ xchat_hook_fd (xchat_plugin *ph, int fd, int flags,
 					xchat_fd_cb *callb, void *userdata)
 {
 	xchat_hook *hook;
-	int read = 0;
-
-	if (flags&1)
-		read = 1;
-
-	if (flags&8)	/* for WIN32 fds */
-		read = 3;
 
 	hook = plugin_add_hook (ph, HOOK_FD, 0, 0, 0, callb, 0, userdata);
 	hook->pri = fd;
-	hook->tag = fe_input_add (fd, read, flags&2, flags&4, plugin_fd_cb, hook);
+	/* plugin hook_fd flags correspond exactly to FIA_* flags (fe.h) */
+	hook->tag = fe_input_add (fd, flags, plugin_fd_cb, hook);
 
 	return hook;
 }

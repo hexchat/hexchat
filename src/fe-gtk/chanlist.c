@@ -598,8 +598,8 @@ chanlist_opengui (struct server *serv)
 	if (!serv->gui->chanlist_minusers)
 		serv->gui->chanlist_minusers = 3;
 
-	/*if (!serv->gui->chanlist_maxusers)
-		serv->gui->chanlist_maxusers = 0;*/
+	if (!serv->gui->chanlist_maxusers)
+		serv->gui->chanlist_maxusers = 9999;
 
 	serv->gui->chanlist_window =
 		mg_create_generic_tab ("chanlist", tbuf, FALSE, TRUE, chanlist_closegui,

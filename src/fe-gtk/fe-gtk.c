@@ -181,11 +181,22 @@ GtkStyle *
 create_input_style (void)
 {
 	GtkStyle *style;
+	char buf[256];
 
 	style = gtk_style_new ();
 	/* FIXME: bg/fg causes hide cursor */
 	pango_font_description_free (style->font_desc);
 	style->font_desc = pango_font_description_from_string (prefs.font_normal);
+
+	/* fall back */
+	if (pango_font_description_get_size (style->font_desc) == 0)
+	{
+		snprintf (buf, sizeof (buf), _("Failed to open font:\n\n%s"), prefs.font_normal);
+		gtkutil_simpledialog (buf);
+		pango_font_description_free (style->font_desc);
+		style->font_desc = pango_font_description_from_string ("sans 11");
+	}
+
 	/*style->text[GTK_STATE_NORMAL] = colors[18];
 	style->base[GTK_STATE_NORMAL] = colors[19];*/
 
@@ -297,13 +308,13 @@ fe_input_remove (int tag)
 }
 
 int
-fe_input_add (int sok, int read, int write, int ex, void *func, void *data)
+fe_input_add (int sok, int flags, void *func, void *data)
 {
 	int tag, type = 0;
 	GIOChannel *channel;
 
 #ifdef WIN32
-	if (read == 3)
+	if (flags & FIA_FD)
 		channel = g_io_channel_win32_new_fd (sok);
 	else
 		channel = g_io_channel_win32_new_socket (sok);
@@ -311,11 +322,11 @@ fe_input_add (int sok, int read, int write, int ex, void *func, void *data)
 	channel = g_io_channel_unix_new (sok);
 #endif
 
-	if (read)
+	if (flags & FIA_READ)
 		type |= G_IO_IN | G_IO_HUP | G_IO_ERR;
-	if (write)
+	if (flags & FIA_WRITE)
 		type |= G_IO_OUT | G_IO_ERR;
-	if (ex)
+	if (flags & FIA_EX)
 		type |= G_IO_PRI;
 
 	tag = g_io_add_watch (channel, type, (GIOFunc) func, data);

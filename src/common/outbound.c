@@ -1349,7 +1349,7 @@ cmd_exec (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			/* Parent path */
 			close(fds[1]);
 			s->childpid = pid;
-			s->iotag = fe_input_add (s->myfd, 1, 0, 1, exec_data, s);
+			s->iotag = fe_input_add (s->myfd, FIA_READ|FIA_EX, exec_data, s);
 			sess->running_exec = s;
 			return TRUE;
 		}

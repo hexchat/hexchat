@@ -201,7 +201,7 @@ static const setting general_settings[] =
 #ifndef WIN32
 	{ST_LABEL,	N_("(Can be a text file relative to ~/.xchat2/).")},
 #else
-	{ST_LABEL,	N_("(Can be a text file relative to conf\\).")},
+	{ST_LABEL,	N_("(Can be a text file relative to config\\).")},
 #endif
 	{ST_ENTRY,	N_("Extra words to highlight on:"), P_OFFSET(bluestring), 0, 0, sizeof prefs.bluestring},
 	{ST_LABEL,	N_("(Separate multiple words with commas).")},
@@ -459,7 +459,8 @@ setup_browsefont_cb (GtkWidget *button, GtkWidget *entry)
 
 	sel = (GtkFontSelection *) dialog->fontsel;
 
-	gtk_font_selection_set_font_name (sel, GTK_ENTRY (entry)->text);
+	if (GTK_ENTRY (entry)->text[0])
+		gtk_font_selection_set_font_name (sel, GTK_ENTRY (entry)->text);
 
 	g_object_set_data (G_OBJECT (dialog->ok_button), "e", entry);
 

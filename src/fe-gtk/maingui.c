@@ -43,6 +43,7 @@
 #include "../common/xchat.h"
 #include "../common/fe.h"
 #include "../common/server.h"
+#include "../common/text.h"
 #include "../common/xchatc.h"
 #include "../common/outbound.h"
 #include "../common/plugin.h"
@@ -1273,110 +1274,12 @@ mg_create_topicbar (session *sess, GtkWidget *box, char *name)
 						 mg_userlist_toggle, 0, 0);
 }
 
-#define WORD_URL     1
-#define WORD_NICK    2
-#define WORD_CHANNEL 3
-#define WORD_HOST    4
-#define WORD_EMAIL   5
-#define WORD_DIALOG  -1
-
 /* check if a word is clickable */
 
 static int
 mg_word_check (GtkWidget * xtext, char *word)
 {
-	session *sess = current_sess;
-	char *at, *dot;
-	int i, dots;
-	int len = strlen (word);
-
-	if ((word[0] == '@' || word[0] == '+') && word[1] == '#')
-		return WORD_CHANNEL;
-
-	if (word[0] == '#' && word[1] != '#' && word[1] != 0)
-		return WORD_CHANNEL;
-
-	if (!strncasecmp (word, "irc://", 6))
-		return WORD_URL;
-
-	if (!strncasecmp (word, "irc.", 4))
-		return WORD_URL;
-
-	if (!strncasecmp (word, "ftp.", 4))
-		return WORD_URL;
-
-	if (!strncasecmp (word, "ftp:", 4))
-		return WORD_URL;
-
-	if (!strncasecmp (word, "www.", 4))
-		return WORD_URL;
-
-	if (!strncasecmp (word, "http:", 5))
-		return WORD_URL;
-
-	if (!strncasecmp (word, "gopher:", 7))
-		return WORD_URL;
-
-	if (!strncasecmp (word, "https:", 6))
-		return WORD_URL;
-
-	if (find_name (sess, word))
-		return WORD_NICK;
-
-	at = strchr (word, '@');	  /* check for email addy */
-	dot = strrchr (word, '.');
-	if (at && dot)
-	{
-		if ((unsigned long) at < (unsigned long) dot)
-		{
-			if (strchr (word, '*'))
-				return WORD_HOST;
-			else
-				return WORD_EMAIL;
-		}
-	}
-
-	/* check if it's an IP number */
-	dots = 0;
-	for (i = 0; i < len; i++)
-	{
-		if (word[i] == '.')
-			dots++;
-		else if (!isdigit (word[i]))
-		{
-			dots = 0;
-			break;
-		}
-	}
-	if (dots == 3)
-		return WORD_HOST;
-
-	if (!strncasecmp (word + len - 5, ".html", 5))
-		return WORD_HOST;
-
-	if (!strncasecmp (word + len - 4, ".org", 4))
-		return WORD_HOST;
-
-	if (!strncasecmp (word + len - 4, ".net", 4))
-		return WORD_HOST;
-
-	if (!strncasecmp (word + len - 4, ".com", 4))
-		return WORD_HOST;
-
-	if (!strncasecmp (word + len - 4, ".edu", 4))
-		return WORD_HOST;
-
-	if (len > 5)
-	{
-		if (word[len - 3] == '.' &&
-			 isalpha (word[len - 2]) && isalpha (word[len - 1]))
-			return WORD_HOST;
-	}
-
-	if (sess->type == SESS_DIALOG)
-		return WORD_DIALOG;
-
-	return 0;
+	return text_word_check (word);	/* common/text.c */
 }
 
 /* mouse click inside text area */
@@ -2106,15 +2009,17 @@ fe_buttons_update (session *sess)
 void
 fe_clear_channel (session *sess)
 {
-	char tbuf[CHANLEN+4];
+	char tbuf[CHANLEN+6];
 	session_gui *gui = sess->gui;
 
 	if (sess->waitchannel[0])
 	{
-		if (prefs.truncchans && strlen (sess->waitchannel) > prefs.truncchans)
+		if (prefs.truncchans > 2 && g_utf8_strlen (sess->waitchannel, -1) > prefs.truncchans)
 		{
-			tbuf[0] = 0;
-			snprintf (tbuf, prefs.truncchans, "(%s", sess->waitchannel);
+			/* truncate long channel names */
+			tbuf[0] = '(';
+			strcpy (tbuf + 1, sess->waitchannel);
+			g_utf8_offset_to_pointer(tbuf, prefs.truncchans)[0] = 0;
 			strcat (tbuf, "..)");
 		} else
 		{
@@ -2249,12 +2154,12 @@ fe_set_channel (session *sess)
 {
 	char *buf;
 
-	if (prefs.truncchans && strlen (sess->channel) > prefs.truncchans)
+	if (prefs.truncchans > 2 && g_utf8_strlen (sess->channel, -1) > prefs.truncchans)
 	{
-		/* FIXME: not utf8 friendly */
+		/* truncate long channel names */
 		buf = malloc (strlen (sess->channel) + 4);
-		buf[0] = 0;
-		snprintf (buf, prefs.truncchans - 1, "%s", sess->channel);
+		strcpy (buf, sess->channel);
+		g_utf8_offset_to_pointer(buf, prefs.truncchans)[0] = 0;
 		strcat (buf, "..");
 		tab_rename (sess->res->tab, buf);
 		free (buf);

@@ -78,7 +78,6 @@ struct xchatprefs prefs;
 
 #ifdef USE_OPENSSL
 SSL_CTX *ctx = NULL;
-void ssl_cb_info (SSL * s, int where, int ret);
 #endif
 
 
@@ -605,7 +604,7 @@ find_away_message (struct server *serv, char *nick)
 	return 0;
 }
 
-#define XTERM "rxvt"
+#define XTERM "gnome-terminal"
 
 #define defaultconf_ctcp \
 	"NAME TIME\n"				"CMD nctcp %s TIME %t\n\n"\
@@ -827,13 +826,14 @@ xchat_init (void)
 		"NAME %s\n"		"CMD op %%a\n\n"
 		"NAME %s\n"		"CMD deop %%a\n\n"
 		"NAME %s\n"		"CMD ban %%s\n\n"
-		"NAME %s\n"		"CMD getstr bye \"kick %%s\" \"%s\"\n\n"
+		"NAME %s\n"		"CMD getstr %s \"kick %%s\" \"%s\"\n\n"
 		"NAME %s\n"		"CMD dcc send %%s\n\n"
 		"NAME %s\n"		"CMD query %%s\n\n",
 				_("Op"),
 				_("DeOp"),
 				_("Ban"),
 				_("Kick"),
+				_("bye"),
 				_("Enter reason to kick %s:"),
 				_("Sendfile"),
 				_("Dialog"));

@@ -134,13 +134,13 @@ timer_cb (char *word[], char *word_eol[], void *userdata)
 	if (!word[2][0])
 	{
 		timer_showlist ();
-		return EAT_XCHAT;
+		return XCHAT_EAT_XCHAT;
 	}
 
 	if (strcasecmp (word[2], "-delete") == 0)
 	{
 		timer_del_ref (atoi (word[3]));
-		return EAT_XCHAT;
+		return XCHAT_EAT_XCHAT;
 	}
 
 	if (strcasecmp (word[2], "-refnum") == 0)
@@ -163,7 +163,7 @@ timer_cb (char *word[], char *word_eol[], void *userdata)
 	else
 		timer_add (ref, timeout, repeat, command);
 
-	return EAT_XCHAT;
+	return XCHAT_EAT_XCHAT;
 }
 
 int
@@ -182,7 +182,7 @@ xchat_plugin_init
 	*plugin_desc = "IrcII style /TIMER command";
 	*plugin_version = "";
 
-	xchat_hook_command (ph, "TIMER", PRI_NORM, timer_cb, HELP, 0);
+	xchat_hook_command (ph, "TIMER", XCHAT_PRI_NORM, timer_cb, HELP, 0);
 
 	return 1;       /* return 1 for success */
 }

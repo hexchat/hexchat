@@ -386,8 +386,7 @@ fe_input_remove (int tag)
 }
 
 int
-fe_input_add (int sok, int rread, int wwrite, int eexcept, void *func,
-				  void *data)
+fe_input_add (int sok, int flags, void *func, void *data)
 {
 	socketevent *se = malloc (sizeof (socketevent));
 
@@ -395,9 +394,9 @@ fe_input_add (int sok, int rread, int wwrite, int eexcept, void *func,
 
 	se->tag = se_list_count;
 	se->sok = sok;
-	se->rread = rread;
-	se->wwrite = wwrite;
-	se->eexcept = eexcept;
+	se->rread = flags & FIA_READ;
+	se->wwrite = flags & FIA_WRITE;
+	se->eexcept = flags & FIA_EX;
 	se->callback = func;
 	se->userdata = data;
 	se_list = g_slist_prepend (se_list, se);
