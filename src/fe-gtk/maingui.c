@@ -282,6 +282,10 @@ mg_show_generic_tab (GtkWidget *button)
 {
 	GtkWidget *box;
 	int num;
+	GtkWidget *f = NULL;
+
+	if (current_sess && GTK_WIDGET_HAS_FOCUS (current_sess->gui->input_box))
+		f = current_sess->gui->input_box;
 
 	box = g_object_get_data (G_OBJECT (button), "box");
 	num = gtk_notebook_page_num (GTK_NOTEBOOK (mg_gui->note_book), box);
@@ -289,6 +293,9 @@ mg_show_generic_tab (GtkWidget *button)
 	gtk_window_set_title (GTK_WINDOW (mg_gui->window),
 								 g_object_get_data (G_OBJECT (button), "title"));
 	gtk_widget_set_sensitive (mg_gui->menu, FALSE);
+
+	if (f)
+		gtk_widget_grab_focus (f);
 }
 
 /* a channel has been focused */
