@@ -15,7 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#define VERSION "1.0.44"
+#define VERSION "1.0.45"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -75,7 +75,6 @@ static char sourcedirs[] = {
 };
 
 static char inlinetcl[] = {
-
 "proc splitsrc { } {\n"
 "uplevel \"scan \\$_src \\\"%\\\\\\[^!\\\\\\]!%\\\\\\[^@\\\\\\]@%s\\\" _nick _ident _host\"\n"
 "}\n"
@@ -984,6 +983,28 @@ static int tcl_getinfo(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
 {
     BADARGS(2, 2, " id");
     Tcl_AppendResult(irp, xchat_get_info(ph, argv[1]), NULL);
+    return TCL_OK;
+}
+
+static int tcl_prefs(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
+{
+    int i;
+    const char *str;
+
+    BADARGS(2, 2, " name");
+
+    switch (xchat_get_prefs (ph, argv[1], &str, &i)) {
+        case 1:
+            Tcl_AppendResult(irp, str, NULL);
+            break;
+        case 2:
+        case 3:
+            Tcl_AppendResult(irp, myitoa(i), NULL);
+            break;
+        default:
+            Tcl_AppendResult(irp, NULL);
+    }
+
     return TCL_OK;
 }
 
@@ -1963,12 +1984,14 @@ static void Tcl_Plugin_Init()
     Tcl_CreateCommand(interp, "off", tcl_off, NULL, NULL);
     Tcl_CreateCommand(interp, "nickcmp", tcl_xchat_nickcmp, NULL, NULL);
     Tcl_CreateCommand(interp, "print", tcl_print, NULL, NULL);
+    Tcl_CreateCommand(interp, "prefs", tcl_prefs, NULL, NULL);
     Tcl_CreateCommand(interp, "::puts", tcl_xchat_puts, NULL, NULL);
     Tcl_CreateCommand(interp, "queries", tcl_queries, NULL, NULL);
     Tcl_CreateCommand(interp, "raw", tcl_raw, NULL, NULL);
     Tcl_CreateCommand(interp, "server", tcl_server, NULL, NULL);
     Tcl_CreateCommand(interp, "servers", tcl_servers, NULL, NULL);
     Tcl_CreateCommand(interp, "setcontext", tcl_setcontext, NULL, NULL);
+    Tcl_CreateCommand(interp, "tab", tcl_channel, NULL, NULL);
     Tcl_CreateCommand(interp, "timer", tcl_timer, NULL, NULL);
     Tcl_CreateCommand(interp, "timerexists", tcl_timerexists, NULL, NULL);
     Tcl_CreateCommand(interp, "timers", tcl_timers, NULL, NULL);
@@ -1988,11 +2011,11 @@ static void Tcl_Plugin_Init()
     for (x = 0; x < XC_SIZE; x++)
         xc[x].hook = NULL;
 
+    xchatdir = xchat_get_info(ph, "xchatdir");
+
     if (Tcl_Eval(interp, unknown) == TCL_ERROR) {
         xchat_printf(ph, "Error sourcing internal 'unknown' (%s)\n", Tcl_GetStringResult(interp));
     }
-
-    xchatdir = xchat_get_info(ph, "xchatdir");
 
     if (Tcl_Eval(interp, sourcedirs) == TCL_ERROR) {
         xchat_printf(ph, "Error sourcing internal 'sourcedirs' (%s)\n", Tcl_GetStringResult(interp));
@@ -2001,7 +2024,6 @@ static void Tcl_Plugin_Init()
     if (Tcl_Eval(interp, inlinetcl) == TCL_ERROR) {
         xchat_printf(ph, "Error sourcing internal 'inlinetcl' (%s)\n", Tcl_GetStringResult(interp));
     }
-
 }
 
 static void Tcl_Plugin_DeInit()
