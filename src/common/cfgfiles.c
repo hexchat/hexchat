@@ -532,7 +532,6 @@ load_config (void)
 	prefs.use_server_tab = 1;
 	/*prefs.windows_as_tabs = 1;*/
 	prefs.privmsgtab = 1;
-	prefs.nickcompletion = 1;
 	prefs.style_inputbox = 1;
 	prefs.slist_select = 9;
 	prefs.nu_color = 4;
@@ -565,6 +564,7 @@ load_config (void)
 	prefs.perc_color = 1;
 	prefs.dcc_send_fillspaces = 1;
 	prefs.mainwindow_save = 1;
+	prefs.bantype = 2;
 #ifdef WIN32
 	prefs.identd = 1;
 #endif
@@ -581,16 +581,16 @@ load_config (void)
 	strcpy (prefs.realname, realname);
 	strcpy (prefs.username, username);
 #ifdef WIN32
-	strcpy (prefs.sounddir, "./sound");
+	strcpy (prefs.sounddir, "./sounds");
 	if (strcmp (get_xdir (), "./config") != 0)
-		sprintf (prefs.dccdir, "%s\\download", get_xdir ());
+		sprintf (prefs.dccdir, "%s\\downloads", get_xdir ());
 	else
-		strcpy (prefs.dccdir, "./download");
+		strcpy (prefs.dccdir, "./downloads");
 #else
-	sprintf (prefs.sounddir, "%s/sound", g_get_home_dir ());
-	sprintf (prefs.dccdir, "%s/dcc", g_get_home_dir ());
+	sprintf (prefs.sounddir, "%s/sounds", get_xdir ());
+	sprintf (prefs.dccdir, "%s/downloads", get_xdir ());
 #endif
-	strcpy (prefs.doubleclickuser, "QUOTE WHOIS %s");
+	strcpy (prefs.doubleclickuser, "QUOTE WHOIS %s %s");
 	strcpy (prefs.awayreason, _("I'm busy"));
 	strcpy (prefs.quitreason, _("Leaving"));
 	strcpy (prefs.partreason, prefs.quitreason);
