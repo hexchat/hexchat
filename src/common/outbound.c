@@ -2504,7 +2504,7 @@ cmd_voice (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	}
 }
 
-
+/* *MUST* be kept perfectly sorted for the bsearch to work */
 const struct commands xc_cmds[] = {
 	{"ADDBUTTON", cmd_addbutton, 0, 0,
 	 N_("ADDBUTTON <name> <action>, adds a button under the user-list")},
@@ -2515,16 +2515,14 @@ const struct commands xc_cmds[] = {
 	{"AWAY", cmd_away, 1, 0, N_("AWAY [<reason>], sets you away")},
 	{"BAN", cmd_ban, 1, 1,
 	 N_("BAN <mask> [<bantype>], bans everyone matching the mask from the current channel. If they are already on the channel this doesn't kick them (needs chanop)")},
-	{"UNBAN", cmd_unban, 1, 1,
-	 N_("UNBAN <mask> [<mask>...], unbans the specified masks.")},
 	{"CHARSET", cmd_charset, 0, 0, 0},
 	{"CLEAR", cmd_clear, 0, 0, N_("CLEAR, Clears the current text window")},
 	{"CLOSE", cmd_close, 0, 0, N_("CLOSE, Closes the current window/tab")},
 
-	{"CTCP", cmd_ctcp, 1, 0,
-	 N_("CTCP <nick> <message>, send the CTCP message to nick, common messages are VERSION and USERINFO")},
 	{"COUNTRY", cmd_country, 0, 0,
 	 N_("COUNTRY <code>, finds a country code, eg: au = australia")},
+	{"CTCP", cmd_ctcp, 1, 0,
+	 N_("CTCP <nick> <message>, send the CTCP message to nick, common messages are VERSION and USERINFO")},
 	{"CYCLE", cmd_cycle, 1, 1,
 	 N_("CYCLE, parts current channel and immediately rejoins")},
 	{"DCC", cmd_dcc, 0, 0,
@@ -2537,10 +2535,10 @@ const struct commands xc_cmds[] = {
 	 "         /dcc close send johnsmith file.tar.gz")},
 	{"DEBUG", cmd_debug, 0, 0, 0},
 
-	{"DELBUTTON", cmd_delbutton, 0, 0,
-	 N_("DELBUTTON <name>, deletes a button from under the user-list")},
 	{"DEHOP", cmd_dehop, 1, 1,
 	 N_("DEHOP <nick>, removes chanhalf-op status from the nick on the current channel (needs chanop)")},
+	{"DELBUTTON", cmd_delbutton, 0, 0,
+	 N_("DELBUTTON <name>, deletes a button from under the user-list")},
 	{"DEOP", cmd_deop, 1, 1,
 	 N_("DEOP <nick>, removes chanop status from the nick on the current channel (needs chanop)")},
 	{"DEVOICE", cmd_devoice, 1, 1,
@@ -2551,11 +2549,13 @@ const struct commands xc_cmds[] = {
 #ifndef WIN32
 	{"EXEC", cmd_exec, 0, 0,
 	 N_("EXEC [-o] <command>, runs the command. If -o flag is used then output is sent to current channel, else is printed to current text box")},
+#ifndef __EMX__
+	{"EXECCONT", cmd_execc, 0, 0, N_("EXECCONT, sends the process SIGCONT")},
+#endif
 	{"EXECKILL", cmd_execk, 0, 0,
 	 N_("EXECKILL [-9], kills a running exec in the current session. If -9 is given the process is SIGKILL'ed")},
 #ifndef __EMX__
 	{"EXECSTOP", cmd_execs, 0, 0, N_("EXECSTOP, sends the process SIGSTOP")},
-	{"EXECCONT", cmd_execc, 0, 0, N_("EXECCONT, sends the process SIGCONT")},
 	{"EXECWRITE", cmd_execw, 0, 0, N_("EXECWRITE, sends data to the processes stdin")},
 #endif
 #endif
@@ -2593,10 +2593,10 @@ const struct commands xc_cmds[] = {
 	 N_("MDEHOP, Mass deop's all chanhalf-ops in the current channel (needs chanop)")},
 	{"MDEOP", cmd_mdeop, 1, 1,
 	 N_("MDEOP, Mass deop's all chanops in the current channel (needs chanop)")},
-	{"MKICK", cmd_mkick, 1, 1,
-	 N_("MKICK, Mass kicks everyone except you in the current channel (needs chanop)")},
 	{"ME", cmd_me, 0, 0,
 	 N_("ME <action>, sends the action to the current channel (actions are written in the 3rd person, like /me jumps)")},
+	{"MKICK", cmd_mkick, 1, 1,
+	 N_("MKICK, Mass kicks everyone except you in the current channel (needs chanop)")},
 	{"MOP", cmd_mop, 1, 1,
 	 N_("MOP, Mass op's all users in the current channel (needs chanop)")},
 	{"MSG", cmd_msg, 0, 0, N_("MSG <nick> <message>, sends a private message")},
@@ -2635,8 +2635,6 @@ const struct commands xc_cmds[] = {
 
 	{"SAY", cmd_say, 0, 0,
 	 N_("SAY <text>, sends the text to the object in the current window")},
-	{"SET", cmd_set, 0, 0, N_("SET <variable> [<value>]")},
-	{"SETTAB", cmd_settab, 0, 0, ""},
 #ifdef USE_OPENSSL
 	{"SERVCHAN", cmd_servchan, 0, 0,
 	 N_("SERVCHAN [-ssl] <host> <port> <channel>, connects and joins a channel")},
@@ -2651,47 +2649,63 @@ const struct commands xc_cmds[] = {
 	{"SERVER", cmd_server, 0, 0,
 	 N_("SERVER <host> [<port>] [<password>], connects to a server, the default port is 6667")},
 #endif
+	{"SET", cmd_set, 0, 0, N_("SET <variable> [<value>]")},
+	{"SETTAB", cmd_settab, 0, 0, ""},
 	{"TOPIC", cmd_topic, 1, 1,
 	 N_("TOPIC [<topic>], sets the topic if one is given, else shows the current topic")},
+	{"UNBAN", cmd_unban, 1, 1,
+	 N_("UNBAN <mask> [<mask>...], unbans the specified masks.")},
 	{"UNIGNORE", cmd_unignore, 0, 0, N_("UNIGNORE <mask> [QUIET]")},
 	{"UNLOAD", cmd_unload, 0, 0, N_("UNLOAD <name>, unloads a plugin or script")},
 	{"USERLIST", cmd_userlist, 1, 1, 0},
-	{"WALLCHOP", cmd_wallchop, 1, 1,
-	 N_("WALLCHOP <message>, sends the message to all chanops on the current channel")},
-	{"WALLCHAN", cmd_wallchan, 1, 1,
-	 N_("WALLCHAN <message>, writes the message to all channels")},
 	{"VOICE", cmd_voice, 1, 1,
 	 N_("VOICE <nick>, gives voice status to someone (needs chanop)")},
+	{"WALLCHAN", cmd_wallchan, 1, 1,
+	 N_("WALLCHAN <message>, writes the message to all channels")},
+	{"WALLCHOP", cmd_wallchop, 1, 1,
+	 N_("WALLCHOP <message>, sends the message to all chanops on the current channel")},
 	{0, 0, 0, 0, 0}
 };
+
+
+static int
+command_compare (const void *a, const void *b)
+{
+	return strcasecmp (a, ((struct commands *)b)->name);
+}
+
+static struct commands *
+find_internal_command (char *name)
+{
+	/* the "-1" is to skip the NULL terminator */
+	return bsearch (name, xc_cmds, (sizeof (xc_cmds) /
+				sizeof (xc_cmds[0])) - 1, sizeof (xc_cmds[0]), command_compare);
+}
 
 static void
 help (session *sess, char *tbuf, char *helpcmd, int quiet)
 {
-	int i = 0;
+	struct commands *cmd;
 
 	if (plugin_show_help (sess, helpcmd))
 		return;
 
-	while (1)
+	cmd = find_internal_command (helpcmd);
+
+	if (cmd)
 	{
-		if (!xc_cmds[i].name)
-			break;
-		if (!strcasecmp (helpcmd, xc_cmds[i].name))
+		if (cmd->help)
 		{
-			if (xc_cmds[i].help)
-			{
-				sprintf (tbuf, _("Usage: %s\n"), _(xc_cmds[i].help));
-				PrintText (sess, tbuf);
-			} else
-			{
-				if (!quiet)
-					PrintText (sess, _("\nNo help available on that command.\n"));
-			}
-			return;
+			sprintf (tbuf, _("Usage: %s\n"), _(cmd->help));
+			PrintText (sess, tbuf);
+		} else
+		{
+			if (!quiet)
+				PrintText (sess, _("\nNo help available on that command.\n"));
 		}
-		i++;
+		return;
 	}
+
 	if (!quiet)
 		PrintText (sess, _("No such command.\n"));
 }
@@ -3095,13 +3109,14 @@ int
 handle_command (session *sess, char *cmd, int check_spch)
 {
 	struct popup *pop;
-	int user_cmd = FALSE, i;
+	int user_cmd = FALSE;
 	GSList *list;
 	char pdibuf[2048];
 	char tbuf[4096];
 	char *word[PDIWORDS];
 	char *word_eol[PDIWORDS];
 	static int command_level = 0;
+	struct commands *int_cmd;
 
 	if (command_level > 99)
 	{
@@ -3137,44 +3152,36 @@ handle_command (session *sess, char *cmd, int check_spch)
 		goto xit;
 
 	/* now check internal commands */
-	i = 0;
-	while (1)
+	int_cmd = find_internal_command (word[1]);
+
+	if (int_cmd)
 	{
-		if (!xc_cmds[i].name)
-			break;
-		if (!strcasecmp (word[1], xc_cmds[i].name))
+		if (int_cmd->needserver && !sess->server->connected)
 		{
-			if (xc_cmds[i].needserver && !sess->server->connected)
-			{
-				notc_msg (sess);
-				goto xit;
-			}
-			if (xc_cmds[i].needchannel && !sess->channel[0])
-			{
-				notj_msg (sess);
-				goto xit;
-			}
-			switch (xc_cmds[i].callback (sess, tbuf, word, word_eol))
+			notc_msg (sess);
+		} else if (int_cmd->needchannel && !sess->channel[0])
+		{
+			notj_msg (sess);
+		} else
+		{
+			switch (int_cmd->callback (sess, tbuf, word, word_eol))
 			{
 			case FALSE:
-				help (sess, tbuf, xc_cmds[i].name, TRUE);
+				help (sess, tbuf, int_cmd->name, TRUE);
 				break;
 			case 2:
 				command_level--;
 				return FALSE;
 			}
-			goto xit;
 		}
-		i++;
-	}
-
-	/* unknown command, just send it to the server and hope */
-	if (!sess->server->connected)
+	} else
 	{
-		PrintText (sess, _("Unknown Command. Try /help\n"));
-		goto xit;
+		/* unknown command, just send it to the server and hope */
+		if (!sess->server->connected)
+			PrintText (sess, _("Unknown Command. Try /help\n"));
+		else
+			sess->server->p_raw (sess->server, cmd);
 	}
-	sess->server->p_raw (sess->server, cmd);
 
 xit:
 	command_level--;
