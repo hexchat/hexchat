@@ -412,10 +412,14 @@ chanlist_wild (GtkWidget * wid, struct server *serv)
 #else
 	/* recompile the regular expression. */
 	if (serv->gui->have_regex)
+	{
+		serv->gui->have_regex = 0;
 		regfree (&serv->gui->chanlist_match_regex);
-	regcomp (&serv->gui->chanlist_match_regex, pattern,
-				REG_ICASE | REG_EXTENDED | REG_NOSUB);
-	serv->gui->have_regex = 1;
+	}
+
+	if (regcomp (&serv->gui->chanlist_match_regex, pattern,
+					 REG_ICASE | REG_EXTENDED | REG_NOSUB) == 0)
+		serv->gui->have_regex = 1;
 #endif
 }
 
