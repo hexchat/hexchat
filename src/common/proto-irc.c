@@ -359,7 +359,8 @@ process_numeric (session * sess, int n,
 	case 314:
 		inbound_user_info_start (sess, word[4]);
 		EMIT_SIGNAL (XP_TE_WHOIS1, serv->server_session, word[4], word[5],
-						 word[6], word_eol[8] + 1, 0);
+						 word[6],
+						(word_eol[8][0] == ':') ? word_eol[8] + 1 : word_eol[8], 0);
 		break;
 
 	case 317:

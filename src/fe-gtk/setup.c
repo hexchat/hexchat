@@ -322,11 +322,25 @@ setup_create_spin (GtkWidget *table, int row, const setting *set)
 	}
 }
 
+static gint
+setup_apply_tint (int *tag)
+{
+	prefs.tint_red = setup_prefs.tint_red;
+	prefs.tint_green = setup_prefs.tint_green;
+	prefs.tint_blue = setup_prefs.tint_blue;
+	mg_update_xtext (current_sess->gui->xtext);
+	*tag = 0;
+	return 0;
+}
 
 static void
 setup_hscale_cb (GtkHScale *wid, const setting *set)
 {
+	static int tag = 0;
+
 	setup_set_int (&setup_prefs, set, gtk_range_get_value(GTK_RANGE(wid)));
+	if(tag == 0)
+		tag = g_idle_add ((GSourceFunc)setup_apply_tint, &tag);
 }
 
 static void
