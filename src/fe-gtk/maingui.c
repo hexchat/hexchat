@@ -1136,7 +1136,7 @@ mg_topic_cb (GtkWidget *entry, gpointer userdata)
 	{
 		text = GTK_ENTRY (entry)->text;
 		if (text[0] == 0)
-			text = " ";
+			text = NULL;
 		sess->server->p_topic (sess->server, sess->channel, text);
 	} else
 		gtk_entry_set_text (GTK_ENTRY (entry), "");
