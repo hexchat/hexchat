@@ -388,8 +388,11 @@ static XS (XS_IRC_add_command_handler)
 
 	tmp = strdup (SvPV (ST (1), junk));
 
+	/* use perl_server_cb when it's a "" hook, so that it gives word_eol[1]
+      as the arg, instead of word_eol[2] */
 	hook = xchat_hook_command (ph, SvPV (ST (0), junk), XCHAT_PRI_NORM,
-										perl_command_cb, NULL, tmp);
+										SvPV (ST (0), junk)[0] == 0 ? perl_server_cb : perl_command_cb,
+										NULL, tmp);
 
 	hook_list = g_slist_prepend (hook_list, hook);
 
