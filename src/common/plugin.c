@@ -34,8 +34,6 @@ typedef struct session xchat_context;
 #include "plugin.h"
 
 
-//typedef struct session xchat_context;
-
 #include "xchatc.h"
 
 /* the USE_PLUGIN define only removes libdl stuff */

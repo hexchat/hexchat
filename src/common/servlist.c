@@ -544,11 +544,17 @@ servlist_connect (session *sess, ircnet *net)
 	}
 
 	if (serv->encoding)
+	{
 		free (serv->encoding);
-	serv->encoding = strdup (net->encoding);
-	space = strchr (serv->encoding, ' ');
-	if (space)
-		space[0] = 0;
+		serv->encoding = NULL;
+	}
+	if (net->encoding)
+	{
+		serv->encoding = strdup (net->encoding);
+		space = strchr (serv->encoding, ' ');
+		if (space)
+			space[0] = 0;
+	}
 }
 
 int
