@@ -1119,11 +1119,15 @@ static void
 mg_topic_cb (GtkWidget *entry, gpointer userdata)
 {
 	session *sess = current_sess;
+	char *text;
 
 	if (sess->channel[0] && sess->server->connected)
-		sess->server->p_topic (sess->server, sess->channel,
-									  GTK_ENTRY (entry)->text);
-	else
+	{
+		text = GTK_ENTRY (entry)->text;
+		if (text[0] == 0)
+			text = " ";
+		sess->server->p_topic (sess->server, sess->channel, text);
+	} else
 		gtk_entry_set_text (GTK_ENTRY (entry), "");
 	/* restore focus to the input widget, where the next input will most
 likely be */
