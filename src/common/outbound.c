@@ -2532,6 +2532,18 @@ cmd_unload (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 }
 
 static int
+cmd_url (struct session *sess, char *tbuf, char *word[], char *word_eol[])
+{
+	if (word[2][0])
+	{
+		fe_open_url (word[2]);
+		return TRUE;
+	}
+
+	return FALSE;
+}
+
+static int
 userlist_cb (struct User *user, session *sess)
 {
 	time_t lt;
@@ -2823,6 +2835,7 @@ const struct commands xc_cmds[] = {
 	 N_("UNBAN <mask> [<mask>...], unbans the specified masks.")},
 	{"UNIGNORE", cmd_unignore, 0, 0, N_("UNIGNORE <mask> [QUIET]")},
 	{"UNLOAD", cmd_unload, 0, 0, N_("UNLOAD <name>, unloads a plugin or script")},
+	{"URL", cmd_url, 0, 0, N_("URL <url>, opens a URL in your browser")},
 	{"USERLIST", cmd_userlist, 1, 1, 0},
 	{"VOICE", cmd_voice, 1, 1,
 	 N_("VOICE <nick>, gives voice status to someone (needs chanop)")},

@@ -812,3 +812,55 @@ fe_set_inputbox_contents (session *sess, char *text)
 		sess->res->topic_text = strdup (text);
 	}
 }
+
+static void
+fe_open_url_locale (const char *url)
+{
+#ifdef WIN32
+	ShellExecute (0, "open", url, NULL, NULL, SW_SHOWNORMAL);
+#else
+	char tbuf[512], *moz;
+
+	/* gnome 2.4+ has this */
+	moz = g_find_program_in_path ("gnome-open");
+	if (moz)
+	{
+		snprintf (tbuf, sizeof (tbuf), "%s %s", moz, url);
+		g_free (moz);
+		xchat_exec (tbuf);
+		return;
+	}
+
+	moz = g_find_program_in_path ("gnome-moz-remote");
+	if (moz)
+	{
+		snprintf (tbuf, sizeof (tbuf), "%s %s", moz, url);
+		g_free (moz);
+	} else
+	{
+		snprintf (tbuf, sizeof (tbuf), "mozilla -remote 'openURL(%s)'", url);
+	}
+	xchat_exec (tbuf);
+#endif
+}
+
+void
+fe_open_url (const char *url)
+{
+	char *loc;
+
+	if (prefs.utf8_locale)
+	{
+		fe_open_url_locale (url);
+		return;
+	}
+
+	/* the OS expects it in "locale" encoding. This makes it work on
+	   unix systems that use ISO-8859-x and Win32. */
+	loc = g_locale_from_utf8 (url, -1, 0, 0, 0);
+	if (loc)
+	{
+		fe_open_url_locale (loc);
+		g_free (loc);
+	}
+}

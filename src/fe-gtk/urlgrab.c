@@ -71,7 +71,7 @@ url_treeview_url_clicked_cb (GtkWidget *view, GdkEventButton *event,
 	{
 		case 1:
 			if (event->type == GDK_2BUTTON_PRESS)
-				goto_url (url);
+				fe_open_url (url);
 			break;
 		case 3:
 			menu_urlmenu (event, url);

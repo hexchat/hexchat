@@ -829,3 +829,6 @@ int fe_get_inputbox_cursor (struct session *sess)
 void fe_set_inputbox_cursor (struct session *sess, int delta, int pos)
 {
 }
+void fe_open_url (const char *url)
+{
+}

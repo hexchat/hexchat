@@ -1733,7 +1733,7 @@ mg_word_clicked (GtkWidget *xtext, char *word, GdkEventButton *even,
 			{
 			case WORD_URL:
 			case WORD_HOST:
-				goto_url (word);
+				fe_open_url (word);
 			}
 		}
 		return;

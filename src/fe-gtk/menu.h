@@ -5,7 +5,6 @@ void menu_chanmenu (session *sess, GdkEventButton * event, char *chan);
 void menu_nickmenu (session *sess, GdkEventButton * event, char *nick, int num_sel);
 void menu_middlemenu (session *sess, GdkEventButton *event);
 void userlist_button_cb (GtkWidget * button, char *cmd);
-void goto_url (char *url);
 void nick_command_parse (session *sess, char *cmd, char *nick, char *allnick);
 void usermenu_update (void);
 GtkWidget *menu_toggle_item (char *label, GtkWidget *menu, void *callback, void *userdata, int state);

@@ -96,62 +96,6 @@ struct mymenu
 };
 
 
-static void
-goto_url_inner (char *url)
-{
-#ifdef USE_GNOME
-	gnome_url_show (url);
-#else
-#ifdef WIN32
-	ShellExecute (0, "open", url, NULL, NULL, SW_SHOWNORMAL);
-#else
-	char tbuf[512], *moz;
-
-	/* gnome 2.4+ has this */
-	moz = g_find_program_in_path ("gnome-open");
-	if (moz)
-	{
-		snprintf (tbuf, sizeof (tbuf), "%s %s", moz, url);
-		g_free (moz);
-		xchat_exec (tbuf);
-		return;
-	}
-
-	moz = g_find_program_in_path ("gnome-moz-remote");
-	if (moz)
-	{
-		snprintf (tbuf, sizeof (tbuf), "%s %s", moz, url);
-		g_free (moz);
-	} else
-	{
-		snprintf (tbuf, sizeof (tbuf), "mozilla -remote 'openURL(%s)'", url);
-	}
-	xchat_exec (tbuf);
-#endif
-#endif
-}
-
-void
-goto_url (char *url)
-{
-	char *loc;
-
-	if (prefs.utf8_locale)
-	{
-		goto_url_inner (url);
-		return;
-	}
-
-	/* the OS expects it in "locale" encoding. This makes it work on
-	   unix systems that use ISO-8859-x and Win32. */
-	loc = g_locale_from_utf8 (url, -1, 0, 0, 0);
-	if (loc)
-	{
-		goto_url_inner (loc);
-		g_free (loc);
-	}
-}
-
 /* execute a userlistbutton/popupmenu command */
 
 static void
@@ -655,7 +599,7 @@ menu_middlemenu (session *sess, GdkEventButton *event)
 static void
 open_url_cb (GtkWidget *item, char *url)
 {
-	goto_url (url);
+	fe_open_url (url);
 }
 #endif
 
@@ -1250,13 +1194,13 @@ menu_saveexit (GtkWidget *wid, gpointer none)
 static void
 menu_docs (GtkWidget *wid, gpointer none)
 {
-	goto_url ("http://xchat.org/docs/");
+	fe_open_url ("http://xchat.org/docs/");
 }
 
 /*static void
 menu_webpage (GtkWidget *wid, gpointer none)
 {
-	goto_url ("http://xchat.org");
+	fe_open_url ("http://xchat.org");
 }*/
 
 static void

@@ -81,5 +81,6 @@ char *fe_get_inputbox_contents (struct session *sess);
 int fe_get_inputbox_cursor (struct session *sess);
 void fe_set_inputbox_contents (struct session *sess, char *text);
 void fe_set_inputbox_cursor (struct session *sess, int delta, int pos);
+void fe_open_url (const char *url);
 
 #endif

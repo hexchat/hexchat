@@ -685,21 +685,10 @@ setup_fontsel_cancel (GtkWidget *button, GtkFontSelectionDialog *dialog)
 
 #ifdef WIN32
 static void
-setup_browse_folder (char *dir)
-{
-	dir = g_locale_from_utf8 (dir, -1, 0, 0, 0);
-	if (dir)
-	{
-		ShellExecute (0, "open", dir, NULL, NULL, SW_SHOWNORMAL);
-		g_free (dir);
-	}
-}
-
-static void
 setup_browsefolder_cb (GtkWidget *button, GtkWidget *entry)
 {
 	if (GTK_ENTRY (entry)->text[0])
-		setup_browse_folder (GTK_ENTRY (entry)->text);
+		fe_open_url (GTK_ENTRY (entry)->text);
 }
 #endif
 
