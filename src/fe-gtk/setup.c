@@ -133,7 +133,7 @@ static const setting userlist_settings[] =
 	{ST_TOGGLE, N_("Userlist buttons enabled"), P_OFFINT(userlistbuttons), 0, 0, 0},
 	{ST_TOGGLE, N_("Use the Text box font and colors"), P_OFFINT(style_namelistgad),0,0,0},
 	{ST_TOGGLE, N_("Resizable userlist"), P_OFFINT(paned_userlist),0,0,0},
-	{ST_NUMBER, N_("Do not track away-status on channels larger than:"), P_OFFINT(away_size_max),0,0,10000},
+	{ST_NUMBER, N_("Track away-status on channels smaller than:"), P_OFFINT(away_size_max),0,0,10000},
 	{ST_END, 0, 0, 0, 0, 0}
 };
 

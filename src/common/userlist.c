@@ -98,7 +98,6 @@ void
 userlist_set_away (struct session *sess, char *nick, unsigned int away)
 {
 	struct User *user;
-	int pos;
 
 	user = find_name (sess, nick);
 	if (user)
@@ -107,8 +106,7 @@ userlist_set_away (struct session *sess, char *nick, unsigned int away)
 		{
 			user->away = away;
 			/* rehash GUI */
-			tree_remove (sess->usertree, user, &pos);
-			fe_userlist_move (sess, user, tree_insert (sess->usertree, user));
+			fe_userlist_rehash (sess, user);
 		}
 	}
 }
