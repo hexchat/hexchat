@@ -145,8 +145,8 @@ static char *tabpos[] =
 {
 	N_("Bottom"),
 	N_("Top"),
-/*	N_("Left"),
-	N_("Right"),*/
+	N_("Left"),
+	N_("Right"),
 	N_("Hidden"),
 	NULL
 };

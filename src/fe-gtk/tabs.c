@@ -3,7 +3,9 @@
 #include <string.h>
 #include <stdlib.h>
 
+#include <gtk/gtkarrow.h>
 #include <gtk/gtkhbox.h>
+#include <gtk/gtkvbox.h>
 #include <gtk/gtktogglebutton.h>
 #include <gtk/gtkwidget.h>
 #include <gtk/gtkcontainer.h>
@@ -50,17 +52,21 @@ static int ignore_toggle = FALSE;
 static void
 tab_viewport_size_request (GtkWidget *widget, GtkRequisition *requisition, gpointer user_data)
 {
-	requisition->width = 1;
-	requisition->height = 1;
+	if (GPOINTER_TO_INT (g_object_get_data (G_OBJECT (user_data), "v")) == 0)
+		requisition->width = 1;
+	else
+		requisition->height = 1;
 }
 
 static gint
-tab_search_offset (GtkWidget *inner, gint start_offset, gboolean forward)
+tab_search_offset (GtkWidget *inner, gint start_offset,
+				   gboolean forward, gboolean vertical)
 {
 	GList *boxes;
 	GList *tabs;
 	GtkWidget *box;
 	GtkWidget *button;
+	gint found;
 
 	boxes = GTK_BOX (inner)->children;
 	if (!forward && boxes)
@@ -83,9 +89,10 @@ tab_search_offset (GtkWidget *inner, gint start_offset, gboolean forward)
 			if (!GTK_IS_TOGGLE_BUTTON (button))
 				continue;
 
-			if ((forward && button->allocation.x > start_offset) ||
-			    (!forward && button->allocation.x < start_offset))
-				return button->allocation.x;
+			found = (vertical ? button->allocation.y : button->allocation.x);
+			if ((forward && found > start_offset) ||
+				(!forward && found < start_offset))
+				return found;
 		}
 	}
 
@@ -93,21 +100,32 @@ tab_search_offset (GtkWidget *inner, gint start_offset, gboolean forward)
 }
 
 static void
-tab_scroll_left_clicked (GtkWidget *widget, GtkWidget *group)
+tab_scroll_left_up_clicked (GtkWidget *widget, GtkWidget *group)
 {
 	GtkAdjustment *adj;
-	gint viewport_width;
+	gint viewport_size;
 	gfloat new_value;
 	GtkWidget *inner;
+	gint vertical;
 	gfloat i;
 
 	inner = g_object_get_data (G_OBJECT (group), "i");
-	adj = gtk_viewport_get_hadjustment (GTK_VIEWPORT (inner->parent));
-	gdk_window_get_geometry (inner->parent->window, 0, 0, &viewport_width, 0, 0);
-	new_value = tab_search_offset (inner, adj->value, 0);
+	vertical = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (group), "v"));
 
-	if (new_value + viewport_width > adj->upper)
-		new_value = adj->upper - viewport_width;
+	if (vertical)
+	{
+		adj = gtk_viewport_get_vadjustment (GTK_VIEWPORT (inner->parent));
+		gdk_window_get_geometry (inner->parent->window, 0, 0, 0, &viewport_size, 0);
+	} else
+	{
+		adj = gtk_viewport_get_hadjustment (GTK_VIEWPORT (inner->parent));
+		gdk_window_get_geometry (inner->parent->window, 0, 0, &viewport_size, 0, 0);
+	}
+
+	new_value = tab_search_offset (inner, adj->value, 0, vertical);
+
+	if (new_value + viewport_size > adj->upper)
+		new_value = adj->upper - viewport_size;
 
 	for (i = adj->value; i > new_value; i -= 0.1)
 	{
@@ -120,21 +138,32 @@ tab_scroll_left_clicked (GtkWidget *widget, GtkWidget *group)
 }
 
 static void
-tab_scroll_right_clicked (GtkWidget *widget, GtkWidget *group)
+tab_scroll_right_down_clicked (GtkWidget *widget, GtkWidget *group)
 {
 	GtkAdjustment *adj;
-	gint viewport_width;
+	gint viewport_size;
 	gfloat new_value;
 	GtkWidget *inner;
+	gint vertical;
 	gfloat i;
 
 	inner = g_object_get_data (G_OBJECT (group), "i");
-	adj = gtk_viewport_get_hadjustment (GTK_VIEWPORT (inner->parent));
-	gdk_window_get_geometry (inner->parent->window, 0, 0, &viewport_width, 0, 0);
-	new_value = tab_search_offset (inner, adj->value, 1);
+	vertical = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (group), "v"));
 
-	if (new_value == 0 || new_value + viewport_width > adj->upper)
-		new_value = adj->upper - viewport_width;
+	if (vertical)
+	{
+		adj = gtk_viewport_get_vadjustment (GTK_VIEWPORT (inner->parent));
+		gdk_window_get_geometry (inner->parent->window, 0, 0, 0, &viewport_size, 0);
+	} else
+	{
+		adj = gtk_viewport_get_hadjustment (GTK_VIEWPORT (inner->parent));
+		gdk_window_get_geometry (inner->parent->window, 0, 0, &viewport_size, 0, 0);
+	}
+
+	new_value = tab_search_offset (inner, adj->value, 1, vertical);
+
+	if (new_value == 0 || new_value + viewport_size > adj->upper)
+		new_value = adj->upper - viewport_size;
 
 	for (i = adj->value; i < new_value; i += 0.1)
 	{
@@ -180,6 +209,7 @@ tab_group_new (void *callback, gboolean vertical)
 	GtkWidget *viewport;
 	GtkWidget *group;
 	GtkWidget *button;
+	GtkWidget *arrow;
 
 	if (vertical)
 	{
@@ -193,7 +223,7 @@ tab_group_new (void *callback, gboolean vertical)
 	viewport = gtk_viewport_new (0, 0);
 	gtk_viewport_set_shadow_type (GTK_VIEWPORT (viewport), GTK_SHADOW_NONE);
 	g_signal_connect (G_OBJECT (viewport), "size_request",
-							G_CALLBACK (tab_viewport_size_request), 0);
+							G_CALLBACK (tab_viewport_size_request), group);
 	gtk_box_pack_start (GTK_BOX (group), viewport, 1, 1, 0);
 	gtk_widget_show (viewport);
 
@@ -205,19 +235,25 @@ tab_group_new (void *callback, gboolean vertical)
 	gtk_container_add (GTK_CONTAINER (viewport), box);
 	gtk_widget_show (box);
 
-	button = gtk_button_new_with_label (">");
+	button = gtk_button_new ();
+	arrow = gtk_arrow_new (vertical ? GTK_ARROW_DOWN : GTK_ARROW_RIGHT,
+								  GTK_SHADOW_NONE);
+	gtk_container_add (GTK_CONTAINER (button), arrow);
 	gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
 	g_signal_connect (G_OBJECT (button), "clicked",
-							G_CALLBACK (tab_scroll_right_clicked), group);
-	gtk_widget_show (button);
+							G_CALLBACK (tab_scroll_right_down_clicked), group);
 	gtk_box_pack_end (GTK_BOX (group), button, 0, 0, 0);
+	gtk_widget_show_all (button);
 
-	button = gtk_button_new_with_label ("<");
+	button = gtk_button_new ();
+	arrow = gtk_arrow_new (vertical ? GTK_ARROW_UP : GTK_ARROW_LEFT,
+								  GTK_SHADOW_NONE);
+	gtk_container_add (GTK_CONTAINER (button), arrow);
 	gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
 	g_signal_connect (G_OBJECT (button), "clicked",
-							G_CALLBACK (tab_scroll_left_clicked), group);
-	gtk_widget_show (button);
+							G_CALLBACK (tab_scroll_left_up_clicked), group);
 	gtk_box_pack_end (GTK_BOX (group), button, 0, 0, 0);
+	gtk_widget_show_all (button);
 
 	return group;
 }
@@ -452,6 +488,7 @@ tab_add_real (GtkWidget *group, GtkWidget *tab, void *family)
 		if (g_object_get_data (G_OBJECT (box), "f") == family)
 		{
 			tab_add_sorted (box, tab);
+			gtk_widget_queue_resize (inner->parent);
 			return;
 		}
 
@@ -500,6 +537,7 @@ tab_add_real (GtkWidget *group, GtkWidget *tab, void *family)
 	gtk_box_pack_start (GTK_BOX (box), tab, 0, 0, 0);
 	gtk_widget_show (tab);
 	gtk_widget_show (box);
+	gtk_widget_queue_resize (inner->parent);
 }
 
 static void
@@ -612,6 +650,7 @@ tab_rename (GtkWidget *tab, char *name, int trunc_len)
 		free (new_name);
 	} else
 		gtk_button_set_label (GTK_BUTTON (tab), name);
+	gtk_widget_queue_resize (tab->parent->parent->parent);
 
 	if (attr)
 		gtk_label_set_attributes (GTK_LABEL (GTK_BIN (tab)->child), attr);
@@ -654,3 +693,69 @@ tab_remove (GtkWidget *tab)
 		tab_group_switch (group, 0, FALSE);
 	}
 }
+
+GtkOrientation
+tab_group_get_orientation (GtkWidget *group)
+{
+	int vertical;
+	vertical = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (group), "v"));
+	return (vertical ? GTK_ORIENTATION_VERTICAL : GTK_ORIENTATION_HORIZONTAL);
+}
+
+GtkWidget *
+tab_group_set_orientation (GtkWidget *group, gboolean vertical)
+{
+	GtkWidget *box;
+	GtkWidget *new_group;
+	GList *boxes;
+	int is_vertical;
+
+	is_vertical = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (group), "v"));
+	if ((vertical && is_vertical) || (!vertical && !is_vertical))
+		return group;
+
+	new_group = tab_group_new (g_object_get_data (G_OBJECT (group), "c"),
+								vertical);
+	g_object_set_data (G_OBJECT (new_group), "foc",
+						g_object_get_data (G_OBJECT (group), "foc"));
+	box = g_object_get_data (G_OBJECT (group), "i");
+	boxes = GTK_BOX (box)->children;
+	while (boxes)
+	{
+		GtkWidget *family_box;
+		GList *children;
+
+		family_box = ((GtkBoxChild *) boxes->data)->widget;
+		children = GTK_BOX (family_box)->children;
+
+		while (children)
+		{
+			GtkWidget *child;
+
+			child = ((GtkBoxChild *) children->data)->widget;
+
+			if (GTK_IS_TOGGLE_BUTTON (child))
+			{
+				void *family;
+
+				gtk_widget_ref (child);
+				gtk_container_remove (GTK_CONTAINER (family_box), child);
+				g_signal_handlers_disconnect_by_func (G_OBJECT (child),
+									G_CALLBACK (tab_pressed_cb), group);
+				g_signal_connect (G_OBJECT (child), "pressed",
+									G_CALLBACK (tab_pressed_cb), new_group);
+				family = g_object_get_data (G_OBJECT (child), "f");
+				g_object_set_data (G_OBJECT (child), "g", new_group);
+				tab_add_real (new_group, child, family);
+				gtk_widget_unref (child);
+				children = GTK_BOX (family_box)->children;
+			} else
+				children = children->next;
+		}
+
+		boxes = boxes->next;
+	}
+
+	return new_group;
+}
+

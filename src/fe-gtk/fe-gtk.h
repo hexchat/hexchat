@@ -114,6 +114,7 @@ typedef struct session_gui
 		*topic_entry,
 		*note_book,
 		*main_vbox,	/* container in TOPLEVEL window */
+		*main_table,
 		*user_tree,	/* GtkTreeView */
 		*user_box,
 		*button_box_parent,

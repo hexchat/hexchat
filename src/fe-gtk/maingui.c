@@ -1723,6 +1723,9 @@ mg_nickclick_cb (GtkWidget *button, gpointer userdata)
 static void
 mg_set_tabs_pos (session_gui *gui, int pos)
 {
+	GtkOrientation orientation;
+	GtkWidget *new_tabs_box;
+
 	if (!gui)
 	{
 		gui = mg_gui;
@@ -1730,23 +1733,42 @@ mg_set_tabs_pos (session_gui *gui, int pos)
 			return;
 	}
 
+	gtk_widget_ref (gui->tabs_box);
+	gtk_container_remove (GTK_CONTAINER (gui->main_table), gui->tabs_box);
+
+	orientation = tab_group_get_orientation (gui->tabs_box);
+	if ((pos == 0 || pos == 1) && orientation == GTK_ORIENTATION_VERTICAL)
+	{
+		new_tabs_box = tab_group_set_orientation (gui->tabs_box, FALSE);
+		gtk_widget_unref (gui->tabs_box);
+		gui->tabs_box = new_tabs_box;
+	} else if((pos == 2 || pos == 3) && orientation == GTK_ORIENTATION_HORIZONTAL) {
+		new_tabs_box = tab_group_set_orientation (gui->tabs_box, TRUE);
+		gtk_widget_unref (gui->tabs_box);
+		gui->tabs_box = new_tabs_box;
+	}
+
 	gtk_widget_show (gui->tabs_box);
 
 	switch (pos)
 	{
 	case 0: /* bottom */
-		gtk_box_reorder_child (GTK_BOX (gui->main_vbox), gui->tabs_box, 9);
+		gtk_table_attach (GTK_TABLE (gui->main_table), gui->tabs_box,
+							1, 2, 2, 3, GTK_FILL, GTK_FILL, 0, 0);
 		break;
 	case 1: /* top */
-		gtk_box_reorder_child (GTK_BOX (gui->main_vbox), gui->tabs_box, 1);
+		gtk_table_attach (GTK_TABLE (gui->main_table), gui->tabs_box,
+							1, 2, 0, 1, GTK_FILL, GTK_FILL, 0, 0);
 		break;
-#if 0
 	case 2: /* left */
+		gtk_table_attach (GTK_TABLE (gui->main_table), gui->tabs_box,
+							0, 1, 1, 2, GTK_FILL, GTK_FILL, 0, 0);
 		break;
 	case 3: /* right */
+		gtk_table_attach (GTK_TABLE (gui->main_table), gui->tabs_box,
+							2, 3, 1, 2, GTK_FILL, GTK_FILL, 0, 0);
 		break;
-#endif
-	case 2: /* hidden */
+	case 4: /* hidden */
 		gtk_widget_hide (gui->tabs_box);
 		break;
 	}
@@ -1824,7 +1846,8 @@ mg_create_tabs (session_gui *gui, GtkWidget *box)
 		vert = TRUE;
 
 	gui->tabs_box = tab_group_new (mg_switch_tab_cb, vert);
-	gtk_box_pack_start (GTK_BOX (box), gui->tabs_box, 0, 0, 0);
+	gtk_table_attach (GTK_TABLE (gui->main_table), gui->tabs_box,
+						1, 2, 0, 1, GTK_FILL, GTK_FILL, 0, 0);
 }
 
 static gboolean
@@ -1993,6 +2016,7 @@ mg_create_tabwindow (session *sess)
 {
 	GtkWidget *win;
 	GtkWidget *vbox;
+	GtkWidget *table;
 	GtkWidget *book;
 
 	win = gtkutil_window_new ("X-Chat ["VERSION"]", prefs.mainwindow_width,
@@ -2018,10 +2042,14 @@ mg_create_tabwindow (session *sess)
 	sess->gui->main_vbox = vbox = gtk_vbox_new (FALSE, 1);
 	gtk_container_add (GTK_CONTAINER (win), vbox);
 
+	sess->gui->main_table = table = gtk_table_new (3, 3, FALSE);
+	gtk_container_add (GTK_CONTAINER (vbox), table);
+
 	sess->gui->note_book = book = gtk_notebook_new ();
 	gtk_notebook_set_show_tabs (GTK_NOTEBOOK (book), FALSE);
 	gtk_notebook_set_show_border (GTK_NOTEBOOK (book), FALSE);
-	gtk_container_add (GTK_CONTAINER (vbox), book);
+	gtk_table_attach (GTK_TABLE (table), book, 1, 2, 1, 2,
+						GTK_EXPAND | GTK_FILL, GTK_EXPAND | GTK_FILL, 0, 0);
 
 	mg_create_irctab (sess, book);
 	mg_create_tabs (sess->gui, vbox);
@@ -2029,13 +2057,14 @@ mg_create_tabwindow (session *sess)
 
 	mg_focus (sess);
 
-	if (prefs.tabs_position != 0)
+	if (prefs.tabs_position != 1)
 		mg_set_tabs_pos (sess->gui, prefs.tabs_position);
 
 	if (!prefs.hidemenu)
 		gtk_widget_show (sess->gui->menu);
 
 	gtk_widget_show (vbox);
+	gtk_widget_show (table);
 	gtk_widget_show_all (book);
 
 	if (prefs.hideuserlist)
