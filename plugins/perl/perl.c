@@ -1048,6 +1048,10 @@ xs_init (pTHX)
 	newCONSTSUB (stash, "EAT_XCHAT", newSViv (XCHAT_EAT_XCHAT));
 	newCONSTSUB (stash, "EAT_PLUGIN", newSViv (XCHAT_EAT_PLUGIN));
 	newCONSTSUB (stash, "EAT_ALL", newSViv (XCHAT_EAT_ALL));
+	newCONSTSUB (stash, "FD_READ", newSViv (XCHAT_FD_READ));
+	newCONSTSUB (stash, "FD_WRITE", newSViv (XCHAT_FD_WRITE));
+	newCONSTSUB (stash, "FD_EXCEPTION", newSViv (XCHAT_FD_EXCEPTION));
+	newCONSTSUB (stash, "FD_NOTSOCKET", newSViv (XCHAT_FD_NOTSOCKET));
 	newCONSTSUB (stash, "KEEP", newSViv(1));
 	newCONSTSUB (stash, "REMOVE", newSViv(0));
 }
@@ -1577,10 +1581,10 @@ perl_load_file (char *script_name)
 		if (!lib)
 		{
 			thread_mbox ("Cannot open " PERL_DLL "\n\n"
-							 "You must have ActivePerl installed in order to\n"
-							 "run perl scripts.\n\n"
-							 "http://www.activestate.com/ActivePerl/\n\n"
-							 "Make sure perl's bin directory is in your PATH.");
+				     "You must have ActivePerl installed in order to\n"
+				     "run perl scripts.\n\n"
+				     "http://www.activestate.com/ActivePerl/\n\n"
+				     "Make sure perl's bin directory is in your PATH.");
 			return FALSE;
 		}
 		FreeLibrary (lib);
@@ -1683,7 +1687,7 @@ perl_command_unload (char *word[], char *word_eol[], void *userdata)
 	len = strlen (word[2]);
 	if (len > 3 && strcasecmp (".pl", word[2] + len - 3) == 0)
 	{
-		/* if only unloading was possible with this shitty interface */
+		/* can't unload without risking memory leaks */
 		xchat_print (ph, "Unloading individual perl scripts is not supported.\nYou may use /UNLOADALL to unload all Perl scripts.\n");
 		return XCHAT_EAT_XCHAT;
 	}
