@@ -805,25 +805,19 @@ tolowerStr (char *str)
 	}
 }*/
 
-/* This is originally from BitchX, but since added missing TLDs and
-   changed to a binary search */
-
 typedef struct
 {
-	char *code;
-	char *country;
-} Domain;
+	char *code, *country;
+} domain_t;
 
 static int
 country_compare (const void *a, const void *b)
 {
-	return strcasecmp (a, ((Domain *)b)->code);
+	return strcasecmp (a, ((domain_t *)b)->code);
 }
 
-char *
-country (char *hostname)
+static const domain_t domain[] =
 {
-	static const Domain domain[] = {
 		{"AD", N_("Andorra") },
 		{"AE", N_("United Arab Emirates") },
 		{"AF", N_("Afghanistan") },
@@ -864,6 +858,7 @@ country (char *hostname)
 		{"BZ", N_("Belize") },
 		{"CA", N_("Canada") },
 		{"CC", N_("Cocos Islands") },
+		{"CD", N_("Democratic Republic of Congo") },
 		{"CF", N_("Central African Republic") },
 		{"CG", N_("Congo") },
 		{"CH", N_("Switzerland") },
@@ -875,7 +870,7 @@ country (char *hostname)
 		{"CO", N_("Colombia") },
 		{"COM", N_("Internic Commercial") },
 		{"CR", N_("Costa Rica") },
-		{"CS", N_("Former Czechoslovakia") },
+		{"CS", N_("Serbia and Montenegro") },
 		{"CU", N_("Cuba") },
 		{"CV", N_("Cape Verde") },
 		{"CX", N_("Christmas Island") },
@@ -1013,6 +1008,7 @@ country (char *hostname)
 		{"PM", N_("St. Pierre and Miquelon") },
 		{"PN", N_("Pitcairn") },
 		{"PR", N_("Puerto Rico") },
+		{"PS", N_("Palestinian Territory") },
 		{"PT", N_("Portugal") },
 		{"PW", N_("Palau") },
 		{"PY", N_("Paraguay") },
@@ -1079,11 +1075,14 @@ country (char *hostname)
 		{"YU", N_("Yugoslavia") },
 		{"ZA", N_("South Africa") },
 		{"ZM", N_("Zambia") },
-		{"ZR", N_("Zaire") },
 		{"ZW", N_("Zimbabwe") },
-	};
+};
+
+char *
+country (char *hostname)
+{
 	char *p;
-	Domain *dom;
+	domain_t *dom;
 
 	if (!hostname || !*hostname || isdigit (hostname[strlen (hostname) - 1]))
 		return _("Unknown");
@@ -1092,13 +1091,29 @@ country (char *hostname)
 	else
 		p = hostname;
 
-	dom = bsearch (p, domain, sizeof (domain) / sizeof (Domain),
-						sizeof (Domain), country_compare);
+	dom = bsearch (p, domain, sizeof (domain) / sizeof (domain_t),
+						sizeof (domain_t), country_compare);
 
 	if (!dom)
 		return _("Unknown");
 
 	return _(dom->country);
+}
+
+void
+country_search (char *pattern, void *ud, void (*print)(void *, char *, ...))
+{
+	const domain_t *dom;
+	int i;
+
+	for (i = 0; i < sizeof (domain) / sizeof (domain_t); i++)
+	{
+		dom = &domain[i];
+		if (match (pattern, dom->country))
+		{
+			print (ud, "%s = %s\n", dom->code, _(dom->country));
+		}
+	}
 }
 
 /* I think gnome1.0.x isn't necessarily linked against popt, ah well! */

@@ -29,6 +29,7 @@ int rfc_ncasecmp (char *, char *, int);
 int buf_get_line (char *, char **, int *, int len);
 char *nocasestrstr (char *text, char *tofind);
 char *country (char *);
+void country_search (char *pattern, void *ud, void (*print)(void *, char *, ...));
 char *get_cpu_str (void);
 int util_exec (char *cmd);
 char *strip_color (char *text, int len, int do_color, int do_attr);

@@ -626,6 +626,20 @@ cmd_country (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	char *code = word[2];
 	if (*code)
 	{
+		/* search? */
+		if (strcmp (code, "-s") == 0)
+		{
+			country_search (word[3], sess, PrintTextf);
+			return TRUE;
+		}
+
+		/* search, but forgot the -s */
+		if (strchr (code, '*'))
+		{
+			country_search (code, sess, PrintTextf);
+			return TRUE;
+		}
+
 		sprintf (tbuf, "%s = %s\n", code, country (code));
 		PrintText (sess, tbuf);
 		return TRUE;
@@ -2667,7 +2681,7 @@ const struct commands xc_cmds[] = {
 	{"CLOSE", cmd_close, 0, 0, N_("CLOSE, Closes the current window/tab")},
 
 	{"COUNTRY", cmd_country, 0, 0,
-	 N_("COUNTRY <code>, finds a country code, eg: au = australia")},
+	 N_("COUNTRY [-s] <code|wildcard>, finds a country code, eg: au = australia")},
 	{"CTCP", cmd_ctcp, 1, 0,
 	 N_("CTCP <nick> <message>, send the CTCP message to nick, common messages are VERSION and USERINFO")},
 	{"CYCLE", cmd_cycle, 1, 1,
