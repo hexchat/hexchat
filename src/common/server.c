@@ -475,10 +475,9 @@ server_connected (server * serv)
 static gboolean
 server_close_pipe (int *pipefd)	/* see comments below */
 {
-	close (pipefd[0]);
-	close (pipefd[1]);
+	close (pipefd[0]);	/* close WRITE end first to cause an EOF on READ */
+	close (pipefd[1]);	/* in giowin32, and end that thread. */
 	free (pipefd);
-
 	return FALSE;
 }
 
@@ -503,14 +502,12 @@ server_stopconnecting (server * serv)
 #else
 	PostThreadMessage (serv->childpid, WM_QUIT, 0, 0);
 
-	/* win32 crashes if we try to close the pipe FDs now (something weird
-		going on with giowin32!) This dirty trick works-around it. */
 	{
+		/* if we close the pipe now, giowin32 will crash. */
 		int *pipefd = malloc (sizeof (int) * 2);
-		pipefd[0] = serv->childread;
-		pipefd[1] = serv->childwrite;
-		/* can't pass "serv" here, since it might be free()ed very soon */
-		g_idle_add ((void *)server_close_pipe, pipefd);
+		pipefd[0] = serv->childwrite;
+		pipefd[1] = serv->childread;
+		g_idle_add ((GSourceFunc)server_close_pipe, pipefd);
 	}
 #endif
 

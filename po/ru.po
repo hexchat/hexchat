@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: xchat-2.0.8pre1\n"
 "Report-Msgid-Bugs-To: www.xchat.org\n"
 "POT-Creation-Date: 2004-03-14 16:11+1100\n"
-"PO-Revision-Date: 2004-03-17 22:33+0300\n"
+"PO-Revision-Date: 2004-04-07 11:54+0400\n"
 "Last-Translator: Peter Astakhov <astakhovp@mail.ru>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -717,7 +717,7 @@ msgstr "-%C10-%C11-%O$tНет такого DCC предложения."
 
 #: src/common/textevents.h:150
 msgid "-%C10-%C11-%O$tDCC RECV %C11$2%O to %C11$1%O aborted."
-msgstr "-%C10-%C11-%O$tDCC RECV %C11$2%O to %C11$1%O прервано."
+msgstr "-%C10-%C11-%O$tDCC RECV %C11$2%O c %C11$1%O прервано."
 
 #: src/common/textevents.h:153
 msgid "-%C10-%C11-%O$tDCC RECV %C11$1%O from %C11$3%O complete %C14[%C11$4%O cps%C14]%O."
@@ -741,7 +741,7 @@ msgstr "-%C10-%C11-%O$tThe file %C11$1%C уже существует, сохра
 
 #: src/common/textevents.h:168
 msgid "-%C10-%C11-%O$t%C11$1 %Chas requested to resume %C11$2 %Cfrom %C11$3%C."
-msgstr "-%C10-%C11-%O$t%C11$1 %Запрос на продолжение разговора %C11$2 %Cот %C11$3%C."
+msgstr "-%C10-%C11-%O$t%C11$1 %CЗапрос на продолжение разговора %C11$2 %Cот %C11$3%C."
 
 #: src/common/textevents.h:171
 msgid "-%C10-%C11-%O$tDCC SEND %C11$2%O to %C11$1%O aborted."
@@ -757,11 +757,11 @@ msgstr "-%C10-%C11-%O$tDCC SEND соединение установлено с %
 
 #: src/common/textevents.h:180
 msgid "-%C10-%C11-%O$tDCC SEND %C11$1%O to %C11$2%O failed. $3"
-msgstr "-%C10-%C11-%O$tDCC SEND %C11$1%O to %C11$2%O провален. $3"
+msgstr "-%C10-%C11-%O$tDCC SEND %C11$1%O для %C11$2%O провален. $3"
 
 #: src/common/textevents.h:183
 msgid "-%C10-%C11-%O$t%C11$1 %Chas offered %C11$2 %C(%C11$3 %Cbytes)"
-msgstr "-%C10-%C11-%O$t%C11$1 %Разговор установлен%C11$2 %C(%C11$3 %Cbytes)"
+msgstr "-%C10-%C11-%O$t%C11$1 %CРазговор установлен%C11$2 %C(%C11$3 %Cbytes)"
 
 #: src/common/textevents.h:186
 msgid "-%C10-%C11-%O$tDCC $1 %C11$2 %Cto %C11$3 %Cstalled - aborting."
@@ -825,7 +825,7 @@ msgstr "-%C10-%C11>%O$t%B$1%B %C14(%C10$3%C14)%C зашел на канал $2"
 
 #: src/common/textevents.h:231
 msgid "-%C10-%C11-%O$tCannot join%C11 %B$1 %O(Requires keyword)."
-msgstr "-%C10-%C11-%O$tНевозможно подключится C11 %B$1 %O(Требуется ключевое слово)."
+msgstr "-%C10-%C11-%O$tНевозможно подключится %C11 %B$1 %O(Требуется ключевое слово)."
 
 #: src/common/textevents.h:234
 msgid "<%C10-%C11-%O$t$1 has kicked $2 from $3 ($4%O)"
@@ -910,7 +910,7 @@ msgstr "%C12*%C13$1%C12*$t%O$2%O"
 
 #: src/common/textevents.h:300
 msgid "-%C10-%C11-%O$tA process is already running"
-msgstr "-%C10-%C11-%O$tA процесс уже запущен"
+msgstr "-%C10-%C11-%O$tПроцесс уже запущен"
 
 #: src/common/textevents.h:303
 msgid "<%C10-%C11-%O$t$1 has quit %C14(%O$2%O%C14)%O"
@@ -1006,7 +1006,7 @@ msgstr "-%C10-%C11-%O$t%C12[%O$1%C12]%O $2"
 
 #: src/common/textevents.h:381
 msgid "-%C10-%C11>%O$t%BYou%B are now talking on %C11$2%O"
-msgstr "-%C10-%C11>%O$t%BYou%B сейчас общается на %C11$2%O"
+msgstr "-%C10-%C11>%O$t%BВы %B сейчас общаетесь на %C11$2%O"
 
 #: src/common/textevents.h:384
 msgid "-%C10-%C11-%O$tYou have left channel $3"
@@ -2950,7 +2950,7 @@ msgstr "Файл"
 
 #: src/fe-gtk/dccgui.c:484 src/fe-gtk/dccgui.c:635
 msgid "ETA"
-msgstr "ETA"
+msgstr "Осталось"
 
 #: src/fe-gtk/dccgui.c:494
 msgid "X-Chat: File Receive List"
@@ -3282,7 +3282,7 @@ msgstr "DCC"
 
 #: src/fe-gtk/ignoregui.c:180
 msgid "Invite"
-msgstr "Невидимый"
+msgstr "Приглашен"
 
 #: src/fe-gtk/ignoregui.c:181
 msgid "Unignore"
@@ -3391,7 +3391,7 @@ msgstr "Секрет"
 
 #: src/fe-gtk/maingui.c:1555
 msgid "Invite Only"
-msgstr "Только невидимые"
+msgstr "Только приглашенные"
 
 #: src/fe-gtk/maingui.c:1557
 msgid "Moderated"
@@ -4354,7 +4354,7 @@ msgstr "DCC IP адрес:"
 
 #: src/fe-gtk/setup.c:179
 msgid "Claim you are at this address when offering files."
-msgstr "Заявить этот адрес для приема файлов."
+msgstr "Заявить этот адрес для предложения файлов."
 
 #: src/fe-gtk/setup.c:180
 msgid "First DCC send port:"
@@ -4627,11 +4627,11 @@ msgstr "Фон:"
 
 #: src/fe-gtk/setup.c:846
 msgid "Mark fore:"
-msgstr "Пометить передний план:"
+msgstr "Отмеченый передний план:"
 
 #: src/fe-gtk/setup.c:847
 msgid "Mark back:"
-msgstr "Пометить фон:"
+msgstr "Отмеченый фон:"
 
 #: src/fe-gtk/setup.c:849
 msgid "Away User:"
