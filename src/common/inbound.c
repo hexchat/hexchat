@@ -224,7 +224,10 @@ is_hilight (char *text, session *sess, server *serv)
 	if ((SearchNick (text, serv->nick)) || SearchNick (text, prefs.bluestring))
 	{
 		if (sess != current_tab)
+		{
+			sess->nick_said = TRUE;
 			fe_set_hilight (sess);
+		}
 		return 1;
 	}
 	return 0;

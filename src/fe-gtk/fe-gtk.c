@@ -410,55 +410,11 @@ fe_set_topic (session *sess, char *topic)
 	}
 }
 
-#ifdef WIN32
-#define WINVER 0x0501	/* needed for vc6? */
-#include <windows.h>
-#include <gdk/gdkwin32.h>
-
-/* Flash the taskbar button on Windows when there's a highlight event. */
-
-static void
-flash_window (GtkWidget *win)
-{
-	FLASHWINFO fi;
-	static HMODULE user = NULL;
-	static BOOL (*flash) (PFLASHWINFO) = NULL;
-
-	if (!user)
-	{
-		user = GetModuleHandleA ("USER32");
-		if (!user)
-			return;	/* this should never fail */
-	}
-
-	if (!flash)
-	{
-		flash = (void *)GetProcAddress (user, "FlashWindowEx");
-		if (!flash)
-			return;	/* this fails on NT4.0 and Win95 */
-	}
-
-	fi.cbSize = sizeof (fi);
-	fi.hwnd = GDK_WINDOW_HWND (win->window);
-	fi.dwFlags = FLASHW_ALL | FLASHW_TIMERNOFG;
-	fi.uCount = 0;
-	fi.dwTimeout = 500;
-	flash (&fi);
-	/*FlashWindowEx (&fi);*/
-}
-#endif
-
 void
 fe_set_hilight (struct session *sess)
 {
 	if (sess->gui->is_tab)
-	{
-		sess->nick_said = TRUE;
-		tab_set_attrlist (sess->res->tab, nickseen_list);
-#ifdef WIN32
-		flash_window (sess->gui->window);
-#endif
-	}
+		fe_set_tab_color (sess, 3, TRUE);	/* blue, with taskbar flash */
 }
 
 static void
@@ -583,9 +539,9 @@ fe_print_text (struct session *sess, char *text)
 	{
 		sess->new_data = TRUE;
 		if (sess->msg_said)
-			tab_set_attrlist (sess->res->tab, newmsg_list);
+			fe_set_tab_color (sess, 2, FALSE);
 		else
-			tab_set_attrlist (sess->res->tab, newdata_list);
+			fe_set_tab_color (sess, 1, FALSE);
 	}
 }
 
@@ -712,7 +668,7 @@ fe_set_throttle (server *serv)
 }
 
 void
-fe_ctrl_gui (session *sess, int action)
+fe_ctrl_gui (session *sess, int action, int arg)
 {
 	switch (action)
 	{
@@ -722,5 +678,9 @@ fe_ctrl_gui (session *sess, int action)
 		gtk_widget_show (sess->gui->window); break;
 	case 2:
 		mg_bring_tofront (sess->res->tab); break;
+	case 3:
+		fe_set_tab_color (sess, -1, TRUE); break; /* flash */
+	case 4:
+		fe_set_tab_color (sess, arg, FALSE); break;
 	}
 }

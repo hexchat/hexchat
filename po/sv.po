@@ -1,15 +1,15 @@
 # Swedish messages for X-Chat.
-# Copyright (C) 2000, 2001, 2002, 2003 Free Software Foundation, Inc.
-# Christian Rose <menthos@menthos.com>, 2000, 2001, 2002, 2003.
+# Copyright (C) 2000, 2001, 2002, 2003, 2004 Free Software Foundation, Inc.
+# Christian Rose <menthos@menthos.com>, 2000, 2001, 2002, 2003, 2004.
 #
-# $Id: sv.po,v 1.26 2004-01-01 13:30:25 zed Exp $
+# $Id: sv.po,v 1.27 2004-01-06 07:02:05 zed Exp $
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: xchat-2.0.5pre1\n"
+"Project-Id-Version: xchat-2.0.7pre1\n"
 "Report-Msgid-Bugs-To: www.xchat.org\n"
-"POT-Creation-Date: 2004-01-01 23:38+1100\n"
-"PO-Revision-Date: 2003-09-15 00:06+0200\n"
+"POT-Creation-Date: 2003-12-26 19:31+1100\n"
+"PO-Revision-Date: 2004-01-04 00:48+0100\n"
 "Last-Translator: Christian Rose <menthos@menthos.com>\n"
 "Language-Team: Swedish <sv@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -60,12 +60,12 @@ msgstr "Anslut"
 msgid "Aborted"
 msgstr "Avbruten"
 
-#: src/common/dcc.c:1269
+#: src/common/dcc.c:1268
 #, c-format
 msgid "Cannot access %s\n"
 msgstr "Kan inte komma åt %s\n"
 
-#: src/common/dcc.c:1801
+#: src/common/dcc.c:1800
 msgid "No active DCCs\n"
 msgstr "Inga aktiva DCC:er\n"
 
@@ -84,12 +84,12 @@ msgstr "NEJ  "
 #: src/common/ignore.c:373
 #, c-format
 msgid "You are being CTCP flooded from %s, ignoring %s\n"
-msgstr ""
+msgstr "Du CTCP-översvämmas från %s, ignorerar %s\n"
 
 #: src/common/ignore.c:398
 #, c-format
 msgid "You are being MSG flooded from %s, setting autodialog OFF.\n"
-msgstr ""
+msgstr "Du MSG-översvämmas från %s, ställer in autodialog till AV.\n"
 
 #: src/common/notify.c:400
 #, c-format
@@ -170,22 +170,15 @@ msgstr "ALLCHAN <kmdo>, skickar ett kommando till alla kanaler du är inne i"
 
 #: src/common/outbound.c:2580
 msgid "ALLSERV <cmd>, sends a command to all servers you're in"
-msgstr ""
-"ALLSERV <kmdo>, skickar ett kommando till alla servrar du är ansluten till"
+msgstr "ALLSERV <kmdo>, skickar ett kommando till alla servrar du är ansluten till"
 
 #: src/common/outbound.c:2581
 msgid "AWAY [<reason>], sets you away"
 msgstr "AWAY [<orsak>], anger att du är frånvarande"
 
 #: src/common/outbound.c:2583
-msgid ""
-"BAN <mask> [<bantype>], bans everyone matching the mask from the current "
-"channel. If they are already on the channel this doesn't kick them (needs "
-"chanop)"
-msgstr ""
-"BAN <mask> [<bannlysningstyp>], bannlyser alla som matchar masken från den "
-"aktuella kanalen. Om de redan är på kanalen kommer detta inte att sparka ut "
-"dem (kräver kanaloperatörsstatus)"
+msgid "BAN <mask> [<bantype>], bans everyone matching the mask from the current channel. If they are already on the channel this doesn't kick them (needs chanop)"
+msgstr "BAN <mask> [<bannlysningstyp>], bannlyser alla som matchar masken från den aktuella kanalen. Om de redan är på kanalen kommer detta inte att sparka ut dem (kräver kanaloperatörsstatus)"
 
 #: src/common/outbound.c:2585
 msgid "CLEAR, Clears the current text window"
@@ -200,12 +193,8 @@ msgid "COUNTRY <code>, finds a country code, eg: au = australia"
 msgstr "COUNTRY <kod>, söker efter en landskod, exempelvis se = Sverige"
 
 #: src/common/outbound.c:2591
-msgid ""
-"CTCP <nick> <message>, send the CTCP message to nick, common messages are "
-"VERSION and USERINFO"
-msgstr ""
-"CTCP <smeknamn> <meddelande>, skickar CTCP-meddelandet till smeknamn, "
-"vanliga meddelanden är VERSION och USERINFO"
+msgid "CTCP <nick> <message>, send the CTCP message to nick, common messages are VERSION and USERINFO"
+msgstr "CTCP <smeknamn> <meddelande>, skickar CTCP-meddelandet till smeknamn, vanliga meddelanden är VERSION och USERINFO"
 
 #: src/common/outbound.c:2593
 msgid "CYCLE, parts current channel and immediately rejoins"
@@ -230,32 +219,20 @@ msgstr ""
 "         /dcc close send nisse fil.tar.gz"
 
 #: src/common/outbound.c:2605
-msgid ""
-"DEHOP <nick>, removes chanhalf-op status from the nick on the current "
-"channel (needs chanop)"
-msgstr ""
-"DEHOP <smeknamn>, tar bort halvkanaloperatörsstatus från smeknamnet på den "
-"aktuella kanalen (kräver kanaloperatörsstatus)"
+msgid "DEHOP <nick>, removes chanhalf-op status from the nick on the current channel (needs chanop)"
+msgstr "DEHOP <smeknamn>, tar bort halvkanaloperatörsstatus från smeknamnet på den aktuella kanalen (kräver kanaloperatörsstatus)"
 
 #: src/common/outbound.c:2607
 msgid "DELBUTTON <name>, deletes a button from under the user-list"
 msgstr "DELBUTTON <namn>, tar bort en knapp under användarlistan"
 
 #: src/common/outbound.c:2609
-msgid ""
-"DEOP <nick>, removes chanop status from the nick on the current channel "
-"(needs chanop)"
-msgstr ""
-"DEOP <smeknamn>, tar bort kanaloperatörsstatus från smeknamnet på den "
-"aktuella kanalen (kräver kanaloperatörsstatus)"
+msgid "DEOP <nick>, removes chanop status from the nick on the current channel (needs chanop)"
+msgstr "DEOP <smeknamn>, tar bort kanaloperatörsstatus från smeknamnet på den aktuella kanalen (kräver kanaloperatörsstatus)"
 
 #: src/common/outbound.c:2611
-msgid ""
-"DEVOICE <nick>, removes voice status from the nick on the current channel "
-"(needs chanop)"
-msgstr ""
-"DEVOICE <smeknamn>, tar bort röststatus från smeknamnet på den aktuella "
-"kanalen (kräver kanaloperatörsstatus)"
+msgid "DEVOICE <nick>, removes voice status from the nick on the current channel (needs chanop)"
+msgstr "DEVOICE <smeknamn>, tar bort röststatus från smeknamnet på den aktuella kanalen (kräver kanaloperatörsstatus)"
 
 #: src/common/outbound.c:2612
 msgid "DISCON, Disconnects from server"
@@ -270,24 +247,16 @@ msgid "ECHO <text>, Prints text locally"
 msgstr "ECHO <text>, skriver ut text lokalt"
 
 #: src/common/outbound.c:2617
-msgid ""
-"EXEC [-o] <command>, runs the command. If -o flag is used then output is "
-"sent to current channel, else is printed to current text box"
-msgstr ""
-"EXEC [-o] <kommando>, kör kommandot. Om flaggan -o används skickas utdata "
-"till den aktuella kanalen, annars skrivs den ut i det aktuella textfältet"
+msgid "EXEC [-o] <command>, runs the command. If -o flag is used then output is sent to current channel, else is printed to current text box"
+msgstr "EXEC [-o] <kommando>, kör kommandot. Om flaggan -o används skickas utdata till den aktuella kanalen, annars skrivs den ut i det aktuella textfältet"
 
 #: src/common/outbound.c:2619
 msgid "EXECCONT, sends the process SIGCONT"
 msgstr "EXECCONT, skickar SIGCONT til processen"
 
 #: src/common/outbound.c:2622
-msgid ""
-"EXECKILL [-9], kills a running exec in the current session. If -9 is given "
-"the process is SIGKILL'ed"
-msgstr ""
-"EXECKILL [-9], dödar en körande exekvering i den aktuella sessionen. Om -9 "
-"anges kommer processen att SIGKILL:as"
+msgid "EXECKILL [-9], kills a running exec in the current session. If -9 is given the process is SIGKILL'ed"
+msgstr "EXECKILL [-9], dödar en körande exekvering i den aktuella sessionen. Om -9 anges kommer processen att SIGKILL:as"
 
 #: src/common/outbound.c:2624
 msgid "EXECSTOP, sends the process SIGSTOP"
@@ -303,14 +272,11 @@ msgstr "FLUSHQ, tömmer den aktuella serverns sändkö"
 
 #: src/common/outbound.c:2631
 msgid "GATE <host> [<port>], proxies through a host, port defaults to 23"
-msgstr ""
-"GATE <värd> [<port>], tunnlar genom en värd, standardvärde på port är 23"
+msgstr "GATE <värd> [<port>], tunnlar genom en värd, standardvärde på port är 23"
 
 #: src/common/outbound.c:2637
 msgid "HOP <nick>, gives chanhalf-op status to the nick (needs chanop)"
-msgstr ""
-"HOP <smeknamn>, ger halvkanaloperatörsstatus till smeknamn (kräver "
-"kanaloperatörsstatus)"
+msgstr "HOP <smeknamn>, ger halvkanaloperatörsstatus till smeknamn (kräver kanaloperatörsstatus)"
 
 #: src/common/outbound.c:2639
 msgid ""
@@ -327,12 +293,8 @@ msgstr ""
 "    alternativ - NOSAVE, QUIET"
 
 #: src/common/outbound.c:2646
-msgid ""
-"INVITE <nick> [<channel>], invites someone to a channel, by default the "
-"current channel (needs chanop)"
-msgstr ""
-"INVITE <smeknamn> [<kanal>], bjuder in någon till en kanal, "
-"standardalternativet är den aktuella kanalen (kräver kanaloperatörsstatus)"
+msgid "INVITE <nick> [<channel>], invites someone to a channel, by default the current channel (needs chanop)"
+msgstr "INVITE <smeknamn> [<kanal>], bjuder in någon till en kanal, standardalternativet är den aktuella kanalen (kräver kanaloperatörsstatus)"
 
 #: src/common/outbound.c:2647
 msgid "JOIN <channel>, joins the channel"
@@ -340,17 +302,11 @@ msgstr "JOIN <kanal>, går in i kanalen"
 
 #: src/common/outbound.c:2649
 msgid "KICK <nick>, kicks the nick from the current channel (needs chanop)"
-msgstr ""
-"KICK <smeknamn>, sparkar ut smeknamn från den aktuella kanalen (kräver "
-"kanaloperatörsstatus)"
+msgstr "KICK <smeknamn>, sparkar ut smeknamn från den aktuella kanalen (kräver kanaloperatörsstatus)"
 
 #: src/common/outbound.c:2651
-msgid ""
-"KICKBAN <nick>, bans then kicks the nick from the current channel (needs "
-"chanop)"
-msgstr ""
-"KICKBAN <smeknamn>, bannlyser och sparkar sedan ut smeknamn från den "
-"aktuella kanalen (kräver kanaloperatörsstatus)"
+msgid "KICKBAN <nick>, bans then kicks the nick from the current channel (needs chanop)"
+msgstr "KICKBAN <smeknamn>, bannlyser och sparkar sedan ut smeknamn från den aktuella kanalen (kräver kanaloperatörsstatus)"
 
 #: src/common/outbound.c:2654
 msgid "LAGCHECK, forces a new lag check"
@@ -365,38 +321,24 @@ msgid "LOAD <file>, loads a plugin or script"
 msgstr "LOAD <fil>, läser in en insticksmodul eller ett skript"
 
 #: src/common/outbound.c:2661
-msgid ""
-"MDEHOP, Mass deop's all chanhalf-ops in the current channel (needs chanop)"
-msgstr ""
-"MDEHOP, tar bort halvkanaloperatörsstatus från alla halvkanaloperatörer i "
-"den aktuella kanalen (kräver kanaloperatörsstatus)"
+msgid "MDEHOP, Mass deop's all chanhalf-ops in the current channel (needs chanop)"
+msgstr "MDEHOP, tar bort halvkanaloperatörsstatus från alla halvkanaloperatörer i den aktuella kanalen (kräver kanaloperatörsstatus)"
 
 #: src/common/outbound.c:2663
 msgid "MDEOP, Mass deop's all chanops in the current channel (needs chanop)"
-msgstr ""
-"MDEOP, tar bort kanaloperatörsstatus från alla kanaloperatörer i den "
-"aktuella kanalen (kräver kanaloperatörsstatus)"
+msgstr "MDEOP, tar bort kanaloperatörsstatus från alla kanaloperatörer i den aktuella kanalen (kräver kanaloperatörsstatus)"
 
 #: src/common/outbound.c:2665
-msgid ""
-"ME <action>, sends the action to the current channel (actions are written in "
-"the 3rd person, like /me jumps)"
-msgstr ""
-"ME <händelse>, skickar händelsen till den aktuella kanalen (händelserna "
-"skrivs i tredje person, som exempelvis /me hoppar)"
+msgid "ME <action>, sends the action to the current channel (actions are written in the 3rd person, like /me jumps)"
+msgstr "ME <händelse>, skickar händelsen till den aktuella kanalen (händelserna skrivs i tredje person, som exempelvis /me hoppar)"
 
 #: src/common/outbound.c:2667
-msgid ""
-"MKICK, Mass kicks everyone except you in the current channel (needs chanop)"
-msgstr ""
-"MKICK, sparkar ut alla utom dig själv från den aktuella kanalen (kräver "
-"kanaloperatörsstatus)"
+msgid "MKICK, Mass kicks everyone except you in the current channel (needs chanop)"
+msgstr "MKICK, sparkar ut alla utom dig själv från den aktuella kanalen (kräver kanaloperatörsstatus)"
 
 #: src/common/outbound.c:2669
 msgid "MOP, Mass op's all users in the current channel (needs chanop)"
-msgstr ""
-"MOP, ger kanaloperatörsstatus till alla användare i den aktuella kanalen "
-"(kräver kanaloperatörsstatus)"
+msgstr "MOP, ger kanaloperatörsstatus till alla användare i den aktuella kanalen (kräver kanaloperatörsstatus)"
 
 #: src/common/outbound.c:2670
 msgid "MSG <nick> <message>, sends a private message"
@@ -419,31 +361,20 @@ msgid "NICK <nickname>, sets your nick"
 msgstr "NICK <smeknamn>, ställer in ditt smeknamn"
 
 #: src/common/outbound.c:2680
-msgid ""
-"NOTICE <nick/channel> <message>, sends a notice. Notices are a type of "
-"message that should be auto reacted to"
-msgstr ""
-"NOTICE <smeknamn/kanal> <meddelande>, skickar en notis. Notiser är en typ av "
-"meddelanden som bör reageras på automatiskt"
+msgid "NOTICE <nick/channel> <message>, sends a notice. Notices are a type of message that should be auto reacted to"
+msgstr "NOTICE <smeknamn/kanal> <meddelande>, skickar en notis. Notiser är en typ av meddelanden som bör reageras på automatiskt"
 
 #: src/common/outbound.c:2682
 msgid "NOTIFY [<nick>], lists your notify list or adds someone to it"
-msgstr ""
-"NOTIFY [<smeknamn>], visar din notifieringslista eller lägger till någon "
-"till den"
+msgstr "NOTIFY [<smeknamn>], visar din notifieringslista eller lägger till någon till den"
 
 #: src/common/outbound.c:2684
 msgid "OP <nick>, gives chanop status to the nick (needs chanop)"
-msgstr ""
-"OP <smeknamn>, ger kanaloperatörsstatus till smeknamn (kräver "
-"kanaloperatörsstatus)"
+msgstr "OP <smeknamn>, ger kanaloperatörsstatus till smeknamn (kräver kanaloperatörsstatus)"
 
 #: src/common/outbound.c:2686
-msgid ""
-"PART [<channel>] [<reason>], leaves the channel, by default the current one"
-msgstr ""
-"PART [<kanal>] [<orsak>], lämnar kanalen, standardalternativet är den "
-"aktuella kanalen"
+msgid "PART [<channel>] [<reason>], leaves the channel, by default the current one"
+msgstr "PART [<kanal>] [<orsak>], lämnar kanalen, standardalternativet är den aktuella kanalen"
 
 #: src/common/outbound.c:2688
 msgid "PING <nick | channel>, CTCP pings nick or channel"
@@ -451,8 +382,7 @@ msgstr "PING <smeknamn | kanal>, CTCP-pingar smeknamn eller kanal"
 
 #: src/common/outbound.c:2690
 msgid "QUERY <nick>, opens up a new privmsg window to someone"
-msgstr ""
-"QUERY <smeknamn>, öppnar ett nytt fönster för privata meddelanden till någon"
+msgstr "QUERY <smeknamn>, öppnar ett nytt fönster för privata meddelanden till någon"
 
 #: src/common/outbound.c:2692
 msgid "QUIT [<reason>], disconnects from the current server"
@@ -463,33 +393,16 @@ msgid "QUOTE <text>, sends the text in raw form to the server"
 msgstr "QUOTE <text>, skickar texten i rå form till servern"
 
 #: src/common/outbound.c:2697
-msgid ""
-"RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as /"
-"RECONNECT to reconnect to the current server or with /RECONNECT ALL to "
-"reconnect to all the open servers"
-msgstr ""
-"RECONNECT [-ssl] [<värd>] [<port>] [<lösenord>], kan anropas bara som /"
-"RECONNECT för att återansluta till den aktuella servern eller med /RECONNECT "
-"ALL för att återansluta till alla de öppna servrarna"
+msgid "RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as /RECONNECT to reconnect to the current server or with /RECONNECT ALL to reconnect to all the open servers"
+msgstr "RECONNECT [-ssl] [<värd>] [<port>] [<lösenord>], kan anropas bara som /RECONNECT för att återansluta till den aktuella servern eller med /RECONNECT ALL för att återansluta till alla de öppna servrarna"
 
 #: src/common/outbound.c:2700
-msgid ""
-"RECONNECT [<host>] [<port>] [<password>], Can be called just as /RECONNECT "
-"to reconnect to the current server or with /RECONNECT ALL to reconnect to "
-"all the open servers"
-msgstr ""
-"RECONNECT [<värd>] [<port>] [<lösenord>] [<ssl>] "
-"[<acceptera_ogiltigt_cert>], kan anropas bara som /RECONNECT för att "
-"återansluta till den aktuella servern eller med /RECONNECT ALL för att "
-"återansluta till alla de öppna servrarna"
+msgid "RECONNECT [<host>] [<port>] [<password>], Can be called just as /RECONNECT to reconnect to the current server or with /RECONNECT ALL to reconnect to all the open servers"
+msgstr "RECONNECT [<värd>] [<port>] [<lösenord>] [<ssl>] [<acceptera_ogiltigt_cert>], kan anropas bara som /RECONNECT för att återansluta till den aktuella servern eller med /RECONNECT ALL för att återansluta till alla de öppna servrarna"
 
 #: src/common/outbound.c:2702
-msgid ""
-"RECV <text>, send raw data to xchat, as if it was received from the irc "
-"server"
-msgstr ""
-"RECV <text>, skicka rå data till xchat på samma sätt som det tas emot från "
-"irc-servern"
+msgid "RECV <text>, send raw data to xchat, as if it was received from the irc server"
+msgstr "RECV <text>, skicka rå data till xchat på samma sätt som det tas emot från irc-servern"
 
 #: src/common/outbound.c:2705
 msgid "SAY <text>, sends the text to the object in the current window"
@@ -504,31 +417,20 @@ msgid "SERVCHAN <host> <port> <channel>, connects and joins a channel"
 msgstr "SERVCHAN <värd> <port> <kanal>, ansluter och går in i en kanal"
 
 #: src/common/outbound.c:2715
-msgid ""
-"SERVER [-ssl] <host> [<port>] [<password>], connects to a server, the "
-"default port is 6667 for normal connections, and 9999 for ssl connections"
-msgstr ""
-"SERVER [-ssl] <värd> [<port>] [<lösenord>], ansluter till en server, "
-"standardporten är 6667 för normala anslutningar, och 994 för ssl-anslutningar"
+msgid "SERVER [-ssl] <host> [<port>] [<password>], connects to a server, the default port is 6667 for normal connections, and 9999 for ssl connections"
+msgstr "SERVER [-ssl] <värd> [<port>] [<lösenord>], ansluter till en server, standardporten är 6667 för normala anslutningar, och 994 för ssl-anslutningar"
 
 #: src/common/outbound.c:2718
-msgid ""
-"SERVER <host> [<port>] [<password>], connects to a server, the default port "
-"is 6667"
-msgstr ""
-"SERVER <värd> [<port>] [<lösenord>], ansluter till en server, standardporten "
-"är 6667"
+msgid "SERVER <host> [<port>] [<password>], connects to a server, the default port is 6667"
+msgstr "SERVER <värd> [<port>] [<lösenord>], ansluter till en server, standardporten är 6667"
 
 #: src/common/outbound.c:2720
 msgid "SET <variable> [<value>]"
 msgstr "SET <variabel> [<värde>]"
 
 #: src/common/outbound.c:2723
-msgid ""
-"TOPIC [<topic>], sets the topic if one is given, else shows the current topic"
-msgstr ""
-"TOPIC [<ämne>], ställer in ämnet om något anges, annars visar det aktuellt "
-"ämne"
+msgid "TOPIC [<topic>], sets the topic if one is given, else shows the current topic"
+msgstr "TOPIC [<ämne>], ställer in ämnet om något anges, annars visar det aktuellt ämne"
 
 #: src/common/outbound.c:2725
 msgid "UNBAN <mask> [<mask>...], unbans the specified masks."
@@ -544,19 +446,15 @@ msgstr "UNLOAD <namn>, glömmer en insticksmodul eller ett skript"
 
 #: src/common/outbound.c:2730
 msgid "VOICE <nick>, gives voice status to someone (needs chanop)"
-msgstr ""
-"VOICE <smeknamn>, ger röststatus till någon (kräver kanaloperatörsstatus)"
+msgstr "VOICE <smeknamn>, ger röststatus till någon (kräver kanaloperatörsstatus)"
 
 #: src/common/outbound.c:2732
 msgid "WALLCHAN <message>, writes the message to all channels"
 msgstr "WALLCHAN <meddelande>, skriver meddelandet i alla kanaler"
 
 #: src/common/outbound.c:2734
-msgid ""
-"WALLCHOP <message>, sends the message to all chanops on the current channel"
-msgstr ""
-"WALLCHOP <meddelande>, skickar meddelandet till alla kanaloperatörer på den "
-"aktuella kanalen"
+msgid "WALLCHOP <message>, sends the message to all chanops on the current channel"
+msgstr "WALLCHOP <meddelande>, skickar meddelandet till alla kanaloperatörer på den aktuella kanalen"
 
 #: src/common/outbound.c:2767
 #, c-format
@@ -589,9 +487,7 @@ msgstr "Okänt kommando. Prova /help\n"
 
 #: src/common/plugin.c:349 src/common/plugin.c:379
 msgid "No xchat_plugin_init symbol; is this really an xchat plugin?"
-msgstr ""
-"Ingen \"xchat_plugin_init\"-symbol; är detta verkligen en xchat-"
-"insticksmodul?"
+msgstr "Ingen \"xchat_plugin_init\"-symbol; är detta verkligen en xchat-insticksmodul?"
 
 #: src/common/server.c:887
 #, c-format
@@ -606,17 +502,15 @@ msgstr ""
 msgid "Proxy traversal failed.\n"
 msgstr "Proxytraversering misslyckades.\n"
 
-#: src/common/servlist.c:633
+#: src/common/servlist.c:632
 #, c-format
 msgid "Cycling to next server in %s...\n"
-msgstr ""
+msgstr "Byter till nästa server i %s...\n"
 
-#: src/common/servlist.c:973
+#: src/common/servlist.c:972
 #, c-format
-msgid ""
-"Warning: \"%s\" character set is unknown. No conversion will be applied for "
-"network %s."
-msgstr ""
+msgid "Warning: \"%s\" character set is unknown. No conversion will be applied for network %s."
+msgstr "Varning: Teckentabellen \"%s\" är okänd. Ingen konvertering kommer att tillämpas för nätverket %s."
 
 #: src/common/textevents.h:6
 msgid "-%C10-%C11-%O$t$1 added to notify list."
@@ -635,9 +529,8 @@ msgid "-%C10-%C11-%O$t$1 is now known as $2"
 msgstr "-%C10-%C11-%O$t$1 är nu känd som $2"
 
 #: src/common/textevents.h:18
-#, fuzzy
 msgid "%C13*%O$t$1%O $2%O"
-msgstr "%C13*%O$t$1 $2%O"
+msgstr "%C13*%O$t$1%O $2%O"
 
 #: src/common/textevents.h:21
 msgid "%C13*%O$t%C8%B$1%B%O $2%O"
@@ -652,10 +545,8 @@ msgid "-%C10-%C11-%O$tChannel $1 created on $2"
 msgstr "-%C10-%C11-%O$tKanalen $1 skapad på $2"
 
 #: src/common/textevents.h:30
-msgid ""
-"-%C10-%C11-%O$t%C11$1%O removes channel half-operator status from %C11$2"
-msgstr ""
-"-%C10-%C11-%O$t%C11$1%O tar bort halvkanaloperatörsstatusen från %C11$2"
+msgid "-%C10-%C11-%O$t%C11$1%O removes channel half-operator status from %C11$2"
+msgstr "-%C10-%C11-%O$t%C11$1%O tar bort halvkanaloperatörsstatusen från %C11$2"
 
 #: src/common/textevents.h:33
 msgid "-%C10-%C11-%O$t%C11$1%O removes channel operator status from %C11$2"
@@ -743,8 +634,7 @@ msgstr "-%C10-%C11-%O$tAnsluten. Loggar nu in..."
 
 #: src/common/textevents.h:96
 msgid "-%C10-%C11-%O$tConnecting to %C11$1 %C14(%C11$2%C14)%C port %C11$3%C.."
-msgstr ""
-"-%C10-%C11-%O$tAnsluter till %C11$1 %C14(%C11$2%C14)%C port %C11$3%C..."
+msgstr "-%C10-%C11-%O$tAnsluter till %C11$1 %C14(%C11$2%C14)%C port %C11$3%C..."
 
 #: src/common/textevents.h:99
 msgid "-%C10-%C11-%O$tConnection failed. Error: $1"
@@ -771,10 +661,8 @@ msgid "-%C10-%C11-%O$tDCC CHAT to %C11$1%O aborted."
 msgstr "-%C10-%C11-%O$tDCC CHAT till %C11$1%0 avbruten."
 
 #: src/common/textevents.h:117
-msgid ""
-"-%C10-%C11-%O$tDCC CHAT connection established to %C11$1 %C14[%O$2%C14]%O"
-msgstr ""
-"-%C10-%C11-%O$tDCC CHAT-anslutning etablerad till %C11$2 %C14[%O$3%C14]%O"
+msgid "-%C10-%C11-%O$tDCC CHAT connection established to %C11$1 %C14[%O$2%C14]%O"
+msgstr "-%C10-%C11-%O$tDCC CHAT-anslutning etablerad till %C11$2 %C14[%O$3%C14]%O"
 
 #: src/common/textevents.h:120
 msgid "-%C10-%C11-%O$tDCC CHAT to %C11$1%O lost. $4."
@@ -794,28 +682,19 @@ msgstr "-%C10-%C11-%O$tErbjuder redan CHAT till $1"
 
 #: src/common/textevents.h:132
 msgid "-%C10-%C11-%O$tDCC $1 connect attempt to %C11$2%O failed (err=$3)."
-msgstr ""
-"-%C10-%C11-%O$tDCC $1-anslutningsförsök till %C11$2%O misslyckades (fel=$3)."
+msgstr "-%C10-%C11-%O$tDCC $1-anslutningsförsök till %C11$2%O misslyckades (fel=$3)."
 
 #: src/common/textevents.h:135
 msgid "-%C10-%C11-%O$tReceived '$1%O' from $2"
 msgstr "-%C10-%C11-%O$tMottog \"$1%O\" från $2"
 
 #: src/common/textevents.h:138
-msgid ""
-"%C8,2 Type  To/From    Status  Size    Pos     File      %O%010%B%"
-"C9----------------------------------------------------%O"
-msgstr ""
-"%C8,2 Typ   Till/Från  Status  Storlek Pos     Fil       %O%010%B%"
-"C9---------------------------------------------------%O"
+msgid "%C8,2 Type  To/From    Status  Size    Pos     File      %O%010%B%C9----------------------------------------------------%O"
+msgstr "%C8,2 Typ   Till/Från  Status  Storlek Pos     Fil       %O%010%B%C9---------------------------------------------------%O"
 
 #: src/common/textevents.h:141
-msgid ""
-"-%C10-%C11-%O$tReceived a malformed DCC request from %C11$1%O.%010-%C10-%C11-"
-"%O$tContents of packet: $2"
-msgstr ""
-"-%C10-%C11-%O$tMottog en felaktigt utformad DCC-begäran från %C11$1%O.%010-%"
-"C10-%C11-%O$tInnehåll i paketet: $2"
+msgid "-%C10-%C11-%O$tReceived a malformed DCC request from %C11$1%O.%010-%C10-%C11-%O$tContents of packet: $2"
+msgstr "-%C10-%C11-%O$tMottog en felaktigt utformad DCC-begäran från %C11$1%O.%010-%C10-%C11-%O$tInnehåll i paketet: $2"
 
 #: src/common/textevents.h:144
 msgid "-%C10-%C11-%O$tOffering %C11$1 %Cto %C11$2%O"
@@ -830,55 +709,40 @@ msgid "-%C10-%C11-%O$tDCC RECV %C11$2%O to %C11$1%O aborted."
 msgstr "-%C10-%C11-%O$tDCC RECV %C11$2%0 till %C11$1%0 avbruten."
 
 #: src/common/textevents.h:153
-msgid ""
-"-%C10-%C11-%O$tDCC RECV %C11$1%O from %C11$3%O complete %C14[%C11$4%O cps%"
-"C14]%O."
-msgstr ""
-"-%C10-%C11-%O$tDCC RECV %C11$1%O från %C11$3%O klar %C14[%C11$4%O cps%C14]%O."
+msgid "-%C10-%C11-%O$tDCC RECV %C11$1%O from %C11$3%O complete %C14[%C11$4%O cps%C14]%O."
+msgstr "-%C10-%C11-%O$tDCC RECV %C11$1%O från %C11$3%O klar %C14[%C11$4%O cps%C14]%O."
 
 #: src/common/textevents.h:156
-msgid ""
-"-%C10-%C11-%O$tDCC RECV connection established to %C11$1 %C14[%O$2%C14]%O"
-msgstr ""
-"-%C10-%C11-%O$tDCC RECV-anslutning etablerad till %C11$1 %C14[%O$2%C14]%O"
+msgid "-%C10-%C11-%O$tDCC RECV connection established to %C11$1 %C14[%O$2%C14]%O"
+msgstr "-%C10-%C11-%O$tDCC RECV-anslutning etablerad till %C11$1 %C14[%O$2%C14]%O"
 
 #: src/common/textevents.h:159
 msgid "-%C10-%C11-%O$tDCC RECV %C11$1%O from %C11$3%O failed. $4."
 msgstr "-%C10-%C11-%O$tDCC RECV %C11$1%O från %C11$3%O misslyckades. $4."
 
 #: src/common/textevents.h:162
-#, fuzzy
-msgid "-%C10-%C11-%O$tDCC RECV: Cannot open $1 for writing ($2)."
+msgid "-%C10-%C11-%O$tDCC RECV: Cannot open $1 for writing - aborting."
 msgstr "-%C10-%C11-%O$tDCC RECV: Kan inte öppna $1 för skrivning - avbryter."
 
 #: src/common/textevents.h:165
-msgid ""
-"-%C10-%C11-%O$tThe file %C11$1%C already exists, saving it as %C11$2%O "
-"instead."
-msgstr ""
-"-%C10-%C11-%O$tFilen %C11$1%C finns redan, sparar det som %C11$2%O istället."
+msgid "-%C10-%C11-%O$tThe file %C11$1%C already exists, saving it as %C11$2%O instead."
+msgstr "-%C10-%C11-%O$tFilen %C11$1%C finns redan, sparar det som %C11$2%O istället."
 
 #: src/common/textevents.h:168
 msgid "-%C10-%C11-%O$t%C11$1 %Chas requested to resume %C11$2 %Cfrom %C11$3%C."
-msgstr ""
-"-%C10-%C11-%O$t%C11$1 %Char begärt att återuppta %C11$2 %Cfrån %C11$3%C."
+msgstr "-%C10-%C11-%O$t%C11$1 %Char begärt att återuppta %C11$2 %Cfrån %C11$3%C."
 
 #: src/common/textevents.h:171
 msgid "-%C10-%C11-%O$tDCC SEND %C11$2%O to %C11$1%O aborted."
 msgstr "-%C10-%C11-%O$tDCC SEND %C11$2%0 till %C11$1%0 avbruten."
 
 #: src/common/textevents.h:174
-msgid ""
-"-%C10-%C11-%O$tDCC SEND %C11$1%O to %C11$2%O complete %C14[%C11$3%O cps%C14]%"
-"O."
-msgstr ""
-"-%C10-%C11-%O$tDCC SEND %C11$1%O till %C11$2%O klar %C14[%C11$3%O cps%C14]%O."
+msgid "-%C10-%C11-%O$tDCC SEND %C11$1%O to %C11$2%O complete %C14[%C11$3%O cps%C14]%O."
+msgstr "-%C10-%C11-%O$tDCC SEND %C11$1%O till %C11$2%O klar %C14[%C11$3%O cps%C14]%O."
 
 #: src/common/textevents.h:177
-msgid ""
-"-%C10-%C11-%O$tDCC SEND connection established to %C11$1 %C14[%O$2%C14]%O"
-msgstr ""
-"-%C10-%C11-%O$tDCC SEND-anslutning etablerad till %C11$1 %C14[%O$2%C14]%O"
+msgid "-%C10-%C11-%O$tDCC SEND connection established to %C11$1 %C14[%O$2%C14]%O"
+msgstr "-%C10-%C11-%O$tDCC SEND-anslutning etablerad till %C11$1 %C14[%O$2%C14]%O"
 
 #: src/common/textevents.h:180
 msgid "-%C10-%C11-%O$tDCC SEND %C11$1%O to %C11$2%O failed. $3"
@@ -894,8 +758,7 @@ msgstr "-%C10-%C11-%O$tDCC $1 %C11$2 %Ctill %C11$3 %Cstannade - avbryter."
 
 #: src/common/textevents.h:189
 msgid "-%C10-%C11-%O$tDCC $1 %C11$2 %Cto %C11$3 %Ctimed out - aborting."
-msgstr ""
-"-%C10-%C11-%O$tDCC $1 %C11$2 %Ctill %C11$3 %Cgjorde time-out - avbryter."
+msgstr "-%C10-%C11-%O$tDCC $1 %C11$2 %Ctill %C11$3 %Cgjorde time-out - avbryter."
 
 #: src/common/textevents.h:192
 msgid "-%C10-%C11-%O$t$1 deleted from notify list."
@@ -922,14 +785,12 @@ msgid "Ignore on %C11$1%O changed."
 msgstr "Ignorering på %C11$1%O ändrades."
 
 #: src/common/textevents.h:210
-#, fuzzy
 msgid "%C08,02                                                              %O"
-msgstr "%C08,02                                                         %O"
+msgstr "%C08,02                                                              %O"
 
 #: src/common/textevents.h:213
 msgid "%C08,02 Hostmask                  PRIV NOTI CHAN CTCP DCC  INVI UNIG %O"
-msgstr ""
-"%C08,02 Värdmask                  PRIV NOTI KANA CTCP DCC  INBJ AVIG %O"
+msgstr "%C08,02 Värdmask                  PRIV NOTI KANA CTCP DCC  INBJ AVIG %O"
 
 #: src/common/textevents.h:216
 msgid "%O%C11$1%O removed from ignore list."
@@ -982,9 +843,7 @@ msgstr "-%C10-%C11-%O$t$1 används redan. Försöker igen med $2..."
 
 #: src/common/textevents.h:252
 msgid "-%C10-%C11-%O$tNickname already in use. Use /NICK to try another."
-msgstr ""
-"-%C10-%C11-%O$tSmeknamnet används redan. Använd /NICK för att försöka med "
-"ett annat."
+msgstr "-%C10-%C11-%O$tSmeknamnet används redan. Använd /NICK för att försöka med ett annat."
 
 #: src/common/textevents.h:255
 msgid "-%C10-%C11-%O$tNo such DCC."
@@ -1115,11 +974,8 @@ msgid "-%C10-%C11-%O$t%C12[%O$1%C12] %O$2 %C11$3%O"
 msgstr "-%C10-%C11-%O$t%C12[%O$1%C12] %O$2 %C11$3%O"
 
 #: src/common/textevents.h:366
-msgid ""
-"-%C10-%C11-%O$t%C12[%O$1%C12] %Oreal user@host %C11$2%O, real IP %C11$3%O"
-msgstr ""
-"-%C10-%C11-%O$t%C12[%O$1%C12] %Overklig användare@värd %C11$2%O, verklig IP %"
-"C11$3%O"
+msgid "-%C10-%C11-%O$t%C12[%O$1%C12] %Oreal user@host %C11$2%O, real IP %C11$3%O"
+msgstr "-%C10-%C11-%O$t%C12[%O$1%C12] %Overklig användare@värd %C11$2%O, verklig IP %C11$3%O"
 
 #: src/common/textevents.h:369
 msgid "-%C10-%C11-%O$t%C12[%O$1%C12]%O idle %C11$2%O"
@@ -1165,17 +1021,17 @@ msgstr "%C6<%O$1%C6>%O$t$2%O"
 msgid "-%C10-%C11-%O$tYou are now known as $2"
 msgstr "-%C10-%C11-%O$tDu är nu känd som $2"
 
-#: src/common/text.c:304
+#: src/common/text.c:303
 #, c-format
 msgid "**** ENDING LOGGING AT %s\n"
 msgstr "**** AVSLUTADE LOGGANDE VID %s\n"
 
-#: src/common/text.c:421
+#: src/common/text.c:420
 #, c-format
 msgid "**** BEGIN LOGGING AT %s\n"
 msgstr "**** PÅBÖRJADE LOGGANDE VID %s\n"
 
-#: src/common/text.c:440
+#: src/common/text.c:439
 #, c-format
 msgid ""
 "* Can't open log file(s) for writing. Check the\n"
@@ -1184,465 +1040,475 @@ msgstr ""
 "* Kan inte öppna loggfiler för skrivande. Kontrollera\n"
 "  rättigheterna på %s/xchatlogs"
 
-#: src/common/text.c:651
+#: src/common/text.c:650
 msgid "Left message"
 msgstr "Vänstermeddelande"
 
-#: src/common/text.c:652
+#: src/common/text.c:651
 msgid "Right message"
 msgstr "Högermeddelande"
 
-#: src/common/text.c:656
+#: src/common/text.c:655
 msgid "The nick of the joining person"
 msgstr "Smeknamnet på personen som går in"
 
-#: src/common/text.c:657
+#: src/common/text.c:656
 msgid "The channel being joined"
 msgstr "Kanalen som gås in i"
 
-#: src/common/text.c:658 src/common/text.c:702 src/common/text.c:758
+#: src/common/text.c:657 src/common/text.c:701 src/common/text.c:757
 msgid "The host of the person"
 msgstr "Personens värddator"
 
-#: src/common/text.c:662 src/common/text.c:667 src/common/text.c:673
-#: src/common/text.c:740 src/common/text.c:864 src/common/text.c:871
-#: src/common/text.c:876 src/common/text.c:881 src/common/text.c:886
-#: src/common/text.c:892 src/common/text.c:897 src/common/text.c:901
-#: src/common/text.c:906 src/common/text.c:912 src/common/text.c:958
-#: src/common/text.c:967 src/common/text.c:972 src/common/text.c:977
-#: src/common/text.c:986 src/common/text.c:997 src/common/text.c:1004
-#: src/common/text.c:1010 src/common/text.c:1015 src/common/text.c:1020
-#: src/common/text.c:1027 src/common/text.c:1033 src/common/text.c:1039
-#: src/common/text.c:1044 src/common/text.c:1049 src/common/text.c:1053
-#: src/common/text.c:1059 src/common/text.c:1067 src/common/text.c:1101
-#: src/common/text.c:1106
+#: src/common/text.c:661 src/common/text.c:666 src/common/text.c:672
+#: src/common/text.c:739 src/common/text.c:863 src/common/text.c:870
+#: src/common/text.c:875 src/common/text.c:880 src/common/text.c:885
+#: src/common/text.c:891 src/common/text.c:896 src/common/text.c:900
+#: src/common/text.c:905 src/common/text.c:911 src/common/text.c:957
+#: src/common/text.c:966 src/common/text.c:971 src/common/text.c:976
+#: src/common/text.c:985 src/common/text.c:995 src/common/text.c:1002
+#: src/common/text.c:1008 src/common/text.c:1013 src/common/text.c:1018
+#: src/common/text.c:1025 src/common/text.c:1031 src/common/text.c:1037
+#: src/common/text.c:1042 src/common/text.c:1047 src/common/text.c:1051
+#: src/common/text.c:1057 src/common/text.c:1065 src/common/text.c:1099
+#: src/common/text.c:1104
 msgid "Nickname"
 msgstr "Smeknamn"
 
-#: src/common/text.c:663
+#: src/common/text.c:662
 msgid "The action"
 msgstr "Åtgärden"
 
-#: src/common/text.c:668
+#: src/common/text.c:667
 msgid "The text"
 msgstr "Texten"
 
-#: src/common/text.c:669
+#: src/common/text.c:668
 msgid "Mode char"
 msgstr "Lägestecken"
 
-#: src/common/text.c:674 src/common/text.c:730 src/common/text.c:736
-#: src/common/text.c:741
+#: src/common/text.c:673 src/common/text.c:729 src/common/text.c:735
+#: src/common/text.c:740
 msgid "The message"
 msgstr "Meddelandet"
 
-#: src/common/text.c:678 src/common/text.c:745
+#: src/common/text.c:677 src/common/text.c:744
 msgid "Old nickname"
 msgstr "Gammalt smeknamn"
 
-#: src/common/text.c:679 src/common/text.c:746
+#: src/common/text.c:678 src/common/text.c:745
 msgid "New nickname"
 msgstr "Nytt smeknamn"
 
-#: src/common/text.c:683
+#: src/common/text.c:682
 msgid "Nick of person who changed the topic"
 msgstr "Smeknamnet på personen som ändrade ämnet"
 
-#: src/common/text.c:684 src/common/text.c:690 src/fe-gtk/chanlist.c:599
+#: src/common/text.c:683 src/common/text.c:689 src/fe-gtk/chanlist.c:599
 #: src/fe-gtk/chanlist.c:700
 msgid "Topic"
 msgstr "Ämne"
 
-#: src/common/text.c:685 src/common/text.c:689 src/common/text.c:1121
+#: src/common/text.c:684 src/common/text.c:688 src/common/text.c:1119
 #: src/fe-gtk/chanlist.c:597 src/fe-gtk/chanlist.c:691
 #: src/fe-gtk/ignoregui.c:175
 msgid "Channel"
 msgstr "Kanal"
 
-#: src/common/text.c:694 src/common/text.c:752
+#: src/common/text.c:693 src/common/text.c:751
 msgid "The nickname of the kicker"
 msgstr "Smeknamnet på den som sparkar ut"
 
-#: src/common/text.c:695 src/common/text.c:750
+#: src/common/text.c:694 src/common/text.c:749
 msgid "The person being kicked"
 msgstr "Personen som blir utsparkad"
 
-#: src/common/text.c:696 src/common/text.c:703 src/common/text.c:707
-#: src/common/text.c:712 src/common/text.c:751 src/common/text.c:759
+#: src/common/text.c:695 src/common/text.c:702 src/common/text.c:706
+#: src/common/text.c:711 src/common/text.c:750 src/common/text.c:758
 msgid "The channel"
 msgstr "Kanalen"
 
-#: src/common/text.c:697 src/common/text.c:753 src/common/text.c:760
+#: src/common/text.c:696 src/common/text.c:752 src/common/text.c:759
 msgid "The reason"
 msgstr "Orsaken"
 
-#: src/common/text.c:701 src/common/text.c:757
+#: src/common/text.c:700 src/common/text.c:756
 msgid "The nick of the person leaving"
 msgstr "Smeknamnet på den person som lämnar"
 
-#: src/common/text.c:708 src/common/text.c:714
+#: src/common/text.c:707 src/common/text.c:713
 msgid "The time"
 msgstr "Tiden"
 
-#: src/common/text.c:713
+#: src/common/text.c:712
 msgid "The creator"
 msgstr "Skaparen"
 
-#: src/common/text.c:718
+#: src/common/text.c:717
 msgid "Nick"
 msgstr "Smeknamn"
 
-#: src/common/text.c:719 src/common/text.c:973
+#: src/common/text.c:718 src/common/text.c:972
 msgid "Reason"
 msgstr "Orsak"
 
-#: src/common/text.c:720 src/common/text.c:866 src/common/text.c:948
+#: src/common/text.c:719 src/common/text.c:865 src/common/text.c:947
 msgid "Host"
 msgstr "Värd"
 
-#: src/common/text.c:724 src/common/text.c:729 src/common/text.c:734
+#: src/common/text.c:723 src/common/text.c:728 src/common/text.c:733
 msgid "Who it's from"
 msgstr "Vem det är från"
 
-#: src/common/text.c:725
+#: src/common/text.c:724
 msgid "The time in x.x format (see below)"
 msgstr "Tiden i x.x-format (se nedan)"
 
-#: src/common/text.c:735 src/common/text.c:776
+#: src/common/text.c:734 src/common/text.c:775
 msgid "The Channel it's going to"
 msgstr "Kanalen som det går till"
 
-#: src/common/text.c:764
+#: src/common/text.c:763
 msgid "The sound"
 msgstr "Ljudet"
 
-#: src/common/text.c:765 src/common/text.c:770 src/common/text.c:775
+#: src/common/text.c:764 src/common/text.c:769 src/common/text.c:774
 msgid "The nick of the person"
 msgstr "Smeknamnet på personen"
 
-#: src/common/text.c:769 src/common/text.c:774
+#: src/common/text.c:768 src/common/text.c:773
 msgid "The CTCP event"
 msgstr "CTCP-händelsen"
 
 # I IRC-sammanhang är "keyword" ett lösenord för att komma in på en kanal.
-#: src/common/text.c:780
+#: src/common/text.c:779
 msgid "The nick of the person who set the key"
 msgstr "Smeknamnet på personen som satte lösenordet"
 
-#: src/common/text.c:781
+#: src/common/text.c:780
 msgid "The key"
 msgstr "Lösenordet"
 
-#: src/common/text.c:785
+#: src/common/text.c:784
 msgid "The nick of the person who set the limit"
 msgstr "Smeknamnet på personen som satte gränsen"
 
-#: src/common/text.c:786
+#: src/common/text.c:785
 msgid "The limit"
 msgstr "Gränsen"
 
-#: src/common/text.c:790
+#: src/common/text.c:789
 msgid "The nick of the person who did the op'ing"
 msgstr "Smeknamnet på personen som gav operatörsstatus"
 
-#: src/common/text.c:791
+#: src/common/text.c:790
 msgid "The nick of the person who has been op'ed"
 msgstr "Smeknamnet på personen som har givits operatörsstatus"
 
-#: src/common/text.c:795
+#: src/common/text.c:794
 msgid "The nick of the person who has been halfop'ed"
 msgstr "Smeknamnet på personen som har givits halvoperatörsstatus"
 
-#: src/common/text.c:796
+#: src/common/text.c:795
 msgid "The nick of the person who did the halfop'ing"
 msgstr "Smeknamnet på personen som gav halvoperatörsstatus"
 
-#: src/common/text.c:800
+#: src/common/text.c:799
 msgid "The nick of the person who did the voice'ing"
 msgstr "Smeknamnet på personen som gav röststatus"
 
-#: src/common/text.c:801
+#: src/common/text.c:800
 msgid "The nick of the person who has been voice'ed"
 msgstr "Smeknamnet på personen som har givits röststatus"
 
-#: src/common/text.c:805
+#: src/common/text.c:804
 msgid "The nick of the person who did the banning"
 msgstr "Smeknamnet på personen som gjorde bannlysningen"
 
-#: src/common/text.c:806 src/common/text.c:833
+#: src/common/text.c:805 src/common/text.c:832
 msgid "The ban mask"
 msgstr "Bannlysningsmasken"
 
 # I IRC-sammanhang är "keyword" ett lösenord för att komma in på en kanal.
-#: src/common/text.c:810
+#: src/common/text.c:809
 msgid "The nick who removed the key"
 msgstr "Smeknamnet som tog bort lösenordet"
 
-#: src/common/text.c:814
+#: src/common/text.c:813
 msgid "The nick who removed the limit"
 msgstr "Smeknamnet som tog bort gränsen"
 
-#: src/common/text.c:818
+#: src/common/text.c:817
 msgid "The nick of the person of did the deop'ing"
 msgstr "Smeknamnet på personen som tog bort operatörsstatus"
 
-#: src/common/text.c:819
+#: src/common/text.c:818
 msgid "The nick of the person who has been deop'ed"
 msgstr "Smeknamnet på personen som har fråntagits operatörsstatus"
 
-#: src/common/text.c:822
+#: src/common/text.c:821
 msgid "The nick of the person of did the dehalfop'ing"
 msgstr "Seknamnet på personen som fråntog halvoperatörsstatus"
 
-#: src/common/text.c:823
+#: src/common/text.c:822
 msgid "The nick of the person who has been dehalfop'ed"
 msgstr "Smeknamnet på personen som har fråntagits halvoperatörsstatus"
 
-#: src/common/text.c:827
+#: src/common/text.c:826
 msgid "The nick of the person of did the devoice'ing"
 msgstr "Smeknamnet på personen som fråntog röststatus"
 
-#: src/common/text.c:828
+#: src/common/text.c:827
 msgid "The nick of the person who has been devoice'ed"
 msgstr "Smeknamnet på personen som har fråntagits röststatus"
 
-#: src/common/text.c:832
+#: src/common/text.c:831
 msgid "The nick of the person of did the unban'ing"
 msgstr "Smeknamnet på personen som tog bort bannlysningen"
 
-#: src/common/text.c:837
+#: src/common/text.c:836
 msgid "The nick of the person who did the exempt"
 msgstr "Smeknamnet på personen som gjorde undantaget"
 
-#: src/common/text.c:838 src/common/text.c:843
+#: src/common/text.c:837 src/common/text.c:842
 msgid "The exempt mask"
 msgstr "Undantagsmasken"
 
-#: src/common/text.c:842
+#: src/common/text.c:841
 msgid "The nick of the person removed the exempt"
 msgstr "Smeknamnet på personen som tog bort undantaget"
 
-#: src/common/text.c:847
+#: src/common/text.c:846
 msgid "The nick of the person who did the invite"
 msgstr "Smeknamnet på personen som gjorde inbjudan"
 
-#: src/common/text.c:848 src/common/text.c:853
+#: src/common/text.c:847 src/common/text.c:852
 msgid "The invite mask"
 msgstr "Inbjudningsmasken"
 
-#: src/common/text.c:852
+#: src/common/text.c:851
 msgid "The nick of the person removed the invite"
 msgstr "Smeknamnet på personen som tog bort inbjudan"
 
-#: src/common/text.c:857
+#: src/common/text.c:856
 msgid "The nick of the person setting the mode"
 msgstr "Smeknamnet på personen som satte läget"
 
-#: src/common/text.c:858
+#: src/common/text.c:857
 msgid "The mode's sign (+/-)"
 msgstr "Lägestecknet (+/-)"
 
-#: src/common/text.c:859
+#: src/common/text.c:858
 msgid "The mode letter"
 msgstr "Lägesbokstaven"
 
-#: src/common/text.c:860
+#: src/common/text.c:859
 msgid "The channel it's being set on"
 msgstr "Kanalen som det sätts på"
 
-#: src/common/text.c:865
+#: src/common/text.c:864
 msgid "Username"
 msgstr "Användarnamn"
 
-#: src/common/text.c:867
+#: src/common/text.c:866
 msgid "Full name"
 msgstr "Fullständigt namn"
 
-#: src/common/text.c:872
+#: src/common/text.c:871
 msgid "Channel Membership/\"is an IRC operator\""
 msgstr "Kanalmedlemskap/\"är en IRC-operatör\""
 
-#: src/common/text.c:877
+#: src/common/text.c:876
 msgid "Server Information"
 msgstr "Serverinformation"
 
-#: src/common/text.c:882 src/common/text.c:887
+#: src/common/text.c:881 src/common/text.c:886
 msgid "Idle time"
 msgstr "Inaktivitetstid"
 
-#: src/common/text.c:888
+#: src/common/text.c:887
 msgid "Signon time"
 msgstr "Påloggningstid"
 
-#: src/common/text.c:893
+#: src/common/text.c:892
 msgid "Away reason"
 msgstr "Frånvaroskäl"
 
-#: src/common/text.c:902 src/common/text.c:907 src/common/text.c:915
-#: src/common/text.c:1093
+#: src/common/text.c:901 src/common/text.c:906 src/common/text.c:914
+#: src/common/text.c:1091
 msgid "Message"
 msgstr "Meddelande"
 
-#: src/common/text.c:908
+#: src/common/text.c:907
 msgid "Account"
 msgstr "Konto"
 
-#: src/common/text.c:913
+#: src/common/text.c:912
 msgid "Real user@host"
 msgstr "Verklig användare@värd"
 
-#: src/common/text.c:914
+#: src/common/text.c:913
 msgid "Real IP"
 msgstr "Verklig IP"
 
-#: src/common/text.c:919 src/common/text.c:928 src/common/text.c:934
-#: src/common/text.c:1116
+#: src/common/text.c:918 src/common/text.c:927 src/common/text.c:933
+#: src/common/text.c:1114
 msgid "Channel Name"
 msgstr "Kanalnamn"
 
-#: src/common/text.c:923 src/common/text.c:1079 src/fe-gtk/textgui.c:383
+#: src/common/text.c:922 src/common/text.c:1077 src/fe-gtk/textgui.c:383
 msgid "Text"
 msgstr "Text"
 
-#: src/common/text.c:924 src/common/text.c:930 src/common/text.c:1117
+#: src/common/text.c:923 src/common/text.c:929 src/common/text.c:1115
 msgid "Server Name"
 msgstr "Servernamn"
 
-#: src/common/text.c:929
+#: src/common/text.c:928
 msgid "Nick of person who invited you"
 msgstr "Smeknamnet på personen som bjöd in dig"
 
-#: src/common/text.c:935 src/fe-gtk/chanlist.c:598
+#: src/common/text.c:934 src/fe-gtk/chanlist.c:598
 msgid "Users"
 msgstr "Användare"
 
-#: src/common/text.c:939
+#: src/common/text.c:938
 msgid "Nickname in use"
 msgstr "Smeknamnet används redan"
 
-#: src/common/text.c:940
+#: src/common/text.c:939
 msgid "Nick being tried"
 msgstr "Smeknamnet provas"
 
-#: src/common/text.c:944 src/common/text.c:980 src/common/text.c:991
-#: src/common/text.c:998 src/common/text.c:1011 src/common/text.c:1028
-#: src/common/text.c:1128
-msgid "Error"
-msgstr "Fel"
+#: src/common/text.c:943
+msgid "Error String"
+msgstr "Felsträng"
 
-#: src/common/text.c:949 src/common/text.c:1083
+#: src/common/text.c:948 src/common/text.c:1081
 msgid "IP"
 msgstr "IP"
 
-#: src/common/text.c:950 src/common/text.c:979
+#: src/common/text.c:949 src/common/text.c:978
 msgid "Port"
 msgstr "Port"
 
-#: src/common/text.c:954
+#: src/common/text.c:953
 msgid "PID"
 msgstr "PID"
 
-#: src/common/text.c:962
+#: src/common/text.c:961
 msgid "Channel name"
 msgstr "Kanalnamn"
 
-#: src/common/text.c:963 src/common/text.c:968
+#: src/common/text.c:962 src/common/text.c:967
 msgid "Modes string"
 msgstr "Lägessträng"
 
-#: src/common/text.c:978 src/common/text.c:1016 src/common/text.c:1021
-#: src/common/text.c:1062
+#: src/common/text.c:977 src/common/text.c:1014 src/common/text.c:1019
+#: src/common/text.c:1060
 msgid "IP address"
 msgstr "IP-adress"
 
-#: src/common/text.c:984 src/common/text.c:1009
+#: src/common/text.c:979 src/common/text.c:996 src/common/text.c:1026
+msgid "Error name"
+msgstr "Felnamn"
+
+#: src/common/text.c:983 src/common/text.c:1007
 msgid "DCC Type"
 msgstr "DCC-typ"
 
-#: src/common/text.c:985 src/common/text.c:990 src/common/text.c:995
-#: src/common/text.c:1002 src/common/text.c:1022 src/common/text.c:1026
-#: src/common/text.c:1032 src/common/text.c:1038 src/common/text.c:1045
-#: src/common/text.c:1054 src/common/text.c:1060
+#: src/common/text.c:984 src/common/text.c:989 src/common/text.c:993
+#: src/common/text.c:1000 src/common/text.c:1020 src/common/text.c:1024
+#: src/common/text.c:1030 src/common/text.c:1036 src/common/text.c:1043
+#: src/common/text.c:1052 src/common/text.c:1058
 msgid "Filename"
 msgstr "Filnamn"
 
-#: src/common/text.c:996 src/common/text.c:1003
+#: src/common/text.c:994 src/common/text.c:1001
 msgid "Destination filename"
 msgstr "Målfilnamn"
 
-#: src/common/text.c:1005 src/common/text.c:1034
+#: src/common/text.c:1003 src/common/text.c:1032
 msgid "CPS"
 msgstr "CPS"
 
-#: src/common/text.c:1040
+#: src/common/text.c:1009
+msgid "Error string"
+msgstr "Felsträng"
+
+#: src/common/text.c:1038
 msgid "Pathname"
 msgstr "Sökväg"
 
-#: src/common/text.c:1055 src/fe-gtk/dccgui.c:483 src/fe-gtk/dccgui.c:633
+#: src/common/text.c:1053 src/fe-gtk/dccgui.c:483 src/fe-gtk/dccgui.c:633
 msgid "Position"
 msgstr "Position"
 
-#: src/common/text.c:1061 src/fe-gtk/dccgui.c:482 src/fe-gtk/dccgui.c:632
+#: src/common/text.c:1059 src/fe-gtk/dccgui.c:482 src/fe-gtk/dccgui.c:632
 msgid "Size"
 msgstr "Storlek"
 
-#: src/common/text.c:1066
+#: src/common/text.c:1064
 msgid "DCC String"
 msgstr "DCC-sträng"
 
-#: src/common/text.c:1071
+#: src/common/text.c:1069
 msgid "Number of notify items"
 msgstr "Antal notifieringsobjekt"
 
-#: src/common/text.c:1075
+#: src/common/text.c:1073
 msgid "Servername"
 msgstr "Servernamn"
 
-#: src/common/text.c:1087
+#: src/common/text.c:1085
 msgid "Old Filename"
 msgstr "Gammalt filnamn"
 
-#: src/common/text.c:1088
+#: src/common/text.c:1086
 msgid "New Filename"
 msgstr "Nytt filnamn"
 
-#: src/common/text.c:1092
+#: src/common/text.c:1090
 msgid "Receiver"
 msgstr "Mottagare"
 
-#: src/common/text.c:1097
+#: src/common/text.c:1095
 msgid "Hostmask"
 msgstr "Värdmask"
 
-#: src/common/text.c:1102
+#: src/common/text.c:1100
 msgid "Hostname"
 msgstr "Värdnamn"
 
-#: src/common/text.c:1107
+#: src/common/text.c:1105
 msgid "The Packet"
 msgstr "Paketet"
 
-#: src/common/text.c:1111
+#: src/common/text.c:1109
 msgid "Seconds"
 msgstr "Sekunder"
 
-#: src/common/text.c:1115
+#: src/common/text.c:1113
 msgid "Nick of person who have been invited"
 msgstr "Smeknamnet på personen som bjudits in"
 
-#: src/common/text.c:1122
+#: src/common/text.c:1120
 msgid "Banmask"
 msgstr "Bannlysningsmask"
 
-#: src/common/text.c:1123
+#: src/common/text.c:1121
 msgid "Who set the ban"
 msgstr "Vem som gjorde bannlysningen"
 
-#: src/common/text.c:1124
+#: src/common/text.c:1122
 msgid "Ban time"
 msgstr "Bannlysningstid"
 
-#: src/common/text.c:1162
+#: src/common/text.c:1126
+msgid "Error"
+msgstr "Fel"
+
+#: src/common/text.c:1160
 #, c-format
 msgid ""
 "Error parsing event %s.\n"
@@ -1651,12 +1517,14 @@ msgstr ""
 "Fel vid tolkning av händelsen %s.\n"
 "Läser in standardvärde"
 
-#: src/common/text.c:1672
-#, fuzzy, c-format
+#: src/common/text.c:1644
+#, c-format
 msgid ""
 "Cannot read sound file:\n"
 "%s"
-msgstr "Kan inte läsa den filen."
+msgstr ""
+"Kan inte läsa ljudfilen:\n"
+"%s"
 
 #: src/common/util.c:292
 msgid "Remote host closed socket"
@@ -2931,7 +2799,7 @@ msgstr "Om X-Chat"
 
 #: src/fe-gtk/about.c:124
 msgid "A multiplatform IRC Client"
-msgstr ""
+msgstr "En IRC-klient för flera plattformar"
 
 #: src/fe-gtk/ascii.c:131
 msgid "Character Chart"
@@ -3062,12 +2930,8 @@ msgstr ""
 "Återupptagning inte möjlig."
 
 #: src/fe-gtk/dccgui.c:383
-msgid ""
-"File in download directory is larger than file offered. Resuming not "
-"possible."
-msgstr ""
-"Filen i hämtningskatalogen är större än den fil som erbjudits. "
-"Återupptagning är inte möjlig."
+msgid "File in download directory is larger than file offered. Resuming not possible."
+msgstr "Filen i hämtningskatalogen är större än den fil som erbjudits. Återupptagning är inte möjlig."
 
 #: src/fe-gtk/dccgui.c:387
 msgid "Cannot resume the same file from two people."
@@ -3225,106 +3089,54 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/fe-gtk/fe-gtk.c:617
+#: src/fe-gtk/fe-gtk.c:614
 msgid "Search buffer is empty.\n"
 msgstr "Sökbufferten är tom.\n"
 
-#: src/fe-gtk/fe-gtk.c:694
+#: src/fe-gtk/fe-gtk.c:691
 #, c-format
 msgid "%d bytes"
-msgstr ""
+msgstr "%d byte"
 
 #: src/fe-gtk/fkeys.c:153
-msgid ""
-"The Run Command action runs the data in Data 1 as if it has been typed into "
-"the entry box where you pressed the key sequence. Thus it can contain text "
-"(which will be sent to the channel/person), commands or user commands. When "
-"run all \\n characters in Data 1 are used to deliminate seperate commands so "
-"it is possible to run more than one command. If you want a \\ in the actual "
-"text run then enter \\\\"
-msgstr ""
-"Åtgärden Kör kommando kör datat i Data 1 som om det hade skrivits i "
-"textfältet där du tryckte tangentkombinationen. Därför kan det innehålla "
-"text (som kommer att skickas till kanalen/personen), kommandon eller "
-"användarkommandon. När det körs behandlas \\n-tecken i Data 1 som avgränsare "
-"mellan kommandon så att det är möjligt att köra mer än ett kommando. Om du "
-"vill ha ett \\ i den verkliga texten anger du \\\\"
+msgid "The Run Command action runs the data in Data 1 as if it has been typed into the entry box where you pressed the key sequence. Thus it can contain text (which will be sent to the channel/person), commands or user commands. When run all \\n characters in Data 1 are used to deliminate seperate commands so it is possible to run more than one command. If you want a \\ in the actual text run then enter \\\\"
+msgstr "Åtgärden Kör kommando kör datat i Data 1 som om det hade skrivits i textfältet där du tryckte tangentkombinationen. Därför kan det innehålla text (som kommer att skickas till kanalen/personen), kommandon eller användarkommandon. När det körs behandlas \\n-tecken i Data 1 som avgränsare mellan kommandon så att det är möjligt att köra mer än ett kommando. Om du vill ha ett \\ i den verkliga texten anger du \\\\"
 
 #: src/fe-gtk/fkeys.c:155
-msgid ""
-"The Change Page command switches between pages in the notebook. Set Data 1 "
-"to the page you want to switch to. If Data 2 is set to anything then the "
-"switch will be relative to the current position"
-msgstr ""
-"Kommandot Byt sida växlar mellan sidor i flikhäftet. Sätt Data 1 till den "
-"sida som du vill växla till. Om Data 2 är satt till någonting kommer "
-"växlingen att vara relativ till nuvarande position"
+msgid "The Change Page command switches between pages in the notebook. Set Data 1 to the page you want to switch to. If Data 2 is set to anything then the switch will be relative to the current position"
+msgstr "Kommandot Byt sida växlar mellan sidor i flikhäftet. Sätt Data 1 till den sida som du vill växla till. Om Data 2 är satt till någonting kommer växlingen att vara relativ till nuvarande position"
 
 #: src/fe-gtk/fkeys.c:157
-msgid ""
-"The Insert in Buffer command will insert the contents of Data 1 into the "
-"entry where the key sequence was pressed at the current cursor position"
-msgstr ""
-"Kommandot Infoga i buffert kommer att infoga innehållet i Data 1 i fältet "
-"där tangentkombinationen trycktes vid nuvarande markörposition"
+msgid "The Insert in Buffer command will insert the contents of Data 1 into the entry where the key sequence was pressed at the current cursor position"
+msgstr "Kommandot Infoga i buffert kommer att infoga innehållet i Data 1 i fältet där tangentkombinationen trycktes vid nuvarande markörposition"
 
 #: src/fe-gtk/fkeys.c:159
-msgid ""
-"The Scroll Page command scrolls the text widget up or down one page. If Data "
-"1 is set to anything the page scrolls up, else it scrolls down"
-msgstr ""
-"Kommandot Rulla sida rullar textwidgeten upp eller ner en sida. Om Data 1 är "
-"satt till något kommer sidan att rulla uppåt, annars rullas den neråt"
+msgid "The Scroll Page command scrolls the text widget up or down one page. If Data 1 is set to anything the page scrolls up, else it scrolls down"
+msgstr "Kommandot Rulla sida rullar textwidgeten upp eller ner en sida. Om Data 1 är satt till något kommer sidan att rulla uppåt, annars rullas den neråt"
 
 #: src/fe-gtk/fkeys.c:161
-msgid ""
-"The Set Buffer command sets the entry where the key sequence was entered to "
-"the contents of Data 1"
-msgstr ""
-"Kommandot Sätt buffert sätter fältet där tangentkombinationen trycktes till "
-"innehållet i Data 1"
+msgid "The Set Buffer command sets the entry where the key sequence was entered to the contents of Data 1"
+msgstr "Kommandot Sätt buffert sätter fältet där tangentkombinationen trycktes till innehållet i Data 1"
 
 #: src/fe-gtk/fkeys.c:163
-msgid ""
-"The Last Command command sets the entry to contain the last command entered "
-"- the same as pressing up in a shell"
-msgstr ""
-"Kommandot Senaste kommando gör att fältet innehåller det senast angivna "
-"kommandot - samma som att trycka uppåtpil i skalet"
+msgid "The Last Command command sets the entry to contain the last command entered - the same as pressing up in a shell"
+msgstr "Kommandot Senaste kommando gör att fältet innehåller det senast angivna kommandot - samma som att trycka uppåtpil i skalet"
 
 #: src/fe-gtk/fkeys.c:165
-msgid ""
-"The Next Command command sets the entry to contain the next command entered "
-"- the same as pressing down in a shell"
-msgstr ""
-"Kommandot Nästa kommando gör att fältet innehåller nästa kommando som angavs "
-"- samma som att trycka nedåtpil i skalet"
+msgid "The Next Command command sets the entry to contain the next command entered - the same as pressing down in a shell"
+msgstr "Kommandot Nästa kommando gör att fältet innehåller nästa kommando som angavs - samma som att trycka nedåtpil i skalet"
 
 #: src/fe-gtk/fkeys.c:167
-msgid ""
-"This command changes the text in the entry to finish an incomplete nickname "
-"or command. If Data 1 is set then double-tabbing in a string will select the "
-"last nick, not the next"
-msgstr ""
-"Detta kommando ändrar texten i fältet för att komplettera ett inkomplett "
-"smeknamn eller kommando. Om Data 1 är satt kommer dubbla tabulatortryck i en "
-"sträng att välja det senaste smeknamnet, inte nästa"
+msgid "This command changes the text in the entry to finish an incomplete nickname or command. If Data 1 is set then double-tabbing in a string will select the last nick, not the next"
+msgstr "Detta kommando ändrar texten i fältet för att komplettera ett inkomplett smeknamn eller kommando. Om Data 1 är satt kommer dubbla tabulatortryck i en sträng att välja det senaste smeknamnet, inte nästa"
 
 #: src/fe-gtk/fkeys.c:169
-msgid ""
-"This command scrolls up and down through the list of nicks. If Data 1 is set "
-"to anything it will scroll up, else it scrolls down"
-msgstr ""
-"Detta kommando rullar upp och ner i listan med smeknamn. Om Data 1 är satt "
-"till någonting rullar det upp, annars rullar det ner"
+msgid "This command scrolls up and down through the list of nicks. If Data 1 is set to anything it will scroll up, else it scrolls down"
+msgstr "Detta kommando rullar upp och ner i listan med smeknamn. Om Data 1 är satt till någonting rullar det upp, annars rullar det ner"
 
 #: src/fe-gtk/fkeys.c:171
-msgid ""
-"This command checks the last word entered in the entry against the replace "
-"list and replaces it if it finds a match"
-msgstr ""
-"Detta kommando kontrollerar det senast angivna ordet i fältet mot "
-"ersättningslistan och ersätter det om det hittar en träff"
+msgid "This command checks the last word entered in the entry against the replace list and replaces it if it finds a match"
+msgstr "Detta kommando kontrollerar det senast angivna ordet i fältet mot ersättningslistan och ersätter det om det hittar en träff"
 
 #: src/fe-gtk/fkeys.c:173
 msgid "This command moves the front tab left by one"
@@ -3348,8 +3160,7 @@ msgstr "Spara indataraden i historiken men skicka inte den till servern"
 
 #: src/fe-gtk/fkeys.c:193
 msgid "There was an error loading key bindings configuration"
-msgstr ""
-"Det inträffade ett fel vid inläsning av tangentbindningskonfigurationen"
+msgstr "Det inträffade ett fel vid inläsning av tangentbindningskonfigurationen"
 
 #: src/fe-gtk/fkeys.c:434 src/fe-gtk/fkeys.c:435 src/fe-gtk/fkeys.c:436
 #: src/fe-gtk/fkeys.c:437 src/fe-gtk/fkeys.c:719 src/fe-gtk/fkeys.c:725
@@ -3616,6 +3427,10 @@ msgid ""
 "You may be using a non-compliant window\n"
 "manager that is not currently supported.\n"
 msgstr ""
+"Kan inte ställa in genomskinlig bakgrund!\n"
+"\n"
+"Du kanske använder en ickekompatibel fönster-\n"
+"hanterare som inte stöds för tillfället.\n"
 
 #: src/fe-gtk/maingui.c:1905
 msgid "Enter new nickname:"
@@ -4269,11 +4084,8 @@ msgid "Connect Command:"
 msgstr "Anslutningskommando:"
 
 #: src/fe-gtk/servlistgui.c:1066
-msgid ""
-"Command to execute after connecting. Can be used to authenticate to NickServ"
-msgstr ""
-"Kommando att utföra efter anslutning. Kan användas för autentisering till "
-"NickServ"
+msgid "Command to execute after connecting. Can be used to authenticate to NickServ"
+msgstr "Kommando att utföra efter anslutning. Kan användas för autentisering till NickServ"
 
 #: src/fe-gtk/servlistgui.c:1074
 msgid "Cycle until connected"
@@ -4510,8 +4322,7 @@ msgstr "Öppna verktyg i:"
 
 #: src/fe-gtk/setup.c:162
 msgid "Open DCC, Ignore, Notify etc, in tabs or windows?"
-msgstr ""
-"Öppna DCC-, ignorerings-, notifieringsfönster osv. i flikar eller fönster?"
+msgstr "Öppna DCC-, ignorerings-, notifieringsfönster osv. i flikar eller fönster?"
 
 #: src/fe-gtk/setup.c:163
 msgid "Open tab for server messages"
@@ -4590,12 +4401,8 @@ msgid "Get my IP from IRC server"
 msgstr "Hämta mitt IP-nummer från IRC-servern"
 
 #: src/fe-gtk/setup.c:186
-msgid ""
-"/WHOIS yourself to find your real address. Use this if you have a 192.168.*."
-"* address!"
-msgstr ""
-"Gör /WHOIS på dig själv för att hitta din verkliga adress. Använd detta om "
-"du har en adress av typen 192.168.*.*!"
+msgid "/WHOIS yourself to find your real address. Use this if you have a 192.168.*.* address!"
+msgstr "Gör /WHOIS på dig själv för att hitta din verkliga adress. Använd detta om du har en adress av typen 192.168.*.*!"
 
 #: src/fe-gtk/setup.c:187
 msgid "Max. send CPS:"
@@ -4699,8 +4506,7 @@ msgstr "Vemär vid notifiering"
 
 #: src/fe-gtk/setup.c:218
 msgid "Sends a /WHOIS when a user comes online in your notify list"
-msgstr ""
-"Skickar en /WHOIS när en användare som är i din notifieringslista ansluter"
+msgstr "Skickar en /WHOIS när en användare som är i din notifieringslista ansluter"
 
 #: src/fe-gtk/setup.c:219
 msgid "Hide join/part messages"
@@ -4768,37 +4574,32 @@ msgid "(Only useful for computers with multiple addresses)."
 msgstr "(Endast användbart för datorer med flera adresser)."
 
 #: src/fe-gtk/setup.c:249
-#, fuzzy
 msgid "Proxy server"
-msgstr "Proxyserver:"
+msgstr "Proxyserver"
 
 #: src/fe-gtk/setup.c:250
-#, fuzzy
 msgid "Hostname:"
-msgstr "Värdnamn"
+msgstr "Värdnamn:"
 
 #: src/fe-gtk/setup.c:251
-#, fuzzy
 msgid "Username:"
-msgstr "Användarnamn"
+msgstr "Användarnamn:"
 
 #: src/fe-gtk/setup.c:252
-#, fuzzy
 msgid "Password:"
-msgstr "Serverlösenord:"
+msgstr "Lösenord:"
 
 #: src/fe-gtk/setup.c:253
 msgid "Port:"
 msgstr "Port:"
 
 #: src/fe-gtk/setup.c:254
-#, fuzzy
 msgid "Type:"
-msgstr "Ovansida:"
+msgstr "Typ:"
 
 #: src/fe-gtk/setup.c:256
 msgid "Authenticate to the proxy server (only HTTP)"
-msgstr ""
+msgstr "Autentisera till proxyservern (endast HTTP)"
 
 #: src/fe-gtk/setup.c:479
 msgid "Select an Image File"
@@ -4902,8 +4703,7 @@ msgstr "Kategorier"
 
 #: src/fe-gtk/setup.c:1085
 msgid "Some settings were changed that require a restart to take full effect."
-msgstr ""
-"En del inställningar ändrades som kräver en omstart för att börja gälla."
+msgstr "En del inställningar ändrades som kräver en omstart för att börja gälla."
 
 #: src/fe-gtk/setup.c:1112
 msgid "X-Chat: Preferences"
@@ -4987,14 +4787,17 @@ msgstr "Spara lista till en fil"
 msgid "%d ops, %d total"
 msgstr "%d oppar, %d totalt"
 
-#~ msgid "Error String"
-#~ msgstr "Felsträng"
+#~ msgid "%C13*%O$t$1 $2%O"
+#~ msgstr "%C13*%O$t$1 $2%O"
 
-#~ msgid "Error name"
-#~ msgstr "Felnamn"
+#~ msgid "%C08,02                                                         %O"
+#~ msgstr "%C08,02                                                         %O"
 
-#~ msgid "Error string"
-#~ msgstr "Felsträng"
+#~ msgid "Proxy server:"
+#~ msgstr "Proxyserver:"
+
+#~ msgid "Password"
+#~ msgstr "Lösenord"
 
 #~ msgid "Proxy port:"
 #~ msgstr "Proxyport:"
@@ -5288,12 +5091,8 @@ msgstr "%d oppar, %d totalt"
 #~ msgid "/LISTDLL, Lists all currenly loaded plugins\n"
 #~ msgstr "/LISTDLL, listar alla för tillfället inlästa insticksmoduler\n"
 
-#~ msgid ""
-#~ "/MKICKB, Sets a ban of *@* and mass kicks everyone except you in the "
-#~ "current channel (needs chanop)\n"
-#~ msgstr ""
-#~ "/MKICKB, sätter en bannlysning på *@* och sparkar ut alla utom dig själv "
-#~ "från den aktuella kanalen (kräver kanaloperatörsstatus)\n"
+#~ msgid "/MKICKB, Sets a ban of *@* and mass kicks everyone except you in the current channel (needs chanop)\n"
+#~ msgstr "/MKICKB, sätter en bannlysning på *@* och sparkar ut alla utom dig själv från den aktuella kanalen (kräver kanaloperatörsstatus)\n"
 
 #~ msgid "/SCPINFO, Lists some information about current Perl bindings\n"
 #~ msgstr "/SCPINFO, listar information om aktuella Perlbindningar\n"
@@ -5343,16 +5142,11 @@ msgstr "%d oppar, %d totalt"
 #~ msgid "Bytes in mailbox"
 #~ msgstr "Byte i brevlådan"
 
-#~ msgid ""
-#~ "-%C10-%C11-%O$tDCC CHAT failed. Connection to $1 %C14[%O$2:$3%C14]%O lost."
-#~ msgstr ""
-#~ "-%C10-%C11-%O$tDCC CHAT misslyckades. Anslutningen till $1 %C14[%O$2:$3%"
-#~ "C14]%O avbruten."
+#~ msgid "-%C10-%C11-%O$tDCC CHAT failed. Connection to $1 %C14[%O$2:$3%C14]%O lost."
+#~ msgstr "-%C10-%C11-%O$tDCC CHAT misslyckades. Anslutningen till $1 %C14[%O$2:$3%C14]%O avbruten."
 
 #~ msgid "-%C10-%C11-%O$tDCC RECV $1 ($2) failed. Connection to $3 lost."
-#~ msgstr ""
-#~ "-%C10-%C11-%O$tDCC RECV $1 ($2) misslyckades. Anslutningen till $3 "
-#~ "avbruten."
+#~ msgstr "-%C10-%C11-%O$tDCC RECV $1 ($2) misslyckades. Anslutningen till $3 avbruten."
 
 #~ msgid " $1 $2  $3  $4  $5  $6  $7"
 #~ msgstr " $1 $2  $3  $4  $5  $6  $7"
@@ -6293,9 +6087,7 @@ msgstr "%d oppar, %d totalt"
 #~ msgstr "Glöm alla insticksmoduler"
 
 #~ msgid "Use the /NOTIFY command to add people to your notify list."
-#~ msgstr ""
-#~ "Använd kommandot /NOTIFY för att lägga till personer till din "
-#~ "notifieringslista."
+#~ msgstr "Använd kommandot /NOTIFY för att lägga till personer till din notifieringslista."
 
 #~ msgid "X-Chat: Palette"
 #~ msgstr "X-Chat: Palett"
@@ -6881,40 +6673,19 @@ msgstr "%d oppar, %d totalt"
 #~ msgstr "okänd"
 
 #~ msgid "*** key_dialog_delete: couldn't find kb in list!\n"
-#~ msgstr ""
-#~ "*** key_dialog_delete: kunde inte hitta tangentbindningen i listan!\n"
+#~ msgstr "*** key_dialog_delete: kunde inte hitta tangentbindningen i listan!\n"
 
-#~ msgid ""
-#~ "/RECONNECT [<host>] [<port>] [<password>] [<ssl>] "
-#~ "[<accept_invalid_cert>], Can be called just as /RECONNECT to reconnect to "
-#~ "the current server or with /RECONNECT ALL to reconnect to all the open "
-#~ "servers\n"
-#~ msgstr ""
-#~ "/RECONNECT [<värd>] [<port>] [<lösenord>] [<ssl>] "
-#~ "[<acceptera_ogiltigt_cert>], kan anropas bara som /RECONNECT för att "
-#~ "återansluta till den aktuella servern eller med /RECONNECT ALL för att "
-#~ "återansluta till alla de öppna servrarna\n"
+#~ msgid "/RECONNECT [<host>] [<port>] [<password>] [<ssl>] [<accept_invalid_cert>], Can be called just as /RECONNECT to reconnect to the current server or with /RECONNECT ALL to reconnect to all the open servers\n"
+#~ msgstr "/RECONNECT [<värd>] [<port>] [<lösenord>] [<ssl>] [<acceptera_ogiltigt_cert>], kan anropas bara som /RECONNECT för att återansluta till den aktuella servern eller med /RECONNECT ALL för att återansluta till alla de öppna servrarna\n"
 
-#~ msgid ""
-#~ "/SERVCHAN <host> <port> <channel> [<ssl>] [<accept_invalid_cert>], "
-#~ "connects and joins a channel\n"
-#~ msgstr ""
-#~ "/SERVCHAN <värd> <port> <kanal> [<ssl>] [<acceptera_ogiltiga_cert>], "
-#~ "ansluter och går in i en kanal\n"
+#~ msgid "/SERVCHAN <host> <port> <channel> [<ssl>] [<accept_invalid_cert>], connects and joins a channel\n"
+#~ msgstr "/SERVCHAN <värd> <port> <kanal> [<ssl>] [<acceptera_ogiltiga_cert>], ansluter och går in i en kanal\n"
 
-#~ msgid ""
-#~ "/SERVER <host> [<port>] [<password>] [<ssl>] [<accept_invalid_cert>], "
-#~ "connects to a server, the default port is 6667\n"
-#~ msgstr ""
-#~ "/SERVER <värd> [<port>] [<lösenord>] [<ssl>] [<acceptera_ogiltigt_cert>], "
-#~ "ansluter till en server, standardporten är 6667\n"
+#~ msgid "/SERVER <host> [<port>] [<password>] [<ssl>] [<accept_invalid_cert>], connects to a server, the default port is 6667\n"
+#~ msgstr "/SERVER <värd> [<port>] [<lösenord>] [<ssl>] [<acceptera_ogiltigt_cert>], ansluter till en server, standardporten är 6667\n"
 
-#~ msgid ""
-#~ "/SSLSERVER <host> [<port>] [<accept_invalid_cert (y/n)>] [<password>], "
-#~ "connects to a server, the default port is 994\n"
-#~ msgstr ""
-#~ "/SSLSERVER <värd> [<port>] [<acceptera_ogiltigt_cert (y/n)>] "
-#~ "[<lösenord>], ansluter till en server, standardporten är 994\n"
+#~ msgid "/SSLSERVER <host> [<port>] [<accept_invalid_cert (y/n)>] [<password>], connects to a server, the default port is 994\n"
+#~ msgstr "/SSLSERVER <värd> [<port>] [<acceptera_ogiltigt_cert (y/n)>] [<lösenord>], ansluter till en server, standardporten är 994\n"
 
 #~ msgid "*** XCHAT WARNING: notify list too large.\n"
 #~ msgstr "*** XCHAT-VARNING: notifieringslistan är för stor.\n"

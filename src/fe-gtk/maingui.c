@@ -112,6 +112,80 @@ mg_create_tab_colors (void)
 		plain_list = pango_attr_list_new ();
 }
 
+#ifdef WIN32
+#define WINVER 0x0501	/* needed for vc6? */
+#include <windows.h>
+#include <gdk/gdkwin32.h>
+
+/* Flash the taskbar button on Windows when there's a highlight event. */
+
+static void
+flash_window (GtkWidget *win)
+{
+	FLASHWINFO fi;
+	static HMODULE user = NULL;
+	static BOOL (*flash) (PFLASHWINFO) = NULL;
+
+	if (!user)
+	{
+		user = GetModuleHandleA ("USER32");
+		if (!user)
+			return;	/* this should never fail */
+	}
+
+	if (!flash)
+	{
+		flash = (void *)GetProcAddress (user, "FlashWindowEx");
+		if (!flash)
+			return;	/* this fails on NT4.0 and Win95 */
+	}
+
+	fi.cbSize = sizeof (fi);
+	fi.hwnd = GDK_WINDOW_HWND (win->window);
+	fi.dwFlags = FLASHW_ALL | FLASHW_TIMERNOFG;
+	fi.uCount = 0;
+	fi.dwTimeout = 500;
+	flash (&fi);
+	/*FlashWindowEx (&fi);*/
+}
+#endif
+
+/* set a tab plain, red, light-red, or blue */
+
+void
+fe_set_tab_color (struct session *sess, int col, int flash)
+{
+	switch (col)
+	{
+	case 0:	/* no particular color (theme default) */
+		sess->new_data = FALSE;
+		sess->msg_said = FALSE;
+		tab_set_attrlist (sess->res->tab, plain_list);
+		break;
+	case 1:	/* new data has been displayed (dark red) */
+		sess->new_data = TRUE;
+		sess->msg_said = FALSE;
+		tab_set_attrlist (sess->res->tab, newdata_list);
+		break;
+	case 2:	/* new message arrived in channel (light red) */
+		sess->new_data = FALSE;
+		sess->msg_said = TRUE;
+		tab_set_attrlist (sess->res->tab, newmsg_list);
+		break;
+	case 3:	/* your nick has been seen (blue) */
+		sess->new_data = FALSE;
+		sess->msg_said = FALSE;
+		sess->nick_said = TRUE;
+		tab_set_attrlist (sess->res->tab, nickseen_list);
+		break;
+	}
+
+#ifdef WIN32
+	if (flash)
+		flash_window (sess->gui->window);
+#endif
+}
+
 /* change the little icon to the left of your nickname */
 
 void
@@ -342,7 +416,7 @@ mg_focus (session *sess)
 		sess->nick_said = FALSE;
 		sess->msg_said = FALSE;
 		sess->new_data = FALSE;
-		tab_set_attrlist (sess->res->tab, plain_list);
+		fe_set_tab_color (sess, 0, FALSE);
 	}
 }
 

@@ -535,10 +535,15 @@ servlist_server_row_cb (GtkTreeSelection *sel, gpointer user_data)
 static void
 servlist_savegui (void)
 {
+	char *sp;
+
 	strcpy (prefs.nick1, GTK_ENTRY (entry_nick1)->text);
 	strcpy (prefs.nick2, GTK_ENTRY (entry_nick2)->text);
 	strcpy (prefs.nick3, GTK_ENTRY (entry_nick3)->text);
 	strcpy (prefs.username, GTK_ENTRY (entry_guser)->text);
+	sp = strchr (prefs.username, ' ');
+	if (sp)
+		sp[0] = 0;	/* spaces will break the login */
 	strcpy (prefs.realname, GTK_ENTRY (entry_greal)->text);
 	servlist_save ();
 }
