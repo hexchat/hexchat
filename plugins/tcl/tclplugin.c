@@ -15,7 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#define VERSION "1.0.6"
+#define VERSION "1.0.8"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -27,6 +27,10 @@
 #include <tclDecls.h>
 #include <sys/stat.h>
 #include <arpa/inet.h>
+
+#ifdef WIN32
+#include <windows.h>
+#endif
 
 #include "xchat-plugin.h"
 #include "tclplugin.h"
@@ -1775,6 +1779,26 @@ static void banner()
 
 int xchat_plugin_init(xchat_plugin * plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg)
 {
+#ifdef WIN32
+    static int have_lib = 0;
+    HINSTANCE lib;
+
+    if (!have_lib) {
+        lib = LoadLibrary("tcl84.dll");
+        if (!lib) {
+            banner();
+            xchat_print(ph, "---\t---\n");
+            xchat_print(ph, "Cannot open tcl84.dll.\n");
+            xchat_print(ph, "You must have ActiveTcl 8.4 installed in order to run Tcl scripts.\n");
+            xchat_print(ph, "http://www.activestate.com/ActiveTcl/\n");
+            xchat_print(ph, "Make sure Tcl's bin directory is in your PATH.\n");
+            return 0;
+        }
+        have_lib++;
+        FreeLibrary(lib);
+    }
+#endif
+
     if (initialized != 0) {
         banner();
         xchat_print(ph, "Tcl plugin already loaded.");
