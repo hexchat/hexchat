@@ -65,6 +65,8 @@ clear_channel (session *sess)
 {
 	strcpy (sess->waitchannel, sess->channel);
 	sess->channel[0] = 0;
+	sess->doing_who = FALSE;
+	sess->done_away_check = FALSE;
 
 	log_close (sess);
 

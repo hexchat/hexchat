@@ -154,13 +154,11 @@ void
 lag_check (void)
 {
 	server *serv;
-	session *sess;
 	GSList *list = serv_list;
 	unsigned long tim;
 	char tbuf[128];
 	time_t now = time (0);
 	int lag;
-	static int count = 0;
 
 	tim = make_ping_time ();
 
@@ -186,55 +184,62 @@ lag_check (void)
 		}
 		list = list->next;
 	}
+}
+
+static void
+away_check (void)
+{
+	session *sess;
+	GSList *list;
+	int full, sent;
 
 	if (prefs.away_size_max < 1)
 		return;
 
-	count++;
-	if (count >= 9)
-		count = 1;
-
-	/* request an update of AWAY status of all channels every 60 seconds */
+doover:
+	/* request an update of AWAY status of 1 channel every 30 seconds */
+	full = TRUE;
+	sent = 0;	/* number of WHOs (users) requested */
 	list = sess_list;
 	while (list)
 	{
 		sess = list->data;
+
 		if (sess->server->connected &&
 			 sess->type == SESS_CHANNEL &&
 			 sess->channel[0] &&
-			 sess->total <= prefs.away_size_max &&
-			 !sess->doing_who)
+			 sess->total <= prefs.away_size_max)
 		{
-			int do_it = FALSE;
+			if (!sess->done_away_check)
+			{
+				full = FALSE;
 
-			if (sess->total < 400)
-			{
-				switch (count)
+				/* if we're under 31 WHOs, send another channels worth */
+				if (sent < 31 && !sess->doing_who)
 				{
-				case 1:
-				case 3:
-				case 5:
-				case 7:
-					do_it = TRUE;
+					sess->done_away_check = TRUE;
+					sess->doing_who = TRUE;
+					/* this'll send a WHO #channel */
+					sess->server->p_away_status (sess->server, sess->channel);
+					sent += sess->total;
 				}
-			} else
-			{
-				switch (count)	/* less often for large channels (120s) */
-				{
-				case 2:
-				case 6:
-					do_it = TRUE;
-				}
-			}
-
-			if (do_it)
-			{
-				sess->doing_who = TRUE;
-				/* this'll send a WHO #channel */
-				sess->server->p_away_status (sess->server, sess->channel);
 			}
 		}
+
 		list = list->next;
+	}
+
+	/* done them all, reset done_away_check to FALSE and start over */
+	if (full)
+	{
+		list = sess_list;
+		while (list)
+		{
+			sess = list->data;
+			sess->done_away_check = FALSE;
+			list = list->next;
+		}
+		goto doover;
 	}
 }
 
@@ -249,6 +254,9 @@ xchat_misc_checks (void)		/* this gets called every 1/2 second */
 
 	if (count % 2)
 		dcc_check_timeouts ();	/* every 1 second */
+
+	if (count == 30)
+		away_check ();				/* every 30 seconds */
 
 	if (count >= 60)				/* every 30 seconds */
 	{

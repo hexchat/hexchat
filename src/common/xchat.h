@@ -312,6 +312,7 @@ typedef struct session
 	int hide_join_part:1;	/* hide join & part messages? */
 	int beep:1;				/* beep enabled? */
 	int color_paste:1;
+	int done_away_check:1;	/* done checking for away status changes */
 } session;
 
 typedef struct server
