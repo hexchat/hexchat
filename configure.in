@@ -16,6 +16,8 @@ AM_GNU_GETTEXT
 dnl displaced from acconfig.h
 AH_VERBATIM([OLD_PERL],[#undef OLD_PERL])
 AH_VERBATIM([PREFIX],[#undef PREFIX])
+AH_VERBATIM([XCHATLIBDIR],[#undef XCHATLIBDIR])
+AH_VERBATIM([XCHATSHAREDIR],[#undef XCHATSHAREDIR])
 AH_VERBATIM([SOCKS],[#undef SOCKS])
 AH_VERBATIM([USE_DEBUG],[#undef USE_DEBUG])
 dnl AH_VERBATIM([USE_GNOME],[#undef USE_GNOME])
@@ -629,18 +631,18 @@ AC_SUBST(PY_CFLAGS)
 AC_SUBST(PY_LIBS)
 AC_SUBST(TCL_LIBS)
 AC_SUBST(TCL_CFLAGS)
-xchatlibdir=${libdir}/xchat
-xchatsharedir=${datadir}/xchat
-AC_SUBST(xchatlibdir)
-AC_SUBST(xchatsharedir)
 
 PLUGIN_INCLUDES='-I$(top_srcdir)/plugins'
 AC_SUBST(PLUGIN_INCLUDES)
 
 if test "x${prefix}" = "xNONE"; then
 	AC_DEFINE_UNQUOTED(PREFIX, "${ac_default_prefix}")
+	AC_DEFINE_UNQUOTED(XCHATLIBDIR, "${ac_default_prefix}/lib/xchat")
+	AC_DEFINE_UNQUOTED(XCHATSHAREDIR, "${ac_default_prefix}/share/xchat")
 else
 	AC_DEFINE_UNQUOTED(PREFIX, "${prefix}")
+	AC_DEFINE_UNQUOTED(XCHATLIBDIR, "${prefix}/lib/xchat")
+	AC_DEFINE_UNQUOTED(XCHATSHAREDIR, "${prefix}/share/xchat")
 fi
 
 AC_OUTPUT([

@@ -130,22 +130,47 @@ fe_args (int argc, char *argv[])
 			printf (PACKAGE" "VERSION"\n");
 			return 0;
 		}
+		if (!strcasecmp (argv[1], "-p"))
+		{
+#ifdef WIN32
+			/* see the chdir() below */
+			char *sl, *exe = strdup (argv[0]);
+			sl = strrchr (exe, '\\');
+			if (sl)
+			{
+				*sl = 0;
+				printf ("%s\\plugins\n", exe);
+			}
+#else
+			printf ("%s\n", XCHATLIBDIR"/plugins");
+#endif
+			return 0;
+		}
+		if (!strcasecmp (argv[1], "-u"))
+		{
+			printf ("%s\n", get_xdir_fs ());
+			return 0;
+		}
 		if (!strcasecmp (argv[1], "-h") || !strcasecmp (argv[1], "--help"))
 		{
 			printf (PACKAGE" "VERSION"\n"
 					"Usage: %s [OPTIONS]... [URL]\n\n", argv[0]);
 			printf ("%s:\n"
-					"  -d,  --cfgdir %-11s %s\n"
 					"  -a,  --no-auto            %s\n"
+					"  -d,  --cfgdir %-11s %s\n"
 					"  -n,  --no-plugins         %s\n"
+					"  -p                        %s\n"
+					"  -u                        %s\n"
 					"  -v,  --version            %s\n\n"
 					"URL:\n"
 					"  irc://server:port/channel\n\n",
 						_("Options"),
+						_("don't auto connect"),
 						_("DIRECTORY"),
 						_("use a different config dir"),
-						_("don't auto connect"),
 						_("don't auto load any plugins"),
+						_("show plugin auto-load dir"),
+						_("show user config dir"),
 						_("show version information")
 					);
 			return 0;

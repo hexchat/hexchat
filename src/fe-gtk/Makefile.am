@@ -25,6 +25,3 @@ xchat_SOURCES = about.c ascii.c banlist.c chanlist.c dccgui.c editlist.c \
 	notifygui.c palette.c pixmaps.c $(plugingui_c) rawlog.c \
 	search.c servlistgui.c setup.c tabs.c textgui.c \
 	urlgrab.c userlistgui.c xtext.c
-
-pixmaps.o: $(srcdir)/pixmaps.c
-	$(COMPILE) -DXCHATSHAREDIR=\"$(xchatsharedir)\" -c $(srcdir)/pixmaps.c
