@@ -34,7 +34,9 @@
 #include "outbound.h"
 #include "xchatc.h"
 #include "text.h"
-
+#ifdef WIN32
+#include <windows.h>
+#endif
 
 struct pevt_stage1
 {
@@ -1595,9 +1597,23 @@ play_wave (const char *file)
 {
 	char buf[512];
 	char wavfile[512];
+	char *file_fs;
+
+	/* the pevents GUI editor triggers this after removing a soundfile */
+	if (!file[0])
+		return;
 
 	memset (buf, 0, sizeof (buf));
 	memset (wavfile, 0, sizeof (wavfile));
+
+#ifdef WIN32
+	/* check for fullpath, windows style */
+	if (strlen (file) > 3 &&
+		 file[1] == ':' && (file[2] == '\\' || file[2] == '/') )
+	{
+		strncpy (wavfile, file, sizeof (wavfile));
+	} else
+#endif
 	if (file[0] != '/')
 	{
 		snprintf (wavfile, sizeof (wavfile), "%s/%s", prefs.sounddir, file);
@@ -1605,16 +1621,31 @@ play_wave (const char *file)
 	{
 		strncpy (wavfile, file, sizeof (wavfile));
 	}
-	if (access (wavfile, R_OK) == 0)
+
+	file_fs = g_filename_from_utf8 (wavfile, -1, 0, 0, 0);
+	if (!file_fs)
+		return;
+
+	if (access (file_fs, R_OK) == 0)
 	{
-		snprintf (buf, sizeof (buf), "%s %s", prefs.soundcmd, wavfile);
-		buf[sizeof (buf) - 1] = '\0';
-		xchat_exec (buf);
+#ifdef WIN32
+		if (strcmp (prefs.soundcmd, "esdplay") == 0)
+		{
+			PlaySound (file_fs, NULL, SND_NODEFAULT|SND_FILENAME|SND_ASYNC);
+		} else
+#endif
+		{
+			snprintf (buf, sizeof (buf), "%s %s", prefs.soundcmd, file_fs);
+			buf[sizeof (buf) - 1] = '\0';
+			xchat_exec (buf);
+		}
 	} else
 	{
-		snprintf (buf, sizeof (buf), "Cannot read %s", wavfile);
+		snprintf (buf, sizeof (buf), _("Cannot read sound file:\n%s"), wavfile);
 		fe_message (buf, FALSE);
 	}
+
+	g_free (file_fs);
 }
 
 /* called by EMIT_SIGNAL macro */
