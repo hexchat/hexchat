@@ -123,6 +123,7 @@ int plugin_emit_command (session *sess, char *name, char *word[], char *word_eol
 int plugin_emit_server (session *sess, char *name, char *word[], char *word_eol[]);
 int plugin_emit_print (session *sess, char *word[]);
 int plugin_emit_dummy_print (session *sess, char *name);
+int plugin_emit_keypress (session *sess, unsigned int state, unsigned int keyval, int len, char *string);
 GList* plugin_command_list(GList *tmp_list);
 int plugin_show_help (session *sess, char *cmd);
 

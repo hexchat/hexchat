@@ -264,6 +264,13 @@ key_handle_key_press (GtkWidget *wid, GdkEventKey *evt, session *sess)
 		return FALSE;
 	current_sess = sess;
 
+	if (plugin_emit_keypress (sess, evt->state, evt->keyval, evt->length, evt->string))
+		return 1;
+
+	/* maybe the plugin closed this tab? */
+	if (!is_session (sess))
+		return 1;
+
 	mod = evt->state & (STATE_CTRL | STATE_ALT | STATE_SHIFT);
 
 	kb = keys_root;

@@ -573,6 +573,34 @@ plugin_emit_dummy_print (session *sess, char *name)
 	return plugin_hook_run (sess, name, word, NULL, HOOK_PRINT);
 }
 
+int
+plugin_emit_keypress (session *sess, unsigned int state, unsigned int keyval,
+							 int len, char *string)
+{
+	char *word[PDIWORDS];
+	char keyval_str[16];
+	char state_str[16];
+	char len_str[16];
+	int i;
+
+	if (!hook_list)
+		return 0;
+
+	sprintf (keyval_str, "%u", keyval);
+	sprintf (state_str, "%u", state);
+	sprintf (len_str, "%d", len);
+
+	word[0] = "Key Press";
+	word[1] = keyval_str;
+	word[2] = state_str;
+	word[3] = string;
+	word[4] = len_str;
+	for (i = 5; i < PDIWORDS; i++)
+		word[i] = "\000";
+
+	return plugin_hook_run (sess, word[0], word, NULL, HOOK_PRINT);
+}
+
 static int
 plugin_timeout_cb (xchat_hook *hook)
 {
@@ -975,6 +1003,13 @@ int
 xchat_get_prefs (xchat_plugin *ph, const char *name, const char **string, int *integer)
 {
 	int i = 0;
+
+	/* some special run-time info (not really prefs, but may aswell throw it in here) */
+	if (!strcmp (name, "state_cursor"))
+	{
+		*integer = fe_get_inputbox_cursor (ph->context);
+		return 2;
+	}
 
 	do
 	{

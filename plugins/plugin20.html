@@ -501,6 +501,11 @@ tab-window is focused by the window manager.
 <br>word[3] Nick
 <br>word[4] The Message
 </blockquote>
+"Key Press" - Called when some keys are pressed in the input-box. It provides these elements in the word[] array:<blockquote>word[1] Key Value
+<br>word[2] State Bitfield (shift, capslock, alt)
+<br>word[3] String version of the key
+<br>word[4] Length of the string (may be 0 for unprintable keys)
+</blockquote>
 </blockquote>
 <br><b>Arguments:</b>
 <blockquote><b>ph:</b> Plugin handle (as given to xchat_plugin_init).
@@ -752,7 +757,13 @@ not be freed and must be copied if needed after the call to xchat_get_info.
 <b>Prototype:</b> int xchat_get_prefs(xchat_plugin *ph, const char *name, const char **string, int *integer);
 <br>
 <br><b>Description:</b> Provides xchat's setting information (that which is available through the /set command).
+A few extra bits of information are available that don't appear in the /set list, currently they are:
 <br>
+<blockquote>
+	<table border=0 cellpadding=5>
+	<tr><td width="18%">state_cursor</td><td>Current input-box cursor position (characters, not bytes).</td></tr>
+	</table>
+</blockquote>
 <br><b>Arguments:</b>
 <blockquote><b>ph:</b> Plugin handle (as given to xchat_plugin_init).
 <br><b>name:</b> Setting name required.
