@@ -35,6 +35,7 @@
 
 #define WANTSOCKET
 #define WANTARPA
+#define WANTDNS
 #include "inet.h"
 
 #ifdef WIN32
@@ -1045,6 +1046,7 @@ dcc_listen_init (struct DCC *dcc, session *sess)
 {
 	unsigned long my_addr;
 	struct sockaddr_in SAddr;
+	struct hostent *dns_query;
 	int i, bindretval = -1;
 	socklen_t len;
 
@@ -1104,14 +1106,30 @@ dcc_listen_init (struct DCC *dcc, session *sess)
 	dcc->port = ntohs (SAddr.sin_port);
 
 	/*if we have a dcc_ip, we use that, so the remote client can connect*/
-	/*we would tell the client to connect to our LAN ip otherwise*/
+	/*else we try to take an address from dcc_ip_str*/
+	/*if something goes wrong we tell the client to connect to our LAN ip*/
+
+	dcc->addr = 0;
+
 	if (prefs.ip_from_server != 0 && prefs.dcc_ip != 0)
 		dcc->addr = prefs.dcc_ip;
 	else if (prefs.dcc_ip_str[0])
-		dcc->addr = inet_addr ((const char *) prefs.dcc_ip_str);
-	else
-	/*else we use the one we bound to*/
-		dcc->addr = my_addr;
+	{
+	   dns_query = gethostbyname ((const char *) prefs.dcc_ip_str);
+
+	   if (dns_query != NULL &&
+	       dns_query->h_length == 4 &&
+	       dns_query->h_addr_list[0] != NULL)
+		  {
+		    /*we're offered at least one IPv4 address: we take the first*/
+
+		    dcc->addr = (unsigned long) *((guint32*) dns_query->h_addr_list[0]);
+		  }
+	}
+
+	/*if nothing else worked we use the address we bound to*/
+	if (dcc->addr == 0)
+	   dcc->addr = my_addr;
 
 	dcc->addr = ntohl (dcc->addr);
 

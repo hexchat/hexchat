@@ -196,9 +196,10 @@ plugin_list_add (xchat_context *ctx, char *filename, const char *name,
 	return pl;
 }
 
-static void
+static void *
 xchat_dummy (xchat_plugin *ph)
 {
+	return NULL;
 }
 
 #ifdef WIN32
@@ -208,6 +209,13 @@ xchat_read_fd (xchat_plugin *ph, GIOChannel *source, char *buf, int *len)
 	return g_io_channel_read (source, buf, *len, len);
 }
 #endif
+
+static char *
+xchat_gettext (xchat_plugin *ph, const char *msgid)
+{
+	/* so that plugins can use xchat's internal gettext strings */
+	return _(msgid);
+}
 
 /* Load a static plugin */
 
@@ -252,13 +260,15 @@ plugin_add (session *sess, char *filename, void *handle, void *init_func,
 		pl->xchat_plugingui_add = xchat_plugingui_add;
 		pl->xchat_plugingui_remove = xchat_plugingui_remove;
 		pl->xchat_emit_print = xchat_emit_print;
-		/* incase new plugins are loaded on older xchat */
 #ifdef WIN32
 		pl->xchat_read_fd = (void *) xchat_read_fd;
 #else
 		pl->xchat_read_fd = xchat_dummy;
 #endif
 		pl->xchat_list_time = xchat_list_time;
+		pl->xchat_gettext = xchat_gettext;
+
+		/* incase new plugins are loaded on older xchat */
 		pl->xchat_dummy6 = xchat_dummy;
 		pl->xchat_dummy5 = xchat_dummy;
 		pl->xchat_dummy4 = xchat_dummy;

@@ -288,7 +288,7 @@ channel_date (session *sess, char *chan, char *timestr)
 {
 	time_t timestamp = (time_t) atol (timestr);
 	char *tim = ctime (&timestamp);
-	tim[19] = 0;	/* get rid of the \n */
+	tim[24] = 0;	/* get rid of the \n */
 	EMIT_SIGNAL (XP_TE_CHANDATE, sess, chan, tim, NULL, NULL, 0);
 }
 

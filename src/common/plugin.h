@@ -84,12 +84,14 @@ struct _xchat_plugin
 	time_t (*xchat_list_time) (xchat_plugin *ph,
 		xchat_list *xlist,
 		const char *name);
-	void (*xchat_dummy6) (xchat_plugin *ph);
-	void (*xchat_dummy5) (xchat_plugin *ph);
-	void (*xchat_dummy4) (xchat_plugin *ph);
-	void (*xchat_dummy3) (xchat_plugin *ph);
-	void (*xchat_dummy2) (xchat_plugin *ph);
-	void (*xchat_dummy1) (xchat_plugin *ph);
+	char *(*xchat_gettext) (xchat_plugin *ph,
+		const char *msgid);
+	void *(*xchat_dummy6) (xchat_plugin *ph);
+	void *(*xchat_dummy5) (xchat_plugin *ph);
+	void *(*xchat_dummy4) (xchat_plugin *ph);
+	void *(*xchat_dummy3) (xchat_plugin *ph);
+	void *(*xchat_dummy2) (xchat_plugin *ph);
+	void *(*xchat_dummy1) (xchat_plugin *ph);
 	/* PRIVATE FIELDS! */
 	void *handle;		/* from dlopen */
 	char *filename;	/* loaded from */

@@ -6,7 +6,7 @@
 
 #define XCHAT_IFACE_MAJOR	1
 #define XCHAT_IFACE_MINOR	9
-#define XCHAT_IFACE_MICRO	10
+#define XCHAT_IFACE_MICRO	11
 #define XCHAT_IFACE_VERSION	((XCHAT_IFACE_MAJOR * 10000) + \
 				 (XCHAT_IFACE_MINOR * 100) + \
 				 (XCHAT_IFACE_MICRO))
@@ -123,6 +123,8 @@ struct _xchat_plugin
 	time_t (*xchat_list_time) (xchat_plugin *ph,
 		xchat_list *xlist,
 		const char *name);
+	char *(*xchat_gettext) (xchat_plugin *ph,
+		const char *msgid);
 };
 #endif
 
@@ -286,6 +288,7 @@ xchat_emit_print (xchat_plugin *ph,
 #define xchat_plugingui_add ((XCHAT_PLUGIN_HANDLE)->xchat_plugingui_add)
 #define xchat_plugingui_remove ((XCHAT_PLUGIN_HANDLE)->xchat_plugingui_remove)
 #define xchat_emit_print ((XCHAT_PLUGIN_HANDLE)->xchat_emit_print)
+#define xchat_gettext ((XCHAT_PLUGIN_HANDLE)->xchat_gettext)
 #endif
 
 #ifdef __cplusplus

@@ -660,7 +660,7 @@ inbound_topictime (server *serv, char *chan, char *nick, time_t stamp)
 	if (!sess)
 		sess = serv->server_session;
 
-	tim[19] = 0;	/* get rid of the \n */
+	tim[24] = 0;	/* get rid of the \n */
 	EMIT_SIGNAL (XP_TE_TOPICDATE, sess, chan, nick, tim, NULL, 0);
 }
 

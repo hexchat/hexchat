@@ -68,6 +68,7 @@ void *xchat_realloc (char *old, int len, char *file, int line);
 
 #define FONTNAMELEN	127
 #define PATHLEN		255
+#define DOMAINLEN	100
 #define NICKLEN		64				/* including the NULL, so 63 really */
 #define CHANLEN		202
 #define PDIWORDS		32
@@ -172,7 +173,7 @@ struct xchatprefs
 	int nu_color;
 	unsigned long local_ip;
 	unsigned long dcc_ip;
-	char dcc_ip_str[16];
+	char dcc_ip_str[DOMAINLEN + 1];
 
 	unsigned int tab_dnd;
 	unsigned int mainwindow_save;

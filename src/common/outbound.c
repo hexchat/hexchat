@@ -3382,6 +3382,9 @@ xit:
 static int
 handle_user_input (session *sess, char *text, int history, int nocommand)
 {
+	if (*text == '\0')
+		return 1;
+
 	if (history)
 		history_add (&sess->history, text);
 

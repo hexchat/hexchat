@@ -1068,6 +1068,7 @@ servlist_create_editbox (GtkWidget *box)
 	entry_real = servlist_create_entry (table, _("Real Name:"), 3,																	G_STRUCT_OFFSET (ircnet, real));
 	entry_pass = servlist_create_entry (table, _("Server Password:"), 4,
 											G_STRUCT_OFFSET (ircnet, pass));
+	gtk_entry_set_visibility (GTK_ENTRY (entry_pass), 0);
 	entry_join = servlist_create_entry (table, _("Join Channels:"), 5,
 											G_STRUCT_OFFSET (ircnet, autojoin));
 	add_tip (entry_join, _("Channels to join, separated by commas, but not spaces!"));
