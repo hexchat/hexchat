@@ -86,7 +86,7 @@ nick_cmp (struct User *user1, struct User *user2, server *serv)
 */
 
 static int
-userlist_insertname (session *sess, struct User *newuser, struct User **after)
+userlist_insertname (session *sess, struct User *newuser)
 {
 	if (!sess->usertree)
 	{
@@ -328,7 +328,7 @@ sub_name (struct session *sess, char *name)
 void
 add_name (struct session *sess, char *name, char *hostname)
 {
-	struct User *user, *after;
+	struct User *user;
 	int row, prefix_chars;
 	unsigned int acc;
 
@@ -352,7 +352,7 @@ add_name (struct session *sess, char *name, char *hostname)
 	/* is it me? */
 	if (!sess->server->p_cmp (user->nick, sess->server->nick))
 		user->me = TRUE;
-	row = userlist_insertname (sess, user, &after);
+	row = userlist_insertname (sess, user);
 
 	/* duplicate? some broken servers trigger this */
 	if (row == -1)
@@ -374,7 +374,7 @@ add_name (struct session *sess, char *name, char *hostname)
 		prefix_chars--;
 	}
 
-	fe_userlist_insert (sess, user, row, FALSE, after);
+	fe_userlist_insert (sess, user, row, FALSE);
 	fe_userlist_numbers (sess);
 }
 

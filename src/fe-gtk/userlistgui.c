@@ -233,7 +233,7 @@ fe_userlist_remove (session *sess, struct User *user)
 }
 
 void
-fe_userlist_insert (session *sess, struct User *newuser, int row, int sel, struct User *after)
+fe_userlist_insert (session *sess, struct User *newuser, int row, int sel)
 {
 	GtkTreeModel *model = sess->res->user_model;
 	GdkPixbuf *pix;
@@ -288,7 +288,7 @@ fe_userlist_insert (session *sess, struct User *newuser, int row, int sel, struc
 void
 fe_userlist_move (session *sess, struct User *user, int new_row)
 {
-	fe_userlist_insert (sess, user, new_row, fe_userlist_remove (sess, user), NULL);
+	fe_userlist_insert (sess, user, new_row, fe_userlist_remove (sess, user));
 }
 
 void
