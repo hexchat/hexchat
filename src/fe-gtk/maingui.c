@@ -135,6 +135,9 @@ mg_inputbox_focus (GtkWidget *widget, GdkEventFocus *event, session_gui *gui)
 	GSList *list;
 	session *sess;
 
+	if (gui->is_tab)
+		return FALSE;
+
 	list = sess_list;
 	while (list)
 	{
