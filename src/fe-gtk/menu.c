@@ -921,6 +921,12 @@ menu_search ()
 }
 
 static void
+menu_resetmarker (GtkWidget * wid, gpointer none)
+{
+	gtk_xtext_clear_marker_pos (GTK_XTEXT (current_sess->gui->xtext));
+}
+
+static void
 menu_flushbuffer (GtkWidget * wid, gpointer none)
 {
 	fe_text_clear (current_sess);
@@ -1329,6 +1335,7 @@ static struct mymenu mymenu[] = {
 	{N_("Raw Log..."), menu_rawlog, 0, M_MENU, 0, 1},	/* 51 */
 	{N_("URL Grabber..."), url_opengui, 0, M_MENU, 0, 1},
 	{0, 0, 0, M_SEP, 0, 0},
+	{N_("Reset Marker Line"), menu_resetmarker, 0, M_MENU, 0, 1, GDK_m},
 	{N_("C_lear Text"), menu_flushbuffer, GTK_STOCK_CLEAR, M_MENUSTOCK, 0, 1, GDK_l},
 	{N_("Search Text..."), menu_search, GTK_STOCK_FIND, M_MENUSTOCK, 0, 1, GDK_f},
 	{N_("Save Text..."), menu_savebuffer, GTK_STOCK_SAVE, M_MENUSTOCK, 0, 1},

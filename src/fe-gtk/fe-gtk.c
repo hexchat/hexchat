@@ -278,7 +278,6 @@ void
 fe_cleanup (void)
 {
 	palette_save ();
-	key_action_tab_clean();
 }
 
 void

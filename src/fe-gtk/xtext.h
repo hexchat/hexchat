@@ -53,6 +53,8 @@ typedef struct {
 	int num_lines;
 	int indent;						  /* position of separator (pixels) from left */
 
+	textentry *marker_pos;
+
 	int window_width;				/* window size when last rendered. */
 	int window_height;
 
@@ -60,7 +62,7 @@ typedef struct {
 	unsigned int scrollbar_down:1;
 	unsigned int needs_recalc:1;
 	unsigned int grid_dirty:1;
-
+	unsigned int marker_drawn:1;
 } xtext_buffer;
 
 struct _GtkXText
@@ -96,6 +98,7 @@ struct _GtkXText
 	GdkGC *light_gc;				  /* sep bar */
 	GdkGC *dark_gc;
 	GdkGC *thin_gc;
+	GdkGC *marker_gc;
 	gulong palette[20];
 
 	gint io_tag;					  /* for delayed refresh events */
@@ -175,6 +178,7 @@ struct _GtkXText
 	unsigned int bold:1;
 	unsigned int underline:1;
 	unsigned int transparent:1;
+	unsigned int marker:1;
 	unsigned int separator:1;
 	unsigned int shaded:1;
 	unsigned int wordwrap:1;
@@ -212,6 +216,7 @@ void gtk_xtext_clear (xtext_buffer *buf);
 void gtk_xtext_save (GtkXText * xtext, int fh);
 void gtk_xtext_refresh (GtkXText * xtext, int do_trans);
 void *gtk_xtext_search (GtkXText * xtext, const unsigned char *text, void *start);
+void gtk_xtext_clear_marker_pos (GtkXText *xtext);
 
 gboolean gtk_xtext_is_empty (xtext_buffer *buf);
 typedef void (*GtkXTextForeach) (GtkXText *xtext, unsigned char *text, void *data);
@@ -221,6 +226,7 @@ void gtk_xtext_set_error_function (GtkXText *xtext, void (*error_function) (int)
 void gtk_xtext_set_indent (GtkXText *xtext, gboolean indent);
 void gtk_xtext_set_max_indent (GtkXText *xtext, int max_auto_indent);
 void gtk_xtext_set_max_lines (GtkXText *xtext, int max_lines);
+void gtk_xtext_set_show_marker (GtkXText *xtext, gboolean show_marker);
 void gtk_xtext_set_show_separator (GtkXText *xtext, gboolean show_separator);
 void gtk_xtext_set_thin_separator (GtkXText *xtext, gboolean thin_separator);
 void gtk_xtext_set_time_stamp (xtext_buffer *buf, gboolean timestamp);

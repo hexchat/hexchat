@@ -241,17 +241,21 @@ tab_pressed_cb (GtkToggleButton *tab, GtkWidget *group)
 {
 	void (*callback) (GtkWidget *tab, gpointer userdata, gpointer family);
 	GtkWidget *old_tab;
+	int is_switching = TRUE;
 
 	ignore_toggle = TRUE;
-	gtk_toggle_button_set_active (tab, TRUE);
-
 	/* de-activate the old tab */
 	old_tab = g_object_get_data (G_OBJECT (group), "foc");
 	if (old_tab)
+	{
 		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (old_tab), FALSE);
+		if (GTK_TOGGLE_BUTTON (old_tab) == tab)
+			is_switching = FALSE;
+	}
+	gtk_toggle_button_set_active (tab, TRUE);
 	ignore_toggle = FALSE;
 
-	if (tab->active)
+	if (/*tab->active*/is_switching)
 	{
 		callback = g_object_get_data (G_OBJECT (group), "c");
 		callback (GTK_WIDGET (tab), g_object_get_data (G_OBJECT (tab), "u"),
@@ -636,6 +640,7 @@ tab_add_real (GtkWidget *group, GtkWidget *tab, void *family)
 	gtk_widget_queue_resize (inner->parent);
 }
 
+#if 0
 static void
 tab_release_cb (GtkToggleButton *widget, gpointer user_data)
 {
@@ -644,6 +649,7 @@ tab_release_cb (GtkToggleButton *widget, gpointer user_data)
 	gtk_toggle_button_set_active (widget, TRUE);
 	ignore_toggle = FALSE;
 }
+#endif
 
 static gboolean
 tab_ignore_cb (GtkWidget *widget, GdkEventCrossing *event, gpointer user_data)
@@ -658,15 +664,15 @@ tab_toggled_cb (GtkToggleButton *tab, gpointer user_data)
 	if (ignore_toggle)
 		return;
 
-	if (tab->active)
-	{
+/*	if (tab->active)
+	{*/
 		/* activated a tab via keyboard */
 		tab_pressed_cb (tab, g_object_get_data (G_OBJECT (tab), "g"));
-		return;
-	}
+/*		return;
+	}*/
 
 	/* activate it */
-	tab_release_cb (tab, NULL);
+/*	tab_release_cb (tab, NULL);*/
 }
 
 static char *
@@ -730,8 +736,6 @@ tab_group_add (GtkWidget *group, char *name, void *family, void *userdata,
 						 	G_CALLBACK (tab_ignore_cb), NULL);
 	g_signal_connect (G_OBJECT (but), "pressed",
 							G_CALLBACK (tab_pressed_cb), group);
-	g_signal_connect (G_OBJECT (but), "released",
-						 	G_CALLBACK (tab_release_cb), NULL);
 	/* for keyboard */
 	g_signal_connect (G_OBJECT (but), "toggled",
 						 	G_CALLBACK (tab_toggled_cb), NULL);

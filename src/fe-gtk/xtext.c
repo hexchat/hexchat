@@ -44,6 +44,7 @@
 #include <gtk/gtkselection.h>
 #include <gtk/gtkclipboard.h>
 #include <gtk/gtkversion.h>
+#include <gtk/gtkwindow.h>
 
 #ifdef XCHAT
 #include "../../config.h"			/* can define USE_XLIB here */
@@ -838,6 +839,12 @@ gtk_xtext_destroy (GtkObject * object)
 		xtext->thin_gc = NULL;
 	}
 
+	if (xtext->marker_gc)
+	{
+		g_object_unref (xtext->marker_gc);
+		xtext->marker_gc = NULL;
+	}
+
 	if (xtext->hand_cursor)
 	{
 		gdk_cursor_unref (xtext->hand_cursor);
@@ -914,6 +921,8 @@ gtk_xtext_realize (GtkWidget * widget)
 											GDK_GC_EXPOSURES | GDK_GC_SUBWINDOW);
 	xtext->thin_gc = gdk_gc_new_with_values (widget->window, &val,
 											GDK_GC_EXPOSURES | GDK_GC_SUBWINDOW);
+	xtext->marker_gc = gdk_gc_new_with_values (widget->window, &val,
+											GDK_GC_EXPOSURES | GDK_GC_SUBWINDOW);
 
 	/* for the separator bar (light) */
 	col.red = 0xffff; col.green = 0xffff; col.blue = 0xffff;
@@ -929,6 +938,11 @@ gtk_xtext_realize (GtkWidget * widget)
 	col.red = 0x8e38; col.green = 0x8e38; col.blue = 0x9f38;
 	gdk_colormap_alloc_color (cmap, &col, FALSE, TRUE);
 	gdk_gc_set_foreground (xtext->thin_gc, &col);
+
+	/* for the marker bar (marker) */
+	col.red = 0xdddd; col.green = 0x0000; col.blue = 0x0000;
+	gdk_colormap_alloc_color (cmap, &col, FALSE, TRUE);
+	gdk_gc_set_foreground (xtext->marker_gc, &col);
 
 	xtext_set_fg (xtext, xtext->fgc, 18);
 	xtext_set_bg (xtext, xtext->fgc, 19);
@@ -1186,6 +1200,38 @@ gtk_xtext_draw_sep (GtkXText * xtext, int y)
 				gdk_draw_line (xtext->draw_buf, light, x, y, x, y + height);
 			}
 		}
+	}
+}
+
+static void
+gtk_xtext_draw_marker (GtkXText * xtext, textentry * ent, int y)
+{
+	int x, width, render_y;
+
+	if (!xtext->marker) return;
+
+	if (xtext->buffer->marker_pos == ent)
+	{
+		render_y = y + xtext->font->descent - xtext->fontsize * ent->lines_taken;
+	}
+	else if (xtext->buffer->marker_pos == ent->next && ent->next != NULL)
+	{
+		render_y = y + xtext->font->descent;
+	}
+	else return;
+
+	x = 0;
+	width = GTK_WIDGET (xtext)->allocation.width;
+
+	gdk_draw_line (xtext->draw_buf, xtext->marker_gc, x, render_y, x + width, render_y);
+
+#if GTK_CHECK_VERSION(2,4,0)
+	if (gtk_window_has_toplevel_focus (GTK_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (xtext)))))
+#else
+	if (GTK_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (xtext)))->has_focus)
+#endif
+	{
+		xtext->buffer->marker_drawn = 1;
 	}
 }
 
@@ -3788,6 +3834,7 @@ gtk_xtext_render_line (GtkXText * xtext, textentry * ent, int line,
 												indent, line, FALSE))
 			{
 				/* small optimization */
+				gtk_xtext_draw_marker (xtext, ent, y + xtext->fontsize * (ent->lines_taken - taken -1));
 				return ent->lines_taken - subline;
 			}
 		} else
@@ -3811,6 +3858,8 @@ gtk_xtext_render_line (GtkXText * xtext, textentry * ent, int line,
 
 	}
 	while (str < ent->str + ent->str_len);
+
+	gtk_xtext_draw_marker (xtext, ent, y);
 
 	return taken;
 }
@@ -4397,6 +4446,8 @@ gtk_xtext_remove_top (xtext_buffer *buffer)
 		buffer->last_ent_end = NULL;
 	}
 
+	if (buffer->marker_pos == ent) buffer->marker_pos = NULL;
+
 	free (ent);
 }
 
@@ -4408,6 +4459,7 @@ gtk_xtext_clear (xtext_buffer *buf)
 	buf->scrollbar_down = TRUE;
 	buf->last_ent_start = NULL;
 	buf->last_ent_end = NULL;
+	buf->marker_pos = NULL;
 	dontscroll (buf);
 
 	while (buf->text_first)
@@ -4565,6 +4617,21 @@ gtk_xtext_append_entry (xtext_buffer *buf, textentry * ent)
 
 	ent->lines_taken = gtk_xtext_lines_taken (buf, ent);
 	buf->num_lines += ent->lines_taken;
+
+	if (buf->marker_pos == NULL || buf->marker_drawn)
+	{
+		if (buf->xtext->buffer != buf ||
+#if GTK_CHECK_VERSION(2,4,0)
+		!gtk_window_has_toplevel_focus (GTK_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (buf->xtext)))))
+#else
+		!(GTK_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (buf->xtext)))->has_focus))
+#endif
+		{
+			buf->marker_pos = ent;
+			dontscroll (buf); /* force scrolling off */
+			buf->marker_drawn = 0;
+		}
+	}
 
 	if (buf->xtext->max_lines > 2 && buf->xtext->max_lines < buf->num_lines)
 	{
@@ -4735,6 +4802,12 @@ gtk_xtext_set_max_lines (GtkXText *xtext, int max_lines)
 }
 
 void
+gtk_xtext_set_show_marker (GtkXText *xtext, gboolean show_marker)
+{
+	xtext->marker = show_marker;
+}
+
+void
 gtk_xtext_set_show_separator (GtkXText *xtext, gboolean show_separator)
 {
 	xtext->separator = show_separator;
@@ -4770,6 +4843,14 @@ void
 gtk_xtext_set_wordwrap (GtkXText *xtext, gboolean wordwrap)
 {
 	xtext->wordwrap = wordwrap;
+}
+
+void
+gtk_xtext_clear_marker_pos (GtkXText *xtext)
+{
+	xtext->buffer->marker_pos = NULL;
+	dontscroll (xtext->buffer); /* force scrolling off */
+	gtk_xtext_render_page (xtext);
 }
 
 void

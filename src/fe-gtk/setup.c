@@ -91,6 +91,8 @@ static const setting textbox_settings[] =
 	{ST_TOGGLE, N_("Tint transparency"), P_OFFINTNL(tint),0,0,0},
 	{ST_TOGGLE, N_("Colored nicks"), P_OFFINTNL(colorednicks),0,0,0},
 	{ST_TOGGLE, N_("Strip mIRC color"), P_OFFINTNL(stripcolor),0,0,0},
+	{ST_TOGGLE, N_("Show marker line"), P_OFFINTNL(show_marker),
+					N_("Insert a red line after the last read text."),0,0},
 	{ST_NUMBER,	N_("Scrollback lines:"), P_OFFINTNL(max_lines),0,0,100000},
 	{ST_HSCALE, N_("Tint red:"), P_OFFINTNL(tint_red),0,0,0},
 	{ST_HSCALE, N_("Tint green:"), P_OFFINTNL(tint_green),0,0,0},

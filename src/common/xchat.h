@@ -241,6 +241,7 @@ struct xchatprefs
 	unsigned int style_inputbox;
 	unsigned int windows_as_tabs;
 	unsigned int indent_nicks;
+	unsigned int show_marker;
 	unsigned int show_separator;
 	unsigned int thin_separator;
 	unsigned int auto_indent;

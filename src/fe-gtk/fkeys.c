@@ -59,8 +59,7 @@
 
 
 static void replace_handle (GtkWidget * wid);
-void key_action_tab_clean(void);
-
+void key_action_tab_clean (void);
 
 /***************** Key Binding Code ******************/
 
@@ -101,12 +100,10 @@ struct key_action
 	char *help;
 };
 
-struct completion
+struct gcomp_data
 {
-	GCompletion *comp;
-	GList *value;
-	GtkWidget *wid;
-	int nick;
+	char data[CHANLEN];
+	int elen;
 };
 
 static int key_load_kbs (char *);
@@ -300,7 +297,8 @@ key_handle_key_press (GtkWidget *wid, GdkEventKey *evt, session *sess)
 		last = kb;
 		kb = kb->next;
 	}
-	key_action_tab_clean();
+	if (keyval == GDK_space)
+		key_action_tab_clean ();
 
 	/* check if it's a return or enter */
 	/* ---handled by the "activate" signal in maingui.c */
@@ -1303,8 +1301,8 @@ key_action_history_down (GtkWidget * wid, GdkEventKey * ent, char *d1,
 	return 2;
 }
 
-/* Generally reused variables */
-static struct completion gcomp;
+/* old data that we reuse */
+static struct gcomp_data old_gcomp;
 
 /* work on the data, ie return only channels */
 static int
@@ -1352,13 +1350,10 @@ gcomp_nick_func (char *data)
 void
 key_action_tab_clean(void)
 {
-	if (gcomp.comp)
+	if (old_gcomp.elen)
 	{
-		g_completion_free(gcomp.comp);
-		gcomp.comp = NULL;
-		gcomp.value = NULL;
-		gcomp.wid = NULL;
-		gcomp.nick = 0;
+		old_gcomp.data[0] = 0;
+		old_gcomp.elen = 0;
 	}
 }
 
@@ -1369,10 +1364,12 @@ static int
 key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 							struct session *sess)
 {
-	int len = 0, elen = 0, i = 0, cursor_pos, ent_start = 0, prefix_len, skip_len = 0, is_nick, is_cmd = 0;
+	int len = 0, elen = 0, i = 0, cursor_pos, ent_start = 0, comp = 0, found = 0,
+	    prefix_len, skip_len = 0, is_nick, is_cmd = 0;
 	char buf[COMP_BUF], ent[CHANLEN], *postfix = NULL, *result, *ch;
 	GList *list = NULL, *tmp_list = NULL;
 	const char *text = gtk_entry_get_text (GTK_ENTRY (t));
+	GCompletion *gcomp = NULL;
 
 	if (text[0] == 0)
 		return 1;
@@ -1399,6 +1396,8 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 		else
 			cursor_pos = g_utf8_pointer_to_offset(text, g_utf8_offset_to_pointer(ch, 1));
 	}
+
+	comp = skip_len;
 	
 	/* store the text following the cursor for reinsertion later */
 	if ((cursor_pos + skip_len) < len)
@@ -1438,86 +1437,14 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 	}
 	else
 	{
-		if (gcomp.wid == t && gcomp.value) /* using the same string gadget */
-		{
-			GList *element;
-			list = gcomp.comp->cache;
-
-			element = gcomp.value;
-
-			if (rfc_ncasecmp(element->data, ent, elen))
-			{
-				key_action_tab_clean();
-			}
-			else
-			{
-				if (prefs.completion_amount && g_list_length(element) <= prefs.completion_amount)
-				{
-					if (!(d1 && d1[0])) /* not holding down ctrl */
-					{
-						if (g_list_next(element) == NULL)
-							element = g_list_first(element);
-						else
-							element = g_list_next(element);
-					}
-					else
-					{
-						if (g_list_previous(element) == NULL)
-							element = g_list_last(element);
-						else
-							element = g_list_previous(element);
-					}
-					gcomp.value = element;
-					result = (char*)element->data;
-					is_nick = gcomp.nick;
-					goto compdone;
-				}
-				else
-				{
-					list = g_completion_complete_utf8(gcomp.comp, ent, &result);
-					
-					if (strlen(result) > elen)
-					{
-						if (prefix_len)
-							g_utf8_strncpy (buf, text, prefix_len);
-						strncat (buf, result, COMP_BUF - prefix_len);
-						cursor_pos = strlen (buf);
-						if (postfix)
-						{
-							strcat(buf, " ");
-							strncat (buf, postfix, COMP_BUF - cursor_pos -1);
-						}
-						gtk_entry_set_text (GTK_ENTRY (t), buf);
-						gtk_editable_set_position (GTK_EDITABLE (t), g_utf8_pointer_to_offset(buf, buf + cursor_pos));
-						buf[0] = 0;
-					}
-					while (list)
-					{
-						if (strlen(buf) + strlen(list->data) >= COMP_BUF)
-						{
-							PrintText (sess, buf);
-							buf[0] = 0;
-						}
-						sprintf (buf, "%s%s ", buf, (char*)list->data);
-						list = g_list_next(list);
-					}
-					PrintText (sess, buf);
-				}
-				return 2;
-			}
-		}
-		else
-			key_action_tab_clean (); /* avoid leaking memory */
-		
 		if (is_nick)
 		{
-			gcomp.comp = g_completion_new((GCompletionFunc)gcomp_nick_func);
+			gcomp = g_completion_new((GCompletionFunc)gcomp_nick_func);
 			tmp_list = userlist_double_list(sess); /* create a temp list so we can free the memory */
 		}
 		else
 		{
-			gcomp.comp = g_completion_new (NULL);
-
+			gcomp = g_completion_new (NULL);
 			if (is_cmd)
 			{
 				tmp_list = cmdlist_double_list (command_list);
@@ -1530,26 +1457,68 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 			else
 				tmp_list = chanlist_double_list (sess_list);
 		}
-		g_completion_set_compare (gcomp.comp, (GCompletionStrncmpFunc)rfc_ncasecmp);
-		g_completion_add_items (gcomp.comp, tmp_list);
+		tmp_list = g_list_reverse(tmp_list); /* make the comp entries turn up in the right order */
+		g_completion_set_compare (gcomp, (GCompletionStrncmpFunc)rfc_ncasecmp);
+		g_completion_add_items (gcomp, tmp_list);
 		g_list_free (tmp_list);
 
-		list = g_completion_complete_utf8 (gcomp.comp, ent, &result);
-
-		if (result == NULL) /* No matches found */
+		if (comp && !(rfc_ncasecmp(old_gcomp.data, ent, old_gcomp.elen) == 0))
 		{
 			key_action_tab_clean ();
-			return 2;
+			comp = 0;
 		}
+	
+#if GLIB_CHECK_VERSION(2,4,0)
+		list = g_completion_complete_utf8 (gcomp, comp ? old_gcomp.data : ent, &result);
+#else
+		list = g_completion_complete (gcomp, comp ? old_gcomp.data : ent, &result);
+#endif
+		
+		if (result == NULL) /* No matches found */
+			return 2;
 
-		if (g_list_next(list) == NULL) /* Only one match in the list */
-			result = list->data;
-		else 
+		if (comp) /* existing completion */
 		{
-			gcomp.wid = t;
-			gcomp.value = list;
-			gcomp.nick = is_nick;
-			
+			while(list) /* find the current entry */
+			{
+				if(rfc_ncasecmp(list->data, ent, elen) == 0)
+				{
+					found = 1;
+					break;
+				}
+				list = list->next;
+			}
+
+			if (found)
+			{
+				if (!(d1 && d1[0])) /* not holding down shift */
+				{
+					if (g_list_next(list) == NULL)
+						list = g_list_first(list);
+					else
+						list = g_list_next(list);
+				}
+				else
+				{
+					if (g_list_previous(list) == NULL)
+						list = g_list_last(list);
+					else
+						list = g_list_previous(list);
+				}
+				result = (char*)list->data;
+				goto compdone;
+			}
+			else
+			{
+				g_completion_free(gcomp);
+				return 2;
+			}
+		}
+		else
+		{
+			strcpy(old_gcomp.data, ent);
+			old_gcomp.elen = elen;
+
 			/* Get the first nick and put out the data for future nickcompletes */
 			if (prefs.completion_amount && g_list_length (list) <= prefs.completion_amount)
 					result = (char*)list->data;
@@ -1562,6 +1531,10 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 						g_utf8_strncpy (buf, text, prefix_len);
 					strncat (buf, result, COMP_BUF - prefix_len);
 					cursor_pos = strlen (buf);
+#if !GLIB_CHECK_VERSION(2,4,0)
+					g_utf8_validate (buf, -1, (const gchar **)&result);
+					(*valid_end) = 0;
+#endif
 					if (postfix)
 					{
 						strcat (buf, " ");
@@ -1582,6 +1555,7 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 					list = g_list_next (list);
 				}
 				PrintText (sess, buf);
+				g_completion_free(gcomp);
 				return 2;
 			}
 		}
@@ -1602,6 +1576,7 @@ compdone:
 		gtk_entry_set_text (GTK_ENTRY (t), buf);
 		gtk_editable_set_position (GTK_EDITABLE (t), g_utf8_pointer_to_offset(buf, buf + cursor_pos));
 	}
+	g_completion_free(gcomp);
 	return 2;
 }
 #undef COMP_BUF
@@ -1610,8 +1585,7 @@ static int
 key_action_comp_chng (GtkWidget * wid, GdkEventKey * ent, char *d1, char *d2,
 		struct session *sess)
 {
-	if (gcomp.comp)
-		key_action_tab_comp(wid, ent, d1, d2, sess);
+	key_action_tab_comp(wid, ent, d1, d2, sess);
 	return 2;
 }
 

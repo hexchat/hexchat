@@ -1778,6 +1778,7 @@ mg_update_xtext (GtkWidget *wid)
 	gtk_xtext_set_tint (xtext, prefs.tint_red, prefs.tint_green, prefs.tint_blue);
 	gtk_xtext_set_background (xtext, channelwin_pix, prefs.transparent, prefs.tint);
 	gtk_xtext_set_wordwrap (xtext, prefs.wordwrap);
+	gtk_xtext_set_show_marker (xtext, prefs.show_marker);
 	gtk_xtext_set_show_separator (xtext, prefs.indent_nicks ? prefs.show_separator : 0);
 	gtk_xtext_set_indent (xtext, prefs.indent_nicks);
 	if (!gtk_xtext_set_font (xtext, prefs.font_normal))
