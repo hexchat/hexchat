@@ -1395,7 +1395,7 @@ cmd_exec (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			/* Now we call /bin/sh to run our cmd ; made it more friendly -DC1 */
 			if (shell)
 			{
-				execl ("/bin/sh", "sh", "-c", cmd, 0);
+				execl ("/bin/sh", "sh", "-c", cmd, NULL);
 			} else
 			{
 				char **argv;
