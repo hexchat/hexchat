@@ -492,7 +492,7 @@ SHADE_XIMAGE_32:
 
 HAVE_MMX:
 	push	%ebx
-# Check if bit 21 in flags word is writeable
+/* Check if bit 21 in flags word is writeable */
 	pushfl	
 	popl	%eax
 	movl	%eax,%ebx
@@ -503,21 +503,21 @@ HAVE_MMX:
 	popl	%eax
 
 	cmpl	%eax, %ebx
-	je	8
+	je	8f
 
-# OK, we have CPUID
+/* OK, we have CPUID */
 
 	movl	$1, %eax
 	cpuid
 	
 	test	$0x00800000, %edx
-	jz	8
+	jz	8f
 
-	movl	$1, %eax		# success, have mmx
+	movl	$1, %eax	/* success, have mmx */
 	popl	%ebx
 	ret
 
 8:
-	xorl	%eax,%eax	# failed, no mmx
+	xorl	%eax,%eax	/* failed, no mmx */
 	popl	%ebx
 	ret
