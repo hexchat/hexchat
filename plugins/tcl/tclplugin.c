@@ -15,7 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#define VERSION "1.0.53"
+#define VERSION "1.0.54"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -30,6 +30,10 @@
 
 #ifdef WIN32
 #include <windows.h>
+#define bzero(mem, sz) memset((mem), 0, (sz))
+#define bcopy(src, dest, count) memmove((dest), (src), (count))
+#else
+#include <unistd.h>
 #endif
 
 #include "xchat-plugin.h"
@@ -2059,10 +2063,9 @@ static void Tcl_Plugin_Init()
     Tcl_InitHashTable(&cmdTablePtr, TCL_STRING_KEYS);
     Tcl_InitHashTable(&aliasTablePtr, TCL_STRING_KEYS);
 
-    for (x = 0; x < MAX_TIMERS; x++) {
-        timers[x].timerid = 0;
-        timers[x].procPtr = NULL;
-    }
+    bzero(timers, sizeof(timers));
+    nexttimerid = 0;
+    nexttimerindex = 0;
 
     for (x = 0; x < XC_SIZE; x++)
         xc[x].hook = NULL;
