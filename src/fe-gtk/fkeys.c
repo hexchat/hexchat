@@ -1368,9 +1368,14 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 	    prefix_len, skip_len = 0, is_nick, is_cmd = 0;
 	char buf[COMP_BUF], ent[CHANLEN], *postfix = NULL, *result, *ch;
 	GList *list = NULL, *tmp_list = NULL;
-	const char *text = gtk_entry_get_text (GTK_ENTRY (t));
+	const char *text;
 	GCompletion *gcomp = NULL;
 
+	/* force the IM Context to reset */
+	gtk_editable_set_editable (GTK_EDITABLE (t), FALSE);
+	gtk_editable_set_editable (GTK_EDITABLE (t), TRUE);
+
+	text = GTK_ENTRY (t)->text;
 	if (text[0] == 0)
 		return 1;
 

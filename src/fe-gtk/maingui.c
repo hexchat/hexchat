@@ -2129,6 +2129,12 @@ mg_switch_tab_cb (GtkWidget *tab, session *sess, gpointer family)
 static int
 mg_tabs_compare (session *a, session *b)
 {
+	/* this is for "Open Utilities in: Tabs" (i.e. sess is NULL) */
+	if (!a)
+		return 1;
+	if (!b)
+		return -1;
+
 	/* server tabs always go first */
 	if (a->type == SESS_SERVER)
 		return -1;
