@@ -1602,7 +1602,7 @@ gtk_xtext_get_word (GtkXText * xtext, int x, int y, textentry ** ret_ent,
 	unsigned char *str;
 	unsigned char *word;
 	int len;
-	int out_of_bounds;
+	int out_of_bounds = 0;
 
 	ent = gtk_xtext_find_char (xtext, x, y, &offset, &out_of_bounds);
 	if (!ent)
@@ -4063,7 +4063,7 @@ gtk_xtext_render_page_timeout (GtkXText * xtext)
 	/* less than a complete page? */
 	if (xtext->buffer->num_lines <= adj->page_size)
 	{
-		xtext->buffer->old_value = -1;
+		xtext->buffer->old_value = 0;
 		adj->value = 0;
 	} else if (xtext->buffer->scrollbar_down)
 	{

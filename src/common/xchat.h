@@ -50,8 +50,6 @@ void *xchat_realloc (char *old, int len, char *file, int line);
 #ifdef WIN32						/* for win32 */
 #define OFLAGS O_BINARY
 #define sleep(t) _sleep(t*1000)
-#define strcasecmp stricmp
-#define strncasecmp strnicmp
 #include <direct.h>
 #define	F_OK	0
 #define	X_OK	1

@@ -255,28 +255,83 @@ close_socket (int sok)
 static void
 server_inline (server *serv, char *line, int len)
 {
-	char *utf;
-	char *conv;
-	gsize utf_len;
+	char *utf_line_allocated = NULL;
 
-	if (serv->encoding == NULL)	/* system */
+	/* Checks whether we're set to use UTF-8 charset */
+	if ((serv->encoding == NULL && prefs.utf8_locale) ||
+	    (serv->encoding != NULL &&
+		 (strcasecmp (serv->encoding, "utf8") == 0 ||
+		  strcasecmp (serv->encoding, "utf-8") == 0)))
 	{
-		utf = NULL;
-		if (!prefs.utf8_locale)
-			utf = g_locale_to_utf8 (line, len, NULL, &utf_len, NULL);
+		/* The user has the UTF-8 charset set, either via /charset
+		command or from his UTF-8 locale. Thus, we first try the
+		UTF-8 charset, and if we fail to convert, we assume
+		it to be ISO-8859-1 (see text_validate). */
+
+		utf_line_allocated = text_validate (&line, &len);
+
 	} else
 	{
-		utf = g_convert (line, len, "UTF-8", serv->encoding, 0, &utf_len, 0);
-	}
+		/* Since the user has an explicit charset set, either
+		via /charset command or from his non-UTF8 locale,
+		we don't fallback to ISO-8859-1 and instead try to remove
+		errnoeous octets till the string is convertable in the
+		said charset. */
 
-	if (utf)
-	{
-		line = utf;
-		len = utf_len;
-	}
+		const char *encoding = NULL;
 
-	/* we really need valid UTF-8 now */
-	conv = text_validate (&line, &len);
+		if (serv->encoding != NULL)
+			encoding = serv->encoding;
+		else
+			g_get_charset (&encoding);
+
+		if (encoding != NULL)
+		{
+			char *conv_line; /* holds a copy of the original string */
+			int conv_len; /* tells g_convert how much of line to convert */
+			int utf_len;
+			int read_len;
+			GError *err;
+			gboolean retry;
+
+			conv_line = g_strdup (line);
+			conv_len = len;
+
+			do
+			{
+				err = NULL;
+				retry = FALSE;
+				utf_line_allocated = g_convert_with_fallback (conv_line, conv_len, "UTF-8", encoding, "?", &read_len, &utf_len, &err);
+				if (err != NULL)
+				{
+					if (err->code == G_CONVERT_ERROR_ILLEGAL_SEQUENCE)
+					{
+						/* Make our best bet by removing the erroneous char.
+						   This will work for casual 8-bit strings with non-standard chars. */
+						memmove (conv_line + read_len, conv_line + read_len + 1, conv_len - read_len -1);
+						conv_len--;
+						retry = TRUE;
+					}
+					g_error_free (err);
+				}
+			} while (retry);
+
+			g_free (conv_line);
+
+			/* If any conversion has occured at all. Conversion might fail
+			due to errors other than invalid sequences, e.g. unknown charset. */
+			if (utf_line_allocated != NULL)
+			{
+				line = utf_line_allocated;
+				len = utf_len;
+			}
+			else
+			{
+				/* If all fails, treat as UTF-8 with fallback to ISO-8859-1. */
+				utf_line_allocated = text_validate (&line, &len);
+			}
+		}
+	}
 
 	fe_add_rawlog (serv, line, len, FALSE);
 	url_check (line);
@@ -284,11 +339,8 @@ server_inline (server *serv, char *line, int len)
 	/* let proto-irc.c handle it */
 	serv->p_inline (serv, line, len);
 
-	if (utf)
-		g_free (utf);
-
-	if (conv)
-		g_free (conv);
+	if (utf_line_allocated != NULL) /* only if a special copy was allocated */
+		g_free (utf_line_allocated);
 }
 
 /* read data from socket */
@@ -763,6 +815,10 @@ server_connect_success (server *serv)
 	server_stopconnecting (serv);	/* ->connecting = FALSE */
 	/* activate glib poll */
 	server_connected (serv);
+
+
+	serv->encoding = strdup ("iso-8859-8");
+	server_inline (serv, "\0xD0\0xD1", 2);
 }
 
 /* receive info from the child-process about connection progress */

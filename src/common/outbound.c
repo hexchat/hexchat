@@ -3056,18 +3056,38 @@ user_command (session * sess, char *tbuf, char *cmd, char *word[],
 static void
 handle_say (session *sess, char *text, int check_spch)
 {
-	char tbuf[4096];
-	char newcmd[2048];
 	struct DCC *dcc;
-	char pdibuf[2048];
 	char *word[PDIWORDS];
 	char *word_eol[PDIWORDS];
+	char pdibuf_static[1024];
+	char newcmd_static[1024];
+	char tbuf_static[4096];
+	char *pdibuf;
+	char *newcmd;
+	char *tbuf;
+	int len;
 
 	if (strcmp (sess->channel, "(lastlog)") == 0)
 	{
 		lastlog (sess->lastlog_sess, text);
 		return;
 	}
+
+	len = strlen (text);
+	if (len >= sizeof (pdibuf_static))
+		pdibuf = malloc (len + 1);
+	else
+		pdibuf = pdibuf_static;
+
+	if ((len + NICKLEN) >= sizeof (newcmd_static))
+		newcmd = malloc (len + NICKLEN + 1);
+	else
+		newcmd = newcmd_static;
+
+	if ((len * 2) >= sizeof (tbuf_static))
+		tbuf = malloc ((len * 2) + 1);
+	else
+		tbuf = tbuf_static;
 
 	if (check_spch && prefs.perc_color)
 		check_special_chars (text, prefs.perc_ascii);
@@ -3077,12 +3097,12 @@ handle_say (session *sess, char *text, int check_spch)
 
 	/* a command of "" can be hooked for non-commands */
 	if (plugin_emit_command (sess, "", word, word_eol))
-		return;
+		goto xit;
 
 	if (!sess->channel[0] || sess->type == SESS_SERVER || sess->type == SESS_NOTICES || sess->type == SESS_SNOTICES)
 	{
 		notj_msg (sess);
-		return;
+		goto xit;
 	}
 
 	if (prefs.nickcompletion)
@@ -3101,7 +3121,7 @@ handle_say (session *sess, char *text, int check_spch)
 			inbound_chanmsg (sess->server, tbuf, sess->channel,
 								  sess->server->nick, text, TRUE);
 			set_topic (sess, net_ip (dcc->addr));
-			return;
+			goto xit;
 		}
 	}
 
@@ -3136,6 +3156,16 @@ handle_say (session *sess, char *text, int check_spch)
 	{
 		notc_msg (sess);
 	}
+
+xit:
+	if (pdibuf != pdibuf_static)
+		free (pdibuf);
+
+	if (newcmd != newcmd_static)
+		free (newcmd);
+
+	if (tbuf != tbuf_static)
+		free (tbuf);
 }
 
 /* handle a command, without the '/' prefix */
@@ -3146,12 +3176,16 @@ handle_command (session *sess, char *cmd, int check_spch)
 	struct popup *pop;
 	int user_cmd = FALSE;
 	GSList *list;
-	char pdibuf[2048];
-	char tbuf[4096];
 	char *word[PDIWORDS];
 	char *word_eol[PDIWORDS];
 	static int command_level = 0;
 	struct commands *int_cmd;
+	char pdibuf_static[1024];
+	char tbuf_static[4096];
+	char *pdibuf;
+	char *tbuf;
+	int len;
+	int ret = TRUE;
 
 	if (command_level > 99)
 	{
@@ -3160,6 +3194,17 @@ handle_command (session *sess, char *cmd, int check_spch)
 	}
 	command_level++;
 	/* anything below MUST DEC command_level before returning */
+
+	len = strlen (cmd);
+	if (len >= sizeof (pdibuf_static))
+		pdibuf = malloc (len + 1);
+	else
+		pdibuf = pdibuf_static;
+
+	if ((len * 2) >= sizeof (tbuf_static))
+		tbuf = malloc ((len * 2) + 1);
+	else
+		tbuf = tbuf_static;
 
 	/* split the text into words and word_eol */
 	process_data_init (pdibuf, cmd, word, word_eol, TRUE);
@@ -3205,8 +3250,8 @@ handle_command (session *sess, char *cmd, int check_spch)
 				help (sess, tbuf, int_cmd->name, TRUE);
 				break;
 			case 2:
-				command_level--;
-				return FALSE;
+				ret = FALSE;
+				goto xit;
 			}
 		}
 	} else
@@ -3220,7 +3265,14 @@ handle_command (session *sess, char *cmd, int check_spch)
 
 xit:
 	command_level--;
-	return TRUE;
+
+	if (pdibuf != pdibuf_static)
+		free (pdibuf);
+
+	if (tbuf != tbuf_static)
+		free (tbuf);
+
+	return ret;
 }
 
 /* handle one line entered into the input box */
