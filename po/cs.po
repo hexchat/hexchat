@@ -4,7 +4,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: X-Chat 1.3.3\n"
-"POT-Creation-Date: 2002-12-04 21:37+1100\n"
+"POT-Creation-Date: 2002-12-06 19:34+1100\n"
 "PO-Revision-Date: 1999-10-13 15:59+0200\n"
 "Last-Translator: Jakub Moc <Jakub.Moc@volny.cz>\n"
 "Language-Team: Czech\n"
@@ -129,7 +129,7 @@ msgstr ""
 msgid "No such plugin found.\n"
 msgstr ""
 
-#: src/common/outbound.c:2289 src/fe-gtk/plugingui.c:128
+#: src/common/outbound.c:2289 src/fe-gtk/plugingui.c:133
 msgid "That plugin is refusing to unload.\n"
 msgstr ""
 
@@ -482,18 +482,18 @@ msgstr ""
 msgid "Unknown Command. Try /help\n"
 msgstr ""
 
-#: src/common/plugin.c:292 src/common/plugin.c:313
+#: src/common/plugin.c:324 src/common/plugin.c:345
 msgid "No xchat_plugin_init symbol; is this really an xchat plugin?"
 msgstr ""
 
-#: src/common/server.c:898
+#: src/common/server.c:899
 #, c-format
 msgid ""
 "Cannot resolve hostname %s\n"
 "Check your IP Settings!\n"
 msgstr ""
 
-#: src/common/server.c:903
+#: src/common/server.c:904
 msgid "Proxy traversal failed.\n"
 msgstr ""
 
@@ -2165,7 +2165,7 @@ msgid "Status"
 msgstr ""
 
 #: src/fe-gtk/dccgui.c:394 src/fe-gtk/dccgui.c:398 src/fe-gtk/dccgui.c:578
-#: src/fe-gtk/plugingui.c:142
+#: src/fe-gtk/plugingui.c:147
 msgid "File"
 msgstr ""
 
@@ -2244,7 +2244,7 @@ msgstr ""
 msgid "EDIT ME"
 msgstr ""
 
-#: src/fe-gtk/editlist.c:299 src/fe-gtk/plugingui.c:142
+#: src/fe-gtk/editlist.c:299 src/fe-gtk/plugingui.c:147
 msgid "Name"
 msgstr ""
 
@@ -2386,7 +2386,7 @@ msgstr ""
 
 #: src/fe-gtk/fkeys.c:392 src/fe-gtk/fkeys.c:671 src/fe-gtk/fkeys.c:677
 #: src/fe-gtk/fkeys.c:682 src/fe-gtk/maingui.c:607 src/fe-gtk/maingui.c:628
-#: src/fe-gtk/maingui.c:675 src/fe-gtk/maingui.c:2096
+#: src/fe-gtk/maingui.c:675 src/fe-gtk/maingui.c:2097
 msgid "<none>"
 msgstr ""
 
@@ -2629,50 +2629,50 @@ msgid "Close this tab/window"
 msgstr ""
 
 #: src/fe-gtk/maingui.c:1122
-msgid "Link/DeLink this tab"
+msgid "Attach/Detach this tab"
 msgstr ""
 
 #: src/fe-gtk/maingui.c:1198
 msgid "Show/Hide userlist"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1628
+#: src/fe-gtk/maingui.c:1629
 msgid "Insert color code"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1648
+#: src/fe-gtk/maingui.c:1649
 #, fuzzy, c-format
 msgid "(%s) Channel settings"
 msgstr "Nastavení panelu"
 
-#: src/fe-gtk/maingui.c:1658
+#: src/fe-gtk/maingui.c:1659
 #, fuzzy
 msgid "Beep on message"
 msgstr "Zvonek pøi soukromé zprávì"
 
-#: src/fe-gtk/maingui.c:1660
+#: src/fe-gtk/maingui.c:1661
 msgid "Hide join/parts"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1662
+#: src/fe-gtk/maingui.c:1663
 #, fuzzy
 msgid "Color paste"
 msgstr "Zavøít"
 
-#: src/fe-gtk/maingui.c:1665
+#: src/fe-gtk/maingui.c:1666
 #, c-format
 msgid "(%s) Network encoding"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1677
+#: src/fe-gtk/maingui.c:1678
 msgid "System default"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1706
+#: src/fe-gtk/maingui.c:1707
 msgid "Enter new nickname:"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1774
+#: src/fe-gtk/maingui.c:1775
 #, fuzzy
 msgid "Channel Options"
 msgstr "Okno kanálù"
@@ -3184,30 +3184,30 @@ msgstr "Adresy"
 msgid "Remove"
 msgstr ""
 
-#: src/fe-gtk/plugingui.c:99
+#: src/fe-gtk/plugingui.c:104
 msgid "Select a Plugin or Script to load"
 msgstr ""
 
-#: src/fe-gtk/plugingui.c:142
+#: src/fe-gtk/plugingui.c:147
 #, fuzzy
 msgid "Version"
 msgstr "Ukrýt verzi"
 
-#: src/fe-gtk/plugingui.c:142 src/fe-gtk/textgui.c:378
+#: src/fe-gtk/plugingui.c:147 src/fe-gtk/textgui.c:378
 msgid "Description"
 msgstr ""
 
-#: src/fe-gtk/plugingui.c:158
+#: src/fe-gtk/plugingui.c:163
 #, fuzzy
 msgid "X-Chat Plugins"
 msgstr "Ukonèit v¹echny Plugins"
 
-#: src/fe-gtk/plugingui.c:172
+#: src/fe-gtk/plugingui.c:177
 #, fuzzy
 msgid "_Load..."
 msgstr "Nahrát Plugin (*.so)..."
 
-#: src/fe-gtk/plugingui.c:176
+#: src/fe-gtk/plugingui.c:181
 msgid "_UnLoad"
 msgstr ""
 
@@ -3255,144 +3255,157 @@ msgstr "Zavøít"
 msgid "Close"
 msgstr "Zavøít"
 
-#: src/fe-gtk/servlistgui.c:118
+#: src/fe-gtk/servlistgui.c:119
 #, fuzzy, c-format
 msgid "Settings for %s"
 msgstr "Mo¾nosti"
 
-#: src/fe-gtk/servlistgui.c:159 src/fe-gtk/servlistgui.c:232
+#: src/fe-gtk/servlistgui.c:160 src/fe-gtk/servlistgui.c:233
 msgid "New Network"
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:327
+#: src/fe-gtk/servlistgui.c:328
 #, c-format
 msgid "Really remove network \"%s\" and all its servers?"
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:364 src/fe-gtk/servlistgui.c:390
+#: src/fe-gtk/servlistgui.c:365 src/fe-gtk/servlistgui.c:391
 #, fuzzy, c-format
 msgid "_Remove \"%s\""
 msgstr "Seznam serverù..."
 
-#: src/fe-gtk/servlistgui.c:371
+#: src/fe-gtk/servlistgui.c:372
 #, fuzzy
 msgid "_Add new server"
 msgstr "Nový server"
 
-#: src/fe-gtk/servlistgui.c:397
+#: src/fe-gtk/servlistgui.c:398
 #, c-format
 msgid "Move \"%s\" _down"
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:404
+#: src/fe-gtk/servlistgui.c:405
 #, fuzzy, c-format
 msgid "Move \"%s\" _up"
 msgstr "Seznam serverù..."
 
-#: src/fe-gtk/servlistgui.c:415
+#: src/fe-gtk/servlistgui.c:416
 msgid "_Add new network"
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:740
+#: src/fe-gtk/servlistgui.c:741
 #, fuzzy
 msgid "Global User Info"
 msgstr "Volby"
 
-#: src/fe-gtk/servlistgui.c:748
+#: src/fe-gtk/servlistgui.c:749
 #, fuzzy
 msgid "Nick Names:"
 msgstr "Zarovnávat Nicks"
 
-#: src/fe-gtk/servlistgui.c:767 src/fe-gtk/servlistgui.c:912
+#: src/fe-gtk/servlistgui.c:768 src/fe-gtk/servlistgui.c:913
 #, fuzzy
 msgid "User Name:"
 msgstr "Bez jména serveru"
 
-#: src/fe-gtk/servlistgui.c:780 src/fe-gtk/servlistgui.c:914
+#: src/fe-gtk/servlistgui.c:781 src/fe-gtk/servlistgui.c:915
 #, fuzzy
 msgid "Real Name:"
 msgstr "Zálo¾ky kanálù"
 
-#: src/fe-gtk/servlistgui.c:822
+#: src/fe-gtk/servlistgui.c:823
 #, fuzzy
 msgid "C_onnect"
 msgstr "Interval pro upozornìní"
 
-#: src/fe-gtk/servlistgui.c:830
+#: src/fe-gtk/servlistgui.c:831
 #, fuzzy
 msgid "Connect in a _new tab"
 msgstr "Interval pro upozornìní"
 
-#: src/fe-gtk/servlistgui.c:881
+#: src/fe-gtk/servlistgui.c:882
 #, fuzzy
 msgid "Servers"
 msgstr "Získat IP adresu ze serveru"
 
-#: src/fe-gtk/servlistgui.c:910
+#: src/fe-gtk/servlistgui.c:911
 #, fuzzy
 msgid "Nick Name:"
 msgstr "Zarovnávat Nicks"
 
-#: src/fe-gtk/servlistgui.c:915
+#: src/fe-gtk/servlistgui.c:916
 #, fuzzy
 msgid "Server Password:"
 msgstr "Seznam serverù..."
 
-#: src/fe-gtk/servlistgui.c:917
+#: src/fe-gtk/servlistgui.c:918
 #, fuzzy
 msgid "Join Channels:"
 msgstr "Nový kanál"
 
-#: src/fe-gtk/servlistgui.c:919
+#: src/fe-gtk/servlistgui.c:920
 msgid "Channels to join, separated by commas, but not spaces!"
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:920
+#: src/fe-gtk/servlistgui.c:921
 #, fuzzy
 msgid "Connect Command:"
 msgstr "Interval pro upozornìní"
 
-#: src/fe-gtk/servlistgui.c:926
+#: src/fe-gtk/servlistgui.c:927
 msgid "Cycle until connected"
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:927
+#: src/fe-gtk/servlistgui.c:928
 #, fuzzy
 msgid "Use global user info"
 msgstr "Volby"
 
-#: src/fe-gtk/servlistgui.c:928
+#: src/fe-gtk/servlistgui.c:929
 #, fuzzy
 msgid "Use secure SSL"
 msgstr "Seznam u¾ivatelù"
 
-#: src/fe-gtk/servlistgui.c:929
+#: src/fe-gtk/servlistgui.c:930
 #, fuzzy
 msgid "Auto connect at startup"
 msgstr "Zpo¾dìní pøi opakovaném automatickém pøipojení"
 
-#: src/fe-gtk/servlistgui.c:930
+#: src/fe-gtk/servlistgui.c:931
 #, fuzzy
 msgid "Use a proxy server"
 msgstr "Získat IP adresu ze serveru"
 
-#: src/fe-gtk/servlistgui.c:931
+#: src/fe-gtk/servlistgui.c:932
 msgid "Accept invalid cert."
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:940
+#: src/fe-gtk/servlistgui.c:941
 msgid "Settings for Selected Network"
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:980
+#: src/fe-gtk/servlistgui.c:981
 msgid "Edit mode"
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:987
+#: src/fe-gtk/servlistgui.c:988
 msgid "Networks"
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:1011
+#: src/fe-gtk/servlistgui.c:1023
+msgid "Skip MOTD"
+msgstr ""
+
+#: src/fe-gtk/servlistgui.c:1030
+msgid "Don't display the message-of-the-day when logging in"
+msgstr ""
+
+#: src/fe-gtk/servlistgui.c:1032
+#, fuzzy
+msgid "No Server List on Startup"
+msgstr "Bez seznamu serverù"
+
+#: src/fe-gtk/servlistgui.c:1056
 #, fuzzy
 msgid "X-Chat: Server List"
 msgstr "Seznam serverù..."
@@ -3548,7 +3561,7 @@ msgstr ""
 msgid "Windows"
 msgstr "Okna"
 
-#: src/fe-gtk/setup.c:136 src/fe-gtk/setup.c:743
+#: src/fe-gtk/setup.c:136 src/fe-gtk/setup.c:744
 msgid "Tabs"
 msgstr "Zálo¾ky"
 
@@ -3892,84 +3905,84 @@ msgstr ""
 msgid "Background:"
 msgstr "Pozadí XPM"
 
-#: src/fe-gtk/setup.c:699
+#: src/fe-gtk/setup.c:700
 msgid "Mark fore:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:700
+#: src/fe-gtk/setup.c:701
 #, fuzzy
 msgid "Mark back:"
 msgstr "Transparentní pozadí"
 
-#: src/fe-gtk/setup.c:702
+#: src/fe-gtk/setup.c:703
 msgid "New Data:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:703
+#: src/fe-gtk/setup.c:704
 #, fuzzy
 msgid "New Message:"
 msgstr "Zpráva pøi ukonèení"
 
-#: src/fe-gtk/setup.c:704
+#: src/fe-gtk/setup.c:705
 #, fuzzy
 msgid "Highlight:"
 msgstr "Zvýraznìní"
 
-#: src/fe-gtk/setup.c:739
+#: src/fe-gtk/setup.c:740
 msgid "Interface"
 msgstr "U¾ivatelské rozhraní"
 
-#: src/fe-gtk/setup.c:740
+#: src/fe-gtk/setup.c:741
 msgid "Text box"
 msgstr ""
 
-#: src/fe-gtk/setup.c:741
+#: src/fe-gtk/setup.c:742
 #, fuzzy
 msgid "Input box"
 msgstr "Vstupní okno"
 
-#: src/fe-gtk/setup.c:742
+#: src/fe-gtk/setup.c:743
 #, fuzzy
 msgid "User list"
 msgstr "Seznam u¾ivatelù"
 
-#: src/fe-gtk/setup.c:744
+#: src/fe-gtk/setup.c:745
 #, fuzzy
 msgid "Colors"
 msgstr "Zavøít"
 
-#: src/fe-gtk/setup.c:746
+#: src/fe-gtk/setup.c:747
 #, fuzzy
 msgid "Chatting"
 msgstr "X-Chat"
 
-#: src/fe-gtk/setup.c:747
+#: src/fe-gtk/setup.c:748
 msgid "General"
 msgstr "Obecné"
 
-#: src/fe-gtk/setup.c:748
+#: src/fe-gtk/setup.c:749
 msgid "Logging"
 msgstr "Ukládání"
 
-#: src/fe-gtk/setup.c:750
+#: src/fe-gtk/setup.c:751
 msgid "Network"
 msgstr ""
 
-#: src/fe-gtk/setup.c:751
+#: src/fe-gtk/setup.c:752
 msgid "Network setup"
 msgstr ""
 
-#: src/fe-gtk/setup.c:752
+#: src/fe-gtk/setup.c:753
 #, fuzzy
 msgid "File transfers"
 msgstr "Pøenos souborù"
 
-#: src/fe-gtk/setup.c:857
+#: src/fe-gtk/setup.c:858
 #, fuzzy
 msgid "Categories"
 msgstr "Kategorie"
 
-#: src/fe-gtk/setup.c:952
+#: src/fe-gtk/setup.c:953
 msgid "X-Chat: Preferences"
 msgstr "X-Chat: Nastavení"
 
@@ -4174,9 +4187,6 @@ msgstr ""
 
 #~ msgid "Startup and Shutdown"
 #~ msgstr "Spu¹tìní a ukonèení"
-
-#~ msgid "No Server List On Startup"
-#~ msgstr "Bez seznamu serverù"
 
 #~ msgid "Don't display the server list on X-Chat startup"
 #~ msgstr "Nezobrazovat seznam serverù po spu¹tìní X-Chatu"

@@ -212,29 +212,30 @@ plugin_add (session *sess, char *filename, void *handle, void *init_func,
 	{
 #ifdef WIN32
 		/* don't change the order, to keep binary compat */
-		pl->hook_command = xchat_hook_command;
-		pl->hook_server = xchat_hook_server;
-		pl->hook_print = xchat_hook_print;
-		pl->hook_timer = xchat_hook_timer;
-		pl->hook_socket = xchat_hook_socket;
-		pl->unhook = xchat_unhook;
-		pl->print = xchat_print;
-		pl->printf = xchat_printf;
-		pl->command = xchat_command;
-		pl->commandf = xchat_commandf;
-		pl->nickcmp = xchat_nickcmp;
-		pl->set_context = xchat_set_context;
-		pl->find_context = xchat_find_context;
-		pl->get_context = xchat_get_context;
-		pl->get_info = xchat_get_info;
-		pl->get_prefs = xchat_get_prefs;
-		pl->list_get = xchat_list_get;
-		pl->list_free = xchat_list_free;
-		pl->list_fields = xchat_list_fields;
-		pl->list_str = xchat_list_str;
-		pl->list_int = xchat_list_int;
-		pl->plugingui_add = xchat_plugingui_add;
-		pl->plugingui_remove = xchat_plugingui_remove;
+		pl->xchat_hook_command = xchat_hook_command;
+		pl->xchat_hook_server = xchat_hook_server;
+		pl->xchat_hook_print = xchat_hook_print;
+		pl->xchat_hook_timer = xchat_hook_timer;
+		pl->xchat_hook_socket = xchat_hook_socket;
+		pl->xchat_unhook = xchat_unhook;
+		pl->xchat_print = xchat_print;
+		pl->xchat_printf = xchat_printf;
+		pl->xchat_command = xchat_command;
+		pl->xchat_commandf = xchat_commandf;
+		pl->xchat_nickcmp = xchat_nickcmp;
+		pl->xchat_set_context = xchat_set_context;
+		pl->xchat_find_context = xchat_find_context;
+		pl->xchat_get_context = xchat_get_context;
+		pl->xchat_get_info = xchat_get_info;
+		pl->xchat_get_prefs = xchat_get_prefs;
+		pl->xchat_list_get = xchat_list_get;
+		pl->xchat_list_free = xchat_list_free;
+		pl->xchat_list_fields = xchat_list_fields;
+		pl->xchat_list_str = xchat_list_str;
+		pl->xchat_list_next = xchat_list_next;
+		pl->xchat_list_int = xchat_list_int;
+		pl->xchat_plugingui_add = xchat_plugingui_add;
+		pl->xchat_plugingui_remove = xchat_plugingui_remove;
 #endif
 
 		/* run xchat_plugin_init, if it returns 0, close the plugin */

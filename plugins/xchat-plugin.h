@@ -33,77 +33,77 @@ typedef struct _xchat_context xchat_context;
 /* === FOR WINDOWS === */
 struct _xchat_plugin
 {
-	xchat_hook *(*hook_command) (xchat_plugin *ph,
+	xchat_hook *(*xchat_hook_command) (xchat_plugin *ph,
 		    char *name,
 		    int pri,
 		    int (*callback) (char *word[], char *word_eol[], void *user_data),
 		    char *help_text,
 		    void *userdata);
-	xchat_hook *(*hook_server) (xchat_plugin *ph,
+	xchat_hook *(*xchat_hook_server) (xchat_plugin *ph,
 		   char *name,
 		   int pri,
 		   int (*callback) (char *word[], char *word_eol[], void *user_data),
 		   void *userdata);
-	xchat_hook *(*hook_print) (xchat_plugin *ph,
+	xchat_hook *(*xchat_hook_print) (xchat_plugin *ph,
 		  char *name,
 		  int pri,
 		  int (*callback) (char *word[], void *user_data),
 		  void *userdata);
-	xchat_hook *(*hook_timer) (xchat_plugin *ph,
+	xchat_hook *(*xchat_hook_timer) (xchat_plugin *ph,
 		  int timeout,
 		  int (*callback) (void *user_data),
 		  void *userdata);
-	xchat_hook *(*hook_socket) (xchat_plugin *ph,
+	xchat_hook *(*xchat_hook_socket) (xchat_plugin *ph,
 		   int fd,
 		   int flags,
 		   int (*callback) (int fd, int flags, void *user_data),
 		   void *userdata);
-	void *(*unhook) (xchat_plugin *ph,
+	void *(*xchat_unhook) (xchat_plugin *ph,
 	      xchat_hook *hook);
-	void (*print) (xchat_plugin *ph,
+	void (*xchat_print) (xchat_plugin *ph,
 	     char *text);
-	void (*printf) (xchat_plugin *ph,
+	void (*xchat_printf) (xchat_plugin *ph,
 	      char *format, ...);
-	void (*command) (xchat_plugin *ph,
+	void (*xchat_command) (xchat_plugin *ph,
 	       char *command);
-	void (*commandf) (xchat_plugin *ph,
+	void (*xchat_commandf) (xchat_plugin *ph,
 		char *format, ...);
-	int (*nickcmp) (xchat_plugin *ph,
+	int (*xchat_nickcmp) (xchat_plugin *ph,
 	       char *s1,
 	       char *s2);
-	int (*set_context) (xchat_plugin *ph,
+	int (*xchat_set_context) (xchat_plugin *ph,
 		   xchat_context *ctx);
-	xchat_context *(*find_context) (xchat_plugin *ph,
+	xchat_context *(*xchat_find_context) (xchat_plugin *ph,
 		    char *servname,
 		    char *channel);
-	xchat_context *(*get_context) (xchat_plugin *ph);
-	const char *(*get_info) (xchat_plugin *ph,
+	xchat_context *(*xchat_get_context) (xchat_plugin *ph);
+	const char *(*xchat_get_info) (xchat_plugin *ph,
 		const char *id);
-	int (*get_prefs) (xchat_plugin *ph,
+	int (*xchat_get_prefs) (xchat_plugin *ph,
 		 const char *name,
 		 const char **string,
 		 int *integer);
-	xchat_list * (*list_get) (xchat_plugin *ph,
+	xchat_list * (*xchat_list_get) (xchat_plugin *ph,
 		const char *name);
-	void (*list_free) (xchat_plugin *ph,
+	void (*xchat_list_free) (xchat_plugin *ph,
 		 xchat_list *xlist);
-	const char ** (*list_fields) (xchat_plugin *ph,
+	const char ** (*xchat_list_fields) (xchat_plugin *ph,
 		   const char *name);
-	int (*list_next) (xchat_plugin *ph,
+	int (*xchat_list_next) (xchat_plugin *ph,
 		 xchat_list *xlist);
-	const char * (*list_str) (xchat_plugin *ph,
+	const char * (*xchat_list_str) (xchat_plugin *ph,
 		xchat_list *xlist,
 		const char *name);
-	int (*list_int) (xchat_plugin *ph,
+	int (*xchat_list_int) (xchat_plugin *ph,
 		xchat_list *xlist,
 		const char *name);
-	void * (*plugingui_add) (xchat_plugin *ph,
+	void * (*xchat_plugingui_add) (xchat_plugin *ph,
 		     char *filename,
 		     char *name,
 		     char *desc,
 		     char *version,
 		     char *reserved);
-	void (*plugingui_remove) (xchat_plugin *ph,
+	void (*xchat_plugingui_remove) (xchat_plugin *ph,
 			void *handle);
 };
 #endif
@@ -230,28 +230,29 @@ xchat_plugingui_remove (xchat_plugin *ph,
 			void *handle);
 
 #if !defined(PLUGIN_C) && defined(WIN32)
-#define xchat_hook_command ((ph)->hook_command)
-#define xchat_hook_server ((ph)->hook_server)
-#define xchat_hook_print ((ph)->hook_print)
-#define xchat_hook_timer ((ph)->hook_timer)
-#define xchat_unhook ((ph)->unhook)
-#define xchat_print ((ph)->print)
-#define xchat_printf ((ph)->printf)
-#define xchat_command ((ph)->command)
-#define xchat_commandf ((ph)->commandf)
-#define xchat_nickcmp ((ph)->nickcmp)
-#define xchat_set_context ((ph)->set_context)
-#define xchat_find_context ((ph)->find_context)
-#define xchat_get_context ((ph)->get_context)
-#define xchat_get_info ((ph)->get_info)
-#define xchat_get_prefs ((ph)->get_prefs)
-#define xchat_list_get ((ph)->list_get)
-#define xchat_list_free ((ph)->list_free)
-#define xchat_list_fields ((ph)->list_fields)
-#define xchat_list_str ((ph)->list_str)
-#define xchat_list_int ((ph)->list_int)
-#define xchat_plugingui_add ((ph)->plugingui_add)
-#define xchat_plugingui_remove ((ph)->plugingui_remove)
+#define xchat_hook_command ((ph)->xchat_hook_command)
+#define xchat_hook_server ((ph)->xchat_hook_server)
+#define xchat_hook_print ((ph)->xchat_hook_print)
+#define xchat_hook_timer ((ph)->xchat_hook_timer)
+#define xchat_unhook ((ph)->xchat_unhook)
+#define xchat_print ((ph)->xchat_print)
+#define xchat_printf ((ph)->xchat_printf)
+#define xchat_command ((ph)->xchat_command)
+#define xchat_commandf ((ph)->xchat_commandf)
+#define xchat_nickcmp ((ph)->xchat_nickcmp)
+#define xchat_set_context ((ph)->xchat_set_context)
+#define xchat_find_context ((ph)->xchat_find_context)
+#define xchat_get_context ((ph)->xchat_get_context)
+#define xchat_get_info ((ph)->xchat_get_info)
+#define xchat_get_prefs ((ph)->xchat_get_prefs)
+#define xchat_list_get ((ph)->xchat_list_get)
+#define xchat_list_free ((ph)->xchat_list_free)
+#define xchat_list_fields ((ph)->xchat_list_fields)
+#define xchat_list_str ((ph)->xchat_list_str)
+#define xchat_list_int ((ph)->xchat_list_int)
+#define xchat_list_next ((ph)->xchat_list_next)
+#define xchat_plugingui_add ((ph)->xchat_plugingui_add)
+#define xchat_plugingui_remove ((ph)->xchat_plugingui_remove)
 #endif
 
 #ifdef __cplusplus

@@ -65,6 +65,11 @@
 #define charlen(str) mblen(str, MB_CUR_MAX)
 #endif
 
+#ifdef WIN32
+#include <windows.h>
+#include <gdk/win32/gdkwin32.h>
+#endif
+
 /* is delimiter */
 #define is_del(c) \
 	(c == ' ' || c == '\n' || c == ')' || c == '(' || \
@@ -111,7 +116,7 @@ int get_stamp_str (time_t, char *, int);
 #endif
 static void gtk_xtext_render_page (GtkXText * xtext);
 static void gtk_xtext_calc_lines (xtext_buffer *buf, int);
-#ifdef USE_XLIB
+#if defined(USE_XLIB) || defined(WIN32)
 static void gtk_xtext_load_trans (GtkXText * xtext);
 static void gtk_xtext_free_trans (GtkXText * xtext);
 #endif
@@ -167,6 +172,50 @@ gtk_xtext_text_width_8bit (GtkXText *xtext, unsigned char *str, int len)
 
 	return width;
 }
+
+#ifdef WIN32
+
+static void
+win32_draw_bg (GtkXText *xtext, int x, int y, int width, int height)
+{
+	HDC hdc;
+	HWND hwnd;
+	HRGN rgn;
+
+	if (xtext->shaded)
+	{
+		gdk_draw_drawable (xtext->draw_buf, xtext->bgc, xtext->pixmap,
+								 x, y, x, y, width, height);
+	} else
+	{
+		hwnd = GDK_WINDOW_HWND (xtext->draw_buf);
+		hdc = GetDC (hwnd);
+
+		rgn = CreateRectRgn (x, y, x + width, y + height);
+		SelectClipRgn (hdc, rgn);
+
+		PaintDesktop (hdc);
+
+		ReleaseDC (hwnd, hdc);
+		DeleteObject (rgn);
+	}
+}
+
+static void
+xtext_draw_bg (GtkXText *xtext, int x, int y, int width, int height)
+{
+	if (xtext->transparent)
+		win32_draw_bg (xtext, x, y, width, height);
+	else
+		gdk_draw_rectangle (xtext->draw_buf, xtext->bgc, 1, x, y, width, height);
+}
+
+#else
+
+#define xtext_draw_bg(xt,x,y,w,h) gdk_draw_rectangle(xt->draw_buf, xt->bgc, \
+																	  1,x,y,w,h);
+
+#endif
 
 /* ================================== */
 /* ========== XFT1 BACKEND ========== */
@@ -444,13 +493,21 @@ backend_draw_text (GtkXText *xtext, int dofill, GdkGC *gc, int x, int y,
 
 	if (dofill)
 	{
-		gdk_gc_get_values (gc, &val);
-		col.pixel = val.background.pixel;
-		gdk_gc_set_foreground (gc, &col);
-		gdk_draw_rectangle (xtext->draw_buf, gc, 1, x, y, str_width,
-								  xtext->fontsize);
-		col.pixel = val.foreground.pixel;
-		gdk_gc_set_foreground (gc, &col);
+#ifdef WIN32
+		if (xtext->transparent && !xtext->backcolor)
+			win32_draw_bg (xtext, x, y - xtext->font->ascent, str_width,
+								xtext->fontsize);
+		else
+#endif
+		{
+			gdk_gc_get_values (gc, &val);
+			col.pixel = val.background.pixel;
+			gdk_gc_set_foreground (gc, &col);
+			gdk_draw_rectangle (xtext->draw_buf, gc, 1, x, y, str_width,
+									  xtext->fontsize);
+			col.pixel = val.foreground.pixel;
+			gdk_gc_set_foreground (gc, &col);
+		}
 	}
 
 	gdk_draw_layout (xtext->draw_buf, gc, x, y, xtext->layout);
@@ -828,7 +885,7 @@ gtk_xtext_destroy (GtkObject * object)
 
 	if (xtext->pixmap)
 	{
-#ifdef USE_XLIB
+#if defined(USE_XLIB) || defined(WIN32)
 		if (xtext->transparent)
 			gtk_xtext_free_trans (xtext);
 		else
@@ -981,7 +1038,7 @@ gtk_xtext_realize (GtkWidget * widget)
 	xtext_set_bg (xtext, xtext->fgc, 19);
 	xtext_set_fg (xtext, xtext->bgc, 19);
 
-#ifdef USE_XLIB
+#if defined(USE_XLIB) || defined(WIN32)
 	if (xtext->transparent)
 	{
 		gtk_xtext_load_trans (xtext);
@@ -1047,7 +1104,7 @@ gtk_xtext_size_allocate (GtkWidget * widget, GtkAllocation * allocation)
 			xtext->buffer->pagetop_ent = NULL;
 			gtk_xtext_adjustment_set (xtext->buffer, FALSE);
 		}
-#ifdef USE_XLIB
+#if defined(USE_XLIB) || defined(WIN32)
 		if (do_trans && xtext->transparent && xtext->shaded)
 		{
 			gtk_xtext_free_trans (xtext);
@@ -1237,7 +1294,7 @@ gtk_xtext_expose (GtkWidget * widget, GdkEventExpose * event)
 	GtkXText *xtext = GTK_XTEXT (widget);
 	textentry *ent_start, *ent_end;
 	int x;
-#ifdef USE_XLIB
+#if defined(USE_XLIB) || defined(WIN32)
 	int y;
 
 	if (xtext->transparent)
@@ -1270,9 +1327,8 @@ gtk_xtext_expose (GtkWidget * widget, GdkEventExpose * event)
 		return FALSE;
 	}
 
-	gdk_draw_rectangle (xtext->draw_buf, xtext->bgc, 1,
-							  event->area.x, event->area.y,
-							  event->area.width, event->area.height);
+	xtext_draw_bg (xtext, event->area.x, event->area.y,
+						event->area.width, event->area.height);
 
 	ent_start = gtk_xtext_find_char (xtext, event->area.x, event->area.y,
 												NULL, NULL);
@@ -2452,9 +2508,8 @@ gtk_xtext_render_flush (GtkXText * xtext, int x, int y, unsigned char *str,
 		if (dofill && xtext->pixmap)
 		{
 	/* draw the background pixmap behind the text - CAUSES FLICKER HERE!! */
-			gdk_draw_rectangle (xtext->draw_buf, xtext->bgc, 1, x,
-									  y - xtext->font->ascent, str_width,
-							 		  xtext->fontsize);
+			xtext_draw_bg (xtext, x, y - xtext->font->ascent, str_width,
+								xtext->fontsize);
 			dofill = FALSE;	/* already drawn the background */
 		}
 	}
@@ -2558,15 +2613,14 @@ gtk_xtext_render_str (GtkXText * xtext, int y, textentry * ent, unsigned char *s
 			/* don't overwrite the timestamp */
 			if (indent > xtext->stamp_width)
 			{
-				gdk_draw_rectangle (xtext->draw_buf, xtext->bgc, 1, 
-										  xtext->stamp_width, y - xtext->font->ascent,
-										  indent - xtext->stamp_width, xtext->fontsize);
+				xtext_draw_bg (xtext, xtext->stamp_width, y - xtext->font->ascent,
+									indent - xtext->stamp_width, xtext->fontsize);
 			}
 		} else
 		{
 			/* fill the indent area with background gc */
-			gdk_draw_rectangle (xtext->draw_buf, xtext->bgc, 1, 0,
-									  y - xtext->font->ascent, indent, xtext->fontsize);
+			xtext_draw_bg (xtext, 0, y - xtext->font->ascent, indent,
+								xtext->fontsize);
 		}
 	}
 
@@ -2807,9 +2861,8 @@ gtk_xtext_render_str (GtkXText * xtext, int y, textentry * ent, unsigned char *s
 	gtk_xtext_draw_sep (xtext, y - xtext->font->ascent);
 	/* draw background to the right of the text */
 	if (!xtext->skip_border_fills)
-		gdk_draw_rectangle (xtext->draw_buf, xtext->bgc, 1, 
-						 x, y - xtext->font->ascent, (win_width + MARGIN) - x,
-						 xtext->fontsize);
+		xtext_draw_bg (xtext, x, y - xtext->font->ascent,
+							(win_width + MARGIN) - x, xtext->fontsize);
 
 	xtext->dont_render2 = FALSE;
 
@@ -3086,6 +3139,7 @@ shade_pixmap (GtkXText * xtext, Pixmap p, int x, int y, int w, int h)
 }
 
 #endif /* !USE_TINT */
+#endif /* !USE_XLIB */
 
 /* free transparency xtext->pixmap */
 
@@ -3099,11 +3153,74 @@ gtk_xtext_free_trans (GtkXText * xtext)
 	}
 }
 
+#ifdef WIN32
+
+static GdkPixmap *
+win32_tint (GtkXText *xtext, GdkImage *img, int width, int height)
+{
+	int x, y;
+	GdkPixmap *pix;
+	GdkVisual *visual = img->visual;
+	gulong pixel;
+	int r, g, b;
+
+	for (y = 0; y < height; y++)
+	{
+		for (x = 0; x < width; x++)
+		{
+			pixel = gdk_image_get_pixel (img, x, y);
+
+			r = (pixel & visual->red_mask) >> visual->red_shift;
+			g = (pixel & visual->green_mask) >> visual->green_shift;
+			b = (pixel & visual->blue_mask) >> visual->blue_shift;
+
+			gdk_image_put_pixel (img, x, y,
+						((r * xtext->tint_red) >> 8) << visual->red_shift |
+						((g * xtext->tint_green) >> 8) << visual->green_shift |
+						((b * xtext->tint_blue) >> 8) << visual->blue_shift);
+		}
+	}
+
+	if (xtext->recycle)
+		pix = xtext->pixmap;
+	else
+		pix = gdk_pixmap_new (GTK_WIDGET (xtext)->window, width, height,
+									 xtext->depth);
+	gdk_draw_image (pix, xtext->bgc, img, 0, 0, 0, 0, width, height);
+
+	return pix;
+}
+
+#endif /* !WIN32 */
+
 /* grab pixmap from root window and set xtext->pixmap */
 
 static void
 gtk_xtext_load_trans (GtkXText * xtext)
 {
+#ifdef WIN32
+	GdkImage *img;
+	int width, height;
+	HDC hdc;
+	HWND hwnd;
+
+	/* if not shaded, we paint directly with PaintDesktop() */
+	if (!xtext->shaded)
+		return;
+
+	hwnd = GDK_WINDOW_HWND (GTK_WIDGET (xtext)->window);
+	hdc = GetDC (hwnd);
+	PaintDesktop (hdc);
+	ReleaseDC (hwnd, hdc);
+
+	gdk_window_get_size (GTK_WIDGET (xtext)->window, &width, &height);
+	width += 105;
+	img = gdk_image_get (GTK_WIDGET (xtext)->window, 0, 0, width, height);
+	xtext->pixmap = win32_tint (xtext, img, width, height);
+	gdk_image_destroy (img);
+
+#else
+
 	Pixmap rootpix;
 	GtkWidget *widget = GTK_WIDGET (xtext);
 	int x, y;
@@ -3145,9 +3262,8 @@ noshade:
 	}
 #endif
 	gdk_gc_set_fill (xtext->bgc, GDK_TILED);
+#endif /* !WIN32 */
 }
-
-#endif
 
 /* walk through str until this line doesn't fit anymore */
 
@@ -3445,18 +3561,18 @@ gtk_xtext_set_background (GtkXText * xtext, GdkPixmap * pixmap, int trans,
 {
 	GdkGCValues val;
 
-#if !defined(USE_GDK_PIXBUF) && !defined(USE_MMX)
+#if !defined(USE_GDK_PIXBUF) && !defined(USE_MMX) && !defined(WIN32)
 	shaded = FALSE;
 #endif
 
-#ifndef USE_XLIB
+#if !defined(USE_XLIB) && !defined(WIN32)
 	shaded = FALSE;
 	trans = FALSE;
 #endif
 
 	if (xtext->pixmap)
 	{
-#ifdef USE_XLIB
+#if defined(USE_XLIB) || defined(WIN32)
 		if (xtext->transparent)
 			gtk_xtext_free_trans (xtext);
 		else
@@ -3467,7 +3583,7 @@ gtk_xtext_set_background (GtkXText * xtext, GdkPixmap * pixmap, int trans,
 
 	xtext->transparent = trans;
 
-#ifdef USE_XLIB
+#if defined(USE_XLIB) || defined(WIN32)
 	if (trans)
 	{
 		xtext->shaded = shaded;
@@ -3776,8 +3892,7 @@ gtk_xtext_render_page (GtkXText * xtext)
 
 	line = (xtext->fontsize * line) - xtext->pixel_offset;
 	/* fill any space below the last line with our background GC */
-	gdk_draw_rectangle (xtext->draw_buf, xtext->bgc, 1, 0, line,
-							  width + MARGIN, height - line);
+	xtext_draw_bg (xtext, 0, line, width + MARGIN, height - line);
 
 	/* draw the separator line */
 	gtk_xtext_draw_sep (xtext, -1);
@@ -3788,7 +3903,7 @@ gtk_xtext_refresh (GtkXText * xtext, int do_trans)
 {
 	if (GTK_WIDGET_REALIZED (GTK_WIDGET (xtext)))
 	{
-#ifdef USE_XLIB
+#if defined(USE_XLIB) || defined(WIN32)
 		if (xtext->transparent && do_trans)
 		{
 			gtk_xtext_free_trans (xtext);

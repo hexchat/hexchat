@@ -50,6 +50,9 @@ incompatibilities from 1.8.x:
 #include "../../config.h"	/* for #define OLD_PERL */
 #include "xchat-plugin.h"
 
+#ifdef WIN32
+#define strcasecmp stricmp
+#endif
 
 struct perlscript
 {
