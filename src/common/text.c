@@ -141,6 +141,48 @@ static char *strhebpatch(char *dest, const char *src)
 
 #endif /* !USE_HEBREW */
 
+/* Make ip:port urls clikable (127.0.0.1:80 etc)
+*  patch by Alex <alex@cosinus.org> & dobler <dobler@barrysworld.com>
+*/
+
+static int
+q3link (char *word)
+{
+	char *s;
+	int i;
+	int d = 0;
+
+	if ((s = strchr (word,':')) != NULL)
+	{
+		for (i = 0; i < (int) ((unsigned long)s - (unsigned long)word); i++)
+		{
+			if (word[i] == '.')
+				d++;
+			else if (!isdigit (word[i]))
+			{
+				d = 0;
+				break;
+			}
+		}
+
+		if (d == 3)
+		{
+			s++;
+			d = 0;
+
+			while (*s != 0)
+			{
+				if (!isdigit (*s++))
+					return (0);
+				d++;
+			}
+			if (d > 0)
+				return (1);
+		}
+	}
+	return (0);
+}
+
 /* check if a word is clickable */
 
 int
@@ -150,6 +192,9 @@ text_word_check (char *word)
 	char *at, *dot;
 	int i, dots;
 	int len = strlen (word);
+
+	if(q3link(word))
+		return WORD_URL;
 
 	if ((word[0] == '@' || word[0] == '+') && word[1] == '#')
 		return WORD_CHANNEL;
@@ -212,8 +257,6 @@ text_word_check (char *word)
 			break;
 		}
 	}
-	if (dots == 3)
-		return WORD_HOST;
 
 	if (!strncasecmp (word + len - 5, ".html", 5))
 		return WORD_HOST;

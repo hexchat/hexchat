@@ -202,7 +202,8 @@ lag_check (void)
 		if (sess->server->connected &&
 			 sess->type == SESS_CHANNEL &&
 			 sess->channel[0] &&
-			 sess->total <= prefs.away_size_max)
+			 sess->total <= prefs.away_size_max &&
+			 !sess->doing_who)
 		{
 			int do_it = FALSE;
 
