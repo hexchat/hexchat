@@ -3146,7 +3146,7 @@ handle_say (session *sess, char *text, int check_spch)
 		max -= 16;	/* :, !, @, " PRIVMSG ", " ", :, \r, \n */
 		max -= strlen (sess->server->nick);
 		max -= strlen (sess->channel);
-		if (sess->me)
+		if (sess->me && sess->me->hostname)
 			max -= strlen (sess->me->hostname);
 		else
 		{
