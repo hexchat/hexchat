@@ -98,7 +98,10 @@ userlist_insertname (session *sess, struct User *newuser, struct User **after)
 		c = nick_cmp (sess->server, newuser, user);
 
 		if (c == 0)
+		{
+			g_slist_free (node);
 			return -2;	/* duplicate */
+		}
 
 		if (c < 0)
 		{

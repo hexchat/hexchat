@@ -154,31 +154,34 @@ text_word_check (char *word)
 	if ((word[0] == '@' || word[0] == '+') && word[1] == '#')
 		return WORD_CHANNEL;
 
-	if (word[0] == '#' && word[1] != '#' && word[1] != 0)
+	if ((word[0] == '#' || word[0] == '&') && word[1] != '#' && word[1] != 0)
 		return WORD_CHANNEL;
 
-	if (!strncasecmp (word, "irc://", 6))
+	if (!strncasecmp (word, "irc.", 4) && word[4] != '.')
 		return WORD_URL;
 
-	if (!strncasecmp (word, "irc.", 4))
+	if (!strncasecmp (word, "ftp.", 4) && word[4] != '.')
 		return WORD_URL;
 
-	if (!strncasecmp (word, "ftp.", 4))
+	if (!strncasecmp (word, "www.", 4) && word[4] != '.')
 		return WORD_URL;
 
-	if (!strncasecmp (word, "ftp:", 4))
+	if (!strncasecmp (word, "irc://", 6) && word[6] != 0)
 		return WORD_URL;
 
-	if (!strncasecmp (word, "www.", 4))
+	if (!strncasecmp (word, "ftp://", 6) && word[6] != 0)
 		return WORD_URL;
 
-	if (!strncasecmp (word, "http:", 5))
+	if (!strncasecmp (word, "http://", 7) && word[7] != 0)
 		return WORD_URL;
 
-	if (!strncasecmp (word, "gopher:", 7))
+	if (!strncasecmp (word, "file://", 7) && word[7] != 0)
 		return WORD_URL;
 
-	if (!strncasecmp (word, "https:", 6))
+	if (!strncasecmp (word, "https://", 8) && word[8] != 0)
+		return WORD_URL;
+
+	if (!strncasecmp (word, "gopher://", 9) && word[9] != 0)
 		return WORD_URL;
 
 	if (find_name (sess, word))
@@ -440,7 +443,7 @@ text_validate (char **text, int *len)
 	{
 		if (error)
 		{
-			*text = g_strdup_printf ("ERROR:\t%s\n", error->message);
+			*text = g_strdup_printf ("\0034ERROR\017\t%s\n", error->message);
 			*len = strlen (*text);
 			g_error_free (error);
 		} else

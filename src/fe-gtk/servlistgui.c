@@ -32,6 +32,8 @@
 #include "../common/xchatc.h"
 #include "../common/servlist.h"
 #include "../common/cfgfiles.h"
+
+#include "fe-gtk.h"
 #include "gtkutil.h"
 #include "menu.h"
 #include "pixmaps.h"
@@ -1191,6 +1193,9 @@ fe_serverlist_open (session *sess)
 	connectnew_button = NULL;
 
 	serverlist_win = win = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+	gtk_window_set_type_hint (GTK_WINDOW (win), GDK_WINDOW_TYPE_HINT_DIALOG);
+	if (current_sess)
+		gtk_window_set_transient_for (GTK_WINDOW (win), GTK_WINDOW (current_sess->gui->window));
 	gtk_window_set_title (GTK_WINDOW (win), _("X-Chat: Server List"));
 	gtk_window_set_position (GTK_WINDOW (win), GTK_WIN_POS_MOUSE);
 	gtkutil_set_icon (win);
