@@ -65,6 +65,22 @@ irc_login (server *serv, char *user, char *realname)
 }
 
 static void
+irc_nickserv (server *serv, char *pass)
+{
+	switch (serv->nickservtype)
+	{
+	case 0:
+		tcp_sendf (serv, "PRIVMSG NickServ :identify %s\r\n", pass);
+		break;
+	case 1:
+		tcp_sendf (serv, "NICKSERV :identify %s\r\n", pass);
+		break;
+	case 2:
+		tcp_sendf (serv, "NS :identify %s\r\n", pass);
+	}
+}
+
+static void
 irc_join (server *serv, char *channel, char *key)
 {
 	if (key[0])
@@ -316,6 +332,15 @@ process_numeric (session * sess, int n,
 			if (prefs.ip_from_server)
 				inbound_foundip (sess, strrchr(word[10], '@')+1);
 		}
+
+		/* use /NICKSERV */
+		if (strcasecmp (word[7], "DALnet") == 0)
+			serv->nickservtype = 1;
+
+		/* use /NS */
+		else if (strcasecmp (word[7], "freenode") == 0)
+			serv->nickservtype = 2;
+
 		goto def;
 
 	case 4:	/* check the ircd type */
@@ -349,7 +374,6 @@ process_numeric (session * sess, int n,
 			serv->have_idmsg = TRUE;
 			break;
 		}
-		serv->have_idmsg = FALSE;
 		goto def;
 
 	case 301:
@@ -981,6 +1005,7 @@ proto_fill_her_up (server *serv)
 	serv->p_quit = irc_quit;
 	serv->p_kick = irc_kick;
 	serv->p_part = irc_part;
+	serv->p_nickserv = irc_nickserv;
 	serv->p_join = irc_join;
 	serv->p_login = irc_login;
 	serv->p_join_info = irc_join_info;

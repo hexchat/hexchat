@@ -1243,8 +1243,7 @@ inbound_login_end (session *sess, char *text)
 
 			/* send nickserv password */
 			if (((ircnet *)serv->network)->nickserv)
-				tcp_sendf (serv, "PRIVMSG NickServ :identify %s\r\n",
-							  ((ircnet *)serv->network)->nickserv);
+				serv->p_nickserv (serv, ((ircnet *)serv->network)->nickserv);
 		}
 
 		check_willjoin_channels (serv);

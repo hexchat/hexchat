@@ -350,11 +350,13 @@ set_server_defaults (server *serv)
 	serv->nick_modes = strdup ("ohv");
 
 	serv->nickcount = 1;
+	serv->nickservtype = 0;
 	serv->end_of_motd = FALSE;
 	serv->is_away = FALSE;
 	serv->supports_watch = FALSE;
 	serv->bad_prefix = FALSE;
 	serv->use_who = TRUE;
+	serv->have_idmsg = FALSE;
 }
 
 static server *
