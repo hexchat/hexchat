@@ -383,6 +383,9 @@ N_("%C22*%O$t%C28[%O$1%C28] %C30(%O$2@$3%C30)%O: $4")},
 {"WhoIs Server Line", pevt_whois3_help, 2, 
 N_("%C22*%O$t%C28[%O$1%C28]%O $2")},
 
+{"WhoIs Special", pevt_whoisid_help, 3, 
+N_("%C22*%O$t%C28[%O$1%C28]%O $2")},
+
 {"You Join", pevt_join_help, 3, 
 N_("%C19*%O$t%C19Now talking on $2")},
 

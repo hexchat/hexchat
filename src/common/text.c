@@ -810,6 +810,7 @@ static char * const pevt_whois6_help[] = {
 static char * const pevt_whoisid_help[] = {
 	N_("Nickname"),
 	N_("Message"),
+	"Numeric"
 };
 
 static char * const pevt_whoisauth_help[] = {

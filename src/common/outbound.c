@@ -629,14 +629,14 @@ cmd_country (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		/* search? */
 		if (strcmp (code, "-s") == 0)
 		{
-			country_search (word[3], sess, PrintTextf);
+			country_search (word[3], sess, (void *)PrintTextf);
 			return TRUE;
 		}
 
 		/* search, but forgot the -s */
 		if (strchr (code, '*'))
 		{
-			country_search (code, sess, PrintTextf);
+			country_search (code, sess, (void *)PrintTextf);
 			return TRUE;
 		}
 
@@ -1342,6 +1342,7 @@ cmd_exec (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	int fds[2], pid = 0;
 	struct nbexec *s;
 	int shell = TRUE;
+	int fd;
 
 	if (*cmd)
 	{
@@ -1411,6 +1412,8 @@ cmd_exec (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			dup2 (fds[1], 2);
 			/* Also copy it to stdin so we can write to it */
 			dup2 (fds[1], 0);
+			/* Now close all open file descriptors except stdin, stdout and stderr */
+			for (fd = 3; fd < 1024; fd++) close(fd);
 			/* Now we call /bin/sh to run our cmd ; made it more friendly -DC1 */
 			if (shell)
 			{

@@ -1216,6 +1216,7 @@ util_exec (char *cmd)
 	int pid;
 	char **argv;
 	int argc;
+	int fd;
 
 	if (my_poptParseArgvString (cmd, &argc, &argv) != 0)
 		return -1;
@@ -1226,6 +1227,8 @@ util_exec (char *cmd)
 		return -1;
 	if (pid == 0)
 	{
+		/* Now close all open file descriptors except stdin, stdout and stderr */
+		for (fd = 3; fd < 1024; fd++) close(fd);
 		execvp (argv[0], argv);
 		_exit (0);
 	} else

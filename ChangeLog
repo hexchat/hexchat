@@ -9,14 +9,23 @@
  - Updated translations (ca, de, lt, nl, ru).
  - Added command line args -u and -p.
  - Fixed handling of "MODE -o+o nick nick" (#1094026).
- - Plugin API: Added "Key Press" print event.
-   Added "state_cursor" for xchat_get_prefs.
-   Added xchat_strip and xchat_free functions.
-   Added "lasttalk" field to "users" list.
-   Added "charset" field to xchat_get_info.
- - TCL: Fixed #1110306 (Daniel P. Stasinski).
- - TCL: fillmein.
- - Perl: fillmein.
+ - Plugin API changes:
+   * Added "Key Press" print event.
+   * Added "state_cursor" for xchat_get_prefs.
+   * Added xchat_strip and xchat_free functions.
+   * Added "lasttalk" field to "users" list.
+   * Added "charset" field to xchat_get_info.
+ - Perl plugin changes (Lian Wan Situ):
+   * Move each script into their own unique package/namespace. Scripts
+     containing multiple packages will not be loaded.
+   * When warning messages are emitted you will now be told which
+     script it came from.
+   * Xchat::set_context will now accept Xchat::set_context( $channel )
+     and Xchat::set_context( $channel, $server ) in addition to
+     Xchat::set_context( $context ).
+   * Fix display of loaded scripts in the Plugins and Scripts window.
+ - TCL: Fixed crash with invalidated TCL timer (#1110306) (Daniel P.
+   Stasinski).
  - /TIMER now supports timeouts to one decimal place.
  - Fixed possible crash of open-file dialog on 64-bit machines.
  - Pressing CTRL-O in the DCC Receive window will now open your
@@ -27,7 +36,7 @@
  - The user is now warned when real/user name is left blank in the
    server list window.
  - Added the /URL command.
- - 
+ - Added a text event for all unknown WHOIS reply lines.
  - 
 
 

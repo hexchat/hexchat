@@ -702,6 +702,15 @@ process_numeric (session * sess, int n,
 		break;
 
 	default:
+
+		if (serv->inside_whois && word[4][0])
+		{
+			/* some unknown WHOIS reply, ircd coders make them up weekly */
+			EMIT_SIGNAL (XP_TE_WHOIS_SPECIAL, serv->server_session, word[4],
+							 word_eol[5] + 1, word[2], NULL, 0);
+			return;
+		}
+
 	def:
 		if (is_channel (serv, word[4]))
 		{
