@@ -55,14 +55,13 @@ sub complete {
 
   # fix $word so { equals [, ] equals }, \ equals |
   $word =~ s/([[\]{}|])/$case_map{$1}/g;
-  Xchat::print ["<",$word,">\n"];
 
   # ignore channels and commands
   if ( $word !~ m{^[/&#]} ) {
-    #Xchat::print Dumper $_[0];
-    
     # this is going to be the "completed" word
     my $completed;
+
+    # used to indicate parital completions so a : isn't added
     my $partial;
 
     # continuing from a previous completion
