@@ -727,6 +727,41 @@ tab_move (GtkWidget *tab, int delta)
 }
 
 void
+tab_family_move (GtkWidget *tab, int delta)
+{
+	int i, pos = 0;
+	GList *list;
+	GtkWidget *group, *inner, *box = NULL;
+	void *family;
+
+	group = g_object_get_data (G_OBJECT (tab), "g");
+	family = g_object_get_data (G_OBJECT (tab), "f");
+	if (!group || !family) return;
+	inner = g_object_get_data (G_OBJECT (group), "i");
+	if (!inner) return;
+	
+	/* find position of tab's family */
+	i = 0;
+	for (list = GTK_BOX (inner)->children; list; list = list->next)
+	{
+		GtkBoxChild *child_entry;
+		void *fam;
+
+		child_entry = list->data;
+		fam = g_object_get_data (G_OBJECT (child_entry->widget), "f");
+		if (fam == family) {
+			box = child_entry->widget;
+			pos = i;
+		}
+		i++;
+	}
+
+	pos = (pos - delta) % i;
+	gtk_box_reorder_child (GTK_BOX (box->parent), box, pos);
+}
+
+
+void
 tab_remove (GtkWidget *tab)
 {
 	GtkWidget *focus_tab;

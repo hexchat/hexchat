@@ -8,6 +8,7 @@ void mg_update_xtext (GtkWidget *wid);
 void mg_safe_quit (void);
 void mg_switch_page (int relative, int num);
 void mg_move_tab (GtkWidget *button, int delta);
+void mg_move_tab_family (GtkWidget *button, int delta);
 void mg_bring_tofront (GtkWidget *button);
 void mg_userlist_showhide (session *sess, int show);
 void mg_chanmodebuttons_showhide (session *sess, int show);

@@ -2511,6 +2511,12 @@ mg_move_tab (GtkWidget *button, int delta)
 }
 
 void
+mg_move_tab_family (GtkWidget *button, int delta)
+{
+	tab_family_move (button, delta);
+}
+
+void
 mg_set_title (GtkWidget *button, char *title)
 {
 	char *old;

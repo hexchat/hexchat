@@ -81,7 +81,7 @@ static void replace_handle (GtkWidget * wid);
  */
 
 /* Remember that the *number* of actions is this *plus* 1 --AGL */
-#define KEY_MAX_ACTIONS 12
+#define KEY_MAX_ACTIONS 14
 /* These are cp'ed from history.c --AGL */
 #define STATE_SHIFT     GDK_SHIFT_MASK
 #define	STATE_ALT	GDK_MOD1_MASK
@@ -135,6 +135,12 @@ static int key_action_move_tab_left (GtkWidget * wid, GdkEventKey * evt,
 static int key_action_move_tab_right (GtkWidget * wid, GdkEventKey * evt,
 												  char *d1, char *d2,
 												  struct session *sess);
+static int key_action_move_tab_family_left (GtkWidget * wid, GdkEventKey * evt,
+												 char *d1, char *d2,
+												 struct session *sess);
+static int key_action_move_tab_family_right (GtkWidget * wid, GdkEventKey * evt,
+												  char *d1, char *d2,
+												  struct session *sess);
 static int key_action_put_history (GtkWidget * wid, GdkEventKey * evt,
 												  char *d1, char *d2,
 												  struct session *sess);
@@ -165,9 +171,13 @@ static const struct key_action key_actions[KEY_MAX_ACTIONS + 1] = {
 	{key_action_replace, "Check For Replace",
 	 N_("This command checks the last word entered in the entry against the replace list and replaces it if it finds a match")},
 	{key_action_move_tab_left, "Move front tab left",
-	 N_("This command move the front tab left by one")},
+	 N_("This command moves the front tab left by one")},
 	{key_action_move_tab_right, "Move front tab right",
-	 N_("This command move the front tab right by one")},
+	 N_("This command moves the front tab right by one")},
+	{key_action_move_tab_family_left, "Move tab family left",
+	 N_("This command moves the current tab family to the left")},
+	{key_action_move_tab_family_right, "Move tab family right",
+	 N_("This command moves the current tab family to the right")},
 	{key_action_put_history, "Push input line into history",
 	 N_("Push input line into history but doesn't send to server")},
 };
@@ -368,7 +378,9 @@ key_load_defaults ()
 		"None\nKP_Enter\nCheck For Replace\nD1!\nD2!\n\n"\
 		"C\nTab\nComplete nick/command\nD1:Up\nD2!\n\n"\
 		"A\nLeft\nMove front tab left\nD1!\nD2!\n\n"\
-		"A\nRight\nMove front tab right\nD1!\nD2!\n\n"
+		"A\nRight\nMove front tab right\nD1!\nD2!\n\n"\
+		"CS\nPrior\nMove tab family left\nD1!\nD2!\n\n"\
+		"CS\nNext\nMove tab family right\nD1!\nD2!\n\n"
 	char buf[512];
 	int fd;
 
@@ -1293,6 +1305,7 @@ key_action_replace (GtkWidget * wid, GdkEventKey * ent, char *d1, char *d2,
 	return 1;
 }
 
+
 static int
 key_action_move_tab_left (GtkWidget * wid, GdkEventKey * ent, char *d1,
 								  char *d2, struct session *sess)
@@ -1306,6 +1319,22 @@ key_action_move_tab_right (GtkWidget * wid, GdkEventKey * ent, char *d1,
 									char *d2, struct session *sess)
 {
 	mg_move_tab (sess->res->tab, -1);
+	return 2;						  /* -''- */
+}
+
+static int
+key_action_move_tab_family_left (GtkWidget * wid, GdkEventKey * ent, char *d1,
+								  char *d2, struct session *sess)
+{
+	mg_move_tab_family (sess->res->tab, +1);
+	return 2;						  /* don't allow default action */
+}
+
+static int
+key_action_move_tab_family_right (GtkWidget * wid, GdkEventKey * ent, char *d1,
+									char *d2, struct session *sess)
+{
+	mg_move_tab_family (sess->res->tab, -1);
 	return 2;						  /* -''- */
 }
 
