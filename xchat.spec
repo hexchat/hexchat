@@ -37,7 +37,7 @@ Summary: XChat TCL plugin
 Group: Applications/Internet
 Requires: xchat >= 1.9.8
 Requires: tcl >= 8.3.3
-%description python
+%description tcl
 Provides TCL scripting capability to XChat.
 
 %prep
