@@ -2020,7 +2020,6 @@ mg_create_topwindow (session *sess)
 	vvbox = gtk_vbox_new (FALSE, 3);
 	gtk_container_add (GTK_CONTAINER (vbox), vvbox);
 
-	mg_create_topicbar (sess, vvbox, sess->channel);
 	mg_create_center (sess, sess->gui, vvbox);
 	mg_create_menu (sess->gui, vbox, sess->server->is_away);
 
@@ -2050,6 +2049,9 @@ mg_create_topwindow (session *sess)
 
 		if (prefs.hideuserlist)
 			mg_userlist_showhide (sess, FALSE);
+
+		if (!prefs.chanmodebuttons)
+			gtk_widget_hide (sess->gui->topicbutton_box);
 	}
 
 	if (!prefs.topicbar)
