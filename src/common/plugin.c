@@ -1142,7 +1142,7 @@ xchat_list_fields (xchat_plugin *ph, const char *name)
 	};
 	static const char *users_fields[] =
 	{
-		"iaway", "shost", "snick", "sprefix", NULL
+		"iaway", "shost", "tlasttalk", "snick", "sprefix", NULL
 	};
 	static const char *list_of_lists[] =
 	{
