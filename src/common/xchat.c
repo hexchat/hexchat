@@ -675,16 +675,16 @@ find_away_message (struct server *serv, char *nick)
 
 #define XTERM "gnome-terminal -x "
 
-#define defaultconf_ctcp \
+static char defaultconf_ctcp[] =
 	"NAME TIME\n"				"CMD nctcp %s TIME %t\n\n"\
-	"NAME PING\n"				"CMD nctcp %s PING %d\n\n"
+	"NAME PING\n"				"CMD nctcp %s PING %d\n\n";
 
-#define defaultconf_replace \
-	"NAME teh\n"				"CMD the\n\n"
+static char defaultconf_replace[] =
+	"NAME teh\n"				"CMD the\n\n";
 /*	"NAME r\n"					"CMD are\n\n"\
 	"NAME u\n"					"CMD you\n\n"*/
 
-#define defaultconf_commands \
+static char defaultconf_commands[] =
 	"NAME ACTION\n"		"CMD me &2\n\n"\
 	"NAME AME\n"			"CMD allchan me &2\n\n"\
 	"NAME ANICK\n"			"CMD allserv nick &2\n\n"\
@@ -711,13 +711,13 @@ find_away_message (struct server *serv, char *nick)
 	"NAME VER\n"			"CMD ctcp %2 VERSION\n\n"\
 	"NAME VERSION\n"		"CMD ctcp %2 VERSION\n\n"\
 	"NAME WALLOPS\n"		"CMD quote WALLOPS :&2\n\n"\
-	"NAME WII\n"			"CMD quote WHOIS %2 %2\n\n"
+	"NAME WII\n"			"CMD quote WHOIS %2 %2\n\n";
 
 #ifdef WIN32
-#define defaultconf_urlhandlers \
-	"NAME Connect as IRC server\n"		"CMD newserver %s\n\n"
+static char defaultconf_urlhandlers[] =
+	"NAME Connect as IRC server\n"		"CMD newserver %s\n\n";
 #else
-#define defaultconf_urlhandlers \
+static char defaultconf_urlhandlers[] =
 	"NAME SUB\n"								"CMD Epiphany...\n\n"\
 		"NAME Open\n"							"CMD !epiphany '%s'\n\n"\
 		"NAME Open in new tab\n"			"CMD !epiphany -n '%s'\n\n"\
@@ -763,7 +763,7 @@ find_away_message (struct server *serv, char *nick)
 		"NAME Telnet\n"						"CMD !"XTERM"telnet %s\n\n"\
 		"NAME Ping\n"							"CMD !"XTERM"ping -c 4 %s\n\n"\
 	"NAME ENDSUB\n"							"CMD \n\n"\
-	"NAME Connect as IRC server\n"		"CMD newserver %s\n\n"
+	"NAME Connect as IRC server\n"		"CMD newserver %s\n\n";
 #endif
 
 #ifdef USE_SIGACTION
@@ -1056,7 +1056,8 @@ xchat_exit (void)
 	if (prefs.autosave)
 	{
 		save_config ();
-		pevent_save (NULL);
+		if (prefs.save_pevents)
+			pevent_save (NULL);
 	}
 	if (prefs.autosave_url)
 		url_autosave ();

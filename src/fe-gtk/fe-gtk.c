@@ -277,7 +277,8 @@ fe_main (void)
 void
 fe_cleanup (void)
 {
-	palette_save ();
+	/* it's saved when pressing OK in setup.c */
+	/*palette_save ();*/
 }
 
 void

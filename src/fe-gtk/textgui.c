@@ -160,6 +160,9 @@ pevent_dialog_update_sound (GtkWidget * wid, GtkWidget * clist)
 		te[sig].sound = NULL;
 	else	/* otherwise copy */
 		te[sig].sound = strdup (GTK_ENTRY (wid)->text);
+
+	/* save this when we exit */
+	prefs.save_pevents = 1;
 }
 
 static void
@@ -214,6 +217,9 @@ pevent_dialog_update (GtkWidget * wid, GtkWidget * twid)
 
 	PrintTextRaw (GTK_XTEXT (twid)->buffer, out, 0);
 	free (out);
+
+	/* save this when we exit */
+	prefs.save_pevents = 1;
 }
 
 static void
@@ -317,6 +323,7 @@ pevent_load_req_cb (void *arg1, char *file)
 		pevent_make_pntevts ();
 		pevent_dialog_fill (pevent_dialog_list);
 		pevent_dialog_select (pevent_dialog_list, -1, -1, NULL, NULL);
+		prefs.save_pevents = 1;
 	}
 }
 

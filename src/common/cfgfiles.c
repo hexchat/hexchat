@@ -62,29 +62,55 @@ list_addentry (GSList ** list, char *cmd, char *name)
 	*list = g_slist_append (*list, pop);
 }
 
+/* read it in from a buffer to our linked list */
+
+static void
+list_load_from_data (GSList ** list, char *ibuf, int size)
+{
+	char cmd[256];
+	char name[82];
+	char *buf;
+	int pnt = 0;
+
+	cmd[0] = 0;
+	name[0] = 0;
+
+	while (buf_get_line (ibuf, &buf, &pnt, size))
+	{
+		if (*buf != '#')
+		{
+			if (!strncasecmp (buf, "NAME ", 5))
+			{
+				safe_strcpy (name, buf + 5, sizeof (name));
+			}
+			else if (!strncasecmp (buf, "CMD ", 4))
+			{
+				safe_strcpy (cmd, buf + 4, sizeof (cmd));
+				if (*name)
+				{
+					list_addentry (list, cmd, name);
+					cmd[0] = 0;
+					name[0] = 0;
+				}
+			}
+		}
+	}
+}
+
 void
 list_loadconf (char *file, GSList ** list, char *defaultconf)
 {
 	char filebuf[256];
-	char cmd[256];
-	char name[82];
-	char *buf, *ibuf;
-	int fh, pnt = 0;
+	char *ibuf;
+	int fh;
 	struct stat st;
 
 	snprintf (filebuf, sizeof (filebuf), "%s/%s", get_xdir_fs (), file);
 	fh = open (filebuf, O_RDONLY | OFLAGS);
 	if (fh == -1)
 	{
-		if (!defaultconf)
-			return;
-		fh = open (filebuf, O_TRUNC | O_WRONLY | O_CREAT | OFLAGS, 0600);
-		if (fh != -1)
-		{
-			write (fh, defaultconf, strlen (defaultconf));
-			close (fh);
-			list_loadconf (file, list, defaultconf);
-		}
+		if (defaultconf)
+			list_load_from_data (list, defaultconf, strlen (defaultconf));
 		return;
 	}
 	if (fstat (fh, &st) != 0)
@@ -97,29 +123,8 @@ list_loadconf (char *file, GSList ** list, char *defaultconf)
 	read (fh, ibuf, st.st_size);
 	close (fh);
 
-	cmd[0] = 0;
-	name[0] = 0;
+	list_load_from_data (list, ibuf, st.st_size);
 
-	while (buf_get_line (ibuf, &buf, &pnt, st.st_size))
-	{
-		if (*buf != '#')
-		{
-			if (!strncasecmp (buf, "NAME ", 5))
-			{
-				safe_strcpy (name, buf + 5, sizeof (name));
-			}
-			if (!strncasecmp (buf, "CMD ", 4))
-			{
-				safe_strcpy (cmd, buf + 4, sizeof (cmd));
-				if (*name)
-				{
-					list_addentry (list, cmd, name);
-					cmd[0] = 0;
-					name[0] = 0;
-				}
-			}
-		}
-	}
 	free (ibuf);
 }
 
