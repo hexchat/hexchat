@@ -4124,7 +4124,7 @@ gtk_xtext_append_entry (xtext_buffer *buf, textentry * ent)
 	} else if (buf->scrollbar_down)
 	{
 		buf->old_value = buf->num_lines - buf->xtext->adj->page_size;
-		buf->pagetop_ent = NULL;
+/*		buf->pagetop_ent = NULL;*/
 	}
 }
 
@@ -4351,8 +4351,10 @@ gtk_xtext_buffer_show (GtkXText *xtext, xtext_buffer *buf, int render)
 	/* sanity check */
 	else if (xtext->adj->value > xtext->adj->upper - xtext->adj->page_size)
 	{
-		buf->pagetop_ent = NULL;
+		/*buf->pagetop_ent = NULL;*/
 		xtext->adj->value = xtext->adj->upper - xtext->adj->page_size;
+		if (xtext->adj->value < 0)
+			xtext->adj->value = 0;
 	}
 
 	if (render)

@@ -443,6 +443,9 @@ fe_main (void)
 	GSList *list;
 	guint64 shortest, delay;
 
+	if (!sess_list)
+		new_ircwindow (NULL, NULL, SESS_SERVER);
+
 #ifdef ENABLE_NLS
 	bindtextdomain (PACKAGE, PREFIX"/share/locale");
 	textdomain (PACKAGE);
@@ -798,4 +801,8 @@ void
 fe_play_wave (const char *file)
 {
     play_wave (file);
+}
+void
+fe_idle_add (void *func, void *data)
+{
 }

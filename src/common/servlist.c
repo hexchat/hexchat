@@ -558,6 +558,26 @@ servlist_connect (session *sess, ircnet *net)
 }
 
 int
+servlist_have_auto (void)
+{
+	GSList *list = network_list;
+	ircnet *net;
+	int ret = 0;
+
+	while (list)
+	{
+		net = list->data;
+
+		if (net->flags & FLAG_AUTO_CONNECT)
+			ret = 1;
+
+		list = list->next;
+	}
+
+	return ret;
+}
+
+int
 servlist_auto_connect (session *sess)
 {
 	GSList *list = network_list;

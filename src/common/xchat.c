@@ -784,6 +784,13 @@ sighup_handler (int signal)
 
 #endif
 
+static gint
+xchat_auto_connect (gpointer userdata)
+{
+	servlist_auto_connect (NULL);
+	return 0;
+}
+
 static void
 xchat_init (void)
 {
@@ -823,12 +830,15 @@ xchat_init (void)
 		fe_serverlist_open (NULL);
 
 	/* do any auto connects */
-	if (!servlist_auto_connect (NULL))	/* if no new windows open .. */
+	if (!servlist_have_auto ())	/* if no new windows open .. */
 	{
 		/* and no serverlist gui ... */
 		if (prefs.slist_skip)
 			/* we'll have to open one. */
 			new_ircwindow (NULL, NULL, SESS_SERVER);
+	} else
+	{
+		fe_idle_add (xchat_auto_connect, NULL);
 	}
 }
 

@@ -387,16 +387,18 @@ menu_create (GtkWidget *menu, GSList *list, char *target)
 }
 
 static void
-menu_destroy (GtkObject *object, gpointer unused)
+menu_destroy (GtkObject *object, gpointer objtounref)
 {
 	gtk_widget_destroy (GTK_WIDGET (object));
+	if (objtounref)
+		g_object_unref (G_OBJECT (objtounref));
 }
 
 static void
-menu_popup (GtkWidget *menu, GdkEventButton *event)
+menu_popup (GtkWidget *menu, GdkEventButton *event, gpointer objtounref)
 {
 	g_signal_connect (G_OBJECT (menu), "selection-done",
-							G_CALLBACK (menu_destroy), NULL);
+							G_CALLBACK (menu_destroy), objtounref);
 	if (event == NULL)
 		gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL, 0, 0);
 	else
@@ -464,7 +466,7 @@ menu_nickmenu (session *sess, GdkEventButton *event, char *nick, int num_sel)
 		menu_create (menu, popup_list, NULL);
 	else
 		menu_create (menu, popup_list, str_copy);
-	menu_popup (menu, event);
+	menu_popup (menu, event, NULL);
 }
 
 static void
@@ -523,8 +525,10 @@ void
 menu_middlemenu (session *sess, GdkEventButton *event)
 {
 	GtkWidget *menu, *away, *user;
+	GtkAccelGroup *accel_group;
 
-	menu = menu_create_main (NULL, FALSE, sess->server->is_away, &away, &user);
+	accel_group = gtk_accel_group_new ();
+	menu = menu_create_main (accel_group, FALSE, sess->server->is_away, &away, &user);
 
 	menu_quick_item (0, 0, menu, 1, 0);	/* sep */
 
@@ -532,7 +536,7 @@ menu_middlemenu (session *sess, GdkEventButton *event)
 	menu_toggle_item (_("Topic Bar"), menu, menu_middle_cb, (void*)1, prefs.topicbar);
 	menu_toggle_item (_("User List"), menu, menu_middle_cb, (void*)2, !prefs.hideuserlist);
 
-	menu_popup (menu, event);
+	menu_popup (menu, event, accel_group);
 }
 
 #ifdef WIN32
@@ -598,7 +602,7 @@ menu_urlmenu (GdkEventButton *event, char *url)
 #endif
 
 	menu_create (menu, urlhandler_list, str_copy);
-	menu_popup (menu, event);
+	menu_popup (menu, event, NULL);
 }
 
 static void
@@ -661,7 +665,7 @@ menu_chanmenu (struct session *sess, GdkEventButton * event, char *chan)
 												 str_copy);
 	}
 
-	menu_popup (menu, event);
+	menu_popup (menu, event, NULL);
 }
 
 static void
@@ -1256,7 +1260,7 @@ create_icon_menu (char *labeltext, void *stock_name, int is_stock)
 }
 
 GtkWidget *
-menu_create_main (GtkWidget *window, int bar, int away,
+menu_create_main (void *accel_group, int bar, int away,
 						GtkWidget **away_item_ret, GtkWidget **user_menu_ret)
 {
 	int i = 0;
@@ -1266,14 +1270,6 @@ menu_create_main (GtkWidget *window, int bar, int away,
 	GtkWidget *menu_bar;
 	GtkWidget *usermenu = 0;
 	GtkWidget *submenu = 0;
-	GtkAccelGroup *accel_group = NULL;
-
-	if (window)
-	{
-		accel_group = gtk_accel_group_new ();
-		gtk_window_add_accel_group (GTK_WINDOW (window), accel_group);
-		g_object_unref (accel_group);
-	}
 
 	if (bar)
 		menu_bar = gtk_menu_bar_new ();
@@ -1318,7 +1314,7 @@ menu_create_main (GtkWidget *window, int bar, int away,
 		case M_MENU:
 			item = gtk_menu_item_new_with_label (_(mymenu[i].text));
 normalitem:
-			if (mymenu[i].key != 0 && accel_group)
+			if (mymenu[i].key != 0)
 				gtk_widget_add_accelerator (item, "activate", accel_group,
 									mymenu[i].key, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
 			if (mymenu[i].callback)
@@ -1336,7 +1332,7 @@ normalitem:
 			item = gtk_check_menu_item_new_with_label (_(mymenu[i].text));
 			gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (item),
 													 mymenu[i].state);
-			if (mymenu[i].key != 0 && accel_group)
+			if (mymenu[i].key != 0)
 				gtk_widget_add_accelerator (item, "activate", accel_group,
 									mymenu[i].key, GDK_MOD1_MASK, GTK_ACCEL_VISIBLE);
 			if (mymenu[i].callback)

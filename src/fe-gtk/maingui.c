@@ -1831,8 +1831,15 @@ mg_topwin_focus_cb (GtkWindow * win, GdkEventFocus *event, session *sess)
 static void
 mg_create_menu (session_gui *gui, GtkWidget *box, int away_state)
 {
-	gui->menu = menu_create_main (gtk_widget_get_toplevel (box),
-						TRUE, away_state, &gui->away_item, &gui->user_menu);
+	GtkAccelGroup *accel_group;
+
+	accel_group = gtk_accel_group_new ();
+	gtk_window_add_accel_group (GTK_WINDOW (gtk_widget_get_toplevel (box)),
+										 accel_group);
+	g_object_unref (accel_group);
+
+	gui->menu = menu_create_main (accel_group, TRUE, away_state,
+											&gui->away_item, &gui->user_menu);
 	gtk_box_pack_start (GTK_BOX (box), gui->menu, 0, 0, 0);
 	gtk_box_reorder_child (GTK_BOX (box), gui->menu, 0);
 }

@@ -15,6 +15,7 @@ void fe_message (char *msg, int wait);
 int fe_input_add (int sok, int read, int write, int ex, void *func,
 						void *data);
 void fe_input_remove (int tag);
+void fe_idle_add (void *func, void *data);
 void fe_set_topic (struct session *sess, char *topic);
 void fe_set_hilight (struct session *sess);
 void fe_update_mode_buttons (struct session *sess, char mode, char sign);
