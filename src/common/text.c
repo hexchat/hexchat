@@ -448,8 +448,20 @@ log_open (session *sess)
 int
 get_stamp_str (char *fmt, time_t tim, char **ret)
 {
+	char *loc = NULL;
 	char dest[128];
 	gsize len;
+
+	/* strftime wants the format string in LOCALE! */
+	if (!prefs.utf8_locale)
+	{
+		const gchar *charset;
+
+		g_get_charset (&charset);
+		loc = g_convert_with_fallback (fmt, -1, charset, "UTF-8", "?", 0, 0, 0);
+		if (loc)
+			fmt = loc;
+	}
 
 	len = strftime (dest, sizeof (dest), fmt, localtime (&tim));
 	if (len)
@@ -459,6 +471,9 @@ get_stamp_str (char *fmt, time_t tim, char **ret)
 		else
 			*ret = g_locale_to_utf8 (dest, len, 0, &len, 0);
 	}
+
+	if (loc)
+		g_free (loc);
 
 	return len;
 }

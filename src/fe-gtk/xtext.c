@@ -3729,10 +3729,12 @@ gtk_xtext_render_line (GtkXText * xtext, textentry * ent, int line,
 	{
 		char *time_str;
 		int stamp_size = xtext_get_stamp_str (ent->stamp, &time_str);
+		int tmp = ent->mb;
 		y = (xtext->fontsize * line) + xtext->font->ascent - xtext->pixel_offset;
-
+		ent->mb = TRUE;
 		gtk_xtext_render_str (xtext, y, ent, time_str, stamp_size,
 									 win_width, 2, line, TRUE);
+		ent->mb = tmp;
 		g_free (time_str);
 	}
 #endif
