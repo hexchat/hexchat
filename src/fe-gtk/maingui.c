@@ -106,17 +106,26 @@ mg_set_access_icon (session_gui *gui, GdkPixbuf *pix)
 	}
 }
 
-void
-mg_inputbox_cb (GtkWidget *igad, session *sess)
+static void
+mg_inputbox_cb (GtkWidget *igad, gpointer userdata)
 {
 	char *cmd = GTK_ENTRY (igad)->text;
+	static int ignore = FALSE;
+
+	if (ignore)
+		return;
 
 	if (cmd[0] == 0)
 		return;
 
 	cmd = strdup (cmd);
+
+	/* avoid recursive loop */
+	ignore = TRUE;
 	gtk_entry_set_text (GTK_ENTRY (igad), "");
-	handle_multiline (sess, cmd, TRUE, FALSE);
+	ignore = FALSE;
+
+	handle_multiline (current_sess, cmd, TRUE, FALSE);
 	free (cmd);
 }
 
@@ -1766,8 +1775,10 @@ mg_create_entry (session *sess, GtkWidget *box)
 	gui->input_box = entry = gtk_entry_new ();
 	gtk_widget_set_name (entry, "xchat-inputbox");
 	gtk_entry_set_max_length (GTK_ENTRY (gui->input_box), 2048);
-	g_signal_connect (G_OBJECT (gui->input_box), "key_press_event",
-							G_CALLBACK (key_handle_key_press), sess);
+	g_signal_connect (G_OBJECT (entry), "key_press_event",
+							G_CALLBACK (key_handle_key_press), NULL);
+	g_signal_connect (G_OBJECT (entry), "activate",
+							G_CALLBACK (mg_inputbox_cb), NULL);
 	gtk_container_add (GTK_CONTAINER (hbox), entry);
 	gtk_widget_grab_focus (entry);
 

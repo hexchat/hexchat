@@ -14,7 +14,6 @@ void mg_userlist_toggle (void);
 void mg_set_topic_tip (session *sess);
 GtkWidget *mg_create_generic_tab (char *name, char *title, int force_toplevel, int link_buttons, void *close_callback, void *userdata, int width, int height, GtkWidget **vbox_ret, void *family);
 void mg_set_title (GtkWidget *button, char *title);
-void mg_inputbox_cb (GtkWidget *igad, session *sess);
 void mg_set_access_icon (session_gui *gui, GdkPixbuf *pix);
 void mg_apply_setup (void);
 void mg_x_click_cb (GtkWidget *button, gpointer userdata);

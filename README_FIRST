@@ -43,3 +43,27 @@ BUGS:
 * delinking/relinking of non-irc windows
 
 * http://sourceforge.net/tracker/?func=browse&group_id=239&atid=100239
+
+
+Perl Scripts:
+~~~~~~~~~~~~~
+Scripts for 1.8.x are compatible with the following exceptions:
+
+- user_list and user_list_short:
+  If a user has both op and voice, only the op flag will be 1.
+
+- dcc_list
+  The address field is always 0.
+
+- add_user_list/sub_user_list/clear_user_list
+  These functions do nothing.
+
+- notify_list
+  Not implemented. Always returns an empty list.
+
+- server_list
+  Lists servers that are not connected aswell.
+
+- Text printed by scripts must now be UTF8.
+
+- Text passed to scripts (via add_message_handler) will be encoded in UTF8.

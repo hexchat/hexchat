@@ -271,11 +271,13 @@ key_handle_key_press (GtkWidget *wid, GdkEventKey *evt, session *sess)
 	}
 
 	/* check if it's a return or enter */
-	if ((evt->keyval == GDK_Return) || (evt->keyval == GDK_KP_Enter))
+	/* ---handled by the "activate" signal in maingui.c */
+/*	if ((evt->keyval == GDK_Return) || (evt->keyval == GDK_KP_Enter))
 		mg_inputbox_cb (wid, sess);
 
 	if (evt->keyval == GDK_KP_Enter)
-		gtk_signal_emit_stop_by_name (GTK_OBJECT (wid), "key_press_event");
+		gtk_signal_emit_stop_by_name (GTK_OBJECT (wid), "key_press_event");*/
+
 	return 0;
 }
 
