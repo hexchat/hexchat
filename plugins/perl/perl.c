@@ -619,7 +619,7 @@ static XS (XS_IRC_user_info)
 		{
 			nick = xchat_list_str (ph, list, "nick");
 
-			if (xchat_nickcmp (ph, (char *)nick, (char *)find_nick))
+			if (xchat_nickcmp (ph, (char *)nick, (char *)find_nick) == 0)
 			{
 				XST_mPV (i, nick);
 				i++;

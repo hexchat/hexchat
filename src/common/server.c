@@ -739,9 +739,9 @@ auto_reconnect (server *serv, int send_quit, int err)
 		del = 500;				  /* so it doesn't block the gui */
 
 #ifndef WIN32
-	if (err == 0 || err == ECONNRESET || err == ETIMEDOUT)
+	if (err == -1 || err == 0 || err == ECONNRESET || err == ETIMEDOUT)
 #else
-	if (err == 0 || err == WSAECONNRESET || err == WSAETIMEDOUT)
+	if (err == -1 || err == 0 || err == WSAECONNRESET || err == WSAETIMEDOUT)
 #endif
 		serv->reconnect_away = serv->is_away;
 
