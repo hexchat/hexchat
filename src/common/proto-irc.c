@@ -473,12 +473,16 @@ process_numeric (session * sess, int n,
 		if (!serv->skip_next_who)
 		{
 			unsigned int away = 0;
+			session *who_sess = find_channel (serv, word[4]);
+
 			if (strchr (word[9], 'G'))
 				away = 1;
-			inbound_user_info (sess, word[4], word[5], word[6], word[7], word[8],
-									 word_eol[11], away);
+
+			inbound_user_info (who_sess, word[4], word[5], word[6], word[7],
+									 word[8], word_eol[11], away);
+
 			/* try to show only user initiated whos */
-			if (!sess->doing_who)
+			if (!who_sess || !who_sess->doing_who)
 				EMIT_SIGNAL (XP_TE_SERVTEXT, serv->server_session, text, word[1],
 								 NULL, NULL, 0);
 		} else
@@ -489,19 +493,21 @@ process_numeric (session * sess, int n,
 		break;
 
 	case 354:	/* undernet WHOX: used as a reply for irc_away_status */
-		if (sess->doing_who)
 		{
 			unsigned int away = 0;
+			session *who_sess = find_channel (serv, word[4]);
 
 			if (strchr (word[6], 'G'))
 				away = 1;
+
 			/* :SanJose.CA.us.undernet.org 354 z1 #zed1 z1 H@ */
-			if (!inbound_user_info (sess, word[4], NULL, NULL, NULL, word[5],
-											NULL, away))
+			inbound_user_info (sess, word[4], 0, 0, 0, word[5], 0, away);
+
+			/* try to show only user initiated whos */
+			if (!who_sess || !who_sess->doing_who)
 				EMIT_SIGNAL (XP_TE_SERVTEXT, serv->server_session, text, word[1],
 								 NULL, NULL, 0);
-		} else
-			goto def;
+		}
 		break;
 
 	case 315:						  /* END OF WHO */
@@ -520,10 +526,10 @@ process_numeric (session * sess, int n,
 				who_sess->doing_who = FALSE;
 			} else
 			{
-				if (!serv->doing_who)
+				if (!serv->doing_dns)
 					EMIT_SIGNAL (XP_TE_SERVTEXT, serv->server_session, text,
 									 word[1], NULL, NULL, 0);
-				serv->doing_who = FALSE;
+				serv->doing_dns = FALSE;
 			}
 		}
 		break;

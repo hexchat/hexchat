@@ -994,7 +994,7 @@ cmd_dns (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			} else
 			{
 				sess->server->p_get_ip (sess->server, nick);
-				sess->server->doing_who = TRUE;
+				sess->server->doing_dns = TRUE;
 			}
 		} else
 		{

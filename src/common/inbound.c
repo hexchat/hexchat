@@ -1101,9 +1101,9 @@ inbound_user_info (session *sess, char *chan, char *user, char *host,
 		}
 	} else
 	{
-		if (!serv->doing_who)
+		if (!serv->doing_dns)
 			return 0;
-		if (host)
+		if (nick && host)
 			do_dns (sess, nick, host);
 	}
 	return 1;
