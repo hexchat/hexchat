@@ -304,6 +304,9 @@ process_numeric (session * sess, char *outbuf, int n,
 		{
 			serv->use_listargs = TRUE;		/* use the /list args */
 			serv->modes_per_line = 6;		/* allow 6 modes per line */
+		} else if (strncmp (word[5], "glx2", 4) == 0)
+		{
+			serv->use_listargs = TRUE;		/* use the /list args */
 		}
 		goto def;
 
@@ -330,7 +333,7 @@ process_numeric (session * sess, char *outbuf, int n,
 		goto def;
 
 	case 312:
-		EMIT_SIGNAL (XP_TE_WHOIS3, sess, word[4], word_eol[5], NULL, NULL, 0);
+		EMIT_SIGNAL (XP_TE_WHOIS3, serv->server_session, word[4], word_eol[5], NULL, NULL, 0);
 		break;
 
 	case 311:
@@ -338,7 +341,7 @@ process_numeric (session * sess, char *outbuf, int n,
 		/* FALL THROUGH */
 
 	case 314:
-		EMIT_SIGNAL (XP_TE_WHOIS1, sess, word[4], word[5],
+		EMIT_SIGNAL (XP_TE_WHOIS1, serv->server_session, word[4], word[5],
 						 word[6], word_eol[8] + 1, 0);
 		break;
 
@@ -350,27 +353,27 @@ process_numeric (session * sess, char *outbuf, int n,
 			sprintf (outbuf, "%02ld:%02ld:%02ld", idle / 3600, (idle / 60) % 60,
 						idle % 60);
 			if (n == 0)
-				EMIT_SIGNAL (XP_TE_WHOIS4, serv->front_session,
-								 word[4], outbuf, NULL, NULL, 0);
+				EMIT_SIGNAL (XP_TE_WHOIS4, serv->server_session, word[4],
+								 outbuf, NULL, NULL, 0);
 			else
 			{
 				tim = ctime (&n);
 				tim[19] = 0; 	/* get rid of the \n */
-				EMIT_SIGNAL (XP_TE_WHOIS4T, serv->front_session,
-								 word[4], outbuf, tim, NULL, 0);
+				EMIT_SIGNAL (XP_TE_WHOIS4T, serv->server_session, word[4],
+								 outbuf, tim, NULL, 0);
 			}
 		}
 		break;
 
 	case 318:
 		serv->inside_whois = 0;
-		EMIT_SIGNAL (XP_TE_WHOIS6, serv->front_session, word[4], NULL,
+		EMIT_SIGNAL (XP_TE_WHOIS6, serv->server_session, word[4], NULL,
 						 NULL, NULL, 0);
 		break;
 
 	case 313:
 	case 319:
-		EMIT_SIGNAL (XP_TE_WHOIS2, serv->front_session, word[4],
+		EMIT_SIGNAL (XP_TE_WHOIS2, serv->server_session, word[4],
 						 word_eol[5] + 1, NULL, NULL, 0);
 		break;
 
@@ -559,7 +562,7 @@ process_numeric (session * sess, char *outbuf, int n,
 		{
 			realsess = find_channel (serv, word[4]);
 			if (!realsess)
-				realsess = sess;
+				realsess = serv->server_session;
 			EMIT_SIGNAL (XP_TE_SERVTEXT, realsess, text, word[1], NULL, NULL, 0);
 		} else
 		{

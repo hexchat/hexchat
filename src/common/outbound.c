@@ -1807,7 +1807,7 @@ cmd_load (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	}
 #endif
 
-	sprintf (tbuf, "Unknown file type %s\n", word[2]);
+	sprintf (tbuf, "Unknown file type %s. Maybe you need to install the Perl or Python plugin?\n", word[2]);
 	PrintText (sess, tbuf);
 
 	return FALSE;

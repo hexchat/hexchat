@@ -148,7 +148,6 @@ PNGS = book.png hop.png op.png purple.png red.png voice.png xchat.png
 noinst_HEADERS = inline_pngs.h
 CLEANFILES = $(noinst_HEADERS)
 EXTRA_DIST = $(PNGS) makefile.msc
-CONV = @gdkpixbufcsourcepath@
 subdir = src/pixmaps
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h
@@ -317,7 +316,7 @@ uninstall-am: uninstall-info-am
 
 
 inline_pngs.h:
-	$(CONV) --build-list $(LIST) > $(srcdir)/inline_pngs.h
+	@gdkpixbufcsourcepath@ --build-list $(LIST) > $(srcdir)/inline_pngs.h
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

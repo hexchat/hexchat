@@ -204,6 +204,8 @@ static void
 chanlist_place_row_in_gui (struct server *serv, gchar ** next_row)
 {
 	int num_users = atoi (next_row[1]);
+	gfloat val, end;
+	GtkAdjustment *adj;
 
 	/* First, update the 'found' counter values */
 	serv->gui->chanlist_users_found_count += num_users;
@@ -260,6 +262,8 @@ chanlist_place_row_in_gui (struct server *serv, gchar ** next_row)
 		}
 	}
 
+	adj = gtk_clist_get_vadjustment (GTK_CLIST (serv->gui->chanlist_list));
+	val = adj->value;
 	/*
 	 * If all the above above tests passed or if no text was in the 
 	 * chanlist_wild_text, add this entry to the GUI
@@ -269,6 +273,12 @@ chanlist_place_row_in_gui (struct server *serv, gchar ** next_row)
 	/* Update the 'shown' counter values */
 	serv->gui->chanlist_users_shown_count += num_users;
 	serv->gui->chanlist_channels_shown_count++;
+
+	/* restore original scrollbar position */
+	end = adj->upper - adj->lower - adj->page_size;
+	if (val > end)
+		val = end;
+	gtk_adjustment_set_value (adj, val);
 
 	chanlist_update_caption (serv);
 }

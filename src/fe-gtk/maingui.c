@@ -1489,12 +1489,15 @@ mg_create_meters (session_gui *gui, GtkWidget *box)
 }
 
 static void
-mg_create_userlist (session_gui *gui, GtkWidget *box)
+mg_create_userlist (session_gui *gui, GtkWidget *box, int pack)
 {
 	GtkWidget *frame, *ulist, *vbox;
 
 	vbox = gtk_vbox_new (0, 0);
-	gtk_box_pack_start (GTK_BOX (box), vbox, 0, 0, 0);
+	if (pack)
+		gtk_box_pack_start (GTK_BOX (box), vbox, 0, 0, 0);
+	else
+		gtk_container_add (GTK_CONTAINER (box), vbox);
 
 	frame = gtk_frame_new (NULL);
 	gtk_box_pack_start (GTK_BOX (vbox), frame, 0, 0, 1);
@@ -1521,37 +1524,37 @@ mg_create_userlist (session_gui *gui, GtkWidget *box)
 static void
 mg_create_center (session *sess, session_gui *gui, GtkWidget *box)
 {
-	GtkWidget *vbox, *hbox, *tbox, *paned;
+	GtkWidget *vbox, *hbox, *paned;
+
+	hbox = gtk_hbox_new (FALSE, 1);
 
 	if (prefs.paned_userlist)
 	{
 		paned = gtk_hpaned_new ();
-
-		hbox = gtk_hbox_new (FALSE, 1);
 		gtk_paned_add1 (GTK_PANED (paned), hbox);
 
 		vbox = gtk_vbox_new (FALSE, 1);
 		gtk_container_add (GTK_CONTAINER (hbox), vbox);
 
-		tbox = gtk_hbox_new (FALSE, 0);
-		gtk_paned_add2 (GTK_PANED (paned), tbox);
-
 		gtk_container_add (GTK_CONTAINER (box), paned);
 
 		mg_create_textarea (gui, vbox);
-		mg_create_userlist (gui, tbox);
 		mg_create_entry (sess, vbox);
+
+		hbox = gtk_hbox_new (FALSE, 1);
+		gtk_paned_add2 (GTK_PANED (paned), hbox);
+
+		mg_create_userlist (gui, hbox, FALSE);
 
 	} else
 	{
-		hbox = gtk_hbox_new (FALSE, 1);
 		gtk_container_add (GTK_CONTAINER (box), hbox);
 
 		vbox = gtk_vbox_new (FALSE, 1);
 		gtk_container_add (GTK_CONTAINER (hbox), vbox);
 
 		mg_create_textarea (gui, vbox);
-		mg_create_userlist (gui, hbox);
+		mg_create_userlist (gui, hbox, TRUE);
 		mg_create_entry (sess, vbox);
 	}
 }

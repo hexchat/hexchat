@@ -446,13 +446,17 @@ load_config (void)
 {
 	struct stat st;
 	char *cfg;
-	const char *username;
+	const char *username, *realname;
 	int res, val, i, fh;
 
 	check_prefs_dir ();
 	username = g_get_user_name ();
 	if (!username)
 		username = "root";
+
+	realname = g_get_real_name ();
+	if ((realname && realname[0] == 0) || !realname)
+		realname = username;
 
 	memset (&prefs, 0, sizeof (struct xchatprefs));
 
@@ -522,7 +526,7 @@ load_config (void)
 	strcat (prefs.nick2, "_");
 	strcpy (prefs.nick3, username);
 	strcat (prefs.nick3, "__");
-	strcpy (prefs.realname, username);
+	strcpy (prefs.realname, realname);
 	strcpy (prefs.username, username);
 #ifdef WIN32
 	strcpy (prefs.sounddir, "./sound");

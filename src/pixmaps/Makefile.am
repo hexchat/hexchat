@@ -12,7 +12,6 @@ PNGS = book.png hop.png op.png purple.png red.png voice.png xchat.png
 noinst_HEADERS = inline_pngs.h
 CLEANFILES = $(noinst_HEADERS)
 EXTRA_DIST = $(PNGS) makefile.msc
-CONV = @gdkpixbufcsourcepath@
 
 inline_pngs.h:
-	$(CONV) --build-list $(LIST) > $(srcdir)/inline_pngs.h
+	@gdkpixbufcsourcepath@ --build-list $(LIST) > $(srcdir)/inline_pngs.h
