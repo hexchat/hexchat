@@ -61,7 +61,6 @@
 
 
 GdkPixmap *channelwin_pix;
-GdkPixmap *dialogwin_pix;
 
 
 #ifdef USE_XLIB

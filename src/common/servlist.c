@@ -761,6 +761,62 @@ servlist_load_defaults (void)
 	}
 }
 
+static int
+servlist_load (void)
+{
+	FILE *fp;
+	char buf[256];
+	int len;
+	ircnet *net = NULL;
+
+	snprintf (buf, sizeof (buf), "%s/servlist_.conf", get_xdir ());
+	fp = fopen (buf, "r");
+	if (!fp)
+		return FALSE;
+
+	while (fgets (buf, sizeof (buf) - 1, fp))
+	{
+		len = strlen (buf);
+		buf[len-1] = 0;	/* remove the trailing \n */
+		switch (buf[0])
+		{
+			case 'N':
+				net = servlist_net_add (buf + 2, /* comment */ "");
+				break;
+			case 'I':
+				net->nick = strdup (buf + 2);
+				break;
+			case 'U':
+				net->user = strdup (buf + 2);
+				break;
+			case 'R':
+				net->real = strdup (buf + 2);
+				break;
+			case 'P':
+				net->pass = strdup (buf + 2);
+				break;
+			case 'J':
+				net->autojoin = strdup (buf + 2);
+				break;
+			case 'C':
+				net->command = strdup (buf + 2);
+				break;
+			case 'F':
+				net->flags = atoi (buf + 2);
+				break;
+			case 'D':
+				net->selected = atoi (buf + 2);
+				break;
+			case 'S':	/* new server/hostname for this network */
+				servlist_server_add (net, buf + 2);
+				break;
+		}
+	}
+	fclose (fp);
+
+	return TRUE;
+}
+
 void
 servlist_init (void)
 {
@@ -819,60 +875,4 @@ servlist_save (void)
 	}
 
 	fclose (fp);
-}
-
-int
-servlist_load (void)
-{
-	FILE *fp;
-	char buf[256];
-	int len;
-	ircnet *net = NULL;
-
-	snprintf (buf, sizeof (buf), "%s/servlist_.conf", get_xdir ());
-	fp = fopen (buf, "r");
-	if (!fp)
-		return FALSE;
-
-	while (fgets (buf, sizeof (buf) - 1, fp))
-	{
-		len = strlen (buf);
-		buf[len-1] = 0;	/* remove the trailing \n */
-		switch (buf[0])
-		{
-			case 'N':
-				net = servlist_net_add (buf + 2, /* comment */ "");
-				break;
-			case 'I':
-				net->nick = strdup (buf + 2);
-				break;
-			case 'U':
-				net->user = strdup (buf + 2);
-				break;
-			case 'R':
-				net->real = strdup (buf + 2);
-				break;
-			case 'P':
-				net->pass = strdup (buf + 2);
-				break;
-			case 'J':
-				net->autojoin = strdup (buf + 2);
-				break;
-			case 'C':
-				net->command = strdup (buf + 2);
-				break;
-			case 'F':
-				net->flags = atoi (buf + 2);
-				break;
-			case 'D':
-				net->selected = atoi (buf + 2);
-				break;
-			case 'S':	/* new server/hostname for this network */
-				servlist_server_add (net, buf + 2);
-				break;
-		}
-	}
-	fclose (fp);
-
-	return TRUE;
 }

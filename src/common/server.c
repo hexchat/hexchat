@@ -251,11 +251,11 @@ tcp_send_len (server *serv, char *buf, int len)
 	return 1;
 }
 
-int
+/*int
 tcp_send (server *serv, char *buf)
 {
 	return tcp_send_len (serv, buf, strlen (buf));
-}
+}*/
 
 void
 tcp_sendf (server *serv, char *fmt, ...)
@@ -728,10 +728,7 @@ auto_reconnect (server *serv, int send_quit, int err)
 	int del;
 
 	if (serv->server_session == NULL)
-	{
-		puts("server_sess was 0!");
 		return;
-	}
 
 	list = sess_list;
 	while (list)				  /* make sure auto rejoin can work */

@@ -848,7 +848,7 @@ mg_x_click_cb (GtkWidget *button, gpointer userdata)
 	fe_close_window (current_sess);
 }
 
-void
+static void
 mg_changui_destroy (session *sess)
 {
 	if (sess->gui->is_tab)
@@ -1703,7 +1703,7 @@ mg_nickclick_cb (GtkWidget *button, gpointer userdata)
 					mg_change_nick, NULL);
 }
 
-void
+static void
 mg_set_tabs_pos (session_gui *gui, int pos)
 {
 	if (!gui)

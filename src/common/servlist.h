@@ -30,7 +30,6 @@ extern GSList *network_list;
 
 void servlist_init (void);
 void servlist_save (void);
-int servlist_load (void);
 int servlist_cycle (server *serv);
 void servlist_connect (session *sess, ircnet *net);
 int servlist_auto_connect (session *sess);

@@ -261,7 +261,7 @@ get_xdir (void)
 #endif
 }
 
-void
+static void
 check_prefs_dir (void)
 {
 	char *xdir = get_xdir ();
@@ -276,7 +276,7 @@ check_prefs_dir (void)
 	}
 }
 
-char *
+static char *
 default_file (void)
 {
 	static char *dfile = 0;

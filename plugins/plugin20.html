@@ -112,7 +112,7 @@ int xchat_plugin_init(xchat_plugin *plugin_handle,
 	*plugin_desc = "Adds an /LS command to give a directory listing";
 	*plugin_version = "0.1";
 
-	xchat_hook_command(ph, "ls", PRI_NORM, ls_cb, "/ls [dir], Does a directory listing", 0);
+	xchat_hook_command(ph, "ls", PRI_NORM, ls_cb, "Usage: LS [dir], Does a directory listing", 0);
 	xchat_print(ph, "LS Plugin loaded successfully!\n");
 
 	return 1;       /* return 1 for success */
@@ -247,7 +247,7 @@ static int onotice_cb(char *word[], char *word_eol[], void *userdata)
 	return EAT_ALL;
 }
 
-xchat_hook_command(ph, "ONOTICE", PRI_NORM, onotice_cb, "/ONOTICE &lt;message> Sends a notice to all ops", NULL);
+xchat_hook_command(ph, "ONOTICE", PRI_NORM, onotice_cb, "Usage: ONOTICE &lt;message> Sends a notice to all ops", NULL);
 </pre>
 </blockquote>
 <br>

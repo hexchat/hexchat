@@ -290,7 +290,7 @@ menu_quick_item (char *cmd, char *label, GtkWidget * menu, int flags,
 	return item;
 }
 
-void
+static void
 menu_quick_item_with_callback (void *callback, char *label, GtkWidget * menu,
 										 void *arg)
 {
@@ -469,7 +469,7 @@ menu_nickmenu (session *sess, GdkEventButton *event, char *nick, int num_sel)
 	menu_popup (menu, event);
 }
 
-void
+static void
 menu_showhide (void)
 {
 	session *sess;

@@ -8,8 +8,6 @@ int cfg_get_int_with_result (char *cfg, char *var, int *result);
 int cfg_get_int (char *cfg, char *var);
 void cfg_put_int (int fh, int value, char *var);
 char *get_xdir (void);
-char *default_file (void);
-void check_prefs_dir (void);
 void load_config (void);
 int save_config (void);
 void list_free (GSList ** list);
