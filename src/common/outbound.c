@@ -990,7 +990,7 @@ cmd_dns (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			user = find_name (sess, nick);
 			if (user && user->hostname)
 			{
-				do_dns (sess, tbuf, user->nick, user->hostname);
+				do_dns (sess, user->nick, user->hostname);
 			} else
 			{
 				sess->server->p_get_ip (sess->server, nick);
@@ -1785,6 +1785,13 @@ cmd_kickban (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 }
 
 static int
+cmd_killall (struct session *sess, char *tbuf, char *word[], char *word_eol[])
+{
+	xchat_exit();
+	return 2;
+}
+
+static int
 cmd_lagcheck (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	lag_check ();
@@ -1906,8 +1913,7 @@ cmd_me (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	if (dcc_write_chat (sess->channel, tbuf))
 	{
 		/* print it to screen */
-		inbound_action (sess, tbuf, sess->channel, sess->server->nick,
-							 act, TRUE);
+		inbound_action (sess, sess->channel, sess->server->nick, act, TRUE);
 	} else
 	{
 		/* DCC CHAT failed, try through server */
@@ -1915,8 +1921,7 @@ cmd_me (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		{
 			sess->server->p_action (sess->server, sess->channel, act);
 			/* print it to screen */
-			inbound_action (sess, tbuf, sess->channel, sess->server->nick,
-								 act, TRUE);
+			inbound_action (sess, sess->channel, sess->server->nick, act, TRUE);
 		} else
 		{
 			notc_msg (sess);
@@ -1994,8 +1999,8 @@ cmd_msg (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			if (!newsess)
 				newsess = find_channel (sess->server, nick);
 			if (newsess)
-				inbound_chanmsg (newsess->server, tbuf, newsess->channel,
-						newsess->server->nick, msg, TRUE);
+				inbound_chanmsg (newsess->server, newsess->channel,
+									  newsess->server->nick, msg, TRUE);
 			else
 				EMIT_SIGNAL (XP_TE_MSGSEND, sess, nick, msg, NULL, NULL, 0);
 
@@ -2512,7 +2517,7 @@ cmd_wallchan (struct session *sess, char *tbuf, char *word[],
 			sess = list->data;
 			if (sess->type == SESS_CHANNEL)
 			{
-				inbound_chanmsg (sess->server, tbuf, sess->channel,
+				inbound_chanmsg (sess->server, sess->channel,
 									  sess->server->nick, word_eol[2], TRUE);
 				sess->server->p_message (sess->server, sess->channel, word_eol[2]);
 			}
@@ -2638,6 +2643,7 @@ const struct commands xc_cmds[] = {
 	 N_("KICK <nick>, kicks the nick from the current channel (needs chanop)")},
 	{"KICKBAN", cmd_kickban, 1, 1,
 	 N_("KICKBAN <nick>, bans then kicks the nick from the current channel (needs chanop)")},
+	{"KILLALL", cmd_killall, 0, 0, "KILLALL, immediately exit"},
 	{"LAGCHECK", cmd_lagcheck, 0, 0,
 	 N_("LAGCHECK, forces a new lag check")},
 	{"LASTLOG", cmd_lastlog, 0, 0,
@@ -3160,7 +3166,7 @@ handle_say (session *sess, char *text, int check_spch)
 		dcc = dcc_write_chat (sess->channel, text);
 		if (dcc)
 		{
-			inbound_chanmsg (sess->server, tbuf, sess->channel,
+			inbound_chanmsg (sess->server, sess->channel,
 								  sess->server->nick, text, TRUE);
 			set_topic (sess, net_ip (dcc->addr));
 			goto xit;
@@ -3204,8 +3210,8 @@ handle_say (session *sess, char *text, int check_spch)
 			text[max] = 0;			  /* insert a NULL terminator to shorten it */
 		}
 
-		inbound_chanmsg (sess->server, tbuf, sess->channel,
-						 sess->server->nick, text, TRUE);
+		inbound_chanmsg (sess->server, sess->channel, sess->server->nick,
+							  text, TRUE);
 		sess->server->p_message (sess->server, sess->channel, text);
 
 		if (t)

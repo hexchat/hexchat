@@ -77,16 +77,18 @@ ctcp_check (session *sess, char *tbuf, char *nick, char *word[],
 }
 
 void
-ctcp_handle (session *sess, char *outbuf, char *to, char *nick,
+ctcp_handle (session *sess, char *to, char *nick,
 				 char *msg, char *word[], char *word_eol[])
 {
 	char *po;
 	session *chansess;
 	server *serv = sess->server;
+	char outbuf[1024];
 
 	if (!strncasecmp (msg, "VERSION", 7) && !prefs.hidever)
 	{
-		sprintf (outbuf, "VERSION xchat "VERSION" %s", get_cpu_str ());
+		snprintf (outbuf, sizeof (outbuf), "VERSION xchat "VERSION" %s",
+					 get_cpu_str ());
 		serv->p_nctcp (serv, nick, outbuf);
 	}
 
@@ -94,7 +96,7 @@ ctcp_handle (session *sess, char *outbuf, char *to, char *nick,
 	{
 		if (!strncasecmp (msg, "ACTION", 6))
 		{
-			inbound_action (sess, outbuf, to, nick, msg + 7, FALSE);
+			inbound_action (sess, to, nick, msg + 7, FALSE);
 			return;
 		}
 		if (!strncasecmp (msg, "DCC", 3))
@@ -109,10 +111,10 @@ ctcp_handle (session *sess, char *outbuf, char *to, char *nick,
 				po[0] = 0;
 			EMIT_SIGNAL (XP_TE_CTCPSND, sess->server->front_session, word[5],
 							 nick, NULL, NULL, 0);
-			snprintf (outbuf, 2048, "%s/%s", prefs.sounddir, word[5]);
+			snprintf (outbuf, sizeof (outbuf), "%s/%s", prefs.sounddir, word[5]);
 			if (strchr (word[5], '/') == 0 && access (outbuf, R_OK) == 0)
 			{
-				snprintf (outbuf, 2048, "%s %s/%s", prefs.soundcmd,
+				snprintf (outbuf, sizeof (outbuf), "%s %s/%s", prefs.soundcmd,
 							 prefs.sounddir, word[5]);
 				xchat_exec (outbuf);
 			}

@@ -291,7 +291,7 @@ channel_date (session *sess, char *chan, char *timestr)
 }
 
 static void
-process_numeric (session * sess, char *outbuf, int n,
+process_numeric (session * sess, int n,
 					  char *word[], char *word_eol[], char *text)
 {
 	session *realsess;
@@ -365,7 +365,10 @@ process_numeric (session * sess, char *outbuf, int n,
 			long n = atol (word[6]);
 			long idle = atol (word[5]);
 			char *tim;
-			sprintf (outbuf, "%02ld:%02ld:%02ld", idle / 3600, (idle / 60) % 60,
+			char outbuf[64];
+
+			snprintf (outbuf, sizeof (outbuf),
+						"%02ld:%02ld:%02ld", idle / 3600, (idle / 60) % 60,
 						idle % 60);
 			if (n == 0)
 				EMIT_SIGNAL (XP_TE_WHOIS4, serv->server_session, word[4],
@@ -472,8 +475,8 @@ process_numeric (session * sess, char *outbuf, int n,
 			unsigned int away = 0;
 			if (strchr (word[9], 'G'))
 				away = 1;
-			if (!inbound_user_info (sess, outbuf, word[4], word[5], word[6],
-											word[7], word[8], word_eol[11], away))
+			if (!inbound_user_info (sess, word[4], word[5], word[6], word[7],
+											word[8], word_eol[11], away))
 				EMIT_SIGNAL (XP_TE_SERVTEXT, serv->server_session, text, word[1],
 								 NULL, NULL, 0);
 		} else
@@ -491,8 +494,8 @@ process_numeric (session * sess, char *outbuf, int n,
 			if (strchr (word[6], 'G'))
 				away = 1;
 			/* :SanJose.CA.us.undernet.org 354 z1 #zed1 z1 H@ */
-			if (!inbound_user_info (sess, outbuf, word[4], NULL, NULL,
-											NULL, word[5], NULL, away))
+			if (!inbound_user_info (sess, word[4], NULL, NULL, NULL, word[5],
+											NULL, away))
 				EMIT_SIGNAL (XP_TE_SERVTEXT, serv->server_session, text, word[1],
 								 NULL, NULL, 0);
 		} else
@@ -616,8 +619,7 @@ process_numeric (session * sess, char *outbuf, int n,
 /* handle named messages that starts with a ':' */
 
 static void
-process_named_msg (session *sess, char *type, char *outbuf,
-					    char *word[], char *word_eol[])
+process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 {
 	server *serv = sess->server;
 	char ip[128], nick[NICKLEN];
@@ -672,7 +674,7 @@ process_named_msg (session *sess, char *type, char *outbuf,
 	if (!strcmp ("NOTICE", type))
 	{
 		if (!ignore_check (word[1], IG_NOTI))
-			inbound_notice (serv, outbuf, word[3], nick,
+			inbound_notice (serv, word[3], nick,
 					(word_eol[4][0] == ':') ? word_eol[4] + 1 : word_eol[4], ip);
 		return;
 	}
@@ -712,19 +714,19 @@ process_named_msg (session *sess, char *type, char *outbuf,
 				if (strncasecmp (text, "DCC ", 4) == 0)
 					/* redo this with handle_quotes TRUE */
 					process_data_init (word[1], word_eol[1], word, word_eol, TRUE);
-				ctcp_handle (sess, outbuf, to, nick, text, word, word_eol);
+				ctcp_handle (sess, to, nick, text, word, word_eol);
 			} else
 			{
 				if (is_channel (serv, to))
 				{
 					if (ignore_check (word[1], IG_CHAN))
 						return;
-					inbound_chanmsg (serv, outbuf, to, nick, text, FALSE);
+					inbound_chanmsg (serv, to, nick, text, FALSE);
 				} else
 				{
 					if (ignore_check (word[1], IG_PRIV))
 						return;
-					inbound_privmsg (serv, outbuf, nick, ip, text);
+					inbound_privmsg (serv, nick, ip, text);
 				}
 			}
 		}
@@ -732,7 +734,7 @@ process_named_msg (session *sess, char *type, char *outbuf,
 	}
 	if (!strcmp ("PONG", type))
 	{
-		inbound_ping_reply (serv->server_session, outbuf,
+		inbound_ping_reply (serv->server_session,
 							 (word[4][0] == ':') ? word[4] + 1 : word[4], word[3]);
 		return;
 	}
@@ -778,8 +780,7 @@ process_named_msg (session *sess, char *type, char *outbuf,
 	}
 
 	/* unknown message */
-	sprintf (outbuf, "GARBAGE: %s\n", word_eol[1]);
-	PrintText (sess, outbuf);
+	PrintTextf (sess, "GARBAGE: %s\n", word_eol[1]);
 }
 
 /* handle named messages that DON'T start with a ':' */
@@ -819,7 +820,6 @@ irc_inline (server *serv, char *buf, int len)
 	char *type, *text;
 	char *word[PDIWORDS];
 	char *word_eol[PDIWORDS];
-	char outbuf[4096];
 	char pdibuf_static[522]; /* 1 line can potentially be 512*6 in utf8 */
 	char *pdibuf = pdibuf_static;
 
@@ -873,10 +873,10 @@ irc_inline (server *serv, char *buf, int len)
 		if (*text == ':')
 			text++;
 
-		process_numeric (sess, outbuf, atoi (word[2]), word, word_eol, text);
+		process_numeric (sess, atoi (word[2]), word, word_eol, text);
 	} else
 	{
-		process_named_msg (sess, type, outbuf, word, word_eol);
+		process_named_msg (sess, type, word, word_eol);
 	}
 
 xit:
