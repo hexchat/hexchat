@@ -421,7 +421,7 @@ static XS (XS_Xchat_register)
 	dXSARGS;
 	if (items < 2 || items > 4) {
 		xchat_printf (ph,
-		"Usage: Xchat::register(scriptname, version, [desc,[shutdowncallback]]) %d",items);
+		"Usage: Xchat::register(scriptname, version, [desc,[shutdowncallback]])");
 	} else {
 		name = SvPV_nolen (ST (0));
 		ver = SvPV_nolen (ST (1));
@@ -2271,6 +2271,8 @@ perl_init (void)
 "\n"
 "$SIG{__WARN__} = sub {\n"
 "  local $, = \"\\n\";\n"
+"  my ($package, $line, $sub) = caller(1);\n"
+"  Xchat::print( \"Warning from ${package}::${sub} at line $line.\" );\n"
 "  Xchat::print( @_ );\n"
 "};\n"
 "\n"
@@ -2278,10 +2280,10 @@ perl_init (void)
 "  my $file = shift @_;\n"
 "\n"
 "  if( open FH, $file ) {\n"
-"	 $file = do {local $/; <FH>};\n"
+"	 my $data = do {local $/; <FH>};\n"
 "	 close FH;\n"
 "\n"
-"	 eval $file;\n"
+"	 eval $data;\n"
 "\n"
 "	 if( $@ ) {\n"
 "		# something went wrong\n"
@@ -2297,7 +2299,6 @@ perl_init (void)
 "\n"
 "  return 0;\n"
 "}\n"
-
 
 
 	};
