@@ -152,6 +152,7 @@ dcc_prepare_row_send (struct DCC *dcc, char *col[])
 
 	/* percentage ack'ed */
 	per = (float) ((dcc->ack * 100.00) / dcc->size);
+	proper_unit (dcc->size, size, sizeof (size));
 	proper_unit (dcc->pos, pos, sizeof (pos));
 	snprintf (kbs, sizeof (kbs), "%.1f", ((float)dcc->cps) / 1024);
 	proper_unit (dcc->ack, ack, sizeof (ack));
