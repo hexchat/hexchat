@@ -503,8 +503,6 @@ userlist_create (GtkWidget *box)
 							G_CALLBACK (userlist_dnd_drop), 0);
 	g_signal_connect (G_OBJECT (treeview), "button_press_event",
 							G_CALLBACK (userlist_click_cb), 0);
-//	g_signal_connect (G_OBJECT (treeview), "cursor_changed",
-//							G_CALLBACK (userlist_cursor_cb), 0);
 
 	userlist_add_columns (GTK_TREE_VIEW (treeview));
 

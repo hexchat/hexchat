@@ -31,6 +31,7 @@
 #include "../common/xchatc.h"
 #include "../pixmaps/xchat.h"
 #include "../common/servlist.h"
+#include "../common/cfgfiles.h"
 #include "gtkutil.h"
 #include "menu.h"
 #include "pixmaps.h"
@@ -376,7 +377,7 @@ servlist_server_popmenu (ircserver *serv, GtkTreeView *treeview, GdkEventButton 
 
 	g_signal_connect (G_OBJECT (menu), "selection-done",
 							G_CALLBACK (servlist_menu_destroy), menu);
-	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL, event->button, event->time);
+	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL, 0, event->time);
 }
 
 static void
@@ -420,7 +421,7 @@ servlist_network_popmenu (ircnet *net, GtkTreeView *treeview, GdkEventButton *ev
 
 	g_signal_connect (G_OBJECT (menu), "selection-done",
 							G_CALLBACK (servlist_menu_destroy), menu);
-	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL, event->button, event->time);
+	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL, 0, event->time);
 }
 
 static ircnet *
@@ -531,8 +532,8 @@ servlist_net_press_cb (GtkWidget *widget, GdkEventButton *event,
 
 	if (event->button == 3)
 	{
-		sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (networks_tree));
-		if (gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (networks_tree),
+		sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (widget));
+		if (gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (widget),
 			 event->x, event->y, &path, 0, 0, 0))
 		{
 			gtk_tree_selection_unselect_all (sel);
@@ -540,7 +541,7 @@ servlist_net_press_cb (GtkWidget *widget, GdkEventButton *event,
 			gtk_tree_path_free (path);
 			net = servlist_find_selected_net (sel, &pos);
 			if (net)
-				servlist_network_popmenu (net, GTK_TREE_VIEW (networks_tree), event);
+				servlist_network_popmenu (net, GTK_TREE_VIEW (widget), event);
 		} else
 		{
 			gtk_tree_selection_unselect_all (sel);
@@ -993,6 +994,50 @@ servlist_create_list (GtkWidget *box)
 	return tree;
 }
 
+static void
+skip_motd (GtkWidget * igad, gpointer serv)
+{
+	if (GTK_TOGGLE_BUTTON (igad)->active)
+		prefs.skipmotd = TRUE;
+	else
+		prefs.skipmotd = FALSE;
+}
+
+static void
+no_servlist (GtkWidget * igad, gpointer serv)
+{
+	if (GTK_TOGGLE_BUTTON (igad)->active)
+		prefs.slist_skip = TRUE;
+	else
+		prefs.slist_skip = FALSE;
+}
+
+static void
+servlist_skip (GtkWidget *box)
+{
+	GtkWidget *hbox, *but;
+
+	hbox = gtk_hbox_new (FALSE, 5);
+	gtk_box_pack_start (GTK_BOX (box), hbox, 0, 0, 0);
+
+	but = gtk_check_button_new_with_label (_("Skip MOTD"));
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (but),
+											prefs.skipmotd);
+	g_signal_connect (G_OBJECT (but), "toggled",
+							G_CALLBACK (skip_motd), 0);
+	gtk_box_pack_start (GTK_BOX (hbox), but, TRUE, FALSE, 0);
+	gtk_widget_show (but);
+	add_tip (but, _("Don't display the message-of-the-day when logging in"));
+
+	but = gtk_check_button_new_with_label (_("No Server List on Startup"));
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (but),
+											prefs.slist_skip);
+	g_signal_connect (G_OBJECT (but), "toggled",
+							G_CALLBACK (no_servlist), 0);
+	gtk_box_pack_start (GTK_BOX (hbox), but, TRUE, FALSE, 0);
+	gtk_widget_show (but);
+}
+
 void
 fe_serverlist_open (session *sess)
 {
@@ -1022,6 +1067,7 @@ fe_serverlist_open (session *sess)
 	servlist_create_infobox (vbox);
 	networks_tree = servlist_create_list (vbox);
 	servlist_create_buttons (vbox);
+	servlist_skip (vbox);
 
 	gtk_widget_show_all (win);
 	if (!prefs.slist_edit)
@@ -1036,3 +1082,4 @@ fe_serverlist_open (session *sess)
 	g_signal_connect (G_OBJECT (gtk_tree_view_get_selection (GTK_TREE_VIEW (servers_tree))),
 							"changed", G_CALLBACK (servlist_server_row_cb), NULL);
 }
+

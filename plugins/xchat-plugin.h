@@ -136,6 +136,7 @@ xchat_hook_timer (xchat_plugin *ph,
 		  int timeout,
 		  int (*callback) (void *user_data),
 		  void *userdata);
+
 xchat_hook *
 xchat_hook_socket (xchat_plugin *ph,
 		   int fd,

@@ -401,7 +401,7 @@ menu_popup (GtkWidget *menu, GdkEventButton *event)
 		gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL, 0, 0);
 	else
 		gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL,
-							 event->button, event->time);
+							 0, event->time);
 }
 
 static char *str_copy = 0;		/* for all pop-up menus */
