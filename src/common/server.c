@@ -237,9 +237,9 @@ tcp_sendf (server *serv, char *fmt, ...)
 }
 
 static int
-close_socket_cb (int sok)
+close_socket_cb (gpointer sok)
 {
-	closesocket (sok);
+	closesocket (GPOINTER_TO_INT (sok));
 	return 0;
 }
 
@@ -296,7 +296,7 @@ server_inline (server *serv, char *line, int len)
 
 			conv_line = g_malloc (len + 1);
 			memcpy (conv_line, line, len);
-			conv_line[len - 1] = 0;
+			conv_line[len] = 0;
 			conv_len = len;
 
 			do
