@@ -142,7 +142,7 @@ execute_perl( SV *function, char *args)
 	SAVETMPS;
 
 	PUSHMARK (SP);
-	XPUSHs ( newSVpvn (args, strlen (args)));
+	XPUSHs ( sv_2mortal (newSVpvn (args, strlen (args))));
 	PUTBACK;
 
 	count = call_sv(function, G_EVAL | G_KEEPERR| G_SCALAR);
@@ -235,9 +235,8 @@ server_cb (char *word[], char *word_eol[], void *userdata)
 	
 	for (count = 1;
 	(count < 32) && (word[count] != NULL) && (word[count][0] != 0);
-	count++)
-	{
-		av_push (wd, newSVpv (word[count], 0));
+	count++) {
+	  av_push (wd, newSVpv (word[count], 0));
 	}
 
 	for (count = 1;
@@ -300,10 +299,11 @@ command_cb (char* word[], char* word_eol[], void *userdata)
 	SAVETMPS;
 	
 	for (count = 1;
-	(count < 32) && (word[count] != NULL) && (word[count][0] != 0);
-	count++)
-	{
-		av_push (wd, newSVpv (word[count], 0));
+		  (count < 32) && (word[count] != NULL) && (word[count][0] != 0);
+		  count++) {
+	  av_push (wd, newSVpv (word[count], 0));
+
+	
 	}
 
 	for (count = 1;
@@ -871,8 +871,9 @@ static XS (XS_Xchat_get_list)
 	xchat_list *list;
 	const char ** fields;
 	const char *field;
-	int i = 0;
-
+	int i = 0; /* field index */
+	int count = 0; /* return value for scalar context */
+	U32 context;
 	dXSARGS;
 
 	if (items != 1) {
@@ -886,6 +887,16 @@ static XS (XS_Xchat_get_list)
 	  
 		if (list == NULL) {
 			XSRETURN_EMPTY;
+		}
+		
+		context = GIMME_V;
+
+		if( context == G_SCALAR ) {
+		  while (xchat_list_next (ph, list)) {
+			 count++;
+		  }
+		  xchat_list_free (ph, list);
+		  XSRETURN_IV((IV)count);
 		}
 	  
 		fields = xchat_list_fields (ph, SvPV_nolen (name));
@@ -1936,7 +1947,11 @@ xs_init (pTHX)
 	newXS ("IRC::user_list_short", XS_IRC_user_list_short, "IRC");
 	newXS ("IRC::perl_script_list", XS_IRC_perl_script_list, "IRC");
 #endif
-	stash = get_hv ("Xchat::", FALSE);
+	stash = get_hv ("Xchat::", TRUE);
+	if(stash == NULL ) {
+	  exit(1);
+	}
+
 	newCONSTSUB (stash, "PRI_HIGHEST", newSViv (XCHAT_PRI_HIGHEST));
 	newCONSTSUB (stash, "PRI_HIGH", newSViv (XCHAT_PRI_HIGH));
 	newCONSTSUB (stash, "PRI_NORM", newSViv (XCHAT_PRI_NORM));
@@ -2269,10 +2284,13 @@ perl_load_file (char *script_name)
 	}
 #endif
 
-	if (my_perl == NULL)
+	if (my_perl == NULL) {
 		perl_init ();
+	}
 
-	return execute_perl (newSVpvn ("Embed::load", 11), script_name);
+	return execute_perl (sv_2mortal (newSVpvn ("Embed::load", 11)),
+								  script_name);
+	
 }
 
 /* checks for "~" in a file and expands */
