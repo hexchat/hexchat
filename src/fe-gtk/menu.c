@@ -494,9 +494,12 @@ menu_nickmenu (session *sess, GdkEventButton *event, char *nick, int num_sel)
 			if (user->away)
 			{
 				away = find_away_message (current_sess->server, nick);
-				snprintf (buf, sizeof (buf), _("Away Msg: %s"),
-						away->message ? away->message : _("Unknown"));
-				menu_quick_item (0, buf, submenu, 0, 0);
+				if (away)
+				{
+					snprintf (buf, sizeof (buf), _("Away Msg: %s"),
+								 away->message ? away->message : _("Unknown"));
+					menu_quick_item (0, buf, submenu, 0, 0);
+				}
 			}
 
 			snprintf (buf, sizeof (buf), _("Last Msg: %s"),
