@@ -72,10 +72,17 @@ nick_cmp (server *serv, struct User *user1, struct User *user2)
 	}
 }
 
+/*
+ insert name in appropriate place in linked list. Returns
+ row number or:
+  -1: append (last row)
+  -2: duplicate
+*/
+
 static int
 userlist_insertname (session *sess, struct User *newuser)
 {
-	int row = 0;
+	int c, row = 0;
 	struct User *user;
 	GSList *list = sess->userlist;
 	GSList *prev = NULL;
@@ -85,8 +92,14 @@ userlist_insertname (session *sess, struct User *newuser)
 
 	while (list)
 	{
-		user = (struct User *) list->data;
-		if (nick_cmp (sess->server, newuser, user) < 1)
+		user = list->data;
+
+		c = nick_cmp (sess->server, newuser, user);
+
+		if (c == 0)
+			return -2;	/* duplicate */
+
+		if (c < 0)
 		{
 			/* this saves a loop inside g_slist_insert */
 			node->next = list;
@@ -94,10 +107,9 @@ userlist_insertname (session *sess, struct User *newuser)
 				prev->next = node;
 			else
 				sess->userlist = node;
-
-			/*sess->userlist = g_slist_insert (sess->userlist, newuser, row);*/
 			return row;
 		}
+
 		row++;
 		prev = list;
 		list = list->next;
@@ -108,7 +120,6 @@ userlist_insertname (session *sess, struct User *newuser)
 		prev->next = node;
 	else
 		sess->userlist = node;
-/*	sess->userlist = g_slist_append (sess->userlist, newuser);*/
 
 	return -1;
 }
@@ -333,10 +344,6 @@ add_name (struct session *sess, char *name, char *hostname)
 
 	notify_set_online (sess->server, name + prefix_chars);
 
-	/* dup? */
-	if (find_name (sess, name + prefix_chars))
-		return;
-
 	user = malloc (sizeof (struct User));
 	memset (user, 0, sizeof (struct User));
 
@@ -345,6 +352,21 @@ add_name (struct session *sess, char *name, char *hostname)
 	/* assume first char is the highest level nick prefix */
 	if (prefix_chars)
 		user->prefix[0] = name[0];
+
+	/* add it to our linked list */
+	if (hostname)
+		user->hostname = strdup (hostname);
+	safe_strcpy (user->nick, name + prefix_chars, NICKLEN);
+	row = userlist_insertname (sess, user);
+
+	/* duplicate? some broken servers trigger this */
+	if (row == -2)
+	{
+		if (user->hostname)
+			free (user->hostname);
+		free (user);
+		return;
+	}
 
 	sess->total++;
 
@@ -357,11 +379,6 @@ add_name (struct session *sess, char *name, char *hostname)
 		prefix_chars--;
 	}
 
-	if (hostname)
-		user->hostname = strdup (hostname);
-	safe_strcpy (user->nick, name, NICKLEN);
-	row = userlist_insertname (sess, user);
-
 	fe_userlist_insert (sess, user, row, FALSE);
 	fe_userlist_numbers (sess);
 }
@@ -369,6 +386,7 @@ add_name (struct session *sess, char *name, char *hostname)
 void
 update_all_of (char *name)
 {
+#if 0
 	struct User *user;
 	struct session *sess;
 	GSList *list = sess_list;
@@ -382,4 +400,5 @@ update_all_of (char *name)
 		}
 		list = list->next;
 	}
+#endif
 }

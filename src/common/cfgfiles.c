@@ -35,8 +35,10 @@
 #include "xchatc.h"
 
 #ifdef WIN32
+#define XCHAT_DIR "X-Chat 2"
 #define DEF_FONT "monospace 10"
 #else
+#define XCHAT_DIR ".xchat2"
 #define DEF_FONT "monospace 11"
 #endif
 
@@ -280,8 +282,7 @@ get_xdir (void)
 		if (!get_reg_str ("Software\\Microsoft\\Windows\\CurrentVersion\\"
 				"Explorer\\Shell Folders", "AppData", out, sizeof (out)))
 			return "./config";
-		xdir = malloc (strlen (out) + 10);
-		sprintf (xdir, "%s\\X-Chat 2", out);
+		xdir = g_strdup_printf ("%s\\" XCHAT_DIR, out);
 	}
 	return xdir;
 }
@@ -293,8 +294,7 @@ get_xdir (void)
 {
 	if (!xdir)
 	{
-		xdir = malloc (strlen (g_get_home_dir ()) + 9);
-		sprintf (xdir, "%s/.xchat2", g_get_home_dir ());
+		xdir = g_strdup_printf ("%s/" XCHAT_DIR, g_get_home_dir());
 	}
 	return xdir;
 }

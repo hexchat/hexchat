@@ -151,7 +151,7 @@ banlist_unban (GtkWidget * wid, struct session *sess)
 
 	/* create an array of all the masks */
 	masks = malloc (num_sel * sizeof (char *));
-	
+
 	i = 0;
 	gtk_tree_model_get_iter_first (model, &iter);
 	do
@@ -166,7 +166,7 @@ banlist_unban (GtkWidget * wid, struct session *sess)
 
 	/* and send to server */
 	send_channel_modes (sess, tbuf, masks, 0, i, '-', 'b');
-	
+
 	/* now free everything, and refresh banlist */	
 	for (i=0; i < num_sel; i++)
 		g_free (masks[i]);
@@ -202,7 +202,6 @@ banlist_add_selected_cb (GtkTreeModel *model, GtkTreePath *path, GtkTreeIter *it
 	*(GSList **)data = list;
 }
 
-
 static void
 banlist_crop (GtkWidget * wid, struct session *sess)
 {
@@ -215,13 +214,13 @@ banlist_crop (GtkWidget * wid, struct session *sess)
 	/* gtk_tree_selected_get_selected_rows() isn't present in gtk 2.0.x */
 	gtk_tree_selection_selected_foreach (select, banlist_add_selected_cb,
 	                                     &list);
-	
+
 	num_sel = g_slist_length (list);
 	/* select all, then unselect those that we remembered */
 	if (num_sel)
 	{
 		gtk_tree_selection_select_all (select);
-		
+
 		for (node = list; node; node = node->next)
 			gtk_tree_selection_unselect_iter (select, node->data);
 		
@@ -268,7 +267,6 @@ banlist_treeview_new (GtkWidget *box)
 	gtk_widget_show (view);
 	return view;
 }
-
 
 static void
 banlist_closegui (GtkWidget *wid, session *sess)
