@@ -1,3 +1,4 @@
+EXTRA_DIST = makefile.msc
 
 libdir = $(xchatlibdir)/plugins
 
