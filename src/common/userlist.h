@@ -13,6 +13,7 @@ struct User
 	unsigned int op:1;
 	unsigned int hop:1;
 	unsigned int voice:1;
+	unsigned int me:1;
 };
 
 #define USERACCESS_SIZE 12

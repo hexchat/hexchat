@@ -404,6 +404,9 @@ add_name (struct session *sess, char *name, char *hostname)
 	if (hostname)
 		user->hostname = strdup (hostname);
 	safe_strcpy (user->nick, name + prefix_chars, NICKLEN);
+	/* is it me? */
+	if (sess->server->p_cmp (user->nick, sess->server->nick))
+		user->me = TRUE;
 	row = userlist_insertname (sess, user, &after);
 
 	/* duplicate? some broken servers trigger this */

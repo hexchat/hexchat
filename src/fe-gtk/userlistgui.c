@@ -270,7 +270,7 @@ fe_userlist_insert (session *sess, struct User *newuser, int row, int sel, struc
 							  -1);
 
 	/* is it me? */
-	if (!sess->server->p_cmp (newuser->nick, sess->server->nick) && sess->gui->nick_box)
+	if (newuser->me && sess->gui->nick_box)
 	{
 		sess->res->myself = newuser;
 		if (!sess->gui->is_tab || sess == current_tab)

@@ -866,7 +866,7 @@ cmd_mdehop (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	while (list)
 	{
 		user = (struct User *) list->data;
-		if (user->hop && (strcmp (user->nick, sess->server->nick) != 0))
+		if (user->hop && !user->me)
 		{
 			nicks[i] = user->nick;
 			i++;
@@ -892,7 +892,7 @@ cmd_mdeop (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	while (list)
 	{
 		user = (struct User *) list->data;
-		if (user->op && (strcmp (user->nick, sess->server->nick) != 0))
+		if (user->op && !user->me)
 		{
 			nicks[i] = user->nick;
 			i++;
@@ -918,12 +918,9 @@ cmd_mkick (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	while (list)
 	{
 		user = (struct User *) list->data;
-		if (user->op)
+		if (user->op && !user->me)
 		{
-			if (strcmp (user->nick, sess->server->nick) != 0)
-			{
-				sess->server->p_kick (sess->server, sess->channel, user->nick, reason);
-			}
+			sess->server->p_kick (sess->server, sess->channel, user->nick, reason);
 		}
 		list = list->next;
 	}
@@ -932,12 +929,9 @@ cmd_mkick (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	while (list)
 	{
 		user = (struct User *) list->data;
-		if (!user->op)
+		if (!user->op && !user->me)
 		{
-			if (strcmp (user->nick, sess->server->nick) != 0)
-			{
-				sess->server->p_kick (sess->server, sess->channel, user->nick, reason);
-			}
+			sess->server->p_kick (sess->server, sess->channel, user->nick, reason);
 		}
 		list = list->next;
 	}
@@ -1883,26 +1877,33 @@ cmd_me (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	return TRUE;
 }
 
+typedef struct
+{
+	char **nicks;
+	int i;
+} multidata;
+
+static gboolean
+mop_cb (gpointer key, struct User *user, multidata *data)
+{
+	if (!user->op)
+	{
+		data->nicks[data->i] = user->nick;
+		data->i++;
+	}
+	return TRUE;
+}
+
 static int
 cmd_mop (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
-	struct User *user;
 	char **nicks = malloc (sizeof (char *) * (sess->total - sess->ops));
-	int i = 0;
-	GSList *list = sess->userlist;
+	multidata data;
 
-	while (list)
-	{
-		user = (struct User *) list->data;
-		if (!user->op)
-		{
-			nicks[i] = user->nick;
-			i++;
-		}
-		list = list->next;
-	}
-
-	send_channel_modes (sess, tbuf, nicks, 0, i, '+', 'o');
+	data.nicks = nicks;
+	data.i = 0;
+	g_tree_foreach (sess->usertree, mop_cb, &data);
+	send_channel_modes (sess, tbuf, nicks, 0, data.i, '+', 'o');
 
 	free (nicks);
 
