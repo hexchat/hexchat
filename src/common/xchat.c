@@ -611,13 +611,6 @@ find_away_message (struct server *serv, char *nick)
 	"NAME TIME\n"				"CMD nctcp %s TIME %t\n\n"\
 	"NAME PING\n"				"CMD nctcp %s PING %d\n\n"
 
-#define defaultconf_dlgbuttons \
-	"NAME Whois\n"				"CMD whois %s\n\n"\
-	"NAME Send\n"				"CMD dcc send %s\n\n"\
-	"NAME Chat\n"				"CMD dcc chat %s\n\n"\
-	"NAME Ping\n"				"CMD ping %s\n\n"\
-	"NAME Clear\n"				"CMD clear\n\n"
-
 #define defaultconf_replace \
 	"NAME teh\n"				"CMD the\n\n"
 /*	"NAME r\n"					"CMD are\n\n"\
@@ -898,8 +891,20 @@ xchat_init (void)
 				_("Dialog"));
 	list_loadconf ("buttons.conf", &button_list, buf);
 
+	snprintf (buf, sizeof (buf),
+		"NAME %s\n"				"CMD whois %%s\n\n"
+		"NAME %s\n"				"CMD dcc send %%s\n\n"
+		"NAME %s\n"				"CMD dcc chat %%s\n\n"
+		"NAME %s\n"				"CMD ping %%s\n\n"
+		"NAME %s\n"				"CMD clear\n\n",
+				_("WhoIs"),
+				_("Send"),
+				_("Chat"),
+				_("Ping"),
+				_("Clear"));
+	list_loadconf ("dlgbuttons.conf", &dlgbutton_list, buf);
+
 	list_loadconf ("ctcpreply.conf", &ctcp_list, defaultconf_ctcp);
-	list_loadconf ("dlgbuttons.conf", &dlgbutton_list, defaultconf_dlgbuttons);
 	list_loadconf ("commands.conf", &command_list, defaultconf_commands);
 	list_loadconf ("replace.conf", &replace_list, defaultconf_replace);
 	list_loadconf ("urlhandlers.conf", &urlhandler_list,
