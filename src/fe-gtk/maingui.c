@@ -900,6 +900,7 @@ void
 mg_userlist_toggle (void)
 {
 	GtkWidget *box;
+	session_gui *gui = current_sess->gui;
 
 	box = current_sess->gui->user_box;
 
@@ -907,11 +908,23 @@ mg_userlist_toggle (void)
 	{
 		prefs.hideuserlist = 1;
 		gtk_widget_hide (box);
+
+		if (gui->pane)
+		{
+			prefs.paned_pos = gui->pane_pos = gtk_paned_get_position (GTK_PANED (gui->pane));
+			gtk_paned_set_position (GTK_PANED (gui->pane), 9999);
+		}
+
 	} else
 	{
 		prefs.hideuserlist = 0;
 		gtk_widget_show (box);
+
+		if (gui->pane)
+			gtk_paned_set_position (GTK_PANED (gui->pane), gui->pane_pos);
 	}
+
+	gtk_widget_grab_focus (gui->input_box);
 }
 
 static void
