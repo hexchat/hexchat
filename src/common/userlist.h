@@ -13,7 +13,6 @@ struct User
 	unsigned int op:1;
 	unsigned int hop:1;
 	unsigned int voice:1;
-	char gui[sizeof(gint) + (sizeof(gpointer) * 3)];
 };
 
 #define USERACCESS_SIZE 16
