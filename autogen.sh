@@ -13,9 +13,11 @@ if automake --version < /dev/null > /dev/null 2>&1 ; then
 fi
 if $have_automake ; then
 	AUTOMAKE="automake"
+	ACLOCAL="aclocal"
 else
 	if automake-1.7 --version < /dev/null > /dev/null 2>&1 ; then
 		AUTOMAKE="automake-1.7"
+		ACLOCAL="aclocal-1.7"
 	else
 		echo "automake missing or too old. This requires atleast automake 1.5"
 		exit 1
@@ -65,8 +67,8 @@ fi
 # ------ END GETTEXT ------
 
 
-echo running aclocal...
-aclocal
+echo running $ACLOCAL...
+$ACLOCAL
 if test "$?" != "0"; then
 	echo aclocal failed, stopping.
 	exit 2
