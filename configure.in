@@ -283,13 +283,14 @@ if test "$python" = yes; then
 		changequote(<<, >>)dnl
 		PY_VERSION=`$pythonpath -c 'import sys; print sys.version.split()[0]'`
 		PY_MAJOR=`$pythonpath -c 'import sys; print "%d.%d"%sys.version_info[:2]'`
+		PY_PATH=`$pythonpath -c 'import sys ; print sys.path[1][5:]'`
 		PY_OK=`$pythonpath -c 'import sys; sys.version_info[:2] >= (2,2) and sys.stdout.write("1")'`
 		changequote([, ])dnl
 		AC_MSG_RESULT($PY_VERSION)
 		if test "$PY_OK" = "1"; then
 			AC_MSG_CHECKING(Python compile flags)
 			if test -f $PY_PREFIX/include/python$PY_MAJOR/Python.h; then
-				PY_LIBS="-L$PY_EXEC_PREFIX/lib/python$PY_MAJOR/config -lpython$PY_MAJOR -lpthread -lutil"
+				PY_LIBS="-L$PY_EXEC_PREFIX/$PY_PATH/config -lpython$PY_MAJOR -lpthread -lutil"
 				PY_CFLAGS="-I$PY_PREFIX/include/python$PY_MAJOR"
 				AC_MSG_RESULT(ok)
 			else
@@ -355,7 +356,23 @@ dnl *********************************************************************
 dnl ** OPENSSL **********************************************************
 dnl *********************************************************************
 
+retry=no
 if test "$openssl" != no; then
+	AC_PATH_PROG(pkgconfigpath, pkg-config)
+	AC_MSG_CHECKING(for openssl through pkg-config)
+	if $pkgconfigpath openssl --exists; then
+		CPPFLAGS="$CPPFLAGS `$pkgconfigpath openssl --cflags`"
+		LIBS="$LIBS `$pkgconfigpath openssl --libs`"
+		AC_DEFINE(USE_OPENSSL)
+		AC_MSG_RESULT(yes)
+		openssl=yes
+	else
+		AC_MSG_RESULT(no)
+		retry=yes
+	fi
+fi
+
+if test "$retry" = "yes"; then
 	unset openssl_path ac_cv_lib_ssl_SSL_new ac_cv_header_openssl_ssl_h
 	if test "$openssl" != yes; then
 		openssl_path=$openssl
