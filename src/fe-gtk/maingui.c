@@ -964,7 +964,7 @@ mg_tab_press_cb (GtkWidget *wid, GdkEventButton *event, session *sess)
 
 		menu_toggle_item (_("Beep on message"), submenu, mg_beepmsg_cb, sess,
 								sess->beep);
-		if (sess->type != SESS_DIALOG)
+		if (sess->type == SESS_CHANNEL)
 			menu_toggle_item (_("Show join/part messages"), submenu, mg_hidejp_cb,
 									sess, !sess->hide_join_part);
 		menu_toggle_item (_("Color paste"), submenu, mg_colorpaste_cb, sess,

@@ -1340,7 +1340,7 @@ download_move_to_completed_dir (char *dcc_dir, char *dcc_completed_dir,
 		if ((tmp_src = open (dl_src, O_RDONLY | OFLAGS)) == -1)
 		{
 			fprintf (stderr, "Unable to open() file '%s' (%s) !", dl_src,
-					  g_strerror (errno));
+					  strerror (errno));
 			return;
 		}
 

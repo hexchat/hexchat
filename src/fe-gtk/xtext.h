@@ -170,6 +170,7 @@ struct _GtkXText
 	unsigned int recycle:1;
 	unsigned int avoid_trans:1;
 	unsigned int overdraw:1;
+	unsigned int indent_changed:1;
 };
 
 struct _GtkXTextClass
