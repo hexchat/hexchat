@@ -746,6 +746,8 @@ process_named_msg (session *sess, char *type, char *outbuf,
 static void
 process_named_servermsg (session *sess, char *buf, char *word_eol[])
 {
+	sess = sess->server->server_session;
+
 	if (!strncmp (buf, "PING ", 5))
 	{
 		tcp_sendf (sess->server, "PONG %s\r\n", buf + 5);

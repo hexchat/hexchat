@@ -1200,15 +1200,18 @@ gtk_xtext_paint (GtkWidget *widget, GdkRectangle *area)
 		return;
 	}
 
-	xtext_draw_bg (xtext, area->x, area->y, area->width, area->height);
-
 	ent_start = gtk_xtext_find_char (xtext, area->x, area->y, NULL, NULL);
 	if (!ent_start)
+	{
+		xtext_draw_bg (xtext, area->x, area->y, area->width, area->height);
 		goto xit;
+	}
 	ent_end = gtk_xtext_find_char (xtext, area->x + area->width,
 											 area->y + area->height, NULL, NULL);
 	if (!ent_end)
 		ent_end = xtext->buffer->text_last;
+
+	xtext_draw_bg (xtext, area->x, area->y, area->width, area->height);
 
 	/* can't over-write the same text with xft, or the AA will change */
 	backend_set_clip (xtext, area);

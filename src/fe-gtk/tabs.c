@@ -17,7 +17,7 @@
 
 #include "tabs.h"
 
-#define ALPHA_SORT
+#undef ALPHA_SORT
 
 /* ignore "toggled" signal? */
 static int ignore_toggle = FALSE;
