@@ -11267,14 +11267,6 @@ else
   perl=yes
 fi;
 
-# Check whether --enable-openssl or --disable-openssl was given.
-if test "${enable_openssl+set}" = set; then
-  enableval="$enable_openssl"
-  openssl=$enableval
-else
-  openssl=yes
-fi;
-
 # Check whether --enable-tcl or --disable-tcl was given.
 if test "${enable_tcl+set}" = set; then
   enableval="$enable_tcl"
@@ -12434,15 +12426,13 @@ if test "$tcl" != "no"; then
 echo "${ECHO_T}$try/tclConfig.sh" >&6
 			. $try/tclConfig.sh
 			TCL_LIBS="$TCL_LIB_SPEC $TCL_LIBS"
-
-			TCL_INCLUDES="${TCL_PREFIX}/include"
-			if test -f "${TCL_INCLUDES}/tcl.h"; then
+			TCL_CFLAGS="${TCL_PREFIX}/include"
+			if test -f "${TCL_CFLAGS}/tcl.h"; then
+				TCL_CFLAGS="-I$TCL_CFLAGS"
 				tcl=yes
-
-				:
 			else
-				echo "$as_me:$LINENO: result: Could not find tcl.h in $TCL_INCLUDES" >&5
-echo "${ECHO_T}Could not find tcl.h in $TCL_INCLUDES" >&6
+				echo "$as_me:$LINENO: result: Could not find tcl.h in $TCL_CFLAGS" >&5
+echo "${ECHO_T}Could not find tcl.h in $TCL_CFLAGS" >&6
 			fi
 			break
 		fi
@@ -14522,6 +14512,8 @@ LIBS="$LIBS $INTLLIBS"
 
 
 
+
+
 xchatlibdir=${libdir}/xchat
 xchatsharedir=${datadir}/xchat
 
@@ -15284,8 +15276,6 @@ s,@GTK_LIBS@,$GTK_LIBS,;t t
 s,@pkgconfigpath@,$pkgconfigpath,;t t
 s,@perlpath@,$perlpath,;t t
 s,@pythonpath@,$pythonpath,;t t
-s,@TCL_LIBS@,$TCL_LIBS,;t t
-s,@TCL_INCLUDES@,$TCL_INCLUDES,;t t
 s,@USE_OPENSSL_TRUE@,$USE_OPENSSL_TRUE,;t t
 s,@USE_OPENSSL_FALSE@,$USE_OPENSSL_FALSE,;t t
 s,@DO_TEXT_TRUE@,$DO_TEXT_TRUE,;t t
@@ -15311,6 +15301,8 @@ s,@PERL_CFLAGS@,$PERL_CFLAGS,;t t
 s,@PERL_LDFLAGS@,$PERL_LDFLAGS,;t t
 s,@PY_CFLAGS@,$PY_CFLAGS,;t t
 s,@PY_LIBS@,$PY_LIBS,;t t
+s,@TCL_LIBS@,$TCL_LIBS,;t t
+s,@TCL_CFLAGS@,$TCL_CFLAGS,;t t
 s,@xchatlibdir@,$xchatlibdir,;t t
 s,@xchatsharedir@,$xchatsharedir,;t t
 s,@PLUGIN_INCLUDES@,$PLUGIN_INCLUDES,;t t
