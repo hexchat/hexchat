@@ -154,7 +154,7 @@ list_delentry (GSList ** list, char *name)
 }
 
 char *
-cfg_get_str (char *cfg, char *var, char *dest)
+cfg_get_str (char *cfg, char *var, char *dest, int dest_len)
 {
 	while (1)
 	{
@@ -175,7 +175,7 @@ cfg_get_str (char *cfg, char *var, char *dest)
 				cfg++;
 			t = *cfg;
 			*cfg = 0;
-			strcpy (dest, value);
+			safe_strcpy (dest, value, dest_len);
 			*cfg = t;
 			return cfg;
 		}
@@ -219,7 +219,7 @@ cfg_get_int_with_result (char *cfg, char *var, int *result)
 {
 	char str[128];
 
-	if (!cfg_get_str (cfg, var, str))
+	if (!cfg_get_str (cfg, var, str, sizeof (str)))
 	{
 		*result = 0;
 		return 0;
@@ -234,7 +234,7 @@ cfg_get_int (char *cfg, char *var)
 {
 	char str[128];
 
-	if (!cfg_get_str (cfg, var, str))
+	if (!cfg_get_str (cfg, var, str, sizeof (str)))
 		return 0;
 
 	return atoi (str);
@@ -654,7 +654,8 @@ load_config (void)
 			switch (vars[i].type)
 			{
 			case TYPE_STR:
-				cfg_get_str (cfg, vars[i].name, (char *) &prefs + vars[i].offset);
+				cfg_get_str (cfg, vars[i].name, (char *) &prefs + vars[i].offset,
+								 vars[i].len);
 				break;
 			case TYPE_BOOL:
 			case TYPE_INT:
@@ -762,7 +763,7 @@ static void
 set_showval (session *sess, const struct prefs *var, char *tbuf)
 {
 	int len, dots, j;
-	static char *offon[] = { "OFF", "ON" };
+	static const char *offon[] = { "OFF", "ON" };
 
 	len = strlen (var->name);
 	memcpy (tbuf, var->name, len);
@@ -859,8 +860,9 @@ cmd_set (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			case TYPE_STR:
 				if (*val)
 				{
-					strcpy ((char *) &prefs + vars[i].offset, val);
-					PrintTextf (sess, "%s set to: %s\n", var, val);
+					strncpy ((char *) &prefs + vars[i].offset, val, vars[i].len);
+					((char *) &prefs)[vars[i].offset + vars[i].len - 1] = 0;
+					PrintTextf (sess, "%s set to: %s\n", var, (char *) &prefs + vars[i].offset);
 				} else
 				{
 					set_showval (sess, &vars[i], tbuf);

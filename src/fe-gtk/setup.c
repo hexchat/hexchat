@@ -77,30 +77,30 @@ typedef struct
 
 static const setting textbox_settings[] =
 {
-	{ST_EFONT,  N_("Font:"), P_OFFSET(font_normal), 0, 0, sizeof prefs.font_normal},
-	{ST_EFILE,  N_("Background image:"), P_OFFSET(background), 0, 0, sizeof prefs.background},
-	{ST_ENTRY,  N_("Time stamp format:"), P_OFFSET(stamp_format),
+	{ST_EFONT,  N_("Font:"), P_OFFSETNL(font_normal), 0, 0, sizeof prefs.font_normal},
+	{ST_EFILE,  N_("Background image:"), P_OFFSETNL(background), 0, 0, sizeof prefs.background},
+	{ST_ENTRY,  N_("Time stamp format:"), P_OFFSETNL(stamp_format),
 					N_("See strftime manpage for details."),0,sizeof prefs.stamp_format},
-	{ST_TOGGLE, N_("Time stamp text"), P_OFFINT(timestamp),0,0,0},
-	{ST_TOGGLE, N_("Transparent background"), P_OFFINT(transparent),0,0,0},
-	{ST_TOGGLE, N_("Indent nicks"), P_OFFINT(indent_nicks),0,0,0},
-	{ST_TOGGLE, N_("Tint transparency"), P_OFFINT(tint),0,0,0},
-	{ST_TOGGLE, N_("Colored nicks"), P_OFFINT(colorednicks),0,0,0},
-	{ST_TOGGLE, N_("Strip mIRC color"), P_OFFINT(stripcolor),0,0,0},
-	{ST_NUMBER,	N_("Scrollback lines:"), P_OFFINT(max_lines),0,0,100000},
-	{ST_HSCALE, N_("Tint red:"), P_OFFINT(tint_red),0,0,0},
-	{ST_HSCALE, N_("Tint green:"), P_OFFINT(tint_green),0,0,0},
-	{ST_HSCALE, N_("Tint blue:"), P_OFFINT(tint_blue),0,0,0},
+	{ST_TOGGLE, N_("Time stamp text"), P_OFFINTNL(timestamp),0,0,0},
+	{ST_TOGGLE, N_("Transparent background"), P_OFFINTNL(transparent),0,0,0},
+	{ST_TOGGLE, N_("Indent nicks"), P_OFFINTNL(indent_nicks),0,0,0},
+	{ST_TOGGLE, N_("Tint transparency"), P_OFFINTNL(tint),0,0,0},
+	{ST_TOGGLE, N_("Colored nicks"), P_OFFINTNL(colorednicks),0,0,0},
+	{ST_TOGGLE, N_("Strip mIRC color"), P_OFFINTNL(stripcolor),0,0,0},
+	{ST_NUMBER,	N_("Scrollback lines:"), P_OFFINTNL(max_lines),0,0,100000},
+	{ST_HSCALE, N_("Tint red:"), P_OFFINTNL(tint_red),0,0,0},
+	{ST_HSCALE, N_("Tint green:"), P_OFFINTNL(tint_green),0,0,0},
+	{ST_HSCALE, N_("Tint blue:"), P_OFFINTNL(tint_blue),0,0,0},
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
 static const setting inputbox_settings[] =
 {
-	{ST_TOGGLE, N_("Interpret %nnn as an ASCII value"), P_OFFINT(perc_ascii),0,0,0},
-	{ST_TOGGLE, N_("Automatic nick completion"), P_OFFINT(nickcompletion),0,0,0},
-	{ST_TOGGLE, N_("Interpret %C, %B as Color, Bold etc"), P_OFFINT(perc_color),0,0,0},
-	{ST_TOGGLE, N_("Use the Text box font and colors"), P_OFFINT(style_inputbox),0,0,0},
-	{ST_ENTRY, N_("Nick completion suffix:"), P_OFFSET(nick_suffix),0,0,sizeof prefs.nick_suffix},
+	{ST_TOGGLE, N_("Interpret %nnn as an ASCII value"), P_OFFINTNL(perc_ascii),0,0,0},
+	{ST_TOGGLE, N_("Automatic nick completion"), P_OFFINTNL(nickcompletion),0,0,0},
+	{ST_TOGGLE, N_("Interpret %C, %B as Color, Bold etc"), P_OFFINTNL(perc_color),0,0,0},
+	{ST_TOGGLE, N_("Use the Text box font and colors"), P_OFFINTNL(style_inputbox),0,0,0},
+	{ST_ENTRY, N_("Nick completion suffix:"), P_OFFSETNL(nick_suffix),0,0,sizeof prefs.nick_suffix},
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
@@ -125,15 +125,15 @@ static char *ulmenutext[] =
 
 static const setting userlist_settings[] =
 {
-	{ST_MENU,	N_("Lag meter:"), P_OFFINT(lagometer), 0, lagmenutext, 0},
-	{ST_MENU,	N_("Throttle meter:"), P_OFFINT(throttlemeter), 0, lagmenutext, 0},
-	{ST_MENU,	N_("Userlist sorted by:"), P_OFFINT(userlist_sort), 0, ulmenutext, 0},
-	{ST_ENTRY,	N_("Double-click command:"), P_OFFSET(doubleclickuser), 0, 0, sizeof prefs.doubleclickuser},
-	{ST_TOGGLE, N_("Show hostnames in userlist"), P_OFFINT(showhostname_in_userlist), 0, 0, 0},
-	{ST_TOGGLE, N_("Userlist buttons enabled"), P_OFFINT(userlistbuttons), 0, 0, 0},
-	{ST_TOGGLE, N_("Use the Text box font and colors"), P_OFFINT(style_namelistgad),0,0,0},
-	{ST_TOGGLE, N_("Resizable userlist"), P_OFFINT(paned_userlist),0,0,0},
-	{ST_NUMBER, N_("Track away-status on channels smaller than:"), P_OFFINT(away_size_max),0,0,10000},
+	{ST_MENU,	N_("Lag meter:"), P_OFFINTNL(lagometer), 0, lagmenutext, 0},
+	{ST_MENU,	N_("Throttle meter:"), P_OFFINTNL(throttlemeter), 0, lagmenutext, 0},
+	{ST_MENU,	N_("Userlist sorted by:"), P_OFFINTNL(userlist_sort), 0, ulmenutext, 0},
+	{ST_ENTRY,	N_("Double-click command:"), P_OFFSETNL(doubleclickuser), 0, 0, sizeof prefs.doubleclickuser},
+	{ST_TOGGLE, N_("Show hostnames in userlist"), P_OFFINTNL(showhostname_in_userlist), 0, 0, 0},
+	{ST_TOGGLE, N_("Userlist buttons enabled"), P_OFFINTNL(userlistbuttons), 0, 0, 0},
+	{ST_TOGGLE, N_("Use the Text box font and colors"), P_OFFINTNL(style_namelistgad),0,0,0},
+	{ST_TOGGLE, N_("Resizable userlist"), P_OFFINTNL(paned_userlist),0,0,0},
+	{ST_NUMBER, N_("Track away-status on channels smaller than:"), P_OFFINTNL(away_size_max),0,0,10000},
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
@@ -156,41 +156,41 @@ static char *tabpos[] =
 
 static const setting tabs_settings[] =
 {
-	{ST_MENU,	N_("Show tabs at:"), P_OFFINT(tabs_position), 0, tabpos, 0},
-	{ST_MENU,	N_("Open channels in:"), P_OFFINT(tabchannels), 0, tabwin, 0},
-	{ST_MENU,	N_("Open dialogs in:"), P_OFFINT(privmsgtab), 0, tabwin, 0},
-	{ST_MENU,	N_("Open utilities in:"), P_OFFINT(windows_as_tabs), N_("Open DCC, Ignore, Notify etc, in tabs or windows?"), tabwin, 0},
-	{ST_TOGGLE, N_("Open tab for server messages"), P_OFFINT(use_server_tab), 0, 0, 0},
-	{ST_TOGGLE, N_("Open tab for server notices"), P_OFFINT(notices_tabs), 0, 0, 0},
-	{ST_TOGGLE, N_("Pop new tabs to front"), P_OFFINT(newtabstofront), 0, 0, 0},
-	{ST_NUMBER,	N_("Shorten tabs to:"), P_OFFINT(truncchans), 0, (char **)N_("letters."), 99},
+	{ST_MENU,	N_("Show tabs at:"), P_OFFINTNL(tabs_position), 0, tabpos, 0},
+	{ST_MENU,	N_("Open channels in:"), P_OFFINTNL(tabchannels), 0, tabwin, 0},
+	{ST_MENU,	N_("Open dialogs in:"), P_OFFINTNL(privmsgtab), 0, tabwin, 0},
+	{ST_MENU,	N_("Open utilities in:"), P_OFFINTNL(windows_as_tabs), N_("Open DCC, Ignore, Notify etc, in tabs or windows?"), tabwin, 0},
+	{ST_TOGGLE, N_("Open tab for server messages"), P_OFFINTNL(use_server_tab), 0, 0, 0},
+	{ST_TOGGLE, N_("Open tab for server notices"), P_OFFINTNL(notices_tabs), 0, 0, 0},
+	{ST_TOGGLE, N_("Pop new tabs to front"), P_OFFINTNL(newtabstofront), 0, 0, 0},
+	{ST_NUMBER,	N_("Shorten tabs to:"), P_OFFINTNL(truncchans), 0, (char **)N_("letters."), 99},
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
 static const setting filexfer_settings[] =
 {
-	{ST_ENTRY,	N_("Download files to:"), P_OFFSET(dccdir), 0, 0, sizeof prefs.dccdir},
-	{ST_ENTRY,	N_("Move completed files to:"), P_OFFSET(dcc_completed_dir), 0, 0, sizeof prefs.dcc_completed_dir},
-	{ST_ENTRY,	N_("DCC IP address:"), P_OFFSET(dcc_ip_str),
+	{ST_ENTRY,	N_("Download files to:"), P_OFFSETNL(dccdir), 0, 0, sizeof prefs.dccdir},
+	{ST_ENTRY,	N_("Move completed files to:"), P_OFFSETNL(dcc_completed_dir), 0, 0, sizeof prefs.dcc_completed_dir},
+	{ST_ENTRY,	N_("DCC IP address:"), P_OFFSETNL(dcc_ip_str),
 					N_("Claim you are at this address when offering files."), 0, sizeof prefs.dcc_ip_str},
-	{ST_NUMBER,	N_("First DCC send port:"), P_OFFINT(first_dcc_send_port), 0, 0, 65535},
-	{ST_NUMBER,	N_("Last DCC send port:"), P_OFFINT(last_dcc_send_port), 0, 0, 65535},
+	{ST_NUMBER,	N_("First DCC send port:"), P_OFFINTNL(first_dcc_send_port), 0, 0, 65535},
+	{ST_NUMBER,	N_("Last DCC send port:"), P_OFFINTNL(last_dcc_send_port), 0, 0, 65535},
 	{ST_LABEL,	N_("(Leave ports at zero for full range).")},
-	{ST_TOGGLE, N_("Auto open DCC send list"), P_OFFINT(autoopendccsendwindow), 0, 0, 0},
-	{ST_TOGGLE, N_("Convert spaces to underscore"), P_OFFINT(dcc_send_fillspaces),
+	{ST_TOGGLE, N_("Auto open DCC send list"), P_OFFINTNL(autoopendccsendwindow), 0, 0, 0},
+	{ST_TOGGLE, N_("Convert spaces to underscore"), P_OFFINTNL(dcc_send_fillspaces),
 					N_("In filenames, before sending"), 0, 0},
-	{ST_TOGGLE, N_("Auto open DCC chat list"), P_OFFINT(autoopendccchatwindow), 0, 0, 0},
-	{ST_TOGGLE, N_("Save nickname in filenames"), P_OFFINT(dccwithnick), 0, 0, 0},
-	{ST_TOGGLE, N_("Auto open DCC receive list"), P_OFFINT(autoopendccrecvwindow), 0, 0, 0},
-	{ST_TOGGLE, N_("Get my IP from IRC server"), P_OFFINT(ip_from_server),
+	{ST_TOGGLE, N_("Auto open DCC chat list"), P_OFFINTNL(autoopendccchatwindow), 0, 0, 0},
+	{ST_TOGGLE, N_("Save nickname in filenames"), P_OFFINTNL(dccwithnick), 0, 0, 0},
+	{ST_TOGGLE, N_("Auto open DCC receive list"), P_OFFINTNL(autoopendccrecvwindow), 0, 0, 0},
+	{ST_TOGGLE, N_("Get my IP from IRC server"), P_OFFINTNL(ip_from_server),
 					N_("/WHOIS yourself to find your real address. Use this if you have a 192.168.*.* address!"), 0, 0},
-	{ST_NUMBER,	N_("Max. send CPS:"), P_OFFINT(dcc_max_send_cps), 
+	{ST_NUMBER,	N_("Max. send CPS:"), P_OFFINTNL(dcc_max_send_cps), 
 					N_("Max. speed for one transfer"), 0, 1000000},
-	{ST_NUMBER,	N_("Max. receive CPS:"), P_OFFINT(dcc_max_get_cps),
+	{ST_NUMBER,	N_("Max. receive CPS:"), P_OFFINTNL(dcc_max_get_cps),
 					N_("Max. speed for one transfer"), 0, 1000000},
-	{ST_NUMBER,	N_("Max. global send CPS:"), P_OFFINT(dcc_global_max_send_cps),
+	{ST_NUMBER,	N_("Max. global send CPS:"), P_OFFINTNL(dcc_global_max_send_cps),
 					N_("Max. speed for all traffic"), 0, 1000000},
-	{ST_NUMBER,	N_("Max. global receive CPS:"), P_OFFINT(dcc_global_max_get_cps),
+	{ST_NUMBER,	N_("Max. global receive CPS:"), P_OFFINTNL(dcc_global_max_get_cps),
 					N_("Max. speed for all traffic"), 0, 1000000},
 	{ST_LABEL,	N_("(Leave at zero for full speed file transfers).")},
 	{ST_END, 0, 0, 0, 0, 0}
@@ -198,37 +198,37 @@ static const setting filexfer_settings[] =
 
 static const setting general_settings[] =
 {
-	{ST_ENTRY,	N_("Default quit message:"), P_OFFSET(quitreason), 0, 0, sizeof prefs.quitreason},
-	{ST_ENTRY,	N_("Default part message:"), P_OFFSET(partreason), 0, 0, sizeof prefs.partreason},
-	{ST_ENTRY,	N_("Default away message:"), P_OFFSET(awayreason), 0, 0, sizeof prefs.awayreason},
+	{ST_ENTRY,	N_("Default quit message:"), P_OFFSETNL(quitreason), 0, 0, sizeof prefs.quitreason},
+	{ST_ENTRY,	N_("Default part message:"), P_OFFSETNL(partreason), 0, 0, sizeof prefs.partreason},
+	{ST_ENTRY,	N_("Default away message:"), P_OFFSETNL(awayreason), 0, 0, sizeof prefs.awayreason},
 #ifndef WIN32
 	{ST_LABEL,	N_("(Can be a text file relative to ~/.xchat2/).")},
 #else
 	{ST_LABEL,	N_("(Can be a text file relative to config dir).")},
 #endif
-	{ST_ENTRY,	N_("Extra words to highlight on:"), P_OFFSET(bluestring), 0, 0, sizeof prefs.bluestring},
+	{ST_ENTRY,	N_("Extra words to highlight on:"), P_OFFSETNL(bluestring), 0, 0, sizeof prefs.bluestring},
 	{ST_LABEL,	N_("(Separate multiple words with commas).")},
-	{ST_TOGGLE,	N_("Show away once"), P_OFFINT(show_away_once), N_("Show identical away messages only once"), 0, 0},
-	{ST_TOGGLE,	N_("Beep on private messages"), P_OFFINT(beepmsg), 0, 0, 0},
-	{ST_TOGGLE,	N_("Automatically unmark away"), P_OFFINT(auto_unmark_away), N_("Unmark yourself as away before sending messages"), 0, 0},
-	{ST_TOGGLE,	N_("Beep on channel messages"), P_OFFINT(beepchans), 0, 0, 0},
-	{ST_TOGGLE,	N_("Announce away messages"), P_OFFINT(show_away_message), N_("Announce your away messages to all channels"), 0, 0},
-	{ST_TOGGLE,	N_("Beep on highlighted messages"), P_OFFINT(beephilight), 0, 0, 0},
-	{ST_TOGGLE,	N_("Display MODEs in raw form"), P_OFFINT(raw_modes), 0, 0, 0},
-	{ST_TOGGLE,	N_("Whois on notify"), P_OFFINT(whois_on_notifyonline), N_("Sends a /WHOIS when a user comes online in your notify list"), 0, 0},
-	{ST_TOGGLE,	N_("Hide join/part messages"), P_OFFINT(confmode), N_("Hide channel join/part messages by default"), 0, 0},
-	{ST_NUMBER,	N_("Auto reconnect delay:"), P_OFFINT(recon_delay), 0, 0, 9999},
+	{ST_TOGGLE,	N_("Show away once"), P_OFFINTNL(show_away_once), N_("Show identical away messages only once"), 0, 0},
+	{ST_TOGGLE,	N_("Beep on private messages"), P_OFFINTNL(beepmsg), 0, 0, 0},
+	{ST_TOGGLE,	N_("Automatically unmark away"), P_OFFINTNL(auto_unmark_away), N_("Unmark yourself as away before sending messages"), 0, 0},
+	{ST_TOGGLE,	N_("Beep on channel messages"), P_OFFINTNL(beepchans), 0, 0, 0},
+	{ST_TOGGLE,	N_("Announce away messages"), P_OFFINTNL(show_away_message), N_("Announce your away messages to all channels"), 0, 0},
+	{ST_TOGGLE,	N_("Beep on highlighted messages"), P_OFFINTNL(beephilight), 0, 0, 0},
+	{ST_TOGGLE,	N_("Display MODEs in raw form"), P_OFFINTNL(raw_modes), 0, 0, 0},
+	{ST_TOGGLE,	N_("Whois on notify"), P_OFFINTNL(whois_on_notifyonline), N_("Sends a /WHOIS when a user comes online in your notify list"), 0, 0},
+	{ST_TOGGLE,	N_("Hide join/part messages"), P_OFFINTNL(confmode), N_("Hide channel join/part messages by default"), 0, 0},
+	{ST_NUMBER,	N_("Auto reconnect delay:"), P_OFFINTNL(recon_delay), 0, 0, 9999},
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
 static const setting logging_settings[] =
 {
-	{ST_ENTRY,	N_("Log filename mask:"), P_OFFSET(logmask), 0, 0, sizeof prefs.logmask},
+	{ST_ENTRY,	N_("Log filename mask:"), P_OFFSETNL(logmask), 0, 0, sizeof prefs.logmask},
 	{ST_LABEL,	N_("(%s=Server %c=Channel %n=Network).")},
-	{ST_ENTRY,	N_("Log timestamp format:"), P_OFFSET(timestamp_log_format), 0, 0, sizeof prefs.timestamp_log_format},
+	{ST_ENTRY,	N_("Log timestamp format:"), P_OFFSETNL(timestamp_log_format), 0, 0, sizeof prefs.timestamp_log_format},
 	{ST_LABEL,	N_("(See strftime manpage for details).")},
-	{ST_TOGGLE,	N_("Enable logging of conversations"), P_OFFINT(logging), 0, 0, 0},
-	{ST_TOGGLE,	N_("Insert timestamps in logs"), P_OFFINT(timestamp_logs), 0, 0, 0},
+	{ST_TOGGLE,	N_("Enable logging of conversations"), P_OFFINTNL(logging), 0, 0, 0},
+	{ST_TOGGLE,	N_("Insert timestamps in logs"), P_OFFINTNL(timestamp_logs), 0, 0, 0},
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
@@ -244,16 +244,16 @@ static char *proxytypes[] =
 
 static const setting network_settings[] =
 {
-	{ST_ENTRY,	N_("Address to bind to:"), P_OFFSET(hostname), 0, 0, sizeof prefs.hostname},
+	{ST_ENTRY,	N_("Address to bind to:"), P_OFFSETNL(hostname), 0, 0, sizeof prefs.hostname},
 	{ST_LABEL,	N_("(Only useful for computers with multiple addresses).")},
 	{ST_FRAME,	N_("Proxy server"), 0, 0, 0, 0},
-	{ST_ENTRY,	N_("Hostname:"), P_OFFSET(proxy_host), 0, 0, sizeof prefs.proxy_host},
-	{ST_ENTRY,	N_("Username:"), P_OFFSET(proxy_user), 0, 0, sizeof prefs.proxy_user},
-	{ST_ENTRY,	N_("Password:"), P_OFFSET(proxy_pass), 0, GINT_TO_POINTER(1), sizeof prefs.proxy_pass},
-	{ST_NUMBER,	N_("Port:"), P_OFFINT(proxy_port), 0, 0, 65535},
-	{ST_MENU,	N_("Type:"), P_OFFINT(proxy_type), 0, proxytypes, 0},
+	{ST_ENTRY,	N_("Hostname:"), P_OFFSETNL(proxy_host), 0, 0, sizeof prefs.proxy_host},
+	{ST_ENTRY,	N_("Username:"), P_OFFSETNL(proxy_user), 0, 0, sizeof prefs.proxy_user},
+	{ST_ENTRY,	N_("Password:"), P_OFFSETNL(proxy_pass), 0, GINT_TO_POINTER(1), sizeof prefs.proxy_pass},
+	{ST_NUMBER,	N_("Port:"), P_OFFINTNL(proxy_port), 0, 0, 65535},
+	{ST_MENU,	N_("Type:"), P_OFFINTNL(proxy_type), 0, proxytypes, 0},
 
-	{ST_TOGGLE,	N_("Authenticate to the proxy server (only HTTP)"), P_OFFINT(proxy_auth), 0, 0, 0},
+	{ST_TOGGLE,	N_("Authenticate to the proxy server (only HTTP)"), P_OFFINTNL(proxy_auth), 0, 0, 0},
 
 	{ST_END, 0, 0, 0, 0, 0}
 };
@@ -555,14 +555,14 @@ setup_create_entry (GtkWidget *table, int row, const setting *set)
 	g_signal_connect (G_OBJECT (wid), "changed",
 							G_CALLBACK (setup_entry_cb), (gpointer)set);
 
-	if (set->offset == P_OFFSET(proxy_user))
+	if (set->offset == P_OFFSETNL(proxy_user))
 		proxy_user = wid;
-	if (set->offset == P_OFFSET(proxy_pass))
+	if (set->offset == P_OFFSETNL(proxy_pass))
 		proxy_pass = wid; 
 
 	/* only http can auth */
-	if ( (set->offset == P_OFFSET(proxy_pass) ||
-			set->offset == P_OFFSET(proxy_user)) &&
+	if ( (set->offset == P_OFFSETNL(proxy_pass) ||
+			set->offset == P_OFFSETNL(proxy_user)) &&
 	     setup_prefs.proxy_type != 4)
 		gtk_widget_set_sensitive (wid, FALSE);
 
