@@ -261,28 +261,34 @@ static void
 log_create_filename (char *buf, char *servname, char *channame, char *netname)
 {
 	char fn[256];
-	char *dir, *sep;
-	int pathlen=510, c=0;
+	unsigned char *tmp, *dir, *sep;
+	int pathlen=510, c=0, mbl;
 
 	if (!rfc_casecmp (channame, servname))
 	{
-		channame = strdup ("server");
+		channame = g_strdup ("server");
 	} else
 	{
-		channame = strdup (channame);
-		tolowerStr (channame);
-		/* win32 can't handle filenames with the '|' character */
-		dir = channame;
-		while (*dir)
+		sep = tmp = strdup (channame);
+		while (*tmp)
 		{
-#ifdef WIN32
-			if (*dir == '|')
+			mbl = g_utf8_skip[*tmp];
+			if (mbl == 1)
+			{
+#ifndef WIN32
+				*tmp = tolower (*tmp);
+				if (*tmp == '/')
 #else
-			if (*dir == '/')
+				/* win32 can't handle filenames with the '|' character */
+				if (*tmp == '|')
 #endif
-				*dir = '_';
-			dir++;
+					*tmp = '_';
+			}
+			tmp += mbl;
 		}
+
+		channame = g_filename_from_utf8 (sep, -1, 0, 0, 0);
+		free (sep);
 	}
 
 	snprintf (buf, 512, "%s/xchatlogs", get_xdir ());
@@ -293,7 +299,7 @@ log_create_filename (char *buf, char *servname, char *channame, char *netname)
 		mkdir (buf, S_IRUSR | S_IWUSR | S_IXUSR);
 #endif
 	auto_insert (fn, prefs.logmask, NULL, NULL, "", channame, "", "", netname, servname);
-	free (channame);
+	g_free (channame);
 
 	snprintf (buf, 512, "%s/xchatlogs/%s", get_xdir (), fn);
 

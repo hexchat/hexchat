@@ -671,7 +671,7 @@ for_files (char *dirname, char *mask, void callback (char *file))
 	}
 }
 
-void
+/*void
 tolowerStr (char *str)
 {
 	while (*str)
@@ -679,7 +679,7 @@ tolowerStr (char *str)
 		*str = rfc_tolower (*str);
 		str++;
 	}
-}
+}*/
 
 /* thanks BitchX */
 

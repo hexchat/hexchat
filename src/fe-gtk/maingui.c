@@ -130,10 +130,12 @@ mg_set_access_icon (session_gui *gui, GdkPixbuf *pix)
 }
 
 static void
-mg_inputbox_cb (GtkWidget *igad, gpointer userdata)
+mg_inputbox_cb (GtkWidget *igad, session_gui *gui)
 {
 	char *cmd = GTK_ENTRY (igad)->text;
 	static int ignore = FALSE;
+	GSList *list;
+	session *sess = NULL;
 
 	if (ignore)
 		return;
@@ -148,7 +150,24 @@ mg_inputbox_cb (GtkWidget *igad, gpointer userdata)
 	gtk_entry_set_text (GTK_ENTRY (igad), "");
 	ignore = FALSE;
 
-	handle_multiline (current_sess, cmd, TRUE, FALSE);
+	/* where did this event come from? */
+	if (gui->is_tab)
+	{
+		sess = current_tab;
+	} else
+	{
+		list = sess_list;
+		while (list)
+		{
+			sess = list->data;
+			if (sess->gui == gui)
+				break;
+			list = list->next;
+		}
+	}
+
+	if (sess)
+		handle_multiline (sess, cmd, TRUE, FALSE);
 	free (cmd);
 }
 
@@ -1695,7 +1714,7 @@ mg_create_entry (session *sess, GtkWidget *box)
 	g_signal_connect (G_OBJECT (entry), "key_press_event",
 							G_CALLBACK (key_handle_key_press), NULL);
 	g_signal_connect (G_OBJECT (entry), "activate",
-							G_CALLBACK (mg_inputbox_cb), NULL);
+							G_CALLBACK (mg_inputbox_cb), gui);
 	gtk_container_add (GTK_CONTAINER (hbox), entry);
 	gtk_widget_grab_focus (entry);
 

@@ -708,7 +708,6 @@ gtk_xtext_adjustment_changed (GtkAdjustment * adj, GtkXText * xtext)
 															xtext);
 		}
 	}
-
 	xtext->buffer->old_value = adj->value;
 }
 
@@ -1189,15 +1188,6 @@ gtk_xtext_paint (GtkWidget *widget, GdkRectangle *area)
 		gtk_xtext_render_page (xtext);
 		return;
 	}
-
-	/*gdk_draw_rectangle (xtext->draw_buf, xtext->light_gc, 0,
-						area->x, area->y, area->width, area->height);
-	gdk_flush ();
-	usleep(1500000);
-	gdk_draw_rectangle (xtext->draw_buf, xtext->light_gc, 1,
-						area->x, area->y, area->width, area->height);
-	gdk_flush ();
-	usleep(1500000);*/
 
 	xtext_draw_bg (xtext, area->x, area->y, area->width, area->height);
 
@@ -3767,10 +3757,18 @@ gtk_xtext_render_page (GtkXText * xtext)
 		gdk_gc_set_exposures (xtext->fgc, TRUE);
 		if (overlap < 1)	/* DOWN */
 		{
+			int remainder;
+
 			gdk_draw_drawable (xtext->draw_buf, xtext->fgc, xtext->draw_buf,
 									 0, -overlap, 0, 0, width, height + overlap);
-			area.y = (height + overlap) - (xtext->fontsize * 2);
-			area.height = (-overlap) + (xtext->fontsize * 2);
+		/*	area.y = (height + overlap) - (xtext->fontsize * 2);
+			area.height = (-overlap) + (xtext->fontsize * 2);*/
+
+			remainder = ((height - xtext->font->descent) % xtext->fontsize) +
+							xtext->fontsize;
+			area.y = (height + overlap) - remainder;
+			area.height = remainder - overlap;
+
 		} else
 		{
 			gdk_draw_drawable (xtext->draw_buf, xtext->fgc, xtext->draw_buf,

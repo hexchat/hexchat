@@ -23,7 +23,6 @@ char *file_part (char *file);
 void for_files (char *dirname, char *mask, void callback (char *file));
 int rfc_casecmp (char *, char *);
 int rfc_ncasecmp (char *, char *, int);
-void tolowerStr (char *str);
 int buf_get_line (char *, char **, int *, int len);
 char *nocasestrstr (char *text, char *tofind);
 char *country (char *);
