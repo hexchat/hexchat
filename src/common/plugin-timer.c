@@ -12,7 +12,8 @@ static GSList *timer_list = NULL;
 
 #define STATIC
 #define HELP \
-"Usage: TIMER [-refnum <num>] [-delete <num>] [-repeat] <seconds> [<command>]"
+"Usage: TIMER [-refnum <num>] [-repeat <num>] <seconds> <command>\n" \
+"       TIMER [-quiet] -delete <num>"
 
 typedef struct
 {
@@ -21,7 +22,8 @@ typedef struct
 	char *command;
 	int ref;
 	int timeout;
-	unsigned int repeat:1;
+	int repeat;
+	unsigned int forever:1;
 } timer;
 
 static void
@@ -34,7 +36,7 @@ timer_del (timer *tim)
 }
 
 static void
-timer_del_ref (int ref)
+timer_del_ref (int ref, int quiet)
 {
 	GSList *list;
 	timer *tim;
@@ -46,12 +48,14 @@ timer_del_ref (int ref)
 		if (tim->ref == ref)
 		{
 			timer_del (tim);
-			xchat_printf (ph, "Timer %d deleted.\n", ref);
+			if (!quiet)
+				xchat_printf (ph, "Timer %d deleted.\n", ref);
 			return;
 		}
 		list = list->next;
 	}
-	xchat_print (ph, "No such ref number found.\n");
+	if (!quiet)
+		xchat_print (ph, "No such ref number found.\n");
 }
 
 static int
@@ -61,7 +65,11 @@ timeout_cb (timer *tim)
 	{
 		xchat_command (ph, tim->command);
 
-		if (tim->repeat)
+		if (tim->forever)
+			return 1;
+
+		tim->repeat--;
+		if (tim->repeat > 0)
 			return 1;
 	}
 
@@ -94,6 +102,10 @@ timer_add (int ref, int timeout, int repeat, char *command)
 	tim->timeout = timeout;
 	tim->command = strdup (command);
 	tim->context = xchat_get_context (ph);
+	tim->forever = FALSE;
+
+	if (repeat == 0)
+		tim->forever = TRUE;
 
 	tim->hook = xchat_hook_timer (ph, timeout * 1000, (void *)timeout_cb, tim);
 	timer_list = g_slist_append (timer_list, tim);
@@ -111,12 +123,12 @@ timer_showlist (void)
 		return;
 	}
 
-	xchat_print (ph, "Ref   T R Command\n");
+	xchat_print (ph, "Ref   T   R Command\n");
 	list = timer_list;
 	while (list)
 	{
 		tim = list->data;
-		xchat_printf (ph, "%3d %3d %d %s\n", tim->ref, tim->timeout,
+		xchat_printf (ph, "%3d %3d %3d %s\n", tim->ref, tim->timeout,
 						  tim->repeat, tim->command);
 		list = list->next;
 	}
@@ -125,10 +137,11 @@ timer_showlist (void)
 static int
 timer_cb (char *word[], char *word_eol[], void *userdata)
 {
-	int repeat = FALSE;
+	int repeat = 1;
 	int timeout;
 	int offset = 0;
 	int ref = 0;
+	int quiet = FALSE;
 	char *command;
 
 	if (!word[2][0])
@@ -137,22 +150,28 @@ timer_cb (char *word[], char *word_eol[], void *userdata)
 		return XCHAT_EAT_XCHAT;
 	}
 
-	if (strcasecmp (word[2], "-delete") == 0)
+	if (strcasecmp (word[2], "-quiet") == 0)
 	{
-		timer_del_ref (atoi (word[3]));
+		quiet = TRUE;
+		offset++;
+	}
+
+	if (strcasecmp (word[2 + offset], "-delete") == 0)
+	{
+		timer_del_ref (atoi (word[3 + offset]), quiet);
 		return XCHAT_EAT_XCHAT;
 	}
 
-	if (strcasecmp (word[2], "-refnum") == 0)
+	if (strcasecmp (word[2 + offset], "-refnum") == 0)
 	{
-		ref = atoi (word[3]);
+		ref = atoi (word[3 + offset]);
 		offset += 2;
 	}
 
 	if (strcasecmp (word[2 + offset], "-repeat") == 0)
 	{
-		repeat = TRUE;
-		offset++;
+		repeat = atoi (word[3 + offset]);
+		offset += 2;
 	}
 
 	timeout = atoi (word[2 + offset]);

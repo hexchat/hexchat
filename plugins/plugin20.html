@@ -45,6 +45,7 @@ color: #990066
 <br><a href="#xchat_commandf">xchat_commandf</a>
 <br><a href="#xchat_print">xchat_print</a>
 <br><a href="#xchat_printf">xchat_printf</a>
+<br><a href="#xchat_emit_print">xchat_emit_print</a>
 <br>
 <br><a href="#xchat_find_context">xchat_find_context</a>
 <br><a href="#xchat_get_context">xchat_get_context</a>
@@ -476,6 +477,17 @@ xchat_hook_command(ph, "STOP", XCHAT_PRI_NORM, stop_cb, NULL, NULL);
 <br><b>Arguments:</b>
 <blockquote><b>ph:</b> Plugin handle (as given to xchat_plugin_init).
 <br><b>format:</b> The format string.
+<br><br>
+</blockquote>
+
+<h3><a class="cmd" name="xchat_emit_print">&nbsp;xchat_emit_print()&nbsp;</a></h3>
+<b>Prototype:</b> void xchat_emit_print(xchat_plugin *ph, char *event_name, ...);
+<br>
+<br><b>Description:</b>
+<br>
+<br><b>Arguments:</b>
+<blockquote><b>ph:</b> Plugin handle (as given to xchat_plugin_init).
+<br><b>event_name:</b> Text event to print.
 <br><br>
 </blockquote>
 

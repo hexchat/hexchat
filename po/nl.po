@@ -1,18 +1,21 @@
 # Dutch (nl) translation of X-Chat 1.9.6
 # Copyright (C) 2000 Free Software Foundation, Inc.
 # First Author: Arjan Scherpenise <acscherp@wins.uva.nl>, 2000
+# Bart Coppens <coppensbart@pi.be>, 2002.
+# Taco Witte <T.C.Witte@phys.uu.nl>, 2003.
+#
+# tot src/common/outbound.c:2581
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: X-Chat 1.9.6\n"
+"Project-Id-Version: xchat 2.0.0pre1\n"
 "POT-Creation-Date: 2003-01-26 19:59+1100\n"
-"PO-Revision-Date: 2002-12-07 02:15+0100\n"
-"Last-Translator: Bart Coppens <coppensbart@pi.be>\n"
-"Language-Team: Nederlands\n"
+"PO-Revision-Date: 2003-02-03 20:24+0100\n"
+"Last-Translator: Taco Witte <T.C.Witte@phys.uu.nl>\n"
+"Language-Team: Dutch <vertaling@nl.linux.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 0.9.6\n"
 
 #: src/common/cfgfiles.c:315
 msgid "Cannot create ~/.xchat2"
@@ -23,21 +26,20 @@ msgid "I'm busy"
 msgstr "Ik ben bezig"
 
 #: src/common/cfgfiles.c:591
-#, fuzzy
 msgid "Client exiting"
-msgstr "Kleur Instelling"
+msgstr "Bezig met afsluiten"
 
 #: src/common/cfgfiles.c:634
 msgid ""
 "* Running IRC as root is stupid! You should\n"
 "  create a User Account and use that to login.\n"
 msgstr ""
-"* IRC uitvoeren als supergebruiker is achterlijk! U\n"
-"  moet een gebruiker aanmaken en daarmee inloggen.\n"
+"* IRC uitvoeren als root is dom! U moet een\n"
+"  gebruikersaccount aanmaken en daarmee inloggen.\n"
 
 #: src/common/dcc.c:54
 msgid "Waiting"
-msgstr "Wachtende"
+msgstr "Bezig met wachten"
 
 #. black
 #: src/common/dcc.c:55
@@ -99,7 +101,7 @@ msgstr "Niet in een kanaal. Probeer /join #<kanaal>\n"
 
 #: src/common/outbound.c:73
 msgid "Not connected. Try /server <host> [<port>]\n"
-msgstr "Niet verbonden. Probeer /connect <host> [<poort>]\n"
+msgstr "Niet verbonden. Probeer /server <host> [<poort>]\n"
 
 #: src/common/outbound.c:1301
 msgid "I need /bin/sh to run!\n"
@@ -135,7 +137,7 @@ msgid ""
 "\n"
 "  "
 msgstr ""
-"Door de gebruiker gedefiniëerde opdrachten:\n"
+"Door de gebruiker gedefinieerde opdrachten:\n"
 "\n"
 "  "
 
@@ -162,42 +164,31 @@ msgstr "ALLCHAN <opdr>, stuurt een opdracht naar alle kanalen waar je in zit"
 
 #: src/common/outbound.c:2456
 msgid "ALLSERV <cmd>, sends a command to all servers you're in"
-msgstr ""
-"ALLSERV <opdr>, stuurt een opdracht naar alle servers waarop je bent ingelogd"
+msgstr "ALLSERV <opdr>, stuurt een opdracht naar alle servers waarop je bent ingelogd"
 
 #: src/common/outbound.c:2457
 msgid "AWAY [<reason>], sets you away"
 msgstr "AWAY [<reden>], zegt dat je weg bent"
 
 #: src/common/outbound.c:2459
-msgid ""
-"BAN <mask> [<bantype>], bans everyone matching the mask from the current "
-"channel. If they are already on the channel this doesn't kick them (needs "
-"chanop)"
-msgstr ""
-"BAN <masker> [<bantype>], bant iedereen die voldoet aan het masker uit het "
-"huidige kanaal. Als ze al in het huidige kanaal zitten worden ze niet "
-"ge'kickt (chanop vereist)"
+msgid "BAN <mask> [<bantype>], bans everyone matching the mask from the current channel. If they are already on the channel this doesn't kick them (needs chanop)"
+msgstr "BAN <masker> [<verbansoort>], verbant iedereen die voldoet aan het masker uit het huidige kanaal. Als ze al in het huidige kanaal zitten worden ze niet weggeschopt (kanaal-operator vereist)"
 
 #: src/common/outbound.c:2461
 msgid "UNBAN <mask> [<mask>...], unbans the specified masks."
-msgstr "UNBAN <masker> [<masker>], de opgegeven maskers weer toelaten"
+msgstr "UNBAN <masker> [<masker>...], de opgegeven maskers weer toelaten"
 
 #: src/common/outbound.c:2462
 msgid "CLEAR, Clears the current text window"
-msgstr "CLEAR, Maakt het huidige tekstvenster schoon"
+msgstr "CLEAR, maakt het huidige tekstvenster schoon"
 
 #: src/common/outbound.c:2463
 msgid "CLOSE, Closes the current window/tab"
-msgstr "CLOSE, Sluit het huidige venster/tabblad"
+msgstr "CLOSE, sluit het huidige venster/tabblad"
 
 #: src/common/outbound.c:2466
-msgid ""
-"CTCP <nick> <message>, send the CTCP message to nick, common messages are "
-"VERSION and USERINFO"
-msgstr ""
-"CTCP <persoon> <bericht>, een CTCP bericht naar de persoon sturen. Veel "
-"voorkomende berichten zijn VERSION en USERINFO"
+msgid "CTCP <nick> <message>, send the CTCP message to nick, common messages are VERSION and USERINFO"
+msgstr "CTCP <persoon> <bericht>, een CTCP bericht naar de persoon sturen. Veel voorkomende berichten zijn VERSION en USERINFO"
 
 #: src/common/outbound.c:2468
 msgid "COUNTRY <code>, finds a country code, eg: au = australia"
@@ -208,7 +199,6 @@ msgid "CYCLE, parts current channel and immediately rejoins"
 msgstr "CYCLE, het huidige kanaal verlaten en direct terugkeren"
 
 #: src/common/outbound.c:2472
-#, fuzzy
 msgid ""
 "\n"
 "DCC GET <nick>                     - accept an offered file\n"
@@ -219,40 +209,28 @@ msgid ""
 "         /dcc close send johnsmith file.tar.gz"
 msgstr ""
 "\n"
-"DCC GET <persoon>         - een aangeboden bestand ontvangen\n"
-"DCC SEND <persoon> <bestand>  - een bestand naar iemand sturen\n"
-"DCC LIST           - de DCC lijst laten zien\n"
+"DCC GET <persoon>         - een aangeboden bestand accepteren\n"
+"DCC SEND [-maxcps=#] <persoon> [bestand] - een bestand naar iemand sturen\n"
+"DCC LIST           - DCC lijst weergeven\n"
 "DCC CHAT <persoon>        - iemand DCC CHAT aanbieden\n"
-"DCC CLOSE <type> <persoon> <bestand>     voorbeeld:\n"
-"      /dcc close send janjanssen bestand.tar.g"
+"DCC CLOSE <soort> <persoon> <bestand>     voorbeeld:\n"
+"      /dcc close send janjanssen bestand.tar.gz"
 
 #: src/common/outbound.c:2482
 msgid "DELBUTTON <name>, deletes a button from under the user-list"
 msgstr "DELBUTTON <naam>, een knop van de gebruikerslijst wissen"
 
 #: src/common/outbound.c:2484
-msgid ""
-"DEHOP <nick>, removes chanhalf-op status from the nick on the current "
-"channel (needs chanop)"
-msgstr ""
-"DEHOP <persoon>, de kanaal-halfoperator status van de persoon in het huidige "
-"kanaal verwijderen (kanaal-operator vereist)"
+msgid "DEHOP <nick>, removes chanhalf-op status from the nick on the current channel (needs chanop)"
+msgstr "DEHOP <persoon>, de kanaal-halfoperator status van de persoon in het huidige kanaal verwijderen (kanaal-operator vereist)"
 
 #: src/common/outbound.c:2486
-msgid ""
-"DEOP <nick>, removes chanop status from the nick on the current channel "
-"(needs chanop)"
-msgstr ""
-"DEOP <persoon>, kanaal-operatorstatus van de persoon in het huidige kanaal "
-"halen (kanaal-operator vereist)"
+msgid "DEOP <nick>, removes chanop status from the nick on the current channel (needs chanop)"
+msgstr "DEOP <persoon>, kanaal-operatorstatus van de persoon in het huidige kanaal verwijderen (kanaal-operator vereist)"
 
 #: src/common/outbound.c:2488
-msgid ""
-"DEVOICE <nick>, removes voice status from the nick on the current channel "
-"(needs chanop)"
-msgstr ""
-"DEVOICE <persoon>, de stemstatus van de persoon in het huidige kanaal halen "
-"(kanaal-operator vereist)"
+msgid "DEVOICE <nick>, removes voice status from the nick on the current channel (needs chanop)"
+msgstr "DEVOICE <persoon>, de stemstatus van de persoon in het huidige kanaal verwijderen (kanaal-operator vereist)"
 
 #: src/common/outbound.c:2489
 msgid "DISCON, Disconnects from server"
@@ -267,48 +245,36 @@ msgid "ECHO <text>, Prints text locally"
 msgstr "ECHO <tekst>, lokaal een tekst afdrukken"
 
 #: src/common/outbound.c:2494
-msgid ""
-"EXEC [-o] <command>, runs the command. If -o flag is used then output is "
-"sent to current channel, else is printed to current text box"
-msgstr ""
-"EXEC [-o] <opdracht>, een opdracht starten. Als de -o vlag meegegeven is, "
-"wordt de uitvoer naar het huidige kanaal gestuurt, anders naar de huidige "
-"tekstomgeving"
+msgid "EXEC [-o] <command>, runs the command. If -o flag is used then output is sent to current channel, else is printed to current text box"
+msgstr "EXEC [-o] <opdracht>, een opdracht uitvoeren. Als de -o vlag meegegeven is, wordt de uitvoer naar het huidige kanaal gestuurd, anders naar het huidige tekstvenster"
 
 #: src/common/outbound.c:2496
-msgid ""
-"EXECKILL [-9], kills a running exec in the current session. If -9 is given "
-"the process is SIGKILL'ed"
-msgstr ""
-"EXECKILL [-9], een lopende exec in de huidige sessie stoppen. Als -9 is "
-"meegegeven wordt het process geSIGKILLd"
+msgid "EXECKILL [-9], kills a running exec in the current session. If -9 is given the process is SIGKILL'ed"
+msgstr "EXECKILL [-9], een lopende exec in de huidige sessie stoppen. Als -9 is meegegeven wordt het proces geSIGKILLd"
 
 #: src/common/outbound.c:2498
 msgid "EXECSTOP, sends the process SIGSTOP"
-msgstr "EXECSTOP, een process SIGSTOP sturen"
+msgstr "EXECSTOP, het proces SIGSTOP sturen"
 
 #: src/common/outbound.c:2499
 msgid "EXECCONT, sends the process SIGCONT"
-msgstr "EXECCONT, het process SIGCONT sturen"
+msgstr "EXECCONT, het proces SIGCONT sturen"
 
 #: src/common/outbound.c:2500
 msgid "EXECWRITE, sends data to the processes stdin"
-msgstr "EXECWRITE, gegevens naar stdin sturen"
+msgstr "EXECWRITE, gegevens naar stdin sturen van het proces"
 
 #: src/common/outbound.c:2504
-#, fuzzy
 msgid "FLUSHQ, flushes the current server's send queue"
-msgstr "FLUSHQ, de huidige server zijn verzendrij doorspoelen"
+msgstr "FLUSHQ, de verzendrij van de huidige server doerspoelen"
 
 #: src/common/outbound.c:2506
 msgid "GATE <host> [<port>], proxies through a host, port defaults to 23"
-msgstr ""
-"GATE <host> [<poort>], verbinding maken door een proxy, de poort is "
-"standaard 23"
+msgstr "GATE <host> [<poort>], verbinding maken door een proxy, de poort is standaard 23"
 
 #: src/common/outbound.c:2511
 msgid "HOP <nick>, gives chanhalf-op status to the nick (needs chanop)"
-msgstr ""
+msgstr "HOP <persoon>, geeft kanaal-halfoperator status aan de persoon (kanaal-operator vereist)"
 
 #: src/common/outbound.c:2513
 msgid ""
@@ -318,14 +284,15 @@ msgid ""
 "            PRIV, CHAN, NOTI, CTCP, INVI, ALL\n"
 "    options - NOSAVE, QUIET"
 msgstr ""
+"IGNORE <masker> <soorten..> <opties..>\n"
+"    masker - host masker om te negeren, bijv.: *!*@*.aol.com\n"
+"    soorten - soorten gegevens om te negeren, een of meer van:\n"
+"            PRIV, CHAN, NOTI, CTCP, INVI, ALL\n"
+"    opties - NOSAVE, QUIET"
 
 #: src/common/outbound.c:2520
-msgid ""
-"INVITE <nick> [<channel>], invites someone to a channel, by default the "
-"current channel (needs chanop)"
-msgstr ""
-"INVITE <persoon> [<kanaal>], iemand uitnodigen een kanaal te openen, "
-"standaard het huidige kanaal (kanaal operator vereist)"
+msgid "INVITE <nick> [<channel>], invites someone to a channel, by default the current channel (needs chanop)"
+msgstr "INVITE <persoon> [<kanaal>], iemand uitnodigen een kanaal te openen, standaard het huidige kanaal (kanaal-operator vereist)"
 
 #: src/common/outbound.c:2521
 msgid "JOIN <channel>, joins the channel"
@@ -333,21 +300,15 @@ msgstr "JOIN <kanaal>, het kanaal binnengaan"
 
 #: src/common/outbound.c:2523
 msgid "KICK <nick>, kicks the nick from the current channel (needs chanop)"
-msgstr ""
-"KICK <persoon>, de persoon van het huidige kanaal kicken (kanaal operator "
-"vereist)"
+msgstr "KICK <persoon>, de persoon uit het huidige kanaal schoppen (kanaal-operator vereist)"
 
 #: src/common/outbound.c:2525
-msgid ""
-"KICKBAN <nick>, bans then kicks the nick from the current channel (needs "
-"chanop)"
-msgstr ""
-"KICKBAR <persoon>, een persoon eerst bannen en dan kicken van het huidige "
-"kanaal (kanaal operator vereist)"
+msgid "KICKBAN <nick>, bans then kicks the nick from the current channel (needs chanop)"
+msgstr "KICKBAR <persoon>, een persoon eerst verbannen en dan uit het huidige kanaal schoppen (kanaal operator vereist)"
 
 #: src/common/outbound.c:2527
 msgid "LAGCHECK, forces a new lag check"
-msgstr "LAGCHECK, een nieuwe controle op lag forceren"
+msgstr "LAGCHECK, een nieuwe controle op achterstand forceren"
 
 #: src/common/outbound.c:2529
 msgid "LASTLOG <string>, searches for a string in the buffer"
@@ -358,27 +319,20 @@ msgid "LOAD <file>, loads a plugin or script"
 msgstr "LOAD <bestand>, laadt een plugin of script"
 
 #: src/common/outbound.c:2534
-msgid ""
-"MDEHOP, Mass deop's all chanhalf-ops in the current channel (needs chanop)"
-msgstr "MDEHOP, deopt alle kanaal-halfops in het kanaal (chanop vereist)"
+msgid "MDEHOP, Mass deop's all chanhalf-ops in the current channel (needs chanop)"
+msgstr "MDEHOP, massaal van alle kanaal-halfops op-status verwijderen in huidige kanaal (kanaal-operator vereist)"
 
 #: src/common/outbound.c:2536
 msgid "MDEOP, Mass deop's all chanops in the current channel (needs chanop)"
-msgstr "MDEHOP, deopt alle kanaal-ops in het kanaal (chanop vereist)"
+msgstr "MDEOP, massaal van alle kanaal-ops op-status verwijderen in huidige kanaal (kanaal-operator vereist)"
 
 #: src/common/outbound.c:2538
-msgid ""
-"MKICK, Mass kicks everyone except you in the current channel (needs chanop)"
-msgstr ""
-"MKICK, kickt iedereen in het huidige kanaal behalve jezelf (chanop vereist)"
+msgid "MKICK, Mass kicks everyone except you in the current channel (needs chanop)"
+msgstr "MKICK, massaal iedereen behalve jezelf uit huidige kanaal schoppen (kanaal-operator vereist)"
 
 #: src/common/outbound.c:2540
-msgid ""
-"ME <action>, sends the action to the current channel (actions are written in "
-"the 3rd person, like /me jumps)"
-msgstr ""
-"ME <actie>, stuurt de actie naar het huidige kanaal (acties worden "
-"geschreven in de 3e persoon, bijv: /me springt)"
+msgid "ME <action>, sends the action to the current channel (actions are written in the 3rd person, like /me jumps)"
+msgstr "ME <actie>, stuurt de actie naar het huidige kanaal (acties worden geschreven in de 3e persoon, bijv: /me springt)"
 
 #: src/common/outbound.c:2541
 msgid "MSG <nick> <message>, sends a private message"
@@ -386,7 +340,7 @@ msgstr "MSG <persoon> <bericht>, een privéberichtje sturen"
 
 #: src/common/outbound.c:2544
 msgid "NAMES, Lists the nicks on the current channel"
-msgstr "NAMES, geef de lijst met personen op het huidige kanaal"
+msgstr "NAMES, geef de lijst met personen in het huidige kanaal"
 
 #: src/common/outbound.c:2546
 msgid "NCTCP <nick> <message>, Sends a CTCP notice"
@@ -401,30 +355,20 @@ msgid "NICK <nickname>, sets your nick"
 msgstr "NICK <bijnaam>, je bijnaam instellen"
 
 #: src/common/outbound.c:2551
-msgid ""
-"NOTICE <nick/channel> <message>, sends a notice. Notices are a type of "
-"message that should be auto reacted to"
-msgstr ""
-"NOTICE <persoon/kanaal> <bericht>, een waarschuwing sturen. Waarschuwingen "
-"zijn het soort berichten waarop automatisch op gereageerd zou moeten worden."
+msgid "NOTICE <nick/channel> <message>, sends a notice. Notices are a type of message that should be auto reacted to"
+msgstr "NOTICE <persoon/kanaal> <bericht>, een waarschuwing sturen. Waarschuwingen zijn het soort berichten waarop automatisch gereageerd zou moeten worden."
 
 #: src/common/outbound.c:2553
 msgid "NOTIFY [<nick>], lists your notify list or adds someone to it"
-msgstr ""
-"NOTIFY [<persoon>], een lijst geven van de waarschuwingslijst of iemand er "
-"aan toevoegen"
+msgstr "NOTIFY [<persoon>], een lijst geven van de waarschuwingslijst of iemand er aan toevoegen"
 
 #: src/common/outbound.c:2555
 msgid "OP <nick>, gives chanop status to the nick (needs chanop)"
-msgstr ""
-"OP <persoon>, de kanaal operator status aan de persoon geven (kanaal "
-"operator vereist)"
+msgstr "OP <persoon>, de kanaal-operator status aan de persoon geven (kanaal-operator vereist)"
 
 #: src/common/outbound.c:2557
-msgid ""
-"PART [<channel>] [<reason>], leaves the channel, by default the current one"
-msgstr ""
-"PART [<kanaal>] [<reden>], het kanaal verlaten, standaard het huidige kanaal."
+msgid "PART [<channel>] [<reason>], leaves the channel, by default the current one"
+msgstr "PART [<kanaal>] [<reden>], het kanaal verlaten, standaard het huidige kanaal."
 
 #: src/common/outbound.c:2559
 msgid "PING <nick | channel>, CTCP pings nick or channel"
@@ -432,7 +376,7 @@ msgstr "PING <persoon | kanaal>, een persoon of kanaal CTCP pingen"
 
 #: src/common/outbound.c:2561
 msgid "QUERY <nick>, opens up a new privmsg window to someone"
-msgstr "QUERY <persoon>, een nieuw privaat berichtvenster naar iemand openen"
+msgstr "QUERY <persoon>, een nieuw privé berichtvenster naar iemand openen"
 
 #: src/common/outbound.c:2563
 msgid "QUIT [<reason>], disconnects from the current server"
@@ -443,32 +387,16 @@ msgid "QUOTE <text>, sends the text in raw form to the server"
 msgstr "QUOTE <tekst>, tekst in ruw formaat naar de server sturen"
 
 #: src/common/outbound.c:2568
-msgid ""
-"RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as /"
-"RECONNECT to reconnect to the current server or with /RECONNECT ALL to "
-"reconnect to all the open servers"
-msgstr ""
-"RECONNECT [-ssl] [<host>] [<poort>] [<paswoord>], Kan net als /RECONNECT "
-"gebruikt worden om opnieuw te verbinden met de huidige server, of om met /"
-"RECONNECT ALL met alle open servers een nieuwe verbinding te maken"
+msgid "RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as /RECONNECT to reconnect to the current server or with /RECONNECT ALL to reconnect to all the open servers"
+msgstr "RECONNECT [-ssl] [<host>] [<poort>] [<wachtwoord>], kan net als /RECONNECT gebruikt worden om opnieuw te verbinden met de huidige server, of met /RECONNECT ALL om met alle open servers een nieuwe verbinding te maken"
 
 #: src/common/outbound.c:2571
-msgid ""
-"RECONNECT [<host>] [<port>] [<password>], Can be called just as /RECONNECT "
-"to reconnect to the current server or with /RECONNECT ALL to reconnect to "
-"all the open servers"
-msgstr ""
-"RECONNECT [<host>] [<poort>] [<paswoord>], Kan net als /RECONNECT gebruikt "
-"worden om opnieuw te verbinden met de huidige server, of om met /RECONNECT "
-"ALL met alle open servers een nieuwe verbinding te maken"
+msgid "RECONNECT [<host>] [<port>] [<password>], Can be called just as /RECONNECT to reconnect to the current server or with /RECONNECT ALL to reconnect to all the open servers"
+msgstr "RECONNECT [<host>] [<poort>] [<wachtwoord>], kan net als /RECONNECT gebruikt worden om opnieuw te verbinden met de huidige server, of met /RECONNECT ALL om met alle open servers een nieuwe verbinding te maken"
 
 #: src/common/outbound.c:2573
-msgid ""
-"RECV <text>, send raw data to xchat, as if it was received from the irc "
-"server"
-msgstr ""
-"RECV <tekst>, ruwe gegevens naar X-Chat sturen, alsof het verstuurd was door "
-"de irc server"
+msgid "RECV <text>, send raw data to xchat, as if it was received from the irc server"
+msgstr "RECV <tekst>, ruwe gegevens naar X-Chat sturen, alsof het verstuurd was door de irc server"
 
 #: src/common/outbound.c:2576
 msgid "SAY <text>, sends the text to the object in the current window"
@@ -480,38 +408,23 @@ msgstr "SET <variabele> [<waarde>]"
 
 #: src/common/outbound.c:2581
 msgid "SERVCHAN [-ssl] <host> <port> <channel>, connects and joins a channel"
-msgstr ""
-"SERVCHAN [-ssl] <host> <poort> <kanaal>, verbinding maken en een kanaal "
-"openen"
+msgstr "SERVCHAN [-ssl] <host> <poort> <kanaal>, verbinding maken en een kanaal openen"
 
 #: src/common/outbound.c:2584
 msgid "SERVCHAN <host> <port> <channel>, connects and joins a channel"
-msgstr ""
-"SERVCHAN  <host> <poort> <kanaal>, verbinding maken en een kanaal openen"
+msgstr "SERVCHAN  <host> <poort> <kanaal>, verbinding maken en een kanaal openen"
 
 #: src/common/outbound.c:2588
-msgid ""
-"SERVER [-ssl] <host> [<port>] [<password>], connects to a server, the "
-"default port is 6667 for normal connections, and 9999 for ssl connections"
-msgstr ""
-"SERVER [-ssl] <host> [<poort>] [<paswoord>], verbinding maken met een "
-"server, de standaard poort is 6667 voor gewone verbindingen, 9999 voor ssl "
-"verbindingen"
+msgid "SERVER [-ssl] <host> [<port>] [<password>], connects to a server, the default port is 6667 for normal connections, and 9999 for ssl connections"
+msgstr "SERVER [-ssl] <host> [<poort>] [<paswoord>], verbinding maken met een server, de standaard poort is 6667 voor gewone verbindingen, 9999 voor ssl verbindingen"
 
 #: src/common/outbound.c:2591
-msgid ""
-"SERVER <host> [<port>] [<password>], connects to a server, the default port "
-"is 6667"
-msgstr ""
-"SERVER <host> [<poort>] [<paswoord>], verbinding maken met een server, de "
-"standaard poort is 6667 voor gewone verbindingen"
+msgid "SERVER <host> [<port>] [<password>], connects to a server, the default port is 6667"
+msgstr "SERVER <host> [<poort>] [<paswoord>], verbinding maken met een server, de standaard poort is 6667 voor gewone verbindingen"
 
 #: src/common/outbound.c:2594
-msgid ""
-"TOPIC [<topic>], sets the topic if one is given, else shows the current topic"
-msgstr ""
-"TOPIC [<topic>], het onderwerp opeven als topic gespecifiëerd is, anders het "
-"huidige onderwerp laten zien"
+msgid "TOPIC [<topic>], sets the topic if one is given, else shows the current topic"
+msgstr "TOPIC [<topic>], het onderwerp opeven als topic gespecifiëerd is, anders het huidige onderwerp laten zien"
 
 #: src/common/outbound.c:2595
 msgid "UNIGNORE <mask> [QUIET]"
@@ -522,11 +435,8 @@ msgid "UNLOAD <name>, unloads a plugin or script"
 msgstr "UNLOAD <naam>, een plugin of script laden"
 
 #: src/common/outbound.c:2599
-msgid ""
-"WALLCHOP <message>, sends the message to all chanops on the current channel"
-msgstr ""
-"WALLCHOP <bericht>, een bericht naar alle kanaaloperatoren op het huidige "
-"kanaal"
+msgid "WALLCHOP <message>, sends the message to all chanops on the current channel"
+msgstr "WALLCHOP <bericht>, een bericht naar alle kanaaloperatoren op het huidige kanaal"
 
 #: src/common/outbound.c:2601
 msgid "WALLCHAN <message>, writes the message to all channels"
@@ -534,8 +444,7 @@ msgstr "WALLCHAN <bericht>, het bericht naar alle kanalen sturen"
 
 #: src/common/outbound.c:2603
 msgid "VOICE <nick>, gives voice status to someone (needs chanop)"
-msgstr ""
-"VOICE <persoon>, geef de stemstatus aan iemand (kanaal operator vereist)"
+msgstr "VOICE <persoon>, geef de stemstatus aan iemand (kanaal operator vereist)"
 
 #: src/common/outbound.c:2623
 #, c-format
@@ -707,9 +616,8 @@ msgid "The time in x.x format (see below)"
 msgstr "De tijd in x.x-formaat"
 
 #: src/common/text.c:637 src/common/text.c:678
-#, fuzzy
 msgid "The Channel it's going to"
-msgstr "Kanaal Lijst Venster.."
+msgstr "Het kanaal waar het heen gaat"
 
 #: src/common/text.c:666
 msgid "The sound"
@@ -934,9 +842,8 @@ msgid "IP address"
 msgstr "IP-Adres"
 
 #: src/common/text.c:864 src/common/text.c:881 src/common/text.c:911
-#, fuzzy
 msgid "Error name"
-msgstr "Fout"
+msgstr "Fout naam"
 
 #: src/common/text.c:868 src/common/text.c:892
 msgid "DCC Type"
@@ -976,9 +883,8 @@ msgid "Size"
 msgstr "Grootte"
 
 #: src/common/text.c:949
-#, fuzzy
 msgid "DCC String"
-msgstr "DCC Instellingen"
+msgstr "DCC Tekst"
 
 #: src/common/text.c:954
 msgid "Number of notify items"
@@ -1784,9 +1690,8 @@ msgid "Portugal"
 msgstr "Portugal"
 
 #: src/common/util.c:868
-#, fuzzy
 msgid "Palau"
-msgstr "Panel"
+msgstr "Palau"
 
 #: src/common/util.c:869
 msgid "Paraguay"
@@ -2099,34 +2004,28 @@ msgid "Unknown"
 msgstr "Onbekend"
 
 #: src/common/xchat.c:820
-#, fuzzy
 msgid "Disconnect"
-msgstr "Verbinden"
+msgstr "Verbinding verbreken"
 
 #: src/common/xchat.c:821
-#, fuzzy
 msgid "Reconnect"
-msgstr "Verbinden"
+msgstr "Opnieuw verbinden"
 
 #: src/common/xchat.c:822
-#, fuzzy
 msgid "Leave Channel"
-msgstr "Kanaal"
+msgstr "Kanaal verlaten"
 
 #: src/common/xchat.c:823
-#, fuzzy
 msgid "Join Channel..."
-msgstr "Te Openen Kanalen:"
+msgstr "Kanaal openen..."
 
 #: src/common/xchat.c:824
-#, fuzzy
 msgid "Enter Channel to Join:"
-msgstr "Kanaal Lijst Venster.."
+msgstr "Geef het te openen kanaal:"
 
 #: src/common/xchat.c:825
-#, fuzzy
 msgid "Server Links"
-msgstr "Server lijst..."
+msgstr "Server koppelingen"
 
 #: src/common/xchat.c:826
 #, fuzzy
@@ -2136,35 +2035,32 @@ msgstr "Server"
 #: src/common/xchat.c:827
 #, fuzzy
 msgid "Hide Version"
-msgstr "Versie"
+msgstr "Versie verbergen"
 
 #: src/common/xchat.c:837
-#, fuzzy
 msgid "Op"
-msgstr "Openen"
+msgstr "Op"
 
 #: src/common/xchat.c:838
 msgid "DeOp"
-msgstr ""
+msgstr "DeOp"
 
 #: src/common/xchat.c:839
-#, fuzzy
 msgid "Ban"
-msgstr "Bhutan"
+msgstr "Verbannen"
 
 #: src/common/xchat.c:840
-#, fuzzy
 msgid "Kick"
-msgstr "Bijnaam"
+msgstr "Wegschoppen"
 
 #: src/common/xchat.c:841
 msgid "bye"
-msgstr ""
+msgstr "doei"
 
 #: src/common/xchat.c:842
 #, c-format
 msgid "Enter reason to kick %s:"
-msgstr ""
+msgstr "Geef reden voor wegschoppen %s:"
 
 #: src/common/xchat.c:843
 #, fuzzy
@@ -2173,16 +2069,15 @@ msgstr "Geluidsbestand:"
 
 #: src/common/xchat.c:844
 msgid "Dialog"
-msgstr ""
+msgstr "Dialoog"
 
 #: src/fe-gtk/about.c:101
 msgid "About X-Chat"
 msgstr "Over X-Chat"
 
 #: src/fe-gtk/ascii.c:131
-#, fuzzy
 msgid "Character Chart"
-msgstr "Tekenset"
+msgstr "Overzicht tekens"
 
 #: src/fe-gtk/banlist.c:173 src/fe-gtk/ignoregui.c:342
 msgid "Mask"
@@ -2199,11 +2094,11 @@ msgstr "Datum"
 #: src/fe-gtk/banlist.c:181
 #, c-format
 msgid "X-Chat: Ban List (%s)"
-msgstr "X-Chat: Banlijst (%s)"
+msgstr "X-Chat: verbanlijst (%s)"
 
 #: src/fe-gtk/banlist.c:206
 msgid "Unban"
-msgstr "Ban ongedaan maken"
+msgstr "Verbanning ongedaan maken"
 
 #: src/fe-gtk/banlist.c:215
 msgid "Crop"
@@ -2213,7 +2108,7 @@ msgstr "Knippen"
 #. sess, _("Wipe"), 0, 0);
 #: src/fe-gtk/banlist.c:227
 msgid "Wipe"
-msgstr ""
+msgstr "Wissen"
 
 #: src/fe-gtk/banlist.c:236
 msgid "Refresh"
@@ -2242,12 +2137,10 @@ msgid "List display options:"
 msgstr ""
 
 #: src/fe-gtk/chanlist.c:630
-#, fuzzy
 msgid "Minimum Users:"
 msgstr "Minimaal aantal gebruikers: "
 
 #: src/fe-gtk/chanlist.c:645
-#, fuzzy
 msgid "Maximum Users:"
 msgstr "Maximum aantal gebruikers: "
 
@@ -2438,69 +2331,43 @@ msgid "Search buffer is empty.\n"
 msgstr "De zoekbuffer is leeg.\n"
 
 #: src/fe-gtk/fkeys.c:148
-msgid ""
-"The Run Command action runs the data in Data 1 as if it has been typed into "
-"the entry box where you pressed the key sequence. Thus it can contain text "
-"(which will be sent to the channel/person), commands or user commands. When "
-"run all \\n characters in Data 1 are used to deliminate seperate commands so "
-"it is possible to run more than one command. If you want a \\ in the actual "
-"text run then enter \\\\"
+msgid "The Run Command action runs the data in Data 1 as if it has been typed into the entry box where you pressed the key sequence. Thus it can contain text (which will be sent to the channel/person), commands or user commands. When run all \\n characters in Data 1 are used to deliminate seperate commands so it is possible to run more than one command. If you want a \\ in the actual text run then enter \\\\"
 msgstr ""
 
 #: src/fe-gtk/fkeys.c:150
-msgid ""
-"The Change Page command switches between pages in the notebook. Set Data 1 "
-"to the page you want to switch to. If Data 2 is set to anything then the "
-"switch will be relative to the current position"
+msgid "The Change Page command switches between pages in the notebook. Set Data 1 to the page you want to switch to. If Data 2 is set to anything then the switch will be relative to the current position"
 msgstr ""
 
 #: src/fe-gtk/fkeys.c:152
-msgid ""
-"The Insert in Buffer command will insert the contents of Data 1 into the "
-"entry where the key sequence was pressed at the current cursor position"
+msgid "The Insert in Buffer command will insert the contents of Data 1 into the entry where the key sequence was pressed at the current cursor position"
 msgstr ""
 
 #: src/fe-gtk/fkeys.c:154
-msgid ""
-"The Scroll Page command scrolls the text widget up or down one page. If Data "
-"1 is set to anything the page scrolls up, else it scrolls down"
+msgid "The Scroll Page command scrolls the text widget up or down one page. If Data 1 is set to anything the page scrolls up, else it scrolls down"
 msgstr ""
 
 #: src/fe-gtk/fkeys.c:156
-msgid ""
-"The Set Buffer command sets the entry where the key sequence was entered to "
-"the contents of Data 1"
+msgid "The Set Buffer command sets the entry where the key sequence was entered to the contents of Data 1"
 msgstr ""
 
 #: src/fe-gtk/fkeys.c:158
-msgid ""
-"The Last Command command sets the entry to contain the last command entered "
-"- the same as pressing up in a shell"
+msgid "The Last Command command sets the entry to contain the last command entered - the same as pressing up in a shell"
 msgstr ""
 
 #: src/fe-gtk/fkeys.c:160
-msgid ""
-"The Next Command command sets the entry to contain the next command entered "
-"- the same as pressing down in a shell"
+msgid "The Next Command command sets the entry to contain the next command entered - the same as pressing down in a shell"
 msgstr ""
 
 #: src/fe-gtk/fkeys.c:162
-msgid ""
-"This command changes the text in the entry to finish an incomplete nickname "
-"or command. If Data 1 is set then double-tabbing in a string will select the "
-"last nick, not the next"
+msgid "This command changes the text in the entry to finish an incomplete nickname or command. If Data 1 is set then double-tabbing in a string will select the last nick, not the next"
 msgstr ""
 
 #: src/fe-gtk/fkeys.c:164
-msgid ""
-"This command scrolls up and down through the list of nicks. If Data 1 is set "
-"to anything it will scroll up, else it scrolls down"
+msgid "This command scrolls up and down through the list of nicks. If Data 1 is set to anything it will scroll up, else it scrolls down"
 msgstr ""
 
 #: src/fe-gtk/fkeys.c:166
-msgid ""
-"This command checks the last work entered in the entry against the replace "
-"list and replaces it if it finds a match"
+msgid "This command checks the last work entered in the entry against the replace list and replaces it if it finds a match"
 msgstr ""
 
 #: src/fe-gtk/fkeys.c:168
@@ -2517,9 +2384,7 @@ msgstr ""
 
 #: src/fe-gtk/fkeys.c:184
 msgid "There was an error loading key bindings configuration"
-msgstr ""
-"Er is een fout opgetreden bij het laden van de configuratie van de "
-"toetsenbordkoppelingen"
+msgstr "Er is een fout opgetreden bij het laden van de configuratie van de toetsenbordkoppelingen"
 
 #: src/fe-gtk/fkeys.c:395 src/fe-gtk/fkeys.c:674 src/fe-gtk/fkeys.c:680
 #: src/fe-gtk/fkeys.c:685 src/fe-gtk/maingui.c:742 src/fe-gtk/maingui.c:763
@@ -2769,21 +2634,19 @@ msgid "Insert color code"
 msgstr ""
 
 #: src/fe-gtk/maingui.c:1682
-#, fuzzy, c-format
+#, c-format
 msgid "(%s) Channel settings"
 msgstr "(%s) Kanaalinstellingen"
 
 #: src/fe-gtk/maingui.c:1692
-#, fuzzy
 msgid "Beep on message"
-msgstr "Pieptoon bij Bericht"
+msgstr "Pieptoon bij bericht"
 
 #: src/fe-gtk/maingui.c:1694
 msgid "Hide join/parts"
 msgstr ""
 
 #: src/fe-gtk/maingui.c:1696
-#, fuzzy
 msgid "Color paste"
 msgstr "Plakken met kleur"
 
@@ -2852,9 +2715,8 @@ msgstr "X-Chat: Gebruikersmenu"
 
 #. sep
 #: src/fe-gtk/menu.c:688
-#, fuzzy
 msgid "Edit This Menu..."
-msgstr "Bewerk Gebruikersmenu"
+msgstr "Dit menu bewerken..."
 
 #: src/fe-gtk/menu.c:790
 msgid ""
@@ -2979,29 +2841,24 @@ msgid "Server List..."
 msgstr "Server lijst..."
 
 #: src/fe-gtk/menu.c:1148
-#, fuzzy
 msgid "Server Tab..."
-msgstr "Nieuwe Server tab..."
+msgstr "Server tabblad..."
 
 #: src/fe-gtk/menu.c:1149
-#, fuzzy
 msgid "Channel Tab..."
-msgstr "Nieuw Kanaal Tab..."
+msgstr "Kanaal tabblad..."
 
 #: src/fe-gtk/menu.c:1150
-#, fuzzy
 msgid "Server Window..."
-msgstr "Nieuw Server venster..."
+msgstr "Server venster..."
 
 #: src/fe-gtk/menu.c:1151
-#, fuzzy
 msgid "Channel Window..."
-msgstr "Nieuw Kanaal Venster..."
+msgstr "Kanaal venster..."
 
 #: src/fe-gtk/menu.c:1156 src/fe-gtk/menu.c:1158
-#, fuzzy
 msgid "Load Plugin or Script..."
-msgstr "Perl Script Laden.."
+msgstr "Plugin of script laden..."
 
 #: src/fe-gtk/menu.c:1162
 msgid "New Shell Tab..."
@@ -3012,9 +2869,8 @@ msgid "Detach Tab"
 msgstr ""
 
 #: src/fe-gtk/menu.c:1169
-#, fuzzy
 msgid "Close Tab"
-msgstr "Sluiten"
+msgstr "Tabblad sluiten"
 
 #: src/fe-gtk/menu.c:1171
 msgid "Quit"
@@ -3022,9 +2878,8 @@ msgstr "Afsluiten"
 
 #. 17
 #: src/fe-gtk/menu.c:1173
-#, fuzzy
 msgid "_IRC"
-msgstr "IRC"
+msgstr "_IRC"
 
 #: src/fe-gtk/menu.c:1174
 msgid "Invisible"
@@ -3435,8 +3290,7 @@ msgid "Connect Command:"
 msgstr "Dubbelklik Commando:"
 
 #: src/fe-gtk/servlistgui.c:1047
-msgid ""
-"Command to execute after connecting. Can be used to authenticate to NickServ"
+msgid "Command to execute after connecting. Can be used to authenticate to NickServ"
 msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1055
@@ -3770,12 +3624,8 @@ msgid "Get my IP from IRC server"
 msgstr "Mijn IP van de IRC server halen"
 
 #: src/fe-gtk/setup.c:184
-msgid ""
-"/WHOIS yourself to find your real address. Use this if you have a 192.168.*."
-"* address!"
-msgstr ""
-"/WHOIS jezelf om je eigen adres te vinden. Dit gebruiken als je een 192.168."
-"*.* addres hebt!"
+msgid "/WHOIS yourself to find your real address. Use this if you have a 192.168.*.* address!"
+msgstr "/WHOIS jezelf om je eigen adres te vinden. Dit gebruiken als je een 192.168.*.* addres hebt!"
 
 #: src/fe-gtk/setup.c:185
 msgid "Max. send CPS:"
@@ -4101,512 +3951,3 @@ msgstr "Map om in op te slaan:"
 #: src/fe-gtk/urlgrab.c:118
 msgid "X-Chat: URL Grabber"
 msgstr ""
-
-#~ msgid "port"
-#~ msgstr "poort"
-
-#~ msgid "Load Plugin..."
-#~ msgstr "Plugin Laden..."
-
-#~ msgid "Replace Popup..."
-#~ msgstr "Vervangen Popup menu..."
-
-#, fuzzy
-#~ msgid "Load plugin..."
-#~ msgstr "Plugin Laden..."
-
-#~ msgid "X-Chat Homepage..."
-#~ msgstr "X-Chat Thuispagina..."
-
-#~ msgid "Online Docs..."
-#~ msgstr "Online Documentatie..."
-
-#~ msgid "About X-Chat..."
-#~ msgstr "Over X-Chat..."
-
-#~ msgid "Choose File"
-#~ msgstr "Kies een Bestand"
-
-#~ msgid "Ascii Chart"
-#~ msgstr "ASCII Tabel"
-
-#~ msgid "Server settings"
-#~ msgstr "Instellingen van de server"
-
-#~ msgid "X-Chat"
-#~ msgstr "X-Chat"
-
-#~ msgid "Ban List Window..."
-#~ msgstr "Ban Lijst Venster..."
-
-#~ msgid "ASCII Window..."
-#~ msgstr "ASCII Venster..."
-
-#~ msgid "F_lush Buffer"
-#~ msgstr "_Leeg Buffer"
-
-#~ msgid "Save Buffer..."
-#~ msgstr "Buffer Opslaan..."
-
-#~ msgid "User Modes"
-#~ msgstr "Gebruikers Modi"
-
-#~ msgid "Auto ReJoin on Kick"
-#~ msgstr "Terug naar kanaal na Kick"
-
-#~ msgid "Plugins"
-#~ msgstr "Plugins"
-
-#~ msgid "User Menu"
-#~ msgstr "Gebruikers Menu"
-
-#~ msgid "Edit User Menu"
-#~ msgstr "Gebruikers Menu Bewerken"
-
-#~ msgid "Left"
-#~ msgstr "Links"
-
-#~ msgid "Right"
-#~ msgstr "Rechts"
-
-#, fuzzy
-#~ msgid "Server List 2..."
-#~ msgstr "Server lijst.."
-
-#, fuzzy
-#~ msgid "PLOAD loads a python script"
-#~ msgstr "Python Script Laden.."
-
-#, fuzzy
-#~ msgid "UNLOADALL, Unloads all perl scripts"
-#~ msgstr "Alle Scripts Verwijderen"
-
-#~ msgid "Encoding"
-#~ msgstr "Codering"
-
-#~ msgid "Scripts & Plugins"
-#~ msgstr "Scripts & Plugins"
-
-#~ msgid "Unload All Scripts"
-#~ msgstr "Alle Scripts Verwijderen"
-
-#~ msgid "Perl List"
-#~ msgstr "Perl Lijst"
-
-#, fuzzy
-#~ msgid "Load Python Script..."
-#~ msgstr "Python Script Laden.."
-
-#~ msgid "Python List"
-#~ msgstr "Python Lijst"
-
-#~ msgid "Ok"
-#~ msgstr "Ok"
-
-#~ msgid "Setup.."
-#~ msgstr "Configuratie.."
-
-#~ msgid "Help.."
-#~ msgstr "Hulp.."
-
-#~ msgid "Perl Script.."
-#~ msgstr "Perl Script.."
-
-#~ msgid "Python Script.."
-#~ msgstr "Python Script.."
-
-#~ msgid "All Perl Scripts"
-#~ msgstr "Alle Perl Scripts"
-
-#~ msgid "All Python Scripts"
-#~ msgstr "Alle Python Scripts"
-
-#~ msgid "Kill"
-#~ msgstr "Stop"
-
-#~ msgid "User _Modes"
-#~ msgstr "Gebruikers _Modi"
-
-#~ msgid "_Settings"
-#~ msgstr "_Instellingen"
-
-#~ msgid "S_cripts & Plugins"
-#~ msgstr "S_cripts & Plugins"
-
-#~ msgid "Use_r Menu"
-#~ msgstr "Geb_ruikers menu"
-
-#~ msgid "Unload All Plugins"
-#~ msgstr "Alle Plugins Verwijderen"
-
-#~ msgid "Appearance"
-#~ msgstr "Uiterlijk"
-
-#~ msgid "Use gdk_fontset_load instead of gdk_font_load"
-#~ msgstr "Gebruik gdk_fonset_load in plaats van gdk_font_load"
-
-#~ msgid "Make nicknames right justified."
-#~ msgstr "Namen rechts uitgelijnd"
-
-#~ msgid "Auto Indent"
-#~ msgstr "Automatisch Inspringen"
-
-#~ msgid "Auto adjust the separator bar position as needed."
-#~ msgstr "Scheidingsbalk vanzelf aanpassen indien nodig"
-
-#~ msgid "Draw Separator Bar"
-#~ msgstr "Toon Scheidingsbalk"
-
-#~ msgid "Make the separator an actual visible line."
-#~ msgstr "Scheiding is een zichtbare lijn"
-
-#~ msgid "Word Wrap"
-#~ msgstr "Geen woordafbreking"
-
-#~ msgid "Don't split words from one line to the next"
-#~ msgstr "Breek zinnen niet midden in een woord af"
-
-#~ msgid "Make the text box seem see-through"
-#~ msgstr "Maak het tekstvenster doorzichtig"
-
-#~ msgid "Tint the see-through text box to make it darker"
-#~ msgstr "Kleur het doorzichtige tekstvenster bij zodat het donkerder is"
-
-#~ msgid "Change in realtime"
-#~ msgstr "Pas kleur vanzelf aan"
-
-#~ msgid "Red:"
-#~ msgstr "Rood:"
-
-#~ msgid "Blue:"
-#~ msgstr "Blauw:"
-
-#~ msgid "Startup and Shutdown"
-#~ msgstr "Opstarten en afsluiten"
-
-#~ msgid "Don't display the server list on X-Chat startup"
-#~ msgstr "Laat de server lijst niet zien als X-Chat start."
-
-#~ msgid "Auto save your URL list when exiting from X-Chat"
-#~ msgstr "Slaat je URL lijst automatisch op bij het afsluiten van X-Chat"
-
-#~ msgid "Give the User List style"
-#~ msgstr "Geef de user list style"
-
-#~ msgid "Complete nicknames when a partial one is entered"
-#~ msgstr "Vul namen aan als slechts een gedeelte ervan is ingevoerd"
-
-#~ msgid "Old-style Nickname Completion"
-#~ msgstr "Old-style nickname compleet maken"
-
-#~ msgid "Nickname completion is old-style (instead of GNU-style)"
-#~ msgstr "Nickname compleet maken is old-style (inplaats van GNU-style"
-
-#~ msgid "Give the Input Box style"
-#~ msgstr "Geef de Invoer Regel stijl"
-
-#~ msgid "Input box gets same style as main text area"
-#~ msgstr "Invoer regel krijgt dezelfde stijl als het tekstvenster"
-
-#~ msgid "(Default is \":\" if left blank.)"
-#~ msgstr "(Standaard is \":\" als u deze entry leeg laat"
-
-#~ msgid "Character to append to completed nicknames"
-#~ msgstr "Karakters die je wilt om te laten nicknaam completen"
-
-#~ msgid "Output Box"
-#~ msgstr "Uitvoer Regel"
-
-#~ msgid "Prefix all text with the current time stamp"
-#~ msgstr "Zet voor alle tekst de tijd neer"
-
-#~ msgid "Output nicknames in different colors"
-#~ msgstr "Namen in verschillende kleuren"
-
-#~ msgid "Output Filtering"
-#~ msgstr "Uitvoer filters"
-
-#~ msgid "Strip MIRC color codes from text before displaying"
-#~ msgstr "Verwijder alle MIRC kleurcodes van de tekst voor het tonen"
-
-#~ msgid "Filter out BEEPs"
-#~ msgstr "Verwijder Pieptonen"
-
-#~ msgid "Remove ^G BEEP codes from text before displaying"
-#~ msgstr "Verwijder ^G Pieptonen van de tekst voor het tonen"
-
-#~ msgid "Buffer Settings"
-#~ msgstr "Buffer Instellingen"
-
-#~ msgid "Text Buffer Size:"
-#~ msgstr "Tekstbuffer Grootte:"
-
-#~ msgid "lines (0=Unlimited)."
-#~ msgstr "regels (0=onbeperkt)."
-
-#~ msgid "Channel Mode Buttons"
-#~ msgstr "Kanaal Modi Knoppen"
-
-#~ msgid "Show the TNSIPMLK buttons"
-#~ msgstr "Toon de TNSIPMLK knoppen"
-
-#~ msgid "User List Buttons"
-#~ msgstr "Gebruikerslijst Knoppen"
-
-#~ msgid "Show the buttons below the user list"
-#~ msgstr "Toon de knoppen onder de gebruikerslijst"
-
-#~ msgid "Bring new query/channel tabs to front"
-#~ msgstr "Zet een nieuwe query/kanaal vooraan in de tabbladen"
-
-#~ msgid "Use tabs for channels instead of separate windows"
-#~ msgstr "Gebruik tabbladen voor kanalen in plaats van verschillende vensters"
-
-#~ msgid "Private Message Tabs"
-#~ msgstr "Prive Berichten Tabbladen"
-
-#~ msgid "Use tabs for /query instead of separate windows"
-#~ msgstr "Gebruik tabbladen voor /query in plaats van verschillende vensters"
-
-#~ msgid "Other Layout Settings"
-#~ msgstr "Andere Opmaak Instellingen"
-
-#~ msgid "Disable Paned Userlist"
-#~ msgstr "Gebruik geen Gebruikerslijst"
-
-#~ msgid "Use a fixed width user list instead of the paned one"
-#~ msgstr "Gebruik een vaste-breedte lettertype voor de gebruikerslijst"
-
-#~ msgid ""
-#~ "If Left and Top are set to zero, X-Chat will use your window manager "
-#~ "defaults."
-#~ msgstr ""
-#~ "Als Links en Bovenkant nul zijn gebruikt X-Chat de instellingen van de "
-#~ "window manager"
-
-#~ msgid "Left:"
-#~ msgstr "Links:"
-
-#~ msgid "Top:"
-#~ msgstr "Bovenkant:"
-
-#~ msgid "Window Size"
-#~ msgstr "Venster Grootte"
-
-#~ msgid "Width:"
-#~ msgstr "Breedte:"
-
-#~ msgid "Height:"
-#~ msgstr "Hoogte:"
-
-#~ msgid "Show Session Tree View"
-#~ msgstr "Toon Sessie-overzicht"
-
-#~ msgid "Hide Session on Panelize"
-#~ msgstr "Verberg sessie tijdens Panelize"
-
-#~ msgid "Hide X-Chat when window moved to the panel"
-#~ msgstr "Verberg X-Chat als venster wordt verplaatst naar het paneel"
-
-#~ msgid "Panel Applet"
-#~ msgstr "Panel Toepassing"
-
-#~ msgid "Layout For a Vertical Panel"
-#~ msgstr "Opmaak voor Vertikaal Panel"
-
-#~ msgid "Layout the X-Chat panel applet for a vertical panel"
-#~ msgstr "Pas de X-Chat Panel Applet aan voor een vertikaal panel"
-
-#~ msgid "Raw Mode Display"
-#~ msgstr "Onbewerkte Modus Venster"
-
-#~ msgid "Display raw mode changes instead of interpretations"
-#~ msgstr "Toon onbewerkte modus in plaats van de bewerkte"
-
-#~ msgid "Beep when a private message for you is received"
-#~ msgstr "Geef een pieptoon als je een prive bericht ontvangt"
-
-#~ msgid "Don't send /who #chan on join."
-#~ msgstr "Stuur geen /who #kanaal bij het binnenkomen"
-
-#~ msgid "Don't find user information when joining a channel."
-#~ msgstr "Zoek geen gebruikers informatie bij het binnenkomen"
-
-#~ msgid "Perform a periodic mail check."
-#~ msgstr "Controleer regelmatig op nieuwe mail"
-
-#~ msgid "Your irc settings"
-#~ msgstr "Jouw IRC instellingen"
-
-#~ msgid "External Programs"
-#~ msgstr "Externe Programma's"
-
-#~ msgid "DNS Lookup Program:"
-#~ msgstr "DNS Lookup Programma:"
-
-#~ msgid "Hostname / IP Number:"
-#~ msgstr "Hostnaam / IP Nummer:"
-
-#~ msgid ""
-#~ "Most people should leave this blank, it's only\n"
-#~ "usefull for machines with multiple addresses."
-#~ msgstr ""
-#~ "De meeste mensen moeten dit leeg laten,\n"
-#~ "het is alleen nuttig voor computers met \n"
-#~ "meerdere adressen."
-
-#~ msgid "Get my IP from Server (for use in DCC Send only)"
-#~ msgstr "Haal mijn IP van de Server (voor DCC Versturen)"
-
-#~ msgid "For people using a 10.* or 192.168.* IP number."
-#~ msgstr "Voor mensen die een 10.* of 192.168.* IP adres gebruiken."
-
-#~ msgid "Only show away messages the first time they're seen"
-#~ msgstr "Laat away-meldingen alleen de eerste keer zien"
-
-#~ msgid "Your away settings"
-#~ msgstr "Je 'away' instellingen"
-
-#~ msgid "Hilighted Nick Color:"
-#~ msgstr "Kleur Opgelichte Naam:"
-
-#~ msgid "User List Notify Highlighting"
-#~ msgstr "Gebruikerslijst Opmerking Oplichten"
-
-#~ msgid "Highlight Notifies"
-#~ msgstr "Licht Opmerkingen op"
-
-#~ msgid "Highlight notified users in the user list"
-#~ msgstr "Licht de opgemerkte gebruikers in de gebruikerslijst op"
-
-#~ msgid "Notified User Color:"
-#~ msgstr "Kleur Opgemerkte Gebruiker:"
-
-#~ msgid "Notify Check Interval:"
-#~ msgstr "Opmerking Controle Tijd"
-
-#~ msgid "seconds. (15=Normal, 0=Disable)"
-#~ msgstr "seconden. (15=Normaal, 0=Uitzetten)"
-
-#~ msgid "Enable Character Translation"
-#~ msgstr "Gebruik Letter Vertaling"
-
-#~ msgid "Translation File:"
-#~ msgstr "Vertaling Bestand:"
-
-#~ msgid "Use a ircII style translation file."
-#~ msgstr "Gebruik een vertalings bestand van ircII."
-
-#~ msgid "Automatically open DCC Send Window"
-#~ msgstr "Opent het venster voor DCC Versturen automatisch"
-
-#~ msgid "Automatically open DCC Recv Window"
-#~ msgstr "Opent het venster voor DCC Ontvangen automatisch"
-
-#~ msgid "Resume on Auto Accept"
-#~ msgstr "Hervatten bij Vanzelf Accepteren"
-
-#~ msgid "When Auto-Accepting DCC, try to resume."
-#~ msgstr "Probeer een bestand te hervatten bij Vanzelf-Accepteren."
-
-#~ msgid "Timeouts"
-#~ msgstr "Timeouts"
-
-#~ msgid "DCC Offers Timeout:"
-#~ msgstr "DCC Aanbod Timeout:"
-
-#~ msgid "DCC Stall Timeout:"
-#~ msgstr "DCC Onderbreek Timeout:"
-
-#~ msgid "File Permissions:"
-#~ msgstr "Bestandspermissies:"
-
-#~ msgid "(octal)"
-#~ msgstr "(octaal)"
-
-#~ msgid "Save file with Nickname"
-#~ msgstr "Bestand Opslaan met Naam"
-
-#~ msgid "DCC Send Options"
-#~ msgstr "DCC Versturen Opties"
-
-#~ msgid "Don't wait for ACKs to send more data"
-#~ msgstr "Wacht niet op ACKs bij het verzenden van data"
-
-#~ msgid "Send Block Size:"
-#~ msgstr "Blok-grootte voor versturen:"
-
-#~ msgid "(1024=Normal)"
-#~ msgstr "(1024=Normaal)"
-
-#~ msgid "Built-in Replies"
-#~ msgstr "Ingebouwde Antwoorden"
-
-#~ msgid "Do not reply to CTCP version"
-#~ msgstr "Geef geen antwoord op CTCP versie"
-
-#~ msgid "Interface Settings"
-#~ msgstr "Instellingen Uiterlijk"
-
-#~ msgid "IRC Input/Output Settings"
-#~ msgstr "IRC Invoer/Uitvoer Instellingen"
-
-#~ msgid "IRC Input/Output"
-#~ msgstr "IRC Invoer/Uitvoer"
-
-#~ msgid "Window Layout Settings"
-#~ msgstr "Instellingen Venster Indeling"
-
-#~ msgid "Window Layout"
-#~ msgstr "Venster Indeling"
-
-#~ msgid "Main Window Settings"
-#~ msgstr "Instellingen Hoofdvenster"
-
-#~ msgid "Main Window"
-#~ msgstr "Hoofdvenster"
-
-#~ msgid "Channel Window Settings"
-#~ msgstr "Instellingen Kanaal Venster"
-
-#~ msgid "Dialog Window Settings"
-#~ msgstr "Instellingen Dialoogvenster"
-
-#~ msgid "Dialog Windows"
-#~ msgstr "Dialoogvensters"
-
-#~ msgid "IRC Settings"
-#~ msgstr "IRC Instellingen"
-
-#~ msgid "IP Address Settings"
-#~ msgstr "IP Adres Instellingen"
-
-#~ msgid "Away Settings"
-#~ msgstr "'Away' instellingen"
-
-#~ msgid "Highlighting Settings"
-#~ msgstr "Instellingen voor Oplichten"
-
-#~ msgid "Logging Settings"
-#~ msgstr "Log-instellingen"
-
-#~ msgid "Notification Settings"
-#~ msgstr "Opmerking Instellingen"
-
-#~ msgid "Notification"
-#~ msgstr "Opmerking"
-
-#~ msgid "Character Set (Translation Tables)"
-#~ msgstr "Tekenset (Vertalingstabellen)"
-
-#~ msgid "CTCP Settings"
-#~ msgstr "CTCP Instellingen"
-
-#~ msgid "DCC"
-#~ msgstr "DCC"
-
-#~ msgid "File Transfer Settings"
-#~ msgstr "Bestands Overdracht Instellingen"
-
-#~ msgid "Select theme.."
-#~ msgstr "Selecteer thema.."

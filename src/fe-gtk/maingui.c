@@ -1734,7 +1734,9 @@ mg_set_tabs_pos (session_gui *gui, int pos)
 	}
 
 	gtk_widget_ref (gui->tabs_box);
-	gtk_container_remove (GTK_CONTAINER (gui->main_table), gui->tabs_box);
+
+	if (pos != 4)
+		gtk_container_remove (GTK_CONTAINER (gui->main_table), gui->tabs_box);
 
 	orientation = tab_group_get_orientation (gui->tabs_box);
 	if ((pos == 0 || pos == 1) && orientation == GTK_ORIENTATION_VERTICAL)
@@ -1772,6 +1774,9 @@ mg_set_tabs_pos (session_gui *gui, int pos)
 		gtk_widget_hide (gui->tabs_box);
 		break;
 	}
+
+	if (orientation == tab_group_get_orientation (gui->tabs_box))
+		gtk_widget_unref (gui->tabs_box);
 }
 
 static void
