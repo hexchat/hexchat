@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-Xchat::register( "Tab Completion", "1.0002",
+Xchat::register( "Tab Completion", "1.0100",
                  "Alternative tab completion behavior" );
 Xchat::hook_print( "Key Press", \&complete );
 Xchat::hook_print( "Close Context", \&close_context );
@@ -57,12 +57,13 @@ sub complete {
   $word =~ s/([[\]{}|])/$case_map{$1}/g;
 
 
-  # ignore channels and commands 
+  # ignore channels and commands
   if ( $word !~ m{^[/&#]} ) {
     #Xchat::print Dumper $_[0];
     
     # this is going to be the "completed" word
     my $completed;
+    my $partial;
 
     # continuing from a previous completion
     if ( exists $completions->{nicks} && @{$completions->{nicks}}
@@ -90,14 +91,15 @@ sub complete {
       if( @{$completions->{nicks}} < Xchat::get_list("users") ) {
         Xchat::print( join " ", @{$completions->{nicks}} );
       }
-      return Xchat::EAT_XCHAT;
+      $completed = lcs( $completions->{nicks} );
+      $partial = 1;
     }
 
     if ( $completed ) {
 
       # move the cursor back to the front
       Xchat::command( "setcursor -$cursor_pos" );
-      if ( $word_start == 0 ) {
+      if ( $word_start == 0 && !$partial ) {
         # at the start of the line append completion suffix
         Xchat::command( "settext $completed$suffix$right");
         $completions->{pos} = length( "$completed$suffix" );
@@ -129,4 +131,30 @@ sub close_context {
   my $context = Xchat::get_context;
   delete $completions{$context};
   return Xchat::EAT_NONE;
+}
+
+# Longest common substring
+# Used for partial completion when using non-cycling completion
+
+sub lcs {
+  my @nicks = @{+shift};
+
+  return "" if @nicks == 0;
+  return $nicks[0] if @nicks == 1;
+
+  my $substring = shift @nicks;
+
+  while(@nicks) {
+    $substring = common_string( $substring, shift @nicks );
+  }
+  return $substring;
+}
+
+sub common_string {
+  my ($nick1, $nick2) = @_;
+  my $index = 0;
+  while( ($index < length $nick1) && ($index < length $nick2)
+         && lc(substr( $nick1, $index, 1)) eq lc(substr( $nick2, $index, 1))
+       ) { $index++ }
+  return substr( $nick1, 0, $index );
 }
