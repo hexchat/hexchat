@@ -754,7 +754,7 @@ find_away_message (struct server *serv, char *nick)
 /* Close and open log files on SIGUSR1. Usefull for log rotating */
 
 static void 
-sighup_handler (int signal)
+sigusr1_handler (int signal, siginfo_t *si, void *un)
 {
 	GSList *list = sess_list;
 	session *sess;
@@ -773,7 +773,7 @@ sighup_handler (int signal)
 /* Execute /SIGUSR2 when SIGUSR2 received */
 
 static void
-sigusr2_handler (int signal)
+sigusr2_handler (int signal, siginfo_t *si, void *un)
 {
 	session *sess = current_sess;
 
@@ -818,8 +818,15 @@ xchat_init (void)
 	sigaction (SIGPIPE, &act, NULL);
 
 	/* Deal with SIGUSR1's & SIGUSR2's */
-	signal (SIGUSR1, sighup_handler);
-	signal (SIGUSR2, sigusr2_handler);
+	act.sa_sigaction = sigusr1_handler;
+	act.sa_flags = 0;
+	sigemptyset (&act.sa_mask);
+	sigaction (SIGUSR1, &act, NULL);
+
+	act.sa_sigaction = sigusr2_handler;
+	act.sa_flags = 0;
+	sigemptyset (&act.sa_mask);
+	sigaction (SIGUSR2, &act, NULL);
 #endif
 
 	if (g_get_charset (&cs))
@@ -1038,8 +1045,10 @@ xchat_exit (void)
 #ifndef WIN32
 
 static int
-child_handler (int pid)
+child_handler (gpointer userdata)
 {
+	int pid = GPOINTER_TO_INT (userdata);
+
 	if (waitpid (pid, 0, WNOHANG) == pid)
 		return 0;					  /* remove timeout handler */
 	return 1;						  /* keep the timeout handler */
