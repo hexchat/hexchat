@@ -328,11 +328,17 @@ static void
 Util_Autoload()
 {
 	char oldcwd[PATH_MAX];
+	const char *dir_name;
 	struct dirent *ent;
 	DIR *dir;
 	if (getcwd(oldcwd, PATH_MAX) == NULL)
 		return;
-	if (chdir(xchat_get_info(ph, "xchatdir")) != 0)
+	/* we need local filesystem encoding for chdir, opendir etc */
+	dir_name = xchat_get_info(ph, "xchatdirfs");
+	/* fallback for pre-2.0.9 xchat */
+	if (!dir_name)
+		dir_name = xchat_get_info(ph, "xchatdir");
+	if (chdir(dir_name) != 0)
 		return;
 	dir = opendir(".");
 	if (dir == NULL)

@@ -1171,6 +1171,7 @@ dcc_send (struct session *sess, char *to, char *file, int maxcps, int passive)
 	{
 		char path[256];
 		char wild[256];
+		char *path_fs;	/* local filesystem encoding */
 
 		safe_strcpy (wild, file_part (file), sizeof (wild));
 		path_part (file, path, sizeof (path));
@@ -1183,9 +1184,15 @@ dcc_send (struct session *sess, char *to, char *file, int maxcps, int passive)
 
 		free (file);
 
-		recursive = TRUE;
-		for_files (path, wild, dcc_send_wild);
-		recursive = FALSE;
+		/* for_files() will use opendir, so we need local FS encoding */
+		path_fs = g_filename_from_utf8 (path, -1, 0, 0, 0);
+		if (path_fs)
+		{
+			recursive = TRUE;
+			for_files (path_fs, wild, dcc_send_wild);
+			recursive = FALSE;
+			g_free (path_fs);
+		}
 
 		return;
 	}

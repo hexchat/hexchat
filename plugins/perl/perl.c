@@ -70,7 +70,10 @@ perl_auto_load (void)
 	struct dirent *ent;
 	const char *xdir;
 
-	xdir = xchat_get_info (ph, "xchatdir");
+	/* get the dir in local filesystem encoding (what opendir() expects!) */
+	xdir = xchat_get_info (ph, "xchatdirfs");
+	if (!xdir)	/* xchatdirfs is new for 2.0.9, will fail on older */
+		xdir = xchat_get_info (ph, "xchatdir");
 	dir = opendir (xdir);
 	if (dir)
 	{

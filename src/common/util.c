@@ -505,6 +505,7 @@ get_cpu_info (double *mhz, int *cpus)
 	u_long freq;
 	size_t len;
 
+	freq = 0;
 	*mhz = 0;
 	*cpus = 0;
 
@@ -579,7 +580,7 @@ get_cpu_str (void)
 {
 #if defined (USING_LINUX) || defined (USING_FREEBSD)
 	double mhz;
-	int cpus;
+	int cpus = 1;
 #endif
 	struct utsname un;
 	static char *buf = NULL;
@@ -603,7 +604,9 @@ get_cpu_str (void)
 					cpuspeed, cpuspeedstr);
 	} else
 #endif
-		snprintf (buf, 128, "%s %s [%s]", un.sysname, un.release, un.machine);
+		snprintf (buf, 128,
+					(cpus == 1) ? "%s %s [%s]" : "%s %s [%s/SMP]",
+					un.sysname, un.release, un.machine);
 
 	return buf;
 }
