@@ -146,16 +146,16 @@ extern void boot_DynaLoader (pTHX_ CV* cv);
 static int
 execute_perl (char *function, char *args)
 {
-	char *perl_args[2] = { NULL, NULL };
+	char *perl_args[2];
 	int count, ret_value = 1;
 	SV *sv;
-
-	perl_args[0] = args;
 
 	dSP;
 	ENTER;
 	SAVETMPS;
 	PUSHMARK(sp);
+	perl_args[0] = args;
+	perl_args[1] = NULL;
 	count = perl_call_argv(function, G_EVAL | G_SCALAR, perl_args);
 	SPAGAIN;
 
