@@ -301,10 +301,11 @@ static XS (XS_IRC_get_info)
 {
 	dXSARGS;
 	char *ret;
-	const char *ids[] = {"version", "nick", "channel", "server", "xchatdir"};
+	static const char *ids[] = {"version", "nick", "channel", "server",
+										 "xchatdir", NULL, "network", "host", "topic"};
 	int i = SvIV (ST (0));
 
-	if (i < 5 && i >= 0)
+	if (i < 9 && i >= 0 && i != 5)
 		ret = (char *)xchat_get_info (ph, ids[i]);
 	else
 	{

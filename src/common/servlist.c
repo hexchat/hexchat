@@ -407,6 +407,11 @@ static const struct defaultserver def[] =
 	{0,			"moo.slashnet.org"},
 	{0,			"radon.slashnet.org"},
 
+	{"SorceryNet",	0},
+	{0,			"irc.sorcery.net/9000"},
+	{0,			"irc.us.sorcery.net/9000"},
+	{0,			"irc.eu.sorcery.net/9000"},
+
 	{"Spidernet",	0},
 	{0,			"us.spidernet.org"},
 	{0,			"eu.spidernet.org"},

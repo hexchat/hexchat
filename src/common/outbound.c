@@ -3099,6 +3099,10 @@ handle_say (session *sess, char *text, int check_spch)
 	if (plugin_emit_command (sess, "", word, word_eol))
 		goto xit;
 
+	/* incase a plugin did /close */
+	if (!is_session (sess))
+		goto xit;
+
 	if (!sess->channel[0] || sess->type == SESS_SERVER || sess->type == SESS_NOTICES || sess->type == SESS_SNOTICES)
 	{
 		notj_msg (sess);
@@ -3213,6 +3217,10 @@ handle_command (session *sess, char *cmd, int check_spch)
 		check_special_chars (cmd, prefs.perc_ascii);
 
 	if (plugin_emit_command (sess, word[1], word, word_eol))
+		goto xit;
+
+	/* incase a plugin did /close */
+	if (!is_session (sess))
 		goto xit;
 
 	/* first see if it's a userCommand */
