@@ -30,7 +30,7 @@ typedef struct {
 	gfloat old_value;					/* last known adj->value */
 	textentry *text_first;
 	textentry *text_last;
-	gint16 grid_offset[256];
+	guint16 grid_offset[256];
 
 	textentry *last_ent_start;	  /* this basically describes the last rendered */
 	textentry *last_ent_end;	  /* selection. */
@@ -52,6 +52,7 @@ typedef struct {
 	unsigned int time_stamp:1;
 	unsigned int scrollbar_down:1;
 	unsigned int needs_recalc:1;
+	unsigned int grid_dirty:1;
 
 } xtext_buffer;
 

@@ -131,6 +131,7 @@ static void gtk_xtext_adjustment_changed (GtkAdjustment * adj,
 static void gtk_xtext_render_ents (GtkXText * xtext, textentry *, textentry *);
 static void gtk_xtext_recalc_widths (xtext_buffer *buf, int);
 static void gtk_xtext_fix_indent (xtext_buffer *buf);
+static int gtk_xtext_find_subline (GtkXText *xtext, textentry *ent, int line);
 static char *gtk_xtext_conv_color (unsigned char *text, int len, int *newlen);
 static unsigned char *
 gtk_xtext_strip_color (unsigned char *text, int len, unsigned char *outbuf,
@@ -1065,13 +1066,17 @@ gtk_xtext_find_x (GtkXText * xtext, int x, textentry * ent, int subline,
 	if (line > xtext->adj->page_size || line < 0)
 		return 0;
 
-	if (xtext->buffer->grid_offset[line] > ent->str_len)
-		return 0;
-
-	if (xtext->buffer->grid_offset[line] < 0)
-		return 0;
-
-	str = ent->str + xtext->buffer->grid_offset[line];
+	if (xtext->buffer->grid_dirty || line > 255)
+	{
+		str = ent->str + gtk_xtext_find_subline (xtext, ent, subline);
+		if (str >= ent->str + ent->str_len)
+			return 0;
+	} else
+	{
+		if (xtext->buffer->grid_offset[line] > ent->str_len)
+			return 0;
+		str = ent->str + xtext->buffer->grid_offset[line];
+	}
 
 	if (x < indent)
 	{
@@ -3246,6 +3251,40 @@ done:
 	return ret;
 }
 
+/* find the offset, in bytes, that wrap number 'line' starts at */
+
+static int
+gtk_xtext_find_subline (GtkXText *xtext, textentry *ent, int line)
+{
+	int win_width;
+	unsigned char *str;
+	int indent, str_pos, line_pos, len;
+
+	gdk_drawable_get_size (GTK_WIDGET (xtext)->window, &win_width, 0);
+	win_width -= MARGIN;
+
+	if (ent->lines_taken < 2 || line < 1)
+		return 0;
+
+	indent = ent->indent;
+	str = ent->str;
+	line_pos = str_pos = 0;
+
+	do
+	{
+		len = find_next_wrap (xtext, ent, str, win_width, indent);
+		indent = xtext->buffer->indent;
+		str += len;
+		str_pos += len;
+		line_pos++;
+		if (line_pos >= line)
+			return str_pos;
+	}
+	while (str < ent->str + ent->str_len);
+
+	return 0;
+}
+
 /* render a single line, which may wrap to more lines */
 
 static int
@@ -3784,12 +3823,14 @@ gtk_xtext_render_page (GtkXText * xtext)
 			area.width = width;
 			gtk_xtext_paint (GTK_WIDGET (xtext), &area);
 		}
+		xtext->buffer->grid_dirty = TRUE;
 
 		return;
 	}
 }
 #endif
 
+	xtext->buffer->grid_dirty = FALSE;
 	width -= MARGIN;
 	while (ent)
 	{

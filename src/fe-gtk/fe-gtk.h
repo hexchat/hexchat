@@ -145,7 +145,5 @@ typedef struct session_gui
 
 } session_gui;
 
-GdkFont *my_font_load (char *fontname);
-
 extern GdkPixmap *channelwin_pix;
 extern GdkPixmap *dialogwin_pix;
