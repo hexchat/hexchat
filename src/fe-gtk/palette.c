@@ -71,8 +71,19 @@ palette_alloc (GtkWidget * widget)
 	{
 		done_alloc = TRUE;
 		cmap = gtk_widget_get_colormap (widget);
-		for (i = MAX_COL; i >= 0; i--)
-			gdk_colormap_alloc_color (cmap, &colors[i], TRUE, TRUE);
+		for (i = 0; i <= MAX_COL; i++)
+		{
+			if (!gdk_colormap_alloc_color (cmap, &colors[i], TRUE, TRUE))
+			{
+				/* oh crap, we're in trouble now.. */
+				if (i == 0 && colors[0].red == 0xcf3c)
+				{
+					/* this is the best we can do (at least BG/FG will work) */
+					colors[0].red = colors[0].green = colors[0].blue = 0xffff;
+					gdk_colormap_alloc_color (cmap, &colors[0], TRUE, TRUE);
+				}
+			}
+		}
 	}
 }
 

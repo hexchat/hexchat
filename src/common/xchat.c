@@ -997,7 +997,7 @@ xchat_init (void)
 		if (!servlist_have_auto ())	/* if no new windows open .. */
 		{
 			/* and no serverlist gui ... */
-			if (prefs.slist_skip)
+			if (prefs.slist_skip || connect_url)
 				/* we'll have to open one. */
 				new_ircwindow (NULL, NULL, SESS_SERVER);
 		} else
