@@ -28,15 +28,7 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gdk-pixbuf/gdk-pixdata.h>
 
-
-#include "../pixmaps/xchat.h"
-#include "../pixmaps/book.h"
-
-#include "../pixmaps/red.h"
-#include "../pixmaps/purple.h"
-#include "../pixmaps/op.h"
-#include "../pixmaps/hop.h"
-#include "../pixmaps/voice.h"
+#include "../pixmaps/inline_pngs.h"
 
 GdkPixbuf *pix_xchat;
 GdkPixbuf *pix_book;

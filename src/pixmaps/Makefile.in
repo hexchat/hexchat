@@ -135,12 +135,20 @@ unamepath = @unamepath@
 xchatlibdir = @xchatlibdir@
 xchatsharedir = @xchatsharedir@
 
+LIST = bookpng $(srcdir)/book.png \
+			hoppng $(srcdir)/hop.png \
+			oppng $(srcdir)/op.png \
+			purplepng $(srcdir)/purple.png \
+			redpng $(srcdir)/red.png \
+			voicepng $(srcdir)/voice.png \
+			xchatpng $(srcdir)/xchat.png
+
+
 PNGS = book.png hop.png op.png purple.png red.png voice.png xchat.png
-noinst_HEADERS = book.h hop.h op.h purple.h red.h voice.h xchat.h
+noinst_HEADERS = inline_pngs.h
 CLEANFILES = $(noinst_HEADERS)
 EXTRA_DIST = $(PNGS) makefile.msc
 CONV = @gdkpixbufcsourcepath@
-SUFFIXES = .png .h
 subdir = src/pixmaps
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h
@@ -152,7 +160,6 @@ DIST_COMMON = $(noinst_HEADERS) Makefile.am Makefile.in
 all: all-am
 
 .SUFFIXES:
-.SUFFIXES: .png .h
 $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.in $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
 	  $(AUTOMAKE) --foreign  src/pixmaps/Makefile
@@ -309,8 +316,8 @@ uninstall-am: uninstall-info-am
 	uninstall-am uninstall-info-am
 
 
-.png.h:
-	$(CONV) --name=$(patsubst %.h,%png,$@) $< > $@
+inline_pngs.h:
+	$(CONV) --build-list $(LIST) > $(srcdir)/inline_pngs.h
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.
 .NOEXPORT:

@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: xchat \n"
-"POT-Creation-Date: 2002-12-27 20:14+1100\n"
+"POT-Creation-Date: 2002-10-31 05:39+0100\n"
 "PO-Revision-Date: 2002-12-14 19:37+EDT\n"
 "Last-Translator: Ge'ez Frontier Foundation <locales@geez.org>\n"
 "Language-Team: Amharic <locales@geez.org>\n"
@@ -15,19 +15,15 @@ msgstr ""
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/common/cfgfiles.c:268
-msgid "Cannot create ~/.xchat2"
+#: src/common/cfgfiles.c:275
+msgid "Cannot create ~/.xchat"
 msgstr ""
 
-#: src/common/cfgfiles.c:537
+#: src/common/cfgfiles.c:546
 msgid "I'm busy"
 msgstr ""
 
-#: src/common/cfgfiles.c:538
-msgid "Client exiting"
-msgstr ""
-
-#: src/common/cfgfiles.c:581
+#: src/common/cfgfiles.c:596
 msgid ""
 "* Running IRC as root is stupid! You should\n"
 "  create a User Account and use that to login.\n"
@@ -55,19 +51,19 @@ msgstr "ጨርሷል"
 #. green
 #: src/common/dcc.c:58
 msgid "Connect"
-msgstr ""
+msgstr "አገናኝ"
 
 #. black
 #: src/common/dcc.c:59
 msgid "Aborted"
-msgstr ""
+msgstr "ውድቅ ሆኗል"
 
-#: src/common/dcc.c:1226
+#: src/common/dcc.c:1137
 #, c-format
 msgid "Cannot access %s\n"
 msgstr ""
 
-#: src/common/dcc.c:1661
+#: src/common/dcc.c:1570
 msgid "No active DCCs\n"
 msgstr ""
 
@@ -99,11 +95,11 @@ msgstr ""
 msgid "Not connected. Try /server <host> [<port>]\n"
 msgstr ""
 
-#: src/common/outbound.c:1296
+#: src/common/outbound.c:1282
 msgid "I need /bin/sh to run!\n"
 msgstr ""
 
-#: src/common/outbound.c:1508
+#: src/common/outbound.c:1494
 msgid ""
 "\n"
 "Commands Available:\n"
@@ -111,7 +107,7 @@ msgid ""
 "  "
 msgstr ""
 
-#: src/common/outbound.c:1543
+#: src/common/outbound.c:1529
 msgid ""
 "\n"
 "\n"
@@ -119,76 +115,76 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/common/outbound.c:1544
+#: src/common/outbound.c:1530
 msgid ""
 "User defined commands:\n"
 "\n"
 "  "
 msgstr ""
 
-#: src/common/outbound.c:1634
+#: src/common/outbound.c:1620
 #, c-format
 msgid "Unknown arg '%s' ignored."
 msgstr ""
 
-#: src/common/outbound.c:2308
+#: src/common/outbound.c:2294
 msgid "No such plugin found.\n"
 msgstr ""
 
-#: src/common/outbound.c:2313 src/fe-gtk/plugingui.c:132
+#: src/common/outbound.c:2299 src/fe-gtk/plugingui.c:132
 msgid "That plugin is refusing to unload.\n"
 msgstr ""
 
-#: src/common/outbound.c:2447
+#: src/common/outbound.c:2433
 msgid "ADDBUTTON <name> <action>, adds a button under the user-list"
 msgstr ""
 
-#: src/common/outbound.c:2449
+#: src/common/outbound.c:2435
 msgid "ALLCHAN <cmd>, sends a command to all channels you're in"
 msgstr ""
 
-#: src/common/outbound.c:2451
+#: src/common/outbound.c:2437
 msgid "ALLSERV <cmd>, sends a command to all servers you're in"
 msgstr ""
 
-#: src/common/outbound.c:2452
+#: src/common/outbound.c:2438
 msgid "AWAY [<reason>], sets you away"
 msgstr ""
 
-#: src/common/outbound.c:2454
+#: src/common/outbound.c:2440
 msgid ""
 "BAN <mask> [<bantype>], bans everyone matching the mask from the current "
 "channel. If they are already on the channel this doesn't kick them (needs "
 "chanop)"
 msgstr ""
 
-#: src/common/outbound.c:2456
+#: src/common/outbound.c:2442
 msgid "UNBAN <mask> [<mask>...], unbans the specified masks."
 msgstr ""
 
-#: src/common/outbound.c:2457
+#: src/common/outbound.c:2443
 msgid "CLEAR, Clears the current text window"
 msgstr ""
 
-#: src/common/outbound.c:2458
+#: src/common/outbound.c:2444
 msgid "CLOSE, Closes the current window/tab"
 msgstr ""
 
-#: src/common/outbound.c:2461
+#: src/common/outbound.c:2447
 msgid ""
 "CTCP <nick> <message>, send the CTCP message to nick, common messages are "
 "VERSION and USERINFO"
 msgstr ""
 
-#: src/common/outbound.c:2463
+#: src/common/outbound.c:2449
 msgid "COUNTRY <code>, finds a country code, eg: au = australia"
 msgstr ""
 
-#: src/common/outbound.c:2465
+#: src/common/outbound.c:2451
 msgid "CYCLE, parts current channel and immediately rejoins"
 msgstr ""
 
-#: src/common/outbound.c:2467
+#: src/common/outbound.c:2453
 msgid ""
 "\n"
 "DCC GET <nick>                     - accept an offered file\n"
@@ -199,77 +195,77 @@ msgid ""
 "         /dcc close send johnsmith file.tar.gz"
 msgstr ""
 
-#: src/common/outbound.c:2477
+#: src/common/outbound.c:2463
 msgid "DELBUTTON <name>, deletes a button from under the user-list"
 msgstr ""
 
-#: src/common/outbound.c:2479
+#: src/common/outbound.c:2465
 msgid ""
 "DEHOP <nick>, removes chanhalf-op status from the nick on the current "
 "channel (needs chanop)"
 msgstr ""
 
-#: src/common/outbound.c:2481
+#: src/common/outbound.c:2467
 msgid ""
 "DEOP <nick>, removes chanop status from the nick on the current channel "
 "(needs chanop)"
 msgstr ""
 
-#: src/common/outbound.c:2483
+#: src/common/outbound.c:2469
 msgid ""
 "DEVOICE <nick>, removes voice status from the nick on the current channel "
 "(needs chanop)"
 msgstr ""
 
-#: src/common/outbound.c:2484
+#: src/common/outbound.c:2470
 msgid "DISCON, Disconnects from server"
 msgstr ""
 
-#: src/common/outbound.c:2485
+#: src/common/outbound.c:2471
 msgid "DNS <nick|host|ip>, Finds a users IP number"
 msgstr ""
 
-#: src/common/outbound.c:2486
+#: src/common/outbound.c:2472
 msgid "ECHO <text>, Prints text locally"
 msgstr ""
 
-#: src/common/outbound.c:2489
+#: src/common/outbound.c:2475
 msgid ""
 "EXEC [-o] <command>, runs the command. If -o flag is used then output is "
 "sent to current channel, else is printed to current text box"
 msgstr ""
 
-#: src/common/outbound.c:2491
+#: src/common/outbound.c:2477
 msgid ""
 "EXECKILL [-9], kills a running exec in the current session. If -9 is given "
 "the process is SIGKILL'ed"
 msgstr ""
 
-#: src/common/outbound.c:2493
+#: src/common/outbound.c:2479
 msgid "EXECSTOP, sends the process SIGSTOP"
 msgstr ""
 
-#: src/common/outbound.c:2494
+#: src/common/outbound.c:2480
 msgid "EXECCONT, sends the process SIGCONT"
 msgstr ""
 
-#: src/common/outbound.c:2495
+#: src/common/outbound.c:2481
 msgid "EXECWRITE, sends data to the processes stdin"
 msgstr ""
 
-#: src/common/outbound.c:2499
+#: src/common/outbound.c:2485
 msgid "FLUSHQ, flushes the current server's send queue"
 msgstr ""
 
-#: src/common/outbound.c:2501
+#: src/common/outbound.c:2487
 msgid "GATE <host> [<port>], proxies through a host, port defaults to 23"
 msgstr ""
 
-#: src/common/outbound.c:2506
+#: src/common/outbound.c:2492
 msgid "HOP <nick>, gives chanhalf-op status to the nick (needs chanop)"
 msgstr ""
 
-#: src/common/outbound.c:2508
+#: src/common/outbound.c:2494
 msgid ""
 "IGNORE <mask> <types..> <options..>\n"
 "    mask - host mask to ignore, eg: *!*@*.aol.com\n"
@@ -278,685 +274,685 @@ msgid ""
 "    options - NOSAVE, QUIET"
 msgstr ""
 
-#: src/common/outbound.c:2515
+#: src/common/outbound.c:2501
 msgid ""
 "INVITE <nick> [<channel>], invites someone to a channel, by default the "
 "current channel (needs chanop)"
 msgstr ""
 
-#: src/common/outbound.c:2516
+#: src/common/outbound.c:2502
 msgid "JOIN <channel>, joins the channel"
 msgstr ""
 
-#: src/common/outbound.c:2518
+#: src/common/outbound.c:2504
 msgid "KICK <nick>, kicks the nick from the current channel (needs chanop)"
 msgstr ""
 
-#: src/common/outbound.c:2520
+#: src/common/outbound.c:2506
 msgid ""
 "KICKBAN <nick>, bans then kicks the nick from the current channel (needs "
 "chanop)"
 msgstr ""
 
-#: src/common/outbound.c:2522
+#: src/common/outbound.c:2508
 msgid "LAGCHECK, forces a new lag check"
 msgstr ""
 
-#: src/common/outbound.c:2524
+#: src/common/outbound.c:2510
 msgid "LASTLOG <string>, searches for a string in the buffer"
 msgstr ""
 
-#: src/common/outbound.c:2526
+#: src/common/outbound.c:2512
 msgid "LOAD <file>, loads a plugin or script"
 msgstr ""
 
-#: src/common/outbound.c:2529
+#: src/common/outbound.c:2515
 msgid ""
 "MDEHOP, Mass deop's all chanhalf-ops in the current channel (needs chanop)"
 msgstr ""
 
-#: src/common/outbound.c:2531
+#: src/common/outbound.c:2517
 msgid "MDEOP, Mass deop's all chanops in the current channel (needs chanop)"
 msgstr ""
 
-#: src/common/outbound.c:2533
+#: src/common/outbound.c:2519
 msgid ""
 "MKICK, Mass kicks everyone except you in the current channel (needs chanop)"
 msgstr ""
 
-#: src/common/outbound.c:2535
+#: src/common/outbound.c:2521
 msgid ""
 "ME <action>, sends the action to the current channel (actions are written in "
 "the 3rd person, like /me jumps)"
 msgstr ""
 
-#: src/common/outbound.c:2536
+#: src/common/outbound.c:2522
 msgid "MSG <nick> <message>, sends a private message"
 msgstr ""
 
-#: src/common/outbound.c:2539
+#: src/common/outbound.c:2525
 msgid "NAMES, Lists the nicks on the current channel"
 msgstr ""
 
-#: src/common/outbound.c:2541
+#: src/common/outbound.c:2527
 msgid "NCTCP <nick> <message>, Sends a CTCP notice"
 msgstr ""
 
-#: src/common/outbound.c:2542
+#: src/common/outbound.c:2528
 msgid "NEWSERVER <hostname> [<port>]"
 msgstr ""
 
-#: src/common/outbound.c:2543
+#: src/common/outbound.c:2529
 msgid "NICK <nickname>, sets your nick"
 msgstr ""
 
-#: src/common/outbound.c:2546
+#: src/common/outbound.c:2532
 msgid ""
 "NOTICE <nick/channel> <message>, sends a notice. Notices are a type of "
 "message that should be auto reacted to"
 msgstr ""
 
-#: src/common/outbound.c:2548
+#: src/common/outbound.c:2534
 msgid "NOTIFY [<nick>], lists your notify list or adds someone to it"
 msgstr ""
 
-#: src/common/outbound.c:2550
+#: src/common/outbound.c:2536
 msgid "OP <nick>, gives chanop status to the nick (needs chanop)"
 msgstr ""
 
-#: src/common/outbound.c:2552
+#: src/common/outbound.c:2538
 msgid ""
 "PART [<channel>] [<reason>], leaves the channel, by default the current one"
 msgstr ""
 
-#: src/common/outbound.c:2554
+#: src/common/outbound.c:2540
 msgid "PING <nick | channel>, CTCP pings nick or channel"
 msgstr ""
 
-#: src/common/outbound.c:2556
+#: src/common/outbound.c:2542
 msgid "QUERY <nick>, opens up a new privmsg window to someone"
 msgstr ""
 
-#: src/common/outbound.c:2558
+#: src/common/outbound.c:2544
 msgid "QUIT [<reason>], disconnects from the current server"
 msgstr ""
 
-#: src/common/outbound.c:2560
+#: src/common/outbound.c:2546
 msgid "QUOTE <text>, sends the text in raw form to the server"
 msgstr ""
 
-#: src/common/outbound.c:2563
+#: src/common/outbound.c:2549
 msgid ""
 "RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as /"
 "RECONNECT to reconnect to the current server or with /RECONNECT ALL to "
 "reconnect to all the open servers"
 msgstr ""
 
-#: src/common/outbound.c:2566
+#: src/common/outbound.c:2552
 msgid ""
 "RECONNECT [<host>] [<port>] [<password>], Can be called just as /RECONNECT "
 "to reconnect to the current server or with /RECONNECT ALL to reconnect to "
 "all the open servers"
 msgstr ""
 
-#: src/common/outbound.c:2568
+#: src/common/outbound.c:2554
 msgid ""
 "RECV <text>, send raw data to xchat, as if it was received from the irc "
 "server"
 msgstr ""
 
-#: src/common/outbound.c:2571
+#: src/common/outbound.c:2557
 msgid "SAY <text>, sends the text to the object in the current window"
 msgstr ""
 
-#: src/common/outbound.c:2572
+#: src/common/outbound.c:2558
 msgid "SET <variable> [<value>]"
 msgstr ""
 
-#: src/common/outbound.c:2576
+#: src/common/outbound.c:2562
 msgid "SERVCHAN [-ssl] <host> <port> <channel>, connects and joins a channel"
 msgstr ""
 
-#: src/common/outbound.c:2579
+#: src/common/outbound.c:2565
 msgid "SERVCHAN <host> <port> <channel>, connects and joins a channel"
 msgstr ""
 
-#: src/common/outbound.c:2583
+#: src/common/outbound.c:2569
 msgid ""
 "SERVER [-ssl] <host> [<port>] [<password>], connects to a server, the "
 "default port is 6667 for normal connections, and 9999 for ssl connections"
 msgstr ""
 
-#: src/common/outbound.c:2586
+#: src/common/outbound.c:2572
 msgid ""
 "SERVER <host> [<port>] [<password>], connects to a server, the default port "
 "is 6667"
 msgstr ""
 
-#: src/common/outbound.c:2589
+#: src/common/outbound.c:2575
 msgid ""
 "TOPIC [<topic>], sets the topic if one is given, else shows the current topic"
 msgstr ""
 
-#: src/common/outbound.c:2590
+#: src/common/outbound.c:2576
 msgid "UNIGNORE <mask> [QUIET]"
 msgstr ""
 
-#: src/common/outbound.c:2591
+#: src/common/outbound.c:2577
 msgid "UNLOAD <name>, unloads a plugin or script"
 msgstr ""
 
-#: src/common/outbound.c:2594
+#: src/common/outbound.c:2580
 msgid ""
 "WALLCHOP <message>, sends the message to all chanops on the current channel"
 msgstr ""
 
-#: src/common/outbound.c:2596
+#: src/common/outbound.c:2582
 msgid "WALLCHAN <message>, writes the message to all channels"
 msgstr ""
 
-#: src/common/outbound.c:2598
+#: src/common/outbound.c:2584
 msgid "VOICE <nick>, gives voice status to someone (needs chanop)"
 msgstr ""
 
-#: src/common/outbound.c:2618
+#: src/common/outbound.c:2604
 #, c-format
 msgid "Usage: %s\n"
-msgstr ""
+msgstr "አጠቃቀም፦ %s\n"
 
-#: src/common/outbound.c:2623
+#: src/common/outbound.c:2609
 msgid ""
 "\n"
 "No help available on that command.\n"
 msgstr ""
 
-#: src/common/outbound.c:2630
+#: src/common/outbound.c:2616
 msgid "No such command.\n"
 msgstr ""
 
-#: src/common/outbound.c:2904
+#: src/common/outbound.c:2880
 msgid "Bad arguments for user command.\n"
 msgstr ""
 
-#: src/common/outbound.c:3014
+#: src/common/outbound.c:2989
 msgid "Too many recursive usercommands, aborting."
 msgstr ""
 
-#: src/common/outbound.c:3080
+#: src/common/outbound.c:3055
 msgid "Unknown Command. Try /help\n"
 msgstr ""
 
-#: src/common/plugin.c:323 src/common/plugin.c:344
+#: src/common/plugin.c:322 src/common/plugin.c:343
 msgid "No xchat_plugin_init symbol; is this really an xchat plugin?"
 msgstr ""
 
-#: src/common/server.c:826
+#: src/common/server.c:885
 #, c-format
 msgid ""
 "Cannot resolve hostname %s\n"
 "Check your IP Settings!\n"
 msgstr ""
 
-#: src/common/server.c:831
+#: src/common/server.c:890
 msgid "Proxy traversal failed.\n"
 msgstr ""
 
-#: src/common/text.c:253
+#: src/common/text.c:154
 #, c-format
 msgid "**** ENDING LOGGING AT %s\n"
 msgstr ""
 
-#: src/common/text.c:364
+#: src/common/text.c:265
 #, c-format
 msgid "**** BEGIN LOGGING AT %s\n"
 msgstr ""
 
-#: src/common/text.c:552
+#: src/common/text.c:412
 msgid "The nick of the joining person"
 msgstr ""
 
-#: src/common/text.c:553
+#: src/common/text.c:413
 msgid "The channel being joined"
 msgstr ""
 
-#: src/common/text.c:554 src/common/text.c:598 src/common/text.c:654
+#: src/common/text.c:414 src/common/text.c:458 src/common/text.c:514
 msgid "The host of the person"
 msgstr ""
 
-#: src/common/text.c:558 src/common/text.c:563 src/common/text.c:569
-#: src/common/text.c:636 src/common/text.c:760 src/common/text.c:767
-#: src/common/text.c:772 src/common/text.c:777 src/common/text.c:782
-#: src/common/text.c:788 src/common/text.c:793 src/common/text.c:836
-#: src/common/text.c:845 src/common/text.c:850 src/common/text.c:855
-#: src/common/text.c:863 src/common/text.c:873 src/common/text.c:879
-#: src/common/text.c:885 src/common/text.c:890 src/common/text.c:895
-#: src/common/text.c:902 src/common/text.c:907 src/common/text.c:913
-#: src/common/text.c:918 src/common/text.c:923 src/common/text.c:927
-#: src/common/text.c:933 src/common/text.c:940 src/common/text.c:974
-#: src/common/text.c:979
+#: src/common/text.c:418 src/common/text.c:423 src/common/text.c:429
+#: src/common/text.c:496 src/common/text.c:620 src/common/text.c:627
+#: src/common/text.c:632 src/common/text.c:637 src/common/text.c:642
+#: src/common/text.c:648 src/common/text.c:653 src/common/text.c:696
+#: src/common/text.c:705 src/common/text.c:710 src/common/text.c:715
+#: src/common/text.c:723 src/common/text.c:733 src/common/text.c:739
+#: src/common/text.c:745 src/common/text.c:750 src/common/text.c:755
+#: src/common/text.c:762 src/common/text.c:767 src/common/text.c:773
+#: src/common/text.c:778 src/common/text.c:783 src/common/text.c:787
+#: src/common/text.c:793 src/common/text.c:800 src/common/text.c:834
+#: src/common/text.c:839
 msgid "Nickname"
 msgstr "ቅጽል ስም"
 
-#: src/common/text.c:559
+#: src/common/text.c:419
 msgid "The action"
 msgstr ""
 
-#: src/common/text.c:564
+#: src/common/text.c:424
 msgid "The text"
 msgstr "ጽሑፉ"
 
-#: src/common/text.c:565
+#: src/common/text.c:425
 msgid "Mode char"
 msgstr ""
 
-#: src/common/text.c:570 src/common/text.c:626 src/common/text.c:632
-#: src/common/text.c:637
+#: src/common/text.c:430 src/common/text.c:486 src/common/text.c:492
+#: src/common/text.c:497
 msgid "The message"
 msgstr "መልእክቱ"
 
-#: src/common/text.c:574 src/common/text.c:641
+#: src/common/text.c:434 src/common/text.c:501
 msgid "Old nickname"
 msgstr "አሮጌ  ቅጽል ስም"
 
-#: src/common/text.c:575 src/common/text.c:642
+#: src/common/text.c:435 src/common/text.c:502
 msgid "New nickname"
 msgstr "አዲስ ቅጽል ስም"
 
-#: src/common/text.c:579
+#: src/common/text.c:439
 msgid "Nick of person who changed the topic"
 msgstr ""
 
-#: src/common/text.c:580 src/common/text.c:586 src/fe-gtk/chanlist.c:583
-#: src/fe-gtk/chanlist.c:686
+#: src/common/text.c:440 src/common/text.c:446 src/fe-gtk/chanlist.c:582
+#: src/fe-gtk/chanlist.c:712
 msgid "Topic"
-msgstr ""
+msgstr "ጉዳዩ"
 
-#: src/common/text.c:581 src/common/text.c:585 src/common/text.c:994
-#: src/fe-gtk/chanlist.c:583 src/fe-gtk/chanlist.c:677
+#: src/common/text.c:441 src/common/text.c:445 src/common/text.c:854
+#: src/fe-gtk/chanlist.c:582 src/fe-gtk/chanlist.c:704
 #: src/fe-gtk/ignoregui.c:394
 msgid "Channel"
-msgstr ""
+msgstr "ጣቢያ"
 
-#: src/common/text.c:590 src/common/text.c:648
+#: src/common/text.c:450 src/common/text.c:508
 msgid "The nickname of the kicker"
 msgstr ""
 
-#: src/common/text.c:591 src/common/text.c:646
+#: src/common/text.c:451 src/common/text.c:506
 msgid "The person being kicked"
 msgstr ""
 
-#: src/common/text.c:592 src/common/text.c:599 src/common/text.c:603
-#: src/common/text.c:608 src/common/text.c:647 src/common/text.c:655
+#: src/common/text.c:452 src/common/text.c:459 src/common/text.c:463
+#: src/common/text.c:468 src/common/text.c:507 src/common/text.c:515
 msgid "The channel"
-msgstr ""
+msgstr "ጣቢያው ሰዓቱ"
 
-#: src/common/text.c:593 src/common/text.c:649 src/common/text.c:656
+#: src/common/text.c:453 src/common/text.c:509 src/common/text.c:516
 msgid "The reason"
 msgstr ""
 
-#: src/common/text.c:597 src/common/text.c:653
+#: src/common/text.c:457 src/common/text.c:513
 msgid "The nick of the person leaving"
 msgstr ""
 
-#: src/common/text.c:604 src/common/text.c:610
+#: src/common/text.c:464 src/common/text.c:470
 msgid "The time"
 msgstr ""
 
-#: src/common/text.c:609
+#: src/common/text.c:469
 msgid "The creator"
 msgstr ""
 
-#: src/common/text.c:614
+#: src/common/text.c:474
 msgid "Nick"
 msgstr "ቅጽል"
 
-#: src/common/text.c:615 src/common/text.c:851
+#: src/common/text.c:475 src/common/text.c:711
 msgid "Reason"
 msgstr ""
 
-#: src/common/text.c:616 src/common/text.c:762 src/common/text.c:826
+#: src/common/text.c:476 src/common/text.c:622 src/common/text.c:686
 msgid "Host"
-msgstr ""
+msgstr "እንግዳ ተቀባይ"
 
-#: src/common/text.c:620 src/common/text.c:625 src/common/text.c:630
+#: src/common/text.c:480 src/common/text.c:485 src/common/text.c:490
 msgid "Who it's from"
 msgstr ""
 
-#: src/common/text.c:621
+#: src/common/text.c:481
 msgid "The time in x.x format (see below)"
 msgstr ""
 
-#: src/common/text.c:631 src/common/text.c:672
+#: src/common/text.c:491 src/common/text.c:532
 msgid "The Channel it's going to"
 msgstr ""
 
-#: src/common/text.c:660
+#: src/common/text.c:520
 msgid "The sound"
-msgstr ""
+msgstr "ድምፁ"
 
-#: src/common/text.c:661 src/common/text.c:666 src/common/text.c:671
+#: src/common/text.c:521 src/common/text.c:526 src/common/text.c:531
 msgid "The nick of the person"
 msgstr ""
 
-#: src/common/text.c:665 src/common/text.c:670
+#: src/common/text.c:525 src/common/text.c:530
 msgid "The CTCP event"
 msgstr ""
 
-#: src/common/text.c:676
+#: src/common/text.c:536
 msgid "The nick of the person who set the key"
 msgstr ""
 
-#: src/common/text.c:677
+#: src/common/text.c:537
 msgid "The key"
 msgstr "ቁልፉ"
 
-#: src/common/text.c:681
+#: src/common/text.c:541
 msgid "The nick of the person who set the limit"
 msgstr ""
 
-#: src/common/text.c:682
+#: src/common/text.c:542
 msgid "The limit"
 msgstr ""
 
-#: src/common/text.c:686
+#: src/common/text.c:546
 msgid "The nick of the person who did the op'ing"
 msgstr ""
 
-#: src/common/text.c:687
+#: src/common/text.c:547
 msgid "The nick of the person who has been op'ed"
 msgstr ""
 
-#: src/common/text.c:691
+#: src/common/text.c:551
 msgid "The nick of the person who has been halfop'ed"
 msgstr ""
 
-#: src/common/text.c:692
+#: src/common/text.c:552
 msgid "The nick of the person who did the halfop'ing"
 msgstr ""
 
-#: src/common/text.c:696
+#: src/common/text.c:556
 msgid "The nick of the person who did the voice'ing"
 msgstr ""
 
-#: src/common/text.c:697
+#: src/common/text.c:557
 msgid "The nick of the person who has been voice'ed"
 msgstr ""
 
-#: src/common/text.c:701
+#: src/common/text.c:561
 msgid "The nick of the person who did the banning"
 msgstr ""
 
-#: src/common/text.c:702 src/common/text.c:729
+#: src/common/text.c:562 src/common/text.c:589
 msgid "The ban mask"
 msgstr ""
 
-#: src/common/text.c:706
+#: src/common/text.c:566
 msgid "The nick who removed the key"
 msgstr ""
 
-#: src/common/text.c:710
+#: src/common/text.c:570
 msgid "The nick who removed the limit"
 msgstr ""
 
-#: src/common/text.c:714
+#: src/common/text.c:574
 msgid "The nick of the person of did the deop'ing"
 msgstr ""
 
-#: src/common/text.c:715
+#: src/common/text.c:575
 msgid "The nick of the person who has been deop'ed"
 msgstr ""
 
-#: src/common/text.c:718
+#: src/common/text.c:578
 msgid "The nick of the person of did the dehalfop'ing"
 msgstr ""
 
-#: src/common/text.c:719
+#: src/common/text.c:579
 msgid "The nick of the person who has been dehalfop'ed"
 msgstr ""
 
-#: src/common/text.c:723
+#: src/common/text.c:583
 msgid "The nick of the person of did the devoice'ing"
 msgstr ""
 
-#: src/common/text.c:724
+#: src/common/text.c:584
 msgid "The nick of the person who has been devoice'ed"
 msgstr ""
 
-#: src/common/text.c:728
+#: src/common/text.c:588
 msgid "The nick of the person of did the unban'ing"
 msgstr ""
 
-#: src/common/text.c:733
+#: src/common/text.c:593
 msgid "The nick of the person who did the exempt"
 msgstr ""
 
-#: src/common/text.c:734 src/common/text.c:739
+#: src/common/text.c:594 src/common/text.c:599
 msgid "The exempt mask"
 msgstr ""
 
-#: src/common/text.c:738
+#: src/common/text.c:598
 msgid "The nick of the person removed the exempt"
 msgstr ""
 
-#: src/common/text.c:743
+#: src/common/text.c:603
 msgid "The nick of the person who did the invite"
 msgstr ""
 
-#: src/common/text.c:744 src/common/text.c:749
+#: src/common/text.c:604 src/common/text.c:609
 msgid "The invite mask"
 msgstr ""
 
-#: src/common/text.c:748
+#: src/common/text.c:608
 msgid "The nick of the person removed the invite"
 msgstr ""
 
-#: src/common/text.c:753
+#: src/common/text.c:613
 msgid "The nick of the person setting the mode"
 msgstr ""
 
-#: src/common/text.c:754
+#: src/common/text.c:614
 msgid "The mode's sign (+/-)"
 msgstr ""
 
-#: src/common/text.c:755
+#: src/common/text.c:615
 msgid "The mode letter"
 msgstr ""
 
-#: src/common/text.c:756
+#: src/common/text.c:616
 msgid "The channel it's being set on"
 msgstr ""
 
-#: src/common/text.c:761
+#: src/common/text.c:621
 msgid "Username"
 msgstr "የተጠቃሚ ስም"
 
-#: src/common/text.c:763
+#: src/common/text.c:623
 msgid "Full name"
-msgstr ""
+msgstr "ሙሉ ስም"
 
-#: src/common/text.c:768
+#: src/common/text.c:628
 msgid "Channel Membership/\"is an IRC operator\""
 msgstr ""
 
-#: src/common/text.c:773
+#: src/common/text.c:633
 msgid "Server Information"
 msgstr ""
 
-#: src/common/text.c:778 src/common/text.c:783
+#: src/common/text.c:638 src/common/text.c:643
 msgid "Idle time"
 msgstr ""
 
-#: src/common/text.c:784
+#: src/common/text.c:644
 msgid "Signon time"
 msgstr ""
 
-#: src/common/text.c:789
+#: src/common/text.c:649
 msgid "Away reason"
 msgstr ""
 
-#: src/common/text.c:797 src/common/text.c:806 src/common/text.c:812
-#: src/common/text.c:989
+#: src/common/text.c:657 src/common/text.c:666 src/common/text.c:672
+#: src/common/text.c:849
 msgid "Channel Name"
 msgstr ""
 
-#: src/common/text.c:801 src/common/text.c:952 src/fe-gtk/textgui.c:373
+#: src/common/text.c:661 src/common/text.c:812 src/fe-gtk/textgui.c:373
 msgid "Text"
 msgstr "ጽሑፍ"
 
-#: src/common/text.c:802 src/common/text.c:808 src/common/text.c:990
+#: src/common/text.c:662 src/common/text.c:668 src/common/text.c:850
 msgid "Server Name"
-msgstr ""
+msgstr "የሰርቨር ስም"
 
-#: src/common/text.c:807
+#: src/common/text.c:667
 msgid "Nick of person who invited you"
 msgstr ""
 
-#: src/common/text.c:813 src/fe-gtk/chanlist.c:583
+#: src/common/text.c:673 src/fe-gtk/chanlist.c:582
 msgid "Users"
 msgstr "ተጠቃሚዎች"
 
-#: src/common/text.c:817
+#: src/common/text.c:677
 msgid "Nickname in use"
 msgstr ""
 
-#: src/common/text.c:818
+#: src/common/text.c:678
 msgid "Nick being tried"
 msgstr ""
 
-#: src/common/text.c:822
+#: src/common/text.c:682
 msgid "Error String"
 msgstr ""
 
-#: src/common/text.c:827 src/common/text.c:956
+#: src/common/text.c:687 src/common/text.c:816
 msgid "IP"
 msgstr "IP"
 
-#: src/common/text.c:828
+#: src/common/text.c:688
 msgid "Port"
-msgstr ""
+msgstr "ፖርት"
 
-#: src/common/text.c:832
+#: src/common/text.c:692
 msgid "PID"
 msgstr "PID"
 
-#: src/common/text.c:840
+#: src/common/text.c:700
 msgid "Channel name"
-msgstr ""
+msgstr "የጣቢያን ስም"
 
-#: src/common/text.c:841 src/common/text.c:846
+#: src/common/text.c:701 src/common/text.c:706
 msgid "Modes string"
 msgstr ""
 
-#: src/common/text.c:856 src/common/text.c:891 src/common/text.c:896
+#: src/common/text.c:716 src/common/text.c:751 src/common/text.c:756
 msgid "IP address"
 msgstr "IP አድራሻ"
 
-#: src/common/text.c:857
+#: src/common/text.c:717
 msgid "port"
-msgstr ""
+msgstr "ፖርት"
 
-#: src/common/text.c:861 src/common/text.c:884
+#: src/common/text.c:721 src/common/text.c:744
 msgid "DCC Type"
-msgstr ""
+msgstr "DCC ዓይነት"
 
-#: src/common/text.c:862 src/common/text.c:867 src/common/text.c:871
-#: src/common/text.c:877 src/common/text.c:897 src/common/text.c:901
-#: src/common/text.c:906 src/common/text.c:912 src/common/text.c:919
-#: src/common/text.c:928 src/common/text.c:934
+#: src/common/text.c:722 src/common/text.c:727 src/common/text.c:731
+#: src/common/text.c:737 src/common/text.c:757 src/common/text.c:761
+#: src/common/text.c:766 src/common/text.c:772 src/common/text.c:779
+#: src/common/text.c:788 src/common/text.c:794
 msgid "Filename"
 msgstr "የፋይል ስም"
 
-#: src/common/text.c:872 src/common/text.c:878
+#: src/common/text.c:732 src/common/text.c:738
 msgid "Destination filename"
 msgstr ""
 
-#: src/common/text.c:880 src/common/text.c:908
+#: src/common/text.c:740 src/common/text.c:768
 msgid "CPS"
-msgstr ""
+msgstr "CPS"
 
-#: src/common/text.c:886
+#: src/common/text.c:746
 msgid "Error string"
-msgstr ""
+msgstr "ስህተት ሐረግ"
 
-#: src/common/text.c:914
+#: src/common/text.c:774
 msgid "Pathname"
 msgstr "የመተላለፊያ ስም"
 
-#: src/common/text.c:929 src/fe-gtk/dccgui.c:374 src/fe-gtk/dccgui.c:378
-#: src/fe-gtk/dccgui.c:558
+#: src/common/text.c:789 src/fe-gtk/dccgui.c:391 src/fe-gtk/dccgui.c:395
+#: src/fe-gtk/dccgui.c:575
 msgid "Position"
 msgstr "ቦታ"
 
-#: src/common/text.c:935 src/fe-gtk/dccgui.c:374 src/fe-gtk/dccgui.c:378
-#: src/fe-gtk/dccgui.c:558
+#: src/common/text.c:795 src/fe-gtk/dccgui.c:391 src/fe-gtk/dccgui.c:395
+#: src/fe-gtk/dccgui.c:575
 msgid "Size"
 msgstr "መጠን"
 
-#: src/common/text.c:939
+#: src/common/text.c:799
 msgid "DCC String"
-msgstr ""
+msgstr "DCC ሐረግ"
 
-#: src/common/text.c:944
+#: src/common/text.c:804
 msgid "Number of notify items"
 msgstr ""
 
-#: src/common/text.c:948
+#: src/common/text.c:808
 msgid "Servername"
-msgstr ""
+msgstr "የሰርቨር ስም"
 
-#: src/common/text.c:960
+#: src/common/text.c:820
 msgid "Old Filename"
 msgstr "አሮጌ የፋይል ስም"
 
-#: src/common/text.c:961
+#: src/common/text.c:821
 msgid "New Filename"
 msgstr "አዲስ የፋይል ስም"
 
-#: src/common/text.c:965
+#: src/common/text.c:825
 msgid "Receiver"
 msgstr ""
 
-#: src/common/text.c:966
+#: src/common/text.c:826
 msgid "Message"
 msgstr "መልእክት"
 
-#: src/common/text.c:970
+#: src/common/text.c:830
 msgid "Hostmask"
 msgstr ""
 
-#: src/common/text.c:975
+#: src/common/text.c:835
 msgid "Hostname"
-msgstr ""
+msgstr "የእንግዳ ተቀባይ ስም"
 
-#: src/common/text.c:980
+#: src/common/text.c:840
 msgid "The Packet"
 msgstr ""
 
-#: src/common/text.c:984
+#: src/common/text.c:844
 msgid "Seconds"
-msgstr ""
+msgstr "ሴኮንዶች"
 
-#: src/common/text.c:988
+#: src/common/text.c:848
 msgid "Nick of person who have been invited"
 msgstr ""
 
-#: src/common/text.c:995
+#: src/common/text.c:855
 msgid "Banmask"
 msgstr ""
 
-#: src/common/text.c:996
+#: src/common/text.c:856
 msgid "Who set the ban"
 msgstr ""
 
-#: src/common/text.c:997
+#: src/common/text.c:857
 msgid "Ban time"
 msgstr ""
 
-#: src/common/text.c:1001
+#: src/common/text.c:861
 msgid "Error"
 msgstr "ስህተት"
 
-#: src/common/text.c:1035
+#: src/common/text.c:895
 #, c-format
 msgid ""
 "Error parsing event %s.\n"
@@ -989,255 +985,255 @@ msgstr ""
 
 #: src/common/util.c:696
 msgid "Andorra"
-msgstr ""
+msgstr "አንዶራ"
 
 #: src/common/util.c:697
 msgid "United Arab Emirates"
-msgstr ""
+msgstr "የተባበሩት አረብ ኤምሬትስ"
 
 #: src/common/util.c:698
 msgid "Afghanistan"
-msgstr ""
+msgstr "አፍጋኒስታን"
 
 #: src/common/util.c:699
 msgid "Antigua and Barbuda"
-msgstr ""
+msgstr "አንቲጓ እና ባሩዳ"
 
 #: src/common/util.c:700
 msgid "Anguilla"
-msgstr ""
+msgstr "አንጉኢላ"
 
 #: src/common/util.c:701
 msgid "Albania"
-msgstr ""
+msgstr "አልባኒያ"
 
 #: src/common/util.c:702
 msgid "Armenia"
-msgstr ""
+msgstr "አርሜኒያ"
 
 #: src/common/util.c:703
 msgid "Netherlands Antilles"
-msgstr ""
+msgstr "ኔዘርላንድስ አንቲልስ"
 
 #: src/common/util.c:704
 msgid "Angola"
-msgstr ""
+msgstr "አንጐላ"
 
 #: src/common/util.c:705
 msgid "Antarctica"
-msgstr ""
+msgstr "አንታርክቲካ"
 
 #: src/common/util.c:706
 msgid "Argentina"
-msgstr ""
+msgstr "አርጀንቲና"
 
 #: src/common/util.c:707
 msgid "American Samoa"
-msgstr ""
+msgstr "የአሜሪካ ሳሞአ"
 
 #: src/common/util.c:708
 msgid "Austria"
-msgstr ""
+msgstr "ኦስትሪያ"
 
 #: src/common/util.c:709
 msgid "Australia"
-msgstr ""
+msgstr "አውስትሬሊያ"
 
 #: src/common/util.c:710
 msgid "Aruba"
-msgstr ""
+msgstr "አሩባ"
 
 #: src/common/util.c:711
 msgid "Azerbaijan"
-msgstr ""
+msgstr "አዘርባጃን"
 
 #: src/common/util.c:712
 msgid "Bosnia and Herzegovina"
-msgstr ""
+msgstr "ቦስኒያ እና ሄርዞጎቪኒያ"
 
 #: src/common/util.c:713
 msgid "Barbados"
-msgstr ""
+msgstr "ባርቤዶስ"
 
 #: src/common/util.c:714
 msgid "Bangladesh"
-msgstr ""
+msgstr "ባንግላዲሽ"
 
 #: src/common/util.c:715
 msgid "Belgium"
-msgstr ""
+msgstr "ቤልጄም"
 
 #: src/common/util.c:716
 msgid "Burkina Faso"
-msgstr ""
+msgstr "ቡርኪና ፋሶ"
 
 #: src/common/util.c:717
 msgid "Bulgaria"
-msgstr ""
+msgstr "ቡልጌሪያ"
 
 #: src/common/util.c:718
 msgid "Bahrain"
-msgstr ""
+msgstr "ባህሬን"
 
 #: src/common/util.c:719
 msgid "Burundi"
-msgstr ""
+msgstr "ብሩንዲ"
 
 #: src/common/util.c:720
 msgid "Benin"
-msgstr ""
+msgstr "ቤኒን"
 
 #: src/common/util.c:721
 msgid "Bermuda"
-msgstr ""
+msgstr "ቤርሙዳ"
 
 #: src/common/util.c:722
 msgid "Brunei Darussalam"
-msgstr ""
+msgstr "ብሩኒ ዳሩሳላም"
 
 #: src/common/util.c:723
 msgid "Bolivia"
-msgstr ""
+msgstr "ቦሊቪያ"
 
 #: src/common/util.c:724
 msgid "Brazil"
-msgstr ""
+msgstr "ብራዚል"
 
 #: src/common/util.c:725
 msgid "Bahamas"
-msgstr ""
+msgstr "ባሃማስ"
 
 #: src/common/util.c:726
 msgid "Bhutan"
-msgstr ""
+msgstr "ቡህታን"
 
 #: src/common/util.c:727
 msgid "Bouvet Island"
-msgstr ""
+msgstr "የቦውቬት ደሴት"
 
 #: src/common/util.c:728
 msgid "Botswana"
-msgstr ""
+msgstr "ቦትስዋና"
 
 #: src/common/util.c:729
 msgid "Belarus"
-msgstr ""
+msgstr "ቤላሩስ"
 
 #: src/common/util.c:730
 msgid "Belize"
-msgstr ""
+msgstr "ቤሊዘ"
 
 #: src/common/util.c:731
 msgid "Canada"
-msgstr ""
+msgstr "ካናዳ"
 
 #: src/common/util.c:732
 msgid "Cocos Islands"
-msgstr ""
+msgstr "የኮኮስ ደሴቶች"
 
 #: src/common/util.c:733
 msgid "Central African Republic"
-msgstr ""
+msgstr "የመካከለኛው አፍሪካ ሪፐብሊክ"
 
 #: src/common/util.c:734
 msgid "Congo"
-msgstr ""
+msgstr "ኮንጐ"
 
 #: src/common/util.c:735
 msgid "Switzerland"
-msgstr ""
+msgstr "ስዊዘርላንድ"
 
 #: src/common/util.c:736
 msgid "Cote D'ivoire"
-msgstr ""
+msgstr "ኮት ዲቯር"
 
 #: src/common/util.c:737
 msgid "Cook Islands"
-msgstr ""
+msgstr "ኩክ ደሴቶች"
 
 #: src/common/util.c:738
 msgid "Chile"
-msgstr ""
+msgstr "ቺሊ"
 
 #: src/common/util.c:739
 msgid "Cameroon"
-msgstr ""
+msgstr "ካሜሩን"
 
 #: src/common/util.c:740
 msgid "China"
-msgstr ""
+msgstr "ቻይና"
 
 #: src/common/util.c:741
 msgid "Colombia"
-msgstr ""
+msgstr "ኮሎምቢያ"
 
 #: src/common/util.c:742
 msgid "Costa Rica"
-msgstr ""
+msgstr "ኮስታ ሪካ"
 
 #: src/common/util.c:743
 msgid "Former Czechoslovakia"
-msgstr ""
+msgstr "የቀድሞው ቼኮዝሎቫኪያ"
 
 #: src/common/util.c:744
 msgid "Cuba"
-msgstr ""
+msgstr "ኩባ"
 
 #: src/common/util.c:745
 msgid "Cape Verde"
-msgstr ""
+msgstr "ኬፕ ቬርዴ"
 
 #: src/common/util.c:746
 msgid "Christmas Island"
-msgstr ""
+msgstr "የገና ደሴቶች"
 
 #: src/common/util.c:747
 msgid "Cyprus"
-msgstr ""
+msgstr "ሳይፕረስ"
 
 #: src/common/util.c:748
 msgid "Czech Republic"
-msgstr ""
+msgstr "ቼክ ሪፑብሊክ"
 
 #: src/common/util.c:749
 msgid "Germany"
-msgstr ""
+msgstr "ጀርመን"
 
 #: src/common/util.c:750
 msgid "Djibouti"
-msgstr ""
+msgstr "ጂቡቲ"
 
 #: src/common/util.c:751
 msgid "Denmark"
-msgstr ""
+msgstr "ዴንማርክ"
 
 #: src/common/util.c:752
 msgid "Dominica"
-msgstr ""
+msgstr "ዶሚኒካ"
 
 #: src/common/util.c:753
 msgid "Dominican Republic"
-msgstr ""
+msgstr "ዶሚኒክ ሪፑብሊክ"
 
 #: src/common/util.c:754
 msgid "Algeria"
-msgstr ""
+msgstr "አልጄሪያ"
 
 #: src/common/util.c:755
 msgid "Ecuador"
-msgstr ""
+msgstr "ኢኳዶር"
 
 #: src/common/util.c:756
 msgid "Estonia"
-msgstr ""
+msgstr "ኤስቶኒያ"
 
 #: src/common/util.c:757
 msgid "Egypt"
-msgstr ""
+msgstr "ግብጽ"
 
 #: src/common/util.c:758
 msgid "Western Sahara"
-msgstr ""
+msgstr "ምዕራባዊ ሳህራ"
 
 #: src/common/util.c:759
 msgid "Eritrea"
@@ -1245,7 +1241,7 @@ msgstr "ኤርትራ"
 
 #: src/common/util.c:760
 msgid "Spain"
-msgstr ""
+msgstr "ስፔን"
 
 #: src/common/util.c:761
 msgid "Ethiopia"
@@ -1253,51 +1249,51 @@ msgstr "ኢትዮጵያ"
 
 #: src/common/util.c:762
 msgid "Finland"
-msgstr ""
+msgstr "ፊንላንድ"
 
 #: src/common/util.c:763
 msgid "Fiji"
-msgstr ""
+msgstr "ፊጂ"
 
 #: src/common/util.c:764
 msgid "Falkland Islands"
-msgstr ""
+msgstr "የፎልክላንድ ደሴቶች"
 
 #: src/common/util.c:765
 msgid "Micronesia"
-msgstr ""
+msgstr "ሚክሮኔዢያ"
 
 #: src/common/util.c:766
 msgid "Faroe Islands"
-msgstr ""
+msgstr "የፋሮይ ደሴቶች"
 
 #: src/common/util.c:767
 msgid "France"
-msgstr ""
+msgstr "ፈረንሳይ"
 
 #: src/common/util.c:768
 msgid "France, Metropolitan"
-msgstr ""
+msgstr "የፈረንሳይ፣ ሜትሮ"
 
 #: src/common/util.c:769
 msgid "Gabon"
-msgstr ""
+msgstr "ጋቦን"
 
 #: src/common/util.c:770
 msgid "Great Britain"
-msgstr ""
+msgstr "ታላቋ ብሪታኒያ"
 
 #: src/common/util.c:771
 msgid "Grenada"
-msgstr ""
+msgstr "ግሬናዳ"
 
 #: src/common/util.c:772
 msgid "Georgia"
-msgstr ""
+msgstr "ጆርጂያ"
 
 #: src/common/util.c:773
 msgid "French Guiana"
-msgstr ""
+msgstr "የፈረንሳይ ጉዊአና"
 
 #: src/common/util.c:774
 msgid "British Channel Isles"
@@ -1305,35 +1301,35 @@ msgstr ""
 
 #: src/common/util.c:775
 msgid "Ghana"
-msgstr ""
+msgstr "ጋና"
 
 #: src/common/util.c:776
 msgid "Gibraltar"
-msgstr ""
+msgstr "ጊብራልታር"
 
 #: src/common/util.c:777
 msgid "Greenland"
-msgstr ""
+msgstr "ግሪንላንድ"
 
 #: src/common/util.c:778
 msgid "Gambia"
-msgstr ""
+msgstr "ጋምቢያ"
 
 #: src/common/util.c:779
 msgid "Guinea"
-msgstr ""
+msgstr "ጊኒ"
 
 #: src/common/util.c:780
 msgid "Guadeloupe"
-msgstr ""
+msgstr "ጉዋደሉፕ"
 
 #: src/common/util.c:781
 msgid "Equatorial Guinea"
-msgstr ""
+msgstr "ኢኳቶሪያል ጊኒ"
 
 #: src/common/util.c:782
 msgid "Greece"
-msgstr ""
+msgstr "ግሪክ"
 
 #: src/common/util.c:783
 msgid "S. Georgia and S. Sandwich Isles."
@@ -1341,95 +1337,95 @@ msgstr ""
 
 #: src/common/util.c:784
 msgid "Guatemala"
-msgstr ""
+msgstr "ጉዋቲማላ"
 
 #: src/common/util.c:785
 msgid "Guam"
-msgstr ""
+msgstr "ጉዋም"
 
 #: src/common/util.c:786
 msgid "Guinea-Bissau"
-msgstr ""
+msgstr "ጊኒ ቢሳዎ"
 
 #: src/common/util.c:787
 msgid "Guyana"
-msgstr ""
+msgstr "ጉያና"
 
 #: src/common/util.c:788
 msgid "Hong Kong"
-msgstr ""
+msgstr "ሆንግ ኮንግ"
 
 #: src/common/util.c:789
 msgid "Heard and McDonald Islands"
-msgstr ""
+msgstr "የኧርድ እና የማክዶናልድ ደሴቶች"
 
 #: src/common/util.c:790
 msgid "Honduras"
-msgstr ""
+msgstr "ሆንዱራስ"
 
 #: src/common/util.c:791
 msgid "Croatia"
-msgstr ""
+msgstr "ክሮኤሽያ"
 
 #: src/common/util.c:792
 msgid "Haiti"
-msgstr ""
+msgstr "ሀይቲ*"
 
 #: src/common/util.c:793
 msgid "Hungary"
-msgstr ""
+msgstr "ሀንጋሪ"
 
 #: src/common/util.c:794
 msgid "Indonesia"
-msgstr ""
+msgstr "ኢንዶኔዢያ"
 
 #: src/common/util.c:795
 msgid "Ireland"
-msgstr ""
+msgstr "አየርላንድ"
 
 #: src/common/util.c:796
 msgid "Israel"
-msgstr ""
+msgstr "እስራኤል"
 
 #: src/common/util.c:797
 msgid "India"
-msgstr ""
+msgstr "ህንድ"
 
 #: src/common/util.c:798
 msgid "British Indian Ocean Territory"
-msgstr ""
+msgstr "የብሪታኒያ ህንድ ውቂያኖስ ግዛት"
 
 #: src/common/util.c:799
 msgid "Iraq"
-msgstr ""
+msgstr "ኢራቅ"
 
 #: src/common/util.c:800
 msgid "Iran"
-msgstr ""
+msgstr "ኢራን"
 
 #: src/common/util.c:801
 msgid "Iceland"
-msgstr ""
+msgstr "አይስላንድ"
 
 #: src/common/util.c:802
 msgid "Italy"
-msgstr ""
+msgstr "ጣሊያን"
 
 #: src/common/util.c:803
 msgid "Jamaica"
-msgstr ""
+msgstr "ጃማይካ"
 
 #: src/common/util.c:804
 msgid "Jordan"
-msgstr ""
+msgstr "ጆርዳን"
 
 #: src/common/util.c:805
 msgid "Japan"
-msgstr ""
+msgstr "ጃፓን"
 
 #: src/common/util.c:806
 msgid "Kenya"
-msgstr ""
+msgstr "ኬንያ"
 
 #: src/common/util.c:807
 msgid "Kyrgyzstan"
@@ -1437,207 +1433,207 @@ msgstr ""
 
 #: src/common/util.c:808
 msgid "Cambodia"
-msgstr ""
+msgstr "ካምቦዲያ"
 
 #: src/common/util.c:809
 msgid "Kiribati"
-msgstr ""
+msgstr "ኪሪባቲ"
 
 #: src/common/util.c:810
 msgid "Comoros"
-msgstr ""
+msgstr "ኮሞሮስ"
 
 #: src/common/util.c:811
 msgid "St. Kitts and Nevis"
-msgstr ""
+msgstr "ቅዱስ ኪትስ እና ኔቪስ"
 
 #: src/common/util.c:812
 msgid "North Korea"
-msgstr ""
+msgstr "ሰሜን ኮሪያ"
 
 #: src/common/util.c:813
 msgid "South Korea"
-msgstr ""
+msgstr "ደቡብ ኮሪያ"
 
 #: src/common/util.c:814
 msgid "Kuwait"
-msgstr ""
+msgstr "ክዌት"
 
 #: src/common/util.c:815
 msgid "Cayman Islands"
-msgstr ""
+msgstr "ካይማን ደሴቶች"
 
 #: src/common/util.c:816
 msgid "Kazakhstan"
-msgstr ""
+msgstr "ካዛኪስታን"
 
 #: src/common/util.c:817
 msgid "Laos"
-msgstr ""
+msgstr "ላኦስ"
 
 #: src/common/util.c:818
 msgid "Lebanon"
-msgstr ""
+msgstr "ሊባኖስ"
 
 #: src/common/util.c:819
 msgid "Saint Lucia"
-msgstr ""
+msgstr "ሴንት ሉቺያ"
 
 #: src/common/util.c:820
 msgid "Liechtenstein"
-msgstr ""
+msgstr "ሊችተንስታይን"
 
 #: src/common/util.c:821
 msgid "Sri Lanka"
-msgstr ""
+msgstr "ሲሪላንካ"
 
 #: src/common/util.c:822
 msgid "Liberia"
-msgstr ""
+msgstr "ላይቤሪያ"
 
 #: src/common/util.c:823
 msgid "Lesotho"
-msgstr ""
+msgstr "ሌሶቶ"
 
 #: src/common/util.c:824
 msgid "Lithuania"
-msgstr ""
+msgstr "ሊቱዌኒያ"
 
 #: src/common/util.c:825
 msgid "Luxembourg"
-msgstr ""
+msgstr "ሉክሰምበርግ"
 
 #: src/common/util.c:826
 msgid "Latvia"
-msgstr ""
+msgstr "ላትቪያ"
 
 #: src/common/util.c:827
 msgid "Libya"
-msgstr ""
+msgstr "ሊቢያ"
 
 #: src/common/util.c:828
 msgid "Morocco"
-msgstr ""
+msgstr "ሞሮኮ"
 
 #: src/common/util.c:829
 msgid "Monaco"
-msgstr ""
+msgstr "ሞናኮ"
 
 #: src/common/util.c:830
 msgid "Moldova"
-msgstr ""
+msgstr "ሞልዶቫ"
 
 #: src/common/util.c:831
 msgid "Madagascar"
-msgstr ""
+msgstr "ማዳጋስካር"
 
 #: src/common/util.c:832
 msgid "Marshall Islands"
-msgstr ""
+msgstr "ማርሻል አይላንድ"
 
 #: src/common/util.c:833
 msgid "Macedonia"
-msgstr ""
+msgstr "ማከዶኒያ"
 
 #: src/common/util.c:834
 msgid "Mali"
-msgstr ""
+msgstr "ማሊ"
 
 #: src/common/util.c:835
 msgid "Myanmar"
-msgstr ""
+msgstr "ማያንማር"
 
 #: src/common/util.c:836
 msgid "Mongolia"
-msgstr ""
+msgstr "ሞንጎሊያ"
 
 #: src/common/util.c:837
 msgid "Macau"
-msgstr ""
+msgstr "ማካዎ"
 
 #: src/common/util.c:838
 msgid "Northern Mariana Islands"
-msgstr ""
+msgstr "የሰሜናዊ ማሪያና ደሴቶች"
 
 #: src/common/util.c:839
 msgid "Martinique"
-msgstr ""
+msgstr "ማርቲኒክ"
 
 #: src/common/util.c:840
 msgid "Mauritania"
-msgstr ""
+msgstr "ሞሪቴኒያ"
 
 #: src/common/util.c:841
 msgid "Montserrat"
-msgstr ""
+msgstr "ሞንትሴራት"
 
 #: src/common/util.c:842
 msgid "Malta"
-msgstr ""
+msgstr "ማልታ"
 
 #: src/common/util.c:843
 msgid "Mauritius"
-msgstr ""
+msgstr "ማሩሸስ"
 
 #: src/common/util.c:844
 msgid "Maldives"
-msgstr ""
+msgstr "ማልዲቭስ"
 
 #: src/common/util.c:845
 msgid "Malawi"
-msgstr ""
+msgstr "ማላዊ"
 
 #: src/common/util.c:846
 msgid "Mexico"
-msgstr ""
+msgstr "ሜክሲኮ"
 
 #: src/common/util.c:847
 msgid "Malaysia"
-msgstr ""
+msgstr "ማሌዢያ"
 
 #: src/common/util.c:848
 msgid "Mozambique"
-msgstr ""
+msgstr "ሞዛምቢክ"
 
 #: src/common/util.c:849
 msgid "Namibia"
-msgstr ""
+msgstr "ናሚቢያ"
 
 #: src/common/util.c:850
 msgid "New Caledonia"
-msgstr ""
+msgstr "ኒው ካሌዶኒያ"
 
 #: src/common/util.c:851
 msgid "Niger"
-msgstr ""
+msgstr "ኒጀር"
 
 #: src/common/util.c:852
 msgid "Norfolk Island"
-msgstr ""
+msgstr "ኖርፎልክ ደሴት"
 
 #: src/common/util.c:853
 msgid "Nigeria"
-msgstr ""
+msgstr "ናይጄሪያ"
 
 #: src/common/util.c:854
 msgid "Nicaragua"
-msgstr ""
+msgstr "ኒካራጓ"
 
 #: src/common/util.c:855
 msgid "Netherlands"
-msgstr ""
+msgstr "ኔዘርላንድ"
 
 #: src/common/util.c:856
 msgid "Norway"
-msgstr ""
+msgstr "ኖርዌ"
 
 #: src/common/util.c:857
 msgid "Nepal"
-msgstr ""
+msgstr "ኔፓል"
 
 #: src/common/util.c:858
 msgid "Nauru"
-msgstr ""
+msgstr "ናኡሩ"
 
 #: src/common/util.c:859
 msgid "Neutral Zone"
@@ -1645,151 +1641,151 @@ msgstr ""
 
 #: src/common/util.c:860
 msgid "Niue"
-msgstr ""
+msgstr "ኒኡይ"
 
 #: src/common/util.c:861
 msgid "New Zealand"
-msgstr ""
+msgstr "ኒው ዚላንድ"
 
 #: src/common/util.c:862
 msgid "Oman"
-msgstr ""
+msgstr "ኦማን"
 
 #: src/common/util.c:863
 msgid "Panama"
-msgstr ""
+msgstr "ፓናማ"
 
 #: src/common/util.c:864
 msgid "Peru"
-msgstr ""
+msgstr "ፔሩ"
 
 #: src/common/util.c:865
 msgid "French Polynesia"
-msgstr ""
+msgstr "የፈረንሳይ ፖሊኔዢያ"
 
 #: src/common/util.c:866
 msgid "Papua New Guinea"
-msgstr ""
+msgstr "ፓፑዋ ኒው ጊኒ"
 
 #: src/common/util.c:867
 msgid "Philippines"
-msgstr ""
+msgstr "ፊሊፒንስ"
 
 #: src/common/util.c:868
 msgid "Pakistan"
-msgstr ""
+msgstr "ፓኪስታን"
 
 #: src/common/util.c:869
 msgid "Poland"
-msgstr ""
+msgstr "ፖላንድ"
 
 #: src/common/util.c:870
 msgid "St. Pierre and Miquelon"
-msgstr ""
+msgstr "ቅዱስ ፒዬር እና ሚኩኤሎን"
 
 #: src/common/util.c:871
 msgid "Pitcairn"
-msgstr ""
+msgstr "ፒትካኢርን"
 
 #: src/common/util.c:872
 msgid "Puerto Rico"
-msgstr ""
+msgstr "ፖርታ ሪኮ"
 
 #: src/common/util.c:873
 msgid "Portugal"
-msgstr ""
+msgstr "ፖርቱጋል"
 
 #: src/common/util.c:874
 msgid "Palau"
-msgstr ""
+msgstr "ፓላው"
 
 #: src/common/util.c:875
 msgid "Paraguay"
-msgstr ""
+msgstr "ፓራጓይ"
 
 #: src/common/util.c:876
 msgid "Qatar"
-msgstr ""
+msgstr "ኳታር"
 
 #: src/common/util.c:877
 msgid "Reunion"
-msgstr ""
+msgstr "ውህደት"
 
 #: src/common/util.c:878
 msgid "Romania"
-msgstr ""
+msgstr "ሮሜኒያ"
 
 #: src/common/util.c:879
 msgid "Russian Federation"
-msgstr ""
+msgstr "ራሺያ"
 
 #: src/common/util.c:880
 msgid "Rwanda"
-msgstr ""
+msgstr "ሩዋንዳ"
 
 #: src/common/util.c:881
 msgid "Saudi Arabia"
-msgstr ""
+msgstr "ሳውድአረቢያ"
 
 #: src/common/util.c:882
 msgid "Solomon Islands"
-msgstr ""
+msgstr "ሰሎሞን ደሴት"
 
 #: src/common/util.c:883
 msgid "Seychelles"
-msgstr ""
+msgstr "ሲሼልስ"
 
 #: src/common/util.c:884
 msgid "Sudan"
-msgstr ""
+msgstr "ሱዳን"
 
 #: src/common/util.c:885
 msgid "Sweden"
-msgstr ""
+msgstr "ስዊድን"
 
 #: src/common/util.c:886
 msgid "Singapore"
-msgstr ""
+msgstr "ሲንጋፖር"
 
 #: src/common/util.c:887
 msgid "St. Helena"
-msgstr ""
+msgstr "ሴንት ሄለና"
 
 #: src/common/util.c:888
 msgid "Slovenia"
-msgstr ""
+msgstr "ስሎቬኒያ"
 
 #: src/common/util.c:889
 msgid "Svalbard and Jan Mayen Islands"
-msgstr ""
+msgstr "የስቫልባርድ እና ዣን ማየን ደሴቶች"
 
 #: src/common/util.c:890
 msgid "Slovak Republic"
-msgstr ""
+msgstr "ስሎቫክ ሪፐብሊክ"
 
 #: src/common/util.c:891
 msgid "Sierra Leone"
-msgstr ""
+msgstr "ሴራሊዮን"
 
 #: src/common/util.c:892
 msgid "San Marino"
-msgstr ""
+msgstr "ሳን ማሪኖ"
 
 #: src/common/util.c:893
 msgid "Senegal"
-msgstr ""
+msgstr "ሴኔጋል"
 
 #: src/common/util.c:894
 msgid "Somalia"
-msgstr ""
+msgstr "ሱማሌ"
 
 #: src/common/util.c:895
 msgid "Suriname"
-msgstr ""
+msgstr "ሱሪናም"
 
 #: src/common/util.c:896
 msgid "Sao Tome and Principe"
-msgstr ""
+msgstr "ሳኦ ቶሜ እና ፕሪንሲፔ"
 
 #: src/common/util.c:897
 msgid "Former USSR"
@@ -1797,171 +1793,171 @@ msgstr ""
 
 #: src/common/util.c:898
 msgid "El Salvador"
-msgstr ""
+msgstr "ኤል ሳልቫዶር"
 
 #: src/common/util.c:899
 msgid "Syria"
-msgstr ""
+msgstr "ሲሪያ"
 
 #: src/common/util.c:900
 msgid "Swaziland"
-msgstr ""
+msgstr "ሱዋዚላንድ"
 
 #: src/common/util.c:901
 msgid "Turks and Caicos Islands"
-msgstr ""
+msgstr "የቱርኮችና የካኢኮስ ደሴቶች"
 
 #: src/common/util.c:902
 msgid "Chad"
-msgstr ""
+msgstr "ቻድ"
 
 #: src/common/util.c:903
 msgid "French Southern Territories"
-msgstr ""
+msgstr "የፈረንሳይ ደቡባዊ ግዛቶች"
 
 #: src/common/util.c:904
 msgid "Togo"
-msgstr ""
+msgstr "ቶጐ"
 
 #: src/common/util.c:905
 msgid "Thailand"
-msgstr ""
+msgstr "ታይላንድ"
 
 #: src/common/util.c:906
 msgid "Tajikistan"
-msgstr ""
+msgstr "ታጃኪስታን"
 
 #: src/common/util.c:907
 msgid "Tokelau"
-msgstr ""
+msgstr "ቶክላው"
 
 #: src/common/util.c:908
 msgid "Turkmenistan"
-msgstr ""
+msgstr "ቱርክሜኒስታን"
 
 #: src/common/util.c:909
 msgid "Tunisia"
-msgstr ""
+msgstr "ቱኒዚያ"
 
 #: src/common/util.c:910
 msgid "Tonga"
-msgstr ""
+msgstr "ቶንጋ"
 
 #: src/common/util.c:911
 msgid "East Timor"
-msgstr ""
+msgstr "ምስራቅ ቲሞር"
 
 #: src/common/util.c:912
 msgid "Turkey"
-msgstr ""
+msgstr "ቱርክ"
 
 #: src/common/util.c:913
 msgid "Trinidad and Tobago"
-msgstr ""
+msgstr "ትሪኒዳድ እና ቶባጎ"
 
 #: src/common/util.c:914
 msgid "Tuvalu"
-msgstr ""
+msgstr "ቱቫሉ"
 
 #: src/common/util.c:915
 msgid "Taiwan"
-msgstr ""
+msgstr "ታይዋን"
 
 #: src/common/util.c:916
 msgid "Tanzania"
-msgstr ""
+msgstr "ታንዛኒያ"
 
 #: src/common/util.c:917
 msgid "Ukraine"
-msgstr ""
+msgstr "ዩክሬን"
 
 #: src/common/util.c:918
 msgid "Uganda"
-msgstr ""
+msgstr "ዩጋንዳ"
 
 #: src/common/util.c:919
 msgid "United Kingdom"
-msgstr ""
+msgstr "እንግሊዝ"
 
 #: src/common/util.c:920
 msgid "US Minor Outlying Islands"
-msgstr ""
+msgstr "የአሜሪካ ራቅ ያሉ  አናሳ ደሴቶች"
 
 #: src/common/util.c:921
 msgid "United States of America"
-msgstr ""
+msgstr "አሜሪካ"
 
 #: src/common/util.c:922
 msgid "Uruguay"
-msgstr ""
+msgstr "ኡራጓይ"
 
 #: src/common/util.c:923
 msgid "Uzbekistan"
-msgstr ""
+msgstr "ዩዝበኪስታን"
 
 #: src/common/util.c:924
 msgid "Vatican City State"
-msgstr ""
+msgstr "ቫቲካን ከተማ"
 
 #: src/common/util.c:925
 msgid "St. Vincent and the grenadines"
-msgstr ""
+msgstr "ቅዱስ ቪንሴንት እና ግሬናዲንስ"
 
 #: src/common/util.c:926
 msgid "Venezuela"
-msgstr ""
+msgstr "ቬንዙዌላ"
 
 #: src/common/util.c:927
 msgid "British Virgin Islands"
-msgstr ""
+msgstr "የእንግሊዝ ድንግል ደሴቶች"
 
 #: src/common/util.c:928
 msgid "US Virgin Islands"
-msgstr ""
+msgstr "የአሜሪካ ቨርጂን ደሴቶች"
 
 #: src/common/util.c:929
 msgid "Vietnam"
-msgstr ""
+msgstr "ቬትናም"
 
 #: src/common/util.c:930
 msgid "Vanuatu"
-msgstr ""
+msgstr "ቫኑአቱ"
 
 #: src/common/util.c:931
 msgid "Wallis and Futuna Islands"
-msgstr ""
+msgstr "ዋሊስ እና ፉቱና ደሴቶች"
 
 #: src/common/util.c:932
 msgid "Samoa"
-msgstr ""
+msgstr "ሳሞአ"
 
 #: src/common/util.c:933
 msgid "Yemen"
-msgstr ""
+msgstr "የመን"
 
 #: src/common/util.c:934
 msgid "Mayotte"
-msgstr ""
+msgstr "ሜይኦቴ"
 
 #: src/common/util.c:935
 msgid "Yugoslavia"
-msgstr ""
+msgstr "ዩጎዝላቪያ"
 
 #: src/common/util.c:936
 msgid "South Africa"
-msgstr ""
+msgstr "ደቡብ አፍሪካ"
 
 #: src/common/util.c:937
 msgid "Zambia"
-msgstr ""
+msgstr "ዛምቢያ"
 
 #: src/common/util.c:938
 msgid "Zaire"
-msgstr ""
+msgstr "ዛየር"
 
 #: src/common/util.c:939
 msgid "Zimbabwe"
-msgstr ""
+msgstr "ዚምቧቤ"
 
 #: src/common/util.c:940
 msgid "Internic Commercial"
@@ -1973,7 +1969,7 @@ msgstr ""
 
 #: src/common/util.c:942
 msgid "Government"
-msgstr ""
+msgstr "መንግስት"
 
 #: src/common/util.c:943
 msgid "International"
@@ -1981,7 +1977,7 @@ msgstr ""
 
 #: src/common/util.c:944
 msgid "Military"
-msgstr ""
+msgstr "ወታደራዊ"
 
 #: src/common/util.c:945
 msgid "Internic Network"
@@ -2013,79 +2009,21 @@ msgstr ""
 msgid "Unknown"
 msgstr "ያልታወቀ"
 
-#: src/common/xchat.c:819
-msgid "Disconnect"
-msgstr ""
-
-#: src/common/xchat.c:820
-msgid "Reconnect"
-msgstr ""
-
-#: src/common/xchat.c:821
-msgid "Leave Channel"
-msgstr ""
-
-#: src/common/xchat.c:822
-msgid "Join Channel..."
-msgstr ""
-
-#: src/common/xchat.c:823
-msgid "Enter Channel to Join:"
-msgstr ""
-
-#: src/common/xchat.c:824
-msgid "Server Links"
-msgstr ""
-
-#: src/common/xchat.c:825
-msgid "Ping Server"
-msgstr ""
-
-#: src/common/xchat.c:826
-#, fuzzy
-msgid "Hide Version"
-msgstr "ዝርያ"
-
-#: src/common/xchat.c:836
-#, fuzzy
-msgid "Op"
-msgstr "ክፈት"
-
-#: src/common/xchat.c:837
-msgid "DeOp"
-msgstr ""
-
-#: src/common/xchat.c:838
-msgid "Ban"
-msgstr ""
-
-#: src/common/xchat.c:839
-#, fuzzy
-msgid "Kick"
-msgstr "ቅጽል"
-
-#: src/common/xchat.c:840
-msgid "bye"
-msgstr ""
-
-#: src/common/xchat.c:841
-#, c-format
-msgid "Enter reason to kick %s:"
-msgstr ""
-
-#: src/common/xchat.c:842
-msgid "Sendfile"
-msgstr ""
-
-#: src/common/xchat.c:843
-msgid "Dialog"
-msgstr ""
-
-#: src/fe-gtk/about.c:100
+#: src/fe-gtk/about.c:99
 msgid "About X-Chat"
-msgstr ""
+msgstr "ስለ X-Chat"
 
-#: src/fe-gtk/ascii.c:131
+#. gdk_font_unref (style->font);
+#. if (menu_sess && menu_sess->type == SESS_DIALOG)
+#. {
+#. style->font = dialog_font_normal;
+#. gdk_font_ref (dialog_font_normal);
+#. } else
+#. {
+#. style->font = font_normal;
+#. gdk_font_ref (font_normal);
+#. }
+#: src/fe-gtk/ascii.c:79
 msgid "Character Chart"
 msgstr ""
 
@@ -2093,7 +2031,7 @@ msgstr ""
 msgid "Mask"
 msgstr ""
 
-#: src/fe-gtk/banlist.c:173 src/fe-gtk/dccgui.c:374 src/fe-gtk/dccgui.c:378
+#: src/fe-gtk/banlist.c:173 src/fe-gtk/dccgui.c:391 src/fe-gtk/dccgui.c:395
 msgid "From"
 msgstr "ከ"
 
@@ -2122,18 +2060,18 @@ msgstr ""
 
 #: src/fe-gtk/banlist.c:236
 msgid "Refresh"
-msgstr ""
+msgstr "በድጋሚ ጀምር"
 
-#: src/fe-gtk/chanlist.c:124
+#: src/fe-gtk/chanlist.c:123
 #, c-format
 msgid "User and Channel Statistics: %d/%d Users on %d/%d Channels"
 msgstr ""
 
-#: src/fe-gtk/chanlist.c:526
+#: src/fe-gtk/chanlist.c:525
 msgid "I can't save an empty list!"
 msgstr ""
 
-#: src/fe-gtk/chanlist.c:529 src/fe-gtk/menu.c:842
+#: src/fe-gtk/chanlist.c:528 src/fe-gtk/menu.c:841
 msgid "Select an output filename"
 msgstr ""
 
@@ -2142,48 +2080,44 @@ msgstr ""
 msgid "X-Chat: Channel List (%s)"
 msgstr ""
 
-#: src/fe-gtk/chanlist.c:608
+#: src/fe-gtk/chanlist.c:609
 msgid "List display options:"
 msgstr ""
 
-#: src/fe-gtk/chanlist.c:620
-msgid "Minimum Users:"
+#: src/fe-gtk/chanlist.c:627
+msgid "Minimum Users: "
+msgstr "በተቻለ መጠን ተጠቃሚዎች፦"
+
+#: src/fe-gtk/chanlist.c:646
+msgid "Maximum Users: "
+msgstr "ከፍተኛ መጠን ተጠቃሚዎች፦"
+
+#: src/fe-gtk/chanlist.c:676
+msgid "Regex Match: "
 msgstr ""
 
-#: src/fe-gtk/chanlist.c:635
-msgid "Maximum Users:"
-msgstr ""
-
-#: src/fe-gtk/chanlist.c:650
-msgid "Regex Match:"
-msgstr ""
-
-#: src/fe-gtk/chanlist.c:671
-msgid "Apply Match to:"
-msgstr ""
-
-#: src/fe-gtk/chanlist.c:695
+#: src/fe-gtk/chanlist.c:721
 msgid "Apply"
 msgstr "ተጠቀም"
 
-#: src/fe-gtk/chanlist.c:737
+#: src/fe-gtk/chanlist.c:764
 msgid "Refresh the list"
 msgstr ""
 
-#: src/fe-gtk/chanlist.c:739
+#: src/fe-gtk/chanlist.c:766
 msgid "Save the list"
 msgstr ""
 
-#: src/fe-gtk/chanlist.c:741 src/fe-gtk/menu.c:650
+#: src/fe-gtk/chanlist.c:768 src/fe-gtk/menu.c:650
 msgid "Join Channel"
-msgstr ""
+msgstr "ጣቢያ አትጫን"
 
-#: src/fe-gtk/dccgui.c:89
+#: src/fe-gtk/dccgui.c:85
 #, c-format
 msgid "Send file to %s"
 msgstr ""
 
-#: src/fe-gtk/dccgui.c:264
+#: src/fe-gtk/dccgui.c:260
 #, c-format
 msgid ""
 "      File: %s\n"
@@ -2194,77 +2128,77 @@ msgid ""
 "Start Time: %s   Max CPS: %d\n"
 msgstr ""
 
-#: src/fe-gtk/dccgui.c:374 src/fe-gtk/dccgui.c:378 src/fe-gtk/dccgui.c:558
-#: src/fe-gtk/dccgui.c:689 src/fe-gtk/notifygui.c:164
+#: src/fe-gtk/dccgui.c:391 src/fe-gtk/dccgui.c:395 src/fe-gtk/dccgui.c:575
+#: src/fe-gtk/dccgui.c:706 src/fe-gtk/notifygui.c:164
 msgid "Status"
 msgstr "ሁኔታ"
 
-#: src/fe-gtk/dccgui.c:374 src/fe-gtk/dccgui.c:378 src/fe-gtk/dccgui.c:558
+#: src/fe-gtk/dccgui.c:391 src/fe-gtk/dccgui.c:395 src/fe-gtk/dccgui.c:575
 #: src/fe-gtk/plugingui.c:146
 msgid "File"
 msgstr "ፋይል"
 
-#: src/fe-gtk/dccgui.c:374 src/fe-gtk/dccgui.c:378 src/fe-gtk/dccgui.c:558
+#: src/fe-gtk/dccgui.c:391 src/fe-gtk/dccgui.c:395 src/fe-gtk/dccgui.c:575
 msgid "ETA"
 msgstr "ETA"
 
-#: src/fe-gtk/dccgui.c:375
+#: src/fe-gtk/dccgui.c:392
 msgid "MIME Type"
 msgstr "የmime ዓይነት"
 
-#: src/fe-gtk/dccgui.c:389
+#: src/fe-gtk/dccgui.c:406
 msgid "X-Chat: File Receive List"
 msgstr ""
 
-#: src/fe-gtk/dccgui.c:417 src/fe-gtk/dccgui.c:591 src/fe-gtk/dccgui.c:716
+#: src/fe-gtk/dccgui.c:434 src/fe-gtk/dccgui.c:608 src/fe-gtk/dccgui.c:733
 msgid "Abort"
-msgstr ""
+msgstr "ውድቅ"
 
-#: src/fe-gtk/dccgui.c:419 src/fe-gtk/dccgui.c:717
+#: src/fe-gtk/dccgui.c:436 src/fe-gtk/dccgui.c:734
 msgid "Accept"
 msgstr ""
 
-#: src/fe-gtk/dccgui.c:421
+#: src/fe-gtk/dccgui.c:438
 msgid "Resume"
-msgstr ""
+msgstr "ቀጥል"
 
-#: src/fe-gtk/dccgui.c:423 src/fe-gtk/dccgui.c:592
+#: src/fe-gtk/dccgui.c:440 src/fe-gtk/dccgui.c:609
 msgid "Info"
 msgstr "_መረጃ"
 
-#: src/fe-gtk/dccgui.c:425
+#: src/fe-gtk/dccgui.c:442
 msgid "Open"
 msgstr "ክፈት"
 
-#: src/fe-gtk/dccgui.c:558
+#: src/fe-gtk/dccgui.c:575
 msgid "Ack"
 msgstr "Ack"
 
-#: src/fe-gtk/dccgui.c:558
+#: src/fe-gtk/dccgui.c:575
 msgid "To"
 msgstr "ወደ"
 
-#: src/fe-gtk/dccgui.c:569
+#: src/fe-gtk/dccgui.c:586
 msgid "X-Chat: File Send List"
 msgstr ""
 
-#: src/fe-gtk/dccgui.c:689
+#: src/fe-gtk/dccgui.c:706
 msgid "To/From"
 msgstr "ወደ/ከ"
 
-#: src/fe-gtk/dccgui.c:689
+#: src/fe-gtk/dccgui.c:706
 msgid "Recv"
 msgstr ""
 
-#: src/fe-gtk/dccgui.c:689
+#: src/fe-gtk/dccgui.c:706
 msgid "Sent"
-msgstr ""
+msgstr "ተልኳል"
 
-#: src/fe-gtk/dccgui.c:689
+#: src/fe-gtk/dccgui.c:706
 msgid "StartTime"
 msgstr ""
 
-#: src/fe-gtk/dccgui.c:700
+#: src/fe-gtk/dccgui.c:717
 msgid "X-Chat: DCC Chat List"
 msgstr ""
 
@@ -2286,11 +2220,11 @@ msgstr "ትእዛዝ"
 
 #: src/fe-gtk/editlist.c:327
 msgid "Move Up"
-msgstr ""
+msgstr "ወደላይ አንቀሳቅስ"
 
 #: src/fe-gtk/editlist.c:331
 msgid "Move Dn"
-msgstr ""
+msgstr "ወደታች አንቀሳቅስ"
 
 #: src/fe-gtk/editlist.c:339 src/fe-gtk/ignoregui.c:451
 msgid "Cancel"
@@ -2304,9 +2238,9 @@ msgstr "አስቀምጥ"
 msgid "Add New"
 msgstr "አዲስ ጨምር"
 
-#: src/fe-gtk/editlist.c:355 src/fe-gtk/fkeys.c:700
+#: src/fe-gtk/editlist.c:355 src/fe-gtk/fkeys.c:698
 msgid "Delete"
-msgstr "መሰረዣ"
+msgstr "አጥፉ"
 
 #: src/fe-gtk/editlist.c:363 src/fe-gtk/ignoregui.c:449
 msgid "Sort"
@@ -2328,15 +2262,7 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/fe-gtk/fe-gtk.c:194
-#, c-format
-msgid ""
-"Failed to open font:\n"
-"\n"
-"%s"
-msgstr ""
-
-#: src/fe-gtk/fe-gtk.c:523
+#: src/fe-gtk/fe-gtk.c:570
 msgid "Search buffer is empty.\n"
 msgstr ""
 
@@ -2422,71 +2348,71 @@ msgstr ""
 msgid "There was an error loading key bindings configuration"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:394 src/fe-gtk/fkeys.c:673 src/fe-gtk/fkeys.c:679
-#: src/fe-gtk/fkeys.c:684 src/fe-gtk/maingui.c:681 src/fe-gtk/maingui.c:702
-#: src/fe-gtk/maingui.c:749 src/fe-gtk/maingui.c:2030
+#: src/fe-gtk/fkeys.c:392 src/fe-gtk/fkeys.c:671 src/fe-gtk/fkeys.c:677
+#: src/fe-gtk/fkeys.c:682 src/fe-gtk/maingui.c:606 src/fe-gtk/maingui.c:627
+#: src/fe-gtk/maingui.c:674 src/fe-gtk/maingui.c:2106
 msgid "<none>"
 msgstr "<ምንም>"
 
-#: src/fe-gtk/fkeys.c:637
+#: src/fe-gtk/fkeys.c:635
 msgid "Mod"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:637 src/fe-gtk/fkeys.c:733
+#: src/fe-gtk/fkeys.c:635 src/fe-gtk/fkeys.c:731
 msgid "Key"
 msgstr "ቁልፍ"
 
-#: src/fe-gtk/fkeys.c:637
+#: src/fe-gtk/fkeys.c:635
 msgid "Action"
-msgstr "ትግባር ኦች"
+msgstr "ትግባር"
 
-#: src/fe-gtk/fkeys.c:648
+#: src/fe-gtk/fkeys.c:646
 msgid "X-Chat: Edit Key Bindings"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:695
+#: src/fe-gtk/fkeys.c:693
 msgid "Add new"
 msgstr "አዲስ ጨምር"
 
-#: src/fe-gtk/fkeys.c:726
+#: src/fe-gtk/fkeys.c:724
 msgid "Shift"
 msgstr "Shift"
 
-#: src/fe-gtk/fkeys.c:728
+#: src/fe-gtk/fkeys.c:726
 msgid "Alt"
 msgstr "Alt"
 
-#: src/fe-gtk/fkeys.c:730
+#: src/fe-gtk/fkeys.c:728
 msgid "Ctrl"
 msgstr "Ctrl"
 
-#: src/fe-gtk/fkeys.c:737
+#: src/fe-gtk/fkeys.c:735
 msgid "Data 1"
 msgstr "ዳታ 1"
 
-#: src/fe-gtk/fkeys.c:740
+#: src/fe-gtk/fkeys.c:738
 msgid "Data 2"
 msgstr "ዳታ 2"
 
-#: src/fe-gtk/fkeys.c:783
+#: src/fe-gtk/fkeys.c:781
 msgid "Error opening keys config file\n"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:954
+#: src/fe-gtk/fkeys.c:952
 #, c-format
 msgid ""
 "Unknown keyname %s in key bindings config file\n"
 "Load aborted, please fix ~/.xchat/keybindings.conf\n"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:992
+#: src/fe-gtk/fkeys.c:990
 #, c-format
 msgid ""
 "Unknown action %s in key bindings config file\n"
 "Load aborted, Please fix ~/.xchat/keybindings\n"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:1013
+#: src/fe-gtk/fkeys.c:1011
 #, c-format
 msgid ""
 "Expecting Data line (beginning Dx{:|!}) but got:\n"
@@ -2540,7 +2466,7 @@ msgid "CTCP"
 msgstr ""
 
 #: src/fe-gtk/ignoregui.c:342 src/fe-gtk/ignoregui.c:388
-#: src/fe-gtk/maingui.c:1169
+#: src/fe-gtk/maingui.c:1094
 msgid "Private"
 msgstr ""
 
@@ -2596,101 +2522,101 @@ msgstr ""
 msgid "OK"
 msgstr "እሺ"
 
-#: src/fe-gtk/ignoregui.c:445 src/fe-gtk/menu.c:1147
+#: src/fe-gtk/ignoregui.c:445 src/fe-gtk/menu.c:1146
 msgid "New"
 msgstr "አዲስ"
 
-#: src/fe-gtk/maingui.c:402
+#: src/fe-gtk/maingui.c:326
 #, c-format
 msgid "Topic for %s is: %s"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:406
+#: src/fe-gtk/maingui.c:330
 msgid "No topic is set"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:882
+#: src/fe-gtk/maingui.c:807
 msgid "Some file transfers still active, quit xchat?"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:918
+#: src/fe-gtk/maingui.c:843
 msgid "No other tabs open, quit xchat?"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1039 src/fe-gtk/maingui.c:1145
+#: src/fe-gtk/maingui.c:964 src/fe-gtk/maingui.c:1070
 msgid "User limit must be a number!\n"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1165
+#: src/fe-gtk/maingui.c:1090
 msgid "Topic Protection"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1166
+#: src/fe-gtk/maingui.c:1091
 msgid "No outside messages"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1167
+#: src/fe-gtk/maingui.c:1092
 msgid "Secret"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1168
+#: src/fe-gtk/maingui.c:1093
 msgid "Invite Only"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1170
+#: src/fe-gtk/maingui.c:1095
 msgid "Moderated"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1171
+#: src/fe-gtk/maingui.c:1096
 msgid "Ban List"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1173
+#: src/fe-gtk/maingui.c:1098
 msgid "Keyword"
 msgstr "ቁልፍ ቃላት"
 
-#: src/fe-gtk/maingui.c:1181
+#: src/fe-gtk/maingui.c:1106
 msgid "User Limit"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1193
+#: src/fe-gtk/maingui.c:1118
 msgid "Close this tab/window"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1197
+#: src/fe-gtk/maingui.c:1121
 msgid "Attach/Detach this tab"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1273
+#: src/fe-gtk/maingui.c:1197
 msgid "Show/Hide userlist"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1567
+#: src/fe-gtk/maingui.c:1629
 msgid "Insert color code"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1587
+#: src/fe-gtk/maingui.c:1649
 #, c-format
 msgid "(%s) Channel settings"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1597
+#: src/fe-gtk/maingui.c:1659
 msgid "Beep on message"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1599
+#: src/fe-gtk/maingui.c:1661
 msgid "Hide join/parts"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1601
+#: src/fe-gtk/maingui.c:1663
 msgid "Color paste"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1624
+#: src/fe-gtk/maingui.c:1708
 msgid "Enter new nickname:"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1695
+#: src/fe-gtk/maingui.c:1776
 msgid "Channel Options"
 msgstr ""
 
@@ -2716,12 +2642,12 @@ msgstr "የውነት ስም፦ %s"
 #: src/fe-gtk/menu.c:449
 #, c-format
 msgid "Server: %s"
-msgstr ""
+msgstr "ሰርቨር፦ %s"
 
 #: src/fe-gtk/menu.c:453
 #, c-format
 msgid "Last Msg: %s"
-msgstr ""
+msgstr "የመጨረሻ መልዕክት፦ %s"
 
 #. sep
 #: src/fe-gtk/menu.c:527
@@ -2730,11 +2656,11 @@ msgstr "ሜኑባር"
 
 #: src/fe-gtk/menu.c:528
 msgid "Topic Bar"
-msgstr ""
+msgstr "ጉዳዩባር"
 
 #: src/fe-gtk/menu.c:529
 msgid "User List"
-msgstr ""
+msgstr "የተጠቃሚ ዝርዝር"
 
 #: src/fe-gtk/menu.c:654
 msgid "Part Channel"
@@ -2744,16 +2670,16 @@ msgstr ""
 msgid "Cycle Channel"
 msgstr ""
 
-#: src/fe-gtk/menu.c:679
+#: src/fe-gtk/menu.c:678
 msgid "X-Chat: User menu"
-msgstr ""
+msgstr "X-Chat፦ የተጠቃሚ ሜኑ"
 
 #. sep
-#: src/fe-gtk/menu.c:688
+#: src/fe-gtk/menu.c:687
 msgid "Edit This Menu..."
-msgstr ""
+msgstr "ይህ ሜኑ ያስተካክሉ..."
 
-#: src/fe-gtk/menu.c:790
+#: src/fe-gtk/menu.c:789
 msgid ""
 "*WARNING*\n"
 "Auto accepting DCC to your home directory\n"
@@ -2761,11 +2687,11 @@ msgid ""
 "Someone could send you a .bash_profile"
 msgstr ""
 
-#: src/fe-gtk/menu.c:912
+#: src/fe-gtk/menu.c:911
 msgid "Settings saved."
 msgstr ""
 
-#: src/fe-gtk/menu.c:949
+#: src/fe-gtk/menu.c:948
 msgid ""
 "User Commands - Special codes:\n"
 "\n"
@@ -2786,7 +2712,7 @@ msgid ""
 "&2 would be \"john hello\"."
 msgstr ""
 
-#: src/fe-gtk/menu.c:964
+#: src/fe-gtk/menu.c:963
 msgid ""
 "Userlist Buttons - Special codes:\n"
 "\n"
@@ -2799,7 +2725,7 @@ msgid ""
 "%t  =  time/date\n"
 msgstr ""
 
-#: src/fe-gtk/menu.c:973
+#: src/fe-gtk/menu.c:972
 msgid ""
 "Dialog Buttons - Special codes:\n"
 "\n"
@@ -2812,7 +2738,7 @@ msgid ""
 "%t  =  time/date\n"
 msgstr ""
 
-#: src/fe-gtk/menu.c:982
+#: src/fe-gtk/menu.c:981
 msgid ""
 "CTCP Replies - Special codes:\n"
 "\n"
@@ -2827,7 +2753,7 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/fe-gtk/menu.c:992
+#: src/fe-gtk/menu.c:991
 #, c-format
 msgid ""
 "URL Handlers - Special codes:\n"
@@ -2839,265 +2765,273 @@ msgid ""
 "shell instead of X-Chat"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1001
+#: src/fe-gtk/menu.c:1000
 msgid "X-Chat: User Defined Commands"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1008
+#: src/fe-gtk/menu.c:1007
 msgid "X-Chat: Userlist Popup menu"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1015
+#: src/fe-gtk/menu.c:1014
 msgid "X-Chat: Replace"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1022
+#: src/fe-gtk/menu.c:1021
 msgid "X-Chat: URL Handlers"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1041
+#: src/fe-gtk/menu.c:1040
 msgid "X-Chat: Userlist buttons"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1048
+#: src/fe-gtk/menu.c:1047
 msgid "X-Chat: Dialog buttons"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1055
+#: src/fe-gtk/menu.c:1054
 msgid "X-Chat: CTCP Replies"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1143
+#: src/fe-gtk/menu.c:1142
 msgid "_X-Chat"
-msgstr ""
+msgstr "_X-Chat"
 
-#: src/fe-gtk/menu.c:1144
+#: src/fe-gtk/menu.c:1143
 msgid "Server List..."
-msgstr ""
+msgstr "የሰርቨር ዝርዝር..."
+
+#: src/fe-gtk/menu.c:1147
+msgid "Server Tab..."
+msgstr "የሰርቨር መክፈቻ..."
 
 #: src/fe-gtk/menu.c:1148
-msgid "Server Tab..."
-msgstr ""
+msgid "Channel Tab..."
+msgstr "የጣቢያ መክፈቻ..."
 
 #: src/fe-gtk/menu.c:1149
-msgid "Channel Tab..."
-msgstr ""
+msgid "Server Window..."
+msgstr "የሰርቨር መስኮት..."
 
 #: src/fe-gtk/menu.c:1150
-msgid "Server Window..."
-msgstr ""
-
-#: src/fe-gtk/menu.c:1151
 msgid "Channel Window..."
-msgstr ""
+msgstr "የጣቢያ መስኮት..."
 
-#: src/fe-gtk/menu.c:1156 src/fe-gtk/menu.c:1158
+#: src/fe-gtk/menu.c:1155
+msgid "Load plugin..."
+msgstr "የተጨማሪው ፕሮግራምን ጫን..."
+
+#: src/fe-gtk/menu.c:1157
 msgid "Load Plugin..."
-msgstr ""
+msgstr "የተጨማሪው ፕሮግራምን ጫን..."
 
-#: src/fe-gtk/menu.c:1162
+#: src/fe-gtk/menu.c:1161
 msgid "New Shell Tab..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1168
+#: src/fe-gtk/menu.c:1167
 msgid "Detach Tab"
-msgstr ""
+msgstr "መክፈቻን አለያይ"
 
-#: src/fe-gtk/menu.c:1169
+#: src/fe-gtk/menu.c:1168
 msgid "Close Tab"
-msgstr "የዶሴ ምክፈቻ ዝጋ"
+msgstr "መክፈቻን ዝጋ"
 
-#: src/fe-gtk/menu.c:1171
+#: src/fe-gtk/menu.c:1170
 msgid "Quit"
 msgstr "ውጣ"
 
 #. 17
-#: src/fe-gtk/menu.c:1173
+#: src/fe-gtk/menu.c:1172
 msgid "_IRC"
 msgstr "_IRC"
 
-#: src/fe-gtk/menu.c:1174
+#: src/fe-gtk/menu.c:1173
 msgid "Invisible"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1175
+#: src/fe-gtk/menu.c:1174
 msgid "Receive Wallops"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1176
+#: src/fe-gtk/menu.c:1175
 msgid "Receive Server Notices"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1178
+#: src/fe-gtk/menu.c:1177
 msgid "Marked Away"
 msgstr ""
 
 #. 24
-#: src/fe-gtk/menu.c:1180
+#: src/fe-gtk/menu.c:1179
 msgid "Auto Rejoin when Kicked"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1181
+#: src/fe-gtk/menu.c:1180
 msgid "Auto Reconnect to Server"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1182
+#: src/fe-gtk/menu.c:1181
 msgid "Never-give-up ReConnect"
 msgstr ""
 
 #. 28
-#: src/fe-gtk/menu.c:1184
+#: src/fe-gtk/menu.c:1183
 msgid "Auto Open Dialog Windows"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1185
+#: src/fe-gtk/menu.c:1184
 msgid "Auto Accept Direct Chat"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1186
+#: src/fe-gtk/menu.c:1185
 msgid "Auto Accept Files"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1188
+#: src/fe-gtk/menu.c:1187
 msgid "_Server"
-msgstr ""
+msgstr "_ሰርቨር"
 
 #. 32
-#: src/fe-gtk/menu.c:1190
+#: src/fe-gtk/menu.c:1189
 msgid "S_ettings"
 msgstr "_ምርጫዎች"
 
 #. 33
-#: src/fe-gtk/menu.c:1191
+#: src/fe-gtk/menu.c:1190
 msgid "Preferences..."
 msgstr "ምርጫዎች..."
 
-#: src/fe-gtk/menu.c:1193
+#: src/fe-gtk/menu.c:1192
 msgid "Lists"
 msgstr "ዝርዝሮች"
 
-#: src/fe-gtk/menu.c:1194
+#: src/fe-gtk/menu.c:1193
 msgid "User Commands..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1195
+#: src/fe-gtk/menu.c:1194
 msgid "CTCP Replies..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1196
+#: src/fe-gtk/menu.c:1195
 msgid "Userlist Buttons..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1197
+#: src/fe-gtk/menu.c:1196
 msgid "Userlist Popup..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1198
+#: src/fe-gtk/menu.c:1197
 msgid "Dialog Buttons..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1199
+#: src/fe-gtk/menu.c:1198
 msgid "Replace Popup..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1200
+#: src/fe-gtk/menu.c:1199
 msgid "URL Handlers..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1201
+#: src/fe-gtk/menu.c:1200
 msgid "Event Texts..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1202
+#: src/fe-gtk/menu.c:1201
 msgid "Key Bindings..."
 msgstr ""
 
 #. 56
-#: src/fe-gtk/menu.c:1207
+#: src/fe-gtk/menu.c:1206
 msgid "Reload Settings"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1209
+#: src/fe-gtk/menu.c:1208
 msgid "Save Settings now"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1210
+#: src/fe-gtk/menu.c:1209
 msgid "Save Settings on exit"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1213
+#: src/fe-gtk/menu.c:1212
 msgid "_Window"
 msgstr "_መስኮት"
 
-#: src/fe-gtk/menu.c:1214
+#: src/fe-gtk/menu.c:1213
 msgid "Channel List..."
-msgstr ""
+msgstr "የጣቢያ ዝርዝር..."
+
+#: src/fe-gtk/menu.c:1214
+msgid "File Send..."
+msgstr "ፋይልን ላክ..."
 
 #: src/fe-gtk/menu.c:1215
-msgid "File Send..."
-msgstr ""
+msgid "File Receive..."
+msgstr "ፋይልን ተቀበል..."
 
 #: src/fe-gtk/menu.c:1216
-msgid "File Receive..."
-msgstr ""
-
-#: src/fe-gtk/menu.c:1217
 msgid "Direct Chat..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1218
+#: src/fe-gtk/menu.c:1217
 msgid "Raw Log..."
 msgstr ""
 
 #. 51
-#: src/fe-gtk/menu.c:1219
+#: src/fe-gtk/menu.c:1218
 msgid "URL Grabber..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1220
+#: src/fe-gtk/menu.c:1219
 msgid "Notify List..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1221
+#: src/fe-gtk/menu.c:1220
 msgid "Ignore List..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1222
+#: src/fe-gtk/menu.c:1221
 msgid "Ban List..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1223
+#: src/fe-gtk/menu.c:1222
 msgid "Character Chart..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1224
+#: src/fe-gtk/menu.c:1223
 msgid "Plugin List..."
 msgstr "የተጨማሪው ፕሮግራም ዝርዝር..."
 
-#: src/fe-gtk/menu.c:1226
+#: src/fe-gtk/menu.c:1225
 msgid "C_lear Text"
 msgstr "ጽሑፉ _ሰርዝ"
 
-#: src/fe-gtk/menu.c:1227
+#: src/fe-gtk/menu.c:1226
 msgid "Search Text..."
 msgstr "ጽሑፉን አስስ..."
 
-#: src/fe-gtk/menu.c:1228
+#: src/fe-gtk/menu.c:1227
 msgid "Save Text..."
 msgstr "ጽሑፉን አስቀምት..."
 
-#: src/fe-gtk/menu.c:1230
+#: src/fe-gtk/menu.c:1229
 msgid "_Help"
 msgstr "_መረጃ"
 
 #. 62
+#: src/fe-gtk/menu.c:1230
+msgid "X-Chat Homepage..."
+msgstr "የX-Chat ማነሻ ገጽ..."
+
 #: src/fe-gtk/menu.c:1231
-msgid "Contents"
+msgid "Online Docs..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1232
-msgid "About"
-msgstr ""
+#: src/fe-gtk/menu.c:1233
+msgid "About X-Chat..."
+msgstr "ስለ X-Chat..."
 
 #: src/fe-gtk/notifygui.c:94
 msgid "Offline"
@@ -3109,7 +3043,7 @@ msgstr "በፍጹም"
 
 #: src/fe-gtk/notifygui.c:116
 msgid "Online"
-msgstr ""
+msgstr "ኦንላይን"
 
 #: src/fe-gtk/notifygui.c:157
 msgid "Enter nickname to add:"
@@ -3121,7 +3055,7 @@ msgstr "ተጠቃሚ"
 
 #: src/fe-gtk/notifygui.c:164
 msgid "Server"
-msgstr ""
+msgstr "ሰርቨር"
 
 #: src/fe-gtk/notifygui.c:164
 msgid "Last Seen"
@@ -3153,7 +3087,7 @@ msgstr "መግለጫ"
 
 #: src/fe-gtk/plugingui.c:162
 msgid "X-Chat Plugins"
-msgstr ""
+msgstr "የX-Chat ተጨማሪ ፕሮግራሞች"
 
 #: src/fe-gtk/plugingui.c:176
 msgid "_Load..."
@@ -3161,7 +3095,7 @@ msgstr "_ጫን..."
 
 #: src/fe-gtk/plugingui.c:180
 msgid "_UnLoad"
-msgstr ""
+msgstr "_አትጫን"
 
 #: src/fe-gtk/rawlog.c:78
 msgid "Save rawlog"
@@ -3186,7 +3120,7 @@ msgstr ""
 
 #: src/fe-gtk/search.c:91
 msgid "X-Chat: Search"
-msgstr ""
+msgstr "X-Chat፦ ፈልግ"
 
 #: src/fe-gtk/search.c:100
 msgid "Find:"
@@ -3207,7 +3141,7 @@ msgstr "ዝጋ"
 #: src/fe-gtk/servlistgui.c:158
 #, c-format
 msgid "Settings for %s"
-msgstr ""
+msgstr "የ%s ምርጫዎች"
 
 #: src/fe-gtk/servlistgui.c:199 src/fe-gtk/servlistgui.c:272
 msgid "New Network"
@@ -3225,17 +3159,17 @@ msgstr "_አስወግድ \"%s\""
 
 #: src/fe-gtk/servlistgui.c:411
 msgid "_Add new server"
-msgstr ""
+msgstr "አዲስ ሰርቨርን _ጨምር"
 
 #: src/fe-gtk/servlistgui.c:437
 #, c-format
 msgid "Move \"%s\" _down"
-msgstr ""
+msgstr "\"%s\"ን ወደ_ታች አንቀሳቅስ"
 
 #: src/fe-gtk/servlistgui.c:444
 #, c-format
 msgid "Move \"%s\" _up"
-msgstr ""
+msgstr "\"%s\"ን ወደ_ላይ አንቀሳቅስ"
 
 #: src/fe-gtk/servlistgui.c:455
 msgid "_Add new network"
@@ -3259,15 +3193,15 @@ msgstr "የውነት ስም፦"
 
 #: src/fe-gtk/servlistgui.c:865
 msgid "C_onnect"
-msgstr ""
+msgstr "_አገናኝ"
 
 #: src/fe-gtk/servlistgui.c:873
 msgid "Connect in a _new tab"
-msgstr ""
+msgstr "በአዲስ መክፈቻ _አገናኝ"
 
 #: src/fe-gtk/servlistgui.c:924
 msgid "Servers"
-msgstr ""
+msgstr "ሰርቨሮች"
 
 #: src/fe-gtk/servlistgui.c:961
 msgid "Character Set:"
@@ -3279,11 +3213,11 @@ msgstr "ቅጽል ስምች፦"
 
 #: src/fe-gtk/servlistgui.c:1006
 msgid "Server Password:"
-msgstr ""
+msgstr "የሰርቨር ሚስጢራዊ ቃል፦"
 
 #: src/fe-gtk/servlistgui.c:1008
 msgid "Join Channels:"
-msgstr ""
+msgstr "ጣቢያዎች አትጫን፦"
 
 #: src/fe-gtk/servlistgui.c:1010
 msgid "Channels to join, separated by commas, but not spaces!"
@@ -3291,7 +3225,7 @@ msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1011
 msgid "Connect Command:"
-msgstr ""
+msgstr "አገናኝ ትዕዛዝ"
 
 #: src/fe-gtk/servlistgui.c:1013
 msgid ""
@@ -3350,62 +3284,70 @@ msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1150
 msgid "X-Chat: Server List"
-msgstr ""
+msgstr "X-Chat፦ የሰርቨር ዝርዝር"
 
-#: src/fe-gtk/setup.c:79
+#: src/fe-gtk/setup.c:77
 msgid "Font:"
 msgstr "የፊደል ቅርጽ፦"
 
-#: src/fe-gtk/setup.c:80
+#: src/fe-gtk/setup.c:78
 msgid "Background image:"
 msgstr "የመደቡ ምስል፦"
 
-#: src/fe-gtk/setup.c:81
+#: src/fe-gtk/setup.c:79
 msgid "Time stamp format:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:82
+#: src/fe-gtk/setup.c:80
 msgid "See strftime manpage for details."
 msgstr ""
 
-#: src/fe-gtk/setup.c:83
+#: src/fe-gtk/setup.c:81
 msgid "Time stamp text"
 msgstr ""
 
-#: src/fe-gtk/setup.c:84
+#: src/fe-gtk/setup.c:82
 msgid "Transparent background"
-msgstr ""
+msgstr "የሚያሳይ መደብ"
 
-#: src/fe-gtk/setup.c:85
+#: src/fe-gtk/setup.c:83
 msgid "Indent nicks"
 msgstr ""
 
-#: src/fe-gtk/setup.c:86
+#: src/fe-gtk/setup.c:84
 msgid "Tint transparency"
 msgstr ""
 
-#: src/fe-gtk/setup.c:87
+#: src/fe-gtk/setup.c:85
 msgid "Colored nicks"
 msgstr ""
 
-#: src/fe-gtk/setup.c:88
+#: src/fe-gtk/setup.c:86
 msgid "Strip mIRC color"
 msgstr ""
 
-#: src/fe-gtk/setup.c:89
+#: src/fe-gtk/setup.c:87
 msgid "Scrollback lines:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:90
+#: src/fe-gtk/setup.c:88
 msgid "Tint red:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:91
+#: src/fe-gtk/setup.c:89
 msgid "Tint green:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:92
+#: src/fe-gtk/setup.c:90
 msgid "Tint blue:"
+msgstr ""
+
+#: src/fe-gtk/setup.c:96
+msgid "Automatic nick completion"
+msgstr ""
+
+#: src/fe-gtk/setup.c:97
+msgid "Use the Text box font"
 msgstr ""
 
 #: src/fe-gtk/setup.c:98
@@ -3414,469 +3356,449 @@ msgid "Interpret %nnn as an ASCII value"
 msgstr ""
 
 #: src/fe-gtk/setup.c:99
-msgid "Automatic nick completion"
-msgstr ""
-
-#: src/fe-gtk/setup.c:100
-msgid "Interpret %C, %B as Color, Bold etc"
-msgstr ""
-
-#: src/fe-gtk/setup.c:101
-msgid "Use the Text box font"
-msgstr ""
-
-#: src/fe-gtk/setup.c:102
 msgid "Nick completion suffix:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:108
+#: src/fe-gtk/setup.c:105
 msgid "Off"
-msgstr ""
+msgstr "አጥፋ"
 
-#: src/fe-gtk/setup.c:109
+#: src/fe-gtk/setup.c:106
 msgid "Graph"
 msgstr ""
 
-#: src/fe-gtk/setup.c:110
+#: src/fe-gtk/setup.c:107
 msgid "Info text"
 msgstr ""
 
-#: src/fe-gtk/setup.c:111
+#: src/fe-gtk/setup.c:108
 msgid "Both"
 msgstr "ሁለትም"
 
-#: src/fe-gtk/setup.c:117
+#: src/fe-gtk/setup.c:114
 msgid "A-Z, Ops first"
 msgstr ""
 
-#: src/fe-gtk/setup.c:118
+#: src/fe-gtk/setup.c:115
 msgid "A-Z"
 msgstr "A-Z"
 
-#: src/fe-gtk/setup.c:119
+#: src/fe-gtk/setup.c:116
 msgid "Z-A, Ops last"
 msgstr ""
 
-#: src/fe-gtk/setup.c:120
+#: src/fe-gtk/setup.c:117
 msgid "Z-A"
 msgstr "Z-A"
 
-#: src/fe-gtk/setup.c:121
+#: src/fe-gtk/setup.c:118
 msgid "Unsorted"
 msgstr ""
 
-#: src/fe-gtk/setup.c:127
-msgid "Lag meter:"
-msgstr ""
-
-#: src/fe-gtk/setup.c:128
-msgid "Throttle meter:"
-msgstr ""
-
-#: src/fe-gtk/setup.c:129
-msgid "Userlist sorted by:"
-msgstr ""
-
-#: src/fe-gtk/setup.c:130
-msgid "Double-click command:"
-msgstr ""
-
-#: src/fe-gtk/setup.c:131
+#: src/fe-gtk/setup.c:124
 msgid "Show hostnames in userlist"
 msgstr ""
 
-#: src/fe-gtk/setup.c:132
+#: src/fe-gtk/setup.c:125
 msgid "Userlist buttons enabled"
 msgstr ""
 
-#: src/fe-gtk/setup.c:138
+#: src/fe-gtk/setup.c:126
+msgid "Double-click command:"
+msgstr ""
+
+#: src/fe-gtk/setup.c:127
+msgid "Userlist sorted by:"
+msgstr ""
+
+#: src/fe-gtk/setup.c:128
+msgid "Lag meter:"
+msgstr ""
+
+#: src/fe-gtk/setup.c:129
+msgid "Throttle meter:"
+msgstr ""
+
+#: src/fe-gtk/setup.c:135
 msgid "Windows"
 msgstr "መስኮቶች"
 
-#: src/fe-gtk/setup.c:139 src/fe-gtk/setup.c:754
+#: src/fe-gtk/setup.c:136 src/fe-gtk/setup.c:744
 msgid "Tabs"
 msgstr "መክፈቻዎች"
 
-#: src/fe-gtk/setup.c:145
+#: src/fe-gtk/setup.c:142
 msgid "Bottom"
 msgstr "ወደ ታች"
 
-#: src/fe-gtk/setup.c:146
+#: src/fe-gtk/setup.c:143
 msgid "Top"
 msgstr "ወደ ላይ"
 
 #. N_("Left"),
 #. N_("Right"),
-#: src/fe-gtk/setup.c:149
+#: src/fe-gtk/setup.c:146
 msgid "Hidden"
 msgstr "የተደበቀ"
+
+#: src/fe-gtk/setup.c:152
+msgid "Open channels in:"
+msgstr ""
+
+#: src/fe-gtk/setup.c:153
+msgid "Open dialogs in:"
+msgstr ""
+
+#: src/fe-gtk/setup.c:154
+msgid "Open utilities in:"
+msgstr ""
+
+#: src/fe-gtk/setup.c:154
+msgid "Open DCC, Ignore, Notify etc, in tabs or windows?"
+msgstr ""
 
 #: src/fe-gtk/setup.c:155
 msgid "Show tabs at:"
 msgstr ""
 
 #: src/fe-gtk/setup.c:156
-msgid "Open channels in:"
-msgstr ""
-
-#: src/fe-gtk/setup.c:157
-msgid "Open dialogs in:"
-msgstr ""
-
-#: src/fe-gtk/setup.c:158
-msgid "Open utilities in:"
-msgstr ""
-
-#: src/fe-gtk/setup.c:158
-msgid "Open DCC, Ignore, Notify etc, in tabs or windows?"
-msgstr ""
-
-#: src/fe-gtk/setup.c:159
-msgid "Shorten tabs to:"
-msgstr ""
-
-#: src/fe-gtk/setup.c:159
-msgid "letters."
-msgstr ""
-
-#: src/fe-gtk/setup.c:160
 msgid "Open tab for server messages"
 msgstr ""
 
-#: src/fe-gtk/setup.c:161
+#: src/fe-gtk/setup.c:157
 msgid "Only highlight tabs on channel messages"
 msgstr ""
 
-#: src/fe-gtk/setup.c:162
+#: src/fe-gtk/setup.c:158
 msgid "Open tab for server notices"
 msgstr ""
 
-#: src/fe-gtk/setup.c:163
+#: src/fe-gtk/setup.c:159
 msgid "Pop new tabs to front"
 msgstr ""
 
-#: src/fe-gtk/setup.c:169
+#: src/fe-gtk/setup.c:165
 msgid "Download files to:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:170
+#: src/fe-gtk/setup.c:166
 msgid "Move completed files to:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:171
+#: src/fe-gtk/setup.c:167
 msgid "DCC IP address:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:172
+#: src/fe-gtk/setup.c:168
 msgid "Claim you are at this address when offering files."
 msgstr ""
 
-#: src/fe-gtk/setup.c:173
+#: src/fe-gtk/setup.c:169
 msgid "First DCC send port:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:174
+#: src/fe-gtk/setup.c:170
 msgid "Last DCC send port:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:175
+#: src/fe-gtk/setup.c:171
 msgid "(Leave ports at zero for full range)."
 msgstr ""
 
-#: src/fe-gtk/setup.c:176
+#: src/fe-gtk/setup.c:172
 msgid "Auto open DCC send list"
 msgstr ""
 
-#: src/fe-gtk/setup.c:177
+#: src/fe-gtk/setup.c:173
 msgid "Convert spaces to underscore"
 msgstr ""
 
-#: src/fe-gtk/setup.c:178
+#: src/fe-gtk/setup.c:174
 msgid "In filenames, before sending"
 msgstr ""
 
-#: src/fe-gtk/setup.c:179
+#: src/fe-gtk/setup.c:175
 msgid "Auto open DCC chat list"
 msgstr ""
 
-#: src/fe-gtk/setup.c:180
+#: src/fe-gtk/setup.c:176
 msgid "Save nickname in filenames"
 msgstr ""
 
-#: src/fe-gtk/setup.c:181
+#: src/fe-gtk/setup.c:177
 msgid "Auto open DCC receive list"
 msgstr ""
 
-#: src/fe-gtk/setup.c:182
+#: src/fe-gtk/setup.c:178
 msgid "Get my IP from IRC server"
 msgstr ""
 
-#: src/fe-gtk/setup.c:183
+#: src/fe-gtk/setup.c:179
 msgid ""
 "/WHOIS yourself to find your real address. Use this if you have a 192.168.*."
 "* address!"
 msgstr ""
 
-#: src/fe-gtk/setup.c:184
+#: src/fe-gtk/setup.c:180
 msgid "Max. send CPS:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:185 src/fe-gtk/setup.c:187
+#: src/fe-gtk/setup.c:181 src/fe-gtk/setup.c:183
 msgid "Max. speed for one transfer"
 msgstr ""
 
-#: src/fe-gtk/setup.c:186
+#: src/fe-gtk/setup.c:182
 msgid "Max. receive CPS:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:188
+#: src/fe-gtk/setup.c:184
 msgid "Max. global send CPS:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:189 src/fe-gtk/setup.c:191
+#: src/fe-gtk/setup.c:185 src/fe-gtk/setup.c:187
 msgid "Max. speed for all traffic"
 msgstr ""
 
-#: src/fe-gtk/setup.c:190
+#: src/fe-gtk/setup.c:186
 msgid "Max. global receive CPS:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:192
+#: src/fe-gtk/setup.c:188
 msgid "(Leave at zero for full speed file transfers)."
 msgstr ""
 
-#: src/fe-gtk/setup.c:198
+#: src/fe-gtk/setup.c:194
 msgid "Default quit message:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:199
+#: src/fe-gtk/setup.c:195
 msgid "Default part message:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:200
+#: src/fe-gtk/setup.c:196
 msgid "Default away message:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:202
+#: src/fe-gtk/setup.c:198
 msgid "(Can be a text file relative to ~/.xchat2/)."
 msgstr ""
 
-#: src/fe-gtk/setup.c:204
-msgid "(Can be a text file relative to config\\)."
+#: src/fe-gtk/setup.c:200
+msgid "(Can be a text file relative to conf\\)."
 msgstr ""
 
-#: src/fe-gtk/setup.c:206
+#: src/fe-gtk/setup.c:202
 msgid "Extra words to highlight on:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:207
+#: src/fe-gtk/setup.c:203
 msgid "(Separate multiple words with commas)."
 msgstr ""
 
-#: src/fe-gtk/setup.c:208
+#: src/fe-gtk/setup.c:204
 msgid "Show away once"
 msgstr ""
 
-#: src/fe-gtk/setup.c:208
+#: src/fe-gtk/setup.c:204
 msgid "Show identical away messages only once"
 msgstr ""
 
-#: src/fe-gtk/setup.c:209
+#: src/fe-gtk/setup.c:205
 msgid "Beep on private messages"
 msgstr ""
 
-#: src/fe-gtk/setup.c:210
+#: src/fe-gtk/setup.c:206
 msgid "Automatically unmark away"
 msgstr ""
 
-#: src/fe-gtk/setup.c:210
+#: src/fe-gtk/setup.c:206
 msgid "Unmark yourself as away before sending messages"
 msgstr ""
 
-#: src/fe-gtk/setup.c:211
+#: src/fe-gtk/setup.c:207
 msgid "Beep on channel messages"
 msgstr ""
 
-#: src/fe-gtk/setup.c:212
+#: src/fe-gtk/setup.c:208
 msgid "Announce away messages"
 msgstr ""
 
-#: src/fe-gtk/setup.c:212
+#: src/fe-gtk/setup.c:208
 msgid "Announce your away messages to all channels"
 msgstr ""
 
-#: src/fe-gtk/setup.c:213
+#: src/fe-gtk/setup.c:209
 msgid "Display MODEs in raw form"
 msgstr ""
 
-#: src/fe-gtk/setup.c:214
+#: src/fe-gtk/setup.c:210
 msgid "Auto reconnect delay:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:220
+#: src/fe-gtk/setup.c:216
 msgid "Log filename mask:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:221
+#: src/fe-gtk/setup.c:217
 #, c-format
 msgid "(%s=Server %c=Channel %n=Network)."
 msgstr ""
 
-#: src/fe-gtk/setup.c:222
+#: src/fe-gtk/setup.c:218
 msgid "Log timestamp format:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:223
+#: src/fe-gtk/setup.c:219
 msgid "(See strftime manpage for details)."
 msgstr ""
 
-#: src/fe-gtk/setup.c:224
+#: src/fe-gtk/setup.c:220
 msgid "Enable logging of conversations"
 msgstr ""
 
-#: src/fe-gtk/setup.c:225
+#: src/fe-gtk/setup.c:221
 msgid "Insert timestamps in logs"
 msgstr ""
 
-#: src/fe-gtk/setup.c:231
+#: src/fe-gtk/setup.c:227
 msgid "(Disabled)"
-msgstr ""
+msgstr "(የተበላሸ)"
 
-#: src/fe-gtk/setup.c:232
+#: src/fe-gtk/setup.c:228
 msgid "Wingate"
 msgstr ""
 
-#: src/fe-gtk/setup.c:233
+#: src/fe-gtk/setup.c:229
 msgid "Socks4"
 msgstr ""
 
-#: src/fe-gtk/setup.c:234
+#: src/fe-gtk/setup.c:230
 msgid "Socks5"
 msgstr ""
 
-#: src/fe-gtk/setup.c:235
+#: src/fe-gtk/setup.c:231
 msgid "HTTP"
 msgstr "HTTP"
 
-#: src/fe-gtk/setup.c:241
+#: src/fe-gtk/setup.c:237
 msgid "Address to bind to:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:242
+#: src/fe-gtk/setup.c:238
 msgid "(Only useful for computers with multiple addresses)."
 msgstr ""
 
-#: src/fe-gtk/setup.c:243
+#: src/fe-gtk/setup.c:239
 msgid "Proxy server:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:244
+#: src/fe-gtk/setup.c:240
 msgid "Proxy port:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:245
+#: src/fe-gtk/setup.c:241
 msgid "Proxy type:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:431
-msgid "Select an Image File"
+#: src/fe-gtk/setup.c:422
+msgid "Choose File"
 msgstr ""
 
-#: src/fe-gtk/setup.c:458
+#: src/fe-gtk/setup.c:449
 msgid "Select font"
-msgstr "የፊደል ቁርጹ ምረጥ"
+msgstr "የፊደል ቁርጹ ምረጡ"
 
-#: src/fe-gtk/setup.c:515
+#: src/fe-gtk/setup.c:505
 msgid "Browse..."
 msgstr "ቃኝ..."
 
-#: src/fe-gtk/setup.c:635
+#: src/fe-gtk/setup.c:625
 msgid "Select color"
-msgstr "ቀላሙ ምረጥ"
+msgstr "ቀላሙ ምረጡ"
 
-#: src/fe-gtk/setup.c:699
+#: src/fe-gtk/setup.c:689
 msgid "mIRC colors:"
-msgstr "የmIRC ቀለማት"
+msgstr "የmIRC ቀለሞች፦"
 
-#: src/fe-gtk/setup.c:707
+#: src/fe-gtk/setup.c:697
 msgid "Foreground:"
 msgstr "ፊት ለፊት፦"
 
-#: src/fe-gtk/setup.c:708
+#: src/fe-gtk/setup.c:698
 msgid "Background:"
 msgstr "መደቡ፦"
 
-#: src/fe-gtk/setup.c:710
+#: src/fe-gtk/setup.c:700
 msgid "Mark fore:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:711
+#: src/fe-gtk/setup.c:701
 msgid "Mark back:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:713
+#: src/fe-gtk/setup.c:703
 msgid "New Data:"
 msgstr "አዲስ ዳታ፦"
 
-#: src/fe-gtk/setup.c:714
+#: src/fe-gtk/setup.c:704
 msgid "New Message:"
 msgstr "አዲስ መልእክት፦"
 
-#: src/fe-gtk/setup.c:715
+#: src/fe-gtk/setup.c:705
 msgid "Highlight:"
 msgstr "አቅልም፦"
 
-#: src/fe-gtk/setup.c:750
+#: src/fe-gtk/setup.c:740
 msgid "Interface"
 msgstr ""
 
-#: src/fe-gtk/setup.c:751
+#: src/fe-gtk/setup.c:741
 msgid "Text box"
 msgstr ""
 
-#: src/fe-gtk/setup.c:752
+#: src/fe-gtk/setup.c:742
 msgid "Input box"
 msgstr ""
 
-#: src/fe-gtk/setup.c:753
+#: src/fe-gtk/setup.c:743
 msgid "User list"
 msgstr ""
 
-#: src/fe-gtk/setup.c:755
+#: src/fe-gtk/setup.c:745
 msgid "Colors"
 msgstr "ቀለማት"
 
-#: src/fe-gtk/setup.c:757
+#: src/fe-gtk/setup.c:747
 msgid "Chatting"
 msgstr ""
 
-#: src/fe-gtk/setup.c:758
+#: src/fe-gtk/setup.c:748
 msgid "General"
 msgstr "አጠቃላይ"
 
-#: src/fe-gtk/setup.c:759
+#: src/fe-gtk/setup.c:749
 msgid "Logging"
 msgstr ""
 
-#: src/fe-gtk/setup.c:761
+#: src/fe-gtk/setup.c:751
 msgid "Network"
 msgstr "መረብ"
 
-#: src/fe-gtk/setup.c:762
+#: src/fe-gtk/setup.c:752
 msgid "Network setup"
-msgstr ""
+msgstr "የመረብ ቅንጅት"
 
-#: src/fe-gtk/setup.c:763
+#: src/fe-gtk/setup.c:753
 msgid "File transfers"
 msgstr ""
 
-#: src/fe-gtk/setup.c:868
+#: src/fe-gtk/setup.c:858
 msgid "Categories"
 msgstr "ምድብ"
 
-#: src/fe-gtk/setup.c:973
+#: src/fe-gtk/setup.c:955
 msgid "X-Chat: Preferences"
-msgstr ""
+msgstr "X-Chat፦ ምርጫዎች"
 
 #: src/fe-gtk/textgui.c:177
 msgid "There was an error parsing the string"
@@ -3909,7 +3831,7 @@ msgstr ""
 
 #: src/fe-gtk/textgui.c:422
 msgid "Sound file: "
-msgstr ""
+msgstr "የድምፅ ፋይል፦"
 
 #: src/fe-gtk/textgui.c:456
 msgid "Save As"
@@ -3917,11 +3839,11 @@ msgstr "በሌላ ስም አስቀምጥ"
 
 #: src/fe-gtk/textgui.c:461
 msgid "Load From"
-msgstr ""
+msgstr "ከ...ጫን"
 
 #: src/fe-gtk/textgui.c:466
 msgid "Test All"
-msgstr ""
+msgstr "ሁሉም ሙከራ"
 
 #: src/fe-gtk/urlgrab.c:70
 msgid "Select a file to save to"
@@ -3930,9 +3852,3 @@ msgstr ""
 #: src/fe-gtk/urlgrab.c:118
 msgid "X-Chat: URL Grabber"
 msgstr ""
-
-#~ msgid "X-Chat Homepage..."
-#~ msgstr "የX-Chat ማነሻ ገጽ..."
-
-#~ msgid "About X-Chat..."
-#~ msgstr "ስለ X-Chat..."
