@@ -160,27 +160,6 @@ if test "$gtkfe" != yes; then
 fi
 
 dnl *********************************************************************
-dnl ** XFT **************************************************************
-dnl *********************************************************************
-
-if test "$xft" = yes; then
-	AC_PATH_PROG(pkgconfigpath, pkg-config)
-	if $pkgconfigpath xft --exists; then
-		GUI_CFLAGS="$GUI_CFLAGS `$pkgconfigpath xft --cflags`"
-		LIBS="$LIBS `$pkgconfigpath xft --libs`"
-	else
-		xft=no
-		oldCPPFLAGS=$CPPFLAGS
-		CPPFLAGS="$CPPFLAGS $GTK_CFLAGS"
-		AC_CHECK_HEADERS(X11/Xft/Xft.h, xft=yes)
-		CPPFLAGS=$oldCPPFLAGS
-	fi
-	if test "$xft" = yes; then
-		AC_DEFINE(USE_XFT)
-	fi
-fi
-
-dnl *********************************************************************
 dnl ** GNOME ************************************************************
 dnl *********************************************************************
 
@@ -203,6 +182,27 @@ gnome=no
 #		AC_MSG_RESULT(ok)
 #	fi
 #fi
+
+dnl *********************************************************************
+dnl ** XFT **************************************************************
+dnl *********************************************************************
+
+if test "$xft" = yes; then
+	AC_PATH_PROG(pkgconfigpath, pkg-config)
+	if $pkgconfigpath xft --exists; then
+		GUI_CFLAGS="$GUI_CFLAGS `$pkgconfigpath xft --cflags`"
+		GUI_LIBS="$GUI_LIBS `$pkgconfigpath xft --libs`"
+	else
+		xft=no
+		oldCPPFLAGS=$CPPFLAGS
+		CPPFLAGS="$CPPFLAGS $GTK_CFLAGS"
+		AC_CHECK_HEADERS(X11/Xft/Xft.h, xft=yes)
+		CPPFLAGS=$oldCPPFLAGS
+	fi
+	if test "$xft" = yes; then
+		AC_DEFINE(USE_XFT)
+	fi
+fi
 
 dnl *********************************************************************
 dnl ** XLIB *************************************************************
@@ -493,11 +493,11 @@ if test "$shm" = yes; then
 		fi
 	fi
 
+	LIBS=$oldl
 	if test "$shm" = yes; then
-		LIBS="$LIBS -lX11 -lXext"
+		GUI_LIBS="$GUI_LIBS -lX11 -lXext"
 		AC_DEFINE(USE_SHM)
 	else
-		LIBS=$oldl
 		CPPFLAGS=$oldc
 	fi
 fi

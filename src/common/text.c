@@ -1631,7 +1631,7 @@ text_emit (int index, session *sess, char *a, char *b, char *c, char *d)
 	word[3] = c;
 	word[4] = d;
 	for (i = 5; i < PDIWORDS; i++)
-		word[i] = "\000";
+		word[i] = NULL;
 
 	if (plugin_emit_print (sess, word))
 		return;
@@ -1650,16 +1650,6 @@ text_emit_by_name (char *name, session *sess, char *a, char *b, char *c, char *d
 	i = pevent_find (name, &i);
 	if (i >= 0)
 	{
-		/* incase new args are added and plugins don't provide them */
-		if (!a && te[i].num_args > 0)
-			a = "";
-		if (!b && te[i].num_args > 1)
-			b = "";
-		if (!c && te[i].num_args > 2)
-			c = "";
-		if (!d && te[i].num_args > 3)
-			d = "";
-
 		text_emit (i, sess, a, b, c, d);
 		return 1;
 	}

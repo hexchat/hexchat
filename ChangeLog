@@ -6,7 +6,7 @@
  2.0.5
 ----------------------------------------------------------------------
 
- - Updated translations (ca, fi, lt, nl, sk, sv).
+ - Updated translations (ca, fi, lt, nl, sk, sv, zh_CN).
  - Fixed detection of Python 2.3 in configure script (anonymous).
  - DCC Send file-selection dialog now supports multi-select.
  - Reset away status after auto-reconnect from a ping timeout.
@@ -32,6 +32,10 @@
  - xtext: tinting now shades towards your background color, making it
    usable with white backgrounds. Tints can also use XShm for extra
    speed with --enable-shm at ./configure time (experimental).
+ - Perl: IRC::add_print_handler callbacks now get parameters in
+   $_[1...x], with $_[0] left for compatibility (Lian wan Situ).
+ - Perl: added command_with_channel command (Alexander Werth)
+   [801711].
  - Smaller bug fixes: [798655].
 
 

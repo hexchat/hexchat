@@ -1171,7 +1171,7 @@ int
 xchat_emit_print (xchat_plugin *ph, char *event_name, ...)
 {
 	va_list args;
-	char *argv[4];
+	char *argv[4] = {NULL, NULL, NULL, NULL};
 	int i = 0;
 
 	memset (&argv, 0, sizeof (argv));

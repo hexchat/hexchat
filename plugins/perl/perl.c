@@ -202,13 +202,52 @@ static int
 perl_print_cb (char *word[], void *perl_callback)
 {
 	char *arg;
-	int ret;
+	int count = 1, retVal = 0;
+
+	dSP;
+	ENTER;
+	SAVETMPS;
 
 	arg = g_strdup_printf ("%s %s %s %s", word[1], word[2], word[3], word[4]);
-	ret = execute_perl (perl_callback, arg);
-	g_free (arg);
 
-	return ret;
+	PUSHMARK( SP );
+	XPUSHs( sv_2mortal( newSVpv( arg, strlen(arg) ) ) );
+
+	for( count = 1;
+	(count < 32) && (word[count] != NULL) && (word[count][0] != 0);
+	count++ )
+	{
+		XPUSHs( sv_2mortal( newSVpv( word[count], 0 ) ) );
+	}
+	PUTBACK;
+
+	count = call_pv( (char*)perl_callback, G_EVAL | G_KEEPERR );
+
+	SPAGAIN;
+
+	if (SvTRUE (ERRSV))
+	{
+		xchat_printf( ph, "Error in print callback %s",
+		SvPV_nolen(ERRSV) );
+		POPs;
+		retVal = XCHAT_EAT_NONE;
+	} else
+	{
+		if (count != 1)
+		{
+			xchat_print (ph, "Print handler should only return 1 value.");
+			retVal = XCHAT_EAT_XCHAT;
+		} else
+		{
+			retVal = POPi;
+		}
+	}
+
+	g_free(arg);
+	PUTBACK;
+	FREETMPS;
+	LEAVE;
+	return retVal;
 }
 
 /* custom IRC perl functions for scripting */
@@ -832,6 +871,41 @@ static XS (XS_IRC_command_with_server)
 	XSRETURN_NO;
 }
 
+/* command_with_channel( command, channel, [server] ) */
+static XS (XS_IRC_command_with_channel)
+{
+	int junk;
+	dXSARGS;
+	void *ctx, *old_ctx;
+	char *cmd = SvPV (ST (0), junk);
+	char *server = NULL;
+
+	if (items > 2)
+	{
+		server = SvPV (ST (2), junk);
+		if (!server[0])
+			server = NULL;
+	}
+
+	old_ctx = xchat_get_context (ph);
+	ctx = xchat_find_context (ph, server, SvPV (ST (1), junk));
+	if (ctx)
+	{
+		xchat_set_context (ph, ctx);
+
+		if (cmd[0] == '/')
+			/* skip the forward slash */
+			xchat_command (ph, cmd + 1);
+		else
+			xchat_commandf (ph, "say %s", cmd);
+
+		xchat_set_context (ph, old_ctx);
+		XSRETURN_YES;
+	}
+
+	XSRETURN_NO;
+}
+
 /* MAG030600: BEGIN IRC::user_list_short */
 /*
 
@@ -930,6 +1004,7 @@ xs_init (pTHX)
 	newXS ("IRC::send_raw", XS_IRC_send_raw, "IRC");
 	newXS ("IRC::command", XS_IRC_command, "IRC");
 	newXS ("IRC::command_with_server", XS_IRC_command_with_server, "IRC");
+	newXS ("IRC::command_with_channel", XS_IRC_command_with_channel, "IRC");
 	newXS ("IRC::channel_list", XS_IRC_channel_list, "IRC");
 	newXS ("IRC::server_list", XS_IRC_server_list, "IRC");
 	newXS ("IRC::add_user_list", XS_IRC_add_user_list, "IRC");
