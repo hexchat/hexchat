@@ -28,7 +28,7 @@ AH_VERBATIM([USE_PLUGIN],[#undef USE_PLUGIN])
 AH_VERBATIM([USE_PANGO],[#undef USE_PANGO])
 AH_VERBATIM([USE_XFT],[#undef USE_XFT])
 AH_VERBATIM([USE_XLIB],[#undef USE_XLIB])
-AH_VERBATIM([USE_ZVT],[#undef USE_ZVT])
+#AH_VERBATIM([USE_ZVT],[#undef USE_ZVT])
 AH_VERBATIM([USING_FREEBSD],[#undef USING_FREEBSD])
 AH_VERBATIM([USING_LINUX],[#undef USING_LINUX])
 AH_VERBATIM([socklen_t],[#undef socklen_t])
@@ -94,9 +94,9 @@ AC_ARG_ENABLE(gnome,
 [  --disable-gnome         disable use of gnome],
         gnome=$enableval, gnome=yes)
 
-AC_ARG_ENABLE(zvt,
-[  --disable-zvt           disable zvt/shelltab feature],
-        zvt=$enableval, zvt=yes)
+#AC_ARG_ENABLE(zvt,
+#[  --disable-zvt           disable zvt/shelltab feature],
+#        zvt=$enableval, zvt=yes)
 
 AC_ARG_ENABLE(xlib,
 [  --disable-xlib          disable use of xlib (for non X11 systems)],

@@ -230,7 +230,9 @@ plugin_kill (char *name, int by_filename)
 	while (list)
 	{
 		pl = list->data;
-		if ((by_filename && strcasecmp (name, pl->filename) == 0) ||
+		/* static-plugins (plugin-timer.c) have a NULL filename */
+		if ((by_filename && pl->filename && strcasecmp (name, pl->filename) == 0) ||
+			 (by_filename && pl->filename && strcasecmp (name, file_part (pl->filename)) == 0) ||
 			(!by_filename && strcasecmp (name, pl->name) == 0))
 		{
 			/* statically linked plugins have a NULL filename */

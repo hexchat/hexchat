@@ -1010,7 +1010,6 @@ Optional Features:
   --disable-gtkfe         disable building gtk frontend
   --disable-textfe        disable building text frontend
   --disable-gnome         disable use of gnome
-  --disable-zvt           disable zvt/shelltab feature
   --disable-xlib          disable use of xlib (for non X11 systems)
   --disable-python        don't build the python plugin
   --disable-perl          don't build the perl plugin
@@ -4214,7 +4213,7 @@ test "x$enable_libtool_lock" != xno && enable_libtool_lock=yes
 case $host in
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 4217 "configure"' > conftest.$ac_ext
+  echo '#line 4216 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -4750,7 +4749,7 @@ chmod -w .
 save_CFLAGS="$CFLAGS"
 CFLAGS="$CFLAGS -o out/conftest2.$ac_objext"
 compiler_c_o=no
-if { (eval echo configure:4753: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>out/conftest.err; } && test -s out/conftest2.$ac_objext; then
+if { (eval echo configure:4752: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>out/conftest.err; } && test -s out/conftest2.$ac_objext; then
   # The compiler can only warn and ignore the option if not recognized
   # So say no if there are warnings
   if test -s out/conftest.err; then
@@ -6543,7 +6542,7 @@ else
     lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 6546 "configure"
+#line 6545 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -6641,7 +6640,7 @@ else
     lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 6644 "configure"
+#line 6643 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -11063,8 +11062,7 @@ _ACEOF
 
 
 
-
-
+#AH_VERBATIM([USE_ZVT],[#undef USE_ZVT])
 
 
 
@@ -11251,13 +11249,9 @@ else
   gnome=yes
 fi;
 
-# Check whether --enable-zvt or --disable-zvt was given.
-if test "${enable_zvt+set}" = set; then
-  enableval="$enable_zvt"
-  zvt=$enableval
-else
-  zvt=yes
-fi;
+#AC_ARG_ENABLE(zvt,
+#[  --disable-zvt           disable zvt/shelltab feature],
+#        zvt=$enableval, zvt=yes)
 
 # Check whether --enable-xlib or --disable-xlib was given.
 if test "${enable_xlib+set}" = set; then

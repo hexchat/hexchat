@@ -2283,6 +2283,8 @@ cmd_unload (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	case 0:
 			PrintText (sess, _("No such plugin found.\n"));
 			break;
+	case 1:
+			return TRUE;
 	case 2:
 			PrintText (sess, _("That plugin is refusing to unload.\n"));
 			break;
