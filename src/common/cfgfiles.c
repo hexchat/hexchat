@@ -19,9 +19,6 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <stdlib.h>
-#ifdef HAVE_STRINGS_H
-#include <strings.h>
-#endif
 #include <string.h>
 #include <stdio.h>
 #include <sys/types.h>

@@ -279,7 +279,7 @@ log_create_filename (char *buf, char *servname, char *channame, char *netname)
 			if (mbl == 1)
 			{
 #ifndef WIN32
-				*tmp = tolower (*tmp);
+				*tmp = rfc_tolower (*tmp);
 				if (*tmp == '/')
 #else
 				/* win32 can't handle filenames with the '|' character */

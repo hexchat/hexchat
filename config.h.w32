@@ -9,3 +9,8 @@
 #ifndef USE_IPV6
 #define socklen_t int
 #endif
+#if _INTEGRAL_MAX_BITS >= 64
+#define stat _stati64
+#define lseek _lseeki64
+#define fstat _fstati64
+#endif

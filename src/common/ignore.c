@@ -19,10 +19,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include "../../config.h"
-#ifdef HAVE_STRINGS_H
-#include <strings.h>
-#endif
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
