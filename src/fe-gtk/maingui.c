@@ -1283,6 +1283,11 @@ mg_dialog_button_cb (GtkWidget *wid, char *cmd)
 	auto_insert (buf, cmd, 0, 0, "", "", "", "", "", current_sess->channel);
 
 	handle_command (current_sess, buf, TRUE);
+
+	/* dirty trick to avoid auto-selection */
+	GTK_ENTRY (current_sess->gui->input_box)->editable = 0;
+	gtk_widget_grab_focus (current_sess->gui->input_box);
+	GTK_ENTRY (current_sess->gui->input_box)->editable = 1;
 }
 
 static void
