@@ -1354,6 +1354,8 @@ key_action_tab_comp (GtkWidget * wid, GdkEventKey * ent, char *d1, char *d2,
 				if (tab_nick_comp (sess, wid, 0) == -1)
 					return 1;
 			}
+
+			return 2;
 		}
 	}
 

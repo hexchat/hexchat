@@ -2885,12 +2885,18 @@ gtk_xtext_render_str (GtkXText * xtext, int y, textentry * ent,
 			xtext->backcolor = FALSE;
 	}
 
-	/* draw separator now so it doesn't appear to flicker */
-	gtk_xtext_draw_sep (xtext, y - xtext->font->ascent);
 	/* draw background to the right of the text */
-	if (!left_only && !xtext->skip_border_fills)
-		xtext_draw_bg (xtext, x, y - xtext->font->ascent,
-							(win_width + MARGIN) - x, xtext->fontsize);
+	if (!left_only)
+	{
+		/* draw separator now so it doesn't appear to flicker */
+		gtk_xtext_draw_sep (xtext, y - xtext->font->ascent);
+		if (!xtext->skip_border_fills && xtext->clip_x2 >= x)
+		{
+			xtext_draw_bg (xtext, x, y - xtext->font->ascent,
+								MIN (xtext->clip_x2, (win_width + MARGIN) - x),
+								xtext->fontsize);
+		}
+	}
 
 	xtext->dont_render2 = FALSE;
 

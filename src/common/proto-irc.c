@@ -168,7 +168,7 @@ static void
 irc_away_status (server *serv, char *channel)
 {
 	if (serv->have_whox)
-		tcp_sendf (serv, "WHO %s %%cnf\r\n", channel);
+		tcp_sendf (serv, "WHO %s %%ctnf,152\r\n", channel);
 	else
 		tcp_sendf (serv, "WHO %s\r\n", channel);
 }
@@ -509,18 +509,25 @@ process_numeric (session * sess, int n,
 	case 354:	/* undernet WHOX: used as a reply for irc_away_status */
 		{
 			unsigned int away = 0;
-			session *who_sess = find_channel (serv, word[4]);
+			session *who_sess;
 
-			if (*word[6] == 'G')
-				away = 1;
+			/* irc_away_status sends out a "152" */
+			if (!strcmp (word[4], "152"))
+			{
+				who_sess = find_channel (serv, word[5]);
 
-			/* :SanJose.CA.us.undernet.org 354 z1 #zed1 z1 H@ */
-			inbound_user_info (sess, word[4], 0, 0, 0, word[5], 0, away);
+				if (*word[7] == 'G')
+					away = 1;
 
-			/* try to show only user initiated whos */
-			if (!who_sess || !who_sess->doing_who)
-				EMIT_SIGNAL (XP_TE_SERVTEXT, serv->server_session, text, word[1],
-								 NULL, NULL, 0);
+				/* :SanJose.CA.us.undernet.org 354 z1 152 #zed1 z1 H@ */
+				inbound_user_info (sess, word[5], 0, 0, 0, word[6], 0, away);
+
+				/* try to show only user initiated whos */
+				if (!who_sess || !who_sess->doing_who)
+					EMIT_SIGNAL (XP_TE_SERVTEXT, serv->server_session, text,
+									 word[1], NULL, NULL, 0);
+			} else
+				goto def;
 		}
 		break;
 
