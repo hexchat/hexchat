@@ -38,6 +38,8 @@
 #define USE_XLIB
 #endif
 
+#undef USE_MMX
+
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
@@ -59,11 +61,7 @@
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #endif
 
-#if defined(WIN32) || defined(USE_XFT) || defined(USE_PANGO)
 #define charlen(str) g_utf8_skip[*(guchar *)(str)]
-#else
-#define charlen(str) mblen(str, MB_CUR_MAX)
-#endif
 
 #ifdef WIN32
 #include <windows.h>
@@ -131,10 +129,10 @@ static void gtk_xtext_adjustment_changed (GtkAdjustment * adj,
 static void gtk_xtext_render_ents (GtkXText * xtext, textentry *, textentry *);
 static void gtk_xtext_recalc_widths (xtext_buffer *buf, int);
 static void gtk_xtext_fix_indent (xtext_buffer *buf);
-static char *gtk_xtext_conv_color (unsigned char *text, int len, int *newlen, int fonttype);
+static char *gtk_xtext_conv_color (unsigned char *text, int len, int *newlen);
 static unsigned char *
 gtk_xtext_strip_color (unsigned char *text, int len, unsigned char *outbuf,
-							  int *newlen, int fonttype, int *mb_ret);
+							  int *newlen, int *mb_ret);
 static GtkType gtk_xtext_get_type (void);
 
 /* some utility functions first */
@@ -217,13 +215,23 @@ xtext_draw_bg (GtkXText *xtext, int x, int y, int width, int height)
 
 #endif
 
-/* ================================== */
-/* ========== XFT1 BACKEND ========== */
-/* ================================== */
+/* ========================================= */
+/* ========== XFT 1 and 2 BACKEND ========== */
+/* ========================================= */
 
 #ifdef USE_XFT
 
 #define backend_font_close(f) XftFontClose(GDK_DISPLAY(),f)
+
+static void
+backend_init (GtkXText *xtext)
+{
+	if (xtext->xftdraw == NULL)
+		xtext->xftdraw = XftDrawCreate (GDK_DISPLAY (),
+			GDK_WINDOW_XWINDOW (xtext->draw_buf),
+			GDK_VISUAL_XVISUAL (gdk_drawable_get_visual (xtext->draw_buf)),
+			GDK_COLORMAP_XCOLORMAP (gdk_drawable_get_colormap (xtext->draw_buf)));
+}
 
 static void
 backend_deinit (GtkXText *xtext)
@@ -382,9 +390,7 @@ backend_clear_clip (GtkXText *xtext)
 	gdk_gc_set_clip_rectangle (xtext->fgc, NULL);
 }
 
-#else
-
-#ifdef USE_PANGO
+#else	/* !USE_XFT */
 
 /* ======================================= */
 /* ============ PANGO BACKEND ============ */
@@ -393,7 +399,7 @@ backend_clear_clip (GtkXText *xtext)
 #define backend_font_close(f) pango_font_description_free(f->font)
 
 static void
-backend_create_layout (GtkXText *xtext)
+backend_init (GtkXText *xtext)
 {
 	if (xtext->layout == NULL)
 	{
@@ -403,9 +409,22 @@ backend_create_layout (GtkXText *xtext)
 }
 
 static void
+backend_deinit (GtkXText *xtext)
+{
+	if (xtext->layout)
+	{
+		g_object_unref (xtext->layout);
+		xtext->layout = NULL;
+	}
+}
+
+static void
 backend_font_open (GtkXText *xtext, char *name)
 {
-	PangoRectangle rect;
+/*	PangoRectangle rect;*/
+	PangoLanguage *lang;
+	PangoContext *context;
+	PangoFontMetrics *metrics;
 
 	xtext->font = &xtext->pango_font;
 
@@ -417,11 +436,19 @@ backend_font_open (GtkXText *xtext, char *name)
 		xtext->font = NULL;
 	else
 	{
-		backend_create_layout (xtext);
+		backend_init (xtext);
 		pango_layout_set_font_description (xtext->layout, xtext->font->font);
 
+		/* vte does it this way */
+		context = gtk_widget_get_pango_context (GTK_WIDGET (xtext));
+		lang = pango_context_get_language (context);
+		metrics = pango_context_get_metrics (context, xtext->font->font, lang);
+		xtext->font->ascent = pango_font_metrics_get_ascent (metrics) / PANGO_SCALE;
+		xtext->font->descent = pango_font_metrics_get_descent (metrics) / PANGO_SCALE;
+		pango_font_metrics_unref (metrics);
+
 		/* oooh, good kludge */
-		pango_layout_set_text (xtext->layout, "jy", 2);
+		/*pango_layout_set_text (xtext->layout, "jy", 2);
 		pango_layout_get_pixel_extents (xtext->layout, NULL, &rect);
 		xtext->font->ascent = rect.height - rect.y;
 		xtext->font->descent = rect.y;
@@ -429,17 +456,7 @@ backend_font_open (GtkXText *xtext, char *name)
 		{
 			xtext->font->ascent -= 2;
 			xtext->font->descent = 2;
-		}
-	}
-}
-
-static void
-backend_deinit (GtkXText *xtext)
-{
-	if (xtext->layout)
-	{
-		g_object_unref (xtext->layout);
-		xtext->layout = NULL;
+		}*/
 	}
 }
 
@@ -454,7 +471,7 @@ backend_get_text_width (GtkXText *xtext, char *str, int len, int is_mb)
 	if (*str == 0)
 		return 0;
 
-	backend_create_layout (xtext);
+	/*backend_init (xtext);*/
 	pango_layout_set_text (xtext->layout, str, len);
 	pango_layout_get_pixel_size (xtext->layout, &width, NULL);
 
@@ -487,7 +504,7 @@ backend_draw_text (GtkXText *xtext, int dofill, GdkGC *gc, int x, int y,
 	GdkGCValues val;
 	GdkColor col;
 
-	backend_create_layout (xtext);
+	/*backend_init (xtext);*/
 	pango_layout_set_text (xtext->layout, str, len);
 
 	y -= xtext->font->ascent;
@@ -531,150 +548,7 @@ backend_clear_clip (GtkXText *xtext)
 	gdk_gc_set_clip_rectangle (xtext->bgc, NULL);
 }
 
-#else
-
-/* ====================================== */
-/* ========== GDK/XLIB BACKEND ========== */
-/* ====================================== */
-
-#define backend_font_close(f) gdk_font_unref(f)
-#define backend_deinit(x)
-#define backend_set_clip(x,a)
-#define backend_clear_clip(x)
-#define GDK_BACKEND
-
-static void
-backend_font_open (GtkXText *xtext, char *name)
-{
-	GdkFont *font;
-
-	xtext->font = NULL;
-
-	font = gdk_font_load (name);
-	if (!font)
-		font = gdk_font_load ("fixed");
-	if (!font)
-		return;
-
-	switch (font->type)
-	{
-	case GDK_FONT_FONT:
-			xtext->fonttype = FONT_1BYTE;
-			break;
-
-	case GDK_FONT_FONTSET:
-			xtext->fonttype = FONT_SET;
-			break;
-	}
-
-	xtext->font = font;
-}
-
-static int
-backend_get_text_width (GtkXText *xtext, char *str, int len, int is_mb)
-{
-	if (xtext->fonttype == FONT_1BYTE || !is_mb)
-		return gtk_xtext_text_width_8bit (xtext, str, len);
-
-	return gdk_text_width (xtext->font, str, len);
-}
-
-static void
-backend_draw_text (GtkXText *xtext, int dofill, GdkGC *gc, int x, int y,
-						 char *str, int len, int str_width, int is_mb)
-{
-#ifdef USE_XLIB
-	XFontStruct *xfont;
-	GC xgc;
-	Drawable xdraw_buf;
-	Display *xdisplay;
-
-	xgc = GDK_GC_XGC (gc);
-	xdraw_buf = GDK_WINDOW_XWINDOW (xtext->draw_buf);
-	xdisplay = GDK_WINDOW_XDISPLAY (xtext->draw_buf);
-	xfont = GDK_FONT_XFONT (xtext->font);
-
-	switch (xtext->fonttype)
-	{
-	case FONT_1BYTE:
-		if (dofill)
-			XDrawImageString (xdisplay, xdraw_buf, xgc, x, y, str, len);
-		else
-			XDrawString (xdisplay, xdraw_buf, xgc, x, y, str, len);
-		if (xtext->bold)
-			XDrawString (xdisplay, xdraw_buf, xgc, x + 1, y, str, len);
-		break;
-
-	case FONT_SET:
-		if (dofill)
-			XmbDrawImageString (xdisplay, xdraw_buf,
-									  (XFontSet) xfont, xgc, x, y, str, len);
-		else
-			XmbDrawString (xdisplay, xdraw_buf,
-								(XFontSet) xfont, xgc, x, y, str, len);
-		if (xtext->bold)
-			XmbDrawString (xdisplay, xdraw_buf,
-								(XFontSet) xfont, xgc, x + 1, y, str, len);
-	}
-
-#else
-
-	/* don't have Xlib, don't have XFT, gdk version --- */
-	if (dofill)
-	{
-		GdkGCValues val;
-		GdkColor col;
-
-		gdk_gc_get_values (gc, &val);
-		col.pixel = val.background.pixel;
-		gdk_gc_set_foreground (gc, &col);
-		gdk_draw_rectangle (xtext->draw_buf, gc, 1, x, y - xtext->font->ascent,
-								  str_width, xtext->fontsize);
-		col.pixel = val.foreground.pixel;
-		gdk_gc_set_foreground (gc, &col);
-	}
-	gdk_draw_text (xtext->draw_buf, xtext->font, gc, x, y, str, len);
-	if (xtext->bold)
-		gdk_draw_text (xtext->draw_buf, xtext->font, gc, x + 1, y, str, len);
-#endif
-}
-
-inline static int
-backend_get_char_width (GtkXText *xtext, unsigned char *str, int *mbl_ret,
-								int is_mb)
-{
-	int mbl, width;
-
-	switch (xtext->fonttype)
-	{
-	case FONT_1BYTE:
-		width = xtext->fontwidth[(int)*str];
-		mbl = 1;
-		break;
-	default: /* FONT_SET: */
-		if (!is_mb)
-		{
-			width = xtext->fontwidth[(int)*str];
-			mbl = 1;
-		} else
-		{
-			mbl = charlen (str);
-			if (mbl == 1)
-				width = xtext->fontwidth[(int)*str];
-			else if (mbl > 0)
-				width = gdk_text_width (xtext->font, str, mbl);
-			else
-				width = 0;
-		}
-		break;
-	}
-
-	*mbl_ret = mbl;
-	return width;
-}
-
 #endif /* !USE_PANGO */
-#endif /* !USE_XFT */
 
 static void
 xtext_set_fg (GtkXText *xtext, GdkGC *gc, int index)
@@ -727,8 +601,7 @@ gtk_xtext_init (GtkXText * xtext)
 	xtext->font = NULL;
 #ifdef USE_XFT
 	xtext->xftdraw = NULL;
-#endif
-#ifdef USE_PANGO
+#else
 	xtext->layout = NULL;
 #endif
 	xtext->jump_out_offset = 0;
@@ -747,7 +620,7 @@ gtk_xtext_init (GtkXText * xtext)
 	xtext->tint_red = xtext->tint_green = xtext->tint_blue = TINT_VALUE;
 
 	xtext->adj = (GtkAdjustment *) gtk_adjustment_new (0, 0, 1, 1, 1, 1);
-	gtk_object_ref ((GtkObject *) xtext->adj);
+	g_object_ref (G_OBJECT (xtext->adj));
 	gtk_object_sink ((GtkObject *) xtext->adj);
 
 	g_signal_connect (G_OBJECT (xtext->adj), "value_changed",
@@ -903,8 +776,10 @@ gtk_xtext_destroy (GtkObject * object)
 
 	if (xtext->adj)
 	{
-		gtk_signal_disconnect_by_data (GTK_OBJECT (xtext->adj), xtext);
-		gtk_object_unref (GTK_OBJECT (xtext->adj));
+		g_signal_handlers_disconnect_matched (G_OBJECT (xtext->adj),
+					G_SIGNAL_MATCH_DATA, 0, 0, NULL, NULL, xtext);
+	/*	gtk_signal_disconnect_by_data (GTK_OBJECT (xtext->adj), xtext);*/
+		g_object_unref (G_OBJECT (xtext->adj));
 		xtext->adj = NULL;
 	}
 
@@ -1030,11 +905,6 @@ gtk_xtext_realize (GtkWidget * widget)
 	gdk_colormap_alloc_color (cmap, &col, TRUE, TRUE);
 	gdk_gc_set_foreground (xtext->thin_gc, &col);
 
-#ifdef GDK_BACKEND
-	if (xtext->fonttype != FONT_SET && xtext->font != NULL)
-		gdk_gc_set_font (xtext->fgc, xtext->font);
-#endif
-
 	xtext_set_fg (xtext, xtext->fgc, 18);
 	xtext_set_bg (xtext, xtext->fgc, 19);
 	xtext_set_fg (xtext, xtext->bgc, 19);
@@ -1059,12 +929,7 @@ gtk_xtext_realize (GtkWidget * widget)
 	/* draw directly to window */
 	xtext->draw_buf = widget->window;
 
-#ifdef USE_XFT
-	xtext->xftdraw = XftDrawCreate (GDK_DISPLAY (),
-			GDK_WINDOW_XWINDOW (xtext->draw_buf),
-			GDK_VISUAL_XVISUAL (gdk_drawable_get_visual (xtext->draw_buf)),
-			GDK_COLORMAP_XCOLORMAP (gdk_drawable_get_colormap (xtext->draw_buf)));
-#endif
+	backend_init (xtext);
 }
 
 static void
@@ -1760,7 +1625,7 @@ gtk_xtext_get_word (GtkXText * xtext, int x, int y, textentry ** ret_ent,
 	if (ret_len)
 		*ret_len = str - word;
 
-	return gtk_xtext_strip_color (word, len, xtext->scratch_buffer, NULL, xtext->fonttype, NULL);
+	return gtk_xtext_strip_color (word, len, xtext->scratch_buffer, NULL, NULL);
 }
 
 #ifdef MOTION_MONITOR
@@ -2156,11 +2021,9 @@ gtk_xtext_selection_get (GtkWidget * widget,
 	*pos = 0;
 
 	if (xtext->color_paste)
-		stripped = gtk_xtext_conv_color (txt, strlen (txt), &len,
-													xtext->fonttype);
+		stripped = gtk_xtext_conv_color (txt, strlen (txt), &len);
 	else
-		stripped = gtk_xtext_strip_color (txt, strlen (txt), NULL, &len,
-													 xtext->fonttype, NULL);
+		stripped = gtk_xtext_strip_color (txt, strlen (txt), NULL, &len, 0);
 	free (txt);
 
 	switch (info)
@@ -2288,7 +2151,7 @@ gtk_xtext_get_type (void)
 
 static unsigned char *
 gtk_xtext_strip_color (unsigned char *text, int len, unsigned char *outbuf,
-							  int *newlen, int fonttype, int *mb_ret)
+							  int *newlen, int *mb_ret)
 {
 	int nc = 0;
 	int i = 0;
@@ -2329,16 +2192,9 @@ gtk_xtext_strip_color (unsigned char *text, int len, unsigned char *outbuf,
 			case ATTR_UNDERLINE:
 				break;
 			default:
-#ifdef GDK_BACKEND
-				if (fonttype != FONT_SET)
-					goto single;
-#endif
 				mbl = charlen (text);
 				if (mbl == 1)
 				{
-#ifdef GDK_BACKEND
-single:
-#endif
 					new_str[i] = *text;
 					i++;
 					text++;
@@ -2377,7 +2233,7 @@ single:
 /* GeEkMaN: converts mIRC control codes to literal control codes */
 
 static char *
-gtk_xtext_conv_color (unsigned char *text, int len, int *newlen, int fonttype)
+gtk_xtext_conv_color (unsigned char *text, int len, int *newlen)
 {
 	int i, j = 2;
 	char cchar = 0;
@@ -2428,16 +2284,9 @@ gtk_xtext_conv_color (unsigned char *text, int len, int *newlen, int fonttype)
 		case ATTR_BEEP:
 			break;
 		default:
-#ifdef GDK_BACKEND
-			if (fonttype != FONT_SET)
-				goto single;
-#endif
 			mbl = charlen (text + i);
 			if (mbl == 1)
 			{
-#ifdef GDK_BACKEND
-single:
-#endif
 				new_str[j] = text[i];
 				j++;
 				i++;
@@ -2476,7 +2325,7 @@ gtk_xtext_text_width (GtkXText *xtext, unsigned char *text, int len,
 	int new_len, mb;
 
 	new_buf = gtk_xtext_strip_color (text, len, xtext->scratch_buffer,
-												&new_len, xtext->fonttype, &mb);
+												&new_len, &mb);
 
 	if (mb_ret)
 		*mb_ret = mb;
@@ -2529,7 +2378,9 @@ gtk_xtext_render_flush (GtkXText * xtext, int x, int y, unsigned char *str,
 
 	if (xtext->underline)
 	{
+#ifdef USE_XFT
 		GdkColor col;
+#endif
 
 #ifndef COLOR_HILIGHT
 dounder:
@@ -3063,7 +2914,8 @@ shade_pixmap_gdk (GtkXText * xtext, Pixmap p, int x, int y, int w, int h)
 
 	pp = gdk_pixmap_foreign_new (p);
 	cmap = gtk_widget_get_colormap (GTK_WIDGET (xtext));
-	gdk_window_get_geometry (pp, NULL, NULL, &width, &height, &depth);
+	gdk_drawable_get_size (pp, &width, &height);
+	depth = gdk_drawable_get_depth (pp);
 
 	if (width < x + w || height < y + h || x < 0 || y < 0)
 	{
@@ -3073,7 +2925,7 @@ shade_pixmap_gdk (GtkXText * xtext, Pixmap p, int x, int y, int w, int h)
 		gdk_gc_set_fill (tgc, GDK_TILED);
 		gdk_gc_set_ts_origin (tgc, -x, -y);
 		gdk_draw_rectangle (tmp, tgc, TRUE, 0, 0, w, h);
-		gdk_gc_destroy (tgc);
+		g_object_unref (tgc);
 
 		pixbuf = gdk_pixbuf_get_from_drawable (NULL, tmp, cmap,
 															0, 0, 0, 0, w, h);
@@ -3126,7 +2978,7 @@ shade_pixmap_gdk (GtkXText * xtext, Pixmap p, int x, int y, int w, int h)
 	{
 		gdk_pixbuf_render_pixmap_and_mask (pixbuf, &shaded_pixmap, NULL, 0);
 	}
-	gdk_pixbuf_unref (pixbuf);
+	g_object_unref (pixbuf);
 
 	return shaded_pixmap;
 }
@@ -3540,11 +3392,7 @@ gtk_xtext_set_font (GtkXText *xtext, char *name)
 	for (i = 0; i < sizeof(xtext->fontwidth)/sizeof(xtext->fontwidth[0]); i++)
 	{
 		c = i;
-#ifdef GDK_BACKEND
-		xtext->fontwidth[i] = gdk_text_width (xtext->font, &c, 1);
-#else
 		xtext->fontwidth[i] = backend_get_text_width (xtext, &c, 1, TRUE);
-#endif
 	}
 	xtext->space_width = xtext->fontwidth[' '];
 	xtext->fontsize = xtext->font->ascent + xtext->font->descent;
@@ -3561,14 +3409,7 @@ gtk_xtext_set_font (GtkXText *xtext, char *name)
 	gtk_xtext_fix_indent (xtext->buffer);
 
 	if (GTK_WIDGET_REALIZED (xtext))
-	{
-#ifdef GDK_BACKEND
-		if (xtext->fonttype != FONT_SET)
-			gdk_gc_set_font (xtext->fgc, xtext->font);
-#endif
-
 		gtk_xtext_recalc_widths (xtext->buffer, TRUE);
-	}
 
 	return TRUE;
 }
@@ -3644,7 +3485,7 @@ gtk_xtext_save (GtkXText * xtext, int fh)
 	while (ent)
 	{
 		buf = gtk_xtext_strip_color (ent->str, ent->str_len, NULL,
-											  &newlen, xtext->fonttype, NULL);
+											  &newlen, NULL);
 		write (fh, buf, newlen);
 		write (fh, "\n", 1);
 		free (buf);
@@ -4153,19 +3994,6 @@ gtk_xtext_append_indent (xtext_buffer *buf,
 	if (right_text[right_len-1] == '\n')
 		right_len--;
 
-#ifdef GDK_BACKEND
-	if (left_text)
-		left_text = g_locale_from_utf8 (left_text, left_len, 0, &left_len, 0);
-	right_text = g_locale_from_utf8 (right_text, right_len, 0, &right_len, 0);
-	if (!right_text)
-	{
-		const char *name = NULL;
-		g_get_charset (&name);
-		printf ("locale/utf-8 conversion failed (%s)\n", name);
-		return;
-	}
-#endif
-
 	ent = malloc (left_len + right_len + 2 + sizeof (textentry));
 	str = (unsigned char *) ent + sizeof (textentry);
 
@@ -4175,11 +4003,6 @@ gtk_xtext_append_indent (xtext_buffer *buf,
 	str[left_len + 1 + right_len] = 0;
 
 	left_width = gtk_xtext_text_width (buf->xtext, left_text, left_len, NULL);
-
-#ifdef GDK_BACKEND
-	g_free (left_text);
-	g_free (right_text);
-#endif
 
 	ent->left_len = left_len;
 	ent->str = str;
@@ -4225,10 +4048,6 @@ gtk_xtext_append (xtext_buffer *buf, unsigned char *text, int len)
 	if (len >= sizeof (buf->xtext->scratch_buffer))
 		len = sizeof (buf->xtext->scratch_buffer) - 1;
 
-#ifdef GDK_BACKEND
-	text = g_locale_from_utf8 (text, len, 0, &len, 0);
-#endif
-
 	ent = malloc (len + 1 + sizeof (textentry));
 	ent->str = (unsigned char *) ent + sizeof (textentry);
 	ent->str_len = len;
@@ -4237,10 +4056,6 @@ gtk_xtext_append (xtext_buffer *buf, unsigned char *text, int len)
 	ent->str[len] = 0;
 	ent->indent = 0;
 	ent->left_len = -1;
-
-#ifdef GDK_BACKEND
-	g_free (text);
-#endif
 
 	gtk_xtext_append_entry (buf, ent);
 }

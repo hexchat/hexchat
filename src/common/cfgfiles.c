@@ -40,11 +40,7 @@
 #ifdef WIN32
 #define DEF_FONT "monospace 10"
 #else
-#if defined (USE_XFT) || defined (USE_PANGO)
-#define DEF_FONT "Luxi Mono 12"
-#else
-#define DEF_FONT "-b&h-lucidatypewriter-medium-r-normal-*-*-120-*-*-m-*-*-*"
-#endif
+#define DEF_FONT "monospace 12"
 #endif
 
 void

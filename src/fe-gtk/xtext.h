@@ -13,10 +13,6 @@
 #define GTK_IS_XTEXT_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_XTEXT))
 #define GTK_XTEXT_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_XTEXT, GtkXTextClass))
 
-#define FONT_1BYTE 0
-#define FONT_2BYTE 1
-#define FONT_SET 2
-
 #define ATTR_BOLD '\002'
 #define ATTR_COLOR '\003'
 #define ATTR_BEEP '\007'
@@ -111,17 +107,15 @@ struct _GtkXText
 	int hilight_start;
 	int hilight_end;
 
+	guint16 fontwidth[128];	  /* each char's width, only the ASCII ones */
+
 #ifdef USE_XFT
 	XftColor color[20];
 	XftColor *xft_fg;
 	XftColor *xft_bg;				/* both point into color[20] */
-	guint16 fontwidth[128];	  /* each char's width, only the ASCII ones */
 	XftDraw *xftdraw;
 	XftFont *font;
-#endif
-
-#ifdef USE_PANGO
-	guint16 fontwidth[128];	  /* each char's width, only the ASCII ones */
+#else
 	struct
 	{
 		PangoFontDescription *font;
@@ -129,11 +123,6 @@ struct _GtkXText
 		int descent;
 	} *font, pango_font;
 	PangoLayout *layout;
-#endif
-
-#if !defined(USE_PANGO) && !defined(USE_XFT)
-	guint16 fontwidth[256];	  /* each char's width, only for FONT_1BYTE type */
-	GdkFont *font;
 #endif
 
 	int fonttype;				/* FONT_* (unused for xft) */
