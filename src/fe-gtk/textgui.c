@@ -55,7 +55,7 @@ static GtkWidget *pevent_dialog = NULL, *pevent_dialog_twid,
 
 /* this is only used in xtext.c for indented timestamping */
 int
-xtext_get_stamp_str (char *fmt, time_t tim, char **ret)
+xtext_get_stamp_str (time_t tim, char **ret)
 {
 	return get_stamp_str (prefs.stamp_format, tim, ret);
 }
