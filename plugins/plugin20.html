@@ -313,8 +313,13 @@ EXPORTS<br>
 <br>Leave out <i>xchat_plugin_deinit</i> if you don't intend to define that
 function. Then, to compile, type this at your command prompt:<br><br>
 <div class=bbox>
+<font color="#00FF00">MSVC</font>
 <br>&nbsp;cl -O1 -MD -G5 -DWIN32 -c plugin.c<br>
-<br>&nbsp;link /DLL /out:plugin.dll /SUBSYSTEM:WINDOWS plugin.obj /def:plugin.def<br><br>
+<br>&nbsp;link /DLL /out:plugin.dll /SUBSYSTEM:WINDOWS plugin.obj /def:plugin.def
+<br><br>
+<font color="#00FF00">GCC (MINGW)</font>
+<br>&nbsp;gcc -Os -DWIN32 -c plugin.c<br>
+<br>&nbsp;dllwrap --def plugin.def --dllname plugin.dll plugin.o<br><br>
 </div>
 <br>For a complete example, have a look at the source code of the <a href="http://xchat.org/win32/testing/xcdns-src.zip">DNS Plugin</a>, which also contains a Makefile.
 <br><br>
@@ -329,7 +334,6 @@ A simple way to perform basic GUI functions is to use the /GUI command.
 You can execute this command through the input-box, or by calling
 xchat_command(ph, "GUI .....");.
 </p>
-<p>
 <blockquote>
 	<table border=0 cellpadding=4>
 	<tr><td>GUI HIDE</td><td>Hide the main xchat window completely (this is used by the Systray plugin).</td></tr>
@@ -341,6 +345,7 @@ xchat_command(ph, "GUI .....");.
 where n is a number from 0 to 3.</td></tr>
 	</table>
 </blockquote>
+<p>
 Note, the FLASH, ICONIFY and COLOR args were added in xchat 2.0.8, they
 will not work with previous versions.
 </p><br><br>

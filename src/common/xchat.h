@@ -1,6 +1,7 @@
 #include "../../config.h"
 
 #include <glib/gslist.h>
+#include <glib/glist.h>
 #include <glib/gutils.h>
 #include <glib/giochannel.h>
 #include <glib/gstrfuncs.h>
@@ -196,7 +197,7 @@ struct xchatprefs
 	unsigned int userlistbuttons;
 	unsigned int showhostname_in_userlist;
 	unsigned int nickcompletion;
-	unsigned int old_nickcompletion;
+	unsigned int completion_amount;
 	unsigned int tabchannels;
 	unsigned int paned_userlist;
 	unsigned int autodccchat;

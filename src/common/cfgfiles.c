@@ -370,7 +370,7 @@ const struct prefs vars[] = {
 	{"away_timeout", P_OFFINT (away_timeout), TYPE_INT},
 
 	{"completion_auto", P_OFFINT (nickcompletion), TYPE_BOOL},
-	{"completion_old", P_OFFINT (old_nickcompletion), TYPE_BOOL},
+	{"completion_amount", P_OFFINT (completion_amount), TYPE_INT},
 	{"completion_suffix", P_OFFSET (nick_suffix), TYPE_STR},
 
 	{"dcc_auto_chat", P_OFFINT (autodccchat), TYPE_INT},

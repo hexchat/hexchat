@@ -326,7 +326,7 @@ userlist_dnd_drop (GtkTreeView *widget, GdkDragContext *context,
 						 guint info, guint ttime, gpointer userdata)
 {
 	struct User *user;
-	char *p, *data, *next;
+	char *p, *data, *next, *fname;
 	GtkTreePath *path;
 	GtkTreeModel *model;
 	GtkTreeIter iter;
@@ -347,12 +347,18 @@ userlist_dnd_drop (GtkTreeView *widget, GdkDragContext *context,
 		{
 			if (next)
 				*next = 0;
-			p += 5;
-#ifdef WIN32
-			if (strncmp (p, "///", 3) == 0)
-				p += 3;
-#endif
-			dcc_send (current_sess, user->nick, p, prefs.dcc_max_send_cps, 0);
+			fname = g_filename_from_uri (p, NULL, NULL);
+			if (fname)
+			{
+				/* dcc_send() expects utf-8 */
+				p = g_filename_to_utf8 (fname, -1, 0, 0, 0);
+				if (p)
+				{
+					dcc_send (current_sess, user->nick, p, prefs.dcc_max_send_cps, 0);
+					g_free (p);
+				}
+				g_free (fname);
+			}
 		}
 		if (!next)
 			break;

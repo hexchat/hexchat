@@ -427,3 +427,19 @@ userlist_flat_list (session *sess)
 	tree_foreach (sess->usertree_alpha, (tree_traverse_func *)flat_cb, &list);
 	return g_slist_reverse (list);
 }
+
+static int
+double_cb (struct User *user, GList **list)
+{
+	*list = g_list_prepend(*list, user);
+	return TRUE;
+}
+
+GList *
+userlist_double_list(session *sess)
+{
+	GList *list = NULL;
+
+	tree_foreach (sess->usertree_alpha, (tree_traverse_func *)double_cb, &list);
+	return list;
+}

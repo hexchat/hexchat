@@ -654,6 +654,22 @@ plugin_add_hook (xchat_plugin *pl, int type, int pri, const char *name,
 	return hook;
 }
 
+GList *
+plugin_command_list(GList *tmp_list)
+{
+	xchat_hook *hook;
+	GSList *list = hook_list;
+
+	while (list)
+	{
+		hook = list->data;
+		if (hook->type == HOOK_COMMAND)
+			tmp_list = g_list_prepend(tmp_list, hook->name);
+		list = list->next;
+	}
+	return tmp_list;
+}
+
 int
 plugin_show_help (session *sess, char *cmd)
 {

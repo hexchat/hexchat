@@ -10,7 +10,6 @@ struct User
 	char *realname;
 	char *servername;
 	time_t lasttalk;
-	int weight;
 	unsigned int access;	/* axs bit field */
 	char prefix[2]; /* @ + % */
 	unsigned int op:1;
@@ -38,6 +37,7 @@ int change_nick (struct session *sess, char *oldname, char *newname);
 void ul_update_entry (session *sess, char *name, char mode, char sign);
 void update_all_of (char *name);
 GSList *userlist_flat_list (session *sess);
+GList *userlist_double_list (session *sess);
 void userlist_rehash (session *sess);
 
 #endif
