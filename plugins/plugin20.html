@@ -12,6 +12,14 @@ background-color: #FFFBF0;
 background-color: #dddddd;
 color: #990066
 }
+.box {
+background-color: #ddddee;
+border: 1px solid #000;
+padding: 4px;
+text-align: left;
+margin-left: 32px;
+margin-right: 32px;
+}
 -->
 </style>
 </head>
@@ -20,7 +28,7 @@ color: #990066
 <h1>XChat 2.0 Plugin Interface</h1>
 
 <small>
-<font size="-12">plugin20.html revision 0.98</font>
+<font size="-12">plugin20.html revision 0.99</font>
 <br>Latest version of this document is available at: <a href="http://xchat.org/docs/plugin20.html">http://xchat.org/docs/plugin20.html</a></small>
 
 <h2>Information:</h2>
@@ -29,7 +37,8 @@ color: #990066
 <br><a href="#sample">Sample plugin</a>
 <br><a href="#word">What is word and word_eol?</a>
 <br><a href="#lists">Lists and fields</a>
-<br><a href="#win32">Plugins on Windows/Win32</a>
+<br><a href="#win32">Plugins on Windows (Win32)</a>
+<br><a href="#gui">Controlling the GUI</a>
 </blockquote>
 
 <h2>Functions:</h2>
@@ -57,10 +66,13 @@ color: #990066
 <br>
 <br><a href="#lists">xchat_list_get</a>
 <br><a href="#lists">xchat_list_free</a>
-<br><a href="#lists">xchat_list_fields</a>
+<br><a href="#lists">xchat_list_fields</a> (not documented yet)
 <br><a href="#lists">xchat_list_next</a>
 <br><a href="#lists">xchat_list_str</a>
 <br><a href="#lists">xchat_list_int</a>
+<br>
+<br><a href="#xchat_plugingui_add">xchat_plugingui_add</a> (not documented yet)
+<br><a href="#xchat_plugingui_remove">xchat_plugingui_remove</a> (not documented yet)
 </blockquote><br>
 
 <h3><a name="intro">Introduction</a></h3>
@@ -72,13 +84,18 @@ versions shouldn't have an impact either. The only real requirement of
 an XChat plugin, is that it define a "xchat_plugin_init" symbol. This
 is your entry point function, see the example below. You should make
 all your global variables and functions <i>static</i>, so that a symbol
-is not exported. There is probably no harm in exporting these symbols,
-but they are not necessary. Plugins are compiled as shared objects
+is not exported. There is no harm in exporting these symbols, but they
+are not necessary and only pollute the name-space. Plugins are compiled as shared objects
 (.so files), for example:
 <pre>
 	gcc -Wall -O1 -shared myplugin.c -o myplugin.so
-
 </pre>
+See the <a href="#win32">Windows section</a> on how to compile a plugin
+using visual studio.
+<p>
+All strings passed to and from plugins are encoded in UTF-8, regardless
+of locale.
+</p><br>
 
 <h3><a name="sample">Sample plugin</a></h3>
 This simple plugin autoOps anyone who joins a channel you're in. It also
@@ -241,8 +258,8 @@ Example:
 
 <br>
 
-<h3><a name="win32">Plugins on Windows/Win32</a></h3>
-Yes, it can be done. All you need is either MSVC or <a href="http://www.mingw.org">MINGW</a>. Simply compile your plugin as a DLL. You should have the
+<h3><a name="win32">Plugins on Windows (Win32)</a></h3>
+Yes, it can be done. All you need is either MSVC (Visual Studio) or <a href="http://www.mingw.org">MINGW</a>. Simply compile your plugin as a DLL. You should have the
 following files:
 
 <ul>
@@ -250,13 +267,14 @@ following files:
 <li>plugin.c - Your plugin, you need to write this one :)</li>
 <li>plugin.def - A simple text file containing the following:</li>
 </ul>
-<table bgcolor="#fefeb0">
-<tr><td>EXPORTS</td></tr>
-<tr><td>&nbsp; xchat_plugin_init</td></tr>
-<tr><td>&nbsp; xchat_plugin_deinit</td></tr>
-</table>
+<div class=box>
+EXPORTS<br>
+&nbsp; xchat_plugin_init<br>
+&nbsp; xchat_plugin_deinit<br>
+</div>
 
-<br>To compile:
+<br>Leave out <i>xchat_plugin_deinit</i> if you don't intend to define that
+function. Then, to compile:
 <pre>
 	cl -O1 -MD -G5 -DWIN32 -c plugin.c
 	link /DLL /out:plugin.dll /SUBSYSTEM:WINDOWS plugin.obj /def:plugin.def
@@ -266,6 +284,28 @@ global variable called <b>ph</b>, which is the plugin_handle, much like
 in the <a href="#sample">sample plugin</a> above.
 
 <br><br>
+
+<h3><a name="gui">Controlling the GUI</a></h3>
+<p>
+A simple way to perform basic GUI functions is to use the /GUI command.
+You can execute this command through the input-box, or by calling
+xchat_command(ph, "GUI .....");.
+</p>
+<p>
+<blockquote>
+	<table border=0 cellpadding=4>
+	<tr><td>GUI HIDE</td><td>Hide the main xchat window completely (this is used by the Systray plugin).</td></tr>
+	<tr><td>GUI SHOW</td><td>Show it again.</td></tr>
+	<tr><td>GUI FOCUS</td><td>Focus the current window or tab.</td></tr>
+	<tr><td>GUI FLASH</td><td>Flash the taskbar button (win32 only). It will flash only if the window isn't focused and will stop when it is focused by the user.</td></tr>
+	<tr><td>GUI COLOR n</td><td>Change the tab color of the current context,
+where n is a number from 0 to 3.
+</td></tr>
+	</table>
+</blockquote>
+Note, the FLASH and COLOR args were added in xchat 2.0.8, they will not work
+with previous versions.
+<br><br></p>
 
 <h1>Functions</h1>
 
@@ -314,7 +354,9 @@ xchat_hook_command(ph, "ONOTICE", XCHAT_PRI_NORM, onotice_cb,
 <br><b>Arguments:</b>
 <blockquote><b>ph:</b> Plugin handle (as given to xchat_plugin_init).
 <br><b>fd:</b> The file descriptor or socket.
-<br><b>flags:</b> One or more of XCHAT_FD_READ, XCHAT_FD_WRITE, XCHAT_FD_EXCEPTION. Use bitwise OR to combine them.
+<br><b>flags:</b> One or more of XCHAT_FD_READ, XCHAT_FD_WRITE, XCHAT_FD_EXCEPTION, XCHAT_FD_NOTSOCKET. Use bitwise OR to combine them.
+XCHAT_FD_NOTSOCKET tells xchat that the provided <b>fd</b> is not a socket, but a file descriptor.
+This is only relevant on Windows, where network sockets are distinguished from file descriptors (such as pipes).
 <br><b>callb:</b> Callback function. This will be called when the socket is available for reading/writing or exception (depending on your chosen <b>flags</b>)
 <br><b>userdata:</b> Pointer passed to the callback function.</blockquote>
 <b>Returns:</b> Pointer to the hook. Can be passed to xchat_unhook.
