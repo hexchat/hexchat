@@ -1315,10 +1315,11 @@ menu_create_main (void *accel_group, int bar, int away, int toplevel,
 	if (settings)
 	{
 		g_object_get (settings, "gtk-key-theme-name", &key_theme, NULL);
-		if (key_theme && !strcasecmp (key_theme, "Emacs"))
+		if (key_theme)
 		{
+			if (!strcasecmp (key_theme, "Emacs"))
+				close_mask = GDK_SHIFT_MASK | GDK_CONTROL_MASK;
 			g_free (key_theme);
-			close_mask = GDK_SHIFT_MASK | GDK_CONTROL_MASK;
 		}
 	}
 
