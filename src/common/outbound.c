@@ -158,8 +158,8 @@ process_data_init (unsigned char *buf, unsigned char *cmd, char *word[],
 	int j = 0;
 	int len;
 
-	word[0] = "";
-	word_eol[0] = "";
+	word[0] = "\000\000";
+	word_eol[0] = "\000\000";
 	word[1] = buf;
 	word_eol[1] = cmd;
 

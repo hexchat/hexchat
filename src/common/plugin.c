@@ -241,11 +241,12 @@ plugin_add (session *sess, char *filename, void *handle, void *init_func,
 		pl->xchat_list_int = xchat_list_int;
 		pl->xchat_plugingui_add = xchat_plugingui_add;
 		pl->xchat_plugingui_remove = xchat_plugingui_remove;
+		pl->xchat_emit_print = xchat_emit_print;
 		/* incase new plugins are loaded on older xchat */
-		pl->xchat_dummy1 = xchat_dummy;
-		pl->xchat_dummy2 = xchat_dummy;
-		pl->xchat_dummy3 = xchat_dummy;
 		pl->xchat_dummy4 = xchat_dummy;
+		pl->xchat_dummy3 = xchat_dummy;
+		pl->xchat_dummy2 = xchat_dummy;
+		pl->xchat_dummy1 = xchat_dummy;
 #endif
 
 		/* run xchat_plugin_init, if it returns 0, close the plugin */
@@ -1125,4 +1126,30 @@ xchat_plugingui_remove (xchat_plugin *ph, void *handle)
 #ifdef USE_PLUGIN
 	plugin_free (handle, FALSE, FALSE);
 #endif
+}
+
+int
+xchat_emit_print (xchat_plugin *ph, char *event_name, ...)
+{
+	va_list args;
+	char *argv[4];
+	int i = 0;
+
+	memset (&argv, 0, sizeof (argv));
+	va_start (args, event_name);
+	while (1)
+	{
+		argv[i] = va_arg (args, char *);
+		if (!argv[i])
+			break;
+		i++;
+		if (i >= 4)
+			break;
+	}
+
+	i = text_emit_by_name (event_name, ph->context, argv[0], argv[1],
+								  argv[2], argv[3]);
+	va_end (args);
+
+	return i;
 }

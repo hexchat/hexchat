@@ -1502,6 +1502,31 @@ text_emit (int index, session *sess, char *a, char *b, char *c, char *d)
 	display_event (pntevts[index], sess, te[index].num_args, word);
 }
 
+int
+text_emit_by_name (char *name, session *sess, char *a, char *b, char *c, char *d)
+{
+	int i = 0;
+
+	i = pevent_find (name, &i);
+	if (i >= 0)
+	{
+		/* incase new args are added and plugins don't provide them */
+		if (!a && te[i].num_args > 0)
+			a = "";
+		if (!b && te[i].num_args > 1)
+			b = "";
+		if (!c && te[i].num_args > 2)
+			c = "";
+		if (!d && te[i].num_args > 3)
+			d = "";
+
+		text_emit (i, sess, a, b, c, d);
+		return 1;
+	}
+
+	return 0;
+}
+
 void
 pevent_save (char *fn)
 {

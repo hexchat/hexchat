@@ -76,10 +76,12 @@ struct _xchat_plugin
 		     char *reserved);
 	void (*xchat_plugingui_remove) (xchat_plugin *ph,
 			void *handle);
-	void (*xchat_dummy1) (xchat_plugin *ph);
-	void (*xchat_dummy2) (xchat_plugin *ph);
-	void (*xchat_dummy3) (xchat_plugin *ph);
+	int (*xchat_emit_print) (xchat_plugin *ph,
+			char *event_name, ...);
 	void (*xchat_dummy4) (xchat_plugin *ph);
+	void (*xchat_dummy3) (xchat_plugin *ph);
+	void (*xchat_dummy2) (xchat_plugin *ph);
+	void (*xchat_dummy1) (xchat_plugin *ph);
 #endif
 	/* PRIVATE FIELDS! */
 	void *handle;		/* from dlopen */

@@ -28,4 +28,5 @@ int pevt_build_string (const char *input, char **output, int *max_arg);
 int pevent_load (char *filename);
 void pevent_make_pntevts (void);
 void text_emit (int index, session *sess, char *a, char *b, char *c, char *d);
+int text_emit_by_name (char *name, session *sess, char *a, char *b, char *c, char *d);
 char *text_validate (char **text, int *len);
