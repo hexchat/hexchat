@@ -12,6 +12,16 @@ background-color: #FFFBF0;
 background-color: #dddddd;
 color: #990066
 }
+.bbox {
+font-family: monospace;
+color: #fdfdfd;
+background-color: #000000;
+border: 1px solid #00f;
+padding: 4px;
+text-align: left;
+margin-left: 32px;
+margin-right: 32px;
+}
 .box {
 background-color: #ddddee;
 border: 1px solid #000;
@@ -28,7 +38,7 @@ margin-right: 32px;
 <h1>XChat 2.0 Plugin Interface</h1>
 
 <small>
-<font size="-12">plugin20.html revision 1.00</font>
+<font size="-12">plugin20.html revision 1.02</font>
 <br>Latest version of this document is available at: <a href="http://xchat.org/docs/plugin20.html">http://xchat.org/docs/plugin20.html</a></small>
 
 <h2>Information:</h2>
@@ -89,7 +99,7 @@ is not exported. There is no harm in exporting these symbols, but they
 are not necessary and only pollute the name-space. Plugins are compiled as shared objects
 (.so files), for example:
 <pre>
-	gcc -Wall -O1 -shared myplugin.c -o myplugin.so
+	gcc -Wl,--export-dynamic -Wall -O1 -shared myplugin.c -o myplugin.so
 </pre>
 See the <a href="#win32">Windows section</a> on how to compile a plugin
 using visual studio.
@@ -187,13 +197,17 @@ needed for a long time after calling xchat_list_str. The types of lists and fiel
 <blockquote>
 
 "channels" - list of channels, querys and their servers.
-<blockquote> <table border=1>
+<blockquote><table border=1>
 <tr bgcolor="#dddddd"><td>Name</td><td>Description</td><td>Type</td></tr>
 <tr><td>channel</td><td>Channel or query name</td><td>string</td></tr>
+<tr><td>chantypes</td><td>Channel types e.g. "#!&amp;"<br><small>(Added in version 2.0.9. Older versions will return NULL)</td><td>string</td>
 <tr><td>context</td><td>(xchat_context *) pointer. Can be used with xchat_set_context</td><td>string</td></tr>
 <tr><td>flags</td><td>Server Bits: 0=Connected 1=Connecting 2=Away 3=EndOfMotd (Login complete) 4=Has WHOX<br><small>(Added in version 2.0.8. Older version will return -1)</small></td><td>int</td></tr>
 <tr><td>id</td><td>Unique server ID<br><small>(Added in version 2.0.8. Older version will return -1)</small></td><td>int</td></tr>
+<tr><td>maxmodes</td><td>Maximum modes per line<br><small>(Added in version 2.0.9. Older versions will return -1)</td><td>int</td>
 <tr><td>network</td><td>Network name to which this channel belongs<br><small>(Added in version 2.0.2. Older versions will return NULL)</small></td><td>string</td></tr>
+<tr><td>nickprefixes</td><td>Nickname prefixes e.g. "+@"<br><small>(Added in version 2.0.9. Older versions will return NULL)</td><td>string</td>
+<tr><td>nickmodes</td><td>Nickname mode chars e.g. "vo"<br><small>(Added in version 2.0.9. Older versions will return NULL)</td><td>string</td>
 <tr><td>server</td><td>Server name to which this channel belongs</td><td>string</td></tr>
 <tr><td>type</td><td>Type of context this is: 1-Server 2-Channel 3-Dialog<br><small>(Added in version 2.0.2. Older versions will return -1)</small></td><td>int</td></tr>
 <tr><td>users</td><td>Number of users in this channel<br><small>(Added in version 2.0.8. Older version will return -1)</small></td><td>int</td></tr>
@@ -279,8 +293,10 @@ Example:
 <br>
 
 <h3><a name="win32">Plugins on Windows (Win32)</a></h3>
-Yes, it can be done. All you need is either MSVC (Visual Studio) or <a href="http://www.mingw.org">MINGW</a>. Simply compile your plugin as a DLL. You should have the
-following files:
+Yes, it can be done. All you need is either
+<a href="http://msdn.microsoft.com/visualc/vctoolkit2003/">MSVC</a> (Visual Studio) or
+<a href="http://www.mingw.org">MINGW</a>, both these compilers are free to download.
+Simply compile your plugin as a DLL. You should have the following files:
 
 <ul>
 <li><a href="http://xchat.org/docs/xchat-plugin.h">xchat-plugin.h</a> - Main Plugin header</li>
@@ -294,12 +310,12 @@ EXPORTS<br>
 </div>
 
 <br>Leave out <i>xchat_plugin_deinit</i> if you don't intend to define that
-function. Then, to compile:
-<pre>
-	cl -O1 -MD -G5 -DWIN32 -c plugin.c
-	link /DLL /out:plugin.dll /SUBSYSTEM:WINDOWS plugin.obj /def:plugin.def
-</pre>
-For a complete example, have a look at the source code of the <a href="http://xchat.org/win32/testing/xcdns-src.zip">DNS Plugin</a>, which also contains a Makefile.
+function. Then, to compile, type this at your command prompt:<br><br>
+<div class=bbox>
+<br>&nbsp;cl -O1 -MD -G5 -DWIN32 -c plugin.c<br>
+<br>&nbsp;link /DLL /out:plugin.dll /SUBSYSTEM:WINDOWS plugin.obj /def:plugin.def<br><br>
+</div>
+<br>For a complete example, have a look at the source code of the <a href="http://xchat.org/win32/testing/xcdns-src.zip">DNS Plugin</a>, which also contains a Makefile.
 <br><br>
 <font color=red>Caveat:</font> Plugins compiled on Win32 MUST have a
 global variable called <b>ph</b>, which is the plugin_handle, much like
@@ -612,7 +628,9 @@ xchat_emit_print(ph, "Channel Message", "John", "Hi there", "@", NULL);
 	<tr><td>server</td><td>current server name (what the server claims to be). NULL if you are not connected.</td></tr>
 	<tr><td>topic</td><td>current channel topic.</td></tr>
 	<tr><td>version</td><td>xchat version number.</td></tr>
-	<tr><td>xchatdir</td><td>xchat config directory, e.g.: /home/user/.xchat.</td></tr>
+	<tr><td>win_status</td><td>window status: "active", "hidden" or "normal" (since 2.0.9).</td>
+	<tr><td>xchatdir</td><td>xchat config directory, e.g.: /home/user/.xchat2 <small>This string is encoded in UTF-8, which means you _should_ to convert it to "locale" encoding before using functions like open() or OpenFile().</small></td></tr>
+	<tr><td>xchatdirfs</td><td>xchat config directory, e.g.: /home/user/.xchat2 (since 2.0.9).<small>This string is encoded in local file system encoding, making it ideal for direct use with functions like open() or OpenFile().</td></tr>
 	</table>
 	</blockquote>
 </blockquote>

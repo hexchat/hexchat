@@ -530,6 +530,28 @@ const struct prefs vars[] = {
 	{0, 0, 0},
 };
 
+static char *
+convert_with_fallback (const char *str)
+{
+	char *utf;
+
+	utf = g_locale_to_utf8 (str, -1, 0, 0, 0);
+	if (!utf)
+	{
+		/* this can happen if CHARSET envvar is set wrong */
+		/* maybe it's already utf8 (breakage!) */
+		if (!g_utf8_validate (str, -1, NULL))
+		{
+			fe_message ("Failed to convert username or realname to UTF-8.\n"
+					"Your locale or charset appears to be missconfigured.", TRUE);
+			exit (1);
+		}
+		utf = g_strdup (str);
+	}
+
+	return utf;
+}
+
 void
 load_config (void)
 {
@@ -547,15 +569,8 @@ load_config (void)
 	if ((realname && realname[0] == 0) || !realname)
 		realname = username;
 
-	username = g_locale_to_utf8 (username, -1, 0, 0, 0);
-	if (!username)
-	{
-		/* this can happen if CHARSET envvar is set wrong */
-		fe_message ("g_locale_to_utf8() failed.\n"
-				"Your locale or charset appears to be missconfigured.", TRUE);
-		exit (1);
-	}
-	realname = g_locale_to_utf8 (realname, -1, 0, 0, 0);
+	username = convert_with_fallback (username);
+	realname = convert_with_fallback (realname);
 
 	memset (&prefs, 0, sizeof (struct xchatprefs));
 

@@ -933,6 +933,9 @@ xchat_get_info (xchat_plugin *ph, const char *id)
 
 	case 0xdd9b1abd:	/* xchatdir */
 		return get_xdir_utf8 ();
+
+	case 0xe33f6c4a:	/* xchatdirfs */
+		return get_xdir_fs ();
 	}
 
 	return NULL;
