@@ -35,6 +35,7 @@
 #include <dirent.h>
 #include <errno.h>
 #include "xchat.h"
+#include "xchatc.h"
 #include <ctype.h>
 #include "util.h"
 #include "../../config.h"
@@ -1365,5 +1366,23 @@ download_move_to_completed_dir (char *dcc_dir, char *dcc_completed_dir,
 		close (tmp_src);
 		if (ok)
 			unlink (dl_src);
+	}
+}
+
+void
+play_wave (const char *file)
+{
+	char buf[512];
+
+	snprintf (buf, sizeof (buf), "%s/%s", prefs.sounddir, file);
+	if (access (buf, R_OK) == 0)
+	{
+		snprintf (buf, sizeof (buf), "%s %s/%s", prefs.soundcmd, prefs.sounddir, file);
+		buf[sizeof (buf) - 1] = '\0';
+		xchat_exec (buf);
+	} else
+	{
+		snprintf (buf, sizeof (buf), "Cannot read %s/%s", prefs.sounddir, file);
+		fe_message (buf, FALSE);
 	}
 }

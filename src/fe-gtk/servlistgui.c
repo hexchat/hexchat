@@ -276,7 +276,8 @@ servlist_deletenetdialog_cb (GtkDialog *dialog, gint arg1, ircnet *net)
 		if (selected_net == net)
 			selected_net = NULL;
 
-		if(!network_list)  {
+		if (!network_list)
+		{
 			servlist_networks_populate (networks_tree, network_list, prefs.slist_edit);
 		}
 	}

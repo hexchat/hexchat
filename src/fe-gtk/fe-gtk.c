@@ -650,3 +650,9 @@ fe_set_throttle (server *serv)
 		list = list->next;
 	}
 }
+
+void
+fe_play_wave (const char *file)
+{
+    play_wave (file);
+}
