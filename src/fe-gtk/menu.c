@@ -38,6 +38,7 @@
 #include <gtk/gtkmenu.h>
 #include <gtk/gtkmenubar.h>
 #include <gtk/gtkstock.h>
+#include <gdk/gdkkeysyms.h>
 
 #include "../common/xchat.h"
 #include "../common/xchatc.h"
@@ -94,6 +95,7 @@ struct mymenu
 	short type;
 	unsigned int state:1;
 	unsigned int activate:1;
+	guint key;
 };
 
 
@@ -526,7 +528,7 @@ menu_middlemenu (session *sess, GdkEventButton *event)
 {
 	GtkWidget *menu, *away, *user;
 
-	menu = menu_create_main (FALSE, sess->server->is_away, &away, &user);
+	menu = menu_create_main (NULL, FALSE, sess->server->is_away, &away, &user);
 
 	menu_quick_item (0, 0, menu, 1, 0);	/* sep */
 
@@ -953,9 +955,15 @@ menu_autodccsend (GtkWidget * wid, gpointer none)
 }
 
 static void
+menu_detach (GtkWidget * wid, gpointer none)
+{
+	mg_link_cb (NULL, NULL);
+}
+
+static void
 menu_close (GtkWidget * wid, gpointer none)
 {
-	fe_close_window (current_sess);
+	mg_x_click_cb (NULL, NULL);
 }
 
 static void
@@ -1293,11 +1301,11 @@ menu_dcc_chat_win (GtkWidget *wid, gpointer none)
 
 static struct mymenu mymenu[] = {
 	{N_("_X-Chat"), 0, 0, M_NEWMENU, 0, 1},
-	{N_("Server List..."), menu_open_server_list, (char *)&pix_book, M_MENUPIX, 0, 1},
+	{N_("Server List..."), menu_open_server_list, (char *)&pix_book, M_MENUPIX, 0, 1, GDK_s},
 	{0, 0, 0, M_SEP, 0, 0},
 
 	{N_("New"), 0, GTK_STOCK_NEW, M_MENUSUB, 0, 1},
-	{N_("Server Tab..."), menu_newserver_tab, 0, M_MENU, 0, 1},
+	{N_("Server Tab..."), menu_newserver_tab, 0, M_MENU, 0, 1, GDK_t},
 	{N_("Channel Tab..."), menu_newchannel_tab, 0, M_MENU, 0, 1},
 	{N_("Server Window..."), menu_newserver_window, 0, M_MENU, 0, 1},
 	{N_("Channel Window..."), menu_newchannel_window, 0, M_MENU, 0, 1},
@@ -1317,28 +1325,29 @@ static struct mymenu mymenu[] = {
 #else
 #define menuoffset 2
 #endif
-	{N_("Close"), menu_close, GTK_STOCK_CLOSE, M_MENUSTOCK, 0, 1},
+	{N_("Detach Tab"), menu_detach, GTK_STOCK_REDO, M_MENUSTOCK, 0, 1, GDK_I},
+	{N_("Close Tab"), menu_close, GTK_STOCK_CLOSE, M_MENUSTOCK, 0, 1, GDK_w},
 	{0, 0, 0, M_SEP, 0, 0},
-	{N_("Quit"), mg_safe_quit, GTK_STOCK_QUIT, M_MENUSTOCK, 0, 1},	/* 16 */
+	{N_("Quit"), mg_safe_quit, GTK_STOCK_QUIT, M_MENUSTOCK, 0, 1, GDK_q},	/* 17 */
 
 	{N_("_IRC"), 0, 0, M_NEWMENU, 0, 1},
 	{N_("Invisible"), menu_invisible, 0, M_MENUTOG, 1, 1},
 	{N_("Receive Wallops"), menu_wallops, 0, M_MENUTOG, 1, 1},
 	{N_("Receive Server Notices"), menu_servernotice, 0, M_MENUTOG, 1, 1},
 	{0, 0, 0, M_SEP, 0, 0},
-	{N_("Marked Away"), menu_away, 0, M_MENUTOG, 0, 1},
-	{0, 0, 0, M_SEP, 0, 0},														/* 23 */
+	{N_("Marked Away"), menu_away, 0, M_MENUTOG, 0, 1, GDK_a},
+	{0, 0, 0, M_SEP, 0, 0},														/* 24 */
 	{N_("Auto ReJoin on Kick"), menu_autorejoin, 0, M_MENUTOG, 0, 1},
 	{N_("Auto ReConnect to Server"), menu_autoreconnect, 0, M_MENUTOG, 0, 1},
 	{N_("Never-give-up ReConnect"), menu_autoreconnectonfail, 0, M_MENUTOG, 0, 1},
-	{0, 0, 0, M_SEP, 0, 0},														/* 27 */
+	{0, 0, 0, M_SEP, 0, 0},														/* 28 */
 	{N_("Auto Open Dialog Windows"), menu_autodialog, 0, M_MENUTOG, 0, 1},
 	{N_("Auto Accept DCC Chat"), menu_autodccchat, 0, M_MENUTOG, 0, 1},
 	{N_("Auto Accept DCC Send"), menu_autodccsend, 0, M_MENUTOG, 0, 1},
 
-	{N_("_Server"), (void *) -1, 0, M_NEWMENU, 0, 1},	/* 31 */
+	{N_("_Server"), (void *) -1, 0, M_NEWMENU, 0, 1},	/* 32 */
 
-	{N_("S_ettings"), 0, 0, M_NEWMENU, 0, 1},	/* 32 */
+	{N_("S_ettings"), 0, 0, M_NEWMENU, 0, 1},	/* 33 */
 	{N_("Preferences..."), menu_settings, GTK_STOCK_PREFERENCES, M_MENUSTOCK, 0, 1},
 
 	{N_("Lists"), 0, GTK_STOCK_JUSTIFY_LEFT, M_MENUSUB, 0, 1},
@@ -1350,11 +1359,11 @@ static struct mymenu mymenu[] = {
 	{N_("Replace Popup..."), menu_rpopup, 0, M_MENU, 0, 1},
 	{N_("URL Handlers..."), menu_urlhandlers, 0, M_MENU, 0, 1},
 	{N_("Event Texts..."), menu_evtpopup, 0, M_MENU, 0, 1},
-	{N_("Key Bindings..."), menu_keypopup, 0, M_MENU, 0, 1},	/* 43 */
+	{N_("Key Bindings..."), menu_keypopup, 0, M_MENU, 0, 1},	/* 44 */
 	{0, 0, 0, M_END, 0, 0},
 
 #if 0
-	{0, 0, 0, M_SEP, 0, 0},	/* 55 */
+	{0, 0, 0, M_SEP, 0, 0},	/* 56 */
 	{N_("Reload Settings"), menu_reload, GTK_STOCK_REVERT_TO_SAVED, M_MENUSTOCK, 0, 1},
 	{0, 0, 0, M_SEP, 0, 0},
 	{N_("Save Settings now"), menu_savedefault, GTK_STOCK_SAVE, M_MENUSTOCK, 0, 1},
@@ -1366,7 +1375,7 @@ static struct mymenu mymenu[] = {
 	{N_("File Send..."), menu_dcc_send_win, 0, M_MENU, 0, 1},
 	{N_("File Receive..."), menu_dcc_recv_win, 0, M_MENU, 0, 1},
 	{N_("Direct Chat..."), menu_dcc_chat_win, 0, M_MENU, 0, 1},
-	{N_("Raw Log..."), menu_rawlog, 0, M_MENU, 0, 1},	/* 50 */
+	{N_("Raw Log..."), menu_rawlog, 0, M_MENU, 0, 1},	/* 51 */
 	{N_("URL Grabber..."), url_opengui, 0, M_MENU, 0, 1},
 	{N_("Notify List..."), notify_opengui, 0, M_MENU, 0, 1},
 	{N_("Ignore List..."), ignore_gui_open, 0, M_MENU, 0, 1},
@@ -1374,11 +1383,11 @@ static struct mymenu mymenu[] = {
 	{N_("Character Chart..."), ascii_open, 0, M_MENU, 0, 1},
 	{N_("Plugin List..."), menu_pluginlist, 0, M_MENU, 0, 1},
 	{0, 0, 0, M_SEP, 0, 0},
-	{N_("C_lear Text"), menu_flushbuffer, GTK_STOCK_CLEAR, M_MENUSTOCK, 0, 1},
-	{N_("Search Text..."), menu_search, GTK_STOCK_FIND, M_MENUSTOCK, 0, 1},
+	{N_("C_lear Text"), menu_flushbuffer, GTK_STOCK_CLEAR, M_MENUSTOCK, 0, 1, GDK_l},
+	{N_("Search Text..."), menu_search, GTK_STOCK_FIND, M_MENUSTOCK, 0, 1, GDK_f},
 	{N_("Save Text..."), menu_savebuffer, GTK_STOCK_SAVE, M_MENUSTOCK, 0, 1},
 
-	{N_("_Help"), 0, 0, M_NEWMENU, 0, 1},	/* 61 */
+	{N_("_Help"), 0, 0, M_NEWMENU, 0, 1},	/* 62 */
 	{N_("X-Chat Homepage..."), menu_webpage, GTK_STOCK_HOME, M_MENUSTOCK, 0, 1},
 	{N_("Online Docs..."), menu_docs, GTK_STOCK_DND_MULTIPLE, M_MENUSTOCK, 0, 1},
 	{0, 0, 0, M_SEP, 0, 0},
@@ -1404,7 +1413,7 @@ create_icon_menu (char *labeltext, void *stock_name, int is_stock)
 }
 
 GtkWidget *
-menu_create_main (int bar, int away,
+menu_create_main (GtkWidget *window, int bar, int away,
 						GtkWidget **away_item_ret, GtkWidget **user_menu_ret)
 {
 	int i = 0;
@@ -1414,23 +1423,31 @@ menu_create_main (int bar, int away,
 	GtkWidget *menu_bar;
 	GtkWidget *usermenu = 0;
 	GtkWidget *submenu = 0;
+	GtkAccelGroup *accel_group = NULL;
+
+	if (window)
+	{
+		accel_group = gtk_accel_group_new ();
+		gtk_window_add_accel_group (GTK_WINDOW (window), accel_group);
+  	   g_object_unref (accel_group);
+	}
 
 	if (bar)
 		menu_bar = gtk_menu_bar_new ();
 	else
 		menu_bar = gtk_menu_new ();
 
-	mymenu[18-menuoffset].state = prefs.invisible;
-	mymenu[19-menuoffset].state = prefs.wallops;
-	mymenu[20-menuoffset].state = prefs.servernotice;
-	mymenu[22-menuoffset].state = away;
-	mymenu[24-menuoffset].state = prefs.autorejoin;
-	mymenu[25-menuoffset].state = prefs.autoreconnect;
-	mymenu[26-menuoffset].state = prefs.autoreconnectonfail;
-	mymenu[28-menuoffset].state = prefs.autodialog;
-	mymenu[29-menuoffset].state = prefs.autodccchat;
-	mymenu[30-menuoffset].state = prefs.autodccsend;
-	/*mymenu[59-menuoffset].state = prefs.autosave;*/
+	mymenu[19-menuoffset].state = prefs.invisible;
+	mymenu[20-menuoffset].state = prefs.wallops;
+	mymenu[21-menuoffset].state = prefs.servernotice;
+	mymenu[23-menuoffset].state = away;
+	mymenu[25-menuoffset].state = prefs.autorejoin;
+	mymenu[26-menuoffset].state = prefs.autoreconnect;
+	mymenu[27-menuoffset].state = prefs.autoreconnectonfail;
+	mymenu[29-menuoffset].state = prefs.autodialog;
+	mymenu[30-menuoffset].state = prefs.autodccchat;
+	mymenu[31-menuoffset].state = prefs.autodccsend;
+	/*mymenu[60-menuoffset].state = prefs.autosave;*/
 
 	while (1)
 	{
@@ -1458,6 +1475,9 @@ menu_create_main (int bar, int away,
 		case M_MENU:
 			item = gtk_menu_item_new_with_label (_(mymenu[i].text));
 normalitem:
+			if (mymenu[i].key != 0 && accel_group)
+				gtk_widget_add_accelerator (item, "activate", accel_group,
+									mymenu[i].key, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
 			if (mymenu[i].callback)
 				g_signal_connect (G_OBJECT (item), "activate",
 										G_CALLBACK (mymenu[i].callback), 0);
@@ -1473,13 +1493,16 @@ normalitem:
 			item = gtk_check_menu_item_new_with_label (_(mymenu[i].text));
 			gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (item),
 													 mymenu[i].state);
+			if (mymenu[i].key != 0 && accel_group)
+				gtk_widget_add_accelerator (item, "activate", accel_group,
+									mymenu[i].key, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
 			if (mymenu[i].callback)
 				g_signal_connect (G_OBJECT (item), "toggled",
 										G_CALLBACK (mymenu[i].callback), 0);
 			gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
 			gtk_widget_show (item);
 			gtk_widget_set_sensitive (item, mymenu[i].activate);
-			if (bar && i == 22 - menuoffset)
+			if (bar && i == 23 - menuoffset)
 				*away_item_ret = item;
 			break;
 

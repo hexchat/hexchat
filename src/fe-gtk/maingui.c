@@ -821,7 +821,7 @@ mg_quit_cb (GtkDialog *dialog, gint arg1, gpointer userdata)
 		mg_safe_quit ();
 }
 
-static void
+void
 mg_x_click_cb (GtkWidget *button, gpointer userdata)
 {
 	GtkWidget *dialog;
@@ -899,7 +899,7 @@ mg_link_gentab (GtkWidget *tab)
 #endif
 }
 
-static void
+void
 mg_link_cb (GtkWidget *but, gpointer userdata)
 {
 	if (userdata)
@@ -1826,8 +1826,8 @@ mg_topwin_focus_cb (GtkWindow * win, GdkEventFocus *event, session *sess)
 static void
 mg_create_menu (session_gui *gui, GtkWidget *box, int away_state)
 {
-	gui->menu = menu_create_main (TRUE, away_state, &gui->away_item,
-											&gui->user_menu);
+	gui->menu = menu_create_main (gtk_widget_get_toplevel (box),
+						TRUE, away_state, &gui->away_item, &gui->user_menu);
 	gtk_box_pack_start (GTK_BOX (box), gui->menu, 0, 0, 0);
 	gtk_box_reorder_child (GTK_BOX (box), gui->menu, 0);
 }

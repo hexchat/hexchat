@@ -76,7 +76,7 @@ ascii_open (void)
 		gdk_font_ref (font_normal);
 	}*/
 
-	win = mg_create_generic_tab ("asciichart", _("Ascii Chart"), TRUE, TRUE,
+	win = mg_create_generic_tab ("asciichart", _("Character Chart"), TRUE, TRUE,
 										  NULL, NULL, 0, 0, &vbox, NULL);
 
 	name[1] = 0;
