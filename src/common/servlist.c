@@ -806,6 +806,8 @@ servlist_net_remove (ircnet *net)
 		free (net->autojoin);
 	if (net->command)
 		free (net->command);
+	if (net->nickserv)
+		free (net->nickserv);
 	if (net->comment)
 		free (net->comment);
 	if (net->encoding)
@@ -934,6 +936,9 @@ servlist_load (void)
 			case 'S':	/* new server/hostname for this network */
 				servlist_server_add (net, buf + 2);
 				break;
+			case 'B':
+				net->nickserv = strdup (buf + 2);
+				break;
 			}
 		}
 		if (buf[0] == 'N')
@@ -1059,6 +1064,8 @@ servlist_save (void)
 			fprintf (fp, "P=%s\n", net->pass);
 		if (net->autojoin)
 			fprintf (fp, "J=%s\n", net->autojoin);
+		if (net->nickserv)
+			fprintf (fp, "B=%s\n", net->nickserv);
 		if (net->encoding && strcasecmp (net->encoding, "System") &&
 			 strcasecmp (net->encoding, "System default"))
 		{
