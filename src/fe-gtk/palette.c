@@ -26,6 +26,7 @@
 #include <fcntl.h>
 
 #include "fe-gtk.h"
+#include "palette.h"
 
 #include "../common/xchat.h"
 #include "../common/util.h"
@@ -99,17 +100,39 @@ palette_alloc (GtkWidget * widget)
 	}
 }
 
+/* maps XChat 2.0.x colors to current */
+static const int remap[] =
+{
+	0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,
+	33,	/* 16:marktextback */
+	32,	/* 17:marktextfore */
+	34,	/* 18: fg */
+	35,	/* 19: bg */
+	37,	/* 20: newdata */
+	38,	/* 21: blue */
+	39,	/* 22: newmsg */
+	40		/* 23: away */
+};
+
 void
 palette_load (void)
 {
-	int i, l, fh, res;
+	int i, j, l, fh, res;
 	char prefname[256];
 	struct stat st;
 	char *cfg;
-	unsigned long red, green, blue;
+	int red, green, blue;
+	int upgrade = FALSE;
 
-   snprintf (prefname, sizeof (prefname), "%s/colors.conf", get_xdir_fs ());
-   fh = open (prefname, O_RDONLY | OFLAGS);
+	snprintf (prefname, sizeof (prefname), "%s/colors.conf", get_xdir_fs ());
+	fh = open (prefname, O_RDONLY | OFLAGS);
+	if (fh == -1)
+	{
+		snprintf (prefname, sizeof (prefname), "%s/palette.conf", get_xdir_fs ());
+	   fh = open (prefname, O_RDONLY | OFLAGS);
+		upgrade = TRUE;
+	}
+
 	if (fh != -1)
 	{
 		fstat (fh, &st);
@@ -121,22 +144,48 @@ palette_load (void)
 			if (l >= 0)
 				cfg[l] = '\0';
 
-			for (i = 0; i < MAX_COL+1; i++)
+			if (!upgrade)
 			{
-				snprintf (prefname, sizeof prefname, "color_%d_red", i);
-				red = cfg_get_int (cfg, prefname);
-
-				snprintf (prefname, sizeof prefname, "color_%d_grn", i);
-				green = cfg_get_int (cfg, prefname);
-
-				snprintf (prefname, sizeof prefname, "color_%d_blu", i);
-				blue = cfg_get_int_with_result (cfg, prefname, &res);
-
-				if (res)
+				/* mIRC colors 0-31 are here */
+				for (i = 0; i < 32; i++)
 				{
+					snprintf (prefname, sizeof prefname, "color_%d", i);
+					cfg_get_color (cfg, prefname, &red, &green, &blue);
 					colors[i].red = red;
 					colors[i].green = green;
 					colors[i].blue = blue;
+				}
+
+				/* our special colors are mapped at 256+ */
+				for (i = 256, j = 32; j < MAX_COL+1; i++, j++)
+				{
+					snprintf (prefname, sizeof prefname, "color_%d", i);
+					cfg_get_color (cfg, prefname, &red, &green, &blue);
+					colors[j].red = red;
+					colors[j].green = green;
+					colors[j].blue = blue;
+				}
+
+			} else
+			{
+				/* loading 2.0.x palette.conf */
+				for (i = 0; i < MAX_COL+1; i++)
+				{
+					snprintf (prefname, sizeof prefname, "color_%d_red", i);
+					red = cfg_get_int (cfg, prefname);
+
+					snprintf (prefname, sizeof prefname, "color_%d_grn", i);
+					green = cfg_get_int (cfg, prefname);
+
+					snprintf (prefname, sizeof prefname, "color_%d_blu", i);
+					blue = cfg_get_int_with_result (cfg, prefname, &res);
+
+					if (res)
+					{
+						colors[remap[i]].red = red;
+						colors[remap[i]].green = green;
+						colors[remap[i]].blue = blue;
+					}
 				}
 			}
 			free (cfg);
@@ -148,24 +197,27 @@ palette_load (void)
 void
 palette_save (void)
 {
-	int i, fh;
+	int i, j, fh;
 	char prefname[256];
 
-   snprintf (prefname, sizeof (prefname), "%s/colors.conf", get_xdir_fs ());
-   fh = open (prefname, O_TRUNC | O_WRONLY | O_CREAT | OFLAGS, 0600);
+	snprintf (prefname, sizeof (prefname), "%s/colors.conf", get_xdir_fs ());
+	fh = open (prefname, O_TRUNC | O_WRONLY | O_CREAT | OFLAGS, 0600);
 	if (fh != -1)
 	{
-		for (i = 0; i < MAX_COL+1; i++)
+		/* mIRC colors 0-31 are here */
+		for (i = 0; i < 32; i++)
 		{
-			snprintf (prefname, sizeof prefname, "color_%d_red", i);
-			cfg_put_int (fh, colors[i].red, prefname);
-
-			snprintf (prefname, sizeof prefname, "color_%d_grn", i);
-			cfg_put_int (fh, colors[i].green, prefname);
-
-			snprintf (prefname, sizeof prefname, "color_%d_blu", i);
-			cfg_put_int (fh, colors[i].blue, prefname);
+			snprintf (prefname, sizeof prefname, "color_%d", i);
+			cfg_put_color (fh, colors[i].red, colors[i].green, colors[i].blue, prefname);
 		}
+
+		/* our special colors are mapped at 256+ */
+		for (i = 256, j = 32; j < MAX_COL+1; i++, j++)
+		{
+			snprintf (prefname, sizeof prefname, "color_%d", i);
+			cfg_put_color (fh, colors[j].red, colors[j].green, colors[j].blue, prefname);
+		}
+
 		close (fh);
 	}
 }

@@ -11,6 +11,8 @@ int cfg_get_bool (char *var);
 int cfg_get_int_with_result (char *cfg, char *var, int *result);
 int cfg_get_int (char *cfg, char *var);
 int cfg_put_int (int fh, int value, char *var);
+int cfg_get_color (char *cfg, char *var, int *r, int *g, int *b);
+int cfg_put_color (int fh, int r, int g, int b, char *var);
 char *get_xdir_fs (void);
 char *get_xdir_utf8 (void);
 void load_config (void);

@@ -203,6 +203,17 @@ cfg_put_str (int fh, char *var, char *value)
 }
 
 int
+cfg_put_color (int fh, int r, int g, int b, char *var)
+{
+	char buf[400];
+	int len;
+
+	snprintf (buf, sizeof buf, "%s = %04x %04x %04x\n", var, r, g, b);
+	len = strlen (buf);
+	return (write (fh, buf, len) == len);
+}
+
+int
 cfg_put_int (int fh, int value, char *var)
 {
 	char buf[400];
@@ -214,6 +225,18 @@ cfg_put_int (int fh, int value, char *var)
 	snprintf (buf, sizeof buf, "%s = %d\n", var, value);
 	len = strlen (buf);
 	return (write (fh, buf, len) == len);
+}
+
+int
+cfg_get_color (char *cfg, char *var, int *r, int *g, int *b)
+{
+	char str[128];
+
+	if (!cfg_get_str (cfg, var, str, sizeof (str)))
+		return 0;
+
+	sscanf (str, "%04x %04x %04x", r, g, b);
+	return 1;
 }
 
 int
