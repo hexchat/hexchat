@@ -51,6 +51,7 @@
 			<li><a href="#xchat::emit_print(_$event,_list_)"><code>Xchat::emit_print( $event, LIST )</code></a></li>
 			<li><a href="#xchat::nickcmp(_$nick1,_$nick2_)"><code>Xchat::nickcmp( $nick1, $nick2 )</code></a></li>
 			<li><a href="#xchat::get_list(_$name_)"><code>Xchat::get_list( $name )</code></a></li>
+			<li><a href="#xchat::user_info(_[$nick]_)"><code>Xchat::user_info( [$nick] )</code></a></li>
 		</ul>
 
 	</ul>
@@ -568,6 +569,8 @@ detail</p><br>
 <table border=1>	<tr bgcolor="#DDDDDD">
 		<td>Key</td>	<td>Value</td>
 	</tr>	<tr>
+		<td>away</td>	<td>away status(boolean)</td>
+	</tr>	<tr>
 		<td>nick</td>	<td>nick name</td>
 	</tr>	<tr>
 		<td>host</td>
@@ -575,7 +578,20 @@ detail</p><br>
 	</tr>	<tr>
 		<td>prefix</td>	<td>prefix character, .e.g: @ or +</td>
 	</tr>
-</table><p>Contact Lian Situ at &lt;<a href="mailto:atmcmnky@yahoo.com">atmcmnky@yahoo.com</a>&gt; for questions, comments and
+</table><p>
+</p>
+<h3><a name="xchat::user_info(_[$nick]_)"><code>Xchat::user_info( [$nick] )</code></a></h3>
+<ul>
+<li><strong><a name="item_c%3c%24nick%3e_%2d_the_nick_to_look_for%2c_if_this"><code>$nick</code>	-	the nick to look for, if this is not given your own nick will be
+				used as default</a></strong><br />
+</li>
+</ul>
+<p>This function is mainly intended to be used as a shortcut for when you need
+to retrieve some information about only one user in a channel. Otherwise it
+is probably a better idea to use <a href="#xchat::get_list(_$name_)">get_list</a>.
+If <code>$nick</code> is found a hash reference containing the same keys as those in the
+``users'' list of <a href="#xchat::get_list(_$name_)">get_list</a>.</p>
+<p>Contact Lian Situ at &lt;<a href="mailto:atmcmnky@yahoo.com">atmcmnky@yahoo.com</a>&gt; for questions, comments and
 corrections about this or the Perl plugin itself.</p>
 
 </body>
