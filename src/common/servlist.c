@@ -403,6 +403,13 @@ static const struct defaultserver def[] =
 	{"RedeBrasilIRC",	0},
 	{0,			"irc.redebrasilirc.org"},
 
+	{"RizeNET", 0},
+	{0,			"irc.rizenet.org"},
+	{0,			"omega.rizenet.org"},
+	{0,			"evelance.rizenet.org"},
+	{0,			"lisa.rizenet.org"},
+	{0,			"scott.rizenet.org"},
+
 	{"SceneNet",	0},
 	{0,			"irc.scene.org"},
 	{0,			"irc.eu.scene.org"},
@@ -517,7 +524,8 @@ servlist_connect (session *sess, ircnet *net)
 		strcpy (serv->nick, prefs.nick1);
 	} else
 	{
-		strcpy (serv->nick, net->nick);
+		if (net->nick)
+			strcpy (serv->nick, net->nick);
 		if (net->user)
 			serv->username = strdup (net->user);
 		if (net->real)

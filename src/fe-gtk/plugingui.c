@@ -159,7 +159,7 @@ plugingui_open (void)
 	gtk_container_set_border_width (GTK_CONTAINER (GTK_DIALOG (plugin_window)->vbox),
 											  4);
 	gtk_window_set_position (GTK_WINDOW (plugin_window), GTK_WIN_POS_CENTER);
-	gtk_window_set_title (GTK_WINDOW (plugin_window), _("X-Chat Plugins"));
+	gtk_window_set_title (GTK_WINDOW (plugin_window), _("X-Chat: Plugins"));
 
 	plugin_clist = gtkutil_clist_new (4, titles,
 						 						 GTK_DIALOG (plugin_window)->vbox,

@@ -1153,9 +1153,9 @@ static struct mymenu mymenu[] = {
 	{0, 0, 0, M_SEP, 0, 0},
 
 #ifdef USE_PLUGIN
-	{N_("Load Plugin..."), menu_loadplugin, GTK_STOCK_REVERT_TO_SAVED, M_MENUSTOCK, 0, 1},
+	{N_("Load Plugin or Script..."), menu_loadplugin, GTK_STOCK_REVERT_TO_SAVED, M_MENUSTOCK, 0, 1},
 #else
-	{N_("Load Plugin..."), 0, GTK_STOCK_REVERT_TO_SAVED, M_MENUSTOCK, 0, 0},
+	{N_("Load Plugin or Script..."), 0, GTK_STOCK_REVERT_TO_SAVED, M_MENUSTOCK, 0, 0},
 #endif
 	{0, 0, 0, M_SEP, 0, 0},	/* 11 */
 #ifdef USE_ZVT
@@ -1211,17 +1211,17 @@ static struct mymenu mymenu[] = {
 #endif
 
 	{N_("_Window"), 0, 0, M_NEWMENU, 0, 1},
+	{N_("Ban List..."), menu_banlist, 0, M_MENU, 0, 1},
 	{N_("Channel List..."), menu_chanlist, 0, M_MENU, 0, 1},
-	{N_("File Send..."), menu_dcc_send_win, 0, M_MENU, 0, 1},
-	{N_("File Receive..."), menu_dcc_recv_win, 0, M_MENU, 0, 1},
+	{N_("Character Chart..."), ascii_open, 0, M_MENU, 0, 1},
 	{N_("Direct Chat..."), menu_dcc_chat_win, 0, M_MENU, 0, 1},
+	{N_("File Receive..."), menu_dcc_recv_win, 0, M_MENU, 0, 1},
+	{N_("File Send..."), menu_dcc_send_win, 0, M_MENU, 0, 1},
+	{N_("Ignore List..."), ignore_gui_open, 0, M_MENU, 0, 1},
+	{N_("Notify List..."), notify_opengui, 0, M_MENU, 0, 1},
+	{N_("Plugin List..."), menu_pluginlist, 0, M_MENU, 0, 1},
 	{N_("Raw Log..."), menu_rawlog, 0, M_MENU, 0, 1},	/* 51 */
 	{N_("URL Grabber..."), url_opengui, 0, M_MENU, 0, 1},
-	{N_("Notify List..."), notify_opengui, 0, M_MENU, 0, 1},
-	{N_("Ignore List..."), ignore_gui_open, 0, M_MENU, 0, 1},
-	{N_("Ban List..."), menu_banlist, 0, M_MENU, 0, 1},
-	{N_("Character Chart..."), ascii_open, 0, M_MENU, 0, 1},
-	{N_("Plugin List..."), menu_pluginlist, 0, M_MENU, 0, 1},
 	{0, 0, 0, M_SEP, 0, 0},
 	{N_("C_lear Text"), menu_flushbuffer, GTK_STOCK_CLEAR, M_MENUSTOCK, 0, 1, GDK_l},
 	{N_("Search Text..."), menu_search, GTK_STOCK_FIND, M_MENUSTOCK, 0, 1, GDK_f},

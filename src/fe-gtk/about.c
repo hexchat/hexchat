@@ -114,7 +114,7 @@ menu_about (GtkWidget * wid, gpointer sess)
 				"<span size=\"x-large\"><b>X-Chat "VERSION"</b></span>\n\n"
 				"An IRC Client for UNIX\n\n"
 				"%s\n"
-				"Charset: %s Renderer: %s\n\n"
+				"<b>Charset</b>: %s <b>Renderer</b>: %s <b>Compiled</b>: "__DATE__"\n\n"
 				"(C) 1998-2002 Peter Zelezny &lt;zed@xchat.org>",
 					get_cpu_str(),
 					locale,
