@@ -4014,7 +4014,7 @@ gtk_xtext_render_page (GtkXText * xtext)
 		return;
 
 #ifdef SMOOTH_SCROLL
-	xtext->pixel_offset = ((float)((float)xtext->adj->value - (float)startline) * xtext->fontsize);
+	xtext->pixel_offset = (xtext->adj->value - startline) * xtext->fontsize;
 #else
 	xtext->pixel_offset = 0;
 #endif
