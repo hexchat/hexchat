@@ -1099,12 +1099,52 @@ traverse_socks5 (int sok, char *serverAddr, int port)
 
 	sc1.version = 5;
 	sc1.nmethods = 1;
-	sc1.method = 0;
+	if ( prefs.proxy_auth )
+	{
+		if ( !prefs.proxy_user[0] || !prefs.proxy_pass[0] )
+		{
+			return 1;
+		}
+		sc1.method = 2;  /* Username/Password Authentication (UPA) */
+	}
+	else
+	{
+		sc1.method = 0;  /* NO Authentication */
+	}
 	send (sok, (char *) &sc1, 3, 0);
 	if (recv (sok, buf, 2, 0) != 2)
 		return 1;
-	if (buf[0] != 5 && buf[1] != 0)
-		return 1;
+
+	if ( prefs.proxy_auth )
+	{
+		int len_u=0, len_p=0;
+
+		/* authentication sub-negotiation (RFC1929) */
+		if ( buf[0] != 5 || buf[1] != 2 )  /* UPA not supported by server */
+			return 1;
+
+		memset (buf, 0, sizeof(buf));
+
+		/* form the UPA request */
+		len_u = strlen (prefs.proxy_user);
+		len_p = strlen (prefs.proxy_pass);
+		buf[0] = 1;
+		buf[1] = len_u;
+		memcpy (buf + 2, prefs.proxy_user, len_u);
+		buf[2 + len_u] = len_p;
+		memcpy (buf + 3 + len_u, prefs.proxy_pass, len_p);
+
+		send (sok, buf, 3 + len_u + len_p, 0);
+		if ( recv (sok, buf, 2, 0) != 2 )
+			return 1;
+		if ( buf[1] != 0 )
+			return 1; /* UPA failed! */
+	}
+	else
+	{
+		if (buf[0] != 5 || buf[1] != 0)
+			return 1;
+	}
 
 	addrlen = strlen (serverAddr);
 	packetlen = 4 + 1 + addrlen + 2;

@@ -337,7 +337,7 @@ static const setting network_settings[] =
 	{ST_NUMBER,	N_("Port:"), P_OFFINTNL(proxy_port), 0, 0, 65535},
 	{ST_MENU,	N_("Type:"), P_OFFINTNL(proxy_type), 0, proxytypes, 0},
 
-	{ST_TOGGLE,	N_("Authenticate to the proxy server (only HTTP)"), P_OFFINTNL(proxy_auth), 0, 0, 0},
+	{ST_TOGGLE,	N_("Authenticate to the proxy server (HTTP and Socks5)"), P_OFFINTNL(proxy_auth), 0, 0, 0},
 
 	{ST_END, 0, 0, 0, 0, 0}
 };
@@ -530,9 +530,9 @@ setup_menu_cb (GtkWidget *item, const setting *set)
 
 	if (g_object_get_data (G_OBJECT (item), "p"))
 	{
-		/* only HTTP can use a username/pass */
-		gtk_widget_set_sensitive (proxy_user, (n == 4));
-		gtk_widget_set_sensitive (proxy_pass, (n == 4));
+		/* only HTTP and Socks5 can use a username/pass */
+		gtk_widget_set_sensitive (proxy_user, (n == 3 || n == 4));
+		gtk_widget_set_sensitive (proxy_pass, (n == 3 || n == 4));
 	}
 }
 
@@ -695,10 +695,10 @@ setup_create_entry (GtkWidget *table, int row, const setting *set)
 	if (set->offset == P_OFFSETNL(proxy_pass))
 		proxy_pass = wid; 
 
-	/* only http can auth */
+	/* only http and Socks5 can auth */
 	if ( (set->offset == P_OFFSETNL(proxy_pass) ||
 			set->offset == P_OFFSETNL(proxy_user)) &&
-	     setup_prefs.proxy_type != 4)
+	     (setup_prefs.proxy_type != 4 && setup_prefs.proxy_type != 3) )
 		gtk_widget_set_sensitive (wid, FALSE);
 
 #ifdef WIN32
