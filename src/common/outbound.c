@@ -511,8 +511,12 @@ cmd_charset (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	server *serv = sess->server;
 	const char *locale = NULL;
+	int offset = 0;
 
-	if (!word[2][0])
+	if (strcmp (word[2], "-quiet") == 0)
+		offset++;
+
+	if (!word[2 + offset][0])
 	{
 		g_get_charset (&locale);
 		PrintTextf (sess, "Current charset: %s\n",
@@ -520,15 +524,16 @@ cmd_charset (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		return TRUE;
 	}
 
-	if (servlist_check_encoding (word[2]))
+	if (servlist_check_encoding (word[2 + offset]))
 	{
 		if (serv->encoding)
 			free (serv->encoding);
-		serv->encoding = strdup (word[2]);
-		PrintTextf (sess, "Charset changed to: %s\n", word[2]);
+		serv->encoding = strdup (word[2 + offset]);
+		if (offset < 1)
+			PrintTextf (sess, "Charset changed to: %s\n", word[2 + offset]);
 	} else
 	{
-		PrintTextf (sess, "\0034Unknown charset:\017 %s\n", word[2]);
+		PrintTextf (sess, "\0034Unknown charset:\017 %s\n", word[2 + offset]);
 	}
 
 	return TRUE;

@@ -954,6 +954,18 @@ xchat_get_info (xchat_plugin *ph, const char *id)
   	case 0x2c0b7d03: /* channel */
 		return sess->channel;
 
+	case 0x2c0d614c: /* charset */
+		{
+			const char *locale;
+
+			if (sess->server->encoding)
+				return sess->server->encoding;
+
+			locale = NULL;
+			g_get_charset (&locale);
+			return locale;
+		}
+
 	case 0x30f5a8: /* host */
 		return sess->server->hostname;
 
