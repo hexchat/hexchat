@@ -270,8 +270,8 @@ if test "$perl" = yes; then
 #		AC_CHECK_FUNC(call_pv)
 #		LIBS=$oldLIBS
 
-		AC_MSG_CHECKING(for perl >= 5.6.0)
-		PERL_VER=`$perlpath -e 'print $]>= 5.006?"yes":"no"'`
+		AC_MSG_CHECKING(for perl >= 5.8.0)
+		PERL_VER=`$perlpath -e 'print $]>= 5.008?"yes":"no"'`
 		if test "$PERL_VER" = "yes"; then
 			AC_MSG_RESULT(yes)
 			AC_MSG_CHECKING(if perl plugin will be backward compatible)

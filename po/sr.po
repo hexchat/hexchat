@@ -1,39 +1,35 @@
 # XChat translation file: Serbian language, cyrillic script
 # Copyright (C) 2004 Free Software Foundation, Inc.
-# This file is put in the public domain.
-# Filip Miletić <f.miletic@ewi.tudelft.nl>, 2004.
-# -----------------------------------------
-# NOTE: External translation submission.
-# The true last translator is: Filip Miletić <f.miletic@ewi.tudelft.nl>
-# ----------------------------------------
-# Original translation by:
-# Zoltan Čala <zolika@sezampro.yu>, 1999.
 #
+# Translators:
+# o Zoltan Čala <zolika@sezampro.yu>, 1999.
+# o Filip Miletić <f.miletic@ewi.tudelft.nl>, 2004.
+# o Aleksandar Jelenak <jelenak@netlinkplus.net>, 2004.
 msgid ""
 msgstr ""
-"Project-Id-Version: xchat 2.0.9pre1\n"
+"Project-Id-Version: xchat 2.4.0pre1\n"
 "Report-Msgid-Bugs-To: www.xchat.org\n"
-"POT-Creation-Date: 2004-05-23 16:49+1000\n"
-"PO-Revision-Date: 2004-06-18 23:59-0400\n"
+"POT-Creation-Date: 2004-07-22 01:32+1000\n"
+"PO-Revision-Date: 2004-07-22 22:44-0400\n"
 "Last-Translator: Aleksandar Jelenak <jelenak@netlinkplus.net>\n"
 "Language-Team: Serbian <gnu@prevod.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/common/cfgfiles.c:342
+#: src/common/cfgfiles.c:369
 msgid "Cannot create ~/.xchat2"
 msgstr "Није направљен ~/.xchat2"
 
-#: src/common/cfgfiles.c:658
+#: src/common/cfgfiles.c:686
 msgid "I'm busy"
 msgstr "Заузет сам"
 
-#: src/common/cfgfiles.c:659
+#: src/common/cfgfiles.c:687
 msgid "Leaving"
 msgstr "Одлазим"
 
-#: src/common/cfgfiles.c:706
+#: src/common/cfgfiles.c:733
 msgid ""
 "* Running IRC as root is stupid! You should\n"
 "  create a User Account and use that to login.\n"
@@ -65,12 +61,12 @@ msgstr "Повежи се"
 msgid "Aborted"
 msgstr "Прекинуто"
 
-#: src/common/dcc.c:1270
+#: src/common/dcc.c:1279
 #, c-format
 msgid "Cannot access %s\n"
 msgstr "Нема приступа %s\n"
 
-#: src/common/dcc.c:1865
+#: src/common/dcc.c:1874
 msgid "No active DCCs\n"
 msgstr "Нема активних DCC-ова\n"
 
@@ -114,11 +110,11 @@ msgstr "Нисте на каналу. Пробајте са /join #<канал>\
 msgid "Not connected. Try /server <host> [<port>]\n"
 msgstr "Нисте на вези. Пробајте са /server <хост> [<порт>]\n"
 
-#: src/common/outbound.c:1356
+#: src/common/outbound.c:1355
 msgid "I need /bin/sh to run!\n"
 msgstr "За покретање треба имати /bin/sh!\n"
 
-#: src/common/outbound.c:1597
+#: src/common/outbound.c:1596
 msgid ""
 "\n"
 "Commands Available:\n"
@@ -130,7 +126,7 @@ msgstr ""
 "\n"
 "  "
 
-#: src/common/outbound.c:1632
+#: src/common/outbound.c:1631
 msgid ""
 "\n"
 "\n"
@@ -142,7 +138,7 @@ msgstr ""
 "Куцајте /HELP <команда> за помоћ, или /HELP -l\n"
 "\n"
 
-#: src/common/outbound.c:1633
+#: src/common/outbound.c:1632
 msgid ""
 "User defined commands:\n"
 "\n"
@@ -152,60 +148,60 @@ msgstr ""
 "\n"
 "  "
 
-#: src/common/outbound.c:1725
+#: src/common/outbound.c:1724
 #, c-format
 msgid "Unknown arg '%s' ignored."
 msgstr "Непознат аргумент '%s' је занемарен."
 
-#: src/common/outbound.c:2450
+#: src/common/outbound.c:2474
 msgid "No such plugin found.\n"
 msgstr "Додатак није пронађен.\n"
 
-#: src/common/outbound.c:2455 src/fe-gtk/plugingui.c:186
+#: src/common/outbound.c:2479 src/fe-gtk/plugingui.c:186
 msgid "That plugin is refusing to unload.\n"
 msgstr "Овај додатак се није учитао.\n"
 
-#: src/common/outbound.c:2600
+#: src/common/outbound.c:2624
 msgid "ADDBUTTON <name> <action>, adds a button under the user-list"
 msgstr "ADDBUTTON <име> <наредба>, додаје дугме у корисничeв списак команди"
 
-#: src/common/outbound.c:2602
+#: src/common/outbound.c:2626
 msgid "ALLCHAN <cmd>, sends a command to all channels you're in"
 msgstr "ALLCHAN <команда>, шаље команду на све канале где сте повезани"
 
-#: src/common/outbound.c:2604
+#: src/common/outbound.c:2628
 msgid "ALLSERV <cmd>, sends a command to all servers you're in"
 msgstr "ALLSERV <команда>, шаље команду свим серверима где сте повезани"
 
-#: src/common/outbound.c:2605
+#: src/common/outbound.c:2629
 msgid "AWAY [<reason>], sets you away"
 msgstr "AWAY [<разлог>], пријављује одсуство"
 
-#: src/common/outbound.c:2607
+#: src/common/outbound.c:2631
 msgid "BAN <mask> [<bantype>], bans everyone matching the mask from the current channel. If they are already on the channel this doesn't kick them (needs chanop)"
 msgstr "BAN <шаблон> [<врста>], забрана за све кориснике обухваћене шаблоном од приступа каналу. Ако су већ на каналу, не избацује их (за то треба бити „оп‟)"
 
-#: src/common/outbound.c:2609
+#: src/common/outbound.c:2633
 msgid "CLEAR, Clears the current text window"
 msgstr "CLEAR, брише тренутни прозор са текстом"
 
-#: src/common/outbound.c:2610
+#: src/common/outbound.c:2634
 msgid "CLOSE, Closes the current window/tab"
 msgstr "CLOSE, затвара тренутни прозор/језичак"
 
-#: src/common/outbound.c:2613
+#: src/common/outbound.c:2637
 msgid "COUNTRY <code>, finds a country code, eg: au = australia"
 msgstr "COUNTRY <код>, тражи код земље, нпр: au = аустралија"
 
-#: src/common/outbound.c:2615
+#: src/common/outbound.c:2639
 msgid "CTCP <nick> <message>, send the CTCP message to nick, common messages are VERSION and USERINFO"
 msgstr "CTCP <име> <порука>, шаље CTCP поруку на дато име, попут VERSION или USERINFO"
 
-#: src/common/outbound.c:2617
+#: src/common/outbound.c:2641
 msgid "CYCLE, parts current channel and immediately rejoins"
 msgstr "CYCLE, напушта тренутни канал и одмах се враћа назад"
 
-#: src/common/outbound.c:2619
+#: src/common/outbound.c:2643
 msgid ""
 "\n"
 "DCC GET <nick>                     - accept an offered file\n"
@@ -223,67 +219,67 @@ msgstr ""
 "DCC CLOSE <тип> <име> <дат>            пример:\n"
 "         /dcc close send пераперић датотека.tar.gz"
 
-#: src/common/outbound.c:2629
+#: src/common/outbound.c:2653
 msgid "DEHOP <nick>, removes chanhalf-op status from the nick on the current channel (needs chanop)"
 msgstr "DEHOP <име>, склања полу-оп звање за име на тренутном каналу (потребан је„оп)‟"
 
-#: src/common/outbound.c:2631
+#: src/common/outbound.c:2655
 msgid "DELBUTTON <name>, deletes a button from under the user-list"
 msgstr "DELBUTTON <име>, брише дугме са корисничног списка"
 
-#: src/common/outbound.c:2633
+#: src/common/outbound.c:2657
 msgid "DEOP <nick>, removes chanop status from the nick on the current channel (needs chanop)"
 msgstr "DELBUTTON <име>, уклања звање оператора за име на овом каналу"
 
-#: src/common/outbound.c:2635
+#: src/common/outbound.c:2659
 msgid "DEVOICE <nick>, removes voice status from the nick on the current channel (needs chanop)"
 msgstr "DEVOICE <име>, одузима реч за име на овом каналу"
 
-#: src/common/outbound.c:2636
+#: src/common/outbound.c:2660
 msgid "DISCON, Disconnects from server"
 msgstr "DISCON, искључује са сервера"
 
-#: src/common/outbound.c:2637
+#: src/common/outbound.c:2661
 msgid "DNS <nick|host|ip>, Finds a users IP number"
 msgstr "DNS <име|рач|ip>, тражи корисников IP број"
 
-#: src/common/outbound.c:2638
+#: src/common/outbound.c:2662
 msgid "ECHO <text>, Prints text locally"
 msgstr "ECHO <текст>, исписује текст"
 
-#: src/common/outbound.c:2641
+#: src/common/outbound.c:2665
 msgid "EXEC [-o] <command>, runs the command. If -o flag is used then output is sent to current channel, else is printed to current text box"
 msgstr "EXEC [-o] <наредба>, изврши наредбу. Ако је дата ознака -o онда се исписшаље на тренутни канал, иначе се исписује у оквиру за текст."
 
-#: src/common/outbound.c:2643
+#: src/common/outbound.c:2667
 msgid "EXECCONT, sends the process SIGCONT"
 msgstr "EXECCONT, шаље процесу SIGCONT"
 
-#: src/common/outbound.c:2646
+#: src/common/outbound.c:2670
 msgid "EXECKILL [-9], kills a running exec in the current session. If -9 is given the process is SIGKILL'ed"
 msgstr "EXECKILL [-9], зауставља позив exec у овој сесији. Ако је дато и -9 процесу се шаље SIGKILL"
 
-#: src/common/outbound.c:2648
+#: src/common/outbound.c:2672
 msgid "EXECSTOP, sends the process SIGSTOP"
 msgstr "EXECSTOP, шаље процесу SIGSTOP"
 
-#: src/common/outbound.c:2649
+#: src/common/outbound.c:2673
 msgid "EXECWRITE, sends data to the processes stdin"
 msgstr "EXECWRITE, шаље податке на стандардни улаз процеса"
 
-#: src/common/outbound.c:2653
+#: src/common/outbound.c:2677
 msgid "FLUSHQ, flushes the current server's send queue"
 msgstr "FLUSHQ, празни ред за слање на овом серверу"
 
-#: src/common/outbound.c:2655
+#: src/common/outbound.c:2679
 msgid "GATE <host> [<port>], proxies through a host, port defaults to 23"
 msgstr "ГАТЕ <рач.> [<порт>], прослеђује преко рач(унара), за порт се узима 23"
 
-#: src/common/outbound.c:2661
+#: src/common/outbound.c:2685
 msgid "HOP <nick>, gives chanhalf-op status to the nick (needs chanop)"
 msgstr "HOP <име>, даје звање полу-оп овом имену (потребан је оп) "
 
-#: src/common/outbound.c:2663
+#: src/common/outbound.c:2687
 msgid ""
 "IGNORE <mask> <types..> <options..>\n"
 "    mask - host mask to ignore, eg: *!*@*.aol.com\n"
@@ -297,176 +293,176 @@ msgstr ""
 "            PRIV, CHAN, NOTI, CTCP, DCC, INVI, ALL\n"
 "    избори  - NOSAVE, QUIET"
 
-#: src/common/outbound.c:2670
+#: src/common/outbound.c:2694
 msgid "INVITE <nick> [<channel>], invites someone to a channel, by default the current channel (needs chanop)"
 msgstr "INVITE <име> [<канал>], позива име да се прикључи каналу, мисли се на тренутни ако се не наведе (потребан је оп)"
 
-#: src/common/outbound.c:2671
+#: src/common/outbound.c:2695
 msgid "JOIN <channel>, joins the channel"
 msgstr "JOIN <канал>, прикључује се каналу"
 
-#: src/common/outbound.c:2673
+#: src/common/outbound.c:2697
 msgid "KICK <nick>, kicks the nick from the current channel (needs chanop)"
 msgstr "KICK <име>, избацује име са овог канала (потребан је оп)"
 
-#: src/common/outbound.c:2675
+#: src/common/outbound.c:2699
 msgid "KICKBAN <nick>, bans then kicks the nick from the current channel (needs chanop)"
 msgstr "KICKBAN <име>, забрањује а затим избацује име са овог канала (потребан је оп)"
 
-#: src/common/outbound.c:2678
+#: src/common/outbound.c:2702
 msgid "LAGCHECK, forces a new lag check"
 msgstr "LAGCHECK, тражи да се измери кашњење"
 
-#: src/common/outbound.c:2680
+#: src/common/outbound.c:2704
 msgid "LASTLOG <string>, searches for a string in the buffer"
 msgstr "LASTLOG <текст>, тражи текст у записима"
 
-#: src/common/outbound.c:2682
+#: src/common/outbound.c:2706
 msgid "LOAD <file>, loads a plugin or script"
 msgstr "LOAD <дат.>, учитава додатак или скрипту"
 
-#: src/common/outbound.c:2685
+#: src/common/outbound.c:2709
 msgid "MDEHOP, Mass deop's all chanhalf-ops in the current channel (needs chanop)"
 msgstr "MDEHOP, одузима звање свим полу-операторима на овом каналу (потребан је оп)"
 
-#: src/common/outbound.c:2687
+#: src/common/outbound.c:2711
 msgid "MDEOP, Mass deop's all chanops in the current channel (needs chanop)"
 msgstr "MDEOP, одузима звање свим операторима на овом каналу (потребан је оп)"
 
-#: src/common/outbound.c:2689
+#: src/common/outbound.c:2713
 msgid "ME <action>, sends the action to the current channel (actions are written in the 3rd person, like /me jumps)"
 msgstr "ME <радња>, шаље опис радње на овај канал (радње се пишу у трећем лицу, нпр. /me скаче"
 
-#: src/common/outbound.c:2691
+#: src/common/outbound.c:2715
 msgid "MKICK, Mass kicks everyone except you in the current channel (needs chanop)"
 msgstr "MKICK, избацује све друге са канала (потребан је оп)"
 
-#: src/common/outbound.c:2693
+#: src/common/outbound.c:2718
 msgid "MOP, Mass op's all users in the current channel (needs chanop)"
 msgstr "MOP, свима на каналу додељује звање оператора (потребан је оп)"
 
-#: src/common/outbound.c:2694
+#: src/common/outbound.c:2719
 msgid "MSG <nick> <message>, sends a private message"
 msgstr "MSG <име> <порука>, шаље приватну поруку"
 
-#: src/common/outbound.c:2697
+#: src/common/outbound.c:2722
 msgid "NAMES, Lists the nicks on the current channel"
 msgstr "NAMES, исписује имена на овом каналу"
 
-#: src/common/outbound.c:2699
+#: src/common/outbound.c:2724
 msgid "NCTCP <nick> <message>, Sends a CTCP notice"
 msgstr "NCTCP <име> <порука>, шаље CTCP дојаву"
 
-#: src/common/outbound.c:2700
+#: src/common/outbound.c:2725
 msgid "NEWSERVER <hostname> [<port>]"
 msgstr "NEWSERVER <рачунар> [<порт>]"
 
-#: src/common/outbound.c:2701
+#: src/common/outbound.c:2726
 msgid "NICK <nickname>, sets your nick"
 msgstr "NICK <име>, узимање новог имена"
 
-#: src/common/outbound.c:2704
+#: src/common/outbound.c:2729
 msgid "NOTICE <nick/channel> <message>, sends a notice. Notices are a type of message that should be auto reacted to"
 msgstr "NOTICE <име/канал> <порука>, шаље дојаву. Дојава је врста поруке коју треба аутоматски обрадити"
 
-#: src/common/outbound.c:2706
+#: src/common/outbound.c:2731
 msgid "NOTIFY [<nick>], lists your notify list or adds someone to it"
 msgstr "NOTIFY [<nick>], даје списак имена која ишчекујете или додаје на списак"
 
-#: src/common/outbound.c:2708
+#: src/common/outbound.c:2733
 msgid "OP <nick>, gives chanop status to the nick (needs chanop)"
 msgstr "OP <име>, даје звање оператора овом имену (потребан је оп)"
 
-#: src/common/outbound.c:2710
+#: src/common/outbound.c:2735
 msgid "PART [<channel>] [<reason>], leaves the channel, by default the current one"
 msgstr "PART [<канал>] [<разлог>], напушта канал, и то тренутни ако се не наведе"
 
-#: src/common/outbound.c:2712
+#: src/common/outbound.c:2737
 msgid "PING <nick | channel>, CTCP pings nick or channel"
 msgstr "PING <име | канал>, испитује име или канал CTCP поруком"
 
-#: src/common/outbound.c:2714
+#: src/common/outbound.c:2739
 msgid "QUERY <nick>, opens up a new privmsg window to someone"
 msgstr "QUERY <име>, отвара нови прозор за личне поруке"
 
-#: src/common/outbound.c:2716
+#: src/common/outbound.c:2741
 msgid "QUIT [<reason>], disconnects from the current server"
 msgstr "QUIT [<reason>], искључује са овог сервера"
 
-#: src/common/outbound.c:2718
+#: src/common/outbound.c:2743
 msgid "QUOTE <text>, sends the text in raw form to the server"
 msgstr "QUOTE <текст>, шаље сирови текст серверу"
 
-#: src/common/outbound.c:2721
+#: src/common/outbound.c:2746
 msgid "RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as /RECONNECT to reconnect to the current server or with /RECONNECT ALL to reconnect to all the open servers"
 msgstr "RECONNECT [-ssl] [<рач.>] [<порт>] [<лозинка>], може се користити и само /RECONNECT за поновно спајање на сервер или као /RECONNECT ALL за поновно спајање на све отворене сервере"
 
-#: src/common/outbound.c:2724
+#: src/common/outbound.c:2749
 msgid "RECONNECT [<host>] [<port>] [<password>], Can be called just as /RECONNECT to reconnect to the current server or with /RECONNECT ALL to reconnect to all the open servers"
 msgstr "RECONNECT [<рач.>] [<порт>] [<лозинка>], може се користити и само /RECONNECT за поновно спајање на сервер или као /RECONNECT ALL за поновно спајање на све отворене сервере"
 
-#: src/common/outbound.c:2726
+#: src/common/outbound.c:2751
 msgid "RECV <text>, send raw data to xchat, as if it was received from the irc server"
 msgstr "RECV <текст>, пошаљи сирове податке у xchat, као да су стигли са IRC сервера"
 
-#: src/common/outbound.c:2729
+#: src/common/outbound.c:2754
 msgid "SAY <text>, sends the text to the object in the current window"
 msgstr "SAY <текст>, шаље текст као поруку објекту у овом прозору"
 
-#: src/common/outbound.c:2732
+#: src/common/outbound.c:2757
 msgid "SERVCHAN [-ssl] <host> <port> <channel>, connects and joins a channel"
 msgstr "SERVCHAN [-ssl] <рач.> <порт> <канал>, повезује се и учлани на канал"
 
-#: src/common/outbound.c:2735
+#: src/common/outbound.c:2760
 msgid "SERVCHAN <host> <port> <channel>, connects and joins a channel"
 msgstr "SERVCHAN <рач.> <порт> <канал>, повезује се и учлани на канал"
 
-#: src/common/outbound.c:2739
+#: src/common/outbound.c:2764
 msgid "SERVER [-ssl] <host> [<port>] [<password>], connects to a server, the default port is 6667 for normal connections, and 9999 for ssl connections"
 msgstr "SERVER [-ssl] <рач.> [<порт>] [<лозинка>], повезује се на сервер, узима да је порт 6667 за нормалну везу, одн. на 9999 за сигурну везу преко SSL"
 
-#: src/common/outbound.c:2742
+#: src/common/outbound.c:2767
 msgid "SERVER <host> [<port>] [<password>], connects to a server, the default port is 6667"
 msgstr "SERVER <рач.> [<порт>] [<лозинка>], повезује се на сервер, узима да је порт 6667"
 
-#: src/common/outbound.c:2744
-msgid "SET <variable> [<value>]"
-msgstr "SET <променљива> [<вредност>]"
+#: src/common/outbound.c:2769
+msgid "SET [-quiet] <variable> [<value>]"
+msgstr "SET [-quiet] <променљива> [<вредност>]"
 
-#: src/common/outbound.c:2747
+#: src/common/outbound.c:2772
 msgid "TOPIC [<topic>], sets the topic if one is given, else shows the current topic"
 msgstr "TOPIC [<тема>], поставља тему ако је наведена, иначе прикаже тренутну тему"
 
-#: src/common/outbound.c:2749
+#: src/common/outbound.c:2774
 msgid "UNBAN <mask> [<mask>...], unbans the specified masks."
 msgstr "UNBAN <шаблон> [<шаблон>...], скида забрану за ове шаблоне"
 
-#: src/common/outbound.c:2750
+#: src/common/outbound.c:2775
 msgid "UNIGNORE <mask> [QUIET]"
 msgstr "UNIGNORE <шаблон> [QUIET]"
 
-#: src/common/outbound.c:2751
+#: src/common/outbound.c:2776
 msgid "UNLOAD <name>, unloads a plugin or script"
 msgstr "UNLOAD <име>, уклони додатак или скрипт"
 
-#: src/common/outbound.c:2754
+#: src/common/outbound.c:2779
 msgid "VOICE <nick>, gives voice status to someone (needs chanop)"
 msgstr "VOICE <име>, даје реч (потребан је оп)"
 
-#: src/common/outbound.c:2756
+#: src/common/outbound.c:2781
 msgid "WALLCHAN <message>, writes the message to all channels"
 msgstr "WALLCHAN <порука>, шаље поруку на све канале"
 
-#: src/common/outbound.c:2758
+#: src/common/outbound.c:2783
 msgid "WALLCHOP <message>, sends the message to all chanops on the current channel"
 msgstr "WALLCHOP <порука>, шаље поруку свим операторима на овом каналу"
 
-#: src/common/outbound.c:2791
+#: src/common/outbound.c:2816
 #, c-format
 msgid "Usage: %s\n"
 msgstr "Употреба: %s\n"
 
-#: src/common/outbound.c:2796
+#: src/common/outbound.c:2821
 msgid ""
 "\n"
 "No help available on that command.\n"
@@ -474,31 +470,31 @@ msgstr ""
 "\n"
 "За ову наредбу помоћ није доступна.\n"
 
-#: src/common/outbound.c:2802
+#: src/common/outbound.c:2827
 msgid "No such command.\n"
 msgstr "Не постоји наредба.\n"
 
-#: src/common/outbound.c:3126
+#: src/common/outbound.c:3151
 msgid "Bad arguments for user command.\n"
 msgstr "Погрешни аргументи за корисничку наредбу.\n"
 
-#: src/common/outbound.c:3290
+#: src/common/outbound.c:3315
 msgid "Too many recursive usercommands, aborting."
 msgstr "Сувише команди се унакрсно позива, обустављам."
 
-#: src/common/outbound.c:3363
+#: src/common/outbound.c:3388
 msgid "Unknown Command. Try /help\n"
 msgstr "Команда није препозната. Пробајте са /help\n"
 
-#: src/common/plugin.c:358 src/common/plugin.c:388
+#: src/common/plugin.c:358 src/common/plugin.c:399
 msgid "No xchat_plugin_init symbol; is this really an xchat plugin?"
 msgstr "Име xchat_plugin_init не постоји; можда ово није додатак за xchat?"
 
-#: src/common/server.c:585
+#: src/common/server.c:586
 msgid "Are you sure this is a SSL capable server and port?\n"
 msgstr "Да ли сте сигурни да је ово SSL сервер и порт?\n"
 
-#: src/common/server.c:912
+#: src/common/server.c:933
 #, c-format
 msgid ""
 "Cannot resolve hostname %s\n"
@@ -507,528 +503,540 @@ msgstr ""
 "Рачунар %s наизглед не постоји\n"
 "Проверите подешавања за IP!\n"
 
-#: src/common/server.c:917
+#: src/common/server.c:938
 msgid "Proxy traversal failed.\n"
 msgstr "Неуспео контакт са заступником.\n"
 
-#: src/common/servlist.c:660
+#: src/common/servlist.c:642
 #, c-format
 msgid "Cycling to next server in %s...\n"
 msgstr "Покушавам везу са следећим сервером у %s...\n"
 
-#: src/common/servlist.c:1005
+#: src/common/servlist.c:1050
 #, c-format
 msgid "Warning: \"%s\" character set is unknown. No conversion will be applied for network %s."
 msgstr "Упозорење: Скуп знакова „%s‟ није познат. За мрежу %s се зато неће користити конверзија."
 
 #: src/common/textevents.h:6
-msgid "-%C10-%C11-%O$t$1 added to notify list."
-msgstr "-%C10-%C11-%O$t$1 додат на списак посматраних."
+msgid "%C22*%O$t$1 added to notify list."
+msgstr "%C22*%O$t$1 додат на списак посматраних."
 
 #: src/common/textevents.h:9
-msgid "-%C10-%C11-%O$t$1 Banlist: %C3$4 %C4$2 %C5$3%O"
-msgstr "-%C10-%C11-%O$t$1 Забране: %C3$4 %C4$2 %C5$3%O"
+msgid "%C22*%O$t$1 Banlist:%C19 $4%C20 $2%C21 $3"
+msgstr "%C22*%O$t$1 Забране:%C19 $4%C20 $2%C21 $3"
 
 #: src/common/textevents.h:12
-msgid "-%C10-%C11-%O$tCannot join%C11 %B$1 %O(You are banned)."
-msgstr "-%C10-%C11-%O$tНе успева прикључење%C11 %B$1 %O(Имате забрану)."
+msgid "%C22*%O$tCannot join%C26 %B$1 %O(You are banned)."
+msgstr "%C22*%O$tНе успева прикључење%C26 %B$1 %O(имате забрану)."
 
 #: src/common/textevents.h:15
-msgid "-%C10-%C11-%O$t$1 is now known as $2"
-msgstr "Име -%C10-%C11-%O$t$1 је промењено у $2"
+msgid "%C22*%O$t$1 is now known as $2"
+msgstr "Име %C22*%O$t$1 је промењено у $2"
 
 #: src/common/textevents.h:18
-msgid "%C13*%O$t$1%O $2%O"
-msgstr "%C13*%O$t$1%O $2%O"
+msgid "%C18*$t$1%O $2"
+msgstr "%C18*$t$1%O $2"
 
 #: src/common/textevents.h:21
-msgid "%C13*%O$t%C8%B$1%B%O $2%O"
-msgstr "%C13*%O$t%C8%B$1%B%O $2%O"
+msgid "%C21*%O$t%C21%B$1%O%C21 $2"
+msgstr "%C21*%O$t%C21%B$1%O%C21 $2"
 
 #: src/common/textevents.h:24
-msgid "-%C10-%C11-%O$t$1 sets ban on $2"
-msgstr "-%C10-%C11-%O$t$1 постави забрану на $2"
+msgid "%C22*%O$t$1 sets ban on $2"
+msgstr "%C22*%O$t$1 поставља забрану на $2"
 
 #: src/common/textevents.h:27
-msgid "-%C10-%C11-%O$tChannel $1 created on $2"
-msgstr "-%C10-%C11-%O$tНови канал $1 на $2"
+msgid "%C22*%O$tChannel $1 created on $2"
+msgstr "%C22*%O$tНаправљен је нови канал $1 на $2"
 
 #: src/common/textevents.h:30
-msgid "-%C10-%C11-%O$t%C11$1%O removes channel half-operator status from %C11$2"
-msgstr "-%C10-%C11-%O$t%C11$1%O укида звање полу-оператора за %C11$2"
+msgid "%C22*%O$t%C26$1%O removes channel half-operator status from%C26 $2"
+msgstr "%C22*%O$t%C26$1%O укида звање полу-оператора за %C26 $2"
 
 #: src/common/textevents.h:33
-msgid "-%C10-%C11-%O$t%C11$1%O removes channel operator status from %C11$2"
-msgstr "-%C10-%C11-%O$t%C11$1%O укида звање оператора за %C11$2"
+msgid "%C22*%O$t%C26$1%O removes channel operator status from%C26 $2"
+msgstr "%C22*%O$t%C26$1%O укида звање оператора за %C26 $2"
 
 #: src/common/textevents.h:36
-msgid "-%C10-%C11-%O$t%C11$1%O removes voice from %C11$2"
-msgstr "-%C10-%C11-%O$t%C11$1%O одузима реч имену %C11$2"
+msgid "%C22*%O$t%C26$1%O removes voice from%C26 $2"
+msgstr "%C22*%O$t%C26$1%O одузима реч од %C26 $2"
 
 #: src/common/textevents.h:39
-msgid "-%C10-%C11-%O$t$1 sets exempt on $2"
-msgstr "-%C10-%C11-%O$t$1 изузима име $2"
+msgid "%C22*%O$t$1 sets exempt on $2"
+msgstr "%C22*%O$t$1 поставља изузеће за $2"
 
 #: src/common/textevents.h:42
-msgid "-%C10-%C11-%O$t%C11$1%O gives channel half-operator status to %C11$2"
-msgstr "-%C10-%C11-%O$t%C11$1%O даје звање полу-оператора за име %C11$2"
+msgid "%C22*%O$t%C26$1%O gives channel half-operator status to%C26 $2"
+msgstr "%C22*%O$t%C26$1%O додељује звање полу оператора за %C26 $2"
 
 #: src/common/textevents.h:45
-msgid "-%C10-%C11-%O$t$1 sets invite on $2"
-msgstr "-%C10-%C11-%O$t$1 позива за $2"
+msgid "%C22*%O$t$1 sets invite on $2"
+msgstr "%C22*%O$t$1 позива на прикључење на $2"
 
 #: src/common/textevents.h:48
-msgid "%UChannel          Users   Topic%O"
-msgstr "%UКанал            Бр.кор. Тема%O"
+msgid "%UChannel          Users   Topic"
+msgstr "%UКанал            Бр.кор. Тема"
 
-#: src/common/textevents.h:51 src/common/textevents.h:297
-msgid "%C2<%O$1%C2>%O$t$2%O"
-msgstr "%C2<%O$1%C2>%O$t$2%O"
+#: src/common/textevents.h:51
+msgid "%C18%B%B$4$1%O%C18%O$t$2"
+msgstr "%C18%B%B$4$1%O%C18%O$t$2"
 
 #: src/common/textevents.h:54
-msgid "-%C10-%C11-%O$t$1 sets mode $2$3 $4"
-msgstr "-%C10-%C11-%O$t$1 поставља приступ на $2$3 $4"
+msgid "%C22*%O$t$1 sets mode $2$3 $4"
+msgstr "%C22*%O$t$1 поставља приступну ознаку на $2$3 $4"
 
 #: src/common/textevents.h:57
-msgid "-%C10-%C11-%O$tChannel $1 modes: $2"
-msgstr "-%C10-%C11-%O$tКанал $1 приступ: $2"
+msgid "%C22*%O$t%C22Channel $1 modes: $2"
+msgstr "%C22*%O$t%C22Канал $1 приступне ознаке: $2"
 
 #: src/common/textevents.h:60
-msgid "%C2<%C8%B$1%B%C2>%O$t$2%O"
-msgstr "%C2<%C8%B$1%B%C2>%O$t$2%O"
+msgid "$4%C21%B$1%O$t%C21$2"
+msgstr "$4%C21%B$1%O$t%C21$2"
 
 #: src/common/textevents.h:63
-msgid "%C12-%C13$1/$2%C12-%O$t$3%O"
-msgstr "%C12-%C13$1/$2%C12-%O$t$3%O"
+msgid "%C28-%C29$1/$2%C28-%O$t$3"
+msgstr "%C28-%C29$1/$2%C28-%O$t$3"
 
 #: src/common/textevents.h:66
-msgid "-%C10-%C11-%O$t%C11$1%O gives channel operator status to %C11$2"
-msgstr "-%C10-%C11-%O$t%C11$1%O даје звање оператора за %C11$2"
+msgid "%C22*%O$t%C26$1%O gives channel operator status to%C26 $2"
+msgstr "%C22*%O$t%C26$1%O додељује звање оператора за%C26 $2"
 
 #: src/common/textevents.h:69
-msgid "-%C10-%C11-%O$t$1 removes exempt on $2"
-msgstr "-%C10-%C11-%O$t$1 уклања изузеће за $2"
+msgid "%C22*%O$t$1 removes exempt on $2"
+msgstr "%C22*%O$t$1 уклања изузеће за $2"
 
 #: src/common/textevents.h:72
-msgid "-%C10-%C11-%O$t$1 removes invite on $2"
-msgstr "-%C10-%C11-%O$t$1 уклања позив на $2"
+msgid "%C22*%O$t$1 removes invite on $2"
+msgstr "%C22*%O$t$1 уклања позив за прикључење на $2"
 
 #: src/common/textevents.h:75
-msgid "-%C10-%C11-%O$t$1 removes channel keyword"
-msgstr "-%C10-%C11-%O$t$1 уклања кључну реч"
+msgid "%C22*%O$t$1 removes channel keyword"
+msgstr "%C22*%O$t$1 уклања кључну реч за канал"
 
 #: src/common/textevents.h:78
-msgid "-%C10-%C11-%O$t$1 removes user limit"
-msgstr "-%C10-%C11-%O$t$1 укида макс. број корисника"
+msgid "%C22*%O$t$1 removes user limit"
+msgstr "%C22*%O$t$1 укида највећи дозвољени број корисника на каналу"
 
 #: src/common/textevents.h:81
-msgid "-%C10-%C11-%O$t$1 sets channel keyword to $2"
-msgstr "-%C10-%C11-%O$t$1 поставља кључну реч на $2"
+msgid "%C22*%O$t$1 sets channel keyword to $2"
+msgstr "%C22*%O$t$1 поставља кључну реч за канал на $2"
 
 #: src/common/textevents.h:84
-msgid "-%C10-%C11-%O$t$1 sets channel limit to $2"
-msgstr "-%C10-%C11-%O$t$1 поставља макс. број корисника на $2"
+msgid "%C22*%O$t$1 sets channel limit to $2"
+msgstr "%C22*%O$t$1 поставља највећи дозвољени број корисника на $2"
 
 #: src/common/textevents.h:87
-msgid "-%C10-%C11-%O$t$1 removes ban on $2"
-msgstr "-%C10-%C11-%O$t$1 укида забрану за $2"
+msgid "%C22*%O$t$1 removes ban on $2"
+msgstr "%C22*%O$t$1 уклања забрану за $2"
 
 #: src/common/textevents.h:90
-msgid "-%C10-%C11-%O$t%C11$1%O gives voice to %C11$2"
-msgstr "-%C10-%C11-%O$t%C11$1%O даје реч %C11$2"
+msgid "%C22*%O$t%C26$1%O gives voice to%C26 $2"
+msgstr "%C22*%O$t%C26$1%O даје реч за %C26 $2"
 
 #: src/common/textevents.h:93
-msgid "-%C10-%C11-%O$tConnected. Now logging in.."
-msgstr "-%C10-%C11-%O$tНа вези. Пријављујем се.."
+msgid "%C22*%O$t%C22Connected. Now logging in.."
+msgstr "%C22*%O$t%C22Повезивање је успело. Пријава у току..."
 
 #: src/common/textevents.h:96
-msgid "-%C10-%C11-%O$tConnecting to %C11$1 %C14(%C11$2%C14)%C port %C11$3%C.."
-msgstr "-%C10-%C11-%O$tПријава на %C11$1 %C14(%C11$2%C14)%C порт %C11$3%C.."
+msgid "%C22*%O$t%C22Connecting to $1 ($2) port $3%O.."
+msgstr "%C22*%O$t%C22У току је повезивање на $1 ($2) порт $3%O.."
 
 #: src/common/textevents.h:99
-msgid "-%C10-%C11-%O$tConnection failed. Error: $1"
-msgstr "-%C10-%C11-%O$tПовезивање није успело . Грешка: $1"
+msgid "%C21*%O$t%C21Connection failed. Error: $1"
+msgstr "%C21*%O$t%C21Повезивање није успело. Јављена је грешка: $1"
 
 #: src/common/textevents.h:102
-msgid "-%C10-%C11-%O$tReceived a CTCP $1 from $2"
-msgstr "-%C10-%C11-%O$t$2 је послао CTCP $1"
+msgid "%C22*%O$tReceived a CTCP $1 from $2"
+msgstr "%C22*%O$tПримљен је CTCP захтев $1 од $2"
 
 #: src/common/textevents.h:105
-msgid "-%C10-%C11-%O$tReceived a CTCP $1 from $2 (to $3)"
-msgstr "-%C10-%C11-%O$tПримљен CTCP $1 од $2 (за $3)"
+msgid "%C22*%O$tReceived a CTCP $1 from $2 (to $3)"
+msgstr "%C22*%O$tПримљен је CTCP захтев $1 од $2 (за $3)"
 
 #: src/common/textevents.h:108
-msgid "%C3>%O$1%C3<%O$tCTCP $2%O"
-msgstr "%C3>%O$1%C3<%O$tCTCP $2%O"
+msgid "%C19>%O$1%C19<%O$tCTCP $2"
+msgstr "%C19>%O$1%C19<%O$tCTCP $2"
 
 #: src/common/textevents.h:111
-msgid "-%C10-%C11-%O$tReceived a CTCP Sound $1 from $2"
-msgstr "-%C10-%C11-%O$t$2 шаље CTCP звук $1"
+msgid "%C22*%O$tReceived a CTCP Sound $1 from $2"
+msgstr "%C22*%O$tПримљен је CTCP звук $1 од $2"
 
 #: src/common/textevents.h:114
-msgid "-%C10-%C11-%O$tDCC CHAT to %C11$1%O aborted."
-msgstr "-%C10-%C11-%O$tПрекинут је DCC разговор са %C11$1%O."
+msgid "%C22*%O$tDCC CHAT to %C26$1%O aborted."
+msgstr "%C22*%O$tПрекинут је DCC разговор са %C26$1%O."
 
 #: src/common/textevents.h:117
-msgid "-%C10-%C11-%O$tDCC CHAT connection established to %C11$1 %C14[%O$2%C14]%O"
-msgstr "-%C10-%C11-%O$tУспостављен је DCC разговор са %C11$1 %C14[%O$2%C14]%O"
+msgid "%C22*%O$tDCC CHAT connection established to %C26$1 %C30[%O$2%C30]"
+msgstr "%C22*%O$tУспостављен је разговор путем DCC са %C26$1 %C30[%O$2%C30]"
 
 #: src/common/textevents.h:120
-msgid "-%C10-%C11-%O$tDCC CHAT to %C11$1%O lost. $4."
-msgstr "-%C10-%C11-%O$tDCC разговор са %C11$1%O је прекинут грешком. $4."
+msgid "%C22*%O$tDCC CHAT to %C26$1%O lost. $4."
+msgstr "%C22*%O$tРазговор путем DCC са %C26$1%O је прекинут услед грешке. $4."
 
 #: src/common/textevents.h:123
-msgid "-%C10-%C11-%O$tReceived a DCC CHAT offer from $1"
-msgstr "-%C10-%C11-%O$t$1 зове на DCC разговор"
+msgid "%C22*%O$tReceived a DCC CHAT offer from $1"
+msgstr "%C22*%O$tПримљена је понуда за разговор путем DCC од $1"
 
 #: src/common/textevents.h:126
-msgid "-%C10-%C11-%O$tOffering DCC CHAT to $1"
-msgstr "-%C10-%C11-%O$tЗовем $1 на DCC разговор"
+msgid "%C22*%O$tOffering DCC CHAT to $1"
+msgstr "%C22*%O$tНудим разговор путем DCC за $1"
 
 #: src/common/textevents.h:129
-msgid "-%C10-%C11-%O$tAlready offering CHAT to $1"
-msgstr "-%C10-%C11-%O$t$1 је већ позван на разговор"
+msgid "%C22*%O$tAlready offering CHAT to $1"
+msgstr "%C22*%O$t$1 већ има понуду за разговор одавде"
 
 #: src/common/textevents.h:132
-msgid "-%C10-%C11-%O$tDCC $1 connect attempt to %C11$2%O failed (err=$3)."
-msgstr "-%C10-%C11-%O$tDCC $1 повезивање са %C11$2%O неуспело (грешка=$3)."
+msgid "%C22*%O$tDCC $1 connect attempt to%C26 $2%O failed (err=$3)."
+msgstr "%C22*%O$tDCC $1 повезивање са%C26 $2%O неуспело (грешка=$3)."
 
 #: src/common/textevents.h:135
-msgid "-%C10-%C11-%O$tReceived '$1%O' from $2"
-msgstr "-%C10-%C11-%O$tReceived '$1%O' from $2"
+msgid "%C22*%O$tReceived '$1%O' from $2"
+msgstr "%C22*%O$tПреузета датотека '$1%O' од $2"
 
 #: src/common/textevents.h:138
-msgid "%C8,2 Type  To/From    Status  Size    Pos     File      %O%010%B%C9----------------------------------------------------%O"
-msgstr "%C8,2 Врста  Од/за     Стање   Вел.    Место   Датотека  %O%010%B%C9----------------------------------------------------%O"
+#, c-format
+msgid "%C24,18 Type  To/From    Status  Size    Pos     File         "
+msgstr "%C24,18 Врста  Од/за     Стање   Вел.    Место   Датотека    "
 
 #: src/common/textevents.h:141
-msgid "-%C10-%C11-%O$tReceived a malformed DCC request from %C11$1%O.%010-%C10-%C11-%O$tContents of packet: $2"
-msgstr "-%C10-%C11-%O$tПримљен је неисправан DCC захтев од %C11$1%O.%010-%C10-%C11-%O$tСадржај пакета: $2"
+msgid "%C22*%O$tReceived a malformed DCC request from %C26$1%O.%010%C22*%O$tContents of packet: $2"
+msgstr "%C22*%O$tПримљен је неисправан DCC захтев од %C26$1%O.%010%C22*%O$tСадржај пакета: $2"
 
 #: src/common/textevents.h:144
-msgid "-%C10-%C11-%O$tOffering %C11$1 %Cto %C11$2%O"
-msgstr "-%C10-%C11-%O$tНудимо %C11$1 %Cза %C11$2%O"
+msgid "%C22*%O$tOffering%C26 $1%O to%C26 $2"
+msgstr "%C22*%O$tНудимо %C26$1 %O за %C26 $2"
 
 #: src/common/textevents.h:147
-msgid "-%C10-%C11-%O$tNo such DCC offer."
-msgstr "-%C10-%C11-%O$tОва DCC понуда не постоји."
+msgid "%C22*%O$tNo such DCC offer."
+msgstr "%C22*%O$tОва DCC понуда не постоји."
 
 #: src/common/textevents.h:150
-msgid "-%C10-%C11-%O$tDCC RECV %C11$2%O to %C11$1%O aborted."
-msgstr "-%C10-%C11-%O$tDCC RECV %C11$2%O за %C11$1%O прекинут."
+msgid "%C22*%O$tDCC RECV%C26 $2%O to%C26 $1%O aborted."
+msgstr "%C22*%O$tDCC RECV %C126$2%O за%C26 $1%O прекинут."
 
 #: src/common/textevents.h:153
-msgid "-%C10-%C11-%O$tDCC RECV %C11$1%O from %C11$3%O complete %C14[%C11$4%O cps%C14]%O."
-msgstr "-%C10-%C11-%O$tDCC RECV %C11$1%O од %C11$3%O обављено %C14[%C11$4%O зн./сек.%C14]%O."
+msgid "%C22*%O$tDCC RECV%C26 $1%O from%C26 $3%O complete %C30[%C26$4%O cps%C30]%O."
+msgstr "%C22*%O$tDCC RECV%C26 $1%O од%C26 $3%O обављено %C30[%C26$4%O зн./сек.%C30]%O."
 
 #: src/common/textevents.h:156
-msgid "-%C10-%C11-%O$tDCC RECV connection established to %C11$1 %C14[%O$2%C14]%O"
-msgstr "-%C10-%C11-%O$tDCC RECV веза успостављена са %C11$1 %C14[%O$2%C14]%O"
+msgid "%C22*%O$tDCC RECV connection established to%C26 $1 %C30[%O$2%C30]"
+msgstr "%C22*%O$tDCC RECV веза успостављена са%C26 $1 %C30[%O$2%C30]%O"
 
 #: src/common/textevents.h:159
-msgid "-%C10-%C11-%O$tDCC RECV %C11$1%O from %C11$3%O failed. $4."
-msgstr "-%C10-%C11-%O$tDCC RECV %C11$1%O од %C11$3%O неуспела. $4."
+msgid "%C22*%O$tDCC RECV%C26 $1%O from%C26 $3%O failed. $4."
+msgstr "%C22*%O$tDCC RECV%C26 $1%O од%C26 $3%O неуспела. $4."
 
 #: src/common/textevents.h:162
-msgid "-%C10-%C11-%O$tDCC RECV: Cannot open $1 for writing ($2)."
-msgstr "-%C10-%C11-%O$tDCC RECV: Не може се писати у $1 ($2)."
+msgid "%C22*%O$tDCC RECV: Cannot open $1 for writing ($2)."
+msgstr "%C22*%O$tDCC RECV: Не може се писати у $1 ($2)."
 
 #: src/common/textevents.h:165
-msgid "-%C10-%C11-%O$tThe file %C11$1%C already exists, saving it as %C11$2%O instead."
-msgstr "-%C10-%C11-%O$tДатотека %C11$1%C већ постоји, снимам под именом %C11$2%O."
+msgid "%C22*%O$tThe file%C26 $1%C already exists, saving it as%C26 $2%O instead."
+msgstr "%C22*%O$tДатотека%C26 $1%C већ постоји, снимам под именом%C26 $2%O."
 
 #: src/common/textevents.h:168
-msgid "-%C10-%C11-%O$t%C11$1 %Chas requested to resume %C11$2 %Cfrom %C11$3%C."
-msgstr "-%C10-%C11-%O$t%C11$1 %Cтражи да се настави %C11$2 %Cод %C11$3%C."
+msgid "%C22*%O$t%C26$1 %Ohas requested to resume%C26 $2 %Cfrom%C26 $3%C."
+msgstr "%C22*%O$t%C26$1 %Cтражи да се настави%C26 $2 %Cод%C26 $3%C."
 
 #: src/common/textevents.h:171
-msgid "-%C10-%C11-%O$tDCC SEND %C11$2%O to %C11$1%O aborted."
-msgstr "-%C10-%C11-%O$tDCC SEND %C11$2%O за %C11$1%O је прекинут."
+msgid "%C22*%O$tDCC SEND%C26 $2%O to%C26 $1%O aborted."
+msgstr "%C22*%O$tDCC SEND%C26 $2%O за%C26 $1%O је прекинут."
 
 #: src/common/textevents.h:174
-msgid "-%C10-%C11-%O$tDCC SEND %C11$1%O to %C11$2%O complete %C14[%C11$3%O cps%C14]%O."
-msgstr "-%C10-%C11-%O$tDCC SEND %C11$1%O за %C11$2%O обављен %C14[%C11$3%O зн./сек.%C14]%O."
+msgid "%C22*%O$tDCC SEND%C26 $1%O to%C26 $2%O complete %C30[%C26$3%O cps%C30]%O."
+msgstr "%C22*%O$tDCC SEND%C26 $1%O за%C26 $2%O обављен %C30[%C26$3%O зн./сек.%C30]%O."
 
 #: src/common/textevents.h:177
-msgid "-%C10-%C11-%O$tDCC SEND connection established to %C11$1 %C14[%O$2%C14]%O"
-msgstr "-%C10-%C11-%O$tDCC SEND веза успостављена са %C11$1 %C14[%O$2%C14]%O"
+msgid "%C22*%O$tDCC SEND connection established to%C26 $1 %C30[%O$2%C30]"
+msgstr "%C22*%O$tDCC SEND веза успостављена са%C26 $1 %C30[%O$2%C30]%O"
 
 #: src/common/textevents.h:180
-msgid "-%C10-%C11-%O$tDCC SEND %C11$1%O to %C11$2%O failed. $3"
-msgstr "-%C10-%C11-%O$tDCC SEND веза %C11$1%O са %C11$2%O није успела. $3"
+msgid "%C22*%O$tDCC SEND%C26 $1%O to%C26 $2%O failed. $3"
+msgstr "%C22*%O$tDCC SEND веза%C26 $1%O са%C26 $2%O није успела. $3"
 
 #: src/common/textevents.h:183
-msgid "-%C10-%C11-%O$t%C11$1 %Chas offered %C11$2 %C(%C11$3 %Cbytes)"
-msgstr "-%C10-%C11-%O$t%C11$1 %Cје понудио %C11$2 %C(%C11$3 %Cбајт((ов)а))"
+msgid "%C22*%O$t%C26$1 %Ohas offered%C26 $2 %O(%C26$3 %Obytes)"
+msgstr "%C22*%O$t%C26$1 %Cје понудио%C26 $2 %C(%C26$3 %Cбајт((ов)а))"
 
 #: src/common/textevents.h:186
-msgid "-%C10-%C11-%O$tDCC $1 %C11$2 %Cto %C11$3 %Cstalled - aborting."
-msgstr "-%C10-%C11-%O$tDCC $1 %C11$2 %Cза %C11$3 %Cзаостаје - прекидам."
+msgid "%C22*%O$tDCC $1%C26 $2 %Oto%C26 $3 %Cstalled - aborting."
+msgstr "%C22*%O$tDCC $1%C26 $2 %Cза%C26 $3 %Cзаостаје - прекидам."
 
 #: src/common/textevents.h:189
-msgid "-%C10-%C11-%O$tDCC $1 %C11$2 %Cto %C11$3 %Ctimed out - aborting."
-msgstr "-%C10-%C11-%O$tDCC $1 %C11$2 %Cto %C11$3 %Ctimed out - aborting."
+msgid "%C22*%O$tDCC $1%C26 $2 %Oto%C26 $3 %Otimed out - aborting."
+msgstr "%C22*%O$tDCC $1%C26 $2 %Cка%C26 $3 %Cје истекао - прекидам."
 
 #: src/common/textevents.h:192
-msgid "-%C10-%C11-%O$t$1 deleted from notify list."
-msgstr "-%C10-%C11-%O$t$1 избрисан са списка посматраних."
+msgid "%C22*%O$t$1 deleted from notify list."
+msgstr "%C22*%O$t$1 избрисан са списка посматраних."
 
 #: src/common/textevents.h:195
-msgid "-%C10-%C11-%O$tDisconnected ($1)."
-msgstr "-%C10-%C11-%O$tИскључен ($1)."
+msgid "%C22*%O$tDisconnected ($1)."
+msgstr "%C22*%O$tИскључен ($1)."
 
 #: src/common/textevents.h:198
-msgid "-%C10-%C11-%O$tFound your IP: [$1]"
-msgstr "-%C10-%C11-%O$tВаш IP број је: [$1]"
+msgid "%C22*%O$tFound your IP: [$1]"
+msgstr "%C22*%O$tВаш IP број је: [$1]"
 
 #: src/common/textevents.h:201
 msgid "$1$t$2"
 msgstr "$1$t$2"
 
 #: src/common/textevents.h:204
-msgid "%O%C11$1%O added to ignore list."
-msgstr "%O%C11$1%O додат у списак ућутканих."
+msgid "%O%C26$1%O added to ignore list."
+msgstr "%O%C26$1%O додат у списак ућутканих."
 
 #: src/common/textevents.h:207
-msgid "Ignore on %C11$1%O changed."
-msgstr "Занемари кад се промени %C11$1%O."
+msgid "Ignore on %C26$1%O changed."
+msgstr "Занемари кад се промени%C26 $1%O."
 
 #: src/common/textevents.h:210
-msgid "%C08,02                                                              %O"
-msgstr "%C08,02                                                              %O"
+#, c-format
+msgid "%C24,18                                                              "
+msgstr "%C24,18                                                              "
 
 #: src/common/textevents.h:213
-msgid "%C08,02 Hostmask                  PRIV NOTI CHAN CTCP DCC  INVI UNIG %O"
-msgstr "%C08,02 Маска                     PRIV NOTI CHAN CTCP DCC  INVI UNIG %O"
+#, c-format
+msgid "%C24,18 Hostmask                  PRIV NOTI CHAN CTCP DCC  INVI UNIG "
+msgstr "%C24,18 Образац за име хоста      PRIV NOTI CHAN CTCP DCC  INVI UNIG "
 
 #: src/common/textevents.h:216
-msgid "%O%C11$1%O removed from ignore list."
-msgstr "%O%C11$1%O избрисан са списка ућутканих."
+msgid "%O%C26$1%O removed from ignore list."
+msgstr "%O%C26$1%O избрисан са списка ућутканих."
 
 #: src/common/textevents.h:219
 msgid "  Ignore list is empty."
 msgstr "  Списак ућутканих је празан."
 
 #: src/common/textevents.h:222
-msgid "-%C10-%C11-%O$tCannot join%C11 %B$1 %O(Channel is invite only)."
-msgstr "-%C10-%C11-%O$tНије могуће прикључити се на%C11 %B$1 %O без позива."
+msgid "%C22*%O$tCannot join%C26 %B$1 %O(Channel is invite only)."
+msgstr "%C22*%O$tНије могуће прикључити се на%C26 %B$1 %O без позива."
 
 #: src/common/textevents.h:225
-msgid "-%C10-%C11-%O$tYou have been invited to %C11$1%C by %C11$2%C (%C11$3%C)"
-msgstr "-%C10-%C11-%O$tПозвани сте на канал %C11$1%C, позвао је %C11$2%C (%C11$3%C)"
+msgid "%C22*%O$tYou have been invited to%C26 $1%O by%C26 $2%C (%C26$3%C)"
+msgstr "%C22*%O$tПозвани сте на канал%C26 $1%C, позвао је%C26 $2%C (%C26$3%C)"
 
 #: src/common/textevents.h:228
-msgid "-%C10-%C11>%O$t%B$1%B %C14(%C10$3%C14)%C has joined $2"
-msgstr "-%C10-%C11>%O$t%B$1%B %C14(%C10$3%C14)%C је дошао на $2"
+msgid "%C19*%O$t%C19%B$1 %B($3) has joined $2"
+msgstr "%C19*%O$t%C19%B$1 %B($3) дошао на $2"
 
 #: src/common/textevents.h:231
-msgid "-%C10-%C11-%O$tCannot join%C11 %B$1 %O(Requires keyword)."
-msgstr "-%C10-%C11-%O$tНије могуће прокључити се на%C11 %B$1 %O без знања кључне речи."
+msgid "%C22*%O$tCannot join%C26 %B$1 %O(Requires keyword)."
+msgstr "%C22*%O$tНије могуће прокључити се на%C26 %B$1 %O без знања кључне речи."
 
 #: src/common/textevents.h:234
-msgid "<%C10-%C11-%O$t$1 has kicked $2 from $3 ($4%O)"
-msgstr "<%C10-%C11-%O$t$1 је избацио $2 са $3 ($4%O)"
+msgid "%C21*%O$t%C21$1 has kicked $2 from $3 ($4%O)"
+msgstr "%C21*%O$t%C21$1 је избацио $2 са $3 ($4%O)"
 
 #: src/common/textevents.h:237
-msgid "-%C10-%C11-%O$tYou have been killed by $1 ($2%O)"
-msgstr "-%C10-%C11-%O$tОдстранио вас је $1 ($2%O)"
+msgid "%C22*%O$tYou have been killed by $1 ($2%O)"
+msgstr "%C22*%O$tОдстранио вас је $1 ($2%O)"
 
-#: src/common/textevents.h:240 src/common/textevents.h:264
-msgid "%C3>%O$1%C3<%O$t$2%O"
-msgstr "%C3>%O$1%C3<%O$t$2%O"
+#: src/common/textevents.h:240
+msgid "%C19>%O$1%C19<%O$t$2%O"
+msgstr "%C19>%O$1%C19<%O$t$2%O"
 
-#: src/common/textevents.h:243 src/common/textevents.h:318
-#: src/common/textevents.h:324 src/common/textevents.h:327
-msgid "-%C10-%C11-%O$t$1%O"
-msgstr "-%C10-%C11-%O$t$1%O"
+#: src/common/textevents.h:243
+msgid "%C16*%O$t$1%O"
+msgstr "%C16*%O$t$1%O"
 
 #: src/common/textevents.h:246
-msgid "-%C10-%C11-%O$tMOTD Skipped."
-msgstr "-%C10-%C11-%O$tПрескочили смо вести дана."
+msgid "%C22*%O$t%C22MOTD Skipped."
+msgstr "%C22*%O$t%C22Прескочили смо вести дана."
 
 #: src/common/textevents.h:249
-msgid "-%C10-%C11-%O$t$1 already in use. Retrying with $2.."
-msgstr "-%C10-%C11-%O$tИме $1 неко већ користи. Пробам да користим $2.."
+msgid "%C22*%O$t$1 already in use. Retrying with $2.."
+msgstr "%C22*%O$tИме $1 неко већ користи. Пробам да користим $2.."
 
 #: src/common/textevents.h:252
-msgid "-%C10-%C11-%O$tNickname already in use. Use /NICK to try another."
-msgstr "-%C10-%C11-%O$tНеко већ користи ово име. Можете користити команду /NICK да пробате неко друго име."
+msgid "%C22*%O$tNickname already in use. Use /NICK to try another."
+msgstr "%C22*%O$tНеко већ користи ово име. Можете користити команду /NICK да пробате неко друго име."
 
 #: src/common/textevents.h:255
-msgid "-%C10-%C11-%O$tNo such DCC."
-msgstr "-%C10-%C11-%O$tDCC захтев не постоји."
+msgid "%C22*%O$tNo such DCC."
+msgstr "%C22*%O$tDCC захтев не постоји."
 
 #: src/common/textevents.h:258
-msgid "-%C10-%C11-%O$tNo process is currently running"
-msgstr "-%C10-%C11-%O$tНиједан процес није покренут."
+msgid "%C22*%O$tNo process is currently running"
+msgstr "%C22*%O$tНиједан процес није покренут."
 
 #: src/common/textevents.h:261
-msgid "%C12-%C13$1%C12-%O$t$2%O"
-msgstr "%C12-%C13$1%C12-%O$t$2%O"
+msgid "%C28-%C29$1%C28-%O$t$2"
+msgstr "%C28-%C29$1%C28-%O$t$2"
+
+#: src/common/textevents.h:264
+msgid "%C19>%O$1%C19<%O$t$2"
+msgstr "%C19>%O$1%C19<%O$t$2"
 
 #: src/common/textevents.h:267
-msgid "-%C10-%C11-%O$tNotify list is empty."
-msgstr "-%C10-%C11-%O$tСписак посматраних је празан."
+msgid "$tNotify list is empty."
+msgstr "$tСписак посматраних је празан."
 
 #: src/common/textevents.h:270
-msgid "%C08,02 %B-- Notify List --------------- %O"
-msgstr "%C08,02 %B-- Списак посматраних -------- %O"
+msgid "%C24,18 %B  Notify List                           "
+msgstr "%C24,18 %B  Списак посматраних                    "
 
 #: src/common/textevents.h:273
-msgid "-%C10-%C11-%O$t$1 users in notify list."
-msgstr "-%C10-%C11-%O$t$1 корисници на списку посматраних."
+msgid "%C22*%O$t$1 users in notify list."
+msgstr "%C22*%O$t$1 корисници на списку посматраних."
 
 #: src/common/textevents.h:276
-msgid "-%C10-%C11-%O$tNotify: $1 is offline ($2)."
-msgstr "-%C10-%C11-%O$tВест: $1 је на вези ($2)."
+msgid "%C22*%O$tNotify: $1 is offline ($2)."
+msgstr "%C22*%O$tВест: $1 је на вези ($2)."
 
 #: src/common/textevents.h:279
-msgid "-%C10-%C11-%O$tNotify: $1 is online ($2)."
-msgstr "-%C10-%C11-%O$tВест: $1 је на вези ($2)."
+msgid "%C22*%O$tNotify: $1 is online ($2)."
+msgstr "%C22*%O$tВест: $1 је на вези ($2)."
 
 #: src/common/textevents.h:282
-msgid "<%C10-%C11-%O$t$1 %C14(%O$2%C14)%C has left $3"
-msgstr "<%C10-%C11-%O$t$1 %C14(%O$2%C14)%C оде $3"
+msgid "%C23*%O$t%C23$1 (%O%C23$2) has left $3"
+msgstr "%C23*%O$t%C23$1 (%O%C23$2) оде $3"
 
 #: src/common/textevents.h:285
-msgid "<%C10-%C11-%O$t$1 %C14(%O$2%C14)%C has left $3 %C14(%O$4%C14)%O"
-msgstr "<%C10-%C11-%O$t$1 %C14(%O$2%C14)%C оде са $3 %C14(%O$4%C14)%O"
+msgid "%C23*%O$t%C23$1 (%O%C23$2) has left $3 (%O%C23$4)"
+msgstr "%C23*%O$t%C23$1 (%O%C23$2) оде са $3 %C14(%O$4%C14)%O"
 
 #: src/common/textevents.h:288
-msgid "-%C10-%C11-%O$tPing reply from $1 : $2 second(s)"
-msgstr "-%C10-%C11-%O$tВреме одзива за $1 у секундама: $2"
+msgid "%C22*%O$tPing reply from $1 : $2 second(s)"
+msgstr "%C22*%O$tВреме одзива за $1 у секундама: $2"
 
 #: src/common/textevents.h:291
-msgid "-%C10-%C11-%O$tNo ping reply for $1 seconds, disconnecting."
-msgstr "-%C10-%C11-%O$tОдзив је изостао за $1 сек., искључујем се."
+msgid "%C22*%O$tNo ping reply for $1 seconds, disconnecting."
+msgstr "%C22*%O$tОдзив је изостао за $1 сек., искључујем се."
 
 #: src/common/textevents.h:294
-msgid "%C12*%C13$1%C12*$t%O$2%O"
-msgstr "%C12*%C13$1%C12*$t%O$2%O"
+msgid "%C28*%C29$3$1%C28*$t%O$2"
+msgstr "%C28*%C29$3$1%C28*$t%O$2"
+
+#: src/common/textevents.h:297
+msgid "%C18%B%B$3$1%O$t$2"
+msgstr "%C18%B%B$3$1%O$t$2"
 
 #: src/common/textevents.h:300
-msgid "-%C10-%C11-%O$tA process is already running"
-msgstr "-%C10-%C11-%O$tПроцес је већ покренут"
+msgid "%C22*%O$tA process is already running"
+msgstr "%C22*%O$tПроцес је већ покренут"
 
 #: src/common/textevents.h:303
-msgid "<%C10-%C11-%O$t$1 has quit %C14(%O$2%O%C14)%O"
-msgstr "<%C10-%C11-%O$t$1 оде %C14(%O$2%O%C14)%O"
+msgid "%C23*%O$t%C23$1 has quit (%O%C23$2)"
+msgstr "%C23*%O$t%C23$1 оде (%O%C23$2)"
 
 #: src/common/textevents.h:306
-msgid "-%C10-%C11-%O$t$1 sets modes%B %C14[%O$2%B%C14]%O"
-msgstr "-%C10-%C11-%O$t$1 поставља приступ%B %C14[%O$2%B%C14]%O"
+msgid "%C22*%O$t$1 sets modes%B %C30[%O$2%B%C30]"
+msgstr "%C22*%O$t$1 поставља приступ%B %C30[%O$2%B%C30]"
 
 #: src/common/textevents.h:309
-msgid "%C12-%C13$1/Wallops%C12-%O$t$2%O"
-msgstr "%C12-%C13$1/Wallops%C12-%O$t$2%O"
+msgid "%C28-%C29$1/Wallops%C28-%O$t$2"
+msgstr "%C28-%C29$1/Wallops%C28-%O$t$2"
 
 #: src/common/textevents.h:312
-msgid "-%C10-%C11-%O$tLooking up IP number for%C11 $1%O.."
-msgstr "-%C10-%C11-%O$tТражим IP број за%C11 $1%O.."
+msgid "%C22*%O$tLooking up IP number for%C26 $1%O.."
+msgstr "%C22*%O$tТражим IP број за%C26 $1%O.."
 
 #: src/common/textevents.h:315
-msgid "-%C10-%C11-%O$tConnected."
-msgstr "-%C10-%C11-%O$tПовезан."
+msgid "%C22*%O$t%C22Connected."
+msgstr "%C22*%O$t%C22Повезан."
+
+#: src/common/textevents.h:318 src/common/textevents.h:324
+#: src/common/textevents.h:327
+msgid "%C22*%O$t$1"
+msgstr "%C22*%O$t$1"
 
 #: src/common/textevents.h:321
-msgid "-%C10-%C11-%O$tLooking up %C11$1%C.."
-msgstr "-%C10-%C11-%O$tТражим %C11$1%C.."
+msgid "%C22*%O$t%C22Looking up $1"
+msgstr "%C22*%O$t%C22Тражим%C26 $1"
 
 #: src/common/textevents.h:330
-msgid "-%C10-%C11-%O$tStopped previous connection attempt (pid=$1)"
-msgstr "-%C10-%C11-%O$tПретходно успостављање везе је прекинуто (pid=$1)"
+msgid "%C22*%O$tStopped previous connection attempt (pid=$1)"
+msgstr "%C22*%O$tПретходно успостављање везе је прекинуто (pid=$1)"
 
 #: src/common/textevents.h:333
-msgid "-%C10-%C11-%O$tTopic for %C11$1%C is %C11$2%O"
-msgstr "-%C10-%C11-%O$tТема за %C11$1%C је %C11$2%O"
+msgid "%C29*%O$t%C29Topic for $1%C %C29is: $2"
+msgstr "%C29*%O$t%C29Тема за%C29 $1%C %C29је: $2"
 
 #: src/common/textevents.h:336
-msgid "-%C10-%C11-%O$tTopic for %C11$1%C set by %C11$2%C at %C11$3%O"
-msgstr "-%C10-%C11-%O$tТему за %C11$1%C поставио је %C11$2%C у %C11$3%O"
+msgid "%C29*%O$t%C29Topic for $1%C %C29set by $2%C %C29at $3"
+msgstr "%C29*%O$t%C29Тему за $1%C %C29поставио је $2%C %C29у $3"
 
 #: src/common/textevents.h:339
-msgid "-%C10-%C11-%O$t$1 has changed the topic to: $2%O"
-msgstr "-%C10-%C11-%O$t$1 променио је тему у: $2%O"
+msgid "%C22*%O$t$1 has changed the topic to: $2"
+msgstr "%C22*%O$t$1 променио је тему у: $2"
 
 #: src/common/textevents.h:342
-msgid "-%C10-%C11-%O$tUnknown host. Maybe you misspelled it?"
-msgstr "-%C10-%C11-%O$tНепознато име рачунара. Можда је погрешно откуцано?"
+msgid "%C22*%O$tUnknown host. Maybe you misspelled it?"
+msgstr "%C22*%O$tНепознато име рачунара. Можда је погрешно откуцано?"
 
 #: src/common/textevents.h:345
-msgid "-%C10-%C11-%O$tCannot join%C11 %B$1 %O(User limit reached)."
-msgstr "-%C10-%C11-%O$tНије могуће ући на%C11 %B$1 %O јер је достигнут макс. број корисника."
+msgid "%C22*%O$tCannot join%C26 %B$1 %O(User limit reached)."
+msgstr "%C22*%O$tНије могуће ући на%C26 %B$1 %O јер је достигнут највећи дозвољени број корисника."
 
 #: src/common/textevents.h:348
-msgid "-%C10-%C11-%O$t%C11Users on $1:%C $2"
-msgstr "-%C10-%C11-%O$t%C11Корисници на $1:%C $2"
+msgid "%C22*%O$t%C26Users on $1:%C $2"
+msgstr "%C22*%O$t%C26Корисници на $1:%C $2"
 
 #: src/common/textevents.h:351
-msgid "-%C10-%C11-%O$t%C12[%O$1%C12] %Cis away %C14(%O$2%O%C14)"
-msgstr "-%C10-%C11-%O$t%C12[%O$1%C12] %Cје одсутан %C14(%O$2%O%C14)"
+msgid "%C22*%O$t%C28[%O$1%C28] %Cis away %C30(%O$2%O%C30)"
+msgstr "%C22*%O$t%C28[%O$1%C28] %Cје одсутан %C30(%O$2%O%C30)"
 
-#: src/common/textevents.h:354
-msgid "-%C10-%C11-%O$t%C12[%O$1%C12]%C $2"
-msgstr "-%C10-%C11-%O$t%C12[%O$1%C12]%C $2"
+#: src/common/textevents.h:354 src/common/textevents.h:378
+msgid "%C22*%O$t%C28[%O$1%C28]%O $2"
+msgstr "%C22*%O$t%C28[%O$1%C28]%O $2"
 
 #: src/common/textevents.h:357
-msgid "-%C10-%C11-%O$t%C12[%O$1%C12] %CEnd of WHOIS list."
-msgstr "-%C10-%C11-%O$t%C12[%O$1%C12] %CКрај списка за WHOIS."
+msgid "%C22*%O$t%C28[%O$1%C28] %OEnd of WHOIS list."
+msgstr "%C22*%O$t%C28[%O$1%C28] %OКрај списка за WHOIS."
 
 #: src/common/textevents.h:360
-msgid "-%C10-%C11-%O$t%C12[%O$1%C12] %O$2"
-msgstr "-%C10-%C11-%O$t%C12[%O$1%C12] %O$2"
+msgid "%C22*%O$t%C28[%O$1%C28] %O$2"
+msgstr "%C22*%O$t%C28[%O$1%C28] %O$2"
 
 #: src/common/textevents.h:363
-msgid "-%C10-%C11-%O$t%C12[%O$1%C12] %O$2 %C11$3%O"
-msgstr "-%C10-%C11-%O$t%C12[%O$1%C12] %O$2 %C11$3%O"
+msgid "%C22*%O$t%C28[%O$1%C28] %O$2%C27 $3"
+msgstr "%C22*%O$t%C28[%O$1%C28] %O$2%C27 $3"
 
 #: src/common/textevents.h:366
-msgid "-%C10-%C11-%O$t%C12[%O$1%C12] %Oreal user@host %C11$2%O, real IP %C11$3%O"
-msgstr "-%C10-%C11-%O$t%C12[%O$1%C12] %Oправи user@host %C11$2%O, прави IP %C11$3%O"
+msgid "%C22*%O$t%C28[%O$1%C28] %Oreal user@host%C27 $2%O, real IP%C27 $3"
+msgstr "%C22*%O$t%C28[%O$1%C28] %Oправи user@host%C27 $2%O, прави IP%C27 $3%O"
 
 #: src/common/textevents.h:369
-msgid "-%C10-%C11-%O$t%C12[%O$1%C12]%O idle %C11$2%O"
-msgstr "-%C10-%C11-%O$t%C12[%O$1%C12]%O неактиван %C11$2%O"
+msgid "%C22*%O$t%C28[%O$1%C28]%O idle%C26 $2"
+msgstr "%C22*%O$t%C28[%O$1%C28]%O неактиван%C26 $2"
 
 #: src/common/textevents.h:372
-msgid "-%C10-%C11-%O$t%C12[%O$1%C12]%O idle %C11$2%O, signon: %C11$3%O"
-msgstr "-%C10-%C11-%O$t%C12[%O$1%C12]%O неактиван %C11$2%O, пријављен: %C11$3%O"
+msgid "%C22*%O$t%C28[%O$1%C28]%O idle%C26 $2%O, signon:%C26 $3"
+msgstr "%C22*%O$t%C28[%O$1%C28]%O неактиван%C26 $2%O, пријављен:%C26 $3%O"
 
 #: src/common/textevents.h:375
-msgid "-%C10-%C11-%O$t%C12[%O$1%C12] %C14(%O$2@$3%C14) %O: $4%O"
-msgstr "-%C10-%C11-%O$t%C12[%O$1%C12] %C14(%O$2@$3%C14) %O: $4%O"
-
-#: src/common/textevents.h:378
-msgid "-%C10-%C11-%O$t%C12[%O$1%C12]%O $2"
-msgstr "-%C10-%C11-%O$t%C12[%O$1%C12]%O $2"
+msgid "%C22*%O$t%C28[%O$1%C28] %C30(%O$2@$3%C30) %O: $4"
+msgstr "%C22*%O$t%C28[%O$1%C28] %C30(%O$2@$3%C30) %O: $4%O"
 
 #: src/common/textevents.h:381
-msgid "-%C10-%C11>%O$t%BYou%B are now talking on %C11$2%O"
-msgstr "-%C10-%C11>%O$t%BСада%B причате на %C11$2%O"
+msgid "%C19*%O$t%C19Now talking on $2"
+msgstr "%C19*%O$t%C19Сада причате на $2"
 
 #: src/common/textevents.h:384
-msgid "-%C10-%C11-%O$tYou have left channel $3"
-msgstr "-%C10-%C11-%O$tНапустили сте канал $3"
+#, c-format
+msgid "%C23*$tYou have left channel $3"
+msgstr "%C23*$tНапустили сте канал $3"
 
 #: src/common/textevents.h:387
-msgid "-%C10-%C11-%O$tYou have left channel $3 %C14(%O$4%C14)%O"
-msgstr "-%C10-%C11-%O$tНапустили сте канал $3 %C14(%O$4%C14)%O"
+msgid "%C23*$tYou have left channel $3 (%O%C23$4%O%C23)"
+msgstr "%C23*$tНапустили сте канал $3 (%O%C23$4%O%C23)"
 
 #: src/common/textevents.h:390
-msgid "-%C10-%C11-%O$tYou have been kicked from $2 by $3 ($4%O)"
-msgstr "-%C10-%C11-%O$t$3 вас је избацио са канала $2 ($4%O)"
+msgid "%C23*$tYou have been kicked from $2 by $3 ($4%O%C23)"
+msgstr "%C23*$t вас је избацио са канала $2 ($4%O%C23)"
 
 #: src/common/textevents.h:393
-msgid "-%C10-%C11-%O$tYou're inviting %C11$1%C to %C11$2%C (%C11$3%C)"
-msgstr "-%C10-%C11-%O$tЗовете %C11$1%C на %C11$2%C (%C11$3%C)"
+msgid "%C22*%O$tYou've invited%C26 $1%O to%C26 $2%O (%C26$3%O)"
+msgstr "%C22*%O$tЗовете%C26 $1%C на%C26 $2%C (%C26$3%C)"
 
 #: src/common/textevents.h:396
-msgid "%C6<%O$1%C6>%O$t$2%O"
-msgstr "%C6<%O$1%C6>%O$t$2%O"
+msgid "%C31%B%B$4$1%O$t%C30$2"
+msgstr "%C31%B%B$4$1%O$t%C30$2"
 
 #: src/common/textevents.h:399
-msgid "-%C10-%C11-%O$tYou are now known as $2"
-msgstr "-%C10-%C11-%O$tПроменили сте име у $2"
+msgid "%C22*%O$tYou are now known as $2"
+msgstr "%C22*%O$tПроменили сте име у $2"
 
 #: src/common/text.c:304
 #, c-format
@@ -1049,1740 +1057,1752 @@ msgstr ""
 "* Дневник се не може отворити за упис. Проверите\n"
 "  права приступа за %s/xchatlogs"
 
-#: src/common/text.c:666
+#: src/common/text.c:675
 msgid "Left message"
 msgstr "Порука слева"
 
-#: src/common/text.c:667
+#: src/common/text.c:676
 msgid "Right message"
 msgstr "Порука здесна"
 
-#: src/common/text.c:671
+#: src/common/text.c:680
 msgid "The nick of the joining person"
 msgstr "Име особе која се прикључује"
 
-#: src/common/text.c:672
+#: src/common/text.c:681
 msgid "The channel being joined"
 msgstr "Канал на који се прикључује"
 
-#: src/common/text.c:673 src/common/text.c:717 src/common/text.c:773
+#: src/common/text.c:682 src/common/text.c:727 src/common/text.c:784
 msgid "The host of the person"
 msgstr "Рачунар на коме ради"
 
-#: src/common/text.c:677 src/common/text.c:682 src/common/text.c:688
-#: src/common/text.c:755 src/common/text.c:879 src/common/text.c:886
-#: src/common/text.c:891 src/common/text.c:896 src/common/text.c:901
-#: src/common/text.c:907 src/common/text.c:912 src/common/text.c:916
-#: src/common/text.c:921 src/common/text.c:927 src/common/text.c:973
-#: src/common/text.c:982 src/common/text.c:987 src/common/text.c:992
-#: src/common/text.c:1001 src/common/text.c:1012 src/common/text.c:1019
-#: src/common/text.c:1025 src/common/text.c:1030 src/common/text.c:1035
-#: src/common/text.c:1042 src/common/text.c:1048 src/common/text.c:1054
-#: src/common/text.c:1059 src/common/text.c:1064 src/common/text.c:1068
-#: src/common/text.c:1074 src/common/text.c:1082 src/common/text.c:1116
-#: src/common/text.c:1121
+#: src/common/text.c:686 src/common/text.c:691 src/common/text.c:698
+#: src/common/text.c:765 src/common/text.c:890 src/common/text.c:897
+#: src/common/text.c:902 src/common/text.c:907 src/common/text.c:912
+#: src/common/text.c:918 src/common/text.c:923 src/common/text.c:927
+#: src/common/text.c:932 src/common/text.c:938 src/common/text.c:984
+#: src/common/text.c:993 src/common/text.c:998 src/common/text.c:1003
+#: src/common/text.c:1012 src/common/text.c:1023 src/common/text.c:1030
+#: src/common/text.c:1036 src/common/text.c:1041 src/common/text.c:1046
+#: src/common/text.c:1053 src/common/text.c:1059 src/common/text.c:1065
+#: src/common/text.c:1070 src/common/text.c:1075 src/common/text.c:1079
+#: src/common/text.c:1085 src/common/text.c:1093 src/common/text.c:1127
+#: src/common/text.c:1132
 msgid "Nickname"
 msgstr "Надимак"
 
-#: src/common/text.c:678
+#: src/common/text.c:687
 msgid "The action"
 msgstr "Наредба"
 
-#: src/common/text.c:683
+#: src/common/text.c:692
 msgid "The text"
 msgstr "Текст"
 
-#: src/common/text.c:684
+#: src/common/text.c:693
 msgid "Mode char"
 msgstr "Ознака за приступ"
 
-#: src/common/text.c:689 src/common/text.c:745 src/common/text.c:751
-#: src/common/text.c:756
+#: src/common/text.c:694 src/common/text.c:767
+msgid "Identified text"
+msgstr "Препознат текст"
+
+#: src/common/text.c:699 src/common/text.c:755 src/common/text.c:761
+#: src/common/text.c:766
 msgid "The message"
 msgstr "Порука"
 
-#: src/common/text.c:693 src/common/text.c:760
+#: src/common/text.c:703 src/common/text.c:771
 msgid "Old nickname"
 msgstr "Стари надимак"
 
-#: src/common/text.c:694 src/common/text.c:761
+#: src/common/text.c:704 src/common/text.c:772
 msgid "New nickname"
 msgstr "Нови надимак"
 
-#: src/common/text.c:698
+#: src/common/text.c:708
 msgid "Nick of person who changed the topic"
 msgstr "Име особе која је променила тему"
 
-#: src/common/text.c:699 src/common/text.c:705 src/fe-gtk/chanlist.c:599
+#: src/common/text.c:709 src/common/text.c:715 src/fe-gtk/chanlist.c:599
 #: src/fe-gtk/chanlist.c:700
 msgid "Topic"
 msgstr "Тема"
 
-#: src/common/text.c:700 src/common/text.c:704 src/common/text.c:1136
+#: src/common/text.c:710 src/common/text.c:714 src/common/text.c:1147
 #: src/fe-gtk/chanlist.c:597 src/fe-gtk/chanlist.c:691
 #: src/fe-gtk/ignoregui.c:175
 msgid "Channel"
 msgstr "Канал"
 
-#: src/common/text.c:709 src/common/text.c:767
+#: src/common/text.c:719 src/common/text.c:778
 msgid "The nickname of the kicker"
 msgstr "Име избацивача"
 
-#: src/common/text.c:710 src/common/text.c:765
+#: src/common/text.c:720 src/common/text.c:776
 msgid "The person being kicked"
 msgstr "Избачена особа"
 
-#: src/common/text.c:711 src/common/text.c:718 src/common/text.c:722
-#: src/common/text.c:727 src/common/text.c:766 src/common/text.c:774
+#: src/common/text.c:721 src/common/text.c:728 src/common/text.c:732
+#: src/common/text.c:737 src/common/text.c:777 src/common/text.c:785
 msgid "The channel"
 msgstr "Канал"
 
-#: src/common/text.c:712 src/common/text.c:768 src/common/text.c:775
+#: src/common/text.c:722 src/common/text.c:779 src/common/text.c:786
 msgid "The reason"
 msgstr "Разлог"
 
-#: src/common/text.c:716 src/common/text.c:772
+#: src/common/text.c:726 src/common/text.c:783
 msgid "The nick of the person leaving"
 msgstr "Име особе која одлази"
 
-#: src/common/text.c:723 src/common/text.c:729
+#: src/common/text.c:733 src/common/text.c:739
 msgid "The time"
 msgstr "Време"
 
-#: src/common/text.c:728
+#: src/common/text.c:738
 msgid "The creator"
 msgstr "Креатор"
 
-#: src/common/text.c:733
+#: src/common/text.c:743
 msgid "Nick"
 msgstr "Име"
 
-#: src/common/text.c:734 src/common/text.c:988
+#: src/common/text.c:744 src/common/text.c:999
 msgid "Reason"
 msgstr "Разлог"
 
-#: src/common/text.c:735 src/common/text.c:881 src/common/text.c:963
+#: src/common/text.c:745 src/common/text.c:892 src/common/text.c:974
 msgid "Host"
 msgstr "Рачунар"
 
-#: src/common/text.c:739 src/common/text.c:744 src/common/text.c:749
+#: src/common/text.c:749 src/common/text.c:754 src/common/text.c:759
 msgid "Who it's from"
 msgstr "Од кога долази"
 
-#: src/common/text.c:740
+#: src/common/text.c:750
 msgid "The time in x.x format (see below)"
 msgstr "Време у формату x.x (видети испод)"
 
-#: src/common/text.c:750 src/common/text.c:791
+#: src/common/text.c:760 src/common/text.c:802
 msgid "The Channel it's going to"
 msgstr "Канал на који иде"
 
-#: src/common/text.c:779
+#: src/common/text.c:790
 msgid "The sound"
 msgstr "Звук"
 
-#: src/common/text.c:780 src/common/text.c:785 src/common/text.c:790
+#: src/common/text.c:791 src/common/text.c:796 src/common/text.c:801
 msgid "The nick of the person"
 msgstr "Име особе"
 
-#: src/common/text.c:784 src/common/text.c:789
+#: src/common/text.c:795 src/common/text.c:800
 msgid "The CTCP event"
 msgstr "CTCP догађај"
 
-#: src/common/text.c:795
+#: src/common/text.c:806
 msgid "The nick of the person who set the key"
 msgstr "Име особе која је поставила кључ"
 
-#: src/common/text.c:796
+#: src/common/text.c:807
 msgid "The key"
 msgstr "Кључ"
 
-#: src/common/text.c:800
+#: src/common/text.c:811
 msgid "The nick of the person who set the limit"
 msgstr "Име особе која је поставила ограничење"
 
-#: src/common/text.c:801
+#: src/common/text.c:812
 msgid "The limit"
 msgstr "Ограничење"
 
-#: src/common/text.c:805
+#: src/common/text.c:816
 msgid "The nick of the person who did the op'ing"
 msgstr "Име особе која је доделила опа"
 
-#: src/common/text.c:806
+#: src/common/text.c:817
 msgid "The nick of the person who has been op'ed"
 msgstr "Име особе која је добила опа"
 
-#: src/common/text.c:810
+#: src/common/text.c:821
 msgid "The nick of the person who has been halfop'ed"
 msgstr "Име особе која је добила полу-опа"
 
-#: src/common/text.c:811
+#: src/common/text.c:822
 msgid "The nick of the person who did the halfop'ing"
 msgstr "Име особе која је доделила полу-опа"
 
-#: src/common/text.c:815
+#: src/common/text.c:826
 msgid "The nick of the person who did the voice'ing"
 msgstr "Име особе која је дала реч"
 
-#: src/common/text.c:816
+#: src/common/text.c:827
 msgid "The nick of the person who has been voice'ed"
 msgstr "Име особе која је добила реч"
 
-#: src/common/text.c:820
+#: src/common/text.c:831
 msgid "The nick of the person who did the banning"
 msgstr "Име особе која је забранила"
 
-#: src/common/text.c:821 src/common/text.c:848
+#: src/common/text.c:832 src/common/text.c:859
 msgid "The ban mask"
 msgstr "Шаблон за забрану"
 
-#: src/common/text.c:825
+#: src/common/text.c:836
 msgid "The nick who removed the key"
 msgstr "Име особе која је склонила кључ"
 
-#: src/common/text.c:829
+#: src/common/text.c:840
 msgid "The nick who removed the limit"
 msgstr "Име особе која је уклонила ограничење"
 
-#: src/common/text.c:833
+#: src/common/text.c:844
 msgid "The nick of the person of did the deop'ing"
 msgstr "Име особе која је одузела опа"
 
-#: src/common/text.c:834
+#: src/common/text.c:845
 msgid "The nick of the person who has been deop'ed"
 msgstr "Име особе којој је одузет оп"
 
-#: src/common/text.c:837
+#: src/common/text.c:848
 msgid "The nick of the person of did the dehalfop'ing"
 msgstr "Име особе која је доделила полу-опа"
 
-#: src/common/text.c:838
+#: src/common/text.c:849
 msgid "The nick of the person who has been dehalfop'ed"
 msgstr "Име особе којој је одузет полу-оп"
 
-#: src/common/text.c:842
+#: src/common/text.c:853
 msgid "The nick of the person of did the devoice'ing"
 msgstr "Име особе која је одузела реч"
 
-#: src/common/text.c:843
+#: src/common/text.c:854
 msgid "The nick of the person who has been devoice'ed"
 msgstr "Име особе којој је одузета реч"
 
-#: src/common/text.c:847
+#: src/common/text.c:858
 msgid "The nick of the person of did the unban'ing"
 msgstr "Име особе која је укинула забрану"
 
-#: src/common/text.c:852
+#: src/common/text.c:863
 msgid "The nick of the person who did the exempt"
 msgstr "Име особе која је поставила искључење"
 
-#: src/common/text.c:853 src/common/text.c:858
+#: src/common/text.c:864 src/common/text.c:869
 msgid "The exempt mask"
 msgstr "Шаблон за искључење"
 
-#: src/common/text.c:857
+#: src/common/text.c:868
 msgid "The nick of the person removed the exempt"
 msgstr "Име особе која је уклонила искључење"
 
-#: src/common/text.c:862
+#: src/common/text.c:873
 msgid "The nick of the person who did the invite"
 msgstr "Име особе која је позвала"
 
-#: src/common/text.c:863 src/common/text.c:868
+#: src/common/text.c:874 src/common/text.c:879
 msgid "The invite mask"
 msgstr "Шаблон за позив"
 
-#: src/common/text.c:867
+#: src/common/text.c:878
 msgid "The nick of the person removed the invite"
 msgstr "Име особе која је уклонила позив"
 
-#: src/common/text.c:872
+#: src/common/text.c:883
 msgid "The nick of the person setting the mode"
 msgstr "Име особе која је поставила приступ"
 
-#: src/common/text.c:873
+#: src/common/text.c:884
 msgid "The mode's sign (+/-)"
 msgstr "Знак приступа (+/-)"
 
-#: src/common/text.c:874
+#: src/common/text.c:885
 msgid "The mode letter"
 msgstr "Ознака приступа"
 
-#: src/common/text.c:875
+#: src/common/text.c:886
 msgid "The channel it's being set on"
 msgstr "Канал на ком стоји"
 
-#: src/common/text.c:880
+#: src/common/text.c:891
 msgid "Username"
 msgstr "Кор. име"
 
-#: src/common/text.c:882
+#: src/common/text.c:893
 msgid "Full name"
 msgstr "Пуно име"
 
-#: src/common/text.c:887
+#: src/common/text.c:898
 msgid "Channel Membership/\"is an IRC operator\""
 msgstr "Припадност каналу/\"је IRC оператор\""
 
-#: src/common/text.c:892
+#: src/common/text.c:903
 msgid "Server Information"
 msgstr "Подаци о серверу"
 
-#: src/common/text.c:897 src/common/text.c:902
+#: src/common/text.c:908 src/common/text.c:913
 msgid "Idle time"
 msgstr "Одсутан"
 
-#: src/common/text.c:903
+#: src/common/text.c:914
 msgid "Signon time"
 msgstr "Време пријаве"
 
-#: src/common/text.c:908
+#: src/common/text.c:919
 msgid "Away reason"
 msgstr "Разлог за одсуство"
 
-#: src/common/text.c:917 src/common/text.c:922 src/common/text.c:930
-#: src/common/text.c:1108
+#: src/common/text.c:928 src/common/text.c:933 src/common/text.c:941
+#: src/common/text.c:1119
 msgid "Message"
 msgstr "Порука"
 
-#: src/common/text.c:923
+#: src/common/text.c:934
 msgid "Account"
 msgstr "Налог"
 
-#: src/common/text.c:928
+#: src/common/text.c:939
 msgid "Real user@host"
 msgstr "Прави user@host"
 
-#: src/common/text.c:929
+#: src/common/text.c:940
 msgid "Real IP"
 msgstr "Прави IP"
 
-#: src/common/text.c:934 src/common/text.c:943 src/common/text.c:949
-#: src/common/text.c:1131
+#: src/common/text.c:945 src/common/text.c:954 src/common/text.c:960
+#: src/common/text.c:1142
 msgid "Channel Name"
 msgstr "Име канала"
 
-#: src/common/text.c:938 src/common/text.c:1094 src/fe-gtk/textgui.c:383
+#: src/common/text.c:949 src/common/text.c:1105 src/fe-gtk/textgui.c:338
 msgid "Text"
 msgstr "Текст"
 
-#: src/common/text.c:939 src/common/text.c:945 src/common/text.c:1132
+#: src/common/text.c:950 src/common/text.c:956 src/common/text.c:1143
 msgid "Server Name"
 msgstr "Име сервера"
 
-#: src/common/text.c:944
+#: src/common/text.c:955
 msgid "Nick of person who invited you"
 msgstr "Име особе која је позвала"
 
-#: src/common/text.c:950 src/fe-gtk/chanlist.c:598
+#: src/common/text.c:961 src/fe-gtk/chanlist.c:598
 msgid "Users"
 msgstr "Корисници"
 
-#: src/common/text.c:954
+#: src/common/text.c:965
 msgid "Nickname in use"
 msgstr "Имена у употреби"
 
-#: src/common/text.c:955
+#: src/common/text.c:966
 msgid "Nick being tried"
 msgstr "Испробана имена"
 
-#: src/common/text.c:959 src/common/text.c:995 src/common/text.c:1006
-#: src/common/text.c:1013 src/common/text.c:1026 src/common/text.c:1043
-#: src/common/text.c:1143 src/common/util.c:348
+#: src/common/text.c:970 src/common/text.c:1006 src/common/text.c:1017
+#: src/common/text.c:1024 src/common/text.c:1037 src/common/text.c:1054
+#: src/common/text.c:1154 src/common/util.c:351
 msgid "Error"
 msgstr "Грешка"
 
-#: src/common/text.c:964 src/common/text.c:1098
+#: src/common/text.c:975 src/common/text.c:1109
 msgid "IP"
 msgstr "IP"
 
-#: src/common/text.c:965 src/common/text.c:994
+#: src/common/text.c:976 src/common/text.c:1005
 msgid "Port"
 msgstr "Порт"
 
-#: src/common/text.c:969
+#: src/common/text.c:980
 msgid "PID"
 msgstr "PID"
 
-#: src/common/text.c:977
+#: src/common/text.c:988
 msgid "Channel name"
 msgstr "Име канала"
 
-#: src/common/text.c:978 src/common/text.c:983
+#: src/common/text.c:989 src/common/text.c:994
 msgid "Modes string"
 msgstr "Права приступа"
 
-#: src/common/text.c:993 src/common/text.c:1031 src/common/text.c:1036
-#: src/common/text.c:1077
+#: src/common/text.c:1004 src/common/text.c:1042 src/common/text.c:1047
+#: src/common/text.c:1088
 msgid "IP address"
 msgstr "IP адреса"
 
-#: src/common/text.c:999 src/common/text.c:1024
+#: src/common/text.c:1010 src/common/text.c:1035
 msgid "DCC Type"
 msgstr "Врста DCC"
 
-#: src/common/text.c:1000 src/common/text.c:1005 src/common/text.c:1010
-#: src/common/text.c:1017 src/common/text.c:1037 src/common/text.c:1041
-#: src/common/text.c:1047 src/common/text.c:1053 src/common/text.c:1060
-#: src/common/text.c:1069 src/common/text.c:1075
+#: src/common/text.c:1011 src/common/text.c:1016 src/common/text.c:1021
+#: src/common/text.c:1028 src/common/text.c:1048 src/common/text.c:1052
+#: src/common/text.c:1058 src/common/text.c:1064 src/common/text.c:1071
+#: src/common/text.c:1080 src/common/text.c:1086
 msgid "Filename"
 msgstr "Датотека"
 
-#: src/common/text.c:1011 src/common/text.c:1018
+#: src/common/text.c:1022 src/common/text.c:1029
 msgid "Destination filename"
 msgstr "Циљна датотека"
 
-#: src/common/text.c:1020 src/common/text.c:1049
+#: src/common/text.c:1031 src/common/text.c:1060
 msgid "CPS"
 msgstr "зн./сек."
 
-#: src/common/text.c:1055
+#: src/common/text.c:1066
 msgid "Pathname"
 msgstr "Путања"
 
-#: src/common/text.c:1070 src/fe-gtk/dccgui.c:483 src/fe-gtk/dccgui.c:633
+#: src/common/text.c:1081 src/fe-gtk/dccgui.c:483 src/fe-gtk/dccgui.c:633
 msgid "Position"
 msgstr "Место"
 
-#: src/common/text.c:1076 src/fe-gtk/dccgui.c:482 src/fe-gtk/dccgui.c:632
+#: src/common/text.c:1087 src/fe-gtk/dccgui.c:482 src/fe-gtk/dccgui.c:632
 msgid "Size"
 msgstr "Величина"
 
-#: src/common/text.c:1081
+#: src/common/text.c:1092
 msgid "DCC String"
 msgstr "DCC текст"
 
-#: src/common/text.c:1086
+#: src/common/text.c:1097
 msgid "Number of notify items"
 msgstr "Број посматраних улаза"
 
-#: src/common/text.c:1090
+#: src/common/text.c:1101
 msgid "Servername"
 msgstr "Име сервера"
 
-#: src/common/text.c:1102
+#: src/common/text.c:1113
 msgid "Old Filename"
 msgstr "Стара датотека"
 
-#: src/common/text.c:1103
+#: src/common/text.c:1114
 msgid "New Filename"
 msgstr "Нова датотека"
 
-#: src/common/text.c:1107
+#: src/common/text.c:1118
 msgid "Receiver"
 msgstr "Прималац"
 
-#: src/common/text.c:1112
+#: src/common/text.c:1123
 msgid "Hostmask"
 msgstr "Шаблон рач."
 
-#: src/common/text.c:1117
+#: src/common/text.c:1128
 msgid "Hostname"
 msgstr "Име рач."
 
-#: src/common/text.c:1122
+#: src/common/text.c:1133
 msgid "The Packet"
 msgstr "Пакет"
 
-#: src/common/text.c:1126
+#: src/common/text.c:1137
 msgid "Seconds"
 msgstr "Секунде"
 
-#: src/common/text.c:1130
+#: src/common/text.c:1141
 msgid "Nick of person who have been invited"
 msgstr "Име позване особе"
 
-#: src/common/text.c:1137
+#: src/common/text.c:1148
 msgid "Banmask"
 msgstr "Шаблон забране"
 
-#: src/common/text.c:1138
+#: src/common/text.c:1149
 msgid "Who set the ban"
 msgstr "Ко је забранио"
 
-#: src/common/text.c:1139
+#: src/common/text.c:1150
 msgid "Ban time"
 msgstr "Време забране"
 
-#: src/common/text.c:1177
+#: src/common/text.c:1188
 #, c-format
 msgid ""
 "Error parsing event %s.\n"
-"Loading default"
+"Loading default."
 msgstr ""
-"Грешка у догађају %s.\n"
+"Грешка у обради догађаја %s.\n"
 "Мењам за подразумевани."
 
-#: src/common/text.c:1687
+#: src/common/text.c:1808
 #, c-format
 msgid ""
 "Cannot read sound file:\n"
 "%s"
 msgstr "Датотека са звучним записом „%s‟ се не може очитати."
 
-#: src/common/util.c:292
+#: src/common/util.c:295
 msgid "Remote host closed socket"
 msgstr "Удаљени рачунар је прекинуо везу"
 
-#: src/common/util.c:297
+#: src/common/util.c:300
 msgid "Connection refused"
 msgstr "Веза одбијена"
 
-#: src/common/util.c:300
+#: src/common/util.c:303
 msgid "No route to host"
 msgstr "Нема путање до рачунара"
 
-#: src/common/util.c:302
+#: src/common/util.c:305
 msgid "Connection timed out"
 msgstr "Време за повезивање је истекло"
 
-#: src/common/util.c:304
+#: src/common/util.c:307
 msgid "Cannot assign that address"
 msgstr "Не може се доделити та адреса"
 
-#: src/common/util.c:306
+#: src/common/util.c:309
 msgid "Connection reset by peer"
 msgstr "Веза прекинута на другом крају"
 
-#: src/common/util.c:771
+#: src/common/util.c:800
 msgid "Andorra"
 msgstr "Андора"
 
-#: src/common/util.c:772
+#: src/common/util.c:801
 msgid "United Arab Emirates"
 msgstr "Уједињени арапски емирати"
 
-#: src/common/util.c:773
+#: src/common/util.c:802
 msgid "Afghanistan"
 msgstr "Авганистан"
 
-#: src/common/util.c:774
+#: src/common/util.c:803
 msgid "Antigua and Barbuda"
 msgstr "Антигва и Барбуда"
 
-#: src/common/util.c:775
+#: src/common/util.c:804
 msgid "Anguilla"
 msgstr "Ангуила"
 
-#: src/common/util.c:776
+#: src/common/util.c:805
 msgid "Albania"
 msgstr "Албанија"
 
-#: src/common/util.c:777
+#: src/common/util.c:806
 msgid "Armenia"
 msgstr "Јерменија"
 
-#: src/common/util.c:778
+#: src/common/util.c:807
 msgid "Netherlands Antilles"
 msgstr "Холандски антили"
 
-#: src/common/util.c:779
+#: src/common/util.c:808
 msgid "Angola"
 msgstr "Ангола"
 
-#: src/common/util.c:780
+#: src/common/util.c:809
 msgid "Antarctica"
 msgstr "Антарктик"
 
-#: src/common/util.c:781
+#: src/common/util.c:810
 msgid "Argentina"
 msgstr "Аргентина"
 
-#: src/common/util.c:782
+#: src/common/util.c:811
 msgid "Reverse DNS"
 msgstr "Обратни DNS"
 
-#: src/common/util.c:783
+#: src/common/util.c:812
 msgid "American Samoa"
 msgstr "Америчка Самоа"
 
-#: src/common/util.c:784
+#: src/common/util.c:813
 msgid "Austria"
 msgstr "Аустрија"
 
-#: src/common/util.c:785
+#: src/common/util.c:814
 msgid "Nato Fiel"
 msgstr "Нато терен"
 
-#: src/common/util.c:786
+#: src/common/util.c:815
 msgid "Australia"
 msgstr "Аустралија"
 
-#: src/common/util.c:787
+#: src/common/util.c:816
 msgid "Aruba"
 msgstr "Аруба"
 
-#: src/common/util.c:788
+#: src/common/util.c:817
 msgid "Azerbaijan"
 msgstr "Азербејџан"
 
-#: src/common/util.c:789
+#: src/common/util.c:818
 msgid "Bosnia and Herzegovina"
 msgstr "Босна и Херцеговина"
 
-#: src/common/util.c:790
+#: src/common/util.c:819
 msgid "Barbados"
 msgstr "Барбадос"
 
-#: src/common/util.c:791
+#: src/common/util.c:820
 msgid "Bangladesh"
 msgstr "Бангладеш"
 
-#: src/common/util.c:792
+#: src/common/util.c:821
 msgid "Belgium"
 msgstr "Белгија"
 
-#: src/common/util.c:793
+#: src/common/util.c:822
 msgid "Burkina Faso"
 msgstr "Буркина Фасо"
 
-#: src/common/util.c:794
+#: src/common/util.c:823
 msgid "Bulgaria"
 msgstr "Бугарска"
 
-#: src/common/util.c:795
+#: src/common/util.c:824
 msgid "Bahrain"
 msgstr "Бахреин"
 
-#: src/common/util.c:796
+#: src/common/util.c:825
 msgid "Burundi"
 msgstr "Бурунди"
 
-#: src/common/util.c:797
+#: src/common/util.c:826
 msgid "Businesses"
 msgstr "Комерцијала"
 
-#: src/common/util.c:798
+#: src/common/util.c:827
 msgid "Benin"
 msgstr "Бенин"
 
-#: src/common/util.c:799
+#: src/common/util.c:828
 msgid "Bermuda"
 msgstr "Бермуда"
 
-#: src/common/util.c:800
+#: src/common/util.c:829
 msgid "Brunei Darussalam"
 msgstr "Брунеји Дар-Ес-Салам"
 
-#: src/common/util.c:801
+#: src/common/util.c:830
 msgid "Bolivia"
 msgstr "Боливија"
 
-#: src/common/util.c:802
+#: src/common/util.c:831
 msgid "Brazil"
 msgstr "Бразил"
 
-#: src/common/util.c:803
+#: src/common/util.c:832
 msgid "Bahamas"
 msgstr "Бахами"
 
-#: src/common/util.c:804
+#: src/common/util.c:833
 msgid "Bhutan"
 msgstr "Бутан"
 
-#: src/common/util.c:805
+#: src/common/util.c:834
 msgid "Bouvet Island"
 msgstr "Острво Буве"
 
-#: src/common/util.c:806
+#: src/common/util.c:835
 msgid "Botswana"
 msgstr "Боцвана"
 
-#: src/common/util.c:807
+#: src/common/util.c:836
 msgid "Belarus"
 msgstr "Белорусија"
 
-#: src/common/util.c:808
+#: src/common/util.c:837
 msgid "Belize"
 msgstr "Белизе"
 
-#: src/common/util.c:809
+#: src/common/util.c:838
 msgid "Canada"
 msgstr "Канада"
 
-#: src/common/util.c:810
+#: src/common/util.c:839
 msgid "Cocos Islands"
 msgstr "Кокосова острва"
 
-#: src/common/util.c:811
+#: src/common/util.c:840
 msgid "Central African Republic"
 msgstr "Централноафричка република"
 
-#: src/common/util.c:812
+#: src/common/util.c:841
 msgid "Congo"
 msgstr "Конго"
 
-#: src/common/util.c:813
+#: src/common/util.c:842
 msgid "Switzerland"
 msgstr "Швајцарска"
 
-#: src/common/util.c:814
-msgid "Cote D'ivoire"
+#: src/common/util.c:843
+msgid "Cote d'Ivoire"
 msgstr "Обала слоноваче"
 
-#: src/common/util.c:815
+#: src/common/util.c:844
 msgid "Cook Islands"
 msgstr "Кукова острва"
 
-#: src/common/util.c:816
+#: src/common/util.c:845
 msgid "Chile"
 msgstr "Чиле"
 
-#: src/common/util.c:817
+#: src/common/util.c:846
 msgid "Cameroon"
 msgstr "Камерун"
 
-#: src/common/util.c:818
+#: src/common/util.c:847
 msgid "China"
 msgstr "Кина"
 
-#: src/common/util.c:819
+#: src/common/util.c:848
 msgid "Colombia"
 msgstr "Колумбија"
 
-#: src/common/util.c:820
+#: src/common/util.c:849
 msgid "Internic Commercial"
 msgstr "Комерцијални домени"
 
-#: src/common/util.c:821
+#: src/common/util.c:850
 msgid "Costa Rica"
 msgstr "Костарика"
 
-#: src/common/util.c:822
+#: src/common/util.c:851
 msgid "Former Czechoslovakia"
 msgstr "Србија и Црна Гора (некад било: Чехословачка)"
 
-#: src/common/util.c:823
+#: src/common/util.c:852
 msgid "Cuba"
 msgstr "Куба"
 
-#: src/common/util.c:824
+#: src/common/util.c:853
 msgid "Cape Verde"
 msgstr "Зеленортска острва"
 
-#: src/common/util.c:825
+#: src/common/util.c:854
 msgid "Christmas Island"
 msgstr "Божићна острва"
 
-#: src/common/util.c:826
+#: src/common/util.c:855
 msgid "Cyprus"
 msgstr "Кипар"
 
-#: src/common/util.c:827
+#: src/common/util.c:856
 msgid "Czech Republic"
 msgstr "Република Чешка"
 
-#: src/common/util.c:828
+#: src/common/util.c:857
 msgid "Germany"
 msgstr "Немачка"
 
-#: src/common/util.c:829
+#: src/common/util.c:858
 msgid "Djibouti"
 msgstr "Џибути"
 
-#: src/common/util.c:830
+#: src/common/util.c:859
 msgid "Denmark"
 msgstr "Данска"
 
-#: src/common/util.c:831
+#: src/common/util.c:860
 msgid "Dominica"
 msgstr "Доминика"
 
-#: src/common/util.c:832
+#: src/common/util.c:861
 msgid "Dominican Republic"
 msgstr "Доминиканска република"
 
-#: src/common/util.c:833
+#: src/common/util.c:862
 msgid "Algeria"
 msgstr "Алжир"
 
-#: src/common/util.c:834
+#: src/common/util.c:863
 msgid "Ecuador"
 msgstr "Еквадор"
 
-#: src/common/util.c:835
+#: src/common/util.c:864
 msgid "Educational Institution"
 msgstr "Образовне установе"
 
-#: src/common/util.c:836
+#: src/common/util.c:865
 msgid "Estonia"
 msgstr "Естонија"
 
-#: src/common/util.c:837
+#: src/common/util.c:866
 msgid "Egypt"
 msgstr "Египат"
 
-#: src/common/util.c:838
+#: src/common/util.c:867
 msgid "Western Sahara"
 msgstr "Западна Сахара"
 
-#: src/common/util.c:839
+#: src/common/util.c:868
 msgid "Eritrea"
 msgstr "Еритреја"
 
-#: src/common/util.c:840
+#: src/common/util.c:869
 msgid "Spain"
 msgstr "Шпанија"
 
-#: src/common/util.c:841
+#: src/common/util.c:870
 msgid "Ethiopia"
 msgstr "Етиопија"
 
-#: src/common/util.c:842
+#: src/common/util.c:871
 msgid "Finland"
 msgstr "Финска"
 
-#: src/common/util.c:843
+#: src/common/util.c:872
 msgid "Fiji"
 msgstr "Фиџи"
 
-#: src/common/util.c:844
+#: src/common/util.c:873
 msgid "Falkland Islands"
 msgstr "Фоклендска острва"
 
-#: src/common/util.c:845
+#: src/common/util.c:874
 msgid "Micronesia"
 msgstr "Микронезија"
 
-#: src/common/util.c:846
+#: src/common/util.c:875
 msgid "Faroe Islands"
 msgstr "Фарска острва"
 
-#: src/common/util.c:847
+#: src/common/util.c:876
 msgid "France"
 msgstr "Француска"
 
-#: src/common/util.c:848
+#: src/common/util.c:877
 msgid "France, Metropolitan"
 msgstr "Француска, Метрополитан"
 
-#: src/common/util.c:849
+#: src/common/util.c:878
 msgid "Gabon"
 msgstr "Габон"
 
-#: src/common/util.c:850
+#: src/common/util.c:879
 msgid "Great Britain"
 msgstr "Велика Британија"
 
-#: src/common/util.c:851
+#: src/common/util.c:880
 msgid "Grenada"
 msgstr "Гренада"
 
-#: src/common/util.c:852
+#: src/common/util.c:881
 msgid "Georgia"
 msgstr "Грузија"
 
-#: src/common/util.c:853
+#: src/common/util.c:882
 msgid "French Guiana"
 msgstr "Француска Гвајана"
 
-#: src/common/util.c:854
+#: src/common/util.c:883
 msgid "British Channel Isles"
 msgstr "Британска Каналска острва"
 
-#: src/common/util.c:855
+#: src/common/util.c:884
 msgid "Ghana"
 msgstr "Гана"
 
-#: src/common/util.c:856
+#: src/common/util.c:885
 msgid "Gibraltar"
 msgstr "Гибралтар"
 
-#: src/common/util.c:857
+#: src/common/util.c:886
 msgid "Greenland"
 msgstr "Гренланд"
 
-#: src/common/util.c:858
+#: src/common/util.c:887
 msgid "Gambia"
 msgstr "Гамбија"
 
-#: src/common/util.c:859
+#: src/common/util.c:888
 msgid "Guinea"
 msgstr "Гвинеја"
 
-#: src/common/util.c:860
+#: src/common/util.c:889
 msgid "Government"
 msgstr "Владине установе"
 
-#: src/common/util.c:861
+#: src/common/util.c:890
 msgid "Guadeloupe"
 msgstr "Гвадалупе"
 
-#: src/common/util.c:862
+#: src/common/util.c:891
 msgid "Equatorial Guinea"
 msgstr "Екваторијална Гвинеја"
 
-#: src/common/util.c:863
+#: src/common/util.c:892
 msgid "Greece"
 msgstr "Грчка"
 
-#: src/common/util.c:864
-msgid "S. Georgia and S. Sandwich Isles."
+#: src/common/util.c:893
+msgid "S. Georgia and S. Sandwich Isles"
 msgstr "С. Џорџија и С. Сендвичка острва"
 
-#: src/common/util.c:865
+#: src/common/util.c:894
 msgid "Guatemala"
 msgstr "Гватемала"
 
-#: src/common/util.c:866
+#: src/common/util.c:895
 msgid "Guam"
 msgstr "Гуам"
 
-#: src/common/util.c:867
+#: src/common/util.c:896
 msgid "Guinea-Bissau"
 msgstr "Гвинеја Бисао"
 
-#: src/common/util.c:868
+#: src/common/util.c:897
 msgid "Guyana"
 msgstr "Гијана"
 
-#: src/common/util.c:869
+#: src/common/util.c:898
 msgid "Hong Kong"
 msgstr "Хонг Конг"
 
-#: src/common/util.c:870
+#: src/common/util.c:899
 msgid "Heard and McDonald Islands"
 msgstr "Хердова и Макдоналдова острва"
 
-#: src/common/util.c:871
+#: src/common/util.c:900
 msgid "Honduras"
 msgstr "Хондурас"
 
-#: src/common/util.c:872
+#: src/common/util.c:901
 msgid "Croatia"
 msgstr "Хрватска"
 
-#: src/common/util.c:873
+#: src/common/util.c:902
 msgid "Haiti"
 msgstr "Хаити"
 
-#: src/common/util.c:874
+#: src/common/util.c:903
 msgid "Hungary"
 msgstr "Мађарска"
 
-#: src/common/util.c:875
+#: src/common/util.c:904
 msgid "Indonesia"
 msgstr "Индонезија"
 
-#: src/common/util.c:876
+#: src/common/util.c:905
 msgid "Ireland"
 msgstr "Ирска"
 
-#: src/common/util.c:877
+#: src/common/util.c:906
 msgid "Israel"
 msgstr "Израел"
 
-#: src/common/util.c:878
+#: src/common/util.c:907
 msgid "India"
 msgstr "Индија"
 
-#: src/common/util.c:879
+#: src/common/util.c:908
 msgid "Informational"
 msgstr "Информациони домен"
 
-#: src/common/util.c:880
+#: src/common/util.c:909
 msgid "International"
 msgstr "Међународни домени"
 
-#: src/common/util.c:881
+#: src/common/util.c:910
 msgid "British Indian Ocean Territory"
 msgstr "Британска Индијска острва"
 
-#: src/common/util.c:882
+#: src/common/util.c:911
 msgid "Iraq"
 msgstr "Ирак"
 
-#: src/common/util.c:883
+#: src/common/util.c:912
 msgid "Iran"
 msgstr "Иран"
 
-#: src/common/util.c:884
+#: src/common/util.c:913
 msgid "Iceland"
 msgstr "Исланд"
 
-#: src/common/util.c:885
+#: src/common/util.c:914
 msgid "Italy"
 msgstr "Италија"
 
-#: src/common/util.c:886
+#: src/common/util.c:915
 msgid "Jamaica"
 msgstr "Јамајка"
 
-#: src/common/util.c:887
+#: src/common/util.c:916
 msgid "Jordan"
 msgstr "Јордан"
 
-#: src/common/util.c:888
+#: src/common/util.c:917
 msgid "Japan"
 msgstr "Јапан"
 
-#: src/common/util.c:889
+#: src/common/util.c:918
 msgid "Kenya"
 msgstr "Кенија"
 
-#: src/common/util.c:890
+#: src/common/util.c:919
 msgid "Kyrgyzstan"
 msgstr "Киргистан"
 
-#: src/common/util.c:891
+#: src/common/util.c:920
 msgid "Cambodia"
 msgstr "Камбоџа"
 
-#: src/common/util.c:892
+#: src/common/util.c:921
 msgid "Kiribati"
 msgstr "Кирибати"
 
-#: src/common/util.c:893
+#: src/common/util.c:922
 msgid "Comoros"
 msgstr "Комори"
 
-#: src/common/util.c:894
+#: src/common/util.c:923
 msgid "St. Kitts and Nevis"
 msgstr "Св. Китс и Невис"
 
-#: src/common/util.c:895
+#: src/common/util.c:924
 msgid "North Korea"
 msgstr "Северна Кореја"
 
-#: src/common/util.c:896
+#: src/common/util.c:925
 msgid "South Korea"
 msgstr "Јужна Кореја"
 
-#: src/common/util.c:897
+#: src/common/util.c:926
 msgid "Kuwait"
 msgstr "Кувајт"
 
-#: src/common/util.c:898
+#: src/common/util.c:927
 msgid "Cayman Islands"
 msgstr "Кајманска острва"
 
-#: src/common/util.c:899
+#: src/common/util.c:928
 msgid "Kazakhstan"
 msgstr "Казахстан"
 
-#: src/common/util.c:900
+#: src/common/util.c:929
 msgid "Laos"
 msgstr "Лаос"
 
-#: src/common/util.c:901
+#: src/common/util.c:930
 msgid "Lebanon"
 msgstr "Либан"
 
-#: src/common/util.c:902
+#: src/common/util.c:931
 msgid "Saint Lucia"
 msgstr "Света Луција"
 
-#: src/common/util.c:903
+#: src/common/util.c:932
 msgid "Liechtenstein"
 msgstr "Лихтенштајн"
 
-#: src/common/util.c:904
+#: src/common/util.c:933
 msgid "Sri Lanka"
 msgstr "Шри Ланка"
 
-#: src/common/util.c:905
+#: src/common/util.c:934
 msgid "Liberia"
 msgstr "Либерија"
 
-#: src/common/util.c:906
+#: src/common/util.c:935
 msgid "Lesotho"
 msgstr "Лесото"
 
-#: src/common/util.c:907
+#: src/common/util.c:936
 msgid "Lithuania"
 msgstr "Литванија"
 
-#: src/common/util.c:908
+#: src/common/util.c:937
 msgid "Luxembourg"
 msgstr "Луксембург"
 
-#: src/common/util.c:909
+#: src/common/util.c:938
 msgid "Latvia"
 msgstr "Латвија"
 
-#: src/common/util.c:910
+#: src/common/util.c:939
 msgid "Libya"
 msgstr "Либија"
 
-#: src/common/util.c:911
+#: src/common/util.c:940
 msgid "Morocco"
 msgstr "Мароко"
 
-#: src/common/util.c:912
+#: src/common/util.c:941
 msgid "Monaco"
 msgstr "Монако"
 
-#: src/common/util.c:913
+#: src/common/util.c:942
 msgid "Moldova"
 msgstr "Молдова"
 
-#: src/common/util.c:914
+#: src/common/util.c:943
 msgid "United States Medical"
 msgstr "Америчке медицинске установе"
 
-#: src/common/util.c:915
+#: src/common/util.c:944
 msgid "Madagascar"
 msgstr "Мадагаскар"
 
-#: src/common/util.c:916
+#: src/common/util.c:945
 msgid "Marshall Islands"
 msgstr "Маршалска острва"
 
-#: src/common/util.c:917
+#: src/common/util.c:946
 msgid "Military"
 msgstr "Војни домени"
 
-#: src/common/util.c:918
+#: src/common/util.c:947
 msgid "Macedonia"
 msgstr "Македонија"
 
-#: src/common/util.c:919
+#: src/common/util.c:948
 msgid "Mali"
 msgstr "Мали"
 
-#: src/common/util.c:920
+#: src/common/util.c:949
 msgid "Myanmar"
 msgstr "Мианмар"
 
-#: src/common/util.c:921
+#: src/common/util.c:950
 msgid "Mongolia"
 msgstr "Монголија"
 
-#: src/common/util.c:922
+#: src/common/util.c:951
 msgid "Macau"
 msgstr "Макао"
 
-#: src/common/util.c:923
+#: src/common/util.c:952
 msgid "Northern Mariana Islands"
 msgstr "Северна Маријанска острва"
 
-#: src/common/util.c:924
+#: src/common/util.c:953
 msgid "Martinique"
 msgstr "Мартиник"
 
-#: src/common/util.c:925
+#: src/common/util.c:954
 msgid "Mauritania"
 msgstr "Мауританија"
 
-#: src/common/util.c:926
+#: src/common/util.c:955
 msgid "Montserrat"
 msgstr "Монсерат"
 
-#: src/common/util.c:927
+#: src/common/util.c:956
 msgid "Malta"
 msgstr "Малта"
 
-#: src/common/util.c:928
+#: src/common/util.c:957
 msgid "Mauritius"
 msgstr "Маурицијус"
 
-#: src/common/util.c:929
+#: src/common/util.c:958
 msgid "Maldives"
 msgstr "Малдиви"
 
-#: src/common/util.c:930
+#: src/common/util.c:959
 msgid "Malawi"
 msgstr "Малави"
 
-#: src/common/util.c:931
+#: src/common/util.c:960
 msgid "Mexico"
 msgstr "Мексико"
 
-#: src/common/util.c:932
+#: src/common/util.c:961
 msgid "Malaysia"
 msgstr "Малезија"
 
-#: src/common/util.c:933
+#: src/common/util.c:962
 msgid "Mozambique"
 msgstr "Мозамбик"
 
-#: src/common/util.c:934
+#: src/common/util.c:963
 msgid "Namibia"
 msgstr "Намибија"
 
-#: src/common/util.c:935
+#: src/common/util.c:964
 msgid "New Caledonia"
 msgstr "Нова Каледонија"
 
-#: src/common/util.c:936
+#: src/common/util.c:965
 msgid "Niger"
 msgstr "Нигер"
 
-#: src/common/util.c:937
+#: src/common/util.c:966
 msgid "Internic Network"
 msgstr "Интерник мрежа"
 
-#: src/common/util.c:938
+#: src/common/util.c:967
 msgid "Norfolk Island"
 msgstr "Норфолшка острва"
 
-#: src/common/util.c:939
+#: src/common/util.c:968
 msgid "Nigeria"
 msgstr "Нигерија"
 
-#: src/common/util.c:940
+#: src/common/util.c:969
 msgid "Nicaragua"
 msgstr "Никарагва"
 
-#: src/common/util.c:941
+#: src/common/util.c:970
 msgid "Netherlands"
 msgstr "Холандија"
 
-#: src/common/util.c:942
+#: src/common/util.c:971
 msgid "Norway"
 msgstr "Норвешка"
 
-#: src/common/util.c:943
+#: src/common/util.c:972
 msgid "Nepal"
 msgstr "Непал"
 
-#: src/common/util.c:944
+#: src/common/util.c:973
 msgid "Nauru"
 msgstr "Науру"
 
-#: src/common/util.c:945
+#: src/common/util.c:974
 msgid "Neutral Zone"
 msgstr "Неутрална зона"
 
-#: src/common/util.c:946
+#: src/common/util.c:975
 msgid "Niue"
 msgstr "Ниуе"
 
-#: src/common/util.c:947
+#: src/common/util.c:976
 msgid "New Zealand"
 msgstr "Нови Зеланд"
 
-#: src/common/util.c:948
+#: src/common/util.c:977
 msgid "Oman"
 msgstr "Оман"
 
-#: src/common/util.c:949
+#: src/common/util.c:978
 msgid "Internic Non-Profit Organization"
 msgstr "Непрофитна организација интерник"
 
-#: src/common/util.c:950
+#: src/common/util.c:979
 msgid "Panama"
 msgstr "Панама"
 
-#: src/common/util.c:951
+#: src/common/util.c:980
 msgid "Peru"
 msgstr "Перу"
 
-#: src/common/util.c:952
+#: src/common/util.c:981
 msgid "French Polynesia"
 msgstr "Француска Полинезија"
 
-#: src/common/util.c:953
+#: src/common/util.c:982
 msgid "Papua New Guinea"
 msgstr "Папуа Нова Гвинеја"
 
-#: src/common/util.c:954
+#: src/common/util.c:983
 msgid "Philippines"
 msgstr "Филипини"
 
-#: src/common/util.c:955
+#: src/common/util.c:984
 msgid "Pakistan"
 msgstr "Пакистан"
 
-#: src/common/util.c:956
+#: src/common/util.c:985
 msgid "Poland"
 msgstr "Пољска"
 
-#: src/common/util.c:957
+#: src/common/util.c:986
 msgid "St. Pierre and Miquelon"
 msgstr "Св. Пјер и Микелон"
 
-#: src/common/util.c:958
+#: src/common/util.c:987
 msgid "Pitcairn"
 msgstr "Питкаирн"
 
-#: src/common/util.c:959
+#: src/common/util.c:988
 msgid "Puerto Rico"
 msgstr "Порторико"
 
-#: src/common/util.c:960
+#: src/common/util.c:989
 msgid "Portugal"
 msgstr "Португал"
 
-#: src/common/util.c:961
+#: src/common/util.c:990
 msgid "Palau"
 msgstr "Палау"
 
-#: src/common/util.c:962
+#: src/common/util.c:991
 msgid "Paraguay"
 msgstr "Парагвај"
 
-#: src/common/util.c:963
+#: src/common/util.c:992
 msgid "Qatar"
 msgstr "Катар"
 
-#: src/common/util.c:964
+#: src/common/util.c:993
 msgid "Reunion"
 msgstr "Реинион"
 
-#: src/common/util.c:965
+#: src/common/util.c:994
 msgid "Romania"
 msgstr "Румунија"
 
-#: src/common/util.c:966
+#: src/common/util.c:995
 msgid "Old School ARPAnet"
 msgstr "Старовремски ARPAnet"
 
-#: src/common/util.c:967
+#: src/common/util.c:996
 msgid "Russian Federation"
 msgstr "Руска федерација"
 
-#: src/common/util.c:968
+#: src/common/util.c:997
 msgid "Rwanda"
 msgstr "Руанда"
 
-#: src/common/util.c:969
+#: src/common/util.c:998
 msgid "Saudi Arabia"
 msgstr "Саудијска Арабија"
 
-#: src/common/util.c:970
+#: src/common/util.c:999
 msgid "Solomon Islands"
 msgstr "Соломонова острва"
 
-#: src/common/util.c:971
+#: src/common/util.c:1000
 msgid "Seychelles"
 msgstr "Сејшели"
 
-#: src/common/util.c:972
+#: src/common/util.c:1001
 msgid "Sudan"
 msgstr "Судан"
 
-#: src/common/util.c:973
+#: src/common/util.c:1002
 msgid "Sweden"
 msgstr "Шведска"
 
-#: src/common/util.c:974
+#: src/common/util.c:1003
 msgid "Singapore"
 msgstr "Сингапур"
 
-#: src/common/util.c:975
+#: src/common/util.c:1004
 msgid "St. Helena"
 msgstr "Св. Јелена"
 
-#: src/common/util.c:976
+#: src/common/util.c:1005
 msgid "Slovenia"
 msgstr "Словенија"
 
-#: src/common/util.c:977
+#: src/common/util.c:1006
 msgid "Svalbard and Jan Mayen Islands"
 msgstr "Свалбард и Јан Мајен острва"
 
-#: src/common/util.c:978
+#: src/common/util.c:1007
 msgid "Slovak Republic"
 msgstr "Словачка република"
 
-#: src/common/util.c:979
+#: src/common/util.c:1008
 msgid "Sierra Leone"
 msgstr "Сијера Леоне"
 
-#: src/common/util.c:980
+#: src/common/util.c:1009
 msgid "San Marino"
 msgstr "Сан Марино"
 
-#: src/common/util.c:981
+#: src/common/util.c:1010
 msgid "Senegal"
 msgstr "Сенегал"
 
-#: src/common/util.c:982
+#: src/common/util.c:1011
 msgid "Somalia"
 msgstr "Сомалија"
 
-#: src/common/util.c:983
+#: src/common/util.c:1012
 msgid "Suriname"
 msgstr "Суринам"
 
-#: src/common/util.c:984
+#: src/common/util.c:1013
 msgid "Sao Tome and Principe"
 msgstr "Сао Томе и Принципе"
 
-#: src/common/util.c:985
+#: src/common/util.c:1014
 msgid "Former USSR"
 msgstr "Бивши СССР"
 
-#: src/common/util.c:986
+#: src/common/util.c:1015
 msgid "El Salvador"
 msgstr "Ел Салвадор"
 
-#: src/common/util.c:987
+#: src/common/util.c:1016
 msgid "Syria"
 msgstr "Сирија"
 
-#: src/common/util.c:988
+#: src/common/util.c:1017
 msgid "Swaziland"
 msgstr "Свазиленд"
 
-#: src/common/util.c:989
+#: src/common/util.c:1018
 msgid "Turks and Caicos Islands"
 msgstr "Туркс и Каикос острва"
 
-#: src/common/util.c:990
+#: src/common/util.c:1019
 msgid "Chad"
 msgstr "Чад"
 
-#: src/common/util.c:991
+#: src/common/util.c:1020
 msgid "French Southern Territories"
 msgstr "Француске јужне територије"
 
-#: src/common/util.c:992
+#: src/common/util.c:1021
 msgid "Togo"
 msgstr "Того"
 
-#: src/common/util.c:993
+#: src/common/util.c:1022
 msgid "Thailand"
 msgstr "Тајланд"
 
-#: src/common/util.c:994
+#: src/common/util.c:1023
 msgid "Tajikistan"
 msgstr "Таџикистан"
 
-#: src/common/util.c:995
+#: src/common/util.c:1024
 msgid "Tokelau"
 msgstr "Токелау"
 
-#: src/common/util.c:996
+#: src/common/util.c:1025
 msgid "Turkmenistan"
 msgstr "Туркменистан"
 
-#: src/common/util.c:997
+#: src/common/util.c:1026
 msgid "Tunisia"
 msgstr "Тунис"
 
-#: src/common/util.c:998
+#: src/common/util.c:1027
 msgid "Tonga"
 msgstr "Тонга"
 
-#: src/common/util.c:999
+#: src/common/util.c:1028
 msgid "East Timor"
 msgstr "Источни Тимор"
 
-#: src/common/util.c:1000
+#: src/common/util.c:1029
 msgid "Turkey"
 msgstr "Турска"
 
-#: src/common/util.c:1001
+#: src/common/util.c:1030
 msgid "Trinidad and Tobago"
 msgstr "Тринидад и Тобаго"
 
-#: src/common/util.c:1002
+#: src/common/util.c:1031
 msgid "Tuvalu"
 msgstr "Тувалу"
 
-#: src/common/util.c:1003
+#: src/common/util.c:1032
 msgid "Taiwan"
 msgstr "Тајван"
 
-#: src/common/util.c:1004
+#: src/common/util.c:1033
 msgid "Tanzania"
 msgstr "Танзанија"
 
-#: src/common/util.c:1005
+#: src/common/util.c:1034
 msgid "Ukraine"
 msgstr "Украjина"
 
-#: src/common/util.c:1006
+#: src/common/util.c:1035
 msgid "Uganda"
 msgstr "Уганда"
 
-#: src/common/util.c:1007
+#: src/common/util.c:1036
 msgid "United Kingdom"
 msgstr "Велика Британија"
 
-#: src/common/util.c:1008
+#: src/common/util.c:1037
 msgid "US Minor Outlying Islands"
 msgstr "Мања америчка истурена острва"
 
-#: src/common/util.c:1009
+#: src/common/util.c:1038
 msgid "United States of America"
 msgstr "Сједињене америчке државе"
 
-#: src/common/util.c:1010
+#: src/common/util.c:1039
 msgid "Uruguay"
 msgstr "Уругвај"
 
-#: src/common/util.c:1011
+#: src/common/util.c:1040
 msgid "Uzbekistan"
 msgstr "Узбекистан"
 
-#: src/common/util.c:1012
+#: src/common/util.c:1041
 msgid "Vatican City State"
 msgstr "Град-држава Ватикан"
 
-#: src/common/util.c:1013
-msgid "St. Vincent and the grenadines"
-msgstr "Св. Винсент и гренадини"
+#: src/common/util.c:1042
+msgid "St. Vincent and the Grenadines"
+msgstr "Св. Винсент и Гренадини"
 
-#: src/common/util.c:1014
+#: src/common/util.c:1043
 msgid "Venezuela"
 msgstr "Венецуела"
 
-#: src/common/util.c:1015
+#: src/common/util.c:1044
 msgid "British Virgin Islands"
 msgstr "Британска Девичанска острва"
 
-#: src/common/util.c:1016
+#: src/common/util.c:1045
 msgid "US Virgin Islands"
 msgstr "Америчка Девичанска острва"
 
-#: src/common/util.c:1017
+#: src/common/util.c:1046
 msgid "Vietnam"
 msgstr "Вијетнам"
 
-#: src/common/util.c:1018
+#: src/common/util.c:1047
 msgid "Vanuatu"
 msgstr "Вануату"
 
-#: src/common/util.c:1019
+#: src/common/util.c:1048
 msgid "Wallis and Futuna Islands"
 msgstr "Острвље Валис и Фортуна"
 
-#: src/common/util.c:1020
+#: src/common/util.c:1049
 msgid "Samoa"
 msgstr "Самоа"
 
-#: src/common/util.c:1021
+#: src/common/util.c:1050
 msgid "Yemen"
 msgstr "Јемен"
 
-#: src/common/util.c:1022
+#: src/common/util.c:1051
 msgid "Mayotte"
 msgstr "Мајот"
 
-#: src/common/util.c:1023
+#: src/common/util.c:1052
 msgid "Yugoslavia"
 msgstr "Југославија"
 
-#: src/common/util.c:1024
+#: src/common/util.c:1053
 msgid "South Africa"
 msgstr "Јужна Африка"
 
-#: src/common/util.c:1025
+#: src/common/util.c:1054
 msgid "Zambia"
 msgstr "Замбија"
 
-#: src/common/util.c:1026
+#: src/common/util.c:1055
 msgid "Zaire"
 msgstr "Заир"
 
-#: src/common/util.c:1027
+#: src/common/util.c:1056
 msgid "Zimbabwe"
 msgstr "Зимбабве"
 
-#: src/common/util.c:1033 src/common/util.c:1043 src/fe-gtk/menu.c:513
+#: src/common/util.c:1062 src/common/util.c:1072 src/fe-gtk/menu.c:513
 #: src/fe-gtk/menu.c:517 src/fe-gtk/menu.c:521 src/fe-gtk/menu.c:525
 #: src/fe-gtk/menu.c:529
 msgid "Unknown"
 msgstr "Непознато"
 
-#: src/common/xchat.c:918
+#: src/common/xchat.c:923
 msgid "Direct client-to-client"
 msgstr "Директни приступ клијенту"
 
-#: src/common/xchat.c:919
+#: src/common/xchat.c:924
 msgid "Send File"
 msgstr "Пошаљи датотеку"
 
-#: src/common/xchat.c:920
+#: src/common/xchat.c:925
 msgid "Offer Chat"
 msgstr "Понуди разговор"
 
-#: src/common/xchat.c:921
+#: src/common/xchat.c:926
 msgid "Abort Chat"
 msgstr "Прекини разговор"
 
-#: src/common/xchat.c:922 src/fe-gtk/plugingui.c:74
+#: src/common/xchat.c:927 src/fe-gtk/plugingui.c:74
 msgid "Version"
 msgstr "Верзија"
 
-#: src/common/xchat.c:923
+#: src/common/xchat.c:928
 msgid "Userinfo"
 msgstr "Информације"
 
-#: src/common/xchat.c:924
+#: src/common/xchat.c:929
 msgid "Clientinfo"
 msgstr "Инф. о клијенту"
 
-#: src/common/xchat.c:925 src/common/xchat.c:957 src/common/xchat.c:1008
+#: src/common/xchat.c:930 src/common/xchat.c:964 src/common/xchat.c:1015
 msgid "Ping"
 msgstr "Ping"
 
-#: src/common/xchat.c:926
+#: src/common/xchat.c:931
 msgid "Time"
 msgstr "Време"
 
-#: src/common/xchat.c:927
+#: src/common/xchat.c:932
 msgid "Finger"
 msgstr "Finger"
 
-#: src/common/xchat.c:928
+#: src/common/xchat.c:933
 msgid "Oper"
 msgstr "Опер"
 
-#: src/common/xchat.c:929
+#: src/common/xchat.c:934
 msgid "Kill this user"
 msgstr "Дај реч"
 
-#: src/common/xchat.c:930
+#: src/common/xchat.c:935
 msgid "Mode"
 msgstr "Приступ"
 
-#: src/common/xchat.c:931
-msgid "Give Voice"
-msgstr "Дај реч"
-
-#: src/common/xchat.c:932
-msgid "Take Voice"
-msgstr "Одузми реч"
-
-#: src/common/xchat.c:933
+#: src/common/xchat.c:936
 msgid "Give Ops"
 msgstr "Дај опа"
 
-#: src/common/xchat.c:934
+#: src/common/xchat.c:937
 msgid "Take Ops"
 msgstr "Одузми опа"
 
-#: src/common/xchat.c:935
+#: src/common/xchat.c:938
+msgid "Give Half-Ops"
+msgstr "Дај полу-опа"
+
+#: src/common/xchat.c:939
+msgid "Take Half-Ops"
+msgstr "Одузми полу-опа"
+
+#: src/common/xchat.c:940
+msgid "Give Voice"
+msgstr "Дај реч"
+
+#: src/common/xchat.c:941
+msgid "Take Voice"
+msgstr "Одузми реч"
+
+#: src/common/xchat.c:942
 msgid "Ignore"
 msgstr "Ућуткај"
 
-#: src/common/xchat.c:936
+#: src/common/xchat.c:943
 msgid "Ignore User"
 msgstr "Занемари корисника"
 
-#: src/common/xchat.c:937
+#: src/common/xchat.c:944
 msgid "UnIgnore User"
 msgstr "Врати ућуткане"
 
-#: src/common/xchat.c:938
+#: src/common/xchat.c:945
 msgid "Kick/Ban"
 msgstr "Шут/забр."
 
-#: src/common/xchat.c:939 src/common/xchat.c:991
+#: src/common/xchat.c:946 src/common/xchat.c:998
 msgid "Kick"
 msgstr "Шут"
 
-#: src/common/xchat.c:940 src/common/xchat.c:941 src/common/xchat.c:942
-#: src/common/xchat.c:943 src/common/xchat.c:944 src/common/xchat.c:990
+#: src/common/xchat.c:947 src/common/xchat.c:948 src/common/xchat.c:949
+#: src/common/xchat.c:950 src/common/xchat.c:951 src/common/xchat.c:997
 msgid "Ban"
 msgstr "Забр."
 
-#: src/common/xchat.c:945 src/common/xchat.c:946 src/common/xchat.c:947
-#: src/common/xchat.c:948
+#: src/common/xchat.c:952 src/common/xchat.c:953 src/common/xchat.c:954
+#: src/common/xchat.c:955
 msgid "KickBan"
 msgstr "Шут и забр."
 
-#: src/common/xchat.c:949 src/fe-gtk/dccgui.c:528 src/fe-gtk/dccgui.c:669
+#: src/common/xchat.c:956 src/fe-gtk/dccgui.c:528 src/fe-gtk/dccgui.c:669
 msgid "Info"
 msgstr "Информ."
 
-#: src/common/xchat.c:950
+#: src/common/xchat.c:957
 msgid "Who"
 msgstr "Ко је"
 
-#: src/common/xchat.c:951 src/common/xchat.c:1004
+#: src/common/xchat.c:958 src/common/xchat.c:1011
 msgid "WhoIs"
 msgstr "WhoIs"
 
-#: src/common/xchat.c:952
+#: src/common/xchat.c:959
 msgid "DNS Lookup"
 msgstr "DNS потрага"
 
-#: src/common/xchat.c:953
+#: src/common/xchat.c:960
 msgid "Trace"
 msgstr "Следи"
 
-#: src/common/xchat.c:954
+#: src/common/xchat.c:961
 msgid "UserHost"
 msgstr "Рачунар"
 
-#: src/common/xchat.c:955
+#: src/common/xchat.c:962
 msgid "External"
 msgstr "Спољњи"
 
-#: src/common/xchat.c:956
+#: src/common/xchat.c:963
 msgid "Traceroute"
 msgstr "Следи"
 
-#: src/common/xchat.c:958
+#: src/common/xchat.c:965
 msgid "Telnet"
 msgstr "Telnet"
 
-#: src/common/xchat.c:959
+#: src/common/xchat.c:966
 msgid "Open Dialog Window"
 msgstr "Започни разговор"
 
-#: src/common/xchat.c:971
+#: src/common/xchat.c:978
 msgid "Disconnect"
 msgstr "Искључи се"
 
-#: src/common/xchat.c:972
+#: src/common/xchat.c:979
 msgid "Reconnect"
 msgstr "Опет повежи"
 
-#: src/common/xchat.c:973
+#: src/common/xchat.c:980
 msgid "Leave Channel"
 msgstr "Напусти канал"
 
-#: src/common/xchat.c:974
+#: src/common/xchat.c:981
 msgid "Join Channel..."
 msgstr "Прикључи се..."
 
-#: src/common/xchat.c:975
+#: src/common/xchat.c:982
 msgid "Enter Channel to Join:"
 msgstr "Унесите име канала:"
 
-#: src/common/xchat.c:976
+#: src/common/xchat.c:983
 msgid "Server Links"
 msgstr "Везе са серверима"
 
-#: src/common/xchat.c:977
+#: src/common/xchat.c:984
 msgid "Ping Server"
 msgstr "Одзив сервера"
 
-#: src/common/xchat.c:978
+#: src/common/xchat.c:985
 msgid "Hide Version"
 msgstr "Сакриј верзију"
 
-#: src/common/xchat.c:988
+#: src/common/xchat.c:995
 msgid "Op"
 msgstr "Оп"
 
-#: src/common/xchat.c:989
+#: src/common/xchat.c:996
 msgid "DeOp"
 msgstr "Деоп"
 
-#: src/common/xchat.c:992
+#: src/common/xchat.c:999
 msgid "bye"
 msgstr "Ћао"
 
-#: src/common/xchat.c:993
+#: src/common/xchat.c:1000
 #, c-format
 msgid "Enter reason to kick %s:"
 msgstr "Разлог да се избаци %s:"
 
-#: src/common/xchat.c:994
+#: src/common/xchat.c:1001
 msgid "Sendfile"
 msgstr "Пошаљи фајл"
 
-#: src/common/xchat.c:995
+#: src/common/xchat.c:1002
 msgid "Dialog"
 msgstr "Разговор"
 
-#: src/common/xchat.c:1005
+#: src/common/xchat.c:1012
 msgid "Send"
 msgstr "Слање"
 
-#: src/common/xchat.c:1006
+#: src/common/xchat.c:1013
 msgid "Chat"
 msgstr "Прича"
 
-#: src/common/xchat.c:1007 src/fe-gtk/banlist.c:314 src/fe-gtk/search.c:117
+#: src/common/xchat.c:1014 src/fe-gtk/banlist.c:314 src/fe-gtk/search.c:117
 #: src/fe-gtk/urlgrab.c:200
 msgid "Clear"
 msgstr "Обриши"
@@ -2841,7 +2861,7 @@ msgstr "Статистике корисника и канала: корисни�
 msgid "I can't save an empty list!"
 msgstr "Списак се не снима када је празан!"
 
-#: src/fe-gtk/chanlist.c:539 src/fe-gtk/menu.c:948
+#: src/fe-gtk/chanlist.c:539 src/fe-gtk/menu.c:954
 msgid "Select an output filename"
 msgstr "Изаберите име датотеке за излаз"
 
@@ -3028,7 +3048,7 @@ msgstr "На доле"
 msgid "Cancel"
 msgstr "Откажи"
 
-#: src/fe-gtk/editlist.c:349 src/fe-gtk/textgui.c:464 src/fe-gtk/urlgrab.c:204
+#: src/fe-gtk/editlist.c:349 src/fe-gtk/textgui.c:413 src/fe-gtk/urlgrab.c:204
 msgid "Save"
 msgstr "Сними"
 
@@ -3036,7 +3056,7 @@ msgstr "Сними"
 msgid "Add New"
 msgstr "Додај нов"
 
-#: src/fe-gtk/editlist.c:361 src/fe-gtk/fkeys.c:738 src/fe-gtk/ignoregui.c:378
+#: src/fe-gtk/editlist.c:361 src/fe-gtk/fkeys.c:742 src/fe-gtk/ignoregui.c:378
 msgid "Delete"
 msgstr "Обриши"
 
@@ -3083,132 +3103,132 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/fe-gtk/fe-gtk.c:593
+#: src/fe-gtk/fe-gtk.c:594
 msgid "Search buffer is empty.\n"
 msgstr "Запис за претрагу је празан.\n"
 
-#: src/fe-gtk/fe-gtk.c:670
+#: src/fe-gtk/fe-gtk.c:671
 #, c-format
 msgid "%d bytes"
 msgstr "%d бајт(ов)(а)"
 
-#: src/fe-gtk/fkeys.c:153
+#: src/fe-gtk/fkeys.c:155
 msgid "The Run Command action runs the data in Data 1 as if it has been typed into the entry box where you pressed the key sequence. Thus it can contain text (which will be sent to the channel/person), commands or user commands. When run all \\n characters in Data 1 are used to deliminate seperate commands so it is possible to run more than one command. If you want a \\ in the actual text run then enter \\\\"
 msgstr "Покрени наредбу убацује податке из Data 1 као да су откуцани у кућицу за унос где је притиснут низ тастера. Зато може садржати текст који ће бити послат особи или на канал, обичне или корисникове наредбе. Када се покрене, сви знакови \\n у Data 1 користе се да раздвоје наредбе тако да је могуће покренути више од једне. Ако желите да имате \\ у тексту, онда треба унети \\\\"
 
-#: src/fe-gtk/fkeys.c:155
+#: src/fe-gtk/fkeys.c:157
 msgid "The Change Page command switches between pages in the notebook. Set Data 1 to the page you want to switch to. If Data 2 is set to anything then the switch will be relative to the current position"
 msgstr "Наредба ^BПромени страну^B листа странице у свесци. Поставите Data 1 на страну на коју желите да одете. Ако је поље Data 2 испуњено, онда се броји у односу на текући положај."
 
-#: src/fe-gtk/fkeys.c:157
+#: src/fe-gtk/fkeys.c:159
 msgid "The Insert in Buffer command will insert the contents of Data 1 into the entry where the key sequence was pressed at the current cursor position"
 msgstr "Наредба ^BУбаци у запис^B ће убацити садржај поља Data 1 на место на ком је био фокус када је притиснута комбинација тастера"
 
-#: src/fe-gtk/fkeys.c:159
+#: src/fe-gtk/fkeys.c:161
 msgid "The Scroll Page command scrolls the text widget up or down one page. If Data 1 is set to anything the page scrolls up, else it scrolls down"
 msgstr "Команда ^BПомери страну^B помера текст у елементу нагоре или надоле за једну страну. Ако је Data 1 садржи било шта, померање је на горе, иначе је на доле"
 
-#: src/fe-gtk/fkeys.c:161
+#: src/fe-gtk/fkeys.c:163
 msgid "The Set Buffer command sets the entry where the key sequence was entered to the contents of Data 1"
 msgstr "Команда ^BПостави запис^B пребацује садржај поља Data 1 на место које је било у фокусу"
 
-#: src/fe-gtk/fkeys.c:163
+#: src/fe-gtk/fkeys.c:165
 msgid "The Last Command command sets the entry to contain the last command entered - the same as pressing up in a shell"
 msgstr "Команда ^BПоследња команда^B уписује последњу унету команду, као када се у шкољци притисне стрелица нагоре"
 
-#: src/fe-gtk/fkeys.c:165
+#: src/fe-gtk/fkeys.c:167
 msgid "The Next Command command sets the entry to contain the next command entered - the same as pressing down in a shell"
 msgstr "Команда ^BНаредна команда^B уписује команду која је следећа на реду, слично као притисак на стрелицу надоле у шкољци"
 
-#: src/fe-gtk/fkeys.c:167
+#: src/fe-gtk/fkeys.c:169
 msgid "This command changes the text in the entry to finish an incomplete nickname or command. If Data 1 is set then double-tabbing in a string will select the last nick, not the next"
 msgstr "Ова команда мења текст у линији за унос тако што довршава непотпуно име или команду. Ако је поље Data 1 попуњено, дупли притисак на табулатор бира последње име, не следеће"
 
-#: src/fe-gtk/fkeys.c:169
+#: src/fe-gtk/fkeys.c:171
 msgid "This command scrolls up and down through the list of nicks. If Data 1 is set to anything it will scroll up, else it scrolls down"
 msgstr "Овом командом се можете шетати горе-доле кроз листу имена. Ако је Data 1 постављено на било шта, кретаћете се на горе, иначе на доле"
 
-#: src/fe-gtk/fkeys.c:171
+#: src/fe-gtk/fkeys.c:173
 msgid "This command checks the last word entered in the entry against the replace list and replaces it if it finds a match"
 msgstr "Ова команда проверава да ли се последња унета реч налази на списку за замене, и замењује је ако је пронађе"
 
-#: src/fe-gtk/fkeys.c:173
+#: src/fe-gtk/fkeys.c:175
 msgid "This command moves the front tab left by one"
 msgstr "Ова команда помера тренутни језичак за једно место улево"
 
-#: src/fe-gtk/fkeys.c:175
+#: src/fe-gtk/fkeys.c:177
 msgid "This command moves the front tab right by one"
 msgstr "Ова команда помера тренутни језичак удесно"
 
-#: src/fe-gtk/fkeys.c:177
+#: src/fe-gtk/fkeys.c:179
 msgid "This command moves the current tab family to the left"
 msgstr "Ова команда помера активну групу језичака улево"
 
-#: src/fe-gtk/fkeys.c:179
+#: src/fe-gtk/fkeys.c:181
 msgid "This command moves the current tab family to the right"
 msgstr "Ова команда помера активну групу језичака удесно"
 
-#: src/fe-gtk/fkeys.c:181
+#: src/fe-gtk/fkeys.c:183
 msgid "Push input line into history but doesn't send to server"
 msgstr "Убацује улазну линију у претходне команде, али не шаље серверу"
 
-#: src/fe-gtk/fkeys.c:193
+#: src/fe-gtk/fkeys.c:195
 msgid "There was an error loading key bindings configuration"
 msgstr "Грешка при учитавању распореда тастера"
 
-#: src/fe-gtk/fkeys.c:426 src/fe-gtk/fkeys.c:427 src/fe-gtk/fkeys.c:428
-#: src/fe-gtk/fkeys.c:429 src/fe-gtk/fkeys.c:711 src/fe-gtk/fkeys.c:717
-#: src/fe-gtk/fkeys.c:722 src/fe-gtk/maingui.c:888 src/fe-gtk/maingui.c:909
-#: src/fe-gtk/maingui.c:1063 src/fe-gtk/maingui.c:1105
-#: src/fe-gtk/maingui.c:2445
+#: src/fe-gtk/fkeys.c:430 src/fe-gtk/fkeys.c:431 src/fe-gtk/fkeys.c:432
+#: src/fe-gtk/fkeys.c:433 src/fe-gtk/fkeys.c:715 src/fe-gtk/fkeys.c:721
+#: src/fe-gtk/fkeys.c:726 src/fe-gtk/maingui.c:905 src/fe-gtk/maingui.c:921
+#: src/fe-gtk/maingui.c:1064 src/fe-gtk/maingui.c:1117
+#: src/fe-gtk/maingui.c:2488
 msgid "<none>"
 msgstr "<нема>"
 
-#: src/fe-gtk/fkeys.c:675
+#: src/fe-gtk/fkeys.c:679
 msgid "Mod"
 msgstr "Мод"
 
-#: src/fe-gtk/fkeys.c:676 src/fe-gtk/fkeys.c:771
+#: src/fe-gtk/fkeys.c:680 src/fe-gtk/fkeys.c:775
 msgid "Key"
 msgstr "Тастер"
 
-#: src/fe-gtk/fkeys.c:677
+#: src/fe-gtk/fkeys.c:681
 msgid "Action"
 msgstr "Акција"
 
-#: src/fe-gtk/fkeys.c:686
+#: src/fe-gtk/fkeys.c:690
 msgid "X-Chat: Edit Key Bindings"
 msgstr "X-Chat: Уреди распоред тастера"
 
-#: src/fe-gtk/fkeys.c:733
+#: src/fe-gtk/fkeys.c:737
 msgid "Add new"
 msgstr "Додај нов"
 
-#: src/fe-gtk/fkeys.c:764
+#: src/fe-gtk/fkeys.c:768
 msgid "Shift"
 msgstr "Shift"
 
-#: src/fe-gtk/fkeys.c:766
+#: src/fe-gtk/fkeys.c:770
 msgid "Alt"
 msgstr "Alt"
 
-#: src/fe-gtk/fkeys.c:768
+#: src/fe-gtk/fkeys.c:772
 msgid "Ctrl"
 msgstr "Ctrl"
 
-#: src/fe-gtk/fkeys.c:775
+#: src/fe-gtk/fkeys.c:779
 msgid "Data 1"
 msgstr "Data 1"
 
-#: src/fe-gtk/fkeys.c:778
+#: src/fe-gtk/fkeys.c:782
 msgid "Data 2"
 msgstr "Data 2"
 
-#: src/fe-gtk/fkeys.c:821
+#: src/fe-gtk/fkeys.c:825
 msgid "Error opening keys config file\n"
 msgstr "Грешка при отварању датотеке са подешавањима\n"
 
-#: src/fe-gtk/fkeys.c:992
+#: src/fe-gtk/fkeys.c:996
 #, c-format
 msgid ""
 "Unknown keyname %s in key bindings config file\n"
@@ -3217,7 +3237,7 @@ msgstr ""
 "Назив тастера %s у датотеци са распоредом није препознат\n"
 "Учитавање је прекинуто, морате поправити %s/keybindings.conf\n"
 
-#: src/fe-gtk/fkeys.c:1030
+#: src/fe-gtk/fkeys.c:1034
 #, c-format
 msgid ""
 "Unknown action %s in key bindings config file\n"
@@ -3226,7 +3246,7 @@ msgstr ""
 "Назив акције %s међу распоредом тастера није препознат\n"
 "Учитавање је прекинуто, морате поправити %s/keybindings\n"
 
-#: src/fe-gtk/fkeys.c:1051
+#: src/fe-gtk/fkeys.c:1055
 #, c-format
 msgid ""
 "Expecting Data line (beginning Dx{:|!}) but got:\n"
@@ -3239,7 +3259,7 @@ msgstr ""
 "\n"
 "Учитавање прекинуто, морате поправити %s/keybindings\n"
 
-#: src/fe-gtk/fkeys.c:1120
+#: src/fe-gtk/fkeys.c:1124
 #, c-format
 msgid ""
 "Key bindings config file is corrupt, load aborted\n"
@@ -3260,7 +3280,7 @@ msgstr "Ова се датотека не може читати."
 msgid "That mask already exists."
 msgstr "Овај шаблон већ постоји."
 
-#: src/fe-gtk/ignoregui.c:176 src/fe-gtk/maingui.c:1560
+#: src/fe-gtk/ignoregui.c:176 src/fe-gtk/maingui.c:1573
 msgid "Private"
 msgstr "Приватно"
 
@@ -3317,7 +3337,7 @@ msgstr "CTCP:"
 msgid "Invite:"
 msgstr "Позив:"
 
-#: src/fe-gtk/ignoregui.c:376 src/fe-gtk/menu.c:1253
+#: src/fe-gtk/ignoregui.c:376 src/fe-gtk/menu.c:1259
 msgid "New"
 msgstr "Нов"
 
@@ -3325,100 +3345,100 @@ msgstr "Нов"
 msgid "Delete All"
 msgstr "Бриши све"
 
-#: src/fe-gtk/maingui.c:302
+#: src/fe-gtk/maingui.c:318
 msgid "Dialog with"
 msgstr "Разговор са"
 
-#: src/fe-gtk/maingui.c:557
+#: src/fe-gtk/maingui.c:574
 #, c-format
 msgid "Topic for %s is: %s"
 msgstr "Тема за %s је: %s"
 
-#: src/fe-gtk/maingui.c:561
+#: src/fe-gtk/maingui.c:578
 msgid "No topic is set"
 msgstr "Тема није постављена"
 
-#: src/fe-gtk/maingui.c:962
+#: src/fe-gtk/maingui.c:974
 msgid "No other tabs open, quit xchat?"
 msgstr "Нема других прозора, желите ли да изађете из Xchat-а?"
 
-#: src/fe-gtk/maingui.c:1008
+#: src/fe-gtk/maingui.c:1020
 msgid "Insert color code"
 msgstr "Убаци боју"
 
-#: src/fe-gtk/maingui.c:1050 src/fe-gtk/menu.c:1275
-msgid "Close Tab"
-msgstr "Затвори језичак"
-
-#: src/fe-gtk/maingui.c:1053 src/fe-gtk/menu.c:1423
-msgid "Detach Tab"
-msgstr "Откачи језичак"
-
-#: src/fe-gtk/maingui.c:1068
+#: src/fe-gtk/maingui.c:1069
 msgid "Beep on message"
 msgstr "Звук уз поруку"
 
-#: src/fe-gtk/maingui.c:1071
+#: src/fe-gtk/maingui.c:1072
 msgid "Show join/part messages"
 msgstr "Обавести о улазу/излазу"
 
-#: src/fe-gtk/maingui.c:1073
+#: src/fe-gtk/maingui.c:1074
 msgid "Color paste"
 msgstr "Залепи и боју"
 
-#: src/fe-gtk/maingui.c:1083
+#: src/fe-gtk/maingui.c:1084
 msgid "Go to"
 msgstr "Иди на"
 
-#: src/fe-gtk/maingui.c:1278
+#: src/fe-gtk/maingui.c:1097 src/fe-gtk/menu.c:1281
+msgid "Close Tab"
+msgstr "Затвори језичак"
+
+#: src/fe-gtk/maingui.c:1100 src/fe-gtk/menu.c:1430
+msgid "Detach Tab"
+msgstr "Откачи језичак"
+
+#: src/fe-gtk/maingui.c:1291
 msgid "Some file transfers still active, quit xchat?"
 msgstr "Још увек ради пренос датотека, да ли ипак желите крај рада?"
 
-#: src/fe-gtk/maingui.c:1428 src/fe-gtk/maingui.c:1534
+#: src/fe-gtk/maingui.c:1441 src/fe-gtk/maingui.c:1547
 msgid "User limit must be a number!\n"
 msgstr "Макс. број корисника мора бити унет као број!\n"
 
-#: src/fe-gtk/maingui.c:1556
+#: src/fe-gtk/maingui.c:1569
 msgid "Topic Protection"
 msgstr "Заштита теме"
 
-#: src/fe-gtk/maingui.c:1557
+#: src/fe-gtk/maingui.c:1570
 msgid "No outside messages"
 msgstr "Нема спољашњих порука"
 
-#: src/fe-gtk/maingui.c:1558
+#: src/fe-gtk/maingui.c:1571
 msgid "Secret"
 msgstr "Тајни"
 
-#: src/fe-gtk/maingui.c:1559
+#: src/fe-gtk/maingui.c:1572
 msgid "Invite Only"
 msgstr "По позиву"
 
-#: src/fe-gtk/maingui.c:1561
+#: src/fe-gtk/maingui.c:1574
 msgid "Moderated"
 msgstr "Надгледан"
 
-#: src/fe-gtk/maingui.c:1562
+#: src/fe-gtk/maingui.c:1575
 msgid "Ban List"
 msgstr "Списак избачених"
 
-#: src/fe-gtk/maingui.c:1564
+#: src/fe-gtk/maingui.c:1577
 msgid "Keyword"
 msgstr "Кључна реч"
 
-#: src/fe-gtk/maingui.c:1576
+#: src/fe-gtk/maingui.c:1589
 msgid "User Limit"
 msgstr "Макс. људи"
 
-#: src/fe-gtk/maingui.c:1592
+#: src/fe-gtk/maingui.c:1605
 msgid "Close this tab/window"
 msgstr "Затвори прозор/језичак"
 
-#: src/fe-gtk/maingui.c:1689
+#: src/fe-gtk/maingui.c:1702
 msgid "Show/Hide userlist"
 msgstr "Покажи/сакриј кориснике"
 
-#: src/fe-gtk/maingui.c:1799
+#: src/fe-gtk/maingui.c:1815
 msgid ""
 "Unable to set transparent background!\n"
 "\n"
@@ -3430,7 +3450,7 @@ msgstr ""
 "Можда користите управљач прозора који\n"
 "тренутно није подржан.\n"
 
-#: src/fe-gtk/maingui.c:1992
+#: src/fe-gtk/maingui.c:2008
 msgid "Enter new nickname:"
 msgstr "Унесите ново име:"
 
@@ -3471,7 +3491,7 @@ msgstr "Линија менија"
 msgid "Topic Bar"
 msgstr "Линија за тему"
 
-#: src/fe-gtk/menu.c:618
+#: src/fe-gtk/menu.c:618 src/fe-gtk/setup.c:157
 msgid "User List"
 msgstr "Списак имена"
 
@@ -3515,11 +3535,11 @@ msgstr ""
 "директоријуму је опасно и може се искористити.\n"
 "Нпр. неко може послати датотеку .bash_profile"
 
-#: src/fe-gtk/menu.c:1018
+#: src/fe-gtk/menu.c:1024
 msgid "Settings saved."
 msgstr "Подешавања су снимљена."
 
-#: src/fe-gtk/menu.c:1055
+#: src/fe-gtk/menu.c:1061
 msgid ""
 "User Commands - Special codes:\n"
 "\n"
@@ -3557,7 +3577,7 @@ msgstr ""
 "%2 би било \"john\"\n"
 "&2 би било \"john hello\"."
 
-#: src/fe-gtk/menu.c:1070
+#: src/fe-gtk/menu.c:1076
 msgid ""
 "Userlist Buttons - Special codes:\n"
 "\n"
@@ -3579,7 +3599,7 @@ msgstr ""
 "%s  =  одабрано име\n"
 "%t  =  време/датум\n"
 
-#: src/fe-gtk/menu.c:1079
+#: src/fe-gtk/menu.c:1085
 msgid ""
 "Dialog Buttons - Special codes:\n"
 "\n"
@@ -3601,7 +3621,7 @@ msgstr ""
 "%s  =  одабрано име\n"
 "%t  =  време/датум\n"
 
-#: src/fe-gtk/menu.c:1088
+#: src/fe-gtk/menu.c:1094
 msgid ""
 "CTCP Replies - Special codes:\n"
 "\n"
@@ -3627,7 +3647,7 @@ msgstr ""
 "&3  =  све почев од треће речи до краја реда\n"
 "\n"
 
-#: src/fe-gtk/menu.c:1098
+#: src/fe-gtk/menu.c:1104
 #, c-format
 msgid ""
 "URL Handlers - Special codes:\n"
@@ -3646,251 +3666,255 @@ msgstr ""
 "говори да се треба проследити шкољци\n"
 "уместо X-Chat-у"
 
-#: src/fe-gtk/menu.c:1107
+#: src/fe-gtk/menu.c:1113
 msgid "X-Chat: User Defined Commands"
 msgstr "C-Chat: Корисничке команде"
 
-#: src/fe-gtk/menu.c:1114
+#: src/fe-gtk/menu.c:1120
 msgid "X-Chat: Userlist Popup menu"
 msgstr "X-Chat: Мени са листом корисника"
 
-#: src/fe-gtk/menu.c:1121
+#: src/fe-gtk/menu.c:1127
 msgid "X-Chat: Replace"
 msgstr "X-Chat: Замени"
 
-#: src/fe-gtk/menu.c:1128
+#: src/fe-gtk/menu.c:1134
 msgid "X-Chat: URL Handlers"
 msgstr "X-Chat: Обрада URL-ова"
 
-#: src/fe-gtk/menu.c:1147
+#: src/fe-gtk/menu.c:1153
 msgid "X-Chat: Userlist buttons"
 msgstr "X-Chat: Корисничка дугмета"
 
-#: src/fe-gtk/menu.c:1154
+#: src/fe-gtk/menu.c:1160
 msgid "X-Chat: Dialog buttons"
 msgstr "X-Chat: Дугмета у прозорчету"
 
-#: src/fe-gtk/menu.c:1161
+#: src/fe-gtk/menu.c:1167
 msgid "X-Chat: CTCP Replies"
 msgstr "X-Chat: Одговори на CTCP упите"
 
-#: src/fe-gtk/menu.c:1249
+#: src/fe-gtk/menu.c:1255
 msgid "_X-Chat"
 msgstr "_X-Chat"
 
-#: src/fe-gtk/menu.c:1250
+#: src/fe-gtk/menu.c:1256
 msgid "Server List..."
 msgstr "Списак рачунара"
 
-#: src/fe-gtk/menu.c:1254
+#: src/fe-gtk/menu.c:1260
 msgid "Server Tab..."
 msgstr "Језичак за сервер..."
 
-#: src/fe-gtk/menu.c:1255
+#: src/fe-gtk/menu.c:1261
 msgid "Channel Tab..."
 msgstr "Језичак за канал"
 
-#: src/fe-gtk/menu.c:1256
+#: src/fe-gtk/menu.c:1262
 msgid "Server Window..."
 msgstr "Прозор за сервер..."
 
-#: src/fe-gtk/menu.c:1257
+#: src/fe-gtk/menu.c:1263
 msgid "Channel Window..."
 msgstr "Прозор за канал..."
 
-#: src/fe-gtk/menu.c:1262 src/fe-gtk/menu.c:1264
+#: src/fe-gtk/menu.c:1268 src/fe-gtk/menu.c:1270
 msgid "Load Plugin or Script..."
 msgstr "Учитај додатак или скрипт..."
 
-#: src/fe-gtk/menu.c:1268
+#: src/fe-gtk/menu.c:1274
 msgid "New Shell Tab..."
 msgstr "Нови језичак са шкољком..."
 
-#: src/fe-gtk/menu.c:1277
+#: src/fe-gtk/menu.c:1283
 msgid "Quit"
 msgstr "Крај"
 
-#: src/fe-gtk/menu.c:1279
+#: src/fe-gtk/menu.c:1285
 msgid "_IRC"
 msgstr "_IRC"
 
-#: src/fe-gtk/menu.c:1280
+#: src/fe-gtk/menu.c:1286
 msgid "Invisible"
 msgstr "Невидљив"
 
-#: src/fe-gtk/menu.c:1281
+#: src/fe-gtk/menu.c:1287
 msgid "Receive Wallops"
 msgstr "Прихвати Wallops"
 
-#: src/fe-gtk/menu.c:1282
+#: src/fe-gtk/menu.c:1288
 msgid "Receive Server Notices"
 msgstr "Прихвати вести са сервера"
 
-#: src/fe-gtk/menu.c:1284
+#: src/fe-gtk/menu.c:1290
 msgid "Marked Away"
 msgstr "Одсутан сам"
 
-#: src/fe-gtk/menu.c:1286
+#: src/fe-gtk/menu.c:1292
 msgid "Auto Rejoin when Kicked"
 msgstr "Прикључи се поново после избацивања"
 
-#: src/fe-gtk/menu.c:1287
+#: src/fe-gtk/menu.c:1293
 msgid "Auto Reconnect to Server"
 msgstr "Одржавај везу"
 
-#: src/fe-gtk/menu.c:1288
+#: src/fe-gtk/menu.c:1294
 msgid "Never-give-up ReConnect"
 msgstr "Не одустај од повезивања"
 
-#: src/fe-gtk/menu.c:1290
+#: src/fe-gtk/menu.c:1296
 msgid "Auto Open Dialog Windows"
 msgstr "Разговоре у посебан прозор"
 
-#: src/fe-gtk/menu.c:1291
+#: src/fe-gtk/menu.c:1297
 msgid "Auto Accept Direct Chat"
 msgstr "Увек прихвати DCC"
 
-#: src/fe-gtk/menu.c:1292
+#: src/fe-gtk/menu.c:1298
 msgid "Auto Accept Files"
 msgstr "Увек прихвати датотеке"
 
-#: src/fe-gtk/menu.c:1294
+#: src/fe-gtk/menu.c:1300
 msgid "_Server"
 msgstr "_Сервер"
 
-#: src/fe-gtk/menu.c:1296
+#: src/fe-gtk/menu.c:1302
 msgid "S_ettings"
 msgstr "П_одешавања"
 
-#: src/fe-gtk/menu.c:1297
+#: src/fe-gtk/menu.c:1303
 msgid "Preferences..."
 msgstr "Поставке..."
 
-#: src/fe-gtk/menu.c:1299
-msgid "Lists"
-msgstr "Спискови"
+#: src/fe-gtk/menu.c:1305
+msgid "Advanced"
+msgstr "Напредна"
 
-#: src/fe-gtk/menu.c:1300
+#: src/fe-gtk/menu.c:1306
 msgid "Auto Replace..."
 msgstr "Замени све..."
 
-#: src/fe-gtk/menu.c:1301
+#: src/fe-gtk/menu.c:1307
 msgid "CTCP Replies..."
 msgstr "Одговори на CTCP..."
 
-#: src/fe-gtk/menu.c:1302
+#: src/fe-gtk/menu.c:1308
 msgid "Dialog Buttons..."
 msgstr "Дугмета за прозорче..."
 
-#: src/fe-gtk/menu.c:1303
+#: src/fe-gtk/menu.c:1309
 msgid "Key Bindings..."
 msgstr "Додела тастера..."
 
-#: src/fe-gtk/menu.c:1304
+#: src/fe-gtk/menu.c:1310
 msgid "Text Events..."
 msgstr "Праћење текста..."
 
-#: src/fe-gtk/menu.c:1305
+#: src/fe-gtk/menu.c:1311
 msgid "URL Handlers..."
 msgstr "Обрада URL-ова..."
 
-#: src/fe-gtk/menu.c:1306
+#: src/fe-gtk/menu.c:1312
 msgid "User Commands..."
 msgstr "Корисникове команде..."
 
-#: src/fe-gtk/menu.c:1307
+#: src/fe-gtk/menu.c:1313
 msgid "Userlist Buttons..."
 msgstr "Корисничка дугмета..."
 
-#: src/fe-gtk/menu.c:1308
+#: src/fe-gtk/menu.c:1314
 msgid "Userlist Popup..."
 msgstr "Корисников избор..."
 
-#: src/fe-gtk/menu.c:1313
+#: src/fe-gtk/menu.c:1319
 msgid "Reload Settings"
 msgstr "Учитај подешавања"
 
-#: src/fe-gtk/menu.c:1315
+#: src/fe-gtk/menu.c:1321
 msgid "Save Settings now"
 msgstr "Сними подешавања"
 
-#: src/fe-gtk/menu.c:1316
+#: src/fe-gtk/menu.c:1322
 msgid "Save Settings on exit"
 msgstr "Сними подешавања при излазу"
 
-#: src/fe-gtk/menu.c:1319
+#: src/fe-gtk/menu.c:1325
 msgid "_Window"
 msgstr "_Прозор"
 
-#: src/fe-gtk/menu.c:1320
+#: src/fe-gtk/menu.c:1326
 msgid "Ban List..."
 msgstr "Списак забрана..."
 
-#: src/fe-gtk/menu.c:1321
+#: src/fe-gtk/menu.c:1327
 msgid "Channel List..."
 msgstr "Списак канала..."
 
-#: src/fe-gtk/menu.c:1322
+#: src/fe-gtk/menu.c:1328
 msgid "Character Chart..."
 msgstr "Знаковна табела..."
 
-#: src/fe-gtk/menu.c:1323
+#: src/fe-gtk/menu.c:1329
 msgid "Direct Chat..."
 msgstr "Директан разговор..."
 
-#: src/fe-gtk/menu.c:1324
+#: src/fe-gtk/menu.c:1330
 msgid "File Receive..."
 msgstr "Пријем датотеке..."
 
-#: src/fe-gtk/menu.c:1325
+#: src/fe-gtk/menu.c:1331
 msgid "File Send..."
 msgstr "Слање датотеке..."
 
-#: src/fe-gtk/menu.c:1326
+#: src/fe-gtk/menu.c:1332
 msgid "Ignore List..."
 msgstr "Списак ућутканих..."
 
-#: src/fe-gtk/menu.c:1327
+#: src/fe-gtk/menu.c:1333
 msgid "Notify List..."
 msgstr "Списак посматраних..."
 
-#: src/fe-gtk/menu.c:1328
+#: src/fe-gtk/menu.c:1334
 msgid "Plugins and Scripts..."
 msgstr "Додаци и скриптови..."
 
-#: src/fe-gtk/menu.c:1329
+#: src/fe-gtk/menu.c:1335
 msgid "Raw Log..."
 msgstr "Сирови дневник..."
 
-#: src/fe-gtk/menu.c:1330
+#: src/fe-gtk/menu.c:1336
 msgid "URL Grabber..."
 msgstr "Памћење URL-ова..."
 
-#: src/fe-gtk/menu.c:1332
+#: src/fe-gtk/menu.c:1338
+msgid "Reset Marker Line"
+msgstr "Премести обележивач"
+
+#: src/fe-gtk/menu.c:1339
 msgid "C_lear Text"
 msgstr "О_чисти текст"
 
-#: src/fe-gtk/menu.c:1333
+#: src/fe-gtk/menu.c:1340
 msgid "Search Text..."
 msgstr "Тражи текст..."
 
-#: src/fe-gtk/menu.c:1334
+#: src/fe-gtk/menu.c:1341
 msgid "Save Text..."
 msgstr "Сними текст..."
 
-#: src/fe-gtk/menu.c:1336
+#: src/fe-gtk/menu.c:1343
 msgid "_Help"
 msgstr "_Помоћ"
 
-#: src/fe-gtk/menu.c:1337
+#: src/fe-gtk/menu.c:1344
 msgid "_Contents"
 msgstr "_Садржај"
 
-#: src/fe-gtk/menu.c:1338
+#: src/fe-gtk/menu.c:1345
 msgid "_About"
 msgstr "_О програму"
 
-#: src/fe-gtk/menu.c:1425
+#: src/fe-gtk/menu.c:1432
 msgid "Attach Tab"
 msgstr "Закачи језичак"
 
@@ -3910,7 +3934,7 @@ msgstr "Био је ту"
 msgid "Offline"
 msgstr "Није на вези"
 
-#: src/fe-gtk/notifygui.c:169
+#: src/fe-gtk/notifygui.c:169 src/fe-gtk/setup.c:197
 msgid "Never"
 msgstr "Никада"
 
@@ -3926,7 +3950,7 @@ msgstr "Унесите име које треба додати:"
 msgid "X-Chat: Notify List"
 msgstr "X-Chat: Списак посматраних"
 
-#: src/fe-gtk/notifygui.c:306 src/fe-gtk/servlistgui.c:722
+#: src/fe-gtk/notifygui.c:306
 msgid "Add"
 msgstr "Додај"
 
@@ -3934,7 +3958,7 @@ msgstr "Додај"
 msgid "Remove"
 msgstr "Уклони"
 
-#: src/fe-gtk/plugingui.c:76 src/fe-gtk/textgui.c:387
+#: src/fe-gtk/plugingui.c:76 src/fe-gtk/textgui.c:341
 msgid "Description"
 msgstr "Опис"
 
@@ -3995,767 +4019,945 @@ msgstr "Нађи"
 msgid "Close"
 msgstr "Затвори"
 
-#: src/fe-gtk/servlistgui.c:161
-#, c-format
-msgid "Settings for %s"
-msgstr "Подешавања за %s"
-
-#: src/fe-gtk/servlistgui.c:202 src/fe-gtk/servlistgui.c:275
+#: src/fe-gtk/servlistgui.c:159 src/fe-gtk/servlistgui.c:257
 msgid "New Network"
 msgstr "Нова мрежа"
 
-#: src/fe-gtk/servlistgui.c:375
+#: src/fe-gtk/servlistgui.c:428
 #, c-format
 msgid "Really remove network \"%s\" and all its servers?"
 msgstr "Да ли заиста треба брисати мрежу \"%s\" и све сервере у њој?"
 
-#: src/fe-gtk/servlistgui.c:412 src/fe-gtk/servlistgui.c:442
+#: src/fe-gtk/servlistgui.c:889
 #, c-format
-msgid "_Remove \"%s\""
-msgstr "_Уклони \"%s\""
+msgid "X-Chat: Edit %s"
+msgstr "X-Chat: Уреди (%s)"
 
-#: src/fe-gtk/servlistgui.c:419
-msgid "_Add new server"
-msgstr "_Додај нови сервер"
-
-#: src/fe-gtk/servlistgui.c:449
+#: src/fe-gtk/servlistgui.c:908
 #, c-format
-msgid "Move \"%s\" _down"
-msgstr "Move \"%s\" _down"
-
-#: src/fe-gtk/servlistgui.c:456
-#, c-format
-msgid "Move \"%s\" _up"
-msgstr "Помери \"%s\" _нагоре"
-
-#: src/fe-gtk/servlistgui.c:467
-msgid "_Add new network"
-msgstr "_Додај нову мрежу"
-
-#: src/fe-gtk/servlistgui.c:836
-msgid "Global User Info"
-msgstr "Подаци о кориснику"
-
-#: src/fe-gtk/servlistgui.c:844
-msgid "Nick Names:"
-msgstr "Имена:"
-
-#: src/fe-gtk/servlistgui.c:863 src/fe-gtk/servlistgui.c:1066
-msgid "User Name:"
-msgstr "Корисничко име:"
-
-#: src/fe-gtk/servlistgui.c:876 src/fe-gtk/servlistgui.c:1068
-msgid "Real Name:"
-msgstr "Право име:"
+msgid "Servers for %s"
+msgstr "Сервери за: %s"
 
 #: src/fe-gtk/servlistgui.c:918
-msgid "C_onnect"
-msgstr "_Повежи се"
+msgid "Your Details"
+msgstr "Ваши подаци"
 
-#: src/fe-gtk/servlistgui.c:926
-msgid "Connect in a _new tab"
-msgstr "Повежи се у _новом језичку"
+#: src/fe-gtk/servlistgui.c:924
+msgid "Use global user information"
+msgstr "Користи главне податке о кориснику"
 
-#: src/fe-gtk/servlistgui.c:986
-msgid "Servers"
-msgstr "Сервери"
+#: src/fe-gtk/servlistgui.c:927 src/fe-gtk/servlistgui.c:1153
+msgid "_Nick name:"
+msgstr "_Надимак:"
 
-#: src/fe-gtk/servlistgui.c:1024
-msgid "Character Set:"
-msgstr "Скуп знакова:"
+#: src/fe-gtk/servlistgui.c:931 src/fe-gtk/servlistgui.c:1174
+msgid "_User name:"
+msgstr "_Корисничко име:"
 
-#: src/fe-gtk/servlistgui.c:1064
-msgid "Nick Name:"
-msgstr "Надимак:"
+#: src/fe-gtk/servlistgui.c:935
+msgid "Real na_me:"
+msgstr "Право _име:"
 
-#: src/fe-gtk/servlistgui.c:1069
-msgid "Server Password:"
-msgstr "Лозинка:"
+#: src/fe-gtk/servlistgui.c:938
+msgid "Connecting"
+msgstr "Повезивање у току"
 
-#: src/fe-gtk/servlistgui.c:1072
-msgid "Join Channels:"
-msgstr "Уђи на канале:"
+#: src/fe-gtk/servlistgui.c:944
+msgid "Auto connect to this network at startup"
+msgstr "Повежи се аутоматски када се програм покрене"
 
-#: src/fe-gtk/servlistgui.c:1074
-msgid "Channels to join, separated by commas, but not spaces!"
-msgstr "Канале треба раздвојити запетама, не размацима!"
-
-#: src/fe-gtk/servlistgui.c:1075
-msgid "Connect Command:"
-msgstr "Пошаљи ову команду:"
-
-#: src/fe-gtk/servlistgui.c:1077
-msgid "Command to execute after connecting. Can be used to authenticate to NickServ"
-msgstr "Команда која ће бити послата по успостављању везе."
-
-#: src/fe-gtk/servlistgui.c:1085
-msgid "Cycle until connected"
-msgstr "Нађи сервер који ради"
-
-#: src/fe-gtk/servlistgui.c:1086
-msgid "Use global user info"
-msgstr "Користи главно име корисника"
-
-#: src/fe-gtk/servlistgui.c:1087
-msgid "Use secure SSL"
-msgstr "Користи шифрован приступ (SSL)"
-
-#: src/fe-gtk/servlistgui.c:1088
-msgid "Auto connect at startup"
-msgstr "Повежи се аутоматски"
-
-#: src/fe-gtk/servlistgui.c:1089
+#: src/fe-gtk/servlistgui.c:946
 msgid "Use a proxy server"
 msgstr "Користи заступника (proxy)"
 
-#: src/fe-gtk/servlistgui.c:1090
-msgid "Accept invalid cert."
-msgstr "Прихвати неважећи сертификат."
+#: src/fe-gtk/servlistgui.c:948
+msgid "Use SSL for all the servers on this network"
+msgstr "Користи SSL за све рачунаре у овој мрежи"
 
-#: src/fe-gtk/servlistgui.c:1099
-msgid "Settings for Selected Network"
-msgstr "Подешавања за изабрану мрежу"
+#: src/fe-gtk/servlistgui.c:953
+msgid "Accept invalid SSL certificate"
+msgstr "Прихвати неважећи SSL сертификат."
 
-#: src/fe-gtk/servlistgui.c:1139
-msgid "Edit mode"
-msgstr "Прикажи детаље"
+#: src/fe-gtk/servlistgui.c:959
+msgid "C_hannels to join:"
+msgstr "Приступи _каналима:"
 
-#: src/fe-gtk/servlistgui.c:1146
-msgid "Networks"
-msgstr "Мреже"
+#: src/fe-gtk/servlistgui.c:961
+msgid "Channels to join, separated by commas, but not spaces!"
+msgstr "Канале треба раздвојити запетама, не размацима!"
 
-#: src/fe-gtk/servlistgui.c:1191
-msgid "No server list on startup"
-msgstr "Не приказуј овај списак при покретању програма"
+#: src/fe-gtk/servlistgui.c:964
+msgid "Connect command:"
+msgstr "Пошаљи ову команду:"
 
-#: src/fe-gtk/servlistgui.c:1218
+#: src/fe-gtk/servlistgui.c:966
+msgid "Extra command to execute after connecting. If you need more than one, set this to LOAD -e <filename>, where <filename> is a text-file full of commands to execute."
+msgstr "Додатна команда која се извршава по повезивању. Ако Вам треба више од једне, овде унесите LOAD -e <ДАТОТЕКА>, где је <ДАТОТЕКА> име датотеке са командама које треба извршити."
+
+#: src/fe-gtk/servlistgui.c:969
+msgid "Nickserv password:"
+msgstr "Лозинка за nickserv:"
+
+#: src/fe-gtk/servlistgui.c:974
+msgid "Server password:"
+msgstr "Лозинка за сервер:"
+
+#: src/fe-gtk/servlistgui.c:976
+msgid "Password for the server, if in doubt, leave blank."
+msgstr "Лозинка за приступ серверу. Ако нисте сигурни шта овде треба да стоји, оставите празно."
+
+#: src/fe-gtk/servlistgui.c:979
+msgid "Character set:"
+msgstr "Скуп знакова:"
+
+#: src/fe-gtk/servlistgui.c:1050
+msgid "_Edit"
+msgstr "_Уреди"
+
+#: src/fe-gtk/servlistgui.c:1131
 msgid "X-Chat: Server List"
 msgstr "X-Chat: Списак сервера"
 
-#: src/fe-gtk/setup.c:84
+#: src/fe-gtk/servlistgui.c:1160
+msgid "Second choice:"
+msgstr "Други избор:"
+
+#: src/fe-gtk/servlistgui.c:1167
+msgid "Third choice:"
+msgstr "Трећи избор:"
+
+#: src/fe-gtk/servlistgui.c:1181
+msgid "Rea_l name:"
+msgstr "_Право име:"
+
+#: src/fe-gtk/servlistgui.c:1268
+msgid "Skip server list on startup"
+msgstr "Не приказуј овај списак при покретању програма"
+
+#: src/fe-gtk/servlistgui.c:1299
+msgid "_Edit..."
+msgstr "_Уреди..."
+
+#: src/fe-gtk/servlistgui.c:1306
+msgid "_Sort"
+msgstr "Поређај"
+
+#: src/fe-gtk/servlistgui.c:1322
+msgid "C_onnect"
+msgstr "_Повежи се"
+
+#: src/fe-gtk/servlistgui.c:1331
+msgid "Connect in new tab"
+msgstr "Повежи се у _новом језичку"
+
+#: src/fe-gtk/setup.c:93
+msgid "Text Box Appearance"
+msgstr "Изглед линије са текстом"
+
+#: src/fe-gtk/setup.c:94
 msgid "Font:"
 msgstr "Слова:"
 
-#: src/fe-gtk/setup.c:85
+#: src/fe-gtk/setup.c:95
 msgid "Background image:"
 msgstr "Позадина:"
 
-#: src/fe-gtk/setup.c:86
-msgid "Time stamp format:"
-msgstr "Формат датума:"
-
-#: src/fe-gtk/setup.c:87
-msgid "See strftime manpage for details."
-msgstr "Погледајте упутство за strftime."
-
-#: src/fe-gtk/setup.c:88
-msgid "Time stamp text"
-msgstr "Текст датума"
-
-#: src/fe-gtk/setup.c:89
-msgid "Transparent background"
-msgstr "Провидна позадина"
-
-#: src/fe-gtk/setup.c:90
-msgid "Indent nicks"
-msgstr "Увуци имена"
-
-#: src/fe-gtk/setup.c:91
-msgid "Tint transparency"
-msgstr "Провидност уз претапање"
-
-#: src/fe-gtk/setup.c:92
-msgid "Colored nicks"
-msgstr "Обоји имена"
-
-#: src/fe-gtk/setup.c:93
-msgid "Strip mIRC color"
-msgstr "Уклањај mIRC боје"
-
-#: src/fe-gtk/setup.c:94
+#: src/fe-gtk/setup.c:96
 msgid "Scrollback lines:"
 msgstr "Памти оволико линија:"
 
-#: src/fe-gtk/setup.c:95
-msgid "Tint red:"
-msgstr "Црвена:"
-
-#: src/fe-gtk/setup.c:96
-msgid "Tint green:"
-msgstr "Зелена"
-
 #: src/fe-gtk/setup.c:97
-msgid "Tint blue:"
-msgstr "Плава:"
+msgid "Transparent background"
+msgstr "Провидна позадина"
+
+#: src/fe-gtk/setup.c:98
+msgid "Indent nick names"
+msgstr "Увуци надимке"
+
+#: src/fe-gtk/setup.c:99
+msgid "Make nick names right-justified"
+msgstr "Уравнај надимке по десној страни"
+
+#: src/fe-gtk/setup.c:100
+msgid "Tint (shade) transparency"
+msgstr "Провидност уз претапање"
+
+#: src/fe-gtk/setup.c:101
+msgid "Colored nick names"
+msgstr "Обоји имена"
+
+#: src/fe-gtk/setup.c:102
+msgid "Give each person on IRC a different color"
+msgstr "Додели свакој особи на ИРЦ-у различиту боју"
 
 #: src/fe-gtk/setup.c:103
+msgid "Strip mIRC colors"
+msgstr "Уклањај mIRC боје"
+
+#: src/fe-gtk/setup.c:104
+msgid "Show marker line"
+msgstr "Прикажи линију за обележавање"
+
+#: src/fe-gtk/setup.c:105
+msgid "Insert a red line after the last read text."
+msgstr "Убаци црвену линију после последње прочитане линије текста."
+
+#: src/fe-gtk/setup.c:106
+msgid "Tint Settings"
+msgstr "П_одешавања провидности"
+
+#: src/fe-gtk/setup.c:107
+msgid "Red:"
+msgstr "Црвенa:"
+
+#: src/fe-gtk/setup.c:108
+msgid "Green:"
+msgstr "Зеленa:"
+
+#: src/fe-gtk/setup.c:109
+msgid "Blue:"
+msgstr "Плава:"
+
+#: src/fe-gtk/setup.c:111 src/fe-gtk/setup.c:310
+msgid "Time Stamps"
+msgstr "Текст датума"
+
+#: src/fe-gtk/setup.c:112
+msgid "Time stamp format:"
+msgstr "Формат датума:"
+
+#: src/fe-gtk/setup.c:113
+msgid "See strftime manpage for details."
+msgstr "Погледајте упутство за strftime."
+
+#: src/fe-gtk/setup.c:114
+msgid "Enable time stamps"
+msgstr "Убацуј време у дневнике"
+
+#: src/fe-gtk/setup.c:121
+msgid "Nick Completion"
+msgstr "Суфикс за допуну имена:"
+
+#: src/fe-gtk/setup.c:122
+msgid "Automatic nick completion"
+msgstr "Аутоматски допуни име"
+
+#: src/fe-gtk/setup.c:123
+msgid "Completes nick names without using the TAB key"
+msgstr "Допуњава надимке без притиска на тастер TAB"
+
+#: src/fe-gtk/setup.c:124
+msgid "Nick completion suffix:"
+msgstr "Суфикс за допуну имена:"
+
+#: src/fe-gtk/setup.c:126
+msgid "Input Box Codes"
+msgstr "Кодови при уносу текста"
+
+#: src/fe-gtk/setup.c:127
 #, c-format
 msgid "Interpret %nnn as an ASCII value"
 msgstr "Тумачи %nnn као ASCII вредност"
 
-#: src/fe-gtk/setup.c:104
-msgid "Automatic nick completion"
-msgstr "Аутоматски допуни име"
-
-#: src/fe-gtk/setup.c:105
+#: src/fe-gtk/setup.c:128
 msgid "Interpret %C, %B as Color, Bold etc"
 msgstr "Тумачи %C, %B као боју, подебљан испис итд."
 
-#: src/fe-gtk/setup.c:106 src/fe-gtk/setup.c:138
+#: src/fe-gtk/setup.c:130
+msgid "Input Box Appearance"
+msgstr "Изглед поља за унос текста"
+
+#: src/fe-gtk/setup.c:131 src/fe-gtk/setup.c:161
 msgid "Use the Text box font and colors"
 msgstr "Користи боје и писмо из кућице за текст"
 
-#: src/fe-gtk/setup.c:107
-msgid "Nick completion suffix:"
-msgstr "Суфикс за допуну имена:"
-
-#: src/fe-gtk/setup.c:113
+#: src/fe-gtk/setup.c:138
 msgid "Off"
 msgstr "Искључено"
 
-#: src/fe-gtk/setup.c:114
+#: src/fe-gtk/setup.c:139
 msgid "Graph"
 msgstr "Графичко"
 
-#: src/fe-gtk/setup.c:115
+#: src/fe-gtk/setup.c:140
 msgid "Info text"
 msgstr "Текстуални"
 
-#: src/fe-gtk/setup.c:116
+#: src/fe-gtk/setup.c:141
 msgid "Both"
 msgstr "Оба"
 
-#: src/fe-gtk/setup.c:122
+#: src/fe-gtk/setup.c:147
 msgid "A-Z, Ops first"
 msgstr "A-Z, опови први"
 
-#: src/fe-gtk/setup.c:123
+#: src/fe-gtk/setup.c:148
 msgid "A-Z"
 msgstr "A-Z"
 
-#: src/fe-gtk/setup.c:124
+#: src/fe-gtk/setup.c:149
 msgid "Z-A, Ops last"
 msgstr "Z-A, опови последњи"
 
-#: src/fe-gtk/setup.c:125
+#: src/fe-gtk/setup.c:150
 msgid "Z-A"
 msgstr "Z-A"
 
-#: src/fe-gtk/setup.c:126
+#: src/fe-gtk/setup.c:151
 msgid "Unsorted"
 msgstr "Неуређено"
 
-#: src/fe-gtk/setup.c:132
+#: src/fe-gtk/setup.c:158
+msgid "User list sorted by:"
+msgstr "Уреди списак корисника према:"
+
+#: src/fe-gtk/setup.c:159
+msgid "Show hostnames in user list"
+msgstr "Покажи имена рачунара"
+
+#: src/fe-gtk/setup.c:160
+msgid "User list buttons enabled"
+msgstr "Корисничка дугмад укључена"
+
+#: src/fe-gtk/setup.c:162
+msgid "Resizable user list"
+msgstr "Променљива величина списка корисника"
+
+#: src/fe-gtk/setup.c:164
+msgid "Away tracking"
+msgstr "Праћење одсуства"
+
+#: src/fe-gtk/setup.c:165
+msgid "Enable away tracking"
+msgstr "Укључи праћење одсустава"
+
+#: src/fe-gtk/setup.c:166
+msgid "On channels smaller than:"
+msgstr "Прати одсутне на каналима са мање од:"
+
+#: src/fe-gtk/setup.c:168
+msgid "Action Upon Double Click"
+msgstr "Шта извршити на двоструки клик"
+
+#: src/fe-gtk/setup.c:169
+msgid "Execute command:"
+msgstr "Пошаљи ову команду:"
+
+#: src/fe-gtk/setup.c:171
+msgid "Extra Gadgets"
+msgstr "Посебне справице"
+
+#: src/fe-gtk/setup.c:172
 msgid "Lag meter:"
 msgstr "Мерење одзива:"
 
-#: src/fe-gtk/setup.c:133
+#: src/fe-gtk/setup.c:173
 msgid "Throttle meter:"
 msgstr "Мерење протока:"
 
-#: src/fe-gtk/setup.c:134
-msgid "Userlist sorted by:"
-msgstr "Уреди списак корисника:"
-
-#: src/fe-gtk/setup.c:135
-msgid "Double-click command:"
-msgstr "Дворструки клик значи:"
-
-#: src/fe-gtk/setup.c:136
-msgid "Show hostnames in userlist"
-msgstr "Покажи имена рачунара"
-
-#: src/fe-gtk/setup.c:137
-msgid "Userlist buttons enabled"
-msgstr "Корисничка дугмад укључена"
-
-#: src/fe-gtk/setup.c:139
-msgid "Resizable userlist"
-msgstr "Мењање величине списка корисника"
-
-#: src/fe-gtk/setup.c:140
-msgid "Track away-status on channels smaller than:"
-msgstr "Прати одсутне на каналима са мање од:"
-
-#: src/fe-gtk/setup.c:146
+#: src/fe-gtk/setup.c:180
 msgid "Windows"
 msgstr "Прозорима"
 
-#: src/fe-gtk/setup.c:147 src/fe-gtk/setup.c:906
+#: src/fe-gtk/setup.c:181 src/fe-gtk/setup.c:205 src/fe-gtk/setup.c:1447
 msgid "Tabs"
 msgstr "Језичцима"
 
-#: src/fe-gtk/setup.c:153
+#: src/fe-gtk/setup.c:187
 msgid "Bottom"
 msgstr "Доле"
 
-#: src/fe-gtk/setup.c:154
+#: src/fe-gtk/setup.c:188
 msgid "Top"
 msgstr "Горе"
 
-#: src/fe-gtk/setup.c:155
+#: src/fe-gtk/setup.c:189
 msgid "Left"
 msgstr "Слева"
 
-#: src/fe-gtk/setup.c:156
+#: src/fe-gtk/setup.c:190
 msgid "Right"
 msgstr "Здесна"
 
-#: src/fe-gtk/setup.c:157
+#: src/fe-gtk/setup.c:191
 msgid "Hidden"
 msgstr "Сакриј"
 
-#: src/fe-gtk/setup.c:163
-msgid "Show tabs at:"
-msgstr "Прикажи језичке:"
+#: src/fe-gtk/setup.c:198
+msgid "Always"
+msgstr "Увек"
 
-#: src/fe-gtk/setup.c:164
-msgid "Open channels in:"
-msgstr "Отвори канале у:"
+#: src/fe-gtk/setup.c:199
+msgid "Only requested tabs"
+msgstr "Само жељени језичци"
 
-#: src/fe-gtk/setup.c:165
-msgid "Open dialogs in:"
-msgstr "Отвори разговоре у:"
+#: src/fe-gtk/setup.c:206
+msgid "Open an extra tab for server messages"
+msgstr "Отвори посебан језичак за поруке са сервера"
 
-#: src/fe-gtk/setup.c:166
-msgid "Open utilities in:"
-msgstr "Отвори помоћне у:"
+#: src/fe-gtk/setup.c:207
+msgid "Open an extra tab for server notices"
+msgstr "Отвори посебан језичак за вести са сервера"
 
-#: src/fe-gtk/setup.c:166
-msgid "Open DCC, Ignore, Notify etc, in tabs or windows?"
-msgstr "DCC, Ignore и Notify се отварају у језичцима или прозорима?"
+#: src/fe-gtk/setup.c:208
+msgid "Small tabs"
+msgstr "Мали језичци"
 
-#: src/fe-gtk/setup.c:167
-msgid "Open tab for server messages"
-msgstr "Отвори језичак за поруке са сервера"
+#: src/fe-gtk/setup.c:209
+msgid "Sort tabs in alphabetical order"
+msgstr "Уреди језичке лексикографски"
 
-#: src/fe-gtk/setup.c:168
-msgid "Open tab for server notices"
-msgstr "Отвори језичак за вести са сервера"
+#: src/fe-gtk/setup.c:210
+msgid "Focus new tabs:"
+msgstr "Фокусирај нове језичке:"
 
-#: src/fe-gtk/setup.c:169
-msgid "Pop new tabs to front"
-msgstr "Нове језичке у први план"
-
-#: src/fe-gtk/setup.c:170
-msgid "Shorten tabs to:"
+#: src/fe-gtk/setup.c:211
+msgid "Shorten tab labels to:"
 msgstr "Скрати језичке на:"
 
-#: src/fe-gtk/setup.c:170
+#: src/fe-gtk/setup.c:211
 msgid "letters."
 msgstr "слова"
 
-#: src/fe-gtk/setup.c:176
+#: src/fe-gtk/setup.c:213
+msgid "Tabs Location"
+msgstr "Смештање језичака"
+
+#: src/fe-gtk/setup.c:214
+msgid "Show tabs at:"
+msgstr "Прикажи језичке:"
+
+#: src/fe-gtk/setup.c:216
+msgid "Tabs or Windows"
+msgstr "Језичци или прозори"
+
+#: src/fe-gtk/setup.c:217
+msgid "Open channels in:"
+msgstr "Отвори канале у:"
+
+#: src/fe-gtk/setup.c:218
+msgid "Open dialogs in:"
+msgstr "Отвори разговоре у:"
+
+#: src/fe-gtk/setup.c:219
+msgid "Open utilities in:"
+msgstr "Отвори помоћне у:"
+
+#: src/fe-gtk/setup.c:219
+msgid "Open DCC, Ignore, Notify etc, in tabs or windows?"
+msgstr "DCC, Ignore и Notify се отварају у језичцима или прозорима?"
+
+#: src/fe-gtk/setup.c:226
+msgid "Files and Directories"
+msgstr "Датотеке и директоријуми"
+
+#: src/fe-gtk/setup.c:227
 msgid "Download files to:"
 msgstr "Снимај датотеке у:"
 
-#: src/fe-gtk/setup.c:177
+#: src/fe-gtk/setup.c:228
 msgid "Move completed files to:"
 msgstr "Помери пренесене датотеке у дир.:"
 
-#: src/fe-gtk/setup.c:178
+#: src/fe-gtk/setup.c:229
+msgid "Save nick name in filenames"
+msgstr "Запамти надимке у именима датотекама"
+
+#: src/fe-gtk/setup.c:230
+msgid "Convert spaces to underscore before sending"
+msgstr "Пребаци размаке у доње црте пре слања"
+
+#: src/fe-gtk/setup.c:232
+msgid "Network Settings"
+msgstr "Подешавања мреже"
+
+#: src/fe-gtk/setup.c:233
 msgid "DCC IP address:"
 msgstr "DCC IP адреса:"
 
-#: src/fe-gtk/setup.c:179
+#: src/fe-gtk/setup.c:234
 msgid "Claim you are at this address when offering files."
 msgstr "Пријави ову адресу при нуђењу датотека."
 
-#: src/fe-gtk/setup.c:180
+#: src/fe-gtk/setup.c:235
 msgid "First DCC send port:"
 msgstr "Први порт за слање DCC:"
 
-#: src/fe-gtk/setup.c:181
+#: src/fe-gtk/setup.c:236
 msgid "Last DCC send port:"
 msgstr "Последњи порт за слање DCC"
 
-#: src/fe-gtk/setup.c:182
+#: src/fe-gtk/setup.c:237
 msgid "(Leave ports at zero for full range)."
 msgstr "(за пуни опсег вредност треба да је 0)"
 
-#: src/fe-gtk/setup.c:183
-msgid "Auto open DCC send list"
-msgstr "Аутоматски отвори DCC списак за слање"
+#: src/fe-gtk/setup.c:238
+msgid "Get my address from the IRC server"
+msgstr "Сазнај IP овог рачунара од сервера"
 
-#: src/fe-gtk/setup.c:184
-msgid "Convert spaces to underscore"
-msgstr "Пребаци размаке у доње црте"
+#: src/fe-gtk/setup.c:239
+msgid "Asks the IRC server for your real address. Use this if you have a 192.168.*.* address!"
+msgstr "Упитајте ИРЦ сервер да сазнате вашу адресу. Корисни уколико је права адреса из опсега 192.168.*.*!"
 
-#: src/fe-gtk/setup.c:185
-msgid "In filenames, before sending"
-msgstr "У датотекама, пре слања"
+#: src/fe-gtk/setup.c:241
+msgid "Maximum File Transfer Speeds (bytes per second)"
+msgstr "Највеће брзине преноса (бајт/секунда)"
 
-#: src/fe-gtk/setup.c:186
-msgid "Auto open DCC chat list"
-msgstr "Увек отвори списак DCC разговора"
+#: src/fe-gtk/setup.c:242
+msgid "One upload:"
+msgstr "Једно слање:"
 
-#: src/fe-gtk/setup.c:187
-msgid "Save nickname in filenames"
-msgstr "Запамти имена у датотекама"
-
-#: src/fe-gtk/setup.c:188
-msgid "Auto open DCC receive list"
-msgstr "Увек отвори списак за DCC пријем"
-
-#: src/fe-gtk/setup.c:189
-msgid "Get my IP from IRC server"
-msgstr "Сазнај IP рачунара од сервера"
-
-#: src/fe-gtk/setup.c:190
-msgid "/WHOIS yourself to find your real address. Use this if you have a 192.168.*.* address!"
-msgstr "Користите команду /WHOIS да сазнате вашу адресу, уколико је права адреса из опсега 192.168.*.*!"
-
-#: src/fe-gtk/setup.c:191
-msgid "Max. send CPS:"
-msgstr "Макс. брзина слања:"
-
-#: src/fe-gtk/setup.c:192 src/fe-gtk/setup.c:194
-msgid "Max. speed for one transfer"
+#: src/fe-gtk/setup.c:243 src/fe-gtk/setup.c:245
+msgid "Maximum speed for one transfer"
 msgstr "Макс. брзина за један пренос"
 
-#: src/fe-gtk/setup.c:193
-msgid "Max. receive CPS:"
-msgstr "Макс. брзина слања:"
+#: src/fe-gtk/setup.c:244
+msgid "One download:"
+msgstr "Једно преузимање:"
 
-#: src/fe-gtk/setup.c:195
-msgid "Max. global send CPS:"
-msgstr "Макс. укупна брзина слања:"
+#: src/fe-gtk/setup.c:246
+msgid "All uploads combined:"
+msgstr "Сва слања:"
 
-#: src/fe-gtk/setup.c:196 src/fe-gtk/setup.c:198
-msgid "Max. speed for all traffic"
-msgstr "Макс. брзина саобраћаја"
+#: src/fe-gtk/setup.c:247 src/fe-gtk/setup.c:249
+msgid "Maximum speed for all files"
+msgstr "Макс. брзина саобраћаја за све датотеке"
 
-#: src/fe-gtk/setup.c:197
-msgid "Max. global receive CPS:"
-msgstr "Макс. брзина пријема:"
+#: src/fe-gtk/setup.c:248
+msgid "All downloads combined:"
+msgstr "Сва преузимања:"
 
-#: src/fe-gtk/setup.c:199
-msgid "(Leave at zero for full speed file transfers)."
-msgstr "(Ако оставите на 0, нема ограничења)"
+#: src/fe-gtk/setup.c:256
+msgid "Default Messages"
+msgstr "Подразумеване поруке"
 
-#: src/fe-gtk/setup.c:205
-msgid "Default quit message:"
-msgstr "Поздрав за крај рада:"
+#: src/fe-gtk/setup.c:257
+msgid "Quit:"
+msgstr "Крај:"
 
-#: src/fe-gtk/setup.c:206
-msgid "Default part message:"
-msgstr "Поздрав за одлазак:"
+#: src/fe-gtk/setup.c:258
+msgid "Leave channel:"
+msgstr "Напусти канал:"
 
-#: src/fe-gtk/setup.c:207
-msgid "Default away message:"
-msgstr "Порука за одсутство:"
+#: src/fe-gtk/setup.c:259
+msgid "Away:"
+msgstr "Одсутан:"
 
-#: src/fe-gtk/setup.c:209
-msgid "(Can be a text file relative to ~/.xchat2/)."
-msgstr "(Можете користити име датотеке релативно у одн. на ~/.xchat2/)."
+#: src/fe-gtk/setup.c:261
+msgid "Away"
+msgstr "Одсутан"
 
-#: src/fe-gtk/setup.c:211
-msgid "(Can be a text file relative to config dir)."
-msgstr "(Може бити релативно у односу на дир. са подешавањима)."
-
-#: src/fe-gtk/setup.c:213
-msgid "Extra words to highlight on:"
-msgstr "Речи које треба нагласити:"
-
-#: src/fe-gtk/setup.c:214
-msgid "(Separate multiple words with commas)."
-msgstr "(Речи раздвојите запетама)."
-
-#: src/fe-gtk/setup.c:215
-msgid "Show away once"
-msgstr "Само једном објави одсутност"
-
-#: src/fe-gtk/setup.c:215
-msgid "Show identical away messages only once"
-msgstr "Исте поруке се не понављају"
-
-#: src/fe-gtk/setup.c:216
-msgid "Beep on private messages"
-msgstr "Звук на приватну поруку"
-
-#: src/fe-gtk/setup.c:217
-msgid "Automatically unmark away"
-msgstr "Склони AWAY кад се вратим"
-
-#: src/fe-gtk/setup.c:217
-msgid "Unmark yourself as away before sending messages"
-msgstr "Објави повратак пре слања порука"
-
-#: src/fe-gtk/setup.c:218
-msgid "Beep on channel messages"
-msgstr "Звук при порукама на каналу"
-
-#: src/fe-gtk/setup.c:219
+#: src/fe-gtk/setup.c:262
 msgid "Announce away messages"
 msgstr "Испиши поруке о одсуству"
 
-#: src/fe-gtk/setup.c:219
+#: src/fe-gtk/setup.c:263
 msgid "Announce your away messages to all channels"
 msgstr "Поруку о одсуству шаљи на све канале"
 
-#: src/fe-gtk/setup.c:220
+#: src/fe-gtk/setup.c:264
+msgid "Show away once"
+msgstr "Само једном објави одсутност"
+
+#: src/fe-gtk/setup.c:264
+msgid "Show identical away messages only once"
+msgstr "Исте поруке се не понављају"
+
+#: src/fe-gtk/setup.c:265
+msgid "Automatically unmark away"
+msgstr "Склони AWAY кад се вратим"
+
+#: src/fe-gtk/setup.c:265
+msgid "Unmark yourself as away before sending messages"
+msgstr "Објави повратак пре слања порука"
+
+#: src/fe-gtk/setup.c:268
+msgid "(Can be a text file relative to ~/.xchat2/)."
+msgstr "(Можете користити име датотеке релативно у одн. на ~/.xchat2/)."
+
+#: src/fe-gtk/setup.c:270
+msgid "(Can be a text file relative to config dir)."
+msgstr "(Може бити релативно у односу на дир. са подешавањима)."
+
+#: src/fe-gtk/setup.c:274
+msgid "Alerts"
+msgstr "Узбуне"
+
+#: src/fe-gtk/setup.c:276
+msgid "Flash taskbar on highlighted messages"
+msgstr "Бљесак оквира прозора при означеним порукама"
+
+#: src/fe-gtk/setup.c:278
 msgid "Beep on highlighted messages"
 msgstr "Звук при означеним порукама"
 
-#: src/fe-gtk/setup.c:221
-msgid "Display MODEs in raw form"
-msgstr "Приказуј приступе у сировом облику"
+#: src/fe-gtk/setup.c:279
+msgid "Extra words to highlight on:"
+msgstr "Речи које треба нагласити:"
 
-#: src/fe-gtk/setup.c:222
-msgid "Whois on notify"
-msgstr "Изврши WHOIS кад се појави неко посматран"
+#: src/fe-gtk/setup.c:280
+msgid "(Separate multiple words with commas)."
+msgstr "(Речи раздвојите запетама)."
 
-#: src/fe-gtk/setup.c:222
-msgid "Sends a /WHOIS when a user comes online in your notify list"
-msgstr "Шаље /WHOIS када се појави име са списка посматраних"
+#: src/fe-gtk/setup.c:281
+msgid "Beep on private messages"
+msgstr "Звук на приватну поруку"
 
-#: src/fe-gtk/setup.c:223
-msgid "Hide join/part messages"
-msgstr "Сакриј поруке о доласку и одласку"
+#: src/fe-gtk/setup.c:282
+msgid "Beep on channel messages"
+msgstr "Звук при порукама на каналу"
 
-#: src/fe-gtk/setup.c:223
-msgid "Hide channel join/part messages by default"
-msgstr "Увек сакривај поруке о доласку и одласку"
+#: src/fe-gtk/setup.c:289
+msgid "Advanced Settings"
+msgstr "Напредна подешавања"
 
-#: src/fe-gtk/setup.c:224
+#: src/fe-gtk/setup.c:290
 msgid "Auto reconnect delay:"
 msgstr "Пауза пре новог повезивања:"
 
-#: src/fe-gtk/setup.c:230
+#: src/fe-gtk/setup.c:291
+msgid "Display MODEs in raw form"
+msgstr "Приказуј приступе у сировом облику"
+
+#: src/fe-gtk/setup.c:292
+msgid "Whois on notify"
+msgstr "Изврши WHOIS кад се појави неко посматран"
+
+#: src/fe-gtk/setup.c:292
+msgid "Sends a /WHOIS when a user comes online in your notify list"
+msgstr "Шаље /WHOIS када се појави име са списка посматраних"
+
+#: src/fe-gtk/setup.c:293
+msgid "Hide join and part messages"
+msgstr "Сакриј поруке о доласку и одласку"
+
+#: src/fe-gtk/setup.c:293
+msgid "Hide channel join/part messages by default"
+msgstr "Увек сакривај поруке о доласку и одласку"
+
+#: src/fe-gtk/setup.c:294
+msgid "Auto Open DCC Windows"
+msgstr "Непосредне акције (DCC) у посебан прозор"
+
+#: src/fe-gtk/setup.c:295
+msgid "Send window"
+msgstr "Прозор за слање"
+
+#: src/fe-gtk/setup.c:296
+msgid "Receive window"
+msgstr "Прозор за пријем"
+
+#: src/fe-gtk/setup.c:297
+msgid "Chat window"
+msgstr "Прозор за разговор"
+
+#: src/fe-gtk/setup.c:305 src/fe-gtk/setup.c:1452
+msgid "Logging"
+msgstr "Записивање"
+
+#: src/fe-gtk/setup.c:306
+msgid "Enable logging of conversations"
+msgstr "Дозволи бележење разговора"
+
+#: src/fe-gtk/setup.c:307
 msgid "Log filename mask:"
 msgstr "Шаблон за име дневника:"
 
-#: src/fe-gtk/setup.c:231
+#: src/fe-gtk/setup.c:308
 #, c-format
 msgid "(%s=Server %c=Channel %n=Network)."
 msgstr "(%s=сервер %c=канал %n=мрежа)."
 
-#: src/fe-gtk/setup.c:232
-msgid "Log timestamp format:"
-msgstr "Формат за запис датума у дневник:"
-
-#: src/fe-gtk/setup.c:233
-msgid "(See strftime manpage for details)."
-msgstr "(Детаљније у упутству за strftime)."
-
-#: src/fe-gtk/setup.c:234
-msgid "Enable logging of conversations"
-msgstr "Дозволи бележење разговора"
-
-#: src/fe-gtk/setup.c:235
+#: src/fe-gtk/setup.c:311
 msgid "Insert timestamps in logs"
 msgstr "Убацуј време у дневнике"
 
-#: src/fe-gtk/setup.c:241
+#: src/fe-gtk/setup.c:312
+msgid "Log timestamp format:"
+msgstr "Формат за запис датума у дневник:"
+
+#: src/fe-gtk/setup.c:313
+msgid "(See strftime manpage for details)."
+msgstr "(Детаљније у упутству за strftime)."
+
+#: src/fe-gtk/setup.c:320
 msgid "(Disabled)"
 msgstr "(искључено)"
 
-#: src/fe-gtk/setup.c:242
+#: src/fe-gtk/setup.c:321
 msgid "Wingate"
 msgstr "Wingate"
 
-#: src/fe-gtk/setup.c:243
+#: src/fe-gtk/setup.c:322
 msgid "Socks4"
 msgstr "Socks4"
 
-#: src/fe-gtk/setup.c:244
+#: src/fe-gtk/setup.c:323
 msgid "Socks5"
 msgstr "Socks5"
 
-#: src/fe-gtk/setup.c:245
+#: src/fe-gtk/setup.c:324
 msgid "HTTP"
 msgstr "HTTP"
 
-#: src/fe-gtk/setup.c:251
-msgid "Address to bind to:"
-msgstr "Адреса за повезивање:"
+#: src/fe-gtk/setup.c:330
+msgid "Your Address"
+msgstr "Ваша адреса"
 
-#: src/fe-gtk/setup.c:252
+#: src/fe-gtk/setup.c:331
+msgid "Bind to:"
+msgstr "Повежи се са:"
+
+#: src/fe-gtk/setup.c:332
 msgid "(Only useful for computers with multiple addresses)."
 msgstr "(корисно је само ако рачунар има више адреса)"
 
-#: src/fe-gtk/setup.c:253
-msgid "Proxy server"
+#: src/fe-gtk/setup.c:334
+msgid "Proxy Server"
 msgstr "Заступник (proxy):"
 
-#: src/fe-gtk/setup.c:254
+#: src/fe-gtk/setup.c:335
 msgid "Hostname:"
 msgstr "Име рач.:"
 
-#: src/fe-gtk/setup.c:255
+#: src/fe-gtk/setup.c:336
 msgid "Username:"
 msgstr "Корисничко име:"
 
-#: src/fe-gtk/setup.c:256
+#: src/fe-gtk/setup.c:337
 msgid "Password:"
 msgstr "Лозинка:"
 
-#: src/fe-gtk/setup.c:257
+#: src/fe-gtk/setup.c:338
 msgid "Port:"
 msgstr "Порт:"
 
-#: src/fe-gtk/setup.c:258
+#: src/fe-gtk/setup.c:339
 msgid "Type:"
 msgstr "Врста:"
 
-#: src/fe-gtk/setup.c:260
-msgid "Authenticate to the proxy server (only HTTP)"
-msgstr "Представи се заступнику (само за HTTP)"
+#: src/fe-gtk/setup.c:341
+msgid "Authenticate to the proxy server (HTTP and Socks5)"
+msgstr "Представи се заступнику (само за HTTP и Socks5)"
 
-#: src/fe-gtk/setup.c:483
+#: src/fe-gtk/setup.c:564
+msgid "(disabled)"
+msgstr "(искључено)"
+
+#: src/fe-gtk/setup.c:565
+msgid "A star (*)"
+msgstr "Звездица (*)"
+
+#: src/fe-gtk/setup.c:566
+msgid "A red star (*)"
+msgstr "Црвена звездица (*)"
+
+#: src/fe-gtk/setup.c:567
+msgid "Underlined"
+msgstr "Подвучено"
+
+#: src/fe-gtk/setup.c:664
 msgid "Select an Image File"
 msgstr "Одабери слику"
 
-#: src/fe-gtk/setup.c:530
+#: src/fe-gtk/setup.c:711
 msgid "Select font"
 msgstr "Одабери писмо"
 
-#: src/fe-gtk/setup.c:604
+#: src/fe-gtk/setup.c:785
 msgid "Browse..."
 msgstr "Прегледај..."
 
-#: src/fe-gtk/setup.c:768
+#: src/fe-gtk/setup.c:902
+msgid "Mark identified users with:"
+msgstr "Означи идентификоване кориснике са:"
+
+#: src/fe-gtk/setup.c:904
+msgid "Mark not-identified users with:"
+msgstr "Означи неидентификоване кориснике са:"
+
+#: src/fe-gtk/setup.c:963
 msgid "Select color"
 msgstr "Одабери боју"
 
-#: src/fe-gtk/setup.c:834
+#: src/fe-gtk/setup.c:1043
+msgid "Text Colors"
+msgstr "Боје текста"
+
+#: src/fe-gtk/setup.c:1045
 msgid "mIRC colors:"
 msgstr "mIRC боје:"
 
-#: src/fe-gtk/setup.c:843
+#: src/fe-gtk/setup.c:1053
+msgid "Extra colors:"
+msgstr "Додатне боје:"
+
+#: src/fe-gtk/setup.c:1061 src/fe-gtk/setup.c:1066
 msgid "Foreground:"
 msgstr "Први план:"
 
-#: src/fe-gtk/setup.c:844
+#: src/fe-gtk/setup.c:1062 src/fe-gtk/setup.c:1067
 msgid "Background:"
 msgstr "Позадина:"
 
-#: src/fe-gtk/setup.c:846
-msgid "Mark fore:"
-msgstr "Означен први план:"
+#: src/fe-gtk/setup.c:1064
+msgid "Marking Text"
+msgstr "Истицање текста"
 
-#: src/fe-gtk/setup.c:847
-msgid "Mark back:"
-msgstr "Означен други план:"
+#: src/fe-gtk/setup.c:1069
+msgid "Interface Colors"
+msgstr "Боје сучеља"
 
-#: src/fe-gtk/setup.c:849
-msgid "Away User:"
-msgstr "Одсутан корисник:"
-
-#: src/fe-gtk/setup.c:851
-msgid "Tab colors"
-msgstr "Боје језичака:"
-
-#: src/fe-gtk/setup.c:862
-msgid "New Data:"
+#: src/fe-gtk/setup.c:1071
+msgid "New data:"
 msgstr "Нови подаци:"
 
-#: src/fe-gtk/setup.c:863
-msgid "New Message:"
+#: src/fe-gtk/setup.c:1072
+msgid "Marker line:"
+msgstr "Линија ознаке:"
+
+#: src/fe-gtk/setup.c:1073
+msgid "New message:"
 msgstr "Нова порука:"
 
-#: src/fe-gtk/setup.c:864
+#: src/fe-gtk/setup.c:1074
+msgid "Away user:"
+msgstr "Одсутан корисник:"
+
+#: src/fe-gtk/setup.c:1075
 msgid "Highlight:"
 msgstr "Истицање:"
 
-#: src/fe-gtk/setup.c:902
+#: src/fe-gtk/setup.c:1171 src/fe-gtk/textgui.c:337
+msgid "Event"
+msgstr "Догађај"
+
+#: src/fe-gtk/setup.c:1177
+msgid "Sound file"
+msgstr "Звучни запис:"
+
+#: src/fe-gtk/setup.c:1212
+msgid "Select a sound file"
+msgstr "Изаберите име звучног записа"
+
+#: src/fe-gtk/setup.c:1284
+msgid "Sound playing method:"
+msgstr "Начин пуштања звука:"
+
+#: src/fe-gtk/setup.c:1292
+msgid "External sound playing _program:"
+msgstr "Вањски програм за пуштање звука:"
+
+#: src/fe-gtk/setup.c:1310
+msgid "_External program"
+msgstr "Спољњи програм"
+
+#: src/fe-gtk/setup.c:1320
+msgid "_Automatic"
+msgstr "Аутоматски"
+
+#: src/fe-gtk/setup.c:1333
+msgid "Sound files _directory:"
+msgstr "Директоријум за звучне записе:"
+
+#: src/fe-gtk/setup.c:1372
+msgid "Sound file:"
+msgstr "Звучни запис:"
+
+#: src/fe-gtk/setup.c:1387
+msgid "_Browse..."
+msgstr "Прегледај..."
+
+#: src/fe-gtk/setup.c:1395
+msgid "_Play"
+msgstr "Пусти"
+
+#: src/fe-gtk/setup.c:1443
 msgid "Interface"
 msgstr "Сучеље"
 
-#: src/fe-gtk/setup.c:903
+#: src/fe-gtk/setup.c:1444
 msgid "Text box"
 msgstr "Унос текста"
 
-#: src/fe-gtk/setup.c:904
+#: src/fe-gtk/setup.c:1445
 msgid "Input box"
 msgstr "Улазни прозор"
 
-#: src/fe-gtk/setup.c:905
+#: src/fe-gtk/setup.c:1446
 msgid "User list"
 msgstr "Списак корисника"
 
-#: src/fe-gtk/setup.c:907
+#: src/fe-gtk/setup.c:1448
 msgid "Colors"
 msgstr "Боје"
 
-#: src/fe-gtk/setup.c:909
+#: src/fe-gtk/setup.c:1450
 msgid "Chatting"
 msgstr "Разговори"
 
-#: src/fe-gtk/setup.c:910
+#: src/fe-gtk/setup.c:1451
 msgid "General"
 msgstr "Опште"
 
-#: src/fe-gtk/setup.c:911
-msgid "Logging"
-msgstr "Записивање"
+#: src/fe-gtk/setup.c:1453
+msgid "Sound"
+msgstr "Звук"
 
-#: src/fe-gtk/setup.c:913
+#: src/fe-gtk/setup.c:1456
 msgid "Network"
 msgstr "Мрежа"
 
-#: src/fe-gtk/setup.c:914
+#: src/fe-gtk/setup.c:1457
 msgid "Network setup"
 msgstr "Подешавање мреже"
 
-#: src/fe-gtk/setup.c:915
+#: src/fe-gtk/setup.c:1458
 msgid "File transfers"
 msgstr "Пренос датотека"
 
-#: src/fe-gtk/setup.c:1020
+#: src/fe-gtk/setup.c:1565
 msgid "Categories"
 msgstr "Врсте"
 
-#: src/fe-gtk/setup.c:1146
+#: src/fe-gtk/setup.c:1695
 msgid "Some settings were changed that require a restart to take full effect."
 msgstr "Неке измене ће постати видљиве тек када следећи пут покренете програм."
 
-#: src/fe-gtk/setup.c:1173
+#: src/fe-gtk/setup.c:1723
 msgid "X-Chat: Preferences"
 msgstr "X-Chat: Поставке"
 
-#: src/fe-gtk/textgui.c:184
+#: src/fe-gtk/textgui.c:160
 msgid "There was an error parsing the string"
 msgstr "Грешка при читању текста"
 
-#: src/fe-gtk/textgui.c:192
+#: src/fe-gtk/textgui.c:168
 #, c-format
 msgid "This signal is only passed %d args, $%d is invalid"
 msgstr "Овај сигнал је допремио %d аргумената, $%d није исправан"
 
-#: src/fe-gtk/textgui.c:304 src/fe-gtk/textgui.c:326
+#: src/fe-gtk/textgui.c:276 src/fe-gtk/textgui.c:299
 msgid "Print Texts File"
 msgstr "Штампај датотеку текстова"
 
-#: src/fe-gtk/textgui.c:382
-msgid "Event"
-msgstr "Догађај"
-
-#: src/fe-gtk/textgui.c:384
-msgid "Sound"
-msgstr "Звук"
-
-#: src/fe-gtk/textgui.c:386
+#: src/fe-gtk/textgui.c:340
 msgid "$ Number"
 msgstr "$ број"
 
-#: src/fe-gtk/textgui.c:396
+#: src/fe-gtk/textgui.c:350
 msgid "Edit Events"
 msgstr "Уреди догађаје"
 
-#: src/fe-gtk/textgui.c:434
-msgid "Sound file: "
-msgstr "Звучни запис:"
-
-#: src/fe-gtk/textgui.c:469
+#: src/fe-gtk/textgui.c:418
 msgid "Save As"
 msgstr "Сними као"
 
-#: src/fe-gtk/textgui.c:474
+#: src/fe-gtk/textgui.c:423
 msgid "Load From"
 msgstr "Учитај из"
 
-#: src/fe-gtk/textgui.c:479
+#: src/fe-gtk/textgui.c:428
 msgid "Test All"
 msgstr "Пробај све"
 
