@@ -294,7 +294,8 @@ key_handle_key_pressAFTER (GtkWidget *wid, GdkEventKey *evt, session *sess)
 gboolean
 key_handle_key_press (GtkWidget *wid, GdkEventKey *evt, session *sess)
 {
-	if (evt->keyval == GDK_space)
+	if (evt->keyval == GDK_space || evt->keyval == GDK_Return ||
+		 evt->keyval == GDK_KP_Enter)
 		return key_handle_key_pressAFTER (wid, evt, sess);
 
 	return FALSE;

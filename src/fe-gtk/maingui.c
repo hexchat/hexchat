@@ -754,18 +754,6 @@ mg_hidejp_cb (GtkCheckMenuItem *item, session *sess)
 }
 
 static void
-mg_create_chan_options_menu (GtkWidget *menu, session *sess)
-{
-	menu_toggle_item (_("Beep on message"), menu, mg_beepmsg_cb, sess,
-							sess->beep);
-	if (sess->type != SESS_DIALOG)
-		menu_toggle_item (_("Show join/part messages"), menu, mg_hidejp_cb, sess,
-								!sess->hide_join_part);
-	menu_toggle_item (_("Color paste"), menu, mg_colorpaste_cb, sess,
-							sess->color_paste);
-}
-
-static void
 mg_create_sess_tree (GtkWidget *menu)
 {
 	GtkWidget *top_item, *item, *submenu;
@@ -823,6 +811,65 @@ mg_menu_destroy (GtkMenuShell *menushell, GtkWidget *menu)
 	gtk_widget_destroy (menu);
 }
 
+static void
+mg_create_icon_item (char *label, char *stock, GtkWidget *menu,
+							void *callback, void *userdata)
+{
+	GtkWidget *item;
+
+	item = create_icon_menu (label, stock, TRUE);
+	gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+	g_signal_connect (G_OBJECT (item), "activate", G_CALLBACK (callback),
+							userdata);
+	gtk_widget_show (item);
+}
+
+static void
+mg_quit_cb (GtkDialog *dialog, gint arg1, gpointer userdata)
+{
+	gtk_widget_destroy (GTK_WIDGET (dialog));
+	if (arg1 == GTK_RESPONSE_YES)
+		mg_safe_quit ();
+}
+
+static void
+mg_close_sess (session *sess)
+{
+	GtkWidget *dialog;
+
+	if (sess_list->next == NULL)
+	{
+		dialog = gtk_message_dialog_new (NULL, 0,
+										GTK_MESSAGE_WARNING, GTK_BUTTONS_YES_NO,
+										_("No other tabs open, quit xchat?"));
+		g_signal_connect (G_OBJECT (dialog), "response",
+								G_CALLBACK (mg_quit_cb), NULL);
+		gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
+		gtk_widget_show (dialog);
+		return;
+	}
+
+	fe_close_window (sess);
+}
+
+static void
+mg_detach_tab_cb (GtkWidget *item, session *sess)
+{
+	mg_link_irctab (sess);
+}
+
+static void
+mg_destroy_tab_cb (GtkWidget *item, GtkWidget *tab)
+{
+	session *sess;
+
+	sess = g_object_get_data (G_OBJECT (tab), "sess");
+	if (sess)
+		mg_close_sess (sess);
+	else
+		gtk_widget_destroy (tab);
+}
+
 static gboolean
 mg_tab_press_cb (GtkWidget *wid, GdkEventButton *event, session *sess)
 {
@@ -833,13 +880,35 @@ mg_tab_press_cb (GtkWidget *wid, GdkEventButton *event, session *sess)
 
 	menu = gtk_menu_new ();
 
-	item = gtk_menu_item_new_with_label (sess->channel[0] ? sess->channel : _("<none>"));
-	gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+	mg_create_icon_item (_("Close Tab"), GTK_STOCK_CLOSE, menu,
+								mg_destroy_tab_cb, wid);
+	if (sess)
+		mg_create_icon_item (_("Detach Tab"), GTK_STOCK_REDO, menu,
+									mg_detach_tab_cb, sess);
 
-	submenu = gtk_menu_new ();
-	mg_create_chan_options_menu (submenu, sess);
-	gtk_menu_item_set_submenu (GTK_MENU_ITEM (item), submenu);
+	/* separator */
+	item = gtk_menu_item_new ();
+	gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
 	gtk_widget_show (item);
+
+	if (sess)
+	{
+		item = gtk_menu_item_new_with_label (sess->channel[0] ? sess->channel : _("<none>"));
+		gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+
+		submenu = gtk_menu_new ();
+
+		menu_toggle_item (_("Beep on message"), submenu, mg_beepmsg_cb, sess,
+								sess->beep);
+		if (sess->type != SESS_DIALOG)
+			menu_toggle_item (_("Show join/part messages"), submenu, mg_hidejp_cb,
+									sess, !sess->hide_join_part);
+		menu_toggle_item (_("Color paste"), submenu, mg_colorpaste_cb, sess,
+								sess->color_paste);
+
+		gtk_menu_item_set_submenu (GTK_MENU_ITEM (item), submenu);
+		gtk_widget_show (item);
+	}
 
 	item = gtk_menu_item_new_with_label (_("Move to tab"));
 	gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
@@ -851,7 +920,7 @@ mg_tab_press_cb (GtkWidget *wid, GdkEventButton *event, session *sess)
 
 	g_signal_connect (G_OBJECT (menu), "selection-done",
 							G_CALLBACK (mg_menu_destroy), menu);
-	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL, 3, 0);
+	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL, 0, event->time);
 	return TRUE;
 }
 
@@ -1044,20 +1113,12 @@ mg_safe_quit (void)
 	}
 }
 
-static void
-mg_quit_cb (GtkDialog *dialog, gint arg1, gpointer userdata)
-{
-	gtk_widget_destroy (GTK_WIDGET (dialog));
-	if (arg1 == GTK_RESPONSE_YES)
-		mg_safe_quit ();
-}
-
 void
 mg_x_click_cb (GtkWidget *button, gpointer userdata)
 {
-	GtkWidget *dialog;
 	int page;
 
+	/* this, to handle CTRL-W while in non-irc tab */
 	if (current_sess->gui->is_tab && mg_gui)
 	{
 		page = gtk_notebook_get_current_page (GTK_NOTEBOOK (mg_gui->note_book));
@@ -1076,19 +1137,7 @@ mg_x_click_cb (GtkWidget *button, gpointer userdata)
 		return;
 	}
 
-	if (sess_list->next == NULL)
-	{
-		dialog = gtk_message_dialog_new (NULL, 0,
-										GTK_MESSAGE_WARNING, GTK_BUTTONS_YES_NO,
-										_("No other tabs open, quit xchat?"));
-		g_signal_connect (G_OBJECT (dialog), "response",
-								G_CALLBACK (mg_quit_cb), NULL);
-		gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
-		gtk_widget_show (dialog);
-		return;
-	}
-
-	fe_close_window (current_sess);
+	mg_close_sess (current_sess);
 }
 
 static void
