@@ -1864,6 +1864,12 @@ cmd_me (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	if (!(*act))
 		return FALSE;
 
+	if (sess->type == SESS_SERVER)
+	{
+		notj_msg (sess);
+		return TRUE;
+	}
+
 	sprintf (tbuf, "\001ACTION %s\001\r", act);
 	/* first try through DCC CHAT */
 	if (dcc_write_chat (sess->channel, tbuf))

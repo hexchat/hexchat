@@ -256,9 +256,14 @@ mg_configure_cb (GtkWidget *wid, GdkEventConfigure *event, session *sess)
 			if (prefs.mainwindow_save)
 			{
 				sess = current_sess;
+#ifdef WIN32
+				prefs.mainwindow_left = event->x;
+				prefs.mainwindow_top = event->y;
+#else
 				gtk_window_get_position (GTK_WINDOW (mg_gui->window),
 												 &prefs.mainwindow_left,
 												 &prefs.mainwindow_top);
+#endif
 				gtk_window_get_size (GTK_WINDOW (mg_gui->window),
 											&prefs.mainwindow_width,
 											&prefs.mainwindow_height);

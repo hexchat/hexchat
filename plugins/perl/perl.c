@@ -1031,10 +1031,9 @@ static int
 perl_load_file (char *script_name)
 {
 #ifdef WIN32
-	static int have_lib = FALSE;
-	HINSTANCE lib;
+	static HINSTANCE lib = NULL;
 
-	if (!have_lib)
+	if (!lib)
 	{
 		lib = LoadLibrary (PERL_DLL);
 		if (!lib)
@@ -1046,7 +1045,6 @@ perl_load_file (char *script_name)
 							 "Make sure perl's bin directory is in your PATH.");
 			return FALSE;
 		}
-		have_lib = TRUE;
 		FreeLibrary (lib);
 	}
 #endif
