@@ -681,7 +681,7 @@ static XS (XS_Xchat_hook_server)
 						server_cb, data);
 		hook_list = g_slist_append (hook_list, RETVAL);
 
-		XSRETURN_IV(PTR2IV(RETVAL));
+		XSRETURN_IV(PTR2UV(RETVAL));
 	}
 }
 
@@ -723,7 +723,7 @@ static XS(XS_Xchat_hook_command)
 						command_cb, help_text, data);
 		hook_list = g_slist_append (hook_list, RETVAL);
 
-		XSRETURN_IV (PTR2IV(RETVAL));
+		XSRETURN_IV (PTR2UV(RETVAL));
 	}
 
 }
@@ -765,7 +765,7 @@ static XS (XS_Xchat_hook_print)
 						print_cb, data);
 		hook_list = g_slist_append (hook_list, RETVAL);
 
-		XSRETURN_IV(PTR2IV(RETVAL));
+		XSRETURN_IV(PTR2UV(RETVAL));
 	}
 }
 
@@ -803,7 +803,7 @@ static XS (XS_Xchat_hook_timer)
 		data->hook = RETVAL;
 		hook_list = g_slist_append (hook_list, RETVAL);
 
-		XSRETURN_IV (PTR2IV(RETVAL));
+		XSRETURN_IV (PTR2UV(RETVAL));
 	}
 }
 
@@ -955,7 +955,7 @@ static XS (XS_Xchat_find_context)
 	if (RETVAL != NULL)
 	{
 /*  		xchat_print (ph, "XSUB - context found"); */
-		XSRETURN_IV(PTR2IV(RETVAL));
+		XSRETURN_IV(PTR2UV(RETVAL));
 	}
 	else
 	{
@@ -971,7 +971,7 @@ static XS (XS_Xchat_get_context)
 	if (items != 0) {
 		xchat_print (ph, "Usage: Xchat::get_context()");
 	} else {
-		XSRETURN_IV(PTR2IV(xchat_get_context (ph)));
+		XSRETURN_IV(PTR2UV(xchat_get_context (ph)));
 	}
 }
 
@@ -1054,13 +1054,13 @@ static XS (XS_Xchat_get_list)
 				case 'p':
 /* 				xchat_printf (ph, "pointer: %s", fields[i]+1); */
 					hv_store (hash, fields[i]+1, strlen (fields[i]+1),
-								newSViv(PTR2IV ( xchat_list_str (ph, list,
+								newSVuv(PTR2UV ( xchat_list_str (ph, list,
 																				fields[i]+1)
-									)), 0);
+									)), 0);cd 
 					break;
 				case 'i': 
 					hv_store (hash, fields[i]+1, strlen (fields[i]+1),
-								newSViv (xchat_list_int (ph, list, fields[i]+1)), 0);
+								newSVuv (xchat_list_int (ph, list, fields[i]+1)), 0);
 /* 				xchat_printf (ph, "int: %s - %d",fields[i]+1, */
 /* 				       xchat_list_int (ph, list, fields[i]+1) */
 /* 						); */
