@@ -1078,7 +1078,7 @@ xs_init (pTHX)
 	newXS("Xchat::_command", XS_Xchat_command, "Xchat");
 	newXS("Xchat::find_context", XS_Xchat_find_context, "Xchat");
 	newXS("Xchat::get_context", XS_Xchat_get_context, "Xchat");
-	newXS("Xchat::set_context", XS_Xchat_set_context, "Xchat");
+	newXS("Xchat::_set_context", XS_Xchat_set_context, "Xchat");
 	newXS("Xchat::_get_info", XS_Xchat_get_info, "Xchat");
 	newXS("Xchat::get_prefs", XS_Xchat_get_prefs, "Xchat");
 	newXS("Xchat::emit_print", XS_Xchat_emit_print, "Xchat");
@@ -1304,6 +1304,20 @@ perl_init (void)
           "sub Xchat::commandf {\n"
           "my $format = shift;\n"
           "Xchat::command( sprintf( $format, @_ ) );\n"
+          "}\n"
+          "sub Xchat::set_context {\n"
+          "my $context;\n"
+          "if( @_ == 2 ) {\n"
+          "my ($channel, $server) = @_;\n"
+          "$context = Xchat::find_context( $channel, $server );\n"
+          "} elsif( @_ == 1 ) {\n"
+          "if( $_[0] =~ /^\\d+$/ ) {\n"
+          "$context = $_[0];\n"
+          "} else {\n"
+          "$context = Xchat::find_context( $_[0] );\n"
+          "}\n"
+          "}\n"
+          "return $context ? Xchat::_set_context( $context ) : 0;\n"
           "}\n"
           "sub Xchat::get_info {\n"
           "my $id = shift;\n"

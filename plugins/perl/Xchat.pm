@@ -251,6 +251,23 @@ sub Xchat::commandf {
   Xchat::command( sprintf( $format, @_ ) );
 }
 
+sub Xchat::set_context {
+  my $context;
+
+  if( @_ == 2 ) {
+    my ($channel, $server) = @_;
+    $context = Xchat::find_context( $channel, $server );
+  } elsif( @_ == 1 ) {
+    if( $_[0] =~ /^\d+$/ ) {
+      $context = $_[0];
+    } else {
+      $context = Xchat::find_context( $_[0] );
+    }
+  }
+
+  return $context ? Xchat::_set_context( $context ) : 0;
+}
+
 sub Xchat::get_info {
   my $id = shift;
   my $info;
