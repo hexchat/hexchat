@@ -249,7 +249,7 @@ static const setting network_settings[] =
 	{ST_FRAME,	N_("Proxy server"), 0, 0, 0, 0},
 	{ST_ENTRY,	N_("Hostname:"), P_OFFSET(proxy_host), 0, 0, sizeof prefs.proxy_host},
 	{ST_ENTRY,	N_("Username:"), P_OFFSET(proxy_user), 0, 0, sizeof prefs.proxy_user},
-	{ST_ENTRY,	N_("Password:"), P_OFFSET(proxy_pass), 0, 0, sizeof prefs.proxy_pass},
+	{ST_ENTRY,	N_("Password:"), P_OFFSET(proxy_pass), 0, GINT_TO_POINTER(1), sizeof prefs.proxy_pass},
 	{ST_NUMBER,	N_("Port:"), P_OFFINT(proxy_port), 0, 0, 65535},
 	{ST_MENU,	N_("Type:"), P_OFFINT(proxy_type), 0, proxytypes, 0},
 
@@ -546,6 +546,8 @@ setup_create_entry (GtkWidget *table, int row, const setting *set)
 							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
 
 	wid = gtk_entry_new ();
+	if (set->list)
+		gtk_entry_set_visibility (GTK_ENTRY (wid), FALSE);
 	if (set->tooltip)
 		add_tip (wid, _(set->tooltip));
 	gtk_entry_set_max_length (GTK_ENTRY (wid), set->extra);

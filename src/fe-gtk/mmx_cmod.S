@@ -521,3 +521,8 @@ HAVE_MMX:
 	xorl	%eax,%eax	/* failed, no mmx */
 	popl	%ebx
 	ret
+
+#ifdef __GNUC__
+.section .note.GNU-stack, "", @progbits
+.previous
+#endif
