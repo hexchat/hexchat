@@ -126,6 +126,7 @@ typedef struct session_gui
 		*throttlemeter,
 		*throttleinfo,
 		*topic_bar,
+		*pane,
 		*menu,
 		*away_item,
 		*user_menu,
@@ -141,6 +142,8 @@ typedef struct session_gui
 		*key_entry;		  /* +k */
 
 	int bartag;		/*connecting progressbar timeout */
+
+	int pane_pos;	/*last position of the pane*/
 
 	unsigned int is_tab:1;	/* is tab or toplevel? */
 

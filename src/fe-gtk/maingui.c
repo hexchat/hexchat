@@ -507,6 +507,11 @@ mg_populate (session *sess)
 		gtk_widget_hide (gui->topicbutton_box);
 		/* hide the userlist */
 		gtk_widget_hide (gui->user_box);
+		if (gui->pane)
+		{
+			prefs.paned_pos = gui->pane_pos = gtk_paned_get_position (GTK_PANED (gui->pane));
+			gtk_paned_set_position (GTK_PANED (gui->pane), 9999);
+		}
 		break;
 	case SESS_SERVER:
 		gtk_widget_show (gui->topicbutton_box);
@@ -521,7 +526,18 @@ mg_populate (session *sess)
 		gtk_widget_show (gui->topicbutton_box);
 		/* show the userlist */
 		if (!prefs.hideuserlist)
+		{
+			if (gui->pane)
+			{
+				if (gui->pane_pos == 0)
+					gui->pane_pos = prefs.paned_pos;
+				if (gui->pane_pos == 0)
+					gui->pane_pos = prefs.mainwindow_width - 150;
+
+				gtk_paned_set_position (GTK_PANED (gui->pane), gui->pane_pos);
+			}
 			gtk_widget_show (gui->user_box);
+		}
 	}
 
 	/* move to THE irc tab */
@@ -1596,8 +1612,8 @@ mg_create_center (session *sess, session_gui *gui, GtkWidget *box)
 
 	if (prefs.paned_userlist)
 	{
-		paned = gtk_hpaned_new ();
-		gtk_paned_add1 (GTK_PANED (paned), hbox);
+		gui->pane = paned = gtk_hpaned_new ();
+		gtk_paned_pack1 (GTK_PANED (paned), hbox, TRUE, TRUE);
 
 		vbox = gtk_vbox_new (FALSE, 1);
 		gtk_container_add (GTK_CONTAINER (hbox), vbox);
@@ -1608,9 +1624,18 @@ mg_create_center (session *sess, session_gui *gui, GtkWidget *box)
 		mg_create_entry (sess, vbox);
 
 		hbox = gtk_hbox_new (FALSE, 1);
-		gtk_paned_add2 (GTK_PANED (paned), hbox);
+		gtk_paned_pack2 (GTK_PANED (paned), hbox, FALSE, FALSE);
 
 		mg_create_userlist (gui, hbox, FALSE);
+
+		if (gui->pane)
+		{
+			if (gui->pane_pos == 0)
+				gui->pane_pos = prefs.paned_pos;
+			if (gui->pane_pos == 0)
+				gui->pane_pos = prefs.mainwindow_width - 150;
+			gtk_paned_set_position (GTK_PANED (gui->pane), gui->pane_pos);
+		}
 
 	} else
 	{
@@ -2211,8 +2236,8 @@ fe_dlgbuttons_update (session *sess)
 
 	gtk_widget_show_all (box);
 
-	if (sess->type != SESS_DIALOG)
-		gtk_widget_hide (sess->gui->dialogbutton_box);
+	if (current_tab && current_tab->type != SESS_DIALOG)
+		gtk_widget_hide (current_tab->gui->dialogbutton_box);
 }
 
 void

@@ -131,6 +131,7 @@ static const setting userlist_settings[] =
 	{ST_TOGGLE, N_("Show hostnames in userlist"), P_OFFINT(showhostname_in_userlist), 0, 0, 0},
 	{ST_TOGGLE, N_("Userlist buttons enabled"), P_OFFINT(userlistbuttons), 0, 0, 0},
 	{ST_TOGGLE, N_("Use the Text box font and colors"), P_OFFINT(style_namelistgad),0,0,0},
+	{ST_TOGGLE, N_("Resizable userlist"), P_OFFINT(paned_userlist),0,0,0},
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
@@ -910,9 +911,23 @@ setup_apply (struct xchatprefs *pr)
 	session *sess;
 	GtkStyle *old_style;
 	int new_pix = FALSE;
+	int noapply = FALSE;
 
 	if (strcmp (pr->background, prefs.background) != 0)
 		new_pix = TRUE;
+
+#define DIFF(a) (pr->a != prefs.a)
+
+	if (DIFF (paned_userlist))
+		noapply = TRUE;
+	if (DIFF (lagometer))
+		noapply = TRUE;
+	if (DIFF (throttlemeter))
+		noapply = TRUE;
+	if (DIFF (showhostname_in_userlist))
+		noapply = TRUE;
+	if (DIFF (userlistbuttons))
+		noapply = TRUE;
 
 	memcpy (&prefs, pr, sizeof (prefs));
 
@@ -962,6 +977,10 @@ setup_apply (struct xchatprefs *pr)
 	mg_apply_setup ();
 
 	g_object_unref (old_style);
+
+	if (noapply)
+		gtkutil_simpledialog (_("Some settings were changed that require a"
+									 " restart to take full effect."));
 }
 
 #if 0

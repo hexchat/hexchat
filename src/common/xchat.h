@@ -142,6 +142,7 @@ struct xchatprefs
 	int tint_green;
 	int tint_blue;
 
+	int paned_pos;
 	int tabs_position;
 	int max_auto_indent;
 	int dcc_blocksize;

@@ -394,6 +394,7 @@ const struct prefs vars[] = {
 	{"gui_ulist_hide", P_OFFINT (hideuserlist), TYPE_BOOL},
 	{"gui_ulist_hilight_notify", P_OFFINT (hilitenotify), TYPE_BOOL},
 	{"gui_ulist_paned", P_OFFINT (paned_userlist), TYPE_BOOL},
+	{"gui_ulist_pos", P_OFFINT (paned_pos), TYPE_INT},
 	{"gui_ulist_show_hosts", P_OFFINT(showhostname_in_userlist), TYPE_BOOL},
 	{"gui_ulist_sort", P_OFFINT (userlist_sort), TYPE_INT},
 	{"gui_ulist_style", P_OFFINT (style_namelistgad), TYPE_BOOL},
