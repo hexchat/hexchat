@@ -1,5 +1,5 @@
 /*
-* Copyright (c) 2002  Gustavo Niemeyer <niemeyer@conectiva.com>
+* Copyright (c) 2002-2003  Gustavo Niemeyer <niemeyer@conectiva.com>
 *
 * XChat Python Plugin Interface
 *
@@ -24,7 +24,7 @@
  * The python interpreter has a global interpreter lock. Any thread
  * executing must acquire it before working with data accessible from
  * python code. Here we must also care about xchat not being
- * thread-safe.  We do this by using an xchat lock, which protect
+ * thread-safe. We do this by using an xchat lock, which protects
  * xchat instructions from being executed out of time (when this
  * plugin is not "active").
  *
@@ -111,7 +111,7 @@
 #define Plugin_AcquireThread(x) \
 	PyEval_AcquireThread(((PluginObject *)(x))->tstate)
 #define Plugin_ReleaseThread(x) \
-	PyEval_ReleaseThread(((PluginObject *)(x))->tstate);
+	Util_ReleaseThread(((PluginObject *)(x))->tstate)
 #define Plugin_GetFilename(x) \
 	(((PluginObject *)(x))->filename)
 #define Plugin_GetName(x) \
@@ -137,12 +137,15 @@
 #define Plugin_SetContext(x, y) \
 	((PluginObject *)(x))->context = (y);
 
+#define HOOK_XCHAT  1
+#define HOOK_UNLOAD 2
+
 /* ===================================================================== */
 /* Object definitions */
 
 typedef struct {
 	PyObject_HEAD
-	int softspace; /* We need it for interactive usage. */
+	int softspace; /* We need it for print support. */
 } XChatOutObject;
 
 typedef struct {
@@ -169,10 +172,11 @@ typedef struct {
 } PluginObject;
 
 typedef struct {
-	xchat_hook *handle;
+	int type;
 	PyObject *plugin;
 	PyObject *callback;
 	PyObject *userdata;
+	void *data; /* A handle, when type == HOOK_XCHAT */
 } Hook;
 
 
@@ -205,10 +209,10 @@ static PyObject *Plugin_New(char *filename, PyMethodDef *xchat_methods,
 			    PyObject *xcoobj);
 static PyObject *Plugin_GetCurrent();
 static PluginObject *Plugin_ByString(char *str);
-static Hook *Plugin_AddHook(PyObject *plugin, PyObject *callback,
-			    PyObject *userdata);
+static Hook *Plugin_AddHook(int type, PyObject *plugin, PyObject *callback,
+			    PyObject *userdata, void *data);
 static void Plugin_RemoveHook(PyObject *plugin, Hook *hook);
-static void Plugin_RemoveAllHooks(PyObject *plugin, int lockxchat);
+static void Plugin_RemoveAllHooks(PyObject *plugin);
 
 static PyObject *Module_xchat_command(PyObject *self, PyObject *args);
 static PyObject *Module_xchat_prnt(PyObject *self, PyObject *args);
@@ -272,9 +276,10 @@ Usage: /PY LOAD   <filename>\n\
 \n";
 
 static char *about = "\
+\n\
 X-Chat Python Interface " VERSION "\n\
 \n\
-Copyright (c) 2002  Gustavo Niemeyer <niemeyer@conectiva.com>\n\
+Copyright (c) 2002-2003  Gustavo Niemeyer <niemeyer@conectiva.com>\n\
 \n";
 
 
@@ -297,7 +302,7 @@ Util_BuildList(char *word[])
 	for (i = 0; i != listsize; i++) {
 		PyObject *o = PyString_FromString(word[i]);
 		if (o == NULL) {
-			PyObject_Del(list);
+			Py_DECREF(list);
 			PyErr_Print();
 			return NULL;
 		}
@@ -331,11 +336,56 @@ Util_Autoload()
 static char *
 Util_Expand(char *filename)
 {
-	if (*filename == '~' && *(filename+1) == '/')
-		return g_strconcat(g_get_home_dir(), filename+1, NULL);
-	if (!g_path_is_absolute(filename))
-		return g_strconcat(g_get_current_dir(), "/", filename, NULL);
-	return g_strdup(filename);
+	char *expanded;
+
+	/* Check if this is an absolute path. */
+	if (g_path_is_absolute(filename)) {
+		if (g_file_test(filename, G_FILE_TEST_EXISTS))
+			return g_strdup(filename);
+		else
+			return NULL;
+	}
+
+	/* Check if it starts with ~/ and expand the home if positive. */
+	if (*filename == '~' && *(filename+1) == '/') {
+		expanded = g_build_filename(g_get_home_dir(),
+					    filename+2, NULL);
+		if (g_file_test(expanded, G_FILE_TEST_EXISTS))
+			return expanded;
+		else {
+			g_free(expanded);
+			return NULL;
+		}
+	}
+
+	/* Check if it's in the current directory. */
+	expanded = g_build_filename(g_get_current_dir(),
+				    filename, NULL);
+	if (g_file_test(expanded, G_FILE_TEST_EXISTS))
+		return expanded;
+	g_free(expanded);
+
+	/* Check if ~/.xchat2/<filename> exists. */
+	expanded = g_build_filename(xchat_get_info(ph, "xchatdir"),
+				    filename, NULL);
+	if (g_file_test(expanded, G_FILE_TEST_EXISTS))
+		return expanded;
+	g_free(expanded);
+
+	return NULL;
+}
+
+/* Similar to PyEval_ReleaseThread, but accepts NULL thread states. */
+static void
+Util_ReleaseThread(PyThreadState *tstate)
+{
+	PyThreadState *old_tstate;
+	if (tstate == NULL)
+		Py_FatalError("PyEval_ReleaseThread: NULL thread state");
+	old_tstate = PyThreadState_Swap(NULL);
+	if (old_tstate != tstate && old_tstate != NULL)
+		Py_FatalError("PyEval_ReleaseThread: wrong thread state");
+	PyEval_ReleaseLock();
 }
 
 /* ===================================================================== */
@@ -350,18 +400,25 @@ Callback_Command(char *word[], char *word_eol[], void *userdata)
 	PyObject *word_list, *word_eol_list;
 	int ret = 0;
 
-	word_list = Util_BuildList(word+1);
-	if (word_list == NULL)
-		return 0;
-	word_eol_list = Util_BuildList(word_eol+1);
-	if (word_eol_list == NULL)
-		return 0;
-
 	BEGIN_PLUGIN(hook->plugin);
 
-	Py_INCREF(hook->userdata);
+	word_list = Util_BuildList(word+1);
+	if (word_list == NULL) {
+		END_PLUGIN(hook->plugin);
+		return 0;
+	}
+	word_eol_list = Util_BuildList(word_eol+1);
+	if (word_eol_list == NULL) {
+		Py_DECREF(word_list);
+		END_PLUGIN(hook->plugin);
+		return 0;
+	}
+
 	retobj = PyObject_CallFunction(hook->callback, "(OOO)", word_list,
 				       word_eol_list, hook->userdata);
+	Py_DECREF(word_list);
+	Py_DECREF(word_eol_list);
+
 	if (retobj == Py_None) {
 		ret = XCHAT_EAT_NONE;
 		Py_DECREF(retobj);
@@ -423,24 +480,29 @@ Callback_Print(char *word[], void *userdata)
 	}
 	word_eol[i] = "";
 
+	BEGIN_PLUGIN(hook->plugin);
+
 	word_list = Util_BuildList(word);
 	if (word_list == NULL) {
 		g_free(word_eol_raw);
 		g_free(word_eol);
+		END_PLUGIN(hook->plugin);
 		return 0;
 	}
 	word_eol_list = Util_BuildList(word_eol);
 	if (word_eol_list == NULL) {
 		g_free(word_eol_raw);
 		g_free(word_eol);
+		Py_DECREF(word_list);
+		END_PLUGIN(hook->plugin);
 		return 0;
 	}
 
-	BEGIN_PLUGIN(hook->plugin);
-
-	Py_INCREF(hook->userdata);
 	retobj = PyObject_CallFunction(hook->callback, "(OOO)", word_list,
 				       word_eol_list, hook->userdata);
+	Py_DECREF(word_list);
+	Py_DECREF(word_eol_list);
+
 	g_free(word_eol_raw);
 	g_free(word_eol);
 	if (retobj == Py_None) {
@@ -467,7 +529,6 @@ Callback_Timer(void *userdata)
 
 	BEGIN_PLUGIN(hook->plugin);
 
-	Py_INCREF(hook->userdata);
 	retobj = PyObject_CallFunction(hook->callback, "(O)", hook->userdata);
 
 	if (retobj) {
@@ -889,7 +950,7 @@ ListItem_New(const char *listname)
 		item->listname = listname;
 		item->dict = PyDict_New();
 		if (item->dict == NULL) {
-			PyObject_Del(item);
+			Py_DECREF(item);
 			item = NULL;
 		}
 	}
@@ -928,6 +989,15 @@ Plugin_New(char *filename, PyMethodDef *xchat_methods, PyObject *xcoobj)
 	PluginObject *plugin = NULL;
 	PyObject *m, *o;
 
+	if (filename) {
+		char *old_filename = filename;
+		filename = Util_Expand(filename);
+		if (filename == NULL) {
+			xchat_printf(ph, "File not found: %s", old_filename);
+			return NULL;
+		}
+	}
+
 	/* Allocate plugin structure. */
 	plugin = PyObject_New(PluginObject, &Plugin_Type);
 	if (plugin == NULL) {
@@ -946,7 +1016,7 @@ Plugin_New(char *filename, PyMethodDef *xchat_methods, PyObject *xcoobj)
 	PyEval_AcquireLock();
 	plugin->tstate = Py_NewInterpreter();
 	if (plugin->tstate == NULL) {
-		xchat_print(ph, "Can't create interpreter state\n");
+		xchat_print(ph, "Can't create interpreter state");
 		goto error;
 	}
 
@@ -985,13 +1055,10 @@ Plugin_New(char *filename, PyMethodDef *xchat_methods, PyObject *xcoobj)
 	if (filename) {
 		FILE *fp;
 
-		/* Copy filename to plugin structure. */
-		plugin->filename = Util_Expand(filename);
-		if (plugin->filename == NULL) {
-			xchat_print(ph, "Not enough memory to allocate "
-					"expanded filename");
-			goto error;
-		}
+		plugin->filename = filename;
+
+		/* It's now owned by the plugin. */
+		filename = NULL;
 
 		/* Open the plugin file. */
 		fp = fopen(plugin->filename, "r");
@@ -1002,9 +1069,9 @@ Plugin_New(char *filename, PyMethodDef *xchat_methods, PyObject *xcoobj)
 		}
 
 		/* Run the plugin. */
-		if (PyRun_SimpleFile(fp, filename) != 0) {
+		if (PyRun_SimpleFile(fp, plugin->filename) != 0) {
 			xchat_printf(ph, "Error loading module %s\n",
-				     filename);
+				     plugin->filename);
 			fclose(fp);
 			goto error;
 		}
@@ -1030,6 +1097,8 @@ Plugin_New(char *filename, PyMethodDef *xchat_methods, PyObject *xcoobj)
 	return (PyObject *) plugin;
 
 error:
+	g_free(filename);
+
 	if (plugin) {
 		if (plugin->tstate)
 			Py_EndInterpreter(plugin->tstate);
@@ -1075,18 +1144,21 @@ Plugin_ByString(char *str)
 }
 
 static Hook *
-Plugin_AddHook(PyObject *plugin, PyObject *callback, PyObject *userdata)
+Plugin_AddHook(int type, PyObject *plugin, PyObject *callback,
+	       PyObject *userdata, void *data)
 {
 	Hook *hook = (Hook *) g_malloc(sizeof(Hook));
 	if (hook == NULL) {
 		PyErr_NoMemory();
 		return NULL;
 	}
+	hook->type = type;
 	hook->plugin = plugin;
 	Py_INCREF(callback);
 	hook->callback = callback;
 	Py_INCREF(userdata);
 	hook->userdata = userdata;
+	hook->data = NULL;
 	Plugin_SetHooks(plugin, g_slist_append(Plugin_GetHooks(plugin),
 					       hook));
 
@@ -1101,9 +1173,12 @@ Plugin_RemoveHook(PyObject *plugin, Hook *hook)
 	list = g_slist_find(Plugin_GetHooks(plugin), hook);
 	if (list) {
 		/* Ok, unhook it. */
-		BEGIN_XCHAT_CALLS();
-		xchat_unhook(ph, hook->handle);
-		END_XCHAT_CALLS();
+		if (hook->type == HOOK_XCHAT) {
+			/* This is an xchat hook. Unregister it. */
+			BEGIN_XCHAT_CALLS();
+			xchat_unhook(ph, (xchat_hook*)hook->data);
+			END_XCHAT_CALLS();
+		}
 		Plugin_SetHooks(plugin,
 				g_slist_remove(Plugin_GetHooks(plugin),
 					       hook));
@@ -1114,17 +1189,16 @@ Plugin_RemoveHook(PyObject *plugin, Hook *hook)
 }
 
 static void
-Plugin_RemoveAllHooks(PyObject *plugin, int lockxchat)
+Plugin_RemoveAllHooks(PyObject *plugin)
 {
 	GSList *list = Plugin_GetHooks(plugin);
 	while (list) {
 		Hook *hook = (Hook *) list->data;
-		if (lockxchat) {
+		if (hook->type == HOOK_XCHAT) {
+			/* This is an xchat hook. Unregister it. */
 			BEGIN_XCHAT_CALLS();
-			xchat_unhook(ph, hook->handle);
+			xchat_unhook(ph, (xchat_hook*)hook->data);
 			END_XCHAT_CALLS();
-		} else {
-			xchat_unhook(ph, hook->handle);
 		}
 		Py_DECREF(hook->callback);
 		Py_DECREF(hook->userdata);
@@ -1137,11 +1211,22 @@ Plugin_RemoveAllHooks(PyObject *plugin, int lockxchat)
 static void
 Plugin_Delete(PyObject *plugin)
 {
-	Plugin_RemoveAllHooks(plugin, 0);
-	Plugin_Swap(plugin);
+	PyThreadState *tstate = ((PluginObject*)plugin)->tstate;
+	GSList *list = Plugin_GetHooks(plugin);
+	while (list) {
+		Hook *hook = (Hook *) list->data;
+		if (hook->type == HOOK_UNLOAD) {
+			PyObject *retobj;
+			retobj = PyObject_CallFunction(hook->callback, "(O)",
+						       hook->userdata);
+			Py_DECREF(retobj);
+		}
+		list = list->next;
+	}
+	Plugin_RemoveAllHooks(plugin);
 	xchat_plugingui_remove(ph, ((PluginObject *)plugin)->gui);
 	Py_DECREF(plugin);
-	Py_EndInterpreter(((PluginObject*)plugin)->tstate);
+	Py_EndInterpreter(tstate);
 }
 
 static void
@@ -1308,13 +1393,13 @@ Module_xchat_hook_command(PyObject *self, PyObject *args, PyObject *kwargs)
 		return NULL;
 	}
 
-	hook = Plugin_AddHook(plugin, callback, userdata);
+	hook = Plugin_AddHook(HOOK_XCHAT, plugin, callback, userdata, NULL);
 	if (hook == NULL)
 		return NULL;
 
 	BEGIN_XCHAT_CALLS();
-	hook->handle = xchat_hook_command(ph, name, priority,
-					  Callback_Command, help, hook);
+	hook->data = (void*)xchat_hook_command(ph, name, priority,
+					       Callback_Command, help, hook);
 	END_XCHAT_CALLS();
 
 	return PyInt_FromLong((long)hook);
@@ -1344,13 +1429,13 @@ Module_xchat_hook_server(PyObject *self, PyObject *args, PyObject *kwargs)
 		return NULL;
 	}
 
-	hook = Plugin_AddHook(plugin, callback, userdata);
+	hook = Plugin_AddHook(HOOK_XCHAT, plugin, callback, userdata, NULL);
 	if (hook == NULL)
 		return NULL;
 
 	BEGIN_XCHAT_CALLS();
-	hook->handle = xchat_hook_server(ph, name, priority, Callback_Command,
-					 hook);
+	hook->data = (void*)xchat_hook_server(ph, name, priority,
+					      Callback_Command, hook);
 	END_XCHAT_CALLS();
 
 	return PyInt_FromLong((long)hook);
@@ -1380,13 +1465,13 @@ Module_xchat_hook_print(PyObject *self, PyObject *args, PyObject *kwargs)
 		return NULL;
 	}
 
-	hook = Plugin_AddHook(plugin, callback, userdata);
+	hook = Plugin_AddHook(HOOK_XCHAT, plugin, callback, userdata, NULL);
 	if (hook == NULL)
 		return NULL;
 
 	BEGIN_XCHAT_CALLS();
-	hook->handle = xchat_hook_print(ph, name, priority, Callback_Print,
-					hook);
+	hook->data = (void*)xchat_hook_print(ph, name, priority,
+					     Callback_Print, hook);
 	END_XCHAT_CALLS();
 
 	return PyInt_FromLong((long)hook);
@@ -1416,13 +1501,42 @@ Module_xchat_hook_timer(PyObject *self, PyObject *args, PyObject *kwargs)
 		return NULL;
 	}
 
-	hook = Plugin_AddHook(plugin, callback, userdata);
+	hook = Plugin_AddHook(HOOK_XCHAT, plugin, callback, userdata, NULL);
 	if (hook == NULL)
 		return NULL;
 
 	BEGIN_XCHAT_CALLS();
-	hook->handle = xchat_hook_timer(ph, timeout, Callback_Timer, hook);
+	hook->data = (void*)xchat_hook_timer(ph, timeout,
+					     Callback_Timer, hook);
 	END_XCHAT_CALLS();
+
+	return PyInt_FromLong((long)hook);
+}
+
+static PyObject *
+Module_xchat_hook_unload(PyObject *self, PyObject *args, PyObject *kwargs)
+{
+	PyObject *callback;
+	PyObject *userdata = Py_None;
+	PyObject *plugin;
+	Hook *hook;
+	char *kwlist[] = {"callback", "userdata", 0};
+
+	if (!PyArg_ParseTupleAndKeywords(args, kwargs, "O|O:hook_unload",
+					 kwlist, &callback, &userdata))
+		return NULL;
+
+	plugin = Plugin_GetCurrent();
+	if (plugin == NULL)
+		return NULL;
+	if (!PyCallable_Check(callback)) {
+		PyErr_SetString(PyExc_TypeError, "callback is not callable");
+		return NULL;
+	}
+
+	hook = Plugin_AddHook(HOOK_UNLOAD, plugin, callback, userdata, NULL);
+	if (hook == NULL)
+		return NULL;
 
 	return PyInt_FromLong((long)hook);
 }
@@ -1574,6 +1688,8 @@ static PyMethodDef Module_xchat_methods[] = {
 		METH_VARARGS|METH_KEYWORDS},
 	{"hook_timer",		(PyCFunction)Module_xchat_hook_timer,
 		METH_VARARGS|METH_KEYWORDS},
+	{"hook_unload",		(PyCFunction)Module_xchat_hook_unload,
+		METH_VARARGS|METH_KEYWORDS},
 	{"unhook",		Module_xchat_unhook,
 		METH_VARARGS},
 	{"get_list",		Module_xchat_get_list,
@@ -1654,12 +1770,12 @@ Command_PyList()
 		xchat_print(ph, "No python modules loaded");
 	} else {
 		xchat_print(ph,
-			"Name     Version  Filename             Description\n"
-		        "----     -------  --------             -----------\n");
+		   "Name         Version  Filename             Description\n"
+		   "----         -------  --------             -----------\n");
 		while (list != NULL) {
 			PluginObject *plg = (PluginObject *) list->data;
 			char *basename = g_path_get_basename(plg->filename);
-			xchat_printf(ph, "%-8s %-8s %-20s %-10s\n",
+			xchat_printf(ph, "%-12s %-8s %-20s %-10s\n",
 				     plg->name,
 				     *plg->version ? plg->version
 				     		  : "<none>",
@@ -1691,9 +1807,9 @@ Command_PyUnload(char *name)
 	if (!plugin) {
 		xchat_print(ph, "Can't find a python plugin with that name");
 	} else {
-		PyEval_AcquireLock();
+		BEGIN_PLUGIN(plugin);
 		Plugin_Delete((PyObject*)plugin);
-		PyEval_ReleaseLock();
+		END_PLUGIN(plugin);
 		plugin_list = g_slist_remove(plugin_list, plugin);
 	}
 }
@@ -1833,7 +1949,7 @@ xchat_plugin_init(xchat_plugin *plugin_handle,
 	xchat_lock = PyThread_allocate_lock();
 	if (xchat_lock == NULL) {
 		xchat_print(ph, "Can't allocate xchat lock");
-		PyObject_Del(xchatout);
+		Py_DECREF(xchatout);
 		xchatout = NULL;
 		return 0;
 	}
@@ -1847,7 +1963,7 @@ xchat_plugin_init(xchat_plugin *plugin_handle,
 #ifdef WITH_THREAD
 		PyThread_free_lock(xchat_lock);
 #endif
-		PyObject_Del(xchatout);
+		Py_DECREF(xchatout);
 		xchatout = NULL;
 		return 0;
 	}
@@ -1879,23 +1995,25 @@ xchat_plugin_deinit()
 		return 1;
 	}
 
+	list = plugin_list;
+	while (list != NULL) {
+		PyObject *plugin = (PyObject *) list->data;
+		BEGIN_PLUGIN(plugin);
+		Plugin_Delete(plugin);
+		END_PLUGIN(plugin);
+		list = list->next;
+	}
+	g_slist_free(plugin_list);
+	plugin_list = NULL;
+
 	/* Reset xchatout buffer. */
 	g_free(xchatout_buffer);
 	xchatout_buffer = NULL;
 	xchatout_buffer_size = 0;
 	xchatout_buffer_pos = 0;
 
-	list = plugin_list;
-	while (list != NULL) {
-		PyObject *plugin = (PyObject *) list->data;
-		Plugin_Delete(plugin);
-		list = list->next;
-	}
-	g_slist_free(plugin_list);
-	plugin_list = NULL;
-
 	if (interp_plugin) {
-		PyObject_Del(interp_plugin);
+		Py_DECREF(interp_plugin);
 		interp_plugin = NULL;
 	}
 
