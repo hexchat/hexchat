@@ -1379,3 +1379,15 @@ xchat_send_modes (xchat_plugin *ph, const char **targets, int ntargets, int mode
 
 	send_channel_modes (ph->context, tbuf, (char **)targets, 0, ntargets, sign, mode, modes_per_line);
 }
+
+char *
+xchat_strip (xchat_plugin *ph, const char *str, int len, int flags)
+{
+	return strip_color ((char *)str, len, (flags & 1), (flags & 2));
+}
+
+void
+xchat_free (xchat_plugin *ph, void *ptr)
+{
+	free (ptr);
+}

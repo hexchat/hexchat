@@ -74,6 +74,8 @@ margin-right: 32px;
 <br><a href="#xchat_set_context">xchat_set_context</a>
 <br>
 <br><a href="#xchat_nickcmp">xchat_nickcmp</a>
+<br><a href="#xchat_strip">xchat_strip</a>
+<br><a href="#xchat_free">xchat_free</a>
 <br>
 <br><a href="#lists">xchat_list_get</a>
 <br><a href="#lists">xchat_list_free</a>
@@ -121,56 +123,63 @@ or OFF. Every XChat plugin must define an xchat_plugin_init function, this
 is the normal entry point. xchat_plugin_deinit is optional.
 <br>
 <pre>
-<font color="#a020f0">#include </font><font color="#f800f8">&quot;xchat-plugin.h&quot;</font>
+<font color="#ff80ff">#include </font><font color="#ffa0a0">&quot;xchat-plugin.h&quot;</font>
 
-<font color="#288850"><b>static</b></font> xchat_plugin *ph;   <font color="#0000f8">/*</font><font color="#0000f8"> plugin handle */</font>
-<font color="#288850"><b>static</b></font> <font color="#288850"><b>int</b></font> enable = <font color="#f800f8">1</font>;
+<font color="#60ff60">static</font> xchat_plugin *ph;   <font color="#80a0ff">/*</font><font color="#80a0ff"> plugin handle </font><font color="#80a0ff">*/</font>
+<font color="#60ff60">static</font> <font color="#60ff60">int</font> enable = <font color="#ffa0a0">1</font>;
 
-<font color="#288850"><b>static</b></font> <font color="#288850"><b>int</b></font> join_cb(<font color="#288850"><b>char</b></font> *word[], <font color="#288850"><b>void</b></font> *userdata)
+<font color="#60ff60">static</font> <font color="#60ff60">int</font> join_cb(<font color="#60ff60">char</font> *word[], <font color="#60ff60">void</font> *userdata)
 {
-   <font color="#a02828"><b>if</b></font> (enable)
-      <font color="#0000f8">/*</font><font color="#0000f8"> Op ANYONE who joins */</font>
-      xchat_commandf(ph, <font color="#f800f8">&quot;OP </font><font color="#6858c8">%s</font><font color="#f800f8">&quot;</font>, word[<font color="#f800f8">1</font>]);
-   <font color="#0000f8">/*</font><font color="#0000f8"> word[1] is the nickname, as in the Settings-&gt;Lists-&gt;EventTexts window in xchat */</font>
+   <font color="#aa3333">if</font> (enable)
+      <font color="#80a0ff">/*</font><font color="#80a0ff"> Op ANYONE who joins </font><font color="#80a0ff">*/</font>
+      xchat_commandf(ph, <font color="#ffa0a0">&quot;OP </font><font color="#ffa500">%s</font><font color="#ffa0a0">&quot;</font>, word[<font color="#ffa0a0">1</font>]);
+   <font color="#80a0ff">/*</font><font color="#80a0ff"> word[1] is the nickname, as in the Settings-&gt;Lists-&gt;EventTexts window in xchat </font><font color="#80a0ff">*/</font>
 
-   <font color="#a02828"><b>return</b></font> XCHAT_EAT_NONE;  <font color="#0000f8">/*</font><font color="#0000f8"> don't eat this event, xchat needs to see it! */</font>
+   <font color="#aa3333">return</font> XCHAT_EAT_NONE;  <font color="#80a0ff">/*</font><font color="#80a0ff"> don't eat this event, xchat needs to see it! </font><font color="#80a0ff">*/</font>
 }
 
-<font color="#288850"><b>static</b></font> <font color="#288850"><b>int</b></font> autooptoggle_cb(<font color="#288850"><b>char</b></font> *word[], <font color="#288850"><b>char</b></font> *word_eol[], <font color="#288850"><b>void</b></font> *userdata)
+<font color="#60ff60">static</font> <font color="#60ff60">int</font> autooptoggle_cb(<font color="#60ff60">char</font> *word[], <font color="#60ff60">char</font> *word_eol[], <font color="#60ff60">void</font> *userdata)
 {
-   <font color="#a02828"><b>if</b></font> (!enable)
+   <font color="#aa3333">if</font> (!enable)
    {
-      enable = <font color="#f800f8">1</font>;
-      xchat_print(ph, <font color="#f800f8">&quot;AutoOping now enabled!</font><font color="#6858c8">\n</font><font color="#f800f8">&quot;</font>);
-   } <font color="#a02828"><b>else</b></font>
+      enable = <font color="#ffa0a0">1</font>;
+      xchat_print(ph, <font color="#ffa0a0">&quot;AutoOping now enabled!</font><font color="#ffa500">\n</font><font color="#ffa0a0">&quot;</font>);
+   } <font color="#aa3333">else</font>
    {
-      enable = <font color="#f800f8">0</font>;
-      xchat_print(ph, <font color="#f800f8">&quot;AutoOping now disabled!</font><font color="#6858c8">\n</font><font color="#f800f8">&quot;</font>);
+      enable = <font color="#ffa0a0">0</font>;
+      xchat_print(ph, <font color="#ffa0a0">&quot;AutoOping now disabled!</font><font color="#ffa500">\n</font><font color="#ffa0a0">&quot;</font>);
    }
 
-   <font color="#a02828"><b>return</b></font> XCHAT_EAT_ALL;   <font color="#0000f8">/*</font><font color="#0000f8"> eat this command so xchat and other plugins can't process it */</font>
+   <font color="#aa3333">return</font> XCHAT_EAT_ALL;   <font color="#80a0ff">/*</font><font color="#80a0ff"> eat this command so xchat and other plugins can't process it </font><font color="#80a0ff">*/</font>
 }
 
-<font color="#288850"><b>int</b></font> xchat_plugin_init(xchat_plugin *plugin_handle,
-                      <font color="#288850"><b>char</b></font> **plugin_name,
-                      <font color="#288850"><b>char</b></font> **plugin_desc,
-                      <font color="#288850"><b>char</b></font> **plugin_version,
-                      <font color="#288850"><b>char</b></font> *arg)
+<font color="#60ff60">void</font> xchat_plugin_get_info(<font color="#60ff60">char</font> **name, <font color="#60ff60">char</font> **desc, <font color="#60ff60">char</font> **version, <font color="#60ff60">void</font> *reserved)
 {
-   <font color="#0000f8">/*</font><font color="#0000f8"> we need to save this for use with any xchat_* functions */</font>
+   *name = <font color="#ffa0a0">&quot;AutoOp&quot;</font>;
+   *desc = <font color="#ffa0a0">&quot;Auto Ops anyone that joins&quot;</font>;
+   *version = <font color="#ffa0a0">&quot;0.1&quot;</font>;
+   <font color="#aa3333">if</font> (reserved)
+      *reserved = <font color="#ffa0a0">NULL</font>;
+}
+
+<font color="#60ff60">int</font> xchat_plugin_init(xchat_plugin *plugin_handle,
+                      <font color="#60ff60">char</font> **plugin_name,
+                      <font color="#60ff60">char</font> **plugin_desc,
+                      <font color="#60ff60">char</font> **plugin_version,
+                      <font color="#60ff60">char</font> *arg)
+{
+   <font color="#80a0ff">/*</font><font color="#80a0ff"> we need to save this for use with any xchat_* functions </font><font color="#80a0ff">*/</font>
    ph = plugin_handle;
 
-   *plugin_name = <font color="#f800f8">&quot;AutoOp&quot;</font>;
-   *plugin_desc = <font color="#f800f8">&quot;Auto Ops anyone that joins&quot;</font>;
-   *plugin_version = <font color="#f800f8">&quot;0.1&quot;</font>;
+   <font color="#80a0ff">/*</font><font color="#80a0ff"> tell xchat our info </font><font color="#80a0ff">*/</font>
+   xchat_plugin_get_info (plugin_name, plugin_desc, plugin_version, <font color="#ffa0a0">NULL</font>);
 
-   xchat_hook_command(ph, <font color="#f800f8">&quot;AutoOpToggle&quot;</font>, XCHAT_PRI_NORM, autooptoggle_cb,
-                      <font color="#f800f8">&quot;Usage: AUTOOPTOGGLE, Turns OFF/ON Auto Oping&quot;</font>, <font color="#f800f8">0</font>);
-   xchat_hook_print(ph, <font color="#f800f8">&quot;Join&quot;</font>, XCHAT_PRI_NORM, join_cb, <font color="#f800f8">0</font>);
+   xchat_hook_command(ph, <font color="#ffa0a0">&quot;AutoOpToggle&quot;</font>, XCHAT_PRI_NORM, autooptoggle_cb, <font color="#ffa0a0">&quot;Usage: AUTOOPTOGGLE, Turns OFF/ON Auto Oping&quot;</font>, <font color="#ffa0a0">0</font>);
+   xchat_hook_print(ph, <font color="#ffa0a0">&quot;Join&quot;</font>, XCHAT_PRI_NORM, join_cb, <font color="#ffa0a0">0</font>);
 
-   xchat_print(ph, <font color="#f800f8">&quot;AutoOpPlugin loaded successfully!</font><font color="#6858c8">\n</font><font color="#f800f8">&quot;</font>);
+   xchat_print(ph, <font color="#ffa0a0">&quot;AutoOpPlugin loaded successfully!</font><font color="#ffa500">\n</font><font color="#ffa0a0">&quot;</font>);
 
-   <font color="#a02828"><b>return</b></font> <font color="#f800f8">1</font>;       <font color="#0000f8">/*</font><font color="#0000f8"> return 1 for success */</font>
+   <font color="#aa3333">return</font> <font color="#ffa0a0">1</font>;       <font color="#80a0ff">/*</font><font color="#80a0ff"> return 1 for success </font><font color="#80a0ff">*/</font>
 }
 </pre>
 
@@ -313,6 +322,7 @@ Simply compile your plugin as a DLL. You should have the following files:
 EXPORTS<br>
 &nbsp; xchat_plugin_init<br>
 &nbsp; xchat_plugin_deinit<br>
+&nbsp; xchat_plugin_get_info<br>
 </div>
 
 <br>Leave out <i>xchat_plugin_deinit</i> if you don't intend to define that
@@ -739,6 +749,53 @@ plain ascii (in the case of DALNet). Use this to compare channels and nicknames.
        less than, equal to, or greater than zero if s1 is found,
        respectively, to be less than, to match, or be greater than s2.
 <br><br><br>
+
+<h3><a class="cmd" name="xchat_strip">&nbsp;xchat_strip()&nbsp;</a><small>(new for 2.4.2)</small></h3>
+<b>Prototype:</b> char *xchat_strip(xchat_plugin *ph, const char *str, int len, int flags);
+<br>
+<br><b>Description:</b> Strips mIRC color codes and/or text attributes (bold, underlined etc) from the given string and returns a newly allocated string.
+<br>
+<br><b>Arguments:</b>
+<blockquote><b>ph:</b> Plugin handle (as given to xchat_plugin_init).
+<br><b>str:</b> String to strip.
+<br><b>len:</b> Length of the string (or -1 for NULL terminated).
+<br><b>flags:</b> Bit-field of flags: 0-Strip mIRC colors, 1-Strip text attributes.
+<br>
+</blockquote>
+<b>Returns:</b>
+A newly allocated string or NULL for failure. You must free this string with xchat_free.
+<br><br><b>Example:</b>
+<blockquote>
+<pre>
+{
+	char *new_text;
+
+	/* strip both colors and attributes by using the 0 and 1 bits (1 BITWISE-OR 2) */
+	new_text = xchat_strip(ph, "\00312Blue\003 \002Bold!\002", -1, 1 | 2);
+
+	if(new_text)
+	{
+		/* new_text should now contain only "Blue Bold!" */
+		xchat_printf(ph, "%s\n", new_text);
+		xchat_free(ph, new_text);
+	}
+}</pre>
+</blockquote>
+
+<br><br>
+
+<h3><a class="cmd" name="xchat_free">&nbsp;xchat_free()&nbsp;</a><small>(new for 2.4.2)</small></h3>
+<b>Prototype:</b> void xchat_free(xchat_plugin *ph, void *ptr);
+<br>
+<br><b>Description:</b> Frees a string returned by xchat_* functions. Currently only used to free strings from xchat_strip.
+<br>
+<br><b>Arguments:</b>
+<blockquote><b>ph:</b> Plugin handle (as given to xchat_plugin_init).
+<br><b>ptr:</b> Pointer to free.
+<br>
+</blockquote>
+
+<br><br>
 
 </body>
 </html>

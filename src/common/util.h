@@ -31,7 +31,7 @@ char *nocasestrstr (char *text, char *tofind);
 char *country (char *);
 char *get_cpu_str (void);
 int util_exec (char *cmd);
-char *strip_color (char *text);
+char *strip_color (char *text, int len, int do_color, int do_attr);
 char *errorstring (int err);
 int waitline (int sok, char *buf, int bufsize, int);
 unsigned long make_ping_time (void);

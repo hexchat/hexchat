@@ -227,7 +227,7 @@ SearchNick (char *text, char *nicks)
 	if (nicks == NULL)
 		return 0;
 
-	text = strip_color (text);
+	text = strip_color (text, -1, 1, 1);
 
 	safe_strcpy (S, nicks, sizeof (S));
 	n = strtok (S, ",");
@@ -643,7 +643,7 @@ inbound_topic (server *serv, char *chan, char *topic_text)
 
 	if (sess)
 	{
-		new_topic = strip_color (topic_text);
+		new_topic = strip_color (topic_text, -1, 1, 1);
 		set_topic (sess, new_topic);
 		free (new_topic);
 	} else
@@ -661,7 +661,7 @@ inbound_topicnew (server *serv, char *nick, char *chan, char *topic)
 	sess = find_channel (serv, chan);
 	if (sess)
 	{
-		new_topic = strip_color (topic);
+		new_topic = strip_color (topic, -1, 1, 1);
 		set_topic (sess, new_topic);
 		free (new_topic);
 		EMIT_SIGNAL (XP_TE_NEWTOPIC, sess, nick, topic, chan, NULL, 0);

@@ -1625,7 +1625,8 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 		strncat (buf, result, COMP_BUF - (prefix_len + 3)); /* make sure nicksuffix and space fits */
 		if(!prefix_len && is_nick)
 			strcat (buf, &prefs.nick_suffix[0]);
-		strcat (buf, " ");
+		if (prefs.nick_suffix[0] != 0)
+			strcat (buf, " ");
 		cursor_pos = strlen (buf);
 		if (postfix)
 			strncat (buf, postfix, COMP_BUF - cursor_pos - 2);

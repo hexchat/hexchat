@@ -573,7 +573,7 @@ dcc_read_chat (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 
 				if (prefs.stripcolor)
 				{
-					temp = strip_color (dcc->dccchat->linebuf);
+					temp = strip_color (dcc->dccchat->linebuf, -1, 1, 1);
 					dead = dcc_chat_line (dcc, temp, tbuf);
 					free (temp);
 				} else

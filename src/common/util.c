@@ -421,13 +421,17 @@ expand_homedir (char *file)
 }
 
 char *
-strip_color (char *text)
+strip_color (char *text, int len, int do_color, int do_attr)
 {
 	int nc = 0;
 	int i = 0;
 	int col = 0;
-	int len = strlen (text);
-	char *new_str = malloc (len + 2);
+	char *new_str;
+
+	if (len == -1)
+		len = strlen (text);
+
+	new_str = malloc (len + 2);
 
 	while (len > 0)
 	{
@@ -437,6 +441,11 @@ strip_color (char *text)
 			nc++;
 			if (*text == ',')
 				nc = 0;
+			if (!do_color)
+			{
+				new_str[i] = *text;
+				i++;
+			}
 		} else
 		{
 			col = 0;
@@ -445,12 +454,22 @@ strip_color (char *text)
 			case '\003':			  /*ATTR_COLOR: */
 				col = 1;
 				nc = 0;
+				if (!do_color)
+				{
+					new_str[i] = *text;
+					i++;
+				}
 				break;
 			case '\007':			  /*ATTR_BEEP: */
 			case '\017':			  /*ATTR_RESET: */
 			case '\026':			  /*ATTR_REVERSE: */
 			case '\002':			  /*ATTR_BOLD: */
 			case '\037':			  /*ATTR_UNDERLINE: */
+				if (!do_attr)
+				{
+					new_str[i] = *text;
+					i++;
+				}
 				break;
 			default:
 				new_str[i] = *text;

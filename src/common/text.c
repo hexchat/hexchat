@@ -400,7 +400,7 @@ log_write (session *sess, char *text)
 				g_free (stamp);
 			}
 		}
-		temp = strip_color (text);
+		temp = strip_color (text, -1, 1, 1);
 		write (sess->logfd, temp, strlen (temp));
 		free (temp);
 	}

@@ -131,6 +131,12 @@ struct _xchat_plugin
 		  int modes_per_line,
 		  char sign,
 		  char mode);
+	char *(*xchat_strip) (xchat_plugin *ph,
+	     const char *str,
+	     int len,
+	     int flags);
+	void (*xchat_free) (xchat_plugin *ph,
+	    void *ptr);
 };
 #endif
 
@@ -276,6 +282,16 @@ xchat_send_modes (xchat_plugin *ph,
 		  char sign,
 		  char mode);
 
+char *
+xchat_strip (xchat_plugin *ph,
+	     const char *str,
+	     int len,
+	     int flags);
+
+void
+xchat_free (xchat_plugin *ph,
+	    void *ptr);
+
 #if !defined(PLUGIN_C) && defined(WIN32)
 #ifndef XCHAT_PLUGIN_HANDLE
 #define XCHAT_PLUGIN_HANDLE (ph)
@@ -308,6 +324,8 @@ xchat_send_modes (xchat_plugin *ph,
 #define xchat_emit_print ((XCHAT_PLUGIN_HANDLE)->xchat_emit_print)
 #define xchat_gettext ((XCHAT_PLUGIN_HANDLE)->xchat_gettext)
 #define xchat_send_modes ((XCHAT_PLUGIN_HANDLE)->xchat_send_modes)
+#define xchat_strip ((XCHAT_PLUGIN_HANDLE)->xchat_strip)
+#define xchat_free ((XCHAT_PLUGIN_HANDLE)->xchat_free)
 #endif
 
 #ifdef __cplusplus

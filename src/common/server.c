@@ -414,7 +414,7 @@ server_read (GIOChannel *source, GIOCondition condition, server *serv)
 				serv->linebuf[serv->pos] = 0;
 				if (prefs.stripcolor)
 				{
-					temp = strip_color (serv->linebuf);
+					temp = strip_color (serv->linebuf, -1, 1, 1);
 					server_inline (serv, temp, strlen (temp));
 					free (temp);
 				} else
