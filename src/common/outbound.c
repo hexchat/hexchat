@@ -1529,6 +1529,23 @@ cmd_getstr (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 }
 
 static int
+cmd_gui (struct session *sess, char *tbuf, char *word[], char *word_eol[])
+{
+	if (!strcasecmp (word[2], "HIDE"))
+	{
+		fe_gui_display (sess, FALSE);
+	} else if (!strcasecmp (word[2], "SHOW"))
+	{
+		fe_gui_display (sess, TRUE);
+	} else
+	{
+		return FALSE;
+	}
+
+	return TRUE;
+}
+
+static int
 cmd_help (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	int i = 0, longfmt = 0;
@@ -2589,6 +2606,7 @@ const struct commands xc_cmds[] = {
 	 N_("GATE <host> [<port>], proxies through a host, port defaults to 23")},
 	{"GETINT", cmd_getint, 0, 0, "GETINT <default> <command> <prompt>"},
 	{"GETSTR", cmd_getstr, 0, 0, "GETSTR <default> <command> <prompt>"},
+	{"GUI", cmd_gui, 0, 0, "GUI [SHOW|HIDE]"},
 	{"HELP", cmd_help, 0, 0, 0},
 	{"HOP", cmd_hop, 1, 1,
 	 N_("HOP <nick>, gives chanhalf-op status to the nick (needs chanop)")},

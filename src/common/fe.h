@@ -72,3 +72,4 @@ void fe_serverlist_open (session *sess);
 void fe_play_wave (const char *fname);
 void fe_get_str (char *prompt, char *def, void *callback, void *ud);
 void fe_get_int (char *prompt, int def, void *callback, void *ud);
+void fe_gui_display (session *sess, int show);

@@ -660,3 +660,12 @@ fe_play_wave (const char *file)
 {
     play_wave (file);
 }
+
+void
+fe_gui_display (session *sess, int show)
+{
+	if (show)
+		gtk_widget_show (sess->gui->window);
+	else
+		gtk_widget_hide (sess->gui->window);
+}
