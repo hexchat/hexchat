@@ -4468,7 +4468,7 @@ gtk_xtext_append (xtext_buffer *buf, unsigned char *text, int len)
 gboolean
 gtk_xtext_is_empty (xtext_buffer *buf)
 {
-	return buf->text_first != NULL;
+	return buf->text_first == NULL;
 }
 
 void
