@@ -626,7 +626,6 @@ load_config (void)
 	prefs.autoopendccsendwindow = 1;
 	prefs.autoopendccchatwindow = 1;
 	prefs.userhost = 1;
-	prefs.perc_color = 1;
 	prefs.dcc_send_fillspaces = 1;
 	prefs.mainwindow_save = 1;
 	prefs.bantype = 2;

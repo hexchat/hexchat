@@ -2826,6 +2826,30 @@ gtk_xtext_render_str (GtkXText * xtext, int y, textentry * ent,
 		if (i > len)
 			i = len;
 
+		/* separate the left part, the space and the right part
+		   into separate runs, and reset bidi state inbetween */
+
+/* ... left string, the space and the right
+string of a text entry are being drawn in a separate runs.
+This ensures that the space never joins the 'right' part of the text
+entry, which proves to be a problem when the text entry starts with a
+Right-to-Left character (since then, the space, which is intended for
+the separator, joins the RTL character to the right of it).*/
+
+		/* we've reached the end of the left part? */
+		if ((pstr-str)+j == ent->left_len)
+		{
+			x += gtk_xtext_render_flush (xtext, x, y, pstr, j, gc, ent->mb);
+			pstr += j;
+			j = 0;
+		}
+		else if ((pstr-str)+j == ent->left_len+1)
+		{
+			x += gtk_xtext_render_flush (xtext, x, y, pstr, j, gc, ent->mb);
+			pstr += j;
+			j = 0;
+		}
+
 		/* have we been told to stop rendering at this point? */
 		if (xtext->jump_out_offset > 0 && xtext->jump_out_offset <= (i + offset))
 		{

@@ -379,9 +379,9 @@ key_load_defaults ()
 		"A\n3\nChange Page\nD1:3\nD2!\n\n"\
 		"A\n2\nChange Page\nD1:2\nD2!\n\n"\
 		"A\n1\nChange Page\nD1:1\nD2!\n\n"\
-		"C\no\nInsert in Buffer\nD1:%O\nD2!\n\n"\
-		"C\nb\nInsert in Buffer\nD1:%B\nD2!\n\n"\
-		"C\nk\nInsert in Buffer\nD1:%C\nD2!\n\n"\
+		"C\no\nInsert in Buffer\nD1:\nD2!\n\n"\
+		"C\nb\nInsert in Buffer\nD1:\nD2!\n\n"\
+		"C\nk\nInsert in Buffer\nD1:\nD2!\n\n"\
 		"S\nNext\nChange Selected Nick\nD1!\nD2!\n\n"\
 		"S\nPrior\nChange Selected Nick\nD1:Up\nD2!\n\n"\
 		"None\nNext\nScroll Page\nD1!\nD2!\n\n"\

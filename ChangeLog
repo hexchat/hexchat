@@ -19,6 +19,7 @@
  - Plugin API: Added some fields to the "channels" list.
  - Plugin API: Added "win_status" and "xchatdirfs" fields to
    xchat_get_info.
+ - Plugin API: Added xchat_send_modes() function.
  - Fix: Unload, then reload a plugin on FreeBSD fails (Kevin Leung).
  - Plugins should now work on HPUX too.
  - Perl-plugin: Fixes for 3 arg version of emit_print, unhooking the
@@ -26,9 +27,8 @@
    address32 field (Lian Situ).
  - Make menu keybindings work when the menubar is hidden on GTK 2.4.
  - Support the new GTK 2.4 file chooser dialog.
- - 
- - 
- - Smaller bug fixes [950353] [945617] (Frederic Krueger).
+ - Fix for BiDi in xtext (Ilya Konstantinov).
+ - Smaller bug fixes [958599] [950353] [945617](Frederic Krueger).
 
 
 ----------------------------------------------------------------------

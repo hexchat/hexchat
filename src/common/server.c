@@ -961,6 +961,7 @@ server_cleanup (server * serv)
 	{
 		close_socket (serv->sok);
 		serv->connected = FALSE;
+		serv->end_of_motd = FALSE;
 		return 2;
 	}
 

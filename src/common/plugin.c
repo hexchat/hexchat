@@ -1136,16 +1136,16 @@ xchat_list_str (xchat_plugin *ph, xchat_list *xlist, const char *name)
 			return ((session *)data)->channel;
 		case 0x577e0867: /* chantypes */
 			return ((session *)data)->server->chantypes;
+		case 0x38b735af: /* context */
+			return data;	/* this is a session * */
+		case 0x6de15a2e: /* network */
+			return ((session *)data)->server->networkname;
 		case 0x8455e723: /* nickprefixes */
 			return ((session *)data)->server->nick_prefixes;
 		case 0x829689ad: /* nickmodes */
 			return ((session *)data)->server->nick_modes;
-		case 0x38b735af: /* context */
-			return data;	/* this is a session * */
 		case 0xca022f43: /* server */
 			return ((session *)data)->server->servername;
-		case 0x6de15a2e:        /* network */
-			return ((session *)data)->server->networkname;
 		}
 		break;
 
@@ -1198,6 +1198,7 @@ xchat_list_int (xchat_plugin *ph, xchat_list *xlist, const char *name)
 {
 	guint32 hash = str_hash (name);
 	gpointer data = xlist->pos->data;
+	int tmp;
 
 	switch (xlist->type)
 	{
@@ -1237,13 +1238,18 @@ xchat_list_int (xchat_plugin *ph, xchat_list *xlist, const char *name)
 		case 0xd1b:	/* id */
 			return ((struct session *)data)->server->id;
 		case 0x5cfee87:	/* flags */
-			return ((((struct session *)data)->server->connected) & 1) ||
-					 ((((struct session *)data)->server->connecting << 1) & 1) ||
-					 ((((struct session *)data)->server->is_away << 2) & 2) ||
-					 ((((struct session *)data)->server->end_of_motd << 3) & 4) ||
-					 ((((struct session *)data)->server->have_whox << 4) & 8);
+			tmp = ((struct session *)data)->server->have_whox;   /* bit 4 */
+			tmp <<= 1;
+			tmp |= ((struct session *)data)->server->end_of_motd;/* 3 */
+			tmp <<= 1;
+			tmp |= ((struct session *)data)->server->is_away;    /* 2 */
+			tmp <<= 1;
+			tmp |= ((struct session *)data)->server->connecting; /* 1 */ 
+			tmp <<= 1;
+			tmp |= ((struct session *)data)->server->connected;  /* 0 */
+			return tmp;
 		case 0x1916144c: /* maxmodes */
-			return ((struct DCC *)data)->serv->modes_per_line;
+			return ((struct session *)data)->server->modes_per_line;
 		case 0x368f3a:	/* type */
 			return ((struct session *)data)->type;
 		case 0x6a68e08: /* users */

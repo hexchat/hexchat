@@ -100,7 +100,7 @@ is not exported. There is no harm in exporting these symbols, but they
 are not necessary and only pollute the name-space. Plugins are compiled as shared objects
 (.so files), for example:
 <pre>
-	gcc -Wl,--export-dynamic -Wall -O1 -shared myplugin.c -o myplugin.so
+	gcc -Wl,--export-dynamic -Wall -O1 -shared -fPIC myplugin.c -o myplugin.so
 </pre>
 See the <a href="#win32">Windows section</a> on how to compile a plugin
 using visual studio.
@@ -203,15 +203,15 @@ needed for a long time after calling xchat_list_str. The types of lists and fiel
 <tr><td>channel</td><td>Channel or query name</td><td>string</td></tr>
 <tr><td>chantypes</td><td>Channel types e.g. "#!&amp;"<br><small>(Added in version 2.0.9. Older versions will return NULL)</small></td><td>string</td>
 <tr><td>context</td><td>(xchat_context *) pointer. Can be used with xchat_set_context</td><td>string</td></tr>
-<tr><td>flags</td><td>Server Bits: 0=Connected 1=Connecting 2=Away 3=EndOfMotd (Login complete) 4=Has WHOX<br><small>(Added in version 2.0.8. Older version will return -1)</small></td><td>int</td></tr>
-<tr><td>id</td><td>Unique server ID<br><small>(Added in version 2.0.8. Older version will return -1)</small></td><td>int</td></tr>
+<tr><td>flags</td><td>Server Bits: 0=Connected 1=Connecting 2=Away 3=EndOfMotd (Login complete) 4=Has WHOX<br><small>(Added in version 2.0.9. Older versions will return -1)</small></td><td>int</td></tr>
+<tr><td>id</td><td>Unique server ID<br><small>(Added in version 2.0.8. Older versions will return -1)</small></td><td>int</td></tr>
 <tr><td>maxmodes</td><td>Maximum modes per line<br><small>(Added in version 2.0.9. Older versions will return -1)</small></td><td>int</td>
 <tr><td>network</td><td>Network name to which this channel belongs<br><small>(Added in version 2.0.2. Older versions will return NULL)</small></td><td>string</td></tr>
 <tr><td>nickprefixes</td><td>Nickname prefixes e.g. "+@"<br><small>(Added in version 2.0.9. Older versions will return NULL)</small></td><td>string</td>
 <tr><td>nickmodes</td><td>Nickname mode chars e.g. "vo"<br><small>(Added in version 2.0.9. Older versions will return NULL)</small></td><td>string</td>
 <tr><td>server</td><td>Server name to which this channel belongs</td><td>string</td></tr>
 <tr><td>type</td><td>Type of context this is: 1-Server 2-Channel 3-Dialog<br><small>(Added in version 2.0.2. Older versions will return -1)</small></td><td>int</td></tr>
-<tr><td>users</td><td>Number of users in this channel<br><small>(Added in version 2.0.8. Older version will return -1)</small></td><td>int</td></tr>
+<tr><td>users</td><td>Number of users in this channel<br><small>(Added in version 2.0.8. Older versions will return -1)</small></td><td>int</td></tr>
 </table>
 </blockquote>
 
