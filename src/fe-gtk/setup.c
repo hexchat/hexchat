@@ -829,7 +829,7 @@ setup_create_frame (GtkWidget **left, GtkWidget *box)
 	gtk_container_add (GTK_CONTAINER (inbox), hbox);
 
 	*left = gtk_vbox_new (FALSE, 0);
-	gtk_container_add (GTK_CONTAINER (hbox), *left);
+	gtk_box_pack_start (GTK_BOX (hbox), *left, 0, 0, 0);
 
 	return tab;
 }
@@ -908,8 +908,12 @@ setup_create_page (const setting *set)
 
 #ifdef WIN32
 	if (set == logging_settings)
-
-		gtkutil_button (left, GTK_STOCK_OPEN, 0, open_data_cb, 0, "Open Data Folder");
+	{
+		GtkWidget *but = gtk_button_new_with_label ("Open Data Folder");
+		gtk_box_pack_start (GTK_BOX (left), but, 0, 0, 0);
+		g_signal_connect (G_OBJECT (but), "clicked",
+								G_CALLBACK (open_data_cb), 0);
+	}
 #endif
 
 	return box;

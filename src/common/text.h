@@ -36,6 +36,7 @@ int get_stamp_str (char *fmt, time_t tim, char **ret);
 
 void sound_play (const char *file);
 void sound_play_event (int i);
+void sound_beep (session *);
 void sound_load ();
 void sound_save ();
 

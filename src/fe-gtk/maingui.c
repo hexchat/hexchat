@@ -74,9 +74,9 @@ GtkWidget *parent_window = NULL;			/* the master window */
 
 GtkStyle *input_style;
 
-PangoAttrList *newdata_list;
-PangoAttrList *nickseen_list;
-PangoAttrList *newmsg_list;
+static PangoAttrList *newdata_list;
+static PangoAttrList *nickseen_list;
+static PangoAttrList *newmsg_list;
 static PangoAttrList *plain_list = NULL;
 
 

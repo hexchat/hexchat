@@ -47,103 +47,6 @@ struct pevt_stage1
 };
 
 
-#ifdef USE_HEBREW
-
-static inline int iswhitespace(const char ch)
-{
-	return (ch == ' ' ||  ch == 8);
-}
-
-static inline int isheb(const char ch)
-{
-	return (((unsigned char)ch) >= 0xE0  &&  ((unsigned char)ch) <= 0xFA);
-}
-
-static inline int iseng(const char ch)
-{
-	return ((ch >= 'A'  &&  ch <= 'z')  ||  (ch >= 'a'  &&  ch <= 'z'));
-}
-
-static char *strhebpatch(char *dest, const char *src)
-{
-	short int mode = 0, imode;
-	const char *hmark = NULL, *lmark, *nmark, *nlmark;
-	char ch;
-
-	if (!dest || !src)
-		return NULL;
-	
-	for (;;)
-	{
-		if (mode == 0)
-		{
-			if (isheb(*src))
-			{
-				hmark = src;
-				mode = 1;
-			}
-			else
-				*dest++ = *src;
-		}
-		else if (mode == 1)
-		{
-			if (*src == 0  ||  iseng(*src))
-			{
-				lmark = src-1;
-				while (!isheb(*lmark)) lmark--;
-				src = lmark;
-				imode = 0;
-				nmark = NULL;
-
-				while (lmark >= hmark)
-				{
-					ch = *lmark;
-
-					if (imode == 0)
-						switch (ch)
-						{
-							case '(': ch = ')'; break;
-							case ')': ch = '('; break;
-							case '{': ch = '}'; break;
-							case '}': ch = '{'; break;
-							case '[': ch = ']'; break;
-							case ']': ch = '['; break;
-						}
-
-					if (imode == 0)
-					{
-						if (isdigit(ch))
-						{
-							imode = 1;
-							nmark = lmark;			
-						}
-						else 
-							*dest++ = ch;
-					}
-					else
-  						if (imode == 1  &&  (isheb(ch) || iswhitespace(ch)))
-						{
-							nlmark = lmark+1;
-							while (nlmark <= nmark)
-								*dest++ = *nlmark++;
-							imode = 0;
-							lmark++;
-						}
-					lmark--;
-				}
-				
-				hmark = NULL;
-				mode = 0;
-			}
-		}
-		if (!*src++)
-			break;
-	}
-	return dest;
-}
-
-#endif /* !USE_HEBREW */
-
 /* Make ip:port urls clikable (127.0.0.1:80 etc)
 *  patch by Alex <alex@cosinus.org> & dobler <dobler@barrysworld.com>
 */
@@ -569,27 +472,7 @@ PrintText (session *sess, char *text)
 	}
 
 	log_write (sess, text);
-
-#ifdef USE_HEBREW
-	if (prefs.hebrew)
-	{
-   	const char *orgtext = NULL;
-   	if (text)
-   	{
-			orgtext = text;
-			text = strdup(text);
-			strhebpatch (text, orgtext);
-   	}
-		fe_print_text (sess, text);
-   	if (orgtext)
-			free(text);
-	} else
-	{
-#endif
-		fe_print_text (sess, text);
-#ifdef USE_HEBREW
-	}
-#endif
+	fe_print_text (sess, text);
 
 	if (conv)
 		g_free (conv);
@@ -1311,6 +1194,7 @@ pevent_load (char *filename)
 			if (text)
 				free (text);
 
+#if 0
 			/* This allows updating of old strings. We don't use new defaults
 				if the user has customized the strings (.e.g a text theme).
 				Hash of the old default is enough to identify and replace it.
@@ -1336,6 +1220,9 @@ pevent_load (char *filename)
 			default:
 				text = strdup (ofs);
 			}
+#else
+			text = strdup (ofs);
+#endif
 
 			continue;
 		}/* else if (strcmp (buf, "event_sound") == 0)
@@ -1724,6 +1611,17 @@ pevent_save (char *fn)
 /* =========================== */
 
 char *sound_files[NUM_XP];
+
+void
+sound_beep (session *sess)
+{
+	if (sound_files[XP_TE_BEEP] && sound_files[XP_TE_BEEP][0])
+		/* user defined beep _file_ */
+		sound_play_event (XP_TE_BEEP);
+	else
+		/* system beep */
+		fe_beep ();
+}
 
 static char *
 sound_find_command (void)

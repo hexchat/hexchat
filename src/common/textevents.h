@@ -11,6 +11,9 @@ N_("%C22*%O$t$1 Banlist:%C19 $4%C20 $2%C21 $3")},
 {"Banned", pevt_generic_channel_help, 1, 
 N_("%C22*%O$tCannot join%C26 %B$1 %O(You are banned).")},
 
+{"Beep", pevt_generic_none_help, 0, 
+""},
+
 {"Change Nick", pevt_changenick_help, 2, 
 N_("%C22*%O$t$1 is now known as $2")},
 

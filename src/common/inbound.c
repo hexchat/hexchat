@@ -154,9 +154,6 @@ inbound_privmsg (server *serv, char *from, char *ip, char *text, int id)
 
 	sess = find_dialog (serv, from);
 
-	if (prefs.beepmsg || (sess && sess->beep))
-		fe_beep ();
-
 	if (sess || prefs.autodialog)
 	{
 		/*0=ctcp  1=priv will set autodialog=0 here is flud detected */
@@ -168,6 +165,10 @@ inbound_privmsg (server *serv, char *from, char *ip, char *text, int id)
 			else
 				sess = serv->server_session;
 		}
+
+		if (prefs.beepmsg || (sess && sess->beep))
+			sound_beep (sess);
+
 		if (ip && ip[0])
 		{
 			if (prefs.logging && sess->logfd != -1 &&
@@ -197,9 +198,16 @@ inbound_privmsg (server *serv, char *from, char *ip, char *text, int id)
 	if (!sess)
 	{
 		sess = serv->front_session;
+
+		if (prefs.beepmsg || (sess && sess->beep))
+			sound_beep (sess);
+
 		EMIT_SIGNAL (XP_TE_PRIVMSG, sess, from, text, idtext, NULL, 0);
 		return;
 	}
+
+	if (prefs.beepmsg || sess->beep)
+		sound_beep (sess);
 
 	if (sess->type == SESS_DIALOG)
 		EMIT_SIGNAL (XP_TE_DPRIVMSG, sess, from, text, idtext, NULL, 0);
@@ -318,7 +326,7 @@ inbound_action (session *sess, char *chan, char *from, char *text, int fromme)
 			beep = TRUE;
 
 		if (beep || sess->beep)
-			fe_beep ();
+			sound_beep (sess);
 
 		if (hilight)
 		{
@@ -394,13 +402,13 @@ inbound_chanmsg (server *serv, session *sess, char *chan, char *from, char *text
 
 	if (sess->type != SESS_DIALOG)
 		if (prefs.beepchans || sess->beep)
-			fe_beep ();
+			sound_beep (sess);
 
 	if (is_hilight (text, sess, serv))
 	{
 		hilight = TRUE;
 		if (prefs.beephilight)
-			fe_beep ();
+			sound_beep (sess);
 	}
 	if (sess->type == SESS_DIALOG)
 		EMIT_SIGNAL (XP_TE_DPRIVMSG, sess, from, text, idtext, NULL, 0);
