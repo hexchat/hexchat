@@ -267,19 +267,22 @@ sub Xchat::user_info {
 sub Xchat::context_info {
   my $ctx = shift @_;
   my $old_ctx = Xchat::get_context;
-  my @fields = (qw(away channel host network nick server topic version),
-					 qw(win_status xchatdir xchatdirfs),
-					);
+  my @fields = (qw(away channel host inputbox libdirfs network nick server),
+		qw(topic version win_status xchatdir xchatdirfs),
+	       );
 
-  Xchat::set_context( $ctx );
-  my %info;
-  for my $field ( @fields ) {
-	 $info{$field} = Xchat::get_info( $field );
+  if(Xchat::set_context( $ctx )) {
+    my %info;
+    for my $field ( @fields ) {
+      $info{$field} = Xchat::get_info( $field );
+    }
+    Xchat::set_context( $old_ctx );
+    
+    return %info if wantarray;
+    return \%info;
+  } else {
+    return undef;
   }
-  Xchat::set_context( $old_ctx );
-
-  return %info if wantarray;
-  return \%info;
 }
 
 sub Xchat::strip_code {

@@ -1121,6 +1121,7 @@ perl_init (void)
 	{
 	  /* Redefine the $SIG{__WARN__} handler to have XChat
 	     printing warnings in the main window. (TheHobbit)*/
+
 	  "BEGIN {\n"
 	  "$INC{'Xchat.pm'} = 'DUMMY';\n"
 	  "}\n"
@@ -1318,10 +1319,10 @@ perl_init (void)
 	  "sub Xchat::context_info {\n"
 	  "my $ctx = shift @_;\n"
 	  "my $old_ctx = Xchat::get_context;\n"
-	  "my @fields = (qw(away channel host network nick server topic version),\n"
-	  "qw(win_status xchatdir xchatdirfs),\n"
+	  "my @fields = (qw(away channel host inputbox libdirfs network nick server),\n"
+	  "qw(topic version win_status xchatdir xchatdirfs),\n"
 	  ");\n"
-	  "Xchat::set_context( $ctx );\n"
+	  "if(Xchat::set_context( $ctx )) {\n"
 	  "my %info;\n"
 	  "for my $field ( @fields ) {\n"
 	  "$info{$field} = Xchat::get_info( $field );\n"
@@ -1329,6 +1330,9 @@ perl_init (void)
 	  "Xchat::set_context( $old_ctx );\n"
 	  "return %info if wantarray;\n"
 	  "return \\%info;\n"
+	  "} else {\n"
+	  "return undef;\n"
+	  "}\n"
 	  "}\n"
 	  "sub Xchat::strip_code {\n"
 	  "my $pattern =\n"
