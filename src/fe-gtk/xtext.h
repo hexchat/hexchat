@@ -148,7 +148,7 @@ struct _GtkXText
 
 	unsigned char scratch_buffer[4096];
 
-	GtkWidget *(*error_function) (char *text);
+	void (*error_function) (int type);
 	int (*urlcheck_function) (GtkWidget * xtext, char *word);
 
 	int jump_out_offset;	/* point at which to stop rendering */
@@ -217,7 +217,7 @@ gboolean gtk_xtext_is_empty (xtext_buffer *buf);
 typedef void (*GtkXTextForeach) (GtkXText *xtext, unsigned char *text, void *data);
 void gtk_xtext_foreach (xtext_buffer *buf, GtkXTextForeach func, void *data);
 
-void gtk_xtext_set_error_function (GtkXText *xtext, GtkWidget *(*error_function) (char *));
+void gtk_xtext_set_error_function (GtkXText *xtext, void (*error_function) (int));
 void gtk_xtext_set_indent (GtkXText *xtext, gboolean indent);
 void gtk_xtext_set_max_indent (GtkXText *xtext, int max_auto_indent);
 void gtk_xtext_set_max_lines (GtkXText *xtext, int max_lines);

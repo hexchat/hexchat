@@ -1701,6 +1701,22 @@ mg_update_xtext (GtkWidget *wid)
 	gtk_xtext_refresh (xtext, FALSE);
 }
 
+/* handle errors reported by xtext */
+
+static void
+mg_xtext_error (int type)
+{
+	switch (type)
+	{
+	case 0:
+		gtkutil_simpledialog (_("Unable to set transparent background!\n\n"
+										"You may be using a non-compliant window\n"
+										"manager that is not currently supported.\n"));
+		prefs.transparent = 0;
+		/* no others exist yet */
+	}
+}
+
 static void
 mg_create_textarea (session_gui *gui, GtkWidget *box)
 {
@@ -1721,7 +1737,7 @@ mg_create_textarea (session_gui *gui, GtkWidget *box)
 	xtext = GTK_XTEXT (gui->xtext);
 	gtk_xtext_set_max_indent (xtext, prefs.max_auto_indent);
 	gtk_xtext_set_thin_separator (xtext, prefs.thin_separator);
-	gtk_xtext_set_error_function (xtext, gtkutil_simpledialog);
+	gtk_xtext_set_error_function (xtext, mg_xtext_error);
 	gtk_xtext_set_urlcheck_function (xtext, mg_word_check);
 	gtk_xtext_set_max_lines (xtext, prefs.max_lines);
 	gtk_container_add (GTK_CONTAINER (frame), GTK_WIDGET (xtext));

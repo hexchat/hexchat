@@ -3525,9 +3525,7 @@ gtk_xtext_load_trans (GtkXText * xtext)
 	if (rootpix == None)
 	{
 		if (xtext->error_function)
-			xtext->error_function ("Unable to get root window pixmap!\n\n"
-										  "You may need to use Esetroot or Gnome\n"
-										  "control-center to set your background.\n");
+			xtext->error_function (0);
 		xtext->transparent = FALSE;
 		return;
 	}
@@ -4691,7 +4689,7 @@ gtk_xtext_foreach (xtext_buffer *buf, GtkXTextForeach func, void *data)
 }
 
 void
-gtk_xtext_set_error_function (GtkXText *xtext, 	GtkWidget *(*error_function) (char *))
+gtk_xtext_set_error_function (GtkXText *xtext, void (*error_function) (int))
 {
 	xtext->error_function = error_function;
 }
