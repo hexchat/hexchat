@@ -487,7 +487,7 @@ server_stopconnecting (server * serv)
 	PostThreadMessage (serv->childpid, WM_QUIT, 0, 0);
 #endif
 
-	/*close (serv->childwrite);*/
+	close (serv->childwrite);
 	close (serv->childread);
 
 #ifdef USE_OPENSSL
@@ -1426,12 +1426,10 @@ server_connect (server *serv, char *hostname, int port, int no_login)
 	case 0:
 		/* this is the child */
 		setuid (getuid ());
-		close (read_des[0]);
 		server_child (serv);
 		_exit (0);
 	}
 #endif
-	close (read_des[1]);
 	serv->childpid = pid;
 	serv->iotag =
 		fe_input_add (serv->childread, FIA_READ|FIA_FD, server_read_child, serv);
