@@ -772,7 +772,10 @@ tab_rename (GtkWidget *tab, char *name, int trunc_len)
 
 	/* Toplevel window's tabs are not working here, why? */
 	if (GTK_IS_LABEL (GTK_BIN (tab)->child))
+	{
 		attr = gtk_label_get_attributes (GTK_LABEL (GTK_BIN (tab)->child));
+		pango_attr_list_ref (attr);
+	}
 
 	new_name = truncate_tab_name (name, trunc_len);
 	if (new_name)
@@ -784,7 +787,10 @@ tab_rename (GtkWidget *tab, char *name, int trunc_len)
 	gtk_widget_queue_resize (tab->parent->parent->parent);
 
 	if (attr)
+	{
 		gtk_label_set_attributes (GTK_LABEL (GTK_BIN (tab)->child), attr);
+		pango_attr_list_unref (attr);
+	}
 }
 
 void

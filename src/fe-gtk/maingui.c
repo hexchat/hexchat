@@ -1060,17 +1060,6 @@ mg_tab_press_cb (GtkWidget *wid, GdkEventButton *event, session *sess)
 
 	menu = gtk_menu_new ();
 
-	mg_create_icon_item (_("Close Tab"), GTK_STOCK_CLOSE, menu,
-								mg_destroy_tab_cb, wid);
-	if (sess)
-		mg_create_icon_item (_("Detach Tab"), GTK_STOCK_REDO, menu,
-									mg_detach_tab_cb, sess);
-
-	/* separator */
-	item = gtk_menu_item_new ();
-	gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
-	gtk_widget_show (item);
-
 	if (sess)
 	{
 		item = gtk_menu_item_new_with_label (sess->channel[0] ? sess->channel : _("<none>"));
@@ -1100,6 +1089,17 @@ mg_tab_press_cb (GtkWidget *wid, GdkEventButton *event, session *sess)
 	mg_create_sess_tree (submenu);
 	gtk_menu_item_set_submenu (GTK_MENU_ITEM (item), submenu);
 	gtk_widget_show (item);
+
+	/* separator */
+	item = gtk_menu_item_new ();
+	gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+	gtk_widget_show (item);
+
+	mg_create_icon_item (_("Close Tab"), GTK_STOCK_CLOSE, menu,
+								mg_destroy_tab_cb, wid);
+	if (sess)
+		mg_create_icon_item (_("Detach Tab"), GTK_STOCK_REDO, menu,
+									mg_detach_tab_cb, sess);
 
 	if (sess && tabmenu_list)
 		menu_create (menu, tabmenu_list, sess->channel, FALSE);

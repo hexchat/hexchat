@@ -91,6 +91,7 @@ struct _GtkXText
 	GdkPixmap *pixmap;				/* 0 = use palette[19] */
 	GdkDrawable *draw_buf;			/* points to ->window */
 	GdkCursor *hand_cursor;
+	GdkCursor *resize_cursor;
 
 	int pixel_offset;					/* amount of pixels the top line is chopped by */
 
@@ -195,6 +196,7 @@ struct _GtkXText
 	unsigned int dont_render:1;
 	unsigned int dont_render2:1;
 	unsigned int cursor_hand:1;
+	unsigned int cursor_resize:1;
 	unsigned int skip_border_fills:1;
 	unsigned int skip_stamp:1;
 	unsigned int render_hilights_only:1;

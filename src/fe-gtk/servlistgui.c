@@ -382,7 +382,10 @@ servlist_update_from_entry (char **str, GtkWidget *entry)
 	if (*str)
 		free (*str);
 
-	*str = strdup (GTK_ENTRY (entry)->text);
+	if (GTK_ENTRY (entry)->text[0] == 0)
+		*str = NULL;
+	else
+		*str = strdup (GTK_ENTRY (entry)->text);
 }
 
 static void

@@ -851,6 +851,12 @@ gtk_xtext_destroy (GtkObject * object)
 		xtext->hand_cursor = NULL;
 	}
 
+	if (xtext->resize_cursor)
+	{
+		gdk_cursor_unref (xtext->resize_cursor);
+		xtext->resize_cursor = NULL;
+	}
+
 	if (xtext->orig_buffer)
 	{
 		gtk_xtext_buffer_free (xtext->orig_buffer);
@@ -967,8 +973,10 @@ gtk_xtext_realize (GtkWidget * widget)
 
 #if (GTK_MAJOR_VERSION == 2) && (GTK_MINOR_VERSION == 0)
 	xtext->hand_cursor = gdk_cursor_new (GDK_HAND1);
+	xtext->resize_cursor = gdk_cursor_new (GDK_LEFT_SIDE);
 #else
 	xtext->hand_cursor = gdk_cursor_new_for_display (gdk_drawable_get_display (widget->window), GDK_HAND1);
+	xtext->resize_cursor = gdk_cursor_new_for_display (gdk_drawable_get_display (widget->window), GDK_LEFT_SIDE);
 #endif
 
 	gdk_window_set_back_pixmap (widget->window, NULL, FALSE);
@@ -1778,6 +1786,17 @@ gtk_xtext_leave_notify (GtkWidget * widget, GdkEventCrossing * event)
 		gdk_window_set_cursor (widget->window, 0);
 		xtext->hilight_ent = NULL;
 	}
+
+	if (xtext->cursor_resize)
+	{
+		gtk_xtext_unrender_hilight (xtext);
+		xtext->hilight_start = -1;
+		xtext->hilight_end = -1;
+		xtext->cursor_resize = FALSE;
+		gdk_window_set_cursor (widget->window, 0);
+		xtext->hilight_ent = NULL;
+	}
+
 	return FALSE;
 }
 
@@ -1787,7 +1806,7 @@ static gboolean
 gtk_xtext_motion_notify (GtkWidget * widget, GdkEventMotion * event)
 {
 	GtkXText *xtext = GTK_XTEXT (widget);
-	int tmp, x, y, offset, len;
+	int tmp, x, y, offset, len, line_x;
 	unsigned char *word;
 	textentry *word_ent;
 
@@ -1828,6 +1847,21 @@ gtk_xtext_motion_notify (GtkWidget * widget, GdkEventMotion * event)
 		return FALSE;
 	}
 #ifdef MOTION_MONITOR
+
+	if (xtext->separator && xtext->buffer->indent)
+	{
+		line_x = xtext->buffer->indent - ((xtext->space_width + 1) / 2);
+		if (line_x == x || line_x == x + 1 || line_x == x - 1)
+		{
+			if (!xtext->cursor_resize)
+			{
+				gdk_window_set_cursor (GTK_WIDGET (xtext)->window,
+										  		xtext->resize_cursor);
+				xtext->cursor_resize = TRUE;
+			}
+			return FALSE;
+		}
+	}
 
 	if (xtext->urlcheck_function == NULL)
 		return FALSE;
