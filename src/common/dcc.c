@@ -218,7 +218,7 @@ dcc_check_timeouts (void)
 						EMIT_SIGNAL (XP_TE_DCCSTALL, dcc->serv->front_session,
 										 dcctypes[(int) dcc->type],
 										 file_part (dcc->file), dcc->nick, NULL, 0);
-						dcc_close (dcc, 0, FALSE);
+						dcc_close (dcc, 0, TRUE);
 					}
 				}
 			}
@@ -233,7 +233,7 @@ dcc_check_timeouts (void)
 						EMIT_SIGNAL (XP_TE_DCCTOUT, dcc->serv->front_session,
 										 dcctypes[(int) dcc->type],
 										 file_part (dcc->file), dcc->nick, NULL, 0);
-						dcc_close (dcc, 0, FALSE);
+						dcc_close (dcc, 0, TRUE);
 					}
 				}
 			}
