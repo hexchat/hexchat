@@ -609,6 +609,9 @@ servlist_savegui (void)
 static void
 servlist_connectnew_cb (GtkWidget *button, gpointer userdata)
 {
+	if (!selected_net)
+		return;
+
 	if (servlist_savegui () != 0)
 	{
 		gtkutil_simpledialog (_("User name and Real name cannot be left blank."));
@@ -625,6 +628,9 @@ servlist_connectnew_cb (GtkWidget *button, gpointer userdata)
 static void
 servlist_connect_cb (GtkWidget *button, gpointer userdata)
 {
+	if (!selected_net)
+		return;
+
 	if (servlist_savegui () != 0)
 	{
 		gtkutil_simpledialog (_("User name and Real name cannot be left blank."));

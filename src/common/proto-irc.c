@@ -710,7 +710,8 @@ process_numeric (session * sess, int n,
 		{
 			/* some unknown WHOIS reply, ircd coders make them up weekly */
 			EMIT_SIGNAL (XP_TE_WHOIS_SPECIAL, serv->server_session, word[4],
-							 word_eol[5] + 1, word[2], NULL, 0);
+							(word_eol[5][0] == ':') ? word_eol[5] + 1 : word_eol[5],
+							 word[2], NULL, 0);
 			return;
 		}
 
