@@ -64,7 +64,7 @@
 
 #ifdef WIN32
 #include <windows.h>
-#include <gdk/win32/gdkwin32.h>
+#include <gdk/gdkwin32.h>
 #endif
 
 /* is delimiter */
