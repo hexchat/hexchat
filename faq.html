@@ -68,7 +68,8 @@ p { margin: 3% }
 <br/><br/>
 <a href="#q216">16. I get this error: "Unknown file type abc.yz. Maybe you need to install the Perl or Python plugin?"</a>
 <br/><br/>
-
+<a href="#q217">17. How do I play sound files on certain events?</a>
+<br/><br/>
 </p>
 
 <h2>3. Section Three: Contributions, Development and Bugs.</h2>
@@ -313,6 +314,25 @@ the plugin for running those scripts isn't loaded.
 <li>If you downloaded a binary package, maybe the packager decided to exclude the Perl or Python plugins.</li>
 </ul>
 
+<br/><h3><a name="q217">17. How do I play sound files on certain events?</a></h3>
+<p>
+You can configure xchat to play a sound file (wave) on almost any event.
+<br/><br/>
+Example: Say you want to play <i>dcc.wav</i> whenever someone offers a DCC file.</p>
+<ol>
+<li>Open the setup window under <i>Settings -> Lists -> Text Events</i>.</li>
+<li>Find the <i>DCC SEND Offer</i> event in the list, they are in alphabetical order.</li>
+<li>Click the row and then enter <i>/home/user/dcc.wav</i> in the "Sound file:" entry box. PRESS ENTER WHEN DONE!</li>
+</ol>
+<p>
+That's it, it should now play <i>/home/user/dcc.wav</i> whenever the DCC SEND Offer message
+is printed. By default, it will use the "esdplay" program to play sound files. If you don't have it
+(most Linux distros do!) then you can nominate another program, for example:
+<br/><br/>
+	/set sound_command soxplay
+<br/><br/>On Windows, you do not need to nominate a sound playing program, it will work automatically,
+if you have xchat 2.0.6b or higher.</p>
+
 <br/><h2>3. Section Three: Contributions, Development and Bugs.</h2>
 
 <br/><h3><a name="q31">1. Why does X-Chat leak so much memory?</a></h3>
@@ -329,7 +349,7 @@ problem. X-Chat itself only allocates about 40kb of memory through malloc()!
    directory: <a href="http://xchat.org/files/source/2.0/patches/">2.0.x patches</a>
 </p><p>
    If you still experience crashes, you should consider running it through GDB. This
-   will help us find a fix quickly, and it's easy to do! See <a href="gdb.html">here</a>.
+   will help us find a fix quickly, and it's easy to do! See <a href="http://xchat.org/gdb/">here</a>.
 </p>
 
 <br/><h3><a name="q33">3. Can I write a new language translation for X-Chat?</a></h3>
