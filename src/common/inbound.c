@@ -249,8 +249,15 @@ inbound_action (session *sess, char *tbuf, char *chan, char *from, char *text,
 
 	if (sess != current_tab)
 	{
-		sess->msg_said = TRUE;
-		sess->new_data = FALSE;
+		if (fromme)
+		{
+			sess->msg_said = FALSE;
+			sess->new_data = TRUE;
+		} else
+		{
+			sess->msg_said = TRUE;
+			sess->new_data = FALSE;
+		}
 	}
 
 	if (!fromme)
