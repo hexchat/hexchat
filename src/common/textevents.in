@@ -670,16 +670,16 @@ pevt_topic_help
 %C29*%O$t%C29Topic for $1%C %C29is: $2
 2
 
-Topic Creation
-XP_TE_TOPICDATE
-pevt_topicdate_help
-%C29*%O$t%C29Topic for $1%C %C29set by $2%C %C29at $3
-3
-
 Topic Change
 XP_TE_NEWTOPIC
 pevt_newtopic_help
 %C22*%O$t$1 has changed the topic to: $2
+3
+
+Topic Creation
+XP_TE_TOPICDATE
+pevt_topicdate_help
+%C29*%O$t%C29Topic for $1%C %C29set by $2%C %C29at $3
 3
 
 Unknown Host
@@ -699,6 +699,12 @@ XP_TE_USERSONCHAN
 pevt_usersonchan_help
 %C22*%O$t%C26Users on $1:%C $2
 2
+
+WhoIs Authenticated
+XP_TE_WHOIS_AUTH
+pevt_whoisauth_help
+%C22*%O$t%C28[%O$1%C28] %O$2%C27 $3
+3
 
 WhoIs Away Line
 XP_TE_WHOIS5
@@ -721,20 +727,8 @@ pevt_whois6_help
 WhoIs Identified
 XP_TE_WHOIS_ID
 pevt_whoisid_help
-%C22*%O$t%C28[%O$1%C28] %O$2
+%C22*%O$t%C28[%O$1%C28]%O $2
 2
-
-WhoIs Authenticated
-XP_TE_WHOIS_AUTH
-pevt_whoisauth_help
-%C22*%O$t%C28[%O$1%C28] %O$2%C27 $3
-3
-
-WhoIs Real Host
-XP_TE_WHOIS_REALHOST
-pevt_whoisrealhost_help
-%C22*%O$t%C28[%O$1%C28] %Oreal user@host%C27 $2%O, real IP%C27 $3
-4
 
 WhoIs Idle Line
 XP_TE_WHOIS4
@@ -752,6 +746,12 @@ WhoIs Name Line
 XP_TE_WHOIS1
 pevt_whois1_help
 %C22*%O$t%C28[%O$1%C28] %C30(%O$2@$3%C30)%O: $4
+4
+
+WhoIs Real Host
+XP_TE_WHOIS_REALHOST
+pevt_whoisrealhost_help
+%C22*%O$t%C28[%O$1%C28] %Oreal user@host%C27 $2%O, real IP%C27 $3
 4
 
 WhoIs Server Line
@@ -772,6 +772,12 @@ pevt_join_help
 %C19*%O$t%C19Now talking on $2
 3
 
+You Kicked
+XP_TE_UKICK
+pevt_ukick_help
+%C23*$tYou have been kicked from $2 by $3 ($4%O%C23)
+4
+
 You Part
 XP_TE_UPART
 pevt_part_help
@@ -782,12 +788,6 @@ You Part with Reason
 XP_TE_UPARTREASON
 pevt_partreason_help
 %C23*$tYou have left channel $3 (%O%C23$4%O%C23)
-4
-
-You Kicked
-XP_TE_UKICK
-pevt_ukick_help
-%C23*$tYou have been kicked from $2 by $3 ($4%O%C23)
 4
 
 Your Invitation

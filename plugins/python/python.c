@@ -1671,7 +1671,7 @@ Module_xchat_get_list(PyObject *self, PyObject *args)
 	xchat_list *list;
 	PyObject *l;
 	const char *name;
-	const char **fields;
+	const char *const *fields;
 	int i;
 
 	if (!PyArg_ParseTuple(args, "s:get_list", &name))
@@ -1750,7 +1750,7 @@ static PyObject *
 Module_xchat_get_lists(PyObject *self, PyObject *args)
 {
 	PyObject *l, *o;
-	const char **fields;
+	const char *const *fields;
 	int i;
 	/* This function is thread safe, and returns statically
 	 * allocated data. */

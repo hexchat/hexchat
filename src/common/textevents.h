@@ -338,11 +338,11 @@ N_("%C22*%O$tStopped previous connection attempt (pid=$1)")},
 {"Topic", pevt_topic_help, 2, 
 N_("%C29*%O$t%C29Topic for $1%C %C29is: $2")},
 
-{"Topic Creation", pevt_topicdate_help, 3, 
-N_("%C29*%O$t%C29Topic for $1%C %C29set by $2%C %C29at $3")},
-
 {"Topic Change", pevt_newtopic_help, 3, 
 N_("%C22*%O$t$1 has changed the topic to: $2")},
+
+{"Topic Creation", pevt_topicdate_help, 3, 
+N_("%C29*%O$t%C29Topic for $1%C %C29set by $2%C %C29at $3")},
 
 {"Unknown Host", pevt_generic_none_help, 0, 
 N_("%C22*%O$tUnknown host. Maybe you misspelled it?")},
@@ -352,6 +352,9 @@ N_("%C22*%O$tCannot join%C26 %B$1 %O(User limit reached).")},
 
 {"Users On Channel", pevt_usersonchan_help, 2, 
 N_("%C22*%O$t%C26Users on $1:%C $2")},
+
+{"WhoIs Authenticated", pevt_whoisauth_help, 3, 
+N_("%C22*%O$t%C28[%O$1%C28] %O$2%C27 $3")},
 
 {"WhoIs Away Line", pevt_whois5_help, 2, 
 N_("%C22*%O$t%C28[%O$1%C28] %Cis away %C30(%O$2%O%C30)")},
@@ -363,13 +366,7 @@ N_("%C22*%O$t%C28[%O$1%C28]%O $2")},
 N_("%C22*%O$t%C28[%O$1%C28] %OEnd of WHOIS list.")},
 
 {"WhoIs Identified", pevt_whoisid_help, 2, 
-N_("%C22*%O$t%C28[%O$1%C28] %O$2")},
-
-{"WhoIs Authenticated", pevt_whoisauth_help, 3, 
-N_("%C22*%O$t%C28[%O$1%C28] %O$2%C27 $3")},
-
-{"WhoIs Real Host", pevt_whoisrealhost_help, 4, 
-N_("%C22*%O$t%C28[%O$1%C28] %Oreal user@host%C27 $2%O, real IP%C27 $3")},
+N_("%C22*%O$t%C28[%O$1%C28]%O $2")},
 
 {"WhoIs Idle Line", pevt_whois4_help, 2, 
 N_("%C22*%O$t%C28[%O$1%C28]%O idle%C26 $2")},
@@ -380,6 +377,9 @@ N_("%C22*%O$t%C28[%O$1%C28]%O idle%C26 $2%O, signon:%C26 $3")},
 {"WhoIs Name Line", pevt_whois1_help, 4, 
 N_("%C22*%O$t%C28[%O$1%C28] %C30(%O$2@$3%C30)%O: $4")},
 
+{"WhoIs Real Host", pevt_whoisrealhost_help, 4, 
+N_("%C22*%O$t%C28[%O$1%C28] %Oreal user@host%C27 $2%O, real IP%C27 $3")},
+
 {"WhoIs Server Line", pevt_whois3_help, 2, 
 N_("%C22*%O$t%C28[%O$1%C28]%O $2")},
 
@@ -389,14 +389,14 @@ N_("%C22*%O$t%C28[%O$1%C28]%O $2")},
 {"You Join", pevt_join_help, 3, 
 N_("%C19*%O$t%C19Now talking on $2")},
 
+{"You Kicked", pevt_ukick_help, 4, 
+N_("%C23*$tYou have been kicked from $2 by $3 ($4%O%C23)")},
+
 {"You Part", pevt_part_help, 3, 
 N_("%C23*$tYou have left channel $3")},
 
 {"You Part with Reason", pevt_partreason_help, 4, 
 N_("%C23*$tYou have left channel $3 (%O%C23$4%O%C23)")},
-
-{"You Kicked", pevt_ukick_help, 4, 
-N_("%C23*$tYou have been kicked from $2 by $3 ($4%O%C23)")},
 
 {"Your Invitation", pevt_uinvite_help, 3, 
 N_("%C22*%O$tYou've invited%C26 $1%O to%C26 $2%O (%C26$3%O)")},

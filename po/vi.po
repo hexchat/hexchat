@@ -1,123 +1,117 @@
-# XChat translation file: Serbian language
-# Copyright (C) 2004 Free Software Foundation, Inc.
-#
-# Translators:
-# o Zoltan Čala <zolika@sezampro.yu>, 1999.
-# o Filip Miletić <f.miletic@ewi.tudelft.nl>, 2004, 2005.
-# o Aleksandar Jelenak <jelenak@netlinkplus.net>, 2004, 2005.
-#
-# Note:
-# The sr@Latn.po is a machine generated file from sr.po
+# Vietnamese translation for xchat-2.4.1pre1.
+# This file is put in the public domain.
+# Clytie Siddall <clytie@riverland.net.au>, 2005.
 msgid ""
 msgstr ""
-"Project-Id-Version: xchat 2.4.2\n"
+"Project-Id-Version: xchat 2.4.1pre1\n"
 "Report-Msgid-Bugs-To: www.xchat.org\n"
 "POT-Creation-Date: 2005-03-07 18:50+1100\n"
-"PO-Revision-Date: 2004-03-07 16:64+0100\n"
-"Last-Translator: Aleksandar Jelenak <jelenak@netlinkplus.net>\n"
-"Language-Team: Serbian <gnu@prevod.org>\n"
+"PO-Revision-Date: 2005-03-06 23:21+1000\n"
+"Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
+"Language-Team: Vietnamese <gnomevi-list@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: src/common/cfgfiles.c:350
 msgid "Cannot create ~/.xchat2"
-msgstr "Није направљен ~/.xchat2"
+msgstr "Không tạo được thư mục ~/.xchat2"
 
 #: src/common/cfgfiles.c:672
 msgid "I'm busy"
-msgstr "Заузет сам"
+msgstr "Tiếc là hiện nay tôi bận"
 
 #: src/common/cfgfiles.c:673
 msgid "Leaving"
-msgstr "Одлазим"
+msgstr "Tôi đi"
 
 #: src/common/cfgfiles.c:719
 msgid ""
 "* Running IRC as root is stupid! You should\n"
 "  create a User Account and use that to login.\n"
 msgstr ""
-"* Није добра идеја да користите IRC као\n"
-"  администратор. Боље је направити налог.\n"
+"* Không là ý kiến tốt để chạy IRC vớí tư cách là người gốc (root).\n"
+"Hãy tạo một tài khoản người dùng và sử dụng nó để đăng nhập.\n"
+" \n"
 
 #: src/common/dcc.c:61
 msgid "Waiting"
-msgstr "Чекам"
+msgstr "Đang đời"
 
 #: src/common/dcc.c:62
 msgid "Active"
-msgstr "Активан"
+msgstr "Hoặt động"
 
 #: src/common/dcc.c:63
 msgid "Failed"
-msgstr "Неуспело"
+msgstr "Không làm việc được"
 
 #: src/common/dcc.c:64
 msgid "Done"
-msgstr "Готово"
+msgstr "Xong rồi"
 
 #: src/common/dcc.c:65
 msgid "Connect"
-msgstr "Повежи се"
+msgstr "Kết nối"
 
 #: src/common/dcc.c:66
 msgid "Aborted"
-msgstr "Прекинуто"
+msgstr "Bị hủy bỏ rồi"
 
 #: src/common/dcc.c:1299
 #, c-format
 msgid "Cannot access %s\n"
-msgstr "Нема приступа %s\n"
+msgstr "Không truy cập được %s\n"
 
 #: src/common/dcc.c:1919
 msgid "No active DCCs\n"
-msgstr "Нема активних DCC-ова\n"
+msgstr "Không có DCC (trờ chuyện trực tiếp) hoặt động nào\n"
 
 #: src/common/ignore.c:120 src/common/ignore.c:124 src/common/ignore.c:128
 #: src/common/ignore.c:132 src/common/ignore.c:136 src/common/ignore.c:140
 #: src/common/ignore.c:144
 msgid "YES  "
-msgstr "ДА   "
+msgstr "Có"
 
 #: src/common/ignore.c:122 src/common/ignore.c:126 src/common/ignore.c:130
 #: src/common/ignore.c:134 src/common/ignore.c:138 src/common/ignore.c:142
 #: src/common/ignore.c:146
 msgid "NO   "
-msgstr "НЕ   "
+msgstr "Không"
 
 #: src/common/ignore.c:373
 #, c-format
 msgid "You are being CTCP flooded from %s, ignoring %s\n"
-msgstr "Корисник %s вас засипа CTCP захтевима, игноришем %s\n"
+msgstr "Bây giờ bạn tràn ngập CTCP từ %s nên bỏ qua %s\n"
 
 #: src/common/ignore.c:398
 #, c-format
 msgid "You are being MSG flooded from %s, setting gui_auto_open_dialog OFF.\n"
 msgstr ""
-"Корисник %s вас засипа MSG захтевима, искључујем посебне прозоре за "
-"разговор. \n"
+"Bây giờ bạn tràn ngập MSG từ %s nên TẮT tùy chọn tự động mở đôi thoại giao "
+"diện  (gui_auto_open_dialog).\n"
 
 #: src/common/notify.c:400
 #, c-format
 msgid "  %-20s online\n"
-msgstr "  %-20s на вези\n"
+msgstr "  %-20s trực tuyến\n"
 
 #: src/common/notify.c:402
 #, c-format
 msgid "  %-20s offline\n"
-msgstr "  %-20s није ту\n"
+msgstr "  %-20s ngoạị tuyến\n"
 
 #: src/common/outbound.c:70
 msgid "No channel joined. Try /join #<channel>\n"
-msgstr "Нисте на каналу. Пробајте са /join #<канал>\n"
+msgstr "Chưa vào kênh nào: hãy thử lệnh /join #<kênh>\n"
 
 #: src/common/outbound.c:76
 msgid "Not connected. Try /server <host> [<port>]\n"
-msgstr "Нисте на вези. Пробајте са /server <хост> [<порт>]\n"
+msgstr "Chưa kêt nối được: hãy thử lệnh /server <máy_chủ> [<cổng>]\n"
 
 #: src/common/outbound.c:1375
 msgid "I need /bin/sh to run!\n"
-msgstr "За покретање треба имати /bin/sh!\n"
+msgstr "Cần đến thư mục/tập tin này để chạy được: /bin/sh\n"
 
 #: src/common/outbound.c:1618
 msgid ""
@@ -127,7 +121,7 @@ msgid ""
 "  "
 msgstr ""
 "\n"
-"Команде:\n"
+"Lệnh sẵn sàng:\n"
 "\n"
 "  "
 
@@ -140,7 +134,8 @@ msgid ""
 msgstr ""
 "\n"
 "\n"
-"Куцајте /HELP <команда> за помоћ, или /HELP -l\n"
+"Hãy gõ lệnh /HELP <lệnh> để xem thông tin thêm (help - trợ giúp), hay /HELP -"
+"l\n"
 "\n"
 
 #: src/common/outbound.c:1654
@@ -149,38 +144,40 @@ msgid ""
 "\n"
 "  "
 msgstr ""
-"Корисникове команде:\n"
+"Lệnh tự định nghĩa:\n"
 "\n"
 "  "
 
 #: src/common/outbound.c:1746
 #, c-format
 msgid "Unknown arg '%s' ignored."
-msgstr "Непознат аргумент '%s' је занемарен."
+msgstr "Không biết đối số '%s' nên bỏ qua nó."
 
 #: src/common/outbound.c:2524
 msgid "No such plugin found.\n"
-msgstr "Додатак није пронађен.\n"
+msgstr "Không tìm thấy trình cầm phít như vậy.\n"
 
 #: src/common/outbound.c:2529 src/fe-gtk/plugingui.c:185
 msgid "That plugin is refusing to unload.\n"
-msgstr "Овај додатак се није учитао.\n"
+msgstr "Trình cầm phít ấy không bỏ nạp đươc.\n"
 
 #: src/common/outbound.c:2686
 msgid "ADDBUTTON <name> <action>, adds a button under the user-list"
-msgstr "ADDBUTTON <име> <наредба>, додаје дугме у корисничeв списак команди"
+msgstr ""
+"Lệnh ADDBUTTON <tên> <hành_động> thì _thêm_ một _cái nút_ ở dưới danh sách "
+"người dùng"
 
 #: src/common/outbound.c:2688
 msgid "ALLCHAN <cmd>, sends a command to all channels you're in"
-msgstr "ALLCHAN <команда>, шаље команду на све канале где сте повезани"
+msgstr "Lệnh ALLCHAN <lệnh> thì gởi lệnh ấy cho _mọi kênh_ hiện có của bạn"
 
 #: src/common/outbound.c:2690
 msgid "ALLSERV <cmd>, sends a command to all servers you're in"
-msgstr "ALLSERV <команда>, шаље команду свим серверима где сте повезани"
+msgstr "Lệnh ALLSERV <lệnh> thì gởi lệnh ấy cho _mọi máy chủ_ hiện có của bạn"
 
 #: src/common/outbound.c:2691
 msgid "AWAY [<reason>], sets you away"
-msgstr "AWAY [<разлог>], пријављује одсуство"
+msgstr "Lệnh AWAY [<lý do>] lập trang thái của bạn thành _Vắng mặt_"
 
 #: src/common/outbound.c:2693
 msgid ""
@@ -188,31 +185,34 @@ msgid ""
 "channel. If they are already on the channel this doesn't kick them (needs "
 "chanop)"
 msgstr ""
-"BAN <шаблон> [<врста>], забрана за све кориснике обухваћене шаблоном од "
-"приступа каналу. Ако су већ на каналу, не избацује их (за то треба бити „оп‟)"
+"Lệnh BAN <mặt_nạ> [<cách_đuổi>] thì _đuổi_ mọi người khớp với mặt nạ ấy ra "
+"kênh hiện có. Cần đến quyền Thao tác (chanop) để đuổi ra người nào trên kênh "
+"rồi."
 
 #: src/common/outbound.c:2695
 msgid "CLEAR, Clears the current text window"
-msgstr "CLEAR, брише тренутни прозор са текстом"
+msgstr "Lệnh CLEAR thì _xóa_ cửa sổ câu hiện có"
 
 #: src/common/outbound.c:2696
 msgid "CLOSE, Closes the current window/tab"
-msgstr "CLOSE, затвара тренутни прозор/језичак"
+msgstr "Lệnh CLOSE thi _đóng_ cửa sổ/thanh hiện có"
 
 #: src/common/outbound.c:2699
+#, fuzzy
 msgid "COUNTRY [-s] <code|wildcard>, finds a country code, eg: au = australia"
-msgstr "COUNTRY [-s] <код|шаблон>, тражи код земље, нпр: au = аустралија"
+msgstr "Lệnh COUNTRY <mã> thì tìm thấy _quốc gia_, v.d. mã au = Úc"
 
 #: src/common/outbound.c:2701
 msgid ""
 "CTCP <nick> <message>, send the CTCP message to nick, common messages are "
 "VERSION and USERINFO"
 msgstr ""
-"CTCP <име> <порука>, шаље CTCP поруку на дато име, попут VERSION или USERINFO"
+"Lệnh CTCP <tên_hiệu> <tin_nhẳn> thì gởi cho tên hiệu ấy tin nhẳn CTCP ấy: "
+"hai tin nhẳn thường là VERSION (phiên bản) và USERINFO (thông tin người dùng)"
 
 #: src/common/outbound.c:2703
 msgid "CYCLE, parts current channel and immediately rejoins"
-msgstr "CYCLE, напушта тренутни канал и одмах се враћа назад"
+msgstr "Lệnh CYCLE thì rời kênh hiện đi rồi vào lại ngay (_quay lại_)"
 
 #: src/common/outbound.c:2705
 msgid ""
@@ -225,88 +225,111 @@ msgid ""
 "         /dcc close send johnsmith file.tar.gz"
 msgstr ""
 "\n"
-"DCC GET <име>                      - прихвати понуђену датотеку\n"
-"DCC SEND [-maxcps=#] <име> <дат>   - пошаљи некоме датотеку\n"
-"DCC LIST                           - покажи списак за DCC\n"
-"DCC CHAT <име>                     - понуди некоме разговор преко DCC\n"
-"DCC CLOSE <тип> <име> <дат>            пример:\n"
-"         /dcc close send пераперић датотека.tar.gz"
+"Lệnh DCC (Trò chuyện trực tiếp) thường dụng:\n"
+"\n"
+"Lệnh DCC GET <tên_hiệu> \t\tthì chấp nhận tập tin đã đưa ra (_gọi_)\n"
+"Lệnh DCC SEND [-maxcps=#] <tên_hiệu> [tập_tin]      thì _gởi_ tập tin ấy cho "
+"người ấy\n"
+"Lệnh DCC LIST   \t\t\t\tthì hiển thị _danh sách_ DCC\n"
+"Lệnh DCC CHAT <tên_hiệu> \tthì đưa ra _trò chuyện_ DCC với người ấy\n"
+"Lệnh DCC CLOSE <loại> <tên_hiệu> <tập_tin>   (_đóng_)      thí dụ:\n"
+"         /dcc close send nguyenvan tập_tin.tar.gz (gởi cho người nguyenvan "
+"tập_tin.tar.gz)"
 
 #: src/common/outbound.c:2715
 msgid ""
 "DEHOP <nick>, removes chanhalf-op status from the nick on the current "
 "channel (needs chanop)"
 msgstr ""
-"DEHOP <име>, склања полу-оп звање за име на тренутном каналу (потребан је"
-"„оп)‟"
+"Lệnh DEHOP <tên_hiệu> thì bỏ ra tên hiệu ấy trạng thái Thao tác kênh nửa "
+"(chanhalf-op) trên kênh hiện có (cần đến trạng thái Thao tác kênh) - DE (bỏ "
+"ra) Half (nửa) OPerator (Thao tác viên)"
 
 #: src/common/outbound.c:2717
 msgid "DELBUTTON <name>, deletes a button from under the user-list"
-msgstr "DELBUTTON <име>, брише дугме са корисничног списка"
+msgstr ""
+"Lệnh DELBUTTON <tên> thi _xóa bỏ cái nút_ ấy ra dưới danh sách người dùng "
+"(DELete - xóa bỏ)"
 
 #: src/common/outbound.c:2719
 msgid ""
 "DEOP <nick>, removes chanop status from the nick on the current channel "
 "(needs chanop)"
-msgstr "DELBUTTON <име>, уклања звање оператора за име на овом каналу"
+msgstr ""
+"Lệnh DEOP <tên_hiệu> thì bỏ ra tên hiệu ấy trạng thái Thao tác kênh (chanop) "
+"trên kênh hiện có (cần đến trạng thái Thao tác kênh (chanop)) - DE (bỏ) "
+"OPerator (Thao tác viên)"
 
 #: src/common/outbound.c:2721
 msgid ""
 "DEVOICE <nick>, removes voice status from the nick on the current channel "
 "(needs chanop)"
-msgstr "DEVOICE <име>, одузима реч за име на овом каналу"
+msgstr ""
+"Lệnh DEVOICE <tên_hiệu> thì _bỏ ra_ tên hiệu ấy trạng thái _nói tiếng_ trên "
+"kênh hiện có (cần đến trạng thái Thao tác kênh (chanop))"
 
 #: src/common/outbound.c:2722
 msgid "DISCON, Disconnects from server"
-msgstr "DISCON, искључује са сервера"
+msgstr "Lệnh DISCON thì ngắt kết nối ra máy chủ - DISCONnect (ngắt kết nối)"
 
 #: src/common/outbound.c:2723
 msgid "DNS <nick|host|ip>, Finds a users IP number"
-msgstr "DNS <име|рач|ip>, тражи корисников IP број"
+msgstr ""
+"Lệnh DNS <tên_hiệu|máy_chủ|ip> thì tìm thấy địa chỉ IP của người dùng ấy - "
+"Domain Name System (Hệ thống tên miền)"
 
 #: src/common/outbound.c:2724
 msgid "ECHO <text>, Prints text locally"
-msgstr "ECHO <текст>, исписује текст"
+msgstr "Lệnh ECHO <câu> thì in ra câu ấy địa phương (_vọng_)"
 
 #: src/common/outbound.c:2727
 msgid ""
 "EXEC [-o] <command>, runs the command. If -o flag is used then output is "
 "sent to current channel, else is printed to current text box"
 msgstr ""
-"EXEC [-o] <наредба>, изврши наредбу. Ако је дата ознака -o онда се исписшаље "
-"на тренутни канал, иначе се исписује у оквиру за текст."
+"Lệnh EXEC [-o] <lệnh> thì chạy lệnh ấy. Nếu sử dụng cờ -o thì gởi dữ liệu "
+"xuất cho kênh hiện có, không thì in ra dữ liệu xuất vào hộp câu hiện có - "
+"EXECute (thi hành)"
 
 #: src/common/outbound.c:2729
 msgid "EXECCONT, sends the process SIGCONT"
-msgstr "EXECCONT, шаље процесу SIGCONT"
+msgstr "Lệnh EXECCONT thì gởi tiến trình SIGCONT"
 
 #: src/common/outbound.c:2732
 msgid ""
 "EXECKILL [-9], kills a running exec in the current session. If -9 is given "
 "the process is SIGKILL'ed"
 msgstr ""
-"EXECKILL [-9], зауставља позив exec у овој сесији. Ако је дато и -9 процесу "
-"се шаље SIGKILL"
+"Lệnh EXECKILL [-9] thì buộc kết thức tiến trình exec đang chạy trong phiên "
+"hiện có. Nếu sử dụng cờ -9 thì SIGKILL tiến trình ấy"
 
 #: src/common/outbound.c:2734
 msgid "EXECSTOP, sends the process SIGSTOP"
-msgstr "EXECSTOP, шаље процесу SIGSTOP"
+msgstr "Lệnh EXECSTOP thì gởi tiến trình SIGSTOP"
 
 #: src/common/outbound.c:2735
 msgid "EXECWRITE, sends data to the processes stdin"
-msgstr "EXECWRITE, шаље податке на стандардни улаз процеса"
+msgstr ""
+"Lệnh EXECWRITE thi gởi dữ liệu cho thiết bị gõ chuẩn (stdin) của tiến trình "
+"- EXECute (thi hành) WRITE (ghi)"
 
 #: src/common/outbound.c:2739
 msgid "FLUSHQ, flushes the current server's send queue"
-msgstr "FLUSHQ, празни ред за слање на овом серверу"
+msgstr ""
+"Lệnh FLUSHQ thì _xóa sạch hàng đợi_ gởi của máy chủ hiện có - Queue (hàng "
+"đời)"
 
 #: src/common/outbound.c:2741
 msgid "GATE <host> [<port>], proxies through a host, port defaults to 23"
-msgstr "ГАТЕ <рач.> [<порт>], прослеђује преко рач(унара), за порт се узима 23"
+msgstr ""
+"Lệnh GATE <máy_chủ> [<cổng>] thì sử dụng máy chủ ủy nhiệm; _cổng_ mặc định "
+"là 23"
 
 #: src/common/outbound.c:2747
 msgid "HOP <nick>, gives chanhalf-op status to the nick (needs chanop)"
-msgstr "HOP <име>, даје звање полу-оп овом имену (потребан је оп) "
+msgstr ""
+"Lệnh HOP <tên_hiệu> thì đưa ra tên hiệu ấy trạng thái Thao tác kênh nửa (cần "
+"đến trạng thái Thao tác kênh [chanop]) - Half (nửa) OPerator (Thao tac viên)"
 
 #: src/common/outbound.c:2749
 msgid ""
@@ -316,132 +339,159 @@ msgid ""
 "            PRIV, CHAN, NOTI, CTCP, DCC, INVI, ALL\n"
 "    options - NOSAVE, QUIET"
 msgstr ""
-"IGNORE <шаблон> <типови...> <избори...>\n"
-"    шаблон - шаблон за име рачунара, нпр. *!*@.aol.com\n"
-"    типови - шта занемарити, један или више из скупа:\n"
-"            PRIV, CHAN, NOTI, CTCP, DCC, INVI, ALL\n"
-"    избори  - NOSAVE, QUIET"
+"Lệnh IGNORE <mặt_nạ> <loại..> <tùy_chọn..>\n"
+"    IGNORE - bỏ ra\n"
+"    mặt nạ - mặt nạ máy chủ để bỏ qua, v.d.: *!*@*.aol.com\n"
+"    loại - loại dữ liệu để bỏ qua, là một hay tất cả của:\n"
+"            PRIV (riêng), CHAN (kênh), NOTI (thông báo), CTCP, DCC (trò "
+"chuyện trực tiếp), INVI (mời), ALL (tất cả)\n"
+"    tùy chọn - NOSAVE (không lưu), QUIET (im)"
 
 #: src/common/outbound.c:2756
 msgid ""
 "INVITE <nick> [<channel>], invites someone to a channel, by default the "
 "current channel (needs chanop)"
 msgstr ""
-"INVITE <име> [<канал>], позива име да се прикључи каналу, мисли се на "
-"тренутни ако се не наведе (потребан је оп)"
+"Lệnh INVITE <tên_hiệu> [<kênh>] thì _mời_ người ấy vào kênh ấy; mặc định là "
+"kênh hiện có (cần đến trạng thái Thao tác kênh [chanop])"
 
 #: src/common/outbound.c:2757
 msgid "JOIN <channel>, joins the channel"
-msgstr "JOIN <канал>, прикључује се каналу"
+msgstr "Lệnh JOIN <kênh> thi _vào_ kênh ấy"
 
 #: src/common/outbound.c:2759
 msgid "KICK <nick>, kicks the nick from the current channel (needs chanop)"
-msgstr "KICK <име>, избацује име са овог канала (потребан је оп)"
+msgstr ""
+"Lệnh KICK <tên_hiệu> thi _đá_ người ấy ra kênh hiện có (cần đến trạng thái "
+"Thao tác kênh [chanop])"
 
 #: src/common/outbound.c:2761
 msgid ""
 "KICKBAN <nick>, bans then kicks the nick from the current channel (needs "
 "chanop)"
 msgstr ""
-"KICKBAN <име>, забрањује а затим избацује име са овог канала (потребан је оп)"
+"Lệnh KICKBAN <tên_hiệu> thì _đuổi_ rồi _đá_ người ấy ra kênh hiện có (cần "
+"đến trạng thái Thao tác kênh [chanop])"
 
 #: src/common/outbound.c:2764
 msgid "LAGCHECK, forces a new lag check"
-msgstr "LAGCHECK, тражи да се измери кашњење"
+msgstr "Lệnh LAGCHECK buộc _kiểm tra sự trễ_ kết nối một lần nữa"
 
 #: src/common/outbound.c:2766
 msgid "LASTLOG <string>, searches for a string in the buffer"
-msgstr "LASTLOG <текст>, тражи текст у записима"
+msgstr "Lệnh LASTLOG <chuỗi> tìm kiếm chuối ấy trong bộ đệm (_bản ghi trước_)"
 
 #: src/common/outbound.c:2768
 msgid "LOAD <file>, loads a plugin or script"
-msgstr "LOAD <дат.>, учитава додатак или скрипту"
+msgstr "Lệnh LOAD <tập_tin> thì _nạp_ trình cầm phít hay tập lệnh"
 
 #: src/common/outbound.c:2771
 msgid ""
 "MDEHOP, Mass deop's all chanhalf-ops in the current channel (needs chanop)"
 msgstr ""
-"MDEHOP, одузима звање свим полу-операторима на овом каналу (потребан је оп)"
+"Lệnh MDEHOP thì bỏ trạng thái Thao tác kênh nửa (chanhalf-op) ra mọi người "
+"trên kênh hiện có (cần đến trạng thái Thao tác kênh [chanop]) - Mass (số "
+"nhiều) DE (bỏ) Half (nửa) OPerator (Thao tác viên)"
 
 #: src/common/outbound.c:2773
 msgid "MDEOP, Mass deop's all chanops in the current channel (needs chanop)"
-msgstr "MDEOP, одузима звање свим операторима на овом каналу (потребан је оп)"
+msgstr ""
+"Lệnh MDEOP thì bỏ trạng thái Thao tác kênh (chanop) ra mọi người trên kênh "
+"hiện có (cần đến trạng thái Thao tác kênh [chanop]) - Mass (số nhiều) DE "
+"(bỏ) OPerator (Thao tác viên)"
 
 #: src/common/outbound.c:2775
 msgid ""
 "ME <action>, sends the action to the current channel (actions are written in "
 "the 3rd person, like /me jumps)"
 msgstr ""
-"ME <радња>, шаље опис радње на овај канал (радње се пишу у трећем лицу, "
-"нпр. /me скаче"
+"Lệnh ME <hành_động> thì gởi hành động ấy cho kênh hiện có (v.d. \"ME jumps\" "
+"có nghĩa là «Tôi nhảy») - ME (tôi)"
 
 #: src/common/outbound.c:2777
 msgid ""
 "MKICK, Mass kicks everyone except you in the current channel (needs chanop)"
-msgstr "MKICK, избацује све друге са канала (потребан је оп)"
+msgstr ""
+"Lệnh MKICK thì _đá_ mọi người (trừ bạn) ra kênh hiện có (cần đến trạng thái "
+"Thao tác kênh [chanop]) - Mass (số nhiều)"
 
 #: src/common/outbound.c:2780
 msgid "MOP, Mass op's all users in the current channel (needs chanop)"
-msgstr "MOP, свима на каналу додељује звање оператора (потребан је оп)"
+msgstr ""
+"Lệnh MOP thì đưa ra mọi người dùng trạng thái Thao tác kênh (chanop) trên "
+"kênh hiện có (cần đến trạng thái Thao tác kênh [chanop]) - Mass (số nhiều) "
+"OPerator (Thao tác viên)"
 
 #: src/common/outbound.c:2781
 msgid "MSG <nick> <message>, sends a private message"
-msgstr "MSG <име> <порука>, шаље приватну поруку"
+msgstr ""
+"Lệnh MSG <tên_hiệu> <tin_nhẳn> thì gởi _tin nhẳn_ riêng - MeSsaGe (tin nhẳn)"
 
 #: src/common/outbound.c:2784
 msgid "NAMES, Lists the nicks on the current channel"
-msgstr "NAMES, исписује имена на овом каналу"
+msgstr "Lệnh NAMES thì liệt kê mọi _tên_ hiệu trên kênh hiện có"
 
 #: src/common/outbound.c:2786
 msgid "NCTCP <nick> <message>, Sends a CTCP notice"
-msgstr "NCTCP <име> <порука>, шаље CTCP дојаву"
+msgstr ""
+"Lệnh NCTCP <tên_hiệu> <tin_nhẳn> thì gởi thông báo CTCP - Notice (thông báo)"
 
 #: src/common/outbound.c:2787
 msgid "NEWSERVER <hostname> [<port>]"
-msgstr "NEWSERVER <рачунар> [<порт>]"
+msgstr "Lệnh NEWSERVER <tên_máy_chủ> [<cổng>] thì lập _máy chủ mới_"
 
 #: src/common/outbound.c:2788
 msgid "NICK <nickname>, sets your nick"
-msgstr "NICK <име>, узимање новог имена"
+msgstr ""
+"Lệnh NICK <tên_hiệu> thì lập _tên hiệu_ của bạn - NICKname (tên hiệu: viết "
+"tắt)"
 
 #: src/common/outbound.c:2791
 msgid ""
 "NOTICE <nick/channel> <message>, sends a notice. Notices are a type of "
 "message that should be auto reacted to"
 msgstr ""
-"NOTICE <име/канал> <порука>, шаље дојаву. Дојава је врста поруке коју треба "
-"аутоматски обрадити"
+"Lệnh NOTICE <tên_hiệu/kênh> <tin_nhản> thì gởi _thông báo_: thông báo là "
+"loại tin nhẳn sẽ nhận trả lời tự động"
 
 #: src/common/outbound.c:2793
 msgid "NOTIFY [<nick>], lists your notify list or adds someone to it"
 msgstr ""
-"NOTIFY [<nick>], даје списак имена која ишчекујете или додаје на списак"
+"Lệnh NOTIFY [<tên_hiệu>] thì liệt kê danh sách _thông báo_ của bạn, hay thêm "
+"người nào vào nó"
 
 #: src/common/outbound.c:2795
 msgid "OP <nick>, gives chanop status to the nick (needs chanop)"
-msgstr "OP <име>, даје звање оператора овом имену (потребан је оп)"
+msgstr ""
+"Lệnh OP <tên_hiệu> thì đưa ra tên hiệu ấy trạng thái Thao tác kênh (chanop) "
+"(cần đến trạng thái Thao tác kênh [chanop]) - OPerator (Thao tác viên)"
 
 #: src/common/outbound.c:2797
 msgid ""
 "PART [<channel>] [<reason>], leaves the channel, by default the current one"
 msgstr ""
-"PART [<канал>] [<разлог>], напушта канал, и то тренутни ако се не наведе"
+"Lệnh PART [<kênh>] [<lý_do>] thì rời kênh ấy đi; mặc định là kênh hiện có - "
+"dePART (rời đi)"
 
 #: src/common/outbound.c:2799
 msgid "PING <nick | channel>, CTCP pings nick or channel"
-msgstr "PING <име | канал>, испитује име или канал CTCP поруком"
+msgstr ""
+"Lệnh PING <tên_hiệu | kênh> thì thi hành tiến trình ping CTCP với tên hiêu "
+"hay kênh ấy"
 
 #: src/common/outbound.c:2801
 msgid "QUERY <nick>, opens up a new privmsg window to someone"
-msgstr "QUERY <име>, отвара нови прозор за личне поруке"
+msgstr ""
+"Lệnh QUERY <tên_hiệu> thì mở một cửa sổ tin nhẳn riêng mới cho người ấy "
+"(_câu hỏi_)"
 
 #: src/common/outbound.c:2803
 msgid "QUIT [<reason>], disconnects from the current server"
-msgstr "QUIT [<reason>], искључује са овог сервера"
+msgstr "Lệnh QUIT [<lý_do>] thì ngắt kết nối ra máy chủ hiện có (_thoát_)"
 
 #: src/common/outbound.c:2805
 msgid "QUOTE <text>, sends the text in raw form to the server"
-msgstr "QUOTE <текст>, шаље сирови текст серверу"
+msgstr "Lệnh QUOTE <câu> thì gởi câu ấy dạng thô cho máy chủ (_trích dẫn_)"
 
 #: src/common/outbound.c:2808
 msgid ""
@@ -449,9 +499,10 @@ msgid ""
 "RECONNECT to reconnect to the current server or with /RECONNECT ALL to "
 "reconnect to all the open servers"
 msgstr ""
-"RECONNECT [-ssl] [<рач.>] [<порт>] [<лозинка>], може се користити и само /"
-"RECONNECT за поновно спајање на сервер или као /RECONNECT ALL за поновно "
-"спајање на све отворене сервере"
+"Lệnh RECONNECT [-ssl] [<máy_chủ>] [<cổng>] [<mật_khẩu>]\n"
+"có thể kết nối lại đến mấy chủ hiện có giống như chỉ đơn giản sử dụng /"
+"RECONNECT, hay kết nối lại đến mọi máy chủ mở với /RECONNECT ALL (phương "
+"pháp SSL bảo vậ dữ liệu sẽ chuyển giao)"
 
 #: src/common/outbound.c:2811
 msgid ""
@@ -459,92 +510,115 @@ msgid ""
 "to reconnect to the current server or with /RECONNECT ALL to reconnect to "
 "all the open servers"
 msgstr ""
-"RECONNECT [<рач.>] [<порт>] [<лозинка>], може се користити и само /RECONNECT "
-"за поновно спајање на сервер или као /RECONNECT ALL за поновно спајање на "
-"све отворене сервере"
+"Lệnh RECONNECT [<máy_chủ>] [<cổng>] [<mật_khẩu>]\n"
+"có thể kết nối lại đến mấy chủ hiện có giống như chỉ đơn giản sử dụng /"
+"RECONNECT, hay kết nối lại đến mọi máy chủ mở với /RECONNECT ALL (không có "
+"bảo vệ dữ liệu với SSL)"
 
 #: src/common/outbound.c:2813
 msgid ""
 "RECV <text>, send raw data to xchat, as if it was received from the irc "
 "server"
 msgstr ""
-"RECV <текст>, пошаљи сирове податке у xchat, као да су стигли са IRC сервера"
+"Lệnh RECV <câu> thì gởi dữ liệu thô vào trình xchat, như máy chủ irc có thể "
+"gởi - RECeiVe (nhận)"
 
 #: src/common/outbound.c:2816
 msgid "SAY <text>, sends the text to the object in the current window"
-msgstr "SAY <текст>, шаље текст као поруку објекту у овом прозору"
+msgstr ""
+"Lệnh SAY <câu> thì gởi câu ấy cho đối tượng trong cửa sổ hiện có (_nói_)"
 
 #: src/common/outbound.c:2819
 msgid "SERVCHAN [-ssl] <host> <port> <channel>, connects and joins a channel"
-msgstr "SERVCHAN [-ssl] <рач.> <порт> <канал>, повезује се и учлани на канал"
+msgstr ""
+"Lệnh SERVCHAN [-ssl] <máy_chủ> <cổng> <kênh> thì kết nối đến kênh ấy và vào "
+"nó (phương pháp SSL bảo vệ dữ liệu sẽ chuyển giao) (phương pháp SSL bảo vệ "
+"dữ liệu sẽ chuyển giao) - SERVer (máy chủ) CHANnel (kênh)"
 
 #: src/common/outbound.c:2822
 msgid "SERVCHAN <host> <port> <channel>, connects and joins a channel"
-msgstr "SERVCHAN <рач.> <порт> <канал>, повезује се и учлани на канал"
+msgstr ""
+"Lệnh SERVCHAN <máy_chủ> <cổng> <kênh> thì kết nối đến kênh ấy và vào nó "
+"(không có bảo vệ dữ liệu với SSL) - SERVer (máy chủ) CHANnel (kênh)"
 
 #: src/common/outbound.c:2826
 msgid ""
 "SERVER [-ssl] <host> [<port>] [<password>], connects to a server, the "
 "default port is 6667 for normal connections, and 9999 for ssl connections"
 msgstr ""
-"SERVER [-ssl] <рач.> [<порт>] [<лозинка>], повезује се на сервер, узима да "
-"је порт 6667 за нормалну везу, одн. на 9999 за сигурну везу преко SSL"
+"Lệnh SERVER [-ssl] <máy_chủ> [<cổng>] [<mật_khẩu>] thì kết nối đến _máy chủ_ "
+"ấy: cổng mặc định là số 6667 cho kết nối thường, và số 9999 cho kết nối loại "
+"ssl (phương pháp SSL bảo vệ dữ liệu sẽ chuyển giao)"
 
 #: src/common/outbound.c:2829
 msgid ""
 "SERVER <host> [<port>] [<password>], connects to a server, the default port "
 "is 6667"
 msgstr ""
-"SERVER <рач.> [<порт>] [<лозинка>], повезује се на сервер, узима да је порт "
-"6667"
+"Lệnh SERVER <máy_chủ> [<cổng>] [<mật_khẩu>] thì kết nối đến _mấy chủ_ ấy; "
+"cổng mặc định là số 6667 (không có bảo vệ dữ liệu với SSL)"
 
 #: src/common/outbound.c:2831
 msgid "SET [-quiet] <variable> [<value>]"
-msgstr "SET [-quiet] <променљива> [<вредност>]"
+msgstr ""
+"Lệnh SET [-quiet] <biến> [<giá_trị>] thì _lập_ giá trị cho biến ấy; tùy chọn "
+"-quiet (im) có nghĩa là không in ra chi tiết"
 
 #: src/common/outbound.c:2832
 msgid "SETCURSOR [-|+]<position>"
-msgstr "SETCURSOR [-|+]<место>"
+msgstr "Lệnh SETCURSOR [-|+]<vị_trí> thi _lập_ vị trí cho _con trỏ_"
 
 #: src/common/outbound.c:2836
 msgid ""
 "TOPIC [<topic>], sets the topic if one is given, else shows the current topic"
 msgstr ""
-"TOPIC [<тема>], поставља тему ако је наведена, иначе прикаже тренутну тему"
+"Lệnh TOPIC [<chủ_đè>], thì lập _chủ đề_ nếu đưa ra nó, nếu không thì hiển "
+"thị chủ đề hiện có"
 
 #: src/common/outbound.c:2838
 msgid "UNBAN <mask> [<mask>...], unbans the specified masks."
-msgstr "UNBAN <шаблон> [<шаблон>...], скида забрану за ове шаблоне"
+msgstr ""
+"Lệnh UNBAN <mặt_nạ> [<mặt_nạ>...] thì _bỏ_ trạng thái _bị đuổi ra_ những mặt "
+"nạ được ghi rõ"
 
 #: src/common/outbound.c:2839
 msgid "UNIGNORE <mask> [QUIET]"
-msgstr "UNIGNORE <шаблон> [QUIET]"
+msgstr ""
+"Lệnh UNIGNORE <mặt_nạ> [QUIET] thì _bỏ_ trạng thái _bị bỏ qua ra_ mặt nạ ấy "
+"(tùy chọn QUIET (im) có nghĩa là không in ra chi tiết)"
 
 #: src/common/outbound.c:2840
 msgid "UNLOAD <name>, unloads a plugin or script"
-msgstr "UNLOAD <име>, уклони додатак или скрипт"
+msgstr "Lệnh UNLOAD <tên> thi _bỏ nạp_ trình cầm phít hay tập lệnh"
 
 #: src/common/outbound.c:2841
 msgid "URL <url>, opens a URL in your browser"
-msgstr "URL <url>, отвара URL у прегледнику мреже"
+msgstr ""
 
 #: src/common/outbound.c:2844
 msgid "VOICE <nick>, gives voice status to someone (needs chanop)"
-msgstr "VOICE <име>, даје реч (потребан је оп)"
+msgstr ""
+"Lệnh VOICE <tên_hiệu> thì đưa ra người ấy trạng thái _nói tiếng_ (cần đến "
+"trạng thái Thao tác kênh [chanop])"
 
 #: src/common/outbound.c:2846
 msgid "WALLCHAN <message>, writes the message to all channels"
-msgstr "WALLCHAN <порука>, шаље поруку на све канале"
+msgstr ""
+"Lệnh WALLCHAN <tin_nhẳn> thì ghi tin nhẳn ấy vào mọi kênh - Write (ghi) ALL "
+"(mọị) CHANnel (kênh)"
 
 #: src/common/outbound.c:2848
 msgid ""
 "WALLCHOP <message>, sends the message to all chanops on the current channel"
-msgstr "WALLCHOP <порука>, шаље поруку свим операторима на овом каналу"
+msgstr ""
+"Lệnh WALLCHOP <tin_nhẳn> thì gởi tin nhẳn ấy cho _mọi người Thao tác kênh "
+"[chanop]_ trên kênh hiện có - Write (ghi) ALL (mọi) CHannel (kênh) OPerator "
+"(Thao tác viên)"
 
 #: src/common/outbound.c:2881
 #, c-format
 msgid "Usage: %s\n"
-msgstr "Употреба: %s\n"
+msgstr "Cách sử dụng: %s\n"
 
 #: src/common/outbound.c:2886
 msgid ""
@@ -552,31 +626,33 @@ msgid ""
 "No help available on that command.\n"
 msgstr ""
 "\n"
-"За ову наредбу помоћ није доступна.\n"
+"Tiếc là không có trợ giúp sẵn sàng về lệnh ấy.\n"
 
 #: src/common/outbound.c:2892
 msgid "No such command.\n"
-msgstr "Не постоји наредба.\n"
+msgstr "Không có lệnh như vậy.\n"
 
 #: src/common/outbound.c:3216
 msgid "Bad arguments for user command.\n"
-msgstr "Погрешни аргументи за корисничку наредбу.\n"
+msgstr "Lệnh người dùng có đối số sai.\n"
 
 #: src/common/outbound.c:3380
 msgid "Too many recursive usercommands, aborting."
-msgstr "Сувише команди се унакрсно позива, обустављам."
+msgstr "Quá nhiều lệnh đệ qui của người dùng nên hủy bỏ."
 
 #: src/common/outbound.c:3453
 msgid "Unknown Command. Try /help\n"
-msgstr "Команда није препозната. Пробајте са /help\n"
+msgstr "Không biết lệnh ấy: bạn hãy thử lệnh /help (trợ giúp)\n"
 
 #: src/common/plugin.c:359 src/common/plugin.c:400
 msgid "No xchat_plugin_init symbol; is this really an xchat plugin?"
-msgstr "Име xchat_plugin_init не постоји; можда ово није додатак за xchat?"
+msgstr ""
+"Không có ký hiệu xchat_plugin_init (khởi động trình cầm phít xchat): đây "
+"thật là trình cầm phít xchat không?"
 
 #: src/common/server.c:586
 msgid "Are you sure this is a SSL capable server and port?\n"
-msgstr "Да ли сте сигурни да је ово SSL сервер и порт?\n"
+msgstr "Bạn có chắc đây là máy chủ và cổng có khả năng SSL không?\n"
 
 #: src/common/server.c:937
 #, c-format
@@ -584,17 +660,17 @@ msgid ""
 "Cannot resolve hostname %s\n"
 "Check your IP Settings!\n"
 msgstr ""
-"Рачунар %s наизглед не постоји\n"
-"Проверите подешавања за IP!\n"
+"Không quyết định được tên máy chủ %s\n"
+"Hãy kiểm tra thiết lập IP của bạn.\n"
 
 #: src/common/server.c:942
 msgid "Proxy traversal failed.\n"
-msgstr "Неуспео контакт са заступником.\n"
+msgstr "Không đi qua máy chủ ủy nhiệm được.\n"
 
 #: src/common/servlist.c:644
 #, c-format
 msgid "Cycling to next server in %s...\n"
-msgstr "Покушавам везу са следећим сервером у %s...\n"
+msgstr "Sẽ quay lại đến mấy chủ tới sau %s...\n"
 
 #: src/common/servlist.c:1056
 #, c-format
@@ -602,24 +678,24 @@ msgid ""
 "Warning: \"%s\" character set is unknown. No conversion will be applied for "
 "network %s."
 msgstr ""
-"Упозорење: Скуп знакова „%s‟ није познат. За мрежу %s се зато неће користити "
-"конверзија."
+"Cảnh báo: không biết bộ ký tự \"%s\" nên sẽ không áp dụng chuyển đổi vào "
+"mạng %s."
 
 #: src/common/textevents.h:6
 msgid "%C22*%O$t$1 added to notify list."
-msgstr "%C22*%O$t$1 додат на списак посматраних."
+msgstr "Đã thêm %C22*%O$t$1 vào danh sách thông báo."
 
 #: src/common/textevents.h:9
 msgid "%C22*%O$t$1 Banlist:%C19 $4%C20 $2%C21 $3"
-msgstr "%C22*%O$t$1 Забране:%C19 $4%C20 $2%C21 $3"
+msgstr "%C22*%O$t$1 Danh sách đuổi ra:%C19 $4%C20 $2%C21 $3"
 
 #: src/common/textevents.h:12
 msgid "%C22*%O$tCannot join%C26 %B$1 %O(You are banned)."
-msgstr "%C22*%O$tНе успева прикључење%C26 %B$1 %O(имате забрану)."
+msgstr "%C22*%O$tKhông vào được%C26 %B$1 %O(vì bạn bị đuổi ra)."
 
 #: src/common/textevents.h:18
 msgid "%C22*%O$t$1 is now known as $2"
-msgstr "Име %C22*%O$t$1 је промењено у $2"
+msgstr "%C22*%O$t$1 bây giờ được biết như là $2"
 
 #: src/common/textevents.h:21
 msgid "%C18*$t$1%O $2"
@@ -631,39 +707,39 @@ msgstr "%C21*%O$t%C21%B$1%O%C21 $2"
 
 #: src/common/textevents.h:27
 msgid "%C22*%O$t$1 sets ban on $2"
-msgstr "%C22*%O$t$1 поставља забрану на $2"
+msgstr "%C22*%O$t$1 đuổi $2 ra"
 
 #: src/common/textevents.h:30
 msgid "%C22*%O$tChannel $1 created on $2"
-msgstr "%C22*%O$tНаправљен је нови канал $1 на $2"
+msgstr "%C22*%O$tKênh$1 được tạo trên $2"
 
 #: src/common/textevents.h:33
 msgid "%C22*%O$t%C26$1%O removes channel half-operator status from%C26 $2"
-msgstr "%C22*%O$t%C26$1%O укида звање полу-оператора за %C26 $2"
+msgstr "%C22*%O$t%C26$1%O bỏ trạng thái Thao tác kênh nửa ra%C26 $2"
 
 #: src/common/textevents.h:36
 msgid "%C22*%O$t%C26$1%O removes channel operator status from%C26 $2"
-msgstr "%C22*%O$t%C26$1%O укида звање оператора за %C26 $2"
+msgstr "%C22*%O$t%C26$1%O bỏ trạng thái Thao tác kênh ra%C26 $2"
 
 #: src/common/textevents.h:39
 msgid "%C22*%O$t%C26$1%O removes voice from%C26 $2"
-msgstr "%C22*%O$t%C26$1%O одузима реч од %C26 $2"
+msgstr "%C22*%O$t%C26$1%O bỏ trạng thái Nói tiếng ra%C26 $2"
 
 #: src/common/textevents.h:42
 msgid "%C22*%O$t$1 sets exempt on $2"
-msgstr "%C22*%O$t$1 поставља изузеће за $2"
+msgstr "%C22*%O$t$1 lập trạng thái miễn cho $2"
 
 #: src/common/textevents.h:45
 msgid "%C22*%O$t%C26$1%O gives channel half-operator status to%C26 $2"
-msgstr "%C22*%O$t%C26$1%O додељује звање полу оператора за %C26 $2"
+msgstr "%C22*%O$t%C26$1%O đưa ra%C26 $2 trạng thái Thao tác kênh nửa "
 
 #: src/common/textevents.h:48
 msgid "%C22*%O$t$1 sets invite on $2"
-msgstr "%C22*%O$t$1 позива на прикључење на $2"
+msgstr "%C22*%O$t$1 lập trạng thái mời cho $2"
 
 #: src/common/textevents.h:51
 msgid "%UChannel          Users   Topic"
-msgstr "%UКанал            Бр.кор. Тема"
+msgstr "%UKênh      \t     Người  Chủ đề"
 
 #: src/common/textevents.h:54
 msgid "%C18%B%B$4$1%O%C18%O$t$2"
@@ -671,11 +747,11 @@ msgstr "%C18%B%B$4$1%O%C18%O$t$2"
 
 #: src/common/textevents.h:57
 msgid "%C22*%O$t$1 sets mode $2$3 $4"
-msgstr "%C22*%O$t$1 поставља приступну ознаку на $2$3 $4"
+msgstr "%C22*%O$t$1 lập chế độ $2$3 $4"
 
 #: src/common/textevents.h:60
 msgid "%C22*%O$t%C22Channel $1 modes: $2"
-msgstr "%C22*%O$t%C22Канал $1 приступне ознаке: $2"
+msgstr "%C22*%O$t%C22Kênh $1 chế độ: $2"
 
 #: src/common/textevents.h:63
 msgid "$4%C21%B$1%O$t%C21$2"
@@ -687,59 +763,59 @@ msgstr "%C28-%C29$1/$2%C28-%O$t$3"
 
 #: src/common/textevents.h:69
 msgid "%C22*%O$t%C26$1%O gives channel operator status to%C26 $2"
-msgstr "%C22*%O$t%C26$1%O додељује звање оператора за%C26 $2"
+msgstr "%C22*%O$t%C26$1%O đưa ra%C26 $2 trạng thái Thao tác kênh "
 
 #: src/common/textevents.h:72
 msgid "%C22*%O$t$1 removes exempt on $2"
-msgstr "%C22*%O$t$1 уклања изузеће за $2"
+msgstr "%C22*%O$t$1 bỏ trạng thái miễn ra $2"
 
 #: src/common/textevents.h:75
 msgid "%C22*%O$t$1 removes invite on $2"
-msgstr "%C22*%O$t$1 уклања позив за прикључење на $2"
+msgstr "%C22*%O$t$1 bỏ trạng thái mời ra $2"
 
 #: src/common/textevents.h:78
 msgid "%C22*%O$t$1 removes channel keyword"
-msgstr "%C22*%O$t$1 уклања кључну реч за канал"
+msgstr "%C22*%O$t$1 bỏ từ khóa kênh ra"
 
 #: src/common/textevents.h:81
 msgid "%C22*%O$t$1 removes user limit"
-msgstr "%C22*%O$t$1 укида највећи дозвољени број корисника на каналу"
+msgstr "%C22*%O$t$1 bỏ tối đa người dùng ra"
 
 #: src/common/textevents.h:84
 msgid "%C22*%O$t$1 sets channel keyword to $2"
-msgstr "%C22*%O$t$1 поставља кључну реч за канал на $2"
+msgstr "%C22*%O$t$1 lập từ khóa kênh thành $2"
 
 #: src/common/textevents.h:87
 msgid "%C22*%O$t$1 sets channel limit to $2"
-msgstr "%C22*%O$t$1 поставља највећи дозвољени број корисника на $2"
+msgstr "%C22*%O$t$1 lập tối đa kênh thành $2"
 
 #: src/common/textevents.h:90
 msgid "%C22*%O$t$1 removes ban on $2"
-msgstr "%C22*%O$t$1 уклања забрану за $2"
+msgstr "%C22*%O$t$1 bỏ trạng thái bị đuổi ra $2"
 
 #: src/common/textevents.h:93
 msgid "%C22*%O$t%C26$1%O gives voice to%C26 $2"
-msgstr "%C22*%O$t%C26$1%O даје реч за %C26 $2"
+msgstr "%C22*%O$t%C26$1%O đưa ra %C26 $2 trạng thái Nói tiếng"
 
 #: src/common/textevents.h:96
 msgid "%C22*%O$t%C22Connected. Now logging in..."
-msgstr "%C22*%O$t%C22Повезивање је успело. Пријава у току..."
+msgstr "%C22*%O$t%C22Kết nối rồì. Bây giờ đăng nhập..."
 
 #: src/common/textevents.h:99
 msgid "%C22*%O$t%C22Connecting to $1 ($2) port $3%O..."
-msgstr "%C22*%O$t%C22У току је повезивање на $1 ($2) порт $3%O.."
+msgstr "%C22*%O$t%C22Đang kết nối đến $1 ($2) qua cổng $3%O..."
 
 #: src/common/textevents.h:102
 msgid "%C21*%O$t%C21Connection failed. Error: $1"
-msgstr "%C21*%O$t%C21Повезивање није успело. Јављена је грешка: $1"
+msgstr "%C21*%O$t%C21Không kết nối được: gặp lỗi: $1"
 
 #: src/common/textevents.h:105
 msgid "%C22*%O$tReceived a CTCP $1 from $2"
-msgstr "%C22*%O$tПримљен је CTCP захтев $1 од $2"
+msgstr "%C22*%O$tMới nhận CTCP $1 từ $2"
 
 #: src/common/textevents.h:108
 msgid "%C22*%O$tReceived a CTCP $1 from $2 (to $3)"
-msgstr "%C22*%O$tПримљен је CTCP захтев $1 од $2 (за $3)"
+msgstr "%C22*%O$tMới nhận CTCP $1 từ $2 (cho $3)"
 
 #: src/common/textevents.h:111
 msgid "%C19>%O$1%C19<%O$tCTCP $2"
@@ -747,134 +823,136 @@ msgstr "%C19>%O$1%C19<%O$tCTCP $2"
 
 #: src/common/textevents.h:114
 msgid "%C22*%O$tReceived a CTCP Sound $1 from $2"
-msgstr "%C22*%O$tПримљен је CTCP звук $1 од $2"
+msgstr "%C22*%O$tMới nhận âm thanh CTCP $1 từ $2"
 
 #: src/common/textevents.h:117
 msgid "%C22*%O$tDCC CHAT to %C26$1%O aborted."
-msgstr "%C22*%O$tПрекинут је DCC разговор са %C26$1%O."
+msgstr "%C22*%O$tTrò chuyện trực tiếp (DCC) với %C26$1%O bị hủy bỏ."
 
 #: src/common/textevents.h:120
 msgid "%C22*%O$tDCC CHAT connection established to %C26$1 %C30[%O$2%C30]"
-msgstr "%C22*%O$tУспостављен је разговор путем DCC са %C26$1 %C30[%O$2%C30]"
+msgstr ""
+"%C22*%O$tMới kết nối được để trò chuyện trực tiếp (DCC) với %C26$1 %C30[%O$2%"
+"C30]"
 
 #: src/common/textevents.h:123
 msgid "%C22*%O$tDCC CHAT to %C26$1%O lost ($4)."
-msgstr "%C22*%O$tРазговор путем DCC са %C26$1%O је прекинут услед грешке. $4."
+msgstr "%C22*%O$tTrò chuyện trực tiếp (DCC) cho %C26$1%O bị mất ($4)."
 
 #: src/common/textevents.h:126
 msgid "%C22*%O$tReceived a DCC CHAT offer from $1"
-msgstr "%C22*%O$tПримљена је понуда за разговор путем DCC од $1"
+msgstr "%C22*%O$tMới nhận lời mời trò chuyện trực tiếp (DCC) từ $1"
 
 #: src/common/textevents.h:129
 msgid "%C22*%O$tOffering DCC CHAT to $1"
-msgstr "%C22*%O$tНудим разговор путем DCC за $1"
+msgstr "%C22*%O$tĐang mời $1 tro chuyện trực tiếp (DCC)"
 
 #: src/common/textevents.h:132
 msgid "%C22*%O$tAlready offering CHAT to $1"
-msgstr "%C22*%O$t$1 већ има понуду за разговор одавде"
+msgstr "%C22*%O$tĐã mời $1 trò chuyện rồi"
 
 #: src/common/textevents.h:135
 msgid "%C22*%O$tDCC $1 connect attempt to%C26 $2%O failed (err=$3)."
-msgstr "%C22*%O$tDCC $1 повезивање са%C26 $2%O неуспело (грешка=$3)."
+msgstr ""
+"%C22*%O$tDCC $1 việc cố kết nối đến%C26 $2%O không thành công (lỗi=$3)."
 
 #: src/common/textevents.h:138
 msgid "%C22*%O$tReceived '$1%O' from $2"
-msgstr "%C22*%O$tПреузета датотека '$1%O' од $2"
+msgstr "%C22*%O$tMới nhận '$1%O' từ $2"
 
 #: src/common/textevents.h:141
 #, c-format
 msgid "%C24,18 Type  To/From    Status  Size    Pos     File         "
-msgstr "%C24,18 Врста  Од/за     Стање   Вел.    Место   Датотека    "
+msgstr "%C24,18 Loại    Cho/Từ    TrThái  Cỡ     Vị trí    Tệp         "
 
 #: src/common/textevents.h:144
 msgid ""
 "%C22*%O$tReceived a malformed DCC request from %C26$1%O.%010%C22*%O"
 "$tContents of packet: $2"
 msgstr ""
-"%C22*%O$tПримљен је неисправан DCC захтев од %C26$1%O.%010%C22*%O$tСадржај "
-"пакета: $2"
+"%C22*%O$tMới nhận yêu cầu khuyết tật trò chuyện trực tiếp (DCC) từ %C26$1%O.%"
+"010%C22*%O$tNội dung gói: $2"
 
 #: src/common/textevents.h:147
 msgid "%C22*%O$tOffering%C26 $1%O to%C26 $2"
-msgstr "%C22*%O$tНудимо %C26$1 %O за %C26 $2"
+msgstr "%C22*%O$tĐang đưa ra%C26 $2 %C26 $1%O "
 
 #: src/common/textevents.h:150
 msgid "%C22*%O$tNo such DCC offer."
-msgstr "%C22*%O$tОва DCC понуда не постоји."
+msgstr "%C22*%O$tKhông có lời mời trò chuyện trực tiếp (DCC) như vậy."
 
 #: src/common/textevents.h:153
 msgid "%C22*%O$tDCC RECV%C26 $2%O to%C26 $1%O aborted."
-msgstr "%C22*%O$tDCC RECV %C126$2%O за%C26 $1%O прекинут."
+msgstr "%C22*%O$tNHẬN DCC%C26 $2%O cho%C26 $1%O bị hủy bỏ."
 
 #: src/common/textevents.h:156
 msgid ""
 "%C22*%O$tDCC RECV%C26 $1%O from%C26 $3%O complete %C30[%C26$4%O cps%C30]%O."
 msgstr ""
-"%C22*%O$tDCC RECV%C26 $1%O од%C26 $3%O обављено %C30[%C26$4%O зн./сек.%C30]%"
-"O."
+"%C22*%O$tNHẬN DCC%C26 $1%O từ%C26 $3%O hoàn thành %C30[%C26$4%O cps%C30]%O."
 
 #: src/common/textevents.h:159
 msgid "%C22*%O$tDCC RECV connection established to%C26 $1 %C30[%O$2%C30]"
-msgstr "%C22*%O$tDCC RECV веза успостављена са%C26 $1 %C30[%O$2%C30]%O"
+msgstr "%C22*%O$tĐã kết nối loại NHẬN DCC đếnC26 $1 %C30[%O$2%C30]"
 
 #: src/common/textevents.h:162
 msgid "%C22*%O$tDCC RECV%C26 $1%O from%C26 $3%O failed ($4)."
-msgstr "%C22*%O$tDCC RECV%C26 $1%O од%C26 $3%O неуспела. $4."
+msgstr "%C22*%O$tNHẬN DCC%C26 $1%O từ%C26 $3%O không thành công ($4)."
 
 #: src/common/textevents.h:165
 msgid "%C22*%O$tDCC RECV: Cannot open $1 for writing ($2)."
-msgstr "%C22*%O$tDCC RECV: Не може се писати у $1 ($2)."
+msgstr "%C22*%O$tNHẬN DCC: Không mở được $1 để ghi ($2)."
 
 #: src/common/textevents.h:168
 msgid ""
 "%C22*%O$tThe file%C26 $1%C already exists, saving it as%C26 $2%O instead."
-msgstr "%C22*%O$tДатотека%C26 $1%C већ постоји, снимам под именом%C26 $2%O."
+msgstr "%C22*%O$tCó tập tin%C26 $1%C rồi: sẽ lưu nó như là %C26 $2%O thay thế."
 
 #: src/common/textevents.h:171
 msgid "%C22*%O$t%C26$1 %Ohas requested to resume%C26 $2 %Cfrom%C26 $3%C."
-msgstr "%C22*%O$t%C26$1 %Cтражи да се настави%C26 $2 %Cод%C26 $3%C."
+msgstr "%C22*%O$t%C26$1 %Ođã yêu cầu tiếp tục%C26 $2 %Ctừ%C26 $3%C."
 
 #: src/common/textevents.h:174
 msgid "%C22*%O$tDCC SEND%C26 $2%O to%C26 $1%O aborted."
-msgstr "%C22*%O$tDCC SEND%C26 $2%O за%C26 $1%O је прекинут."
+msgstr "%C22*%O$tGỞI DCC%C26 $2%O cho%C26 $1%O bị hủy bỏ."
 
 #: src/common/textevents.h:177
 msgid ""
 "%C22*%O$tDCC SEND%C26 $1%O to%C26 $2%O complete %C30[%C26$3%O cps%C30]%O."
 msgstr ""
-"%C22*%O$tDCC SEND%C26 $1%O за%C26 $2%O обављен %C30[%C26$3%O зн./сек.%C30]%O."
+"%C22*%O$tGỞI DCC%C26 $1%O cho%C26 $2%O hoàn thành %C30[%C26$3%O cps%C30]%O."
 
 #: src/common/textevents.h:180
 msgid "%C22*%O$tDCC SEND connection established to%C26 $1 %C30[%O$2%C30]"
-msgstr "%C22*%O$tDCC SEND веза успостављена са%C26 $1 %C30[%O$2%C30]%O"
+msgstr "%C22*%O$tĐã kết nối DCC GỞI đến%C26 $1 %C30[%O$2%C30]"
 
 #: src/common/textevents.h:183
 msgid "%C22*%O$tDCC SEND%C26 $1%O to%C26 $2%O failed. $3"
-msgstr "%C22*%O$tDCC SEND веза%C26 $1%O са%C26 $2%O није успела. $3"
+msgstr "%C22*%O$tKhông kết nối DCC GỞI%C26 $1%O đến%C26 $2%O được. $3"
 
 #: src/common/textevents.h:186
 msgid "%C22*%O$t%C26$1 %Ohas offered%C26 $2 %O(%C26$3 %Obytes)"
-msgstr "%C22*%O$t%C26$1 %Cје понудио%C26 $2 %C(%C26$3 %Cбајт((ов)а))"
+msgstr "%C22*%O$t%C26$1 %Ođã mời%C26 $2 %O(%C26$3 %Obyte)"
 
 #: src/common/textevents.h:189
 msgid "%C22*%O$tDCC $1%C26 $2 %Oto%C26 $3 %Cstalled - aborting."
-msgstr "%C22*%O$tDCC $1%C26 $2 %Cза%C26 $3 %Cзаостаје - прекидам."
+msgstr "%C22*%O$tDCC $1%C26 $2 %Ođến%C26 $3 %Cngừng - hủy bỏ."
 
 #: src/common/textevents.h:192
 msgid "%C22*%O$tDCC $1%C26 $2 %Oto%C26 $3 %Otimed out - aborting."
-msgstr "%C22*%O$tDCC $1%C26 $2 %Cка%C26 $3 %Cје истекао - прекидам."
+msgstr "%C22*%O$tDCC $1%C26 $2 %Ođến%C26 $3 %Othời hạn rồì - hủy bỏ."
 
 #: src/common/textevents.h:195
 msgid "%C22*%O$t$1 deleted from notify list."
-msgstr "%C22*%O$t$1 избрисан са списка посматраних."
+msgstr "Mới xóa bỏ %C22*%O$t$1 ra danh sách thông báo."
 
 #: src/common/textevents.h:198
 msgid "%C22*%O$tDisconnected ($1)."
-msgstr "%C22*%O$tИскључен ($1)."
+msgstr "%C22*%O$tNgắt kết nối ($1)."
 
 #: src/common/textevents.h:201
 msgid "%C22*%O$tFound your IP: [$1]"
-msgstr "%C22*%O$tВаш IP број је: [$1]"
+msgstr "%C22*%O$tTìm thấy địa chỉ IP của bạn rồi: [$1]"
 
 #: src/common/textevents.h:204
 msgid "$1$t$2"
@@ -882,11 +960,11 @@ msgstr "$1$t$2"
 
 #: src/common/textevents.h:207
 msgid "%O%C26$1%O added to ignore list."
-msgstr "%O%C26$1%O додат у списак ућутканих."
+msgstr "Mới thêm %O%C26$1%O vào danh sách bỏ qua."
 
 #: src/common/textevents.h:210
 msgid "Ignore on %C26$1%O changed."
-msgstr "Занемари кад се промени%C26 $1%O."
+msgstr "Đã thay đổi trang thái bỏ qua về %C26$1%O."
 
 #: src/common/textevents.h:213
 #, c-format
@@ -896,40 +974,39 @@ msgstr "%C24,18                                                              "
 #: src/common/textevents.h:216
 #, c-format
 msgid "%C24,18 Hostmask                  PRIV NOTI CHAN CTCP DCC  INVI UNIG "
-msgstr "%C24,18 Образац за име хоста      PRIV NOTI CHAN CTCP DCC  INVI UNIG "
+msgstr "%C24,18 Mặt nạ máy chủ         RIÊN TBÁO KÊNH  CTCP DCC  MỜI BỎBỎ "
 
 #: src/common/textevents.h:219
 msgid "%O%C26$1%O removed from ignore list."
-msgstr "%O%C26$1%O избрисан са списка ућутканих."
+msgstr "Mới bỏ %O%C26$1%O ra danh sách bỏ qua."
 
 #: src/common/textevents.h:222
 msgid "  Ignore list is empty."
-msgstr "  Списак ућутканих је празан."
+msgstr "  Danh sách bỏ qua la trống không."
 
 #: src/common/textevents.h:225
 msgid "%C22*%O$tCannot join%C26 %B$1 %O(Channel is invite only)."
-msgstr "%C22*%O$tНије могуће прикључити се на%C26 %B$1 %O без позива."
+msgstr "%C22*%O$tKhông vào được%C26 %B$1 %O(Phải có lời mời)."
 
 #: src/common/textevents.h:228
 msgid "%C22*%O$tYou have been invited to%C26 $1%O by%C26 $2%C (%C26$3%C)"
-msgstr "%C22*%O$tПозвани сте на канал%C26 $1%C, позвао је%C26 $2%C (%C26$3%C)"
+msgstr "%C22*%O$tBạn được mời vào%C26 $1%O bởi%C26 $2%C (%C26$3%C)"
 
 #: src/common/textevents.h:231
 msgid "%C19*%O$t%C19%B$1 %B($3) has joined $2"
-msgstr "%C19*%O$t%C19%B$1 %B($3) дошао на $2"
+msgstr "%C19*%O$t%C19%B$1 %B($3) mới vao $2"
 
 #: src/common/textevents.h:234
 msgid "%C22*%O$tCannot join%C26 %B$1 %O(Requires keyword)."
-msgstr ""
-"%C22*%O$tНије могуће прокључити се на%C26 %B$1 %O без знања кључне речи."
+msgstr "%C22*%O$tKhông vào được%C26 %B$1 %O(Cần đến từ khóa)."
 
 #: src/common/textevents.h:237
 msgid "%C21*%O$t%C21$1 has kicked $2 from $3 ($4%O%C21)"
-msgstr "%C21*%O$t%C21$1 је избацио $2 са $3 ($4%O%C21)"
+msgstr "%C21*%O$t%C21$1 mới đá $2 ra $3 ($4%O%C21)"
 
 #: src/common/textevents.h:240
 msgid "%C22*%O$tYou have been killed by $1 ($2%O%C22)"
-msgstr "%C22*%O$tОдстранио вас је $1 ($2%O)"
+msgstr "%C22*%O$tBạn mới bị «giêt» bởi $1 ($2%O%C22)"
 
 #: src/common/textevents.h:243
 msgid "%C19>%O$1%C19<%O$t$2%O"
@@ -941,25 +1018,26 @@ msgstr "%C16*%O$t$1%O"
 
 #: src/common/textevents.h:249
 msgid "%C22*%O$t%C22MOTD Skipped."
-msgstr "%C22*%O$t%C22Прескочили смо вести дана."
+msgstr ""
+"Đã bỏ qua %C22*%O$t%C22MOTD (Message Of The Day - Thông điệp của hôm nay)."
 
 #: src/common/textevents.h:252
 msgid "%C22*%O$t$1 already in use. Retrying with $2..."
-msgstr "%C22*%O$tИме $1 неко већ користи. Пробам да користим $2.."
+msgstr "Sử dụng %C22*%O$t$1 rồi nên thử lái vơi $2..."
 
 #: src/common/textevents.h:255
 msgid "%C22*%O$tNickname already in use. Use /NICK to try another."
 msgstr ""
-"%C22*%O$tНеко већ користи ово име. Можете користити команду /NICK да пробате "
-"неко друго име."
+"%C22*%O$tTên hiệu đã chọn nên hay sử dụng lệnh /NICK để thử môt tên hiệu "
+"khác."
 
 #: src/common/textevents.h:258
 msgid "%C22*%O$tNo such DCC."
-msgstr "%C22*%O$tDCC захтев не постоји."
+msgstr "%C22*%O$tKhông có DCC như vậy."
 
 #: src/common/textevents.h:261
 msgid "%C22*%O$tNo process is currently running"
-msgstr "%C22*%O$tНиједан процес није покренут."
+msgstr "%C22*%O$tKhông có tiến trình đang chạy"
 
 #: src/common/textevents.h:264
 msgid "%C28-%C29$1%C28-%O$t$2"
@@ -971,39 +1049,39 @@ msgstr "%C19>%O$1%C19<%O$t$2"
 
 #: src/common/textevents.h:270
 msgid "$tNotify list is empty."
-msgstr "$tСписак посматраних је празан."
+msgstr "$tDanh sách thông báo la trống không."
 
 #: src/common/textevents.h:273
 msgid "%C24,18 %B  Notify List                           "
-msgstr "%C24,18 %B  Списак посматраних                    "
+msgstr "%C24,18 %B  Danh sách thông báo                       "
 
 #: src/common/textevents.h:276
 msgid "%C22*%O$t$1 users in notify list."
-msgstr "%C22*%O$t$1 корисници на списку посматраних."
+msgstr "%C22*%O$t$1 người dùng trong danh sách thông báo."
 
 #: src/common/textevents.h:279
 msgid "%C22*%O$tNotify: $1 is offline ($2)."
-msgstr "%C22*%O$tВест: $1 је на вези ($2)."
+msgstr "%C22*%O$tThông báo: $1 ngoại tuyến ($2)."
 
 #: src/common/textevents.h:282
 msgid "%C22*%O$tNotify: $1 is online ($2)."
-msgstr "%C22*%O$tВест: $1 је на вези ($2)."
+msgstr "%C22*%O$tThông báo: $1 trực tuyến ($2)."
 
 #: src/common/textevents.h:288
 msgid "%C23*%O$t%C23$1 (%O%C23$2) has left $3"
-msgstr "%C23*%O$t%C23$1 (%O%C23$2) оде $3"
+msgstr "%C23*%O$t%C23$1 (%O%C23$2) đã rời $3 đi"
 
 #: src/common/textevents.h:291
 msgid "%C23*%O$t%C23$1 (%O%C23$2) has left $3 (%O%C23$4)"
-msgstr "%C23*%O$t%C23$1 (%O%C23$2) оде са $3 %C14(%O$4%C14)%O"
+msgstr "%C23*%O$t%C23$1 (%O%C23$2) đa rời $3 đi (%O%C23$4)"
 
 #: src/common/textevents.h:294
 msgid "%C22*%O$tPing reply from $1: $2 second(s)"
-msgstr "%C22*%O$tВреме одзива за $1 у секундама: $2"
+msgstr "%C22*%O$tTrả lời ping từ $1: $2 giây"
 
 #: src/common/textevents.h:297
 msgid "%C22*%O$tNo ping reply for $1 seconds, disconnecting."
-msgstr "%C22*%O$tОдзив је изостао за $1 сек., искључујем се."
+msgstr "%C22*%O$tKhông nhận trả lời ping được $1 giây nên ngắt kết nối."
 
 #: src/common/textevents.h:300
 msgid "%C28*%C29$3$1%C28*$t%O$2"
@@ -1015,27 +1093,27 @@ msgstr "%C18%B%B$3$1%O$t$2"
 
 #: src/common/textevents.h:306
 msgid "%C22*%O$tA process is already running"
-msgstr "%C22*%O$tПроцес је већ покренут"
+msgstr "%C22*%O$tCó một tiến trình chạy rôi."
 
 #: src/common/textevents.h:309
 msgid "%C23*%O$t%C23$1 has quit (%O%C23$2)"
-msgstr "%C23*%O$t%C23$1 оде (%O%C23$2)"
+msgstr "%C23*%O$t%C23$1 đã thoát (%O%C23$2)"
 
 #: src/common/textevents.h:312
 msgid "%C22*%O$t$1 sets modes%B %C30[%O$2%B%C30]"
-msgstr "%C22*%O$t$1 поставља приступ%B %C30[%O$2%B%C30]"
+msgstr "%C22*%O$t$1 lập chế độ%B %C30[%O$2%B%C30]"
 
 #: src/common/textevents.h:315
 msgid "%C28-%C29$1/Wallops%C28-%O$t$2"
-msgstr "%C28-%C29$1/Wallops%C28-%O$t$2"
+msgstr "%C28-%C29$1/Quất mạnh%C28-%O$t$2"
 
 #: src/common/textevents.h:318
 msgid "%C22*%O$tLooking up IP number for%C26 $1%O..."
-msgstr "%C22*%O$tТражим IP број за%C26 $1%O..."
+msgstr "%C22*%O$tTra cứu số IP cho%C26 $1%O..."
 
 #: src/common/textevents.h:321
 msgid "%C22*%O$t%C22Connected."
-msgstr "%C22*%O$t%C22Повезан."
+msgstr "%C22*%O$t%C22Kết nối rồi."
 
 #: src/common/textevents.h:324 src/common/textevents.h:330
 #: src/common/textevents.h:333
@@ -1044,37 +1122,35 @@ msgstr "%C22*%O$t$1"
 
 #: src/common/textevents.h:327
 msgid "%C22*%O$t%C22Looking up $1"
-msgstr "%C22*%O$t%C22Тражим%C26 $1"
+msgstr "%C22*%O$t%C22Tra cứu $1"
 
 #: src/common/textevents.h:336
 msgid "%C22*%O$tStopped previous connection attempt (pid=$1)"
-msgstr "%C22*%O$tПретходно успостављање везе је прекинуто (pid=$1)"
+msgstr "%C22*%O$tĐã thôi việc cố kết nối trước (pid=$1)"
 
 #: src/common/textevents.h:339
 msgid "%C29*%O$t%C29Topic for $1%C %C29is: $2"
-msgstr "%C29*%O$t%C29Тема за%C29 $1%C %C29је: $2"
+msgstr "%C29*%O$t%C29Chủ đề cho $1%C %C29là: $2"
 
 #: src/common/textevents.h:342
 msgid "%C22*%O$t$1 has changed the topic to: $2"
-msgstr "%C22*%O$t$1 променио је тему у: $2"
+msgstr "%C22*%O$t$1 mới thay đổi chủ đề thành: $2"
 
 #: src/common/textevents.h:345
 msgid "%C29*%O$t%C29Topic for $1%C %C29set by $2%C %C29at $3"
-msgstr "%C29*%O$t%C29Тему за $1%C %C29поставио је $2%C %C29у $3"
+msgstr "%C29*%O$t%C29Chủ đề cho $1%C %C29đã lập do $2%C %C29vào lúc $3"
 
 #: src/common/textevents.h:348
 msgid "%C22*%O$tUnknown host. Maybe you misspelled it?"
-msgstr "%C22*%O$tНепознато име рачунара. Можда је погрешно откуцано?"
+msgstr "%C22*%O$tKhông biết máy chủ ấy: có lẽ chính tả sai không?"
 
 #: src/common/textevents.h:351
 msgid "%C22*%O$tCannot join%C26 %B$1 %O(User limit reached)."
-msgstr ""
-"%C22*%O$tНије могуће ући на%C26 %B$1 %O јер је достигнут највећи дозвољени "
-"број корисника."
+msgstr "%C22*%O$tKhông vào được%C26 %B$1 %O(Quá nhiều người)."
 
 #: src/common/textevents.h:354
 msgid "%C22*%O$t%C26Users on $1:%C $2"
-msgstr "%C22*%O$t%C26Корисници на $1:%C $2"
+msgstr "%C22*%O$t%C26Người dùng trên $1:%C $2"
 
 #: src/common/textevents.h:357
 msgid "%C22*%O$t%C28[%O$1%C28] %O$2%C27 $3"
@@ -1082,7 +1158,7 @@ msgstr "%C22*%O$t%C28[%O$1%C28] %O$2%C27 $3"
 
 #: src/common/textevents.h:360
 msgid "%C22*%O$t%C28[%O$1%C28] %Cis away %C30(%O$2%O%C30)"
-msgstr "%C22*%O$t%C28[%O$1%C28] %Cје одсутан %C30(%O$2%O%C30)"
+msgstr "%C22*%O$t%C28[%O$1%C28] %Cvắng mặt %C30(%O$2%O%C30)"
 
 #: src/common/textevents.h:363 src/common/textevents.h:369
 #: src/common/textevents.h:384 src/common/textevents.h:387
@@ -1091,44 +1167,46 @@ msgstr "%C22*%O$t%C28[%O$1%C28]%O $2"
 
 #: src/common/textevents.h:366
 msgid "%C22*%O$t%C28[%O$1%C28] %OEnd of WHOIS list."
-msgstr "%C22*%O$t%C28[%O$1%C28] %OКрај списка за WHOIS."
+msgstr "%C22*%O$t%C28[%O$1%C28] %OKết thức danh sách WHOIS (là ai?)"
 
 #: src/common/textevents.h:372
 msgid "%C22*%O$t%C28[%O$1%C28]%O idle%C26 $2"
-msgstr "%C22*%O$t%C28[%O$1%C28]%O неактиван%C26 $2"
+msgstr "%C22*%O$t%C28[%O$1%C28]%O nhàn rỗi%C26 $2"
 
 #: src/common/textevents.h:375
 msgid "%C22*%O$t%C28[%O$1%C28]%O idle%C26 $2%O, signon:%C26 $3"
-msgstr "%C22*%O$t%C28[%O$1%C28]%O неактиван%C26 $2%O, пријављен:%C26 $3%O"
+msgstr "%C22*%O$t%C28[%O$1%C28]%O nhàn rỗi%C26 $2%O, đăng nhập:%C26 $3"
 
 #: src/common/textevents.h:378
 msgid "%C22*%O$t%C28[%O$1%C28] %C30(%O$2@$3%C30)%O: $4"
-msgstr "%C22*%O$t%C28[%O$1%C28] %C30(%O$2@$3%C30) %O: $4"
+msgstr "%C22*%O$t%C28[%O$1%C28] %C30(%O$2@$3%C30)%O: $4"
 
 #: src/common/textevents.h:381
 msgid "%C22*%O$t%C28[%O$1%C28] %Oreal user@host%C27 $2%O, real IP%C27 $3"
-msgstr "%C22*%O$t%C28[%O$1%C28] %Oправи user@host%C27 $2%O, прави IP%C27 $3%O"
+msgstr ""
+"%C22*%O$t%C28[%O$1%C28] %Ongươi dùng thật@máy chủ%C27 $2%O, địạ chỉ IP thật%"
+"C27 $3"
 
 #: src/common/textevents.h:390
 msgid "%C19*%O$t%C19Now talking on $2"
-msgstr "%C19*%O$t%C19Сада причате на $2"
+msgstr "%C19*%O$t%C19Bây giờ nói chuyện trên $2"
 
 #: src/common/textevents.h:393
 msgid "%C23*$tYou have been kicked from $2 by $3 ($4%O%C23)"
-msgstr "%C23*$t вас је избацио са канала $2 ($4%O%C23)"
+msgstr "%C23*$tBạn mới bị đá ra $2 bởi $3 ($4%O%C23)"
 
 #: src/common/textevents.h:396
 #, c-format
 msgid "%C23*$tYou have left channel $3"
-msgstr "%C23*$tНапустили сте канал $3"
+msgstr "%C23*$tBạn rời kênh $3 đi rồi"
 
 #: src/common/textevents.h:399
 msgid "%C23*$tYou have left channel $3 (%O%C23$4%O%C23)"
-msgstr "%C23*$tНапустили сте канал $3 (%O%C23$4%O%C23)"
+msgstr "%C23*$tBạn rời kênh $3 đi rồi (%O%C23$4%O%C23)"
 
 #: src/common/textevents.h:402
 msgid "%C22*%O$tYou've invited%C26 $1%O to%C26 $2%O (%C26$3%O)"
-msgstr "%C22*%O$tЗовете%C26 $1%C на%C26 $2%C (%C26$3%C)"
+msgstr "%C22*%O$tBạn đã mời%C26 $1%O vào%C26 $2%O (%C26$3%O)"
 
 #: src/common/textevents.h:405
 msgid "%C31%B%B$4$1%O$t%C30$2"
@@ -1136,17 +1214,17 @@ msgstr "%C31%B%B$4$1%O$t%C30$2"
 
 #: src/common/textevents.h:408
 msgid "%C22*%O$tYou are now known as $2"
-msgstr "%C22*%O$tПроменили сте име у $2"
+msgstr "%C22*%O$tBây giờ bạn được biết như là $2"
 
 #: src/common/text.c:207
 #, c-format
 msgid "**** ENDING LOGGING AT %s\n"
-msgstr "**** КРАЈ ЗАПИСА У ДНЕВНИКУ У %s\n"
+msgstr "**** XONG GHI VÀO %s\n"
 
 #: src/common/text.c:325
 #, c-format
 msgid "**** BEGIN LOGGING AT %s\n"
-msgstr "**** ПОЧЕТАК ЗАПИСА У ДНЕВНИКУ У %s\n"
+msgstr "**** BẮT ĐẦU GHI VÀO %s\n"
 
 #: src/common/text.c:344
 #, c-format
@@ -1154,28 +1232,28 @@ msgid ""
 "* Can't open log file(s) for writing. Check the\n"
 "  permissions on %s/xchatlogs"
 msgstr ""
-"* Дневник се не може отворити за упис. Проверите\n"
-"  права приступа за %s/xchatlogs"
+"* Không mở được tập tin bản ghi để ghi: hãy\n"
+"  kiểm tra quyền truy cập %s/xchatlogs"
 
 #: src/common/text.c:559
 msgid "Left message"
-msgstr "Порука слева"
+msgstr "Tin nhẳn bên trái"
 
 #: src/common/text.c:560
 msgid "Right message"
-msgstr "Порука здесна"
+msgstr "Tin nhẳn bên phải"
 
 #: src/common/text.c:564
 msgid "The nick of the joining person"
-msgstr "Име особе која се прикључује"
+msgstr "Tên hiệu của người vào"
 
 #: src/common/text.c:565
 msgid "The channel being joined"
-msgstr "Канал на који се прикључује"
+msgstr "Kênh sẽ vào"
 
 #: src/common/text.c:566 src/common/text.c:611 src/common/text.c:668
 msgid "The host of the person"
-msgstr "Рачунар на коме ради"
+msgstr "Máy chủ của người ấy"
 
 #: src/common/text.c:570 src/common/text.c:575 src/common/text.c:582
 #: src/common/text.c:649 src/common/text.c:774 src/common/text.c:781
@@ -1190,320 +1268,327 @@ msgstr "Рачунар на коме ради"
 #: src/common/text.c:970 src/common/text.c:978 src/common/text.c:1012
 #: src/common/text.c:1017
 msgid "Nickname"
-msgstr "Надимак"
+msgstr "Tên hiệu"
 
 #: src/common/text.c:571
 msgid "The action"
-msgstr "Наредба"
+msgstr "Hành động"
 
 #: src/common/text.c:576
 msgid "The text"
-msgstr "Текст"
+msgstr "Câu"
 
 #: src/common/text.c:577
 msgid "Mode char"
-msgstr "Ознака за приступ"
+msgstr "Ký tự chế độ"
 
 #: src/common/text.c:578 src/common/text.c:651
 msgid "Identified text"
-msgstr "Препознат текст"
+msgstr "Câu đã nhận biết"
 
 #: src/common/text.c:583 src/common/text.c:639 src/common/text.c:645
 #: src/common/text.c:650
 msgid "The message"
-msgstr "Порука"
+msgstr "Tin nhẳn"
 
 #: src/common/text.c:587 src/common/text.c:655
 msgid "Old nickname"
-msgstr "Стари надимак"
+msgstr "Tên hiệu cũ"
 
 #: src/common/text.c:588 src/common/text.c:656
 msgid "New nickname"
-msgstr "Нови надимак"
+msgstr "Tên hiệu mới"
 
 #: src/common/text.c:592
 msgid "Nick of person who changed the topic"
-msgstr "Име особе која је променила тему"
+msgstr "Tên hiệu của người đã thay đổi chủ đề"
 
 #: src/common/text.c:593 src/common/text.c:599 src/fe-gtk/chanlist.c:599
 #: src/fe-gtk/chanlist.c:700
 msgid "Topic"
-msgstr "Тема"
+msgstr "Chủ đề"
 
 #: src/common/text.c:594 src/common/text.c:598 src/common/text.c:1032
 #: src/fe-gtk/chanlist.c:597 src/fe-gtk/chanlist.c:691
 #: src/fe-gtk/ignoregui.c:176
 msgid "Channel"
-msgstr "Канал"
+msgstr "Kênh"
 
 #: src/common/text.c:603 src/common/text.c:662
 msgid "The nickname of the kicker"
-msgstr "Име избацивача"
+msgstr "Tên hiệu của người đá"
 
 #: src/common/text.c:604 src/common/text.c:660
 msgid "The person being kicked"
-msgstr "Избачена особа"
+msgstr "Người bị đá"
 
 #: src/common/text.c:605 src/common/text.c:612 src/common/text.c:616
 #: src/common/text.c:621 src/common/text.c:661 src/common/text.c:669
 msgid "The channel"
-msgstr "Канал"
+msgstr "Kênh"
 
 #: src/common/text.c:606 src/common/text.c:663 src/common/text.c:670
 msgid "The reason"
-msgstr "Разлог"
+msgstr "Lý do"
 
 #: src/common/text.c:610 src/common/text.c:667
 msgid "The nick of the person leaving"
-msgstr "Име особе која одлази"
+msgstr "Tên hiệu của người rời đi"
 
 #: src/common/text.c:617 src/common/text.c:623
 msgid "The time"
-msgstr "Време"
+msgstr "Giờ"
 
 #: src/common/text.c:622
 msgid "The creator"
-msgstr "Креатор"
+msgstr "Tác giả"
 
 #: src/common/text.c:627
 msgid "Nick"
-msgstr "Име"
+msgstr "Tên hiệu"
 
 #: src/common/text.c:628 src/common/text.c:884
 msgid "Reason"
-msgstr "Разлог"
+msgstr "Lý do"
 
 #: src/common/text.c:629 src/common/text.c:776 src/common/text.c:859
 msgid "Host"
-msgstr "Рачунар"
+msgstr "Máy chủ"
 
 #: src/common/text.c:633 src/common/text.c:638 src/common/text.c:643
 msgid "Who it's from"
-msgstr "Од кога долази"
+msgstr "Người gởi"
 
 #: src/common/text.c:634
 msgid "The time in x.x format (see below)"
-msgstr "Време у формату x.x (видети испод)"
+msgstr "Giờ dạng x.x (xem dưới)"
 
 #: src/common/text.c:644 src/common/text.c:686
 msgid "The Channel it's going to"
-msgstr "Канал на који иде"
+msgstr "Kênh sẽ nhận nó"
 
 #: src/common/text.c:674
 msgid "The sound"
-msgstr "Звук"
+msgstr "Âm thanh"
 
 #: src/common/text.c:675 src/common/text.c:680 src/common/text.c:685
 msgid "The nick of the person"
-msgstr "Име особе"
+msgstr "Tên hiệu của người ấy"
 
 #: src/common/text.c:679 src/common/text.c:684
 msgid "The CTCP event"
-msgstr "CTCP догађај"
+msgstr "Sự kiện CTCP"
 
 #: src/common/text.c:690
 msgid "The nick of the person who set the key"
-msgstr "Име особе која је поставила кључ"
+msgstr "Tên hiệu của người đã lập khóa"
 
 #: src/common/text.c:691
 msgid "The key"
-msgstr "Кључ"
+msgstr "Khóa"
 
 #: src/common/text.c:695
 msgid "The nick of the person who set the limit"
-msgstr "Име особе која је поставила ограничење"
+msgstr "Tên hiệu của người đã lập tối đa"
 
 #: src/common/text.c:696
 msgid "The limit"
-msgstr "Ограничење"
+msgstr "Tối đa"
 
 #: src/common/text.c:700
 msgid "The nick of the person who did the op'ing"
-msgstr "Име особе која је доделила опа"
+msgstr "Tên hiệu của người đã lập trạng thái Thao tác (OPerator)"
 
 #: src/common/text.c:701
 msgid "The nick of the person who has been op'ed"
-msgstr "Име особе која је добила опа"
+msgstr "Tên hiệu của người đã nhận trạng thái Thao tác (OPerator)"
 
 #: src/common/text.c:705
 msgid "The nick of the person who has been halfop'ed"
-msgstr "Име особе која је добила полу-опа"
+msgstr "Tên hiệu của người đã nhận trạng thái Thao tác nửa (HalfOperator)"
 
 #: src/common/text.c:706
 msgid "The nick of the person who did the halfop'ing"
-msgstr "Име особе која је доделила полу-опа"
+msgstr "Tên hiệu của người đã lập trạng thái Thao tác nửa (HalfOPerator)"
 
 #: src/common/text.c:710
 msgid "The nick of the person who did the voice'ing"
-msgstr "Име особе која је дала реч"
+msgstr "Tên hiệu của người đã lập trạng thái Nói tiếng (Voice)"
 
 #: src/common/text.c:711
 msgid "The nick of the person who has been voice'ed"
-msgstr "Име особе која је добила реч"
+msgstr "Tên hiệu của người đã nhận trạng thái Nói tiếng (Voice)"
 
 #: src/common/text.c:715
 msgid "The nick of the person who did the banning"
-msgstr "Име особе која је забранила"
+msgstr "Tên hiệu của người đã đuổi người ấy ra"
 
 #: src/common/text.c:716 src/common/text.c:743
 msgid "The ban mask"
-msgstr "Шаблон за забрану"
+msgstr "Mặt nạ đuổi ra"
 
 #: src/common/text.c:720
 msgid "The nick who removed the key"
-msgstr "Име особе која је склонила кључ"
+msgstr "Tên hiệu đã bỏ khóa ra"
 
 #: src/common/text.c:724
 msgid "The nick who removed the limit"
-msgstr "Име особе која је уклонила ограничење"
+msgstr "Tên hiệu đã bỏ tối đa ra"
 
 #: src/common/text.c:728
 msgid "The nick of the person of did the deop'ing"
-msgstr "Име особе која је одузела опа"
+msgstr ""
+"Tên hiệu của người đã bỏ trạng thái Thao tác - DE (bỏ) OPerator (Thao tác "
+"viên)"
 
 #: src/common/text.c:729
 msgid "The nick of the person who has been deop'ed"
-msgstr "Име особе којој је одузет оп"
+msgstr ""
+"Tên hiệu của người mất trạng thái Thao tác - DE (bỏ) OPerator (Thao tác viên)"
 
 #: src/common/text.c:732
 msgid "The nick of the person of did the dehalfop'ing"
-msgstr "Име особе која је доделила полу-опа"
+msgstr ""
+"Tên hiệu của người đã bỏ trạng thái Thao tác nửa - DE (bỏ) Half (nửa) "
+"OPerator (Thao tác viên)"
 
 #: src/common/text.c:733
 msgid "The nick of the person who has been dehalfop'ed"
-msgstr "Име особе којој је одузет полу-оп"
+msgstr ""
+"Tên hiệu của người mất trạng thái Thao tác nửa - DE (bỏ) Half (nửa) OPerator "
+"(Thao tác viên)"
 
 #: src/common/text.c:737
 msgid "The nick of the person of did the devoice'ing"
-msgstr "Име особе која је одузела реч"
+msgstr "Tên hiệu của người đã bỏ trạng thái Nói tiếng"
 
 #: src/common/text.c:738
 msgid "The nick of the person who has been devoice'ed"
-msgstr "Име особе којој је одузета реч"
+msgstr "Tên hiệu của người mất trạng thái Nói tiếng)"
 
 #: src/common/text.c:742
 msgid "The nick of the person of did the unban'ing"
-msgstr "Име особе која је укинула забрану"
+msgstr "Tên hiệu của người đã bỏ trạng thái Bị đuổỉ ra - UN (bỏ) BAN (đuổi ra)"
 
 #: src/common/text.c:747
 msgid "The nick of the person who did the exempt"
-msgstr "Име особе која је поставила искључење"
+msgstr "Tên hiệu của người đã lập trạng thái miễn"
 
 #: src/common/text.c:748 src/common/text.c:753
 msgid "The exempt mask"
-msgstr "Шаблон за искључење"
+msgstr "Mặt nạ miễn"
 
 #: src/common/text.c:752
 msgid "The nick of the person removed the exempt"
-msgstr "Име особе која је уклонила искључење"
+msgstr "Tên hiệu của người đã bỏ trạng thái miễn"
 
 #: src/common/text.c:757
 msgid "The nick of the person who did the invite"
-msgstr "Име особе која је позвала"
+msgstr "Tên hiệu của người mời"
 
 #: src/common/text.c:758 src/common/text.c:763
 msgid "The invite mask"
-msgstr "Шаблон за позив"
+msgstr "Mặt nạ mờì"
 
 #: src/common/text.c:762
 msgid "The nick of the person removed the invite"
-msgstr "Име особе која је уклонила позив"
+msgstr "Tên hiệu của người đã bỏ lời mời)"
 
 #: src/common/text.c:767
 msgid "The nick of the person setting the mode"
-msgstr "Име особе која је поставила приступ"
+msgstr "Tên hiệu của người lập chế độ"
 
 #: src/common/text.c:768
 msgid "The mode's sign (+/-)"
-msgstr "Знак приступа (+/-)"
+msgstr "Dấu của chế độ (+/-)"
 
 #: src/common/text.c:769
 msgid "The mode letter"
-msgstr "Ознака приступа"
+msgstr "Chữ chế độ"
 
 #: src/common/text.c:770
 msgid "The channel it's being set on"
-msgstr "Канал на ком стоји"
+msgstr "Lập trên kênh này"
 
 #: src/common/text.c:775
 msgid "Username"
-msgstr "Кор. име"
+msgstr "Tên đăng nhập"
 
 #: src/common/text.c:777
 msgid "Full name"
-msgstr "Пуно име"
+msgstr "Tên họ"
 
 #: src/common/text.c:782
 msgid "Channel Membership/\"is an IRC operator\""
-msgstr "Припадност каналу/\"је IRC оператор\""
+msgstr "Tư cách thành viên/\"là toán tử IRC\""
 
 #: src/common/text.c:787
 msgid "Server Information"
-msgstr "Подаци о серверу"
+msgstr "Thông tin máy chủ"
 
 #: src/common/text.c:792 src/common/text.c:797
 msgid "Idle time"
-msgstr "Одсутан"
+msgstr "Thời gian nhàn rỗi"
 
 #: src/common/text.c:798
 msgid "Signon time"
-msgstr "Време пријаве"
+msgstr "Giờ đăng nhập"
 
 #: src/common/text.c:803
 msgid "Away reason"
-msgstr "Разлог за одсуство"
+msgstr "Lý do vắng mặt"
 
 #: src/common/text.c:812 src/common/text.c:818 src/common/text.c:826
 #: src/common/text.c:1004
 msgid "Message"
-msgstr "Порука"
+msgstr "Tin nhẳn"
 
 #: src/common/text.c:819
 msgid "Account"
-msgstr "Налог"
+msgstr "Tài khoản"
 
 #: src/common/text.c:824
 msgid "Real user@host"
-msgstr "Прави user@host"
+msgstr "Người dùng thât@máy chủ"
 
 #: src/common/text.c:825
 msgid "Real IP"
-msgstr "Прави IP"
+msgstr "Địa chỉ IP"
 
 #: src/common/text.c:830 src/common/text.c:839 src/common/text.c:845
 #: src/common/text.c:1027
 msgid "Channel Name"
-msgstr "Име канала"
+msgstr "Tên kênh"
 
 #: src/common/text.c:834 src/common/text.c:990 src/fe-gtk/textgui.c:338
 msgid "Text"
-msgstr "Текст"
+msgstr "Câu"
 
 #: src/common/text.c:835 src/common/text.c:841 src/common/text.c:1028
 msgid "Server Name"
-msgstr "Име сервера"
+msgstr "Tên máy chủ"
 
 #: src/common/text.c:840
 msgid "Nick of person who invited you"
-msgstr "Име особе која је позвала"
+msgstr "Tên hiệu của người đã mời bạn"
 
 #: src/common/text.c:846 src/fe-gtk/chanlist.c:598
 msgid "Users"
-msgstr "Корисници"
+msgstr "Người dùng"
 
 #: src/common/text.c:850
 msgid "Nickname in use"
-msgstr "Имена у употреби"
+msgstr "Tên hiệu đã chọn rồi"
 
 #: src/common/text.c:851
 msgid "Nick being tried"
-msgstr "Испробана имена"
+msgstr "Tên hiệu được thử hiện có"
 
 #: src/common/text.c:855 src/common/text.c:891 src/common/text.c:902
 #: src/common/text.c:909 src/common/text.c:922 src/common/text.c:939
 #: src/common/text.c:1039 src/common/util.c:352
 msgid "Error"
-msgstr "Грешка"
+msgstr "Lỗi"
 
 #: src/common/text.c:860 src/common/text.c:994
 msgid "IP"
@@ -1511,7 +1596,7 @@ msgstr "IP"
 
 #: src/common/text.c:861 src/common/text.c:890
 msgid "Port"
-msgstr "Порт"
+msgstr "Cổng"
 
 #: src/common/text.c:865
 msgid "PID"
@@ -1519,103 +1604,103 @@ msgstr "PID"
 
 #: src/common/text.c:873
 msgid "Channel name"
-msgstr "Име канала"
+msgstr "Tên kênh"
 
 #: src/common/text.c:874 src/common/text.c:879
 msgid "Modes string"
-msgstr "Права приступа"
+msgstr "Chuỗi chế độ"
 
 #: src/common/text.c:889 src/common/text.c:927 src/common/text.c:932
 #: src/common/text.c:973
 msgid "IP address"
-msgstr "IP адреса"
+msgstr "Địa chỉ IP"
 
 #: src/common/text.c:895 src/common/text.c:920
 msgid "DCC Type"
-msgstr "Врста DCC"
+msgstr "Loại DCC"
 
 #: src/common/text.c:896 src/common/text.c:901 src/common/text.c:906
 #: src/common/text.c:913 src/common/text.c:933 src/common/text.c:937
 #: src/common/text.c:943 src/common/text.c:949 src/common/text.c:956
 #: src/common/text.c:965 src/common/text.c:971
 msgid "Filename"
-msgstr "Датотека"
+msgstr "Tên tập tin"
 
 #: src/common/text.c:907 src/common/text.c:914
 msgid "Destination filename"
-msgstr "Циљна датотека"
+msgstr "Tên tập tin nơi nhận"
 
 #: src/common/text.c:916 src/common/text.c:945
 msgid "CPS"
-msgstr "зн./сек."
+msgstr "CPS"
 
 #: src/common/text.c:951
 msgid "Pathname"
-msgstr "Путања"
+msgstr "Đường dẫn"
 
 #: src/common/text.c:966 src/fe-gtk/dccgui.c:518 src/fe-gtk/dccgui.c:676
 msgid "Position"
-msgstr "Место"
+msgstr "Vị trí"
 
 #: src/common/text.c:972 src/fe-gtk/dccgui.c:517 src/fe-gtk/dccgui.c:675
 msgid "Size"
-msgstr "Величина"
+msgstr "Cỡ"
 
 #: src/common/text.c:977
 msgid "DCC String"
-msgstr "DCC текст"
+msgstr "Chuỗi DCC"
 
 #: src/common/text.c:982
 msgid "Number of notify items"
-msgstr "Број посматраних улаза"
+msgstr "Số mục thông báo"
 
 #: src/common/text.c:986
 msgid "Servername"
-msgstr "Име сервера"
+msgstr "Tên máy chủ"
 
 #: src/common/text.c:998
 msgid "Old Filename"
-msgstr "Стара датотека"
+msgstr "Tên tập tin cũ"
 
 #: src/common/text.c:999
 msgid "New Filename"
-msgstr "Нова датотека"
+msgstr "Tên tập tin mới"
 
 #: src/common/text.c:1003
 msgid "Receiver"
-msgstr "Прималац"
+msgstr "Máy/người nhận"
 
 #: src/common/text.c:1008
 msgid "Hostmask"
-msgstr "Шаблон рач."
+msgstr "Mặt nạ máy chủ"
 
 #: src/common/text.c:1013
 msgid "Hostname"
-msgstr "Име рач."
+msgstr "Tên máy chủ"
 
 #: src/common/text.c:1018
 msgid "The Packet"
-msgstr "Пакет"
+msgstr "Gói"
 
 #: src/common/text.c:1022
 msgid "Seconds"
-msgstr "Секунде"
+msgstr "Giây"
 
 #: src/common/text.c:1026
 msgid "Nick of person who have been invited"
-msgstr "Име позване особе"
+msgstr "Tên người được mời"
 
 #: src/common/text.c:1033
 msgid "Banmask"
-msgstr "Шаблон забране"
+msgstr "Mặt nạ đuổi ra"
 
 #: src/common/text.c:1034
 msgid "Who set the ban"
-msgstr "Ко је забранио"
+msgstr "Người lập đuổi ra"
 
 #: src/common/text.c:1035
 msgid "Ban time"
-msgstr "Време забране"
+msgstr "Thời gian đuổi ra"
 
 #: src/common/text.c:1075
 #, c-format
@@ -1623,1105 +1708,1108 @@ msgid ""
 "Error parsing event %s.\n"
 "Loading default."
 msgstr ""
-"Грешка у обради догађаја %s.\n"
-"Мењам за подразумевани."
+"Gặp lỗi khi phân tách sự kiện %s.\n"
+"Nạp dữ liệu mặc định."
 
 #: src/common/text.c:1713
 #, c-format
 msgid ""
 "Cannot read sound file:\n"
 "%s"
-msgstr "Датотека са звучним записом „%s‟ се не може очитати."
+msgstr ""
+"Không đọc được tập tin âm thanh:\n"
+"%s"
 
 #: src/common/util.c:296
 msgid "Remote host closed socket"
-msgstr "Удаљени рачунар је прекинуо везу"
+msgstr "Máy chủ từ xa mới đóng ổ cắm"
 
 #: src/common/util.c:301
 msgid "Connection refused"
-msgstr "Веза одбијена"
+msgstr "Kết nối bị từ chối rồi"
 
 #: src/common/util.c:304
 msgid "No route to host"
-msgstr "Нема путање до рачунара"
+msgstr "Không có đường dẫn đến máy chủ"
 
 #: src/common/util.c:306
 msgid "Connection timed out"
-msgstr "Време за повезивање је истекло"
+msgstr "Kết nối hết thời gian rồi"
 
 #: src/common/util.c:308
 msgid "Cannot assign that address"
-msgstr "Не може се доделити та адреса"
+msgstr "Không gán được địa chỉ ấy"
 
 #: src/common/util.c:310
 msgid "Connection reset by peer"
-msgstr "Веза прекинута на другом крају"
+msgstr "Kết nối bị ngắt do máy ngang hàng"
 
 #: src/common/util.c:821
 msgid "Andorra"
-msgstr "Андора"
+msgstr "Ăn-đoa-râ"
 
 #: src/common/util.c:822
 msgid "United Arab Emirates"
-msgstr "Уједињени арапски емирати"
+msgstr "Các Tiểu Vương quốc A-rập Thống nhất"
 
 #: src/common/util.c:823
 msgid "Afghanistan"
-msgstr "Авганистан"
+msgstr "Quốc gia Hồi giáo Chuyển tiếp "
 
 #: src/common/util.c:824
 msgid "Antigua and Barbuda"
-msgstr "Антигва и Барбуда"
+msgstr "Ănh-thí-gụ-a và Ba-bu-đa"
 
 #: src/common/util.c:825
 msgid "Anguilla"
-msgstr "Ангуила"
+msgstr "Ăng-ouí-la"
 
 #: src/common/util.c:826
 msgid "Albania"
-msgstr "Албанија"
+msgstr "An-ba-ni"
 
 #: src/common/util.c:827
 msgid "Armenia"
-msgstr "Јерменија"
+msgstr "Ac-mê-ni"
 
 #: src/common/util.c:828
 msgid "Netherlands Antilles"
-msgstr "Холандски антили"
+msgstr "An-thi-li Hoà-lan"
 
 #: src/common/util.c:829
 msgid "Angola"
-msgstr "Ангола"
+msgstr "Ăng-gô-la"
 
 #: src/common/util.c:830
 msgid "Antarctica"
-msgstr "Антарктик"
+msgstr "Nam cực"
 
 #: src/common/util.c:831
 msgid "Argentina"
-msgstr "Аргентина"
+msgstr "Ác-hen-ti-na"
 
 #: src/common/util.c:832
 msgid "Reverse DNS"
-msgstr "Обратни DNS"
+msgstr "DNS ngược"
 
 #: src/common/util.c:833
 msgid "American Samoa"
-msgstr "Америчка Самоа"
+msgstr "Xa-mô-a Mỹ"
 
 #: src/common/util.c:834
 msgid "Austria"
-msgstr "Аустрија"
+msgstr "Ao"
 
 #: src/common/util.c:835
 msgid "Nato Fiel"
-msgstr "Нато терен"
+msgstr "Nato Fiel"
 
 #: src/common/util.c:836
 msgid "Australia"
-msgstr "Аустралија"
+msgstr "Úc"
 
 #: src/common/util.c:837
 msgid "Aruba"
-msgstr "Аруба"
+msgstr "Ă-ru-ba"
 
 #: src/common/util.c:838
 msgid "Azerbaijan"
-msgstr "Азербејџан"
+msgstr "Ai-déc-bai-gian"
 
 #: src/common/util.c:839
 msgid "Bosnia and Herzegovina"
-msgstr "Босна и Херцеговина"
+msgstr "Bô-xni-a và Héc-xê-gô-vi-na"
 
 #: src/common/util.c:840
 msgid "Barbados"
-msgstr "Барбадос"
+msgstr "Bác-ba-đốt"
 
 #: src/common/util.c:841
 msgid "Bangladesh"
-msgstr "Бангладеш"
+msgstr "Bang-la-đexợ"
 
 #: src/common/util.c:842
 msgid "Belgium"
-msgstr "Белгија"
+msgstr "Bỉ"
 
 #: src/common/util.c:843
 msgid "Burkina Faso"
-msgstr "Буркина Фасо"
+msgstr "Buốc-khi-na Pha-xô"
 
 #: src/common/util.c:844
 msgid "Bulgaria"
-msgstr "Бугарска"
+msgstr "Bun-ga-ri"
 
 #: src/common/util.c:845
 msgid "Bahrain"
-msgstr "Бахреин"
+msgstr "Ba-ren"
 
 #: src/common/util.c:846
 msgid "Burundi"
-msgstr "Бурунди"
+msgstr "Bu-run-đi"
 
 #: src/common/util.c:847
 msgid "Businesses"
-msgstr "Комерцијала"
+msgstr "Kinh doanh"
 
 #: src/common/util.c:848
 msgid "Benin"
-msgstr "Бенин"
+msgstr "Bê-ninh"
 
 #: src/common/util.c:849
 msgid "Bermuda"
-msgstr "Бермуда"
+msgstr "Be-mư-đa"
 
 #: src/common/util.c:850
 msgid "Brunei Darussalam"
-msgstr "Брунеји Дар-Ес-Салам"
+msgstr "Bợru-này Đa-ru-xa-làm"
 
 #: src/common/util.c:851
 msgid "Bolivia"
-msgstr "Боливија"
+msgstr "Bô-li-vi-a"
 
 #: src/common/util.c:852
 msgid "Brazil"
-msgstr "Бразил"
+msgstr "Bra-xin"
 
 #: src/common/util.c:853
 msgid "Bahamas"
-msgstr "Бахами"
+msgstr "Ba-ha-ma"
 
 #: src/common/util.c:854
 msgid "Bhutan"
-msgstr "Бутан"
+msgstr "Bu-thăn"
 
 #: src/common/util.c:855
 msgid "Bouvet Island"
-msgstr "Острво Буве"
+msgstr "Quần đảo Bu-vê"
 
 #: src/common/util.c:856
 msgid "Botswana"
-msgstr "Боцвана"
+msgstr "Bốt-xoa-na"
 
 #: src/common/util.c:857
 msgid "Belarus"
-msgstr "Белорусија"
+msgstr "Be-la-ruxợ"
 
 #: src/common/util.c:858
 msgid "Belize"
-msgstr "Белизе"
+msgstr "Bê-li-xê"
 
 #: src/common/util.c:859
 msgid "Canada"
-msgstr "Канада"
+msgstr "Gia-na-đại"
 
 #: src/common/util.c:860
 msgid "Cocos Islands"
-msgstr "Кокосова острва"
+msgstr "Quần đảo Cocox"
 
 #: src/common/util.c:861
 msgid "Democratic Republic of Congo"
-msgstr "Демократска република Конго"
+msgstr ""
 
 #: src/common/util.c:862
 msgid "Central African Republic"
-msgstr "Централноафричка република"
+msgstr "Cộng hoà Châu phi Trung ương"
 
 #: src/common/util.c:863
 msgid "Congo"
-msgstr "Конго"
+msgstr "Công-gô"
 
 #: src/common/util.c:864
 msgid "Switzerland"
-msgstr "Швајцарска"
+msgstr "Thụy Sĩ "
 
 #: src/common/util.c:865
 msgid "Cote d'Ivoire"
-msgstr "Обала слоноваче"
+msgstr "Cộng hoà Cốt đi-vouă"
 
 #: src/common/util.c:866
 msgid "Cook Islands"
-msgstr "Кукова острва"
+msgstr "Quần đảo Khu-kh"
 
 #: src/common/util.c:867
 msgid "Chile"
-msgstr "Чиле"
+msgstr "Chi lê "
 
 #: src/common/util.c:868
 msgid "Cameroon"
-msgstr "Камерун"
+msgstr "Ca-mơ-run"
 
 #: src/common/util.c:869
 msgid "China"
-msgstr "Кина"
+msgstr "Trung Quốc "
 
 #: src/common/util.c:870
 msgid "Colombia"
-msgstr "Колумбија"
+msgstr "Cô-lôm-bi-a"
 
 #: src/common/util.c:871
 msgid "Internic Commercial"
-msgstr "Комерцијални домени"
+msgstr "Thương nghiệp Internic"
 
 #: src/common/util.c:872
 msgid "Costa Rica"
-msgstr "Костарика"
+msgstr "Cốt-x-tha Ri-ca"
 
 #: src/common/util.c:873
 msgid "Serbia and Montenegro"
-msgstr "Србија и Црна Гора"
+msgstr ""
 
 #: src/common/util.c:874
 msgid "Cuba"
-msgstr "Куба"
+msgstr "Cu-ba"
 
 #: src/common/util.c:875
 msgid "Cape Verde"
-msgstr "Зеленортска острва"
+msgstr "Cáp-ve-đ"
 
 #: src/common/util.c:876
 msgid "Christmas Island"
-msgstr "Божићна острва"
+msgstr "Đảo Kh-ri-x-mạ-x"
 
 #: src/common/util.c:877
 msgid "Cyprus"
-msgstr "Кипар"
+msgstr "Síp"
 
 #: src/common/util.c:878
 msgid "Czech Republic"
-msgstr "Република Чешка"
+msgstr "Cộng hoà Séc"
 
 #: src/common/util.c:879
 msgid "Germany"
-msgstr "Немачка"
+msgstr "Đức"
 
 #: src/common/util.c:880
 msgid "Djibouti"
-msgstr "Џибути"
+msgstr "Gi-bu-ti"
 
 #: src/common/util.c:881
 msgid "Denmark"
-msgstr "Данска"
+msgstr "Đan mạch"
 
 #: src/common/util.c:882
 msgid "Dominica"
-msgstr "Доминика"
+msgstr "Đô-mi-ni-cạ"
 
 #: src/common/util.c:883
 msgid "Dominican Republic"
-msgstr "Доминиканска република"
+msgstr "Cộng hoà Đô-mi-ni-cạ "
 
 #: src/common/util.c:884
 msgid "Algeria"
-msgstr "Алжир"
+msgstr "An-giê-ri"
 
 #: src/common/util.c:885
 msgid "Ecuador"
-msgstr "Еквадор"
+msgstr "Ê-cu-a-đoa"
 
 #: src/common/util.c:886
 msgid "Educational Institution"
-msgstr "Образовне установе"
+msgstr "Tổ chức giáo dục"
 
 #: src/common/util.c:887
 msgid "Estonia"
-msgstr "Естонија"
+msgstr "E-xtô-ni-a"
 
 #: src/common/util.c:888
 msgid "Egypt"
-msgstr "Египат"
+msgstr "Ai-cập"
 
 #: src/common/util.c:889
 msgid "Western Sahara"
-msgstr "Западна Сахара"
+msgstr "Sa-ha-ra Tây"
 
 #: src/common/util.c:890
 msgid "Eritrea"
-msgstr "Еритреја"
+msgstr "Ê-ri-tơ-rê-a"
 
 #: src/common/util.c:891
 msgid "Spain"
-msgstr "Шпанија"
+msgstr "Tây-ban-nha "
 
 #: src/common/util.c:892
 msgid "Ethiopia"
-msgstr "Етиопија"
+msgstr "Ê-ti-ô-pi"
 
 #: src/common/util.c:893
 msgid "Finland"
-msgstr "Финска"
+msgstr "Phần lan "
 
 #: src/common/util.c:894
 msgid "Fiji"
-msgstr "Фиџи"
+msgstr "Phi-gi"
 
 #: src/common/util.c:895
 msgid "Falkland Islands"
-msgstr "Фоклендска острва"
+msgstr "Quần đảo Phoa-kh-lận-đ (Mal-vi-na)"
 
 #: src/common/util.c:896
 msgid "Micronesia"
-msgstr "Микронезија"
+msgstr "Mi-kh-rô-nê-xi-a"
 
 #: src/common/util.c:897
 msgid "Faroe Islands"
-msgstr "Фарска острва"
+msgstr "Quần đảo Pha-rô"
 
 #: src/common/util.c:898
 msgid "France"
-msgstr "Француска"
+msgstr "Pháp"
 
 #: src/common/util.c:899
 msgid "France, Metropolitan"
-msgstr "Француска, Метрополитан"
+msgstr "Pháp, thành phố"
 
 #: src/common/util.c:900
 msgid "Gabon"
-msgstr "Габон"
+msgstr "Ga-bông"
 
 #: src/common/util.c:901
 msgid "Great Britain"
-msgstr "Велика Британија"
+msgstr "Vương quốc Thống nhất Anh va Ai-len Bắc"
 
 #: src/common/util.c:902
 msgid "Grenada"
-msgstr "Гренада"
+msgstr "Grê-na-đa"
 
 #: src/common/util.c:903
 msgid "Georgia"
-msgstr "Грузија"
+msgstr "Gi-oa-gi-a"
 
 #: src/common/util.c:904
 msgid "French Guiana"
-msgstr "Француска Гвајана"
+msgstr "Ghi-a-na Pháp"
 
 #: src/common/util.c:905
 msgid "British Channel Isles"
-msgstr "Британска Каналска острва"
+msgstr "Quần đảo kênh Anh"
 
 #: src/common/util.c:906
 msgid "Ghana"
-msgstr "Гана"
+msgstr "Ga-na"
 
 #: src/common/util.c:907
 msgid "Gibraltar"
-msgstr "Гибралтар"
+msgstr "Gi-boa-tha"
 
 #: src/common/util.c:908
 msgid "Greenland"
-msgstr "Гренланд"
+msgstr "Đảo băng"
 
 #: src/common/util.c:909
 msgid "Gambia"
-msgstr "Гамбија"
+msgstr "Găm-bi-a"
 
 #: src/common/util.c:910
 msgid "Guinea"
-msgstr "Гвинеја"
+msgstr "Ghi-nê"
 
 #: src/common/util.c:911
 msgid "Government"
-msgstr "Владине установе"
+msgstr "Chính phủ"
 
 #: src/common/util.c:912
 msgid "Guadeloupe"
-msgstr "Гвадалупе"
+msgstr "Gu-a-đe-luc"
 
 #: src/common/util.c:913
 msgid "Equatorial Guinea"
-msgstr "Екваторијална Гвинеја"
+msgstr "Ghi-nê Xích-đạo"
 
 #: src/common/util.c:914
 msgid "Greece"
-msgstr "Грчка"
+msgstr "Hy-lạp "
 
 #: src/common/util.c:915
 msgid "S. Georgia and S. Sandwich Isles"
-msgstr "С. Џорџија и С. Сендвичка острва"
+msgstr "Quần đảo xan Gi-oa-gi-a và xan Xan-oui-giợ"
 
 #: src/common/util.c:916
 msgid "Guatemala"
-msgstr "Гватемала"
+msgstr "Gua-tê-ma-la"
 
 #: src/common/util.c:917
 msgid "Guam"
-msgstr "Гуам"
+msgstr "Gu-ăm"
 
 #: src/common/util.c:918
 msgid "Guinea-Bissau"
-msgstr "Гвинеја Бисао"
+msgstr "Ghi-nê Bít-xao"
 
 #: src/common/util.c:919
 msgid "Guyana"
-msgstr "Гијана"
+msgstr "Guy-a-na"
 
 #: src/common/util.c:920
 msgid "Hong Kong"
-msgstr "Хонг Конг"
+msgstr "Hông Kông"
 
 #: src/common/util.c:921
 msgid "Heard and McDonald Islands"
-msgstr "Хердова и Макдоналдова острва"
+msgstr "Quần đảo Hơđ và Mơc-đo-nựn"
 
 #: src/common/util.c:922
 msgid "Honduras"
-msgstr "Хондурас"
+msgstr "Hôn-đu-rát"
 
 #: src/common/util.c:923
 msgid "Croatia"
-msgstr "Хрватска"
+msgstr "Crô-a-ti-a"
 
 #: src/common/util.c:924
 msgid "Haiti"
-msgstr "Хаити"
+msgstr "Ha-i-ti"
 
 #: src/common/util.c:925
 msgid "Hungary"
-msgstr "Мађарска"
+msgstr "Hung-ga-ri"
 
 #: src/common/util.c:926
 msgid "Indonesia"
-msgstr "Индонезија"
+msgstr "Nam Dương"
 
 #: src/common/util.c:927
 msgid "Ireland"
-msgstr "Ирска"
+msgstr "Ai-len"
 
 #: src/common/util.c:928
 msgid "Israel"
-msgstr "Израел"
+msgstr "Do thái"
 
 #: src/common/util.c:929
 msgid "India"
-msgstr "Индија"
+msgstr "Ấn-độ"
 
 #: src/common/util.c:930
 msgid "Informational"
-msgstr "Информациони домен"
+msgstr "Loại thông tin"
 
 #: src/common/util.c:931
 msgid "International"
-msgstr "Међународни домени"
+msgstr "Quốc tế"
 
 #: src/common/util.c:932
 msgid "British Indian Ocean Territory"
-msgstr "Британска Индијска острва"
+msgstr "Miền Đại dương Ấn-độ Anh"
 
 #: src/common/util.c:933
 msgid "Iraq"
-msgstr "Ирак"
+msgstr "I-rắc"
 
 #: src/common/util.c:934
 msgid "Iran"
-msgstr "Иран"
+msgstr "I-ran"
 
 #: src/common/util.c:935
 msgid "Iceland"
-msgstr "Исланд"
+msgstr "Băng đảo"
 
 #: src/common/util.c:936
 msgid "Italy"
-msgstr "Италија"
+msgstr "Ý"
 
 #: src/common/util.c:937
 msgid "Jamaica"
-msgstr "Јамајка"
+msgstr "Gia-mê-ca"
 
 #: src/common/util.c:938
 msgid "Jordan"
-msgstr "Јордан"
+msgstr "Gi-oa-đan"
 
 #: src/common/util.c:939
 msgid "Japan"
-msgstr "Јапан"
+msgstr "Nhật bản"
 
 #: src/common/util.c:940
 msgid "Kenya"
-msgstr "Кенија"
+msgstr "Khi-nia"
 
 #: src/common/util.c:941
 msgid "Kyrgyzstan"
-msgstr "Киргистан"
+msgstr "Cư-rơ-gư-xtan"
 
 #: src/common/util.c:942
 msgid "Cambodia"
-msgstr "Камбоџа"
+msgstr "Căm bốt"
 
 #: src/common/util.c:943
 msgid "Kiribati"
-msgstr "Кирибати"
+msgstr "Ki-ri-ba-ti"
 
 #: src/common/util.c:944
 msgid "Comoros"
-msgstr "Комори"
+msgstr "Cô-mô-rô-x"
 
 #: src/common/util.c:945
 msgid "St. Kitts and Nevis"
-msgstr "Св. Китс и Невис"
+msgstr "Xan Kith-x và Ne-vịt"
 
 #: src/common/util.c:946
 msgid "North Korea"
-msgstr "Северна Кореја"
+msgstr "Bắc Hàn"
 
 #: src/common/util.c:947
 msgid "South Korea"
-msgstr "Јужна Кореја"
+msgstr "Nam Hàn"
 
 #: src/common/util.c:948
 msgid "Kuwait"
-msgstr "Кувајт"
+msgstr "Cu-ouai-th"
 
 #: src/common/util.c:949
 msgid "Cayman Islands"
-msgstr "Кајманска острва"
+msgstr "Quần đảo Cay-man"
 
 #: src/common/util.c:950
 msgid "Kazakhstan"
-msgstr "Казахстан"
+msgstr "Ca-da-kh-x-than"
 
 #: src/common/util.c:951
 msgid "Laos"
-msgstr "Лаос"
+msgstr "Lào"
 
 #: src/common/util.c:952
 msgid "Lebanon"
-msgstr "Либан"
+msgstr "Le-ba-non"
 
 #: src/common/util.c:953
 msgid "Saint Lucia"
-msgstr "Света Луција"
+msgstr "Xan Lu-xi"
 
 #: src/common/util.c:954
 msgid "Liechtenstein"
-msgstr "Лихтенштајн"
+msgstr "Lich-ten-xtên"
 
 #: src/common/util.c:955
 msgid "Sri Lanka"
-msgstr "Шри Ланка"
+msgstr "Xri-lan-ca"
 
 #: src/common/util.c:956
 msgid "Liberia"
-msgstr "Либерија"
+msgstr "Li-bê-ri-a"
 
 #: src/common/util.c:957
 msgid "Lesotho"
-msgstr "Лесото"
+msgstr "Lê-xô-thô"
 
 #: src/common/util.c:958
 msgid "Lithuania"
-msgstr "Литванија"
+msgstr "Li-tu-a-ni-a"
 
 #: src/common/util.c:959
 msgid "Luxembourg"
-msgstr "Луксембург"
+msgstr "Lúc-xăm-buac"
 
 #: src/common/util.c:960
 msgid "Latvia"
-msgstr "Латвија"
+msgstr "Lát-vi-a"
 
 #: src/common/util.c:961
 msgid "Libya"
-msgstr "Либија"
+msgstr "Li-bi-a"
 
 #: src/common/util.c:962
 msgid "Morocco"
-msgstr "Мароко"
+msgstr "Ma-rốc"
 
 #: src/common/util.c:963
 msgid "Monaco"
-msgstr "Монако"
+msgstr "Mô-na-cô"
 
 #: src/common/util.c:964
 msgid "Moldova"
-msgstr "Молдова"
+msgstr "Moa-đô-va"
 
 #: src/common/util.c:965
 msgid "United States Medical"
-msgstr "Америчке медицинске установе"
+msgstr "Y Mỹ"
 
 #: src/common/util.c:966
 msgid "Madagascar"
-msgstr "Мадагаскар"
+msgstr "Ma-đa-gát-xca"
 
 #: src/common/util.c:967
 msgid "Marshall Islands"
-msgstr "Маршалска острва"
+msgstr "Quần đảo Mác-san"
 
 #: src/common/util.c:968
 msgid "Military"
-msgstr "Војни домени"
+msgstr "Quân đội"
 
 #: src/common/util.c:969
 msgid "Macedonia"
-msgstr "Македонија"
+msgstr "Maxêđôni"
 
 #: src/common/util.c:970
 msgid "Mali"
-msgstr "Мали"
+msgstr "Ma-li"
 
 #: src/common/util.c:971
 msgid "Myanmar"
-msgstr "Мианмар"
+msgstr "Miến điện"
 
 #: src/common/util.c:972
 msgid "Mongolia"
-msgstr "Монголија"
+msgstr "Mông Cổ"
 
 #: src/common/util.c:973
 msgid "Macau"
-msgstr "Макао"
+msgstr "Ma-cau"
 
 #: src/common/util.c:974
 msgid "Northern Mariana Islands"
-msgstr "Северна Маријанска острва"
+msgstr "Quần đảo Ma-ri-a-na Bắc"
 
 #: src/common/util.c:975
 msgid "Martinique"
-msgstr "Мартиник"
+msgstr "Mác-thi-ni-kh"
 
 #: src/common/util.c:976
 msgid "Mauritania"
-msgstr "Мауританија"
+msgstr "Mô-ri-ta-ni-a"
 
 #: src/common/util.c:977
 msgid "Montserrat"
-msgstr "Монсерат"
+msgstr "Mon-xe-rạc"
 
 #: src/common/util.c:978
 msgid "Malta"
-msgstr "Малта"
+msgstr "Mantơ"
 
 #: src/common/util.c:979
 msgid "Mauritius"
-msgstr "Маурицијус"
+msgstr "Mô-ri-xơ"
 
 #: src/common/util.c:980
 msgid "Maldives"
-msgstr "Малдиви"
+msgstr "Mal-đi-vợx"
 
 #: src/common/util.c:981
 msgid "Malawi"
-msgstr "Малави"
+msgstr "Ma-la-uy"
 
 #: src/common/util.c:982
 msgid "Mexico"
-msgstr "Мексико"
+msgstr "Mê-hi-cô"
 
 #: src/common/util.c:983
 msgid "Malaysia"
-msgstr "Малезија"
+msgstr "Ma-lay-xi-a"
 
 #: src/common/util.c:984
 msgid "Mozambique"
-msgstr "Мозамбик"
+msgstr "Mô-dăm-bích"
 
 #: src/common/util.c:985
 msgid "Namibia"
-msgstr "Намибија"
+msgstr "Na-mi-bi-a"
 
 #: src/common/util.c:986
 msgid "New Caledonia"
-msgstr "Нова Каледонија"
+msgstr "Niu Ca-lê-đô-ni-a"
 
 #: src/common/util.c:987
 msgid "Niger"
-msgstr "Нигер"
+msgstr "Ni-giê"
 
 #: src/common/util.c:988
 msgid "Internic Network"
-msgstr "Интерник мрежа"
+msgstr "mạng Internic"
 
 #: src/common/util.c:989
 msgid "Norfolk Island"
-msgstr "Норфолшка острва"
+msgstr "Đảo Noa-phực"
 
 #: src/common/util.c:990
 msgid "Nigeria"
-msgstr "Нигерија"
+msgstr "Ni-giê-ri-a"
 
 #: src/common/util.c:991
 msgid "Nicaragua"
-msgstr "Никарагва"
+msgstr "Ni-ca-ra-gua"
 
 #: src/common/util.c:992
 msgid "Netherlands"
-msgstr "Холандија"
+msgstr "Hoà-lan "
 
 #: src/common/util.c:993
 msgid "Norway"
-msgstr "Норвешка"
+msgstr "Na-uy "
 
 #: src/common/util.c:994
 msgid "Nepal"
-msgstr "Непал"
+msgstr "Nê-pan"
 
 #: src/common/util.c:995
 msgid "Nauru"
-msgstr "Науру"
+msgstr "Nau-ru"
 
 #: src/common/util.c:996
 msgid "Neutral Zone"
-msgstr "Неутрална зона"
+msgstr "Khu vực Trung lập"
 
 #: src/common/util.c:997
 msgid "Niue"
-msgstr "Ниуе"
+msgstr "Ni-u-e"
 
 #: src/common/util.c:998
 msgid "New Zealand"
-msgstr "Нови Зеланд"
+msgstr "Niu Di-lân"
 
 #: src/common/util.c:999
 msgid "Oman"
-msgstr "Оман"
+msgstr "Ô-man"
 
 #: src/common/util.c:1000
 msgid "Internic Non-Profit Organization"
-msgstr "Непрофитна организација интерник"
+msgstr "Tổ chức Phi lợi nhuận Internic"
 
 #: src/common/util.c:1001
 msgid "Panama"
-msgstr "Панама"
+msgstr "Ba-na-ma"
 
 #: src/common/util.c:1002
 msgid "Peru"
-msgstr "Перу"
+msgstr "Pê-ru"
 
 #: src/common/util.c:1003
 msgid "French Polynesia"
-msgstr "Француска Полинезија"
+msgstr "Pô-li-nê-di Pháp"
 
 #: src/common/util.c:1004
 msgid "Papua New Guinea"
-msgstr "Папуа Нова Гвинеја"
+msgstr "Ba-bu-a Niu Ghi-nê"
 
 #: src/common/util.c:1005
 msgid "Philippines"
-msgstr "Филипини"
+msgstr "Phi-li-pin"
 
 #: src/common/util.c:1006
 msgid "Pakistan"
-msgstr "Пакистан"
+msgstr "Ba-ki-x-thăn"
 
 #: src/common/util.c:1007
 msgid "Poland"
-msgstr "Пољска"
+msgstr "Ba-lan"
 
 #: src/common/util.c:1008
 msgid "St. Pierre and Miquelon"
-msgstr "Св. Пјер и Микелон"
+msgstr "Xan Pi-e và Mi-kê-lon"
 
 #: src/common/util.c:1009
 msgid "Pitcairn"
-msgstr "Питкаирн"
+msgstr "Bi-th-khenh"
 
 #: src/common/util.c:1010
 msgid "Puerto Rico"
-msgstr "Порторико"
+msgstr "Bu-éc-thô Ri-cô"
 
 #: src/common/util.c:1011
+#, fuzzy
 msgid "Palestinian Territory"
-msgstr "Палестинска територија"
+msgstr "Miền Đại dương Ấn-độ Anh"
 
 #: src/common/util.c:1012
 msgid "Portugal"
-msgstr "Португал"
+msgstr "Bồ-đào-nha"
 
 #: src/common/util.c:1013
 msgid "Palau"
-msgstr "Палау"
+msgstr "Ba-lau"
 
 #: src/common/util.c:1014
 msgid "Paraguay"
-msgstr "Парагвај"
+msgstr "Ba-ra-guay"
 
 #: src/common/util.c:1015
 msgid "Qatar"
-msgstr "Катар"
+msgstr "Ca-tă"
 
 #: src/common/util.c:1016
 msgid "Reunion"
-msgstr "Реинион"
+msgstr "Rê-u-ni-ợnh"
 
 #: src/common/util.c:1017
 msgid "Romania"
-msgstr "Румунија"
+msgstr "Ru-ma-ni "
 
 #: src/common/util.c:1018
 msgid "Old School ARPAnet"
-msgstr "Старовремски ARPAnet"
+msgstr "ARPAnet theo kiểu cũ"
 
 #: src/common/util.c:1019
 msgid "Russian Federation"
-msgstr "Руска федерација"
+msgstr "Liên bang Nga"
 
 #: src/common/util.c:1020
 msgid "Rwanda"
-msgstr "Руанда"
+msgstr "Ru-oanh-đa"
 
 #: src/common/util.c:1021
 msgid "Saudi Arabia"
-msgstr "Саудијска Арабија"
+msgstr "A-rập Xau-đi"
 
 #: src/common/util.c:1022
 msgid "Solomon Islands"
-msgstr "Соломонова острва"
+msgstr "Đô-la Quần Đảo So-lo-mon"
 
 #: src/common/util.c:1023
 msgid "Seychelles"
-msgstr "Сејшели"
+msgstr "Xây-sen"
 
 #: src/common/util.c:1024
 msgid "Sudan"
-msgstr "Судан"
+msgstr "Su-đan"
 
 #: src/common/util.c:1025
 msgid "Sweden"
-msgstr "Шведска"
+msgstr "Thuỵ Điển"
 
 #: src/common/util.c:1026
 msgid "Singapore"
-msgstr "Сингапур"
+msgstr "Xin-ga-po"
 
 #: src/common/util.c:1027
 msgid "St. Helena"
-msgstr "Св. Јелена"
+msgstr "Xan He-le-na"
 
 #: src/common/util.c:1028
 msgid "Slovenia"
-msgstr "Словенија"
+msgstr "Xlô-ven"
 
 #: src/common/util.c:1029
 msgid "Svalbard and Jan Mayen Islands"
-msgstr "Свалбард и Јан Мајен острва"
+msgstr "Quần đảo X-van-băt và Dan May-en"
 
 #: src/common/util.c:1030
 msgid "Slovak Republic"
-msgstr "Словачка република"
+msgstr "Cộng hoà Xlô-vác"
 
 #: src/common/util.c:1031
 msgid "Sierra Leone"
-msgstr "Сијера Леоне"
+msgstr "Xi-ê-ra Lê-ôn"
 
 #: src/common/util.c:1032
 msgid "San Marino"
-msgstr "Сан Марино"
+msgstr "Xan Ma-ri-nô"
 
 #: src/common/util.c:1033
 msgid "Senegal"
-msgstr "Сенегал"
+msgstr "Xê-nê-gan"
 
 #: src/common/util.c:1034
 msgid "Somalia"
-msgstr "Сомалија"
+msgstr "So-ma-li"
 
 #: src/common/util.c:1035
 msgid "Suriname"
-msgstr "Суринам"
+msgstr "Xu-ri-nam"
 
 #: src/common/util.c:1036
 msgid "Sao Tome and Principe"
-msgstr "Сао Томе и Принципе"
+msgstr "Xao Tô-mê và Prin-xi-pê"
 
 #: src/common/util.c:1037
 msgid "Former USSR"
-msgstr "Бивши СССР"
+msgstr "Liên xô trước"
 
 #: src/common/util.c:1038
 msgid "El Salvador"
-msgstr "Ел Салвадор"
+msgstr "En-san-va-đoa"
 
 #: src/common/util.c:1039
 msgid "Syria"
-msgstr "Сирија"
+msgstr "Xi-ri"
 
 #: src/common/util.c:1040
 msgid "Swaziland"
-msgstr "Свазиленд"
+msgstr "Xoua-di-lan"
 
 #: src/common/util.c:1041
 msgid "Turks and Caicos Islands"
-msgstr "Туркс и Каикос острва"
+msgstr "Quần đảo Tuốc và Cai-cox"
 
 #: src/common/util.c:1042
 msgid "Chad"
-msgstr "Чад"
+msgstr "Chê-đ "
 
 #: src/common/util.c:1043
 msgid "French Southern Territories"
-msgstr "Француске јужне територије"
+msgstr "Miền Nam Pháp"
 
 #: src/common/util.c:1044
 msgid "Togo"
-msgstr "Того"
+msgstr "Tô-gô"
 
 #: src/common/util.c:1045
 msgid "Thailand"
-msgstr "Тајланд"
+msgstr "Thái lan"
 
 #: src/common/util.c:1046
 msgid "Tajikistan"
-msgstr "Таџикистан"
+msgstr "Tha-gi-ki-xthan"
 
 #: src/common/util.c:1047
 msgid "Tokelau"
-msgstr "Токелау"
+msgstr "To-ke-lau"
 
 #: src/common/util.c:1048
 msgid "Turkmenistan"
-msgstr "Туркменистан"
+msgstr "Tuốc-mê-ni-xtan"
 
 #: src/common/util.c:1049
 msgid "Tunisia"
-msgstr "Тунис"
+msgstr "Tu-ni-xi-a"
 
 #: src/common/util.c:1050
 msgid "Tonga"
-msgstr "Тонга"
+msgstr "Tông-ga"
 
 #: src/common/util.c:1051
 msgid "East Timor"
-msgstr "Источни Тимор"
+msgstr "Thi-mọa Đông"
 
 #: src/common/util.c:1052
 msgid "Turkey"
-msgstr "Турска"
+msgstr "Thổ nhĩ kỳ"
 
 #: src/common/util.c:1053
 msgid "Trinidad and Tobago"
-msgstr "Тринидад и Тобаго"
+msgstr "Trinh-i-đat và To-ba-gô"
 
 #: src/common/util.c:1054
 msgid "Tuvalu"
-msgstr "Тувалу"
+msgstr "Tu-va-lu"
 
 #: src/common/util.c:1055
 msgid "Taiwan"
-msgstr "Тајван"
+msgstr "Đài Loan"
 
 #: src/common/util.c:1056
 msgid "Tanzania"
-msgstr "Танзанија"
+msgstr "Thanh-da-ni-a "
 
 #: src/common/util.c:1057
 msgid "Ukraine"
-msgstr "Украjина"
+msgstr "Ukraina"
 
 #: src/common/util.c:1058
 msgid "Uganda"
-msgstr "Уганда"
+msgstr "U-gan-đa"
 
 #: src/common/util.c:1059
 msgid "United Kingdom"
-msgstr "Велика Британија"
+msgstr "Vương quốc Anh Thống nhất"
 
 #: src/common/util.c:1060
 msgid "US Minor Outlying Islands"
-msgstr "Мања америчка истурена острва"
+msgstr "Quần đảo ở xa nhỏ Mỹ"
 
 #: src/common/util.c:1061
 msgid "United States of America"
-msgstr "Сједињене америчке државе"
+msgstr "Mỹ"
 
 #: src/common/util.c:1062
 msgid "Uruguay"
-msgstr "Уругвај"
+msgstr "U-ru-guay"
 
 #: src/common/util.c:1063
 msgid "Uzbekistan"
-msgstr "Узбекистан"
+msgstr "U-dơ-bê-ki-xtan"
 
 #: src/common/util.c:1064
 msgid "Vatican City State"
-msgstr "Град-држава Ватикан"
+msgstr "Bang Thành phố Va-ti-can)"
 
 #: src/common/util.c:1065
 msgid "St. Vincent and the Grenadines"
-msgstr "Св. Винсент и Гренадини"
+msgstr "Xan Vin-xen và Gợ-re-na-đinh"
 
 #: src/common/util.c:1066
 msgid "Venezuela"
-msgstr "Венецуела"
+msgstr "Vê-nê-du-ê-la"
 
 #: src/common/util.c:1067
 msgid "British Virgin Islands"
-msgstr "Британска Девичанска острва"
+msgstr "Quần đảo Vơ-ginh Anh"
 
 #: src/common/util.c:1068
 msgid "US Virgin Islands"
-msgstr "Америчка Девичанска острва"
+msgstr "Quần đảo Vơ-ginh Mỹ"
 
 #: src/common/util.c:1069
 msgid "Vietnam"
-msgstr "Вијетнам"
+msgstr "Việt Nam"
 
 #: src/common/util.c:1070
 msgid "Vanuatu"
-msgstr "Вануату"
+msgstr "Va-nu-a-tu"
 
 #: src/common/util.c:1071
 msgid "Wallis and Futuna Islands"
-msgstr "Острвље Валис и Фортуна"
+msgstr "Quần đảo Oua-lit và Phu-tu-na"
 
 #: src/common/util.c:1072
 msgid "Samoa"
-msgstr "Самоа"
+msgstr "Xa-moa"
 
 #: src/common/util.c:1073
 msgid "Yemen"
-msgstr "Јемен"
+msgstr "Y-ê-men"
 
 #: src/common/util.c:1074
 msgid "Mayotte"
-msgstr "Мајот"
+msgstr "May-oth"
 
 #: src/common/util.c:1075
 msgid "Yugoslavia"
-msgstr "Југославија"
+msgstr "Nam Tư"
 
 #: src/common/util.c:1076
 msgid "South Africa"
-msgstr "Јужна Африка"
+msgstr "Nam Phi"
 
 #: src/common/util.c:1077
 msgid "Zambia"
-msgstr "Замбија"
+msgstr "Dăm-bi-a"
 
 #: src/common/util.c:1078
 msgid "Zimbabwe"
-msgstr "Зимбабве"
+msgstr "Dim-ba-bu-ê"
 
 #: src/common/util.c:1088 src/common/util.c:1098 src/fe-gtk/menu.c:478
 #: src/fe-gtk/menu.c:482 src/fe-gtk/menu.c:486 src/fe-gtk/menu.c:490
 #: src/fe-gtk/menu.c:494
 msgid "Unknown"
-msgstr "Непознато"
+msgstr "Chưa biết"
 
 #: src/common/xchat.c:929
 msgid "Direct client-to-client"
-msgstr "Директни приступ клијенту"
+msgstr "Trực tiếp máy-đến-máy"
 
 #: src/common/xchat.c:930
 msgid "Send File"
-msgstr "Пошаљи датотеку"
+msgstr "Gởi tập tin"
 
 #: src/common/xchat.c:931
 msgid "Offer Chat"
-msgstr "Понуди разговор"
+msgstr "Mời trờ chuyện"
 
 #: src/common/xchat.c:932
 msgid "Abort Chat"
-msgstr "Прекини разговор"
+msgstr "Thôi trò chuyện"
 
 #: src/common/xchat.c:933 src/fe-gtk/plugingui.c:73
 msgid "Version"
-msgstr "Верзија"
+msgstr "Phiên bản"
 
 #: src/common/xchat.c:934
 msgid "Userinfo"
-msgstr "Информације"
+msgstr "Thông tin người dùng"
 
 #: src/common/xchat.c:935
 msgid "Clientinfo"
-msgstr "Инф. о клијенту"
+msgstr "Thông tin ứng dụng khách"
 
 #: src/common/xchat.c:936 src/common/xchat.c:970 src/common/xchat.c:1021
 msgid "Ping"
@@ -2729,7 +2817,7 @@ msgstr "Ping"
 
 #: src/common/xchat.c:937
 msgid "Time"
-msgstr "Време"
+msgstr "Thòi gian"
 
 #: src/common/xchat.c:938
 msgid "Finger"
@@ -2737,101 +2825,101 @@ msgstr "Finger"
 
 #: src/common/xchat.c:939
 msgid "Oper"
-msgstr "Опер"
+msgstr "Tháo tác"
 
 #: src/common/xchat.c:940
 msgid "Kill this user"
-msgstr "Дај реч"
+msgstr "«Giết» người này"
 
 #: src/common/xchat.c:941
 msgid "Mode"
-msgstr "Приступ"
+msgstr "Chế độ"
 
 #: src/common/xchat.c:942
 msgid "Give Ops"
-msgstr "Дај опа"
+msgstr "Cho Tháo tác"
 
 #: src/common/xchat.c:943
 msgid "Take Ops"
-msgstr "Одузми опа"
+msgstr "Bỏ Tháo tác"
 
 #: src/common/xchat.c:944
 msgid "Give Half-Ops"
-msgstr "Дај полу-опа"
+msgstr "Cho Tháo tác nửa"
 
 #: src/common/xchat.c:945
 msgid "Take Half-Ops"
-msgstr "Одузми полу-опа"
+msgstr "Bỏ Thao tác nửa"
 
 #: src/common/xchat.c:946
 msgid "Give Voice"
-msgstr "Дај реч"
+msgstr "Cho Nói tiếng"
 
 #: src/common/xchat.c:947
 msgid "Take Voice"
-msgstr "Одузми реч"
+msgstr "Bỏ Nói tiếng"
 
 #: src/common/xchat.c:948
 msgid "Ignore"
-msgstr "Ућуткај"
+msgstr "Bỏ qua"
 
 #: src/common/xchat.c:949
 msgid "Ignore User"
-msgstr "Занемари корисника"
+msgstr "Bỏ qua người"
 
 #: src/common/xchat.c:950
 msgid "UnIgnore User"
-msgstr "Врати ућуткане"
+msgstr "Bỏ bỏ qua người"
 
 #: src/common/xchat.c:951
 msgid "Kick/Ban"
-msgstr "Шут/забр."
+msgstr "Đá/Đuổi"
 
 #: src/common/xchat.c:952 src/common/xchat.c:1004
 msgid "Kick"
-msgstr "Шут"
+msgstr "Đá"
 
 #: src/common/xchat.c:953 src/common/xchat.c:954 src/common/xchat.c:955
 #: src/common/xchat.c:956 src/common/xchat.c:957 src/common/xchat.c:1003
 msgid "Ban"
-msgstr "Забр."
+msgstr "Đuổi"
 
 #: src/common/xchat.c:958 src/common/xchat.c:959 src/common/xchat.c:960
 #: src/common/xchat.c:961
 msgid "KickBan"
-msgstr "Шут и забр."
+msgstr "Đá đuổi"
 
 #: src/common/xchat.c:962 src/fe-gtk/dccgui.c:564 src/fe-gtk/dccgui.c:712
 msgid "Info"
-msgstr "Информ."
+msgstr "Thông tin"
 
 #: src/common/xchat.c:963
 msgid "Who"
-msgstr "Ко је"
+msgstr "Ai"
 
 #: src/common/xchat.c:964 src/common/xchat.c:1017
 msgid "WhoIs"
-msgstr "WhoIs"
+msgstr "Whois"
 
 #: src/common/xchat.c:965
 msgid "DNS Lookup"
-msgstr "DNS потрага"
+msgstr "Tra cứu DNS"
 
 #: src/common/xchat.c:966
 msgid "Trace"
-msgstr "Следи"
+msgstr "Dấu vết"
 
 #: src/common/xchat.c:967
 msgid "UserHost"
-msgstr "Рачунар"
+msgstr "Người/máy"
 
 #: src/common/xchat.c:968
 msgid "External"
-msgstr "Спољњи"
+msgstr "Ở ngoài"
 
 #: src/common/xchat.c:969
 msgid "Traceroute"
-msgstr "Следи"
+msgstr "Tìm thấy dấu vết đường"
 
 #: src/common/xchat.c:971
 msgid "Telnet"
@@ -2839,181 +2927,181 @@ msgstr "Telnet"
 
 #: src/common/xchat.c:972
 msgid "Open Dialog Window"
-msgstr "Започни разговор"
+msgstr "Mở cửa sổ đôi thoại"
 
 #: src/common/xchat.c:984
 msgid "Disconnect"
-msgstr "Искључи се"
+msgstr "Ngắt kết nối"
 
 #: src/common/xchat.c:985
 msgid "Reconnect"
-msgstr "Опет повежи"
+msgstr "Kết nối lại"
 
 #: src/common/xchat.c:986
 msgid "Leave Channel"
-msgstr "Напусти канал"
+msgstr "Rời kênh đi"
 
 #: src/common/xchat.c:987
 msgid "Join Channel..."
-msgstr "Прикључи се..."
+msgstr "Vào kênh..."
 
 #: src/common/xchat.c:988
 msgid "Enter Channel to Join:"
-msgstr "Унесите име канала:"
+msgstr "Gõ kênh để vào:"
 
 #: src/common/xchat.c:989
 msgid "Server Links"
-msgstr "Везе са серверима"
+msgstr "Liên kết máy chủ"
 
 #: src/common/xchat.c:990
 msgid "Ping Server"
-msgstr "Одзив сервера"
+msgstr "Máy chủ ping"
 
 #: src/common/xchat.c:991
 msgid "Hide Version"
-msgstr "Сакриј верзију"
+msgstr " Ẩn phiên bản"
 
 #: src/common/xchat.c:1001
 msgid "Op"
-msgstr "Оп"
+msgstr "Tháo tác"
 
 #: src/common/xchat.c:1002
 msgid "DeOp"
-msgstr "Деоп"
+msgstr "Bỏ thao tác"
 
 #: src/common/xchat.c:1005
 msgid "bye"
-msgstr "Ћао"
+msgstr "tạm biệt"
 
 #: src/common/xchat.c:1006
 #, c-format
 msgid "Enter reason to kick %s:"
-msgstr "Разлог да се избаци %s:"
+msgstr "Gõ lý do sẽ đá: %s"
 
 #: src/common/xchat.c:1007
 msgid "Sendfile"
-msgstr "Пошаљи фајл"
+msgstr "Gởi tập tin"
 
 #: src/common/xchat.c:1008
 msgid "Dialog"
-msgstr "Разговор"
+msgstr "Đôi thoại"
 
 #: src/common/xchat.c:1018
 msgid "Send"
-msgstr "Слање"
+msgstr "Gởi"
 
 #: src/common/xchat.c:1019
 msgid "Chat"
-msgstr "Прича"
+msgstr "Trò chuyện"
 
 #: src/common/xchat.c:1020 src/fe-gtk/banlist.c:319 src/fe-gtk/ignoregui.c:388
 #: src/fe-gtk/search.c:117 src/fe-gtk/urlgrab.c:200
 msgid "Clear"
-msgstr "Обриши"
+msgstr "Xóa"
 
 #: src/fe-gtk/about.c:102
 msgid "About X-Chat"
-msgstr "О програму"
+msgstr "Về X-Chat"
 
 #: src/fe-gtk/about.c:124
 msgid "A multiplatform IRC Client"
-msgstr "Преносиви клијент за IRC"
+msgstr "Ứng dụng khách IRC đa nền"
 
 #: src/fe-gtk/ascii.c:131
 msgid "Character Chart"
-msgstr "Табела знакова"
+msgstr "Sơ đồ ký tự"
 
 #: src/fe-gtk/banlist.c:153 src/fe-gtk/banlist.c:237
 msgid "You must select some bans."
-msgstr "Морате изабрати забране"
+msgstr "Phải chọn sự đuổi ra."
 
 #: src/fe-gtk/banlist.c:253 src/fe-gtk/ignoregui.c:175
 msgid "Mask"
-msgstr "Шаблон"
+msgstr "Mặt nạ "
 
 #: src/fe-gtk/banlist.c:254 src/fe-gtk/dccgui.c:520
 msgid "From"
-msgstr "Од"
+msgstr "Từ"
 
 #: src/fe-gtk/banlist.c:255
 msgid "Date"
-msgstr "Датум"
+msgstr "Ngày"
 
 #: src/fe-gtk/banlist.c:299
 #, c-format
 msgid "X-Chat: Ban List (%s)"
-msgstr "X-Chat: Списак забрана (%s)"
+msgstr "X-Chat: Danh sách đuổi ra (%s)"
 
 #: src/fe-gtk/banlist.c:315
 msgid "Unban"
-msgstr "Скини забр."
+msgstr "Bỏ đuổỉ ra"
 
 #: src/fe-gtk/banlist.c:317
 msgid "Crop"
-msgstr "Исеци"
+msgstr "Xén"
 
 #: src/fe-gtk/banlist.c:321
 msgid "Refresh"
-msgstr "Освежи"
+msgstr "Làm tươi"
 
 #: src/fe-gtk/chanlist.c:120
 #, c-format
 msgid "User and Channel Statistics: %d/%d Users on %d/%d Channels"
-msgstr "Статистике корисника и канала: корисника ‒ %d/%d, канала ‒%d/%d"
+msgstr "Thống kê người/kênh: %d/%d người trên %d/%d kênh"
 
 #: src/fe-gtk/chanlist.c:536
 msgid "I can't save an empty list!"
-msgstr "Списак се не снима када је празан!"
+msgstr "Không lưu được danh sách trống không."
 
 #: src/fe-gtk/chanlist.c:539 src/fe-gtk/menu.c:924
 msgid "Select an output filename"
-msgstr "Изаберите име датотеке за излаз"
+msgstr "Hãy chọn tên tập tin xuất"
 
 #: src/fe-gtk/chanlist.c:607
 #, c-format
 msgid "X-Chat: Channel List (%s)"
-msgstr "X-Chat: списак канала (%s)"
+msgstr "X-Chat: Danh sách kênh (%s)"
 
 #: src/fe-gtk/chanlist.c:622
 msgid "List display options:"
-msgstr "Списак опција за приказ"
+msgstr "Liệt kê các tùy chọn trình bày:"
 
 #: src/fe-gtk/chanlist.c:634
 msgid "Minimum Users:"
-msgstr "Мин. корисника"
+msgstr "Tối thiểu người:"
 
 #: src/fe-gtk/chanlist.c:649
 msgid "Maximum Users:"
-msgstr "Макс. корисника"
+msgstr "Tối đa người:"
 
 #: src/fe-gtk/chanlist.c:664
 msgid "Regex Match:"
-msgstr "Regex образац"
+msgstr "Khớp biểu thức chính quy:"
 
 #: src/fe-gtk/chanlist.c:685
 msgid "Apply Match to:"
-msgstr "Када се поклопи:"
+msgstr "Áp dụng điều khớp vào:"
 
 #: src/fe-gtk/chanlist.c:709
 msgid "Apply"
-msgstr "Примени"
+msgstr "Áp dụng"
 
 #: src/fe-gtk/chanlist.c:751
 msgid "Refresh the list"
-msgstr "Освежи списак"
+msgstr "Làm tươi danh sách"
 
 #: src/fe-gtk/chanlist.c:753
 msgid "Save the list"
-msgstr "Сними списак"
+msgstr "Lưu danh sách"
 
 #: src/fe-gtk/chanlist.c:755 src/fe-gtk/menu.c:721
 msgid "Join Channel"
-msgstr "Иди на канал"
+msgstr "Vào kênh"
 
 #: src/fe-gtk/dccgui.c:126
 #, c-format
 msgid "Send file to %s"
-msgstr "Шаљи датотеку за %s"
+msgstr "Gởi tập tin vào %s"
 
 #: src/fe-gtk/dccgui.c:346
 #, c-format
@@ -3025,16 +3113,16 @@ msgid ""
 " IP Number: %s\n"
 "Start Time: %s   Max CPS: %d\n"
 msgstr ""
-"  Датотека: %s\n"
-"     Од/За: %s\n"
-"  Величина: %u\n"
-"      Порт: %d\n"
-" IP број  : %s\n"
-"Време поч.: %s   Макс. зн/сек: %d\n"
+"      Tập tin: %s\n"
+"   Cho/Từ: %s\n"
+"      Cỡ: %u\n"
+"      Cổng: %d\n"
+" Số IP: %s\n"
+"Giờ bắt đầu: %s   Tối đa CPS: %d\n"
 
 #: src/fe-gtk/dccgui.c:379
 msgid "That file is not resumable."
-msgstr "Датотека се мора преузети изједна."
+msgstr "Không tiếp tục được tập tin ấy."
 
 #: src/fe-gtk/dccgui.c:383
 #, c-format
@@ -3043,170 +3131,171 @@ msgid ""
 "%s.\n"
 "Resuming not possible."
 msgstr ""
-"Не могу да приступим: %s\n"
+"Không truy cập được tập tin: %s\n"
 "%s.\n"
-"Настављање није могуће."
+"Không tiếp tục được."
 
 #: src/fe-gtk/dccgui.c:390
 msgid ""
 "File in download directory is larger than file offered. Resuming not "
 "possible."
 msgstr ""
-"Датотека која је претходно преузета је већа него понуђена. Зато није могуће "
-"наставити пренос."
+"Tập tin trong thư mục tải về là lớn hơn tập tin đã cho nên không tiếp tục "
+"được."
 
 #: src/fe-gtk/dccgui.c:394
 msgid "Cannot resume the same file from two people."
-msgstr "Не може се наставити пренос исте датотеке од две различите особе."
+msgstr "Không tiếp tục được cùng một tập tin từ hai người khác."
 
 #: src/fe-gtk/dccgui.c:509
 msgid "MIME Type"
-msgstr "MIME тип"
+msgstr "Loại MIME"
 
 #: src/fe-gtk/dccgui.c:515 src/fe-gtk/dccgui.c:673 src/fe-gtk/dccgui.c:796
 #: src/fe-gtk/notifygui.c:110
 msgid "Status"
-msgstr "Стање"
+msgstr "Tình trạng"
 
 #: src/fe-gtk/dccgui.c:516 src/fe-gtk/dccgui.c:674 src/fe-gtk/plugingui.c:74
 msgid "File"
-msgstr "Датотека"
+msgstr "Tập tin"
 
 #: src/fe-gtk/dccgui.c:519 src/fe-gtk/dccgui.c:678
 msgid "ETA"
-msgstr "ETA"
+msgstr "Giờ tới xấp xỉ"
 
 #: src/fe-gtk/dccgui.c:529
 msgid "X-Chat: File Receive List"
-msgstr "X-Chat: Списак датотека на пријему"
+msgstr "X-Chat: Danh sách nhận tập tin"
 
 #: src/fe-gtk/dccgui.c:558 src/fe-gtk/dccgui.c:711 src/fe-gtk/dccgui.c:826
 msgid "Abort"
-msgstr "Обустави"
+msgstr "Hủy bỏ"
 
 #: src/fe-gtk/dccgui.c:560 src/fe-gtk/dccgui.c:827
 msgid "Accept"
-msgstr "Прихвати"
+msgstr "Chấp nhận"
 
 #: src/fe-gtk/dccgui.c:562
 msgid "Resume"
-msgstr "Настави"
+msgstr "Tiếp tục"
 
 #: src/fe-gtk/dccgui.c:566
 msgid "Open"
-msgstr "Отвори"
+msgstr "Mở"
 
 #: src/fe-gtk/dccgui.c:677
 msgid "Ack"
-msgstr "Потврди"
+msgstr "Ghi nhập"
 
 #: src/fe-gtk/dccgui.c:679
 msgid "To"
-msgstr "За"
+msgstr "Cho"
 
 #: src/fe-gtk/dccgui.c:689
 msgid "X-Chat: File Send List"
-msgstr "X-Chat: Списак за слање"
+msgstr "X-Chat: Danh sách gởi tập tin"
 
 #: src/fe-gtk/dccgui.c:797
 msgid "To/From"
-msgstr "Од/за"
+msgstr "Cho/Từ"
 
 #: src/fe-gtk/dccgui.c:798
 msgid "Recv"
-msgstr "Пријем"
+msgstr "Nhận"
 
 #: src/fe-gtk/dccgui.c:799
 msgid "Sent"
-msgstr "Послато"
+msgstr "Gởi rồi"
 
 #: src/fe-gtk/dccgui.c:800
 msgid "StartTime"
-msgstr "Поч."
+msgstr "Giờ bắt đầu"
 
 #: src/fe-gtk/dccgui.c:810
 msgid "X-Chat: DCC Chat List"
-msgstr "X-Chat: DCC списак разговора"
+msgstr "X-Chat: Danh sách trò chuyện trực tiếp (DCC)"
 
 #: src/fe-gtk/editlist.c:139
 msgid "*NEW*"
-msgstr "*НОВО*"
+msgstr "*Mới*"
 
 #: src/fe-gtk/editlist.c:140
 msgid "EDIT ME"
-msgstr "Унеси текст"
+msgstr "Nhập ở đây"
 
 #: src/fe-gtk/editlist.c:305 src/fe-gtk/plugingui.c:72
 msgid "Name"
-msgstr "Име"
+msgstr "Tên"
 
 #: src/fe-gtk/editlist.c:306
 msgid "Command"
-msgstr "Наредба"
+msgstr "Lệnh"
 
 #: src/fe-gtk/editlist.c:333
 msgid "Move Up"
-msgstr "На горе"
+msgstr "Đi lên"
 
 #: src/fe-gtk/editlist.c:337
 msgid "Move Dn"
-msgstr "На доле"
+msgstr "Đi xuống"
 
 #: src/fe-gtk/editlist.c:345
 msgid "Cancel"
-msgstr "Откажи"
+msgstr "Thôi"
 
 #: src/fe-gtk/editlist.c:349 src/fe-gtk/textgui.c:413 src/fe-gtk/urlgrab.c:204
 msgid "Save"
-msgstr "Сними"
+msgstr "Lưu"
 
 #: src/fe-gtk/editlist.c:357
 msgid "Add New"
-msgstr "Додај нов"
+msgstr "Thêm mới"
 
 #: src/fe-gtk/editlist.c:361 src/fe-gtk/fkeys.c:751 src/fe-gtk/ignoregui.c:386
 msgid "Delete"
-msgstr "Обриши"
+msgstr "Xóa bỏ"
 
 #: src/fe-gtk/editlist.c:369
 msgid "Sort"
-msgstr "Уреди"
+msgstr "Sắp xếp"
 
 #: src/fe-gtk/editlist.c:373
 msgid "Help"
-msgstr "Помоћ"
+msgstr "Trợ giúp"
 
 #: src/fe-gtk/fe-gtk.c:170
 msgid "Options"
-msgstr "Поставке"
+msgstr "Tùy chọn"
 
 #: src/fe-gtk/fe-gtk.c:171
 msgid "don't auto connect"
-msgstr "не повезуј се одмах"
+msgstr "không tự động kết nối"
 
 #: src/fe-gtk/fe-gtk.c:172
 msgid "DIRECTORY"
-msgstr "КАТАЛОГ"
+msgstr "Thư mục"
 
 #: src/fe-gtk/fe-gtk.c:173
 msgid "use a different config dir"
-msgstr "користи други каталог са подешавањима"
+msgstr "sử dụng một tập tin cấu hình khác"
 
 #: src/fe-gtk/fe-gtk.c:174
 msgid "don't auto load any plugins"
-msgstr "не учитавај додатке одмах"
+msgstr "không tự động tải trình cầm phít nào"
 
 #: src/fe-gtk/fe-gtk.c:175
 msgid "show plugin auto-load dir"
-msgstr "прикажи каталог за аутоматско учитавање додатака"
+msgstr ""
 
 #: src/fe-gtk/fe-gtk.c:176
+#, fuzzy
 msgid "show user config dir"
-msgstr "прикажи каталог са подешавањима"
+msgstr "sử dụng một tập tin cấu hình khác"
 
 #: src/fe-gtk/fe-gtk.c:177
 msgid "show version information"
-msgstr "покажи верзију"
+msgstr "hiển thị thông tin phiên bản"
 
 #: src/fe-gtk/fe-gtk.c:262
 #, c-format
@@ -3215,18 +3304,18 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
-"Не може се отворити фонт:\n"
+"Không mở được phông chữ\n"
 "\n"
 "%s"
 
 #: src/fe-gtk/fe-gtk.c:622
 msgid "Search buffer is empty.\n"
-msgstr "Запис за претрагу је празан.\n"
+msgstr "Bộ đệm tìm kiếm là trống không.\n"
 
 #: src/fe-gtk/fe-gtk.c:699
 #, c-format
 msgid "%d bytes"
-msgstr "%d бајт(ов)(а)"
+msgstr "%d bytes"
 
 #: src/fe-gtk/fkeys.c:155
 msgid ""
@@ -3237,12 +3326,11 @@ msgid ""
 "it is possible to run more than one command. If you want a \\ in the actual "
 "text run then enter \\\\"
 msgstr ""
-"Покрени наредбу убацује податке из Data 1 као да су откуцани у кућицу за "
-"унос где је притиснут низ тастера. Зато може садржати текст који ће бити "
-"послат особи или на канал, обичне или корисникове наредбе. Када се покрене, "
-"сви знакови \\n у Data 1 користе се да раздвоје наредбе тако да је могуће "
-"покренути више од једне. Ако желите да имате \\ у тексту, онда треба унети \\"
-"\\"
+"Hành động Chạy lệnh thì thi hành dữ liệu trong Dữ liệu 1 giống như đã gõ nó "
+"trong hộp nhập nơi nào bạn đã bấm dãy phím ấy. Vậy nó có thể bao gồm câu (sẽ "
+"gởi câu ấy cho kênh/người), lệnh hay lệnh của người dùng. Khi thi hành thì "
+"sử dụng mọi ký tự \\n trong Dữ liệu 1 để phân cách những lệnh khác để mà có "
+"thể chạy nhiều lệnh. Nếu muốn ký tự \\ trong câu thật thì hãy gõ \\\\."
 
 #: src/fe-gtk/fkeys.c:157
 msgid ""
@@ -3250,49 +3338,48 @@ msgid ""
 "to the page you want to switch to. If Data 2 is set to anything then the "
 "switch will be relative to the current position"
 msgstr ""
-"Наредба ^BПромени страну^B листа странице у свесци. Поставите Data 1 на "
-"страну на коју желите да одете. Ако је поље Data 2 испуњено, онда се броји у "
-"односу на текући положај."
+"Lệnh Đổi trang thì trao đổi giữa trang khác nhau trong cuốn vở. Hãy lập Dữ "
+"liệụ 1 thành trang mà bạn muốn trao đổi tới nó. Nếu đã lập Dữ liêu 2 thành "
+"gì, thì việc trao đổi sẽ cân xứng với vị trí hiện có."
 
 #: src/fe-gtk/fkeys.c:159
 msgid ""
 "The Insert in Buffer command will insert the contents of Data 1 into the "
 "entry where the key sequence was pressed at the current cursor position"
 msgstr ""
-"Наредба ^BУбаци у запис^B ће убацити садржај поља Data 1 на место на ком је "
-"био фокус када је притиснута комбинација тастера"
+"Lệnh Chèn vào bộ đệm thì chèn nội dung của Dữ liệu 1 vào trường nơi mà bạn "
+"đã bấm phím, tại vị tri con trỏ hiện có."
 
 #: src/fe-gtk/fkeys.c:161
 msgid ""
 "The Scroll Page command scrolls the text widget up or down one page or one "
 "line. Set Data 1 to either Up, Down, +1 or -1."
 msgstr ""
-"Команда ^BПомери страну^B помера текст у елементу нагоре или надоле за једну "
-"страну. Ако је Data 1 садржи било шта, померање је на горе, иначе је на доле"
+"Lệnh Cuộn trang thì cuộn thành phần văn bản lên hay xuống một trang hay một "
+"dòng. Hãy lập Dữ liệu 1 thành Lên, Xuống, +1 hay -1."
 
 #: src/fe-gtk/fkeys.c:163
 msgid ""
 "The Set Buffer command sets the entry where the key sequence was entered to "
 "the contents of Data 1"
 msgstr ""
-"Команда ^BПостави запис^B пребацује садржај поља Data 1 на место које је "
-"било у фокусу"
+"Lệnh Lập bộ đệm thì lập trường nơi mà đã gõ dãy phím thành nội bộ Dữ liệu 1."
 
 #: src/fe-gtk/fkeys.c:165
 msgid ""
 "The Last Command command sets the entry to contain the last command entered "
 "- the same as pressing up in a shell"
 msgstr ""
-"Команда ^BПоследња команда^B уписује последњу унету команду, као када се у "
-"шкољци притисне стрелица нагоре"
+"Lệnh Lệnh trước thì lập trường để chứa lệnh mới gõ - giống như khi bấm phím "
+"mũi lên trong hệ vỏ."
 
 #: src/fe-gtk/fkeys.c:167
 msgid ""
 "The Next Command command sets the entry to contain the next command entered "
 "- the same as pressing down in a shell"
 msgstr ""
-"Команда ^BНаредна команда^B уписује команду која је следећа на реду, слично "
-"као притисак на стрелицу надоле у шкољци"
+"Lệnh Lệnh sau thì lập trường để chứa lệnh sẽ gõ sau này - giống như khi bấm "
+"phím mũi xuống trong hệ vỏ."
 
 #: src/fe-gtk/fkeys.c:169
 msgid ""
@@ -3300,49 +3387,49 @@ msgid ""
 "or command. If Data 1 is set then double-tabbing in a string will select the "
 "last nick, not the next"
 msgstr ""
-"Ова команда мења текст у линији за унос тако што довршава непотпуно име или "
-"команду. Ако је поље Data 1 попуњено, дупли притисак на табулатор бира "
-"последње име, не следеће"
+"Lệnh này thì thay đổi câu trong trường để nhập xong một tên hiệu hay lệnh "
+"chưa hoàn thành. Nếu đã lập Dữ liệu 1 thế khi bám phím Tab hai lần trong "
+"chuỗi nào sẽ chọn tên hiệu trước, không phải tên hiệu sau."
 
 #: src/fe-gtk/fkeys.c:171
 msgid ""
 "This command scrolls up and down through the list of nicks. If Data 1 is set "
 "to anything it will scroll up, else it scrolls down"
 msgstr ""
-"Овом командом се можете шетати горе-доле кроз листу имена. Ако је Data 1 "
-"постављено на било шта, кретаћете се на горе, иначе на доле"
+"Lệnh này cuộn lên và xuống danh sách tên hiệu. Nếu đã lập Dữ liệu 1 thành gì "
+"thì sẽ cuộn lên, không nếu thi sẽ cuộn xuống."
 
 #: src/fe-gtk/fkeys.c:173
 msgid ""
 "This command checks the last word entered in the entry against the replace "
 "list and replaces it if it finds a match"
 msgstr ""
-"Ова команда проверава да ли се последња унета реч налази на списку за "
-"замене, и замењује је ако је пронађе"
+"Lệnh này so từ đã nhập trước trong trường với danh sách thay thế, rồi thay "
+"thế được nếu tìm thấy từ khớp được."
 
 #: src/fe-gtk/fkeys.c:175
 msgid "This command moves the front tab left by one"
-msgstr "Ова команда помера тренутни језичак за једно место улево"
+msgstr "Lệnh này di động tab ở trươc về bên trái một điều."
 
 #: src/fe-gtk/fkeys.c:177
 msgid "This command moves the front tab right by one"
-msgstr "Ова команда помера тренутни језичак удесно"
+msgstr "Lệnh này di động tab ở trươc về bên phải một điều."
 
 #: src/fe-gtk/fkeys.c:179
 msgid "This command moves the current tab family to the left"
-msgstr "Ова команда помера активну групу језичака улево"
+msgstr "Lệnh này di động nhóm tab hiện có về bên trái."
 
 #: src/fe-gtk/fkeys.c:181
 msgid "This command moves the current tab family to the right"
-msgstr "Ова команда помера активну групу језичака удесно"
+msgstr "Lệnh này di động nhóm tab hiện có về bên phải."
 
 #: src/fe-gtk/fkeys.c:183
 msgid "Push input line into history but doesn't send to server"
-msgstr "Убацује улазну линију у претходне команде, али не шаље серверу"
+msgstr "Gởi dòng gõ vào lịch sử nhưng không gởi cho máy chủ."
 
 #: src/fe-gtk/fkeys.c:195
 msgid "There was an error loading key bindings configuration"
-msgstr "Грешка при учитавању распореда тастера"
+msgstr "Gặp lỗi khi nạp cấu hình ánh xạ phím"
 
 #: src/fe-gtk/fkeys.c:439 src/fe-gtk/fkeys.c:440 src/fe-gtk/fkeys.c:441
 #: src/fe-gtk/fkeys.c:442 src/fe-gtk/fkeys.c:724 src/fe-gtk/fkeys.c:730
@@ -3350,27 +3437,27 @@ msgstr "Грешка при учитавању распореда тастера
 #: src/fe-gtk/maingui.c:1064 src/fe-gtk/maingui.c:1117
 #: src/fe-gtk/maingui.c:2494
 msgid "<none>"
-msgstr "<нема>"
+msgstr "<không có>"
 
 #: src/fe-gtk/fkeys.c:688
 msgid "Mod"
-msgstr "Мод"
+msgstr "Đổi"
 
 #: src/fe-gtk/fkeys.c:689 src/fe-gtk/fkeys.c:784
 msgid "Key"
-msgstr "Тастер"
+msgstr "Phím"
 
 #: src/fe-gtk/fkeys.c:690
 msgid "Action"
-msgstr "Акција"
+msgstr "Hành động"
 
 #: src/fe-gtk/fkeys.c:699
 msgid "X-Chat: Keyboard Shortcuts"
-msgstr "X-Chat: Скраћенице с тастатуре"
+msgstr "X-Chat: Phím tắt"
 
 #: src/fe-gtk/fkeys.c:746
 msgid "Add new"
-msgstr "Додај нов"
+msgstr "Thêm mới"
 
 #: src/fe-gtk/fkeys.c:777
 msgid "Shift"
@@ -3386,15 +3473,15 @@ msgstr "Ctrl"
 
 #: src/fe-gtk/fkeys.c:788
 msgid "Data 1"
-msgstr "Data 1"
+msgstr "Dữ liệu 1"
 
 #: src/fe-gtk/fkeys.c:791
 msgid "Data 2"
-msgstr "Data 2"
+msgstr "Dữ liệu 2"
 
 #: src/fe-gtk/fkeys.c:834
 msgid "Error opening keys config file\n"
-msgstr "Грешка при отварању датотеке са подешавањима\n"
+msgstr "Gặp lỗi khi mở tập tin cấu hình phím\n"
 
 #: src/fe-gtk/fkeys.c:1005
 #, c-format
@@ -3402,8 +3489,8 @@ msgid ""
 "Unknown keyname %s in key bindings config file\n"
 "Load aborted, please fix %s/keybindings.conf\n"
 msgstr ""
-"Назив тастера %s у датотеци са распоредом није препознат\n"
-"Учитавање је прекинуто, морате поправити %s/keybindings.conf\n"
+"Gặp tên phím không biết %s trong tập tin cấu hình ánh xạ phím\n"
+"Thôi nạp nên hãy sửa %s/keybindings.conf\n"
 
 #: src/fe-gtk/fkeys.c:1043
 #, c-format
@@ -3411,8 +3498,8 @@ msgid ""
 "Unknown action %s in key bindings config file\n"
 "Load aborted, Please fix %s/keybindings\n"
 msgstr ""
-"Назив акције %s међу распоредом тастера није препознат\n"
-"Учитавање је прекинуто, морате поправити %s/keybindings\n"
+"Gặp hành động không biết %s trong tập tin cấu hình ánh xạ phím\n"
+"Thôi nạp nên hãy sửa %s/keybindings\n"
 
 #: src/fe-gtk/fkeys.c:1064
 #, c-format
@@ -3422,11 +3509,10 @@ msgid ""
 "\n"
 "Load aborted, Please fix %s/keybindings\n"
 msgstr ""
-"На овом месту требала је да стоји линија са подацима (почиње са Dx{:|!}) али "
-"је стајало:\n"
+"Ngờ dòng Dữ liêu (bắt đầu Dx{:|!}) nhưng nhận:\n"
 "%s\n"
 "\n"
-"Учитавање прекинуто, морате поправити %s/keybindings\n"
+"Thôi nạp nên hãy sửa %s/keybindings\n"
 
 #: src/fe-gtk/fkeys.c:1133
 #, c-format
@@ -3434,28 +3520,28 @@ msgid ""
 "Key bindings config file is corrupt, load aborted\n"
 "Please fix %s/keybindings.conf\n"
 msgstr ""
-"Датотека са распоредом тастера је неисправна, учитавање је прекинуто\n"
-"Морате поправити %s/keybindings.conf\n"
+"Tập tin cấu hình ánh xạ phím bị hỏng.\n"
+"Thôi nạp nên hãy sửa %s/keybindings.conf\n"
 
 #: src/fe-gtk/gtkutil.c:154
 msgid "Cannot write to that file."
-msgstr "Не може се писати у ту датотеку."
+msgstr "Không ghi được vào tập tin ấy."
 
 #: src/fe-gtk/gtkutil.c:156
 msgid "Cannot read that file."
-msgstr "Ова се датотека не може читати."
+msgstr "Không đọc được tập tin ây."
 
 #: src/fe-gtk/ignoregui.c:117 src/fe-gtk/ignoregui.c:263
 msgid "That mask already exists."
-msgstr "Овај шаблон већ постоји."
+msgstr "Có mặt nạ ấy rồi."
 
 #: src/fe-gtk/ignoregui.c:177 src/fe-gtk/maingui.c:1573
 msgid "Private"
-msgstr "Приватно"
+msgstr "Riêng"
 
 #: src/fe-gtk/ignoregui.c:178
 msgid "Notice"
-msgstr "Вест"
+msgstr "Thông báo"
 
 #: src/fe-gtk/ignoregui.c:179
 msgid "CTCP"
@@ -3467,36 +3553,35 @@ msgstr "DCC"
 
 #: src/fe-gtk/ignoregui.c:181
 msgid "Invite"
-msgstr "Позови"
+msgstr "Mời"
 
-# Јесте, натегнуто је...
 #: src/fe-gtk/ignoregui.c:182
 msgid "Unignore"
-msgstr "Прихвати"
+msgstr "Bỏ bỏ qua"
 
 #: src/fe-gtk/ignoregui.c:307
 msgid "Enter mask to ignore:"
-msgstr "Унеси шаблон за ућуткивање"
+msgstr "Hãy gõ mạt nạ để bỏ qua:"
 
 #: src/fe-gtk/ignoregui.c:354
 msgid "X-Chat: Ignore list"
-msgstr "X-Chat: Списак ућутканих"
+msgstr "X-Chat: Danh sách bỏ qua"
 
 #: src/fe-gtk/ignoregui.c:361
 msgid "Ignore Stats:"
-msgstr "Статистика за ућуткане:"
+msgstr "Thống kê bỏ qua:"
 
 #: src/fe-gtk/ignoregui.c:369
 msgid "Channel:"
-msgstr "Канал:"
+msgstr "Kênh:"
 
 #: src/fe-gtk/ignoregui.c:370
 msgid "Private:"
-msgstr "Приватно:"
+msgstr "Riêng:"
 
 #: src/fe-gtk/ignoregui.c:371
 msgid "Notice:"
-msgstr "Вести:"
+msgstr "Thông báo:"
 
 #: src/fe-gtk/ignoregui.c:372
 msgid "CTCP:"
@@ -3504,104 +3589,104 @@ msgstr "CTCP:"
 
 #: src/fe-gtk/ignoregui.c:373
 msgid "Invite:"
-msgstr "Позив:"
+msgstr "Mời:"
 
 #: src/fe-gtk/ignoregui.c:384 src/fe-gtk/notifygui.c:306
 msgid "Add"
-msgstr "Додај"
+msgstr "Thêm"
 
 #: src/fe-gtk/maingui.c:318
 msgid "Dialog with"
-msgstr "Разговор са"
+msgstr "Đôi thoại với"
 
 #: src/fe-gtk/maingui.c:574
 #, c-format
 msgid "Topic for %s is: %s"
-msgstr "Тема за %s је: %s"
+msgstr "Chủ đề cho %s là: %s"
 
 #: src/fe-gtk/maingui.c:578
 msgid "No topic is set"
-msgstr "Тема није постављена"
+msgstr "Chưa lập chủ đề"
 
 #: src/fe-gtk/maingui.c:974
 msgid "No other tabs open, quit xchat?"
-msgstr "Нема других прозора, желите ли да изађете из Xchat-а?"
+msgstr "Không có thanh nữa còn mở thì thoát xchat không?"
 
 #: src/fe-gtk/maingui.c:1020
 msgid "Insert color code"
-msgstr "Убаци боју"
+msgstr "Chèn mã màuy"
 
 #: src/fe-gtk/maingui.c:1069
 msgid "Beep on message"
-msgstr "Звук уз поруку"
+msgstr "Phát tiếng bíp khi nhạn tin nhẳn"
 
 #: src/fe-gtk/maingui.c:1072
 msgid "Show join/part messages"
-msgstr "Обавести о улазу/излазу"
+msgstr "Hiển thị tin nhẳn vào/rời"
 
 #: src/fe-gtk/maingui.c:1074
 msgid "Color paste"
-msgstr "Залепи и боју"
+msgstr "Dán màu"
 
 #: src/fe-gtk/maingui.c:1084
 msgid "Go to"
-msgstr "Иди на"
+msgstr "Đi"
 
 #: src/fe-gtk/maingui.c:1097 src/fe-gtk/menu.c:1251
 msgid "Close Tab"
-msgstr "Затвори језичак"
+msgstr "Đóng thanh"
 
 #: src/fe-gtk/maingui.c:1100 src/fe-gtk/menu.c:1404
 msgid "Detach Tab"
-msgstr "Откачи језичак"
+msgstr "Gỡ thanh ra"
 
 #: src/fe-gtk/maingui.c:1291
 msgid "Some file transfers still active, quit xchat?"
-msgstr "Још увек ради пренос датотека, да ли ипак желите крај рада?"
+msgstr "Có việc chuyển giao tập tin còn hoặt động thì thoát xchat không?"
 
 #: src/fe-gtk/maingui.c:1441 src/fe-gtk/maingui.c:1547
 msgid "User limit must be a number!\n"
-msgstr "Макс. број корисника мора бити унет као број!\n"
+msgstr "Tối đa người dùng phải là số.\n"
 
 #: src/fe-gtk/maingui.c:1569
 msgid "Topic Protection"
-msgstr "Заштита теме"
+msgstr "Bảo vệ chủ đề"
 
 #: src/fe-gtk/maingui.c:1570
 msgid "No outside messages"
-msgstr "Нема спољашњих порука"
+msgstr "Không có tin nhẳn ngoài"
 
 #: src/fe-gtk/maingui.c:1571
 msgid "Secret"
-msgstr "Тајни"
+msgstr "Mật"
 
 #: src/fe-gtk/maingui.c:1572
 msgid "Invite Only"
-msgstr "По позиву"
+msgstr "Chỉ mời"
 
 #: src/fe-gtk/maingui.c:1574
 msgid "Moderated"
-msgstr "Надгледан"
+msgstr "Có điều tiết viên"
 
 #: src/fe-gtk/maingui.c:1575
 msgid "Ban List"
-msgstr "Списак избачених"
+msgstr "Danh sách đuổi ra"
 
 #: src/fe-gtk/maingui.c:1577
 msgid "Keyword"
-msgstr "Кључна реч"
+msgstr "Từ khóa"
 
 #: src/fe-gtk/maingui.c:1589
 msgid "User Limit"
-msgstr "Макс. људи"
+msgstr "Tối đa ngườiu"
 
 #: src/fe-gtk/maingui.c:1605
 msgid "Close this tab/window"
-msgstr "Затвори прозор/језичак"
+msgstr "Đóng thanh/cửa sổ này"
 
 #: src/fe-gtk/maingui.c:1702
 msgid "Show/Hide userlist"
-msgstr "Покажи/сакриј кориснике"
+msgstr "Hiển thị/ẩn danh sách người dùng"
 
 #: src/fe-gtk/maingui.c:1815
 msgid ""
@@ -3610,83 +3695,83 @@ msgid ""
 "You may be using a non-compliant window\n"
 "manager that is not currently supported.\n"
 msgstr ""
-"Не могу да поставим провидну позадину!\n"
+"Không lập được nền trong suốt.\n"
 "\n"
-"Можда користите управљач прозора који\n"
-"тренутно није подржан.\n"
+"Có lẽ bạn sử dụng trình quản lý cửa sổ\n"
+"không tuân theo mà chưa được hỗ trợ.\n"
 
 #: src/fe-gtk/maingui.c:2008
 msgid "Enter new nickname:"
-msgstr "Унесите ново име:"
+msgstr "Hãy gõ tên hiệu mới"
 
 #: src/fe-gtk/menu.c:116
 msgid "Host unknown"
-msgstr "Непознат рачунар"
+msgstr "Không biết máy chủ"
 
 #: src/fe-gtk/menu.c:477
 #, c-format
 msgid "User: %s"
-msgstr "Корисник: %s"
+msgstr "Người dùng: %s"
 
 #: src/fe-gtk/menu.c:481
 #, c-format
 msgid "Country: %s"
-msgstr "Земља: %s"
+msgstr "Quốc gia: %s"
 
 #: src/fe-gtk/menu.c:485
 #, c-format
 msgid "Realname: %s"
-msgstr "Право име: %s"
+msgstr "Tên thật: %s"
 
 #: src/fe-gtk/menu.c:489
 #, c-format
 msgid "Server: %s"
-msgstr "Сервер: %s"
+msgstr "Máy chủ: %s"
 
 #: src/fe-gtk/menu.c:493
 #, c-format
 msgid "Last Msg: %s"
-msgstr "Посл. порука: %s"
+msgstr "Tin nhẳn trước: %s"
 
 #: src/fe-gtk/menu.c:578
 msgid "Menu Bar"
-msgstr "Линија менија"
+msgstr "Thanh trình đơn"
 
 #: src/fe-gtk/menu.c:579
 msgid "Topic Bar"
-msgstr "Линија за тему"
+msgstr "Thanh chủ đề"
 
 #: src/fe-gtk/menu.c:583 src/fe-gtk/setup.c:159
 msgid "User List"
-msgstr "Списак имена"
+msgstr "Danh sách người dùng"
 
 #: src/fe-gtk/menu.c:586
 msgid "Mode Buttons"
-msgstr "Списак приступа"
+msgstr "Nút chế độ"
 
 #: src/fe-gtk/menu.c:592
 msgid "User List Buttons"
-msgstr "Корисничка дугмета"
+msgstr "Nút danh sách người dùng"
 
 #: src/fe-gtk/menu.c:662 src/fe-gtk/urlgrab.c:202
 msgid "Copy selected URL"
-msgstr "Пресликај овај URL"
+msgstr "Sao chép địa chỉ Mạng đã chọn"
 
 #: src/fe-gtk/menu.c:725
 msgid "Part Channel"
-msgstr "Изађи са канала"
+msgstr "Rời kênh đi"
 
 #: src/fe-gtk/menu.c:727
 msgid "Cycle Channel"
-msgstr "Понови приступ"
+msgstr "Quay kênh lại"
 
 #: src/fe-gtk/menu.c:750
 msgid "X-Chat: User menu"
-msgstr "X-Chat: Корисников мени"
+msgstr "X-Chat: Trình đơn người dùng"
 
 #: src/fe-gtk/menu.c:759
 msgid "Edit This Menu..."
-msgstr "Уреди овај мени..."
+msgstr "Hiệu chỉnh trình đơn này..."
 
 #: src/fe-gtk/menu.c:866
 msgid ""
@@ -3695,14 +3780,16 @@ msgid ""
 "can be dangerous and is exploitable. Eg:\n"
 "Someone could send you a .bash_profile"
 msgstr ""
-"*УПОЗОРЕЊЕ*\n"
-"Аутоматско прихватање DCC захтева у кућном\n"
-"директоријуму је опасно и може се искористити.\n"
-"Нпр. неко може послати датотеку .bash_profile"
+"*CẢNH BÁO*\n"
+"Không tốt, không an toàn để tự động chấp nhận\n"
+"trò chuyện trực tiếp (DCC) thành thư mục chính\n"
+"của bạn. Thí dụ, người khác có thể gởi\n"
+"một tập tin loại .bash_profile cho bạn\n"
+"(điều kiện hệ thống của bạn)."
 
 #: src/fe-gtk/menu.c:994
 msgid "Settings saved."
-msgstr "Подешавања су снимљена."
+msgstr "Mới lưu thiết lập."
 
 #: src/fe-gtk/menu.c:1031
 msgid ""
@@ -3724,23 +3811,23 @@ msgid ""
 "%2 would be \"john\"\n"
 "&2 would be \"john hello\"."
 msgstr ""
-"Корисникове команде - посебни кодови:\n"
+"Lệnh người dùng - Mã đặc biệt:\n"
 "\n"
-"%c  =  тренутни канал\n"
-"%m  =  подаци о машини\n"
-"%n  =  ваше име\n"
-"%t  =  време/датум\n"
-"%v  =  верзија програма\n"
-"%2  =  реч 2\n"
-"%3  =  реч 3\n"
-"&2  =  реч 2 и даље до краја линије\n"
-"&3  =  реч 3 и даље до краја линије\n"
+"%c  =  kênh hiện có\n"
+"%m  =  thông tin máy\n"
+"%n  =  tên hiệu bạn\n"
+"%t  =  giờ/ngày\n"
+"%v  =  phiên bản xchat\n"
+"%2  =  từ 2\n"
+"%3  =  từ 3\n"
+"&2  =  từ 2 đán kết thức dòng\n"
+"&3  =  từ 3 đến kết thức dòng\n"
 "\n"
-"нпр:\n"
-"/cmd john hello\n"
+"v.d.:\n"
+"/cmd Chào bạn\n"
 "\n"
-"%2 би било \"john\"\n"
-"&2 би било \"john hello\"."
+"%2 là \"Chào\"\n"
+"&2 là \"Chào bạn\"."
 
 #: src/fe-gtk/menu.c:1046
 msgid ""
@@ -3754,15 +3841,15 @@ msgid ""
 "%s  =  selected nick\n"
 "%t  =  time/date\n"
 msgstr ""
-"Корисничка дугмад - посебни кодови:\n"
+"Cái nút trên danh sách người dùng - Mã đặt biệt:\n"
 "\n"
-"%a  =  сва изабрана имена\n"
-"%c  =  овај канал\n"
-"%h  =  рачунар на коме је изабрано име\n"
-"%m  =  подаци о рачунару\n"
-"%n  =  ваше име\n"
-"%s  =  одабрано име\n"
-"%t  =  време/датум\n"
+"%a  =  mọi tên hiệu đã chọn\n"
+"%c  =  kênh hiện có\n"
+"%h  =  tên máy chủ của tên hiệu đã chọn\n"
+"%m  =  thông tin máy\n"
+"%n  =  tên hiệu bạn\n"
+"%s  =  tên hiệu đã chọn\n"
+"%t  =  giờ/ngày\n"
 
 #: src/fe-gtk/menu.c:1055
 msgid ""
@@ -3776,15 +3863,15 @@ msgid ""
 "%s  =  selected nick\n"
 "%t  =  time/date\n"
 msgstr ""
-"Дугмад прозорчета - посебни кодови:\n"
+"Cái nút trong đôi thoại:\n"
 "\n"
-"%a  =  сва изабрана имена\n"
-"%c  =  овај канал\n"
-"%h  =  рачунар на коме је изабрано име\n"
-"%m  =  подаци о рачунару\n"
-"%n  =  ваше име\n"
-"%s  =  одабрано име\n"
-"%t  =  време/датум\n"
+"%a  =  mọi tên hiệu đã chọn\n"
+"%c  =  kênh hiện có\n"
+"%h  =  tên máy chủ của tên hiệu đã chọn\n"
+"%m  =  thông tin máy\n"
+"%n  =  tên hiệu bạn\n"
+"%s  =  tên hiệu đã chọn\n"
+"%t  =  giờ/ngàỳ\n"
 
 #: src/fe-gtk/menu.c:1064
 msgid ""
@@ -3800,16 +3887,16 @@ msgid ""
 "&3  =  word 3 to the end of line\n"
 "\n"
 msgstr ""
-"CTCP одговори - посебни кодови:\n"
+"Trả lời CTCP - Mã đặc biệt:\n"
 "\n"
-"%d  =  подаци (цео CTCP)\n"
-"%m  =  подаци о рачунару\n"
-"%s  =  име онога ко је послао упит\n"
-"%t  =  време/датум\n"
-"%2  =  друга реч\n"
-"%3  =  трећа реч\n"
-"&2  =  све почев од друге речи до краја реда\n"
-"&3  =  све почев од треће речи до краја реда\n"
+"%d  =  dữ liệu (CTCP toàn)\n"
+"%m  =  thông tin máy\n"
+"%s  =  tên hiệu đã gởi CTCP\n"
+"%t  =  giờ/ngày\n"
+"%2  =  từ 2\n"
+"%3  =  tư 3\n"
+"&2  =  từ 2 đến kết thức dòng\n"
+"&3  =  từ 3 đến kết thức dòng\n"
 "\n"
 
 #: src/fe-gtk/menu.c:1074
@@ -3823,41 +3910,40 @@ msgid ""
 "indicates it should be sent to a\n"
 "shell instead of X-Chat"
 msgstr ""
-"Обрада URL-ова - посебни кодови:\n"
+"Mã đặc biệt để quản lý địa chỉ Mạng:\n"
 "\n"
-"%s  =  запис URL-а\n"
+"%s  =  chuỗi của địa chỉ Mạng\n"
 "\n"
-"Стављање узвичника (!) испред команде\n"
-"говори да се треба проследити шкољци\n"
-"уместо X-Chat-у"
+"Khi để ký tự ! trước lệnh thì\n"
+"gởi nó cho hệ vỏ thay thế \\ncho trình XChat."
 
 #: src/fe-gtk/menu.c:1083
 msgid "X-Chat: User Defined Commands"
-msgstr "C-Chat: Корисничке команде"
+msgstr "X-Chat: Lệnh tự định nghĩa"
 
 #: src/fe-gtk/menu.c:1090
 msgid "X-Chat: Userlist Popup menu"
-msgstr "X-Chat: Мени са листом корисника"
+msgstr "X-Chat: Trình đơn bât lên danh sách người dùng"
 
 #: src/fe-gtk/menu.c:1097
 msgid "X-Chat: Replace"
-msgstr "X-Chat: Замени"
+msgstr "X-Chat: Thay thế"
 
 #: src/fe-gtk/menu.c:1104
 msgid "X-Chat: URL Handlers"
-msgstr "X-Chat: Обрада URL-ова"
+msgstr "X-Chat: Quản lý địa chỉ Mạng"
 
 #: src/fe-gtk/menu.c:1123
 msgid "X-Chat: Userlist buttons"
-msgstr "X-Chat: Корисничка дугмета"
+msgstr "X-Chat: Cái nút trên danh sách người dùng"
 
 #: src/fe-gtk/menu.c:1130
 msgid "X-Chat: Dialog buttons"
-msgstr "X-Chat: Дугмета у прозорчету"
+msgstr "X-Chat: Cái nút trong đôi thoại"
 
 #: src/fe-gtk/menu.c:1137
 msgid "X-Chat: CTCP Replies"
-msgstr "X-Chat: Одговори на CTCP упите"
+msgstr "X-Chat: Trả lời CTCP"
 
 #: src/fe-gtk/menu.c:1225
 msgid "_X-Chat"
@@ -3865,39 +3951,39 @@ msgstr "_X-Chat"
 
 #: src/fe-gtk/menu.c:1226
 msgid "Server List..."
-msgstr "Списак рачунара"
+msgstr "Danh sách máy chủ..."
 
 #: src/fe-gtk/menu.c:1229
 msgid "New"
-msgstr "Нов"
+msgstr "Mới"
 
 #: src/fe-gtk/menu.c:1230
 msgid "Server Tab..."
-msgstr "Језичак за сервер..."
+msgstr "Thanh máy chủ..."
 
 #: src/fe-gtk/menu.c:1231
 msgid "Channel Tab..."
-msgstr "Језичак за канал"
+msgstr "Thanh kênh..."
 
 #: src/fe-gtk/menu.c:1232
 msgid "Server Window..."
-msgstr "Прозор за сервер..."
+msgstr "Cửa sổ máy chủ..."
 
 #: src/fe-gtk/menu.c:1233
 msgid "Channel Window..."
-msgstr "Прозор за канал..."
+msgstr "Cửa sổ kênh..."
 
 #: src/fe-gtk/menu.c:1238 src/fe-gtk/menu.c:1240
 msgid "Load Plugin or Script..."
-msgstr "Учитај додатак или скрипт..."
+msgstr "Nạp trình cầm phít hay tâp lênh..."
 
 #: src/fe-gtk/menu.c:1244
 msgid "New Shell Tab..."
-msgstr "Нови језичак са шкољком..."
+msgstr "Thanh vỏ mới..."
 
 #: src/fe-gtk/menu.c:1253
 msgid "Quit"
-msgstr "Крај"
+msgstr "Thoát"
 
 #: src/fe-gtk/menu.c:1255
 msgid "_IRC"
@@ -3905,367 +3991,367 @@ msgstr "_IRC"
 
 #: src/fe-gtk/menu.c:1256
 msgid "Invisible"
-msgstr "Постави невидљивост"
+msgstr "Vô hình"
 
 #: src/fe-gtk/menu.c:1257
 msgid "Receive Wallops"
-msgstr "Прихвати Wallops"
+msgstr "Nhận quất mạnh"
 
 #: src/fe-gtk/menu.c:1258
 msgid "Receive Server Notices"
-msgstr "Прихвати вести са сервера"
+msgstr "Nhận thông báo máy chủ"
 
 #: src/fe-gtk/menu.c:1260
 msgid "Marked Away"
-msgstr "Објави одсуство"
+msgstr "Có nhãn Vắng mặt"
 
 #: src/fe-gtk/menu.c:1262
 msgid "Auto Rejoin when Kicked"
-msgstr "Прикључи се поново после избацивања"
+msgstr "Tự động vào lại khi bị đá ra"
 
 #: src/fe-gtk/menu.c:1263
 msgid "Auto Reconnect to Server"
-msgstr "Одржавај везу"
+msgstr "Tự động kết nối đến máy chủ"
 
 #: src/fe-gtk/menu.c:1264
 msgid "Never-give-up ReConnect"
-msgstr "Не одустај од повезивања"
+msgstr "Cố kết nối lại suốt"
 
 #: src/fe-gtk/menu.c:1266
 msgid "Auto Open Dialog Windows"
-msgstr "Разговоре у посебан прозор"
+msgstr "Tự động mở cửa sổ đôi thoại"
 
 #: src/fe-gtk/menu.c:1267
 msgid "Auto Accept Direct Chat"
-msgstr "Увек прихвати DCC"
+msgstr "Tự động chấp nhận Trò chuyện trực tiếp (DCC)"
 
 #: src/fe-gtk/menu.c:1268
 msgid "Auto Accept Files"
-msgstr "Увек прихвати датотеке"
+msgstr "Tự động chấp nhận tập tin"
 
 #: src/fe-gtk/menu.c:1270
 msgid "_Server"
-msgstr "_Сервер"
+msgstr "_Máy chủ"
 
 #: src/fe-gtk/menu.c:1272
 msgid "S_ettings"
-msgstr "П_одешавања"
+msgstr "Thiết _lập"
 
 #: src/fe-gtk/menu.c:1273
 msgid "Preferences..."
-msgstr "Поставке..."
+msgstr "Sở thích..."
 
 #: src/fe-gtk/menu.c:1275
 msgid "Advanced"
-msgstr "Напредна"
+msgstr "Cấp cao"
 
 #: src/fe-gtk/menu.c:1276
 msgid "Auto Replace..."
-msgstr "Замени све..."
+msgstr "Tự động thay thế..."
 
 #: src/fe-gtk/menu.c:1277
 msgid "CTCP Replies..."
-msgstr "Одговори на CTCP..."
+msgstr "Trả lơi CTCP..."
 
 #: src/fe-gtk/menu.c:1278
 msgid "Dialog Buttons..."
-msgstr "Дугмета за прозорче..."
+msgstr "Nút đôi thoại..."
 
 #: src/fe-gtk/menu.c:1279
 msgid "Keyboard Shortcuts..."
-msgstr "Скраћенице с тастатуре..."
+msgstr "Phím tắt..."
 
 #: src/fe-gtk/menu.c:1280
 msgid "Text Events..."
-msgstr "Праћење текста..."
+msgstr "Sự kiện câu..."
 
 #: src/fe-gtk/menu.c:1281
 msgid "URL Handlers..."
-msgstr "Обрада URL-ова..."
+msgstr "Quản lý địa chỉ Mạng..."
 
 #: src/fe-gtk/menu.c:1282
 msgid "User Commands..."
-msgstr "Корисникове команде..."
+msgstr "Lệnh người dùng..."
 
 #: src/fe-gtk/menu.c:1283
 msgid "Userlist Buttons..."
-msgstr "Корисничка дугмета..."
+msgstr "Nút danh sách người dùng"
 
 #: src/fe-gtk/menu.c:1284
 msgid "Userlist Popup..."
-msgstr "Корисников избор..."
+msgstr "Danh sách người dùng bật lên..."
 
 #: src/fe-gtk/menu.c:1289
 msgid "Reload Settings"
-msgstr "Учитај подешавања"
+msgstr "Nạp thiết lập lại"
 
 #: src/fe-gtk/menu.c:1291
 msgid "Save Settings now"
-msgstr "Сними подешавања"
+msgstr "Lưu thiết lập bây giờ"
 
 #: src/fe-gtk/menu.c:1292
 msgid "Save Settings on exit"
-msgstr "Сними подешавања при излазу"
+msgstr "Lưu thiết lập khi thoát"
 
 #: src/fe-gtk/menu.c:1295
 msgid "_Window"
-msgstr "_Прозор"
+msgstr "_Cửa sổ"
 
 #: src/fe-gtk/menu.c:1296
 msgid "Ban List..."
-msgstr "Списак забрана..."
+msgstr "Danh sách đuổi ra..."
 
 #: src/fe-gtk/menu.c:1297
 msgid "Channel List..."
-msgstr "Списак канала..."
+msgstr "Danh sách kênh..."
 
 #: src/fe-gtk/menu.c:1298
 msgid "Character Chart..."
-msgstr "Знаковна табела..."
+msgstr "Sơ đồ ký tự..."
 
 #: src/fe-gtk/menu.c:1299
 msgid "Direct Chat..."
-msgstr "Директан разговор..."
+msgstr "Trò chuyện trực tiếp..."
 
 #: src/fe-gtk/menu.c:1300
 msgid "File Receive..."
-msgstr "Пријем датотеке..."
+msgstr "Nhận tập tin..."
 
 #: src/fe-gtk/menu.c:1301
 msgid "File Send..."
-msgstr "Слање датотеке..."
+msgstr "Gởi tâp tin..."
 
 #: src/fe-gtk/menu.c:1302
 msgid "Ignore List..."
-msgstr "Списак ућутканих..."
+msgstr "Danh sách bỏ qua..."
 
 #: src/fe-gtk/menu.c:1303
 msgid "Notify List..."
-msgstr "Списак посматраних..."
+msgstr "Danh sách thông báo..."
 
 #: src/fe-gtk/menu.c:1304
 msgid "Plugins and Scripts..."
-msgstr "Додаци и скриптови..."
+msgstr "Trình cầm phít và tập lệnh..."
 
 #: src/fe-gtk/menu.c:1305
 msgid "Raw Log..."
-msgstr "Сирови дневник..."
+msgstr "Bản ghi thô..."
 
 #: src/fe-gtk/menu.c:1306
 msgid "URL Grabber..."
-msgstr "Памћење URL-ова..."
+msgstr "Lấy địa chỉ Mạng..."
 
 #: src/fe-gtk/menu.c:1308
 msgid "Reset Marker Line"
-msgstr "Постави овде ознаку"
+msgstr "Lập dòng đánh dấu lại"
 
 #: src/fe-gtk/menu.c:1309
 msgid "C_lear Text"
-msgstr "О_чисти текст"
+msgstr "_Xóa câu"
 
 #: src/fe-gtk/menu.c:1310
 msgid "Search Text..."
-msgstr "Тражи текст..."
+msgstr "Tìm kiếm câu..."
 
 #: src/fe-gtk/menu.c:1311
 msgid "Save Text..."
-msgstr "Сними текст..."
+msgstr "Lưu câu..."
 
 #: src/fe-gtk/menu.c:1313
 msgid "_Help"
-msgstr "_Помоћ"
+msgstr "Trợ _giúp"
 
 #: src/fe-gtk/menu.c:1314
 msgid "_Contents"
-msgstr "_Садржај"
+msgstr "_Nội dụng"
 
 #: src/fe-gtk/menu.c:1316 src/fe-gtk/menu.c:1318
 msgid "_About"
-msgstr "_О програму"
+msgstr "_Về XChat"
 
 #: src/fe-gtk/menu.c:1406
 msgid "Attach Tab"
-msgstr "Закачи језичак"
+msgstr "Đính thanh"
 
 #: src/fe-gtk/notifygui.c:109
 msgid "User"
-msgstr "Корисник"
+msgstr "Người dùng"
 
 #: src/fe-gtk/notifygui.c:111
 msgid "Server"
-msgstr "Рачунар"
+msgstr "Máy chủ"
 
 #: src/fe-gtk/notifygui.c:112
 msgid "Last Seen"
-msgstr "Био је ту"
+msgstr "Gặp gần nhất"
 
 #: src/fe-gtk/notifygui.c:149
 msgid "Offline"
-msgstr "Није на вези"
+msgstr "Ngoại tuyến"
 
 #: src/fe-gtk/notifygui.c:169 src/fe-gtk/setup.c:199
 msgid "Never"
-msgstr "Никада"
+msgstr "Không bao giờ"
 
 #: src/fe-gtk/notifygui.c:187
 msgid "Online"
-msgstr "На вези"
+msgstr "Trực tuyến"
 
 #: src/fe-gtk/notifygui.c:277
 msgid "Enter nickname to add:"
-msgstr "Унесите име које треба додати:"
+msgstr "Hãy gõ tên hiệu để thêm"
 
 #: src/fe-gtk/notifygui.c:293
 msgid "X-Chat: Notify List"
-msgstr "X-Chat: Списак посматраних"
+msgstr "X-Chat: Danh sách thông báo"
 
 #: src/fe-gtk/notifygui.c:308
 msgid "Remove"
-msgstr "Уклони"
+msgstr "Bỏ ra"
 
 #: src/fe-gtk/plugingui.c:75 src/fe-gtk/textgui.c:341
 msgid "Description"
-msgstr "Опис"
+msgstr "Mô tả"
 
 #: src/fe-gtk/plugingui.c:150
 msgid "Select a Plugin or Script to load"
-msgstr "Избор додатка или скрипта за учитавање"
+msgstr "Hãy chọn trình cầm phít hay tập lệnh để thêm"
 
 #: src/fe-gtk/plugingui.c:222
 msgid "X-Chat: Plugins and Scripts"
-msgstr "X-Chat: Додаци и скриптови"
+msgstr "X-Chat: Trình cầm phít và tập lệnh"
 
 #: src/fe-gtk/plugingui.c:228
 msgid "_Load..."
-msgstr "_Учитај..."
+msgstr "_Nạp..."
 
 #: src/fe-gtk/plugingui.c:231
 msgid "_UnLoad"
-msgstr "У_клони"
+msgstr "_Bỏ nạp"
 
 #: src/fe-gtk/plugingui.c:235
 msgid "_Close"
-msgstr "_Затвори"
+msgstr "_Đóng"
 
 #: src/fe-gtk/rawlog.c:78
 msgid "Save rawlog"
-msgstr "Сними дневник"
+msgstr "Lưu bản ghi thô"
 
 #: src/fe-gtk/rawlog.c:94
 #, c-format
 msgid "X-Chat: Rawlog (%s)"
-msgstr "X-Chat: Дневник (%s)"
+msgstr "X-Chat: Bản ghi thô (%s)"
 
 #: src/fe-gtk/rawlog.c:123
 msgid "Clear rawlog"
-msgstr "Обриши дневник"
+msgstr "Xóa bản ghi thô"
 
 #: src/fe-gtk/rawlog.c:126
 msgid "Save rawlog..."
-msgstr "Сними дневник..."
+msgstr "Lưu bản ghi thô..."
 
 #: src/fe-gtk/search.c:47
 msgid "The window you opened this Search for doesn't exist anymore."
-msgstr "Прозор за ког сте покренули претрагу више не постоји."
+msgstr "Bạn mở việc tìm kiếm cho cửa sổ không còn có lại."
 
 #: src/fe-gtk/search.c:91
 msgid "X-Chat: Search"
-msgstr "X-Chat: Претрага"
+msgstr "X-Chat: Tìm kiếm"
 
 #: src/fe-gtk/search.c:100
 msgid "Find:"
-msgstr "Нађи:"
+msgstr "Tìm:"
 
 #: src/fe-gtk/search.c:114
 msgid "Find"
-msgstr "Нађи"
+msgstr "Tìm"
 
 #: src/fe-gtk/search.c:119
 msgid "Close"
-msgstr "Затвори"
+msgstr "Đóng"
 
 #: src/fe-gtk/servlistgui.c:161 src/fe-gtk/servlistgui.c:260
 msgid "New Network"
-msgstr "Нова мрежа"
+msgstr "mạng mới"
 
 #: src/fe-gtk/servlistgui.c:493
 #, c-format
 msgid "Really remove network \"%s\" and all its servers?"
-msgstr "Да ли заиста треба брисати мрежу \"%s\" и све сервере у њој?"
+msgstr "Bạn thật muốn bỏ mạng \"%s\" và tất cả máy chủ của nó ra không?"
 
 #: src/fe-gtk/servlistgui.c:614 src/fe-gtk/servlistgui.c:630
 msgid "User name and Real name cannot be left blank."
-msgstr "Име и право име не могу да буду празни."
+msgstr ""
 
 #: src/fe-gtk/servlistgui.c:981
 #, c-format
 msgid "X-Chat: Edit %s"
-msgstr "X-Chat: Уреди (%s)"
+msgstr "X-Chat: Hiệu chỉnh %s"
 
 #: src/fe-gtk/servlistgui.c:1000
 #, c-format
 msgid "Servers for %s"
-msgstr "Сервери за: %s"
+msgstr "Máy chủ cho %s"
 
 #: src/fe-gtk/servlistgui.c:1011
 msgid "Connect to selected server only"
-msgstr "Повежи се само са изабраним рачунарима"
+msgstr "Chỉ kết nối đến máy chủ đã chọn thôi"
 
 #: src/fe-gtk/servlistgui.c:1012
 msgid "Don't cycle through all the servers when the connection fails."
-msgstr "Не испитуј све рачунаре у списку када повезивање не успе."
+msgstr "Không quay lại qua tất cả máy chủ khi kết nối bị ngắt."
 
 #: src/fe-gtk/servlistgui.c:1014
 msgid "Your Details"
-msgstr "Ваши подаци"
+msgstr "Thông tin cá nhân"
 
 #: src/fe-gtk/servlistgui.c:1020
 msgid "Use global user information"
-msgstr "Користи главне податке о кориснику"
+msgstr "Sử dụng thông tin người dùng toàn cục"
 
 #: src/fe-gtk/servlistgui.c:1023 src/fe-gtk/servlistgui.c:1255
 msgid "_Nick name:"
-msgstr "_Надимак:"
+msgstr "Tên _hiệu:"
 
 #: src/fe-gtk/servlistgui.c:1027 src/fe-gtk/servlistgui.c:1276
 msgid "_User name:"
-msgstr "_Корисничко име:"
+msgstr "Tên _đăng nhập:"
 
 #: src/fe-gtk/servlistgui.c:1031
 msgid "Real na_me:"
-msgstr "Право _име:"
+msgstr "Tên _thật:"
 
 #: src/fe-gtk/servlistgui.c:1034
 msgid "Connecting"
-msgstr "Повезивање у току"
+msgstr "Đang kết nối"
 
 #: src/fe-gtk/servlistgui.c:1040
 msgid "Auto connect to this network at startup"
-msgstr "Повежи се аутоматски када се програм покрене"
+msgstr "Tự động kết nối đến mạng này khi khởi đông"
 
 #: src/fe-gtk/servlistgui.c:1042
 msgid "Use a proxy server"
-msgstr "Користи заступника (proxy)"
+msgstr "Sử dụng máy chủ ủy nhiệm"
 
 #: src/fe-gtk/servlistgui.c:1044
 msgid "Use SSL for all the servers on this network"
-msgstr "Користи SSL за све рачунаре у овој мрежи"
+msgstr "Sử dụng SSL cho mọi máy chủ trên mạng này"
 
 #: src/fe-gtk/servlistgui.c:1049
 msgid "Accept invalid SSL certificate"
-msgstr "Прихвати неважећи SSL сертификат."
+msgstr "Chấp nhận chứng nhận SSL không hợp lệ"
 
 #: src/fe-gtk/servlistgui.c:1055
 msgid "C_hannels to join:"
-msgstr "Приступи _каналима:"
+msgstr "_Kênh để vào:"
 
 #: src/fe-gtk/servlistgui.c:1057
 msgid "Channels to join, separated by commas, but not spaces!"
-msgstr "Канале треба раздвојити запетама, не размацима!"
+msgstr "Kênh để vào, phân ranh bằng dấu phẩy còn không có dấu cách"
 
 #: src/fe-gtk/servlistgui.c:1060
 msgid "Connect command:"
-msgstr "Пошаљи ову команду:"
+msgstr "Lệnh kết nối:"
 
 #: src/fe-gtk/servlistgui.c:1062
 msgid ""
@@ -4273,216 +4359,214 @@ msgid ""
 "this to LOAD -e <filename>, where <filename> is a text-file full of commands "
 "to execute."
 msgstr ""
-"Додатна команда која се извршава по повезивању. Ако Вам треба више од једне, "
-"овде унесите LOAD -e <ДАТОТЕКА>, где је <ДАТОТЕКА> име датотеке са командама "
-"које треба извршити."
+"Lệnh thêm để thi hành sau kết nối được. Nếu cần nhiều lệnh thì hãy lập lệnh "
+"này thành LOAD -e <tên_tập_tin>, mà tập tin ấy chứa danh sách lệnh để thi "
+"hành. (load - nạp)"
 
 #: src/fe-gtk/servlistgui.c:1065
 msgid "Nickserv password:"
-msgstr "Лозинка за nickserv:"
+msgstr "Mật khẩu máy chủ tên hiệu:"
 
 #: src/fe-gtk/servlistgui.c:1070
 msgid "Server password:"
-msgstr "Лозинка за сервер:"
+msgstr "Mật khẩu máy chủ:"
 
 #: src/fe-gtk/servlistgui.c:1072
 msgid "Password for the server, if in doubt, leave blank."
-msgstr ""
-"Лозинка за приступ серверу. Ако нисте сигурни шта овде треба да стоји, "
-"оставите празно."
+msgstr "Mật khẩu cho mấy chu: nếu không chắc thì không gõ gì."
 
 #: src/fe-gtk/servlistgui.c:1075
 msgid "Character set:"
-msgstr "Скуп знакова:"
+msgstr "Bộ ký tự:"
 
 #: src/fe-gtk/servlistgui.c:1148
 msgid "_Edit"
-msgstr "_Уреди"
+msgstr "_Hiệu chỉnh"
 
 #: src/fe-gtk/servlistgui.c:1229
 msgid "X-Chat: Server List"
-msgstr "X-Chat: Списак сервера"
+msgstr "X-Chat: Danh sách máy chủ"
 
 #: src/fe-gtk/servlistgui.c:1245
 msgid "User Information"
-msgstr "Подаци о кориснику"
+msgstr "Thông tin người dùng"
 
 #: src/fe-gtk/servlistgui.c:1262
 msgid "Second choice:"
-msgstr "Други избор:"
+msgstr "Chọn thứ hai:"
 
 #: src/fe-gtk/servlistgui.c:1269
 msgid "Third choice:"
-msgstr "Трећи избор:"
+msgstr "Chọn thứ ba:"
 
 #: src/fe-gtk/servlistgui.c:1283
 msgid "Rea_l name:"
-msgstr "_Право име:"
+msgstr "Tên _thật:"
 
 #: src/fe-gtk/servlistgui.c:1329
 msgid "Networks"
-msgstr "Мреже"
+msgstr "mạng"
 
 #: src/fe-gtk/servlistgui.c:1370
 msgid "Skip server list on startup"
-msgstr "Не приказуј овај списак при покретању програма"
+msgstr "Bỏ qua danh sách máy chủ khi khởi động"
 
 #: src/fe-gtk/servlistgui.c:1401
 msgid "_Edit..."
-msgstr "_Уреди..."
+msgstr "_Hiệu chỉnh..."
 
 #: src/fe-gtk/servlistgui.c:1408
 msgid "_Sort"
-msgstr "Поређај"
+msgstr "Sắp _xếp"
 
 #: src/fe-gtk/servlistgui.c:1424
 msgid "C_onnect"
-msgstr "_Повежи се"
+msgstr "_Kết nối"
 
 #: src/fe-gtk/servlistgui.c:1433
 msgid "Connect in new tab"
-msgstr "Повежи се у _новом језичку"
+msgstr "Kết nối trong thanh mới"
 
 #: src/fe-gtk/setup.c:95
 msgid "Text Box Appearance"
-msgstr "Изглед линије са текстом"
+msgstr "Hình thức hộp câu"
 
 #: src/fe-gtk/setup.c:96
 msgid "Font:"
-msgstr "Слова:"
+msgstr "Phông chữ:"
 
 #: src/fe-gtk/setup.c:97
 msgid "Background image:"
-msgstr "Позадина:"
+msgstr "Ảnh nền:"
 
 #: src/fe-gtk/setup.c:98
 msgid "Scrollback lines:"
-msgstr "Памти оволико линија:"
+msgstr "Dòng cuộn về:"
 
 #: src/fe-gtk/setup.c:99
 msgid "Transparent background"
-msgstr "Провидна позадина"
+msgstr "Nền trong suốt"
 
 #: src/fe-gtk/setup.c:100
 msgid "Indent nick names"
-msgstr "Уравнај надимке"
+msgstr "Thụt lệ tên hiệu"
 
 #: src/fe-gtk/setup.c:101
 msgid "Make nick names right-justified"
-msgstr "Уравнај надимке по десној страни"
+msgstr "Sắp chữ các tên hiệu xuống bên phải"
 
 #: src/fe-gtk/setup.c:102
 msgid "Tint (shade) transparency"
-msgstr "Провидност уз претапање"
+msgstr "Bóng độ trong suốttra"
 
 #: src/fe-gtk/setup.c:103
 msgid "Colored nick names"
-msgstr "Обоји имена"
+msgstr "Tên hiệu có màu"
 
 #: src/fe-gtk/setup.c:104
 msgid "Give each person on IRC a different color"
-msgstr "Додели свакој особи на ИРЦ-у различиту боју"
+msgstr "Cho mỗi người trên IRC một màu khác"
 
 #: src/fe-gtk/setup.c:105
 msgid "Strip mIRC colors"
-msgstr "Уклањај mIRC боје"
+msgstr "Tước màu mIRC"
 
 #: src/fe-gtk/setup.c:106
 msgid "Show marker line"
-msgstr "Прикажи линију за обележавање"
+msgstr "Hiển thị dòng đánh dấu"
 
 #: src/fe-gtk/setup.c:107
 msgid "Insert a red line after the last read text."
-msgstr "Убаци црвену линију после последње прочитане линије текста."
+msgstr "Chèn dòng màu đỏ sau câu đã đọc trước."
 
 #: src/fe-gtk/setup.c:108
 msgid "Tint Settings"
-msgstr "Подешавања провидности"
+msgstr "Thiết lập bóng"
 
 #: src/fe-gtk/setup.c:109
 msgid "Red:"
-msgstr "Црвенa:"
+msgstr "Màu đỏ:"
 
 #: src/fe-gtk/setup.c:110
 msgid "Green:"
-msgstr "Зеленa:"
+msgstr "Màu xanh lá cây:"
 
 #: src/fe-gtk/setup.c:111
 msgid "Blue:"
-msgstr "Плава:"
+msgstr "Màu xanh nước biển:"
 
 #: src/fe-gtk/setup.c:113 src/fe-gtk/setup.c:312
 msgid "Time Stamps"
-msgstr "Текст датума"
+msgstr "Nhãn thời gian"
 
 #: src/fe-gtk/setup.c:114
 msgid "Time stamp format:"
-msgstr "Формат датума:"
+msgstr "Dạng nhãn thời gian:"
 
 #: src/fe-gtk/setup.c:115
 msgid "See strftime manpage for details."
-msgstr "Погледајте упутство за strftime."
+msgstr "Hãy sử dụng lệnh man strftime để tìm thấy chi tiết."
 
 #: src/fe-gtk/setup.c:116
 msgid "Enable time stamps"
-msgstr "Убацуј време у дневнике"
+msgstr "Hiệu lực nhãn thời gian"
 
 #: src/fe-gtk/setup.c:123
 msgid "Nick Completion"
-msgstr "Суфикс за допуну имена:"
+msgstr "Xong tên hiệu"
 
 #: src/fe-gtk/setup.c:124
 msgid "Automatic nick completion"
-msgstr "Аутоматски допуни име"
+msgstr "Tự động gõ xong tên hiệu."
 
 #: src/fe-gtk/setup.c:125
 msgid "Completes nick names without using the TAB key"
-msgstr "Допуњава надимке без притиска на тастер TAB"
+msgstr "Gõ xong tên hiêu mà không cần sử dụng phím Tab"
 
 #: src/fe-gtk/setup.c:126
 msgid "Nick completion suffix:"
-msgstr "Суфикс за допуну имена:"
+msgstr "Hậu tố xong tên hiệu:"
 
 #: src/fe-gtk/setup.c:128
 msgid "Input Box Codes"
-msgstr "Кодови при уносу текста"
+msgstr "Mã hộp gõ"
 
 #: src/fe-gtk/setup.c:129
 #, c-format
 msgid "Interpret %nnn as an ASCII value"
-msgstr "Тумачи %nnn као ASCII вредност"
+msgstr "Giải thích %nnn là một giá trị ASCII"
 
 #: src/fe-gtk/setup.c:130
 msgid "Interpret %C, %B as Color, Bold etc"
-msgstr "Тумачи %C, %B као боју, подебљан испис итд."
+msgstr "Giải thích %C, %B là Màu, In đậm v.v."
 
 #: src/fe-gtk/setup.c:132
 msgid "Input Box Appearance"
-msgstr "Изглед поља за унос текста"
+msgstr "Hình thức hộp gõ"
 
 #: src/fe-gtk/setup.c:133 src/fe-gtk/setup.c:163
 msgid "Use the Text box font and colors"
-msgstr "Користи боје и писмо из кућице за текст"
+msgstr "Sử dụng phông chữ và màu của hộp Câu"
 
 #: src/fe-gtk/setup.c:140
 msgid "Off"
-msgstr "Искључено"
+msgstr "Tất"
 
 #: src/fe-gtk/setup.c:141
 msgid "Graph"
-msgstr "Графичко"
+msgstr "Đồ thị"
 
 #: src/fe-gtk/setup.c:142
 msgid "Info text"
-msgstr "Текстуални"
+msgstr "Câu thông tin"
 
 #: src/fe-gtk/setup.c:143
 msgid "Both"
-msgstr "Оба"
+msgstr "Cả hai"
 
 #: src/fe-gtk/setup.c:149
 msgid "A-Z, Ops first"
-msgstr "A-Z, опови први"
+msgstr "A-Z, Thao tác viên trước"
 
 #: src/fe-gtk/setup.c:150
 msgid "A-Z"
@@ -4490,7 +4574,7 @@ msgstr "A-Z"
 
 #: src/fe-gtk/setup.c:151
 msgid "Z-A, Ops last"
-msgstr "Z-A, опови последњи"
+msgstr "Z-A, Thao tác viên sau"
 
 #: src/fe-gtk/setup.c:152
 msgid "Z-A"
@@ -4498,388 +4582,391 @@ msgstr "Z-A"
 
 #: src/fe-gtk/setup.c:153
 msgid "Unsorted"
-msgstr "Неуређено"
+msgstr "Chưa sắp xếp"
 
 #: src/fe-gtk/setup.c:160
 msgid "User list sorted by:"
-msgstr "Уреди списак корисника према:"
+msgstr "Sắp xếp danh sách người dùng theo:"
 
 #: src/fe-gtk/setup.c:161
 msgid "Show hostnames in user list"
-msgstr "Покажи имена рачунара"
+msgstr "Hiển thị tên máy chủ trong danh sách người dùng"
 
 #: src/fe-gtk/setup.c:162
 msgid "User list buttons enabled"
-msgstr "Прикажи корисничку дугмад"
+msgstr "Mọi cái nút trên danh sách người dùng là hoặt động"
 
 #: src/fe-gtk/setup.c:164
 msgid "Resizable user list"
-msgstr "Променљива величина списка корисника"
+msgstr "Danh sách người dùng có thể thay đổi cỡ"
 
 #: src/fe-gtk/setup.c:166
 msgid "Away tracking"
-msgstr "Праћење одсуства"
+msgstr "Theo dõi Vắng mặt"
 
 #: src/fe-gtk/setup.c:167
 msgid "Enable away tracking"
-msgstr "Укључи праћење одсустава"
+msgstr "Hiệu lực Theo dõi Vắng mặt"
 
 #: src/fe-gtk/setup.c:168
 msgid "On channels smaller than:"
-msgstr "Прати одсутне на каналима са мање од:"
+msgstr "Trên kênh nhỏ hơn:"
 
 #: src/fe-gtk/setup.c:170
 msgid "Action Upon Double Click"
-msgstr "Шта извршити на двоструки клик"
+msgstr "Hành động khi nhắp đôi"
 
 #: src/fe-gtk/setup.c:171
 msgid "Execute command:"
-msgstr "Пошаљи ову команду:"
+msgstr "Thi hành lệnh:"
 
 #: src/fe-gtk/setup.c:173
 msgid "Extra Gadgets"
-msgstr "Посебне справице"
+msgstr "Đồ phụ tùng nhỏ thêm"
 
 #: src/fe-gtk/setup.c:174
 msgid "Lag meter:"
-msgstr "Мерење одзива:"
+msgstr "Bộ đo trễ:"
 
 #: src/fe-gtk/setup.c:175
 msgid "Throttle meter:"
-msgstr "Мерење протока:"
+msgstr "Bộ đo van tiết lưu:"
 
 #: src/fe-gtk/setup.c:182
 msgid "Windows"
-msgstr "Прозори"
+msgstr "Cửa sổ"
 
 #: src/fe-gtk/setup.c:183 src/fe-gtk/setup.c:207 src/fe-gtk/setup.c:1446
 msgid "Tabs"
-msgstr "Језичци"
+msgstr "Thanh"
 
 #: src/fe-gtk/setup.c:189
 msgid "Bottom"
-msgstr "Доле"
+msgstr "Đáy"
 
 #: src/fe-gtk/setup.c:190
 msgid "Top"
-msgstr "Горе"
+msgstr "Đầu"
 
 #: src/fe-gtk/setup.c:191
 msgid "Left"
-msgstr "Слева"
+msgstr "Bên trái"
 
 #: src/fe-gtk/setup.c:192
 msgid "Right"
-msgstr "Здесна"
+msgstr "Bên phải"
 
 #: src/fe-gtk/setup.c:193
 msgid "Hidden"
-msgstr "Сакриј"
+msgstr "Đã ẩn"
 
 #: src/fe-gtk/setup.c:200
 msgid "Always"
-msgstr "Увек"
+msgstr "Luôn luôn"
 
 #: src/fe-gtk/setup.c:201
 msgid "Only requested tabs"
-msgstr "Само жељени језичци"
+msgstr "Chỉ thanh đã yêu cầu"
 
 #: src/fe-gtk/setup.c:208
 msgid "Open an extra tab for server messages"
-msgstr "Отвори посебан језичак за поруке са сервера"
+msgstr "Mở thanh thêm cho thông điệp máy chủ"
 
 #: src/fe-gtk/setup.c:209
 msgid "Open an extra tab for server notices"
-msgstr "Отвори посебан језичак за вести са сервера"
+msgstr "Mở thanh thêm cho thông báo máy chủ"
 
 #: src/fe-gtk/setup.c:210
 msgid "Small tabs"
-msgstr "Мали језичци"
+msgstr "Thanh nhỏ"
 
 #: src/fe-gtk/setup.c:211
 msgid "Sort tabs in alphabetical order"
-msgstr "Уреди језичке лексикографски"
+msgstr "Sắp xếp thanh theo thứ tự abc"
 
 #: src/fe-gtk/setup.c:212
 msgid "Focus new tabs:"
-msgstr "Фокусирај нове језичке:"
+msgstr "Tiêu điểm mọi thanh mới:"
 
 #: src/fe-gtk/setup.c:213
 msgid "Shorten tab labels to:"
-msgstr "Скрати језичке на:"
+msgstr "Giảm nhãn thanh thành:"
 
 #: src/fe-gtk/setup.c:213
 msgid "letters."
-msgstr "слова"
+msgstr "chữ."
 
 #: src/fe-gtk/setup.c:215
 msgid "Tabs Location"
-msgstr "Смештање језичака"
+msgstr "Vị trí thanh"
 
 #: src/fe-gtk/setup.c:216
 msgid "Show tabs at:"
-msgstr "Прикажи језичке:"
+msgstr "Hiển thị thanh tại:"
 
 #: src/fe-gtk/setup.c:218
 msgid "Tabs or Windows"
-msgstr "Језичци или прозори"
+msgstr "Thanh hay cửa sổ"
 
 #: src/fe-gtk/setup.c:219
 msgid "Open channels in:"
-msgstr "Место за приказ нових канала:"
+msgstr "Mở kênh trong:"
 
 #: src/fe-gtk/setup.c:220
 msgid "Open dialogs in:"
-msgstr "Место за прикаѕ нових разговора:"
+msgstr "Mở đôi thoại trong:"
 
 #: src/fe-gtk/setup.c:221
 msgid "Open utilities in:"
-msgstr "Место за приказ помоћних порука:"
+msgstr "Mở tiện ích trong:"
 
 #: src/fe-gtk/setup.c:221
 msgid "Open DCC, Ignore, Notify etc, in tabs or windows?"
-msgstr "DCC, Ignore и Notify се отварају у језичцима или прозорима?"
+msgstr ""
+"Mở trò chuyện trực tiếp (DCC), Bỏ qua, Thông báo v.v. trong thanh hay cửa sổ?"
 
 #: src/fe-gtk/setup.c:228
 msgid "Files and Directories"
-msgstr "Датотеке и директоријуми"
+msgstr "Tập tin và Thư mục"
 
 #: src/fe-gtk/setup.c:229
 msgid "Download files to:"
-msgstr "Снимај датотеке у:"
+msgstr "Tải tập tin về:"
 
 #: src/fe-gtk/setup.c:230
 msgid "Move completed files to:"
-msgstr "Помери пренесене датотеке у дир.:"
+msgstr "Di động tập tin tải xong vào:"
 
 #: src/fe-gtk/setup.c:231
 msgid "Save nick name in filenames"
-msgstr "Запамти надимке у именима датотекама"
+msgstr "Lưu tên hiệu trong tên tập tin"
 
 #: src/fe-gtk/setup.c:232
 msgid "Convert spaces to underscore before sending"
-msgstr "Пребаци размаке у доње црте пре слања"
+msgstr "Chuyển đổi mọi chữ cach thành dấu gạch dưới trước khi gởi"
 
 #: src/fe-gtk/setup.c:234
 msgid "Network Settings"
-msgstr "Подешавања мреже"
+msgstr "Thiết lập mạng"
 
 #: src/fe-gtk/setup.c:235
 msgid "DCC IP address:"
-msgstr "DCC IP адреса:"
+msgstr "Địa chỉ IP DCC:"
 
 #: src/fe-gtk/setup.c:236
 msgid "Claim you are at this address when offering files."
-msgstr "Пријави ову адресу при нуђењу датотека."
+msgstr "Sử dụng địa chỉ này khi đưa ra tập tin."
 
 #: src/fe-gtk/setup.c:237
 msgid "First DCC send port:"
-msgstr "Први порт за слање DCC:"
+msgstr "Cổng gởi DCC thứ nhất:"
 
 #: src/fe-gtk/setup.c:238
 msgid "Last DCC send port:"
-msgstr "Последњи порт за слање DCC"
+msgstr "Cổng gởi DCC cuối cùng:"
 
 #: src/fe-gtk/setup.c:239
 msgid "(Leave ports at zero for full range)."
-msgstr "(за пуни опсег вредност треба да је 0)"
+msgstr "(Hãy giữ mọi cổng có giá trị số không cho miền toàn)."
 
 #: src/fe-gtk/setup.c:240
 msgid "Get my address from the IRC server"
-msgstr "Сазнај IP овог рачунара од сервера"
+msgstr "Gọi địa chỉ tôi từ máy chủ IRC"
 
 #: src/fe-gtk/setup.c:241
 msgid ""
 "Asks the IRC server for your real address. Use this if you have a 192.168.*."
 "* address!"
 msgstr ""
-"Упитајте ИРЦ сервер да сазнате вашу адресу. Корисни уколико је права адреса "
-"из опсега 192.168.*.*!"
+"Gọi địa chỉ thật của bạn từ máy chủ IRC. Hãy sử dụng tùy chon này nếu có địa "
+"chỉ số 192.168.*.*"
 
 #: src/fe-gtk/setup.c:243
 msgid "Maximum File Transfer Speeds (bytes per second)"
-msgstr "Највеће брзине преноса (бајт/секунда)"
+msgstr "Tối đa tốc độ chuyển giao tập tin (byte mỗi giây)"
 
 #: src/fe-gtk/setup.c:244
 msgid "One upload:"
-msgstr "Једно слање:"
+msgstr "Một việc tải lên:"
 
 #: src/fe-gtk/setup.c:245 src/fe-gtk/setup.c:247
 msgid "Maximum speed for one transfer"
-msgstr "Макс. брзина за један пренос"
+msgstr "Tối đa tốc độ cho môt việc chuyển giao"
 
 #: src/fe-gtk/setup.c:246
 msgid "One download:"
-msgstr "Једно преузимање:"
+msgstr "Một việc tải xuống:"
 
 #: src/fe-gtk/setup.c:248
 msgid "All uploads combined:"
-msgstr "Сва слања:"
+msgstr "Tất cả việc tải lên phối hợp nhau:"
 
 #: src/fe-gtk/setup.c:249 src/fe-gtk/setup.c:251
 msgid "Maximum speed for all files"
-msgstr "Макс. брзина саобраћаја за све датотеке"
+msgstr "Tối đa tốc độ cho tất cả tập tin"
 
 #: src/fe-gtk/setup.c:250
 msgid "All downloads combined:"
-msgstr "Сва преузимања:"
+msgstr "Tất ca việc tải xuống phối hợp nhau:"
 
 #: src/fe-gtk/setup.c:258
 msgid "Default Messages"
-msgstr "Подразумеване поруке"
+msgstr "Tin nhẳn mặc định"
 
 #: src/fe-gtk/setup.c:259
 msgid "Quit:"
-msgstr "Крај:"
+msgstr "Thoát:"
 
 #: src/fe-gtk/setup.c:260
 msgid "Leave channel:"
-msgstr "Напусти канал:"
+msgstr "Rời kênh đi:"
 
 #: src/fe-gtk/setup.c:261
 msgid "Away:"
-msgstr "Одсутан:"
+msgstr "Vắng mặt:"
 
 #: src/fe-gtk/setup.c:263
 msgid "Away"
-msgstr "Одсутан"
+msgstr "Vắng mặt"
 
 #: src/fe-gtk/setup.c:264
 msgid "Announce away messages"
-msgstr "Испиши поруке о одсуству"
+msgstr "Thông báo tin nhẳn vắng mặt nào"
 
 #: src/fe-gtk/setup.c:265
 msgid "Announce your away messages to all channels"
-msgstr "Поруку о одсуству шаљи на све канале"
+msgstr "Thông báo tin nhẳn vắng mặt của bạn trên mọi kênh"
 
 #: src/fe-gtk/setup.c:266
 msgid "Show away once"
-msgstr "Само једном објави одсутност"
+msgstr "Hiển thị Vắng mặt một lần"
 
 #: src/fe-gtk/setup.c:266
 msgid "Show identical away messages only once"
-msgstr "Исте поруке се не понављају"
+msgstr "Hiển thị tin nhẳn vắng mặt trùng chỉ một lần"
 
 #: src/fe-gtk/setup.c:267
 msgid "Automatically unmark away"
-msgstr "Склони AWAY кад се вратим"
+msgstr "Tự động bỏ nhãn Vắng mặt"
 
 #: src/fe-gtk/setup.c:267
 msgid "Unmark yourself as away before sending messages"
-msgstr "Објави повратак пре слања порука"
+msgstr "Bỏ nhãn Vắng mặt của bạn khi gởi tin nhẳn"
 
 #: src/fe-gtk/setup.c:270
 msgid "(Can be a text file relative to ~/.xchat2/)."
-msgstr "(Можете користити име датотеке релативно у одн. на ~/.xchat2/)."
+msgstr "(Có thể là tâp tin văn bản cân xứng với ~/.xchat2/)."
 
 #: src/fe-gtk/setup.c:272
 msgid "(Can be a text file relative to config dir)."
-msgstr "(Може бити релативно у односу на дир. са подешавањима)."
+msgstr "(Có thể là tâp tin văn bản cân xứng với thư mục cấu hình)."
 
 #: src/fe-gtk/setup.c:276
 msgid "Alerts"
-msgstr "Узбуне"
+msgstr "Cảnh giác"
 
 #: src/fe-gtk/setup.c:278
 msgid "Flash taskbar on highlighted messages"
-msgstr "Бљесак оквира прозора при означеним порукама"
+msgstr "Chớp thanh việc trên tin nhẳn có nổi bật"
 
 #: src/fe-gtk/setup.c:280
 msgid "Beep on highlighted messages"
-msgstr "Звук при означеним порукама"
+msgstr "Phát tiếng bíp trên tin nhẳn có nổi bật"
 
 #: src/fe-gtk/setup.c:281
 msgid "Extra words to highlight on:"
-msgstr "Речи које треба нагласити:"
+msgstr "Từ thêm để nổi bật:"
 
 #: src/fe-gtk/setup.c:282
 msgid "(Separate multiple words with commas)."
-msgstr "(Речи раздвојите запетама)."
+msgstr "(Phân ranh nhiều từ bằng dấu phẩy)."
 
 #: src/fe-gtk/setup.c:283
 msgid "Beep on private messages"
-msgstr "Звук на приватну поруку"
+msgstr "Phát tiếng bíp khi nhận tin nhẳn riêng"
 
 #: src/fe-gtk/setup.c:284
 msgid "Beep on channel messages"
-msgstr "Звук при порукама на каналу"
+msgstr "Phát tiếng bíp khi nhận tin nhẳn kênh"
 
 #: src/fe-gtk/setup.c:291
 msgid "Advanced Settings"
-msgstr "Напредна подешавања"
+msgstr "Thiết lập cấp cao"
 
 #: src/fe-gtk/setup.c:292
 msgid "Auto reconnect delay:"
-msgstr "Пауза пре новог повезивања:"
+msgstr "Trễ khi tự động kết nối lại:"
 
 #: src/fe-gtk/setup.c:293
 msgid "Display MODEs in raw form"
-msgstr "Приказуј приступе у сировом облику"
+msgstr "Trình bày CHẾ ĐỘ dạng thô"
 
 #: src/fe-gtk/setup.c:294
 msgid "Whois on notify"
-msgstr "Изврши WHOIS кад се појави неко посматран"
+msgstr "Sử dụng dịch vụ Whois (là ai?) khi thông báol"
 
 #: src/fe-gtk/setup.c:294
 msgid "Sends a /WHOIS when a user comes online in your notify list"
-msgstr "Шаље /WHOIS када се појави име са списка посматраних"
+msgstr ""
+"Gởi một lệnh /WHOIS khi người dùng mới trực tuyến trong danh sách thông báo "
+"của bạn"
 
 #: src/fe-gtk/setup.c:295
 msgid "Hide join and part messages"
-msgstr "Сакриј поруке о доласку и одласку"
+msgstr "Ẩn mọi tin nhẳn vào/rời"
 
 #: src/fe-gtk/setup.c:295
 msgid "Hide channel join/part messages by default"
-msgstr "Увек сакривај поруке о доласку и одласку"
+msgstr "Mặc định là ẩn tin nhẳn vào/rời kênh"
 
 #: src/fe-gtk/setup.c:296
 msgid "Auto Open DCC Windows"
-msgstr "Непосредне акције (DCC) у посебан прозор"
+msgstr "Tự động mở cửa sổ DCC"
 
 #: src/fe-gtk/setup.c:297
 msgid "Send window"
-msgstr "Прозор за слање"
+msgstr "Cửa sô Gởi"
 
 #: src/fe-gtk/setup.c:298
 msgid "Receive window"
-msgstr "Прозор за пријем"
+msgstr "Cửa sổ Nhận"
 
 #: src/fe-gtk/setup.c:299
 msgid "Chat window"
-msgstr "Прозор за разговор"
+msgstr "Cửa sổ Trò chuyện"
 
 #: src/fe-gtk/setup.c:307 src/fe-gtk/setup.c:1451
 msgid "Logging"
-msgstr "Записивање"
+msgstr "Tạo bản ghi"
 
 #: src/fe-gtk/setup.c:308
 msgid "Enable logging of conversations"
-msgstr "Дозволи бележење разговора"
+msgstr "Tạo bản ghi của đôi thoại"
 
 #: src/fe-gtk/setup.c:309
 msgid "Log filename mask:"
-msgstr "Шаблон за име дневника:"
+msgstr "Ghi mặt nạ tên tập tin:"
 
 #: src/fe-gtk/setup.c:310
 #, c-format
 msgid "(%s=Server %c=Channel %n=Network)."
-msgstr "(%s=сервер %c=канал %n=мрежа)."
+msgstr "(%s=Máy chủ %c=Kênh %n=mạng)."
 
 #: src/fe-gtk/setup.c:313
 msgid "Insert timestamps in logs"
-msgstr "Уписуј у дневнике време када су поруке стигле"
+msgstr "Nhãn thời gian trong bản ghi"
 
 #: src/fe-gtk/setup.c:314
 msgid "Log timestamp format:"
-msgstr "Формат за запис датума у дневник:"
+msgstr "Dạng nhãn thời gian trong ban ghi:"
 
 #: src/fe-gtk/setup.c:315
 msgid "(See strftime manpage for details)."
-msgstr "(Детаљније у упутству за strftime)."
+msgstr "(Hãy sử dụng lệnh man strftime để tìm thấy chi tiết)."
 
 #: src/fe-gtk/setup.c:322
 msgid "(Disabled)"
-msgstr "(искључено)"
+msgstr "(Không hoặt đông)"
 
 #: src/fe-gtk/setup.c:323
 msgid "Wingate"
@@ -4899,308 +4986,301 @@ msgstr "HTTP"
 
 #: src/fe-gtk/setup.c:332
 msgid "Your Address"
-msgstr "Ваша адреса"
+msgstr "Địa chỉ của bạn"
 
 #: src/fe-gtk/setup.c:333
 msgid "Bind to:"
-msgstr "Повежи се са:"
+msgstr "Ánh xạ với:"
 
 #: src/fe-gtk/setup.c:334
 msgid "(Only useful for computers with multiple addresses)."
-msgstr "(корисно је само ако рачунар има више адреса)"
+msgstr "(Chỉ có ích trên máy vi tính có nhiều địa chỉ)."
 
 #: src/fe-gtk/setup.c:336
 msgid "Proxy Server"
-msgstr "Заступник (proxy):"
+msgstr "Máy chủ ủy nhiệm"
 
 #: src/fe-gtk/setup.c:337
 msgid "Hostname:"
-msgstr "Име рач.:"
+msgstr "Tên máy chủ:"
 
 #: src/fe-gtk/setup.c:338
 msgid "Username:"
-msgstr "Корисничко име:"
+msgstr "Tên đăng nhập:"
 
 #: src/fe-gtk/setup.c:339
 msgid "Password:"
-msgstr "Лозинка:"
+msgstr "Mật khẩu:"
 
 #: src/fe-gtk/setup.c:340
 msgid "Port:"
-msgstr "Порт:"
+msgstr "Cổng:"
 
 #: src/fe-gtk/setup.c:341
 msgid "Type:"
-msgstr "Врста:"
+msgstr "Loại:"
 
 #: src/fe-gtk/setup.c:343
 msgid "Authenticate to the proxy server (HTTP and Socks5)"
-msgstr "Представи се заступнику (само за HTTP и Socks5)"
+msgstr "Xác thức với máy chủ ủy nhiệm (HTTP và Socks5)"
 
 #: src/fe-gtk/setup.c:566
 msgid "(disabled)"
-msgstr "(искључено)"
+msgstr "(không hoặt động)"
 
 #: src/fe-gtk/setup.c:567
 msgid "A star (*)"
-msgstr "Звездица (*)"
+msgstr "Một dấu sao (*)"
 
 #: src/fe-gtk/setup.c:568
 msgid "A red star (*)"
-msgstr "Црвена звездица (*)"
+msgstr "Một dấu sao màu đỏ (*)"
 
 #: src/fe-gtk/setup.c:569
 msgid "Underlined"
-msgstr "Подвучено"
+msgstr "Đã gạch dưới"
 
 #: src/fe-gtk/setup.c:666
 msgid "Select an Image File"
-msgstr "Одабери слику"
+msgstr "Chọn tập tin ảnh"
 
 #: src/fe-gtk/setup.c:702
 msgid "Select font"
-msgstr "Одабери писмо"
+msgstr "Chọn phông chữ"
 
 #: src/fe-gtk/setup.c:776
 msgid "Browse..."
-msgstr "Прегледај..."
+msgstr "Duyệt..."
 
 #: src/fe-gtk/setup.c:893
 msgid "Mark identified users with:"
-msgstr "Означи идентификоване кориснике са:"
+msgstr "Nhãn người dùng đã nhận biết với:"
 
 #: src/fe-gtk/setup.c:895
 msgid "Mark not-identified users with:"
-msgstr "Означи неидентификоване кориснике са:"
+msgstr "Nhãn người dùng chưa nhận biết với:"
 
 #: src/fe-gtk/setup.c:958
 msgid "Select color"
-msgstr "Одабери боју"
+msgstr "Chọn màu"
 
 #: src/fe-gtk/setup.c:1038
 msgid "Text Colors"
-msgstr "Боје текста"
+msgstr "Màu câu"
 
 #: src/fe-gtk/setup.c:1040
 msgid "mIRC colors:"
-msgstr "mIRC боје:"
+msgstr "Màu mIRC:"
 
 #: src/fe-gtk/setup.c:1048
 msgid "Extra colors:"
-msgstr "Додатне боје:"
+msgstr "Màu thêm:"
 
 #: src/fe-gtk/setup.c:1056 src/fe-gtk/setup.c:1061
 msgid "Foreground:"
-msgstr "Први план:"
+msgstr "Tiền cảnh:"
 
 #: src/fe-gtk/setup.c:1057 src/fe-gtk/setup.c:1062
 msgid "Background:"
-msgstr "Позадина:"
+msgstr "Nền:"
 
 #: src/fe-gtk/setup.c:1059
 msgid "Marking Text"
-msgstr "Истицање текста"
+msgstr "Đánh dấu câu"
 
 #: src/fe-gtk/setup.c:1064
 msgid "Interface Colors"
-msgstr "Боје сучеља"
+msgstr "Màu giao diện"
 
 #: src/fe-gtk/setup.c:1066
 msgid "New data:"
-msgstr "Нови подаци:"
+msgstr "Dữ liệu mới:"
 
 #: src/fe-gtk/setup.c:1067
 msgid "Marker line:"
-msgstr "Линија ознаке:"
+msgstr "Dòng đánh dấu:"
 
 #: src/fe-gtk/setup.c:1068
 msgid "New message:"
-msgstr "Нова порука:"
+msgstr "Tin nhẳn mới:"
 
 #: src/fe-gtk/setup.c:1069
 msgid "Away user:"
-msgstr "Одсутан корисник:"
+msgstr "Người dùng vắng mặt:"
 
 #: src/fe-gtk/setup.c:1070
 msgid "Highlight:"
-msgstr "Истицање:"
+msgstr "Nổi bật:"
 
 #: src/fe-gtk/setup.c:1166 src/fe-gtk/textgui.c:337
 msgid "Event"
-msgstr "Догађај"
+msgstr "Sự kiện"
 
 #: src/fe-gtk/setup.c:1172
 msgid "Sound file"
-msgstr "Звучни запис:"
+msgstr "Tập tin âm thanh"
 
 #: src/fe-gtk/setup.c:1207
 msgid "Select a sound file"
-msgstr "Изаберите име звучног записа"
+msgstr "Chon tập tin âm thanh"
 
 #: src/fe-gtk/setup.c:1279
 msgid "Sound playing method:"
-msgstr "Начин пуштања звука:"
+msgstr "Cách phát âm thanh:"
 
 #: src/fe-gtk/setup.c:1287
 msgid "External sound playing _program:"
-msgstr "Вањски програм за пуштање звука:"
+msgstr "Chương trình bên ngoài _phát âm thanh:"
 
 #: src/fe-gtk/setup.c:1305
 msgid "_External program"
-msgstr "Спољњи програм"
+msgstr "Trình b_ên ngoài"
 
 #: src/fe-gtk/setup.c:1315
 msgid "_Automatic"
-msgstr "Аутоматски"
+msgstr "_Tự động"
 
 #: src/fe-gtk/setup.c:1328
 msgid "Sound files _directory:"
-msgstr "Директоријум за звучне записе:"
+msgstr "Thư _mục tập tin âm thanh:"
 
 #: src/fe-gtk/setup.c:1367
 msgid "Sound file:"
-msgstr "Звучни запис:"
+msgstr "Tập tin âm thanh:"
 
 #: src/fe-gtk/setup.c:1382
 msgid "_Browse..."
-msgstr "Прегледај..."
+msgstr "_Duyệt..."
 
 #: src/fe-gtk/setup.c:1393
 msgid "_Play"
-msgstr "Пусти"
+msgstr "_Phát"
 
 #: src/fe-gtk/setup.c:1442
 msgid "Interface"
-msgstr "Сучеље"
+msgstr "Giao diện"
 
 #: src/fe-gtk/setup.c:1443
 msgid "Text box"
-msgstr "Унос текста"
+msgstr "Hộp câu"
 
 #: src/fe-gtk/setup.c:1444
 msgid "Input box"
-msgstr "Улазни прозор"
+msgstr "Hộp gõ"
 
 #: src/fe-gtk/setup.c:1445
 msgid "User list"
-msgstr "Списак корисника"
+msgstr "Danh sách người dùng"
 
 #: src/fe-gtk/setup.c:1447
 msgid "Colors"
-msgstr "Боје"
+msgstr "Màu"
 
 #: src/fe-gtk/setup.c:1449
 msgid "Chatting"
-msgstr "Разговори"
+msgstr "Trò chuyện"
 
 #: src/fe-gtk/setup.c:1450
 msgid "General"
-msgstr "Опште"
+msgstr "Chung"
 
 #: src/fe-gtk/setup.c:1452
 msgid "Sound"
-msgstr "Звук"
+msgstr "Âm thanh"
 
 #: src/fe-gtk/setup.c:1455
 msgid "Network"
-msgstr "Мрежа"
+msgstr "mạng"
 
 #: src/fe-gtk/setup.c:1456
 msgid "Network setup"
-msgstr "Подешавање мреже"
+msgstr "Thiết lập mạng"
 
 #: src/fe-gtk/setup.c:1457
 msgid "File transfers"
-msgstr "Пренос датотека"
+msgstr "Chuyển giao tập tin"
 
 #: src/fe-gtk/setup.c:1564
 msgid "Categories"
-msgstr "Врсте"
+msgstr "Loại"
 
 #: src/fe-gtk/setup.c:1694
 msgid "Some settings were changed that require a restart to take full effect."
-msgstr "Неке измене ће постати видљиве тек када следећи пут покренете програм."
+msgstr ""
+"Đã thay đổi một sô thiết lập nên cần phải khởi động lại để sử dụng chúng cho "
+"đúng."
 
 #: src/fe-gtk/setup.c:1722
 msgid "X-Chat: Preferences"
-msgstr "X-Chat: Поставке"
+msgstr "X-Chat: Sở thích"
 
 #: src/fe-gtk/textgui.c:160
 msgid "There was an error parsing the string"
-msgstr "Грешка при читању текста"
+msgstr "Gặp lỗi khi phân tách chuỗi ấy"
 
 #: src/fe-gtk/textgui.c:168
 #, c-format
 msgid "This signal is only passed %d args, $%d is invalid"
-msgstr "Овај сигнал је допремио %d аргумената, $%d није исправан"
+msgstr "Tín hiệu này chỉ gởi %d đối sô, $%d không hợp lệ"
 
 #: src/fe-gtk/textgui.c:276 src/fe-gtk/textgui.c:299
 msgid "Print Texts File"
-msgstr "Штампај датотеку текстова"
+msgstr "In tập tin câu"
 
 #: src/fe-gtk/textgui.c:340
 msgid "$ Number"
-msgstr "$ број"
+msgstr "$ Số"
 
 #: src/fe-gtk/textgui.c:350
 msgid "Edit Events"
-msgstr "Уреди догађаје"
+msgstr "Hiệu chỉnh sự kiện"
 
 #: src/fe-gtk/textgui.c:418
 msgid "Save As"
-msgstr "Сними као"
+msgstr "Lưu như là"
 
 #: src/fe-gtk/textgui.c:423
 msgid "Load From"
-msgstr "Учитај из"
+msgstr "Nạp từ"
 
 #: src/fe-gtk/textgui.c:428
 msgid "Test All"
-msgstr "Пробај све"
+msgstr "Thử tất cả"
 
 #: src/fe-gtk/urlgrab.c:97
 msgid "URL"
-msgstr "URL"
+msgstr "Địa chỉ Mạng"
 
 #: src/fe-gtk/urlgrab.c:147
 msgid "Select a file to save to"
-msgstr "Избор датотеке за снимање"
+msgstr "Chọn lưu vào tập tin nào?"
 
 #: src/fe-gtk/urlgrab.c:187
 msgid "X-Chat: URL Grabber"
-msgstr "X-Chat: Памћење URL-ова"
+msgstr "X-Chat: Lấy địa chỉ Mạng"
 
 #: src/fe-gtk/urlgrab.c:200
 msgid "Clear list"
-msgstr "Обриши списак"
+msgstr "Xóa danh sách"
 
 #: src/fe-gtk/urlgrab.c:202
 msgid "Copy"
-msgstr "Пресликај"
+msgstr "Sao chép"
 
 #: src/fe-gtk/urlgrab.c:204
 msgid "Save list to a file"
-msgstr "Сними списак у датотеку"
+msgstr "Lưu danh sách vào tập tin"
 
 #: src/fe-gtk/userlistgui.c:108
 #, c-format
 msgid "%d ops, %d total"
-msgstr "%d оп., %d ук."
+msgstr "%d thao tác viên, %d tổng số"
 
 #~ msgid "%C22*%O$t%C28[%O$1%C28] %O$2"
 #~ msgstr "%C22*%O$t%C28[%O$1%C28] %O$2"
 
 #~ msgid "Former Czechoslovakia"
-#~ msgstr "Србија и Црна Гора (некад било: Чехословачка)"
+#~ msgstr "Tiệp khắc trước"
 
 #~ msgid "Zaire"
-#~ msgstr "Заир"
-
-#~ msgid "Delete All"
-#~ msgstr "Бриши све"
-
-#~ msgid "X-Chat: Edit Key Bindings"
-#~ msgstr "X-Chat: Уреди распоред тастера"
-
-#~ msgid "Key Bindings..."
-#~ msgstr "Распоред тастера..."
+#~ msgstr "Dai-i-re"
