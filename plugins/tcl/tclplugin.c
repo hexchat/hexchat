@@ -15,7 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#define VERSION "1.0.8"
+#define VERSION "1.0.9"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -26,10 +26,12 @@
 #include <tcl.h>
 #include <tclDecls.h>
 #include <sys/stat.h>
-#include <arpa/inet.h>
 
 #ifdef WIN32
 #include <windows.h>
+#include <winsock.h>
+#else
+#include <arpa/inet.h>
 #endif
 
 #include "xchat-plugin.h"
