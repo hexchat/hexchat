@@ -42,7 +42,7 @@ int servlist_auto_connect (session *sess);
 int servlist_have_auto (void);
 int servlist_check_encoding (char *charset);
 
-ircnet *servlist_net_add (char *name, char *comment);
+ircnet *servlist_net_add (char *name, char *comment, int prepend);
 void servlist_net_remove (ircnet *net);
 ircnet *servlist_net_find (char *name, int *pos);
 

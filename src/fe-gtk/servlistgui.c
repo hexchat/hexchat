@@ -113,6 +113,7 @@ servlist_select_and_show (GtkTreeView *treeview, GtkTreeIter *iter,
 	if (path)
 	{
 		gtk_tree_view_scroll_to_cell (treeview, path, NULL, TRUE, 0.5, 0.5);
+		gtk_tree_view_set_cursor (treeview, path, NULL, FALSE);
 		gtk_tree_path_free (path);
 	}
 }
@@ -155,7 +156,7 @@ servlist_networks_populate (GtkWidget *treeview, GSList *netlist)
 
 	if (!netlist)
 	{
-		net = servlist_net_add (_("New Network"), "");
+		net = servlist_net_add (_("New Network"), "", FALSE);
 		servlist_server_add (net, "newserver/6667");
 		netlist = network_list;
 	}
@@ -259,7 +260,7 @@ servlist_addnet_cb (GtkWidget *item, GtkTreeView *treeview)
 	ircnet *net;
 
 	store = (GtkListStore *)gtk_tree_view_get_model (treeview);
-	net = servlist_net_add (_("New Network"), "");
+	net = servlist_net_add (_("New Network"), "", TRUE);
 #ifdef WIN32
 	/* Windows gets UTF-8 for new users. Unix gets "System Default",
 		which is often UTF-8 anyway! */
@@ -296,7 +297,7 @@ servlist_deletenetwork (ircnet *net)
 	gtk_tree_model_get_iter_first (model, &iter);
 	servlist_select_and_show (GTK_TREE_VIEW (networks_tree), &iter,
 									  GTK_LIST_STORE (model));
-	selected_net = net;
+	servlist_network_row_cb (sel, NULL);
 }
 
 static void
@@ -939,8 +940,13 @@ servlist_key_cb (GtkWidget *wid, GdkEventKey *evt, gpointer tree)
 {
 	GtkTreeModel *model = gtk_tree_view_get_model (tree);
 	GtkTreeIter iter;
-	unsigned char c = toupper (evt->keyval);
+	unsigned char c;
 	unsigned char *net_name;
+
+	if (evt->keyval > 0x7a || evt->keyval < 0x41)
+		return FALSE;
+
+	c = toupper (evt->keyval);
 
 	/* scroll to a network that starts with the letter pressed */
 	if (gtk_tree_model_get_iter_first (model, &iter))
@@ -954,7 +960,7 @@ servlist_key_cb (GtkWidget *wid, GdkEventKey *evt, gpointer tree)
 				{
 					servlist_select_and_show (tree, &iter, GTK_LIST_STORE (model));
 					g_free (net_name);
-					break;
+					return TRUE;
 				}
 				g_free (net_name);
 			}

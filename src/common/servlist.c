@@ -827,7 +827,7 @@ servlist_net_remove (ircnet *net)
 }
 
 ircnet *
-servlist_net_add (char *name, char *comment)
+servlist_net_add (char *name, char *comment, int prepend)
 {
 	ircnet *net;
 
@@ -837,7 +837,10 @@ servlist_net_add (char *name, char *comment)
 /*	net->comment = strdup (comment);*/
 	net->flags = FLAG_CYCLE | FLAG_USE_GLOBAL | FLAG_USE_PROXY;
 
-	network_list = g_slist_append (network_list, net);
+	if (prepend)
+		network_list = g_slist_prepend (network_list, net);
+	else
+		network_list = g_slist_append (network_list, net);
 
 	return net;
 }
@@ -852,7 +855,7 @@ servlist_load_defaults (void)
 	{
 		if (def[i].network)
 		{
-			net = servlist_net_add (def[i].network, def[i].host);
+			net = servlist_net_add (def[i].network, def[i].host, FALSE);
 #ifdef WIN32
 			/* Windows gets UTF-8 for new users. Unix gets "System Default",
 				which is often UTF-8 anyway! */
@@ -942,7 +945,7 @@ servlist_load (void)
 			}
 		}
 		if (buf[0] == 'N')
-			net = servlist_net_add (buf + 2, /* comment */ NULL);
+			net = servlist_net_add (buf + 2, /* comment */ NULL, FALSE);
 	}
 	fclose (fp);
 
