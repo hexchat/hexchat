@@ -165,7 +165,7 @@ banlist_unban (GtkWidget * wid, struct session *sess)
 	while (gtk_tree_model_iter_next (model, &iter));
 
 	/* and send to server */
-	send_channel_modes (sess, tbuf, masks, 0, i, '-', 'b');
+	send_channel_modes (sess, tbuf, masks, 0, i, '-', 'b', 0);
 
 	/* now free everything, and refresh banlist */	
 	for (i=0; i < num_sel; i++)

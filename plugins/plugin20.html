@@ -65,6 +65,7 @@ margin-right: 32px;
 <br><a href="#xchat_print">xchat_print</a>
 <br><a href="#xchat_printf">xchat_printf</a>
 <br><a href="#xchat_emit_print">xchat_emit_print</a>
+<br><a href="#xchat_send_modes">xchat_send_modes</a>
 <br>
 <br><a href="#xchat_find_context">xchat_find_context</a>
 <br><a href="#xchat_get_context">xchat_get_context</a>
@@ -198,7 +199,7 @@ needed for a long time after calling xchat_list_str. The types of lists and fiel
 
 "channels" - list of channels, querys and their servers.
 <blockquote><table border=1>
-<tr bgcolor="#ddddd"><td>Name</td><td>Description</td><td>Type</td></tr>
+<tr bgcolor="#dddddd"><td>Name</td><td>Description</td><td>Type</td></tr>
 <tr><td>channel</td><td>Channel or query name</td><td>string</td></tr>
 <tr><td>chantypes</td><td>Channel types e.g. "#!&amp;"<br><small>(Added in version 2.0.9. Older versions will return NULL)</small></td><td>string</td>
 <tr><td>context</td><td>(xchat_context *) pointer. Can be used with xchat_set_context</td><td>string</td></tr>
@@ -580,6 +581,29 @@ event found in the Preferences > Lists > Text Events window.
 <b>Example:</b>
 <pre>
 xchat_emit_print(ph, "Channel Message", "John", "Hi there", "@", NULL);
+</pre>
+<br><br>
+
+<h3><a class="cmd" name="xchat_send_modes">&nbsp;xchat_send_modes()&nbsp;</a><small>(new for 2.0.9)</small></h3>
+<b>Prototype:</b> void xchat_send_modes (xchat_plugin *ph, const char *targets[], int ntargets, int modes_per_line, char sign, char mode)
+<br>
+<br><b>Description:</b> Sends a number of channel mode changes to the current channel. For example, you can Op a whole
+group of people in one go. It may send multiple MODE lines if the request doesn't fit on one. Pass 0 for
+<b>modes_per_line</b> to use the current server's maximum possible. This function should only be called while
+in a channel context.
+<br>
+<br><b>Arguments:</b>
+<blockquote><b>ph:</b> Plugin handle (as given to xchat_plugin_init).
+<br><b>targets:</b> Array of targets (strings). The names of people whom the action will be performed on.
+<br><b>ntargets:</b> Number of elements in the array given.
+<br><b>modes_per_line:</b> Maximum modes to send per line.
+<br><b>sign:</b> Mode sign, '-' or '+'.
+<br><b>mode:</b> Mode char, e.g. 'o' for Ops.<br>
+</blockquote>
+<b>Example:</b> (Ops the three names given)
+<pre>
+const char *names_to_Op[] = {"John", "Jack", "Jill"};
+xchat_send_modes(ph, names_to_Op, 3, 0, '+', 'o');
 </pre>
 <br><br>
 

@@ -125,6 +125,12 @@ struct _xchat_plugin
 		const char *name);
 	char *(*xchat_gettext) (xchat_plugin *ph,
 		const char *msgid);
+	void (*xchat_send_modes) (xchat_plugin *ph,
+		  const char **targets,
+		  int ntargets,
+		  int modes_per_line,
+		  char sign,
+		  char mode);
 };
 #endif
 
@@ -258,6 +264,18 @@ int
 xchat_emit_print (xchat_plugin *ph,
 		  const char *event_name, ...);
 
+char *
+xchat_gettext (xchat_plugin *ph,
+	       const char *msgid);
+
+void
+xchat_send_modes (xchat_plugin *ph,
+		  const char **targets,
+		  int ntargets,
+		  int modes_per_line,
+		  char sign,
+		  char mode);
+
 #if !defined(PLUGIN_C) && defined(WIN32)
 #ifndef XCHAT_PLUGIN_HANDLE
 #define XCHAT_PLUGIN_HANDLE (ph)
@@ -289,6 +307,7 @@ xchat_emit_print (xchat_plugin *ph,
 #define xchat_plugingui_remove ((XCHAT_PLUGIN_HANDLE)->xchat_plugingui_remove)
 #define xchat_emit_print ((XCHAT_PLUGIN_HANDLE)->xchat_emit_print)
 #define xchat_gettext ((XCHAT_PLUGIN_HANDLE)->xchat_gettext)
+#define xchat_send_modes ((XCHAT_PLUGIN_HANDLE)->xchat_send_modes)
 #endif
 
 #ifdef __cplusplus

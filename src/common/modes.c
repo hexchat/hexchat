@@ -47,7 +47,7 @@ typedef struct
    mode   - a mode, e.g. 'o' or 'v'	*/
 void
 send_channel_modes (session *sess, char *tbuf, char *word[], int wpos,
-						  int end, char sign, char mode)
+						  int end, char sign, char mode, int modes_per_line)
 {
 	int usable_modes, orig_len, len, wlen, i, max;
 	server *serv = sess->server;
@@ -55,6 +55,8 @@ send_channel_modes (session *sess, char *tbuf, char *word[], int wpos,
 	/* sanity check. IRC RFC says three per line. */
 	if (serv->modes_per_line < 3)
 		serv->modes_per_line = 3;
+	if (modes_per_line < 1)
+		modes_per_line = serv->modes_per_line;
 
 	/* RFC max, minus length of "MODE %s " and "\r\n" and 1 +/- sign */
 	/* 512 - 6 - 2 - 1 - strlen(chan) */
@@ -66,10 +68,10 @@ send_channel_modes (session *sess, char *tbuf, char *word[], int wpos,
 		orig_len = len = 0;
 
 		/* we'll need this many modechars too */
-		len += serv->modes_per_line;
+		len += modes_per_line;
 
 		/* how many can we fit? */
-		for (i = 0; i < serv->modes_per_line; i++)
+		for (i = 0; i < modes_per_line; i++)
 		{
 			/* no more nicks left? */
 			if (wpos + i >= end)

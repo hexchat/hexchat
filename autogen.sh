@@ -46,6 +46,9 @@ if test "$found" != 1; then
 fi;
 
 echo copying gettext intl files...
+if test -f $try/gettext/mkinstalldirs; then
+	ln -s $try/gettext/mkinstalldirs mkinstalldirs
+fi
 intldir="$try/gettext/intl"
 if test ! -d intl; then
 	mkdir intl

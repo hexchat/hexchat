@@ -210,13 +210,6 @@ xchat_read_fd (xchat_plugin *ph, GIOChannel *source, char *buf, int *len)
 }
 #endif
 
-static char *
-xchat_gettext (xchat_plugin *ph, const char *msgid)
-{
-	/* so that plugins can use xchat's internal gettext strings */
-	return _(msgid);
-}
-
 /* Load a static plugin */
 
 void
@@ -235,6 +228,7 @@ plugin_add (session *sess, char *filename, void *handle, void *init_func,
 
 	if (!fake)
 	{
+		/* win32 uses these because it doesn't have --export-dynamic! */
 		pl->xchat_hook_command = xchat_hook_command;
 		pl->xchat_hook_server = xchat_hook_server;
 		pl->xchat_hook_print = xchat_hook_print;
@@ -267,6 +261,7 @@ plugin_add (session *sess, char *filename, void *handle, void *init_func,
 #endif
 		pl->xchat_list_time = xchat_list_time;
 		pl->xchat_gettext = xchat_gettext;
+		pl->xchat_send_modes = xchat_send_modes;
 
 		/* incase new plugins are loaded on older xchat */
 		pl->xchat_dummy6 = xchat_dummy;
@@ -414,9 +409,7 @@ plugin_auto_load_cb (char *filename)
 	pMsg = plugin_load (ps, filename, NULL);
 	if (pMsg)
 	{
-		PrintText (ps, "AutoLoad failed for: ");
-		PrintText (ps, filename);
-		PrintText (ps, "\n");
+		PrintTextf (ps, "AutoLoad failed for: %s\n", filename);
 		PrintText (ps, pMsg);
 	}
 }
@@ -1326,4 +1319,20 @@ xchat_emit_print (xchat_plugin *ph, const char *event_name, ...)
 	va_end (args);
 
 	return i;
+}
+
+char *
+xchat_gettext (xchat_plugin *ph, const char *msgid)
+{
+	/* so that plugins can use xchat's internal gettext strings. */
+	/* e.g. The EXEC plugin uses this on Windows. */
+	return _(msgid);
+}
+
+void
+xchat_send_modes (xchat_plugin *ph, const char **targets, int ntargets, int modes_per_line, char sign, char mode)
+{
+	char tbuf[514];	/* modes.c needs 512 + null */
+
+	send_channel_modes (ph->context, tbuf, targets, 0, ntargets, sign, mode, modes_per_line);
 }

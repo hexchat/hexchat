@@ -499,7 +499,7 @@ cmd_unban (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		{
 			if (i == 2)
 				return FALSE;
-			send_channel_modes (sess, tbuf, word, 2, i, '-', 'b');
+			send_channel_modes (sess, tbuf, word, 2, i, '-', 'b', 0);
 			return TRUE;
 		}
 		i++;
@@ -835,7 +835,7 @@ cmd_dehop (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		{
 			if (i == 2)
 				return FALSE;
-			send_channel_modes (sess, tbuf, word, 2, i, '-', 'h');
+			send_channel_modes (sess, tbuf, word, 2, i, '-', 'h', 0);
 			return TRUE;
 		}
 		i++;
@@ -853,7 +853,7 @@ cmd_deop (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		{
 			if (i == 2)
 				return FALSE;
-			send_channel_modes (sess, tbuf, word, 2, i, '-', 'o');
+			send_channel_modes (sess, tbuf, word, 2, i, '-', 'o', 0);
 			return TRUE;
 		}
 		i++;
@@ -889,7 +889,7 @@ cmd_mdehop (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	data.nicks = nicks;
 	data.i = 0;
 	tree_foreach (sess->usertree, (tree_traverse_func *)mdehop_cb, &data);
-	send_channel_modes (sess, tbuf, nicks, 0, data.i, '-', 'h');
+	send_channel_modes (sess, tbuf, nicks, 0, data.i, '-', 'h', 0);
 	free (nicks);
 
 	return TRUE;
@@ -915,7 +915,7 @@ cmd_mdeop (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	data.nicks = nicks;
 	data.i = 0;
 	tree_foreach (sess->usertree, (tree_traverse_func *)mdeop_cb, &data);
-	send_channel_modes (sess, tbuf, nicks, 0, data.i, '-', 'o');
+	send_channel_modes (sess, tbuf, nicks, 0, data.i, '-', 'o', 0);
 	free (nicks);
 
 	return TRUE;
@@ -961,7 +961,7 @@ cmd_devoice (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		{
 			if (i == 2)
 				return FALSE;
-			send_channel_modes (sess, tbuf, word, 2, i, '-', 'v');
+			send_channel_modes (sess, tbuf, word, 2, i, '-', 'v', 0);
 			return TRUE;
 		}
 		i++;
@@ -1970,7 +1970,7 @@ cmd_mop (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	data.nicks = nicks;
 	data.i = 0;
 	tree_foreach (sess->usertree, (tree_traverse_func *)mop_cb, &data);
-	send_channel_modes (sess, tbuf, nicks, 0, data.i, '+', 'o');
+	send_channel_modes (sess, tbuf, nicks, 0, data.i, '+', 'o', 0);
 
 	free (nicks);
 
@@ -2122,7 +2122,7 @@ cmd_op (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		{
 			if (i == 2)
 				return FALSE;
-			send_channel_modes (sess, tbuf, word, 2, i, '+', 'o');
+			send_channel_modes (sess, tbuf, word, 2, i, '+', 'o', 0);
 			return TRUE;
 		}
 		i++;
@@ -2569,7 +2569,7 @@ cmd_hop (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		{
 			if (i == 2)
 				return FALSE;
-			send_channel_modes (sess, tbuf, word, 2, i, '+', 'h');
+			send_channel_modes (sess, tbuf, word, 2, i, '+', 'h', 0);
 			return TRUE;
 		}
 		i++;
@@ -2587,7 +2587,7 @@ cmd_voice (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		{
 			if (i == 2)
 				return FALSE;
-			send_channel_modes (sess, tbuf, word, 2, i, '+', 'v');
+			send_channel_modes (sess, tbuf, word, 2, i, '+', 'v', 0);
 			return TRUE;
 		}
 		i++;

@@ -86,6 +86,12 @@ struct _xchat_plugin
 		const char *name);
 	char *(*xchat_gettext) (xchat_plugin *ph,
 		const char *msgid);
+	void (*xchat_send_modes) (xchat_plugin *ph,
+		  const char **targets,
+		  int ntargets,
+		  int modes_per_line,
+		  char sign,
+		  char mode);
 	void *(*xchat_dummy6) (xchat_plugin *ph);
 	void *(*xchat_dummy5) (xchat_plugin *ph);
 	void *(*xchat_dummy4) (xchat_plugin *ph);
