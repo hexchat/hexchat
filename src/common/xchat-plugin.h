@@ -1,4 +1,6 @@
 /* You can distribute this header with your plugins for easy compilation */
+#ifndef XCHAT_PLUGIN_H
+#define XCHAT_PLUGIN_H
 
 #define XCHAT_IFACE_MAJOR	1
 #define XCHAT_IFACE_MINOR	9
@@ -273,4 +275,5 @@ xchat_emit_print (xchat_plugin *ph,
 
 #ifdef __cplusplus
 }
+#endif
 #endif
