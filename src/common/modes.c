@@ -571,6 +571,10 @@ inbound_005 (server * serv, char *word[])
 					free (serv->encoding);
 				serv->encoding = strdup ("UTF-8");
 			}
+		} else if (strcmp (word[w], "NAMESX") == 0)
+		{
+									/* 12345678901234567 */
+			tcp_send_len (serv, "PROTOCTL NAMESX\r\n", 17);
 		}
 
 		w++;

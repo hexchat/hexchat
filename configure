@@ -1011,6 +1011,7 @@ Optional Features:
   --disable-xlib          disable use of xlib (for non X11 systems)
   --disable-python        don't build the python plugin
   --disable-perl          don't build the perl plugin
+  --enable-tcl=DIR        directory with Tcl config file: tclConfig.sh
   --disable-plugin        disable plugin support
   --disable-mmx           disable MMX assembly routines
   --disable-glibtest      do not try to compile and run a test GLIB program
@@ -4210,7 +4211,7 @@ test "x$enable_libtool_lock" != xno && enable_libtool_lock=yes
 case $host in
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 4213 "configure"' > conftest.$ac_ext
+  echo '#line 4214 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -4746,7 +4747,7 @@ chmod -w .
 save_CFLAGS="$CFLAGS"
 CFLAGS="$CFLAGS -o out/conftest2.$ac_objext"
 compiler_c_o=no
-if { (eval echo configure:4749: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>out/conftest.err; } && test -s out/conftest2.$ac_objext; then
+if { (eval echo configure:4750: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>out/conftest.err; } && test -s out/conftest2.$ac_objext; then
   # The compiler can only warn and ignore the option if not recognized
   # So say no if there are warnings
   if test -s out/conftest.err; then
@@ -6539,7 +6540,7 @@ else
     lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 6542 "configure"
+#line 6543 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -6637,7 +6638,7 @@ else
     lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 6640 "configure"
+#line 6641 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -11266,6 +11267,12 @@ else
   perl=yes
 fi;
 
+# Check whether --enable-tclcfg_path or --disable-tclcfg_path was given.
+if test "${enable_tclcfg_path+set}" = set; then
+  enableval="$enable_tclcfg_path"
+   tclcnf="${withval}"
+fi;
+
 # Check whether --enable-plugin or --disable-plugin was given.
 if test "${enable_plugin+set}" = set; then
   enableval="$enable_plugin"
@@ -12403,6 +12410,39 @@ echo "${ECHO_T}Can't find Python.h" >&6
 fi
 
 
+echo "$as_me:$LINENO: checking for location of tclConfig.sh" >&5
+echo $ECHO_N "checking for location of tclConfig.sh... $ECHO_C" >&6
+dirs="$tclcnf /lib /usr/lib /usr/local/lib /usr/local/tcl-8.0/lib /usr/local/tcl/lib"
+found=0
+tcl=no
+if test "$withval" != "no"; then
+	for try in $dirs; do
+		if test -f $try/tclConfig.sh; then
+			found=1
+			echo "$as_me:$LINENO: result: $try/tclConfig.sh" >&5
+echo "${ECHO_T}$try/tclConfig.sh" >&6
+			. $try/tclConfig.sh
+			TCL_LIBS="$TCL_LIB_SPEC $TCL_LIBS"
+
+			TCL_INCLUDES="${TCL_PREFIX}/include"
+			if test -f "${TCL_INCLUDES}/tcl.h"; then
+				tcl=yes
+
+				:
+			else
+				echo "$as_me:$LINENO: result: Could not find tcl.h in $TCL_INCLUDES" >&5
+echo "${ECHO_T}Could not find tcl.h in $TCL_INCLUDES" >&6
+			fi
+			break
+		fi
+	done
+	if test "$found" -eq 0 ; then
+		echo "$as_me:$LINENO: result: tclConfig.sh not found - use the --enable-tcl option" >&5
+echo "${ECHO_T}tclConfig.sh not found - use the --enable-tcl option" >&6
+	fi
+fi
+
+
 if test "$ipv6" = yes; then
 
 for ac_func in getaddrinfo
@@ -12908,6 +12948,16 @@ if test "x$python" = "xyes"; then
 else
   DO_PYTHON_TRUE='#'
   DO_PYTHON_FALSE=
+fi
+
+
+
+if test "x$tcl" = "xyes"; then
+  DO_TCL_TRUE=
+  DO_TCL_FALSE='#'
+else
+  DO_TCL_TRUE='#'
+  DO_TCL_FALSE=
 fi
 
 
@@ -14421,7 +14471,7 @@ _ACEOF
 
 fi
 
-ac_config_files="$ac_config_files Makefile src/Makefile src/common/Makefile src/fe-text/Makefile src/fe-gtk/Makefile src/pixmaps/Makefile plugins/Makefile plugins/python/Makefile plugins/perl/Makefile intl/Makefile po/Makefile.in"
+ac_config_files="$ac_config_files Makefile src/Makefile src/common/Makefile src/fe-text/Makefile src/fe-gtk/Makefile src/pixmaps/Makefile plugins/Makefile plugins/python/Makefile plugins/perl/Makefile plugins/tcl/Makefile intl/Makefile po/Makefile.in"
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
 # tests run on this system so they can be shared between configure
@@ -14544,6 +14594,13 @@ if test -z "${DO_PYTHON_TRUE}" && test -z "${DO_PYTHON_FALSE}"; then
   { { echo "$as_me:$LINENO: error: conditional \"DO_PYTHON\" was never defined.
 Usually this means the macro was only invoked conditionally." >&5
 echo "$as_me: error: conditional \"DO_PYTHON\" was never defined.
+Usually this means the macro was only invoked conditionally." >&2;}
+   { (exit 1); exit 1; }; }
+fi
+if test -z "${DO_TCL_TRUE}" && test -z "${DO_TCL_FALSE}"; then
+  { { echo "$as_me:$LINENO: error: conditional \"DO_TCL\" was never defined.
+Usually this means the macro was only invoked conditionally." >&5
+echo "$as_me: error: conditional \"DO_TCL\" was never defined.
 Usually this means the macro was only invoked conditionally." >&2;}
    { (exit 1); exit 1; }; }
 fi
@@ -14982,6 +15039,7 @@ do
   "plugins/Makefile" ) CONFIG_FILES="$CONFIG_FILES plugins/Makefile" ;;
   "plugins/python/Makefile" ) CONFIG_FILES="$CONFIG_FILES plugins/python/Makefile" ;;
   "plugins/perl/Makefile" ) CONFIG_FILES="$CONFIG_FILES plugins/perl/Makefile" ;;
+  "plugins/tcl/Makefile" ) CONFIG_FILES="$CONFIG_FILES plugins/tcl/Makefile" ;;
   "intl/Makefile" ) CONFIG_FILES="$CONFIG_FILES intl/Makefile" ;;
   "po/Makefile.in" ) CONFIG_FILES="$CONFIG_FILES po/Makefile.in" ;;
   "depfiles" ) CONFIG_COMMANDS="$CONFIG_COMMANDS depfiles" ;;
@@ -15155,6 +15213,8 @@ s,@GTK_LIBS@,$GTK_LIBS,;t t
 s,@pkgconfigpath@,$pkgconfigpath,;t t
 s,@perlpath@,$perlpath,;t t
 s,@pythonpath@,$pythonpath,;t t
+s,@TCL_LIBS@,$TCL_LIBS,;t t
+s,@TCL_INCLUDES@,$TCL_INCLUDES,;t t
 s,@USE_OPENSSL_TRUE@,$USE_OPENSSL_TRUE,;t t
 s,@USE_OPENSSL_FALSE@,$USE_OPENSSL_FALSE,;t t
 s,@DO_TEXT_TRUE@,$DO_TEXT_TRUE,;t t
@@ -15165,6 +15225,8 @@ s,@DO_PERL_TRUE@,$DO_PERL_TRUE,;t t
 s,@DO_PERL_FALSE@,$DO_PERL_FALSE,;t t
 s,@DO_PYTHON_TRUE@,$DO_PYTHON_TRUE,;t t
 s,@DO_PYTHON_FALSE@,$DO_PYTHON_FALSE,;t t
+s,@DO_TCL_TRUE@,$DO_TCL_TRUE,;t t
+s,@DO_TCL_FALSE@,$DO_TCL_FALSE,;t t
 s,@DO_PLUGIN_TRUE@,$DO_PLUGIN_TRUE,;t t
 s,@DO_PLUGIN_FALSE@,$DO_PLUGIN_FALSE,;t t
 s,@USE_MMX_TRUE@,$USE_MMX_TRUE,;t t
@@ -15879,9 +15941,8 @@ echo
 echo Building GTK+ Interface .... : $gtkfe
 echo Building TEXT Interface .... : $textfe
 echo
-#echo libgnome ............ : $gnome $GNOME_VER
-echo perl ................ : $perl
-echo python .............. : $python $PY_VERSION
+echo PLUGINS: Perl: $perl Python: $python TCL: $tcl
+echo
 echo mmx tinting ......... : $mmx
 echo plugin interface .... : $plugin\	nls/gettext ......... : $USE_NLS
 if test "$xft" = no; then
@@ -15889,8 +15950,7 @@ if test "$xft" = no; then
 else
   echo link with socks5 .... : $socks\	text backend ........ : xft
 fi
-echo openssl support ..... : $openssl
-echo ipv6 support ........ : $ipv6
+echo openssl support ..... : $openssl\	ipv6 support ........ : $ipv6
 echo
 echo The binary will be installed in $prefix/bin
 echo

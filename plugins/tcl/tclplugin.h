@@ -1,0 +1,91 @@
+/***************************************************************************
+                          tclplugin.h  -  TCL plugin for xchat 2.x
+                             -------------------
+    begin                : Sat Nov  9 17:31:20 MST 2002
+    copyright            : (C) 2002 by Daniel P. Stasinski
+    email                : mooooooo@avenues.org
+ ***************************************************************************/
+
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
+#define BADARGS(nl,nh,example) \
+    if ((argc<(nl)) || (argc>(nh))) { \
+    Tcl_AppendResult(irp,"wrong # args: should be \"",argv[0], \
+        (example),"\"",NULL); \
+        return TCL_ERROR; \
+    }
+
+#define CHECKCTX(ctx) \
+    if (ctx == NULL) { \
+        Tcl_AppendResult(irp, "No such server/channel/nick", NULL); \
+        return TCL_ERROR; \
+    }
+
+typedef struct {
+    char *procPtr;
+    xchat_hook *hook;
+} alias;
+
+typedef struct {
+    int timerid;
+    time_t timestamp;
+    char *procPtr;
+} timer;
+
+#define MAX_TIMERS 256
+
+static void SourceScriptFiles(char *dirname);
+static char *StrDup(char *string, int *length);
+static char *itoa(int value);
+static xchat_context *xchat_smart_context(char *arg1, char *arg2);
+static void queue_nexttimer();
+static int insert_timer(int seconds, char *script);
+static void do_timer();
+static int Server_raw_line(char *word[], char *word_eol[], void *userdata);
+static int Print_Hook(char *word[], void *userdata);
+static int tcl_timerexists(ClientData cd, Tcl_Interp * irp, int argc, char *argv[]);
+static int tcl_killtimer(ClientData cd, Tcl_Interp * irp, int argc, char *argv[]);
+static int tcl_timers(ClientData cd, Tcl_Interp * irp, int argc, char *argv[]);
+static int tcl_timer(ClientData cd, Tcl_Interp * irp, int argc, char *argv[]);
+static int tcl_on(ClientData cd, Tcl_Interp * irp, int argc, char *argv[]);
+static int tcl_off(ClientData cd, Tcl_Interp * irp, int argc, char *argv[]);
+static int tcl_alias(ClientData cd, Tcl_Interp * irp, int argc, char *argv[]);
+static int tcl_complete(ClientData cd, Tcl_Interp * irp, int argc, char *argv[]);
+static int tcl_raw(ClientData cd, Tcl_Interp * irp, int argc, char *argv[]);
+static int tcl_command(ClientData cd, Tcl_Interp * irp, int argc, char *argv[]);
+static int tcl_xchat_puts(ClientData cd, Tcl_Interp * irp, int argc, char *argv[]);
+static int tcl_print(ClientData cd, Tcl_Interp * irp, int argc, char *argv[]);
+static int tcl_channels(ClientData cd, Tcl_Interp * irp, int argc, char *argv[]);
+static int tcl_servers(ClientData cd, Tcl_Interp * irp, int argc, char *argv[]);
+static int tcl_queries(ClientData cd, Tcl_Interp * irp, int argc, char *argv[]);
+static int tcl_users(ClientData cd, Tcl_Interp * irp, int argc, char *argv[]);
+static int tcl_chats(ClientData cd, Tcl_Interp * irp, int argc, char *argv[]);
+static int tcl_ignores(ClientData cd, Tcl_Interp * irp, int argc, char *argv[]);
+static int tcl_dcclist(ClientData cd, Tcl_Interp * irp, int argc, char *argv[]);
+static int tcl_away(ClientData cd, Tcl_Interp * irp, int argc, char *argv[]);
+static int tcl_channel(ClientData cd, Tcl_Interp * irp, int argc, char *argv[]);
+static int tcl_host(ClientData cd, Tcl_Interp * irp, int argc, char *argv[]);
+static int tcl_network(ClientData cd, Tcl_Interp * irp, int argc, char *argv[]);
+static int tcl_me(ClientData cd, Tcl_Interp * irp, int argc, char *argv[]);
+static int tcl_server(ClientData cd, Tcl_Interp * irp, int argc, char *argv[]);
+static int tcl_topic(ClientData cd, Tcl_Interp * irp, int argc, char *argv[]);
+static int tcl_version(ClientData cd, Tcl_Interp * irp, int argc, char *argv[]);
+static int tcl_xchatdir(ClientData cd, Tcl_Interp * irp, int argc, char *argv[]);
+static int tcl_xchat_nickcmp(ClientData cd, Tcl_Interp * irp, int argc, char *argv[]);
+static int Command_Alias(char *word[], char *word_eol[], void *userdata);
+static int Command_TCL(char *word[], char *word_eol[], void *userdata);
+static int Command_Source(char *word[], char *word_eol[], void *userdata);
+static int Command_Rehash(char *word[], char *word_eol[], void *userdata);
+static int TCL_Event_Handler(void *userdata);
+static void Tcl_Plugin_Init();
+static void Tcl_Plugin_DeInit();
+static void banner();
+int xchat_plugin_init(xchat_plugin * plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg);
+int xchat_plugin_deinit();

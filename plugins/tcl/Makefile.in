@@ -138,20 +138,22 @@ unamepath = @unamepath@
 xchatlibdir = @xchatlibdir@
 xchatsharedir = @xchatsharedir@
 
-lib_LTLIBRARIES = python.la
-python_la_SOURCES = python.c
-python_la_LDFLAGS = -avoid-version -module 
-python_la_LIBADD = $(PY_LIBS)
-INCLUDES = $(PY_CFLAGS) $(COMMON_CFLAGS) -I$(srcdir)/..
-subdir = plugins/python
+EXTRA_DIST = makefile.msc printevents.h tclplugin.h
+
+lib_LTLIBRARIES = tcl.la
+tcl_la_SOURCES = tclplugin.c
+tcl_la_LDFLAGS = -avoid-version -module 
+tcl_la_LIBADD = $(TCL_LIBS)
+INCLUDES = $(TCL_CFLAGS) $(COMMON_CFLAGS) -I$(srcdir)/..
+subdir = plugins/tcl
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 LTLIBRARIES = $(lib_LTLIBRARIES)
 
-python_la_DEPENDENCIES =
-am_python_la_OBJECTS = python.lo
-python_la_OBJECTS = $(am_python_la_OBJECTS)
+tcl_la_DEPENDENCIES =
+am_tcl_la_OBJECTS = tclplugin.lo
+tcl_la_OBJECTS = $(am_tcl_la_OBJECTS)
 
 DEFS = @DEFS@
 DEFAULT_INCLUDES =  -I. -I$(srcdir) -I$(top_builddir)
@@ -160,7 +162,7 @@ LDFLAGS = @LDFLAGS@
 LIBS = @LIBS@
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
-@AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/python.Plo
+@AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/tclplugin.Plo
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
@@ -169,9 +171,9 @@ CCLD = $(CC)
 LINK = $(LIBTOOL) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(AM_LDFLAGS) $(LDFLAGS) -o $@
 CFLAGS = @CFLAGS@
-DIST_SOURCES = $(python_la_SOURCES)
+DIST_SOURCES = $(tcl_la_SOURCES)
 DIST_COMMON = Makefile.am Makefile.in
-SOURCES = $(python_la_SOURCES)
+SOURCES = $(tcl_la_SOURCES)
 
 all: all-am
 
@@ -179,7 +181,7 @@ all: all-am
 .SUFFIXES: .c .lo .o .obj
 $(srcdir)/Makefile.in: @MAINTAINER_MODE_TRUE@ Makefile.am  $(top_srcdir)/configure.in $(ACLOCAL_M4)
 	cd $(top_srcdir) && \
-	  $(AUTOMAKE) --foreign  plugins/python/Makefile
+	  $(AUTOMAKE) --foreign  plugins/tcl/Makefile
 Makefile: @MAINTAINER_MODE_TRUE@ $(srcdir)/Makefile.in  $(top_builddir)/config.status
 	cd $(top_builddir) && $(SHELL) ./config.status $(subdir)/$@ $(am__depfiles_maybe)
 libLTLIBRARIES_INSTALL = $(INSTALL)
@@ -210,8 +212,8 @@ clean-libLTLIBRARIES:
 	  echo "rm -f \"$${dir}/so_locations\""; \
 	  rm -f "$${dir}/so_locations"; \
 	done
-python.la: $(python_la_OBJECTS) $(python_la_DEPENDENCIES) 
-	$(LINK) -rpath $(libdir) $(python_la_LDFLAGS) $(python_la_OBJECTS) $(python_la_LIBADD) $(LIBS)
+tcl.la: $(tcl_la_OBJECTS) $(tcl_la_DEPENDENCIES) 
+	$(LINK) -rpath $(libdir) $(tcl_la_LDFLAGS) $(tcl_la_OBJECTS) $(tcl_la_LIBADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT) core *.core
@@ -219,7 +221,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/python.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tclplugin.Plo@am__quote@
 
 distclean-depend:
 	-rm -rf ./$(DEPDIR)

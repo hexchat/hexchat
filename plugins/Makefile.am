@@ -16,5 +16,9 @@ if DO_PERL
 perldir = perl
 endif
 
+if DO_TCL
+tcldir = tcl
+endif
+
 #SUBDIRS = . $(pythondir) $(perldir) mailcheck xdcc
-SUBDIRS = . $(pythondir) $(perldir)
+SUBDIRS = . $(pythondir) $(perldir) $(tcldir)

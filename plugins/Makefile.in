@@ -120,6 +120,8 @@ PY_CFLAGS = @PY_CFLAGS@
 PY_LIBS = @PY_LIBS@
 RANLIB = @RANLIB@
 STRIP = @STRIP@
+TCL_INCLUDES = @TCL_INCLUDES@
+TCL_LIBS = @TCL_LIBS@
 USE_INCLUDED_LIBINTL = @USE_INCLUDED_LIBINTL@
 USE_NLS = @USE_NLS@
 VERSION = @VERSION@
@@ -150,8 +152,10 @@ noinst_HEADERS = xchat-plugin.h
 
 @DO_PERL_TRUE@perldir = perl
 
+@DO_TCL_TRUE@tcldir = tcl
+
 #SUBDIRS = . $(pythondir) $(perldir) mailcheck xdcc
-SUBDIRS = . $(pythondir) $(perldir)
+SUBDIRS = . $(pythondir) $(perldir) $(tcldir)
 subdir = plugins
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
 CONFIG_HEADER = $(top_builddir)/config.h
@@ -165,7 +169,7 @@ RECURSIVE_TARGETS = info-recursive dvi-recursive install-info-recursive \
 	install-exec-recursive installdirs-recursive install-recursive \
 	uninstall-recursive check-recursive installcheck-recursive
 DIST_COMMON = $(noinst_HEADERS) Makefile.am Makefile.in
-DIST_SUBDIRS = . python perl
+DIST_SUBDIRS = . python perl tcl
 all: all-recursive
 
 .SUFFIXES:

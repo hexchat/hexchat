@@ -51,7 +51,7 @@ body {
 <br><br>
 <a href="faq.html#q212">12. How can I run the /dccserver command?</a>
 <br><br>
-<a href="faq.html#q213">13. (Only for 1.9.x) How can I make my input text white over black?</a>
+<a href="faq.html#q213">13. How do I execute multiple commands in one line?<a>
 <br><br>
 </blockquote>
 
@@ -122,7 +122,7 @@ body {
     Identd isn't actually apart of X-Chat. You will need to download and install 
     your own ident server. Most distributions, including RedHat, come with an 
     ident server program called pidentd. Make sure it is enabled in
-    /etc/inetd.conf or read you distribution's documentation.
+    /etc/xinetd.conf or read you distribution's documentation.
 
     As an alternative, you can try this experimental identd server: <a href="auth/index.html">xchat_auth</a>
 
@@ -203,7 +203,10 @@ body {
 
       where the &lt;bantype> is a number from 0 to 3.
 
-         /set ban_type &lt;bantype>
+         Version: 1.8 or earlier:
+           /set ban_type &lt;bantype>
+         Version: 1.9 or 2.0:
+           /set irc_ban_type &lt;bantype>
 
       sets the default ban type to use for all bans. The different types are:
 
@@ -227,6 +230,8 @@ Version 1.8:
 Version 1.9/2.0:
    Refer to <a href="http://xchat.org/encoding.html">http://xchat.org/encoding.html</a>.
 
+   Note: Log files are written in UTF-8/Unicode.
+
 </pre>
 
 <b><a name="q210">10. Why does the timestamp overlap some nicknames?</a></b>
@@ -245,8 +250,16 @@ Version 1.9/2.0:
 
 <b><a name="q211">11. How do I turn on Conference mode where I will not see join or part messages?</a></b>
 <pre>
+   <u>Version 1.8</u>:
+
    At the bottom right of the X-Chat screen there is a "&lt;" button.
    Click that then also click the "Conf" button that will pop up.
+
+   <u>Version 1.9/2.0</u>:
+
+   At the bottom right of the X-Chat screen, click the little up-arrow
+   button. A menu will appear, with a "Channel settings" submenu. In this
+   menu you may turn ON/OFF "Hide join/parts".
 
 </pre>
 
@@ -258,22 +271,17 @@ Version 1.9/2.0:
    root. Why do you need this anyway? Just use normal DCC.
 
 </pre>
-<b><a name="q213">13. (Only for 1.9.x) How can I make my input text white over black?</a></b>
+<b><a name="q213">13. How do I execute multiple commands in one line?</a></b>
 <pre>
-   Add this to your ~/.gtkrc-2.0 (It's a file, if it doesnt exists just create one):
+   There are two ways to do this:
 
-   style "xchat-inputbox-style"
-   {
-      text[NORMAL] = "#FFFFFF"
-      base[NORMAL] = "#000000"
-      GtkEntry::cursor-color = "#ffffff"
-      font_name = "Verdana 16"
-   }
-   widget "*.xchat-inputbox" style : application "xchat-inputbox-style"
+   1) You can create two UserCommands, with the same name, and then execute
+      the UserCommand. It will be executed in the same order as it's written
+      in the UserCommands gui.
 
-   Change "Verdana 16" to the font you are using.
-   And be *SURE* that "Use the Text box font" is unchecked. Its under
-   "Preferences-> Input box".
+   2) /LOAD -e &lt;textfile>, where &lt;textfile> is a full pathname to a file
+      containing commands on each line.
+
 </pre>
 <h3>3. Section Three: Crashes, Bugs and other problems.</h3>
 <b><a name="q31">1. Why does X-Chat leak so much memory?</a></b>

@@ -32,6 +32,14 @@ Requires: python = 2.2.1
 %description python
 Provides Python scripting capability to XChat.
 
+%package tcl
+Summary: XChat TCL plugin
+Group: Applications/Internet
+Requires: xchat >= 1.9.8
+Requires: tcl
+%description python
+Provides TCL scripting capability to XChat.
+
 %prep
 %setup -q
 
@@ -45,8 +53,10 @@ mkdir -p $RPM_BUILD_ROOT%{_datadir}/applications $RPM_BUILD_ROOT%{_datadir}/pixm
 %makeinstall
 strip -R .note -R .comment $RPM_BUILD_ROOT%{_libdir}/perl.so
 strip -R .note -R .comment $RPM_BUILD_ROOT%{_libdir}/python.so
+strip -R .note -R .comment $RPM_BUILD_ROOT%{_libdir}/tcl.so
 mv $RPM_BUILD_ROOT%{_libdir}/perl.so $RPM_BUILD_ROOT%{_libdir}/xchat/plugins
 mv $RPM_BUILD_ROOT%{_libdir}/python.so $RPM_BUILD_ROOT%{_libdir}/xchat/plugins
+mv $RPM_BUILD_ROOT%{_libdir}/tcl.so $RPM_BUILD_ROOT%{_libdir}/xchat/plugins
 
 %find_lang %name
 
@@ -58,12 +68,16 @@ mv $RPM_BUILD_ROOT%{_libdir}/python.so $RPM_BUILD_ROOT%{_libdir}/xchat/plugins
 %{_datadir}/pixmaps/xchat.png
 #%{_libdir}/xchat/plugins/perl.so
 #%{_libdir}/xchat/plugins/python.so
+#%{_libdir}/xchat/plugins/tcl.so
 
 %files perl
 %{_libdir}/xchat/plugins/perl.so
 
 %files python
 %{_libdir}/xchat/plugins/python.so
+
+%files tcl
+%{_libdir}/xchat/plugins/tcl.so
 
 %clean
 rm -rf $RPM_BUILD_ROOT
