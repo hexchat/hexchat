@@ -322,7 +322,7 @@ $SIG{__WARN__} = sub {
 sub Xchat::Embed::load {
   my $file = shift @_;
   my $package = Xchat::Embed::valid_package( $file );
-  
+
   if( exists $INC{$package} ) {
     Xchat::print( qq{'$file' already loaded.} );
     return 2;
@@ -332,7 +332,7 @@ sub Xchat::Embed::load {
     my $data = do {local $/; <FH>};
     close FH;
 
-    if( my @matches = $data =~ m/^\s*package .*?;/m ) {
+    if( my @matches = $data =~ m/^\s*package .*?;/mg ) {
       if( @matches > 1 ) {
 	Xchat::print( "Too many package defintions, only 1 is allowed" );
 	return 1;

@@ -1372,7 +1372,11 @@ perl_init (void)
 	  "if( open FH, $file ) {\n"
 	  "my $data = do {local $/; <FH>};\n"
 	  "close FH;\n"
-	  "if( $data =~ m/^\\s*package .*?;/m ) {\n"
+	  "if( my @matches = $data =~ m/^\\s*package .*?;/mg ) {\n"
+	  "if( @matches > 1 ) {\n"
+	  "Xchat::print( \"Too many package defintions, only 1 is allowed\" );\n"
+	  "return 1;\n"
+	  "}\n"
 	  "$data =~ s/^\\s*package .*?;/package $package;/m;\n"
 	  "} else {\n"
 	  "$data = \"package $package;\" . $data;\n"
@@ -1616,6 +1620,7 @@ perl_init (void)
 	  "sub IRC::notify_list {}\n"
 	  "sub IRC::perl_script_list {}\n"
 #endif
+
 
 	};
 #ifdef ENABLE_NLS
