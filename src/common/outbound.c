@@ -1547,10 +1547,13 @@ cmd_gui (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	if (!strcasecmp (word[2], "HIDE"))
 	{
-		fe_gui_display (sess, FALSE);
+		fe_ctrl_gui (sess, 0);
 	} else if (!strcasecmp (word[2], "SHOW"))
 	{
-		fe_gui_display (sess, TRUE);
+		fe_ctrl_gui (sess, 1);
+	} else if (!strcasecmp (word[2], "FOCUS"))
+	{
+		fe_ctrl_gui (sess, 2);
 	} else
 	{
 		return FALSE;

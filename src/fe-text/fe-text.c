@@ -810,6 +810,6 @@ fe_idle_add (void *func, void *data)
 {
 }
 void
-fe_gui_display (session *sess, int show)
+fe_ctrl_gui (session *sess, int action)
 {
 }

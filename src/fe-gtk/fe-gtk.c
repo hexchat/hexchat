@@ -672,14 +672,19 @@ fe_set_throttle (server *serv)
 void
 fe_play_wave (const char *file)
 {
-    play_wave (file);
+	play_wave (file);
 }
 
 void
-fe_gui_display (session *sess, int show)
+fe_ctrl_gui (session *sess, int action)
 {
-	if (show)
-		gtk_widget_show (sess->gui->window);
-	else
-		gtk_widget_hide (sess->gui->window);
+	switch (action)
+	{
+	case 0:
+		gtk_widget_hide (sess->gui->window); break;
+	case 1:
+		gtk_widget_show (sess->gui->window); break;
+	case 2:
+		mg_bring_tofront (sess->res->tab); break;
+	}
 }
