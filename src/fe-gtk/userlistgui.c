@@ -268,7 +268,8 @@ fe_userlist_insert (session *sess, struct User *newuser, int row, int sel)
 	if (!rfc_casecmp (newuser->nick, sess->server->nick) && sess->gui->nick_box)
 	{
 		sess->res->myself = newuser;
-		mg_set_access_icon (sess->gui, pix);
+		if (!sess->gui->is_tab || sess == current_tab)
+			mg_set_access_icon (sess->gui, pix);
 	}
 
 #if 0

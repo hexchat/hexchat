@@ -95,7 +95,7 @@ static const setting inputbox_settings[] =
 {
 	{ST_TOGGLE, N_("Automatic nick completion"), P_OFFINT(nickcompletion),0,0,0},
 	{ST_TOGGLE, N_("Use the Text box font"), P_OFFINT(style_inputbox),0,0,0},
-	{ST_TOGGLE, N_("Interpret %nnn as an ASCII value"), P_OFFINT(perc_color),0,0,0},
+	{ST_TOGGLE, N_("Interpret %nnn as an ASCII value"), P_OFFINT(perc_ascii),0,0,0},
 	{ST_ENTRY, N_("Nick completion suffix:"), P_OFFSET(nick_suffix),0,0,sizeof prefs.nick_suffix},
 	{ST_END, 0, 0, 0, 0, 0}
 };

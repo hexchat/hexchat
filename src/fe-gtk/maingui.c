@@ -2139,9 +2139,9 @@ fe_dlgbuttons_update (session *sess)
 
 	gtk_widget_destroy (gui->dialogbutton_box);
 
-	/* FIXME: reorder child */
 	gui->dialogbutton_box = box = gtk_hbox_new (0, 0);
 	gtk_box_pack_start (GTK_BOX (gui->topic_bar), box, 0, 0, 0);
+	gtk_box_reorder_child (GTK_BOX (gui->topic_bar), box, 3);
 	mg_create_dialogbuttons (box);
 	gtk_widget_show_all (box);
 }
