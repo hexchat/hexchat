@@ -81,7 +81,7 @@ static void server_connect (server *serv, char *hostname, int port, int no_login
 static int
 tcp_send_real (server *serv, char *buf, int len)
 {
-	int ret = 0;
+	int ret;
 	char *locale;
 	int loc_len;
 

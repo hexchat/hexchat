@@ -125,9 +125,6 @@ static void gtk_xtext_load_trans (GtkXText * xtext);
 static void gtk_xtext_free_trans (GtkXText * xtext);
 #endif
 static textentry *gtk_xtext_nth (GtkXText *xtext, int line, int *subline);
-static void gtk_xtext_selection_get (GtkWidget * widget,
-												 GtkSelectionData * selection_data_ptr,
-												 guint info, guint time);
 static void gtk_xtext_adjustment_changed (GtkAdjustment * adj,
 														GtkXText * xtext);
 static void gtk_xtext_render_ents (GtkXText * xtext, textentry *, textentry *);
@@ -599,20 +596,6 @@ xtext_set_bg (GtkXText *xtext, GdkGC *gc, int index)
 
 #endif
 
-#ifdef SCROLL_HACK
-
-static gboolean
-gtk_xtext_visibility (GtkWidget *widget, GdkEventVisibility *event)
-{
-	GTK_XTEXT (widget)->obscured = FALSE;
-	if (event->state == GDK_VISIBILITY_PARTIAL)
-		GTK_XTEXT (widget)->obscured = TRUE;
-
-	return FALSE;
-}
-
-#endif
-
 static void
 gtk_xtext_init (GtkXText * xtext)
 {
@@ -627,7 +610,6 @@ gtk_xtext_init (GtkXText * xtext)
 	xtext->pixel_offset = 0;
 	xtext->bold = FALSE;
 	xtext->underline = FALSE;
-	xtext->reverse = FALSE;
 	xtext->font = NULL;
 #ifdef USE_XFT
 	xtext->xftdraw = NULL;
@@ -647,7 +629,6 @@ gtk_xtext_init (GtkXText * xtext)
 	xtext->recycle = FALSE;
 	xtext->dont_render = FALSE;
 	xtext->dont_render2 = FALSE;
-	xtext->obscured = FALSE;
 	xtext->tint_red = xtext->tint_green = xtext->tint_blue = TINT_VALUE;
 
 	xtext->adj = (GtkAdjustment *) gtk_adjustment_new (0, 0, 1, 1, 1, 1);
@@ -673,8 +654,6 @@ gtk_xtext_init (GtkXText * xtext)
 											targets, n_targets);
 #endif
 	}
-	g_signal_connect (G_OBJECT (xtext), "selection_get",
-							G_CALLBACK (gtk_xtext_selection_get), xtext);
 }
 
 static void
@@ -887,9 +866,6 @@ gtk_xtext_realize (GtkWidget * widget)
 	attributes.window_type = GDK_WINDOW_CHILD;
 	attributes.event_mask = gtk_widget_get_events (widget) |
 		GDK_EXPOSURE_MASK | GDK_BUTTON_PRESS_MASK | GDK_BUTTON_RELEASE_MASK
-#ifdef SCROLL_HACK
-		| GDK_VISIBILITY_NOTIFY_MASK
-#endif
 #ifdef MOTION_MONITOR
 		| GDK_POINTER_MOTION_MASK | GDK_LEAVE_NOTIFY_MASK;
 #else
@@ -2146,13 +2122,11 @@ gtk_xtext_class_init (GtkXTextClass * class)
 	widget_class->button_release_event = gtk_xtext_button_release;
 	widget_class->motion_notify_event = gtk_xtext_motion_notify;
 	widget_class->selection_clear_event = (void *)gtk_xtext_selection_kill;
-#ifdef MOTION_MONITOR
-	widget_class->leave_notify_event = gtk_xtext_leave_notify;
-#endif
+	widget_class->selection_get = gtk_xtext_selection_get;
 	widget_class->expose_event = gtk_xtext_expose;
 	widget_class->scroll_event = gtk_xtext_scroll;
-#ifdef SCROLL_HACK
-	widget_class->visibility_notify_event = gtk_xtext_visibility;
+#ifdef MOTION_MONITOR
+	widget_class->leave_notify_event = gtk_xtext_leave_notify;
 #endif
 
 	xtext_class->word_click = NULL;
@@ -3793,9 +3767,10 @@ gtk_xtext_render_page (GtkXText * xtext)
 	overlap = xtext->buffer->last_pixel_pos - pos;
 	xtext->buffer->last_pixel_pos = pos;
 
-	if (!xtext->pixmap && !xtext->obscured &&
-		(overlap < 0 ? -overlap : overlap) < height)
+	if (!xtext->pixmap && (overlap < 0 ? -overlap : overlap) < height)
 	{
+		/* so the obscured regions are exposed */
+		gdk_gc_set_exposures (xtext->fgc, TRUE);
 		if (overlap < 0)	/* DOWN */
 		{
 			gdk_draw_drawable (xtext->draw_buf, xtext->fgc, xtext->draw_buf,
@@ -3810,6 +3785,7 @@ gtk_xtext_render_page (GtkXText * xtext)
 			event.area.y = 0;
 			event.area.height = overlap;
 		}
+		gdk_gc_set_exposures (xtext->fgc, FALSE);
 
 		event.area.x = 0;
 		event.area.width = width;

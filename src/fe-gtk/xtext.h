@@ -128,7 +128,6 @@ struct _GtkXText
 	PangoLayout *layout;
 #endif
 
-	int fonttype;				/* FONT_* (unused for xft) */
 	int fontsize;
 	int space_width;				  /* width (pixels) of the space " " character */
 	int stamp_width;				  /* width of "[88:88:88]" */
@@ -153,7 +152,6 @@ struct _GtkXText
 	unsigned int button_down:1;
 	unsigned int bold:1;
 	unsigned int underline:1;
-	unsigned int reverse:1;
 	unsigned int transparent:1;
 	unsigned int separator:1;
 	unsigned int shaded:1;
@@ -169,7 +167,6 @@ struct _GtkXText
 	unsigned int un_hilight:1;
 	unsigned int recycle:1;
 	unsigned int avoid_trans:1;
-	unsigned int obscured:1;
 };
 
 struct _GtkXTextClass
