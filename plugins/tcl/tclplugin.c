@@ -15,7 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#define VERSION "1.0.3"
+#define VERSION "1.0.4"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -43,6 +43,7 @@ static xchat_hook *raw_line_hook;
 static xchat_hook *Command_TCL_hook;
 static xchat_hook *Command_Source_hook;
 static xchat_hook *Command_Rehash_hook;
+static xchat_hook *Command_Load_hook;
 static xchat_hook *Event_Handler_hook;
 
 static int complete = 0;
@@ -1798,6 +1799,7 @@ int xchat_plugin_init(xchat_plugin * plugin_handle, char **plugin_name, char **p
     Command_TCL_hook = xchat_hook_command(ph, "tcl", XCHAT_PRI_NORM, Command_TCL, 0, 0);
     Command_Source_hook = xchat_hook_command(ph, "source", XCHAT_PRI_NORM, Command_Source, 0, 0);
     Command_Rehash_hook = xchat_hook_command(ph, "rehash", XCHAT_PRI_NORM, Command_Rehash, 0, 0);
+    Command_Load_hook = xchat_hook_command(ph, "LOAD", XCHAT_PRI_NORM, Command_Source, 0, 0);
     Event_Handler_hook = xchat_hook_timer(ph, 100, TCL_Event_Handler, 0);
 
     banner();
@@ -1817,6 +1819,7 @@ int xchat_plugin_deinit()
     xchat_unhook(ph, Command_TCL_hook);
     xchat_unhook(ph, Command_Source_hook);
     xchat_unhook(ph, Command_Rehash_hook);
+    xchat_unhook(ph, Command_Load_hook);
     xchat_unhook(ph, Event_Handler_hook);
 
     Tcl_Plugin_DeInit();
