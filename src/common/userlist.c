@@ -19,6 +19,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <glib/gtree.h>
+
 #include "../../config.h"
 #ifdef HAVE_STRINGS_H
 #include <strings.h>
@@ -30,6 +32,7 @@
 #include "xchatc.h"
 #include "util.h"
 
+#define USE_TREE	/* use binary tree storage? Fast, but more memory */
 
 static int
 nick_cmp_az_ops (server *serv, struct User *user1, struct User *user2)
@@ -91,6 +94,7 @@ userlist_insertname (session *sess, struct User *newuser, struct User **after)
 	node->data = newuser;
 	*after = NULL;
 
+
 	while (list)
 	{
 		user = list->data;
@@ -113,6 +117,13 @@ userlist_insertname (session *sess, struct User *newuser, struct User **after)
 				*after = prev->data;
 			} else
 				sess->userlist = node;
+
+#ifdef USE_TREE
+			if (!sess->usertree)
+				sess->usertree = g_tree_new ((GCompareFunc)strcasecmp);
+			g_tree_insert (sess->usertree, newuser->nick, newuser);
+#endif
+
 			return row;
 		}
 
@@ -129,6 +140,12 @@ userlist_insertname (session *sess, struct User *newuser, struct User **after)
 	} else
 		sess->userlist = node;
 
+#ifdef USE_TREE
+	if (!sess->usertree)
+		sess->usertree = g_tree_new ((GCompareFunc)strcasecmp);
+	g_tree_insert (sess->usertree, newuser->nick, newuser);
+#endif
+
 	return -1;
 }
 
@@ -137,6 +154,11 @@ update_entry (struct session *sess, struct User *user)
 {
 	int row;
 	struct User *after;
+
+#ifdef USE_TREE
+	g_tree_steal (sess->usertree, user->nick);
+	g_tree_insert (sess->usertree, user->nick, user);
+#endif
 
 	sess->userlist = g_slist_remove (sess->userlist, user);
 	row = userlist_insertname (sess, user, &after);
@@ -184,6 +206,14 @@ free_userlist (session *sess)
 {
 	struct User *user;
 
+#ifdef USE_TREE
+	if (sess->usertree)
+	{
+		g_tree_destroy (sess->usertree);
+		sess->usertree = NULL;
+	}
+#endif
+
 	while (sess->userlist)
 	{
 		user = (struct User *) sess->userlist->data;
@@ -206,6 +236,10 @@ clear_user_list (session *sess)
 struct User *
 find_name (struct session *sess, char *name)
 {
+#ifdef USE_TREE
+	if (sess->usertree)
+		return g_tree_lookup (sess->usertree, name);
+#else
 	struct User *user;
 	GSList *list;
 
@@ -217,7 +251,8 @@ find_name (struct session *sess, char *name)
 			return user;
 		list = list->next;
 	}
-	return FALSE;
+#endif
+	return NULL;
 }
 
 struct User *
@@ -338,6 +373,9 @@ sub_name (struct session *sess, char *name)
 	fe_userlist_remove (sess, user);
 
 	free_user (user, &sess->userlist);
+#ifdef USE_TREE
+	g_tree_steal (sess->usertree, user->nick);
+#endif
 
 	return TRUE;
 }

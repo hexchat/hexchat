@@ -267,6 +267,7 @@ typedef struct session
 {
 	struct server *server;
 	GSList *userlist;
+	void *usertree;
 	char channel[CHANLEN];
 	char waitchannel[CHANLEN];		  /* waiting to join this channel */
 	char willjoinchannel[CHANLEN];	  /* /join done for this channel */
