@@ -626,7 +626,7 @@ static XS (XS_Xchat_get_prefs)
 		switch (xchat_get_prefs
 				(ph, SvPV_nolen (ST (0)), &str, &integer)) {
 		case 0:
-			XSRETURN_PV ("Unknown variable");
+			XSRETURN_UNDEF;
 			break;
 		case 1:
 			XSRETURN_PV(str);
@@ -925,8 +925,8 @@ static XS (XS_Xchat_find_context)
 		/* otherwise leave it as null */
 		if (ST (0) != &PL_sv_undef){
 			chan = SvPV_nolen (ST (0));
-			xchat_printf( ph, "XSUB - find_context( %s, NULL )", chan );
-		} else { xchat_print( ph, "XSUB - find_context( NULL, NULL )" ); }
+/* 			xchat_printf( ph, "XSUB - find_context( %s, NULL )", chan ); */
+		}/*  else { xchat_print( ph, "XSUB - find_context( NULL, NULL )" ); } */
 		/* chan is already NULL */
 		break;
 	case 2: /* server and channel */
@@ -934,13 +934,13 @@ static XS (XS_Xchat_find_context)
 		/* otherwise leave it as NULL */
 		if (ST (0) != &PL_sv_undef){
 			chan = SvPV_nolen (ST (0));
-			xchat_print( ph, "XSUB - 2 arg NULL chan" );
+/* 			xchat_print( ph, "XSUB - 2 arg NULL chan" ); */
 		}
 		/* change server value only if it is defined */
 		/* otherwise leave it as NULL */
 		if (ST (1) != &PL_sv_undef){
 			server = SvPV_nolen (ST (1));
-			xchat_print( ph, "XSUB - 2 arg NULL server" );
+/* 			xchat_print( ph, "XSUB - 2 arg NULL server" ); */
 		}
 
 		break;
@@ -949,12 +949,12 @@ static XS (XS_Xchat_find_context)
 	RETVAL = xchat_find_context (ph, server, chan);
 	if (RETVAL != NULL)
 	{
- 		xchat_print (ph, "XSUB - context found");
+/*  		xchat_print (ph, "XSUB - context found"); */
 		XSRETURN_IV(PTR2IV(RETVAL));
 	}
 	else
 	{
- 		xchat_print (ph, "XSUB - context not found");
+/*  		xchat_print (ph, "XSUB - context not found"); */
 		XSRETURN_UNDEF;
 	}
 	}
@@ -2265,10 +2265,10 @@ perl_init (void)
 "  my $file = shift;\n"
 "\n"
 "  if( open FH, $file ) {\n"
-"	 $file = do {local $/; <FH>};\n"
+"	 my $data = do {local $/; <FH>};\n"
 "	 close FH;\n"
 "\n"
-"	 eval $file;\n"
+"	 eval $data;\n"
 "\n"
 "	 if( $@ ) {\n"
 "		# something went wrong\n"
