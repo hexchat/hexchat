@@ -1626,6 +1626,125 @@ dcc_deny_chat (void *ud)
 	dcc_abort (dcc->serv->front_session, dcc);
 }
 
+static struct DCC *
+dcc_add_chat (session *sess, char *nick, int port, unsigned long addr, int pasvid)
+{
+	struct DCC *dcc;
+
+	dcc = new_dcc ();
+	if (dcc)
+	{
+		dcc->serv = sess->server;
+		dcc->type = TYPE_CHATRECV;
+		dcc->dccstat = STAT_QUEUED;
+		dcc->addr = addr;
+		dcc->port = port;
+		dcc->pasvid = pasvid;
+		dcc->nick = strdup (nick);
+		dcc->starttime = time (0);
+
+		EMIT_SIGNAL (XP_TE_DCCCHATOFFER, sess->server->front_session, nick,
+						 NULL, NULL, NULL, 0);
+
+		if (prefs.autoopendccchatwindow)
+		{
+			if (fe_dcc_open_chat_win (TRUE))	/* already open? add only */
+				fe_dcc_add (dcc);
+		} else
+			fe_dcc_add (dcc);
+
+		if (prefs.autodccchat == 1)
+			dcc_connect (dcc);
+		else if (prefs.autodccchat == 2)
+		{
+			char buff[128];
+			snprintf (buff, sizeof (buff), "%s is offering DCC Chat.  Do you want to accept?", nick);
+			fe_confirm (buff, dcc_confirm_chat, dcc_deny_chat, dcc);
+		}
+	}
+
+	return dcc;
+}
+
+static struct DCC *
+dcc_add_file (session *sess, char *file, unsigned long size, int port, char *nick, unsigned long addr, int pasvid)
+{
+	struct DCC *dcc;
+	char tbuf[512];
+
+	dcc = new_dcc ();
+	if (dcc)
+	{
+		dcc->file = strdup (file);
+
+		dcc->destfile = g_malloc (strlen (prefs.dccdir) + strlen (nick) +
+										  strlen (file) + 4);
+
+		strcpy (dcc->destfile, prefs.dccdir);
+		if (prefs.dccdir[strlen (prefs.dccdir) - 1] != '/')
+			strcat (dcc->destfile, "/");
+		if (prefs.dccwithnick)
+		{
+#ifdef WIN32
+			char *t = strlen (dcc->destfile) + dcc->destfile;
+			strcpy (t, nick);
+			while (*t)
+			{
+				if (*t == '\\' || *t == '|')
+					*t = '_';
+				t++;
+			}
+#else
+			strcat (dcc->destfile, nick);
+#endif
+			strcat (dcc->destfile, ".");
+		}
+		strcat (dcc->destfile, file);
+
+		/* get the local filesystem encoding */
+		dcc->destfile_fs = g_filename_from_utf8 (dcc->destfile, -1, 0, 0, 0);
+
+		dcc->resumable = 0;
+		dcc->pos = 0;
+		dcc->serv = sess->server;
+		dcc->type = TYPE_RECV;
+		dcc->dccstat = STAT_QUEUED;
+		dcc->addr = addr;
+		dcc->port = port;
+		dcc->pasvid = pasvid;
+		dcc->size = size;
+		dcc->nick = strdup (nick);
+		dcc->maxcps = prefs.dcc_max_get_cps;
+
+		is_resumable (dcc);
+
+		/* autodccsend is really autodccrecv.. right? */
+
+		if (prefs.autodccsend == 1)
+		{
+			dcc_get (dcc);
+		}
+		else if (prefs.autodccsend == 2)
+		{
+			char buff[128];
+			snprintf (buff, sizeof (buff), "%s is offering \"%s\" via DCC.  Do you want to accept the transfer?", nick, file);
+			fe_confirm (buff, dcc_confirm_send, dcc_deny_send, dcc);
+		}
+		if (prefs.autoopendccrecvwindow)
+		{
+			if (fe_dcc_open_recv_win (TRUE))	/* was already open? just add*/
+				fe_dcc_add (dcc);
+		} else
+			fe_dcc_add (dcc);
+	}
+	sprintf (tbuf, "%lu", size);
+	snprintf (tbuf + 24, 300, "%s:%d", net_ip (dcc->addr), dcc->port);
+	EMIT_SIGNAL (XP_TE_DCCSENDOFFER, sess->server->front_session, nick,
+					 file, tbuf, tbuf + 24, 0);
+
+	return dcc;
+}
+
 void
 handle_dcc (struct session *sess, char *nick, char *word[],
 				char *word_eol[])
@@ -1658,39 +1777,10 @@ handle_dcc (struct session *sess, char *nick, char *word[],
 		if (dcc)
 			dcc_close (dcc, 0, TRUE);
 
-		dcc = new_dcc ();
-		if (dcc)
-		{
-			dcc->serv = sess->server;
-			dcc->type = TYPE_CHATRECV;
-			dcc->dccstat = STAT_QUEUED;
-			dcc->addr = addr;
-			dcc->port = port;
-			dcc->pasvid = pasvid;
-			dcc->nick = strdup (nick);
-			dcc->starttime = time (0);
-
-			EMIT_SIGNAL (XP_TE_DCCCHATOFFER, sess->server->front_session, nick,
-							 NULL, NULL, NULL, 0);
-
-			if (prefs.autoopendccchatwindow)
-			{
-				if (fe_dcc_open_chat_win (TRUE))	/* already open? add only */
-					fe_dcc_add (dcc);
-			} else
-				fe_dcc_add (dcc);
-
-			if (prefs.autodccchat == 1)
-				dcc_connect (dcc);
-			else if (prefs.autodccchat == 2)
-			{
-				char buff[128];
-				snprintf (buff, sizeof (buff), "%s is offering DCC Chat.  Do you want to accept?", nick);
-				fe_confirm (buff, dcc_confirm_chat, dcc_deny_chat, dcc);
-			}
-		}
+		dcc_add_chat (sess, nick, port, addr, pasvid);
 		return;
 	}
+
 	if (!strcasecmp (type, "RESUME"))
 	{
 		port = atoi (word[7]);
@@ -1798,78 +1888,13 @@ handle_dcc (struct session *sess, char *nick, char *word[],
 			return;
 		}
 
-		dcc = new_dcc ();
-		if (dcc)
-		{
-			dcc->file = strdup (file);
+		dcc_add_file (sess, file, size, port, nick, addr, pasvid);
 
-			dcc->destfile = g_malloc (strlen (prefs.dccdir) + strlen (nick) +
-											  strlen (file) + 4);
-
-			strcpy (dcc->destfile, prefs.dccdir);
-			if (prefs.dccdir[strlen (prefs.dccdir) - 1] != '/')
-				strcat (dcc->destfile, "/");
-			if (prefs.dccwithnick)
-			{
-#ifdef WIN32
-				char *t = strlen (dcc->destfile) + dcc->destfile;
-				strcpy (t, nick);
-				while (*t)
-				{
-					if (*t == '\\' || *t == '|')
-						*t = '_';
-					t++;
-				}
-#else
- 				strcat (dcc->destfile, nick);
-#endif
-				strcat (dcc->destfile, ".");
-			}
-			strcat (dcc->destfile, file);
-
-			/* get the local filesystem encoding */
-			dcc->destfile_fs = g_filename_from_utf8 (dcc->destfile, -1, 0, 0, 0);
-
-			dcc->resumable = 0;
-			dcc->pos = 0;
-			dcc->serv = sess->server;
-			dcc->type = TYPE_RECV;
-			dcc->dccstat = STAT_QUEUED;
-			dcc->addr = addr;
-			dcc->port = port;
-			dcc->pasvid = pasvid;
-			dcc->size = size;
-			dcc->nick = strdup (nick);
-			dcc->maxcps = prefs.dcc_max_get_cps;
-
-			is_resumable (dcc);
-
-			/* autodccsend is really autodccrecv.. right? */
-
-			if (prefs.autodccsend == 1)
-			{
-				dcc_get (dcc);
-			}
-			else if (prefs.autodccsend == 2)
-			{
-				char buff[128];
-				snprintf (buff, sizeof (buff), "%s is offering \"%s\" via DCC.  Do you want to accept the transfer?", nick, file);
-				fe_confirm (buff, dcc_confirm_send, dcc_deny_send, dcc);
-			}
-			if (prefs.autoopendccrecvwindow)
-			{
-				if (fe_dcc_open_recv_win (TRUE))	/* was already open? just add*/
-					fe_dcc_add (dcc);
-			} else
-				fe_dcc_add (dcc);
-		}
-		sprintf (tbuf, "%lu", size);
-		snprintf (tbuf + 24, 300, "%s:%d", net_ip (dcc->addr), dcc->port);
-		EMIT_SIGNAL (XP_TE_DCCSENDOFFER, sess->server->front_session, nick,
-						 file, tbuf, tbuf + 24, 0);
 	} else
+	{
 		EMIT_SIGNAL (XP_TE_DCCGENERICOFFER, sess->server->front_session,
 						 word_eol[4] + 2, nick, NULL, NULL, 0);
+	}
 }
 
 void
