@@ -120,7 +120,7 @@ menu_about (GtkWidget * wid, gpointer sess)
 				"%s\n"
 				"<b>Charset</b>: %s <b>Renderer</b>: %s\n"
 				"<b>Compiled</b>: "__DATE__"\n\n"
-				"\302\251 1998-2004 Peter \305\275elezn\303\275 &lt;zed@xchat.org>",
+				"<small>\302\251 1998-2004 Peter \305\275elezn\303\275 &lt;zed@xchat.org></small>",
 					_("A multiplatform IRC Client"),
 					get_cpu_str(),
 					locale,
@@ -136,7 +136,7 @@ menu_about (GtkWidget * wid, gpointer sess)
 	hbox = gtk_hbox_new (0, 2);
 	gtk_container_add (GTK_CONTAINER (vbox), hbox);
 
-	wid = gtk_button_new_from_stock (GTK_STOCK_OK);
+	wid = gtk_button_new_from_stock (GTK_STOCK_CLOSE);
 	GTK_WIDGET_SET_FLAGS (GTK_WIDGET (wid), GTK_CAN_DEFAULT);
 	gtk_box_pack_end (GTK_BOX (GTK_DIALOG (about)->action_area), wid, 0, 0, 0);
 	gtk_widget_grab_default (wid);

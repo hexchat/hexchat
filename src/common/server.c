@@ -1054,7 +1054,7 @@ traverse_socks5 (int sok, char *serverAddr, int port)
 	struct sock5_connect1 sc1;
 	unsigned char *sc2;
 	unsigned int packetlen, addrlen;
-	unsigned char buf[10];
+	unsigned char buf[260];
 
 	sc1.version = 5;
 	sc1.nmethods = 1;
@@ -1095,7 +1095,7 @@ traverse_socks5 (int sok, char *serverAddr, int port)
 	{
 		if (recv (sok, buf, 1, 0) != 1)
 			return 1;
-		packetlen = buf[0] + 2;
+		packetlen = buf[0] + 2;	/* can't exceed 260 */
 		if (recv (sok, buf, packetlen, 0) != packetlen)
 			return 1;
 	}
@@ -1233,9 +1233,7 @@ server_child (server * serv)
 	char *proxy_ip = NULL;
 	char *local_ip;
 	int connect_port;
-	FILE *fd;
-
-	fd = fdopen (serv->childwrite, "w");
+	char buf[512];
 
 	ns_server = net_store_new ();
 
@@ -1246,26 +1244,26 @@ server_child (server * serv)
 		local_ip = net_resolve (ns_local, prefs.hostname, 0, &real_hostname);
 		if (local_ip != NULL)
 		{
-			fprintf (fd, "5\n%s\n", local_ip);
+			snprintf (buf, sizeof (buf), "5\n%s\n", local_ip);
+			write (serv->childwrite, buf, strlen (buf));
 			net_bind (ns_local, serv->sok4, serv->sok6);
 		} else
 		{
-			fprintf (fd, "7\n");
+			write (serv->childwrite, "7\n", 2);
 		}
 		net_store_destroy (ns_local);
-		fflush (fd);
 	}
 
 	/* first resolve where we want to connect to */
 	if (!serv->dont_use_proxy && prefs.proxy_host[0] && prefs.proxy_type > 0)
 	{
-		fprintf (fd, "9\n%s\n", prefs.proxy_host);
-		fflush (fd);
+		snprintf (buf, sizeof (buf), "9\n%s\n", prefs.proxy_host);
+		write (serv->childwrite, buf, strlen (buf));
 		ip = net_resolve (ns_server, prefs.proxy_host, prefs.proxy_port,
 								&real_hostname);
 		if (!ip)
 		{
-			fprintf (fd, "1\n");
+			write (serv->childwrite, "1\n", 2);
 			goto xit;
 		}
 		connect_port = prefs.proxy_port;
@@ -1277,7 +1275,7 @@ server_child (server * serv)
 			proxy_ip = net_resolve (ns_proxy, hostname, port, &real_hostname);
 			if (!proxy_ip)
 			{
-				fprintf (fd, "1\n");
+				write (serv->childwrite, "1\n", 2);
 				goto xit;
 			}
 		} else						  /* otherwise we can just use the hostname */
@@ -1287,20 +1285,22 @@ server_child (server * serv)
 		ip = net_resolve (ns_server, hostname, port, &real_hostname);
 		if (!ip)
 		{
-			fprintf (fd, "1\n");
+			write (serv->childwrite, "1\n", 2);
 			goto xit;
 		}
 		connect_port = port;
 	}
 
-	fprintf (fd, "3\n%s\n%s\n%d\n", real_hostname, ip, connect_port);
-	fflush (fd);
+	snprintf (buf, sizeof (buf), "3\n%s\n%s\n%d\n",
+				 real_hostname, ip, connect_port);
+	write (serv->childwrite, buf, strlen (buf));
 
 	error = net_connect (ns_server, serv->sok4, serv->sok6, &sok);
 
 	if (error != 0)
 	{
-		fprintf (fd, "2\n%d\n", sock_error ());
+		snprintf (buf, sizeof (buf), "2\n%d\n", sock_error ());
+		write (serv->childwrite, buf, strlen (buf));
 	} else
 	{
 		/* connect succeeded */
@@ -1308,23 +1308,22 @@ server_child (server * serv)
 		{
 			switch (traverse_proxy (sok, proxy_ip, port))
 			{
-			case 0:
-				fprintf (fd, "4\n%d\n", sok);	/* success */
+			case 0:	/* success */
+				snprintf (buf, sizeof (buf), "4\n%d\n", sok);	/* success */
+				write (serv->childwrite, buf, strlen (buf));
 				break;
-			case 1:
-				fprintf (fd, "8\n");	  /* socks traversal failed */
+			case 1:	/* socks traversal failed */
+				write (serv->childwrite, "8\n", 2);
 				break;
 			}
 		} else
 		{
-			fprintf (fd, "4\n%d\n", sok);
+			snprintf (buf, sizeof (buf), "4\n%d\n", sok);	/* success */
+			write (serv->childwrite, buf, strlen (buf));
 		}
 	}
 
 xit:
-
-	/* 'fd' is leaked on win32 */
-	fflush (fd);
 
 #if defined (USE_IPV6) || defined (WIN32)
 	/* this is probably not needed */
@@ -1342,7 +1341,6 @@ xit:
 		free (ip);
 	if (real_hostname)
 		free (real_hostname);
-	/*fclose (fd);*/
 #endif
 
 	return 0;
