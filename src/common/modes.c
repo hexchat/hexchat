@@ -47,12 +47,16 @@ void
 send_channel_modes (session *sess, char *tbuf, char *word[], int wpos,
 						  int end, char sign, char mode)
 {
-	int usable_modes, orig_len, len, wlen, i;
+	int usable_modes, orig_len, len, wlen, i, max;
 	server *serv = sess->server;
 
 	/* sanity check. IRC RFC says three per line. */
 	if (serv->modes_per_line < 3)
 		serv->modes_per_line = 3;
+
+	/* RFC max, minus length of "MODE %s " and "\r\n" and 1 +/- sign */
+	/* 512 - 6 - 2 - 1 - strlen(chan) */
+	max = 503 - strlen (sess->channel);
 
 	while (wpos < end)
 	{
@@ -69,8 +73,7 @@ send_channel_modes (session *sess, char *tbuf, char *word[], int wpos,
 			if (wpos + i >= end)
 				break;
 			wlen = strlen (word[wpos + i]) + 1;
-			/* 512 is IRC max, minus 2 for \r\n, 1 for sign, 1 for OBO error */
-			if (wlen + len > 508)
+			if (wlen + len > max)
 				break;
 			len += wlen; /* length of our whole string so far */
 		}
