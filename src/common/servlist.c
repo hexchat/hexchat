@@ -178,6 +178,9 @@ static const struct defaultserver def[] =
 	{0,			"irc.inn.at.euirc.net"},
 	{0,			"irc.bas.ch.euirc.net"},
 
+	{"EuropNet", 0},
+	{0,			"irc.europnet.org"},
+
 	{"EU-IRC",	0},
 	{0,			"irc.eu-irc.net"},
 

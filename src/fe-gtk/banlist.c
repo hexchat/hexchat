@@ -83,7 +83,7 @@ fe_add_ban_list (struct session *sess, char *mask, char *who, char *when, int is
 }
 
 void
-fe_ban_list_end (struct session *sess)
+fe_ban_list_end (struct session *sess, int is_exemption)
 {
 	gtk_widget_set_sensitive (sess->res->banlist_butRefresh, TRUE);
 }

@@ -622,7 +622,7 @@ process_numeric (session * sess, int n,
 			sess = serv->front_session;
 		if (!fe_is_banwindow (sess))
 			goto def;
-		fe_ban_list_end (sess);
+		fe_ban_list_end (sess, TRUE);
 		break;
 
 	case 353:						  /* NAMES */
@@ -645,7 +645,7 @@ process_numeric (session * sess, int n,
 			sess = serv->front_session;
 		if (!fe_is_banwindow (sess))
 			goto def;
-		fe_ban_list_end (sess);
+		fe_ban_list_end (sess, FALSE);
 		break;
 
 	case 372:	/* motd text */

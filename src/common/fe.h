@@ -34,7 +34,7 @@ void fe_add_chan_list (struct server *serv, char *chan, char *users,
 void fe_chan_list_end (struct server *serv);
 int fe_is_banwindow (struct session *sess);
 void fe_add_ban_list (struct session *sess, char *mask, char *who, char *when, int is_exemption);
-void fe_ban_list_end (struct session *sess);
+void fe_ban_list_end (struct session *sess, int is_exemption);
 void fe_notify_update (char *name);
 void fe_text_clear (struct session *sess);
 void fe_close_window (struct session *sess);
