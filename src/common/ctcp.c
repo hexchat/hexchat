@@ -136,11 +136,6 @@ ctcp_handle (session *sess, char *to, char *nick,
 
 	if (!ctcp_check (sess, nick, word, word_eol, word[4] + 2))
 	{
-		if (!strncasecmp (msg, "ACTION", 6))
-		{
-			inbound_action (sess, to, nick, msg + 7, FALSE);
-			return;
-		}
 		if (!strncasecmp (msg, "SOUND", 5))
 		{
 			po = strchr (word[5], '\001');

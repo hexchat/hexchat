@@ -1,18 +1,22 @@
+## RPM spec file designed for Fedora Core 3 ##
+
 Summary: Graphical IRC (chat) client
 Summary(fr): Client IRC (chat) avec interface graphique
 Summary(de): IRC-Client (Chat) mit grafischer Oberfläche
 Name: xchat
-Version: 2.4.1
+Version: 2.4.2
 Release: 0
 Epoch: 1
 Group: Applications/Internet
 License: GPL
 URL: http://xchat.org
-Source: http://xchat.org/files/source/2.0/xchat-%{version}.tar.bz2
+Source: http://xchat.org/files/source/2.4/xchat-%{version}.tar.bz2
 Buildroot: %{_tmppath}/%{name}-%{version}-root
 Requires: gtk2
 Requires: openssl
 BuildRequires: gettext
+BuildRequires: openssl-devel
+BuildRequires: gtk2-devel
 
 %description
 A GUI IRC client with DCC file transfers, C plugin interface, Perl
@@ -31,7 +35,7 @@ Provides Perl scripting capability to XChat.
 Summary: XChat Python plugin
 Group: Applications/Internet
 Requires: xchat >= 2.0.9
-Requires: python2 >= 2.2.0
+Requires: python >= 2.3.0
 %description python
 Provides Python scripting capability to XChat.
 
