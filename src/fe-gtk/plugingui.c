@@ -16,9 +16,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
  */
 
-/* we still use gtk_button_new_from_stock() for some reason... -Vince
 #define GTK_DISABLE_DEPRECATED
-*/
 
 #include <string.h>
 #include <stdio.h>
@@ -200,7 +198,7 @@ plugingui_unload (GtkWidget * wid, gpointer unused)
 void
 plugingui_open (void)
 {
-	GtkWidget *okb, *view;
+	GtkWidget *view;
 	GtkWidget *vbox, *action_area;
 
 	if (plugin_window)
@@ -220,25 +218,18 @@ plugingui_open (void)
 	gtk_window_set_title (GTK_WINDOW (plugin_window), _("X-Chat: Plugins and Scripts"));
 
 	view = plugingui_treeview_new (vbox);
-  g_object_set_data (G_OBJECT (plugin_window), "view", view);
+	g_object_set_data (G_OBJECT (plugin_window), "view", view);
 
 	gtkutil_button (action_area, GTK_STOCK_REVERT_TO_SAVED, NULL,
 	                plugingui_loadbutton_cb, NULL, _("_Load..."));
 
 	gtkutil_button (action_area, GTK_STOCK_DELETE, NULL,
 	                plugingui_unload, NULL, _("_UnLoad"));
-/* Any reason we can't use gtkutil_button() here?  -Vince
+
 	gtkutil_button (action_area,
 						 GTK_STOCK_CLOSE, NULL, plugingui_close_button,
 						 NULL, _("_Close"));
- */
-	okb = gtk_button_new_from_stock (GTK_STOCK_CLOSE);
-	gtk_box_pack_end (GTK_BOX (action_area),
-							okb, 1, 1, 10);
-	g_signal_connect (G_OBJECT (okb), "clicked",
-							G_CALLBACK (plugingui_close_button), 0);
-	gtk_widget_show (okb);
-
+ 
 	fe_pluginlist_update ();
 
 	gtk_widget_show (plugin_window);
