@@ -600,10 +600,20 @@ servlist_check_cb (GtkWidget *but, gpointer num_p)
 	if (!selected_net)
 		return;
 
-	if (GTK_TOGGLE_BUTTON (but)->active)
-		selected_net->flags |= (1 << num);
-	else
-		selected_net->flags &= ~(1 << num);
+	if ((1 << num) == FLAG_CYCLE)
+	{
+		/* this ones reverse, so it's compat with 2.0.x */
+		if (GTK_TOGGLE_BUTTON (but)->active)
+			selected_net->flags &= ~(1 << num);
+		else
+			selected_net->flags |= (1 << num);
+	} else
+	{
+		if (GTK_TOGGLE_BUTTON (but)->active)
+			selected_net->flags |= (1 << num);
+		else
+			selected_net->flags &= ~(1 << num);
+	}
 
 	if ((1 << num) == FLAG_USE_GLOBAL)
 	{
@@ -915,70 +925,74 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 	gtk_label_set_use_markup (GTK_LABEL (label16), TRUE);
 	gtk_misc_set_alignment (GTK_MISC (label16), 0, 0.5);
 
+	check = servlist_create_check (0, !(net->flags & FLAG_CYCLE), table3,
+								  2, 1, _("Connect to selected server only"));
+	add_tip (check, _("Don't cycle through all the servers when the connection fails."));
+
 	label17 = bold_label (_("Your Details"));
-	gtk_table_attach (GTK_TABLE (table3), label17, 0, 3, 2, 3,
+	gtk_table_attach (GTK_TABLE (table3), label17, 0, 3, 3, 4,
 							(GtkAttachOptions) (GTK_FILL),
 							(GtkAttachOptions) (0), 0, 3);
 
 	servlist_create_check (1, net->flags & FLAG_USE_GLOBAL, table3,
-								  3, 1, _("Use global user information"));
+								  4, 1, _("Use global user information"));
 
 	edit_entry_nick =
-		servlist_create_entry (table3, _("_Nick name:"), 4, net->nick,
+		servlist_create_entry (table3, _("_Nick name:"), 5, net->nick,
 									  &edit_label_nick, 0);
 
 	edit_entry_user =
-		servlist_create_entry (table3, _("_User name:"), 5, net->user,
+		servlist_create_entry (table3, _("_User name:"), 6, net->user,
 									  &edit_label_user, 0);
 
 	edit_entry_real =
-		servlist_create_entry (table3, _("Real na_me:"), 6, net->real,
+		servlist_create_entry (table3, _("Real na_me:"), 7, net->real,
 									  &edit_label_real, 0);
 
 	label21 = bold_label (_("Connecting"));
-	gtk_table_attach (GTK_TABLE (table3), label21, 0, 3, 7, 8,
+	gtk_table_attach (GTK_TABLE (table3), label21, 0, 3, 8, 9,
 							(GtkAttachOptions) (GTK_FILL),
 							(GtkAttachOptions) (0), 0, 3);
 
 	servlist_create_check (3, net->flags & FLAG_AUTO_CONNECT, table3,
-								  8, 1, _("Auto connect to this network at startup"));
+								  9, 1, _("Auto connect to this network at startup"));
 	servlist_create_check (4, net->flags & FLAG_USE_PROXY, table3,
-								  9, 1, _("Use a proxy server"));
+								  10, 1, _("Use a proxy server"));
 	check = servlist_create_check (2, net->flags & FLAG_USE_SSL, table3,
-								  10, 1, _("Use SSL for all the servers on this network"));
+								  11, 1, _("Use SSL for all the servers on this network"));
 #ifndef USE_OPENSSL
 	gtk_widget_set_sensitive (check, FALSE);
 #endif
 	check = servlist_create_check (5, net->flags & FLAG_ALLOW_INVALID, table3,
-								  11, 1, _("Accept invalid SSL certificate"));
+								  12, 1, _("Accept invalid SSL certificate"));
 #ifndef USE_OPENSSL
 	gtk_widget_set_sensitive (check, FALSE);
 #endif
 
 	edit_entry_join =
-		servlist_create_entry (table3, _("C_hannels to join:"), 12,
+		servlist_create_entry (table3, _("C_hannels to join:"), 13,
 									  net->autojoin, 0,
 				  _("Channels to join, separated by commas, but not spaces!"));
 
 	edit_entry_cmd =
-		servlist_create_entry (table3, _("Connect command:"), 13,
+		servlist_create_entry (table3, _("Connect command:"), 14,
 									  net->command, 0,
 					_("Extra command to execute after connecting. If you need more than one, set this to LOAD -e <filename>, where <filename> is a text-file full of commands to execute."));
 
 	edit_entry_nickserv =
-		servlist_create_entry (table3, _("Nickserv password:"), 14,
+		servlist_create_entry (table3, _("Nickserv password:"), 15,
 									  net->nickserv, 0, 0);
 	gtk_entry_set_visibility (GTK_ENTRY (edit_entry_nickserv), FALSE);
 
 	edit_entry_pass =
-		servlist_create_entry (table3, _("Server password:"), 15,
+		servlist_create_entry (table3, _("Server password:"), 16,
 									  net->pass, 0,
 					_("Password for the server, if in doubt, leave blank."));
 	gtk_entry_set_visibility (GTK_ENTRY (edit_entry_pass), FALSE);
 
 	label34 = gtk_label_new (_("Character set:"));
 	gtk_widget_show (label34);
-	gtk_table_attach (GTK_TABLE (table3), label34, 1, 2, 16, 17,
+	gtk_table_attach (GTK_TABLE (table3), label34, 1, 2, 17, 18,
 							(GtkAttachOptions) (GTK_FILL),
 							(GtkAttachOptions) (0), 0, 0);
 	gtk_misc_set_alignment (GTK_MISC (label34), 0, 0.5);
@@ -992,7 +1006,7 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 #endif
 	ignore_changed = FALSE;
 	gtk_widget_show (comboboxentry_charset);
-	gtk_table_attach (GTK_TABLE (table3), comboboxentry_charset, 2, 3, 16, 17,
+	gtk_table_attach (GTK_TABLE (table3), comboboxentry_charset, 2, 3, 17, 18,
 							(GtkAttachOptions) (GTK_FILL),
 							(GtkAttachOptions) (GTK_FILL), 0, 0);
 

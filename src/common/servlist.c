@@ -654,9 +654,13 @@ servlist_cycle (server *serv)
 		max = g_slist_length (net->servlist);
 		if (max > 0)
 		{
-			net->selected++;
-			if (net->selected >= max)
-				net->selected = 0;
+			/* try the next server, if that option is on */
+			if (net->flags & FLAG_CYCLE)
+			{
+				net->selected++;
+				if (net->selected >= max)
+					net->selected = 0;
+			}
 
 			del = prefs.recon_delay * 1000;
 			if (del < 1000)
