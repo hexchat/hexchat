@@ -809,7 +809,7 @@ xchat_auto_connect (gpointer userdata)
 static void
 xchat_init (void)
 {
-	char buf[2048];
+	char buf[3068];
 	const char *cs = NULL;
 
 #ifdef WIN32

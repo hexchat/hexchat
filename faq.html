@@ -22,7 +22,7 @@ p { margin: 3% }
 </head>
 <body>
 
-<h1>X-Chat 2 Frequently Asked Questions</h1>
+<h1>X-Chat 2.4 Frequently Asked Questions</h1>
 
 <h2>1. Section One: Compiling and Installing.</h2>
 <p>
@@ -62,7 +62,7 @@ p { margin: 3% }
 <br/><br/>
 <a href="#q214">14. How do I execute multiple commands in one line?</a>
 <br/><br/>
-<a href="#q215">15. How do I enable Emacs keybindings in XChat 2.0?</a>
+<a href="#q215">15. How do I enable Emacs keybindings in XChat?</a>
 <br/><br/>
 <a href="#q216">16. I get this error: "Unknown file type abc.yz. Maybe you need to install the Perl or Python plugin?"</a>
 <br/><br/>
@@ -149,8 +149,8 @@ language support and all menus and GUI will be in english only.</li>
 
 <br/><h3><a name="q23">3. How do I autoconnect and join a channel when X-Chat loads?</a></h3>
 <p>
-In the Serverlist, enable "Edit Mode", select the Network to want to auto-connect to,
-and turn ON the "Auto connect at startup" checkbox.
+In the Serverlist, select the Network you want to auto-connect to, click Edit
+and turn ON the "Auto connect to this network at startup" checkbox.
 </p>
 
 <br/><h3><a name="q24">4. How do I cut and paste in X-Chat?</a></h3>
@@ -163,9 +163,8 @@ you want, and then press middle mouse button to paste (if you only have a
 <br/><h3><a name="q25">5. How do I connect through a proxy?</a></h3>
 <p>
 Go to the menus, Settings -> Preferences -> Network Setup and fill in the requested
-information there. There is currently no support for using a username and
-password to authenticate to proxies.
-<br/><br/><b><i>Update</i></b>: HTTP authentication was added in 2.0.6.
+information there. Authentication (using a username and password) is
+only supported for HTTP and Socks5.
 </p>
 
 <br/><h3><a name="q26">6. How do I show @ and + infront of nicknames that are Op and Voice when they talk?</a></h3>
@@ -173,7 +172,7 @@ password to authenticate to proxies.
 To display @ and + characters next to nicknames as they talk, do the following:
 </p>
 <p>
-In the menus, open up Settings -> Lists -> Text Events. Find the
+In the menus, open up Settings -> Advanced -> Text Events. Find the
 <i>Channel Message</i> event in the list. The $3 code can be inserted to
 print the user's mode-character (e.g. @ or +). For example, you might want
 to change the default:
@@ -270,23 +269,26 @@ Unofficial <a href="http://dfx.at/xchat/">patches are available here</a>.
    When offering a DCC file, xchat will tell the receiver your address. If it says
    192.168.0.0, the receiver will not be able to connect. One way to make it send
    your "real" address is to enable the "Get my IP from IRC Server" option in xchat.
-   In version 2.0, it's available in Prefereces -> File Transfers. When you turn
+   In version 2, it's available in Prefereces -> File Transfers. When you turn
    this option ON, you will have to relogin to the server before it'll take effect.
 </p>
 
 <br/><h3><a name="q214">14. How do I execute multiple commands in one line?</a></h3>
 <p>
-   There are two ways to do this:
+   There are three ways to do this:
 </p>
 <ul>
 <li>You can create two UserCommands, with the same name, and then execute
-      the UserCommand. It will be executed in the same order as it's written
-      in the UserCommands gui.</li>
+the UserCommand. It will be executed in the same order as it's written
+in the UserCommands gui.</li>
 <li>/LOAD -e &lt;textfile>, where &lt;textfile> is a full pathname to a file
-      containing commands on each line.</li>
+containing commands on each line.</li>
+<li>
+Separate your commands with CTRL-SHIFT-a. This will appear as a little box
+with numbers on it (doesn't work on Windows).</li>
 </ul>
 
-<br/><h3><a name="q215">15. How do I enable Emacs keybindings in XChat 2.0?</a></h3>
+<br/><h3><a name="q215">15. How do I enable Emacs keybindings in XChat?</a></h3>
 <p>
 The standard Emacs keybindings, such as ctrl-w, ctrl-u etc, are supported by
 GTK+ 2.0, but normally disabled. If you run Gnome 2, you can reenable them in
@@ -295,10 +297,7 @@ your Gnome menu under: Preferences -> Keyboard Shortcuts.
 <p>
 If you don't use Gnome 2, but still want Emacs keybindings, it's beyond the
 scope of this document. You might find some hints here:
-<a href="http://www.gtk.org/gtk-2.2.0-notes.html">GTK+ 2.2.0 release notes</a>.
-</p>
-<p>
-Note, X-Chat versions 2.0.0 and 2.0.1 used the ctrl-w key for "Close Tab". Ctrl-w is recommended by the H.I.G for this purpose, but it conflicts with Emacs bindings. Version 2.0.2 changed the "Close Tab" binding to shift-ctrl-w, to avoid this conflict. In 2.0.3, ctrl-w is used for "Close Tab" when Emacs key bindings are disabled, and shift-ctrl-w when they are enabled. This solution should satisfy everyone.
+<a href="http://www.gtk.org/gtk-2.4.0-notes.html">GTK+ 2.4.0 release notes</a>.
 </p>
 
 <br/><h3><a name="q216">16. I get this error: "Unknown file type abc.yz. Maybe you need to install the Perl or Python plugin?"</a></h3>
@@ -318,22 +317,10 @@ the plugin for running those scripts isn't loaded.
 
 <br/><h3><a name="q217">17. How do I play sound files on certain events?</a></h3>
 <p>
-You can configure xchat to play a sound file (wave) on almost any event.
-<br/><br/>
-Example: Say you want to play <i>dcc.wav</i> whenever someone offers a DCC file.</p>
-<ol>
-<li>Open the setup window under <i>Settings -> Lists -> Text Events</i>.</li>
-<li>Find the <i>DCC SEND Offer</i> event in the list, they are in alphabetical order.</li>
-<li>Click the row and then enter <i>/home/user/dcc.wav</i> in the "Sound file:" entry box. PRESS ENTER WHEN DONE!</li>
-</ol>
-<p>
-That's it, it should now play <i>/home/user/dcc.wav</i> whenever the DCC SEND Offer message
-is printed. By default, it will use the "esdplay" program to play sound files. If you don't have it
-(most Linux distros do!) then you can nominate another program, for example:
-<br/><br/>
-	/set sound_command soxplay
-<br/><br/>On Windows, you do not need to nominate a sound playing program, it will work automatically,
-if you have xchat 2.0.6b or higher.</p>
+In the menus, go to: Settings > Preferences > Sound.
+Select the event you want to make a sound on, then type in a
+sound filename (or use the Browse button).
+</p>
 
 <br/><h3><a name="q218">18. How do I auto-load scripts at startup?</a></h3>
 <p>
@@ -381,9 +368,9 @@ problem. X-Chat itself only allocates about 40kb of memory through malloc()!
 
 <br/><h3><a name="q32">2. My copy of X-Chat crashes, what can I do?</a></h3>
 <p>
-   Firstly, make sure it's the latest stable version of X-Chat. Stable versions have
-   an EVEN middle number, e.g.: 2.0.1 or 2.0.2. Often late fixes are placed in this
-   directory: <a href="http://xchat.org/files/source/2.0/patches/">2.0.x patches</a>
+Firstly, make sure it's the latest stable version of X-Chat. Stable versions have
+an EVEN middle number, e.g.: 2.4.1 or 2.4.2. Often late fixes are placed in this
+directory: <a href="http://xchat.org/files/source/2.4/patches/">2.4.x patches</a>
 </p><p>
    If you still experience crashes, you should consider running it through GDB. This
    will help us find a fix quickly, and it's easy to do! See <a href="http://xchat.org/gdb/">here</a>.

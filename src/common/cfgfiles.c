@@ -66,8 +66,8 @@ list_addentry (GSList ** list, char *cmd, char *name)
 static void
 list_load_from_data (GSList ** list, char *ibuf, int size)
 {
-	char cmd[256];
-	char name[82];
+	char cmd[384];
+	char name[128];
 	char *buf;
 	int pnt = 0;
 

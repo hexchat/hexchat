@@ -380,7 +380,7 @@ editlist_gui_open (GSList * list, char *title, char *wmclass, char *file,
 	gtk_box_pack_end (GTK_BOX (vbox), hbox, 0, 0, 0);
 	gtk_widget_show (hbox);
 
-	editlist_gui_entry_name = gtk_entry_new_with_max_length (40);
+	editlist_gui_entry_name = gtk_entry_new_with_max_length (82);
 	gtk_widget_set_usize (editlist_gui_entry_name, 96, 0);
 	gtk_signal_connect (GTK_OBJECT (editlist_gui_entry_name), "changed",
 							  GTK_SIGNAL_FUNC (editlist_gui_handle_name), 0);
