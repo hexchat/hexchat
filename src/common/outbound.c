@@ -21,6 +21,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <limits.h>
+#include <glib/gtree.h>
 
 #define WANTSOCKET
 #define WANTARPA
@@ -855,86 +856,92 @@ cmd_deop (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	}
 }
 
+typedef struct
+{
+	char **nicks;
+	int i;
+	session *sess;
+	char *reason;
+	char *tbuf;
+} multidata;
+
+static gboolean
+mdehop_cb (gpointer key, struct User *user, multidata *data)
+{
+	if (user->hop && !user->me)
+	{
+		data->nicks[data->i] = user->nick;
+		data->i++;
+	}
+	return TRUE;
+}
+
 static int
 cmd_mdehop (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
-	struct User *user;
 	char **nicks = malloc (sizeof (char *) * sess->hops);
-	int i = 0;
-	GSList *list = sess->userlist;
+	multidata data;
 
-	while (list)
-	{
-		user = (struct User *) list->data;
-		if (user->hop && !user->me)
-		{
-			nicks[i] = user->nick;
-			i++;
-		}
-		list = list->next;
-	}
-
-	send_channel_modes (sess, tbuf, nicks, 0, i, '-', 'h');
-
+	data.nicks = nicks;
+	data.i = 0;
+	g_tree_foreach (sess->usertree, (GTraverseFunc)mdehop_cb, &data);
+	send_channel_modes (sess, tbuf, nicks, 0, data.i, '-', 'h');
 	free (nicks);
 
+	return TRUE;
+}
+
+static gboolean
+mdeop_cb (gpointer key, struct User *user, multidata *data)
+{
+	if (user->op && !user->me)
+	{
+		data->nicks[data->i] = user->nick;
+		data->i++;
+	}
 	return TRUE;
 }
 
 static int
 cmd_mdeop (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
-	struct User *user;
 	char **nicks = malloc (sizeof (char *) * sess->ops);
-	int i = 0;
-	GSList *list = sess->userlist;
+	multidata data;
 
-	while (list)
-	{
-		user = (struct User *) list->data;
-		if (user->op && !user->me)
-		{
-			nicks[i] = user->nick;
-			i++;
-		}
-		list = list->next;
-	}
-
-	send_channel_modes (sess, tbuf, nicks, 0, i, '-', 'o');
-
+	data.nicks = nicks;
+	data.i = 0;
+	g_tree_foreach (sess->usertree, (GTraverseFunc)mdeop_cb, &data);
+	send_channel_modes (sess, tbuf, nicks, 0, data.i, '-', 'o');
 	free (nicks);
 
+	return TRUE;
+}
+
+static gboolean
+mkick_cb (gpointer key, struct User *user, multidata *data)
+{
+	if (!user->op && !user->me)
+		data->sess->server->p_kick (data->sess->server, data->sess->channel, user->nick, data->reason);
+	return TRUE;
+}
+
+static gboolean
+mkickops_cb (gpointer key, struct User *user, multidata *data)
+{
+	if (user->op && !user->me)
+		data->sess->server->p_kick (data->sess->server, data->sess->channel, user->nick, data->reason);
 	return TRUE;
 }
 
 static int
 cmd_mkick (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
-	struct User *user;
-	char *reason = word_eol[2];
-	GSList *list;
+	multidata data;
 
-	list = sess->userlist;
-	while (list)
-	{
-		user = (struct User *) list->data;
-		if (user->op && !user->me)
-		{
-			sess->server->p_kick (sess->server, sess->channel, user->nick, reason);
-		}
-		list = list->next;
-	}
-
-	list = sess->userlist;
-	while (list)
-	{
-		user = (struct User *) list->data;
-		if (!user->op && !user->me)
-		{
-			sess->server->p_kick (sess->server, sess->channel, user->nick, reason);
-		}
-		list = list->next;
-	}
+	data.sess = sess;
+	data.reason = word_eol[2];
+	g_tree_foreach (sess->usertree, (GTraverseFunc)mkickops_cb, &data);
+	g_tree_foreach (sess->usertree, (GTraverseFunc)mkick_cb, &data);
 
 	return TRUE;
 }
@@ -1877,12 +1884,6 @@ cmd_me (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	return TRUE;
 }
 
-typedef struct
-{
-	char **nicks;
-	int i;
-} multidata;
-
 static gboolean
 mop_cb (gpointer key, struct User *user, multidata *data)
 {
@@ -1902,7 +1903,7 @@ cmd_mop (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 
 	data.nicks = nicks;
 	data.i = 0;
-	g_tree_foreach (sess->usertree, mop_cb, &data);
+	g_tree_foreach (sess->usertree, (GTraverseFunc)mop_cb, &data);
 	send_channel_modes (sess, tbuf, nicks, 0, data.i, '+', 'o');
 
 	free (nicks);
@@ -2382,26 +2383,47 @@ cmd_unload (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	return FALSE;
 }
 
+static gboolean
+userlist_cb (gpointer key, struct User *user, session *sess)
+{
+	time_t lt;
+
+	if (!user->lasttalk)
+		lt = 0;
+	else
+		lt = time (0) - user->lasttalk;
+	PrintTextf (sess,
+				"\00306%s\t\00314[\00310%-38s\00314] \017ov\0033=\017%d%d lt\0033=\017%d\n",
+				user->nick, user->hostname, user->op, user->voice, lt);
+
+	return TRUE;
+}
+
 static int
 cmd_userlist (struct session *sess, char *tbuf, char *word[],
 				  char *word_eol[])
 {
-	struct User *user;
-	GSList *list;
-	int lt;
+	g_tree_foreach (sess->usertree, (GTraverseFunc)userlist_cb, sess);
+	return TRUE;
+}
 
-	list = sess->userlist;
-	while (list)
+static gboolean
+wallchop_cb (gpointer key, struct User *user, multidata *data)
+{
+	if (user->op)
 	{
-		user = list->data;
-		lt = time (0) - user->lasttalk;
-		if (!user->lasttalk)
-			lt = 0;
-		sprintf (tbuf,
-					"\00306%s\t\00314[\00310%-38s\00314] \017ov\0033=\017%d%d lt\0033=\017%d\n",
-					user->nick, user->hostname, user->op, user->voice, lt);
-		PrintText (sess, tbuf);
-		list = list->next;
+		if (data->i)
+			strcat (data->tbuf, ",");
+		strcat (data->tbuf, user->nick);
+		data->i++;
+	}
+	if (data->i == 5)
+	{
+		data->i = 0;
+		sprintf (data->tbuf + strlen (data->tbuf),
+					" :[@%s] %s", data->sess->channel, data->reason);
+		data->sess->server->p_raw (data->sess->server, data->tbuf);
+		strcpy (data->tbuf, "NOTICE ");
 	}
 
 	return TRUE;
@@ -2411,37 +2433,27 @@ static int
 cmd_wallchop (struct session *sess, char *tbuf, char *word[],
 				  char *word_eol[])
 {
-	int i = 0;
-	struct User *user;
-	GSList *list;
+	multidata data;
 
-	if (*word_eol[2])
+	if (!(*word_eol[2]))
+		return FALSE;
+
+	strcpy (tbuf, "NOTICE ");
+
+	data.reason = word_eol[2];
+	data.tbuf = tbuf;
+	data.i = 0;
+	data.sess = sess;
+	g_tree_foreach (sess->usertree, (GTraverseFunc)wallchop_cb, &data);
+
+	if (data.i)
 	{
-		strcpy (tbuf, "NOTICE ");
-		list = sess->userlist;
-		while (list)
-		{
-			user = (struct User *) list->data;
-			if (user->op)
-			{
-				if (i)
-					strcat (tbuf, ",");
-				strcat (tbuf, user->nick);
-				i++;
-			}
-			if ((i == 5 || !list->next) && i)
-			{
-				i = 0;
-				sprintf (tbuf + strlen (tbuf),
-							" :[@%s] %s", sess->channel, word_eol[2]);
-				sess->server->p_raw (sess->server, tbuf);
-				strcpy (tbuf, "NOTICE ");
-			}
-			list = list->next;
-		}
-		return TRUE;
+		sprintf (tbuf + strlen (tbuf),
+					" :[@%s] %s", sess->channel, word_eol[2]);
+		sess->server->p_raw (sess->server, tbuf);
 	}
-	return FALSE;
+
+	return TRUE;
 }
 
 static int
@@ -2951,6 +2963,39 @@ check_special_chars (char *cmd, int do_ascii) /* check for %X */
 	}
 }
 
+typedef struct
+{
+	char *nick;
+	int len;
+	struct User *best;
+	int bestlen;
+	char *space;
+	char *tbuf;
+} nickdata;
+
+static gboolean
+nick_comp_cb (gpointer key, struct User *user, nickdata *data)
+{
+	int lenu;
+
+	if (!rfc_ncasecmp (user->nick, data->nick, data->len))
+	{
+		lenu = strlen (user->nick);
+		if (lenu == data->len)
+		{
+			sprintf (data->tbuf, "%s%s", user->nick, data->space);
+			data->len = -1;
+			return FALSE;
+		} else if (lenu < data->bestlen)
+		{
+			data->bestlen = lenu;
+			data->best = user;
+		}
+	}
+
+	return TRUE;
+}
+
 static void
 perform_nick_completion (struct session *sess, char *cmd, char *tbuf)
 {
@@ -2963,37 +3008,26 @@ perform_nick_completion (struct session *sess, char *cmd, char *tbuf)
 			len = (long) space - (long) cmd - 1;
 			if (len < NICKLEN)
 			{
-				struct User *user;
-				struct User *best = NULL;
-				int bestlen = INT_MAX, lenu;
 				char nick[NICKLEN];
-				GSList *list;
+				nickdata data;
 
 				memcpy (nick, cmd, len);
 				nick[len] = 0;
 
-				list = sess->userlist;
-				while (list)
+				data.nick = nick;
+				data.len = len;
+				data.bestlen = INT_MAX;
+				data.best = NULL;
+				data.tbuf = tbuf;
+				data.space = space - 1;
+				g_tree_foreach (sess->usertree, (GTraverseFunc)nick_comp_cb, &data);
+
+				if (data.len == -1)
+					return;
+
+				if (data.best)
 				{
-					user = (struct User *) list->data;
-					if (!rfc_ncasecmp (user->nick, nick, len))
-					{
-						lenu = strlen (user->nick);
-						if (lenu == len)
-						{
-							sprintf (tbuf, "%s%s", user->nick, space - 1);
-							return;
-						} else if (lenu < bestlen)
-						{
-							bestlen = lenu;
-							best = user;
-						}
-					}
-					list = list->next;
-				}
-				if (best)
-				{
-					sprintf (tbuf, "%s%s", best->nick, space - 1);
+					sprintf (tbuf, "%s%s", data.best->nick, space - 1);
 					return;
 				}
 			}

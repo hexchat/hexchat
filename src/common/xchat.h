@@ -266,8 +266,8 @@ struct xchatprefs
 typedef struct session
 {
 	struct server *server;
-	GSList *userlist;
-	void *usertree;
+	void *usertree_alpha;			/* pure alphabetical tree */
+	void *usertree;					/* ordered with Ops first */
 	char channel[CHANLEN];
 	char waitchannel[CHANLEN];		  /* waiting to join this channel */
 	char willjoinchannel[CHANLEN];	  /* /join done for this channel */

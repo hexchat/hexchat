@@ -19,7 +19,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <glib/gtree.h>
 
 #include "../../config.h"
 #ifdef HAVE_STRINGS_H
@@ -29,10 +28,10 @@
 #include "modes.h"
 #include "fe.h"
 #include "notify.h"
+#include "tree.h"
 #include "xchatc.h"
 #include "util.h"
 
-#define USE_TREE	/* use binary tree storage? Fast, but more memory */
 
 static int
 nick_cmp_az_ops (server *serv, struct User *user1, struct User *user2)
@@ -58,7 +57,13 @@ nick_cmp_az_ops (server *serv, struct User *user1, struct User *user2)
 }
 
 static int
-nick_cmp (server *serv, struct User *user1, struct User *user2)
+nick_cmp_alpha (struct User *user1, struct User *user2, server *serv)
+{
+	return strcasecmp (user1->nick, user2->nick);
+}
+
+static int
+nick_cmp (struct User *user1, struct User *user2, server *serv)
 {
 	switch (prefs.userlist_sort)
 	{
@@ -78,93 +83,20 @@ nick_cmp (server *serv, struct User *user1, struct User *user2)
 /*
  insert name in appropriate place in linked list. Returns
  row number or:
-  -1: append (last row)
-  -2: duplicate
+  -1: duplicate
 */
 
 static int
 userlist_insertname (session *sess, struct User *newuser, struct User **after)
 {
-	int c, row = 0;
-	struct User *user;
-	GSList *list = sess->userlist;
-	GSList *prev = NULL;
-	GSList *node = g_slist_alloc ();
-
-	node->data = newuser;
-	*after = NULL;
-
-
-	while (list)
+	if (!sess->usertree)
 	{
-		user = list->data;
-
-		c = nick_cmp (sess->server, newuser, user);
-
-		if (c == 0)
-		{
-			g_slist_free (node);
-			return -2;	/* duplicate */
-		}
-
-		if (c < 0)
-		{
-			/* this saves a loop inside g_slist_insert */
-			node->next = list;
-			if (prev)
-			{
-				prev->next = node;
-				*after = prev->data;
-			} else
-				sess->userlist = node;
-
-#ifdef USE_TREE
-			if (!sess->usertree)
-				sess->usertree = g_tree_new ((GCompareFunc)strcasecmp);
-			g_tree_insert (sess->usertree, newuser->nick, newuser);
-#endif
-
-			return row;
-		}
-
-		row++;
-		prev = list;
-		list = list->next;
+		sess->usertree = tree_new ((tree_cmp_func *)nick_cmp, sess->server);
+		sess->usertree_alpha = tree_new ((tree_cmp_func *)nick_cmp_alpha, sess->server);
 	}
 
-	/* avoid calling g_slist_last() */
-	if (sess->userlist)
-	{
-		prev->next = node;
-		*after = prev->data;
-	} else
-		sess->userlist = node;
-
-#ifdef USE_TREE
-	if (!sess->usertree)
-		sess->usertree = g_tree_new ((GCompareFunc)strcasecmp);
-	g_tree_insert (sess->usertree, newuser->nick, newuser);
-#endif
-
-	return -1;
-}
-
-static void
-update_entry (struct session *sess, struct User *user)
-{
-	int row;
-	struct User *after;
-
-#ifdef USE_TREE
-	g_tree_steal (sess->usertree, user->nick);
-	g_tree_insert (sess->usertree, user->nick, user);
-#endif
-
-	sess->userlist = g_slist_remove (sess->userlist, user);
-	row = userlist_insertname (sess, user, &after);
-
-	fe_userlist_move (sess, user, row);
-	fe_userlist_numbers (sess);
+	tree_insert (sess->usertree_alpha, newuser);
+	return tree_insert (sess->usertree, newuser);
 }
 
 int
@@ -181,15 +113,15 @@ userlist_add_hostname (struct session *sess, char *nick, char *hostname,
 			user->realname = strdup (realname);
 		if (!user->servername)
 			user->servername = strdup (servername);
-		if (prefs.showhostname_in_userlist)
-			update_entry (sess, user);
+	/*	if (prefs.showhostname_in_userlist)
+			update_entry (sess, user);*/
 		return 1;
 	}
 	return 0;
 }
 
-static void
-free_user (struct User *user, GSList **list)
+static int
+free_user (struct User *user, gpointer data)
 {
 	if (user->realname)
 		free (user->realname);
@@ -198,27 +130,20 @@ free_user (struct User *user, GSList **list)
 	if (user->servername)
 		free (user->servername);
 	free (user);
-	*list = g_slist_remove (*list, user);
+
+	return TRUE;
 }
 
 void
 free_userlist (session *sess)
 {
-	struct User *user;
+	tree_foreach (sess->usertree, (tree_traverse_func *)free_user, NULL);
+	tree_destroy (sess->usertree);
+	tree_destroy (sess->usertree_alpha);
 
-#ifdef USE_TREE
-	if (sess->usertree)
-	{
-		g_tree_destroy (sess->usertree);
-		sess->usertree = NULL;
-	}
-#endif
+	sess->usertree = NULL;
+	sess->usertree_alpha = NULL;
 
-	while (sess->userlist)
-	{
-		user = (struct User *) sess->userlist->data;
-		free_user (user, &sess->userlist);
-	}
 	sess->ops = 0;
 	sess->hops = 0;
 	sess->voices = 0;
@@ -233,25 +158,21 @@ clear_user_list (session *sess)
 	fe_userlist_numbers (sess);
 }
 
+static int
+find_cmp (const char *name, struct User *user, void *data)
+{
+	return strcasecmp (name, user->nick);
+}
+
 struct User *
 find_name (struct session *sess, char *name)
 {
-#ifdef USE_TREE
-	if (sess->usertree)
-		return g_tree_lookup (sess->usertree, name);
-#else
-	struct User *user;
-	GSList *list;
+	int pos;
 
-	list = sess->userlist;
-	while (list)
-	{
-		user = (struct User *) list->data;
-		if (!sess->server->p_cmp (user->nick, name))
-			return user;
-		list = list->next;
-	}
-#endif
+	if (sess->usertree_alpha)
+		return tree_find (sess->usertree_alpha, name,
+								(tree_cmp_func *)find_cmp, NULL, &pos);
+
 	return NULL;
 }
 
@@ -302,12 +223,17 @@ ul_update_entry (session *sess, char *name, char mode, char sign)
 	int access;
 	int offset = 0;
 	int level;
+	int pos;
 	char prefix;
 	struct User *user;
 
 	user = find_name (sess, name);
 	if (!user)
 		return;
+
+	/* remove from binary trees, before we loose track of it */
+	tree_remove (sess->usertree, user, &pos);
+	tree_remove (sess->usertree_alpha, user, &pos);
 
 	/* which bit number is affected? */
 	access = mode_access (sess->server, mode, &prefix);
@@ -336,17 +262,33 @@ ul_update_entry (session *sess, char *name, char mode, char sign)
 	/* update the various counts using the CHANGED prefix only */
 	update_counts (sess, user, prefix, level, offset);
 
-	update_entry (sess, user);
+	/* insert it back into its new place */
+	tree_insert (sess->usertree_alpha, user);
+	pos = tree_insert (sess->usertree, user);
+
+	/* let GTK move it too */
+	fe_userlist_move (sess, user, pos);
+	fe_userlist_numbers (sess);
 }
 
 int
 change_nick (struct session *sess, char *oldname, char *newname)
 {
 	struct User *user = find_name (sess, oldname);
+	int pos;
+
 	if (user)
 	{
+		tree_remove (sess->usertree, user, &pos);
+		tree_remove (sess->usertree_alpha, user, &pos);
+
 		safe_strcpy (user->nick, newname, NICKLEN);
-		update_entry (sess, user);
+
+		tree_insert (sess->usertree_alpha, user);
+
+		fe_userlist_move (sess, user, tree_insert (sess->usertree, user));
+		fe_userlist_numbers (sess);
+
 		return 1;
 	}
 
@@ -357,6 +299,7 @@ int
 sub_name (struct session *sess, char *name)
 {
 	struct User *user;
+	int pos;
 
 	user = find_name (sess, name);
 	if (!user)
@@ -372,10 +315,9 @@ sub_name (struct session *sess, char *name)
 	fe_userlist_numbers (sess);
 	fe_userlist_remove (sess, user);
 
-	free_user (user, &sess->userlist);
-#ifdef USE_TREE
-	g_tree_steal (sess->usertree, user->nick);
-#endif
+	tree_remove (sess->usertree, user, &pos);
+	tree_remove (sess->usertree_alpha, user, &pos);
+	free_user (user, NULL);
 
 	return TRUE;
 }
@@ -410,7 +352,7 @@ add_name (struct session *sess, char *name, char *hostname)
 	row = userlist_insertname (sess, user, &after);
 
 	/* duplicate? some broken servers trigger this */
-	if (row == -2)
+	if (row == -1)
 	{
 		if (user->hostname)
 			free (user->hostname);
@@ -451,4 +393,20 @@ update_all_of (char *name)
 		list = list->next;
 	}
 #endif
+}
+
+static gboolean
+flat_cb (struct User *user, GSList **list)
+{
+	*list = g_slist_prepend (*list, user);
+	return TRUE;
+}
+
+GSList *
+userlist_flat_list (session *sess)
+{
+	GSList *list;
+
+	tree_foreach (sess->usertree, (tree_traverse_func *)flat_cb, &list);
+	return g_slist_reverse (list);
 }

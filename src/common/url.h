@@ -1,6 +1,4 @@
-#include <glib/gslist.h>
-
-extern GSList *url_list;
+extern void *url_tree;
 
 void url_clear (void);
 void url_save (const char *fname, const char *mode);

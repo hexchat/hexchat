@@ -41,6 +41,7 @@
 #include "../common/xchat.h"
 #include "../common/cfgfiles.h"
 #include "../common/url.h"
+#include "../common/tree.h"
 #include "gtkutil.h"
 #include "menu.h"
 #include "maingui.h"
@@ -172,7 +173,6 @@ void
 url_opengui ()
 {
 	GtkWidget *vbox, *hbox, *view;
-	GSList *list;
 
 	if (urlgrabberwindow)
 	{
@@ -202,10 +202,5 @@ url_opengui ()
 
 	gtk_widget_show (urlgrabberwindow);
 
-	list = url_list;
-	while (list)
-	{
-		fe_url_add ((char *) list->data);
-		list = list->next;
-	}
+	tree_foreach (url_tree, (tree_traverse_func *)fe_url_add, NULL);
 }

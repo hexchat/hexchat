@@ -30,6 +30,7 @@ EXTRA_DIST = makefile.msc \
 	textenums.h \
 	textevents.h \
 	textevents.in \
+	tree.h \
 	url.h \
 	userlist.h \
 	util.h \
@@ -44,7 +45,7 @@ endif
 libxchatcommon_a_SOURCES = cfgfiles.c ctcp.c dcc.c history.c ignore.c \
 	inbound.c modes.c network.c notify.c outbound.c \
 	plugin.c plugin-timer.c proto-irc.c server.c servlist.c $(ssl_c) \
-	text.c url.c userlist.c util.c xchat.c
+	text.c tree.c url.c userlist.c util.c xchat.c
 
 textevents: make-te
 	./make-te < textevents.in > textevents.h 2> textenums.h

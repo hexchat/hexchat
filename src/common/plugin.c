@@ -66,6 +66,7 @@ struct _xchat_list
 	int type;			/* LIST_* */
 	GSList *pos;		/* current pos */
 	GSList *next;		/* next pos */
+	GSList *head;
 };
 
 typedef int (xchat_cmd_cb) (char *word[], char *word_eol[], void *user_data);
@@ -950,7 +951,7 @@ xchat_list_get (xchat_plugin *ph, const char *name)
 		if (is_session (ph->context))
 		{
 			list->type = LIST_USERS;
-			list->next = ph->context->userlist;
+			list->head = list->next = userlist_flat_list (ph->context);
 			break;
 		}	/* fall through */
 
@@ -965,6 +966,8 @@ xchat_list_get (xchat_plugin *ph, const char *name)
 void
 xchat_list_free (xchat_plugin *ph, xchat_list *xlist)
 {
+	if (xlist->type == LIST_USERS)
+		g_slist_free (xlist->head);
 	free (xlist);
 }
 

@@ -31,3 +31,4 @@ int sub_name (struct session *sess, char *name);
 int change_nick (struct session *sess, char *oldname, char *newname);
 void ul_update_entry (session *sess, char *name, char mode, char sign);
 void update_all_of (char *name);
+GSList *userlist_flat_list (session *sess);

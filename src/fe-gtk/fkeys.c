@@ -1480,14 +1480,14 @@ nick_comp_chng (session *sess, GtkWidget * t, int updown)
 	const char *text;
 	char nick[NICKLEN], *lastnick, *newtext;
 	int len, slen;
-	GSList *list;
+	GSList *head, *list;
 
 	text = gtk_entry_get_text (GTK_ENTRY (t));
 	if (nick_comp_get_nick ((char *)text, nick) == -1)
 		return;
 
 	len = strlen (nick);
-	list = sess->userlist;
+	head = list = userlist_flat_list (sess);
 
 	while (list)
 	{
@@ -1504,14 +1504,20 @@ nick_comp_chng (session *sess, GtkWidget * t, int updown)
 			if (updown == 0)
 			{
 				if (list->next == NULL)
+				{
+					g_slist_free (head);
 					return;
+				}
 				user->weight--;
 				((struct User *)list->next->data)->weight++;
 				lastnick = ((struct User *)list->next->data)->nick;
 			} else
 			{
 				if (last == NULL)
+				{
+					g_slist_free (head);
 					return;
+				}
 				user->weight--;
 				last->weight++;
 				lastnick = last->nick;
@@ -1522,12 +1528,14 @@ nick_comp_chng (session *sess, GtkWidget * t, int updown)
 			gtk_entry_set_text (GTK_ENTRY (t), newtext);
 			free (newtext);
 			gtk_editable_set_position (GTK_EDITABLE (t), -1);
+			g_slist_free (head);
 			return;
 
 		}
 		last = user;
 		list = list->next;
 	}
+	g_slist_free (head);
 }
 
 static void
@@ -1675,9 +1683,9 @@ tab_nick_comp_next (struct session *sess, GtkWidget * wid, char *b4,
 	struct User *user = 0, *last = NULL;
 	int pos;
 	char buf[4096];
-	GSList *list;
+	GSList *head, *list;
 
-	list = sess->userlist;
+	head = list = userlist_flat_list (sess);
 	while (list)
 	{
 		user = (struct User *) list->data;
@@ -1688,7 +1696,10 @@ tab_nick_comp_next (struct session *sess, GtkWidget * wid, char *b4,
 	}
 
 	if (!list)
+	{
+		g_slist_free (head);
 		return 0;
+	}
 
 	if (b4[0] != 0)
 		strcat (b4, " ");
@@ -1700,7 +1711,7 @@ tab_nick_comp_next (struct session *sess, GtkWidget * wid, char *b4,
 		else
 		{
 			/* making this consistent with the (!shift) behaviour */
-			list = g_slist_last (sess->userlist);
+			list = g_slist_last (head);
 			if (list)
 				nick = ((struct User *)list->data)->nick;
 		}
@@ -1710,8 +1721,8 @@ tab_nick_comp_next (struct session *sess, GtkWidget * wid, char *b4,
 			nick = ((struct User *) list->next->data)->nick;
 		else
 		{
-			if (sess->userlist)
-				nick = ((struct User *) sess->userlist->data)->nick;
+			if (head)
+				nick = ((struct User *) head->data)->nick;
 			/*else
 				nick = nick;*/
 		}
@@ -1722,6 +1733,7 @@ tab_nick_comp_next (struct session *sess, GtkWidget * wid, char *b4,
 	pos = strlen (buf) - strlen (c5);
 	gtk_entry_set_text (GTK_ENTRY (wid), buf);
 	gtk_editable_set_position (GTK_EDITABLE (wid), pos);
+	g_slist_free (head);
 
 	return 1;
 }
@@ -1736,7 +1748,7 @@ tab_nick_comp (session *sess, GtkWidget *t, int shift)
 	char buf[2048], nick_buf[2048], *b4 = NULL, *c5 = NULL;
 	char *match_text = NULL, *current_nick = NULL;
 	unsigned char match_char = 0xff;
-	GSList *list, *match_list = NULL, *first_match = NULL;
+	GSList *head = NULL, *list, *match_list = NULL, *first_match = NULL;
 	int ret = 0;	/* return value */
 
 	if (sess->type == SESS_DIALOG)
@@ -1834,7 +1846,7 @@ tab_nick_comp (session *sess, GtkWidget *t, int shift)
 	}
 
 	len = strlen (text);
-	list = sess->userlist;
+	head = list = userlist_flat_list (sess);
 
 	/* make a list of matches */
 	while (list)
@@ -1947,6 +1959,8 @@ compdone:
 
 compdone1:
 	free (text);
+	if (head)
+		g_slist_free (head);
 
 	return ret;
 }

@@ -167,6 +167,7 @@ EXTRA_DIST = makefile.msc \
 	textenums.h \
 	textevents.h \
 	textevents.in \
+	tree.h \
 	url.h \
 	userlist.h \
 	util.h \
@@ -180,7 +181,7 @@ EXTRA_DIST = makefile.msc \
 libxchatcommon_a_SOURCES = cfgfiles.c ctcp.c dcc.c history.c ignore.c \
 	inbound.c modes.c network.c notify.c outbound.c \
 	plugin.c plugin-timer.c proto-irc.c server.c servlist.c $(ssl_c) \
-	text.c url.c userlist.c util.c xchat.c
+	text.c tree.c url.c userlist.c util.c xchat.c
 
 subdir = src/common
 mkinstalldirs = $(SHELL) $(top_srcdir)/mkinstalldirs
@@ -197,7 +198,8 @@ am_libxchatcommon_a_OBJECTS = cfgfiles.$(OBJEXT) ctcp.$(OBJEXT) \
 	notify.$(OBJEXT) outbound.$(OBJEXT) plugin.$(OBJEXT) \
 	plugin-timer.$(OBJEXT) proto-irc.$(OBJEXT) server.$(OBJEXT) \
 	servlist.$(OBJEXT) $(am__objects_1) text.$(OBJEXT) \
-	url.$(OBJEXT) userlist.$(OBJEXT) util.$(OBJEXT) xchat.$(OBJEXT)
+	tree.$(OBJEXT) url.$(OBJEXT) userlist.$(OBJEXT) util.$(OBJEXT) \
+	xchat.$(OBJEXT)
 libxchatcommon_a_OBJECTS = $(am_libxchatcommon_a_OBJECTS)
 
 DEFS = @DEFS@
@@ -215,9 +217,9 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@	./$(DEPDIR)/plugin-timer.Po ./$(DEPDIR)/plugin.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/proto-irc.Po ./$(DEPDIR)/server.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/servlist.Po ./$(DEPDIR)/ssl.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/text.Po ./$(DEPDIR)/url.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/userlist.Po ./$(DEPDIR)/util.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/xchat.Po
+@AMDEP_TRUE@	./$(DEPDIR)/text.Po ./$(DEPDIR)/tree.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/url.Po ./$(DEPDIR)/userlist.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/util.Po ./$(DEPDIR)/xchat.Po
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
@@ -272,6 +274,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/servlist.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ssl.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/text.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/tree.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/url.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/userlist.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/util.Po@am__quote@
