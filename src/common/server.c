@@ -504,7 +504,7 @@ server_stopconnecting (server * serv)
 }
 
 #ifdef USE_OPENSSL
-#define	SSLTMOUT	10				  /* seconds */
+#define	SSLTMOUT	90				  /* seconds */
 static void
 ssl_cb_info (SSL * s, int where, int ret)
 {

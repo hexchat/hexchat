@@ -2281,7 +2281,8 @@ cmd_server (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 #ifdef USE_OPENSSL
 	int use_ssl = FALSE;
 
-	if (strcmp (word[2], "-ssl") == 0)
+	/* BitchX uses -ssl, mIRC uses -e, let's support both */
+	if (strcmp (word[2], "-ssl") == 0 || strcmp (word[2], "-e") == 0)
 	{
 		use_ssl = TRUE;
 		offset++;	/* args move up by 1 word */
@@ -2345,6 +2346,15 @@ urlserv:
 				safe_strcpy ((sess->willjoinchannel + 1), co, (CHANLEN - 1));
 			}
 		}
+	}
+
+	/* support +7000 style ports like mIRC */
+	if (port[0] == '+')
+	{
+		port++;
+#ifdef USE_OPENSSL
+		use_ssl = TRUE;
+#endif
 	}
 
 	if (*pass)

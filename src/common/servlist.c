@@ -548,7 +548,19 @@ servlist_connect (session *sess, ircnet *net)
 	if (port)
 	{
 		*port = 0;
-		serv->connect (serv, ircserv->hostname, atoi (port + 1), FALSE);
+
+		/* support "+port" to indicate SSL (like mIRC does) */
+		if (port[1] == '+')
+		{
+#ifdef USE_OPENSSL
+			serv->use_ssl = TRUE;
+#endif
+			serv->connect (serv, ircserv->hostname, atoi (port + 2), FALSE);
+		} else
+		{
+			serv->connect (serv, ircserv->hostname, atoi (port + 1), FALSE);
+		}
+
 		*port = '/';
 	} else
 		serv->connect (serv, ircserv->hostname, 6667, FALSE);
