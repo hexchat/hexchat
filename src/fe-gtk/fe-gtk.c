@@ -688,7 +688,7 @@ fe_set_throttle (server *serv)
 		sess = list->data;
 		if (sess->server == serv)
 		{
-			snprintf (tbuf, sizeof (tbuf) - 1, "%d bytes", serv->sendq_len);
+			snprintf (tbuf, sizeof (tbuf) - 1, _("%d bytes"), serv->sendq_len);
 
 			if (!sess->gui->is_tab || current_tab == sess)
 			{

@@ -352,7 +352,7 @@ userlist_dnd_drop (GtkTreeView *widget, GdkDragContext *context,
 			if (strncmp (p, "///", 3) == 0)
 				p += 3;
 #endif
-			dcc_send (current_sess, user->nick, p, prefs.dcc_max_send_cps);
+			dcc_send (current_sess, user->nick, p, prefs.dcc_max_send_cps, 0);
 		}
 		if (!next)
 			break;

@@ -882,7 +882,7 @@ xchat_init (void)
 	"NAME ENDSUB\n"			"CMD \n\n"\
 	"NAME SUB\n"				"CMD %s\n\n"\
 		"NAME %s\n"				"CMD quote WHO %%s\n\n"\
-		"NAME %s\n"				"CMD quote WHOIS %%s\n\n"\
+		"NAME %s\n"				"CMD quote WHOIS %%s %%s\n\n"\
 		"NAME %s\n"				"CMD dns %%s\n\n"\
 		"NAME %s\n"				"CMD quote TRACE %%s\n\n"\
 		"NAME %s\n"				"CMD quote USERHOST %%s\n\n"\

@@ -16,13 +16,13 @@
  - Apply tint changes instantly.
  - Fixed DCC resume with mirc >= 6.1.
  - Python plugin changes:
-	* Fixed the reentrancy problem which made xchat freeze when some
+   * Fixed the reentrancy problem which made xchat freeze when some
      python code made xchat trigger a python callback somewhere.
    * Implemented xchat_emit_print() and xchat_get_prefs() support.
    * Fixed softspace support for python 2.3. This problem was making
      print statements yield an extra space at the next line start.
    * Other minor changes.
-	(Gustavo Niemeyer, Gustavo J. A. M. Carneiro, Marko Kreen).
+     (Gustavo Niemeyer, Gustavo J. A. M. Carneiro, Marko Kreen).
  - Fixed request of a MODE on a channel you're not in changing the
    current titlebar [820998].
  - Restored compatibility with older Perl that lacks call_pv().
@@ -31,6 +31,12 @@
    allow it.
  - Backported HTTP authentication code from 1.8.11 (you can now
    specify a username and password for HTTP proxies).
+ - When beep on highlight is on, beep on channel actions too
+   (Christopher A. Aillon)
+ - Added active dcc send feature (/dcc PSEND). More info here:
+   http://mail.nl.linux.org/xchat-discuss/2003-10/msg00124.html
+   (Daniel Dubois and Emmanuel Jeandel).
+ - 
  - 
  - 
  - Smaller bug fixes: [822199] [786267] [783172] [811971] [756048].

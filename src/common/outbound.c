@@ -718,10 +718,11 @@ cmd_dcc (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			}
 			return TRUE;
 		}
-		if (!strcasecmp (type, "SEND"))
+		if ((!strcasecmp (type, "SEND")) || (!strcasecmp (type, "PSEND")))
 		{
 			int i = 3, maxcps;
 			char *nick, *file;
+			int passive = (!strcasecmp(type, "PSEND")) ? 1 : 0;
 
 			nick = word[i];
 			if (!*nick)
@@ -742,13 +743,13 @@ cmd_dcc (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			file = word[i];
 			if (!*file)
 			{
-				fe_dcc_send_filereq (sess, nick, maxcps);
+				fe_dcc_send_filereq (sess, nick, maxcps, passive);
 				return TRUE;
 			}
 
 			do
 			{
-				dcc_send (sess, nick, file, maxcps);
+				dcc_send (sess, nick, file, maxcps, passive);
 				i++;
 				file = word[i];
 			}

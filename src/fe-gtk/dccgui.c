@@ -92,7 +92,19 @@ static void
 dcc_send_filereq_file (struct my_dcc_send *mdc, char *file)
 {
 	if (file)
-		dcc_send (mdc->sess, mdc->nick, file, mdc->maxcps);
+		dcc_send (mdc->sess, mdc->nick, file, mdc->maxcps, 0);
+	else
+	{
+		free (mdc->nick);
+		free (mdc);
+	}
+}
+
+static void
+dcc_psend_filereq_file (struct my_dcc_send *mdc, char *file)
+{
+	if (file)
+		dcc_send (mdc->sess, mdc->nick, file, mdc->maxcps, 1);
 	else
 	{
 		free (mdc->nick);
@@ -101,7 +113,7 @@ dcc_send_filereq_file (struct my_dcc_send *mdc, char *file)
 }
 
 void
-fe_dcc_send_filereq (struct session *sess, char *nick, int maxcps)
+fe_dcc_send_filereq (struct session *sess, char *nick, int maxcps, int passive)
 {
 	char tbuf[128];
 	struct my_dcc_send *mdc;
@@ -112,7 +124,10 @@ fe_dcc_send_filereq (struct session *sess, char *nick, int maxcps)
 	mdc->maxcps = maxcps;
 
 	snprintf (tbuf, sizeof tbuf, _("Send file to %s"), nick);
-	gtkutil_file_req (tbuf, dcc_send_filereq_file, mdc, NULL, FRF_MULTIPLE);
+	if (passive)
+		gtkutil_file_req (tbuf, dcc_psend_filereq_file, mdc, NULL, FRF_MULTIPLE);
+	else
+		gtkutil_file_req (tbuf, dcc_send_filereq_file, mdc, NULL, FRF_MULTIPLE);
 }
 
 static void
