@@ -65,7 +65,6 @@
 #ifdef WIN32
 #include <windows.h>
 #include <gdk/win32/gdkwin32.h>
-#undef SCROLL_HACK
 #endif
 
 /* is delimiter */
@@ -504,7 +503,6 @@ backend_draw_text (GtkXText *xtext, int dofill, GdkGC *gc, int x, int y,
 	GdkGCValues val;
 	GdkColor col;
 
-	/*backend_init (xtext);*/
 	pango_layout_set_text (xtext->layout, str, len);
 
 	y -= xtext->font->ascent;
@@ -528,7 +526,15 @@ backend_draw_text (GtkXText *xtext, int dofill, GdkGC *gc, int x, int y,
 		}
 	}
 
+#if 1
+{
+	GSList *list = pango_layout_get_lines (xtext->layout);
+	gdk_draw_layout_line_with_colors (xtext->draw_buf, gc, x, y +
+												 xtext->font->ascent, list->data, 0, 0);
+}
+#else
 	gdk_draw_layout (xtext->draw_buf, gc, x, y, xtext->layout);
+#endif
 
 	if (xtext->bold)
 		gdk_draw_layout (xtext->draw_buf, gc, x + 1, y, xtext->layout);
@@ -2583,11 +2589,6 @@ gtk_xtext_render_str (GtkXText * xtext, int y, textentry * ent, unsigned char *s
 
 			switch (str[i])
 			{
-			/* FIXME for non-fixed width fonts. \t may not match ' ' width */
-			case '\t':
-				str[i] = ' ';
-				j++;
-				break;
 			case '\n':
 			/*case ATTR_BEEP:*/
 				break;
@@ -4029,6 +4030,16 @@ static void
 gtk_xtext_append_entry (xtext_buffer *buf, textentry * ent)
 {
 	unsigned int mb;
+	int i;
+
+	/* we don't like tabs */
+	i = 0;
+	while (i < ent->str_len)
+	{
+		if (ent->str[i] == '\t')
+			ent->str[i] = ' ';
+		i += charlen (ent->str + i);
+	}
 
 	ent->stamp = time (0);
 	ent->str_width = gtk_xtext_text_width (buf->xtext, ent->str, ent->str_len, &mb);

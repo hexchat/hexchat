@@ -51,7 +51,7 @@ GdkColor colors[] = {
 	{0, 0x9999, 0x9999, 0x9999}, /* 15 light grey */
 	{0, 0xa4a4, 0xdfdf, 0xffff}, /* 16 marktext Back (blue) */
 	{0, 0x0000, 0x0000, 0x0000}, /* 17 marktext Fore (black) */
-	{0, 0xcf3c, 0xcf3c, 0xcf3c}, /* 18 foreground (white) */
+	{0, 0xdf3c, 0xdf3c, 0xdf3c}, /* 18 foreground (white) */
 	{0, 0x0000, 0x0000, 0x0000}, /* 19 background (black) */
 	{0, 0x8c8c, 0x1010, 0x1010}, /* 20 tab New Data (dark red) */
 	{0, 0x0000, 0x0000, 0xffff}, /* 21 tab Nick Mentioned (blue) */

@@ -6,13 +6,14 @@
 #include <gtk/gtkcontainer.h>
 #include <gtk/gtklabel.h>
 #include <gtk/gtksignal.h>
+#include <gtk/gtkhseparator.h>
+#include <gtk/gtkvbox.h>
 #include <gtk/gtkviewport.h>
 #include <gtk/gtkvseparator.h>
 
 /* keep this code generic, don't include xchat.h! */
 
 #include "tabs.h"
-#undef TABS_SPREAD		/* left justify tabs instead */
 
 
 /* ignore "toggled" signal? */
@@ -25,6 +26,7 @@ static int ignore_toggle = FALSE;
  *   "c" tab-focus callback function
  *   "foc" currently focused tab
  *   "i" inner hbox (inside the viewport)
+ *   "v" set to 1 if group is vertical type
  *
  * family boxes inside group
  *   "f" family
@@ -175,7 +177,12 @@ tab_group_new (void *callback, gboolean vertical)
 	GtkWidget *group;
 	GtkWidget *button;
 
-	group = gtk_hbox_new (0, 0);
+	if (vertical)
+	{
+		group = gtk_vbox_new (0, 0);
+		g_object_set_data (G_OBJECT (group), "v", (gpointer)1);
+	} else
+		group = gtk_hbox_new (0, 0);
 	g_object_set_data (G_OBJECT (group), "c", callback);
 	gtk_widget_show (group);
 
@@ -186,7 +193,10 @@ tab_group_new (void *callback, gboolean vertical)
 	gtk_box_pack_start (GTK_BOX (group), viewport, 1, 1, 0);
 	gtk_widget_show (viewport);
 
-	box = gtk_hbox_new (FALSE, 0);
+	if (vertical)
+		box = gtk_vbox_new (FALSE, 0);
+	else
+		box = gtk_hbox_new (FALSE, 0);
 	g_object_set_data (G_OBJECT (group), "i", box);
 	gtk_container_add (GTK_CONTAINER (viewport), box);
 	gtk_widget_show (box);
@@ -211,9 +221,9 @@ tab_group_new (void *callback, gboolean vertical)
 /* traverse all the family boxes of tabs 
  *
  * A "group" is basically:
- * GtkHBox
+ * GtkV/HBox
  * `-GtkViewPort
- *   `-GtkHBox (inner box)
+ *   `-GtkV/HBox (inner box)
  *     `- GtkBox (family box)
  *        `- GtkToggleButton
  *        `- GtkToggleButton
@@ -249,7 +259,7 @@ tab_group_for_each_tab (GtkWidget *group,
 		{
 			child = tabs->data;
 
-			if (!GTK_IS_VSEPARATOR (child->widget))
+			if (!GTK_IS_SEPARATOR (child->widget))
 			{
 				if (callback (child->widget, i, usernum) != -1)
 					return i;
@@ -346,7 +356,7 @@ tab_focus (GtkWidget *tab)
 	tab_pressed_cb (GTK_TOGGLE_BUTTON (tab), group);
 }
 
-/* remove empty boxes and Vseparators */
+/* remove empty boxes and separators */
 
 void
 tab_group_cleanup (GtkWidget *group)
@@ -370,7 +380,7 @@ tab_group_cleanup (GtkWidget *group)
 		children = GTK_BOX (box)->children;
 		while (children)
 		{
-			if (!GTK_IS_VSEPARATOR (((GtkBoxChild *)children->data)->widget))
+			if (!GTK_IS_SEPARATOR (((GtkBoxChild *)children->data)->widget))
 			{
 				empty = FALSE;
 				break;
@@ -418,7 +428,7 @@ tab_add_real (GtkWidget *group, GtkWidget *tab, void *family)
 		children = GTK_BOX (box)->children;
 		while (children)
 		{
-			if (!GTK_IS_VSEPARATOR (((GtkBoxChild *)children->data)->widget))
+			if (!GTK_IS_SEPARATOR (((GtkBoxChild *)children->data)->widget))
 			{
 				empty = FALSE;
 				break;
@@ -436,15 +446,21 @@ tab_add_real (GtkWidget *group, GtkWidget *tab, void *family)
 	}
 
 	/* create a new family box */
-	box = gtk_hbox_new (FALSE, 0);
-#ifndef TABS_SPREAD
-	sep = gtk_vseparator_new ();
+	if (g_object_get_data (G_OBJECT (group), "v") != NULL)
+	{
+		/* vertical */
+		box = gtk_vbox_new (FALSE, 0);
+		sep = gtk_hseparator_new ();
+	} else
+	{
+		/* horiz */
+		box = gtk_hbox_new (FALSE, 0);
+		sep = gtk_vseparator_new ();
+	}
+
 	gtk_box_pack_end (GTK_BOX (box), sep, 0, 0, 4);
 	gtk_widget_show (sep);
 	gtk_box_pack_start (GTK_BOX (inner), box, 0, 0, 0);
-#else
-	gtk_container_add (GTK_CONTAINER (inner), box);
-#endif
 	g_object_set_data (G_OBJECT (box), "f", family);
 	gtk_box_pack_start (GTK_BOX (box), tab, 0, 0, 0);
 	gtk_widget_show (tab);

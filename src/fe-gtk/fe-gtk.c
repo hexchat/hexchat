@@ -177,14 +177,21 @@ fe_args (int argc, char *argv[])
 	return 1;
 }
 
+static const char rc[] =
+	"style \"xc-ib-st\""
+	"{"
+		"GtkEntry::cursor-color=\"#%02x%02x%02x\""
+	"}"
+	"widget \"*.xchat-inputbox\" style : application \"xc-ib-st\"";
+
 GtkStyle *
 create_input_style (void)
 {
 	GtkStyle *style;
 	char buf[256];
+	static int done_rc = FALSE;
 
 	style = gtk_style_new ();
-	/* FIXME: bg/fg causes hide cursor */
 	pango_font_description_free (style->font_desc);
 	style->font_desc = pango_font_description_from_string (prefs.font_normal);
 
@@ -197,8 +204,17 @@ create_input_style (void)
 		style->font_desc = pango_font_description_from_string ("sans 11");
 	}
 
-	/*style->text[GTK_STATE_NORMAL] = colors[18];
-	style->base[GTK_STATE_NORMAL] = colors[19];*/
+	if (prefs.style_inputbox && !done_rc)
+	{
+		done_rc = TRUE;
+		sprintf (buf, rc, (colors[18].red >> 8), (colors[18].green >> 8),
+					(colors[18].blue >> 8));
+		gtk_rc_parse_string (buf);
+	}
+
+	style->bg[GTK_STATE_NORMAL] = colors[18];
+	style->base[GTK_STATE_NORMAL] = colors[19];
+	style->text[GTK_STATE_NORMAL] = colors[18];
 
 	return style;
 }

@@ -98,7 +98,7 @@ static const setting inputbox_settings[] =
 	{ST_TOGGLE, N_("Interpret %nnn as an ASCII value"), P_OFFINT(perc_ascii),0,0,0},
 	{ST_TOGGLE, N_("Automatic nick completion"), P_OFFINT(nickcompletion),0,0,0},
 	{ST_TOGGLE, N_("Interpret %C, %B as Color, Bold etc"), P_OFFINT(perc_color),0,0,0},
-	{ST_TOGGLE, N_("Use the Text box font"), P_OFFINT(style_inputbox),0,0,0},
+	{ST_TOGGLE, N_("Use the Text box font and colors"), P_OFFINT(style_inputbox),0,0,0},
 	{ST_ENTRY, N_("Nick completion suffix:"), P_OFFSET(nick_suffix),0,0,sizeof prefs.nick_suffix},
 	{ST_END, 0, 0, 0, 0, 0}
 };
@@ -130,6 +130,7 @@ static const setting userlist_settings[] =
 	{ST_ENTRY,	N_("Double-click command:"), P_OFFSET(doubleclickuser), 0, 0, sizeof prefs.doubleclickuser},
 	{ST_TOGGLE, N_("Show hostnames in userlist"), P_OFFINT(showhostname_in_userlist), 0, 0, 0},
 	{ST_TOGGLE, N_("Userlist buttons enabled"), P_OFFINT(userlistbuttons), 0, 0, 0},
+	{ST_TOGGLE, N_("Use the Text box font and colors"), P_OFFINT(style_namelistgad),0,0,0},
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
@@ -878,11 +879,28 @@ setup_create_tree (GtkWidget *box, GtkWidget *book)
 }
 
 static void
-setup_apply_to_sess (session *sess)
+setup_apply_entry_style (GtkWidget *entry)
 {
-	mg_update_xtext (sess->gui->xtext);
+	gtk_widget_modify_base (entry, GTK_STATE_NORMAL, &colors[19]);
+	gtk_widget_modify_text (entry, GTK_STATE_NORMAL, &colors[18]);
+	gtk_widget_modify_font (entry, input_style->font_desc);
+}
+
+static void
+setup_apply_to_sess (session_gui *gui)
+{
+	mg_update_xtext (gui->xtext);
+
+	if (prefs.style_namelistgad)
+		gtk_widget_set_style (gui->user_tree, input_style);
+
 	if (prefs.style_inputbox)
-		gtk_widget_set_style (sess->gui->input_box, input_style);
+	{
+		setup_apply_entry_style (gui->input_box);
+		setup_apply_entry_style (gui->limit_entry);
+		setup_apply_entry_style (gui->key_entry);
+		setup_apply_entry_style (gui->topic_entry);
+	}
 }
 
 static void
@@ -927,11 +945,11 @@ setup_apply (struct xchatprefs *pr)
 			if (!done_main)
 			{
 				done_main = TRUE;
-				setup_apply_to_sess (sess);
+				setup_apply_to_sess (sess->gui);
 			}
 		} else
 		{
-			setup_apply_to_sess (sess);
+			setup_apply_to_sess (sess->gui);
 		}
 
 		if (prefs.logging)
