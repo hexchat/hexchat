@@ -314,6 +314,11 @@ process_numeric (session * sess, char *outbuf, int n,
 		inbound_005 (serv, word);
 		goto def;
 
+	case 263:	/*Server load is temporarily too heavy */
+		if (fe_is_chanwindow (sess->server))
+			fe_chan_list_end (sess->server);
+		goto def;
+
 	case 301:
 		inbound_away (serv, word[4],
 						(word_eol[5][0] == ':') ? word_eol[5] + 1 : word_eol[5]);

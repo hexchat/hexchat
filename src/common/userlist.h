@@ -15,7 +15,7 @@ struct User
 	unsigned int voice:1;
 };
 
-#define USERACCESS_SIZE 16
+#define USERACCESS_SIZE 12
 
 int userlist_add_hostname (struct session *sess, char *nick,
 											 char *hostname, char *realname,

@@ -164,7 +164,7 @@ fe_dcc_update_recv (struct DCC *dcc)
 void
 fe_dcc_update_send (struct DCC *dcc)
 {
-	char pos[16], kbs[14], ack[14], perc[14], eta[14];
+	char pos[16], kbs[14], ack[16], perc[14], eta[14];
 	gint row;
 	int to_go;
 	float per;
@@ -177,10 +177,9 @@ fe_dcc_update_send (struct DCC *dcc)
 
 	/* percentage ack'ed */
 	per = (float) ((dcc->ack * 100.00) / dcc->size);
-
 	proper_unit (dcc->pos, pos, sizeof (pos));
 	snprintf (kbs, sizeof (kbs), "%.1f", ((float)dcc->cps) / 1024);
-	snprintf (ack, sizeof (ack), "%u", dcc->ack);
+	proper_unit (dcc->ack, ack, sizeof (ack));
 	snprintf (perc, sizeof (perc), "%.0f%%", per);
 	if (dcc->cps != 0)
 	{
@@ -464,10 +463,10 @@ fe_dcc_update_send_win (void)
 	struct DCC *dcc;
 	GSList *list = dcc_list;
 	gchar *nnew[9];
-	char size[14];
-	char pos[14];
+	char size[16];
+	char pos[16];
 	char kbs[14];
-	char ack[14];
+	char ack[16];
 	char perc[14];
 	char eta[14];
 	gint row;
@@ -501,7 +500,7 @@ fe_dcc_update_send_win (void)
 			proper_unit (dcc->pos, pos, sizeof (pos));
 			snprintf (kbs, sizeof (kbs), "%.1f", ((float)dcc->cps) / 1024);
 			snprintf (perc, sizeof (perc), "%.0f%%", per);
-			snprintf (ack, sizeof (ack), "%u", dcc->ack);
+			proper_unit (dcc->ack, ack, sizeof (ack));
 			if (dcc->cps != 0)
 			{
 				to_go = (dcc->size - dcc->ack) / dcc->cps;

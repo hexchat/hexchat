@@ -205,8 +205,8 @@ int
 fe_userlist_remove (session *sess, struct User *user)
 {
 	GtkTreeIter *iter;
-	GtkAdjustment *adj;
-	gfloat val, end;
+/*	GtkAdjustment *adj;
+	gfloat val, end;*/
 	int sel;
 
 	iter = find_row (GTK_TREE_VIEW (sess->gui->user_tree),
@@ -214,20 +214,20 @@ fe_userlist_remove (session *sess, struct User *user)
 	if (!iter)
 		return 0;
 
-	adj = gtk_tree_view_get_vadjustment (GTK_TREE_VIEW (sess->gui->user_tree));
-	val = adj->value;
+/*	adj = gtk_tree_view_get_vadjustment (GTK_TREE_VIEW (sess->gui->user_tree));
+	val = adj->value;*/
 
 	gtk_list_store_remove (sess->res->user_model, iter);
 
 	/* is it the front-most tab? */
-	if (gtk_tree_view_get_model (GTK_TREE_VIEW (sess->gui->user_tree))
+/*	if (gtk_tree_view_get_model (GTK_TREE_VIEW (sess->gui->user_tree))
 		 == sess->res->user_model)
 	{
 		end = adj->upper - adj->lower - adj->page_size;
 		if (val > end)
 			val = end;
 		gtk_adjustment_set_value (adj, val);
-	}
+	}*/
 
 	return sel;
 }
