@@ -131,7 +131,7 @@ static void gtk_xtext_adjustment_changed (GtkAdjustment * adj,
 static void gtk_xtext_render_ents (GtkXText * xtext, textentry *, textentry *);
 static void gtk_xtext_recalc_widths (xtext_buffer *buf, int);
 static void gtk_xtext_fix_indent (xtext_buffer *buf);
-static char *gtk_xtext_conv_color (unsigned char *text, int len, char *outbuf, int *newlen, int fonttype);
+static char *gtk_xtext_conv_color (unsigned char *text, int len, int *newlen, int fonttype);
 static unsigned char *
 gtk_xtext_strip_color (unsigned char *text, int len, unsigned char *outbuf,
 							  int *newlen, int fonttype, int *mb_ret);
@@ -396,10 +396,8 @@ static void
 backend_create_layout (GtkXText *xtext)
 {
 	if (xtext->layout == NULL)
-	{
 		xtext->layout = gtk_widget_create_pango_layout (GTK_WIDGET (xtext), 0); 
-		pango_layout_set_font_description (xtext->layout, xtext->font->font);
-	}
+	pango_layout_set_font_description (xtext->layout, xtext->font->font);
 }
 
 static void
@@ -2154,8 +2152,8 @@ gtk_xtext_selection_get (GtkWidget * widget,
 	}
 	*pos = 0;
 
-/*	if (xtext->color_paste)
-		stripped = gtk_xtext_conv_color (txt, strlen (txt), NULL, &len,
+	/*if (xtext->color_paste)
+		stripped = gtk_xtext_conv_color (txt, strlen (txt), &len,
 													xtext->fonttype);
 	else*/
 		stripped = gtk_xtext_strip_color (txt, strlen (txt), NULL, &len,
@@ -2365,7 +2363,7 @@ single:
 /* GeEkMaN: converts mIRC control codes to literal control codes */
 
 static char *
-gtk_xtext_conv_color (unsigned char *text, int len, char *outbuf, int *newlen, int fonttype)
+gtk_xtext_conv_color (unsigned char *text, int len, int *newlen, int fonttype)
 {
 	int i, j = 2;
 	char cchar = 0;
@@ -2391,11 +2389,9 @@ gtk_xtext_conv_color (unsigned char *text, int len, char *outbuf, int *newlen, i
 		}
 	}
 
-	if (outbuf == NULL)
-		new_str = malloc (j);
-	else
-		new_str = outbuf;
+	new_str = malloc (j);
 
+	i = 0;
 	while (len > 0)
 	{
 		switch (*text)
@@ -2438,7 +2434,8 @@ single:
 				len -= mbl - 1; /* -1 -> len-- */
 			}
 		}
-		if (cchar != 0) {
+		if (cchar != 0)
+		{
 			new_str[i++] = '%';
 			new_str[i++] = cchar;
 			cchar = 0;
@@ -2448,9 +2445,7 @@ single:
 	}
 
 	new_str[i] = 0;
-
-	if (newlen != NULL)
-		*newlen = i;
+	*newlen = i;
 
 	return new_str;
 }
