@@ -1659,9 +1659,15 @@ handle_dcc (struct session *sess, char *nick, char *word[],
 			 * sending file.
 			 */
 			dcc = find_dcc_from_id (pasvid, TYPE_SEND);
-			dcc->addr = addr;
-			dcc->port = port;
-			dcc_connect(dcc);
+			if (dcc)
+			{
+				dcc->addr = addr;
+				dcc->port = port;
+				dcc_connect (dcc);
+			} else
+			{
+				dcc_malformed (sess, nick, word_eol[4] + 2);
+			}
 			return;
 		}
 

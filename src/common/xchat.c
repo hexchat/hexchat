@@ -1042,10 +1042,6 @@ xchat_exit (void)
 	ignore_save ();
 	free_sessions ();
 	fe_exit ();
-
-#ifdef WIN32
-	WSACleanup ();
-#endif
 }
 
 #ifndef WIN32
@@ -1102,6 +1098,10 @@ main (int argc, char *argv[])
 
 #ifdef USE_DEBUG
 	xchat_mem_list ();
+#endif
+
+#ifdef WIN32
+	WSACleanup ();
 #endif
 
 	return 0;

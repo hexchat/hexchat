@@ -809,6 +809,7 @@ static void
 setup_add_page (char *title, GtkWidget *book, GtkWidget *tab)
 {
 	GtkWidget *oframe, *frame, *label, *vvbox;
+	char buf[128];
 
 	/* frame for whole page */
 	oframe = gtk_frame_new (NULL);
@@ -823,7 +824,9 @@ setup_add_page (char *title, GtkWidget *book, GtkWidget *tab)
 	gtk_box_pack_start (GTK_BOX (vvbox), frame, FALSE, TRUE, 0);
 
 	/* label */
-	label = gtk_label_new (title);
+	label = gtk_label_new (NULL);
+	snprintf (buf, sizeof (buf), "<b><big>%s</big></b>", _(title));
+	gtk_label_set_markup (GTK_LABEL (label), buf);
 	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
 	gtk_misc_set_padding (GTK_MISC (label), 2, 1);
 	gtk_container_add (GTK_CONTAINER (frame), label);
@@ -860,15 +863,15 @@ setup_create_pages (GtkWidget *box)
 
 	book = gtk_notebook_new ();
 
-	setup_add_page (_(cata[1]), book, setup_create_page (textbox_settings));
-	setup_add_page (_(cata[2]), book, setup_create_page (inputbox_settings));
-	setup_add_page (_(cata[3]), book, setup_create_page (userlist_settings));
-	setup_add_page (_(cata[4]), book, setup_create_page (tabs_settings));
-	setup_add_page (_(cata[5]), book, setup_create_color_page ());
-	setup_add_page (_(cata[8]), book, setup_create_page (general_settings));
-	setup_add_page (_(cata[9]), book, setup_create_page (logging_settings));
-	setup_add_page (_(cata[12]), book, setup_create_page (network_settings));
-	setup_add_page (_(cata[13]), book, setup_create_page (filexfer_settings));
+	setup_add_page (cata[1], book, setup_create_page (textbox_settings));
+	setup_add_page (cata[2], book, setup_create_page (inputbox_settings));
+	setup_add_page (cata[3], book, setup_create_page (userlist_settings));
+	setup_add_page (cata[4], book, setup_create_page (tabs_settings));
+	setup_add_page (cata[5], book, setup_create_color_page ());
+	setup_add_page (cata[8], book, setup_create_page (general_settings));
+	setup_add_page (cata[9], book, setup_create_page (logging_settings));
+	setup_add_page (cata[12], book, setup_create_page (network_settings));
+	setup_add_page (cata[13], book, setup_create_page (filexfer_settings));
 
 	gtk_notebook_set_show_tabs (GTK_NOTEBOOK (book), FALSE);
 	gtk_notebook_set_show_border (GTK_NOTEBOOK (book), FALSE);
