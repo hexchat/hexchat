@@ -831,6 +831,11 @@ static char *pevt_whois6_help[] = {
 	N_("Nickname"),
 };
 
+static char *pevt_whoisid_help[] = {
+	N_("Nickname"),
+	N_("Message"),
+};
+
 static char *pevt_generic_channel_help[] = {
 	N_("Channel Name"),
 };
