@@ -475,8 +475,10 @@ process_numeric (session * sess, int n,
 			unsigned int away = 0;
 			if (strchr (word[9], 'G'))
 				away = 1;
-			if (!inbound_user_info (sess, word[4], word[5], word[6], word[7],
-											word[8], word_eol[11], away))
+			inbound_user_info (sess, word[4], word[5], word[6], word[7], word[8],
+									 word_eol[11], away);
+			/* try to show only user initiated whos */
+			if (!sess->doing_who)
 				EMIT_SIGNAL (XP_TE_SERVTEXT, serv->server_session, text, word[1],
 								 NULL, NULL, 0);
 		} else
@@ -513,12 +515,14 @@ process_numeric (session * sess, int n,
 			if (who_sess)
 			{
 				if (!who_sess->doing_who)
-					goto def;
+					EMIT_SIGNAL (XP_TE_SERVTEXT, serv->server_session, text,
+									 word[1], NULL, NULL, 0);
 				who_sess->doing_who = FALSE;
 			} else
 			{
 				if (!serv->doing_who)
-					goto def;
+					EMIT_SIGNAL (XP_TE_SERVTEXT, serv->server_session, text,
+									 word[1], NULL, NULL, 0);
 				serv->doing_who = FALSE;
 			}
 		}
