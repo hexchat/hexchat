@@ -359,7 +359,7 @@ inbound_newnick (server *serv, char *nick, char *newnick, int quiet)
 		sess = list->data;
 		if (sess->server == serv)
 		{
-			if (change_nick (sess, nick, newnick))
+			if (change_nick (sess, nick, newnick) || (me && sess->type == SESS_SERVER))
 			{
 				if (!quiet)
 				{

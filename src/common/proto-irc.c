@@ -382,6 +382,7 @@ process_numeric (session * sess, char *outbuf, int n,
 						 word_eol[5] + 1, NULL, NULL, 0);
 		break;
 
+	case 307:	/* dalnet version */
 	case 320:	/* :is an identified user */
 		EMIT_SIGNAL (XP_TE_WHOIS_ID, serv->server_session, word[4],
 						 word_eol[5] + 1, NULL, NULL, 0);
