@@ -1289,6 +1289,9 @@ menu_create_main (void *accel_group, int bar, int away, int toplevel,
 	GtkWidget *menu_bar;
 	GtkWidget *usermenu = 0;
 	GtkWidget *submenu = 0;
+	int close_mask = GDK_CONTROL_MASK;
+	char *key_theme = NULL;
+	GtkSettings *settings;
 
 	if (bar)
 		menu_bar = gtk_menu_bar_new ();
@@ -1306,6 +1309,15 @@ menu_create_main (void *accel_group, int bar, int away, int toplevel,
 	mymenu[30-menuoffset].state = prefs.autodccchat;
 	mymenu[31-menuoffset].state = prefs.autodccsend;
 	/*mymenu[60-menuoffset].state = prefs.autosave;*/
+
+	/* change Close binding to ctrl-shift-w when using emacs keys */
+	settings = gtk_widget_get_settings (menu_bar);
+	if (settings)
+	{
+		g_object_get (settings, "gtk-key-theme-name", &key_theme, NULL);
+		if (key_theme && !strcasecmp (key_theme, "Emacs"))
+			close_mask = GDK_SHIFT_MASK | GDK_CONTROL_MASK;
+	}
 
 	if (!toplevel)
 		mymenu[14-menuoffset].text = _("Detach Tab");
@@ -1342,8 +1354,8 @@ normalitem:
 				gtk_widget_add_accelerator (item, "activate", accel_group,
 										mymenu[i].key,
 										mymenu[i].key == GDK_F1 ? 0 :
-										mymenu[i].key == GDK_w ? GDK_CONTROL_MASK 
-										| GDK_SHIFT_MASK : GDK_CONTROL_MASK,
+										mymenu[i].key == GDK_w ? close_mask :
+										GDK_CONTROL_MASK,
 										GTK_ACCEL_VISIBLE);
 			if (mymenu[i].callback)
 				g_signal_connect (G_OBJECT (item), "activate",
