@@ -194,7 +194,7 @@ away_check (void)
 	GSList *list;
 	int full, sent, loop = 0;
 
-	if (prefs.away_size_max < 1)
+	if (!prefs.away_track || prefs.away_size_max < 1)
 		return 1;
 
 doover:

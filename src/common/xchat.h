@@ -222,6 +222,7 @@ struct xchatprefs
 	unsigned int beepmsg;
 	unsigned int beepchans;
 	unsigned int beephilight;
+	unsigned int flash_hilight;
 	unsigned int truncchans;
 	unsigned int privmsgtab;
 	unsigned int logging;
@@ -235,6 +236,7 @@ struct xchatprefs
 	unsigned int show_away_once;
 	unsigned int show_away_message;
 	unsigned int auto_unmark_away;
+	unsigned int away_track;
 	unsigned int userhost;
 	unsigned int use_server_tab;
 	unsigned int notices_tabs;

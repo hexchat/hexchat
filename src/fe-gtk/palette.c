@@ -187,6 +187,14 @@ palette_load (void)
 						colors[remap[i]].blue = blue;
 					}
 				}
+
+				/* copy 0-15 to 16-31 */
+				for (i = 0; i < 16; i++)
+				{
+					colors[i+16].red = colors[i].red;
+					colors[i+16].green = colors[i].green;
+					colors[i+16].blue = colors[i].blue;
+				}
 			}
 			free (cfg);
 		}

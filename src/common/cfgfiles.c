@@ -395,6 +395,7 @@ const struct prefs vars[] = {
 	{"away_show_once", P_OFFINT (show_away_once), TYPE_BOOL},
 	{"away_size_max", P_OFFINT (away_size_max), TYPE_INT},
 	{"away_timeout", P_OFFINT (away_timeout), TYPE_INT},
+	{"away_track", P_OFFINT (away_track), TYPE_BOOL},
 
 	{"completion_amount", P_OFFINT (completion_amount), TYPE_INT},
 	{"completion_auto", P_OFFINT (nickcompletion), TYPE_BOOL},
@@ -470,6 +471,7 @@ const struct prefs vars[] = {
 	{"input_beep_msg", P_OFFINT (beepmsg), TYPE_BOOL},
 	{"input_command_char", P_OFFSET (cmdchar), TYPE_STR},
 	{"input_filter_beep", P_OFFINT (filterbeep), TYPE_BOOL},
+	{"input_flash_hilight", P_OFFINT (flash_hilight), TYPE_BOOL},
 	{"input_fudge_snotice", P_OFFINT (fudgeservernotice), TYPE_BOOL},
 	{"input_perc_ascii", P_OFFINT (perc_ascii), TYPE_BOOL},
 	{"input_perc_color", P_OFFINT (perc_color), TYPE_BOOL},
@@ -599,6 +601,7 @@ load_config (void)
 	prefs.completion_amount = 5;
 	prefs.away_timeout = 60;
 	prefs.away_size_max = 300;
+	prefs.away_track = 1;
 	prefs.timestamp_logs = 1;
 	prefs.truncchans = 20;
 	prefs.autoresume = 1;
@@ -651,6 +654,7 @@ load_config (void)
 	prefs.dcc_send_fillspaces = 1;
 	prefs.mainwindow_save = 1;
 	prefs.bantype = 2;
+	prefs.flash_hilight = 1;
 #ifdef WIN32
 	prefs.identd = 1;
 #endif

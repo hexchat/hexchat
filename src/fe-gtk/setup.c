@@ -159,7 +159,10 @@ static const setting userlist_settings[] =
 	{ST_TOGGLE, N_("User list buttons enabled"), P_OFFINTNL(userlistbuttons), 0, 0, 0},
 	{ST_TOGGLE, N_("Use the Text box font and colors"), P_OFFINTNL(style_namelistgad),0,0,0},
 	{ST_TOGGLE, N_("Resizable user list"), P_OFFINTNL(paned_userlist),0,0,0},
-	{ST_NUMBER, N_("Track away-status on channels smaller than:"), P_OFFINTNL(away_size_max),0,0,10000},
+
+	{ST_HEADER,	N_("Away tracking"),0,0,0},
+	{ST_TOGGLE,	N_("Enable away tracking"), P_OFFINTNL(away_track),0,0,0},
+	{ST_NUMBER, N_("On channels smaller than:"), P_OFFINTNL(away_size_max),0,0,10000},
 
 	{ST_HEADER,	N_("Action Upon Double Click"),0,0,0},
 	{ST_ENTRY,	N_("Execute command:"), P_OFFSETNL(doubleclickuser), 0, 0, sizeof prefs.doubleclickuser},
@@ -268,18 +271,22 @@ static const setting general_settings[] =
 #endif
 
 	{ST_HEADER,	N_("Alerts"),0,0,0},
+#ifdef WIN32
+	{ST_TOGGLE,	N_("Flash taskbar on highlighted messages"), P_OFFINTNL(flash_hilight), 0, 0, 0},
+#endif
 	{ST_TOGGLE,	N_("Beep on highlighted messages"), P_OFFINTNL(beephilight), 0, 0, 0},
+	{ST_ENTRY,	N_("Extra words to highlight on:"), P_OFFSETNL(bluestring), 0, 0, sizeof prefs.bluestring},
+	{ST_LABEL,	N_("(Separate multiple words with commas).")},
 	{ST_TOGGLE,	N_("Beep on private messages"), P_OFFINTNL(beepmsg), 0, 0, 0},
 	{ST_TOGGLE,	N_("Beep on channel messages"), P_OFFINTNL(beepchans), 0, 0, 0},
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
+#if 0
 static const setting advanced_settings[] =
 {
 	{ST_HEADER,	N_("Advanced Settings"),0,0,0},
 	{ST_NUMBER,	N_("Auto reconnect delay:"), P_OFFINTNL(recon_delay), 0, 0, 9999},
-	{ST_ENTRY,	N_("Extra words to highlight on:"), P_OFFSETNL(bluestring), 0, 0, sizeof prefs.bluestring},
-	{ST_LABEL,	N_("(Separate multiple words with commas).")},
 	{ST_TOGGLE,	N_("Display MODEs in raw form"), P_OFFINTNL(raw_modes), 0, 0, 0},
 	{ST_TOGGLE,	N_("Whois on notify"), P_OFFINTNL(whois_on_notifyonline), N_("Sends a /WHOIS when a user comes online in your notify list"), 0, 0},
 	{ST_TOGGLE,	N_("Hide join and part messages"), P_OFFINTNL(confmode), N_("Hide channel join/part messages by default"), 0, 0},
@@ -290,6 +297,7 @@ static const setting advanced_settings[] =
 
 	{ST_END, 0, 0, 0, 0, 0}
 };
+#endif
 
 static const setting logging_settings[] =
 {
@@ -406,18 +414,14 @@ static void
 setup_create_spin (GtkWidget *table, int row, const setting *set)
 {
 	GtkWidget *label, *wid, *rbox, *align;
-	int add = 0;
-
-	if (strlen (set->label) > 30)
-		add = 3;
 
 	label = gtk_label_new (_(set->label));
 	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
-	gtk_table_attach (GTK_TABLE (table), label, 2, 3+add, row, row + 1,
+	gtk_table_attach (GTK_TABLE (table), label, 2, 3, row, row + 1,
 							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, LABEL_INDENT, 0);
 
 	align = gtk_alignment_new (0.0, 0.5, 0.0, 0.0);
-	gtk_table_attach (GTK_TABLE (table), align, 3+add, 4+add, row, row + 1,
+	gtk_table_attach (GTK_TABLE (table), align, 3, 4, row, row + 1,
 							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
 
 	rbox = gtk_hbox_new (0, 0);
@@ -535,7 +539,7 @@ setup_menu_cb (GtkWidget *item, const setting *set)
 static void
 setup_create_menu (GtkWidget *table, int row, const setting *set)
 {
-	GtkWidget *wid, *menu, *item, *align;
+	GtkWidget *wid, *menu, *item;
 	int i;
 	char **text = set->list;
 
@@ -570,10 +574,8 @@ setup_create_menu (GtkWidget *table, int row, const setting *set)
 	gtk_option_menu_set_history (GTK_OPTION_MENU (wid),
 										  setup_get_int (&setup_prefs, set));
 
-	align = gtk_alignment_new (0.0, 0.5, 0.6, 0.0);
-	gtk_container_add (GTK_CONTAINER (align), wid);
-	gtk_table_attach (GTK_TABLE (table), align, 3, 4, row, row + 1,
-							GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
+	gtk_table_attach (GTK_TABLE (table), wid, 3, 4, row, row + 1,
+							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
 }
 
 static void
@@ -663,7 +665,7 @@ static void
 setup_create_label (GtkWidget *table, int row, const setting *set)
 {
 	gtk_table_attach (GTK_TABLE (table), gtk_label_new (_(set->label)),
-							3, 4, row, row + 1, GTK_SHRINK | GTK_FILL,
+							3, 4, row, row + 1, GTK_FILL,
 							GTK_SHRINK | GTK_FILL, 0, 0);
 }
 
@@ -1357,7 +1359,7 @@ static const char *cata[] =
 		N_("General"),
 		N_("Logging"),
 		N_("Sound"),
-		N_("Advanced"),
+/*		N_("Advanced"),*/
 		NULL,
 	N_("Network"),
 		N_("Network setup"),
@@ -1381,9 +1383,9 @@ setup_create_pages (GtkWidget *box)
 	setup_add_page (cata[8], book, setup_create_page (general_settings));
 	setup_add_page (cata[9], book, setup_create_page (logging_settings));
 	setup_add_page (cata[10], book, setup_create_sound_page ());
-	setup_add_page (cata[11], book, setup_create_page (advanced_settings));
-	setup_add_page (cata[14], book, setup_create_page (network_settings));
-	setup_add_page (cata[15], book, setup_create_page (filexfer_settings));
+	/*setup_add_page (cata[11], book, setup_create_page (advanced_settings));*/
+	setup_add_page (cata[13], book, setup_create_page (network_settings));
+	setup_add_page (cata[14], book, setup_create_page (filexfer_settings));
 
 	gtk_notebook_set_show_tabs (GTK_NOTEBOOK (book), FALSE);
 	gtk_notebook_set_show_border (GTK_NOTEBOOK (book), FALSE);

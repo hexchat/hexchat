@@ -98,7 +98,11 @@ mg_attr_list_create (GdkColor *col)
 
 	if (prefs.tab_small)
 	{
+#ifdef WIN32
+		attr = pango_attr_scale_new (PANGO_SCALE_SMALL);
+#else
 		attr = pango_attr_scale_new (PANGO_SCALE_X_SMALL);
+#endif
 		attr->start_index = 0;
 		attr->end_index = 0xffff;
 		pango_attr_list_insert (list, attr);
@@ -199,7 +203,7 @@ fe_set_tab_color (struct session *sess, int col, int flash)
 	}
 
 #ifdef WIN32
-	if (flash)
+	if (flash && prefs.flash_hilight)
 		flash_window (sess->gui->window);
 #endif
 }
