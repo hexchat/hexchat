@@ -16,6 +16,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
  */
 
+#define _GNU_SOURCE	/* for memrchr */
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -1229,6 +1230,19 @@ norm:			nbuf[j] = buf[i];
 	free (nbuf);
 }
 
+#ifndef HAVE_MEMRCHR
+static void *
+memrchr (const void *block, int c, size_t size)
+{
+	unsigned char *p;
+
+	for (p = (unsigned char *)block + size; p != block; p--)
+		if (*p == c)
+			return p;
+	return 0;
+}
+#endif
+
 static gboolean
 exec_data (GIOChannel *source, GIOCondition condition, struct nbexec *s)
 {
@@ -1271,8 +1285,8 @@ exec_data (GIOChannel *source, GIOCondition condition, struct nbexec *s)
 	}
 	len += rd;
 	buf[len] = '\0';
-	
-	rest = strrchr(buf, '\n');
+
+	rest = memrchr(buf, '\n', len);
 	if (rest)
 		rest++;
 	else
