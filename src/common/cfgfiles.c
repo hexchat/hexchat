@@ -532,7 +532,7 @@ const struct prefs vars[] = {
 };
 
 static char *
-convert_with_fallback (const char *str)
+convert_with_fallback (const char *str, const char *fallback)
 {
 	char *utf;
 
@@ -542,12 +542,9 @@ convert_with_fallback (const char *str)
 		/* this can happen if CHARSET envvar is set wrong */
 		/* maybe it's already utf8 (breakage!) */
 		if (!g_utf8_validate (str, -1, NULL))
-		{
-			fe_message ("Failed to convert username or realname to UTF-8.\n"
-					"Your locale or charset appears to be missconfigured.", TRUE);
-			exit (1);
-		}
-		utf = g_strdup (str);
+			utf = g_strdup (fallback);
+		else
+			utf = g_strdup (str);
 	}
 
 	return utf;
@@ -570,8 +567,8 @@ load_config (void)
 	if ((realname && realname[0] == 0) || !realname)
 		realname = username;
 
-	username = convert_with_fallback (username);
-	realname = convert_with_fallback (realname);
+	username = convert_with_fallback (username, "username");
+	realname = convert_with_fallback (realname, "realname");
 
 	memset (&prefs, 0, sizeof (struct xchatprefs));
 
@@ -666,6 +663,9 @@ load_config (void)
 	strcpy (prefs.soundcmd, "esdplay");
 	strcpy (prefs.dnsprogram, "host");
 
+	g_free ((char *)username);
+	g_free ((char *)realname);
+
 	fh = open (default_file (), OFLAGS | O_RDONLY);
 	if (fh != -1)
 	{
@@ -716,9 +716,6 @@ load_config (void)
 		prefs.mainwindow_height = 138;
 	if (prefs.mainwindow_width < 106)
 		prefs.mainwindow_width = 106;
-
-	g_free ((char *)username);
-	g_free ((char *)realname);
 
 	sp = strchr (prefs.username, ' ');
 	if (sp)

@@ -560,7 +560,8 @@ tab_add_sorted (GtkWidget *group, GtkWidget *box, GtkWidget *tab)
 	}
 
 	/* append */
-	gtk_box_pack_end (GTK_BOX (box), tab, 0, 0, 0);
+	gtk_box_pack_start (GTK_BOX (box), tab, 0, 0, 0);
+	gtk_box_reorder_child (GTK_BOX (box), tab, i);
 	gtk_widget_show (tab);
 }
 
