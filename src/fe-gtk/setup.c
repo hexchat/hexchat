@@ -157,11 +157,10 @@ static const setting tabs_settings[] =
 	{ST_MENU,	N_("Open channels in:"), P_OFFINT(tabchannels), 0, tabwin, 0},
 	{ST_MENU,	N_("Open dialogs in:"), P_OFFINT(privmsgtab), 0, tabwin, 0},
 	{ST_MENU,	N_("Open utilities in:"), P_OFFINT(windows_as_tabs), N_("Open DCC, Ignore, Notify etc, in tabs or windows?"), tabwin, 0},
-	{ST_NUMBER,	N_("Shorten tabs to:"), P_OFFINT(truncchans), 0, (char **)N_("letters."), 99},
 	{ST_TOGGLE, N_("Open tab for server messages"), P_OFFINT(use_server_tab), 0, 0, 0},
-/*	{ST_TOGGLE, N_("Only highlight tabs on channel messages"), P_OFFINT(limitedtabhighlight), 0, 0, 0},*/
 	{ST_TOGGLE, N_("Open tab for server notices"), P_OFFINT(notices_tabs), 0, 0, 0},
 	{ST_TOGGLE, N_("Pop new tabs to front"), P_OFFINT(newtabstofront), 0, 0, 0},
+	{ST_NUMBER,	N_("Shorten tabs to:"), P_OFFINT(truncchans), 0, (char **)N_("letters."), 99},
 	{ST_END, 0, 0, 0, 0, 0}
 };
 

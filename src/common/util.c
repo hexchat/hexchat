@@ -494,10 +494,10 @@ get_cpu_str (void)
 
 	mhz = get_mhz ();
 	if (mhz)
-		sprintf (verbuf, "Windoze %ld.%ld [i%d86/%dMHz]",
+		sprintf (verbuf, "Windows %ld.%ld [i%d86/%dMHz]",
 			osvi.dwMajorVersion, osvi.dwMinorVersion, si.wProcessorLevel, mhz);
 	else
-		sprintf (verbuf, "Windoze %ld.%ld [i%d86]",
+		sprintf (verbuf, "Windows %ld.%ld [i%d86]",
 			osvi.dwMajorVersion, osvi.dwMinorVersion, si.wProcessorLevel);
 
 	return verbuf;

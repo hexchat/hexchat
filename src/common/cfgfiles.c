@@ -529,7 +529,7 @@ load_config (void)
 	prefs.privmsgtab = 1;
 	prefs.nickcompletion = 1;
 	prefs.style_inputbox = 1;
-	prefs.slist_select = 10;
+	prefs.slist_select = 9;
 	prefs.nu_color = 4;
 	prefs.dccpermissions = 0600;
 	prefs.max_lines = 300;

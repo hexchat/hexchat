@@ -21,6 +21,14 @@
  - Possible tcl plugin crash fixes (Daniel P. Stasinski).
  - Group multiple op/voice in one print event.
  - Fixed plugin loading on solaris.
+ - Python fixes (Gustavo Niemeyer):
+   * Fixed bug which made Python plugins crash randomly.
+   * Introduced a new xchat.hook_unload() function, as requested by
+     many people. This will call a given callback at module unload
+     time.
+   * Now /py load <filename> will succeed if filename is the name of a
+     file inside "xchatdir" (~/.xchat2).
+   * Fixed some leakings.
 
 
 ----------------------------------------------------------------------
