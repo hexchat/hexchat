@@ -325,9 +325,13 @@ mg_set_topic_tip (session *sess)
 
 	if (sess->type == SESS_CHANNEL)
 	{
-		snprintf (buf, sizeof (buf), _("Topic for %s is: %s"), sess->channel,
-					 sess->topic);
-		add_tip (sess->gui->topic_entry, buf);
+		if (sess->topic)
+		{
+			snprintf (buf, sizeof (buf), _("Topic for %s is: %s"), sess->channel,
+						 sess->topic);
+			add_tip (sess->gui->topic_entry, buf);
+		} else
+			add_tip (sess->gui->topic_entry, _("No topic is set"));
 	}
 }
 
@@ -488,8 +492,8 @@ mg_switch_page (int relative, int num)
 static void
 mg_find_replacement_focus (GtkWidget *tab)
 {
-	mg_switch_page (FALSE, 0);
-	/*mg_switch_page (TRUE, -1);*/
+/*	mg_switch_page (FALSE, 0);*/
+	mg_switch_page (TRUE, -1);	/* FIXME: does so relative properly */
 }
 
 static void
@@ -568,9 +572,9 @@ mg_tabdestroy_cb (GtkWidget *tab, session *sess)
 		mg_gendestroy (tab);
 	else
 	{
-		mg_ircdestroy (tab, sess);
 		if (!xchat_is_quitting)
 			tab_group_cleanup (sess->gui->tabs_box);
+		mg_ircdestroy (tab, sess);
 	}
 }
 
