@@ -1587,13 +1587,12 @@ static int Command_Source(char *word[], char *word_eol[], void *userdata)
     char *xchatdir;
     Tcl_DString ds;
     struct stat dummy;
-
-    int result;
+    int len;
 
     if (!strlen(word_eol[2]))
         return XCHAT_EAT_NONE;
 
-    int len = strlen(word[2]);
+    len = strlen(word[2]);
 
     if (len > 4 && strcasecmp(".tcl", word[2] + len - 4) == 0) {
 
