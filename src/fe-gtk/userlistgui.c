@@ -395,16 +395,16 @@ userlist_add_columns (GtkTreeView * treeview)
 	gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (treeview),
 																-1, NULL, renderer,
 																"pixbuf", 0, NULL);
-	gtk_tree_view_column_set_sizing (gtk_tree_view_get_column (treeview, 0),
-												GTK_TREE_VIEW_COLUMN_AUTOSIZE);
+/*	gtk_tree_view_column_set_sizing (gtk_tree_view_get_column (treeview, 0),
+												GTK_TREE_VIEW_COLUMN_AUTOSIZE);*/
 
 	/* nick column */
 	renderer = gtk_cell_renderer_text_new ();
 	gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (treeview),
 																-1, NULL, renderer,
 																"text", 1, NULL);
-	gtk_tree_view_column_set_sizing (gtk_tree_view_get_column (treeview, 1),
-												GTK_TREE_VIEW_COLUMN_AUTOSIZE);
+/*	gtk_tree_view_column_set_sizing (gtk_tree_view_get_column (treeview, 1),
+												GTK_TREE_VIEW_COLUMN_AUTOSIZE);*/
 
 	if (prefs.showhostname_in_userlist)
 	{

@@ -1627,6 +1627,12 @@ gtk_xtext_get_word (GtkXText * xtext, int x, int y, textentry ** ret_ent,
 		len++;
 	}
 
+	if (len > 0 && word[len-1]=='.')
+	{
+		len--;
+		str--;
+	}
+
 	if (ret_ent)
 		*ret_ent = ent;
 	if (ret_off)

@@ -991,7 +991,7 @@ mg_add_chan (session *sess)
 
 	sess->res->tab = tab_group_add (sess->gui->tabs_box, name, sess->server,
 											  sess, mg_tab_press_cb, mg_link_cb,
-											  prefs.truncchans);
+											  prefs.truncchans, prefs.tab_dnd);
 	g_object_set_data (G_OBJECT (sess->res->tab), "sess", sess);
 
 	if (newmsg_list == NULL)
@@ -2263,7 +2263,8 @@ mg_add_generic_tab (char *name, char *title, void *family, GtkWidget *box)
 	gtk_widget_show (box);
 
 	but = tab_group_add (mg_gui->tabs_box, name, family, NULL,
-								mg_tab_press_cb, mg_link_cb, prefs.truncchans);
+								mg_tab_press_cb, mg_link_cb, prefs.truncchans,
+								prefs.tab_dnd);
 	g_object_set_data (G_OBJECT (but), "title", strdup (title));
 	g_object_set_data (G_OBJECT (but), "box", box);
 	g_object_set_data (G_OBJECT (but), "sess", NULL);

@@ -36,10 +36,10 @@
 
 #ifdef WIN32
 #define XCHAT_DIR "X-Chat 2"
-#define DEF_FONT "monospace 10"
+#define DEF_FONT "Monospace 10"
 #else
 #define XCHAT_DIR ".xchat2"
-#define DEF_FONT "monospace 11"
+#define DEF_FONT "Monospace 10"
 #endif
 
 void
@@ -463,7 +463,7 @@ const struct prefs vars[] = {
 
 	{"tab_dialogs", P_OFFINT (privmsgtab), TYPE_BOOL},
 	{"tab_chans", P_OFFINT (tabchannels), TYPE_BOOL},
-/*	{"tab_limited_hilight", P_OFFINT (limitedtabhighlight), TYPE_BOOL},*/
+	{"tab_dnd",  P_OFFINT (tab_dnd), TYPE_BOOL},
 	{"tab_new_to_front", P_OFFINT (newtabstofront), TYPE_BOOL},
 	{"tab_notices", P_OFFINT (notices_tabs), TYPE_BOOL},
 	{"tab_position", P_OFFINT (tabs_position), TYPE_INT},
@@ -510,6 +510,7 @@ load_config (void)
 	memset (&prefs, 0, sizeof (struct xchatprefs));
 
 	/* put in default values, anything left out is automatically zero */
+	prefs.tab_dnd = 1;
 	prefs.timestamp_logs = 1;
 	prefs.truncchans = 20;
 	prefs.autoresume = 1;

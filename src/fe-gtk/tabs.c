@@ -658,7 +658,7 @@ tab_drag_end (GtkWidget *widget, GdkDragContext *drag_context,
 
 GtkWidget *
 tab_group_add (GtkWidget *group, char *name, void *family, void *userdata,
-			void *click_cb, void *delink_cb, int trunc_len)
+			void *click_cb, void *delink_cb, int trunc_len, int dnd)
 {
 	GtkWidget *but;
 	char *new_name;
@@ -698,10 +698,13 @@ tab_group_add (GtkWidget *group, char *name, void *family, void *userdata,
 	tab_add_real (group, but, family);
 
 	/* DND for detaching tabs */
-	gtk_drag_source_set (but, GDK_BUTTON1_MASK, targets, 1, GDK_ACTION_MOVE);
-	gtk_drag_dest_set (but, GTK_DEST_DEFAULT_ALL, targets, 1, GDK_ACTION_MOVE);
-	g_signal_connect (G_OBJECT (but), "drag-end",
-							G_CALLBACK (tab_drag_end), delink_cb);
+	if (dnd)
+	{
+		gtk_drag_source_set (but, GDK_BUTTON1_MASK, targets, 1, GDK_ACTION_MOVE);
+		gtk_drag_dest_set (but, GTK_DEST_DEFAULT_ALL, targets, 1, GDK_ACTION_MOVE);
+		g_signal_connect (G_OBJECT (but), "drag-end",
+								G_CALLBACK (tab_drag_end), delink_cb);
+	}
 
 	return but;
 }

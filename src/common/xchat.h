@@ -167,6 +167,7 @@ struct xchatprefs
 	unsigned long dcc_ip;
 	char dcc_ip_str[16];
 
+	unsigned int tab_dnd;
 	unsigned int mainwindow_save;
 	unsigned int perc_color;
 	unsigned int perc_ascii;

@@ -19,7 +19,7 @@ AH_VERBATIM([PREFIX],[#undef PREFIX])
 AH_VERBATIM([SOCKS],[#undef SOCKS])
 AH_VERBATIM([USE_DEBUG],[#undef USE_DEBUG])
 AH_VERBATIM([USE_GNOME],[#undef USE_GNOME])
-AH_VERBATIM([USE_HEBREW],[#undef USE_HEBREW])
+dnl AH_VERBATIM([USE_HEBREW],[#undef USE_HEBREW])
 AH_VERBATIM([USE_IPV6],[#undef USE_IPV6])
 AH_VERBATIM([USE_MMX],[#undef USE_MMX])
 AH_VERBATIM([USE_OPENSSL],[#undef USE_OPENSSL])
@@ -63,9 +63,9 @@ AC_ARG_ENABLE(socks,
 [  --enable-socks          enable use of SOCKS5 (default: no)],
         socks=$enableval, socks=no)
 
-AC_ARG_ENABLE(hebrew,
-[  --enable-hebrew         enable Hebrew support (default: no)],
-        hebrew=$enableval, hebrew=no)
+dnl AC_ARG_ENABLE(hebrew,
+dnl [  --enable-hebrew         enable Hebrew support (default: no)],
+dnl        hebrew=$enableval, hebrew=no)
 
 AC_ARG_ENABLE(ipv6,
 [  --enable-ipv6           enable IPv6 (default: no)],
@@ -455,9 +455,9 @@ dnl *********************************************************************
 dnl ** Hebrew support ***************************************************
 dnl *********************************************************************
 
-if test "$hebrew" = yes; then
-	AC_DEFINE(USE_HEBREW)
-fi
+dnl if test "$hebrew" = yes; then
+dnl 	AC_DEFINE(USE_HEBREW)
+dnl fi
 
 dnl *********************************************************************
 dnl ** MMX **************************************************************
