@@ -1,6 +1,7 @@
 extern struct xchatprefs prefs;
 
 extern int auto_connect;
+extern int skip_plugins;
 extern int xchat_is_quitting;
 extern char *connect_url;
 

@@ -133,18 +133,34 @@ fe_args (int argc, char *argv[])
 		{
 			printf (PACKAGE" "VERSION"\n"
 					"Usage: %s [OPTIONS]... [URL]\n\n", argv[0]);
-			printf (_("Options:\n"
-					"  -d,  --cfgdir DIRECTORY   use a different config dir\n"
-					"  -a,  --no-auto            don't auto connect\n"
-					"  -v,  --version            show version information\n\n"
+			printf ("%s:\n"
+					"  -d,  --cfgdir %-11s %s\n"
+					"  -a,  --no-auto            %s\n"
+					"  -n,  --no-plugins         %s\n"
+					"  -v,  --version            %s\n\n"
 					"URL:\n"
-					"  irc://server:port/channel\n\n"));
+					"  irc://server:port/channel\n\n",
+						_("Options"),
+						_("DIRECTORY"),
+						_("use a different config dir"),
+						_("don't auto connect"),
+						_("don't auto load any plugins"),
+						_("show version information")
+					);
 			return 0;
 		}
 		if (!strcasecmp (argv[1], "-a") || !strcasecmp (argv[1], "--no-auto"))
 		{
 			auto_connect = 0;
 			offset++;
+		}
+		if (argc > 1 + offset)
+		{
+			if (!strcasecmp (argv[1+offset], "-n") || !strcasecmp (argv[1+offset], "--no-plugins"))
+			{
+				skip_plugins = 1;
+				offset++;
+			}
 		}
 	}
 

@@ -70,6 +70,7 @@ static GSList *away_list = 0;
 static int in_xchat_exit = FALSE;
 int xchat_is_quitting = FALSE;
 int auto_connect = TRUE;
+int skip_plugins = FALSE;
 char *connect_url = NULL;
 
 struct session *current_tab;
@@ -220,7 +221,8 @@ irc_init (session *sess)
 	done_init = TRUE;
 
 #ifdef USE_PLUGIN
-	plugin_auto_load (sess);	/* autoload ~/.xchat *.so */
+	if (!skip_plugins)
+		plugin_auto_load (sess);	/* autoload ~/.xchat *.so */
 #endif
 	plugin_add (sess, NULL, NULL, timer_plugin_init, NULL, NULL, FALSE);
 
