@@ -6,7 +6,7 @@
  2.4.2
 ----------------------------------------------------------------------
 
- - Updated translations (ca, de, lt, nl, ru).
+ - Updated translations (ca, de, lt, nl, ru, sk, sr, vi).
  - Added command line args -u and -p.
  - Fixed handling of "MODE -o+o nick nick" (#1094026).
  - Plugin API changes:
@@ -37,7 +37,9 @@
    server list window.
  - Added the /URL command.
  - Added a text event for all unknown WHOIS reply lines.
- - 
+ - Added /ALLCHANL which sends to the current server only.
+ - Actions (/ME) are now treated like PRIV/CHAN for purposes of the
+   ignore list.
 
 
 ----------------------------------------------------------------------

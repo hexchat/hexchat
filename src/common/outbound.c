@@ -274,6 +274,29 @@ cmd_allchannels (session *sess, char *tbuf, char *word[], char *word_eol[])
 }
 
 static int
+cmd_allchannelslocal (session *sess, char *tbuf, char *word[], char *word_eol[])
+{
+	GSList *list = sess_list;
+	server *serv = sess->server;
+
+	if (!*word_eol[2])
+		return FALSE;
+
+	while (list)
+	{
+		sess = list->data;
+		if (sess->type == SESS_CHANNEL && sess->channel[0] &&
+			 sess->server->connected && sess->server == serv)
+		{
+			handle_command (sess, word_eol[2], FALSE);
+		}
+		list = list->next;
+	}
+
+	return TRUE;
+}
+
+static int
 cmd_allservers (struct session *sess, char *tbuf, char *word[],
 					 char *word_eol[])
 {
@@ -2692,6 +2715,8 @@ const struct commands xc_cmds[] = {
 	 N_("ADDBUTTON <name> <action>, adds a button under the user-list")},
 	{"ALLCHAN", cmd_allchannels, 0, 0,
 	 N_("ALLCHAN <cmd>, sends a command to all channels you're in")},
+	{"ALLCHANL", cmd_allchannelslocal, 0, 0,
+	 N_("ALLCHANL <cmd>, sends a command to all channels you're in")},
 	{"ALLSERV", cmd_allservers, 0, 0,
 	 N_("ALLSERV <cmd>, sends a command to all servers you're in")},
 	{"AWAY", cmd_away, 1, 0, N_("AWAY [<reason>], sets you away")},

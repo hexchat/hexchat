@@ -77,6 +77,9 @@ irc_nickserv (server *serv, char *pass)
 		break;
 	case 2:
 		tcp_sendf (serv, "NS :identify %s\r\n", pass);
+		break;
+	case 3:
+		tcp_sendf (serv, "PRIVMSG NS :identify %s\r\n", pass);
 	}
 }
 

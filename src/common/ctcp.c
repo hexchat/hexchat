@@ -36,20 +36,22 @@
 
 
 static void
-ctcp_reply (session *sess, char *tbuf, char *nick, char *word[],
-				char *word_eol[], char *conf)
+ctcp_reply (session *sess, char *nick, char *word[], char *word_eol[],
+				char *conf)
 {
+	char tbuf[2048];
+
 	conf = strdup (conf);
 	/* process %C %B etc */
 	check_special_chars (conf, TRUE);
-	auto_insert (tbuf, 2048, conf, word, word_eol, "", "", word_eol[5], "", "", nick);
+	auto_insert (tbuf, sizeof (tbuf), conf, word, word_eol, "", "", word_eol[5], "", "", nick);
 	free (conf);
 	handle_command (sess, tbuf, FALSE);
 }
 
 static int
-ctcp_check (session *sess, char *tbuf, char *nick, char *word[],
-				char *word_eol[], char *ctcp)
+ctcp_check (session *sess, char *nick, char *word[], char *word_eol[],
+				char *ctcp)
 {
 	int ret = 0;
 	char *po;
@@ -69,7 +71,7 @@ ctcp_check (session *sess, char *tbuf, char *nick, char *word[],
 		pop = (struct popup *) list->data;
 		if (!strcasecmp (ctcp, pop->name))
 		{
-			ctcp_reply (sess, tbuf, nick, word, word_eol, pop->cmd);
+			ctcp_reply (sess, nick, word, word_eol, pop->cmd);
 			ret = 1;
 		}
 		list = list->next;
@@ -90,11 +92,35 @@ ctcp_handle (session *sess, char *to, char *nick,
 	if (!strncasecmp (msg, "DCC", 3))
 	{
 		/* but still let CTCP replies override it */
-		if (!ctcp_check (sess, outbuf, nick, word, word_eol, word[4] + 2))
+		if (!ctcp_check (sess, nick, word, word_eol, word[4] + 2))
 		{
 			if (!ignore_check (word[1], IG_DCC))
 				handle_dcc (sess, nick, word, word_eol);
 		}
+		return;
+	}
+
+	/* consider ACTION to be different from other CTCPs. Check
+      ignore as if it was a PRIV/CHAN. */
+	if (!strncasecmp (msg, "ACTION ", 7))
+	{
+		if (is_channel (serv, to))
+		{
+			/* treat a channel action as a CHAN */
+			if (ignore_check (word[1], IG_CHAN))
+				return;
+		} else
+		{
+			/* treat a private action as a PRIV */
+			if (ignore_check (word[1], IG_PRIV))
+				return;
+		}
+
+		/* but still let CTCP replies override it */
+		if (ctcp_check (sess, nick, word, word_eol, word[4] + 2))
+			goto generic;
+
+		inbound_action (sess, to, nick, msg + 7, FALSE);
 		return;
 	}
 
@@ -108,7 +134,7 @@ ctcp_handle (session *sess, char *to, char *nick,
 		serv->p_nctcp (serv, nick, outbuf);
 	}
 
-	if (!ctcp_check (sess, outbuf, nick, word, word_eol, word[4] + 2))
+	if (!ctcp_check (sess, nick, word, word_eol, word[4] + 2))
 	{
 		if (!strncasecmp (msg, "ACTION", 6))
 		{
@@ -133,6 +159,7 @@ ctcp_handle (session *sess, char *to, char *nick,
 		}
 	}
 
+generic:
 	po = strchr (msg, '\001');
 	if (po)
 		po[0] = 0;
