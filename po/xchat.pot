@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2003-02-26 23:09+1100\n"
+"POT-Creation-Date: 2003-02-28 15:02+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,15 +19,15 @@ msgstr ""
 msgid "Cannot create ~/.xchat2"
 msgstr ""
 
-#: src/common/cfgfiles.c:588
+#: src/common/cfgfiles.c:589
 msgid "I'm busy"
 msgstr ""
 
-#: src/common/cfgfiles.c:589
+#: src/common/cfgfiles.c:590
 msgid "Client exiting"
 msgstr ""
 
-#: src/common/cfgfiles.c:632
+#: src/common/cfgfiles.c:633
 msgid ""
 "* Running IRC as root is stupid! You should\n"
 "  create a User Account and use that to login.\n"
@@ -2768,7 +2768,7 @@ msgstr ""
 msgid "I can't save an empty list!"
 msgstr ""
 
-#: src/fe-gtk/chanlist.c:539 src/fe-gtk/menu.c:859
+#: src/fe-gtk/chanlist.c:539 src/fe-gtk/menu.c:868
 msgid "Select an output filename"
 msgstr ""
 
@@ -2809,7 +2809,7 @@ msgstr ""
 msgid "Save the list"
 msgstr ""
 
-#: src/fe-gtk/chanlist.c:751 src/fe-gtk/menu.c:667
+#: src/fe-gtk/chanlist.c:751 src/fe-gtk/menu.c:676
 msgid "Join Channel"
 msgstr ""
 
@@ -2935,7 +2935,7 @@ msgstr ""
 msgid "Add New"
 msgstr ""
 
-#: src/fe-gtk/editlist.c:355 src/fe-gtk/fkeys.c:701
+#: src/fe-gtk/editlist.c:355 src/fe-gtk/fkeys.c:713
 msgid "Delete"
 msgstr ""
 
@@ -2971,7 +2971,7 @@ msgstr ""
 msgid "Search buffer is empty.\n"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:148
+#: src/fe-gtk/fkeys.c:154
 msgid ""
 "The Run Command action runs the data in Data 1 as if it has been typed into "
 "the entry box where you pressed the key sequence. Thus it can contain text "
@@ -2981,143 +2981,151 @@ msgid ""
 "text run then enter \\\\"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:150
+#: src/fe-gtk/fkeys.c:156
 msgid ""
 "The Change Page command switches between pages in the notebook. Set Data 1 "
 "to the page you want to switch to. If Data 2 is set to anything then the "
 "switch will be relative to the current position"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:152
+#: src/fe-gtk/fkeys.c:158
 msgid ""
 "The Insert in Buffer command will insert the contents of Data 1 into the "
 "entry where the key sequence was pressed at the current cursor position"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:154
+#: src/fe-gtk/fkeys.c:160
 msgid ""
 "The Scroll Page command scrolls the text widget up or down one page. If Data "
 "1 is set to anything the page scrolls up, else it scrolls down"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:156
+#: src/fe-gtk/fkeys.c:162
 msgid ""
 "The Set Buffer command sets the entry where the key sequence was entered to "
 "the contents of Data 1"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:158
+#: src/fe-gtk/fkeys.c:164
 msgid ""
 "The Last Command command sets the entry to contain the last command entered "
 "- the same as pressing up in a shell"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:160
+#: src/fe-gtk/fkeys.c:166
 msgid ""
 "The Next Command command sets the entry to contain the next command entered "
 "- the same as pressing down in a shell"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:162
+#: src/fe-gtk/fkeys.c:168
 msgid ""
 "This command changes the text in the entry to finish an incomplete nickname "
 "or command. If Data 1 is set then double-tabbing in a string will select the "
 "last nick, not the next"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:164
+#: src/fe-gtk/fkeys.c:170
 msgid ""
 "This command scrolls up and down through the list of nicks. If Data 1 is set "
 "to anything it will scroll up, else it scrolls down"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:166
+#: src/fe-gtk/fkeys.c:172
 msgid ""
 "This command checks the last word entered in the entry against the replace "
 "list and replaces it if it finds a match"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:168
-msgid "This command move the front tab left by one"
+#: src/fe-gtk/fkeys.c:174
+msgid "This command moves the front tab left by one"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:170
-msgid "This command move the front tab right by one"
+#: src/fe-gtk/fkeys.c:176
+msgid "This command moves the front tab right by one"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:172
+#: src/fe-gtk/fkeys.c:178
+msgid "This command moves the current tab family to the left"
+msgstr ""
+
+#: src/fe-gtk/fkeys.c:180
+msgid "This command moves the current tab family to the right"
+msgstr ""
+
+#: src/fe-gtk/fkeys.c:182
 msgid "Push input line into history but doesn't send to server"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:184
+#: src/fe-gtk/fkeys.c:194
 msgid "There was an error loading key bindings configuration"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:395 src/fe-gtk/fkeys.c:674 src/fe-gtk/fkeys.c:680
-#: src/fe-gtk/fkeys.c:685 src/fe-gtk/maingui.c:782 src/fe-gtk/maingui.c:803
-#: src/fe-gtk/maingui.c:836 src/fe-gtk/maingui.c:863 src/fe-gtk/maingui.c:2268
+#: src/fe-gtk/fkeys.c:407 src/fe-gtk/fkeys.c:686 src/fe-gtk/fkeys.c:692
+#: src/fe-gtk/fkeys.c:697 src/fe-gtk/maingui.c:782 src/fe-gtk/maingui.c:803
+#: src/fe-gtk/maingui.c:836 src/fe-gtk/maingui.c:863 src/fe-gtk/maingui.c:2275
 msgid "<none>"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:638
+#: src/fe-gtk/fkeys.c:650
 msgid "Mod"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:638 src/fe-gtk/fkeys.c:734
+#: src/fe-gtk/fkeys.c:650 src/fe-gtk/fkeys.c:746
 msgid "Key"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:638
+#: src/fe-gtk/fkeys.c:650
 msgid "Action"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:649
+#: src/fe-gtk/fkeys.c:661
 msgid "X-Chat: Edit Key Bindings"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:696
+#: src/fe-gtk/fkeys.c:708
 msgid "Add new"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:727
+#: src/fe-gtk/fkeys.c:739
 msgid "Shift"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:729
+#: src/fe-gtk/fkeys.c:741
 msgid "Alt"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:731
+#: src/fe-gtk/fkeys.c:743
 msgid "Ctrl"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:738
+#: src/fe-gtk/fkeys.c:750
 msgid "Data 1"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:741
+#: src/fe-gtk/fkeys.c:753
 msgid "Data 2"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:784
+#: src/fe-gtk/fkeys.c:796
 msgid "Error opening keys config file\n"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:955
+#: src/fe-gtk/fkeys.c:967
 #, c-format
 msgid ""
 "Unknown keyname %s in key bindings config file\n"
 "Load aborted, please fix ~/.xchat/keybindings.conf\n"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:993
+#: src/fe-gtk/fkeys.c:1005
 #, c-format
 msgid ""
 "Unknown action %s in key bindings config file\n"
 "Load aborted, Please fix ~/.xchat/keybindings\n"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:1014
+#: src/fe-gtk/fkeys.c:1026
 #, c-format
 msgid ""
 "Expecting Data line (beginning Dx{:|!}) but got:\n"
@@ -3227,7 +3235,7 @@ msgstr ""
 msgid "OK"
 msgstr ""
 
-#: src/fe-gtk/ignoregui.c:445 src/fe-gtk/menu.c:1164
+#: src/fe-gtk/ignoregui.c:445 src/fe-gtk/menu.c:1173
 msgid "New"
 msgstr ""
 
@@ -3240,7 +3248,7 @@ msgstr ""
 msgid "No topic is set"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:759 src/fe-gtk/maingui.c:1789
+#: src/fe-gtk/maingui.c:759 src/fe-gtk/maingui.c:1787
 msgid "Beep on message"
 msgstr ""
 
@@ -3248,7 +3256,7 @@ msgstr ""
 msgid "Show join/part messages"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:764 src/fe-gtk/maingui.c:1793
+#: src/fe-gtk/maingui.c:764 src/fe-gtk/maingui.c:1791
 msgid "Color paste"
 msgstr ""
 
@@ -3304,28 +3312,24 @@ msgstr ""
 msgid "Close this tab/window"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1372
-msgid "Attach/Detach this tab"
-msgstr ""
-
 #: src/fe-gtk/maingui.c:1465
 msgid "Show/Hide userlist"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1759
+#: src/fe-gtk/maingui.c:1757
 msgid "Insert color code"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1779
+#: src/fe-gtk/maingui.c:1777
 #, c-format
 msgid "(%s) Channel settings"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1791
+#: src/fe-gtk/maingui.c:1789
 msgid "Hide join/parts"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1817
+#: src/fe-gtk/maingui.c:1815
 msgid "Enter new nickname:"
 msgstr ""
 
@@ -3359,40 +3363,44 @@ msgid "Last Msg: %s"
 msgstr ""
 
 #. sep
-#: src/fe-gtk/menu.c:534
+#: src/fe-gtk/menu.c:540
 msgid "Menu Bar"
 msgstr ""
 
-#: src/fe-gtk/menu.c:535
+#: src/fe-gtk/menu.c:541
 msgid "Topic Bar"
 msgstr ""
 
-#: src/fe-gtk/menu.c:539
+#: src/fe-gtk/menu.c:545
 msgid "User List"
 msgstr ""
 
-#: src/fe-gtk/menu.c:542
+#: src/fe-gtk/menu.c:548
 msgid "Mode Buttons"
 msgstr ""
 
-#: src/fe-gtk/menu.c:671
+#: src/fe-gtk/menu.c:554
+msgid "User List Buttons"
+msgstr ""
+
+#: src/fe-gtk/menu.c:680
 msgid "Part Channel"
 msgstr ""
 
-#: src/fe-gtk/menu.c:673
+#: src/fe-gtk/menu.c:682
 msgid "Cycle Channel"
 msgstr ""
 
-#: src/fe-gtk/menu.c:696
+#: src/fe-gtk/menu.c:705
 msgid "X-Chat: User menu"
 msgstr ""
 
 #. sep
-#: src/fe-gtk/menu.c:705
+#: src/fe-gtk/menu.c:714
 msgid "Edit This Menu..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:807
+#: src/fe-gtk/menu.c:816
 msgid ""
 "*WARNING*\n"
 "Auto accepting DCC to your home directory\n"
@@ -3400,11 +3408,11 @@ msgid ""
 "Someone could send you a .bash_profile"
 msgstr ""
 
-#: src/fe-gtk/menu.c:929
+#: src/fe-gtk/menu.c:938
 msgid "Settings saved."
 msgstr ""
 
-#: src/fe-gtk/menu.c:966
+#: src/fe-gtk/menu.c:975
 msgid ""
 "User Commands - Special codes:\n"
 "\n"
@@ -3425,7 +3433,7 @@ msgid ""
 "&2 would be \"john hello\"."
 msgstr ""
 
-#: src/fe-gtk/menu.c:981
+#: src/fe-gtk/menu.c:990
 msgid ""
 "Userlist Buttons - Special codes:\n"
 "\n"
@@ -3438,7 +3446,7 @@ msgid ""
 "%t  =  time/date\n"
 msgstr ""
 
-#: src/fe-gtk/menu.c:990
+#: src/fe-gtk/menu.c:999
 msgid ""
 "Dialog Buttons - Special codes:\n"
 "\n"
@@ -3451,7 +3459,7 @@ msgid ""
 "%t  =  time/date\n"
 msgstr ""
 
-#: src/fe-gtk/menu.c:999
+#: src/fe-gtk/menu.c:1008
 msgid ""
 "CTCP Replies - Special codes:\n"
 "\n"
@@ -3466,7 +3474,7 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1009
+#: src/fe-gtk/menu.c:1018
 #, c-format
 msgid ""
 "URL Handlers - Special codes:\n"
@@ -3478,263 +3486,263 @@ msgid ""
 "shell instead of X-Chat"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1018
+#: src/fe-gtk/menu.c:1027
 msgid "X-Chat: User Defined Commands"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1025
+#: src/fe-gtk/menu.c:1034
 msgid "X-Chat: Userlist Popup menu"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1032
+#: src/fe-gtk/menu.c:1041
 msgid "X-Chat: Replace"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1039
+#: src/fe-gtk/menu.c:1048
 msgid "X-Chat: URL Handlers"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1058
+#: src/fe-gtk/menu.c:1067
 msgid "X-Chat: Userlist buttons"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1065
+#: src/fe-gtk/menu.c:1074
 msgid "X-Chat: Dialog buttons"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1072
+#: src/fe-gtk/menu.c:1081
 msgid "X-Chat: CTCP Replies"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1160
+#: src/fe-gtk/menu.c:1169
 msgid "_X-Chat"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1161
+#: src/fe-gtk/menu.c:1170
 msgid "Server List..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1165
+#: src/fe-gtk/menu.c:1174
 msgid "Server Tab..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1166
+#: src/fe-gtk/menu.c:1175
 msgid "Channel Tab..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1167
+#: src/fe-gtk/menu.c:1176
 msgid "Server Window..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1168
+#: src/fe-gtk/menu.c:1177
 msgid "Channel Window..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1173 src/fe-gtk/menu.c:1175
+#: src/fe-gtk/menu.c:1182 src/fe-gtk/menu.c:1184
 msgid "Load Plugin or Script..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1179
+#: src/fe-gtk/menu.c:1188
 msgid "New Shell Tab..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1185
+#: src/fe-gtk/menu.c:1194
 msgid "Detach Tab"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1186
+#: src/fe-gtk/menu.c:1195
 msgid "Close Tab"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1188
+#: src/fe-gtk/menu.c:1197
 msgid "Quit"
 msgstr ""
 
 #. 17
-#: src/fe-gtk/menu.c:1190
+#: src/fe-gtk/menu.c:1199
 msgid "_IRC"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1191
+#: src/fe-gtk/menu.c:1200
 msgid "Invisible"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1192
+#: src/fe-gtk/menu.c:1201
 msgid "Receive Wallops"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1193
+#: src/fe-gtk/menu.c:1202
 msgid "Receive Server Notices"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1195
+#: src/fe-gtk/menu.c:1204
 msgid "Marked Away"
 msgstr ""
 
 #. 24
-#: src/fe-gtk/menu.c:1197
+#: src/fe-gtk/menu.c:1206
 msgid "Auto Rejoin when Kicked"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1198
+#: src/fe-gtk/menu.c:1207
 msgid "Auto Reconnect to Server"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1199
+#: src/fe-gtk/menu.c:1208
 msgid "Never-give-up ReConnect"
 msgstr ""
 
 #. 28
-#: src/fe-gtk/menu.c:1201
+#: src/fe-gtk/menu.c:1210
 msgid "Auto Open Dialog Windows"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1202
+#: src/fe-gtk/menu.c:1211
 msgid "Auto Accept Direct Chat"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1203
+#: src/fe-gtk/menu.c:1212
 msgid "Auto Accept Files"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1205
+#: src/fe-gtk/menu.c:1214
 msgid "_Server"
 msgstr ""
 
 #. 32
-#: src/fe-gtk/menu.c:1207
+#: src/fe-gtk/menu.c:1216
 msgid "S_ettings"
 msgstr ""
 
 #. 33
-#: src/fe-gtk/menu.c:1208
+#: src/fe-gtk/menu.c:1217
 msgid "Preferences..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1210
+#: src/fe-gtk/menu.c:1219
 msgid "Lists"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1211
+#: src/fe-gtk/menu.c:1220
 msgid "Auto Replace..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1212
+#: src/fe-gtk/menu.c:1221
 msgid "CTCP Replies..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1213
+#: src/fe-gtk/menu.c:1222
 msgid "Dialog Buttons..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1214
+#: src/fe-gtk/menu.c:1223
 msgid "Key Bindings..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1215
+#: src/fe-gtk/menu.c:1224
 msgid "Text Events..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1216
+#: src/fe-gtk/menu.c:1225
 msgid "URL Handlers..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1217
+#: src/fe-gtk/menu.c:1226
 msgid "User Commands..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1218
+#: src/fe-gtk/menu.c:1227
 msgid "Userlist Buttons..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1219
+#: src/fe-gtk/menu.c:1228
 msgid "Userlist Popup..."
 msgstr ""
 
 #. 56
-#: src/fe-gtk/menu.c:1224
+#: src/fe-gtk/menu.c:1233
 msgid "Reload Settings"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1226
+#: src/fe-gtk/menu.c:1235
 msgid "Save Settings now"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1227
+#: src/fe-gtk/menu.c:1236
 msgid "Save Settings on exit"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1230
+#: src/fe-gtk/menu.c:1239
 msgid "_Window"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1231
+#: src/fe-gtk/menu.c:1240
 msgid "Ban List..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1232
+#: src/fe-gtk/menu.c:1241
 msgid "Channel List..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1233
+#: src/fe-gtk/menu.c:1242
 msgid "Character Chart..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1234
+#: src/fe-gtk/menu.c:1243
 msgid "Direct Chat..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1235
+#: src/fe-gtk/menu.c:1244
 msgid "File Receive..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1236
+#: src/fe-gtk/menu.c:1245
 msgid "File Send..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1237
+#: src/fe-gtk/menu.c:1246
 msgid "Ignore List..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1238
+#: src/fe-gtk/menu.c:1247
 msgid "Notify List..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1239
+#: src/fe-gtk/menu.c:1248
 msgid "Plugins and Scripts..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1240
+#: src/fe-gtk/menu.c:1249
 msgid "Raw Log..."
 msgstr ""
 
 #. 51
-#: src/fe-gtk/menu.c:1241
+#: src/fe-gtk/menu.c:1250
 msgid "URL Grabber..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1243
+#: src/fe-gtk/menu.c:1252
 msgid "C_lear Text"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1244
+#: src/fe-gtk/menu.c:1253
 msgid "Search Text..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1245
+#: src/fe-gtk/menu.c:1254
 msgid "Save Text..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1247
+#: src/fe-gtk/menu.c:1256
 msgid "_Help"
 msgstr ""
 
 #. 62
-#: src/fe-gtk/menu.c:1248
+#: src/fe-gtk/menu.c:1257
 msgid "_Contents"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1249
+#: src/fe-gtk/menu.c:1258
 msgid "_About"
 msgstr ""
 
@@ -4132,7 +4140,7 @@ msgstr ""
 msgid "Windows"
 msgstr ""
 
-#: src/fe-gtk/setup.c:141 src/fe-gtk/setup.c:755
+#: src/fe-gtk/setup.c:141 src/fe-gtk/setup.c:756
 msgid "Tabs"
 msgstr ""
 
@@ -4347,179 +4355,183 @@ msgid "Announce your away messages to all channels"
 msgstr ""
 
 #: src/fe-gtk/setup.c:214
-msgid "Display MODEs in raw form"
+msgid "Beep on highlighted messages"
 msgstr ""
 
 #: src/fe-gtk/setup.c:215
+msgid "Display MODEs in raw form"
+msgstr ""
+
+#: src/fe-gtk/setup.c:216
 msgid "Auto reconnect delay:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:221
+#: src/fe-gtk/setup.c:222
 msgid "Log filename mask:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:222
+#: src/fe-gtk/setup.c:223
 #, c-format
 msgid "(%s=Server %c=Channel %n=Network)."
 msgstr ""
 
-#: src/fe-gtk/setup.c:223
+#: src/fe-gtk/setup.c:224
 msgid "Log timestamp format:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:224
+#: src/fe-gtk/setup.c:225
 msgid "(See strftime manpage for details)."
 msgstr ""
 
-#: src/fe-gtk/setup.c:225
+#: src/fe-gtk/setup.c:226
 msgid "Enable logging of conversations"
 msgstr ""
 
-#: src/fe-gtk/setup.c:226
+#: src/fe-gtk/setup.c:227
 msgid "Insert timestamps in logs"
 msgstr ""
 
-#: src/fe-gtk/setup.c:232
+#: src/fe-gtk/setup.c:233
 msgid "(Disabled)"
 msgstr ""
 
-#: src/fe-gtk/setup.c:233
+#: src/fe-gtk/setup.c:234
 msgid "Wingate"
 msgstr ""
 
-#: src/fe-gtk/setup.c:234
+#: src/fe-gtk/setup.c:235
 msgid "Socks4"
 msgstr ""
 
-#: src/fe-gtk/setup.c:235
+#: src/fe-gtk/setup.c:236
 msgid "Socks5"
 msgstr ""
 
-#: src/fe-gtk/setup.c:236
+#: src/fe-gtk/setup.c:237
 msgid "HTTP"
 msgstr ""
 
-#: src/fe-gtk/setup.c:242
+#: src/fe-gtk/setup.c:243
 msgid "Address to bind to:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:243
+#: src/fe-gtk/setup.c:244
 msgid "(Only useful for computers with multiple addresses)."
 msgstr ""
 
-#: src/fe-gtk/setup.c:244
+#: src/fe-gtk/setup.c:245
 msgid "Proxy server:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:245
+#: src/fe-gtk/setup.c:246
 msgid "Proxy port:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:246
+#: src/fe-gtk/setup.c:247
 msgid "Proxy type:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:432
+#: src/fe-gtk/setup.c:433
 msgid "Select an Image File"
 msgstr ""
 
-#: src/fe-gtk/setup.c:459
+#: src/fe-gtk/setup.c:460
 msgid "Select font"
 msgstr ""
 
-#: src/fe-gtk/setup.c:516
+#: src/fe-gtk/setup.c:517
 msgid "Browse..."
 msgstr ""
 
-#: src/fe-gtk/setup.c:636
+#: src/fe-gtk/setup.c:637
 msgid "Select color"
 msgstr ""
 
-#: src/fe-gtk/setup.c:700
+#: src/fe-gtk/setup.c:701
 msgid "mIRC colors:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:708
+#: src/fe-gtk/setup.c:709
 msgid "Foreground:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:709
+#: src/fe-gtk/setup.c:710
 msgid "Background:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:711
+#: src/fe-gtk/setup.c:712
 msgid "Mark fore:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:712
+#: src/fe-gtk/setup.c:713
 msgid "Mark back:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:714
+#: src/fe-gtk/setup.c:715
 msgid "New Data:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:715
+#: src/fe-gtk/setup.c:716
 msgid "New Message:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:716
+#: src/fe-gtk/setup.c:717
 msgid "Highlight:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:751
+#: src/fe-gtk/setup.c:752
 msgid "Interface"
 msgstr ""
 
-#: src/fe-gtk/setup.c:752
+#: src/fe-gtk/setup.c:753
 msgid "Text box"
 msgstr ""
 
-#: src/fe-gtk/setup.c:753
+#: src/fe-gtk/setup.c:754
 msgid "Input box"
 msgstr ""
 
-#: src/fe-gtk/setup.c:754
+#: src/fe-gtk/setup.c:755
 msgid "User list"
 msgstr ""
 
-#: src/fe-gtk/setup.c:756
+#: src/fe-gtk/setup.c:757
 msgid "Colors"
 msgstr ""
 
-#: src/fe-gtk/setup.c:758
+#: src/fe-gtk/setup.c:759
 msgid "Chatting"
 msgstr ""
 
-#: src/fe-gtk/setup.c:759
+#: src/fe-gtk/setup.c:760
 msgid "General"
 msgstr ""
 
-#: src/fe-gtk/setup.c:760
+#: src/fe-gtk/setup.c:761
 msgid "Logging"
 msgstr ""
 
-#: src/fe-gtk/setup.c:762
+#: src/fe-gtk/setup.c:763
 msgid "Network"
 msgstr ""
 
-#: src/fe-gtk/setup.c:763
+#: src/fe-gtk/setup.c:764
 msgid "Network setup"
 msgstr ""
 
-#: src/fe-gtk/setup.c:764
+#: src/fe-gtk/setup.c:765
 msgid "File transfers"
 msgstr ""
 
-#: src/fe-gtk/setup.c:869
+#: src/fe-gtk/setup.c:870
 msgid "Categories"
 msgstr ""
 
-#: src/fe-gtk/setup.c:982
+#: src/fe-gtk/setup.c:986
 msgid "Some settings were changed that require a restart to take full effect."
 msgstr ""
 
-#: src/fe-gtk/setup.c:1009
+#: src/fe-gtk/setup.c:1013
 msgid "X-Chat: Preferences"
 msgstr ""
 

@@ -902,6 +902,11 @@ setup_apply_to_sess (session_gui *gui)
 		setup_apply_entry_style (gui->key_entry);
 		setup_apply_entry_style (gui->topic_entry);
 	}
+
+	if (prefs.userlistbuttons)
+		gtk_widget_show (gui->button_box);
+	else
+		gtk_widget_hide (gui->button_box);
 }
 
 static void
@@ -926,8 +931,6 @@ setup_apply (struct xchatprefs *pr)
 	if (DIFF (throttlemeter))
 		noapply = TRUE;
 	if (DIFF (showhostname_in_userlist))
-		noapply = TRUE;
-	if (DIFF (userlistbuttons))
 		noapply = TRUE;
 
 	memcpy (&prefs, pr, sizeof (prefs));

@@ -60,7 +60,7 @@
 #include "xtext.h"
 
 static void mg_create_entry (session *sess, GtkWidget *box);
-
+static void mg_link_irctab (session *sess);
 
 static session_gui static_mg_gui;
 static session_gui *mg_gui = NULL;	/* the shared irc tab */
@@ -866,7 +866,8 @@ mg_add_chan (session *sess)
 		name = sess->channel;
 
 	sess->res->tab = tab_group_add (sess->gui->tabs_box, name, sess->server,
-											  sess, mg_tab_press_cb, prefs.truncchans);
+											  sess, mg_tab_press_cb, mg_link_cb,
+											  prefs.truncchans);
 	g_object_set_data (G_OBJECT (sess->res->tab), "sess", sess);
 
 	if (newmsg_list == NULL)
@@ -920,7 +921,6 @@ mg_create_userlistbuttons (GtkWidget *box)
 		}
 		list = list->next;
 	}
-	gtk_widget_show (tab);
 
 	return tab;
 }
@@ -1368,9 +1368,9 @@ mg_create_link_buttons (GtkWidget *box, gpointer userdata)
 	gtkutil_button (box, GTK_STOCK_CLOSE, _("Close this tab/window"),
 						 mg_x_click_cb, userdata, 0);
 
-	if (!userdata)
+	/*if (!userdata)
 	gtkutil_button (box, GTK_STOCK_REDO, _("Attach/Detach this tab"),
-						 mg_link_cb, userdata, 0);
+						 mg_link_cb, userdata, 0);*/
 }
 
 static void
@@ -1678,10 +1678,8 @@ mg_create_userlist (session_gui *gui, GtkWidget *box, int pack)
 
 	mg_create_meters (gui, vbox);
 
-	gui->button_box = NULL;
 	gui->button_box_parent = vbox;
-	if (prefs.userlistbuttons)
-		gui->button_box = mg_create_userlistbuttons (vbox);
+	gui->button_box = mg_create_userlistbuttons (vbox);
 }
 
 static void
@@ -2054,6 +2052,9 @@ mg_create_topwindow (session *sess)
 			gtk_widget_hide (sess->gui->topicbutton_box);
 	}
 
+	if (!prefs.userlistbuttons)
+		gtk_widget_hide (sess->gui->button_box);
+
 	if (!prefs.topicbar)
 		gtk_widget_hide (sess->gui->topic_bar);
 }
@@ -2187,6 +2188,9 @@ mg_create_tabwindow (session *sess)
 	if (!prefs.chanmodebuttons)
 		gtk_widget_hide (sess->gui->topicbutton_box);
 
+	if (!prefs.userlistbuttons)
+		gtk_widget_hide (sess->gui->button_box);
+
 	gtk_widget_show (win);
 }
 
@@ -2218,7 +2222,8 @@ mg_add_generic_tab (char *name, char *title, void *family, GtkWidget *box)
 	gtk_notebook_append_page (GTK_NOTEBOOK (mg_gui->note_book), box, NULL);
 	gtk_widget_show (box);
 
-	but = tab_group_add (mg_gui->tabs_box, name, family, NULL, mg_tab_press_cb, prefs.truncchans);
+	but = tab_group_add (mg_gui->tabs_box, name, family, NULL,
+								mg_tab_press_cb, mg_link_cb, prefs.truncchans);
 	g_object_set_data (G_OBJECT (but), "title", strdup (title));
 	g_object_set_data (G_OBJECT (but), "box", box);
 	g_object_set_data (G_OBJECT (but), "sess", NULL);
@@ -2237,13 +2242,13 @@ fe_buttons_update (session *sess)
 {
 	session_gui *gui = sess->gui;
 
-	if (gui->button_box)
-	{
-		gtk_widget_destroy (gui->button_box);
-		gui->button_box = 0;
-	}
+	gtk_widget_destroy (gui->button_box);
+	gui->button_box = mg_create_userlistbuttons (gui->button_box_parent);
+
 	if (prefs.userlistbuttons)
-		gui->button_box = mg_create_userlistbuttons (gui->button_box_parent);
+		gtk_widget_show (sess->gui->button_box);
+	else
+		gtk_widget_hide (sess->gui->button_box);
 }
 
 void

@@ -4,6 +4,7 @@
 #include <stdlib.h>
 
 #include <gtk/gtkarrow.h>
+#include <gtk/gtkdnd.h>
 #include <gtk/gtkhbox.h>
 #include <gtk/gtkvbox.h>
 #include <gtk/gtktogglebutton.h>
@@ -403,7 +404,10 @@ tab_group_switch (GtkWidget *group, int relative, int num)
 {
 	int i, max;
 
-	g_idle_add ((GSourceFunc)tab_group_resize, group);
+	while (g_main_pending ())
+		g_main_iteration (TRUE);
+
+	tab_group_resize (group);
 
 	if (relative)
 	{
@@ -585,8 +589,6 @@ tab_add_real (GtkWidget *group, GtkWidget *tab, void *family)
 	gtk_widget_show (tab);
 	gtk_widget_show (box);
 	gtk_widget_queue_resize (inner->parent);
-
-/*	g_idle_add ((GSourceFunc)tab_group_resize, group);*/
 }
 
 static void
@@ -640,12 +642,30 @@ truncate_tab_name (char *name, int max)
 	return NULL;
 }
 
+
+static void
+tab_drag_end (GtkWidget *widget, GdkDragContext *drag_context,
+				  gpointer user_data)
+{
+	void (*callback) (GtkWidget *tab, gpointer userdata);
+
+	if (!drag_context->dest_window)
+	{
+		callback = user_data;
+		callback (widget, NULL);
+	}
+}
+
 GtkWidget *
 tab_group_add (GtkWidget *group, char *name, void *family, void *userdata,
-			void *click_cb, int trunc_len)
+			void *click_cb, void *delink_cb, int trunc_len)
 {
 	GtkWidget *but;
 	char *new_name;
+	static const GtkTargetEntry targets[] =
+	{
+		{"text/x-xchat-tab", 0, 1}
+	};
 
 	new_name = truncate_tab_name (name, trunc_len);
 	if (new_name)
@@ -676,6 +696,12 @@ tab_group_add (GtkWidget *group, char *name, void *family, void *userdata,
 	g_object_set_data (G_OBJECT (but), "u", userdata);
 
 	tab_add_real (group, but, family);
+
+	/* DND for detaching tabs */
+	gtk_drag_source_set (but, GDK_BUTTON1_MASK, targets, 1, GDK_ACTION_MOVE);
+	gtk_drag_dest_set (but, GTK_DEST_DEFAULT_ALL, targets, 1, GDK_ACTION_MOVE);
+	g_signal_connect (G_OBJECT (but), "drag-end",
+							G_CALLBACK (tab_drag_end), delink_cb);
 
 	return but;
 }

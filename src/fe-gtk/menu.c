@@ -517,6 +517,12 @@ menu_middle_cb (GtkWidget *item, gpointer userdata)
 		prefs.chanmodebuttons = !prefs.chanmodebuttons;
 		mg_chanmodebuttons_showhide (current_sess, prefs.chanmodebuttons);
 		break;
+	case 4:
+		prefs.userlistbuttons = !prefs.userlistbuttons;
+		if (prefs.userlistbuttons)
+			gtk_widget_show (current_sess->gui->button_box);
+		else
+			gtk_widget_hide (current_sess->gui->button_box);
 	}
 }
 
@@ -544,6 +550,9 @@ menu_middlemenu (session *sess, GdkEventButton *event)
 									prefs.topicbar ? prefs.chanmodebuttons : 0);
 	if (!prefs.topicbar)
 		gtk_widget_set_sensitive (item, FALSE);
+
+	menu_toggle_item (_("User List Buttons"), menu, menu_middle_cb,
+							GINT_TO_POINTER (4), prefs.userlistbuttons);
 
 	menu_popup (menu, event, accel_group);
 }
