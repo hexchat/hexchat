@@ -15,7 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#define VERSION "1.0.41"
+#define VERSION "1.0.42"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -72,6 +72,16 @@ static char sourcedirs[] = {
         "set initfile [lindex $files $init]\n"
         "set files [lreplace $files $init $init]\n"
         "set files [linsert $files 0 $initfile]\n" "}\n" "foreach f $files {\n" "if { [catch { source $f } errMsg] } {\n" "puts \"Tcl plugin\\tError sourcing \\\"$f\\\" ($errMsg)\"\n" "} else {\n" "puts \"Tcl plugin\\tSourced \\\"$f\\\"\"\n" "}\n" "}\n"
+};
+
+static char inlinetcl[] = {
+
+"proc splitsrc { } {\n"
+"uplevel \"scan \\$_src \\\"%\\\\\\[^!\\\\\\]!%\\\\\\[^@\\\\\\]@%s\\\" _nick _ident _host\"\n"
+"}\n"
+"proc ::exit { } {\n"
+"puts \"Using 'exit' is bad\"\n"
+"}\n"
 };
 
 static void Tcl_MyDStringAppend(Tcl_DString * ds, char *string)
@@ -164,10 +174,10 @@ static char *StrDup(char *string, int *length)
     return result;
 }
 
-static char *myitoa(int value)
+static char *myitoa(long value)
 {
     static char result[32];
-    sprintf(result, "%d", value);
+    sprintf(result, "%ld", value);
     return result;
 }
 
@@ -185,7 +195,7 @@ static xchat_context *atoctx(const char *nptr)
     }
 
     if (isnum && x)
-        return (xchat_context *) atoi(nptr);
+        return (xchat_context *) atol(nptr);
     else
         return NULL;
 }
@@ -626,8 +636,8 @@ static int tcl_timers(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
     for (x = 1; x < MAX_TIMERS; x++) {
         if (timers[x].timerid) {
             Tcl_DStringStartSublist(&ds);
-            Tcl_DStringAppendElement(&ds, myitoa(timers[x].timerid));
-            Tcl_DStringAppendElement(&ds, myitoa(timers[x].timestamp - now));
+            Tcl_DStringAppendElement(&ds, myitoa((long)timers[x].timerid));
+            Tcl_DStringAppendElement(&ds, myitoa((long)timers[x].timestamp - now));
             Tcl_DStringAppendElement(&ds, timers[x].procPtr);
             Tcl_DStringEndSublist(&ds);
         }
@@ -1097,13 +1107,13 @@ static int tcl_getlist(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
                 break;
             case 'i':
                 iattr = xchat_list_int(ph, list, (char *) field);
-                Tcl_DStringAppendElement(&ds, myitoa(iattr));
+                Tcl_DStringAppendElement(&ds, myitoa((long)iattr));
                 break;
             case 'p':
                 sattr = xchat_list_str(ph, list, (char *) field);
                 if (strcmp(field, "context") == 0) {
                     ctx = (xchat_context *) sattr;
-                    Tcl_DStringAppendElement(&ds, myitoa((int)ctx));
+                    Tcl_DStringAppendElement(&ds, myitoa((long)ctx));
                 } else
                     Tcl_DStringAppendElement(&ds, "*");
                 break;
@@ -1293,7 +1303,7 @@ static int tcl_findcontext(ClientData cd, Tcl_Interp * irp, int argc, char *argv
 
     CHECKCTX(ctx);
 
-    Tcl_AppendResult(irp, myitoa((int)ctx), NULL);
+    Tcl_AppendResult(irp, myitoa((long)ctx), NULL);
 
     return TCL_OK;
 }
@@ -1306,7 +1316,7 @@ static int tcl_getcontext(ClientData cd, Tcl_Interp * irp, int argc, char *argv[
 
     ctx = xchat_get_context(ph);
 
-    Tcl_AppendResult(irp, myitoa((int)ctx), NULL);
+    Tcl_AppendResult(irp, myitoa((long)ctx), NULL);
 
     return TCL_OK;
 }
@@ -1630,12 +1640,12 @@ static int tcl_dcclist(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
                 break;
             }
 
-            Tcl_DStringAppendElement(&ds, myitoa(xchat_list_int(ph, list, "size")));
-            Tcl_DStringAppendElement(&ds, myitoa(xchat_list_int(ph, list, "resume")));
-            Tcl_DStringAppendElement(&ds, myitoa(xchat_list_int(ph, list, "pos")));
-            Tcl_DStringAppendElement(&ds, myitoa(xchat_list_int(ph, list, "cps")));
-            Tcl_DStringAppendElement(&ds, myitoa(xchat_list_int(ph, list, "address32")));
-            Tcl_DStringAppendElement(&ds, myitoa(xchat_list_int(ph, list, "port")));
+            Tcl_DStringAppendElement(&ds, myitoa((long)xchat_list_int(ph, list, "size")));
+            Tcl_DStringAppendElement(&ds, myitoa((long)xchat_list_int(ph, list, "resume")));
+            Tcl_DStringAppendElement(&ds, myitoa((long)xchat_list_int(ph, list, "pos")));
+            Tcl_DStringAppendElement(&ds, myitoa((long)xchat_list_int(ph, list, "cps")));
+            Tcl_DStringAppendElement(&ds, myitoa((long)xchat_list_int(ph, list, "address32")));
+            Tcl_DStringAppendElement(&ds, myitoa((long)xchat_list_int(ph, list, "port")));
             Tcl_DStringEndSublist(&ds);
         }
         xchat_list_free(ph, list);
@@ -1760,7 +1770,7 @@ static int tcl_topic(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
 static int tcl_xchat_nickcmp(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
 {
     BADARGS(3, 3, " string1 string2");
-    Tcl_AppendResult(irp, myitoa(xchat_nickcmp(ph, argv[1], argv[2])), NULL);
+    Tcl_AppendResult(irp, myitoa((long)xchat_nickcmp(ph, argv[1], argv[2])), NULL);
     return TCL_OK;
 }
 
@@ -1987,6 +1997,11 @@ static void Tcl_Plugin_Init()
     if (Tcl_Eval(interp, sourcedirs) == TCL_ERROR) {
         xchat_printf(ph, "Error sourcing internal 'sourcedirs' (%s)\n", Tcl_GetStringResult(interp));
     }
+
+    if (Tcl_Eval(interp, inlinetcl) == TCL_ERROR) {
+        xchat_printf(ph, "Error sourcing internal 'inlinetcl' (%s)\n", Tcl_GetStringResult(interp));
+    }
+
 }
 
 static void Tcl_Plugin_DeInit()

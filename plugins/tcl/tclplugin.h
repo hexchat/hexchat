@@ -48,7 +48,7 @@ typedef struct {
 #define MAX_COMPLETES 128
 
 static char *StrDup(char *string, int *length);
-static char *myitoa(int value);
+static char *myitoa(long value);
 static xchat_context *xchat_smart_context(char *arg1, char *arg2);
 static void queue_nexttimer();
 static int insert_timer(int seconds, char *script);
