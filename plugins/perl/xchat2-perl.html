@@ -11,12 +11,9 @@
 </td></tr>
 </table>
 
-<p><a name="__index__"></a></p>
 <!-- INDEX BEGIN -->
 
-<!--<ul>-->
-
-	<ul>
+<ul>
 
 		<li><a href="#introduction">Introduction</a></li>
 		<li><a href="#constants">Constants</a></li>
@@ -57,12 +54,12 @@
 			<li><a href="#xchat::get_list(_$name_)"><code>Xchat::get_list( $name )</code></a></li>
 			<li><a href="#xchat::user_info(_[$nick]_)"><code>Xchat::user_info( [$nick] )</code></a></li>
 			<li><a href="#xchat::context_info(_[$context]_)"><code>Xchat::context_info( [$context] )</code></a></li>
+			<li><a href="#xchat::strip_code(_$string_)"><code>Xchat::strip_code( $string )</code></a></li>
 		</ul></li>
 
 		<li><a href="#contact_information">Contact Information</a></li>
-	</ul>
 
-<!--</ul>-->
+</ul>
 <!-- INDEX END -->
 
 <hr />
@@ -140,7 +137,7 @@ on the bottom of this page.</p>
 </p>
 <h3><a name="xchat::hook_timer(_$timeout,$callback,_[\%options_|_$data]_)"><code>Xchat::hook_timer( $timeout,$callback, [\%options | $data] )</code></a></h3>
 <ul>
-<li><strong><a name="item_c%3c%24message%3e_%2d_server_message_to_hook"><code>$message</code> 		-	server message type to hook</a></strong><br />
+<li><strong><a name="item_c%3c%24message%3e_%2d_server_message_to_hook"><code>$message</code> 		-	server message to hook</a></strong><br />
 </li>
 <li><strong><a name="item_c%3c%24command%3e_%2d_command_to_execute_without_t"><code>$command</code> 		-	command to execute without the leading /</a></strong><br />
 </li>
@@ -470,7 +467,7 @@ found respectively, to be less than, to match, or be greater than
 </ul>
 <p>This function will return a list of hash references.  The hash references
 will have different keys depend on the list.  An empty list is returned
-if there is not such list.</p>
+if there is no such list.</p>
 "channels"	-	list of channels, querys and their server<table border=1>	<tr bgcolor="#DDDDDD">
 		<td>Key</td>	<td>Description</td>
 	</tr>	<tr>
@@ -622,10 +619,18 @@ If <code>$nick</code> is found a hash reference containing the same keys as thos
 </p>
 <h3><a name="xchat::context_info(_[$context]_)"><code>Xchat::context_info( [$context] )</code></a></h3>
 <ul>
-<li><strong><a name="item_get_context"></a><code>$context</code>	-	context returned from <a href="#xchat::get_context()">get_context</a>, <a href="#xchat::find_context(_[$channel,_[$server]]_)">find_context</a> and <a href="#xchat::get_list(_$name_)">get_list</a>, this is the context that you want infomation about</strong><br />
+<li><strong><code>$context</code>	-	context returned from <a href="#xchat::get_context()">get_context</a>, <a href="#xchat::find_context(_[$channel,_[$server]]_)">find_context</a> and <a href="#xchat::get_list(_$name_)">get_list</a>, this is the context that you want infomation about</strong><br />
 </li>
 </ul>
 <p>This function will return the information normally retrieved with <a href="#xchat::get_info(_$id_)">get_info</a>, except this is for the context that is passed in. The information will be returned in the form of a hash. The keys of the hash are the $id you would normally supply to <a href="#xchat::get_info(_$id_)">get_info</a>.</p>
+<p>
+</p>
+<h3><a name="xchat::strip_code(_$string_)"><code>Xchat::strip_code( $string )</code></a></h3>
+<ul>
+<li><strong><a name="item_c%3c%24string%3e_%2d_string_to_remove_codes_from"><code>$string</code>	-	string to remove codes from</a></strong><br />
+</li>
+</ul>
+<p>This function will remove bold, color, beep, reset, reverse and underline codes from <code>$string</code>. If it is called in void context $string will be modified otherwise a modified copy of <code>$string</code> is returned.</p>
 <p>
 </p>
 <h2><a name="contact_information">Contact Information</a></h2>
