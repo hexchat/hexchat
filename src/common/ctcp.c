@@ -99,7 +99,7 @@ ctcp_handle (session *sess, char *outbuf, char *to, char *nick,
 		}
 		if (!strncasecmp (msg, "DCC", 3))
 		{
-			handle_dcc (sess, outbuf, nick, word, word_eol);
+			handle_dcc (sess, nick, word, word_eol);
 			return;
 		}
 		if (!strncasecmp (msg, "SOUND", 5))
@@ -109,11 +109,11 @@ ctcp_handle (session *sess, char *outbuf, char *to, char *nick,
 				po[0] = 0;
 			EMIT_SIGNAL (XP_TE_CTCPSND, sess->server->front_session, word[5],
 							 nick, NULL, NULL, 0);
-			sprintf (outbuf, "%s/%s", prefs.sounddir, word[5]);
+			snprintf (outbuf, 2048, "%s/%s", prefs.sounddir, word[5]);
 			if (strchr (word[5], '/') == 0 && access (outbuf, R_OK) == 0)
 			{
-				sprintf (outbuf, "%s %s/%s", prefs.soundcmd, prefs.sounddir,
-							word[5]);
+				snprintf (outbuf, 2048, "%s %s/%s", prefs.soundcmd,
+							 prefs.sounddir, word[5]);
 				xchat_exec (outbuf);
 			}
 			return;

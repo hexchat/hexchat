@@ -1481,7 +1481,7 @@ dcc_resume (struct DCC *dcc)
 }
 
 void
-handle_dcc (struct session *sess, char *outbuf, char *nick, char *word[],
+handle_dcc (struct session *sess, char *nick, char *word[],
 				char *word_eol[])
 {
 	char tbuf[512];
@@ -1557,9 +1557,9 @@ handle_dcc (struct session *sess, char *outbuf, char *nick, char *word[],
 							file_part (dcc->file), port, dcc->resumable);
 				dcc->serv->p_ctcp (dcc->serv, dcc->nick, tbuf);
 			}
-			sprintf (outbuf, "%u", dcc->pos);
+			sprintf (tbuf, "%u", dcc->pos);
 			EMIT_SIGNAL (XP_TE_DCCRESUMEREQUEST, sess, nick,
-							 file_part (dcc->file), outbuf, NULL, 0);
+							 file_part (dcc->file), tbuf, NULL, 0);
 		}
 		return;
 	}
@@ -1673,10 +1673,10 @@ dontresume:
 			else
 				fe_dcc_update_recv_win ();
 		}
-		sprintf (outbuf, "%lu", size);
-		snprintf (outbuf + 24, 300, "%s:%d", net_ip (dcc->addr), dcc->port);
+		sprintf (tbuf, "%lu", size);
+		snprintf (tbuf + 24, 300, "%s:%d", net_ip (dcc->addr), dcc->port);
 		EMIT_SIGNAL (XP_TE_DCCSENDOFFER, sess->server->front_session, nick,
-						 file, outbuf, outbuf + 24, 0);
+						 file, tbuf, tbuf + 24, 0);
 	} else
 		EMIT_SIGNAL (XP_TE_DCCGENERICOFFER, sess->server->front_session,
 						 word_eol[4] + 2, nick, NULL, NULL, 0);

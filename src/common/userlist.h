@@ -27,6 +27,6 @@ void clear_user_list (struct session *sess);
 void free_userlist (struct session *sess);
 void add_name (struct session *sess, char *name, char *hostname);
 int sub_name (struct session *sess, char *name);
-void change_nick (struct session *sess, char *oldname, char *newname);
+int change_nick (struct session *sess, char *oldname, char *newname);
 void ul_update_entry (session *sess, char *name, char mode, char sign);
 void update_all_of (char *name);

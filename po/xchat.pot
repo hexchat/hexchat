@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2003-03-09 20:44+1100\n"
+"POT-Creation-Date: 2003-03-15 20:51+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -71,13 +71,13 @@ msgstr ""
 msgid "No active DCCs\n"
 msgstr ""
 
-#: src/common/ignore.c:112 src/common/ignore.c:116 src/common/ignore.c:120
 #: src/common/ignore.c:124 src/common/ignore.c:128 src/common/ignore.c:132
+#: src/common/ignore.c:136 src/common/ignore.c:140 src/common/ignore.c:144
 msgid "YES  "
 msgstr ""
 
-#: src/common/ignore.c:114 src/common/ignore.c:118 src/common/ignore.c:122
 #: src/common/ignore.c:126 src/common/ignore.c:130 src/common/ignore.c:134
+#: src/common/ignore.c:138 src/common/ignore.c:142 src/common/ignore.c:146
 msgid "NO   "
 msgstr ""
 
@@ -135,7 +135,7 @@ msgstr ""
 msgid "No such plugin found.\n"
 msgstr ""
 
-#: src/common/outbound.c:2350 src/fe-gtk/plugingui.c:135
+#: src/common/outbound.c:2350 src/fe-gtk/plugingui.c:183
 msgid "That plugin is refusing to unload.\n"
 msgstr ""
 
@@ -1080,7 +1080,7 @@ msgstr ""
 
 #: src/common/text.c:607 src/common/text.c:611 src/common/text.c:1024
 #: src/fe-gtk/chanlist.c:593 src/fe-gtk/chanlist.c:687
-#: src/fe-gtk/ignoregui.c:394
+#: src/fe-gtk/ignoregui.c:171
 msgid "Channel"
 msgstr ""
 
@@ -2537,7 +2537,7 @@ msgstr ""
 msgid "Abort Chat"
 msgstr ""
 
-#: src/common/xchat.c:815 src/fe-gtk/plugingui.c:152
+#: src/common/xchat.c:815 src/fe-gtk/plugingui.c:76
 msgid "Version"
 msgstr ""
 
@@ -2724,7 +2724,7 @@ msgstr ""
 msgid "Character Chart"
 msgstr ""
 
-#: src/fe-gtk/banlist.c:173 src/fe-gtk/ignoregui.c:342
+#: src/fe-gtk/banlist.c:173 src/fe-gtk/ignoregui.c:170
 msgid "Mask"
 msgstr ""
 
@@ -2830,12 +2830,12 @@ msgid ""
 msgstr ""
 
 #: src/fe-gtk/dccgui.c:374 src/fe-gtk/dccgui.c:378 src/fe-gtk/dccgui.c:558
-#: src/fe-gtk/dccgui.c:689 src/fe-gtk/notifygui.c:170
+#: src/fe-gtk/dccgui.c:689 src/fe-gtk/notifygui.c:110
 msgid "Status"
 msgstr ""
 
 #: src/fe-gtk/dccgui.c:374 src/fe-gtk/dccgui.c:378 src/fe-gtk/dccgui.c:558
-#: src/fe-gtk/plugingui.c:152
+#: src/fe-gtk/plugingui.c:77
 msgid "File"
 msgstr ""
 
@@ -2907,7 +2907,7 @@ msgstr ""
 msgid "EDIT ME"
 msgstr ""
 
-#: src/fe-gtk/editlist.c:299 src/fe-gtk/plugingui.c:152
+#: src/fe-gtk/editlist.c:299 src/fe-gtk/plugingui.c:75
 msgid "Name"
 msgstr ""
 
@@ -2923,11 +2923,11 @@ msgstr ""
 msgid "Move Dn"
 msgstr ""
 
-#: src/fe-gtk/editlist.c:339 src/fe-gtk/ignoregui.c:451
+#: src/fe-gtk/editlist.c:339
 msgid "Cancel"
 msgstr ""
 
-#: src/fe-gtk/editlist.c:343 src/fe-gtk/textgui.c:454 src/fe-gtk/urlgrab.c:136
+#: src/fe-gtk/editlist.c:343 src/fe-gtk/textgui.c:454 src/fe-gtk/urlgrab.c:201
 msgid "Save"
 msgstr ""
 
@@ -2939,7 +2939,7 @@ msgstr ""
 msgid "Delete"
 msgstr ""
 
-#: src/fe-gtk/editlist.c:363 src/fe-gtk/ignoregui.c:449
+#: src/fe-gtk/editlist.c:363
 msgid "Sort"
 msgstr ""
 
@@ -3115,14 +3115,14 @@ msgstr ""
 #, c-format
 msgid ""
 "Unknown keyname %s in key bindings config file\n"
-"Load aborted, please fix ~/.xchat/keybindings.conf\n"
+"Load aborted, please fix %s/keybindings.conf\n"
 msgstr ""
 
 #: src/fe-gtk/fkeys.c:1015
 #, c-format
 msgid ""
 "Unknown action %s in key bindings config file\n"
-"Load aborted, Please fix ~/.xchat/keybindings\n"
+"Load aborted, Please fix %s/keybindings\n"
 msgstr ""
 
 #: src/fe-gtk/fkeys.c:1036
@@ -3131,111 +3131,82 @@ msgid ""
 "Expecting Data line (beginning Dx{:|!}) but got:\n"
 "%s\n"
 "\n"
-"Load aborted, Please fix ~/.xchat/keybindings\n"
+"Load aborted, Please fix %s/keybindings\n"
 msgstr ""
 
-#: src/fe-gtk/gtkutil.c:136
+#: src/fe-gtk/fkeys.c:1105
+#, c-format
+msgid ""
+"Key bindings config file is corrupt, load aborted\n"
+"Please fix %s/keybindings.conf\n"
+msgstr ""
+
+#: src/fe-gtk/gtkutil.c:143
 msgid "Cannot write to that file."
 msgstr ""
 
-#: src/fe-gtk/gtkutil.c:138
+#: src/fe-gtk/gtkutil.c:145
 msgid "Cannot read that file."
 msgstr ""
 
-#: src/fe-gtk/ignoregui.c:87 src/fe-gtk/ignoregui.c:90
-#: src/fe-gtk/ignoregui.c:93 src/fe-gtk/ignoregui.c:96
-#: src/fe-gtk/ignoregui.c:99 src/fe-gtk/ignoregui.c:102
-#: src/fe-gtk/ignoregui.c:116 src/fe-gtk/ignoregui.c:120
-#: src/fe-gtk/ignoregui.c:124 src/fe-gtk/ignoregui.c:128
-#: src/fe-gtk/ignoregui.c:132 src/fe-gtk/ignoregui.c:136
-#: src/fe-gtk/ignoregui.c:190 src/fe-gtk/ignoregui.c:247
-#: src/fe-gtk/ignoregui.c:258 src/fe-gtk/ignoregui.c:269
-#: src/fe-gtk/ignoregui.c:280 src/fe-gtk/ignoregui.c:291
-#: src/fe-gtk/ignoregui.c:302
-msgid "Yes"
+#. duplicate, ignore
+#: src/fe-gtk/ignoregui.c:113 src/fe-gtk/ignoregui.c:257
+msgid "That mask already exists."
 msgstr ""
 
-#: src/fe-gtk/ignoregui.c:118 src/fe-gtk/ignoregui.c:122
-#: src/fe-gtk/ignoregui.c:126 src/fe-gtk/ignoregui.c:130
-#: src/fe-gtk/ignoregui.c:134 src/fe-gtk/ignoregui.c:138
-#: src/fe-gtk/ignoregui.c:171 src/fe-gtk/ignoregui.c:172
-#: src/fe-gtk/ignoregui.c:173 src/fe-gtk/ignoregui.c:174
-#: src/fe-gtk/ignoregui.c:175 src/fe-gtk/ignoregui.c:176
-#: src/fe-gtk/ignoregui.c:249 src/fe-gtk/ignoregui.c:260
-#: src/fe-gtk/ignoregui.c:271 src/fe-gtk/ignoregui.c:282
-#: src/fe-gtk/ignoregui.c:293 src/fe-gtk/ignoregui.c:304
-msgid "No"
-msgstr ""
-
-#.
-#. Serverlist copies an existing entry, but not much point to do so here
-#.
-#: src/fe-gtk/ignoregui.c:170
-msgid "new!new@new.com"
-msgstr ""
-
-#: src/fe-gtk/ignoregui.c:342 src/fe-gtk/ignoregui.c:382
-msgid "CTCP"
-msgstr ""
-
-#: src/fe-gtk/ignoregui.c:342 src/fe-gtk/ignoregui.c:388
-#: src/fe-gtk/maingui.c:1436
+#: src/fe-gtk/ignoregui.c:172 src/fe-gtk/maingui.c:1436
 msgid "Private"
 msgstr ""
 
-#: src/fe-gtk/ignoregui.c:342
-msgid "Chan"
-msgstr ""
-
-#: src/fe-gtk/ignoregui.c:342 src/fe-gtk/ignoregui.c:400
+#: src/fe-gtk/ignoregui.c:173
 msgid "Notice"
 msgstr ""
 
-#: src/fe-gtk/ignoregui.c:342 src/fe-gtk/ignoregui.c:406
+#: src/fe-gtk/ignoregui.c:174
+msgid "CTCP"
+msgstr ""
+
+#: src/fe-gtk/ignoregui.c:175
 msgid "Invite"
 msgstr ""
 
-#: src/fe-gtk/ignoregui.c:342 src/fe-gtk/ignoregui.c:412
+#: src/fe-gtk/ignoregui.c:176
 msgid "Unignore"
 msgstr ""
 
-#: src/fe-gtk/ignoregui.c:353
+#: src/fe-gtk/ignoregui.c:277
+msgid "Enter mask to ignore:"
+msgstr ""
+
+#: src/fe-gtk/ignoregui.c:324
 msgid "X-Chat: Ignore list"
 msgstr ""
 
-#: src/fe-gtk/ignoregui.c:375
-msgid "Ignore Mask:"
-msgstr ""
-
-#: src/fe-gtk/ignoregui.c:422
+#: src/fe-gtk/ignoregui.c:331
 msgid "Ignore Stats:"
 msgstr ""
 
-#: src/fe-gtk/ignoregui.c:430
-msgid "CTCP:"
-msgstr ""
-
-#: src/fe-gtk/ignoregui.c:431
-msgid "Private:"
-msgstr ""
-
-#: src/fe-gtk/ignoregui.c:432
+#: src/fe-gtk/ignoregui.c:339
 msgid "Channel:"
 msgstr ""
 
-#: src/fe-gtk/ignoregui.c:433
+#: src/fe-gtk/ignoregui.c:340
+msgid "Private:"
+msgstr ""
+
+#: src/fe-gtk/ignoregui.c:341
 msgid "Notice:"
 msgstr ""
 
-#: src/fe-gtk/ignoregui.c:434
+#: src/fe-gtk/ignoregui.c:342
+msgid "CTCP:"
+msgstr ""
+
+#: src/fe-gtk/ignoregui.c:343
 msgid "Invite:"
 msgstr ""
 
-#: src/fe-gtk/ignoregui.c:443
-msgid "OK"
-msgstr ""
-
-#: src/fe-gtk/ignoregui.c:445 src/fe-gtk/menu.c:1173
+#: src/fe-gtk/ignoregui.c:354 src/fe-gtk/menu.c:1173
 msgid "New"
 msgstr ""
 
@@ -3256,11 +3227,12 @@ msgstr ""
 msgid "Insert color code"
 msgstr ""
 
+#. 14
 #: src/fe-gtk/maingui.c:933 src/fe-gtk/menu.c:1195
 msgid "Close Tab"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:936 src/fe-gtk/menu.c:1194
+#: src/fe-gtk/maingui.c:936 src/fe-gtk/menu.c:1309
 msgid "Detach Tab"
 msgstr ""
 
@@ -3737,63 +3709,67 @@ msgstr ""
 msgid "_About"
 msgstr ""
 
-#: src/fe-gtk/notifygui.c:95
-msgid "Offline"
+#: src/fe-gtk/menu.c:1311
+msgid "Attach Tab"
 msgstr ""
 
-#: src/fe-gtk/notifygui.c:98
-msgid "Never"
-msgstr ""
-
-#: src/fe-gtk/notifygui.c:120
-msgid "Online"
-msgstr ""
-
-#: src/fe-gtk/notifygui.c:163
-msgid "Enter nickname to add:"
-msgstr ""
-
-#: src/fe-gtk/notifygui.c:170
+#: src/fe-gtk/notifygui.c:109
 msgid "User"
 msgstr ""
 
-#: src/fe-gtk/notifygui.c:170
+#: src/fe-gtk/notifygui.c:111
 msgid "Server"
 msgstr ""
 
-#: src/fe-gtk/notifygui.c:170
+#: src/fe-gtk/notifygui.c:112
 msgid "Last Seen"
 msgstr ""
 
-#: src/fe-gtk/notifygui.c:179
+#: src/fe-gtk/notifygui.c:149
+msgid "Offline"
+msgstr ""
+
+#: src/fe-gtk/notifygui.c:172
+msgid "Never"
+msgstr ""
+
+#: src/fe-gtk/notifygui.c:190
+msgid "Online"
+msgstr ""
+
+#: src/fe-gtk/notifygui.c:280
+msgid "Enter nickname to add:"
+msgstr ""
+
+#: src/fe-gtk/notifygui.c:296
 msgid "X-Chat: Notify List"
 msgstr ""
 
-#: src/fe-gtk/notifygui.c:195 src/fe-gtk/servlistgui.c:702
+#: src/fe-gtk/notifygui.c:309 src/fe-gtk/servlistgui.c:702
 msgid "Add"
 msgstr ""
 
-#: src/fe-gtk/notifygui.c:197
+#: src/fe-gtk/notifygui.c:311
 msgid "Remove"
 msgstr ""
 
-#: src/fe-gtk/plugingui.c:106
-msgid "Select a Plugin or Script to load"
-msgstr ""
-
-#: src/fe-gtk/plugingui.c:152 src/fe-gtk/textgui.c:377
+#: src/fe-gtk/plugingui.c:78 src/fe-gtk/textgui.c:377
 msgid "Description"
 msgstr ""
 
-#: src/fe-gtk/plugingui.c:168
+#: src/fe-gtk/plugingui.c:152
+msgid "Select a Plugin or Script to load"
+msgstr ""
+
+#: src/fe-gtk/plugingui.c:220
 msgid "X-Chat: Plugins and Scripts"
 msgstr ""
 
-#: src/fe-gtk/plugingui.c:182
+#: src/fe-gtk/plugingui.c:226
 msgid "_Load..."
 msgstr ""
 
-#: src/fe-gtk/plugingui.c:186
+#: src/fe-gtk/plugingui.c:229
 msgid "_UnLoad"
 msgstr ""
 
@@ -3830,7 +3806,7 @@ msgstr ""
 msgid "Find"
 msgstr ""
 
-#: src/fe-gtk/search.c:117 src/fe-gtk/urlgrab.c:134
+#: src/fe-gtk/search.c:117 src/fe-gtk/urlgrab.c:197
 msgid "Clear"
 msgstr ""
 
@@ -4131,7 +4107,7 @@ msgstr ""
 msgid "Windows"
 msgstr ""
 
-#: src/fe-gtk/setup.c:141 src/fe-gtk/setup.c:756
+#: src/fe-gtk/setup.c:141 src/fe-gtk/setup.c:757
 msgid "Tabs"
 msgstr ""
 
@@ -4354,175 +4330,183 @@ msgid "Display MODEs in raw form"
 msgstr ""
 
 #: src/fe-gtk/setup.c:216
+msgid "Whois on notify"
+msgstr ""
+
+#: src/fe-gtk/setup.c:216
+msgid "Sends a /WHOIS when a user is online in your notify list"
+msgstr ""
+
+#: src/fe-gtk/setup.c:217
 msgid "Auto reconnect delay:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:222
+#: src/fe-gtk/setup.c:223
 msgid "Log filename mask:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:223
+#: src/fe-gtk/setup.c:224
 #, c-format
 msgid "(%s=Server %c=Channel %n=Network)."
 msgstr ""
 
-#: src/fe-gtk/setup.c:224
+#: src/fe-gtk/setup.c:225
 msgid "Log timestamp format:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:225
+#: src/fe-gtk/setup.c:226
 msgid "(See strftime manpage for details)."
 msgstr ""
 
-#: src/fe-gtk/setup.c:226
+#: src/fe-gtk/setup.c:227
 msgid "Enable logging of conversations"
 msgstr ""
 
-#: src/fe-gtk/setup.c:227
+#: src/fe-gtk/setup.c:228
 msgid "Insert timestamps in logs"
 msgstr ""
 
-#: src/fe-gtk/setup.c:233
+#: src/fe-gtk/setup.c:234
 msgid "(Disabled)"
 msgstr ""
 
-#: src/fe-gtk/setup.c:234
+#: src/fe-gtk/setup.c:235
 msgid "Wingate"
 msgstr ""
 
-#: src/fe-gtk/setup.c:235
+#: src/fe-gtk/setup.c:236
 msgid "Socks4"
 msgstr ""
 
-#: src/fe-gtk/setup.c:236
+#: src/fe-gtk/setup.c:237
 msgid "Socks5"
 msgstr ""
 
-#: src/fe-gtk/setup.c:237
+#: src/fe-gtk/setup.c:238
 msgid "HTTP"
 msgstr ""
 
-#: src/fe-gtk/setup.c:243
+#: src/fe-gtk/setup.c:244
 msgid "Address to bind to:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:244
+#: src/fe-gtk/setup.c:245
 msgid "(Only useful for computers with multiple addresses)."
 msgstr ""
 
-#: src/fe-gtk/setup.c:245
+#: src/fe-gtk/setup.c:246
 msgid "Proxy server:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:246
+#: src/fe-gtk/setup.c:247
 msgid "Proxy port:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:247
+#: src/fe-gtk/setup.c:248
 msgid "Proxy type:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:433
+#: src/fe-gtk/setup.c:434
 msgid "Select an Image File"
 msgstr ""
 
-#: src/fe-gtk/setup.c:460
+#: src/fe-gtk/setup.c:461
 msgid "Select font"
 msgstr ""
 
-#: src/fe-gtk/setup.c:517
+#: src/fe-gtk/setup.c:518
 msgid "Browse..."
 msgstr ""
 
-#: src/fe-gtk/setup.c:637
+#: src/fe-gtk/setup.c:638
 msgid "Select color"
 msgstr ""
 
-#: src/fe-gtk/setup.c:701
+#: src/fe-gtk/setup.c:702
 msgid "mIRC colors:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:709
+#: src/fe-gtk/setup.c:710
 msgid "Foreground:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:710
+#: src/fe-gtk/setup.c:711
 msgid "Background:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:712
+#: src/fe-gtk/setup.c:713
 msgid "Mark fore:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:713
+#: src/fe-gtk/setup.c:714
 msgid "Mark back:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:715
+#: src/fe-gtk/setup.c:716
 msgid "New Data:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:716
+#: src/fe-gtk/setup.c:717
 msgid "New Message:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:717
+#: src/fe-gtk/setup.c:718
 msgid "Highlight:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:752
+#: src/fe-gtk/setup.c:753
 msgid "Interface"
 msgstr ""
 
-#: src/fe-gtk/setup.c:753
+#: src/fe-gtk/setup.c:754
 msgid "Text box"
 msgstr ""
 
-#: src/fe-gtk/setup.c:754
+#: src/fe-gtk/setup.c:755
 msgid "Input box"
 msgstr ""
 
-#: src/fe-gtk/setup.c:755
+#: src/fe-gtk/setup.c:756
 msgid "User list"
 msgstr ""
 
-#: src/fe-gtk/setup.c:757
+#: src/fe-gtk/setup.c:758
 msgid "Colors"
 msgstr ""
 
-#: src/fe-gtk/setup.c:759
+#: src/fe-gtk/setup.c:760
 msgid "Chatting"
 msgstr ""
 
-#: src/fe-gtk/setup.c:760
+#: src/fe-gtk/setup.c:761
 msgid "General"
 msgstr ""
 
-#: src/fe-gtk/setup.c:761
+#: src/fe-gtk/setup.c:762
 msgid "Logging"
 msgstr ""
 
-#: src/fe-gtk/setup.c:763
+#: src/fe-gtk/setup.c:764
 msgid "Network"
 msgstr ""
 
-#: src/fe-gtk/setup.c:764
+#: src/fe-gtk/setup.c:765
 msgid "Network setup"
 msgstr ""
 
-#: src/fe-gtk/setup.c:765
+#: src/fe-gtk/setup.c:766
 msgid "File transfers"
 msgstr ""
 
-#: src/fe-gtk/setup.c:870
+#: src/fe-gtk/setup.c:871
 msgid "Categories"
 msgstr ""
 
-#: src/fe-gtk/setup.c:986
+#: src/fe-gtk/setup.c:987
 msgid "Some settings were changed that require a restart to take full effect."
 msgstr ""
 
-#: src/fe-gtk/setup.c:1013
+#: src/fe-gtk/setup.c:1014
 msgid "X-Chat: Preferences"
 msgstr ""
 
@@ -4571,10 +4555,30 @@ msgstr ""
 msgid "Test All"
 msgstr ""
 
-#: src/fe-gtk/urlgrab.c:70
+#: src/fe-gtk/urlgrab.c:100
+msgid "URL"
+msgstr ""
+
+#: src/fe-gtk/urlgrab.c:150
 msgid "Select a file to save to"
 msgstr ""
 
-#: src/fe-gtk/urlgrab.c:118
+#: src/fe-gtk/urlgrab.c:184
 msgid "X-Chat: URL Grabber"
+msgstr ""
+
+#: src/fe-gtk/urlgrab.c:197
+msgid "Clear list"
+msgstr ""
+
+#: src/fe-gtk/urlgrab.c:199
+msgid "Copy selected URL"
+msgstr ""
+
+#: src/fe-gtk/urlgrab.c:199
+msgid "Copy"
+msgstr ""
+
+#: src/fe-gtk/urlgrab.c:201
+msgid "Save list to a file"
 msgstr ""

@@ -265,7 +265,7 @@ ul_update_entry (session *sess, char *name, char mode, char sign)
 	update_entry (sess, user);
 }
 
-void
+int
 change_nick (struct session *sess, char *oldname, char *newname)
 {
 	struct User *user = find_name (sess, oldname);
@@ -273,7 +273,10 @@ change_nick (struct session *sess, char *oldname, char *newname)
 	{
 		safe_strcpy (user->nick, newname, NICKLEN);
 		update_entry (sess, user);
+		return 1;
 	}
+
+	return 0;
 }
 
 int

@@ -388,9 +388,8 @@ process_numeric (session * sess, char *outbuf, int n,
 			fe_add_chan_list (sess->server, word[4], word[5], word_eol[6] + 1);
 		} else
 		{
-			sprintf (outbuf, "%-16s %-7d %s\017\n",
-						word[4], atoi (word[5]), word_eol[6] + 1);
-			PrintText (sess, outbuf);
+			PrintTextf (sess, "%-16s %-7d %s\017\n",
+							word[4], atoi (word[5]), word_eol[6] + 1);
 		}
 		break;
 
@@ -417,7 +416,7 @@ process_numeric (session * sess, char *outbuf, int n,
 		fe_update_mode_buttons (sess, 'm', '-');
 		fe_update_mode_buttons (sess, 'l', '-');
 		fe_update_mode_buttons (sess, 'k', '-');
-		handle_mode (serv, outbuf, word, word_eol, "", TRUE);
+		handle_mode (serv, word, word_eol, "", TRUE);
 		break;
 
 	case 329:
@@ -619,7 +618,7 @@ process_named_msg (session *sess, char *type, char *outbuf,
 	}
 	if (!strcmp ("MODE", type))
 	{
-		handle_mode (serv, outbuf, word, word_eol, nick, FALSE);	/* modes.c */
+		handle_mode (serv, word, word_eol, nick, FALSE);	/* modes.c */
 		return;
 	}
 	if (!strcmp ("NICK", type))

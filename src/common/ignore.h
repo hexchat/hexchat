@@ -20,6 +20,7 @@ struct ignore
 	unsigned int type;	/* one of more of IG_* ORed together */
 };
 
+struct ignore *ignore_exists (char *mask);
 int ignore_add (char *mask, int type);
 void ignore_showlist (session *sess);
 int ignore_del (char *mask, struct ignore *ig);

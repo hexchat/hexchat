@@ -352,7 +352,7 @@ inbound_newnick (server *serv, char *nick, char *newnick, int quiet)
 		sess = list->data;
 		if (sess->server == serv)
 		{
-			if (me || find_name (sess, nick))
+			if (change_nick (sess, nick, newnick))
 			{
 				if (!quiet)
 				{
@@ -363,7 +363,6 @@ inbound_newnick (server *serv, char *nick, char *newnick, int quiet)
 						EMIT_SIGNAL (XP_TE_CHANGENICK, sess, nick, newnick, NULL,
 										 NULL, 0);
 				}
-				change_nick (sess, nick, newnick);
 			}
 			if (!serv->p_cmp (sess->channel, nick))
 			{
@@ -375,7 +374,6 @@ inbound_newnick (server *serv, char *nick, char *newnick, int quiet)
 		list = list->next;
 	}
 
-	fe_change_nick (serv, nick, newnick);
 	dcc_change_nick (serv, nick, newnick);
 
 	if (me)
@@ -942,7 +940,7 @@ do_dns (session *sess, char *tbuf, char *nick, char *host)
 	if (po)
 		host = po + 1;
 	EMIT_SIGNAL (XP_TE_RESOLVINGUSER, sess, nick, host, NULL, NULL, 0);
-	sprintf (tbuf, "exec -d %s %s", prefs.dnsprogram, host);
+	snprintf (tbuf, 2048, "exec -d %s %s", prefs.dnsprogram, host);
 	handle_command (sess, tbuf, FALSE);
 }
 
@@ -1023,7 +1021,7 @@ inbound_user_info (session *sess, char *outbuf, char *chan, char *user,
 	who_sess = find_channel (serv, chan);
 	if (who_sess)
 	{
-		sprintf (outbuf, "%s@%s", user, host);
+		snprintf (outbuf, 2048, "%s@%s", user, host);
 		if (!userlist_add_hostname (who_sess, nick, outbuf, realname, servname))
 		{
 			if (!who_sess->doing_who)

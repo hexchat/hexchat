@@ -44,6 +44,28 @@ int ignored_noti = 0;
 int ignored_invi = 0;
 static int ignored_total = 0;
 
+/* ignore_exists ():
+ * returns: struct ig, if this mask is in the ignore list already
+ *          NULL, otherwise
+ */
+struct ignore *
+ignore_exists (char *mask)
+{
+	struct ignore *ig = 0;
+	GSList *list;
+
+	list = ignore_list;
+	while (list)
+	{
+		ig = (struct ignore *) list->data;
+		if (!rfc_casecmp (ig->mask, mask))
+			return ig;
+		list = list->next;
+	}
+	return NULL;
+
+}
+
 /* ignore_add(...)
 
  * returns:
@@ -56,22 +78,12 @@ int
 ignore_add (char *mask, int type)
 {
 	struct ignore *ig = 0;
-	GSList *list;
 	int change_only = FALSE;
 
 	/* first check if it's already ignored */
-	list = ignore_list;
-	while (list)
-	{
-		ig = (struct ignore *) list->data;
-		if (!rfc_casecmp (ig->mask, mask))
-		{
-			/* already ignored, change the flags */
-			change_only = TRUE;
-			break;
-		}
-		list = list->next;
-	}
+	ig = ignore_exists (mask);
+	if (ig)
+		change_only = TRUE;
 
 	if (!change_only)
 		ig = malloc (sizeof (struct ignore));

@@ -16,6 +16,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
  */
 
+#define GTK_DISABLE_DEPRECATED
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -26,12 +28,18 @@
 
 #include <gtk/gtkcheckbutton.h>
 #include <gtk/gtkentry.h>
-#include <gtk/gtkclist.h>
 #include <gtk/gtkstock.h>
 #include <gtk/gtkhbox.h>
 #include <gtk/gtkhbbox.h>
 #include <gtk/gtkframe.h>
 #include <gtk/gtkhseparator.h>
+#include <gtk/gtkversion.h>
+
+#include <gtk/gtkliststore.h>
+#include <gtk/gtktreeview.h>
+#include <gtk/gtktreeselection.h>
+#include <gtk/gtkcellrenderertext.h>
+#include <gtk/gtkcellrenderertoggle.h>
 
 #include "../common/xchat.h"
 #include "../common/ignore.h"
@@ -39,16 +47,19 @@
 #include "gtkutil.h"
 #include "maingui.h"
 
+enum
+{
+	MASK_COLUMN,
+	CHAN_COLUMN,
+	PRIV_COLUMN,
+	NOTICE_COLUMN,
+	CTCP_COLUMN,
+	INVITE_COLUMN,
+	UNIGNORE_COLUMN,
+	N_COLUMNS
+};
 
 static GtkWidget *ignorewin = 0;
-static GtkWidget *ignorelist;
-static GtkWidget *entry_mask;
-static GtkWidget *entry_ctcp;
-static GtkWidget *entry_private;
-static GtkWidget *entry_channel;
-static GtkWidget *entry_notice;
-static GtkWidget *entry_invi;
-static GtkWidget *entry_unignore;	/* these are toggles, not really entrys */
 
 static GtkWidget *num_ctcp;
 static GtkWidget *num_priv;
@@ -56,266 +67,222 @@ static GtkWidget *num_chan;
 static GtkWidget *num_noti;
 static GtkWidget *num_invi;
 
-static void
-ignore_save_clist_tomem (void)
+static GtkTreeModel *
+get_store (void)
 {
-	struct ignore *ignore;
-	char *tmp;
-	int i = 0;
-	GSList *list;
+	return gtk_tree_view_get_model (g_object_get_data (G_OBJECT (ignorewin), "view"));
+}
 
-	list = ignore_list;
-	while (list)
+static int
+ignore_get_flags (GtkTreeModel *model, GtkTreeIter *iter)
+{
+	gboolean chan, priv, noti, ctcp, invi, unig;
+	int flags = 0;
+
+	gtk_tree_model_get (model, iter, 1, &chan, 2, &priv, 3, &noti,
+	                    4, &ctcp, 5, &invi, 6, &unig, -1);
+	if (chan)
+		flags |= IG_CHAN;
+	if (priv)
+		flags |= IG_PRIV;
+	if (noti)
+		flags |= IG_NOTI;
+	if (ctcp)
+		flags |= IG_CTCP;
+	if (invi)
+		flags |= IG_INVI;
+	if (unig)
+		flags |= IG_UNIG;
+	return flags;
+}
+
+static void
+mask_edited (GtkCellRendererText *render, gchar *path, gchar *new, gpointer dat)
+{
+	GtkListStore *store = GTK_LIST_STORE (get_store ());
+	GtkTreeIter iter;
+	char *old;
+	int flags;
+
+	gtkutil_treemodel_string_to_iter (GTK_TREE_MODEL (store), path, &iter);
+	gtk_tree_model_get (GTK_TREE_MODEL (store), &iter, 0, &old, -1);
+	
+	if (!strcmp (old, new))	/* no change */
+		;
+	else if (ignore_exists (new))	/* duplicate, ignore */
+		gtkutil_simpledialog (_("That mask already exists."));
+	else
 	{
-		ignore = (struct ignore *) list->data;
-		ignore_list = g_slist_remove (ignore_list, ignore);
-		free (ignore->mask);
-		free (ignore);
-		list = ignore_list;
+		/* delete old mask, and add new one with original flags */
+		ignore_del (old, NULL);
+		flags = ignore_get_flags (GTK_TREE_MODEL (store), &iter);
+		ignore_add (new, flags);
+
+		/* update tree */
+		gtk_list_store_set (store, &iter, MASK_COLUMN, new, -1);
 	}
+	g_free (old);
+	
+}
 
-	while (1)
+static void
+option_toggled (GtkCellRendererToggle *render, gchar *path, gpointer data)
+{
+	GtkListStore *store = GTK_LIST_STORE (get_store ());
+	GtkTreeIter iter;
+	int col_id = GPOINTER_TO_INT (data);
+	gboolean active;
+	char *mask;
+	int flags;
+
+	gtkutil_treemodel_string_to_iter (GTK_TREE_MODEL (store), path, &iter);
+
+	/* update model */
+	gtk_tree_model_get (GTK_TREE_MODEL (store), &iter, col_id, &active, -1);
+	gtk_list_store_set (store, &iter, col_id, !active, -1);
+
+	/* update ignore list */
+	gtk_tree_model_get (GTK_TREE_MODEL (store), &iter, 0, &mask, -1);
+	flags = ignore_get_flags (GTK_TREE_MODEL (store), &iter);
+	if (ignore_add (mask, flags) != 2)
+		g_warning ("ignore treeview is out of sync!\n");
+	
+	g_free (mask);
+}
+
+static GtkWidget *
+ignore_treeview_new (GtkWidget *box)
+{
+	GtkListStore *store;
+	GtkWidget *view;
+	GtkTreeViewColumn *col;
+	GtkCellRenderer *render;
+	int col_id;
+
+	store = gtk_list_store_new (N_COLUMNS, G_TYPE_STRING,
+	                            G_TYPE_BOOLEAN, G_TYPE_BOOLEAN,
+	                            G_TYPE_BOOLEAN, G_TYPE_BOOLEAN,
+	                            G_TYPE_BOOLEAN, G_TYPE_BOOLEAN);
+	g_return_val_if_fail (store != NULL, NULL);
+
+	view = gtkutil_treeview_new (box, GTK_TREE_MODEL (store),
+	                             NULL,
+	                             MASK_COLUMN, _("Mask"),
+	                             CHAN_COLUMN, _("Channel"),
+	                             PRIV_COLUMN, _("Private"),
+	                             NOTICE_COLUMN, _("Notice"),
+	                             CTCP_COLUMN, _("CTCP"),
+	                             INVITE_COLUMN, _("Invite"),
+	                             UNIGNORE_COLUMN, _("Unignore"),
+	                             -1);
+
+	gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (view), TRUE);
+
+	/* attach to signals and customise columns */
+	for (col_id=0; (col = gtk_tree_view_get_column (GTK_TREE_VIEW (view), col_id));
+	     col_id++)
 	{
-		if (!gtk_clist_get_text (GTK_CLIST (ignorelist), i, 0, &tmp))
+		GList *list = gtk_tree_view_column_get_cell_renderers (col);
+		GList *tmp;
+
+		for (tmp = list; tmp; tmp = tmp->next)
 		{
-			break;
+			render = tmp->data;
+			if (col_id > 0)	/* it's a toggle button column */
+			{
+				g_signal_connect (render, "toggled", G_CALLBACK (option_toggled),
+				                  GINT_TO_POINTER (col_id));
+			} else	/* mask column */
+			{
+				g_object_set (G_OBJECT (render), "editable", TRUE, NULL);
+				g_signal_connect (render, "edited", G_CALLBACK (mask_edited), NULL);
+				/* make this column sortable */
+				gtk_tree_view_column_set_sort_column_id (col, col_id);
+				gtk_tree_view_column_set_min_width (col, 300);
+			}
+			/* centre titles */
+			gtk_tree_view_column_set_alignment (col, 0.5);
 		}
-		ignore = malloc (sizeof (struct ignore));
-		memset (ignore, 0, sizeof (struct ignore));
-		ignore->mask = strdup (tmp);
-		gtk_clist_get_text (GTK_CLIST (ignorelist), i, 1, &tmp);
-		if (!strcmp (tmp, _("Yes")))
-			ignore->type |= IG_CTCP;
-		gtk_clist_get_text (GTK_CLIST (ignorelist), i, 2, &tmp);
-		if (!strcmp (tmp, _("Yes")))
-			ignore->type |= IG_PRIV;
-		gtk_clist_get_text (GTK_CLIST (ignorelist), i, 3, &tmp);
-		if (!strcmp (tmp, _("Yes")))
-			ignore->type |= IG_CHAN;
-		gtk_clist_get_text (GTK_CLIST (ignorelist), i, 4, &tmp);
-		if (!strcmp (tmp, _("Yes")))
-			ignore->type |= IG_NOTI;
-		gtk_clist_get_text (GTK_CLIST (ignorelist), i, 5, &tmp);
-		if (!strcmp (tmp, _("Yes")))
-			ignore->type |= IG_INVI;
-		gtk_clist_get_text (GTK_CLIST (ignorelist), i, 6, &tmp);
-		if (!strcmp (tmp, _("Yes")))
-			ignore->type |= IG_UNIG;
-		ignore_list = g_slist_append (ignore_list, ignore);
-		i++;
+
+		g_list_free (list);
 	}
-}
-
-static void
-ignore_add_clist_entry (struct ignore *ignore)
-{
-	char *nnew[7];
-
-	nnew[0] = ignore->mask;
-	if (ignore->type & IG_CTCP)
-		nnew[1] = _("Yes");
-	else
-		nnew[1] = _("No");
-	if (ignore->type & IG_PRIV)
-		nnew[2] = _("Yes");
-	else
-		nnew[2] = _("No");
-	if (ignore->type & IG_CHAN)
-		nnew[3] = _("Yes");
-	else
-		nnew[3] = _("No");
-	if (ignore->type & IG_NOTI)
-		nnew[4] = _("Yes");
-	else
-		nnew[4] = _("No");
-	if (ignore->type & IG_INVI)
-		nnew[5] = _("Yes");
-	else
-		nnew[5] = _("No");
-	if (ignore->type & IG_UNIG)
-		nnew[6] = _("Yes");
-	else
-		nnew[6] = _("No");
-
-	gtk_clist_append (GTK_CLIST (ignorelist), nnew);
-}
-
-static void
-ignore_sort_clicked (void)
-{
-	gtk_clist_sort (GTK_CLIST (ignorelist));
+	
+	gtk_widget_show (view);
+	return view;
 }
 
 static void
 ignore_delete_entry_clicked (GtkWidget * wid, struct session *sess)
 {
-	int row;
+	GtkTreeView *view = g_object_get_data (G_OBJECT (ignorewin), "view");
+	GtkListStore *store = GTK_LIST_STORE (gtk_tree_view_get_model (view));
+	GtkTreeIter iter;
+	GtkTreePath *path;
+	char *mask = NULL;
 
-	row = gtkutil_clist_selection (ignorelist);
-	if (row != -1)
+	if (gtkutil_treeview_get_selected (view, &iter, 0, &mask, -1))
 	{
-		gtk_clist_unselect_all (GTK_CLIST (ignorelist));
-		gtk_clist_remove ((GtkCList *) ignorelist, row);
+		/* delete this row, select next one */
+#if (GTK_MAJOR_VERSION == 2) && (GTK_MINOR_VERSION == 0)
+		gtk_list_store_remove (store, &iter);
+#else
+		if (gtk_list_store_remove (store, &iter))
+		{
+			path = gtk_tree_model_get_path (GTK_TREE_MODEL (store), &iter);
+			gtk_tree_view_scroll_to_cell (view, path, NULL, TRUE, 1.0, 0.0);
+			gtk_tree_view_set_cursor (view, path, NULL, FALSE);
+			gtk_tree_path_free (path);
+		}
+#endif
+
+		ignore_del (mask, NULL);
+		g_free (mask);
 	}
+}
+
+static void
+ignore_store_new (int cancel, char *mask, gpointer data)
+{
+	GtkTreeView *view = g_object_get_data (G_OBJECT (ignorewin), "view");
+	GtkListStore *store = GTK_LIST_STORE (get_store ());
+	GtkTreeIter iter;
+	GtkTreePath *path;
+	int flags = IG_CHAN | IG_PRIV | IG_NOTI | IG_CTCP | IG_INVI;
+
+	if (cancel)
+		return;
+	/* check if it already exists */
+	if (ignore_exists (mask))
+	{
+		gtkutil_simpledialog (_("That mask already exists."));
+		return;
+	}
+
+	ignore_add (mask, flags);
+
+	gtk_list_store_append (store, &iter);
+	/* ignore everything by default */
+	gtk_list_store_set (store, &iter, 0, mask, 1, TRUE, 2, TRUE, 3, TRUE,
+	                    4, TRUE, 5, TRUE, 6, FALSE, -1);
+	/* make sure the new row is visible and selected */
+	path = gtk_tree_model_get_path (GTK_TREE_MODEL (store), &iter);
+	gtk_tree_view_scroll_to_cell (view, path, NULL, TRUE, 1.0, 0.0);
+	gtk_tree_view_set_cursor (view, path, NULL, FALSE);
+	gtk_tree_path_free (path);
 }
 
 static void
 ignore_new_entry_clicked (GtkWidget * wid, struct session *sess)
 {
-	int i, row;
-	gchar *nnew[7];
-	/*
-	   Serverlist copies an existing entry, but not much point to do so here
-	 */
-	nnew[0] = _("new!new@new.com");
-	nnew[1] = _("No");
-	nnew[2] = _("No");
-	nnew[3] = _("No");
-	nnew[4] = _("No");
-	nnew[5] = _("No");
-	nnew[6] = _("No");
-	row = gtkutil_clist_selection (ignorelist);
-	i = gtk_clist_insert (GTK_CLIST (ignorelist), row + 1, nnew);
-	gtk_clist_select_row (GTK_CLIST (ignorelist), i, 0);
-	gtk_clist_moveto (GTK_CLIST (ignorelist), i, 0, 0.5, 0);
-}
+	fe_get_str (_("Enter mask to ignore:"), "nick!userid@host.com",
+	            ignore_store_new, NULL);
 
-static void
-ignore_check_state_toggled (GtkWidget * wid, int row, int col)
-{
-	char *text;
-	int state;
-
-	gtk_clist_get_text (GTK_CLIST (ignorelist), row, col, &text);
-	if (!strcmp (text, _("Yes")))
-		state = 1;
-	else
-		state = 0;
-
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (wid), state);
-}
-
-static void
-ignore_row_unselected (GtkWidget * clist, int row, int column,
-							  GdkEventButton * even)
-{
-	gtk_entry_set_text (GTK_ENTRY (entry_mask), "");
-}
-
-static void
-ignore_row_selected (GtkWidget * clist, int row, int column,
-							GdkEventButton * even, gpointer sess)
-{
-	char *mask;
-	row = gtkutil_clist_selection (ignorelist);
-	if (row != -1)
-	{
-		gtk_clist_get_text (GTK_CLIST (ignorelist), row, 0, &mask);
-		mask = strdup (mask);
-		gtk_entry_set_text (GTK_ENTRY (entry_mask), mask);
-		free (mask);
-		ignore_check_state_toggled (entry_ctcp, row, 1);
-		ignore_check_state_toggled (entry_private, row, 2);
-		ignore_check_state_toggled (entry_channel, row, 3);
-		ignore_check_state_toggled (entry_notice, row, 4);
-		ignore_check_state_toggled (entry_invi, row, 5);
-		ignore_check_state_toggled (entry_unignore, row, 6);
-	} else
-		ignore_row_unselected (0, 0, 0, 0);
-}
-
-static void
-ignore_handle_mask (GtkWidget * igad)
-{
-	int row;
-	const char *mask;
-
-	row = gtkutil_clist_selection (ignorelist);
-	if (row != -1)
-	{
-		mask = gtk_entry_get_text ((GtkEntry *) igad);
-		gtk_clist_set_text ((GtkCList *) ignorelist, row, 0, mask);
-	}
-}
-
-static void
-ignore_ctcp_toggled (GtkWidget * igad, gpointer serv)
-{
-	int row;
-	row = gtkutil_clist_selection (ignorelist);
-	if (GTK_TOGGLE_BUTTON (igad)->active)
-		gtk_clist_set_text ((GtkCList *) ignorelist, row, 1, _("Yes"));
-	else
-		gtk_clist_set_text ((GtkCList *) ignorelist, row, 1, _("No"));
-}
-
-static void
-ignore_private_toggled (GtkWidget * igad, gpointer serv)
-{
-	int row;
-	row = gtkutil_clist_selection (ignorelist);
-	if (GTK_TOGGLE_BUTTON (igad)->active)
-		gtk_clist_set_text ((GtkCList *) ignorelist, row, 2, _("Yes"));
-	else
-		gtk_clist_set_text ((GtkCList *) ignorelist, row, 2, _("No"));
-}
-
-static void
-ignore_channel_toggled (GtkWidget * igad, gpointer serv)
-{
-	int row;
-	row = gtkutil_clist_selection (ignorelist);
-	if (GTK_TOGGLE_BUTTON (igad)->active)
-		gtk_clist_set_text ((GtkCList *) ignorelist, row, 3, _("Yes"));
-	else
-		gtk_clist_set_text ((GtkCList *) ignorelist, row, 3, _("No"));
-}
-
-static void
-ignore_notice_toggled (GtkWidget * igad, gpointer serv)
-{
-	int row;
-	row = gtkutil_clist_selection (ignorelist);
-	if (GTK_TOGGLE_BUTTON (igad)->active)
-		gtk_clist_set_text ((GtkCList *) ignorelist, row, 4, _("Yes"));
-	else
-		gtk_clist_set_text ((GtkCList *) ignorelist, row, 4, _("No"));
-}
-
-static void
-ignore_invi_toggled (GtkWidget * igad, gpointer serv)
-{
-	int row;
-	row = gtkutil_clist_selection (ignorelist);
-	if (GTK_TOGGLE_BUTTON (igad)->active)
-		gtk_clist_set_text ((GtkCList *) ignorelist, row, 5, _("Yes"));
-	else
-		gtk_clist_set_text ((GtkCList *) ignorelist, row, 5, _("No"));
-}
-
-static void
-ignore_unignore_toggled (GtkWidget * igad, gpointer serv)
-{
-	int row;
-	row = gtkutil_clist_selection (ignorelist);
-	if (GTK_TOGGLE_BUTTON (igad)->active)
-		gtk_clist_set_text ((GtkCList *) ignorelist, row, 6, _("Yes"));
-	else
-		gtk_clist_set_text ((GtkCList *) ignorelist, row, 6, _("No"));
-}
-
-static int
-close_ignore_list ()
-{
-	ignore_save_clist_tomem ();
-	ignore_save ();
-	gtk_widget_destroy (ignorewin);
-	return 0;
 }
 
 static void
 close_ignore_gui_callback ()
 {
+	ignore_save ();
 	ignorewin = 0;
 }
 
@@ -328,8 +295,9 @@ ignore_stats_entry (GtkWidget * box, char *label, int value)
 	sprintf (buf, "%d", value);
 	gtkutil_label_new (label, box);
 	wid = gtkutil_entry_new (16, box, 0, 0);
-	gtk_widget_set_usize (wid, 30, 0);
+	gtk_widget_set_size_request (wid, 30, -1);
 	gtk_editable_set_editable (GTK_EDITABLE (wid), FALSE);
+	gtk_widget_set_sensitive (GTK_WIDGET (wid), FALSE);
 	gtk_entry_set_text (GTK_ENTRY (wid), buf);
 
 	return wid;
@@ -338,10 +306,13 @@ ignore_stats_entry (GtkWidget * box, char *label, int value)
 void
 ignore_gui_open ()
 {
-	gchar *titles[] =
-		{ _("Mask"), _("CTCP"), _("Private"), _("Chan"), _("Notice"), _("Invite"), _("Unignore") };
-	GtkWidget *vbox, *box, *wid, *stat_box, *frame;
+	GtkWidget *vbox, *box, *stat_box, *frame;
+	GtkWidget *view;
+	GtkListStore *store;
+	GtkTreeIter iter;
 	GSList *temp = ignore_list;
+	char *mask;
+	gboolean private, chan, notice, ctcp, invite, unignore;
 
 	if (ignorewin)
 	{
@@ -354,71 +325,9 @@ ignore_gui_open ()
 											FALSE, TRUE, close_ignore_gui_callback,
 											NULL, 0, 0, &vbox, 0);
 
-	ignorelist = gtkutil_clist_new (7, titles, vbox, GTK_POLICY_ALWAYS,
-											  ignore_row_selected, 0,
-											  ignore_row_unselected, 0,
-											  GTK_SELECTION_BROWSE);
-
-	gtk_widget_set_usize (ignorelist, 500, 150);
-
-	gtk_clist_set_column_width (GTK_CLIST (ignorelist), 0, 196);
-	gtk_clist_set_column_width (GTK_CLIST (ignorelist), 1, 40);
-	gtk_clist_set_column_width (GTK_CLIST (ignorelist), 2, 40);
-	gtk_clist_set_column_width (GTK_CLIST (ignorelist), 3, 40);
-	gtk_clist_set_column_width (GTK_CLIST (ignorelist), 4, 40);
-	gtk_clist_set_column_width (GTK_CLIST (ignorelist), 5, 40);
-
-	box = gtk_hbox_new (0, 0);
-	gtk_box_pack_start (GTK_BOX (vbox), box, FALSE, TRUE, 5);
-	gtk_widget_show (box);
-
-	gtkutil_label_new (_("Ignore Mask:"), box);
-	entry_mask = gtkutil_entry_new (99, box, ignore_handle_mask, 0);
-
-	box = gtk_hbox_new (0, 0);
-	gtk_box_pack_start (GTK_BOX (vbox), box, FALSE, TRUE, 5);
-	gtk_widget_show (box);
-
-	entry_ctcp = gtk_check_button_new_with_label (_("CTCP"));
-	gtk_signal_connect (GTK_OBJECT (entry_ctcp), "toggled",
-							  GTK_SIGNAL_FUNC (ignore_ctcp_toggled), 0);
-	gtk_container_add (GTK_CONTAINER (box), entry_ctcp);
-	gtk_widget_show (entry_ctcp);
-
-	entry_private = gtk_check_button_new_with_label (_("Private"));
-	gtk_signal_connect (GTK_OBJECT (entry_private), "toggled",
-							  GTK_SIGNAL_FUNC (ignore_private_toggled), 0);
-	gtk_container_add (GTK_CONTAINER (box), entry_private);
-	gtk_widget_show (entry_private);
-
-	entry_channel = gtk_check_button_new_with_label (_("Channel"));
-	gtk_signal_connect (GTK_OBJECT (entry_channel), "toggled",
-							  GTK_SIGNAL_FUNC (ignore_channel_toggled), 0);
-	gtk_container_add (GTK_CONTAINER (box), entry_channel);
-	gtk_widget_show (entry_channel);
-
-	entry_notice = gtk_check_button_new_with_label (_("Notice"));
-	gtk_signal_connect (GTK_OBJECT (entry_notice), "toggled",
-							  GTK_SIGNAL_FUNC (ignore_notice_toggled), 0);
-	gtk_container_add (GTK_CONTAINER (box), entry_notice);
-	gtk_widget_show (entry_notice);
-
-	entry_invi = gtk_check_button_new_with_label (_("Invite"));
-	gtk_signal_connect (GTK_OBJECT (entry_invi), "toggled",
-							  GTK_SIGNAL_FUNC (ignore_invi_toggled), 0);
-	gtk_container_add (GTK_CONTAINER (box), entry_invi);
-	gtk_widget_show (entry_invi);
-
-	entry_unignore = gtk_check_button_new_with_label (_("Unignore"));
-	gtk_signal_connect (GTK_OBJECT (entry_unignore), "toggled",
-							  GTK_SIGNAL_FUNC (ignore_unignore_toggled), 0);
-	gtk_container_add (GTK_CONTAINER (box), entry_unignore);
-	gtk_widget_show (entry_unignore);
-
-	wid = gtk_hseparator_new ();
-	gtk_box_pack_start (GTK_BOX (vbox), wid, FALSE, FALSE, 8);
-	gtk_widget_show (wid);
-
+	view = ignore_treeview_new (vbox);
+	g_object_set_data (G_OBJECT (ignorewin), "view", view);
+	
 	frame = gtk_frame_new (_("Ignore Stats:"));
 	gtk_widget_show (frame);
 
@@ -427,32 +336,50 @@ ignore_gui_open ()
 	gtk_container_add (GTK_CONTAINER (frame), stat_box);
 	gtk_widget_show (stat_box);
 
-	num_ctcp = ignore_stats_entry (stat_box, _("CTCP:"), ignored_ctcp);
-	num_priv = ignore_stats_entry (stat_box, _("Private:"), ignored_priv);
 	num_chan = ignore_stats_entry (stat_box, _("Channel:"), ignored_chan);
+	num_priv = ignore_stats_entry (stat_box, _("Private:"), ignored_priv);
 	num_noti = ignore_stats_entry (stat_box, _("Notice:"), ignored_noti);
+	num_ctcp = ignore_stats_entry (stat_box, _("CTCP:"), ignored_ctcp);
 	num_invi = ignore_stats_entry (stat_box, _("Invite:"), ignored_invi);
 
-	gtk_container_add (GTK_CONTAINER (vbox), frame);
+	gtk_box_pack_start (GTK_BOX (vbox), frame, 0, 0, 5);
 
 	box = gtk_hbutton_box_new ();
 	gtk_button_box_set_layout (GTK_BUTTON_BOX (box), GTK_BUTTONBOX_SPREAD);
 	gtk_box_pack_start (GTK_BOX (vbox), box, FALSE, FALSE, 2);
+	gtk_container_set_border_width (GTK_CONTAINER (box), 5);
 	gtk_widget_show (box);
 
-	gtkutil_button (box, GTK_STOCK_OK, 0, close_ignore_list, 0, _("OK"));
 	gtkutil_button (box, GTK_STOCK_NEW, 0, ignore_new_entry_clicked, 0,
 						 _("New"));
 	gtkutil_button (box, GTK_STOCK_CLOSE, 0, ignore_delete_entry_clicked,
 						 0, ("Delete"));
-	gtkutil_button (box, GTK_STOCK_SPELL_CHECK, 0, ignore_sort_clicked,
-						 0, _("Sort"));
-	gtkutil_button (box, GTK_STOCK_CANCEL, 0, gtkutil_destroy, ignorewin,
-						 _("Cancel"));
+
+	store = GTK_LIST_STORE (gtk_tree_view_get_model (GTK_TREE_VIEW (view)));
 
 	while (temp)
 	{
-		ignore_add_clist_entry ((struct ignore *) temp->data);
+		struct ignore *ignore = temp->data;
+		
+		mask = ignore->mask;
+		chan = (ignore->type & IG_CHAN);
+		private = (ignore->type & IG_PRIV);
+		notice = (ignore->type & IG_NOTI);
+		ctcp = (ignore->type & IG_CTCP);
+		invite = (ignore->type & IG_INVI);
+		unignore = (ignore->type & IG_UNIG);
+
+		gtk_list_store_append (store, &iter);
+		gtk_list_store_set (store, &iter,
+		                    MASK_COLUMN, mask,
+		                    CHAN_COLUMN, chan,
+		                    PRIV_COLUMN, private,
+		                    NOTICE_COLUMN, notice,
+		                    CTCP_COLUMN, ctcp,
+		                    INVITE_COLUMN, invite,
+		                    UNIGNORE_COLUMN, unignore,
+		                    -1);
+		
 		temp = temp->next;
 	}
 	gtk_widget_show (ignorewin);

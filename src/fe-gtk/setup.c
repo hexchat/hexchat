@@ -213,6 +213,7 @@ static const setting general_settings[] =
 	{ST_TOGGLE,	N_("Announce away messages"), P_OFFINT(show_away_message), N_("Announce your away messages to all channels"), 0, 0},
 	{ST_TOGGLE,	N_("Beep on highlighted messages"), P_OFFINT(beephilight), 0, 0, 0},
 	{ST_TOGGLE,	N_("Display MODEs in raw form"), P_OFFINT(raw_modes), 0, 0, 0},
+	{ST_TOGGLE,	N_("Whois on notify"), P_OFFINT(whois_on_notifyonline), N_("Sends a /WHOIS when a user is online in your notify list"), 0, 0},
 	{ST_NUMBER,	N_("Auto reconnect delay:"), P_OFFINT(recon_delay), 0, 0, 9999},
 	{ST_END, 0, 0, 0, 0, 0}
 };

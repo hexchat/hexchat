@@ -2355,17 +2355,6 @@ fe_dlgbuttons_update (session *sess)
 }
 
 void
-fe_change_nick (server *serv, char *nick, char *newnick)
-{
-	session *sess = find_dialog (serv, nick);
-	if (sess)
-	{
-		safe_strcpy (sess->channel, newnick, NICKLEN);
-		fe_set_title (sess);
-	}
-}
-
-void
 fe_update_mode_buttons (session *sess, char mode, char sign)
 {
 	int state, i;

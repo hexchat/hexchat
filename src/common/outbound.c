@@ -3180,6 +3180,23 @@ handle_user_input (session *sess, char *text, int history, int nocommand)
 	return handle_command (sess, text + 1, TRUE);
 }
 
+/* changed by Steve Green. Macs sometimes paste with imbedded \r */
+/*void
+handle_multiline (session *sess, char *cmd, int history, int nocommand)
+{
+	while (*cmd)
+	{
+		char *cr = cmd + strcspn (cmd, "\n\r");
+		int end_of_string = *cr == 0;
+		*cr = 0;
+		if (!handle_user_input (sess, cmd, history, nocommand))
+			return;
+		if (end_of_string)
+			break;
+		cmd = cr + 1;
+	}
+}*/
+
 void
 handle_multiline (session *sess, char *cmd, int history, int nocommand)
 {

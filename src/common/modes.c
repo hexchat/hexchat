@@ -258,15 +258,15 @@ mode_cat (char *str, char *addition)
 }
 
 /* handle one mode, e.g.
-   handle_single_mode (mr,outbuf,'+','b',"elite","#warez","banneduser",) */
+   handle_single_mode (mr,'+','b',"elite","#warez","banneduser",) */
 
 static void
-handle_single_mode (mode_run *mr, char *outbuf, char sign, char mode,
-						  char *nick, char *chan, char *arg, int quiet,
-						  int is_324)
+handle_single_mode (mode_run *mr, char sign, char mode, char *nick,
+						  char *chan, char *arg, int quiet, int is_324)
 {
 	session *sess;
 	server *serv = mr->serv;
+	char outbuf[4];
 
 	outbuf[0] = sign;
 	outbuf[1] = 0;
@@ -440,7 +440,7 @@ mode_has_arg (server * serv, char sign, char mode)
 /* handle a MODE or numeric 324 from server */
 
 void
-handle_mode (server * serv, char *outbuf, char *word[], char *word_eol[],
+handle_mode (server * serv, char *word[], char *word_eol[],
 				 char *nick, int numeric_324)
 {
 	session *sess;
@@ -535,7 +535,7 @@ handle_mode (server * serv, char *outbuf, char *word[], char *word_eol[],
 				arg++;
 				argstr = word[arg + offset];
 			}
-			handle_single_mode (&mr, outbuf, sign, *modes, nick, chan,
+			handle_single_mode (&mr, sign, *modes, nick, chan,
 									  argstr, numeric_324 || prefs.raw_modes,
 									  numeric_324);
 		}

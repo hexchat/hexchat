@@ -16,6 +16,8 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
  */
 
+#define GTK_DISABLE_DEPRECATED
+
 #include <stdio.h>
 #include <string.h>
 #include "../../config.h"
@@ -26,10 +28,15 @@
 
 #include "fe-gtk.h"
 
-#include <gtk/gtkclist.h>
 #include <gtk/gtkhbox.h>
 #include <gtk/gtkstock.h>
 #include <gtk/gtkhbbox.h>
+#include <gtk/gtkscrolledwindow.h>
+
+#include <gtk/gtkliststore.h>
+#include <gtk/gtktreeview.h>
+#include <gtk/gtktreeselection.h>
+#include <gtk/gtkcellrenderertext.h>
 
 #include "../common/xchat.h"
 #include "../common/cfgfiles.h"
@@ -39,10 +46,65 @@
 #include "maingui.h"
 #include "urlgrab.h"
 
+/* model for the URL treeview */
+enum
+{
+	URL_COLUMN,
+	N_COLUMNS
+};
 
 static GtkWidget *urlgrabberwindow = 0;
-static GtkWidget *urlgrabberlist;
 
+
+static gboolean
+url_treeview_url_clicked_cb (GtkWidget *view, GdkEventButton *event,
+                             gpointer data)
+{
+	GtkTreeIter iter;
+	gchar *url;
+
+	if (!event ||
+	    !gtkutil_treeview_get_selected (GTK_TREE_VIEW (view), &iter,
+	                                    URL_COLUMN, &url, -1))
+	{
+		return FALSE;
+	}
+	
+	switch (event->button)
+	{
+		case 1:
+			if (event->type == GDK_2BUTTON_PRESS)
+				goto_url (url);
+			break;
+		case 3:
+			menu_urlmenu (event, url);
+			break;
+		default:
+			break;
+	}
+	g_free (url);
+
+	return FALSE;
+}
+
+static GtkWidget *
+url_treeview_new (GtkWidget *box)
+{
+	GtkListStore *store;
+	GtkWidget *view;
+
+	store = gtk_list_store_new (N_COLUMNS, G_TYPE_STRING);
+	g_return_val_if_fail (store != NULL, NULL);
+
+	view = gtkutil_treeview_new (box, GTK_TREE_MODEL (store), NULL,
+	                             URL_COLUMN, _("URL"), -1);
+	g_signal_connect (G_OBJECT (view), "button-press-event",
+	                  G_CALLBACK (url_treeview_url_clicked_cb), NULL);
+	/* don't want column headers */
+	gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (view), FALSE);
+	gtk_widget_show (view);
+	return view;
+}
 
 static void
 url_closegui (GtkWidget *wid, gpointer userdata)
@@ -53,8 +115,26 @@ url_closegui (GtkWidget *wid, gpointer userdata)
 static void
 url_button_clear (void)
 {
+	GtkListStore *store;
+	
 	url_clear ();
-	gtk_clist_clear (GTK_CLIST (urlgrabberlist));
+	store = GTK_LIST_STORE (g_object_get_data (G_OBJECT (urlgrabberwindow),
+	                                           "model"));
+	gtk_list_store_clear (store);
+}
+
+static void
+url_button_copy (GtkWidget *widget, gpointer data)
+{
+	GtkTreeView *view = GTK_TREE_VIEW (data);
+	GtkTreeIter iter;
+	gchar *url = NULL;
+
+	if (gtkutil_treeview_get_selected (view, &iter, URL_COLUMN, &url, -1))
+	{
+		gtkutil_copy_to_clipboard (GTK_WIDGET (view), NULL, url);
+		g_free (url);
+	}
 }
 
 static void
@@ -71,41 +151,27 @@ url_button_save (void)
 							url_save_callback, 0, 0, TRUE);
 }
 
-static gboolean
-url_clicklist (GtkWidget * widget, GdkEventButton * event, gpointer userdata)
-{
-	int row, col;
-	char *text;
-
-	if (event->button == 3)
-	{
-		if (gtk_clist_get_selection_info
-			 (GTK_CLIST (widget), event->x, event->y, &row, &col) < 0)
-			return FALSE;
-		gtk_clist_unselect_all (GTK_CLIST (widget));
-		gtk_clist_select_row (GTK_CLIST (widget), row, 0);
-		if (gtk_clist_get_text (GTK_CLIST (widget), row, 0, &text))
-		{
-			if (text && text[0])
-			{
-				menu_urlmenu (event, text);
-			}
-		}
-	}
-	return FALSE;
-}
-
 void
 fe_url_add (char *urltext)
 {
+	GtkListStore *store;
+	GtkTreeIter iter;
+	
 	if (urlgrabberwindow)
-		gtk_clist_prepend ((GtkCList *) urlgrabberlist, &urltext);
+	{
+		store = GTK_LIST_STORE (g_object_get_data (G_OBJECT (urlgrabberwindow),
+		                                           "model"));
+		gtk_list_store_prepend (store, &iter);
+		gtk_list_store_set (store, &iter,
+		                    URL_COLUMN, urltext,
+		                    -1);
+	}
 }
 
 void
 url_opengui ()
 {
-	GtkWidget *vbox, *hbox;
+	GtkWidget *vbox, *hbox, *view;
 	GSList *list;
 
 	if (urlgrabberwindow)
@@ -117,23 +183,22 @@ url_opengui ()
 	urlgrabberwindow =
 		mg_create_generic_tab ("urlgrabber", _("X-Chat: URL Grabber"), FALSE,
 							 TRUE, url_closegui, NULL, 350, 100, &vbox, 0);
-
-	urlgrabberlist = gtkutil_clist_new (1, 0, vbox, GTK_POLICY_AUTOMATIC,
-													0, 0, 0, 0, GTK_SELECTION_BROWSE);
-	gtk_signal_connect (GTK_OBJECT (urlgrabberlist), "button_press_event",
-							  GTK_SIGNAL_FUNC (url_clicklist), 0);
-	gtk_widget_set_usize (urlgrabberlist, 350, 0);
-	gtk_clist_set_column_width (GTK_CLIST (urlgrabberlist), 0, 100);
+	view = url_treeview_new (vbox);
+	g_object_set_data (G_OBJECT (urlgrabberwindow), "model",
+	                   gtk_tree_view_get_model (GTK_TREE_VIEW (view)));
 
 	hbox = gtk_hbutton_box_new ();
 	gtk_button_box_set_layout (GTK_BUTTON_BOX (hbox), GTK_BUTTONBOX_SPREAD);
+	gtk_container_set_border_width (GTK_CONTAINER (hbox), 5);
 	gtk_box_pack_end (GTK_BOX (vbox), hbox, 0, 0, 0);
 	gtk_widget_show (hbox);
 
 	gtkutil_button (hbox, GTK_STOCK_CLEAR,
-						 0, url_button_clear, 0, _("Clear"));
+						 _("Clear list"), url_button_clear, 0, _("Clear"));
+	gtkutil_button (hbox, GTK_STOCK_COPY,
+						 _("Copy selected URL"), url_button_copy, view, _("Copy"));
 	gtkutil_button (hbox, GTK_STOCK_SAVE,
-						 0, url_button_save, 0, _("Save"));
+						 _("Save list to a file"), url_button_save, 0, _("Save"));
 
 	gtk_widget_show (urlgrabberwindow);
 

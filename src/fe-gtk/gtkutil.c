@@ -19,6 +19,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdarg.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <unistd.h>
@@ -38,6 +39,12 @@
 #include <gtk/gtkentry.h>
 #include <gtk/gtkstock.h>
 #include <gtk/gtkspinbutton.h>
+#include <gtk/gtkclipboard.h>
+#include <gtk/gtktreeview.h>
+#include <gtk/gtktreeselection.h>
+#include <gtk/gtkcellrenderertext.h>
+#include <gtk/gtkcellrenderertoggle.h>
+#include <gtk/gtkversion.h>
 
 #include "../common/xchat.h"
 #include "gtkutil.h"
@@ -448,3 +455,143 @@ gtkutil_window_new (char *title, int width, int height, int mouse_pos)
 
 	return win;
 }
+
+/* pass NULL as selection to paste to both clipboard & X11 text */
+void
+gtkutil_copy_to_clipboard (GtkWidget *widget, GdkAtom selection,
+                           const gchar *str)
+{
+	GtkWidget *win;
+	GtkClipboard *clip, *clip2;
+
+	win = gtk_widget_get_toplevel (GTK_WIDGET (widget));
+	if (GTK_WIDGET_TOPLEVEL (win))
+	{
+		glong len = g_utf8_strlen (str, -1);
+
+		if (selection)
+		{
+#if (GTK_MAJOR_VERSION == 2) && (GTK_MINOR_VERSION == 0)
+			gtk_clipboard_set_text (gtk_clipboard_get (selection), str, len);
+		} else
+		{
+			clip = gtk_clipboard_get (GDK_SELECTION_PRIMARY);
+			clip2 = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
+#else
+			clip = gtk_widget_get_clipboard (win, selection);
+			gtk_clipboard_set_text (clip, str, len);
+		} else
+		{
+			/* copy to both primary X selection and clipboard */
+			clip = gtk_widget_get_clipboard (win, GDK_SELECTION_PRIMARY);
+			clip2 = gtk_widget_get_clipboard (win, GDK_SELECTION_CLIPBOARD);
+#endif
+			gtk_clipboard_set_text (clip, str, len);
+			gtk_clipboard_set_text (clip2, str, len);
+		}
+	}
+}
+
+/* Treeview util functions */
+
+GtkWidget *
+gtkutil_treeview_new (GtkWidget *box, GtkTreeModel *model,
+                      GtkTreeCellDataFunc mapper, ...)
+{
+	GtkWidget *win, *view;
+	GtkCellRenderer *renderer = NULL;
+	GtkTreeViewColumn *col;
+	va_list args;
+	int col_id = 0;
+	GType type;
+	char *title, *attr;
+
+	win = gtk_scrolled_window_new (0, 0);
+	gtk_container_add (GTK_CONTAINER (box), win);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (win),
+											  GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+	gtk_widget_show (win);
+
+	view = gtk_tree_view_new_with_model (model);
+	/* the view now has a ref on the model, we can unref it */
+	g_object_unref (G_OBJECT (model));
+	gtk_container_add (GTK_CONTAINER (win), view);
+
+	va_start (args, mapper);
+	for (col_id = va_arg (args, int); col_id != -1; col_id = va_arg (args, int))
+	{
+		type = gtk_tree_model_get_column_type (model, col_id);
+		switch (type)
+		{
+			case G_TYPE_BOOLEAN:
+				renderer = gtk_cell_renderer_toggle_new ();
+				attr = "active";
+				break;
+			case G_TYPE_STRING:	/* fall through */
+			default:
+				renderer = gtk_cell_renderer_text_new ();
+				attr = "text";
+				break;
+		}
+
+		title = va_arg (args, char *);
+		if (mapper)	/* user-specified function to set renderer attributes */
+		{
+			col = gtk_tree_view_column_new_with_attributes (title, renderer, NULL);
+			gtk_tree_view_column_set_cell_data_func (col, renderer, mapper,
+			                                         GINT_TO_POINTER (col_id), NULL);
+		} else
+		{
+			/* just set the typical attribute for this type of renderer */
+			col = gtk_tree_view_column_new_with_attributes (title, renderer,
+			                                                attr, col_id, NULL);
+		}
+		gtk_tree_view_append_column (GTK_TREE_VIEW (view), col);
+	}
+
+	va_end (args);
+
+	return view;
+}
+
+gboolean
+gtkutil_treemodel_string_to_iter (GtkTreeModel *model, gchar *pathstr, GtkTreeIter *iter_ret)
+{
+	GtkTreePath *path = gtk_tree_path_new_from_string (pathstr);
+	gboolean success;
+
+	success = gtk_tree_model_get_iter (model, iter_ret, path);
+	gtk_tree_path_free (path);
+	return success;
+}
+
+gboolean
+gtkutil_treeview_get_selected_iter (GtkTreeView *view, GtkTreeIter *iter_ret)
+{
+	GtkTreeModel *store;
+	GtkTreeSelection *select;
+	
+	select = gtk_tree_view_get_selection (view);
+	return gtk_tree_selection_get_selected (select, &store, iter_ret);
+}
+
+gboolean
+gtkutil_treeview_get_selected (GtkTreeView *view, GtkTreeIter *iter_ret, ...)
+{
+	GtkTreeModel *store;
+	GtkTreeSelection *select;
+	gboolean has_selected;
+	va_list args;
+	
+	select = gtk_tree_view_get_selection (view);
+	has_selected = gtk_tree_selection_get_selected (select, &store, iter_ret);
+
+	if (has_selected) {
+		va_start (args, iter_ret);
+		gtk_tree_model_get_valist (store, iter_ret, args);
+		va_end (args);
+	}
+
+	return has_selected;
+}
+
