@@ -1059,18 +1059,15 @@ perl_command_unloadall (char *word[], char *word_eol[], void *userdata)
 static int
 perl_command_unload (char *word[], char *word_eol[], void *userdata)
 {
-#if 0
 	int len;
 
 	len = strlen (word[2]);
 	if (len > 3 && strcasecmp (".pl", word[2] + len - 3) == 0)
 	{
-
 		/* if only unloading was possible with this shitty interface :( */
-
+		xchat_print (ph, "Unloading individual perl scripts is not supported.\n");
 		return XCHAT_EAT_XCHAT;
 	}
-#endif
 
 	return XCHAT_EAT_NONE;
 }
