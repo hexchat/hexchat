@@ -508,7 +508,8 @@ menu_middle_cb (GtkWidget *item, int n)
 		mg_showhide_topic (current_sess);
 		break;
 	case 2:
-		mg_userlist_toggle ();
+		prefs.hideuserlist = !prefs.hideuserlist;
+		mg_userlist_showhide (current_sess, prefs.hideuserlist);
 		break;
 	}
 }

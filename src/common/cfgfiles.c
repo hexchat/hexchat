@@ -380,10 +380,10 @@ const struct prefs vars[] = {
 	{"gui_auto_open_chat", P_OFFINT (autoopendccchatwindow), TYPE_BOOL},
 	{"gui_auto_open_recv", P_OFFINT (autoopendccrecvwindow), TYPE_BOOL},
 	{"gui_auto_open_send", P_OFFINT (autoopendccsendwindow), TYPE_BOOL},
-	{"gui_chanmode_buttons", P_OFFINT (chanmodebuttons), TYPE_BOOL},
 	{"gui_hide_menu", P_OFFINT (hidemenu), TYPE_BOOL},
 	{"gui_input_style", P_OFFINT (style_inputbox), TYPE_BOOL},
 	{"gui_lagometer", P_OFFINT (lagometer), TYPE_INT},
+	{"gui_mode_buttons", P_OFFINT (chanmodebuttons), TYPE_BOOL},
 	{"gui_slist_edit", P_OFFINT (slist_edit), TYPE_BOOL},
 	{"gui_slist_select", P_OFFINT (slist_select), TYPE_INT},
 	{"gui_slist_skip", P_OFFINT (slist_skip), TYPE_BOOL},
@@ -393,7 +393,7 @@ const struct prefs vars[] = {
 	{"gui_ulist_doubleclick", P_OFFSET (doubleclickuser), TYPE_STR},
 	{"gui_ulist_hide", P_OFFINT (hideuserlist), TYPE_BOOL},
 	{"gui_ulist_hilight_notify", P_OFFINT (hilitenotify), TYPE_BOOL},
-	{"gui_ulist_paned", P_OFFINT (paned_userlist), TYPE_BOOL},
+	{"gui_ulist_resizable", P_OFFINT (paned_userlist), TYPE_BOOL},
 	{"gui_ulist_pos", P_OFFINT (paned_pos), TYPE_INT},
 	{"gui_ulist_show_hosts", P_OFFINT(showhostname_in_userlist), TYPE_BOOL},
 	{"gui_ulist_sort", P_OFFINT (userlist_sort), TYPE_INT},
@@ -524,6 +524,7 @@ load_config (void)
 	prefs.autoreconnect = 1;
 	prefs.recon_delay = 10;
 	prefs.tabchannels = 1;
+	prefs.paned_userlist = 1;
 	prefs.newtabstofront = 1;
 	prefs.use_server_tab = 1;
 	prefs.windows_as_tabs = 1;
@@ -557,9 +558,7 @@ load_config (void)
 	prefs.autoopendccrecvwindow = 1;
 	prefs.autoopendccsendwindow = 1;
 	prefs.autoopendccchatwindow = 1;
-	prefs.chanmodebuttons = 1;
 	prefs.userhost = 1;
-	prefs.userlistbuttons = 1;
 	prefs.perc_color = 1;
 	prefs.dcc_send_fillspaces = 1;
 	prefs.mainwindow_save = 1;

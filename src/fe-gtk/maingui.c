@@ -380,13 +380,16 @@ mg_unpopulate (session *sess)
 	gui = sess->gui;
 	res = sess->res;
 
-	if (gui->pane)
+	if (gui->pane && sess->type == SESS_CHANNEL)
 		prefs.paned_pos = gui->pane_pos = gtk_paned_get_position (GTK_PANED (gui->pane));
 
 	res->input_text = strdup (GTK_ENTRY (gui->input_box)->text);
 	res->topic_text = strdup (GTK_ENTRY (gui->topic_entry)->text);
-	res->limit_text = strdup (GTK_ENTRY (gui->limit_entry)->text);
-	res->key_text = strdup (GTK_ENTRY (gui->key_entry)->text);
+	if (gui->flag_wid[0] != NULL)
+	{
+		res->limit_text = strdup (GTK_ENTRY (gui->limit_entry)->text);
+		res->key_text = strdup (GTK_ENTRY (gui->key_entry)->text);
+	}
 	if (gui->laginfo)
 		res->lag_text = strdup (gtk_label_get_text (GTK_LABEL (gui->laginfo)));
 	if (gui->throttleinfo)
@@ -510,38 +513,21 @@ mg_populate (session *sess)
 		/* hide the chan-mode buttons */
 		gtk_widget_hide (gui->topicbutton_box);
 		/* hide the userlist */
-		gtk_widget_hide (gui->user_box);
-		if (gui->pane)
-		{
-			prefs.paned_pos = gui->pane_pos = gtk_paned_get_position (GTK_PANED (gui->pane));
-			gtk_paned_set_position (GTK_PANED (gui->pane), 9999);
-		}
+		mg_userlist_showhide (sess, FALSE);
 		break;
 	case SESS_SERVER:
 		gtk_widget_show (gui->topicbutton_box);
 		/* hide the dialog buttons */
 		gtk_widget_hide (gui->dialogbutton_box);
 		/* hide the userlist */
-		gtk_widget_hide (gui->user_box);
+		mg_userlist_showhide (sess, FALSE);
 		break;
 	default:
 		/* hide the dialog buttons */
 		gtk_widget_hide (gui->dialogbutton_box);
 		gtk_widget_show (gui->topicbutton_box);
 		/* show the userlist */
-		if (!prefs.hideuserlist)
-		{
-			if (gui->pane)
-			{
-				if (gui->pane_pos == 0)
-					gui->pane_pos = prefs.paned_pos;
-				if (gui->pane_pos == 0)
-					gui->pane_pos = prefs.mainwindow_width - 150;
-
-				gtk_paned_set_position (GTK_PANED (gui->pane), gui->pane_pos);
-			}
-			gtk_widget_show (gui->user_box);
-		}
+		mg_userlist_showhide (sess, TRUE);
 	}
 
 	/* move to THE irc tab */
@@ -563,8 +549,11 @@ mg_populate (session *sess)
 	/* restore all the GtkEntry's */
 	mg_restore_entry (gui->topic_entry, &res->topic_text);
 	mg_restore_entry (gui->input_box, &res->input_text);
-	mg_restore_entry (gui->key_entry, &res->key_text);
-	mg_restore_entry (gui->limit_entry, &res->limit_text);
+	if (gui->flag_wid[0] != NULL)
+	{
+		mg_restore_entry (gui->key_entry, &res->key_text);
+		mg_restore_entry (gui->limit_entry, &res->limit_text);
+	}
 	mg_restore_label (gui->laginfo, &res->lag_text);
 	mg_restore_label (gui->throttleinfo, &res->queue_text);
 
@@ -897,31 +886,41 @@ mg_create_userlistbuttons (GtkWidget *box)
 }
 
 void
-mg_userlist_toggle (void)
+mg_userlist_showhide (session *sess, int show)
 {
 	GtkWidget *box;
+	session_gui *gui = sess->gui;
+
+	box = gui->user_box;
+
+	if (!show)
+	{
+		if (gui->pane)
+			gtk_paned_set_position (GTK_PANED (gui->pane), 9999);
+		else
+			gtk_widget_hide (box);
+	} else
+	{
+		if (gui->pane)
+			gtk_paned_set_position (GTK_PANED (gui->pane), gui->pane_pos);
+		else
+			gtk_widget_show (box);
+	}
+}
+
+static void
+mg_userlist_toggle_cb (GtkWidget *button, gpointer userdata)
+{
 	session_gui *gui = current_sess->gui;
 
-	box = current_sess->gui->user_box;
-
-	if (GTK_WIDGET_VISIBLE (box))
+	if (GTK_WIDGET_VISIBLE (gui->user_box))
 	{
 		prefs.hideuserlist = 1;
-		gtk_widget_hide (box);
-
-		if (gui->pane)
-		{
-			prefs.paned_pos = gui->pane_pos = gtk_paned_get_position (GTK_PANED (gui->pane));
-			gtk_paned_set_position (GTK_PANED (gui->pane), 9999);
-		}
-
+		mg_userlist_showhide (current_sess, FALSE);
 	} else
 	{
 		prefs.hideuserlist = 0;
-		gtk_widget_show (box);
-
-		if (gui->pane)
-			gtk_paned_set_position (GTK_PANED (gui->pane), gui->pane_pos);
+		mg_userlist_showhide (current_sess, TRUE);
 	}
 
 	gtk_widget_grab_focus (gui->input_box);
@@ -1001,6 +1000,18 @@ void
 mg_x_click_cb (GtkWidget *button, gpointer userdata)
 {
 	GtkWidget *dialog;
+	int page;
+
+	if (current_sess->gui->is_tab && mg_gui)
+	{
+		page = gtk_notebook_get_current_page (GTK_NOTEBOOK (mg_gui->note_book));
+		if (page != 0)
+		{
+			/* destroy non-irc tab (when called from menu.c) */
+			gtk_widget_destroy (tab_group_get_focused (mg_gui->tabs_box));
+			return;
+		}
+	}
 
 	/* is it a non-irc tab? */
 	if (userdata)
@@ -1400,8 +1411,9 @@ mg_create_topicbar (session *sess, GtkWidget *box, char *name)
 	gtk_box_pack_start (GTK_BOX (hbox), bbox, 0, 0, 0);
 	mg_create_dialogbuttons (bbox);
 
-	gtkutil_button (hbox, GTK_STOCK_GOTO_LAST, _("Show/Hide userlist"),
-						 mg_userlist_toggle, 0, 0);
+	if (!prefs.paned_userlist)
+		gtkutil_button (hbox, GTK_STOCK_GOTO_LAST, _("Show/Hide userlist"),
+							 mg_userlist_toggle_cb, 0, 0);
 }
 
 /* check if a word is clickable */
@@ -1636,6 +1648,7 @@ mg_create_center (session *sess, session_gui *gui, GtkWidget *box)
 
 		vbox = gtk_vbox_new (FALSE, 1);
 		gtk_container_add (GTK_CONTAINER (hbox), vbox);
+		mg_create_topicbar (sess, vbox, NULL);
 
 		gtk_container_add (GTK_CONTAINER (box), paned);
 
@@ -1662,6 +1675,7 @@ mg_create_center (session *sess, session_gui *gui, GtkWidget *box)
 
 		vbox = gtk_vbox_new (FALSE, 1);
 		gtk_container_add (GTK_CONTAINER (hbox), vbox);
+		mg_create_topicbar (sess, vbox, NULL);
 
 		mg_create_textarea (gui, vbox);
 		mg_create_userlist (gui, hbox, TRUE);
@@ -2000,13 +2014,13 @@ mg_create_topwindow (session *sess)
 		/* hide the chan-mode buttons */
 		gtk_widget_hide (sess->gui->topicbutton_box);
 		/* hide the userlist */
-		gtk_widget_hide (sess->gui->user_box);
+		mg_userlist_showhide (sess, FALSE);
 	} else
 	{
 		gtk_widget_hide (sess->gui->dialogbutton_box);
 
 		if (prefs.hideuserlist)
-			gtk_widget_hide (sess->gui->user_box);
+			mg_userlist_showhide (sess, FALSE);
 	}
 
 	if (!prefs.topicbar)
@@ -2021,7 +2035,6 @@ mg_create_irctab (session *sess, GtkWidget *book)
 
 	vbox = gtk_vbox_new (FALSE, 3);
 
-	mg_create_topicbar (sess, vbox, NULL);
 	mg_create_center (sess, gui, vbox);
 
 	gtk_notebook_append_page (GTK_NOTEBOOK (book), vbox, NULL);
@@ -2135,7 +2148,7 @@ mg_create_tabwindow (session *sess)
 	gtk_widget_show_all (book);
 
 	if (prefs.hideuserlist)
-		gtk_widget_hide (sess->gui->user_box);
+		mg_userlist_showhide (sess, FALSE);
 
 	if (!prefs.topicbar)
 		gtk_widget_hide (sess->gui->topic_bar);

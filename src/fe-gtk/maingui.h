@@ -9,6 +9,7 @@ void mg_safe_quit (void);
 void mg_switch_page (int relative, int num);
 void mg_move_tab (GtkWidget *button, int delta);
 void mg_bring_tofront (GtkWidget *button);
+void mg_userlist_showhide (session *sess, int show);
 void mg_showhide_topic (session *sess);
 void mg_userlist_toggle (void);
 void mg_set_topic_tip (session *sess);

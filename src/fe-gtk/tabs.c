@@ -478,6 +478,12 @@ tab_group_cleanup (GtkWidget *group)
 	}
 }
 
+GtkWidget *
+tab_group_get_focused (GtkWidget *group)
+{
+	return g_object_get_data (G_OBJECT (group), "foc");
+}
+
 static void
 tab_add_sorted (GtkWidget *box, GtkWidget *tab)
 {
@@ -580,7 +586,7 @@ tab_add_real (GtkWidget *group, GtkWidget *tab, void *family)
 	gtk_widget_show (box);
 	gtk_widget_queue_resize (inner->parent);
 
-	g_idle_add ((GSourceFunc)tab_group_resize, group);
+/*	g_idle_add ((GSourceFunc)tab_group_resize, group);*/
 }
 
 static void
