@@ -1394,7 +1394,7 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 			skip_len++;
 		}
 		else
-			cursor_pos = g_utf8_pointer_to_offset(text, g_utf8_offset_to_pointer(ch, 1));
+			return 2;
 	}
 
 	comp = skip_len;
@@ -1599,7 +1599,8 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 		gtk_entry_set_text (GTK_ENTRY (t), buf);
 		gtk_editable_set_position (GTK_EDITABLE (t), g_utf8_pointer_to_offset(buf, buf + cursor_pos));
 	}
-	g_completion_free(gcomp);
+	if (gcomp)
+		g_completion_free(gcomp);
 	return 2;
 }
 #undef COMP_BUF
