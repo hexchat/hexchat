@@ -25,7 +25,7 @@ pevt_changenick_help
 Channel Action
 XP_TE_CHANACTION
 pevt_chanaction_help
-%C18*%O%C18$t$1 $2%O
+%C18*$t$1%O%C18 $2%O
 2
 
 Channel Action Hilight
@@ -91,7 +91,7 @@ pevt_generic_none_help
 Channel Message
 XP_TE_CHANMSG
 pevt_chanmsg_help
-%C18<%O%C18$1>%O$t$2%O
+%C18<$1%O%C18>%O$t$2%O
 3
 
 Channel Mode Generic
@@ -313,7 +313,7 @@ pevt_dccrecverr_help
 DCC RECV File Open Error
 XP_TE_DCCFILEERR
 pevt_generic_file_help
--%C26-%C27-%O$tDCC RECV: Cannot open $1 for writing ($2).
+%C22*%O$tDCC RECV: Cannot open $1 for writing ($2).
 2
 
 DCC Rename
@@ -445,7 +445,7 @@ pevt_invited_help
 Join
 XP_TE_JOIN
 pevt_join_help
-%C19*%O$t%C19$1 ($3) has joined $2
+%C19*%O$t%C19%B$1 %B($3) has joined $2
 3
 
 Keyword
@@ -457,7 +457,7 @@ pevt_generic_channel_help
 Kick
 XP_TE_KICK
 pevt_kick_help
-<%C26-%C26-%O$t$1 has kicked $2 from $3 ($4%O)
+%C21*%O$t%C21$1 has kicked $2 from $3 ($4%O)
 4
 
 Killed
@@ -715,13 +715,13 @@ pevt_whoisid_help
 WhoIs Authenticated
 XP_TE_WHOIS_AUTH
 pevt_whoisauth_help
--%C26-%C27-%O$t%C28[%O$1%C28] %O$2%C27 $3%O
+%C22*%O$t%C28[%O$1%C28] %O$2%C27 $3%O
 3
 
 WhoIs Real Host
 XP_TE_WHOIS_REALHOST
 pevt_whoisrealhost_help
--%C26-%C27-%O$t%C28[%O$1%C28] %Oreal user@host%C27 $2%O, real IP%C27 $3%O
+%C22*%O$t%C28[%O$1%C28] %Oreal user@host%C27 $2%O, real IP%C27 $3%O
 4
 
 WhoIs Idle Line

@@ -15,7 +15,7 @@ N_("%C22*%O$tCannot join%C26 %B$1 %O(You are banned).")},
 N_("%C22*%O$t$1 is now known as $2")},
 
 {"Channel Action", pevt_chanaction_help, 2, 0,
-N_("%C18*%O%C18$t$1 $2%O")},
+N_("%C18*$t$1%O%C18 $2%O")},
 
 {"Channel Action Hilight", pevt_chanaction_help, 2, 0,
 N_("%C23*%O$t%C23%B$1%B%O%C23 $2%O")},
@@ -48,7 +48,7 @@ N_("%C22*%O$t$1 sets invite on $2")},
 N_("%UChannel          Users   Topic%O")},
 
 {"Channel Message", pevt_chanmsg_help, 3, 0,
-N_("%C18<%O%C18$1>%O$t$2%O")},
+N_("%C18<$1%O%C18>%O$t$2%O")},
 
 {"Channel Mode Generic", pevt_chanmodegen_help, 4, 0,
 N_("%C22*%O$t$1 sets mode $2$3 $4")},
@@ -159,7 +159,7 @@ N_("%C22*%O$tDCC RECV connection established to%C26 $1 %C30[%O$2%C30]%O")},
 N_("%C22*%O$tDCC RECV%C26 $1%O from%C26 $3%O failed. $4.")},
 
 {"DCC RECV File Open Error", pevt_generic_file_help, 2, 0,
-N_("-%C26-%C27-%O$tDCC RECV: Cannot open $1 for writing ($2).")},
+N_("%C22*%O$tDCC RECV: Cannot open $1 for writing ($2).")},
 
 {"DCC Rename", pevt_dccrename_help, 2, 0,
 N_("%C22*%O$tThe file%C26 $1%C already exists, saving it as%C26 $2%O instead.")},
@@ -225,13 +225,13 @@ N_("%C22*%O$tCannot join%C26 %B$1 %O(Channel is invite only).")},
 N_("%C22*%O$tYou have been invited to%C26 $1%O by%C26 $2%C (%C26$3%C)")},
 
 {"Join", pevt_join_help, 3, 0,
-N_("%C19*%O$t%C19$1 ($3) has joined $2")},
+N_("%C19*%O$t%C19%B$1 %B($3) has joined $2")},
 
 {"Keyword", pevt_generic_channel_help, 1, 0,
 N_("%C22*%O$tCannot join%C26 %B$1 %O(Requires keyword).")},
 
 {"Kick", pevt_kick_help, 4, 0,
-N_("<%C26-%C26-%O$t$1 has kicked $2 from $3 ($4%O)")},
+N_("%C21*%O$t%C21$1 has kicked $2 from $3 ($4%O)")},
 
 {"Killed", pevt_kill_help, 2, 0,
 N_("%C22*%O$tYou have been killed by $1 ($2%O)")},
@@ -360,10 +360,10 @@ N_("%C22*%O$t%C28[%O$1%C28] %OEnd of WHOIS list.")},
 N_("%C22*%O$t%C28[%O$1%C28] %O$2")},
 
 {"WhoIs Authenticated", pevt_whoisauth_help, 3, 0,
-N_("-%C26-%C27-%O$t%C28[%O$1%C28] %O$2%C27 $3%O")},
+N_("%C22*%O$t%C28[%O$1%C28] %O$2%C27 $3%O")},
 
 {"WhoIs Real Host", pevt_whoisrealhost_help, 4, 0,
-N_("-%C26-%C27-%O$t%C28[%O$1%C28] %Oreal user@host%C27 $2%O, real IP%C27 $3%O")},
+N_("%C22*%O$t%C28[%O$1%C28] %Oreal user@host%C27 $2%O, real IP%C27 $3%O")},
 
 {"WhoIs Idle Line", pevt_whois4_help, 2, 0,
 N_("%C22*%O$t%C28[%O$1%C28]%O idle%C26 $2%O")},

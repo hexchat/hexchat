@@ -76,7 +76,7 @@ GtkStyle *input_style;
 
 PangoAttrList *newdata_list;
 PangoAttrList *nickseen_list;
-PangoAttrList *newmsg_list = NULL;
+PangoAttrList *newmsg_list;
 static PangoAttrList *plain_list = NULL;
 
 
@@ -86,12 +86,23 @@ mg_attr_list_create (GdkColor *col)
 	PangoAttribute *attr;
 	PangoAttrList *list;
 
-	attr = pango_attr_foreground_new (col->red, col->green, col->blue);
-	attr->start_index = 0;
-	attr->end_index = 0xffff;
-
 	list = pango_attr_list_new ();
-	pango_attr_list_insert (list, attr);
+
+	if (col)
+	{
+		attr = pango_attr_foreground_new (col->red, col->green, col->blue);
+		attr->start_index = 0;
+		attr->end_index = 0xffff;
+		pango_attr_list_insert (list, attr);
+	}
+
+	if (prefs.tab_small)
+	{
+		attr = pango_attr_scale_new (PANGO_SCALE_X_SMALL);
+		attr->start_index = 0;
+		attr->end_index = 0xffff;
+		pango_attr_list_insert (list, attr);
+	}
 
 	return list;
 }
@@ -99,19 +110,18 @@ mg_attr_list_create (GdkColor *col)
 static void
 mg_create_tab_colors (void)
 {
-	if (newmsg_list)
+	if (plain_list)
 	{
+		pango_attr_list_unref (plain_list);
 		pango_attr_list_unref (newmsg_list);
 		pango_attr_list_unref (newdata_list);
 		pango_attr_list_unref (nickseen_list);
 	}
 
+	plain_list = mg_attr_list_create (NULL);
 	newdata_list = mg_attr_list_create (&colors[COL_NEW_DATA]);
 	nickseen_list = mg_attr_list_create (&colors[COL_HILIGHT]);
 	newmsg_list = mg_attr_list_create (&colors[COL_NEW_MSG]);
-
-	if (!plain_list)
-		plain_list = pango_attr_list_new ();
 }
 
 #ifdef WIN32
@@ -1113,10 +1123,11 @@ mg_add_chan (session *sess)
 	sess->res->tab = tab_group_add (sess->gui->tabs_box, name, sess->server,
 											  sess, mg_tab_press_cb, mg_link_cb,
 											  prefs.truncchans, prefs.tab_dnd);
-	g_object_set_data (G_OBJECT (sess->res->tab), "sess", sess);
-
-	if (newmsg_list == NULL)
+	if (plain_list == NULL)
 		mg_create_tab_colors ();
+
+	tab_set_attrlist (sess->res->tab, plain_list);
+	g_object_set_data (G_OBJECT (sess->res->tab), "sess", sess);
 
 	g_signal_connect (G_OBJECT (sess->res->tab), "destroy",
 					      G_CALLBACK (mg_tabdestroy_cb), sess);
@@ -2131,8 +2142,11 @@ static gboolean
 mg_tabwin_focus_cb (GtkWindow * win, GdkEventFocus *event, gpointer userdata)
 {
 	current_sess = current_tab;
-	gtk_xtext_check_marker_visibility(GTK_XTEXT (current_sess->gui->xtext));
-	plugin_emit_dummy_print (current_sess, "Focus Window");
+	if (current_sess)
+	{
+		gtk_xtext_check_marker_visibility (GTK_XTEXT (current_sess->gui->xtext));
+		plugin_emit_dummy_print (current_sess, "Focus Window");
+	}
 	return FALSE;
 }
 
@@ -2404,6 +2418,7 @@ mg_add_generic_tab (char *name, char *title, void *family, GtkWidget *box)
 	but = tab_group_add (mg_gui->tabs_box, name, family, NULL,
 								mg_tab_press_cb, mg_link_cb, prefs.truncchans,
 								prefs.tab_dnd);
+	tab_set_attrlist (but, plain_list);
 	g_object_set_data (G_OBJECT (but), "title", strdup (title));
 	g_object_set_data (G_OBJECT (but), "box", box);
 	g_object_set_data (G_OBJECT (but), "sess", NULL);

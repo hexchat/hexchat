@@ -195,6 +195,7 @@ static const setting tabs_settings[] =
 	{ST_HEADER,	N_("Tabs"),0,0,0},
 	{ST_TOGGLE, N_("Open an extra tab for server messages"), P_OFFINTNL(use_server_tab), 0, 0, 0},
 	{ST_TOGGLE, N_("Open an extra tab for server notices"), P_OFFINTNL(notices_tabs), 0, 0, 0},
+	{ST_TOGGLE, N_("Small tabs"), P_OFFINTNL(tab_small), 0, 0, 0},
 	{ST_MENU,	N_("Focus new tabs:"), P_OFFINTNL(newtabstofront), 0, focusnewtabsmenu, 0},
 	{ST_NUMBER,	N_("Shorten tab labels to:"), P_OFFINTNL(truncchans), 0, (char **)N_("letters."), 99},
 
@@ -892,7 +893,7 @@ setup_create_color_button (GtkWidget *table, int num, int row, int col)
 	char buf[64];
 
 	if (num > 31)
-		buf[0] = 0;
+		strcpy (buf, "<span size=\"x-small\"> </span>");
 	else
 						/* 12345678901 23456789 01  23456789 */
 		sprintf (buf, "<span size=\"x-small\">%d</span>", num);

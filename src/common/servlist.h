@@ -15,6 +15,7 @@ typedef struct ircnet
 	char *pass;
 	char *autojoin;
 	char *command;
+	char *nickserv;
 	char *comment;
 	char *encoding;
 	GSList *servlist;
