@@ -568,7 +568,7 @@ fe_lastlog_foreach (GtkXText *xtext, unsigned char *text, void *data)
 void
 fe_lastlog (session *sess, session *lastlog_sess, char *sstr)
 {
-	if (gtk_xtext_is_empty (GTK_XTEXT (sess->gui->xtext)))
+	if (gtk_xtext_is_empty (sess->res->buffer))
 	{
 		PrintText (lastlog_sess, _("Search buffer is empty.\n"));
 	}

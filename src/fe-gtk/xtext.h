@@ -201,7 +201,7 @@ void gtk_xtext_save (GtkXText * xtext, int fh);
 void gtk_xtext_refresh (GtkXText * xtext, int do_trans);
 void *gtk_xtext_search (GtkXText * xtext, const unsigned char *text, void *start);
 
-gboolean gtk_xtext_is_empty (GtkXText * xtext);
+gboolean gtk_xtext_is_empty (xtext_buffer *buf);
 typedef void (*GtkXTextForeach) (GtkXText *xtext, unsigned char *text, void *data);
 void gtk_xtext_foreach (xtext_buffer *buf, GtkXTextForeach func, void *data);
 

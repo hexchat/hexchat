@@ -1811,10 +1811,8 @@ lastlog (session *sess, char *search)
 
 	lastlog_sess = find_dialog (sess->server, "(lastlog)");
 	if (!lastlog_sess)
-	{
 		lastlog_sess = new_ircwindow (sess->server, "(lastlog)", SESS_DIALOG);
-		lastlog_sess->lastlog_sess = sess;
-	}
+	lastlog_sess->lastlog_sess = sess;
 
 	fe_text_clear (lastlog_sess);
 
