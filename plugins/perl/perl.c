@@ -1731,7 +1731,7 @@ static XS (XS_IRC_user_list)
 	xchat_list *list;
 	xchat_context *ctx, *old = xchat_get_context (ph);
 
-	if( items != 2 ) {
+	if( items > 2 ) {
 		xchat_print (ph, "Usage: IRC::user_list(channel,server)");
 		XSRETURN_EMPTY;
 	} else {
