@@ -131,7 +131,7 @@ find_session_from_nick (char *nick, server *serv)
 }
 
 void
-inbound_privmsg (server *serv, char *tbuf, char *from, char *ip, char *text)
+inbound_privmsg (server *serv, char *from, char *ip, char *text)
 {
 	session *sess;
 
@@ -155,18 +155,24 @@ inbound_privmsg (server *serv, char *tbuf, char *from, char *ip, char *text)
 			if (prefs.logging && sess->logfd != -1 &&
 				(!sess->topic || strcmp(sess->topic, ip)))
 			{
-				snprintf (tbuf, 2048, "[%s has address %s]\n", from, ip);
+				char tbuf[1024];
+				snprintf (tbuf, sizeof (tbuf), "[%s has address %s]\n", from, ip);
 				write (sess->logfd, tbuf, strlen (tbuf));
 			}
 			set_topic (sess, ip);
 		}
-		inbound_chanmsg (serv, tbuf, from, from, text, FALSE);
+		inbound_chanmsg (serv, NULL, from, text, FALSE);
 		return;
 	}
+
 	sess = find_session_from_nick (from, serv);
 	if (!sess)
 		sess = serv->front_session;
-	EMIT_SIGNAL (XP_TE_PRIVMSG, sess, from, text, NULL, NULL, 0);
+
+	if (sess->type == SESS_DIALOG)
+		EMIT_SIGNAL (XP_TE_DPRIVMSG, sess, from, text, NULL, NULL, 0);
+	else
+		EMIT_SIGNAL (XP_TE_PRIVMSG, sess, from, text, NULL, NULL, 0);
 }
 
 static int
@@ -219,8 +225,7 @@ is_hilight (char *text, session *sess, server *serv)
 }
 
 void
-inbound_action (session *sess, char *tbuf, char *chan, char *from, char *text,
-					 int fromme)
+inbound_action (session *sess, char *chan, char *from, char *text, int fromme)
 {
 	session *def = sess;
 	server *serv = sess->server;
@@ -274,7 +279,8 @@ inbound_action (session *sess, char *tbuf, char *chan, char *from, char *text,
 
 	if (prefs.colorednicks)
 	{
-		sprintf (tbuf, "\003%d%s", color_of (from), from);
+		char tbuf[NICKLEN + 4];
+		snprintf (tbuf, sizeof (tbuf), "\003%d%s", color_of (from), from);
 		EMIT_SIGNAL (XP_TE_CHANACTION, sess, tbuf, text, NULL, NULL, 0);
 	} else
 	{
@@ -283,17 +289,22 @@ inbound_action (session *sess, char *tbuf, char *chan, char *from, char *text,
 }
 
 void
-inbound_chanmsg (server *serv, char *tbuf, char *chan, char *from, char *text,
-					  char fromme)
+inbound_chanmsg (server *serv, char *chan, char *from, char *text, char fromme)
 {
 	struct User *user;
 	session *sess;
 	int hilight = FALSE;
 	char nickchar[2] = "\000";
 
-	sess = find_channel (serv, chan);
-	if (!sess && !is_channel (serv, chan))
-		sess = find_dialog (serv, chan);
+	if (chan)
+	{
+		sess = find_channel (serv, chan);
+		if (!sess && !is_channel (serv, chan))
+			sess = find_dialog (serv, chan);
+	} else
+	{
+		sess = find_dialog (serv, from);
+	}
 	if (!sess)
 		return;
 
@@ -329,12 +340,13 @@ inbound_chanmsg (server *serv, char *tbuf, char *chan, char *from, char *text,
 			fe_beep ();
 	}
 	if (sess->type == SESS_DIALOG)
-		EMIT_SIGNAL (XP_TE_DPRIVMSG, sess, from, text, nickchar, NULL, 0);
+		EMIT_SIGNAL (XP_TE_DPRIVMSG, sess, from, text, NULL, NULL, 0);
 	else if (hilight)
 		EMIT_SIGNAL (XP_TE_HCHANMSG, sess, from, text, nickchar, NULL, 0);
 	else if (prefs.colorednicks)
 	{
-		sprintf (tbuf, "\003%d%s", color_of (from), from);
+		char tbuf[NICKLEN + 4];
+		snprintf (tbuf, sizeof (tbuf), "\003%d%s", color_of (from), from);
 		EMIT_SIGNAL (XP_TE_CHANMSG, sess, tbuf, text, nickchar, NULL, 0);
 	}
 	else
@@ -694,10 +706,11 @@ inbound_quit (server *serv, char *nick, char *ip, char *reason)
 }
 
 void
-inbound_ping_reply (session *sess, char *outbuf, char *timestring, char *from)
+inbound_ping_reply (session *sess, char *timestring, char *from)
 {
 	unsigned long tim, nowtim, dif;
 	int lag = 0;
+	char outbuf[64];
 
 	if (strncmp (timestring, "LAG", 3) == 0)
 	{
@@ -714,7 +727,7 @@ inbound_ping_reply (session *sess, char *outbuf, char *timestring, char *from)
 	if (lag)
 	{
 		sess->server->lag_sent = 0;
-		sprintf (outbuf, "%ld.%ld", dif / 100000, (dif / 10000) % 100);
+		snprintf (outbuf, sizeof (outbuf), "%ld.%ld", dif / 100000, (dif / 10000) % 100);
 		fe_set_lag (sess->server, (int)((float)atof (outbuf)));
 		return;
 	}
@@ -727,7 +740,7 @@ inbound_ping_reply (session *sess, char *outbuf, char *timestring, char *from)
 			EMIT_SIGNAL (XP_TE_PINGREP, sess, from, "?", NULL, NULL, 0);
 	} else
 	{
-		sprintf (outbuf, "%ld.%ld%ld", dif / 1000000, (dif / 100000) % 10, dif % 10);
+		snprintf (outbuf, sizeof (outbuf), "%ld.%ld%ld", dif / 1000000, (dif / 100000) % 10, dif % 10);
 		EMIT_SIGNAL (XP_TE_PINGREP, sess, from, outbuf, NULL, NULL, 0);
 	}
 }
@@ -748,8 +761,7 @@ find_session_from_type (int type, server *serv)
 }
 
 void
-inbound_notice (server *serv, char *outbuf, char *to, char *nick, char *msg,
-					 char *ip)
+inbound_notice (server *serv, char *to, char *nick, char *msg, char *ip)
 {
 	char *po,*ptr=to;
 	session *sess = 0;
@@ -817,7 +829,7 @@ inbound_notice (server *serv, char *outbuf, char *to, char *nick, char *msg,
 		msg++;
 		if (!strncmp (msg, "PING", 4))
 		{
-			inbound_ping_reply (sess, outbuf, msg + 5, nick);
+			inbound_ping_reply (sess, msg + 5, nick);
 			return;
 		}
 	}
@@ -949,15 +961,16 @@ inbound_next_nick (session *sess, char *nick)
 }
 
 void
-do_dns (session *sess, char *tbuf, char *nick, char *host)
+do_dns (session *sess, char *nick, char *host)
 {
 	char *po;
+	char tbuf[1024];
 
 	po = strrchr (host, '@');
 	if (po)
 		host = po + 1;
 	EMIT_SIGNAL (XP_TE_RESOLVINGUSER, sess, nick, host, NULL, NULL, 0);
-	snprintf (tbuf, 2048, "exec -d %s %s", prefs.dnsprogram, host);
+	snprintf (tbuf, sizeof (tbuf), "exec -d %s %s", prefs.dnsprogram, host);
 	handle_command (sess, tbuf, FALSE);
 }
 
@@ -1056,24 +1069,28 @@ inbound_user_info_start (session *sess, char *nick)
 }
 
 int
-inbound_user_info (session *sess, char *outbuf, char *chan, char *user,
-						 char *host, char *servname, char *nick, char *realname,
+inbound_user_info (session *sess, char *chan, char *user, char *host,
+						 char *servname, char *nick, char *realname,
 						 unsigned int away)
 {
 	server *serv = sess->server;
 	session *who_sess;
+	char *uhost;
 
 	who_sess = find_channel (serv, chan);
 	if (who_sess)
 	{
 		if (user && host)
 		{
-			snprintf (outbuf, 2048, "%s@%s", user, host);
-			if (!userlist_add_hostname (who_sess, nick, outbuf, realname, servname, away))
+			uhost = malloc (strlen (user) + strlen (host) + 2);
+			sprintf (uhost, "%s@%s", user, host);
+			if (!userlist_add_hostname (who_sess, nick, uhost, realname, servname, away))
 			{
+				free (uhost);
 				if (!who_sess->doing_who)
 					return 0;
 			}
+			free (uhost);
 		} else
 		{
 			if (!userlist_add_hostname (who_sess, nick, NULL, realname, servname, away))
@@ -1087,7 +1104,7 @@ inbound_user_info (session *sess, char *outbuf, char *chan, char *user,
 		if (!serv->doing_who)
 			return 0;
 		if (host)
-			do_dns (sess, outbuf, nick, host);
+			do_dns (sess, nick, host);
 	}
 	return 1;
 }
