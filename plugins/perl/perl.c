@@ -571,8 +571,8 @@ static XS (XS_Xchat_emit_print)
 			break;
 		case 3:
 			RETVAL = xchat_emit_print (ph, event_name,
-							SvPV_nolen (ST (2)), 
-							SvPV_nolen (ST (3)),
+							SvPV_nolen (ST (1)), 
+							SvPV_nolen (ST (2)),
 							NULL);
 			break;
 		case 4:
