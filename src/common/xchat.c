@@ -669,14 +669,6 @@ find_away_message (struct server *serv, char *nick)
 	"NAME ENDSUB\n"			"CMD \n\n"\
 	"NAME Open Dialog Window\n"		"CMD query %s\n\n"
 
-#define defaultconf_buttons \
-	"NAME Op\n"					"CMD op %a\n\n"\
-	"NAME DeOp\n"				"CMD deop %a\n\n"\
-	"NAME Ban\n"				"CMD ban %s\n\n"\
-	"NAME Kick\n"				"CMD getstr bye \"kick %s\" \"Enter reason to kick %s:\"\n\n"\
-	"NAME Sendfile\n"			"CMD dcc send %s\n\n"\
-	"NAME Dialog\n"			"CMD query %s\n\n"
-
 #define defaultconf_dlgbuttons \
 	"NAME Whois\n"				"CMD whois %s\n\n"\
 	"NAME Send\n"				"CMD dcc send %s\n\n"\

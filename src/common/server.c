@@ -55,10 +55,6 @@
 #include "ssl.h"
 #endif
 
-#ifdef USE_JCODE
-#include "jcode.h"
-#endif
-
 #ifdef WIN32
 #include "identd.c"
 #endif
@@ -181,38 +177,13 @@ tcp_send_len (server *serv, char *buf, int len)
 	char *dbuf;
 	int noqueue = !serv->outbound_queue;
 
-#ifdef USE_JCODE
-	if (prefs.kanji_conv)
-	{
-		buf = kanji_conv_auto (buf, "ISO-2022-JP");
-		if (!buf)
-			return -1;
-		len = strlen (buf);
-	}
-
-	if (!prefs.throttle)
-	{
-		int ret = tcp_send_real (serv, buf, len);
-		if (prefs.kanji_conv)
-			free (buf);
-		return ret;
-	}
-#else
-
 	if (!prefs.throttle)
 		return tcp_send_real (serv, buf, len);
-
-#endif
 
 	dbuf = malloc (len + 2);	/* first byte is the priority */
 	dbuf[0] = 1;	/* pri 1 for most things */
 	memcpy (dbuf + 1, buf, len);
 	dbuf[len + 1] = 0;
-
-#ifdef USE_JCODE
-	if (prefs.kanji_conv)
-		free (buf);
-#endif
 
 	/* privmsg and notice get a lower priority */
 	if (strncasecmp (dbuf + 1, "PRIVMSG", 7) == 0 ||
@@ -267,25 +238,6 @@ close_socket (int sok)
 	fe_timeout_add (5000, close_socket_cb, GINT_TO_POINTER (sok));
 }
 
-static char *
-text_validate (char **text)
-{
-	char *utf;
-
-	/* valid utf8? */
-	if (g_utf8_validate (*text, -1, 0))
-		return NULL;
-
-	/* maybe it's iso-8859-1 */
-	utf = g_convert (*text, -1, "UTF-8", "ISO-8859-1", 0, 0, 0);
-	if (!utf)	/* should never happen; all text is iso-8859-1 valid */
-		*text = g_strdup ("%INVALID%");
-	else
-		*text = utf;
-
-	return utf;
-}
-
 /* handle 1 line of text received from the server */
 
 static void
@@ -293,16 +245,6 @@ server_inline (server *serv, char *line, int len)
 {
 	char *utf;
 	char *conv;
-#ifdef USE_JCODE
-	char *oline;
-
-	oline = line;
-	if (prefs.kanji_conv)
-	{
-		line = kanji_conv_to_locale (line);
-		len = strlen (line);
-	}
-#endif
 
 	if (serv->encoding == NULL)	/* system */
 		utf = g_locale_to_utf8 (line, len, NULL, NULL, NULL);
@@ -326,11 +268,6 @@ server_inline (server *serv, char *line, int len)
 
 	if (conv)
 		g_free (conv);
-
-#ifdef USE_JCODE
-	if (oline != line)
-		free (line);
-#endif
 }
 
 /* read data from socket */

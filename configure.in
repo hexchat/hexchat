@@ -21,7 +21,6 @@ AH_VERBATIM([USE_DEBUG],[#undef USE_DEBUG])
 AH_VERBATIM([USE_GNOME],[#undef USE_GNOME])
 AH_VERBATIM([USE_HEBREW],[#undef USE_HEBREW])
 AH_VERBATIM([USE_IPV6],[#undef USE_IPV6])
-AH_VERBATIM([USE_JCODE],[#undef USE_JCODE])
 AH_VERBATIM([USE_MMX],[#undef USE_MMX])
 AH_VERBATIM([USE_OPENSSL],[#undef USE_OPENSSL])
 AH_VERBATIM([USE_PLUGIN],[#undef USE_PLUGIN])
@@ -75,11 +74,6 @@ AC_ARG_ENABLE(ipv6,
 AC_ARG_ENABLE(xft,
 [  --enable-xft            enable use of Xft directly (default: no)],
         xft=$enableval, xft=no)
-
-#AC_ARG_ENABLE(japanese-conv, 
-#[  --enable-japanese-conv  Enable Japanese code conversion support.
-#                          iconv.h is needed. (default: no)],
-#			WITH_JAPANESE=$enableval, WITH_JAPANESE=no)
 
 AC_ARG_ENABLE(openssl,
 [  --enable-openssl[=PATH]   enable use of openSSL],
@@ -419,16 +413,6 @@ if test "$hebrew" = yes; then
 fi
 
 dnl *********************************************************************
-dnl ** JAPANESE/ICONV ***************************************************
-dnl *********************************************************************
-
-#WITH_JAPANESE=no
-#if test "$WITH_JAPANESE" = "yes"; then
-#	AC_CHECK_HEADER([iconv.h], AC_DEFINE(USE_JCODE))
-#fi
-#AM_CONDITIONAL(DO_ICONV, test "$WITH_JAPANESE" = "yes")
-
-dnl *********************************************************************
 dnl ** MMX **************************************************************
 dnl *********************************************************************
 
@@ -579,7 +563,6 @@ else
   echo link with socks5 .... : $socks\	text backend ........ : xft
 fi
 echo openssl support ..... : $openssl
-#\	japanese conversion . : $WITH_JAPANESE
 echo ipv6 support ........ : $ipv6
 #\	hebrew support ...... : $hebrew
 echo

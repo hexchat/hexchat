@@ -14,8 +14,6 @@ EXTRA_DIST = makefile.msc \
 	ignore.h \
 	inbound.h \
 	inet.h \
-	jcode.c \
-	jcode.h \
 	make-te.c \
 	modes.h \
 	network.h \
@@ -43,12 +41,8 @@ if USE_OPENSSL
 ssl_c = ssl.c
 endif
 
-#if DO_ICONV
-#jcode_c = jcode.c
-#endif
-
 libxchatcommon_a_SOURCES = cfgfiles.c ctcp.c dcc.c history.c ignore.c \
-	inbound.c $(jcode_c) modes.c network.c notify.c outbound.c \
+	inbound.c modes.c network.c notify.c outbound.c \
 	plugin.c plugin-timer.c proto-irc.c server.c servlist.c $(ssl_c) \
 	text.c url.c userlist.c util.c xchat.c
 

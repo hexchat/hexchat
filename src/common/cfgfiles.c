@@ -33,14 +33,11 @@
 #include "fe.h"
 #include "text.h"
 #include "xchatc.h"
-#ifdef USE_JCODE
-#include <locale.h>
-#endif
 
 #ifdef WIN32
 #define DEF_FONT "monospace 10"
 #else
-#define DEF_FONT "monospace 12"
+#define DEF_FONT "monospace 11"
 #endif
 
 void
@@ -451,9 +448,6 @@ load_config (void)
 	char *cfg;
 	const char *username;
 	int res, val, i, fh;
-#ifdef	USE_JCODE
-	gchar *locale;
-#endif
 
 	check_prefs_dir ();
 	username = g_get_user_name ();
@@ -546,12 +540,6 @@ load_config (void)
 	strcpy (prefs.font_normal, DEF_FONT);
 	strcpy (prefs.soundcmd, "esdplay");
 	strcpy (prefs.dnsprogram, "host");
-
-#ifdef	USE_JCODE
-	locale = setlocale (LC_CTYPE, "");
-	if (locale != NULL && !g_strncasecmp (locale, "ja", 2))
-		prefs.kanji_conv = 1;
-#endif
 
 	fh = open (default_file (), OFLAGS | O_RDONLY);
 	if (fh != -1)

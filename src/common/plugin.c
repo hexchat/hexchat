@@ -48,6 +48,7 @@ typedef struct session xchat_context;
 
 #define DEBUG(t) PrintText(0,t)
 
+/* crafted to be an even 32 bytes */
 struct _xchat_hook
 {
 	xchat_plugin *pl;	/* the plugin to which it belongs */
@@ -57,8 +58,7 @@ struct _xchat_hook
 	void *userdata;	/* passed to the callback */
 	int tag;				/* for timers & FDs only */
 	int type;			/* HOOK_* */
-	int pri;				/* priority */
-	int fd;				/* fd for HOOK_FD only */
+	int pri;	/* fd */	/* priority / fd for HOOK_FD only */
 };
 
 struct _xchat_list
@@ -90,7 +90,8 @@ enum
 	HOOK_SERVER,	/* PRIVMSG, NOTICE, numerics */
 	HOOK_PRINT,		/* All print events */
 	HOOK_TIMER,		/* timeouts */
-	HOOK_FD			/* sockets & fds */
+	HOOK_FD,			/* sockets & fds */
+	HOOK_DELETED	/* marked for deletion */
 };
 
 GSList *plugin_list = NULL;	/* export for plugingui.c */
@@ -414,7 +415,7 @@ plugin_hook_run (session *sess, char *name, char *word[], char *word_eol[], int 
 	{
 		list = plugin_hook_find (list, type, name);
 		if (!list)
-			return eat;
+			goto xit;
 
 		hook = list->data;
 		next = list->next;
@@ -435,14 +436,34 @@ plugin_hook_run (session *sess, char *name, char *word[], char *word_eol[], int 
 		}
 
 		if ((ret & EAT_XCHAT) && (ret & EAT_PLUGIN))
-			return 1;
+		{
+			eat = 1;
+			goto xit;
+		}
 		if (ret & EAT_PLUGIN)
-			return eat;	/* stop running plugins */
+			goto xit;	/* stop running plugins */
 		if (ret & EAT_XCHAT)
 			eat = 1;	/* eventually we'll return 1, but continue running plugins */
 
 		list = next;
 	}
+
+xit:
+	/* really remove deleted hooks now */
+	list = hook_list;
+	while (list)
+	{
+		hook = list->data;
+		next = list->next;
+		if (hook->type == HOOK_DELETED)
+		{
+			hook_list = g_slist_remove (hook_list, hook);
+			free (hook);
+		}
+		list = next;
+	}
+
+	return eat;
 }
 
 /* execute a plugged in command. Called from outbound.c */
@@ -541,7 +562,7 @@ plugin_fd_cb (GIOChannel *source, GIOCondition condition, xchat_hook *hook)
 	if (condition & G_IO_PRI)
 		flags |= 4;
 
-	return ((xchat_fd_cb *)hook->callback) (hook->fd, flags, hook->userdata);
+	return ((xchat_fd_cb *)hook->callback) (hook->pri, flags, hook->userdata);
 }
 
 /* allocate and add a hook to our list. Used for all 4 types */
@@ -615,10 +636,8 @@ plugin_show_help (session *sess, char *cmd)
 void *
 xchat_unhook (xchat_plugin *ph, xchat_hook *hook)
 {
-	void *userdata;
-
 	/* perl.c trips this */
-	if (!g_slist_find (hook_list, hook))
+	if (hook->type == HOOK_DELETED || !g_slist_find (hook_list, hook))
 		return NULL;
 
 	if (hook->type == HOOK_TIMER && hook->tag != 0)
@@ -627,16 +646,14 @@ xchat_unhook (xchat_plugin *ph, xchat_hook *hook)
 	if (hook->type == HOOK_FD)
 		fe_input_remove (hook->tag);
 
-	hook_list = g_slist_remove (hook_list, hook);
+	hook->type = HOOK_DELETED;	/* expunge later */
 
-	userdata = hook->userdata;
 	if (hook->name)
 		free (hook->name);	/* NULL for timers & fds */
 	if (hook->help_text)
 		free (hook->help_text);	/* NULL for non-commands */
-	free (hook);
 
-	return userdata;
+	return hook->userdata;
 }
 
 xchat_hook *
@@ -682,7 +699,7 @@ xchat_hook_fd (xchat_plugin *ph, int fd, int flags,
 		read = 3;
 
 	hook = plugin_add_hook (ph, HOOK_FD, 0, 0, 0, callb, 0, userdata);
-	hook->fd = fd;
+	hook->pri = fd;
 	hook->tag = fe_input_add (fd, read, flags&2, flags&4, plugin_fd_cb, hook);
 
 	return hook;

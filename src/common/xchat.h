@@ -226,9 +226,6 @@ struct xchatprefs
 	unsigned int style_namelistgad;
 	unsigned int style_inputbox;
 	unsigned int windows_as_tabs;
-#ifdef USE_JCODE
-	unsigned int kanji_conv;
-#endif
 	unsigned int indent_nicks;
 	unsigned int show_separator;
 	unsigned int thin_separator;

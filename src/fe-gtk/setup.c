@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 
 #include "../common/xchat.h"
 #include "../common/cfgfiles.h"
@@ -420,7 +422,6 @@ setup_filereq_cb (GtkWidget *entry, void *data2, char *file)
 	{
 		if (file[0])
 			gtk_entry_set_text (GTK_ENTRY (entry), file);
-		free (file);
 	}
 }
 
@@ -896,6 +897,14 @@ setup_apply (struct xchatprefs *pr)
 		new_pix = TRUE;
 
 	memcpy (&prefs, pr, sizeof (prefs));
+
+#ifdef WIN32
+	mkdir (prefs.dccdir);
+	mkdir (prefs.dcc_completed_dir);
+#else
+	mkdir (prefs.dccdir, S_IRUSR | S_IWUSR | S_IXUSR);
+	mkdir (prefs.dcc_completed_dir, S_IRUSR | S_IWUSR | S_IXUSR);
+#endif
 
 	if (new_pix)
 	{

@@ -3849,6 +3849,13 @@ gtk_xtext_remove_top (xtext_buffer *buffer)
 	buffer->text_first = ent->next;
 	buffer->text_first->prev = NULL;
 
+	buffer->old_value -= ent->lines_taken;
+	if (buffer->xtext->buffer == buffer)	/* is it the current buffer? */
+	{
+		buffer->xtext->adj->value -= ent->lines_taken;
+		buffer->xtext->select_start_adj -= ent->lines_taken;
+	}
+
 	if (ent == buffer->pagetop_ent)
 		buffer->pagetop_ent = NULL;
 
@@ -3871,6 +3878,7 @@ gtk_xtext_clear (xtext_buffer *buf)
 
 	buf->last_ent_start = NULL;
 	buf->last_ent_end = NULL;
+	dontscroll (buf);
 
 	while (buf->text_first)
 	{

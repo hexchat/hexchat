@@ -432,7 +432,7 @@ inbound_ujoin (server *serv, char *chan, char *nick, char *ip)
 			sess = find_unused_session (serv);
 			if (!sess)
 				/* last resort, open a new tab/window */
-				sess = new_ircwindow (serv, NULL, SESS_CHANNEL);
+				sess = new_ircwindow (serv, chan, SESS_CHANNEL);
 		}
 	}
 

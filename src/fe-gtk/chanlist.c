@@ -37,6 +37,7 @@
 #include <gtk/gtkentry.h>
 #include <gtk/gtkhbox.h>
 #include <gtk/gtkvbox.h>
+#include <gtk/gtkspinbutton.h>
 #include <gtk/gtkstock.h>
 #include <gdk/gdkkeysyms.h>
 #include <gtk/gtkhbbox.h>
@@ -530,15 +531,15 @@ chanlist_save (GtkWidget * wid, struct server *serv)
 }
 
 static void
-chanlist_minusers (GtkWidget * wid, struct server *serv)
+chanlist_minusers (GtkSpinButton *wid, struct server *serv)
 {
-	serv->gui->chanlist_minusers = atoi (gtk_entry_get_text (GTK_ENTRY (wid)));
+	serv->gui->chanlist_minusers = gtk_spin_button_get_value_as_int (wid);
 }
 
 static void
-chanlist_maxusers (GtkWidget * wid, struct server *serv)
+chanlist_maxusers (GtkSpinButton *wid, struct server *serv)
 {
-	serv->gui->chanlist_maxusers = atoi (gtk_entry_get_text (GTK_ENTRY (wid)));
+	serv->gui->chanlist_maxusers = gtk_spin_button_get_value_as_int (wid);
 }
 
 static void
@@ -580,8 +581,7 @@ void
 chanlist_opengui (struct server *serv)
 {
 	gchar *titles[] = { _("Channel"), _("Users"), _("Topic") };
-	GtkWidget *frame, *vbox, *hbox, *sortvbox, *sorthbox, *numtable,
-		*table, *wid, *real_wid;
+	GtkWidget *frame, *vbox, *hbox, *table, *wid;
 	char tbuf[256];
 
 	if (serv->gui->chanlist_window)
@@ -598,9 +598,8 @@ chanlist_opengui (struct server *serv)
 	if (!serv->gui->chanlist_minusers)
 		serv->gui->chanlist_minusers = 3;
 
-	if (!serv->gui->chanlist_maxusers)
-		serv->gui->chanlist_maxusers = 0;
-
+	/*if (!serv->gui->chanlist_maxusers)
+		serv->gui->chanlist_maxusers = 0;*/
 
 	serv->gui->chanlist_window =
 		mg_create_generic_tab ("chanlist", tbuf, FALSE, TRUE, chanlist_closegui,
@@ -610,78 +609,49 @@ chanlist_opengui (struct server *serv)
 	gtk_container_set_border_width (GTK_CONTAINER (frame), 2);
 	gtk_widget_show (frame);
 
-	table = gtk_table_new (2, 3, FALSE);
+	table = gtk_table_new (6, 3, FALSE);
+	gtk_table_set_col_spacings (GTK_TABLE (table), 25);
+	gtk_table_set_row_spacings (GTK_TABLE (table), 2);
 	gtk_container_set_border_width (GTK_CONTAINER (table), 2);
 	gtk_container_add (GTK_CONTAINER (frame), table);
 	gtk_widget_show (table);
 	gtk_box_pack_start (GTK_BOX (vbox), frame, FALSE, FALSE, 5);
 
-	wid = gtk_alignment_new (0.0, 0.0, 0.0, 0.0);
-	gtk_widget_show (wid);
-	numtable = gtk_table_new (2, 2, FALSE);
-	gtk_container_add (GTK_CONTAINER (wid), numtable);
-	gtk_table_attach_defaults (GTK_TABLE (table), wid, 0, 1, 0, 1);
-	gtk_widget_show (numtable);
-
-	wid = gtk_alignment_new (0.0, 0.0, 0.0, 0.0);
-	real_wid = gtk_label_new (_("Minimum Users: "));
-	gtk_container_add (GTK_CONTAINER (wid), real_wid);
-	gtk_table_attach_defaults (GTK_TABLE (numtable), wid, 0, 1, 0, 1);
+	wid = gtk_label_new (_("Minimum Users:"));
+	gtk_misc_set_alignment (GTK_MISC (wid), 1.0, 0.5);
+	gtk_table_attach (GTK_TABLE (table), wid, 0, 1, 0, 1,
+							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
 	gtk_widget_show (wid);
 
-	wid = gtk_entry_new_with_max_length (6);
-	gtk_widget_set_usize (wid, 40, 0);
-	sprintf (tbuf, "%d", serv->gui->chanlist_minusers);
-	gtk_entry_set_text (GTK_ENTRY (wid), tbuf);
-	gtk_signal_connect (GTK_OBJECT (wid), "changed",
-							  GTK_SIGNAL_FUNC (chanlist_minusers), serv);
-	gtk_signal_connect (GTK_OBJECT (wid), "key_press_event",
-							  GTK_SIGNAL_FUNC (chanlist_editable_keypress),
-							  (gpointer) serv);
-	gtk_table_attach_defaults (GTK_TABLE (numtable), wid, 1, 2, 0, 1);
-	gtk_widget_show (real_wid);
+	wid = gtk_spin_button_new_with_range (0, 999999, 1);
+	gtk_spin_button_set_value (GTK_SPIN_BUTTON (wid),
+										serv->gui->chanlist_minusers);
+	g_signal_connect (G_OBJECT (wid), "value-changed",
+							G_CALLBACK (chanlist_minusers), serv);
+	gtk_table_attach (GTK_TABLE (table), wid, 1, 2, 0, 1,
+							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
 	gtk_widget_show (wid);
 
-	wid = gtk_alignment_new (0.0, 0.0, 0.0, 0.0);
-	real_wid = gtk_label_new (_("Maximum Users: "));
-	gtk_container_add (GTK_CONTAINER (wid), real_wid);
-	gtk_table_attach_defaults (GTK_TABLE (numtable), wid, 0, 1, 1, 2);
-	gtk_widget_show (real_wid);
+	wid = gtk_label_new (_("Maximum Users:"));
+	gtk_misc_set_alignment (GTK_MISC (wid), 1.0, 0.5);
+	gtk_table_attach (GTK_TABLE (table), wid, 0, 1, 2, 3,
+							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
 	gtk_widget_show (wid);
 
-	wid = gtk_entry_new_with_max_length (6);
-	gtk_widget_set_usize (wid, 40, 0);
-	if (serv->gui->chanlist_maxusers > 0)
-		sprintf (tbuf, "%d", serv->gui->chanlist_maxusers);
-	else
-		tbuf[0] = 0;
-	gtk_entry_set_text (GTK_ENTRY (wid), tbuf);
-	gtk_signal_connect (GTK_OBJECT (wid), "changed",
-							  GTK_SIGNAL_FUNC (chanlist_maxusers), serv);
-	gtk_signal_connect (GTK_OBJECT (wid), "key_press_event",
-							  GTK_SIGNAL_FUNC (chanlist_editable_keypress),
-							  (gpointer) serv);
-	gtk_table_attach_defaults (GTK_TABLE (numtable), wid, 1, 2, 1, 2);
+	wid = gtk_spin_button_new_with_range (0, 999999, 1);
+	gtk_spin_button_set_value (GTK_SPIN_BUTTON (wid),
+										serv->gui->chanlist_maxusers);
+	g_signal_connect (G_OBJECT (wid), "value-changed",
+							G_CALLBACK (chanlist_maxusers), serv);
+	gtk_table_attach (GTK_TABLE (table), wid, 1, 2, 2, 3,
+							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
 	gtk_widget_show (wid);
 
-	wid = gtk_alignment_new (1.0, 0.0, 0.0, 0.0);
-	sorthbox = gtk_hbox_new (FALSE, 2);
-	gtk_container_add (GTK_CONTAINER (wid), sorthbox);
-	gtk_widget_show (sorthbox);
-
-	gtk_table_attach_defaults (GTK_TABLE (table), wid, 2, 3, 0, 1);
+	wid = gtk_label_new (_("Regex Match:"));
+	gtk_misc_set_alignment (GTK_MISC (wid), 1.0, 0.5);
+	gtk_table_attach (GTK_TABLE (table), wid, 2, 3, 0, 1,
+							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
 	gtk_widget_show (wid);
-
-	wid = gtk_alignment_new (1.0, 0.0, 1.0, 0.0);
-	real_wid = gtk_label_new (_("Regex Match: "));
-	gtk_container_add (GTK_CONTAINER (wid), real_wid);
-	gtk_box_pack_start (GTK_BOX (sorthbox), wid, 0, 0, 0);
-	gtk_widget_show (real_wid);
-	gtk_widget_show (wid);
-
-	sortvbox = gtk_vbox_new (FALSE, 2);
-	gtk_box_pack_start (GTK_BOX (sorthbox), sortvbox, 0, 0, 0);
-	gtk_widget_show (sortvbox);
 
 	wid = gtk_entry_new_with_max_length (255);
 	gtk_widget_set_usize (wid, 155, 0);
@@ -691,21 +661,25 @@ chanlist_opengui (struct server *serv)
 	gtk_signal_connect (GTK_OBJECT (wid), "key_press_event",
 							  GTK_SIGNAL_FUNC (chanlist_editable_keypress),
 							  (gpointer) serv);
-	gtk_box_pack_start (GTK_BOX (sortvbox), wid, 0, 0, 0);
+	gtk_table_attach (GTK_TABLE (table), wid, 3, 6, 0, 1,
+							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
 	gtk_widget_show (wid);
 	serv->gui->chanlist_wild = wid;
 
 	chanlist_wild (wid, serv);
 
-	sorthbox = gtk_hbox_new (FALSE, 2);
-	gtk_box_pack_start (GTK_BOX (sortvbox), sorthbox, 0, 0, 0);
-	gtk_widget_show (sorthbox);
+	wid = gtk_label_new (_("Apply Match to:"));
+	gtk_misc_set_alignment (GTK_MISC (wid), 1.0, 0.5);
+	gtk_table_attach (GTK_TABLE (table), wid, 2, 3, 2, 3,
+							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
+	gtk_widget_show (wid);
 
 	wid = gtk_check_button_new_with_label (_("Channel"));
-	gtk_box_pack_start (GTK_BOX (sorthbox), wid, 0, 0, 0);
 	gtk_signal_connect (GTK_OBJECT (wid), "toggled",
 							  GTK_SIGNAL_FUNC
 							  (chanlist_match_channel_button_toggled), serv);
+	gtk_table_attach (GTK_TABLE (table), wid, 3, 4, 2, 3,
+							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (wid), TRUE);
 	gtk_widget_show (wid);
 
@@ -713,18 +687,17 @@ chanlist_opengui (struct server *serv)
 	gtk_signal_connect (GTK_OBJECT (wid), "toggled",
 							  GTK_SIGNAL_FUNC (chanlist_match_topic_button_toggled),
 							  serv);
-	gtk_box_pack_start (GTK_BOX (sorthbox), wid, 0, 0, 0);
+	gtk_table_attach (GTK_TABLE (table), wid, 4, 5, 2, 3,
+							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (wid), TRUE);
 	gtk_widget_show (wid);
 
-	wid = gtk_alignment_new (0.5, 0.0, 0.0, 0.0);
-	real_wid = gtk_button_new_with_label (_("Apply"));
-	gtk_container_add (GTK_CONTAINER (wid), real_wid);
-	gtk_table_attach_defaults (GTK_TABLE (table), wid, 0, 3, 1, 2);
-	gtk_signal_connect (GTK_OBJECT (real_wid), "pressed",
+	wid = gtk_button_new_with_label (_("Apply"));
+	gtk_table_attach (GTK_TABLE (table), wid, 7, 8, 2, 3,
+							GTK_SHRINK | GTK_FILL, GTK_SHRINK,  0, 0);
+	gtk_signal_connect (GTK_OBJECT (wid), "clicked",
 							  GTK_SIGNAL_FUNC (chanlist_apply_pressed),
 							  (gpointer) serv);
-	gtk_widget_show (real_wid);
 	gtk_widget_show (wid);
 
 	serv->gui->chanlist_list =

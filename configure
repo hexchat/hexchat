@@ -11055,8 +11055,6 @@ _ACEOF
 
 
 
-
-
 #AH_VERBATIM([USE_ZVT],[#undef USE_ZVT])
 
 
@@ -11211,11 +11209,6 @@ if test "${enable_xft+set}" = set; then
 else
   xft=no
 fi;
-
-#AC_ARG_ENABLE(japanese-conv,
-#[  --enable-japanese-conv  Enable Japanese code conversion support.
-#                          iconv.h is needed. (default: no)],
-#			WITH_JAPANESE=$enableval, WITH_JAPANESE=no)
 
 # Check whether --enable-openssl or --disable-openssl was given.
 if test "${enable_openssl+set}" = set; then
@@ -13081,13 +13074,6 @@ if test "$hebrew" = yes; then
 _ACEOF
 
 fi
-
-
-#WITH_JAPANESE=no
-#if test "$WITH_JAPANESE" = "yes"; then
-#	AC_CHECK_HEADER([iconv.h], AC_DEFINE(USE_JCODE))
-#fi
-#AM_CONDITIONAL(DO_ICONV, test "$WITH_JAPANESE" = "yes")
 
 
 if test "$mmx" = "yes"; then
@@ -15862,7 +15848,6 @@ else
   echo link with socks5 .... : $socks\	text backend ........ : xft
 fi
 echo openssl support ..... : $openssl
-#\	japanese conversion . : $WITH_JAPANESE
 echo ipv6 support ........ : $ipv6
 #\	hebrew support ...... : $hebrew
 echo

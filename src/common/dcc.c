@@ -420,18 +420,35 @@ struct DCC *
 dcc_write_chat (char *nick, char *text)
 {
 	struct DCC *dcc;
-	int len;
 
 	dcc = find_dcc (nick, "", TYPE_CHATRECV);
 	if (!dcc)
 		dcc = find_dcc (nick, "", TYPE_CHATSEND);
 	if (dcc && dcc->dccstat == STAT_ACTIVE)
 	{
+		char *locale;
+		int loc_len;
+		int len;
+
 		len = strlen (text);
+
+		if (dcc->serv->encoding == NULL)	/* system */
+			locale = g_locale_from_utf8 (text, len, NULL, &loc_len, NULL);
+		else
+			locale = g_convert (text, len, dcc->serv->encoding, "UTF-8", 0, &loc_len, 0);
+
+		if (locale)
+		{
+			text = locale;
+			len = loc_len;
+		}
+
 		dcc->size += len;
 		send (dcc->sok, text, len, 0);
 		send (dcc->sok, "\n", 1, 0);
 		fe_dcc_update_chat_win ();
+		if (locale)
+			g_free (locale);
 		return dcc;
 	}
 	return 0;
@@ -446,7 +463,23 @@ dcc_chat_line (struct DCC *dcc, char *line, char *tbuf)
 	session *sess;
 	char *word[PDIWORDS];
 	char *po;
+	char *utf;
+	char *conv;
 	int ret, i;
+	int len;
+
+	len = strlen (line);
+
+	if (dcc->serv->encoding == NULL)     /* system */
+		utf = g_locale_to_utf8 (line, len, NULL, NULL, NULL);
+	else
+		utf = g_convert (line, len, "UTF-8", dcc->serv->encoding, 0, 0, 0);
+
+	if (utf)
+		line = utf;
+
+	/* we really need valid UTF-8 now */
+	conv = text_validate (&line);
 
 	sess = find_dialog (dcc->serv, dcc->nick);
 	if (!sess)
@@ -466,11 +499,23 @@ dcc_chat_line (struct DCC *dcc, char *line, char *tbuf)
 
 	/* did the plugin close it? */
 	if (!g_slist_find (dcc_list, dcc))
+	{
+		if (utf)
+			g_free (utf);
+		if (conv)
+			g_free (conv);
 		return 1;
+	}
 
 	/* did the plugin eat the event? */
 	if (ret)
+	{
+		if (utf)
+			g_free (utf);
+		if (conv)
+			g_free (conv);
 		return 0;
+	}
 
 	url_check (line);
 
@@ -484,6 +529,10 @@ dcc_chat_line (struct DCC *dcc, char *line, char *tbuf)
 	{
 		inbound_privmsg (dcc->serv, tbuf, dcc->nick, "", line);
 	}
+	if (utf)
+		g_free (utf);
+	if (conv)
+		g_free (conv);
 	return 0;
 }
 
@@ -557,6 +606,20 @@ dcc_read_chat (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 			i++;
 		}
 	}
+}
+
+static void
+dcc_calc_average_cps (struct DCC *dcc)
+{
+	time_t sec;
+
+	sec = time (0) - dcc->starttime;
+	if (sec < 1)
+		sec = 1;
+	if (dcc->type == TYPE_SEND)
+		dcc->cps = (dcc->ack - dcc->resumable) / sec;
+	else
+		dcc->cps = (dcc->pos - dcc->resumable) / sec;
 }
 
 static gboolean
@@ -643,16 +706,17 @@ failedabort:
 
 		dcc->lasttime = time (0);
 
-		dcc_calc_cps (dcc);
-
 		if (dcc->pos >= dcc->size)
 		{
+			dcc_calc_average_cps (dcc);
 			sprintf (buf, "%d", dcc->cps);
 			dcc_close (dcc, STAT_DONE, FALSE);
 			EMIT_SIGNAL (XP_TE_DCCRECVCOMP, dcc->serv->front_session,
 							 dcc->file, dcc->destfile, dcc->nick, buf, 0);
 			return TRUE;
 		}
+
+		dcc_calc_cps (dcc);
 	}
 }
 
@@ -880,6 +944,7 @@ dcc_read_ack (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 
 	if (dcc->pos >= dcc->size && dcc->ack >= dcc->size)
 	{
+		dcc_calc_average_cps (dcc);
 		dcc_close (dcc, STAT_DONE, FALSE);
 		sprintf (buf, "%d", dcc->cps);
 		EMIT_SIGNAL (XP_TE_DCCSENDCOMP, dcc->serv->front_session,

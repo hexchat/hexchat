@@ -566,8 +566,7 @@ mg_switch_page (int relative, int num)
 static void
 mg_find_replacement_focus (GtkWidget *tab)
 {
-	mg_switch_page (FALSE, 0);
-/*	mg_switch_page (TRUE, -1);*/	/* crashes if replacement is non-irc */
+	mg_switch_page (TRUE, -1);
 }
 
 static void
