@@ -337,6 +337,7 @@ const struct prefs vars[] = {
 	{"away_show_message", P_OFFINT (show_away_message), TYPE_BOOL},
 	{"away_show_once", P_OFFINT (show_away_once), TYPE_BOOL},
 	{"away_size_max", P_OFFINT (away_size_max), TYPE_INT},
+	{"away_timeout", P_OFFINT (away_timeout), TYPE_INT},
 
 	{"completion_auto", P_OFFINT (nickcompletion), TYPE_BOOL},
 	{"completion_old", P_OFFINT (old_nickcompletion), TYPE_BOOL},
@@ -515,6 +516,7 @@ load_config (void)
 	memset (&prefs, 0, sizeof (struct xchatprefs));
 
 	/* put in default values, anything left out is automatically zero */
+	prefs.away_timeout = 60;
 	prefs.away_size_max = 300;
 	prefs.timestamp_logs = 1;
 	prefs.truncchans = 20;

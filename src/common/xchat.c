@@ -186,7 +186,7 @@ lag_check (void)
 	}
 }
 
-static void
+static int
 away_check (void)
 {
 	session *sess;
@@ -194,7 +194,7 @@ away_check (void)
 	int full, sent, loop = 0;
 
 	if (prefs.away_size_max < 1)
-		return;
+		return 1;
 
 doover:
 	/* request an update of AWAY status of 1 channel every 30 seconds */
@@ -243,6 +243,8 @@ doover:
 		if (loop < 2)
 			goto doover;
 	}
+
+	return 1;
 }
 
 static int
@@ -256,9 +258,6 @@ xchat_misc_checks (void)		/* this gets called every 1/2 second */
 
 	if (count % 2)
 		dcc_check_timeouts ();	/* every 1 second */
-
-	if (count == 30)
-		away_check ();				/* every 30 seconds */
 
 	if (count >= 60)				/* every 30 seconds */
 	{
@@ -292,6 +291,7 @@ irc_init (session *sess)
 		notify_tag = fe_timeout_add (prefs.notify_timeout * 1000,
 											  notify_checklist, 0);
 
+	fe_timeout_add (prefs.away_timeout * 1000, away_check, 0);
 	fe_timeout_add (500, xchat_misc_checks, 0);
 
 	if (connect_url != NULL)

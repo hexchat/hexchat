@@ -137,6 +137,7 @@ struct xchatprefs
 	int tint_green;
 	int tint_blue;
 
+	int away_timeout;
 	int away_size_max;
 	int paned_pos;
 	int tabs_position;
