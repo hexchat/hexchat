@@ -409,7 +409,7 @@ const struct prefs vars[] = {
 #endif
 
 #ifdef WIN32
-	{"identd", PREFS_OFFINT (identd), TYPE_BOOL},
+	{"identd", P_OFFINT (identd), TYPE_BOOL},
 #endif
 	{"input_beep_chans", P_OFFINT (beepchans), TYPE_BOOL},
 	{"input_beep_hilight", P_OFFINT (beephilight), TYPE_BOOL},
