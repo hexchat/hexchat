@@ -72,7 +72,7 @@ list_loadconf (char *file, GSList ** list, char *defaultconf)
 	int fh, pnt = 0;
 	struct stat st;
 
-	snprintf (filebuf, sizeof (filebuf), "%s/%s", get_xdir (), file);
+	snprintf (filebuf, sizeof (filebuf), "%s/%s", get_xdir_fs (), file);
 	fh = open (filebuf, O_RDONLY | OFLAGS);
 	if (fh == -1)
 	{
@@ -240,7 +240,8 @@ cfg_get_int (char *cfg, char *var)
 	return atoi (str);
 }
 
-char *xdir = 0;
+char *xdir_fs = NULL;	/* file system encoding */
+char *xdir_utf = NULL;	/* utf-8 encoding */
 
 #ifdef WIN32
 
@@ -270,7 +271,7 @@ get_reg_str (const char *sub, const char *name, char *out, DWORD len)
 }
 
 char *
-get_xdir (void)
+get_xdir_fs (void)
 {
 	if (!xdir)
 	{
@@ -287,21 +288,48 @@ get_xdir (void)
 #else
 
 char *
-get_xdir (void)
+get_xdir_fs (void)
 {
-	if (!xdir)
-	{
-		xdir = g_strdup_printf ("%s/" XCHAT_DIR, g_get_home_dir());
-	}
-	return xdir;
+	if (!xdir_fs)
+		xdir_fs = g_strdup_printf ("%s/" XCHAT_DIR, g_get_home_dir ());
+
+	return xdir_fs;
 }
 
 #endif	/* !WIN32 */
 
+char *
+get_xdir_utf8 (void)
+{
+	if (!xdir_utf)	/* never free this, keep it for program life time */
+		xdir_utf = g_filename_to_utf8 (get_xdir_fs (), -1, 0, 0, 0);
+
+	return xdir_utf;
+}
+
+int
+mkdir_utf8 (char *dir)
+{
+	int ret;
+
+	dir = g_filename_from_utf8 (dir, -1, 0, 0, 0);
+	if (!dir)
+		return -1;
+
+#ifdef WIN32
+	ret = mkdir (dir);
+#else
+	ret = mkdir (dir, S_IRUSR | S_IWUSR | S_IXUSR);
+#endif
+	g_free (dir);
+
+	return ret;
+}
+
 static void
 check_prefs_dir (void)
 {
-	char *dir = get_xdir ();
+	char *dir = get_xdir_fs ();
 	if (access (dir, F_OK) != 0)
 	{
 #ifdef WIN32
@@ -320,8 +348,8 @@ default_file (void)
 
 	if (!dfile)
 	{
-		dfile = malloc (strlen (get_xdir ()) + 12);
-		sprintf (dfile, "%s/xchat.conf", get_xdir ());
+		dfile = malloc (strlen (get_xdir_fs ()) + 12);
+		sprintf (dfile, "%s/xchat.conf", get_xdir_fs ());
 	}
 	return dfile;
 }
@@ -594,13 +622,13 @@ load_config (void)
 	strcpy (prefs.username, username);
 #ifdef WIN32
 	strcpy (prefs.sounddir, "./sounds");
-	if (strcmp (get_xdir (), "./config") != 0)
-		sprintf (prefs.dccdir, "%s\\downloads", get_xdir ());
+	if (strcmp (get_xdir_utf8 (), "./config") != 0)
+		sprintf (prefs.dccdir, "%s\\downloads", get_xdir_utf8 ());
 	else
 		strcpy (prefs.dccdir, "./downloads");
 #else
-	sprintf (prefs.sounddir, "%s/sounds", get_xdir ());
-	sprintf (prefs.dccdir, "%s/downloads", get_xdir ());
+	sprintf (prefs.sounddir, "%s/sounds", get_xdir_utf8 ());
+	sprintf (prefs.dccdir, "%s/downloads", get_xdir_utf8 ());
 #endif
 	strcpy (prefs.doubleclickuser, "QUOTE WHOIS %s %s");
 	strcpy (prefs.awayreason, _("I'm busy"));
@@ -652,14 +680,8 @@ load_config (void)
 #endif
 #endif /* !WIN32 */
 
-#ifdef WIN32
-		mkdir (prefs.dccdir);
-		mkdir (prefs.dcc_completed_dir);
-#else
-		mkdir (prefs.dccdir, S_IRUSR | S_IWUSR | S_IXUSR);
-		mkdir (prefs.dcc_completed_dir, S_IRUSR | S_IWUSR | S_IXUSR);
-#endif
-
+		mkdir_utf8 (prefs.dccdir);
+		mkdir_utf8 (prefs.dcc_completed_dir);
 	}
 	if (prefs.mainwindow_height < 138)
 		prefs.mainwindow_height = 138;

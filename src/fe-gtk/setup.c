@@ -1032,13 +1032,8 @@ setup_apply (struct xchatprefs *pr)
 
 	memcpy (&prefs, pr, sizeof (prefs));
 
-#ifdef WIN32
-	mkdir (prefs.dccdir);
-	mkdir (prefs.dcc_completed_dir);
-#else
-	mkdir (prefs.dccdir, S_IRUSR | S_IWUSR | S_IXUSR);
-	mkdir (prefs.dcc_completed_dir, S_IRUSR | S_IWUSR | S_IXUSR);
-#endif
+	mkdir_utf8 (prefs.dccdir);
+	mkdir_utf8 (prefs.dcc_completed_dir);
 
 	if (new_pix)
 	{

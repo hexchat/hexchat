@@ -605,7 +605,7 @@ gtkutil_treemodel_string_to_iter (GtkTreeModel *model, gchar *pathstr, GtkTreeIt
 	return success;
 }
 
-gboolean
+/*gboolean
 gtkutil_treeview_get_selected_iter (GtkTreeView *view, GtkTreeIter *iter_ret)
 {
 	GtkTreeModel *store;
@@ -613,7 +613,7 @@ gtkutil_treeview_get_selected_iter (GtkTreeView *view, GtkTreeIter *iter_ret)
 	
 	select = gtk_tree_view_get_selection (view);
 	return gtk_tree_selection_get_selected (select, &store, iter_ret);
-}
+}*/
 
 gboolean
 gtkutil_treeview_get_selected (GtkTreeView *view, GtkTreeIter *iter_ret, ...)

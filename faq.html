@@ -48,7 +48,7 @@ p { margin: 3% }
 <br/><br/>
 <a href="#q26">6. How do I show @ and + infront of nicknames that are Op and Voice when they talk?</a>
 <br/><br/>
-<a href="#q27">7. What happened to question 7?</a>
+<a href="#q27">7. How do I change the Op and Voice icons in the userlist?</a>
 <br/><br/>
 <a href="#q28">8. How do I set different ban types?</a>
 <br/><br/>
@@ -125,7 +125,7 @@ language support and all menus and GUI will be in english only.</li>
     ident server program called pidentd. Make sure it is enabled in
     /etc/xinetd.conf or read you distribution's documentation.
 
-    As an alternative, you can try this experimental identd server: <a href="auth/index.html">xchat_auth</a>
+    As an alternative, you can try this experimental identd server: <a href="http://xchat.org/auth/">xchat_auth</a>
 
 <br/><br/><u>WINDOWS:</u><br/>
     The win32 version of X-Chat comes with a builtin identd server. It is
@@ -162,6 +162,7 @@ you want, and then press middle mouse button to paste (if you only have a
 Go to the menus, Settings -> Preferences -> Network Setup and fill in the requested
 information there. There is currently no support for using a username and
 password to authenticate to proxies.
+<br/><br/><b><i>Update</i></b>: HTTP authentication was added in 2.0.6.
 </p>
 
 <br/><h3><a name="q26">6. How do I show @ and + infront of nicknames that are Op and Voice when they talk?</a></h3>
@@ -177,6 +178,15 @@ to change the default:
 <br/><br/>%C2&lt;<b>%O$3</b>%O$1%C2>%O$t$2%O
 <br/><br/>Don't forget to press Enter, so the changes take effect in the
 list at the top of the window.
+</p>
+
+<br/><h3><a name="q27">7. How do I change the Op and Voice icons in the userlist?</a></h3>
+<p>
+The default icons are hardcoded (compiled) in. You can override them by creating
+some PNG files in ${PREFIX}/share/xchat. ${PREFIX} is usually /usr, so that
+would translate to /usr/share/xchat. If you compiled from source tarball without
+specifying a prefix, it will be /usr/local instead.
+<br/><br/>Call the files op.png, hop.png, voice.png, red.png and purple.png. Red and Purple are used for Channel Owner and Founder. They will be loaded at the next startup.
 </p>
 
 <br/><h3><a name="q28">8. How do I set different ban types?</a></h3>

@@ -839,7 +839,7 @@ servlist_load (void)
 	int len;
 	ircnet *net = NULL;
 
-	snprintf (buf, sizeof (buf), "%s/servlist_.conf", get_xdir ());
+	snprintf (buf, sizeof (buf), "%s/servlist_.conf", get_xdir_fs ());
 	fp = fopen (buf, "r");
 	if (!fp)
 		return FALSE;
@@ -937,7 +937,7 @@ servlist_save (void)
 	GSList *hlist;
 	int first = FALSE;
 
-	snprintf (buf, sizeof (buf), "%s/servlist_.conf", get_xdir ());
+	snprintf (buf, sizeof (buf), "%s/servlist_.conf", get_xdir_fs ());
 	if (access (buf, F_OK) != 0)
 		first = TRUE;
 	fp = fopen (buf, "w");

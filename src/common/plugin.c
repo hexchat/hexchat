@@ -403,10 +403,10 @@ plugin_auto_load (session *sess)
 	ps = sess;
 #ifdef WIN32
 	for_files ("./plugins", "*.dll", plugin_auto_load_cb);
-	for_files (get_xdir (), "*.dll", plugin_auto_load_cb);
+	for_files (get_xdir_fs (), "*.dll", plugin_auto_load_cb);
 #else
 	for_files (XCHATLIBDIR"/plugins", "*.so", plugin_auto_load_cb);
-	for_files (get_xdir (), "*.so", plugin_auto_load_cb);
+	for_files (get_xdir_fs (), "*.so", plugin_auto_load_cb);
 #endif
 }
 
@@ -894,7 +894,7 @@ xchat_get_info (xchat_plugin *ph, const char *id)
 		return VERSION;
 
 	case 0xdd9b1abd:	/* xchatdir */
-		return get_xdir ();
+		return get_xdir_utf8 ();
 	}
 
 	return NULL;

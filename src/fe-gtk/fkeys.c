@@ -408,7 +408,7 @@ key_load_defaults ()
 	char buf[512];
 	int fd;
 
-	snprintf (buf, 512, "%s/keybindings.conf", get_xdir ());
+	snprintf (buf, 512, "%s/keybindings.conf", get_xdir_fs ());
 	fd = open (buf, O_CREAT | O_TRUNC | O_WRONLY | OFLAGS, 0x180);
 	if (fd < 0)
 		/* ???!!! */
@@ -818,7 +818,7 @@ key_save_kbs (char *fn)
 	struct key_binding *kb;
 
 	if (!fn)
-		snprintf (buf, 510, "%s/keybindings.conf", get_xdir ());
+		snprintf (buf, 510, "%s/keybindings.conf", get_xdir_fs ());
 	else
 	{
 		safe_strcpy (buf, fn, sizeof (buf));
@@ -948,7 +948,7 @@ key_load_kbs (char *filename)
 
 	buf = malloc (1000);
 	if (filename == NULL)
-		snprintf (buf, 1000, "%s/keybindings.conf", get_xdir ());
+		snprintf (buf, 1000, "%s/keybindings.conf", get_xdir_fs ());
 	else
 		strcpy (buf, filename);
 
@@ -998,7 +998,7 @@ key_load_kbs (char *filename)
 				ibuf = malloc (1024);
 				snprintf (ibuf, 1024,
 							 _("Unknown keyname %s in key bindings config file\nLoad aborted, please fix %s/keybindings.conf\n"),
-							 buf, get_xdir ());
+							 buf, get_xdir_utf8 ());
 				gtkutil_simpledialog (ibuf);
 				free (ibuf);
 				return 2;
@@ -1036,7 +1036,7 @@ key_load_kbs (char *filename)
 				ibuf = malloc (1024);
 				snprintf (ibuf, 1024,
 							 _("Unknown action %s in key bindings config file\nLoad aborted, Please fix %s/keybindings\n"),
-							 buf, get_xdir ());
+							 buf, get_xdir_utf8 ());
 				gtkutil_simpledialog (ibuf);
 				free (ibuf);
 				return 3;
@@ -1057,7 +1057,7 @@ key_load_kbs (char *filename)
 				ibuf = malloc (1024);
 				snprintf (ibuf, 1024,
 							 _("Expecting Data line (beginning Dx{:|!}) but got:\n%s\n\nLoad aborted, Please fix %s/keybindings\n"),
-							 buf, get_xdir ());
+							 buf, get_xdir_utf8 ());
 				gtkutil_simpledialog (ibuf);
 				free (ibuf);
 				return 4;
@@ -1127,7 +1127,7 @@ key_load_kbs (char *filename)
 	snprintf (ibuf, 1024,
 						_("Key bindings config file is corrupt, load aborted\n"
 								 "Please fix %s/keybindings.conf\n"),
-						 get_xdir ());
+						 get_xdir_utf8 ());
 	gtkutil_simpledialog (ibuf);
 	free (ibuf);
 	return 5;

@@ -86,7 +86,7 @@ palette_load (void)
 	char *cfg;
 	unsigned long red, green, blue;
 
-   snprintf (prefname, sizeof (prefname), "%s/palette.conf", get_xdir ());
+   snprintf (prefname, sizeof (prefname), "%s/palette.conf", get_xdir_fs ());
    fh = open (prefname, O_RDONLY | OFLAGS);
 	if (fh != -1)
 	{
@@ -129,7 +129,7 @@ palette_save (void)
 	int i, fh;
 	char prefname[256];
 
-   snprintf (prefname, sizeof (prefname), "%s/palette.conf", get_xdir ());
+   snprintf (prefname, sizeof (prefname), "%s/palette.conf", get_xdir_fs ());
    fh = open (prefname, O_TRUNC | O_WRONLY | O_CREAT | OFLAGS, 0600);
 	if (fh != -1)
 	{

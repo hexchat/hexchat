@@ -86,7 +86,7 @@ random_line (char *file_name)
 	if (!file_name[0])
 		goto nofile;
 
-	snprintf (buf, sizeof (buf), "%s/%s", get_xdir (), file_name);
+	snprintf (buf, sizeof (buf), "%s/%s", get_xdir_fs (), file_name);
 	fh = fopen (buf, "r");
 	if (!fh)
 	{

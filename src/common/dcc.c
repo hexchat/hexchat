@@ -638,11 +638,7 @@ dcc_read (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 	{
 
 		/* try to create the download dir (even if it exists, no harm) */
-#ifdef WIN32
-		mkdir (prefs.dccdir);
-#else
-		mkdir (prefs.dccdir, S_IRUSR | S_IWUSR | S_IXUSR);
-#endif
+		mkdir_utf8 (prefs.dccdir);
 
 		if (dcc->resumable)
 		{

@@ -1209,7 +1209,7 @@ perl_command_unload (char *word[], char *word_eol[], void *userdata)
 	if (len > 3 && strcasecmp (".pl", word[2] + len - 3) == 0)
 	{
 		/* if only unloading was possible with this shitty interface :( */
-		xchat_print (ph, "Unloading individual perl scripts is not supported.\n");
+		xchat_print (ph, "Unloading individual perl scripts is not supported.\nYou may use /UNLOADALL to unload all Perl scripts.\n");
 		return XCHAT_EAT_XCHAT;
 	}
 
@@ -1220,7 +1220,7 @@ perl_command_unload (char *word[], char *word_eol[], void *userdata)
 		scp = list->data;
 		if (strcasecmp (scp->name, word[2]) == 0)
 		{
-			xchat_print (ph, "Unloading individual perl scripts is not supported.\n");
+			xchat_print (ph, "Unloading individual perl scripts is not supported.\nYou may use /UNLOADALL to unload all Perl scripts.\n");
 			return XCHAT_EAT_XCHAT;
 		}
 		list = list->next;

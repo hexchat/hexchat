@@ -168,9 +168,9 @@ fe_args (int argc, char *argv[])
 	{
 		if (!strcasecmp (argv[1+offset], "-d") || !strcasecmp (argv[1+offset], "--cfgdir"))
 		{
-			xdir = strdup (argv[2+offset]);
-			if (xdir[strlen (xdir) - 1] == '/')
-				xdir[strlen (xdir) - 1] = 0;
+			xdir_fs = strdup (argv[2+offset]);
+			if (xdir_fs[strlen (xdir_fs) - 1] == '/')
+				xdir_fs[strlen (xdir_fs) - 1] = 0;
 			offset += 2;
 		}
 	}

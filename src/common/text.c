@@ -339,7 +339,7 @@ log_create_filename (char *buf, char *servname, char *channame, char *netname)
 		free (sep);
 	}
 
-	snprintf (buf, 512, "%s/xchatlogs", get_xdir ());
+	snprintf (buf, 512, "%s/xchatlogs", get_xdir_fs ());
 	if (access (buf, F_OK) != 0)
 #ifdef WIN32
 		mkdir (buf);
@@ -349,7 +349,7 @@ log_create_filename (char *buf, char *servname, char *channame, char *netname)
 	auto_insert (fn, sizeof (fn), prefs.logmask, NULL, NULL, "", channame, "", "", netname, servname);
 	g_free (channame);
 
-	snprintf (buf, 512, "%s/xchatlogs/%s", get_xdir (), fn);
+	snprintf (buf, 512, "%s/xchatlogs/%s", get_xdir_fs (), fn);
 
  	/* The following code handles subdirectories in logpath and creates
  	 * them, if they don't exist. Useful with logmasks like "%c/%y.log" in
@@ -359,7 +359,7 @@ log_create_filename (char *buf, char *servname, char *channame, char *netname)
 
 	if (access (buf, F_OK) != 0)
 	{
-		snprintf (buf, 512, "%s/xchatlogs/", get_xdir ());
+		snprintf (buf, 512, "%s/xchatlogs/", get_xdir_fs ());
 		pathlen -= strlen(buf);
  
 		/* how many sub-directories do we have? */
@@ -435,7 +435,7 @@ log_open (session *sess)
 		char message[512];
 		snprintf (message, sizeof (message),
 					_("* Can't open log file(s) for writing. Check the\n" \
-					  "  permissions on %s/xchatlogs"), get_xdir());
+					  "  permissions on %s/xchatlogs"), get_xdir_utf8 ());
 		fe_message (message, TRUE);
 
 		log_error = TRUE;
@@ -1250,7 +1250,7 @@ pevent_load (char *filename)
 
 	buf = malloc (1000);
 	if (filename == NULL)
-		snprintf (buf, 1000, "%s/pevents.conf", get_xdir ());
+		snprintf (buf, 1000, "%s/pevents.conf", get_xdir_fs ());
    else
       safe_strcpy (buf, filename, 1000);
 
@@ -1673,7 +1673,7 @@ pevent_save (char *fn)
 	char buf[1024];
 
 	if (!fn)
-		snprintf (buf, sizeof (buf), "%s/pevents.conf", get_xdir ());
+		snprintf (buf, sizeof (buf), "%s/pevents.conf", get_xdir_fs ());
 	else
 		safe_strcpy (buf, fn, sizeof (buf));
 	fd = open (buf, O_CREAT | O_TRUNC | O_WRONLY | OFLAGS, 0x180);

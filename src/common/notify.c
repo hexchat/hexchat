@@ -70,7 +70,7 @@ notify_save (void)
 	struct notify *notify;
 	GSList *list = notify_list;
 
-	snprintf (buf, sizeof buf, "%s/notify.conf", get_xdir ());
+	snprintf (buf, sizeof buf, "%s/notify.conf", get_xdir_fs ());
 
 	fh = open (buf, O_TRUNC | O_WRONLY | O_CREAT | OFLAGS, 0600);
 	if (fh != -1)
@@ -92,7 +92,7 @@ notify_load (void)
 	int fh;
 	char buf[256];
 
-	snprintf (buf, sizeof buf, "%s/notify.conf", get_xdir ());
+	snprintf (buf, sizeof buf, "%s/notify.conf", get_xdir_fs ());
 
 	fh = open (buf, O_RDONLY | OFLAGS);
 	if (fh != -1)

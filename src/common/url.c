@@ -72,7 +72,7 @@ url_autosave (void)
 	char *buf;
 
 	buf = malloc (512);
-	snprintf (buf, 512, "%s/url.save", get_xdir ());
+	snprintf (buf, 512, "%s/url.save", get_xdir_fs ());
 	url_save (buf, "a");
 	free (buf);
 }

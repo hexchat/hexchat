@@ -274,7 +274,7 @@ ignore_load ()
 	char file[256];
 	int fh, i;
 
-	snprintf (file, sizeof (file), "%s/ignore.conf", get_xdir ());
+	snprintf (file, sizeof (file), "%s/ignore.conf", get_xdir_fs ());
 	fh = open (file, O_RDONLY | OFLAGS);
 	if (fh != -1)
 	{
@@ -310,7 +310,7 @@ ignore_save ()
 	GSList *temp = ignore_list;
 	struct ignore *ig;
 
-	snprintf (buf, sizeof (buf), "%s/ignore.conf", get_xdir ());
+	snprintf (buf, sizeof (buf), "%s/ignore.conf", get_xdir_fs ());
 	fh = open (buf, O_TRUNC | O_WRONLY | O_CREAT | OFLAGS, 0600);
 	if (fh != -1)
 	{
