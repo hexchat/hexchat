@@ -910,6 +910,9 @@ gtk_xtext_realize (GtkWidget * widget)
 	xtext_set_bg (xtext, xtext->fgc, 19);
 	xtext_set_fg (xtext, xtext->bgc, 19);
 
+	/* draw directly to window */
+	xtext->draw_buf = widget->window;
+
 #if defined(USE_XLIB) || defined(WIN32)
 	if (xtext->transparent)
 	{
@@ -930,9 +933,6 @@ gtk_xtext_realize (GtkWidget * widget)
 #endif
 
 	gdk_window_set_back_pixmap (widget->window, NULL, FALSE);
-
-	/* draw directly to window */
-	xtext->draw_buf = widget->window;
 
 	backend_init (xtext);
 }
