@@ -1685,19 +1685,22 @@ mg_upbutton_cb (GtkButton *but, gpointer userdata)
 }
 
 static void
-mg_change_nick (char *text, gpointer userdata)
+mg_change_nick (int cancel, char *text, gpointer userdata)
 {
 	char buf[256];
 
-	snprintf (buf, sizeof (buf), "nick %s", text);
-	handle_command (current_sess, buf, FALSE);
+	if (!cancel)
+	{
+		snprintf (buf, sizeof (buf), "nick %s", text);
+		handle_command (current_sess, buf, FALSE);
+	}
 }
 
 static void
 mg_nickclick_cb (GtkWidget *button, gpointer userdata)
 {
-	gtkutil_get_str (_("Enter new nickname:"), current_sess->server->nick,
-						  mg_change_nick, NULL);
+	fe_get_str (_("Enter new nickname:"), current_sess->server->nick,
+					mg_change_nick, NULL);
 }
 
 void

@@ -145,15 +145,16 @@ notify_remove_clicked (GtkWidget * igad)
 }
 
 static void
-notifygui_add (char *text, gpointer userdata)
+notifygui_add (int cancel, char *text, gpointer userdata)
 {
-	notify_adduser (text);
+	if (!cancel)
+		notify_adduser (text);
 }
 
 static void
 notify_add_clicked (GtkWidget * igad)
 {
-	gtkutil_get_str ("Enter nickname to add:", "", notifygui_add, NULL);
+	fe_get_str (_("Enter nickname to add:"), "", notifygui_add, NULL);
 }
 
 void

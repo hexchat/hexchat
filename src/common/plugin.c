@@ -755,6 +755,9 @@ xchat_get_info (xchat_plugin *ph, const char *id)
 	case 0x30f5a8: /* host */
 		return sess->server->hostname;
 
+	case 0x6de15a2e:	/* network */
+		return sess->server->networkname;
+
 	case 0x339763: /* nick */
 		return sess->server->nick;
 

@@ -155,6 +155,12 @@ servlist_networks_populate (GtkWidget *treeview, GSList *netlist, gboolean edit)
 	int i;
 	ircnet *net;
 
+	if (!netlist)
+	{
+		net = servlist_net_add (_("New Network"), "");
+		servlist_server_add (net, "newserver/6667");
+		netlist = network_list;
+	}
 	store = (GtkListStore *)gtk_tree_view_get_model (GTK_TREE_VIEW (treeview));
 	gtk_list_store_clear (store);
 	sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (treeview));
@@ -269,6 +275,10 @@ servlist_deletenetdialog_cb (GtkDialog *dialog, gint arg1, ircnet *net)
 
 		if (selected_net == net)
 			selected_net = NULL;
+
+		if(!network_list)  {
+			servlist_networks_populate (networks_tree, network_list, prefs.slist_edit);
+		}
 	}
 }
 
@@ -467,6 +477,7 @@ servlist_server_row_cb (GtkTreeView *treeview, gpointer user_data)
 		return;
 
 	sel = gtk_tree_view_get_selection (treeview);
+
 	if (gtk_tree_selection_get_selected (sel, &model, &iter))
 	{
 		gtk_tree_model_get (model, &iter, 0, &servname, -1);
@@ -525,7 +536,10 @@ servlist_cellclick_cb (GtkWidget *widget, GdkEventButton *event,
 	right_click = FALSE;
 
 	if (event->type == GDK_2BUTTON_PRESS)
-		servlist_connect_cb (widget, user_data);
+	{
+		if (selected_net != NULL)
+			servlist_connect_cb (widget, user_data);
+	}
 
 	if (event->button == 3)
 		right_click = TRUE;

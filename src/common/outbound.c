@@ -1399,6 +1399,78 @@ cmd_gate (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	return FALSE;
 }
 
+typedef struct
+{
+	char *cmd;
+	session *sess;
+} getvalinfo;
+
+static void
+get_int_cb (int cancel, int val, getvalinfo *info)
+{
+	char buf[512];
+
+	if (!cancel)
+	{
+		snprintf (buf, sizeof (buf), "%s %d", info->cmd, val);
+		if (is_session (info->sess))
+			handle_command (info->sess, buf, FALSE);
+	}
+
+	free (info->cmd);
+	free (info);
+}
+
+static int
+cmd_getint (struct session *sess, char *tbuf, char *word[], char *word_eol[])
+{
+	getvalinfo *info;
+
+	if (!word[4][0])
+		return FALSE;
+
+	info = malloc (sizeof (*info));
+	info->cmd = strdup (word[3]);
+	info->sess = sess;
+
+	fe_get_int (word[4], atoi (word[2]), get_int_cb, info);
+
+	return TRUE;
+}
+
+static void
+get_str_cb (int cancel, char *val, getvalinfo *info)
+{
+	char buf[512];
+
+	if (!cancel)
+	{
+		snprintf (buf, sizeof (buf), "%s %s", info->cmd, val);
+		if (is_session (info->sess))
+			handle_command (info->sess, buf, FALSE);
+	}
+
+	free (info->cmd);
+	free (info);
+}
+
+static int
+cmd_getstr (struct session *sess, char *tbuf, char *word[], char *word_eol[])
+{
+	getvalinfo *info;
+
+	if (!word[4][0])
+		return FALSE;
+
+	info = malloc (sizeof (*info));
+	info->cmd = strdup (word[3]);
+	info->sess = sess;
+
+	fe_get_str (word[4], word[2], get_str_cb, info);
+
+	return TRUE;
+}
+
 static int
 cmd_help (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
@@ -2400,6 +2472,8 @@ const struct commands xc_cmds[] = {
 	 N_("FLUSHQ, flushes the current server's send queue")},
 	{"GATE", cmd_gate, 0, 0,
 	 N_("GATE <host> [<port>], proxies through a host, port defaults to 23")},
+	{"GETINT", cmd_getint, 0, 0, "GETINT <default> <command> <prompt>"},
+	{"GETSTR", cmd_getstr, 0, 0, "GETSTR <default> <command> <prompt>"},
 	{"HELP", cmd_help, 0, 0, 0},
 	{"HOP", cmd_hop, 1, 1,
 	 N_("HOP <nick>, gives chanhalf-op status to the nick (needs chanop)")},

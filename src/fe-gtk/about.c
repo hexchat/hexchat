@@ -108,7 +108,7 @@ menu_about (GtkWidget * wid, gpointer sess)
 	label = gtk_label_new (NULL);
 	gtk_container_add (GTK_CONTAINER (vbox), label);
 	(snprintf) (buf, sizeof (buf),
-				"<span size=\"x-large\"><b>X-Chat</b></span>\n\n"
+				"<span size=\"x-large\"><b>X-Chat "VERSION"</b></span>\n\n"
 				"An IRC Client for UNIX\n\n"
 				"(C) 1998-2002 Peter Zelezny zed@xchat.org");
 	gtk_label_set_markup (GTK_LABEL (label), buf);

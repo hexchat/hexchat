@@ -420,6 +420,9 @@ static const struct defaultserver def[] =
 	{0,			"irc.phuncrew.ch"},
 	{0,			"irc.mgz.ch"},
 
+	{"TopGamers",	0},
+	{0,			"irc.topgamers.net"},
+
 	{"UnderNet",	0},
 	{0,			"us.undernet.org"},
 	{0,			"eu.undernet.org"},
@@ -533,7 +536,7 @@ servlist_connect (session *sess, ircnet *net)
 	{
 		if (serv->eom_cmd)
 			free (serv->eom_cmd);
-		serv->eom_cmd = strdup (net->command);
+		serv->eom_cmd = strdup (net->command[0] == '/' ? net->command+1 : net->command);
 	}
 }
 
@@ -800,7 +803,7 @@ servlist_save (void)
 		if (net->autojoin)
 			fprintf (fp, "J=%s\n", net->autojoin);
 		if (net->command)
-			fprintf (fp, "C=%s\n", net->command);
+			fprintf (fp, "C=%s\n", net->command[0] == '/' ? net->command+1 : net->command);
 		fprintf (fp, "F=%d\nD=%d\n", net->flags, net->selected);
 
 		hlist = net->servlist;

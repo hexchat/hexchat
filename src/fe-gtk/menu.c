@@ -124,17 +124,9 @@ goto_url (char *url)
 
 /* execute a userlistbutton/popupmenu command */
 
-/*static void
-shit (int val, char *ud)
-{
-	printf("%d: %s\n", val, ud);
-}*/
-
 static void
 nick_command (session * sess, char *cmd)
 {
-/*	gtkutil_get_number ("title", "Number to kill:", shit, "hi");*/
-  
 	if (*cmd == '!')
 		xchat_exec (cmd + 1);
 	else

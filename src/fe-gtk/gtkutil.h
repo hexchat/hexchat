@@ -1,6 +1,5 @@
 typedef void (*filereqcallback) (void *, void *, char *file);
 
-void gtkutil_get_str (char *msg, char *def, void *callback, void *userdata);
 void gtkutil_file_req (char *title, void *callback, void *userdata,
 							  void *userdata2, int write);
 void gtkutil_destroy (GtkWidget * igad, GtkWidget * dgad);
