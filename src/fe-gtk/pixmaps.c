@@ -30,6 +30,7 @@
 
 #include "../pixmaps/inline_pngs.h"
 
+GdkPixbuf *pix_about;
 GdkPixbuf *pix_xchat;
 GdkPixbuf *pix_book;
 
@@ -78,6 +79,7 @@ pixmap_load_from_file (char *filename)
 void
 pixmaps_init (void)
 {
+	pix_about = gdk_pixbuf_new_from_inline (-1, aboutpng, FALSE, 0);
 	pix_book = gdk_pixbuf_new_from_inline (-1, bookpng, FALSE, 0);
 	pix_xchat = gdk_pixbuf_new_from_inline (-1, xchatpng, FALSE, 0);
 

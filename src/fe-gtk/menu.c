@@ -1191,16 +1191,16 @@ static struct mymenu mymenu[] = {
 	{N_("Preferences..."), menu_settings, GTK_STOCK_PREFERENCES, M_MENUSTOCK, 0, 1},
 
 	{N_("Lists"), 0, GTK_STOCK_JUSTIFY_LEFT, M_MENUSUB, 0, 1},
-	{N_("User Commands..."), menu_usercommands, 0, M_MENU, 0, 1},
+	{N_("Auto Replace..."), menu_rpopup, 0, M_MENU, 0, 1},
 	{N_("CTCP Replies..."), menu_ctcpguiopen, 0, M_MENU, 0, 1},
+	{N_("Dialog Buttons..."), menu_dlgbuttons, 0, M_MENU, 0, 1},
+	{N_("Key Bindings..."), menu_keypopup, 0, M_MENU, 0, 1},
+	{N_("Text Events..."), menu_evtpopup, 0, M_MENU, 0, 1},
+	{N_("URL Handlers..."), menu_urlhandlers, 0, M_MENU, 0, 1},
+	{N_("User Commands..."), menu_usercommands, 0, M_MENU, 0, 1},
 	{N_("Userlist Buttons..."), menu_ulbuttons, 0, M_MENU, 0, 1},
 	{N_("Userlist Popup..."), menu_ulpopup, 0, M_MENU, 0, 1},
-	{N_("Dialog Buttons..."), menu_dlgbuttons, 0, M_MENU, 0, 1},
-	{N_("Replace Popup..."), menu_rpopup, 0, M_MENU, 0, 1},
-	{N_("URL Handlers..."), menu_urlhandlers, 0, M_MENU, 0, 1},
-	{N_("Event Texts..."), menu_evtpopup, 0, M_MENU, 0, 1},
-	{N_("Key Bindings..."), menu_keypopup, 0, M_MENU, 0, 1},	/* 44 */
-	{0, 0, 0, M_END, 0, 0},
+	{0, 0, 0, M_END, 0, 0},		/* 45 */
 
 #if 0
 	{0, 0, 0, M_SEP, 0, 0},	/* 56 */
@@ -1229,7 +1229,7 @@ static struct mymenu mymenu[] = {
 
 	{N_("_Help"), 0, 0, M_NEWMENU, 0, 1},	/* 62 */
 	{N_("_Contents"), menu_docs, GTK_STOCK_HELP, M_MENUSTOCK, 0, 1, GDK_F1},
-	{N_("_About"), menu_about, 0, M_MENU, 0, 1},
+	{N_("_About"), menu_about, (char *)&pix_about, M_MENUPIX, 0, 1},
 
 	{0, 0, 0, M_END, 0, 0},
 };

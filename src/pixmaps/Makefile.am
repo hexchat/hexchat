@@ -1,6 +1,7 @@
 ## Process this file with automake to produce Makefile.in
 
-LIST =	bookpng $(srcdir)/book.png \
+LIST =	aboutpng $(srcdir)/about.png \
+			bookpng $(srcdir)/book.png \
 			hoppng $(srcdir)/hop.png \
 			oppng $(srcdir)/op.png \
 			purplepng $(srcdir)/purple.png \
@@ -8,7 +9,7 @@ LIST =	bookpng $(srcdir)/book.png \
 			voicepng $(srcdir)/voice.png \
 			xchatpng $(srcdir)/../../xchat.png
 
-PNGS = book.png hop.png op.png purple.png red.png voice.png
+PNGS = about.png book.png hop.png op.png purple.png red.png voice.png
 noinst_HEADERS = inline_pngs.h
 CLEANFILES = $(noinst_HEADERS)
 EXTRA_DIST = $(PNGS) makefile.msc

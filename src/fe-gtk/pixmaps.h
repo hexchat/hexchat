@@ -1,3 +1,4 @@
+extern GdkPixbuf *pix_about;
 extern GdkPixbuf *pix_xchat;
 extern GdkPixbuf *pix_book;
 extern GdkPixbuf *pix_purple;

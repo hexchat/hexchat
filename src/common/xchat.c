@@ -676,9 +676,9 @@ find_away_message (struct server *serv, char *nick)
 	"NAME Clear\n"				"CMD clear\n\n"
 
 #define defaultconf_replace \
-	"NAME teh\n"				"CMD the\n\n"\
-	"NAME r\n"					"CMD are\n\n"\
-	"NAME u\n"					"CMD you\n\n"
+	"NAME teh\n"				"CMD the\n\n"
+/*	"NAME r\n"					"CMD are\n\n"\
+	"NAME u\n"					"CMD you\n\n"*/
 
 #define defaultconf_commands \
 	"NAME ACTION\n"		"CMD me &2\n\n"\
