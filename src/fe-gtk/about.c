@@ -117,7 +117,7 @@ menu_about (GtkWidget * wid, gpointer sess)
 				"%s\n"
 				"<b>Charset</b>: %s <b>Renderer</b>: %s\n"
 				"<b>Compiled</b>: "__DATE__"\n\n"
-				"(C) 1998-2002 Peter \305\275elezn\303\275 &lt;zed@xchat.org>",
+				"\302\251 1998-2002 Peter \305\275elezn\303\275 &lt;zed@xchat.org>",
 					get_cpu_str(),
 					locale,
 #ifdef USE_XFT

@@ -533,7 +533,7 @@ menu_middlemenu (session *sess, GdkEventButton *event)
 	GtkAccelGroup *accel_group;
 
 	accel_group = gtk_accel_group_new ();
-	menu = menu_create_main (accel_group, FALSE, sess->server->is_away, &away, &user);
+	menu = menu_create_main (accel_group, FALSE, sess->server->is_away, !sess->gui->is_tab, &away, &user);
 
 	menu_quick_item (0, 0, menu, 1, 0);	/* sep */
 
@@ -1191,7 +1191,7 @@ static struct mymenu mymenu[] = {
 #else
 #define menuoffset 2
 #endif
-	{N_("Detach Tab"), menu_detach, GTK_STOCK_REDO, M_MENUSTOCK, 0, 1, GDK_I},
+	{0, menu_detach, GTK_STOCK_REDO, M_MENUSTOCK, 0, 1, GDK_I},	/* 14 */
 	{N_("Close Tab"), menu_close, GTK_STOCK_CLOSE, M_MENUSTOCK, 0, 1, GDK_w},
 	{0, 0, 0, M_SEP, 0, 0},
 	{N_("Quit"), mg_safe_quit, GTK_STOCK_QUIT, M_MENUSTOCK, 0, 1, GDK_q},	/* 17 */
@@ -1277,7 +1277,7 @@ create_icon_menu (char *labeltext, void *stock_name, int is_stock)
 }
 
 GtkWidget *
-menu_create_main (void *accel_group, int bar, int away,
+menu_create_main (void *accel_group, int bar, int away, int toplevel,
 						GtkWidget **away_item_ret, GtkWidget **user_menu_ret)
 {
 	int i = 0;
@@ -1304,6 +1304,11 @@ menu_create_main (void *accel_group, int bar, int away,
 	mymenu[30-menuoffset].state = prefs.autodccchat;
 	mymenu[31-menuoffset].state = prefs.autodccsend;
 	/*mymenu[60-menuoffset].state = prefs.autosave;*/
+
+	if (!toplevel)
+		mymenu[14-menuoffset].text = _("Detach Tab");
+	else
+		mymenu[14-menuoffset].text = _("Attach Tab");
 
 	while (1)
 	{

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xchat 2.0.0\n"
 "POT-Creation-Date: 2003-03-03 14:07+1100\n"
-"PO-Revision-Date: 2003-02-25 20:00+0200\n"
+"PO-Revision-Date: 2003-03-04 20:00+0200\n"
 "Last-Translator: Vaidrius Petrauskas <vaidrius@delfi.lt>\n"
 "Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
 "MIME-Version: 1.0\n"
@@ -237,7 +237,7 @@ msgid ""
 "DEHOP <nick>, removes chanhalf-op status from the nick on the current "
 "channel (needs chanop)"
 msgstr ""
-"DEHOP <slapyvardis> - atima halfopo teisę iš vartotojo esamame kanale "
+"DEHOP <slapyvardis> - pašalina halfopo teisę nuo vartotojo esamame kanale "
 "(reikia kanalo operatoriaus teisių)"
 
 #: src/common/outbound.c:2519
@@ -253,7 +253,7 @@ msgid ""
 "DEVOICE <nick>, removes voice status from the nick on the current channel "
 "(needs chanop)"
 msgstr ""
-"DEVOICE <slapyvardis> - panaikina balso teisę vartotojui esamame kanale "
+"DEVOICE <slapyvardis> - atima balso teisę iš vartotojo esamame kanale "
 "(reikia kanalo operatoriaus teisių)"
 
 #: src/common/outbound.c:2522
@@ -371,13 +371,13 @@ msgstr "LOAD <byla> - įkelia įskiepį ar skriptą"
 msgid ""
 "MDEHOP, Mass deop's all chanhalf-ops in the current channel (needs chanop)"
 msgstr ""
-"MDEHOP - kanale atima halfopo teises iš visų esamame kanale jas turinčių "
+"MDEHOP - pašalina halfopo teises iš visų jas turinčių esamame kanale   "
 "(reikia kanalo operatoriaus teisių)"
 
 #: src/common/outbound.c:2569
 msgid "MDEOP, Mass deop's all chanops in the current channel (needs chanop)"
 msgstr ""
-"MDEOP - atima kanalo operatoriaus teises iš visų esamame kanale jas turinčių "
+"MDEOP - pašalina kanalo operatoriaus teises iš visų jas turinčių esamame kanale "
 "(reikia kanalo operatoriaus teisių)"
 
 #: src/common/outbound.c:2571
@@ -2662,7 +2662,7 @@ msgstr "Versija"
 
 #: src/common/xchat.c:816
 msgid "Userinfo"
-msgstr "Apie klientą"
+msgstr "Apie vartotoją"
 
 #: src/common/xchat.c:817
 msgid "Clientinfo"
@@ -3178,24 +3178,20 @@ msgstr ""
 "pagalpakeitimų sąrašą, jei taip, pakeičia"
 
 #: src/fe-gtk/fkeys.c:174
-#, fuzzy
 msgid "This command moves the front tab left by one"
 msgstr "Ši komanda stumia kortelę į kairę"
 
 #: src/fe-gtk/fkeys.c:176
-#, fuzzy
 msgid "This command moves the front tab right by one"
 msgstr "Ši komanda stumia kortelę į dešinę"
 
 #: src/fe-gtk/fkeys.c:178
-#, fuzzy
 msgid "This command moves the current tab family to the left"
-msgstr "Ši komanda stumia kortelę į kairę"
+msgstr "Ši komanda stumia kortelių šeimą į kairę"
 
 #: src/fe-gtk/fkeys.c:180
-#, fuzzy
 msgid "This command moves the current tab family to the right"
-msgstr "Ši komanda stumia kortelę į kairę"
+msgstr "Ši komanda stumia kortelių šeimą į kairę"
 
 #: src/fe-gtk/fkeys.c:182
 msgid "Push input line into history but doesn't send to server"
@@ -3421,9 +3417,8 @@ msgid "Beep on message"
 msgstr "Pyptelėti, gavus žinutę"
 
 #: src/fe-gtk/maingui.c:954
-#, fuzzy
 msgid "Show join/part messages"
-msgstr "Pyptelėti, gavus asmeninę žinutę"
+msgstr "Rodyti atėjimo/išėjimo žinutes"
 
 #: src/fe-gtk/maingui.c:956
 msgid "Color paste"
@@ -3528,14 +3523,12 @@ msgid "User List"
 msgstr "Vartotojų sąrašas"
 
 #: src/fe-gtk/menu.c:548
-#, fuzzy
 msgid "Mode Buttons"
-msgstr "Dialogo mygtukai..."
+msgstr "Režimų mygtukai"
 
 #: src/fe-gtk/menu.c:554
-#, fuzzy
 msgid "User List Buttons"
-msgstr "Vartotojų sąrašo mygtukai..."
+msgstr "Vartotojų sąrašo mygtukai"
 
 #: src/fe-gtk/menu.c:680
 msgid "Part Channel"
@@ -4562,9 +4555,8 @@ msgid "Announce your away messages to all channels"
 msgstr "Skelbti nebuvimo žinutes visuose kanaluose"
 
 #: src/fe-gtk/setup.c:214
-#, fuzzy
 msgid "Beep on highlighted messages"
-msgstr "Pyptelėti, gavus asmeninę žinutę"
+msgstr "Pyptelėti, gavus paryškintą žinutę"
 
 #: src/fe-gtk/setup.c:215
 msgid "Display MODEs in raw form"
@@ -4796,14 +4788,3 @@ msgstr "Išrinkite bylą, į kurią įrašyti"
 msgid "X-Chat: URL Grabber"
 msgstr "X-Chat: URL surinktuvas"
 
-#~ msgid "Attach/Detach this tab"
-#~ msgstr "Prijungti/atjungti šią kortelę"
-
-#~ msgid "(%s) Channel settings"
-#~ msgstr "„%s“ kanalo nuostatos"
-
-#~ msgid "Hide join/parts"
-#~ msgstr "Slėpti pranešimus apie ateinančius/išeinančius"
-
-#~ msgid "Channel Options"
-#~ msgstr "Kanalo nuostatos"

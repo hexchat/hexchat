@@ -928,14 +928,11 @@ servlist_editserver_cb (GtkCellRendererText *cell, gchar *arg1, gchar *arg2,
 	char *servname;
 	ircserver *serv;
 
+	if (!selected_net)
+		return;
+
 	gtk_tree_model_get_iter (model, &iter, path);
 	gtk_tree_model_get (model, &iter, 0, &servname, -1);
-
-	if (!selected_net)
-	{
-		g_free (servname);
-		return;
-	}
 
 	serv = servlist_server_find (selected_net, servname, NULL);
 	g_free (servname);
