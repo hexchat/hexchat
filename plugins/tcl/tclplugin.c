@@ -15,7 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#define VERSION "1.0.39"
+#define VERSION "1.0.40"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -1892,6 +1892,8 @@ static void Tcl_Plugin_Init()
 
     interp = Tcl_CreateInterp();
 
+    Tcl_FindExecutable (NULL);
+
     Tcl_Init(interp);
 
     nextprocid = 0x1000;
@@ -2078,3 +2080,4 @@ int xchat_plugin_deinit()
 
     return 1;
 }
+
