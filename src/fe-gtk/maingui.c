@@ -385,21 +385,15 @@ mg_unpopulate (session *sess)
 
 	res->input_text = strdup (GTK_ENTRY (gui->input_box)->text);
 	res->topic_text = strdup (GTK_ENTRY (gui->topic_entry)->text);
-	if (gui->flag_wid[0] != NULL)
-	{
-		res->limit_text = strdup (GTK_ENTRY (gui->limit_entry)->text);
-		res->key_text = strdup (GTK_ENTRY (gui->key_entry)->text);
-	}
+	res->limit_text = strdup (GTK_ENTRY (gui->limit_entry)->text);
+	res->key_text = strdup (GTK_ENTRY (gui->key_entry)->text);
 	if (gui->laginfo)
 		res->lag_text = strdup (gtk_label_get_text (GTK_LABEL (gui->laginfo)));
 	if (gui->throttleinfo)
 		res->queue_text = strdup (gtk_label_get_text (GTK_LABEL (gui->throttleinfo)));
 
-	if (gui->flag_wid[0] != NULL)
-	{
-		for (i = 0; i < NUM_FLAG_WIDS - 1; i++)
-			res->flag_wid_state[i] = GTK_TOGGLE_BUTTON (gui->flag_wid[i])->active;
-	}
+	for (i = 0; i < NUM_FLAG_WIDS - 1; i++)
+		res->flag_wid_state[i] = GTK_TOGGLE_BUTTON (gui->flag_wid[i])->active;
 
 	res->old_ul_value = userlist_get_value (gui->user_tree);
 	if (gui->lagometer)
@@ -525,7 +519,8 @@ mg_populate (session *sess)
 	default:
 		/* hide the dialog buttons */
 		gtk_widget_hide (gui->dialogbutton_box);
-		gtk_widget_show (gui->topicbutton_box);
+		if (prefs.chanmodebuttons)
+			gtk_widget_show (gui->topicbutton_box);
 		/* show the userlist */
 		mg_userlist_showhide (sess, TRUE);
 	}
@@ -549,11 +544,8 @@ mg_populate (session *sess)
 	/* restore all the GtkEntry's */
 	mg_restore_entry (gui->topic_entry, &res->topic_text);
 	mg_restore_entry (gui->input_box, &res->input_text);
-	if (gui->flag_wid[0] != NULL)
-	{
-		mg_restore_entry (gui->key_entry, &res->key_text);
-		mg_restore_entry (gui->limit_entry, &res->limit_text);
-	}
+	mg_restore_entry (gui->key_entry, &res->key_text);
+	mg_restore_entry (gui->limit_entry, &res->limit_text);
 	mg_restore_label (gui->laginfo, &res->lag_text);
 	mg_restore_label (gui->throttleinfo, &res->queue_text);
 
@@ -576,15 +568,12 @@ mg_populate (session *sess)
 
 	fe_userlist_numbers (sess);
 
-	if (gui->flag_wid[0] != NULL)
-	{
-		/* restore all the channel mode buttons */
-		ignore_chanmode = TRUE;
-		for (i = 0; i < NUM_FLAG_WIDS - 1; i++)
-			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gui->flag_wid[i]),
-													res->flag_wid_state[i]);
-		ignore_chanmode = FALSE;
-	}
+	/* restore all the channel mode buttons */
+	ignore_chanmode = TRUE;
+	for (i = 0; i < NUM_FLAG_WIDS - 1; i++)
+		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (gui->flag_wid[i]),
+												res->flag_wid_state[i]);
+	ignore_chanmode = FALSE;
 
 	if (gui->lagometer)
 		gtk_progress_bar_set_fraction (GTK_PROGRESS_BAR (gui->lagometer),
@@ -886,6 +875,22 @@ mg_create_userlistbuttons (GtkWidget *box)
 }
 
 void
+mg_chanmodebuttons_showhide (session *sess, int show)
+{
+	switch (sess->type)
+	{
+	case SESS_SERVER:
+	case SESS_DIALOG:
+		show = FALSE;
+	}
+
+	if (show)
+		gtk_widget_show (sess->gui->topicbutton_box);
+	else
+		gtk_widget_hide (sess->gui->topicbutton_box);
+}
+
+void
 mg_userlist_showhide (session *sess, int show)
 {
 	GtkWidget *box;
@@ -893,7 +898,7 @@ mg_userlist_showhide (session *sess, int show)
 
 	box = gui->user_box;
 
-	if (!show)
+	if (!show || prefs.hideuserlist)
 	{
 		if (gui->pane)
 			gtk_paned_set_position (GTK_PANED (gui->pane), 9999);
@@ -1273,12 +1278,6 @@ mg_apply_entry_style (GtkWidget *entry)
 static void
 mg_create_chanmodebuttons (session_gui *gui, GtkWidget *box)
 {
-	if (!prefs.chanmodebuttons)
-	{
-		gui->flag_wid[0] = NULL;
-		return;
-	}
-
 	gui->flag_t = mg_create_flagbutton (_("Topic Protection"), box, "T");
 	gui->flag_n = mg_create_flagbutton (_("No outside messages"), box, "N");
 	gui->flag_s = mg_create_flagbutton (_("Secret"), box, "S");
@@ -2153,6 +2152,9 @@ mg_create_tabwindow (session *sess)
 	if (!prefs.topicbar)
 		gtk_widget_hide (sess->gui->topic_bar);
 
+	if (!prefs.chanmodebuttons)
+		gtk_widget_hide (sess->gui->topicbutton_box);
+
 	gtk_widget_show (win);
 }
 
@@ -2299,9 +2301,6 @@ fe_update_mode_buttons (session *sess, char mode, char sign)
 		state = TRUE;
 	else
 		state = FALSE;
-
-	if (!sess->gui->flag_wid[0])
-		return;
 
 	for (i = 0; i < NUM_FLAG_WIDS - 1; i++)
 	{
@@ -2460,7 +2459,7 @@ mg_create_generic_tab (char *name, char *title, int force_toplevel,
 }
 
 void
-mg_showhide_topic (session *sess)
+mg_topic_showhide (session *sess)
 {
 	if (GTK_WIDGET_VISIBLE (sess->gui->topic_bar))
 	{

@@ -8,5 +8,5 @@ void userlist_button_cb (GtkWidget * button, char *cmd);
 void goto_url (char *url);
 void nick_command_parse (session *sess, char *cmd, char *nick, char *allnick);
 void usermenu_update (void);
-void menu_toggle_item (char *label, GtkWidget *menu, void *callback, void *userdata, int state);
+GtkWidget *menu_toggle_item (char *label, GtkWidget *menu, void *callback, void *userdata, int state);
 GtkWidget *create_icon_menu (char *labeltext, void *stock_name, int is_stock);

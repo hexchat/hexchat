@@ -253,7 +253,7 @@ popup_menu_cb (GtkWidget * item, char *cmd)
 		nick_command_parse (current_sess, cmd, nick, nick);
 }
 
-void
+GtkWidget *
 menu_toggle_item (char *label, GtkWidget *menu, void *callback, void *userdata,
 						int state)
 {
@@ -265,6 +265,8 @@ menu_toggle_item (char *label, GtkWidget *menu, void *callback, void *userdata,
 	g_signal_connect (G_OBJECT (item), "activate",
 							G_CALLBACK (callback), userdata);
 	gtk_widget_show (item);
+
+	return item;
 }
 
 static GtkWidget *
@@ -493,9 +495,9 @@ menu_showhide (void)
 }
 
 static void
-menu_middle_cb (GtkWidget *item, int n)
+menu_middle_cb (GtkWidget *item, gpointer userdata)
 {
-	switch (n)
+	switch (GPOINTER_TO_INT (userdata))
 	{
 	case 0:
 		if (prefs.hidemenu)
@@ -505,11 +507,15 @@ menu_middle_cb (GtkWidget *item, int n)
 		menu_showhide ();
 		break;
 	case 1:
-		mg_showhide_topic (current_sess);
+		mg_topic_showhide (current_sess);
 		break;
 	case 2:
 		prefs.hideuserlist = !prefs.hideuserlist;
-		mg_userlist_showhide (current_sess, prefs.hideuserlist);
+		mg_userlist_showhide (current_sess, !prefs.hideuserlist);
+		break;
+	case 3:
+		prefs.chanmodebuttons = !prefs.chanmodebuttons;
+		mg_chanmodebuttons_showhide (current_sess, prefs.chanmodebuttons);
 		break;
 	}
 }
@@ -517,7 +523,7 @@ menu_middle_cb (GtkWidget *item, int n)
 void
 menu_middlemenu (session *sess, GdkEventButton *event)
 {
-	GtkWidget *menu, *away, *user;
+	GtkWidget *menu, *away, *user, *item;
 	GtkAccelGroup *accel_group;
 
 	accel_group = gtk_accel_group_new ();
@@ -526,8 +532,18 @@ menu_middlemenu (session *sess, GdkEventButton *event)
 	menu_quick_item (0, 0, menu, 1, 0);	/* sep */
 
 	menu_toggle_item (_("Menu Bar"), menu, menu_middle_cb, 0, !prefs.hidemenu);
-	menu_toggle_item (_("Topic Bar"), menu, menu_middle_cb, (void*)1, prefs.topicbar);
-	menu_toggle_item (_("User List"), menu, menu_middle_cb, (void*)2, !prefs.hideuserlist);
+	menu_toggle_item (_("Topic Bar"), menu, menu_middle_cb,
+							GINT_TO_POINTER (1), prefs.topicbar);
+
+	if (!prefs.paned_userlist)
+		menu_toggle_item (_("User List"), menu, menu_middle_cb,
+								GINT_TO_POINTER (2), !prefs.hideuserlist);
+
+	item = menu_toggle_item (_("Mode Buttons"), menu, menu_middle_cb,
+									GINT_TO_POINTER (3),
+									prefs.topicbar ? prefs.chanmodebuttons : 0);
+	if (!prefs.topicbar)
+		gtk_widget_set_sensitive (item, FALSE);
 
 	menu_popup (menu, event, accel_group);
 }

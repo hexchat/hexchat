@@ -4051,6 +4051,7 @@ gtk_xtext_render_page_timeout (GtkXText * xtext)
 		gtk_xtext_adjustment_set (xtext->buffer, FALSE);
 		gtk_adjustment_set_value (adj, adj->upper - adj->page_size);
 		g_signal_handler_unblock (xtext->adj, xtext->vc_signal_tag);
+		xtext->buffer->old_value = adj->value;
 	} else
 	{
 		gtk_xtext_adjustment_set (xtext->buffer, FALSE);
