@@ -57,6 +57,7 @@ strip -R .note -R .comment $RPM_BUILD_ROOT%{_libdir}/tcl.so
 mv $RPM_BUILD_ROOT%{_libdir}/perl.so $RPM_BUILD_ROOT%{_libdir}/xchat/plugins
 mv $RPM_BUILD_ROOT%{_libdir}/python.so $RPM_BUILD_ROOT%{_libdir}/xchat/plugins
 mv $RPM_BUILD_ROOT%{_libdir}/tcl.so $RPM_BUILD_ROOT%{_libdir}/xchat/plugins
+rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
 
 %find_lang %name
 
