@@ -173,7 +173,7 @@ timer_cb (void *userdata)
 	dSP;
 	ENTER;
 	SAVETMPS;
-	
+
 	PUSHMARK (SP);
 	XPUSHs (data->userdata);
 	PUTBACK;
@@ -182,7 +182,7 @@ timer_cb (void *userdata)
 	SPAGAIN;
 	if (SvTRUE (ERRSV))
 	{
-		xchat_printf (ph, "Error in server callback %s",
+		xchat_printf (ph, "Error in timer callback %s",
 				SvPV_nolen (ERRSV));
 		POPs; /* remove undef from the top of the stack */
 		retVal = XCHAT_EAT_ALL;
@@ -465,88 +465,16 @@ static XS (XS_Xchat_print)
 {
   
 	char *text = NULL;
-/* 	char *server = NULL; */
-/* 	char *channel = NULL; */
-/*  	xchat_context *oldctx; */
-/* 	xchat_context *newctx; */
 
 	dXSARGS;
 	if (items != 1 ) {
 		xchat_print (ph, "Usage: Xchat::_print(text)");
 	} else {
 		text = SvPV_nolen (ST (0));
-
-/* 	if (items == 1) { */
 		xchat_print (ph, text);
-/* 	} */
-/* 	else */
-/* 	{ */
-
-/* 		switch (items) */
-/* 		{ */
-/* 		case 2: /\* server name only *\/ */
-/* 			server = SvPV_nolen (ST (0)); */
-/* 			/\* chan is already NULL *\/ */
-/* 			break; */
-/* 		case 3: /\* server and channel *\/ */
-/* 			server = SvPV_nolen (ST (0)); */
-/* 			channel = SvPV_nolen (ST (1)); */
-/* 			break; */
-/* 		} */
-    
-/* 		oldctx = xchat_get_context (ph); */
-/* 		newctx = xchat_find_context (ph, server, channel); */
-
-/* 		if (newctx != NULL) */
-/* 		{ */
-/* 			xchat_set_context (ph, newctx); */
-/* 			xchat_print (ph, text); */
-/* 			xchat_set_context (ph, oldctx); */
-/* 		} */
-/* 		else */
-/* 		{ */
-/* 			xchat_printf (ph, */
-/* 			"print: context not found (server = %s, channel = %s", */
-/* 					server, channel); */
-/* 		} */
-/* 	} */
 	}
 	XSRETURN_EMPTY;
 }
-
-/* static XS (XS_Xchat_printf) */
-/* { */
-/* 	SV *	format; */
-/* 	AV *args; */
-/* 	SV * print_str; */
-/* 	int i = 0; */
-
-/* 	dXSARGS; */
-
-/* 	if (items < 1) */
-/* 		xchat_print (ph, "Usage: Xchat::printf(format, ...)"); */
-/* 	{ */
-/* 	format = ST (0); */
-/* 	args = newAV (); */
-/* 	print_str = newSV (0); */
-
-/* 	if (items == 1) */
-/* 	{ */
-/* 		xchat_print (ph, SvPV_nolen (format)); */
-/* 		XSRETURN_EMPTY; */
-/* 	} */
-/* 	for (i = 1; i < items; i++) */
-/* 	{ */
-/* 		av_push (args, ST (i)); */
-/* 	} */
-
-/* 	sv_vsetpvfn (print_str, SvPV_nolen (format), sv_len (format), NULL, */
-/* 			AvARRAY (args), av_len (args) + 1, NULL); */
-/* 	xchat_print (ph, SvPV_nolen (print_str)); */
-
-/* 	} */
-/* 	XSRETURN_EMPTY; */
-/* } */
 
 static XS (XS_Xchat_emit_print)
 {
@@ -788,7 +716,6 @@ static XS (XS_Xchat_hook_timer)
 		callback = ST (1);
 		data = NULL;
 		userdata = ST (2);
-
 		data = malloc (sizeof (HookData));
 
 		if (data == NULL) {
@@ -833,81 +760,17 @@ static XS(XS_Xchat_unhook)
 static XS (XS_Xchat_command)
 {
 	char *cmd = NULL;
-/* 	char *server = NULL; */
-/* 	char *channel = NULL; */
-/* 	xchat_context *oldctx; */
-/* 	xchat_context *newctx; */
 
 	dXSARGS;
 	if (items != 1 ) {
 		xchat_print (ph, "Usage: Xchat::_command(command)");
 	} else {
 		cmd = SvPV_nolen (ST (0));
-    
-/* 	if (items == 1) { */
 		xchat_command (ph, cmd);
-/* 	} */
-/* 	else */
-/* 	{ */
 
-/* 		switch (items) */
-/* 		{ */
-/* 		case 2: /\* server name only *\/ */
-/* 			server = SvPV_nolen (ST (0)); */
-/* 			/\* chan is already NULL *\/ */
-/* 			break; */
-/* 		case 3: /\* server and channel *\/ */
-/* 			server = SvPV_nolen (ST (0)); */
-/* 			channel = SvPV_nolen (ST (1)); */
-/* 			break; */
-/* 		} */
-
-/* 		oldctx = xchat_get_context (ph); */
-/* 		newctx = xchat_find_context (ph, server, channel); */
-
-/* 		if (newctx != NULL) */
-/* 		{ */
-/* 			xchat_set_context (ph, newctx); */
-/* 			xchat_command (ph, cmd); */
-/* 			xchat_set_context (ph, oldctx); */
-/* 		} */
-/* 		else */
-/* 		{ */
-/* 			xchat_printf (ph, */
-/* 		     "command: context not found (server = %s, channel = %s", */
-/* 				     server, channel); */
-/* 		} */
-/* 	} */
 	}
 	XSRETURN_EMPTY;
 }
-
-/* static XS (XS_Xchat_commandf) */
-/* { */
-/* 	SV *format; */
-/* 	AV *args; */
-/* 	SV *command; */
-/* 	int i = 1; */
-/* 	dXSARGS; */
-/* 	if (items < 1) */
-/* 		xchat_print (ph, "Usage: Xchat::commandf(format, ...)"); */
-/* 	{ */
-/* 	format = ST (0); */
-/* 	args = newAV (); */
-/* 	command = newSV(0); */
-	
-/* 	for (i = 1; i < items; i++) */
-/* 	{ */
-/* 		av_push (args, ST (i)); */
-/* 	} */
-
-/* 	sv_vsetpvfn (command, SvPV_nolen (format), sv_len (format), NULL, */
-/* 			AvARRAY (args), av_len (args) + 1, NULL); */
-/* 	xchat_command (ph, SvPV_nolen (command)); */
-
-/* 	} */
-/* 	XSRETURN_EMPTY; */
-/* } */
 
 static XS (XS_Xchat_find_context)
 {
@@ -2032,9 +1895,7 @@ xs_init (pTHX)
 	newXS("Xchat::_hook_timer", XS_Xchat_hook_timer, "Xchat");
 	newXS("Xchat::unhook", XS_Xchat_unhook, "Xchat");
 	newXS("Xchat::_print", XS_Xchat_print, "Xchat");
-/* 	newXS("Xchat::printf", XS_Xchat_printf, "Xchat"); */
 	newXS("Xchat::_command", XS_Xchat_command, "Xchat");
-/* 	newXS("Xchat::commandf", XS_Xchat_commandf, "Xchat"); */
 	newXS("Xchat::find_context", XS_Xchat_find_context, "Xchat");
 	newXS("Xchat::get_context", XS_Xchat_get_context, "Xchat");
 	newXS("Xchat::set_context", XS_Xchat_set_context, "Xchat");
@@ -2304,7 +2165,6 @@ perl_init (void)
 "\n"
 "  return 0;\n"
 "}\n"
-
 
 
 	};
