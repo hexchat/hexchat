@@ -179,7 +179,7 @@ N_("-%C10-%C11-%O$tDCC SEND connection established to %C11$1 %C14[%O$2%C14]%O")}
 {"DCC SEND Failed", pevt_dccsendfail_help, 2, 0,
 N_("-%C10-%C11-%O$tDCC SEND %C11$1%O failed. Connection to %C11$2%O lost.")},
 
-{"DCC SEND Offer", pevt_dccsendoffer_help, 3, 0,
+{"DCC SEND Offer", pevt_dccsendoffer_help, 4, 0,
 N_("-%C10-%C11-%O$t%C11$1 %Chas offered %C11$2 %C(%C11$3 %Cbytes)")},
 
 {"DCC Stall", pevt_dccstall_help, 3, 0,

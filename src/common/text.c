@@ -933,6 +933,7 @@ static char *pevt_dccsendoffer_help[] = {
 	N_("Nickname"),
 	N_("Filename"),
 	N_("Size"),
+	N_("IP address"),
 };
 
 static char *pevt_dccgenericoffer_help[] = {

@@ -1632,8 +1632,9 @@ dontresume:
 				fe_dcc_update_recv_win ();
 		}
 		sprintf (outbuf, "%lu", size);
+		snprintf (outbuf + 24, 300, "%s:%d", net_ip (dcc->addr), dcc->port);
 		EMIT_SIGNAL (XP_TE_DCCSENDOFFER, sess->server->front_session, nick,
-						 file, outbuf, NULL, 0);
+						 file, outbuf, outbuf + 24, 0);
 	} else
 		EMIT_SIGNAL (XP_TE_DCCGENERICOFFER, sess->server->front_session,
 						 word_eol[4] + 2, nick, NULL, NULL, 0);

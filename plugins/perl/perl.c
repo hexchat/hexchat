@@ -258,9 +258,17 @@ static XS (XS_IRC_print_with_channel)
 	int junk;
 	dXSARGS;
 	void *ctx, *old_ctx;
+	char *server = NULL;
+
+	if (items > 2)
+	{
+		server = SvPV (ST (2), junk);
+		if (!server[0])
+			server = NULL;
+	}
 
 	old_ctx = xchat_get_context (ph);
-	ctx = xchat_find_context (ph, SvPV (ST (1), junk), SvPV (ST (2), junk));
+	ctx = xchat_find_context (ph, server, SvPV (ST (1), junk));
 	if (ctx)
 	{
 		xchat_set_context (ph, ctx);

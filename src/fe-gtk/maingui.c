@@ -414,15 +414,19 @@ mg_populate_userlist (session *sess)
 {
 	session_gui *gui;
 
-	sess = current_sess;
-	gui = sess->gui;
+	if (!sess)
+		sess = current_tab;
 
-	if (sess->type == SESS_DIALOG)
-		mg_set_access_icon (sess->gui, NULL);
-	else
-		mg_set_access_icon (sess->gui, get_user_icon (sess->server, sess->res->myself));
-	userlist_show (sess);
-	userlist_set_value (sess->gui->user_tree, sess->res->old_ul_value);
+	if (is_session (sess))
+	{
+		gui = sess->gui;
+		if (sess->type == SESS_DIALOG)
+			mg_set_access_icon (sess->gui, NULL);
+		else
+			mg_set_access_icon (sess->gui, get_user_icon (sess->server, sess->res->myself));
+		userlist_show (sess);
+		userlist_set_value (sess->gui->user_tree, sess->res->old_ul_value);
+	}
 
 	ul_tag = 0;
 	return 0;
@@ -497,8 +501,14 @@ mg_populate (session *sess)
 		gtk_button_set_label (GTK_BUTTON (gui->nick_label), sess->server->nick);
 
 	/* this is slow, so make it a timeout event */
-	if (ul_tag == 0)
-		ul_tag = g_idle_add ((GSourceFunc)mg_populate_userlist, 0);
+	if (!gui->is_tab)
+	{
+		mg_populate_userlist (sess);
+	} else
+	{
+		if (ul_tag == 0)
+			ul_tag = g_idle_add ((GSourceFunc)mg_populate_userlist, NULL);
+	}
 
 	fe_userlist_numbers (sess);
 

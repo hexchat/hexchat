@@ -342,7 +342,8 @@ key_load_defaults ()
 {
 		/* This is the default config */
 #define defcfg \
-		"A\nminus\nChange Page\nD1:-1\nD2:Relative\n\n"\
+		"C\nPrior\nChange Page\nD1:-1\nD2:Relative\n\n"\
+		"C\nNext\nChange Page\nD1:1\nD2:Relative\n\n"\
 		"A\n9\nChange Page\nD1:9\nD2!\n\n"\
 		"A\n8\nChange Page\nD1:8\nD2!\n\n"\
 		"A\n7\nChange Page\nD1:7\nD2!\n\n"\
@@ -364,7 +365,6 @@ key_load_defaults ()
 		"None\nTab\nComplete nick/command\nD1!\nD2!\n\n"\
 		"None\nspace\nCheck For Replace\nD1!\nD2!\n\n"\
 		"None\nReturn\nCheck For Replace\nD1!\nD2!\n\n"\
-		"A\nequal\nChange Page\nD1:1\nD2:Relative\n\n"\
 		"C\nTab\nComplete nick/command\nD1:Up\nD2!\n\n"\
 		"A\nLeft\nMove front tab left\nD1!\nD2!\n\n"\
 		"A\nRight\nMove front tab right\nD1!\nD2!\n\n"
