@@ -15,7 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#define VERSION "1.0.10"
+#define VERSION "1.0.11"
 
 #ifdef WIN32
 #define strcasecmp stricmp
@@ -79,10 +79,15 @@ static char sourcedirs[] = {
 static char *StrDup(char *string, int *length)
 {
     char *result;
-    if ((*length = strlen(string)) == 0)
+
+    if (string == NULL)
         return NULL;
+
+    *length = strlen(string);
     result = Tcl_Alloc(*length + 1);
-    strncpy(result, string, *length + 1);
+    strncpy(result, string, *length);
+    result[*length] = 0;
+
     return result;
 }
 
@@ -218,6 +223,9 @@ static int Server_raw_line(char *word[], char *word_eol[], void *userdata)
     int private = 0;
 
     complete = XCHAT_EAT_NONE;
+
+    if (word[0][0] == 0)
+      return complete;
 
     if (word[1][0] == ':') {
         src = word[1];
@@ -691,7 +699,6 @@ static int tcl_alias(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
 
     return TCL_OK;
 }
-
 
 static int tcl_complete(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
 {
@@ -1855,3 +1862,4 @@ int xchat_plugin_deinit()
 
     return 1;
 }
+
