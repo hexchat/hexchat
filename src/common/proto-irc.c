@@ -478,7 +478,7 @@ process_numeric (session * sess, int n,
 			if (strchr (word[9], 'G'))
 				away = 1;
 
-			inbound_user_info (who_sess, word[4], word[5], word[6], word[7],
+			inbound_user_info (sess, word[4], word[5], word[6], word[7],
 									 word[8], word_eol[11], away);
 
 			/* try to show only user initiated whos */
