@@ -989,7 +989,7 @@ xchat_list_fields (xchat_plugin *ph, const char *name)
 	};
 	static const char *channels_fields[] =
 	{
-		"schannel",	"pcontext",	"sserver",	"stype", NULL
+		"schannel",	"pcontext",	"sserver",	"stype",	"snetwork",	NULL
 	};
 	static const char *ignore_fields[] =
 	{
@@ -1038,6 +1038,8 @@ xchat_list_str (xchat_plugin *ph, xchat_list *xlist, const char *name)
 			return data;	/* this is a session * */
 		case 0xca022f43: /* server */
 			return ((session *)data)->server->servername;
+		case 0x6de15a2e:        /* network */
+			return ((session *)data)->server->networkname;
 		}
 		break;
 
