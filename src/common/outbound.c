@@ -975,6 +975,10 @@ cmd_discon (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 static int
 cmd_dns (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
+#ifdef WIN32
+	PrintText (sess, "DNS is not implemented in Windows.\n");
+	return TRUE;
+#else
 	char *nick = word[2];
 	struct User *user;
 
@@ -999,6 +1003,7 @@ cmd_dns (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		return TRUE;
 	}
 	return FALSE;
+#endif
 }
 
 static int

@@ -443,7 +443,18 @@ text_validate (char **text, int *len)
 	{
 		if (error)
 		{
-			*text = g_strdup_printf ("\0034ERROR\017\t%s\n", error->message);
+#ifdef WIN32
+			FILE *fp = fopen ("./error.txt", "w");
+			if (fp)
+			{
+				fwrite (error->message, strlen (error->message), 1, fp);
+				fwrite (*text, *len, 1, fp);
+				fclose (fp);
+			}
+			*text = g_strdup_printf ("\0034ICONV\017 %s (error.txt written)\n", error->message);
+#else
+			*text = g_strdup_printf ("\0034ICONV\017 %s\n", error->message);
+#endif
 			*len = strlen (*text);
 			g_error_free (error);
 		} else
