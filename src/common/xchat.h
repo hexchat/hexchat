@@ -293,8 +293,8 @@ typedef struct session
 	void *usertree;					/* ordered with Ops first */
 	struct User *me;					/* points to myself in the usertree */
 	char channel[CHANLEN];
-	char waitchannel[CHANLEN];		  /* waiting to join this channel */
-	char willjoinchannel[CHANLEN];	  /* /join done for this channel */
+	char waitchannel[CHANLEN];		  /* waiting to join channel (/join sent) */
+	char willjoinchannel[CHANLEN];	  /* will issue /join for this channel */
 	char channelkey[64];			  /* XXX correct max length? */
 	int limit;						  /* channel user limit */
 	int logfd;

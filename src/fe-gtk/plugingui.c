@@ -25,7 +25,6 @@
 #include "fe-gtk.h"
 
 #include <gtk/gtkdialog.h>
-#include <gtk/gtkclist.h>
 #include <gtk/gtkstock.h>
 #include <gtk/gtkbox.h>
 #include <gtk/gtkscrolledwindow.h>

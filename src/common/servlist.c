@@ -509,6 +509,9 @@ servlist_connect (session *sess, ircnet *net)
 	/* incase a protocol switch is added to the servlist gui */
 	server_fill_her_up (sess->server);
 
+	sess->willjoinchannel[0] = 0;
+	serv->password[0] = 0;
+
 	if (net->autojoin && !sess->server->recondelay_tag)
 		safe_strcpy (sess->willjoinchannel, net->autojoin,
 						 sizeof (sess->willjoinchannel));
