@@ -388,12 +388,12 @@ plugin_load (session *sess, char *filename, char *arg)
 	else
 		handle = dlopen (filename, RTLD_GLOBAL | RTLD_NOW);
 	if (handle == NULL)
-		return dlerror ();
+		return (char *)dlerror ();
 	dlerror ();		/* Clear any existing error */
 
 	/* find the init routine xchat_plugin_init */
 	init_func = dlsym (handle, "xchat_plugin_init");
-	error = dlerror ();
+	error = (char *)dlerror ();
 	if (error != NULL)
 	{
 		dlclose (handle);
@@ -402,7 +402,7 @@ plugin_load (session *sess, char *filename, char *arg)
 
 	/* find the plugin's deinit routine, if any */
 	deinit_func = dlsym (handle, "xchat_plugin_deinit");
-	error = dlerror ();
+	error = (char *)dlerror ();
 #endif
 
 	/* add it to our linked list */

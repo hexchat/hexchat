@@ -612,13 +612,21 @@ dcc_calc_average_cps (struct DCC *dcc)
 		dcc->cps = (dcc->pos - dcc->resumable) / sec;
 }
 
+static void
+dcc_send_ack (struct DCC *dcc)
+{
+	/* send in 32-bit big endian */
+	guint32 pos = htonl (dcc->pos);
+	send (dcc->sok, (char *) &pos, 4, 0);
+}
+
 static gboolean
 dcc_read (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 {
 	char *old;
 	char buf[4096];
-	guint32 pos;
 	int n;
+	gboolean need_ack = FALSE;
 
 	if (dcc->fp == -1)
 	{
@@ -670,6 +678,9 @@ dcc_read (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 	{
 		if (dcc->throttled)
 		{
+			if (need_ack)
+				dcc_send_ack (dcc);
+
 			fe_input_remove (dcc->iotag);
 			dcc->iotag = 0;
 			return FALSE;
@@ -684,8 +695,14 @@ dcc_read (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 			if (n < 0)
 			{
 				if (would_block_again ())
+				{
+					if (need_ack)
+						dcc_send_ack (dcc);
 					return TRUE;
+				}
 			}
+			if (need_ack)
+				dcc_send_ack (dcc);
 			EMIT_SIGNAL (XP_TE_DCCRECVERR, dcc->serv->front_session, dcc->file,
 							 dcc->destfile, dcc->nick,
 							 errorstring ((n < 0) ? sock_error () : 0), 0);
@@ -697,17 +714,19 @@ dcc_read (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 		{
 			EMIT_SIGNAL (XP_TE_DCCRECVERR, dcc->serv->front_session, dcc->file,
 							 dcc->destfile, dcc->nick, errorstring (errno), 0);
+			if (need_ack)
+				dcc_send_ack (dcc);
 			dcc_close (dcc, STAT_FAILED, FALSE);
 			return TRUE;
 		}
-		dcc->pos += n;
-		pos = htonl (dcc->pos);
-		send (dcc->sok, (char *) &pos, 4, 0);
 
 		dcc->lasttime = time (0);
+		dcc->pos += n;
+		need_ack = TRUE;	/* send ack when we're done recv()ing */
 
 		if (dcc->pos >= dcc->size)
 		{
+			dcc_send_ack (dcc);
 			dcc_calc_average_cps (dcc);
 			sprintf (buf, "%d", dcc->cps);
 			dcc_close (dcc, STAT_DONE, FALSE);
