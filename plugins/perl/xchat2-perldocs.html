@@ -11,11 +11,6 @@ h2{font-family:sans-serif;color:#990066;}
 
 <body>
 
-<table width="100%" cellpadding="0" cellspacing="0" border="0">
-<tbody><tr>
-
-<td align="center" valign="top">
-
 <table width="90%" cellpadding="0" cellspacing="0" border="0">
 <tbody><tr>
 
@@ -23,17 +18,15 @@ h2{font-family:sans-serif;color:#990066;}
 <blockquote>
 <h2>Xchat Perl Docs</h2>
 
-<p>
 <table width="95%" cellpadding="0" cellspacing="3" border="0" align="center">
 <tbody><tr><td bgcolor="#000000">
 <table width="100%" cellpadding="2" cellspacing="1" border="0"><tbody><tr>
 <td width="20%" align="left" bgcolor="#dddddd">
-<font face="Lucida, Helvetica, Arial" color="#990066;">
+<font face="Lucida, Helvetica, Arial" color="#990066">
 Introduction
 </font></td>
 </tr></tbody></table>
 </td></tr></tbody></table>
-</p>
 
 <blockquote>
 <p>Good Hello!</p>
@@ -65,11 +58,14 @@ never interoperate properly with others, or at least just piss off a lot of othe
 people.  <i>Pay special attention to section 2.2 of the RFC.</i></p>
 </blockquote>
 
-<p>
-<table ALIGN=CENTER WIDTH="75%" CELLPADDING=5 CELLSPACING=0><tr><td ALIGN=CENTER BGCOLOR="#FF7070"><font COLOR="#FFFFFF" FACE="Verdana, Helvetica, Arial, Sans"><b>Standard Disclaimer</b></font></td></tr><td BGCOLOR="#FFCECE" ALIGN=CENTER><font COLOR="#800000" FACE="Helvetica, Lucida, Arial, Sans">This documentation is provided on an "as-is" basis and comes with no warranty of accuracy or usefulness, either expressed or implied.  It is subject to change without any notice, and may contain omissions or errors which could cause your genitalia to shrivel and fall off, or spontaneously combust.  If you have any further questions,<br>please feel free to seek professional help.</font></td></tr></table>
-</p>
+<table ALIGN=CENTER WIDTH="75%" CELLPADDING=5 CELLSPACING=0>
+<tr><td ALIGN=CENTER BGCOLOR="#FF7070">
+<font COLOR="#FFFFFF" FACE="Verdana, Helvetica, Arial, Sans"><b>Standard Disclaimer</b>
+</font>
+</td></tr><tr> <td BGCOLOR="#FFCECE" ALIGN=CENTER><font COLOR="#800000" FACE="Helvetica, Lucida, Arial, Sans">
+This documentation is provided on an "as-is" basis and comes with no warranty of accuracy or usefulness, either expressed or implied.  It is subject to change without any notice, and may contain omissions or errors which could cause your genitalia to shrivel and fall off, or spontaneously combust.  If you have any further questions,<br>please feel free to seek professional help.</font>
+</td></tr></table>
 
-<p>
 <table width="95%" cellpadding="0" cellspacing="3" border="0" align="center">
 <tbody><tr><td bgcolor="#000000">
 <table width="100%" cellpadding="2" cellspacing="1" border="0"><tbody><tr>
@@ -79,7 +75,6 @@ About Handlers
 </font></td>
 </tr></tbody></table>
 </td></tr></tbody></table>
-</p>
 
 <blockquote>
 There are [currently] four basic ways to make things call the subroutines you write for X-Chat and they are:
@@ -89,7 +84,6 @@ There are [currently] four basic ways to make things call the subroutines you wr
 <li>print handlers - triggered just before xchat calls its built in print handlers for events</li></ul>
 </blockquote>
 
-<p>
 <table width="95%" cellpadding="0" cellspacing="3" border="0" align="center">
 <tbody><tr><td bgcolor="#000000">
 <table width="100%" cellpadding="2" cellspacing="1" border="0"><tbody><tr>
@@ -99,13 +93,11 @@ About Exit Codes
 </font></td>
 </tr></tbody></table>
 </td></tr></tbody></table>
-</p>
 
 <blockquote>
 These are very important. Every time you set up a handler, it takes precedent over the built-in functions and commands of X-Chat. That is, whatever thing which triggered your subroutine will go to your code before it goes to X-Chat to be dealt with. In this way you can replace almost every built-in function that the client has with your own routines. The thing to remember is that if your code exits by hitting the end of your subroutine, or by a plain 'return' statement, processing of the event will go on to whatever other things have set up hooks for the event, and then (provided nothing else exits with a return value of 1) to X-Chat itself. There is only one problem with this, (which is solved by the brokering handler that I'll explain that later) and that is that you cannot really control what order the custom routines get called. Normally they will execute in order of which ones were installed first, but a single script has no real way of knowing this. Beware.
 </blockquote>
 
-<p>
 <table width="95%" cellpadding="0" cellspacing="3" border="0" align="center">
 <tbody><tr><td bgcolor="#000000">
 <table width="100%" cellpadding="2" cellspacing="1" border="0"><tbody><tr>
@@ -115,13 +107,11 @@ About @_
 </font></td>
 </tr></tbody></table>
 </td></tr></tbody></table>
-</p>
 
 <blockquote>
 If you've never heard of @_ before, then you've obviously not coded in perl. When a message handler triggers, the raw line from the IRC server is passed to the subroutine you specify in @_. When a command handler is triggered, only the arguments are passed to the routine through @_ and they are not broken into a list, but left as one long string. You'll have to parse those yourself with split. (I advise using s/\s+/ /g to collapse the blank space to single space first.) When a timer handler is triggered, I *think* absolutely nothing is passed in @_, but it's not like anything terrifically important could be passed along anyway. Be especially careful when setting up message handlers for mode changes, since the modes are not broken up into individual events like they are with eggdrop. The upside of this is that X-Chat has no mode hooks of it's own, so you don't have to worry about it too much. (This is not the case with the brokering handler, however.)
 </blockquote>
 
-<p>
 <table width="95%" cellpadding="0" cellspacing="3" border="0" align="center">
 <tbody><tr><td bgcolor="#000000">
 <table width="100%" cellpadding="2" cellspacing="1" border="0"><tbody><tr>
@@ -131,15 +121,13 @@ About Context
 </font></td>
 </tr></tbody></table>
 </td></tr></tbody></table>
-</p>
 
 <blockquote>
 There are some really nice things about coding for X-Chat, and the biggest one is that it's fairly good about determining the proper context for things. If a server sends something that triggers a message handler, then you can be sure that unless you specify otherwise, that your IRC::print or IRC::command function call will go back to that server and that server alone. If you really really need to know what the current context is, use the IRC::get_info function as detailed below.
 </blockquote>
 
-<hr width=95%>
+<hr width="95%">
 
-<p>
 <table width="95%" cellpadding="0" cellspacing="3" border="0" align="center">
 <tbody><tr><td bgcolor="#000000">
 <table width="100%" cellpadding="2" cellspacing="1" border="0"><tbody><tr>
@@ -149,7 +137,6 @@ script initialization commands
 </font></td>
 </tr></tbody></table>
 </td></tr></tbody></table>
-</p>
 
 <table width="95%" cellpadding="0" cellspacing="3" border="0" align="center">
 <tbody><tr><td bgcolor="#000000">
@@ -167,7 +154,6 @@ IRC::register(scriptname, version, shutdownroutine, unused);
 <p>The "shutdownroutine" arg is a function that will be called when X-Chat shuts down, so you get a chance to save config files etc. You can omit this arg, it is optional. The "unused" arg is reserved for future use, for now just provide "". This function also returns X-Chat's version number. </p>
 </blockquote>
 
-<p>
 <table width="95%" cellpadding="0" cellspacing="3" border="0" align="center">
 <tbody><tr><td bgcolor="#000000">
 <table width="100%" cellpadding="2" cellspacing="1" border="0"><tbody><tr>
@@ -177,7 +163,6 @@ Handler initialization commands
 </font></td>
 </tr></tbody></table>
 </td></tr></tbody></table>
-</p>
 
 <table width="95%" cellpadding="0" cellspacing="3" border="0" align="center">
 <tbody><tr><td bgcolor="#000000">
@@ -235,7 +220,6 @@ IRC::add_print_handler(message, subroutine_name);
 <p>This function allows you to catch the system messages (those who generally start by three stars) and to execute a function each time an event appear. The events are those you can see in "Settings->Edit Events Texts". message is the name of the event (you can find it in the Edit Events box, "Events" column) , subroutine_name is the name of the function that will get messages. Be carrful: all the arguments are sent to function in $_[0] separated by spaces. </p>
 </blockquote>
 
-<p>
 <table width="95%" cellpadding="0" cellspacing="3" border="0" align="center">
 <tbody><tr><td bgcolor="#000000">
 <table width="100%" cellpadding="2" cellspacing="1" border="0"><tbody><tr>
@@ -245,7 +229,6 @@ Output commands
 </font></td>
 </tr></tbody></table>
 </td></tr></tbody></table>
-</p>
 
 <table width="95%" cellpadding="0" cellspacing="3" border="0" align="center">
 <tbody><tr><td bgcolor="#000000">
@@ -317,7 +300,6 @@ IRC::send_raw(text);
 This routine is very useful in that it allows you to send a string directly to the IRC server you are connected to. It is assumed that the server will be the one you first connected to if there is no clear context for the command, otherwise it will go to whatever server triggered the message handler or command handler window. You must specify newlines here always or you can be guaranteed that strange things will happen. The text message you specify should be a proper RAW IRC message, so don't play with it if you don't know how to do these. Additionally, while newlines are also not assumed here as with the IRC::print function, the RFC specifies that newlines are a CR+LF pair, even if most servers will accept a mere newline. It's best to play it safe and use \r\n instead of just \n.
 </blockquote>
 
-<p>
 <table width="95%" cellpadding="0" cellspacing="3" border="0" align="center">
 <tbody><tr><td bgcolor="#000000">
 <table width="100%" cellpadding="2" cellspacing="1" border="0"><tbody><tr>
@@ -327,7 +309,6 @@ Information retrieval commands
 </font></td>
 </tr></tbody></table>
 </td></tr></tbody></table>
-</p>
 
 <table width="95%" cellpadding="0" cellspacing="3" border="0" align="center">
 <tbody><tr><td bgcolor="#000000">
@@ -469,7 +450,6 @@ IRC::ignore_list( );
 This command returns a flat list of the contents of your ignore list. You'll have to play with it a little as I have not had a chance to yet. Works basically the same as the other list commands.
 </blockquote>
 
-<p>
 <table width="95%" cellpadding="0" cellspacing="3" border="0" align="center">
 <tbody><tr><td bgcolor="#000000">
 <table width="100%" cellpadding="2" cellspacing="1" border="0"><tbody><tr>
@@ -479,7 +459,6 @@ Unimplemented commands that were available in xchat 1.8.x
 </font></td>
 </tr></tbody></table>
 </td></tr></tbody></table>
-</p>
 
 <blockquote>
 add_user_list , sub_user_list , clear_user_list, notify_list were available in xchat 1.8.x but are not implemented in xchat 2 at this time.
