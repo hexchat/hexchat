@@ -369,8 +369,8 @@ const struct prefs vars[] = {
 	{"away_size_max", P_OFFINT (away_size_max), TYPE_INT},
 	{"away_timeout", P_OFFINT (away_timeout), TYPE_INT},
 
-	{"completion_auto", P_OFFINT (nickcompletion), TYPE_BOOL},
 	{"completion_amount", P_OFFINT (completion_amount), TYPE_INT},
+	{"completion_auto", P_OFFINT (nickcompletion), TYPE_BOOL},
 	{"completion_suffix", P_OFFSET (nick_suffix), TYPE_STR},
 
 	{"dcc_auto_chat", P_OFFINT (autodccchat), TYPE_INT},
@@ -401,9 +401,6 @@ const struct prefs vars[] = {
 	{"flood_ctcp_time", P_OFFINT (ctcp_time_limit), TYPE_INT},
 	{"flood_msg_num", P_OFFINT (msg_number_limit), TYPE_INT},
 	{"flood_msg_time", P_OFFINT (msg_time_limit), TYPE_INT},
-#ifdef USE_ZVT
-	{"font_shell", P_OFFSET (font_shell), TYPE_STR},
-#endif
 
 	{"gui_auto_open_chat", P_OFFINT (autoopendccchatwindow), TYPE_BOOL},
 	{"gui_auto_open_dialog", P_OFFINT (autodialog), TYPE_BOOL},
@@ -437,10 +434,6 @@ const struct prefs vars[] = {
 	{"gui_win_state", P_OFFINT (gui_win_state), TYPE_INT},
 	{"gui_win_top", P_OFFINT (mainwindow_top), TYPE_INT},
 	{"gui_win_width", P_OFFINT (mainwindow_width), TYPE_INT},
-
-#ifdef USE_HEBREW
-	{"hebrew", P_OFFINT (hebrew), TYPE_BOOL},
-#endif
 
 #ifdef WIN32
 	{"identd", P_OFFINT (identd), TYPE_BOOL},

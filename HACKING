@@ -47,3 +47,5 @@ cd xchat-2.0.0p1
 make distclean
 cd ..
 diff -urN xchat-2.0.0 xchat-2.0.0p1 > xchat-something.diff
+
+If using nmake (Windows) replace "make distclean" with "nmake -f makefile.msc clean"

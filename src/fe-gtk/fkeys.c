@@ -1460,8 +1460,11 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 		}
 		tmp_list = g_list_reverse(tmp_list); /* make the comp entries turn up in the right order */
 		g_completion_set_compare (gcomp, (GCompletionStrncmpFunc)rfc_ncasecmp);
-		g_completion_add_items (gcomp, tmp_list);
-		g_list_free (tmp_list);
+		if (tmp_list)
+		{
+			g_completion_add_items (gcomp, tmp_list);
+			g_list_free (tmp_list);
+		}
 
 		if (comp && !(rfc_ncasecmp(old_gcomp.data, ent, old_gcomp.elen) == 0))
 		{

@@ -2002,7 +2002,7 @@ gtk_xtext_button_press (GtkWidget * widget, GdkEventButton * event)
 
 	gdk_window_get_pointer (widget->window, &x, &y, 0);
 
-	if (event->button == 3)		  /* right click */
+	if (event->button == 3 || event->button == 2) /* right/middle click */
 	{
 		word = gtk_xtext_get_word (xtext, x, y, 0, 0, 0);
 		if (word)
@@ -2012,12 +2012,6 @@ gtk_xtext_button_press (GtkWidget * widget, GdkEventButton * event)
 		} else
 			g_signal_emit (G_OBJECT (xtext), xtext_signals[WORD_CLICK], 0,
 								"", event);
-		return FALSE;
-	}
-
-	if (event->button == 2)
-	{
-		g_signal_emit (G_OBJECT (xtext), xtext_signals[WORD_CLICK], 0, "", event);
 		return FALSE;
 	}
 

@@ -114,6 +114,35 @@ fe_userlist_numbers (session *sess)
 	}
 }
 
+/* select a row in the userlist by nick-name */
+
+void
+userlist_select (session *sess, char *name)
+{
+	GtkTreeIter iter;
+	GtkTreeView *treeview = GTK_TREE_VIEW (sess->gui->user_tree);
+	GtkTreeModel *model = gtk_tree_view_get_model (treeview);
+	GtkTreeSelection *selection = gtk_tree_view_get_selection (treeview);
+	struct User *row_user;
+
+	if (gtk_tree_model_get_iter_first (model, &iter))
+	{
+		do
+		{
+			gtk_tree_model_get (model, &iter, 3, &row_user, -1);
+			if (sess->server->p_cmp (row_user->nick, name) == 0)
+			{
+				if (gtk_tree_selection_iter_is_selected (selection, &iter))
+					gtk_tree_selection_unselect_iter (selection, &iter);
+				else
+					gtk_tree_selection_select_iter (selection, &iter);
+				return;
+			}
+		}
+		while (gtk_tree_model_iter_next (model, &iter));
+	}
+}
+
 char **
 userlist_selection_list (GtkWidget *widget, int *num_ret)
 {

@@ -2018,10 +2018,16 @@ cmd_msg (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			if (!newsess)
 				newsess = find_channel (sess->server, nick);
 			if (newsess)
-				inbound_chanmsg (newsess->server, newsess->channel,
+				inbound_chanmsg (newsess->server, NULL, newsess->channel,
 									  newsess->server->nick, msg, TRUE);
 			else
+			{
+				/* mask out passwords */
+				if (strcasecmp (nick, "nickserv") == 0 &&
+					 strncasecmp (msg, "identify ", 9) == 0)
+					msg = "identify ****";
 				EMIT_SIGNAL (XP_TE_MSGSEND, sess, nick, msg, NULL, NULL, 0);
+			}
 
 			return TRUE;
 		}
@@ -2547,7 +2553,7 @@ cmd_wallchan (struct session *sess, char *tbuf, char *word[],
 			sess = list->data;
 			if (sess->type == SESS_CHANNEL)
 			{
-				inbound_chanmsg (sess->server, sess->channel,
+				inbound_chanmsg (sess->server, NULL, sess->channel,
 									  sess->server->nick, word_eol[2], TRUE);
 				sess->server->p_message (sess->server, sess->channel, word_eol[2]);
 			}
@@ -3196,7 +3202,7 @@ handle_say (session *sess, char *text, int check_spch)
 		dcc = dcc_write_chat (sess->channel, text);
 		if (dcc)
 		{
-			inbound_chanmsg (sess->server, sess->channel,
+			inbound_chanmsg (sess->server, NULL, sess->channel,
 								  sess->server->nick, text, TRUE);
 			set_topic (sess, net_ip (dcc->addr));
 			goto xit;
@@ -3240,7 +3246,7 @@ handle_say (session *sess, char *text, int check_spch)
 			text[max] = 0;			  /* insert a NULL terminator to shorten it */
 		}
 
-		inbound_chanmsg (sess->server, sess->channel, sess->server->nick,
+		inbound_chanmsg (sess->server, sess, sess->channel, sess->server->nick,
 							  text, TRUE);
 		sess->server->p_message (sess->server, sess->channel, text);
 

@@ -25,7 +25,7 @@ int inbound_nameslist_end (server *serv, char *chan);
 void inbound_away (server *serv, char *nick, char *msg);
 void inbound_login_start (session *sess, char *nick, char *servname);
 void inbound_login_end (session *sess, char *text);
-void inbound_chanmsg (server *serv, char *chan, char *from, char *text, char fromme);
+void inbound_chanmsg (server *serv, session *sess, char *chan, char *from, char *text, char fromme);
 void clear_channel (session *sess);
 void set_topic (session *sess, char *topic);
 void inbound_privmsg (server *serv, char *from, char *ip, char *text);

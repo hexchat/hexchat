@@ -164,7 +164,7 @@ inbound_privmsg (server *serv, char *from, char *ip, char *text)
 			}
 			set_topic (sess, ip);
 		}
-		inbound_chanmsg (serv, NULL, from, text, FALSE);
+		inbound_chanmsg (serv, NULL, NULL, from, text, FALSE);
 		return;
 	}
 
@@ -314,24 +314,26 @@ inbound_action (session *sess, char *chan, char *from, char *text, int fromme)
 }
 
 void
-inbound_chanmsg (server *serv, char *chan, char *from, char *text, char fromme)
+inbound_chanmsg (server *serv, session *sess, char *chan, char *from, char *text, char fromme)
 {
 	struct User *user;
-	session *sess;
 	int hilight = FALSE;
 	char nickchar[2] = "\000";
 
-	if (chan)
-	{
-		sess = find_channel (serv, chan);
-		if (!sess && !is_channel (serv, chan))
-			sess = find_dialog (serv, chan);
-	} else
-	{
-		sess = find_dialog (serv, from);
-	}
 	if (!sess)
-		return;
+	{
+		if (chan)
+		{
+			sess = find_channel (serv, chan);
+			if (!sess && !is_channel (serv, chan))
+				sess = find_dialog (serv, chan);
+		} else
+		{
+			sess = find_dialog (serv, from);
+		}
+		if (!sess)
+			return;
+	}
 
 	if (sess != current_tab)
 	{

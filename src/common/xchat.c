@@ -878,11 +878,14 @@ xchat_init (void)
 		"NAME %s\n"				"CMD quote KILL %%s :die!\n\n"\
 	"NAME ENDSUB\n"			"CMD \n\n"\
 	"NAME SUB\n"				"CMD %s\n\n"\
-		"NAME %s\n"				"CMD voice %%a\n\n"\
-		"NAME %s\n"				"CMD devoice %%a\n"\
-		"NAME SEP\n"			"CMD \n\n"\
 		"NAME %s\n"				"CMD op %%a\n\n"\
 		"NAME %s\n"				"CMD deop %%a\n\n"\
+		"NAME SEP\n"			"CMD \n\n"\
+		"NAME %s\n"				"CMD hop %%a\n\n"\
+		"NAME %s\n"				"CMD dehop %%a\n\n"\
+		"NAME SEP\n"			"CMD \n\n"\
+		"NAME %s\n"				"CMD voice %%a\n\n"\
+		"NAME %s\n"				"CMD devoice %%a\n"\
 	"NAME ENDSUB\n"			"CMD \n\n"\
 	"NAME SUB\n"				"CMD %s\n\n"\
 		"NAME %s\n"				"CMD ignore %%s!*@* ALL\n\n"\
@@ -928,10 +931,12 @@ xchat_init (void)
 		_("Oper"),
 		_("Kill this user"),
 		_("Mode"),
-		_("Give Voice"),
-		_("Take Voice"),
 		_("Give Ops"),
 		_("Take Ops"),
+		_("Give Half-Ops"),
+		_("Take Half-Ops"),
+		_("Give Voice"),
+		_("Take Voice"),
 		_("Ignore"),
 		_("Ignore User"),
 		_("UnIgnore User"),

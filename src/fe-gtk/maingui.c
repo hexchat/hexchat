@@ -1731,6 +1731,8 @@ mg_word_clicked (GtkWidget *xtext, char *word, GdkEventButton *even,
 	{
 		if (sess->type == SESS_DIALOG)
 			menu_middlemenu (sess, even);
+		else if (even->type == GDK_2BUTTON_PRESS)
+			userlist_select (sess, word);
 		return;
 	}
 
