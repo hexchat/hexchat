@@ -97,6 +97,7 @@ menu_about (GtkWidget * wid, gpointer sess)
 
 	about = gtk_dialog_new ();
 	gtk_window_set_position (GTK_WINDOW (about), GTK_WIN_POS_CENTER);
+	gtk_window_set_resizable (GTK_WINDOW (about), FALSE);
 	gtk_window_set_title (GTK_WINDOW (about), _("About X-Chat"));
 	g_signal_connect (G_OBJECT (about), "destroy",
 							G_CALLBACK (about_close), 0);
