@@ -369,10 +369,15 @@ sub Xchat::Embed::load {
     my $data = do {local $/; <FH>};
     close FH;
 
-    if( my @matches = $data =~ m/^\s*package .*?;/mg ) {
+    if( my @matches = $data =~ m/^\s*package ([\w:]+).*?;/mg ) {
       if( @matches > 1 ) {
 	Xchat::print( "Too many package defintions, only 1 is allowed" );
 	return 1;
+      }
+
+      # fixes things up for code calling subs with fully qualified names
+      if( @matches == 1 ) {
+        $data =~ s/$matches[0]:://g;
       }
 
       $data =~ s/^\s*package .*?;/package $package;/m;

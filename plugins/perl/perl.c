@@ -1121,7 +1121,6 @@ perl_init (void)
 	{
 	  /* Redefine the $SIG{__WARN__} handler to have XChat
 	     printing warnings in the main window. (TheHobbit)*/
-          
           "BEGIN {\n"
           "$INC{'Xchat.pm'} = 'DUMMY';\n"
           "}\n"
@@ -1404,10 +1403,13 @@ perl_init (void)
           "if( open FH, $file ) {\n"
           "my $data = do {local $/; <FH>};\n"
           "close FH;\n"
-          "if( my @matches = $data =~ m/^\\s*package .*?;/mg ) {\n"
+          "if( my @matches = $data =~ m/^\\s*package ([\\w:]+).*?;/mg ) {\n"
           "if( @matches > 1 ) {\n"
           "Xchat::print( \"Too many package defintions, only 1 is allowed\" );\n"
           "return 1;\n"
+          "}\n"
+          "if( @matches == 1 ) {\n"
+          "$data =~ s/$matches[0]:://g;\n"
           "}\n"
           "$data =~ s/^\\s*package .*?;/package $package;/m;\n"
           "} else {\n"
