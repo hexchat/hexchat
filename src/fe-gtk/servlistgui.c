@@ -1198,6 +1198,7 @@ fe_serverlist_open (session *sess)
 		gtk_window_set_transient_for (GTK_WINDOW (win), GTK_WINDOW (current_sess->gui->window));
 	gtk_window_set_title (GTK_WINDOW (win), _("X-Chat: Server List"));
 	gtk_window_set_position (GTK_WINDOW (win), GTK_WIN_POS_MOUSE);
+	gtk_window_set_role (GTK_WINDOW (win), "servlist");
 	gtkutil_set_icon (win);
 	gtk_container_set_border_width (GTK_CONTAINER (win), 5);
 

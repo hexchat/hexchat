@@ -2037,7 +2037,7 @@ mg_create_topwindow (session *sess)
 	GtkWidget *vbox;
 	GtkWidget *vvbox;
 
-	win = gtkutil_window_new ("X-Chat ["VERSION"]", prefs.mainwindow_width,
+	win = gtkutil_window_new ("X-Chat ["VERSION"]", NULL, prefs.mainwindow_width,
 									  prefs.mainwindow_height, 0);
 	sess->gui->window = win;
 	gtk_container_set_border_width (GTK_CONTAINER (win), 2);
@@ -2171,7 +2171,7 @@ mg_create_tabwindow (session *sess)
 	GtkWidget *table;
 	GtkWidget *book;
 
-	win = gtkutil_window_new ("X-Chat ["VERSION"]", prefs.mainwindow_width,
+	win = gtkutil_window_new ("X-Chat ["VERSION"]", NULL, prefs.mainwindow_width,
 									  prefs.mainwindow_height, 0);
 	sess->gui->window = win;
 	gtk_window_move (GTK_WINDOW (win), prefs.mainwindow_left,
@@ -2497,7 +2497,7 @@ mg_create_generic_tab (char *name, char *title, int force_toplevel,
 
 	if (force_toplevel || !prefs.windows_as_tabs)
 	{
-		win = gtkutil_window_new (title, width, height, 3);
+		win = gtkutil_window_new (title, name, width, height, 3);
 		vbox = gtk_vbox_new (0, 0);
 		*vbox_ret = vbox;
 		gtk_container_add (GTK_CONTAINER (win), vbox);

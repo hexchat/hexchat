@@ -108,6 +108,7 @@ open_rawlog (struct server *serv)
 									  channelwin_pix, prefs.transparent, prefs.tint);
 
 	gtk_container_add (GTK_CONTAINER (hbox), serv->gui->rawlog_textlist);
+	gtk_widget_show (serv->gui->rawlog_textlist);
 
 	vscrollbar = gtk_vscrollbar_new (GTK_XTEXT (serv->gui->rawlog_textlist)->adj);
 	gtk_box_pack_start (GTK_BOX (hbox), vscrollbar, FALSE, FALSE, 0);
@@ -124,7 +125,7 @@ open_rawlog (struct server *serv)
 	gtkutil_button (hbox, GTK_STOCK_SAVE, NULL, rawlog_savebutton,
 						 serv, _("Save rawlog..."));
 
-	gtk_widget_show (serv->gui->rawlog_textlist);
+	gtk_widget_show (serv->gui->rawlog_window);
 }
 
 void

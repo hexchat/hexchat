@@ -21,7 +21,7 @@ int gtkutil_clist_selection (GtkWidget * clist);
 void add_tip (GtkWidget * wid, char *text);
 void show_and_unfocus (GtkWidget * wid);
 void gtkutil_set_icon (GtkWidget *win);
-GtkWidget *gtkutil_window_new (char *title, int width, int height, int flags);
+GtkWidget *gtkutil_window_new (char *title, char *role, int width, int height, int flags);
 void gtkutil_copy_to_clipboard (GtkWidget *widget, GdkAtom selection,
                                 const gchar *str);
 GtkWidget *gtkutil_treeview_new (GtkWidget *box, GtkTreeModel *model,

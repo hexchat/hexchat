@@ -323,7 +323,7 @@ ignore_gui_open ()
 	ignorewin =
 			  mg_create_generic_tab ("ignorelist", _("X-Chat: Ignore list"),
 											FALSE, TRUE, close_ignore_gui_callback,
-											NULL, 0, 0, &vbox, 0);
+											NULL, 600, 256, &vbox, 0);
 
 	view = ignore_treeview_new (vbox);
 	g_object_set_data (G_OBJECT (ignorewin), "view", view);
