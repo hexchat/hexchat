@@ -2300,6 +2300,10 @@ cmd_server (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	if (!(*server_name))
 		return FALSE;
 
+	/* dont clear it for /servchan */
+	if (strncasecmp (word_eol[1], "SERVCHAN ", 9))
+		sess->willjoinchannel[0] = 0;
+
 #ifdef USE_OPENSSL
 	if (strncasecmp ("ircs://", server_name, 7) == 0)
 	{
@@ -2308,10 +2312,6 @@ cmd_server (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		goto urlserv;
 	}
 #endif
-
-	/* dont clear it for /servchan */
-	if (strncasecmp (word_eol[1], "SERVCHAN ", 9))
-		sess->willjoinchannel[0] = 0;
 
 	if (strncasecmp ("irc://", server_name, 6) == 0)
 	{

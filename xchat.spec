@@ -2,7 +2,7 @@ Summary: Graphical IRC (chat) client
 Summary(fr): Client IRC (chat) avec interface graphique
 Summary(de): IRC-Client (Chat) mit grafischer Oberfläche
 Name: xchat
-Version: 2.0.7
+Version: 2.0.9
 Release: 0
 Epoch: 1
 Group: Applications/Internet
@@ -22,7 +22,7 @@ tabbed channels and more.
 %package perl
 Summary: XChat Perl plugin
 Group: Applications/Internet
-Requires: xchat >= 1.9.5
+Requires: xchat >= 2.0.9
 Requires: perl
 %description perl
 Provides Perl scripting capability to XChat.
@@ -30,7 +30,7 @@ Provides Perl scripting capability to XChat.
 %package python
 Summary: XChat Python plugin
 Group: Applications/Internet
-Requires: xchat >= 2.0.0
+Requires: xchat >= 2.0.9
 Requires: python2 >= 2.2.0
 %description python
 Provides Python scripting capability to XChat.

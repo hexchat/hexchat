@@ -6,8 +6,9 @@
  2.0.9
 ----------------------------------------------------------------------
 
- - Updated translations (cs, de, en_GB, eu, ru, uk, wa).
- - Fix for Socks5 overflow.
+ - Updated translations (bg, cs, de, en_GB, eu, fi, lt, nl, ru, sk,
+                         uk, wa).
+ - Fixed the Socks5 overflow security bug.
  - DCC IP address setting can now be a hostname too (Flavio
    Chierichetti) [773229].
  - Don't try random DCC ports when a range is set (mib) [889987].
@@ -24,11 +25,12 @@
  - Plugins should now work on HPUX too.
  - Perl-plugin: Fixes for 3 arg version of emit_print, unhooking the
    same hook multiple times and get_list returning correct values for
-   address32 field (Lian Situ).
- - Make menu keybindings work when the menubar is hidden on GTK 2.4.
- - Support the new GTK 2.4 file chooser dialog.
+   address32 field and some memory leaks (Lian Situ).
+ - Made menu keybindings work when the menubar is hidden on GTK 2.4.
+ - Added support for the new GTK 2.4 file chooser dialog.
  - Fix for BiDi in xtext (Ilya Konstantinov).
- - Smaller bug fixes [958599] [950353] [945617](Frederic Krueger).
+ - Smaller bug fixes [962211] [958599] [950353] and
+   [945617] (Frederic Krueger).
 
 
 ----------------------------------------------------------------------
