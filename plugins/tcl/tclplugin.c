@@ -15,7 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#define VERSION "1.0.4"
+#define VERSION "1.0.5"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -50,46 +50,20 @@ static int complete = 0;
 static Tcl_HashTable cmdTablePtr;
 static Tcl_HashTable aliasTablePtr;
 
-static char unknown[] = { "proc ::unknown {args} {\n \
-  global errorInfo errorCode\n \
-  set cmd [lindex $args 0]\n \
-  if { [string index $cmd 0] == \"/\" } {\n \
-    command \"[string range $cmd 1 end] [join [lrange $args 1 end] \" \"]\"\n \
-  } else {\n \
-    return -code error \"invalid command name \\\"$cmd\\\"\"\n \
-  }\n \
-}"
+static char unknown[] = {
+    "proc ::unknown {args} {\n"
+        "global errorInfo errorCode\n"
+        "set cmd [lindex $args 0]\n" "if { [string index $cmd 0] == \"/\" } {\n" "command \"[string range $cmd 1 end] [join [lrange $args 1 end] \" \"]\"\n" "} else {\n" "return -code error \"invalid command name \\\"$cmd\\\"\"\n" "}\n" "}"
 };
 
-static char sourcedirs[] = { "
-set files [lsort [glob [xchatdir]/*.tcl]]\n \
-set init [lsearch -glob $files \"*/init.tcl\"]\n \
-if { $init > 0 } {\n \
- set initfile [lindex $files $init]\n \
- set files [lreplace $files $init $init]\n \
- set files [linsert $files 0 $initfile]\n \
-}\n \
-foreach f $files {\n \
- if { [catch { source $f } errMsg] } {\n \
-  puts \"Tcl plugin\\tError sourcing \\\"$f\\\" ($errMsg)\"\n \
- } else {\n \
-  puts \"Tcl plugin\\tSourced \\\"$f\\\"\"\n \
- }\n \
-}\n" };
-
-static void SourceScriptFiles ()
-{
-    /*
-     * Sourcing of user scripts is done in via an internal tcl script.  This was easier to 
-     * implement than adding scandir() for WIN32
-     *
-     */
-
-    if (Tcl_Eval(interp, sourcedirs) == TCL_ERROR) {
-        xchat_printf(ph, "Error sourcing internal 'sourcedirs' (%s)\n", Tcl_GetStringResult(interp));
-    }
-
-}
+static char sourcedirs[] = {
+    "set files [lsort [glob [xchatdir]/*.tcl]]\n"
+        "set init [lsearch -glob $files \"*/init.tcl\"]\n"
+        "if { $init > 0 } {\n"
+        "set initfile [lindex $files $init]\n"
+        "set files [lreplace $files $init $init]\n"
+        "set files [linsert $files 0 $initfile]\n" "}\n" "foreach f $files {\n" "if { [catch { source $f } errMsg] } {\n" "puts \"Tcl plugin\\tError sourcing \\\"$f\\\" ($errMsg)\"\n" "} else {\n" "puts \"Tcl plugin\\tSourced \\\"$f\\\"\"\n" "}\n" "}\n"
+};
 
 static char *StrDup(char *string, int *length)
 {
@@ -101,7 +75,7 @@ static char *StrDup(char *string, int *length)
     return result;
 }
 
-static char *itoa(int value)
+static char *myitoa(int value)
 {
     static char result[32];
     sprintf(result, "%d", value);
@@ -317,7 +291,7 @@ static int Server_raw_line(char *word[], char *word_eol[], void *userdata)
                 label = proc_argv[0];
 
                 Tcl_SetVar(interp, "_label", label, TCL_NAMESPACE_ONLY);
-                Tcl_SetVar(interp, "_private", itoa(private), TCL_NAMESPACE_ONLY);
+                Tcl_SetVar(interp, "_private", myitoa(private), TCL_NAMESPACE_ONLY);
                 Tcl_SetVar(interp, "_raw", word_eol[1], TCL_NAMESPACE_ONLY);
                 Tcl_SetVar(interp, "_src", src, TCL_NAMESPACE_ONLY);
                 Tcl_SetVar(interp, "_cmd", cmd, TCL_NAMESPACE_ONLY);
@@ -495,8 +469,8 @@ static int tcl_timers(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
     for (x = 1; x < MAX_TIMERS; x++) {
         if (timers[x].timerid) {
             Tcl_DStringStartSublist(&ds);
-            Tcl_DStringAppendElement(&ds, itoa(timers[x].timerid));
-            Tcl_DStringAppendElement(&ds, itoa(timers[x].timestamp - now));
+            Tcl_DStringAppendElement(&ds, myitoa(timers[x].timerid));
+            Tcl_DStringAppendElement(&ds, myitoa(timers[x].timestamp - now));
             Tcl_DStringAppendElement(&ds, timers[x].procPtr);
             Tcl_DStringEndSublist(&ds);
         }
@@ -897,7 +871,7 @@ static int tcl_getlist(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
                 break;
             case 'i':
                 iattr = xchat_list_int(ph, list, (char *) field);
-                Tcl_DStringAppendElement(&ds, itoa(iattr));
+                Tcl_DStringAppendElement(&ds, myitoa(iattr));
                 break;
             case 'p':
                 sattr = xchat_list_str(ph, list, (char *) field);
@@ -1437,10 +1411,10 @@ static int tcl_dcclist(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
                 Tcl_DStringAppendElement(&ds, (const char *) xchat_list_str(ph, list, "destfile"));
                 break;
             }
-            Tcl_DStringAppendElement(&ds, itoa(xchat_list_int(ph, list, "size")));
-            Tcl_DStringAppendElement(&ds, itoa(xchat_list_int(ph, list, "resume")));
-            Tcl_DStringAppendElement(&ds, itoa(xchat_list_int(ph, list, "pos")));
-            Tcl_DStringAppendElement(&ds, itoa(xchat_list_int(ph, list, "cps")));
+            Tcl_DStringAppendElement(&ds, myitoa(xchat_list_int(ph, list, "size")));
+            Tcl_DStringAppendElement(&ds, myitoa(xchat_list_int(ph, list, "resume")));
+            Tcl_DStringAppendElement(&ds, myitoa(xchat_list_int(ph, list, "pos")));
+            Tcl_DStringAppendElement(&ds, myitoa(xchat_list_int(ph, list, "cps")));
             Tcl_DStringEndSublist(&ds);
         }
         xchat_list_free(ph, list);
@@ -1565,7 +1539,7 @@ static int tcl_topic(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
 static int tcl_xchat_nickcmp(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
 {
     BADARGS(3, 3, " string1 string2");
-    Tcl_AppendResult(irp, itoa(xchat_nickcmp(ph, argv[1], argv[2])), NULL);
+    Tcl_AppendResult(irp, myitoa(xchat_nickcmp(ph, argv[1], argv[2])), NULL);
     return TCL_OK;
 }
 
@@ -1638,7 +1612,10 @@ static int Command_Source(char *word[], char *word_eol[], void *userdata)
 
     Tcl_DStringFree(&ds);
 
-    return XCHAT_EAT_ALL;
+    if (strcasecmp("LOAD", word[1]) == 0)
+        return XCHAT_EAT_XCHAT;
+    else
+        return XCHAT_EAT_ALL;
 }
 
 static int Command_Rehash(char *word[], char *word_eol[], void *userdata)
@@ -1716,7 +1693,9 @@ static void Tcl_Plugin_Init()
 
     (const char *) xchatdir = xchat_get_info(ph, "xchatdir");
 
-    SourceScriptFiles();
+    if (Tcl_Eval(interp, sourcedirs) == TCL_ERROR) {
+        xchat_printf(ph, "Error sourcing internal 'sourcedirs' (%s)\n", Tcl_GetStringResult(interp));
+    }
 
 }
 
