@@ -977,7 +977,7 @@ mg_tab_press_cb (GtkWidget *wid, GdkEventButton *event, session *sess)
 	if (sess)
 		mg_create_color_menu (menu, sess);
 
-	item = gtk_menu_item_new_with_label (_("Move to tab"));
+	item = gtk_menu_item_new_with_label (_("Go to"));
 	gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
 
 	submenu = gtk_menu_new ();
