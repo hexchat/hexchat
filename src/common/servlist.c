@@ -48,13 +48,6 @@ static const struct defaultserver def[] =
 	{0,			"ptolomea.2600.net"},
 	{0,			"collective.2600.net"},
 
-	{"AbleNET",	0},
-	{0,			"california.ablenet.org"},
-	{0,			"amazon.ablenet.org"},
-	{0,			"agora.ablenet.org"},
-	{0,			"extreme.ablenet.org"},
-	{0,			"irc.ablenet.org"},
-
 	{"AccessIRC",	0},
 	{0,			"irc.accessirc.net"},
 	{0,			"eu.accessirc.net"},
@@ -85,12 +78,11 @@ static const struct defaultserver def[] =
 	{0,			"irc.if.lt"},
 
 	{"AmigaNet",	0},
-	{0,			"linux.us.amiganet.org"},
-	{0,			"whiterose.us.amiganet.org"},
-	{0,			"thule.no.amiganet.org"},
-	{0,			"dynarc.se.amiganet.org"},
-	{0,			"fullcomp.au.amiganet.org"},
-	{0,			"spod.uk.amiganet.org"},
+	{0,			"irc.amiganet.org"},
+	{0,			"us.amiganet.org"},
+	{0,			"uk.amiganet.org"},
+	{0,			"no.amiganet.org"},
+	{0,			"au.amiganet.org"},
 
 	{"ARCNet",	0},
 	{0,			"se1.arcnet.vapor.com"},
@@ -112,9 +104,9 @@ static const struct defaultserver def[] =
 	{0,			"irc.astrolink.org"},
 
 	{"AustNet",	0},
+	{0,			"au.austnet.org"},
 	{0,			"us.austnet.org"},
 	{0,			"ca.austnet.org"},
-	{0,			"au.austnet.org"},
 
 	{"AxeNet",	0},
 	{0,			"irc.axenet.org"},
@@ -136,6 +128,10 @@ static const struct defaultserver def[] =
 	{"ChatNet",	0},
 	{0,			"US.ChatNet.Org"},
 	{0,			"EU.ChatNet.Org"},
+
+	{"ChatSociety", 0},
+	{0,			"us.chatsociety.net"},
+	{0,			"eu.chatsociety.net"},
 
 	{"CoolChat",	0},
 	{0,			"irc.coolchat.net"},
@@ -236,8 +232,9 @@ static const struct defaultserver def[] =
 	{0,			"Sunshine.Ca.US.Infinity-IRC.Org"},
 	{0,			"IRC.Infinity-IRC.Org"},
 
-	{"IRCDZone",		0},
-	{0,			"irc.ircdzone.net"},
+	{"insiderZ.DE",	0},
+	{0,			"irc.insiderz.de/6667"},
+	{0,			"irc.insiderz.de/6666"},
 
 	{"IrcLink",	0},
 	{0,			"irc.irclink.net"},

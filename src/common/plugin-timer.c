@@ -21,8 +21,8 @@ typedef struct
 	xchat_context *context;
 	char *command;
 	int ref;
-	int timeout;
 	int repeat;
+	float timeout;
 	unsigned int forever:1;
 } timer;
 
@@ -78,7 +78,7 @@ timeout_cb (timer *tim)
 }
 
 static void
-timer_add (int ref, int timeout, int repeat, char *command)
+timer_add (int ref, float timeout, int repeat, char *command)
 {
 	timer *tim;
 	GSList *list;
@@ -107,7 +107,7 @@ timer_add (int ref, int timeout, int repeat, char *command)
 	if (repeat == 0)
 		tim->forever = TRUE;
 
-	tim->hook = xchat_hook_timer (ph, timeout * 1000, (void *)timeout_cb, tim);
+	tim->hook = xchat_hook_timer (ph, timeout * 1000.0, (void *)timeout_cb, tim);
 	timer_list = g_slist_append (timer_list, tim);
 }
 
@@ -120,15 +120,16 @@ timer_showlist (void)
 	if (timer_list == NULL)
 	{
 		xchat_print (ph, "No timers installed.\n");
+		xchat_print (ph, HELP);
 		return;
 	}
-
-	xchat_print (ph, "Ref   T   R Command\n");
+							 /*  00000 00000000 0000000 abc */
+	xchat_print (ph, "\026 Ref#  Seconds  Repeat  Command \026\n");
 	list = timer_list;
 	while (list)
 	{
 		tim = list->data;
-		xchat_printf (ph, "%3d %3d %3d %s\n", tim->ref, tim->timeout,
+		xchat_printf (ph, "%5d %8.1f %7d  %s\n", tim->ref, tim->timeout,
 						  tim->repeat, tim->command);
 		list = list->next;
 	}
@@ -138,7 +139,7 @@ static int
 timer_cb (char *word[], char *word_eol[], void *userdata)
 {
 	int repeat = 1;
-	int timeout;
+	float timeout;
 	int offset = 0;
 	int ref = 0;
 	int quiet = FALSE;
@@ -174,10 +175,10 @@ timer_cb (char *word[], char *word_eol[], void *userdata)
 		offset += 2;
 	}
 
-	timeout = atoi (word[2 + offset]);
+	timeout = atof (word[2 + offset]);
 	command = word_eol[3 + offset];
 
-	if (timeout < 1 || !command[0])
+	if (timeout < 0.1 || !command[0])
 		xchat_print (ph, HELP);
 	else
 		timer_add (ref, timeout, repeat, command);
