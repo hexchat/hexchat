@@ -1083,7 +1083,6 @@ pevent_make_pntevts ()
 				abort ();
 			}
 		}
-		check_special_chars (pntevts[i], TRUE);
 	}
 }
 

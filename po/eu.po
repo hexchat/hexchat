@@ -7,29 +7,29 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: xchat 2.0.9pre1\n"
+"Project-Id-Version: xchat 2.4.0pre1\n"
 "Report-Msgid-Bugs-To: www.xchat.org\n"
-"POT-Creation-Date: 2004-05-23 16:49+1000\n"
-"PO-Revision-Date: 2004-07-08 16:59+0200\n"
+"POT-Creation-Date: 2004-07-22 01:32+1000\n"
+"PO-Revision-Date: 2004-08-02 20:53+0200\n"
 "Last-Translator: Mikel Olasagasti <hey_neken@mundurat.net>\n"
 "Language-Team: Basque <translation-team-eu@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/common/cfgfiles.c:342
+#: src/common/cfgfiles.c:369
 msgid "Cannot create ~/.xchat2"
 msgstr "Ezin da ~/.xchat2 sortu"
 
-#: src/common/cfgfiles.c:658
+#: src/common/cfgfiles.c:686
 msgid "I'm busy"
 msgstr "Lanpetuta nabil"
 
-#: src/common/cfgfiles.c:659
+#: src/common/cfgfiles.c:687
 msgid "Leaving"
 msgstr "Irteten"
 
-#: src/common/cfgfiles.c:706
+#: src/common/cfgfiles.c:733
 msgid ""
 "* Running IRC as root is stupid! You should\n"
 "  create a User Account and use that to login.\n"
@@ -61,12 +61,12 @@ msgstr "Konektatu"
 msgid "Aborted"
 msgstr "Abortatua"
 
-#: src/common/dcc.c:1270
+#: src/common/dcc.c:1279
 #, c-format
 msgid "Cannot access %s\n"
 msgstr "Ezin da %s-ra sartu\n"
 
-#: src/common/dcc.c:1865
+#: src/common/dcc.c:1874
 msgid "No active DCCs\n"
 msgstr "Ez dago DCC aktiborik\n"
 
@@ -110,11 +110,11 @@ msgstr ""
 msgid "Not connected. Try /server <host> [<port>]\n"
 msgstr ""
 
-#: src/common/outbound.c:1356
+#: src/common/outbound.c:1355
 msgid "I need /bin/sh to run!\n"
 msgstr "/bin/sh behar dut abiatzeko!\n"
 
-#: src/common/outbound.c:1597
+#: src/common/outbound.c:1596
 msgid ""
 "\n"
 "Commands Available:\n"
@@ -126,7 +126,7 @@ msgstr ""
 "\n"
 "  "
 
-#: src/common/outbound.c:1632
+#: src/common/outbound.c:1631
 msgid ""
 "\n"
 "\n"
@@ -137,7 +137,7 @@ msgstr ""
 "\n"
 "Idatzi /HELP <komandoa> informazio gehiagorako, edo /HELP -l\n"
 
-#: src/common/outbound.c:1633
+#: src/common/outbound.c:1632
 msgid ""
 "User defined commands:\n"
 "\n"
@@ -147,60 +147,60 @@ msgstr ""
 "\n"
 "  "
 
-#: src/common/outbound.c:1725
+#: src/common/outbound.c:1724
 #, c-format
 msgid "Unknown arg '%s' ignored."
 msgstr "Argumentu ezezaguna '%s', ezikusia."
 
-#: src/common/outbound.c:2450
+#: src/common/outbound.c:2474
 msgid "No such plugin found.\n"
 msgstr ""
 
-#: src/common/outbound.c:2455 src/fe-gtk/plugingui.c:186
+#: src/common/outbound.c:2479 src/fe-gtk/plugingui.c:186
 msgid "That plugin is refusing to unload.\n"
 msgstr "Plugin hori kargatzeari uko egiten ari da.\n"
 
-#: src/common/outbound.c:2600
+#: src/common/outbound.c:2624
 msgid "ADDBUTTON <name> <action>, adds a button under the user-list"
 msgstr "ADDBUTTON <izena> <ekintza>, botoi bat gehitzen du erabiltzaile zerrendaren azpian"
 
-#: src/common/outbound.c:2602
+#: src/common/outbound.c:2626
 msgid "ALLCHAN <cmd>, sends a command to all channels you're in"
 msgstr "ALLCHAN <komandoa>, zauden kanal guztietara komando bat bidaltzen du"
 
-#: src/common/outbound.c:2604
+#: src/common/outbound.c:2628
 msgid "ALLSERV <cmd>, sends a command to all servers you're in"
 msgstr "ALLSERV <cmd>, zauden zerbitzari guztietara komando bat bidaltzen du"
 
-#: src/common/outbound.c:2605
+#: src/common/outbound.c:2629
 msgid "AWAY [<reason>], sets you away"
 msgstr "AWAY [<arrazoia>], aldendua jartzen zaitu"
 
-#: src/common/outbound.c:2607
+#: src/common/outbound.c:2631
 msgid "BAN <mask> [<bantype>], bans everyone matching the mask from the current channel. If they are already on the channel this doesn't kick them (needs chanop)"
 msgstr ""
 
-#: src/common/outbound.c:2609
+#: src/common/outbound.c:2633
 msgid "CLEAR, Clears the current text window"
 msgstr "CLEAR, uneko testu leihoa garbitzen du"
 
-#: src/common/outbound.c:2610
+#: src/common/outbound.c:2634
 msgid "CLOSE, Closes the current window/tab"
 msgstr "CLOSE, uneko leiho/fitxa itxitzen du"
 
-#: src/common/outbound.c:2613
+#: src/common/outbound.c:2637
 msgid "COUNTRY <code>, finds a country code, eg: au = australia"
 msgstr "COUNTRY <kodea>, herrialde kode bat aurkitzen du, adib.: au = australia"
 
-#: src/common/outbound.c:2615
+#: src/common/outbound.c:2639
 msgid "CTCP <nick> <message>, send the CTCP message to nick, common messages are VERSION and USERINFO"
 msgstr ""
 
-#: src/common/outbound.c:2617
+#: src/common/outbound.c:2641
 msgid "CYCLE, parts current channel and immediately rejoins"
 msgstr ""
 
-#: src/common/outbound.c:2619
+#: src/common/outbound.c:2643
 msgid ""
 "\n"
 "DCC GET <nick>                     - accept an offered file\n"
@@ -211,67 +211,67 @@ msgid ""
 "         /dcc close send johnsmith file.tar.gz"
 msgstr ""
 
-#: src/common/outbound.c:2629
+#: src/common/outbound.c:2653
 msgid "DEHOP <nick>, removes chanhalf-op status from the nick on the current channel (needs chanop)"
 msgstr ""
 
-#: src/common/outbound.c:2631
+#: src/common/outbound.c:2655
 msgid "DELBUTTON <name>, deletes a button from under the user-list"
 msgstr "DELBUTTON <izena>, erabiltzaile zerrendaren azpitik botoi bat ezabatzen du"
 
-#: src/common/outbound.c:2633
+#: src/common/outbound.c:2657
 msgid "DEOP <nick>, removes chanop status from the nick on the current channel (needs chanop)"
 msgstr "DEOP <ezizena>, uneko kanalean chanop egoera kentzen dio aukeratutako ezizenari (chanop egoera behar da)"
 
-#: src/common/outbound.c:2635
+#: src/common/outbound.c:2659
 msgid "DEVOICE <nick>, removes voice status from the nick on the current channel (needs chanop)"
 msgstr "DEVOICE <ezizena>, uneko kanalean voice egoera kentzen dio aukeratutako ezizenari <chanop egoera behar da>"
 
-#: src/common/outbound.c:2636
+#: src/common/outbound.c:2660
 msgid "DISCON, Disconnects from server"
 msgstr "DISCON, zerbitzaritik deskonektatzen da"
 
-#: src/common/outbound.c:2637
+#: src/common/outbound.c:2661
 msgid "DNS <nick|host|ip>, Finds a users IP number"
 msgstr "DNS <ezizena|ostalaria|ip-a>, erabiltzaile baten IPa aurkitzen du"
 
-#: src/common/outbound.c:2638
+#: src/common/outbound.c:2662
 msgid "ECHO <text>, Prints text locally"
 msgstr ""
 
-#: src/common/outbound.c:2641
+#: src/common/outbound.c:2665
 msgid "EXEC [-o] <command>, runs the command. If -o flag is used then output is sent to current channel, else is printed to current text box"
 msgstr ""
 
-#: src/common/outbound.c:2643
+#: src/common/outbound.c:2667
 msgid "EXECCONT, sends the process SIGCONT"
 msgstr ""
 
-#: src/common/outbound.c:2646
+#: src/common/outbound.c:2670
 msgid "EXECKILL [-9], kills a running exec in the current session. If -9 is given the process is SIGKILL'ed"
 msgstr ""
 
-#: src/common/outbound.c:2648
+#: src/common/outbound.c:2672
 msgid "EXECSTOP, sends the process SIGSTOP"
 msgstr ""
 
-#: src/common/outbound.c:2649
+#: src/common/outbound.c:2673
 msgid "EXECWRITE, sends data to the processes stdin"
 msgstr ""
 
-#: src/common/outbound.c:2653
+#: src/common/outbound.c:2677
 msgid "FLUSHQ, flushes the current server's send queue"
 msgstr ""
 
-#: src/common/outbound.c:2655
+#: src/common/outbound.c:2679
 msgid "GATE <host> [<port>], proxies through a host, port defaults to 23"
 msgstr ""
 
-#: src/common/outbound.c:2661
+#: src/common/outbound.c:2685
 msgid "HOP <nick>, gives chanhalf-op status to the nick (needs chanop)"
 msgstr ""
 
-#: src/common/outbound.c:2663
+#: src/common/outbound.c:2687
 msgid ""
 "IGNORE <mask> <types..> <options..>\n"
 "    mask - host mask to ignore, eg: *!*@*.aol.com\n"
@@ -280,206 +280,207 @@ msgid ""
 "    options - NOSAVE, QUIET"
 msgstr ""
 
-#: src/common/outbound.c:2670
+#: src/common/outbound.c:2694
 msgid "INVITE <nick> [<channel>], invites someone to a channel, by default the current channel (needs chanop)"
 msgstr ""
 
-#: src/common/outbound.c:2671
+#: src/common/outbound.c:2695
 msgid "JOIN <channel>, joins the channel"
 msgstr "JOIN <kanala>, kanalera sartzen da"
 
-#: src/common/outbound.c:2673
+#: src/common/outbound.c:2697
 msgid "KICK <nick>, kicks the nick from the current channel (needs chanop)"
 msgstr "KICK <ezizena>, uneko kanaletik aukeratutako ezizena kanporatzen du (kanalop-a behar da)"
 
-#: src/common/outbound.c:2675
+#: src/common/outbound.c:2699
 msgid "KICKBAN <nick>, bans then kicks the nick from the current channel (needs chanop)"
 msgstr ""
 
-#: src/common/outbound.c:2678
+#: src/common/outbound.c:2702
 msgid "LAGCHECK, forces a new lag check"
 msgstr ""
 
-#: src/common/outbound.c:2680
+#: src/common/outbound.c:2704
 msgid "LASTLOG <string>, searches for a string in the buffer"
 msgstr ""
 
-#: src/common/outbound.c:2682
+#: src/common/outbound.c:2706
 msgid "LOAD <file>, loads a plugin or script"
 msgstr "LOAD <fitxategia>, plugin edo skript bat kargatzen du"
 
-#: src/common/outbound.c:2685
+#: src/common/outbound.c:2709
 msgid "MDEHOP, Mass deop's all chanhalf-ops in the current channel (needs chanop)"
 msgstr ""
 
-#: src/common/outbound.c:2687
+#: src/common/outbound.c:2711
 msgid "MDEOP, Mass deop's all chanops in the current channel (needs chanop)"
 msgstr ""
 
-#: src/common/outbound.c:2689
+#: src/common/outbound.c:2713
 msgid "ME <action>, sends the action to the current channel (actions are written in the 3rd person, like /me jumps)"
 msgstr ""
 
-#: src/common/outbound.c:2691
+#: src/common/outbound.c:2715
 msgid "MKICK, Mass kicks everyone except you in the current channel (needs chanop)"
 msgstr ""
 
-#: src/common/outbound.c:2693
+#: src/common/outbound.c:2718
 msgid "MOP, Mass op's all users in the current channel (needs chanop)"
 msgstr ""
 
-#: src/common/outbound.c:2694
+#: src/common/outbound.c:2719
 msgid "MSG <nick> <message>, sends a private message"
 msgstr "MSG <nick> <mezua>, mezu pribatu bat bidaltzen du"
 
-#: src/common/outbound.c:2697
+#: src/common/outbound.c:2722
 msgid "NAMES, Lists the nicks on the current channel"
 msgstr ""
 
-#: src/common/outbound.c:2699
+#: src/common/outbound.c:2724
 msgid "NCTCP <nick> <message>, Sends a CTCP notice"
 msgstr ""
 
-#: src/common/outbound.c:2700
+#: src/common/outbound.c:2725
 msgid "NEWSERVER <hostname> [<port>]"
 msgstr ""
 
-#: src/common/outbound.c:2701
+#: src/common/outbound.c:2726
 msgid "NICK <nickname>, sets your nick"
 msgstr ""
 
-#: src/common/outbound.c:2704
+#: src/common/outbound.c:2729
 msgid "NOTICE <nick/channel> <message>, sends a notice. Notices are a type of message that should be auto reacted to"
 msgstr ""
 
-#: src/common/outbound.c:2706
+#: src/common/outbound.c:2731
 msgid "NOTIFY [<nick>], lists your notify list or adds someone to it"
 msgstr ""
 
-#: src/common/outbound.c:2708
+#: src/common/outbound.c:2733
 msgid "OP <nick>, gives chanop status to the nick (needs chanop)"
 msgstr ""
 
-#: src/common/outbound.c:2710
+#: src/common/outbound.c:2735
 msgid "PART [<channel>] [<reason>], leaves the channel, by default the current one"
 msgstr ""
 
-#: src/common/outbound.c:2712
+#: src/common/outbound.c:2737
 msgid "PING <nick | channel>, CTCP pings nick or channel"
 msgstr ""
 
-#: src/common/outbound.c:2714
+#: src/common/outbound.c:2739
 msgid "QUERY <nick>, opens up a new privmsg window to someone"
 msgstr ""
 
-#: src/common/outbound.c:2716
+#: src/common/outbound.c:2741
 msgid "QUIT [<reason>], disconnects from the current server"
 msgstr ""
 
-#: src/common/outbound.c:2718
+#: src/common/outbound.c:2743
 msgid "QUOTE <text>, sends the text in raw form to the server"
 msgstr ""
 
-#: src/common/outbound.c:2721
+#: src/common/outbound.c:2746
 msgid "RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as /RECONNECT to reconnect to the current server or with /RECONNECT ALL to reconnect to all the open servers"
 msgstr ""
 
-#: src/common/outbound.c:2724
+#: src/common/outbound.c:2749
 msgid "RECONNECT [<host>] [<port>] [<password>], Can be called just as /RECONNECT to reconnect to the current server or with /RECONNECT ALL to reconnect to all the open servers"
 msgstr ""
 
-#: src/common/outbound.c:2726
+#: src/common/outbound.c:2751
 msgid "RECV <text>, send raw data to xchat, as if it was received from the irc server"
 msgstr ""
 
-#: src/common/outbound.c:2729
+#: src/common/outbound.c:2754
 msgid "SAY <text>, sends the text to the object in the current window"
 msgstr "SAY <testua>, uneko leihoko objektuari testua bidaltzen dio"
 
-#: src/common/outbound.c:2732
+#: src/common/outbound.c:2757
 msgid "SERVCHAN [-ssl] <host> <port> <channel>, connects and joins a channel"
 msgstr ""
 
-#: src/common/outbound.c:2735
+#: src/common/outbound.c:2760
 msgid "SERVCHAN <host> <port> <channel>, connects and joins a channel"
 msgstr ""
 
-#: src/common/outbound.c:2739
+#: src/common/outbound.c:2764
 msgid "SERVER [-ssl] <host> [<port>] [<password>], connects to a server, the default port is 6667 for normal connections, and 9999 for ssl connections"
 msgstr ""
 
-#: src/common/outbound.c:2742
+#: src/common/outbound.c:2767
 msgid "SERVER <host> [<port>] [<password>], connects to a server, the default port is 6667"
 msgstr ""
 
-#: src/common/outbound.c:2744
-msgid "SET <variable> [<value>]"
+#: src/common/outbound.c:2769
+#, fuzzy
+msgid "SET [-quiet] <variable> [<value>]"
 msgstr "SET <bariablea> [<balorea>]"
 
-#: src/common/outbound.c:2747
+#: src/common/outbound.c:2772
 msgid "TOPIC [<topic>], sets the topic if one is given, else shows the current topic"
 msgstr "TOPIC [<gaia>], zerbait ematen bada gaia hori ezartzen du, bestela uneko gaia erakusten du"
 
-#: src/common/outbound.c:2749
+#: src/common/outbound.c:2774
 msgid "UNBAN <mask> [<mask>...], unbans the specified masks."
 msgstr "UNBAN <maskara> [<maskara>...], espezifikatutako maskarei debekua kentzen die"
 
-#: src/common/outbound.c:2750
+#: src/common/outbound.c:2775
 msgid "UNIGNORE <mask> [QUIET]"
 msgstr "UNIGNORE <maskara> [IXILIK]"
 
-#: src/common/outbound.c:2751
+#: src/common/outbound.c:2776
 msgid "UNLOAD <name>, unloads a plugin or script"
 msgstr "UNLOAD <izena>, plugin edo skript-a deskargatzen du"
 
-#: src/common/outbound.c:2754
+#: src/common/outbound.c:2779
 msgid "VOICE <nick>, gives voice status to someone (needs chanop)"
 msgstr "VOICE <ezizena>, ahots egoera ematen dio norbaiti (chanop-a behar da)"
 
-#: src/common/outbound.c:2756
+#: src/common/outbound.c:2781
 msgid "WALLCHAN <message>, writes the message to all channels"
 msgstr "WALLCHAN <mezua>, mezua kanal guztietan idazten du"
 
-#: src/common/outbound.c:2758
+#: src/common/outbound.c:2783
 msgid "WALLCHOP <message>, sends the message to all chanops on the current channel"
 msgstr "WALLCHOP <mezua>, uneko kanaleko chanop guztiei mezua bidaltzen die"
 
-#: src/common/outbound.c:2791
+#: src/common/outbound.c:2816
 #, c-format
 msgid "Usage: %s\n"
 msgstr "Erabilera: %s\n"
 
-#: src/common/outbound.c:2796
+#: src/common/outbound.c:2821
 msgid ""
 "\n"
 "No help available on that command.\n"
 msgstr ""
 
-#: src/common/outbound.c:2802
+#: src/common/outbound.c:2827
 msgid "No such command.\n"
 msgstr ""
 
-#: src/common/outbound.c:3126
+#: src/common/outbound.c:3151
 msgid "Bad arguments for user command.\n"
 msgstr "Argumentu akastunak erabiltzaile komandoentzat.\n"
 
-#: src/common/outbound.c:3290
+#: src/common/outbound.c:3315
 msgid "Too many recursive usercommands, aborting."
 msgstr ""
 
-#: src/common/outbound.c:3363
+#: src/common/outbound.c:3388
 msgid "Unknown Command. Try /help\n"
 msgstr "Komando ezezaguna. Saiatu /help ekin\n"
 
-#: src/common/plugin.c:358 src/common/plugin.c:388
+#: src/common/plugin.c:358 src/common/plugin.c:399
 msgid "No xchat_plugin_init symbol; is this really an xchat plugin?"
 msgstr ""
 
-#: src/common/server.c:585
+#: src/common/server.c:586
 msgid "Are you sure this is a SSL capable server and port?\n"
 msgstr "Ziur zaude SSL erabiltzeko gai den zerbitzari eta ataka dela?\n"
 
-#: src/common/server.c:912
+#: src/common/server.c:933
 #, c-format
 msgid ""
 "Cannot resolve hostname %s\n"
@@ -488,302 +489,311 @@ msgstr ""
 "Ezin da ebatzi %s ostalari-izena\n"
 "Egiaztatu zure IP ezarpenak!\n"
 
-#: src/common/server.c:917
+#: src/common/server.c:938
 msgid "Proxy traversal failed.\n"
 msgstr ""
 
-#: src/common/servlist.c:660
+#: src/common/servlist.c:642
 #, c-format
 msgid "Cycling to next server in %s...\n"
 msgstr "Hurrengo zerbitzarira %s-n ziklatzen...\n"
 
-#: src/common/servlist.c:1005
+#: src/common/servlist.c:1050
 #, c-format
 msgid "Warning: \"%s\" character set is unknown. No conversion will be applied for network %s."
 msgstr "Oharra: \"%s\" karaktere-jokoa ezezaguna da. Ez da konbertsiorik aplikatu %s sarearentzat."
 
 #: src/common/textevents.h:6
-msgid "-%C10-%C11-%O$t$1 added to notify list."
-msgstr ""
+#, fuzzy
+msgid "%C22*%O$t$1 added to notify list."
+msgstr "%O%C11$1%O ezikusien zerrendara gehitua."
 
 #: src/common/textevents.h:9
-msgid "-%C10-%C11-%O$t$1 Banlist: %C3$4 %C4$2 %C5$3%O"
+msgid "%C22*%O$t$1 Banlist:%C19 $4%C20 $2%C21 $3"
 msgstr ""
 
 #: src/common/textevents.h:12
-msgid "-%C10-%C11-%O$tCannot join%C11 %B$1 %O(You are banned)."
+msgid "%C22*%O$tCannot join%C26 %B$1 %O(You are banned)."
 msgstr ""
 
 #: src/common/textevents.h:15
-msgid "-%C10-%C11-%O$t$1 is now known as $2"
+msgid "%C22*%O$t$1 is now known as $2"
 msgstr ""
 
 #: src/common/textevents.h:18
-msgid "%C13*%O$t$1%O $2%O"
-msgstr "%C13*%O$t$1%O $2%O"
+msgid "%C18*$t$1%O $2"
+msgstr "%C18*$t$1%O $2"
 
 #: src/common/textevents.h:21
-msgid "%C13*%O$t%C8%B$1%B%O $2%O"
-msgstr "%C13*%O$t%C8%B$1%B%O $2%O"
+msgid "%C21*%O$t%C21%B$1%O%C21 $2"
+msgstr "%C21*%O$t%C21%B$1%O%C21 $2"
 
 #: src/common/textevents.h:24
-msgid "-%C10-%C11-%O$t$1 sets ban on $2"
+msgid "%C22*%O$t$1 sets ban on $2"
 msgstr ""
 
 #: src/common/textevents.h:27
-msgid "-%C10-%C11-%O$tChannel $1 created on $2"
+msgid "%C22*%O$tChannel $1 created on $2"
 msgstr ""
 
 #: src/common/textevents.h:30
-msgid "-%C10-%C11-%O$t%C11$1%O removes channel half-operator status from %C11$2"
+msgid "%C22*%O$t%C26$1%O removes channel half-operator status from%C26 $2"
 msgstr ""
 
 #: src/common/textevents.h:33
-msgid "-%C10-%C11-%O$t%C11$1%O removes channel operator status from %C11$2"
+msgid "%C22*%O$t%C26$1%O removes channel operator status from%C26 $2"
 msgstr ""
 
 #: src/common/textevents.h:36
-msgid "-%C10-%C11-%O$t%C11$1%O removes voice from %C11$2"
+msgid "%C22*%O$t%C26$1%O removes voice from%C26 $2"
 msgstr ""
 
 #: src/common/textevents.h:39
-msgid "-%C10-%C11-%O$t$1 sets exempt on $2"
+msgid "%C22*%O$t$1 sets exempt on $2"
 msgstr ""
 
 #: src/common/textevents.h:42
-msgid "-%C10-%C11-%O$t%C11$1%O gives channel half-operator status to %C11$2"
+msgid "%C22*%O$t%C26$1%O gives channel half-operator status to%C26 $2"
 msgstr ""
 
 #: src/common/textevents.h:45
-msgid "-%C10-%C11-%O$t$1 sets invite on $2"
+msgid "%C22*%O$t$1 sets invite on $2"
 msgstr ""
 
 #: src/common/textevents.h:48
-msgid "%UChannel          Users   Topic%O"
-msgstr "%UKanala          Erabiltzaileak   Gaia%O"
+msgid "%UChannel          Users   Topic"
+msgstr "%UKanala          Erabiltzaileak   Gaia"
 
-#: src/common/textevents.h:51 src/common/textevents.h:297
-msgid "%C2<%O$1%C2>%O$t$2%O"
-msgstr "%C2<%O$1%C2>%O$t$2%O"
+#: src/common/textevents.h:51
+msgid "%C18%B%B$4$1%O%C18%O$t$2"
+msgstr "%C18%B%B$4$1%O%C18%O$t$2"
 
 #: src/common/textevents.h:54
-msgid "-%C10-%C11-%O$t$1 sets mode $2$3 $4"
+msgid "%C22*%O$t$1 sets mode $2$3 $4"
 msgstr ""
 
 #: src/common/textevents.h:57
-msgid "-%C10-%C11-%O$tChannel $1 modes: $2"
+msgid "%C22*%O$t%C22Channel $1 modes: $2"
 msgstr ""
 
 #: src/common/textevents.h:60
-msgid "%C2<%C8%B$1%B%C2>%O$t$2%O"
-msgstr "%C2<%C8%B$1%B%C2>%O$t$2%O"
+#, fuzzy
+msgid "$4%C21%B$1%O$t%C21$2"
+msgstr "%C2<%O$1%C2>%O$t$2%O"
 
 #: src/common/textevents.h:63
-msgid "%C12-%C13$1/$2%C12-%O$t$3%O"
-msgstr "%C12-%C13$1/$2%C12-%O$t$3%O"
+msgid "%C28-%C29$1/$2%C28-%O$t$3"
+msgstr "%C28-%C29$1/$2%C28-%O$t$3"
 
 #: src/common/textevents.h:66
-msgid "-%C10-%C11-%O$t%C11$1%O gives channel operator status to %C11$2"
+msgid "%C22*%O$t%C26$1%O gives channel operator status to%C26 $2"
 msgstr ""
 
 #: src/common/textevents.h:69
-msgid "-%C10-%C11-%O$t$1 removes exempt on $2"
+msgid "%C22*%O$t$1 removes exempt on $2"
 msgstr ""
 
 #: src/common/textevents.h:72
-msgid "-%C10-%C11-%O$t$1 removes invite on $2"
+msgid "%C22*%O$t$1 removes invite on $2"
 msgstr ""
 
 #: src/common/textevents.h:75
-msgid "-%C10-%C11-%O$t$1 removes channel keyword"
+msgid "%C22*%O$t$1 removes channel keyword"
 msgstr ""
 
 #: src/common/textevents.h:78
-msgid "-%C10-%C11-%O$t$1 removes user limit"
+msgid "%C22*%O$t$1 removes user limit"
 msgstr ""
 
 #: src/common/textevents.h:81
-msgid "-%C10-%C11-%O$t$1 sets channel keyword to $2"
+msgid "%C22*%O$t$1 sets channel keyword to $2"
 msgstr ""
 
 #: src/common/textevents.h:84
-msgid "-%C10-%C11-%O$t$1 sets channel limit to $2"
+msgid "%C22*%O$t$1 sets channel limit to $2"
 msgstr ""
 
 #: src/common/textevents.h:87
-msgid "-%C10-%C11-%O$t$1 removes ban on $2"
+msgid "%C22*%O$t$1 removes ban on $2"
 msgstr ""
 
 #: src/common/textevents.h:90
-msgid "-%C10-%C11-%O$t%C11$1%O gives voice to %C11$2"
+msgid "%C22*%O$t%C26$1%O gives voice to%C26 $2"
 msgstr ""
 
 #: src/common/textevents.h:93
-msgid "-%C10-%C11-%O$tConnected. Now logging in.."
+msgid "%C22*%O$t%C22Connected. Now logging in.."
 msgstr ""
 
 #: src/common/textevents.h:96
-msgid "-%C10-%C11-%O$tConnecting to %C11$1 %C14(%C11$2%C14)%C port %C11$3%C.."
+msgid "%C22*%O$t%C22Connecting to $1 ($2) port $3%O.."
 msgstr ""
 
 #: src/common/textevents.h:99
-msgid "-%C10-%C11-%O$tConnection failed. Error: $1"
+msgid "%C21*%O$t%C21Connection failed. Error: $1"
 msgstr ""
 
 #: src/common/textevents.h:102
-msgid "-%C10-%C11-%O$tReceived a CTCP $1 from $2"
+msgid "%C22*%O$tReceived a CTCP $1 from $2"
 msgstr ""
 
 #: src/common/textevents.h:105
-msgid "-%C10-%C11-%O$tReceived a CTCP $1 from $2 (to $3)"
+msgid "%C22*%O$tReceived a CTCP $1 from $2 (to $3)"
 msgstr ""
 
 #: src/common/textevents.h:108
-msgid "%C3>%O$1%C3<%O$tCTCP $2%O"
-msgstr "%C3>%O$1%C3<%O$tCTCP $2%O"
+msgid "%C19>%O$1%C19<%O$tCTCP $2"
+msgstr "%C19>%O$1%C19<%O$tCTCP $2"
 
 #: src/common/textevents.h:111
-msgid "-%C10-%C11-%O$tReceived a CTCP Sound $1 from $2"
+msgid "%C22*%O$tReceived a CTCP Sound $1 from $2"
 msgstr ""
 
 #: src/common/textevents.h:114
-msgid "-%C10-%C11-%O$tDCC CHAT to %C11$1%O aborted."
+msgid "%C22*%O$tDCC CHAT to %C26$1%O aborted."
 msgstr ""
 
 #: src/common/textevents.h:117
-msgid "-%C10-%C11-%O$tDCC CHAT connection established to %C11$1 %C14[%O$2%C14]%O"
+msgid "%C22*%O$tDCC CHAT connection established to %C26$1 %C30[%O$2%C30]"
 msgstr ""
 
 #: src/common/textevents.h:120
-msgid "-%C10-%C11-%O$tDCC CHAT to %C11$1%O lost. $4."
+msgid "%C22*%O$tDCC CHAT to %C26$1%O lost. $4."
 msgstr ""
 
 #: src/common/textevents.h:123
-msgid "-%C10-%C11-%O$tReceived a DCC CHAT offer from $1"
+msgid "%C22*%O$tReceived a DCC CHAT offer from $1"
 msgstr ""
 
 #: src/common/textevents.h:126
-msgid "-%C10-%C11-%O$tOffering DCC CHAT to $1"
+msgid "%C22*%O$tOffering DCC CHAT to $1"
 msgstr ""
 
 #: src/common/textevents.h:129
-msgid "-%C10-%C11-%O$tAlready offering CHAT to $1"
+msgid "%C22*%O$tAlready offering CHAT to $1"
 msgstr ""
 
 #: src/common/textevents.h:132
-msgid "-%C10-%C11-%O$tDCC $1 connect attempt to %C11$2%O failed (err=$3)."
+msgid "%C22*%O$tDCC $1 connect attempt to%C26 $2%O failed (err=$3)."
 msgstr ""
 
 #: src/common/textevents.h:135
-msgid "-%C10-%C11-%O$tReceived '$1%O' from $2"
+msgid "%C22*%O$tReceived '$1%O' from $2"
 msgstr ""
 
 #: src/common/textevents.h:138
-msgid "%C8,2 Type  To/From    Status  Size    Pos     File      %O%010%B%C9----------------------------------------------------%O"
-msgstr "%C8,2 Mota  Nori/Nork    Egoera  Tamainua    Pos     Fitxategia      %O%010%B%C9----------------------------------------------------%O"
+#, c-format
+msgid "%C24,18 Type  To/From    Status  Size    Pos     File         "
+msgstr ""
 
 #: src/common/textevents.h:141
-msgid "-%C10-%C11-%O$tReceived a malformed DCC request from %C11$1%O.%010-%C10-%C11-%O$tContents of packet: $2"
+msgid "%C22*%O$tReceived a malformed DCC request from %C26$1%O.%010%C22*%O$tContents of packet: $2"
 msgstr ""
 
 #: src/common/textevents.h:144
-msgid "-%C10-%C11-%O$tOffering %C11$1 %Cto %C11$2%O"
+msgid "%C22*%O$tOffering%C26 $1%O to%C26 $2"
 msgstr ""
 
 #: src/common/textevents.h:147
-msgid "-%C10-%C11-%O$tNo such DCC offer."
+msgid "%C22*%O$tNo such DCC offer."
 msgstr ""
 
 #: src/common/textevents.h:150
-msgid "-%C10-%C11-%O$tDCC RECV %C11$2%O to %C11$1%O aborted."
+msgid "%C22*%O$tDCC RECV%C26 $2%O to%C26 $1%O aborted."
 msgstr ""
 
 #: src/common/textevents.h:153
-msgid "-%C10-%C11-%O$tDCC RECV %C11$1%O from %C11$3%O complete %C14[%C11$4%O cps%C14]%O."
+msgid "%C22*%O$tDCC RECV%C26 $1%O from%C26 $3%O complete %C30[%C26$4%O cps%C30]%O."
 msgstr ""
 
 #: src/common/textevents.h:156
-msgid "-%C10-%C11-%O$tDCC RECV connection established to %C11$1 %C14[%O$2%C14]%O"
+msgid "%C22*%O$tDCC RECV connection established to%C26 $1 %C30[%O$2%C30]"
 msgstr ""
 
 #: src/common/textevents.h:159
-msgid "-%C10-%C11-%O$tDCC RECV %C11$1%O from %C11$3%O failed. $4."
+msgid "%C22*%O$tDCC RECV%C26 $1%O from%C26 $3%O failed. $4."
 msgstr ""
 
 #: src/common/textevents.h:162
-msgid "-%C10-%C11-%O$tDCC RECV: Cannot open $1 for writing ($2)."
+msgid "%C22*%O$tDCC RECV: Cannot open $1 for writing ($2)."
 msgstr ""
 
 #: src/common/textevents.h:165
-msgid "-%C10-%C11-%O$tThe file %C11$1%C already exists, saving it as %C11$2%O instead."
+msgid "%C22*%O$tThe file%C26 $1%C already exists, saving it as%C26 $2%O instead."
 msgstr ""
 
 #: src/common/textevents.h:168
-msgid "-%C10-%C11-%O$t%C11$1 %Chas requested to resume %C11$2 %Cfrom %C11$3%C."
+msgid "%C22*%O$t%C26$1 %Ohas requested to resume%C26 $2 %Cfrom%C26 $3%C."
 msgstr ""
 
 #: src/common/textevents.h:171
-msgid "-%C10-%C11-%O$tDCC SEND %C11$2%O to %C11$1%O aborted."
+msgid "%C22*%O$tDCC SEND%C26 $2%O to%C26 $1%O aborted."
 msgstr ""
 
 #: src/common/textevents.h:174
-msgid "-%C10-%C11-%O$tDCC SEND %C11$1%O to %C11$2%O complete %C14[%C11$3%O cps%C14]%O."
+msgid "%C22*%O$tDCC SEND%C26 $1%O to%C26 $2%O complete %C30[%C26$3%O cps%C30]%O."
 msgstr ""
 
 #: src/common/textevents.h:177
-msgid "-%C10-%C11-%O$tDCC SEND connection established to %C11$1 %C14[%O$2%C14]%O"
+msgid "%C22*%O$tDCC SEND connection established to%C26 $1 %C30[%O$2%C30]"
 msgstr ""
 
 #: src/common/textevents.h:180
-msgid "-%C10-%C11-%O$tDCC SEND %C11$1%O to %C11$2%O failed. $3"
+msgid "%C22*%O$tDCC SEND%C26 $1%O to%C26 $2%O failed. $3"
 msgstr ""
 
 #: src/common/textevents.h:183
-msgid "-%C10-%C11-%O$t%C11$1 %Chas offered %C11$2 %C(%C11$3 %Cbytes)"
+msgid "%C22*%O$t%C26$1 %Ohas offered%C26 $2 %O(%C26$3 %Obytes)"
 msgstr ""
 
 #: src/common/textevents.h:186
-msgid "-%C10-%C11-%O$tDCC $1 %C11$2 %Cto %C11$3 %Cstalled - aborting."
+msgid "%C22*%O$tDCC $1%C26 $2 %Oto%C26 $3 %Cstalled - aborting."
 msgstr ""
 
 #: src/common/textevents.h:189
-msgid "-%C10-%C11-%O$tDCC $1 %C11$2 %Cto %C11$3 %Ctimed out - aborting."
+msgid "%C22*%O$tDCC $1%C26 $2 %Oto%C26 $3 %Otimed out - aborting."
 msgstr ""
 
 #: src/common/textevents.h:192
-msgid "-%C10-%C11-%O$t$1 deleted from notify list."
-msgstr ""
+#, fuzzy
+msgid "%C22*%O$t$1 deleted from notify list."
+msgstr "%O%C11$1%O ezikusien zerrendatik kendua."
 
 #: src/common/textevents.h:195
-msgid "-%C10-%C11-%O$tDisconnected ($1)."
-msgstr "-%C10-%C11-%O$tDeskonektatua ($1)."
+msgid "%C22*%O$tDisconnected ($1)."
+msgstr "%C22*%O$tDeskonektatua ($1)."
 
 #: src/common/textevents.h:198
-msgid "-%C10-%C11-%O$tFound your IP: [$1]"
-msgstr "-%C10-%C11-%O$tZure IPa aurkituta: [$1]"
+msgid "%C22*%O$tFound your IP: [$1]"
+msgstr "%C22*%O$tZure IPa aurkitu da: [$1]"
 
 #: src/common/textevents.h:201
 msgid "$1$t$2"
 msgstr "$1$t$2"
 
 #: src/common/textevents.h:204
-msgid "%O%C11$1%O added to ignore list."
+#, fuzzy
+msgid "%O%C26$1%O added to ignore list."
 msgstr "%O%C11$1%O ezikusien zerrendara gehitua."
 
 #: src/common/textevents.h:207
-msgid "Ignore on %C11$1%O changed."
+#, fuzzy
+msgid "Ignore on %C26$1%O changed."
 msgstr "%C11$1%O-ri ignoraketa aldatu da."
 
 #: src/common/textevents.h:210
-msgid "%C08,02                                                              %O"
-msgstr "%C08,02                                                              %O"
+#, c-format
+msgid "%C24,18                                                              "
+msgstr "%C24,18                                                              "
 
 #: src/common/textevents.h:213
-msgid "%C08,02 Hostmask                  PRIV NOTI CHAN CTCP DCC  INVI UNIG %O"
+#, fuzzy, c-format
+msgid "%C24,18 Hostmask                  PRIV NOTI CHAN CTCP DCC  INVI UNIG "
 msgstr "%C08,02 ostalariaren maskara          PRIV NOTI CHAN CTCP DCC  INVI UNIG %O"
 
 #: src/common/textevents.h:216
-msgid "%O%C11$1%O removed from ignore list."
+#, fuzzy
+msgid "%O%C26$1%O removed from ignore list."
 msgstr "%O%C11$1%O ezikusien zerrendatik kendua."
 
 #: src/common/textevents.h:219
@@ -791,225 +801,238 @@ msgid "  Ignore list is empty."
 msgstr "  Ezikuzien zerrenda hutsik dago."
 
 #: src/common/textevents.h:222
-msgid "-%C10-%C11-%O$tCannot join%C11 %B$1 %O(Channel is invite only)."
+msgid "%C22*%O$tCannot join%C26 %B$1 %O(Channel is invite only)."
 msgstr ""
 
 #: src/common/textevents.h:225
-msgid "-%C10-%C11-%O$tYou have been invited to %C11$1%C by %C11$2%C (%C11$3%C)"
+msgid "%C22*%O$tYou have been invited to%C26 $1%O by%C26 $2%C (%C26$3%C)"
 msgstr ""
 
 #: src/common/textevents.h:228
-msgid "-%C10-%C11>%O$t%B$1%B %C14(%C10$3%C14)%C has joined $2"
-msgstr ""
+msgid "%C19*%O$t%C19%B$1 %B($3) has joined $2"
+msgstr "%C19*%O$t%C19%B$1 %B($3) gehitu da $2"
 
 #: src/common/textevents.h:231
-msgid "-%C10-%C11-%O$tCannot join%C11 %B$1 %O(Requires keyword)."
+msgid "%C22*%O$tCannot join%C26 %B$1 %O(Requires keyword)."
 msgstr ""
 
 #: src/common/textevents.h:234
-msgid "<%C10-%C11-%O$t$1 has kicked $2 from $3 ($4%O)"
+msgid "%C21*%O$t%C21$1 has kicked $2 from $3 ($4%O)"
 msgstr ""
 
 #: src/common/textevents.h:237
-msgid "-%C10-%C11-%O$tYou have been killed by $1 ($2%O)"
+msgid "%C22*%O$tYou have been killed by $1 ($2%O)"
 msgstr ""
 
-#: src/common/textevents.h:240 src/common/textevents.h:264
-msgid "%C3>%O$1%C3<%O$t$2%O"
-msgstr "%C3>%O$1%C3<%O$t$2%O"
+#: src/common/textevents.h:240
+msgid "%C19>%O$1%C19<%O$t$2%O"
+msgstr "%C19>%O$1%C19<%O$t$2%O"
 
-#: src/common/textevents.h:243 src/common/textevents.h:318
-#: src/common/textevents.h:324 src/common/textevents.h:327
-msgid "-%C10-%C11-%O$t$1%O"
-msgstr "-%C10-%C11-%O$t$1%O"
+#: src/common/textevents.h:243
+msgid "%C16*%O$t$1%O"
+msgstr "%C16*%O$t$1%O"
 
 #: src/common/textevents.h:246
-msgid "-%C10-%C11-%O$tMOTD Skipped."
+msgid "%C22*%O$t%C22MOTD Skipped."
 msgstr ""
 
 #: src/common/textevents.h:249
-msgid "-%C10-%C11-%O$t$1 already in use. Retrying with $2.."
+msgid "%C22*%O$t$1 already in use. Retrying with $2.."
 msgstr ""
 
 #: src/common/textevents.h:252
-msgid "-%C10-%C11-%O$tNickname already in use. Use /NICK to try another."
+msgid "%C22*%O$tNickname already in use. Use /NICK to try another."
 msgstr ""
 
 #: src/common/textevents.h:255
-msgid "-%C10-%C11-%O$tNo such DCC."
+msgid "%C22*%O$tNo such DCC."
 msgstr ""
 
 #: src/common/textevents.h:258
-msgid "-%C10-%C11-%O$tNo process is currently running"
+msgid "%C22*%O$tNo process is currently running"
 msgstr ""
 
 #: src/common/textevents.h:261
-msgid "%C12-%C13$1%C12-%O$t$2%O"
-msgstr "%C12-%C13$1%C12-%O$t$2%O"
+msgid "%C28-%C29$1%C28-%O$t$2"
+msgstr "%C28-%C29$1%C28-%O$t$2"
+
+#: src/common/textevents.h:264
+msgid "%C19>%O$1%C19<%O$t$2"
+msgstr "%C19>%O$1%C19<%O$t$2"
 
 #: src/common/textevents.h:267
-msgid "-%C10-%C11-%O$tNotify list is empty."
-msgstr ""
+#, fuzzy
+msgid "$tNotify list is empty."
+msgstr "  Ezikuzien zerrenda hutsik dago."
 
 #: src/common/textevents.h:270
-msgid "%C08,02 %B-- Notify List --------------- %O"
-msgstr "%C08,02 %B-- Jakinaraztekoen zerrenda--- %O"
+msgid "%C24,18 %B  Notify List                           "
+msgstr ""
 
 #: src/common/textevents.h:273
-msgid "-%C10-%C11-%O$t$1 users in notify list."
+msgid "%C22*%O$t$1 users in notify list."
 msgstr ""
 
 #: src/common/textevents.h:276
-msgid "-%C10-%C11-%O$tNotify: $1 is offline ($2)."
+msgid "%C22*%O$tNotify: $1 is offline ($2)."
 msgstr ""
 
 #: src/common/textevents.h:279
-msgid "-%C10-%C11-%O$tNotify: $1 is online ($2)."
+msgid "%C22*%O$tNotify: $1 is online ($2)."
 msgstr ""
 
 #: src/common/textevents.h:282
-msgid "<%C10-%C11-%O$t$1 %C14(%O$2%C14)%C has left $3"
+msgid "%C23*%O$t%C23$1 (%O%C23$2) has left $3"
 msgstr ""
 
 #: src/common/textevents.h:285
-msgid "<%C10-%C11-%O$t$1 %C14(%O$2%C14)%C has left $3 %C14(%O$4%C14)%O"
+msgid "%C23*%O$t%C23$1 (%O%C23$2) has left $3 (%O%C23$4)"
 msgstr ""
 
 #: src/common/textevents.h:288
-msgid "-%C10-%C11-%O$tPing reply from $1 : $2 second(s)"
+msgid "%C22*%O$tPing reply from $1 : $2 second(s)"
 msgstr ""
 
 #: src/common/textevents.h:291
-msgid "-%C10-%C11-%O$tNo ping reply for $1 seconds, disconnecting."
+msgid "%C22*%O$tNo ping reply for $1 seconds, disconnecting."
 msgstr ""
 
 #: src/common/textevents.h:294
-msgid "%C12*%C13$1%C12*$t%O$2%O"
+#, fuzzy
+msgid "%C28*%C29$3$1%C28*$t%O$2"
 msgstr "%C12*%C13$1%C12*$t%O$2%O"
 
+#: src/common/textevents.h:297
+msgid "%C18%B%B$3$1%O$t$2"
+msgstr "%C18%B%B$3$1%O$t$2"
+
 #: src/common/textevents.h:300
-msgid "-%C10-%C11-%O$tA process is already running"
+msgid "%C22*%O$tA process is already running"
 msgstr ""
 
 #: src/common/textevents.h:303
-msgid "<%C10-%C11-%O$t$1 has quit %C14(%O$2%O%C14)%O"
+msgid "%C23*%O$t%C23$1 has quit (%O%C23$2)"
 msgstr ""
 
 #: src/common/textevents.h:306
-msgid "-%C10-%C11-%O$t$1 sets modes%B %C14[%O$2%B%C14]%O"
+msgid "%C22*%O$t$1 sets modes%B %C30[%O$2%B%C30]"
 msgstr ""
 
 #: src/common/textevents.h:309
-msgid "%C12-%C13$1/Wallops%C12-%O$t$2%O"
+#, fuzzy
+msgid "%C28-%C29$1/Wallops%C28-%O$t$2"
 msgstr "%C12-%C13$1/Wallops%C12-%O$t$2%O"
 
 #: src/common/textevents.h:312
-msgid "-%C10-%C11-%O$tLooking up IP number for%C11 $1%O.."
+msgid "%C22*%O$tLooking up IP number for%C26 $1%O.."
 msgstr ""
 
 #: src/common/textevents.h:315
-msgid "-%C10-%C11-%O$tConnected."
-msgstr "-%C10-%C11-%O$tKonektatua."
+msgid "%C22*%O$t%C22Connected."
+msgstr "%C22*%O$t%C22Konektatua."
+
+#: src/common/textevents.h:318 src/common/textevents.h:324
+#: src/common/textevents.h:327
+msgid "%C22*%O$t$1"
+msgstr "%C22*%O$t$1"
 
 #: src/common/textevents.h:321
-msgid "-%C10-%C11-%O$tLooking up %C11$1%C.."
+msgid "%C22*%O$t%C22Looking up $1"
 msgstr ""
 
 #: src/common/textevents.h:330
-msgid "-%C10-%C11-%O$tStopped previous connection attempt (pid=$1)"
+msgid "%C22*%O$tStopped previous connection attempt (pid=$1)"
 msgstr ""
 
 #: src/common/textevents.h:333
-msgid "-%C10-%C11-%O$tTopic for %C11$1%C is %C11$2%O"
+msgid "%C29*%O$t%C29Topic for $1%C %C29is: $2"
 msgstr ""
 
 #: src/common/textevents.h:336
-msgid "-%C10-%C11-%O$tTopic for %C11$1%C set by %C11$2%C at %C11$3%O"
+msgid "%C29*%O$t%C29Topic for $1%C %C29set by $2%C %C29at $3"
 msgstr ""
 
 #: src/common/textevents.h:339
-msgid "-%C10-%C11-%O$t$1 has changed the topic to: $2%O"
+msgid "%C22*%O$t$1 has changed the topic to: $2"
 msgstr ""
 
 #: src/common/textevents.h:342
-msgid "-%C10-%C11-%O$tUnknown host. Maybe you misspelled it?"
+msgid "%C22*%O$tUnknown host. Maybe you misspelled it?"
 msgstr ""
 
 #: src/common/textevents.h:345
-msgid "-%C10-%C11-%O$tCannot join%C11 %B$1 %O(User limit reached)."
+msgid "%C22*%O$tCannot join%C26 %B$1 %O(User limit reached)."
 msgstr ""
 
 #: src/common/textevents.h:348
-msgid "-%C10-%C11-%O$t%C11Users on $1:%C $2"
+msgid "%C22*%O$t%C26Users on $1:%C $2"
 msgstr ""
 
 #: src/common/textevents.h:351
-msgid "-%C10-%C11-%O$t%C12[%O$1%C12] %Cis away %C14(%O$2%O%C14)"
+msgid "%C22*%O$t%C28[%O$1%C28] %Cis away %C30(%O$2%O%C30)"
 msgstr ""
 
-#: src/common/textevents.h:354
-msgid "-%C10-%C11-%O$t%C12[%O$1%C12]%C $2"
-msgstr ""
+#: src/common/textevents.h:354 src/common/textevents.h:378
+msgid "%C22*%O$t%C28[%O$1%C28]%O $2"
+msgstr "%C22*%O$t%C28[%O$1%C28]%O $2"
 
 #: src/common/textevents.h:357
-msgid "-%C10-%C11-%O$t%C12[%O$1%C12] %CEnd of WHOIS list."
+msgid "%C22*%O$t%C28[%O$1%C28] %OEnd of WHOIS list."
 msgstr ""
 
 #: src/common/textevents.h:360
-msgid "-%C10-%C11-%O$t%C12[%O$1%C12] %O$2"
-msgstr ""
+msgid "%C22*%O$t%C28[%O$1%C28] %O$2"
+msgstr "%C22*%O$t%C28[%O$1%C28] %O$2"
 
 #: src/common/textevents.h:363
-msgid "-%C10-%C11-%O$t%C12[%O$1%C12] %O$2 %C11$3%O"
-msgstr ""
+msgid "%C22*%O$t%C28[%O$1%C28] %O$2%C27 $3"
+msgstr "%C22*%O$t%C28[%O$1%C28] %O$2%C27 $3"
 
 #: src/common/textevents.h:366
-msgid "-%C10-%C11-%O$t%C12[%O$1%C12] %Oreal user@host %C11$2%O, real IP %C11$3%O"
+msgid "%C22*%O$t%C28[%O$1%C28] %Oreal user@host%C27 $2%O, real IP%C27 $3"
 msgstr ""
 
 #: src/common/textevents.h:369
-msgid "-%C10-%C11-%O$t%C12[%O$1%C12]%O idle %C11$2%O"
-msgstr ""
+#, fuzzy
+msgid "%C22*%O$t%C28[%O$1%C28]%O idle%C26 $2"
+msgstr "%C13*%O$t%C8%B$1%B%O $2%O"
 
 #: src/common/textevents.h:372
-msgid "-%C10-%C11-%O$t%C12[%O$1%C12]%O idle %C11$2%O, signon: %C11$3%O"
+msgid "%C22*%O$t%C28[%O$1%C28]%O idle%C26 $2%O, signon:%C26 $3"
 msgstr ""
 
 #: src/common/textevents.h:375
-msgid "-%C10-%C11-%O$t%C12[%O$1%C12] %C14(%O$2@$3%C14) %O: $4%O"
-msgstr ""
-
-#: src/common/textevents.h:378
-msgid "-%C10-%C11-%O$t%C12[%O$1%C12]%O $2"
+msgid "%C22*%O$t%C28[%O$1%C28] %C30(%O$2@$3%C30) %O: $4"
 msgstr ""
 
 #: src/common/textevents.h:381
-msgid "-%C10-%C11>%O$t%BYou%B are now talking on %C11$2%O"
+msgid "%C19*%O$t%C19Now talking on $2"
 msgstr ""
 
 #: src/common/textevents.h:384
-msgid "-%C10-%C11-%O$tYou have left channel $3"
+#, c-format
+msgid "%C23*$tYou have left channel $3"
 msgstr ""
 
 #: src/common/textevents.h:387
-msgid "-%C10-%C11-%O$tYou have left channel $3 %C14(%O$4%C14)%O"
+msgid "%C23*$tYou have left channel $3 (%O%C23$4%O%C23)"
 msgstr ""
 
 #: src/common/textevents.h:390
-msgid "-%C10-%C11-%O$tYou have been kicked from $2 by $3 ($4%O)"
+msgid "%C23*$tYou have been kicked from $2 by $3 ($4%O%C23)"
 msgstr ""
 
 #: src/common/textevents.h:393
 #, fuzzy
-msgid "-%C10-%C11-%O$tYou're inviting %C11$1%C to %C11$2%C (%C11$3%C)"
+msgid "%C22*%O$tYou've invited%C26 $1%O to%C26 $2%O (%C26$3%O)"
 msgstr "-%C10-%C11-%O$t%C11$1%C gonbidatzen ari zara %C11$2%C hona.(%C11$3%C)"
 
 #: src/common/textevents.h:396
-msgid "%C6<%O$1%C6>%O$t$2%O"
-msgstr "%C6<%O$1%C6>%O$t$2%O"
+msgid "%C31%B%B$4$1%O$t%C30$2"
+msgstr ""
 
 #: src/common/textevents.h:399
-msgid "-%C10-%C11-%O$tYou are now known as $2"
+msgid "%C22*%O$tYou are now known as $2"
 msgstr ""
 
 #: src/common/text.c:304
@@ -1031,470 +1054,475 @@ msgstr ""
 "* Ezin ireki log fitxategia(k) idazteko. Egiaztatu\n"
 "  baimenak %s/xchatlogs-en"
 
-#: src/common/text.c:666
+#: src/common/text.c:675
 msgid "Left message"
 msgstr ""
 
-#: src/common/text.c:667
+#: src/common/text.c:676
 msgid "Right message"
 msgstr "Eskuineko mezua"
 
-#: src/common/text.c:671
+#: src/common/text.c:680
 msgid "The nick of the joining person"
 msgstr "Sartu den pertsonaren ezizena"
 
-#: src/common/text.c:672
+#: src/common/text.c:681
 msgid "The channel being joined"
 msgstr "Sartzen hari den kanala"
 
-#: src/common/text.c:673 src/common/text.c:717 src/common/text.c:773
+#: src/common/text.c:682 src/common/text.c:727 src/common/text.c:784
 msgid "The host of the person"
 msgstr "Pertsonaren ostalaria"
 
-#: src/common/text.c:677 src/common/text.c:682 src/common/text.c:688
-#: src/common/text.c:755 src/common/text.c:879 src/common/text.c:886
-#: src/common/text.c:891 src/common/text.c:896 src/common/text.c:901
-#: src/common/text.c:907 src/common/text.c:912 src/common/text.c:916
-#: src/common/text.c:921 src/common/text.c:927 src/common/text.c:973
-#: src/common/text.c:982 src/common/text.c:987 src/common/text.c:992
-#: src/common/text.c:1001 src/common/text.c:1012 src/common/text.c:1019
-#: src/common/text.c:1025 src/common/text.c:1030 src/common/text.c:1035
-#: src/common/text.c:1042 src/common/text.c:1048 src/common/text.c:1054
-#: src/common/text.c:1059 src/common/text.c:1064 src/common/text.c:1068
-#: src/common/text.c:1074 src/common/text.c:1082 src/common/text.c:1116
-#: src/common/text.c:1121
+#: src/common/text.c:686 src/common/text.c:691 src/common/text.c:698
+#: src/common/text.c:765 src/common/text.c:890 src/common/text.c:897
+#: src/common/text.c:902 src/common/text.c:907 src/common/text.c:912
+#: src/common/text.c:918 src/common/text.c:923 src/common/text.c:927
+#: src/common/text.c:932 src/common/text.c:938 src/common/text.c:984
+#: src/common/text.c:993 src/common/text.c:998 src/common/text.c:1003
+#: src/common/text.c:1012 src/common/text.c:1023 src/common/text.c:1030
+#: src/common/text.c:1036 src/common/text.c:1041 src/common/text.c:1046
+#: src/common/text.c:1053 src/common/text.c:1059 src/common/text.c:1065
+#: src/common/text.c:1070 src/common/text.c:1075 src/common/text.c:1079
+#: src/common/text.c:1085 src/common/text.c:1093 src/common/text.c:1127
+#: src/common/text.c:1132
 msgid "Nickname"
 msgstr "Ezizena"
 
-#: src/common/text.c:678
+#: src/common/text.c:687
 msgid "The action"
 msgstr "akzioa"
 
-#: src/common/text.c:683
+#: src/common/text.c:692
 msgid "The text"
 msgstr "Testua"
 
-#: src/common/text.c:684
+#: src/common/text.c:693
 msgid "Mode char"
 msgstr ""
 
-#: src/common/text.c:689 src/common/text.c:745 src/common/text.c:751
-#: src/common/text.c:756
+#: src/common/text.c:694 src/common/text.c:767
+#, fuzzy
+msgid "Identified text"
+msgstr "Informazio testua"
+
+#: src/common/text.c:699 src/common/text.c:755 src/common/text.c:761
+#: src/common/text.c:766
 msgid "The message"
 msgstr "Mezua"
 
-#: src/common/text.c:693 src/common/text.c:760
+#: src/common/text.c:703 src/common/text.c:771
 msgid "Old nickname"
 msgstr "Ezizen zaharra"
 
-#: src/common/text.c:694 src/common/text.c:761
+#: src/common/text.c:704 src/common/text.c:772
 msgid "New nickname"
 msgstr "Ezizen berria"
 
-#: src/common/text.c:698
+#: src/common/text.c:708
 msgid "Nick of person who changed the topic"
 msgstr ""
 
-#: src/common/text.c:699 src/common/text.c:705 src/fe-gtk/chanlist.c:599
+#: src/common/text.c:709 src/common/text.c:715 src/fe-gtk/chanlist.c:599
 #: src/fe-gtk/chanlist.c:700
 msgid "Topic"
 msgstr "Gaia"
 
-#: src/common/text.c:700 src/common/text.c:704 src/common/text.c:1136
+#: src/common/text.c:710 src/common/text.c:714 src/common/text.c:1147
 #: src/fe-gtk/chanlist.c:597 src/fe-gtk/chanlist.c:691
 #: src/fe-gtk/ignoregui.c:175
 msgid "Channel"
 msgstr "Kanala"
 
-#: src/common/text.c:709 src/common/text.c:767
+#: src/common/text.c:719 src/common/text.c:778
 msgid "The nickname of the kicker"
 msgstr "Bidaltzailearen ezizena"
 
-#: src/common/text.c:710 src/common/text.c:765
+#: src/common/text.c:720 src/common/text.c:776
 msgid "The person being kicked"
 msgstr ""
 
-#: src/common/text.c:711 src/common/text.c:718 src/common/text.c:722
-#: src/common/text.c:727 src/common/text.c:766 src/common/text.c:774
+#: src/common/text.c:721 src/common/text.c:728 src/common/text.c:732
+#: src/common/text.c:737 src/common/text.c:777 src/common/text.c:785
 msgid "The channel"
 msgstr "Kanala"
 
-#: src/common/text.c:712 src/common/text.c:768 src/common/text.c:775
+#: src/common/text.c:722 src/common/text.c:779 src/common/text.c:786
 msgid "The reason"
 msgstr "Arrazoia"
 
-#: src/common/text.c:716 src/common/text.c:772
+#: src/common/text.c:726 src/common/text.c:783
 msgid "The nick of the person leaving"
 msgstr "Irten den pertsonaren ezizena"
 
-#: src/common/text.c:723 src/common/text.c:729
+#: src/common/text.c:733 src/common/text.c:739
 msgid "The time"
 msgstr "Ordua"
 
-#: src/common/text.c:728
+#: src/common/text.c:738
 msgid "The creator"
 msgstr "Sortzailea"
 
-#: src/common/text.c:733
+#: src/common/text.c:743
 msgid "Nick"
 msgstr "Ezizena"
 
-#: src/common/text.c:734 src/common/text.c:988
+#: src/common/text.c:744 src/common/text.c:999
 msgid "Reason"
 msgstr "Arrazoia"
 
-#: src/common/text.c:735 src/common/text.c:881 src/common/text.c:963
+#: src/common/text.c:745 src/common/text.c:892 src/common/text.c:974
 msgid "Host"
 msgstr "Ostalaria"
 
-#: src/common/text.c:739 src/common/text.c:744 src/common/text.c:749
+#: src/common/text.c:749 src/common/text.c:754 src/common/text.c:759
 msgid "Who it's from"
 msgstr "Norengandik den"
 
-#: src/common/text.c:740
+#: src/common/text.c:750
 msgid "The time in x.x format (see below)"
 msgstr "Ordua x.x formatuan (ikusi azpian)"
 
-#: src/common/text.c:750 src/common/text.c:791
+#: src/common/text.c:760 src/common/text.c:802
 msgid "The Channel it's going to"
 msgstr ""
 
-#: src/common/text.c:779
+#: src/common/text.c:790
 msgid "The sound"
 msgstr "Soinua"
 
-#: src/common/text.c:780 src/common/text.c:785 src/common/text.c:790
+#: src/common/text.c:791 src/common/text.c:796 src/common/text.c:801
 msgid "The nick of the person"
 msgstr "Pertsonaren ezizena"
 
-#: src/common/text.c:784 src/common/text.c:789
+#: src/common/text.c:795 src/common/text.c:800
 msgid "The CTCP event"
 msgstr "CTCP gertaera"
 
-#: src/common/text.c:795
+#: src/common/text.c:806
 msgid "The nick of the person who set the key"
 msgstr ""
 
-#: src/common/text.c:796
+#: src/common/text.c:807
 msgid "The key"
 msgstr "Giltza"
 
-#: src/common/text.c:800
+#: src/common/text.c:811
 msgid "The nick of the person who set the limit"
 msgstr ""
 
-#: src/common/text.c:801
+#: src/common/text.c:812
 msgid "The limit"
 msgstr "Muga"
 
-#: src/common/text.c:805
+#: src/common/text.c:816
 msgid "The nick of the person who did the op'ing"
 msgstr ""
 
-#: src/common/text.c:806
+#: src/common/text.c:817
 msgid "The nick of the person who has been op'ed"
 msgstr ""
 
-#: src/common/text.c:810
+#: src/common/text.c:821
 msgid "The nick of the person who has been halfop'ed"
 msgstr ""
 
-#: src/common/text.c:811
+#: src/common/text.c:822
 msgid "The nick of the person who did the halfop'ing"
 msgstr ""
 
-#: src/common/text.c:815
+#: src/common/text.c:826
 msgid "The nick of the person who did the voice'ing"
 msgstr ""
 
-#: src/common/text.c:816
+#: src/common/text.c:827
 msgid "The nick of the person who has been voice'ed"
 msgstr ""
 
-#: src/common/text.c:820
+#: src/common/text.c:831
 msgid "The nick of the person who did the banning"
 msgstr ""
 
-#: src/common/text.c:821 src/common/text.c:848
+#: src/common/text.c:832 src/common/text.c:859
 msgid "The ban mask"
 msgstr "Debekuaren maskara"
 
-#: src/common/text.c:825
+#: src/common/text.c:836
 msgid "The nick who removed the key"
 msgstr ""
 
-#: src/common/text.c:829
+#: src/common/text.c:840
 msgid "The nick who removed the limit"
 msgstr ""
 
-#: src/common/text.c:833
+#: src/common/text.c:844
 msgid "The nick of the person of did the deop'ing"
 msgstr ""
 
-#: src/common/text.c:834
+#: src/common/text.c:845
 msgid "The nick of the person who has been deop'ed"
 msgstr ""
 
-#: src/common/text.c:837
+#: src/common/text.c:848
 msgid "The nick of the person of did the dehalfop'ing"
 msgstr ""
 
-#: src/common/text.c:838
+#: src/common/text.c:849
 msgid "The nick of the person who has been dehalfop'ed"
 msgstr ""
 
-#: src/common/text.c:842
+#: src/common/text.c:853
 msgid "The nick of the person of did the devoice'ing"
 msgstr ""
 
-#: src/common/text.c:843
+#: src/common/text.c:854
 msgid "The nick of the person who has been devoice'ed"
 msgstr ""
 
-#: src/common/text.c:847
+#: src/common/text.c:858
 msgid "The nick of the person of did the unban'ing"
 msgstr ""
 
-#: src/common/text.c:852
+#: src/common/text.c:863
 msgid "The nick of the person who did the exempt"
 msgstr ""
 
-#: src/common/text.c:853 src/common/text.c:858
+#: src/common/text.c:864 src/common/text.c:869
 msgid "The exempt mask"
 msgstr ""
 
-#: src/common/text.c:857
+#: src/common/text.c:868
 msgid "The nick of the person removed the exempt"
 msgstr ""
 
-#: src/common/text.c:862
+#: src/common/text.c:873
 msgid "The nick of the person who did the invite"
 msgstr ""
 
-#: src/common/text.c:863 src/common/text.c:868
+#: src/common/text.c:874 src/common/text.c:879
 msgid "The invite mask"
 msgstr ""
 
-#: src/common/text.c:867
+#: src/common/text.c:878
 msgid "The nick of the person removed the invite"
 msgstr ""
 
-#: src/common/text.c:872
+#: src/common/text.c:883
 msgid "The nick of the person setting the mode"
 msgstr ""
 
-#: src/common/text.c:873
+#: src/common/text.c:884
 msgid "The mode's sign (+/-)"
 msgstr ""
 
-#: src/common/text.c:874
+#: src/common/text.c:885
 msgid "The mode letter"
 msgstr ""
 
-#: src/common/text.c:875
+#: src/common/text.c:886
 msgid "The channel it's being set on"
 msgstr ""
 
-#: src/common/text.c:880
+#: src/common/text.c:891
 msgid "Username"
 msgstr "Erabiltzaile izena"
 
-#: src/common/text.c:882
+#: src/common/text.c:893
 msgid "Full name"
 msgstr "Izen osoa"
 
-#: src/common/text.c:887
+#: src/common/text.c:898
 msgid "Channel Membership/\"is an IRC operator\""
 msgstr "Kanaleko kidea /\"IRC operatzaile bat da\""
 
-#: src/common/text.c:892
+#: src/common/text.c:903
 msgid "Server Information"
 msgstr "Zerbitzariaren informazioa"
 
-#: src/common/text.c:897 src/common/text.c:902
+#: src/common/text.c:908 src/common/text.c:913
 msgid "Idle time"
 msgstr "Inaktibitate denbora"
 
-#: src/common/text.c:903
+#: src/common/text.c:914
 msgid "Signon time"
 msgstr "Konektatutako ordua"
 
-#: src/common/text.c:908
+#: src/common/text.c:919
 msgid "Away reason"
 msgstr "Aldentzearen arrazoia"
 
-#: src/common/text.c:917 src/common/text.c:922 src/common/text.c:930
-#: src/common/text.c:1108
+#: src/common/text.c:928 src/common/text.c:933 src/common/text.c:941
+#: src/common/text.c:1119
 msgid "Message"
 msgstr "Mezua"
 
-#: src/common/text.c:923
+#: src/common/text.c:934
 msgid "Account"
 msgstr "Kontua"
 
-#: src/common/text.c:928
+#: src/common/text.c:939
 msgid "Real user@host"
 msgstr "Benetazko erabiltzaile@ostalaria"
 
-#: src/common/text.c:929
+#: src/common/text.c:940
 msgid "Real IP"
 msgstr "Benetazko IPa"
 
-#: src/common/text.c:934 src/common/text.c:943 src/common/text.c:949
-#: src/common/text.c:1131
+#: src/common/text.c:945 src/common/text.c:954 src/common/text.c:960
+#: src/common/text.c:1142
 msgid "Channel Name"
 msgstr "Kanalaren izena"
 
-#: src/common/text.c:938 src/common/text.c:1094 src/fe-gtk/textgui.c:383
+#: src/common/text.c:949 src/common/text.c:1105 src/fe-gtk/textgui.c:338
 msgid "Text"
 msgstr "Testua"
 
-#: src/common/text.c:939 src/common/text.c:945 src/common/text.c:1132
+#: src/common/text.c:950 src/common/text.c:956 src/common/text.c:1143
 msgid "Server Name"
 msgstr "Zerbitzariaren izena"
 
-#: src/common/text.c:944
+#: src/common/text.c:955
 msgid "Nick of person who invited you"
 msgstr ""
 
-#: src/common/text.c:950 src/fe-gtk/chanlist.c:598
+#: src/common/text.c:961 src/fe-gtk/chanlist.c:598
 msgid "Users"
 msgstr "Erabiltzaileak"
 
-#: src/common/text.c:954
+#: src/common/text.c:965
 msgid "Nickname in use"
 msgstr "Ezizena erabilita"
 
-#: src/common/text.c:955
+#: src/common/text.c:966
 msgid "Nick being tried"
 msgstr ""
 
-#: src/common/text.c:959 src/common/text.c:995 src/common/text.c:1006
-#: src/common/text.c:1013 src/common/text.c:1026 src/common/text.c:1043
-#: src/common/text.c:1143 src/common/util.c:348
+#: src/common/text.c:970 src/common/text.c:1006 src/common/text.c:1017
+#: src/common/text.c:1024 src/common/text.c:1037 src/common/text.c:1054
+#: src/common/text.c:1154 src/common/util.c:351
 msgid "Error"
 msgstr "Errorea"
 
-#: src/common/text.c:964 src/common/text.c:1098
+#: src/common/text.c:975 src/common/text.c:1109
 msgid "IP"
 msgstr "IP"
 
-#: src/common/text.c:965 src/common/text.c:994
+#: src/common/text.c:976 src/common/text.c:1005
 msgid "Port"
 msgstr "Ataka"
 
-#: src/common/text.c:969
+#: src/common/text.c:980
 msgid "PID"
 msgstr "PID"
 
-#: src/common/text.c:977
+#: src/common/text.c:988
 msgid "Channel name"
 msgstr "Kanalaren izena"
 
-#: src/common/text.c:978 src/common/text.c:983
+#: src/common/text.c:989 src/common/text.c:994
 msgid "Modes string"
 msgstr ""
 
-#: src/common/text.c:993 src/common/text.c:1031 src/common/text.c:1036
-#: src/common/text.c:1077
+#: src/common/text.c:1004 src/common/text.c:1042 src/common/text.c:1047
+#: src/common/text.c:1088
 msgid "IP address"
 msgstr "IP helbidea"
 
-#: src/common/text.c:999 src/common/text.c:1024
+#: src/common/text.c:1010 src/common/text.c:1035
 msgid "DCC Type"
 msgstr "DCC mota"
 
-#: src/common/text.c:1000 src/common/text.c:1005 src/common/text.c:1010
-#: src/common/text.c:1017 src/common/text.c:1037 src/common/text.c:1041
-#: src/common/text.c:1047 src/common/text.c:1053 src/common/text.c:1060
-#: src/common/text.c:1069 src/common/text.c:1075
+#: src/common/text.c:1011 src/common/text.c:1016 src/common/text.c:1021
+#: src/common/text.c:1028 src/common/text.c:1048 src/common/text.c:1052
+#: src/common/text.c:1058 src/common/text.c:1064 src/common/text.c:1071
+#: src/common/text.c:1080 src/common/text.c:1086
 msgid "Filename"
 msgstr "Fitxategi-izena"
 
-#: src/common/text.c:1011 src/common/text.c:1018
+#: src/common/text.c:1022 src/common/text.c:1029
 msgid "Destination filename"
 msgstr "Helmuga fitxategia"
 
-#: src/common/text.c:1020 src/common/text.c:1049
+#: src/common/text.c:1031 src/common/text.c:1060
 msgid "CPS"
 msgstr "CPS"
 
-#: src/common/text.c:1055
+#: src/common/text.c:1066
 msgid "Pathname"
 msgstr "Bide-izena"
 
-#: src/common/text.c:1070 src/fe-gtk/dccgui.c:483 src/fe-gtk/dccgui.c:633
+#: src/common/text.c:1081 src/fe-gtk/dccgui.c:483 src/fe-gtk/dccgui.c:633
 msgid "Position"
 msgstr "Posizioa"
 
-#: src/common/text.c:1076 src/fe-gtk/dccgui.c:482 src/fe-gtk/dccgui.c:632
+#: src/common/text.c:1087 src/fe-gtk/dccgui.c:482 src/fe-gtk/dccgui.c:632
 msgid "Size"
 msgstr "Tamainua"
 
-#: src/common/text.c:1081
+#: src/common/text.c:1092
 msgid "DCC String"
 msgstr "DCC katea"
 
-#: src/common/text.c:1086
+#: src/common/text.c:1097
 msgid "Number of notify items"
 msgstr ""
 
-#: src/common/text.c:1090
+#: src/common/text.c:1101
 msgid "Servername"
 msgstr "Zerbitzeriaren izena"
 
-#: src/common/text.c:1102
+#: src/common/text.c:1113
 msgid "Old Filename"
 msgstr "Fitxategi zaharra"
 
-#: src/common/text.c:1103
+#: src/common/text.c:1114
 msgid "New Filename"
 msgstr "Fitxategi berria"
 
-#: src/common/text.c:1107
+#: src/common/text.c:1118
 msgid "Receiver"
 msgstr "Jasotzailea"
 
-#: src/common/text.c:1112
+#: src/common/text.c:1123
 msgid "Hostmask"
 msgstr "Ostalariaren maskara"
 
-#: src/common/text.c:1117
+#: src/common/text.c:1128
 msgid "Hostname"
 msgstr "Ostalariaren izena"
 
-#: src/common/text.c:1122
+#: src/common/text.c:1133
 msgid "The Packet"
 msgstr "Paketea"
 
-#: src/common/text.c:1126
+#: src/common/text.c:1137
 msgid "Seconds"
 msgstr "Segunduak"
 
-#: src/common/text.c:1130
+#: src/common/text.c:1141
 msgid "Nick of person who have been invited"
 msgstr ""
 
-#: src/common/text.c:1137
+#: src/common/text.c:1148
 msgid "Banmask"
 msgstr "Debeku maskara"
 
-#: src/common/text.c:1138
+#: src/common/text.c:1149
 msgid "Who set the ban"
 msgstr "Nork ezarri duen debekua"
 
-#: src/common/text.c:1139
+#: src/common/text.c:1150
 msgid "Ban time"
 msgstr "Debekuaren denbora"
 
-#: src/common/text.c:1177
+#: src/common/text.c:1188
 #, c-format
 msgid ""
 "Error parsing event %s.\n"
-"Loading default"
+"Loading default."
 msgstr ""
 
-#: src/common/text.c:1687
+#: src/common/text.c:1808
 #, c-format
 msgid ""
 "Cannot read sound file:\n"
@@ -1503,1268 +1531,1280 @@ msgstr ""
 "Ezin da soinu fitxategia irakurri:\n"
 "%s"
 
-#: src/common/util.c:292
+#: src/common/util.c:295
 msgid "Remote host closed socket"
 msgstr ""
 
-#: src/common/util.c:297
+#: src/common/util.c:300
 msgid "Connection refused"
 msgstr "Konexio ukatua"
 
-#: src/common/util.c:300
+#: src/common/util.c:303
 msgid "No route to host"
 msgstr ""
 
-#: src/common/util.c:302
+#: src/common/util.c:305
 msgid "Connection timed out"
 msgstr "Konexioa denboraz kanpo"
 
-#: src/common/util.c:304
+#: src/common/util.c:307
 msgid "Cannot assign that address"
 msgstr "Ezin da helbide hori eman"
 
-#: src/common/util.c:306
+#: src/common/util.c:309
 msgid "Connection reset by peer"
 msgstr "Konexioa bikoteak berrezarria"
 
-#: src/common/util.c:771
+#: src/common/util.c:800
 msgid "Andorra"
 msgstr "Andorra"
 
-#: src/common/util.c:772
+#: src/common/util.c:801
 msgid "United Arab Emirates"
 msgstr "Arabiar Emirerri Batuak"
 
-#: src/common/util.c:773
+#: src/common/util.c:802
 msgid "Afghanistan"
 msgstr "Afganistan"
 
-#: src/common/util.c:774
+#: src/common/util.c:803
 msgid "Antigua and Barbuda"
 msgstr "Antigua eta Barbuda"
 
-#: src/common/util.c:775
+#: src/common/util.c:804
 msgid "Anguilla"
 msgstr "Anguilla"
 
-#: src/common/util.c:776
+#: src/common/util.c:805
 msgid "Albania"
 msgstr "Albania"
 
-#: src/common/util.c:777
+#: src/common/util.c:806
 msgid "Armenia"
 msgstr "Armenia"
 
-#: src/common/util.c:778
+#: src/common/util.c:807
 msgid "Netherlands Antilles"
 msgstr "Antilla Nederlandarrak"
 
-#: src/common/util.c:779
+#: src/common/util.c:808
 msgid "Angola"
 msgstr "Angola"
 
-#: src/common/util.c:780
+#: src/common/util.c:809
 msgid "Antarctica"
 msgstr "Antarktika"
 
-#: src/common/util.c:781
+#: src/common/util.c:810
 msgid "Argentina"
 msgstr "Argentina"
 
-#: src/common/util.c:782
+#: src/common/util.c:811
 msgid "Reverse DNS"
 msgstr "Alderantzizko DNSa"
 
-#: src/common/util.c:783
+#: src/common/util.c:812
 msgid "American Samoa"
 msgstr "Samoa Estatubatuarra"
 
-#: src/common/util.c:784
+#: src/common/util.c:813
 msgid "Austria"
 msgstr "Austria"
 
-#: src/common/util.c:785
+#: src/common/util.c:814
 msgid "Nato Fiel"
 msgstr ""
 
-#: src/common/util.c:786
+#: src/common/util.c:815
 msgid "Australia"
 msgstr "Australia"
 
-#: src/common/util.c:787
+#: src/common/util.c:816
 msgid "Aruba"
 msgstr "Aruba"
 
-#: src/common/util.c:788
+#: src/common/util.c:817
 msgid "Azerbaijan"
 msgstr "Azerbaijan"
 
-#: src/common/util.c:789
+#: src/common/util.c:818
 msgid "Bosnia and Herzegovina"
 msgstr "Bosnia-Herzegovina"
 
-#: src/common/util.c:790
+#: src/common/util.c:819
 msgid "Barbados"
 msgstr "Barbados"
 
-#: src/common/util.c:791
+#: src/common/util.c:820
 msgid "Bangladesh"
 msgstr "Bangladesh"
 
-#: src/common/util.c:792
+#: src/common/util.c:821
 msgid "Belgium"
 msgstr "Belgika"
 
-#: src/common/util.c:793
+#: src/common/util.c:822
 msgid "Burkina Faso"
 msgstr "Burkina Faso"
 
-#: src/common/util.c:794
+#: src/common/util.c:823
 msgid "Bulgaria"
 msgstr "Bulgaria"
 
-#: src/common/util.c:795
+#: src/common/util.c:824
 msgid "Bahrain"
 msgstr "Bahrein"
 
-#: src/common/util.c:796
+#: src/common/util.c:825
 msgid "Burundi"
 msgstr "Burundi"
 
-#: src/common/util.c:797
+#: src/common/util.c:826
 msgid "Businesses"
 msgstr "Negozioak"
 
-#: src/common/util.c:798
+#: src/common/util.c:827
 msgid "Benin"
 msgstr "Benin"
 
-#: src/common/util.c:799
+#: src/common/util.c:828
 msgid "Bermuda"
 msgstr "Bermudak"
 
-#: src/common/util.c:800
+#: src/common/util.c:829
 msgid "Brunei Darussalam"
 msgstr "Brunei Darussalam"
 
-#: src/common/util.c:801
+#: src/common/util.c:830
 msgid "Bolivia"
 msgstr "Bolivia"
 
-#: src/common/util.c:802
+#: src/common/util.c:831
 msgid "Brazil"
 msgstr "Brasil"
 
-#: src/common/util.c:803
+#: src/common/util.c:832
 msgid "Bahamas"
 msgstr "Bahamak"
 
-#: src/common/util.c:804
+#: src/common/util.c:833
 msgid "Bhutan"
 msgstr "Bhutan"
 
-#: src/common/util.c:805
+#: src/common/util.c:834
 msgid "Bouvet Island"
 msgstr "Bouvet Uhartea"
 
-#: src/common/util.c:806
+#: src/common/util.c:835
 msgid "Botswana"
 msgstr "Botswana"
 
-#: src/common/util.c:807
+#: src/common/util.c:836
 msgid "Belarus"
 msgstr "Bielorrusia"
 
-#: src/common/util.c:808
+#: src/common/util.c:837
 msgid "Belize"
 msgstr "Belize"
 
-#: src/common/util.c:809
+#: src/common/util.c:838
 msgid "Canada"
 msgstr "Kanada"
 
-#: src/common/util.c:810
+#: src/common/util.c:839
 msgid "Cocos Islands"
 msgstr "Cocos Uharteak"
 
-#: src/common/util.c:811
+#: src/common/util.c:840
 msgid "Central African Republic"
 msgstr "Ertafrikar Errepublika"
 
-#: src/common/util.c:812
+#: src/common/util.c:841
 msgid "Congo"
 msgstr "Kongo"
 
-#: src/common/util.c:813
+#: src/common/util.c:842
 msgid "Switzerland"
 msgstr "Suitza"
 
-#: src/common/util.c:814
-msgid "Cote D'ivoire"
+#: src/common/util.c:843
+#, fuzzy
+msgid "Cote d'Ivoire"
 msgstr "Bolikosta"
 
-#: src/common/util.c:815
+#: src/common/util.c:844
 msgid "Cook Islands"
 msgstr "Cook Uharteak"
 
-#: src/common/util.c:816
+#: src/common/util.c:845
 msgid "Chile"
 msgstr "Txile"
 
-#: src/common/util.c:817
+#: src/common/util.c:846
 msgid "Cameroon"
 msgstr "Kamerun"
 
-#: src/common/util.c:818
+#: src/common/util.c:847
 msgid "China"
 msgstr "Txina"
 
-#: src/common/util.c:819
+#: src/common/util.c:848
 msgid "Colombia"
 msgstr "Kolombia"
 
-#: src/common/util.c:820
+#: src/common/util.c:849
 msgid "Internic Commercial"
 msgstr "Internic Komertziala"
 
-#: src/common/util.c:821
+#: src/common/util.c:850
 msgid "Costa Rica"
 msgstr "Costa Rica"
 
-#: src/common/util.c:822
+#: src/common/util.c:851
 msgid "Former Czechoslovakia"
 msgstr "Txekiar Errepublika"
 
-#: src/common/util.c:823
+#: src/common/util.c:852
 msgid "Cuba"
 msgstr "Kuba"
 
-#: src/common/util.c:824
+#: src/common/util.c:853
 msgid "Cape Verde"
 msgstr "Cabo Verde"
 
-#: src/common/util.c:825
+#: src/common/util.c:854
 msgid "Christmas Island"
 msgstr "Christmas Uhartea"
 
-#: src/common/util.c:826
+#: src/common/util.c:855
 msgid "Cyprus"
 msgstr "Txipre"
 
-#: src/common/util.c:827
+#: src/common/util.c:856
 msgid "Czech Republic"
 msgstr "Txekiar Errepublika"
 
-#: src/common/util.c:828
+#: src/common/util.c:857
 msgid "Germany"
 msgstr "Alemania"
 
-#: src/common/util.c:829
+#: src/common/util.c:858
 msgid "Djibouti"
 msgstr "Djituti"
 
-#: src/common/util.c:830
+#: src/common/util.c:859
 msgid "Denmark"
 msgstr "Danimarka"
 
-#: src/common/util.c:831
+#: src/common/util.c:860
 msgid "Dominica"
 msgstr "Dominika"
 
-#: src/common/util.c:832
+#: src/common/util.c:861
 msgid "Dominican Republic"
 msgstr "Dominikar Errepublika"
 
-#: src/common/util.c:833
+#: src/common/util.c:862
 msgid "Algeria"
 msgstr "Algeria"
 
-#: src/common/util.c:834
+#: src/common/util.c:863
 msgid "Ecuador"
 msgstr "Ekuador"
 
-#: src/common/util.c:835
+#: src/common/util.c:864
 msgid "Educational Institution"
 msgstr "Instituzio Edukatiboa"
 
-#: src/common/util.c:836
+#: src/common/util.c:865
 msgid "Estonia"
 msgstr "Estonia"
 
-#: src/common/util.c:837
+#: src/common/util.c:866
 msgid "Egypt"
 msgstr "Egipto"
 
-#: src/common/util.c:838
+#: src/common/util.c:867
 msgid "Western Sahara"
 msgstr "Mendebaldeko Sahara"
 
-#: src/common/util.c:839
+#: src/common/util.c:868
 msgid "Eritrea"
 msgstr "Eritrea"
 
-#: src/common/util.c:840
+#: src/common/util.c:869
 msgid "Spain"
 msgstr "Espainia"
 
-#: src/common/util.c:841
+#: src/common/util.c:870
 msgid "Ethiopia"
 msgstr "Etiopia"
 
-#: src/common/util.c:842
+#: src/common/util.c:871
 msgid "Finland"
 msgstr "Finlandia"
 
-#: src/common/util.c:843
+#: src/common/util.c:872
 msgid "Fiji"
 msgstr "Fiji"
 
-#: src/common/util.c:844
+#: src/common/util.c:873
 msgid "Falkland Islands"
 msgstr "Malvina Uharteak (Falkland)"
 
-#: src/common/util.c:845
+#: src/common/util.c:874
 msgid "Micronesia"
 msgstr "Maine"
 
-#: src/common/util.c:846
+#: src/common/util.c:875
 msgid "Faroe Islands"
 msgstr "Faroe Uharteak"
 
-#: src/common/util.c:847
+#: src/common/util.c:876
 msgid "France"
 msgstr "Frantzia"
 
-#: src/common/util.c:848
+#: src/common/util.c:877
 msgid "France, Metropolitan"
 msgstr "Frantzia, Metropolitanoa"
 
-#: src/common/util.c:849
+#: src/common/util.c:878
 msgid "Gabon"
 msgstr "Gabon"
 
-#: src/common/util.c:850
+#: src/common/util.c:879
 msgid "Great Britain"
 msgstr "Britania Handia"
 
-#: src/common/util.c:851
+#: src/common/util.c:880
 msgid "Grenada"
 msgstr "Granada"
 
-#: src/common/util.c:852
+#: src/common/util.c:881
 msgid "Georgia"
 msgstr "Georgia"
 
-#: src/common/util.c:853
+#: src/common/util.c:882
 msgid "French Guiana"
 msgstr "Guyana Frantsesa"
 
-#: src/common/util.c:854
+#: src/common/util.c:883
 msgid "British Channel Isles"
 msgstr "Channel Uharte Britaniarrak"
 
-#: src/common/util.c:855
+#: src/common/util.c:884
 msgid "Ghana"
 msgstr "Ghana"
 
-#: src/common/util.c:856
+#: src/common/util.c:885
 msgid "Gibraltar"
 msgstr "Gibraltar"
 
-#: src/common/util.c:857
+#: src/common/util.c:886
 msgid "Greenland"
 msgstr "Groenlandia"
 
-#: src/common/util.c:858
+#: src/common/util.c:887
 msgid "Gambia"
 msgstr "Gambia"
 
-#: src/common/util.c:859
+#: src/common/util.c:888
 msgid "Guinea"
 msgstr "Ginea"
 
-#: src/common/util.c:860
+#: src/common/util.c:889
 msgid "Government"
 msgstr "Gobernua"
 
-#: src/common/util.c:861
+#: src/common/util.c:890
 msgid "Guadeloupe"
 msgstr "Guadelupe"
 
-#: src/common/util.c:862
+#: src/common/util.c:891
 msgid "Equatorial Guinea"
 msgstr "Ekuatore-Ginea"
 
-#: src/common/util.c:863
+#: src/common/util.c:892
 msgid "Greece"
 msgstr "Grezia"
 
-#: src/common/util.c:864
-msgid "S. Georgia and S. Sandwich Isles."
+#: src/common/util.c:893
+msgid "S. Georgia and S. Sandwich Isles"
 msgstr "Hegoaldeko Georgia eta Hegoaldeko Sandwich Uharteak"
 
-#: src/common/util.c:865
+#: src/common/util.c:894
 msgid "Guatemala"
 msgstr "Guatemala"
 
-#: src/common/util.c:866
+#: src/common/util.c:895
 msgid "Guam"
 msgstr "Guam"
 
-#: src/common/util.c:867
+#: src/common/util.c:896
 msgid "Guinea-Bissau"
 msgstr "Ginea Bissau"
 
-#: src/common/util.c:868
+#: src/common/util.c:897
 msgid "Guyana"
 msgstr "Guyana"
 
-#: src/common/util.c:869
+#: src/common/util.c:898
 msgid "Hong Kong"
 msgstr "Hong Kong"
 
-#: src/common/util.c:870
+#: src/common/util.c:899
 msgid "Heard and McDonald Islands"
 msgstr "Heard Uhartea eta McDonald Uharteak"
 
-#: src/common/util.c:871
+#: src/common/util.c:900
 msgid "Honduras"
 msgstr "Honduras"
 
-#: src/common/util.c:872
+#: src/common/util.c:901
 msgid "Croatia"
 msgstr "Kroazia"
 
-#: src/common/util.c:873
+#: src/common/util.c:902
 msgid "Haiti"
 msgstr "Haiti"
 
-#: src/common/util.c:874
+#: src/common/util.c:903
 msgid "Hungary"
 msgstr "Hungaria"
 
-#: src/common/util.c:875
+#: src/common/util.c:904
 msgid "Indonesia"
 msgstr "Indonesia"
 
-#: src/common/util.c:876
+#: src/common/util.c:905
 msgid "Ireland"
 msgstr "Irlanda"
 
-#: src/common/util.c:877
+#: src/common/util.c:906
 msgid "Israel"
 msgstr "Israel"
 
-#: src/common/util.c:878
+#: src/common/util.c:907
 msgid "India"
 msgstr "India"
 
-#: src/common/util.c:879
+#: src/common/util.c:908
 msgid "Informational"
 msgstr "Informatiboa"
 
-#: src/common/util.c:880
+#: src/common/util.c:909
 msgid "International"
 msgstr "Internazionala"
 
-#: src/common/util.c:881
+#: src/common/util.c:910
 msgid "British Indian Ocean Territory"
 msgstr "Indiar Ozeanoko Lurralde Britainiarra"
 
-#: src/common/util.c:882
+#: src/common/util.c:911
 msgid "Iraq"
 msgstr "Irak"
 
-#: src/common/util.c:883
+#: src/common/util.c:912
 msgid "Iran"
 msgstr "Iran"
 
-#: src/common/util.c:884
+#: src/common/util.c:913
 msgid "Iceland"
 msgstr "Islandia"
 
-#: src/common/util.c:885
+#: src/common/util.c:914
 msgid "Italy"
 msgstr "Italia"
 
-#: src/common/util.c:886
+#: src/common/util.c:915
 msgid "Jamaica"
 msgstr "Jamaika"
 
-#: src/common/util.c:887
+#: src/common/util.c:916
 msgid "Jordan"
 msgstr "Jordania"
 
-#: src/common/util.c:888
+#: src/common/util.c:917
 msgid "Japan"
 msgstr "Japonia"
 
-#: src/common/util.c:889
+#: src/common/util.c:918
 msgid "Kenya"
 msgstr "Kenya"
 
-#: src/common/util.c:890
+#: src/common/util.c:919
 msgid "Kyrgyzstan"
 msgstr "Kirgizstan"
 
-#: src/common/util.c:891
+#: src/common/util.c:920
 msgid "Cambodia"
 msgstr "Kanbodia"
 
-#: src/common/util.c:892
+#: src/common/util.c:921
 msgid "Kiribati"
 msgstr "Kiribati"
 
-#: src/common/util.c:893
+#: src/common/util.c:922
 msgid "Comoros"
 msgstr "Komoreak"
 
-#: src/common/util.c:894
+#: src/common/util.c:923
 msgid "St. Kitts and Nevis"
 msgstr "Saint Kitts eta Nevis"
 
-#: src/common/util.c:895
+#: src/common/util.c:924
 msgid "North Korea"
 msgstr "Korea, Herri-Errepublika Demokratikoa (Ipar Korea)"
 
-#: src/common/util.c:896
+#: src/common/util.c:925
 msgid "South Korea"
 msgstr "Korea Errepublika (Hego Korea)"
 
-#: src/common/util.c:897
+#: src/common/util.c:926
 msgid "Kuwait"
 msgstr "Kuwait"
 
-#: src/common/util.c:898
+#: src/common/util.c:927
 msgid "Cayman Islands"
 msgstr "Cayman Uharteak"
 
-#: src/common/util.c:899
+#: src/common/util.c:928
 msgid "Kazakhstan"
 msgstr "Kazakhstan"
 
-#: src/common/util.c:900
+#: src/common/util.c:929
 msgid "Laos"
 msgstr "Laos"
 
-#: src/common/util.c:901
+#: src/common/util.c:930
 msgid "Lebanon"
 msgstr "Libano"
 
-#: src/common/util.c:902
+#: src/common/util.c:931
 msgid "Saint Lucia"
 msgstr "Santa Luzia"
 
-#: src/common/util.c:903
+#: src/common/util.c:932
 msgid "Liechtenstein"
 msgstr "Liechtenstein"
 
-#: src/common/util.c:904
+#: src/common/util.c:933
 msgid "Sri Lanka"
 msgstr "Sri Lanka"
 
-#: src/common/util.c:905
+#: src/common/util.c:934
 msgid "Liberia"
 msgstr "Liberia"
 
-#: src/common/util.c:906
+#: src/common/util.c:935
 msgid "Lesotho"
 msgstr "Lesotho"
 
-#: src/common/util.c:907
+#: src/common/util.c:936
 msgid "Lithuania"
 msgstr "Lituania"
 
-#: src/common/util.c:908
+#: src/common/util.c:937
 msgid "Luxembourg"
 msgstr "Luxemburgo"
 
-#: src/common/util.c:909
+#: src/common/util.c:938
 msgid "Latvia"
 msgstr "Letonia"
 
-#: src/common/util.c:910
+#: src/common/util.c:939
 msgid "Libya"
 msgstr "Liberia"
 
-#: src/common/util.c:911
+#: src/common/util.c:940
 msgid "Morocco"
 msgstr "Maroko"
 
-#: src/common/util.c:912
+#: src/common/util.c:941
 msgid "Monaco"
 msgstr "Monako"
 
-#: src/common/util.c:913
+#: src/common/util.c:942
 msgid "Moldova"
 msgstr "Moldavia"
 
-#: src/common/util.c:914
+#: src/common/util.c:943
 msgid "United States Medical"
 msgstr "Estatu Batuak Medizinala"
 
-#: src/common/util.c:915
+#: src/common/util.c:944
 msgid "Madagascar"
 msgstr "Madagaskar"
 
-#: src/common/util.c:916
+#: src/common/util.c:945
 msgid "Marshall Islands"
 msgstr "Marshall Uharteak"
 
-#: src/common/util.c:917
+#: src/common/util.c:946
 msgid "Military"
 msgstr "Militarra"
 
-#: src/common/util.c:918
+#: src/common/util.c:947
 msgid "Macedonia"
 msgstr "Macedonia"
 
-#: src/common/util.c:919
+#: src/common/util.c:948
 msgid "Mali"
 msgstr "Mali"
 
-#: src/common/util.c:920
+#: src/common/util.c:949
 msgid "Myanmar"
 msgstr "Birmania"
 
-#: src/common/util.c:921
+#: src/common/util.c:950
 msgid "Mongolia"
 msgstr "Mongolia"
 
-#: src/common/util.c:922
+#: src/common/util.c:951
 msgid "Macau"
 msgstr "Macau"
 
-#: src/common/util.c:923
+#: src/common/util.c:952
 msgid "Northern Mariana Islands"
 msgstr "Iparraldeko Mariana Uharteak"
 
-#: src/common/util.c:924
+#: src/common/util.c:953
 msgid "Martinique"
 msgstr "Martinika"
 
-#: src/common/util.c:925
+#: src/common/util.c:954
 msgid "Mauritania"
 msgstr "Mauritania"
 
-#: src/common/util.c:926
+#: src/common/util.c:955
 msgid "Montserrat"
 msgstr "Montserrat"
 
-#: src/common/util.c:927
+#: src/common/util.c:956
 msgid "Malta"
 msgstr "Malta"
 
-#: src/common/util.c:928
+#: src/common/util.c:957
 msgid "Mauritius"
 msgstr "Maurizio"
 
-#: src/common/util.c:929
+#: src/common/util.c:958
 msgid "Maldives"
 msgstr "Mali"
 
-#: src/common/util.c:930
+#: src/common/util.c:959
 msgid "Malawi"
 msgstr "Malawi"
 
-#: src/common/util.c:931
+#: src/common/util.c:960
 msgid "Mexico"
 msgstr "Mexiko"
 
-#: src/common/util.c:932
+#: src/common/util.c:961
 msgid "Malaysia"
 msgstr "Malaysia"
 
-#: src/common/util.c:933
+#: src/common/util.c:962
 msgid "Mozambique"
 msgstr "Mozambike"
 
-#: src/common/util.c:934
+#: src/common/util.c:963
 msgid "Namibia"
 msgstr "Namibia"
 
-#: src/common/util.c:935
+#: src/common/util.c:964
 msgid "New Caledonia"
 msgstr "Kaledonia Berria"
 
-#: src/common/util.c:936
+#: src/common/util.c:965
 msgid "Niger"
 msgstr "Niger"
 
-#: src/common/util.c:937
+#: src/common/util.c:966
 msgid "Internic Network"
 msgstr "Internic Sarea"
 
-#: src/common/util.c:938
+#: src/common/util.c:967
 msgid "Norfolk Island"
 msgstr "Norfolk Uhartea"
 
-#: src/common/util.c:939
+#: src/common/util.c:968
 msgid "Nigeria"
 msgstr "Nigeria"
 
-#: src/common/util.c:940
+#: src/common/util.c:969
 msgid "Nicaragua"
 msgstr "Nikaragua"
 
-#: src/common/util.c:941
+#: src/common/util.c:970
 msgid "Netherlands"
 msgstr "Herbereak"
 
-#: src/common/util.c:942
+#: src/common/util.c:971
 msgid "Norway"
 msgstr "Norvegia"
 
-#: src/common/util.c:943
+#: src/common/util.c:972
 msgid "Nepal"
 msgstr "Nepal"
 
-#: src/common/util.c:944
+#: src/common/util.c:973
 msgid "Nauru"
 msgstr "Nauru"
 
-#: src/common/util.c:945
+#: src/common/util.c:974
 msgid "Neutral Zone"
 msgstr "Eremu neutrala"
 
-#: src/common/util.c:946
+#: src/common/util.c:975
 msgid "Niue"
 msgstr "Niue"
 
-#: src/common/util.c:947
+#: src/common/util.c:976
 msgid "New Zealand"
 msgstr "Zeelanda Berria"
 
-#: src/common/util.c:948
+#: src/common/util.c:977
 msgid "Oman"
 msgstr "Oman"
 
-#: src/common/util.c:949
+#: src/common/util.c:978
 msgid "Internic Non-Profit Organization"
 msgstr "Papua Ginea Berria"
 
-#: src/common/util.c:950
+#: src/common/util.c:979
 msgid "Panama"
 msgstr "Panama"
 
-#: src/common/util.c:951
+#: src/common/util.c:980
 msgid "Peru"
 msgstr "Peru"
 
-#: src/common/util.c:952
+#: src/common/util.c:981
 msgid "French Polynesia"
 msgstr "Polinesia Frantsesa"
 
-#: src/common/util.c:953
+#: src/common/util.c:982
 msgid "Papua New Guinea"
 msgstr "Papua Ginea Berria"
 
-#: src/common/util.c:954
+#: src/common/util.c:983
 msgid "Philippines"
 msgstr "Filipinak"
 
-#: src/common/util.c:955
+#: src/common/util.c:984
 msgid "Pakistan"
 msgstr "Pakistan"
 
-#: src/common/util.c:956
+#: src/common/util.c:985
 msgid "Poland"
 msgstr "Polonia"
 
-#: src/common/util.c:957
+#: src/common/util.c:986
 msgid "St. Pierre and Miquelon"
 msgstr "Saint Pierre eta Miquelon"
 
-#: src/common/util.c:958
+#: src/common/util.c:987
 msgid "Pitcairn"
 msgstr "Pitcairn"
 
-#: src/common/util.c:959
+#: src/common/util.c:988
 msgid "Puerto Rico"
 msgstr "Puerto Rico"
 
-#: src/common/util.c:960
+#: src/common/util.c:989
 msgid "Portugal"
 msgstr "Portugal"
 
-#: src/common/util.c:961
+#: src/common/util.c:990
 msgid "Palau"
 msgstr "Belau (lehen Palaos)"
 
-#: src/common/util.c:962
+#: src/common/util.c:991
 msgid "Paraguay"
 msgstr "Paraguay"
 
-#: src/common/util.c:963
+#: src/common/util.c:992
 msgid "Qatar"
 msgstr "Katar"
 
-#: src/common/util.c:964
+#: src/common/util.c:993
 msgid "Reunion"
 msgstr "Reunion"
 
-#: src/common/util.c:965
+#: src/common/util.c:994
 msgid "Romania"
 msgstr "Errumania"
 
-#: src/common/util.c:966
+#: src/common/util.c:995
 msgid "Old School ARPAnet"
 msgstr "ARPAnet zaharra"
 
-#: src/common/util.c:967
+#: src/common/util.c:996
 msgid "Russian Federation"
 msgstr "Errusiako Federazioa"
 
-#: src/common/util.c:968
+#: src/common/util.c:997
 msgid "Rwanda"
 msgstr "Ruanda"
 
-#: src/common/util.c:969
+#: src/common/util.c:998
 msgid "Saudi Arabia"
 msgstr "Saudi Arabia"
 
-#: src/common/util.c:970
+#: src/common/util.c:999
 msgid "Solomon Islands"
 msgstr "Salomon Uharteak"
 
-#: src/common/util.c:971
+#: src/common/util.c:1000
 msgid "Seychelles"
 msgstr "Seychelleak"
 
-#: src/common/util.c:972
+#: src/common/util.c:1001
 msgid "Sudan"
 msgstr "Sudan"
 
-#: src/common/util.c:973
+#: src/common/util.c:1002
 msgid "Sweden"
 msgstr "Suedia"
 
-#: src/common/util.c:974
+#: src/common/util.c:1003
 msgid "Singapore"
 msgstr "Singapur"
 
-#: src/common/util.c:975
+#: src/common/util.c:1004
 msgid "St. Helena"
 msgstr "Santa Elena"
 
-#: src/common/util.c:976
+#: src/common/util.c:1005
 msgid "Slovenia"
 msgstr "Eslovenia"
 
-#: src/common/util.c:977
+#: src/common/util.c:1006
 msgid "Svalbard and Jan Mayen Islands"
 msgstr "Svalbard eta Jan Mayen Uharteak"
 
-#: src/common/util.c:978
+#: src/common/util.c:1007
 msgid "Slovak Republic"
 msgstr "Eslovakia"
 
-#: src/common/util.c:979
+#: src/common/util.c:1008
 msgid "Sierra Leone"
 msgstr "Sierra Leona"
 
-#: src/common/util.c:980
+#: src/common/util.c:1009
 msgid "San Marino"
 msgstr "San Marino"
 
-#: src/common/util.c:981
+#: src/common/util.c:1010
 msgid "Senegal"
 msgstr "Senegal"
 
-#: src/common/util.c:982
+#: src/common/util.c:1011
 msgid "Somalia"
 msgstr "Somalia"
 
-#: src/common/util.c:983
+#: src/common/util.c:1012
 msgid "Suriname"
 msgstr "Surinam"
 
-#: src/common/util.c:984
+#: src/common/util.c:1013
 msgid "Sao Tome and Principe"
 msgstr "Sao Tome eta Printze"
 
-#: src/common/util.c:985
+#: src/common/util.c:1014
 msgid "Former USSR"
 msgstr "Lehenago USSR"
 
-#: src/common/util.c:986
+#: src/common/util.c:1015
 msgid "El Salvador"
 msgstr "El Salvador"
 
-#: src/common/util.c:987
+#: src/common/util.c:1016
 msgid "Syria"
 msgstr "Siria"
 
-#: src/common/util.c:988
+#: src/common/util.c:1017
 msgid "Swaziland"
 msgstr "Swazilandia"
 
-#: src/common/util.c:989
+#: src/common/util.c:1018
 msgid "Turks and Caicos Islands"
 msgstr "Turk eta Caicoak Uharteak"
 
-#: src/common/util.c:990
+#: src/common/util.c:1019
 msgid "Chad"
 msgstr "Txad"
 
-#: src/common/util.c:991
+#: src/common/util.c:1020
 msgid "French Southern Territories"
 msgstr "Hegoaldeko Lurralde Frantsesak"
 
-#: src/common/util.c:992
+#: src/common/util.c:1021
 msgid "Togo"
 msgstr "Togo"
 
-#: src/common/util.c:993
+#: src/common/util.c:1022
 msgid "Thailand"
 msgstr "Tailandia"
 
-#: src/common/util.c:994
+#: src/common/util.c:1023
 msgid "Tajikistan"
 msgstr "Tadjikistan"
 
-#: src/common/util.c:995
+#: src/common/util.c:1024
 msgid "Tokelau"
 msgstr "Tokelau"
 
-#: src/common/util.c:996
+#: src/common/util.c:1025
 msgid "Turkmenistan"
 msgstr "Turkmenistan"
 
-#: src/common/util.c:997
+#: src/common/util.c:1026
 msgid "Tunisia"
 msgstr "Tunisia"
 
-#: src/common/util.c:998
+#: src/common/util.c:1027
 msgid "Tonga"
 msgstr "Tonga"
 
-#: src/common/util.c:999
+#: src/common/util.c:1028
 msgid "East Timor"
 msgstr "Ekialdeko Timor"
 
-#: src/common/util.c:1000
+#: src/common/util.c:1029
 msgid "Turkey"
 msgstr "Turkia"
 
-#: src/common/util.c:1001
+#: src/common/util.c:1030
 msgid "Trinidad and Tobago"
 msgstr "Trinidad eta Tobago"
 
-#: src/common/util.c:1002
+#: src/common/util.c:1031
 msgid "Tuvalu"
 msgstr "Tuvalu"
 
-#: src/common/util.c:1003
+#: src/common/util.c:1032
 msgid "Taiwan"
 msgstr "Taiwan"
 
-#: src/common/util.c:1004
+#: src/common/util.c:1033
 msgid "Tanzania"
 msgstr "Tanzania"
 
-#: src/common/util.c:1005
+#: src/common/util.c:1034
 msgid "Ukraine"
 msgstr "Ukraina"
 
-#: src/common/util.c:1006
+#: src/common/util.c:1035
 msgid "Uganda"
 msgstr "Uganda"
 
-#: src/common/util.c:1007
+#: src/common/util.c:1036
 msgid "United Kingdom"
 msgstr "Erresuma Batua"
 
-#: src/common/util.c:1008
+#: src/common/util.c:1037
 msgid "US Minor Outlying Islands"
 msgstr "United States Minor Outlying Islands"
 
-#: src/common/util.c:1009
+#: src/common/util.c:1038
 msgid "United States of America"
 msgstr "Amerikako Estatu Batuak"
 
-#: src/common/util.c:1010
+#: src/common/util.c:1039
 msgid "Uruguay"
 msgstr "Uruguay"
 
-#: src/common/util.c:1011
+#: src/common/util.c:1040
 msgid "Uzbekistan"
 msgstr "Uzbekistan"
 
-#: src/common/util.c:1012
+#: src/common/util.c:1041
 msgid "Vatican City State"
 msgstr "Vatikanoko Hiria"
 
-#: src/common/util.c:1013
-msgid "St. Vincent and the grenadines"
+#: src/common/util.c:1042
+#, fuzzy
+msgid "St. Vincent and the Grenadines"
 msgstr "Vatikano Hiria (aita santuaren bizilekua)"
 
-#: src/common/util.c:1014
+#: src/common/util.c:1043
 msgid "Venezuela"
 msgstr "Venezuela"
 
-#: src/common/util.c:1015
+#: src/common/util.c:1044
 msgid "British Virgin Islands"
 msgstr "Birjina Uharteak (Err. Ba.)"
 
-#: src/common/util.c:1016
+#: src/common/util.c:1045
 msgid "US Virgin Islands"
 msgstr "Birjina Uharteak (EEBB)"
 
-#: src/common/util.c:1017
+#: src/common/util.c:1046
 msgid "Vietnam"
 msgstr "Vietnam"
 
-#: src/common/util.c:1018
+#: src/common/util.c:1047
 msgid "Vanuatu"
 msgstr "Vanuatu"
 
-#: src/common/util.c:1019
+#: src/common/util.c:1048
 msgid "Wallis and Futuna Islands"
 msgstr "Wallis and Futuna Uharteak"
 
-#: src/common/util.c:1020
+#: src/common/util.c:1049
 msgid "Samoa"
 msgstr "Samoa"
 
-#: src/common/util.c:1021
+#: src/common/util.c:1050
 msgid "Yemen"
 msgstr "Jemen"
 
-#: src/common/util.c:1022
+#: src/common/util.c:1051
 msgid "Mayotte"
 msgstr "Mayotte"
 
-#: src/common/util.c:1023
+#: src/common/util.c:1052
 msgid "Yugoslavia"
 msgstr "Jugoslavia"
 
-#: src/common/util.c:1024
+#: src/common/util.c:1053
 msgid "South Africa"
 msgstr "Hegoafrikar Errepublika"
 
-#: src/common/util.c:1025
+#: src/common/util.c:1054
 msgid "Zambia"
 msgstr "Zambia"
 
-#: src/common/util.c:1026
+#: src/common/util.c:1055
 msgid "Zaire"
 msgstr "Zaire"
 
-#: src/common/util.c:1027
+#: src/common/util.c:1056
 msgid "Zimbabwe"
 msgstr "Zimbabwe"
 
-#: src/common/util.c:1033 src/common/util.c:1043 src/fe-gtk/menu.c:513
+#: src/common/util.c:1062 src/common/util.c:1072 src/fe-gtk/menu.c:513
 #: src/fe-gtk/menu.c:517 src/fe-gtk/menu.c:521 src/fe-gtk/menu.c:525
 #: src/fe-gtk/menu.c:529
 msgid "Unknown"
 msgstr "Ezezaguna"
 
-#: src/common/xchat.c:918
+#: src/common/xchat.c:923
 msgid "Direct client-to-client"
 msgstr "Bezerotik-bezerora zuzenean"
 
-#: src/common/xchat.c:919
+#: src/common/xchat.c:924
 msgid "Send File"
 msgstr "Bidali fitxategia"
 
-#: src/common/xchat.c:920
+#: src/common/xchat.c:925
 msgid "Offer Chat"
 msgstr "Eskeini berriketa"
 
-#: src/common/xchat.c:921
+#: src/common/xchat.c:926
 msgid "Abort Chat"
 msgstr "Abortatu berriketa"
 
-#: src/common/xchat.c:922 src/fe-gtk/plugingui.c:74
+#: src/common/xchat.c:927 src/fe-gtk/plugingui.c:74
 msgid "Version"
 msgstr "Bertsioa"
 
-#: src/common/xchat.c:923
+#: src/common/xchat.c:928
 msgid "Userinfo"
 msgstr "Erabiltzailearen Informazioa"
 
-#: src/common/xchat.c:924
+#: src/common/xchat.c:929
 msgid "Clientinfo"
 msgstr "Bezeroaren informazioa"
 
-#: src/common/xchat.c:925 src/common/xchat.c:957 src/common/xchat.c:1008
+#: src/common/xchat.c:930 src/common/xchat.c:964 src/common/xchat.c:1015
 msgid "Ping"
 msgstr "Ping"
 
-#: src/common/xchat.c:926
+#: src/common/xchat.c:931
 msgid "Time"
 msgstr "Ordua"
 
-#: src/common/xchat.c:927
+#: src/common/xchat.c:932
 msgid "Finger"
 msgstr ""
 
-#: src/common/xchat.c:928
+#: src/common/xchat.c:933
 msgid "Oper"
 msgstr ""
 
-#: src/common/xchat.c:929
+#: src/common/xchat.c:934
 msgid "Kill this user"
 msgstr "Hil erabiltzaile hau"
 
-#: src/common/xchat.c:930
+#: src/common/xchat.c:935
 msgid "Mode"
 msgstr "Modua"
 
-#: src/common/xchat.c:931
-msgid "Give Voice"
-msgstr "Eman ahotsa"
-
-#: src/common/xchat.c:932
-msgid "Take Voice"
-msgstr "Hartu ahotsa"
-
-#: src/common/xchat.c:933
+#: src/common/xchat.c:936
 msgid "Give Ops"
 msgstr "Eman Opak"
 
-#: src/common/xchat.c:934
+#: src/common/xchat.c:937
 msgid "Take Ops"
 msgstr "Hartu Op"
 
-#: src/common/xchat.c:935
+#: src/common/xchat.c:938
+#, fuzzy
+msgid "Give Half-Ops"
+msgstr "Eman Opak"
+
+#: src/common/xchat.c:939
+#, fuzzy
+msgid "Take Half-Ops"
+msgstr "Hartu Op"
+
+#: src/common/xchat.c:940
+msgid "Give Voice"
+msgstr "Eman ahotsa"
+
+#: src/common/xchat.c:941
+msgid "Take Voice"
+msgstr "Hartu ahotsa"
+
+#: src/common/xchat.c:942
 msgid "Ignore"
 msgstr "Ezikusi"
 
-#: src/common/xchat.c:936
+#: src/common/xchat.c:943
 msgid "Ignore User"
 msgstr "Ezikusi erabiltzailea"
 
-#: src/common/xchat.c:937
+#: src/common/xchat.c:944
 msgid "UnIgnore User"
 msgstr "Ez-ignoratu erabiltzailea"
 
-#: src/common/xchat.c:938
+#: src/common/xchat.c:945
 msgid "Kick/Ban"
 msgstr "Kanporatu/debekatu"
 
-#: src/common/xchat.c:939 src/common/xchat.c:991
+#: src/common/xchat.c:946 src/common/xchat.c:998
 msgid "Kick"
 msgstr "Kanporatu"
 
-#: src/common/xchat.c:940 src/common/xchat.c:941 src/common/xchat.c:942
-#: src/common/xchat.c:943 src/common/xchat.c:944 src/common/xchat.c:990
+#: src/common/xchat.c:947 src/common/xchat.c:948 src/common/xchat.c:949
+#: src/common/xchat.c:950 src/common/xchat.c:951 src/common/xchat.c:997
 msgid "Ban"
 msgstr "Debekatu"
 
-#: src/common/xchat.c:945 src/common/xchat.c:946 src/common/xchat.c:947
-#: src/common/xchat.c:948
+#: src/common/xchat.c:952 src/common/xchat.c:953 src/common/xchat.c:954
+#: src/common/xchat.c:955
 msgid "KickBan"
 msgstr "Kanporatu-debekatu"
 
-#: src/common/xchat.c:949 src/fe-gtk/dccgui.c:528 src/fe-gtk/dccgui.c:669
+#: src/common/xchat.c:956 src/fe-gtk/dccgui.c:528 src/fe-gtk/dccgui.c:669
 msgid "Info"
 msgstr "Informazioa"
 
-#: src/common/xchat.c:950
+#: src/common/xchat.c:957
 msgid "Who"
 msgstr "Who"
 
-#: src/common/xchat.c:951 src/common/xchat.c:1004
+#: src/common/xchat.c:958 src/common/xchat.c:1011
 msgid "WhoIs"
 msgstr "WhoIs"
 
-#: src/common/xchat.c:952
+#: src/common/xchat.c:959
 msgid "DNS Lookup"
 msgstr "DNS bilaketa"
 
-#: src/common/xchat.c:953
+#: src/common/xchat.c:960
 msgid "Trace"
 msgstr "Trace"
 
-#: src/common/xchat.c:954
+#: src/common/xchat.c:961
 msgid "UserHost"
 msgstr "Erabiltzaile-ostalaria"
 
-#: src/common/xchat.c:955
+#: src/common/xchat.c:962
 msgid "External"
 msgstr "Kanpoko"
 
-#: src/common/xchat.c:956
+#: src/common/xchat.c:963
 msgid "Traceroute"
 msgstr "Traceroute"
 
-#: src/common/xchat.c:958
+#: src/common/xchat.c:965
 msgid "Telnet"
 msgstr "Telnet"
 
-#: src/common/xchat.c:959
+#: src/common/xchat.c:966
 msgid "Open Dialog Window"
 msgstr ""
 
-#: src/common/xchat.c:971
+#: src/common/xchat.c:978
 msgid "Disconnect"
 msgstr "Deskonektatu"
 
-#: src/common/xchat.c:972
+#: src/common/xchat.c:979
 msgid "Reconnect"
 msgstr "Berriz konektatu"
 
-#: src/common/xchat.c:973
+#: src/common/xchat.c:980
 msgid "Leave Channel"
 msgstr "Irten kanaletik"
 
-#: src/common/xchat.c:974
+#: src/common/xchat.c:981
 msgid "Join Channel..."
 msgstr "Sartu kanalera..."
 
-#: src/common/xchat.c:975
+#: src/common/xchat.c:982
 msgid "Enter Channel to Join:"
 msgstr "Sartu elkartu nahi duzun kanalaren izena:"
 
-#: src/common/xchat.c:976
+#: src/common/xchat.c:983
 msgid "Server Links"
 msgstr "Zerbitzari estekak"
 
-#: src/common/xchat.c:977
+#: src/common/xchat.c:984
 msgid "Ping Server"
 msgstr "Ping egin zerbitzariari"
 
-#: src/common/xchat.c:978
+#: src/common/xchat.c:985
 msgid "Hide Version"
 msgstr "Ezkutatu bertsioa"
 
-#: src/common/xchat.c:988
+#: src/common/xchat.c:995
 msgid "Op"
 msgstr "Op"
 
-#: src/common/xchat.c:989
+#: src/common/xchat.c:996
 msgid "DeOp"
 msgstr "OP kendu"
 
-#: src/common/xchat.c:992
+#: src/common/xchat.c:999
 msgid "bye"
 msgstr "agur"
 
-#: src/common/xchat.c:993
+#: src/common/xchat.c:1000
 #, c-format
 msgid "Enter reason to kick %s:"
 msgstr "Sartu %s botatzeko arrazoia:"
 
-#: src/common/xchat.c:994
+#: src/common/xchat.c:1001
 msgid "Sendfile"
 msgstr "Bidali fitxategia"
 
-#: src/common/xchat.c:995
+#: src/common/xchat.c:1002
 msgid "Dialog"
 msgstr "Elkarrizketa"
 
-#: src/common/xchat.c:1005
+#: src/common/xchat.c:1012
 msgid "Send"
 msgstr "Bidali"
 
-#: src/common/xchat.c:1006
+#: src/common/xchat.c:1013
 msgid "Chat"
 msgstr "Berriketa"
 
-#: src/common/xchat.c:1007 src/fe-gtk/banlist.c:314 src/fe-gtk/search.c:117
+#: src/common/xchat.c:1014 src/fe-gtk/banlist.c:314 src/fe-gtk/search.c:117
 #: src/fe-gtk/urlgrab.c:200
 msgid "Clear"
 msgstr "Garbitu"
@@ -2823,7 +2863,7 @@ msgstr "Erabiltzaile eta kanal estatistikak: %d/%d erabiltzaile %d/%d kanaletan"
 msgid "I can't save an empty list!"
 msgstr "Ezin duzu zerrenda huts bat gorde!"
 
-#: src/fe-gtk/chanlist.c:539 src/fe-gtk/menu.c:948
+#: src/fe-gtk/chanlist.c:539 src/fe-gtk/menu.c:954
 msgid "Select an output filename"
 msgstr ""
 
@@ -3010,7 +3050,7 @@ msgstr "Mugitu behera"
 msgid "Cancel"
 msgstr "Utzi"
 
-#: src/fe-gtk/editlist.c:349 src/fe-gtk/textgui.c:464 src/fe-gtk/urlgrab.c:204
+#: src/fe-gtk/editlist.c:349 src/fe-gtk/textgui.c:413 src/fe-gtk/urlgrab.c:204
 msgid "Save"
 msgstr "Gorde"
 
@@ -3018,7 +3058,7 @@ msgstr "Gorde"
 msgid "Add New"
 msgstr "Gehitu berria"
 
-#: src/fe-gtk/editlist.c:361 src/fe-gtk/fkeys.c:738 src/fe-gtk/ignoregui.c:378
+#: src/fe-gtk/editlist.c:361 src/fe-gtk/fkeys.c:742 src/fe-gtk/ignoregui.c:378
 msgid "Delete"
 msgstr "Ezabatu"
 
@@ -3065,146 +3105,146 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/fe-gtk/fe-gtk.c:593
+#: src/fe-gtk/fe-gtk.c:594
 msgid "Search buffer is empty.\n"
 msgstr "Bilaketa bufferra hutsik dago.\n"
 
-#: src/fe-gtk/fe-gtk.c:670
+#: src/fe-gtk/fe-gtk.c:671
 #, c-format
 msgid "%d bytes"
 msgstr "%d byte"
 
-#: src/fe-gtk/fkeys.c:153
+#: src/fe-gtk/fkeys.c:155
 msgid "The Run Command action runs the data in Data 1 as if it has been typed into the entry box where you pressed the key sequence. Thus it can contain text (which will be sent to the channel/person), commands or user commands. When run all \\n characters in Data 1 are used to deliminate seperate commands so it is possible to run more than one command. If you want a \\ in the actual text run then enter \\\\"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:155
+#: src/fe-gtk/fkeys.c:157
 msgid "The Change Page command switches between pages in the notebook. Set Data 1 to the page you want to switch to. If Data 2 is set to anything then the switch will be relative to the current position"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:157
+#: src/fe-gtk/fkeys.c:159
 msgid "The Insert in Buffer command will insert the contents of Data 1 into the entry where the key sequence was pressed at the current cursor position"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:159
+#: src/fe-gtk/fkeys.c:161
 msgid "The Scroll Page command scrolls the text widget up or down one page. If Data 1 is set to anything the page scrolls up, else it scrolls down"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:161
+#: src/fe-gtk/fkeys.c:163
 msgid "The Set Buffer command sets the entry where the key sequence was entered to the contents of Data 1"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:163
+#: src/fe-gtk/fkeys.c:165
 msgid "The Last Command command sets the entry to contain the last command entered - the same as pressing up in a shell"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:165
+#: src/fe-gtk/fkeys.c:167
 msgid "The Next Command command sets the entry to contain the next command entered - the same as pressing down in a shell"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:167
+#: src/fe-gtk/fkeys.c:169
 msgid "This command changes the text in the entry to finish an incomplete nickname or command. If Data 1 is set then double-tabbing in a string will select the last nick, not the next"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:169
+#: src/fe-gtk/fkeys.c:171
 msgid "This command scrolls up and down through the list of nicks. If Data 1 is set to anything it will scroll up, else it scrolls down"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:171
+#: src/fe-gtk/fkeys.c:173
 msgid "This command checks the last word entered in the entry against the replace list and replaces it if it finds a match"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:173
+#: src/fe-gtk/fkeys.c:175
 msgid "This command moves the front tab left by one"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:175
+#: src/fe-gtk/fkeys.c:177
 msgid "This command moves the front tab right by one"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:177
+#: src/fe-gtk/fkeys.c:179
 msgid "This command moves the current tab family to the left"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:179
+#: src/fe-gtk/fkeys.c:181
 msgid "This command moves the current tab family to the right"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:181
+#: src/fe-gtk/fkeys.c:183
 msgid "Push input line into history but doesn't send to server"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:193
+#: src/fe-gtk/fkeys.c:195
 msgid "There was an error loading key bindings configuration"
 msgstr "Errore bat egon da tekla-mapa konfigurazioa kargatzerakoan"
 
-#: src/fe-gtk/fkeys.c:426 src/fe-gtk/fkeys.c:427 src/fe-gtk/fkeys.c:428
-#: src/fe-gtk/fkeys.c:429 src/fe-gtk/fkeys.c:711 src/fe-gtk/fkeys.c:717
-#: src/fe-gtk/fkeys.c:722 src/fe-gtk/maingui.c:888 src/fe-gtk/maingui.c:909
-#: src/fe-gtk/maingui.c:1063 src/fe-gtk/maingui.c:1105
-#: src/fe-gtk/maingui.c:2445
+#: src/fe-gtk/fkeys.c:430 src/fe-gtk/fkeys.c:431 src/fe-gtk/fkeys.c:432
+#: src/fe-gtk/fkeys.c:433 src/fe-gtk/fkeys.c:715 src/fe-gtk/fkeys.c:721
+#: src/fe-gtk/fkeys.c:726 src/fe-gtk/maingui.c:905 src/fe-gtk/maingui.c:921
+#: src/fe-gtk/maingui.c:1064 src/fe-gtk/maingui.c:1117
+#: src/fe-gtk/maingui.c:2488
 msgid "<none>"
 msgstr "<bat ere ez>"
 
-#: src/fe-gtk/fkeys.c:675
+#: src/fe-gtk/fkeys.c:679
 msgid "Mod"
 msgstr "Mod"
 
-#: src/fe-gtk/fkeys.c:676 src/fe-gtk/fkeys.c:771
+#: src/fe-gtk/fkeys.c:680 src/fe-gtk/fkeys.c:775
 msgid "Key"
 msgstr "Tekla"
 
-#: src/fe-gtk/fkeys.c:677
+#: src/fe-gtk/fkeys.c:681
 msgid "Action"
 msgstr "Ekintza"
 
-#: src/fe-gtk/fkeys.c:686
+#: src/fe-gtk/fkeys.c:690
 msgid "X-Chat: Edit Key Bindings"
 msgstr "X-Chat: Editatu tekla-mapa"
 
-#: src/fe-gtk/fkeys.c:733
+#: src/fe-gtk/fkeys.c:737
 msgid "Add new"
 msgstr "Gehitu berria"
 
-#: src/fe-gtk/fkeys.c:764
+#: src/fe-gtk/fkeys.c:768
 msgid "Shift"
 msgstr "Shift"
 
-#: src/fe-gtk/fkeys.c:766
+#: src/fe-gtk/fkeys.c:770
 msgid "Alt"
 msgstr "Alt"
 
-#: src/fe-gtk/fkeys.c:768
+#: src/fe-gtk/fkeys.c:772
 msgid "Ctrl"
 msgstr "Ctrl"
 
-#: src/fe-gtk/fkeys.c:775
+#: src/fe-gtk/fkeys.c:779
 msgid "Data 1"
 msgstr "1 Datua"
 
-#: src/fe-gtk/fkeys.c:778
+#: src/fe-gtk/fkeys.c:782
 msgid "Data 2"
 msgstr "2 Datua"
 
-#: src/fe-gtk/fkeys.c:821
+#: src/fe-gtk/fkeys.c:825
 msgid "Error opening keys config file\n"
 msgstr "Errorea teklen konfigurazio fitxategia irekitzean\n"
 
-#: src/fe-gtk/fkeys.c:992
+#: src/fe-gtk/fkeys.c:996
 #, c-format
 msgid ""
 "Unknown keyname %s in key bindings config file\n"
 "Load aborted, please fix %s/keybindings.conf\n"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:1030
+#: src/fe-gtk/fkeys.c:1034
 #, c-format
 msgid ""
 "Unknown action %s in key bindings config file\n"
 "Load aborted, Please fix %s/keybindings\n"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:1051
+#: src/fe-gtk/fkeys.c:1055
 #, c-format
 msgid ""
 "Expecting Data line (beginning Dx{:|!}) but got:\n"
@@ -3213,7 +3253,7 @@ msgid ""
 "Load aborted, Please fix %s/keybindings\n"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:1120
+#: src/fe-gtk/fkeys.c:1124
 #, c-format
 msgid ""
 "Key bindings config file is corrupt, load aborted\n"
@@ -3232,7 +3272,7 @@ msgstr "Ezin irakurri fitxategi hori."
 msgid "That mask already exists."
 msgstr "Maskara hau dagoeneko exisititzen da."
 
-#: src/fe-gtk/ignoregui.c:176 src/fe-gtk/maingui.c:1560
+#: src/fe-gtk/ignoregui.c:176 src/fe-gtk/maingui.c:1573
 msgid "Private"
 msgstr "Pribatua"
 
@@ -3288,7 +3328,7 @@ msgstr "CTCP:"
 msgid "Invite:"
 msgstr "Gonbidatu:"
 
-#: src/fe-gtk/ignoregui.c:376 src/fe-gtk/menu.c:1253
+#: src/fe-gtk/ignoregui.c:376 src/fe-gtk/menu.c:1259
 msgid "New"
 msgstr "Berria"
 
@@ -3296,100 +3336,100 @@ msgstr "Berria"
 msgid "Delete All"
 msgstr "Ezabatu guztiak"
 
-#: src/fe-gtk/maingui.c:302
+#: src/fe-gtk/maingui.c:318
 msgid "Dialog with"
 msgstr "Elkarrizketatu honekin"
 
-#: src/fe-gtk/maingui.c:557
+#: src/fe-gtk/maingui.c:574
 #, c-format
 msgid "Topic for %s is: %s"
 msgstr "%s-ren gaia honakoa da: %s"
 
-#: src/fe-gtk/maingui.c:561
+#: src/fe-gtk/maingui.c:578
 msgid "No topic is set"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:962
+#: src/fe-gtk/maingui.c:974
 msgid "No other tabs open, quit xchat?"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1008
+#: src/fe-gtk/maingui.c:1020
 msgid "Insert color code"
 msgstr "Txertatu kolore kodea"
 
-#: src/fe-gtk/maingui.c:1050 src/fe-gtk/menu.c:1275
-msgid "Close Tab"
-msgstr "Itxi fitxa"
-
-#: src/fe-gtk/maingui.c:1053 src/fe-gtk/menu.c:1423
-msgid "Detach Tab"
-msgstr "Kendu fitxa"
-
-#: src/fe-gtk/maingui.c:1068
+#: src/fe-gtk/maingui.c:1069
 msgid "Beep on message"
 msgstr "Bip egin mezuetan"
 
-#: src/fe-gtk/maingui.c:1071
+#: src/fe-gtk/maingui.c:1072
 msgid "Show join/part messages"
 msgstr "Erakutsi sartze/irtete mezuak"
 
-#: src/fe-gtk/maingui.c:1073
+#: src/fe-gtk/maingui.c:1074
 msgid "Color paste"
 msgstr "Koloreak itsatsi"
 
-#: src/fe-gtk/maingui.c:1083
+#: src/fe-gtk/maingui.c:1084
 msgid "Go to"
 msgstr "Joan hona"
 
-#: src/fe-gtk/maingui.c:1278
+#: src/fe-gtk/maingui.c:1097 src/fe-gtk/menu.c:1281
+msgid "Close Tab"
+msgstr "Itxi fitxa"
+
+#: src/fe-gtk/maingui.c:1100 src/fe-gtk/menu.c:1430
+msgid "Detach Tab"
+msgstr "Kendu fitxa"
+
+#: src/fe-gtk/maingui.c:1291
 msgid "Some file transfers still active, quit xchat?"
 msgstr "Fitxategi transferentzia batzuk aktibo daude oraindek, xchat-etik irten nahi duzu?"
 
-#: src/fe-gtk/maingui.c:1428 src/fe-gtk/maingui.c:1534
+#: src/fe-gtk/maingui.c:1441 src/fe-gtk/maingui.c:1547
 msgid "User limit must be a number!\n"
 msgstr "Erabiltzaile mugak zenbakia izan behar du!\n"
 
-#: src/fe-gtk/maingui.c:1556
+#: src/fe-gtk/maingui.c:1569
 msgid "Topic Protection"
 msgstr "Gaia babestua"
 
-#: src/fe-gtk/maingui.c:1557
+#: src/fe-gtk/maingui.c:1570
 msgid "No outside messages"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1558
+#: src/fe-gtk/maingui.c:1571
 msgid "Secret"
 msgstr "Sekretu"
 
-#: src/fe-gtk/maingui.c:1559
+#: src/fe-gtk/maingui.c:1572
 msgid "Invite Only"
 msgstr "Gonbidapenarekin bakarrik"
 
-#: src/fe-gtk/maingui.c:1561
+#: src/fe-gtk/maingui.c:1574
 msgid "Moderated"
 msgstr "Moderatua"
 
-#: src/fe-gtk/maingui.c:1562
+#: src/fe-gtk/maingui.c:1575
 msgid "Ban List"
 msgstr "Debekatuen zerrenda"
 
-#: src/fe-gtk/maingui.c:1564
+#: src/fe-gtk/maingui.c:1577
 msgid "Keyword"
 msgstr "Gako-hitza"
 
-#: src/fe-gtk/maingui.c:1576
+#: src/fe-gtk/maingui.c:1589
 msgid "User Limit"
 msgstr "Erabiltzaile limitea"
 
-#: src/fe-gtk/maingui.c:1592
+#: src/fe-gtk/maingui.c:1605
 msgid "Close this tab/window"
 msgstr "Fitxa/leiho hau itxitzen du"
 
-#: src/fe-gtk/maingui.c:1689
+#: src/fe-gtk/maingui.c:1702
 msgid "Show/Hide userlist"
 msgstr "Erakutsi/ezkutatu erabiltzaile zerrenda"
 
-#: src/fe-gtk/maingui.c:1799
+#: src/fe-gtk/maingui.c:1815
 msgid ""
 "Unable to set transparent background!\n"
 "\n"
@@ -3397,7 +3437,7 @@ msgid ""
 "manager that is not currently supported.\n"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1992
+#: src/fe-gtk/maingui.c:2008
 msgid "Enter new nickname:"
 msgstr "Sartu ezizen berria:"
 
@@ -3438,7 +3478,7 @@ msgstr "Menu barra"
 msgid "Topic Bar"
 msgstr "Gai barra"
 
-#: src/fe-gtk/menu.c:618
+#: src/fe-gtk/menu.c:618 src/fe-gtk/setup.c:157
 msgid "User List"
 msgstr "Erabiltzaile zerrenda"
 
@@ -3482,11 +3522,11 @@ msgstr ""
 "kaltegarria izan daiteke. Adibidez norbaitek\n"
 ".bash_profile fitxategia bidali dezake"
 
-#: src/fe-gtk/menu.c:1018
+#: src/fe-gtk/menu.c:1024
 msgid "Settings saved."
 msgstr "Hobespenak gordeta."
 
-#: src/fe-gtk/menu.c:1055
+#: src/fe-gtk/menu.c:1061
 msgid ""
 "User Commands - Special codes:\n"
 "\n"
@@ -3507,7 +3547,7 @@ msgid ""
 "&2 would be \"john hello\"."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1070
+#: src/fe-gtk/menu.c:1076
 msgid ""
 "Userlist Buttons - Special codes:\n"
 "\n"
@@ -3520,7 +3560,7 @@ msgid ""
 "%t  =  time/date\n"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1079
+#: src/fe-gtk/menu.c:1085
 msgid ""
 "Dialog Buttons - Special codes:\n"
 "\n"
@@ -3533,7 +3573,7 @@ msgid ""
 "%t  =  time/date\n"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1088
+#: src/fe-gtk/menu.c:1094
 msgid ""
 "CTCP Replies - Special codes:\n"
 "\n"
@@ -3548,7 +3588,7 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1098
+#: src/fe-gtk/menu.c:1104
 #, c-format
 msgid ""
 "URL Handlers - Special codes:\n"
@@ -3560,251 +3600,255 @@ msgid ""
 "shell instead of X-Chat"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1107
+#: src/fe-gtk/menu.c:1113
 msgid "X-Chat: User Defined Commands"
 msgstr "X-Chat: Erabiltzaileak definitutako komandoak"
 
-#: src/fe-gtk/menu.c:1114
+#: src/fe-gtk/menu.c:1120
 msgid "X-Chat: Userlist Popup menu"
 msgstr "X-Chat: Erabiltzaile zerrenda agertarazlearen menua"
 
-#: src/fe-gtk/menu.c:1121
+#: src/fe-gtk/menu.c:1127
 msgid "X-Chat: Replace"
 msgstr "X-Chat: Ordezkatu"
 
-#: src/fe-gtk/menu.c:1128
+#: src/fe-gtk/menu.c:1134
 msgid "X-Chat: URL Handlers"
 msgstr "X-Chat: URL maneiatzaileak"
 
-#: src/fe-gtk/menu.c:1147
+#: src/fe-gtk/menu.c:1153
 msgid "X-Chat: Userlist buttons"
 msgstr "X-Chat: Erabiltzaile-zerrenda botoiak"
 
-#: src/fe-gtk/menu.c:1154
+#: src/fe-gtk/menu.c:1160
 msgid "X-Chat: Dialog buttons"
 msgstr "X-Chat: Elkarrizketa botoiak"
 
-#: src/fe-gtk/menu.c:1161
+#: src/fe-gtk/menu.c:1167
 msgid "X-Chat: CTCP Replies"
 msgstr "X-Chat: CTCP erantzunak"
 
-#: src/fe-gtk/menu.c:1249
+#: src/fe-gtk/menu.c:1255
 msgid "_X-Chat"
 msgstr "_X-Chat"
 
-#: src/fe-gtk/menu.c:1250
+#: src/fe-gtk/menu.c:1256
 msgid "Server List..."
 msgstr "Zerbitzari zerrenda..."
 
-#: src/fe-gtk/menu.c:1254
+#: src/fe-gtk/menu.c:1260
 msgid "Server Tab..."
 msgstr "Zerbitzari fitxa..."
 
-#: src/fe-gtk/menu.c:1255
+#: src/fe-gtk/menu.c:1261
 msgid "Channel Tab..."
 msgstr "Kanal fitxa..."
 
-#: src/fe-gtk/menu.c:1256
+#: src/fe-gtk/menu.c:1262
 msgid "Server Window..."
 msgstr "Zerbitzari leihoa..."
 
-#: src/fe-gtk/menu.c:1257
+#: src/fe-gtk/menu.c:1263
 msgid "Channel Window..."
 msgstr "Kanalaren leihoa..."
 
-#: src/fe-gtk/menu.c:1262 src/fe-gtk/menu.c:1264
+#: src/fe-gtk/menu.c:1268 src/fe-gtk/menu.c:1270
 msgid "Load Plugin or Script..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1268
+#: src/fe-gtk/menu.c:1274
 msgid "New Shell Tab..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1277
+#: src/fe-gtk/menu.c:1283
 msgid "Quit"
 msgstr "Irten"
 
-#: src/fe-gtk/menu.c:1279
+#: src/fe-gtk/menu.c:1285
 msgid "_IRC"
 msgstr "_IRC"
 
-#: src/fe-gtk/menu.c:1280
+#: src/fe-gtk/menu.c:1286
 msgid "Invisible"
 msgstr "Ikustezina"
 
-#: src/fe-gtk/menu.c:1281
+#: src/fe-gtk/menu.c:1287
 msgid "Receive Wallops"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1282
+#: src/fe-gtk/menu.c:1288
 msgid "Receive Server Notices"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1284
+#: src/fe-gtk/menu.c:1290
 msgid "Marked Away"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1286
+#: src/fe-gtk/menu.c:1292
 msgid "Auto Rejoin when Kicked"
 msgstr "Automatikoki birsartu kanporatzean"
 
-#: src/fe-gtk/menu.c:1287
+#: src/fe-gtk/menu.c:1293
 msgid "Auto Reconnect to Server"
 msgstr "Automatikoki birkonektatu zerbitzarira"
 
-#: src/fe-gtk/menu.c:1288
+#: src/fe-gtk/menu.c:1294
 msgid "Never-give-up ReConnect"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1290
+#: src/fe-gtk/menu.c:1296
 msgid "Auto Open Dialog Windows"
 msgstr "Automatikoki ireki elkarrizketa leihoak"
 
-#: src/fe-gtk/menu.c:1291
+#: src/fe-gtk/menu.c:1297
 msgid "Auto Accept Direct Chat"
 msgstr "Automatikoki onartu elkarrizketa zuzenak"
 
-#: src/fe-gtk/menu.c:1292
+#: src/fe-gtk/menu.c:1298
 msgid "Auto Accept Files"
 msgstr "Automatikoki onartu fitxategiak"
 
-#: src/fe-gtk/menu.c:1294
+#: src/fe-gtk/menu.c:1300
 msgid "_Server"
 msgstr "_Zerbitzaria"
 
-#: src/fe-gtk/menu.c:1296
+#: src/fe-gtk/menu.c:1302
 msgid "S_ettings"
 msgstr "_Ezarpenak"
 
-#: src/fe-gtk/menu.c:1297
+#: src/fe-gtk/menu.c:1303
 msgid "Preferences..."
 msgstr "Hobespenak..."
 
-#: src/fe-gtk/menu.c:1299
-msgid "Lists"
-msgstr "Zerrendak"
+#: src/fe-gtk/menu.c:1305
+msgid "Advanced"
+msgstr "Aurreratua"
 
-#: src/fe-gtk/menu.c:1300
+#: src/fe-gtk/menu.c:1306
 msgid "Auto Replace..."
 msgstr "Automatikoki ordezkatu"
 
-#: src/fe-gtk/menu.c:1301
+#: src/fe-gtk/menu.c:1307
 msgid "CTCP Replies..."
 msgstr "CTCP erantzunak..."
 
-#: src/fe-gtk/menu.c:1302
+#: src/fe-gtk/menu.c:1308
 msgid "Dialog Buttons..."
 msgstr "Elkarrizketa botoiak..."
 
-#: src/fe-gtk/menu.c:1303
+#: src/fe-gtk/menu.c:1309
 msgid "Key Bindings..."
 msgstr "Tekla loturak..."
 
-#: src/fe-gtk/menu.c:1304
+#: src/fe-gtk/menu.c:1310
 msgid "Text Events..."
 msgstr "Testu gertaera"
 
-#: src/fe-gtk/menu.c:1305
+#: src/fe-gtk/menu.c:1311
 msgid "URL Handlers..."
 msgstr "URL maneiatzaileak..."
 
-#: src/fe-gtk/menu.c:1306
+#: src/fe-gtk/menu.c:1312
 msgid "User Commands..."
 msgstr "Erabiltzaile komandoak..."
 
-#: src/fe-gtk/menu.c:1307
+#: src/fe-gtk/menu.c:1313
 msgid "Userlist Buttons..."
 msgstr "Erabiltzaile-zerrenda botoiak..."
 
-#: src/fe-gtk/menu.c:1308
+#: src/fe-gtk/menu.c:1314
 msgid "Userlist Popup..."
 msgstr "Erabiltzaile zerrenda agerrarazi..."
 
-#: src/fe-gtk/menu.c:1313
+#: src/fe-gtk/menu.c:1319
 msgid "Reload Settings"
 msgstr "Birkargatu ezarpenak"
 
-#: src/fe-gtk/menu.c:1315
+#: src/fe-gtk/menu.c:1321
 msgid "Save Settings now"
 msgstr "Gorde ezarpenak orain"
 
-#: src/fe-gtk/menu.c:1316
+#: src/fe-gtk/menu.c:1322
 msgid "Save Settings on exit"
 msgstr "Gorde ezarpenak irteterakoan"
 
-#: src/fe-gtk/menu.c:1319
+#: src/fe-gtk/menu.c:1325
 msgid "_Window"
 msgstr "_Leihoa"
 
-#: src/fe-gtk/menu.c:1320
+#: src/fe-gtk/menu.c:1326
 msgid "Ban List..."
 msgstr "Debekatuen zerrenda..."
 
-#: src/fe-gtk/menu.c:1321
+#: src/fe-gtk/menu.c:1327
 msgid "Channel List..."
 msgstr "Kanal zerrenda..."
 
-#: src/fe-gtk/menu.c:1322
+#: src/fe-gtk/menu.c:1328
 msgid "Character Chart..."
 msgstr "Karaktere taula.."
 
-#: src/fe-gtk/menu.c:1323
+#: src/fe-gtk/menu.c:1329
 msgid "Direct Chat..."
 msgstr "Elkarrizketa zuzena..."
 
-#: src/fe-gtk/menu.c:1324
+#: src/fe-gtk/menu.c:1330
 msgid "File Receive..."
 msgstr "Jaso fitxategia..."
 
-#: src/fe-gtk/menu.c:1325
+#: src/fe-gtk/menu.c:1331
 msgid "File Send..."
 msgstr "Bidali fitxategiak..."
 
-#: src/fe-gtk/menu.c:1326
+#: src/fe-gtk/menu.c:1332
 msgid "Ignore List..."
 msgstr "Ignoratuen zerrenda"
 
-#: src/fe-gtk/menu.c:1327
+#: src/fe-gtk/menu.c:1333
 msgid "Notify List..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1328
+#: src/fe-gtk/menu.c:1334
 msgid "Plugins and Scripts..."
 msgstr "Plugin eta script-ak..."
 
-#: src/fe-gtk/menu.c:1329
+#: src/fe-gtk/menu.c:1335
 msgid "Raw Log..."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1330
+#: src/fe-gtk/menu.c:1336
 msgid "URL Grabber..."
 msgstr "URT hartzailea..."
 
-#: src/fe-gtk/menu.c:1332
+#: src/fe-gtk/menu.c:1338
+msgid "Reset Marker Line"
+msgstr ""
+
+#: src/fe-gtk/menu.c:1339
 msgid "C_lear Text"
 msgstr "G_arbitu testua"
 
-#: src/fe-gtk/menu.c:1333
+#: src/fe-gtk/menu.c:1340
 msgid "Search Text..."
 msgstr "Bilatu testua..."
 
-#: src/fe-gtk/menu.c:1334
+#: src/fe-gtk/menu.c:1341
 msgid "Save Text..."
 msgstr "Gorde testua..."
 
-#: src/fe-gtk/menu.c:1336
+#: src/fe-gtk/menu.c:1343
 msgid "_Help"
 msgstr "_Laguntza"
 
-#: src/fe-gtk/menu.c:1337
+#: src/fe-gtk/menu.c:1344
 msgid "_Contents"
 msgstr "_Edukia"
 
-#: src/fe-gtk/menu.c:1338
+#: src/fe-gtk/menu.c:1345
 msgid "_About"
 msgstr "_Honi buruz"
 
-#: src/fe-gtk/menu.c:1425
+#: src/fe-gtk/menu.c:1432
 msgid "Attach Tab"
 msgstr "Fitxa erantsi"
 
@@ -3824,7 +3868,7 @@ msgstr "Azkenekoz ikusia"
 msgid "Offline"
 msgstr "Lineaz kanpo"
 
-#: src/fe-gtk/notifygui.c:169
+#: src/fe-gtk/notifygui.c:169 src/fe-gtk/setup.c:197
 msgid "Never"
 msgstr "Inoiz"
 
@@ -3840,7 +3884,7 @@ msgstr "Sartu gehitu nahi den ezizena:"
 msgid "X-Chat: Notify List"
 msgstr "X-Chat: Jakinarazketa zerrenda"
 
-#: src/fe-gtk/notifygui.c:306 src/fe-gtk/servlistgui.c:722
+#: src/fe-gtk/notifygui.c:306
 msgid "Add"
 msgstr "Gehitu"
 
@@ -3848,7 +3892,7 @@ msgstr "Gehitu"
 msgid "Remove"
 msgstr "Kendu"
 
-#: src/fe-gtk/plugingui.c:76 src/fe-gtk/textgui.c:387
+#: src/fe-gtk/plugingui.c:76 src/fe-gtk/textgui.c:341
 msgid "Description"
 msgstr "Azalpena"
 
@@ -3909,767 +3953,972 @@ msgstr "Bilatu"
 msgid "Close"
 msgstr "Itxi"
 
-#: src/fe-gtk/servlistgui.c:161
-#, c-format
-msgid "Settings for %s"
-msgstr "%s-rentzat ezarpenak"
-
-#: src/fe-gtk/servlistgui.c:202 src/fe-gtk/servlistgui.c:275
+#: src/fe-gtk/servlistgui.c:159 src/fe-gtk/servlistgui.c:257
 msgid "New Network"
 msgstr "Sare berria"
 
-#: src/fe-gtk/servlistgui.c:375
+#: src/fe-gtk/servlistgui.c:428
 #, c-format
 msgid "Really remove network \"%s\" and all its servers?"
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:412 src/fe-gtk/servlistgui.c:442
+#: src/fe-gtk/servlistgui.c:889
 #, c-format
-msgid "_Remove \"%s\""
-msgstr "_Kendu \"%s\""
+msgid "X-Chat: Edit %s"
+msgstr "X-Chat: Editatu %s"
 
-#: src/fe-gtk/servlistgui.c:419
-msgid "_Add new server"
-msgstr "_Gehitu zerbitzari berri bat"
-
-#: src/fe-gtk/servlistgui.c:449
-#, c-format
-msgid "Move \"%s\" _down"
-msgstr "Mugitu \"%s\" _behera"
-
-#: src/fe-gtk/servlistgui.c:456
-#, c-format
-msgid "Move \"%s\" _up"
-msgstr "Mugitu \"%s\" g_ora"
-
-#: src/fe-gtk/servlistgui.c:467
-msgid "_Add new network"
-msgstr "_Gehitu sare berri bat"
-
-#: src/fe-gtk/servlistgui.c:836
-msgid "Global User Info"
-msgstr "Erabiltzaileen informazio globala"
-
-#: src/fe-gtk/servlistgui.c:844
-msgid "Nick Names:"
-msgstr "Ezizenak:"
-
-#: src/fe-gtk/servlistgui.c:863 src/fe-gtk/servlistgui.c:1066
-msgid "User Name:"
-msgstr "Erabiltzailearen izena:"
-
-#: src/fe-gtk/servlistgui.c:876 src/fe-gtk/servlistgui.c:1068
-msgid "Real Name:"
-msgstr "Benetazko izena:"
+#: src/fe-gtk/servlistgui.c:908
+#, fuzzy, c-format
+msgid "Servers for %s"
+msgstr "Zerbitzaria: %s"
 
 #: src/fe-gtk/servlistgui.c:918
-msgid "C_onnect"
-msgstr "K_onektatu"
+msgid "Your Details"
+msgstr "Zure xehetasunak"
 
-#: src/fe-gtk/servlistgui.c:926
-msgid "Connect in a _new tab"
-msgstr "Konektatu fitxa _berrian"
-
-#: src/fe-gtk/servlistgui.c:986
-msgid "Servers"
-msgstr "Zerbitzariak"
-
-#: src/fe-gtk/servlistgui.c:1024
-msgid "Character Set:"
-msgstr "Karaktere-jokoa:"
-
-#: src/fe-gtk/servlistgui.c:1064
-msgid "Nick Name:"
-msgstr "Ezizena"
-
-#: src/fe-gtk/servlistgui.c:1069
-msgid "Server Password:"
-msgstr "Zerbitzariko pasahitza"
-
-#: src/fe-gtk/servlistgui.c:1072
-msgid "Join Channels:"
-msgstr "Sartu kanaletara:"
-
-#: src/fe-gtk/servlistgui.c:1074
-msgid "Channels to join, separated by commas, but not spaces!"
-msgstr "Sartuko den kanalak, komaz banandua, baina hutsunerik gabe!"
-
-#: src/fe-gtk/servlistgui.c:1075
-msgid "Connect Command:"
-msgstr "Konektatzeko komandoa:"
-
-#: src/fe-gtk/servlistgui.c:1077
-msgid "Command to execute after connecting. Can be used to authenticate to NickServ"
-msgstr "Konektatu ostean ejekutatuko den komandoa. NickServ-en autentifikatzeko erabili daiteke"
-
-#: src/fe-gtk/servlistgui.c:1085
-msgid "Cycle until connected"
-msgstr "Ziklatu konektatu arte"
-
-#: src/fe-gtk/servlistgui.c:1086
-msgid "Use global user info"
+#: src/fe-gtk/servlistgui.c:924
+msgid "Use global user information"
 msgstr "Erabili erabiltzailearen informazio globala"
 
-#: src/fe-gtk/servlistgui.c:1087
-msgid "Use secure SSL"
-msgstr "Erabili SSL seguritatea"
+#: src/fe-gtk/servlistgui.c:927 src/fe-gtk/servlistgui.c:1153
+msgid "_Nick name:"
+msgstr "_Ezizena:"
 
-#: src/fe-gtk/servlistgui.c:1088
-msgid "Auto connect at startup"
+#: src/fe-gtk/servlistgui.c:931 src/fe-gtk/servlistgui.c:1174
+msgid "_User name:"
+msgstr "_Erabiltzaile izena:"
+
+#: src/fe-gtk/servlistgui.c:935
+msgid "Real na_me:"
+msgstr "Be_netazko izena:"
+
+#: src/fe-gtk/servlistgui.c:938
+msgid "Connecting"
+msgstr "Konektatzen"
+
+#: src/fe-gtk/servlistgui.c:944
+#, fuzzy
+msgid "Auto connect to this network at startup"
 msgstr "Automatikoki konektatu abiaratzean"
 
-#: src/fe-gtk/servlistgui.c:1089
+#: src/fe-gtk/servlistgui.c:946
 msgid "Use a proxy server"
 msgstr "Erabili proxy zerbitzari bat"
 
-#: src/fe-gtk/servlistgui.c:1090
-msgid "Accept invalid cert."
-msgstr "Onartu baliogabeko zertifikatua"
-
-#: src/fe-gtk/servlistgui.c:1099
-msgid "Settings for Selected Network"
-msgstr "Aukeratutako sarearentzat ezarpenak"
-
-#: src/fe-gtk/servlistgui.c:1139
-msgid "Edit mode"
-msgstr "Edizio modua"
-
-#: src/fe-gtk/servlistgui.c:1146
-msgid "Networks"
-msgstr "Sareak"
-
-#: src/fe-gtk/servlistgui.c:1191
-msgid "No server list on startup"
+#: src/fe-gtk/servlistgui.c:948
+msgid "Use SSL for all the servers on this network"
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:1218
+#: src/fe-gtk/servlistgui.c:953
+msgid "Accept invalid SSL certificate"
+msgstr "Onartu baliogabeko SSL zertifikatuak"
+
+#: src/fe-gtk/servlistgui.c:959
+#, fuzzy
+msgid "C_hannels to join:"
+msgstr "Sartu elkartu nahi duzun kanalaren izena:"
+
+#: src/fe-gtk/servlistgui.c:961
+msgid "Channels to join, separated by commas, but not spaces!"
+msgstr "Sartuko den kanalak, komaz banandua, baina hutsunerik gabe!"
+
+#: src/fe-gtk/servlistgui.c:964
+msgid "Connect command:"
+msgstr "Konektatzeko komandoa:"
+
+#: src/fe-gtk/servlistgui.c:966
+msgid "Extra command to execute after connecting. If you need more than one, set this to LOAD -e <filename>, where <filename> is a text-file full of commands to execute."
+msgstr ""
+
+#: src/fe-gtk/servlistgui.c:969
+msgid "Nickserv password:"
+msgstr "Nickserv-erako pasahitza:"
+
+#: src/fe-gtk/servlistgui.c:974
+msgid "Server password:"
+msgstr "Zerbitzariko pasahitza:"
+
+#: src/fe-gtk/servlistgui.c:976
+msgid "Password for the server, if in doubt, leave blank."
+msgstr ""
+
+#: src/fe-gtk/servlistgui.c:979
+msgid "Character set:"
+msgstr "Karaktere-jokoa:"
+
+#: src/fe-gtk/servlistgui.c:1050
+msgid "_Edit"
+msgstr "_Editatu"
+
+#: src/fe-gtk/servlistgui.c:1131
 msgid "X-Chat: Server List"
 msgstr "X-Chat: Zerbitzari zerrenda"
 
-#: src/fe-gtk/setup.c:84
+#: src/fe-gtk/servlistgui.c:1160
+msgid "Second choice:"
+msgstr "Bigarren aukera:"
+
+#: src/fe-gtk/servlistgui.c:1167
+msgid "Third choice:"
+msgstr ""
+
+#: src/fe-gtk/servlistgui.c:1181
+msgid "Rea_l name:"
+msgstr "Benetazko _izena:"
+
+#: src/fe-gtk/servlistgui.c:1268
+msgid "Skip server list on startup"
+msgstr ""
+
+#: src/fe-gtk/servlistgui.c:1299
+msgid "_Edit..."
+msgstr "_Editatu..."
+
+#: src/fe-gtk/servlistgui.c:1306
+msgid "_Sort"
+msgstr "_Sailkatu"
+
+#: src/fe-gtk/servlistgui.c:1322
+msgid "C_onnect"
+msgstr "K_onektatu"
+
+#: src/fe-gtk/servlistgui.c:1331
+msgid "Connect in new tab"
+msgstr "Konektatu fitxa berrian"
+
+#: src/fe-gtk/setup.c:93
+msgid "Text Box Appearance"
+msgstr ""
+
+#: src/fe-gtk/setup.c:94
 msgid "Font:"
 msgstr "Letra-tipoa"
 
-#: src/fe-gtk/setup.c:85
+#: src/fe-gtk/setup.c:95
 msgid "Background image:"
 msgstr "Atzeko planoko irudia:"
 
-#: src/fe-gtk/setup.c:86
-msgid "Time stamp format:"
-msgstr "Ordu arrastoaren formatua:"
-
-#: src/fe-gtk/setup.c:87
-msgid "See strftime manpage for details."
-msgstr ""
-
-#: src/fe-gtk/setup.c:88
-msgid "Time stamp text"
-msgstr "Ordu arrastoaren testua"
-
-#: src/fe-gtk/setup.c:89
-msgid "Transparent background"
-msgstr "Atzeko plano transparentea"
-
-#: src/fe-gtk/setup.c:90
-msgid "Indent nicks"
-msgstr ""
-
-#: src/fe-gtk/setup.c:91
-msgid "Tint transparency"
-msgstr "Tindatu transparentzia"
-
-#: src/fe-gtk/setup.c:92
-msgid "Colored nicks"
-msgstr "Koloreztatu ezizenak"
-
-#: src/fe-gtk/setup.c:93
-msgid "Strip mIRC color"
-msgstr "Erantzi mIRC-en koloreak"
-
-#: src/fe-gtk/setup.c:94
+#: src/fe-gtk/setup.c:96
 msgid "Scrollback lines:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:95
-msgid "Tint red:"
-msgstr "Tintatu gorriz:"
-
-#: src/fe-gtk/setup.c:96
-msgid "Tint green:"
-msgstr "Tintatu berdez:"
-
 #: src/fe-gtk/setup.c:97
-msgid "Tint blue:"
-msgstr "Tintatu urdinez:"
+msgid "Transparent background"
+msgstr "Atzeko plano transparentea"
+
+#: src/fe-gtk/setup.c:98
+#, fuzzy
+msgid "Indent nick names"
+msgstr "Ezizen zaharra"
+
+#: src/fe-gtk/setup.c:99
+msgid "Make nick names right-justified"
+msgstr ""
+
+#: src/fe-gtk/setup.c:100
+#, fuzzy
+msgid "Tint (shade) transparency"
+msgstr "Tindatu transparentzia"
+
+#: src/fe-gtk/setup.c:101
+msgid "Colored nick names"
+msgstr "Koloreztatutako ezizenak"
+
+#: src/fe-gtk/setup.c:102
+msgid "Give each person on IRC a different color"
+msgstr ""
 
 #: src/fe-gtk/setup.c:103
+msgid "Strip mIRC colors"
+msgstr "Erantzi mIRC-en koloreak"
+
+#: src/fe-gtk/setup.c:104
+#, fuzzy
+msgid "Show marker line"
+msgstr "Erakutsi aldendu mezua behin"
+
+#: src/fe-gtk/setup.c:105
+msgid "Insert a red line after the last read text."
+msgstr ""
+
+#: src/fe-gtk/setup.c:106
+#, fuzzy
+msgid "Tint Settings"
+msgstr "_Ezarpenak"
+
+#: src/fe-gtk/setup.c:107
+msgid "Red:"
+msgstr ""
+
+#: src/fe-gtk/setup.c:108
+msgid "Green:"
+msgstr "Berdea:"
+
+#: src/fe-gtk/setup.c:109
+msgid "Blue:"
+msgstr "Urdina:"
+
+#: src/fe-gtk/setup.c:111 src/fe-gtk/setup.c:310
+#, fuzzy
+msgid "Time Stamps"
+msgstr "Ordu arrastoaren testua"
+
+#: src/fe-gtk/setup.c:112
+msgid "Time stamp format:"
+msgstr "Ordu arrastoaren formatua:"
+
+#: src/fe-gtk/setup.c:113
+msgid "See strftime manpage for details."
+msgstr ""
+
+#: src/fe-gtk/setup.c:114
+#, fuzzy
+msgid "Enable time stamps"
+msgstr "Txertatu ordu arrastoak log-etan"
+
+#: src/fe-gtk/setup.c:121
+#, fuzzy
+msgid "Nick Completion"
+msgstr "Ezizen beteketa automatikoa"
+
+#: src/fe-gtk/setup.c:122
+msgid "Automatic nick completion"
+msgstr "Ezizen beteketa automatikoa"
+
+#: src/fe-gtk/setup.c:123
+msgid "Completes nick names without using the TAB key"
+msgstr ""
+
+#: src/fe-gtk/setup.c:124
+msgid "Nick completion suffix:"
+msgstr ""
+
+#: src/fe-gtk/setup.c:126
+#, fuzzy
+msgid "Input Box Codes"
+msgstr "Sarrera kaxa"
+
+#: src/fe-gtk/setup.c:127
 #, c-format
 msgid "Interpret %nnn as an ASCII value"
 msgstr ""
 
-#: src/fe-gtk/setup.c:104
-msgid "Automatic nick completion"
-msgstr "Ezizen beteketa automatikoa"
-
-#: src/fe-gtk/setup.c:105
+#: src/fe-gtk/setup.c:128
 msgid "Interpret %C, %B as Color, Bold etc"
 msgstr ""
 
-#: src/fe-gtk/setup.c:106 src/fe-gtk/setup.c:138
+#: src/fe-gtk/setup.c:130
+msgid "Input Box Appearance"
+msgstr ""
+
+#: src/fe-gtk/setup.c:131 src/fe-gtk/setup.c:161
 msgid "Use the Text box font and colors"
 msgstr "Erabili textu kaxaren letra-tipo eta koloreak"
 
-#: src/fe-gtk/setup.c:107
-msgid "Nick completion suffix:"
-msgstr ""
-
-#: src/fe-gtk/setup.c:113
+#: src/fe-gtk/setup.c:138
 msgid "Off"
 msgstr "Off"
 
-#: src/fe-gtk/setup.c:114
+#: src/fe-gtk/setup.c:139
 msgid "Graph"
 msgstr "Grafikoa"
 
-#: src/fe-gtk/setup.c:115
+#: src/fe-gtk/setup.c:140
 msgid "Info text"
 msgstr "Informazio testua"
 
-#: src/fe-gtk/setup.c:116
+#: src/fe-gtk/setup.c:141
 msgid "Both"
 msgstr "Biak"
 
-#: src/fe-gtk/setup.c:122
+#: src/fe-gtk/setup.c:147
 msgid "A-Z, Ops first"
 msgstr "A-Z, Op-ak aurrena"
 
-#: src/fe-gtk/setup.c:123
+#: src/fe-gtk/setup.c:148
 msgid "A-Z"
 msgstr "A-Z"
 
-#: src/fe-gtk/setup.c:124
+#: src/fe-gtk/setup.c:149
 msgid "Z-A, Ops last"
 msgstr "Z-A, Op-ak azkenak"
 
-#: src/fe-gtk/setup.c:125
+#: src/fe-gtk/setup.c:150
 msgid "Z-A"
 msgstr "Z-A"
 
-#: src/fe-gtk/setup.c:126
+#: src/fe-gtk/setup.c:151
 msgid "Unsorted"
 msgstr "Sailkatu gabe"
 
-#: src/fe-gtk/setup.c:132
-msgid "Lag meter:"
-msgstr "Atzerapen neurtzailea:"
-
-#: src/fe-gtk/setup.c:133
-msgid "Throttle meter:"
-msgstr "Azelarazio neurtzailea:"
-
-#: src/fe-gtk/setup.c:134
-msgid "Userlist sorted by:"
+#: src/fe-gtk/setup.c:158
+msgid "User list sorted by:"
 msgstr "Erabiltzaile-zerrenda honela sailkatua:"
 
-#: src/fe-gtk/setup.c:135
-msgid "Double-click command:"
-msgstr "Klik bikoitzaren komandoa:"
-
-#: src/fe-gtk/setup.c:136
-msgid "Show hostnames in userlist"
+#: src/fe-gtk/setup.c:159
+#, fuzzy
+msgid "Show hostnames in user list"
 msgstr "Erakutsi ostalari izenak erabiltzaile zerrendan"
 
-#: src/fe-gtk/setup.c:137
-msgid "Userlist buttons enabled"
+#: src/fe-gtk/setup.c:160
+msgid "User list buttons enabled"
 msgstr "Erabiltzaile zerrenda botoiak gaituta"
 
-#: src/fe-gtk/setup.c:139
-msgid "Resizable userlist"
-msgstr ""
-
-#: src/fe-gtk/setup.c:140
-msgid "Track away-status on channels smaller than:"
-msgstr ""
-
-#: src/fe-gtk/setup.c:146
-msgid "Windows"
-msgstr "Windows"
-
-#: src/fe-gtk/setup.c:147 src/fe-gtk/setup.c:906
-msgid "Tabs"
-msgstr "Fitxak"
-
-#: src/fe-gtk/setup.c:153
-msgid "Bottom"
-msgstr "Behean"
-
-#: src/fe-gtk/setup.c:154
-msgid "Top"
-msgstr "Goian"
-
-#: src/fe-gtk/setup.c:155
-msgid "Left"
-msgstr "Ezkerrean"
-
-#: src/fe-gtk/setup.c:156
-msgid "Right"
-msgstr "Eskuinean"
-
-#: src/fe-gtk/setup.c:157
-msgid "Hidden"
-msgstr "Ezkutatu"
-
-#: src/fe-gtk/setup.c:163
-msgid "Show tabs at:"
-msgstr "Erakutxi fitxak hemen:"
+#: src/fe-gtk/setup.c:162
+#, fuzzy
+msgid "Resizable user list"
+msgstr "Benetazko erabiltzaile@ostalaria"
 
 #: src/fe-gtk/setup.c:164
-msgid "Open channels in:"
-msgstr ""
+#, fuzzy
+msgid "Away tracking"
+msgstr "Aldentzearen arrazoia"
 
 #: src/fe-gtk/setup.c:165
-msgid "Open dialogs in:"
+msgid "Enable away tracking"
 msgstr ""
 
 #: src/fe-gtk/setup.c:166
-msgid "Open utilities in:"
-msgstr ""
-
-#: src/fe-gtk/setup.c:166
-msgid "Open DCC, Ignore, Notify etc, in tabs or windows?"
-msgstr ""
-
-#: src/fe-gtk/setup.c:167
-msgid "Open tab for server messages"
+msgid "On channels smaller than:"
 msgstr ""
 
 #: src/fe-gtk/setup.c:168
-msgid "Open tab for server notices"
+msgid "Action Upon Double Click"
 msgstr ""
 
 #: src/fe-gtk/setup.c:169
-msgid "Pop new tabs to front"
+msgid "Execute command:"
+msgstr "Exekutatu komandoa:"
+
+#: src/fe-gtk/setup.c:171
+msgid "Extra Gadgets"
 msgstr ""
 
-#: src/fe-gtk/setup.c:170
-msgid "Shorten tabs to:"
+#: src/fe-gtk/setup.c:172
+msgid "Lag meter:"
+msgstr "Atzerapen neurtzailea:"
+
+#: src/fe-gtk/setup.c:173
+msgid "Throttle meter:"
+msgstr "Azelarazio neurtzailea:"
+
+#: src/fe-gtk/setup.c:180
+msgid "Windows"
+msgstr "Windows"
+
+#: src/fe-gtk/setup.c:181 src/fe-gtk/setup.c:205 src/fe-gtk/setup.c:1447
+msgid "Tabs"
+msgstr "Fitxak"
+
+#: src/fe-gtk/setup.c:187
+msgid "Bottom"
+msgstr "Behean"
+
+#: src/fe-gtk/setup.c:188
+msgid "Top"
+msgstr "Goian"
+
+#: src/fe-gtk/setup.c:189
+msgid "Left"
+msgstr "Ezkerrean"
+
+#: src/fe-gtk/setup.c:190
+msgid "Right"
+msgstr "Eskuinean"
+
+#: src/fe-gtk/setup.c:191
+msgid "Hidden"
+msgstr "Ezkutatu"
+
+#: src/fe-gtk/setup.c:198
+msgid "Always"
+msgstr "Beti"
+
+#: src/fe-gtk/setup.c:199
+msgid "Only requested tabs"
 msgstr ""
 
-#: src/fe-gtk/setup.c:170
+#: src/fe-gtk/setup.c:206
+msgid "Open an extra tab for server messages"
+msgstr ""
+
+#: src/fe-gtk/setup.c:207
+msgid "Open an extra tab for server notices"
+msgstr ""
+
+#: src/fe-gtk/setup.c:208
+msgid "Small tabs"
+msgstr ""
+
+#: src/fe-gtk/setup.c:209
+msgid "Sort tabs in alphabetical order"
+msgstr ""
+
+#: src/fe-gtk/setup.c:210
+msgid "Focus new tabs:"
+msgstr ""
+
+#: src/fe-gtk/setup.c:211
+#, fuzzy
+msgid "Shorten tab labels to:"
+msgstr "Erakutxi fitxak hemen:"
+
+#: src/fe-gtk/setup.c:211
 msgid "letters."
 msgstr "letrak."
 
-#: src/fe-gtk/setup.c:176
-msgid "Download files to:"
-msgstr "Hona jaitsi fitxategiak:"
-
-#: src/fe-gtk/setup.c:177
-msgid "Move completed files to:"
-msgstr "Mugitu amaitutako fitxategiak hona:"
-
-#: src/fe-gtk/setup.c:178
-msgid "DCC IP address:"
-msgstr "DCCaren IP helbidea:"
-
-#: src/fe-gtk/setup.c:179
-msgid "Claim you are at this address when offering files."
-msgstr ""
-
-#: src/fe-gtk/setup.c:180
-msgid "First DCC send port:"
-msgstr "DCCa bidaltzeko lehen ataka:"
-
-#: src/fe-gtk/setup.c:181
-msgid "Last DCC send port:"
-msgstr "DCCa bidaltzeok azken ataka:"
-
-#: src/fe-gtk/setup.c:182
-msgid "(Leave ports at zero for full range)."
-msgstr "(Utzi atakak zeron denak hartzeko)"
-
-#: src/fe-gtk/setup.c:183
-msgid "Auto open DCC send list"
-msgstr "Automatikoki ireki DCC bidaltze zerrenda"
-
-#: src/fe-gtk/setup.c:184
-msgid "Convert spaces to underscore"
-msgstr "Hutsuneak behe-marratxora bihurtu"
-
-#: src/fe-gtk/setup.c:185
-msgid "In filenames, before sending"
-msgstr "Fitxategietan, bidali aurretik"
-
-#: src/fe-gtk/setup.c:186
-msgid "Auto open DCC chat list"
-msgstr "Automatikoki ireki DCC elkarrizketa zerrenda"
-
-#: src/fe-gtk/setup.c:187
-msgid "Save nickname in filenames"
-msgstr ""
-
-#: src/fe-gtk/setup.c:188
-msgid "Auto open DCC receive list"
-msgstr "Automatikoki ireki DCC jasotze zerrenda"
-
-#: src/fe-gtk/setup.c:189
-msgid "Get my IP from IRC server"
-msgstr "Hartu nire IPa IRC zerbitzaritik"
-
-#: src/fe-gtk/setup.c:190
-msgid "/WHOIS yourself to find your real address. Use this if you have a 192.168.*.* address!"
-msgstr "Egin /WHOIS zure buruari zure benetako helbidea jakiteko. Erabili hau 192.168.*.0 moduko helbidea baduzu."
-
-#: src/fe-gtk/setup.c:191
-msgid "Max. send CPS:"
-msgstr ""
-
-#: src/fe-gtk/setup.c:192 src/fe-gtk/setup.c:194
-msgid "Max. speed for one transfer"
-msgstr ""
-
-#: src/fe-gtk/setup.c:193
-msgid "Max. receive CPS:"
-msgstr ""
-
-#: src/fe-gtk/setup.c:195
-msgid "Max. global send CPS:"
-msgstr ""
-
-#: src/fe-gtk/setup.c:196 src/fe-gtk/setup.c:198
-msgid "Max. speed for all traffic"
-msgstr ""
-
-#: src/fe-gtk/setup.c:197
-msgid "Max. global receive CPS:"
-msgstr ""
-
-#: src/fe-gtk/setup.c:199
-msgid "(Leave at zero for full speed file transfers)."
-msgstr ""
-
-#: src/fe-gtk/setup.c:205
-msgid "Default quit message:"
-msgstr "Lehenetsitako irteera mezua:"
-
-#: src/fe-gtk/setup.c:206
-msgid "Default part message:"
-msgstr "Lehenetsitako kanal-irtete mezua:"
-
-#: src/fe-gtk/setup.c:207
-msgid "Default away message:"
-msgstr "Lehenetsitako mezua aldentzerakoan:"
-
-#: src/fe-gtk/setup.c:209
-msgid "(Can be a text file relative to ~/.xchat2/)."
-msgstr "(~/.xchat2/ -ri erlatiboa den textu fitxategi bat izan daiteke)"
-
-#: src/fe-gtk/setup.c:211
-msgid "(Can be a text file relative to config dir)."
-msgstr "(konfigurazio direktorioari erlatiboa den textu fitxategia izan daiteke)"
-
 #: src/fe-gtk/setup.c:213
-msgid "Extra words to highlight on:"
-msgstr ""
+msgid "Tabs Location"
+msgstr "Fitxen kokapena"
 
 #: src/fe-gtk/setup.c:214
-msgid "(Separate multiple words with commas)."
-msgstr ""
-
-#: src/fe-gtk/setup.c:215
-msgid "Show away once"
-msgstr "Erakutsi aldendu mezua behin"
-
-#: src/fe-gtk/setup.c:215
-msgid "Show identical away messages only once"
-msgstr ""
+msgid "Show tabs at:"
+msgstr "Erakutxi fitxak hemen:"
 
 #: src/fe-gtk/setup.c:216
-msgid "Beep on private messages"
-msgstr "Bip egin mezu pribatuetan"
+msgid "Tabs or Windows"
+msgstr "Fitxak ala leihoak"
 
 #: src/fe-gtk/setup.c:217
-msgid "Automatically unmark away"
-msgstr ""
-
-#: src/fe-gtk/setup.c:217
-msgid "Unmark yourself as away before sending messages"
+msgid "Open channels in:"
 msgstr ""
 
 #: src/fe-gtk/setup.c:218
-msgid "Beep on channel messages"
-msgstr "Bip egin kanaletako mezuetan"
+msgid "Open dialogs in:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:219
+msgid "Open utilities in:"
+msgstr ""
+
+#: src/fe-gtk/setup.c:219
+msgid "Open DCC, Ignore, Notify etc, in tabs or windows?"
+msgstr ""
+
+#: src/fe-gtk/setup.c:226
+msgid "Files and Directories"
+msgstr ""
+
+#: src/fe-gtk/setup.c:227
+msgid "Download files to:"
+msgstr "Hona jaitsi fitxategiak:"
+
+#: src/fe-gtk/setup.c:228
+msgid "Move completed files to:"
+msgstr "Mugitu amaitutako fitxategiak hona:"
+
+#: src/fe-gtk/setup.c:229
+#, fuzzy
+msgid "Save nick name in filenames"
+msgstr "Helmuga fitxategia"
+
+#: src/fe-gtk/setup.c:230
+#, fuzzy
+msgid "Convert spaces to underscore before sending"
+msgstr "Hutsuneak behe-marratxora bihurtu"
+
+#: src/fe-gtk/setup.c:232
+msgid "Network Settings"
+msgstr "Sareko ezarpenak"
+
+#: src/fe-gtk/setup.c:233
+msgid "DCC IP address:"
+msgstr "DCCaren IP helbidea:"
+
+#: src/fe-gtk/setup.c:234
+msgid "Claim you are at this address when offering files."
+msgstr ""
+
+#: src/fe-gtk/setup.c:235
+msgid "First DCC send port:"
+msgstr "DCCa bidaltzeko lehen ataka:"
+
+#: src/fe-gtk/setup.c:236
+msgid "Last DCC send port:"
+msgstr "DCCa bidaltzeok azken ataka:"
+
+#: src/fe-gtk/setup.c:237
+msgid "(Leave ports at zero for full range)."
+msgstr "(Utzi atakak zeron denak hartzeko)"
+
+#: src/fe-gtk/setup.c:238
+msgid "Get my address from the IRC server"
+msgstr "Hartu nire IPa IRC zerbitzaritik"
+
+#: src/fe-gtk/setup.c:239
+#, fuzzy
+msgid "Asks the IRC server for your real address. Use this if you have a 192.168.*.* address!"
+msgstr "Egin /WHOIS zure buruari zure benetako helbidea jakiteko. Erabili hau 192.168.*.0 moduko helbidea baduzu."
+
+#: src/fe-gtk/setup.c:241
+msgid "Maximum File Transfer Speeds (bytes per second)"
+msgstr ""
+
+#: src/fe-gtk/setup.c:242
+msgid "One upload:"
+msgstr ""
+
+#: src/fe-gtk/setup.c:243 src/fe-gtk/setup.c:245
+msgid "Maximum speed for one transfer"
+msgstr ""
+
+#: src/fe-gtk/setup.c:244
+msgid "One download:"
+msgstr ""
+
+#: src/fe-gtk/setup.c:246
+msgid "All uploads combined:"
+msgstr ""
+
+#: src/fe-gtk/setup.c:247 src/fe-gtk/setup.c:249
+msgid "Maximum speed for all files"
+msgstr ""
+
+#: src/fe-gtk/setup.c:248
+msgid "All downloads combined:"
+msgstr ""
+
+#: src/fe-gtk/setup.c:256
+#, fuzzy
+msgid "Default Messages"
+msgstr "Lehenetsitako irteera mezua:"
+
+#: src/fe-gtk/setup.c:257
+msgid "Quit:"
+msgstr "Irten:"
+
+#: src/fe-gtk/setup.c:258
+msgid "Leave channel:"
+msgstr "Irten kanaletik:"
+
+#: src/fe-gtk/setup.c:259
+msgid "Away:"
+msgstr "Aldenduta:"
+
+#: src/fe-gtk/setup.c:261
+msgid "Away"
+msgstr "Aldenduta"
+
+#: src/fe-gtk/setup.c:262
 msgid "Announce away messages"
 msgstr "Iragarri aldentze mezuak"
 
-#: src/fe-gtk/setup.c:219
+#: src/fe-gtk/setup.c:263
 msgid "Announce your away messages to all channels"
 msgstr "Iragarri zure aldentze mezuak kanal guztietan"
 
-#: src/fe-gtk/setup.c:220
+#: src/fe-gtk/setup.c:264
+msgid "Show away once"
+msgstr "Erakutsi aldendu mezua behin"
+
+#: src/fe-gtk/setup.c:264
+msgid "Show identical away messages only once"
+msgstr ""
+
+#: src/fe-gtk/setup.c:265
+msgid "Automatically unmark away"
+msgstr ""
+
+#: src/fe-gtk/setup.c:265
+msgid "Unmark yourself as away before sending messages"
+msgstr ""
+
+#: src/fe-gtk/setup.c:268
+msgid "(Can be a text file relative to ~/.xchat2/)."
+msgstr "(~/.xchat2/ -ri erlatiboa den textu fitxategi bat izan daiteke)"
+
+#: src/fe-gtk/setup.c:270
+msgid "(Can be a text file relative to config dir)."
+msgstr "(konfigurazio direktorioari erlatiboa den textu fitxategia izan daiteke)"
+
+#: src/fe-gtk/setup.c:274
+msgid "Alerts"
+msgstr "Alertak"
+
+#: src/fe-gtk/setup.c:276
+#, fuzzy
+msgid "Flash taskbar on highlighted messages"
+msgstr "Bip egin mezu nabarmenduetan"
+
+#: src/fe-gtk/setup.c:278
 msgid "Beep on highlighted messages"
 msgstr "Bip egin mezu nabarmenduetan"
 
-#: src/fe-gtk/setup.c:221
-msgid "Display MODEs in raw form"
-msgstr "Erakutsi MODEak era lauean"
+#: src/fe-gtk/setup.c:279
+msgid "Extra words to highlight on:"
+msgstr ""
 
-#: src/fe-gtk/setup.c:222
-msgid "Whois on notify"
-msgstr "Egin whois jakinaraztean"
+#: src/fe-gtk/setup.c:280
+msgid "(Separate multiple words with commas)."
+msgstr ""
 
-#: src/fe-gtk/setup.c:222
-msgid "Sends a /WHOIS when a user comes online in your notify list"
-msgstr "/WHOIS komandoa egiten du jakinarezte zerrendako norbait konektatzean"
+#: src/fe-gtk/setup.c:281
+msgid "Beep on private messages"
+msgstr "Bip egin mezu pribatuetan"
 
-#: src/fe-gtk/setup.c:223
-msgid "Hide join/part messages"
-msgstr "Ezkutatu sartze/irtete mezuak"
+#: src/fe-gtk/setup.c:282
+msgid "Beep on channel messages"
+msgstr "Bip egin kanaletako mezuetan"
 
-#: src/fe-gtk/setup.c:223
-msgid "Hide channel join/part messages by default"
-msgstr "Lehenetsi kanalera sartze/ateratze mezuak eskutatzea"
+#: src/fe-gtk/setup.c:289
+msgid "Advanced Settings"
+msgstr "Ezarpen aurreratuak"
 
-#: src/fe-gtk/setup.c:224
+#: src/fe-gtk/setup.c:290
 msgid "Auto reconnect delay:"
 msgstr "Automatikoki berriz konektatzeko atzerapena:"
 
-#: src/fe-gtk/setup.c:230
+#: src/fe-gtk/setup.c:291
+msgid "Display MODEs in raw form"
+msgstr "Erakutsi MODEak era lauean"
+
+#: src/fe-gtk/setup.c:292
+msgid "Whois on notify"
+msgstr "Egin whois jakinaraztean"
+
+#: src/fe-gtk/setup.c:292
+msgid "Sends a /WHOIS when a user comes online in your notify list"
+msgstr "/WHOIS komandoa egiten du jakinarezte zerrendako norbait konektatzean"
+
+#: src/fe-gtk/setup.c:293
+#, fuzzy
+msgid "Hide join and part messages"
+msgstr "Ezkutatu sartze/irtete mezuak"
+
+#: src/fe-gtk/setup.c:293
+msgid "Hide channel join/part messages by default"
+msgstr "Lehenetsi kanalera sartze/ateratze mezuak eskutatzea"
+
+#: src/fe-gtk/setup.c:294
+#, fuzzy
+msgid "Auto Open DCC Windows"
+msgstr "Automatikoki ireki elkarrizketa leihoak"
+
+#: src/fe-gtk/setup.c:295
+#, fuzzy
+msgid "Send window"
+msgstr "Bidali fitxategia"
+
+#: src/fe-gtk/setup.c:296
+#, fuzzy
+msgid "Receive window"
+msgstr "Jasotzailea"
+
+#: src/fe-gtk/setup.c:297
+msgid "Chat window"
+msgstr "Elkarrizketa leihoa"
+
+#: src/fe-gtk/setup.c:305 src/fe-gtk/setup.c:1452
+msgid "Logging"
+msgstr ""
+
+#: src/fe-gtk/setup.c:306
+msgid "Enable logging of conversations"
+msgstr "Gaitu elkarrizketen log-eaketa"
+
+#: src/fe-gtk/setup.c:307
 msgid "Log filename mask:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:231
+#: src/fe-gtk/setup.c:308
 #, c-format
 msgid "(%s=Server %c=Channel %n=Network)."
 msgstr "(%s=Zerbitzaria %c=Kanala %n=Sarea)."
 
-#: src/fe-gtk/setup.c:232
-msgid "Log timestamp format:"
-msgstr ""
-
-#: src/fe-gtk/setup.c:233
-msgid "(See strftime manpage for details)."
-msgstr ""
-
-#: src/fe-gtk/setup.c:234
-msgid "Enable logging of conversations"
-msgstr "Gaitu elkarrizketen log-eaketa"
-
-#: src/fe-gtk/setup.c:235
+#: src/fe-gtk/setup.c:311
 msgid "Insert timestamps in logs"
 msgstr "Txertatu ordu arrastoak log-etan"
 
-#: src/fe-gtk/setup.c:241
+#: src/fe-gtk/setup.c:312
+msgid "Log timestamp format:"
+msgstr ""
+
+#: src/fe-gtk/setup.c:313
+msgid "(See strftime manpage for details)."
+msgstr ""
+
+#: src/fe-gtk/setup.c:320
 msgid "(Disabled)"
 msgstr "(Desgaitua)"
 
-#: src/fe-gtk/setup.c:242
+#: src/fe-gtk/setup.c:321
 msgid "Wingate"
 msgstr "Wingate"
 
-#: src/fe-gtk/setup.c:243
+#: src/fe-gtk/setup.c:322
 msgid "Socks4"
 msgstr "Socks4"
 
-#: src/fe-gtk/setup.c:244
+#: src/fe-gtk/setup.c:323
 msgid "Socks5"
 msgstr "Socks5"
 
-#: src/fe-gtk/setup.c:245
+#: src/fe-gtk/setup.c:324
 msgid "HTTP"
 msgstr "HTTP"
 
-#: src/fe-gtk/setup.c:251
-msgid "Address to bind to:"
-msgstr "Lotuko den helbidea:"
+#: src/fe-gtk/setup.c:330
+msgid "Your Address"
+msgstr "Zure helbidea"
 
-#: src/fe-gtk/setup.c:252
+#: src/fe-gtk/setup.c:331
+#, fuzzy
+msgid "Bind to:"
+msgstr "Bilatu:"
+
+#: src/fe-gtk/setup.c:332
 msgid "(Only useful for computers with multiple addresses)."
 msgstr ""
 
-#: src/fe-gtk/setup.c:253
-msgid "Proxy server"
+#: src/fe-gtk/setup.c:334
+msgid "Proxy Server"
 msgstr "Proxy zerbitzaria"
 
-#: src/fe-gtk/setup.c:254
+#: src/fe-gtk/setup.c:335
 msgid "Hostname:"
 msgstr "Ostalari-izena"
 
-#: src/fe-gtk/setup.c:255
+#: src/fe-gtk/setup.c:336
 msgid "Username:"
 msgstr "Erabiltzaile izena:"
 
-#: src/fe-gtk/setup.c:256
+#: src/fe-gtk/setup.c:337
 msgid "Password:"
 msgstr "Pasahitza:"
 
-#: src/fe-gtk/setup.c:257
+#: src/fe-gtk/setup.c:338
 msgid "Port:"
 msgstr "Ataka:"
 
-#: src/fe-gtk/setup.c:258
+#: src/fe-gtk/setup.c:339
 msgid "Type:"
 msgstr "Mota:"
 
-#: src/fe-gtk/setup.c:260
-msgid "Authenticate to the proxy server (only HTTP)"
+#: src/fe-gtk/setup.c:341
+#, fuzzy
+msgid "Authenticate to the proxy server (HTTP and Socks5)"
 msgstr "Autentifikatu proxy zerbitzarian (HTTP bakarrik)"
 
-#: src/fe-gtk/setup.c:483
+#: src/fe-gtk/setup.c:564
+msgid "(disabled)"
+msgstr "(desgaitua)"
+
+#: src/fe-gtk/setup.c:565
+msgid "A star (*)"
+msgstr "Izar bat (*)"
+
+#: src/fe-gtk/setup.c:566
+msgid "A red star (*)"
+msgstr "Izar gorri bat (*)"
+
+#: src/fe-gtk/setup.c:567
+msgid "Underlined"
+msgstr "Azpimarratua"
+
+#: src/fe-gtk/setup.c:664
 msgid "Select an Image File"
 msgstr "Aukeratu irudi fitxategi bat"
 
-#: src/fe-gtk/setup.c:530
+#: src/fe-gtk/setup.c:711
 msgid "Select font"
 msgstr "Aukeratu letra-tipoa"
 
-#: src/fe-gtk/setup.c:604
+#: src/fe-gtk/setup.c:785
 msgid "Browse..."
 msgstr "Arakatu..."
 
-#: src/fe-gtk/setup.c:768
+#: src/fe-gtk/setup.c:902
+msgid "Mark identified users with:"
+msgstr ""
+
+#: src/fe-gtk/setup.c:904
+msgid "Mark not-identified users with:"
+msgstr ""
+
+#: src/fe-gtk/setup.c:963
 msgid "Select color"
 msgstr "Aukeratu kolorea"
 
-#: src/fe-gtk/setup.c:834
+#: src/fe-gtk/setup.c:1043
+msgid "Text Colors"
+msgstr "Testu koloreak"
+
+#: src/fe-gtk/setup.c:1045
 msgid "mIRC colors:"
 msgstr "mIRC koloreak:"
 
-#: src/fe-gtk/setup.c:843
+#: src/fe-gtk/setup.c:1053
+msgid "Extra colors:"
+msgstr "Kolore extrak:"
+
+#: src/fe-gtk/setup.c:1061 src/fe-gtk/setup.c:1066
 msgid "Foreground:"
 msgstr "Aurreko planoa:"
 
-#: src/fe-gtk/setup.c:844
+#: src/fe-gtk/setup.c:1062 src/fe-gtk/setup.c:1067
 msgid "Background:"
 msgstr "Atzeko planoa:"
 
-#: src/fe-gtk/setup.c:846
-msgid "Mark fore:"
-msgstr ""
+#: src/fe-gtk/setup.c:1064
+#, fuzzy
+msgid "Marking Text"
+msgstr "G_arbitu testua"
 
-#: src/fe-gtk/setup.c:847
-msgid "Mark back:"
-msgstr ""
+#: src/fe-gtk/setup.c:1069
+msgid "Interface Colors"
+msgstr "Interfazearen koloreak"
 
-#: src/fe-gtk/setup.c:849
-msgid "Away User:"
-msgstr "Aldendutako erabiltzailea:"
-
-#: src/fe-gtk/setup.c:851
-msgid "Tab colors"
-msgstr "Fitxen koloreak"
-
-#: src/fe-gtk/setup.c:862
-msgid "New Data:"
+#: src/fe-gtk/setup.c:1071
+msgid "New data:"
 msgstr "Datu berria:"
 
-#: src/fe-gtk/setup.c:863
-msgid "New Message:"
+#: src/fe-gtk/setup.c:1072
+msgid "Marker line:"
+msgstr ""
+
+#: src/fe-gtk/setup.c:1073
+msgid "New message:"
 msgstr "Mezu berria:"
 
-#: src/fe-gtk/setup.c:864
+#: src/fe-gtk/setup.c:1074
+msgid "Away user:"
+msgstr "Aldendutako erabiltzailea:"
+
+#: src/fe-gtk/setup.c:1075
 msgid "Highlight:"
 msgstr "Nabarmendu:"
 
-#: src/fe-gtk/setup.c:902
+#: src/fe-gtk/setup.c:1171 src/fe-gtk/textgui.c:337
+msgid "Event"
+msgstr "Gertaera"
+
+#: src/fe-gtk/setup.c:1177
+msgid "Sound file"
+msgstr "Soinu fitxategia"
+
+#: src/fe-gtk/setup.c:1212
+#, fuzzy
+msgid "Select a sound file"
+msgstr "Aukeratu irudi fitxategi bat"
+
+#: src/fe-gtk/setup.c:1284
+msgid "Sound playing method:"
+msgstr ""
+
+#: src/fe-gtk/setup.c:1292
+msgid "External sound playing _program:"
+msgstr ""
+
+#: src/fe-gtk/setup.c:1310
+msgid "_External program"
+msgstr "_Programa externoa"
+
+#: src/fe-gtk/setup.c:1320
+msgid "_Automatic"
+msgstr "_Automatikoa"
+
+#: src/fe-gtk/setup.c:1333
+msgid "Sound files _directory:"
+msgstr "Soinu fitxategien _direktorioa:"
+
+#: src/fe-gtk/setup.c:1372
+msgid "Sound file:"
+msgstr "Soinu fitxategia:"
+
+#: src/fe-gtk/setup.c:1387
+msgid "_Browse..."
+msgstr "_Arakatu..."
+
+#: src/fe-gtk/setup.c:1395
+msgid "_Play"
+msgstr "_Jo"
+
+#: src/fe-gtk/setup.c:1443
 msgid "Interface"
 msgstr "Interfazea"
 
-#: src/fe-gtk/setup.c:903
+#: src/fe-gtk/setup.c:1444
 msgid "Text box"
 msgstr "Testu kaxa"
 
-#: src/fe-gtk/setup.c:904
+#: src/fe-gtk/setup.c:1445
 msgid "Input box"
 msgstr "Sarrera kaxa"
 
-#: src/fe-gtk/setup.c:905
+#: src/fe-gtk/setup.c:1446
 msgid "User list"
 msgstr "Erabiltzaile zerrenda"
 
-#: src/fe-gtk/setup.c:907
+#: src/fe-gtk/setup.c:1448
 msgid "Colors"
 msgstr "Koloreak"
 
-#: src/fe-gtk/setup.c:909
+#: src/fe-gtk/setup.c:1450
 msgid "Chatting"
 msgstr "Elkarrizketan"
 
-#: src/fe-gtk/setup.c:910
+#: src/fe-gtk/setup.c:1451
 msgid "General"
 msgstr "Orokorra"
 
-#: src/fe-gtk/setup.c:911
-msgid "Logging"
-msgstr ""
+#: src/fe-gtk/setup.c:1453
+msgid "Sound"
+msgstr "Soinua"
 
-#: src/fe-gtk/setup.c:913
+#: src/fe-gtk/setup.c:1456
 msgid "Network"
 msgstr "Sarea"
 
-#: src/fe-gtk/setup.c:914
+#: src/fe-gtk/setup.c:1457
 msgid "Network setup"
 msgstr "Sare konfigurazioa"
 
-#: src/fe-gtk/setup.c:915
+#: src/fe-gtk/setup.c:1458
 msgid "File transfers"
 msgstr "Fitxategi transferentziak"
 
-#: src/fe-gtk/setup.c:1020
+#: src/fe-gtk/setup.c:1565
 msgid "Categories"
 msgstr "Kategoriak"
 
-#: src/fe-gtk/setup.c:1146
+#: src/fe-gtk/setup.c:1695
 msgid "Some settings were changed that require a restart to take full effect."
 msgstr ""
 
-#: src/fe-gtk/setup.c:1173
+#: src/fe-gtk/setup.c:1723
 msgid "X-Chat: Preferences"
 msgstr "X-Chat: Hobespenak"
 
-#: src/fe-gtk/textgui.c:184
+#: src/fe-gtk/textgui.c:160
 msgid "There was an error parsing the string"
 msgstr ""
 
-#: src/fe-gtk/textgui.c:192
+#: src/fe-gtk/textgui.c:168
 #, c-format
 msgid "This signal is only passed %d args, $%d is invalid"
 msgstr "Seinale honek %d argumentu pasa ditu, $%d baliogabekoa da"
 
-#: src/fe-gtk/textgui.c:304 src/fe-gtk/textgui.c:326
+#: src/fe-gtk/textgui.c:276 src/fe-gtk/textgui.c:299
 msgid "Print Texts File"
 msgstr ""
 
-#: src/fe-gtk/textgui.c:382
-msgid "Event"
-msgstr "Gertaera"
-
-#: src/fe-gtk/textgui.c:384
-msgid "Sound"
-msgstr "Soinua"
-
-#: src/fe-gtk/textgui.c:386
+#: src/fe-gtk/textgui.c:340
 msgid "$ Number"
 msgstr "$ Zenbakia"
 
-#: src/fe-gtk/textgui.c:396
+#: src/fe-gtk/textgui.c:350
 msgid "Edit Events"
 msgstr "Editatu gertaerak"
 
-#: src/fe-gtk/textgui.c:434
-msgid "Sound file: "
-msgstr "Soinu fitxategia: "
-
-#: src/fe-gtk/textgui.c:469
+#: src/fe-gtk/textgui.c:418
 msgid "Save As"
 msgstr "Gorde honela"
 
-#: src/fe-gtk/textgui.c:474
+#: src/fe-gtk/textgui.c:423
 msgid "Load From"
 msgstr "Kargatu hemendik"
 
-#: src/fe-gtk/textgui.c:479
+#: src/fe-gtk/textgui.c:428
 msgid "Test All"
 msgstr "Egiaztatu denak"
 
@@ -4701,3 +4950,102 @@ msgstr "Gorde zerrenda fitxategi batean"
 #, c-format
 msgid "%d ops, %d total"
 msgstr "%d op, %d guztira"
+
+#~ msgid "%C8,2 Type  To/From    Status  Size    Pos     File      %O%010%B%C9----------------------------------------------------%O"
+#~ msgstr "%C8,2 Mota  Nori/Nork    Egoera  Tamainua    Pos     Fitxategia      %O%010%B%C9----------------------------------------------------%O"
+
+#~ msgid "-%C10-%C11-%O$t$1%O"
+#~ msgstr "-%C10-%C11-%O$t$1%O"
+
+#~ msgid "%C08,02 %B-- Notify List --------------- %O"
+#~ msgstr "%C08,02 %B-- Jakinaraztekoen zerrenda--- %O"
+
+#~ msgid "%C6<%O$1%C6>%O$t$2%O"
+#~ msgstr "%C6<%O$1%C6>%O$t$2%O"
+
+#~ msgid "Lists"
+#~ msgstr "Zerrendak"
+
+#~ msgid "Settings for %s"
+#~ msgstr "%s-rentzat ezarpenak"
+
+#~ msgid "_Remove \"%s\""
+#~ msgstr "_Kendu \"%s\""
+
+#~ msgid "_Add new server"
+#~ msgstr "_Gehitu zerbitzari berri bat"
+
+#~ msgid "Move \"%s\" _down"
+#~ msgstr "Mugitu \"%s\" _behera"
+
+#~ msgid "Move \"%s\" _up"
+#~ msgstr "Mugitu \"%s\" g_ora"
+
+#~ msgid "_Add new network"
+#~ msgstr "_Gehitu sare berri bat"
+
+#~ msgid "Global User Info"
+#~ msgstr "Erabiltzaileen informazio globala"
+
+#~ msgid "Nick Names:"
+#~ msgstr "Ezizenak:"
+
+#~ msgid "User Name:"
+#~ msgstr "Erabiltzailearen izena:"
+
+#~ msgid "Servers"
+#~ msgstr "Zerbitzariak"
+
+#~ msgid "Join Channels:"
+#~ msgstr "Sartu kanaletara:"
+
+#~ msgid "Command to execute after connecting. Can be used to authenticate to NickServ"
+#~ msgstr "Konektatu ostean ejekutatuko den komandoa. NickServ-en autentifikatzeko erabili daiteke"
+
+#~ msgid "Cycle until connected"
+#~ msgstr "Ziklatu konektatu arte"
+
+#~ msgid "Use secure SSL"
+#~ msgstr "Erabili SSL seguritatea"
+
+#~ msgid "Settings for Selected Network"
+#~ msgstr "Aukeratutako sarearentzat ezarpenak"
+
+#~ msgid "Edit mode"
+#~ msgstr "Edizio modua"
+
+#~ msgid "Networks"
+#~ msgstr "Sareak"
+
+#~ msgid "Tint red:"
+#~ msgstr "Tintatu gorriz:"
+
+#~ msgid "Tint green:"
+#~ msgstr "Tintatu berdez:"
+
+#~ msgid "Tint blue:"
+#~ msgstr "Tintatu urdinez:"
+
+#~ msgid "Double-click command:"
+#~ msgstr "Klik bikoitzaren komandoa:"
+
+#~ msgid "Auto open DCC send list"
+#~ msgstr "Automatikoki ireki DCC bidaltze zerrenda"
+
+#~ msgid "In filenames, before sending"
+#~ msgstr "Fitxategietan, bidali aurretik"
+
+#~ msgid "Auto open DCC chat list"
+#~ msgstr "Automatikoki ireki DCC elkarrizketa zerrenda"
+
+#~ msgid "Auto open DCC receive list"
+#~ msgstr "Automatikoki ireki DCC jasotze zerrenda"
+
+#~ msgid "Default part message:"
+#~ msgstr "Lehenetsitako kanal-irtete mezua:"
+
+#~ msgid "Default away message:"
+#~ msgstr "Lehenetsitako mezua aldentzerakoan:"
+
+#~ msgid "Address to bind to:"
+#~ msgstr "Lotuko den helbidea:"

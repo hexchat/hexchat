@@ -5,10 +5,10 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: xchat 2.1.0\n"
+"Project-Id-Version: xchat 2.1.1\n"
 "Report-Msgid-Bugs-To: www.xchat.org\n"
-"POT-Creation-Date: 2004-07-31 11:31+0300\n"
-"PO-Revision-Date: 2004-07-20 23:51+0200\n"
+"POT-Creation-Date: 2004-08-05 22:40+0300\n"
+"PO-Revision-Date: 2004-08-05 23:51+0200\n"
 "Last-Translator: Vaidrius Petrauskas <vaidrius@delfi.lt>\n"
 "Language-Team: Lithuanian <komp_lt@konferencijos.lt>\n"
 "MIME-Version: 1.0\n"
@@ -664,7 +664,7 @@ msgstr "%C22*%O$t$1 uždraudžia $2"
 
 #: src/common/textevents.h:30
 msgid "%C22*%O$tChannel $1 created on $2"
-msgstr "-%C10-%C11-%O$tKanalas $1 sukurtas $2"
+msgstr "%C22*%O$tKanalas $1 sukurtas $2"
 
 #: src/common/textevents.h:33
 msgid "%C22*%O$t%C26$1%O removes channel half-operator status from%C26 $2"
@@ -684,7 +684,7 @@ msgstr "%C22*%O$t$1 nustato $2 išimtį draudimui"
 
 #: src/common/textevents.h:45
 msgid "%C22*%O$t%C26$1%O gives channel half-operator status to%C26 $2"
-msgstr "-%C10-%C11-%O$t%C11$1%O suteikia halfopo statusą %C11$2"
+msgstr "%C22*%O$t%C26$1%O suteikia halfopo statusą%C26 $2"
 
 #: src/common/textevents.h:48
 msgid "%C22*%O$t$1 sets invite on $2"
@@ -751,12 +751,12 @@ msgid "%C22*%O$t%C26$1%O gives voice to%C26 $2"
 msgstr "%C22*%O$t%C26$1%O suteikia balsą%C26 $2"
 
 #: src/common/textevents.h:96
-msgid "%C22*%O$t%C22Connected. Now logging in.."
+msgid "%C22*%O$t%C22Connected. Now logging in..."
 msgstr "%C22*%O$t%C22Prisijungta. Registruojamasi..."
 
 #: src/common/textevents.h:99
-msgid "%C22*%O$t%C22Connecting to $1 ($2) port $3%O.."
-msgstr "%C22*%O$t%C22Jungiamiasi prie $1 ($2) prievadu $3%O"
+msgid "%C22*%O$t%C22Connecting to $1 ($2) port $3%O..."
+msgstr "%C22*%O$t%C22Jungiamiasi prie $1 ($2) prievadu $3%O..."
 
 #: src/common/textevents.h:102
 msgid "%C21*%O$t%C21Connection failed. Error: $1"
@@ -784,11 +784,11 @@ msgstr "%C22*%O$tDCC CHAT į %C26$1%O nutrūko."
 
 #: src/common/textevents.h:120
 msgid "%C22*%O$tDCC CHAT connection established to %C26$1 %C30[%O$2%C30]"
-msgstr "%C22*%O$tDCC CHAT jungtis į %C26$1%0 pavyko %C30[%O$2%C30]"
+msgstr "%C22*%O$tDCC CHAT jungtis į %C26$1%O pavyko %C30[%O$2%C30]"
 
 #: src/common/textevents.h:123
-msgid "%C22*%O$tDCC CHAT to %C26$1%O lost. $4."
-msgstr "%C22*%O$tDCC CHAT jungtis į %C26$1%O nutrūko. $4."
+msgid "%C22*%O$tDCC CHAT to %C26$1%O lost ($4)."
+msgstr "%C22*%O$tDCC CHAT jungtis į %C26$1%O nutrūko ($4)."
 
 #: src/common/textevents.h:126
 msgid "%C22*%O$tReceived a DCC CHAT offer from $1"
@@ -839,15 +839,15 @@ msgstr "%C22*%O$tDCC RECV%C26 $2%O%C26 $1%O nutrūko."
 msgid ""
 "%C22*%O$tDCC RECV%C26 $1%O from%C26 $3%O complete %C30[%C26$4%O cps%C30]%O."
 msgstr ""
-"%C22*%O$tDCC RECV%C26 $1%O iš%C26 $3%O baigtas %C30[%C26$4%O b/s%C30]%O.O."
+"%C22*%O$tDCC RECV%C26 $1%O iš%C26 $3%O baigtas %C30[%C26$4%O b/s%C30]%O."
 
 #: src/common/textevents.h:159
 msgid "%C22*%O$tDCC RECV connection established to%C26 $1 %C30[%O$2%C30]"
-msgstr "%C22*%O$tDCC RECV jungtis į%C26 $1 pavyko %C30[%O$2%C30]"
+msgstr "%C22*%O$tDCC RECV jungtis į%C26 $1%O pavyko %C30[%O$2%C30]"
 
 #: src/common/textevents.h:162
-msgid "%C22*%O$tDCC RECV%C26 $1%O from%C26 $3%O failed. $4."
-msgstr "%C22*%O$tDCC RECV%C26 $1%O%C26 $3%O nepavyko. $4."
+msgid "%C22*%O$tDCC RECV%C26 $1%O from%C26 $3%O failed ($4)."
+msgstr "%C22*%O$tDCC RECV%C26 $1%O%C26 $3%O nepavyko ($4)."
 
 #: src/common/textevents.h:165
 msgid "%C22*%O$tDCC RECV: Cannot open $1 for writing ($2)."
@@ -890,7 +890,7 @@ msgstr "%C22*%O$tDCC $1%C26 $2 %O%C26 $3 %Csustojo - nutraukiama."
 #: src/common/textevents.h:192
 msgid "%C22*%O$tDCC $1%C26 $2 %Oto%C26 $3 %Otimed out - aborting."
 msgstr ""
-"%C22*%O$tDCC $1%C26 $2 %O%C26 $3 %Obaigėsi ryšio laiko limitas -nutraukiama."
+"%C22*%O$tDCC $1%C26 $2 %O%C26 $3 %Obaigėsi ryšio laiko limitas - nutraukiama."
 
 #: src/common/textevents.h:195
 msgid "%C22*%O$t$1 deleted from notify list."
@@ -951,12 +951,12 @@ msgid "%C22*%O$tCannot join%C26 %B$1 %O(Requires keyword)."
 msgstr "%C22*%O$tNepavyko įeiti į%C26 %B$1 %O(reikia rakto)."
 
 #: src/common/textevents.h:237
-msgid "%C21*%O$t%C21$1 has kicked $2 from $3 ($4%O)"
-msgstr "%C21*%O$t%C21$1 išspyrė $2 iš $3 ($4%O)"
+msgid "%C21*%O$t%C21$1 has kicked $2 from $3 ($4%O%C21)"
+msgstr "%C21*%O$t%C21$1 išspyrė $2 iš $3 ($4%OC21)"
 
 #: src/common/textevents.h:240
-msgid "%C22*%O$tYou have been killed by $1 ($2%O)"
-msgstr "%C22*%O$tJus nužudė $1 ($2%O)"
+msgid "%C22*%O$tYou have been killed by $1 ($2%O%C22)"
+msgstr "%C22*%O$tJus nužudė $1 ($2%O%C22)"
 
 #: src/common/textevents.h:243
 msgid "%C19>%O$1%C19<%O$t$2%O"
@@ -971,7 +971,7 @@ msgid "%C22*%O$t%C22MOTD Skipped."
 msgstr "%C22*%O$t%C22MOTD praleistas."
 
 #: src/common/textevents.h:252
-msgid "%C22*%O$t$1 already in use. Retrying with $2.."
+msgid "%C22*%O$t$1 already in use. Retrying with $2..."
 msgstr "%C22*%O$t$1 jau naudojamas. Bandoma su $2..."
 
 #: src/common/textevents.h:255
@@ -1025,7 +1025,7 @@ msgid "%C23*%O$t%C23$1 (%O%C23$2) has left $3 (%O%C23$4)"
 msgstr "%C23*%O$t%C23$1 (%O%C23$2) paliko $3 (%O%C23$4)"
 
 #: src/common/textevents.h:294
-msgid "%C22*%O$tPing reply from $1 : $2 second(s)"
+msgid "%C22*%O$tPing reply from $1: $2 second(s)"
 msgstr "%C22*%O$t„Ping“ atsakymas iš $1: $2 sekundžių"
 
 #: src/common/textevents.h:297
@@ -1057,7 +1057,7 @@ msgid "%C28-%C29$1/Wallops%C28-%O$t$2"
 msgstr "%C28-%C29$1/„Wallops“%C28-%O$t$2"
 
 #: src/common/textevents.h:318
-msgid "%C22*%O$tLooking up IP number for%C26 $1%O.."
+msgid "%C22*%O$tLooking up IP number for%C26 $1%O..."
 msgstr "%C22*%O$tIeškomas%C26 $1%OIP adresas..."
 
 #: src/common/textevents.h:321
@@ -1136,8 +1136,8 @@ msgid "%C22*%O$t%C28[%O$1%C28]%O idle%C26 $2%O, signon:%C26 $3"
 msgstr "%C22*%O$t%C28[%O$1%C28]%O neveiksnus%C26 $2%O, prisijungė%C26 $3"
 
 #: src/common/textevents.h:381
-msgid "%C22*%O$t%C28[%O$1%C28] %C30(%O$2@$3%C30) %O: $4"
-msgstr "%C22*%O$t%C28[%O$1%C28] %C30(%O$2@$3%C30) %O: $4"
+msgid "%C22*%O$t%C28[%O$1%C28] %C30(%O$2@$3%C30)%O: $4"
+msgstr "%C22*%O$t%C28[%O$1%C28] %C30(%O$2@$3%C30)%O: $4"
 
 #: src/common/textevents.h:387
 msgid "%C19*%O$t%C19Now talking on $2"
@@ -1583,11 +1583,11 @@ msgstr "greitis"
 msgid "Pathname"
 msgstr "Kelias"
 
-#: src/common/text.c:964 src/fe-gtk/dccgui.c:483 src/fe-gtk/dccgui.c:633
+#: src/common/text.c:964 src/fe-gtk/dccgui.c:490 src/fe-gtk/dccgui.c:647
 msgid "Position"
 msgstr "Vieta"
 
-#: src/common/text.c:970 src/fe-gtk/dccgui.c:482 src/fe-gtk/dccgui.c:632
+#: src/common/text.c:970 src/fe-gtk/dccgui.c:489 src/fe-gtk/dccgui.c:646
 msgid "Size"
 msgstr "Dydis"
 
@@ -1647,7 +1647,7 @@ msgstr "Uždraudė"
 msgid "Ban time"
 msgstr "Draudimo laikas"
 
-#: src/common/text.c:1071
+#: src/common/text.c:1073
 #, c-format
 msgid ""
 "Error parsing event %s.\n"
@@ -1656,7 +1656,7 @@ msgstr ""
 "Klaida apdorojant įvykį „%s“.\n"
 "Įkeliamas pagrindinis."
 
-#: src/common/text.c:1706
+#: src/common/text.c:1708
 #, c-format
 msgid ""
 "Cannot read sound file:\n"
@@ -2829,7 +2829,7 @@ msgstr "Uždrausti"
 msgid "KickBan"
 msgstr "Išspirti ir uždrausti"
 
-#: src/common/xchat.c:956 src/fe-gtk/dccgui.c:528 src/fe-gtk/dccgui.c:669
+#: src/common/xchat.c:956 src/fe-gtk/dccgui.c:535 src/fe-gtk/dccgui.c:683
 msgid "Info"
 msgstr "Informacija"
 
@@ -2959,7 +2959,7 @@ msgstr "Pažymėkite bent vieną draudimą."
 msgid "Mask"
 msgstr "Formatas"
 
-#: src/fe-gtk/banlist.c:249 src/fe-gtk/dccgui.c:485
+#: src/fe-gtk/banlist.c:249 src/fe-gtk/dccgui.c:492
 msgid "From"
 msgstr "Iš"
 
@@ -3043,7 +3043,7 @@ msgstr "Įeiti į kanalą"
 msgid "Send file to %s"
 msgstr "Bylos išsiuntimas %s"
 
-#: src/fe-gtk/dccgui.c:339
+#: src/fe-gtk/dccgui.c:346
 #, c-format
 msgid ""
 "      File: %s\n"
@@ -3060,11 +3060,11 @@ msgstr ""
 "     IP adresas: %s\n"
 "Pradžios laikas: %s   Maks. greitis: %d\n"
 
-#: src/fe-gtk/dccgui.c:372
+#: src/fe-gtk/dccgui.c:379
 msgid "That file is not resumable."
 msgstr "Ši byla nepratęstina."
 
-#: src/fe-gtk/dccgui.c:376
+#: src/fe-gtk/dccgui.c:383
 #, c-format
 msgid ""
 "Cannot access file: %s\n"
@@ -3075,7 +3075,7 @@ msgstr ""
 "%s.\n"
 "Atnaujinimas negalimas."
 
-#: src/fe-gtk/dccgui.c:383
+#: src/fe-gtk/dccgui.c:390
 msgid ""
 "File in download directory is larger than file offered. Resuming not "
 "possible."
@@ -3083,76 +3083,76 @@ msgstr ""
 "Byla parsiuntimų kataloge didesnė nei pasiūlytoji byla. Atnaujinimas "
 "negalimas."
 
-#: src/fe-gtk/dccgui.c:387
+#: src/fe-gtk/dccgui.c:394
 msgid "Cannot resume the same file from two people."
 msgstr "Negalima atnaujinti tos pačios bylos siuntimo iš dviejų žmonių."
 
-#: src/fe-gtk/dccgui.c:474
+#: src/fe-gtk/dccgui.c:481
 msgid "MIME Type"
 msgstr "MIME tipas"
 
-#: src/fe-gtk/dccgui.c:480 src/fe-gtk/dccgui.c:630 src/fe-gtk/dccgui.c:753
+#: src/fe-gtk/dccgui.c:487 src/fe-gtk/dccgui.c:644 src/fe-gtk/dccgui.c:767
 #: src/fe-gtk/notifygui.c:110
 msgid "Status"
 msgstr "Būklė"
 
-#: src/fe-gtk/dccgui.c:481 src/fe-gtk/dccgui.c:631 src/fe-gtk/plugingui.c:75
+#: src/fe-gtk/dccgui.c:488 src/fe-gtk/dccgui.c:645 src/fe-gtk/plugingui.c:75
 msgid "File"
 msgstr "Byla"
 
-#: src/fe-gtk/dccgui.c:484 src/fe-gtk/dccgui.c:635
+#: src/fe-gtk/dccgui.c:491 src/fe-gtk/dccgui.c:649
 msgid "ETA"
 msgstr "Liko laiko"
 
-#: src/fe-gtk/dccgui.c:494
+#: src/fe-gtk/dccgui.c:501
 msgid "X-Chat: File Receive List"
 msgstr "X-Chat: bylų parsiuntimo sąrašas"
 
-#: src/fe-gtk/dccgui.c:522 src/fe-gtk/dccgui.c:668 src/fe-gtk/dccgui.c:783
+#: src/fe-gtk/dccgui.c:529 src/fe-gtk/dccgui.c:682 src/fe-gtk/dccgui.c:797
 msgid "Abort"
 msgstr "Atsisakyti"
 
-#: src/fe-gtk/dccgui.c:524 src/fe-gtk/dccgui.c:784
+#: src/fe-gtk/dccgui.c:531 src/fe-gtk/dccgui.c:798
 msgid "Accept"
 msgstr "Priimti"
 
-#: src/fe-gtk/dccgui.c:526
+#: src/fe-gtk/dccgui.c:533
 msgid "Resume"
 msgstr "Tęsti"
 
-#: src/fe-gtk/dccgui.c:530
+#: src/fe-gtk/dccgui.c:537
 msgid "Open"
 msgstr "Atverti"
 
-#: src/fe-gtk/dccgui.c:634
+#: src/fe-gtk/dccgui.c:648
 msgid "Ack"
 msgstr "Patvirt."
 
-#: src/fe-gtk/dccgui.c:636
+#: src/fe-gtk/dccgui.c:650
 msgid "To"
 msgstr "Kam"
 
-#: src/fe-gtk/dccgui.c:646
+#: src/fe-gtk/dccgui.c:660
 msgid "X-Chat: File Send List"
 msgstr "X-Chat: bylų išsiuntimo sąrašas"
 
-#: src/fe-gtk/dccgui.c:754
+#: src/fe-gtk/dccgui.c:768
 msgid "To/From"
 msgstr "Į/iš"
 
-#: src/fe-gtk/dccgui.c:755
+#: src/fe-gtk/dccgui.c:769
 msgid "Recv"
 msgstr "Gauta"
 
-#: src/fe-gtk/dccgui.c:756
+#: src/fe-gtk/dccgui.c:770
 msgid "Sent"
 msgstr "Išsiųsta"
 
-#: src/fe-gtk/dccgui.c:757
+#: src/fe-gtk/dccgui.c:771
 msgid "StartTime"
 msgstr "Pradžios laikas"
 
-#: src/fe-gtk/dccgui.c:767
+#: src/fe-gtk/dccgui.c:781
 msgid "X-Chat: DCC Chat List"
 msgstr "X-Chat: DCC pokalbių sąrašas"
 
@@ -3192,7 +3192,7 @@ msgstr "Įrašyti"
 msgid "Add New"
 msgstr "Pridėti naują"
 
-#: src/fe-gtk/editlist.c:361 src/fe-gtk/fkeys.c:742 src/fe-gtk/ignoregui.c:379
+#: src/fe-gtk/editlist.c:361 src/fe-gtk/fkeys.c:744 src/fe-gtk/ignoregui.c:379
 msgid "Delete"
 msgstr "Šalinti"
 
@@ -3283,11 +3283,11 @@ msgstr ""
 
 #: src/fe-gtk/fkeys.c:161
 msgid ""
-"The Scroll Page command scrolls the text widget up or down one page. If Data "
-"1 is set to anything the page scrolls up, else it scrolls down"
+"The Scroll Page command scrolls the text widget up or down one page or one "
+"line. Set Data 1 to either Up, Down, +1 or -1."
 msgstr ""
-"Scroll Page komanda paslenka tekstą aukštyn ar žemyn per ekraną. Jei "
-"„Duomenyse nr. 1“ kas nors yra, tai slenkama aukštyn, kitu atveju žemyn"
+"Scroll Page komanda paslenka tekstą aukštyn ar žemyn per ekraną arba per eilutę. "
+"„Duomenis nr. 1“ nustatykite į Up, Down, +1 arba -1."
 
 #: src/fe-gtk/fkeys.c:163
 msgid ""
@@ -3363,59 +3363,59 @@ msgstr "Įdėti eilutę į langą, bet nesiųsti serveriui"
 msgid "There was an error loading key bindings configuration"
 msgstr "Įkeliant klavišų sąsajos nustatymus įvyko klaida"
 
-#: src/fe-gtk/fkeys.c:430 src/fe-gtk/fkeys.c:431 src/fe-gtk/fkeys.c:432
-#: src/fe-gtk/fkeys.c:433 src/fe-gtk/fkeys.c:715 src/fe-gtk/fkeys.c:721
-#: src/fe-gtk/fkeys.c:726 src/fe-gtk/maingui.c:905 src/fe-gtk/maingui.c:921
+#: src/fe-gtk/fkeys.c:432 src/fe-gtk/fkeys.c:433 src/fe-gtk/fkeys.c:434
+#: src/fe-gtk/fkeys.c:435 src/fe-gtk/fkeys.c:717 src/fe-gtk/fkeys.c:723
+#: src/fe-gtk/fkeys.c:728 src/fe-gtk/maingui.c:905 src/fe-gtk/maingui.c:921
 #: src/fe-gtk/maingui.c:1064 src/fe-gtk/maingui.c:1117
 #: src/fe-gtk/maingui.c:2494
 msgid "<none>"
 msgstr "<joks>"
 
-#: src/fe-gtk/fkeys.c:679
+#: src/fe-gtk/fkeys.c:681
 msgid "Mod"
 msgstr "Mod."
 
-#: src/fe-gtk/fkeys.c:680 src/fe-gtk/fkeys.c:775
+#: src/fe-gtk/fkeys.c:682 src/fe-gtk/fkeys.c:777
 msgid "Key"
 msgstr "Klavišas"
 
-#: src/fe-gtk/fkeys.c:681
+#: src/fe-gtk/fkeys.c:683
 msgid "Action"
 msgstr "Veiksmas"
 
-#: src/fe-gtk/fkeys.c:690
-msgid "X-Chat: Edit Key Bindings"
-msgstr "X-Chat: klavišų sąsajos"
+#: src/fe-gtk/fkeys.c:692
+msgid "X-Chat: Keyboard Shortcuts"
+msgstr "X-Chat: Greitieji klavišai"
 
-#: src/fe-gtk/fkeys.c:737
+#: src/fe-gtk/fkeys.c:739
 msgid "Add new"
 msgstr "Pridėti naują"
 
-#: src/fe-gtk/fkeys.c:768
+#: src/fe-gtk/fkeys.c:770
 msgid "Shift"
 msgstr "Lyg2 (Shift)"
 
-#: src/fe-gtk/fkeys.c:770
+#: src/fe-gtk/fkeys.c:772
 msgid "Alt"
 msgstr "Alt"
 
-#: src/fe-gtk/fkeys.c:772
+#: src/fe-gtk/fkeys.c:774
 msgid "Ctrl"
 msgstr "Vald (Ctrl)"
 
-#: src/fe-gtk/fkeys.c:779
+#: src/fe-gtk/fkeys.c:781
 msgid "Data 1"
 msgstr "Duomenys nr. 1"
 
-#: src/fe-gtk/fkeys.c:782
+#: src/fe-gtk/fkeys.c:784
 msgid "Data 2"
 msgstr "Duomenys nr. 2"
 
-#: src/fe-gtk/fkeys.c:825
+#: src/fe-gtk/fkeys.c:827
 msgid "Error opening keys config file\n"
 msgstr "Klaida įkeliant klavišų sąsajos nustatymų bylą\n"
 
-#: src/fe-gtk/fkeys.c:996
+#: src/fe-gtk/fkeys.c:998
 #, c-format
 msgid ""
 "Unknown keyname %s in key bindings config file\n"
@@ -3424,7 +3424,7 @@ msgstr ""
 "Nežinomas raktas „%s“ klavišų sąsajos nustatymų byloje.\n"
 "Įkeltis nutraukta, prašom ištaisyti „%s/keybindings.conf“\n"
 
-#: src/fe-gtk/fkeys.c:1034
+#: src/fe-gtk/fkeys.c:1036
 #, c-format
 msgid ""
 "Unknown action %s in key bindings config file\n"
@@ -3433,7 +3433,7 @@ msgstr ""
 "Nežinomas veiksmas „%s“ klavišų sąsajos nustatymų byloje.\n"
 "Įkeltis nutraukta, prašom ištaisyti „%s/keybindings“\n"
 
-#: src/fe-gtk/fkeys.c:1055
+#: src/fe-gtk/fkeys.c:1057
 #, c-format
 msgid ""
 "Expecting Data line (beginning Dx{:|!}) but got:\n"
@@ -3446,7 +3446,7 @@ msgstr ""
 "\n"
 "Įkeltis nutraukta, prašom ištaisyti „%s/keybindings“\n"
 
-#: src/fe-gtk/fkeys.c:1124
+#: src/fe-gtk/fkeys.c:1126
 #, c-format
 msgid ""
 "Key bindings config file is corrupt, load aborted\n"
@@ -3989,8 +3989,8 @@ msgid "Dialog Buttons..."
 msgstr "Dialogo mygtukai..."
 
 #: src/fe-gtk/menu.c:1309
-msgid "Key Bindings..."
-msgstr "Klavišų sąsajos..."
+msgid "Keyboard Shortcuts..."
+msgstr "Greitieji klavišai..."
 
 #: src/fe-gtk/menu.c:1310
 msgid "Text Events..."
@@ -4232,11 +4232,11 @@ msgstr "Jūsų duomenys"
 msgid "Use global user information"
 msgstr "Naudoti bendrus naudotojo duomenis"
 
-#: src/fe-gtk/servlistgui.c:927 src/fe-gtk/servlistgui.c:1157
+#: src/fe-gtk/servlistgui.c:927 src/fe-gtk/servlistgui.c:1159
 msgid "_Nick name:"
 msgstr "Slapyvardis:"
 
-#: src/fe-gtk/servlistgui.c:931 src/fe-gtk/servlistgui.c:1178
+#: src/fe-gtk/servlistgui.c:931 src/fe-gtk/servlistgui.c:1180
 msgid "_User name:"
 msgstr "Na_udotojo vardas:"
 
@@ -4302,43 +4302,43 @@ msgstr "Serverio slaptažodis. Jei neaišku, palikti tuščią."
 msgid "Character set:"
 msgstr "Koduotė:"
 
-#: src/fe-gtk/servlistgui.c:1050
+#: src/fe-gtk/servlistgui.c:1052
 msgid "_Edit"
 msgstr "K_eisti"
 
-#: src/fe-gtk/servlistgui.c:1131
+#: src/fe-gtk/servlistgui.c:1133
 msgid "X-Chat: Server List"
 msgstr "X-Chat: serverių sąrašas"
 
-#: src/fe-gtk/servlistgui.c:1164
+#: src/fe-gtk/servlistgui.c:1166
 msgid "Second choice:"
 msgstr "Antras pasirinkimas:"
 
-#: src/fe-gtk/servlistgui.c:1171
+#: src/fe-gtk/servlistgui.c:1173
 msgid "Third choice:"
 msgstr "Trečias pasirinkimas"
 
-#: src/fe-gtk/servlistgui.c:1185
+#: src/fe-gtk/servlistgui.c:1187
 msgid "Rea_l name:"
 msgstr "Tik_rasis vardas:"
 
-#: src/fe-gtk/servlistgui.c:1272
+#: src/fe-gtk/servlistgui.c:1274
 msgid "Skip server list on startup"
 msgstr "Paleidus serverių sąrašo nerodyti"
 
-#: src/fe-gtk/servlistgui.c:1303
+#: src/fe-gtk/servlistgui.c:1305
 msgid "_Edit..."
 msgstr "K_eisti..."
 
-#: src/fe-gtk/servlistgui.c:1310
+#: src/fe-gtk/servlistgui.c:1312
 msgid "_Sort"
 msgstr "Rūši_uoti"
 
-#: src/fe-gtk/servlistgui.c:1326
+#: src/fe-gtk/servlistgui.c:1328
 msgid "C_onnect"
 msgstr "J_ungtis"
 
-#: src/fe-gtk/servlistgui.c:1335
+#: src/fe-gtk/servlistgui.c:1337
 msgid "Connect in new tab"
 msgstr "Jungtis naujoje kortelėje"
 
@@ -5185,3 +5185,10 @@ msgstr "Įrašyti sąrašą į bylą"
 #, c-format
 msgid "%d ops, %d total"
 msgstr "%d opai (-ų), %d viso"
+
+#~ msgid "X-Chat: Edit Key Bindings"
+#~ msgstr "X-Chat: klavišų sąsajos"
+
+#~ msgid "Key Bindings..."
+#~ msgstr "Klavišų sąsajos..."
+
