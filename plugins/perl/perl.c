@@ -1121,7 +1121,6 @@ perl_init (void)
 	{
 	  /* Redefine the $SIG{__WARN__} handler to have XChat
 	     printing warnings in the main window. (TheHobbit)*/
-	  
 	  "BEGIN {\n"
 	  "$INC{'Xchat.pm'} = 'DUMMY';\n"
 	  "}\n"
@@ -1357,10 +1356,13 @@ perl_init (void)
 	  "return $callback;\n"
 	  "}\n"
 	  "$SIG{__WARN__} = sub {\n"
-	  "local $, = \"\\n\";\n"
 	  "my ($package, $file, $line, $sub) = caller(1);\n"
+	  "$sub =~ s/^Xchat::Embed//;\n"
+	  "$sub =~ s/^(.+)::.+$/$1/;\n"
+	  "$sub =~ s/_([[:xdigit:]]+)/pack(\"H*\",$1)/eg;\n"
+	  "$sub =~ s[::][/]g;\n"
 	  "Xchat::print( \"Warning from ${sub}.\" );\n"
-	  "Xchat::print( @_ );\n"
+	  "Xchat::print( $_[0] );\n"
 	  "};\n"
 	  "sub Xchat::Embed::load {\n"
 	  "my $file = shift @_;\n"
@@ -1620,7 +1622,6 @@ perl_init (void)
 	  "sub IRC::notify_list {}\n"
 	  "sub IRC::perl_script_list {}\n"
 #endif
-
 
 	};
 #ifdef ENABLE_NLS
