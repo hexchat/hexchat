@@ -141,7 +141,6 @@ static char *gtk_xtext_conv_color (unsigned char *text, int len, int *newlen);
 static unsigned char *
 gtk_xtext_strip_color (unsigned char *text, int len, unsigned char *outbuf,
 							  int *newlen, int *mb_ret);
-static GtkType gtk_xtext_get_type (void);
 
 /* some utility functions first */
 
@@ -2234,7 +2233,7 @@ gtk_xtext_class_init (GtkXTextClass * class)
 	xtext_class->word_click = NULL;
 }
 
-static GtkType
+GtkType
 gtk_xtext_get_type (void)
 {
 	static GtkType xtext_type = 0;

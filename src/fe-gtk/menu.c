@@ -1211,7 +1211,7 @@ menu_saveexit (GtkWidget *wid, gpointer none)
 static void
 menu_docs (GtkWidget *wid, gpointer none)
 {
-	goto_url ("http://xchat.org/docs.html");
+	goto_url ("http://xchat.org/docs/");
 }
 
 /*static void

@@ -733,11 +733,11 @@ find_away_message (struct server *serv, char *nick)
 		"NAME Open in new tab\n"			"CMD !mozilla -remote 'openURL(%s,new-tab)'\n\n"\
 		"NAME Run new Mozilla\n"			"CMD !mozilla %s\n\n"\
 	"NAME ENDSUB\n"							"CMD \n\n"\
-	"NAME SUB\n"								"CMD Mozilla Firebird...\n\n"\
-		"NAME Open in existing\n"			"CMD !MozillaFirebird -remote 'openURL(%s)'\n\n"\
-		"NAME Open in new window\n"		"CMD !MozillaFirebird -remote 'openURL(%s,new-window)'\n\n"\
-		"NAME Open in new tab\n"			"CMD !MozillaFirebird -remote 'openURL(%s,new-tab)'\n\n"\
-		"NAME Run new Mozilla Firebird\n"	"CMD !MozillaFirebird %s\n\n"\
+	"NAME SUB\n"								"CMD Mozilla FireFox...\n\n"\
+		"NAME Open in existing\n"			"CMD !firefox -remote 'openURL(%s)'\n\n"\
+		"NAME Open in new window\n"		"CMD !firefox -remote 'openURL(%s,new-window)'\n\n"\
+		"NAME Open in new tab\n"			"CMD !firefox -remote 'openURL(%s,new-tab)'\n\n"\
+		"NAME Run new Mozilla FireFox\n"	"CMD !firefox %s\n\n"\
 	"NAME ENDSUB\n"							"CMD \n\n"\
 	"NAME SUB\n"								"CMD Galeon...\n\n"\
 		"NAME Open in existing\n"			"CMD !galeon -x '%s'\n\n"\
