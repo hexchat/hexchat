@@ -80,7 +80,7 @@ nick_cmp (server *serv, struct User *user1, struct User *user2)
 */
 
 static int
-userlist_insertname (session *sess, struct User *newuser)
+userlist_insertname (session *sess, struct User *newuser, struct User **after)
 {
 	int c, row = 0;
 	struct User *user;
@@ -89,6 +89,7 @@ userlist_insertname (session *sess, struct User *newuser)
 	GSList *node = g_slist_alloc ();
 
 	node->data = newuser;
+	*after = NULL;
 
 	while (list)
 	{
@@ -104,8 +105,10 @@ userlist_insertname (session *sess, struct User *newuser)
 			/* this saves a loop inside g_slist_insert */
 			node->next = list;
 			if (prev)
+			{
 				prev->next = node;
-			else
+				*after = prev->data;
+			} else
 				sess->userlist = node;
 			return row;
 		}
@@ -117,8 +120,10 @@ userlist_insertname (session *sess, struct User *newuser)
 
 	/* avoid calling g_slist_last() */
 	if (sess->userlist)
+	{
 		prev->next = node;
-	else
+		*after = prev->data;
+	} else
 		sess->userlist = node;
 
 	return -1;
@@ -128,9 +133,10 @@ static void
 update_entry (struct session *sess, struct User *user)
 {
 	int row;
+	struct User *after;
 
 	sess->userlist = g_slist_remove (sess->userlist, user);
-	row = userlist_insertname (sess, user);
+	row = userlist_insertname (sess, user, &after);
 
 	fe_userlist_move (sess, user, row);
 	fe_userlist_numbers (sess);
@@ -336,7 +342,7 @@ sub_name (struct session *sess, char *name)
 void
 add_name (struct session *sess, char *name, char *hostname)
 {
-	struct User *user;
+	struct User *user, *after;
 	int row, prefix_chars;
 	unsigned int acc;
 
@@ -357,7 +363,7 @@ add_name (struct session *sess, char *name, char *hostname)
 	if (hostname)
 		user->hostname = strdup (hostname);
 	safe_strcpy (user->nick, name + prefix_chars, NICKLEN);
-	row = userlist_insertname (sess, user);
+	row = userlist_insertname (sess, user, &after);
 
 	/* duplicate? some broken servers trigger this */
 	if (row == -2)
@@ -379,7 +385,7 @@ add_name (struct session *sess, char *name, char *hostname)
 		prefix_chars--;
 	}
 
-	fe_userlist_insert (sess, user, row, FALSE);
+	fe_userlist_insert (sess, user, row, FALSE, after);
 	fe_userlist_numbers (sess);
 }
 

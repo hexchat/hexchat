@@ -1884,6 +1884,32 @@ cmd_me (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 }
 
 static int
+cmd_mop (struct session *sess, char *tbuf, char *word[], char *word_eol[])
+{
+	struct User *user;
+	char **nicks = malloc (sizeof (char *) * (sess->total - sess->ops));
+	int i = 0;
+	GSList *list = sess->userlist;
+
+	while (list)
+	{
+		user = (struct User *) list->data;
+		if (!user->op)
+		{
+			nicks[i] = user->nick;
+			i++;
+		}
+		list = list->next;
+	}
+
+	send_channel_modes (sess, tbuf, nicks, 0, i, '+', 'o');
+
+	free (nicks);
+
+	return TRUE;
+}
+
+static int
 cmd_msg (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	char *nick = word[2];
@@ -2571,6 +2597,8 @@ const struct commands xc_cmds[] = {
 	 N_("MKICK, Mass kicks everyone except you in the current channel (needs chanop)")},
 	{"ME", cmd_me, 0, 0,
 	 N_("ME <action>, sends the action to the current channel (actions are written in the 3rd person, like /me jumps)")},
+	{"MOP", cmd_mop, 1, 1,
+	 N_("MOP, Mass op's all users in the current channel (needs chanop)")},
 	{"MSG", cmd_msg, 0, 0, N_("MSG <nick> <message>, sends a private message")},
 
 	{"NAMES", cmd_names, 1, 0,

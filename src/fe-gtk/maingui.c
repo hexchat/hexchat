@@ -1169,7 +1169,7 @@ mg_x_click_cb (GtkWidget *button, gpointer userdata)
 	int page;
 
 	/* this, to handle CTRL-W while in non-irc tab */
-	if (current_sess->gui->is_tab && mg_gui)
+	if (current_sess && current_sess->gui->is_tab && mg_gui)
 	{
 		page = gtk_notebook_get_current_page (GTK_NOTEBOOK (mg_gui->note_book));
 		if (page != 0)

@@ -656,7 +656,7 @@ fe_progressbar_end (struct server *serv)
 {
 }
 void
-fe_userlist_insert (struct session *sess, struct User *newuser, int row, int sel)
+fe_userlist_insert (struct session *sess, struct User *newuser, int row, int sel, struct User *after)
 {
 }
 int

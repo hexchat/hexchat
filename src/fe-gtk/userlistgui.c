@@ -233,28 +233,36 @@ fe_userlist_remove (session *sess, struct User *user)
 }
 
 void
-fe_userlist_insert (session *sess, struct User *newuser, int row, int sel)
+fe_userlist_insert (session *sess, struct User *newuser, int row, int sel, struct User *after)
 {
 	gfloat val;
 	GtkTreeModel *model = sess->res->user_model;
 	GdkPixbuf *pix;
-	GtkTreeIter iter;
+	GtkTreeIter *iter;
 
 	val = userlist_get_value (sess->gui->user_tree);
+	iter = (GtkTreeIter *)newuser->gui;
 
-	switch (row)
+	if (after)
 	{
-	case -1:
-		gtk_list_store_append (GTK_LIST_STORE (model), &iter);
-		break;
-	default:
-		/* row 0 does an *_append() */
-		gtk_list_store_insert (GTK_LIST_STORE (model), &iter, row);
+		gtk_list_store_insert_after (GTK_LIST_STORE (model), iter,
+											  (GtkTreeIter *)after->gui);
+	} else
+	{
+		switch (row)
+		{
+		case -1:
+			gtk_list_store_append (GTK_LIST_STORE (model), iter);
+			break;
+		default:
+			/* row 0 does an *_prepend() */
+			gtk_list_store_insert (GTK_LIST_STORE (model), iter, row);
+		}
 	}
 
 	pix = get_user_icon (sess->server, newuser);
 
-	gtk_list_store_set (GTK_LIST_STORE (model), &iter,
+	gtk_list_store_set (GTK_LIST_STORE (model), iter,
 							  0, pix,
 							  1, newuser->nick,
 							  2, newuser->hostname,
@@ -285,14 +293,14 @@ fe_userlist_insert (session *sess, struct User *newuser, int row, int sel)
 
 		if (sel)
 			gtk_tree_selection_select_iter (gtk_tree_view_get_selection
-										(GTK_TREE_VIEW (sess->gui->user_tree)), &iter);
+										(GTK_TREE_VIEW (sess->gui->user_tree)), iter);
 	}
 }
 
 void
 fe_userlist_move (session *sess, struct User *user, int new_row)
 {
-	fe_userlist_insert (sess, user, new_row, fe_userlist_remove (sess, user));
+	fe_userlist_insert (sess, user, new_row, fe_userlist_remove (sess, user), NULL);
 }
 
 void
