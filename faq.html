@@ -51,6 +51,8 @@ body {
 <br><br>
 <a href="faq.html#q212">12. How can I run the /dccserver command?</a>
 <br><br>
+<a href="faq.html#q213">13. (Only for 1.9.x) How can I make my input text white over black?</a>
+<br><br>
 </blockquote>
 
 <h3>3. Section Three: Crashes, Bugs and other problems.</h3>
@@ -224,6 +226,7 @@ Version 1.8:
 
 Version 1.9/2.0:
    Refer to <a href="http://xchat.org/encoding.html">http://xchat.org/encoding.html</a>.
+
 </pre>
 
 <b><a name="q210">10. Why does the timestamp overlap some nicknames?</a></b>
@@ -255,7 +258,23 @@ Version 1.9/2.0:
    root. Why do you need this anyway? Just use normal DCC.
 
 </pre>
+<b><a name="q213">13. (Only for 1.9.x) How can I make my input text white over black?</a></b>
+<pre>
+   Add this to your ~/.gtkrc-2.0 (It's a file, if it doesnt exists just create one):
 
+   style "xchat-inputbox-style"
+   {
+      text[NORMAL] = "#FFFFFF"
+      base[NORMAL] = "#000000"
+      GtkEntry::cursor-color = "#ffffff"
+      font_name = "Verdana 16"
+   }
+   widget "*.xchat-inputbox" style : application "xchat-inputbox-style"
+
+   Change "Verdana 16" to the font you are using.
+   And be *SURE* that "Use the Text box font" is unchecked. Its under
+   "Preferences-> Input box".
+</pre>
 <h3>3. Section Three: Crashes, Bugs and other problems.</h3>
 <b><a name="q31">1. Why does X-Chat leak so much memory?</a></b>
 <pre>
@@ -277,3 +296,4 @@ Version 1.9/2.0:
 
 </body>
 </html>
+
