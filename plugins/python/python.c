@@ -1914,6 +1914,8 @@ xchat_plugin_init(xchat_plugin *plugin_handle,
 {
 	char *argv[] = {"<xchat>", 0};
 
+	ph = plugin_handle;
+
 	/* Block double initalization. */
 	if (initialized != 0) {
 		xchat_print(ph, "Python interface already loaded");
@@ -1923,8 +1925,6 @@ xchat_plugin_init(xchat_plugin *plugin_handle,
 		return 0;
 	}
 	initialized = 1;
-
-	ph = plugin_handle;
 
 	*plugin_name = "Python";
 	*plugin_version = VERSION;
