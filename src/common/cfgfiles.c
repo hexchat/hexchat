@@ -430,6 +430,7 @@ const struct prefs vars[] = {
 	{"irc_who_join", P_OFFINT (userhost), TYPE_BOOL},
 
 	{"input_beep_chans", P_OFFINT (beepchans), TYPE_BOOL},
+	{"input_beep_hilight", P_OFFINT (beephilight), TYPE_BOOL},
 	{"input_beep_msg", P_OFFINT (beepmsg), TYPE_BOOL},
 	{"input_command_char", P_OFFSET (cmdchar), TYPE_STR},
 	{"input_filter_beep", P_OFFINT (filterbeep), TYPE_BOOL},

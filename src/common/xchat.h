@@ -208,6 +208,7 @@ struct xchatprefs
 	unsigned int filterbeep;
 	unsigned int beepmsg;
 	unsigned int beepchans;
+	unsigned int beephilight;
 	unsigned int truncchans;
 	unsigned int privmsgtab;
 	unsigned int logging;

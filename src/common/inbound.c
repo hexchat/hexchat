@@ -316,8 +316,11 @@ inbound_chanmsg (server *serv, char *tbuf, char *chan, char *from, char *text,
 			fe_beep ();
 
 	if (is_hilight (text, sess, serv))
+	{
 		hilight = TRUE;
-
+		if (prefs.beephilight)
+			fe_beep ();
+	}
 	if (sess->type == SESS_DIALOG)
 		EMIT_SIGNAL (XP_TE_DPRIVMSG, sess, from, text, nickchar, NULL, 0);
 	else if (hilight)
