@@ -256,23 +256,24 @@ mg_configure_cb (GtkWidget *wid, GdkEventConfigure *event, session *sess)
 			if (prefs.mainwindow_save)
 			{
 				sess = current_sess;
-#ifdef WIN32
 				prefs.mainwindow_left = event->x;
 				prefs.mainwindow_top = event->y;
-#else
-				gtk_window_get_position (GTK_WINDOW (mg_gui->window),
-												 &prefs.mainwindow_left,
-												 &prefs.mainwindow_top);
-#endif
-				gtk_window_get_size (GTK_WINDOW (mg_gui->window),
-											&prefs.mainwindow_width,
-											&prefs.mainwindow_height);
+				prefs.mainwindow_width = event->width;
+				prefs.mainwindow_height = event->height;
 			}
 		}
 	}
 
 	if (sess)
 	{
+		if (sess->type == SESS_DIALOG && prefs.mainwindow_save)
+		{
+			prefs.dialog_left = event->x;
+			prefs.dialog_top = event->y;
+			prefs.dialog_width = event->width;
+			prefs.dialog_height = event->height;
+		}
+
 		if (((GtkXText *) sess->gui->xtext)->transparent)
 			gtk_widget_queue_draw (sess->gui->xtext);
 	}
@@ -2052,8 +2053,13 @@ mg_create_topwindow (session *sess)
 	GtkWidget *vbox;
 	GtkWidget *vvbox;
 
-	win = gtkutil_window_new ("X-Chat ["VERSION"]", NULL, prefs.mainwindow_width,
-									  prefs.mainwindow_height, 0);
+	if (sess->type == SESS_DIALOG)
+		win = gtkutil_window_new ("X-Chat ["VERSION"]", NULL,
+										  prefs.dialog_width, prefs.dialog_height, 0);
+	else
+		win = gtkutil_window_new ("X-Chat ["VERSION"]", NULL,
+										  prefs.mainwindow_width,
+										  prefs.mainwindow_height, 0);
 	sess->gui->window = win;
 	gtk_container_set_border_width (GTK_CONTAINER (win), 2);
 	g_signal_connect (G_OBJECT (win), "focus_in_event",

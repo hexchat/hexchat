@@ -378,6 +378,10 @@ const struct prefs vars[] = {
 	{"gui_auto_open_dialog", P_OFFINT (autodialog), TYPE_BOOL},
 	{"gui_auto_open_recv", P_OFFINT (autoopendccrecvwindow), TYPE_BOOL},
 	{"gui_auto_open_send", P_OFFINT (autoopendccsendwindow), TYPE_BOOL},
+	{"gui_dialog_height", P_OFFINT (dialog_height), TYPE_INT},
+	{"gui_dialog_left", P_OFFINT (dialog_left), TYPE_INT},
+	{"gui_dialog_top", P_OFFINT (dialog_top), TYPE_INT},
+	{"gui_dialog_width", P_OFFINT (dialog_width), TYPE_INT},
 	{"gui_hide_menu", P_OFFINT (hidemenu), TYPE_BOOL},
 	{"gui_input_style", P_OFFINT (style_inputbox), TYPE_BOOL},
 	{"gui_lagometer", P_OFFINT (lagometer), TYPE_INT},
@@ -539,6 +543,8 @@ load_config (void)
 	prefs.max_lines = 300;
 	prefs.mainwindow_width = 640;
 	prefs.mainwindow_height = 400;
+	prefs.dialog_width = 500;
+	prefs.dialog_height = 256;
 	prefs.dcctimeout = 180;
 	prefs.dccstalltimeout = 60;
 	prefs.notify_timeout = 15;

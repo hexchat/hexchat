@@ -154,6 +154,10 @@ struct xchatprefs
 	int mainwindow_top;
 	int mainwindow_width;
 	int mainwindow_height;
+	int dialog_left;
+	int dialog_top;
+	int dialog_width;
+	int dialog_height;
 	int dccpermissions;
 	int recon_delay;
 	int bantype;

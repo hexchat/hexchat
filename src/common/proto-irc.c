@@ -483,8 +483,11 @@ process_numeric (session * sess, int n,
 
 			/* try to show only user initiated whos */
 			if (!who_sess || !who_sess->doing_who)
+			{
+printf("chan=%s who_sess=%p\n", word[4], who_sess);
 				EMIT_SIGNAL (XP_TE_SERVTEXT, serv->server_session, text, word[1],
 								 NULL, NULL, 0);
+			}
 		} else
 		{
 			if (!serv->p_cmp (word[8], serv->nick))
