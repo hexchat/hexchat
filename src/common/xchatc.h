@@ -37,6 +37,6 @@ void lag_check (void);
 void kill_session_callback (session * killsess);
 void xchat_exit (void);
 void xchat_exec (char *cmd);
-char *get_network (session *sess);
+char *get_network (session *sess, gboolean fallback);
 
 #endif

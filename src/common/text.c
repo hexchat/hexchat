@@ -334,7 +334,7 @@ log_open (session *sess)
 
 	log_close (sess);
 	sess->logfd = log_open_file (sess->server->servername, sess->channel,
-										  get_network (sess));
+										  get_network (sess, FALSE));
 
 	if (!log_error && sess->logfd == -1)
 	{

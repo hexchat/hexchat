@@ -3,6 +3,19 @@
   `----------------------'
 
 ----------------------------------------------------------------------
+ 2.4.0
+----------------------------------------------------------------------
+
+ - Updated translations (de, eu, it, ko, lt, nl, sk, sr, zh_CN).
+ - Fixed a possible crash in loading pevents.conf.
+ - Made default URL handlers work with Firefox 0.9.x by adding the
+   "-a firefox" argument.
+ - Plugin API: Added xchat_get_info field "libdirfs".
+ - Fixed crash when trying to dcc send a filename which has encoding
+   that doesn't match G_FILENAME_ENCODING.
+
+
+----------------------------------------------------------------------
  2.1.1
 ----------------------------------------------------------------------
 
@@ -14,6 +27,7 @@
  - The standard beep can now be overridden with a sound-file.
  - Fixed tab-nick-completion's cycling behaviour.
  - New keyboard shortcut for line up and down (shift-arrow up/down).
+ - Fixed: [986958] tab completion with GTK Input-Methods.
 
 
 ----------------------------------------------------------------------

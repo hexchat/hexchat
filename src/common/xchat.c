@@ -423,12 +423,15 @@ new_ircwindow (server *serv, char *name, int type, int focus)
 }
 
 char *
-get_network (session *sess)
+get_network (session *sess, gboolean fallback)
 {
 	if (sess->server->network)
 		return ((ircnet *)sess->server->network)->name;
 
-	return sess->server->servername;
+	if (fallback)
+		return sess->server->servername;
+
+	return NULL;
 }
 
 static void

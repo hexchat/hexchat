@@ -904,7 +904,7 @@ mg_create_sess_tree (GtkWidget *menu)
 		if (serv->servername[0] == 0)
 			top_item = gtk_menu_item_new_with_label (_("<none>"));
 		else
-			top_item = gtk_menu_item_new_with_label (get_network (serv->front_session));
+			top_item = gtk_menu_item_new_with_label (get_network (serv->front_session, TRUE));
 
 		gtk_menu_shell_prepend (GTK_MENU_SHELL (menu), top_item);
 		gtk_widget_show (top_item);

@@ -140,8 +140,14 @@ gtkutil_check_file (char *file, struct file_req *freq)
 		/* convert to UTF8. It might be converted back to locale by
 			server.c's g_convert */
 		utf8_file = g_filename_to_utf8 (file, -1, NULL, NULL, NULL);
-		freq->callback (freq->userdata, utf8_file);
-		g_free (utf8_file);
+		if (utf8_file)
+		{
+			freq->callback (freq->userdata, utf8_file);
+			g_free (utf8_file);
+		} else
+		{
+			gtkutil_simpledialog ("Filename encoding is corrupt.");
+		}
 	} else
 	{
 		if (freq->write)
