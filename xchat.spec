@@ -1,6 +1,6 @@
 Summary: Graphical IRC (chat) client
 Name: xchat
-Version: 2.0.3
+Version: 2.0.4
 Release: 0
 Epoch: 1
 Group: Applications/Internet

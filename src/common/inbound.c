@@ -1088,9 +1088,11 @@ inbound_user_info (session *sess, char *chan, char *user, char *host,
 			sprintf (uhost, "%s@%s", user, host);
 			if (!userlist_add_hostname (who_sess, nick, uhost, realname, servname, away))
 			{
-				free (uhost);
 				if (!who_sess->doing_who)
+				{
+					free (uhost);
 					return 0;
+				}
 			}
 			free (uhost);
 		} else
