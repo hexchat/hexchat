@@ -404,12 +404,12 @@ dcc_abort (session *sess, struct DCC *dcc)
 								 NULL, 0);
 				break;
 			case TYPE_SEND:
-				EMIT_SIGNAL (XP_TE_DCCSENDABORT, sess, file_part (dcc->file),
-								 dcc->nick, NULL, NULL, 0);
+				EMIT_SIGNAL (XP_TE_DCCSENDABORT, sess, dcc->nick,
+								 file_part (dcc->file), NULL, NULL, 0);
 				break;
 			case TYPE_RECV:
-				EMIT_SIGNAL (XP_TE_DCCRECVABORT, sess, dcc->file,
-								 dcc->nick, NULL, NULL, 0);
+				EMIT_SIGNAL (XP_TE_DCCRECVABORT, sess, dcc->nick,
+								 dcc->file, NULL, NULL, 0);
 			}
 			break;
 		default:
