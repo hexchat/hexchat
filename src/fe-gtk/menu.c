@@ -1341,7 +1341,9 @@ normalitem:
 			if (mymenu[i].key != 0)
 				gtk_widget_add_accelerator (item, "activate", accel_group,
 										mymenu[i].key,
-										mymenu[i].key == GDK_F1 ? 0 : GDK_CONTROL_MASK,
+										mymenu[i].key == GDK_F1 ? 0 :
+										mymenu[i].key == GDK_w ? GDK_CONTROL_MASK 
+										| GDK_SHIFT_MASK : GDK_CONTROL_MASK,
 										GTK_ACCEL_VISIBLE);
 			if (mymenu[i].callback)
 				g_signal_connect (G_OBJECT (item), "activate",

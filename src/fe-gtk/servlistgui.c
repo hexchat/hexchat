@@ -612,11 +612,12 @@ servlist_serv_press_cb (GtkWidget *widget, GdkEventButton *event,
 	ircserver *serv;
 	GtkTreeModel *model;
 
-	if (event->type == GDK_2BUTTON_PRESS)
+	/* this conflicts with inline editing too much */
+/*	if (event->type == GDK_2BUTTON_PRESS)
 	{
 		if (selected_net != NULL)
 			servlist_connect_cb (widget, user_data);
-	}
+	}*/
 
 	if (event->button == 3)
 	{
