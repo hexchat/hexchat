@@ -66,6 +66,7 @@ notify_gui_update (void)
 
 	row = gtkutil_clist_selection (notify_guilist);
 
+	gtk_clist_freeze ((GtkCList *) notify_guilist);
 	gtk_clist_clear ((GtkCList *) notify_guilist);
 	while (list)
 	{
@@ -96,7 +97,10 @@ notify_gui_update (void)
 			if (!lastseen)
 				nnew[3] = _("Never");
 			else
+			{
 				nnew[3] = ctime (&lastseen);
+				nnew[3][strlen (nnew[3]) - 1] = 0;	/* remove the \n */
+			}
 			crow = gtk_clist_append ((GtkCList *) notify_guilist, nnew);
 			gtk_clist_set_foreground (GTK_CLIST (notify_guilist),
 											  crow, &colors[4]);
@@ -116,6 +120,7 @@ notify_gui_update (void)
 					nnew[1] = _("Online");
 					nnew[2] = servnot->server->servername;
 					nnew[3] = ctime (&servnot->laston);
+					nnew[3][strlen (nnew[3]) - 1] = 0;	/* remove the \n */
 					crow = gtk_clist_append ((GtkCList *) notify_guilist, nnew);
 					gtk_clist_set_foreground (GTK_CLIST (notify_guilist),
 													  crow, &colors[3]);
@@ -128,6 +133,7 @@ notify_gui_update (void)
 	}
 	if (row != -1)
 		gtk_clist_select_row ((GtkCList *) notify_guilist, row, 0);
+	gtk_clist_thaw ((GtkCList *) notify_guilist);
 }
 
 static void
