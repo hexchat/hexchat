@@ -235,13 +235,19 @@ server_cb (char *word[], char *word_eol[], void *userdata)
 	int retVal = 0;
 	int count = 0;
 
-	AV* wd = newAV ();
-	AV* wd_eol = newAV ();
+	/* these must be initialized after SAVETMPS */
+	AV* wd = NULL;
+	AV* wd_eol = NULL;
 
 	dSP;
 	ENTER;
 	SAVETMPS;
 	
+	wd = newAV ();
+	sv_2mortal ((SV*)wd);
+	wd_eol = newAV ();
+	sv_2mortal ((SV*)wd_eol);
+
 	for (count = 1;
 	(count < 32) && (word[count] != NULL) && (word[count][0] != 0);
 	count++) {
@@ -300,19 +306,25 @@ command_cb (char* word[], char* word_eol[], void *userdata)
 	int retVal = 0;
 	int count = 0;
 
-	AV* wd = newAV ();
-	AV* wd_eol = newAV ();
+/* 	AV* wd = newAV (); */
+/* 	AV* wd_eol = newAV (); */
+	/* these must be initialized after SAVETMPS */
+	AV* wd = NULL;
+	AV* wd_eol = NULL;
 
 	dSP;
 	ENTER;
 	SAVETMPS;
 	
+	wd = newAV ();
+	sv_2mortal ((SV*)wd);
+	wd_eol = newAV ();
+	sv_2mortal ((SV*)wd_eol);
+
 	for (count = 1;
 		  (count < 32) && (word[count] != NULL) && (word[count][0] != 0);
 		  count++) {
 	  av_push (wd, newSVpv (word[count], 0));
-
-	
 	}
 
 	for (count = 1;
@@ -369,12 +381,16 @@ print_cb (char *word[], void *userdata)
 	int retVal = 0;
 	int count = 0;
 
-	AV* wd = newAV ();
+	/* must be initialized after SAVETMPS */
+	AV* wd = NULL;
 
 	dSP;
 	ENTER;
 	SAVETMPS;
-	
+
+	wd = newAV ();
+	sv_2mortal ((SV*)wd);
+
 	for (count = 1;
 	(count < 32) && (word[count] != NULL) && (word[count][0] != 0);
 	count++)
