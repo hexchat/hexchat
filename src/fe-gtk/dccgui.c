@@ -473,19 +473,14 @@ recv_row_selected (GtkWidget * clist, gint row, gint column,
 static void
 browse_folder (char *dir)
 {
-	dir = g_locale_from_utf8 (dir, -1, 0, 0, 0);
-	if (dir)
-	{
 #ifdef WIN32
-		ShellExecute (0, "open", dir, NULL, NULL, SW_SHOWNORMAL);
+	ShellExecute (0, "open", dir, NULL, NULL, SW_SHOWNORMAL);
 #else
-		char buf[512];
+	char buf[512];
 
-		snprintf (buf, sizeof (buf), "file://%s", dir);
-		goto_url (buf);
+	snprintf (buf, sizeof (buf), "file://%s", dir);
+	goto_url (buf);
 #endif
-		g_free (dir);
-	}
 }
 
 static gboolean

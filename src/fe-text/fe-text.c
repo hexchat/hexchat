@@ -636,11 +636,11 @@ fe_is_banwindow (struct session *sess)
 	return 0;
 }
 void
-fe_add_ban_list (struct session *sess, char *chan, char *users, char *topic)
+fe_add_ban_list (struct session *sess, char *mask, char *who, char *when, int is_exemption)
 {
 }               
 void
-fe_ban_list_end (struct session *sess)
+fe_ban_list_end (struct session *sess, int is_exemption)
 {
 }
 void
@@ -821,6 +821,10 @@ char *fe_get_inputbox_contents (struct session *sess)
 }
 void fe_set_inputbox_contents (struct session *sess, char *text)
 {
+}
+int fe_get_inputbox_cursor (struct session *sess)
+{
+	return 0;
 }
 void fe_set_inputbox_cursor (struct session *sess, int delta, int pos)
 {
