@@ -544,7 +544,7 @@ mg_populate (session *sess)
 	if (gui->pane)
 	{
 		/* no change? then there will be no expose, so render now */
-		if (vis != gui->ul_hidden)
+		if (vis != gui->ul_hidden && gui->user_box->allocation.width > 1)
 			render = FALSE;
 	} else
 	{
