@@ -1334,7 +1334,7 @@ key_action_tab_comp (GtkWidget * wid, GdkEventKey * ent, char *d1, char *d2,
 		}
 
 		/* check if we can match a command */
-		else if (chan_start == 0 && text[0] == '/')
+		else if (chan_start == 0 && text[0] == prefs.cmdchar[0])
 		{
 			tab_comp_cmd (sess, wid);
 			return 2;
