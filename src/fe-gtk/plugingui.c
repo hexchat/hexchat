@@ -175,7 +175,11 @@ plugingui_unload (GtkWidget * wid, gpointer unused)
 #ifdef WIN32
 	if (len > 4 && strcasecmp (file + len - 4, ".dll") == 0)
 #else
+#if defined(__hpux)
+	if (len > 3 && strcasecmp (file + len - 3, ".sl") == 0)
+#else
 	if (len > 3 && strcasecmp (file + len - 3, ".so") == 0)
+#endif
 #endif
 	{
 		if (plugin_kill (modname, FALSE) == 2)

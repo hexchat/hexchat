@@ -470,6 +470,20 @@ server_connected (server * serv)
 	set_server_name (serv, serv->servername);
 }
 
+#ifdef WIN32
+
+static gboolean
+server_close_pipe (int *pipefd)	/* see comments below */
+{
+	close (pipefd[0]);
+	close (pipefd[1]);
+	free (pipefd);
+
+	return FALSE;
+}
+
+#endif
+
 static void
 server_stopconnecting (server * serv)
 {
@@ -483,12 +497,22 @@ server_stopconnecting (server * serv)
 	/* kill the child process trying to connect */
 	kill (serv->childpid, SIGKILL);
 	waitpid (serv->childpid, NULL, 0);
-#else
-	PostThreadMessage (serv->childpid, WM_QUIT, 0, 0);
-#endif
 
 	close (serv->childwrite);
 	close (serv->childread);
+#else
+	PostThreadMessage (serv->childpid, WM_QUIT, 0, 0);
+
+	/* win32 crashes if we try to close the pipe FDs now (something weird
+		going on with giowin32!) This dirty trick works-around it. */
+	{
+		int *pipefd = malloc (sizeof (int) * 2);
+		pipefd[0] = serv->childread;
+		pipefd[1] = serv->childwrite;
+		/* can't pass "serv" here, since it might be free()ed very soon */
+		g_idle_add ((void *)server_close_pipe, pipefd);
+	}
+#endif
 
 #ifdef USE_OPENSSL
 	if (serv->ssl_do_connect_tag)

@@ -1885,7 +1885,11 @@ cmd_load (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 #ifdef WIN32
 	if (len > 4 && strcasecmp (".dll", word[2] + len - 4) == 0)
 #else
+#if defined(__hpux)
+	if (len > 3 && strcasecmp (".sl", word[2] + len - 3) == 0)
+#else
 	if (len > 3 && strcasecmp (".so", word[2] + len - 3) == 0)
+#endif
 #endif
 	{
 		arg = NULL;
@@ -2432,7 +2436,11 @@ cmd_unload (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 #ifdef WIN32
 	if (len > 4 && strcasecmp (word[2] + len - 4, ".dll") == 0)
 #else
+#if defined(__hpux)
+	if (len > 3 && strcasecmp (word[2] + len - 3, ".sl") == 0)
+#else
 	if (len > 3 && strcasecmp (word[2] + len - 3, ".so") == 0)
+#endif
 #endif
 		by_file = TRUE;
 

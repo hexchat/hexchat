@@ -418,8 +418,13 @@ plugin_auto_load (session *sess)
 	for_files ("./plugins", "*.dll", plugin_auto_load_cb);
 	for_files (get_xdir_fs (), "*.dll", plugin_auto_load_cb);
 #else
+#if defined(__hpux)
+	for_files (XCHATLIBDIR"/plugins", "*.sl", plugin_auto_load_cb);
+	for_files (get_xdir_fs (), "*.sl", plugin_auto_load_cb);
+#else
 	for_files (XCHATLIBDIR"/plugins", "*.so", plugin_auto_load_cb);
 	for_files (get_xdir_fs (), "*.so", plugin_auto_load_cb);
+#endif
 #endif
 }
 
