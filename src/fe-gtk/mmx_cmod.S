@@ -510,6 +510,6 @@ have_mmx:
 	ret
 
 8:
-	xor	%eax,%eax	# failed, no mmx
+	xorl	%eax,%eax	# failed, no mmx
 	popl	%ebx
 	ret
