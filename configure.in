@@ -2,7 +2,7 @@ dnl Process this file with autoconf to produce a configure script.
 
 AC_INIT(src)
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE(xchat, 2.0.0pre1)
+AM_INIT_AUTOMAKE(xchat, 2.0.0)
 AM_MAINTAINER_MODE
 AC_PROG_CC
 AC_PROG_CPP
@@ -409,7 +409,10 @@ if test "$plugin" = yes; then
 	fi
 	if test "$have_dl" = yes; then
 		AC_DEFINE(USE_PLUGIN)
-		LIBS="$LIBS -rdynamic"
+		AC_PATH_PROG(pkgconfigpath, pkg-config)
+		# we just need the -Wl,--export-dynamic, but not -lgmodule-2.0
+		RDYNAMIC_FLAGS="`$pkgconfigpath gmodule-2.0 --libs | $sedpath 's/ -lgmodule-2.0//'`"
+		LIBS="$LIBS $RDYNAMIC_FLAGS"
 		if test "x$GCC" = "xyes"; then
 			GUI_LIBS="$GUI_LIBS -Wl,--version-script,\$(srcdir)/../version-script"
 		fi
