@@ -164,6 +164,7 @@ struct _GtkXText
 	unsigned int skip_fills:1;
 	unsigned int skip_border_fills:1;
 	unsigned int skip_stamp:1;
+	unsigned int skip_clip:1;
 	unsigned int render_hilights_only:1;
 	unsigned int in_hilight:1;
 	unsigned int un_hilight:1;

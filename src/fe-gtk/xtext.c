@@ -1225,11 +1225,12 @@ gtk_xtext_expose (GtkWidget * widget, GdkEventExpose * event)
 		ent_end = xtext->buffer->text_last;
 
 	/* kludge to fix an unknown bug */
-	event->area.y -= xtext->fontsize;
-	event->area.height += xtext->fontsize;
+/*	event->area.y -= xtext->fontsize;
+	event->area.height += xtext->fontsize;*/
 
 	/* can't over-write the same text with xft, or the AA will change */
-	backend_set_clip (xtext, &event->area);
+	if (!xtext->skip_clip)
+		backend_set_clip (xtext, &event->area);
 
 	xtext->skip_fills = TRUE;
 	xtext->skip_border_fills = TRUE;
@@ -1239,7 +1240,9 @@ gtk_xtext_expose (GtkWidget * widget, GdkEventExpose * event)
 	xtext->skip_fills = FALSE;
 	xtext->skip_border_fills = FALSE;
 
-	backend_clear_clip (xtext);
+	if (!xtext->skip_clip)
+		backend_clear_clip (xtext);
+	xtext->skip_clip = FALSE;
 
 xit:
 	x = xtext->buffer->indent - ((xtext->space_width + 1) / 2);
@@ -3780,6 +3783,7 @@ gtk_xtext_render_page (GtkXText * xtext)
 	if (!xtext->pixmap && abs (overlap) < height)
 	{
 		/* exposures will do the rest */
+		xtext->skip_clip = TRUE;
 		gdk_window_scroll (GTK_WIDGET (xtext)->window, 0, overlap);
 		return;
 	}
