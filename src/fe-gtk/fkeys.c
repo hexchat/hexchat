@@ -1536,39 +1536,47 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 			else
 			{
 				/* bash style completion */
-				if (strlen (result) > elen) /* the largest common prefix is larger than nick, change the data */
+				if (g_list_next(list) != NULL)
 				{
-					if (prefix_len)
-						g_utf8_strncpy (buf, text, prefix_len);
-					strncat (buf, result, COMP_BUF - prefix_len);
-					cursor_pos = strlen (buf);
-					g_free(result);
+					if (strlen (result) > elen) /* the largest common prefix is larger than nick, change the data */
+					{
+						if (prefix_len)
+							g_utf8_strncpy (buf, text, prefix_len);
+						strncat (buf, result, COMP_BUF - prefix_len);
+						cursor_pos = strlen (buf);
+						g_free(result);
 #if !GLIB_CHECK_VERSION(2,4,0)
-					g_utf8_validate (buf, -1, (const gchar **)&result);
-					(*result) = 0;
+						g_utf8_validate (buf, -1, (const gchar **)&result);
+						(*result) = 0;
 #endif
-					if (postfix)
-					{
-						strcat (buf, " ");
-						strncat (buf, postfix, COMP_BUF - cursor_pos -1);
-					}
-					gtk_entry_set_text (GTK_ENTRY (t), buf);
-					gtk_editable_set_position (GTK_EDITABLE (t), g_utf8_pointer_to_offset(buf, buf + cursor_pos));
-					buf[0] = 0;
-				}
-				while (list)
-				{
-					if (strlen (buf) + strlen(list->data) >= COMP_BUF)
-					{
-						PrintText (sess, buf);
+						if (postfix)
+						{
+							strcat (buf, " ");
+							strncat (buf, postfix, COMP_BUF - cursor_pos -1);
+						}
+						gtk_entry_set_text (GTK_ENTRY (t), buf);
+						gtk_editable_set_position (GTK_EDITABLE (t), g_utf8_pointer_to_offset(buf, buf + cursor_pos));
 						buf[0] = 0;
 					}
-					sprintf (buf, "%s%s ", buf, (char*)list->data);
-					list = g_list_next (list);
+					else
+						g_free(result);
+					while (list)
+					{
+						if (strlen (buf) + strlen(list->data) >= COMP_BUF)
+						{
+							PrintText (sess, buf);
+							buf[0] = 0;
+						}
+						sprintf (buf, "%s%s ", buf, (char*)list->data);
+						list = g_list_next (list);
+					}
+					PrintText (sess, buf);
+					g_completion_free(gcomp);
+					return 2;
 				}
-				PrintText (sess, buf);
-				g_completion_free(gcomp);
-				return 2;
+				/* Only one matching entry */
+				g_free(result);
+				result = list->data;
 			}
 		}
 	}

@@ -5,9 +5,40 @@ It is not easy! Be warned! You need either one of these compilers:
 	* Mingw (http://www.mingw.org)
 	* MS Visual C
 
-You also need GTK+ 2.0 for win32. Get it from http://www.gimp.org/win32/
-or http://www.dropline.net/gtk/. Install all the binary and development
-packages. The dropline packages are probably easier to install.
+
+Getting GTK
+~~~~~~~~~~~
+
+You also need GTK+ 2.0 for win32. Altough the GTK packages from the GIMP website are
+larger and harder to install they work very well.
+
+	1) Get the following packages from: 
+	  http://www.gimp.org/~tml/gimp/win32/downloads.html
+
+	  - gtk+-2.4.3.tar.gz
+	  - gtk+-dev-2.4.3.tar.gz
+	  - dirent.zip
+	  - gettext-runtime-0.13.1.zip
+	  - gettext-tools-0.13.1.zip
+	  - atk-1.6.0.zip
+	  - atk-dev-1.6.0.zip
+	  - pango-1.4.0.zip
+	  - pango-dev-1.4.0.zip
+	  - libpng (http://gnuwin32.sourceforge.net/packages/libpng.htm) Binaries & Developer files.
+	  - GNU libiconv (Not source files)
+	  - glib-2.4.2.zip
+	  - glib-dev-2.4.2.zip
+	  - pkgconfig-0.15.zip
+
+	2) Extract all files to a suitable place such as c:\devtools
+
+	3) Windows 2000, XP & 2003 users:
+	  - Start->(Settings->)Control Panel->System Applet
+	  - Advanced Tab->Environment Variables
+	  - Under "User variables for <user>" append ";C:\devtools" to the end of the PATH Variable
+	  - Click Ok twice and close the Control Panel
+	
+	  For Windows 9x users your basicly on your own for now.
 
 
 Mingw
@@ -19,6 +50,7 @@ Mingw
 MS Visual C
 ~~~~~~~~~~~
 
+	
 	1) Edit src\makeinc.msc
 
 	  You need to change the variables GLIB, GTK and LIBS to point
@@ -36,21 +68,45 @@ MS Visual C
 
 	2) In MSVC's includes directory, copy io.h to unistd.h.
 
-	3) Type this:
+	MS VC++ 6
+	~~~~~~~~~
 
-		cd src
-		nmake -f makefile.msc
+		3) Download Platform SDK from http://www.microsoft.com/msdownload/platformsdk/sdkupdate/
+		  (you only need Core SDK) - ~200 MB Download (Be warned).
+		4) Open the build enviroment.
+		 
+		  a) If your planning on developing modifications to the xchat code go:
+		     Start->Programs->Microsoft Platform SDK...->Open Build Enviroment...->(Choose OS)->... (Debug)
 
-	4) Use your superior debugging skills to fix the compile errors.
+		  b) If your compiling just to use xchat and wish to no recieve debug messages:
+		     Start->Programs->Microsoft Platform SDK...->Open Build Enviroment...->(Choose OS)->... (Retail)
+		5) Change directory into where you have download the xchat source to and type this:
+		  cd src
+		  nmake -f makefile.msc clean
+		  nmake -f makefile.msc
+		6) Copy fe-gtk\xchat.exe to another place.
+	MS VC++ 7 (.NET)
+	~~~~~~~~~~~~~~~~
 
-	5) Copy fe-gtk\xchat.exe where ever you need it.
-
+		3) Open the Visual Studio .NET Command Prompt
+		 
+		4) Change directory into where you have download the xchat source to and type this:
+		  cd src
+		  nmake -f makefile.msc clean
+		  nmake -f makefile.msc
+		5) Copy fe-gtk\xchat.exe to another place.
+	
 
 Common problems:
 ~~~~~~~~~~~~~~~~
 
  * gdk-pixbuf-csource must be in PATH.
+   FIX: See step 3 for setting up GTK
 
  * You might need to install dirent.zip manually.
+   FIX: Copy C:\devtools\include\dirent.h to C:\devtools\include\glib-2.0\dirent.h
 
  * Include path to libintl.h should be in GLIB= (makeinc.msc).
+   FIX: Copy C:\devtools\include\libintl.h to C:\devtools\include\glib-2.0\libintl.h
+
+

@@ -1619,7 +1619,7 @@ handle_dcc (struct session *sess, char *nick, char *word[],
 	if (!strcasecmp (type, "CHAT"))
 	{
 		port = atoi (word[8]);
-		sscanf (word[7], "%lu", &addr);
+		addr = strtoul (word[7], NULL, 10);
 
 		if (port == 0)
 			pasvid = atoi (word[9]);
@@ -1687,7 +1687,7 @@ handle_dcc (struct session *sess, char *nick, char *word[],
 			dcc = find_dcc (nick, word[6], TYPE_SEND);
 		if (dcc)
 		{
-			sscanf (word[8], "%lu", &size);
+			size = strtoul (word[8], NULL, 10);
 			dcc->resumable = size;
 			if (dcc->resumable < dcc->size)
 			{
@@ -1731,8 +1731,8 @@ handle_dcc (struct session *sess, char *nick, char *word[],
 		int psend = 0;
 
 		port = atoi (word[8]);
-		sscanf (word[7], "%lu", &addr);
-		sscanf (word[9], "%lu", &size);
+		addr = strtoul (word[7], NULL, 10);
+		size = strtoul (word[9], NULL, 10);
 
 		if (port == 0) /* Passive dcc requested */
 			pasvid = atoi (word[10]);

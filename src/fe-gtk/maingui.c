@@ -47,7 +47,9 @@
 #include "../common/text.h"
 #include "../common/xchatc.h"
 #include "../common/outbound.h"
+#include "../common/inbound.h"
 #include "../common/plugin.h"
+#include "../common/modes.h"
 #include "fe-gtk.h"
 #include "banlist.h"
 #include "gtkutil.h"
@@ -2573,6 +2575,7 @@ mg_changui_new (session *sess, restore_gui *res, int tab)
 {
 	int first_run = FALSE;
 	session_gui *gui;
+	struct User *user = NULL;
 
 	if (!res)
 	{
@@ -2585,6 +2588,9 @@ mg_changui_new (session *sess, restore_gui *res, int tab)
 	if (!sess->server->front_session)
 		sess->server->front_session = sess;
 
+	if (!is_channel (sess->server, sess->channel))
+		user = find_name_global (sess->server, sess->channel);
+
 	if (!tab)
 	{
 		gui = malloc (sizeof (session_gui));
@@ -2593,6 +2599,8 @@ mg_changui_new (session *sess, restore_gui *res, int tab)
 		sess->gui = gui;
 		mg_create_topwindow (sess);
 		fe_set_title (sess);
+		if (user && user->hostname)
+			set_topic (sess, user->hostname);
 		return;
 	}
 
@@ -2611,6 +2619,9 @@ mg_changui_new (session *sess, restore_gui *res, int tab)
 		sess->gui = gui = mg_gui;
 		gui->is_tab = TRUE;
 	}
+
+	if (user && user->hostname)
+		set_topic (sess, user->hostname);
 
 	mg_add_chan (sess);
 

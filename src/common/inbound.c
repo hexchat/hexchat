@@ -749,7 +749,7 @@ inbound_ping_reply (session *sess, char *timestring, char *from)
 		lag = 1;
 	}
 
-	sscanf (timestring, "%lu", &tim);
+	tim = strtoul (timestring, NULL, 10);
 	nowtim = make_ping_time ();
 	dif = nowtim - tim;
 
