@@ -45,6 +45,7 @@ typedef struct {
 } t_complete;
 
 #define MAX_TIMERS 256
+#define MAX_COMPLETES 128
 
 static char *StrDup(char *string, int *length);
 static char *myitoa(int value);

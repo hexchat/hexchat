@@ -187,7 +187,7 @@ static print_event xc[] = {
 	{ "XC_CTCPSND", "CTCP Sound", 2, NULL },
 	{ "XC_DCCCHATABORT", "DCC CHAT Abort", 1, NULL },
 	{ "XC_DCCCONCHAT", "DCC CHAT Connect", 1, NULL },
-	{ "XC_DCCCHATF", "DCC CHAT Failed", 3, NULL },
+	{ "XC_DCCCHATF", "DCC CHAT Failed", 4, NULL },
 	{ "XC_DCCCHATOFFER", "DCC CHAT Offer", 1, NULL },
 	{ "XC_DCCCHATOFFERING", "DCC CHAT Offering", 1, NULL },
 	{ "XC_DCCCHATREOFFER", "DCC CHAT Reoffer", 1, NULL },
@@ -200,14 +200,14 @@ static print_event xc[] = {
 	{ "XC_DCCRECVABORT", "DCC RECV Abort", 2, NULL },
 	{ "XC_DCCRECVCOMP", "DCC RECV Complete", 4, NULL },
 	{ "XC_DCCCONRECV", "DCC RECV Connect", 3, NULL },
-	{ "XC_DCCRECVERR", "DCC RECV Failed", 3, NULL },
+	{ "XC_DCCRECVERR", "DCC RECV Failed", 4, NULL },
 	{ "XC_DCCFILEERR", "DCC RECV File Open Error", 1, NULL },
 	{ "XC_DCCRENAME", "DCC Rename", 2, NULL },
 	{ "XC_DCCRESUMEREQUEST", "DCC RESUME Request", 3, NULL },
 	{ "XC_DCCSENDABORT", "DCC SEND Abort", 2, NULL },
 	{ "XC_DCCSENDCOMP", "DCC SEND Complete", 3, NULL },
 	{ "XC_DCCCONSEND", "DCC SEND Connect", 3, NULL },
-	{ "XC_DCCSENDFAIL", "DCC SEND Failed", 2, NULL },
+	{ "XC_DCCSENDFAIL", "DCC SEND Failed", 3, NULL },
 	{ "XC_DCCSENDOFFER", "DCC SEND Offer", 4, NULL },
 	{ "XC_DCCSTALL", "DCC Stall", 3, NULL },
 	{ "XC_DCCTOUT", "DCC Timeout", 3, NULL },
@@ -278,4 +278,3 @@ static print_event xc[] = {
 	{ "XC_UCHANMSG", "Your Message", 3, NULL },
 	{ "XC_UCHANGENICK", "Your Nick Changing", 2, NULL }
 };
-

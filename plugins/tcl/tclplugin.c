@@ -15,7 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#define VERSION "1.0.11"
+#define VERSION "1.0.12"
 
 #ifdef WIN32
 #define strcasecmp stricmp
@@ -59,7 +59,7 @@ static xchat_hook *Event_Handler_hook;
 static xchat_hook *Null_Command_hook;
 
 static int complete_level = 0;
-static t_complete complete[128 + 1];
+static t_complete complete[MAX_COMPLETES + 1];
 static Tcl_HashTable cmdTablePtr;
 static Tcl_HashTable aliasTablePtr;
 
@@ -314,7 +314,7 @@ static int Server_raw_line(char *word[], char *word_eol[], void *userdata)
     if (word[0][0] == 0)
         return XCHAT_EAT_NONE;
 
-    if (complete_level == 128)
+    if (complete_level == MAX_COMPLETES)
         return XCHAT_EAT_NONE;
 
     complete_level++;
@@ -442,7 +442,7 @@ static int Print_Hook(char *word[], void *userdata)
     int x;
     char *errorInfo;
 
-    if (complete_level == 128)
+    if (complete_level == MAX_COMPLETES)
         return XCHAT_EAT_NONE;
 
     complete_level++;
@@ -1694,7 +1694,7 @@ static int Command_Alias(char *word[], char *word_eol[], void *userdata)
     char *string;
     char *errorInfo;
 
-    if (complete_level == 128)
+    if (complete_level == MAX_COMPLETES)
         return XCHAT_EAT_NONE;
 
     complete_level++;
@@ -1735,7 +1735,7 @@ static int Null_Command_Alias(char *word[], char *word_eol[], void *userdata)
     if (recurse)
         return XCHAT_EAT_NONE;
 
-    if (complete_level == 128)
+    if (complete_level == MAX_COMPLETES)
         return XCHAT_EAT_NONE;
 
     complete_level++;
