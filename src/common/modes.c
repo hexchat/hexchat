@@ -28,6 +28,16 @@
 #include "fe.h"
 
 
+typedef struct
+{
+	server *serv;
+	char *op;
+	char *deop;
+	char *voice;
+	char *devoice;
+} mode_run;
+
+
 /* word[] - list of nicks.
    wpos   - index into word[]. Where nicks really start.
    end    - index into word[]. Last entry plus one.
@@ -228,15 +238,35 @@ record_chan_mode (session *sess)/*, char sign, char mode, char *arg)*/
 		sess->mode_timeout_tag = fe_timeout_add (15000, mode_timeout_cb, sess);
 }
 
+static char *
+mode_cat (char *str, char *addition)
+{
+	int len;
+
+	if (str)
+	{
+		len = strlen (str) + strlen (addition) + 2;
+		str = realloc (str, len);
+		strcat (str, " ");
+		strcat (str, addition);
+	} else
+	{
+		str = strdup (addition);
+	}
+
+	return str;
+}
+
 /* handle one mode, e.g.
-   handle_single_mode (serv,outbuf,'+','b',"elite","#warez","banneduser",) */
+   handle_single_mode (mr,outbuf,'+','b',"elite","#warez","banneduser",) */
 
 static void
-handle_single_mode (server * serv, char *outbuf, char sign, char mode,
+handle_single_mode (mode_run *mr, char *outbuf, char sign, char mode,
 						  char *nick, char *chan, char *arg, int quiet,
 						  int is_324)
 {
 	session *sess;
+	server *serv = mr->serv;
 
 	outbuf[0] = sign;
 	outbuf[1] = 0;
@@ -283,7 +313,7 @@ handle_single_mode (server * serv, char *outbuf, char sign, char mode,
 			return;
 		case 'o':
 			if (!quiet)
-				EMIT_SIGNAL (XP_TE_CHANOP, sess, nick, arg, NULL, NULL, 0);
+				mr->op = mode_cat (mr->op, arg);
 			return;
 		case 'h':
 			if (!quiet)
@@ -291,7 +321,7 @@ handle_single_mode (server * serv, char *outbuf, char sign, char mode,
 			return;
 		case 'v':
 			if (!quiet)
-				EMIT_SIGNAL (XP_TE_CHANVOICE, sess, nick, arg, NULL, NULL, 0);
+				mr->voice = mode_cat (mr->voice, arg);
 			return;
 		case 'b':
 			if (!quiet)
@@ -326,7 +356,7 @@ handle_single_mode (server * serv, char *outbuf, char sign, char mode,
 			return;
 		case 'o':
 			if (!quiet)
-				EMIT_SIGNAL (XP_TE_CHANDEOP, sess, nick, arg, NULL, NULL, 0);
+				mr->deop = mode_cat (mr->deop, arg);
 			return;
 		case 'h':
 			if (!quiet)
@@ -334,7 +364,7 @@ handle_single_mode (server * serv, char *outbuf, char sign, char mode,
 			return;
 		case 'v':
 			if (!quiet)
-				EMIT_SIGNAL (XP_TE_CHANDEVOICE, sess, nick, arg, NULL, NULL, 0);
+				mr->devoice = mode_cat (mr->devoice, arg);
 			return;
 		case 'b':
 			if (!quiet)
@@ -424,6 +454,10 @@ handle_mode (server * serv, char *outbuf, char *word[], char *word_eol[],
 	int num_modes;
 	int offset = 3;
 	int all_modes_have_args = FALSE;
+	mode_run mr;
+
+	mr.serv = serv;
+	mr.op = mr.deop = mr.voice = mr.devoice = NULL;
 
 	/* numeric 324 has everything 1 word later (as opposed to MODE) */
 	if (numeric_324)
@@ -489,7 +523,7 @@ handle_mode (server * serv, char *outbuf, char *word[], char *word_eol[],
 		switch (*modes)
 		{
 		case 0:
-			return;
+			goto xit;
 		case '-':
 		case '+':
 			sign = *modes;
@@ -501,12 +535,38 @@ handle_mode (server * serv, char *outbuf, char *word[], char *word_eol[],
 				arg++;
 				argstr = word[arg + offset];
 			}
-			handle_single_mode (serv, outbuf, sign, *modes, nick, chan,
+			handle_single_mode (&mr, outbuf, sign, *modes, nick, chan,
 									  argstr, numeric_324 || prefs.raw_modes,
 									  numeric_324);
 		}
 
 		modes++;
+	}
+
+xit:
+	/* print all the grouped Op/Deops */
+	if (mr.op)
+	{
+		EMIT_SIGNAL (XP_TE_CHANOP, sess, nick, mr.op, NULL, NULL, 0);
+		free (mr.op);
+	}
+
+	if (mr.deop)
+	{
+		EMIT_SIGNAL (XP_TE_CHANDEOP, sess, nick, mr.deop, NULL, NULL, 0);
+		free (mr.deop);
+	}
+
+	if (mr.voice)
+	{
+		EMIT_SIGNAL (XP_TE_CHANVOICE, sess, nick, mr.voice, NULL, NULL, 0);
+		free (mr.voice);
+	}
+
+	if (mr.devoice)
+	{
+		EMIT_SIGNAL (XP_TE_CHANDEVOICE, sess, nick, mr.devoice, NULL, NULL, 0);
+		free (mr.devoice);
 	}
 }
 

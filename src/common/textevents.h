@@ -27,19 +27,19 @@ N_("-%C10-%C11-%O$t$1 sets ban on $2")},
 N_("-%C10-%C11-%O$tChannel $1 created on $2")},
 
 {"Channel DeHalfOp", pevt_chandehop_help, 2, 0,
-N_("-%C10-%C11-%O$t$1 removes channel half-operator status from $2")},
+N_("-%C10-%C11-%O$t%C11$1%O removes channel half-operator status from %C11$2")},
 
 {"Channel DeOp", pevt_chandeop_help, 2, 0,
-N_("-%C10-%C11-%O$t$1 removes channel operator status from $2")},
+N_("-%C10-%C11-%O$t%C11$1%O removes channel operator status from %C11$2")},
 
 {"Channel DeVoice", pevt_chandevoice_help, 2, 0,
-N_("-%C10-%C11-%O$t$1 removes voice from $2")},
+N_("-%C10-%C11-%O$t%C11$1%O removes voice from %C11$2")},
 
 {"Channel Exempt", pevt_chanexempt_help, 2, 0,
 N_("-%C10-%C11-%O$t$1 sets exempt on $2")},
 
 {"Channel Half-Operator", pevt_chanhop_help, 2, 0,
-N_("-%C10-%C11-%O$t$1 gives channel half-operator status to $2")},
+N_("-%C10-%C11-%O$t%C11$1%O gives channel half-operator status to %C11$2")},
 
 {"Channel INVITE", pevt_chaninvite_help, 2, 0,
 N_("-%C10-%C11-%O$t$1 sets invite on $2")},
@@ -63,7 +63,7 @@ N_("%C2<%C8%B$1%B%C2>%O$t$2%O")},
 N_("%C12-%C13$1/$2%C12-%O$t$3%O")},
 
 {"Channel Operator", pevt_chanop_help, 2, 0,
-N_("-%C10-%C11-%O$t$1 gives channel operator status to $2")},
+N_("-%C10-%C11-%O$t%C11$1%O gives channel operator status to %C11$2")},
 
 {"Channel Remove Exempt", pevt_chanrmexempt_help, 2, 0,
 N_("-%C10-%C11-%O$t$1 removes exempt on $2")},
@@ -87,7 +87,7 @@ N_("-%C10-%C11-%O$t$1 sets channel limit to $2")},
 N_("-%C10-%C11-%O$t$1 removes ban on $2")},
 
 {"Channel Voice", pevt_chanvoice_help, 2, 0,
-N_("-%C10-%C11-%O$t$1 gives voice to $2")},
+N_("-%C10-%C11-%O$t%C11$1%O gives voice to %C11$2")},
 
 {"Connected", pevt_generic_none_help, 0, 0,
 N_("-%C10-%C11-%O$tConnected. Now logging in..")},
