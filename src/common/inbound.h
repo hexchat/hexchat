@@ -18,7 +18,7 @@ void inbound_topic (server *serv, char *chan, char *topic_text);
 void inbound_user_info_start (session *sess, char *nick);
 int inbound_user_info (session *sess, char *chan, char *user, char *host, char *servname, char *nick, char *realname, unsigned int away);
 void inbound_foundip (session *sess, char *ip);
-void inbound_banlist (session *sess, time_t stamp, char *chan, char *mask, char *banner);
+int inbound_banlist (session *sess, time_t stamp, char *chan, char *mask, char *banner, int is_exemption);
 void inbound_ping_reply (session *sess, char *timestring, char *from);
 void inbound_nameslist (server *serv, char *chan, char *names);
 int inbound_nameslist_end (server *serv, char *chan);

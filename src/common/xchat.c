@@ -357,6 +357,7 @@ set_server_defaults (server *serv)
 	serv->bad_prefix = FALSE;
 	serv->use_who = TRUE;
 	serv->have_idmsg = FALSE;
+	serv->have_except = FALSE;
 }
 
 static server *

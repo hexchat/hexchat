@@ -662,6 +662,9 @@ inbound_005 (server * serv, char *word[])
 									/* 12345678901234567890 */
 			tcp_send_len (serv, "CAPAB IDENTIFY-MSG\r\n", 20);
 			/* now wait for numeric 290 */	
+		} else if (strcmp (word[w], "EXCEPTS") == 0)
+		{
+			serv->have_except = TRUE;
 		}
 
 		w++;

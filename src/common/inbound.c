@@ -1192,8 +1192,8 @@ inbound_user_info (session *sess, char *chan, char *user, char *host,
 	return 1;
 }
 
-void
-inbound_banlist (session *sess, time_t stamp, char *chan, char *mask, char *banner)
+int
+inbound_banlist (session *sess, time_t stamp, char *chan, char *mask, char *banner, int is_exemption)
 {
 	char *time_str = ctime (&stamp);
 	server *serv = sess->server;
@@ -1206,9 +1206,17 @@ inbound_banlist (session *sess, time_t stamp, char *chan, char *mask, char *bann
 	if (!sess)
 		sess = serv->front_session;
    if (!fe_is_banwindow (sess))
+	{
+		/* let proto-irc.c do the 'goto def' for exemptions */
+		if (is_exemption)
+			return FALSE;
+
 		EMIT_SIGNAL (XP_TE_BANLIST, sess, chan, mask, banner, time_str, 0);
-	else
-		fe_add_ban_list (sess, mask, banner, time_str);
+		return TRUE;
+	}
+
+	fe_add_ban_list (sess, mask, banner, time_str, is_exemption);
+	return TRUE;
 }
 
 /* execute 1 end-of-motd command */

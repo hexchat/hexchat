@@ -611,6 +611,20 @@ process_numeric (session * sess, int n,
 		}
 		break;
 
+	case 348:	/* +e-list entry */
+		if (!inbound_banlist (sess, atol (word[7]), word[4], word[5], word[6], TRUE))
+			goto def;
+		break;
+
+	case 349:	/* end of exemption list */
+		sess = find_channel (serv, word[4]);
+		if (!sess)
+			sess = serv->front_session;
+		if (!fe_is_banwindow (sess))
+			goto def;
+		fe_ban_list_end (sess);
+		break;
+
 	case 353:						  /* NAMES */
 		inbound_nameslist (serv, word[5],
 							(word_eol[6][0] == ':') ? word_eol[6] + 1 : word_eol[6]);
@@ -622,7 +636,7 @@ process_numeric (session * sess, int n,
 		break;
 
 	case 367: /* banlist entry */
-		inbound_banlist (sess, atol (word[7]), word[4], word[5], word[6]);
+		inbound_banlist (sess, atol (word[7]), word[4], word[5], word[6], FALSE);
 		break;
 
 	case 368:

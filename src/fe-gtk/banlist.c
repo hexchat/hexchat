@@ -36,6 +36,7 @@
 #include <gtk/gtktreeselection.h>
 
 #include "../common/xchat.h"
+#include "../common/fe.h"
 #include "../common/modes.h"
 #include "../common/outbound.h"
 #include "../common/xchatc.h"
@@ -65,15 +66,20 @@ get_store (struct session *sess)
 }
 
 void
-fe_add_ban_list (struct session *sess, char *mask, char *who, char *when)
+fe_add_ban_list (struct session *sess, char *mask, char *who, char *when, int is_exempt)
 {
 	GtkListStore *store;
 	GtkTreeIter iter;
 
 	store = get_store (sess);
 	gtk_list_store_append (store, &iter);
-	gtk_list_store_set (store, &iter, 0, mask, 1, who, 2, when, -1);
 
+	if (!is_exempt)
+	{
+		gtk_list_store_set (store, &iter, 0, mask, 1, who, 2, when, -1);
+	} else
+	{
+	}
 }
 
 void
