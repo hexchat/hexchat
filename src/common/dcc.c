@@ -129,7 +129,7 @@ dcc_calc_cps (struct DCC *dcc)
 	if (dcc->type == TYPE_SEND)
 	{
 		/* carefull to avoid 32bit overflow */
-		pos = dcc->pos + ((dcc->pos - dcc->ack) / 2);
+		pos = dcc->pos - ((dcc->pos - dcc->ack) / 2);
 		glob_throttle_bit = 0x1;
 		cpssum = &dcc_sendcpssum;
 		glob_limit = prefs.dcc_global_max_send_cps;
