@@ -26,7 +26,6 @@
 #include <fcntl.h>
 
 #include "fe-gtk.h"
-#include "xtext.h"	/* for gtk_xtext_find_color */
 
 #include "../common/xchat.h"
 #include "../common/util.h"
@@ -68,22 +67,13 @@ palette_alloc (GtkWidget * widget)
 	int i;
 	static int done_alloc = FALSE;
 	GdkColormap *cmap;
-	GdkColor *best_col;
 
 	if (!done_alloc)		  /* don't do it again */
 	{
 		done_alloc = TRUE;
 		cmap = gtk_widget_get_colormap (widget);
 		for (i = MAX_COL; i >= 0; i--)
-		{
-			if (!gdk_colormap_alloc_color (cmap, &colors[i], TRUE, TRUE))
-			{
-				/* find a color that's in the cmap and close enough */
-				best_col = gtk_xtext_find_color (cmap, &colors[i]);
-				if (best_col)
-					colors[i] = *best_col;
-			}
-		}
+			gdk_colormap_alloc_color (cmap, &colors[i], FALSE, TRUE);
 	}
 }
 

@@ -863,64 +863,13 @@ gtk_xtext_unrealize (GtkWidget * widget)
 		(* GTK_WIDGET_CLASS (parent_class)->unrealize) (widget);
 }
 
-GdkColor *
-gtk_xtext_find_color (GdkColormap *cmap, GdkColor *col)
-{
-	int i, best, diff;
-	GdkColor *best_col;
-	GdkVisual *vis = gdk_colormap_get_visual (cmap);
-
-	/* cmap->colors can only be accessed when in PseudoColor */
-	if (vis && vis->type != GDK_VISUAL_PSEUDO_COLOR)
-		return NULL;
-
-	/* find the next closest color to the one we want */
-	best = 0x7ffffff;
-	best_col = NULL;
-	for (i = 0; i < cmap->size; i++)
-	{
-		/* roughly how far away is this color? */
-		diff = abs (col->red - cmap->colors[i].red) +
-				 abs (col->green - cmap->colors[i].green) +
-			 	 abs (col->blue - cmap->colors[i].blue);
-		if (diff < best)
-		{
-			/* that's the closest so far */
-			best_col = &cmap->colors[i];
-			best = diff;
-			if (best == 0)	/* perfect match */
-				break;
-		}
-	}
-
-	return best_col;
-}
-
-static void
-gtk_xtext_alloc_color (GdkColormap *cmap, GdkGC *gc, int red, int green, int blue)
-{
-	GdkColor col;
-	GdkColor *fcol;
-
-	col.red = red;
-	col.green = green;
-	col.blue = blue;
-
-	if (!gdk_colormap_alloc_color (cmap, &col, TRUE, TRUE))
-	{
-		fcol = gtk_xtext_find_color (cmap, &col);
-		if (fcol)
-			col = *fcol;
-	}
-	gdk_gc_set_foreground (gc, &col);
-}
-
 static void
 gtk_xtext_realize (GtkWidget * widget)
 {
 	GtkXText *xtext;
 	GdkWindowAttr attributes;
 	GdkGCValues val;
+	GdkColor col;
 	GdkColormap *cmap;
 
 	GTK_WIDGET_SET_FLAGS (widget, GTK_REALIZED);
@@ -967,11 +916,19 @@ gtk_xtext_realize (GtkWidget * widget)
 											GDK_GC_EXPOSURES | GDK_GC_SUBWINDOW);
 
 	/* for the separator bar (light) */
-	gtk_xtext_alloc_color (cmap, xtext->light_gc, 0xffff, 0xffff, 0xffff);
+	col.red = 0xffff; col.green = 0xffff; col.blue = 0xffff;
+	gdk_colormap_alloc_color (cmap, &col, TRUE, TRUE);
+	gdk_gc_set_foreground (xtext->light_gc, &col);
+
 	/* for the separator bar (dark) */
-	gtk_xtext_alloc_color (cmap, xtext->dark_gc, 0x1111, 0x1111, 0x1111);
+	col.red = 0x1111; col.green = 0x1111; col.blue = 0x1111;
+	gdk_colormap_alloc_color (cmap, &col, TRUE, TRUE);
+	gdk_gc_set_foreground (xtext->dark_gc, &col);
+
 	/* for the separator bar (thinline) */
-	gtk_xtext_alloc_color (cmap, xtext->thin_gc, 0x8e38, 0x8e38, 0x9f38);
+	col.red = 0x8e38; col.green = 0x8e38; col.blue = 0x9f38;
+	gdk_colormap_alloc_color (cmap, &col, TRUE, TRUE);
+	gdk_gc_set_foreground (xtext->thin_gc, &col);
 
 	xtext_set_fg (xtext, xtext->fgc, 18);
 	xtext_set_bg (xtext, xtext->fgc, 19);
@@ -3059,10 +3016,15 @@ get_pixmap_prop (Display *xdisplay, Window the_window)
 	return pix;
 }
 
+/* slow generic routine, for the depths/bpp we don't know about */
+
 static void
-shade_ximage_generic (GdkVisual *visual, XImage *ximg, int bpl, int w, int h, int rm, int gm, int bm)
+shade_ximage_generic (GdkVisual *visual, XImage *ximg, int bpl, int w, int h, int rm, int gm, int bm, int bg)
 {
 	int x, y;
+	int bgr = (256 - rm) * (bg & visual->red_mask);
+	int bgg = (256 - gm) * (bg & visual->green_mask);
+	int bgb = (256 - bm) * (bg & visual->blue_mask);
 
 	for (x = 0; x < w; x++)
 	{
@@ -3071,78 +3033,69 @@ shade_ximage_generic (GdkVisual *visual, XImage *ximg, int bpl, int w, int h, in
 			unsigned long pixel = XGetPixel (ximg, x, y);
 			int r, g, b;
 
-			r = (pixel & visual->red_mask) >> visual->red_shift;
-			g = (pixel & visual->green_mask) >> visual->green_shift;
-			b = (pixel & visual->blue_mask) >> visual->blue_shift;
+			r = rm * (pixel & visual->red_mask) + bgr;
+			g = gm * (pixel & visual->green_mask) + bgg;
+			b = bm * (pixel & visual->blue_mask) + bgb;
 
-			XPutPixel (ximg, x, y, 
-						((r * rm) >> 8) << visual->red_shift |
-						((g * gm) >> 8) << visual->green_shift |
-						((b * bm) >> 8) << visual->blue_shift);
+			XPutPixel (ximg, x, y,
+							((r >> 8) & visual->red_mask) |
+							((g >> 8) & visual->green_mask) |
+							((b >> 8) & visual->blue_mask));
 		}
 	}
 }
 
-/* New optimized routines for tinting XImages written by Willem Monsuwe <willem@stack.nl> */
+#endif
+
+/* Fast shading routine. Based on code by Willem Monsuwe <willem@stack.nl> */
+
+#define SHADE_IMAGE(bytes, type, rmask, gmask, bmask) \
+	unsigned char *ptr; \
+	int x, y; \
+	int bgr = (256 - rm) * (bg & rmask); \
+	int bgg = (256 - gm) * (bg & gmask); \
+	int bgb = (256 - bm) * (bg & bmask); \
+	ptr = (unsigned char *) data + (w * bytes); \
+	for (y = h; --y >= 0;) \
+	{ \
+		for (x = -w; x < 0; x++) \
+		{ \
+			int r, g, b; \
+			b = ((type *) ptr)[x]; \
+			r = rm * (b & rmask) + bgr; \
+			g = gm * (b & gmask) + bgg; \
+			b = bm * (b & bmask) + bgb; \
+			((type *) ptr)[x] = ((r >> 8) & rmask) \
+										| ((g >> 8) & gmask) \
+										| ((b >> 8) & bmask); \
+		} \
+		ptr += bpl; \
+    }
 
 /* RGB 15 */
 static void
-shade_ximage_15 (void *data, int bpl, int w, int h, int rm, int gm, int bm)
+shade_ximage_15 (void *data, int bpl, int w, int h, int rm, int gm, int bm, int bg)
 {
-	unsigned char *ptr;
-	int x, y;
-
-	ptr = (unsigned char *) data + (w << 1);
-	for (y = h; --y >= 0;)
-	{
-		for (x = -w; x < 0; x++)
-		{
-			int r, g, b;
-
-			b = ((guint16 *) ptr)[x];
-			r = (b & 0x7c00) * rm;
-			g = (b & 0x3e0) * gm;
-			b = (b & 0x1f) * bm;
-			((guint16 *) ptr)[x] = ((r >> 8) & 0x7c00)
-										| ((g >> 8) & 0x3e0)
-										| ((b >> 8) & 0x1f);
-		}
-		ptr += bpl;
-	}
+	SHADE_IMAGE (2, guint16, 0x7c00, 0x3e0, 0x1f);
 }
 
 /* RGB 16 */
 static void
-shade_ximage_16 (void *data, int bpl, int w, int h, int rm, int gm, int bm)
+shade_ximage_16 (void *data, int bpl, int w, int h, int rm, int gm, int bm, int bg)
 {
-	unsigned char *ptr;
-	int x, y;
-
-	ptr = (unsigned char *) data + (w << 1);
-	for (y = h; --y >= 0;)
-	{
-		for (x = -w; x < 0; x++)
-		{
-			int r, g, b;
-
-			b = ((guint16 *) ptr)[x];
-			r = (b & 0xf800) * rm;
-			g = (b & 0x7e0) * gm;
-			b = (b & 0x1f) * bm;
-			((guint16 *) ptr)[x] = ((r >> 8) & 0xf800)
-										| ((g >> 8) & 0x7e0)
-										| ((b >> 8) & 0x1f);
-		}
-		ptr += bpl;
-	}
+	SHADE_IMAGE (2, guint16, 0xf800, 0x7e0, 0x1f);
 }
 
 /* RGB 24 */
 static void
-shade_ximage_24 (void *data, int bpl, int w, int h, int rm, int gm, int bm)
+shade_ximage_24 (void *data, int bpl, int w, int h, int rm, int gm, int bm, int bg)
 {
+	/* 24 has to be a special case, there's no guint24, or 24bit MOV :) */
 	unsigned char *ptr;
 	int x, y;
+	int bgr = (256 - rm) * ((bg & 0xff0000) >> 16);
+	int bgg = (256 - gm) * ((bg & 0xff00) >> 8);
+	int bgb = (256 - bm) * (bg & 0xff);
 
 	ptr = (unsigned char *) data + (w * 3);
 	for (y = h; --y >= 0;)
@@ -3152,16 +3105,16 @@ shade_ximage_24 (void *data, int bpl, int w, int h, int rm, int gm, int bm)
 			int r, g, b;
 
 #if (G_BYTE_ORDER == G_BIG_ENDIAN)
-			r = (ptr[x + 0] * rm) >> 8;
-			g = (ptr[x + 1] * gm) >> 8;
-			b = (ptr[x + 2] * bm) >> 8;
+			r = (ptr[x + 0] * rm + bgr) >> 8;
+			g = (ptr[x + 1] * gm + bgg) >> 8;
+			b = (ptr[x + 2] * bm + bgb) >> 8;
 			ptr[x + 0] = r;
 			ptr[x + 1] = g;
 			ptr[x + 2] = b;
 #else
-			r = (ptr[x + 2] * rm) >> 8;
-			g = (ptr[x + 1] * gm) >> 8;
-			b = (ptr[x + 0] * bm) >> 8;
+			r = (ptr[x + 2] * rm + bgr) >> 8;
+			g = (ptr[x + 1] * gm + bgg) >> 8;
+			b = (ptr[x + 0] * bm + bgb) >> 8;
 			ptr[x + 2] = r;
 			ptr[x + 1] = g;
 			ptr[x + 0] = b;
@@ -3173,37 +3126,70 @@ shade_ximage_24 (void *data, int bpl, int w, int h, int rm, int gm, int bm)
 
 /* RGB 32 */
 static void
-shade_ximage_32 (void *data, int bpl, int w, int h, int rm, int gm, int bm)
+shade_ximage_32 (void *data, int bpl, int w, int h, int rm, int gm, int bm, int bg)
 {
-	unsigned char *ptr;
-	int x, y;
-
-	ptr = (unsigned char *) data + (w << 2);
-	for (y = h; --y >= 0;)
-	{
-		for (x = -(w << 2); x < 0; x += 4)
-		{
-			int r, g, b;
-
-#if (G_BYTE_ORDER == G_BIG_ENDIAN)
-			r = (ptr[x + 1] * rm) >> 8;
-			g = (ptr[x + 2] * gm) >> 8;
-			b = (ptr[x + 3] * bm) >> 8;
-			ptr[x + 1] = r;
-			ptr[x + 2] = g;
-			ptr[x + 3] = b;
-#else
-			r = (ptr[x + 2] * rm) >> 8;
-			g = (ptr[x + 1] * gm) >> 8;
-			b = (ptr[x + 0] * bm) >> 8;
-			ptr[x + 2] = r;
-			ptr[x + 1] = g;
-			ptr[x + 0] = b;
-#endif
-		}
-		ptr += bpl;
-    }
+	SHADE_IMAGE (4, guint32, 0xff0000, 0xff00, 0xff);
 }
+
+static void
+shade_image (GdkVisual *visual, void *data, int bpl, int bpp, int w, int h,
+				 int rm, int gm, int bm, int bg, int depth)
+{
+	int bg_r, bg_g, bg_b;
+
+	bg_r = bg & visual->red_mask;
+	bg_g = bg & visual->green_mask;
+	bg_b = bg & visual->blue_mask;
+
+#ifdef USE_MMX
+	/* the MMX routines are about 50% faster at 16-bit. */
+	/* only use MMX routines with a pure black background */
+	if (bg_r == 0 && bg_g == 0 && bg_b == 0 && have_mmx ())	/* do a runtime check too! */
+	{
+		switch (depth)
+		{
+		case 15:
+			shade_ximage_15_mmx (data, bpl, w, h, rm, gm, bm);
+			break;
+		case 16:
+			shade_ximage_16_mmx (data, bpl, w, h, rm, gm, bm);
+			break;
+		case 24:
+			if (bpp != 32)
+				goto generic;
+		case 32:
+			shade_ximage_32_mmx (data, bpl, w, h, rm, gm, bm);
+			break;
+		default:
+			goto generic;
+		}
+	} else
+	{
+generic:
+#endif
+		switch (depth)
+		{
+		case 15:
+			shade_ximage_15 (data, bpl, w, h, rm, gm, bm, bg);
+			break;
+		case 16:
+			shade_ximage_16 (data, bpl, w, h, rm, gm, bm, bg);
+			break;
+		case 24:
+			if (bpp != 32)
+			{
+				shade_ximage_24 (data, bpl, w, h, rm, gm, bm, bg);
+				break;
+			}
+		case 32:
+			shade_ximage_32 (data, bpl, w, h, rm, gm, bm, bg);
+		}
+#ifdef USE_MMX
+	}
+#endif
+}
+
+#ifdef USE_XLIB
 
 static GdkPixmap *
 shade_pixmap (GtkXText * xtext, Pixmap p, int x, int y, int w, int h)
@@ -3243,69 +3229,18 @@ shade_pixmap (GtkXText * xtext, Pixmap p, int x, int y, int w, int h)
 	if (!ximg)
 		return NULL;
 
-	if (depth <= 8)
+	if (depth <= 14)
 	{
 		shade_ximage_generic (gdk_drawable_get_visual (GTK_WIDGET (xtext)->window),
 									 ximg, ximg->bytes_per_line, w, h, xtext->tint_red,
-									 xtext->tint_green, xtext->tint_blue);
+									 xtext->tint_green, xtext->tint_blue,
+									 xtext->palette[19]);
 	} else
 	{
-#ifdef USE_MMX
-		/* the MMX routines are about 50% faster at 16-bit */
-		if (have_mmx ())	/* do a runtime check too! */
-		{
-			switch (depth)
-			{
-			case 15:
-				shade_ximage_15_mmx (ximg->data, ximg->bytes_per_line, w, h,
-											xtext->tint_red,
-											xtext->tint_green, xtext->tint_blue);
-				break;
-			case 16:
-				shade_ximage_16_mmx (ximg->data, ximg->bytes_per_line, w, h,
-											xtext->tint_red,
-											xtext->tint_green, xtext->tint_blue);
-				break;
-			case 24:
-				if (ximg->bits_per_pixel != 32)
-					goto generic;
-			case 32:
-				shade_ximage_32_mmx (ximg->data, ximg->bytes_per_line, w, h,
-											xtext->tint_red,
-											xtext->tint_green, xtext->tint_blue);
-			}
-		} else
-		{
-generic:
-#endif
-			switch (depth)
-			{
-			case 15:
-				shade_ximage_15 (ximg->data, ximg->bytes_per_line, w, h,
-									  xtext->tint_red,
-									  xtext->tint_green, xtext->tint_blue);
-				break;
-			case 16:
-				shade_ximage_16 (ximg->data, ximg->bytes_per_line, w, h,
-									  xtext->tint_red,
-									  xtext->tint_green, xtext->tint_blue);
-				break;
-			case 24:
-				if (ximg->bits_per_pixel != 32)
-				{
-					shade_ximage_24 (ximg->data, ximg->bytes_per_line, w, h,
-										  xtext->tint_red,
-										  xtext->tint_green, xtext->tint_blue);
-					break;
-				}
-			case 32:
-				shade_ximage_32 (ximg->data, ximg->bytes_per_line, w, h,
-									  xtext->tint_red,
-									  xtext->tint_green, xtext->tint_blue);
-			}
-#ifdef USE_MMX
-		}
-#endif
+		shade_image (gdk_drawable_get_visual (GTK_WIDGET (xtext)->window),
+						 ximg->data, ximg->bytes_per_line, ximg->bits_per_pixel,
+						 w, h, xtext->tint_red, xtext->tint_green, xtext->tint_blue,
+						 xtext->palette[19], depth);
 	}
 
 	if (xtext->recycle)
@@ -3350,39 +3285,15 @@ win32_tint (GtkXText *xtext, GdkImage *img, int width, int height)
 	guint32 pixel;
 	int r, g, b;
 
-#ifdef USE_MMX
-	if (have_mmx ())
+	if (img->depth <= 14)
 	{
-		switch (img->depth)
-		{
-		case 16:
-			shade_ximage_16_mmx (img->mem, img->bpl, width, height,
-		 					xtext->tint_red, xtext->tint_green, xtext->tint_blue);
-			break;
-
-		case 24:
-			if (img->bpp != 32)
-				goto generic;
-
-		case 32:
-			shade_ximage_32_mmx (img->mem, img->bpl, width, height,
-		 					xtext->tint_red, xtext->tint_green, xtext->tint_blue);
-			break;
-
-		default:
-			goto generic;
-		}
-	} else
-	{
-generic:
-#endif	/* !USE_MMX */
-
+		/* slow generic routine */
 		for (y = 0; y < height; y++)
 		{
 			for (x = 0; x < width; x++)
 			{
-					if (img->depth == 1)
-			{
+				if (img->depth == 1)
+				{
 					pixel = (((guchar *) img->mem)[y * img->bpl + (x >> 3)] & (1 << (7 - (x & 0x7)))) != 0;
 					goto here;
 				}
@@ -3465,9 +3376,12 @@ here:
 				}
 			}
 		}
-#ifdef USE_MMX
+	} else
+	{
+		shade_image (visual, img->mem, img->bpl, img->bpp, width, height,
+						 xtext->tint_red, xtext->tint_green, xtext->tint_blue,
+						 xtext->palette[19], visual->depth);
 	}
-#endif
 
 	if (xtext->recycle)
 		pix = xtext->pixmap;

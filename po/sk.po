@@ -1,36 +1,35 @@
-# translation of xchat-2.0.3pre1.sk.po to Slovak
+# translation of xchat-2.0.5pre1.sk.po to Slovak
 # Copyright (C) 2003 Free Software Foundation, Inc.
 # Martin Pekar <cortex@nextra.sk>, 2000.
-# Stanislav Visnovsky <visnovsky@nenya.ms.mff.cuni.cz>, 2002
-# Stanislav Višňovský <visnovsky@nenya.ms.mff.cuni.cz>, 2002
-# Stanislav Visnovsky <visnovsky@kde.org>, 2003
-# Andrej Kacian <andrej@kacian.sk>, 2003
+# Stanislav Visnovsky <visnovsky@nenya.ms.mff.cuni.cz>, 2002.
+# Stanislav Visnovsky <visnovsky@kde.org>, 2003.
+# Andrej Kacian <andrej@kacian.sk>, 2003.
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: xchat-2.0.3pre1.sk\n"
-"POT-Creation-Date: 2003-06-19 15:06+1000\n"
-"PO-Revision-Date: 2003-09-08 11:28+0200\n"
+"Project-Id-Version: xchat 2.0.5pre1\n"
+"POT-Creation-Date: 2003-09-14 17:36+1000\n"
+"PO-Revision-Date: 2003-09-15 09:25+0200\n"
 "Last-Translator: Andrej Kacian <andrej@kacian.sk>\n"
 "Language-Team: Slovak <sk-i18n@lists.linux.sk>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.0.1\n"
+"X-Generator: KBabel 1.2\n"
 
 #: src/common/cfgfiles.c:312
 msgid "Cannot create ~/.xchat2"
 msgstr "Nepodarilo sa vytvoriť ~/.xchat"
 
-#: src/common/cfgfiles.c:592
+#: src/common/cfgfiles.c:602
 msgid "I'm busy"
 msgstr "Pracujem"
 
-#: src/common/cfgfiles.c:593
-msgid "Client exiting"
-msgstr "Klient sa ukončuje"
+#: src/common/cfgfiles.c:603
+msgid "Leaving"
+msgstr "Ukončujem"
 
-#: src/common/cfgfiles.c:636
+#: src/common/cfgfiles.c:646
 msgid ""
 "* Running IRC as root is stupid! You should\n"
 "  create a User Account and use that to login.\n"
@@ -62,48 +61,50 @@ msgstr "Pripojiť"
 msgid "Aborted"
 msgstr "Prerušené"
 
-#: src/common/dcc.c:1279
+#: src/common/dcc.c:1240
 #, c-format
 msgid "Cannot access %s\n"
 msgstr "Nepodaril sa prístup k %s\n"
 
-#: src/common/dcc.c:1720
+#: src/common/dcc.c:1703
 msgid "No active DCCs\n"
 msgstr "Žiadne DCC spojenie nie je aktívne\n"
 
 #: src/common/ignore.c:120 src/common/ignore.c:124 src/common/ignore.c:128
 #: src/common/ignore.c:132 src/common/ignore.c:136 src/common/ignore.c:140
+#: src/common/ignore.c:144
 msgid "YES  "
 msgstr "ÁNO  "
 
 #: src/common/ignore.c:122 src/common/ignore.c:126 src/common/ignore.c:130
 #: src/common/ignore.c:134 src/common/ignore.c:138 src/common/ignore.c:142
+#: src/common/ignore.c:146
 msgid "NO   "
 msgstr "NIE  "
 
-#: src/common/notify.c:392
+#: src/common/notify.c:400
 #, c-format
 msgid "  %-20s online\n"
 msgstr "  %-20s on-line\n"
 
-#: src/common/notify.c:394
+#: src/common/notify.c:402
 #, c-format
 msgid "  %-20s offline\n"
 msgstr "  %-20s off-line\n"
 
-#: src/common/outbound.c:69
+#: src/common/outbound.c:70
 msgid "No channel joined. Try /join #<channel>\n"
 msgstr "Nie ste na žiadnom kanáli. Použite /join #<kanál>\n"
 
-#: src/common/outbound.c:75
+#: src/common/outbound.c:76
 msgid "Not connected. Try /server <host> [<port>]\n"
 msgstr "Nie ste pripojený. Použite /server <hostiteľ> [<port>]\n"
 
-#: src/common/outbound.c:1339
+#: src/common/outbound.c:1353
 msgid "I need /bin/sh to run!\n"
 msgstr "Je potrebný program /bin/sh!\n"
 
-#: src/common/outbound.c:1551
+#: src/common/outbound.c:1585
 msgid ""
 "\n"
 "Commands Available:\n"
@@ -115,7 +116,7 @@ msgstr ""
 "\n"
 ".."
 
-#: src/common/outbound.c:1586
+#: src/common/outbound.c:1620
 msgid ""
 "\n"
 "\n"
@@ -127,7 +128,7 @@ msgstr ""
 "Ďalšie informácie získate zadaním /HELP <príkaz> alebo /HELP -l\n"
 "\n"
 
-#: src/common/outbound.c:1587
+#: src/common/outbound.c:1621
 msgid ""
 "User defined commands:\n"
 "\n"
@@ -137,60 +138,60 @@ msgstr ""
 "\n"
 "  "
 
-#: src/common/outbound.c:1677
+#: src/common/outbound.c:1713
 #, c-format
 msgid "Unknown arg '%s' ignored."
 msgstr "Neznámy argument '%s' ignorovaný."
 
-#: src/common/outbound.c:2384
+#: src/common/outbound.c:2423
 msgid "No such plugin found.\n"
 msgstr "Plugin sa nenašiel.\n"
 
-#: src/common/outbound.c:2389 src/fe-gtk/plugingui.c:181
+#: src/common/outbound.c:2428 src/fe-gtk/plugingui.c:182
 msgid "That plugin is refusing to unload.\n"
 msgstr "Plugin sa odmieta odobrať.\n"
 
-#: src/common/outbound.c:2534
+#: src/common/outbound.c:2573
 msgid "ADDBUTTON <name> <action>, adds a button under the user-list"
 msgstr "ADDBUTTON <meno> <akcia>, pridá tlačidlo pod zoznam používateľov"
 
-#: src/common/outbound.c:2536
+#: src/common/outbound.c:2575
 msgid "ALLCHAN <cmd>, sends a command to all channels you're in"
 msgstr "ALLCHAN <príkaz>, pošle príkaz do všetkých kanálov, v ktorých ste"
 
-#: src/common/outbound.c:2538
+#: src/common/outbound.c:2577
 msgid "ALLSERV <cmd>, sends a command to all servers you're in"
 msgstr "ALLSERV <príkaz>, pošle príkaz na všetky servery, na ktorých ste"
 
-#: src/common/outbound.c:2539
+#: src/common/outbound.c:2578
 msgid "AWAY [<reason>], sets you away"
 msgstr "AWAY [<dôvod>], označí vás ako neprítomného"
 
-#: src/common/outbound.c:2541
+#: src/common/outbound.c:2580
 msgid "BAN <mask> [<bantype>], bans everyone matching the mask from the current channel. If they are already on the channel this doesn't kick them (needs chanop)"
 msgstr "BAN <maska> [<typ>], zakáže každého, kto odpovedá maske, z aktuálneho kanála. Ak už sú prihlásený v kanáli, nevykopne ich to (musíte byť chanop)"
 
-#: src/common/outbound.c:2543
+#: src/common/outbound.c:2582
 msgid "CLEAR, Clears the current text window"
 msgstr "CLEAR, vyčistí aktuálne textové okno"
 
-#: src/common/outbound.c:2544
+#: src/common/outbound.c:2583
 msgid "CLOSE, Closes the current window/tab"
 msgstr "CLOSE, zavrie aktuálne okno alebo záložku"
 
-#: src/common/outbound.c:2547
+#: src/common/outbound.c:2586
 msgid "COUNTRY <code>, finds a country code, eg: au = australia"
 msgstr "COUNTRY <kód>, nájde kód krajiny, napr. sk = Slovensko"
 
-#: src/common/outbound.c:2549
+#: src/common/outbound.c:2588
 msgid "CTCP <nick> <message>, send the CTCP message to nick, common messages are VERSION and USERINFO"
 msgstr "CTCP <prezývka> <správa>, pošle správu CTCP prezývka, obvyklé správy sú VERSION a USERINFO"
 
-#: src/common/outbound.c:2551
+#: src/common/outbound.c:2590
 msgid "CYCLE, parts current channel and immediately rejoins"
 msgstr "CYCLE, opustí aktuálny kanál a hneď sa vráti"
 
-#: src/common/outbound.c:2553
+#: src/common/outbound.c:2592
 msgid ""
 "\n"
 "DCC GET <nick>                     - accept an offered file\n"
@@ -208,250 +209,250 @@ msgstr ""
 "DCC CLOSE <typ> <prezývka> <súbor>         príklad:\n"
 "         /dcc close send janko subor.tar.gz"
 
-#: src/common/outbound.c:2563
+#: src/common/outbound.c:2602
 msgid "DEHOP <nick>, removes chanhalf-op status from the nick on the current channel (needs chanop)"
 msgstr "DEHOP <prezývka>, odstráni stav chanhalf-op pre prezývku v aktuálnom kanáli (vyžaduje chanop)"
 
-#: src/common/outbound.c:2565
+#: src/common/outbound.c:2604
 msgid "DELBUTTON <name>, deletes a button from under the user-list"
 msgstr "DELBUTTON <meno>, odstráni tlačidlo pod zoznamom používateľov"
 
-#: src/common/outbound.c:2567
+#: src/common/outbound.c:2606
 msgid "DEOP <nick>, removes chanop status from the nick on the current channel (needs chanop)"
 msgstr "DEOP <prezývka>, odstráni stav chanop pre prezývku v aktuálnom kanáli (vyžaduje chanop)"
 
-#: src/common/outbound.c:2569
+#: src/common/outbound.c:2608
 msgid "DEVOICE <nick>, removes voice status from the nick on the current channel (needs chanop)"
 msgstr "DEVOICE <prezývka>, odstráni stav voice pre prezývku v aktuálnom kanáli (vyžaduje chanop)"
 
-#: src/common/outbound.c:2570
+#: src/common/outbound.c:2609
 msgid "DISCON, Disconnects from server"
 msgstr "DISCON, odpojí od serveru"
 
-#: src/common/outbound.c:2571
+#: src/common/outbound.c:2610
 msgid "DNS <nick|host|ip>, Finds a users IP number"
 msgstr "DNS <prezývka|hostiteľ|ip>, nájde IP adresu používateľa"
 
-#: src/common/outbound.c:2572
+#: src/common/outbound.c:2611
 msgid "ECHO <text>, Prints text locally"
 msgstr "ECHO <text>, Vytlačí text lokálne"
 
-#: src/common/outbound.c:2575
+#: src/common/outbound.c:2614
 msgid "EXEC [-o] <command>, runs the command. If -o flag is used then output is sent to current channel, else is printed to current text box"
 msgstr "EXEC [-o] <príkaz>, spustí príkaz. Ak je použitý prepínač -o, výstup sa posiela do aktuálneho kanálu, inak sa vytlačí do aktuálneho textového poľa"
 
-#: src/common/outbound.c:2577
+#: src/common/outbound.c:2616
 msgid "EXECCONT, sends the process SIGCONT"
 msgstr "EXECCONT, pošle procesu SIGCONT"
 
-#: src/common/outbound.c:2580
+#: src/common/outbound.c:2619
 msgid "EXECKILL [-9], kills a running exec in the current session. If -9 is given the process is SIGKILL'ed"
 msgstr "EXECKILL [-9], zabije programy bežiace v aktuálnom sedení. Ak je zadané -9, pošle sa signál SIGKILL"
 
-#: src/common/outbound.c:2582
+#: src/common/outbound.c:2621
 msgid "EXECSTOP, sends the process SIGSTOP"
 msgstr "EXECSTOP, pošle procesu SIGSTOP"
 
-#: src/common/outbound.c:2583
+#: src/common/outbound.c:2622
 msgid "EXECWRITE, sends data to the processes stdin"
 msgstr "EXECWRITE, pošle procesu dáta na štandardný vstup"
 
-#: src/common/outbound.c:2587
+#: src/common/outbound.c:2626
 msgid "FLUSHQ, flushes the current server's send queue"
 msgstr "FLUSHQ, vyčistí aktuálnu frontu serveru pre posielanie"
 
-#: src/common/outbound.c:2589
+#: src/common/outbound.c:2628
 msgid "GATE <host> [<port>], proxies through a host, port defaults to 23"
 msgstr "GATE <hostiteľ> [<port>], nastaví proxy na hostiteľa, port je štandardne 23"
 
-#: src/common/outbound.c:2594
+#: src/common/outbound.c:2634
 msgid "HOP <nick>, gives chanhalf-op status to the nick (needs chanop)"
 msgstr "HOP <prezývka>, nastaví stav chanhalf-op pre prezývku (vyžaduje chanop)"
 
-#: src/common/outbound.c:2596
+#: src/common/outbound.c:2636
 msgid ""
 "IGNORE <mask> <types..> <options..>\n"
 "    mask - host mask to ignore, eg: *!*@*.aol.com\n"
 "    types - types of data to ignore, one or all of:\n"
-"            PRIV, CHAN, NOTI, CTCP, INVI, ALL\n"
+"            PRIV, CHAN, NOTI, CTCP, DCC, INVI, ALL\n"
 "    options - NOSAVE, QUIET"
 msgstr ""
 "IGNORE <maska> <typy..> <možnosti..>\n"
 "    maska - maska ignorovaných hostiteľov, napr.: *!*@*.aol.com\n"
 "    typy - typy ignorovaný dát, jedna alebo všetky z:\n"
-"            PRIV, CHAN, NOTI, CTCP, INVI, ALL\n"
+"            PRIV, CHAN, NOTI, CTCP, DCC, INVI, ALL\n"
 "    možnosti - NOSAVE, QUIET"
 
-#: src/common/outbound.c:2603
+#: src/common/outbound.c:2643
 msgid "INVITE <nick> [<channel>], invites someone to a channel, by default the current channel (needs chanop)"
 msgstr "INVITE <prezývka> [<kanál>], pozve niekoho do kanála, štandardne do aktuálneho kanála (vyžaduje chanop)"
 
-#: src/common/outbound.c:2604
+#: src/common/outbound.c:2644
 msgid "JOIN <channel>, joins the channel"
 msgstr "JOIN <kanál>, prejde do kanálu"
 
-#: src/common/outbound.c:2606
+#: src/common/outbound.c:2646
 msgid "KICK <nick>, kicks the nick from the current channel (needs chanop)"
 msgstr "KICK <prezývka>, vykopne prezývku z aktuálneho kanála (vyžaduje chanop)"
 
-#: src/common/outbound.c:2608
+#: src/common/outbound.c:2648
 msgid "KICKBAN <nick>, bans then kicks the nick from the current channel (needs chanop)"
 msgstr "KICKBAN <prezývka>, zakáže a potom vykopne prezývku z aktuálneho kanála (vyžaduje chanop)"
 
-#: src/common/outbound.c:2610
+#: src/common/outbound.c:2651
 msgid "LAGCHECK, forces a new lag check"
 msgstr "LAGCHECK, vynúti novú kontrolu lag"
 
-#: src/common/outbound.c:2612
+#: src/common/outbound.c:2653
 msgid "LASTLOG <string>, searches for a string in the buffer"
 msgstr "LASTLOG <reťazec>, hľadá reťazec v texte."
 
-#: src/common/outbound.c:2614
+#: src/common/outbound.c:2655
 msgid "LOAD <file>, loads a plugin or script"
 msgstr "LOAD <súbor>, načíta skript Perl"
 
-#: src/common/outbound.c:2617
+#: src/common/outbound.c:2658
 msgid "MDEHOP, Mass deop's all chanhalf-ops in the current channel (needs chanop)"
 msgstr "MDEHOP, hromadne zruší stav všetkým chanhalf-op v aktuálnom kanáli (vyžaduje chanop)"
 
-#: src/common/outbound.c:2619
+#: src/common/outbound.c:2660
 msgid "MDEOP, Mass deop's all chanops in the current channel (needs chanop)"
 msgstr "MDEOP, hromadne zruší stav všetkým chanop v aktuálnom kanáli (vyžaduje chanop)"
 
-#: src/common/outbound.c:2621
+#: src/common/outbound.c:2662
 msgid "ME <action>, sends the action to the current channel (actions are written in the 3rd person, like /me jumps)"
 msgstr "ME <akcia>, pošle akciu do aktuálneho kanála (akcie sa píšu v tretej osobe, napríklad /me skáče)"
 
-#: src/common/outbound.c:2623
+#: src/common/outbound.c:2664
 msgid "MKICK, Mass kicks everyone except you in the current channel (needs chanop)"
 msgstr "MKICK, hromadne vykopne každého okrem vás z aktuálneho kanála (vyžaduje chanop)"
 
-#: src/common/outbound.c:2625
+#: src/common/outbound.c:2666
 msgid "MOP, Mass op's all users in the current channel (needs chanop)"
 msgstr "MOP, hromadne nastaví stav všetkým používateľom v aktuálnom kanáli (vyžaduje chanop)"
 
-#: src/common/outbound.c:2626
+#: src/common/outbound.c:2667
 msgid "MSG <nick> <message>, sends a private message"
 msgstr "MSG <prezývka> <správa>, pošle súkromnú správu"
 
-#: src/common/outbound.c:2629
+#: src/common/outbound.c:2670
 msgid "NAMES, Lists the nicks on the current channel"
 msgstr "NAMES, vypíše zoznam prezývok v aktuálnom kanáli"
 
-#: src/common/outbound.c:2631
+#: src/common/outbound.c:2672
 msgid "NCTCP <nick> <message>, Sends a CTCP notice"
 msgstr "NCTCP <prezývka> <správa>, pošle poznámku CTCP"
 
-#: src/common/outbound.c:2632
+#: src/common/outbound.c:2673
 msgid "NEWSERVER <hostname> [<port>]"
 msgstr "NEWSERVER <hostiteľ> [<port>]"
 
-#: src/common/outbound.c:2633
+#: src/common/outbound.c:2674
 msgid "NICK <nickname>, sets your nick"
 msgstr "NICK <prezývka>, nastaví vašu prezývku"
 
-#: src/common/outbound.c:2636
+#: src/common/outbound.c:2677
 msgid "NOTICE <nick/channel> <message>, sends a notice. Notices are a type of message that should be auto reacted to"
 msgstr "NOTICE <prezývka/kanál> <správa>, pošle poznámku. Poznámky sú typom správy, na ktoré by sa malo automaticky reagovať"
 
-#: src/common/outbound.c:2638
+#: src/common/outbound.c:2679
 msgid "NOTIFY [<nick>], lists your notify list or adds someone to it"
 msgstr "NOTIFY [<prezývka>], vypíše váš zoznam upozornení, alebo niekoho do tohto zoznamu pridá"
 
-#: src/common/outbound.c:2640
+#: src/common/outbound.c:2681
 msgid "OP <nick>, gives chanop status to the nick (needs chanop)"
 msgstr "OP <prezývka>, dá stav chanop prezývke (vyžaduje chanop)"
 
-#: src/common/outbound.c:2642
+#: src/common/outbound.c:2683
 msgid "PART [<channel>] [<reason>], leaves the channel, by default the current one"
 msgstr "PART [<kanál>] [<dôvod>], opustí kanál, štandardne aktuálny"
 
-#: src/common/outbound.c:2644
+#: src/common/outbound.c:2685
 msgid "PING <nick | channel>, CTCP pings nick or channel"
 msgstr "PING <prezývka | kanál>, pošle CTCP ping na prezývku alebo kanál"
 
-#: src/common/outbound.c:2646
+#: src/common/outbound.c:2687
 msgid "QUERY <nick>, opens up a new privmsg window to someone"
 msgstr "QUERY <prezývka>, otvorí nové okno pre súkromné správy niekomu"
 
-#: src/common/outbound.c:2648
+#: src/common/outbound.c:2689
 msgid "QUIT [<reason>], disconnects from the current server"
 msgstr "QUIT [<dôvod>], odpojí sa od aktuálneho serveru"
 
-#: src/common/outbound.c:2650
+#: src/common/outbound.c:2691
 msgid "QUOTE <text>, sends the text in raw form to the server"
 msgstr "QUOTE <text>, pošle text tak ako je na server"
 
-#: src/common/outbound.c:2653
+#: src/common/outbound.c:2694
 msgid "RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as /RECONNECT to reconnect to the current server or with /RECONNECT ALL to reconnect to all the open servers"
 msgstr "RECONNECT [-ssl] [<hostiteľ>] [<port>] [<heslo>], môže sa použiť aj ako /RECONNECT pre znovupripojenie k aktuálnemu serveru alebo ako /RECONNECT ALL pre znovupripojenie ku všetkým otvoreným serverom"
 
-#: src/common/outbound.c:2656
+#: src/common/outbound.c:2697
 msgid "RECONNECT [<host>] [<port>] [<password>], Can be called just as /RECONNECT to reconnect to the current server or with /RECONNECT ALL to reconnect to all the open servers"
 msgstr "RECONNECT [<hostiteľ>] [<port>] [<heslo>], môže sa použiť aj ako /RECONNECT pre znovupripojenie k aktuálnemu serveru alebo ako /RECONNECT ALL pre znovupripojenie ku všetkým otvoreným serverom"
 
-#: src/common/outbound.c:2658
+#: src/common/outbound.c:2699
 msgid "RECV <text>, send raw data to xchat, as if it was received from the irc server"
 msgstr "RECV <text>, odošle xchatu čisté data, ako keby boli prijaté z irc serveru"
 
-#: src/common/outbound.c:2661
+#: src/common/outbound.c:2702
 msgid "SAY <text>, sends the text to the object in the current window"
 msgstr "SAY <text>, pošle text objektu v aktuálnom okne"
 
-#: src/common/outbound.c:2664
+#: src/common/outbound.c:2705
 msgid "SERVCHAN [-ssl] <host> <port> <channel>, connects and joins a channel"
 msgstr "SERVCHAN [-ssl] <hostiteľ> <port> <kanál>, pripojí sa a navštívi kanál"
 
-#: src/common/outbound.c:2667
+#: src/common/outbound.c:2708
 msgid "SERVCHAN <host> <port> <channel>, connects and joins a channel"
 msgstr "SERVCHAN <hostiteľ> <port> <kanál>, pripojí sa a navštívi kanál"
 
-#: src/common/outbound.c:2671
+#: src/common/outbound.c:2712
 msgid "SERVER [-ssl] <host> [<port>] [<password>], connects to a server, the default port is 6667 for normal connections, and 9999 for ssl connections"
 msgstr "SERVER [-ssl] <hostiteľ> [<port>] [<heslo>], pripojí sa na server, štandardný port je 6667 pre obyčajné pripojenia, 9999 pre ssl pripojenia."
 
-#: src/common/outbound.c:2674
+#: src/common/outbound.c:2715
 msgid "SERVER <host> [<port>] [<password>], connects to a server, the default port is 6667"
 msgstr "/SERVER <hostiteľ> [<port>] [<heslo>], pripojí sa na server, štandardný port je 6667"
 
-#: src/common/outbound.c:2676
+#: src/common/outbound.c:2717
 msgid "SET <variable> [<value>]"
 msgstr "SET <premenná> [<hodnota>]"
 
-#: src/common/outbound.c:2679
+#: src/common/outbound.c:2720
 msgid "TOPIC [<topic>], sets the topic if one is given, else shows the current topic"
 msgstr "TOPIC [<téma>], nastaví tému, ak je zadaná, inak zobrazí aktuálnu tému"
 
-#: src/common/outbound.c:2681
+#: src/common/outbound.c:2722
 msgid "UNBAN <mask> [<mask>...], unbans the specified masks."
 msgstr "UNBAN <maska> [<maska>...], zruší zákaz pre zadané masky."
 
-#: src/common/outbound.c:2682
+#: src/common/outbound.c:2723
 msgid "UNIGNORE <mask> [QUIET]"
 msgstr "UNIGNORE <maska> [QUIET]"
 
-#: src/common/outbound.c:2683
+#: src/common/outbound.c:2724
 msgid "UNLOAD <name>, unloads a plugin or script"
 msgstr "UNLOAD <súbor>, načíta plugin alebo skript"
 
-#: src/common/outbound.c:2686
+#: src/common/outbound.c:2727
 msgid "VOICE <nick>, gives voice status to someone (needs chanop)"
 msgstr "VOICE <prezývka>, priradí niekomu stav voice (vyžaduje chanop)"
 
-#: src/common/outbound.c:2688
+#: src/common/outbound.c:2729
 msgid "WALLCHAN <message>, writes the message to all channels"
 msgstr "WALLCHAN <správa>, napíše správu do všetkých kanálov"
 
-#: src/common/outbound.c:2690
+#: src/common/outbound.c:2731
 msgid "WALLCHOP <message>, sends the message to all chanops on the current channel"
 msgstr "WALLCHOP <správa>, pošle správu všetkým so stavom chanop v aktuálnom kanáli"
 
-#: src/common/outbound.c:2723
+#: src/common/outbound.c:2764
 #, c-format
 msgid "Usage: %s\n"
 msgstr "Použitie: %s\n"
 
-#: src/common/outbound.c:2728
+#: src/common/outbound.c:2769
 msgid ""
 "\n"
 "No help available on that command.\n"
@@ -459,19 +460,19 @@ msgstr ""
 "\n"
 "Pre tento príkaz nie je žiadna pomoc.\n"
 
-#: src/common/outbound.c:2734
+#: src/common/outbound.c:2775
 msgid "No such command.\n"
 msgstr "Neznámy príkaz.\n"
 
-#: src/common/outbound.c:3058
+#: src/common/outbound.c:3099
 msgid "Bad arguments for user command.\n"
 msgstr "Chybné argumenty pre používateľský príkaz.\n"
 
-#: src/common/outbound.c:3222
+#: src/common/outbound.c:3263
 msgid "Too many recursive usercommands, aborting."
 msgstr "Príliš veľa vnorených používateľských príkazov, končím."
 
-#: src/common/outbound.c:3295
+#: src/common/outbound.c:3336
 msgid "Unknown Command. Try /help\n"
 msgstr "Neznámy príkaz. Skúste použiť /help\n"
 
@@ -552,7 +553,7 @@ msgstr "-%C10-%C11-%O$t$1 nastavil pozvanie pre $2"
 msgid "%UChannel          Users   Topic%O"
 msgstr "%UKanál          Používatelia   Téma%O"
 
-#: src/common/textevents.h:51 src/common/textevents.h:294
+#: src/common/textevents.h:51 src/common/textevents.h:297
 msgid "%C2<%O$1%C2>%O$t$2%O"
 msgstr "%C2<%O$1%C2>%O$t$2%O"
 
@@ -753,695 +754,740 @@ msgid "-%C10-%C11-%O$tFound your IP: [$1]"
 msgstr "-%C10-%C11-%O$tNájdená vaša IP: [$1]"
 
 #: src/common/textevents.h:201
+msgid "$1$t$2"
+msgstr "$1$t$2"
+
+#: src/common/textevents.h:204
 msgid "%O%C11$1%O added to ignore list."
 msgstr "%O%C11$1%O pridaný do zoznamu ignorovaných."
 
-#: src/common/textevents.h:204
+#: src/common/textevents.h:207
 msgid "Ignore on %C11$1%O changed."
 msgstr "Ignorovať pri zmene %C11$1%O."
 
-#: src/common/textevents.h:207
+#: src/common/textevents.h:210
 msgid "%C08,02                                                         %O"
 msgstr "%C08,02                                                    %O"
 
-#: src/common/textevents.h:210
-msgid "%C08,02 Hostmask                  PRIV NOTI CHAN CTCP INVI UNIG %O"
-msgstr "%C08,02 Maska hostiteľa             SÚKR UPOZ KAN CTCP POZV ODIGN %O"
-
 #: src/common/textevents.h:213
+msgid "%C08,02 Hostmask                  PRIV NOTI CHAN CTCP DCC  INVI UNIG %O"
+msgstr "%C08,02 Maska hostiteľa             SÚKR UPOZ KAN CTCP DCC POZV ODIGN %O"
+
+#: src/common/textevents.h:216
 msgid "%O%C11$1%O removed from ignore list."
 msgstr "%O%C11$1%O odstránený zo zoznamu ignorovaných."
 
-#: src/common/textevents.h:216
+#: src/common/textevents.h:219
 msgid "  Ignore list is empty."
 msgstr "  Zoznam ignorovaných je prázdny."
 
-#: src/common/textevents.h:219
+#: src/common/textevents.h:222
 msgid "-%C10-%C11-%O$tCannot join%C11 %B$1 %O(Channel is invite only)."
 msgstr "-%C10-%C11-%O$tPríchod zakázaný do %C11 %B$1 %O(Kanál iba pre pozvaných)."
 
-#: src/common/textevents.h:222
+#: src/common/textevents.h:225
 msgid "-%C10-%C11-%O$tYou have been invited to %C11$1%C by %C11$2%C (%C11$3%C)"
 msgstr "-%C10-%C11-%O$tSte pozvaný do %C11$1%C od %C11$2%C (%C11$3%C)"
 
-#: src/common/textevents.h:225
+#: src/common/textevents.h:228
 msgid "-%C10-%C11>%O$t%B$1%B %C14(%C10$3%C14)%C has joined $2"
 msgstr "-%C10-%C11>%O$t%B$1%B %C14(%C10$3%C14)%C prišiel do $2"
 
-#: src/common/textevents.h:228
+#: src/common/textevents.h:231
 msgid "-%C10-%C11-%O$tCannot join%C11 %B$1 %O(Requires keyword)."
 msgstr "-%C10-%C11-%O$tPríchod zakázaný do %C11 %B$1 %O(Vyžaduje sa kľúčové slovo)."
 
-#: src/common/textevents.h:231
+#: src/common/textevents.h:234
 msgid "<%C10-%C11-%O$t$1 has kicked $2 from $3 ($4%O)"
 msgstr "<%C10-%C11-%O$t$1 vykopol $2 z $3 ($4%O)"
 
-#: src/common/textevents.h:234
+#: src/common/textevents.h:237
 msgid "-%C10-%C11-%O$tYou have been killed by $1 ($2%O)"
 msgstr "-%C10-%C11-%O$tZabil vás $1 ($2%O)"
 
-#: src/common/textevents.h:237 src/common/textevents.h:261
+#: src/common/textevents.h:240 src/common/textevents.h:264
 msgid "%C3>%O$1%C3<%O$t$2%O"
 msgstr "%C3>%O$1%C3<%O$t$2%O"
 
-#: src/common/textevents.h:240 src/common/textevents.h:315
-#: src/common/textevents.h:321 src/common/textevents.h:324
+#: src/common/textevents.h:243 src/common/textevents.h:318
+#: src/common/textevents.h:324 src/common/textevents.h:327
 msgid "-%C10-%C11-%O$t$1%O"
 msgstr "-%C10-%C11-%O$t$1%O"
 
-#: src/common/textevents.h:243
+#: src/common/textevents.h:246
 msgid "-%C10-%C11-%O$tMOTD Skipped."
 msgstr "-%C10-%C11-%O$tMOTD preskočená."
 
-#: src/common/textevents.h:246
+#: src/common/textevents.h:249
 msgid "-%C10-%C11-%O$t$1 already in use. Retrying with $2.."
 msgstr "-%C10-%C11-%O$t$1 sa už používa. Nový pokus s $2.."
 
-#: src/common/textevents.h:249
+#: src/common/textevents.h:252
 msgid "-%C10-%C11-%O$tNickname already in use. Use /NICK to try another."
 msgstr "-%C10-%C11-%O$tPrezývka je už použitá. Použite /NICK pre inú prezývku."
 
-#: src/common/textevents.h:252
+#: src/common/textevents.h:255
 msgid "-%C10-%C11-%O$tNo such DCC."
 msgstr "-%C10-%C11-%O$tTaké DCC neexistuje."
 
-#: src/common/textevents.h:255
+#: src/common/textevents.h:258
 msgid "-%C10-%C11-%O$tNo process is currently running"
 msgstr "-%C10-%C11-%O$tMomentálne nebeží žiadny proces"
 
-#: src/common/textevents.h:258
+#: src/common/textevents.h:261
 msgid "%C12-%C13$1%C12-%O$t$2%O"
 msgstr "%C12-%C13$1%C12-%O$t$2%O"
 
-#: src/common/textevents.h:264
+#: src/common/textevents.h:267
 msgid "-%C10-%C11-%O$tNotify list is empty."
 msgstr "-%C10-%C11-%O$tZoznam upozornení prázdny."
 
-#: src/common/textevents.h:267
+#: src/common/textevents.h:270
 msgid "%C08,02 %B-- Notify List --------------- %O"
 msgstr "%C08,02 %B-- Zoznam upozornení --------------- %O"
 
-#: src/common/textevents.h:270
+#: src/common/textevents.h:273
 msgid "-%C10-%C11-%O$t$1 users in notify list."
 msgstr "-%C10-%C11-%O$t$1 používateľov na zozname upozornení."
 
-#: src/common/textevents.h:273
+#: src/common/textevents.h:276
 msgid "-%C10-%C11-%O$tNotify: $1 is offline ($2)."
 msgstr "-%C10-%C11-%O$tUpozornenie: $1 je off-line ($2)."
 
-#: src/common/textevents.h:276
+#: src/common/textevents.h:279
 msgid "-%C10-%C11-%O$tNotify: $1 is online ($2)."
 msgstr "-%C10-%C11-%O$tUpozornenie: $1 je on-line ($2)."
 
-#: src/common/textevents.h:279
+#: src/common/textevents.h:282
 msgid "<%C10-%C11-%O$t$1 %C14(%O$2%C14)%C has left $3"
 msgstr "<%C10-%C11-%O$t$1 %C14(%O$2%C14)%C opustil $3"
 
-#: src/common/textevents.h:282
+#: src/common/textevents.h:285
 msgid "<%C10-%C11-%O$t$1 %C14(%O$2%C14)%C has left $3 %C14(%O$4%C14)%O"
 msgstr "<%C10-%C11-%O$t$1 %C14(%O$2%C14)%C opustil $3 %C14(%O$4%C14)%O"
 
-#: src/common/textevents.h:285
+#: src/common/textevents.h:288
 msgid "-%C10-%C11-%O$tPing reply from $1 : $2 second(s)"
 msgstr "-%C10-%C11-%O$tOdpoveď ping od $1 : $2 sekúnd"
 
-#: src/common/textevents.h:288
+#: src/common/textevents.h:291
 msgid "-%C10-%C11-%O$tNo ping reply for $1 seconds, disconnecting."
 msgstr "-%C10-%C11-%O$tNeprišla ping odpoved za $1 sekúnd, odpájam."
 
-#: src/common/textevents.h:291
+#: src/common/textevents.h:294
 msgid "%C12*%C13$1%C12*$t%O$2%O"
 msgstr "%C12*%C13$1%C12*$t%O$2%O"
 
-#: src/common/textevents.h:297
+#: src/common/textevents.h:300
 msgid "-%C10-%C11-%O$tA process is already running"
 msgstr "-%C10-%C11-%O$tProces už beží"
 
-#: src/common/textevents.h:300
+#: src/common/textevents.h:303
 msgid "<%C10-%C11-%O$t$1 has quit %C14(%O$2%O%C14)%O"
 msgstr "<%C10-%C11-%O$t$1 skončil %C14(%O$2%O%C14)%O"
 
-#: src/common/textevents.h:303
+#: src/common/textevents.h:306
 msgid "-%C10-%C11-%O$t$1 sets modes%B %C14[%O$2%B%C14]%O"
 msgstr "-%C10-%C11-%O$t$1 nastavil módy %B %C14[%O$2%B%C14]%O"
 
-#: src/common/textevents.h:306
+#: src/common/textevents.h:309
 msgid "%C12-%C13$1/Wallops%C12-%O$t$2%O"
 msgstr "%C12-%C13$1/Wallops%C12-%O$t$2%O"
 
-#: src/common/textevents.h:309
+#: src/common/textevents.h:312
 msgid "-%C10-%C11-%O$tLooking up IP number for%C11 $1%O.."
 msgstr "-%C10-%C11-%O$tHľadám adresu IP pre%C11 $1%O.."
 
-#: src/common/textevents.h:312
+#: src/common/textevents.h:315
 msgid "-%C10-%C11-%O$tConnected."
 msgstr "-%C10-%C11-%O$tPripojený."
 
-#: src/common/textevents.h:318
+#: src/common/textevents.h:321
 msgid "-%C10-%C11-%O$tLooking up %C11$1%C.."
 msgstr "-%C10-%C11-%O$tHľadám %C11$1%C.."
 
-#: src/common/textevents.h:327
+#: src/common/textevents.h:330
 msgid "-%C10-%C11-%O$tStopped previous connection attempt (pid=$1)"
 msgstr "-%C10-%C11-%O$tZastavený predchádzajúci pokus o spojenie (pid=$1)"
 
-#: src/common/textevents.h:330
+#: src/common/textevents.h:333
 msgid "-%C10-%C11-%O$tTopic for %C11$1%C is %C11$2%O"
 msgstr "-%C10-%C11-%O$tTéma pre %C11$1%C je %C11$2%O"
 
-#: src/common/textevents.h:333
+#: src/common/textevents.h:336
 msgid "-%C10-%C11-%O$tTopic for %C11$1%C set by %C11$2%C at %C11$3%O"
 msgstr "-%C10-%C11-%O$tTéma pre %C11$1%C nastavil %C11$2%C na %C11$3%O"
 
-#: src/common/textevents.h:336
+#: src/common/textevents.h:339
 msgid "-%C10-%C11-%O$t$1 has changed the topic to: $2%O"
 msgstr "-%C10-%C11-%O$t$1 zmenil tému na: $2%O"
 
-#: src/common/textevents.h:339
+#: src/common/textevents.h:342
 msgid "-%C10-%C11-%O$tUnknown host. Maybe you misspelled it?"
 msgstr "-%C10-%C11-%O$tNeznámy hostiteľ. Je správne zadaný?"
 
-#: src/common/textevents.h:342
+#: src/common/textevents.h:345
 msgid "-%C10-%C11-%O$tCannot join%C11 %B$1 %O(User limit reached)."
 msgstr "-%C10-%C11-%O$tPríchod nie je možný pre %C11 %B$1 %O(Dosiahnutý maximálny počet používateľov)."
 
-#: src/common/textevents.h:345
+#: src/common/textevents.h:348
 msgid "-%C10-%C11-%O$t%C11Users on $1:%C $2"
 msgstr "-%C10-%C11-%O$t%C11Používatelia v $1:%C $2"
 
-#: src/common/textevents.h:348
+#: src/common/textevents.h:351
 msgid "-%C10-%C11-%O$t%C12[%O$1%C12] %Cis away %C14(%O$2%O%C14)"
 msgstr "-%C10-%C11-%O$t%C12[%O$1%C12] %Cje mimo %C14(%O$2%O%C14)"
 
-#: src/common/textevents.h:351
+#: src/common/textevents.h:354
 msgid "-%C10-%C11-%O$t%C12[%O$1%C12]%C $2"
 msgstr "-%C10-%C11-%O$t%C12[%O$1%C12]%C $2"
 
-#: src/common/textevents.h:354
+#: src/common/textevents.h:357
 msgid "-%C10-%C11-%O$t%C12[%O$1%C12] %CEnd of WHOIS list."
 msgstr "-%C10-%C11-%O$t%C12[%O$1%C12] %CKoniec zoznamu WHOIS."
 
-#: src/common/textevents.h:357
+#: src/common/textevents.h:360
+msgid "-%C10-%C11-%O$t%C12[%O$1%C12] %O$2"
+msgstr "-%C10-%C11-%O$t%C12[%O$1%C12] %O$2"
+
+#: src/common/textevents.h:363
+msgid "-%C10-%C11-%O$t%C12[%O$1%C12] %O$2 %C11$3%O"
+msgstr "-%C10-%C11-%O$t%C12[%O$1%C12] %O$2 %C11$3%O"
+
+#: src/common/textevents.h:366
+msgid "-%C10-%C11-%O$t%C12[%O$1%C12] %Oreal user@host %C11$2%O, real IP %C11$3%O"
+msgstr "-%C10-%C11-%O$t%C12[%O$1%C12] %Oreálny user@host %C11$2%O, reálna IP %C11$3%O"
+
+#: src/common/textevents.h:369
 msgid "-%C10-%C11-%O$t%C12[%O$1%C12]%O idle %C11$2%O"
 msgstr "-%C10-%C11-%O$t%C12[%O$1%C12]%O nečinný %C11$2%O"
 
-#: src/common/textevents.h:360
+#: src/common/textevents.h:372
 msgid "-%C10-%C11-%O$t%C12[%O$1%C12]%O idle %C11$2%O, signon: %C11$3%O"
 msgstr "-%C10-%C11-%O$t%C12[%O$1%C12]%O nečinný %C11$2%O, prihlásenie: %C11$3%O"
 
-#: src/common/textevents.h:363
+#: src/common/textevents.h:375
 msgid "-%C10-%C11-%O$t%C12[%O$1%C12] %C14(%O$2@$3%C14) %O: $4%O"
 msgstr "-%C10-%C11-%O$t%C12[%O$1%C12] %C14(%O$2@$3%C14) %O: $4%O"
 
-#: src/common/textevents.h:366
+#: src/common/textevents.h:378
 msgid "-%C10-%C11-%O$t%C12[%O$1%C12]%O $2"
 msgstr "-%C10-%C11-%O$t%C12[%O$1%C12]%O $2"
 
-#: src/common/textevents.h:369
+#: src/common/textevents.h:381
 msgid "-%C10-%C11>%O$t%BYou%B are now talking on %C11$2%O"
 msgstr "-%C10-%C11>%O$t%B%B teraz hovoríte v %C11$2%O"
 
-#: src/common/textevents.h:372
+#: src/common/textevents.h:384
 msgid "-%C10-%C11-%O$tYou have left channel $3"
 msgstr "-%C10-%C11-%O$tOpustili ste kanál $3"
 
-#: src/common/textevents.h:375
+#: src/common/textevents.h:387
 msgid "-%C10-%C11-%O$tYou have left channel $3 %C14(%O$4%C14)%O"
 msgstr "-%C10-%C11-%O$tOpustili ste kanál $3 %C14(%O$4%C14)%O"
 
-#: src/common/textevents.h:378
+#: src/common/textevents.h:390
 msgid "-%C10-%C11-%O$tYou have been kicked from $2 by $3 ($4%O)"
 msgstr "-%C10-%C11-%O$tVykopli vás z $2, urobil to $3 ($4%O)"
 
-#: src/common/textevents.h:381
+#: src/common/textevents.h:393
 msgid "-%C10-%C11-%O$tYou're inviting %C11$1%C to %C11$2%C (%C11$3%C)"
 msgstr "-%C10-%C11-%O$tPozývate %C11$1%C do %C11$2%C (%C11$3%C)"
 
-#: src/common/textevents.h:384
+#: src/common/textevents.h:396
 msgid "%C6<%O$1%C6>%O$t$2%O"
 msgstr "%C6<%O$1%C6>%O$t$2%O"
 
-#: src/common/textevents.h:387
+#: src/common/textevents.h:399
 msgid "-%C10-%C11-%O$tYou are now known as $2"
 msgstr "-%C10-%C11-%O$tTeraz ste známy ako $2"
 
-#: src/common/text.c:256
+#: src/common/text.c:301
 #, c-format
 msgid "**** ENDING LOGGING AT %s\n"
 msgstr "**** KONIEC ZÁZNAMU %s\n"
 
-#: src/common/text.c:373
+#: src/common/text.c:418
 #, c-format
 msgid "**** BEGIN LOGGING AT %s\n"
 msgstr "**** ZAČIATOK ZÁZNAMU %s\n"
 
-#: src/common/text.c:590
+#: src/common/text.c:437
+#, c-format
+msgid ""
+"* Can't open log file(s) for writing. Check the\n"
+"  permissions on %s/xchatlogs"
+msgstr ""
+"* Nemôžem otvoriť logovací súbor pre zápis. Skontrolujte\n"
+"  prístupové práva pre %s/xchatlogs"
+
+#: src/common/text.c:648
+msgid "Left message"
+msgstr "Ľavá správa"
+
+#: src/common/text.c:649
+msgid "Right message"
+msgstr "Pravá správa"
+
+#: src/common/text.c:653
 msgid "The nick of the joining person"
 msgstr "Prezývka prichádzajúcej osoby"
 
-#: src/common/text.c:591
+#: src/common/text.c:654
 msgid "The channel being joined"
 msgstr "Práve navštívený kanál"
 
-#: src/common/text.c:592 src/common/text.c:636 src/common/text.c:692
+#: src/common/text.c:655 src/common/text.c:699 src/common/text.c:755
 msgid "The host of the person"
 msgstr "Hostiteľ osoby"
 
-#: src/common/text.c:596 src/common/text.c:601 src/common/text.c:607
-#: src/common/text.c:674 src/common/text.c:798 src/common/text.c:805
-#: src/common/text.c:810 src/common/text.c:815 src/common/text.c:820
-#: src/common/text.c:826 src/common/text.c:831 src/common/text.c:874
-#: src/common/text.c:883 src/common/text.c:888 src/common/text.c:893
-#: src/common/text.c:902 src/common/text.c:912 src/common/text.c:919
-#: src/common/text.c:925 src/common/text.c:930 src/common/text.c:935
-#: src/common/text.c:942 src/common/text.c:948 src/common/text.c:954
-#: src/common/text.c:959 src/common/text.c:964 src/common/text.c:968
-#: src/common/text.c:974 src/common/text.c:982 src/common/text.c:1016
-#: src/common/text.c:1021
+#: src/common/text.c:659 src/common/text.c:664 src/common/text.c:670
+#: src/common/text.c:737 src/common/text.c:861 src/common/text.c:868
+#: src/common/text.c:873 src/common/text.c:878 src/common/text.c:883
+#: src/common/text.c:889 src/common/text.c:894 src/common/text.c:898
+#: src/common/text.c:903 src/common/text.c:909 src/common/text.c:955
+#: src/common/text.c:964 src/common/text.c:969 src/common/text.c:974
+#: src/common/text.c:983 src/common/text.c:993 src/common/text.c:1000
+#: src/common/text.c:1006 src/common/text.c:1011 src/common/text.c:1016
+#: src/common/text.c:1023 src/common/text.c:1029 src/common/text.c:1035
+#: src/common/text.c:1040 src/common/text.c:1045 src/common/text.c:1049
+#: src/common/text.c:1055 src/common/text.c:1063 src/common/text.c:1097
+#: src/common/text.c:1102
 msgid "Nickname"
 msgstr "Prezývka"
 
-#: src/common/text.c:597
+#: src/common/text.c:660
 msgid "The action"
 msgstr "Akcia"
 
-#: src/common/text.c:602
+#: src/common/text.c:665
 msgid "The text"
 msgstr "Text"
 
-#: src/common/text.c:603
+#: src/common/text.c:666
 msgid "Mode char"
 msgstr "Znak módu"
 
-#: src/common/text.c:608 src/common/text.c:664 src/common/text.c:670
-#: src/common/text.c:675
+#: src/common/text.c:671 src/common/text.c:727 src/common/text.c:733
+#: src/common/text.c:738
 msgid "The message"
 msgstr "Správa"
 
-#: src/common/text.c:612 src/common/text.c:679
+#: src/common/text.c:675 src/common/text.c:742
 msgid "Old nickname"
 msgstr "Stará prezývka"
 
-#: src/common/text.c:613 src/common/text.c:680
+#: src/common/text.c:676 src/common/text.c:743
 msgid "New nickname"
 msgstr "Nová prezývka"
 
-#: src/common/text.c:617
+#: src/common/text.c:680
 msgid "Nick of person who changed the topic"
 msgstr "Prezývka osoby, ktorá zmenila tému"
 
-#: src/common/text.c:618 src/common/text.c:624 src/fe-gtk/chanlist.c:593
-#: src/fe-gtk/chanlist.c:696
+#: src/common/text.c:681 src/common/text.c:687 src/fe-gtk/chanlist.c:599
+#: src/fe-gtk/chanlist.c:700
 msgid "Topic"
 msgstr "Téma"
 
-#: src/common/text.c:619 src/common/text.c:623 src/common/text.c:1036
-#: src/fe-gtk/chanlist.c:593 src/fe-gtk/chanlist.c:687
-#: src/fe-gtk/ignoregui.c:171
+#: src/common/text.c:682 src/common/text.c:686 src/common/text.c:1117
+#: src/fe-gtk/chanlist.c:597 src/fe-gtk/chanlist.c:691
+#: src/fe-gtk/ignoregui.c:175
 msgid "Channel"
 msgstr "Kanál"
 
-#: src/common/text.c:628 src/common/text.c:686
+#: src/common/text.c:691 src/common/text.c:749
 msgid "The nickname of the kicker"
 msgstr "Prezývka kickera"
 
-#: src/common/text.c:629 src/common/text.c:684
+#: src/common/text.c:692 src/common/text.c:747
 msgid "The person being kicked"
 msgstr "Osoba, ktorá bola vykopnutá"
 
-#: src/common/text.c:630 src/common/text.c:637 src/common/text.c:641
-#: src/common/text.c:646 src/common/text.c:685 src/common/text.c:693
+#: src/common/text.c:693 src/common/text.c:700 src/common/text.c:704
+#: src/common/text.c:709 src/common/text.c:748 src/common/text.c:756
 msgid "The channel"
 msgstr "Kanál"
 
-#: src/common/text.c:631 src/common/text.c:687 src/common/text.c:694
+#: src/common/text.c:694 src/common/text.c:750 src/common/text.c:757
 msgid "The reason"
 msgstr "Dôvod"
 
-#: src/common/text.c:635 src/common/text.c:691
+#: src/common/text.c:698 src/common/text.c:754
 msgid "The nick of the person leaving"
 msgstr "Prezývka odchádzajúcej osoby"
 
-#: src/common/text.c:642 src/common/text.c:648
+#: src/common/text.c:705 src/common/text.c:711
 msgid "The time"
 msgstr "Čas"
 
-#: src/common/text.c:647
+#: src/common/text.c:710
 msgid "The creator"
 msgstr "Autor"
 
-#: src/common/text.c:652
+#: src/common/text.c:715
 msgid "Nick"
 msgstr "Prezývka"
 
-#: src/common/text.c:653 src/common/text.c:889
+#: src/common/text.c:716 src/common/text.c:970
 msgid "Reason"
 msgstr "Dôvod"
 
-#: src/common/text.c:654 src/common/text.c:800 src/common/text.c:864
+#: src/common/text.c:717 src/common/text.c:863 src/common/text.c:945
 msgid "Host"
 msgstr "Hostiteľ"
 
-#: src/common/text.c:658 src/common/text.c:663 src/common/text.c:668
+#: src/common/text.c:721 src/common/text.c:726 src/common/text.c:731
 msgid "Who it's from"
 msgstr "Od koho to je"
 
-#: src/common/text.c:659
+#: src/common/text.c:722
 msgid "The time in x.x format (see below)"
 msgstr "Čas vo formáte x.x (viď nižšie)"
 
-#: src/common/text.c:669 src/common/text.c:710
+#: src/common/text.c:732 src/common/text.c:773
 msgid "The Channel it's going to"
 msgstr "Kanál, kam ide"
 
-#: src/common/text.c:698
+#: src/common/text.c:761
 msgid "The sound"
 msgstr "Zvuk"
 
-#: src/common/text.c:699 src/common/text.c:704 src/common/text.c:709
+#: src/common/text.c:762 src/common/text.c:767 src/common/text.c:772
 msgid "The nick of the person"
 msgstr "Prezývka osoby"
 
-#: src/common/text.c:703 src/common/text.c:708
+#: src/common/text.c:766 src/common/text.c:771
 msgid "The CTCP event"
 msgstr "Udalosť CTCP"
 
-#: src/common/text.c:714
+#: src/common/text.c:777
 msgid "The nick of the person who set the key"
 msgstr "Prezývka osoby, ktorá nastavila kľúč"
 
-#: src/common/text.c:715
+#: src/common/text.c:778
 msgid "The key"
 msgstr "Kľúč"
 
-#: src/common/text.c:719
+#: src/common/text.c:782
 msgid "The nick of the person who set the limit"
 msgstr "Prezývka osoby, ktorá nastavila limit"
 
-#: src/common/text.c:720
+#: src/common/text.c:783
 msgid "The limit"
 msgstr "Limit"
 
-#: src/common/text.c:724
+#: src/common/text.c:787
 msgid "The nick of the person who did the op'ing"
 msgstr "Prezývka osoby, ktorá nastavila operátora"
 
-#: src/common/text.c:725
+#: src/common/text.c:788
 msgid "The nick of the person who has been op'ed"
 msgstr "Prezývka osoby, ktorá sa stala operátorom"
 
-#: src/common/text.c:729
+#: src/common/text.c:792
 msgid "The nick of the person who has been halfop'ed"
 msgstr "Prezývka osoby, ktorá sa stala čiastočným operátorom"
 
-#: src/common/text.c:730
+#: src/common/text.c:793
 msgid "The nick of the person who did the halfop'ing"
 msgstr "Prezývka osoby, ktorá nastavila čiastočného operátora"
 
-#: src/common/text.c:734
+#: src/common/text.c:797
 msgid "The nick of the person who did the voice'ing"
 msgstr "Prezývka osoby, ktorá použila \"voice\""
 
-#: src/common/text.c:735
+#: src/common/text.c:798
 msgid "The nick of the person who has been voice'ed"
 msgstr "Prezývka osoby, na ktorú bol použitý \"voice\""
 
-#: src/common/text.c:739
+#: src/common/text.c:802
 msgid "The nick of the person who did the banning"
 msgstr "Prezývka osoby, ktorá použila zákaz"
 
-#: src/common/text.c:740 src/common/text.c:767
+#: src/common/text.c:803 src/common/text.c:830
 msgid "The ban mask"
 msgstr "Maska zákazu"
 
-#: src/common/text.c:744
+#: src/common/text.c:807
 msgid "The nick who removed the key"
 msgstr "Prezývka osoby, ktorá odstránila kľúč"
 
-#: src/common/text.c:748
+#: src/common/text.c:811
 msgid "The nick who removed the limit"
 msgstr "Prezývka osoby, ktorá odstránila limit"
 
-#: src/common/text.c:752
+#: src/common/text.c:815
 msgid "The nick of the person of did the deop'ing"
 msgstr "Prezývka osoby, ktorá použila zrušenie operátora"
 
-#: src/common/text.c:753
+#: src/common/text.c:816
 msgid "The nick of the person who has been deop'ed"
 msgstr "Prezývka osoby, ktorá sa stala operátorom"
 
-#: src/common/text.c:756
+#: src/common/text.c:819
 msgid "The nick of the person of did the dehalfop'ing"
 msgstr "Prezývka osoby, ktorá nastavila čiastočného operátora"
 
-#: src/common/text.c:757
+#: src/common/text.c:820
 msgid "The nick of the person who has been dehalfop'ed"
 msgstr "Prezývka osoby, ktorá sa stala čiastočným operátorom"
 
-#: src/common/text.c:761
+#: src/common/text.c:824
 msgid "The nick of the person of did the devoice'ing"
 msgstr "Prezývka osoby, ktorá použila \"devoice\""
 
-#: src/common/text.c:762
+#: src/common/text.c:825
 msgid "The nick of the person who has been devoice'ed"
 msgstr "Prezývka osoby, na ktorú bol použitý \"devoice\""
 
-#: src/common/text.c:766
+#: src/common/text.c:829
 msgid "The nick of the person of did the unban'ing"
 msgstr "Prezývka osoby, ktorá zrušila zákaz"
 
-#: src/common/text.c:771
+#: src/common/text.c:834
 msgid "The nick of the person who did the exempt"
 msgstr "Prezývka osoby, ktorá vylúčila"
 
-#: src/common/text.c:772 src/common/text.c:777
+#: src/common/text.c:835 src/common/text.c:840
 msgid "The exempt mask"
 msgstr "Maska vylúčenia"
 
-#: src/common/text.c:776
+#: src/common/text.c:839
 msgid "The nick of the person removed the exempt"
 msgstr "Prezývka osoby, ktorá odstránila vylúčenie"
 
-#: src/common/text.c:781
+#: src/common/text.c:844
 msgid "The nick of the person who did the invite"
 msgstr "Prezývka osoby, ktorá pozvala"
 
-#: src/common/text.c:782 src/common/text.c:787
+#: src/common/text.c:845 src/common/text.c:850
 msgid "The invite mask"
 msgstr "Maska pozvania"
 
-#: src/common/text.c:786
+#: src/common/text.c:849
 msgid "The nick of the person removed the invite"
 msgstr "Prezývka osoby, ktorá odstránila pozvanie"
 
-#: src/common/text.c:791
+#: src/common/text.c:854
 msgid "The nick of the person setting the mode"
 msgstr "Prezývka osoby, ktorá nastavila mód"
 
-#: src/common/text.c:792
+#: src/common/text.c:855
 msgid "The mode's sign (+/-)"
 msgstr "Znamienko módu (+/-)"
 
-#: src/common/text.c:793
+#: src/common/text.c:856
 msgid "The mode letter"
 msgstr "Písmeno módu"
 
-#: src/common/text.c:794
+#: src/common/text.c:857
 msgid "The channel it's being set on"
 msgstr "Kanál, na ktorom to bolo nastavené"
 
-#: src/common/text.c:799
+#: src/common/text.c:862
 msgid "Username"
 msgstr "Používateľ"
 
-#: src/common/text.c:801
+#: src/common/text.c:864
 msgid "Full name"
 msgstr "Celé meno"
 
-#: src/common/text.c:806
+#: src/common/text.c:869
 msgid "Channel Membership/\"is an IRC operator\""
 msgstr "Členstvo v kanáli/\"is an IRC operator\""
 
-#: src/common/text.c:811
+#: src/common/text.c:874
 msgid "Server Information"
 msgstr "Informácie o serveri"
 
-#: src/common/text.c:816 src/common/text.c:821
+#: src/common/text.c:879 src/common/text.c:884
 msgid "Idle time"
 msgstr "Čas nečinnosti"
 
-#: src/common/text.c:822
+#: src/common/text.c:885
 msgid "Signon time"
 msgstr "Čas prihlásenia"
 
-#: src/common/text.c:827
+#: src/common/text.c:890
 msgid "Away reason"
 msgstr "Dôvod pre AWAY"
 
-#: src/common/text.c:835 src/common/text.c:844 src/common/text.c:850
-#: src/common/text.c:1031
-msgid "Channel Name"
-msgstr "Meno kanálu"
-
-#: src/common/text.c:839 src/common/text.c:994 src/fe-gtk/textgui.c:376
-msgid "Text"
-msgstr "Text"
-
-#: src/common/text.c:840 src/common/text.c:846 src/common/text.c:1032
-msgid "Server Name"
-msgstr "Meno serveru"
-
-#: src/common/text.c:845
-msgid "Nick of person who invited you"
-msgstr "Prezývka osoby, ktorá vás pozvala"
-
-#: src/common/text.c:851 src/fe-gtk/chanlist.c:593
-msgid "Users"
-msgstr "Používatelia"
-
-#: src/common/text.c:855
-msgid "Nickname in use"
-msgstr "Používaná prezývka"
-
-#: src/common/text.c:856
-msgid "Nick being tried"
-msgstr "Skúšaná prezývka"
-
-#: src/common/text.c:860
-msgid "Error String"
-msgstr "Reťazec chyby"
-
-#: src/common/text.c:865 src/common/text.c:998
-msgid "IP"
-msgstr "IP"
-
-#: src/common/text.c:866 src/common/text.c:895
-msgid "Port"
-msgstr "Port"
-
-#: src/common/text.c:870
-msgid "PID"
-msgstr "PID"
-
-#: src/common/text.c:878
-msgid "Channel name"
-msgstr "Meno kanálu"
-
-#: src/common/text.c:879 src/common/text.c:884
-msgid "Modes string"
-msgstr "Reťazec módov"
-
-#: src/common/text.c:894 src/common/text.c:931 src/common/text.c:936
-#: src/common/text.c:977
-msgid "IP address"
-msgstr "IP adresa"
-
-#: src/common/text.c:896 src/common/text.c:913 src/common/text.c:943
-msgid "Error name"
-msgstr "Názov chyby"
-
-#: src/common/text.c:900 src/common/text.c:924
-msgid "DCC Type"
-msgstr "Typ DCC"
-
-#: src/common/text.c:901 src/common/text.c:906 src/common/text.c:910
-#: src/common/text.c:917 src/common/text.c:937 src/common/text.c:941
-#: src/common/text.c:947 src/common/text.c:953 src/common/text.c:960
-#: src/common/text.c:969 src/common/text.c:975
-msgid "Filename"
-msgstr "Názov súboru"
-
-#: src/common/text.c:911 src/common/text.c:918
-msgid "Destination filename"
-msgstr "Cieľový súbor"
-
-#: src/common/text.c:920 src/common/text.c:949
-msgid "CPS"
-msgstr "CPS"
-
-#: src/common/text.c:926
-msgid "Error string"
-msgstr "Chybový reťazec"
-
-#: src/common/text.c:955
-msgid "Pathname"
-msgstr "Cesta"
-
-#: src/common/text.c:970 src/fe-gtk/dccgui.c:396 src/fe-gtk/dccgui.c:400
-#: src/fe-gtk/dccgui.c:580
-msgid "Position"
-msgstr "Pozícia"
-
-#: src/common/text.c:976 src/fe-gtk/dccgui.c:396 src/fe-gtk/dccgui.c:400
-#: src/fe-gtk/dccgui.c:580
-msgid "Size"
-msgstr "Veľkosť"
-
-#: src/common/text.c:981
-msgid "DCC String"
-msgstr "Reťazec DCC"
-
-#: src/common/text.c:986
-msgid "Number of notify items"
-msgstr "Počet položiek upozornenia"
-
-#: src/common/text.c:990
-msgid "Servername"
-msgstr "Meno serveru"
-
-#: src/common/text.c:1002
-msgid "Old Filename"
-msgstr "Staré meno súboru"
-
-#: src/common/text.c:1003
-msgid "New Filename"
-msgstr "Nové meno súboru"
-
-#: src/common/text.c:1007
-msgid "Receiver"
-msgstr "Príjemca"
-
-#: src/common/text.c:1008
+#: src/common/text.c:899 src/common/text.c:904 src/common/text.c:912
+#: src/common/text.c:1089
 msgid "Message"
 msgstr "Správa"
 
-#: src/common/text.c:1012
+#: src/common/text.c:905
+msgid "Account"
+msgstr "Konto"
+
+#: src/common/text.c:910
+msgid "Real user@host"
+msgstr "Reálny user@host"
+
+#: src/common/text.c:911
+msgid "Real IP"
+msgstr "Reálna IP"
+
+#: src/common/text.c:916 src/common/text.c:925 src/common/text.c:931
+#: src/common/text.c:1112
+msgid "Channel Name"
+msgstr "Meno kanálu"
+
+#: src/common/text.c:920 src/common/text.c:1075 src/fe-gtk/textgui.c:379
+msgid "Text"
+msgstr "Text"
+
+#: src/common/text.c:921 src/common/text.c:927 src/common/text.c:1113
+msgid "Server Name"
+msgstr "Meno serveru"
+
+#: src/common/text.c:926
+msgid "Nick of person who invited you"
+msgstr "Prezývka osoby, ktorá vás pozvala"
+
+#: src/common/text.c:932 src/fe-gtk/chanlist.c:598
+msgid "Users"
+msgstr "Používatelia"
+
+#: src/common/text.c:936
+msgid "Nickname in use"
+msgstr "Používaná prezývka"
+
+#: src/common/text.c:937
+msgid "Nick being tried"
+msgstr "Skúšaná prezývka"
+
+#: src/common/text.c:941
+msgid "Error String"
+msgstr "Reťazec chyby"
+
+#: src/common/text.c:946 src/common/text.c:1079
+msgid "IP"
+msgstr "IP"
+
+#: src/common/text.c:947 src/common/text.c:976
+msgid "Port"
+msgstr "Port"
+
+#: src/common/text.c:951
+msgid "PID"
+msgstr "PID"
+
+#: src/common/text.c:959
+msgid "Channel name"
+msgstr "Meno kanálu"
+
+#: src/common/text.c:960 src/common/text.c:965
+msgid "Modes string"
+msgstr "Reťazec módov"
+
+#: src/common/text.c:975 src/common/text.c:1012 src/common/text.c:1017
+#: src/common/text.c:1058
+msgid "IP address"
+msgstr "IP adresa"
+
+#: src/common/text.c:977 src/common/text.c:994 src/common/text.c:1024
+msgid "Error name"
+msgstr "Názov chyby"
+
+#: src/common/text.c:981 src/common/text.c:1005
+msgid "DCC Type"
+msgstr "Typ DCC"
+
+#: src/common/text.c:982 src/common/text.c:987 src/common/text.c:991
+#: src/common/text.c:998 src/common/text.c:1018 src/common/text.c:1022
+#: src/common/text.c:1028 src/common/text.c:1034 src/common/text.c:1041
+#: src/common/text.c:1050 src/common/text.c:1056
+msgid "Filename"
+msgstr "Názov súboru"
+
+#: src/common/text.c:992 src/common/text.c:999
+msgid "Destination filename"
+msgstr "Cieľový súbor"
+
+#: src/common/text.c:1001 src/common/text.c:1030
+msgid "CPS"
+msgstr "CPS"
+
+#: src/common/text.c:1007
+msgid "Error string"
+msgstr "Chybový reťazec"
+
+#: src/common/text.c:1036
+msgid "Pathname"
+msgstr "Cesta"
+
+#: src/common/text.c:1051 src/fe-gtk/dccgui.c:470 src/fe-gtk/dccgui.c:620
+msgid "Position"
+msgstr "Pozícia"
+
+#: src/common/text.c:1057 src/fe-gtk/dccgui.c:469 src/fe-gtk/dccgui.c:619
+msgid "Size"
+msgstr "Veľkosť"
+
+#: src/common/text.c:1062
+msgid "DCC String"
+msgstr "Reťazec DCC"
+
+#: src/common/text.c:1067
+msgid "Number of notify items"
+msgstr "Počet položiek upozornenia"
+
+#: src/common/text.c:1071
+msgid "Servername"
+msgstr "Meno serveru"
+
+#: src/common/text.c:1083
+msgid "Old Filename"
+msgstr "Staré meno súboru"
+
+#: src/common/text.c:1084
+msgid "New Filename"
+msgstr "Nové meno súboru"
+
+#: src/common/text.c:1088
+msgid "Receiver"
+msgstr "Príjemca"
+
+#: src/common/text.c:1093
 msgid "Hostmask"
 msgstr "Maska hostiteľa"
 
-#: src/common/text.c:1017
+#: src/common/text.c:1098
 msgid "Hostname"
 msgstr "Hostiteľ"
 
-#: src/common/text.c:1022
+#: src/common/text.c:1103
 msgid "The Packet"
 msgstr "Paket"
 
-#: src/common/text.c:1026
+#: src/common/text.c:1107
 msgid "Seconds"
 msgstr "Sekundy"
 
-#: src/common/text.c:1030
+#: src/common/text.c:1111
 msgid "Nick of person who have been invited"
 msgstr "Prezývka osoby, ktorá bola pozvaná"
 
-#: src/common/text.c:1037
+#: src/common/text.c:1118
 msgid "Banmask"
 msgstr "Maska zákazu"
 
-#: src/common/text.c:1038
+#: src/common/text.c:1119
 msgid "Who set the ban"
 msgstr "Kto nastavil zákaz"
 
-#: src/common/text.c:1039
+#: src/common/text.c:1120
 msgid "Ban time"
 msgstr "Čas zákazu"
 
-#: src/common/text.c:1043
+#: src/common/text.c:1124
 msgid "Error"
 msgstr "Chyba"
 
-#: src/common/text.c:1077
+#: src/common/text.c:1158
 #, c-format
 msgid ""
 "Error parsing event %s.\n"
@@ -1450,1268 +1496,1268 @@ msgstr ""
 "Chyba pri spracovaní udalosti %s.\n"
 "Načítavam štandardné"
 
-#: src/common/util.c:287
+#: src/common/util.c:292
 msgid "Remote host closed socket"
 msgstr "Vzdialený hostiteľ zatvoril soket"
 
-#: src/common/util.c:290
+#: src/common/util.c:295
 msgid "Connection refused"
 msgstr "Spojenie odmietnuté"
 
-#: src/common/util.c:293
+#: src/common/util.c:298
 msgid "No route to host"
 msgstr "Cesta k počítaču neexistuje"
 
-#: src/common/util.c:295
+#: src/common/util.c:300
 msgid "Connection timed out"
 msgstr "Časový limit pre spojenie vypršal"
 
-#: src/common/util.c:297
+#: src/common/util.c:302
 msgid "Cannot assign that address"
 msgstr "Nepodarilo sa priradiť adresu"
 
-#: src/common/util.c:299
+#: src/common/util.c:304
 msgid "Connection reset by peer"
 msgstr "Spojenie zrušené druhou stranou"
 
-#: src/common/util.c:699
+#: src/common/util.c:724
 msgid "Andorra"
 msgstr "Andorra"
 
-#: src/common/util.c:700
+#: src/common/util.c:725
 msgid "United Arab Emirates"
 msgstr "Spojené Arabské Emiráty"
 
-#: src/common/util.c:701
+#: src/common/util.c:726
 msgid "Afghanistan"
 msgstr "Afganistan"
 
-#: src/common/util.c:702
+#: src/common/util.c:727
 msgid "Antigua and Barbuda"
 msgstr "Antigua a Barbuda"
 
-#: src/common/util.c:703
+#: src/common/util.c:728
 msgid "Anguilla"
 msgstr "Anguilla"
 
-#: src/common/util.c:704
+#: src/common/util.c:729
 msgid "Albania"
 msgstr "Albánsko"
 
-#: src/common/util.c:705
+#: src/common/util.c:730
 msgid "Armenia"
 msgstr "Arménsko"
 
-#: src/common/util.c:706
+#: src/common/util.c:731
 msgid "Netherlands Antilles"
 msgstr "Holandské Antily"
 
-#: src/common/util.c:707
+#: src/common/util.c:732
 msgid "Angola"
 msgstr "Angola"
 
-#: src/common/util.c:708
+#: src/common/util.c:733
 msgid "Antarctica"
 msgstr "Antarktída"
 
-#: src/common/util.c:709
+#: src/common/util.c:734
 msgid "Argentina"
 msgstr "Argentína"
 
-#: src/common/util.c:710
+#: src/common/util.c:735
 msgid "Reverse DNS"
 msgstr "Reverzné DNS"
 
-#: src/common/util.c:711
+#: src/common/util.c:736
 msgid "American Samoa"
 msgstr "Americká Samoa"
 
-#: src/common/util.c:712
+#: src/common/util.c:737
 msgid "Austria"
 msgstr "Rakúsko"
 
-#: src/common/util.c:713
+#: src/common/util.c:738
 msgid "Nato Fiel"
 msgstr "Nato Fiel"
 
-#: src/common/util.c:714
+#: src/common/util.c:739
 msgid "Australia"
 msgstr "Austrália"
 
-#: src/common/util.c:715
+#: src/common/util.c:740
 msgid "Aruba"
 msgstr "Aruba"
 
-#: src/common/util.c:716
+#: src/common/util.c:741
 msgid "Azerbaijan"
 msgstr "Azerbajdžan"
 
-#: src/common/util.c:717
+#: src/common/util.c:742
 msgid "Bosnia and Herzegovina"
 msgstr "Bosna a Hercegovina"
 
-#: src/common/util.c:718
+#: src/common/util.c:743
 msgid "Barbados"
 msgstr "Barbados"
 
-#: src/common/util.c:719
+#: src/common/util.c:744
 msgid "Bangladesh"
 msgstr "Bangladéš"
 
-#: src/common/util.c:720
+#: src/common/util.c:745
 msgid "Belgium"
 msgstr "Belgicko"
 
-#: src/common/util.c:721
+#: src/common/util.c:746
 msgid "Burkina Faso"
 msgstr "Burkina Faso"
 
-#: src/common/util.c:722
+#: src/common/util.c:747
 msgid "Bulgaria"
 msgstr "Bulharsko"
 
-#: src/common/util.c:723
+#: src/common/util.c:748
 msgid "Bahrain"
 msgstr "Bahrajn"
 
-#: src/common/util.c:724
+#: src/common/util.c:749
 msgid "Burundi"
 msgstr "Burundi"
 
-#: src/common/util.c:725
+#: src/common/util.c:750
 msgid "Businesses"
 msgstr "Obchodné"
 
-#: src/common/util.c:726
+#: src/common/util.c:751
 msgid "Benin"
 msgstr "Benin"
 
-#: src/common/util.c:727
+#: src/common/util.c:752
 msgid "Bermuda"
 msgstr "Bermudy"
 
-#: src/common/util.c:728
+#: src/common/util.c:753
 msgid "Brunei Darussalam"
 msgstr "Brunei Darussalam"
 
-#: src/common/util.c:729
+#: src/common/util.c:754
 msgid "Bolivia"
 msgstr "Bolívia"
 
-#: src/common/util.c:730
+#: src/common/util.c:755
 msgid "Brazil"
 msgstr "Brazília"
 
-#: src/common/util.c:731
+#: src/common/util.c:756
 msgid "Bahamas"
 msgstr "Bahamy"
 
-#: src/common/util.c:732
+#: src/common/util.c:757
 msgid "Bhutan"
 msgstr "Bhután"
 
-#: src/common/util.c:733
+#: src/common/util.c:758
 msgid "Bouvet Island"
 msgstr "Bouvet Island"
 
-#: src/common/util.c:734
+#: src/common/util.c:759
 msgid "Botswana"
 msgstr "Botswana"
 
-#: src/common/util.c:735
+#: src/common/util.c:760
 msgid "Belarus"
 msgstr "Bielorusko"
 
-#: src/common/util.c:736
+#: src/common/util.c:761
 msgid "Belize"
 msgstr "Belize"
 
-#: src/common/util.c:737
+#: src/common/util.c:762
 msgid "Canada"
 msgstr "Kanada"
 
-#: src/common/util.c:738
+#: src/common/util.c:763
 msgid "Cocos Islands"
 msgstr "Kokosové ostrovy"
 
-#: src/common/util.c:739
+#: src/common/util.c:764
 msgid "Central African Republic"
 msgstr "Stredoafrická Republika"
 
-#: src/common/util.c:740
+#: src/common/util.c:765
 msgid "Congo"
 msgstr "Kongo"
 
-#: src/common/util.c:741
+#: src/common/util.c:766
 msgid "Switzerland"
 msgstr "Švajčiarsko"
 
-#: src/common/util.c:742
+#: src/common/util.c:767
 msgid "Cote D'ivoire"
 msgstr "Pobrežie slonoviny"
 
-#: src/common/util.c:743
+#: src/common/util.c:768
 msgid "Cook Islands"
 msgstr "Cookove ostrovy"
 
-#: src/common/util.c:744
+#: src/common/util.c:769
 msgid "Chile"
 msgstr "Chile"
 
-#: src/common/util.c:745
+#: src/common/util.c:770
 msgid "Cameroon"
 msgstr "Kamerun"
 
-#: src/common/util.c:746
+#: src/common/util.c:771
 msgid "China"
 msgstr "Čína"
 
-#: src/common/util.c:747
+#: src/common/util.c:772
 msgid "Colombia"
 msgstr "Kolumbia"
 
-#: src/common/util.c:748
+#: src/common/util.c:773
 msgid "Internic Commercial"
 msgstr "Internic komerčné"
 
-#: src/common/util.c:749
+#: src/common/util.c:774
 msgid "Costa Rica"
 msgstr "Kostarika"
 
-#: src/common/util.c:750
+#: src/common/util.c:775
 msgid "Former Czechoslovakia"
 msgstr "Bývalé Československo"
 
-#: src/common/util.c:751
+#: src/common/util.c:776
 msgid "Cuba"
 msgstr "Kuba"
 
-#: src/common/util.c:752
+#: src/common/util.c:777
 msgid "Cape Verde"
 msgstr "Kapverdy"
 
-#: src/common/util.c:753
+#: src/common/util.c:778
 msgid "Christmas Island"
 msgstr "Vianočné ostrovy"
 
-#: src/common/util.c:754
+#: src/common/util.c:779
 msgid "Cyprus"
 msgstr "Cyprus"
 
-#: src/common/util.c:755
+#: src/common/util.c:780
 msgid "Czech Republic"
 msgstr "Česká Republika"
 
-#: src/common/util.c:756
+#: src/common/util.c:781
 msgid "Germany"
 msgstr "Nemecko"
 
-#: src/common/util.c:757
+#: src/common/util.c:782
 msgid "Djibouti"
 msgstr "Džibuti"
 
-#: src/common/util.c:758
+#: src/common/util.c:783
 msgid "Denmark"
 msgstr "Dánsko"
 
-#: src/common/util.c:759
+#: src/common/util.c:784
 msgid "Dominica"
 msgstr "Dominika"
 
-#: src/common/util.c:760
+#: src/common/util.c:785
 msgid "Dominican Republic"
 msgstr "Dominikánska Republika"
 
-#: src/common/util.c:761
+#: src/common/util.c:786
 msgid "Algeria"
 msgstr "Alžírsko"
 
-#: src/common/util.c:762
+#: src/common/util.c:787
 msgid "Ecuador"
 msgstr "Ekvádor"
 
-#: src/common/util.c:763
+#: src/common/util.c:788
 msgid "Educational Institution"
 msgstr "Školstvo"
 
-#: src/common/util.c:764
+#: src/common/util.c:789
 msgid "Estonia"
 msgstr "Estónsko"
 
-#: src/common/util.c:765
+#: src/common/util.c:790
 msgid "Egypt"
 msgstr "Egypt"
 
-#: src/common/util.c:766
+#: src/common/util.c:791
 msgid "Western Sahara"
 msgstr "Západná Sahara"
 
-#: src/common/util.c:767
+#: src/common/util.c:792
 msgid "Eritrea"
 msgstr "Eritrea"
 
-#: src/common/util.c:768
+#: src/common/util.c:793
 msgid "Spain"
 msgstr "Španielsko"
 
-#: src/common/util.c:769
+#: src/common/util.c:794
 msgid "Ethiopia"
 msgstr "Etiópia"
 
-#: src/common/util.c:770
+#: src/common/util.c:795
 msgid "Finland"
 msgstr "Fínsko"
 
-#: src/common/util.c:771
+#: src/common/util.c:796
 msgid "Fiji"
 msgstr "Fidži"
 
-#: src/common/util.c:772
+#: src/common/util.c:797
 msgid "Falkland Islands"
 msgstr "Falklandské ostrovy"
 
-#: src/common/util.c:773
+#: src/common/util.c:798
 msgid "Micronesia"
 msgstr "Mikronézia"
 
-#: src/common/util.c:774
+#: src/common/util.c:799
 msgid "Faroe Islands"
 msgstr "Faerské ostrovy"
 
-#: src/common/util.c:775
+#: src/common/util.c:800
 msgid "France"
 msgstr "Francúzsko"
 
-#: src/common/util.c:776
+#: src/common/util.c:801
 msgid "France, Metropolitan"
 msgstr "Metropolitné francúzsko"
 
-#: src/common/util.c:777
+#: src/common/util.c:802
 msgid "Gabon"
 msgstr "Gabon"
 
-#: src/common/util.c:778
+#: src/common/util.c:803
 msgid "Great Britain"
 msgstr "Veľká Británia"
 
-#: src/common/util.c:779
+#: src/common/util.c:804
 msgid "Grenada"
 msgstr "Grenada"
 
-#: src/common/util.c:780
+#: src/common/util.c:805
 msgid "Georgia"
 msgstr "Gruzínsko"
 
-#: src/common/util.c:781
+#: src/common/util.c:806
 msgid "French Guiana"
 msgstr "Francúzska guajana"
 
-#: src/common/util.c:782
+#: src/common/util.c:807
 msgid "British Channel Isles"
 msgstr "Britské ostrovy v kanáli"
 
-#: src/common/util.c:783
+#: src/common/util.c:808
 msgid "Ghana"
 msgstr "Ghana"
 
-#: src/common/util.c:784
+#: src/common/util.c:809
 msgid "Gibraltar"
 msgstr "Gibraltar"
 
-#: src/common/util.c:785
+#: src/common/util.c:810
 msgid "Greenland"
 msgstr "Grónsko"
 
-#: src/common/util.c:786
+#: src/common/util.c:811
 msgid "Gambia"
 msgstr "Gambia"
 
-#: src/common/util.c:787
+#: src/common/util.c:812
 msgid "Guinea"
 msgstr "Guinea"
 
-#: src/common/util.c:788
+#: src/common/util.c:813
 msgid "Government"
 msgstr "Vládne"
 
-#: src/common/util.c:789
+#: src/common/util.c:814
 msgid "Guadeloupe"
 msgstr "Guadeloupe"
 
-#: src/common/util.c:790
+#: src/common/util.c:815
 msgid "Equatorial Guinea"
 msgstr "Rovníková Guinea"
 
-#: src/common/util.c:791
+#: src/common/util.c:816
 msgid "Greece"
 msgstr "Grécko"
 
-#: src/common/util.c:792
+#: src/common/util.c:817
 msgid "S. Georgia and S. Sandwich Isles."
 msgstr "S. Georgia a S. Sandwich Isles."
 
-#: src/common/util.c:793
+#: src/common/util.c:818
 msgid "Guatemala"
 msgstr "Guatemala"
 
-#: src/common/util.c:794
+#: src/common/util.c:819
 msgid "Guam"
 msgstr "Guam"
 
-#: src/common/util.c:795
+#: src/common/util.c:820
 msgid "Guinea-Bissau"
 msgstr "Guinea-Bissau"
 
-#: src/common/util.c:796
+#: src/common/util.c:821
 msgid "Guyana"
 msgstr "Guayana"
 
-#: src/common/util.c:797
+#: src/common/util.c:822
 msgid "Hong Kong"
 msgstr "Hongkong"
 
-#: src/common/util.c:798
+#: src/common/util.c:823
 msgid "Heard and McDonald Islands"
 msgstr "Heard a McDonald Islands"
 
-#: src/common/util.c:799
+#: src/common/util.c:824
 msgid "Honduras"
 msgstr "Honduras"
 
-#: src/common/util.c:800
+#: src/common/util.c:825
 msgid "Croatia"
 msgstr "Chorvátsko"
 
-#: src/common/util.c:801
+#: src/common/util.c:826
 msgid "Haiti"
 msgstr "Haiti"
 
-#: src/common/util.c:802
+#: src/common/util.c:827
 msgid "Hungary"
 msgstr "Maďarsko"
 
-#: src/common/util.c:803
+#: src/common/util.c:828
 msgid "Indonesia"
 msgstr "Indonézia"
 
-#: src/common/util.c:804
+#: src/common/util.c:829
 msgid "Ireland"
 msgstr "Írsko"
 
-#: src/common/util.c:805
+#: src/common/util.c:830
 msgid "Israel"
 msgstr "Izrael"
 
-#: src/common/util.c:806
+#: src/common/util.c:831
 msgid "India"
 msgstr "India"
 
-#: src/common/util.c:807
+#: src/common/util.c:832
 msgid "Informational"
 msgstr "Informačné"
 
-#: src/common/util.c:808
+#: src/common/util.c:833
 msgid "International"
 msgstr "Medzinárodné"
 
-#: src/common/util.c:809
+#: src/common/util.c:834
 msgid "British Indian Ocean Territory"
 msgstr "Britské teritórium Indický oceán"
 
-#: src/common/util.c:810
+#: src/common/util.c:835
 msgid "Iraq"
 msgstr "Irak"
 
-#: src/common/util.c:811
+#: src/common/util.c:836
 msgid "Iran"
 msgstr "Irán"
 
-#: src/common/util.c:812
+#: src/common/util.c:837
 msgid "Iceland"
 msgstr "Island"
 
-#: src/common/util.c:813
+#: src/common/util.c:838
 msgid "Italy"
 msgstr "Taliansko"
 
-#: src/common/util.c:814
+#: src/common/util.c:839
 msgid "Jamaica"
 msgstr "Jamajka"
 
-#: src/common/util.c:815
+#: src/common/util.c:840
 msgid "Jordan"
 msgstr "Jordánsko"
 
-#: src/common/util.c:816
+#: src/common/util.c:841
 msgid "Japan"
 msgstr "Japonsko"
 
-#: src/common/util.c:817
+#: src/common/util.c:842
 msgid "Kenya"
 msgstr "Keňa"
 
-#: src/common/util.c:818
+#: src/common/util.c:843
 msgid "Kyrgyzstan"
 msgstr "Kirgistán"
 
-#: src/common/util.c:819
+#: src/common/util.c:844
 msgid "Cambodia"
 msgstr "Kambodža"
 
-#: src/common/util.c:820
+#: src/common/util.c:845
 msgid "Kiribati"
 msgstr "Kiribati"
 
-#: src/common/util.c:821
+#: src/common/util.c:846
 msgid "Comoros"
 msgstr "Komory"
 
-#: src/common/util.c:822
+#: src/common/util.c:847
 msgid "St. Kitts and Nevis"
 msgstr "Svätý Krištof a Nevis"
 
-#: src/common/util.c:823
+#: src/common/util.c:848
 msgid "North Korea"
 msgstr "Severná Kórea"
 
-#: src/common/util.c:824
+#: src/common/util.c:849
 msgid "South Korea"
 msgstr "Južná Kórea"
 
-#: src/common/util.c:825
+#: src/common/util.c:850
 msgid "Kuwait"
 msgstr "Kuvajt"
 
-#: src/common/util.c:826
+#: src/common/util.c:851
 msgid "Cayman Islands"
 msgstr "Kajmanské ostrovy"
 
-#: src/common/util.c:827
+#: src/common/util.c:852
 msgid "Kazakhstan"
 msgstr "Kazachstan"
 
-#: src/common/util.c:828
+#: src/common/util.c:853
 msgid "Laos"
 msgstr "Laos"
 
-#: src/common/util.c:829
+#: src/common/util.c:854
 msgid "Lebanon"
 msgstr "Libanon"
 
-#: src/common/util.c:830
+#: src/common/util.c:855
 msgid "Saint Lucia"
 msgstr "Svätá Lucia"
 
-#: src/common/util.c:831
+#: src/common/util.c:856
 msgid "Liechtenstein"
 msgstr "Lichtenštajnsko"
 
-#: src/common/util.c:832
+#: src/common/util.c:857
 msgid "Sri Lanka"
 msgstr "Srí Lanka"
 
-#: src/common/util.c:833
+#: src/common/util.c:858
 msgid "Liberia"
 msgstr "Libéria"
 
-#: src/common/util.c:834
+#: src/common/util.c:859
 msgid "Lesotho"
 msgstr "Lesotho"
 
-#: src/common/util.c:835
+#: src/common/util.c:860
 msgid "Lithuania"
 msgstr "Litva"
 
-#: src/common/util.c:836
+#: src/common/util.c:861
 msgid "Luxembourg"
 msgstr "Luxemburgsko"
 
-#: src/common/util.c:837
+#: src/common/util.c:862
 msgid "Latvia"
 msgstr "Lotyšsko"
 
-#: src/common/util.c:838
+#: src/common/util.c:863
 msgid "Libya"
 msgstr "Líbya"
 
-#: src/common/util.c:839
+#: src/common/util.c:864
 msgid "Morocco"
 msgstr "Maroko"
 
-#: src/common/util.c:840
+#: src/common/util.c:865
 msgid "Monaco"
 msgstr "Monako"
 
-#: src/common/util.c:841
+#: src/common/util.c:866
 msgid "Moldova"
 msgstr "Moldavsko"
 
-#: src/common/util.c:842
+#: src/common/util.c:867
 msgid "United States Medical"
 msgstr "USA zdravotníctvo"
 
-#: src/common/util.c:843
+#: src/common/util.c:868
 msgid "Madagascar"
 msgstr "Madagaskar"
 
-#: src/common/util.c:844
+#: src/common/util.c:869
 msgid "Marshall Islands"
 msgstr "Marshallove ostrovy"
 
-#: src/common/util.c:845
+#: src/common/util.c:870
 msgid "Military"
 msgstr "Vojenské"
 
-#: src/common/util.c:846
+#: src/common/util.c:871
 msgid "Macedonia"
 msgstr "Makedónia"
 
-#: src/common/util.c:847
+#: src/common/util.c:872
 msgid "Mali"
 msgstr "Mali"
 
-#: src/common/util.c:848
+#: src/common/util.c:873
 msgid "Myanmar"
 msgstr "Myanmar (Barma)"
 
-#: src/common/util.c:849
+#: src/common/util.c:874
 msgid "Mongolia"
 msgstr "Mongolsko"
 
-#: src/common/util.c:850
+#: src/common/util.c:875
 msgid "Macau"
 msgstr "Macao"
 
-#: src/common/util.c:851
+#: src/common/util.c:876
 msgid "Northern Mariana Islands"
 msgstr "Severné Mariánske Ostrovy"
 
-#: src/common/util.c:852
+#: src/common/util.c:877
 msgid "Martinique"
 msgstr "Martinik"
 
-#: src/common/util.c:853
+#: src/common/util.c:878
 msgid "Mauritania"
 msgstr "Mauritania"
 
-#: src/common/util.c:854
+#: src/common/util.c:879
 msgid "Montserrat"
 msgstr "Montserrat"
 
-#: src/common/util.c:855
+#: src/common/util.c:880
 msgid "Malta"
 msgstr "Malta"
 
-#: src/common/util.c:856
+#: src/common/util.c:881
 msgid "Mauritius"
 msgstr "Maurítius"
 
-#: src/common/util.c:857
+#: src/common/util.c:882
 msgid "Maldives"
 msgstr "Maledivy"
 
-#: src/common/util.c:858
+#: src/common/util.c:883
 msgid "Malawi"
 msgstr "Malawi"
 
-#: src/common/util.c:859
+#: src/common/util.c:884
 msgid "Mexico"
 msgstr "Mexiko"
 
-#: src/common/util.c:860
+#: src/common/util.c:885
 msgid "Malaysia"
 msgstr "Malajzia"
 
-#: src/common/util.c:861
+#: src/common/util.c:886
 msgid "Mozambique"
 msgstr "Mozambik"
 
-#: src/common/util.c:862
+#: src/common/util.c:887
 msgid "Namibia"
 msgstr "Namíbia"
 
-#: src/common/util.c:863
+#: src/common/util.c:888
 msgid "New Caledonia"
 msgstr "Nová Kaledónia"
 
-#: src/common/util.c:864
+#: src/common/util.c:889
 msgid "Niger"
 msgstr "Niger"
 
-#: src/common/util.c:865
+#: src/common/util.c:890
 msgid "Internic Network"
 msgstr "Sieť Internic"
 
-#: src/common/util.c:866
+#: src/common/util.c:891
 msgid "Norfolk Island"
 msgstr "Ostrov Norfolk"
 
-#: src/common/util.c:867
+#: src/common/util.c:892
 msgid "Nigeria"
 msgstr "Nigéria"
 
-#: src/common/util.c:868
+#: src/common/util.c:893
 msgid "Nicaragua"
 msgstr "Nikaragua"
 
-#: src/common/util.c:869
+#: src/common/util.c:894
 msgid "Netherlands"
 msgstr "Holandsko"
 
-#: src/common/util.c:870
+#: src/common/util.c:895
 msgid "Norway"
 msgstr "Nórsko"
 
-#: src/common/util.c:871
+#: src/common/util.c:896
 msgid "Nepal"
 msgstr "Nepál"
 
-#: src/common/util.c:872
+#: src/common/util.c:897
 msgid "Nauru"
 msgstr "Nauru"
 
-#: src/common/util.c:873
+#: src/common/util.c:898
 msgid "Neutral Zone"
 msgstr "Neutrálna zóna"
 
-#: src/common/util.c:874
+#: src/common/util.c:899
 msgid "Niue"
 msgstr "Niue"
 
-#: src/common/util.c:875
+#: src/common/util.c:900
 msgid "New Zealand"
 msgstr "Nový Zéland"
 
-#: src/common/util.c:876
+#: src/common/util.c:901
 msgid "Oman"
 msgstr "Omán"
 
-#: src/common/util.c:877
+#: src/common/util.c:902
 msgid "Internic Non-Profit Organization"
 msgstr "Internic nezisková organizácia"
 
-#: src/common/util.c:878
+#: src/common/util.c:903
 msgid "Panama"
 msgstr "Panama"
 
-#: src/common/util.c:879
+#: src/common/util.c:904
 msgid "Peru"
 msgstr "Peru"
 
-#: src/common/util.c:880
+#: src/common/util.c:905
 msgid "French Polynesia"
 msgstr "Francúzska Polynézia"
 
-#: src/common/util.c:881
+#: src/common/util.c:906
 msgid "Papua New Guinea"
 msgstr "Papua Nová Guinea"
 
-#: src/common/util.c:882
+#: src/common/util.c:907
 msgid "Philippines"
 msgstr "Filipíny"
 
-#: src/common/util.c:883
+#: src/common/util.c:908
 msgid "Pakistan"
 msgstr "Pakistan"
 
-#: src/common/util.c:884
+#: src/common/util.c:909
 msgid "Poland"
 msgstr "Poľsko"
 
-#: src/common/util.c:885
+#: src/common/util.c:910
 msgid "St. Pierre and Miquelon"
 msgstr "St. Pierre a Miquelon"
 
-#: src/common/util.c:886
+#: src/common/util.c:911
 msgid "Pitcairn"
 msgstr "Pitcairn"
 
-#: src/common/util.c:887
+#: src/common/util.c:912
 msgid "Puerto Rico"
 msgstr "Portoriko"
 
-#: src/common/util.c:888
+#: src/common/util.c:913
 msgid "Portugal"
 msgstr "Portugalsko"
 
-#: src/common/util.c:889
+#: src/common/util.c:914
 msgid "Palau"
 msgstr "Palau"
 
-#: src/common/util.c:890
+#: src/common/util.c:915
 msgid "Paraguay"
 msgstr "Paraguaj"
 
-#: src/common/util.c:891
+#: src/common/util.c:916
 msgid "Qatar"
 msgstr "Katar"
 
-#: src/common/util.c:892
+#: src/common/util.c:917
 msgid "Reunion"
 msgstr "Reunion"
 
-#: src/common/util.c:893
+#: src/common/util.c:918
 msgid "Romania"
 msgstr "Rumunsko"
 
-#: src/common/util.c:894
+#: src/common/util.c:919
 msgid "Old School ARPAnet"
 msgstr "Stará ARPAnet"
 
-#: src/common/util.c:895
+#: src/common/util.c:920
 msgid "Russian Federation"
 msgstr "Ruská federácia"
 
-#: src/common/util.c:896
+#: src/common/util.c:921
 msgid "Rwanda"
 msgstr "Rwanda"
 
-#: src/common/util.c:897
+#: src/common/util.c:922
 msgid "Saudi Arabia"
 msgstr "Saudská Arábia"
 
-#: src/common/util.c:898
+#: src/common/util.c:923
 msgid "Solomon Islands"
 msgstr "Šalamúnove Ostrovy"
 
-#: src/common/util.c:899
+#: src/common/util.c:924
 msgid "Seychelles"
 msgstr "Seychely"
 
-#: src/common/util.c:900
+#: src/common/util.c:925
 msgid "Sudan"
 msgstr "Sudán"
 
-#: src/common/util.c:901
+#: src/common/util.c:926
 msgid "Sweden"
 msgstr "Švédsko"
 
-#: src/common/util.c:902
+#: src/common/util.c:927
 msgid "Singapore"
 msgstr "Singapur"
 
-#: src/common/util.c:903
+#: src/common/util.c:928
 msgid "St. Helena"
 msgstr "Svätá Helena"
 
-#: src/common/util.c:904
+#: src/common/util.c:929
 msgid "Slovenia"
 msgstr "Slovinsko"
 
-#: src/common/util.c:905
+#: src/common/util.c:930
 msgid "Svalbard and Jan Mayen Islands"
 msgstr "Svalbard a Jan Mayen Islands"
 
-#: src/common/util.c:906
+#: src/common/util.c:931
 msgid "Slovak Republic"
 msgstr "Slovensko"
 
-#: src/common/util.c:907
+#: src/common/util.c:932
 msgid "Sierra Leone"
 msgstr "Sierra Leone"
 
-#: src/common/util.c:908
+#: src/common/util.c:933
 msgid "San Marino"
 msgstr "San Marino"
 
-#: src/common/util.c:909
+#: src/common/util.c:934
 msgid "Senegal"
 msgstr "Senegal"
 
-#: src/common/util.c:910
+#: src/common/util.c:935
 msgid "Somalia"
 msgstr "Somálsko"
 
-#: src/common/util.c:911
+#: src/common/util.c:936
 msgid "Suriname"
 msgstr "Surinam"
 
-#: src/common/util.c:912
+#: src/common/util.c:937
 msgid "Sao Tome and Principe"
 msgstr "Svätý Tomáš"
 
-#: src/common/util.c:913
+#: src/common/util.c:938
 msgid "Former USSR"
 msgstr "Bývalý Sovietsky zväz"
 
-#: src/common/util.c:914
+#: src/common/util.c:939
 msgid "El Salvador"
 msgstr "Salvádor"
 
-#: src/common/util.c:915
+#: src/common/util.c:940
 msgid "Syria"
 msgstr "Sýria"
 
-#: src/common/util.c:916
+#: src/common/util.c:941
 msgid "Swaziland"
 msgstr "Svazijsko"
 
-#: src/common/util.c:917
+#: src/common/util.c:942
 msgid "Turks and Caicos Islands"
 msgstr "Turks a Kaikské Ostrovy"
 
-#: src/common/util.c:918
+#: src/common/util.c:943
 msgid "Chad"
 msgstr "Čad"
 
-#: src/common/util.c:919
+#: src/common/util.c:944
 msgid "French Southern Territories"
 msgstr "Francúzske južné teritóriá"
 
-#: src/common/util.c:920
+#: src/common/util.c:945
 msgid "Togo"
 msgstr "Togo"
 
-#: src/common/util.c:921
+#: src/common/util.c:946
 msgid "Thailand"
 msgstr "Thajsko"
 
-#: src/common/util.c:922
+#: src/common/util.c:947
 msgid "Tajikistan"
 msgstr "Tadžikistan"
 
-#: src/common/util.c:923
+#: src/common/util.c:948
 msgid "Tokelau"
 msgstr "Tokelau"
 
-#: src/common/util.c:924
+#: src/common/util.c:949
 msgid "Turkmenistan"
 msgstr "Turkmenistán"
 
-#: src/common/util.c:925
+#: src/common/util.c:950
 msgid "Tunisia"
 msgstr "Tunisko"
 
-#: src/common/util.c:926
+#: src/common/util.c:951
 msgid "Tonga"
 msgstr "Tonga"
 
-#: src/common/util.c:927
+#: src/common/util.c:952
 msgid "East Timor"
 msgstr "Východný Timor"
 
-#: src/common/util.c:928
+#: src/common/util.c:953
 msgid "Turkey"
 msgstr "Turecko"
 
-#: src/common/util.c:929
+#: src/common/util.c:954
 msgid "Trinidad and Tobago"
 msgstr "Trinidad a Tobago"
 
-#: src/common/util.c:930
+#: src/common/util.c:955
 msgid "Tuvalu"
 msgstr "Tuvalu"
 
-#: src/common/util.c:931
+#: src/common/util.c:956
 msgid "Taiwan"
 msgstr "Taiwan"
 
-#: src/common/util.c:932
+#: src/common/util.c:957
 msgid "Tanzania"
 msgstr "Tanzánia"
 
-#: src/common/util.c:933
+#: src/common/util.c:958
 msgid "Ukraine"
 msgstr "Ukrajina"
 
-#: src/common/util.c:934
+#: src/common/util.c:959
 msgid "Uganda"
 msgstr "Uganda"
 
-#: src/common/util.c:935
+#: src/common/util.c:960
 msgid "United Kingdom"
 msgstr "Spojené kráľovstvo"
 
-#: src/common/util.c:936
+#: src/common/util.c:961
 msgid "US Minor Outlying Islands"
 msgstr "US menšie pobrežné ostrovy"
 
-#: src/common/util.c:937
+#: src/common/util.c:962
 msgid "United States of America"
 msgstr "USA"
 
-#: src/common/util.c:938
+#: src/common/util.c:963
 msgid "Uruguay"
 msgstr "Uruguaj"
 
-#: src/common/util.c:939
+#: src/common/util.c:964
 msgid "Uzbekistan"
 msgstr "Uzbekistán"
 
-#: src/common/util.c:940
+#: src/common/util.c:965
 msgid "Vatican City State"
 msgstr "Vatikán"
 
-#: src/common/util.c:941
+#: src/common/util.c:966
 msgid "St. Vincent and the grenadines"
 msgstr "St. Vincent a grenadines"
 
-#: src/common/util.c:942
+#: src/common/util.c:967
 msgid "Venezuela"
 msgstr "Venezuela"
 
-#: src/common/util.c:943
+#: src/common/util.c:968
 msgid "British Virgin Islands"
 msgstr "Britské panenské ostrovy"
 
-#: src/common/util.c:944
+#: src/common/util.c:969
 msgid "US Virgin Islands"
 msgstr "US Panenské ostrovy"
 
-#: src/common/util.c:945
+#: src/common/util.c:970
 msgid "Vietnam"
 msgstr "Vietnam"
 
-#: src/common/util.c:946
+#: src/common/util.c:971
 msgid "Vanuatu"
 msgstr "Vanuatu (Nové Hebridy)"
 
-#: src/common/util.c:947
+#: src/common/util.c:972
 msgid "Wallis and Futuna Islands"
 msgstr "Wallis a Futuna Islands"
 
-#: src/common/util.c:948
+#: src/common/util.c:973
 msgid "Samoa"
 msgstr "Samoa"
 
-#: src/common/util.c:949
+#: src/common/util.c:974
 msgid "Yemen"
 msgstr "Jemen"
 
-#: src/common/util.c:950
+#: src/common/util.c:975
 msgid "Mayotte"
 msgstr "Mayotte"
 
-#: src/common/util.c:951
+#: src/common/util.c:976
 msgid "Yugoslavia"
 msgstr "Juhoslávia"
 
-#: src/common/util.c:952
+#: src/common/util.c:977
 msgid "South Africa"
 msgstr "Južná Afrika"
 
-#: src/common/util.c:953
+#: src/common/util.c:978
 msgid "Zambia"
 msgstr "Zambia"
 
-#: src/common/util.c:954
+#: src/common/util.c:979
 msgid "Zaire"
 msgstr "Zair"
 
-#: src/common/util.c:955
+#: src/common/util.c:980
 msgid "Zimbabwe"
 msgstr "Zimbabwe"
 
-#: src/common/util.c:961 src/common/util.c:971 src/fe-gtk/menu.c:447
-#: src/fe-gtk/menu.c:451 src/fe-gtk/menu.c:455 src/fe-gtk/menu.c:459
-#: src/fe-gtk/menu.c:463
+#: src/common/util.c:986 src/common/util.c:996 src/fe-gtk/menu.c:448
+#: src/fe-gtk/menu.c:452 src/fe-gtk/menu.c:456 src/fe-gtk/menu.c:460
+#: src/fe-gtk/menu.c:464
 msgid "Unknown"
 msgstr "Neznámy"
 
-#: src/common/xchat.c:814
+#: src/common/xchat.c:889
 msgid "Direct client-to-client"
 msgstr "Priamo klient klientovi"
 
-#: src/common/xchat.c:815
+#: src/common/xchat.c:890
 msgid "Send File"
 msgstr "Odoslať súbor"
 
-#: src/common/xchat.c:816
+#: src/common/xchat.c:891
 msgid "Offer Chat"
 msgstr "Ponúknuť rozhovor"
 
-#: src/common/xchat.c:817
+#: src/common/xchat.c:892
 msgid "Abort Chat"
 msgstr "Ukončiť rozhovor"
 
-#: src/common/xchat.c:818 src/fe-gtk/plugingui.c:74
+#: src/common/xchat.c:893 src/fe-gtk/plugingui.c:74
 msgid "Version"
 msgstr "Verzia"
 
-#: src/common/xchat.c:819
+#: src/common/xchat.c:894
 msgid "Userinfo"
 msgstr "Informácie o používateľovi"
 
-#: src/common/xchat.c:820
+#: src/common/xchat.c:895
 msgid "Clientinfo"
 msgstr "Informácie o klientovi"
 
-#: src/common/xchat.c:821 src/common/xchat.c:853 src/common/xchat.c:903
+#: src/common/xchat.c:896 src/common/xchat.c:928 src/common/xchat.c:978
 msgid "Ping"
 msgstr "Ping"
 
-#: src/common/xchat.c:822
+#: src/common/xchat.c:897
 msgid "Time"
 msgstr "Čas"
 
-#: src/common/xchat.c:823
+#: src/common/xchat.c:898
 msgid "Finger"
 msgstr "Finger"
 
-#: src/common/xchat.c:824
+#: src/common/xchat.c:899
 msgid "Oper"
 msgstr "Oper"
 
-#: src/common/xchat.c:825
+#: src/common/xchat.c:900
 msgid "Kill this user"
 msgstr "Odpojiť tohoto používateľa"
 
-#: src/common/xchat.c:826
+#: src/common/xchat.c:901
 msgid "Mode"
 msgstr "Mód"
 
-#: src/common/xchat.c:827
+#: src/common/xchat.c:902
 msgid "Give Voice"
 msgstr "Dať voice"
 
-#: src/common/xchat.c:828
+#: src/common/xchat.c:903
 msgid "Take Voice"
 msgstr "Zobrať voice"
 
-#: src/common/xchat.c:829
+#: src/common/xchat.c:904
 msgid "Give Ops"
 msgstr "Dať op"
 
-#: src/common/xchat.c:830
+#: src/common/xchat.c:905
 msgid "Take Ops"
 msgstr "Zobrať op"
 
-#: src/common/xchat.c:831
+#: src/common/xchat.c:906
 msgid "Ignore"
 msgstr "Ignorovať"
 
-#: src/common/xchat.c:832
+#: src/common/xchat.c:907
 msgid "Ignore User"
 msgstr "Ignorovať používateľa"
 
-#: src/common/xchat.c:833
+#: src/common/xchat.c:908
 msgid "UnIgnore User"
 msgstr "Prestať ignorovať používateľa"
 
-#: src/common/xchat.c:834
+#: src/common/xchat.c:909
 msgid "Kick/Ban"
 msgstr "Vykopnúť/Zakázať"
 
-#: src/common/xchat.c:835 src/common/xchat.c:887
+#: src/common/xchat.c:910 src/common/xchat.c:962
 msgid "Kick"
 msgstr "Vykopnúť"
 
-#: src/common/xchat.c:836 src/common/xchat.c:837 src/common/xchat.c:838
-#: src/common/xchat.c:839 src/common/xchat.c:840 src/common/xchat.c:886
+#: src/common/xchat.c:911 src/common/xchat.c:912 src/common/xchat.c:913
+#: src/common/xchat.c:914 src/common/xchat.c:915 src/common/xchat.c:961
 msgid "Ban"
 msgstr "Zakázať"
 
-#: src/common/xchat.c:841 src/common/xchat.c:842 src/common/xchat.c:843
-#: src/common/xchat.c:844
+#: src/common/xchat.c:916 src/common/xchat.c:917 src/common/xchat.c:918
+#: src/common/xchat.c:919
 msgid "KickBan"
 msgstr "Vykopnúť a zakázať"
 
-#: src/common/xchat.c:845 src/fe-gtk/dccgui.c:445 src/fe-gtk/dccgui.c:614
+#: src/common/xchat.c:920 src/fe-gtk/dccgui.c:515 src/fe-gtk/dccgui.c:656
 msgid "Info"
 msgstr "Informácie"
 
-#: src/common/xchat.c:846
+#: src/common/xchat.c:921
 msgid "Who"
 msgstr "Who"
 
-#: src/common/xchat.c:847 src/common/xchat.c:900
+#: src/common/xchat.c:922 src/common/xchat.c:975
 msgid "WhoIs"
 msgstr "WhoIs"
 
-#: src/common/xchat.c:848
+#: src/common/xchat.c:923
 msgid "DNS Lookup"
 msgstr "Vyhľadávanie DNS"
 
-#: src/common/xchat.c:849
+#: src/common/xchat.c:924
 msgid "Trace"
 msgstr "Trasovať"
 
-#: src/common/xchat.c:850
+#: src/common/xchat.c:925
 msgid "UserHost"
 msgstr "UserHost"
 
-#: src/common/xchat.c:851
+#: src/common/xchat.c:926
 msgid "External"
 msgstr "Externé"
 
-#: src/common/xchat.c:852
+#: src/common/xchat.c:927
 msgid "Traceroute"
 msgstr "Traceroute"
 
-#: src/common/xchat.c:854
+#: src/common/xchat.c:929
 msgid "Telnet"
 msgstr "Telnet"
 
-#: src/common/xchat.c:855
+#: src/common/xchat.c:930
 msgid "Open Dialog Window"
 msgstr "Otvoriť dialógové okno"
 
-#: src/common/xchat.c:867
+#: src/common/xchat.c:942
 msgid "Disconnect"
 msgstr "Odpojiť"
 
-#: src/common/xchat.c:868
+#: src/common/xchat.c:943
 msgid "Reconnect"
 msgstr "Znovu pripojiť"
 
-#: src/common/xchat.c:869
+#: src/common/xchat.c:944
 msgid "Leave Channel"
 msgstr "Opustiť kanál"
 
-#: src/common/xchat.c:870
+#: src/common/xchat.c:945
 msgid "Join Channel..."
 msgstr "Prihlásiť sa do kanálu..."
 
-#: src/common/xchat.c:871
+#: src/common/xchat.c:946
 msgid "Enter Channel to Join:"
 msgstr "Zadajte kanál:"
 
-#: src/common/xchat.c:872
+#: src/common/xchat.c:947
 msgid "Server Links"
 msgstr "Serverové pripojenia"
 
-#: src/common/xchat.c:873
+#: src/common/xchat.c:948
 msgid "Ping Server"
 msgstr "Ping na server"
 
-#: src/common/xchat.c:874
+#: src/common/xchat.c:949
 msgid "Hide Version"
 msgstr "Skryť verziu"
 
-#: src/common/xchat.c:884
+#: src/common/xchat.c:959
 msgid "Op"
 msgstr "Op"
 
-#: src/common/xchat.c:885
+#: src/common/xchat.c:960
 msgid "DeOp"
 msgstr "DeOp"
 
-#: src/common/xchat.c:888
+#: src/common/xchat.c:963
 msgid "bye"
 msgstr "bye"
 
-#: src/common/xchat.c:889
+#: src/common/xchat.c:964
 #, c-format
 msgid "Enter reason to kick %s:"
 msgstr "Zadajte dôvod pre vykopnutie %s:"
 
-#: src/common/xchat.c:890
+#: src/common/xchat.c:965
 msgid "Sendfile"
 msgstr "Odoslať súbor"
 
-#: src/common/xchat.c:891
+#: src/common/xchat.c:966
 msgid "Dialog"
 msgstr "Dialóg"
 
-#: src/common/xchat.c:901
+#: src/common/xchat.c:976
 msgid "Send"
 msgstr "Odoslať"
 
-#: src/common/xchat.c:902
+#: src/common/xchat.c:977
 msgid "Chat"
 msgstr "Chat"
 
-#: src/common/xchat.c:904 src/fe-gtk/banlist.c:311 src/fe-gtk/search.c:117
+#: src/common/xchat.c:979 src/fe-gtk/banlist.c:314 src/fe-gtk/search.c:117
 #: src/fe-gtk/urlgrab.c:200
 msgid "Clear"
 msgstr "Vymazať"
@@ -2728,11 +2774,11 @@ msgstr "Znaková Tabuľka"
 msgid "You must select some bans."
 msgstr "Musíte vybrať nejaké zákazy"
 
-#: src/fe-gtk/banlist.c:248 src/fe-gtk/ignoregui.c:170
+#: src/fe-gtk/banlist.c:248 src/fe-gtk/ignoregui.c:174
 msgid "Mask"
 msgstr "Maska"
 
-#: src/fe-gtk/banlist.c:249 src/fe-gtk/dccgui.c:396 src/fe-gtk/dccgui.c:400
+#: src/fe-gtk/banlist.c:249 src/fe-gtk/dccgui.c:472
 msgid "From"
 msgstr "Od"
 
@@ -2740,20 +2786,20 @@ msgstr "Od"
 msgid "Date"
 msgstr "Dátum"
 
-#: src/fe-gtk/banlist.c:291
+#: src/fe-gtk/banlist.c:294
 #, c-format
 msgid "X-Chat: Ban List (%s)"
 msgstr "X-Chat: Zoznam zákazov (%s)"
 
-#: src/fe-gtk/banlist.c:307
+#: src/fe-gtk/banlist.c:310
 msgid "Unban"
 msgstr "Odstrániť zákaz"
 
-#: src/fe-gtk/banlist.c:309
+#: src/fe-gtk/banlist.c:312
 msgid "Crop"
 msgstr "Vytiahnuť"
 
-#: src/fe-gtk/banlist.c:313
+#: src/fe-gtk/banlist.c:316
 msgid "Refresh"
 msgstr "Aktualizovať"
 
@@ -2766,57 +2812,57 @@ msgstr "Štatistika kanálov a používateľov: %d/%d používateľov v %d/%d ka
 msgid "I can't save an empty list!"
 msgstr "Prázdny zoznam nie je možné uložiť."
 
-#: src/fe-gtk/chanlist.c:539 src/fe-gtk/menu.c:875
+#: src/fe-gtk/chanlist.c:539 src/fe-gtk/menu.c:876
 msgid "Select an output filename"
 msgstr "Vyberte meno výstupného súboru"
 
-#: src/fe-gtk/chanlist.c:603
+#: src/fe-gtk/chanlist.c:607
 #, c-format
 msgid "X-Chat: Channel List (%s)"
 msgstr "X-Chat: Zoznam kanálov (%s)"
 
-#: src/fe-gtk/chanlist.c:618
+#: src/fe-gtk/chanlist.c:622
 msgid "List display options:"
 msgstr "Možnosti zobrazenia zoznamu:"
 
-#: src/fe-gtk/chanlist.c:630
+#: src/fe-gtk/chanlist.c:634
 msgid "Minimum Users:"
 msgstr "Minimálny počet používateľov:"
 
-#: src/fe-gtk/chanlist.c:645
+#: src/fe-gtk/chanlist.c:649
 msgid "Maximum Users:"
 msgstr "Maximálny počet používateľov:"
 
-#: src/fe-gtk/chanlist.c:660
+#: src/fe-gtk/chanlist.c:664
 msgid "Regex Match:"
 msgstr "Regulérny výraz:"
 
-#: src/fe-gtk/chanlist.c:681
+#: src/fe-gtk/chanlist.c:685
 msgid "Apply Match to:"
 msgstr "Použiť výraz na:"
 
-#: src/fe-gtk/chanlist.c:705
+#: src/fe-gtk/chanlist.c:709
 msgid "Apply"
 msgstr "Použiť"
 
-#: src/fe-gtk/chanlist.c:747
+#: src/fe-gtk/chanlist.c:751
 msgid "Refresh the list"
 msgstr "Aktualizovať zoznam"
 
-#: src/fe-gtk/chanlist.c:749
+#: src/fe-gtk/chanlist.c:753
 msgid "Save the list"
 msgstr "Uložiť zoznam"
 
-#: src/fe-gtk/chanlist.c:751 src/fe-gtk/menu.c:683
+#: src/fe-gtk/chanlist.c:755 src/fe-gtk/menu.c:684
 msgid "Join Channel"
 msgstr "Prihlásiť sa do kanálu"
 
-#: src/fe-gtk/dccgui.c:113
+#: src/fe-gtk/dccgui.c:116
 #, c-format
 msgid "Send file to %s"
 msgstr "Poslať súbor do %s"
 
-#: src/fe-gtk/dccgui.c:287
+#: src/fe-gtk/dccgui.c:326
 #, c-format
 msgid ""
 "      File: %s\n"
@@ -2833,149 +2879,171 @@ msgstr ""
 " IP adresa: %s\n"
 "Začiatok: %s   Max CPS: %d\n"
 
-#: src/fe-gtk/dccgui.c:313
+#: src/fe-gtk/dccgui.c:359
 msgid "That file is not resumable."
 msgstr "V prenose tohoto súboru nie je možné pokračovať."
 
-#: src/fe-gtk/dccgui.c:396 src/fe-gtk/dccgui.c:400 src/fe-gtk/dccgui.c:580
-#: src/fe-gtk/dccgui.c:711 src/fe-gtk/notifygui.c:110
-msgid "Status"
-msgstr "Stav"
+#: src/fe-gtk/dccgui.c:363
+#, c-format
+msgid ""
+"Cannot access file: %s\n"
+"%s.\n"
+"Resuming not possible."
+msgstr ""
+"Nemôžem pristupovať k súboru: %s\n"
+"%s.\n"
+"Pokračovanie nie je možné."
 
-#: src/fe-gtk/dccgui.c:396 src/fe-gtk/dccgui.c:400 src/fe-gtk/dccgui.c:580
-#: src/fe-gtk/plugingui.c:75
-msgid "File"
-msgstr "Súbor"
+#: src/fe-gtk/dccgui.c:370
+msgid "File in download directory is larger than file offered. Resuming not possible."
+msgstr "Nedokončený súbor je väčší ako ponúkaný súbor. Pokračovanie nie je možné."
 
-#: src/fe-gtk/dccgui.c:396 src/fe-gtk/dccgui.c:400 src/fe-gtk/dccgui.c:580
-msgid "ETA"
-msgstr "ETA"
+#: src/fe-gtk/dccgui.c:374
+msgid "Cannot resume the same file from two people."
+msgstr "Nemôžem sťahovať ten istý súbor od dvoch používateľov."
 
-#: src/fe-gtk/dccgui.c:397
+#: src/fe-gtk/dccgui.c:461
 msgid "MIME Type"
 msgstr "Typ MIME"
 
-#: src/fe-gtk/dccgui.c:411
+#: src/fe-gtk/dccgui.c:467 src/fe-gtk/dccgui.c:617 src/fe-gtk/dccgui.c:740
+#: src/fe-gtk/notifygui.c:110
+msgid "Status"
+msgstr "Stav"
+
+#: src/fe-gtk/dccgui.c:468 src/fe-gtk/dccgui.c:618 src/fe-gtk/plugingui.c:75
+msgid "File"
+msgstr "Súbor"
+
+#: src/fe-gtk/dccgui.c:471 src/fe-gtk/dccgui.c:622
+msgid "ETA"
+msgstr "ETA"
+
+#: src/fe-gtk/dccgui.c:481
 msgid "X-Chat: File Receive List"
 msgstr "X-Chat: Zoznam prijímaných súborov"
 
-#: src/fe-gtk/dccgui.c:439 src/fe-gtk/dccgui.c:613 src/fe-gtk/dccgui.c:738
+#: src/fe-gtk/dccgui.c:509 src/fe-gtk/dccgui.c:655 src/fe-gtk/dccgui.c:770
 msgid "Abort"
 msgstr "Prerušiť"
 
-#: src/fe-gtk/dccgui.c:441 src/fe-gtk/dccgui.c:739
+#: src/fe-gtk/dccgui.c:511 src/fe-gtk/dccgui.c:771
 msgid "Accept"
 msgstr "Akceptovať"
 
-#: src/fe-gtk/dccgui.c:443
+#: src/fe-gtk/dccgui.c:513
 msgid "Resume"
 msgstr "Obnoviť"
 
-#: src/fe-gtk/dccgui.c:447
+#: src/fe-gtk/dccgui.c:517
 msgid "Open"
 msgstr "Otvoriť"
 
-#: src/fe-gtk/dccgui.c:580
+#: src/fe-gtk/dccgui.c:621
 msgid "Ack"
 msgstr "Potvr"
 
-#: src/fe-gtk/dccgui.c:580
+#: src/fe-gtk/dccgui.c:623
 msgid "To"
 msgstr "Do"
 
-#: src/fe-gtk/dccgui.c:591
+#: src/fe-gtk/dccgui.c:633
 msgid "X-Chat: File Send List"
 msgstr "X-Chat: Zoznam posielaných súborov"
 
-#: src/fe-gtk/dccgui.c:711
+#: src/fe-gtk/dccgui.c:741
 msgid "To/From"
 msgstr "Do/Z"
 
-#: src/fe-gtk/dccgui.c:711
+#: src/fe-gtk/dccgui.c:742
 msgid "Recv"
 msgstr "Príjem"
 
-#: src/fe-gtk/dccgui.c:711
+#: src/fe-gtk/dccgui.c:743
 msgid "Sent"
 msgstr "Odoslané"
 
-#: src/fe-gtk/dccgui.c:711
+#: src/fe-gtk/dccgui.c:744
 msgid "StartTime"
 msgstr "Začiatočný stav"
 
-#: src/fe-gtk/dccgui.c:722
+#: src/fe-gtk/dccgui.c:754
 msgid "X-Chat: DCC Chat List"
 msgstr "X-Chat: Zoznam DCC Chat"
 
-#: src/fe-gtk/editlist.c:137
+#: src/fe-gtk/editlist.c:139
 msgid "*NEW*"
 msgstr "*NOVÝ*"
 
-#: src/fe-gtk/editlist.c:137
+#: src/fe-gtk/editlist.c:140
 msgid "EDIT ME"
 msgstr "UPRAVTE MA"
 
-#: src/fe-gtk/editlist.c:299 src/fe-gtk/plugingui.c:73
+#: src/fe-gtk/editlist.c:305 src/fe-gtk/plugingui.c:73
 msgid "Name"
 msgstr "uMeno"
 
-#: src/fe-gtk/editlist.c:299
+#: src/fe-gtk/editlist.c:306
 msgid "Command"
 msgstr "Príkaz"
 
-#: src/fe-gtk/editlist.c:327
+#: src/fe-gtk/editlist.c:333
 msgid "Move Up"
 msgstr "Presun hore"
 
-#: src/fe-gtk/editlist.c:331
+#: src/fe-gtk/editlist.c:337
 msgid "Move Dn"
 msgstr "Presun dolu"
 
-#: src/fe-gtk/editlist.c:339
+#: src/fe-gtk/editlist.c:345
 msgid "Cancel"
 msgstr "Zrušiť"
 
-#: src/fe-gtk/editlist.c:343 src/fe-gtk/textgui.c:454 src/fe-gtk/urlgrab.c:204
+#: src/fe-gtk/editlist.c:349 src/fe-gtk/textgui.c:460 src/fe-gtk/urlgrab.c:204
 msgid "Save"
 msgstr "Uložiť"
 
-#: src/fe-gtk/editlist.c:351
+#: src/fe-gtk/editlist.c:357
 msgid "Add New"
 msgstr "Pridať nový"
 
-#: src/fe-gtk/editlist.c:355 src/fe-gtk/fkeys.c:734
+#: src/fe-gtk/editlist.c:361 src/fe-gtk/fkeys.c:746 src/fe-gtk/ignoregui.c:378
 msgid "Delete"
 msgstr "Odstrániť"
 
-#: src/fe-gtk/editlist.c:363
+#: src/fe-gtk/editlist.c:369
 msgid "Sort"
 msgstr "Triediť"
 
-#: src/fe-gtk/editlist.c:367
+#: src/fe-gtk/editlist.c:373
 msgid "Help"
 msgstr "Pomocník"
 
-#: src/fe-gtk/fe-gtk.c:136
-msgid ""
-"Options:\n"
-"  -d,  --cfgdir DIRECTORY   use a different config dir\n"
-"  -a,  --no-auto            don't auto connect\n"
-"  -v,  --version            show version information\n"
-"\n"
-"URL:\n"
-"  irc://server:port/channel\n"
-"\n"
-msgstr ""
-"Možnosti:\n"
-"  -d,  --cfgdir PRIEČINOK   použiť iný konfiguračný priečinok\n"
-"  -a,  --no-auto            nepripájať automaticky\n"
-"  -v,  --version            zobraziť informácie o verzii\n"
-"\n"
-"URL:\n"
-"  irc://server:port/kanál\n"
-"\n"
+#: src/fe-gtk/fe-gtk.c:143
+msgid "Options"
+msgstr "Možnosti"
 
-#: src/fe-gtk/fe-gtk.c:200
+#: src/fe-gtk/fe-gtk.c:144
+msgid "DIRECTORY"
+msgstr "PRIEČINOK"
+
+#: src/fe-gtk/fe-gtk.c:145
+msgid "use a different config dir"
+msgstr "použiť iný konfiguračný priečinok"
+
+#: src/fe-gtk/fe-gtk.c:146
+msgid "don't auto connect"
+msgstr "nepripojovať sa automaticky"
+
+#: src/fe-gtk/fe-gtk.c:147
+msgid "don't auto load any plugins"
+msgstr "nenahrávať automaticky žiadne pluginy"
+
+#: src/fe-gtk/fe-gtk.c:148
+msgid "show version information"
+msgstr "zobraziť informácie o verzii"
+
+#: src/fe-gtk/fe-gtk.c:214
 #, c-format
 msgid ""
 "Failed to open font:\n"
@@ -2986,125 +3054,127 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/fe-gtk/fe-gtk.c:561
+#: src/fe-gtk/fe-gtk.c:614
 msgid "Search buffer is empty.\n"
 msgstr "Vyhľadávací zásobník je prázdny.\n"
 
-#: src/fe-gtk/fkeys.c:150
+#: src/fe-gtk/fkeys.c:153
 msgid "The Run Command action runs the data in Data 1 as if it has been typed into the entry box where you pressed the key sequence. Thus it can contain text (which will be sent to the channel/person), commands or user commands. When run all \\n characters in Data 1 are used to deliminate seperate commands so it is possible to run more than one command. If you want a \\ in the actual text run then enter \\\\"
 msgstr "Príkaz Spustiť príkazovú akciu pošle dáta do Data 1 ako keby ste ich napísali do vstupného poľa. Preto môže obsahovať text (ktorý je posielaný do kanálu alebo osobe), príkazy alebo používateľské príkazy. Po poslaní sa použijú znaky \\n  pre rozdelenie do príkazov, takže sa dá naraz spustiť viac ako jeden príkaz. Ak chcete priamo do príkazov zadať znaky \\ in, zadajte ich ako \\\\"
 
-#: src/fe-gtk/fkeys.c:152
+#: src/fe-gtk/fkeys.c:155
 msgid "The Change Page command switches between pages in the notebook. Set Data 1 to the page you want to switch to. If Data 2 is set to anything then the switch will be relative to the current position"
 msgstr "Príkaz Zmeniť stránku prepína medzi stránkami notesu. Nastavte Data 1 na stránku, na ktorú chcete prepnúť. Ak je Data 2 vyplnené, bude prepnutie relatívne k aktuálnej pozícii"
 
-#: src/fe-gtk/fkeys.c:154
+#: src/fe-gtk/fkeys.c:157
 msgid "The Insert in Buffer command will insert the contents of Data 1 into the entry where the key sequence was pressed at the current cursor position"
 msgstr "Príkaz Vložiť do textu vloží obsah Data 1 do položky na aktuálnu pozíciu kurzoru, akoby boli stlačené tieto klávesy"
 
-#: src/fe-gtk/fkeys.c:156
+#: src/fe-gtk/fkeys.c:159
 msgid "The Scroll Page command scrolls the text widget up or down one page. If Data 1 is set to anything the page scrolls up, else it scrolls down"
 msgstr "Príkaz Posun o stránku posunie text hore alebo dolu o jednu stránku. Ak je Data 1 vyplnené, posun bude smerom hore, inak smerom dolu"
 
-#: src/fe-gtk/fkeys.c:158
+#: src/fe-gtk/fkeys.c:161
 msgid "The Set Buffer command sets the entry where the key sequence was entered to the contents of Data 1"
 msgstr "Príkaz Nastaviť text vyplní položku akoby boli stlačené dané klávesy podľa obsahu Data 1"
 
-#: src/fe-gtk/fkeys.c:160
+#: src/fe-gtk/fkeys.c:163
 msgid "The Last Command command sets the entry to contain the last command entered - the same as pressing up in a shell"
 msgstr "Príkaz Posledný príkaz nastaví položku, aby obsahovala posledný zadaný príkaz - rovnaké ako stlačenie šipky hore v shelle"
 
-#: src/fe-gtk/fkeys.c:162
+#: src/fe-gtk/fkeys.c:165
 msgid "The Next Command command sets the entry to contain the next command entered - the same as pressing down in a shell"
 msgstr "Príkaz Nasledujúci príkaz nastaví položku, aby obsahovala ďalší zadaný príkaz - rovnaké ako stlačenie šipky dolu v shelle"
 
-#: src/fe-gtk/fkeys.c:164
+#: src/fe-gtk/fkeys.c:167
 msgid "This command changes the text in the entry to finish an incomplete nickname or command. If Data 1 is set then double-tabbing in a string will select the last nick, not the next"
 msgstr "Tento príkaz zmení text v položke tak, aby dokončil neúplné prezývky alebo príkazy. Ak je Data 1 vyplnené, použijú sa dvojité tabulátory ako posledná prezývka a nie nasledujúca"
 
-#: src/fe-gtk/fkeys.c:166
+#: src/fe-gtk/fkeys.c:169
 msgid "This command scrolls up and down through the list of nicks. If Data 1 is set to anything it will scroll up, else it scrolls down"
 msgstr "Tento príkaz posunie hore alebo dolu v zozname prezývok. Ak je niečo vyplnené v Data 1, posun bude hore, inak bude posun dolu"
 
-#: src/fe-gtk/fkeys.c:168
+#: src/fe-gtk/fkeys.c:171
 msgid "This command checks the last word entered in the entry against the replace list and replaces it if it finds a match"
 msgstr "Tento príkaz otestuje posledné zadané slovo v položke oproti zoznamu náhrad a použije náhrady, ak nájde odpovedajúce časti"
 
-#: src/fe-gtk/fkeys.c:170
+#: src/fe-gtk/fkeys.c:173
 msgid "This command moves the front tab left by one"
 msgstr "Tento príkaz posunie prednú záložku o jednu vľavo"
 
-#: src/fe-gtk/fkeys.c:172
+#: src/fe-gtk/fkeys.c:175
 msgid "This command moves the front tab right by one"
 msgstr "Tento príkaz posunie prednú záložku o jednu vpravo"
 
-#: src/fe-gtk/fkeys.c:174
+#: src/fe-gtk/fkeys.c:177
 msgid "This command moves the current tab family to the left"
 msgstr "Tento príkaz posunie aktuálnu skupinu záložiek o jednu vľavo"
 
-#: src/fe-gtk/fkeys.c:176
+#: src/fe-gtk/fkeys.c:179
 msgid "This command moves the current tab family to the right"
 msgstr "Tento príkaz posunie aktuálnu skupinu záložiek o jednu vpravo"
 
-#: src/fe-gtk/fkeys.c:178
+#: src/fe-gtk/fkeys.c:181
 msgid "Push input line into history but doesn't send to server"
 msgstr "Vloží vstupný riadok do histórie, ale neodošle ho serveru"
 
-#: src/fe-gtk/fkeys.c:190
+#: src/fe-gtk/fkeys.c:193
 msgid "There was an error loading key bindings configuration"
 msgstr "Počas načítavania konfigurácie klávesových skratiek nastala chyba"
 
-#: src/fe-gtk/fkeys.c:428 src/fe-gtk/fkeys.c:707 src/fe-gtk/fkeys.c:713
-#: src/fe-gtk/fkeys.c:718 src/fe-gtk/maingui.c:795 src/fe-gtk/maingui.c:816
-#: src/fe-gtk/maingui.c:960 src/fe-gtk/maingui.c:999 src/fe-gtk/maingui.c:2326
+#: src/fe-gtk/fkeys.c:434 src/fe-gtk/fkeys.c:435 src/fe-gtk/fkeys.c:436
+#: src/fe-gtk/fkeys.c:437 src/fe-gtk/fkeys.c:719 src/fe-gtk/fkeys.c:725
+#: src/fe-gtk/fkeys.c:730 src/fe-gtk/maingui.c:804 src/fe-gtk/maingui.c:825
+#: src/fe-gtk/maingui.c:979 src/fe-gtk/maingui.c:1018
+#: src/fe-gtk/maingui.c:2341
 msgid "<none>"
 msgstr "<žiadny>"
 
-#: src/fe-gtk/fkeys.c:671
+#: src/fe-gtk/fkeys.c:683
 msgid "Mod"
 msgstr "Mod"
 
-#: src/fe-gtk/fkeys.c:671 src/fe-gtk/fkeys.c:767
+#: src/fe-gtk/fkeys.c:684 src/fe-gtk/fkeys.c:779
 msgid "Key"
 msgstr "Klávesa"
 
-#: src/fe-gtk/fkeys.c:671
+#: src/fe-gtk/fkeys.c:685
 msgid "Action"
 msgstr "Akcia"
 
-#: src/fe-gtk/fkeys.c:682
+#: src/fe-gtk/fkeys.c:694
 msgid "X-Chat: Edit Key Bindings"
 msgstr "X-Chat: Upraviť klávesové skratky"
 
-#: src/fe-gtk/fkeys.c:729
+#: src/fe-gtk/fkeys.c:741
 msgid "Add new"
 msgstr "Pridať nový"
 
-#: src/fe-gtk/fkeys.c:760
+#: src/fe-gtk/fkeys.c:772
 msgid "Shift"
 msgstr "Shift"
 
-#: src/fe-gtk/fkeys.c:762
+#: src/fe-gtk/fkeys.c:774
 msgid "Alt"
 msgstr "Alt"
 
-#: src/fe-gtk/fkeys.c:764
+#: src/fe-gtk/fkeys.c:776
 msgid "Ctrl"
 msgstr "Ctrl"
 
-#: src/fe-gtk/fkeys.c:771
+#: src/fe-gtk/fkeys.c:783
 msgid "Data 1"
 msgstr "Dáta 1"
 
-#: src/fe-gtk/fkeys.c:774
+#: src/fe-gtk/fkeys.c:786
 msgid "Data 2"
 msgstr "Dáta 2"
 
-#: src/fe-gtk/fkeys.c:817
+#: src/fe-gtk/fkeys.c:829
 msgid "Error opening keys config file\n"
 msgstr "Chyba pri otváraní súboru s nastavením kláves\n"
 
-#: src/fe-gtk/fkeys.c:988
+#: src/fe-gtk/fkeys.c:1000
 #, c-format
 msgid ""
 "Unknown keyname %s in key bindings config file\n"
@@ -3113,7 +3183,7 @@ msgstr ""
 "Neznáme meno klávesy %s v konfiguračnom súbore\n"
 "Načítanie prerušené. Prosím, opravte %s/keybindings.conf\n"
 
-#: src/fe-gtk/fkeys.c:1026
+#: src/fe-gtk/fkeys.c:1038
 #, c-format
 msgid ""
 "Unknown action %s in key bindings config file\n"
@@ -3122,7 +3192,7 @@ msgstr ""
 "Neznáma akcia %s v konfiguračnom súbore\n"
 "Načítanie prerušené. Prosím, opravte %s/keybindings\n"
 
-#: src/fe-gtk/fkeys.c:1047
+#: src/fe-gtk/fkeys.c:1059
 #, c-format
 msgid ""
 "Expecting Data line (beginning Dx{:|!}) but got:\n"
@@ -3135,7 +3205,7 @@ msgstr ""
 "\n"
 "Načítanie prerušené. Prosím, opravte %s/keybindings\n"
 
-#: src/fe-gtk/fkeys.c:1116
+#: src/fe-gtk/fkeys.c:1128
 #, c-format
 msgid ""
 "Key bindings config file is corrupt, load aborted\n"
@@ -3144,233 +3214,241 @@ msgstr ""
 "Konfiguračný súbor nastavenia klávesnice je poškodený\n"
 "Načítanie prerušené. Prosím, opravte %s/keybindings.conf\n"
 
-#: src/fe-gtk/gtkutil.c:143
+#: src/fe-gtk/gtkutil.c:146
 msgid "Cannot write to that file."
 msgstr "Nepodaril sa zápis to súboru."
 
-#: src/fe-gtk/gtkutil.c:145
+#: src/fe-gtk/gtkutil.c:148
 msgid "Cannot read that file."
 msgstr "Nepodarilo sa čítanie súboru."
 
-#: src/fe-gtk/ignoregui.c:113 src/fe-gtk/ignoregui.c:274
+#: src/fe-gtk/ignoregui.c:116 src/fe-gtk/ignoregui.c:279
 msgid "That mask already exists."
 msgstr "Taká maska už existuje."
 
-#: src/fe-gtk/ignoregui.c:172 src/fe-gtk/maingui.c:1450
+#: src/fe-gtk/ignoregui.c:176 src/fe-gtk/maingui.c:1473
 msgid "Private"
 msgstr "Súkromné"
 
-#: src/fe-gtk/ignoregui.c:173
+#: src/fe-gtk/ignoregui.c:177
 msgid "Notice"
 msgstr "Poznámka"
 
-#: src/fe-gtk/ignoregui.c:174
+#: src/fe-gtk/ignoregui.c:178
 msgid "CTCP"
 msgstr "CTCP"
 
-#: src/fe-gtk/ignoregui.c:175
+#: src/fe-gtk/ignoregui.c:179
+msgid "DCC"
+msgstr "DCC"
+
+#: src/fe-gtk/ignoregui.c:180
 msgid "Invite"
 msgstr "Pozvať"
 
-#: src/fe-gtk/ignoregui.c:176
+#: src/fe-gtk/ignoregui.c:181
 msgid "Unignore"
 msgstr "Prestať ignorovať"
 
-#: src/fe-gtk/ignoregui.c:294
+#: src/fe-gtk/ignoregui.c:299
 msgid "Enter mask to ignore:"
 msgstr "Zadajte masku pre ignorovanie:"
 
-#: src/fe-gtk/ignoregui.c:341
+#: src/fe-gtk/ignoregui.c:346
 msgid "X-Chat: Ignore list"
 msgstr "X-Chat: Zoznam ignorovaných"
 
-#: src/fe-gtk/ignoregui.c:348
+#: src/fe-gtk/ignoregui.c:353
 msgid "Ignore Stats:"
 msgstr "Štatistika ignorovania:"
 
-#: src/fe-gtk/ignoregui.c:356
+#: src/fe-gtk/ignoregui.c:361
 msgid "Channel:"
 msgstr "Kanál:"
 
-#: src/fe-gtk/ignoregui.c:357
+#: src/fe-gtk/ignoregui.c:362
 msgid "Private:"
 msgstr "Súkromné:"
 
-#: src/fe-gtk/ignoregui.c:358
+#: src/fe-gtk/ignoregui.c:363
 msgid "Notice:"
 msgstr "Poznámka:"
 
-#: src/fe-gtk/ignoregui.c:359
+#: src/fe-gtk/ignoregui.c:364
 msgid "CTCP:"
 msgstr "CTCP:"
 
-#: src/fe-gtk/ignoregui.c:360
+#: src/fe-gtk/ignoregui.c:365
 msgid "Invite:"
 msgstr "Pozvánka:"
 
-#: src/fe-gtk/ignoregui.c:371 src/fe-gtk/menu.c:1180
+#: src/fe-gtk/ignoregui.c:376 src/fe-gtk/menu.c:1181
 msgid "New"
 msgstr "Nový"
 
-#: src/fe-gtk/maingui.c:468
+#: src/fe-gtk/ignoregui.c:380
+msgid "Delete All"
+msgstr "Odstrániť všetko"
+
+#: src/fe-gtk/maingui.c:477
 #, c-format
 msgid "Topic for %s is: %s"
 msgstr "Téma pre %s je: %s"
 
-#: src/fe-gtk/maingui.c:472
+#: src/fe-gtk/maingui.c:481
 msgid "No topic is set"
 msgstr "Nie je nastavená téma"
 
-#: src/fe-gtk/maingui.c:869
+#: src/fe-gtk/maingui.c:878
 msgid "No other tabs open, quit xchat?"
 msgstr "Nie sú otvorené žiadne ďalšie záložky, ukončiť xchat?"
 
-#: src/fe-gtk/maingui.c:915
+#: src/fe-gtk/maingui.c:924
 msgid "Insert color code"
 msgstr "Vložte kód farby"
 
-#: src/fe-gtk/maingui.c:947 src/fe-gtk/menu.c:1202
+#: src/fe-gtk/maingui.c:966 src/fe-gtk/menu.c:1203
 msgid "Close Tab"
 msgstr "Zavrieť záložku"
 
-#: src/fe-gtk/maingui.c:950 src/fe-gtk/menu.c:1332
+#: src/fe-gtk/maingui.c:969 src/fe-gtk/menu.c:1333
 msgid "Detach Tab"
 msgstr "Odpojiť záložku"
 
-#: src/fe-gtk/maingui.c:965
+#: src/fe-gtk/maingui.c:984
 msgid "Beep on message"
 msgstr "Zazvoniť pri správe"
 
-#: src/fe-gtk/maingui.c:968
+#: src/fe-gtk/maingui.c:987
 msgid "Show join/part messages"
 msgstr "Zobrazovať správy o príchode/odchode"
 
-#: src/fe-gtk/maingui.c:970
+#: src/fe-gtk/maingui.c:989
 msgid "Color paste"
 msgstr "Vložiť farbu"
 
-#: src/fe-gtk/maingui.c:980
-msgid "Move to tab"
-msgstr "Presunúť sa na záložku"
+#: src/fe-gtk/maingui.c:999
+msgid "Go to"
+msgstr "Ísť na"
 
-#: src/fe-gtk/maingui.c:1168
+#: src/fe-gtk/maingui.c:1191
 msgid "Some file transfers still active, quit xchat?"
 msgstr "Sú aktívne prenosy súborov, ukončiť xchat?"
 
-#: src/fe-gtk/maingui.c:1318 src/fe-gtk/maingui.c:1424
+#: src/fe-gtk/maingui.c:1341 src/fe-gtk/maingui.c:1447
 msgid "User limit must be a number!\n"
 msgstr "Limit používateľov musí byť číslo!\n"
 
-#: src/fe-gtk/maingui.c:1446
+#: src/fe-gtk/maingui.c:1469
 msgid "Topic Protection"
 msgstr "Ochrana témy"
 
-#: src/fe-gtk/maingui.c:1447
+#: src/fe-gtk/maingui.c:1470
 msgid "No outside messages"
 msgstr "Žiadne správy mimo kanál"
 
-#: src/fe-gtk/maingui.c:1448
+#: src/fe-gtk/maingui.c:1471
 msgid "Secret"
 msgstr "Tajné"
 
-#: src/fe-gtk/maingui.c:1449
+#: src/fe-gtk/maingui.c:1472
 msgid "Invite Only"
 msgstr "Len pozvaní"
 
-#: src/fe-gtk/maingui.c:1451
+#: src/fe-gtk/maingui.c:1474
 msgid "Moderated"
 msgstr "Moderované"
 
-#: src/fe-gtk/maingui.c:1452
+#: src/fe-gtk/maingui.c:1475
 msgid "Ban List"
 msgstr "Zoznam zákazov"
 
-#: src/fe-gtk/maingui.c:1454
+#: src/fe-gtk/maingui.c:1477
 msgid "Keyword"
 msgstr "Kľúčové slovo"
 
-#: src/fe-gtk/maingui.c:1466
+#: src/fe-gtk/maingui.c:1489
 msgid "User Limit"
 msgstr "Limit používateľov"
 
-#: src/fe-gtk/maingui.c:1482
+#: src/fe-gtk/maingui.c:1505
 msgid "Close this tab/window"
 msgstr "Zatvoriť toto okno alebo záložku"
 
-#: src/fe-gtk/maingui.c:1579
+#: src/fe-gtk/maingui.c:1602
 msgid "Show/Hide userlist"
 msgstr "Zobraziť alebo skryť zoznam používateľov"
 
-#: src/fe-gtk/maingui.c:1862
+#: src/fe-gtk/maingui.c:1886
 msgid "Enter new nickname:"
 msgstr "Zadajte novú prezývku:"
 
-#: src/fe-gtk/menu.c:140
+#: src/fe-gtk/menu.c:141
 msgid "Host unknown"
 msgstr "Hostiteľ neznámy"
 
-#: src/fe-gtk/menu.c:446
+#: src/fe-gtk/menu.c:447
 #, c-format
 msgid "User: %s"
 msgstr "Používateľ: %s"
 
-#: src/fe-gtk/menu.c:450
+#: src/fe-gtk/menu.c:451
 #, c-format
 msgid "Country: %s"
 msgstr "Krajina: %s"
 
-#: src/fe-gtk/menu.c:454
+#: src/fe-gtk/menu.c:455
 #, c-format
 msgid "Realname: %s"
 msgstr "Skutočné meno: %s"
 
-#: src/fe-gtk/menu.c:458
+#: src/fe-gtk/menu.c:459
 #, c-format
 msgid "Server: %s"
 msgstr "Server: %s"
 
-#: src/fe-gtk/menu.c:462
+#: src/fe-gtk/menu.c:463
 #, c-format
 msgid "Last Msg: %s"
 msgstr "Posledná správa: %s"
 
-#: src/fe-gtk/menu.c:547
+#: src/fe-gtk/menu.c:548
 msgid "Menu Bar"
 msgstr "Menu"
 
-#: src/fe-gtk/menu.c:548
+#: src/fe-gtk/menu.c:549
 msgid "Topic Bar"
 msgstr "Panel témy"
 
-#: src/fe-gtk/menu.c:552
+#: src/fe-gtk/menu.c:553
 msgid "User List"
 msgstr "Zoznam používateľov"
 
-#: src/fe-gtk/menu.c:555
+#: src/fe-gtk/menu.c:556
 msgid "Mode Buttons"
 msgstr "Tlačidlá módov"
 
-#: src/fe-gtk/menu.c:561
+#: src/fe-gtk/menu.c:562
 msgid "User List Buttons"
 msgstr "Tlačidlá zoznamu používateľov"
 
-#: src/fe-gtk/menu.c:687
+#: src/fe-gtk/menu.c:688
 msgid "Part Channel"
 msgstr "Opustiť kanál"
 
-#: src/fe-gtk/menu.c:689
+#: src/fe-gtk/menu.c:690
 msgid "Cycle Channel"
 msgstr "Cyklovať kanál"
 
-#: src/fe-gtk/menu.c:712
+#: src/fe-gtk/menu.c:713
 msgid "X-Chat: User menu"
 msgstr "X-Chat: Menu Používatelia"
 
-#: src/fe-gtk/menu.c:721
+#: src/fe-gtk/menu.c:722
 msgid "Edit This Menu..."
 msgstr "Upraviť toto menu..."
 
-#: src/fe-gtk/menu.c:823
+#: src/fe-gtk/menu.c:824
 msgid ""
 "*WARNING*\n"
 "Auto accepting DCC to your home directory\n"
@@ -3382,11 +3460,11 @@ msgstr ""
 "priečinku môže byť nebezpečné. Napríklad:\n"
 "niekto by vám mohol poslať súbor .bash_profile."
 
-#: src/fe-gtk/menu.c:945
+#: src/fe-gtk/menu.c:946
 msgid "Settings saved."
 msgstr "Nastavenia uložené."
 
-#: src/fe-gtk/menu.c:982
+#: src/fe-gtk/menu.c:983
 msgid ""
 "User Commands - Special codes:\n"
 "\n"
@@ -3424,7 +3502,7 @@ msgstr ""
 "%2 bude \"john\"\n"
 "&2 bude \"john hello\"."
 
-#: src/fe-gtk/menu.c:997
+#: src/fe-gtk/menu.c:998
 msgid ""
 "Userlist Buttons - Special codes:\n"
 "\n"
@@ -3446,7 +3524,7 @@ msgstr ""
 "%s  =  vybraná prezývka\n"
 "%t  =  čas/dátum\n"
 
-#: src/fe-gtk/menu.c:1006
+#: src/fe-gtk/menu.c:1007
 msgid ""
 "Dialog Buttons - Special codes:\n"
 "\n"
@@ -3468,7 +3546,7 @@ msgstr ""
 "%s  =  vybraná prezývka\n"
 "%t  =  čas/dátum\n"
 
-#: src/fe-gtk/menu.c:1015
+#: src/fe-gtk/menu.c:1016
 msgid ""
 "CTCP Replies - Special codes:\n"
 "\n"
@@ -3494,7 +3572,7 @@ msgstr ""
 "&3 = slovo 3 do konca riadku\n"
 "\n"
 
-#: src/fe-gtk/menu.c:1025
+#: src/fe-gtk/menu.c:1026
 #, c-format
 msgid ""
 "URL Handlers - Special codes:\n"
@@ -3511,251 +3589,251 @@ msgstr ""
 "Pridaním ! pred príkaz označíte, že sa\n"
 "má poslať do shellu a nie do X-Chat"
 
-#: src/fe-gtk/menu.c:1034
+#: src/fe-gtk/menu.c:1035
 msgid "X-Chat: User Defined Commands"
 msgstr "X-Chat: Používateľské príkazy"
 
-#: src/fe-gtk/menu.c:1041
+#: src/fe-gtk/menu.c:1042
 msgid "X-Chat: Userlist Popup menu"
 msgstr "X-Chat: Kontextové menu Zoznam používateľov"
 
-#: src/fe-gtk/menu.c:1048
+#: src/fe-gtk/menu.c:1049
 msgid "X-Chat: Replace"
 msgstr "X-Chat: Nahradiť"
 
-#: src/fe-gtk/menu.c:1055
+#: src/fe-gtk/menu.c:1056
 msgid "X-Chat: URL Handlers"
 msgstr "X-Chat: Obsluha URL"
 
-#: src/fe-gtk/menu.c:1074
+#: src/fe-gtk/menu.c:1075
 msgid "X-Chat: Userlist buttons"
 msgstr "X-Chat: Tlačidla zoznamu používateľov"
 
-#: src/fe-gtk/menu.c:1081
+#: src/fe-gtk/menu.c:1082
 msgid "X-Chat: Dialog buttons"
 msgstr "X-Chat: Tlačidlá dialógu"
 
-#: src/fe-gtk/menu.c:1088
+#: src/fe-gtk/menu.c:1089
 msgid "X-Chat: CTCP Replies"
 msgstr "X-Chat: CTCP odpovede"
 
-#: src/fe-gtk/menu.c:1176
+#: src/fe-gtk/menu.c:1177
 msgid "_X-Chat"
 msgstr "_X-Chat"
 
-#: src/fe-gtk/menu.c:1177
+#: src/fe-gtk/menu.c:1178
 msgid "Server List..."
 msgstr "Zoznam serverov..."
 
-#: src/fe-gtk/menu.c:1181
+#: src/fe-gtk/menu.c:1182
 msgid "Server Tab..."
 msgstr "Záložka serverov..."
 
-#: src/fe-gtk/menu.c:1182
+#: src/fe-gtk/menu.c:1183
 msgid "Channel Tab..."
 msgstr "Záložka kanálov..."
 
-#: src/fe-gtk/menu.c:1183
+#: src/fe-gtk/menu.c:1184
 msgid "Server Window..."
 msgstr "Okno serverov..."
 
-#: src/fe-gtk/menu.c:1184
+#: src/fe-gtk/menu.c:1185
 msgid "Channel Window..."
 msgstr "Okno kanálov..."
 
-#: src/fe-gtk/menu.c:1189 src/fe-gtk/menu.c:1191
+#: src/fe-gtk/menu.c:1190 src/fe-gtk/menu.c:1192
 msgid "Load Plugin or Script..."
 msgstr "Načítať plugin alebo skript..."
 
-#: src/fe-gtk/menu.c:1195
+#: src/fe-gtk/menu.c:1196
 msgid "New Shell Tab..."
 msgstr "Záložka s novým shellom..."
 
-#: src/fe-gtk/menu.c:1204
+#: src/fe-gtk/menu.c:1205
 msgid "Quit"
 msgstr "Ukončiť"
 
-#: src/fe-gtk/menu.c:1206
+#: src/fe-gtk/menu.c:1207
 msgid "_IRC"
 msgstr "_IRC"
 
-#: src/fe-gtk/menu.c:1207
+#: src/fe-gtk/menu.c:1208
 msgid "Invisible"
 msgstr "Neviditeľný"
 
-#: src/fe-gtk/menu.c:1208
+#: src/fe-gtk/menu.c:1209
 msgid "Receive Wallops"
 msgstr "Prijímať wallops"
 
-#: src/fe-gtk/menu.c:1209
+#: src/fe-gtk/menu.c:1210
 msgid "Receive Server Notices"
 msgstr "Prijímať správy serveru"
 
-#: src/fe-gtk/menu.c:1211
+#: src/fe-gtk/menu.c:1212
 msgid "Marked Away"
 msgstr "Som preč"
 
-#: src/fe-gtk/menu.c:1213
+#: src/fe-gtk/menu.c:1214
 msgid "Auto Rejoin when Kicked"
 msgstr "Automaticky sa vrátiť po vykopnutí"
 
-#: src/fe-gtk/menu.c:1214
+#: src/fe-gtk/menu.c:1215
 msgid "Auto Reconnect to Server"
 msgstr "Automaticky sa znovupripojiť k serveru"
 
-#: src/fe-gtk/menu.c:1215
+#: src/fe-gtk/menu.c:1216
 msgid "Never-give-up ReConnect"
 msgstr "Neustále pokusy o znovupripojenie"
 
-#: src/fe-gtk/menu.c:1217
+#: src/fe-gtk/menu.c:1218
 msgid "Auto Open Dialog Windows"
 msgstr "Automaticky otvoriť dialógové okná"
 
-#: src/fe-gtk/menu.c:1218
+#: src/fe-gtk/menu.c:1219
 msgid "Auto Accept Direct Chat"
 msgstr "Automaticky prijať DCC chat"
 
-#: src/fe-gtk/menu.c:1219
+#: src/fe-gtk/menu.c:1220
 msgid "Auto Accept Files"
 msgstr "Automaticky prijať posielaný súbor"
 
-#: src/fe-gtk/menu.c:1221
+#: src/fe-gtk/menu.c:1222
 msgid "_Server"
 msgstr "_Server"
 
-#: src/fe-gtk/menu.c:1223
+#: src/fe-gtk/menu.c:1224
 msgid "S_ettings"
 msgstr "_Nastavenia"
 
-#: src/fe-gtk/menu.c:1224
+#: src/fe-gtk/menu.c:1225
 msgid "Preferences..."
 msgstr "Nastavenia..."
 
-#: src/fe-gtk/menu.c:1226
+#: src/fe-gtk/menu.c:1227
 msgid "Lists"
 msgstr "Zoznamy"
 
-#: src/fe-gtk/menu.c:1227
+#: src/fe-gtk/menu.c:1228
 msgid "Auto Replace..."
 msgstr "Automaticky nahradiť..."
 
-#: src/fe-gtk/menu.c:1228
+#: src/fe-gtk/menu.c:1229
 msgid "CTCP Replies..."
 msgstr "CTCP odpovede..."
 
-#: src/fe-gtk/menu.c:1229
+#: src/fe-gtk/menu.c:1230
 msgid "Dialog Buttons..."
 msgstr "Tlačidlá dialógu..."
 
-#: src/fe-gtk/menu.c:1230
+#: src/fe-gtk/menu.c:1231
 msgid "Key Bindings..."
 msgstr "Klávesové skratky..."
 
-#: src/fe-gtk/menu.c:1231
+#: src/fe-gtk/menu.c:1232
 msgid "Text Events..."
 msgstr "Textové udalosti..."
 
-#: src/fe-gtk/menu.c:1232
+#: src/fe-gtk/menu.c:1233
 msgid "URL Handlers..."
 msgstr "Správa URL..."
 
-#: src/fe-gtk/menu.c:1233
+#: src/fe-gtk/menu.c:1234
 msgid "User Commands..."
 msgstr "Používateľské príkazy..."
 
-#: src/fe-gtk/menu.c:1234
+#: src/fe-gtk/menu.c:1235
 msgid "Userlist Buttons..."
 msgstr "Tlačidla zoznamu používateľov..."
 
-#: src/fe-gtk/menu.c:1235
+#: src/fe-gtk/menu.c:1236
 msgid "Userlist Popup..."
 msgstr "Menu zoznamu používateľov..."
 
-#: src/fe-gtk/menu.c:1240
+#: src/fe-gtk/menu.c:1241
 msgid "Reload Settings"
 msgstr "Znovu načítať nastavenia"
 
-#: src/fe-gtk/menu.c:1242
+#: src/fe-gtk/menu.c:1243
 msgid "Save Settings now"
 msgstr "Uložiť nastavenia"
 
-#: src/fe-gtk/menu.c:1243
+#: src/fe-gtk/menu.c:1244
 msgid "Save Settings on exit"
 msgstr "Uložiť nastavenia pri ukončení"
 
-#: src/fe-gtk/menu.c:1246
+#: src/fe-gtk/menu.c:1247
 msgid "_Window"
 msgstr "_Okno"
 
-#: src/fe-gtk/menu.c:1247
+#: src/fe-gtk/menu.c:1248
 msgid "Ban List..."
 msgstr "Zoznam zákazov..."
 
-#: src/fe-gtk/menu.c:1248
+#: src/fe-gtk/menu.c:1249
 msgid "Channel List..."
 msgstr "Zoznam kanálov..."
 
-#: src/fe-gtk/menu.c:1249
+#: src/fe-gtk/menu.c:1250
 msgid "Character Chart..."
 msgstr "Tabuľka znakov..."
 
-#: src/fe-gtk/menu.c:1250
+#: src/fe-gtk/menu.c:1251
 msgid "Direct Chat..."
 msgstr "Priamy rozhovor..."
 
-#: src/fe-gtk/menu.c:1251
+#: src/fe-gtk/menu.c:1252
 msgid "File Receive..."
 msgstr "Príjem súboru..."
 
-#: src/fe-gtk/menu.c:1252
+#: src/fe-gtk/menu.c:1253
 msgid "File Send..."
 msgstr "Odosielanie súboru..."
 
-#: src/fe-gtk/menu.c:1253
+#: src/fe-gtk/menu.c:1254
 msgid "Ignore List..."
 msgstr "Zoznam ignorovaných..."
 
-#: src/fe-gtk/menu.c:1254
+#: src/fe-gtk/menu.c:1255
 msgid "Notify List..."
 msgstr "Zoznam upozornení..."
 
-#: src/fe-gtk/menu.c:1255
+#: src/fe-gtk/menu.c:1256
 msgid "Plugins and Scripts..."
 msgstr "Pluginy a skripty..."
 
-#: src/fe-gtk/menu.c:1256
+#: src/fe-gtk/menu.c:1257
 msgid "Raw Log..."
 msgstr "Log..."
 
-#: src/fe-gtk/menu.c:1257
+#: src/fe-gtk/menu.c:1258
 msgid "URL Grabber..."
 msgstr "Zachytávanie URL..."
 
-#: src/fe-gtk/menu.c:1259
+#: src/fe-gtk/menu.c:1260
 msgid "C_lear Text"
 msgstr "Č_istý text"
 
-#: src/fe-gtk/menu.c:1260
+#: src/fe-gtk/menu.c:1261
 msgid "Search Text..."
 msgstr "Prehľadať text..."
 
-#: src/fe-gtk/menu.c:1261
+#: src/fe-gtk/menu.c:1262
 msgid "Save Text..."
 msgstr "Uložiť text..."
 
-#: src/fe-gtk/menu.c:1263
+#: src/fe-gtk/menu.c:1264
 msgid "_Help"
 msgstr "_Pomocník"
 
-#: src/fe-gtk/menu.c:1264
+#: src/fe-gtk/menu.c:1265
 msgid "_Contents"
 msgstr "O_bsah"
 
-#: src/fe-gtk/menu.c:1265
+#: src/fe-gtk/menu.c:1266
 msgid "_About"
 msgstr "_O Programe"
 
-#: src/fe-gtk/menu.c:1334
+#: src/fe-gtk/menu.c:1335
 msgid "Attach Tab"
 msgstr "Pripojiť záložku"
 
@@ -3791,7 +3869,7 @@ msgstr "Zadajte prezývku:"
 msgid "X-Chat: Notify List"
 msgstr "X-Chat: Zoznam upozornení"
 
-#: src/fe-gtk/notifygui.c:309 src/fe-gtk/servlistgui.c:713
+#: src/fe-gtk/notifygui.c:309 src/fe-gtk/servlistgui.c:714
 msgid "Add"
 msgstr "Pridať"
 
@@ -3799,27 +3877,27 @@ msgstr "Pridať"
 msgid "Remove"
 msgstr "Odstrániť"
 
-#: src/fe-gtk/plugingui.c:76 src/fe-gtk/textgui.c:377
+#: src/fe-gtk/plugingui.c:76 src/fe-gtk/textgui.c:383
 msgid "Description"
 msgstr "Popis"
 
-#: src/fe-gtk/plugingui.c:150
+#: src/fe-gtk/plugingui.c:151
 msgid "Select a Plugin or Script to load"
 msgstr "Vyberte plugin alebo skript"
 
-#: src/fe-gtk/plugingui.c:218
+#: src/fe-gtk/plugingui.c:219
 msgid "X-Chat: Plugins and Scripts"
 msgstr "X-Chat: Pluginy a skripty"
 
-#: src/fe-gtk/plugingui.c:224
+#: src/fe-gtk/plugingui.c:225
 msgid "_Load..."
 msgstr "_Načítať..."
 
-#: src/fe-gtk/plugingui.c:227
+#: src/fe-gtk/plugingui.c:228
 msgid "_UnLoad"
 msgstr "O_dobrať"
 
-#: src/fe-gtk/plugingui.c:231
+#: src/fe-gtk/plugingui.c:232
 msgid "_Close"
 msgstr "_Zavrieť"
 
@@ -3860,694 +3938,702 @@ msgstr "Nájsť"
 msgid "Close"
 msgstr "Zavrieť"
 
-#: src/fe-gtk/servlistgui.c:162
+#: src/fe-gtk/servlistgui.c:163
 #, c-format
 msgid "Settings for %s"
 msgstr "Nastavenia pre %s"
 
-#: src/fe-gtk/servlistgui.c:203 src/fe-gtk/servlistgui.c:276
+#: src/fe-gtk/servlistgui.c:204 src/fe-gtk/servlistgui.c:277
 msgid "New Network"
 msgstr "Nová sieť"
 
-#: src/fe-gtk/servlistgui.c:371
+#: src/fe-gtk/servlistgui.c:372
 #, c-format
 msgid "Really remove network \"%s\" and all its servers?"
 msgstr "Naozaj odstrániť sieť \"%s\" a všetky príslušné servery?"
 
-#: src/fe-gtk/servlistgui.c:408 src/fe-gtk/servlistgui.c:438
+#: src/fe-gtk/servlistgui.c:409 src/fe-gtk/servlistgui.c:439
 #, c-format
 msgid "_Remove \"%s\""
 msgstr "O_dstrániť \"%s\""
 
-#: src/fe-gtk/servlistgui.c:415
+#: src/fe-gtk/servlistgui.c:416
 msgid "_Add new server"
 msgstr "_Nový server"
 
-#: src/fe-gtk/servlistgui.c:445
+#: src/fe-gtk/servlistgui.c:446
 #, c-format
 msgid "Move \"%s\" _down"
 msgstr "Posunúť \"%s\" _nadol"
 
-#: src/fe-gtk/servlistgui.c:452
+#: src/fe-gtk/servlistgui.c:453
 #, c-format
 msgid "Move \"%s\" _up"
 msgstr "Posunúť \"%s\" na_hor"
 
-#: src/fe-gtk/servlistgui.c:463
+#: src/fe-gtk/servlistgui.c:464
 msgid "_Add new network"
 msgstr "_Pridať sieť"
 
-#: src/fe-gtk/servlistgui.c:827
+#: src/fe-gtk/servlistgui.c:828
 msgid "Global User Info"
 msgstr "Spoločné informácie o používateľovi"
 
-#: src/fe-gtk/servlistgui.c:835
+#: src/fe-gtk/servlistgui.c:836
 msgid "Nick Names:"
 msgstr "Prezývky:"
 
-#: src/fe-gtk/servlistgui.c:854 src/fe-gtk/servlistgui.c:1057
+#: src/fe-gtk/servlistgui.c:855 src/fe-gtk/servlistgui.c:1058
 msgid "User Name:"
 msgstr "Používateľ:"
 
-#: src/fe-gtk/servlistgui.c:867 src/fe-gtk/servlistgui.c:1059
+#: src/fe-gtk/servlistgui.c:868 src/fe-gtk/servlistgui.c:1060
 msgid "Real Name:"
 msgstr "Skutočné meno:"
 
-#: src/fe-gtk/servlistgui.c:909
+#: src/fe-gtk/servlistgui.c:910
 msgid "C_onnect"
 msgstr "_Pripojiť"
 
-#: src/fe-gtk/servlistgui.c:917
+#: src/fe-gtk/servlistgui.c:918
 msgid "Connect in a _new tab"
 msgstr "Pripojiť v novej _záložke"
 
-#: src/fe-gtk/servlistgui.c:977
+#: src/fe-gtk/servlistgui.c:978
 msgid "Servers"
 msgstr "Servery"
 
-#: src/fe-gtk/servlistgui.c:1015
+#: src/fe-gtk/servlistgui.c:1016
 msgid "Character Set:"
 msgstr "Znaková sada:"
 
-#: src/fe-gtk/servlistgui.c:1055
+#: src/fe-gtk/servlistgui.c:1056
 msgid "Nick Name:"
 msgstr "Prezývka:"
 
-#: src/fe-gtk/servlistgui.c:1060
+#: src/fe-gtk/servlistgui.c:1061
 msgid "Server Password:"
 msgstr "Heslo:"
 
-#: src/fe-gtk/servlistgui.c:1062
+#: src/fe-gtk/servlistgui.c:1063
 msgid "Join Channels:"
 msgstr "Prihlásiť sa do kanálov:"
 
-#: src/fe-gtk/servlistgui.c:1064
+#: src/fe-gtk/servlistgui.c:1065
 msgid "Channels to join, separated by commas, but not spaces!"
 msgstr "Kanály na ktoré sa prihlásiť, oddelené čiarkami, ale nie medzerami!"
 
-#: src/fe-gtk/servlistgui.c:1065
+#: src/fe-gtk/servlistgui.c:1066
 msgid "Connect Command:"
 msgstr "Príkaz po pripojení:"
 
-#: src/fe-gtk/servlistgui.c:1067
+#: src/fe-gtk/servlistgui.c:1068
 msgid "Command to execute after connecting. Can be used to authenticate to NickServ"
 msgstr "Príkaz, ktorý sa vykoná po pripojení. Použitie napríklad pre autentizáciu pomocou služby NickServ"
 
-#: src/fe-gtk/servlistgui.c:1075
+#: src/fe-gtk/servlistgui.c:1076
 msgid "Cycle until connected"
 msgstr "Cyklovať až do pripojenia"
 
-#: src/fe-gtk/servlistgui.c:1076
+#: src/fe-gtk/servlistgui.c:1077
 msgid "Use global user info"
 msgstr "Použiť spoločné informácie o používateľovi"
 
-#: src/fe-gtk/servlistgui.c:1077
+#: src/fe-gtk/servlistgui.c:1078
 msgid "Use secure SSL"
 msgstr "Používať SSL"
 
-#: src/fe-gtk/servlistgui.c:1078
+#: src/fe-gtk/servlistgui.c:1079
 msgid "Auto connect at startup"
 msgstr "Automaticky pripojiť po štarte"
 
-#: src/fe-gtk/servlistgui.c:1079
+#: src/fe-gtk/servlistgui.c:1080
 msgid "Use a proxy server"
 msgstr "Použiť proxy server"
 
-#: src/fe-gtk/servlistgui.c:1080
+#: src/fe-gtk/servlistgui.c:1081
 msgid "Accept invalid cert."
 msgstr "Akceptovať neplatné certifikáty"
 
-#: src/fe-gtk/servlistgui.c:1089
+#: src/fe-gtk/servlistgui.c:1090
 msgid "Settings for Selected Network"
 msgstr "Nastavenia zvolenej siete"
 
-#: src/fe-gtk/servlistgui.c:1129
+#: src/fe-gtk/servlistgui.c:1130
 msgid "Edit mode"
 msgstr "Upraviť"
 
-#: src/fe-gtk/servlistgui.c:1136
+#: src/fe-gtk/servlistgui.c:1137
 msgid "Networks"
 msgstr "Siete"
 
-#: src/fe-gtk/servlistgui.c:1181
+#: src/fe-gtk/servlistgui.c:1182
 msgid "No server list on startup"
 msgstr "Nezobrazovať zoznam serverov pri štarte"
 
-#: src/fe-gtk/servlistgui.c:1208
+#: src/fe-gtk/servlistgui.c:1209
 msgid "X-Chat: Server List"
 msgstr "X-Chat: Zoznam serverov"
 
-#: src/fe-gtk/setup.c:79
+#: src/fe-gtk/setup.c:80
 msgid "Font:"
 msgstr "Písmo:"
 
-#: src/fe-gtk/setup.c:80
+#: src/fe-gtk/setup.c:81
 msgid "Background image:"
 msgstr "Obrázok v pozadí:"
 
-#: src/fe-gtk/setup.c:81
+#: src/fe-gtk/setup.c:82
 msgid "Time stamp format:"
 msgstr "Formát zobrazenia času:"
 
-#: src/fe-gtk/setup.c:82
+#: src/fe-gtk/setup.c:83
 msgid "See strftime manpage for details."
 msgstr "Detaily nájdete v manuálovej stránke pre strftime."
 
-#: src/fe-gtk/setup.c:83
+#: src/fe-gtk/setup.c:84
 msgid "Time stamp text"
 msgstr "Text zobrazenia času"
 
-#: src/fe-gtk/setup.c:84
+#: src/fe-gtk/setup.c:85
 msgid "Transparent background"
 msgstr "Priehľadné pozadie"
 
-#: src/fe-gtk/setup.c:85
+#: src/fe-gtk/setup.c:86
 msgid "Indent nicks"
 msgstr "Odsadiť prezývky"
 
-#: src/fe-gtk/setup.c:86
+#: src/fe-gtk/setup.c:87
 msgid "Tint transparency"
 msgstr "Zafarbenie priehľadnosti"
 
-#: src/fe-gtk/setup.c:87
+#: src/fe-gtk/setup.c:88
 msgid "Colored nicks"
 msgstr "Farebné prezývky"
 
-#: src/fe-gtk/setup.c:88
+#: src/fe-gtk/setup.c:89
 msgid "Strip mIRC color"
 msgstr "Odstrániť mIRC farby"
 
-#: src/fe-gtk/setup.c:89
+#: src/fe-gtk/setup.c:90
 msgid "Scrollback lines:"
 msgstr "Počet riadkov spätného logu:"
 
-#: src/fe-gtk/setup.c:90
+#: src/fe-gtk/setup.c:91
 msgid "Tint red:"
 msgstr "Červené zafarbenie pozadia:"
 
-#: src/fe-gtk/setup.c:91
+#: src/fe-gtk/setup.c:92
 msgid "Tint green:"
 msgstr "Zelené zafarbenie pozadia:"
 
-#: src/fe-gtk/setup.c:92
+#: src/fe-gtk/setup.c:93
 msgid "Tint blue:"
 msgstr "Modré zafarbenie pozadia:"
 
-#: src/fe-gtk/setup.c:98
+#: src/fe-gtk/setup.c:99
 #, c-format
 msgid "Interpret %nnn as an ASCII value"
 msgstr "Brať %nnn ako hodnotu ASCII"
 
-#: src/fe-gtk/setup.c:99
+#: src/fe-gtk/setup.c:100
 msgid "Automatic nick completion"
 msgstr "Automatické dokončovanie prezývok"
 
-#: src/fe-gtk/setup.c:100
+#: src/fe-gtk/setup.c:101
 msgid "Interpret %C, %B as Color, Bold etc"
 msgstr "Brať %C,%B ako Color, Bold atď"
 
-#: src/fe-gtk/setup.c:101 src/fe-gtk/setup.c:133
+#: src/fe-gtk/setup.c:102 src/fe-gtk/setup.c:134
 msgid "Use the Text box font and colors"
 msgstr "Použiť písmo a farby z textového poľa"
 
-#: src/fe-gtk/setup.c:102
+#: src/fe-gtk/setup.c:103
 msgid "Nick completion suffix:"
 msgstr "Prípona dokončovania prezývky:"
 
-#: src/fe-gtk/setup.c:108
+#: src/fe-gtk/setup.c:109
 msgid "Off"
 msgstr "Vypnuté"
 
-#: src/fe-gtk/setup.c:109
+#: src/fe-gtk/setup.c:110
 msgid "Graph"
 msgstr "Graf"
 
-#: src/fe-gtk/setup.c:110
+#: src/fe-gtk/setup.c:111
 msgid "Info text"
 msgstr "Informácie"
 
-#: src/fe-gtk/setup.c:111
+#: src/fe-gtk/setup.c:112
 msgid "Both"
 msgstr "Oboje"
 
-#: src/fe-gtk/setup.c:117
+#: src/fe-gtk/setup.c:118
 msgid "A-Z, Ops first"
 msgstr "A-Z, Ops najprv"
 
-#: src/fe-gtk/setup.c:118
+#: src/fe-gtk/setup.c:119
 msgid "A-Z"
 msgstr "A-Z"
 
-#: src/fe-gtk/setup.c:119
+#: src/fe-gtk/setup.c:120
 msgid "Z-A, Ops last"
 msgstr "Z-A, Ops nakoniec"
 
-#: src/fe-gtk/setup.c:120
+#: src/fe-gtk/setup.c:121
 msgid "Z-A"
 msgstr "Z-A"
 
-#: src/fe-gtk/setup.c:121
+#: src/fe-gtk/setup.c:122
 msgid "Unsorted"
 msgstr "Nezotriedené"
 
-#: src/fe-gtk/setup.c:127
+#: src/fe-gtk/setup.c:128
 msgid "Lag meter:"
 msgstr "Meranie opozdenia:"
 
-#: src/fe-gtk/setup.c:128
+#: src/fe-gtk/setup.c:129
 msgid "Throttle meter:"
 msgstr "Meranie rýchlosti:"
 
-#: src/fe-gtk/setup.c:129
+#: src/fe-gtk/setup.c:130
 msgid "Userlist sorted by:"
 msgstr "Zoznam používateľov zotriedený podľa:"
 
-#: src/fe-gtk/setup.c:130
+#: src/fe-gtk/setup.c:131
 msgid "Double-click command:"
 msgstr "Príkaz pri dvojitom kliknutí myšou:"
 
-#: src/fe-gtk/setup.c:131
+#: src/fe-gtk/setup.c:132
 msgid "Show hostnames in userlist"
 msgstr "Zobrazovať hostiteľov v zozname používateľov"
 
-#: src/fe-gtk/setup.c:132
+#: src/fe-gtk/setup.c:133
 msgid "Userlist buttons enabled"
 msgstr "Tlačidlá zoznamu používateľov zobrazené"
 
-#: src/fe-gtk/setup.c:134
+#: src/fe-gtk/setup.c:135
 msgid "Resizable userlist"
 msgstr "Meniteľná veľkosť zoznamu používateľov"
 
-#: src/fe-gtk/setup.c:140
+#: src/fe-gtk/setup.c:136
+msgid "Track away-status on channels smaller than:"
+msgstr "Sledovať stav neprítomnosti na kanáloch menších ako:"
+
+#: src/fe-gtk/setup.c:142
 msgid "Windows"
 msgstr "Okná"
 
-#: src/fe-gtk/setup.c:141 src/fe-gtk/setup.c:759
+#: src/fe-gtk/setup.c:143 src/fe-gtk/setup.c:768
 msgid "Tabs"
 msgstr "Záložky"
 
-#: src/fe-gtk/setup.c:147
+#: src/fe-gtk/setup.c:149
 msgid "Bottom"
 msgstr "Dolu"
 
-#: src/fe-gtk/setup.c:148
+#: src/fe-gtk/setup.c:150
 msgid "Top"
 msgstr "Hore"
 
-#: src/fe-gtk/setup.c:149
+#: src/fe-gtk/setup.c:151
 msgid "Left"
 msgstr "Vľavo"
 
-#: src/fe-gtk/setup.c:150
+#: src/fe-gtk/setup.c:152
 msgid "Right"
 msgstr "Vpravo"
 
-#: src/fe-gtk/setup.c:151
+#: src/fe-gtk/setup.c:153
 msgid "Hidden"
 msgstr "Skryté"
 
-#: src/fe-gtk/setup.c:157
+#: src/fe-gtk/setup.c:159
 msgid "Show tabs at:"
 msgstr "Zobraziť záložky:"
 
-#: src/fe-gtk/setup.c:158
+#: src/fe-gtk/setup.c:160
 msgid "Open channels in:"
 msgstr "Otvárať kanály v:"
 
-#: src/fe-gtk/setup.c:159
+#: src/fe-gtk/setup.c:161
 msgid "Open dialogs in:"
 msgstr "Otvárať dialógy v:"
 
-#: src/fe-gtk/setup.c:160
+#: src/fe-gtk/setup.c:162
 msgid "Open utilities in:"
 msgstr "Otvárať pomôcky v:"
 
-#: src/fe-gtk/setup.c:160
+#: src/fe-gtk/setup.c:162
 msgid "Open DCC, Ignore, Notify etc, in tabs or windows?"
 msgstr "Otvárať DCC, Ignorovanie, Upozornenie atď v záložkách alebo v oknách?"
 
-#: src/fe-gtk/setup.c:161
+#: src/fe-gtk/setup.c:163
 msgid "Open tab for server messages"
 msgstr "Otvoriť záložku pre správy serveru"
 
-#: src/fe-gtk/setup.c:162
+#: src/fe-gtk/setup.c:164
 msgid "Open tab for server notices"
 msgstr "Otvoriť záložku pre oznamy serveru"
 
-#: src/fe-gtk/setup.c:163
+#: src/fe-gtk/setup.c:165
 msgid "Pop new tabs to front"
 msgstr "Posunúť nové záložky dopredu"
 
-#: src/fe-gtk/setup.c:164
+#: src/fe-gtk/setup.c:166
 msgid "Shorten tabs to:"
 msgstr "Skrátiť záložky na:"
 
-#: src/fe-gtk/setup.c:164
+#: src/fe-gtk/setup.c:166
 msgid "letters."
 msgstr "znakov."
 
-#: src/fe-gtk/setup.c:170
+#: src/fe-gtk/setup.c:172
 msgid "Download files to:"
 msgstr "Prijímať súbory do:"
 
-#: src/fe-gtk/setup.c:171
+#: src/fe-gtk/setup.c:173
 msgid "Move completed files to:"
 msgstr "Presunúť dokončené súbory do:"
 
-#: src/fe-gtk/setup.c:172
+#: src/fe-gtk/setup.c:174
 msgid "DCC IP address:"
 msgstr "IP adresa DCC:"
 
-#: src/fe-gtk/setup.c:173
+#: src/fe-gtk/setup.c:175
 msgid "Claim you are at this address when offering files."
 msgstr "Tvrdiť že ste na tejto adrese pri ponúkaní súborov."
 
-#: src/fe-gtk/setup.c:174
+#: src/fe-gtk/setup.c:176
 msgid "First DCC send port:"
 msgstr "Prvý port DCC pre odosielanie:"
 
-#: src/fe-gtk/setup.c:175
+#: src/fe-gtk/setup.c:177
 msgid "Last DCC send port:"
 msgstr "Posledný port DCC pre odosielanie:"
 
-#: src/fe-gtk/setup.c:176
+#: src/fe-gtk/setup.c:178
 msgid "(Leave ports at zero for full range)."
 msgstr "(Zadajte nuly pre plný rozsah)."
 
-#: src/fe-gtk/setup.c:177
+#: src/fe-gtk/setup.c:179
 msgid "Auto open DCC send list"
 msgstr "Automaticky otvoriť okno DCC posielania"
 
-#: src/fe-gtk/setup.c:178
+#: src/fe-gtk/setup.c:180
 msgid "Convert spaces to underscore"
 msgstr "Nahradiť medzery za podtrhovníky"
 
-#: src/fe-gtk/setup.c:179
+#: src/fe-gtk/setup.c:181
 msgid "In filenames, before sending"
 msgstr "V súboroch, pred odoslaním"
 
-#: src/fe-gtk/setup.c:180
+#: src/fe-gtk/setup.c:182
 msgid "Auto open DCC chat list"
 msgstr "Automaticky otvoriť zoznam DCC rozhovorov"
 
-#: src/fe-gtk/setup.c:181
+#: src/fe-gtk/setup.c:183
 msgid "Save nickname in filenames"
 msgstr "Uložiť prezývku v súboroch"
 
-#: src/fe-gtk/setup.c:182
+#: src/fe-gtk/setup.c:184
 msgid "Auto open DCC receive list"
 msgstr "Automaticky otvoriť zoznam DCC príjmov"
 
-#: src/fe-gtk/setup.c:183
+#: src/fe-gtk/setup.c:185
 msgid "Get my IP from IRC server"
 msgstr "Získať IP adresu z IRC serveru"
 
-#: src/fe-gtk/setup.c:184
+#: src/fe-gtk/setup.c:186
 msgid "/WHOIS yourself to find your real address. Use this if you have a 192.168.*.* address!"
 msgstr "Použite /WHOIS na seba pre získanie vašej reálnej adresy. Použite toto ak máte adresu v tvare 192.168.*.* !"
 
-#: src/fe-gtk/setup.c:185
+#: src/fe-gtk/setup.c:187
 msgid "Max. send CPS:"
 msgstr "Max. CPS pri odosielaní:"
 
-#: src/fe-gtk/setup.c:186 src/fe-gtk/setup.c:188
+#: src/fe-gtk/setup.c:188 src/fe-gtk/setup.c:190
 msgid "Max. speed for one transfer"
 msgstr "Max. rýchlosť jedného prenosu"
 
-#: src/fe-gtk/setup.c:187
+#: src/fe-gtk/setup.c:189
 msgid "Max. receive CPS:"
 msgstr "Max. CPS pri prijímaní:"
 
-#: src/fe-gtk/setup.c:189
+#: src/fe-gtk/setup.c:191
 msgid "Max. global send CPS:"
 msgstr "Max. celkové CPS pre odosielanie:"
 
-#: src/fe-gtk/setup.c:190 src/fe-gtk/setup.c:192
+#: src/fe-gtk/setup.c:192 src/fe-gtk/setup.c:194
 msgid "Max. speed for all traffic"
 msgstr "Max. rýchlosť pre celkovú premávku"
 
-#: src/fe-gtk/setup.c:191
+#: src/fe-gtk/setup.c:193
 msgid "Max. global receive CPS:"
 msgstr "Max. celkové CPS pre prijímanie:"
 
-#: src/fe-gtk/setup.c:193
+#: src/fe-gtk/setup.c:195
 msgid "(Leave at zero for full speed file transfers)."
 msgstr "(Zadajte nuly pre plnú rýchlosť)."
 
-#: src/fe-gtk/setup.c:199
+#: src/fe-gtk/setup.c:201
 msgid "Default quit message:"
 msgstr "Implicitná správa pri odpojení sa:"
 
-#: src/fe-gtk/setup.c:200
+#: src/fe-gtk/setup.c:202
 msgid "Default part message:"
 msgstr "Implicitná správa opustenia:"
 
-#: src/fe-gtk/setup.c:201
+#: src/fe-gtk/setup.c:203
 msgid "Default away message:"
 msgstr "Implicitná AWAY správa:"
 
-#: src/fe-gtk/setup.c:203
+#: src/fe-gtk/setup.c:205
 msgid "(Can be a text file relative to ~/.xchat2/)."
 msgstr "(Môže byť textový súbor relatívny k ~/.xchat2/)."
 
-#: src/fe-gtk/setup.c:205
+#: src/fe-gtk/setup.c:207
 msgid "(Can be a text file relative to config dir)."
 msgstr "(Môže byť textový súbor relatívny k adresáru s nastaveniami)."
 
-#: src/fe-gtk/setup.c:207
+#: src/fe-gtk/setup.c:209
 msgid "Extra words to highlight on:"
 msgstr "Zvýrazňované slová:"
 
-#: src/fe-gtk/setup.c:208
+#: src/fe-gtk/setup.c:210
 msgid "(Separate multiple words with commas)."
 msgstr "(Oddelte slová čiarkami)."
 
-#: src/fe-gtk/setup.c:209
+#: src/fe-gtk/setup.c:211
 msgid "Show away once"
 msgstr "Zobrazovať AWAY iba raz"
 
-#: src/fe-gtk/setup.c:209
+#: src/fe-gtk/setup.c:211
 msgid "Show identical away messages only once"
 msgstr "Rovnaké správy zobraziť len raz"
 
-#: src/fe-gtk/setup.c:210
+#: src/fe-gtk/setup.c:212
 msgid "Beep on private messages"
 msgstr "Zazvoniť pri súkromnej správe"
 
-#: src/fe-gtk/setup.c:211
+#: src/fe-gtk/setup.c:213
 msgid "Automatically unmark away"
 msgstr "Automaticky zrušiť AWAY"
 
-#: src/fe-gtk/setup.c:211
+#: src/fe-gtk/setup.c:213
 msgid "Unmark yourself as away before sending messages"
 msgstr "Zrušiť AWAY pred odoslaním správy"
 
-#: src/fe-gtk/setup.c:212
+#: src/fe-gtk/setup.c:214
 msgid "Beep on channel messages"
 msgstr "Zazvoniť pri správach kanála"
 
-#: src/fe-gtk/setup.c:213
+#: src/fe-gtk/setup.c:215
 msgid "Announce away messages"
 msgstr "Oznamovať AWAY správy"
 
-#: src/fe-gtk/setup.c:213
+#: src/fe-gtk/setup.c:215
 msgid "Announce your away messages to all channels"
 msgstr "Zaslať AWAY správu na všetky kanály"
 
-#: src/fe-gtk/setup.c:214
+#: src/fe-gtk/setup.c:216
 msgid "Beep on highlighted messages"
 msgstr "Zazvoniť pri zvýraznenej správe"
 
-#: src/fe-gtk/setup.c:215
+#: src/fe-gtk/setup.c:217
 msgid "Display MODEs in raw form"
 msgstr "Zobrazovať zmeny MODE v pôvodnom tvare"
 
-#: src/fe-gtk/setup.c:216
+#: src/fe-gtk/setup.c:218
 msgid "Whois on notify"
 msgstr "WHOIS pri upozornení"
 
-#: src/fe-gtk/setup.c:216
+#: src/fe-gtk/setup.c:218
 msgid "Sends a /WHOIS when a user comes online in your notify list"
 msgstr "Odošle /WHOIS keď sa prihlási niekto koho máte v zozname upozornení"
 
-#: src/fe-gtk/setup.c:217
+#: src/fe-gtk/setup.c:219
 msgid "Hide join/part messages"
 msgstr "Skryť prihlásenia a odchody z kanálov"
 
-#: src/fe-gtk/setup.c:217
+#: src/fe-gtk/setup.c:219
 msgid "Hide channel join/part messages by default"
 msgstr "Implicitne skryť prihlásenia a odchody z kanálov"
 
-#: src/fe-gtk/setup.c:218
+#: src/fe-gtk/setup.c:220
 msgid "Auto reconnect delay:"
 msgstr "Oneskorenie automatického znovupripojenia:"
 
-#: src/fe-gtk/setup.c:224
+#: src/fe-gtk/setup.c:226
 msgid "Log filename mask:"
 msgstr "Maska mena súboru logu:"
 
-#: src/fe-gtk/setup.c:225
+#: src/fe-gtk/setup.c:227
 #, c-format
 msgid "(%s=Server %c=Channel %n=Network)."
 msgstr "(%s=Server %c=Kanál %n=Sieť)."
 
-#: src/fe-gtk/setup.c:226
+#: src/fe-gtk/setup.c:228
 msgid "Log timestamp format:"
 msgstr "Formát zobrazovania času:"
 
-#: src/fe-gtk/setup.c:227
+#: src/fe-gtk/setup.c:229
 msgid "(See strftime manpage for details)."
 msgstr "(Detaily nájdete v manuálovej stránke pre strftime)."
 
-#: src/fe-gtk/setup.c:228
+#: src/fe-gtk/setup.c:230
 msgid "Enable logging of conversations"
 msgstr "Zapnúť ukladanie rozhovorov do log súborov"
 
-#: src/fe-gtk/setup.c:229
+#: src/fe-gtk/setup.c:231
 msgid "Insert timestamps in logs"
 msgstr "Zaznamenať čas v logoch"
 
-#: src/fe-gtk/setup.c:235
+#: src/fe-gtk/setup.c:237
 msgid "(Disabled)"
 msgstr "(Zakázané)"
 
-#: src/fe-gtk/setup.c:236
+#: src/fe-gtk/setup.c:238
 msgid "Wingate"
 msgstr "Wingate"
 
-#: src/fe-gtk/setup.c:237
+#: src/fe-gtk/setup.c:239
 msgid "Socks4"
 msgstr "Socks4"
 
-#: src/fe-gtk/setup.c:238
+#: src/fe-gtk/setup.c:240
 msgid "Socks5"
 msgstr "Socks5"
 
-#: src/fe-gtk/setup.c:239
+#: src/fe-gtk/setup.c:241
 msgid "HTTP"
 msgstr "HTTP"
 
-#: src/fe-gtk/setup.c:245
+#: src/fe-gtk/setup.c:247
 msgid "Address to bind to:"
 msgstr "Použiť adresu:"
 
-#: src/fe-gtk/setup.c:246
+#: src/fe-gtk/setup.c:248
 msgid "(Only useful for computers with multiple addresses)."
 msgstr "(Len pre počítače, ktoré majú viac adries)."
 
-#: src/fe-gtk/setup.c:247
+#: src/fe-gtk/setup.c:249
 msgid "Proxy server:"
 msgstr "Server proxy:"
 
-#: src/fe-gtk/setup.c:248
+#: src/fe-gtk/setup.c:250
 msgid "Proxy port:"
 msgstr "Port proxy:"
 
-#: src/fe-gtk/setup.c:249
+#: src/fe-gtk/setup.c:251
 msgid "Proxy type:"
 msgstr "Typ proxy:"
 
-#: src/fe-gtk/setup.c:435
+#: src/fe-gtk/setup.c:441
 msgid "Select an Image File"
 msgstr "Vyberte obrazový súbor"
 
-#: src/fe-gtk/setup.c:462
+#: src/fe-gtk/setup.c:468
 msgid "Select font"
 msgstr "Vyberte písmo"
 
-#: src/fe-gtk/setup.c:519
+#: src/fe-gtk/setup.c:525
 msgid "Browse..."
 msgstr "Prehliadať..."
 
-#: src/fe-gtk/setup.c:639
+#: src/fe-gtk/setup.c:647
 msgid "Select color"
 msgstr "Vyberte farbu"
 
-#: src/fe-gtk/setup.c:704
+#: src/fe-gtk/setup.c:712
 msgid "mIRC colors:"
 msgstr "Farby mIRC:"
 
-#: src/fe-gtk/setup.c:712
+#: src/fe-gtk/setup.c:720
 msgid "Foreground:"
 msgstr "Popredie:"
 
-#: src/fe-gtk/setup.c:713
+#: src/fe-gtk/setup.c:721
 msgid "Background:"
 msgstr "Pozadie:"
 
-#: src/fe-gtk/setup.c:715
+#: src/fe-gtk/setup.c:723
 msgid "Mark fore:"
 msgstr "Popredie označeného:"
 
-#: src/fe-gtk/setup.c:716
+#: src/fe-gtk/setup.c:724
 msgid "Mark back:"
 msgstr "Pozadie označeného:"
 
-#: src/fe-gtk/setup.c:718
+#: src/fe-gtk/setup.c:726
 msgid "New Data:"
 msgstr "Nové Data:"
 
-#: src/fe-gtk/setup.c:719
+#: src/fe-gtk/setup.c:727
 msgid "New Message:"
 msgstr "Nová správa:"
 
-#: src/fe-gtk/setup.c:720
+#: src/fe-gtk/setup.c:728
 msgid "Highlight:"
 msgstr "Zvýraznenie:"
 
-#: src/fe-gtk/setup.c:755
+#: src/fe-gtk/setup.c:729
+msgid "Away User:"
+msgstr "Neprítomný používateľ:"
+
+#: src/fe-gtk/setup.c:764
 msgid "Interface"
 msgstr "Používateľské prostredie"
 
-#: src/fe-gtk/setup.c:756
+#: src/fe-gtk/setup.c:765
 msgid "Text box"
 msgstr "Textové pole"
 
-#: src/fe-gtk/setup.c:757
+#: src/fe-gtk/setup.c:766
 msgid "Input box"
 msgstr "Vstupné pole"
 
-#: src/fe-gtk/setup.c:758
+#: src/fe-gtk/setup.c:767
 msgid "User list"
 msgstr "Zoznam používateľov"
 
-#: src/fe-gtk/setup.c:760
+#: src/fe-gtk/setup.c:769
 msgid "Colors"
 msgstr "Farby"
 
-#: src/fe-gtk/setup.c:762
+#: src/fe-gtk/setup.c:771
 msgid "Chatting"
 msgstr "Rozhovor"
 
-#: src/fe-gtk/setup.c:763
+#: src/fe-gtk/setup.c:772
 msgid "General"
 msgstr "Všeobecné"
 
-#: src/fe-gtk/setup.c:764
+#: src/fe-gtk/setup.c:773
 msgid "Logging"
 msgstr "Logovanie"
 
-#: src/fe-gtk/setup.c:766
+#: src/fe-gtk/setup.c:775
 msgid "Network"
 msgstr "Sieť"
 
-#: src/fe-gtk/setup.c:767
+#: src/fe-gtk/setup.c:776
 msgid "Network setup"
 msgstr "Nastavenie siete"
 
-#: src/fe-gtk/setup.c:768
+#: src/fe-gtk/setup.c:777
 msgid "File transfers"
 msgstr "Prenos súborov"
 
-#: src/fe-gtk/setup.c:873
+#: src/fe-gtk/setup.c:882
 msgid "Categories"
 msgstr "Kategórie"
 
-#: src/fe-gtk/setup.c:989
+#: src/fe-gtk/setup.c:1005
 msgid "Some settings were changed that require a restart to take full effect."
 msgstr "Boli vykonané zmeny, ktoré vyžadujú spustiť aplikáciu znovu, aby sa použili."
 
-#: src/fe-gtk/setup.c:1016
+#: src/fe-gtk/setup.c:1032
 msgid "X-Chat: Preferences"
 msgstr "X-Chat: Nastavenia"
 
@@ -4564,35 +4650,35 @@ msgstr "Tento signál predal iba %d argumentov, $%d je neplatné"
 msgid "Print Texts File"
 msgstr "Vytlačiť súbor textov"
 
-#: src/fe-gtk/textgui.c:376
+#: src/fe-gtk/textgui.c:378
 msgid "Event"
 msgstr "Udalosť"
 
-#: src/fe-gtk/textgui.c:376
+#: src/fe-gtk/textgui.c:380
 msgid "Sound"
 msgstr "Zvuky"
 
-#: src/fe-gtk/textgui.c:377
+#: src/fe-gtk/textgui.c:382
 msgid "$ Number"
 msgstr "Číslo $"
 
-#: src/fe-gtk/textgui.c:386
+#: src/fe-gtk/textgui.c:392
 msgid "Edit Events"
 msgstr "Upraviť udalosti"
 
-#: src/fe-gtk/textgui.c:424
+#: src/fe-gtk/textgui.c:430
 msgid "Sound file: "
 msgstr "Zvukový súbor:"
 
-#: src/fe-gtk/textgui.c:459
+#: src/fe-gtk/textgui.c:465
 msgid "Save As"
 msgstr "Uložiť ako"
 
-#: src/fe-gtk/textgui.c:464
+#: src/fe-gtk/textgui.c:470
 msgid "Load From"
 msgstr "Načítať z"
 
-#: src/fe-gtk/textgui.c:469
+#: src/fe-gtk/textgui.c:475
 msgid "Test All"
 msgstr "Testovať všetky"
 
@@ -4628,1744 +4714,3 @@ msgstr "Uložiť zoznam do súboru"
 #, c-format
 msgid "%d ops, %d total"
 msgstr "%d chanop, %d celk."
-
-#~ msgid ""
-#~ "The default download directory is your\n"
-#~ "home dir, you should change this at some stage."
-#~ msgstr ""
-#~ "Ako štandardný priečinok pre sťahovanie je nastavený\n"
-#~ "váš domovský priečinok, asi by ste to mali zmeniť."
-
-#~ msgid "/LISTDLL, Lists all currenly loaded plugins\n"
-#~ msgstr "/LISTDLL, vypíše všetky momentálne načítané moduly\n"
-
-#~ msgid "/LOADDLL <file>, loads a plugin\n"
-#~ msgstr "/LOADDLL <súbor>, načíta modul\n"
-
-#~ msgid "/MKICKB, Sets a ban of *@* and mass kicks everyone except you in the current channel (needs chanop)\n"
-#~ msgstr "/MKICKB, nastaví zákaz *@* a hromadne vykopne každého okrem vás z aktuálneho kanála (vyžaduje chanop)\n"
-
-#~ msgid "/PKILL <name>, kills the script of the given name\n"
-#~ msgstr "/PKILL <meno>, zabije skript s daným menom\n"
-
-#~ msgid "/PLIST, lists the current python scripts\n"
-#~ msgstr "/PLIST, vypíše zoznam aktuálnych skriptov python\n"
-
-#~ msgid "/PLOAD loads a python script\n"
-#~ msgstr "/PLOAD načíta skript python\n"
-
-#~ msgid "/RMDLL <dll name>, unloads a plugin\n"
-#~ msgstr "/RMDLL <meno dll>, uvoľní modul\n"
-
-#~ msgid "/SCPINFO, Lists some information about current Perl bindings\n"
-#~ msgstr "/SCPINFO, vypíše niektoré informácie o aktuálnom napojení Perl\n"
-
-#~ msgid "/TIMER <seconds> <command>\n"
-#~ msgstr "/TIMER <sekundy> <príkaz>\n"
-
-#~ msgid "/UNLOADALL, Unloads all perl scripts\n"
-#~ msgstr "/UNLOADALL, uvoľní všetky skripty Perl\n"
-
-#~ msgid "Error compiling script\n"
-#~ msgstr "Chyba pri preklade skriptu\n"
-
-#~ msgid "Error Loading file\n"
-#~ msgstr "Chyba pri načítaní súboru\n"
-
-#~ msgid "Perl scripting not available in this compilation.\n"
-#~ msgstr "Skripty Perl nie sú v tejto kompilácii dostupné.\n"
-
-#~ msgid "Registered Scripts:\n"
-#~ msgstr "Registrované skripty:\n"
-
-#~ msgid "Inbound Handlers:\n"
-#~ msgstr "Vnútorná obsluha:\n"
-
-#~ msgid "Command Handlers:\n"
-#~ msgstr "Obsluha príkazov:\n"
-
-#~ msgid "Print Handlers:\n"
-#~ msgstr "Obsluha tlače:\n"
-
-#~ msgid "port"
-#~ msgstr "port"
-
-#~ msgid "{to|from}"
-#~ msgstr "{od|do}"
-
-#~ msgid "DCC type"
-#~ msgstr "Typ DCC"
-
-#~ msgid "Priv Yes/No"
-#~ msgstr "Súkr. Áno/Nie"
-
-#~ msgid "Noti Yes/No"
-#~ msgstr "Upoz. Áno/Nie"
-
-#~ msgid "Chan Yes/No"
-#~ msgstr "Kan. Áno/Nie"
-
-#~ msgid "Ctcp Yes/No"
-#~ msgstr "Ctcp Áno/Nie"
-
-#~ msgid "Invi Yes/No"
-#~ msgstr "Pozv. Áno/Nie"
-
-#~ msgid "Unig Yes/No"
-#~ msgstr "Zruš. ig. Áno/Nie"
-
-#~ msgid "Number of messages"
-#~ msgstr "Počet správ"
-
-#~ msgid "Bytes in mailbox"
-#~ msgstr "Bajtov v poštovej schránke"
-
-#~ msgid "-%C10-%C11-%O$tDCC CHAT failed. Connection to $1 %C14[%O$2:$3%C14]%O lost."
-#~ msgstr "-%C10-%C11-%O$tDCC CHAT zlyhalo. Spojenie s $1 %C14[%O$2:$3%C14]%O stratené."
-
-#~ msgid "-%C10-%C11-%O$tDCC RECV $1 ($2) failed. Connection to $3 lost."
-#~ msgstr "-%C10-%C11-%O$tDCC RECV $1 ($2) zlyhalo. Spojenie s $3 stratené."
-
-#~ msgid " $1 $2  $3  $4  $5  $6  $7"
-#~ msgstr " $1 $2  $3  $4  $5  $6  $7"
-
-#~ msgid "-%C10-%C11-%O$tContents of packet: \"$1%O\"."
-#~ msgstr "-%C10-%C11-%O$tObsah paketu: \"$1%O\"."
-
-#~ msgid "-%C3-%C9-%O$tYou have new mail ($1 messages, $2 bytes total)."
-#~ msgstr "-%C3-%C9-%O$tMáte novú poštu ($1 správ, $2 bajtov)."
-
-#~ msgid ""
-#~ "NAME SUB\n"
-#~ "CMD Direct Client-To-Client\n"
-#~ "\n"
-#~ "NAME Send File\n"
-#~ "CMD /dcc send %s\n"
-#~ "\n"
-#~ "NAME Offer Chat\n"
-#~ "CMD /dcc chat %s\n"
-#~ "\n"
-#~ "NAME Abort Chat\n"
-#~ "CMD /dcc close chat %s\n"
-#~ "\n"
-#~ "NAME ENDSUB\n"
-#~ "CMD \n"
-#~ "\n"
-#~ "NAME SUB\n"
-#~ "CMD CTCP\n"
-#~ "\n"
-#~ "NAME Version\n"
-#~ "CMD /ctcp %s VERSION\n"
-#~ "\n"
-#~ "NAME Userinfo\n"
-#~ "CMD /ctcp %s USERINFO\n"
-#~ "\n"
-#~ "NAME Clientinfo\n"
-#~ "CMD /ctcp %s CLIENTINFO\n"
-#~ "\n"
-#~ "NAME Ping\n"
-#~ "CMD /ping %s\n"
-#~ "\n"
-#~ "NAME Time\n"
-#~ "CMD /ctcp %s TIME\n"
-#~ "\n"
-#~ "NAME Finger\n"
-#~ "CMD /ctcp %s FINGER\n"
-#~ "\n"
-#~ "NAME XDCC List\n"
-#~ "CMD /ctcp %s XDCC LIST\n"
-#~ "\n"
-#~ "NAME CDCC List\n"
-#~ "CMD /ctcp %s CDCC LIST\n"
-#~ "\n"
-#~ "NAME ENDSUB\n"
-#~ "CMD \n"
-#~ "\n"
-#~ "NAME SUB\n"
-#~ "CMD Oper\n"
-#~ "\n"
-#~ "NAME Kill this user\n"
-#~ "CMD /quote KILL %s :die!\n"
-#~ "\n"
-#~ "NAME ENDSUB\n"
-#~ "CMD \n"
-#~ "\n"
-#~ "NAME SUB\n"
-#~ "CMD Mode\n"
-#~ "\n"
-#~ "NAME Give Voice\n"
-#~ "CMD /voice %s\n"
-#~ "\n"
-#~ "NAME Take Voice\n"
-#~ "CMD /devoice %s\n"
-#~ "NAME SEP\n"
-#~ "CMD \n"
-#~ "\n"
-#~ "NAME Give Ops\n"
-#~ "CMD /op %s\n"
-#~ "\n"
-#~ "NAME Take Ops\n"
-#~ "CMD /deop %s\n"
-#~ "\n"
-#~ "NAME ENDSUB\n"
-#~ "CMD \n"
-#~ "\n"
-#~ "NAME SUB\n"
-#~ "CMD Ignore\n"
-#~ "\n"
-#~ "NAME Ignore User\n"
-#~ "CMD /ignore %s!*@* ALL\n"
-#~ "\n"
-#~ "NAME UnIgnore User\n"
-#~ "CMD /unignore %s!*@*\n"
-#~ "\n"
-#~ "NAME ENDSUB\n"
-#~ "CMD \n"
-#~ "\n"
-#~ "NAME SUB\n"
-#~ "CMD Kick/Ban\n"
-#~ "\n"
-#~ "NAME Kick\n"
-#~ "CMD /kick %s\n"
-#~ "\n"
-#~ "NAME Ban\n"
-#~ "CMD /ban %s\n"
-#~ "\n"
-#~ "NAME SEP\n"
-#~ "CMD \n"
-#~ "\n"
-#~ "NAME Ban *!*@*.host\n"
-#~ "CMD /ban %s 0\n"
-#~ "\n"
-#~ "NAME Ban *!*@domain\n"
-#~ "CMD /ban %s 1\n"
-#~ "\n"
-#~ "NAME Ban *!*user@*.host\n"
-#~ "CMD /ban %s 2\n"
-#~ "\n"
-#~ "NAME Ban *!*user@domain\n"
-#~ "CMD /ban %s 3\n"
-#~ "\n"
-#~ "NAME SEP\n"
-#~ "CMD \n"
-#~ "\n"
-#~ "NAME KickBan *!*@*.host\n"
-#~ "CMD /kickban %s 0\n"
-#~ "\n"
-#~ "NAME KickBan *!*@domain\n"
-#~ "CMD /kickban %s 1\n"
-#~ "\n"
-#~ "NAME KickBan *!*user@*.host\n"
-#~ "CMD /kickban %s 2\n"
-#~ "\n"
-#~ "NAME KickBan *!*user@domain\n"
-#~ "CMD /kickban %s 3\n"
-#~ "\n"
-#~ "NAME ENDSUB\n"
-#~ "CMD \n"
-#~ "\n"
-#~ "NAME SUB\n"
-#~ "CMD Info\n"
-#~ "\n"
-#~ "NAME Who\n"
-#~ "CMD /quote WHO %s\n"
-#~ "\n"
-#~ "NAME Whois\n"
-#~ "CMD /quote WHOIS %s\n"
-#~ "\n"
-#~ "NAME DNS Lookup\n"
-#~ "CMD /dns %s\n"
-#~ "\n"
-#~ "NAME Trace\n"
-#~ "CMD /quote TRACE %s\n"
-#~ "\n"
-#~ "NAME UserHost\n"
-#~ "CMD /quote USERHOST %s\n"
-#~ "\n"
-#~ "NAME ENDSUB\n"
-#~ "CMD \n"
-#~ "\n"
-#~ "NAME SUB\n"
-#~ "CMD External\n"
-#~ "\n"
-#~ "NAME Traceroute\n"
-#~ "CMD !rxvt -e /bin/sh -c \"/usr/sbin/traceroute %h ; sleep 30\"\n"
-#~ "\n"
-#~ "NAME Ping\n"
-#~ "CMD !rxvt -e /bin/sh -c \"ping -c 4 %h ; sleep 30\"\n"
-#~ "\n"
-#~ "NAME Telnet\n"
-#~ "CMD !rxvt -e telnet %h\n"
-#~ "\n"
-#~ "NAME ENDSUB\n"
-#~ "CMD \n"
-#~ "\n"
-#~ "NAME Open Query\n"
-#~ "CMD /query %s\n"
-#~ "\n"
-#~ msgstr ""
-#~ "NAME SUB\n"
-#~ "CMD Direct Client-To-Client\n"
-#~ "\n"
-#~ "NAME Send File\n"
-#~ "CMD /dcc send %s\n"
-#~ "\n"
-#~ "NAME Offer Chat\n"
-#~ "CMD /dcc chat %s\n"
-#~ "\n"
-#~ "NAME Abort Chat\n"
-#~ "CMD /dcc close chat %s\n"
-#~ "\n"
-#~ "NAME ENDSUB\n"
-#~ "CMD \n"
-#~ "\n"
-#~ "NAME SUB\n"
-#~ "CMD CTCP\n"
-#~ "\n"
-#~ "NAME Version\n"
-#~ "CMD /ctcp %s VERSION\n"
-#~ "\n"
-#~ "NAME Userinfo\n"
-#~ "CMD /ctcp %s USERINFO\n"
-#~ "\n"
-#~ "NAME Clientinfo\n"
-#~ "CMD /ctcp %s CLIENTINFO\n"
-#~ "\n"
-#~ "NAME Ping\n"
-#~ "CMD /ping %s\n"
-#~ "\n"
-#~ "NAME Time\n"
-#~ "CMD /ctcp %s TIME\n"
-#~ "\n"
-#~ "NAME Finger\n"
-#~ "CMD /ctcp %s FINGER\n"
-#~ "\n"
-#~ "NAME XDCC List\n"
-#~ "CMD /ctcp %s XDCC LIST\n"
-#~ "\n"
-#~ "NAME CDCC List\n"
-#~ "CMD /ctcp %s CDCC LIST\n"
-#~ "\n"
-#~ "NAME ENDSUB\n"
-#~ "CMD \n"
-#~ "\n"
-#~ "NAME SUB\n"
-#~ "CMD Oper\n"
-#~ "\n"
-#~ "NAME Kill this user\n"
-#~ "CMD /quote KILL %s :die!\n"
-#~ "\n"
-#~ "NAME ENDSUB\n"
-#~ "CMD \n"
-#~ "\n"
-#~ "NAME SUB\n"
-#~ "CMD Mode\n"
-#~ "\n"
-#~ "NAME Give Voice\n"
-#~ "CMD /voice %s\n"
-#~ "\n"
-#~ "NAME Take Voice\n"
-#~ "CMD /devoice %s\n"
-#~ "NAME SEP\n"
-#~ "CMD \n"
-#~ "\n"
-#~ "NAME Give Ops\n"
-#~ "CMD /op %s\n"
-#~ "\n"
-#~ "NAME Take Ops\n"
-#~ "CMD /deop %s\n"
-#~ "\n"
-#~ "NAME ENDSUB\n"
-#~ "CMD \n"
-#~ "\n"
-#~ "NAME SUB\n"
-#~ "CMD Ignore\n"
-#~ "\n"
-#~ "NAME Ignore User\n"
-#~ "CMD /ignore %s!*@* ALL\n"
-#~ "\n"
-#~ "NAME UnIgnore User\n"
-#~ "CMD /unignore %s!*@*\n"
-#~ "\n"
-#~ "NAME ENDSUB\n"
-#~ "CMD \n"
-#~ "\n"
-#~ "NAME SUB\n"
-#~ "CMD Kick/Ban\n"
-#~ "\n"
-#~ "NAME Kick\n"
-#~ "CMD /kick %s\n"
-#~ "\n"
-#~ "NAME Ban\n"
-#~ "CMD /ban %s\n"
-#~ "\n"
-#~ "NAME SEP\n"
-#~ "CMD \n"
-#~ "\n"
-#~ "NAME Ban *!*@*.host\n"
-#~ "CMD /ban %s 0\n"
-#~ "\n"
-#~ "NAME Ban *!*@domain\n"
-#~ "CMD /ban %s 1\n"
-#~ "\n"
-#~ "NAME Ban *!*user@*.host\n"
-#~ "CMD /ban %s 2\n"
-#~ "\n"
-#~ "NAME Ban *!*user@domain\n"
-#~ "CMD /ban %s 3\n"
-#~ "\n"
-#~ "NAME SEP\n"
-#~ "CMD \n"
-#~ "\n"
-#~ "NAME KickBan *!*@*.host\n"
-#~ "CMD /kickban %s 0\n"
-#~ "\n"
-#~ "NAME KickBan *!*@domain\n"
-#~ "CMD /kickban %s 1\n"
-#~ "\n"
-#~ "NAME KickBan *!*user@*.host\n"
-#~ "CMD /kickban %s 2\n"
-#~ "\n"
-#~ "NAME KickBan *!*user@domain\n"
-#~ "CMD /kickban %s 3\n"
-#~ "\n"
-#~ "NAME ENDSUB\n"
-#~ "CMD \n"
-#~ "\n"
-#~ "NAME SUB\n"
-#~ "CMD Info\n"
-#~ "\n"
-#~ "NAME Who\n"
-#~ "CMD /quote WHO %s\n"
-#~ "\n"
-#~ "NAME Whois\n"
-#~ "CMD /quote WHOIS %s\n"
-#~ "\n"
-#~ "NAME DNS Lookup\n"
-#~ "CMD /dns %s\n"
-#~ "\n"
-#~ "NAME Trace\n"
-#~ "CMD /quote TRACE %s\n"
-#~ "\n"
-#~ "NAME UserHost\n"
-#~ "CMD /quote USERHOST %s\n"
-#~ "\n"
-#~ "NAME ENDSUB\n"
-#~ "CMD \n"
-#~ "\n"
-#~ "NAME SUB\n"
-#~ "CMD External\n"
-#~ "\n"
-#~ "NAME Traceroute\n"
-#~ "CMD !rxvt -e /bin/sh -c \"/usr/sbin/traceroute %h ; sleep 30\"\n"
-#~ "\n"
-#~ "NAME Ping\n"
-#~ "CMD !rxvt -e /bin/sh -c \"ping -c 4 %h ; sleep 30\"\n"
-#~ "\n"
-#~ "NAME Telnet\n"
-#~ "CMD !rxvt -e telnet %h\n"
-#~ "\n"
-#~ "NAME ENDSUB\n"
-#~ "CMD \n"
-#~ "\n"
-#~ "NAME Open Query\n"
-#~ "CMD /query %s\n"
-#~ "\n"
-
-#~ msgid ""
-#~ "NAME Op\n"
-#~ "CMD /op %a\n"
-#~ "\n"
-#~ "NAME DeOp\n"
-#~ "CMD /deop %a\n"
-#~ "\n"
-#~ "NAME Ban\n"
-#~ "CMD /ban %s\n"
-#~ "\n"
-#~ "NAME Kick\n"
-#~ "CMD /kick %s\n"
-#~ "\n"
-#~ "NAME Sendfile\n"
-#~ "CMD /dcc send %s\n"
-#~ "\n"
-#~ "NAME Dialog\n"
-#~ "CMD /query %s\n"
-#~ "\n"
-#~ msgstr ""
-#~ "NAME Op\n"
-#~ "CMD /op %a\n"
-#~ "\n"
-#~ "NAME DeOp\n"
-#~ "CMD /deop %a\n"
-#~ "\n"
-#~ "NAME Ban\n"
-#~ "CMD /ban %s\n"
-#~ "\n"
-#~ "NAME Kick\n"
-#~ "CMD /kick %s\n"
-#~ "\n"
-#~ "NAME Sendfile\n"
-#~ "CMD /dcc send %s\n"
-#~ "\n"
-#~ "NAME Dialog\n"
-#~ "CMD /query %s\n"
-#~ "\n"
-
-#~ msgid ""
-#~ "NAME Whois\n"
-#~ "CMD /whois %s\n"
-#~ "\n"
-#~ "NAME Send\n"
-#~ "CMD /dcc send %s\n"
-#~ "\n"
-#~ "NAME Chat\n"
-#~ "CMD /dcc chat %s\n"
-#~ "\n"
-#~ "NAME Ping\n"
-#~ "CMD /ping %s\n"
-#~ "\n"
-#~ "NAME Clear\n"
-#~ "CMD /clear\n"
-#~ "\n"
-#~ msgstr ""
-#~ "NAME Whois\n"
-#~ "CMD /whois %s\n"
-#~ "\n"
-#~ "NAME Send\n"
-#~ "CMD /dcc send %s\n"
-#~ "\n"
-#~ "NAME Chat\n"
-#~ "CMD /dcc chat %s\n"
-#~ "\n"
-#~ "NAME Ping\n"
-#~ "CMD /ping %s\n"
-#~ "\n"
-#~ "NAME Clear\n"
-#~ "CMD /clear\n"
-#~ "\n"
-
-#~ msgid ""
-#~ "NAME SUB\n"
-#~ "CMD IRC Stuff\n"
-#~ "\n"
-#~ "NAME Disconnect\n"
-#~ "CMD /discon\n"
-#~ "\n"
-#~ "NAME Reconnect\n"
-#~ "CMD /reconnect\n"
-#~ "\n"
-#~ "NAME Part Channel\n"
-#~ "CMD /part\n"
-#~ "\n"
-#~ "NAME Cycle Channel\n"
-#~ "CMD /cycle\n"
-#~ "\n"
-#~ "NAME Server Map\n"
-#~ "CMD /quote MAP\n"
-#~ "\n"
-#~ "NAME Server Links\n"
-#~ "CMD /quote LINKS\n"
-#~ "\n"
-#~ "NAME Ping Server\n"
-#~ "CMD /ping\n"
-#~ "\n"
-#~ "NAME ENDSUB\n"
-#~ "CMD \n"
-#~ "\n"
-#~ "NAME SUB\n"
-#~ "CMD Connect\n"
-#~ "\n"
-#~ "NAME irc.xchat.org #Linux\n"
-#~ "CMD /servchan irc.xchat.org 6667 #linux\n"
-#~ "\n"
-#~ "NAME Go to EFNet\n"
-#~ "CMD /newserver irc.efnet.net\n"
-#~ "\n"
-#~ "NAME ENDSUB\n"
-#~ "CMD \n"
-#~ "\n"
-#~ "NAME SUB\n"
-#~ "CMD Settings\n"
-#~ "\n"
-#~ "NAME TOGGLE Hide Version\n"
-#~ "CMD hide_version\n"
-#~ "\n"
-#~ "NAME TOGGLE Colored Nicks\n"
-#~ "CMD colorednicks\n"
-#~ "\n"
-#~ "NAME TOGGLE 1.4.x Nick Comp.\n"
-#~ "CMD old_nickcompletion\n"
-#~ "\n"
-#~ "NAME TOGGLE Strip mIRC color\n"
-#~ "CMD stripcolor\n"
-#~ "\n"
-#~ "NAME TOGGLE Filter Beeps\n"
-#~ "CMD filterbeep\n"
-#~ "\n"
-#~ "NAME TOGGLE Raw MODE Display\n"
-#~ "CMD raw_modes\n"
-#~ "\n"
-#~ "NAME TOGGLE Perl Warnings\n"
-#~ "CMD perlwarnings\n"
-#~ "\n"
-#~ "NAME TOGGLE Mail Checker\n"
-#~ "CMD mail_check\n"
-#~ "\n"
-#~ "NAME ENDSUB\n"
-#~ "CMD \n"
-#~ "\n"
-#~ "NAME SUB\n"
-#~ "CMD External\n"
-#~ "\n"
-#~ "NAME Run XMMS\n"
-#~ "CMD !xmms\n"
-#~ "\n"
-#~ "NAME Run RXVT\n"
-#~ "CMD !rxvt\n"
-#~ "\n"
-#~ "NAME ENDSUB\n"
-#~ "CMD \n"
-#~ "\n"
-#~ msgstr ""
-#~ "NAME SUB\n"
-#~ "CMD IRC Stuff\n"
-#~ "\n"
-#~ "NAME Disconnect\n"
-#~ "CMD /discon\n"
-#~ "\n"
-#~ "NAME Reconnect\n"
-#~ "CMD /reconnect\n"
-#~ "\n"
-#~ "NAME Part Channel\n"
-#~ "CMD /part\n"
-#~ "\n"
-#~ "NAME Cycle Channel\n"
-#~ "CMD /cycle\n"
-#~ "\n"
-#~ "NAME Server Map\n"
-#~ "CMD /quote MAP\n"
-#~ "\n"
-#~ "NAME Server Links\n"
-#~ "CMD /quote LINKS\n"
-#~ "\n"
-#~ "NAME Ping Server\n"
-#~ "CMD /ping\n"
-#~ "\n"
-#~ "NAME ENDSUB\n"
-#~ "CMD \n"
-#~ "\n"
-#~ "NAME SUB\n"
-#~ "CMD Connect\n"
-#~ "\n"
-#~ "NAME irc.xchat.org #Linux\n"
-#~ "CMD /servchan irc.xchat.org 6667 #linux\n"
-#~ "\n"
-#~ "NAME Go to EFNet\n"
-#~ "CMD /newserver irc.efnet.net\n"
-#~ "\n"
-#~ "NAME ENDSUB\n"
-#~ "CMD \n"
-#~ "\n"
-#~ "NAME SUB\n"
-#~ "CMD Settings\n"
-#~ "\n"
-#~ "NAME TOGGLE Hide Version\n"
-#~ "CMD hide_version\n"
-#~ "\n"
-#~ "NAME TOGGLE Colored Nicks\n"
-#~ "CMD colorednicks\n"
-#~ "\n"
-#~ "NAME TOGGLE 1.4.x Nick Comp.\n"
-#~ "CMD old_nickcompletion\n"
-#~ "\n"
-#~ "NAME TOGGLE Strip mIRC color\n"
-#~ "CMD stripcolor\n"
-#~ "\n"
-#~ "NAME TOGGLE Filter Beeps\n"
-#~ "CMD filterbeep\n"
-#~ "\n"
-#~ "NAME TOGGLE Raw MODE Display\n"
-#~ "CMD raw_modes\n"
-#~ "\n"
-#~ "NAME TOGGLE Perl Warnings\n"
-#~ "CMD perlwarnings\n"
-#~ "\n"
-#~ "NAME TOGGLE Mail Checker\n"
-#~ "CMD mail_check\n"
-#~ "\n"
-#~ "NAME ENDSUB\n"
-#~ "CMD \n"
-#~ "\n"
-#~ "NAME SUB\n"
-#~ "CMD External\n"
-#~ "\n"
-#~ "NAME Run XMMS\n"
-#~ "CMD !xmms\n"
-#~ "\n"
-#~ "NAME Run RXVT\n"
-#~ "CMD !rxvt\n"
-#~ "\n"
-#~ "NAME ENDSUB\n"
-#~ "CMD \n"
-#~ "\n"
-
-#~ msgid ""
-#~ "NAME SUB\n"
-#~ "CMD Netscape...\n"
-#~ "\n"
-#~ "NAME Open in existing\n"
-#~ "CMD !netscape -remote 'openURL(%s)'\n"
-#~ "\n"
-#~ "NAME Open in new window\n"
-#~ "CMD !netscape -remote 'openURL(%s,new-window)'\n"
-#~ "\n"
-#~ "NAME Run new Netscape\n"
-#~ "CMD !netscape %s\n"
-#~ "\n"
-#~ "NAME ENDSUB\n"
-#~ "CMD \n"
-#~ "\n"
-#~ "NAME SUB\n"
-#~ "CMD Mozilla...\n"
-#~ "\n"
-#~ "NAME Open in existing\n"
-#~ "CMD !mozilla -remote 'openURL(%s)'\n"
-#~ "\n"
-#~ "NAME Open in new window\n"
-#~ "CMD !mozilla -remote 'openURL(%s,new-window)'\n"
-#~ "\n"
-#~ "NAME Run new Mozilla\n"
-#~ "CMD !mozilla %s\n"
-#~ "\n"
-#~ "NAME ENDSUB\n"
-#~ "CMD \n"
-#~ "\n"
-#~ "NAME SUB\n"
-#~ "CMD Galeon...\n"
-#~ "\n"
-#~ "NAME Open in existing\n"
-#~ "CMD !galeon -x '%s'\n"
-#~ "\n"
-#~ "NAME Open in new window\n"
-#~ "CMD !galeon -w '%s'\n"
-#~ "\n"
-#~ "NAME Open in new tab\n"
-#~ "CMD !galeon -n '%s'\n"
-#~ "\n"
-#~ "NAME Run new Galeon\n"
-#~ "CMD !galeon '%s'\n"
-#~ "\n"
-#~ "NAME ENDSUB\n"
-#~ "CMD \n"
-#~ "\n"
-#~ "NAME SUB\n"
-#~ "CMD Opera...\n"
-#~ "\n"
-#~ "NAME Open in existing\n"
-#~ "CMD !opera -remote 'openURL(%s)'\n"
-#~ "\n"
-#~ "NAME Open in new window\n"
-#~ "CMD !opera -remote 'openURL(%s,new-window)'\n"
-#~ "\n"
-#~ "NAME Run new Opera\n"
-#~ "CMD !opera %s\n"
-#~ "\n"
-#~ "NAME ENDSUB\n"
-#~ "CMD \n"
-#~ "\n"
-#~ "NAME SUB\n"
-#~ "CMD Send URL to...\n"
-#~ "\n"
-#~ "NAME Gnome URL Handler\n"
-#~ "CMD !gnome-moz-remote %s\n"
-#~ "\n"
-#~ "NAME Lynx\n"
-#~ "CMD !rxvt -e lynx %s\n"
-#~ "\n"
-#~ "NAME Links\n"
-#~ "CMD !rxvt -e links %s\n"
-#~ "\n"
-#~ "NAME w3m\n"
-#~ "CMD !rxvt -e w3m %s\n"
-#~ "\n"
-#~ "NAME NcFTP\n"
-#~ "CMD !rxvt -e ncftp %s\n"
-#~ "\n"
-#~ "NAME gFTP\n"
-#~ "CMD !gftp %s\n"
-#~ "\n"
-#~ "NAME Konqueror\n"
-#~ "CMD !konqueror %s\n"
-#~ "\n"
-#~ "NAME Telnet\n"
-#~ "CMD !rxvt -e telnet %s\n"
-#~ "\n"
-#~ "NAME Ping\n"
-#~ "CMD !rxvt -e ping -c 4 %s\n"
-#~ "\n"
-#~ "NAME ENDSUB\n"
-#~ "CMD \n"
-#~ "\n"
-#~ "NAME Connect as IRC server\n"
-#~ "CMD /newserver %s\n"
-#~ "\n"
-#~ msgstr ""
-#~ "NAME SUB\n"
-#~ "CMD Netscape...\n"
-#~ "\n"
-#~ "NAME Open in existing\n"
-#~ "CMD !netscape -remote 'openURL(%s)'\n"
-#~ "\n"
-#~ "NAME Open in new window\n"
-#~ "CMD !netscape -remote 'openURL(%s,new-window)'\n"
-#~ "\n"
-#~ "NAME Run new Netscape\n"
-#~ "CMD !netscape %s\n"
-#~ "\n"
-#~ "NAME ENDSUB\n"
-#~ "CMD \n"
-#~ "\n"
-#~ "NAME SUB\n"
-#~ "CMD Mozilla...\n"
-#~ "\n"
-#~ "NAME Open in existing\n"
-#~ "CMD !mozilla -remote 'openURL(%s)'\n"
-#~ "\n"
-#~ "NAME Open in new window\n"
-#~ "CMD !mozilla -remote 'openURL(%s,new-window)'\n"
-#~ "\n"
-#~ "NAME Run new Mozilla\n"
-#~ "CMD !mozilla %s\n"
-#~ "\n"
-#~ "NAME ENDSUB\n"
-#~ "CMD \n"
-#~ "\n"
-#~ "NAME SUB\n"
-#~ "CMD Galeon...\n"
-#~ "\n"
-#~ "NAME Open in existing\n"
-#~ "CMD !galeon -x '%s'\n"
-#~ "\n"
-#~ "NAME Open in new window\n"
-#~ "CMD !galeon -w '%s'\n"
-#~ "\n"
-#~ "NAME Open in new tab\n"
-#~ "CMD !galeon -n '%s'\n"
-#~ "\n"
-#~ "NAME Run new Galeon\n"
-#~ "CMD !galeon '%s'\n"
-#~ "\n"
-#~ "NAME ENDSUB\n"
-#~ "CMD \n"
-#~ "\n"
-#~ "NAME SUB\n"
-#~ "CMD Opera...\n"
-#~ "\n"
-#~ "NAME Open in existing\n"
-#~ "CMD !opera -remote 'openURL(%s)'\n"
-#~ "\n"
-#~ "NAME Open in new window\n"
-#~ "CMD !opera -remote 'openURL(%s,new-window)'\n"
-#~ "\n"
-#~ "NAME Run new Opera\n"
-#~ "CMD !opera %s\n"
-#~ "\n"
-#~ "NAME ENDSUB\n"
-#~ "CMD \n"
-#~ "\n"
-#~ "NAME SUB\n"
-#~ "CMD Send URL to...\n"
-#~ "\n"
-#~ "NAME Gnome URL Handler\n"
-#~ "CMD !gnome-moz-remote %s\n"
-#~ "\n"
-#~ "NAME Lynx\n"
-#~ "CMD !rxvt -e lynx %s\n"
-#~ "\n"
-#~ "NAME Links\n"
-#~ "CMD !rxvt -e links %s\n"
-#~ "\n"
-#~ "NAME w3m\n"
-#~ "CMD !rxvt -e w3m %s\n"
-#~ "\n"
-#~ "NAME NcFTP\n"
-#~ "CMD !rxvt -e ncftp %s\n"
-#~ "\n"
-#~ "NAME gFTP\n"
-#~ "CMD !gftp %s\n"
-#~ "\n"
-#~ "NAME Konqueror\n"
-#~ "CMD !konqueror %s\n"
-#~ "\n"
-#~ "NAME Telnet\n"
-#~ "CMD !rxvt -e telnet %s\n"
-#~ "\n"
-#~ "NAME Ping\n"
-#~ "CMD !rxvt -e ping -c 4 %s\n"
-#~ "\n"
-#~ "NAME ENDSUB\n"
-#~ "CMD \n"
-#~ "\n"
-#~ "NAME Connect as IRC server\n"
-#~ "CMD /newserver %s\n"
-#~ "\n"
-
-#~ msgid ""
-#~ "An IRC Client for UNIX.\n"
-#~ "\n"
-#~ "This binary was compiled on "
-#~ msgstr ""
-#~ "IRC klient pre UNIX.\n"
-#~ "\n"
-#~ "Tento program bol preložený na "
-
-#~ msgid ""
-#~ "\n"
-#~ "Using GTK %d.%d.%d X %d\n"
-#~ "Running on %s"
-#~ msgstr ""
-#~ "\n"
-#~ "Použité GTK %d.%d.%d X %d\n"
-#~ "Beží na %s"
-
-#~ msgid ""
-#~ "(C) 1998-2001 Peter Zelezny <zed@xchat.org>\n"
-#~ "\n"
-#~ "An IRC Client for UNIX.\n"
-#~ "\n"
-#~ "This binary was compiled on "
-#~ msgstr ""
-#~ "(C) 1998-2001 Peter Zelezny <zed@xchat.org>\n"
-#~ "\n"
-#~ "IRC klient pre UNIX.\n"
-#~ "\n"
-#~ "Tento program bol preložený na "
-
-#~ msgid ""
-#~ "\n"
-#~ "Using GTK %d.%d.%d X %d\n"
-#~ "Running on %s\n"
-#~ msgstr ""
-#~ "\n"
-#~ "Použité GTK %d.%d.%d X %d\n"
-#~ "Beží na %s\n"
-
-#~ msgid "Ascii Chart"
-#~ msgstr "Tabuľka ASCII"
-
-#~ msgid " Apply "
-#~ msgstr "Použiť"
-
-#~ msgid "Config dir"
-#~ msgstr "Priečinok konfigurácie"
-
-#~ msgid "Don't Auto connect"
-#~ msgstr "Nepripojovať sa automaticky"
-
-#~ msgid "Don't use GNOME Panel"
-#~ msgstr "Nepoužiť panel GNOME"
-
-#~ msgid "gdk_font_load failed"
-#~ msgstr "gdk_font_load zlyhalo"
-
-#~ msgid "Ok"
-#~ msgstr "OK"
-
-#~ msgid "Yes"
-#~ msgstr "Áno"
-
-#~ msgid "No"
-#~ msgstr "Nie"
-
-#~ msgid "new!new@new.com"
-#~ msgstr "new!new@new.com"
-
-#~ msgid "OK"
-#~ msgstr "OK"
-
-#~ msgid "Open Toolbox"
-#~ msgstr "Otvoriť nástroje"
-
-#~ msgid "Beep"
-#~ msgstr "Zazvoniť"
-
-#~ msgid "Conf"
-#~ msgstr "Konf"
-
-#~ msgid "Conference mode (no join/part msgs)"
-#~ msgstr "Konferencia (žiadne správy príchod/odchod)"
-
-#~ msgid "CP"
-#~ msgstr "CP"
-
-#~ msgid "Ascii"
-#~ msgstr "ASCII"
-
-#~ msgid "Open ASCII Chart"
-#~ msgstr "Otvoriť tabuľku ASCII"
-
-#~ msgid "Underline"
-#~ msgstr "Podčiarknuté"
-
-#~ msgid "Bold"
-#~ msgstr "Tučné"
-
-#~ msgid "Hide/Show Userlist"
-#~ msgstr "Skryť/zobraziť zoznam používateľov"
-
-#~ msgid "Select a Perl script to load"
-#~ msgstr "Vyberte skript Perl"
-
-#~ msgid "Select a Python script to load"
-#~ msgstr "Vyberte skript Python"
-
-#~ msgid ""
-#~ "User Commands - Special codes:\n"
-#~ "\n"
-#~ "%c  =  current channel\n"
-#~ "%m  =  machine info\n"
-#~ "%n  =  your nick\n"
-#~ "%t  =  time/date\n"
-#~ "%v  =  x-chat version ("
-#~ msgstr ""
-#~ "Používateľské príkazy - Špeciálne kódy:\n"
-#~ "\n"
-#~ "%c  =  aktuálny kanál\n"
-#~ "%m  =  informácie o počítači\n"
-#~ "%n  =  vaša prezývka\n"
-#~ "%t  =  čas/dátum\n"
-#~ "%v  =  verzia x-chat ("
-
-#~ msgid ""
-#~ "Userlist Popup - Special codes:\n"
-#~ "\n"
-#~ "%c  =  current channel\n"
-#~ "%h  =  selected nick's hostname\n"
-#~ "%m  =  machine info\n"
-#~ "%n  =  your nick\n"
-#~ "%s  =  selected nick\n"
-#~ "%t  =  time/date\n"
-#~ msgstr ""
-#~ "Zoznam používateľov - Špeciálne kódy:\n"
-#~ "\n"
-#~ "%c  =  aktuálny kanál\n"
-#~ "%h  =  hostiteľ vybranej prezývky\n"
-#~ "%m  =  informácie o počítači\n"
-#~ "%n  =  vaša prezývka\n"
-#~ "%s  =  vybraná prezývka\n"
-#~ "%t  =  čas/dátum\n"
-
-#~ msgid "New Channel Tab.."
-#~ msgstr "Nový kanál.."
-
-#~ msgid "New Channel Window.."
-#~ msgstr "Okno s novým kanálom.."
-
-#~ msgid "DCC Chat Window.."
-#~ msgstr "Chatovacie okno.."
-
-#~ msgid "Ban List Window.."
-#~ msgstr "Okno pre zoznam zákazov.."
-
-#~ msgid "Flush Buffer"
-#~ msgstr "Vyprázdniť text"
-
-#~ msgid "Setup.."
-#~ msgstr "Nastavenia..."
-
-#~ msgid "Palette.."
-#~ msgstr "Paleta.."
-
-#~ msgid "Replace Popup.."
-#~ msgstr "Nahradiť zoznam.."
-
-#~ msgid "Edit Event Texts.."
-#~ msgstr "Upraviť hlásenia udalostí.."
-
-#~ msgid "X-Chat Homepage.."
-#~ msgstr "Domovská stránka X-Chat.."
-
-#~ msgid "Online Docs.."
-#~ msgstr "On-line dokumentácia.."
-
-#~ msgid "About X-Chat.."
-#~ msgstr "Informácie o X-Chat.."
-
-#~ msgid "Python Script.."
-#~ msgstr "Skripty python.."
-
-#~ msgid "Plugin.."
-#~ msgstr "Moduly.."
-
-#~ msgid "Perl List"
-#~ msgstr "Zoznam Perlu"
-
-#~ msgid "Python List"
-#~ msgstr "Zoznam Python"
-
-#~ msgid "Plugin List"
-#~ msgstr "Zoznam pluginov.."
-
-#~ msgid "All Perl Scripts"
-#~ msgstr "Všetky skripty perlu"
-
-#~ msgid "All Python Scripts"
-#~ msgstr "Všetky skripty Python"
-
-#~ msgid "All Plugins"
-#~ msgstr "Všetky moduly"
-
-#~ msgid "Kill"
-#~ msgstr "Ukončiť"
-
-#~ msgid "User _Modes"
-#~ msgstr "_Voľby"
-
-#~ msgid "_Settings"
-#~ msgstr "_Nastavenia"
-
-#~ msgid "S_cripts & Plugins"
-#~ msgstr "S_kripty a pluginy"
-
-#~ msgid "Use_r Menu"
-#~ msgstr "Použív_ateľské menu"
-
-#~ msgid "User Modes"
-#~ msgstr "Voľby"
-
-#~ msgid "Auto ReJoin on Kick"
-#~ msgstr "Automaticky sa vrátiť po vykopnutí"
-
-#~ msgid "Scripts & Plugins"
-#~ msgstr "Skripty a pluginy"
-
-#~ msgid "Unload All Scripts"
-#~ msgstr "Ukončiť všetky skripty"
-
-#~ msgid "Load Plugin (*.so).."
-#~ msgstr "Nahrať Plugin (*.so).."
-
-#~ msgid "Unload All Plugins"
-#~ msgstr "Ukončiť všetky pluginy"
-
-#~ msgid "Load Python Script.."
-#~ msgstr "Načítať skript perlu.."
-
-#~ msgid "User Menu"
-#~ msgstr "Používateľské menu"
-
-#~ msgid "Edit User Menu"
-#~ msgstr "Upraviť používateľskú ponuku"
-
-#~ msgid "Use the /NOTIFY command to add people to your notify list."
-#~ msgstr "Do zoznamu upozornení pridáte ľudí príkazom /NOTIFY."
-
-#~ msgid "X-Chat: Palette"
-#~ msgstr "X-Chat: Paleta"
-
-#~ msgid "Color %d"
-#~ msgstr "Farba %d"
-
-#~ msgid "About..."
-#~ msgstr "O programe..."
-
-#~ msgid "No Channel"
-#~ msgstr "Žiadny kanál"
-
-#~ msgid "No Server"
-#~ msgstr "Žiadny server"
-
-#~ msgid "Is Tab"
-#~ msgstr "Je záložka"
-
-#~ msgid "Is Not Tab"
-#~ msgstr "Nie je záložka"
-
-#~ msgid "Hide"
-#~ msgstr "Skryť"
-
-#~ msgid "Show"
-#~ msgstr "Zobraziť"
-
-#~ msgid "Move Here"
-#~ msgstr "Presun sem"
-
-#~ msgid "View"
-#~ msgstr "Zobraziť"
-
-#~ msgid "X-Chat: Edit entry"
-#~ msgstr "X-Chat: Upraviť položku"
-
-#~ msgid "Edit entry:"
-#~ msgstr "Upraviť položku:"
-
-#~ msgid "Name:"
-#~ msgstr "Meno:"
-
-#~ msgid "Server:"
-#~ msgstr "Server:"
-
-#~ msgid "Port:"
-#~ msgstr "Port:"
-
-#~ msgid "Channels:"
-#~ msgstr "Kanále:"
-
-#~ msgid "Use Proxy"
-#~ msgstr "Použiť proxy"
-
-#~ msgid "Use proxy server if one is set in Setup->Proxy Server"
-#~ msgstr "Použiť proxy, ak je nastavené v Nastavenie->Proxy server"
-
-#~ msgid "New Group"
-#~ msgstr "Nová skupina"
-
-#~ msgid ""
-#~ "Cannot use \"root\" as a nickname,\n"
-#~ "please change that first."
-#~ msgstr ""
-#~ "Ako prezývku nemôžete použiť \"root\",\n"
-#~ "musíte ju zmeniť."
-
-#~ msgid "Connect New"
-#~ msgstr "Pripojiť nový"
-
-#~ msgid "Skip MOTD"
-#~ msgstr "Preskočiť MOTD"
-
-#~ msgid "Don't display the message-of-the-day when logging in"
-#~ msgstr "Nezobrazovať správu dňa pri prihlásení"
-
-#~ msgid "Show channels"
-#~ msgstr "Zobraziť kanály"
-
-#~ msgid "Choose File"
-#~ msgstr "Vybrať súbor"
-
-#~ msgid "Failed to load translation table."
-#~ msgstr "Nepodarilo sa načítať prekladovú tabuľku."
-
-#~ msgid ""
-#~ "The following prefs do not take effect\n"
-#~ "immediately, you will have to close the\n"
-#~ "window and re-open it:\n"
-#~ "\n"
-#~ " - Channel Tabs\n"
-#~ " - Channel Mode Buttons\n"
-#~ " - Userlist Buttons\n"
-#~ " - Disable Paned Userlist\n"
-#~ " - Notify User color\n"
-#~ " - Layout for a vertical panel\n"
-#~ " - Auto Indent"
-#~ msgstr ""
-#~ "Tieto nastavenia sa neprejavia okamžite, ale\n"
-#~ "až po novom otvorení okna:\n"
-#~ "\n"
-#~ " - záložky kanálov\n"
-#~ " - tlačidlá módu kanálu\n"
-#~ " - tlačidlá zoznamu používateľov\n"
-#~ " - zákaz panelového zoznamu používateľov\n"
-#~ " - rozloženie vertikálneho panelu\n"
-#~ " - automatické odsadzovanie"
-
-#~ msgid "Appearance"
-#~ msgstr "Vzhľad"
-
-#~ msgid "Background XPM:"
-#~ msgstr "Pozadie XPM:"
-
-#~ msgid "Make nicknames right justified."
-#~ msgstr "Prezývky zarovnať napravo."
-
-#~ msgid "Auto Indent"
-#~ msgstr "Automaticky zvýrazniť"
-
-#~ msgid "Auto adjust the separator bar position as needed."
-#~ msgstr "Automaticky prispôsobiť pozíciu oddeľovača ako treba."
-
-#~ msgid "Draw Separator Bar"
-#~ msgstr "Zobrazovať oddeľovač"
-
-#~ msgid "Make the separator an actual visible line."
-#~ msgstr "Urobiť oddeľovač viditeľnou čiarou."
-
-#~ msgid "Word Wrap"
-#~ msgstr "Zarovnávať slová"
-
-#~ msgid "Don't split words from one line to the next"
-#~ msgstr "Nerozdeľovať slová na konci riadku"
-
-#~ msgid "Make the text box seem see-through"
-#~ msgstr "Urobiť textové okno priesvitné"
-
-#~ msgid "Tint the see-through text box to make it darker"
-#~ msgstr "Tint priesvitné textové okno urobiť tmavšie"
-
-#~ msgid "Use a font set"
-#~ msgstr "Použiť písmo"
-
-#~ msgid "Change in realtime"
-#~ msgstr "Zmeniť v reálnom čase"
-
-#~ msgid "Red:"
-#~ msgstr "Červená:"
-
-#~ msgid "Green:"
-#~ msgstr "Zelená:"
-
-#~ msgid "Blue:"
-#~ msgstr "Modrá:"
-
-#~ msgid "Startup and Shutdown"
-#~ msgstr "Spustenie a ukončenie"
-
-#~ msgid "No Server List On Startup"
-#~ msgstr "Bez zoznamu serverov pri štarte"
-
-#~ msgid "Don't display the server list on X-Chat startup"
-#~ msgstr "Nezobrazovať zoznam serverov po spustení X-Chatu"
-
-#~ msgid "Auto Save URL list"
-#~ msgstr "Automaticky uložiť zoznam URL"
-
-#~ msgid "Auto save your URL list when exiting from X-Chat"
-#~ msgstr "Automaticky uložiť zoznam URL pri ukončení X-Chat"
-
-#~ msgid "Give the User List style"
-#~ msgstr "Dať zoznamu používateľov štýl"
-
-#~ msgid "Use paned user list instead of a fixed width one"
-#~ msgstr "Používať pre zobrazenie zoznamu používateľov panelového okno namiesto okna s pevnou šírkou"
-
-#~ msgid "Userlist icons"
-#~ msgstr "Ikony zoznamu používateľov"
-
-#~ msgid "Complete nicknames when a partial one is entered"
-#~ msgstr "Automaticky dokončovať prezývku podľa zadávania"
-
-#~ msgid "Old-style Nickname Completion"
-#~ msgstr "Starý štýl dopĺňania prezývky"
-
-#~ msgid "Nickname completion is old-style (instead of GNU-style)"
-#~ msgstr "Doplnenie prezývky je v starom štýle (namiesto štýlu GNU)"
-
-#~ msgid "Give the Input Box style"
-#~ msgstr "Dať vstupnému oknu štýl"
-
-#~ msgid "Input box gets same style as main text area"
-#~ msgstr "Štýl vstupného okna je zhodný so štýlom hlavného textového okna"
-
-#~ msgid "Input Box always in focus"
-#~ msgstr "Vstupné pole je vždy aktívne"
-
-#~ msgid "Show nickname"
-#~ msgstr "Zobraziť prezývku"
-
-#~ msgid "Show nickname and op/voice icon before the input box"
-#~ msgstr "Zobraziť prezývku a ikonu op/voice pred vstupným poľom"
-
-#~ msgid "Nickname Completion Character:"
-#~ msgstr "Znak pre doplnenie prezývky:"
-
-#~ msgid "Character to append to completed nicknames"
-#~ msgstr "Znak pridávaný k doplneným prezývkam"
-
-#~ msgid "Output Box"
-#~ msgstr "Výstupné okno"
-
-#~ msgid "Strip MIRC color codes from text before displaying"
-#~ msgstr "Odstrániť kódy farieb z textu pred jeho zobrazením"
-
-#~ msgid "Output nicknames in different colors"
-#~ msgstr "Zobrazovať prezývky rozdielnymi farbami"
-
-#~ msgid "Show invites in active window"
-#~ msgstr "Zobraziť pozvánky v aktívnom okne"
-
-#~ msgid "Prefix all text with the current time stamp"
-#~ msgstr "Vždy vložiť pred text aktuálny čas"
-
-#~ msgid "Filter out BEEPs"
-#~ msgstr "Vyfiltrovať zvonček"
-
-#~ msgid "Remove ^G BEEP codes from text before displaying"
-#~ msgstr "Odstrániť ^G kódy zvončeku pred zobrazením textu"
-
-#~ msgid "Buffer Settings"
-#~ msgstr "Nastavenia textu"
-
-#~ msgid "Text Buffer Size:"
-#~ msgstr "Veľkosť textovej pamäti:"
-
-#~ msgid "lines (0=Unlimited)."
-#~ msgstr "riadkov (0=Bez obmedzenia)."
-
-#~ msgid "Other Settings"
-#~ msgstr "Iné nastavenia"
-
-#~ msgid "Kanji locale <=> JIS translation"
-#~ msgstr "Preklad Kanji <=> JIS"
-
-#~ msgid "Progress bar"
-#~ msgstr "Priebeh"
-
-#~ msgid "Buttons"
-#~ msgstr "Tlačidlá"
-
-#~ msgid "Show the TNSIPMLK buttons"
-#~ msgstr "Zobrazovať TNSIPMLK tlačidlá"
-
-#~ msgid "Show the buttons below the user list"
-#~ msgstr "Zobrazovať tlačidlá pod zoznamom používateľov"
-
-#~ msgid "Tabs Located at:"
-#~ msgstr "Záložky umiestnené:"
-
-#~ msgid "Use tabs for channels instead of separate windows"
-#~ msgstr "Používať záložky miesto otvorenia ďalšieho okna"
-
-#~ msgid "Limited Tab Highlighting"
-#~ msgstr "Obmedzené zvýrazňovanie záložky"
-
-#~ msgid "Only highlight channel tabs for channel messages and actions"
-#~ msgstr "Zvýrazňovať záložky kanálov iba pre správy kanálov a akcie"
-
-#~ msgid "Bring new query/channel tabs to front"
-#~ msgstr "Dávať nový odkaz/kanál dopredu"
-
-#~ msgid "Private Message Tabs"
-#~ msgstr "Záložky súkromných správ"
-
-#~ msgid "Use tabs for /query instead of separate windows"
-#~ msgstr "Používať záložky pre /query miesto otvorenia ďalšieho okna"
-
-#~ msgid "Window Position"
-#~ msgstr "Pozícia okna"
-
-#~ msgid ""
-#~ "If Left and Top are set to zero, X-Chat will use\n"
-#~ "your window manager defaults."
-#~ msgstr ""
-#~ "Ak Vľavo a Hore sú nastavené na 0, X-Chat použije\n"
-#~ "štandardné nastavenie od správcu okien."
-
-#~ msgid "Left:"
-#~ msgstr "Vľavo:"
-
-#~ msgid "Top:"
-#~ msgstr "Hore:"
-
-#~ msgid "Window Size"
-#~ msgstr "Veľkosť okna"
-
-#~ msgid "Width:"
-#~ msgstr "Šírka:"
-
-#~ msgid "Height:"
-#~ msgstr "Výška:"
-
-#~ msgid "Show Session Tree View"
-#~ msgstr "Zobraziť stromového zobrazenie sedenia"
-
-#~ msgid "Hide Session on Panelize"
-#~ msgstr "Skryť sedenie pri minimalizácii"
-
-#~ msgid "Hide X-Chat when window moved to the panel"
-#~ msgstr "Skryť X-Chat, ak je okno presunuté do panelu"
-
-#~ msgid "Panel Applet"
-#~ msgstr "Aplet panelu"
-
-#~ msgid "Layout For a Vertical Panel"
-#~ msgstr "Vzhľad pre vertikálny panel"
-
-#~ msgid "Layout the X-Chat panel applet for a vertical panel"
-#~ msgstr "Nastaviť vzhľad panelového apletu X-Chat pre vertikálny panel"
-
-#~ msgid "Raw Mode Display"
-#~ msgstr "Zobrazenie v Raw móde"
-
-#~ msgid "Display raw mode changes instead of interpretations"
-#~ msgstr "Zobrazí zmeny v raw móde namiesto v interpretáciách"
-
-#~ msgid "Beep when a private message for you is received"
-#~ msgstr "Zazvoní, pri príchode súkromnej správy"
-
-#~ msgid "Beep when a channel message is received"
-#~ msgstr "Zazvoní, pri príchode správy z kanála"
-
-#~ msgid "Send /who #chan on join."
-#~ msgstr "Poslať /who #chan pri príchode."
-
-#~ msgid "Find user information when joining a channel."
-#~ msgstr "Nájsť informácie o používateľovi pri príchode do kanálu."
-
-#~ msgid "Perform a periodic mail check."
-#~ msgstr "Neustála kontrola pošty."
-
-#~ msgid "Your irc settings"
-#~ msgstr "Nastavenie IRC"
-
-#~ msgid ""
-#~ "These can be a filename relative to ~/.xchat/ to be\n"
-#~ "used as a list of random quit or part reasons."
-#~ msgstr ""
-#~ "Toto môže byť meno súboru relatívne k ~/.xchat/,\n"
-#~ "ktorý sa použije pre náhodné dôvody skončenia alebo opustenia."
-
-#~ msgid "seconds."
-#~ msgstr "sekúnd."
-
-#~ msgid "Address"
-#~ msgstr "Adresa"
-
-#~ msgid "Hostname / IP Number:"
-#~ msgstr "Meno hostiteľa/IP adresa:"
-
-#~ msgid ""
-#~ "Most people should leave this blank, it's only\n"
-#~ "usefull for machines with multiple addresses."
-#~ msgstr ""
-#~ "Pre väčšinu ľudí je dobré toto nechať prázdne, je to použiteľné\n"
-#~ "v prípade viacnásobných adries."
-
-#~ msgid "Public IP Address"
-#~ msgstr "Verejná IP adresa"
-
-#~ msgid ""
-#~ "You may need to set the DCC IP Address if\n"
-#~ "you're behind a NAT router or proxy firewall."
-#~ msgstr ""
-#~ "Ak ste za routerom NAT alebo proxy firewall,\n"
-#~ "budete možno musieť nastaviť DCC IP adresu."
-
-#~ msgid "Get my IP from Server (for use in DCC Send only)"
-#~ msgstr "Získať IP adresu zo serveru(iba pre DCC posielanie)"
-
-#~ msgid "For people using a 10.* or 192.168.* IP number."
-#~ msgstr "Pre ľudí používajúcich 10.* alebo 192.168.* IP čísla."
-
-#~ msgid "Proxy Server Hostname:"
-#~ msgstr "Proxy hostiteľ:"
-
-#~ msgid "Proxy Server Port:"
-#~ msgstr "Port proxy serveru:"
-
-#~ msgid "Proxy Authorization (HTTP proxy only)"
-#~ msgstr "Overenie proxy (iba pre proxy HTTP)"
-
-#~ msgid "Proxy requires authorization"
-#~ msgstr "Proxy vyžaduje overenie"
-
-#~ msgid "Proxy User:"
-#~ msgstr "Používateľ pre proxy:"
-
-#~ msgid "Proxy Password:"
-#~ msgstr "Heslo pre proxy:"
-
-#~ msgid "Only show away messages the first time they're seen"
-#~ msgstr "Ukazovať AWAY správy iba pri ich prvom zobrazení"
-
-#~ msgid "When typing is started, the away flag is unset"
-#~ msgstr "Po začiatku písania je príznak Preč zrušený"
-
-#~ msgid "Your away settings"
-#~ msgstr "Nastavenie AWAY"
-
-#~ msgid "Away Reason:"
-#~ msgstr "Dôvod pre AWAY:"
-
-#~ msgid "Always apply timestamp to disk logs"
-#~ msgstr "Vždy použiť časové razítko na záznamy na disku"
-
-#~ msgid "Generic"
-#~ msgstr "Všeobecná"
-
-#~ msgid "Show notifies in active window"
-#~ msgstr "Zobraziť upozornenia v aktívnom okne"
-
-#~ msgid "Send /whois"
-#~ msgstr "Poslať /whois"
-
-#~ msgid "User List Notify Highlighting"
-#~ msgstr "Zvýraznenie Friends v zozname používateľov"
-
-#~ msgid "Highlight Notifies"
-#~ msgstr "Zvýrazňovať"
-
-#~ msgid "Highlight notified users in the user list"
-#~ msgstr "Zobrazovať Friends v zozname používateľov odlišnou farbou"
-
-#~ msgid "Notified User Color:"
-#~ msgstr "Farba:"
-
-#~ msgid "Notification Timeouts"
-#~ msgstr "Interval pre upozornenie"
-
-#~ msgid "Notify Check Interval:"
-#~ msgstr "Zvoľte interval:"
-
-#~ msgid "seconds (0=Disable)."
-#~ msgstr "sekúnd (0=Vypnúť)."
-
-#~ msgid "Enable Character Translation"
-#~ msgstr "Zapnúť preklad znakov"
-
-#~ msgid "Translation File:"
-#~ msgstr "Prekladový súbor:"
-
-#~ msgid "Use a ircII style translation file."
-#~ msgstr "Použiť prekladový súbor na štýl ircII."
-
-#~ msgid "Automatically open DCC Send Window"
-#~ msgstr "Automaticky otvoriť DCC okno posielania"
-
-#~ msgid "Automatically open DCC Recv Window"
-#~ msgstr "Automaticky otvoriť DCC okno pre príjem"
-
-#~ msgid "Automatically open DCC Chat Window"
-#~ msgstr "Automaticky otvoriť DCC chatovacie okno"
-
-#~ msgid "Resume on Auto Accept"
-#~ msgstr "Obnoviť pri automatickom príjme"
-
-#~ msgid "When Auto-Accepting DCC, try to resume."
-#~ msgstr "Pri používaní automatického príjmu DCC, pokúsiť sa o obnovenie."
-
-#~ msgid "DCC Offers Timeout:"
-#~ msgstr "DCC Offers Timeout:"
-
-#~ msgid "DCC Stall Timeout:"
-#~ msgstr "DCC Stall Timeout:"
-
-#~ msgid "Received files"
-#~ msgstr "Prijaté súbory"
-
-#~ msgid "File Permissions:"
-#~ msgstr "Práva súboru:"
-
-#~ msgid "(octal)"
-#~ msgstr "(osmičková sústava)"
-
-#~ msgid "Directory to save to:"
-#~ msgstr "Priečinok pre ukladanie:"
-
-#~ msgid "Save file with Nickname"
-#~ msgstr "Uložiť súbor s prezývkou"
-
-#~ msgid "Put the sender's nickname in incoming filenames"
-#~ msgstr "Pridať prezývku odosielateľa do mena príchádzajúceho súboru"
-
-#~ msgid "DCC Send Options"
-#~ msgstr "Voľby DCC odesielania:"
-
-#~ msgid "Fast DCC Send"
-#~ msgstr "Rýchle DCC odosielanie"
-
-#~ msgid "Don't wait for ACKs to send more data"
-#~ msgstr "Nečakať na potvrdenie (ACKS) pred odosielaním ďalších dát"
-
-#~ msgid "Fill Spaces"
-#~ msgstr "Vyplniť medzery"
-
-#~ msgid "File names with spaces will be filled with underscore"
-#~ msgstr "Mená súborov s medzerami budú vyplnené podtržítkami"
-
-#~ msgid "(0=Disabled)"
-#~ msgstr "(0=Vypnúť)"
-
-#~ msgid "Send Block Size:"
-#~ msgstr "Veľkosť odosielaného bloku:"
-
-#~ msgid "(1024=Normal)"
-#~ msgstr "(1024=Štandardne)"
-
-#~ msgid "Built-in Replies"
-#~ msgstr "Vstavané odpovede"
-
-#~ msgid "Do not reply to CTCP version"
-#~ msgstr "Neodpovedať na CTCP verziu"
-
-#~ msgid "Sound Dir:"
-#~ msgstr "Priečinok pre zvuky:"
-
-#~ msgid "Play Command:"
-#~ msgstr "Príkaz pre prehrávanie:"
-
-#~ msgid "Interface Settings"
-#~ msgstr "Nastavenia používateľského prostredia"
-
-#~ msgid "IRC Input/Output Settings"
-#~ msgstr "Nastavenie vstupu/výstupu IRC"
-
-#~ msgid "IRC Input/Output"
-#~ msgstr "Vstup/výstup IRC"
-
-#~ msgid "Window Layout Settings"
-#~ msgstr "Nastavenie vzhľadu okna"
-
-#~ msgid "Window Layout"
-#~ msgstr "Vzhľad okna"
-
-#~ msgid "Main Window Settings"
-#~ msgstr "Nastavenie hlavného okna"
-
-#~ msgid "Main Window"
-#~ msgstr "Hlavné okno"
-
-#~ msgid "Channel Window Settings"
-#~ msgstr "Nastavenie okna kanálov"
-
-#~ msgid "Dialog Window Settings"
-#~ msgstr "Nastavenie okna dialógov"
-
-#~ msgid "Panel Settings"
-#~ msgstr "Nastavenie panelu"
-
-#~ msgid "Panel"
-#~ msgstr "Panel"
-
-#~ msgid "IRC Settings"
-#~ msgstr "Nastavenie IRC"
-
-#~ msgid "IP Address Settings"
-#~ msgstr "Nastavenie IP adresy"
-
-#~ msgid "IP Address"
-#~ msgstr "IP adresa"
-
-#~ msgid "Away Settings"
-#~ msgstr "Nastavenie AWAY"
-
-#~ msgid "Away"
-#~ msgstr "Preč (AWAY)"
-
-#~ msgid "Highlighting Settings"
-#~ msgstr "Nastavenie zvýrazňovania"
-
-#~ msgid "Logging Settings"
-#~ msgstr "Nastavenie logovania"
-
-#~ msgid "Notification Settings"
-#~ msgstr "Nastavenie upozornení"
-
-#~ msgid "Notification"
-#~ msgstr "Upozornenia"
-
-#~ msgid "Character Set (Translation Tables)"
-#~ msgstr "Znaková sada (Prekladové tabuľky)"
-
-#~ msgid "CTCP Settings"
-#~ msgstr "Nastavenie CTCP"
-
-#~ msgid "DCC Settings"
-#~ msgstr "Nastavenie DCC"
-
-#~ msgid "DCC"
-#~ msgstr "DCC"
-
-#~ msgid "File Transfer Settings"
-#~ msgstr "Nastavenie prenosu súborov"
-
-#~ msgid "K"
-#~ msgstr "K"

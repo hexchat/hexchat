@@ -840,7 +840,7 @@ static int
 servlist_load (void)
 {
 	FILE *fp;
-	char buf[256];
+	char buf[258];
 	int len;
 	ircnet *net = NULL;
 
@@ -849,15 +849,15 @@ servlist_load (void)
 	if (!fp)
 		return FALSE;
 
-	while (fgets (buf, sizeof (buf) - 1, fp))
+	while (fgets (buf, sizeof (buf) - 2, fp))
 	{
 		len = strlen (buf);
+		buf[len] = 0;
 		buf[len-1] = 0;	/* remove the trailing \n */
-		switch (buf[0])
+		if (net)
 		{
-			case 'N':
-				net = servlist_net_add (buf + 2, /* comment */ "");
-				break;
+			switch (buf[0])
+			{
 			case 'I':
 				net->nick = strdup (buf + 2);
 				break;
@@ -888,7 +888,10 @@ servlist_load (void)
 			case 'S':	/* new server/hostname for this network */
 				servlist_server_add (net, buf + 2);
 				break;
+			}
 		}
+		if (buf[0] == 'N')
+			net = servlist_net_add (buf + 2, /* comment */ "");
 	}
 	fclose (fp);
 
