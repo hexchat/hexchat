@@ -116,8 +116,8 @@ N_("-%C10-%C11-%O$tDCC CHAT to %C11$1%O aborted.")},
 {"DCC CHAT Connect", pevt_dccchatcon_help, 1, 0,
 N_("-%C10-%C11-%O$tDCC CHAT connection established to %C11$1 %C14[%O$2%C14]%O")},
 
-{"DCC CHAT Failed", pevt_dccchaterr_help, 3, 0,
-N_("-%C10-%C11-%O$tDCC CHAT failed. Connection to $1 %C14[%O$2:$3%C14]%O lost.")},
+{"DCC CHAT Failed", pevt_dccchaterr_help, 4, 0,
+N_("-%C10-%C11-%O$tDCC CHAT to %C11$1%O lost. $4.")},
 
 {"DCC CHAT Offer", pevt_generic_nick_help, 1, 0,
 N_("-%C10-%C11-%O$tReceived a DCC CHAT offer from $1")},
@@ -155,8 +155,8 @@ N_("-%C10-%C11-%O$tDCC RECV %C11$1%O from %C11$3%O complete %C14[%C11$4%O cps%C1
 {"DCC RECV Connect", pevt_dcccon_help, 3, 0,
 N_("-%C10-%C11-%O$tDCC RECV connection established to %C11$1 %C14[%O$2%C14]%O")},
 
-{"DCC RECV Failed", pevt_dccrecverr_help, 3, 0,
-N_("-%C10-%C11-%O$tDCC RECV $1 ($2) failed. Connection to $3 lost.")},
+{"DCC RECV Failed", pevt_dccrecverr_help, 4, 0,
+N_("-%C10-%C11-%O$tDCC RECV %C11$1%O from %C11$3%O failed. $4.")},
 
 {"DCC RECV File Open Error", pevt_generic_file_help, 1, 0,
 N_("-%C10-%C11-%O$tDCC RECV: Cannot open $1 for writing - aborting.")},
@@ -176,8 +176,8 @@ N_("-%C10-%C11-%O$tDCC SEND %C11$1%O to %C11$2%O complete %C14[%C11$3%O cps%C14]
 {"DCC SEND Connect", pevt_dcccon_help, 3, 0,
 N_("-%C10-%C11-%O$tDCC SEND connection established to %C11$1 %C14[%O$2%C14]%O")},
 
-{"DCC SEND Failed", pevt_dccsendfail_help, 2, 0,
-N_("-%C10-%C11-%O$tDCC SEND %C11$1%O failed. Connection to %C11$2%O lost.")},
+{"DCC SEND Failed", pevt_dccsendfail_help, 3, 0,
+N_("-%C10-%C11-%O$tDCC SEND %C11$1%O to %C11$2%O failed. $3")},
 
 {"DCC SEND Offer", pevt_dccsendoffer_help, 4, 0,
 N_("-%C10-%C11-%O$t%C11$1 %Chas offered %C11$2 %C(%C11$3 %Cbytes)")},

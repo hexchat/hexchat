@@ -860,7 +860,8 @@ static char *pevt_kill_help[] = {
 static char *pevt_dccchaterr_help[] = {
 	N_("Nickname"),
 	N_("IP address"),
-	N_("port"),
+	N_("Port"),
+	N_("Error name"),
 };
 
 static char *pevt_dccstall_help[] = {
@@ -877,6 +878,7 @@ static char *pevt_dccrecverr_help[] = {
 	N_("Filename"),
 	N_("Destination filename"),
 	N_("Nickname"),
+	N_("Error name"),
 };
 
 static char *pevt_dccrecvcomp_help[] = {
@@ -906,6 +908,7 @@ static char *pevt_dcccon_help[] = {
 static char *pevt_dccsendfail_help[] = {
 	N_("Filename"),
 	N_("Nickname"),
+	N_("Error name"),
 };
 
 static char *pevt_dccsendcomp_help[] = {

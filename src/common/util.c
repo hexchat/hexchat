@@ -277,25 +277,13 @@ nocasestrstr (char *s, char *wanted)
 char *
 errorstring (int err)
 {
-	static char tbuf[16];
 	switch (err)
 	{
 	case -1:
 		return "";
 	case 0:
 		return _("Remote host closed socket");
-#ifndef WIN32
-	case ECONNREFUSED:
-		return _("Connection refused");
-	case ENETUNREACH:
-	case EHOSTUNREACH:
-		return _("No route to host");
-	case ETIMEDOUT:
-		return _("Connection timed out");
-	case EADDRNOTAVAIL:
-		return _("Cannot assign that address");
-	case ECONNRESET:
-#else
+#ifdef WIN32
 	case WSAECONNREFUSED:
 		return _("Connection refused");
 	case WSAENETUNREACH:
@@ -306,11 +294,18 @@ errorstring (int err)
 	case WSAEADDRNOTAVAIL:
 		return _("Cannot assign that address");
 	case WSAECONNRESET:
-#endif
 		return _("Connection reset by peer");
+	default:
+		{
+			static char tbuf[16];
+			sprintf (tbuf, "(%d)", err);
+			return tbuf;
+		}
+#else
+	default:
+		return strerror (err);
+#endif
 	}
-	sprintf (tbuf, "%d", err);
-	return tbuf;
 }
 
 int

@@ -574,7 +574,8 @@ dcc_read_chat (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 			}
 			sprintf (tbuf, "%d", dcc->port);
 			EMIT_SIGNAL (XP_TE_DCCCHATF, dcc->serv->front_session, dcc->nick,
-							 net_ip (dcc->addr), tbuf, NULL, 0);
+							 net_ip (dcc->addr), tbuf,
+							 errorstring ((len < 0) ? sock_error () : 0), 0);
 			dcc_close (dcc, STAT_FAILED, FALSE);
 			return TRUE;
 		}
@@ -701,7 +702,8 @@ dcc_read (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 			}
 failedabort:
 			EMIT_SIGNAL (XP_TE_DCCRECVERR, dcc->serv->front_session, dcc->file,
-							 dcc->destfile, dcc->nick, NULL, 0);
+							 dcc->destfile, dcc->nick,
+							 errorstring ((n < 0) ? sock_error () : 0), 0);
 			dcc_close (dcc, STAT_FAILED, FALSE);
 			return TRUE;
 		}
@@ -910,7 +912,8 @@ dcc_send_data (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 abortit:
 		free (buf);
 		EMIT_SIGNAL (XP_TE_DCCSENDFAIL, dcc->serv->front_session,
-						 file_part (dcc->file), dcc->nick, NULL, NULL, 0);
+						 file_part (dcc->file), dcc->nick,
+						 errorstring (sock_error ()), NULL, 0);
 		dcc_close (dcc, STAT_FAILED, FALSE);
 		return TRUE;
 	}
@@ -954,7 +957,8 @@ dcc_read_ack (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 				return TRUE;
 		}
 		EMIT_SIGNAL (XP_TE_DCCSENDFAIL, dcc->serv->front_session,
-						 file_part (dcc->file), dcc->nick, NULL, NULL, 0);
+						 file_part (dcc->file), dcc->nick,
+						 errorstring ((len < 0) ? sock_error () : 0), NULL, 0);
 		dcc_close (dcc, STAT_FAILED, FALSE);
 		return TRUE;
 	}
