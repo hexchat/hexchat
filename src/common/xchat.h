@@ -71,7 +71,7 @@ void *xchat_realloc (char *old, int len, char *file, int line);
 #define PATHLEN		255
 #define DOMAINLEN	100
 #define NICKLEN		64				/* including the NULL, so 63 really */
-#define CHANLEN		202
+#define CHANLEN		300
 #define PDIWORDS		32
 
 #define safe_strcpy(dest,src,len)	{strncpy(dest,src,len); \
