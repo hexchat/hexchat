@@ -509,13 +509,13 @@ fe_main (void)
 			se->checked = 1;
 			if (se->rread && FD_ISSET (se->sok, &rd))
 			{
-				se->callback (NULL, 0, se->userdata);
+				se->callback (NULL, 1, se->userdata);
 			} else if (se->wwrite && FD_ISSET (se->sok, &wd))
 			{
-				se->callback (NULL, 0, se->userdata);
+				se->callback (NULL, 2, se->userdata);
 			} else if (se->eexcept && FD_ISSET (se->sok, &ex))
 			{
-				se->callback (NULL, 0, se->userdata);
+				se->callback (NULL, 4, se->userdata);
 			}
 			list = se_list;
 			if (list)

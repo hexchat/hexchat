@@ -1,6 +1,6 @@
 Summary: Graphical IRC (chat) client
 Name: xchat
-Version: 1.9.6
+Version: 1.9.7
 Release: 0
 Epoch: 1
 Group: Applications/Internet
@@ -36,7 +36,7 @@ Provides Python scripting capability to XChat.
 %setup -q
 
 %build
-%configure --disable-textfe --enable-openssl
+%configure --disable-textfe
 make
 
 %install

@@ -1861,7 +1861,7 @@ mg_create_topwindow (session *sess)
 	g_signal_connect (G_OBJECT (win), "destroy",
 							G_CALLBACK (mg_topdestroy_cb), sess);
 	g_signal_connect (G_OBJECT (win), "configure_event",
-							G_CALLBACK (mg_configure_cb), NULL);
+							G_CALLBACK (mg_configure_cb), sess);
 
 	palette_alloc (win);
 
