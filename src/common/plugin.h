@@ -23,6 +23,11 @@ struct _xchat_plugin
 		  int timeout,
 		  int (*callback) (void *user_data),
 		  void *userdata);
+	xchat_hook *(*hook_socket) (xchat_plugin *ph,
+		   int fd,
+		   int flags,
+		   int (*callback) (int fd, int flags, void *user_data),
+		   void *userdata);
 	void *(*unhook) (xchat_plugin *ph,
 	      xchat_hook *hook);
 	void (*print) (xchat_plugin *ph,

@@ -777,7 +777,7 @@ irc_inline (server *serv, char *buf)
 	if (buf[0] == ':')
 	{
 		/* split line into words and words_to_end_of_line */
-		process_data_init (pdibuf, buf + 1, word, word_eol, FALSE);
+		process_data_init (pdibuf, buf, word, word_eol, FALSE);
 
 		/* find a context for this message */
 		if (is_channel (serv, word[3]))
@@ -794,6 +794,7 @@ irc_inline (server *serv, char *buf)
 		word_eol[1] = buf;	/* keep the ":" for plugins */
 		if (plugin_emit_server (sess, type, word, word_eol))
 			return;
+		word[1]++;
 		word_eol[1] = buf + 1;	/* but not for xchat internally */
 
 	} else

@@ -696,12 +696,13 @@ setup_create_color_page (void)
 
 	setup_create_other_color (_("Foreground:"), 18, 1, tab);
 	setup_create_other_color (_("Background:"), 19, 2, tab);
-	setup_create_other_color (_("Mark fore:"), 17, 3, tab);
-	setup_create_other_color (_("Mark back:"), 16, 4, tab);
 
-	setup_create_other_color (_("New Data:"), 20, 5, tab);
-	setup_create_other_color (_("New Message:"), 22, 6, tab);
-	setup_create_other_color (_("Highlight:"), 21, 7, tab);
+	setup_create_other_color (_("Mark fore:"), 17, 6, tab);
+	setup_create_other_color (_("Mark back:"), 16, 7, tab);
+
+	setup_create_other_color (_("New Data:"), 20, 10, tab);
+	setup_create_other_color (_("New Message:"), 22, 11, tab);
+	setup_create_other_color (_("Highlight:"), 21, 12, tab);
 	
 	return box;
 }

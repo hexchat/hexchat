@@ -707,6 +707,11 @@ gtk_xtext_init (GtkXText * xtext)
 
 		gtk_selection_add_targets (GTK_WIDGET (xtext), GDK_SELECTION_PRIMARY,
 											targets, n_targets);
+#ifdef WIN32
+		gtk_selection_add_targets (GTK_WIDGET (xtext),
+											gdk_atom_intern ("CLIPBOARD", FALSE),
+											targets, n_targets);
+#endif
 	}
 	g_signal_connect (G_OBJECT (xtext), "selection_get",
 							G_CALLBACK (gtk_xtext_selection_get), xtext);
@@ -1836,6 +1841,10 @@ gtk_xtext_motion_notify (GtkWidget * widget, GdkEventMotion * event)
 static void
 gtk_xtext_set_clip_owner (GtkWidget * xtext, GdkEventButton * event)
 {
+#ifdef WIN32
+	gtk_selection_owner_set (xtext, gdk_atom_intern ("CLIPBOARD", FALSE),
+									 event->time);
+#endif
 	gtk_selection_owner_set (xtext, GDK_SELECTION_PRIMARY, event->time);
 
 	if (GTK_XTEXT (xtext)->selection_buffer &&
