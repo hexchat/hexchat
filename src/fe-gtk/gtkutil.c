@@ -257,7 +257,7 @@ gtkutil_file_req (char *title, void *callback, void *userdata, char *filter,
 		gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), last_dir);
 	if (flags & FRF_ADDFOLDER)
 		gtk_file_chooser_add_shortcut_folder (GTK_FILE_CHOOSER (dialog),
-														  get_xdir_utf8 (), NULL);
+														  (char *)get_xdir_fs (), NULL);
 
 	freq = malloc (sizeof (struct file_req));
 	freq->dialog = dialog;

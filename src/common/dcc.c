@@ -1215,7 +1215,7 @@ dcc_send (struct session *sess, char *to, char *file, int maxcps, int passive)
 		{
 			if (st.st_size > 0)
 			{
-				dcc->offertime = time (0);
+				dcc->starttime = dcc->offertime = time (0);
 				dcc->serv = sess->server;
 				dcc->dccstat = STAT_QUEUED;
 				dcc->size = st.st_size;

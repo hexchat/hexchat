@@ -159,11 +159,18 @@ tcp_send_queue (server *serv)
 				if (serv->next_send < now)
 					serv->next_send = now;
 				if (serv->next_send - now >= 10)
-					return 1;				  /* don't remove the timeout handler */
+				{
+					/* check for clock skew */
+					if (now >= serv->prev_now)
+						return 1;		  /* don't remove the timeout handler */
+					/* it is skewed, reset to something sane */
+					serv->next_send = now;
+				}
 
 				for (p = buf, i = len; i && *p != ' '; p++, i--);
 				serv->next_send += (2 + i / 120);
 				serv->sendq_len -= len;
+				serv->prev_now = now;
 				fe_set_throttle (serv);
 
 				tcp_send_real (serv, buf, len);

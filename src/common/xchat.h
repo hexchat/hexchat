@@ -406,7 +406,8 @@ typedef struct server
 	void *network;						/* for servlistgui.c */
 
 	GSList *outbound_queue;
-	int next_send;						/* cptr->since in ircu */
+	time_t next_send;						/* cptr->since in ircu */
+	time_t prev_now;					/* previous now-time */
 	int sendq_len;						/* queue size */
 
 	struct session *front_session;	/* front-most window/tab */

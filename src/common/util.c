@@ -15,6 +15,9 @@
  * along with this program; if not, write to the Free Software
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
  */
+
+#define __APPLE_API_STRICT_CONFORMANCE
+
 #define _FILE_OFFSET_BITS 64
 #include <stdio.h>
 #include <unistd.h>
@@ -42,7 +45,7 @@
 
 #include "inet.h"
 
-#ifdef USING_FREEBSD
+#if defined (USING_FREEBSD) || defined (__APPLE__)
 #include <sys/sysctl.h>
 #endif
 #ifdef SOCKS
@@ -455,7 +458,7 @@ strip_color (char *text)
 	return new_str;
 }
 
-#if defined (USING_LINUX) || defined (USING_FREEBSD)
+#if defined (USING_LINUX) || defined (USING_FREEBSD) || defined (__APPLE__)
 
 static void
 get_cpu_info (double *mhz, int *cpus)
@@ -517,7 +520,30 @@ get_cpu_info (double *mhz, int *cpus)
 
 	len = sizeof(freq);
 	sysctlbyname("machdep.tsc_freq", &freq, &len, NULL, 0);
-	
+
+	*cpus = ncpu;
+	*mhz = (freq / 1000000);
+
+#endif
+#ifdef __APPLE__
+
+	int mib[2], ncpu;
+	unsigned long long freq;
+	size_t len;
+
+	freq = 0;
+	*mhz = 0;
+	*cpus = 0;
+
+	mib[0] = CTL_HW;
+	mib[1] = HW_NCPU;
+
+	len = sizeof(ncpu);
+	sysctl(mib, 2, &ncpu, &len, NULL, 0);
+
+	len = sizeof(freq);
+        sysctlbyname("hw.cpufrequency", &freq, &len, NULL, 0);
+
 	*cpus = ncpu;
 	*mhz = (freq / 1000000);
 
@@ -578,7 +604,7 @@ get_cpu_str (void)
 char *
 get_cpu_str (void)
 {
-#if defined (USING_LINUX) || defined (USING_FREEBSD)
+#if defined (USING_LINUX) || defined (USING_FREEBSD) || defined (__APPLE__)
 	double mhz;
 #endif
 	int cpus = 1;
@@ -592,7 +618,7 @@ get_cpu_str (void)
 
 	uname (&un);
 
-#if defined (USING_LINUX) || defined (USING_FREEBSD)
+#if defined (USING_LINUX) || defined (USING_FREEBSD) || defined (__APPLE__)
 	get_cpu_info (&mhz, &cpus);
 	if (mhz)
 	{
