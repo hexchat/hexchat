@@ -63,7 +63,7 @@ xtext_get_stamp_str (time_t tim, char **ret)
 static void
 PrintTextLine (xtext_buffer *xtbuf, unsigned char *text, int len, int indent)
 {
-	char *tab, *new_text;
+	unsigned char *tab, *new_text;
 	int leftlen;
 
 	if (len == 0)
@@ -89,9 +89,9 @@ PrintTextLine (xtext_buffer *xtbuf, unsigned char *text, int len, int indent)
 	}
 
 	tab = strchr (text, '\t');
-	if (tab && (unsigned long) tab < (unsigned long) (text + len))
+	if (tab && tab < (text + len))
 	{
-		leftlen = (unsigned long) tab - (unsigned long) text;
+		leftlen = tab - text;
 		gtk_xtext_append_indent (xtbuf,
 										 text, leftlen, tab + 1, len - (leftlen + 1));
 	} else

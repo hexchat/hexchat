@@ -65,14 +65,15 @@ static const struct defaultserver def[] =
 #ifdef USE_IPV6
 	{0,			"irc6.ktu.lt/7666"},
 #endif
-	{0,			"irc.delfi.lt"},
+	{0,			"irc.data.lt"},
 	{0,			"irc.ktu.lt"},
 	{0,			"irc.le.lt"},
-	{0,			"irc.takas.lt"},
 	{0,			"irc.omnitel.net"},
+	{0,			"irc.takas.lt"},
 	{0,			"irc.5ci.net"},
 	{0,			"irc.interneka.lt"},
 	{0,			"irc.elekta.lt"},
+	{0,			"irc.if.lt"},
 
 	{"AmigaNet",	0},
 	{0,			"linux.us.amiganet.org"},

@@ -156,7 +156,7 @@ q3link (char *word)
 
 	if ((s = strchr (word,':')) != NULL)
 	{
-		for (i = 0; i < (int) ((unsigned long)s - (unsigned long)word); i++)
+		for (i = 0; i < s - word; i++)
 		{
 			if (word[i] == '.')
 				d++;
@@ -238,7 +238,7 @@ text_word_check (char *word)
 	dot = strrchr (word, '.');
 	if (at && dot)
 	{
-		if ((unsigned long) at < (unsigned long) dot)
+		if (at < dot)
 		{
 			if (strchr (word, '*'))
 				return WORD_HOST;
@@ -940,7 +940,7 @@ static char *pevt_nickclash_help[] = {
 };
 
 static char *pevt_connfail_help[] = {
-	N_("Error String"),
+	N_("Error"),
 };
 
 static char *pevt_connect_help[] = {
@@ -976,7 +976,7 @@ static char *pevt_dccchaterr_help[] = {
 	N_("Nickname"),
 	N_("IP address"),
 	N_("Port"),
-	N_("Error name"),
+	N_("Error"),
 };
 
 static char *pevt_dccstall_help[] = {
@@ -987,13 +987,14 @@ static char *pevt_dccstall_help[] = {
 
 static char *pevt_generic_file_help[] = {
 	N_("Filename"),
+	N_("Error"),
 };
 
 static char *pevt_dccrecverr_help[] = {
 	N_("Filename"),
 	N_("Destination filename"),
 	N_("Nickname"),
-	N_("Error name"),
+	N_("Error"),
 };
 
 static char *pevt_dccrecvcomp_help[] = {
@@ -1006,7 +1007,7 @@ static char *pevt_dccrecvcomp_help[] = {
 static char *pevt_dccconfail_help[] = {
 	N_("DCC Type"),
 	N_("Nickname"),
-	N_("Error string"),
+	N_("Error"),
 };
 
 static char *pevt_dccchatcon_help[] = {
@@ -1023,7 +1024,7 @@ static char *pevt_dcccon_help[] = {
 static char *pevt_dccsendfail_help[] = {
 	N_("Filename"),
 	N_("Nickname"),
-	N_("Error name"),
+	N_("Error"),
 };
 
 static char *pevt_dccsendcomp_help[] = {
@@ -1291,7 +1292,33 @@ pevent_load (char *filename)
 		{
 			if (text)
 				free (text);
-			text = strdup (ofs);
+
+			/* This allows updating of old strings. We don't use new defaults
+				if the user has customized the strings (.e.g a text theme).
+				Hash of the old default is enough to identify and replace it.
+				This only works in English. */
+
+			switch (g_str_hash (ofs))
+			{
+			case 0x526743a4:
+		/* %C08,02 Hostmask                  PRIV NOTI CHAN CTCP INVI UNIG %O */
+				text = strdup (te[XP_TE_IGNOREHEADER].def);
+				break;
+
+			case 0xe91bc9c2:
+		/* %C08,02                                                         %O */
+				text = strdup (te[XP_TE_IGNOREFOOTER].def);
+				break;
+
+			case 0x1fbfdf22:
+		/* -%C10-%C11-%O$tDCC RECV: Cannot open $1 for writing - aborting. */
+				text = strdup (te[XP_TE_DCCFILEERR].def);
+				break;
+
+			default:
+				text = strdup (ofs);
+			}
+
 			continue;
 		} else if (strcmp (buf, "event_sound") == 0)
 		{

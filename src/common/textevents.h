@@ -158,8 +158,8 @@ N_("-%C10-%C11-%O$tDCC RECV connection established to %C11$1 %C14[%O$2%C14]%O")}
 {"DCC RECV Failed", pevt_dccrecverr_help, 4, 0,
 N_("-%C10-%C11-%O$tDCC RECV %C11$1%O from %C11$3%O failed. $4.")},
 
-{"DCC RECV File Open Error", pevt_generic_file_help, 1, 0,
-N_("-%C10-%C11-%O$tDCC RECV: Cannot open $1 for writing - aborting.")},
+{"DCC RECV File Open Error", pevt_generic_file_help, 2, 0,
+N_("-%C10-%C11-%O$tDCC RECV: Cannot open $1 for writing ($2).")},
 
 {"DCC Rename", pevt_dccrename_help, 2, 0,
 N_("-%C10-%C11-%O$tThe file %C11$1%C already exists, saving it as %C11$2%O instead.")},

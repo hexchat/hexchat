@@ -653,7 +653,7 @@ dcc_read (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 				do
 				{
 					n++;
-					sprintf (buf, "%s.%d", dcc->destfile_fs, n);
+					snprintf (buf, sizeof (buf), "%s.%d", dcc->destfile_fs, n);
 				}
 				while (access (buf, F_OK) == 0);
 
@@ -674,8 +674,9 @@ dcc_read (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 	}
 	if (dcc->fp == -1)
 	{
+		/* the last executed function is open(), errno should be valid */
 		EMIT_SIGNAL (XP_TE_DCCFILEERR, dcc->serv->front_session, dcc->destfile,
-						 NULL, NULL, NULL, 0);
+						 errorstring (errno), NULL, NULL, 0);
 		dcc_close (dcc, STAT_FAILED, FALSE);
 		return TRUE;
 	}

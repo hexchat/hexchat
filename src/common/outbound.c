@@ -3054,13 +3054,13 @@ nick_comp_cb (struct User *user, nickdata *data)
 static void
 perform_nick_completion (struct session *sess, char *cmd, char *tbuf)
 {
-	long len;
+	int len;
 	char *space = strchr (cmd, ' ');
 	if (space && space != cmd)
 	{
 		if (((space[-1] == ':') || (space[-1] == prefs.nick_suffix[0])) && (space - 1 != cmd))
 		{
-			len = (long) space - (long) cmd - 1;
+			len = space - cmd - 1;
 			if (len < NICKLEN)
 			{
 				char nick[NICKLEN];
