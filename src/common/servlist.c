@@ -69,9 +69,6 @@ static const struct defaultserver def[] =
 	{0,			"fullcomp.au.amiganet.org"},
 	{0,			"spod.uk.amiganet.org"},
 
-	{"AnyNet",	0},
-	{0,			"irc.anynet.org"},
-
 	{"ARCNet",	0},
 	{0,			"se1.arcnet.vapor.com"},
 	{0,			"us1.arcnet.vapor.com"},
@@ -132,7 +129,7 @@ static const struct defaultserver def[] =
 	{0,			"nc.d-t-net.de"},
 	{0,			"wakka.d-t-net.de"},
 
-	{"DwarfStarNet",	0},
+	{"DwarfStarNet",	0},/*undersized*/
 	{0,			"IRC.dwarfstar.net"},
 	{0,			"US.dwarfstar.net"},
 	{0,			"EU.dwarfstar.net"},
@@ -162,7 +159,7 @@ static const struct defaultserver def[] =
 	{0,			"irc.inn.at.euirc.net"},
 	{0,			"irc.bas.ch.euirc.net"},
 
-	{"Evolnet",	0},
+	{"Evolnet",	0},/*undersized*/
 	{0,			"irc.evolnet.org"},
 	{0,			"blender.evolnet.org"},
 
@@ -191,7 +188,15 @@ static const struct defaultserver def[] =
 	{0,			"sprynet.us.galaxynet.org"},
 	{0,			"atlanta.ga.us.galaxynet.org"},
 
-	{"Gamma Force",	0},
+	{"GamesNET",	0},
+	{0,				"irc.gamesnet.net"},
+	{0,				"irc.us.gamesnet.net"},
+	{0,				"east.us.gamesnet.net"},
+	{0,				"west.us.gamesnet.net"},
+	{0,				"irc.ca.gamesnet.net"},
+	{0,				"irc.eu.gamesnet.net"},
+
+	{"Gamma Force",	0},/*undersized*/
 	{0,			"irc.gammaforce.org"},
 	{0,			"sphinx.or.us.gammaforce.org"},
 
@@ -299,7 +304,7 @@ static const struct defaultserver def[] =
 	{0,			"us.pa.nixhelp.org"},
 
 	{"NullusNet",	0},
-	{0,			"irc.spot.org"},
+	{0,			"irc.spot.org"},/*refused*/
 	{0,			"irc.nullus.net"},
 
 	{"OFTC",	0},

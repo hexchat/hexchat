@@ -302,7 +302,6 @@ typedef struct session
 	int ignore_names:1;
 	int end_of_names:1;
 	int doing_who:1;		/* /who sent on this channel */
-	int highlight_tab:1;	/* Highlight the channel tab (red-style) */
 	/* these are in the bottom-right menu */
 	int hide_join_part:1;	/* hide join & part messages? */
 	int beep:1;				/* beep enabled? */

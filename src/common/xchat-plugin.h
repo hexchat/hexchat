@@ -34,10 +34,10 @@ typedef struct _xchat_hook xchat_hook;
 typedef struct _xchat_context xchat_context;
 #endif
 
-#if !defined(PLUGIN_C) && defined(WIN32)
-/* === FOR WINDOWS === */
+#ifndef PLUGIN_C
 struct _xchat_plugin
 {
+	/* these are only used on win32 */
 	xchat_hook *(*xchat_hook_command) (xchat_plugin *ph,
 		    char *name,
 		    int pri,

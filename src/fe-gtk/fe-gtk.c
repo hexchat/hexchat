@@ -495,11 +495,6 @@ fe_print_text (struct session *sess, char *text)
 {
 	PrintTextRaw (sess->res->buffer, text, prefs.indent_nicks);
 
-/*	if (prefs.limitedtabhighlight && !sess->highlight_tab)
-		return;*/
-
-	sess->highlight_tab = FALSE;
-
 	if (!sess->new_data && sess != current_tab &&
 		 sess->gui->is_tab && !sess->nick_said)
 	{

@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: X-Chat 1.9.8\n"
-"POT-Creation-Date: 2003-01-26 19:59+1100\n"
+"POT-Creation-Date: 2003-02-09 13:54+1100\n"
 "PO-Revision-Date: 2003-01-14 03:00GMT+2\n"
 "Last-Translator: Dokianakis Theofanis <madf@hellug.gr>\n"
 "Language-Team: Greek <EL@li.org>\n"
@@ -17,15 +17,15 @@ msgstr ""
 msgid "Cannot create ~/.xchat2"
 msgstr "Αδυναμία δημιουργίας ~/.xchat2"
 
-#: src/common/cfgfiles.c:590
+#: src/common/cfgfiles.c:588
 msgid "I'm busy"
 msgstr "Είμαι απασχολημένος/η"
 
-#: src/common/cfgfiles.c:591
+#: src/common/cfgfiles.c:589
 msgid "Client exiting"
 msgstr "Έξοδος πελάτη"
 
-#: src/common/cfgfiles.c:634
+#: src/common/cfgfiles.c:632
 msgid ""
 "* Running IRC as root is stupid! You should\n"
 "  create a User Account and use that to login.\n"
@@ -63,12 +63,12 @@ msgstr "Σύνδεση"
 msgid "Aborted"
 msgstr "Ματαιώθηκε"
 
-#: src/common/dcc.c:1256
+#: src/common/dcc.c:1248
 #, c-format
 msgid "Cannot access %s\n"
 msgstr "Αδυναμία πρόσβασης στο %s\n"
 
-#: src/common/dcc.c:1692
+#: src/common/dcc.c:1684
 msgid "No active DCCs\n"
 msgstr "Μη ενεργά DCC\n"
 
@@ -92,19 +92,19 @@ msgstr "  %-20s συνδέθηκε\n"
 msgid "  %-20s offline\n"
 msgstr "  %-20s αποσυνδέθηκε\n"
 
-#: src/common/outbound.c:67
+#: src/common/outbound.c:68
 msgid "No channel joined. Try /join #<channel>\n"
 msgstr "Δεν έχετε συνδεθεί σε κανάλι. Δοκιμάστε /join #<channel>\n"
 
-#: src/common/outbound.c:73
+#: src/common/outbound.c:74
 msgid "Not connected. Try /server <host> [<port>]\n"
 msgstr "Δεν έχετε συνδεθεί. Δοκιμάστε /server <διακομίστης> [<port>]\n"
 
-#: src/common/outbound.c:1301
+#: src/common/outbound.c:1330
 msgid "I need /bin/sh to run!\n"
 msgstr "Το /bin/sh χρειάζετε για την εκτέλεση!\n"
 
-#: src/common/outbound.c:1513
+#: src/common/outbound.c:1542
 msgid ""
 "\n"
 "Commands Available:\n"
@@ -116,7 +116,7 @@ msgstr ""
 "\n"
 "  "
 
-#: src/common/outbound.c:1548
+#: src/common/outbound.c:1577
 msgid ""
 "\n"
 "\n"
@@ -128,7 +128,7 @@ msgstr ""
 "Δώστε /HELP <εντολή> για περισσότερες πληροφορίες, ή /HELP -l\n"
 "\n"
 
-#: src/common/outbound.c:1549
+#: src/common/outbound.c:1578
 msgid ""
 "User defined commands:\n"
 "\n"
@@ -138,36 +138,36 @@ msgstr ""
 "\n"
 "  "
 
-#: src/common/outbound.c:1639
+#: src/common/outbound.c:1668
 #, c-format
 msgid "Unknown arg '%s' ignored."
 msgstr "Αγνόηση της άγνωστης επιλογής '%s'"
 
-#: src/common/outbound.c:2313
+#: src/common/outbound.c:2342
 msgid "No such plugin found.\n"
 msgstr "Δεν υπάρχει τέτοιο άρθρωμα.\n"
 
-#: src/common/outbound.c:2318 src/fe-gtk/plugingui.c:135
+#: src/common/outbound.c:2347 src/fe-gtk/plugingui.c:135
 msgid "That plugin is refusing to unload.\n"
 msgstr "Αυτό το άρθρωμα αρνείτε να αποφορτωθεί.\n"
 
-#: src/common/outbound.c:2452
+#: src/common/outbound.c:2481
 msgid "ADDBUTTON <name> <action>, adds a button under the user-list"
 msgstr "ADDBUTTON <όνομα> <δράση>, προσθέτει ένα κουμπί στη λίστα χρηστών"
 
-#: src/common/outbound.c:2454
+#: src/common/outbound.c:2483
 msgid "ALLCHAN <cmd>, sends a command to all channels you're in"
 msgstr "ALLCHAN <εντολή>, στέλνει μια εντολή σε όλα τα κανάλια που είστε"
 
-#: src/common/outbound.c:2456
+#: src/common/outbound.c:2485
 msgid "ALLSERV <cmd>, sends a command to all servers you're in"
 msgstr "ALLSERV <εντολή>, στέλνει μια εντολή στους διακομιστές που είστε"
 
-#: src/common/outbound.c:2457
+#: src/common/outbound.c:2486
 msgid "AWAY [<reason>], sets you away"
 msgstr "AWAY [<αιτία>], σημείωση απουσίας"
 
-#: src/common/outbound.c:2459
+#: src/common/outbound.c:2488
 msgid ""
 "BAN <mask> [<bantype>], bans everyone matching the mask from the current "
 "channel. If they are already on the channel this doesn't kick them (needs "
@@ -177,19 +177,19 @@ msgstr ""
 "τρέχον κανάλι. Εάν είναι ήδη στο κανάλι δεν τους κάνει kick (χρειάζετε "
 "chanop)"
 
-#: src/common/outbound.c:2461
+#: src/common/outbound.c:2490
 msgid "UNBAN <mask> [<mask>...], unbans the specified masks."
 msgstr "UNBAN <mask> [<mask>...], κάνει unban με τις ορισμένες επιλογές"
 
-#: src/common/outbound.c:2462
+#: src/common/outbound.c:2492
 msgid "CLEAR, Clears the current text window"
 msgstr "CLEAR, Καθαρίζει το τρέχον παράθυρο κειμένου"
 
-#: src/common/outbound.c:2463
+#: src/common/outbound.c:2493
 msgid "CLOSE, Closes the current window/tab"
 msgstr "CLOSE, Κλείνει το τρέχον παράθυρο/σελίδα"
 
-#: src/common/outbound.c:2466
+#: src/common/outbound.c:2496
 msgid ""
 "CTCP <nick> <message>, send the CTCP message to nick, common messages are "
 "VERSION and USERINFO"
@@ -197,15 +197,15 @@ msgstr ""
 "CTCP <nick> <μήνυμα>, στέλνει ένα μήνυμα CTCP στο nick, συνηθέστερα μηνύματα "
 "είναι το VERSION και USERINFO"
 
-#: src/common/outbound.c:2468
+#: src/common/outbound.c:2498
 msgid "COUNTRY <code>, finds a country code, eg: au = australia"
 msgstr "COUNTRY <κώδικας>, βρίσκει το κώδικα χώρας, πχ: gr = greece"
 
-#: src/common/outbound.c:2470
+#: src/common/outbound.c:2500
 msgid "CYCLE, parts current channel and immediately rejoins"
 msgstr "CYCLE, αποσυνδέετε από το τρέχον κανάλι και επανασυνδέετε άμεσα"
 
-#: src/common/outbound.c:2472
+#: src/common/outbound.c:2502
 msgid ""
 "\n"
 "DCC GET <nick>                     - accept an offered file\n"
@@ -223,11 +223,11 @@ msgstr ""
 "DCC CLOSE <τύπος> <nick> <αρχείο>      παράδειγμα:\n"
 "         /dcc close send mixalhs file.tar.gz"
 
-#: src/common/outbound.c:2482
+#: src/common/outbound.c:2512
 msgid "DELBUTTON <name>, deletes a button from under the user-list"
 msgstr "DELBUTTON <όνομα>, διαγραφή ενός κουμπιού κάτω από τη λίστα χρηστών"
 
-#: src/common/outbound.c:2484
+#: src/common/outbound.c:2514
 msgid ""
 "DEHOP <nick>, removes chanhalf-op status from the nick on the current "
 "channel (needs chanop)"
@@ -235,7 +235,7 @@ msgstr ""
 "DEHOP <nick>, αφαίρεση της κατάστασης chanhalf-op από το nick στο τρέχων "
 "κανάλι (χρειάζετε chanop)"
 
-#: src/common/outbound.c:2486
+#: src/common/outbound.c:2516
 msgid ""
 "DEOP <nick>, removes chanop status from the nick on the current channel "
 "(needs chanop)"
@@ -243,7 +243,7 @@ msgstr ""
 "DEOP <nick>, αφαίρεση της κατάστασης chanop από το nick στο τρέχων κανάλι "
 "(χρειάζετε chanop)"
 
-#: src/common/outbound.c:2488
+#: src/common/outbound.c:2518
 msgid ""
 "DEVOICE <nick>, removes voice status from the nick on the current channel "
 "(needs chanop)"
@@ -251,19 +251,19 @@ msgstr ""
 "DEVOICE <nick>, αφαίρεση της κατάστασης voice από το nick στο τρέχων κανάλι "
 "(χρειάζετε chanop)"
 
-#: src/common/outbound.c:2489
+#: src/common/outbound.c:2519
 msgid "DISCON, Disconnects from server"
 msgstr "DISCON, Αποσύνδεση από το διακομιστή"
 
-#: src/common/outbound.c:2490
+#: src/common/outbound.c:2520
 msgid "DNS <nick|host|ip>, Finds a users IP number"
 msgstr "DNS <nick|διακομιστής|ip>, Ανίχνευση του αριθμού IP ενός χρήστη"
 
-#: src/common/outbound.c:2491
+#: src/common/outbound.c:2521
 msgid "ECHO <text>, Prints text locally"
 msgstr "ECHO <κείμενο>, Τοπική εκτύπωση κειμένου"
 
-#: src/common/outbound.c:2494
+#: src/common/outbound.c:2524
 msgid ""
 "EXEC [-o] <command>, runs the command. If -o flag is used then output is "
 "sent to current channel, else is printed to current text box"
@@ -271,7 +271,7 @@ msgstr ""
 "EXEC [-o] <εντολή>, εκτελεί την εντολή. Εάν υπάρχει το -o τότε η έξοδος θα "
 "σταλθεί στο τρέχων κανάλι, αλλίως στέλνετε στο τρέχων κουτι κειμένου"
 
-#: src/common/outbound.c:2496
+#: src/common/outbound.c:2526
 msgid ""
 "EXECKILL [-9], kills a running exec in the current session. If -9 is given "
 "the process is SIGKILL'ed"
@@ -279,32 +279,32 @@ msgstr ""
 "EXECKILL [-9], σκοτώνει ένα εκτελούμενο exec στη τρέχουσα συνεδρία. Εάν "
 "δοθεί το -9 τότε στέλνει στη διεργασία ένα SIGKILL σήμα"
 
-#: src/common/outbound.c:2498
+#: src/common/outbound.c:2528
 msgid "EXECSTOP, sends the process SIGSTOP"
 msgstr "EXECSTOP, στέλνει στη διεργασία ένα SIGSTOP σήμα"
 
-#: src/common/outbound.c:2499
+#: src/common/outbound.c:2529
 msgid "EXECCONT, sends the process SIGCONT"
 msgstr "EXECCONT, στέλνει στη διεργασία ένα SIGCONT σήμα"
 
-#: src/common/outbound.c:2500
+#: src/common/outbound.c:2530
 msgid "EXECWRITE, sends data to the processes stdin"
 msgstr "EXECWRITE, στέλνει δεδομένα στη stdin της διεργασίας"
 
-#: src/common/outbound.c:2504
+#: src/common/outbound.c:2534
 msgid "FLUSHQ, flushes the current server's send queue"
 msgstr "FLUSHQ, καθαρίζει σειρά αποστολής του τρέχοντος διακομιστή"
 
-#: src/common/outbound.c:2506
+#: src/common/outbound.c:2536
 msgid "GATE <host> [<port>], proxies through a host, port defaults to 23"
 msgstr ""
 "GATE <διακομιστής> [<port>], θέτει proxy ένα διακομιστή, εξ'ορισμού θύρα 23"
 
-#: src/common/outbound.c:2511
+#: src/common/outbound.c:2541
 msgid "HOP <nick>, gives chanhalf-op status to the nick (needs chanop)"
 msgstr "HOP <nick>, δίνει κατάσταση chanhalf-op στο nick (χρειάζετε chanop)"
 
-#: src/common/outbound.c:2513
+#: src/common/outbound.c:2543
 msgid ""
 "IGNORE <mask> <types..> <options..>\n"
 "    mask - host mask to ignore, eg: *!*@*.aol.com\n"
@@ -318,7 +318,7 @@ msgstr ""
 "           PRIV, CHAN, NOTI, CTCP, INVI, ALL\n"
 "   επιλογές - NOSAVE, QUIET"
 
-#: src/common/outbound.c:2520
+#: src/common/outbound.c:2550
 msgid ""
 "INVITE <nick> [<channel>], invites someone to a channel, by default the "
 "current channel (needs chanop)"
@@ -326,15 +326,15 @@ msgstr ""
 "/INVITE <nick> [<κανάλι>], καλεί κάποιον σε ένα κανάλι, εξ'ορισμού το "
 "τρέχων  κανάλι (χρειάζετε chanop)"
 
-#: src/common/outbound.c:2521
+#: src/common/outbound.c:2551
 msgid "JOIN <channel>, joins the channel"
 msgstr "JOIN <κανάλι>, συνδέετε στο κανάλι"
 
-#: src/common/outbound.c:2523
+#: src/common/outbound.c:2553
 msgid "KICK <nick>, kicks the nick from the current channel (needs chanop)"
 msgstr "KICK <nick>, διώχνει το nick από τρέχων κανάλι (χρειάζετε chanop)"
 
-#: src/common/outbound.c:2525
+#: src/common/outbound.c:2555
 msgid ""
 "KICKBAN <nick>, bans then kicks the nick from the current channel (needs "
 "chanop)"
@@ -342,37 +342,37 @@ msgstr ""
 "KICKBAN <nick>, κάνει ban και διώχνει το nick από τρέχων κανάλι (χρειάζετε "
 "chanop)"
 
-#: src/common/outbound.c:2527
+#: src/common/outbound.c:2557
 msgid "LAGCHECK, forces a new lag check"
 msgstr "LAGCHECK, απαίτηση νέου ελέγχου για lag"
 
-#: src/common/outbound.c:2529
+#: src/common/outbound.c:2559
 msgid "LASTLOG <string>, searches for a string in the buffer"
 msgstr "LASTLOG <string>, αναζήτηση ενός string στη προσωρινή μνήμη."
 
-#: src/common/outbound.c:2531
+#: src/common/outbound.c:2561
 msgid "LOAD <file>, loads a plugin or script"
 msgstr "LOAD <αρχείο>, φορτώνει ένα Perl script"
 
-#: src/common/outbound.c:2534
+#: src/common/outbound.c:2564
 msgid ""
 "MDEHOP, Mass deop's all chanhalf-ops in the current channel (needs chanop)"
 msgstr ""
 "MDEHOP, Μαζικό deop όλων των chanhalf-ops στο τρέχων κανάλι (χρειάζετε "
 "chanop)"
 
-#: src/common/outbound.c:2536
+#: src/common/outbound.c:2566
 msgid "MDEOP, Mass deop's all chanops in the current channel (needs chanop)"
 msgstr ""
 "MDEOP, Μαζικό deop όλων των chanops στο τρέχων κανάλι (χρειάζετε chanop)"
 
-#: src/common/outbound.c:2538
+#: src/common/outbound.c:2568
 msgid ""
 "MKICK, Mass kicks everyone except you in the current channel (needs chanop)"
 msgstr ""
 "MKICK, Μαζικό kick όλων εκτός από εσένα στο τρέχων κανάλι (χρειάζετε chanop)"
 
-#: src/common/outbound.c:2540
+#: src/common/outbound.c:2570
 msgid ""
 "ME <action>, sends the action to the current channel (actions are written in "
 "the 3rd person, like /me jumps)"
@@ -380,29 +380,29 @@ msgstr ""
 "ME <δράση>, στέλνει τη δράση στο τρέχων κανάλι (οι δράσεις γράφονται στο "
 "τρίτο πρόσωπο, πχ. /me kanei mia toumpa)"
 
-#: src/common/outbound.c:2541
+#: src/common/outbound.c:2571
 msgid "MSG <nick> <message>, sends a private message"
 msgstr "MSG <nick> <μήνυμα>, στέλνει ένα προσωπικό μήνυμα"
 
-#: src/common/outbound.c:2544
+#: src/common/outbound.c:2574
 msgid "NAMES, Lists the nicks on the current channel"
 msgstr "NAMES, Δείχνει μια λίστα με όλα τα ονόματα στο τρέχων κανάλι"
 
-#: src/common/outbound.c:2546
+#: src/common/outbound.c:2576
 msgid "NCTCP <nick> <message>, Sends a CTCP notice"
 msgstr "NCTCP <nick> <μήνυμα>, Στέλνει μία CTCP αγγελία"
 
-#: src/common/outbound.c:2547
+#: src/common/outbound.c:2577
 msgid "NEWSERVER <hostname> [<port>]"
 msgstr ""
 "NEWSERVER <διακομιστής> [<port>] σύνδεση σε ένα διακομιστή σε νέο  παράθυρο/"
 "σελίδα"
 
-#: src/common/outbound.c:2548
+#: src/common/outbound.c:2578
 msgid "NICK <nickname>, sets your nick"
 msgstr "NICK <ψευδώνυμο>, θέτει το ψευδώνυμο σας"
 
-#: src/common/outbound.c:2551
+#: src/common/outbound.c:2581
 msgid ""
 "NOTICE <nick/channel> <message>, sends a notice. Notices are a type of "
 "message that should be auto reacted to"
@@ -410,36 +410,36 @@ msgstr ""
 "NOTICE <nick/κανάλι> <μήνυμα>, στέλνει μια αναγγελία. Οι αγγελίες είναι "
 "τύποι μηνυμάτων που θα πρέπει να αντιδρά αυτόματα(auto reacted to)"
 
-#: src/common/outbound.c:2553
+#: src/common/outbound.c:2583
 msgid "NOTIFY [<nick>], lists your notify list or adds someone to it"
 msgstr "NOTIFY [<nick>], δείχνει τη λίστα ειδοποίησης ή προσθέτει κάποιον"
 
-#: src/common/outbound.c:2555
+#: src/common/outbound.c:2585
 msgid "OP <nick>, gives chanop status to the nick (needs chanop)"
 msgstr "OP <nick>, δίνει κατάσταση chanop στο nick, (χρειάζετε chanop)"
 
-#: src/common/outbound.c:2557
+#: src/common/outbound.c:2587
 msgid ""
 "PART [<channel>] [<reason>], leaves the channel, by default the current one"
 msgstr "PART [<κανάλι>] [<αιτία>], φεύγει από το κανάλι, εξ'ορισμού το τρέχων"
 
-#: src/common/outbound.c:2559
+#: src/common/outbound.c:2589
 msgid "PING <nick | channel>, CTCP pings nick or channel"
 msgstr "PING <nick | κανάλι>, κάνει ένα CTCP ping στο nick ή το κανάλι"
 
-#: src/common/outbound.c:2561
+#: src/common/outbound.c:2591
 msgid "QUERY <nick>, opens up a new privmsg window to someone"
 msgstr "QUERY <nick>, ανοίγει ένα παράθυρο για προσωπική συζήτηση"
 
-#: src/common/outbound.c:2563
+#: src/common/outbound.c:2593
 msgid "QUIT [<reason>], disconnects from the current server"
 msgstr "QUIT [<αιτία>], αποσύνδεση από το τρέχων διακομιστή"
 
-#: src/common/outbound.c:2565
+#: src/common/outbound.c:2595
 msgid "QUOTE <text>, sends the text in raw form to the server"
 msgstr "QUOTE <κείμενο>, στέλνει ένα κείμενο σε ωμή μορφή στο διακομιστή"
 
-#: src/common/outbound.c:2568
+#: src/common/outbound.c:2598
 msgid ""
 "RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as /"
 "RECONNECT to reconnect to the current server or with /RECONNECT ALL to "
@@ -449,7 +449,7 @@ msgstr ""
 "απλά σαν /reconnect για επανασύνδεση στο τρέχων διακομιστή ή με /reconnect "
 "all για όλους τους ανοικτούς διακομιστές"
 
-#: src/common/outbound.c:2571
+#: src/common/outbound.c:2601
 msgid ""
 "RECONNECT [<host>] [<port>] [<password>], Can be called just as /RECONNECT "
 "to reconnect to the current server or with /RECONNECT ALL to reconnect to "
@@ -459,7 +459,7 @@ msgstr ""
 "σαν /reconnect για επανασύνδεση στο τρέχων διακομιστή ή με /reconnect all "
 "για όλους τους ανοικτούς διακομιστές"
 
-#: src/common/outbound.c:2573
+#: src/common/outbound.c:2603
 msgid ""
 "RECV <text>, send raw data to xchat, as if it was received from the irc "
 "server"
@@ -467,26 +467,26 @@ msgstr ""
 "RECV <κείμενο>, στέλνει ωμά δεδομένα στο xchat, όπως λαμβάνονται από τον irc "
 "server"
 
-#: src/common/outbound.c:2576
+#: src/common/outbound.c:2606
 msgid "SAY <text>, sends the text to the object in the current window"
 msgstr "SAY <κείμενο>, στέλνει το κείμενο στο αντικείμενο στο παράθυρο"
 
-#: src/common/outbound.c:2577
+#: src/common/outbound.c:2607
 msgid "SET <variable> [<value>]"
 msgstr "SET <μεταβλητή> [<τιμή>]"
 
-#: src/common/outbound.c:2581
+#: src/common/outbound.c:2611
 msgid "SERVCHAN [-ssl] <host> <port> <channel>, connects and joins a channel"
 msgstr ""
 "SERVCHAN [-ssl] <διακομιστής> <port> <κανάλι>, σύνδεση σε διακομιστή και "
 "κανάλι"
 
-#: src/common/outbound.c:2584
+#: src/common/outbound.c:2614
 msgid "SERVCHAN <host> <port> <channel>, connects and joins a channel"
 msgstr ""
 "SERVCHAN <διακομιστής> <port> <κανάλι>, σύνδεση σε διακομιστή και κανάλι"
 
-#: src/common/outbound.c:2588
+#: src/common/outbound.c:2618
 msgid ""
 "SERVER [-ssl] <host> [<port>] [<password>], connects to a server, the "
 "default port is 6667 for normal connections, and 9999 for ssl connections"
@@ -494,7 +494,7 @@ msgstr ""
 "SERVER [-ssl] <διακομιστής> [<port>] [<password>], σύνδεση σε ένα διακομιστή,"
 "εξ'ορισμού port το 6667"
 
-#: src/common/outbound.c:2591
+#: src/common/outbound.c:2621
 msgid ""
 "SERVER <host> [<port>] [<password>], connects to a server, the default port "
 "is 6667"
@@ -502,41 +502,41 @@ msgstr ""
 "SERVER <διακομιστής> [<port>] [<password>], σύνδεση σε ένα διακομιστή, "
 "εξ'ορισμού port το 6667"
 
-#: src/common/outbound.c:2594
+#: src/common/outbound.c:2624
 msgid ""
 "TOPIC [<topic>], sets the topic if one is given, else shows the current topic"
 msgstr ""
 "TOPIC [<θέμα>], θέτει το θέμα αν δοθεί κάποιο, αλλίως δείχνει το τρέχων"
 
-#: src/common/outbound.c:2595
+#: src/common/outbound.c:2625
 msgid "UNIGNORE <mask> [QUIET]"
 msgstr "UNIGNORE <μάσκα> [QUIET]"
 
-#: src/common/outbound.c:2596
+#: src/common/outbound.c:2626
 msgid "UNLOAD <name>, unloads a plugin or script"
 msgstr "UNLOAD <αρχείο>, αποφορτώνει ένα Perl script"
 
-#: src/common/outbound.c:2599
+#: src/common/outbound.c:2629
 msgid ""
 "WALLCHOP <message>, sends the message to all chanops on the current channel"
 msgstr ""
 "WALLCHOP <μήνυμα>, αποστολή του μηνύματος σε όλους τους chanops στο  τρέχων "
 "κανάλι"
 
-#: src/common/outbound.c:2601
+#: src/common/outbound.c:2631
 msgid "WALLCHAN <message>, writes the message to all channels"
 msgstr "WALLCHAN <μήνυμα>, αποστολή του μηνύματος σε όλα τα κανάλια"
 
-#: src/common/outbound.c:2603
+#: src/common/outbound.c:2633
 msgid "VOICE <nick>, gives voice status to someone (needs chanop)"
 msgstr "VOICE <nick>, δίνει κατάσταση voice σε κάποιον (θέλει chanop)"
 
-#: src/common/outbound.c:2623
+#: src/common/outbound.c:2653
 #, c-format
 msgid "Usage: %s\n"
 msgstr "Χρήση: %s\n"
 
-#: src/common/outbound.c:2628
+#: src/common/outbound.c:2658
 msgid ""
 "\n"
 "No help available on that command.\n"
@@ -544,23 +544,23 @@ msgstr ""
 "\n"
 "Δεν υπάρχει διαθέσιμη βοήθεια για αυτή την εντολή.\n"
 
-#: src/common/outbound.c:2635
+#: src/common/outbound.c:2665
 msgid "No such command.\n"
 msgstr "Δεν υπάρχει τέτοια εντολή.\n"
 
-#: src/common/outbound.c:2909
+#: src/common/outbound.c:2950
 msgid "Bad arguments for user command.\n"
 msgstr "Κακές επιλογές για την εντολή χρήστη.\n"
 
-#: src/common/outbound.c:3019
+#: src/common/outbound.c:3060
 msgid "Too many recursive usercommands, aborting."
 msgstr "Εγκατάλειψη, πάρα πολλές επαναλαμβανόμενες εντολές χρήστη."
 
-#: src/common/outbound.c:3085
+#: src/common/outbound.c:3126
 msgid "Unknown Command. Try /help\n"
 msgstr "Άγνωστη Εντολή. Δοκιμάστε /help\n"
 
-#: src/common/plugin.c:335 src/common/plugin.c:356
+#: src/common/plugin.c:336 src/common/plugin.c:357
 msgid "No xchat_plugin_init symbol; is this really an xchat plugin?"
 msgstr "Όχι σύμβολο xchat_plugin_init· σίγουρα είναι άρθρωμα xchat;"
 
@@ -2278,12 +2278,12 @@ msgstr ""
 "Ώρα Έναρξης: %s   Μέγιστοι CPS: %d\n"
 
 #: src/fe-gtk/dccgui.c:374 src/fe-gtk/dccgui.c:378 src/fe-gtk/dccgui.c:558
-#: src/fe-gtk/dccgui.c:689 src/fe-gtk/notifygui.c:164
+#: src/fe-gtk/dccgui.c:689 src/fe-gtk/notifygui.c:170
 msgid "Status"
 msgstr "Κατάσταση"
 
 #: src/fe-gtk/dccgui.c:374 src/fe-gtk/dccgui.c:378 src/fe-gtk/dccgui.c:558
-#: src/fe-gtk/plugingui.c:149
+#: src/fe-gtk/plugingui.c:152
 msgid "File"
 msgstr "Αρχείο"
 
@@ -2359,7 +2359,7 @@ msgstr "*ΝΕΟ*"
 msgid "EDIT ME"
 msgstr "ΔΙΟΡΘΩΣΕ ΜΕ"
 
-#: src/fe-gtk/editlist.c:299 src/fe-gtk/plugingui.c:149
+#: src/fe-gtk/editlist.c:299 src/fe-gtk/plugingui.c:152
 msgid "Name"
 msgstr "Όνομα"
 
@@ -2426,7 +2426,7 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/fe-gtk/fe-gtk.c:539
+#: src/fe-gtk/fe-gtk.c:534
 msgid "Search buffer is empty.\n"
 msgstr "Η μνήμη έυρεσης είναι άδεια.\n"
 
@@ -2516,8 +2516,9 @@ msgstr ""
 "είναι καθορισμένο τότε μετακινεί πάνω αλλιώς κάτω"
 
 #: src/fe-gtk/fkeys.c:166
+#, fuzzy
 msgid ""
-"This command checks the last work entered in the entry against the replace "
+"This command checks the last word entered in the entry against the replace "
 "list and replaces it if it finds a match"
 msgstr ""
 "Αυτή η εντολή συγκρίνει την τελευταία εργασία που δόθηκε στην εγγραφή με τη "
@@ -2542,7 +2543,7 @@ msgstr "Σφάλμα κατά το φόρτωμα των ρυθμίσεων των πλήκτρων συντόμευσης"
 
 #: src/fe-gtk/fkeys.c:395 src/fe-gtk/fkeys.c:674 src/fe-gtk/fkeys.c:680
 #: src/fe-gtk/fkeys.c:685 src/fe-gtk/maingui.c:742 src/fe-gtk/maingui.c:763
-#: src/fe-gtk/maingui.c:810 src/fe-gtk/maingui.c:2127
+#: src/fe-gtk/maingui.c:810 src/fe-gtk/maingui.c:2161
 msgid "<none>"
 msgstr "<κανένα>"
 
@@ -2816,7 +2817,7 @@ msgstr "Επικόλληση Χρωμάτων"
 msgid "Enter new nickname:"
 msgstr "Εισάγετε νέο ψευδώνυμο:"
 
-#: src/fe-gtk/maingui.c:1792
+#: src/fe-gtk/maingui.c:1819
 msgid "Channel Options"
 msgstr "Επιλογές Καναλιού"
 
@@ -3285,43 +3286,43 @@ msgstr "Περιεχόμενα"
 msgid "_About"
 msgstr "Περί"
 
-#: src/fe-gtk/notifygui.c:94
+#: src/fe-gtk/notifygui.c:95
 msgid "Offline"
 msgstr "Offline"
 
-#: src/fe-gtk/notifygui.c:97
+#: src/fe-gtk/notifygui.c:98
 msgid "Never"
 msgstr "Ποτέ"
 
-#: src/fe-gtk/notifygui.c:116
+#: src/fe-gtk/notifygui.c:120
 msgid "Online"
 msgstr "Online"
 
-#: src/fe-gtk/notifygui.c:157
+#: src/fe-gtk/notifygui.c:163
 msgid "Enter nickname to add:"
 msgstr "Εισάγετε ψευδόνυμο για πρόσθεση:"
 
-#: src/fe-gtk/notifygui.c:164
+#: src/fe-gtk/notifygui.c:170
 msgid "User"
 msgstr "Χρήστης"
 
-#: src/fe-gtk/notifygui.c:164
+#: src/fe-gtk/notifygui.c:170
 msgid "Server"
 msgstr "Διακομιστής"
 
-#: src/fe-gtk/notifygui.c:164
+#: src/fe-gtk/notifygui.c:170
 msgid "Last Seen"
 msgstr "Τελευταία Ειδώθηκε"
 
-#: src/fe-gtk/notifygui.c:173
+#: src/fe-gtk/notifygui.c:179
 msgid "X-Chat: Notify List"
 msgstr "X-Chat: Λίστα ειδοποίησης"
 
-#: src/fe-gtk/notifygui.c:189 src/fe-gtk/servlistgui.c:695
+#: src/fe-gtk/notifygui.c:195 src/fe-gtk/servlistgui.c:695
 msgid "Add"
 msgstr "Προσθήκη"
 
-#: src/fe-gtk/notifygui.c:191
+#: src/fe-gtk/notifygui.c:197
 msgid "Remove"
 msgstr "Διαγραφή"
 
@@ -3329,24 +3330,24 @@ msgstr "Διαγραφή"
 msgid "Select a Plugin or Script to load"
 msgstr "Επιλογή ενός Plugin ή Script για φόρτωμα"
 
-#: src/fe-gtk/plugingui.c:149
+#: src/fe-gtk/plugingui.c:152
 msgid "Version"
 msgstr "Έκδοση"
 
-#: src/fe-gtk/plugingui.c:149 src/fe-gtk/textgui.c:374
+#: src/fe-gtk/plugingui.c:152 src/fe-gtk/textgui.c:374
 msgid "Description"
 msgstr "Περιγραφή"
 
-#: src/fe-gtk/plugingui.c:165
+#: src/fe-gtk/plugingui.c:168
 #, fuzzy
 msgid "X-Chat: Plugins and Scripts"
 msgstr "X-Chat Plugins"
 
-#: src/fe-gtk/plugingui.c:179
+#: src/fe-gtk/plugingui.c:182
 msgid "_Load..."
 msgstr "Άνοιγμα (_L)..."
 
-#: src/fe-gtk/plugingui.c:183
+#: src/fe-gtk/plugingui.c:186
 msgid "_UnLoad"
 msgstr "Αποφόρτωση (_U)"
 
@@ -3695,8 +3696,14 @@ msgstr "Βάση"
 msgid "Top"
 msgstr "Κορυφή"
 
-#. N_("Left"),
-#. N_("Right"),
+#: src/fe-gtk/setup.c:148
+msgid "Left"
+msgstr ""
+
+#: src/fe-gtk/setup.c:149
+msgid "Right"
+msgstr ""
+
 #: src/fe-gtk/setup.c:150
 msgid "Hidden"
 msgstr "Κρυφό"
@@ -3733,10 +3740,7 @@ msgstr "γράμματα."
 msgid "Open tab for server messages"
 msgstr "Άνοιγμα σελίδα για τα μηνύματα διακομιστή"
 
-#: src/fe-gtk/setup.c:162
-msgid "Only highlight tabs on channel messages"
-msgstr "Έμφαση του σελιδοδείκτη των καναλιών μόνο για μηνύματα"
-
+#. {ST_TOGGLE, N_("Only highlight tabs on channel messages"), P_OFFINT(limitedtabhighlight), 0, 0, 0},
 #: src/fe-gtk/setup.c:163
 msgid "Open tab for server notices"
 msgstr "Άνοιγμα σελίδας για τις ειδοποιήσεις διακομιστή"
@@ -3854,7 +3858,8 @@ msgid "(Can be a text file relative to ~/.xchat2/)."
 msgstr "(Μπορεί να έιναι αρχείο κειμένου σχετικό με ~/.xchat2/)."
 
 #: src/fe-gtk/setup.c:205
-msgid "(Can be a text file relative to config\\)."
+#, fuzzy
+msgid "(Can be a text file relative to config dir)."
 msgstr "(Μπορεί να είναι αρχείο κειμένου σχετικό με τις ρυθμίσεις\\)."
 
 #: src/fe-gtk/setup.c:207
@@ -4122,6 +4127,9 @@ msgstr "Επιλογή ενός αρχείου για αποθήκευση σε αυτό"
 #: src/fe-gtk/urlgrab.c:118
 msgid "X-Chat: URL Grabber"
 msgstr "X-Chat: Καταγραφέας URL"
+
+#~ msgid "Only highlight tabs on channel messages"
+#~ msgstr "Έμφαση του σελιδοδείκτη των καναλιών μόνο για μηνύματα"
 
 #~ msgid "port"
 #~ msgstr "port"

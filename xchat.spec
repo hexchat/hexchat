@@ -1,12 +1,12 @@
 Summary: Graphical IRC (chat) client
 Name: xchat
-Version: 2.0.0pre1
+Version: 2.0.0
 Release: 0
 Epoch: 1
 Group: Applications/Internet
 License: GPL
 URL: http://xchat.org
-Source: http://xchat.org/files/source/1.9/xchat-%{version}.tar.bz2
+Source: http://xchat.org/files/source/2.0/xchat-%{version}.tar.bz2
 Buildroot: %{_tmppath}/%{name}-%{version}-root
 Requires: gtk2 >= 2.0.6
 Requires: openssl >= 0.9.6b
@@ -44,7 +44,7 @@ Provides TCL scripting capability to XChat.
 %setup -q
 
 %build
-%configure --disable-textfe --enable-ipv6
+%configure --disable-textfe
 make
 
 %install

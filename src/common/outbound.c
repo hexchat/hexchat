@@ -503,10 +503,13 @@ static int
 cmd_charset (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	server *serv = sess->server;
+	const char *locale = NULL;
 
 	if (!word[2][0])
 	{
-		PrintTextf (sess, "Current charset: %s\n", serv->encoding);
+		g_get_charset (&locale);
+		PrintTextf (sess, "Current charset: %s\n",
+						serv->encoding ? serv->encoding : locale);
 		return TRUE;
 	}
 
@@ -518,7 +521,7 @@ cmd_charset (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		PrintTextf (sess, "Charset changed to: %s\n", word[2]);
 	} else
 	{
-		PrintTextf (sess, "Unknown charset: %s\n", word[2]);
+		PrintTextf (sess, "\0034Unknown charset:\017 %s\n", word[2]);
 	}
 
 	return TRUE;

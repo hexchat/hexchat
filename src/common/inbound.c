@@ -247,8 +247,11 @@ inbound_action (session *sess, char *tbuf, char *chan, char *from, char *text,
 	if (!sess)
 		sess = def;
 
-	sess->highlight_tab = TRUE;
-	sess->msg_said = TRUE;
+	if (sess != current_tab)
+	{
+		sess->msg_said = TRUE;
+		sess->new_data = FALSE;
+	}
 
 	if (!fromme)
 	{
@@ -287,7 +290,6 @@ inbound_chanmsg (server *serv, char *tbuf, char *chan, char *from, char *text,
 	if (!sess)
 		return;
 
-	sess->highlight_tab = TRUE;
 	if (sess != current_tab)
 	{
 		sess->msg_said = TRUE;

@@ -1,7 +1,6 @@
 #ifdef PLUGIN_C
 struct _xchat_plugin
 {
-#ifdef WIN32
 	/* Keep these insync with xchat-plugin.h */
 	/* !!don't change the order, to keep binary compat!! */
 	xchat_hook *(*xchat_hook_command) (xchat_plugin *ph,
@@ -78,11 +77,14 @@ struct _xchat_plugin
 			void *handle);
 	int (*xchat_emit_print) (xchat_plugin *ph,
 			char *event_name, ...);
+	void (*xchat_dummy8) (xchat_plugin *ph);
+	void (*xchat_dummy7) (xchat_plugin *ph);
+	void (*xchat_dummy6) (xchat_plugin *ph);
+	void (*xchat_dummy5) (xchat_plugin *ph);
 	void (*xchat_dummy4) (xchat_plugin *ph);
 	void (*xchat_dummy3) (xchat_plugin *ph);
 	void (*xchat_dummy2) (xchat_plugin *ph);
 	void (*xchat_dummy1) (xchat_plugin *ph);
-#endif
 	/* PRIVATE FIELDS! */
 	void *handle;		/* from dlopen */
 	char *filename;	/* loaded from */
