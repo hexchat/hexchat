@@ -15,7 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#define VERSION "1.0.25"
+#define VERSION "1.0.27"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -178,8 +178,10 @@ static char *myitoa(int value)
 
 static xchat_context *xchat_smart_context(char *arg1, char *arg2)
 {
-    xchat_context *origctx;
+    char *server, *s, *n;
     xchat_context *result = NULL;
+    xchat_context *ctx = NULL;
+    xchat_list *list;
 
     if (arg1 == NULL)
         return xchat_get_context(ph);;
@@ -190,22 +192,44 @@ static xchat_context *xchat_smart_context(char *arg1, char *arg2)
             result = xchat_find_context(ph, arg2, arg1);
         return result;
     } else {
-		/* is this chan/msg/tab on the current network? */
-        result = xchat_find_context(ph, xchat_get_info(ph, "network"), arg1);
-        if (result == NULL) {
-			/* is this a server/network? */
-            result = xchat_find_context(ph, arg1, NULL);
-            if (result != NULL) {
-                origctx = xchat_get_context(ph);
-                xchat_set_context(ph, result);
-                result = xchat_find_context(ph, arg1, xchat_get_info(ph, "network"));
-                xchat_set_context(ph, origctx);
+
+        server = xchat_get_info(ph, "server");
+
+        list = xchat_list_get(ph, "channels");
+
+        if (list != NULL) {
+
+            while (xchat_list_next(ph, list)) {
+
+                s = xchat_list_str(ph, list, "server");
+                ctx = xchat_list_str(ph, list, "context");
+
+                if (xchat_list_int(ph, list, "type") == 1) {
+                    if (strcasecmp(arg1, s) == 0) {
+                        result = ctx;
+                        break;
+                    }
+                    n = xchat_list_str(ph, list, "network");
+                    if (n) {
+                        if (strcasecmp(arg1, n) == 0) {
+                            result = ctx;
+                            break;
+                        }
+                    }
+                } else {
+                    if ((strcasecmp(server, s) == 0) && (strcasecmp(arg1, xchat_list_str(ph, list, "channel")) == 0)) {
+                        result = ctx;
+                        break;
+                    }
+                }
             }
+
+            xchat_list_free(ph, list);
         }
-        return result;
+
     }
 
-    return NULL;
+    return result;
 }
 
 static void queue_nexttimer()
@@ -1018,7 +1042,7 @@ static int tcl_getlist(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
                     xchat_set_context(ph, ctx);
                     Tcl_DStringStartSublist(&ds);
                     Tcl_DStringAppendElement(&ds, "ctx");
-                    Tcl_DStringAppendElement(&ds, xchat_get_info(ph, "network"));
+                    Tcl_DStringAppendElement(&ds, xchat_get_info(ph, "server"));
                     Tcl_DStringAppendElement(&ds, xchat_get_info(ph, "channel"));
                     Tcl_DStringEndSublist(&ds);
                 } else
@@ -1224,7 +1248,7 @@ static int tcl_findcontext(ClientData cd, Tcl_Interp * irp, int argc, char *argv
     origctx = xchat_get_context(ph);
     xchat_set_context(ph, ctx);
     Tcl_DStringAppendElement(&ds, "ctx");
-    Tcl_DStringAppendElement(&ds, xchat_get_info(ph, "network"));
+    Tcl_DStringAppendElement(&ds, xchat_get_info(ph, "server"));
     Tcl_DStringAppendElement(&ds, xchat_get_info(ph, "channel"));
     xchat_set_context(ph, origctx);
 
@@ -1247,7 +1271,7 @@ static int tcl_getcontext(ClientData cd, Tcl_Interp * irp, int argc, char *argv[
     ctx = xchat_get_context(ph);
 
     Tcl_DStringAppendElement(&ds, "ctx");
-    Tcl_DStringAppendElement(&ds, xchat_get_info(ph, "network"));
+    Tcl_DStringAppendElement(&ds, xchat_get_info(ph, "server"));
     Tcl_DStringAppendElement(&ds, xchat_get_info(ph, "channel"));
 
     Tcl_AppendResult(irp, ds.string, NULL);
@@ -1266,7 +1290,7 @@ static int tcl_channels(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
     BADARGS(1, 2, " ?server|network?");
 
     if (argc == 1)
-        server = (char *) xchat_get_info(ph, "network");
+        server = (char *) xchat_get_info(ph, "server");
     else
         server = argv[1];
 
