@@ -1,0 +1,593 @@
+dnl Process this file with autoconf to produce a configure script.
+
+AC_INIT(src)
+AM_CONFIG_HEADER(config.h)
+AM_INIT_AUTOMAKE(xchat, 1.9.6)
+AM_MAINTAINER_MODE
+AC_PROG_CC
+AC_PROG_CPP
+AM_PROG_AS
+AM_DISABLE_STATIC
+AM_PROG_LIBTOOL
+
+ALL_LINGUAS="ca cs da de el es et fi fr he hu it ja ko lt lv nl no pt pt_BR ro ru sk sl sr sv tr uk zh_CN zh_TW.Big5"
+AM_GNU_GETTEXT
+
+# displaced from acconfig.h
+AH_VERBATIM([OLD_PERL],[#undef OLD_PERL])
+AH_VERBATIM([PREFIX],[#undef PREFIX])
+AH_VERBATIM([SOCKS],[#undef SOCKS])
+AH_VERBATIM([USE_DEBUG],[#undef USE_DEBUG])
+AH_VERBATIM([USE_GNOME],[#undef USE_GNOME])
+AH_VERBATIM([USE_HEBREW],[#undef USE_HEBREW])
+AH_VERBATIM([USE_IPV6],[#undef USE_IPV6])
+AH_VERBATIM([USE_JCODE],[#undef USE_JCODE])
+AH_VERBATIM([USE_MMX],[#undef USE_MMX])
+AH_VERBATIM([USE_OPENSSL],[#undef USE_OPENSSL])
+AH_VERBATIM([USE_PLUGIN],[#undef USE_PLUGIN])
+AH_VERBATIM([USE_PANGO],[#undef USE_PANGO])
+AH_VERBATIM([USE_XFT],[#undef USE_XFT])
+AH_VERBATIM([USE_XLIB],[#undef USE_XLIB])
+AH_VERBATIM([USE_ZVT],[#undef USE_ZVT])
+AH_VERBATIM([USING_FREEBSD],[#undef USING_FREEBSD])
+AH_VERBATIM([USING_LINUX],[#undef USING_LINUX])
+AH_VERBATIM([socklen_t],[#undef socklen_t])
+
+AC_PATH_PROG(sedpath, sed)
+if test "_$sedpath" = _; then
+	AC_MSG_ERROR("Cannot find sed: I need it\!")
+fi
+
+AC_PATH_PROG(unamepath, uname)
+if test "_$unamepath" = _; then
+	system="unknown"
+else
+	AC_MSG_CHECKING(system type)
+	system=`$unamepath -s`
+	AC_MSG_RESULT($system)
+	if test "$system" = "Linux"; then
+		AC_DEFINE(USING_LINUX)
+	fi
+	if test "$system" = "FreeBSD"; then
+		AC_DEFINE(USING_FREEBSD)
+	fi
+fi
+
+dnl *********************************************************************
+dnl ** configure switches ***********************************************
+dnl *********************************************************************
+
+AC_ARG_ENABLE(debug,
+[  --enable-memdebug       enable use of Memory Debug (default: no)],
+        debug=$enableval, debug=no)
+
+AC_ARG_ENABLE(socks,
+[  --enable-socks          enable use of SOCKS5 (default: no)],
+        socks=$enableval, socks=no)
+
+AC_ARG_ENABLE(openssl,
+[  --enable-openssl[=PATH] enable use of openSSL (default: no)],
+        openssl=$enableval, openssl=no)
+
+AC_ARG_ENABLE(hebrew,
+[  --enable-hebrew         enable Hebrew support (default: no)],
+        hebrew=$enableval, hebrew=no)
+
+AC_ARG_ENABLE(ipv6,
+[  --enable-ipv6           enable IPv6 (default: no)],
+        ipv6=$enableval, ipv6=no)
+
+AC_ARG_ENABLE(japanese-conv, 
+[  --enable-japanese-conv  Enable Japanese code conversion support.
+                          iconv.h is needed. (default: no)],
+			WITH_JAPANESE=$enableval, WITH_JAPANESE=no)
+
+AC_ARG_ENABLE(gtkfe,
+[  --disable-gtkfe         disable building gtk frontend],
+        gtkfe=$enableval, gtkfe=yes)
+
+AC_ARG_ENABLE(textfe,
+[  --disable-textfe        disable building text frontend],
+        textfe=$enableval, textfe=yes)
+
+AC_ARG_ENABLE(gnome,
+[  --disable-gnome         disable use of gnome],
+        gnome=$enableval, gnome=yes)
+
+AC_ARG_ENABLE(zvt,
+[  --disable-zvt           disable zvt/shelltab feature],
+        zvt=$enableval, zvt=yes)
+
+AC_ARG_ENABLE(xlib,
+[  --disable-xlib          disable use of xlib (for non X11 systems)],
+        xlib=$enableval, xlib=yes)
+
+AC_ARG_ENABLE(python,
+[  --disable-python        don't build the python plugin],
+        python=$enableval, python=yes)
+
+AC_ARG_ENABLE(perl,
+[  --disable-perl          don't build the perl plugin],
+        perl=$enableval, perl=yes)
+
+AC_ARG_ENABLE(plugin,
+[  --disable-plugin        disable plugin support],
+        plugin=$enableval, plugin=yes)
+
+AC_ARG_ENABLE(mmx,
+[  --disable-mmx           disable MMX assembly routines],
+        mmx=$enableval, mmx=yes)
+
+AC_ARG_ENABLE(xft,
+[  --disable-xft           disable use of Xft],
+        xft=$enableval, xft=yes)
+
+dnl *********************************************************************
+dnl ** DEBUG ************************************************************
+dnl *********************************************************************
+
+if test "$debug" = yes; then
+	AC_DEFINE(USE_DEBUG)
+fi
+
+dnl *********************************************************************
+dnl ** XLIB *************************************************************
+dnl *********************************************************************
+
+if test "$xlib" = yes; then
+	AC_DEFINE(USE_XLIB)
+fi
+
+dnl *********************************************************************
+dnl ** GLIB *************************************************************
+dnl *********************************************************************
+
+AM_PATH_GLIB_2_0(2.0.3, glib=yes, glib=no)
+if test "$glib" = no; then
+	AC_MSG_ERROR("Cannot find glib")
+fi
+
+COMMON_CFLAGS="$GLIB_CFLAGS"
+COMMON_LIBS="$GLIB_LIBS"
+
+dnl *********************************************************************
+dnl ** GTK **************************************************************
+dnl *********************************************************************
+
+AM_PATH_GTK_2_0(2.0.3, havegtk=yes, havegtk=no)
+
+if test "$havegtk" = no; then
+	gtkfe=no
+	echo
+	echo Cannot find GTK\! Not building GTK FrontEnd.
+	echo
+fi
+
+if test "$gtkfe" != yes; then
+	gnome=no
+	zvt=no
+	COMMON_LIBS="$GLIB_LIBS"
+	COMMON_CFLAGS="$GLIB_CFLAGS"
+fi
+
+dnl *********************************************************************
+dnl ** XFT **************************************************************
+dnl *********************************************************************
+
+if test "$xft" = yes; then
+	xft=no
+	oldCPPFLAGS=$CPPFLAGS
+	CPPFLAGS="$CPPFLAGS $GTK_CFLAGS"
+	AC_CHECK_HEADERS(X11/Xft/Xft.h, xft=yes)
+	CPPFLAGS=$oldCPPFLAGS
+	if test "$xft" = yes; then
+		AC_DEFINE(USE_XFT)
+	fi
+fi
+
+dnl slow, but beats gdk_text_*
+if test "$xft" != yes; then
+	AC_DEFINE(USE_PANGO)
+fi
+
+dnl *********************************************************************
+dnl ** GNOME ************************************************************
+dnl *********************************************************************
+
+gnome=no
+if test "$gnome" = yes; then
+	AC_PATH_PROG(gnomepath, gnome-config)
+	AC_MSG_CHECKING(for Gnome compile flags)
+	GNOME_CFLAGS=`$gnomepath gnomeui --cflags 2>/dev/null`
+	if test "_$GNOME_CFLAGS" = _ ; then
+		gnome=no
+		AC_MSG_RESULT([Gnome not found, building without it.])
+		GUI_LIBS="$GUI_LIBS $GTK_LIBS"
+		GUI_CFLAGS="$GUI_CFLAGS $GTK_CFLAGS"
+	else
+		GNOME_VER=`$gnomepath --version |$sedpath 's/gnome-libs //' 2>/dev/null`
+		AC_MSG_RESULT(ok)
+		GUI_LIBS="$GUI_LIBS `$gnomepath gnomeui --libs 2>/dev/null`"
+		GUI_CFLAGS="$GUI_CFLAGS $GNOME_CFLAGS"
+		AC_DEFINE(USE_GNOME)
+	fi
+else
+	GUI_LIBS="$GUI_LIBS $GTK_LIBS"
+	GUI_CFLAGS="$GUI_CFLAGS $GTK_CFLAGS"
+fi
+
+dnl *********************************************************************
+dnl ** ZVT/SHELLTAB *****************************************************
+dnl *********************************************************************
+
+zvt=no
+if test "$zvt" = yes; then
+	if test "$gnome" = no; then
+		AC_PATH_PROG(gnomepath, gnome-config)
+	fi
+	AC_MSG_CHECKING(for zvt)
+	if test "_$gnomepath" = "_"; then
+		AC_MSG_RESULT([No gnome-config, can't do it.])
+		zvt=no
+	else
+		GUI_LIBS="$GUI_LIBS `$gnomepath zvt --libs`"
+		AC_DEFINE(USE_ZVT)
+		AC_MSG_RESULT(yes)
+	fi
+fi
+
+dnl *********************************************************************
+dnl ** PERL *************************************************************
+dnl *********************************************************************
+
+if test "$perl" = yes; then
+	AC_PATH_PROG(perlpath, perl)
+	AC_MSG_CHECKING(for Perl compile flags)
+	PERL_CFLAGS=`$perlpath -MExtUtils::Embed -e ccopts 2>/dev/null`
+	if test "_$PERL_CFLAGS" = _ ; then
+		AC_MSG_RESULT([not found, building without perl.])
+		perl=no
+	else
+		PERL_LDFLAGS=`$perlpath -MExtUtils::Embed -e ldopts |$sedpath 's/-lgdbm //'`
+		PERL_LDFLAGS=`echo $PERL_LDFLAGS |$sedpath 's/-ldb //'`
+		PERL_LDFLAGS=`echo $PERL_LDFLAGS |$sedpath 's/-lndbm //'`
+		if test "$system" = "Linux"; then
+			PERL_LDFLAGS=`echo $PERL_LDFLAGS |$sedpath 's/-lnsl //'`
+			PERL_LDFLAGS=`echo $PERL_LDFLAGS |$sedpath 's/-lposix //'`
+		fi
+		PERL_LDFLAGS=`echo $PERL_LDFLAGS |$sedpath 's/-lc //'`
+		AC_MSG_RESULT(ok)
+
+		oldLIBS=$LIBS
+		LIBS="$LIBS $PERL_LDFLAGS"
+		AC_CHECK_FUNCS(eval_pv)
+		LIBS=$oldLIBS
+
+		AC_MSG_CHECKING(for old perl)
+		PERL_OLD=`$perlpath -e 'if($]<5.006){printf"yes\n";}else{printf"no\n";}'`
+		if test "$PERL_OLD" = "yes"; then
+			AC_DEFINE(OLD_PERL)
+			AC_MSG_RESULT(yes)
+		else
+			AC_MSG_RESULT(no)
+		fi
+	fi
+fi
+
+dnl *********************************************************************
+dnl ** PYTHON ***********************************************************
+dnl *********************************************************************
+
+if test "$python" = yes; then
+	AC_PATH_PROG(pythonpath, python2)
+	if test "_$pythonpath" = _ ; then
+		AC_PATH_PROG(pythonpath, python)
+	fi
+	if test "_$pythonpath" = _ ; then
+		python=no
+	else
+		AC_MSG_CHECKING(Python version)
+		PY_PREFIX=`$pythonpath -c 'import sys; print sys.prefix'`
+		PY_EXEC_PREFIX=`$pythonpath -c 'import sys; print sys.exec_prefix'`
+		changequote(<<, >>)dnl
+		PY_VERSION=`$pythonpath -c 'import sys; print sys.version.split()[0]'`
+		PY_MAJOR=`$pythonpath -c 'import sys; print "%d.%d"%sys.version_info[:2]'`
+		PY_OK=`$pythonpath -c 'import sys; sys.version_info[:2] >= (2,2) and sys.stdout.write("1")'`
+		changequote([, ])dnl
+		AC_MSG_RESULT($PY_VERSION)
+		if test "$PY_OK" = "1"; then
+			AC_MSG_CHECKING(Python compile flags)
+			if test -f $PY_PREFIX/include/python$PY_MAJOR/Python.h; then
+				PY_LIBS="-L$PY_EXEC_PREFIX/lib/python$PY_MAJOR/config -lpython$PY_MAJOR -lpthread -lutil"
+				PY_CFLAGS="-I$PY_PREFIX/include/python$PY_MAJOR"
+				AC_MSG_RESULT(ok)
+			else
+				python=no
+				AC_MSG_RESULT([Can't find Python.h])
+			fi
+		else
+			echo "Python too old. Only 2.2 or above is supported."
+			python=no
+		fi
+	fi
+fi
+
+dnl *********************************************************************
+dnl ** IPv6 *************************************************************
+dnl *********************************************************************
+
+if test "$ipv6" = yes; then
+	AC_CHECK_FUNCS(getaddrinfo, have_getaddrinfo=yes)
+	AC_MSG_CHECKING(whether to enable IPv6 support)
+	if test "$have_getaddrinfo" = yes; then
+		AC_MSG_RESULT(yes)
+		AC_DEFINE(USE_IPV6)
+	else
+		ipv6=no
+		AC_MSG_RESULT(no)
+	fi
+fi
+
+dnl *********************************************************************
+dnl ** OPENSSL **********************************************************
+dnl *********************************************************************
+
+if test "$openssl" != no; then
+	unset openssl_path ac_cv_lib_ssl_SSL_new ac_cv_header_openssl_ssl_h
+	if test "$openssl" != yes; then
+		openssl_path=$openssl
+	fi
+	openssl=no
+	SAVED_LIBS=$LIBS
+	LIBS="$LIBS -lcrypto"
+	if test -n "$openssl_path"; then
+		LIBS="-L$openssl_path/lib $LIBS"
+	fi
+	AC_CHECK_LIB(ssl, SSL_new, have_openssl=yes)
+	LIBS=$SAVED_LIBS
+	if test "$have_openssl" = yes; then
+		SAVED_CPPFLAGS=$CPPFLAGS
+		if test -n "$openssl_path"; then
+			CPPFLAGS="-I$openssl_path/include $CPPFLAGS"
+		fi
+		AC_CHECK_HEADERS(openssl/ssl.h, have_openssl_h=yes)
+		if test "$have_openssl_h" = yes; then
+			openssl=yes
+			AC_DEFINE(USE_OPENSSL)
+			LIBS="$LIBS -lssl -lcrypto"
+			if test -n "$openssl_path"; then
+				LIBS="-L$openssl_path/lib $LIBS"
+			fi
+		else
+			CPPFLAGS=$SAVED_CPPFLAGS
+		fi
+	fi
+fi
+
+dnl *********************************************************************
+dnl ** PLUGIN ***********************************************************
+dnl *********************************************************************
+
+if test "$plugin" = yes; then
+	AC_CHECK_FUNCS(dlopen, have_dl=yes)
+	if test "$have_dl" != yes; then
+		AC_CHECK_LIB(dl, dlopen, have_dl=yes)
+		if test "$have_dl" = yes; then
+			LIBS="$LIBS -ldl"
+		fi
+	fi
+	if test "$have_dl" = yes; then
+		AC_DEFINE(USE_PLUGIN)
+		LIBS="$LIBS -rdynamic"
+		if test "x$GCC" = "xyes"; then
+			GUI_LIBS="$GUI_LIBS -Wl,--version-script,\$(srcdir)/../version-script"
+		fi
+	else
+		plugin=no
+	fi
+fi
+
+dnl *********************************************************************
+dnl ** CONDITIONALS *****************************************************
+dnl *********************************************************************
+
+AM_CONDITIONAL(USE_OPENSSL, test "x$openssl" = "xyes")
+AM_CONDITIONAL(DO_TEXT, test "x$textfe" = "xyes")
+AM_CONDITIONAL(DO_GTK, test "x$gtkfe" = "xyes")
+AM_CONDITIONAL(DO_PERL, test "x$perl" = "xyes")
+AM_CONDITIONAL(DO_PYTHON, test "x$python" = "xyes")
+AM_CONDITIONAL(DO_PLUGIN, test "x$plugin" = "xyes")
+
+dnl *********************************************************************
+dnl ** SOCKS5 ***********************************************************
+dnl *********************************************************************
+
+if test "$socks" = yes; then
+	socks=no
+	AC_CHECK_LIB(socks5, SOCKSconnect, have_socks=yes)
+	if test "$have_socks" = yes; then
+		AC_CHECK_HEADERS(socks.h, have_socks_h=yes)
+		if test "$have_socks_h" = yes; then
+			socks=yes
+			AC_DEFINE(SOCKS)
+			LIBS="$LIBS -lsocks5"
+		fi
+	fi
+fi
+
+dnl *********************************************************************
+dnl ** Hebrew support ***************************************************
+dnl *********************************************************************
+
+if test "$hebrew" = yes; then
+	AC_DEFINE(USE_HEBREW)
+fi
+
+dnl *********************************************************************
+dnl ** JAPANESE/ICONV ***************************************************
+dnl *********************************************************************
+
+if test "$WITH_JAPANESE" = "yes"; then
+	AC_CHECK_HEADER([iconv.h], AC_DEFINE(USE_JCODE))
+fi
+AM_CONDITIONAL(DO_ICONV, test "$WITH_JAPANESE" = "yes")
+
+dnl *********************************************************************
+dnl ** MMX **************************************************************
+dnl *********************************************************************
+
+dnl we don't need mmx on *this* machine, just i386, because
+dnl it's checked at runtime.
+if test "$mmx" = "yes"; then
+	case $host_cpu in
+    i386|i486|i586|i686|i786|k6|k7)
+    mmx=yes
+        ;;
+     *)
+    mmx=no
+	esac
+	if test "$mmx" = "yes"; then
+		AC_DEFINE(USE_MMX)
+	fi
+fi
+
+AM_CONDITIONAL(USE_MMX, test "$mmx" = "yes")
+
+dnl *********************************************************************
+dnl ** GCC FLAGS ********************************************************
+dnl *********************************************************************
+
+dnl Only use -Wall and -pipe if we have gcc
+if test "x$GCC" = "xyes"; then
+	if test -z "`echo "$CFLAGS" | grep "\-Wall" 2> /dev/null`" ; then
+		CFLAGS="$CFLAGS -Wall"
+	fi
+	if test "$system" = "Linux" -o "$system" = "FreeBSD"; then
+		if test -z "`echo "$CFLAGS" | grep "\-pipe" 2> /dev/null`" ; then
+			CFLAGS="$CFLAGS -pipe"
+		fi
+	fi
+	if test -z "`echo "$CFLAGS" | grep "\-g " 2> /dev/null`" ; then
+		CFLAGS="$CFLAGS -g"
+	fi
+fi
+
+dnl *********************************************************************
+dnl ** FUNCTIONS/LIBS/CFLAGS ********************************************
+dnl *********************************************************************
+
+AC_PATH_PROG(gdkpixbufcsourcepath, gdk-pixbuf-csource)
+AC_SUBST(gdkpixbufcsourcepath)
+if test "$gtkfe" != no -a "_$gdkpixbufcsourcepath" = _; then
+	AC_MSG_ERROR("Cannot find gdk-pixbuf-csource: Install GTK+ 2.0\!")
+fi
+
+dnl if we don't have this, use g_snprintf instead
+AC_CHECK_FUNCS(snprintf)
+AC_CHECK_FUNCS(vsnprintf)
+
+dnl old solaris doesn't have this
+AC_CHECK_FUNCS(setenv)
+
+dnl purely for Solaris
+AC_CHECK_FUNC(select, ,
+	AC_CHECK_LIB(socket, select, ,
+		AC_CHECK_LIB(nsl, select, ,
+			AC_CHECK_LIB(inet, select, ,
+				AC_CHECK_LIB(cposix, select, ,
+					AC_CHECK_LIB(net, select, ,
+						AC_MSG_WARN(i can not find select.  you might need to help me)))))))
+
+dnl purely for Solaris
+AC_CHECK_LIB(socket, select)
+
+AC_CHECK_FUNC(gethostbyname, ,
+	AC_CHECK_LIB(resolv, gethostbyname, ,
+		AC_CHECK_LIB(nsl, gethostbyname)))
+
+AC_CHECK_FUNC(gethostname, , AC_CHECK_LIB(nsl, gethostname))
+
+dnl necessary for IRIX
+AC_CHECK_HEADERS(strings.h)
+
+dnl Check for type in sys/socket.h - from Squid source (GPL)
+AC_CACHE_CHECK(for socklen_t, ac_cv_type_socklen_t, [
+AC_EGREP_CPP([socklen_t[^a-zA-Z_0-9]], [#include <sys/types.h>
+#include <sys/socket.h>
+#if STDC_HEADERS
+#include <stdlib.h>
+#include <stddef.h>
+#endif],
+ac_cv_type_socklen_t=yes,
+ac_cv_type_socklen_t=no)
+])
+if test $ac_cv_type_socklen_t = no; then
+	AC_DEFINE(socklen_t, int)
+fi
+
+dnl freebsd needs this
+LIBS="$LIBS $INTLLIBS"
+
+dnl make these visible to all Makefiles
+AC_SUBST(GUI_LIBS)
+AC_SUBST(GUI_CFLAGS)
+AC_SUBST(COMMON_LIBS)
+AC_SUBST(COMMON_CFLAGS)
+AC_SUBST(PERL_CFLAGS)
+AC_SUBST(PERL_LDFLAGS)
+AC_SUBST(PY_CFLAGS)
+AC_SUBST(PY_LIBS)
+xchatlibdir=${libdir}/xchat
+xchatsharedir=${datadir}/xchat
+AC_SUBST(xchatlibdir)
+AC_SUBST(xchatsharedir)
+
+PLUGIN_INCLUDES='-I$(top_srcdir)/plugins'
+AC_SUBST(PLUGIN_INCLUDES)
+
+if test "x${prefix}" = "xNONE"; then
+	AC_DEFINE_UNQUOTED(PREFIX, "${ac_default_prefix}")
+else
+	AC_DEFINE_UNQUOTED(PREFIX, "${prefix}")
+fi
+
+AC_OUTPUT([
+Makefile
+src/Makefile
+src/common/Makefile
+src/fe-text/Makefile
+src/fe-gtk/Makefile
+src/pixmaps/Makefile
+plugins/Makefile
+plugins/python/Makefile
+plugins/perl/Makefile
+intl/Makefile
+po/Makefile.in
+])
+
+echo
+echo xchat $VERSION
+echo
+echo Building GTK+ Interface .... : $gtkfe
+echo Building TEXT Interface .... : $textfe
+echo
+#echo gnome-libs .......... : $gnome $GNOME_VER
+echo perl ................ : $perl
+echo python .............. : $python $PY_VERSION
+echo mmx tinting ......... : $mmx
+#echo zvt shell tab ....... : $zvt
+echo plugin interface .... : $plugin\	nls/gettext ......... : $USE_NLS
+echo link with socks5 .... : $socks\	xft text ............ : $xft
+echo openssl support ..... : $openssl\	japanese conversion . : $WITH_JAPANESE
+echo ipv6 support ........ : $ipv6\	hebrew support ...... : $hebrew
+echo
+echo The binary will be installed in $prefix/bin
+echo
+
+if test "$gtkfe" = no; then
+	echo Warning: The GTK \(GUI\) frontend will not be built.
+	echo
+fi
+
+echo configure complete, now type \'make\' and pray.
+echo

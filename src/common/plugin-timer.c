@@ -1,0 +1,188 @@
+#include <stdlib.h>
+#include <string.h>
+#include <glib.h>
+#include "xchat-plugin.h"
+
+#ifdef WIN32
+#define strcasecmp stricmp
+#endif
+
+static xchat_plugin *ph;	/* plugin handle */
+static GSList *timer_list = NULL;
+
+#define STATIC
+#define HELP \
+"Usage: TIMER [-refnum <num>] [-delete <num>] [-repeat] <seconds> [<command>]"
+
+typedef struct
+{
+	xchat_hook *hook;
+	xchat_context *context;
+	char *command;
+	int ref;
+	int timeout;
+	unsigned int repeat:1;
+} timer;
+
+static void
+timer_del (timer *tim)
+{
+	timer_list = g_slist_remove (timer_list, tim);
+	free (tim->command);
+	xchat_unhook (ph, tim->hook);
+	free (tim);
+}
+
+static void
+timer_del_ref (int ref)
+{
+	GSList *list;
+	timer *tim;
+
+	list = timer_list;
+	while (list)
+	{
+		tim = list->data;
+		if (tim->ref == ref)
+		{
+			timer_del (tim);
+			xchat_printf (ph, "Timer %d deleted.\n", ref);
+			return;
+		}
+		list = list->next;
+	}
+	xchat_print (ph, "No such ref number found.\n");
+}
+
+static int
+timeout_cb (timer *tim)
+{
+	if (xchat_set_context (ph, tim->context))
+	{
+		xchat_command (ph, tim->command);
+
+		if (tim->repeat)
+			return 1;
+	}
+
+	timer_del (tim);
+	return 0;
+}
+
+static void
+timer_add (int ref, int timeout, int repeat, char *command)
+{
+	timer *tim;
+	GSList *list;
+
+	if (ref == 0)
+	{
+		ref = 1;
+		list = timer_list;
+		while (list)
+		{
+			tim = list->data;
+			if (tim->ref >= ref)
+				ref = tim->ref + 1;
+			list = list->next;
+		}
+	}
+
+	tim = malloc (sizeof (timer));
+	tim->ref = ref;
+	tim->repeat = repeat;
+	tim->timeout = timeout;
+	tim->command = strdup (command);
+	tim->context = xchat_get_context (ph);
+
+	tim->hook = xchat_hook_timer (ph, timeout * 1000, (void *)timeout_cb, tim);
+	timer_list = g_slist_append (timer_list, tim);
+}
+
+static void
+timer_showlist (void)
+{
+	GSList *list;
+	timer *tim;
+
+	if (timer_list == NULL)
+	{
+		xchat_print (ph, "No timers installed.\n");
+		return;
+	}
+
+	xchat_print (ph, "Ref   T R Command\n");
+	list = timer_list;
+	while (list)
+	{
+		tim = list->data;
+		xchat_printf (ph, "%3d %3d %d %s\n", tim->ref, tim->timeout,
+						  tim->repeat, tim->command);
+		list = list->next;
+	}
+}
+
+static int
+timer_cb (char *word[], char *word_eol[], void *userdata)
+{
+	int repeat = FALSE;
+	int timeout;
+	int offset = 0;
+	int ref = 0;
+	char *command;
+
+	if (!word[2][0])
+	{
+		timer_showlist ();
+		return EAT_XCHAT;
+	}
+
+	if (strcasecmp (word[2], "-delete") == 0)
+	{
+		timer_del_ref (atoi (word[3]));
+		return EAT_XCHAT;
+	}
+
+	if (strcasecmp (word[2], "-refnum") == 0)
+	{
+		ref = atoi (word[3]);
+		offset += 2;
+	}
+
+	if (strcasecmp (word[2 + offset], "-repeat") == 0)
+	{
+		repeat = TRUE;
+		offset++;
+	}
+
+	timeout = atoi (word[2 + offset]);
+	command = word_eol[3 + offset];
+
+	if (timeout < 1 || !command[0])
+		xchat_print (ph, HELP);
+	else
+		timer_add (ref, timeout, repeat, command);
+
+	return EAT_XCHAT;
+}
+
+int
+#ifdef STATIC
+timer_plugin_init
+#else
+xchat_plugin_init
+#endif
+				(xchat_plugin *plugin_handle, char **plugin_name,
+				char **plugin_desc, char **plugin_version, char *arg)
+{
+	/* we need to save this for use with any xchat_* functions */
+	ph = plugin_handle;
+
+	*plugin_name = "Timer";
+	*plugin_desc = "IrcII style /TIMER command";
+	*plugin_version = "";
+
+	xchat_hook_command (ph, "TIMER", PRI_NORM, timer_cb, HELP, 0);
+
+	return 1;       /* return 1 for success */
+}

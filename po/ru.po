@@ -1,0 +1,5062 @@
+# Copyright (C) 2000 Free Software Foundation, Inc.
+# Volosenkov Dmitry <_bil_@mail.ru>, 1999
+# Valek Filippov <frob@df.ru>, 2001
+msgid ""
+msgstr ""
+"Project-Id-Version: X-Chat 1.8.3\n"
+"POT-Creation-Date: 2002-11-26 17:32+1100\n"
+"PO-Revision-Date: 2002-05-25 16:57+0400\n"
+"Last-Translator: Rider <rider@altlinux.com>\n"
+"Language-Team: ALT Linux Team\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=koi8-r\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/common/cfgfiles.c:275
+msgid "Cannot create ~/.xchat"
+msgstr "Не могу создать ~/.xchat"
+
+#: src/common/cfgfiles.c:547
+msgid "I'm busy"
+msgstr "Я занят"
+
+#: src/common/cfgfiles.c:597
+#, fuzzy
+msgid ""
+"* Running IRC as root is stupid! You should\n"
+"  create a User Account and use that to login.\n"
+msgstr ""
+"* Глупо запускать IRC под пользователем root! Вы должны\n"
+"  создать пользовательский вход и работать под ним.\n"
+"\n"
+"* По умолчанию каталог для скачивания в вашем  \n"
+"  домашнем каталоге. Вы можете поменять его позже."
+
+#: src/common/dcc.c:54
+msgid "Waiting"
+msgstr "Ожидание"
+
+#. black
+#: src/common/dcc.c:55
+msgid "Active"
+msgstr "Активен"
+
+#. cyan
+#: src/common/dcc.c:56
+msgid "Failed"
+msgstr "Ошибка"
+
+#. red
+#: src/common/dcc.c:57
+msgid "Done"
+msgstr "Готово"
+
+#. green
+#: src/common/dcc.c:58
+msgid "Connect"
+msgstr "Соединение"
+
+#. black
+#: src/common/dcc.c:59
+msgid "Aborted"
+msgstr "Остановлено"
+
+#: src/common/dcc.c:1137
+#, c-format
+msgid "Cannot access %s\n"
+msgstr "Нет доступа к %s\n"
+
+#: src/common/dcc.c:1570
+msgid "No active DCCs\n"
+msgstr "Нет активных DCC\n"
+
+#: src/common/ignore.c:112 src/common/ignore.c:116 src/common/ignore.c:120
+#: src/common/ignore.c:124 src/common/ignore.c:128 src/common/ignore.c:132
+msgid "YES  "
+msgstr "ДА   "
+
+#: src/common/ignore.c:114 src/common/ignore.c:118 src/common/ignore.c:122
+#: src/common/ignore.c:126 src/common/ignore.c:130 src/common/ignore.c:134
+msgid "NO   "
+msgstr "НЕТ  "
+
+#: src/common/notify.c:396
+#, c-format
+msgid "  %-20s online\n"
+msgstr "  %-20s на канале\n"
+
+#: src/common/notify.c:398
+#, c-format
+msgid "  %-20s offline\n"
+msgstr "  %-20s отключен\n"
+
+#: src/common/outbound.c:67
+msgid "No channel joined. Try /join #<channel>\n"
+msgstr "Вы не зашли на канал. Наберите /join #<канал>\n"
+
+#: src/common/outbound.c:73
+msgid "Not connected. Try /server <host> [<port>]\n"
+msgstr "Нет соединения. Наберите /server <адрес> [<порт>]\n"
+
+#: src/common/outbound.c:1282
+msgid "I need /bin/sh to run!\n"
+msgstr "Мне нужен /bin/sh для запуска!\n"
+
+#: src/common/outbound.c:1422
+msgid ""
+"\n"
+"Commands Available:\n"
+"\n"
+"  "
+msgstr ""
+"\n"
+"Доступные команды:\n"
+"\n"
+"  "
+
+#: src/common/outbound.c:1457
+msgid ""
+"\n"
+"\n"
+"Type /HELP <command> for more information, or /HELP -l\n"
+"\n"
+msgstr ""
+"\n"
+"\n"
+"Наберите /HELP <имя команды> для более полной информации, или /HELP -l\n"
+"\n"
+
+#: src/common/outbound.c:1458
+msgid ""
+"User defined commands:\n"
+"\n"
+"  "
+msgstr ""
+"Определенные пользователем команды:\n"
+"\n"
+"  "
+
+#: src/common/outbound.c:1548
+#, c-format
+msgid "Unknown arg '%s' ignored."
+msgstr "Игнорируется неизвестный аргумент \"%s\"."
+
+#: src/common/outbound.c:2212
+#, fuzzy
+msgid "No such plugin found.\n"
+msgstr "Команда не существует\n"
+
+#: src/common/outbound.c:2215 src/fe-gtk/plugingui.c:128
+msgid "That plugin is refusing to unload.\n"
+msgstr ""
+
+#: src/common/outbound.c:2349
+#, fuzzy
+msgid "ADDBUTTON <name> <action>, adds a button under the user-list"
+msgstr ""
+"/ADDBUTTON <название> <действие>, добавляет кнопку под списком "
+"пользователей\n"
+
+#: src/common/outbound.c:2351
+#, fuzzy
+msgid "ALLCHAN <cmd>, sends a command to all channels you're in"
+msgstr "/ALLCHAN <команда>, посылает команду во всех каналах где вы есть\n"
+
+#: src/common/outbound.c:2353
+#, fuzzy
+msgid "ALLSERV <cmd>, sends a command to all servers you're in"
+msgstr "/ALLSERV <команда>, посылает команду на всех серверах где вы есть\n"
+
+#: src/common/outbound.c:2354
+#, fuzzy
+msgid "AWAY [<reason>], sets you away"
+msgstr "/AWAY [<причина>], устанавливает флаг отсутствия\n"
+
+#: src/common/outbound.c:2356
+#, fuzzy
+msgid ""
+"BAN <mask> [<bantype>], bans everyone matching the mask from the current "
+"channel. If they are already on the channel this doesn't kick them (needs "
+"chanop)"
+msgstr ""
+"/BAN <маска> [<тип>], блокирует доступ на текущий канал для каждого "
+"совпадающего с маской. Если они уже на канале, то они не будут скинуты (для "
+"этого нужно быть оператором канала)\n"
+
+#: src/common/outbound.c:2358
+#, fuzzy
+msgid "UNBAN <mask> [<mask>...], unbans the specified masks."
+msgstr "/UNBAN <маска> [<маска>...], снять запрет для специфической маски\n"
+
+#: src/common/outbound.c:2359
+#, fuzzy
+msgid "CLEAR, Clears the current text window"
+msgstr "/CLEAR, очищает текущее окно\n"
+
+#: src/common/outbound.c:2360
+#, fuzzy
+msgid "CLOSE, Closes the current window/tab"
+msgstr "/CLOSE, закрывает текущее окно\n"
+
+#: src/common/outbound.c:2363
+#, fuzzy
+msgid ""
+"CTCP <nick> <message>, send the CTCP message to nick, common messages are "
+"VERSION and USERINFO"
+msgstr ""
+"/CTCP <псевдоним> <сообщение>, посылает пользователю с указанным псевдонимом "
+"CCTP-сообщение, обычные сообщения -- VERSION и USERINFO\n"
+
+#: src/common/outbound.c:2365
+#, fuzzy
+msgid "COUNTRY <code>, finds a country code, eg: au = australia"
+msgstr "/COUNTRY <код>, находит код страны, например: au = Австралия\n"
+
+#: src/common/outbound.c:2367
+#, fuzzy
+msgid "CYCLE, parts current channel and immediately rejoins"
+msgstr "/CYCLE, выйти с текущего канала и немедленно зайти\n"
+
+#: src/common/outbound.c:2369
+#, fuzzy
+msgid ""
+"\n"
+"DCC GET <nick>          - receive an offered file\n"
+"DCC SEND <nick> <file>  - send a file to someone\n"
+"DCC LIST                - show DCC list\n"
+"DCC CHAT <nick>         - offer DCC CHAT to someone\n"
+"DCC CLOSE <type> <nick> <file>         example:\n"
+"         /dcc close send johnsmith file.tar.gz"
+msgstr ""
+"\n"
+"/DCC GET <имя>          - принять отправляемый файл\n"
+"/DCC SEND <имя> <имя файла>  - отправить файл получателю\n"
+"/DCC LIST                - показать список DCC\n"
+"/DCC CHAT <имя>         - запросить разговор через DCC\n"
+"/DCC CLOSE <тип> <имя> <файл>         пример:\n"
+"         /dcc close send johnsmith file.tar.gz\n"
+
+#: src/common/outbound.c:2378
+#, fuzzy
+msgid "DELBUTTON <name>, deletes a button from under the user-list"
+msgstr "/DELBUTTON <имя>, удаляет кнопку из под списка пользователей\n"
+
+#: src/common/outbound.c:2380
+#, fuzzy
+msgid ""
+"DEHOP <nick>, removes chanhalf-op status from the nick on the current "
+"channel (needs chanop)"
+msgstr ""
+"/DEHOP <имя>, удаляет chanhalf-op статус у имени на текущем канале\n"
+"(нужны права администратора канала)\n"
+
+#: src/common/outbound.c:2382
+#, fuzzy
+msgid ""
+"DEOP <nick>, removes chanop status from the nick on the current channel "
+"(needs chanop)"
+msgstr ""
+"/DEOP <имя>, убирает права администратора канала у пользователя на текущем "
+"канале.\n"
+"Для использования необходимы права администратора\n"
+
+#: src/common/outbound.c:2384
+#, fuzzy
+msgid ""
+"DEVOICE <nick>, removes voice status from the nick on the current channel "
+"(needs chanop)"
+msgstr ""
+"/DEVOICE <имя>, удаляет право голоса у пользователя с переданным именем на "
+"текущем\n"
+"канале. Для использования нужны права администратора канала\n"
+
+#: src/common/outbound.c:2385
+#, fuzzy
+msgid "DISCON, Disconnects from server"
+msgstr "/DISCON, отсоединиться от сервера\n"
+
+#: src/common/outbound.c:2386
+#, fuzzy
+msgid "DNS <nick|host|ip>, Finds a users IP number"
+msgstr "/DNS <имя,адрес,IP> - поиск IP адреса пользователя\n"
+
+#: src/common/outbound.c:2387
+#, fuzzy
+msgid "ECHO <text>, Prints text locally"
+msgstr "</ECHO <текст>, вывести текст на локальной машине\n"
+
+#: src/common/outbound.c:2390
+#, fuzzy
+msgid ""
+"EXEC [-o] <command>, runs the command. If -o flag is used then output is "
+"sent to current channel, else is printed to current text box"
+msgstr ""
+"/EXEC [-o] <Команда>, выполняет команду. При передаче опции -o вывод \n"
+"команды перенаправляется в текущий канал. Иначе вывод печатается в текущем "
+"окне\n"
+
+#: src/common/outbound.c:2392
+msgid ""
+"EXECKILL [-9], kills a running exec in the current session. If -9 is given "
+"the process is SIGKILL'ed"
+msgstr ""
+
+#: src/common/outbound.c:2394
+msgid "EXECSTOP, sends the process SIGSTOP"
+msgstr ""
+
+#: src/common/outbound.c:2395
+msgid "EXECCONT, sends the process SIGCONT"
+msgstr ""
+
+#: src/common/outbound.c:2396
+msgid "EXECWRITE, sends data to the processes stdin"
+msgstr ""
+
+#: src/common/outbound.c:2400
+msgid "FLUSHQ, flushes the current server's send queue"
+msgstr ""
+
+#: src/common/outbound.c:2402
+msgid "GATE <host> [<port>], proxies through a host, port defaults to 23"
+msgstr ""
+
+#: src/common/outbound.c:2405
+#, fuzzy
+msgid "HOP <nick>, gives chanhalf-op status to the nick (needs chanop)"
+msgstr ""
+"/DEHOP <имя>, удаляет chanhalf-op статус у имени на текущем канале\n"
+"(нужны права администратора канала)\n"
+
+#: src/common/outbound.c:2407
+msgid ""
+"IGNORE <mask> <types..> <options..>\n"
+"    mask - host mask to ignore, eg: *!*@*.aol.com\n"
+"    types - types of data to ignore, one or all of:\n"
+"            PRIV, CHAN, NOTI, CTCP, INVI, ALL\n"
+"    options - NOSAVE, QUIET"
+msgstr ""
+
+#: src/common/outbound.c:2414
+#, fuzzy
+msgid ""
+"INVITE <nick> [<channel>], invites someone to a channel, by default the "
+"current channel (needs chanop)"
+msgstr ""
+"/DEVOICE <имя>, удаляет право голоса у пользователя с переданным именем на "
+"текущем\n"
+"канале. Для использования нужны права администратора канала\n"
+
+#: src/common/outbound.c:2415
+#, fuzzy
+msgid "JOIN <channel>, joins the channel"
+msgstr "/JOIN <канал>, зайти на канал\n"
+
+#: src/common/outbound.c:2417
+#, fuzzy
+msgid "KICK <nick>, kicks the nick from the current channel (needs chanop)"
+msgstr ""
+"/KICK <имя>, удаляет человека с <имя> с текущего канала <нужны права "
+"оператора>\n"
+
+#: src/common/outbound.c:2419
+#, fuzzy
+msgid ""
+"KICKBAN <nick>, bans then kicks the nick from the current channel (needs "
+"chanop)"
+msgstr ""
+"/KICK <имя>, удаляет человека с <имя> с текущего канала <нужны права "
+"оператора>\n"
+
+#: src/common/outbound.c:2421
+msgid "LAGCHECK, forces a new lag check"
+msgstr ""
+
+#: src/common/outbound.c:2423
+msgid "LASTLOG <string>, searches for a string in the buffer"
+msgstr ""
+
+#: src/common/outbound.c:2425
+#, fuzzy
+msgid "LOAD <file>, loads a plugin or script"
+msgstr "Загрузить скрипты Python..\n"
+
+#: src/common/outbound.c:2428
+#, fuzzy
+msgid ""
+"MDEHOP, Mass deop's all chanhalf-ops in the current channel (needs chanop)"
+msgstr ""
+"/DEHOP <имя>, удаляет chanhalf-op статус у имени на текущем канале\n"
+"(нужны права администратора канала)\n"
+
+#: src/common/outbound.c:2430
+#, fuzzy
+msgid "MDEOP, Mass deop's all chanops in the current channel (needs chanop)"
+msgstr ""
+"/DEOP <имя>, убирает права администратора канала у пользователя на текущем "
+"канале.\n"
+"Для использования необходимы права администратора\n"
+
+#: src/common/outbound.c:2432
+#, fuzzy
+msgid ""
+"MKICK, Mass kicks everyone except you in the current channel (needs chanop)"
+msgstr ""
+"/KICK <имя>, удаляет человека с <имя> с текущего канала <нужны права "
+"оператора>\n"
+
+#: src/common/outbound.c:2434
+#, fuzzy
+msgid ""
+"ME <action>, sends the action to the current channel (actions are written in "
+"the 3rd person, like /me jumps)"
+msgstr ""
+"/ME <действие>, отправляет действие в текущий канал (все действия пишутся "
+"от \n"
+"третьего лица, например /me прыгает)\n"
+
+#: src/common/outbound.c:2435
+#, fuzzy
+msgid "MSG <nick> <message>, sends a private message"
+msgstr "/MSG <ник> <сообщение>, отправляет приватное сообщение\n"
+
+#: src/common/outbound.c:2438
+#, fuzzy
+msgid "NAMES, Lists the nicks on the current channel"
+msgstr "/NAMES, показывает список посетителей текущего канала\n"
+
+#: src/common/outbound.c:2440
+#, fuzzy
+msgid "NCTCP <nick> <message>, Sends a CTCP notice"
+msgstr "/MSG <ник> <сообщение>, отправляет приватное сообщение\n"
+
+#: src/common/outbound.c:2441
+msgid "NEWSERVER <hostname> [<port>]"
+msgstr ""
+
+#: src/common/outbound.c:2442
+#, fuzzy
+msgid "NICK <nickname>, sets your nick"
+msgstr "/NICK <ник>, меняет ваше имя (ник)\n"
+
+#: src/common/outbound.c:2445
+msgid ""
+"NOTICE <nick/channel> <message>, sends a notice. Notices are a type of "
+"message that should be auto reacted to"
+msgstr ""
+
+#: src/common/outbound.c:2447
+msgid "NOTIFY [<nick>], lists your notify list or adds someone to it"
+msgstr ""
+
+#: src/common/outbound.c:2449
+#, fuzzy
+msgid "OP <nick>, gives chanop status to the nick (needs chanop)"
+msgstr ""
+"/DEOP <имя>, убирает права администратора канала у пользователя на текущем "
+"канале.\n"
+"Для использования необходимы права администратора\n"
+
+#: src/common/outbound.c:2451
+msgid ""
+"PART [<channel>] [<reason>], leaves the channel, by default the current one"
+msgstr ""
+
+#: src/common/outbound.c:2453
+#, fuzzy
+msgid "PING <nick | channel>, CTCP pings nick or channel"
+msgstr "/JOIN <канал>, зайти на канал\n"
+
+#: src/common/outbound.c:2455
+#, fuzzy
+msgid "QUERY <nick>, opens up a new privmsg window to someone"
+msgstr "/QUERY <ник>, открыть новое окно приватных сообщений\n"
+
+#: src/common/outbound.c:2457
+#, fuzzy
+msgid "QUIT [<reason>], disconnects from the current server"
+msgstr "/QUIT [<причина>] - отсоединение от текущего сервера\n"
+
+#: src/common/outbound.c:2459
+msgid "QUOTE <text>, sends the text in raw form to the server"
+msgstr ""
+
+#: src/common/outbound.c:2462
+msgid ""
+"RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as /"
+"RECONNECT to reconnect to the current server or with /RECONNECT ALL to "
+"reconnect to all the open servers"
+msgstr ""
+
+#: src/common/outbound.c:2465
+msgid ""
+"RECONNECT [<host>] [<port>] [<password>], Can be called just as /RECONNECT "
+"to reconnect to the current server or with /RECONNECT ALL to reconnect to "
+"all the open servers"
+msgstr ""
+
+#: src/common/outbound.c:2467
+msgid ""
+"RECV <text>, send raw data to xchat, as if it was received from the irc "
+"server"
+msgstr ""
+
+#: src/common/outbound.c:2470
+msgid "SAY <text>, sends the text to the object in the current window"
+msgstr ""
+
+#: src/common/outbound.c:2471
+msgid "SET <variable> [<value>]"
+msgstr ""
+
+#: src/common/outbound.c:2475
+msgid "SERVCHAN [-ssl] <host> <port> <channel>, connects and joins a channel"
+msgstr ""
+
+#: src/common/outbound.c:2478
+msgid "SERVCHAN <host> <port> <channel>, connects and joins a channel"
+msgstr ""
+
+#: src/common/outbound.c:2482
+#, fuzzy
+msgid ""
+"SERVER [-ssl] <host> [<port>] [<password>], connects to a server, the "
+"default port is 6667 for normal connections, and 9999 for ssl connections"
+msgstr ""
+"/SERVER [-ssl] <адрес> [<порт>] [<пароль>] соединяет с сервером. Порт по "
+"умолчанию 6667 для нормальных соединений и 994 для соединений через SSL\n"
+
+#: src/common/outbound.c:2485
+#, fuzzy
+msgid ""
+"SERVER <host> [<port>] [<password>], connects to a server, the default port "
+"is 6667"
+msgstr ""
+"/SERVER <адрес> [<порт>] [<пароль>] соединяет с сервером. Порт по умолчанию "
+"6667\n"
+
+#: src/common/outbound.c:2488
+#, fuzzy
+msgid ""
+"TOPIC [<topic>], sets the topic if one is given, else shows the current topic"
+msgstr ""
+"/TOPIC [<тема>], устанавливает тему, если она указана. Иначе отображает "
+"текущую\n"
+"тему\n"
+
+#: src/common/outbound.c:2489
+msgid "UNIGNORE <mask> [QUIET]"
+msgstr ""
+
+#: src/common/outbound.c:2490
+#, fuzzy
+msgid "UNLOAD <name>, unloads a plugin or script"
+msgstr "Загрузить скрипты Python..\n"
+
+#: src/common/outbound.c:2493
+#, fuzzy
+msgid ""
+"WALLCHOP <message>, sends the message to all chanops on the current channel"
+msgstr "/ALLCHAN <команда>, посылает команду во всех каналах где вы есть\n"
+
+#: src/common/outbound.c:2495
+#, fuzzy
+msgid "WALLCHAN <message>, writes the message to all channels"
+msgstr "/ALLCHAN <команда>, посылает команду во всех каналах где вы есть\n"
+
+#: src/common/outbound.c:2497
+#, fuzzy
+msgid "VOICE <nick>, gives voice status to someone (needs chanop)"
+msgstr ""
+"/DEVOICE <имя>, удаляет право голоса у пользователя с переданным именем на "
+"текущем\n"
+"канале. Для использования нужны права администратора канала\n"
+
+#: src/common/outbound.c:2517
+#, fuzzy, c-format
+msgid "Usage: %s\n"
+msgstr "Использование:\n"
+
+#: src/common/outbound.c:2522
+msgid ""
+"\n"
+"No help available on that command.\n"
+msgstr ""
+"\n"
+"По этой команде нет помощи.\n"
+
+#: src/common/outbound.c:2529
+msgid "No such command.\n"
+msgstr "Команда не существует\n"
+
+#: src/common/outbound.c:2793
+msgid "Bad arguments for user command.\n"
+msgstr "Недопустимые аргументы команды пользователя.\n"
+
+#: src/common/outbound.c:2902
+msgid "Too many recursive usercommands, aborting."
+msgstr ""
+
+#: src/common/outbound.c:2968
+msgid "Unknown Command. Try /help\n"
+msgstr "Неизвестная команда. Попробуйте /help\n"
+
+#: src/common/plugin.c:290 src/common/plugin.c:311
+msgid "No xchat_plugin_init symbol; is this really an xchat plugin?"
+msgstr ""
+
+#: src/common/server.c:901
+#, c-format
+msgid ""
+"Cannot resolve hostname %s\n"
+"Check your IP Settings!\n"
+msgstr ""
+
+#: src/common/server.c:906
+msgid "Proxy traversal failed.\n"
+msgstr ""
+
+#: src/common/text.c:154
+#, c-format
+msgid "**** ENDING LOGGING AT %s\n"
+msgstr "**** КОНЕЦ ПРОТОКОЛА НА %s\n"
+
+#: src/common/text.c:265
+#, c-format
+msgid "**** BEGIN LOGGING AT %s\n"
+msgstr "**** НАЧАЛО ПРОТОКОЛА НА %s\n"
+
+#: src/common/text.c:412
+msgid "The nick of the joining person"
+msgstr "Имя зашедшей персоны"
+
+#: src/common/text.c:413
+msgid "The channel being joined"
+msgstr "Вы уже на канале"
+
+#: src/common/text.c:414 src/common/text.c:458 src/common/text.c:514
+msgid "The host of the person"
+msgstr "Адрес компьютера персоны"
+
+#: src/common/text.c:418 src/common/text.c:423 src/common/text.c:429
+#: src/common/text.c:496 src/common/text.c:620 src/common/text.c:627
+#: src/common/text.c:632 src/common/text.c:637 src/common/text.c:642
+#: src/common/text.c:648 src/common/text.c:653 src/common/text.c:696
+#: src/common/text.c:705 src/common/text.c:710 src/common/text.c:715
+#: src/common/text.c:723 src/common/text.c:733 src/common/text.c:739
+#: src/common/text.c:745 src/common/text.c:750 src/common/text.c:755
+#: src/common/text.c:762 src/common/text.c:767 src/common/text.c:773
+#: src/common/text.c:778 src/common/text.c:783 src/common/text.c:787
+#: src/common/text.c:793 src/common/text.c:800 src/common/text.c:834
+#: src/common/text.c:839
+msgid "Nickname"
+msgstr "Ник"
+
+#: src/common/text.c:419
+msgid "The action"
+msgstr "Действие"
+
+#: src/common/text.c:424
+msgid "The text"
+msgstr "Текст"
+
+#: src/common/text.c:425
+msgid "Mode char"
+msgstr ""
+
+#: src/common/text.c:430 src/common/text.c:486 src/common/text.c:492
+#: src/common/text.c:497
+msgid "The message"
+msgstr "Сообщение"
+
+#: src/common/text.c:434 src/common/text.c:501
+msgid "Old nickname"
+msgstr "Старый ник"
+
+#: src/common/text.c:435 src/common/text.c:502
+msgid "New nickname"
+msgstr "Новый ник"
+
+#: src/common/text.c:439
+msgid "Nick of person who changed the topic"
+msgstr "Ник человека, который поменял Топик"
+
+#: src/common/text.c:440 src/common/text.c:446 src/fe-gtk/chanlist.c:584
+#: src/fe-gtk/chanlist.c:714
+msgid "Topic"
+msgstr "Топик"
+
+#: src/common/text.c:441 src/common/text.c:445 src/common/text.c:854
+#: src/fe-gtk/chanlist.c:584 src/fe-gtk/chanlist.c:706
+#: src/fe-gtk/ignoregui.c:394
+msgid "Channel"
+msgstr "Канал"
+
+#: src/common/text.c:450 src/common/text.c:508
+msgid "The nickname of the kicker"
+msgstr "Ник выкинувшего"
+
+#: src/common/text.c:451 src/common/text.c:506
+msgid "The person being kicked"
+msgstr "Персона выкинута"
+
+#: src/common/text.c:452 src/common/text.c:459 src/common/text.c:463
+#: src/common/text.c:468 src/common/text.c:507 src/common/text.c:515
+msgid "The channel"
+msgstr "Канал"
+
+#: src/common/text.c:453 src/common/text.c:509 src/common/text.c:516
+msgid "The reason"
+msgstr "Причина"
+
+#: src/common/text.c:457 src/common/text.c:513
+msgid "The nick of the person leaving"
+msgstr ""
+
+#: src/common/text.c:464 src/common/text.c:470
+msgid "The time"
+msgstr "Время"
+
+#: src/common/text.c:469
+msgid "The creator"
+msgstr "Создатель"
+
+#: src/common/text.c:474
+msgid "Nick"
+msgstr "Ник"
+
+#: src/common/text.c:475 src/common/text.c:711
+msgid "Reason"
+msgstr "Причина"
+
+#: src/common/text.c:476 src/common/text.c:622 src/common/text.c:686
+msgid "Host"
+msgstr "Адрес машины"
+
+#: src/common/text.c:480 src/common/text.c:485 src/common/text.c:490
+msgid "Who it's from"
+msgstr ""
+
+#: src/common/text.c:481
+msgid "The time in x.x format (see below)"
+msgstr ""
+
+#: src/common/text.c:491 src/common/text.c:532
+msgid "The Channel it's going to"
+msgstr "Список каналов..."
+
+#: src/common/text.c:520
+msgid "The sound"
+msgstr "Звук"
+
+#: src/common/text.c:521 src/common/text.c:526 src/common/text.c:531
+msgid "The nick of the person"
+msgstr "Ник персоны"
+
+#: src/common/text.c:525 src/common/text.c:530
+msgid "The CTCP event"
+msgstr "CTCP событие"
+
+#: src/common/text.c:536
+msgid "The nick of the person who set the key"
+msgstr ""
+
+#: src/common/text.c:537
+msgid "The key"
+msgstr "Ключ"
+
+#: src/common/text.c:541
+msgid "The nick of the person who set the limit"
+msgstr ""
+
+#: src/common/text.c:542
+msgid "The limit"
+msgstr "Ограничение"
+
+#: src/common/text.c:546
+msgid "The nick of the person who did the op'ing"
+msgstr "Ник человека, установившего оператора"
+
+#: src/common/text.c:547
+msgid "The nick of the person who has been op'ed"
+msgstr ""
+
+#: src/common/text.c:551
+msgid "The nick of the person who has been halfop'ed"
+msgstr ""
+
+#: src/common/text.c:552
+msgid "The nick of the person who did the halfop'ing"
+msgstr "Ник человека, который поменял Топик"
+
+#: src/common/text.c:556
+#, fuzzy
+msgid "The nick of the person who did the voice'ing"
+msgstr "Ник человека, который поменял Топик"
+
+#: src/common/text.c:557
+msgid "The nick of the person who has been voice'ed"
+msgstr ""
+
+#: src/common/text.c:561
+msgid "The nick of the person who did the banning"
+msgstr ""
+
+#: src/common/text.c:562 src/common/text.c:589
+msgid "The ban mask"
+msgstr "Маска бана"
+
+#: src/common/text.c:566
+msgid "The nick who removed the key"
+msgstr ""
+
+#: src/common/text.c:570
+msgid "The nick who removed the limit"
+msgstr ""
+
+#: src/common/text.c:574
+msgid "The nick of the person of did the deop'ing"
+msgstr ""
+
+#: src/common/text.c:575
+msgid "The nick of the person who has been deop'ed"
+msgstr ""
+
+#: src/common/text.c:578
+msgid "The nick of the person of did the dehalfop'ing"
+msgstr ""
+
+#: src/common/text.c:579
+msgid "The nick of the person who has been dehalfop'ed"
+msgstr ""
+
+#: src/common/text.c:583
+msgid "The nick of the person of did the devoice'ing"
+msgstr ""
+
+#: src/common/text.c:584
+msgid "The nick of the person who has been devoice'ed"
+msgstr ""
+
+#: src/common/text.c:588
+msgid "The nick of the person of did the unban'ing"
+msgstr ""
+
+#: src/common/text.c:593
+msgid "The nick of the person who did the exempt"
+msgstr ""
+
+#: src/common/text.c:594 src/common/text.c:599
+msgid "The exempt mask"
+msgstr ""
+
+#: src/common/text.c:598
+msgid "The nick of the person removed the exempt"
+msgstr ""
+
+#: src/common/text.c:603
+msgid "The nick of the person who did the invite"
+msgstr ""
+
+#: src/common/text.c:604 src/common/text.c:609
+msgid "The invite mask"
+msgstr ""
+
+#: src/common/text.c:608
+msgid "The nick of the person removed the invite"
+msgstr ""
+
+#: src/common/text.c:613
+msgid "The nick of the person setting the mode"
+msgstr ""
+
+#: src/common/text.c:614
+msgid "The mode's sign (+/-)"
+msgstr ""
+
+#: src/common/text.c:615
+msgid "The mode letter"
+msgstr ""
+
+#: src/common/text.c:616
+msgid "The channel it's being set on"
+msgstr ""
+
+#: src/common/text.c:621
+msgid "Username"
+msgstr "Имя пользователя"
+
+#: src/common/text.c:623
+msgid "Full name"
+msgstr "Полное имя"
+
+#: src/common/text.c:628
+msgid "Channel Membership/\"is an IRC operator\""
+msgstr ""
+
+#: src/common/text.c:633
+msgid "Server Information"
+msgstr "Информация о сервере"
+
+#: src/common/text.c:638 src/common/text.c:643
+msgid "Idle time"
+msgstr "Время простоя"
+
+#: src/common/text.c:644
+msgid "Signon time"
+msgstr ""
+
+#: src/common/text.c:649
+msgid "Away reason"
+msgstr "Причина ухода:"
+
+#: src/common/text.c:657 src/common/text.c:666 src/common/text.c:672
+#: src/common/text.c:849
+msgid "Channel Name"
+msgstr "Имя канала"
+
+#: src/common/text.c:661 src/common/text.c:812 src/fe-gtk/textgui.c:377
+msgid "Text"
+msgstr "Текст"
+
+#: src/common/text.c:662 src/common/text.c:668 src/common/text.c:850
+msgid "Server Name"
+msgstr "Имя сервера"
+
+#: src/common/text.c:667
+msgid "Nick of person who invited you"
+msgstr ""
+
+#: src/common/text.c:673 src/fe-gtk/chanlist.c:584
+msgid "Users"
+msgstr "Список Пользователей"
+
+#: src/common/text.c:677
+msgid "Nickname in use"
+msgstr "Псевдоним используется"
+
+#: src/common/text.c:678
+msgid "Nick being tried"
+msgstr ""
+
+#: src/common/text.c:682
+msgid "Error String"
+msgstr "Строка ошибки"
+
+#: src/common/text.c:687 src/common/text.c:816
+msgid "IP"
+msgstr "IP"
+
+#: src/common/text.c:688
+msgid "Port"
+msgstr "Порт"
+
+#: src/common/text.c:692
+msgid "PID"
+msgstr "PID"
+
+#: src/common/text.c:700
+msgid "Channel name"
+msgstr "Имя канала"
+
+#: src/common/text.c:701 src/common/text.c:706
+msgid "Modes string"
+msgstr ""
+
+#: src/common/text.c:716 src/common/text.c:751 src/common/text.c:756
+msgid "IP address"
+msgstr "IP Адрес"
+
+#: src/common/text.c:717
+msgid "port"
+msgstr "порт"
+
+#: src/common/text.c:721 src/common/text.c:744
+msgid "DCC Type"
+msgstr "Тип DCC"
+
+#: src/common/text.c:722 src/common/text.c:727 src/common/text.c:731
+#: src/common/text.c:737 src/common/text.c:757 src/common/text.c:761
+#: src/common/text.c:766 src/common/text.c:772 src/common/text.c:779
+#: src/common/text.c:788 src/common/text.c:794
+msgid "Filename"
+msgstr "Имя файла"
+
+#: src/common/text.c:732 src/common/text.c:738
+msgid "Destination filename"
+msgstr "Имя файла у получателя"
+
+#: src/common/text.c:740 src/common/text.c:768
+msgid "CPS"
+msgstr ""
+
+#: src/common/text.c:746
+msgid "Error string"
+msgstr "Строка ошибки"
+
+#: src/common/text.c:774
+#, fuzzy
+msgid "Pathname"
+msgstr "Панама"
+
+#: src/common/text.c:789 src/fe-gtk/dccgui.c:394 src/fe-gtk/dccgui.c:398
+#: src/fe-gtk/dccgui.c:578
+msgid "Position"
+msgstr "Положение"
+
+#: src/common/text.c:795 src/fe-gtk/dccgui.c:394 src/fe-gtk/dccgui.c:398
+#: src/fe-gtk/dccgui.c:578
+msgid "Size"
+msgstr "Размер"
+
+#: src/common/text.c:799
+msgid "DCC String"
+msgstr "Строка DCC"
+
+#: src/common/text.c:804
+msgid "Number of notify items"
+msgstr ""
+
+#: src/common/text.c:808
+msgid "Servername"
+msgstr "Имя сервера"
+
+#: src/common/text.c:820
+msgid "Old Filename"
+msgstr "Старое имя файла"
+
+#: src/common/text.c:821
+msgid "New Filename"
+msgstr "Новое имя файла"
+
+#: src/common/text.c:825
+msgid "Receiver"
+msgstr "Принятые файлы"
+
+#: src/common/text.c:826
+msgid "Message"
+msgstr "Сообщение"
+
+#: src/common/text.c:830
+msgid "Hostmask"
+msgstr ""
+
+#: src/common/text.c:835
+msgid "Hostname"
+msgstr "Имя машины"
+
+#: src/common/text.c:840
+msgid "The Packet"
+msgstr "Пакет"
+
+#: src/common/text.c:844
+msgid "Seconds"
+msgstr "Секунд."
+
+#: src/common/text.c:848
+msgid "Nick of person who have been invited"
+msgstr ""
+
+#: src/common/text.c:855
+msgid "Banmask"
+msgstr ""
+
+#: src/common/text.c:856
+msgid "Who set the ban"
+msgstr "Кто установил бан"
+
+#: src/common/text.c:857
+msgid "Ban time"
+msgstr "Продолжительность бан"
+
+#: src/common/text.c:861
+msgid "Error"
+msgstr "Ошибка"
+
+#: src/common/text.c:895
+#, c-format
+msgid ""
+"Error parsing event %s.\n"
+"Loading default"
+msgstr ""
+
+#: src/common/util.c:286
+msgid "Remote host closed socket"
+msgstr "Удаленная машина закрыла сокет"
+
+#: src/common/util.c:289 src/common/util.c:300
+msgid "Connection refused"
+msgstr "Соединение отвергнуто"
+
+#: src/common/util.c:292 src/common/util.c:303
+msgid "No route to host"
+msgstr "Нет маршрута к хосту"
+
+#: src/common/util.c:294 src/common/util.c:305
+msgid "Connection timed out"
+msgstr "Истечение времени ожидания соединения"
+
+#: src/common/util.c:296 src/common/util.c:307
+msgid "Cannot assign that address"
+msgstr ""
+
+#: src/common/util.c:310
+msgid "Connection reset by peer"
+msgstr "Соединение оборвано"
+
+#: src/common/util.c:695
+msgid "Andorra"
+msgstr "Андорра"
+
+#: src/common/util.c:696
+msgid "United Arab Emirates"
+msgstr "Объединённые арабские эмираты"
+
+#: src/common/util.c:697
+msgid "Afghanistan"
+msgstr "Афганистан"
+
+#: src/common/util.c:698
+msgid "Antigua and Barbuda"
+msgstr "Антигуа и Барбуда"
+
+#: src/common/util.c:699
+msgid "Anguilla"
+msgstr ""
+
+#: src/common/util.c:700
+msgid "Albania"
+msgstr "Албания"
+
+#: src/common/util.c:701
+msgid "Armenia"
+msgstr "Армения"
+
+#: src/common/util.c:702
+msgid "Netherlands Antilles"
+msgstr ""
+
+#: src/common/util.c:703
+msgid "Angola"
+msgstr "Ангола"
+
+#: src/common/util.c:704
+msgid "Antarctica"
+msgstr "Антарктика"
+
+#: src/common/util.c:705
+msgid "Argentina"
+msgstr "Аргентина"
+
+#: src/common/util.c:706
+msgid "American Samoa"
+msgstr "Американское Самоа"
+
+#: src/common/util.c:707
+msgid "Austria"
+msgstr "Австрия"
+
+#: src/common/util.c:708
+msgid "Australia"
+msgstr "Австралия"
+
+#: src/common/util.c:709
+msgid "Aruba"
+msgstr "Аруба"
+
+#: src/common/util.c:710
+msgid "Azerbaijan"
+msgstr "Азербайджан"
+
+#: src/common/util.c:711
+msgid "Bosnia and Herzegovina"
+msgstr "Босния и Герцеговина"
+
+#: src/common/util.c:712
+msgid "Barbados"
+msgstr "Барбадос"
+
+#: src/common/util.c:713
+msgid "Bangladesh"
+msgstr "Бангладеш"
+
+#: src/common/util.c:714
+msgid "Belgium"
+msgstr "Бельгия"
+
+#: src/common/util.c:715
+msgid "Burkina Faso"
+msgstr "Буркина Фасо"
+
+#: src/common/util.c:716
+msgid "Bulgaria"
+msgstr "Болгария"
+
+#: src/common/util.c:717
+msgid "Bahrain"
+msgstr "Бахрейн"
+
+#: src/common/util.c:718
+msgid "Burundi"
+msgstr "Бурунди"
+
+#: src/common/util.c:719
+msgid "Benin"
+msgstr "Бенин"
+
+#: src/common/util.c:720
+msgid "Bermuda"
+msgstr "Бермуды"
+
+#: src/common/util.c:721
+msgid "Brunei Darussalam"
+msgstr ""
+
+#: src/common/util.c:722
+msgid "Bolivia"
+msgstr "Боливия"
+
+#: src/common/util.c:723
+msgid "Brazil"
+msgstr "Бразилия"
+
+#: src/common/util.c:724
+msgid "Bahamas"
+msgstr "Багамы"
+
+#: src/common/util.c:725
+msgid "Bhutan"
+msgstr "Бутан"
+
+#: src/common/util.c:726
+msgid "Bouvet Island"
+msgstr ""
+
+#: src/common/util.c:727
+msgid "Botswana"
+msgstr "Ботсвана"
+
+#: src/common/util.c:728
+msgid "Belarus"
+msgstr "Беларусь"
+
+#: src/common/util.c:729
+msgid "Belize"
+msgstr "Белиз"
+
+#: src/common/util.c:730
+msgid "Canada"
+msgstr "Канада"
+
+#: src/common/util.c:731
+msgid "Cocos Islands"
+msgstr "Кокосовы о-ва"
+
+#: src/common/util.c:732
+msgid "Central African Republic"
+msgstr "Центральная Африканская Республика"
+
+#: src/common/util.c:733
+msgid "Congo"
+msgstr "Конго"
+
+#: src/common/util.c:734
+msgid "Switzerland"
+msgstr "Швейцария"
+
+#: src/common/util.c:735
+msgid "Cote D'ivoire"
+msgstr ""
+
+#: src/common/util.c:736
+msgid "Cook Islands"
+msgstr "Острова Кука"
+
+#: src/common/util.c:737
+msgid "Chile"
+msgstr "Чили"
+
+#: src/common/util.c:738
+msgid "Cameroon"
+msgstr "Камерун"
+
+#: src/common/util.c:739
+msgid "China"
+msgstr "Китай"
+
+#: src/common/util.c:740
+msgid "Colombia"
+msgstr "Колумбия"
+
+#: src/common/util.c:741
+msgid "Costa Rica"
+msgstr "Коста Рика"
+
+#: src/common/util.c:742
+msgid "Former Czechoslovakia"
+msgstr "Чехословакия"
+
+#: src/common/util.c:743
+msgid "Cuba"
+msgstr "Куба"
+
+#: src/common/util.c:744
+msgid "Cape Verde"
+msgstr ""
+
+#: src/common/util.c:745
+msgid "Christmas Island"
+msgstr ""
+
+#: src/common/util.c:746
+msgid "Cyprus"
+msgstr "Кипр"
+
+#: src/common/util.c:747
+msgid "Czech Republic"
+msgstr "Чехословакия"
+
+#: src/common/util.c:748
+msgid "Germany"
+msgstr "Германия"
+
+#: src/common/util.c:749
+msgid "Djibouti"
+msgstr "Джибути"
+
+#: src/common/util.c:750
+msgid "Denmark"
+msgstr "Германия"
+
+#: src/common/util.c:751
+msgid "Dominica"
+msgstr "Доминика"
+
+#: src/common/util.c:752
+msgid "Dominican Republic"
+msgstr "Доминицанская республика"
+
+#: src/common/util.c:753
+msgid "Algeria"
+msgstr "Алжир"
+
+#: src/common/util.c:754
+msgid "Ecuador"
+msgstr "Эквадор"
+
+#: src/common/util.c:755
+msgid "Estonia"
+msgstr "Эстония"
+
+#: src/common/util.c:756
+msgid "Egypt"
+msgstr "Египет"
+
+#: src/common/util.c:757
+msgid "Western Sahara"
+msgstr "Западная сахара"
+
+#: src/common/util.c:758
+msgid "Eritrea"
+msgstr "Эритрея"
+
+#: src/common/util.c:759
+msgid "Spain"
+msgstr "Испания"
+
+#: src/common/util.c:760
+msgid "Ethiopia"
+msgstr "Эфиопия"
+
+#: src/common/util.c:761
+msgid "Finland"
+msgstr "Финляндия"
+
+#: src/common/util.c:762
+msgid "Fiji"
+msgstr "Фиджи"
+
+#: src/common/util.c:763
+msgid "Falkland Islands"
+msgstr "Фолклендские о-ва"
+
+#: src/common/util.c:764
+msgid "Micronesia"
+msgstr "Микронезия"
+
+#: src/common/util.c:765
+msgid "Faroe Islands"
+msgstr "Острова Фарое"
+
+#: src/common/util.c:766
+msgid "France"
+msgstr "Франция"
+
+#: src/common/util.c:767
+msgid "France, Metropolitan"
+msgstr "Франция, Метрополитен"
+
+#: src/common/util.c:768
+msgid "Gabon"
+msgstr "Габон"
+
+#: src/common/util.c:769
+msgid "Great Britain"
+msgstr "Вся Британия"
+
+#: src/common/util.c:770
+msgid "Grenada"
+msgstr "Гринада"
+
+#: src/common/util.c:771
+msgid "Georgia"
+msgstr "Грузия"
+
+#: src/common/util.c:772
+msgid "French Guiana"
+msgstr "Французская Гвиана"
+
+#: src/common/util.c:773
+msgid "British Channel Isles"
+msgstr "Британские каналы Isles"
+
+#: src/common/util.c:774
+msgid "Ghana"
+msgstr "Гана"
+
+#: src/common/util.c:775
+msgid "Gibraltar"
+msgstr "Гибралтар"
+
+#: src/common/util.c:776
+msgid "Greenland"
+msgstr "Гринландия"
+
+#: src/common/util.c:777
+msgid "Gambia"
+msgstr "Гамбия"
+
+#: src/common/util.c:778
+msgid "Guinea"
+msgstr "Гвинея"
+
+#: src/common/util.c:779
+msgid "Guadeloupe"
+msgstr "Гванделопа"
+
+#: src/common/util.c:780
+msgid "Equatorial Guinea"
+msgstr "Экваториальная Гвинея"
+
+#: src/common/util.c:781
+msgid "Greece"
+msgstr "Греция"
+
+#: src/common/util.c:782
+msgid "S. Georgia and S. Sandwich Isles."
+msgstr ""
+
+#: src/common/util.c:783
+msgid "Guatemala"
+msgstr "Гватемала"
+
+#: src/common/util.c:784
+msgid "Guam"
+msgstr "Гуам"
+
+#: src/common/util.c:785
+msgid "Guinea-Bissau"
+msgstr "Гвинея-Биссау"
+
+#: src/common/util.c:786
+msgid "Guyana"
+msgstr "Гана"
+
+#: src/common/util.c:787
+msgid "Hong Kong"
+msgstr "Гонк Конг"
+
+#: src/common/util.c:788
+msgid "Heard and McDonald Islands"
+msgstr ""
+
+#: src/common/util.c:789
+msgid "Honduras"
+msgstr "Гондурас"
+
+#: src/common/util.c:790
+msgid "Croatia"
+msgstr "Хорватия"
+
+#: src/common/util.c:791
+msgid "Haiti"
+msgstr "Гаити"
+
+#: src/common/util.c:792
+msgid "Hungary"
+msgstr "Венгрия"
+
+#: src/common/util.c:793
+msgid "Indonesia"
+msgstr "Индонезия"
+
+#: src/common/util.c:794
+msgid "Ireland"
+msgstr "Ирландия"
+
+#: src/common/util.c:795
+msgid "Israel"
+msgstr "Израиль"
+
+#: src/common/util.c:796
+msgid "India"
+msgstr "Индия"
+
+#: src/common/util.c:797
+msgid "British Indian Ocean Territory"
+msgstr ""
+
+#: src/common/util.c:798
+msgid "Iraq"
+msgstr "Ирак"
+
+#: src/common/util.c:799
+msgid "Iran"
+msgstr "Иран"
+
+#: src/common/util.c:800
+msgid "Iceland"
+msgstr "Исландия"
+
+#: src/common/util.c:801
+msgid "Italy"
+msgstr "Италия"
+
+#: src/common/util.c:802
+msgid "Jamaica"
+msgstr "Ямайка"
+
+#: src/common/util.c:803
+msgid "Jordan"
+msgstr "Иордания"
+
+#: src/common/util.c:804
+msgid "Japan"
+msgstr "Япония"
+
+#: src/common/util.c:805
+msgid "Kenya"
+msgstr "Кения"
+
+#: src/common/util.c:806
+msgid "Kyrgyzstan"
+msgstr "Киргизстан"
+
+#: src/common/util.c:807
+msgid "Cambodia"
+msgstr "Камбоджа"
+
+#: src/common/util.c:808
+msgid "Kiribati"
+msgstr ""
+
+#: src/common/util.c:809
+msgid "Comoros"
+msgstr "Коморос"
+
+#: src/common/util.c:810
+msgid "St. Kitts and Nevis"
+msgstr ""
+
+#: src/common/util.c:811
+msgid "North Korea"
+msgstr "Северная Корея"
+
+#: src/common/util.c:812
+msgid "South Korea"
+msgstr "Южная Корея"
+
+#: src/common/util.c:813
+msgid "Kuwait"
+msgstr "Кувейт"
+
+#: src/common/util.c:814
+msgid "Cayman Islands"
+msgstr "Каймановы о-ва"
+
+#: src/common/util.c:815
+msgid "Kazakhstan"
+msgstr "Казахстан"
+
+#: src/common/util.c:816
+msgid "Laos"
+msgstr "Лаос"
+
+#: src/common/util.c:817
+msgid "Lebanon"
+msgstr "Ливан"
+
+#: src/common/util.c:818
+msgid "Saint Lucia"
+msgstr ""
+
+#: src/common/util.c:819
+msgid "Liechtenstein"
+msgstr "Лихтенштейн"
+
+#: src/common/util.c:820
+msgid "Sri Lanka"
+msgstr "Шри Ланка"
+
+#: src/common/util.c:821
+msgid "Liberia"
+msgstr "Либерия"
+
+#: src/common/util.c:822
+msgid "Lesotho"
+msgstr "Лесото"
+
+#: src/common/util.c:823
+msgid "Lithuania"
+msgstr "Литва"
+
+#: src/common/util.c:824
+msgid "Luxembourg"
+msgstr "Люксембург"
+
+#: src/common/util.c:825
+msgid "Latvia"
+msgstr "Латвия"
+
+#: src/common/util.c:826
+msgid "Libya"
+msgstr "Ливия"
+
+#: src/common/util.c:827
+msgid "Morocco"
+msgstr "Морокко"
+
+#: src/common/util.c:828
+msgid "Monaco"
+msgstr "Монако"
+
+#: src/common/util.c:829
+msgid "Moldova"
+msgstr "Молдова"
+
+#: src/common/util.c:830
+msgid "Madagascar"
+msgstr "Мадагаскар"
+
+#: src/common/util.c:831
+msgid "Marshall Islands"
+msgstr "Маршаловы о-ва"
+
+#: src/common/util.c:832
+msgid "Macedonia"
+msgstr "Македония"
+
+#: src/common/util.c:833
+msgid "Mali"
+msgstr "Мали"
+
+#: src/common/util.c:834
+msgid "Myanmar"
+msgstr ""
+
+#: src/common/util.c:835
+msgid "Mongolia"
+msgstr "Монголия"
+
+#: src/common/util.c:836
+msgid "Macau"
+msgstr "Макау"
+
+#: src/common/util.c:837
+msgid "Northern Mariana Islands"
+msgstr ""
+
+#: src/common/util.c:838
+msgid "Martinique"
+msgstr "Мартиника"
+
+#: src/common/util.c:839
+msgid "Mauritania"
+msgstr "Мавритания"
+
+#: src/common/util.c:840
+msgid "Montserrat"
+msgstr "Монтсерат"
+
+#: src/common/util.c:841
+msgid "Malta"
+msgstr "Мальта"
+
+#: src/common/util.c:842
+msgid "Mauritius"
+msgstr "Маврикий"
+
+#: src/common/util.c:843
+msgid "Maldives"
+msgstr "Мальдивы"
+
+#: src/common/util.c:844
+msgid "Malawi"
+msgstr ""
+
+#: src/common/util.c:845
+msgid "Mexico"
+msgstr "Мехико"
+
+#: src/common/util.c:846
+msgid "Malaysia"
+msgstr "Малайзия"
+
+#: src/common/util.c:847
+msgid "Mozambique"
+msgstr "Мозамбик"
+
+#: src/common/util.c:848
+msgid "Namibia"
+msgstr "Намибия"
+
+#: src/common/util.c:849
+msgid "New Caledonia"
+msgstr "Новая Каледония"
+
+#: src/common/util.c:850
+msgid "Niger"
+msgstr "Нигерия"
+
+#: src/common/util.c:851
+msgid "Norfolk Island"
+msgstr ""
+
+#: src/common/util.c:852
+msgid "Nigeria"
+msgstr "Нигерия"
+
+#: src/common/util.c:853
+msgid "Nicaragua"
+msgstr "Никарагуа"
+
+#: src/common/util.c:854
+msgid "Netherlands"
+msgstr "Нидерланды"
+
+#: src/common/util.c:855
+msgid "Norway"
+msgstr "Норвегия"
+
+#: src/common/util.c:856
+msgid "Nepal"
+msgstr "Непал"
+
+#: src/common/util.c:857
+msgid "Nauru"
+msgstr "Науру"
+
+#: src/common/util.c:858
+msgid "Neutral Zone"
+msgstr "Нейтральная зона"
+
+#: src/common/util.c:859
+msgid "Niue"
+msgstr "Ниуе"
+
+#: src/common/util.c:860
+msgid "New Zealand"
+msgstr "Новая зеландия"
+
+#: src/common/util.c:861
+msgid "Oman"
+msgstr "Оман"
+
+#: src/common/util.c:862
+msgid "Panama"
+msgstr "Панама"
+
+#: src/common/util.c:863
+msgid "Peru"
+msgstr "Перу"
+
+#: src/common/util.c:864
+msgid "French Polynesia"
+msgstr "Французская Полинезия"
+
+#: src/common/util.c:865
+msgid "Papua New Guinea"
+msgstr "Новая Гвинея"
+
+#: src/common/util.c:866
+msgid "Philippines"
+msgstr "Филлипины"
+
+#: src/common/util.c:867
+msgid "Pakistan"
+msgstr "Пакистан"
+
+#: src/common/util.c:868
+msgid "Poland"
+msgstr "Польша"
+
+#: src/common/util.c:869
+msgid "St. Pierre and Miquelon"
+msgstr ""
+
+#: src/common/util.c:870
+msgid "Pitcairn"
+msgstr ""
+
+#: src/common/util.c:871
+msgid "Puerto Rico"
+msgstr "Пуэрто Рико"
+
+#: src/common/util.c:872
+msgid "Portugal"
+msgstr "Португалия"
+
+#: src/common/util.c:873
+msgid "Palau"
+msgstr "Палау"
+
+#: src/common/util.c:874
+msgid "Paraguay"
+msgstr "Парагвай"
+
+#: src/common/util.c:875
+msgid "Qatar"
+msgstr "Катар"
+
+#: src/common/util.c:876
+msgid "Reunion"
+msgstr ""
+
+#: src/common/util.c:877
+msgid "Romania"
+msgstr "Румыния"
+
+#: src/common/util.c:878
+msgid "Russian Federation"
+msgstr "Российская федерация"
+
+#: src/common/util.c:879
+msgid "Rwanda"
+msgstr "Руанда"
+
+#: src/common/util.c:880
+msgid "Saudi Arabia"
+msgstr "Саудовская Аравия"
+
+#: src/common/util.c:881
+msgid "Solomon Islands"
+msgstr "Соломоновы о-ва"
+
+#: src/common/util.c:882
+msgid "Seychelles"
+msgstr "Сейшелы"
+
+#: src/common/util.c:883
+msgid "Sudan"
+msgstr "Звуки"
+
+#: src/common/util.c:884
+msgid "Sweden"
+msgstr "Шведция"
+
+#: src/common/util.c:885
+msgid "Singapore"
+msgstr "Сингапур"
+
+#: src/common/util.c:886
+msgid "St. Helena"
+msgstr ""
+
+#: src/common/util.c:887
+msgid "Slovenia"
+msgstr "Словения"
+
+#: src/common/util.c:888
+msgid "Svalbard and Jan Mayen Islands"
+msgstr ""
+
+#: src/common/util.c:889
+msgid "Slovak Republic"
+msgstr "Словацкая Республика"
+
+#: src/common/util.c:890
+msgid "Sierra Leone"
+msgstr "Сьера Леоне"
+
+#: src/common/util.c:891
+msgid "San Marino"
+msgstr "Сан Марино"
+
+#: src/common/util.c:892
+msgid "Senegal"
+msgstr "Сенегал"
+
+#: src/common/util.c:893
+msgid "Somalia"
+msgstr "Сомали"
+
+#: src/common/util.c:894
+msgid "Suriname"
+msgstr "Суринам"
+
+#: src/common/util.c:895
+msgid "Sao Tome and Principe"
+msgstr ""
+
+#: src/common/util.c:896
+msgid "Former USSR"
+msgstr "Бывш. СССР"
+
+#: src/common/util.c:897
+msgid "El Salvador"
+msgstr "Сальвадор"
+
+#: src/common/util.c:898
+msgid "Syria"
+msgstr "Сирия"
+
+#: src/common/util.c:899
+msgid "Swaziland"
+msgstr "Свазилэнд"
+
+#: src/common/util.c:900
+msgid "Turks and Caicos Islands"
+msgstr "о-ва Тёркс и Кайкос"
+
+#: src/common/util.c:901
+msgid "Chad"
+msgstr "Чад"
+
+#: src/common/util.c:902
+msgid "French Southern Territories"
+msgstr ""
+
+#: src/common/util.c:903
+msgid "Togo"
+msgstr "Того"
+
+#: src/common/util.c:904
+msgid "Thailand"
+msgstr "Таиланд"
+
+#: src/common/util.c:905
+msgid "Tajikistan"
+msgstr "Таджикистан"
+
+#: src/common/util.c:906
+msgid "Tokelau"
+msgstr ""
+
+#: src/common/util.c:907
+msgid "Turkmenistan"
+msgstr "Туркменистан"
+
+#: src/common/util.c:908
+msgid "Tunisia"
+msgstr "Тунис"
+
+#: src/common/util.c:909
+msgid "Tonga"
+msgstr "Тонга"
+
+#: src/common/util.c:910
+msgid "East Timor"
+msgstr "Восточный Тимор"
+
+#: src/common/util.c:911
+msgid "Turkey"
+msgstr "Турция"
+
+#: src/common/util.c:912
+msgid "Trinidad and Tobago"
+msgstr "Тринидад и Тобаго"
+
+#: src/common/util.c:913
+msgid "Tuvalu"
+msgstr ""
+
+#: src/common/util.c:914
+msgid "Taiwan"
+msgstr "Тайвань"
+
+#: src/common/util.c:915
+msgid "Tanzania"
+msgstr "Танзания"
+
+#: src/common/util.c:916
+msgid "Ukraine"
+msgstr "Украина"
+
+#: src/common/util.c:917
+msgid "Uganda"
+msgstr "Уганда"
+
+#: src/common/util.c:918
+msgid "United Kingdom"
+msgstr "Великобритания"
+
+#: src/common/util.c:919
+msgid "US Minor Outlying Islands"
+msgstr ""
+
+#: src/common/util.c:920
+msgid "United States of America"
+msgstr "США"
+
+#: src/common/util.c:921
+msgid "Uruguay"
+msgstr "Уругвай"
+
+#: src/common/util.c:922
+msgid "Uzbekistan"
+msgstr "Узбекистан"
+
+#: src/common/util.c:923
+msgid "Vatican City State"
+msgstr "Ватикан"
+
+#: src/common/util.c:924
+msgid "St. Vincent and the grenadines"
+msgstr "Сент-Винсент и Гренадины"
+
+#: src/common/util.c:925
+msgid "Venezuela"
+msgstr "Венесуэла"
+
+#: src/common/util.c:926
+msgid "British Virgin Islands"
+msgstr "Британские Виргинские о-ва"
+
+#: src/common/util.c:927
+msgid "US Virgin Islands"
+msgstr "Американские Виргинские о-ва"
+
+#: src/common/util.c:928
+msgid "Vietnam"
+msgstr "Вьетнам"
+
+#: src/common/util.c:929
+msgid "Vanuatu"
+msgstr "Вануату"
+
+#: src/common/util.c:930
+msgid "Wallis and Futuna Islands"
+msgstr ""
+
+#: src/common/util.c:931
+msgid "Samoa"
+msgstr "Самоа"
+
+#: src/common/util.c:932
+msgid "Yemen"
+msgstr "Йемен"
+
+#: src/common/util.c:933
+msgid "Mayotte"
+msgstr ""
+
+#: src/common/util.c:934
+msgid "Yugoslavia"
+msgstr "Югославия"
+
+#: src/common/util.c:935
+msgid "South Africa"
+msgstr "Южная Африка"
+
+#: src/common/util.c:936
+msgid "Zambia"
+msgstr "Замбия"
+
+#: src/common/util.c:937
+msgid "Zaire"
+msgstr "Заир"
+
+#: src/common/util.c:938
+msgid "Zimbabwe"
+msgstr "Зимбабве"
+
+#: src/common/util.c:939
+msgid "Internic Commercial"
+msgstr "Коммерческие"
+
+#: src/common/util.c:940
+msgid "Educational Institution"
+msgstr "Образовательные учреждения"
+
+#: src/common/util.c:941
+msgid "Government"
+msgstr "Правительственные"
+
+#: src/common/util.c:942
+msgid "International"
+msgstr "Интернациональные"
+
+#: src/common/util.c:943
+msgid "Military"
+msgstr "Военные"
+
+#: src/common/util.c:944
+msgid "Internic Network"
+msgstr "Сети"
+
+#: src/common/util.c:945
+msgid "Internic Non-Profit Organization"
+msgstr "Не профильные организации"
+
+#: src/common/util.c:946
+msgid "Old School ARPAnet"
+msgstr ""
+
+#: src/common/util.c:947
+msgid "Nato Fiel"
+msgstr "Нато"
+
+#: src/common/util.c:948
+msgid "United States Medical"
+msgstr ""
+
+#: src/common/util.c:949
+msgid "Reverse DNS"
+msgstr "Обратный DNS"
+
+#: src/common/util.c:955 src/common/util.c:963 src/fe-gtk/menu.c:446
+#: src/fe-gtk/menu.c:450 src/fe-gtk/menu.c:454 src/fe-gtk/menu.c:458
+#: src/fe-gtk/menu.c:462
+msgid "Unknown"
+msgstr "Неизвестно"
+
+#: src/fe-gtk/about.c:99
+msgid "About X-Chat"
+msgstr "Об X-Chat.."
+
+#. gdk_font_unref (style->font);
+#. if (menu_sess && menu_sess->type == SESS_DIALOG)
+#. {
+#. style->font = dialog_font_normal;
+#. gdk_font_ref (dialog_font_normal);
+#. } else
+#. {
+#. style->font = font_normal;
+#. gdk_font_ref (font_normal);
+#. }
+#: src/fe-gtk/ascii.c:79
+msgid "Ascii Chart"
+msgstr "Символы ASCII"
+
+#: src/fe-gtk/banlist.c:173 src/fe-gtk/ignoregui.c:342
+msgid "Mask"
+msgstr "Маска"
+
+#: src/fe-gtk/banlist.c:173 src/fe-gtk/dccgui.c:394 src/fe-gtk/dccgui.c:398
+msgid "From"
+msgstr "От"
+
+#: src/fe-gtk/banlist.c:173
+#, fuzzy
+msgid "Date"
+msgstr "Удалить"
+
+#: src/fe-gtk/banlist.c:181
+#, fuzzy, c-format
+msgid "X-Chat: Ban List (%s)"
+msgstr "X-Chat: Список каналов (%s)"
+
+#: src/fe-gtk/banlist.c:206
+msgid "Unban"
+msgstr ""
+
+#: src/fe-gtk/banlist.c:215
+msgid "Crop"
+msgstr ""
+
+#. butWipe = gtkutil_button (vbox2, GTK_STOCK_CLEAR, 0, banlist_wipe,
+#. sess, _("Wipe"), 0, 0);
+#: src/fe-gtk/banlist.c:227
+msgid "Wipe"
+msgstr ""
+
+#: src/fe-gtk/banlist.c:236
+#, fuzzy
+msgid "Refresh"
+msgstr "Обновить список"
+
+#: src/fe-gtk/chanlist.c:123
+#, c-format
+msgid "User and Channel Statistics: %d/%d Users on %d/%d Channels"
+msgstr ""
+"Статистика пользователей и каналов: %d/%d пользователей  на %d/%d каналах"
+
+#: src/fe-gtk/chanlist.c:527
+msgid "I can't save an empty list!"
+msgstr "Невозможно сохранить пустой список"
+
+#: src/fe-gtk/chanlist.c:530 src/fe-gtk/menu.c:1001
+msgid "Select an output filename"
+msgstr "Выберите файл для вывода"
+
+#: src/fe-gtk/chanlist.c:595
+#, c-format
+msgid "X-Chat: Channel List (%s)"
+msgstr "X-Chat: Список каналов (%s)"
+
+#: src/fe-gtk/chanlist.c:611
+msgid "List display options:"
+msgstr "Список настроек экрана:"
+
+#: src/fe-gtk/chanlist.c:629
+msgid "Minimum Users: "
+msgstr "Минимум пользователей:"
+
+#: src/fe-gtk/chanlist.c:648
+msgid "Maximum Users: "
+msgstr "Максимум пользователей:"
+
+#: src/fe-gtk/chanlist.c:678
+msgid "Regex Match: "
+msgstr "Поиск RegExp"
+
+#: src/fe-gtk/chanlist.c:723
+msgid "Apply"
+msgstr "Применить"
+
+#: src/fe-gtk/chanlist.c:766
+msgid "Refresh the list"
+msgstr "Обновить список"
+
+#: src/fe-gtk/chanlist.c:768
+msgid "Save the list"
+msgstr "Записать список"
+
+#: src/fe-gtk/chanlist.c:770 src/fe-gtk/menu.c:664
+msgid "Join Channel"
+msgstr "Зайти на канал"
+
+#: src/fe-gtk/dccgui.c:88
+#, c-format
+msgid "Send file to %s"
+msgstr "Отправить файл %s"
+
+#: src/fe-gtk/dccgui.c:263
+#, c-format
+msgid ""
+"      File: %s\n"
+"   To/From: %s\n"
+"      Size: %u\n"
+"      Port: %d\n"
+" IP Number: %s\n"
+"Start Time: %s   Max CPS: %d\n"
+msgstr ""
+
+#: src/fe-gtk/dccgui.c:394 src/fe-gtk/dccgui.c:398 src/fe-gtk/dccgui.c:578
+#: src/fe-gtk/dccgui.c:709 src/fe-gtk/notifygui.c:163
+msgid "Status"
+msgstr "Статус"
+
+#: src/fe-gtk/dccgui.c:394 src/fe-gtk/dccgui.c:398 src/fe-gtk/dccgui.c:578
+#: src/fe-gtk/plugingui.c:142
+msgid "File"
+msgstr "Файл"
+
+#: src/fe-gtk/dccgui.c:394 src/fe-gtk/dccgui.c:398 src/fe-gtk/dccgui.c:578
+msgid "ETA"
+msgstr ""
+
+#: src/fe-gtk/dccgui.c:395
+msgid "MIME Type"
+msgstr "Тип файла"
+
+#: src/fe-gtk/dccgui.c:409
+msgid "X-Chat: File Receive List"
+msgstr "X-Chat: Список принимаемых файлов"
+
+#: src/fe-gtk/dccgui.c:437 src/fe-gtk/dccgui.c:611 src/fe-gtk/dccgui.c:736
+msgid "Abort"
+msgstr "Прервать"
+
+#: src/fe-gtk/dccgui.c:439 src/fe-gtk/dccgui.c:737
+msgid "Accept"
+msgstr "Подтвердить"
+
+#: src/fe-gtk/dccgui.c:441
+msgid "Resume"
+msgstr "Продолж."
+
+#: src/fe-gtk/dccgui.c:443 src/fe-gtk/dccgui.c:612
+msgid "Info"
+msgstr "Информация"
+
+#: src/fe-gtk/dccgui.c:445
+msgid "Open"
+msgstr "Откр"
+
+#: src/fe-gtk/dccgui.c:578
+msgid "Ack"
+msgstr ""
+
+#: src/fe-gtk/dccgui.c:578
+msgid "To"
+msgstr "Кому"
+
+#: src/fe-gtk/dccgui.c:589
+msgid "X-Chat: File Send List"
+msgstr "X-Chat: Список отправляемых файлов"
+
+#: src/fe-gtk/dccgui.c:709
+msgid "To/From"
+msgstr "Кому/Откуда"
+
+#: src/fe-gtk/dccgui.c:709
+msgid "Recv"
+msgstr "Прин"
+
+#: src/fe-gtk/dccgui.c:709
+msgid "Sent"
+msgstr "Отпр"
+
+#: src/fe-gtk/dccgui.c:709
+msgid "StartTime"
+msgstr "Время начала"
+
+#: src/fe-gtk/dccgui.c:720
+msgid "X-Chat: DCC Chat List"
+msgstr "X-Chat: Список разговоров по DCC"
+
+#: src/fe-gtk/editlist.c:137
+msgid "*NEW*"
+msgstr "*НОВ*"
+
+#: src/fe-gtk/editlist.c:137
+msgid "EDIT ME"
+msgstr "Исправь"
+
+#: src/fe-gtk/editlist.c:299 src/fe-gtk/plugingui.c:142
+msgid "Name"
+msgstr "Имя"
+
+#: src/fe-gtk/editlist.c:299
+msgid "Command"
+msgstr "Команда"
+
+#: src/fe-gtk/editlist.c:327
+msgid "Move Up"
+msgstr "Вверх"
+
+#: src/fe-gtk/editlist.c:331
+msgid "Move Dn"
+msgstr "Вниз"
+
+#: src/fe-gtk/editlist.c:339 src/fe-gtk/ignoregui.c:451
+msgid "Cancel"
+msgstr "Отмена"
+
+#: src/fe-gtk/editlist.c:343 src/fe-gtk/textgui.c:455 src/fe-gtk/urlgrab.c:139
+msgid "Save"
+msgstr "Записать"
+
+#: src/fe-gtk/editlist.c:351
+msgid "Add New"
+msgstr "Добавить"
+
+#: src/fe-gtk/editlist.c:355 src/fe-gtk/fkeys.c:698
+msgid "Delete"
+msgstr "Удалить"
+
+#: src/fe-gtk/editlist.c:363 src/fe-gtk/ignoregui.c:449
+msgid "Sort"
+msgstr "Сортировать"
+
+#: src/fe-gtk/editlist.c:367
+msgid "Help"
+msgstr "Помощь"
+
+#: src/fe-gtk/fe-gtk.c:138
+msgid ""
+"Options:\n"
+"  -d,  --cfgdir DIRECTORY   use a different config dir\n"
+"  -a,  --no-auto            don't auto connect\n"
+"  -v,  --version            show version information\n"
+"\n"
+"URL:\n"
+"  irc://server:port/channel\n"
+"\n"
+msgstr ""
+
+#: src/fe-gtk/fe-gtk.c:557
+#, fuzzy
+msgid "Search buffer is empty.\n"
+msgstr "Поиск в буфере..."
+
+#: src/fe-gtk/fkeys.c:148
+msgid ""
+"The Run Command action runs the data in Data 1 as if it has been typed into "
+"the entry box where you pressed the key sequence. Thus it can contain text "
+"(which will be sent to the channel/person), commands or user commands. When "
+"run all \\n characters in Data 1 are used to deliminate seperate commands so "
+"it is possible to run more than one command. If you want a \\ in the actual "
+"text run then enter \\\\"
+msgstr ""
+
+#: src/fe-gtk/fkeys.c:150
+msgid ""
+"The Change Page command switches between pages in the notebook. Set Data 1 "
+"to the page you want to switch to. If Data 2 is set to anything then the "
+"switch will be relative to the current position"
+msgstr ""
+
+#: src/fe-gtk/fkeys.c:152
+msgid ""
+"The Insert in Buffer command will insert the contents of Data 1 into the "
+"entry where the key sequence was pressed at the current cursor position"
+msgstr ""
+
+#: src/fe-gtk/fkeys.c:154
+msgid ""
+"The Scroll Page command scrolls the text widget up or down one page. If Data "
+"1 is set to anything the page scrolls up, else it scrolls down"
+msgstr ""
+
+#: src/fe-gtk/fkeys.c:156
+msgid ""
+"The Set Buffer command sets the entry where the key sequence was entered to "
+"the contents of Data 1"
+msgstr ""
+
+#: src/fe-gtk/fkeys.c:158
+msgid ""
+"The Last Command command sets the entry to contain the last command entered "
+"- the same as pressing up in a shell"
+msgstr ""
+
+#: src/fe-gtk/fkeys.c:160
+msgid ""
+"The Next Command command sets the entry to contain the next command entered "
+"- the same as pressing down in a shell"
+msgstr ""
+
+#: src/fe-gtk/fkeys.c:162
+msgid ""
+"This command changes the text in the entry to finish an incomplete nickname "
+"or command. If Data 1 is set then double-tabbing in a string will select the "
+"last nick, not the next"
+msgstr ""
+
+#: src/fe-gtk/fkeys.c:164
+msgid ""
+"This command scrolls up and down through the list of nicks. If Data 1 is set "
+"to anything it will scroll up, else it scrolls down"
+msgstr ""
+
+#: src/fe-gtk/fkeys.c:166
+msgid ""
+"This command checks the last work entered in the entry against the replace "
+"list and replaces it if it finds a match"
+msgstr ""
+
+#: src/fe-gtk/fkeys.c:168
+msgid "This command move the front tab left by one"
+msgstr ""
+
+#: src/fe-gtk/fkeys.c:170
+msgid "This command move the front tab right by one"
+msgstr ""
+
+#: src/fe-gtk/fkeys.c:172
+msgid "Push input line into history but doesn't send to server"
+msgstr ""
+
+#: src/fe-gtk/fkeys.c:184
+msgid "There was an error loading key bindings configuration"
+msgstr ""
+
+#: src/fe-gtk/fkeys.c:392 src/fe-gtk/fkeys.c:671 src/fe-gtk/fkeys.c:677
+#: src/fe-gtk/fkeys.c:682 src/fe-gtk/maingui.c:603 src/fe-gtk/maingui.c:624
+#: src/fe-gtk/maingui.c:671 src/fe-gtk/maingui.c:2089
+msgid "<none>"
+msgstr ""
+
+#: src/fe-gtk/fkeys.c:635
+msgid "Mod"
+msgstr ""
+
+#: src/fe-gtk/fkeys.c:635 src/fe-gtk/fkeys.c:731
+msgid "Key"
+msgstr "Клавиша"
+
+#: src/fe-gtk/fkeys.c:635
+msgid "Action"
+msgstr "Действие"
+
+#: src/fe-gtk/fkeys.c:646
+msgid "X-Chat: Edit Key Bindings"
+msgstr "Изменить Назначение Кнопок.."
+
+#: src/fe-gtk/fkeys.c:693
+msgid "Add new"
+msgstr "Добавить новый"
+
+#: src/fe-gtk/fkeys.c:724
+msgid "Shift"
+msgstr "Shift"
+
+#: src/fe-gtk/fkeys.c:726
+msgid "Alt"
+msgstr "Alt"
+
+#: src/fe-gtk/fkeys.c:728
+msgid "Ctrl"
+msgstr "Ctrl"
+
+#: src/fe-gtk/fkeys.c:735
+msgid "Data 1"
+msgstr ""
+
+#: src/fe-gtk/fkeys.c:738
+msgid "Data 2"
+msgstr ""
+
+#: src/fe-gtk/fkeys.c:781
+msgid "Error opening keys config file\n"
+msgstr "Ошибка открытия файла настроек клавиш\n"
+
+#: src/fe-gtk/fkeys.c:952
+#, c-format
+msgid ""
+"Unknown keyname %s in key bindings config file\n"
+"Load aborted, please fix ~/.xchat/keybindings.conf\n"
+msgstr ""
+
+#: src/fe-gtk/fkeys.c:990
+#, c-format
+msgid ""
+"Unknown action %s in key bindings config file\n"
+"Load aborted, Please fix ~/.xchat/keybindings\n"
+msgstr ""
+
+#: src/fe-gtk/fkeys.c:1011
+#, c-format
+msgid ""
+"Expecting Data line (beginning Dx{:|!}) but got:\n"
+"%s\n"
+"\n"
+"Load aborted, Please fix ~/.xchat/keybindings\n"
+msgstr ""
+
+#: src/fe-gtk/gtkutil.c:131
+msgid "Cannot write to that file."
+msgstr "Невозможно записать в этот файл."
+
+#: src/fe-gtk/gtkutil.c:133
+msgid "Cannot read that file."
+msgstr "Невозможно прочитать этот файл."
+
+#: src/fe-gtk/ignoregui.c:87 src/fe-gtk/ignoregui.c:90
+#: src/fe-gtk/ignoregui.c:93 src/fe-gtk/ignoregui.c:96
+#: src/fe-gtk/ignoregui.c:99 src/fe-gtk/ignoregui.c:102
+#: src/fe-gtk/ignoregui.c:116 src/fe-gtk/ignoregui.c:120
+#: src/fe-gtk/ignoregui.c:124 src/fe-gtk/ignoregui.c:128
+#: src/fe-gtk/ignoregui.c:132 src/fe-gtk/ignoregui.c:136
+#: src/fe-gtk/ignoregui.c:190 src/fe-gtk/ignoregui.c:247
+#: src/fe-gtk/ignoregui.c:258 src/fe-gtk/ignoregui.c:269
+#: src/fe-gtk/ignoregui.c:280 src/fe-gtk/ignoregui.c:291
+#: src/fe-gtk/ignoregui.c:302
+msgid "Yes"
+msgstr "Да"
+
+#: src/fe-gtk/ignoregui.c:118 src/fe-gtk/ignoregui.c:122
+#: src/fe-gtk/ignoregui.c:126 src/fe-gtk/ignoregui.c:130
+#: src/fe-gtk/ignoregui.c:134 src/fe-gtk/ignoregui.c:138
+#: src/fe-gtk/ignoregui.c:171 src/fe-gtk/ignoregui.c:172
+#: src/fe-gtk/ignoregui.c:173 src/fe-gtk/ignoregui.c:174
+#: src/fe-gtk/ignoregui.c:175 src/fe-gtk/ignoregui.c:176
+#: src/fe-gtk/ignoregui.c:249 src/fe-gtk/ignoregui.c:260
+#: src/fe-gtk/ignoregui.c:271 src/fe-gtk/ignoregui.c:282
+#: src/fe-gtk/ignoregui.c:293 src/fe-gtk/ignoregui.c:304
+msgid "No"
+msgstr "Нет"
+
+#.
+#. Serverlist copies an existing entry, but not much point to do so here
+#.
+#: src/fe-gtk/ignoregui.c:170
+msgid "new!new@new.com"
+msgstr "new!new@new.com"
+
+#: src/fe-gtk/ignoregui.c:342 src/fe-gtk/ignoregui.c:382
+msgid "CTCP"
+msgstr ""
+
+#: src/fe-gtk/ignoregui.c:342 src/fe-gtk/ignoregui.c:388
+#: src/fe-gtk/maingui.c:1091
+msgid "Private"
+msgstr "Приватный"
+
+#: src/fe-gtk/ignoregui.c:342
+msgid "Chan"
+msgstr ""
+
+#: src/fe-gtk/ignoregui.c:342 src/fe-gtk/ignoregui.c:400
+msgid "Notice"
+msgstr "Сообщение"
+
+#: src/fe-gtk/ignoregui.c:342 src/fe-gtk/ignoregui.c:406
+msgid "Invite"
+msgstr "Невидимый"
+
+#: src/fe-gtk/ignoregui.c:342 src/fe-gtk/ignoregui.c:412
+msgid "Unignore"
+msgstr "Не игнорировать"
+
+#: src/fe-gtk/ignoregui.c:353
+msgid "X-Chat: Ignore list"
+msgstr "X-Chat: Список игнорирования"
+
+#: src/fe-gtk/ignoregui.c:375
+msgid "Ignore Mask:"
+msgstr "Маска игнорирования:"
+
+#: src/fe-gtk/ignoregui.c:422
+msgid "Ignore Stats:"
+msgstr "Состояние игнорирования:"
+
+#: src/fe-gtk/ignoregui.c:430
+msgid "CTCP:"
+msgstr ""
+
+#: src/fe-gtk/ignoregui.c:431
+msgid "Private:"
+msgstr "Приватный:"
+
+#: src/fe-gtk/ignoregui.c:432
+msgid "Channel:"
+msgstr "Канал:"
+
+#: src/fe-gtk/ignoregui.c:433
+msgid "Notice:"
+msgstr "Сообщение:"
+
+#: src/fe-gtk/ignoregui.c:434
+msgid "Invite:"
+msgstr "Невидимый:"
+
+#: src/fe-gtk/ignoregui.c:443
+msgid "OK"
+msgstr "Ок"
+
+#: src/fe-gtk/ignoregui.c:445 src/fe-gtk/menu.c:1307
+msgid "New"
+msgstr "Новый"
+
+#: src/fe-gtk/maingui.c:328
+#, c-format
+msgid "Topic for %s is: %s"
+msgstr "Тема для %s : %s"
+
+#: src/fe-gtk/maingui.c:804
+msgid "Some file transfers still active, quit xchat?"
+msgstr ""
+
+#: src/fe-gtk/maingui.c:840
+msgid "No other tabs open, quit xchat?"
+msgstr ""
+
+#: src/fe-gtk/maingui.c:961 src/fe-gtk/maingui.c:1067
+msgid "User limit must be a number!\n"
+msgstr "Лимит пользователей должен содержать номер!\n"
+
+#: src/fe-gtk/maingui.c:1087
+msgid "Topic Protection"
+msgstr "Защитить тему"
+
+#: src/fe-gtk/maingui.c:1088
+msgid "No outside messages"
+msgstr ""
+
+#: src/fe-gtk/maingui.c:1089
+msgid "Secret"
+msgstr "Секрет"
+
+#: src/fe-gtk/maingui.c:1090
+msgid "Invite Only"
+msgstr "Только невидимые"
+
+#: src/fe-gtk/maingui.c:1092
+msgid "Moderated"
+msgstr "Модерируемый"
+
+#: src/fe-gtk/maingui.c:1093
+msgid "Ban List"
+msgstr "Список банов"
+
+#: src/fe-gtk/maingui.c:1095
+msgid "Keyword"
+msgstr "Ключевое слово"
+
+#: src/fe-gtk/maingui.c:1103
+msgid "User Limit"
+msgstr "Ограничение пользователей"
+
+#: src/fe-gtk/maingui.c:1115
+msgid "Close this tab/window"
+msgstr ""
+
+#: src/fe-gtk/maingui.c:1118
+msgid "Link/DeLink this tab"
+msgstr ""
+
+#: src/fe-gtk/maingui.c:1194
+#, fuzzy
+msgid "Show/Hide userlist"
+msgstr "Показывать хост"
+
+#: src/fe-gtk/maingui.c:1624
+msgid "Insert color code"
+msgstr ""
+
+#: src/fe-gtk/maingui.c:1644
+#, fuzzy, c-format
+msgid "(%s) Channel settings"
+msgstr "Настройки панели"
+
+#: src/fe-gtk/maingui.c:1654
+#, fuzzy
+msgid "Beep on message"
+msgstr "Звуковой сигнал при получении сообщений"
+
+#: src/fe-gtk/maingui.c:1656
+msgid "Hide join/parts"
+msgstr ""
+
+#: src/fe-gtk/maingui.c:1658
+#, fuzzy
+msgid "Color paste"
+msgstr "Вставить цвет"
+
+#: src/fe-gtk/maingui.c:1661
+#, c-format
+msgid "(%s) Network encoding"
+msgstr ""
+
+#: src/fe-gtk/maingui.c:1673
+msgid "System default"
+msgstr ""
+
+#: src/fe-gtk/maingui.c:1699
+#, fuzzy
+msgid "Enter new nickname:"
+msgstr "Новый ник"
+
+#: src/fe-gtk/maingui.c:1767
+#, fuzzy
+msgid "Channel Options"
+msgstr "Окна канала"
+
+#: src/fe-gtk/menu.c:150
+msgid "Host unknown"
+msgstr "Хост неизвестен"
+
+#: src/fe-gtk/menu.c:445
+#, c-format
+msgid "User: %s"
+msgstr "Пользователь: %s"
+
+#: src/fe-gtk/menu.c:449
+#, c-format
+msgid "Country: %s"
+msgstr "Страна: %s"
+
+#: src/fe-gtk/menu.c:453
+#, c-format
+msgid "Realname: %s"
+msgstr "Реальное имя: %s"
+
+#: src/fe-gtk/menu.c:457
+#, c-format
+msgid "Server: %s"
+msgstr "Сервер: %s"
+
+#: src/fe-gtk/menu.c:461
+#, c-format
+msgid "Last Msg: %s"
+msgstr "Последнее сообщение: %s"
+
+#. sep
+#: src/fe-gtk/menu.c:541
+msgid "Menu Bar"
+msgstr "Панель меню"
+
+#: src/fe-gtk/menu.c:542
+msgid "Topic Bar"
+msgstr "Панель темы"
+
+#: src/fe-gtk/menu.c:543
+msgid "User List"
+msgstr "Список Пользователей"
+
+#: src/fe-gtk/menu.c:668
+msgid "Part Channel"
+msgstr "Покинуть канал"
+
+#: src/fe-gtk/menu.c:670
+msgid "Cycle Channel"
+msgstr "Каналы по кругу"
+
+#: src/fe-gtk/menu.c:843
+msgid "X-Chat: User menu"
+msgstr "X-Chat: пользовательское меню"
+
+#. sep
+#: src/fe-gtk/menu.c:852
+#, fuzzy
+msgid "Edit This Menu..."
+msgstr "Редактировать пользовательское меню.."
+
+#: src/fe-gtk/menu.c:954
+msgid ""
+"*WARNING*\n"
+"Auto accepting DCC to your home directory\n"
+"can be dangerous and is exploitable. Eg:\n"
+"Someone could send you a .bash_profile"
+msgstr ""
+
+#: src/fe-gtk/menu.c:1071
+msgid "Settings saved."
+msgstr "Настройки записаны."
+
+#: src/fe-gtk/menu.c:1109
+msgid ""
+"User Commands - Special codes:\n"
+"\n"
+"%c  =  current channel\n"
+"%m  =  machine info\n"
+"%n  =  your nick\n"
+"%t  =  time/date\n"
+"%v  =  xchat version\n"
+"%2  =  word 2\n"
+"%3  =  word 3\n"
+"&2  =  word 2 to the end of line\n"
+"&3  =  word 3 to the end of line\n"
+"\n"
+"eg:\n"
+"/cmd john hello\n"
+"\n"
+"%2 would be \"john\"\n"
+"&2 would be \"john hello\"."
+msgstr ""
+
+#: src/fe-gtk/menu.c:1124
+msgid ""
+"Userlist Buttons - Special codes:\n"
+"\n"
+"%a  =  all selected nicks\n"
+"%c  =  current channel\n"
+"%h  =  selected nick's hostname\n"
+"%m  =  machine info\n"
+"%n  =  your nick\n"
+"%s  =  selected nick\n"
+"%t  =  time/date\n"
+msgstr ""
+
+#: src/fe-gtk/menu.c:1133
+msgid ""
+"Dialog Buttons - Special codes:\n"
+"\n"
+"%a  =  all selected nicks\n"
+"%c  =  current channel\n"
+"%h  =  selected nick's hostname\n"
+"%m  =  machine info\n"
+"%n  =  your nick\n"
+"%s  =  selected nick\n"
+"%t  =  time/date\n"
+msgstr ""
+
+#: src/fe-gtk/menu.c:1142
+msgid ""
+"CTCP Replies - Special codes:\n"
+"\n"
+"%d  =  data (the whole ctcp)\n"
+"%m  =  machine info\n"
+"%s  =  nick who sent the ctcp\n"
+"%t  =  time/date\n"
+"%2  =  word 2\n"
+"%3  =  word 3\n"
+"&2  =  word 2 to the end of line\n"
+"&3  =  word 3 to the end of line\n"
+"\n"
+msgstr ""
+
+#: src/fe-gtk/menu.c:1152
+#, c-format
+msgid ""
+"URL Handlers - Special codes:\n"
+"\n"
+"%s  =  the URL string\n"
+"\n"
+"Putting a ! infront of the command\n"
+"indicates it should be sent to a\n"
+"shell instead of X-Chat"
+msgstr ""
+
+#: src/fe-gtk/menu.c:1161
+msgid "X-Chat: User Defined Commands"
+msgstr "X-Chat: Определенные пользователем команды"
+
+#: src/fe-gtk/menu.c:1168
+msgid "X-Chat: Userlist Popup menu"
+msgstr "Всплывающее меню для списка пользователей.."
+
+#: src/fe-gtk/menu.c:1175
+msgid "X-Chat: Replace"
+msgstr "X-Chat: Замены"
+
+#: src/fe-gtk/menu.c:1182
+msgid "X-Chat: URL Handlers"
+msgstr "Обработчики URL.."
+
+#: src/fe-gtk/menu.c:1201
+msgid "X-Chat: Userlist buttons"
+msgstr "Кнопки списка пользователей.."
+
+#: src/fe-gtk/menu.c:1208
+msgid "X-Chat: Dialog buttons"
+msgstr "X-Chat: Кнопки диалогов"
+
+#: src/fe-gtk/menu.c:1215
+msgid "X-Chat: CTCP Replies"
+msgstr "Ответы CTCP"
+
+#: src/fe-gtk/menu.c:1303
+#, fuzzy
+msgid "_X-Chat"
+msgstr "X-Chat"
+
+#: src/fe-gtk/menu.c:1304
+#, fuzzy
+msgid "Server List..."
+msgstr "Список серверов..."
+
+#: src/fe-gtk/menu.c:1308
+#, fuzzy
+msgid "Server Tab..."
+msgstr "Закладка для нового сервера.."
+
+#: src/fe-gtk/menu.c:1309
+#, fuzzy
+msgid "Channel Tab..."
+msgstr "Закладка для нового канала.."
+
+#: src/fe-gtk/menu.c:1310
+#, fuzzy
+msgid "Server Window..."
+msgstr "Окно нового сервера.."
+
+#: src/fe-gtk/menu.c:1311
+#, fuzzy
+msgid "Channel Window..."
+msgstr "Окно нового канала.."
+
+#: src/fe-gtk/menu.c:1316
+#, fuzzy
+msgid "Load plugin..."
+msgstr "Загрузить модуль (*.so)..."
+
+#: src/fe-gtk/menu.c:1318
+#, fuzzy
+msgid "Load Plugin..."
+msgstr "Загрузить модуль (*.so)..."
+
+#: src/fe-gtk/menu.c:1322
+#, fuzzy
+msgid "New Shell Tab..."
+msgstr "Закладка для новой консоли.."
+
+#: src/fe-gtk/menu.c:1328 src/fe-gtk/search.c:117
+msgid "Close"
+msgstr "Закрыть"
+
+#: src/fe-gtk/menu.c:1330
+msgid "Quit"
+msgstr "Выйти"
+
+#. 16
+#: src/fe-gtk/menu.c:1332
+#, fuzzy
+msgid "_IRC"
+msgstr "IRC"
+
+#: src/fe-gtk/menu.c:1333
+msgid "Invisible"
+msgstr "Невидимый"
+
+#: src/fe-gtk/menu.c:1334
+msgid "Receive Wallops"
+msgstr "Принимать Wallops"
+
+#: src/fe-gtk/menu.c:1335
+msgid "Receive Server Notices"
+msgstr "Принимать предупреждения сервера"
+
+#: src/fe-gtk/menu.c:1337
+msgid "Marked Away"
+msgstr "Помечен как Ушел"
+
+#. 23
+#: src/fe-gtk/menu.c:1339
+msgid "Auto ReJoin on Kick"
+msgstr "Автоматически присоединяться после Kick"
+
+#: src/fe-gtk/menu.c:1340
+msgid "Auto ReConnect to Server"
+msgstr "Автоматически восстанавливать соединение с сервером"
+
+#: src/fe-gtk/menu.c:1341
+msgid "Never-give-up ReConnect"
+msgstr "Никогда не прекращать попыток соединиться"
+
+#. 27
+#: src/fe-gtk/menu.c:1343
+msgid "Auto Open Dialog Windows"
+msgstr "Автоматически открывать диалоговые окна"
+
+#: src/fe-gtk/menu.c:1344
+msgid "Auto Accept DCC Chat"
+msgstr "Автоматически принимать DCC Chat"
+
+#: src/fe-gtk/menu.c:1345
+msgid "Auto Accept DCC Send"
+msgstr "Автоматически принимать DCC Send"
+
+#: src/fe-gtk/menu.c:1347
+#, fuzzy
+msgid "_Server"
+msgstr "Сервер"
+
+#. 31
+#: src/fe-gtk/menu.c:1349
+#, fuzzy
+msgid "S_ettings"
+msgstr "Настройки"
+
+#. 32
+#: src/fe-gtk/menu.c:1350
+#, fuzzy
+msgid "Preferences..."
+msgstr "X-Chat: Свойства"
+
+#: src/fe-gtk/menu.c:1352
+#, fuzzy
+msgid "Lists"
+msgstr "Список банов"
+
+#: src/fe-gtk/menu.c:1353
+#, fuzzy
+msgid "User Commands..."
+msgstr "Команды Пользователя.."
+
+#: src/fe-gtk/menu.c:1354
+#, fuzzy
+msgid "CTCP Replies..."
+msgstr "Ответы CTCP.."
+
+#: src/fe-gtk/menu.c:1355
+#, fuzzy
+msgid "Userlist Buttons..."
+msgstr "Кнопки списка пользователей.."
+
+#: src/fe-gtk/menu.c:1356
+#, fuzzy
+msgid "Userlist Popup..."
+msgstr "Всплывающее меню списка пользователей.."
+
+#: src/fe-gtk/menu.c:1357
+#, fuzzy
+msgid "Dialog Buttons..."
+msgstr "Кнопки диалога.."
+
+#: src/fe-gtk/menu.c:1358
+#, fuzzy
+msgid "Replace Popup..."
+msgstr "Список замен.."
+
+#: src/fe-gtk/menu.c:1359
+#, fuzzy
+msgid "URL Handlers..."
+msgstr "Обработчики URL.."
+
+#: src/fe-gtk/menu.c:1360
+#, fuzzy
+msgid "Event Texts..."
+msgstr "Редактировать тексты событий"
+
+#: src/fe-gtk/menu.c:1361
+#, fuzzy
+msgid "Key Bindings..."
+msgstr "Изменить Назначение Кнопок.."
+
+#. 55
+#: src/fe-gtk/menu.c:1366
+msgid "Reload Settings"
+msgstr "Перечитать настройки"
+
+#: src/fe-gtk/menu.c:1368
+msgid "Save Settings now"
+msgstr "Сохранить настройки сейчас"
+
+#: src/fe-gtk/menu.c:1369
+msgid "Save Settings on exit"
+msgstr "Сохранить настройки при выходе"
+
+#: src/fe-gtk/menu.c:1372
+#, fuzzy
+msgid "_Window"
+msgstr "_Окна"
+
+#: src/fe-gtk/menu.c:1373
+#, fuzzy
+msgid "Channel List..."
+msgstr "Окно списка каналов..."
+
+#: src/fe-gtk/menu.c:1374
+#, fuzzy
+msgid "File Send..."
+msgstr "Окно отправки файла.."
+
+#: src/fe-gtk/menu.c:1375
+#, fuzzy
+msgid "File Receive..."
+msgstr "Окно получения файла.."
+
+#: src/fe-gtk/menu.c:1376
+#, fuzzy
+msgid "Direct Chat..."
+msgstr "Окно DCC Chat.."
+
+#: src/fe-gtk/menu.c:1377
+#, fuzzy
+msgid "Raw Log..."
+msgstr "Окно сообщений.."
+
+#. 50
+#: src/fe-gtk/menu.c:1378
+#, fuzzy
+msgid "URL Grabber..."
+msgstr "Найденные URL'и..."
+
+#: src/fe-gtk/menu.c:1379
+#, fuzzy
+msgid "Notify List..."
+msgstr "Окно списка уведомлений.."
+
+#: src/fe-gtk/menu.c:1380
+#, fuzzy
+msgid "Ignore List..."
+msgstr "Окно игнорирования.."
+
+#: src/fe-gtk/menu.c:1381
+#, fuzzy
+msgid "Ban List..."
+msgstr "Список банов"
+
+#: src/fe-gtk/menu.c:1382
+#, fuzzy
+msgid "Character Chart..."
+msgstr "Наборы символов"
+
+#: src/fe-gtk/menu.c:1383
+#, fuzzy
+msgid "Plugin List..."
+msgstr "Список модулей"
+
+#: src/fe-gtk/menu.c:1385
+#, fuzzy
+msgid "C_lear Text"
+msgstr "Простой текст"
+
+#: src/fe-gtk/menu.c:1386
+#, fuzzy
+msgid "Search Text..."
+msgstr "Поиск в буфере..."
+
+#: src/fe-gtk/menu.c:1387
+#, fuzzy
+msgid "Save Text..."
+msgstr "Редактировать тексты событий"
+
+#: src/fe-gtk/menu.c:1389
+msgid "_Help"
+msgstr "_Помощь"
+
+#. 61
+#: src/fe-gtk/menu.c:1390
+#, fuzzy
+msgid "X-Chat Homepage..."
+msgstr "Домашняя страница X-Chat.."
+
+#: src/fe-gtk/menu.c:1391
+#, fuzzy
+msgid "Online Docs..."
+msgstr "Документация в Интернет.."
+
+#: src/fe-gtk/menu.c:1393
+#, fuzzy
+msgid "About X-Chat..."
+msgstr "Об X-Chat.."
+
+#: src/fe-gtk/notifygui.c:94
+msgid "Offline"
+msgstr "Отключен"
+
+#: src/fe-gtk/notifygui.c:97
+msgid "Never"
+msgstr "Никогда"
+
+#: src/fe-gtk/notifygui.c:116
+msgid "Online"
+msgstr "Подключен"
+
+#: src/fe-gtk/notifygui.c:163
+msgid "User"
+msgstr "Пользователь"
+
+#: src/fe-gtk/notifygui.c:163
+msgid "Server"
+msgstr "Сервер"
+
+#: src/fe-gtk/notifygui.c:163
+msgid "Last Seen"
+msgstr "Последний раз"
+
+#: src/fe-gtk/notifygui.c:172
+msgid "X-Chat: Notify List"
+msgstr "X-Chat: Список уведомлений"
+
+#: src/fe-gtk/notifygui.c:188
+msgid "Add"
+msgstr "Добавить"
+
+#: src/fe-gtk/notifygui.c:190
+msgid "Remove"
+msgstr "Удалить"
+
+#: src/fe-gtk/plugingui.c:99
+#, fuzzy
+msgid "Select a Plugin or Script to load"
+msgstr "Выберите плагин для загрузки"
+
+#: src/fe-gtk/plugingui.c:142
+#, fuzzy
+msgid "Version"
+msgstr "Не показывать версию"
+
+#: src/fe-gtk/plugingui.c:142 src/fe-gtk/textgui.c:378
+msgid "Description"
+msgstr "Описание"
+
+#: src/fe-gtk/plugingui.c:158
+msgid "X-Chat Plugins"
+msgstr "X-Chat Модули"
+
+#: src/fe-gtk/plugingui.c:172
+#, fuzzy
+msgid "_Load..."
+msgstr "Загрузить"
+
+#: src/fe-gtk/plugingui.c:176
+#, fuzzy
+msgid "_UnLoad"
+msgstr "Выгрузить"
+
+#: src/fe-gtk/rawlog.c:79
+msgid "Save rawlog"
+msgstr "Записать лог"
+
+#: src/fe-gtk/rawlog.c:95
+#, fuzzy, c-format
+msgid "X-Chat: Rawlog (%s)"
+msgstr "X-Chat: Кнопки диалогов"
+
+#: src/fe-gtk/rawlog.c:123
+#, fuzzy
+msgid "Clear rawlog"
+msgstr "Записать лог"
+
+#: src/fe-gtk/rawlog.c:126
+#, fuzzy
+msgid "Save rawlog..."
+msgstr "Записать лог"
+
+#: src/fe-gtk/search.c:46
+msgid "The window you opened this Search for doesn't exist anymore."
+msgstr ""
+
+#: src/fe-gtk/search.c:89
+msgid "X-Chat: Search"
+msgstr "X-Chat: Поиск"
+
+#: src/fe-gtk/search.c:98
+msgid "Find:"
+msgstr "Поиск:"
+
+#: src/fe-gtk/search.c:112
+msgid "Find"
+msgstr "Поиск"
+
+#: src/fe-gtk/search.c:115 src/fe-gtk/urlgrab.c:137
+msgid "Clear"
+msgstr "Очистить"
+
+#: src/fe-gtk/servlistgui.c:119
+#, fuzzy, c-format
+msgid "Settings for %s"
+msgstr "Настройки"
+
+#: src/fe-gtk/servlistgui.c:226
+#, fuzzy
+msgid "New Network"
+msgstr "Сети"
+
+#: src/fe-gtk/servlistgui.c:315
+#, c-format
+msgid "Really remove network \"%s\" and all its servers?"
+msgstr ""
+
+#: src/fe-gtk/servlistgui.c:352 src/fe-gtk/servlistgui.c:378
+#, fuzzy, c-format
+msgid "_Remove \"%s\""
+msgstr "Удалить"
+
+#: src/fe-gtk/servlistgui.c:359
+#, fuzzy
+msgid "_Add new server"
+msgstr "Новый сервер"
+
+#: src/fe-gtk/servlistgui.c:385
+#, c-format
+msgid "Move \"%s\" _down"
+msgstr ""
+
+#: src/fe-gtk/servlistgui.c:392
+#, fuzzy, c-format
+msgid "Move \"%s\" _up"
+msgstr "Удалить"
+
+#: src/fe-gtk/servlistgui.c:403
+#, fuzzy
+msgid "_Add new network"
+msgstr "Добавить новый"
+
+#: src/fe-gtk/servlistgui.c:676
+#, fuzzy
+msgid "Global User Info"
+msgstr "Пользователь:"
+
+#: src/fe-gtk/servlistgui.c:684
+#, fuzzy
+msgid "Nick Names:"
+msgstr "Имя(ник):"
+
+#: src/fe-gtk/servlistgui.c:703 src/fe-gtk/servlistgui.c:845
+#, fuzzy
+msgid "User Name:"
+msgstr "Имя пользователя:"
+
+#: src/fe-gtk/servlistgui.c:716 src/fe-gtk/servlistgui.c:847
+#, fuzzy
+msgid "Real Name:"
+msgstr "Реальное имя:"
+
+#: src/fe-gtk/servlistgui.c:758
+#, fuzzy
+msgid "C_onnect"
+msgstr "Соединение"
+
+#: src/fe-gtk/servlistgui.c:764
+#, fuzzy
+msgid "Connect in a _new tab"
+msgstr "Истечение времени ожидания соединения"
+
+#: src/fe-gtk/servlistgui.c:814
+#, fuzzy
+msgid "Servers"
+msgstr "Сервер"
+
+#: src/fe-gtk/servlistgui.c:843
+#, fuzzy
+msgid "Nick Name:"
+msgstr "Имя(ник):"
+
+#: src/fe-gtk/servlistgui.c:848
+#, fuzzy
+msgid "Server Password:"
+msgstr "Пароль:"
+
+#: src/fe-gtk/servlistgui.c:850
+#, fuzzy
+msgid "Join Channels:"
+msgstr "Зайти на канал"
+
+#: src/fe-gtk/servlistgui.c:852
+msgid "Channels to join, separated by commas, but not spaces!"
+msgstr ""
+
+#: src/fe-gtk/servlistgui.c:853
+#, fuzzy
+msgid "Connect Command:"
+msgstr "Команда соединения:"
+
+#: src/fe-gtk/servlistgui.c:859
+msgid "Cycle until connected"
+msgstr ""
+
+#: src/fe-gtk/servlistgui.c:860
+#, fuzzy
+msgid "Use global user info"
+msgstr "Пользователь:"
+
+#: src/fe-gtk/servlistgui.c:861
+#, fuzzy
+msgid "Use secure SSL"
+msgstr "Использовать SSL"
+
+#: src/fe-gtk/servlistgui.c:862
+#, fuzzy
+msgid "Auto connect at startup"
+msgstr "Авто Соединение"
+
+#: src/fe-gtk/servlistgui.c:863
+#, fuzzy
+msgid "Use a proxy server"
+msgstr "Прокси сервер"
+
+#: src/fe-gtk/servlistgui.c:864
+msgid "Accept invalid cert."
+msgstr "Разрешать плохие сертификаты."
+
+#: src/fe-gtk/servlistgui.c:873
+msgid "Settings for Selected Network"
+msgstr ""
+
+#: src/fe-gtk/servlistgui.c:913
+#, fuzzy
+msgid "Edit mode"
+msgstr "Изменить"
+
+#: src/fe-gtk/servlistgui.c:920
+msgid "Networks"
+msgstr ""
+
+#: src/fe-gtk/servlistgui.c:943
+msgid "X-Chat: Server List"
+msgstr "X-Chat: Список серверов"
+
+#: src/fe-gtk/setup.c:77
+msgid "Font:"
+msgstr "Шрифт:"
+
+#: src/fe-gtk/setup.c:78
+#, fuzzy
+msgid "Background image:"
+msgstr "Фоновое изображение:"
+
+#: src/fe-gtk/setup.c:79
+#, fuzzy
+msgid "Time stamp format:"
+msgstr "Формат времени/даты"
+
+#: src/fe-gtk/setup.c:80
+msgid "See strftime manpage for details."
+msgstr ""
+
+#: src/fe-gtk/setup.c:81
+#, fuzzy
+msgid "Time stamp text"
+msgstr "Ставить время/дату сообщений"
+
+#: src/fe-gtk/setup.c:82
+#, fuzzy
+msgid "Transparent background"
+msgstr "Прозрачный фон"
+
+#: src/fe-gtk/setup.c:83
+#, fuzzy
+msgid "Indent nicks"
+msgstr "Выравнивать ники"
+
+#: src/fe-gtk/setup.c:84
+#, fuzzy
+msgid "Tint transparency"
+msgstr "Оттенок прозрачности"
+
+#: src/fe-gtk/setup.c:85
+#, fuzzy
+msgid "Colored nicks"
+msgstr "Цветные ники"
+
+#: src/fe-gtk/setup.c:86
+#, fuzzy
+msgid "Strip mIRC color"
+msgstr "Удалять цвета MIRC"
+
+#: src/fe-gtk/setup.c:87
+msgid "Scrollback lines:"
+msgstr ""
+
+#: src/fe-gtk/setup.c:88
+msgid "Tint red:"
+msgstr ""
+
+#: src/fe-gtk/setup.c:89
+#, fuzzy
+msgid "Tint green:"
+msgstr "Настройки прозрачности"
+
+#: src/fe-gtk/setup.c:90
+msgid "Tint blue:"
+msgstr ""
+
+#: src/fe-gtk/setup.c:96
+msgid "Automatic nick completion"
+msgstr ""
+
+#: src/fe-gtk/setup.c:97
+msgid "Use the Text box font"
+msgstr ""
+
+#: src/fe-gtk/setup.c:98
+#, c-format
+msgid "Interpret %nnn as an ASCII value"
+msgstr ""
+
+#: src/fe-gtk/setup.c:99
+#, fuzzy
+msgid "Nick completion suffix:"
+msgstr "Расширение ников"
+
+#: src/fe-gtk/setup.c:105
+msgid "Off"
+msgstr "Выключено"
+
+#: src/fe-gtk/setup.c:106
+msgid "Graph"
+msgstr ""
+
+#: src/fe-gtk/setup.c:107
+msgid "Info text"
+msgstr "Информация"
+
+#: src/fe-gtk/setup.c:108
+msgid "Both"
+msgstr "Оба"
+
+#: src/fe-gtk/setup.c:114
+msgid "A-Z, Ops first"
+msgstr "A-Z, Op`ы первыми"
+
+#: src/fe-gtk/setup.c:115
+msgid "A-Z"
+msgstr "A-Z"
+
+#: src/fe-gtk/setup.c:116
+msgid "Z-A, Ops last"
+msgstr "Z-A, Op`ы последними"
+
+#: src/fe-gtk/setup.c:117
+msgid "Z-A"
+msgstr "Z-A"
+
+#: src/fe-gtk/setup.c:118
+msgid "Unsorted"
+msgstr "Не сортировать"
+
+#: src/fe-gtk/setup.c:124
+#, fuzzy
+msgid "Show hostnames in userlist"
+msgstr "Показывать хост пользователя в списке пользователей канала"
+
+#: src/fe-gtk/setup.c:125
+#, fuzzy
+msgid "Userlist buttons enabled"
+msgstr "Кнопки списка пользователей.."
+
+#: src/fe-gtk/setup.c:126
+#, fuzzy
+msgid "Double-click command:"
+msgstr "Команда для двойного щелчка"
+
+#: src/fe-gtk/setup.c:127
+msgid "Userlist sorted by:"
+msgstr "Порядок списка пользователей: "
+
+#: src/fe-gtk/setup.c:128
+msgid "Lag meter:"
+msgstr "Измеритель "
+
+#: src/fe-gtk/setup.c:129
+msgid "Throttle meter:"
+msgstr ""
+
+#: src/fe-gtk/setup.c:135
+msgid "Windows"
+msgstr "Окна"
+
+#: src/fe-gtk/setup.c:136 src/fe-gtk/setup.c:743
+msgid "Tabs"
+msgstr "Закладки"
+
+#: src/fe-gtk/setup.c:142
+msgid "Bottom"
+msgstr "Внизу"
+
+#: src/fe-gtk/setup.c:143
+msgid "Top"
+msgstr "Вверху"
+
+#. N_("Left"),
+#. N_("Right"),
+#: src/fe-gtk/setup.c:146
+msgid "Hidden"
+msgstr "Скрыто"
+
+#: src/fe-gtk/setup.c:152
+#, fuzzy
+msgid "Open channels in:"
+msgstr "Тема канала"
+
+#: src/fe-gtk/setup.c:153
+#, fuzzy
+msgid "Open dialogs in:"
+msgstr "Автоматически открывать диалоговые окна"
+
+#: src/fe-gtk/setup.c:154
+msgid "Open utilities in:"
+msgstr ""
+
+#: src/fe-gtk/setup.c:154
+#, fuzzy
+msgid "Open DCC, Ignore, Notify etc, in tabs or windows?"
+msgstr "Использовать закладки для окон DCC, Ignore, Notify..."
+
+#: src/fe-gtk/setup.c:155
+msgid "Show tabs at:"
+msgstr ""
+
+#: src/fe-gtk/setup.c:156
+#, fuzzy
+msgid "Open tab for server messages"
+msgstr "Использовать отдельную закладку/окно для сообщений сервера"
+
+#: src/fe-gtk/setup.c:157
+msgid "Only highlight tabs on channel messages"
+msgstr ""
+
+#: src/fe-gtk/setup.c:158
+#, fuzzy
+msgid "Open tab for server notices"
+msgstr "Использовать отдельную закладку/окно для сообщений сервера"
+
+#: src/fe-gtk/setup.c:159
+#, fuzzy
+msgid "Pop new tabs to front"
+msgstr "Новые Закладки на передний план"
+
+#: src/fe-gtk/setup.c:165
+#, fuzzy
+msgid "Download files to:"
+msgstr "Отправить файл %s"
+
+#: src/fe-gtk/setup.c:166
+#, fuzzy
+msgid "Move completed files to:"
+msgstr "Отправить файл %s"
+
+#: src/fe-gtk/setup.c:167
+#, fuzzy
+msgid "DCC IP address:"
+msgstr "IP Адрес для DCC"
+
+#: src/fe-gtk/setup.c:168
+msgid "Claim you are at this address when offering files."
+msgstr ""
+
+#: src/fe-gtk/setup.c:169
+#, fuzzy
+msgid "First DCC send port:"
+msgstr "Первая DCC передача"
+
+#: src/fe-gtk/setup.c:170
+#, fuzzy
+msgid "Last DCC send port:"
+msgstr "Последня DCC передача"
+
+#: src/fe-gtk/setup.c:171
+msgid "(Leave ports at zero for full range)."
+msgstr ""
+
+#: src/fe-gtk/setup.c:172
+#, fuzzy
+msgid "Auto open DCC send list"
+msgstr "Автоматически открывать окно DCC send"
+
+#: src/fe-gtk/setup.c:173
+msgid "Convert spaces to underscore"
+msgstr ""
+
+#: src/fe-gtk/setup.c:174
+msgid "In filenames, before sending"
+msgstr ""
+
+#: src/fe-gtk/setup.c:175
+#, fuzzy
+msgid "Auto open DCC chat list"
+msgstr "Автоматически Открывать окно DCC Chat"
+
+#: src/fe-gtk/setup.c:176
+#, fuzzy
+msgid "Save nickname in filenames"
+msgstr "Имя файла у получателя"
+
+#: src/fe-gtk/setup.c:177
+#, fuzzy
+msgid "Auto open DCC receive list"
+msgstr "Автоматически открывать окно DCC приёма"
+
+#: src/fe-gtk/setup.c:178
+msgid "Get my IP from IRC server"
+msgstr ""
+
+#: src/fe-gtk/setup.c:179
+msgid ""
+"/WHOIS yourself to find your real address. Use this if you have a 192.168.*."
+"* address!"
+msgstr ""
+
+#: src/fe-gtk/setup.c:180
+msgid "Max. send CPS:"
+msgstr ""
+
+#: src/fe-gtk/setup.c:181 src/fe-gtk/setup.c:183
+msgid "Max. speed for one transfer"
+msgstr ""
+
+#: src/fe-gtk/setup.c:182
+msgid "Max. receive CPS:"
+msgstr ""
+
+#: src/fe-gtk/setup.c:184
+msgid "Max. global send CPS:"
+msgstr ""
+
+#: src/fe-gtk/setup.c:185 src/fe-gtk/setup.c:187
+msgid "Max. speed for all traffic"
+msgstr ""
+
+#: src/fe-gtk/setup.c:186
+msgid "Max. global receive CPS:"
+msgstr ""
+
+#: src/fe-gtk/setup.c:188
+msgid "(Leave at zero for full speed file transfers)."
+msgstr ""
+
+#: src/fe-gtk/setup.c:194
+#, fuzzy
+msgid "Default quit message:"
+msgstr "Сообщение при Выходе из программы:"
+
+#: src/fe-gtk/setup.c:195
+#, fuzzy
+msgid "Default part message:"
+msgstr "Сообщение при Выходе с канала:"
+
+#: src/fe-gtk/setup.c:196
+#, fuzzy
+msgid "Default away message:"
+msgstr "Анонсировать сообщение 'Ушёл'"
+
+#: src/fe-gtk/setup.c:198
+msgid "(Can be a text file relative to ~/.xchat2/)."
+msgstr ""
+
+#: src/fe-gtk/setup.c:200
+msgid "(Can be a text file relative to conf\\)."
+msgstr ""
+
+#: src/fe-gtk/setup.c:202
+#, fuzzy
+msgid "Extra words to highlight on:"
+msgstr "Дополнительные Слова (выделенные)"
+
+#: src/fe-gtk/setup.c:203
+#, fuzzy
+msgid "(Separate multiple words with commas)."
+msgstr "(разделять запятыми)"
+
+#: src/fe-gtk/setup.c:204
+msgid "Show away once"
+msgstr "Показывать сообщение 'Ушёл' 1 раз"
+
+#: src/fe-gtk/setup.c:204
+msgid "Show identical away messages only once"
+msgstr ""
+
+#: src/fe-gtk/setup.c:205
+#, fuzzy
+msgid "Beep on private messages"
+msgstr "Звуковой сигнал при получении личных Сообщений"
+
+#: src/fe-gtk/setup.c:206
+#, fuzzy
+msgid "Automatically unmark away"
+msgstr "Автоматически открывать окно DCC Chat"
+
+#: src/fe-gtk/setup.c:206
+msgid "Unmark yourself as away before sending messages"
+msgstr ""
+
+#: src/fe-gtk/setup.c:207
+#, fuzzy
+msgid "Beep on channel messages"
+msgstr "Звуковой сигнал при получении сообщений на канале"
+
+#: src/fe-gtk/setup.c:208
+msgid "Announce away messages"
+msgstr "Анонсировать сообщение 'Ушёл'"
+
+#: src/fe-gtk/setup.c:208
+#, fuzzy
+msgid "Announce your away messages to all channels"
+msgstr "Объявляет ваше сообщение 'Ушёл' на все каналы к которым вы подключены"
+
+#: src/fe-gtk/setup.c:209
+msgid "Display MODEs in raw form"
+msgstr ""
+
+#: src/fe-gtk/setup.c:210
+#, fuzzy
+msgid "Auto reconnect delay:"
+msgstr "Задержка авто восстановления соединения:"
+
+#: src/fe-gtk/setup.c:216
+#, fuzzy
+msgid "Log filename mask:"
+msgstr "Маска имени лог файлов"
+
+#: src/fe-gtk/setup.c:217
+#, c-format
+msgid "(%s=Server %c=Channel %n=Network)."
+msgstr ""
+
+#: src/fe-gtk/setup.c:218
+msgid "Log timestamp format:"
+msgstr "Формат времени/даты для протокола:"
+
+#: src/fe-gtk/setup.c:219
+msgid "(See strftime manpage for details)."
+msgstr ""
+
+#: src/fe-gtk/setup.c:220
+#, fuzzy
+msgid "Enable logging of conversations"
+msgstr "Включить протоколирование разговоров на диск"
+
+#: src/fe-gtk/setup.c:221
+#, fuzzy
+msgid "Insert timestamps in logs"
+msgstr "Добавлять время в протокол"
+
+#: src/fe-gtk/setup.c:227
+msgid "(Disabled)"
+msgstr "(Выключкено)"
+
+#: src/fe-gtk/setup.c:228
+msgid "Wingate"
+msgstr "Wingate"
+
+#: src/fe-gtk/setup.c:229
+msgid "Socks4"
+msgstr "Socks4"
+
+#: src/fe-gtk/setup.c:230
+msgid "Socks5"
+msgstr "Socks5"
+
+#: src/fe-gtk/setup.c:231
+msgid "HTTP"
+msgstr "HTTP"
+
+#: src/fe-gtk/setup.c:237
+msgid "Address to bind to:"
+msgstr ""
+
+#: src/fe-gtk/setup.c:238
+msgid "(Only useful for computers with multiple addresses)."
+msgstr ""
+
+#: src/fe-gtk/setup.c:239
+#, fuzzy
+msgid "Proxy server:"
+msgstr "Прокси сервер"
+
+#: src/fe-gtk/setup.c:240
+#, fuzzy
+msgid "Proxy port:"
+msgstr "Тип прокси:"
+
+#: src/fe-gtk/setup.c:241
+#, fuzzy
+msgid "Proxy type:"
+msgstr "Тип прокси:"
+
+#: src/fe-gtk/setup.c:422
+msgid "Choose File"
+msgstr "Выберите Файл"
+
+#: src/fe-gtk/setup.c:449
+#, fuzzy
+msgid "Select font"
+msgstr "Выберите Шрифт"
+
+#: src/fe-gtk/setup.c:505
+msgid "Browse..."
+msgstr "Пролистать..."
+
+#: src/fe-gtk/setup.c:625
+msgid "Select color"
+msgstr "Выбрать цвет"
+
+#: src/fe-gtk/setup.c:689
+msgid "mIRC colors:"
+msgstr ""
+
+#: src/fe-gtk/setup.c:697
+#, fuzzy
+msgid "Foreground:"
+msgstr "Передний план"
+
+#: src/fe-gtk/setup.c:698
+#, fuzzy
+msgid "Background:"
+msgstr "Фон"
+
+#: src/fe-gtk/setup.c:699
+#, fuzzy
+msgid "Mark fore:"
+msgstr "Пометить передний план"
+
+#: src/fe-gtk/setup.c:700
+#, fuzzy
+msgid "Mark back:"
+msgstr "Пометить Фон"
+
+#: src/fe-gtk/setup.c:702
+msgid "New Data:"
+msgstr ""
+
+#: src/fe-gtk/setup.c:703
+#, fuzzy
+msgid "New Message:"
+msgstr "Сообщение"
+
+#: src/fe-gtk/setup.c:704
+#, fuzzy
+msgid "Highlight:"
+msgstr "Выделение"
+
+#: src/fe-gtk/setup.c:739
+msgid "Interface"
+msgstr "Интерфейс"
+
+#: src/fe-gtk/setup.c:740
+#, fuzzy
+msgid "Text box"
+msgstr "Текст"
+
+#: src/fe-gtk/setup.c:741
+#, fuzzy
+msgid "Input box"
+msgstr "Поле ввода"
+
+#: src/fe-gtk/setup.c:742
+#, fuzzy
+msgid "User list"
+msgstr "Список Пользователей"
+
+#: src/fe-gtk/setup.c:744
+#, fuzzy
+msgid "Colors"
+msgstr "Коморос"
+
+#: src/fe-gtk/setup.c:746
+#, fuzzy
+msgid "Chatting"
+msgstr "X-Chat"
+
+#: src/fe-gtk/setup.c:747
+msgid "General"
+msgstr "Главный"
+
+#: src/fe-gtk/setup.c:748
+msgid "Logging"
+msgstr "Протоколирование"
+
+#: src/fe-gtk/setup.c:750
+#, fuzzy
+msgid "Network"
+msgstr "Сети"
+
+#: src/fe-gtk/setup.c:751
+msgid "Network setup"
+msgstr ""
+
+#: src/fe-gtk/setup.c:752
+#, fuzzy
+msgid "File transfers"
+msgstr "Передача файла"
+
+#: src/fe-gtk/setup.c:857
+msgid "Categories"
+msgstr "Категории"
+
+#: src/fe-gtk/setup.c:952
+msgid "X-Chat: Preferences"
+msgstr "X-Chat: Свойства"
+
+#: src/fe-gtk/textgui.c:177
+msgid "There was an error parsing the string"
+msgstr ""
+
+#: src/fe-gtk/textgui.c:185
+#, c-format
+msgid "This signal is only passed %d args, $%d is invalid"
+msgstr ""
+
+#: src/fe-gtk/textgui.c:300 src/fe-gtk/textgui.c:323
+msgid "Print Texts File"
+msgstr "Печатать текстовый файл"
+
+#: src/fe-gtk/textgui.c:377
+msgid "Event"
+msgstr "Событие"
+
+#: src/fe-gtk/textgui.c:377
+msgid "Sound"
+msgstr "Звуки"
+
+#: src/fe-gtk/textgui.c:378
+msgid "$ Number"
+msgstr "$ номер"
+
+#: src/fe-gtk/textgui.c:387
+msgid "Edit Events"
+msgstr "Редактировать тексты событий"
+
+#: src/fe-gtk/textgui.c:426
+msgid "Sound file: "
+msgstr "Файл со звуком:"
+
+#: src/fe-gtk/textgui.c:460
+msgid "Save As"
+msgstr "Сохранить как"
+
+#: src/fe-gtk/textgui.c:465
+msgid "Load From"
+msgstr "Загрузить"
+
+#: src/fe-gtk/textgui.c:470
+msgid "Test All"
+msgstr "Проверить все"
+
+#: src/fe-gtk/urlgrab.c:73
+msgid "Select a file to save to"
+msgstr "Выберите файл для сохранения"
+
+#: src/fe-gtk/urlgrab.c:121
+msgid "X-Chat: URL Grabber"
+msgstr "X-Chat: Граббер URL"
+
+#, fuzzy
+#~ msgid "Server settings"
+#~ msgstr "Настройки"
+
+#, fuzzy
+#~ msgid "Ban List Window..."
+#~ msgstr "Окно списка БАНов..."
+
+#, fuzzy
+#~ msgid "ASCII Window..."
+#~ msgstr "Окно игнорирования.."
+
+#, fuzzy
+#~ msgid "F_lush Buffer"
+#~ msgstr "Очистить буфер"
+
+#, fuzzy
+#~ msgid "Save Buffer..."
+#~ msgstr "Сохранить Буфер..."
+
+#~ msgid "User Modes"
+#~ msgstr "Режимы пользователя"
+
+#, fuzzy
+#~ msgid "Plugins"
+#~ msgstr "Модуль.."
+
+#~ msgid "User Menu"
+#~ msgstr "Пользовательское Меню"
+
+#~ msgid "Edit User Menu"
+#~ msgstr "Редактировать Пользовательское Меню"
+
+#~ msgid "Left"
+#~ msgstr "Слева"
+
+#~ msgid "Right"
+#~ msgstr "Справа"
+
+#, fuzzy
+#~ msgid "NewServer"
+#~ msgstr "Сервер"
+
+#, fuzzy
+#~ msgid "Server List 2..."
+#~ msgstr "Список серверов..."
+
+#~ msgid ""
+#~ "The default download directory is your\n"
+#~ "home dir, you should change this at some stage."
+#~ msgstr ""
+#~ "Ваш домашний каталог используется как каталог\n"
+#~ "для скачаных файлов по умолчанию, это надо изменить."
+
+#~ msgid "Client Exiting"
+#~ msgstr "Вышел из XChat"
+
+#~ msgid "Error compiling script\n"
+#~ msgstr "Ошибка компиляции скрипта\n"
+
+#~ msgid "Error Loading file\n"
+#~ msgstr "Ошибка загрузки файла\n"
+
+#~ msgid "Registered Scripts:\n"
+#~ msgstr "Зарегистрированные скрипты:\n"
+
+#~ msgid "Inbound Handlers:\n"
+#~ msgstr "Обработчики сообщений:\n"
+
+#~ msgid "Command Handlers:\n"
+#~ msgstr "Обработчики команд:\n"
+
+#~ msgid "Print Handlers:\n"
+#~ msgstr "Обработчики печати..\n"
+
+#~ msgid "DCC type"
+#~ msgstr "Тип DCC"
+
+#~ msgid "Number of messages"
+#~ msgstr "Количество сообщений"
+
+#~ msgid "Bytes in mailbox"
+#~ msgstr "Байт в почтовом ящике"
+
+#~ msgid "-%C10-%C11>%O$t%B$1%B %C14(%C10$3%C14)%C has joined $2"
+#~ msgstr "-%C10-%C11>%O$t%B$1%B %C14(%C10$3%C14)%C зашел на канал $2"
+
+#~ msgid "%C13*%O$t$1 $2%O"
+#~ msgstr "%C13*%O$t$1 $2%O"
+
+#~ msgid "%C13*%O$t%C8%B$1%B%O $2%O"
+#~ msgstr "%C13*%O$t%C8%B$1%B%O $2%O"
+
+#~ msgid "%C2<%O$1%C2>%O$t$2%O"
+#~ msgstr "%C2<%O$1%C2>%O$t$2%O"
+
+#~ msgid "%C2<%C8%B$1%B%C2>%O$t$2%O"
+#~ msgstr "%C2<%C8%B$1%B%C2>%O$t$2%O"
+
+#~ msgid "%C12*%C13$1%C12*$t%O$2%O"
+#~ msgstr "%C12*%C13$1%C12*$t%O$2%O"
+
+#~ msgid "-%C10-%C11-%O$t$1 is now known as $2"
+#~ msgstr "-%C10-%C11-%O$t$1 теперь называется $2"
+
+#~ msgid "-%C10-%C11-%O$t$1 has changed the topic to: $2%O"
+#~ msgstr "-%C10-%C11-%O$t$1 изменил тему на: $2%O"
+
+#~ msgid "-%C10-%C11-%O$tTopic for %C11$1%C is %C11$2%O"
+#~ msgstr "-%C10-%C11-%O$tТема для %C11$1%C : %C11$2%O"
+
+#~ msgid "<%C10-%C11-%O$t$1 has kicked $2 from $3 ($4%O)"
+#~ msgstr "<%C10-%C11-%O$t$1 выпинал $2 с $3 ($4%O)"
+
+#~ msgid "<%C10-%C11-%O$t$1 %C14(%O$2%C14)%C has left $3"
+#~ msgstr "<%C10-%C11-%O$t$1 %C14(%O$2%C14)%C ушел с $3"
+
+#~ msgid "-%C10-%C11-%O$tChannel $1 created on $2"
+#~ msgstr "-%C10-%C11-%O$tКанал $1 создан в $2"
+
+#~ msgid "-%C10-%C11-%O$tTopic for %C11$1%C set by %C11$2%C at %C11$3%O"
+#~ msgstr "-%C10-%C11-%O$tТема для %C11$1%C установлена %C11$2%C в %C11$3%O"
+
+#~ msgid "<%C10-%C11-%O$t$1 has quit %C14(%O$2%O%C14)%O"
+#~ msgstr "<%C10-%C11-%O$t$1 ушел %C14(%O$2%O%C14)%O"
+
+#~ msgid "-%C10-%C11-%O$tPing reply from $1 : $2 second(s)"
+#~ msgstr "-%C10-%C11-%O$tPing ответ от $1 : $2 second(s)"
+
+#~ msgid "%C12-%C13$1%C12-%O$t$2%O"
+#~ msgstr "%C12-%C13$1%C12-%O$t$2%O"
+
+#~ msgid "%C6<%O$1%C6>%O$t$2%O"
+#~ msgstr "%C6<%O$1%C6>%O$t$2%O"
+
+#~ msgid "-%C10-%C11-%O$tYou are now known as $2"
+#~ msgstr "-%C10-%C11-%O$tЗнайте, что теперь ваше имя $2"
+
+#~ msgid "-%C10-%C11-%O$tYou have been kicked from $2 by $3 ($4%O)"
+#~ msgstr "-%C10-%C11-%O$tВас вышвырнул $3 с канала $2 ($4%O)"
+
+#~ msgid "-%C10-%C11-%O$tYou have left channel $3"
+#~ msgstr "-%C10-%C11-%O$tВы ушли с канала $3"
+
+#~ msgid "-%C10-%C11-%O$t$1 gives channel operator status to $2"
+#~ msgstr "-%C10-%C11-%O$t$1 дал права оператора канала для $2"
+
+#~ msgid "-%C10-%C11-%O$t$1 gives voice to $2"
+#~ msgstr "-%C10-%C11-%O$t$1 повесил голос на $2"
+
+#~ msgid "-%C10-%C11-%O$t$1 sets ban on $2"
+#~ msgstr "-%C10-%C11-%O$t$1 забанил некоего $2"
+
+#~ msgid "-%C10-%C11-%O$t$1 removes voice from $2"
+#~ msgstr "-%C10-%C11-%O$t$1 забрал голос у $2"
+
+#~ msgid "-%C10-%C11-%O$t$1 removes ban on $2"
+#~ msgstr "-%C10-%C11-%O$t$1 снял бан с $2"
+
+#~ msgid "-%C10-%C11-%O$t%C12[%O$1%C12] %Cis away %C14(%O$2%O%C14)"
+#~ msgstr "-%C10-%C11-%O$t%C12[%O$1%C12] %Cнедоступен %C14(%O$2%O%C14)"
+
+#~ msgid "-%C10-%C11-%O$tCannot join%C11 %B$1 %O(User limit reached)."
+#~ msgstr ""
+#~ "-%C10-%C11-%O$tНевозможно зайти%C11 %B$1 %O(Лимит пользователей исчерпан)."
+
+#~ msgid "-%C10-%C11-%O$tCannot join%C11 %B$1 %O(You are banned)."
+#~ msgstr "-%C10-%C11-%O$tНе получается зайти%C11 %B$1 %O(Вы забанены)."
+
+#~ msgid "-%C10-%C11-%O$tMOTD Skipped."
+#~ msgstr "-%C10-%C11-%O$tMOTD пропущен."
+
+#~ msgid "-%C10-%C11-%O$t$1%O"
+#~ msgstr "-%C10-%C11-%O$t$1%O"
+
+#~ msgid "-%C10-%C11-%O$tNickname already in use. Use /NICK to try another."
+#~ msgstr ""
+#~ "-%C10-%C11-%O$tИмя уже используется. Поменяйте его на другое с помощью "
+#~ "команды /NICK ."
+
+#~ msgid "-%C10-%C11-%O$tConnection failed. Error: $1"
+#~ msgstr "-%C10-%C11-%O$tСоединение невозможно. Ошибка: $1"
+
+#~ msgid ""
+#~ "-%C10-%C11-%O$tConnecting to %C11$1 %C14(%C11$2%C14)%C port %C11$3%C.."
+#~ msgstr ""
+#~ "-%C10-%C11-%O$tСоединение с %C11$1 %C14(%C11$2%C14)%C порт %C11$3%C.."
+
+#~ msgid "-%C10-%C11-%O$tConnected. Now logging in.."
+#~ msgstr "-%C10-%C11-%O$tСоедениние установлено. Попытка войти в сеть..."
+
+#~ msgid "-%C10-%C11-%O$tDisconnected ($1)."
+#~ msgstr "-%C10-%C11-%O$tСоединение разорвано ($1)."
+
+#~ msgid "-%C10-%C11-%O$tLooking up %C11$1%C.."
+#~ msgstr "-%C10-%C11-%O$tИщу сервер %C11$1%C.."
+
+#~ msgid "-%C10-%C11-%O$tConnected."
+#~ msgstr "-%C10-%C11-%O$tСоединение установлено."
+
+#~ msgid "%O%C11$1%O added to ignore list."
+#~ msgstr "%O%C11$1%O добавлен в список игнорирования."
+
+#~ msgid "%O%C11$1%O removed from ignore list."
+#~ msgstr "%O%C11$1%O удалён из списка игнорирования."
+
+#~ msgid "-%C10-%C11-%O$tLooking up IP number for%C11 $1%O.."
+#~ msgstr "-%C10-%C11-%O$tПоиск IP-адреса для%C11 $1%O.."
+
+#~ msgid "  Ignore list is empty."
+#~ msgstr "  Список игнорирований пуст."
+
+#~ msgid "<%C10-%C11-%O$t$1 %C14(%O$2%C14)%C has left $3 %C14(%O$4%C14)%O"
+#~ msgstr "<%C10-%C11-%O$t$1 %C14(%O$2%C14)%C ушел с $3 %C14(%O$4%C14)%O"
+
+#~ msgid "-%C10-%C11-%O$tYou have left channel $3 %C14(%O$4%C14)%O"
+#~ msgstr "-%C10-%C11-%O$tВы ушли с канала $3 %C14(%O$4%C14)%O"
+
+#~ msgid "-%C3-%C9-%O$tYou have new mail ($1 messages, $2 bytes total)."
+#~ msgstr "-%C3-%C9-%O$tВы получили новую почту ($1 сообщений, $2 байт всего)."
+
+#~ msgid "-%C10-%C11-%O$tNo ping reply for $1 seconds, disconnecting."
+#~ msgstr "-%C10-%C11-%O$tНе получено ответов в течении $1 секунд.Отсоедиение."
+
+#~ msgid "-%C10-%C11-%O$t$1 Banlist: %C3$4 %C4$2 %C5$3%O"
+#~ msgstr "-%C10-%C11-%O$t$1 Список банов: %C3$4 %C4$2 %C5$3%O"
+
+#~ msgid ""
+#~ "An IRC Client for UNIX.\n"
+#~ "\n"
+#~ "This binary was compiled on "
+#~ msgstr ""
+#~ "IRC-клиент для UNIX.\n"
+#~ "\n"
+#~ "Эта программа была скомпилирована на "
+
+#~ msgid ""
+#~ "\n"
+#~ "Using GTK %d.%d.%d X %d\n"
+#~ "Running on %s"
+#~ msgstr ""
+#~ "\n"
+#~ "Используется GTK %d.%d.%d X %d\n"
+#~ "Запущен на %s"
+
+#, fuzzy
+#~ msgid ""
+#~ "(C) 1998-2001 Peter Zelezny <zed@xchat.org>\n"
+#~ "\n"
+#~ "An IRC Client for UNIX.\n"
+#~ "\n"
+#~ "This binary was compiled on "
+#~ msgstr ""
+#~ "(C) 1998-2001 Peter Zelezny <zed@linux.com>\n"
+#~ "\n"
+#~ "An IRC-клиент для UNIX.\n"
+#~ "\n"
+#~ "Эта программа была скомпилирована ALT Linux Team (http://www.altlinux.ru) "
+#~ "на "
+
+#~ msgid " Apply "
+#~ msgstr "Применить"
+
+#~ msgid "Config dir"
+#~ msgstr "Каталог настроек"
+
+#~ msgid "Don't Auto connect"
+#~ msgstr "Не соединяться автоматически"
+
+#~ msgid "Don't use GNOME Panel"
+#~ msgstr "Не использовать панель GNOME"
+
+#~ msgid ""
+#~ "Cannot open font:\n"
+#~ "\n"
+#~ "%s"
+#~ msgstr ""
+#~ "Не удалось открыть шрифт:\n"
+#~ "\n"
+#~ "%s"
+
+#~ msgid "gdk_font_load failed"
+#~ msgstr "Использовать gdk_fontset_load вместо gdk_font_load"
+
+#~ msgid "Ok"
+#~ msgstr "Ок"
+
+#~ msgid "Open Toolbox"
+#~ msgstr "Открыть Инструменты"
+
+#~ msgid "Close Toolbox"
+#~ msgstr "Закрыть Инструменты"
+
+#~ msgid "Beep"
+#~ msgstr "Сигнал"
+
+#~ msgid "Conference mode (no join/part msgs)"
+#~ msgstr "Режим конференкции (нет сообщение о входе/выходе)"
+
+#~ msgid "Underline"
+#~ msgstr "Подчёркивание"
+
+#~ msgid "Bold"
+#~ msgstr "Полужирный"
+
+#~ msgid "Hide/Show Userlist"
+#~ msgstr "Скрыть/Показать список пользователей"
+
+#~ msgid "Select a Perl script to load"
+#~ msgstr "Выберите скрипт Perl для загрузки"
+
+#~ msgid "Select a Python script to load"
+#~ msgstr "Выберите Python скрипт для загрузки"
+
+#~ msgid "Auto Rejoin on Kick"
+#~ msgstr "Автоматически присоединяться после Kick"
+
+#~ msgid "Setup.."
+#~ msgstr "Настройки.."
+
+#~ msgid "Palette.."
+#~ msgstr "Палитра.."
+
+#~ msgid "Perl Script.."
+#~ msgstr "Скрипты Perl.."
+
+#~ msgid "Python Script.."
+#~ msgstr "Скрипты Python.."
+
+#~ msgid "Perl List"
+#~ msgstr "Список Perl"
+
+#~ msgid "Python List"
+#~ msgstr "Список Python"
+
+#~ msgid "All Perl Scripts"
+#~ msgstr "Все Perl Скрипты"
+
+#~ msgid "All Python Scripts"
+#~ msgstr "Все Python скрипты"
+
+#~ msgid "All Plugins"
+#~ msgstr "Все модули"
+
+#~ msgid "Kill"
+#~ msgstr "Прервать"
+
+#~ msgid "User _Modes"
+#~ msgstr "_Режимы пользователя"
+
+#~ msgid "_Settings"
+#~ msgstr "_Настройки"
+
+#~ msgid "S_cripts & Plugins"
+#~ msgstr "_Скрипты и модули"
+
+#~ msgid "Use_r Menu"
+#~ msgstr "П_ользовательское Меню"
+
+#~ msgid "Replace.."
+#~ msgstr "Заменить.."
+
+#~ msgid "Scripts & Plugins"
+#~ msgstr "Скрипты и Модули"
+
+#~ msgid "Load Perl Script.."
+#~ msgstr "Загрузить Perl'овый Скрипт..."
+
+#~ msgid "Unload All Scripts"
+#~ msgstr "Выгрузить все Скрипты"
+
+#~ msgid "Unload All Plugins"
+#~ msgstr "Выгрузить все модули"
+
+#~ msgid "Load Python Script.."
+#~ msgstr "Загрузить Скрипты Python.."
+
+#~ msgid "Use the /NOTIFY command to add people to your notify list."
+#~ msgstr ""
+#~ "Используйте команду /NOTIFY для добавлению людей в ваш список уведомлений."
+
+#~ msgid "X-Chat: Palette"
+#~ msgstr "X-Chat: Палитра"
+
+#~ msgid "Color %d"
+#~ msgstr "Цвет %d"
+
+#~ msgid "About..."
+#~ msgstr "О .."
+
+#~ msgid "No Channel"
+#~ msgstr "Нет канала"
+
+#~ msgid "No Server"
+#~ msgstr "Нет сервера"
+
+#~ msgid "Is Tab"
+#~ msgstr "Закладка"
+
+#~ msgid "Is Not Tab"
+#~ msgstr "Это не закладка"
+
+#~ msgid "Hide"
+#~ msgstr "Скрыть"
+
+#~ msgid "Show"
+#~ msgstr "Показать"
+
+#~ msgid "Move Here"
+#~ msgstr "Переместить сюда"
+
+#~ msgid "View"
+#~ msgstr "Просмотр"
+
+#~ msgid "X-Chat: Edit entry"
+#~ msgstr "X-Chat: Правка записи"
+
+#~ msgid "Edit entry:"
+#~ msgstr "Правка записи:"
+
+#~ msgid "Name:"
+#~ msgstr "Имя:"
+
+#~ msgid "Server:"
+#~ msgstr "Сервер:"
+
+#~ msgid "Port:"
+#~ msgstr "Порт:"
+
+#~ msgid "Channels:"
+#~ msgstr "Каналы:"
+
+#~ msgid "Command to execute after the connection is complete"
+#~ msgstr "Команда, выполняемая после окончания соединения"
+
+#~ msgid "Use Proxy"
+#~ msgstr "Использовать прокси"
+
+#~ msgid "Use proxy server if one is set in Setup->Proxy Server"
+#~ msgstr "Использовать прокси сервер если он есть в Настрока->Прокси Сервер"
+
+#~ msgid "New Group"
+#~ msgstr "Новая группа"
+
+#~ msgid ""
+#~ "Cannot use \"root\" as a nickname,\n"
+#~ "please change that first."
+#~ msgstr ""
+#~ "Вы не должны испрользовать \"root\" как имя на канале,\n"
+#~ "пожалуйста измените его немедленно."
+
+#~ msgid "Nicknames:"
+#~ msgstr "Ваши ники:"
+
+#~ msgid "Connect New"
+#~ msgstr "Новое соединение"
+
+#~ msgid "Skip MOTD"
+#~ msgstr "Пропустить MOTD"
+
+#~ msgid "Don't display the message-of-the-day when logging in"
+#~ msgstr "Не показывать сообщение дня при входе"
+
+#~ msgid "Show channels"
+#~ msgstr "Показать каналы"
+
+#~ msgid "No ServerList on startup"
+#~ msgstr "Не показывать это окно"
+
+#~ msgid "Failed to load translation table."
+#~ msgstr "Используйте таблицы перекодировки ircII."
+
+#~ msgid "Appearance"
+#~ msgstr "Внешний вид"
+
+#~ msgid "Background XPM:"
+#~ msgstr "Фоновый XPM:"
+
+#~ msgid "Make nicknames right justified."
+#~ msgstr "Выравнивать ники справа."
+
+#~ msgid "Auto Indent"
+#~ msgstr "Авто выравнивание"
+
+#~ msgid "Auto adjust the separator bar position as needed."
+#~ msgstr "Установить расположение разделительной полосы автоматом."
+
+#~ msgid "Draw Separator Bar"
+#~ msgstr "Показывать разделительную полосу"
+
+#~ msgid "Make the separator an actual visible line."
+#~ msgstr "Сделать разделитель видимой линией"
+
+#~ msgid "Word Wrap"
+#~ msgstr "Перенос слов"
+
+#~ msgid "Don't split words from one line to the next"
+#~ msgstr "Не переносить часть слова на следующую строку"
+
+#~ msgid "Make the text box seem see-through"
+#~ msgstr "Сделать текстовые окна прозрачными"
+
+#~ msgid "Tint the see-through text box to make it darker"
+#~ msgstr "Окрасить прозрачные текстовые сообщения в тёмный оттенок"
+
+#~ msgid "Use a font set"
+#~ msgstr "Использовать gdk_fontset_load вместо gdk_font_load"
+
+#~ msgid "Change in realtime"
+#~ msgstr "Изменять сразу"
+
+#~ msgid "Red:"
+#~ msgstr "Красный:"
+
+#~ msgid "Green:"
+#~ msgstr "Зелёный:"
+
+#~ msgid "Blue:"
+#~ msgstr "Синий:"
+
+#~ msgid "Startup and Shutdown"
+#~ msgstr "Запуск и завершение"
+
+#~ msgid "No Server List On Startup"
+#~ msgstr "Не показывать список серверов при запуске"
+
+#~ msgid "Don't display the server list on X-Chat startup"
+#~ msgstr "Не показывать список серверов во время запуска X-Chat"
+
+#~ msgid "Auto Save URL list"
+#~ msgstr "Авто сохранение списка URL"
+
+#~ msgid "Auto save your URL list when exiting from X-Chat"
+#~ msgstr "Автоматически сохранять ваш список URL при выходе из X-Chat"
+
+#~ msgid "Give the User List style"
+#~ msgstr "Присвоить стиль списку пользователей"
+
+#~ msgid "Enable Paned Userlist"
+#~ msgstr "Список пользователей фиксированной ширины"
+
+#~ msgid "Use paned user list instead of a fixed width one"
+#~ msgstr ""
+#~ "Использовать вместо изменяемого список пользователей фиксированной ширины"
+
+#~ msgid "Userlist icons"
+#~ msgstr "Иконки списка пользователей.."
+
+#~ msgid "Complete nicknames when a partial one is entered"
+#~ msgstr "Расширять ники после неполного ввода"
+
+#~ msgid "Old-style Nickname Completion"
+#~ msgstr "Старый стиль расширения ников"
+
+#~ msgid "Nickname completion is old-style (instead of GNU-style)"
+#~ msgstr "Старый стиль расширения ников (вместо стиля GNU)"
+
+#~ msgid "Give the Input Box style"
+#~ msgstr "Присвоить стиль окну ввода"
+
+#~ msgid "Input box gets same style as main text area"
+#~ msgstr "Окно ввода получает тот-же стиль, что и основная область"
+
+#~ msgid "Input Box always in focus"
+#~ msgstr "Окно ввода всегда активно"
+
+#~ msgid "Show nickname"
+#~ msgstr "Показывать ник"
+
+#~ msgid "Show nickname and op/voice icon before the input box"
+#~ msgstr "Показывать ваш ник и иконку статуса перед окном ввода"
+
+#~ msgid "Nickname Completion Character:"
+#~ msgstr "Символ завершения ника"
+
+#~ msgid "Character to append to completed nicknames"
+#~ msgstr "Символ добавляемый к полному имени при расширении"
+
+#~ msgid "Output Box"
+#~ msgstr "Окно вывода"
+
+#~ msgid "Strip MIRC color codes from text before displaying"
+#~ msgstr "Удалять кода цвета MIRC из текста перед отображением"
+
+#~ msgid "Output nicknames in different colors"
+#~ msgstr "Выводить ники разными цветами"
+
+#~ msgid "Show invites in active window"
+#~ msgstr "Показывать приглашения вприват в активном окне"
+
+#~ msgid "Prefix all text with the current time stamp"
+#~ msgstr "Ставить перед всеми сообщениями текущую дату/время"
+
+#~ msgid "Filter out BEEPs"
+#~ msgstr "Удалять сигналы BEEP"
+
+#~ msgid "Remove ^G BEEP codes from text before displaying"
+#~ msgstr "Удалять ^G код Звонка перед отображением"
+
+#~ msgid "Buffer Settings"
+#~ msgstr "Настройки буфера"
+
+#~ msgid "Text Buffer Size:"
+#~ msgstr "Размер текстового буфера:"
+
+#~ msgid "lines (0=Unlimited)."
+#~ msgstr "строк (0=без ограничений)."
+
+#~ msgid "Other Settings"
+#~ msgstr "Другие настройки"
+
+#~ msgid "Progress bar"
+#~ msgstr "Линейка состояния"
+
+#~ msgid "Buttons"
+#~ msgstr "Кнопки"
+
+#~ msgid "Channel Mode Buttons"
+#~ msgstr "Кнопки Режима Канала"
+
+#~ msgid "Show the TNSIPMLK buttons"
+#~ msgstr "Показывать кнопки TNSIPMLK"
+
+#~ msgid "User List Buttons"
+#~ msgstr "Кнопки Cписка Пользователей"
+
+#~ msgid "Show the buttons below the user list"
+#~ msgstr "Показывать кнопки под списком пользователей"
+
+#~ msgid "Meters"
+#~ msgstr "Измерители"
+
+#~ msgid "Tabs Located at:"
+#~ msgstr "Местонахождение закладок"
+
+#~ msgid "Channel Tabs"
+#~ msgstr "Закладки канала"
+
+#~ msgid "Use tabs for channels instead of separate windows"
+#~ msgstr "Использовать вместо отдельных окон каналов закладки"
+
+#~ msgid "Limited Tab Highlighting"
+#~ msgstr "Ограниченное Выделение закладок"
+
+#~ msgid "Bring new query/channel tabs to front"
+#~ msgstr "Выводит новые приваты/каналы на передний план"
+
+#~ msgid "Private Message Tabs"
+#~ msgstr "Закладки для личных сообщений"
+
+#~ msgid "Use tabs for /query instead of separate windows"
+#~ msgstr "Использовать закладки для /query вместо отдельных окон"
+
+#~ msgid "Use a separate tab/window for server messages"
+#~ msgstr "Использовать отдельную закладку/окно для сообщений сервера"
+
+#~ msgid "Window Position"
+#~ msgstr "Расположение окон"
+
+#~ msgid ""
+#~ "If Left and Top are set to zero, X-Chat will use\n"
+#~ "your window manager defaults."
+#~ msgstr ""
+#~ "Если поля Левый и Вершина равны 0, то X-Chat будет использовать установки "
+#~ "WM по умолчанию."
+
+#~ msgid "Left:"
+#~ msgstr "Левый:"
+
+#~ msgid "Top:"
+#~ msgstr "Вершина:"
+
+#~ msgid "Window Size"
+#~ msgstr "Размер Окна"
+
+#~ msgid "Width:"
+#~ msgstr "Ширина:"
+
+#~ msgid "Height:"
+#~ msgstr "Высота:"
+
+#~ msgid "Show Session Tree View"
+#~ msgstr "Показывать дерево Сессий"
+
+#~ msgid "Hide Session on Panelize"
+#~ msgstr "Скрывать сессии при сворачивании"
+
+#~ msgid "Hide X-Chat when window moved to the panel"
+#~ msgstr "Прятать X-Chat когда окно перемещается в список"
+
+#~ msgid "Panel Applet"
+#~ msgstr "Апплет для панели"
+
+#~ msgid "Layout For a Vertical Panel"
+#~ msgstr "Расположение для вертикальной панели"
+
+#~ msgid "Layout the X-Chat panel applet for a vertical panel"
+#~ msgstr "Располагать X-Chat панель как вертикальную панель"
+
+#~ msgid "Raw Mode Display"
+#~ msgstr "Показывать необработанные данные"
+
+#~ msgid "Display raw mode changes instead of interpretations"
+#~ msgstr ""
+#~ "Показывать необработанные данные изменений вместо интерпретированных"
+
+#~ msgid "Beep when a private message for you is received"
+#~ msgstr "Пищать при получении личного сообщения"
+
+#~ msgid "Beep when a channel message is received"
+#~ msgstr "Пищать при получении сообщения на канале"
+
+#~ msgid "Send /who #chan on join."
+#~ msgstr "Не посылать /who #chan во время соединения."
+
+#~ msgid "Find user information when joining a channel."
+#~ msgstr "Не запрашивать информацию о пользователях при подключении к каналу."
+
+#~ msgid "Perform a periodic mail check."
+#~ msgstr "Выполнять периодическую проверку почты."
+
+#~ msgid "Your irc settings"
+#~ msgstr "Ваши настройки irc"
+
+#~ msgid "External Programs"
+#~ msgstr "Внешние программы"
+
+#~ msgid "DNS Lookup Program:"
+#~ msgstr "Программа поиска DNS:"
+
+#~ msgid "Timing"
+#~ msgstr "Выбор времени"
+
+#~ msgid "seconds."
+#~ msgstr "Секунд."
+
+#~ msgid "Address"
+#~ msgstr "Адрес"
+
+#~ msgid "Hostname / IP Number:"
+#~ msgstr "Имя хоста/Номер IP:"
+
+#~ msgid ""
+#~ "Most people should leave this blank, it's only\n"
+#~ "usefull for machines with multiple addresses."
+#~ msgstr ""
+#~ "Большинство пользователей должны оставить это поле пустым\n"
+#~ "Удобно для машин с несколькими адресами."
+
+#~ msgid "Public IP Address"
+#~ msgstr "Публичный IP Адрес"
+
+#~ msgid "Get my IP from Server (for use in DCC Send only)"
+#~ msgstr "Получать наш IP от Сервера (используется только в режиме DCC Send)"
+
+#~ msgid "For people using a 10.* or 192.168.* IP number."
+#~ msgstr "Для людей использующих IP адреса 10.* или 192.168.*"
+
+#~ msgid "Proxy Server Hostname:"
+#~ msgstr "Адрес прокси-сервера:"
+
+#~ msgid "Proxy Server Port:"
+#~ msgstr "Порт прокси-сервера"
+
+#, fuzzy
+#~ msgid "Proxy User:"
+#~ msgstr "Тип прокси:"
+
+#, fuzzy
+#~ msgid "Proxy Password:"
+#~ msgstr "Пароль:"
+
+#~ msgid "Only show away messages the first time they're seen"
+#~ msgstr "Показывать сообщение 'Ушёл'  один раз на канале"
+
+#~ msgid "Your away settings"
+#~ msgstr "Настройки режима 'Ушёл'"
+
+#~ msgid "Away Reason:"
+#~ msgstr "Причина Ухода:"
+
+#~ msgid "Always apply timestamp to disk logs"
+#~ msgstr "Всегда добавлять время в протоколы разговора на диске"
+
+#~ msgid "Generic"
+#~ msgstr "Общий"
+
+#~ msgid "Show notifies in active window"
+#~ msgstr "Показывать заходы в активном окне"
+
+#~ msgid "Send /whois"
+#~ msgstr "Отправить /whois"
+
+#~ msgid "User List Notify Highlighting"
+#~ msgstr "Подсвечивать объявления списка пльзователей"
+
+#~ msgid "Highlight Notifies"
+#~ msgstr "Подсвечивать объявления"
+
+#~ msgid "Highlight notified users in the user list"
+#~ msgstr "Выделять зарегистрировавшихся пользователей в списке пользователей"
+
+#~ msgid "Notified User Color:"
+#~ msgstr "Цвет Зарегистрировавшихся Пользователей"
+
+#~ msgid "Notification Timeouts"
+#~ msgstr "Истечение времени ожидания сообщений"
+
+#~ msgid "Notify Check Interval:"
+#~ msgstr "Интервал Проверки Регистрации:"
+
+#~ msgid "seconds (0=Disable)."
+#~ msgstr "секунд. (15=Нормально, 0=Отключить)"
+
+#~ msgid "Enable Character Translation"
+#~ msgstr "Включить Перекодировку Символов"
+
+#~ msgid "Translation File:"
+#~ msgstr "Файл Перекодировки:"
+
+#~ msgid "Use a ircII style translation file."
+#~ msgstr "Использовать таблицы перекодировки ircII."
+
+#~ msgid "Automatically open DCC Send Window"
+#~ msgstr "Автоматически открывать окно DCC Передачи"
+
+#~ msgid "Automatically open DCC Recv Window"
+#~ msgstr "Автоматически открывать окно DCC приёма"
+
+#~ msgid "Resume on Auto Accept"
+#~ msgstr "Докачивать при Авто Приёме"
+
+#~ msgid "When Auto-Accepting DCC, try to resume."
+#~ msgstr "При включённом Авто Приёме DCC пытаться докачивать файл"
+
+#~ msgid "Timeouts"
+#~ msgstr "Время Ожидания событий"
+
+#~ msgid "DCC Offers Timeout:"
+#~ msgstr "Время ожидания DCC Offer`ов"
+
+#~ msgid "DCC Stall Timeout:"
+#~ msgstr "Время ожидания DCC Stall"
+
+#~ msgid "Received files"
+#~ msgstr "Принятые файлы"
+
+#~ msgid "File Permissions:"
+#~ msgstr "Права Файла"
+
+#~ msgid "(octal)"
+#~ msgstr "(восьмеричная система)"
+
+#~ msgid "Directory to save to:"
+#~ msgstr "Директория для сохранения:"
+
+#~ msgid "Save file with Nickname"
+#~ msgstr "Сохранять файлы вместе с NickName"
+
+#~ msgid "Put the sender's nickname in incoming filenames"
+#~ msgstr "Выводить ник отправителя в имена файлов приёма"
+
+#~ msgid "DCC Send Options"
+#~ msgstr "Настройки DCC Передачи"
+
+#~ msgid "Fast DCC Send"
+#~ msgstr "Быстрая DCC передача"
+
+#~ msgid "Don't wait for ACKs to send more data"
+#~ msgstr "Не ждать ACK перед передачей данный"
+
+#~ msgid "Fill Spaces"
+#~ msgstr "Заполнять пробелами"
+
+#~ msgid "(0=Disabled)"
+#~ msgstr "(0=выключено)"
+
+#~ msgid "Send Block Size:"
+#~ msgstr "Размер Блока Передачи:"
+
+#~ msgid "(1024=Normal)"
+#~ msgstr "(1024=Нормальный)"
+
+#~ msgid "Built-in Replies"
+#~ msgstr "Встроенные Ответы"
+
+#~ msgid "Do not reply to CTCP version"
+#~ msgstr "Не отвечать на запрос CTCP version"
+
+#~ msgid "Sound Dir:"
+#~ msgstr "Директория со звуками:"
+
+#~ msgid "Play Command:"
+#~ msgstr "Команда воспроизведения:"
+
+#~ msgid "Interface Settings"
+#~ msgstr "Настройки интерфейса"
+
+#~ msgid "IRC Input/Output Settings"
+#~ msgstr "Настройки Ввода/Вывода IRC"
+
+#~ msgid "IRC Input/Output"
+#~ msgstr "IRC Ввод/Вывод"
+
+#~ msgid "Window Layout Settings"
+#~ msgstr "Настройки Размещения Окон"
+
+#~ msgid "Window Layout"
+#~ msgstr "Размещение Окон"
+
+#~ msgid "Main Window Settings"
+#~ msgstr "Свойства Главного окна"
+
+#~ msgid "Main Window"
+#~ msgstr "Главное Окно"
+
+#~ msgid "Channel Window Settings"
+#~ msgstr "Настройки окна канала"
+
+#~ msgid "Dialog Window Settings"
+#~ msgstr "Настройки окна диалогов"
+
+#~ msgid "Dialog Windows"
+#~ msgstr "Диалоговые окна"
+
+#~ msgid "Panel"
+#~ msgstr "Панель"
+
+#~ msgid "IRC Settings"
+#~ msgstr "Настройки IRC"
+
+#~ msgid "IP Address Settings"
+#~ msgstr "Настройки IP адреса"
+
+#~ msgid "IP Address"
+#~ msgstr "IP адрес"
+
+#~ msgid "Away Settings"
+#~ msgstr "Настройки режима 'Ушёл'"
+
+#~ msgid "Away"
+#~ msgstr "Ушёл"
+
+#~ msgid "Highlighting Settings"
+#~ msgstr "Настройки выделения"
+
+#~ msgid "Logging Settings"
+#~ msgstr "Настройки протоколирования"
+
+#~ msgid "Notification Settings"
+#~ msgstr "Настройки уведомления"
+
+#~ msgid "Notification"
+#~ msgstr "Уведомления"
+
+#~ msgid "Character Set (Translation Tables)"
+#~ msgstr "Наборы символов (Таблицы Перекодировки)"
+
+#~ msgid "CTCP Settings"
+#~ msgstr "Настройки CTCP"
+
+#~ msgid "DCC Settings"
+#~ msgstr "Настройки DCC"
+
+#~ msgid "File Transfer Settings"
+#~ msgstr "Настройка передачи файла"
+
+#~ msgid "unknown"
+#~ msgstr "неизвестно"
+
+#, fuzzy
+#~ msgid "Show the buttons above the text area"
+#~ msgstr "Показывать кнопки под списком пользователей"
+
+#~ msgid "WhoIs"
+#~ msgstr "Кто"
+
+#~ msgid "Send"
+#~ msgstr "Звуки"
+
+#~ msgid "Ping"
+#~ msgstr "Выбор Времени"

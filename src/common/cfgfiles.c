@@ -1,0 +1,793 @@
+/* X-Chat
+ * Copyright (C) 1998 Peter Zelezny.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
+ */
+
+#include <fcntl.h>
+#include <unistd.h>
+#include <stdlib.h>
+#ifdef HAVE_STRINGS_H
+#include <strings.h>
+#endif
+#include <string.h>
+#include <stdio.h>
+#include <sys/types.h>
+#include <sys/stat.h>
+
+#include "xchat.h"
+#include "cfgfiles.h"
+#include "util.h"
+#include "fe.h"
+#include "text.h"
+#include "xchatc.h"
+#ifdef USE_JCODE
+#include <locale.h>
+#endif
+
+#ifdef WIN32
+#define DEF_FONT "monospace 11"
+#else
+#if defined (USE_XFT) || defined (USE_PANGO)
+#define DEF_FONT "Luxi Mono 12"
+#else
+#define DEF_FONT "-b&h-lucidatypewriter-medium-r-normal-*-*-120-*-*-m-*-*-*"
+#endif
+#endif
+
+void
+list_addentry (GSList ** list, char *cmd, char *name)
+{
+	struct popup *pop;
+	int cmd_len = 1, name_len;
+
+	if (cmd)
+		cmd_len = strlen (cmd) + 1;
+	name_len = strlen (name) + 1;
+
+	pop = malloc (sizeof (struct popup) + cmd_len + name_len);
+	pop->name = (char *) pop + sizeof (struct popup);
+	pop->cmd = pop->name + name_len;
+
+	memcpy (pop->name, name, name_len);
+	if (cmd)
+		memcpy (pop->cmd, cmd, cmd_len);
+	else
+		pop->cmd[0] = 0;
+
+	*list = g_slist_append (*list, pop);
+}
+
+void
+list_loadconf (char *file, GSList ** list, char *defaultconf)
+{
+	char filebuf[256];
+	char cmd[256];
+	char name[82];
+	char *buf, *ibuf;
+	int fh, pnt = 0;
+	struct stat st;
+
+	snprintf (filebuf, sizeof (filebuf), "%s/%s", get_xdir (), file);
+	fh = open (filebuf, O_RDONLY | OFLAGS);
+	if (fh == -1)
+	{
+		fh = open (filebuf, O_TRUNC | O_WRONLY | O_CREAT | OFLAGS, 0600);
+		if (fh != -1)
+		{
+			write (fh, defaultconf, strlen (defaultconf));
+			close (fh);
+			list_loadconf (file, list, defaultconf);
+		}
+		return;
+	}
+	if (fstat (fh, &st) != 0)
+	{
+		perror ("fstat");
+		abort ();
+	}
+
+	ibuf = malloc (st.st_size);
+	read (fh, ibuf, st.st_size);
+	close (fh);
+
+	cmd[0] = 0;
+	name[0] = 0;
+
+	while (buf_get_line (ibuf, &buf, &pnt, st.st_size))
+	{
+		if (*buf != '#')
+		{
+			if (!strncasecmp (buf, "NAME ", 5))
+			{
+				safe_strcpy (name, buf + 5, sizeof (name));
+			}
+			if (!strncasecmp (buf, "CMD ", 4))
+			{
+				safe_strcpy (cmd, buf + 4, sizeof (cmd));
+				if (*name)
+				{
+					list_addentry (list, cmd, name);
+					cmd[0] = 0;
+					name[0] = 0;
+				}
+			}
+		}
+	}
+	free (ibuf);
+}
+
+void
+list_free (GSList ** list)
+{
+	void *data;
+	while (*list)
+	{
+		data = (void *) (*list)->data;
+		free (data);
+		*list = g_slist_remove (*list, data);
+	}
+}
+
+int
+list_delentry (GSList ** list, char *name)
+{
+	struct popup *pop;
+	GSList *alist = *list;
+
+	while (alist)
+	{
+		pop = (struct popup *) alist->data;
+		if (!strcasecmp (name, pop->name))
+		{
+			*list = g_slist_remove (*list, pop);
+			free (pop);
+			return 1;
+		}
+		alist = alist->next;
+	}
+	return 0;
+}
+
+char *
+cfg_get_str (char *cfg, char *var, char *dest)
+{
+	while (1)
+	{
+		if (!strncasecmp (var, cfg, strlen (var)))
+		{
+			char *value, t;
+			cfg += strlen (var);
+			while (*cfg == ' ')
+				cfg++;
+			if (*cfg == '=')
+				cfg++;
+			while (*cfg == ' ')
+				cfg++;
+			/*while (*cfg == ' ' || *cfg == '=')
+			   cfg++; */
+			value = cfg;
+			while (*cfg != 0 && *cfg != '\n')
+				cfg++;
+			t = *cfg;
+			*cfg = 0;
+			strcpy (dest, value);
+			*cfg = t;
+			return cfg;
+		}
+		while (*cfg != 0 && *cfg != '\n')
+			cfg++;
+		if (*cfg == 0)
+			return 0;
+		cfg++;
+		if (*cfg == 0)
+			return 0;
+	}
+}
+
+static void
+cfg_put_str (int fh, char *var, char *value)
+{
+	char buf[512];
+
+	snprintf (buf, sizeof buf, "%s = %s\n", var, value);
+	write (fh, buf, strlen (buf));
+}
+
+void
+cfg_put_int (int fh, int value, char *var)
+{
+	char buf[400];
+
+	if (value == -1)
+		value = 1;
+
+	snprintf (buf, sizeof buf, "%s = %d\n", var, value);
+	write (fh, buf, strlen (buf));
+}
+
+int
+cfg_get_int_with_result (char *cfg, char *var, int *result)
+{
+	char str[128];
+
+	if (!cfg_get_str (cfg, var, str))
+	{
+		*result = 0;
+		return 0;
+	}
+
+	*result = 1;
+	return atoi (str);
+}
+
+int
+cfg_get_int (char *cfg, char *var)
+{
+	char str[128];
+
+	if (!cfg_get_str (cfg, var, str))
+		return 0;
+
+	return atoi (str);
+}
+
+char *xdir = 0;
+
+char *
+get_xdir (void)
+{
+#ifndef WIN32
+	if (!xdir)
+	{
+		xdir = malloc (strlen (g_get_home_dir ()) + 9);
+		sprintf (xdir, "%s/.xchat2", g_get_home_dir ());
+	}
+	return xdir;
+#else
+	return "./conf";
+#endif
+}
+
+void
+check_prefs_dir (void)
+{
+	char *xdir = get_xdir ();
+	if (access (xdir, F_OK) != 0)
+	{
+#ifdef WIN32
+		if (mkdir (xdir) != 0)
+#else
+		if (mkdir (xdir, S_IRUSR | S_IWUSR | S_IXUSR) != 0)
+#endif
+			fe_message (_("Cannot create ~/.xchat"), FALSE);
+	}
+}
+
+char *
+default_file (void)
+{
+	static char *dfile = 0;
+
+	if (!dfile)
+	{
+		dfile = malloc (strlen (get_xdir ()) + 12);
+		sprintf (dfile, "%s/xchat.conf", get_xdir ());
+	}
+	return dfile;
+}
+
+/* Keep these sorted!! */
+
+const struct prefs vars[] = {
+	{"auto_save", P_OFFINT (autosave), TYPE_BOOL},
+	{"auto_save_url", P_OFFINT (autosave_url), TYPE_BOOL},
+
+	{"away_auto_unmark", P_OFFINT (auto_unmark_away), TYPE_BOOL},
+	{"away_reason", P_OFFSET (awayreason), TYPE_STR},
+	{"away_show_message", P_OFFINT (show_away_message), TYPE_BOOL},
+	{"away_show_once", P_OFFINT (show_away_once), TYPE_BOOL},
+
+	{"completion_auto", P_OFFINT (nickcompletion), TYPE_BOOL},
+	{"completion_old", P_OFFINT (old_nickcompletion), TYPE_BOOL},
+	{"completion_suffix", P_OFFSET (nick_suffix), TYPE_STR},
+
+	{"dcc_auto_chat", P_OFFINT (autodccchat), TYPE_BOOL},
+	{"dcc_auto_resume", P_OFFINT (autoresume), TYPE_BOOL},
+	{"dcc_auto_send", P_OFFINT (autodccsend), TYPE_BOOL},
+	{"dcc_blocksize", P_OFFINT (dcc_blocksize), TYPE_INT},
+	{"dcc_dir", P_OFFSET (dccdir), TYPE_STR},
+	{"dcc_completed_dir", P_OFFSET (dcc_completed_dir), TYPE_STR},
+	{"dcc_fast_send", P_OFFINT (fastdccsend), TYPE_BOOL},
+	{"dcc_ip", P_OFFSET (dcc_ip_str), TYPE_STR},
+	{"dcc_ip_from_server", P_OFFINT (ip_from_server), TYPE_BOOL},
+	{"dcc_global_max_get_cps", P_OFFINT (dcc_global_max_get_cps), TYPE_INT},
+	{"dcc_global_max_send_cps", P_OFFINT (dcc_global_max_send_cps), TYPE_INT},
+	{"dcc_max_get_cps", P_OFFINT (dcc_max_get_cps), TYPE_INT},
+	{"dcc_max_send_cps", P_OFFINT (dcc_max_send_cps), TYPE_INT},
+	{"dcc_permissions", P_OFFINT (dccpermissions), TYPE_INT},
+	{"dcc_port_first", P_OFFINT (first_dcc_send_port), TYPE_INT},
+	{"dcc_port_last", P_OFFINT (last_dcc_send_port), TYPE_INT},
+	{"dcc_remove", P_OFFINT (dcc_remove), TYPE_BOOL},
+	{"dcc_save_nick", P_OFFINT (dccwithnick), TYPE_BOOL},
+	{"dcc_send_fillspaces", P_OFFINT (dcc_send_fillspaces), TYPE_BOOL},
+	{"dcc_stall_timeout", P_OFFINT (dccstalltimeout), TYPE_INT},
+	{"dcc_timeout", P_OFFINT (dcctimeout), TYPE_INT},
+
+	{"dnsprogram", P_OFFSET (dnsprogram), TYPE_STR},
+
+	{"flood_ctcp_num", P_OFFINT (ctcp_number_limit), TYPE_INT},
+	{"flood_ctcp_time", P_OFFINT (ctcp_time_limit), TYPE_INT},
+	{"flood_msg_num", P_OFFINT (msg_number_limit), TYPE_INT},
+	{"flood_msg_time", P_OFFINT (msg_time_limit), TYPE_INT},
+#ifdef USE_ZVT
+	{"font_shell", P_OFFSET (font_shell), TYPE_STR},
+#endif
+
+	{"gui_auto_open_dialog", P_OFFINT (autodialog), TYPE_BOOL},
+	{"gui_auto_open_chat", P_OFFINT (autoopendccchatwindow), TYPE_BOOL},
+	{"gui_auto_open_recv", P_OFFINT (autoopendccrecvwindow), TYPE_BOOL},
+	{"gui_auto_open_send", P_OFFINT (autoopendccsendwindow), TYPE_BOOL},
+	{"gui_chanmode_buttons", P_OFFINT (chanmodebuttons), TYPE_BOOL},
+	{"gui_hide_menu", P_OFFINT (hidemenu), TYPE_BOOL},
+	{"gui_input_style", P_OFFINT (style_inputbox), TYPE_BOOL},
+	{"gui_lagometer", P_OFFINT (lagometer), TYPE_INT},
+	{"gui_slist_edit", P_OFFINT (slist_edit), TYPE_BOOL},
+	{"gui_slist_select", P_OFFINT (slist_select), TYPE_INT},
+	{"gui_slist_skip", P_OFFINT (slist_skip), TYPE_BOOL},
+	{"gui_throttlemeter", P_OFFINT (throttlemeter), TYPE_INT},
+	{"gui_topicbar", P_OFFINT (topicbar), TYPE_BOOL},
+	{"gui_ulist_buttons", P_OFFINT (userlistbuttons), TYPE_BOOL},
+	{"gui_ulist_doubleclick", P_OFFSET (doubleclickuser), TYPE_STR},
+	{"gui_ulist_hide", P_OFFINT (hideuserlist), TYPE_BOOL},
+	{"gui_ulist_hilight_notify", P_OFFINT (hilitenotify), TYPE_BOOL},
+	{"gui_ulist_paned", P_OFFINT (paned_userlist), TYPE_BOOL},
+	{"gui_ulist_show_hosts", P_OFFINT(showhostname_in_userlist), TYPE_BOOL},
+	{"gui_ulist_sort", P_OFFINT (userlist_sort), TYPE_INT},
+	{"gui_ulist_style", P_OFFINT (style_namelistgad), TYPE_BOOL},
+	{"gui_win_height", P_OFFINT (mainwindow_height), TYPE_INT},
+	{"gui_win_left", P_OFFINT (mainwindow_left), TYPE_INT},
+	{"gui_win_save", P_OFFINT (mainwindow_save), TYPE_BOOL},
+	{"gui_win_top", P_OFFINT (mainwindow_top), TYPE_INT},
+	{"gui_win_width", P_OFFINT (mainwindow_width), TYPE_INT},
+
+#ifdef USE_HEBREW
+	{"hebrew", P_OFFINT (hebrew), TYPE_BOOL},
+#endif
+
+	{"irc_auto_rejoin", P_OFFINT (autorejoin), TYPE_BOOL},
+	{"irc_ban_type", P_OFFINT (bantype), TYPE_INT},
+	{"irc_extra_hilight", P_OFFSET (bluestring), TYPE_STR},
+	{"irc_invisible", P_OFFINT (invisible), TYPE_BOOL},
+	{"irc_logging", P_OFFINT (logging), TYPE_BOOL},
+	{"irc_logmask", P_OFFSET (logmask), TYPE_STR},
+	{"irc_hide_version", P_OFFINT (hidever), TYPE_BOOL},
+	{"irc_nick1", P_OFFSET (nick1), TYPE_STR},
+	{"irc_nick2", P_OFFSET (nick2), TYPE_STR},
+	{"irc_nick3", P_OFFSET (nick3), TYPE_STR},
+	{"irc_part_reason", P_OFFSET (partreason), TYPE_STR},
+	{"irc_persist_chans", P_OFFINT (persist_chans), TYPE_BOOL},
+	{"irc_raw_modes", P_OFFINT (raw_modes), TYPE_BOOL},
+	{"irc_real_name", P_OFFSET (realname), TYPE_STR},
+	{"irc_quit_reason", P_OFFSET (quitreason), TYPE_STR},
+	{"irc_servernotice", P_OFFINT (servernotice), TYPE_BOOL},
+	{"irc_skip_motd", P_OFFINT (skipmotd), TYPE_BOOL},
+	{"irc_user_name", P_OFFSET (username), TYPE_STR},
+	{"irc_wallops", P_OFFINT (wallops), TYPE_BOOL},
+	{"irc_who_join", P_OFFINT (userhost), TYPE_BOOL},
+
+	{"input_beep_chans", P_OFFINT (beepchans), TYPE_BOOL},
+	{"input_beep_msg", P_OFFINT (beepmsg), TYPE_BOOL},
+	{"input_command_char", P_OFFSET (cmdchar), TYPE_STR},
+	{"input_filter_beep", P_OFFINT (filterbeep), TYPE_BOOL},
+	{"input_fudge_snotice", P_OFFINT (fudgeservernotice), TYPE_BOOL},
+	{"input_perc_ascii", P_OFFINT (perc_ascii), TYPE_BOOL},
+	{"input_perc_color", P_OFFINT (perc_color), TYPE_BOOL},
+
+	{"net_auto_reconnect", P_OFFINT (autoreconnect), TYPE_BOOL},
+	{"net_auto_reconnectonfail", P_OFFINT (autoreconnectonfail), TYPE_BOOL},
+	{"net_bind_host", P_OFFSET (hostname), TYPE_STR},
+	{"net_encoding", P_OFFINT (net_encoding), TYPE_INT},
+	{"net_ping_timeout", P_OFFINT (pingtimeout), TYPE_INT},
+	{"net_proxy_host", P_OFFSET (proxy_host), TYPE_STR},
+	{"net_proxy_port", P_OFFINT (proxy_port), TYPE_INT},
+	{"net_proxy_type", P_OFFINT (proxy_type), TYPE_INT},
+	{"net_reconnect_delay", P_OFFINT (recon_delay), TYPE_INT},
+	{"net_throttle", P_OFFINT (throttle), TYPE_BOOL},
+
+	{"notify_color", P_OFFINT (nu_color), TYPE_INT},
+	{"notify_timeout", P_OFFINT (notify_timeout), TYPE_INT},
+	{"notify_whois_online", P_OFFINT (whois_on_notifyonline), TYPE_BOOL},
+
+	{"perl_warnings", P_OFFINT (perlwarnings), TYPE_BOOL},
+
+	{"sound_command", P_OFFSET (soundcmd), TYPE_STR},
+	{"sound_dir", P_OFFSET (sounddir), TYPE_STR},
+	{"stamp_text", P_OFFINT (timestamp), TYPE_BOOL},
+	{"stamp_text_format", P_OFFSET (stamp_format), TYPE_STR},
+	{"stamp_log", P_OFFINT (timestamp_logs), TYPE_BOOL},
+	{"stamp_log_format", P_OFFSET (timestamp_log_format), TYPE_STR},
+
+	{"tab_dialogs", P_OFFINT (privmsgtab), TYPE_BOOL},
+	{"tab_chans", P_OFFINT (tabchannels), TYPE_BOOL},
+	{"tab_limited_hilight", P_OFFINT (limitedtabhighlight), TYPE_BOOL},
+	{"tab_new_to_front", P_OFFINT (newtabstofront), TYPE_BOOL},
+	{"tab_notices", P_OFFINT (notices_tabs), TYPE_BOOL},
+	{"tab_position", P_OFFINT (tabs_position), TYPE_INT},
+	{"tab_trunc", P_OFFINT (truncchans), TYPE_INT},
+	{"tab_server", P_OFFINT (use_server_tab), TYPE_BOOL},
+	{"tab_utils", P_OFFINT (windows_as_tabs), TYPE_BOOL},
+
+	{"text_color_nicks", P_OFFINT (colorednicks), TYPE_BOOL},
+	{"text_background", P_OFFSET (background), TYPE_STR},
+	{"text_font", P_OFFSET (font_normal), TYPE_STR},
+	{"text_indent", P_OFFINT (indent_nicks), TYPE_BOOL},
+	{"text_max_indent", P_OFFINT (max_auto_indent), TYPE_INT},
+	{"text_max_lines", P_OFFINT (max_lines), TYPE_INT},
+	{"text_thin_sep", P_OFFINT (thin_separator), TYPE_BOOL},
+	{"text_tint", P_OFFINT (tint), TYPE_BOOL},
+	{"text_tint_blue", P_OFFINT (tint_blue), TYPE_INT},
+	{"text_tint_green", P_OFFINT (tint_green), TYPE_INT},
+	{"text_tint_red", P_OFFINT (tint_red), TYPE_INT},
+	{"text_transparent", P_OFFINT (transparent), TYPE_BOOL},
+	{"text_show_sep", P_OFFINT (show_separator), TYPE_BOOL},
+	{"text_stripcolor", P_OFFINT (stripcolor), TYPE_BOOL},
+	{"text_wordwrap", P_OFFINT (wordwrap), TYPE_BOOL},
+
+	{0, 0, 0},
+};
+
+void
+load_config (void)
+{
+	struct stat st;
+	char *cfg;
+	const char *username;
+	int res, val, i, fh;
+#ifdef	USE_JCODE
+	gchar *locale;
+#endif
+
+	check_prefs_dir ();
+	username = g_get_user_name ();
+	if (!username)
+		username = "root";
+
+	memset (&prefs, 0, sizeof (struct xchatprefs));
+
+	/* put in default values, anything left out is automatically zero */
+	prefs.truncchans = 20;
+	prefs.autoresume = 1;
+	prefs.show_away_once = 1;
+	prefs.show_away_message = 1;
+	prefs.indent_nicks = 1;
+	prefs.thin_separator = 1;
+	prefs.tabs_position = 1;
+	prefs.fastdccsend = 1;
+	prefs.wordwrap = 1;
+	prefs.autosave = 1;
+	prefs.autodialog = 1;
+	prefs.autoreconnect = 1;
+	prefs.recon_delay = 10;
+	prefs.tabchannels = 1;
+	prefs.newtabstofront = 1;
+	prefs.use_server_tab = 1;
+	prefs.windows_as_tabs = 1;
+	prefs.privmsgtab = 1;
+	prefs.nickcompletion = 1;
+	prefs.style_inputbox = 1;
+	prefs.slist_select = 10;
+	prefs.nu_color = 4;
+	prefs.dccpermissions = 0600;
+	prefs.max_lines = 300;
+	prefs.mainwindow_width = 640;
+	prefs.mainwindow_height = 400;
+	prefs.dcctimeout = 180;
+	prefs.dccstalltimeout = 60;
+	prefs.notify_timeout = 15;
+	prefs.tint_red =
+		prefs.tint_green =
+		prefs.tint_blue = 195;
+	prefs.auto_indent = 1;
+	prefs.max_auto_indent = 256;
+	prefs.show_separator = 1;
+	prefs.dcc_blocksize = 1024;
+	prefs.throttle = 1;
+	 /*FIXME*/ prefs.msg_time_limit = 30;
+	prefs.msg_number_limit = 5;
+	prefs.ctcp_time_limit = 30;
+	prefs.ctcp_number_limit = 5;
+	prefs.topicbar = 1;
+	prefs.lagometer = 1;
+	prefs.throttlemeter = 1;
+	prefs.autoopendccrecvwindow = 1;
+	prefs.autoopendccsendwindow = 1;
+	prefs.autoopendccchatwindow = 1;
+	prefs.chanmodebuttons = 1;
+	prefs.userhost = 1;
+	prefs.userlistbuttons = 1;
+	prefs.persist_chans = 1;
+	prefs.perc_color = 1;
+	prefs.dcc_send_fillspaces = 1;
+	prefs.mainwindow_save = 1;
+	strcpy (prefs.stamp_format, "[%H:%M] ");
+	strcpy (prefs.timestamp_log_format, "%b %d %H:%M:%S ");
+	strcpy (prefs.logmask, "%n-%c.log");
+	strcpy (prefs.nick_suffix, ":");
+	strcpy (prefs.cmdchar, "/");
+	strcpy (prefs.nick1, username);
+	strcpy (prefs.nick2, username);
+	strcat (prefs.nick2, "_");
+	strcpy (prefs.nick3, username);
+	strcat (prefs.nick3, "__");
+	strcpy (prefs.realname, username);
+	strcpy (prefs.username, username);
+#ifdef WIN32
+	strcpy (prefs.sounddir, "./sound");
+	strcpy (prefs.dccdir, "./dcc");
+	/*strcpy (prefs.dcc_completed_dir, "./dcc");*/
+#else
+	sprintf (prefs.sounddir, "%s/sound", g_get_home_dir ());
+	sprintf (prefs.dccdir, "%s/dcc", g_get_home_dir ());
+	/*strcpy (prefs.dcc_completed_dir, prefs.dccdir);*/
+#endif
+	strcpy (prefs.doubleclickuser, "QUOTE WHOIS %s");
+	strcpy (prefs.awayreason, _("I'm busy"));
+	strcpy (prefs.quitreason, "I like core dumps");
+	strcpy (prefs.partreason, prefs.quitreason);
+	strcpy (prefs.font_normal, DEF_FONT);
+	strcpy (prefs.soundcmd, "esdplay");
+	strcpy (prefs.dnsprogram, "host");
+
+#ifdef	USE_JCODE
+	locale = setlocale (LC_CTYPE, "");
+	if (locale != NULL && !g_strncasecmp (locale, "ja", 2))
+		prefs.kanji_conv = 1;
+#endif
+
+	fh = open (default_file (), OFLAGS | O_RDONLY);
+	if (fh != -1)
+	{
+		fstat (fh, &st);
+		cfg = malloc (st.st_size + 1);
+		cfg[0] = '\0';
+		i = read (fh, cfg, st.st_size);
+		if (i >= 0)
+			cfg[i] = '\0';					/* make sure cfg is NULL terminated */
+		close (fh);
+		i = 0;
+		do
+		{
+			switch (vars[i].type)
+			{
+			case TYPE_STR:
+				cfg_get_str (cfg, vars[i].name, (char *) &prefs + vars[i].offset);
+				break;
+			case TYPE_BOOL:
+			case TYPE_INT:
+				val = cfg_get_int_with_result (cfg, vars[i].name, &res);
+				if (res)
+					*((int *) &prefs + vars[i].offset) = val;
+				break;
+			}
+			i++;
+		}
+		while (vars[i].name);
+
+		free (cfg);
+
+	} else
+	{
+#ifndef WIN32
+#ifndef __EMX__
+		/* OS/2 uses UID 0 all the time */
+		if (getuid () == 0)
+			fe_message (_("* Running IRC as root is stupid! You should\n"
+							"  create a User Account and use that to login.\n"), TRUE);
+#endif
+#endif /* !WIN32 */
+
+#ifdef WIN32
+		mkdir (prefs.dccdir);
+		mkdir (prefs.dcc_completed_dir);
+#else
+		mkdir (prefs.dccdir, S_IRUSR | S_IWUSR | S_IXUSR);
+		mkdir (prefs.dcc_completed_dir, S_IRUSR | S_IWUSR | S_IXUSR);
+#endif
+
+	}
+	if (prefs.mainwindow_height < 138)
+		prefs.mainwindow_height = 138;
+	if (prefs.mainwindow_width < 106)
+		prefs.mainwindow_width = 106;
+}
+
+int
+save_config (void)
+{
+	int fh, i;
+
+	check_prefs_dir ();
+
+	fh = open (default_file (), OFLAGS | O_TRUNC | O_WRONLY | O_CREAT, 0600);
+	if (fh == -1)
+		return 0;
+
+	cfg_put_str (fh, "version", VERSION);
+	i = 0;
+	do
+	{
+		switch (vars[i].type)
+		{
+		case TYPE_STR:
+			cfg_put_str (fh, vars[i].name, (char *) &prefs + vars[i].offset);
+			break;
+		case TYPE_INT:
+		case TYPE_BOOL:
+			cfg_put_int (fh, *((int *) &prefs + vars[i].offset), vars[i].name);
+		}
+		i++;
+	}
+	while (vars[i].name);
+
+	close (fh);
+
+	return 1;
+}
+
+static void
+set_showval (session *sess, const struct prefs *var, char *tbuf)
+{
+	int len, dots, j;
+	static char *offon[] = { "OFF", "ON" };
+
+	len = strlen (var->name);
+	memcpy (tbuf, var->name, len);
+	dots = 29 - len;
+	if (dots < 0)
+		dots = 0;
+	tbuf[len++] = '\003';
+	tbuf[len++] = '2';
+	for (j=0;j<dots;j++)
+		tbuf[j + len] = '.';
+	len += j;
+	switch (var->type)
+	{
+	case TYPE_STR:
+		sprintf (tbuf + len, "\0033:\017 %s\n",
+					(char *) &prefs + var->offset);
+		break;
+	case TYPE_INT:
+		sprintf (tbuf + len, "\0033:\017 %d\n",
+					*((int *) &prefs + var->offset));
+		break;
+	case TYPE_BOOL:
+		sprintf (tbuf + len, "\0033:\017 %s\n", offon[
+					*((int *) &prefs + var->offset)]);
+		break;
+	}
+	PrintText (sess, tbuf);
+}
+
+static void
+set_list (session * sess, char *tbuf)
+{
+	int i;
+
+	i = 0;
+	do
+	{
+		set_showval (sess, &vars[i], tbuf);
+		i++;
+	}
+	while (vars[i].name);
+}
+
+int
+cfg_get_bool (char *var)
+{
+	int i = 0;
+
+	do
+	{
+		if (!strcasecmp (var, vars[i].name))
+		{
+			return *((int *) &prefs + vars[i].offset);
+		}
+		i++;
+	}
+	while (vars[i].name);
+
+	return -1;
+}
+
+int
+cmd_set (struct session *sess, char *tbuf, char *word[], char *word_eol[])
+{
+	int wild = FALSE;
+	int i = 0, finds = 0, found;
+	char *var = word[2];
+	char *val = word_eol[3];
+
+	if (!*var)
+	{
+		set_list (sess, tbuf);
+		return TRUE;
+	}
+
+	if ((strchr (var, '*') || strchr (var, '?')) && !*val)
+		wild = TRUE;
+
+	if (*val == '=')
+		val++;
+
+	do
+	{
+		if (wild)
+			found = !match (var, vars[i].name);
+		else
+			found = strcasecmp (var, vars[i].name);
+
+		if (found == 0)
+		{
+			finds++;
+			switch (vars[i].type)
+			{
+			case TYPE_STR:
+				if (*val)
+				{
+					strcpy ((char *) &prefs + vars[i].offset, val);
+					PrintTextf (sess, "%s set to: %s\n", var, val);
+				} else
+				{
+					set_showval (sess, &vars[i], tbuf);
+				}
+				break;
+			case TYPE_INT:
+			case TYPE_BOOL:
+				if (*val)
+				{
+					if (vars[i].type == TYPE_BOOL)
+					{
+						if (atoi (val))
+							*((int *) &prefs + vars[i].offset) = 1;
+						else
+							*((int *) &prefs + vars[i].offset) = 0;
+						if (!strcasecmp (val, "YES") || !strcasecmp (val, "ON"))
+							*((int *) &prefs + vars[i].offset) = 1;
+						if (!strcasecmp (val, "NO") || !strcasecmp (val, "OFF"))
+							*((int *) &prefs + vars[i].offset) = 0;
+					} else
+					{
+						*((int *) &prefs + vars[i].offset) = atoi (val);
+					}
+					PrintTextf (sess, "%s set to: %d\n", var,
+									*((int *) &prefs + vars[i].offset));
+				} else
+				{
+					set_showval (sess, &vars[i], tbuf);
+				}
+				break;
+			}
+		}
+		i++;
+	}
+	while (vars[i].name);
+
+	if (!finds)
+		PrintText (sess, "No such variable.\n");
+
+	return TRUE;
+}

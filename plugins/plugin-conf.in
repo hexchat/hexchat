@@ -1,0 +1,20 @@
+
+AC_INIT(@PLUGIN@-config.h.in)
+AM_CONFIG_HEADER(@PLUGIN@-config.h)
+AM_INIT_AUTOMAKE(xchat-@PLUGIN@, @PLUGIN_VERSION@)
+AM_MAINTAINER_MODE
+AM_DISABLE_STATIC
+AM_PROG_LIBTOOL
+
+AC_ARG_WITH(plugin-includes,
+[  --with-plugin-includes  directory containing xchat-plugin.h],         
+	PLUGIN_INCLUDES=$enableval)
+
+AC_SUBST(PLUGIN_INCLUDES)
+
+xchatlibdir=${libdir}/xchat
+AC_SUBST(xchatlibdir)
+
+AC_OUTPUT(
+Makefile
+)

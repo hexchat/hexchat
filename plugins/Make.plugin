@@ -1,0 +1,38 @@
+# Makefile stub for creating standalone plugin distributions.
+
+plugin_dist: pg_dist pg_dist/config.status
+	pgi=`cd $(srcdir)/.. && pwd`; cd pg_dist; \
+		$(MAKE) $(AM_MAKEFLAGS) PLUGIN_INCLUDES=-I$$pgi distcheck dist
+
+pg_dist: pg_distdir pg_dist/configure.in pg_dist/install-sh
+	cd pg_dist \
+	&& libtoolize --copy --force --automake \
+	&& automake --copy --add-missing --foreign \
+	&& autoconf -l ../$(top_srcdir)
+
+pg_distdir: $(DISTFILES)
+	test -d pg_dist || mkdir pg_dist
+	for dfile in $(DISTFILES); do \
+		test -f $$dfile && cp $$dfile pg_dist \
+		|| test -f $(srcdir)/$$dfile && cp $(srcdir)/$$dfile pg_dist; done
+	sed '/Make.plugin/d' < $(srcdir)/Makefile.am > pg_dist/Makefile.am
+
+pg_dist/configure.in: $(srcdir)/../plugin-conf.in
+	rm -f pg_dist/configure.in
+	test -f $(srcdir)/config.stub \
+	&& cat $(srcdir)/config.stub > pg_dist/configure.in || true
+	cat $(srcdir)/../plugin-conf.in | \
+		sed 's%@PLUGIN_VERSION@%$(PLUGIN_VERSION)%; \
+		s%@PLUGIN@%$(PLUGIN)%' >> pg_dist/configure.in
+
+pg_dist/install-sh: pg_distdir
+	cp $(top_srcdir)/install-sh pg_dist
+
+pg_dist/config.status: pg_dist/configure
+	cd pg_dist \
+	&& test -f config.status && $(SHELL) ./config.status --recheck \
+	|| $(SHELL) ./configure --enable-maintainer-mode
+
+DISTCLEANFILES = pg_dist/* pg_dist
+
+#

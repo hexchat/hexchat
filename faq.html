@@ -1,0 +1,276 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>XCHAT FAQ</title>
+<style type="text/css">
+<!--
+body {
+	font-family: sans-serif;
+	background-color: #FFFBF0;
+}
+-->
+</style>
+</head>
+<body text="#000000" link="#000077" vlink="#660055">
+
+<h1>X-Chat Frequently Asked Questions</h1>
+
+<h3>1. Section One: Compiling and Installing.</h3>
+<blockquote>
+<a href="faq.html#q11">1. I get this error: /bin/sh: no: command not found</a>
+<br><br>
+<a href="faq.html#q12">2. Why doesn't ./configure find GTK+ on my FreeBSD system?</a>
+<br><br>
+<a href="faq.html#q13">3. How do I compile X-Chat on my Sun OS system?</a>
+<br><br>
+</blockquote>
+
+<h3>2. Section Two: Using X-Chat.</h3>
+<blockquote>
+<a href="faq.html#q21">1. How do I enable identd in X-Chat? (How do I get rid of the ~ infront of my username?)</a>
+<br><br>
+<a href="faq.html#q22">2. How do I auto join more than one channel with keys?</a>
+<br><br>
+<a href="faq.html#q23">3. How do I autoconnect and join a channel when X-Chat loads?</a>
+<br><br>
+<a href="faq.html#q24">4. How do I cut and paste in X-Chat?</a>
+<br><br>
+<a href="faq.html#q25">5. How do I connect through a proxy?</a>
+<br><br>
+<a href="faq.html#q26">6. Why does X-Chat open a listen port?</a>
+<br><br>
+<a href="faq.html#q27">7. Why is the "Tint Transparency" option shaded out?</a>
+<br><br>
+<a href="faq.html#q28">8. How do I set different ban types?</a>
+<br><br>
+<a href="faq.html#q29">9. Why can't I see accented-letters/umlauts/upper-ascii-chars in X-Chat?</a>
+<br><br>
+<a href="faq.html#q210">10. Why does the timestamp overlap some nicknames?</a>
+<br><br>
+<a href="faq.html#q211">11. How do I turn on Conference mode where I will not see join or part messages?</a>
+<br><br>
+<a href="faq.html#q212">12. How can I run the /dccserver command?</a>
+<br><br>
+</blockquote>
+
+<h3>3. Section Three: Crashes, Bugs and other problems.</h3>
+<blockquote>
+<a href="faq.html#q31">1. Why does X-Chat leak so much memory?</a>
+<br><br>
+<a href="faq.html#q32">2. My copy of X-Chat crashes, what can I do?</a>
+</blockquote>
+
+<br><br><br><br>
+
+<h3>1. Section One: Compiling and Installing.</h3>
+<b><a name="q11">1. I get this error: /bin/sh: no: command not found</a></b>
+<pre>
+   If you get an error something like:
+
+   Making all in po
+   make[2]: Entering directory `/home/zed/xchat/files/xchat-1.8.7/po'
+   file=./`echo ca | sed 's,.*/,,'`.gmo \
+     && rm -f $file && PATH=../src:$PATH no -o $file ca.po
+   /bin/sh: no: command not found
+   make[2]: *** [ca.gmo] Error 127
+   make[2]: Leaving directory `/home/zed/xchat/files/xchat-1.8.7/po'
+   make[1]: *** [all-recursive] Error 1
+   make[1]: Leaving directory `/home/zed/xchat/files/xchat-1.8.7'
+   make: *** [all-recursive-am] Error 2
+
+   It means you don't have GNU gettext installed. There are two solutions:
+
+       a) Install GNU gettext and try again.
+
+       b) Use <i>./configure --disable-nls</i>. This will disable foreign
+          language support and all menus and GUI will be in english only.
+
+</pre>
+
+<b><a name="q12">2. Why doesn't ./configure find GTK+ on my FreeBSD system?</a></b>
+<pre>
+   FreeBSD usually comes with glib12-config and gtk12-config, so you'll need
+   to set the GLIB_CONFIG and GTK_CONFIG environment variables, e.g:
+
+       setenv GLIB_CONFIG /usr/local/bin/glib12-config
+       setenv GTK_CONFIG /usr/X11R6/bin/gtk12-config
+       rm config.cache
+       ./configure
+
+   Or if you are using a bash shell:
+
+       export GLIB_CONFIG=/usr/local/bin/glib12-config
+       export GTK_CONFIG=/usr/X11R6/bin/gtk12-config
+       rm config.cache
+       ./configure
+
+</pre>
+
+<b><a name="q13">3. How do I compile X-Chat on my Sun OS system?</a></b>
+<pre>
+   X-Chat uses GNU gettext which in turn requires gmake, either install that
+   and or use ./configure --disable-nls with Sun's own make.
+
+</pre>
+
+<h3>2. Section Two: Using X-Chat.</h3>
+<b><a name="q21">1. How do I enable identd in X-Chat?</a></b>
+<pre>
+   <u>UNIX:</u>
+    Identd isn't actually apart of X-Chat. You will need to download and install 
+    your own ident server. Most distributions, including RedHat, come with an 
+    ident server program called pidentd. Make sure it is enabled in
+    /etc/inetd.conf or read you distribution's documentation.
+
+    As an alternative, you can try this experimental identd server: <a href="auth/index.html">xchat_auth</a>
+
+   <u>WINDOWS:</u>
+    The win32 version of X-Chat comes with a builtin identd server. It is
+    enabled by default, but can be disabled with <i>/set identd 0</i>.
+
+</pre>
+
+<b><a name="q22">2. How do I auto join more than one channel with keys?</a></b>
+<pre>
+   In the Serverlist's channel column enter multiple channels and separate 
+   them by commas, eg:  "#linux,#warez,#chat". Do not put spaces between the
+   channels. If the channels also have keys (passwords), then the syntax is:
+   "#channel1,#channel2,#channel3 key1,key2,key3"
+
+</pre>
+
+<b><a name="q23">3. How do I autoconnect and join a channel when X-Chat loads?</a></b>
+<pre>
+   In the Serverlist's Edit Window, check the checkbox "Autoconnect"
+   of the entries you want to auto-connect/join. When you restart xchat
+   it should automatically connect to these servers, and join the channels.
+
+</pre>
+
+<b><a name="q24">4. How do I cut and paste in X-Chat?</a></b>
+<pre>
+   It's exactly the same as any other X application. You simply mark the text
+   you want, and then press middle mouse button to paste (if you only have a
+   2 button mouse, press left and right buttons at once).
+
+</pre>
+
+<b><a name="q25">5. How do I connect through a proxy?</a></b>
+<pre>
+   Go to the menus, Settings -> Setup -> Proxy Server and fill in the requested
+   information there. There is currently no support for using a username and
+   password to authenticate to socks proxies. Version 1.8.10 and above supports
+   authenticating to HTTPD proxies.
+
+</pre>
+
+<b><a name="q26">6. Why does X-Chat open a listen port?</a></b>
+<pre>
+   Normally, X-Chat will not open a listen port, unless you are offering
+   a file by DCC. If you compiled X-Chat with the --enable-panel option,
+   ORBit (a library that is apart of Gnome) will open a port. X-Chat cannot
+   prevent this. If it really bothers you, compile X-Chat with --disable-panel.
+
+</pre>
+
+<b><a name="q27">7. Why is the "Tint Transparency" option shaded out?</a></b>
+<pre>
+   It means you've compiled without gdk-pixbuf available. The configure script
+   looks for gdk-pixbuf-config to find out if you have it installed. On a
+   redhat or mandrake system you should have something like:
+
+      $ rpm -qa | grep gdk-pix
+      gdk-pixbuf-0.11.0
+      gdk-pixbuf-devel-0.11.0
+
+   The "devel" package is also necessary! You should be able to find these
+   packages on your Linux CDROM or local GNOME ftp site. Once you install
+   gdk-pixbuf, try recompiling xchat.
+
+</pre>
+
+<b><a name="q28">8. How do I set different ban types?</a></b>
+<pre>
+   Three ways:
+
+      Right click the nickname in the userlist, and choose a bantype from the
+      "Kick/Ban" submenu. This menu is only available by default in version
+      1.6.x or above. You can also do it manually:
+
+         /ban &lt;nick> &lt;bantype>
+
+      where the &lt;bantype> is a number from 0 to 3.
+
+         /set ban_type &lt;bantype>
+
+      sets the default ban type to use for all bans. The different types are:
+
+        0 *!*@*.host
+        1 *!*@domain
+        2 *!*user@*.host
+        3 *!*user@domain
+
+</pre>
+
+<b><a name="q29">9. Why can't I see accented-letters/umlauts/upper-ascii-chars in X-Chat?</a></b>
+<pre>
+   Firstly, you should disable fontsets. The setting is in Settings ->
+   Setup -> Channel Windows -> Use a FontSet. There is no reason to have
+   this setting ON, unless you know you need it. Some versions of X-Chat
+   require a restart for this setting to take affect.
+   If that doesn't fix the problem, try using a different font, some
+   fonts simply don't have the characters you want.
+
+</pre>
+
+<b><a name="q210">10. Why does the timestamp overlap some nicknames?</a></b>
+<pre>
+   Some networks allow very long nicknames (up to 32 letters). It can be annoying to have
+   the separator bar move too far to the right, just for one long nick. Therefore, it has
+   a set limit for the distance it will move to the right. If you use a large font, you
+   may need to adjust this distance. It is set in pixels, for example:
+
+      /set max_auto_indent 320
+
+   Once you adjust this setting high enough, overlapping timestamps and nicknames should
+   not occur. The adjustment will not take effect immediately, a restart may be needed.
+
+</pre>
+
+<b><a name="q211">11. How do I turn on Conference mode where I will not see join or part messages?</a></b>
+<pre>
+   At the bottom right of the X-Chat screen there is a "&lt;" button.
+   Click that then also click the "Conf" button that will pop up.
+
+</pre>
+
+<b><a name="q212">12. How can I run the /dccserver command?</a></b>
+<pre>
+   In short you can not do this (easily). This is a mIRC only propriotory feature
+   that is quite nonstandard. There is no code for doing this, mainly because
+   /dccserver runs on port 59 which in turn would require running X-Chat as
+   root. Why do you need this anyway? Just use normal DCC.
+
+</pre>
+
+<h3>3. Section Three: Crashes, Bugs and other problems.</h3>
+<b><a name="q31">1. Why does X-Chat leak so much memory?</a></b>
+<pre>
+   The simple answer is, it doesn't! There are some GTK+ pixmap based themes around that
+   leak alot of memory. Please try using a different theme and see if that resolves the
+   problem. X-Chat itself only allocates about 40kb of memory through malloc()!
+
+</pre>
+
+<b><a name="q32">2. My copy of X-Chat crashes, what can I do?</a></b>
+<pre>
+   Firstly, make sure it's the latest stable version of X-Chat. Stable versions have
+   an EVEN middle number, e.g.: 1.8.10 or 1.8.11. Often late fixes are placed in this
+   directory: <a href="http://xchat.org/files/source/1.8/patches/">1.8.x patches</a>
+
+   If you still experience crashes, you should consider running it through GDB. This
+   will help us find a fix quickly, and it's easy to do! See <a href="gdb.html">here</a>.
+</pre>
+
+</body>
+</html>

@@ -1,0 +1,49 @@
+X-Chat Requirements:
+~~~~~~~~~~~~~~~~~~~~
+
+	- GTK 2.0+  (get it from http://www.gtk.org)
+
+ Optional:
+
+	- Gnome               (http://www.gnome.org)
+	- Perl                (http://www.perl.com)
+	- Python              (http://www.python.org)
+	- OpenSSL             (http://www.openssl.org)
+
+
+
+X-Chat Compiling and Installation:
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Type this:
+
+	./configure
+	make
+
+Become root and type:
+
+	make install
+
+
+Other Options
+~~~~~~~~~~~~~
+
+To get a full list of compile options, type:
+
+	./configure --help
+
+
+If you do not have GNU Gettext installed, instead use:
+
+	./configure --disable-nls
+
+
+If you want to disable Gnome and/or Perl you can do:
+
+	./configure --disable-perl --disable-gnome
+
+
+If you want to install a smaller stripped binary (without debug) do:
+
+	make install-strip
+

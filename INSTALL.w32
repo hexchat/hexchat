@@ -1,0 +1,44 @@
+COMPILING ON WIN32
+~~~~~~~~~~~~~~~~~~
+It is not easy! Be warned! You need either one of these compilers:
+
+	* Mingw (http://www.mingw.org)
+	* MS Visual C
+
+You also need GTK+ 2.0 for win32. Get it from http://www.gimp.org/win32/
+Install all the binary and development packages.
+
+
+Mingw
+~~~~~
+
+	I havn't tried this yet.
+
+
+MS Visual C
+~~~~~~~~~~~
+
+	1) Edit src\makeinc.msc
+
+	  You need to change the variables GLIB, GTK and LIBS to point
+	  the correct paths for your harddrive. Use the program pkg-config
+	  to find this information.
+
+	  a) paste the output of `pkg-config glib-2.0 --msvc-syntax --cflags`
+	     to the GLIB = ... line.
+
+	  b) paste the output of `pkg-config gtk+-2.0 --msvc-syntax --cflags`
+	     to the GTK = ... line.
+
+	  c) paste the output of `pkg-config gtk+-2.0 --msvc-syntax --libs`
+	     to the LIBS = ... line.
+
+	2) Type this:
+
+		cd src
+		nmake -f makefile.msc
+
+	3) Use your superior debugging skills to fix the compile errors.
+
+	4) Copy fe-gtk\xchat.exe where ever you need it.
+
