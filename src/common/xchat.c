@@ -830,16 +830,24 @@ xchat_init (void)
 	if (!prefs.slist_skip)
 		fe_serverlist_open (NULL);
 
-	/* do any auto connects */
-	if (!servlist_have_auto ())	/* if no new windows open .. */
+	/* turned OFF via -a arg */
+	if (auto_connect)
 	{
-		/* and no serverlist gui ... */
-		if (prefs.slist_skip)
-			/* we'll have to open one. */
-			new_ircwindow (NULL, NULL, SESS_SERVER);
+		/* do any auto connects */
+		if (!servlist_have_auto ())	/* if no new windows open .. */
+		{
+			/* and no serverlist gui ... */
+			if (prefs.slist_skip)
+				/* we'll have to open one. */
+				new_ircwindow (NULL, NULL, SESS_SERVER);
+		} else
+		{
+			fe_idle_add (xchat_auto_connect, NULL);
+		}
 	} else
 	{
-		fe_idle_add (xchat_auto_connect, NULL);
+		if (prefs.slist_skip)
+			new_ircwindow (NULL, NULL, SESS_SERVER);
 	}
 }
 

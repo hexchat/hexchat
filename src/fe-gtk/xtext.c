@@ -2072,14 +2072,14 @@ gtk_xtext_scroll (GtkWidget *widget, GdkEventScroll *event)
 
 	if (event->direction == GDK_SCROLL_UP)		/* mouse wheel pageUp */
 	{
-		new_value = xtext->adj->value - (xtext->adj->page_increment - 1);
+		new_value = xtext->adj->value - (xtext->adj->page_increment / 10);
 		if (new_value < xtext->adj->lower)
 			new_value = xtext->adj->lower;
 		gtk_adjustment_set_value (xtext->adj, new_value);
 	}
 	else if (event->direction == GDK_SCROLL_DOWN)	/* mouse wheel pageDn */
 	{
-		new_value = xtext->adj->value + (xtext->adj->page_increment - 1);
+		new_value = xtext->adj->value + (xtext->adj->page_increment / 10);
 		if (new_value > (xtext->adj->upper - xtext->adj->page_size))
 			new_value = xtext->adj->upper - xtext->adj->page_size;
 		gtk_adjustment_set_value (xtext->adj, new_value);

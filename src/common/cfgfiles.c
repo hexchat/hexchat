@@ -470,7 +470,7 @@ load_config (void)
 	prefs.show_away_message = 1;
 	prefs.indent_nicks = 1;
 	prefs.thin_separator = 1;
-	prefs.tabs_position = 1;
+	/*prefs.tabs_position = 1;*/ /* 0 = bottom */
 	prefs.fastdccsend = 1;
 	prefs.wordwrap = 1;
 	prefs.autosave = 1;

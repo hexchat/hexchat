@@ -1764,6 +1764,7 @@ mg_create_entry (session *sess, GtkWidget *box)
 		sess = NULL;	/* pass NULL to key_handle_key_press for tabs */
 
 	gui->input_box = entry = gtk_entry_new ();
+	gtk_widget_set_name (entry, "xchat-inputbox");
 	gtk_entry_set_max_length (GTK_ENTRY (gui->input_box), 2048);
 	g_signal_connect (G_OBJECT (gui->input_box), "key_press_event",
 							G_CALLBACK (key_handle_key_press), sess);
