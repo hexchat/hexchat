@@ -444,6 +444,40 @@ mode_has_arg (server * serv, char sign, char mode)
 	return 0;
 }
 
+static void
+mode_print_grouped (session *sess, char *nick, mode_run *mr)
+{
+	/* print all the grouped Op/Deops */
+	if (mr->op)
+	{
+		EMIT_SIGNAL (XP_TE_CHANOP, sess, nick, mr->op, NULL, NULL, 0);
+		free (mr->op);
+		mr->op = NULL;
+	}
+
+	if (mr->deop)
+	{
+		EMIT_SIGNAL (XP_TE_CHANDEOP, sess, nick, mr->deop, NULL, NULL, 0);
+		free (mr->deop);
+		mr->deop = NULL;
+	}
+
+	if (mr->voice)
+	{
+		EMIT_SIGNAL (XP_TE_CHANVOICE, sess, nick, mr->voice, NULL, NULL, 0);
+		free (mr->voice);
+		mr->voice = NULL;
+	}
+
+	if (mr->devoice)
+	{
+		EMIT_SIGNAL (XP_TE_CHANDEVOICE, sess, nick, mr->devoice, NULL, NULL, 0);
+		free (mr->devoice);
+		mr->devoice = NULL;
+	}
+}
+
+
 /* handle a MODE or numeric 324 from server */
 
 void
@@ -529,14 +563,14 @@ handle_mode (server * serv, char *word[], char *word_eol[],
 	if (num_args == num_modes)
 		all_modes_have_args = TRUE;
 
-	while (1)
+	while (*modes)
 	{
 		switch (*modes)
 		{
-		case 0:
-			goto xit;
 		case '-':
 		case '+':
+			/* print all the grouped Op/Deops */
+			mode_print_grouped (sess, nick, &mr);
 			sign = *modes;
 			break;
 		default:
@@ -554,31 +588,8 @@ handle_mode (server * serv, char *word[], char *word_eol[],
 		modes++;
 	}
 
-xit:
 	/* print all the grouped Op/Deops */
-	if (mr.op)
-	{
-		EMIT_SIGNAL (XP_TE_CHANOP, sess, nick, mr.op, NULL, NULL, 0);
-		free (mr.op);
-	}
-
-	if (mr.deop)
-	{
-		EMIT_SIGNAL (XP_TE_CHANDEOP, sess, nick, mr.deop, NULL, NULL, 0);
-		free (mr.deop);
-	}
-
-	if (mr.voice)
-	{
-		EMIT_SIGNAL (XP_TE_CHANVOICE, sess, nick, mr.voice, NULL, NULL, 0);
-		free (mr.voice);
-	}
-
-	if (mr.devoice)
-	{
-		EMIT_SIGNAL (XP_TE_CHANDEVOICE, sess, nick, mr.devoice, NULL, NULL, 0);
-		free (mr.devoice);
-	}
+	mode_print_grouped (sess, nick, &mr);
 }
 
 /* handle the 005 numeric */
