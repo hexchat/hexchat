@@ -20,7 +20,7 @@ color: #990066
 <h1>XChat 2.0 Plugin Interface</h1>
 
 <small>
-<font size="-12">plugin20.html revision 0.93</font>
+<font size="-12">plugin20.html revision 0.94</font>
 <br>Latest version of this document is available at: <a href="http://xchat.org/docs/plugin20.html">http://xchat.org/docs/plugin20.html</a></small>
 
 <h2>Information:</h2>
@@ -174,6 +174,7 @@ needed for a long time after calling xchat_list_str. The types of lists and fiel
 <tr><td>channel</td><td>Channel or query name</td><td>string</td></tr>
 <tr><td>context</td><td>(xchat_context *) pointer. Can be used with xchat_set_context</td><td>string</td></tr>
 <tr><td>server</td><td>Server name to which this channel belongs</td><td>string</td></tr>
+<tr><td>type</td><td>Type of context this is: 1-Server 2-Channel 3-Dialog<br><small>(Added in version 2.0.2. Older versions will return -1)</small></td><td>int</td></tr>
 </table>
 </blockquote>
 

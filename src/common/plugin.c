@@ -989,7 +989,7 @@ xchat_list_fields (xchat_plugin *ph, const char *name)
 	};
 	static const char *channels_fields[] =
 	{
-		"schannel",	"pcontext",	"sserver",	NULL
+		"schannel",	"pcontext",	"sserver",	"stype", NULL
 	};
 	static const char *ignore_fields[] =
 	{
@@ -1114,6 +1114,15 @@ xchat_list_int (xchat_plugin *ph, xchat_list *xlist, const char *name)
 			return ((struct ignore *)data)->type;
 		}
 		break;
+
+	case LIST_CHANNELS:
+		switch (hash)
+		{
+		case 0x368f3a:	/* type */
+			return ((struct session *)data)->type;
+		}
+		break;
+
 	}
 
 	return -1;
