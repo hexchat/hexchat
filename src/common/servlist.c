@@ -258,11 +258,6 @@ static const struct defaultserver def[] =
 	{0,			"irc.canadian.net"},
 	{0,			"irc.irctoo.net"},
 
-	{"KewlNet",	0},
-	{0,			"random.irc.kewl.org"},
-	{0,			"la.defense.fr.eu.kewl.org"},
-	{0,			"nanterre.fr.eu.kewl.org"},
-
 	{"Librenet",	0},
 	{0,			"irc.librenet.net"},
 	{0,			"ielf.fr.librenet.net"},
@@ -454,6 +449,10 @@ static const struct defaultserver def[] =
 	{"Unsecurity",	0},
 	{0,			"irc.unsecurity.org"},
 
+	{"Worldnet",		0},
+	{0,			"irc.worldnet.net"},
+	{0,			"irc.fr.worldnet.net"},
+
 	{"Xentonix.net",	0},
 	{0,			"irc.ffm.de.eu.xentonix.net"},
 	{0,			"irc.brs.de.eu.xentonix.net"},
@@ -498,7 +497,7 @@ servlist_connect (session *sess, ircnet *net)
 	/* incase a protocol switch is added to the servlist gui */
 	server_fill_her_up (sess->server);
 
-	if (net->autojoin)
+	if (net->autojoin && !sess->server->recondelay_tag)
 		safe_strcpy (sess->willjoinchannel, net->autojoin,
 						 sizeof (sess->willjoinchannel));
 	if (net->pass)

@@ -548,6 +548,12 @@ load_config (void)
 		realname = username;
 
 	username = g_locale_to_utf8 (username, -1, 0, 0, 0);
+	if (!username)
+	{
+		/* this can happen if CHARSET envvar is set wrong */
+		fprintf (stderr, "g_locale_to_utf8() failed, bad CHARSET.\n");
+		exit (1);
+	}
 	realname = g_locale_to_utf8 (realname, -1, 0, 0, 0);
 
 	memset (&prefs, 0, sizeof (struct xchatprefs));

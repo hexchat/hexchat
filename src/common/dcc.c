@@ -1084,11 +1084,9 @@ dcc_listen_init (struct DCC *dcc, session *sess)
 			/*printf("Trying to bind against port: %d\n",ntohs(SAddr.sin_port));*/
 			bindretval = bind (dcc->sok, (struct sockaddr *) &SAddr, sizeof (SAddr));
 		}
-	}
-
-	/*if we didnt bind yet, try a random port*/
-	if (bindretval == -1)
+	} else
 	{
+		/* try random port */
 		SAddr.sin_port = 0;
 		bindretval = bind (dcc->sok, (struct sockaddr *) &SAddr, sizeof (SAddr));
 	}

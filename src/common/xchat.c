@@ -999,13 +999,13 @@ xchat_init (void)
 		"NAME %s\n"				"CMD whois %%s %%s\n\n"
 		"NAME %s\n"				"CMD dcc send %%s\n\n"
 		"NAME %s\n"				"CMD dcc chat %%s\n\n"
-		"NAME %s\n"				"CMD ping %%s\n\n"
-		"NAME %s\n"				"CMD clear\n\n",
+		"NAME %s\n"				"CMD clear\n\n"
+		"NAME %s\n"				"CMD ping %%s\n\n",
 				_("WhoIs"),
 				_("Send"),
 				_("Chat"),
-				_("Ping"),
-				_("Clear"));
+				_("Clear"),
+				_("Ping"));
 	list_loadconf ("dlgbuttons.conf", &dlgbutton_list, buf);
 
 	list_loadconf ("tabmenu.conf", &tabmenu_list, NULL);
