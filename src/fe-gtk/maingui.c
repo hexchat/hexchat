@@ -492,8 +492,8 @@ mg_switch_page (int relative, int num)
 static void
 mg_find_replacement_focus (GtkWidget *tab)
 {
-/*	mg_switch_page (FALSE, 0);*/
-	mg_switch_page (TRUE, -1);	/* FIXME: does so relative properly */
+	mg_switch_page (FALSE, 0);
+/*	mg_switch_page (TRUE, -1);*/	/* crashes if replacement is non-irc */
 }
 
 static void
@@ -1119,7 +1119,7 @@ mg_create_link_buttons (GtkWidget *box, gpointer userdata)
 	gtkutil_button (box, GTK_STOCK_CLOSE, _("Close this tab/window"),
 						 mg_x_click_cb, userdata, 0);
 
-	gtkutil_button (box, GTK_STOCK_REDO, _("Link/DeLink this tab"),
+	gtkutil_button (box, GTK_STOCK_REDO, _("Attach/Detach this tab"),
 						 mg_link_cb, userdata, 0);
 }
 

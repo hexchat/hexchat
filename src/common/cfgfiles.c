@@ -38,7 +38,7 @@
 #endif
 
 #ifdef WIN32
-#define DEF_FONT "monospace 11"
+#define DEF_FONT "monospace 10"
 #else
 #if defined (USE_XFT) || defined (USE_PANGO)
 #define DEF_FONT "Luxi Mono 12"
@@ -257,7 +257,7 @@ get_xdir (void)
 	}
 	return xdir;
 #else
-	return "./conf";
+	return "./config";
 #endif
 }
 
@@ -536,7 +536,7 @@ load_config (void)
 	strcpy (prefs.username, username);
 #ifdef WIN32
 	strcpy (prefs.sounddir, "./sound");
-	strcpy (prefs.dccdir, "./dcc");
+	strcpy (prefs.dccdir, "./download");
 	/*strcpy (prefs.dcc_completed_dir, "./dcc");*/
 #else
 	sprintf (prefs.sounddir, "%s/sound", g_get_home_dir ());

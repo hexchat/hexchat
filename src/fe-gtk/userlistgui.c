@@ -405,69 +405,61 @@ userlist_add_columns (GtkTreeView * treeview)
 	}
 }
 
-static int last_button = 0;
-
-static void
-userlist_cursor_cb (GtkTreeView *treeview, gpointer user_data)
-{
-	session *sess = current_sess;
-	char **nicks;
-	int i;
-
-	if (last_button == 100)
-	{
-		if (prefs.doubleclickuser[0])
-		{
-			nicks = userlist_selection_list (sess->gui->user_tree, &i);
-			if (nicks)
-			{
-				nick_command_parse (sess, prefs.doubleclickuser, nicks[0],
-										  nicks[0]);
-				free (nicks);
-			}
-		}
-		return;
-	}
-
-	if (last_button == 3)
-	{
-		nicks = userlist_selection_list (sess->gui->user_tree, &i);
-		if (nicks)
-		{
-			menu_nickmenu (sess, NULL, nicks[0], i);
-			free (nicks);
-		}
-	}
-}
-
 static gint
 userlist_click_cb (GtkWidget *widget, GdkEventButton *event, gpointer userdata)
 {
-	session *sess = current_sess;
 	char **nicks;
 	int i;
+	GtkTreeSelection *sel;
+	GtkTreePath *path;
 
 	if (!event)
 		return FALSE;
 
-	last_button = event->button;
-
-	if (event->type == GDK_2BUTTON_PRESS)
-		last_button = 100;
+	if (event->type == GDK_2BUTTON_PRESS && prefs.doubleclickuser[0])
+	{
+		nicks = userlist_selection_list (widget, &i);
+		if (nicks)
+		{
+			nick_command_parse (current_sess, prefs.doubleclickuser, nicks[0],
+									  nicks[0]);
+			free (nicks);
+		}
+		return TRUE;
+	}
 
 	if (event->button == 3)
 	{
-		nicks = userlist_selection_list (sess->gui->user_tree, &i);
-		if (nicks)
+		/* do we have a multi-selection? */
+		nicks = userlist_selection_list (widget, &i);
+		if (nicks && i > 1)
 		{
-			if (i > 1)
-				menu_nickmenu (sess, event, nicks[0], i);
+			menu_nickmenu (current_sess, event, nicks[0], i);
 			free (nicks);
+			return TRUE;
+		}
+		if (nicks)
+			free (nicks);
+
+		sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (widget));
+		if (gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (widget),
+			 event->x, event->y, &path, 0, 0, 0))
+		{
+			gtk_tree_selection_unselect_all (sel);
+			gtk_tree_selection_select_path (sel, path);
+			gtk_tree_path_free (path);
+			nicks = userlist_selection_list (widget, &i);
+			if (nicks)
+			{
+				menu_nickmenu (current_sess, event, nicks[0], i);
+				free (nicks);
+			}
+		} else
+		{
+			gtk_tree_selection_unselect_all (sel);
 		}
 
-		/* don't let it unselect a multiselection */
-		if (i > 1)
-			return TRUE;
+		return TRUE;
 	}
 
 	return FALSE;
@@ -511,8 +503,8 @@ userlist_create (GtkWidget *box)
 							G_CALLBACK (userlist_dnd_drop), 0);
 	g_signal_connect (G_OBJECT (treeview), "button_press_event",
 							G_CALLBACK (userlist_click_cb), 0);
-	g_signal_connect (G_OBJECT (treeview), "cursor_changed",
-							G_CALLBACK (userlist_cursor_cb), 0);
+//	g_signal_connect (G_OBJECT (treeview), "cursor_changed",
+//							G_CALLBACK (userlist_cursor_cb), 0);
 
 	userlist_add_columns (GTK_TREE_VIEW (treeview));
 

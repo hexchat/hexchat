@@ -5,7 +5,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: X-Chat 1.3.12\n"
-"POT-Creation-Date: 2002-11-26 17:32+1100\n"
+"POT-Creation-Date: 2002-12-04 21:37+1100\n"
 "PO-Revision-Date: 2001-03-25 04:52 +0900\n"
 "Last-Translator: Kim SeungBaeck <kongsi@taegu.linux.or.kr>\n"
 "Language-Team: Taegu Linux User Group <kongsi@taegu.linux.or.kr>\n"
@@ -107,7 +107,7 @@ msgstr ""
 msgid "I need /bin/sh to run!\n"
 msgstr "실행을 위해 /bin/sh 가 필요합니다!\n"
 
-#: src/common/outbound.c:1422
+#: src/common/outbound.c:1494
 msgid ""
 "\n"
 "Commands Available:\n"
@@ -119,7 +119,7 @@ msgstr ""
 "\n"
 "  "
 
-#: src/common/outbound.c:1457
+#: src/common/outbound.c:1529
 msgid ""
 "\n"
 "\n"
@@ -131,7 +131,7 @@ msgstr ""
 "/HELP <명령> 이나 /HELP -l 을 입력하면 더 많은 정보를 볼 수 있습니다.\n"
 "\n"
 
-#: src/common/outbound.c:1458
+#: src/common/outbound.c:1530
 msgid ""
 "User defined commands:\n"
 "\n"
@@ -141,41 +141,41 @@ msgstr ""
 "\n"
 "  "
 
-#: src/common/outbound.c:1548
+#: src/common/outbound.c:1620
 #, c-format
 msgid "Unknown arg '%s' ignored."
 msgstr "알 수 없는 변수 '%s' 무시됨."
 
-#: src/common/outbound.c:2212
+#: src/common/outbound.c:2284
 #, fuzzy
 msgid "No such plugin found.\n"
 msgstr "해당 명령이 없습니다.\n"
 
-#: src/common/outbound.c:2215 src/fe-gtk/plugingui.c:128
+#: src/common/outbound.c:2289 src/fe-gtk/plugingui.c:128
 msgid "That plugin is refusing to unload.\n"
 msgstr ""
 
-#: src/common/outbound.c:2349
+#: src/common/outbound.c:2423
 #, fuzzy
 msgid "ADDBUTTON <name> <action>, adds a button under the user-list"
 msgstr "/ADDBUTTON <이름> <명령>, 사용자 목록에 단추를 추가합니다\n"
 
-#: src/common/outbound.c:2351
+#: src/common/outbound.c:2425
 #, fuzzy
 msgid "ALLCHAN <cmd>, sends a command to all channels you're in"
 msgstr "/ADDCHAN <명령>, 당신이 있는 모든 대화방에 명령을 실행합니다\n"
 
-#: src/common/outbound.c:2353
+#: src/common/outbound.c:2427
 #, fuzzy
 msgid "ALLSERV <cmd>, sends a command to all servers you're in"
 msgstr "/ALLSERV <명령>, 당신이 접속한 모든 서버에 명령을 실행합니다.\n"
 
-#: src/common/outbound.c:2354
+#: src/common/outbound.c:2428
 #, fuzzy
 msgid "AWAY [<reason>], sets you away"
 msgstr "/AWAY [<이유>], 자리비움을 알립니다.\n"
 
-#: src/common/outbound.c:2356
+#: src/common/outbound.c:2430
 #, fuzzy
 msgid ""
 "BAN <mask> [<bantype>], bans everyone matching the mask from the current "
@@ -186,21 +186,21 @@ msgstr ""
 "니다.만약. 이미 그들이 대화방에 있어도 쫓아 내지 안습니다. (대화방 관리권한"
 "이 필요합니다)\n"
 
-#: src/common/outbound.c:2358
+#: src/common/outbound.c:2432
 msgid "UNBAN <mask> [<mask>...], unbans the specified masks."
 msgstr ""
 
-#: src/common/outbound.c:2359
+#: src/common/outbound.c:2433
 #, fuzzy
 msgid "CLEAR, Clears the current text window"
 msgstr "/CLEAR, 현재 창의 글월들을 비워버립니다.\n"
 
-#: src/common/outbound.c:2360
+#: src/common/outbound.c:2434
 #, fuzzy
 msgid "CLOSE, Closes the current window/tab"
 msgstr "/CLOSE, 현자 창/책갈피를 닫습니다.\n"
 
-#: src/common/outbound.c:2363
+#: src/common/outbound.c:2437
 #, fuzzy
 msgid ""
 "CTCP <nick> <message>, send the CTCP message to nick, common messages are "
@@ -209,24 +209,24 @@ msgstr ""
 "/CTCP <대화명> <명령>, CTCP 명령 해당 대화명을 가진 사람에게 보냅니다.일반적"
 "인 명령은 VERSION 과 USERINFO 등이 있습니다\n"
 
-#: src/common/outbound.c:2365
+#: src/common/outbound.c:2439
 #, fuzzy
 msgid "COUNTRY <code>, finds a country code, eg: au = australia"
 msgstr "/COUNTRY <부호>, 국가 부호를 찾습니다. 예) au = 오스트레일리아\n"
 
-#: src/common/outbound.c:2367
+#: src/common/outbound.c:2441
 #, fuzzy
 msgid "CYCLE, parts current channel and immediately rejoins"
 msgstr "/CYCLE, 현재 대화방에서 퇴장하고 임의적으로 다시 참여합니다.\n"
 
-#: src/common/outbound.c:2369
+#: src/common/outbound.c:2443
 #, fuzzy
 msgid ""
 "\n"
-"DCC GET <nick>          - receive an offered file\n"
-"DCC SEND <nick> <file>  - send a file to someone\n"
-"DCC LIST                - show DCC list\n"
-"DCC CHAT <nick>         - offer DCC CHAT to someone\n"
+"DCC GET <nick>                     - accept an offered file\n"
+"DCC SEND [-maxcps=#] <nick> [file] - send a file to someone\n"
+"DCC LIST                           - show DCC list\n"
+"DCC CHAT <nick>                    - offer DCC CHAT to someone\n"
 "DCC CLOSE <type> <nick> <file>         example:\n"
 "         /dcc close send johnsmith file.tar.gz"
 msgstr ""
@@ -238,12 +238,12 @@ msgstr ""
 "/DCC CLOSE <형태> <대화명> <화일>         예)\n"
 "         /dcc close send 콩시 file.tar.gz\n"
 
-#: src/common/outbound.c:2378
+#: src/common/outbound.c:2453
 #, fuzzy
 msgid "DELBUTTON <name>, deletes a button from under the user-list"
 msgstr "/DELBUTTON <이름>, 사용자 목록 아래에 있는 단추를 삭제합니다\n"
 
-#: src/common/outbound.c:2380
+#: src/common/outbound.c:2455
 #, fuzzy
 msgid ""
 "DEHOP <nick>, removes chanhalf-op status from the nick on the current "
@@ -252,7 +252,7 @@ msgstr ""
 "/DEHOP <대화명>, 현재 대화방에서 대화명의 chanhalf-op 상태를 제거합니다.(관리"
 "권한 필요)\n"
 
-#: src/common/outbound.c:2382
+#: src/common/outbound.c:2457
 #, fuzzy
 msgid ""
 "DEOP <nick>, removes chanop status from the nick on the current channel "
@@ -261,7 +261,7 @@ msgstr ""
 "/DEOP <대화명>, 현재 대화방에서 대화명의 관리권한을 제거합니다.(관리권한 필"
 "요)\n"
 
-#: src/common/outbound.c:2384
+#: src/common/outbound.c:2459
 #, fuzzy
 msgid ""
 "DEVOICE <nick>, removes voice status from the nick on the current channel "
@@ -270,22 +270,22 @@ msgstr ""
 "/DEVOICE <대화명>, 현재 대화방에서 대화명의 발언권을 제거합니다.(관리권한 필"
 "요)\n"
 
-#: src/common/outbound.c:2385
+#: src/common/outbound.c:2460
 #, fuzzy
 msgid "DISCON, Disconnects from server"
 msgstr "/DISCON, 서버로부터 접속을 해제 합니다.\n"
 
-#: src/common/outbound.c:2386
+#: src/common/outbound.c:2461
 #, fuzzy
 msgid "DNS <nick|host|ip>, Finds a users IP number"
 msgstr "/DNS <대화명|호스트|IP>, 사용자의 IP주소를 찾습니다\n"
 
-#: src/common/outbound.c:2387
+#: src/common/outbound.c:2462
 #, fuzzy
 msgid "ECHO <text>, Prints text locally"
 msgstr "/ECHO <글월>, 현재창에 글월을 출력합니다\n"
 
-#: src/common/outbound.c:2390
+#: src/common/outbound.c:2465
 #, fuzzy
 msgid ""
 "EXEC [-o] <command>, runs the command. If -o flag is used then output is "
@@ -294,7 +294,7 @@ msgstr ""
 "/EXEC [-o] <명령>, 명령을 실행합니다. 만약 -o 옵션을 사용하면 현재 대화방으로"
 "출력합니다, 아닐경우 현재 창에만 출력합니다\n"
 
-#: src/common/outbound.c:2392
+#: src/common/outbound.c:2467
 #, fuzzy
 msgid ""
 "EXECKILL [-9], kills a running exec in the current session. If -9 is given "
@@ -303,39 +303,39 @@ msgstr ""
 "/EXECKILL [-9], 실행중인 세션을 죽입니다. 만약 -9 를 사용하면 SIGKILL 을 사용"
 "하여 죽입니다.\n"
 
-#: src/common/outbound.c:2394
+#: src/common/outbound.c:2469
 #, fuzzy
 msgid "EXECSTOP, sends the process SIGSTOP"
 msgstr "/EXECSTOP, SIGSTOP 을 보냅니다\n"
 
-#: src/common/outbound.c:2395
+#: src/common/outbound.c:2470
 #, fuzzy
 msgid "EXECCONT, sends the process SIGCONT"
 msgstr "/EXECCONT, SIGCONT 를 보냅니다\n"
 
-#: src/common/outbound.c:2396
+#: src/common/outbound.c:2471
 #, fuzzy
 msgid "EXECWRITE, sends data to the processes stdin"
 msgstr "/EXECWRITE, 표준입력으로 자료를 보냅니다.\n"
 
-#: src/common/outbound.c:2400
+#: src/common/outbound.c:2475
 #, fuzzy
 msgid "FLUSHQ, flushes the current server's send queue"
 msgstr "/FLUSHQ, 현재 서버에 보낸 대기열을 비웁니다.\n"
 
-#: src/common/outbound.c:2402
+#: src/common/outbound.c:2477
 #, fuzzy
 msgid "GATE <host> [<port>], proxies through a host, port defaults to 23"
 msgstr ""
 "/GATE <호스트> [<포트>], 프록시를 경유한 호스트일경우, 기본포트는 23 입니"
 "다.\n"
 
-#: src/common/outbound.c:2405
+#: src/common/outbound.c:2482
 #, fuzzy
 msgid "HOP <nick>, gives chanhalf-op status to the nick (needs chanop)"
 msgstr "/HOP <대화명>, chanhalf-op을 대화명에게 부여합니다 (관리권한 필요)\n"
 
-#: src/common/outbound.c:2407
+#: src/common/outbound.c:2484
 #, fuzzy
 msgid ""
 "IGNORE <mask> <types..> <options..>\n"
@@ -350,7 +350,7 @@ msgstr ""
 "            PRIV, CHAN, NOTI, CTCP, INVI, ALL\n"
 " 추가사항 - NOSAVE, QUIET\n"
 
-#: src/common/outbound.c:2414
+#: src/common/outbound.c:2491
 #, fuzzy
 msgid ""
 "INVITE <nick> [<channel>], invites someone to a channel, by default the "
@@ -359,18 +359,18 @@ msgstr ""
 "/INVITE <대화명> [<대화방>], 특정 사용자를 대화방으로 초대합니다, 기본 대화방"
 "은현재 대화방입니다. (관리권한 필요)\n"
 
-#: src/common/outbound.c:2415
+#: src/common/outbound.c:2492
 #, fuzzy
 msgid "JOIN <channel>, joins the channel"
 msgstr "/JOIN <대화방>, 대화방에 참여합니다\n"
 
-#: src/common/outbound.c:2417
+#: src/common/outbound.c:2494
 #, fuzzy
 msgid "KICK <nick>, kicks the nick from the current channel (needs chanop)"
 msgstr ""
 "/KICK <대화명>, 대화명을 현재 대화방에서 퇴장시킵니다. (관리권한 필요)\n"
 
-#: src/common/outbound.c:2419
+#: src/common/outbound.c:2496
 #, fuzzy
 msgid ""
 "KICKBAN <nick>, bans then kicks the nick from the current channel (needs "
@@ -379,20 +379,20 @@ msgstr ""
 "/KICKBAN <대화명>, bans then kicks the nick from the current channel(관리권"
 "한 필요)\n"
 
-#: src/common/outbound.c:2421
+#: src/common/outbound.c:2498
 msgid "LAGCHECK, forces a new lag check"
 msgstr ""
 
-#: src/common/outbound.c:2423
+#: src/common/outbound.c:2500
 msgid "LASTLOG <string>, searches for a string in the buffer"
 msgstr ""
 
-#: src/common/outbound.c:2425
+#: src/common/outbound.c:2502
 #, fuzzy
 msgid "LOAD <file>, loads a plugin or script"
 msgstr "혼자말(Python)"
 
-#: src/common/outbound.c:2428
+#: src/common/outbound.c:2505
 #, fuzzy
 msgid ""
 "MDEHOP, Mass deop's all chanhalf-ops in the current channel (needs chanop)"
@@ -400,64 +400,64 @@ msgstr ""
 "/DEHOP <대화명>, 현재 대화방에서 대화명의 chanhalf-op 상태를 제거합니다.(관리"
 "권한 필요)\n"
 
-#: src/common/outbound.c:2430
+#: src/common/outbound.c:2507
 #, fuzzy
 msgid "MDEOP, Mass deop's all chanops in the current channel (needs chanop)"
 msgstr ""
 "/DEOP <대화명>, 현재 대화방에서 대화명의 관리권한을 제거합니다.(관리권한 필"
 "요)\n"
 
-#: src/common/outbound.c:2432
+#: src/common/outbound.c:2509
 #, fuzzy
 msgid ""
 "MKICK, Mass kicks everyone except you in the current channel (needs chanop)"
 msgstr ""
 "/KICK <대화명>, 대화명을 현재 대화방에서 퇴장시킵니다. (관리권한 필요)\n"
 
-#: src/common/outbound.c:2434
+#: src/common/outbound.c:2511
 msgid ""
 "ME <action>, sends the action to the current channel (actions are written in "
 "the 3rd person, like /me jumps)"
 msgstr ""
 
-#: src/common/outbound.c:2435
+#: src/common/outbound.c:2512
 msgid "MSG <nick> <message>, sends a private message"
 msgstr ""
 
-#: src/common/outbound.c:2438
+#: src/common/outbound.c:2515
 #, fuzzy
 msgid "NAMES, Lists the nicks on the current channel"
 msgstr ""
 "/KICK <대화명>, 대화명을 현재 대화방에서 퇴장시킵니다. (관리권한 필요)\n"
 
-#: src/common/outbound.c:2440
+#: src/common/outbound.c:2517
 msgid "NCTCP <nick> <message>, Sends a CTCP notice"
 msgstr ""
 
-#: src/common/outbound.c:2441
+#: src/common/outbound.c:2518
 msgid "NEWSERVER <hostname> [<port>]"
 msgstr ""
 
-#: src/common/outbound.c:2442
+#: src/common/outbound.c:2519
 msgid "NICK <nickname>, sets your nick"
 msgstr ""
 
-#: src/common/outbound.c:2445
+#: src/common/outbound.c:2522
 msgid ""
 "NOTICE <nick/channel> <message>, sends a notice. Notices are a type of "
 "message that should be auto reacted to"
 msgstr ""
 
-#: src/common/outbound.c:2447
+#: src/common/outbound.c:2524
 msgid "NOTIFY [<nick>], lists your notify list or adds someone to it"
 msgstr ""
 
-#: src/common/outbound.c:2449
+#: src/common/outbound.c:2526
 #, fuzzy
 msgid "OP <nick>, gives chanop status to the nick (needs chanop)"
 msgstr "/HOP <대화명>, chanhalf-op을 대화명에게 부여합니다 (관리권한 필요)\n"
 
-#: src/common/outbound.c:2451
+#: src/common/outbound.c:2528
 #, fuzzy
 msgid ""
 "PART [<channel>] [<reason>], leaves the channel, by default the current one"
@@ -465,60 +465,60 @@ msgstr ""
 "/INVITE <대화명> [<대화방>], 특정 사용자를 대화방으로 초대합니다, 기본 대화방"
 "은현재 대화방입니다. (관리권한 필요)\n"
 
-#: src/common/outbound.c:2453
+#: src/common/outbound.c:2530
 #, fuzzy
 msgid "PING <nick | channel>, CTCP pings nick or channel"
 msgstr "/JOIN <대화방>, 대화방에 참여합니다\n"
 
-#: src/common/outbound.c:2455
+#: src/common/outbound.c:2532
 msgid "QUERY <nick>, opens up a new privmsg window to someone"
 msgstr ""
 
-#: src/common/outbound.c:2457
+#: src/common/outbound.c:2534
 msgid "QUIT [<reason>], disconnects from the current server"
 msgstr ""
 
-#: src/common/outbound.c:2459
+#: src/common/outbound.c:2536
 msgid "QUOTE <text>, sends the text in raw form to the server"
 msgstr ""
 
-#: src/common/outbound.c:2462
+#: src/common/outbound.c:2539
 msgid ""
 "RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as /"
 "RECONNECT to reconnect to the current server or with /RECONNECT ALL to "
 "reconnect to all the open servers"
 msgstr ""
 
-#: src/common/outbound.c:2465
+#: src/common/outbound.c:2542
 msgid ""
 "RECONNECT [<host>] [<port>] [<password>], Can be called just as /RECONNECT "
 "to reconnect to the current server or with /RECONNECT ALL to reconnect to "
 "all the open servers"
 msgstr ""
 
-#: src/common/outbound.c:2467
+#: src/common/outbound.c:2544
 msgid ""
 "RECV <text>, send raw data to xchat, as if it was received from the irc "
 "server"
 msgstr ""
 
-#: src/common/outbound.c:2470
+#: src/common/outbound.c:2547
 msgid "SAY <text>, sends the text to the object in the current window"
 msgstr ""
 
-#: src/common/outbound.c:2471
+#: src/common/outbound.c:2548
 msgid "SET <variable> [<value>]"
 msgstr ""
 
-#: src/common/outbound.c:2475
+#: src/common/outbound.c:2552
 msgid "SERVCHAN [-ssl] <host> <port> <channel>, connects and joins a channel"
 msgstr ""
 
-#: src/common/outbound.c:2478
+#: src/common/outbound.c:2555
 msgid "SERVCHAN <host> <port> <channel>, connects and joins a channel"
 msgstr ""
 
-#: src/common/outbound.c:2482
+#: src/common/outbound.c:2559
 #, fuzzy
 msgid ""
 "SERVER [-ssl] <host> [<port>] [<password>], connects to a server, the "
@@ -527,7 +527,7 @@ msgstr ""
 "/GATE <호스트> [<포트>], 프록시를 경유한 호스트일경우, 기본포트는 23 입니"
 "다.\n"
 
-#: src/common/outbound.c:2485
+#: src/common/outbound.c:2562
 #, fuzzy
 msgid ""
 "SERVER <host> [<port>] [<password>], connects to a server, the default port "
@@ -536,42 +536,42 @@ msgstr ""
 "/GATE <호스트> [<포트>], 프록시를 경유한 호스트일경우, 기본포트는 23 입니"
 "다.\n"
 
-#: src/common/outbound.c:2488
+#: src/common/outbound.c:2565
 msgid ""
 "TOPIC [<topic>], sets the topic if one is given, else shows the current topic"
 msgstr ""
 
-#: src/common/outbound.c:2489
+#: src/common/outbound.c:2566
 msgid "UNIGNORE <mask> [QUIET]"
 msgstr ""
 
-#: src/common/outbound.c:2490
+#: src/common/outbound.c:2567
 #, fuzzy
 msgid "UNLOAD <name>, unloads a plugin or script"
 msgstr "혼자말(Python)"
 
-#: src/common/outbound.c:2493
+#: src/common/outbound.c:2570
 #, fuzzy
 msgid ""
 "WALLCHOP <message>, sends the message to all chanops on the current channel"
 msgstr "/ADDCHAN <명령>, 당신이 있는 모든 대화방에 명령을 실행합니다\n"
 
-#: src/common/outbound.c:2495
+#: src/common/outbound.c:2572
 #, fuzzy
 msgid "WALLCHAN <message>, writes the message to all channels"
 msgstr "/ADDCHAN <명령>, 당신이 있는 모든 대화방에 명령을 실행합니다\n"
 
-#: src/common/outbound.c:2497
+#: src/common/outbound.c:2574
 #, fuzzy
 msgid "VOICE <nick>, gives voice status to someone (needs chanop)"
 msgstr "/HOP <대화명>, chanhalf-op을 대화명에게 부여합니다 (관리권한 필요)\n"
 
-#: src/common/outbound.c:2517
+#: src/common/outbound.c:2594
 #, fuzzy, c-format
 msgid "Usage: %s\n"
 msgstr "사용법:\n"
 
-#: src/common/outbound.c:2522
+#: src/common/outbound.c:2599
 msgid ""
 "\n"
 "No help available on that command.\n"
@@ -579,34 +579,34 @@ msgstr ""
 "\n"
 "해당 명령에 관한 도움말이 없습니다.\n"
 
-#: src/common/outbound.c:2529
+#: src/common/outbound.c:2606
 msgid "No such command.\n"
 msgstr "해당 명령이 없습니다.\n"
 
-#: src/common/outbound.c:2793
+#: src/common/outbound.c:2870
 msgid "Bad arguments for user command.\n"
 msgstr "사용자명령의 잘못된 변수.\n"
 
-#: src/common/outbound.c:2902
+#: src/common/outbound.c:2979
 msgid "Too many recursive usercommands, aborting."
 msgstr ""
 
-#: src/common/outbound.c:2968
+#: src/common/outbound.c:3045
 msgid "Unknown Command. Try /help\n"
 msgstr "알 수 없는 명령. /help를 참조하세요\n"
 
-#: src/common/plugin.c:290 src/common/plugin.c:311
+#: src/common/plugin.c:292 src/common/plugin.c:313
 msgid "No xchat_plugin_init symbol; is this really an xchat plugin?"
 msgstr ""
 
-#: src/common/server.c:901
+#: src/common/server.c:898
 #, c-format
 msgid ""
 "Cannot resolve hostname %s\n"
 "Check your IP Settings!\n"
 msgstr ""
 
-#: src/common/server.c:906
+#: src/common/server.c:903
 msgid "Proxy traversal failed.\n"
 msgstr ""
 
@@ -1094,1060 +1094,1060 @@ msgid ""
 "Loading default"
 msgstr ""
 
-#: src/common/util.c:286
+#: src/common/util.c:287
 msgid "Remote host closed socket"
 msgstr "원격 호스트로부터 접속 해제됨"
 
-#: src/common/util.c:289 src/common/util.c:300
+#: src/common/util.c:290 src/common/util.c:301
 msgid "Connection refused"
 msgstr "접속 해제됨"
 
-#: src/common/util.c:292 src/common/util.c:303
+#: src/common/util.c:293 src/common/util.c:304
 msgid "No route to host"
 msgstr "호스트로갈 경로가 없음"
 
-#: src/common/util.c:294 src/common/util.c:305
+#: src/common/util.c:295 src/common/util.c:306
 #, fuzzy
 msgid "Connection timed out"
 msgstr "알림 제한시간"
 
-#: src/common/util.c:296 src/common/util.c:307
+#: src/common/util.c:297 src/common/util.c:308
 msgid "Cannot assign that address"
 msgstr "해당 주소에 접근 할 수 없습니다"
 
-#: src/common/util.c:310
+#: src/common/util.c:311
 msgid "Connection reset by peer"
 msgstr ""
 
-#: src/common/util.c:695
+#: src/common/util.c:696
 msgid "Andorra"
 msgstr ""
 
-#: src/common/util.c:696
+#: src/common/util.c:697
 msgid "United Arab Emirates"
 msgstr ""
 
-#: src/common/util.c:697
+#: src/common/util.c:698
 msgid "Afghanistan"
 msgstr ""
 
-#: src/common/util.c:698
+#: src/common/util.c:699
 msgid "Antigua and Barbuda"
 msgstr ""
 
-#: src/common/util.c:699
+#: src/common/util.c:700
 msgid "Anguilla"
 msgstr ""
 
-#: src/common/util.c:700
+#: src/common/util.c:701
 msgid "Albania"
 msgstr ""
 
-#: src/common/util.c:701
+#: src/common/util.c:702
 msgid "Armenia"
 msgstr ""
 
-#: src/common/util.c:702
+#: src/common/util.c:703
 msgid "Netherlands Antilles"
 msgstr ""
 
-#: src/common/util.c:703
+#: src/common/util.c:704
 msgid "Angola"
 msgstr ""
 
-#: src/common/util.c:704
+#: src/common/util.c:705
 msgid "Antarctica"
 msgstr ""
 
-#: src/common/util.c:705
+#: src/common/util.c:706
 msgid "Argentina"
 msgstr ""
 
-#: src/common/util.c:706
+#: src/common/util.c:707
 msgid "American Samoa"
 msgstr ""
 
-#: src/common/util.c:707
+#: src/common/util.c:708
 msgid "Austria"
 msgstr ""
 
-#: src/common/util.c:708
+#: src/common/util.c:709
 msgid "Australia"
 msgstr ""
 
-#: src/common/util.c:709
+#: src/common/util.c:710
 msgid "Aruba"
 msgstr ""
 
-#: src/common/util.c:710
+#: src/common/util.c:711
 msgid "Azerbaijan"
 msgstr ""
 
-#: src/common/util.c:711
+#: src/common/util.c:712
 msgid "Bosnia and Herzegovina"
 msgstr ""
 
-#: src/common/util.c:712
+#: src/common/util.c:713
 msgid "Barbados"
 msgstr ""
 
-#: src/common/util.c:713
+#: src/common/util.c:714
 msgid "Bangladesh"
 msgstr ""
 
-#: src/common/util.c:714
+#: src/common/util.c:715
 msgid "Belgium"
 msgstr ""
 
-#: src/common/util.c:715
+#: src/common/util.c:716
 msgid "Burkina Faso"
 msgstr ""
 
-#: src/common/util.c:716
+#: src/common/util.c:717
 msgid "Bulgaria"
 msgstr ""
 
-#: src/common/util.c:717
+#: src/common/util.c:718
 msgid "Bahrain"
 msgstr ""
 
-#: src/common/util.c:718
+#: src/common/util.c:719
 msgid "Burundi"
 msgstr ""
 
-#: src/common/util.c:719
+#: src/common/util.c:720
 msgid "Benin"
 msgstr ""
 
-#: src/common/util.c:720
+#: src/common/util.c:721
 msgid "Bermuda"
 msgstr ""
 
-#: src/common/util.c:721
+#: src/common/util.c:722
 msgid "Brunei Darussalam"
 msgstr ""
 
-#: src/common/util.c:722
+#: src/common/util.c:723
 msgid "Bolivia"
 msgstr ""
 
-#: src/common/util.c:723
+#: src/common/util.c:724
 msgid "Brazil"
 msgstr ""
 
-#: src/common/util.c:724
+#: src/common/util.c:725
 msgid "Bahamas"
 msgstr ""
 
-#: src/common/util.c:725
+#: src/common/util.c:726
 msgid "Bhutan"
 msgstr ""
 
-#: src/common/util.c:726
+#: src/common/util.c:727
 msgid "Bouvet Island"
 msgstr ""
 
-#: src/common/util.c:727
+#: src/common/util.c:728
 msgid "Botswana"
 msgstr ""
 
-#: src/common/util.c:728
+#: src/common/util.c:729
 msgid "Belarus"
 msgstr ""
 
-#: src/common/util.c:729
+#: src/common/util.c:730
 msgid "Belize"
 msgstr ""
 
-#: src/common/util.c:730
+#: src/common/util.c:731
 msgid "Canada"
 msgstr ""
 
-#: src/common/util.c:731
+#: src/common/util.c:732
 msgid "Cocos Islands"
 msgstr ""
 
-#: src/common/util.c:732
+#: src/common/util.c:733
 msgid "Central African Republic"
 msgstr ""
 
-#: src/common/util.c:733
+#: src/common/util.c:734
 msgid "Congo"
 msgstr ""
 
-#: src/common/util.c:734
+#: src/common/util.c:735
 msgid "Switzerland"
 msgstr ""
 
-#: src/common/util.c:735
+#: src/common/util.c:736
 msgid "Cote D'ivoire"
 msgstr ""
 
-#: src/common/util.c:736
+#: src/common/util.c:737
 msgid "Cook Islands"
 msgstr ""
 
-#: src/common/util.c:737
+#: src/common/util.c:738
 msgid "Chile"
 msgstr ""
 
-#: src/common/util.c:738
+#: src/common/util.c:739
 msgid "Cameroon"
 msgstr ""
 
-#: src/common/util.c:739
+#: src/common/util.c:740
 msgid "China"
 msgstr ""
 
-#: src/common/util.c:740
+#: src/common/util.c:741
 msgid "Colombia"
 msgstr ""
 
-#: src/common/util.c:741
+#: src/common/util.c:742
 msgid "Costa Rica"
 msgstr ""
 
-#: src/common/util.c:742
+#: src/common/util.c:743
 msgid "Former Czechoslovakia"
 msgstr ""
 
-#: src/common/util.c:743
+#: src/common/util.c:744
 msgid "Cuba"
 msgstr ""
 
-#: src/common/util.c:744
+#: src/common/util.c:745
 msgid "Cape Verde"
 msgstr ""
 
-#: src/common/util.c:745
+#: src/common/util.c:746
 msgid "Christmas Island"
 msgstr ""
 
-#: src/common/util.c:746
+#: src/common/util.c:747
 msgid "Cyprus"
 msgstr ""
 
-#: src/common/util.c:747
+#: src/common/util.c:748
 msgid "Czech Republic"
 msgstr ""
 
-#: src/common/util.c:748
+#: src/common/util.c:749
 msgid "Germany"
 msgstr ""
 
-#: src/common/util.c:749
+#: src/common/util.c:750
 msgid "Djibouti"
 msgstr ""
 
-#: src/common/util.c:750
+#: src/common/util.c:751
 msgid "Denmark"
 msgstr ""
 
-#: src/common/util.c:751
+#: src/common/util.c:752
 msgid "Dominica"
 msgstr ""
 
-#: src/common/util.c:752
+#: src/common/util.c:753
 msgid "Dominican Republic"
 msgstr ""
 
-#: src/common/util.c:753
+#: src/common/util.c:754
 msgid "Algeria"
 msgstr ""
 
-#: src/common/util.c:754
+#: src/common/util.c:755
 msgid "Ecuador"
 msgstr ""
 
-#: src/common/util.c:755
+#: src/common/util.c:756
 msgid "Estonia"
 msgstr ""
 
-#: src/common/util.c:756
+#: src/common/util.c:757
 msgid "Egypt"
 msgstr ""
 
-#: src/common/util.c:757
+#: src/common/util.c:758
 msgid "Western Sahara"
 msgstr ""
 
-#: src/common/util.c:758
+#: src/common/util.c:759
 msgid "Eritrea"
 msgstr ""
 
-#: src/common/util.c:759
+#: src/common/util.c:760
 msgid "Spain"
 msgstr ""
 
-#: src/common/util.c:760
+#: src/common/util.c:761
 msgid "Ethiopia"
 msgstr ""
 
-#: src/common/util.c:761
+#: src/common/util.c:762
 msgid "Finland"
 msgstr ""
 
-#: src/common/util.c:762
+#: src/common/util.c:763
 msgid "Fiji"
 msgstr ""
 
-#: src/common/util.c:763
+#: src/common/util.c:764
 msgid "Falkland Islands"
 msgstr ""
 
-#: src/common/util.c:764
+#: src/common/util.c:765
 msgid "Micronesia"
 msgstr ""
 
-#: src/common/util.c:765
+#: src/common/util.c:766
 msgid "Faroe Islands"
 msgstr ""
 
-#: src/common/util.c:766
+#: src/common/util.c:767
 msgid "France"
 msgstr ""
 
-#: src/common/util.c:767
+#: src/common/util.c:768
 msgid "France, Metropolitan"
 msgstr ""
 
-#: src/common/util.c:768
+#: src/common/util.c:769
 msgid "Gabon"
 msgstr ""
 
-#: src/common/util.c:769
+#: src/common/util.c:770
 msgid "Great Britain"
 msgstr ""
 
-#: src/common/util.c:770
+#: src/common/util.c:771
 msgid "Grenada"
 msgstr ""
 
-#: src/common/util.c:771
+#: src/common/util.c:772
 msgid "Georgia"
 msgstr ""
 
-#: src/common/util.c:772
+#: src/common/util.c:773
 msgid "French Guiana"
 msgstr ""
 
-#: src/common/util.c:773
+#: src/common/util.c:774
 #, fuzzy
 msgid "British Channel Isles"
 msgstr "영국령 버진 군도"
 
-#: src/common/util.c:774
+#: src/common/util.c:775
 msgid "Ghana"
 msgstr ""
 
-#: src/common/util.c:775
+#: src/common/util.c:776
 msgid "Gibraltar"
 msgstr ""
 
-#: src/common/util.c:776
+#: src/common/util.c:777
 msgid "Greenland"
 msgstr ""
 
-#: src/common/util.c:777
+#: src/common/util.c:778
 msgid "Gambia"
 msgstr ""
 
-#: src/common/util.c:778
+#: src/common/util.c:779
 msgid "Guinea"
 msgstr ""
 
-#: src/common/util.c:779
+#: src/common/util.c:780
 msgid "Guadeloupe"
 msgstr ""
 
-#: src/common/util.c:780
+#: src/common/util.c:781
 msgid "Equatorial Guinea"
 msgstr ""
 
-#: src/common/util.c:781
+#: src/common/util.c:782
 msgid "Greece"
 msgstr ""
 
-#: src/common/util.c:782
+#: src/common/util.c:783
 msgid "S. Georgia and S. Sandwich Isles."
 msgstr ""
 
-#: src/common/util.c:783
+#: src/common/util.c:784
 msgid "Guatemala"
 msgstr ""
 
-#: src/common/util.c:784
+#: src/common/util.c:785
 msgid "Guam"
 msgstr ""
 
-#: src/common/util.c:785
+#: src/common/util.c:786
 msgid "Guinea-Bissau"
 msgstr ""
 
-#: src/common/util.c:786
+#: src/common/util.c:787
 msgid "Guyana"
 msgstr ""
 
-#: src/common/util.c:787
+#: src/common/util.c:788
 msgid "Hong Kong"
 msgstr ""
 
-#: src/common/util.c:788
+#: src/common/util.c:789
 msgid "Heard and McDonald Islands"
 msgstr ""
 
-#: src/common/util.c:789
+#: src/common/util.c:790
 msgid "Honduras"
 msgstr ""
 
-#: src/common/util.c:790
+#: src/common/util.c:791
 msgid "Croatia"
 msgstr ""
 
-#: src/common/util.c:791
+#: src/common/util.c:792
 msgid "Haiti"
 msgstr ""
 
-#: src/common/util.c:792
+#: src/common/util.c:793
 msgid "Hungary"
 msgstr ""
 
-#: src/common/util.c:793
+#: src/common/util.c:794
 msgid "Indonesia"
 msgstr ""
 
-#: src/common/util.c:794
+#: src/common/util.c:795
 msgid "Ireland"
 msgstr ""
 
-#: src/common/util.c:795
+#: src/common/util.c:796
 msgid "Israel"
 msgstr ""
 
-#: src/common/util.c:796
+#: src/common/util.c:797
 msgid "India"
 msgstr ""
 
-#: src/common/util.c:797
+#: src/common/util.c:798
 msgid "British Indian Ocean Territory"
 msgstr ""
 
-#: src/common/util.c:798
+#: src/common/util.c:799
 msgid "Iraq"
 msgstr ""
 
-#: src/common/util.c:799
+#: src/common/util.c:800
 msgid "Iran"
 msgstr ""
 
-#: src/common/util.c:800
+#: src/common/util.c:801
 msgid "Iceland"
 msgstr ""
 
-#: src/common/util.c:801
+#: src/common/util.c:802
 msgid "Italy"
 msgstr ""
 
-#: src/common/util.c:802
+#: src/common/util.c:803
 msgid "Jamaica"
 msgstr ""
 
-#: src/common/util.c:803
+#: src/common/util.c:804
 msgid "Jordan"
 msgstr ""
 
-#: src/common/util.c:804
+#: src/common/util.c:805
 msgid "Japan"
 msgstr ""
 
-#: src/common/util.c:805
+#: src/common/util.c:806
 msgid "Kenya"
 msgstr ""
 
-#: src/common/util.c:806
+#: src/common/util.c:807
 msgid "Kyrgyzstan"
 msgstr ""
 
-#: src/common/util.c:807
+#: src/common/util.c:808
 msgid "Cambodia"
 msgstr ""
 
-#: src/common/util.c:808
+#: src/common/util.c:809
 msgid "Kiribati"
 msgstr ""
 
-#: src/common/util.c:809
+#: src/common/util.c:810
 msgid "Comoros"
 msgstr ""
 
-#: src/common/util.c:810
+#: src/common/util.c:811
 msgid "St. Kitts and Nevis"
 msgstr ""
 
-#: src/common/util.c:811
+#: src/common/util.c:812
 msgid "North Korea"
 msgstr "북한"
 
-#: src/common/util.c:812
+#: src/common/util.c:813
 msgid "South Korea"
 msgstr "대한민국"
 
-#: src/common/util.c:813
+#: src/common/util.c:814
 msgid "Kuwait"
 msgstr ""
 
-#: src/common/util.c:814
+#: src/common/util.c:815
 msgid "Cayman Islands"
 msgstr ""
 
-#: src/common/util.c:815
+#: src/common/util.c:816
 msgid "Kazakhstan"
 msgstr ""
 
-#: src/common/util.c:816
+#: src/common/util.c:817
 msgid "Laos"
 msgstr ""
 
-#: src/common/util.c:817
+#: src/common/util.c:818
 msgid "Lebanon"
 msgstr ""
 
-#: src/common/util.c:818
+#: src/common/util.c:819
 msgid "Saint Lucia"
 msgstr ""
 
-#: src/common/util.c:819
+#: src/common/util.c:820
 msgid "Liechtenstein"
 msgstr ""
 
-#: src/common/util.c:820
+#: src/common/util.c:821
 msgid "Sri Lanka"
 msgstr ""
 
-#: src/common/util.c:821
+#: src/common/util.c:822
 msgid "Liberia"
 msgstr ""
 
-#: src/common/util.c:822
+#: src/common/util.c:823
 msgid "Lesotho"
 msgstr ""
 
-#: src/common/util.c:823
+#: src/common/util.c:824
 msgid "Lithuania"
 msgstr ""
 
-#: src/common/util.c:824
+#: src/common/util.c:825
 msgid "Luxembourg"
 msgstr ""
 
-#: src/common/util.c:825
+#: src/common/util.c:826
 msgid "Latvia"
 msgstr ""
 
-#: src/common/util.c:826
+#: src/common/util.c:827
 msgid "Libya"
 msgstr ""
 
-#: src/common/util.c:827
+#: src/common/util.c:828
 msgid "Morocco"
 msgstr ""
 
-#: src/common/util.c:828
+#: src/common/util.c:829
 msgid "Monaco"
 msgstr ""
 
-#: src/common/util.c:829
+#: src/common/util.c:830
 msgid "Moldova"
 msgstr ""
 
-#: src/common/util.c:830
+#: src/common/util.c:831
 msgid "Madagascar"
 msgstr ""
 
-#: src/common/util.c:831
+#: src/common/util.c:832
 msgid "Marshall Islands"
 msgstr ""
 
-#: src/common/util.c:832
+#: src/common/util.c:833
 msgid "Macedonia"
 msgstr ""
 
-#: src/common/util.c:833
+#: src/common/util.c:834
 msgid "Mali"
 msgstr ""
 
-#: src/common/util.c:834
+#: src/common/util.c:835
 msgid "Myanmar"
 msgstr ""
 
-#: src/common/util.c:835
+#: src/common/util.c:836
 msgid "Mongolia"
 msgstr ""
 
-#: src/common/util.c:836
+#: src/common/util.c:837
 msgid "Macau"
 msgstr ""
 
-#: src/common/util.c:837
+#: src/common/util.c:838
 msgid "Northern Mariana Islands"
 msgstr ""
 
-#: src/common/util.c:838
+#: src/common/util.c:839
 msgid "Martinique"
 msgstr ""
 
-#: src/common/util.c:839
+#: src/common/util.c:840
 msgid "Mauritania"
 msgstr ""
 
-#: src/common/util.c:840
+#: src/common/util.c:841
 msgid "Montserrat"
 msgstr ""
 
-#: src/common/util.c:841
+#: src/common/util.c:842
 msgid "Malta"
 msgstr ""
 
-#: src/common/util.c:842
+#: src/common/util.c:843
 msgid "Mauritius"
 msgstr ""
 
-#: src/common/util.c:843
+#: src/common/util.c:844
 msgid "Maldives"
 msgstr ""
 
-#: src/common/util.c:844
+#: src/common/util.c:845
 msgid "Malawi"
 msgstr ""
 
-#: src/common/util.c:845
+#: src/common/util.c:846
 msgid "Mexico"
 msgstr "멕시코"
 
-#: src/common/util.c:846
+#: src/common/util.c:847
 msgid "Malaysia"
 msgstr "말레이지아"
 
-#: src/common/util.c:847
+#: src/common/util.c:848
 msgid "Mozambique"
 msgstr "모잠비크"
 
-#: src/common/util.c:848
+#: src/common/util.c:849
 msgid "Namibia"
 msgstr "나미비아"
 
-#: src/common/util.c:849
+#: src/common/util.c:850
 msgid "New Caledonia"
 msgstr "뉴칼레도니아"
 
-#: src/common/util.c:850
+#: src/common/util.c:851
 msgid "Niger"
 msgstr "니제르"
 
-#: src/common/util.c:851
+#: src/common/util.c:852
 msgid "Norfolk Island"
 msgstr "노퍽 섬"
 
-#: src/common/util.c:852
+#: src/common/util.c:853
 msgid "Nigeria"
 msgstr "나이지리아"
 
-#: src/common/util.c:853
+#: src/common/util.c:854
 msgid "Nicaragua"
 msgstr "니카라과"
 
-#: src/common/util.c:854
+#: src/common/util.c:855
 msgid "Netherlands"
 msgstr "네덜란드"
 
-#: src/common/util.c:855
+#: src/common/util.c:856
 #, fuzzy
 msgid "Norway"
 msgstr "노르웨이"
 
-#: src/common/util.c:856
+#: src/common/util.c:857
 msgid "Nepal"
 msgstr "네팔"
 
-#: src/common/util.c:857
+#: src/common/util.c:858
 msgid "Nauru"
 msgstr "나우루 공화국"
 
-#: src/common/util.c:858
+#: src/common/util.c:859
 msgid "Neutral Zone"
 msgstr ""
 
-#: src/common/util.c:859
+#: src/common/util.c:860
 msgid "Niue"
 msgstr ""
 
-#: src/common/util.c:860
+#: src/common/util.c:861
 msgid "New Zealand"
 msgstr "뉴질랜드"
 
-#: src/common/util.c:861
+#: src/common/util.c:862
 msgid "Oman"
 msgstr "오만"
 
-#: src/common/util.c:862
+#: src/common/util.c:863
 msgid "Panama"
 msgstr "파나마"
 
-#: src/common/util.c:863
+#: src/common/util.c:864
 msgid "Peru"
 msgstr "페루"
 
-#: src/common/util.c:864
+#: src/common/util.c:865
 msgid "French Polynesia"
 msgstr "프랑스령 폴리네시아"
 
-#: src/common/util.c:865
+#: src/common/util.c:866
 msgid "Papua New Guinea"
 msgstr "파푸아 뉴 기니"
 
-#: src/common/util.c:866
+#: src/common/util.c:867
 msgid "Philippines"
 msgstr "필리핀"
 
-#: src/common/util.c:867
+#: src/common/util.c:868
 msgid "Pakistan"
 msgstr "파키스탄"
 
-#: src/common/util.c:868
+#: src/common/util.c:869
 #, fuzzy
 msgid "Poland"
 msgstr "폴란드"
 
-#: src/common/util.c:869
+#: src/common/util.c:870
 msgid "St. Pierre and Miquelon"
 msgstr ""
 
-#: src/common/util.c:870
+#: src/common/util.c:871
 msgid "Pitcairn"
 msgstr ""
 
-#: src/common/util.c:871
+#: src/common/util.c:872
 msgid "Puerto Rico"
 msgstr "푸에르토리코"
 
-#: src/common/util.c:872
+#: src/common/util.c:873
 msgid "Portugal"
 msgstr "포르투갈"
 
-#: src/common/util.c:873
+#: src/common/util.c:874
 #, fuzzy
 msgid "Palau"
 msgstr "판넬"
 
-#: src/common/util.c:874
+#: src/common/util.c:875
 msgid "Paraguay"
 msgstr "파라과이"
 
-#: src/common/util.c:875
+#: src/common/util.c:876
 msgid "Qatar"
 msgstr "카타르"
 
-#: src/common/util.c:876
+#: src/common/util.c:877
 msgid "Reunion"
 msgstr ""
 
-#: src/common/util.c:877
+#: src/common/util.c:878
 msgid "Romania"
 msgstr "루마니아"
 
-#: src/common/util.c:878
+#: src/common/util.c:879
 msgid "Russian Federation"
 msgstr "러시아 연방"
 
-#: src/common/util.c:879
+#: src/common/util.c:880
 msgid "Rwanda"
 msgstr "르완다"
 
-#: src/common/util.c:880
+#: src/common/util.c:881
 msgid "Saudi Arabia"
 msgstr "사우디 아라비아"
 
-#: src/common/util.c:881
+#: src/common/util.c:882
 msgid "Solomon Islands"
 msgstr "솔로몬 군도"
 
-#: src/common/util.c:882
+#: src/common/util.c:883
 msgid "Seychelles"
 msgstr "세이셸"
 
-#: src/common/util.c:883
+#: src/common/util.c:884
 #, fuzzy
 msgid "Sudan"
 msgstr "수단"
 
-#: src/common/util.c:884
+#: src/common/util.c:885
 msgid "Sweden"
 msgstr "스웨덴"
 
-#: src/common/util.c:885
+#: src/common/util.c:886
 msgid "Singapore"
 msgstr "싱가폴"
 
-#: src/common/util.c:886
+#: src/common/util.c:887
 msgid "St. Helena"
 msgstr "산 헬레나"
 
-#: src/common/util.c:887
+#: src/common/util.c:888
 msgid "Slovenia"
 msgstr "슬로베니아"
 
-#: src/common/util.c:888
+#: src/common/util.c:889
 msgid "Svalbard and Jan Mayen Islands"
 msgstr "스발바드와 잔 마엔 군도"
 
-#: src/common/util.c:889
+#: src/common/util.c:890
 msgid "Slovak Republic"
 msgstr "슬로바키아 공화국"
 
-#: src/common/util.c:890
+#: src/common/util.c:891
 msgid "Sierra Leone"
 msgstr "시에라 레오네"
 
-#: src/common/util.c:891
+#: src/common/util.c:892
 msgid "San Marino"
 msgstr "산 마리노"
 
-#: src/common/util.c:892
+#: src/common/util.c:893
 #, fuzzy
 msgid "Senegal"
 msgstr "세네갈"
 
-#: src/common/util.c:893
+#: src/common/util.c:894
 msgid "Somalia"
 msgstr "소말리아"
 
-#: src/common/util.c:894
+#: src/common/util.c:895
 msgid "Suriname"
 msgstr "수리남"
 
-#: src/common/util.c:895
+#: src/common/util.c:896
 msgid "Sao Tome and Principe"
 msgstr ""
 
-#: src/common/util.c:896
+#: src/common/util.c:897
 msgid "Former USSR"
 msgstr "이전 소비에트연방"
 
-#: src/common/util.c:897
+#: src/common/util.c:898
 msgid "El Salvador"
 msgstr "엘 살바도르"
 
-#: src/common/util.c:898
+#: src/common/util.c:899
 msgid "Syria"
 msgstr "시리아"
 
-#: src/common/util.c:899
+#: src/common/util.c:900
 msgid "Swaziland"
 msgstr "스와질랜드"
 
-#: src/common/util.c:900
+#: src/common/util.c:901
 msgid "Turks and Caicos Islands"
 msgstr "턱스와 카이코스 군도"
 
-#: src/common/util.c:901
+#: src/common/util.c:902
 msgid "Chad"
 msgstr "차드"
 
-#: src/common/util.c:902
+#: src/common/util.c:903
 msgid "French Southern Territories"
 msgstr "프랑스 남부"
 
-#: src/common/util.c:903
+#: src/common/util.c:904
 msgid "Togo"
 msgstr "토고"
 
-#: src/common/util.c:904
+#: src/common/util.c:905
 msgid "Thailand"
 msgstr "타이"
 
-#: src/common/util.c:905
+#: src/common/util.c:906
 msgid "Tajikistan"
 msgstr "타지키스탄"
 
-#: src/common/util.c:906
+#: src/common/util.c:907
 msgid "Tokelau"
 msgstr "토케라우"
 
-#: src/common/util.c:907
+#: src/common/util.c:908
 msgid "Turkmenistan"
 msgstr ""
 
-#: src/common/util.c:908
+#: src/common/util.c:909
 msgid "Tunisia"
 msgstr "튀니지아"
 
-#: src/common/util.c:909
+#: src/common/util.c:910
 msgid "Tonga"
 msgstr "통가"
 
-#: src/common/util.c:910
+#: src/common/util.c:911
 msgid "East Timor"
 msgstr "동 티모"
 
-#: src/common/util.c:911
+#: src/common/util.c:912
 msgid "Turkey"
 msgstr "터키"
 
-#: src/common/util.c:912
+#: src/common/util.c:913
 msgid "Trinidad and Tobago"
 msgstr ""
 
-#: src/common/util.c:913
+#: src/common/util.c:914
 msgid "Tuvalu"
 msgstr "투발루"
 
-#: src/common/util.c:914
+#: src/common/util.c:915
 msgid "Taiwan"
 msgstr "타이완"
 
-#: src/common/util.c:915
+#: src/common/util.c:916
 msgid "Tanzania"
 msgstr "탄자니아"
 
-#: src/common/util.c:916
+#: src/common/util.c:917
 msgid "Ukraine"
 msgstr "우크라이나"
 
-#: src/common/util.c:917
+#: src/common/util.c:918
 msgid "Uganda"
 msgstr "우간다"
 
-#: src/common/util.c:918
+#: src/common/util.c:919
 msgid "United Kingdom"
 msgstr "영국"
 
-#: src/common/util.c:919
+#: src/common/util.c:920
 msgid "US Minor Outlying Islands"
 msgstr ""
 
-#: src/common/util.c:920
+#: src/common/util.c:921
 msgid "United States of America"
 msgstr "미국"
 
-#: src/common/util.c:921
+#: src/common/util.c:922
 msgid "Uruguay"
 msgstr "우르과이"
 
-#: src/common/util.c:922
+#: src/common/util.c:923
 msgid "Uzbekistan"
 msgstr "우즈베키스탄"
 
-#: src/common/util.c:923
+#: src/common/util.c:924
 msgid "Vatican City State"
 msgstr "바티칸 시국"
 
-#: src/common/util.c:924
+#: src/common/util.c:925
 msgid "St. Vincent and the grenadines"
 msgstr ""
 
-#: src/common/util.c:925
+#: src/common/util.c:926
 msgid "Venezuela"
 msgstr "베네주엘라"
 
-#: src/common/util.c:926
+#: src/common/util.c:927
 msgid "British Virgin Islands"
 msgstr "영국령 버진 군도"
 
-#: src/common/util.c:927
+#: src/common/util.c:928
 msgid "US Virgin Islands"
 msgstr "미국령 버진군도"
 
-#: src/common/util.c:928
+#: src/common/util.c:929
 msgid "Vietnam"
 msgstr "베트남"
 
-#: src/common/util.c:929
+#: src/common/util.c:930
 msgid "Vanuatu"
 msgstr "바나투"
 
-#: src/common/util.c:930
+#: src/common/util.c:931
 msgid "Wallis and Futuna Islands"
 msgstr ""
 
-#: src/common/util.c:931
+#: src/common/util.c:932
 msgid "Samoa"
 msgstr "사모아"
 
-#: src/common/util.c:932
+#: src/common/util.c:933
 msgid "Yemen"
 msgstr "예멘"
 
-#: src/common/util.c:933
+#: src/common/util.c:934
 msgid "Mayotte"
 msgstr ""
 
-#: src/common/util.c:934
+#: src/common/util.c:935
 msgid "Yugoslavia"
 msgstr "유고슬라비아"
 
-#: src/common/util.c:935
+#: src/common/util.c:936
 msgid "South Africa"
 msgstr "남아프리카"
 
-#: src/common/util.c:936
+#: src/common/util.c:937
 msgid "Zambia"
 msgstr "잠비아"
 
-#: src/common/util.c:937
+#: src/common/util.c:938
 msgid "Zaire"
 msgstr "자이르"
 
-#: src/common/util.c:938
+#: src/common/util.c:939
 msgid "Zimbabwe"
 msgstr ""
 
-#: src/common/util.c:939
+#: src/common/util.c:940
 msgid "Internic Commercial"
 msgstr "인터닉 회사"
 
-#: src/common/util.c:940
+#: src/common/util.c:941
 msgid "Educational Institution"
 msgstr "교육기관"
 
-#: src/common/util.c:941
+#: src/common/util.c:942
 msgid "Government"
 msgstr "공공기관"
 
-#: src/common/util.c:942
+#: src/common/util.c:943
 msgid "International"
 msgstr "국가"
 
-#: src/common/util.c:943
+#: src/common/util.c:944
 msgid "Military"
 msgstr "군대"
 
-#: src/common/util.c:944
+#: src/common/util.c:945
 msgid "Internic Network"
 msgstr "네트워크"
 
-#: src/common/util.c:945
+#: src/common/util.c:946
 msgid "Internic Non-Profit Organization"
 msgstr ""
 
-#: src/common/util.c:946
+#: src/common/util.c:947
 msgid "Old School ARPAnet"
 msgstr "아르파넷"
 
-#: src/common/util.c:947
+#: src/common/util.c:948
 msgid "Nato Fiel"
 msgstr "나토"
 
-#: src/common/util.c:948
+#: src/common/util.c:949
 msgid "United States Medical"
 msgstr "미국 의료기관"
 
-#: src/common/util.c:949
+#: src/common/util.c:950
 msgid "Reverse DNS"
 msgstr "거꾸로 도메인"
 
-#: src/common/util.c:955 src/common/util.c:963 src/fe-gtk/menu.c:446
-#: src/fe-gtk/menu.c:450 src/fe-gtk/menu.c:454 src/fe-gtk/menu.c:458
-#: src/fe-gtk/menu.c:462
+#: src/common/util.c:956 src/common/util.c:964 src/fe-gtk/menu.c:436
+#: src/fe-gtk/menu.c:440 src/fe-gtk/menu.c:444 src/fe-gtk/menu.c:448
+#: src/fe-gtk/menu.c:452
 msgid "Unknown"
 msgstr "알수없음"
 
@@ -2167,8 +2167,9 @@ msgstr "X-Chat에 대하여"
 #. gdk_font_ref (font_normal);
 #. }
 #: src/fe-gtk/ascii.c:79
-msgid "Ascii Chart"
-msgstr "아스키 차트"
+#, fuzzy
+msgid "Character Chart"
+msgstr "문자 설정"
 
 #: src/fe-gtk/banlist.c:173 src/fe-gtk/ignoregui.c:342
 msgid "Mask"
@@ -2216,7 +2217,7 @@ msgstr "사용자와 대화방 통계: %d/%d 사용자 - 대화방 %d/%d"
 msgid "I can't save an empty list!"
 msgstr "빈 목록은 저장 할 수 없습니다!"
 
-#: src/fe-gtk/chanlist.c:530 src/fe-gtk/menu.c:1001
+#: src/fe-gtk/chanlist.c:530 src/fe-gtk/menu.c:846
 msgid "Select an output filename"
 msgstr "저장할 화일 명"
 
@@ -2254,7 +2255,7 @@ msgstr "목록 갱신"
 msgid "Save the list"
 msgstr "주소 목록 저장"
 
-#: src/fe-gtk/chanlist.c:770 src/fe-gtk/menu.c:664
+#: src/fe-gtk/chanlist.c:770 src/fe-gtk/menu.c:654
 msgid "Join Channel"
 msgstr "대화방 참여"
 
@@ -2281,7 +2282,7 @@ msgstr ""
 " 시작 시간: %s"
 
 #: src/fe-gtk/dccgui.c:394 src/fe-gtk/dccgui.c:398 src/fe-gtk/dccgui.c:578
-#: src/fe-gtk/dccgui.c:709 src/fe-gtk/notifygui.c:163
+#: src/fe-gtk/dccgui.c:709 src/fe-gtk/notifygui.c:164
 msgid "Status"
 msgstr "상태"
 
@@ -2406,7 +2407,7 @@ msgstr "정렬"
 msgid "Help"
 msgstr "도움말"
 
-#: src/fe-gtk/fe-gtk.c:138
+#: src/fe-gtk/fe-gtk.c:137
 #, fuzzy
 msgid ""
 "Options:\n"
@@ -2424,7 +2425,7 @@ msgstr ""
 "   --noauto       -a\t : 자동 접속하지 않습니다\n"
 "   --version      -v\t : 판번호를 출력합니다\n"
 
-#: src/fe-gtk/fe-gtk.c:557
+#: src/fe-gtk/fe-gtk.c:556
 #, fuzzy
 msgid "Search buffer is empty.\n"
 msgstr "기억공간 찾기.."
@@ -2512,8 +2513,8 @@ msgid "There was an error loading key bindings configuration"
 msgstr "글쇠 배열 설정 읽는중 오류가 발생했습니다 "
 
 #: src/fe-gtk/fkeys.c:392 src/fe-gtk/fkeys.c:671 src/fe-gtk/fkeys.c:677
-#: src/fe-gtk/fkeys.c:682 src/fe-gtk/maingui.c:603 src/fe-gtk/maingui.c:624
-#: src/fe-gtk/maingui.c:671 src/fe-gtk/maingui.c:2089
+#: src/fe-gtk/fkeys.c:682 src/fe-gtk/maingui.c:607 src/fe-gtk/maingui.c:628
+#: src/fe-gtk/maingui.c:675 src/fe-gtk/maingui.c:2096
 msgid "<none>"
 msgstr "<없음>"
 
@@ -2638,7 +2639,7 @@ msgid "CTCP"
 msgstr "CTCP"
 
 #: src/fe-gtk/ignoregui.c:342 src/fe-gtk/ignoregui.c:388
-#: src/fe-gtk/maingui.c:1091
+#: src/fe-gtk/maingui.c:1095
 msgid "Private"
 msgstr ""
 
@@ -2698,180 +2699,184 @@ msgstr "초대:"
 msgid "OK"
 msgstr "확인"
 
-#: src/fe-gtk/ignoregui.c:445 src/fe-gtk/menu.c:1307
+#: src/fe-gtk/ignoregui.c:445 src/fe-gtk/menu.c:1152
 msgid "New"
 msgstr "새로작성"
 
-#: src/fe-gtk/maingui.c:328
+#: src/fe-gtk/maingui.c:330
 #, c-format
 msgid "Topic for %s is: %s"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:804
+#: src/fe-gtk/maingui.c:334
+msgid "No topic is set"
+msgstr ""
+
+#: src/fe-gtk/maingui.c:808
 msgid "Some file transfers still active, quit xchat?"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:840
+#: src/fe-gtk/maingui.c:844
 msgid "No other tabs open, quit xchat?"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:961 src/fe-gtk/maingui.c:1067
+#: src/fe-gtk/maingui.c:965 src/fe-gtk/maingui.c:1071
 msgid "User limit must be a number!\n"
 msgstr "사용자제한은 숫자만 가능합니다!\n"
 
-#: src/fe-gtk/maingui.c:1087
+#: src/fe-gtk/maingui.c:1091
 #, fuzzy
 msgid "Topic Protection"
 msgstr "자동 찾기"
 
-#: src/fe-gtk/maingui.c:1088
+#: src/fe-gtk/maingui.c:1092
 msgid "No outside messages"
 msgstr "외부 메세지 사용안함"
 
-#: src/fe-gtk/maingui.c:1089
+#: src/fe-gtk/maingui.c:1093
 msgid "Secret"
 msgstr "비밀"
 
-#: src/fe-gtk/maingui.c:1090
+#: src/fe-gtk/maingui.c:1094
 msgid "Invite Only"
 msgstr "초대만 가능"
 
-#: src/fe-gtk/maingui.c:1092
+#: src/fe-gtk/maingui.c:1096
 msgid "Moderated"
 msgstr "대화제한"
 
-#: src/fe-gtk/maingui.c:1093
+#: src/fe-gtk/maingui.c:1097
 #, fuzzy
 msgid "Ban List"
 msgstr "대화방 목록 창"
 
-#: src/fe-gtk/maingui.c:1095
+#: src/fe-gtk/maingui.c:1099
 msgid "Keyword"
 msgstr "암호"
 
-#: src/fe-gtk/maingui.c:1103
+#: src/fe-gtk/maingui.c:1107
 #, fuzzy
 msgid "User Limit"
 msgstr "사용자 제한"
 
-#: src/fe-gtk/maingui.c:1115
+#: src/fe-gtk/maingui.c:1119
 msgid "Close this tab/window"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1118
+#: src/fe-gtk/maingui.c:1122
 msgid "Link/DeLink this tab"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1194
+#: src/fe-gtk/maingui.c:1198
 #, fuzzy
 msgid "Show/Hide userlist"
 msgstr "사용자 호스트 보기"
 
-#: src/fe-gtk/maingui.c:1624
+#: src/fe-gtk/maingui.c:1628
 msgid "Insert color code"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1644
+#: src/fe-gtk/maingui.c:1648
 #, fuzzy, c-format
 msgid "(%s) Channel settings"
 msgstr "판넬 설정"
 
-#: src/fe-gtk/maingui.c:1654
+#: src/fe-gtk/maingui.c:1658
 #, fuzzy
 msgid "Beep on message"
 msgstr "귓속말에 삑소리"
 
-#: src/fe-gtk/maingui.c:1656
+#: src/fe-gtk/maingui.c:1660
 msgid "Hide join/parts"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1658
+#: src/fe-gtk/maingui.c:1662
 #, fuzzy
 msgid "Color paste"
 msgstr "닫기"
 
-#: src/fe-gtk/maingui.c:1661
+#: src/fe-gtk/maingui.c:1665
 #, c-format
 msgid "(%s) Network encoding"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1673
+#: src/fe-gtk/maingui.c:1677
 msgid "System default"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1699
+#: src/fe-gtk/maingui.c:1706
 #, fuzzy
 msgid "Enter new nickname:"
 msgstr "새 대화명"
 
-#: src/fe-gtk/maingui.c:1767
+#: src/fe-gtk/maingui.c:1774
 #, fuzzy
 msgid "Channel Options"
 msgstr "대화방 창"
 
-#: src/fe-gtk/menu.c:150
+#: src/fe-gtk/menu.c:140
 msgid "Host unknown"
 msgstr "알수없는 호스트"
 
-#: src/fe-gtk/menu.c:445
+#: src/fe-gtk/menu.c:435
 #, fuzzy, c-format
 msgid "User: %s"
 msgstr "사용자: %s"
 
-#: src/fe-gtk/menu.c:449
+#: src/fe-gtk/menu.c:439
 #, c-format
 msgid "Country: %s"
 msgstr "국가: %s"
 
-#: src/fe-gtk/menu.c:453
+#: src/fe-gtk/menu.c:443
 #, c-format
 msgid "Realname: %s"
 msgstr "실제명: %s"
 
-#: src/fe-gtk/menu.c:457
+#: src/fe-gtk/menu.c:447
 #, fuzzy, c-format
 msgid "Server: %s"
 msgstr "서버: %s"
 
-#: src/fe-gtk/menu.c:461
+#: src/fe-gtk/menu.c:451
 #, c-format
 msgid "Last Msg: %s"
 msgstr "마지막 메세지: %s"
 
 #. sep
-#: src/fe-gtk/menu.c:541
+#: src/fe-gtk/menu.c:531
 msgid "Menu Bar"
 msgstr "메뉴 막대"
 
-#: src/fe-gtk/menu.c:542
+#: src/fe-gtk/menu.c:532
 msgid "Topic Bar"
 msgstr "제목 막대"
 
-#: src/fe-gtk/menu.c:543
+#: src/fe-gtk/menu.c:533
 msgid "User List"
 msgstr "사용자 목록"
 
-#: src/fe-gtk/menu.c:668
+#: src/fe-gtk/menu.c:658
 msgid "Part Channel"
 msgstr "대화방 퇴장"
 
-#: src/fe-gtk/menu.c:670
+#: src/fe-gtk/menu.c:660
 #, fuzzy
 msgid "Cycle Channel"
 msgstr "대화방 순환"
 
-#: src/fe-gtk/menu.c:843
+#: src/fe-gtk/menu.c:682
 #, fuzzy
 msgid "X-Chat: User menu"
 msgstr "X-Chat: 선택사항"
 
 #. sep
-#: src/fe-gtk/menu.c:852
+#: src/fe-gtk/menu.c:691
 #, fuzzy
 msgid "Edit This Menu..."
 msgstr "사용자 메뉴 편집"
 
-#: src/fe-gtk/menu.c:954
+#: src/fe-gtk/menu.c:793
 msgid ""
 "*WARNING*\n"
 "Auto accepting DCC to your home directory\n"
@@ -2879,12 +2884,12 @@ msgid ""
 "Someone could send you a .bash_profile"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1071
+#: src/fe-gtk/menu.c:916
 #, fuzzy
 msgid "Settings saved."
 msgstr "설정 저장"
 
-#: src/fe-gtk/menu.c:1109
+#: src/fe-gtk/menu.c:954
 msgid ""
 "User Commands - Special codes:\n"
 "\n"
@@ -2905,7 +2910,7 @@ msgid ""
 "&2 would be \"john hello\"."
 msgstr ""
 
-#: src/fe-gtk/menu.c:1124
+#: src/fe-gtk/menu.c:969
 msgid ""
 "Userlist Buttons - Special codes:\n"
 "\n"
@@ -2918,7 +2923,7 @@ msgid ""
 "%t  =  time/date\n"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1133
+#: src/fe-gtk/menu.c:978
 msgid ""
 "Dialog Buttons - Special codes:\n"
 "\n"
@@ -2931,7 +2936,7 @@ msgid ""
 "%t  =  time/date\n"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1142
+#: src/fe-gtk/menu.c:987
 msgid ""
 "CTCP Replies - Special codes:\n"
 "\n"
@@ -2946,7 +2951,7 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1152
+#: src/fe-gtk/menu.c:997
 #, c-format
 msgid ""
 "URL Handlers - Special codes:\n"
@@ -2958,315 +2963,320 @@ msgid ""
 "shell instead of X-Chat"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1161
+#: src/fe-gtk/menu.c:1006
 msgid "X-Chat: User Defined Commands"
 msgstr "X-Chat: 사용자 정의 명령"
 
-#: src/fe-gtk/menu.c:1168
+#: src/fe-gtk/menu.c:1013
 #, fuzzy
 msgid "X-Chat: Userlist Popup menu"
 msgstr "사용자 목록 메뉴"
 
-#: src/fe-gtk/menu.c:1175
+#: src/fe-gtk/menu.c:1020
 #, fuzzy
 msgid "X-Chat: Replace"
 msgstr "X-Chat: 선택사항"
 
 # Adding 1.3.9
-#: src/fe-gtk/menu.c:1182
+#: src/fe-gtk/menu.c:1027
 #, fuzzy
 msgid "X-Chat: URL Handlers"
 msgstr "주소 관리기"
 
-#: src/fe-gtk/menu.c:1201
+#: src/fe-gtk/menu.c:1046
 #, fuzzy
 msgid "X-Chat: Userlist buttons"
 msgstr "사용자 목록 단추"
 
-#: src/fe-gtk/menu.c:1208
+#: src/fe-gtk/menu.c:1053
 #, fuzzy
 msgid "X-Chat: Dialog buttons"
 msgstr "사용자 목록 단추"
 
-#: src/fe-gtk/menu.c:1215
+#: src/fe-gtk/menu.c:1060
 #, fuzzy
 msgid "X-Chat: CTCP Replies"
 msgstr "CTCP 보낼말"
 
-#: src/fe-gtk/menu.c:1303
+#: src/fe-gtk/menu.c:1148
 #, fuzzy
 msgid "_X-Chat"
 msgstr "X-Chat에 대하여"
 
-#: src/fe-gtk/menu.c:1304
+#: src/fe-gtk/menu.c:1149
 #, fuzzy
 msgid "Server List..."
 msgstr "서버 목록"
 
-#: src/fe-gtk/menu.c:1308
+#: src/fe-gtk/menu.c:1153
 #, fuzzy
 msgid "Server Tab..."
 msgstr "새 서버 탭"
 
-#: src/fe-gtk/menu.c:1309
+#: src/fe-gtk/menu.c:1154
 #, fuzzy
 msgid "Channel Tab..."
 msgstr "새 채널 탭"
 
-#: src/fe-gtk/menu.c:1310
+#: src/fe-gtk/menu.c:1155
 #, fuzzy
 msgid "Server Window..."
 msgstr "새 서버 창"
 
-#: src/fe-gtk/menu.c:1311
+#: src/fe-gtk/menu.c:1156
 #, fuzzy
 msgid "Channel Window..."
 msgstr "새 채널 창"
 
-#: src/fe-gtk/menu.c:1316
+#: src/fe-gtk/menu.c:1161
 #, fuzzy
 msgid "Load plugin..."
 msgstr "기능추가(*.so)"
 
-#: src/fe-gtk/menu.c:1318
+#: src/fe-gtk/menu.c:1163
 #, fuzzy
 msgid "Load Plugin..."
 msgstr "기능추가(*.so)"
 
-#: src/fe-gtk/menu.c:1322
+#: src/fe-gtk/menu.c:1167
 #, fuzzy
 msgid "New Shell Tab..."
 msgstr "명령창"
 
-#: src/fe-gtk/menu.c:1328 src/fe-gtk/search.c:117
-msgid "Close"
+#: src/fe-gtk/menu.c:1173
+msgid "Detach Tab"
+msgstr ""
+
+#: src/fe-gtk/menu.c:1174
+#, fuzzy
+msgid "Close Tab"
 msgstr "닫기"
 
-#: src/fe-gtk/menu.c:1330
+#: src/fe-gtk/menu.c:1176
 msgid "Quit"
 msgstr "종료"
 
-#. 16
-#: src/fe-gtk/menu.c:1332
+#. 17
+#: src/fe-gtk/menu.c:1178
 #, fuzzy
 msgid "_IRC"
 msgstr "IRC"
 
-#: src/fe-gtk/menu.c:1333
+#: src/fe-gtk/menu.c:1179
 msgid "Invisible"
 msgstr "초대가능"
 
-#: src/fe-gtk/menu.c:1334
+#: src/fe-gtk/menu.c:1180
 msgid "Receive Wallops"
 msgstr "오퍼 알림 받기"
 
-#: src/fe-gtk/menu.c:1335
+#: src/fe-gtk/menu.c:1181
 msgid "Receive Server Notices"
 msgstr "서버 알림 보기"
 
-#: src/fe-gtk/menu.c:1337
+#: src/fe-gtk/menu.c:1183
 msgid "Marked Away"
 msgstr "자리 비움"
 
-#. 23
-#: src/fe-gtk/menu.c:1339
+#. 24
+#: src/fe-gtk/menu.c:1185
 msgid "Auto ReJoin on Kick"
 msgstr "추방시 자동 재 접속"
 
-#: src/fe-gtk/menu.c:1340
+#: src/fe-gtk/menu.c:1186
 msgid "Auto ReConnect to Server"
 msgstr "서버에 자동 재접속"
 
-#: src/fe-gtk/menu.c:1341
+#: src/fe-gtk/menu.c:1187
 msgid "Never-give-up ReConnect"
 msgstr "무제한 재 접속"
 
-#. 27
-#: src/fe-gtk/menu.c:1343
+#. 28
+#: src/fe-gtk/menu.c:1189
 msgid "Auto Open Dialog Windows"
 msgstr "대화창 자동 열기"
 
-#: src/fe-gtk/menu.c:1344
+#: src/fe-gtk/menu.c:1190
 msgid "Auto Accept DCC Chat"
 msgstr "DCC 대화 동의"
 
-#: src/fe-gtk/menu.c:1345
+#: src/fe-gtk/menu.c:1191
 msgid "Auto Accept DCC Send"
 msgstr "DCC 자동받기"
 
-#: src/fe-gtk/menu.c:1347
+#: src/fe-gtk/menu.c:1193
 #, fuzzy
 msgid "_Server"
 msgstr "서버"
 
-#. 31
-#: src/fe-gtk/menu.c:1349
+#. 32
+#: src/fe-gtk/menu.c:1195
 #, fuzzy
 msgid "S_ettings"
 msgstr "설정"
 
-#. 32
-#: src/fe-gtk/menu.c:1350
+#. 33
+#: src/fe-gtk/menu.c:1196
 #, fuzzy
 msgid "Preferences..."
 msgstr "X-Chat: 선택사항"
 
-#: src/fe-gtk/menu.c:1352
+#: src/fe-gtk/menu.c:1198
 #, fuzzy
 msgid "Lists"
 msgstr "대화방 목록 창"
 
-#: src/fe-gtk/menu.c:1353
+#: src/fe-gtk/menu.c:1199
 #, fuzzy
 msgid "User Commands..."
 msgstr "사용자 명령"
 
-#: src/fe-gtk/menu.c:1354
+#: src/fe-gtk/menu.c:1200
 #, fuzzy
 msgid "CTCP Replies..."
 msgstr "CTCP 보낼말"
 
-#: src/fe-gtk/menu.c:1355
+#: src/fe-gtk/menu.c:1201
 #, fuzzy
 msgid "Userlist Buttons..."
 msgstr "사용자 목록 단추"
 
-#: src/fe-gtk/menu.c:1356
+#: src/fe-gtk/menu.c:1202
 #, fuzzy
 msgid "Userlist Popup..."
 msgstr "사용자 목록 메뉴"
 
-#: src/fe-gtk/menu.c:1357
+#: src/fe-gtk/menu.c:1203
 #, fuzzy
 msgid "Dialog Buttons..."
 msgstr "사용자 목록 단추"
 
-#: src/fe-gtk/menu.c:1358
+#: src/fe-gtk/menu.c:1204
 #, fuzzy
 msgid "Replace Popup..."
 msgstr "글월 바꿈"
 
 # Adding 1.3.9
-#: src/fe-gtk/menu.c:1359
+#: src/fe-gtk/menu.c:1205
 #, fuzzy
 msgid "URL Handlers..."
 msgstr "주소 관리기"
 
-#: src/fe-gtk/menu.c:1360
+#: src/fe-gtk/menu.c:1206
 #, fuzzy
 msgid "Event Texts..."
 msgstr "상황 출력 수정"
 
-#: src/fe-gtk/menu.c:1361
+#: src/fe-gtk/menu.c:1207
 #, fuzzy
 msgid "Key Bindings..."
 msgstr "단축글쇠 수정"
 
-#. 55
-#: src/fe-gtk/menu.c:1366
+#. 56
+#: src/fe-gtk/menu.c:1212
 msgid "Reload Settings"
 msgstr "설정 다시읽기"
 
-#: src/fe-gtk/menu.c:1368
+#: src/fe-gtk/menu.c:1214
 msgid "Save Settings now"
 msgstr "현재설정 저장"
 
-#: src/fe-gtk/menu.c:1369
+#: src/fe-gtk/menu.c:1215
 msgid "Save Settings on exit"
 msgstr "설정 저장후 종료"
 
-#: src/fe-gtk/menu.c:1372
+#: src/fe-gtk/menu.c:1218
 #, fuzzy
 msgid "_Window"
 msgstr "창(_W)"
 
-#: src/fe-gtk/menu.c:1373
+#: src/fe-gtk/menu.c:1219
 #, fuzzy
 msgid "Channel List..."
 msgstr "대화방 목록 창"
 
-#: src/fe-gtk/menu.c:1374
+#: src/fe-gtk/menu.c:1220
 #, fuzzy
 msgid "File Send..."
 msgstr "DCC 보내기 창"
 
-#: src/fe-gtk/menu.c:1375
+#: src/fe-gtk/menu.c:1221
 #, fuzzy
 msgid "File Receive..."
 msgstr "DCC 받기 창"
 
-#: src/fe-gtk/menu.c:1376
+#: src/fe-gtk/menu.c:1222
 #, fuzzy
 msgid "Direct Chat..."
 msgstr "DCC 대화 창"
 
-#: src/fe-gtk/menu.c:1377
+#: src/fe-gtk/menu.c:1223
 #, fuzzy
 msgid "Raw Log..."
 msgstr "번역되지 않은기록 창"
 
-#. 50
-#: src/fe-gtk/menu.c:1378
+#. 51
+#: src/fe-gtk/menu.c:1224
 #, fuzzy
 msgid "URL Grabber..."
 msgstr "주소 잡기 창"
 
-#: src/fe-gtk/menu.c:1379
+#: src/fe-gtk/menu.c:1225
 #, fuzzy
 msgid "Notify List..."
 msgstr "알림 목록창"
 
-#: src/fe-gtk/menu.c:1380
+#: src/fe-gtk/menu.c:1226
 #, fuzzy
 msgid "Ignore List..."
 msgstr "무시 창"
 
-#: src/fe-gtk/menu.c:1381
+#: src/fe-gtk/menu.c:1227
 #, fuzzy
 msgid "Ban List..."
 msgstr "대화방 목록 창"
 
-#: src/fe-gtk/menu.c:1382
+#: src/fe-gtk/menu.c:1228
 #, fuzzy
 msgid "Character Chart..."
 msgstr "문자 설정"
 
-#: src/fe-gtk/menu.c:1383
+#: src/fe-gtk/menu.c:1229
 #, fuzzy
 msgid "Plugin List..."
 msgstr "추가기능 목록"
 
-#: src/fe-gtk/menu.c:1385
+#: src/fe-gtk/menu.c:1231
 #, fuzzy
 msgid "C_lear Text"
 msgstr "일반 글월"
 
-#: src/fe-gtk/menu.c:1386
+#: src/fe-gtk/menu.c:1232
 #, fuzzy
 msgid "Search Text..."
 msgstr "기억공간 찾기.."
 
-#: src/fe-gtk/menu.c:1387
+#: src/fe-gtk/menu.c:1233
 #, fuzzy
 msgid "Save Text..."
 msgstr "상황 출력 수정"
 
-#: src/fe-gtk/menu.c:1389
+#: src/fe-gtk/menu.c:1235
 msgid "_Help"
 msgstr "도움말(_H)"
 
-#. 61
-#: src/fe-gtk/menu.c:1390
+#. 62
+#: src/fe-gtk/menu.c:1236
 #, fuzzy
 msgid "X-Chat Homepage..."
 msgstr "X-Chat 홈페이지"
 
-#: src/fe-gtk/menu.c:1391
+#: src/fe-gtk/menu.c:1237
 #, fuzzy
 msgid "Online Docs..."
 msgstr "온라인 문서"
 
-#: src/fe-gtk/menu.c:1393
+#: src/fe-gtk/menu.c:1239
 #, fuzzy
 msgid "About X-Chat..."
 msgstr "X-Chat에 대하여.."
@@ -3285,31 +3295,36 @@ msgstr "결코"
 msgid "Online"
 msgstr "접속"
 
-#: src/fe-gtk/notifygui.c:163
+#: src/fe-gtk/notifygui.c:157
+#, fuzzy
+msgid "Enter nickname to add:"
+msgstr "새 대화명"
+
+#: src/fe-gtk/notifygui.c:164
 #, fuzzy
 msgid "User"
 msgstr "사용자"
 
-#: src/fe-gtk/notifygui.c:163
+#: src/fe-gtk/notifygui.c:164
 #, fuzzy
 msgid "Server"
 msgstr "서버"
 
-#: src/fe-gtk/notifygui.c:163
+#: src/fe-gtk/notifygui.c:164
 #, fuzzy
 msgid "Last Seen"
 msgstr "최근 본 시간"
 
-#: src/fe-gtk/notifygui.c:172
+#: src/fe-gtk/notifygui.c:173
 msgid "X-Chat: Notify List"
 msgstr "X-Chat: 알림 목록"
 
-#: src/fe-gtk/notifygui.c:188
+#: src/fe-gtk/notifygui.c:189
 #, fuzzy
 msgid "Add"
 msgstr "추가"
 
-#: src/fe-gtk/notifygui.c:190
+#: src/fe-gtk/notifygui.c:191
 msgid "Remove"
 msgstr "제거"
 
@@ -3384,149 +3399,153 @@ msgstr "찾기"
 msgid "Clear"
 msgstr "지움"
 
-#: src/fe-gtk/servlistgui.c:119
+#: src/fe-gtk/search.c:117
+msgid "Close"
+msgstr "닫기"
+
+#: src/fe-gtk/servlistgui.c:118
 #, fuzzy, c-format
 msgid "Settings for %s"
 msgstr "설정"
 
-#: src/fe-gtk/servlistgui.c:226
+#: src/fe-gtk/servlistgui.c:159 src/fe-gtk/servlistgui.c:232
 #, fuzzy
 msgid "New Network"
 msgstr "네트워크"
 
-#: src/fe-gtk/servlistgui.c:315
+#: src/fe-gtk/servlistgui.c:327
 #, c-format
 msgid "Really remove network \"%s\" and all its servers?"
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:352 src/fe-gtk/servlistgui.c:378
+#: src/fe-gtk/servlistgui.c:364 src/fe-gtk/servlistgui.c:390
 #, fuzzy, c-format
 msgid "_Remove \"%s\""
 msgstr "제거"
 
-#: src/fe-gtk/servlistgui.c:359
+#: src/fe-gtk/servlistgui.c:371
 #, fuzzy
 msgid "_Add new server"
 msgstr "새 서버"
 
-#: src/fe-gtk/servlistgui.c:385
+#: src/fe-gtk/servlistgui.c:397
 #, c-format
 msgid "Move \"%s\" _down"
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:392
+#: src/fe-gtk/servlistgui.c:404
 #, fuzzy, c-format
 msgid "Move \"%s\" _up"
 msgstr "제거"
 
-#: src/fe-gtk/servlistgui.c:403
+#: src/fe-gtk/servlistgui.c:415
 #, fuzzy
 msgid "_Add new network"
 msgstr "새로 추가"
 
-#: src/fe-gtk/servlistgui.c:676
+#: src/fe-gtk/servlistgui.c:740
 #, fuzzy
 msgid "Global User Info"
 msgstr "사용자 메뉴"
 
-#: src/fe-gtk/servlistgui.c:684
+#: src/fe-gtk/servlistgui.c:748
 #, fuzzy
 msgid "Nick Names:"
 msgstr "대화명:"
 
-#: src/fe-gtk/servlistgui.c:703 src/fe-gtk/servlistgui.c:845
+#: src/fe-gtk/servlistgui.c:767 src/fe-gtk/servlistgui.c:912
 #, fuzzy
 msgid "User Name:"
 msgstr "사용자명:"
 
-#: src/fe-gtk/servlistgui.c:716 src/fe-gtk/servlistgui.c:847
+#: src/fe-gtk/servlistgui.c:780 src/fe-gtk/servlistgui.c:914
 #, fuzzy
 msgid "Real Name:"
 msgstr "실제이름:"
 
-#: src/fe-gtk/servlistgui.c:758
+#: src/fe-gtk/servlistgui.c:822
 #, fuzzy
 msgid "C_onnect"
 msgstr "접속"
 
-#: src/fe-gtk/servlistgui.c:764
+#: src/fe-gtk/servlistgui.c:830
 #, fuzzy
 msgid "Connect in a _new tab"
 msgstr "알림 제한시간"
 
-#: src/fe-gtk/servlistgui.c:814
+#: src/fe-gtk/servlistgui.c:881
 #, fuzzy
 msgid "Servers"
 msgstr "서버"
 
-#: src/fe-gtk/servlistgui.c:843
+#: src/fe-gtk/servlistgui.c:910
 #, fuzzy
 msgid "Nick Name:"
 msgstr "대화명:"
 
-#: src/fe-gtk/servlistgui.c:848
+#: src/fe-gtk/servlistgui.c:915
 #, fuzzy
 msgid "Server Password:"
 msgstr "암호:"
 
-#: src/fe-gtk/servlistgui.c:850
+#: src/fe-gtk/servlistgui.c:917
 #, fuzzy
 msgid "Join Channels:"
 msgstr "대화방 참여"
 
-#: src/fe-gtk/servlistgui.c:852
+#: src/fe-gtk/servlistgui.c:919
 msgid "Channels to join, separated by commas, but not spaces!"
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:853
+#: src/fe-gtk/servlistgui.c:920
 #, fuzzy
 msgid "Connect Command:"
 msgstr "접속"
 
-#: src/fe-gtk/servlistgui.c:859
+#: src/fe-gtk/servlistgui.c:926
 msgid "Cycle until connected"
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:860
+#: src/fe-gtk/servlistgui.c:927
 #, fuzzy
 msgid "Use global user info"
 msgstr "사용자 메뉴"
 
-#: src/fe-gtk/servlistgui.c:861
+#: src/fe-gtk/servlistgui.c:928
 #, fuzzy
 msgid "Use secure SSL"
 msgstr "SSL 사용"
 
-#: src/fe-gtk/servlistgui.c:862
+#: src/fe-gtk/servlistgui.c:929
 #, fuzzy
 msgid "Auto connect at startup"
 msgstr "자동 접속"
 
-#: src/fe-gtk/servlistgui.c:863
+#: src/fe-gtk/servlistgui.c:930
 #, fuzzy
 msgid "Use a proxy server"
 msgstr "IP를 서버로부터 가져옴"
 
-#: src/fe-gtk/servlistgui.c:864
+#: src/fe-gtk/servlistgui.c:931
 #, fuzzy
 msgid "Accept invalid cert."
 msgstr "잘못된 증명서 허용"
 
-#: src/fe-gtk/servlistgui.c:873
+#: src/fe-gtk/servlistgui.c:940
 msgid "Settings for Selected Network"
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:913
+#: src/fe-gtk/servlistgui.c:980
 #, fuzzy
 msgid "Edit mode"
 msgstr "편집"
 
-#: src/fe-gtk/servlistgui.c:920
+#: src/fe-gtk/servlistgui.c:987
 #, fuzzy
 msgid "Networks"
 msgstr "네트워크"
 
-#: src/fe-gtk/servlistgui.c:943
+#: src/fe-gtk/servlistgui.c:1011
 #, fuzzy
 msgid "X-Chat: Server List"
 msgstr "X-Chat: 서버 목록"
@@ -4172,6 +4191,9 @@ msgstr "저장할 위치"
 #: src/fe-gtk/urlgrab.c:121
 msgid "X-Chat: URL Grabber"
 msgstr "X-Chat: URL 잡기"
+
+#~ msgid "Ascii Chart"
+#~ msgstr "아스키 차트"
 
 #, fuzzy
 #~ msgid "Server settings"
@@ -5425,10 +5447,6 @@ msgstr "X-Chat: URL 잡기"
 
 #~ msgid "Move tab right"
 #~ msgstr "오른쪽으로 이동"
-
-#, fuzzy
-#~ msgid "Close Tab"
-#~ msgstr "닫기"
 
 #~ msgid ""
 #~ "\n"

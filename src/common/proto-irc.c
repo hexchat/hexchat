@@ -789,15 +789,20 @@ irc_inline (server *serv, char *buf)
 
 		/* for server messages, the 2nd word is the "message type" */
 		type = word[2];
+
+		word[0] = type;
+		word_eol[1] = buf;	/* keep the ":" for plugins */
+		if (plugin_emit_server (sess, type, word, word_eol))
+			return;
+		word_eol[1] = buf + 1;	/* but not for xchat internally */
+
 	} else
 	{
 		process_data_init (pdibuf, buf, word, word_eol, FALSE);
-		type = word[1];
+		word[0] = type = word[1];
+		if (plugin_emit_server (sess, type, word, word_eol))
+			return;
 	}
-
-	word[0] = type;
-	if (plugin_emit_server (sess, type, word, word_eol))
-		return;
 
 	if (buf[0] != ':')
 	{

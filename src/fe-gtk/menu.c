@@ -398,7 +398,7 @@ menu_popup (GtkWidget *menu, GdkEventButton *event)
 	g_signal_connect (G_OBJECT (menu), "selection-done",
 							G_CALLBACK (menu_destroy), NULL);
 	if (event == NULL)
-		gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL, 3, 0);
+		gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL, 0, 0);
 	else
 		gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL,
 							 event->button, event->time);
