@@ -611,64 +611,6 @@ find_away_message (struct server *serv, char *nick)
 	"NAME TIME\n"				"CMD nctcp %s TIME %t\n\n"\
 	"NAME PING\n"				"CMD nctcp %s PING %d\n\n"
 
-#define defaultconf_popup \
-	"NAME SUB\n"				"CMD Direct Client-To-Client\n\n"\
-		"NAME Send File\n"	"CMD dcc send %s\n\n"\
-		"NAME Offer Chat\n"	"CMD dcc chat %s\n\n"\
-		"NAME Abort Chat\n"	"CMD dcc close chat %s\n\n"\
-	"NAME ENDSUB\n"			"CMD \n\n"\
-	"NAME SUB\n"				"CMD CTCP\n\n"\
-		"NAME Version\n"		"CMD ctcp %s VERSION\n\n"\
-		"NAME Userinfo\n"		"CMD ctcp %s USERINFO\n\n"\
-		"NAME Clientinfo\n"	"CMD ctcp %s CLIENTINFO\n\n"\
-		"NAME Ping\n"			"CMD ping %s\n\n"\
-		"NAME Time\n"			"CMD ctcp %s TIME\n\n"\
-		"NAME Finger\n"		"CMD ctcp %s FINGER\n\n"\
-		"NAME XDCC List\n"	"CMD ctcp %s XDCC LIST\n\n"\
-		"NAME CDCC List\n"	"CMD ctcp %s CDCC LIST\n\n"\
-	"NAME ENDSUB\n"			"CMD \n\n"\
-	"NAME SUB\n"				"CMD Oper\n\n"\
-		"NAME Kill this user\n""CMD quote KILL %s :die!\n\n"\
-		"NAME ENDSUB\n"		"CMD \n\n"\
-		"NAME SUB\n"			"CMD Mode\n\n"\
-		"NAME Give Voice\n"	"CMD voice %a\n\n"\
-		"NAME Take Voice\n"	"CMD devoice %a\n"\
-		"NAME SEP\n"			"CMD \n\n"\
-		"NAME Give Ops\n"		"CMD op %a\n\n"\
-		"NAME Take Ops\n"		"CMD deop %a\n\n"\
-	"NAME ENDSUB\n"			"CMD \n\n"\
-	"NAME SUB\n"				"CMD Ignore\n\n"\
-		"NAME Ignore User\n"	"CMD ignore %s!*@* ALL\n\n"\
-		"NAME UnIgnore User\n""CMD unignore %s!*@*\n\n"\
-	"NAME ENDSUB\n"			"CMD \n\n"\
-	"NAME SUB\n"				"CMD Kick/Ban\n\n"\
-		"NAME Kick\n"			"CMD kick %s\n\n"\
-		"NAME Ban\n"			"CMD ban %s\n\n"\
-		"NAME SEP\n"			"CMD \n\n"\
-		"NAME Ban *!*@*.host\n""CMD ban %s 0\n\n"\
-		"NAME Ban *!*@domain\n""CMD ban %s 1\n\n"\
-		"NAME Ban *!*user@*.host\n""CMD ban %s 2\n\n"\
-		"NAME Ban *!*user@domain\n""CMD ban %s 3\n\n"\
-		"NAME SEP\n"			"CMD \n\n"\
-		"NAME KickBan *!*@*.host\n""CMD kickban %s 0\n\n"\
-		"NAME KickBan *!*@domain\n""CMD kickban %s 1\n\n"\
-		"NAME KickBan *!*user@*.host\n""CMD kickban %s 2\n\n"\
-		"NAME KickBan *!*user@domain\n""CMD kickban %s 3\n\n"\
-	"NAME ENDSUB\n"			"CMD \n\n"\
-	"NAME SUB\n"				"CMD Info\n\n"\
-		"NAME Who\n"			"CMD quote WHO %s\n\n"\
-		"NAME Whois\n"			"CMD quote WHOIS %s\n\n"\
-		"NAME DNS Lookup\n"	"CMD dns %s\n\n"\
-		"NAME Trace\n"			"CMD quote TRACE %s\n\n"\
-		"NAME UserHost\n"		"CMD quote USERHOST %s\n\n"\
-	"NAME ENDSUB\n"			"CMD \n\n"\
-	"NAME SUB\n"				"CMD External\n\n"\
-		"NAME Traceroute\n"	"CMD !"XTERM" -e /bin/sh -c \"/usr/sbin/traceroute %h ; sleep 30\"\n\n"\
-		"NAME Ping\n"			"CMD !"XTERM" -e /bin/sh -c \"ping -c 4 %h ; sleep 30\"\n\n"\
-		"NAME Telnet\n"		"CMD !"XTERM" -e telnet %h\n\n"\
-	"NAME ENDSUB\n"			"CMD \n\n"\
-	"NAME Open Dialog Window\n"		"CMD query %s\n\n"
-
 #define defaultconf_dlgbuttons \
 	"NAME Whois\n"				"CMD whois %s\n\n"\
 	"NAME Send\n"				"CMD dcc send %s\n\n"\
@@ -809,7 +751,7 @@ xchat_init (void)
 	notify_load ();
 	ignore_load ();
 
-	printf("%d\n", snprintf (buf, sizeof (buf),
+	snprintf (buf, sizeof (buf),
 	"NAME SUB\n"				"CMD %s\n\n"\
 		"NAME %s\n"				"CMD dcc send %%s\n\n"\
 		"NAME %s\n"				"CMD dcc chat %%s\n\n"\
@@ -825,10 +767,10 @@ xchat_init (void)
 		"NAME XDCC List\n"	"CMD ctcp %%s XDCC LIST\n\n"\
 		"NAME CDCC List\n"	"CMD ctcp %%s CDCC LIST\n\n"\
 	"NAME ENDSUB\n"			"CMD \n\n"\
-	"NAME SUB\n"				"CMD Oper\n\n"\
+	"NAME SUB\n"				"CMD %s\n\n"\
 		"NAME %s\n"				"CMD quote KILL %%s :die!\n\n"\
-		"NAME ENDSUB\n"		"CMD \n\n"\
-		"NAME SUB\n"			"CMD Mode\n\n"\
+	"NAME ENDSUB\n"			"CMD \n\n"\
+	"NAME SUB\n"				"CMD %s\n\n"\
 		"NAME %s\n"				"CMD voice %%a\n\n"\
 		"NAME %s\n"				"CMD devoice %%a\n"\
 		"NAME SEP\n"			"CMD \n\n"\
@@ -839,33 +781,33 @@ xchat_init (void)
 		"NAME %s\n"				"CMD ignore %%s!*@* ALL\n\n"\
 		"NAME %s\n"				"CMD unignore %%s!*@*\n\n"\
 	"NAME ENDSUB\n"			"CMD \n\n"\
-	"NAME SUB\n"				"CMD Kick/Ban\n\n"\
-		"NAME Kick\n"			"CMD kick %%s\n\n"\
-		"NAME Ban\n"			"CMD ban %%s\n\n"\
+	"NAME SUB\n"				"CMD %s\n\n"\
+		"NAME %s\n"				"CMD kick %%s\n\n"\
+		"NAME %s\n"				"CMD ban %%s\n\n"\
 		"NAME SEP\n"			"CMD \n\n"\
-		"NAME Ban *!*@*.host\n""CMD ban %%s 0\n\n"\
-		"NAME Ban *!*@domain\n""CMD ban %%s 1\n\n"\
-		"NAME Ban *!*user@*.host\n""CMD ban %%s 2\n\n"\
-		"NAME Ban *!*user@domain\n""CMD ban %%s 3\n\n"\
+		"NAME %s *!*@*.host\n""CMD ban %%s 0\n\n"\
+		"NAME %s *!*@domain\n""CMD ban %%s 1\n\n"\
+		"NAME %s *!*user@*.host\n""CMD ban %%s 2\n\n"\
+		"NAME %s *!*user@domain\n""CMD ban %%s 3\n\n"\
 		"NAME SEP\n"			"CMD \n\n"\
-		"NAME KickBan *!*@*.host\n""CMD kickban %%s 0\n\n"\
-		"NAME KickBan *!*@domain\n""CMD kickban %%s 1\n\n"\
-		"NAME KickBan *!*user@*.host\n""CMD kickban %%s 2\n\n"\
-		"NAME KickBan *!*user@domain\n""CMD kickban %%s 3\n\n"\
+		"NAME %s *!*@*.host\n""CMD kickban %%s 0\n\n"\
+		"NAME %s *!*@domain\n""CMD kickban %%s 1\n\n"\
+		"NAME %s *!*user@*.host\n""CMD kickban %%s 2\n\n"\
+		"NAME %s *!*user@domain\n""CMD kickban %%s 3\n\n"\
 	"NAME ENDSUB\n"			"CMD \n\n"\
-	"NAME SUB\n"				"CMD Info\n\n"\
-		"NAME Who\n"			"CMD quote WHO %%s\n\n"\
-		"NAME Whois\n"			"CMD quote WHOIS %%s\n\n"\
-		"NAME DNS Lookup\n"	"CMD dns %%s\n\n"\
-		"NAME Trace\n"			"CMD quote TRACE %%s\n\n"\
-		"NAME UserHost\n"		"CMD quote USERHOST %%s\n\n"\
+	"NAME SUB\n"				"CMD %s\n\n"\
+		"NAME %s\n"				"CMD quote WHO %%s\n\n"\
+		"NAME %s\n"				"CMD quote WHOIS %%s\n\n"\
+		"NAME %s\n"				"CMD dns %%s\n\n"\
+		"NAME %s\n"				"CMD quote TRACE %%s\n\n"\
+		"NAME %s\n"				"CMD quote USERHOST %%s\n\n"\
 	"NAME ENDSUB\n"			"CMD \n\n"\
-	"NAME SUB\n"				"CMD External\n\n"\
-		"NAME Traceroute\n"	"CMD !"XTERM" -e /bin/sh -c \"/usr/sbin/traceroute %%h ; sleep 30\"\n\n"\
-		"NAME Ping\n"			"CMD !"XTERM" -e /bin/sh -c \"ping -c 4 %%h ; sleep 30\"\n\n"\
-		"NAME Telnet\n"		"CMD !"XTERM" -e telnet %%h\n\n"\
+	"NAME SUB\n"				"CMD %s\n\n"\
+		"NAME %s\n"				"CMD !"XTERM" -e /bin/sh -c \"/usr/sbin/traceroute %%h ; sleep 30\"\n\n"\
+		"NAME %s\n"				"CMD !"XTERM" -e /bin/sh -c \"ping -c 4 %%h ; sleep 30\"\n\n"\
+		"NAME %s\n"				"CMD !"XTERM" -e telnet %%h\n\n"\
 	"NAME ENDSUB\n"			"CMD \n\n"\
-	"NAME Open Dialog Window\n"		"CMD query %%s\n\n",
+	"NAME %s\n"					"CMD query %%s\n\n",
 		_("Direct client-to-client"),
 		_("Send File"),
 		_("Offer Chat"),
@@ -876,15 +818,39 @@ xchat_init (void)
 		_("Ping"),
 		_("Time"),
 		_("Finger"),
+		_("Oper"),
 		_("Kill this user"),
+		_("Mode"),
 		_("Give Voice"),
 		_("Take Voice"),
 		_("Give Ops"),
 		_("Take Ops"),
 		_("Ignore"),
 		_("Ignore User"),
-		_("UnIgnore User")
-		));
+		_("UnIgnore User"),
+		_("Kick/Ban"),
+		_("Kick"),
+		_("Ban"),
+		_("Kick"),
+		_("Kick"),
+		_("Kick"),
+		_("Kick"),
+		_("KickBan"),
+		_("KickBan"),
+		_("KickBan"),
+		_("KickBan"),
+		_("Info"),
+		_("Who"),
+		_("WhoIs"),
+		_("DNS Lookup"),
+		_("Trace"),
+		_("UserHost"),
+		_("External"),
+		_("Traceroute"),
+		_("Ping"),
+		_("Telnet"),
+		_("Open Dialog Window")
+		);
 	list_loadconf ("popup.conf", &popup_list, buf);
 
 	snprintf (buf, sizeof (buf),

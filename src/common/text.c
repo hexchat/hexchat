@@ -1183,8 +1183,8 @@ pevent_load (char *filename)
 			continue;
 		*ofs = 0;
 		ofs++;
-		if (*ofs == 0)
-			continue;
+		/*if (*ofs == 0)
+			continue;*/
 
 		if (strcmp (buf, "event_name") == 0)
 		{
