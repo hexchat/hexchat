@@ -1011,7 +1011,7 @@ Optional Features:
   --disable-xlib          disable use of xlib (for non X11 systems)
   --disable-python        don't build the python plugin
   --disable-perl          don't build the perl plugin
-  --enable-tcl=DIR        directory with Tcl config file: tclConfig.sh
+  --enable-tcl=PATH       directory with Tcl config file: tclConfig.sh
   --disable-plugin        disable plugin support
   --disable-mmx           disable MMX assembly routines
   --disable-glibtest      do not try to compile and run a test GLIB program
@@ -11267,10 +11267,20 @@ else
   perl=yes
 fi;
 
-# Check whether --enable-tclcfg_path or --disable-tclcfg_path was given.
-if test "${enable_tclcfg_path+set}" = set; then
-  enableval="$enable_tclcfg_path"
-   tclcnf="${withval}"
+# Check whether --enable-openssl or --disable-openssl was given.
+if test "${enable_openssl+set}" = set; then
+  enableval="$enable_openssl"
+  openssl=$enableval
+else
+  openssl=yes
+fi;
+
+# Check whether --enable-tcl or --disable-tcl was given.
+if test "${enable_tcl+set}" = set; then
+  enableval="$enable_tcl"
+  tcl=$enableval
+else
+  tcl=yes
 fi;
 
 # Check whether --enable-plugin or --disable-plugin was given.
@@ -12413,10 +12423,10 @@ fi
 
 echo "$as_me:$LINENO: checking for location of tclConfig.sh" >&5
 echo $ECHO_N "checking for location of tclConfig.sh... $ECHO_C" >&6
-dirs="$tclcnf /lib /usr/lib /usr/local/lib /usr/local/tcl-8.0/lib /usr/local/tcl/lib"
+dirs="$tcl /lib /usr/lib /usr/tcl/lib /usr/local/lib /usr/local/tcl-8.4/lib /usr/local/tcl/lib /opt/lib"
 found=0
-tcl=no
-if test "$withval" != "no"; then
+if test "$tcl" != "no"; then
+	tcl=no
 	for try in $dirs; do
 		if test -f $try/tclConfig.sh; then
 			found=1

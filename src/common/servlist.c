@@ -327,6 +327,12 @@ static const struct defaultserver def[] =
 	{0,			"sydney.oz.org"},
 	{0,			"melbourne.oz.org"},
 
+	{"Progameplayer",	0},
+	{0,			"irc.progameplayer.com"},
+	{0,			"melancholia.oh.us.progameplayer.com"},
+	{0,			"deimos.oh.us.progameplayer.com"},
+	{0,			"paradigm.oh.us.progameplayer.com"},
+
 	{"PTlink",	0},
 	{0,			"irc.PTlink.net"},
 	{0,			"dark.PTlink.net"},
