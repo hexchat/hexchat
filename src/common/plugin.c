@@ -535,18 +535,15 @@ plugin_insert_hook (xchat_hook *new_hook)
 static gboolean
 plugin_socket_cb (GIOChannel *source, GIOCondition condition, xchat_hook *hook)
 {
-	xchat_socket_cb *cb = (xchat_socket_cb *) hook->callback;
-	int flags = 0;	/* FIXME */
-
-	return cb (hook->fd, flags, hook->userdata);
+	/* FIXME: condition is always 0 on fe-text */
+	return ((xchat_socket_cb *)hook->callback) (hook->fd, condition, hook->userdata);
 }
 
 /* allocate and add a hook to our list. Used for all 4 types */
 
 static xchat_hook *
-plugin_add_hook (xchat_plugin *pl, int type, int pri, int fd, int flags,
-					  char *name, char *help_text, void *callb, int timeout,
-					  void *userdata)
+plugin_add_hook (xchat_plugin *pl, int type, int pri, char *name,
+					  char *help_text, void *callb, int timeout, void *userdata)
 {
 	xchat_hook *hook;
 
@@ -568,12 +565,6 @@ plugin_add_hook (xchat_plugin *pl, int type, int pri, int fd, int flags,
 
 	if (type == HOOK_TIMER)
 		hook->tag = fe_timeout_add (timeout, plugin_timeout_cb, hook);
-
-	if (type == HOOK_SOCKET)
-	{
-		hook->fd = fd;
-		hook->tag = fe_input_add (fd, flags&1, flags&2, flags&4, plugin_socket_cb, hook);
-	}
 
 	return hook;
 }
@@ -635,7 +626,7 @@ xchat_unhook (xchat_plugin *ph, xchat_hook *hook)
 
 	userdata = hook->userdata;
 	if (hook->name)
-		free (hook->name);	/* NULL for timers */
+		free (hook->name);	/* NULL for timers & sockets */
 	if (hook->help_text)
 		free (hook->help_text);	/* NULL for non-commands */
 	free (hook);
@@ -647,7 +638,7 @@ xchat_hook *
 xchat_hook_command (xchat_plugin *ph, char *name, int pri, xchat_cmd_cb *callb,
 					 	  char *help_text, void *userdata)
 {
-	return plugin_add_hook (ph, HOOK_COMMAND, pri, 0, 0, name, help_text, callb, 0,
+	return plugin_add_hook (ph, HOOK_COMMAND, pri, name, help_text, callb, 0,
 									userdata);
 }
 
@@ -655,30 +646,34 @@ xchat_hook *
 xchat_hook_server (xchat_plugin *ph, char *name, int pri, xchat_serv_cb *callb,
 					 	 void *userdata)
 {
-	return plugin_add_hook (ph, HOOK_SERVER, pri, 0, 0, name, NULL, callb, 0, userdata);
+	return plugin_add_hook (ph, HOOK_SERVER, pri, name, 0, callb, 0, userdata);
 }
 
 xchat_hook *
 xchat_hook_print (xchat_plugin *ph, char *name, int pri, xchat_print_cb *callb,
 					   void *userdata)
 {
-	return plugin_add_hook (ph, HOOK_PRINT, pri, 0, 0, name, NULL, callb, 0, userdata);
+	return plugin_add_hook (ph, HOOK_PRINT, pri, name, 0, callb, 0, userdata);
 }
 
 xchat_hook *
 xchat_hook_timer (xchat_plugin *ph, int timeout, xchat_timer_cb *callb,
 					   void *userdata)
 {
-	return plugin_add_hook (ph, HOOK_TIMER, 0, 0, 0, NULL, NULL, callb, timeout,
-									userdata);
+	return plugin_add_hook (ph, HOOK_TIMER, 0, 0, 0, callb, timeout, userdata);
 }
 
 xchat_hook *
 xchat_hook_socket (xchat_plugin *ph, int fd, int flags,
 						 xchat_socket_cb *callb, void *userdata)
 {
-	return plugin_add_hook (ph, HOOK_SOCKET, 0, fd, flags, NULL, NULL, callb, 0,
-									userdata);
+	xchat_hook *hook;
+
+	hook = plugin_add_hook (ph, HOOK_SOCKET, 0, 0, 0, callb, 0, userdata);
+	hook->fd = fd;
+	hook->tag = fe_input_add (fd, flags&1, flags&2, flags&4, plugin_socket_cb, hook);
+
+	return hook;
 }
 
 void
