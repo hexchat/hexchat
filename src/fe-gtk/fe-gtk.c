@@ -670,12 +670,6 @@ fe_set_throttle (server *serv)
 }
 
 void
-fe_play_wave (const char *file)
-{
-	play_wave (file);
-}
-
-void
 fe_ctrl_gui (session *sess, int action)
 {
 	switch (action)

@@ -801,11 +801,6 @@ fe_get_int (char *prompt, int def, void *callback, void *ud)
 {
 }
 void
-fe_play_wave (const char *file)
-{
-    play_wave (file);
-}
-void
 fe_idle_add (void *func, void *data)
 {
 }

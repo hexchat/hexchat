@@ -1557,6 +1557,33 @@ pevt_build_string (const char *input, char **output, int *max_arg)
 	return 0;
 }
 
+static void
+play_wave (const char *file)
+{
+	char buf[512];
+	char wavfile[512];
+
+	memset (buf, 0, sizeof (buf));
+	memset (wavfile, 0, sizeof (wavfile));
+	if (file[0] != '/')
+	{
+		snprintf (wavfile, sizeof (wavfile), "%s/%s", prefs.sounddir, file);
+	} else
+	{
+		strncpy (wavfile, file, sizeof (wavfile));
+	}
+	if (access (wavfile, R_OK) == 0)
+	{
+		snprintf (buf, sizeof (buf), "%s %s", prefs.soundcmd, wavfile);
+		buf[sizeof (buf) - 1] = '\0';
+		xchat_exec (buf);
+	} else
+	{
+		snprintf (buf, sizeof (buf), "Cannot read %s", wavfile);
+		fe_message (buf, FALSE);
+	}
+}
+
 /* called by EMIT_SIGNAL macro */
 
 void
@@ -1577,7 +1604,7 @@ text_emit (int index, session *sess, char *a, char *b, char *c, char *d)
 		return;
 
 	if (te[index].sound)
-		fe_play_wave (te[index].sound);
+		play_wave (te[index].sound);
 
 	display_event (pntevts[index], sess, te[index].num_args, word);
 }

@@ -2628,7 +2628,7 @@ const struct commands xc_cmds[] = {
 	 N_("GATE <host> [<port>], proxies through a host, port defaults to 23")},
 	{"GETINT", cmd_getint, 0, 0, "GETINT <default> <command> <prompt>"},
 	{"GETSTR", cmd_getstr, 0, 0, "GETSTR <default> <command> <prompt>"},
-	{"GUI", cmd_gui, 0, 0, "GUI [SHOW|HIDE]"},
+	{"GUI", cmd_gui, 0, 0, "GUI [SHOW|HIDE|FOCUS]"},
 	{"HELP", cmd_help, 0, 0, 0},
 	{"HOP", cmd_hop, 1, 1,
 	 N_("HOP <nick>, gives chanhalf-op status to the nick (needs chanop)")},

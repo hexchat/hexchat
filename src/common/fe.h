@@ -70,7 +70,6 @@ void fe_set_lag (server *serv, int lag);
 void fe_set_throttle (server *serv);
 void fe_set_away (server *serv);
 void fe_serverlist_open (session *sess);
-void fe_play_wave (const char *fname);
 void fe_get_str (char *prompt, char *def, void *callback, void *ud);
 void fe_get_int (char *prompt, int def, void *callback, void *ud);
 void fe_ctrl_gui (session *sess, int action);
