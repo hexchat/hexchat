@@ -289,8 +289,8 @@ server_inline (server *serv, char *line, int len)
 		{
 			char *conv_line; /* holds a copy of the original string */
 			int conv_len; /* tells g_convert how much of line to convert */
-			int utf_len;
-			int read_len;
+			gsize utf_len;
+			gsize read_len;
 			GError *err;
 			gboolean retry;
 

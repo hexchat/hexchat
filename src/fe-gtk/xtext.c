@@ -2126,6 +2126,7 @@ gtk_xtext_selection_get (GtkWidget * widget,
 	char *stripped;
 	guchar *new_text;
 	int len;
+	gsize glen;
 
 	stripped = gtk_xtext_selection_get_text (xtext, &len);
 	if (!stripped)
@@ -2158,9 +2159,9 @@ gtk_xtext_selection_get (GtkWidget * widget,
 		}
 		break;
 	default:
-		new_text = g_locale_from_utf8 (stripped, len, NULL, &len, NULL);
+		new_text = g_locale_from_utf8 (stripped, len, NULL, &glen, NULL);
 		gtk_selection_data_set (selection_data_ptr, GDK_SELECTION_TYPE_STRING,
-										8, new_text, len);
+										8, new_text, glen);
 		g_free (new_text);
 	}
 

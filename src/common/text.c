@@ -446,7 +446,7 @@ int
 get_stamp_str (char *fmt, time_t tim, char **ret)
 {
 	char dest[128];
-	int len;
+	gsize len;
 
 	len = strftime (dest, sizeof (dest), fmt, localtime (&tim));
 	if (len)
