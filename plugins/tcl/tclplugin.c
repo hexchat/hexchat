@@ -15,7 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#define VERSION "1.0.45"
+#define VERSION "1.0.47"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -60,9 +60,26 @@ static int nextprocid = 0x1000;
 #define PROCPREFIX "__xctcl_"
 
 static char unknown[] = {
-    "proc ::unknown {args} {\n"
-        "global errorInfo errorCode\n"
-        "set cmd [lindex $args 0]\n" "if { [string index $cmd 0] == \"/\" } {\n" "command \"[string range $cmd 1 end] [join [lrange $args 1 end] \" \"]\"\n" "} else {\n" "return -code error \"invalid command name \\\"$cmd\\\"\"\n" "}\n" "}"
+"rename unknown iunknown\n"
+"proc ::unknown {args} {\n"
+"  global errorInfo errorCode\n"
+"  if { [string index [lindex $args 0] 0] == \"/\" } {\n"
+"    command \"[string range [join $args \" \"] 1 end]\"\n"
+"  } else {\n"
+"    set code [catch {uplevel iunknown $args} msg]\n"
+"    if {$code == 1} {\n"
+"      set new [split $errorInfo \\n]\n"
+"      set new [join [lrange $new 0 [expr {[llength $new] - 8}]] \\n]\n"
+"      return -code error -errorcode $errorCode -errorinfo $new $msg\n"
+"    } else {\n"
+"      return -code $code $msg\n"
+"    }\n"
+"  }\n"
+"}\n"
+"proc unsupported0 {from to {bytes \"\"}} {\n"
+"  set b [expr {$bytes == \"\" ? \"\" : \"-size [list $bytes]\"}]\n"
+"  eval [list fcopy $from $to] $b\n"
+"}\n"
 };
 
 static char sourcedirs[] = {
@@ -273,7 +290,7 @@ static void queue_nexttimer()
     time_t then;
 
     nexttimerindex = 0;
-    then = (time_t) 0xffffffff;
+    then = (time_t) 9999999999 ;
 
     for (x = 1; x < MAX_TIMERS; x++) {
         if (timers[x].timerid) {
@@ -285,7 +302,7 @@ static void queue_nexttimer()
     }
 }
 
-static int insert_timer(int seconds, char *script)
+static int insert_timer(int seconds, int count, char *script)
 {
     int x;
     int dummy;
@@ -309,6 +326,8 @@ static int insert_timer(int seconds, char *script)
             }
             timers[x].timerid = (nexttimerid++ % INT_MAX) + 1;
             timers[x].timestamp = now + seconds;
+            timers[x].count = count;
+            timers[x].seconds = seconds;
             timers[x].procPtr = StrDup(InternalProcName(id), &dummy);
             queue_nexttimer();
             return (timers[x].timerid);
@@ -341,12 +360,19 @@ static void do_timer()
     }
     xchat_set_context(ph, origctx);
 
-    timers[index].timerid = 0;
-    if (timers[index].procPtr != NULL) {
-        DeleteInternalProc(timers[index].procPtr);
-        Tcl_Free(timers[index].procPtr);
+    if (timers[index].count != -1)
+      timers[index].count--;
+
+    if (timers[index].count == 0) {
+      timers[index].timerid = 0;
+      if (timers[index].procPtr != NULL) {
+          DeleteInternalProc(timers[index].procPtr);
+          Tcl_Free(timers[index].procPtr);
+      }
+      timers[index].procPtr = NULL;
+    } else {
+      timers[index].timestamp += timers[index].seconds;
     }
-    timers[index].procPtr = NULL;
 
     queue_nexttimer();
 
@@ -638,6 +664,8 @@ static int tcl_timers(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
             Tcl_DStringAppendElement(&ds, myitoa((long)timers[x].timerid));
             Tcl_DStringAppendElement(&ds, myitoa((long)timers[x].timestamp - now));
             Tcl_DStringAppendElement(&ds, timers[x].procPtr);
+	    Tcl_DStringAppendElement(&ds, myitoa((long)timers[x].seconds));
+	    Tcl_DStringAppendElement(&ds, myitoa((long)timers[x].count));
             Tcl_DStringEndSublist(&ds);
         }
     }
@@ -652,15 +680,35 @@ static int tcl_timer(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
 {
     int seconds;
     int timerid;
+    int repeat = 0;
+    int count = 0;
+    int first = 1;
     char reply[32];
 
-    BADARGS(3, 3, " seconds {script | procname ?args?}");
+    BADARGS(3, 6, " ?-repeat? ?-count times? seconds {script | procname ?args?}");
 
-    if (Tcl_GetInt(irp, argv[1], &seconds) != TCL_OK) {
-        return TCL_ERROR;
+    while (argc--) {
+        if (strcasecmp(argv[first], "-repeat") == 0) {
+            repeat++;
+        } else if (strcasecmp(argv[first], "-count") == 0) {
+            if (Tcl_GetInt(irp, argv[++first], &count) != TCL_OK)
+                return TCL_ERROR;
+        } else {
+            break;
+        }
+        first++;
     }
 
-    if ((timerid = insert_timer(seconds, argv[2])) == -1) {
+    if (repeat && !count)
+      count = -1;
+
+    if (!count)
+      count = 1;
+
+    if (Tcl_GetInt(irp, argv[first++], &seconds) != TCL_OK)
+        return TCL_ERROR;
+
+    if ((timerid = insert_timer(seconds, count, argv[first++])) == -1) {
         Tcl_AppendResult(irp, "0", NULL);
         return TCL_ERROR;
     }

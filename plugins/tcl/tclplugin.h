@@ -37,6 +37,8 @@ typedef struct {
     int timerid;
     time_t timestamp;
     char *procPtr;
+    int count;
+    int seconds;
 } timer;
 
 typedef struct {
@@ -51,7 +53,7 @@ static char *StrDup(char *string, int *length);
 static char *myitoa(long value);
 static xchat_context *xchat_smart_context(char *arg1, char *arg2);
 static void queue_nexttimer();
-static int insert_timer(int seconds, char *script);
+static int insert_timer(int seconds, int count, char *script);
 static void do_timer();
 static int Server_raw_line(char *word[], char *word_eol[], void *userdata);
 static int Print_Hook(char *word[], void *userdata);
