@@ -129,14 +129,6 @@ if test "$memdebug" = yes; then
 fi
 
 dnl *********************************************************************
-dnl ** XLIB *************************************************************
-dnl *********************************************************************
-
-if test "$xlib" = yes; then
-	AC_DEFINE(USE_XLIB)
-fi
-
-dnl *********************************************************************
 dnl ** GLIB *************************************************************
 dnl *********************************************************************
 
@@ -206,6 +198,17 @@ gnome=no
 #		AC_MSG_RESULT(ok)
 #	fi
 #fi
+
+dnl *********************************************************************
+dnl ** XLIB *************************************************************
+dnl *********************************************************************
+
+if test "$xlib" = yes; then
+	AC_DEFINE(USE_XLIB)
+	if test "$system" = "SunOS"; then
+		LIBS="$LIBS -L/usr/openwin/lib -lX11"
+	fi
+fi
 
 dnl *********************************************************************
 dnl ** ZVT/SHELLTAB *****************************************************
@@ -340,6 +343,7 @@ AC_CHECK_FUNC(select, ,
 				AC_CHECK_LIB(cposix, select, ,
 					AC_CHECK_LIB(net, select, ,
 						AC_MSG_WARN(i can not find select.  you might need to help me)))))))
+AC_CHECK_LIB(socket, select)
 
 if test "$ipv6" = yes; then
 	AC_CHECK_FUNCS(getaddrinfo, have_getaddrinfo=yes)
@@ -531,9 +535,6 @@ AC_CHECK_FUNCS(stat64)
 
 dnl old solaris doesn't have this
 AC_CHECK_FUNCS(setenv)
-
-dnl purely for Solaris
-AC_CHECK_LIB(socket, select)
 
 AC_CHECK_FUNC(gethostbyname, ,
 	AC_CHECK_LIB(resolv, gethostbyname, ,
