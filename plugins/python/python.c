@@ -65,7 +65,7 @@
 
 #define VERSION_MAJOR 0
 #define VERSION_MINOR 1
-#define VERSION "0.1"
+#define VERSION "0.2"
 
 #ifdef WIN32
 #undef WITH_THREAD /* Thread support locks up xchat on Win32. */
@@ -472,7 +472,7 @@ Callback_Print(char *word[], void *userdata)
 		listsize++;
 	word_eol = (char **) g_malloc(sizeof(char*)*listsize+1);
 	if (word_eol == NULL) {
-		xchat_print(ph, "No enough memory to alloc word_eol "
+		xchat_print(ph, "Not enough memory to alloc word_eol "
 				"for python plugin callback.");
 		return 0;
 	}
@@ -482,7 +482,7 @@ Callback_Print(char *word[], void *userdata)
 	/* Then join it. */
 	word_eol_raw = g_strjoinv(" ", word_eol);
 	if (word_eol_raw == NULL) {
-		xchat_print(ph, "No enough memory to alloc word_eol_raw "
+		xchat_print(ph, "Not enough memory to alloc word_eol_raw "
 				"for python plugin callback.");
 		return 0;
 	}
@@ -630,7 +630,7 @@ XChatOut_write(PyObject *self, PyObject *args)
 		xchatout_buffer_size += data_size*2+16;
 		new_buffer = g_realloc(xchatout_buffer, xchatout_buffer_size);
 		if (new_buffer == NULL) {
-			xchat_print(ph, "No enough memory to print");
+			xchat_print(ph, "Not enough memory to print");
 			/* The system is out of resources. Let's help. */
 			g_free(xchatout_buffer);
 			xchatout_buffer = NULL;
@@ -1020,7 +1020,7 @@ ListItem_New(const char *listname)
 		} \
 		plugin->x = g_strdup(PyString_AsString(o)); \
 		if (plugin->x == NULL) { \
-			xchat_print(ph, "No enough memory to allocate " #x); \
+			xchat_print(ph, "Not enough memory to allocate " #x); \
 			goto error; \
 		} \
 	}
@@ -1828,7 +1828,7 @@ IInterp_Exec(char *command)
 	len = strlen(command);
 	buffer = (char *) g_malloc(len+2);
 	if (buffer == NULL) {
-		xchat_print(ph, "No enough memory for command buffer");
+		xchat_print(ph, "Not enough memory for command buffer");
 		goto fail;
 	}
 	memcpy(buffer, command, len);
