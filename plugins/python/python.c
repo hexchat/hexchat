@@ -526,6 +526,9 @@ Callback_Timer(void *userdata)
 	Hook *hook = (Hook *) userdata;
 	PyObject *retobj;
 	int ret = 0;
+	PyObject *plugin;
+
+	plugin = hook->plugin;
 
 	BEGIN_PLUGIN(hook->plugin);
 
@@ -542,7 +545,7 @@ Callback_Timer(void *userdata)
 	if (ret == 0)
 		Plugin_RemoveHook(hook->plugin, hook);
 
-	END_PLUGIN(hook->plugin);
+	END_PLUGIN(plugin);
 
 	return ret;
 }
