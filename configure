@@ -12386,6 +12386,7 @@ echo $ECHO_N "checking Python version... $ECHO_C" >&6
 		PY_EXEC_PREFIX=`$pythonpath -c 'import sys; print sys.exec_prefix'`
 				PY_VERSION=`$pythonpath -c 'import sys; print sys.version.split()[0]'`
 		PY_MAJOR=`$pythonpath -c 'import sys; print "%d.%d"%sys.version_info[:2]'`
+		PY_PATH=`$pythonpath -c 'import sys ; print sys.path[1][5:]'`
 		PY_OK=`$pythonpath -c 'import sys; sys.version_info[:2] >= (2,2) and sys.stdout.write("1")'`
 				echo "$as_me:$LINENO: result: $PY_VERSION" >&5
 echo "${ECHO_T}$PY_VERSION" >&6
@@ -12393,7 +12394,7 @@ echo "${ECHO_T}$PY_VERSION" >&6
 			echo "$as_me:$LINENO: checking Python compile flags" >&5
 echo $ECHO_N "checking Python compile flags... $ECHO_C" >&6
 			if test -f $PY_PREFIX/include/python$PY_MAJOR/Python.h; then
-				PY_LIBS="-L$PY_EXEC_PREFIX/lib/python$PY_MAJOR/config -lpython$PY_MAJOR -lpthread -lutil"
+				PY_LIBS="-L$PY_EXEC_PREFIX/$PY_PATH/config -lpython$PY_MAJOR -lpthread -lutil"
 				PY_CFLAGS="-I$PY_PREFIX/include/python$PY_MAJOR"
 				echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6
@@ -12537,7 +12538,67 @@ echo "${ECHO_T}no" >&6
 fi
 
 
+retry=no
 if test "$openssl" != no; then
+	# Extract the first word of "pkg-config", so it can be a program name with args.
+set dummy pkg-config; ac_word=$2
+echo "$as_me:$LINENO: checking for $ac_word" >&5
+echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
+if test "${ac_cv_path_pkgconfigpath+set}" = set; then
+  echo $ECHO_N "(cached) $ECHO_C" >&6
+else
+  case $pkgconfigpath in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_pkgconfigpath="$pkgconfigpath" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+  for ac_exec_ext in '' $ac_executable_extensions; do
+  if $as_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_path_pkgconfigpath="$as_dir/$ac_word$ac_exec_ext"
+    echo "$as_me:$LINENO: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+done
+
+  ;;
+esac
+fi
+pkgconfigpath=$ac_cv_path_pkgconfigpath
+
+if test -n "$pkgconfigpath"; then
+  echo "$as_me:$LINENO: result: $pkgconfigpath" >&5
+echo "${ECHO_T}$pkgconfigpath" >&6
+else
+  echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
+fi
+
+	echo "$as_me:$LINENO: checking for openssl through pkg-config" >&5
+echo $ECHO_N "checking for openssl through pkg-config... $ECHO_C" >&6
+	if $pkgconfigpath openssl --exists; then
+		CPPFLAGS="$CPPFLAGS `$pkgconfigpath openssl --cflags`"
+		LIBS="$LIBS `$pkgconfigpath openssl --libs`"
+		cat >>confdefs.h <<\_ACEOF
+#define USE_OPENSSL 1
+_ACEOF
+
+		echo "$as_me:$LINENO: result: yes" >&5
+echo "${ECHO_T}yes" >&6
+		openssl=yes
+	else
+		echo "$as_me:$LINENO: result: no" >&5
+echo "${ECHO_T}no" >&6
+		retry=yes
+	fi
+fi
+
+if test "$retry" = "yes"; then
 	unset openssl_path ac_cv_lib_ssl_SSL_new ac_cv_header_openssl_ssl_h
 	if test "$openssl" != yes; then
 		openssl_path=$openssl
