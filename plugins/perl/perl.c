@@ -815,13 +815,18 @@ static XS(XS_Xchat_unhook)
 	if (items != 1) {
 		xchat_print (ph, "Usage: Xchat::unhook(hook)");
 	} else {
-		hook = INT2PTR(xchat_hook *,SvIV(ST (0)));
-		userdata = (HookData*)xchat_unhook (ph, hook);
-		hook_list = g_slist_remove (hook_list, hook);
-
-		XPUSHs(userdata->userdata);
+	  if(looks_like_number(ST (0))) {
+		 hook = INT2PTR(xchat_hook *,SvIV(ST (0)));
+		 
+		 if(g_slist_find( hook_list, hook ) != NULL ) {
+			userdata = (HookData*)xchat_unhook (ph, hook);
+			hook_list = g_slist_remove (hook_list, hook);
+			XPUSHs(userdata->userdata);
+			XSRETURN(1);
+		 }
+	  }
+	  XSRETURN_EMPTY;
 	}
-	XSRETURN(1);
 }
 
 /* Xchat::_command(command) */
@@ -2112,14 +2117,14 @@ perl_init (void)
 "  my ($priority, $data) = ( Xchat::PRI_NORM, undef );\n"
 "  \n"
 "  if ( ref( $options ) eq 'HASH' ) {\n"
-"    if ( exists( $options->{priority} ) && defined( $options->{priority} ) ) {\n"
-"      $priority = $options->{priority};\n"
+"	 if ( exists( $options->{priority} ) && defined( $options->{priority} ) ) {\n"
+"		$priority = $options->{priority};\n"
 "    }\n"
 "    if ( exists( $options->{data} ) && defined( $options->{data} ) ) {\n"
 "      $data = $options->{data};\n"
 "    }\n"
 "  }\n"
-"\n"
+"  \n"
 "  return Xchat::_hook_server( $message, $priority, $callback, $data);\n"
 "\n"
 "}\n"
@@ -2299,6 +2304,7 @@ perl_init (void)
 "\n"
 "  return 0;\n"
 "}\n"
+
 
 
 	};
