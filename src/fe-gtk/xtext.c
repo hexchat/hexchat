@@ -1401,10 +1401,16 @@ lamejump:
 		gtk_xtext_render_ents (xtext, xtext->buffer->last_ent_start, xtext->buffer->last_ent_end);
 		/* now render the new mark, but skip overlaps */
 		if (start_ent == xtext->buffer->last_ent_start)
-			gtk_xtext_render_ents (xtext, start_ent->next, end_ent);
-		else if (end_ent == xtext->buffer->last_ent_end)
-			gtk_xtext_render_ents (xtext, start_ent, end_ent->prev);
-		else
+		{
+			/* if the new mark is a sub-set of the old, do nothing */
+			if (start_ent != end_ent)
+				gtk_xtext_render_ents (xtext, start_ent->next, end_ent);
+		} else if (end_ent == xtext->buffer->last_ent_end)
+		{
+			/* if the new mark is a sub-set of the old, do nothing */
+			if (start_ent != end_ent)
+				gtk_xtext_render_ents (xtext, start_ent, end_ent->prev);
+		} else
 			gtk_xtext_render_ents (xtext, start_ent, end_ent);
 	}
 

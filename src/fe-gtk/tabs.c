@@ -21,7 +21,6 @@
 
 #include "tabs.h"
 
-#undef ALPHA_SORT
 
 /* ignore "toggled" signal? */
 static int ignore_toggle = FALSE;
@@ -33,6 +32,7 @@ static int ignore_toggle = FALSE;
  *   "c" tab-focus callback function
  *   "foc" currently focused tab
  *   "i" inner hbox (inside the viewport)
+ *   "s" sorted (boolean)
  *   "v" set to 1 if group is vertical type
  *   "b1" first arrow button
  *   "b2" second arrow button
@@ -240,7 +240,7 @@ tab_pressed_cb (GtkToggleButton *tab, GtkWidget *group)
 }
 
 GtkWidget *
-tab_group_new (void *callback, gboolean vertical)
+tab_group_new (void *callback, gboolean vertical, gboolean sorted)
 {
 	GtkWidget *box;
 	GtkWidget *viewport;
@@ -257,6 +257,8 @@ tab_group_new (void *callback, gboolean vertical)
 	g_object_set_data (G_OBJECT (group), "c", callback);
 	gtk_container_set_border_width (GTK_CONTAINER (group), 2);
 	gtk_widget_show (group);
+
+	g_object_set_data (G_OBJECT (group), "s", GINT_TO_POINTER (sorted));
 
 	viewport = gtk_viewport_new (0, 0);
 	gtk_viewport_set_shadow_type (GTK_VIEWPORT (viewport), GTK_SHADOW_NONE);
@@ -489,14 +491,24 @@ tab_group_get_focused (GtkWidget *group)
 }
 
 static void
-tab_add_sorted (GtkWidget *box, GtkWidget *tab)
+tab_add_sorted (GtkWidget *group, GtkWidget *box, GtkWidget *tab)
 {
-#ifdef ALPHA_SORT
 	GList *list;
 	GtkBoxChild *child;
-	char *name = GTK_BUTTON (tab)->label_text;
+	char *name;
 	int i = 0;
 
+	if (!GPOINTER_TO_INT (g_object_get_data (G_OBJECT (group), "s")))
+	{
+		gtk_box_pack_start (GTK_BOX (box), tab, 0, 0, 0);
+		gtk_widget_show (tab);
+		return;
+	}
+
+	/* sorting TODO:
+    *   - always put servertab first
+    *   - move tab if renamed */
+	name = GTK_BUTTON (tab)->label_text;
 	list = GTK_BOX (box)->children;
 	while (list)
 	{
@@ -514,10 +526,6 @@ tab_add_sorted (GtkWidget *box, GtkWidget *tab)
 		i++;
 		list = list->next;
 	}
-#endif
-
-	gtk_box_pack_start (GTK_BOX (box), tab, 0, 0, 0);
-	gtk_widget_show (tab);
 }
 
 static void
@@ -538,7 +546,7 @@ tab_add_real (GtkWidget *group, GtkWidget *tab, void *family)
 
 		if (g_object_get_data (G_OBJECT (box), "f") == family)
 		{
-			tab_add_sorted (box, tab);
+			tab_add_sorted (group, box, tab);
 			gtk_widget_queue_resize (inner->parent);
 			return;
 		}
@@ -828,7 +836,7 @@ tab_group_set_orientation (GtkWidget *group, gboolean vertical)
 		return group;
 
 	new_group = tab_group_new (g_object_get_data (G_OBJECT (group), "c"),
-								vertical);
+								vertical, FALSE);
 	g_object_set_data (G_OBJECT (new_group), "foc",
 						g_object_get_data (G_OBJECT (group), "foc"));
 	box = g_object_get_data (G_OBJECT (group), "i");

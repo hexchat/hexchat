@@ -1998,7 +1998,7 @@ mg_create_tabs (session_gui *gui, GtkWidget *box)
 	if (prefs.tabs_position == 2 || prefs.tabs_position == 3)
 		vert = TRUE;
 
-	gui->tabs_box = tab_group_new (mg_switch_tab_cb, vert);
+	gui->tabs_box = tab_group_new (mg_switch_tab_cb, vert, FALSE);
 	gtk_table_attach (GTK_TABLE (gui->main_table), gui->tabs_box,
 						1, 2, 0, 1, GTK_FILL, GTK_FILL, 0, 0);
 }

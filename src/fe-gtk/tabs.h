@@ -1,4 +1,4 @@
-GtkWidget *tab_group_new (void *callback, gboolean vertical);
+GtkWidget *tab_group_new (void *callback, gboolean vertical, gboolean sorted);
 void tab_group_switch (GtkWidget *group, int relative, int num);
 void tab_group_cleanup (GtkWidget *group);
 int tab_group_get_size (GtkWidget *group);
