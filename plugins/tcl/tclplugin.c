@@ -2051,7 +2051,7 @@ int xchat_plugin_init(xchat_plugin * plugin_handle, char **plugin_name, char **p
     Null_Command_hook = xchat_hook_command(ph, "", XCHAT_PRI_NORM, Null_Command_Alias, "", 0);
 
     banner();
-    xchat_print(ph, "Tcl interface loaded successfully!\n");
+    xchat_print(ph, "Tcl interface loaded.\n");
 
     return 1;                   /* return 1 for success */
 }
