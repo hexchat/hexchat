@@ -2522,7 +2522,11 @@ gtk_xtext_render_str (GtkXText * xtext, int y, textentry * ent, unsigned char *s
 				{
 					xtext->num[xtext->nc] = 0;
 					xtext->nc = 0;
-					col_num = atoi (xtext->num) % 16;
+					col_num = atoi (xtext->num);
+					if (col_num == 99)	/* mIRC lameness */
+						col_num = 18;
+					else
+						col_num = col_num % 16;
 					xtext->col_fore = col_num;
 					if (!mark)
 						xtext_set_fg (xtext, gc, col_num);
@@ -2543,12 +2547,12 @@ gtk_xtext_render_str (GtkXText * xtext, int y, textentry * ent, unsigned char *s
 					xtext->num[xtext->nc] = 0;
 					xtext->nc = 0;
 					col_num = atoi (xtext->num);
-					if (col_num == 99)	/* mIRC lameness */
-						col_num = 19;
-					else
-						col_num = col_num % 16;
 					if (xtext->parsing_backcolor)
 					{
+						if (col_num == 99)	/* mIRC lameness */
+							col_num = 19;
+						else
+							col_num = col_num % 16;
 						if (col_num == 19)
 							xtext->backcolor = FALSE;
 						else
@@ -2558,6 +2562,10 @@ gtk_xtext_render_str (GtkXText * xtext, int y, textentry * ent, unsigned char *s
 						xtext->col_back = col_num;
 					} else
 					{
+						if (col_num == 99)	/* mIRC lameness */
+							col_num = 18;
+						else
+							col_num = col_num % 16;
 						if (!mark)
 							xtext_set_fg (xtext, gc, col_num);
 						xtext->col_fore = col_num;
