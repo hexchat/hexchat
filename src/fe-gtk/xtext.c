@@ -38,8 +38,6 @@
 #define USE_XLIB
 #endif
 
-#undef USE_MMX
-
 #include <string.h>
 #include <ctype.h>
 #include <stdlib.h>
@@ -432,32 +430,42 @@ backend_font_open (GtkXText *xtext, char *name)
 	if (!xtext->font->font)
 		xtext->font->font = pango_font_description_from_string ("sans 11");
 
-	if (!xtext->font->font)
-		xtext->font = NULL;
-	else
+	if (xtext->font->font)
 	{
-		backend_init (xtext);
-		pango_layout_set_font_description (xtext->layout, xtext->font->font);
-
-		/* vte does it this way */
-		context = gtk_widget_get_pango_context (GTK_WIDGET (xtext));
-		lang = pango_context_get_language (context);
-		metrics = pango_context_get_metrics (context, xtext->font->font, lang);
-		xtext->font->ascent = pango_font_metrics_get_ascent (metrics) / PANGO_SCALE;
-		xtext->font->descent = pango_font_metrics_get_descent (metrics) / PANGO_SCALE;
-		pango_font_metrics_unref (metrics);
-
-		/* oooh, good kludge */
-		/*pango_layout_set_text (xtext->layout, "jy", 2);
-		pango_layout_get_pixel_extents (xtext->layout, NULL, &rect);
-		xtext->font->ascent = rect.height - rect.y;
-		xtext->font->descent = rect.y;
-		if (xtext->font->descent < 2)
+		if (pango_font_description_get_size (xtext->font->font) == 0)
 		{
-			xtext->font->ascent -= 2;
-			xtext->font->descent = 2;
-		}*/
+			pango_font_description_free (xtext->font->font);
+			xtext->font->font = pango_font_description_from_string ("sans 11");
+		}
 	}
+
+	if (!xtext->font->font)
+	{
+		xtext->font = NULL;
+		return;
+	}
+
+	backend_init (xtext);
+	pango_layout_set_font_description (xtext->layout, xtext->font->font);
+
+	/* vte does it this way */
+	context = gtk_widget_get_pango_context (GTK_WIDGET (xtext));
+	lang = pango_context_get_language (context);
+	metrics = pango_context_get_metrics (context, xtext->font->font, lang);
+	xtext->font->ascent = pango_font_metrics_get_ascent (metrics) / PANGO_SCALE;
+	xtext->font->descent = pango_font_metrics_get_descent (metrics) / PANGO_SCALE;
+	pango_font_metrics_unref (metrics);
+
+	/* oooh, good kludge */
+	/*pango_layout_set_text (xtext->layout, "jy", 2);
+	pango_layout_get_pixel_extents (xtext->layout, NULL, &rect);
+	xtext->font->ascent = rect.height - rect.y;
+	xtext->font->descent = rect.y;
+	if (xtext->font->descent < 2)
+	{
+		xtext->font->ascent -= 2;
+		xtext->font->descent = 2;
+	}*/
 }
 
 static int

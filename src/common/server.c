@@ -75,12 +75,17 @@ static int server_cleanup (server * serv);
 static void server_connect (server *serv, char *hostname, int port, int no_login);
 
 
+/* actually send to the socket. This might do a character translation or
+   send via SSL */
+
 static int
-tcp_send_real_real (server *serv, char *buf, int len)
+tcp_send_real (server *serv, char *buf, int len)
 {
 	int ret = 0;
 	char *locale;
 	int loc_len;
+
+	fe_add_rawlog (serv, buf, len, TRUE);
 
 	if (serv->encoding == NULL)	/* system */
 		locale = g_locale_from_utf8 (buf, len, NULL, &loc_len, NULL);
@@ -110,21 +115,6 @@ tcp_send_real_real (server *serv, char *buf, int len)
 		ret = send (serv->sok, buf, len, 0);
 #endif
 	}
-
-	return ret;
-}
-
-/* actually send to the socket. This might do a character translation or
-   send via SSL */
-
-static int
-tcp_send_real (server *serv, char *buf, int len)
-{
-	int ret;
-	unsigned char *tbuf = buf;
-
-	fe_add_rawlog (serv, tbuf, TRUE);
-	ret = tcp_send_real_real (serv, tbuf, len);
 
 	return ret;
 }
@@ -325,7 +315,7 @@ server_inline (server *serv, char *line, int len)
 	/* we really need valid UTF-8 now */
 	conv = text_validate (&line);
 
-	fe_add_rawlog (serv, line, FALSE);
+	fe_add_rawlog (serv, line, strlen (line), FALSE);
 	url_check (line);
 
 	/* let proto-irc.c handle it */

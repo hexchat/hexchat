@@ -1004,6 +1004,7 @@ Optional Features:
   --enable-socks          enable use of SOCKS5 (default: no)
   --enable-hebrew         enable Hebrew support (default: no)
   --enable-ipv6           enable IPv6 (default: no)
+  --enable-xft            enable use of Xft directly (default: no)
   --enable-openssl=PATH   enable use of openSSL
   --disable-gtkfe         disable building gtk frontend
   --disable-textfe        disable building text frontend
@@ -1013,7 +1014,6 @@ Optional Features:
   --disable-perl          don't build the perl plugin
   --disable-plugin        disable plugin support
   --disable-mmx           disable MMX assembly routines
-  --disable-xft           disable use of Xft
   --disable-glibtest      do not try to compile and run a test GLIB program
   --disable-gtktest       do not try to compile and run a test GTK+ program
 
@@ -11058,8 +11058,6 @@ _ACEOF
 
 
 
-
-
 #AH_VERBATIM([USE_ZVT],[#undef USE_ZVT])
 
 
@@ -11207,6 +11205,14 @@ else
   ipv6=no
 fi;
 
+# Check whether --enable-xft or --disable-xft was given.
+if test "${enable_xft+set}" = set; then
+  enableval="$enable_xft"
+  xft=$enableval
+else
+  xft=no
+fi;
+
 #AC_ARG_ENABLE(japanese-conv,
 #[  --enable-japanese-conv  Enable Japanese code conversion support.
 #                          iconv.h is needed. (default: no)],
@@ -11288,13 +11294,6 @@ else
   mmx=yes
 fi;
 
-# Check whether --enable-xft or --disable-xft was given.
-if test "${enable_xft+set}" = set; then
-  enableval="$enable_xft"
-  xft=$enableval
-else
-  xft=yes
-fi;
 
 
 if test "$debug" = yes; then
@@ -12060,13 +12059,6 @@ done
 _ACEOF
 
 	fi
-fi
-
-if test "$xft" != yes; then
-	cat >>confdefs.h <<\_ACEOF
-#define USE_PANGO 1
-_ACEOF
-
 fi
 
 

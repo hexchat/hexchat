@@ -128,15 +128,13 @@ open_rawlog (struct server *serv)
 }
 
 void
-fe_add_rawlog (server *serv, char *text, int outbound)
+fe_add_rawlog (server *serv, char *text, int len, int outbound)
 {
-	int len;
 	char *new_text;
 
 	if (!serv->gui->rawlog_window)
 		return;
 
-	len = strlen (text);
 	new_text = malloc (len + 7);
 
 	len = sprintf (new_text, "\0033>>\017 %s", text);

@@ -25,7 +25,6 @@ AH_VERBATIM([USE_JCODE],[#undef USE_JCODE])
 AH_VERBATIM([USE_MMX],[#undef USE_MMX])
 AH_VERBATIM([USE_OPENSSL],[#undef USE_OPENSSL])
 AH_VERBATIM([USE_PLUGIN],[#undef USE_PLUGIN])
-AH_VERBATIM([USE_PANGO],[#undef USE_PANGO])
 AH_VERBATIM([USE_XFT],[#undef USE_XFT])
 AH_VERBATIM([USE_XLIB],[#undef USE_XLIB])
 #AH_VERBATIM([USE_ZVT],[#undef USE_ZVT])
@@ -73,6 +72,10 @@ AC_ARG_ENABLE(ipv6,
 [  --enable-ipv6           enable IPv6 (default: no)],
         ipv6=$enableval, ipv6=no)
 
+AC_ARG_ENABLE(xft,
+[  --enable-xft            enable use of Xft directly (default: no)],
+        xft=$enableval, xft=no)
+
 #AC_ARG_ENABLE(japanese-conv, 
 #[  --enable-japanese-conv  Enable Japanese code conversion support.
 #                          iconv.h is needed. (default: no)],
@@ -118,9 +121,6 @@ AC_ARG_ENABLE(mmx,
 [  --disable-mmx           disable MMX assembly routines],
         mmx=$enableval, mmx=yes)
 
-AC_ARG_ENABLE(xft,
-[  --disable-xft           disable use of Xft],
-        xft=$enableval, xft=yes)
 
 dnl *********************************************************************
 dnl ** DEBUG ************************************************************
@@ -183,11 +183,6 @@ if test "$xft" = yes; then
 	if test "$xft" = yes; then
 		AC_DEFINE(USE_XFT)
 	fi
-fi
-
-dnl slow, but beats gdk_text_*
-if test "$xft" != yes; then
-	AC_DEFINE(USE_PANGO)
 fi
 
 dnl *********************************************************************

@@ -93,9 +93,10 @@ static const setting textbox_settings[] =
 
 static const setting inputbox_settings[] =
 {
-	{ST_TOGGLE, N_("Automatic nick completion"), P_OFFINT(nickcompletion),0,0,0},
-	{ST_TOGGLE, N_("Use the Text box font"), P_OFFINT(style_inputbox),0,0,0},
 	{ST_TOGGLE, N_("Interpret %nnn as an ASCII value"), P_OFFINT(perc_ascii),0,0,0},
+	{ST_TOGGLE, N_("Automatic nick completion"), P_OFFINT(nickcompletion),0,0,0},
+	{ST_TOGGLE, N_("Interpret %C, %B as Color, Bold etc"), P_OFFINT(perc_color),0,0,0},
+	{ST_TOGGLE, N_("Use the Text box font"), P_OFFINT(style_inputbox),0,0,0},
 	{ST_ENTRY, N_("Nick completion suffix:"), P_OFFSET(nick_suffix),0,0,sizeof prefs.nick_suffix},
 	{ST_END, 0, 0, 0, 0, 0}
 };
@@ -121,12 +122,12 @@ static char *ulmenutext[] =
 
 static const setting userlist_settings[] =
 {
-	{ST_TOGGLE, N_("Show hostnames in userlist"), P_OFFINT(showhostname_in_userlist), 0, 0, 0},
-	{ST_TOGGLE, N_("Userlist buttons enabled"), P_OFFINT(userlistbuttons), 0, 0, 0},
-	{ST_ENTRY,	N_("Double-click command:"), P_OFFSET(doubleclickuser), 0, 0, sizeof prefs.doubleclickuser},
-	{ST_MENU,	N_("Userlist sorted by:"), P_OFFINT(userlist_sort), 0, ulmenutext, 0},
 	{ST_MENU,	N_("Lag meter:"), P_OFFINT(lagometer), 0, lagmenutext, 0},
 	{ST_MENU,	N_("Throttle meter:"), P_OFFINT(throttlemeter), 0, lagmenutext, 0},
+	{ST_MENU,	N_("Userlist sorted by:"), P_OFFINT(userlist_sort), 0, ulmenutext, 0},
+	{ST_ENTRY,	N_("Double-click command:"), P_OFFSET(doubleclickuser), 0, 0, sizeof prefs.doubleclickuser},
+	{ST_TOGGLE, N_("Show hostnames in userlist"), P_OFFINT(showhostname_in_userlist), 0, 0, 0},
+	{ST_TOGGLE, N_("Userlist buttons enabled"), P_OFFINT(userlistbuttons), 0, 0, 0},
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
@@ -149,10 +150,11 @@ static char *tabpos[] =
 
 static const setting tabs_settings[] =
 {
+	{ST_MENU,	N_("Show tabs at:"), P_OFFINT(tabs_position), 0, tabpos, 0},
 	{ST_MENU,	N_("Open channels in:"), P_OFFINT(tabchannels), 0, tabwin, 0},
 	{ST_MENU,	N_("Open dialogs in:"), P_OFFINT(privmsgtab), 0, tabwin, 0},
 	{ST_MENU,	N_("Open utilities in:"), P_OFFINT(windows_as_tabs), N_("Open DCC, Ignore, Notify etc, in tabs or windows?"), tabwin, 0},
-	{ST_MENU,	N_("Show tabs at:"), P_OFFINT(tabs_position), 0, tabpos, 0},
+	{ST_NUMBER,	N_("Shorten tabs to:"), P_OFFINT(truncchans), 0, (char **)N_("letters."), 99},
 	{ST_TOGGLE, N_("Open tab for server messages"), P_OFFINT(use_server_tab), 0, 0, 0},
 	{ST_TOGGLE, N_("Only highlight tabs on channel messages"), P_OFFINT(limitedtabhighlight), 0, 0, 0},
 	{ST_TOGGLE, N_("Open tab for server notices"), P_OFFINT(notices_tabs), 0, 0, 0},
@@ -300,6 +302,12 @@ setup_create_spin (GtkWidget *table, int row, const setting *set)
 	g_signal_connect (G_OBJECT (wid), "value-changed",
 							G_CALLBACK (setup_spin_cb), (gpointer)set);
 	gtk_box_pack_start (GTK_BOX (rbox), wid, 0, 0, 0);
+
+	if (set->list)
+	{
+		label = gtk_label_new (_((char *)set->list));
+		gtk_box_pack_start (GTK_BOX (rbox), label, 0, 0, 5);
+	}
 }
 
 
@@ -703,7 +711,7 @@ setup_create_color_page (void)
 	setup_create_other_color (_("New Data:"), 20, 10, tab);
 	setup_create_other_color (_("New Message:"), 22, 11, tab);
 	setup_create_other_color (_("Highlight:"), 21, 12, tab);
-	
+
 	return box;
 }
 

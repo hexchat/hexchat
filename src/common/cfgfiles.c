@@ -463,6 +463,7 @@ load_config (void)
 	memset (&prefs, 0, sizeof (struct xchatprefs));
 
 	/* put in default values, anything left out is automatically zero */
+	prefs.timestamp_logs = 1;
 	prefs.truncchans = 20;
 	prefs.autoresume = 1;
 	prefs.show_away_once = 1;

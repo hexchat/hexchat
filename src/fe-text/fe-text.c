@@ -586,7 +586,7 @@ fe_beep (void)
 }
 
 void
-fe_add_rawlog (struct server *serv, char *text, int outbound)
+fe_add_rawlog (struct server *serv, char *text, int len, int outbound)
 {
 }
 void
