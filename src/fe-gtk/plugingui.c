@@ -136,8 +136,11 @@ plugingui_unload (GtkWidget * wid, gpointer unused)
 	} else
 	{
 		/* let python.so or perl.so handle it */
-		buf = malloc (strlen (file) + 8);
-		sprintf (buf, "UNLOAD %s", file);
+		buf = malloc (strlen (file) + 10);
+		if (strchr (file, ' '))
+			sprintf (buf, "UNLOAD \"%s\"", file);
+		else
+			sprintf (buf, "UNLOAD %s", file);
 		handle_command (current_sess, buf, FALSE);
 		free (buf);
 	}

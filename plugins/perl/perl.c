@@ -1111,13 +1111,29 @@ static int
 perl_command_unload (char *word[], char *word_eol[], void *userdata)
 {
 	int len;
+	struct perlscript *scp;
+	GSList *list;
 
+	/* try it by filename */
 	len = strlen (word[2]);
 	if (len > 3 && strcasecmp (".pl", word[2] + len - 3) == 0)
 	{
 		/* if only unloading was possible with this shitty interface :( */
 		xchat_print (ph, "Unloading individual perl scripts is not supported.\n");
 		return XCHAT_EAT_XCHAT;
+	}
+
+	/* try it by script name */
+	list = perl_list;
+	while (list)
+	{
+		scp = list->data;
+		if (strcasecmp (scp->name, word[2]) == 0)
+		{
+			xchat_print (ph, "Unloading individual perl scripts is not supported.\n");
+			return XCHAT_EAT_XCHAT;
+		}
+		list = list->next;
 	}
 
 	return XCHAT_EAT_NONE;
