@@ -83,7 +83,7 @@ typedef struct restore_gui
 {
 	/* banlist stuff */
 	GtkWidget *banlist_window;
-	GtkWidget *banlist_clistBan;
+	GtkWidget *banlist_treeview;
 	GtkWidget *banlist_butRefresh;
 
 	GtkWidget *tab;		/* toggleButton */

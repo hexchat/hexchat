@@ -24,7 +24,6 @@
 #include <sys/stat.h>
 #ifdef WIN32
 #include <sys/timeb.h>
-#include <winsock.h>
 #include <process.h>
 #else
 #include <sys/time.h>
@@ -38,6 +37,9 @@
 #include <ctype.h>
 #include "util.h"
 #include "../../config.h"
+
+#include "inet.h"
+
 #ifdef USING_FREEBSD
 #include <sys/sysctl.h>
 #endif

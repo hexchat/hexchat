@@ -428,17 +428,26 @@ text_validate (char **text, int *len)
 {
 	char *utf;
 	gsize utf_len;
+	GError *error = NULL;
 
 	/* valid utf8? */
 	if (g_utf8_validate (*text, *len, 0))
 		return NULL;
 
 	/* maybe it's iso-8859-1 */
-	utf = g_convert (*text, *len, "UTF-8", "ISO-8859-1", 0, &utf_len, 0);
+	utf = g_convert (*text, *len, "UTF-8", "ISO-8859-1", 0, &utf_len, &error);
 	if (!utf)       /* should never happen; all text is iso-8859-1 valid */
 	{
-		*text = g_strdup ("%INVALID%");
-		*len = 8;
+		if (error)
+		{
+			*text = g_strdup_printf ("ERROR:\t%s\n", error->message);
+			*len = strlen (*text);
+			g_error_free (error);
+		} else
+		{
+			*text = g_strdup ("%INVALID%");
+			*len = 9;
+		}
 	} else
 	{
 		*text = utf;

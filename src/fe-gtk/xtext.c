@@ -47,6 +47,7 @@
 #include <gtk/gtkmain.h>
 #include <gtk/gtksignal.h>
 #include <gtk/gtkselection.h>
+#include <gtk/gtkclipboard.h>
 
 #ifdef USE_XLIB
 #include <gdk/gdkx.h>
@@ -65,7 +66,6 @@
 #ifdef WIN32
 #include <windows.h>
 #include <gdk/gdkwin32.h>
-#include <gtk/gtkclipboard.h>
 #endif
 
 /* is delimiter */
@@ -1771,7 +1771,6 @@ gtk_xtext_motion_notify (GtkWidget * widget, GdkEventMotion * event)
 static void
 gtk_xtext_set_clip_owner (GtkWidget * xtext, GdkEventButton * event)
 {
-#ifdef WIN32
 	char *str;
 	int len;
 
@@ -1783,7 +1782,6 @@ gtk_xtext_set_clip_owner (GtkWidget * xtext, GdkEventButton * event)
 		free (str);
 	}
 
-#endif
 	gtk_selection_owner_set (xtext, GDK_SELECTION_PRIMARY, event->time);
 
 	if (GTK_XTEXT (xtext)->selection_buffer &&

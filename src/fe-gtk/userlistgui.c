@@ -235,14 +235,10 @@ fe_userlist_remove (session *sess, struct User *user)
 void
 fe_userlist_insert (session *sess, struct User *newuser, int row, int sel)
 {
-	char *name[2];
 	gfloat val;
 	GtkTreeModel *model = sess->res->user_model;
 	GdkPixbuf *pix;
 	GtkTreeIter iter;
-
-	name[0] = newuser->nick;
-	name[1] = newuser->hostname;
 
 	val = userlist_get_value (sess->gui->user_tree);
 
@@ -283,7 +279,7 @@ fe_userlist_insert (session *sess, struct User *newuser, int row, int sel)
 
 	/* is it the front-most tab? */
 	if (gtk_tree_view_get_model (GTK_TREE_VIEW (sess->gui->user_tree))
-		 == sess->res->user_model)
+		 == model)
 	{
 		userlist_set_value (sess->gui->user_tree, val);
 
