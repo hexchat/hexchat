@@ -404,8 +404,8 @@ tab_group_switch (GtkWidget *group, int relative, int num)
 {
 	int i, max;
 
-	while (g_main_pending ())
-		g_main_iteration (TRUE);
+	/*while (g_main_pending ())
+		g_main_iteration (TRUE);*/
 
 	tab_group_resize (group);
 
