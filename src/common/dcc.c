@@ -1216,13 +1216,11 @@ dcc_send (struct session *sess, char *tbuf, char *to, char *file, int maxcps)
 
 	if (stat (file_fs, &st) != -1)
 	{
-#ifdef HAVE_STAT64
-		if (st.st_size > 4294967295U)
+		if (sizeof (st.st_size) > 4 && st.st_size > 4294967295U)
 		{
 			PrintText (sess, "Cannot send files larger than 4 GB.\n");
 			goto noaxs;
 		}
-#endif
 
 		if (*file_part (file_fs) && !S_ISDIR (st.st_mode))
 		{
