@@ -15,7 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#define VERSION "1.0.35"
+#define VERSION "1.0.39"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -170,6 +170,7 @@ static char *myitoa(int value)
     sprintf(result, "%d", value);
     return result;
 }
+
 
 static xchat_context *xchat_smart_context(char *arg1, char *arg2)
 {
@@ -1034,7 +1035,12 @@ static int tcl_getlist(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
                 sattr = xchat_list_str(ph, list, (char *) field);
                 if (strcmp(field, "context") == 0) {
                     ctx = (xchat_context *) sattr;
-                    Tcl_DStringAppendElement(&ds, myitoa(ctx));
+                    xchat_set_context(ph, ctx);
+                    Tcl_DStringStartSublist(&ds);
+                    Tcl_DStringAppendElement(&ds, "ctx");
+                    Tcl_DStringAppendElement(&ds, xchat_get_info(ph, "server"));
+                    Tcl_DStringAppendElement(&ds, xchat_get_info(ph, "channel"));
+                    Tcl_DStringEndSublist(&ds);
                 } else
                     Tcl_DStringAppendElement(&ds, "*");
                 break;
@@ -1191,10 +1197,18 @@ static int tcl_print(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
 static int tcl_setcontext(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
 {
     xchat_context *ctx = NULL;
+    int list_argc;
+    char **list_argv;
 
     BADARGS(2, 2, " context");
 
-    ctx = atoi(argv[1]);
+    if (Tcl_SplitList(interp, argv[1], &list_argc, &list_argv) == TCL_OK) {
+        if ((argc != 3) || strcmp(list_argv[0], "ctx")) {
+            Tcl_AppendResult(irp, "Invalid context", NULL);
+            return TCL_ERROR;
+        }
+        ctx = xchat_find_context(ph, list_argv[1], list_argv[2]);
+    }
 
     CHECKCTX(ctx);
 
@@ -1205,7 +1219,8 @@ static int tcl_setcontext(ClientData cd, Tcl_Interp * irp, int argc, char *argv[
 
 static int tcl_findcontext(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
 {
-    xchat_context *ctx = NULL;
+    xchat_context *origctx, *ctx = NULL;
+    Tcl_DString ds;
 
     BADARGS(1, 3, " ?server|network? ?channel?");
 
@@ -1224,20 +1239,40 @@ static int tcl_findcontext(ClientData cd, Tcl_Interp * irp, int argc, char *argv
 
     CHECKCTX(ctx);
 
-    Tcl_AppendResult(irp, myitoa(ctx), NULL);
+    Tcl_DStringInit(&ds);
+
+    origctx = xchat_get_context(ph);
+    xchat_set_context(ph, ctx);
+    Tcl_DStringAppendElement(&ds, "ctx");
+    Tcl_DStringAppendElement(&ds, xchat_get_info(ph, "server"));
+    Tcl_DStringAppendElement(&ds, xchat_get_info(ph, "channel"));
+    xchat_set_context(ph, origctx);
+
+    Tcl_AppendResult(irp, ds.string, NULL);
+
+    Tcl_DStringFree(&ds);
 
     return TCL_OK;
 }
 
-static int tcl_getcontext (ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
+static int tcl_getcontext(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
 {
     xchat_context *ctx = NULL;
+    Tcl_DString ds;
 
     BADARGS(1, 1, "");
 
+    Tcl_DStringInit(&ds);
+
     ctx = xchat_get_context(ph);
 
-    Tcl_AppendResult(irp, myitoa(ctx), NULL);
+    Tcl_DStringAppendElement(&ds, "ctx");
+    Tcl_DStringAppendElement(&ds, xchat_get_info(ph, "server"));
+    Tcl_DStringAppendElement(&ds, xchat_get_info(ph, "channel"));
+
+    Tcl_AppendResult(irp, ds.string, NULL);
+
+    Tcl_DStringFree(&ds);
 
     return TCL_OK;
 }
