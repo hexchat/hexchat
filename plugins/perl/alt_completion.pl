@@ -2,23 +2,35 @@
 use strict;
 use warnings;
 
-my $previous_pos = 0;
-my @completions;
-my $completion_idx = 0;
-
-Xchat::register( "Tab Completion", "1.0001",
+Xchat::register( "Tab Completion", "1.0002",
                  "Alternative tab completion behavior" );
-Xchat::hook_print( "Key Press", \&tab_complete );
-sub tab_complete {
+Xchat::hook_print( "Key Press", \&complete );
+Xchat::hook_print( "Close Context", \&close_context );
+
+my %completions;
+my %case_map = ( "[" => "[\\\\[{]",
+                 "{" => "[\\\\[{]",
+                 "}" => "[\\\\]}]",
+                 "]" => "[\\\\]}]",
+                 "\\" => "[\\\\|]",
+                 "|" => "[\\\\|]"
+               );
+
+sub complete {
   # if $_[0][0] contains the value of the key pressed
   # the value for tab is 0xFF09
   # we don't care about other keys
   return Xchat::EAT_NONE unless $_[0][0] == 0xFF09;
   
-  # In case some other script decides to be stupid and
-  # alter the base index
-  local $[ = 0;
+  # we also don't care about other kinds of tabs besides channel tabs
+  return Xchat::EAT_NONE unless Xchat::get_info( "channel" ) =~ m/^(?:#|&)/;
 
+  # In case some other script decides to be stupid and alter the base index
+  local $[ = 0;
+  
+  my $context = Xchat::get_context;
+  $completions{$context} ||= {};
+  my $completions = $completions{$context};
   my $suffix = Xchat::get_prefs( "completion_suffix" );
   $suffix =~ s/\s+//g;
   $suffix .= " ";
@@ -42,13 +54,6 @@ sub tab_complete {
   $left = substr( $left, 0, -length $word );
 
   # fix $word so { equals [, ] equals }, \ equals |
-  my %case_map = ( "[" => "[\\\\[{]",
-                   "{" => "[\\\\[{]",
-                   "}" => "[\\\\]}]",
-                   "]" => "[\\\\]}]",
-                   "\\" => "[\\\\|]",
-                   "|" => "[\\\\|]"
-                 );
   $word =~ s/([[\]{}|])/$case_map{$1}/g;
 
 
@@ -60,27 +65,30 @@ sub tab_complete {
     my $completed;
 
     # continuing from a previous completion
-    if ( @completions && $cursor_pos == $previous_pos ) {
-      $completion_idx = ( $completion_idx + 1 )
-        % @completions;
-      $completed = $completions[ $completion_idx ];
+    if ( exists $completions->{nicks} && @{$completions->{nicks}}
+         && $cursor_pos == $completions->{pos} ) {
+      $completions->{index} =
+        ( $completions->{index} + 1 ) % @{$completions->{nicks}};
+      $completed = $completions->{nicks}[ $completions->{index} ];
     } else {
-      @completions = map { $_->{nick} }
-        sort { $b->{lasttalk} <=> $a->{lasttalk}}
-          grep { $_->{nick} =~ /^$word/i }
-            Xchat::get_list( "users" );
-      $completion_idx = 0;
-      $completed = $completions[ $completion_idx ];
+      $completions->{nicks} = [ map { $_->{nick} }
+                                sort { $b->{lasttalk} <=> $a->{lasttalk}}
+                                grep { $_->{nick} =~ /^$word/i }
+                                Xchat::get_list( "users" )
+                              ];
+      $completions->{index} = 0;
+      $completed = $completions->{nicks}[ $completions->{index} ];
     }
 
     my $completion_amount = Xchat::get_prefs( "completion_amount" );
     # don't cycle if the number of possible completions is greater than
     # completion_amount
-    if( @completions > $completion_amount && @completions != 1 ) {
+    if( @{$completions->{nicks}} > $completion_amount
+        && @{$completions->{nicks}} != 1 ) {
       # don't print if we tabbed in the beginning and the list of possible
       # completions includes all nicks in the channel
-      if( @completions < Xchat::get_list("users") ) {
-        Xchat::print [join " ", @completions];
+      if( @{$completions->{nicks}} < Xchat::get_list("users") ) {
+        Xchat::print( join " ", @{$completions->{nicks}} );
       }
       return Xchat::EAT_XCHAT;
     }
@@ -92,12 +100,12 @@ sub tab_complete {
       if ( $word_start == 0 ) {
         # at the start of the line append completion suffix
         Xchat::command( "settext $completed$suffix$right");
-        $previous_pos = length( "$completed$suffix" );
+        $completions->{pos} = length( "$completed$suffix" );
       } else {
         Xchat::command( "settext $left$completed$right" );
-        $previous_pos = length( "$left$completed" );
+        $completions->{pos} = length( "$left$completed" );
       }
-      Xchat::command( "setcursor +$previous_pos" );
+      Xchat::command( "setcursor +$completions->{pos}" );
     
       # debugging stuff
 #       local $, = " ";
@@ -114,4 +122,11 @@ sub tab_complete {
   } else {
     return Xchat::EAT_NONE;
   }
+}
+
+# Remove completion related data for tabs that are closed
+sub close_context {
+  my $context = Xchat::get_context;
+  delete $completions{$context};
+  return Xchat::EAT_NONE;
 }
