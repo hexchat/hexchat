@@ -46,7 +46,7 @@ typedef struct session xchat_context;
 #endif
 #endif
 
-#define DEBUG(t) PrintText(0,t)
+#define DEBUG(x) {x;}
 
 /* crafted to be an even 32 bytes */
 struct _xchat_hook
@@ -741,7 +741,7 @@ xchat_print (xchat_plugin *ph, char *text)
 {
 	if (!is_session (ph->context))
 	{
-		DEBUG("xchat_print called without a valid context.\n");
+		DEBUG(PrintTextf(0, "%s\txchat_print called without a valid context.\n", ph->name));
 		return;
 	}
 
@@ -767,7 +767,7 @@ xchat_command (xchat_plugin *ph, char *command)
 {
 	if (!is_session (ph->context))
 	{
-		DEBUG("xchat_command called without a valid context.\n");
+		DEBUG(PrintTextf(0, "%s\txchat_command called without a valid context.\n", ph->name));
 		return;
 	}
 
@@ -859,7 +859,7 @@ xchat_get_info (xchat_plugin *ph, const char *id)
 	sess = ph->context;
 	if (!is_session (sess))
 	{
-		DEBUG("xchat_get_info called without a valid context.\n");
+		DEBUG(PrintTextf(0, "%s\txchat_get_info called without a valid context.\n", ph->name));
 		return NULL;
 	}
 

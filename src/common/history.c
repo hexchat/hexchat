@@ -83,7 +83,7 @@ history_down (struct history *his)
 }
 
 char *
-history_up (struct history *his)
+history_up (struct history *his, char *current_text)
 {
 	int next;
 
@@ -103,6 +103,16 @@ history_up (struct history *his)
 
 	if (his->lines[next])
 	{
+		if
+		(
+			current_text[0] && strcmp(current_text, his->lines[next]) &&
+			(!his->lines[his->pos] || strcmp(current_text, his->lines[his->pos])) &&
+			(!his->lines[his->realpos] || strcmp(current_text, his->lines[his->pos]))
+		)
+		{
+			history_add (his, current_text);
+		}
+		
 		his->pos = next;
 		return his->lines[his->pos];
 	}

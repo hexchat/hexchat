@@ -918,17 +918,17 @@ gtk_xtext_realize (GtkWidget * widget)
 
 	/* for the separator bar (light) */
 	col.red = 0xffff; col.green = 0xffff; col.blue = 0xffff;
-	gdk_colormap_alloc_color (cmap, &col, TRUE, TRUE);
+	gdk_colormap_alloc_color (cmap, &col, FALSE, TRUE);
 	gdk_gc_set_foreground (xtext->light_gc, &col);
 
 	/* for the separator bar (dark) */
 	col.red = 0x1111; col.green = 0x1111; col.blue = 0x1111;
-	gdk_colormap_alloc_color (cmap, &col, TRUE, TRUE);
+	gdk_colormap_alloc_color (cmap, &col, FALSE, TRUE);
 	gdk_gc_set_foreground (xtext->dark_gc, &col);
 
 	/* for the separator bar (thinline) */
 	col.red = 0x8e38; col.green = 0x8e38; col.blue = 0x9f38;
-	gdk_colormap_alloc_color (cmap, &col, TRUE, TRUE);
+	gdk_colormap_alloc_color (cmap, &col, FALSE, TRUE);
 	gdk_gc_set_foreground (xtext->thin_gc, &col);
 
 	xtext_set_fg (xtext, xtext->fgc, 18);

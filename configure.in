@@ -290,7 +290,7 @@ if test "$python" = yes; then
                 AC_MSG_CHECKING(Python version)
                 changequote(<<, >>)dnl
                 PY_VER=`$pythonpath -c 'import distutils.sysconfig; print distutils.sysconfig.get_config_vars("VERSION")[0];'`
-                PY_LIB=`$pythonpath -c 'import distutils.sysconfig; print distutils.sysconfig.get_config_vars("LIBDEST")[0];'`
+                PY_LIB=`$pythonpath -c 'import distutils.sysconfig; print distutils.sysconfig.get_python_lib(standard_lib=1);'`
                 PY_INC=`$pythonpath -c 'import distutils.sysconfig; print distutils.sysconfig.get_config_vars("INCLUDEPY")[0];'`
                 $pythonpath -c "import sys; map(int,sys.version[:3].split('.')) >= [2,2] or sys.exit(1)"
                 changequote([, ])dnl
@@ -495,7 +495,7 @@ if test "$shm" = yes; then
 
 	LIBS=$oldl
 	if test "$shm" = yes; then
-		GUI_LIBS="$GUI_LIBS -lX11 -lXext"
+		GUI_LIBS="$GUI_LIBS `$pkgconfigpath --libs-only-L xft` -lX11 -lXext"
 		AC_DEFINE(USE_SHM)
 	else
 		CPPFLAGS=$oldc

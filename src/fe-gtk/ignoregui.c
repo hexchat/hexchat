@@ -269,7 +269,7 @@ ignore_store_new (int cancel, char *mask, gpointer data)
 	GtkListStore *store = GTK_LIST_STORE (get_store ());
 	GtkTreeIter iter;
 	GtkTreePath *path;
-	int flags = IG_CHAN | IG_PRIV | IG_NOTI | IG_CTCP | IG_INVI;
+	int flags = IG_CHAN | IG_PRIV | IG_NOTI | IG_CTCP | IG_DCC | IG_INVI;
 
 	if (cancel)
 		return;

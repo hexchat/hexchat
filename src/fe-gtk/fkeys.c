@@ -1279,7 +1279,7 @@ key_action_history_up (GtkWidget * wid, GdkEventKey * ent, char *d1, char *d2,
 {
 	char *new_line;
 
-	new_line = history_up (&sess->history);
+	new_line = history_up (&sess->history, (char *)GTK_ENTRY (wid)->text);
 	if (new_line)
 	{
 		gtk_entry_set_text (GTK_ENTRY (wid), new_line);
@@ -1419,7 +1419,7 @@ static int
 key_action_put_history (GtkWidget * wid, GdkEventKey * ent, char *d1,
 									char *d2, struct session *sess)
 {
-	history_add (&sess->history, (char *)gtk_entry_get_text (GTK_ENTRY (wid)));
+	history_add (&sess->history, (char *)GTK_ENTRY (wid)->text);
 	gtk_entry_set_text (GTK_ENTRY (wid), "");
 	return 2;						  /* -''- */
 }
