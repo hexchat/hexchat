@@ -134,11 +134,14 @@ server_sendpart (server * serv, char *channel, char *reason)
 void
 server_sendquit (session * sess)
 {
-	char *rea;
+	char *rea, *colrea;
 
 	if (!sess->quitreason)
 	{
-		rea = random_line (prefs.quitreason);
+		colrea = strdup (prefs.quitreason);
+		check_special_chars (colrea, FALSE);
+		rea = random_line (colrea);
+		free (colrea);
 		sess->server->p_quit (sess->server, rea);
 		free (rea);
 	} else
