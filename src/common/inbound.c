@@ -569,17 +569,18 @@ inbound_nameslist (server *serv, char *chan, char *names)
 void
 inbound_topic (server *serv, char *chan, char *topic_text)
 {
-	session *sess;
+	session *sess = find_channel (serv, chan);
 	char *new_topic;
 
-	sess = find_channel (serv, chan);
 	if (sess)
 	{
 		new_topic = strip_color (topic_text);
 		set_topic (sess, new_topic);
 		free (new_topic);
-		EMIT_SIGNAL (XP_TE_TOPIC, sess, chan, topic_text, NULL, NULL, 0);
-	}
+	} else
+		sess = serv->server_session;
+
+	EMIT_SIGNAL (XP_TE_TOPIC, sess, chan, topic_text, NULL, NULL, 0);
 }
 
 void
@@ -643,6 +644,9 @@ inbound_topictime (server *serv, char *chan, char *nick, time_t stamp)
 {
 	char *tim = ctime (&stamp);
 	session *sess = find_channel (serv, chan);
+
+	if (!sess)
+		sess = serv->server_session;
 
 	tim[19] = 0;	/* get rid of the \n */
 	EMIT_SIGNAL (XP_TE_TOPICDATE, sess, chan, nick, tim, NULL, 0);
