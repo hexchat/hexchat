@@ -21,7 +21,6 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <limits.h>
-#include <glib/gtree.h>
 
 #define WANTSOCKET
 #define WANTARPA
@@ -51,6 +50,7 @@
 #include "xchatc.h"
 #include "servlist.h"
 #include "server.h"
+#include "tree.h"
 #include "outbound.h"
 
 
@@ -865,8 +865,8 @@ typedef struct
 	char *tbuf;
 } multidata;
 
-static gboolean
-mdehop_cb (gpointer key, struct User *user, multidata *data)
+static int
+mdehop_cb (struct User *user, multidata *data)
 {
 	if (user->hop && !user->me)
 	{
@@ -884,15 +884,15 @@ cmd_mdehop (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 
 	data.nicks = nicks;
 	data.i = 0;
-	g_tree_foreach (sess->usertree, (GTraverseFunc)mdehop_cb, &data);
+	tree_foreach (sess->usertree, (tree_traverse_func *)mdehop_cb, &data);
 	send_channel_modes (sess, tbuf, nicks, 0, data.i, '-', 'h');
 	free (nicks);
 
 	return TRUE;
 }
 
-static gboolean
-mdeop_cb (gpointer key, struct User *user, multidata *data)
+static int
+mdeop_cb (struct User *user, multidata *data)
 {
 	if (user->op && !user->me)
 	{
@@ -910,7 +910,7 @@ cmd_mdeop (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 
 	data.nicks = nicks;
 	data.i = 0;
-	g_tree_foreach (sess->usertree, (GTraverseFunc)mdeop_cb, &data);
+	tree_foreach (sess->usertree, (tree_traverse_func *)mdeop_cb, &data);
 	send_channel_modes (sess, tbuf, nicks, 0, data.i, '-', 'o');
 	free (nicks);
 
@@ -925,8 +925,8 @@ mkick_cb (gpointer key, struct User *user, multidata *data)
 	return TRUE;
 }
 
-static gboolean
-mkickops_cb (gpointer key, struct User *user, multidata *data)
+static int
+mkickops_cb (struct User *user, multidata *data)
 {
 	if (user->op && !user->me)
 		data->sess->server->p_kick (data->sess->server, data->sess->channel, user->nick, data->reason);
@@ -940,8 +940,8 @@ cmd_mkick (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 
 	data.sess = sess;
 	data.reason = word_eol[2];
-	g_tree_foreach (sess->usertree, (GTraverseFunc)mkickops_cb, &data);
-	g_tree_foreach (sess->usertree, (GTraverseFunc)mkick_cb, &data);
+	tree_foreach (sess->usertree, (tree_traverse_func *)mkickops_cb, &data);
+	tree_foreach (sess->usertree, (tree_traverse_func *)mkick_cb, &data);
 
 	return TRUE;
 }
@@ -1884,8 +1884,8 @@ cmd_me (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	return TRUE;
 }
 
-static gboolean
-mop_cb (gpointer key, struct User *user, multidata *data)
+static int
+mop_cb (struct User *user, multidata *data)
 {
 	if (!user->op)
 	{
@@ -1903,7 +1903,7 @@ cmd_mop (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 
 	data.nicks = nicks;
 	data.i = 0;
-	g_tree_foreach (sess->usertree, (GTraverseFunc)mop_cb, &data);
+	tree_foreach (sess->usertree, (tree_traverse_func *)mop_cb, &data);
 	send_channel_modes (sess, tbuf, nicks, 0, data.i, '+', 'o');
 
 	free (nicks);
@@ -2383,8 +2383,8 @@ cmd_unload (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	return FALSE;
 }
 
-static gboolean
-userlist_cb (gpointer key, struct User *user, session *sess)
+static int
+userlist_cb (struct User *user, session *sess)
 {
 	time_t lt;
 
@@ -2403,12 +2403,12 @@ static int
 cmd_userlist (struct session *sess, char *tbuf, char *word[],
 				  char *word_eol[])
 {
-	g_tree_foreach (sess->usertree, (GTraverseFunc)userlist_cb, sess);
+	tree_foreach (sess->usertree, (tree_traverse_func *)userlist_cb, sess);
 	return TRUE;
 }
 
-static gboolean
-wallchop_cb (gpointer key, struct User *user, multidata *data)
+static int
+wallchop_cb (struct User *user, multidata *data)
 {
 	if (user->op)
 	{
@@ -2444,7 +2444,7 @@ cmd_wallchop (struct session *sess, char *tbuf, char *word[],
 	data.tbuf = tbuf;
 	data.i = 0;
 	data.sess = sess;
-	g_tree_foreach (sess->usertree, (GTraverseFunc)wallchop_cb, &data);
+	tree_foreach (sess->usertree, (tree_traverse_func*)wallchop_cb, &data);
 
 	if (data.i)
 	{
@@ -2973,8 +2973,8 @@ typedef struct
 	char *tbuf;
 } nickdata;
 
-static gboolean
-nick_comp_cb (gpointer key, struct User *user, nickdata *data)
+static int
+nick_comp_cb (struct User *user, nickdata *data)
 {
 	int lenu;
 
@@ -3020,7 +3020,7 @@ perform_nick_completion (struct session *sess, char *cmd, char *tbuf)
 				data.best = NULL;
 				data.tbuf = tbuf;
 				data.space = space - 1;
-				g_tree_foreach (sess->usertree, (GTraverseFunc)nick_comp_cb, &data);
+				tree_foreach (sess->usertree, (tree_traverse_func *)nick_comp_cb, &data);
 
 				if (data.len == -1)
 					return;
