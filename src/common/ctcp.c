@@ -80,6 +80,7 @@ void
 ctcp_handle (session *sess, char *outbuf, char *to, char *nick,
 				 char *msg, char *word[], char *word_eol[])
 {
+	char *po;
 	session *chansess;
 	server *serv = sess->server;
 
@@ -103,6 +104,9 @@ ctcp_handle (session *sess, char *outbuf, char *to, char *nick,
 		}
 		if (!strncasecmp (msg, "SOUND", 5))
 		{
+			po = strchr (word[5], '\001');
+			if (po)
+				po[0] = 0;
 			EMIT_SIGNAL (XP_TE_CTCPSND, sess->server->front_session, word[5],
 							 nick, NULL, NULL, 0);
 			sprintf (outbuf, "%s/%s", prefs.sounddir, word[5]);
@@ -115,6 +119,10 @@ ctcp_handle (session *sess, char *outbuf, char *to, char *nick,
 			return;
 		}
 	}
+
+	po = strchr (msg, '\001');
+	if (po)
+		po[0] = 0;
 
 	if (!is_channel (sess->server, to))
 	{
