@@ -15,7 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#define VERSION "1.0.5"
+#define VERSION "1.0.6"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -26,6 +26,7 @@
 #include <tcl.h>
 #include <tclDecls.h>
 #include <sys/stat.h>
+#include <arpa/inet.h>
 
 #include "xchat-plugin.h"
 #include "tclplugin.h"
@@ -1354,6 +1355,7 @@ static int tcl_dcclist(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
     xchat_list *list;
     Tcl_DString ds;
     int dcctype;
+    struct in_addr addr;
 
     BADARGS(1, 1, "");
 
@@ -1411,10 +1413,15 @@ static int tcl_dcclist(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
                 Tcl_DStringAppendElement(&ds, (const char *) xchat_list_str(ph, list, "destfile"));
                 break;
             }
+
+            addr.s_addr = htonl(xchat_list_int(ph, list, "address32"));
+
             Tcl_DStringAppendElement(&ds, myitoa(xchat_list_int(ph, list, "size")));
             Tcl_DStringAppendElement(&ds, myitoa(xchat_list_int(ph, list, "resume")));
             Tcl_DStringAppendElement(&ds, myitoa(xchat_list_int(ph, list, "pos")));
             Tcl_DStringAppendElement(&ds, myitoa(xchat_list_int(ph, list, "cps")));
+            Tcl_DStringAppendElement(&ds, inet_ntoa(addr));
+            Tcl_DStringAppendElement(&ds, myitoa(xchat_list_int(ph, list, "port")));
             Tcl_DStringEndSublist(&ds);
         }
         xchat_list_free(ph, list);
