@@ -306,8 +306,6 @@ command_cb (char* word[], char* word_eol[], void *userdata)
 	int retVal = 0;
 	int count = 0;
 
-/* 	AV* wd = newAV (); */
-/* 	AV* wd_eol = newAV (); */
 	/* these must be initialized after SAVETMPS */
 	AV* wd = NULL;
 	AV* wd_eol = NULL;
