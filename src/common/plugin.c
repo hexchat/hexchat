@@ -929,6 +929,9 @@ xchat_get_info (xchat_plugin *ph, const char *id)
 	case 0x30f5a8: /* host */
 		return sess->server->hostname;
 
+	case 0x325acab5:	/* libdirfs */
+		return XCHATLIBDIR;
+
 	case 0x6de15a2e:	/* network */
 		return get_network (sess);
 
