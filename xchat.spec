@@ -36,7 +36,7 @@ Provides Python scripting capability to XChat.
 %setup -q
 
 %build
-%configure --disable-textfe
+%configure --disable-textfe --enable-ipv6
 make
 
 %install

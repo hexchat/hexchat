@@ -4173,6 +4173,13 @@ gtk_xtext_buffer_show (GtkXText *xtext, xtext_buffer *buf, int render)
 
 	gdk_drawable_get_size (GTK_WIDGET (xtext)->window, &w, &h);
 
+	/* after a font change */
+	if (buf->needs_recalc)
+	{
+		buf->needs_recalc = FALSE;
+		gtk_xtext_recalc_widths (buf, TRUE);
+	}
+
 	/* now change to the new buffer */
 	xtext->buffer = buf;
 	xtext->adj->value = buf->old_value;

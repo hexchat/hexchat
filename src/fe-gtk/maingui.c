@@ -1386,12 +1386,12 @@ mg_update_xtext (GtkWidget *wid)
 	gtk_xtext_set_background (xtext, channelwin_pix, prefs.transparent, prefs.tint);
 	gtk_xtext_set_wordwrap (xtext, prefs.wordwrap);
 	gtk_xtext_set_show_separator (xtext, prefs.indent_nicks ? prefs.show_separator : 0);
+	gtk_xtext_set_indent (xtext, prefs.indent_nicks);
 	if (!gtk_xtext_set_font (xtext, prefs.font_normal))
 	{
 		fe_message ("Failed to open any font. I'm out of here!", TRUE);
 		exit (1);
 	}
-	gtk_xtext_set_indent (xtext, prefs.indent_nicks);
 
 	gtk_xtext_refresh (xtext, FALSE);
 }
@@ -1991,6 +1991,7 @@ mg_apply_setup (void)
 	{
 		sess = list->data;
 		gtk_xtext_set_time_stamp (sess->res->buffer, prefs.timestamp);
+		((xtext_buffer *)sess->res->buffer)->needs_recalc = TRUE;
 		list = list->next;
 	}
 

@@ -49,6 +49,7 @@ typedef struct {
 
 	unsigned int time_stamp:1;
 	unsigned int scrollbar_down:1;
+	unsigned int needs_recalc:1;
 
 } xtext_buffer;
 
