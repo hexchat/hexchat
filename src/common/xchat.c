@@ -37,14 +37,15 @@
 #include "util.h"
 #include "cfgfiles.h"
 #include "ignore.h"
+#include "xchat-plugin.h"
 #include "plugin.h"
+#include "plugin-timer.h"
 #include "notify.h"
 #include "server.h"
 #include "servlist.h"
 #include "outbound.h"
 #include "text.h"
 #include "url.h"
-#include "plugin-timer.h"
 #include "xchatc.h"
 
 #ifdef USE_OPENSSL
@@ -662,7 +663,7 @@ find_away_message (struct server *serv, char *nick)
 	"NAME Op\n"					"CMD op %a\n\n"\
 	"NAME DeOp\n"				"CMD deop %a\n\n"\
 	"NAME Ban\n"				"CMD ban %s\n\n"\
-	"NAME Kick\n"				"CMD kick %s\n\n"\
+	"NAME Kick\n"				"CMD getstr bye \"kick %s\" \"Enter reason to kick %s:\"\n\n"\
 	"NAME Sendfile\n"			"CMD dcc send %s\n\n"\
 	"NAME Dialog\n"			"CMD query %s\n\n"
 

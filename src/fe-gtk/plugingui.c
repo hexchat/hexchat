@@ -28,6 +28,9 @@
 #include <gtk/gtkbox.h>
 
 #include "../common/xchat.h"
+#define PLUGIN_C
+typedef struct session xchat_context;
+#include "../common/xchat-plugin.h"
 #include "../common/plugin.h"
 #include "../common/util.h"
 #include "../common/outbound.h"
@@ -50,6 +53,8 @@ plugingui_close (GtkWidget * wid, gpointer a)
 {
 	plugin_window = NULL;
 }
+
+extern GSList *plugin_list;
 
 void
 fe_pluginlist_update (void)

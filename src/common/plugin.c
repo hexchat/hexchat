@@ -28,7 +28,14 @@
 #include "cfgfiles.h"
 #include "ignore.h"
 #include "text.h"
+#define PLUGIN_C
+typedef struct session xchat_context;
+#include "xchat-plugin.h"
 #include "plugin.h"
+
+
+//typedef struct session xchat_context;
+
 #include "xchatc.h"
 
 /* the USE_PLUGIN define only removes libdl stuff */
@@ -43,16 +50,7 @@
 
 #define DEBUG(t) PrintText(0,t)
 
-typedef int (xchat_cmd_cb) (char *word[], char *word_eol[], void *user_data);
-typedef int (xchat_serv_cb) (char *word[], char *word_eol[], void *user_data);
-typedef int (xchat_print_cb) (char *word[], void *user_data);
-typedef int (xchat_timer_cb) (void *user_data);
-typedef int (xchat_init_func) (xchat_plugin *, char **, char **, char **, char *);
-typedef int (xchat_deinit_func) (xchat_plugin *);
-
-typedef struct session xchat_context;
-
-typedef struct xchat_hook
+struct _xchat_hook
 {
 	xchat_plugin *pl;	/* the plugin to which it belongs */
 	char *name;			/* "xdcc" */
@@ -62,17 +60,21 @@ typedef struct xchat_hook
 	int tag;				/* for timers only */
 	int type;			/* HOOK_* */
 	int pri;				/* priority */
-} xchat_hook;
+};
 
-typedef struct xchat_list
+struct _xchat_list
 {
 	int type;			/* LIST_* */
 	GSList *pos;		/* current pos */
 	GSList *next;		/* next pos */
-} xchat_list;
+};
 
-#define PLUGIN_C
-#include "xchat-plugin.h"
+typedef int (xchat_cmd_cb) (char *word[], char *word_eol[], void *user_data);
+typedef int (xchat_serv_cb) (char *word[], char *word_eol[], void *user_data);
+typedef int (xchat_print_cb) (char *word[], void *user_data);
+typedef int (xchat_timer_cb) (void *user_data);
+typedef int (xchat_init_func) (xchat_plugin *, char **, char **, char **, char *);
+typedef int (xchat_deinit_func) (xchat_plugin *);
 
 enum
 {
@@ -205,6 +207,32 @@ plugin_add (session *sess, char *filename, void *handle, void *init_func,
 
 	if (!fake)
 	{
+#ifdef WIN32
+		/* don't change the order, to keep binary compat */
+		pl->hook_command = xchat_hook_command;
+		pl->hook_server = xchat_hook_server;
+		pl->hook_print = xchat_hook_print;
+		pl->hook_timer = xchat_hook_timer;
+		pl->unhook = xchat_unhook;
+		pl->print = xchat_print;
+		pl->printf = xchat_printf;
+		pl->command = xchat_command;
+		pl->commandf = xchat_commandf;
+		pl->nickcmp = xchat_nickcmp;
+		pl->set_context = xchat_set_context;
+		pl->find_context = xchat_find_context;
+		pl->get_context = xchat_get_context;
+		pl->get_info = xchat_get_info;
+		pl->get_prefs = xchat_get_prefs;
+		pl->list_get = xchat_list_get;
+		pl->list_free = xchat_list_free;
+		pl->list_fields = xchat_list_fields;
+		pl->list_str = xchat_list_str;
+		pl->list_int = xchat_list_int;
+		pl->plugingui_add = xchat_plugingui_add;
+		pl->plugingui_remove = xchat_plugingui_remove;
+#endif
+
 		/* run xchat_plugin_init, if it returns 0, close the plugin */
 		if (((xchat_init_func *)init_func) (pl, &pl->name, &pl->desc, &pl->version, arg) == 0)
 		{
