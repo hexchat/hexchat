@@ -777,7 +777,12 @@ inbound_notice (server *serv, char *outbuf, char *to, char *nick, char *msg,
 			sess = find_session_from_nick (nick, serv);
 		}
 		if (!sess)
-			sess = serv->front_session;
+		{
+			if (server_notice)	
+				sess = serv->server_session;
+			else
+				sess = serv->front_session;
+		}
 	}
 
 	if (msg[0] == 1)

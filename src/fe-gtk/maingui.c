@@ -1786,7 +1786,7 @@ mg_switch_tab_cb (GtkWidget *tab, session *sess, gpointer family)
 	{
 		if (active_tab != old)
 		{
-			if (old)
+			if (old && current_tab)
 				mg_unpopulate (current_tab);
 			mg_populate (sess);
 		}
@@ -2367,6 +2367,12 @@ mg_set_title (GtkWidget *button, char *title)
 void
 fe_server_callback (server *serv)
 {
+	if (serv->gui->chanlist_window)
+		gtk_widget_destroy (serv->gui->chanlist_window);
+
+	if (serv->gui->rawlog_window)
+		gtk_widget_destroy (serv->gui->rawlog_window);
+
 	free (serv->gui);
 }
 

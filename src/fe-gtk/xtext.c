@@ -1224,13 +1224,8 @@ gtk_xtext_expose (GtkWidget * widget, GdkEventExpose * event)
 	if (!ent_end)
 		ent_end = xtext->buffer->text_last;
 
-	/* kludge to fix an unknown bug */
-/*	event->area.y -= xtext->fontsize;
-	event->area.height += xtext->fontsize;*/
-
 	/* can't over-write the same text with xft, or the AA will change */
-	if (!xtext->skip_clip)
-		backend_set_clip (xtext, &event->area);
+	backend_set_clip (xtext, &event->area);
 
 	xtext->skip_fills = TRUE;
 	xtext->skip_border_fills = TRUE;
@@ -1240,9 +1235,7 @@ gtk_xtext_expose (GtkWidget * widget, GdkEventExpose * event)
 	xtext->skip_fills = FALSE;
 	xtext->skip_border_fills = FALSE;
 
-	if (!xtext->skip_clip)
-		backend_clear_clip (xtext);
-	xtext->skip_clip = FALSE;
+	backend_clear_clip (xtext);
 
 xit:
 	x = xtext->buffer->indent - ((xtext->space_width + 1) / 2);
@@ -3774,17 +3767,33 @@ gtk_xtext_render_page (GtkXText * xtext)
 
 #ifdef SCROLL_HACK
 {
-	int pos, overlap;
+	int pos, overlap, remainder;
+	GdkEventExpose event;
 
 	pos = xtext->adj->value * xtext->fontsize;
 	overlap = xtext->buffer->last_pixel_pos - pos;
 	xtext->buffer->last_pixel_pos = pos;
 
-	if (!xtext->pixmap && abs (overlap) < height)
+	if (!xtext->pixmap && (overlap < 0 ? -overlap : overlap) < height)
 	{
-		/* exposures will do the rest */
-		xtext->skip_clip = TRUE;
-		gdk_window_scroll (GTK_WIDGET (xtext)->window, 0, overlap);
+		if (overlap < 0)	/* DOWN */
+		{
+			gdk_draw_drawable (xtext->draw_buf, xtext->fgc, xtext->draw_buf,
+									 0, -overlap, 0, 0, width+MARGIN, height + overlap);
+			remainder = height % xtext->fontsize;
+			event.area.y = (height + overlap) - remainder;
+			event.area.height = -overlap + remainder;
+		} else
+		{
+			gdk_draw_drawable (xtext->draw_buf, xtext->fgc, xtext->draw_buf,
+									 0, 0, 0, overlap, width+MARGIN, height - overlap);
+			event.area.y = 0;
+			event.area.height = overlap;
+		}
+
+		event.area.x = 0;
+		event.area.width = width + MARGIN;
+		gtk_xtext_expose (GTK_WIDGET (xtext), &event);
 		return;
 	}
 }
