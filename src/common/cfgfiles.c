@@ -520,7 +520,7 @@ load_config (void)
 	prefs.truncchans = 20;
 	prefs.autoresume = 1;
 	prefs.show_away_once = 1;
-	prefs.show_away_message = 1;
+	/*prefs.show_away_message = 1;*/
 	prefs.indent_nicks = 1;
 	prefs.thin_separator = 1;
 	/*prefs.tabs_position = 1;*/ /* 0 = bottom */

@@ -191,7 +191,7 @@ away_check (void)
 {
 	session *sess;
 	GSList *list;
-	int full, sent;
+	int full, sent, loop = 0;
 
 	if (prefs.away_size_max < 1)
 		return;
@@ -239,7 +239,9 @@ doover:
 			sess->done_away_check = FALSE;
 			list = list->next;
 		}
-		goto doover;
+		loop++;
+		if (loop < 2)
+			goto doover;
 	}
 }
 
