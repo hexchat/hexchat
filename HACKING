@@ -1,0 +1,47 @@
+Just some tips if you're going to help with xchat code (patches etc):
+
+* Use tabs, not spaces, to indent code.
+
+* Use a tab size of 3 (most editors will let you choose this).
+  Type :set ts=3 in vim/gvim.
+
+* Try to stick to the same consistant coding style:
+
+void
+routine (void)
+{
+	if (function (a, b, c))
+	{
+		x = a + 1;
+	}
+}
+
+	(vertically aligned braces, a space after if, while, functions etc).
+
+* When opening a file with unix level functions (open, read/write, close)
+  as opposed to the C-level functions (fopen, fwrite/fread, fclose), use
+  the OFLAGS macro. This makes sure it'll work on Win32 aswell as unix e.g:
+
+	fh = open ("file", OFLAGS | O_RDONLY);
+
+* Use closesocket() for sockets, and close() for normal files.
+
+* Don't read() from sockets, instead use recv().
+
+* Please provide unified format diffs (run diff -u).
+
+* Call your patch something more meaningfull than xchat.diff (I get a
+  million of these files!).
+
+* To make a really nice and clean patch, do something like this:
+
+Have two directories, unpacked from the original archive:
+xchat-2.0.0/
+xchat-2.0.0p1/
+Then edit/compile the xchat-2.0.0p1 directory. When you're done, make
+a patch with:
+
+cd xchat-2.0.0p1
+make distclean
+cd ..
+diff -urN xchat-2.0.0 xchat-2.0.0p1 > xchat-something.diff
