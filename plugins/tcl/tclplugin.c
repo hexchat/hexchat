@@ -15,7 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#define VERSION "1.0.40"
+#define VERSION "1.0.41"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -171,12 +171,31 @@ static char *myitoa(int value)
     return result;
 }
 
+static xchat_context *atoctx(const char *nptr)
+{
+    int isnum = 1;
+    int x = 0;
+
+    if (!nptr)
+        return NULL;
+
+    while (isnum && nptr[x]) {
+        if (!isdigit(nptr[x++]))
+            isnum--;
+    }
+
+    if (isnum && x)
+        return (xchat_context *) atoi(nptr);
+    else
+        return NULL;
+}
 
 static xchat_context *xchat_smart_context(char *arg1, char *arg2)
 {
     char *server, *s, *n;
     xchat_context *result = NULL;
     xchat_context *ctx = NULL;
+    xchat_context *actx = NULL;
     xchat_list *list;
 
     if (arg1 == NULL)
@@ -189,6 +208,8 @@ static xchat_context *xchat_smart_context(char *arg1, char *arg2)
         return result;
     } else {
 
+        actx = atoctx(arg1);
+
         server = xchat_get_info(ph, "server");
 
         list = xchat_list_get(ph, "channels");
@@ -197,25 +218,34 @@ static xchat_context *xchat_smart_context(char *arg1, char *arg2)
 
             while (xchat_list_next(ph, list)) {
 
-                s = xchat_list_str(ph, list, "server");
                 ctx = xchat_list_str(ph, list, "context");
 
-                if (xchat_list_int(ph, list, "type") == 1) {
-                    if (strcasecmp(arg1, s) == 0) {
+                if (actx) {
+                    if (ctx == actx) {
                         result = ctx;
                         break;
                     }
-                    n = xchat_list_str(ph, list, "network");
-                    if (n) {
-                        if (strcasecmp(arg1, n) == 0) {
+                } else {
+
+                    s = xchat_list_str(ph, list, "server");
+
+                    if (xchat_list_int(ph, list, "type") == 1) {
+                        if (strcasecmp(arg1, s) == 0) {
                             result = ctx;
                             break;
                         }
-                    }
-                } else {
-                    if ((strcasecmp(server, s) == 0) && (strcasecmp(arg1, xchat_list_str(ph, list, "channel")) == 0)) {
-                        result = ctx;
-                        break;
+                        n = xchat_list_str(ph, list, "network");
+                        if (n) {
+                            if (strcasecmp(arg1, n) == 0) {
+                                result = ctx;
+                                break;
+                            }
+                        }
+                    } else {
+                        if ((strcasecmp(server, s) == 0) && (strcasecmp(arg1, xchat_list_str(ph, list, "channel")) == 0)) {
+                            result = ctx;
+                            break;
+                        }
                     }
                 }
             }
@@ -785,7 +815,6 @@ static int tcl_off(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
 static int tcl_alias(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
 {
     int newentry;
-    int proclen;
     alias *aliasPtr;
     Tcl_HashEntry *entry;
     char *string;
@@ -796,38 +825,51 @@ static int tcl_alias(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
 
     BADARGS(3, 4, " name ?help? {script | procname ?args?}");
 
-    id = (nextprocid++ % INT_MAX) + 1;
-
-    if (SourceInternalProc(id, "_cmd _rest", argv[argc - 1]) == TCL_ERROR) {
-        errorInfo = Tcl_GetVar(interp, "errorInfo", TCL_GLOBAL_ONLY);
-        xchat_printf(ph, "\0039Tcl plugin\003\tERROR (alias %s) %s \n", argv[1], errorInfo);
-        return TCL_OK;
-    }
-
     string = StrDup(argv[1], &dummy);
     Tcl_UtfToUpper(string);
 
-    if (argc == 4)
-        help = argv[2];
+    if (strlen(argv[argc - 1])) {
 
-    proclen = strlen(argv[argc - 1]);
+        if (argc == 4)
+            help = argv[2];
 
-    entry = Tcl_CreateHashEntry(&aliasTablePtr, string, &newentry);
-    if (newentry) {
-        aliasPtr = (alias *) Tcl_Alloc(sizeof(alias));
-        if (string[0] == '@')
-            aliasPtr->hook = NULL;
-        else
-            aliasPtr->hook = xchat_hook_command(ph, string, XCHAT_PRI_NORM, Command_Alias, help, 0);
+        id = (nextprocid++ % INT_MAX) + 1;
+
+        if (SourceInternalProc(id, "_cmd _rest", argv[argc - 1]) == TCL_ERROR) {
+            errorInfo = Tcl_GetVar(interp, "errorInfo", TCL_GLOBAL_ONLY);
+            xchat_printf(ph, "\0039Tcl plugin\003\tERROR (alias %s) %s \n", argv[1], errorInfo);
+            return TCL_OK;
+        }
+
+        entry = Tcl_CreateHashEntry(&aliasTablePtr, string, &newentry);
+        if (newentry) {
+            aliasPtr = (alias *) Tcl_Alloc(sizeof(alias));
+            if (string[0] == '@')
+                aliasPtr->hook = NULL;
+            else
+                aliasPtr->hook = xchat_hook_command(ph, string, XCHAT_PRI_NORM, Command_Alias, help, 0);
+        } else {
+            aliasPtr = Tcl_GetHashValue(entry);
+            DeleteInternalProc(aliasPtr->procPtr);
+            Tcl_Free(aliasPtr->procPtr);
+        }
+
+        aliasPtr->procPtr = StrDup(InternalProcName(id), &dummy);
+
+        Tcl_SetHashValue(entry, aliasPtr);
+
     } else {
-        aliasPtr = Tcl_GetHashValue(entry);
-        DeleteInternalProc(aliasPtr->procPtr);
-        Tcl_Free(aliasPtr->procPtr);
+
+        if ((entry = Tcl_FindHashEntry(&aliasTablePtr, string)) != NULL) {
+            aliasPtr = Tcl_GetHashValue(entry);
+            DeleteInternalProc(aliasPtr->procPtr);
+            Tcl_Free(aliasPtr->procPtr);
+            if (aliasPtr->hook)
+                xchat_unhook(ph, aliasPtr->hook);
+            Tcl_Free((char *) aliasPtr);
+            Tcl_DeleteHashEntry(entry);	    
+        }
     }
-
-    aliasPtr->procPtr = StrDup(InternalProcName(id), &dummy);
-
-    Tcl_SetHashValue(entry, aliasPtr);
 
     Tcl_Free(string);
 
@@ -863,7 +905,7 @@ static int tcl_command(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
     xchat_context *ctx = NULL;
     char *string = NULL;
 
-    BADARGS(2, 4, " ?server|network? ?#channel|nick? text");
+    BADARGS(2, 4, " ?server|network|context? ?#channel|nick? text");
 
     origctx = xchat_get_context(ph);
 
@@ -900,7 +942,7 @@ static int tcl_raw(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
     xchat_context *ctx = NULL;
     char *string = NULL;
 
-    BADARGS(2, 4, " ?server|network? ?#channel|nick? text");
+    BADARGS(2, 4, " ?server|network|context? ?#channel|nick? text");
 
     origctx = xchat_get_context(ph);
 
@@ -937,15 +979,41 @@ static int tcl_getinfo(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
 
 static int tcl_server(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
 {
-    BADARGS(1, 1, "");
+    xchat_context *origctx, *ctx;
+    BADARGS(1, 2, " ?server|network|context?");
+
+    origctx = xchat_get_context(ph);
+
+    if (argc == 2) {
+        ctx = xchat_smart_context(argv[1], NULL);
+        CHECKCTX(ctx);
+        xchat_set_context(ph, ctx);
+    }
+
     Tcl_AppendResult(irp, xchat_get_info(ph, "server"), NULL);
+
+    xchat_set_context(ph, origctx);
+
     return TCL_OK;
 }
 
 static int tcl_channel(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
 {
-    BADARGS(1, 1, "");
+    xchat_context *origctx, *ctx;
+    BADARGS(1, 2, " ?server|network|context?");
+
+    origctx = xchat_get_context(ph);
+
+    if (argc == 2) {
+        ctx = xchat_smart_context(argv[1], NULL);
+        CHECKCTX(ctx);
+        xchat_set_context(ph, ctx);
+    }
+
     Tcl_AppendResult(irp, xchat_get_info(ph, "channel"), NULL);
+
+    xchat_set_context(ph, origctx);
+
     return TCL_OK;
 }
 
@@ -1035,12 +1103,7 @@ static int tcl_getlist(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
                 sattr = xchat_list_str(ph, list, (char *) field);
                 if (strcmp(field, "context") == 0) {
                     ctx = (xchat_context *) sattr;
-                    xchat_set_context(ph, ctx);
-                    Tcl_DStringStartSublist(&ds);
-                    Tcl_DStringAppendElement(&ds, "ctx");
-                    Tcl_DStringAppendElement(&ds, xchat_get_info(ph, "server"));
-                    Tcl_DStringAppendElement(&ds, xchat_get_info(ph, "channel"));
-                    Tcl_DStringEndSublist(&ds);
+                    Tcl_DStringAppendElement(&ds, myitoa((int)ctx));
                 } else
                     Tcl_DStringAppendElement(&ds, "*");
                 break;
@@ -1166,7 +1229,7 @@ static int tcl_print(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
     xchat_context *ctx = NULL;
     char *string = NULL;
 
-    BADARGS(2, 4, " ?server|network? ?#channel|nick? text");
+    BADARGS(2, 4, " ?server|network|context? ?#channel|nick? text");
 
     origctx = xchat_get_context(ph);
 
@@ -1197,18 +1260,10 @@ static int tcl_print(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
 static int tcl_setcontext(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
 {
     xchat_context *ctx = NULL;
-    int list_argc;
-    char **list_argv;
 
     BADARGS(2, 2, " context");
 
-    if (Tcl_SplitList(interp, argv[1], &list_argc, &list_argv) == TCL_OK) {
-        if ((argc != 3) || strcmp(list_argv[0], "ctx")) {
-            Tcl_AppendResult(irp, "Invalid context", NULL);
-            return TCL_ERROR;
-        }
-        ctx = xchat_find_context(ph, list_argv[1], list_argv[2]);
-    }
+    ctx = xchat_smart_context(argv[1], NULL);
 
     CHECKCTX(ctx);
 
@@ -1219,10 +1274,9 @@ static int tcl_setcontext(ClientData cd, Tcl_Interp * irp, int argc, char *argv[
 
 static int tcl_findcontext(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
 {
-    xchat_context *origctx, *ctx = NULL;
-    Tcl_DString ds;
+    xchat_context *ctx = NULL;
 
-    BADARGS(1, 3, " ?server|network? ?channel?");
+    BADARGS(1, 3, " ?server|network|context? ?channel?");
 
     switch (argc) {
     case 1:
@@ -1239,18 +1293,7 @@ static int tcl_findcontext(ClientData cd, Tcl_Interp * irp, int argc, char *argv
 
     CHECKCTX(ctx);
 
-    Tcl_DStringInit(&ds);
-
-    origctx = xchat_get_context(ph);
-    xchat_set_context(ph, ctx);
-    Tcl_DStringAppendElement(&ds, "ctx");
-    Tcl_DStringAppendElement(&ds, xchat_get_info(ph, "server"));
-    Tcl_DStringAppendElement(&ds, xchat_get_info(ph, "channel"));
-    xchat_set_context(ph, origctx);
-
-    Tcl_AppendResult(irp, ds.string, NULL);
-
-    Tcl_DStringFree(&ds);
+    Tcl_AppendResult(irp, myitoa((int)ctx), NULL);
 
     return TCL_OK;
 }
@@ -1258,21 +1301,12 @@ static int tcl_findcontext(ClientData cd, Tcl_Interp * irp, int argc, char *argv
 static int tcl_getcontext(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
 {
     xchat_context *ctx = NULL;
-    Tcl_DString ds;
 
     BADARGS(1, 1, "");
 
-    Tcl_DStringInit(&ds);
-
     ctx = xchat_get_context(ph);
 
-    Tcl_DStringAppendElement(&ds, "ctx");
-    Tcl_DStringAppendElement(&ds, xchat_get_info(ph, "server"));
-    Tcl_DStringAppendElement(&ds, xchat_get_info(ph, "channel"));
-
-    Tcl_AppendResult(irp, ds.string, NULL);
-
-    Tcl_DStringFree(&ds);
+    Tcl_AppendResult(irp, myitoa((int)ctx), NULL);
 
     return TCL_OK;
 }
@@ -1287,10 +1321,10 @@ static int tcl_channels(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
 
     origctx = xchat_get_context(ph);
 
-    BADARGS(1, 2, " ?server|network?");
+    BADARGS(1, 2, " ?server|network|context?");
 
     if (argc == 2) {
-        ctx = xchat_find_context(ph, argv[1], NULL);
+        ctx = xchat_smart_context(argv[1], NULL);
         CHECKCTX(ctx);
         xchat_set_context(ph, ctx);
     }
@@ -1362,10 +1396,10 @@ static int tcl_queries(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
 
     origctx = xchat_get_context(ph);
 
-    BADARGS(1, 2, " ?server|network?");
+    BADARGS(1, 2, " ?server|network|context?");
 
     if (argc == 2) {
-        ctx = xchat_find_context(ph, argv[1], NULL);
+        ctx = xchat_smart_context(argv[1], NULL);
         CHECKCTX(ctx);
         xchat_set_context(ph, ctx);
     }
@@ -1403,7 +1437,7 @@ static int tcl_users(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
     xchat_list *list;
     Tcl_DString ds;
 
-    BADARGS(1, 3, " ?server|network? ?channel?");
+    BADARGS(1, 3, " ?server|network|context? ?channel?");
 
     origctx = xchat_get_context(ph);
 
@@ -1617,12 +1651,12 @@ static int tcl_dcclist(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
 static int tcl_away(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
 {
     xchat_context *origctx, *ctx;
-    BADARGS(1, 2, " ?server|network?");
+    BADARGS(1, 2, " ?server|network|context?");
 
     origctx = xchat_get_context(ph);
 
     if (argc == 2) {
-        ctx = xchat_find_context(ph, argv[1], NULL);
+        ctx = xchat_smart_context(argv[1], NULL);
         CHECKCTX(ctx);
         xchat_set_context(ph, ctx);
     }
@@ -1637,12 +1671,12 @@ static int tcl_away(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
 static int tcl_host(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
 {
     xchat_context *origctx, *ctx;
-    BADARGS(1, 2, " ?server|network?");
+    BADARGS(1, 2, " ?server|network|context?");
 
     origctx = xchat_get_context(ph);
 
     if (argc == 2) {
-        ctx = xchat_find_context(ph, argv[1], NULL);
+        ctx = xchat_smart_context(argv[1], NULL);
         CHECKCTX(ctx);
         xchat_set_context(ph, ctx);
     }
@@ -1657,12 +1691,12 @@ static int tcl_host(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
 static int tcl_network(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
 {
     xchat_context *origctx, *ctx;
-    BADARGS(1, 2, " ?server|network?");
+    BADARGS(1, 2, " ?server|network|context?");
 
     origctx = xchat_get_context(ph);
 
     if (argc == 2) {
-        ctx = xchat_find_context(ph, argv[1], NULL);
+        ctx = xchat_smart_context(argv[1], NULL);
         CHECKCTX(ctx);
         xchat_set_context(ph, ctx);
     }
@@ -1677,12 +1711,12 @@ static int tcl_network(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
 static int tcl_me(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
 {
     xchat_context *origctx, *ctx;
-    BADARGS(1, 2, " ?server|network?");
+    BADARGS(1, 2, " ?server|network|context?");
 
     origctx = xchat_get_context(ph);
 
     if (argc == 2) {
-        ctx = xchat_find_context(ph, argv[1], NULL);
+        ctx = xchat_smart_context(argv[1], NULL);
         CHECKCTX(ctx);
         xchat_set_context(ph, ctx);
     }
@@ -1697,7 +1731,7 @@ static int tcl_me(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
 static int tcl_topic(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
 {
     xchat_context *origctx, *ctx = NULL;
-    BADARGS(1, 3, " ?server|network? ?channel?");
+    BADARGS(1, 3, " ?server|network|context? ?channel?");
 
     origctx = xchat_get_context(ph);
 
@@ -1892,7 +1926,7 @@ static void Tcl_Plugin_Init()
 
     interp = Tcl_CreateInterp();
 
-    Tcl_FindExecutable (NULL);
+    Tcl_FindExecutable(NULL);
 
     Tcl_Init(interp);
 
@@ -2080,4 +2114,3 @@ int xchat_plugin_deinit()
 
     return 1;
 }
-
