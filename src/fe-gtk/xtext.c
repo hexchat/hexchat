@@ -124,6 +124,7 @@ static void gtk_xtext_calc_lines (xtext_buffer *buf, int);
 static void gtk_xtext_load_trans (GtkXText * xtext);
 static void gtk_xtext_free_trans (GtkXText * xtext);
 #endif
+static char *gtk_xtext_selection_get_text (GtkXText *xtext, int *len_ret);
 static textentry *gtk_xtext_nth (GtkXText *xtext, int line, int *subline);
 static void gtk_xtext_adjustment_changed (GtkAdjustment * adj,
 														GtkXText * xtext);
@@ -641,11 +642,6 @@ gtk_xtext_init (GtkXText * xtext)
 
 		gtk_selection_add_targets (GTK_WIDGET (xtext), GDK_SELECTION_PRIMARY,
 											targets, n_targets);
-#ifdef WIN32
-		gtk_selection_add_targets (GTK_WIDGET (xtext),
-											gdk_atom_intern ("CLIPBOARD", FALSE),
-											targets, n_targets);
-#endif
 	}
 }
 
@@ -1776,8 +1772,17 @@ static void
 gtk_xtext_set_clip_owner (GtkWidget * xtext, GdkEventButton * event)
 {
 #ifdef WIN32
-	gtk_selection_owner_set (xtext, gdk_atom_intern ("CLIPBOARD", FALSE),
-									 event->time);
+	char *str;
+	int len;
+
+	str = gtk_xtext_selection_get_text (GTK_XTEXT (xtext), &len);
+	if (str)
+	{
+		gtk_clipboard_set_text (gtk_clipboard_get (GDK_SELECTION_CLIPBOARD),
+										str, len);
+		free (str);
+	}
+
 #endif
 	gtk_selection_owner_set (xtext, GDK_SELECTION_PRIMARY, event->time);
 
@@ -1960,26 +1965,20 @@ gtk_xtext_selection_kill (GtkXText *xtext, GdkEventSelection *event)
 	return TRUE;
 }
 
-/* another program is asking for our selection */
-
-static void
-gtk_xtext_selection_get (GtkWidget * widget,
-								 GtkSelectionData * selection_data_ptr,
-								 guint info, guint time)
+static char *
+gtk_xtext_selection_get_text (GtkXText *xtext, int *len_ret)
 {
-	GtkXText *xtext = GTK_XTEXT (widget);
 	textentry *ent;
 	char *txt;
 	char *pos;
 	char *stripped;
-	guchar *new_text;
 	int len;
 	int first = TRUE;
 	xtext_buffer *buf;
 
 	buf = xtext->selection_buffer;
 	if (!buf)
-		return;
+		return NULL;
 
 	/* first find out how much we need to malloc ... */
 	len = 0;
@@ -1999,7 +1998,7 @@ gtk_xtext_selection_get (GtkWidget * widget,
 	}
 
 	if (len < 1)
-		return;
+		return NULL;
 
 	/* now allocate mem and copy buffer */
 	pos = txt = malloc (len);
@@ -2032,6 +2031,26 @@ gtk_xtext_selection_get (GtkWidget * widget,
 	else
 		stripped = gtk_xtext_strip_color (txt, strlen (txt), NULL, &len, 0);
 	free (txt);
+
+	*len_ret = len;
+	return stripped;
+}
+
+/* another program is asking for our selection */
+
+static void
+gtk_xtext_selection_get (GtkWidget * widget,
+								 GtkSelectionData * selection_data_ptr,
+								 guint info, guint time)
+{
+	GtkXText *xtext = GTK_XTEXT (widget);
+	char *stripped;
+	guchar *new_text;
+	int len;
+
+	stripped = gtk_xtext_selection_get_text (xtext, &len);
+	if (!stripped)
+		return;
 
 	switch (info)
 	{

@@ -280,8 +280,8 @@ get_xdir (void)
 		if (!get_reg_str ("Software\\Microsoft\\Windows\\CurrentVersion\\"
 				"Explorer\\Shell Folders", "AppData", out, sizeof (out)))
 			return "./config";
-		xdir = malloc (strlen (out) + 8);
-		sprintf (xdir, "%s\\X-Chat", out);
+		xdir = malloc (strlen (out) + 10);
+		sprintf (xdir, "%s\\X-Chat 2", out);
 	}
 	return xdir;
 }
@@ -707,6 +707,7 @@ save_config (void)
 		return 0;
 	}
 
+	unlink (config);	/* win32 can't rename to an existing file */
 	if (rename (new_config, config) == -1)
 	{
 		free (new_config);
