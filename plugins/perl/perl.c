@@ -305,7 +305,7 @@ static XS (XS_IRC_get_info)
 	int i = SvIV (ST (0));
 
 	if (i < 5 && i >= 0)
-		XST_mPV (0, xchat_get_info (ph, ids[i]));
+		ret = (char *)xchat_get_info (ph, ids[i]);
 	else
 	{
 		switch (i)
@@ -315,12 +315,18 @@ static XS (XS_IRC_get_info)
 				XST_mIV (0, 1);
 			else
 				XST_mIV (0, 0);
-			break;
+			XSRETURN (1);
+			return;
 
 		default:
-			XST_mPV (0, "Error2");
+			ret = "Error2";
 		}
 	}
+
+	if (ret)
+		XST_mPV (0, ret);
+	else
+		XST_mPV (0, "");	/* emulate 1.8.x behaviour */
 
 	XSRETURN (1);
 }

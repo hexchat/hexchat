@@ -816,9 +816,9 @@ server_connect_success (server *serv)
 	/* activate glib poll */
 	server_connected (serv);
 
-
+/*
 	serv->encoding = strdup ("iso-8859-8");
-	server_inline (serv, "\0xD0\0xD1", 2);
+	server_inline (serv, "\0xD0\0xD1", 2);*/
 }
 
 /* receive info from the child-process about connection progress */
