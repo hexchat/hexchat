@@ -442,8 +442,9 @@ mg_set_topic_tip (session *sess)
 {
 	char buf[512];
 
-	if (sess->type == SESS_CHANNEL)
+	switch (sess->type)
 	{
+	case SESS_CHANNEL:
 		if (sess->topic)
 		{
 			snprintf (buf, sizeof (buf), _("Topic for %s is: %s"), sess->channel,
@@ -451,6 +452,9 @@ mg_set_topic_tip (session *sess)
 			add_tip (sess->gui->topic_entry, buf);
 		} else
 			add_tip (sess->gui->topic_entry, _("No topic is set"));
+		break;
+	default:
+		add_tip (sess->gui->topic_entry, GTK_ENTRY (sess->gui->topic_entry)->text);
 	}
 }
 
