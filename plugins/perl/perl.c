@@ -34,7 +34,6 @@
 #include "../../config.h"	/* for #define OLD_PERL */
 #include "xchat-plugin.h"
 
-
 static xchat_plugin *ph; /* plugin handle */
 
 
@@ -122,10 +121,6 @@ typedef struct
 static PerlInterpreter *my_perl = NULL;
 static GSList *perl_list = NULL;
 static GSList *hook_list = NULL;
-
-#ifdef OLD_PERL
-static GSList *compat_hook_list = NULL;
-#endif
 
 extern void boot_DynaLoader (pTHX_ CV* cv);
 
@@ -457,12 +452,16 @@ static XS (XS_Xchat_register)
 		switch(items)
 		{
 		case 3:
-			desc = SvPV_nolen (ST (2));
-			break;
+		  if(SvTRUE (ST (2))) {
+		    desc = SvPV_nolen (ST (2));
+		  }
+		  break;
 		case 4:
-			desc = SvPV_nolen (ST (2));
-			callback = ST (3);
-			break;
+		  if(SvTRUE (ST (2))) {
+		    desc = SvPV_nolen (ST (2));
+		  }
+		  callback = ST (3);
+		  break;
 		}
 	  
 		if(desc == NULL ) {
@@ -1005,936 +1004,6 @@ static XS (XS_Xchat_get_list)
 	}
 }
 
-#ifdef OLD_PERL
-static int
-compat_execute_perl (char *function, char *args)
-{
-	char *perl_args[2];
-	int count, ret_value = 1;
-	SV *sv;
-
-	dSP;
-	ENTER;
-	SAVETMPS;
-	PUSHMARK(sp);
-	perl_args[0] = args;
-	perl_args[1] = NULL;
-	count = call_argv(function, G_EVAL | G_SCALAR, perl_args);
-	SPAGAIN;
-
-	sv = GvSV(gv_fetchpv("@", TRUE, SVt_PV));
-	if (SvTRUE(sv)) {
-		xchat_printf(ph, "Perl error: %s\n", SvPV(sv, count));
-		POPs;
-	} else if (count != 1) {
-		xchat_printf(ph, "Perl error: expected 1 value from %s, "
-						 "got: %d\n", function, count);
-	} else {
-		ret_value = POPi;
-	}
-
-	PUTBACK;
-	FREETMPS;
-	LEAVE;
-
-	return ret_value;
-}
-
-static int
-perl_timer_cb (void *perl_callback)
-{
-	compat_execute_perl (perl_callback, "");
-	compat_hook_list = g_slist_remove (compat_hook_list, perl_callback);
-	free (perl_callback);
-	return 0;	/* returning zero removes the timeout handler */
-}
-
-static int
-perl_server_cb (char *word[], char *word_eol[], void *perl_callback)
-{
-	return compat_execute_perl (perl_callback, word_eol[1]);
-}
-
-static int
-perl_command_cb (char *word[], char *word_eol[], void *perl_callback)
-{
-	return compat_execute_perl (perl_callback, word_eol[2]);
-}
-
-static int
-perl_print_cb (char *word[], void *perl_callback)
-{
-	char *arg;
-	int count = 1, retVal = 0;
-
-	dSP;
-	ENTER;
-	SAVETMPS;
-
-	arg = g_strdup_printf ("%s %s %s %s", word[1], word[2], word[3],
-								word[4]);
-
-	PUSHMARK( SP );
-	XPUSHs( sv_2mortal( newSVpv( arg, strlen(arg) ) ) );
-
-	for( count = 1;
-	(count < 32) && (word[count] != NULL) && (word[count][0] != 0);
-	count++ )
-	{
-		XPUSHs( sv_2mortal( newSVpv( word[count], 0 ) ) );
-	}
-	PUTBACK;
-
-	count = call_pv( (char*)perl_callback, G_EVAL);
-
-	SPAGAIN;
-
-	if (SvTRUE (ERRSV))
-	{
-		xchat_printf( ph, "Error in print callback %s",
-		SvPV_nolen(ERRSV) );
-		POPs;
-		retVal = XCHAT_EAT_NONE;
-	} else
-	{
-		if (count != 1)
-		{
-			xchat_print (ph,
-				"Print handler should only return 1 value.");
-			retVal = XCHAT_EAT_XCHAT;
-		} else
-		{
-			retVal = POPi;
-		}
-	}
-
-	g_free(arg);
-	PUTBACK;
-	FREETMPS;
-	LEAVE;
-	return retVal;
-}
-
-/* custom IRC perl functions for scripting */
-
-/* IRC::register (scriptname, version, shutdowncallback, unused)
-
- *  all scripts should call this at startup
- *
- */
-
-static XS (XS_IRC_register)
-{
-	char *name, *ver, *desc; 
-	SV *callback;
-	PerlScript *scp;
-	dXSARGS;
-	
-	if (items != 4) {
-	     xchat_print (ph,
-	"Usage: IRC::register(scriptname, version, shutdowncallback, desc)");
-		XSRETURN_EMPTY;
-	} else {
-		name = SvPV_nolen (ST (0));
-		ver = SvPV_nolen (ST (1));
-		callback = ST (2);
-		desc = SvPV_nolen (ST (3));
-
-		scp = malloc (sizeof (PerlScript));
-		scp->name = strdup (name);
-		scp->version = strdup (ver);
-		scp->desc = strdup (desc);
-		scp->shutdowncallback = sv_mortalcopy (callback);
-		SvREFCNT_inc( scp->shutdowncallback );
-		/* FIXME: no filename */
-		scp->gui_entry = xchat_plugingui_add (ph, scp->name,
-							scp->name, scp->desc,
-							  scp->version, NULL);
-
-		perl_list = g_slist_prepend (perl_list, scp);
-
-		XST_mPV (0, VERSION);
-		XSRETURN (1);
-	}
-}
-
-
-/* print to main window */
-/* IRC::main_print(output) */
-static XS (XS_IRC_print)
-{
-	int i;
-	char *output;
-	dXSARGS;
-
-	for (i = 0; i < items; ++i)
-	{
-		output = SvPV_nolen (ST (i));
-		xchat_print (ph, output);
-	}
-
-	XSRETURN_EMPTY;
-}
-
-/*
- * IRC::print_with_channel( text, channelname, servername )
- *    
- *   The servername is optional, channelname is required.
- *   Returns 1 on success, 0 on fail.
- */
-
-static XS (XS_IRC_print_with_channel)
-{
-	void *ctx, *old_ctx;
-	char *server = NULL;
-	dXSARGS;
-
-	if (items > 2)
-	{
-		server = SvPV_nolen (ST (2));
-		if (!server[0])
-			server = NULL;
-	}
-
-	old_ctx = xchat_get_context (ph);
-	ctx = xchat_find_context (ph, server, SvPV_nolen (ST (1)));
-	if (ctx)
-	{
-		xchat_set_context (ph, ctx);
-		xchat_print (ph, SvPV_nolen (ST (0)));
-		xchat_set_context (ph, old_ctx);
-		XSRETURN_YES;
-	}
-
-	XSRETURN_NO;
-}
-
-static XS (XS_IRC_get_info)
-{
-	char *ret;
-	static const char *ids[] = {"version", "nick", "channel", "server",
-				 "xchatdir", NULL, "network", "host", "topic"};
-	int i;
-	dXSARGS;
-
-	i = SvIV (ST (0));
-	if( items != 1 ) {
-		xchat_print (ph, "Usage: IRC::get_info(id)");
-		XSRETURN_EMPTY;
-	} else {
-		if (i < 9 && i >= 0 && i != 5) {
-			ret = (char *)xchat_get_info (ph, ids[i]);
-		} else {
-			switch (i) {
-				case 5:
-					if (xchat_get_info (ph, "away")) {
-						XST_mIV (0, 1);
-					} else {
-						XST_mIV (0, 0);
-					}
-					XSRETURN (1);
-
-				default:
-					ret = "Error2";
-			}
-		}
-
-		if (ret) {
-			XST_mPV (0, ret);
-		} else {
-			XST_mPV (0, "");	/* emulate 1.8.x behaviour */
-		}
-		XSRETURN (1);
-	}
-}
-
-/* Added by TheHobbit <thehobbit@altern.org>*/
-/* IRC::get_prefs(var) */
-static XS (XS_IRC_get_prefs)
-{
-	const char *str;
-	int integer;
-	dXSARGS;
-
-	if( items != 1 ) {
-		xchat_print (ph, "Usage: IRC::get_prefs(name)");
-		XSRETURN_EMPTY;
-	}
-	switch (xchat_get_prefs (ph, SvPV_nolen (ST (0)), &str, &integer))
-	{
-	case 0:
-		XST_mPV (0, "Unknown variable");
-		break;
-	case 1:
-		XST_mPV (0, str);
-		break;
-	case 2:
-		XST_mIV (0, integer);
-		break;
-	case 3:
-		if (integer)
-			XST_mYES (0);
-		else
-			XST_mNO (0);
-	}
-
-	XSRETURN (1);
-}
-
-/* add handler for messages with message_type(ie PRIVMSG, 400, etc) */
-/* IRC::add_message_handler(message_type, handler_name) */
-static XS (XS_IRC_add_message_handler)
-{
-	char *tmp;
-	char *name;
-	void *hook;
-	dXSARGS;
-
-	if( items != 2 ) {
-		xchat_print (ph,
-			"Usage: IRC::add_message_handler(message,callback)");
-	} else {
-		tmp = strdup (SvPV_nolen (ST (1)));
-		name = SvPV_nolen (ST (0));
-		if (strcasecmp (name, "inbound") == 0) {
-			name = "RAW LINE";
-		}
-		hook = xchat_hook_server (ph, name, XCHAT_PRI_NORM, perl_server_cb,
-									tmp);
-
-		compat_hook_list = g_slist_prepend (compat_hook_list, hook);
-	
-	}
-	XSRETURN_EMPTY;
-}
-
-/* add handler for commands with command_name */
-/* IRC::add_command_handler(command_name, handler_name) */
-static XS (XS_IRC_add_command_handler)
-{
-	char *tmp;
-	void *hook;
-	dXSARGS;
-
-	if( items != 2 ) {
-		xchat_print (ph,
-			"Usage: IRC::add_command_handler(command,callback)");
-	} else {
-		tmp = strdup (SvPV_nolen (ST (1)));
-
-		/* use perl_server_cb when it's a "" hook, so that it gives
-		   word_eol[1] as the arg, instead of word_eol[2] */
-		hook = xchat_hook_command (ph, SvPV_nolen (ST (0)),
-						XCHAT_PRI_NORM,
-						SvPV_nolen (ST (0))[0] == 0 ? 
-					perl_server_cb : perl_command_cb,
-								NULL, tmp);
-
-		compat_hook_list = g_slist_prepend (compat_hook_list, hook);
-		
-	}
-	XSRETURN_EMPTY;
-}
-
-/* add handler for commands with print_name */
-/* IRC::add_print_handler(print_name, handler_name) */
-static XS (XS_IRC_add_print_handler)
-{
-	char *tmp;
-	void *hook;
-	dXSARGS;
-
-	if( items != 2 ) {
-		xchat_print (ph,
-			"Usage: IRC::add_print_handler(event,callback)");
-	} else {
-		tmp = strdup (SvPV_nolen (ST (1)));
-
-		hook = xchat_hook_print (ph, SvPV_nolen (ST (0)),
-						XCHAT_PRI_NORM,
-						perl_print_cb, tmp);
-
-		compat_hook_list = g_slist_prepend (compat_hook_list, hook);
-	}
-	XSRETURN_EMPTY;
-}
-
-static XS (XS_IRC_add_timeout_handler)
-{
-	void *hook;
-	dXSARGS;
-
-	if( items != 2 ) {
-		xchat_print (ph,
-			"Usage: IRC::add_timeout_handler(interval,callback)");
-	} else {
-		hook = xchat_hook_timer (ph, SvIV (ST (0)), perl_timer_cb,
-						strdup (SvPV_nolen (ST (1))));
-		compat_hook_list = g_slist_prepend (compat_hook_list, hook);
-	}
-	XSRETURN_EMPTY;
-}
-
-/* send raw data to server */
-/* IRC::send_raw(data) */
-static XS (XS_IRC_send_raw)
-{
-	dXSARGS;
-	
-	if( items != 1 ) {
-		xchat_print (ph, "Usage: IRC::send_raw(message)");
-	} else {
-		xchat_commandf (ph, "quote %s", SvPV_nolen (ST (0)));
-	}
-	XSRETURN_EMPTY;
-}
-
-static XS (XS_IRC_channel_list)
-{
-	int i = 0;
-	xchat_list *list;
-	xchat_context *old = xchat_get_context (ph);
-	
-	dXSARGS;
-	
-	if( items != 0 ) {
-		xchat_print (ph, "Usage: IRC::channel_list()");
-		XSRETURN_EMPTY;
-	} else {
-		list = xchat_list_get (ph, "channels");
-		if (list) {
-			while (xchat_list_next (ph, list)) {
-				XST_mPV (i, xchat_list_str
-							(ph, list, "channel"));
-				i++;
-				XST_mPV (i, xchat_list_str
-							(ph, list, "server"));
-				i++;
-				xchat_set_context (ph,
-					(xchat_context *) xchat_list_str (ph, list, "context"));
-				XST_mPV (i, xchat_get_info (ph, "nick"));
-				i++;
-			}
-
-			xchat_list_free (ph, list);
-		}
-
-		xchat_set_context (ph, old);
-
-		XSRETURN (i);
-	}
-}
-
-static XS (XS_IRC_server_list)
-{
-	int i = 0;
-	xchat_list *list;
-	dXSARGS;
-
-	if( items != 0 ) {
-		xchat_print (ph, "Usage: IRC::server_list()");
-		XSRETURN_EMPTY;
-	} else {
-		list = xchat_list_get (ph, "channels");
-		if (list) {
-			while (xchat_list_next (ph, list)) {
-				XST_mPV (i, xchat_list_str
-							(ph, list, "server"));
-				i++;
-			}
-
-			xchat_list_free (ph, list);
-		}
-
-		XSRETURN (i);
-	}
-}
-
-static XS (XS_IRC_ignore_list)
-{
-	int i = 0, flags;
-	xchat_list *list;
-	
-	dXSARGS;
-
-	if( items != 0 ) {
-		xchat_print (ph, "Usage: IRC::ignore_list()");
-		XSRETURN_EMPTY;
-	} else {
-		list = xchat_list_get (ph, "ignore");
-		if (list) {
-			while (xchat_list_next (ph, list)) {
-			/* Make sure there is room on the stack */
-				EXTEND(SP, i + 10);
-
-				XST_mPV (i, xchat_list_str (ph, list, "mask"));
-				i++;
-
-				flags = xchat_list_int (ph, list, "flags");
-
-				XST_mIV (i, flags & 1);
-				i++;
-				XST_mIV (i, flags & 2);
-				i++;
-				XST_mIV (i, flags & 4);
-				i++;
-				XST_mIV (i, flags & 8);
-				i++;
-				XST_mIV (i, flags & 16);
-				i++;
-				XST_mIV (i, flags & 32);
-				i++;
-				XST_mPV (i, ":");
-				i++;
-			}
-
-			xchat_list_free (ph, list);
-		}
-
-		XSRETURN (i);
-	}
-}
-
-static XS (XS_IRC_notify_list)
-{
-	dXSARGS;
-#if 0
-	struct notify *not;
-	struct notify_per_server *notserv;
-	GSList *list = notify_list;
-	GSList *notslist;
-
-	while (list)
-	{
-		not = (struct notify *) list->data;
-		notslist = not->server_list;
-
-		XST_mPV (i, not->name);
-		i++;
-		while (notslist)
-		{
-			notserv = (struct notify_per_server *)notslist->data;
-
-			XST_mPV (i, notserv->server->servername);
-			i++;
-			XST_mIV (i, notserv->laston);
-			i++;
-			XST_mIV (i, notserv->lastseen);
-			i++;
-			XST_mIV (i, notserv->lastoff);
-			i++;
-			if (notserv->ison)
-				XST_mYES (i);
-			else
-				XST_mNO (i);
-			i++;
-			XST_mPV (i, "::");
-			i++;
-			
-			notslist = notslist->next;
-		}
-		XST_mPV (i, ":");
-		i++;
-
-		list = list->next;
-	}
-#endif
-
-	XSRETURN_IV (items);
-}
-
-
-/*
-
-   IRC::user_info( nickname )
-
- */
-
-static XS (XS_IRC_user_info)
-{
-	dXSARGS;
-	xchat_list *list;
-	int i = 0;
-	const char *nick;
-	const char *find_nick;
-	const char *host, *prefix;
-
-	if( items > 1 ) {
-		xchat_print (ph, "Usage: IRC::user_info([nick])");
-		XSRETURN_EMPTY;
-	} else {
-		find_nick = SvPV_nolen (ST (0));
-		if (find_nick[0] == 0) {
-			find_nick = xchat_get_info (ph, "nick");
-		}
-
-		list = xchat_list_get (ph, "users");
-		if (list) {
-			while (xchat_list_next (ph, list)) {
-				nick = xchat_list_str (ph, list, "nick");
-
-				if (xchat_nickcmp (ph, 
-					(char *)nick, (char *)find_nick) == 0)
-				{
-					XST_mPV (i, nick);
-					i++;
-					host = xchat_list_str (ph, list,
-								"host");
-					if (!host) {
-						host = "FETCHING";
-					}
-					XST_mPV (i, host);
-					i++;
-
-					prefix = xchat_list_str
-							(ph, list, "prefix");
-
-					XST_mIV (i,(prefix[0] == '@') ? 1 : 0);
-					i++;
-
-					XST_mIV (i,(prefix[0] == '+') ? 1 : 0);
-					i++;
-
-					xchat_list_free (ph, list);
-					XSRETURN (4);
-				}
-			}
-
-			xchat_list_free (ph, list);
-		}
-		
-		XSRETURN (0);
-	}
-}
-
-/*
- * IRC::add_user_list(ul_channel, ul_server, nick, user_host,
- * 		      realname, server)
- */
-static XS (XS_IRC_add_user_list)
-{
-	dXSARGS;
-
-	XSRETURN_IV(items);
-}
-
-/*
- * IRC::sub_user_list(ul_channel, ul_server, nick)
- */
-static XS (XS_IRC_sub_user_list)
-{
-	dXSARGS;
-
-	XSRETURN_IV(items);
-}
-
-/*
- * IRC::clear_user_list(channel, server)
- */
-static XS (XS_IRC_clear_user_list)
-{
-	dXSARGS;
-
-	XSRETURN_IV(items);
-};
-
-/*
-
-   IRC::user_list( channel, server )
-
- */
-
-static XS (XS_IRC_user_list)
-{
-	const char *host;
-	const char *prefix;
-	int i = 0;
-	dXSARGS;
-	xchat_list *list;
-	xchat_context *ctx, *old = xchat_get_context (ph);
-
-	if( items > 2 ) {
-		xchat_print (ph, "Usage: IRC::user_list(channel,server)");
-		XSRETURN_EMPTY;
-	} else {
-		ctx = xchat_find_context (ph, SvPV_nolen (ST (1)),
-							SvPV_nolen (ST (0)));
-		if (!ctx) {
-			XSRETURN (0);
-		}
-		xchat_set_context (ph, ctx);
-
-		list = xchat_list_get (ph, "users");
-		if (list) {
-			while (xchat_list_next (ph, list)) {
-				/* Make sure there is room on the stack */
-				EXTEND(SP, i + 9);
-
-				XST_mPV (i, xchat_list_str (ph, list, "nick"));
-				i++;
-				host = xchat_list_str (ph, list, "host");
-				if (!host) {
-					host = "FETCHING";
-				}
-				XST_mPV (i, host);
-				i++;
-
-				prefix = xchat_list_str (ph, list, "prefix");
-
-				XST_mIV (i, (prefix[0] == '@') ? 1 : 0);
-				i++;
-				XST_mIV (i, (prefix[0] == '+') ? 1 : 0);
-				i++;
-				XST_mPV (i, ":");
-				i++;
-			}
-
-			xchat_list_free (ph, list);
-		}
-
-		xchat_set_context (ph, old);
-
-		XSRETURN (i);
-	}
-}
-
-static XS (XS_IRC_dcc_list)
-{
-	int i = 0;
-	xchat_list *list;
-	const char *file;
-	int type;
-
-	dXSARGS;
-	if( items != 0 ) {
-		xchat_print (ph, "Usage: IRC::dcc_list()");
-		XSRETURN_EMPTY;
-	} else {
-		list = xchat_list_get (ph, "dcc");
-		if (list) {
-			while (xchat_list_next (ph, list)) {
-				/* Make sure there is room on the stack */
-				EXTEND (SP, i + 11);
-
-				XST_mPV (i, xchat_list_str (ph, list, "nick"));
-				i++;
-
-				file = xchat_list_str (ph, list, "file");
-				if (!file) {
-					file = "";
-				}
-
-				XST_mPV (i, file);
-				i++;
-				XST_mIV (i, xchat_list_int (ph, list, "type"));
-				i++;
-				XST_mIV (i, xchat_list_int
-							(ph, list, "status"));
-				i++;
-				XST_mIV (i, xchat_list_int (ph, list, "cps"));
-				i++;
-				XST_mIV (i, xchat_list_int (ph, list, "size"));
-				i++;
-				type = xchat_list_int (ph, list, "type");
-				if (type == 0) {
-					XST_mIV (i, xchat_list_int
-							(ph, list, "pos"));
-				} else {
-					XST_mIV (i, xchat_list_int
-							(ph, list, "resume"));
-				}
-
-				i++;
-				XST_mIV (i, xchat_list_int
-						(ph, list, "address32"));
-				i++;
-				file = xchat_list_str (ph, list, "destfile");
-				if (!file)
-					file = "";
-
-				XST_mPV (i, file);
-				i++;
-			}
-
-			xchat_list_free (ph, list);
-		}
-
-		XSRETURN (i);
-	}
-}
-
-/* run internal xchat command */
-/* IRC::command(command) */
-static XS (XS_IRC_command)
-{
-	char *cmd;
-	dXSARGS;
-
-	if( items != 1 ) {
-		xchat_print (ph, "Usage: IRC::command(command)");
-	} else {
-		cmd = SvPV_nolen (ST (0));
-		if (cmd[0] == '/') {
-			/* skip the forward slash */
-			xchat_command (ph, cmd + 1);
-		} else {
-			xchat_commandf (ph, "say %s", cmd);
-		}
-	}
-	XSRETURN_EMPTY;
-}
-
-/* command_with_server(command, server) */
-static XS (XS_IRC_command_with_server)
-{
-	void *ctx, *old_ctx;
-	char *cmd;
-
-	dXSARGS;
-
-	if( items != 2 ) {
-		xchat_print (ph,
-			"Usage: IRC::command_with_server(command,server)");
-		XSRETURN_EMPTY;
-	} else {
-		cmd = SvPV_nolen (ST (0));
-		old_ctx = xchat_get_context (ph);
-		ctx = xchat_find_context (ph, SvPV_nolen (ST (1)), NULL);
-		if (ctx) {
-			xchat_set_context (ph, ctx);
-
-			if (cmd[0] == '/') {
-				/* skip the forward slash */
-				xchat_command (ph, cmd + 1);
-			} else {
-				xchat_commandf (ph, "say %s", cmd);
-			}
-			xchat_set_context (ph, old_ctx);
-			XSRETURN_YES;
-		}
-
-		XSRETURN_NO;
-	}
-}
-
-/* command_with_channel( command, channel, [server] ) */
-static XS (XS_IRC_command_with_channel)
-{
-	
-	void *ctx, *old_ctx;
-	char *cmd;
-	char *server = NULL;
-
-	dXSARGS;
-
-	cmd = SvPV_nolen (ST (0));
-
-	if (items > 2)
-	{
-		server = SvPV_nolen (ST (2));
-		if (!server[0])
-			server = NULL;
-	}
-
-	old_ctx = xchat_get_context (ph);
-	ctx = xchat_find_context (ph, server, SvPV_nolen (ST (1)));
-	if (ctx)
-	{
-		xchat_set_context (ph, ctx);
-
-		if (cmd[0] == '/')
-			/* skip the forward slash */
-			xchat_command (ph, cmd + 1);
-		else
-			xchat_commandf (ph, "say %s", cmd);
-
-		xchat_set_context (ph, old_ctx);
-		XSRETURN_YES;
-	}
-
-	XSRETURN_NO;
-}
-
-/* MAG030600: BEGIN IRC::user_list_short */
-/*
-
-   IRC::user_list_short( channel, server )
-   returns a shorter user list consisting of pairs of nick & user@host
-   suitable for assigning to a hash.  modified IRC::user_list()
-   
- */
-static XS (XS_IRC_user_list_short)
-{
-	const char *host;
-	int i = 0;
-	
-	xchat_list *list;
-	xchat_context *ctx, *old = xchat_get_context (ph);
-
-	dXSARGS;
-	
-	if( items != 2 ) {
-		xchat_print (ph,
-			"Usage: IRC::user_list_short(channel,server)");
-		XSRETURN_EMPTY;
-	} else {
-		ctx = xchat_find_context (ph, SvPV_nolen (ST (1)), SvPV_nolen (ST (0)));
-		if (!ctx) {
-			XSRETURN (0);
-		}
-		xchat_set_context (ph, ctx);
-
-		list = xchat_list_get (ph, "users");
-		if (list) {
-			while (xchat_list_next (ph, list)) {
-				/* Make sure there is room on the stack */
-				EXTEND(SP, i + 5);
-
-				XST_mPV (i, xchat_list_str (ph, list, "nick"));
-				i++;
-				host = xchat_list_str (ph, list, "host");
-				if (!host) {
-					host = "FETCHING";
-				}
-				XST_mPV (i, host);
-				i++;
-			}
-
-			xchat_list_free (ph, list);
-		}
-
-		xchat_set_context (ph, old);
-
-		XSRETURN (i);
-	}
-}
-
-static XS (XS_IRC_perl_script_list)
-{
-	int i = 0;
-	GSList *handler;
-	dXSARGS;
-	if (items != 0) {
-		xchat_print (ph, "Usage: IRC::perl_script_list()");
-	} else {
-	  handler = perl_list;
-	  while (handler) {
-	    PerlScript *scp = handler->data;
-	    
-	    /* Make sure there is room on the stack */
-	    EXTEND(SP, i + 5);
-	    
-	    XST_mPV (i, scp->name);
-	    i++;
-	    XST_mPV (i, scp->version);
-	    i++;
-	    handler = handler->next;
-	  }
-	  XSRETURN(i);
-	}
-}
-#endif
-
 /* xs_init is the second argument perl_parse. As the name hints, it
    initializes XS subroutines (see the perlembed manpage) */
 static void
@@ -1964,34 +1033,6 @@ xs_init (pTHX)
 	newXS("Xchat::nickcmp", XS_Xchat_nickcmp, "Xchat");
 	newXS("Xchat::get_list", XS_Xchat_get_list, "Xchat");
 	
-#ifdef OLD_PERL
-	/* for old interface compatibility */
-	newXS ("IRC::register", XS_IRC_register, "IRC");
-	newXS ("IRC::add_message_handler", XS_IRC_add_message_handler, "IRC");
-	newXS ("IRC::add_command_handler", XS_IRC_add_command_handler, "IRC");
-	newXS ("IRC::add_print_handler", XS_IRC_add_print_handler, "IRC");
-	newXS ("IRC::add_timeout_handler", XS_IRC_add_timeout_handler, "IRC");
-	newXS ("IRC::print", XS_IRC_print, "IRC");
-	newXS ("IRC::print_with_channel", XS_IRC_print_with_channel, "IRC");
-	newXS ("IRC::send_raw", XS_IRC_send_raw, "IRC");
-	newXS ("IRC::command", XS_IRC_command, "IRC");
-	newXS ("IRC::command_with_server", XS_IRC_command_with_server, "IRC");
-	newXS ("IRC::command_with_channel", XS_IRC_command_with_channel, "IRC");
-	newXS ("IRC::channel_list", XS_IRC_channel_list, "IRC");
-	newXS ("IRC::server_list", XS_IRC_server_list, "IRC");
-	newXS ("IRC::add_user_list", XS_IRC_add_user_list, "IRC");
-	newXS ("IRC::sub_user_list", XS_IRC_sub_user_list, "IRC");
-	newXS ("IRC::clear_user_list", XS_IRC_clear_user_list, "IRC");
-	newXS ("IRC::user_list", XS_IRC_user_list, "IRC");
-	newXS ("IRC::user_info", XS_IRC_user_info, "IRC");
-	newXS ("IRC::ignore_list", XS_IRC_ignore_list, "IRC");
-	newXS ("IRC::notify_list", XS_IRC_notify_list, "IRC");
-	newXS ("IRC::dcc_list", XS_IRC_dcc_list, "IRC");
-	newXS ("IRC::get_info", XS_IRC_get_info, "IRC");
-	newXS ("IRC::get_prefs", XS_IRC_get_prefs, "IRC");
-	newXS ("IRC::user_list_short", XS_IRC_user_list_short, "IRC");
-	newXS ("IRC::perl_script_list", XS_IRC_perl_script_list, "IRC");
-#endif
 	stash = get_hv ("Xchat::", TRUE);
 	if(stash == NULL ) {
 	  exit(1);
@@ -2029,11 +1070,11 @@ perl_init (void)
 	     value. Just a question of style:) 
 	     We also redefine the $SIG{__WARN__} handler to have XChat
 	     printing warnings in the main window. (TheHobbit)*/
-
+	  
+	  "use strict; use warnings;"
 	  "BEGIN {\n"
 	  "$INC{'Xchat.pm'} = 'DUMMY';\n"
 	  "}\n"
-
 	  "{\n"
 	  "package Xchat;\n"
 	  "use base qw(Exporter);\n"
@@ -2073,17 +1114,13 @@ perl_init (void)
 	  "qw(strip_code),\n"
 	  "],\n"
 	  ");\n"
-
 	  "}\n"
 	  "sub Xchat::hook_server {\n"
 	  "return undef unless @_ >= 2;\n"
-  
 	  "my $message = shift;\n"
 	  "my $callback = shift;\n"
 	  "my $options = shift;\n"
-  
 	  "my ($priority, $data) = ( Xchat::PRI_NORM, undef );\n"
-  
 	  "if ( ref( $options ) eq 'HASH' ) {\n"
 	  "if ( exists( $options->{priority} ) && defined( $options->{priority} ) ) {\n"
 	  "$priority = $options->{priority};\n"
@@ -2092,20 +1129,14 @@ perl_init (void)
 	  "$data = $options->{data};\n"
 	  "}\n"
 	  "}\n"
-  
 	  "return Xchat::_hook_server( $message, $priority, $callback, $data);\n"
-
 	  "}\n"
-
 	  "sub Xchat::hook_command {\n"
 	  "return undef unless @_ >= 2;\n"
-
 	  "my $command = shift;\n"
 	  "my $callback = shift;\n"
 	  "my $options = shift;\n"
-
 	  "my ($priority, $help_text, $data) = ( Xchat::PRI_NORM, '', undef );\n"
-
 	  "if ( ref( $options ) eq 'HASH' ) {\n"
 	  "if ( exists( $options->{priority} ) && defined( $options->{priority} ) ) {\n"
 	  "$priority = $options->{priority};\n"
@@ -2117,21 +1148,15 @@ perl_init (void)
 	  "$data = $options->{data};\n"
 	  "}\n"
 	  "}\n"
-
 	  "return Xchat::_hook_command( $command, $priority, $callback, $help_text,\n"
 	  "$data);\n"
-
 	  "}\n"
-
 	  "sub Xchat::hook_print {\n"
 	  "return undef unless @_ >= 2;\n"
-
 	  "my $event = shift;\n"
 	  "my $callback = shift;\n"
 	  "my $options = shift;\n"
-
 	  "my ($priority, $data) = ( Xchat::PRI_NORM, undef );\n"
-
 	  "if ( ref( $options ) eq 'HASH' ) {\n"
 	  "if ( exists( $options->{priority} ) && defined( $options->{priority} ) ) {\n"
 	  "$priority = $options->{priority};\n"
@@ -2140,31 +1165,22 @@ perl_init (void)
 	  "$data = $options->{data};\n"
 	  "}\n"
 	  "}\n"
-
 	  "return Xchat::_hook_print( $event, $priority, $callback, $data);\n"
-
 	  "}\n"
-
-
 	  "sub Xchat::hook_timer {\n"
 	  "return undef unless @_ >= 2;\n"
-
 	  "my $timeout = shift;\n"
 	  "my $callback = shift;\n"
 	  "my $data = shift;\n"
-
 	  "if( ref( $data ) eq 'HASH' && exists( $data->{data} )\n"
 	  "&& defined( $data->{data} ) ) {\n"
 	  "$data = $data->{data};\n"
 	  "}\n"
-
 	  "return Xchat::_hook_timer( $timeout, $callback, $data );\n"
-
 	  "}\n"
-
 	  "sub Xchat::print {\n"
-
 	  "my $text = shift @_;\n"
+	  "return 1 unless $text;\n"
 	  "if( ref( $text ) eq 'ARRAY' ) {\n"
 	  "if( $, ) {\n"
 	  "$text = join $, , @$text;\n"
@@ -2172,13 +1188,11 @@ perl_init (void)
 	  "$text = join \"\", @$text;\n"
 	  "}\n"
 	  "}\n"
-  
 	  "if( @_ >= 1 ) {\n"
 	  "my $channel = shift @_;\n"
 	  "my $server = shift @_;\n"
 	  "my $old_ctx = Xchat::get_context();\n"
 	  "my $ctx = Xchat::find_context( $channel, $server );\n"
-    
 	  "if( $ctx ) {\n"
 	  "Xchat::set_context( $ctx );\n"
 	  "Xchat::_print( $text );\n"
@@ -2191,16 +1205,12 @@ perl_init (void)
 	  "Xchat::_print( $text );\n"
 	  "return 1;\n"
 	  "}\n"
-
 	  "}\n"
-
 	  "sub Xchat::printf {\n"
 	  "my $format = shift;\n"
 	  "Xchat::print( sprintf( $format, @_ ) );\n"
 	  "}\n"
-
 	  "sub Xchat::command {\n"
-
 	  "my $command = shift;\n"
 	  "my @commands;\n"
 	  "if( ref( $command ) eq 'ARRAY' ) {\n"
@@ -2212,7 +1222,6 @@ perl_init (void)
 	  "my ($channel, $server) = @_;\n"
 	  "my $old_ctx = Xchat::get_context();\n"
 	  "my $ctx = Xchat::find_context( $channel, $server );\n"
-
 	  "if( $ctx ) {\n"
 	  "Xchat::set_context( $ctx );\n"
 	  "Xchat::_command( $_ ) foreach @commands;\n"
@@ -2225,18 +1234,14 @@ perl_init (void)
 	  "Xchat::_command( $_ ) foreach @commands;\n"
 	  "return 1;\n"
 	  "}\n"
-
 	  "}\n"
-
 	  "sub Xchat::commandf {\n"
 	  "my $format = shift;\n"
 	  "Xchat::command( sprintf( $format, @_ ) );\n"
 	  "}\n"
-
 	  "sub Xchat::user_info {\n"
 	  "my $nick = shift @_ || Xchat::get_info( \"nick\" );\n"
 	  "my $user;\n"
-
 	  "for(Xchat::get_list( \"users\" ) ) {\n"
 	  "if( Xchat::nickcmp( $_->{nick}, $nick ) == 0 ) {\n"
 	  "$user = $_;\n"
@@ -2245,25 +1250,21 @@ perl_init (void)
 	  "}\n"
 	  "return $user;\n"
 	  "}\n"
-
 	  "sub Xchat::context_info {\n"
 	  "my $ctx = shift @_;\n"
 	  "my $old_ctx = Xchat::get_context;\n"
 	  "my @fields = (qw(away channel host network nick server topic version),\n"
 	  "qw(win_status xchatdir xchatdirfs),\n"
 	  ");\n"
-
 	  "Xchat::set_context( $ctx );\n"
 	  "my %info;\n"
 	  "for my $field ( @fields ) {\n"
 	  "$info{$field} = Xchat::get_info( $field );\n"
 	  "}\n"
 	  "Xchat::set_context( $old_ctx );\n"
-
 	  "return %info if wantarray;\n"
 	  "return \\%info;\n"
 	  "}\n"
-
 	  "sub Xchat::strip_code {\n"
 	  "my $pattern =\n"
 	  "qr/\\cB| #Bold\n"
@@ -2273,7 +1274,6 @@ perl_init (void)
 	  "\\cV| #Reverse\n"
 	  "\\c_  #Underline\n"
 	  "/x;\n"
-
 	  "if( defined wantarray ) {\n"
 	  "my $msg = shift;\n"
 	  "$msg =~ s/$pattern//g;\n"
@@ -2282,36 +1282,252 @@ perl_init (void)
 	  "$_[0] =~ s/$pattern//g;\n"
 	  "}\n"
 	  "}\n"
-
 	  "$SIG{__WARN__} = sub {\n"
 	  "local $, = \"\\n\";\n"
 	  "my ($package, $file, $line, $sub) = caller(1);\n"
 	  "Xchat::print( \"Warning from ${sub}.\" );\n"
 	  "Xchat::print( @_ );\n"
 	  "};\n"
-
 	  "sub Xchat::Embed::load {\n"
 	  "my $file = shift @_;\n"
-
 	  "if( open FH, $file ) {\n"
 	  "my $data = do {local $/; <FH>};\n"
 	  "close FH;\n"
-
 	  "eval $data;\n"
-
 	  "if( $@ ) {\n"
 	  "Xchat::print( \"Error loading '$file':\\n$@\\n\" );\n"
 	  "return 1;\n"
 	  "}\n"
-
 	  "} else {\n"
-
 	  "Xchat::print( \"Error opening '$file': $!\\n\" );\n"
 	  "return 2;\n"
 	  "}\n"
-
 	  "return 0;\n"
 	  "}\n"
+#ifdef OLD_PERL
+	  "sub IRC::_fix_callback {\n"
+	  "my ($package, $callback) = @_;\n"
+	  "unless( ref $callback ) {\n"
+	  "$callback =~ s/^.*:://;\n"
+	  "$callback = qq[${package}::$callback];\n"
+	  "}\n"
+	  "return $callback;\n"
+	  "}\n"
+	  "sub IRC::register {\n"
+	  "my ($script_name, $version, $callback) = @_;\n"
+	  "my $package = caller;\n"
+	  "$callback = IRC::_fix_callback( $package, $callback) if $callback;\n"
+	  "Xchat::register( $script_name, $version, undef, $callback );\n"
+	  "}\n"
+	  "sub IRC::add_command_handler {\n"
+	  "my ($command, $callback) = @_;\n"
+	  "my $package = caller;\n"
+	  "$callback = IRC::_fix_callback( $package, $callback );\n"
+	  "my $start_index = $command ? 1 : 0;\n"
+	  "Xchat::hook_command( $command,\n"
+	  "sub {\n"
+	  "no strict 'refs';\n"
+	  "return &{$callback}($_[1][$start_index]);\n"
+	  "}\n"
+	  ");\n"
+	  "return;\n"
+	  "}\n"
+	  "sub IRC::add_message_handler {\n"
+	  "my ($message, $callback) = @_;\n"
+	  "my $package = caller;\n"
+	  "$callback = IRC::_fix_callback( $package, $callback );\n"
+	  "Xchat::hook_server( $message,\n"
+	  "sub {\n"
+	  "no strict 'refs';\n"
+	  "return &{$callback}( $_[1][0] );\n"
+	  "}\n"
+	  ");\n"
+	  "return;\n"
+	  "}\n"
+	  "sub IRC::add_print_handler {\n"
+	  "my ($event, $callback) = @_;\n"
+	  "my $package = caller;\n"
+	  "$callback = IRC::_fix_callback( $package, $callback );\n"
+	  "Xchat::hook_print( $event,\n"
+	  "sub {\n"
+	  "my @word = @{$_[0]};\n"
+	  "no strict 'refs';\n"
+	  "return &{$callback}( join( ' ', @word[0..3] ), @word );\n"
+	  "}\n"
+	  ");\n"
+	  "return;\n"
+	  "}\n"
+	  "sub IRC::add_timeout_handler {\n"
+	  "my ($timeout, $callback) = @_;\n"
+	  "my $package = caller;\n"
+	  "$callback = IRC::_fix_callback( $package, $callback );\n"
+	  "Xchat::hook_timer( $timeout,\n"
+	  "sub {\n"
+	  "no strict 'refs';\n"
+	  "&{$callback};\n"
+	  "return 0;\n"
+	  "}\n"
+	  ");\n"
+	  "return;\n"
+	  "}\n"
+	  "sub IRC::command {\n"
+	  "my $command = shift;\n"
+	  "if( $command =~ m{^/} ) {\n"
+	  "$command =~ s{^/}{};\n"
+	  "Xchat::command( $command );\n"
+	  "} else {\n"
+	  "Xchat::command( qq[say $command] );\n"
+	  "}\n"
+	  "}\n"
+	  "sub IRC::command_with_channel {\n"
+	  "my ($command, $channel, $server) = @_;\n"
+	  "my $old_ctx = Xchat::get_context;\n"
+	  "my $ctx = Xchat::find_context( $channel, $server );\n"
+	  "if( $ctx ) {\n"
+	  "Xchat::set_context( $ctx );\n"
+	  "IRC::command( $command );\n"
+	  "Xchat::set_context( $ctx );\n"
+	  "}\n"
+	  "}\n"
+	  "sub IRC::command_with_server {\n"
+	  "my ($command, $server) = @_;\n"
+	  "my $old_ctx = Xchat::get_context;\n"
+	  "my $ctx = Xchat::find_context( undef, $server );\n"
+	  "if( $ctx ) {\n"
+	  "Xchat::set_context( $ctx );\n"
+	  "IRC::command( $command );\n"
+	  "Xchat::set_context( $ctx );\n"
+	  "}\n"
+	  "}\n"
+	  "sub IRC::dcc_list {\n"
+	  "my @dccs;\n"
+	  "for my $dcc ( Xchat::get_list( 'dcc' ) ) {\n"
+	  "push @dccs, $dcc->{nick};\n"
+	  "push @dccs, $dcc->{file} ? $dcc->{file} : '';\n"
+	  "push @dccs, @{$dcc}{qw(type status cps size)};\n"
+	  "push @dccs, $dcc->{type} == 0 ? $dcc->{pos} : $dcc->{resume};\n"
+	  "push @dccs, $dcc->{address32};\n"
+	  "push @dccs, $dcc->{destfile} ? $dcc->{destfile} : '';\n"
+	  "}\n"
+	  "return @dccs;\n"
+	  "}\n"
+	  "sub IRC::channel_list {\n"
+	  "my @channels;\n"
+	  "for my $channel ( Xchat::get_list( 'channels' ) ) {\n"
+	  "push @channels, @{$channel}{qw(channel server)},\n"
+	  "Xchat::context_info( $channel->{context} )->{nick};\n"
+	  "}\n"
+	  "return @channels;\n"
+	  "}\n"
+	  "sub IRC::get_info {\n"
+	  "my $id = shift;\n"
+	  "my @ids = qw(version nick channel server xchatdir away network host topic);\n"
+	  "if( $id >= 0 && $id <= 8 && $id != 5 ) {\n"
+	  "my $info = Xchat::get_info($ids[$id]);\n"
+	  "return defined $info ? $info : '';\n"
+	  "} else {\n"
+	  "if( $id == 5 ) {\n"
+	  "return Xchat::get_info( 'away' ) ? 1 : 0;\n"
+	  "} else {\n"
+	  "return 'Error2';\n"
+	  "}\n"
+	  "}\n"
+	  "}\n"
+	  "sub IRC::get_prefs {\n"
+	  "return 'Unknown variable' unless defined $_[0];\n"
+	  "my $result = Xchat::get_prefs(shift);\n"
+	  "return defined $result ? $result : 'Unknown variable';\n"
+	  "}\n"
+	  "sub IRC::ignore_list {\n"
+	  "my @ignores;\n"
+	  "for my $ignore ( Xchat::get_list( 'ignore' ) ) {\n"
+	  "push @ignores, $ignore->{mask};\n"
+	  "my $flags = $ignore->{flags};\n"
+	  "push @ignores, $flags & 1, $flags & 2, $flags & 4, $flags & 8, $flags & 16,\n"
+	  "$flags & 32, ':';\n"
+	  "}\n"
+	  "return @ignores;\n"
+	  "}\n"
+	  "sub IRC::print {\n"
+	  "Xchat::print( $_ ) for @_;\n"
+	  "return;\n"
+	  "}\n"
+	  "sub IRC::print_with_channel {\n"
+	  "Xchat::print( @_ );\n"
+	  "}\n"
+	  "sub IRC::send_raw {\n"
+	  "Xchat::commandf( qq[quote %s], shift );\n"
+	  "}\n"
+	  "sub IRC::server_list {\n"
+	  "my @servers;\n"
+	  "for my $channel ( Xchat::get_list( 'channels' ) ) {\n"
+	  "push @servers, $channel->{server} if $channel->{server};\n"
+	  "}\n"
+	  "return @servers;\n"
+	  "}\n"
+	  "sub IRC::user_info {\n"
+	  "my $user;\n"
+	  "if( @_ > 0 ) {\n"
+	  "$user = Xchat::user_info( shift );\n"
+	  "} else {\n"
+	  "$user = Xchat::user_info();\n"
+	  "}\n"
+	  "my @info;\n"
+	  "if( $user ) {\n"
+	  "push @info, $user->{nick};\n"
+	  "if( $user->{host} ) {\n"
+	  "push @info, $user->{host};\n"
+	  "} else {\n"
+	  "push @info, 'FETCHING';\n"
+	  "}\n"
+	  "push @info, $user->{prefix} eq '@' ? 1 : 0;\n"
+	  "push @info, $user->{prefix} eq '+' ? 1 : 0;\n"
+	  "}\n"
+	  "return @info;\n"
+	  "}\n"
+	  "sub IRC::user_list {\n"
+	  "my ($channel, $server) = @_;\n"
+	  "my $ctx = Xchat::find_context( $channel, $server );\n"
+	  "my $old_ctx = Xchat::get_context;\n"
+	  "if( $ctx ) {\n"
+	  "Xchat::set_context( $ctx );\n"
+	  "my @users;\n"
+	  "for my $user ( Xchat::get_list( 'users' ) ) {\n"
+	  "push @users, $user->{nick};\n"
+	  "if( $user->{host} ) {\n"
+	  "push @users, $user->{host};\n"
+	  "} else {\n"
+	  "push @users, 'FETCHING';\n"
+	  "}\n"
+	  "push @users, $user->{prefix} eq '@' ? 1 : 0;\n"
+	  "push @users, $user->{prefix} eq '+' ? 1 : 0;\n"
+	  "push @users, ':';\n"
+	  "}\n"
+	  "Xchat::set_context( $old_ctx );\n"
+	  "return @users;\n"
+	  "} else {\n"
+	  "return;\n"
+	  "}\n"
+	  "}\n"
+	  "sub IRC::user_list_short {\n"
+	  "my ($channel, $server) = @_;\n"
+	  "my $ctx = Xchat::find_context( $channel, $server );\n"
+	  "my $old_ctx = Xchat::get_context;\n"
+	  "if( $ctx ) {\n"
+	  "Xchat::set_context( $ctx );\n"
+	  "my @users;\n"
+	  "for my $user ( Xchat::get_list( 'users' ) ) {\n"
+	  "my $nick = $user->{nick};\n"
+	  "my $host = $user->{host} || 'FETCHING';\n"
+	  "push @users, $nick, $host;\n"
+	  "}\n"
+	  "Xchat::set_context( $old_ctx );\n"
+	  "return @users;\n"
+	  "} else {\n"
+	  "return;\n"
+	  "}\n"
+	  "}\n"
+#endif
 
 	};
 #ifdef ENABLE_NLS
@@ -2437,15 +1653,6 @@ perl_end (void)
 		hook_list = g_slist_remove (hook_list, hook_list->data);
 	}
 
-#ifdef OLD_PERL
-	while (compat_hook_list)
-	{
-		tmp = xchat_unhook (ph, compat_hook_list->data);
-		if (tmp)
-			free(tmp);
-		compat_hook_list = g_slist_remove (compat_hook_list, compat_hook_list->data);
-	}
-#endif
 }
 
 static int
