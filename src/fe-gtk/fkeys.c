@@ -425,8 +425,13 @@ key_dialog_close ()
 static void
 key_dialog_add_new (GtkWidget * button, GtkCList * list)
 {
-	gchar *strs[] = { "", _("<none>"), _("<none>"), _("<none>"), _("<none>") };
+	gchar *strs[] = { "", NULL, NULL, NULL, NULL };
 	struct key_binding *kb;
+
+	strs[1] = _("<none>");
+	strs[2] = _("<none>");
+	strs[3] = _("<none>");
+	strs[4] = _("<none>");
 
 	kb = malloc (sizeof (struct key_binding));
 
@@ -668,9 +673,13 @@ key_dialog_show ()
 {
 	GtkWidget *vbox, *hbox, *list, *vbox2, *wid, *wid2, *wid3, *hbox2;
 	struct key_binding *kb;
-	gchar *titles[] = { _("Mod"), _("Key"), _("Action"), "1", "2" };
+	gchar *titles[] = { NULL, NULL, NULL, "1", "2" };
 	char temp[32];
 	int i;
+
+	titles[0] = _("Mod");
+	titles[1] = _("Key");
+	titles[2] = _("Action");
 
 	if (key_dialog)
 	{

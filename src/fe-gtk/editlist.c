@@ -134,7 +134,10 @@ static void
 editlist_gui_addnew (GtkWidget * igad)
 {
 	int i;
-	gchar *nnew[2] = { _("*NEW*"), _("EDIT ME") };
+	gchar *nnew[2];
+
+	nnew[0] = _("*NEW*");
+	nnew[1] = _("EDIT ME");
 
 	i = gtk_clist_append (GTK_CLIST (editlist_gui_list), nnew);
 	gtk_clist_select_row (GTK_CLIST (editlist_gui_list), i, 0);
@@ -296,8 +299,11 @@ void
 editlist_gui_open (GSList * list, char *title, char *wmclass, char *file,
 						 char *help)
 {
-	gchar *titles[] = { _("Name"), _("Command") };
+	gchar *titles[2];
 	GtkWidget *vbox, *hbox, *button;
+
+	titles[0] = _("Name");
+	titles[1] = _("Command");
 
 	if (editlist_gui_window)
 	{

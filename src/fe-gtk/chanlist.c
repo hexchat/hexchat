@@ -590,9 +590,13 @@ chanlist_closegui (GtkWidget *wid, server *serv)
 void
 chanlist_opengui (struct server *serv)
 {
-	gchar *titles[] = { _("Channel"), _("Users"), _("Topic") };
+	gchar *titles[3];
 	GtkWidget *frame, *vbox, *hbox, *table, *wid;
 	char tbuf[256];
+
+	titles[0] = _("Channel");
+	titles[1] = _("Users");
+	titles[2] = _("Topic");
 
 	if (serv->gui->chanlist_window)
 	{

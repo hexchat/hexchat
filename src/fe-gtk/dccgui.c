@@ -393,12 +393,20 @@ fe_dcc_open_recv_win (int passive)
 	GtkWidget *vbox, *bbox;
 #ifdef USE_GNOME
 	gchar *titles[] =
-		{ _("Status"), _("File"), _("Size"), _("Position"), "%", "KB/s", _("ETA"), _("From"),
-			_("MIME Type") };
+		{ NULL, NULL, NULL, NULL, "%", "KB/s", NULL, NULL, NULL };
+
+	titles[8] = _("MIME Type");
 #else
 	gchar *titles[] =
-		{ _("Status"), _("File"), _("Size"), _("Position"), "%", "KB/s", _("ETA"), _("From") };
+		{ NULL, NULL, NULL, NULL, "%", "KB/s", NULL, NULL };
 #endif
+
+	titles[0] = _("Status");
+	titles[1] = _("File");
+	titles[2] = _("Size");
+	titles[3] = _("Position");
+	titles[6] = _("ETA");
+	titles[7] = _("From");
 
 	if (dccrwin.window)
 	{
@@ -577,7 +585,15 @@ fe_dcc_open_send_win (int passive)
 {
 	GtkWidget *vbox, *bbox;
 	gchar *titles[] =
-		{ _("Status"), _("File"), _("Size"), _("Position"), _("Ack"), "%", "KB/s", _("ETA"), _("To") };
+		{ NULL, NULL, NULL, NULL, NULL, "%", "KB/s", NULL, NULL };
+
+	titles[0] = _("Status");
+	titles[1] = _("File");
+	titles[2] = _("Size");
+	titles[3] = _("Position");
+	titles[4] = _("Ack");
+	titles[7] = _("ETA");
+	titles[8] = _("To");
 
 	if (dccswin.window)
 	{
@@ -707,8 +723,13 @@ void
 fe_dcc_open_chat_win (int passive)
 {
 	GtkWidget *vbox, *bbox;
-	gchar *titles[] =
-		{ _("Status"), _("To/From"), _("Recv"), _("Sent"), _("StartTime") };
+	gchar *titles[5];
+
+	titles[0] = _("Status");
+	titles[1] = _("To/From");
+	titles[2] = _("Recv");
+	titles[3] = _("Sent");
+	titles[4] = _("StartTime");
 
 	if (dcccwin.window)
 	{

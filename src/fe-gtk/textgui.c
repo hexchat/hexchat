@@ -373,8 +373,15 @@ void
 pevent_dialog_show ()
 {
 	GtkWidget *vbox, *vbox2, *hbox, *tbox, *wid, *bh, *th;
-	gchar *titles[] = { _("Event"), _("Text"), _("Sound") };
-	gchar *help_titles[] = { _("$ Number"), _("Description") };
+	gchar *titles[3];
+	gchar *help_titles[2];
+
+	titles[0] = _("Event");
+	titles[1] = _("Text");
+	titles[2] = _("Sound");
+
+	help_titles[0] = _("$ Number");
+	help_titles[1] = _("Description");
 
 	if (pevent_dialog)
 	{
