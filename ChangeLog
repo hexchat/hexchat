@@ -17,6 +17,16 @@
  - Fixed some 64-bit issues (xc205-fix64bit.diff).
  - 311 word[8] might not have a ":" [822199].
  - Apply tint changes instantly.
+ - Fixed skipping of "" in word[] to solve resume with mirc >= 6.1.
+ - Python plugin changes:
+	* Fixed the reentrancy problem which made xchat freeze when some
+     python code made xchat trigger a python callback somewhere.
+   * Implemented xchat_emit_print() and xchat_get_prefs() support.
+   * Fixed softspace support for python 2.3. This problem was making
+     print statements yield an extra space at the next line start.
+   * Other minor changes.
+	(Gustavo Niemeyer, Gustavo J. A. M. Carneiro, Marko Kreen).
+ - 
  - 
 
 

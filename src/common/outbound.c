@@ -185,8 +185,10 @@ process_data_init (char *buf, char *cmd, char *word[],
 			if (!handle_quotes)
 				goto def;
 			if (quote)
+			{
 				quote = FALSE;
-			else
+				space = FALSE;
+			} else
 				quote = TRUE;
 			cmd++;
 			break;
