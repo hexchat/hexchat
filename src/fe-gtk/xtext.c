@@ -4065,6 +4065,7 @@ gtk_xtext_render_page_timeout (GtkXText * xtext)
 	{
 		xtext->buffer->old_value = 0;
 		adj->value = 0;
+		gtk_xtext_render_page (xtext);
 	} else if (xtext->buffer->scrollbar_down)
 	{
 		g_signal_handler_block (xtext->adj, xtext->vc_signal_tag);
@@ -4072,12 +4073,11 @@ gtk_xtext_render_page_timeout (GtkXText * xtext)
 		gtk_adjustment_set_value (adj, adj->upper - adj->page_size);
 		g_signal_handler_unblock (xtext->adj, xtext->vc_signal_tag);
 		xtext->buffer->old_value = adj->value;
+		gtk_xtext_render_page (xtext);
 	} else
 	{
-		gtk_xtext_adjustment_set (xtext->buffer, FALSE);
+		gtk_xtext_adjustment_set (xtext->buffer, TRUE);
 	}
-
-	gtk_xtext_render_page (xtext);
 
 	return 0;
 }
