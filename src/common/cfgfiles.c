@@ -569,7 +569,7 @@ load_config (void)
 	strcpy (prefs.stamp_format, "[%H:%M] ");
 	strcpy (prefs.timestamp_log_format, "%b %d %H:%M:%S ");
 	strcpy (prefs.logmask, "%n-%c.log");
-	strcpy (prefs.nick_suffix, ":");
+	strcpy (prefs.nick_suffix, ",");
 	strcpy (prefs.cmdchar, "/");
 	strcpy (prefs.nick1, username);
 	strcpy (prefs.nick2, username);
