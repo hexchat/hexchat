@@ -28,42 +28,44 @@ XChat 2.0.0pre1 RELEASE NOTES:
 Notes for packagers:
 ~~~~~~~~~~~~~~~~~~~~
 
-* If you need your packages to work on i386, you don't need to compile with
-  --disable-mmx, because it's also checked at run-time.
+ If you need your packages to work on i386, you don't need to compile with
+ --disable-mmx, because it's also checked at run-time.
 
 
-Crashes:
-~~~~~~~~
-  They're easy to debug: http://xchat.org/gdb.html
+BUGS/Crashes:
+~~~~~~~~~~~~~
+
+	http://xchat.org/cvs.html
 
 
-BUGS:
-~~~~~
-
-* delinking/relinking of non-irc windows
-
-* http://sourceforge.net/tracker/?func=browse&group_id=239&atid=100239
+Python Scripts:
+~~~~~~~~~~~~~~~
+ Scripts for 1.8.x are not compatible, and a brand new interface has be
+ written. Documentation can be found here: http://xchat.org/docs.html.
+ Consider using the Python interface for your scripts, it's a very nice
+ API, allows for loading/unloading individual scripts, and gives you
+ almost all the features of the C-Plugin API.
 
 
 Perl Scripts:
 ~~~~~~~~~~~~~
-Scripts for 1.8.x are compatible with the following exceptions:
+ Scripts for 1.8.x are compatible with the following exceptions:
 
-- user_list and user_list_short:
+* user_list and user_list_short:
   If a user has both op and voice, only the op flag will be 1.
 
-- dcc_list
+* dcc_list
   The address field is always 0.
 
-- add_user_list/sub_user_list/clear_user_list
+* add_user_list/sub_user_list/clear_user_list
   These functions do nothing.
 
-- notify_list
+* notify_list
   Not implemented. Always returns an empty list.
 
-- server_list
+* server_list
   Lists servers that are not connected aswell.
 
-- Text printed by scripts must now be UTF8.
+* Text printed by scripts must now be UTF8.
 
-- Text passed to scripts (via add_message_handler) will be encoded in UTF8.
+* Text passed to scripts (via add_message_handler) will be encoded in UTF8.

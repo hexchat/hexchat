@@ -241,7 +241,6 @@ fe_timeout_remove (int tag)
 void
 fe_new_window (session *sess)
 {
-	static const char *locale = NULL;
 	int tab = FALSE;
 
 	if (sess->type == SESS_DIALOG)
@@ -255,20 +254,6 @@ fe_new_window (session *sess)
 	}
 
 	mg_changui_new (sess, NULL, tab);
-
-	if (locale == NULL)
-	{
-		g_get_charset (&locale);
-		PrintTextf (sess, "Report crashes! http://xchat.org/gdb.html\n\n"
-								"Encoding: %s\n"
-								"Renderer: %s\n\n", locale,
-#ifdef USE_XFT
-		"Xft"
-#else
-		"Pango"
-#endif
-						);
-	}
 }
 
 void

@@ -1127,6 +1127,7 @@ mg_create_link_buttons (GtkWidget *box, gpointer userdata)
 	gtkutil_button (box, GTK_STOCK_CLOSE, _("Close this tab/window"),
 						 mg_x_click_cb, userdata, 0);
 
+	if (!userdata)
 	gtkutil_button (box, GTK_STOCK_REDO, _("Attach/Detach this tab"),
 						 mg_link_cb, userdata, 0);
 }

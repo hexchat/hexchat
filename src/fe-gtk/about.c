@@ -87,6 +87,7 @@ menu_about (GtkWidget * wid, gpointer sess)
 {
 	GtkWidget *vbox, *label, *hbox;
 	char buf[512];
+	const char *locale = NULL;
 
 	if (about)
 	{
@@ -106,12 +107,23 @@ menu_about (GtkWidget * wid, gpointer sess)
 	gtk_container_add (GTK_CONTAINER (vbox), wid);
 
 	label = gtk_label_new (NULL);
+	gtk_label_set_selectable (GTK_LABEL (label), TRUE);
 	gtk_container_add (GTK_CONTAINER (vbox), label);
+	g_get_charset (&locale);
 	(snprintf) (buf, sizeof (buf),
 				"<span size=\"x-large\"><b>X-Chat "VERSION"</b></span>\n\n"
 				"An IRC Client for UNIX\n\n"
-				"%s\n\n"
-				"(C) 1998-2002 Peter Zelezny &lt;zed@xchat.org>", get_cpu_str());
+				"%s\n"
+				"Charset: %s Renderer: %s\n\n"
+				"(C) 1998-2002 Peter Zelezny &lt;zed@xchat.org>",
+					get_cpu_str(),
+					locale,
+#ifdef USE_XFT
+					"Xft"
+#else
+					"Pango"
+#endif
+					);
 	gtk_label_set_markup (GTK_LABEL (label), buf);
 	gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_CENTER);
 

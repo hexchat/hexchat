@@ -5,21 +5,21 @@
 <style type="text/css">
 <!--
 body {
-	font-family: sans-serif;
-	background-color: #FFFBF0;
+font-family: sans-serif;
+background-color: #FFFBF0;
 }
 .cmd {
-	background-color: #dddddd;
-	color: #990066
+background-color: #dddddd;
+color: #990066
 }
 -->
 </style>
 </head>
-<body bgcolor="#FFFFFF" text="#000000" link="#607060" vlink="#607060" alink="#607060">
+<body bgcolor="#FFFBF0" text="#000000" link="#607060" vlink="#607060" alink="#607060">
 
 <h1>XChat 2.0 Plugin Interface</h1>
 
-<small>This interface is still under development and may be changed!
+<small>
 <br>Latest version of this document is available at: <a href="http://xchat.org/docs/plugin20.html">http://xchat.org/docs/plugin20.html</a></small>
 
 <h2>Information:</h2>
@@ -28,6 +28,7 @@ body {
 <br><a href="#sample">Sample plugin</a>
 <br><a href="#word">What is word and word_eol?</a>
 <br><a href="#lists">Lists and fields</a>
+<br><a href="#win32">Plugins on Windows/Win32</a>
 </blockquote>
 
 <h2>Functions:</h2>
@@ -77,25 +78,38 @@ but they are not necessary. Plugins are compiled as shared objects
 </pre>
 
 <h3><a name="sample">Sample plugin</a></h3>
-This simple plugin adds one extra command: /LS. When executed with a parameter, it will
-execute /exec ls &lt;parameter>. When executed without any paramaters it will execute
-/exec ls. All XChat plugins must define a "xchat_plugin_init" function! Defining
-a xchat_plugin_deinit is optional.
+This simple plugin autoOps anyone who joins a channel you're in. It also
+adds a new command /AUTOOPTOGGLE, which can be used to turn the feature ON
+or OFF. Every XChat plugin must define an xchat_plugin_init function, this
+is the normal entry point. xchat_plugin_deinit is optional.
 <br>
 <pre>
 <font color="#a020f0">#include </font><font color="#f800f8">&quot;xchat-plugin.h&quot;</font>
 
 <font color="#288850"><b>static</b></font> xchat_plugin *ph;   <font color="#0000f8">/*</font><font color="#0000f8"> plugin handle */</font>
+<font color="#288850"><b>static</b></font> <font color="#288850"><b>int</b></font> enable = <font color="#f800f8">1</font>;
 
-<font color="#288850"><b>static</b></font> <font color="#288850"><b>int</b></font> ls_cb(<font color="#288850"><b>char</b></font> *word[], <font color="#288850"><b>char</b></font> *word_eol[], <font color="#288850"><b>void</b></font> *userdata)
+<font color="#288850"><b>static</b></font> <font color="#288850"><b>int</b></font> join_cb(<font color="#288850"><b>char</b></font> *word[], <font color="#288850"><b>void</b></font> *userdata)
 {
-   <font color="#288850"><b>char</b></font> *dir;
+   <font color="#a02828"><b>if</b></font> (enable)
+      <font color="#0000f8">/*</font><font color="#0000f8"> Op ANYONE who joins */</font>
+      xchat_commandf(ph, <font color="#f800f8">&quot;OP </font><font color="#6858c8">%s</font><font color="#f800f8">&quot;</font>, word[<font color="#f800f8">1</font>]);
+   <font color="#0000f8">/*</font><font color="#0000f8"> word[1] is the nickname, as in the Settings-&gt;Lists-&gt;EventTexts window in xchat */</font>
 
-   dir = word[<font color="#f800f8">2</font>]; <font color="#0000f8">/*</font><font color="#0000f8"> the directory is the 1st arg (2nd word) */</font>
-   <font color="#a02828"><b>if</b></font>(dir[<font color="#f800f8">0</font>])
-      xchat_commandf(ph, <font color="#f800f8">&quot;exec ls </font><font color="#6858c8">%s</font><font color="#f800f8">&quot;</font>, dir);
-   <font color="#a02828"><b>else</b></font>
-      xchat_command(ph, <font color="#f800f8">&quot;exec ls&quot;</font>);
+   <font color="#a02828"><b>return</b></font> EAT_NONE;  <font color="#0000f8">/*</font><font color="#0000f8"> don't eat this event, xchat needs to see it! */</font>
+}
+
+<font color="#288850"><b>static</b></font> <font color="#288850"><b>int</b></font> autooptoggle_cb(<font color="#288850"><b>char</b></font> *word[], <font color="#288850"><b>char</b></font> *word_eol[], <font color="#288850"><b>void</b></font> *userdata)
+{
+   <font color="#a02828"><b>if</b></font> (!enable)
+   {
+      enable = <font color="#f800f8">1</font>;
+      xchat_print(ph, <font color="#f800f8">&quot;AutoOping now enabled!</font><font color="#6858c8">\n</font><font color="#f800f8">&quot;</font>);
+   } <font color="#a02828"><b>else</b></font>
+   {
+      enable = <font color="#f800f8">0</font>;
+      xchat_print(ph, <font color="#f800f8">&quot;AutoOping now disabled!</font><font color="#6858c8">\n</font><font color="#f800f8">&quot;</font>);
+   }
 
    <font color="#a02828"><b>return</b></font> EAT_ALL;   <font color="#0000f8">/*</font><font color="#0000f8"> eat this command so xchat and other plugins can't process it */</font>
 }
@@ -109,17 +123,19 @@ a xchat_plugin_deinit is optional.
    <font color="#0000f8">/*</font><font color="#0000f8"> we need to save this for use with any xchat_* functions */</font>
    ph = plugin_handle;
 
-   *plugin_name = <font color="#f800f8">&quot;LS plugin&quot;</font>;
-   *plugin_desc = <font color="#f800f8">&quot;Adds an /LS command to give a directory listing&quot;</font>;
+   *plugin_name = <font color="#f800f8">&quot;AutoOp&quot;</font>;
+   *plugin_desc = <font color="#f800f8">&quot;Auto Ops anyone that joins&quot;</font>;
    *plugin_version = <font color="#f800f8">&quot;0.1&quot;</font>;
 
-   xchat_hook_command(ph, <font color="#f800f8">&quot;ls&quot;</font>, PRI_NORM, ls_cb, <font color="#f800f8">&quot;Usage: LS [dir], Does a directory listing&quot;</font>, <font color="#f800f8">0</font>);
-   xchat_print(ph, <font color="#f800f8">&quot;LS Plugin loaded successfully!</font><font color="#6858c8">\n</font><font color="#f800f8">&quot;</font>);
+   xchat_hook_command(ph, <font color="#f800f8">&quot;AutoOpToggle&quot;</font>, PRI_NORM, autooptoggle_cb, <font color="#f800f8">&quot;Usage: AUTOOPTOGGLE, Turns OFF/ON Auto Oping&quot;</font>, <font color="#f800f8">0</font>);
+   xchat_hook_print(ph, <font color="#f800f8">&quot;Join&quot;</font>, PRI_NORM, join_cb, <font color="#f800f8">0</font>);
+
+   xchat_print(ph, <font color="#f800f8">&quot;AutoOpPlugin loaded successfully!</font><font color="#6858c8">\n</font><font color="#f800f8">&quot;</font>);
 
    <font color="#a02828"><b>return</b></font> <font color="#f800f8">1</font>;       <font color="#0000f8">/*</font><font color="#0000f8"> return 1 for success */</font>
 }
-
 </pre>
+
 <h3><a name="word">What's word and word_eol?</a></h3>
 
 They are arrays of strings. They contain the parameters the user entered
@@ -194,31 +210,54 @@ needed for a long time after calling xchat_list_str. The types of lists and fiel
 Example:
 <br>
 <pre>
-{
-	xchat_list *list;
+   list = xchat_list_get(ph, <font color="#f800f8">&quot;dcc&quot;</font>);
+   <font color="#a02828"><b>if</b></font>(list)
+   {
+      xchat_print(ph, <font color="#f800f8">&quot;--- DCC LIST ------------------</font><font color="#6858c8">\n</font><font color="#f800f8">&quot;</font>
+                      <font color="#f800f8">&quot;File  To/From   KB/s   Position</font><font color="#6858c8">\n</font><font color="#f800f8">&quot;</font>);
 
-	list = xchat_list_get(ph, "dcc");
+      <font color="#a02828"><b>while</b></font>(xchat_list_next(ph, list))
+      {
+         xchat_printf(ph, <font color="#f800f8">&quot;</font><font color="#6858c8">%6s</font><font color="#f800f8"> </font><font color="#6858c8">%10s</font><font color="#f800f8"> </font><font color="#6858c8">%.2f</font><font color="#f800f8">  </font><font color="#6858c8">%d</font><font color="#6858c8">\n</font><font color="#f800f8">&quot;</font>,
+             xchat_list_str(ph, list, <font color="#f800f8">&quot;file&quot;</font>),
+             xchat_list_str(ph, list, <font color="#f800f8">&quot;nick&quot;</font>),
+             xchat_list_int(ph, list, <font color="#f800f8">&quot;cps&quot;</font>) / <font color="#f800f8">1024</font>,
+             xchat_list_int(ph, list, <font color="#f800f8">&quot;pos&quot;</font>));
+      }
 
-	if(list)
-	{
-		xchat_print(ph, "--- DCC LIST ------------------\n"
-				"File  To/From   KB/s   Position\n");
-
-		while(xchat_list_next(ph, list))
-		{
-			xchat_printf(ph, "%6s %10s %.2f  %d\n",
-				 xchat_list_str(ph, list, "file"),
-				 xchat_list_str(ph, list, "nick"),
-				 xchat_list_int(ph, list, "cps") / 1024,
-				 xchat_list_int(ph, list, "pos"));
-		}
-
-		xchat_list_free(ph, list);
-	}
-}
+      xchat_list_free(ph, list);
+   }
 </pre>
 
-<br><br><br>
+<br>
+
+<h3><a name="win32">Plugins on Windows/Win32</a></h3>
+Yes, it can be done. All you need is either MSVC or <a href="http://www.mingw.org">MINGW</a>. Simply compile your plugin as a DLL. You should have the
+following files:
+
+<ul>
+<li><a href="http://xchat.org/docs/xchat-plugin.h">xchat-plugin.h</a> - Main Plugin header</li>
+<li>plugin.c - Your plugin, you need to write this one :)</li>
+<li>plugin.def - A simple text file containing the following:</li>
+</ul>
+<table bgcolor="#fefeb0">
+<tr><td>EXPORTS</td></tr>
+<tr><td>&nbsp; xchat_plugin_init</td></tr>
+<tr><td>&nbsp; xchat_plugin_deinit</td></tr>
+</table>
+
+<br>To compile:
+<pre>
+	cl -O1 -MD -G5 -DWIN32 -c plugin.c
+	link /DLL /out:plugin.dll /SUBSYSTEM:WINDOWS plugin.obj /def:plugin.def
+</pre>
+<font color=red>Caveat:</font> Plugins compiled on Win32 MUST have a
+global variable called <b>ph</b>, which is the plugin_handle, much like
+in the <a href="#sample">sample plugin</a> above.
+
+<br><br>
+
+<h1>Functions</h1>
 
 <h3><a class="cmd" name="xchat_hook_command">&nbsp;xchat_hook_command()&nbsp;</a></h3>
 <b>Prototype:</b> xchat_hook *xchat_hook_command(xchat_plugin *ph, char *name, int pri, xchat_cmd_cb *callb, char *help_text, void *userdata);
@@ -275,6 +314,7 @@ xchat_hook_command(ph, "ONOTICE", PRI_NORM, onotice_cb, "Usage: ONOTICE &lt;mess
 The event names may be any available in the "Edit Event Texts" window.
 There are also some extra "special" events you may hook using this function.
 Currently they are:<blockquote>
+"Open Context" - Called when a new xchat_context is created.
 "Close Context" - Called when a xchat_context pointer is closed.
 <br>"Focus Tab" - Called when a tab is brought to front.
 <br>"Focus Window" - Called a toplevel window is focused, or the main
