@@ -10,7 +10,7 @@ AM_PROG_AS
 AM_DISABLE_STATIC
 AM_PROG_LIBTOOL
 
-ALL_LINGUAS="am ca cs da de el es et fi fr he hu it ja ko lt lv nl no pt pt_BR ro ru sk sl sr sv tr uk zh_CN zh_TW.Big5"
+ALL_LINGUAS="am el es et lt lv nl no sk sv"
 AM_GNU_GETTEXT
 
 # displaced from acconfig.h
@@ -270,38 +270,36 @@ dnl ** PYTHON ***********************************************************
 dnl *********************************************************************
 
 if test "$python" = yes; then
-	AC_PATH_PROG(pythonpath, python2)
-	if test "_$pythonpath" = _ ; then
-		AC_PATH_PROG(pythonpath, python)
-	fi
-	if test "_$pythonpath" = _ ; then
-		python=no
-	else
-		AC_MSG_CHECKING(Python version)
-		PY_PREFIX=`$pythonpath -c 'import sys; print sys.prefix'`
-		PY_EXEC_PREFIX=`$pythonpath -c 'import sys; print sys.exec_prefix'`
-		changequote(<<, >>)dnl
-		PY_VERSION=`$pythonpath -c 'import sys; print sys.version.split()[0]'`
-		PY_MAJOR=`$pythonpath -c 'import sys; print "%d.%d"%sys.version_info[:2]'`
-		PY_PATH=`$pythonpath -c 'import sys ; print sys.path[1][5:]'`
-		PY_OK=`$pythonpath -c 'import sys; sys.version_info[:2] >= (2,2) and sys.stdout.write("1")'`
-		changequote([, ])dnl
-		AC_MSG_RESULT($PY_VERSION)
-		if test "$PY_OK" = "1"; then
-			AC_MSG_CHECKING(Python compile flags)
-			if test -f $PY_PREFIX/include/python$PY_MAJOR/Python.h; then
-				PY_LIBS="-L$PY_EXEC_PREFIX/$PY_PATH/config -lpython$PY_MAJOR -lpthread -lutil"
-				PY_CFLAGS="-I$PY_PREFIX/include/python$PY_MAJOR"
-				AC_MSG_RESULT(ok)
-			else
-				python=no
-				AC_MSG_RESULT([Can't find Python.h])
-			fi
-		else
-			echo "Python too old. Only 2.2 or above is supported."
-			python=no
-		fi
-	fi
+        AC_PATH_PROG(pythonpath, python2)
+        if test "_$pythonpath" = _ ; then
+                AC_PATH_PROG(pythonpath, python)
+        fi
+        if test "_$pythonpath" = _ ; then
+                python=no
+        else
+                AC_MSG_CHECKING(Python version)
+                changequote(<<, >>)dnl
+                PY_VERSION=`$pythonpath -c 'import sys; print sys.version[:3]'`
+                $pythonpath -c "import sys; map(int,sys.version[:3].split('.')) >= [2,2] or sys.exit(1)"
+                changequote([, ])dnl
+                AC_MSG_RESULT($PY_VERSION)
+                if test "$?" != "1"; then
+                        AC_MSG_CHECKING(Python compile flags)
+                        PY_PREFIX=`$pythonpath -c 'import sys; print sys.prefix'`
+                        PY_EXEC_PREFIX=`$pythonpath -c 'import sys; print sys.exec_prefix'`
+                        if test -f $PY_PREFIX/include/python$PY_VERSION/Python.h; then
+                                PY_LIBS="-L$PY_EXEC_PREFIX/lib/python$PY_VERSION/config -lpython$PY_VERSION -lpthread -lutil"
+                                PY_CFLAGS="-I$PY_PREFIX/include/python$PY_VERSION"
+                                AC_MSG_RESULT(ok)
+                        else
+                                python=no
+                                AC_MSG_RESULT([Can't find Python.h])
+                        fi
+                else
+                        echo "Python too old. Only 2.2 or above is supported."
+                        python=no
+                fi
+        fi
 fi
 
 dnl *********************************************************************

@@ -813,7 +813,7 @@ mg_add_chan (session *sess)
 		name = sess->channel;
 
 	sess->res->tab = tab_group_add (sess->gui->tabs_box, name, sess->server,
-											  sess, mg_tab_press_cb);
+											  sess, mg_tab_press_cb, prefs.truncchans);
 	g_object_set_data (G_OBJECT (sess->res->tab), "sess", sess);
 
 	if (newmsg_list == NULL)
@@ -2075,7 +2075,7 @@ mg_add_generic_tab (char *name, char *title, void *family, GtkWidget *box)
 	gtk_notebook_append_page (GTK_NOTEBOOK (mg_gui->note_book), box, NULL);
 	gtk_widget_show (box);
 
-	but = tab_group_add (mg_gui->tabs_box, name, family, NULL, mg_tab_press_cb);
+	but = tab_group_add (mg_gui->tabs_box, name, family, NULL, mg_tab_press_cb, prefs.truncchans);
 	g_object_set_data (G_OBJECT (but), "title", strdup (title));
 	g_object_set_data (G_OBJECT (but), "box", box);
 	g_object_set_data (G_OBJECT (but), "sess", NULL);
@@ -2125,7 +2125,7 @@ fe_clear_channel (session *sess)
 	}
 	else
 		strcpy (tbuf, _("<none>"));
-	tab_rename (sess->res->tab, tbuf);
+	tab_rename (sess->res->tab, tbuf, prefs.truncchans);
 
 	if (!sess->gui->is_tab || sess == current_tab)
 	{
@@ -2249,21 +2249,7 @@ fe_set_away (server *serv)
 void
 fe_set_channel (session *sess)
 {
-	char *buf;
-
-	if (prefs.truncchans > 2 && g_utf8_strlen (sess->channel, -1) > prefs.truncchans)
-	{
-		/* truncate long channel names */
-		buf = malloc (strlen (sess->channel) + 4);
-		strcpy (buf, sess->channel);
-		g_utf8_offset_to_pointer(buf, prefs.truncchans)[0] = 0;
-		strcat (buf, "..");
-		tab_rename (sess->res->tab, buf);
-		free (buf);
-	} else
-	{
-		tab_rename (sess->res->tab, sess->channel);
-	}
+	tab_rename (sess->res->tab, sess->channel, prefs.truncchans);
 }
 
 void

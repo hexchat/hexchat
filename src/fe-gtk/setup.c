@@ -202,7 +202,7 @@ static const setting general_settings[] =
 #ifndef WIN32
 	{ST_LABEL,	N_("(Can be a text file relative to ~/.xchat2/).")},
 #else
-	{ST_LABEL,	N_("(Can be a text file relative to config\\).")},
+	{ST_LABEL,	N_("(Can be a text file relative to config dir).")},
 #endif
 	{ST_ENTRY,	N_("Extra words to highlight on:"), P_OFFSET(bluestring), 0, 0, sizeof prefs.bluestring},
 	{ST_LABEL,	N_("(Separate multiple words with commas).")},

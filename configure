@@ -7363,7 +7363,7 @@ LIBTOOL='$(SHELL) $(top_builddir)/libtool'
 
 
 
-ALL_LINGUAS="am ca cs da de el es et fi fr he hu it ja ko lt lv nl no pt pt_BR ro ru sk sl sr sv tr uk zh_CN zh_TW.Big5"
+ALL_LINGUAS="am el es et lt lv nl no sk sv"
 
         MKINSTALLDIRS=
   if test -n "$ac_aux_dir"; then
@@ -12299,7 +12299,7 @@ fi
 
 
 if test "$python" = yes; then
-	# Extract the first word of "python2", so it can be a program name with args.
+        # Extract the first word of "python2", so it can be a program name with args.
 set dummy python2; ac_word=$2
 echo "$as_me:$LINENO: checking for $ac_word" >&5
 echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
@@ -12338,8 +12338,8 @@ else
 echo "${ECHO_T}no" >&6
 fi
 
-	if test "_$pythonpath" = _ ; then
-		# Extract the first word of "python", so it can be a program name with args.
+        if test "_$pythonpath" = _ ; then
+                # Extract the first word of "python", so it can be a program name with args.
 set dummy python; ac_word=$2
 echo "$as_me:$LINENO: checking for $ac_word" >&5
 echo $ECHO_N "checking for $ac_word... $ECHO_C" >&6
@@ -12378,38 +12378,36 @@ else
 echo "${ECHO_T}no" >&6
 fi
 
-	fi
-	if test "_$pythonpath" = _ ; then
-		python=no
-	else
-		echo "$as_me:$LINENO: checking Python version" >&5
+        fi
+        if test "_$pythonpath" = _ ; then
+                python=no
+        else
+                echo "$as_me:$LINENO: checking Python version" >&5
 echo $ECHO_N "checking Python version... $ECHO_C" >&6
-		PY_PREFIX=`$pythonpath -c 'import sys; print sys.prefix'`
-		PY_EXEC_PREFIX=`$pythonpath -c 'import sys; print sys.exec_prefix'`
-				PY_VERSION=`$pythonpath -c 'import sys; print sys.version.split()[0]'`
-		PY_MAJOR=`$pythonpath -c 'import sys; print "%d.%d"%sys.version_info[:2]'`
-		PY_PATH=`$pythonpath -c 'import sys ; print sys.path[1][5:]'`
-		PY_OK=`$pythonpath -c 'import sys; sys.version_info[:2] >= (2,2) and sys.stdout.write("1")'`
-				echo "$as_me:$LINENO: result: $PY_VERSION" >&5
+                                PY_VERSION=`$pythonpath -c 'import sys; print sys.version[:3]'`
+                $pythonpath -c "import sys; map(int,sys.version[:3].split('.')) >= [2,2] or sys.exit(1)"
+                                echo "$as_me:$LINENO: result: $PY_VERSION" >&5
 echo "${ECHO_T}$PY_VERSION" >&6
-		if test "$PY_OK" = "1"; then
-			echo "$as_me:$LINENO: checking Python compile flags" >&5
+                if test "$?" != "1"; then
+                        echo "$as_me:$LINENO: checking Python compile flags" >&5
 echo $ECHO_N "checking Python compile flags... $ECHO_C" >&6
-			if test -f $PY_PREFIX/include/python$PY_MAJOR/Python.h; then
-				PY_LIBS="-L$PY_EXEC_PREFIX/$PY_PATH/config -lpython$PY_MAJOR -lpthread -lutil"
-				PY_CFLAGS="-I$PY_PREFIX/include/python$PY_MAJOR"
-				echo "$as_me:$LINENO: result: ok" >&5
+                        PY_PREFIX=`$pythonpath -c 'import sys; print sys.prefix'`
+                        PY_EXEC_PREFIX=`$pythonpath -c 'import sys; print sys.exec_prefix'`
+                        if test -f $PY_PREFIX/include/python$PY_VERSION/Python.h; then
+                                PY_LIBS="-L$PY_EXEC_PREFIX/lib/python$PY_VERSION/config -lpython$PY_VERSION -lpthread -lutil"
+                                PY_CFLAGS="-I$PY_PREFIX/include/python$PY_VERSION"
+                                echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6
-			else
-				python=no
-				echo "$as_me:$LINENO: result: Can't find Python.h" >&5
+                        else
+                                python=no
+                                echo "$as_me:$LINENO: result: Can't find Python.h" >&5
 echo "${ECHO_T}Can't find Python.h" >&6
-			fi
-		else
-			echo "Python too old. Only 2.2 or above is supported."
-			python=no
-		fi
-	fi
+                        fi
+                else
+                        echo "Python too old. Only 2.2 or above is supported."
+                        python=no
+                fi
+        fi
 fi
 
 

@@ -1,6 +1,7 @@
 #define GTK_DISABLE_DEPRECATED
 
 #include <string.h>
+#include <stdlib.h>
 
 #include <gtk/gtkhbox.h>
 #include <gtk/gtktogglebutton.h>
@@ -534,13 +535,38 @@ tab_toggled_cb (GtkToggleButton *tab, gpointer user_data)
 	tab_release_cb (tab, NULL);
 }
 
+static char *
+truncate_tab_name (char *name, int max)
+{
+	char *buf;
+
+	if (max > 2 && g_utf8_strlen (name, -1) > max)
+	{
+		/* truncate long channel names */
+		buf = malloc (strlen (name) + 4);
+		strcpy (buf, name);
+		g_utf8_offset_to_pointer (buf, max)[0] = 0;
+		strcat (buf, "..");
+		return buf;
+	}
+
+	return NULL;
+}
+
 GtkWidget *
 tab_group_add (GtkWidget *group, char *name, void *family, void *userdata,
-			void *click_cb)
+			void *click_cb, int trunc_len)
 {
 	GtkWidget *but;
+	char *new_name;
 
-	but = gtk_toggle_button_new_with_label (name);
+	new_name = truncate_tab_name (name, trunc_len);
+	if (new_name)
+	{
+		but = gtk_toggle_button_new_with_label (new_name);
+		free (new_name);
+	} else
+		but = gtk_toggle_button_new_with_label (name);
 	gtk_widget_set_name (but, "xchat-tab");
 	/* used to trap right-clicks */
 	g_signal_connect (G_OBJECT (but), "button-press-event",
@@ -574,9 +600,20 @@ tab_set_attrlist (GtkWidget *tab, PangoAttrList *list)
 }
 
 void
-tab_rename (GtkWidget *tab, char *new_name)
+tab_rename (GtkWidget *tab, char *name, int trunc_len)
 {
-	gtk_button_set_label (GTK_BUTTON (tab), new_name);
+	PangoAttrList *attr = gtk_label_get_attributes (GTK_LABEL (GTK_BIN (tab)->child));
+	char *new_name;
+
+	new_name = truncate_tab_name (name, trunc_len);
+	if (new_name)
+	{
+		gtk_button_set_label (GTK_BUTTON (tab), new_name);
+		free (new_name);
+	} else
+		gtk_button_set_label (GTK_BUTTON (tab), name);
+
+	gtk_label_set_attributes (GTK_LABEL (GTK_BIN (tab)->child), attr);
 }
 
 void

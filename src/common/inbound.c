@@ -249,6 +249,7 @@ inbound_action (session *sess, char *tbuf, char *chan, char *from, char *text,
 		sess = def;
 
 	sess->highlight_tab = TRUE;
+	sess->msg_said = TRUE;
 
 	if (!fromme)
 	{
