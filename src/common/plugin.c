@@ -343,6 +343,15 @@ plugin_load (session *sess, char *filename, char *arg)
 #else
 	char *error;
 
+/* OpenBSD lacks this! */
+#ifndef RTLD_GLOBAL
+#define RTLD_GLOBAL 0
+#endif
+
+#ifndef RTLD_NOW
+#define RTLD_NOW 0
+#endif
+
 	/* load the plugin */
 	handle = dlopen (filename, RTLD_GLOBAL | RTLD_NOW);
 	if (handle == NULL)

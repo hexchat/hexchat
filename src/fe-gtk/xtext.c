@@ -2861,7 +2861,7 @@ get_pixmap_prop (Window the_window)
 static GdkPixmap *
 shade_pixmap_mmx (GtkXText * xtext, Pixmap p, int x, int y, int w, int h)
 {
-	int dummy, width, height, depth;
+	unsigned int dummy, width, height, depth;
 	GdkPixmap *shaded_pix;
 	Window root;
 	Pixmap tmp;

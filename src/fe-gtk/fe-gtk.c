@@ -493,7 +493,7 @@ fe_progressbar_end (server *serv)
 void
 fe_print_text (struct session *sess, char *text)
 {
-	PrintTextRaw (sess->res->buffer, text, prefs.indent_nicks);
+	PrintTextRaw (sess->res->buffer, (unsigned char *)text, prefs.indent_nicks);
 
 	if (!sess->new_data && sess != current_tab &&
 		 sess->gui->is_tab && !sess->nick_said)
@@ -539,7 +539,7 @@ fe_lastlog (session *sess, session *lastlog_sess, char *sstr)
 
 		info.sess = lastlog_sess;
 		info.sstr = sstr;
-		
+
 		gtk_xtext_foreach (sess->res->buffer, fe_lastlog_foreach, &info);
 	}
 }

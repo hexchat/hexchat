@@ -79,7 +79,7 @@ tcp_send_real (server *serv, char *buf, int len)
 {
 	int ret;
 	char *locale;
-	int loc_len;
+	gsize loc_len;
 
 	fe_add_rawlog (serv, buf, len, TRUE);
 
@@ -250,7 +250,7 @@ server_inline (server *serv, char *line, int len)
 {
 	char *utf;
 	char *conv;
-	int utf_len;
+	gsize utf_len;
 
 	if (serv->encoding == NULL)	/* system */
 	{

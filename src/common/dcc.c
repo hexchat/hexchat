@@ -427,7 +427,7 @@ dcc_write_chat (char *nick, char *text)
 	if (dcc && dcc->dccstat == STAT_ACTIVE)
 	{
 		char *locale;
-		int loc_len;
+		gsize loc_len;
 		int len;
 
 		len = strlen (text);
@@ -471,7 +471,8 @@ dcc_chat_line (struct DCC *dcc, char *line, char *tbuf)
 	char *utf;
 	char *conv;
 	int ret, i;
-	int len, utf_len;
+	int len;
+	gsize utf_len;
 
 	len = strlen (line);
 
@@ -550,7 +551,7 @@ dcc_read_chat (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 	int i, len, dead;
 	char tbuf[1226];
 	char lbuf[1026];
-	unsigned char *temp;
+	char *temp;
 
 	while (1)
 	{

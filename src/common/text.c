@@ -261,7 +261,7 @@ static void
 log_create_filename (char *buf, char *servname, char *channame, char *netname)
 {
 	char fn[256];
-	unsigned char *tmp, *dir, *sep;
+	char *tmp, *dir, *sep;
 	int pathlen=510, c=0, mbl;
 
 	if (!rfc_casecmp (channame, servname))
@@ -272,7 +272,7 @@ log_create_filename (char *buf, char *servname, char *channame, char *netname)
 		sep = tmp = strdup (channame);
 		while (*tmp)
 		{
-			mbl = g_utf8_skip[*tmp];
+			mbl = g_utf8_skip[((unsigned char *)tmp)[0]];
 			if (mbl == 1)
 			{
 #ifndef WIN32
@@ -407,7 +407,7 @@ char *
 text_validate (char **text, int *len)
 {
 	char *utf;
-	int utf_len;
+	gsize utf_len;
 
 	/* valid utf8? */
 	if (g_utf8_validate (*text, *len, 0))
@@ -429,7 +429,7 @@ text_validate (char **text, int *len)
 }
 
 void
-PrintText (session *sess, unsigned char *text)
+PrintText (session *sess, char *text)
 {
 	char *conv;
 

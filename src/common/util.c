@@ -344,14 +344,14 @@ expand_homedir (char *file)
 	return strdup (file);
 }
 
-unsigned char *
-strip_color (unsigned char *text)
+char *
+strip_color (char *text)
 {
 	int nc = 0;
 	int i = 0;
 	int col = 0;
 	int len = strlen (text);
-	unsigned char *new_str = malloc (len + 2);
+	char *new_str = malloc (len + 2);
 
 	while (len > 0)
 	{

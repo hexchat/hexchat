@@ -11031,7 +11031,6 @@ _ACEOF
 
 
 
-# displaced from acconfig.h
 
 
 
@@ -11056,7 +11055,6 @@ _ACEOF
 
 
 
-#AH_VERBATIM([USE_ZVT],[#undef USE_ZVT])
 
 
 
@@ -11235,13 +11233,7 @@ else
   textfe=yes
 fi;
 
-#AC_ARG_ENABLE(gnome,
-#[  --disable-gnome         disable use of gnome],
-#        gnome=$enableval, gnome=yes)
 
-#AC_ARG_ENABLE(zvt,
-#[  --disable-zvt           disable zvt/shelltab feature],
-#        zvt=$enableval, zvt=yes)
 
 # Check whether --enable-xlib or --disable-xlib was given.
 if test "${enable_xlib+set}" = set; then
@@ -12938,10 +12930,10 @@ else
 echo "${ECHO_T}no" >&6
 fi
 
-		# we just need the -Wl,--export-dynamic, but not -lgmodule-2.0
-		RDYNAMIC_FLAGS="`$pkgconfigpath gmodule-2.0 --libs | $sedpath 's/ -lgmodule-2.0//'`"
+				RDYNAMIC_FLAGS="`$pkgconfigpath gmodule-2.0 --libs | $sedpath 's/ -lgmodule-2.0//'`"
 		LIBS="$LIBS $RDYNAMIC_FLAGS"
-		if test "x$GCC" = "xyes"; then
+		VS="`ld --help | grep version-script`"
+		if test "$VS" != ""; then
 			GUI_LIBS="$GUI_LIBS -Wl,--version-script,\$(srcdir)/../version-script"
 		fi
 	else
@@ -13226,6 +13218,9 @@ if test "$mmx" = "yes"; then
      *)
     mmx=no
 	esac
+	if test "$system" = "OpenBSD"; then
+						mmx=no
+	fi
 	if test "$mmx" = "yes"; then
 		cat >>confdefs.h <<\_ACEOF
 #define USE_MMX 1

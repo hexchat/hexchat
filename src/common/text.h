@@ -18,7 +18,7 @@ struct text_event
 };
 
 int text_word_check (char *word);
-void PrintText (session *sess, unsigned char *text);
+void PrintText (session *sess, char *text);
 void PrintTextf (session *sess, char *format, ...);
 void log_close (session *sess);
 void log_open (session *sess);

@@ -13,7 +13,7 @@ AM_PROG_LIBTOOL
 ALL_LINGUAS="am de el es et lt lv nl no sk sl sv"
 AM_GNU_GETTEXT
 
-# displaced from acconfig.h
+dnl displaced from acconfig.h
 AH_VERBATIM([OLD_PERL],[#undef OLD_PERL])
 AH_VERBATIM([PREFIX],[#undef PREFIX])
 AH_VERBATIM([SOCKS],[#undef SOCKS])
@@ -26,7 +26,7 @@ AH_VERBATIM([USE_OPENSSL],[#undef USE_OPENSSL])
 AH_VERBATIM([USE_PLUGIN],[#undef USE_PLUGIN])
 AH_VERBATIM([USE_XFT],[#undef USE_XFT])
 AH_VERBATIM([USE_XLIB],[#undef USE_XLIB])
-#AH_VERBATIM([USE_ZVT],[#undef USE_ZVT])
+dnl AH_VERBATIM([USE_ZVT],[#undef USE_ZVT])
 AH_VERBATIM([USING_FREEBSD],[#undef USING_FREEBSD])
 AH_VERBATIM([USING_LINUX],[#undef USING_LINUX])
 AH_VERBATIM([socklen_t],[#undef socklen_t])
@@ -87,13 +87,13 @@ AC_ARG_ENABLE(textfe,
 [  --disable-textfe        disable building text frontend],
         textfe=$enableval, textfe=yes)
 
-#AC_ARG_ENABLE(gnome,
-#[  --disable-gnome         disable use of gnome],
-#        gnome=$enableval, gnome=yes)
+dnl AC_ARG_ENABLE(gnome,
+dnl [  --disable-gnome         disable use of gnome],
+dnl        gnome=$enableval, gnome=yes)
 
-#AC_ARG_ENABLE(zvt,
-#[  --disable-zvt           disable zvt/shelltab feature],
-#        zvt=$enableval, zvt=yes)
+dnl AC_ARG_ENABLE(zvt,
+dnl [  --disable-zvt           disable zvt/shelltab feature],
+dnl         zvt=$enableval, zvt=yes)
 
 AC_ARG_ENABLE(xlib,
 [  --disable-xlib          disable use of xlib (for non X11 systems)],
@@ -410,10 +410,11 @@ if test "$plugin" = yes; then
 	if test "$have_dl" = yes; then
 		AC_DEFINE(USE_PLUGIN)
 		AC_PATH_PROG(pkgconfigpath, pkg-config)
-		# we just need the -Wl,--export-dynamic, but not -lgmodule-2.0
+		dnl we just need the -Wl,--export-dynamic, but not -lgmodule-2.0
 		RDYNAMIC_FLAGS="`$pkgconfigpath gmodule-2.0 --libs | $sedpath 's/ -lgmodule-2.0//'`"
 		LIBS="$LIBS $RDYNAMIC_FLAGS"
-		if test "x$GCC" = "xyes"; then
+		VS="`ld --help | grep version-script`"
+		if test "$VS" != ""; then
 			GUI_LIBS="$GUI_LIBS -Wl,--version-script,\$(srcdir)/../version-script"
 		fi
 	else
@@ -472,6 +473,11 @@ if test "$mmx" = "yes"; then
      *)
     mmx=no
 	esac
+	if test "$system" = "OpenBSD"; then
+		dnl openbsd fails because mmx_cmod doesn't prefix its symbols with underscore.
+		dnl xtext.o: Undefined symbol `_shade_ximage_15_mmx' referenced from text segment
+		mmx=no
+	fi
 	if test "$mmx" = "yes"; then
 		AC_DEFINE(USE_MMX)
 	fi

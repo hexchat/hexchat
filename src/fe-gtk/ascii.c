@@ -125,7 +125,7 @@ ascii_open (void)
 {
 	int i, len;
 	const unsigned char *table_pos;
-	unsigned char name[8];
+	char name[8];
 	GtkWidget *frame, *label, *but, *hbox = NULL, *vbox, *win;
 
 	win = mg_create_generic_tab ("charmap", _("Character Chart"), TRUE, TRUE,

@@ -16,7 +16,7 @@ extern int ignored_invi;
 
 struct ignore
 {
-	unsigned char *mask;
+	char *mask;
 	unsigned int type;	/* one of more of IG_* ORed together */
 };
 

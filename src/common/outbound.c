@@ -149,7 +149,7 @@ server_sendquit (session * sess)
 }
 
 void
-process_data_init (unsigned char *buf, unsigned char *cmd, char *word[],
+process_data_init (char *buf, char *cmd, char *word[],
 						 char *word_eol[], int handle_quotes)
 {
 	int wordcount = 2;
@@ -160,8 +160,8 @@ process_data_init (unsigned char *buf, unsigned char *cmd, char *word[],
 
 	word[0] = "\000\000";
 	word_eol[0] = "\000\000";
-	word[1] = buf;
-	word_eol[1] = cmd;
+	word[1] = (char *)buf;
+	word_eol[1] = (char *)cmd;
 
 	while (1)
 	{
@@ -208,7 +208,7 @@ process_data_init (unsigned char *buf, unsigned char *cmd, char *word[],
 		default:
 def:
 			space = FALSE;
-			len = g_utf8_skip[*cmd];
+			len = g_utf8_skip[((unsigned char *)cmd)[0]];
 			if (len == 1)
 			{
 				buf[j] = *cmd;
@@ -585,7 +585,7 @@ cmd_ctcp (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		char *msg = word_eol[3];
 		if (*msg)
 		{
-			unsigned char *cmd = msg;
+			unsigned char *cmd = (unsigned char *)msg;
 
 			/* make the first word upper case (as per RFC) */
 			while (1)
@@ -2680,7 +2680,7 @@ auto_insert (char *dest, unsigned char *src, char *word[], char *word_eol[],
 	time_t now;
 	struct tm *tm_ptr;
 	char *utf;
-	int utf_len;
+	gsize utf_len;
 	char *orig = dest;
 
 	while (src[0])
@@ -2811,8 +2811,9 @@ check_special_chars (char *cmd, int do_ascii) /* check for %X */
 	int occur = 0;
 	int len = strlen (cmd);
 	char *buf, *utf;
-	int i = 0, j = 0, utf_len;
 	char tbuf[4];
+	int i = 0, j = 0;
+	gsize utf_len;
 
 	if (!len)
 		return;
@@ -2944,8 +2945,8 @@ static void
 user_command (session * sess, char *tbuf, char *cmd, char *word[],
 				  char *word_eol[])
 {
-	if (!auto_insert (tbuf, cmd, word, word_eol, "", sess->channel, "", "",
-							sess->server->nick, ""))
+	if (!auto_insert (tbuf, cmd, word, word_eol, "",
+							sess->channel, "", "", sess->server->nick, ""))
 	{
 		PrintText (sess, _("Bad arguments for user command.\n"));
 		return;
@@ -2962,7 +2963,7 @@ handle_say (session *sess, char *text, int check_spch)
 	char tbuf[4096];
 	char newcmd[2048];
 	struct DCC *dcc;
-	unsigned char pdibuf[2048];
+	char pdibuf[2048];
 	char *word[PDIWORDS];
 	char *word_eol[PDIWORDS];
 
@@ -3049,8 +3050,8 @@ handle_command (session *sess, char *cmd, int check_spch)
 	struct popup *pop;
 	int user_cmd = FALSE, i;
 	GSList *list;
-	unsigned char pdibuf[2048];
-	unsigned char tbuf[4096];
+	char pdibuf[2048];
+	char tbuf[4096];
 	char *word[PDIWORDS];
 	char *word_eol[PDIWORDS];
 	static int command_level = 0;
