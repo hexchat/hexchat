@@ -1700,9 +1700,8 @@ mg_create_textarea (session_gui *gui, GtkWidget *box)
 	gtk_xtext_set_error_function (xtext, gtkutil_simpledialog);
 	gtk_xtext_set_urlcheck_function (xtext, mg_word_check);
 	gtk_xtext_set_max_lines (xtext, prefs.max_lines);
-	mg_update_xtext (GTK_WIDGET (xtext));
-
 	gtk_container_add (GTK_CONTAINER (frame), GTK_WIDGET (xtext));
+	mg_update_xtext (GTK_WIDGET (xtext));
 
 	g_signal_connect (G_OBJECT (xtext), "word_click",
 							G_CALLBACK (mg_word_clicked), NULL);
@@ -2117,10 +2116,9 @@ mg_create_irctab (session *sess, GtkWidget *book)
 	session_gui *gui = sess->gui;
 
 	vbox = gtk_vbox_new (FALSE, 3);
+	gtk_notebook_append_page (GTK_NOTEBOOK (book), vbox, NULL);
 
 	mg_create_center (sess, gui, vbox);
-
-	gtk_notebook_append_page (GTK_NOTEBOOK (book), vbox, NULL);
 }
 
 static void

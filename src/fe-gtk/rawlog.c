@@ -102,12 +102,12 @@ open_rawlog (struct server *serv)
 	gtk_widget_show (hbox);
 
 	serv->gui->rawlog_textlist = gtk_xtext_new (colors, 0);
-	gtk_xtext_set_font (GTK_XTEXT (serv->gui->rawlog_textlist), prefs.font_normal);
 	gtk_xtext_set_tint (GTK_XTEXT (serv->gui->rawlog_textlist), prefs.tint_red, prefs.tint_green, prefs.tint_blue);
 	gtk_xtext_set_background (GTK_XTEXT (serv->gui->rawlog_textlist),
 									  channelwin_pix, prefs.transparent, prefs.tint);
 
 	gtk_container_add (GTK_CONTAINER (hbox), serv->gui->rawlog_textlist);
+	gtk_xtext_set_font (GTK_XTEXT (serv->gui->rawlog_textlist), prefs.font_normal);
 	gtk_widget_show (serv->gui->rawlog_textlist);
 
 	vscrollbar = gtk_vscrollbar_new (GTK_XTEXT (serv->gui->rawlog_textlist)->adj);

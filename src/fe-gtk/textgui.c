@@ -407,7 +407,6 @@ pevent_dialog_show ()
 	gtk_clist_set_column_width (GTK_CLIST (pevent_dialog_list), 1, 380);
 
 	pevent_dialog_twid = gtk_xtext_new (colors, 0);
-	gtk_xtext_set_font (GTK_XTEXT (pevent_dialog_twid), prefs.font_normal);
 	gtk_xtext_set_tint (GTK_XTEXT (pevent_dialog_twid), prefs.tint_red, prefs.tint_green, prefs.tint_blue);
 	gtk_xtext_set_background (GTK_XTEXT (pevent_dialog_twid),
 									  channelwin_pix, prefs.transparent, prefs.tint);
@@ -433,6 +432,7 @@ pevent_dialog_show ()
 
 	gtk_widget_set_usize (pevent_dialog_twid, 150, 20);
 	gtk_container_add (GTK_CONTAINER (tbox), pevent_dialog_twid);
+	gtk_xtext_set_font (GTK_XTEXT (pevent_dialog_twid), prefs.font_normal);
 
 	gtk_widget_show (pevent_dialog_twid);
 
