@@ -669,6 +669,7 @@ menu_open_server_list (GtkWidget *wid, gpointer none)
 static void
 menu_settings (GtkWidget * wid, gpointer none)
 {
+	extern void setup_open (void);
 	setup_open ();
 }
 

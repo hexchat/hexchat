@@ -32,7 +32,6 @@ void fe_notify_update (char *name);
 void fe_text_clear (struct session *sess);
 void fe_close_window (struct session *sess);
 void fe_progressbar_start (struct session *sess);
-void fe_progressbar_destroy (struct session *sess);
 void fe_progressbar_end (struct server *serv);
 void fe_print_text (struct session *sess, char *text);
 void fe_userlist_insert (struct session *sess, struct User *newuser, int row, int sel);

@@ -558,6 +558,9 @@ kill_session_callback (session * killsess)
 
 	fe_session_callback (killsess);
 
+	if (current_sess == killsess && sess_list)
+		current_sess = sess_list->data;
+
 	free (killsess);
 
 	if (!sess_list && !in_xchat_exit)

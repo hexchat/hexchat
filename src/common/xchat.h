@@ -366,7 +366,6 @@ typedef struct server
 	int childhandle;
 #endif
 	int iotag;
-	int bartag;
 	int recondelay_tag;				/* reconnect delay timeout */
 	char hostname[128];				/* real ip number */
 	char servername[128];			/* what the server says is its name */

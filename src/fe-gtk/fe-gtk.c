@@ -432,58 +432,15 @@ fe_close_window (struct session *sess)
 		gtk_widget_destroy (sess->gui->window);
 }
 
-static int
-updatedate_bar (struct session *sess)
-{
-	static int type = 0;
-	static float pos = 0;
-
-	if (!is_session (sess))
-		return 0;
-
-	pos += 0.05;
-	if (pos >= 0.99)
-	{
-		if (type == 0)
-		{
-			type = 1;
-			gtk_progress_bar_set_orientation ((GtkProgressBar *) sess->gui->bar,
-														 GTK_PROGRESS_RIGHT_TO_LEFT);
-		} else
-		{
-			type = 0;
-			gtk_progress_bar_set_orientation ((GtkProgressBar *) sess->gui->bar,
-														 GTK_PROGRESS_LEFT_TO_RIGHT);
-		}
-		pos = 0.05;
-	}
-	gtk_progress_bar_set_fraction ((GtkProgressBar *) sess->gui->bar, pos);
-	return 1;
-}
-
 void
 fe_progressbar_start (session *sess)
 {
 	if (!sess->gui->is_tab || current_tab == sess)
-	{
-		sess->gui->bar = gtk_progress_bar_new ();
-		gtk_box_pack_start (GTK_BOX (sess->gui->nick_box), sess->gui->bar, 0, 0,
-								  0);
-		gtk_widget_show (sess->gui->bar);
-		sess->server->bartag = fe_timeout_add (50, updatedate_bar, sess);
-	} else
-	{
+	/* if it's the focused tab, create it for real! */
+		mg_progressbar_create (sess->gui);
+	else
+	/* otherwise just remember to create on when it gets focused */
 		sess->res->c_graph = TRUE;
-	}
-}
-
-void
-fe_progressbar_destroy (session *sess)
-{
-	fe_timeout_remove (sess->server->bartag);
-	if (GTK_IS_WIDGET (sess->gui->bar))
-		gtk_widget_destroy (sess->gui->bar);
-	sess->gui->bar = 0;
 }
 
 void
@@ -499,7 +456,7 @@ fe_progressbar_end (server *serv)
 		if (sess->server == serv)
 		{
 			if (sess->gui->bar)
-				fe_progressbar_destroy (sess);
+				mg_progressbar_destroy (sess->gui);
 			sess->res->c_graph = FALSE;
 		}
 		list = list->next;
@@ -586,14 +543,14 @@ fe_set_lag (server *serv, int lag)
 	if (per > 1.0)
 		per = 1.0;
 
+	snprintf (tip, sizeof (tip) - 1, "%s%d.%ds",
+				 serv->lag_sent ? "+" : "", lag / 10, lag % 10);
+
 	while (list)
 	{
 		sess = list->data;
 		if (sess->server == serv)
 		{
-			snprintf (tip, sizeof (tip) - 1, "%s%d.%ds",
-						 serv->lag_sent ? "+" : "", lag / 10, lag % 10);
-
 			if (!sess->gui->is_tab || current_tab == sess)
 			{
 				if (sess->gui->lagometer)

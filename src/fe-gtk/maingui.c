@@ -249,6 +249,50 @@ mg_focus (session *sess)
 	}
 }
 
+static int
+mg_progressbar_update (GtkWidget *bar)
+{
+	static int type = 0;
+	static float pos = 0;
+
+	pos += 0.05;
+	if (pos >= 0.99)
+	{
+		if (type == 0)
+		{
+			type = 1;
+			gtk_progress_bar_set_orientation ((GtkProgressBar *) bar,
+														 GTK_PROGRESS_RIGHT_TO_LEFT);
+		} else
+		{
+			type = 0;
+			gtk_progress_bar_set_orientation ((GtkProgressBar *) bar,
+														 GTK_PROGRESS_LEFT_TO_RIGHT);
+		}
+		pos = 0.05;
+	}
+	gtk_progress_bar_set_fraction ((GtkProgressBar *) bar, pos);
+	return 1;
+}
+
+void
+mg_progressbar_create (session_gui *gui)
+{
+	gui->bar = gtk_progress_bar_new ();
+	gtk_box_pack_start (GTK_BOX (gui->nick_box), gui->bar, 0, 0, 0);
+	gtk_widget_show (gui->bar);
+	gui->bartag = fe_timeout_add (50, mg_progressbar_update, gui->bar);
+}
+
+void
+mg_progressbar_destroy (session_gui *gui)
+{
+	fe_timeout_remove (gui->bartag);
+	gtk_widget_destroy (gui->bar);
+	gui->bar = 0;
+	gui->bartag = 0;
+}
+
 /* switching tabs away from this one, so remember some info about it! */
 
 static void
@@ -287,7 +331,7 @@ mg_unpopulate (session *sess)
 	if (gui->bar)
 	{
 		res->c_graph = TRUE;	/* still have a graph, just not visible now */
-		fe_progressbar_destroy (sess);
+		mg_progressbar_destroy (gui);
 	}
 }
 
@@ -456,7 +500,7 @@ mg_populate (session *sess)
 	if (res->c_graph)
 	{
 		res->c_graph = FALSE;
-		fe_progressbar_start (sess);
+		mg_progressbar_create (gui);
 	}
 
 	GTK_CHECK_MENU_ITEM (gui->away_item)->active = sess->server->is_away;
@@ -2184,6 +2228,7 @@ fe_set_channel (session *sess)
 
 	if (prefs.truncchans && strlen (sess->channel) > prefs.truncchans)
 	{
+		/* FIXME: not utf8 friendly */
 		buf = malloc (strlen (sess->channel) + 4);
 		buf[0] = 0;
 		snprintf (buf, prefs.truncchans - 1, "%s", sess->channel);
@@ -2330,8 +2375,6 @@ fe_server_callback (server *serv)
 void
 fe_session_callback (session *sess)
 {
-	sess->res->myself = NULL;
-
 	if (sess->res->input_text)
 		free (sess->res->input_text);
 
@@ -2350,11 +2393,8 @@ fe_session_callback (session *sess)
 	if (sess->res->lag_text)
 		free (sess->res->lag_text);
 
-	if (sess->gui->bar)
-		fe_progressbar_end (sess->server);
-
-	if (current_sess == sess && sess_list)
-		current_sess = sess_list->data;
+	if (sess->gui->bartag)
+		fe_timeout_remove (sess->gui->bartag);
 
 	if (sess->gui != mg_gui)
 		free (sess->gui);

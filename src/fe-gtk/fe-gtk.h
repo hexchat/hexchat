@@ -139,6 +139,8 @@ typedef struct session_gui
 		*limit_entry,		  /* +l */
 		*key_entry;		  /* +k */
 
+	int bartag;		/*connecting progressbar timeout */
+
 	unsigned int is_tab:1;	/* is tab or toplevel? */
 
 } session_gui;
