@@ -3050,6 +3050,7 @@ shade_pixmap (GtkXText * xtext, Pixmap p, int x, int y, int w, int h)
 #endif /* !USE_XLIB */
 
 /* free transparency xtext->pixmap */
+#if defined(USE_XLIB) || defined(WIN32)
 
 static void
 gtk_xtext_free_trans (GtkXText * xtext)
@@ -3060,6 +3061,8 @@ gtk_xtext_free_trans (GtkXText * xtext)
 		xtext->pixmap = NULL;
 	}
 }
+
+#endif
 
 #ifdef WIN32
 
@@ -3102,6 +3105,7 @@ win32_tint (GtkXText *xtext, GdkImage *img, int width, int height)
 #endif /* !WIN32 */
 
 /* grab pixmap from root window and set xtext->pixmap */
+#if defined(USE_XLIB) || defined(WIN32)
 
 static void
 gtk_xtext_load_trans (GtkXText * xtext)
@@ -3172,6 +3176,8 @@ noshade:
 	gdk_gc_set_fill (xtext->bgc, GDK_TILED);
 #endif /* !WIN32 */
 }
+
+#endif /* ! XLIB || WIN32 */
 
 /* walk through str until this line doesn't fit anymore */
 

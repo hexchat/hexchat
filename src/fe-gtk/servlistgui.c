@@ -91,6 +91,7 @@ static const char *pages[]=
 	"ISO-8859-9 (Turkish)",
 	"ISO-2022-JP (Japanese)",
 	"SJIS (Japanese)",
+	"CP949 (Korean)",
 	"CP1251 (Cyrillic)",
 	"CP1256 (Arabic)",
 	"GB18030 (Chinese)",
