@@ -4077,6 +4077,11 @@ gtk_xtext_render_page_timeout (GtkXText * xtext)
 	} else
 	{
 		gtk_xtext_adjustment_set (xtext->buffer, TRUE);
+		if (xtext->indent_changed)
+		{
+			xtext->indent_changed = FALSE;
+			gtk_xtext_render_page (xtext);
+		}
 	}
 
 	return 0;
@@ -4216,6 +4221,7 @@ gtk_xtext_append_indent (xtext_buffer *buf,
 		gtk_xtext_recalc_widths (buf, FALSE);
 
 		ent->indent = (buf->indent - left_width) - buf->xtext->space_width;
+		buf->xtext->indent_changed = TRUE;
 	}
 
 	gtk_xtext_append_entry (buf, ent);
