@@ -25,6 +25,7 @@
 #define TINT_VALUE 195				/* 195/255 of the brightness. */
 #define MOTION_MONITOR				/* URL hilights. */
 #define SMOOTH_SCROLL				/* line-by-line or pixel scroll? */
+#define SCROLL_HACK					/* use gdk_window_scroll? */
 #undef COLOR_HILIGHT				/* Color instead of underline? */
 #define USE_GDK_PIXBUF
 
@@ -70,6 +71,13 @@
 #define is_del(c) \
 	(c == ' ' || c == '\n' || c == ')' || c == '(' || \
 	 c == '>' || c == '<' || c == ATTR_RESET || c == ATTR_BOLD || c == 0)
+
+#ifdef SCROLL_HACK
+/* force scrolling off */
+#define dontscroll(buf) (buf)->last_pixel_pos = 2147483647
+#else
+#define dontscroll(buf)
+#endif
 
 static GtkWidgetClass *parent_class = NULL;
 
@@ -943,8 +951,8 @@ gtk_xtext_realize (GtkWidget * widget)
 static void
 gtk_xtext_size_request (GtkWidget * widget, GtkRequisition * requisition)
 {
-	requisition->width = GTK_XTEXT (widget)->fontwidth['Z'] * 20;
-	requisition->height = (GTK_XTEXT (widget)->fontsize * 10) + 3;
+	requisition->width = 200;
+	requisition->height = 90;
 }
 
 static void
@@ -971,6 +979,7 @@ gtk_xtext_size_allocate (GtkWidget * widget, GtkAllocation * allocation)
 
 		gdk_window_move_resize (widget->window, allocation->x, allocation->y,
 										allocation->width, allocation->height);
+		dontscroll (xtext->buffer);	/* force scrolling off */
 		if (!height_only)
 			gtk_xtext_calc_lines (xtext->buffer, FALSE);
 		else
@@ -1197,6 +1206,7 @@ gtk_xtext_expose (GtkWidget * widget, GdkEventExpose * event)
 		 event->area.height == widget->allocation.height &&
 		 event->area.width == widget->allocation.width)
 	{
+		dontscroll (xtext->buffer);	/* force scrolling off */
 		gtk_xtext_render_page (xtext);
 		return FALSE;
 	}
@@ -1209,10 +1219,14 @@ gtk_xtext_expose (GtkWidget * widget, GdkEventExpose * event)
 	if (!ent_start)
 		goto xit;
 	ent_end = gtk_xtext_find_char (xtext, event->area.x + event->area.width,
-						event->area.y + event->area.height + xtext->font->descent,
+						event->area.y + event->area.height /*+ xtext->font->descent*/,
 						NULL, NULL);
 	if (!ent_end)
 		ent_end = xtext->buffer->text_last;
+
+	/* kludge to fix an unknown bug */
+	event->area.y -= xtext->fontsize;
+	event->area.height += xtext->fontsize;
 
 	/* can't over-write the same text with xft, or the AA will change */
 	backend_set_clip (xtext, &event->area);
@@ -3360,6 +3374,8 @@ gtk_xtext_fix_indent (xtext_buffer *buf)
 		}
 		buf->indent = j;
 	}
+
+	dontscroll (buf);	/* force scrolling off */
 }
 
 static void
@@ -3468,6 +3484,7 @@ gtk_xtext_set_background (GtkXText * xtext, GdkPixmap * pixmap, int trans,
 	}
 #endif
 
+	dontscroll (xtext->buffer);
 	xtext->pixmap = pixmap;
 
 	if (pixmap != 0)
@@ -3752,6 +3769,23 @@ gtk_xtext_render_page (GtkXText * xtext)
 	xtext->buffer->pagetop_subline = subline;
 	xtext->buffer->pagetop_line = startline;
 
+#ifdef SCROLL_HACK
+{
+	int pos, overlap;
+
+	pos = xtext->adj->value * xtext->fontsize;
+	overlap = xtext->buffer->last_pixel_pos - pos;
+	xtext->buffer->last_pixel_pos = pos;
+
+	if (!xtext->pixmap && abs (overlap) < height)
+	{
+		/* exposures will do the rest */
+		gdk_window_scroll (GTK_WIDGET (xtext)->window, 0, overlap);
+		return;
+	}
+}
+#endif
+
 	while (ent)
 	{
 		gtk_xtext_reset (xtext, FALSE, TRUE);
@@ -3801,6 +3835,7 @@ gtk_xtext_remove_top (xtext_buffer *buffer)
 		return;
 	buffer->num_lines -= ent->lines_taken;
 	buffer->pagetop_line -= ent->lines_taken;
+	buffer->last_pixel_pos -= (ent->lines_taken * buffer->xtext->fontsize);
 	buffer->text_first = ent->next;
 	buffer->text_first->prev = NULL;
 
@@ -3963,6 +3998,12 @@ gtk_xtext_append_entry (xtext_buffer *buf, textentry * ent)
 
 	ent->lines_taken = gtk_xtext_lines_taken (buf, ent);
 	buf->num_lines += ent->lines_taken;
+
+#ifdef SCROLL_HACK
+	/* this could be improved */
+	if (buf->num_lines <= buf->xtext->adj->page_size)
+		dontscroll (buf);
+#endif
 
 	if (buf->xtext->max_lines > 2 && buf->xtext->max_lines < buf->num_lines)
 	{
@@ -4182,6 +4223,7 @@ gtk_xtext_buffer_show (GtkXText *xtext, xtext_buffer *buf, int render)
 
 	/* now change to the new buffer */
 	xtext->buffer = buf;
+	dontscroll (buf);	/* force scrolling off */
 	xtext->adj->value = buf->old_value;
 	xtext->adj->upper = buf->num_lines;
 	if (xtext->adj->upper == 0)
@@ -4232,6 +4274,7 @@ gtk_xtext_buffer_new (GtkXText *xtext)
 	buf->xtext = xtext;
 	buf->scrollbar_down = TRUE;
 	buf->indent = xtext->space_width * 2;
+	dontscroll (buf);
 
 	return buf;
 }

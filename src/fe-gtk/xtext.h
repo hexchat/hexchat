@@ -37,6 +37,8 @@ typedef struct {
 	int last_offset_start;
 	int last_offset_end;
 
+	int last_pixel_pos;
+
 	int pagetop_line;
 	int pagetop_subline;
 	textentry *pagetop_ent;			/* what's at xtext->adj->value */
