@@ -34,6 +34,7 @@
 #include <gtk/gtkvbbox.h>
 #include <gtk/gtkvbox.h>
 #include <gtk/gtkwindow.h>
+#include <gdk/gdkkeysyms.h>
 
 #include "../common/xchat.h"
 #include "../common/xchatc.h"
@@ -73,6 +74,7 @@ static GtkWidget *edit_label_user;
 static GtkWidget *edit_tree;
 
 static ircnet *selected_net = NULL;
+static ircserver *selected_serv = NULL;
 static session *servlist_sess;
 
 static void servlist_network_row_cb (GtkTreeSelection *sel, gpointer user_data);
@@ -199,6 +201,7 @@ servlist_server_row_cb (GtkTreeSelection *sel, gpointer user_data)
 		g_free (servname);
 		if (serv)
 			selected_net->selected = pos;
+		selected_serv = serv;
 	}
 }
 
@@ -303,6 +306,24 @@ servlist_deletenetdialog_cb (GtkDialog *dialog, gint arg1, ircnet *net)
 }
 
 static void
+servlist_move_server (ircserver *serv, int delta)
+{
+	int pos;
+
+	pos = g_slist_index (selected_net->servlist, serv);
+	if (pos >= 0)
+	{
+		pos += delta;
+		if (pos >= 0)
+		{
+			selected_net->servlist = g_slist_remove (selected_net->servlist, serv);
+			selected_net->servlist = g_slist_insert (selected_net->servlist, serv, pos);
+			servlist_servers_populate (selected_net, edit_tree);
+		}
+	}
+}
+
+static void
 servlist_move_network (ircnet *net, int delta)
 {
 	int pos;
@@ -313,12 +334,54 @@ servlist_move_network (ircnet *net, int delta)
 		pos += delta;
 		if (pos >= 0)
 		{
-			prefs.slist_select += delta;
+			/*prefs.slist_select += delta;*/
 			network_list = g_slist_remove (network_list, net);
 			network_list = g_slist_insert (network_list, net, pos);
 			servlist_networks_populate (networks_tree, network_list);
 		}
 	}
+}
+
+static gboolean
+servlist_net_keypress_cb (GtkWidget *wid, GdkEventKey *evt, gpointer userdata)
+{
+	if (!selected_net)
+		return FALSE;
+
+	if (evt->state & GDK_SHIFT_MASK)
+	{
+		if (evt->keyval == GDK_Up)
+		{
+			servlist_move_network (selected_net, -1);
+		}
+		else if (evt->keyval == GDK_Down)
+		{
+			servlist_move_network (selected_net, +1);
+		}
+	}
+
+	return FALSE;
+}
+
+static gboolean
+servlist_serv_keypress_cb (GtkWidget *wid, GdkEventKey *evt, gpointer userdata)
+{
+	if (!selected_net || !selected_serv)
+		return FALSE;
+
+	if (evt->state & GDK_SHIFT_MASK)
+	{
+		if (evt->keyval == GDK_Up)
+		{
+			servlist_move_server (selected_serv, -1);
+		}
+		else if (evt->keyval == GDK_Down)
+		{
+			servlist_move_server (selected_serv, +1);
+		}
+	}
+
+	return FALSE;
 }
 
 static gint
@@ -408,6 +471,8 @@ servlist_edit_cb (GtkWidget *but, gpointer none)
 							"changed", G_CALLBACK (servlist_server_row_cb), NULL);
 	g_signal_connect (G_OBJECT (edit_win), "delete_event",
 						 	G_CALLBACK (servlist_editwin_delete_cb), 0);
+	g_signal_connect (G_OBJECT (edit_tree), "key_press_event",
+							G_CALLBACK (servlist_serv_keypress_cb), 0);
 	gtk_widget_show (edit_win);
 }
 
@@ -1160,7 +1225,7 @@ servlist_open_networks (void)
 	gtk_widget_show (vbox1);
 	gtk_container_add (GTK_CONTAINER (servlist), vbox1);
 
-	label2 = bold_label ("User Information");
+	label2 = bold_label (_("User Information"));
 	gtk_box_pack_start (GTK_BOX (vbox1), label2, FALSE, FALSE, 0);
 
 	table1 = gtk_table_new (5, 2, FALSE);
@@ -1244,7 +1309,7 @@ servlist_open_networks (void)
 	gtk_widget_show (vbox2);
 	gtk_box_pack_start (GTK_BOX (vbox1), vbox2, TRUE, TRUE, 0);
 
-	label1 = bold_label ("Networks");
+	label1 = bold_label (_("Networks"));
 	gtk_box_pack_start (GTK_BOX (vbox2), label1, FALSE, FALSE, 0);
 
 	table4 = gtk_table_new (2, 2, FALSE);
@@ -1394,6 +1459,8 @@ fe_serverlist_open (session *sess)
 							"changed", G_CALLBACK (servlist_network_row_cb), NULL);
 	g_signal_connect (G_OBJECT (networks_tree), "key_press_event",
 							G_CALLBACK (servlist_key_cb), networks_tree);
+	g_signal_connect (G_OBJECT (networks_tree), "key_press_event",
+							G_CALLBACK (servlist_net_keypress_cb), 0);
 
 	gtk_widget_show (serverlist_win);
 }
