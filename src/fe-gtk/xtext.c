@@ -3782,13 +3782,14 @@ gtk_xtext_render_page (GtkXText * xtext)
 	{
 		/* so the obscured regions are exposed */
 		gdk_gc_set_exposures (xtext->fgc, TRUE);
-		if (overlap < 0)	/* DOWN */
+		if (overlap < 1)	/* DOWN */
 		{
 			gdk_draw_drawable (xtext->draw_buf, xtext->fgc, xtext->draw_buf,
 									 0, -overlap, 0, 0, width, height + overlap);
-			area.y = height + overlap;
-			area.height = -overlap;
-			ended = gtk_xtext_draw_new_lines (xtext);
+			area.y = (height + overlap) - xtext->fontsize;
+			area.height = (-overlap) + xtext->fontsize;
+			if (xtext->buffer->scrollbar_down)
+				ended = gtk_xtext_draw_new_lines (xtext);
 		} else
 		{
 			gdk_draw_drawable (xtext->draw_buf, xtext->fgc, xtext->draw_buf,
@@ -4041,12 +4042,11 @@ gtk_xtext_append_entry (xtext_buffer *buf, textentry * ent)
 	{
 #ifdef SCROLL_HACK
 		/* this could be improved */
-		if (buf->num_lines <= buf->xtext->adj->page_size)
+		if (!buf->scrollbar_down || (buf->num_lines - 1) <= buf->xtext->adj->page_size)
 			dontscroll (buf);
-#endif
-
-		if (buf->scrollbar_down)
+		else
 			ent->new = 1;
+#endif
 
 		if (!buf->xtext->add_io_tag)
 		{
