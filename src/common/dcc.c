@@ -800,6 +800,7 @@ dcc_connect_finished (GIOChannel *source, GIOCondition condition, struct DCC *dc
 		break;
 	case TYPE_SEND:
 		/* passive send */
+		dcc->fastsend = prefs.fastdccsend;
 		if (dcc->fastsend)
 			dcc->wiotag = fe_input_add (dcc->sok, FIA_WRITE, dcc_send_data, dcc);
 		dcc->iotag = fe_input_add (dcc->sok, FIA_READ|FIA_EX, dcc_read_ack, dcc);

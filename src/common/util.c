@@ -522,7 +522,7 @@ get_cpu_str (void)
 	mhz = get_mhz ();
 	if (mhz)
 	{
-		int cpuspeed = ( mhz > 1000 ) ? mhz / 1000 : mhz;
+		double cpuspeed = ( mhz > 1000 ) ? mhz / 1000 : mhz;
 		const char *cpuspeedstr = ( mhz > 1000 ) ? "GHz" : "MHz";
 		sprintf (verbuf, "Windows %ld.%ld [i%d86/%.2f%s]",
 					osvi.dwMajorVersion, osvi.dwMinorVersion, si.wProcessorLevel, 

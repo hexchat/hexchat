@@ -1062,8 +1062,7 @@ perl_init (void)
 	    "if($@){"
 	    /*"  #something went wrong\n"*/
 	      "IRC::print \"Errors loading file $f_name:\\n\";"
-	      "IRC::print \"$@\\n\\n\";"
-			"IRC::print \"trying to eval:\\n$strin\\n\\n\";"
+	      "IRC::print \"$@\\n\";"
 	      "return 1;"
 	    "}"
 	    "return 0;"
