@@ -534,10 +534,11 @@ servlist_savegui (void)
 static void
 servlist_connectnew_cb (GtkWidget *button, gpointer userdata)
 {
+	servlist_savegui ();		/* why doesn't the delete_event trigger this? */
+
 	/* give it a NULL sess and it'll open a new tab for us */
 	servlist_connect (NULL, selected_net);
 
-	servlist_savegui ();		/* why doesn't the delete_event trigger this? */
 	gtk_widget_destroy (serverlist_win);
 	serverlist_win = NULL;
 }
@@ -545,12 +546,13 @@ servlist_connectnew_cb (GtkWidget *button, gpointer userdata)
 static void
 servlist_connect_cb (GtkWidget *button, gpointer userdata)
 {
+	servlist_savegui ();		/* why doesn't the delete_event trigger this? */
+
 	if (!is_session (servlist_sess))
 		servlist_sess = NULL;
 
 	servlist_connect (servlist_sess, selected_net);
 
-	servlist_savegui ();		/* why doesn't the delete_event trigger this? */
 	gtk_widget_destroy (serverlist_win);
 	serverlist_win = NULL;
 }
