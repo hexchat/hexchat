@@ -353,11 +353,11 @@ editlist_gui_open (GSList * list, char *title, char *wmclass, char *file,
 	gtk_box_pack_end (GTK_BOX (vbox), hbox, 0, 0, 0);
 	gtk_widget_show (hbox);
 
-	button = gtkutil_button (hbox, GTK_STOCK_NEW, 0, editlist_gui_addnew,
+	button = gtkutil_button (hbox, GTK_STOCK_ADD, 0, editlist_gui_addnew,
 									 0, _("Add New"));
 	gtk_widget_set_usize (button, 100, 0);
 
-	button = gtkutil_button (hbox, GTK_STOCK_DELETE, 0, editlist_gui_delete,
+	button = gtkutil_button (hbox, GTK_STOCK_REMOVE, 0, editlist_gui_delete,
 									 0, _("Delete"));
 	gtk_widget_set_usize (button, 100, 0);
 

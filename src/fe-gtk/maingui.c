@@ -1669,7 +1669,7 @@ mg_create_topicbar (session *sess, GtkWidget *box, char *name)
 	GtkWidget *hbox, *topic, *bbox;
 	session_gui *gui = sess->gui;
 
-	gui->topic_bar = hbox = gtk_hbox_new (FALSE, 0);
+	gui->topic_bar = hbox = gtk_hbox_new (FALSE, 1);
 	gtk_box_pack_start (GTK_BOX (box), hbox, 0, 0, 0);
 
 	mg_create_link_buttons (hbox, NULL);

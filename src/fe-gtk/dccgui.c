@@ -310,6 +310,7 @@ dcc_update_recv_win (void)
 	GSList *list = dcc_list;
 	gchar *nnew[9];
 	gint row;
+	int i = 0;
 
 	gtk_clist_freeze (GTK_CLIST (dccrwin.list));
 	gtk_clist_clear (GTK_CLIST (dccrwin.list));
@@ -326,9 +327,15 @@ dcc_update_recv_win (void)
 				gtk_clist_set_foreground (GTK_CLIST (dccrwin.list), row,
 												  colors +
 												  dccstat[dcc->dccstat].color);
+			i++;
 		}
 		list = list->next;
 	}
+
+	/* if only one entry, select it (so Accept button can work) */
+	if (i == 1)
+		gtk_clist_select_row (GTK_CLIST (dccrwin.list), 0, 0);
+
 	gtk_clist_thaw (GTK_CLIST (dccrwin.list));
 }
 
@@ -548,6 +555,7 @@ dcc_update_send_win (void)
 	GSList *list = dcc_list;
 	gchar *nnew[9];
 	gint row;
+	int i = 0;
 
 	gtk_clist_freeze (GTK_CLIST (dccswin.list));
 	gtk_clist_clear ((GtkCList *) dccswin.list);
@@ -563,9 +571,15 @@ dcc_update_send_win (void)
 				gtk_clist_set_foreground
 					(GTK_CLIST (dccswin.list), row,
 					 colors + dccstat[dcc->dccstat].color);
+			i++;
 		}
 		list = list->next;
 	}
+
+	/* if only one entry, select it (so Abort button can work) */
+	if (i == 1)
+		gtk_clist_select_row (GTK_CLIST (dccswin.list), 0, 0);
+
 	gtk_clist_thaw (GTK_CLIST (dccswin.list));
 }
 

@@ -1042,16 +1042,18 @@ static char *pevt_discon_help[] = {
 static void
 pevent_load_defaults ()
 {
-	int i, len;
+	int i;
 
 	for (i = 0; i < NUM_XP; i++)
 	{
-		len = strlen (_(te[i].def));
-		len++;
 		if (pntevts_text[i])
 			free (pntevts_text[i]);
-		pntevts_text[i] = malloc (len);
-		memcpy (pntevts_text[i], _(te[i].def), len);
+
+		/* don't gettext() the blank ones */
+		if (i == XP_TE_OPENDIALOG || i == XP_TE_BEEP)
+			pntevts_text[i] = strdup (te[i].def);
+		else
+			pntevts_text[i] = strdup (_(te[i].def));
 	}
 }
 

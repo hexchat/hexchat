@@ -984,11 +984,13 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 	gtk_misc_set_alignment (GTK_MISC (label34), 0, 0.5);
 
 	comboboxentry_charset = servlist_create_charsetcombo ();
+	ignore_changed = TRUE;
 #if GTK_CHECK_VERSION(2,4,0)
 	gtk_entry_set_text (GTK_ENTRY (GTK_BIN (comboboxentry_charset)->child), net->encoding ? net->encoding : "System default");
 #else
 	gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (comboboxentry_charset)->entry), net->encoding ? net->encoding : "System default");
 #endif
+	ignore_changed = FALSE;
 	gtk_widget_show (comboboxentry_charset);
 	gtk_table_attach (GTK_TABLE (table3), comboboxentry_charset, 2, 3, 16, 17,
 							(GtkAttachOptions) (GTK_FILL),
