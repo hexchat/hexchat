@@ -510,7 +510,7 @@ backend_draw_text (GtkXText *xtext, int dofill, GdkGC *gc, int x, int y,
 	{
 #ifdef WIN32
 		if (xtext->transparent && !xtext->backcolor)
-			win32_draw_bg (xtext, x, y - (xtext->font->ascent * 2), str_width,
+			win32_draw_bg (xtext, x, y - xtext->font->ascent, str_width,
 								xtext->fontsize);
 		else
 #endif
@@ -3830,7 +3830,11 @@ gtk_xtext_render_page (GtkXText * xtext)
 	xtext->buffer->last_pixel_pos = pos;
 
 									/* dont scroll PageUp/Down, it looks ugly */
+#ifdef WIN32
+	if (!xtext->transparent && !xtext->pixmap && abs (overlap) < height - (3*xtext->fontsize))
+#else
 	if (!xtext->pixmap && abs (overlap) < height - (3*xtext->fontsize))
+#endif
 	{
 		/* so the obscured regions are exposed */
 		gdk_gc_set_exposures (xtext->fgc, TRUE);
