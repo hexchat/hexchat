@@ -294,7 +294,9 @@ server_inline (server *serv, char *line, int len)
 			GError *err;
 			gboolean retry;
 
-			conv_line = g_strdup (line);
+			conv_line = g_malloc (len + 1);
+			memcpy (conv_line, line, len);
+			conv_line[len - 1] = 0;
 			conv_len = len;
 
 			do
@@ -815,10 +817,6 @@ server_connect_success (server *serv)
 	server_stopconnecting (serv);	/* ->connecting = FALSE */
 	/* activate glib poll */
 	server_connected (serv);
-
-/*
-	serv->encoding = strdup ("iso-8859-8");
-	server_inline (serv, "\0xD0\0xD1", 2);*/
 }
 
 /* receive info from the child-process about connection progress */
