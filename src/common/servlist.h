@@ -36,6 +36,7 @@ void servlist_connect (session *sess, ircnet *net);
 int servlist_connect_by_netname (session *sess, char *network);
 int servlist_auto_connect (session *sess);
 int servlist_have_auto (void);
+int servlist_check_encoding (char *charset);
 
 ircnet *servlist_net_add (char *name, char *comment);
 void servlist_net_remove (ircnet *net);

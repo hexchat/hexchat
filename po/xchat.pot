@@ -7,7 +7,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
-"POT-Creation-Date: 2003-01-28 14:38+1100\n"
+"POT-Creation-Date: 2003-01-29 02:41+1100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -91,19 +91,19 @@ msgstr ""
 msgid "  %-20s offline\n"
 msgstr ""
 
-#: src/common/outbound.c:67
+#: src/common/outbound.c:68
 msgid "No channel joined. Try /join #<channel>\n"
 msgstr ""
 
-#: src/common/outbound.c:73
+#: src/common/outbound.c:74
 msgid "Not connected. Try /server <host> [<port>]\n"
 msgstr ""
 
-#: src/common/outbound.c:1301
+#: src/common/outbound.c:1327
 msgid "I need /bin/sh to run!\n"
 msgstr ""
 
-#: src/common/outbound.c:1513
+#: src/common/outbound.c:1539
 msgid ""
 "\n"
 "Commands Available:\n"
@@ -111,7 +111,7 @@ msgid ""
 "  "
 msgstr ""
 
-#: src/common/outbound.c:1548
+#: src/common/outbound.c:1574
 msgid ""
 "\n"
 "\n"
@@ -119,76 +119,76 @@ msgid ""
 "\n"
 msgstr ""
 
-#: src/common/outbound.c:1549
+#: src/common/outbound.c:1575
 msgid ""
 "User defined commands:\n"
 "\n"
 "  "
 msgstr ""
 
-#: src/common/outbound.c:1639
+#: src/common/outbound.c:1665
 #, c-format
 msgid "Unknown arg '%s' ignored."
 msgstr ""
 
-#: src/common/outbound.c:2313
+#: src/common/outbound.c:2339
 msgid "No such plugin found.\n"
 msgstr ""
 
-#: src/common/outbound.c:2318 src/fe-gtk/plugingui.c:135
+#: src/common/outbound.c:2344 src/fe-gtk/plugingui.c:135
 msgid "That plugin is refusing to unload.\n"
 msgstr ""
 
-#: src/common/outbound.c:2452
+#: src/common/outbound.c:2478
 msgid "ADDBUTTON <name> <action>, adds a button under the user-list"
 msgstr ""
 
-#: src/common/outbound.c:2454
+#: src/common/outbound.c:2480
 msgid "ALLCHAN <cmd>, sends a command to all channels you're in"
 msgstr ""
 
-#: src/common/outbound.c:2456
+#: src/common/outbound.c:2482
 msgid "ALLSERV <cmd>, sends a command to all servers you're in"
 msgstr ""
 
-#: src/common/outbound.c:2457
+#: src/common/outbound.c:2483
 msgid "AWAY [<reason>], sets you away"
 msgstr ""
 
-#: src/common/outbound.c:2459
+#: src/common/outbound.c:2485
 msgid ""
 "BAN <mask> [<bantype>], bans everyone matching the mask from the current "
 "channel. If they are already on the channel this doesn't kick them (needs "
 "chanop)"
 msgstr ""
 
-#: src/common/outbound.c:2461
+#: src/common/outbound.c:2487
 msgid "UNBAN <mask> [<mask>...], unbans the specified masks."
 msgstr ""
 
-#: src/common/outbound.c:2462
+#: src/common/outbound.c:2489
 msgid "CLEAR, Clears the current text window"
 msgstr ""
 
-#: src/common/outbound.c:2463
+#: src/common/outbound.c:2490
 msgid "CLOSE, Closes the current window/tab"
 msgstr ""
 
-#: src/common/outbound.c:2466
+#: src/common/outbound.c:2493
 msgid ""
 "CTCP <nick> <message>, send the CTCP message to nick, common messages are "
 "VERSION and USERINFO"
 msgstr ""
 
-#: src/common/outbound.c:2468
+#: src/common/outbound.c:2495
 msgid "COUNTRY <code>, finds a country code, eg: au = australia"
 msgstr ""
 
-#: src/common/outbound.c:2470
+#: src/common/outbound.c:2497
 msgid "CYCLE, parts current channel and immediately rejoins"
 msgstr ""
 
-#: src/common/outbound.c:2472
+#: src/common/outbound.c:2499
 msgid ""
 "\n"
 "DCC GET <nick>                     - accept an offered file\n"
@@ -199,77 +199,77 @@ msgid ""
 "         /dcc close send johnsmith file.tar.gz"
 msgstr ""
 
-#: src/common/outbound.c:2482
+#: src/common/outbound.c:2509
 msgid "DELBUTTON <name>, deletes a button from under the user-list"
 msgstr ""
 
-#: src/common/outbound.c:2484
+#: src/common/outbound.c:2511
 msgid ""
 "DEHOP <nick>, removes chanhalf-op status from the nick on the current "
 "channel (needs chanop)"
 msgstr ""
 
-#: src/common/outbound.c:2486
+#: src/common/outbound.c:2513
 msgid ""
 "DEOP <nick>, removes chanop status from the nick on the current channel "
 "(needs chanop)"
 msgstr ""
 
-#: src/common/outbound.c:2488
+#: src/common/outbound.c:2515
 msgid ""
 "DEVOICE <nick>, removes voice status from the nick on the current channel "
 "(needs chanop)"
 msgstr ""
 
-#: src/common/outbound.c:2489
+#: src/common/outbound.c:2516
 msgid "DISCON, Disconnects from server"
 msgstr ""
 
-#: src/common/outbound.c:2490
+#: src/common/outbound.c:2517
 msgid "DNS <nick|host|ip>, Finds a users IP number"
 msgstr ""
 
-#: src/common/outbound.c:2491
+#: src/common/outbound.c:2518
 msgid "ECHO <text>, Prints text locally"
 msgstr ""
 
-#: src/common/outbound.c:2494
+#: src/common/outbound.c:2521
 msgid ""
 "EXEC [-o] <command>, runs the command. If -o flag is used then output is "
 "sent to current channel, else is printed to current text box"
 msgstr ""
 
-#: src/common/outbound.c:2496
+#: src/common/outbound.c:2523
 msgid ""
 "EXECKILL [-9], kills a running exec in the current session. If -9 is given "
 "the process is SIGKILL'ed"
 msgstr ""
 
-#: src/common/outbound.c:2498
+#: src/common/outbound.c:2525
 msgid "EXECSTOP, sends the process SIGSTOP"
 msgstr ""
 
-#: src/common/outbound.c:2499
+#: src/common/outbound.c:2526
 msgid "EXECCONT, sends the process SIGCONT"
 msgstr ""
 
-#: src/common/outbound.c:2500
+#: src/common/outbound.c:2527
 msgid "EXECWRITE, sends data to the processes stdin"
 msgstr ""
 
-#: src/common/outbound.c:2504
+#: src/common/outbound.c:2531
 msgid "FLUSHQ, flushes the current server's send queue"
 msgstr ""
 
-#: src/common/outbound.c:2506
+#: src/common/outbound.c:2533
 msgid "GATE <host> [<port>], proxies through a host, port defaults to 23"
 msgstr ""
 
-#: src/common/outbound.c:2511
+#: src/common/outbound.c:2538
 msgid "HOP <nick>, gives chanhalf-op status to the nick (needs chanop)"
 msgstr ""
 
-#: src/common/outbound.c:2513
+#: src/common/outbound.c:2540
 msgid ""
 "IGNORE <mask> <types..> <options..>\n"
 "    mask - host mask to ignore, eg: *!*@*.aol.com\n"
@@ -278,211 +278,211 @@ msgid ""
 "    options - NOSAVE, QUIET"
 msgstr ""
 
-#: src/common/outbound.c:2520
+#: src/common/outbound.c:2547
 msgid ""
 "INVITE <nick> [<channel>], invites someone to a channel, by default the "
 "current channel (needs chanop)"
 msgstr ""
 
-#: src/common/outbound.c:2521
+#: src/common/outbound.c:2548
 msgid "JOIN <channel>, joins the channel"
 msgstr ""
 
-#: src/common/outbound.c:2523
+#: src/common/outbound.c:2550
 msgid "KICK <nick>, kicks the nick from the current channel (needs chanop)"
 msgstr ""
 
-#: src/common/outbound.c:2525
+#: src/common/outbound.c:2552
 msgid ""
 "KICKBAN <nick>, bans then kicks the nick from the current channel (needs "
 "chanop)"
 msgstr ""
 
-#: src/common/outbound.c:2527
+#: src/common/outbound.c:2554
 msgid "LAGCHECK, forces a new lag check"
 msgstr ""
 
-#: src/common/outbound.c:2529
+#: src/common/outbound.c:2556
 msgid "LASTLOG <string>, searches for a string in the buffer"
 msgstr ""
 
-#: src/common/outbound.c:2531
+#: src/common/outbound.c:2558
 msgid "LOAD <file>, loads a plugin or script"
 msgstr ""
 
-#: src/common/outbound.c:2534
+#: src/common/outbound.c:2561
 msgid ""
 "MDEHOP, Mass deop's all chanhalf-ops in the current channel (needs chanop)"
 msgstr ""
 
-#: src/common/outbound.c:2536
+#: src/common/outbound.c:2563
 msgid "MDEOP, Mass deop's all chanops in the current channel (needs chanop)"
 msgstr ""
 
-#: src/common/outbound.c:2538
+#: src/common/outbound.c:2565
 msgid ""
 "MKICK, Mass kicks everyone except you in the current channel (needs chanop)"
 msgstr ""
 
-#: src/common/outbound.c:2540
+#: src/common/outbound.c:2567
 msgid ""
 "ME <action>, sends the action to the current channel (actions are written in "
 "the 3rd person, like /me jumps)"
 msgstr ""
 
-#: src/common/outbound.c:2541
+#: src/common/outbound.c:2568
 msgid "MSG <nick> <message>, sends a private message"
 msgstr ""
 
-#: src/common/outbound.c:2544
+#: src/common/outbound.c:2571
 msgid "NAMES, Lists the nicks on the current channel"
 msgstr ""
 
-#: src/common/outbound.c:2546
+#: src/common/outbound.c:2573
 msgid "NCTCP <nick> <message>, Sends a CTCP notice"
 msgstr ""
 
-#: src/common/outbound.c:2547
+#: src/common/outbound.c:2574
 msgid "NEWSERVER <hostname> [<port>]"
 msgstr ""
 
-#: src/common/outbound.c:2548
+#: src/common/outbound.c:2575
 msgid "NICK <nickname>, sets your nick"
 msgstr ""
 
-#: src/common/outbound.c:2551
+#: src/common/outbound.c:2578
 msgid ""
 "NOTICE <nick/channel> <message>, sends a notice. Notices are a type of "
 "message that should be auto reacted to"
 msgstr ""
 
-#: src/common/outbound.c:2553
+#: src/common/outbound.c:2580
 msgid "NOTIFY [<nick>], lists your notify list or adds someone to it"
 msgstr ""
 
-#: src/common/outbound.c:2555
+#: src/common/outbound.c:2582
 msgid "OP <nick>, gives chanop status to the nick (needs chanop)"
 msgstr ""
 
-#: src/common/outbound.c:2557
+#: src/common/outbound.c:2584
 msgid ""
 "PART [<channel>] [<reason>], leaves the channel, by default the current one"
 msgstr ""
 
-#: src/common/outbound.c:2559
+#: src/common/outbound.c:2586
 msgid "PING <nick | channel>, CTCP pings nick or channel"
 msgstr ""
 
-#: src/common/outbound.c:2561
+#: src/common/outbound.c:2588
 msgid "QUERY <nick>, opens up a new privmsg window to someone"
 msgstr ""
 
-#: src/common/outbound.c:2563
+#: src/common/outbound.c:2590
 msgid "QUIT [<reason>], disconnects from the current server"
 msgstr ""
 
-#: src/common/outbound.c:2565
+#: src/common/outbound.c:2592
 msgid "QUOTE <text>, sends the text in raw form to the server"
 msgstr ""
 
-#: src/common/outbound.c:2568
+#: src/common/outbound.c:2595
 msgid ""
 "RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as /"
 "RECONNECT to reconnect to the current server or with /RECONNECT ALL to "
 "reconnect to all the open servers"
 msgstr ""
 
-#: src/common/outbound.c:2571
+#: src/common/outbound.c:2598
 msgid ""
 "RECONNECT [<host>] [<port>] [<password>], Can be called just as /RECONNECT "
 "to reconnect to the current server or with /RECONNECT ALL to reconnect to "
 "all the open servers"
 msgstr ""
 
-#: src/common/outbound.c:2573
+#: src/common/outbound.c:2600
 msgid ""
 "RECV <text>, send raw data to xchat, as if it was received from the irc "
 "server"
 msgstr ""
 
-#: src/common/outbound.c:2576
+#: src/common/outbound.c:2603
 msgid "SAY <text>, sends the text to the object in the current window"
 msgstr ""
 
-#: src/common/outbound.c:2577
+#: src/common/outbound.c:2604
 msgid "SET <variable> [<value>]"
 msgstr ""
 
-#: src/common/outbound.c:2581
+#: src/common/outbound.c:2608
 msgid "SERVCHAN [-ssl] <host> <port> <channel>, connects and joins a channel"
 msgstr ""
 
-#: src/common/outbound.c:2584
+#: src/common/outbound.c:2611
 msgid "SERVCHAN <host> <port> <channel>, connects and joins a channel"
 msgstr ""
 
-#: src/common/outbound.c:2588
+#: src/common/outbound.c:2615
 msgid ""
 "SERVER [-ssl] <host> [<port>] [<password>], connects to a server, the "
 "default port is 6667 for normal connections, and 9999 for ssl connections"
 msgstr ""
 
-#: src/common/outbound.c:2591
+#: src/common/outbound.c:2618
 msgid ""
 "SERVER <host> [<port>] [<password>], connects to a server, the default port "
 "is 6667"
 msgstr ""
 
-#: src/common/outbound.c:2594
+#: src/common/outbound.c:2621
 msgid ""
 "TOPIC [<topic>], sets the topic if one is given, else shows the current topic"
 msgstr ""
 
-#: src/common/outbound.c:2595
+#: src/common/outbound.c:2622
 msgid "UNIGNORE <mask> [QUIET]"
 msgstr ""
 
-#: src/common/outbound.c:2596
+#: src/common/outbound.c:2623
 msgid "UNLOAD <name>, unloads a plugin or script"
 msgstr ""
 
-#: src/common/outbound.c:2599
+#: src/common/outbound.c:2626
 msgid ""
 "WALLCHOP <message>, sends the message to all chanops on the current channel"
 msgstr ""
 
-#: src/common/outbound.c:2601
+#: src/common/outbound.c:2628
 msgid "WALLCHAN <message>, writes the message to all channels"
 msgstr ""
 
-#: src/common/outbound.c:2603
+#: src/common/outbound.c:2630
 msgid "VOICE <nick>, gives voice status to someone (needs chanop)"
 msgstr ""
 
-#: src/common/outbound.c:2623
+#: src/common/outbound.c:2650
 #, c-format
 msgid "Usage: %s\n"
 msgstr ""
 
-#: src/common/outbound.c:2628
+#: src/common/outbound.c:2655
 msgid ""
 "\n"
 "No help available on that command.\n"
 msgstr ""
 
-#: src/common/outbound.c:2635
+#: src/common/outbound.c:2662
 msgid "No such command.\n"
 msgstr ""
 
-#: src/common/outbound.c:2909
+#: src/common/outbound.c:2947
 msgid "Bad arguments for user command.\n"
 msgstr ""
 
-#: src/common/outbound.c:3019
+#: src/common/outbound.c:3057
 msgid "Too many recursive usercommands, aborting."
 msgstr ""
 
-#: src/common/outbound.c:3085
+#: src/common/outbound.c:3123
 msgid "Unknown Command. Try /help\n"
 msgstr ""
 

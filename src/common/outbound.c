@@ -48,6 +48,7 @@
 #include "inbound.h"
 #include "text.h"
 #include "xchatc.h"
+#include "servlist.h"
 #include "server.h"
 #include "outbound.h"
 
@@ -496,6 +497,31 @@ cmd_unban (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		}
 		i++;
 	}
+}
+
+static int
+cmd_charset (struct session *sess, char *tbuf, char *word[], char *word_eol[])
+{
+	server *serv = sess->server;
+
+	if (!word[2][0])
+	{
+		PrintTextf (sess, "Current charset: %s\n", serv->encoding);
+		return TRUE;
+	}
+
+	if (servlist_check_encoding (word[2]))
+	{
+		if (serv->encoding)
+			free (serv->encoding);
+		serv->encoding = strdup (word[2]);
+		PrintTextf (sess, "Charset changed to: %s\n", word[2]);
+	} else
+	{
+		PrintTextf (sess, "Unknown charset: %s\n", word[2]);
+	}
+
+	return TRUE;
 }
 
 static int
@@ -2459,6 +2485,7 @@ const struct commands xc_cmds[] = {
 	 N_("BAN <mask> [<bantype>], bans everyone matching the mask from the current channel. If they are already on the channel this doesn't kick them (needs chanop)")},
 	{"UNBAN", cmd_unban, 1, 1,
 	 N_("UNBAN <mask> [<mask>...], unbans the specified masks.")},
+	{"CHARSET", cmd_charset, 0, 0, 0},
 	{"CLEAR", cmd_clear, 0, 0, N_("CLEAR, Clears the current text window")},
 	{"CLOSE", cmd_close, 0, 0, N_("CLOSE, Closes the current window/tab")},
 

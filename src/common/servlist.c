@@ -882,7 +882,7 @@ servlist_init (void)
 }
 
 /* check if a charset is known by Iconv */
-static int
+int
 servlist_check_encoding (char *charset)
 {
 	GIConv gic;
