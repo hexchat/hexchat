@@ -2152,10 +2152,10 @@ gtk_xtext_selection_get (GtkWidget * widget,
 	}
 	*pos = 0;
 
-	/*if (xtext->color_paste)
+	if (xtext->color_paste)
 		stripped = gtk_xtext_conv_color (txt, strlen (txt), &len,
 													xtext->fonttype);
-	else*/
+	else
 		stripped = gtk_xtext_strip_color (txt, strlen (txt), NULL, &len,
 													 xtext->fonttype, NULL);
 	free (txt);
@@ -2370,7 +2370,7 @@ gtk_xtext_conv_color (unsigned char *text, int len, int *newlen, int fonttype)
 	char *new_str;
 	int mbl;
 
-	for (i = 0; i < len; i++)
+	for (i = 0; i < len;)
 	{
 		switch (text[i])
 		{
@@ -2390,11 +2390,11 @@ gtk_xtext_conv_color (unsigned char *text, int len, int *newlen, int fonttype)
 	}
 
 	new_str = malloc (j);
+	j = 0;
 
-	i = 0;
-	while (len > 0)
+	for (i = 0; i < len;)
 	{
-		switch (*text)
+		switch (text[i])
 		{
 		case ATTR_COLOR:
 			cchar = 'C';
@@ -2418,34 +2418,33 @@ gtk_xtext_conv_color (unsigned char *text, int len, int *newlen, int fonttype)
 			if (fonttype != FONT_SET)
 				goto single;
 #endif
-			mbl = charlen (text);
+			mbl = charlen (text + i);
 			if (mbl == 1)
 			{
 #ifdef GDK_BACKEND
 single:
 #endif
-				new_str[i] = *text;
+				new_str[j] = text[i];
+				j++;
 				i++;
 			} else if (mbl > 0)
 			{
-				memcpy (&new_str[i], text, mbl);
+				memcpy (new_str + j, text + i, mbl);
+				j += mbl;
 				i += mbl;
-				text += mbl - 1; /* -1 -> text++ */
-				len -= mbl - 1; /* -1 -> len-- */
 			}
 		}
 		if (cchar != 0)
 		{
-			new_str[i++] = '%';
-			new_str[i++] = cchar;
+			new_str[j++] = '%';
+			new_str[j++] = cchar;
 			cchar = 0;
+			i++;
 		}
-		text++;
-		len--;
 	}
 
-	new_str[i] = 0;
-	*newlen = i;
+	new_str[j] = 0;
+	*newlen = j;
 
 	return new_str;
 }

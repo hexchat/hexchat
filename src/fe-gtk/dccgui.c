@@ -66,10 +66,7 @@ dcc_send_filereq_done (struct my_dcc_send *mdc, void *dummy, char *file)
 	char tbuf[400];
 
 	if (file)
-	{
 		dcc_send (mdc->sess, tbuf, mdc->nick, file, mdc->maxcps);
-		free (file);
-	}
 	free (mdc->nick);
 	free (mdc);
 }

@@ -286,10 +286,7 @@ static void
 pevent_save_req_cb (void *arg1, void *arg2, char *file)
 {
 	if (file)
-	{
 		pevent_save (file);
-		free (file);
-	}
 }
 
 static void
@@ -313,7 +310,6 @@ pevent_load_req_cb (void *arg1, void *arg2, char *file)
 		pevent_make_pntevts ();
 		pevent_dialog_fill (pevent_dialog_list);
 		pevent_dialog_select (pevent_dialog_list, -1, -1, NULL, NULL);
-		free (file);
 	}
 }
 

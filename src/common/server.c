@@ -74,36 +74,22 @@ static void server_disconnect (session * sess, int sendquit, int err);
 static int server_cleanup (server * serv);
 static void server_connect (server *serv, char *hostname, int port, int no_login);
 
-static const char *pages[]=
-{
-	"ISO-8859-1",	/*(Western Europe)*/
-	"ISO-8859-2",	/*(Central Europe)*/
-	"ISO-8859-7",	/*(Greek)*/
-	"ISO-8859-9",	/*(Turkish)*/
-	"CP1256",		/*(Windows-Arabic)*/
-	"KOI8-R",		/*(Cyrillic)*/
-	"SJIS",
-};
 
 static int
 tcp_send_real_real (server *serv, char *buf, int len)
 {
 	int ret = 0;
-	char *locale = NULL;
+	char *locale;
 	int loc_len;
 
-	if (serv->encoding == 0)	/* system */
+	if (serv->encoding == NULL)	/* system */
 		locale = g_locale_from_utf8 (buf, len, NULL, &loc_len, NULL);
-
-	if (serv->encoding > 1)
-		locale = g_convert (buf, len, pages[serv->encoding - 2], "UTF-8",
-								  NULL, &loc_len, NULL);
-
-	if (locale)
-		len = loc_len;
+	else
+		locale = g_convert (buf, len, serv->encoding, "UTF-8", 0, &loc_len, 0);
 
 	if (locale)
 	{
+		len = loc_len;
 #ifdef USE_OPENSSL
 		if (!serv->ssl)
 			ret = send (serv->sok, locale, len, 0);
@@ -315,7 +301,7 @@ text_validate (char **text)
 static void
 server_inline (server *serv, char *line, int len)
 {
-	char *utf = NULL;
+	char *utf;
 	char *conv = NULL;
 #ifdef USE_JCODE
 	char *oline;
@@ -328,10 +314,10 @@ server_inline (server *serv, char *line, int len)
 	}
 #endif
 
-	if (serv->encoding == 0)	/* system */
+	if (serv->encoding == NULL)	/* system */
 		utf = g_locale_to_utf8 (line, len, NULL, NULL, NULL);
-	else if (serv->encoding > 1)
-		utf = g_convert (line, len, "UTF-8", pages[serv->encoding - 2], 0, 0, 0);
+	else
+		utf = g_convert (line, len, "UTF-8", serv->encoding, 0, 0, 0);
 
 	if (utf)
 		line = utf;

@@ -566,7 +566,11 @@ inbound_005 (server * serv, char *word[])
 		} else if (strncmp (word[w], "CHARSET=", 8) == 0)
 		{
 			if (strcmp (word[w] + 8, "UTF-8") == 0)
-				serv->encoding = 1;
+			{
+				if (serv->encoding)
+					free (serv->encoding);
+				serv->encoding = strdup ("UTF-8");
+			}
 		}
 
 		w++;

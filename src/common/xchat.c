@@ -273,6 +273,11 @@ set_server_defaults (server *serv)
 		free (serv->nick_prefixes);
 	if (serv->nick_modes)
 		free (serv->nick_modes);
+	if (serv->encoding)
+	{
+		free (serv->encoding);
+		serv->encoding = NULL;
+	}
 
 	serv->chantypes = strdup ("#&!+");
 	serv->chanmodes = strdup ("beI,k,l");
@@ -284,7 +289,6 @@ set_server_defaults (server *serv)
 	serv->is_away = FALSE;
 	serv->supports_watch = FALSE;
 	serv->bad_prefix = FALSE;
-	serv->encoding = prefs.net_encoding;
 }
 
 static server *
@@ -423,6 +427,8 @@ kill_server_callback (server * serv)
 		free (serv->realname);
 	if (serv->networkname)
 		free (serv->networkname);
+	if (serv->encoding)
+		free (serv->encoding);
 
 	fe_server_callback (serv);
 

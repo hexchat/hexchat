@@ -92,7 +92,6 @@ plugingui_load_cb (session *sess, void *data2, char *file)
 		char *buf = malloc (strlen (file) + 7);
 
 		sprintf (buf, "LOAD %s", file);
-		free (file);
 		handle_command (sess, buf, FALSE);
 		free (buf);
 	}

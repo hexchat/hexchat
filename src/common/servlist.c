@@ -465,6 +465,7 @@ servlist_connect (session *sess, ircnet *net)
 	ircserver *ircserv;
 	GSList *list;
 	char *port;
+	char *space;
 	server *serv;
 
 	if (!sess)
@@ -541,6 +542,13 @@ servlist_connect (session *sess, ircnet *net)
 			free (serv->eom_cmd);
 		serv->eom_cmd = strdup (net->command[0] == '/' ? net->command+1 : net->command);
 	}
+
+	if (serv->encoding)
+		free (serv->encoding);
+	serv->encoding = strdup (net->encoding);
+	space = strchr (serv->encoding, ' ');
+	if (space)
+		space[0] = 0;
 }
 
 int
@@ -711,6 +719,8 @@ servlist_net_remove (ircnet *net)
 		free (net->command);
 	if (net->comment)
 		free (net->comment);
+	if (net->encoding)
+		free (net->encoding);
 	free (net->name);
 	free (net);
 
@@ -810,6 +820,9 @@ servlist_load (void)
 			case 'D':
 				net->selected = atoi (buf + 2);
 				break;
+			case 'E':
+				net->encoding = strdup (buf + 2);
+				break;
 			case 'S':	/* new server/hostname for this network */
 				servlist_server_add (net, buf + 2);
 				break;
@@ -826,6 +839,31 @@ servlist_init (void)
 	if (!network_list)
 		if (!servlist_load ())
 			servlist_load_defaults ();
+}
+
+/* check if a charset is known by Iconv */
+static int
+servlist_check_encoding (char *charset)
+{
+	GIConv gic;
+	char *c;
+
+	c = strchr (charset, ' ');
+	if (c)
+		c[0] = 0;
+
+	gic = g_iconv_open (charset, "UTF-8");
+
+	if (c)
+		c[0] = ' ';
+
+	if (gic != (GIConv)-1)
+	{
+		g_iconv_close (gic);
+		return TRUE;
+	}
+
+	return FALSE;
 }
 
 void
@@ -861,6 +899,17 @@ servlist_save (void)
 			fprintf (fp, "P=%s\n", net->pass);
 		if (net->autojoin)
 			fprintf (fp, "J=%s\n", net->autojoin);
+		if (net->encoding && strcasecmp (net->encoding, "System") &&
+			 strcasecmp (net->encoding, "System default"))
+		{
+			fprintf (fp, "E=%s\n", net->encoding);
+			if (!servlist_check_encoding (net->encoding))
+			{
+				snprintf (buf, sizeof (buf), _("Warning: \"%s\" character set is unknown. No conversion will be applied for network %s."),
+							 net->encoding, net->name);
+				fe_message (buf, FALSE);
+			}
+		}
 		if (net->command)
 			fprintf (fp, "C=%s\n", net->command[0] == '/' ? net->command+1 : net->command);
 		fprintf (fp, "F=%d\nD=%d\n", net->flags, net->selected);

@@ -492,8 +492,6 @@ chanlist_filereq_done (struct server *serv, void *data2, char *file)
 		return;
 
 	fh = open (file, O_TRUNC | O_WRONLY | O_CREAT, 0600);
-	free (file);
-
 	if (fh == -1)
 		return;
 

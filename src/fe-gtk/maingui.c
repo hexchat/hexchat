@@ -1576,6 +1576,7 @@ mg_color_insert (GtkWidget *item, gpointer userdata)
 	key_action_insert (current_sess->gui->input_box, 0, buf, 0, 0);
 }
 
+/*
 static const char *pages[]=
 {
 	"UTF-8",
@@ -1612,7 +1613,7 @@ mg_create_code_item (server *serv, GtkWidget *menu, GSList *group,
 	gtk_widget_show (item);
 
 	return group;
-}
+}*/
 
 static void
 mg_upbutton_cb (GtkButton *but, gpointer userdata)
@@ -1620,7 +1621,7 @@ mg_upbutton_cb (GtkButton *but, gpointer userdata)
 	GtkWidget *menu, *item;
 	session *sess = current_sess;
 	GtkWidget *submenu;
-	GSList *group;
+	/*GSList *group;*/
 	char buf[256];
 	int i;
 
@@ -1663,6 +1664,7 @@ mg_upbutton_cb (GtkButton *but, gpointer userdata)
 	menu_toggle_item (_("Color paste"), submenu, mg_colorpaste_cb, sess,
 							sess->color_paste);
 
+/*
 	snprintf (buf, sizeof (buf), _("(%s) Network encoding"),
 				 sess->server->networkname ? sess->server->networkname :
 				 sess->server->servername);
@@ -1682,7 +1684,7 @@ mg_upbutton_cb (GtkButton *but, gpointer userdata)
 		group = mg_create_code_item (sess->server, submenu, group, i,
 											  pages[i - 1]);
 		i++;
-	}
+	}*/
 
 	g_signal_connect (G_OBJECT (menu), "selection-done",
 							G_CALLBACK (mg_menu_destroy), menu);

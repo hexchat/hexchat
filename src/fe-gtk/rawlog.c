@@ -62,7 +62,6 @@ rawlog_save (server *serv, void *unused, char *file)
 			gtk_xtext_save (GTK_XTEXT (serv->gui->rawlog_textlist), fh);
 			close (fh);
 		}
-		free (file);
 	}
 }
 

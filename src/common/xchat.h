@@ -162,7 +162,6 @@ struct xchatprefs
 	int bantype;
 	int userlist_sort;
 	int nu_color;
-	int net_encoding;
 	unsigned long local_ip;
 	unsigned long dcc_ip;
 	char dcc_ip_str[16];
@@ -412,7 +411,7 @@ typedef struct server
 	time_t ping_recv;					/* when we last got a ping reply */
 	time_t away_time;					/* when we were marked away */
 
-	int encoding;						/* 0=system 1=utf8 2=iso-8859-1 */
+	char *encoding;					/* NULL for system */
 
 	int motd_skipped:1;
 	int connected:1;

@@ -399,7 +399,6 @@ const struct prefs vars[] = {
 	{"net_auto_reconnect", P_OFFINT (autoreconnect), TYPE_BOOL},
 	{"net_auto_reconnectonfail", P_OFFINT (autoreconnectonfail), TYPE_BOOL},
 	{"net_bind_host", P_OFFSET (hostname), TYPE_STR},
-	{"net_encoding", P_OFFINT (net_encoding), TYPE_INT},
 	{"net_ping_timeout", P_OFFINT (pingtimeout), TYPE_INT},
 	{"net_proxy_host", P_OFFSET (proxy_host), TYPE_STR},
 	{"net_proxy_port", P_OFFINT (proxy_port), TYPE_INT},

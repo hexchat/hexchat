@@ -837,7 +837,6 @@ savebuffer_req_done (session *sess, void *arg2, char *file)
 		gtk_xtext_save (GTK_XTEXT (sess->gui->xtext), fh);
 		close (fh);
 	}
-	free (file);
 }
 
 static void

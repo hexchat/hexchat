@@ -61,10 +61,7 @@ static void
 url_save_callback (void *arg1, void *arg2, char *file)
 {
 	if (file)
-	{
 		url_save (file, "w");
-		free (file);
-	}
 }
 
 static void

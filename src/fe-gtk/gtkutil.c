@@ -123,16 +123,21 @@ gtkutil_file_req_done (GtkWidget * wid, struct file_req *freq)
 
 	if (axs)
 	{
-		freq->callback (freq->userdata, freq->userdata2, file);
+		char *utf8_file;
+		/* convert to UTF8. It might be converted back to locale by
+			server.c's g_convert */
+		utf8_file = g_filename_to_utf8 (file, -1, NULL, NULL, NULL);
+		freq->callback (freq->userdata, freq->userdata2, utf8_file);
+		g_free (utf8_file);
 	} else
 	{
-		free (file);
 		if (freq->write)
 			gtkutil_simpledialog (_("Cannot write to that file."));
 		else
 			gtkutil_simpledialog (_("Cannot read that file."));
 	}
 
+	free (file);
 	gtk_widget_destroy (freq->dialog);
 	free (freq);
 }

@@ -13,6 +13,7 @@ typedef struct ircnet
 	char *autojoin;
 	char *command;
 	char *comment;
+	char *encoding;
 	GSList *servlist;
 	int selected;
 	guint32 flags;

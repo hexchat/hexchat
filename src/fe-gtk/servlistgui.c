@@ -7,6 +7,7 @@
 
 #include <gtk/gtkcheckbutton.h>
 #include <gtk/gtkcellrenderertext.h>
+#include <gtk/gtkcombo.h>
 #include <gtk/gtkentry.h>
 #include <gtk/gtkframe.h>
 #include <gtk/gtkhbox.h>
@@ -59,6 +60,7 @@ static GtkWidget *entry_real;
 static GtkWidget *entry_join;
 static GtkWidget *entry_pass;
 static GtkWidget *entry_cmd;
+static GtkWidget *combo_encoding;
 static GtkWidget *check_buttons[FLAG_COUNT];
 static GtkWidget *editbox;	/* shown/hidden by "Edit Mode" checkbutton */
 
@@ -79,15 +81,50 @@ servlist_toggles_populate (ircnet *net)
 
 }
 
+static const char *pages[]=
+{
+	"UTF-8",
+	"ISO-8859-1 (Western Europe)",
+	"ISO-8859-2 (Central Europe)",
+	"ISO-8859-7 (Greek)",
+	"ISO-8859-9 (Turkish)",
+	"CP1256 (Arabic)",
+	"KOI8-R (Cyrillic)",
+	"SJIS (Japanese)",
+	NULL
+};
+
 static void
 servlist_entries_populate (ircnet *net)
 {
+	void *old = selected_net;
+	static GList *cbitems = NULL;
+	int i;
+
 	gtk_entry_set_text (GTK_ENTRY (entry_nick), net->nick ? net->nick : "");
 	gtk_entry_set_text (GTK_ENTRY (entry_user), net->user ? net->user : "");
 	gtk_entry_set_text (GTK_ENTRY (entry_real), net->real ? net->real : "");
 	gtk_entry_set_text (GTK_ENTRY (entry_pass), net->pass ? net->pass : "");
 	gtk_entry_set_text (GTK_ENTRY (entry_join), net->autojoin ? net->autojoin : "");
 	gtk_entry_set_text (GTK_ENTRY (entry_cmd), net->command ? net->command : "");
+
+	if (cbitems == NULL)
+	{
+		cbitems = g_list_append (cbitems, "System default");
+		i = 0;
+		while (pages[i])
+		{
+			cbitems = g_list_append (cbitems, (char *)pages[i]);
+			i++;
+		}
+		gtk_combo_set_popdown_strings (GTK_COMBO (combo_encoding), cbitems);
+	}
+
+	/* avoid the "changed" callback */
+	old = selected_net;
+	selected_net = NULL;
+	gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (combo_encoding)->entry), net->encoding ? net->encoding : "System default");
+	selected_net = old;
 
 	if (net->flags & FLAG_USE_GLOBAL)
 	{
@@ -895,6 +932,52 @@ servlist_create_servlistbox (GtkWidget *box)
 }
 
 static void
+servlist_combo_cb (GtkEntry *entry, gpointer userdata)
+{
+	if (!selected_net)
+		return;
+
+	if (selected_net->encoding)
+		free (selected_net->encoding);
+	selected_net->encoding = strdup (entry->text);
+}
+
+static GtkWidget *
+servlist_create_charsetcombo (GtkTable *table)
+{
+	GtkWidget *cb;
+	GtkWidget *label;
+	int i;
+	static GList *cbitems = NULL;
+
+	label = gtk_label_new (_("Character Set:"));
+	gtk_table_attach (GTK_TABLE (table), label, 0, 1, 7, 8,
+							GTK_FILL|GTK_SHRINK, GTK_FILL, 4, 1);
+	gtk_misc_set_alignment (GTK_MISC (label), 1, 0.5);
+
+	if (cbitems == NULL)
+	{
+		cbitems = g_list_append (cbitems, "System default");
+		i = 0;
+		while (pages[i])
+		{
+			cbitems = g_list_append (cbitems, (char *)pages[i]);
+			i++;
+		}
+	}
+
+	cb = gtk_combo_new ();
+	gtk_combo_set_popdown_strings (GTK_COMBO (cb), cbitems);
+	/*gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (cb)->entry), _("System default"));*/
+	g_signal_connect (G_OBJECT (GTK_COMBO (cb)->entry), "changed",
+							G_CALLBACK (servlist_combo_cb), NULL);
+	gtk_table_attach (GTK_TABLE (table), cb, 1, 2, 7, 8,
+						   GTK_FILL|GTK_EXPAND, 0, 0, 0);
+
+	return cb;
+}
+
+static void
 servlist_create_editbox (GtkWidget *box)
 {
 	GtkWidget *table, *vbox, *hbox, *frame;
@@ -920,6 +1003,9 @@ servlist_create_editbox (GtkWidget *box)
 	add_tip (entry_join, _("Channels to join, separated by commas, but not spaces!"));
 	entry_cmd = servlist_create_entry (table, _("Connect Command:"), 6,
 											G_STRUCT_OFFSET (ircnet, command));
+
+	combo_encoding = servlist_create_charsetcombo (GTK_TABLE (table));
+
 	gtk_container_add (GTK_CONTAINER (hbox), table);
 
 	table = gtk_table_new (2, 3, FALSE);
