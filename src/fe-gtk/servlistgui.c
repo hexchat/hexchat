@@ -1427,6 +1427,13 @@ servlist_open_networks (void)
 	gtk_box_pack_start (GTK_BOX (vbox1), hbuttonbox1, FALSE, TRUE, 0);
 	gtk_container_set_border_width (GTK_CONTAINER (hbuttonbox1), 8);
 
+	button_close = gtk_button_new_from_stock ("gtk-close");
+	gtk_widget_show (button_close);
+	g_signal_connect (G_OBJECT (button_close), "clicked",
+							G_CALLBACK (servlist_close_cb), 0);
+	gtk_container_add (GTK_CONTAINER (hbuttonbox1), button_close);
+	GTK_WIDGET_SET_FLAGS (button_close, GTK_CAN_DEFAULT);
+
 	button_connect = gtk_button_new_with_mnemonic (_("C_onnect"));
 	gtk_widget_show (button_connect);
 	g_signal_connect (G_OBJECT (button_connect), "clicked",
@@ -1443,13 +1450,6 @@ servlist_open_networks (void)
 		gtk_container_add (GTK_CONTAINER (hbuttonbox1), button_connectnew);
 		GTK_WIDGET_SET_FLAGS (button_connectnew, GTK_CAN_DEFAULT);
 	}
-
-	button_close = gtk_button_new_from_stock ("gtk-close");
-	gtk_widget_show (button_close);
-	g_signal_connect (G_OBJECT (button_close), "clicked",
-							G_CALLBACK (servlist_close_cb), 0);
-	gtk_container_add (GTK_CONTAINER (hbuttonbox1), button_close);
-	GTK_WIDGET_SET_FLAGS (button_close, GTK_CAN_DEFAULT);
 
 	gtk_label_set_mnemonic_widget (GTK_LABEL (label3), entry1);
 	gtk_label_set_mnemonic_widget (GTK_LABEL (label6), entry4);

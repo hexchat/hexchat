@@ -453,6 +453,7 @@ menu_nickmenu (session *sess, GdkEventButton *event, char *nick, int num_sel)
 {
 	char buf[256];
 	struct User *user;
+	struct away_msg *away;
 	GtkWidget *wid, *submenu, *menu = gtk_menu_new ();
 
 	if (str_copy)
@@ -489,6 +490,14 @@ menu_nickmenu (session *sess, GdkEventButton *event, char *nick, int num_sel)
 			snprintf (buf, sizeof (buf), _("Server: %s"),
 						user->servername ? user->servername : _("Unknown"));
 			menu_quick_item (0, buf, submenu, 0, 0);
+
+			if (user->away)
+			{
+				away = find_away_message (current_sess->server, nick);
+				snprintf (buf, sizeof (buf), _("Away Msg: %s"),
+						away->message ? away->message : _("Unknown"));
+				menu_quick_item (0, buf, submenu, 0, 0);
+			}
 
 			snprintf (buf, sizeof (buf), _("Last Msg: %s"),
 						user->lasttalk ? ctime (&(user->lasttalk)) : _("Unknown"));
