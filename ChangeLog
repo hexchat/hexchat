@@ -3,22 +3,34 @@
   `----------------------'
 
 ----------------------------------------------------------------------
- 2.4.3
+ 2.4.4
 ----------------------------------------------------------------------
 
- - Updated translations (de).
- - Fixed crash of serverlist connect button when no network is
-   selected while using GTK 2.4+ [1166669].
- - Fixed handling of WhoIs Special event on some networks where it
-   could chop off the first character [1164315].
- - Plugin API changes:
-   * Added "nickserv" field to xchat_get_info.
-   * 
-   * 
+ - Updated translations ().
  - People's away message is now shown in the right-click menu, if
    known (Christopher Aillon).
  - 
- - 
+
+
+----------------------------------------------------------------------
+ 2.4.3
+----------------------------------------------------------------------
+
+ - Updated translations (de, sq, zh_CN).
+ - Fixed crash of server list connect button when no network is
+   selected while using GTK's auto-find feature [1166669].
+ - Fixed handling of WhoIs Special event on some networks where it
+   could chop off the first character [1164315].
+ - Plugin API changes: Added "nickserv" field to xchat_get_info.
+ - Python: Fixed get_list() incorrectly failing when the list
+   contained a time field [1171525].
+ - Perl: Make scripts using calls with fully qualified subs work again
+   [1170139] (Lian Wan Situ).
+ - Fixed input-box input-method (GTK I.M.) problem [1168239].
+ - Fixed: Ignore and Notify windows incorrectly used the stock CLOSE
+   button instead of DELETE [1170655].
+ - Placed Close/Connect buttons in correct position in server list
+   [1165474].
 
 
 ----------------------------------------------------------------------
