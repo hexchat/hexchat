@@ -55,6 +55,7 @@ GtkStyle *create_input_style (void);
 #define LABEL_INDENT 6
 
 static int last_selected_page = 0;
+static int last_selected_row = 0; /* sound row */
 static gboolean color_change;
 static struct xchatprefs setup_prefs;
 static GtkWidget *cancel_button;
@@ -1099,6 +1100,7 @@ setup_snd_populate (GtkTreeView * treeview)
 	GtkListStore *store;
 	GtkTreeIter iter;
 	GtkTreeSelection *sel;
+	GtkTreePath *path;
 	int i;
 
 	sel = gtk_tree_view_get_selection (treeview);
@@ -1111,8 +1113,17 @@ setup_snd_populate (GtkTreeView * treeview)
 			gtk_list_store_set (store, &iter, 0, te[i].name, 1, sound_files[i], 2, i, -1);
 		else
 			gtk_list_store_set (store, &iter, 0, te[i].name, 1, "", 2, i, -1);
-		if (i == 0)
+		if (i == last_selected_row)
+		{
 			gtk_tree_selection_select_iter (sel, &iter);
+			path = gtk_tree_model_get_path (GTK_TREE_MODEL (store), &iter);
+			if (path)
+			{
+				gtk_tree_view_scroll_to_cell (treeview, path, NULL, TRUE, 0.5, 0.5);
+				gtk_tree_view_set_cursor (treeview, path, NULL, FALSE);
+				gtk_tree_path_free (path);
+			}
+		}
 	}
 }
 
@@ -1138,6 +1149,7 @@ setup_snd_row_cb (GtkTreeSelection *sel, gpointer user_data)
 	n = setup_snd_get_selected (sel, &iter);
 	if (n == -1)
 		return;
+	last_selected_row = n;
 
 	ignore_changed = TRUE;
 	if (sound_files[n])
@@ -1629,7 +1641,7 @@ setup_apply (struct xchatprefs *pr)
 	if (DIFF (tab_sort))
 		noapply = TRUE;
 
-	if (color_change || (DIFF (away_size_max)))
+	if (color_change || (DIFF (away_size_max)) || (DIFF (away_track)))
 		do_ulist = TRUE;
 
 	memcpy (&prefs, pr, sizeof (prefs));

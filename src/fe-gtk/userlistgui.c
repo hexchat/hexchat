@@ -479,7 +479,8 @@ userlist_click_cb (GtkWidget *widget, GdkEventButton *event, gpointer userdata)
 	if (!event)
 		return FALSE;
 
-	if (event->type == GDK_2BUTTON_PRESS && prefs.doubleclickuser[0])
+	if (!(event->state & GDK_CONTROL_MASK) &&
+		event->type == GDK_2BUTTON_PRESS && prefs.doubleclickuser[0])
 	{
 		nicks = userlist_selection_list (widget, &i);
 		if (nicks)

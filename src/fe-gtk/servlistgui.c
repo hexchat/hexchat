@@ -1029,6 +1029,7 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 								NULL);
 
 	vbuttonbox1 = gtk_vbutton_box_new ();
+	gtk_button_box_set_layout (GTK_BUTTON_BOX (vbuttonbox1), GTK_BUTTONBOX_START);
 	gtk_widget_show (vbuttonbox1);
 	gtk_box_pack_start (GTK_BOX (hbox1), vbuttonbox1, FALSE, FALSE, 3);
 
@@ -1128,7 +1129,7 @@ servlist_open_networks (void)
 	servlist = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gtk_container_set_border_width (GTK_CONTAINER (servlist), 4);
 	gtk_window_set_title (GTK_WINDOW (servlist), _("X-Chat: Server List"));
-	gtk_window_set_default_size (GTK_WINDOW (servlist), 416, 478);
+	gtk_window_set_default_size (GTK_WINDOW (servlist), 414, 478);
 	gtk_window_set_position (GTK_WINDOW (servlist), GTK_WIN_POS_MOUSE);
 	gtk_window_set_role (GTK_WINDOW (servlist), "servlist");
 	gtk_window_set_type_hint (GTK_WINDOW (servlist), GDK_WINDOW_TYPE_HINT_DIALOG);
@@ -1275,6 +1276,7 @@ servlist_open_networks (void)
 							(GtkAttachOptions) (0), 0, 0);
 
 	vbuttonbox2 = gtk_vbutton_box_new ();
+	gtk_button_box_set_layout (GTK_BUTTON_BOX (vbuttonbox2), GTK_BUTTONBOX_START);
 	gtk_widget_show (vbuttonbox2);
 	gtk_table_attach (GTK_TABLE (table4), vbuttonbox2, 1, 2, 0, 1,
 							(GtkAttachOptions) (GTK_FILL),

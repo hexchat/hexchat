@@ -332,7 +332,6 @@ inbound_chanmsg (server *serv, session *sess, char *chan, char *from, char *text
 	int hilight = FALSE;
 	char nickchar[2] = "\000";
 	char idtext[64];
-	char *idtextptr = NULL;
 
 	if (!sess)
 	{
@@ -391,17 +390,17 @@ inbound_chanmsg (server *serv, session *sess, char *chan, char *from, char *text
 			fe_beep ();
 	}
 	if (sess->type == SESS_DIALOG)
-		EMIT_SIGNAL (XP_TE_DPRIVMSG, sess, from, text, idtextptr, NULL, 0);
+		EMIT_SIGNAL (XP_TE_DPRIVMSG, sess, from, text, idtext, NULL, 0);
 	else if (hilight)
-		EMIT_SIGNAL (XP_TE_HCHANMSG, sess, from, text, nickchar, idtextptr, 0);
+		EMIT_SIGNAL (XP_TE_HCHANMSG, sess, from, text, nickchar, idtext, 0);
 	else if (prefs.colorednicks)
 	{
 		char tbuf[NICKLEN + 4];
 		snprintf (tbuf, sizeof (tbuf), "\003%d%s", color_of (from), from);
-		EMIT_SIGNAL (XP_TE_CHANMSG, sess, tbuf, text, nickchar, idtextptr, 0);
+		EMIT_SIGNAL (XP_TE_CHANMSG, sess, tbuf, text, nickchar, idtext, 0);
 	}
 	else
-		EMIT_SIGNAL (XP_TE_CHANMSG, sess, from, text, nickchar, idtextptr, 0);
+		EMIT_SIGNAL (XP_TE_CHANMSG, sess, from, text, nickchar, idtext, 0);
 }
 
 void
