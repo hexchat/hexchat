@@ -470,7 +470,7 @@ GtkWidget *
 userlist_create (GtkWidget *box)
 {
 	GtkWidget *sw, *treeview;
-	static GtkTargetEntry dnd_targets[] =
+	static const GtkTargetEntry dnd_targets[] =
 	{
 		{"text/uri-list", 0, 1}
 	};

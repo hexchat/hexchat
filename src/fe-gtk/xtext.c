@@ -3778,7 +3778,7 @@ gtk_xtext_render_page (GtkXText * xtext)
 			gdk_draw_drawable (xtext->draw_buf, xtext->fgc, xtext->draw_buf,
 									 0, -overlap, 0, 0, width, height + overlap);
 			/* to fill the area below the last line */
-			remainder = height % xtext->fontsize;
+			remainder = (height-xtext->font->descent) % xtext->fontsize;
 			area.y = (height + overlap) - remainder;
 			area.height = -overlap + remainder;
 		} else
