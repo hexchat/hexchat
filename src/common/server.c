@@ -439,7 +439,7 @@ server_connected (server * serv)
 
 #ifdef WIN32
 	if (prefs.identd)
-		identd_start ();
+		identd_start ((serv->username) ? serv->username : prefs.username);
 #else
 	sprintf (outbuf, "%s/auth/xchat_auth", g_get_home_dir ());
 	if (access (outbuf, X_OK) == 0)
@@ -1027,6 +1027,11 @@ server_disconnect (session * sess, int sendquit, int err)
 	serv->motd_skipped = FALSE;
 	serv->no_login = FALSE;
 	serv->servername[0] = 0;
+	if (serv->networkname)
+	{
+		free (serv->networkname);
+		serv->networkname = NULL;
+	}
 	serv->lag_sent = 0;
 
 	notify_cleanup ();

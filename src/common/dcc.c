@@ -1084,6 +1084,11 @@ dcc_listen_init (struct DCC *dcc, session *sess)
 			/*printf("Trying to bind against port: %d\n",ntohs(SAddr.sin_port));*/
 			bindretval = bind (dcc->sok, (struct sockaddr *) &SAddr, sizeof (SAddr));
 		}
+
+		/* with a small port range, reUseAddr is needed */
+		len = 1;
+		setsockopt (dcc->sok, SOL_SOCKET, SO_REUSEADDR, (char *) &len, sizeof (len));
+
 	} else
 	{
 		/* try random port */

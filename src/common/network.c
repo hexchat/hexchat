@@ -39,7 +39,7 @@
 static void
 net_set_socket_options (int sok)
 {
-	int sw;
+	socklen_t sw;
 
 	sw = 1;
 	setsockopt (sok, SOL_SOCKET, SO_REUSEADDR, (char *) &sw, sizeof (sw));
