@@ -27,11 +27,9 @@
 #include <gtk/gtkhbox.h>
 #include <gtk/gtkvbox.h>
 #include <gtk/gtkentry.h>
-#include <gtk/gtkclist.h>
 #include <gtk/gtkhpaned.h>
 #include <gtk/gtkframe.h>
 #include <gtk/gtklabel.h>
-#include <gtk/gtkscrolledwindow.h>
 #include <gtk/gtkmenuitem.h>
 #include <gtk/gtkprogressbar.h>
 #include <gtk/gtkstock.h>
@@ -39,8 +37,8 @@
 #include <gtk/gtknotebook.h>
 #include <gtk/gtkimage.h>
 #include <gtk/gtkmessagedialog.h>
-#include <gtk/gtkradiomenuitem.h>
-#include <gtk/gtkobject.h>
+#include <gtk/gtkcheckmenuitem.h>
+#include <gtk/gtkvscrollbar.h>
 
 #include "../common/xchat.h"
 #include "../common/fe.h"

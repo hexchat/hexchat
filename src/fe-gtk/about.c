@@ -110,7 +110,8 @@ menu_about (GtkWidget * wid, gpointer sess)
 	(snprintf) (buf, sizeof (buf),
 				"<span size=\"x-large\"><b>X-Chat "VERSION"</b></span>\n\n"
 				"An IRC Client for UNIX\n\n"
-				"(C) 1998-2002 Peter Zelezny zed@xchat.org");
+				"%s\n\n"
+				"(C) 1998-2002 Peter Zelezny &lt;zed@xchat.org>", get_cpu_str());
 	gtk_label_set_markup (GTK_LABEL (label), buf);
 	gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_CENTER);
 

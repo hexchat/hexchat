@@ -1181,13 +1181,13 @@ static struct mymenu mymenu[] = {
 	{0, 0, 0, M_SEP, 0, 0},
 	{N_("Marked Away"), menu_away, 0, M_MENUTOG, 0, 1, GDK_a},
 	{0, 0, 0, M_SEP, 0, 0},														/* 24 */
-	{N_("Auto ReJoin on Kick"), menu_autorejoin, 0, M_MENUTOG, 0, 1},
-	{N_("Auto ReConnect to Server"), menu_autoreconnect, 0, M_MENUTOG, 0, 1},
+	{N_("Auto Rejoin when Kicked"), menu_autorejoin, 0, M_MENUTOG, 0, 1},
+	{N_("Auto Reconnect to Server"), menu_autoreconnect, 0, M_MENUTOG, 0, 1},
 	{N_("Never-give-up ReConnect"), menu_autoreconnectonfail, 0, M_MENUTOG, 0, 1},
 	{0, 0, 0, M_SEP, 0, 0},														/* 28 */
 	{N_("Auto Open Dialog Windows"), menu_autodialog, 0, M_MENUTOG, 0, 1},
-	{N_("Auto Accept DCC Chat"), menu_autodccchat, 0, M_MENUTOG, 0, 1},
-	{N_("Auto Accept DCC Send"), menu_autodccsend, 0, M_MENUTOG, 0, 1},
+	{N_("Auto Accept Direct Chat"), menu_autodccchat, 0, M_MENUTOG, 0, 1},
+	{N_("Auto Accept Files"), menu_autodccsend, 0, M_MENUTOG, 0, 1},
 
 	{N_("_Server"), (void *) -1, 0, M_NEWMENU, 0, 1},	/* 32 */
 
@@ -1339,7 +1339,7 @@ normalitem:
 													 mymenu[i].state);
 			if (mymenu[i].key != 0 && accel_group)
 				gtk_widget_add_accelerator (item, "activate", accel_group,
-									mymenu[i].key, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
+									mymenu[i].key, GDK_MOD1_MASK, GTK_ACCEL_VISIBLE);
 			if (mymenu[i].callback)
 				g_signal_connect (G_OBJECT (item), "toggled",
 										G_CALLBACK (mymenu[i].callback), 0);
