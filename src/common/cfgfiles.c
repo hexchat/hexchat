@@ -655,10 +655,15 @@ load_config (void)
 	strcpy (prefs.username, username);
 #ifdef WIN32
 	strcpy (prefs.sounddir, "./sounds");
-	if (strcmp (get_xdir_utf8 (), "./config") != 0)
-		sprintf (prefs.dccdir, "%s\\downloads", get_xdir_utf8 ());
-	else
-		strcpy (prefs.dccdir, "./downloads");
+	{
+		char out[256];
+
+		if (get_reg_str ("Software\\Microsoft\\Windows\\CurrentVersion\\"
+						 "Explorer\\Shell Folders", "Personal", out, sizeof (out)))
+			snprintf (prefs.dccdir, sizeof (prefs.dccdir), "%s\\Downloads", out);
+		else
+			snprintf (prefs.dccdir, sizeof (prefs.dccdir), "%s\\Downloads", get_xdir_utf8 ());
+	}
 #else
 	sprintf (prefs.sounddir, "%s/sounds", get_xdir_utf8 ());
 	sprintf (prefs.dccdir, "%s/downloads", get_xdir_utf8 ());

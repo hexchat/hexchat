@@ -470,6 +470,38 @@ recv_row_selected (GtkWidget * clist, gint row, gint column,
 		accept_clicked (0, 0);
 }
 
+static void
+browse_folder (char *dir)
+{
+	dir = g_locale_from_utf8 (dir, -1, 0, 0, 0);
+	if (dir)
+	{
+#ifdef WIN32
+		ShellExecute (0, "open", dir, NULL, NULL, SW_SHOWNORMAL);
+#else
+		char buf[512];
+
+		snprintf (buf, sizeof (buf), "file://%s", dir);
+		goto_url (buf);
+#endif
+		g_free (dir);
+	}
+}
+
+static gboolean
+recv_key_press (GtkWidget *wid, GdkEventKey *evt, gpointer unused)
+{
+	if (evt->state & GDK_CONTROL_MASK && evt->keyval == 0x06f)
+	{
+		if (prefs.dcc_completed_dir[0])
+			browse_folder (prefs.dcc_completed_dir);
+		else
+			browse_folder (prefs.dccdir);
+	}
+
+	return FALSE;
+}
+
 int
 fe_dcc_open_recv_win (int passive)
 {
@@ -500,7 +532,8 @@ fe_dcc_open_recv_win (int passive)
 	dccrwin.window =
 			  mg_create_generic_tab ("dccrecv", _("X-Chat: File Receive List"),
 						FALSE, TRUE, close_dcc_recv_window, NULL, 601, 200, &vbox, 0);
-
+	g_signal_connect (G_OBJECT (dccrwin.window), "key_release_event",
+							G_CALLBACK (recv_key_press), 0);
 #ifdef USE_GNOME
 	dccrwin.list = gtkutil_clist_new (9, titles, vbox, GTK_POLICY_ALWAYS,
 												 recv_row_selected, 0,
