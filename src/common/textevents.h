@@ -18,7 +18,7 @@ N_("%C22*%O$t$1 is now known as $2")},
 N_("%C18*$t$1%O $2")},
 
 {"Channel Action Hilight", pevt_chanaction_help, 2, 
-N_("%C21*%O$t%C21%B%B$1%O%C21 $2")},
+N_("%C21*%O$t%C21%B$1%O%C21 $2")},
 
 {"Channel Ban", pevt_chanban_help, 2, 
 N_("%C22*%O$t$1 sets ban on $2")},
@@ -57,7 +57,7 @@ N_("%C22*%O$t$1 sets mode $2$3 $4")},
 N_("%C22*%O$t%C22Channel $1 modes: $2")},
 
 {"Channel Msg Hilight", pevt_chanmsg_help, 3, 
-N_("%C21%B%B$1%O$t%C21$2")},
+N_("%C21%B$1%O$t%C21$2")},
 
 {"Channel Notice", pevt_channotice_help, 3, 
 N_("%C28-%C29$1/$2%C28-%O$t$3")},

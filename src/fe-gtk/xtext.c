@@ -3896,6 +3896,7 @@ void
 gtk_xtext_set_palette (GtkXText * xtext, GdkColor palette[])
 {
 	int i;
+	GdkColor col;
 
 	for (i = (XTEXT_COLS-1); i >= 0; i--)
 	{
@@ -3914,6 +3915,9 @@ gtk_xtext_set_palette (GtkXText * xtext, GdkColor palette[])
 		xtext_set_fg (xtext, xtext->fgc, XTEXT_FG);
 		xtext_set_bg (xtext, xtext->fgc, XTEXT_BG);
 		xtext_set_fg (xtext, xtext->bgc, XTEXT_BG);
+
+		col.pixel = xtext->palette[XTEXT_MARKER];
+		gdk_gc_set_foreground (xtext->marker_gc, &col);
 	}
 	xtext->col_fore = XTEXT_FG;
 	xtext->col_back = XTEXT_BG;

@@ -877,6 +877,7 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 	GtkWidget *hseparator2;
 	GtkWidget *hbuttonbox4;
 	GtkWidget *button10;
+	GtkWidget *check;
 	GtkTreeModel *model;
 	GtkListStore *store;
 	GtkCellRenderer *renderer;
@@ -892,6 +893,7 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 	gtk_window_set_transient_for (GTK_WINDOW (editwindow), GTK_WINDOW (parent));
 	gtk_window_set_modal (GTK_WINDOW (editwindow), TRUE);
 	gtk_window_set_type_hint (GTK_WINDOW (editwindow), GDK_WINDOW_TYPE_HINT_DIALOG);
+	gtk_window_set_role (GTK_WINDOW (editwindow), "editserv");
 
 	vbox5 = gtk_vbox_new (FALSE, 0);
 	gtk_widget_show (vbox5);
@@ -942,10 +944,16 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 								  8, 1, _("Auto connect to this network at startup"));
 	servlist_create_check (4, net->flags & FLAG_USE_PROXY, table3,
 								  9, 1, _("Use a proxy server"));
-	servlist_create_check (2, net->flags & FLAG_USE_SSL, table3,
+	check = servlist_create_check (2, net->flags & FLAG_USE_SSL, table3,
 								  10, 1, _("Use SSL for all the servers on this network"));
-	servlist_create_check (5, net->flags & FLAG_ALLOW_INVALID, table3,
+#ifndef USE_OPENSSL
+	gtk_widget_set_sensitive (check, FALSE);
+#endif
+	check = servlist_create_check (5, net->flags & FLAG_ALLOW_INVALID, table3,
 								  11, 1, _("Accept invalid SSL certificate"));
+#ifndef USE_OPENSSL
+	gtk_widget_set_sensitive (check, FALSE);
+#endif
 
 	edit_entry_join =
 		servlist_create_entry (table3, _("C_hannels to join:"), 12,

@@ -33,11 +33,10 @@
 
 #ifdef WIN32
 #define XCHAT_DIR "X-Chat 2"
-#define DEF_FONT "Monospace 10"
 #else
 #define XCHAT_DIR ".xchat2"
-#define DEF_FONT "Monospace 10"
 #endif
+#define DEF_FONT "Monospace 9"
 
 void
 list_addentry (GSList ** list, char *cmd, char *name)
@@ -604,7 +603,6 @@ load_config (void)
 	prefs.truncchans = 20;
 	prefs.autoresume = 1;
 	prefs.show_away_once = 1;
-	/*prefs.show_away_message = 1;*/
 	prefs.indent_nicks = 1;
 	prefs.thin_separator = 1;
 	/*prefs.tabs_position = 1;*/ /* 0 = bottom */
@@ -619,10 +617,8 @@ load_config (void)
 	prefs.paned_userlist = 1;
 	prefs.newtabstofront = 2;
 	prefs.use_server_tab = 1;
-	/*prefs.windows_as_tabs = 1;*/
 	prefs.privmsgtab = 1;
-	/*prefs.style_inputbox = 1;
-	prefs.slist_select = 99;*/
+	/*prefs.style_inputbox = 1;*/
 	prefs.nu_color = 4;
 	prefs.dccpermissions = 0600;
 	prefs.max_lines = 300;

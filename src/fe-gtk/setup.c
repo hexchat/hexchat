@@ -40,6 +40,7 @@
 #include <gtk/gtkmenuitem.h>
 #include <gtk/gtkradiobutton.h>
 #include <gtk/gtkoptionmenu.h>
+#include <gtk/gtkliststore.h>
 #include <gtk/gtktreestore.h>
 #include <gtk/gtktreeselection.h>
 #include <gtk/gtkcellrenderertext.h>
