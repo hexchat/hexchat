@@ -33,6 +33,8 @@ static int ignore_toggle = FALSE;
  *   "foc" currently focused tab
  *   "i" inner hbox (inside the viewport)
  *   "v" set to 1 if group is vertical type
+ *   "b1" first arrow button
+ *   "b2" second arrow button
  *
  * family boxes inside group
  *   "f" family
@@ -175,6 +177,40 @@ tab_scroll_right_down_clicked (GtkWidget *widget, GtkWidget *group)
 	gtk_adjustment_set_value (adj, new_value);
 }
 
+int
+tab_group_resize (GtkWidget *group)
+{
+	GtkAdjustment *adj;
+	GtkWidget *inner;
+	gint vertical;
+	gint viewport_size;
+
+	vertical = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (group), "v"));
+	inner = g_object_get_data (G_OBJECT (group), "i");
+
+	if (vertical)
+	{
+		adj = gtk_viewport_get_vadjustment (GTK_VIEWPORT (inner->parent));
+		gdk_window_get_geometry (inner->parent->window, 0, 0, 0, &viewport_size, 0);
+	} else
+	{
+		adj = gtk_viewport_get_hadjustment (GTK_VIEWPORT (inner->parent));
+		gdk_window_get_geometry (inner->parent->window, 0, 0, &viewport_size, 0, 0);
+	}
+
+	if (adj->upper <= viewport_size)
+	{
+		gtk_widget_hide (g_object_get_data (G_OBJECT (group), "b1"));
+		gtk_widget_hide (g_object_get_data (G_OBJECT (group), "b2"));
+	} else
+	{
+		gtk_widget_show (g_object_get_data (G_OBJECT (group), "b1"));
+		gtk_widget_show (g_object_get_data (G_OBJECT (group), "b2"));
+	}
+
+	return 0;
+}
+
 /* called when a tab is clicked (button down) */
 
 static void
@@ -236,6 +272,7 @@ tab_group_new (void *callback, gboolean vertical)
 	gtk_widget_show (box);
 
 	button = gtk_button_new ();
+	g_object_set_data (G_OBJECT (group), "b1", button);
 	arrow = gtk_arrow_new (vertical ? GTK_ARROW_DOWN : GTK_ARROW_RIGHT,
 								  GTK_SHADOW_NONE);
 	gtk_container_add (GTK_CONTAINER (button), arrow);
@@ -246,6 +283,7 @@ tab_group_new (void *callback, gboolean vertical)
 	gtk_widget_show_all (button);
 
 	button = gtk_button_new ();
+	g_object_set_data (G_OBJECT (group), "b2", button);
 	arrow = gtk_arrow_new (vertical ? GTK_ARROW_UP : GTK_ARROW_LEFT,
 								  GTK_SHADOW_NONE);
 	gtk_container_add (GTK_CONTAINER (button), arrow);
@@ -363,6 +401,8 @@ void
 tab_group_switch (GtkWidget *group, int relative, int num)
 {
 	int i, max;
+
+	g_idle_add ((GSourceFunc)tab_group_resize, group);
 
 	if (relative)
 	{
@@ -538,6 +578,8 @@ tab_add_real (GtkWidget *group, GtkWidget *tab, void *family)
 	gtk_widget_show (tab);
 	gtk_widget_show (box);
 	gtk_widget_queue_resize (inner->parent);
+
+	g_idle_add ((GSourceFunc)tab_group_resize, group);
 }
 
 static void

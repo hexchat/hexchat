@@ -248,15 +248,19 @@ mg_configure_cb (GtkWidget *wid, GdkEventConfigure *event, session *sess)
 {
 	if (sess == NULL)			/* for the main_window */
 	{
-		if (mg_gui && prefs.mainwindow_save)
+		if (mg_gui)
 		{
-			sess = current_sess;
-			gtk_window_get_position (GTK_WINDOW (mg_gui->window),
-											 &prefs.mainwindow_left,
-											 &prefs.mainwindow_top);
-			gtk_window_get_size (GTK_WINDOW (mg_gui->window),
-										&prefs.mainwindow_width,
-										&prefs.mainwindow_height);
+			g_idle_add ((GSourceFunc)tab_group_resize, mg_gui->tabs_box);
+			if (prefs.mainwindow_save)
+			{
+				sess = current_sess;
+				gtk_window_get_position (GTK_WINDOW (mg_gui->window),
+												 &prefs.mainwindow_left,
+												 &prefs.mainwindow_top);
+				gtk_window_get_size (GTK_WINDOW (mg_gui->window),
+											&prefs.mainwindow_width,
+											&prefs.mainwindow_height);
+			}
 		}
 	}
 
