@@ -52,7 +52,7 @@
 #define MEGABYTE (KILOBYTE * 1024)
 #define GIGABYTE (MEGABYTE * 1024)
 
-static void proper_unit (int size, char *buf, int buf_len)
+static void proper_unit (unsigned int size, char *buf, int buf_len)
 {
 	if (size <= KILOBYTE)
 	{
