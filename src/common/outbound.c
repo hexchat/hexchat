@@ -917,8 +917,8 @@ cmd_mdeop (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	return TRUE;
 }
 
-static gboolean
-mkick_cb (gpointer key, struct User *user, multidata *data)
+static int
+mkick_cb (struct User *user, multidata *data)
 {
 	if (!user->op && !user->me)
 		data->sess->server->p_kick (data->sess->server, data->sess->channel, user->nick, data->reason);

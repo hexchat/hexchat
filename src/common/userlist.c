@@ -59,7 +59,7 @@ nick_cmp_az_ops (server *serv, struct User *user1, struct User *user2)
 static int
 nick_cmp_alpha (struct User *user1, struct User *user2, server *serv)
 {
-	return strcasecmp (user1->nick, user2->nick);
+	return serv->p_cmp (user1->nick, user2->nick);
 }
 
 static int
@@ -81,8 +81,7 @@ nick_cmp (struct User *user1, struct User *user2, server *serv)
 }
 
 /*
- insert name in appropriate place in linked list. Returns
- row number or:
+ insert name in appropriate place in linked list. Returns row number or:
   -1: duplicate
 */
 
@@ -159,9 +158,9 @@ clear_user_list (session *sess)
 }
 
 static int
-find_cmp (const char *name, struct User *user, void *data)
+find_cmp (const char *name, struct User *user, server *serv)
 {
-	return strcasecmp (name, user->nick);
+	return serv->p_cmp ((char *)name, user->nick);
 }
 
 struct User *
@@ -171,7 +170,7 @@ find_name (struct session *sess, char *name)
 
 	if (sess->usertree_alpha)
 		return tree_find (sess->usertree_alpha, name,
-								(tree_cmp_func *)find_cmp, NULL, &pos);
+								(tree_cmp_func *)find_cmp, sess->server, &pos);
 
 	return NULL;
 }
@@ -347,7 +346,7 @@ add_name (struct session *sess, char *name, char *hostname)
 		user->hostname = strdup (hostname);
 	safe_strcpy (user->nick, name + prefix_chars, NICKLEN);
 	/* is it me? */
-	if (sess->server->p_cmp (user->nick, sess->server->nick))
+	if (!sess->server->p_cmp (user->nick, sess->server->nick))
 		user->me = TRUE;
 	row = userlist_insertname (sess, user, &after);
 

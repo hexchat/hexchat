@@ -235,12 +235,9 @@ fe_userlist_remove (session *sess, struct User *user)
 void
 fe_userlist_insert (session *sess, struct User *newuser, int row, int sel, struct User *after)
 {
-/*	gfloat val;*/
 	GtkTreeModel *model = sess->res->user_model;
 	GdkPixbuf *pix;
 	GtkTreeIter iter;
-
-/*	val = userlist_get_value (sess->gui->user_tree);*/
 
 	/* TreeView is no faster with this! Why?? */
 /*	if (after)
@@ -249,15 +246,8 @@ fe_userlist_insert (session *sess, struct User *newuser, int row, int sel, struc
 											  (GtkTreeIter *)after->gui);
 	} else
 	{*/
-		switch (row)
-		{
-		case -1:
-			gtk_list_store_append (GTK_LIST_STORE (model), &iter);
-			break;
-		default:
-			/* row 0 does an *_prepend() */
-			gtk_list_store_insert (GTK_LIST_STORE (model), &iter, row);
-		}
+		/* row 0 does an *_prepend() */
+		gtk_list_store_insert (GTK_LIST_STORE (model), &iter, row);
 	/*}*/
 
 	pix = get_user_icon (sess->server, newuser);
@@ -289,8 +279,6 @@ fe_userlist_insert (session *sess, struct User *newuser, int row, int sel, struc
 	if (gtk_tree_view_get_model (GTK_TREE_VIEW (sess->gui->user_tree))
 		 == model)
 	{
-	/*	userlist_set_value (sess->gui->user_tree, val);*/
-
 		if (sel)
 			gtk_tree_selection_select_iter (gtk_tree_view_get_selection
 										(GTK_TREE_VIEW (sess->gui->user_tree)), &iter);
@@ -395,16 +383,12 @@ userlist_add_columns (GtkTreeView * treeview)
 	gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (treeview),
 																-1, NULL, renderer,
 																"pixbuf", 0, NULL);
-/*	gtk_tree_view_column_set_sizing (gtk_tree_view_get_column (treeview, 0),
-												GTK_TREE_VIEW_COLUMN_AUTOSIZE);*/
 
 	/* nick column */
 	renderer = gtk_cell_renderer_text_new ();
 	gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (treeview),
 																-1, NULL, renderer,
 																"text", 1, NULL);
-/*	gtk_tree_view_column_set_sizing (gtk_tree_view_get_column (treeview, 1),
-												GTK_TREE_VIEW_COLUMN_AUTOSIZE);*/
 
 	if (prefs.showhostname_in_userlist)
 	{
