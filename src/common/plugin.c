@@ -1172,7 +1172,7 @@ time_t
 xchat_list_time (xchat_plugin *ph, xchat_list *xlist, const char *name)
 {
 	guint32 hash = str_hash (name);
-/*	gpointer data = xlist->pos->data;*/
+	gpointer data;
 
 	switch (xlist->type)
 	{
@@ -1187,6 +1187,15 @@ xchat_list_time (xchat_plugin *ph, xchat_list *xlist, const char *name)
 			return xlist->notifyps->laston;
 		case 0x35ce7b:	/* seen */
 			return xlist->notifyps->lastseen;
+		}
+		break;
+
+	case LIST_USERS:
+		data = xlist->pos->data;
+		switch (hash)
+		{
+		case 0xa9118c42:	/* lasttalk */
+			return ((struct User *)data)->lasttalk;
 		}
 	}
 
