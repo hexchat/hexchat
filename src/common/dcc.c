@@ -91,6 +91,21 @@ dcc_unthrottle (struct DCC *dcc)
 		dcc_send_data (NULL, 0, dcc);
 }
 
+#ifdef WIN32
+#include <windows.h>
+
+/* g_get_current_time is giving bad CPS results, let's try this instead */
+static void
+g_get_current_time_win32 (GTimeVal *tv)
+{
+	SYSTEMTIME current;
+
+	GetLocalTime (&current);
+	tv->tv_sec = current.wSecond;
+	tv->tv_usec = current.wMilliseconds * 1000;
+}
+#endif
+
 static void
 dcc_calc_cps (struct DCC *dcc)
 {
@@ -100,7 +115,11 @@ dcc_calc_cps (struct DCC *dcc)
 	int glob_throttle_bit, wasthrottled;
 	int *cpssum, glob_limit;
 
+#ifdef WIN32
+	g_get_current_time_win32 (&now);
+#else
 	g_get_current_time (&now);
+#endif
 
 	/* the pos we use for sends is an average
 		between pos and ack */
