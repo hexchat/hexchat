@@ -2061,6 +2061,7 @@ mg_create_topwindow (session *sess)
 	{
 		sess->res->buffer = gtk_xtext_buffer_new (GTK_XTEXT (sess->gui->xtext));
 		gtk_xtext_buffer_show (GTK_XTEXT (sess->gui->xtext), sess->res->buffer, TRUE);
+		gtk_xtext_set_time_stamp (sess->res->buffer, prefs.timestamp);
 		sess->res->user_model = userlist_create_model ();
 	}
 
