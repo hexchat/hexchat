@@ -1699,7 +1699,7 @@ dontresume:
 }
 
 void
-dcc_show_list (struct session *sess, char *outbuf)
+dcc_show_list (struct session *sess)
 {
 	int i = 0;
 	struct DCC *dcc;

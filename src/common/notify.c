@@ -360,7 +360,7 @@ notify_checklist (void)
 	}
 	if (i)
 	{
-		GSList *list = serv_list;
+		list = serv_list;
 		while (list)
 		{
 			serv = (struct server *) list->data;

@@ -260,9 +260,12 @@ file_part (char *file)
 void
 path_part (char *file, char *path, int pathlen)
 {
+	unsigned char t;
 	char *filepart = file_part (file);
+	t = *filepart;
 	*filepart = 0;
 	safe_strcpy (path, file, pathlen);
+	*filepart = t;
 }
 
 char *				/* like strstr(), but nocase */

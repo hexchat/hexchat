@@ -59,8 +59,8 @@ struct file_req
 {
 	GtkWidget *dialog;
 	void *userdata;
-	void *userdata2;
-	filereqcallback callback;
+	filereqcallback file_callback;
+	filereqcallback clean_callback;
 	int write;
 };
 
@@ -87,33 +87,32 @@ static void
 gtkutil_file_req_cancel (GtkWidget * wid, struct file_req *freq)
 {
 	gtk_widget_destroy (freq->dialog);
-	freq->callback (freq->userdata, freq->userdata2, 0);
+	freq->file_callback (freq->userdata, NULL);
 	free (freq);
 }
 
-static void
-gtkutil_file_req_done (GtkWidget * wid, struct file_req *freq)
+static int
+gtkutil_check_file (char *file, struct file_req *freq)
 {
 	struct stat st;
 	int axs = FALSE;
-	char *file;
-	const char *f;
 
-	f = gtk_file_selection_get_filename (GTK_FILE_SELECTION (freq->dialog));
-	file = malloc (strlen (f) + 2);
-	strcpy (file, f);
-	path_part ((char *)f, last_dir, sizeof (last_dir));
+	path_part (file, last_dir, sizeof (last_dir));
 
 	if (stat (file, &st) != -1)
 	{
 		if (S_ISDIR (st.st_mode))
 		{
-			if (file[strlen(file)-1] != '/')
-				strcat (file, "/");
+			char *tmp = malloc (strlen (file) + 2);
+
+			strcpy (tmp, file);
+
+			if (tmp[strlen(tmp)-1] != '/')
+				strcat (tmp, "/");
 			gtk_file_selection_set_filename (GTK_FILE_SELECTION (freq->dialog),
-														file);
-			free (file);
-			return;
+														tmp);
+			free (tmp);
+			return 0;
 		}
 	}
 	if (freq->write)
@@ -135,7 +134,7 @@ gtkutil_file_req_done (GtkWidget * wid, struct file_req *freq)
 		/* convert to UTF8. It might be converted back to locale by
 			server.c's g_convert */
 		utf8_file = g_filename_to_utf8 (file, -1, NULL, NULL, NULL);
-		freq->callback (freq->userdata, freq->userdata2, utf8_file);
+		freq->file_callback (freq->userdata, utf8_file);
 		g_free (utf8_file);
 	} else
 	{
@@ -145,28 +144,61 @@ gtkutil_file_req_done (GtkWidget * wid, struct file_req *freq)
 			gtkutil_simpledialog (_("Cannot read that file."));
 	}
 
-	free (file);
-	gtk_widget_destroy (freq->dialog);
-	free (freq);
+	return 1;
+}
+
+static void
+gtkutil_file_req_done (GtkWidget * wid, struct file_req *freq)
+{
+	int i = 0, kill = 0;
+	gchar **files;
+	GtkFileSelection *fs = GTK_FILE_SELECTION (freq->dialog);
+
+	if (gtk_file_selection_get_select_multiple (fs))
+	{
+		files = gtk_file_selection_get_selections (fs);
+		if (files)
+		{
+			while (files[i])
+			{
+				kill |= gtkutil_check_file (files[i], freq);
+				i++;
+			}
+			g_strfreev (files);
+		}
+	} else
+	{
+		kill |= gtkutil_check_file ((char *)gtk_file_selection_get_filename (fs), freq);
+	}
+
+	if (kill)
+	{
+		if (freq->clean_callback)
+			freq->clean_callback (freq->userdata, NULL);
+		gtk_widget_destroy (freq->dialog);
+		free (freq);
+	}
 }
 
 void
-gtkutil_file_req (char *title, void *callback, void *userdata,
-						void *userdata2, int write)
+gtkutil_file_req (char *title, void *file_callback, void *userdata,
+						void *clean_callback, char *filter, int flags)
 {
 	struct file_req *freq;
 	GtkWidget *dialog;
 
 	dialog = gtk_file_selection_new (title);
+	if (flags & FRF_MULTIPLE)
+		gtk_file_selection_set_select_multiple (GTK_FILE_SELECTION (dialog), TRUE);
 	if (last_dir[0])
 		gtk_file_selection_set_filename (GTK_FILE_SELECTION (dialog), last_dir);
 
 	freq = malloc (sizeof (struct file_req));
 	freq->dialog = dialog;
-	freq->write = write;
-	freq->callback = callback;
+	freq->write = (flags & FRF_WRITE);
+	freq->file_callback = file_callback;
+	freq->clean_callback = clean_callback;
 	freq->userdata = userdata;
-	freq->userdata2 = userdata2;
 
 	g_signal_connect (G_OBJECT
 							  (GTK_FILE_SELECTION (dialog)->cancel_button),

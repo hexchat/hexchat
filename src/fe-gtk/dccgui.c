@@ -89,14 +89,19 @@ static struct dccwindow dcccwin;	/* chat */
 
 
 static void
-dcc_send_filereq_done (struct my_dcc_send *mdc, void *dummy, char *file)
+dcc_send_filereq_done (struct my_dcc_send *mdc, char *file)
+{
+	free (mdc->nick);
+	free (mdc);
+}
+
+static void
+dcc_send_filereq_file (struct my_dcc_send *mdc, char *file)
 {
 	char tbuf[400];
 
 	if (file)
 		dcc_send (mdc->sess, tbuf, mdc->nick, file, mdc->maxcps);
-	free (mdc->nick);
-	free (mdc);
 }
 
 void
@@ -111,7 +116,8 @@ fe_dcc_send_filereq (struct session *sess, char *nick, int maxcps)
 	mdc->maxcps = maxcps;
 
 	snprintf (tbuf, sizeof tbuf, _("Send file to %s"), nick);
-	gtkutil_file_req (tbuf, dcc_send_filereq_done, mdc, NULL, FALSE);
+	gtkutil_file_req (tbuf, dcc_send_filereq_file, mdc,
+							dcc_send_filereq_done, NULL, FRF_MULTIPLE);
 }
 
 void

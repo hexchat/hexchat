@@ -1,10 +1,13 @@
 #include <gtk/gtktreeview.h>
 #include <gtk/gtktreemodel.h>
 
-typedef void (*filereqcallback) (void *, void *, char *file);
+typedef void (*filereqcallback) (void *, char *file);
 
-void gtkutil_file_req (char *title, void *callback, void *userdata,
-							  void *userdata2, int write);
+#define FRF_WRITE 1
+#define FRF_MULTIPLE 2
+
+void gtkutil_file_req (char *title, void *file_callback, void *userdata,
+						void *clean_callback, char *filter, int flags);
 void gtkutil_destroy (GtkWidget * igad, GtkWidget * dgad);
 GtkWidget *gtkutil_simpledialog (char *msg);
 GtkWidget *gtkutil_button (GtkWidget *box, char *stock, char *tip, void *callback,

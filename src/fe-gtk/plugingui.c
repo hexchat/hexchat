@@ -129,7 +129,7 @@ fe_pluginlist_update (void)
 }
 
 static void
-plugingui_load_cb (session *sess, void *data2, char *file)
+plugingui_load_cb (session *sess, char *file)
 {
 	if (file)
 	{
@@ -148,7 +148,7 @@ void
 plugingui_load (void)
 {
 	gtkutil_file_req (_("Select a Plugin or Script to load"), plugingui_load_cb,
-							current_sess, 0, FALSE);
+							current_sess, NULL, NULL, 0);
 }
 
 static void

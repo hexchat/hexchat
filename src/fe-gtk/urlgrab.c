@@ -135,7 +135,7 @@ url_button_copy (GtkWidget *widget, gpointer data)
 }
 
 static void
-url_save_callback (void *arg1, void *arg2, char *file)
+url_save_callback (void *arg1, char *file)
 {
 	if (file)
 		url_save (file, "w");
@@ -145,7 +145,7 @@ static void
 url_button_save (void)
 {
 	gtkutil_file_req (_("Select a file to save to"),
-							url_save_callback, 0, 0, TRUE);
+							url_save_callback, NULL, NULL, NULL, FRF_WRITE);
 }
 
 void

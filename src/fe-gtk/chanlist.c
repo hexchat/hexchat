@@ -491,7 +491,7 @@ chanlist_join (GtkWidget * wid, struct server *serv)
 }
 
 static void
-chanlist_filereq_done (struct server *serv, void *data2, char *file)
+chanlist_filereq_done (struct server *serv, char *file)
 {
 	time_t t = time (0);
 	int i = 0;
@@ -537,7 +537,7 @@ chanlist_save (GtkWidget * wid, struct server *serv)
 		return;
 	}
 	gtkutil_file_req (_("Select an output filename"), chanlist_filereq_done,
-							serv, 0, TRUE);
+							serv, NULL, NULL, FRF_WRITE);
 }
 
 static void

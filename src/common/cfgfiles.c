@@ -301,13 +301,13 @@ get_xdir (void)
 static void
 check_prefs_dir (void)
 {
-	char *xdir = get_xdir ();
-	if (access (xdir, F_OK) != 0)
+	char *dir = get_xdir ();
+	if (access (dir, F_OK) != 0)
 	{
 #ifdef WIN32
-		if (mkdir (xdir) != 0)
+		if (mkdir (dir) != 0)
 #else
-		if (mkdir (xdir, S_IRUSR | S_IWUSR | S_IXUSR) != 0)
+		if (mkdir (dir, S_IRUSR | S_IWUSR | S_IXUSR) != 0)
 #endif
 			fe_message (_("Cannot create ~/.xchat2"), FALSE);
 	}

@@ -79,7 +79,7 @@ struct DCC *find_dcc (char *nick, char *file, int type);
 void dcc_get_nick (struct session *sess, char *nick);
 void dcc_chat (session *sess, char *nick);
 void handle_dcc (session *sess, char *nick, char *word[], char *word_eol[]);
-void dcc_show_list (session *sess, char *outbuf);
+void dcc_show_list (session *sess);
 void open_dcc_recv_window (void);
 void open_dcc_send_window (void);
 void open_dcc_chat_window (void);

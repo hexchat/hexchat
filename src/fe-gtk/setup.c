@@ -426,7 +426,7 @@ setup_create_menu (GtkWidget *table, int row, const setting *set)
 }
 
 static void
-setup_filereq_cb (GtkWidget *entry, void *data2, char *file)
+setup_filereq_cb (GtkWidget *entry, char *file)
 {
 	if (file)
 	{
@@ -438,7 +438,7 @@ setup_filereq_cb (GtkWidget *entry, void *data2, char *file)
 static void
 setup_browsefile_cb (GtkWidget *button, GtkWidget *entry)
 {
-	gtkutil_file_req (_("Select an Image File"), setup_filereq_cb, entry, 0, FALSE);
+	gtkutil_file_req (_("Select an Image File"), setup_filereq_cb, entry, NULL, NULL, 0);
 }
 
 static void

@@ -695,7 +695,7 @@ cmd_dcc (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		}
 		if (!strcasecmp (type, "LIST"))
 		{
-			dcc_show_list (sess, tbuf);
+			dcc_show_list (sess);
 			return TRUE;
 		}
 		if (!strcasecmp (type, "GET"))
@@ -755,7 +755,7 @@ cmd_dcc (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			return TRUE;
 		}
 	} else
-		dcc_show_list (sess, tbuf);
+		dcc_show_list (sess);
 	return TRUE;
 }
 
