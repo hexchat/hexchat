@@ -78,19 +78,38 @@ userlist_insertname (session *sess, struct User *newuser)
 	int row = 0;
 	struct User *user;
 	GSList *list = sess->userlist;
+	GSList *prev = NULL;
+	GSList *node = g_slist_alloc ();
+
+	node->data = newuser;
 
 	while (list)
 	{
 		user = (struct User *) list->data;
 		if (nick_cmp (sess->server, newuser, user) < 1)
 		{
-			sess->userlist = g_slist_insert (sess->userlist, newuser, row);
+			/* this saves a loop inside g_slist_insert */
+			node->next = list;
+			if (prev)
+				prev->next = node;
+			else
+				sess->userlist = node;
+
+			/*sess->userlist = g_slist_insert (sess->userlist, newuser, row);*/
 			return row;
 		}
 		row++;
+		prev = list;
 		list = list->next;
 	}
-	sess->userlist = g_slist_append (sess->userlist, newuser);
+
+	/* avoid calling g_slist_last() */
+	if (sess->userlist)
+		prev->next = node;
+	else
+		sess->userlist = node;
+/*	sess->userlist = g_slist_append (sess->userlist, newuser);*/
+
 	return -1;
 }
 
