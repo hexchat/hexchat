@@ -27,7 +27,6 @@
 #define SMOOTH_SCROLL				/* line-by-line or pixel scroll? */
 #define SCROLL_HACK					/* use XCopyArea scroll, or full redraw? */
 #undef COLOR_HILIGHT				/* Color instead of underline? */
-#define USE_GDK_PIXBUF
 #define GDK_MULTIHEAD_SAFE
 #define USE_DB							/* double buffer */
 
@@ -59,10 +58,6 @@
 #endif
 
 #include "xtext.h"
-
-#ifdef USE_GDK_PIXBUF
-#include <gdk-pixbuf/gdk-pixbuf.h>
-#endif
 
 #define charlen(str) g_utf8_skip[*(guchar *)(str)]
 
@@ -3017,12 +3012,158 @@ get_pixmap_prop (Display *xdisplay, Window the_window)
 	return pix;
 }
 
-#ifdef USE_MMX
+static void
+shade_ximage_generic (GdkVisual *visual, XImage *ximg, int bpl, int w, int h, int rm, int gm, int bm)
+{
+	int x, y;
 
+	for (x = 0; x < w; x++)
+	{
+		for (y = 0; y < h; y++)
+		{
+			unsigned long pixel = XGetPixel (ximg, x, y);
+			int r, g, b;
+
+			r = (pixel & visual->red_mask) >> visual->red_shift;
+			g = (pixel & visual->green_mask) >> visual->green_shift;
+			b = (pixel & visual->blue_mask) >> visual->blue_shift;
+
+			XPutPixel (ximg, x, y, 
+						((r * rm) >> 8) << visual->red_shift |
+						((g * gm) >> 8) << visual->green_shift |
+						((b * bm) >> 8) << visual->blue_shift);
+		}
+	}
+}
+
+/* New optimized routines for tinting XImages written by Willem Monsuwe <willem@stack.nl> */
+
+/* RGB 15 */
+static void
+shade_ximage_15 (void *data, int bpl, int w, int h, int rm, int gm, int bm)
+{
+	unsigned char *ptr;
+	int x, y;
+
+	ptr = (unsigned char *) data + (w << 1);
+	for (y = h; --y >= 0;)
+	{
+		for (x = -w; x < 0; x++)
+		{
+			int r, g, b;
+
+			b = ((guint16 *) ptr)[x];
+			r = (b & 0x7c00) * rm;
+			g = (b & 0x3e0) * gm;
+			b = (b & 0x1f) * bm;
+			((guint16 *) ptr)[x] = ((r >> 8) & 0x7c00)
+										| ((g >> 8) & 0x3e0)
+										| ((b >> 8) & 0x1f);
+		}
+		ptr += bpl;
+	}
+}
+
+/* RGB 16 */
+static void
+shade_ximage_16 (void *data, int bpl, int w, int h, int rm, int gm, int bm)
+{
+	unsigned char *ptr;
+	int x, y;
+
+	ptr = (unsigned char *) data + (w << 1);
+	for (y = h; --y >= 0;)
+	{
+		for (x = -w; x < 0; x++)
+		{
+			int r, g, b;
+
+			b = ((guint16 *) ptr)[x];
+			r = (b & 0xf800) * rm;
+			g = (b & 0x7e0) * gm;
+			b = (b & 0x1f) * bm;
+			((guint16 *) ptr)[x] = ((r >> 8) & 0xf800)
+										| ((g >> 8) & 0x7e0)
+										| ((b >> 8) & 0x1f);
+		}
+		ptr += bpl;
+	}
+}
+
+/* RGB 24 */
+static void
+shade_ximage_24 (void *data, int bpl, int w, int h, int rm, int gm, int bm)
+{
+	unsigned char *ptr;
+	int x, y;
+
+	ptr = (unsigned char *) data + (w * 3);
+	for (y = h; --y >= 0;)
+	{
+		for (x = -(w * 3); x < 0; x += 3)
+		{
+			int r, g, b;
+
+#if (G_BYTE_ORDER == G_BIG_ENDIAN)
+			r = (ptr[x + 0] * rm) >> 8;
+			g = (ptr[x + 1] * gm) >> 8;
+			b = (ptr[x + 2] * bm) >> 8;
+			ptr[x + 0] = r;
+			ptr[x + 1] = g;
+			ptr[x + 2] = b;
+#else
+			r = (ptr[x + 2] * rm) >> 8;
+			g = (ptr[x + 1] * gm) >> 8;
+			b = (ptr[x + 0] * bm) >> 8;
+			ptr[x + 2] = r;
+			ptr[x + 1] = g;
+			ptr[x + 0] = b;
+#endif
+		}
+		ptr += bpl;
+	}
+}
+
+/* RGB 32 */
+static void
+shade_ximage_32 (void *data, int bpl, int w, int h, int rm, int gm, int bm)
+{
+	unsigned char *ptr;
+	int x, y;
+
+	ptr = (unsigned char *) data + (w << 2);
+	for (y = h; --y >= 0;)
+	{
+		for (x = -(w << 2); x < 0; x += 4)
+		{
+			int r, g, b;
+
+#if (G_BYTE_ORDER == G_BIG_ENDIAN)
+			r = (ptr[x + 1] * rm) >> 8;
+			g = (ptr[x + 2] * gm) >> 8;
+			b = (ptr[x + 3] * bm) >> 8;
+			ptr[x + 1] = r;
+			ptr[x + 2] = g;
+			ptr[x + 3] = b;
+#else
+			r = (ptr[x + 2] * rm) >> 8;
+			g = (ptr[x + 1] * gm) >> 8;
+			b = (ptr[x + 0] * bm) >> 8;
+			ptr[x + 2] = r;
+			ptr[x + 1] = g;
+			ptr[x + 0] = b;
+#endif
+		}
+		ptr += bpl;
+    }
+}
+
+#ifdef USE_MMX
 #include "mmx_cmod.h"
+#endif
 
 static GdkPixmap *
-shade_pixmap_mmx (GtkXText * xtext, Pixmap p, int x, int y, int w, int h)
+shade_pixmap (GtkXText * xtext, Pixmap p, int x, int y, int w, int h)
 {
 	unsigned int dummy, width, height, depth;
 	GdkPixmap *shaded_pix;
@@ -3056,24 +3197,71 @@ shade_pixmap_mmx (GtkXText * xtext, Pixmap p, int x, int y, int w, int h)
 		ximg = XGetImage (xdisplay, p, x, y, w, h, -1, ZPixmap);
 	}
 
-	switch (depth)
+	if (!ximg)
+		return NULL;
+
+	if (depth <= 8)
 	{
-	/* 1 and 8 not supported */
-	case 15:
-		shade_ximage_15_mmx (ximg->data, ximg->bytes_per_line, w, h,
-						xtext->tint_red, xtext->tint_green, xtext->tint_blue);
-		break;
-	case 16:
-		shade_ximage_16_mmx (ximg->data, ximg->bytes_per_line, w, h,
-						xtext->tint_red, xtext->tint_green, xtext->tint_blue);
-		break;
-	case 24:
-		if (ximg->bits_per_pixel != 32)
-			break;
-	case 32:
-		shade_ximage_32_mmx (ximg->data, ximg->bytes_per_line, w, h,
-						xtext->tint_red, xtext->tint_green, xtext->tint_blue);
-		break;
+		shade_ximage_generic (gdk_drawable_get_visual (GTK_WIDGET (xtext)->window),
+									 ximg, ximg->bytes_per_line, w, h, xtext->tint_red,
+									 xtext->tint_green, xtext->tint_blue);
+	} else
+	{
+#ifdef USE_MMX
+		/* the MMX routines are about 50% faster at 16-bit */
+		if (have_mmx ())	/* do a runtime check too! */
+		{
+			switch (depth)
+			{
+			case 15:
+				shade_ximage_15_mmx (ximg->data, ximg->bytes_per_line, w, h,
+											xtext->tint_red,
+											xtext->tint_green, xtext->tint_blue);
+				break;
+			case 16:
+				shade_ximage_16_mmx (ximg->data, ximg->bytes_per_line, w, h,
+											xtext->tint_red,
+											xtext->tint_green, xtext->tint_blue);
+				break;
+			case 24:
+				if (ximg->bits_per_pixel != 32)
+					break;
+			case 32:
+				shade_ximage_32_mmx (ximg->data, ximg->bytes_per_line, w, h,
+											xtext->tint_red,
+											xtext->tint_green, xtext->tint_blue);
+			}
+		} else
+		{
+#endif
+			switch (depth)
+			{
+			case 15:
+				shade_ximage_15 (ximg->data, ximg->bytes_per_line, w, h,
+									  xtext->tint_red,
+									  xtext->tint_green, xtext->tint_blue);
+				break;
+			case 16:
+				shade_ximage_16 (ximg->data, ximg->bytes_per_line, w, h,
+									  xtext->tint_red,
+									  xtext->tint_green, xtext->tint_blue);
+				break;
+			case 24:
+				if (ximg->bits_per_pixel != 32)
+				{
+					shade_ximage_24 (ximg->data, ximg->bytes_per_line, w, h,
+										  xtext->tint_red,
+										  xtext->tint_green, xtext->tint_blue);
+					break;
+				}
+			case 32:
+				shade_ximage_32 (ximg->data, ximg->bytes_per_line, w, h,
+									  xtext->tint_red,
+									  xtext->tint_green, xtext->tint_blue);
+			}
+#ifdef USE_MMX
+		}
+#endif
 	}
 
 	if (xtext->recycle)
@@ -3089,133 +3277,6 @@ shade_pixmap_mmx (GtkXText * xtext, Pixmap p, int x, int y, int w, int h)
 	return shaded_pix;
 }
 
-#endif	/* !USE_MMX */
-
-#ifdef USE_GDK_PIXBUF
-
-static GdkPixmap *
-shade_pixmap_gdk (GtkXText * xtext, Pixmap p, int x, int y, int w, int h)
-{
-	GdkPixmap *pp, *tmp, *shaded_pixmap;
-	GdkPixbuf *pixbuf;
-	GdkColormap *cmap;
-	GdkGC *tgc;
-	unsigned char *buf;
-	unsigned char *pbuf;
-	int width, height, depth;
-	int rowstride;
-	int pbwidth;
-	int pbheight;
-	int i, j;
-	int offset;
-	int r, g, b, a;
-
-#if (GTK_MAJOR_VERSION == 2) && (GTK_MINOR_VERSION == 0)
-	pp = gdk_pixmap_foreign_new (p);
-#else
-	pp = gdk_pixmap_foreign_new_for_display (gdk_drawable_get_display (GTK_WIDGET (xtext)->window), p);
-#endif
-	cmap = gtk_widget_get_colormap (GTK_WIDGET (xtext));
-	gdk_drawable_get_size (pp, &width, &height);
-	depth = gdk_drawable_get_depth (pp);
-
-	if (width < x + w || height < y + h || x < 0 || y < 0)
-	{
-		tgc = gdk_gc_new (pp);
-		tmp = gdk_pixmap_new (pp, w, h, depth);
-		gdk_gc_set_tile (tgc, pp);
-		gdk_gc_set_fill (tgc, GDK_TILED);
-		gdk_gc_set_ts_origin (tgc, -x, -y);
-		gdk_draw_rectangle (tmp, tgc, TRUE, 0, 0, w, h);
-		g_object_unref (tgc);
-
-		pixbuf = gdk_pixbuf_get_from_drawable (NULL, tmp, cmap,
-															0, 0, 0, 0, w, h);
-		g_object_unref (tmp);
-	} else
-	{
-		pixbuf = gdk_pixbuf_get_from_drawable (NULL, pp, cmap,
-															x, y, 0, 0, w, h);
-	}
-	g_object_unref (pp);
-
-	if (!pixbuf)
-		return NULL;
-
-	buf = gdk_pixbuf_get_pixels (pixbuf);
-	rowstride = gdk_pixbuf_get_rowstride (pixbuf);
-	pbwidth = gdk_pixbuf_get_width (pixbuf);
-	pbheight = gdk_pixbuf_get_height (pixbuf);
-
-	a = 128;	/* alpha */
-	r = xtext->tint_red;
-	g = xtext->tint_green;
-	b = xtext->tint_blue;
-
-	if (gdk_pixbuf_get_has_alpha (pixbuf))
-		offset = 4;
-	else
-		offset = 3;
-
-	for (i=0;i<pbheight;i++)
-	{
-		pbuf = buf;
-		for (j=0;j<pbwidth;j++)
-		{
-			pbuf[0] = ((pbuf[0] * r) >> 8);
-			pbuf[1] = ((pbuf[1] * g) >> 8);
-			pbuf[2] = ((pbuf[2] * b) >> 8);
-			pbuf+=offset;
-		}
-		buf+=rowstride;
-	}
-
-	/* reuse the same pixmap to save a few cycles */
-	if (xtext->recycle)
-	{
-		shaded_pixmap = xtext->pixmap;
-		gdk_pixbuf_render_to_drawable (pixbuf, shaded_pixmap, xtext->fgc, 0, 0,
-												 0, 0, w, h, GDK_RGB_DITHER_NORMAL, 0, 0);
-	} else
-	{
-#if (GTK_MAJOR_VERSION == 2) && (GTK_MINOR_VERSION == 0)
-		gdk_pixbuf_render_pixmap_and_mask (pixbuf, &shaded_pixmap, NULL, 0);
-#else
-
-		gdk_pixbuf_render_pixmap_and_mask_for_colormap (pixbuf, cmap, &shaded_pixmap, NULL, 0);
-#endif
-	}
-	g_object_unref (pixbuf);
-
-	return shaded_pixmap;
-}
-
-#endif /* !USE_GDK_PIXBUF */
-
-#if defined(USE_GDK_PIXBUF) || defined(USE_MMX)
-
-static GdkPixmap *
-shade_pixmap (GtkXText * xtext, Pixmap p, int x, int y, int w, int h)
-{
-#ifdef USE_MMX
-
-	if (have_mmx () && xtext->depth != 8)
-		return shade_pixmap_mmx (xtext, p, x, y, w, h);
-
-#ifdef USE_GDK_PIXBUF
-	return shade_pixmap_gdk (xtext, p, x, y, w, h);
-#else
-	return NULL;
-#endif
-
-#else
-
-	return shade_pixmap_gdk (xtext, p, x, y, w, h);
-
-#endif /* !USE_MMX */
-}
-
-#endif /* !USE_TINT */
 #endif /* !USE_XLIB */
 
 /* free transparency xtext->pixmap */
@@ -3319,7 +3380,6 @@ gtk_xtext_load_trans (GtkXText * xtext)
 
 	gdk_window_get_origin (widget->window, &x, &y);
 
-#if defined(USE_GDK_PIXBUF) || defined(USE_MMX)
 	if (xtext->shaded)
 	{
 		int width, height;
@@ -3336,7 +3396,6 @@ gtk_xtext_load_trans (GtkXText * xtext)
 	} else
 	{
 noshade:
-#endif
 #if (GTK_MAJOR_VERSION == 2) && (GTK_MINOR_VERSION == 0)
 		xtext->pixmap = gdk_pixmap_foreign_new (rootpix);
 #else
@@ -3346,9 +3405,7 @@ noshade:
 		gdk_gc_set_ts_origin (xtext->bgc, -x, -y);
 		xtext->ts_x = -x;
 		xtext->ts_y = -y;
-#if defined(USE_GDK_PIXBUF) || defined(USE_MMX)
 	}
-#endif
 	gdk_gc_set_fill (xtext->bgc, GDK_TILED);
 #endif /* !WIN32 */
 }
@@ -3707,10 +3764,6 @@ gtk_xtext_set_background (GtkXText * xtext, GdkPixmap * pixmap, int trans,
 								  int shaded)
 {
 	GdkGCValues val;
-
-#if !defined(USE_GDK_PIXBUF) && !defined(USE_MMX) && !defined(WIN32)
-	shaded = FALSE;
-#endif
 
 #if !defined(USE_XLIB) && !defined(WIN32)
 	shaded = FALSE;

@@ -256,10 +256,14 @@ mg_configure_cb (GtkWidget *wid, GdkEventConfigure *event, session *sess)
 			if (prefs.mainwindow_save)
 			{
 				sess = current_sess;
-				prefs.mainwindow_left = event->x;
+				gtk_window_get_position (GTK_WINDOW (wid), &prefs.mainwindow_left,
+												 &prefs.mainwindow_top);
+				gtk_window_get_size (GTK_WINDOW (wid), &prefs.mainwindow_width,
+												 &prefs.mainwindow_height);
+				/*prefs.mainwindow_left = event->x;
 				prefs.mainwindow_top = event->y;
 				prefs.mainwindow_width = event->width;
-				prefs.mainwindow_height = event->height;
+				prefs.mainwindow_height = event->height;*/
 			}
 		}
 	}
@@ -268,10 +272,14 @@ mg_configure_cb (GtkWidget *wid, GdkEventConfigure *event, session *sess)
 	{
 		if (sess->type == SESS_DIALOG && prefs.mainwindow_save)
 		{
-			prefs.dialog_left = event->x;
+			gtk_window_get_position (GTK_WINDOW (wid), &prefs.dialog_left,
+											 &prefs.dialog_top);
+			gtk_window_get_size (GTK_WINDOW (wid), &prefs.dialog_width,
+										&prefs.dialog_height);
+			/*prefs.dialog_left = event->x;
 			prefs.dialog_top = event->y;
 			prefs.dialog_width = event->width;
-			prefs.dialog_height = event->height;
+			prefs.dialog_height = event->height;*/
 		}
 
 		if (((GtkXText *) sess->gui->xtext)->transparent)
