@@ -1195,9 +1195,12 @@ static int tcl_findcontext(ClientData cd, Tcl_Interp * irp, int argc, char *argv
     xchat_context *origctx, *ctx = NULL;
     Tcl_DString ds;
 
-    BADARGS(2, 3, " ?server? ?channel?");
+    BADARGS(1, 3, " ?server? ?channel?");
 
     switch (argc) {
+    case 1:
+        ctx = xchat_find_context(ph, NULL, NULL);
+        break;
     case 2:
         ctx = xchat_smart_context(argv[1], NULL);
         break;
