@@ -420,31 +420,42 @@ static XS (XS_Xchat_register)
 	PerlScript *scp;
 	dXSARGS;
 	if (items < 2 || items > 4) {
-	     xchat_printf (ph,
-       "Usage: Xchat::register(scriptname, version, [desc,[shutdowncallback]]) %d",items);
+		xchat_printf (ph,
+		"Usage: Xchat::register(scriptname, version, [desc,[shutdowncallback]]) %d",items);
 	} else {
-	  name = SvPV_nolen (ST (0));
-	  ver = SvPV_nolen (ST (1));
-	  desc = SvPV_nolen (ST (2));
-	  callback = ST (3);
+		name = SvPV_nolen (ST (0));
+		ver = SvPV_nolen (ST (1));
+		desc = NULL;
+		callback = &PL_sv_undef;
+
+		switch(items)
+		{
+		case 3:
+			desc = SvPV_nolen (ST (2));
+			break;
+		case 4:
+			desc = SvPV_nolen (ST (2));
+			callback = ST (3);
+			break;
+		}
 	  
-	  if(desc == NULL ) {
-	    desc = "";
-	  }
-	  scp = malloc (sizeof (PerlScript));
-	  scp->name = strdup (name);
-	  scp->version = strdup (ver);
-	  scp->desc = strdup (desc);
+		if(desc == NULL ) {
+			desc = "";
+		}
+		scp = malloc (sizeof (PerlScript));
+		scp->name = strdup (name);
+		scp->version = strdup (ver);
+		scp->desc = strdup (desc);
 	  
-	  scp->shutdowncallback = sv_mortalcopy (callback);
-	  SvREFCNT_inc (scp->shutdowncallback);
-	  /* FIXME: no filename */
-	  scp->gui_entry = xchat_plugingui_add (ph, scp->name, scp->name,
-						scp->desc, scp->version, NULL);
+		scp->shutdowncallback = sv_mortalcopy (callback);
+		SvREFCNT_inc (scp->shutdowncallback);
+		/* FIXME: no filename */
+		scp->gui_entry = xchat_plugingui_add (ph, scp->name, scp->name,
+															scp->desc, scp->version, NULL);
 	  
-	  perl_list = g_slist_prepend (perl_list, scp);
+		perl_list = g_slist_prepend (perl_list, scp);
 	  
-	  XSRETURN_EMPTY;
+		XSRETURN_EMPTY;
 	}
 }
 
@@ -914,7 +925,8 @@ static XS (XS_Xchat_find_context)
 		/* otherwise leave it as null */
 		if (ST (0) != &PL_sv_undef){
 			chan = SvPV_nolen (ST (0));
-		}
+			xchat_printf( ph, "XSUB - find_context( %s, NULL )", chan );
+		} else { xchat_print( ph, "XSUB - find_context( NULL, NULL )" ); }
 		/* chan is already NULL */
 		break;
 	case 2: /* server and channel */
@@ -922,11 +934,13 @@ static XS (XS_Xchat_find_context)
 		/* otherwise leave it as NULL */
 		if (ST (0) != &PL_sv_undef){
 			chan = SvPV_nolen (ST (0));
+			xchat_print( ph, "XSUB - 2 arg NULL chan" );
 		}
 		/* change server value only if it is defined */
 		/* otherwise leave it as NULL */
 		if (ST (1) != &PL_sv_undef){
 			server = SvPV_nolen (ST (1));
+			xchat_print( ph, "XSUB - 2 arg NULL server" );
 		}
 
 		break;
@@ -935,12 +949,12 @@ static XS (XS_Xchat_find_context)
 	RETVAL = xchat_find_context (ph, server, chan);
 	if (RETVAL != NULL)
 	{
-/* 		xchat_print (ph, "XSUB - context found"); */
+ 		xchat_print (ph, "XSUB - context found");
 		XSRETURN_IV(PTR2IV(RETVAL));
 	}
 	else
 	{
-/* 		xchat_print (ph, "XSUB - context not found"); */
+ 		xchat_print (ph, "XSUB - context not found");
 		XSRETURN_UNDEF;
 	}
 	}
@@ -2085,9 +2099,9 @@ perl_init (void)
 	     value. Just a question of style:) 
 	     We also redefine the $SIG{__WARN__} handler to have XChat
 	     printing warnings in the main window. (TheHobbit)*/
-	  "#use strict;\n"
-	  "#use warnings;\n"
 
+"use File::Basename();\n"
+"\n"
 "sub Xchat::hook_server {\n"
 "  return undef unless @_ >= 2;\n"
 "  \n"
@@ -2095,18 +2109,18 @@ perl_init (void)
 "  my $callback = shift;\n"
 "  my $options = shift;\n"
 "  \n"
-"  my ($priority, $userdata) = ( Xchat::PRI_NORM, undef );\n"
+"  my ($priority, $data) = ( Xchat::PRI_NORM, undef );\n"
 "  \n"
 "  if ( ref( $options ) eq 'HASH' ) {\n"
 "    if ( exists( $options->{priority} ) && defined( $options->{priority} ) ) {\n"
 "      $priority = $options->{priority};\n"
 "    }\n"
-"    if ( exists( $options->{userdata} ) && defined( $options->{userdata} ) ) {\n"
-"      $userdata = $options->{userdata};\n"
+"    if ( exists( $options->{data} ) && defined( $options->{data} ) ) {\n"
+"      $data = $options->{data};\n"
 "    }\n"
 "  }\n"
 "\n"
-"  return Xchat::_hook_server( $message, $priority, $callback, $userdata);\n"
+"  return Xchat::_hook_server( $message, $priority, $callback, $data);\n"
 "\n"
 "}\n"
 "\n"
@@ -2117,7 +2131,7 @@ perl_init (void)
 "  my $callback = shift;\n"
 "  my $options = shift;\n"
 "\n"
-"  my ($priority, $help_text, $userdata) = ( Xchat::PRI_NORM, '', undef );\n"
+"  my ($priority, $help_text, $data) = ( Xchat::PRI_NORM, '', undef );\n"
 "\n"
 "  if ( ref( $options ) eq 'HASH' ) {\n"
 "    if ( exists( $options->{priority} ) && defined( $options->{priority} ) ) {\n"
@@ -2126,13 +2140,13 @@ perl_init (void)
 "    if ( exists( $options->{help_text} ) && defined( $options->{help_text} ) ) {\n"
 "      $help_text = $options->{help_text};\n"
 "    }\n"
-"    if ( exists( $options->{userdata} ) && defined( $options->{userdata} ) ) {\n"
-"      $userdata = $options->{userdata};\n"
+"    if ( exists( $options->{data} ) && defined( $options->{data} ) ) {\n"
+"      $data = $options->{data};\n"
 "    }\n"
 "  }\n"
 "\n"
 "  return Xchat::_hook_command( $command, $priority, $callback, $help_text,\n"
-"			       $userdata);\n"
+"			       $data);\n"
 "\n"
 "}\n"
 "\n"
@@ -2143,18 +2157,18 @@ perl_init (void)
 "  my $callback = shift;\n"
 "  my $options = shift;\n"
 "\n"
-"  my ($priority, $userdata) = ( Xchat::PRI_NORM, undef );\n"
+"  my ($priority, $data) = ( Xchat::PRI_NORM, undef );\n"
 "\n"
 "  if ( ref( $options ) eq 'HASH' ) {\n"
 "    if ( exists( $options->{priority} ) && defined( $options->{priority} ) ) {\n"
 "      $priority = $options->{priority};\n"
 "    }\n"
-"    if ( exists( $options->{userdata} ) && defined( $options->{userdata} ) ) {\n"
-"      $userdata = $options->{userdata};\n"
+"    if ( exists( $options->{data} ) && defined( $options->{data} ) ) {\n"
+"      $data = $options->{data};\n"
 "    }\n"
 "  }\n"
 "\n"
-"  return Xchat::_hook_print( $event, $priority, $callback, $userdata);\n"
+"  return Xchat::_hook_print( $event, $priority, $callback, $data);\n"
 "\n"
 "}\n"
 "\n"
@@ -2162,11 +2176,16 @@ perl_init (void)
 "sub Xchat::hook_timer {\n"
 "  return undef unless @_ >= 2;\n"
 "\n"
-"  my $interval = shift;\n"
+"  my $timeout = shift;\n"
 "  my $callback = shift;\n"
-"  my $userdata = shift;\n"
+"  my $data = shift;\n"
 "\n"
-"  return Xchat::_hook_timer( $interval, $callback, $userdata );\n"
+"  if( ref( $data ) eq 'HASH' && exists( $data->{data} )\n"
+"      && defined( $data->{data} ) ) {\n"
+"    $data = $data->{data};\n"
+"  }\n"
+"\n"
+"  return Xchat::_hook_timer( $timeout, $callback, $data );\n"
 "\n"
 "}\n"
 "\n"
@@ -2235,33 +2254,36 @@ perl_init (void)
 "  my $format = shift;\n"
 "  Xchat::command( sprintf( $format, @_ ) );\n"
 "}\n"
-
-		"$SIG{__WARN__}=sub{Xchat::print\"$_[0]\\n\";};\n"
-	  
-		"sub load_file{\n"
-			"my $f_name=shift;\n"
-			"local $/=undef;\n"
-			"open FH,$f_name or return \"__FAILED__: $!\";\n"
-			"$_=<FH>;\n"
-			"close FH;\n"
-			"return $_;\n"
-		"}\n"
-		"sub load_n_eval{\n"
-			"my $f_name=shift;\n"
-			"my $strin=load_file($f_name);\n"
-			"if ( $strin =~ /^__FAILED__: (.*)/ ) {\n"
-				"Xchat::print( \"$1\\n\" );\n"
-				"return 2;\n"
-			"}\n"
-			"eval $strin;\n"
-			"if($@){\n"
-			/*"  #something went wrong\n"*/
-				"Xchat::print(\"Errors loading file $f_name:\\n\");\n"
-				"Xchat::print(\"$@\\n\");\n"
-				"return 1;\n"
-			"}\n"
-			"return 0;\n"
-		"}\n"
+"\n"
+"\n"
+"$SIG{__WARN__} = sub {\n"
+"  local $, = \"\n\";\n"
+"  Xchat::print( @_ );\n"
+"};\n"
+"\n"
+"sub load {\n"
+"  my $file = shift;\n"
+"\n"
+"  if( open FH, $file ) {\n"
+"	 $file = do {local $/; <FH>};\n"
+"	 close FH;\n"
+"\n"
+"	 eval $file;\n"
+"\n"
+"	 if( $@ ) {\n"
+"		# something went wrong\n"
+"		Xchat::print( \"Error loading '$file':\n$@\n\" );\n"
+"		return 1;\n"
+"	 }\n"
+"\n"
+"  } else {\n"
+"\n"
+"	 Xchat::print( \"Error opening '$file': $!\n\" );\n"
+"	 return 2;\n"
+"  }\n"
+"\n"
+"  return 0;\n"
+"}\n"
 
 	};
 #ifdef ENABLE_NLS
@@ -2324,7 +2346,7 @@ perl_load_file (char *script_name)
 	if (my_perl == NULL)
 		perl_init ();
 
-	return execute_perl (newSVpvn ("load_n_eval", 11), script_name);
+	return execute_perl (newSVpvn ("load", 11), script_name);
 }
 
 /* checks for "~" in a file and expands */
