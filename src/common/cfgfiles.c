@@ -336,25 +336,6 @@ get_xdir_utf8 (void)
 	return xdir_utf;
 }
 
-int
-mkdir_utf8 (char *dir)
-{
-	int ret;
-
-	dir = g_filename_from_utf8 (dir, -1, 0, 0, 0);
-	if (!dir)
-		return -1;
-
-#ifdef WIN32
-	ret = mkdir (dir);
-#else
-	ret = mkdir (dir, S_IRUSR | S_IWUSR | S_IXUSR);
-#endif
-	g_free (dir);
-
-	return ret;
-}
-
 static void
 check_prefs_dir (void)
 {

@@ -11,6 +11,7 @@
 #include "../common/xchat.h"
 #include "../common/cfgfiles.h"
 #include "../common/text.h"
+#include "../common/userlist.h"
 #include "../common/xchatc.h"
 #include "fe-gtk.h"
 #include "gtkutil.h"

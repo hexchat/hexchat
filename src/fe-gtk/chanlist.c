@@ -617,7 +617,7 @@ chanlist_opengui (struct server *serv)
 
 	serv->gui->chanlist_window =
 		mg_create_generic_tab ("chanlist", tbuf, FALSE, TRUE, chanlist_closegui,
-								serv, 450, 300, &vbox, serv);
+								serv, 450, 356, &vbox, serv);
 
 	frame = gtk_frame_new (_("List display options:"));
 	gtk_container_set_border_width (GTK_CONTAINER (frame), 2);

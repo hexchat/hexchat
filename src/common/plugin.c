@@ -27,6 +27,7 @@
 #include "outbound.h"
 #include "cfgfiles.h"
 #include "ignore.h"
+#include "modes.h"
 #include "notify.h"
 #include "text.h"
 #define PLUGIN_C
@@ -1370,5 +1371,5 @@ xchat_send_modes (xchat_plugin *ph, const char **targets, int ntargets, int mode
 {
 	char tbuf[514];	/* modes.c needs 512 + null */
 
-	send_channel_modes (ph->context, tbuf, targets, 0, ntargets, sign, mode, modes_per_line);
+	send_channel_modes (ph->context, tbuf, (char **)targets, 0, ntargets, sign, mode, modes_per_line);
 }

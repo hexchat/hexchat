@@ -185,7 +185,7 @@ url_opengui ()
 
 	urlgrabberwindow =
 		mg_create_generic_tab ("urlgrabber", _("X-Chat: URL Grabber"), FALSE,
-							 TRUE, url_closegui, NULL, 350, 100, &vbox, 0);
+							 TRUE, url_closegui, NULL, 400, 256, &vbox, 0);
 	view = url_treeview_new (vbox);
 	g_object_set_data (G_OBJECT (urlgrabberwindow), "model",
 	                   gtk_tree_view_get_model (GTK_TREE_VIEW (view)));

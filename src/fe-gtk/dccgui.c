@@ -492,7 +492,7 @@ fe_dcc_open_recv_win (int passive)
 	}
 	dccrwin.window =
 			  mg_create_generic_tab ("dccrecv", _("X-Chat: File Receive List"),
-						FALSE, TRUE, close_dcc_recv_window, NULL, 601, 0, &vbox, 0);
+						FALSE, TRUE, close_dcc_recv_window, NULL, 601, 200, &vbox, 0);
 
 #ifdef USE_GNOME
 	dccrwin.list = gtkutil_clist_new (9, titles, vbox, GTK_POLICY_ALWAYS,
@@ -644,7 +644,7 @@ fe_dcc_open_send_win (int passive)
 
 	dccswin.window =
 			  mg_create_generic_tab ("dccsend", _("X-Chat: File Send List"),
-						FALSE, TRUE, close_dcc_send_window, NULL, 595, 0, &vbox, 0);
+						FALSE, TRUE, close_dcc_send_window, NULL, 595, 200, &vbox, 0);
 
 	dccswin.list = gtkutil_clist_new (9, titles, vbox, GTK_POLICY_ALWAYS,
 												 send_row_selected, 0,
@@ -765,7 +765,7 @@ fe_dcc_open_chat_win (int passive)
 
 	dcccwin.window =
 			  mg_create_generic_tab ("dccchat", _("X-Chat: DCC Chat List"),
-						FALSE, TRUE, close_dcc_chat_window, NULL, 550, 0, &vbox, 0);
+						FALSE, TRUE, close_dcc_chat_window, NULL, 550, 180, &vbox, 0);
 
 	dcccwin.list = gtkutil_clist_new (5, titles, vbox, GTK_POLICY_ALWAYS,
 												 chat_row_selected, 0,

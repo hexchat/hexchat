@@ -94,7 +94,7 @@ open_rawlog (struct server *serv)
 	snprintf (tbuf, sizeof tbuf, _("X-Chat: Rawlog (%s)"), serv->servername);
 	serv->gui->rawlog_window =
 		mg_create_generic_tab ("rawlog", tbuf, FALSE, TRUE, close_rawlog, serv,
-							 450, 100, &vbox, serv);
+							 640, 320, &vbox, serv);
 
 	hbox = gtk_hbox_new (FALSE, 2);
 	gtk_container_add (GTK_CONTAINER (vbox), hbox);

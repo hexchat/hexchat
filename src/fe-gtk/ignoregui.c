@@ -44,6 +44,7 @@
 #include "../common/xchat.h"
 #include "../common/ignore.h"
 #include "../common/cfgfiles.h"
+#include "../common/fe.h"
 #include "gtkutil.h"
 #include "maingui.h"
 
