@@ -163,7 +163,7 @@ static const struct key_action key_actions[KEY_MAX_ACTIONS + 1] = {
 	{key_action_comp_chng, "Change Selected Nick",
 	 N_("This command scrolls up and down through the list of nicks. If Data 1 is set to anything it will scroll up, else it scrolls down")},
 	{key_action_replace, "Check For Replace",
-	 N_("This command checks the last work entered in the entry against the replace list and replaces it if it finds a match")},
+	 N_("This command checks the last word entered in the entry against the replace list and replaces it if it finds a match")},
 	{key_action_move_tab_left, "Move front tab left",
 	 N_("This command move the front tab left by one")},
 	{key_action_move_tab_right, "Move front tab right",
