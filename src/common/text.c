@@ -298,15 +298,40 @@ log_write (session *sess, char *text)
 	}
 }
 
+static char *
+text_validate (unsigned char **text)
+{
+	char *utf;
+
+	/* valid utf8? */
+	if (g_utf8_validate (*text, -1, 0))
+		return NULL;
+
+	/* iso-8859-1 fallback is useful for old 1.8.x scripts that don't
+		provide us with valid utf8 */
+	utf = g_convert (*text, -1, "UTF-8", "ISO-8859-1", 0, 0, 0);
+	if (!utf)	/* should never happen; all text is iso-8859-1 valid */
+		*text = g_strdup ("%INVALID%");
+	else
+		*text = utf;
+
+	return utf;
+}
+
 void
 PrintText (session *sess, unsigned char *text)
 {
+	char *conv = NULL;
+
 	if (!sess)
 	{
 		if (!sess_list)
 			return;
 		sess = (session *) sess_list->data;
 	}
+
+	/* make sure it's valid utf8 */
+	conv = text_validate (&text);
 
 	log_write (sess, text);
 
@@ -330,6 +355,9 @@ PrintText (session *sess, unsigned char *text)
 #ifdef USE_HEBREW
 	}
 #endif
+
+	if (conv)
+		g_free (conv);
 }
 
 void

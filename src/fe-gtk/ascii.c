@@ -37,20 +37,28 @@
 
 
 static void
-ascii_click (GtkWidget * wid, int c)
+ascii_click (GtkWidget * wid, gpointer userdata)
 {
 	int tmp_pos, len;
-	unsigned char str = c;
+	unsigned char str = GPOINTER_TO_INT (userdata);
 	char *locale;
 
 	if (current_sess)
 	{
 		wid = current_sess->gui->input_box;
 		tmp_pos = gtk_editable_get_position (GTK_EDITABLE (wid));
-		locale = g_locale_to_utf8 (&str, 1, 0, &len, 0);
-		gtk_editable_insert_text (GTK_EDITABLE (wid), locale, len, &tmp_pos);
-		g_free (locale);
-		gtk_editable_set_position (GTK_EDITABLE (wid), tmp_pos);
+
+		if (current_sess->server->encoding)
+			locale = g_convert (&str, 1, "UTF-8", current_sess->server->encoding, 0, &len, 0);
+		else
+			locale = g_locale_to_utf8 (&str, 1, NULL, &len, NULL);
+
+		if (locale)
+		{
+			gtk_editable_insert_text (GTK_EDITABLE (wid), locale, len, &tmp_pos);
+			g_free (locale);
+			gtk_editable_set_position (GTK_EDITABLE (wid), tmp_pos);
+		}
 	}
 }
 
@@ -93,9 +101,14 @@ ascii_open (void)
 		{
 			val = j + (i * 16);
 			name[0] = val;
-			utf = g_locale_to_utf8 (name, 1, NULL, NULL, NULL);
+
+			if (current_sess->server->encoding)
+				utf = g_convert (name, 1, "UTF-8", current_sess->server->encoding, 0, 0, 0);
+			else
+				utf = g_locale_to_utf8 (name, 1, NULL, NULL, NULL);
 			if (!utf)
 				utf = g_strdup ("");
+
 			but = gtk_button_new_with_label (utf);
 			g_free (utf);
 			gtk_widget_set_style (GTK_BIN (but)->child, style);
