@@ -1306,7 +1306,7 @@ static struct mymenu mymenu[] = {
 	{N_("Auto Replace..."), menu_rpopup, 0, M_MENU, 0, 1},
 	{N_("CTCP Replies..."), menu_ctcpguiopen, 0, M_MENU, 0, 1},
 	{N_("Dialog Buttons..."), menu_dlgbuttons, 0, M_MENU, 0, 1},
-	{N_("Key Bindings..."), menu_keypopup, 0, M_MENU, 0, 1},
+	{N_("Keyboard Shortcuts..."), menu_keypopup, 0, M_MENU, 0, 1},
 	{N_("Text Events..."), menu_evtpopup, 0, M_MENU, 0, 1},
 	{N_("URL Handlers..."), menu_urlhandlers, 0, M_MENU, 0, 1},
 	{N_("User Commands..."), menu_usercommands, 0, M_MENU, 0, 1},

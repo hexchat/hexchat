@@ -158,7 +158,7 @@ static const struct key_action key_actions[KEY_MAX_ACTIONS + 1] = {
 	{key_action_insert, "Insert in Buffer",
 	 N_("The \002Insert in Buffer\002 command will insert the contents of Data 1 into the entry where the key sequence was pressed at the current cursor position")},
 	{key_action_scroll_page, "Scroll Page",
-	 N_("The \002Scroll Page\002 command scrolls the text widget up or down one page. If Data 1 is set to anything the page scrolls up, else it scrolls down")},
+	 N_("The \002Scroll Page\002 command scrolls the text widget up or down one page or one line. Set Data 1 to either Up, Down, +1 or -1.")},
 	{key_action_set_buffer, "Set Buffer",
 	 N_("The \002Set Buffer\002 command sets the entry where the key sequence was entered to the contents of Data 1")},
 	{key_action_history_up, "Last Command",
@@ -388,8 +388,10 @@ key_load_defaults ()
 		"C\nk\nInsert in Buffer\nD1:\nD2!\n\n"\
 		"S\nNext\nChange Selected Nick\nD1!\nD2!\n\n"\
 		"S\nPrior\nChange Selected Nick\nD1:Up\nD2!\n\n"\
-		"None\nNext\nScroll Page\nD1!\nD2!\n\n"\
+		"None\nNext\nScroll Page\nD1:Down\nD2!\n\n"\
 		"None\nPrior\nScroll Page\nD1:Up\nD2!\n\n"\
+		"S\nDown\nScroll Page\nD1:+1\nD2!\n\n"\
+		"S\nUp\nScroll Page\nD1:-1\nD2!\n\n"\
 		"None\nDown\nNext Command\nD1!\nD2!\n\n"\
 		"None\nUp\nLast Command\nD1!\nD2!\n\n"\
 		"None\nTab\nComplete nick/command\nD1!\nD2!\n\n"\
@@ -687,7 +689,7 @@ key_dialog_show ()
 	}
 
 	key_dialog =
-			  mg_create_generic_tab ("editkeys", _("X-Chat: Edit Key Bindings"),
+			  mg_create_generic_tab ("editkeys", _("X-Chat: Keyboard Shortcuts"),
 							TRUE, FALSE, key_dialog_close, NULL, 560, 330, &vbox, 0);
 
 	hbox = gtk_hbox_new (0, 2);
@@ -1229,28 +1231,51 @@ key_action_scroll_page (GtkWidget * wid, GdkEventKey * evt, char *d1,
 {
 	int value, end;
 	GtkAdjustment *adj;
-	int up = 0;
+	enum scroll_type { PAGE_UP, PAGE_DOWN, LINE_UP, LINE_DOWN };
+	int type = PAGE_DOWN;
 
-	if (d1 && d1[0] != 0)
-		up++;
-
-	if (sess)
+	if (d1)
 	{
-		adj = GTK_RANGE (sess->gui->vscrollbar)->adjustment;
-		if (up)						  /* PageUp */
-		{
-			value = adj->value - (adj->page_size - 1);
-			if (value < 0)
-				value = 0;
-		} else
-		{								  /* PageDown */
-			end = adj->upper - adj->lower - adj->page_size;
-			value = adj->value + (adj->page_size - 1);
-			if (value > end)
-				value = end;
-		}
-		gtk_adjustment_set_value (adj, value);
+		if (!strcasecmp (d1, "up"))
+			type = PAGE_UP;
+		else if (!strcasecmp (d1, "+1"))
+			type = LINE_DOWN;
+		else if (!strcasecmp (d1, "-1"))
+			type = LINE_UP;
 	}
+
+	if (!sess)
+		return 0;
+
+	adj = GTK_RANGE (sess->gui->vscrollbar)->adjustment;
+	end = adj->upper - adj->lower - adj->page_size;
+
+	switch (type)
+	{
+	case LINE_UP:
+		value = adj->value - 1.0;
+		break;
+
+	case LINE_DOWN:
+		value = adj->value + 1.0;
+		break;
+
+	case PAGE_UP:
+		value = adj->value - (adj->page_size - 1);
+		break;
+
+	default:	/* PAGE_DOWN */
+		value = adj->value + (adj->page_size - 1);
+		break;
+	}
+
+	if (value < 0)
+		value = 0;
+	if (value > end)
+		value = end;
+
+	gtk_adjustment_set_value (adj, value);
+
 	return 0;
 }
 

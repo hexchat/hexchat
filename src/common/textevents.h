@@ -93,10 +93,10 @@ N_("%C22*%O$t$1 removes ban on $2")},
 N_("%C22*%O$t%C26$1%O gives voice to%C26 $2")},
 
 {"Connected", pevt_generic_none_help, 0, 
-N_("%C22*%O$t%C22Connected. Now logging in..")},
+N_("%C22*%O$t%C22Connected. Now logging in...")},
 
 {"Connecting", pevt_connect_help, 3, 
-N_("%C22*%O$t%C22Connecting to $1 ($2) port $3%O..")},
+N_("%C22*%O$t%C22Connecting to $1 ($2) port $3%O...")},
 
 {"Connection Failed", pevt_connfail_help, 1, 
 N_("%C21*%O$t%C21Connection failed. Error: $1")},
@@ -120,7 +120,7 @@ N_("%C22*%O$tDCC CHAT to %C26$1%O aborted.")},
 N_("%C22*%O$tDCC CHAT connection established to %C26$1 %C30[%O$2%C30]")},
 
 {"DCC CHAT Failed", pevt_dccchaterr_help, 4, 
-N_("%C22*%O$tDCC CHAT to %C26$1%O lost. $4.")},
+N_("%C22*%O$tDCC CHAT to %C26$1%O lost ($4).")},
 
 {"DCC CHAT Offer", pevt_generic_nick_help, 1, 
 N_("%C22*%O$tReceived a DCC CHAT offer from $1")},
@@ -159,7 +159,7 @@ N_("%C22*%O$tDCC RECV%C26 $1%O from%C26 $3%O complete %C30[%C26$4%O cps%C30]%O."
 N_("%C22*%O$tDCC RECV connection established to%C26 $1 %C30[%O$2%C30]")},
 
 {"DCC RECV Failed", pevt_dccrecverr_help, 4, 
-N_("%C22*%O$tDCC RECV%C26 $1%O from%C26 $3%O failed. $4.")},
+N_("%C22*%O$tDCC RECV%C26 $1%O from%C26 $3%O failed ($4).")},
 
 {"DCC RECV File Open Error", pevt_generic_file_help, 2, 
 N_("%C22*%O$tDCC RECV: Cannot open $1 for writing ($2).")},
@@ -249,7 +249,7 @@ N_("%C16*%O$t$1%O")},
 N_("%C22*%O$t%C22MOTD Skipped.")},
 
 {"Nick Clash", pevt_nickclash_help, 2, 
-N_("%C22*%O$t$1 already in use. Retrying with $2..")},
+N_("%C22*%O$t$1 already in use. Retrying with $2...")},
 
 {"Nick Failed", pevt_generic_none_help, 0, 
 N_("%C22*%O$tNickname already in use. Use /NICK to try another.")},
@@ -291,7 +291,7 @@ N_("%C23*%O$t%C23$1 (%O%C23$2) has left $3")},
 N_("%C23*%O$t%C23$1 (%O%C23$2) has left $3 (%O%C23$4)")},
 
 {"Ping Reply", pevt_pingrep_help, 2, 
-N_("%C22*%O$tPing reply from $1 : $2 second(s)")},
+N_("%C22*%O$tPing reply from $1: $2 second(s)")},
 
 {"Ping Timeout", pevt_pingtimeout_help, 1, 
 N_("%C22*%O$tNo ping reply for $1 seconds, disconnecting.")},
@@ -315,7 +315,7 @@ N_("%C22*%O$t$1 sets modes%B %C30[%O$2%B%C30]")},
 N_("%C28-%C29$1/Wallops%C28-%O$t$2")},
 
 {"Resolving User", pevt_resolvinguser_help, 2, 
-N_("%C22*%O$tLooking up IP number for%C26 $1%O..")},
+N_("%C22*%O$tLooking up IP number for%C26 $1%O...")},
 
 {"Server Connected", pevt_generic_none_help, 0, 
 N_("%C22*%O$t%C22Connected.")},
@@ -378,7 +378,7 @@ N_("%C22*%O$t%C28[%O$1%C28]%O idle%C26 $2")},
 N_("%C22*%O$t%C28[%O$1%C28]%O idle%C26 $2%O, signon:%C26 $3")},
 
 {"WhoIs Name Line", pevt_whois1_help, 4, 
-N_("%C22*%O$t%C28[%O$1%C28] %C30(%O$2@$3%C30) %O: $4")},
+N_("%C22*%O$t%C28[%O$1%C28] %C30(%O$2@$3%C30)%O: $4")},
 
 {"WhoIs Server Line", pevt_whois3_help, 2, 
 N_("%C22*%O$t%C28[%O$1%C28]%O $2")},
