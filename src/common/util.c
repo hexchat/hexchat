@@ -677,17 +677,24 @@ tolowerStr (char *str)
 	}
 }*/
 
-/* thanks BitchX */
+/* This is originally from BitchX, but since added missing TLDs and
+   changed to a binary search */
+
+typedef struct
+{
+	char *code;
+	char *country;
+} Domain;
+
+static int
+country_compare (const void *a, const void *b)
+{
+	return strcasecmp (a, ((Domain *)b)->code);
+}
 
 char *
 country (char *hostname)
 {
-	typedef struct _domain
-	{
-		char *code;
-		char *country;
-	}
-	Domain;
 	static const Domain domain[] = {
 		{"AD", N_("Andorra") },
 		{"AE", N_("United Arab Emirates") },
@@ -700,8 +707,10 @@ country (char *hostname)
 		{"AO", N_("Angola") },
 		{"AQ", N_("Antarctica") },
 		{"AR", N_("Argentina") },
+		{"ARPA", N_("Reverse DNS") },
 		{"AS", N_("American Samoa") },
 		{"AT", N_("Austria") },
+		{"ATO", N_("Nato Fiel") },
 		{"AU", N_("Australia") },
 		{"AW", N_("Aruba") },
 		{"AZ", N_("Azerbaijan") },
@@ -713,6 +722,7 @@ country (char *hostname)
 		{"BG", N_("Bulgaria") },
 		{"BH", N_("Bahrain") },
 		{"BI", N_("Burundi") },
+		{"BIZ", N_("Businesses"), },
 		{"BJ", N_("Benin") },
 		{"BM", N_("Bermuda") },
 		{"BN", N_("Brunei Darussalam") },
@@ -735,6 +745,7 @@ country (char *hostname)
 		{"CM", N_("Cameroon") },
 		{"CN", N_("China") },
 		{"CO", N_("Colombia") },
+		{"COM", N_("Internic Commercial") },
 		{"CR", N_("Costa Rica") },
 		{"CS", N_("Former Czechoslovakia") },
 		{"CU", N_("Cuba") },
@@ -749,6 +760,7 @@ country (char *hostname)
 		{"DO", N_("Dominican Republic") },
 		{"DZ", N_("Algeria") },
 		{"EC", N_("Ecuador") },
+		{"EDU", N_("Educational Institution") },
 		{"EE", N_("Estonia") },
 		{"EG", N_("Egypt") },
 		{"EH", N_("Western Sahara") },
@@ -773,6 +785,7 @@ country (char *hostname)
 		{"GL", N_("Greenland") },
 		{"GM", N_("Gambia") },
 		{"GN", N_("Guinea") },
+		{"GOV", N_("Government") },
 		{"GP", N_("Guadeloupe") },
 		{"GQ", N_("Equatorial Guinea") },
 		{"GR", N_("Greece") },
@@ -791,6 +804,8 @@ country (char *hostname)
 		{"IE", N_("Ireland") },
 		{"IL", N_("Israel") },
 		{"IN", N_("India") },
+		{"INFO", N_("Informational") },
+		{"INT", N_("International") },
 		{"IO", N_("British Indian Ocean Territory") },
 		{"IQ", N_("Iraq") },
 		{"IR", N_("Iran") },
@@ -824,8 +839,10 @@ country (char *hostname)
 		{"MA", N_("Morocco") },
 		{"MC", N_("Monaco") },
 		{"MD", N_("Moldova") },
+		{"MED", N_("United States Medical") },
 		{"MG", N_("Madagascar") },
 		{"MH", N_("Marshall Islands") },
+		{"MIL", N_("Military") },
 		{"MK", N_("Macedonia") },
 		{"ML", N_("Mali") },
 		{"MM", N_("Myanmar") },
@@ -845,6 +862,7 @@ country (char *hostname)
 		{"NA", N_("Namibia") },
 		{"NC", N_("New Caledonia") },
 		{"NE", N_("Niger") },
+		{"NET", N_("Internic Network") },
 		{"NF", N_("Norfolk Island") },
 		{"NG", N_("Nigeria") },
 		{"NI", N_("Nicaragua") },
@@ -856,6 +874,7 @@ country (char *hostname)
 		{"NU", N_("Niue") },
 		{"NZ", N_("New Zealand") },
 		{"OM", N_("Oman") },
+		{"ORG", N_("Internic Non-Profit Organization") },
 		{"PA", N_("Panama") },
 		{"PE", N_("Peru") },
 		{"PF", N_("French Polynesia") },
@@ -872,10 +891,11 @@ country (char *hostname)
 		{"QA", N_("Qatar") },
 		{"RE", N_("Reunion") },
 		{"RO", N_("Romania") },
+		{"RPA", N_("Old School ARPAnet") },
 		{"RU", N_("Russian Federation") },
 		{"RW", N_("Rwanda") },
 		{"SA", N_("Saudi Arabia") },
-		{"Sb", N_("Solomon Islands") },
+		{"SB", N_("Solomon Islands") },
 		{"SC", N_("Seychelles") },
 		{"SD", N_("Sudan") },
 		{"SE", N_("Sweden") },
@@ -933,31 +953,24 @@ country (char *hostname)
 		{"ZM", N_("Zambia") },
 		{"ZR", N_("Zaire") },
 		{"ZW", N_("Zimbabwe") },
-		{"COM", N_("Internic Commercial") },
-		{"EDU", N_("Educational Institution") },
-		{"GOV", N_("Government") },
-		{"INT", N_("International") },
-		{"MIL", N_("Military") },
-		{"NET", N_("Internic Network") },
-		{"ORG", N_("Internic Non-Profit Organization") },
-		{"RPA", N_("Old School ARPAnet") },
-		{"ATO", N_("Nato Fiel") },
-		{"MED", N_("United States Medical") },
-		{"ARPA", N_("Reverse DNS") },
-		{NULL, NULL}
 	};
 	char *p;
-	int i;
+	Domain *dom;
+
 	if (!hostname || !*hostname || isdigit (hostname[strlen (hostname) - 1]))
 		return _("Unknown");
 	if ((p = strrchr (hostname, '.')))
 		p++;
 	else
 		p = hostname;
-	for (i = 0; domain[i].code; i++)
-		if (!strcasecmp (p, domain[i].code))
-			return _(domain[i].country);
-	return _("Unknown");
+
+	dom = bsearch (p, domain, sizeof (domain) / sizeof (Domain),
+						sizeof (Domain), country_compare);
+
+	if (!dom)
+		return _("Unknown");
+
+	return _(dom->country);
 }
 
 /* I think gnome1.0.x isn't necessarily linked against popt, ah well! */
