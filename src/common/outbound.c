@@ -3143,11 +3143,22 @@ handle_say (session *sess, char *text, int check_spch)
 		/* maximum allowed message text */
 		/* PRIVMSG #channel :text\r\n */
 		/* 12345678        90    12 */
-		max = 456 - strlen (sess->channel);
+		max = 437 - strlen (sess->channel);
 
 		if (strlen (text) > max)
 		{
-			/* FIXME: utf8 */
+			int i = 0, size;
+
+			/* traverse the utf8 string and find the nearest cut point that
+				doesn't split 1 char in half */
+			while (1)
+			{
+				size = g_utf8_skip[((unsigned char *)text)[i]];
+				if ((i + size) >= max)
+					break;
+				i += size;
+			}
+			max = i;
 			t = text[max];
 			text[max] = 0;			  /* insert a NULL terminator to shorten it */
 		}

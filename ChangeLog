@@ -15,7 +15,7 @@
    back to ISO-8859-1 when using UTF-8 only (Ilya Konstantinov).
  - Fixed perl IRC::get_info(3) crash when not connected [732496].
  - Fixed crash on long output lines for /exec -o [731187].
- - Make "Move completed files to:" and "Save nickname in filenames"
+ - Made "Move completed files to:" and "Save nickname in filenames"
    work at the same time (Matthew Gabeler-Lee).
  - xtext: fix redraw when new additions not on current page.
  - win32: Added /set identd 0 switch to turn off built-in identd. 
@@ -26,6 +26,9 @@
  - Fixed ChannelList crash on invalid regex match string.
  - Added hide join/parts setting to gui (Jason Wies).
  - Added Delete All button to ignore window (Mohammed Sameer).
+ - Don't allow adding empty names to notify list [741589].
+ - Made message fragmentation code utf8 friendly so it always splits
+   on a multibyte char boundary [748653].
  - 
  - 
 

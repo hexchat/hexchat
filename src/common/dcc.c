@@ -1462,7 +1462,7 @@ dcc_malformed (struct session *sess, char *nick, char *data)
 	EMIT_SIGNAL (XP_TE_MALFORMED, sess, nick, data, NULL, NULL, 0);
 }
 
-void
+int
 dcc_resume (struct DCC *dcc)
 {
 	char tbuf[500];
@@ -1479,7 +1479,10 @@ dcc_resume (struct DCC *dcc)
  			sprintf (tbuf + strlen (tbuf), " %d", dcc->pasvid);
 
 		dcc->serv->p_ctcp (dcc->serv, dcc->nick, tbuf);
+		return 1;
 	}
+
+	return 0;
 }
 
 void

@@ -304,14 +304,13 @@ static void
 resume_clicked (GtkWidget * wid, gpointer none)
 {
 	int row;
-	struct DCC *dcc;
 
 	row = gtkutil_clist_selection (dccrwin.list);
 	if (row != -1)
 	{
-		dcc = gtk_clist_get_row_data (GTK_CLIST (dccrwin.list), row);
 		gtk_clist_unselect_row (GTK_CLIST (dccrwin.list), row, 0);
-		dcc_resume (dcc);
+		if (!dcc_resume (gtk_clist_get_row_data (GTK_CLIST (dccrwin.list), row)))
+			gtkutil_simpledialog (_("That file is not resumable."));
 	}
 }
 

@@ -69,7 +69,7 @@ extern struct dccstat_info dccstat[];
 
 void dcc_abort (session *sess, struct DCC *dcc);
 void dcc_get (struct DCC *dcc);
-void dcc_resume (struct DCC *dcc);
+int dcc_resume (struct DCC *dcc);
 void dcc_check_timeouts (void);
 void dcc_change_nick (server *serv, char *oldnick, char *newnick);
 void dcc_notify_kill (struct server *serv);
