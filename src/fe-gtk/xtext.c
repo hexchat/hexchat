@@ -95,6 +95,7 @@ struct textentry
 	gint16 left_len;
 	gint16 lines_taken;
 	unsigned int mb:1;	/* is multibyte? */
+	unsigned int new:1;	/* new and hasn't been drawn yet? */
 };
 
 enum
@@ -3257,6 +3258,7 @@ gtk_xtext_render_line (GtkXText * xtext, textentry * ent, int line,
 	taken = 0;
 	str = ent->str;
 	indent = ent->indent;
+	ent->new = 0;
 
 #ifdef XCHAT
 	/* draw the timestamp */
@@ -3645,11 +3647,7 @@ gtk_xtext_render_ents (GtkXText * xtext, textentry * enta, textentry * entb)
 	if (width < 32 || height < xtext->fontsize || width < xtext->buffer->indent + 30)
 		return;
 
-#ifdef SMOOTH_SCROLL
-	lines_max = (height - xtext->font->descent + xtext->pixel_offset) / xtext->fontsize + 1;
-#else
-	lines_max = (height - xtext->font->descent) / xtext->fontsize;
-#endif
+	lines_max = ((height + xtext->pixel_offset) / xtext->fontsize) + 1;
 	line = 0;
 	orig_ent = xtext->buffer->pagetop_ent;
 	subline = xtext->buffer->pagetop_subline;
@@ -3703,6 +3701,33 @@ gtk_xtext_render_ents (GtkXText * xtext, textentry * enta, textentry * entb)
 	}
 }
 
+#ifdef SCROLL_HACK
+
+static int
+gtk_xtext_draw_new_lines (GtkXText *xtext)
+{
+	textentry *ent;
+	int ret = 0;
+
+	ent = xtext->buffer->text_last;
+	while (ent)
+	{
+		if (!ent->new)
+			break;
+		ent = ent->prev;
+	}
+
+	if (ent && ent->next)
+	{
+		gtk_xtext_render_ents (xtext, ent->next, xtext->buffer->text_last);
+		ret = 1;
+	}
+
+	return ret;
+}
+
+#endif
+
 /* render a whole page/window, starting from 'startline' */
 
 static void
@@ -3729,12 +3754,11 @@ gtk_xtext_render_page (GtkXText * xtext)
 
 #ifdef SMOOTH_SCROLL
 	xtext->pixel_offset = ((float)((float)xtext->adj->value - (float)startline) * xtext->fontsize);
-	lines_max = (height - xtext->font->descent + xtext->pixel_offset) / xtext->fontsize + 1;
 #else
 	xtext->pixel_offset = 0;
-	lines_max = (height - xtext->font->descent) / xtext->fontsize;
 #endif
 
+	lines_max = ((height + xtext->pixel_offset) / xtext->fontsize) + 1;
 	subline = line = 0;
 	ent = xtext->buffer->text_first;
 
@@ -3747,14 +3771,14 @@ gtk_xtext_render_page (GtkXText * xtext)
 
 #ifdef SCROLL_HACK
 {
-	int pos, overlap, remainder;
+	int pos, ended = 0, overlap;
 	GdkRectangle area;
 
 	pos = xtext->adj->value * xtext->fontsize;
 	overlap = xtext->buffer->last_pixel_pos - pos;
 	xtext->buffer->last_pixel_pos = pos;
 
-	if (!xtext->pixmap && (overlap < 0 ? -overlap : overlap) < height)
+	if (!xtext->pixmap && abs (overlap) < height - (3*xtext->fontsize))
 	{
 		/* so the obscured regions are exposed */
 		gdk_gc_set_exposures (xtext->fgc, TRUE);
@@ -3762,12 +3786,9 @@ gtk_xtext_render_page (GtkXText * xtext)
 		{
 			gdk_draw_drawable (xtext->draw_buf, xtext->fgc, xtext->draw_buf,
 									 0, -overlap, 0, 0, width, height + overlap);
-			/* to fill the area below the last line */
-			/*remainder = (height-xtext->font->descent) % xtext->fontsize;*/
-			/* this is a few pixels more than we need to draw, but who cares */
-			remainder = xtext->fontsize;
-			area.y = (height + overlap) - remainder;
-			area.height = -overlap + remainder;
+			area.y = height + overlap;
+			area.height = -overlap;
+			ended = gtk_xtext_draw_new_lines (xtext);
 		} else
 		{
 			gdk_draw_drawable (xtext->draw_buf, xtext->fgc, xtext->draw_buf,
@@ -3777,9 +3798,13 @@ gtk_xtext_render_page (GtkXText * xtext)
 		}
 		gdk_gc_set_exposures (xtext->fgc, FALSE);
 
-		area.x = 0;
-		area.width = width;
-		gtk_xtext_paint (GTK_WIDGET (xtext), &area);
+		if (!ended && area.height > 0)
+		{
+			area.x = 0;
+			area.width = width;
+			gtk_xtext_paint (GTK_WIDGET (xtext), &area);
+		}
+
 		return;
 	}
 }
@@ -4007,12 +4032,6 @@ gtk_xtext_append_entry (xtext_buffer *buf, textentry * ent)
 	ent->lines_taken = gtk_xtext_lines_taken (buf, ent);
 	buf->num_lines += ent->lines_taken;
 
-#ifdef SCROLL_HACK
-	/* this could be improved */
-	if (buf->num_lines <= buf->xtext->adj->page_size)
-		dontscroll (buf);
-#endif
-
 	if (buf->xtext->max_lines > 2 && buf->xtext->max_lines < buf->num_lines)
 	{
 		gtk_xtext_remove_top (buf);
@@ -4020,6 +4039,15 @@ gtk_xtext_append_entry (xtext_buffer *buf, textentry * ent)
 
 	if (buf->xtext->buffer == buf)
 	{
+#ifdef SCROLL_HACK
+		/* this could be improved */
+		if (buf->num_lines <= buf->xtext->adj->page_size)
+			dontscroll (buf);
+#endif
+
+		if (buf->scrollbar_down)
+			ent->new = 1;
+
 		if (!buf->xtext->add_io_tag)
 		{
 			buf->xtext->add_io_tag = g_timeout_add (REFRESH_TIMEOUT * 2,
