@@ -246,6 +246,7 @@ struct xchatprefs
 	unsigned int wait_on_exit;
 	unsigned int confmode;
 	unsigned int utf8_locale;
+	unsigned int identd;
 
 	unsigned int ctcp_number_limit;	/*flood */
 	unsigned int ctcp_time_limit;	/*seconds of floods */

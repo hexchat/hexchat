@@ -438,7 +438,8 @@ server_connected (server * serv)
 	serv->ping_recv = time (0);
 
 #ifdef WIN32
-	identd_start ();
+	if (prefs.identd)
+		identd_start ();
 #else
 	sprintf (outbuf, "%s/auth/xchat_auth", g_get_home_dir ());
 	if (access (outbuf, X_OK) == 0)

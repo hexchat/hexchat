@@ -408,6 +408,9 @@ const struct prefs vars[] = {
 	{"hebrew", P_OFFINT (hebrew), TYPE_BOOL},
 #endif
 
+#ifdef WIN32
+	{"identd", PREFS_OFFINT (identd), TYPE_BOOL},
+#endif
 	{"input_beep_chans", P_OFFINT (beepchans), TYPE_BOOL},
 	{"input_beep_hilight", P_OFFINT (beephilight), TYPE_BOOL},
 	{"input_beep_msg", P_OFFINT (beepmsg), TYPE_BOOL},
@@ -563,6 +566,9 @@ load_config (void)
 	prefs.perc_color = 1;
 	prefs.dcc_send_fillspaces = 1;
 	prefs.mainwindow_save = 1;
+#ifdef WIN32
+	prefs.identd = 1;
+#endif
 	strcpy (prefs.stamp_format, "[%H:%M] ");
 	strcpy (prefs.timestamp_log_format, "%b %d %H:%M:%S ");
 	strcpy (prefs.logmask, "%n-%c.log");

@@ -197,6 +197,14 @@ xchat_dummy (xchat_plugin *ph)
 {
 }
 
+#ifdef WIN32
+static int
+xchat_read_fd (xchat_plugin *ph, GIOChannel *source, char *buf, int *len)
+{
+	return g_io_channel_read (source, buf, *len, len);
+}
+#endif
+
 /* Load a static plugin */
 
 void
@@ -241,7 +249,11 @@ plugin_add (session *sess, char *filename, void *handle, void *init_func,
 		pl->xchat_plugingui_remove = xchat_plugingui_remove;
 		pl->xchat_emit_print = xchat_emit_print;
 		/* incase new plugins are loaded on older xchat */
+#ifdef WIN32
+		pl->xchat_dummy8 = (void *) xchat_read_fd;
+#else
 		pl->xchat_dummy8 = xchat_dummy;
+#endif
 		pl->xchat_dummy7 = xchat_dummy;
 		pl->xchat_dummy6 = xchat_dummy;
 		pl->xchat_dummy5 = xchat_dummy;
@@ -578,6 +590,7 @@ static gboolean
 plugin_fd_cb (GIOChannel *source, GIOCondition condition, xchat_hook *hook)
 {
 	int flags = 0;
+	typedef int (xchat_fd_cb2) (int fd, int flags, void *user_data, GIOChannel *);
 
 	if (condition & G_IO_IN)
 		flags |= XCHAT_FD_READ;
@@ -586,7 +599,7 @@ plugin_fd_cb (GIOChannel *source, GIOCondition condition, xchat_hook *hook)
 	if (condition & G_IO_PRI)
 		flags |= XCHAT_FD_EXCEPTION;
 
-	return ((xchat_fd_cb *)hook->callback) (hook->pri, flags, hook->userdata);
+	return ((xchat_fd_cb2 *)hook->callback) (hook->pri, flags, hook->userdata, source);
 }
 
 /* allocate and add a hook to our list. Used for all 4 types */

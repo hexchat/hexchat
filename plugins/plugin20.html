@@ -563,7 +563,7 @@ not be freed and must be copied if needed after the call to xchat_get_info.
 	int i;
 	char *str;
 
-	if (xchat_get_prefs (ph, "irc_nick1", &str, &i) == 1)
+	if (xchat_get_prefs (ph, "irc_nick1", &amp;str, &amp;i) == 1)
 	{
 		xchat_printf (ph, "Current nickname setting: %s\n", str);
 	}
