@@ -240,10 +240,8 @@ struct xchatprefs
 	unsigned int lagometer;
 	unsigned int throttlemeter;
 	unsigned int hebrew;
-	unsigned int limitedtabhighlight;
 	unsigned int pingtimeout;
 	unsigned int whois_on_notifyonline;
-	unsigned int persist_chans;
 	unsigned int wait_on_exit;
 	unsigned int confmode;
 	unsigned int utf8_locale;

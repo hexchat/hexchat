@@ -1689,7 +1689,7 @@ cmd_join (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	{
 		char *po, *pass = word[3];
 		sess->server->p_join (sess->server, chan, pass);
-		if (sess->channel[0] == 0 && !prefs.persist_chans)
+		if (sess->channel[0] == 0 && sess->waitchannel[0])
 		{
 			po = strchr (chan, ',');
 			if (po)

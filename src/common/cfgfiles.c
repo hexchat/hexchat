@@ -419,7 +419,6 @@ const struct prefs vars[] = {
 	{"irc_nick2", P_OFFSET (nick2), TYPE_STR},
 	{"irc_nick3", P_OFFSET (nick3), TYPE_STR},
 	{"irc_part_reason", P_OFFSET (partreason), TYPE_STR},
-	{"irc_persist_chans", P_OFFINT (persist_chans), TYPE_BOOL},
 	{"irc_raw_modes", P_OFFINT (raw_modes), TYPE_BOOL},
 	{"irc_real_name", P_OFFSET (realname), TYPE_STR},
 	{"irc_quit_reason", P_OFFSET (quitreason), TYPE_STR},
@@ -462,7 +461,7 @@ const struct prefs vars[] = {
 
 	{"tab_dialogs", P_OFFINT (privmsgtab), TYPE_BOOL},
 	{"tab_chans", P_OFFINT (tabchannels), TYPE_BOOL},
-	{"tab_limited_hilight", P_OFFINT (limitedtabhighlight), TYPE_BOOL},
+/*	{"tab_limited_hilight", P_OFFINT (limitedtabhighlight), TYPE_BOOL},*/
 	{"tab_new_to_front", P_OFFINT (newtabstofront), TYPE_BOOL},
 	{"tab_notices", P_OFFINT (notices_tabs), TYPE_BOOL},
 	{"tab_position", P_OFFINT (tabs_position), TYPE_INT},
@@ -560,7 +559,6 @@ load_config (void)
 	prefs.chanmodebuttons = 1;
 	prefs.userhost = 1;
 	prefs.userlistbuttons = 1;
-	prefs.persist_chans = 1;
 	prefs.perc_color = 1;
 	prefs.dcc_send_fillspaces = 1;
 	prefs.mainwindow_save = 1;

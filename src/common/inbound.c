@@ -63,8 +63,7 @@ color_of (char *name)
 void
 clear_channel (session *sess)
 {
-	if (prefs.persist_chans)
-		strcpy (sess->waitchannel, sess->channel);
+	strcpy (sess->waitchannel, sess->channel);
 	sess->channel[0] = 0;
 
 	log_close (sess);
@@ -390,7 +389,7 @@ find_unused_session (server *serv)
 		if (sess->type == SESS_CHANNEL && sess->channel[0] == 0 &&
 			 sess->server == serv)
 		{
-			if (!prefs.persist_chans || sess->waitchannel[0] == 0)
+			if (sess->waitchannel[0] == 0)
 				return sess;
 		}
 		list = list->next;
