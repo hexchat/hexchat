@@ -63,7 +63,7 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
 
 %files -f %{name}.lang
 %defattr(-,root,root)
-%doc README ChangeLog faq.html COPYING plugins/plugin20.html plugins/perl/xchat-perl18.html
+%doc README ChangeLog faq.html COPYING plugins/plugin20.html plugins/perl/xchat2-perldocs.html
 %{_bindir}/xchat
 %{_datadir}/applications/xchat.desktop
 %{_datadir}/pixmaps/xchat.png
