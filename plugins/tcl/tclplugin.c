@@ -1966,7 +1966,7 @@ int xchat_plugin_init(xchat_plugin * plugin_handle, char **plugin_name, char **p
 {
 #ifdef WIN32
     static int have_lib = 0;
-    HANDLE lib;
+    HINSTANCE lib;
 #endif
 
     ph = plugin_handle;
@@ -1974,7 +1974,7 @@ int xchat_plugin_init(xchat_plugin * plugin_handle, char **plugin_name, char **p
 #ifdef WIN32
     if (!have_lib) {
         lib = LoadLibrary("tcl84.dll");
-        if (lib <= HINSTANCE_ERROR) {
+        if (!lib) {
             banner();
             xchat_print(ph, "---\t---\n");
             xchat_print(ph, "Cannot open tcl84.dll.\n");
