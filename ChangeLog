@@ -18,7 +18,8 @@
  - Added Sort button to the server list window (David Oftedal and
    Tim-Philipp Mueller).
  - Tab button selection fix (Guillaume Knispel).
- - Added marker-line feature (Thomas Kockerbauer).
+ - Added marker-line feature. Shows a red-line to indicate the place
+   where you last read up to (Thomas Kockerbauer).
  - The "Get my IP from Server" feature now works on networks that
    hide your hostname too (by using the USERHOST command).
  - Win32: Fixed CPS calculation for file transfers [824934].
@@ -29,7 +30,9 @@
  - Double middle-clicking a nickname in the text area will now select
    it in the userlist.
  - Included a work-around to stop X-Sys plugin crashing with GTK 2.4.
- - Smaller bugs: [970746] [968652].
+ - Fixed: /list output going to the current tab [970746].
+ - Fixed: Serverlist crash while editing a port-number, and switching
+   to another network before pressing enter [968652].
 
 
 ----------------------------------------------------------------------
