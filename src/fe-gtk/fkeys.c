@@ -1564,7 +1564,7 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 					{
 						len = strlen (buf);	/* current buffer */
 						elen = strlen (list->data);	/* next item to add */
-						if (len + elen >= COMP_BUF)
+						if (len + elen + 2 >= COMP_BUF) /* +2 is space + null */
 						{
 							PrintText (sess, buf);
 							buf[0] = 0;
