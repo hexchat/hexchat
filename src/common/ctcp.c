@@ -85,7 +85,7 @@ ctcp_handle (session *sess, char *to, char *nick,
 	server *serv = sess->server;
 	char outbuf[1024];
 
-	if (!strncasecmp (msg, "VERSION", 7) && !prefs.hidever)
+	if (!strcasecmp (msg, "VERSION") && !prefs.hidever)
 	{
 		snprintf (outbuf, sizeof (outbuf), "VERSION xchat "VERSION" %s",
 					 get_cpu_str ());

@@ -631,7 +631,9 @@ gtk_xtext_init (GtkXText * xtext)
 	xtext->jump_in_offset = 0;
 	xtext->ts_x = 0;
 	xtext->ts_y = 0;
+	xtext->clip_x = 0;
 	xtext->clip_x2 = 1000000;
+	xtext->clip_y = 0;
 	xtext->clip_y2 = 1000000;
 	xtext->error_function = NULL;
 	xtext->urlcheck_function = NULL;
@@ -1260,7 +1262,9 @@ gtk_xtext_paint (GtkWidget *widget, GdkRectangle *area)
 		/* fill any space below the last line that also intersects with
 			the exposure rectangle */
 		if (gdk_rectangle_intersect (area, &rect, &rect))
+		{
 			xtext_draw_bg (xtext, rect.x, rect.y, rect.width, rect.height);
+		}
 	}
 
 	/*backend_clear_clip (xtext);*/
@@ -2461,7 +2465,7 @@ gtk_xtext_render_flush (GtkXText * xtext, int x, int y, unsigned char *str,
 	/* roll-your-own clipping (avoiding XftDrawString is always good!) */
 	if (x > xtext->clip_x2 || x + str_width < xtext->clip_x)
 		return str_width;
-	if (y - xtext->font->ascent > xtext->clip_y2 || (y + xtext->fontsize) - xtext->font->ascent < xtext->clip_y)
+	if (y - xtext->font->ascent > xtext->clip_y2 || (y - xtext->font->ascent) + xtext->fontsize < xtext->clip_y)
 		return str_width;
 
 	if (xtext->render_hilights_only)
@@ -2513,13 +2517,34 @@ gtk_xtext_render_flush (GtkXText * xtext, int x, int y, unsigned char *str,
 #ifdef USE_DB
 	if (pix)
 	{
+		GdkRectangle clip;
+		GdkRectangle dest;
+
 		gdk_gc_set_ts_origin (xtext->bgc, xtext->ts_x, xtext->ts_y);
 		xtext->draw_buf = GTK_WIDGET (xtext)->window;
 #ifdef USE_XFT
 		XftDrawChange (xtext->xftdraw, GDK_WINDOW_XWINDOW (xtext->draw_buf));
 #endif
+#if 0
 		gdk_draw_drawable (xtext->draw_buf, xtext->bgc, pix, 0, 0, dest_x,
 								 dest_y, str_width, xtext->fontsize);
+#else
+		clip.x = xtext->clip_x;
+		clip.y = xtext->clip_y;
+		clip.width = xtext->clip_x2 - xtext->clip_x;
+		clip.height = xtext->clip_y2 - xtext->clip_y;
+
+		dest.x = dest_x;
+		dest.y = dest_y;
+		dest.width = str_width;
+		dest.height = xtext->fontsize;
+
+		if (gdk_rectangle_intersect (&clip, &dest, &dest))
+			/* dump the DB to window, but only within the clip_x/x2/y/y2 */
+			gdk_draw_drawable (xtext->draw_buf, xtext->bgc, pix,
+									 dest.x - dest_x, dest.y - dest_y,
+									 dest.x, dest.y, dest.width, dest.height);
+#endif
 		g_object_unref (pix);
 	}
 #endif
@@ -2623,7 +2648,7 @@ gtk_xtext_render_str (GtkXText * xtext, int y, textentry * ent,
 	}
 #endif
 
-	if (!xtext->skip_border_fills)
+	if (!xtext->skip_border_fills && !xtext->dont_render)
 	{
 		/* draw background to the left of the text */
 		if (str == ent->str && indent > MARGIN && xtext->buffer->time_stamp)
@@ -2637,8 +2662,11 @@ gtk_xtext_render_str (GtkXText * xtext, int y, textentry * ent,
 		} else
 		{
 			/* fill the indent area with background gc */
-			xtext_draw_bg (xtext, 0, y - xtext->font->ascent, indent,
-								xtext->fontsize);
+			if (indent >= xtext->clip_x)
+			{
+				xtext_draw_bg (xtext, 0, y - xtext->font->ascent, indent,
+									xtext->fontsize);
+			}
 		}
 	}
 
@@ -2886,15 +2914,19 @@ gtk_xtext_render_str (GtkXText * xtext, int y, textentry * ent,
 	}
 
 	/* draw background to the right of the text */
-	if (!left_only)
+	if (!left_only && !xtext->dont_render)
 	{
 		/* draw separator now so it doesn't appear to flicker */
 		gtk_xtext_draw_sep (xtext, y - xtext->font->ascent);
 		if (!xtext->skip_border_fills && xtext->clip_x2 >= x)
 		{
-			xtext_draw_bg (xtext, x, y - xtext->font->ascent,
-								MIN (xtext->clip_x2, (win_width + MARGIN) - x),
-								xtext->fontsize);
+			int xx = MAX (x, xtext->clip_x);
+
+			xtext_draw_bg (xtext,
+								xx,	/* x */
+								y - xtext->font->ascent, /* y */
+				MIN (xtext->clip_x2 - xx, (win_width + MARGIN) - xx), /* width */
+								xtext->fontsize);		/* height */
 		}
 	}
 
