@@ -17,10 +17,6 @@
 
 #define VERSION "1.0.16"
 
-#ifdef WIN32
-#define strcasecmp stricmp
-#endif
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -33,6 +29,10 @@
 
 #ifdef WIN32
 #include <windows.h>
+#endif
+
+#ifdef WIN32
+#define strcasecmp stricmp
 #endif
 
 #include "xchat-plugin.h"
