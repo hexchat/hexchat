@@ -1013,23 +1013,18 @@ mg_chanmodebuttons_showhide (session *sess, int show)
 void
 mg_userlist_showhide (session *sess, int show)
 {
-	GtkWidget *box;
 	session_gui *gui = sess->gui;
-
-	box = gui->user_box;
 
 	if (!show || prefs.hideuserlist)
 	{
 		if (gui->pane)
 			gtk_paned_set_position (GTK_PANED (gui->pane), 9999);
-		else
-			gtk_widget_hide (box);
+		gtk_widget_hide (gui->user_box);
 	} else
 	{
 		if (gui->pane)
 			gtk_paned_set_position (GTK_PANED (gui->pane), gui->pane_pos);
-		else
-			gtk_widget_show (box);
+		gtk_widget_show (gui->user_box);
 	}
 }
 
