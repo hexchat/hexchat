@@ -157,6 +157,8 @@ process_data_init (unsigned char *buf, unsigned char *cmd, char *word[],
 	int j = 0;
 	int len;
 
+	word[0] = "";
+	word_eol[0] = "";
 	word[1] = buf;
 	word_eol[1] = cmd;
 
@@ -3110,6 +3112,24 @@ handle_user_input (session *sess, char *text, int history, int nocommand)
 	{
 		handle_say (sess, text + 1, TRUE);
 		return 1;
+	}
+
+	if (prefs.cmdchar[0] == '/')
+	{
+		int i;
+		const char *unix_dirs [] = {
+			"/bin/", "/boot/", "/dev/",
+			"/etc/", "/home/", "/lib/",
+			"/lost+found/", "/mnt/", "/opt/",
+			"/proc/", "/root/", "/sbin/",
+			"/tmp/", "/usr/", "/var/",
+			"/gnome/", NULL};
+		for (i = 0; unix_dirs[i] != NULL; i++)
+			if (strncmp (text, unix_dirs[i], strlen (unix_dirs[i]))==0)
+			{
+				handle_say (sess, text, TRUE);
+				return 1;
+			}
 	}
 
 	return handle_command (sess, text + 1, TRUE);
