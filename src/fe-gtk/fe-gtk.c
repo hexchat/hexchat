@@ -259,7 +259,15 @@ fe_new_window (session *sess)
 	if (locale == NULL)
 	{
 		g_get_charset (&locale);
-		PrintTextf (sess, "Report crashes! http://xchat.org/gdb.html Encoding: %s\n\n", locale);
+		PrintTextf (sess, "Report crashes! http://xchat.org/gdb.html\n\n"
+								"Encoding: %s\n"
+								"Renderer: %s\n\n", locale,
+#ifdef USE_XFT
+		"Xft"
+#else
+		"Pango"
+#endif
+						);
 	}
 }
 

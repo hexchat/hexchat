@@ -788,7 +788,7 @@ menu_autodccsend (GtkWidget * wid, gpointer none)
 #ifndef WIN32
 	if (prefs.autodccsend)
 	{
-		if (!strcasecmp ((char *)g_get_home_dir (), prefs.dccdir))
+		if (!strcmp ((char *)g_get_home_dir (), prefs.dccdir))
 		{
 			gtkutil_simpledialog (_("*WARNING*\n"
 										 "Auto accepting DCC to your home directory\n"
@@ -944,7 +944,6 @@ menu_pluginlist (void)
 
 #else
 
-#define menu_unloadallplugins 0
 #define menu_pluginlist 0
 #define menu_loadplugin 0
 

@@ -65,10 +65,6 @@ AC_ARG_ENABLE(socks,
 [  --enable-socks          enable use of SOCKS5 (default: no)],
         socks=$enableval, socks=no)
 
-AC_ARG_ENABLE(openssl,
-[  --enable-openssl[=PATH] enable use of openSSL (default: no)],
-        openssl=$enableval, openssl=no)
-
 AC_ARG_ENABLE(hebrew,
 [  --enable-hebrew         enable Hebrew support (default: no)],
         hebrew=$enableval, hebrew=no)
@@ -77,10 +73,14 @@ AC_ARG_ENABLE(ipv6,
 [  --enable-ipv6           enable IPv6 (default: no)],
         ipv6=$enableval, ipv6=no)
 
-AC_ARG_ENABLE(japanese-conv, 
-[  --enable-japanese-conv  Enable Japanese code conversion support.
-                          iconv.h is needed. (default: no)],
-			WITH_JAPANESE=$enableval, WITH_JAPANESE=no)
+#AC_ARG_ENABLE(japanese-conv, 
+#[  --enable-japanese-conv  Enable Japanese code conversion support.
+#                          iconv.h is needed. (default: no)],
+#			WITH_JAPANESE=$enableval, WITH_JAPANESE=no)
+
+AC_ARG_ENABLE(openssl,
+[  --enable-openssl[=PATH]   enable use of openSSL],
+        openssl=$enableval, openssl=yes)
 
 AC_ARG_ENABLE(gtkfe,
 [  --disable-gtkfe         disable building gtk frontend],
@@ -427,10 +427,11 @@ dnl *********************************************************************
 dnl ** JAPANESE/ICONV ***************************************************
 dnl *********************************************************************
 
-if test "$WITH_JAPANESE" = "yes"; then
-	AC_CHECK_HEADER([iconv.h], AC_DEFINE(USE_JCODE))
-fi
-AM_CONDITIONAL(DO_ICONV, test "$WITH_JAPANESE" = "yes")
+#WITH_JAPANESE=no
+#if test "$WITH_JAPANESE" = "yes"; then
+#	AC_CHECK_HEADER([iconv.h], AC_DEFINE(USE_JCODE))
+#fi
+#AM_CONDITIONAL(DO_ICONV, test "$WITH_JAPANESE" = "yes")
 
 dnl *********************************************************************
 dnl ** MMX **************************************************************
@@ -577,7 +578,11 @@ echo python .............. : $python $PY_VERSION
 echo mmx tinting ......... : $mmx
 #echo zvt shell tab ....... : $zvt
 echo plugin interface .... : $plugin\	nls/gettext ......... : $USE_NLS
-echo link with socks5 .... : $socks\	xft text ............ : $xft
+if test "$xft" = no; then
+  echo link with socks5 .... : $socks\	text backend ........ : pango
+else
+  echo link with socks5 .... : $socks\	text backend ........ : xft
+fi
 echo openssl support ..... : $openssl
 #\	japanese conversion . : $WITH_JAPANESE
 echo ipv6 support ........ : $ipv6

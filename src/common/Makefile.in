@@ -176,8 +176,10 @@ EXTRA_DIST = makefile.msc \
 
 @USE_OPENSSL_TRUE@ssl_c = ssl.c
 
-@DO_ICONV_TRUE@jcode_c = jcode.c
 
+#if DO_ICONV
+#jcode_c = jcode.c
+#endif
 libxchatcommon_a_SOURCES = cfgfiles.c ctcp.c dcc.c history.c ignore.c \
 	inbound.c $(jcode_c) modes.c network.c notify.c outbound.c \
 	plugin.c plugin-timer.c proto-irc.c server.c servlist.c $(ssl_c) \
@@ -191,7 +193,6 @@ LIBRARIES = $(noinst_LIBRARIES)
 
 libxchatcommon_a_AR = $(AR) cru
 libxchatcommon_a_LIBADD =
-@DO_ICONV_TRUE@am__objects_1 = jcode.$(OBJEXT)
 @USE_OPENSSL_TRUE@am__objects_2 = ssl.$(OBJEXT)
 am_libxchatcommon_a_OBJECTS = cfgfiles.$(OBJEXT) ctcp.$(OBJEXT) \
 	dcc.$(OBJEXT) history.$(OBJEXT) ignore.$(OBJEXT) \
@@ -213,14 +214,14 @@ am__depfiles_maybe = depfiles
 @AMDEP_TRUE@DEP_FILES = ./$(DEPDIR)/cfgfiles.Po ./$(DEPDIR)/ctcp.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/dcc.Po ./$(DEPDIR)/history.Po \
 @AMDEP_TRUE@	./$(DEPDIR)/ignore.Po ./$(DEPDIR)/inbound.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/jcode.Po ./$(DEPDIR)/modes.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/network.Po ./$(DEPDIR)/notify.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/outbound.Po ./$(DEPDIR)/plugin-timer.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/plugin.Po ./$(DEPDIR)/proto-irc.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/server.Po ./$(DEPDIR)/servlist.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/ssl.Po ./$(DEPDIR)/text.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/url.Po ./$(DEPDIR)/userlist.Po \
-@AMDEP_TRUE@	./$(DEPDIR)/util.Po ./$(DEPDIR)/xchat.Po
+@AMDEP_TRUE@	./$(DEPDIR)/modes.Po ./$(DEPDIR)/network.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/notify.Po ./$(DEPDIR)/outbound.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/plugin-timer.Po ./$(DEPDIR)/plugin.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/proto-irc.Po ./$(DEPDIR)/server.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/servlist.Po ./$(DEPDIR)/ssl.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/text.Po ./$(DEPDIR)/url.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/userlist.Po ./$(DEPDIR)/util.Po \
+@AMDEP_TRUE@	./$(DEPDIR)/xchat.Po
 COMPILE = $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) \
 	$(CPPFLAGS) $(AM_CFLAGS) $(CFLAGS)
 LTCOMPILE = $(LIBTOOL) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) \
@@ -264,7 +265,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/history.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/ignore.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/inbound.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/jcode.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/modes.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/network.Po@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/notify.Po@am__quote@

@@ -43,9 +43,9 @@ if USE_OPENSSL
 ssl_c = ssl.c
 endif
 
-if DO_ICONV
-jcode_c = jcode.c
-endif
+#if DO_ICONV
+#jcode_c = jcode.c
+#endif
 
 libxchatcommon_a_SOURCES = cfgfiles.c ctcp.c dcc.c history.c ignore.c \
 	inbound.c $(jcode_c) modes.c network.c notify.c outbound.c \

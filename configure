@@ -1002,11 +1002,9 @@ Optional Features:
   --disable-nls           do not use Native Language Support
   --enable-memdebug       enable use of Memory Debug (default: no)
   --enable-socks          enable use of SOCKS5 (default: no)
-  --enable-openssl=PATH enable use of openSSL (default: no)
   --enable-hebrew         enable Hebrew support (default: no)
   --enable-ipv6           enable IPv6 (default: no)
-  --enable-japanese-conv  Enable Japanese code conversion support.
-                          iconv.h is needed. (default: no)
+  --enable-openssl=PATH   enable use of openSSL
   --disable-gtkfe         disable building gtk frontend
   --disable-textfe        disable building text frontend
   --disable-gnome         disable use of gnome
@@ -4213,7 +4211,7 @@ test "x$enable_libtool_lock" != xno && enable_libtool_lock=yes
 case $host in
 *-*-irix6*)
   # Find out which ABI we are using.
-  echo '#line 4216 "configure"' > conftest.$ac_ext
+  echo '#line 4214 "configure"' > conftest.$ac_ext
   if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
   (eval $ac_compile) 2>&5
   ac_status=$?
@@ -4749,7 +4747,7 @@ chmod -w .
 save_CFLAGS="$CFLAGS"
 CFLAGS="$CFLAGS -o out/conftest2.$ac_objext"
 compiler_c_o=no
-if { (eval echo configure:4752: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>out/conftest.err; } && test -s out/conftest2.$ac_objext; then
+if { (eval echo configure:4750: \"$ac_compile\") 1>&5; (eval $ac_compile) 2>out/conftest.err; } && test -s out/conftest2.$ac_objext; then
   # The compiler can only warn and ignore the option if not recognized
   # So say no if there are warnings
   if test -s out/conftest.err; then
@@ -6542,7 +6540,7 @@ else
     lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 6545 "configure"
+#line 6543 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -6640,7 +6638,7 @@ else
     lt_dlunknown=0; lt_dlno_uscore=1; lt_dlneed_uscore=2
   lt_status=$lt_dlunknown
   cat > conftest.$ac_ext <<EOF
-#line 6643 "configure"
+#line 6641 "configure"
 #include "confdefs.h"
 
 #if HAVE_DLFCN_H
@@ -11193,14 +11191,6 @@ else
   socks=no
 fi;
 
-# Check whether --enable-openssl or --disable-openssl was given.
-if test "${enable_openssl+set}" = set; then
-  enableval="$enable_openssl"
-  openssl=$enableval
-else
-  openssl=no
-fi;
-
 # Check whether --enable-hebrew or --disable-hebrew was given.
 if test "${enable_hebrew+set}" = set; then
   enableval="$enable_hebrew"
@@ -11217,12 +11207,17 @@ else
   ipv6=no
 fi;
 
-# Check whether --enable-japanese-conv or --disable-japanese-conv was given.
-if test "${enable_japanese_conv+set}" = set; then
-  enableval="$enable_japanese_conv"
-  WITH_JAPANESE=$enableval
+#AC_ARG_ENABLE(japanese-conv,
+#[  --enable-japanese-conv  Enable Japanese code conversion support.
+#                          iconv.h is needed. (default: no)],
+#			WITH_JAPANESE=$enableval, WITH_JAPANESE=no)
+
+# Check whether --enable-openssl or --disable-openssl was given.
+if test "${enable_openssl+set}" = set; then
+  enableval="$enable_openssl"
+  openssl=$enableval
 else
-  WITH_JAPANESE=no
+  openssl=yes
 fi;
 
 # Check whether --enable-gtkfe or --disable-gtkfe was given.
@@ -13101,127 +13096,11 @@ _ACEOF
 fi
 
 
-if test "$WITH_JAPANESE" = "yes"; then
-	if test "${ac_cv_header_iconv_h+set}" = set; then
-  echo "$as_me:$LINENO: checking for iconv.h" >&5
-echo $ECHO_N "checking for iconv.h... $ECHO_C" >&6
-if test "${ac_cv_header_iconv_h+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-fi
-echo "$as_me:$LINENO: result: $ac_cv_header_iconv_h" >&5
-echo "${ECHO_T}$ac_cv_header_iconv_h" >&6
-else
-  # Is the header compilable?
-echo "$as_me:$LINENO: checking iconv.h usability" >&5
-echo $ECHO_N "checking iconv.h usability... $ECHO_C" >&6
-cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-#include "confdefs.h"
-$ac_includes_default
-#include <iconv.h>
-_ACEOF
-rm -f conftest.$ac_objext
-if { (eval echo "$as_me:$LINENO: \"$ac_compile\"") >&5
-  (eval $ac_compile) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } &&
-         { ac_try='test -s conftest.$ac_objext'
-  { (eval echo "$as_me:$LINENO: \"$ac_try\"") >&5
-  (eval $ac_try) 2>&5
-  ac_status=$?
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); }; }; then
-  ac_header_compiler=yes
-else
-  echo "$as_me: failed program was:" >&5
-cat conftest.$ac_ext >&5
-ac_header_compiler=no
-fi
-rm -f conftest.$ac_objext conftest.$ac_ext
-echo "$as_me:$LINENO: result: $ac_header_compiler" >&5
-echo "${ECHO_T}$ac_header_compiler" >&6
-
-# Is the header present?
-echo "$as_me:$LINENO: checking iconv.h presence" >&5
-echo $ECHO_N "checking iconv.h presence... $ECHO_C" >&6
-cat >conftest.$ac_ext <<_ACEOF
-#line $LINENO "configure"
-#include "confdefs.h"
-#include <iconv.h>
-_ACEOF
-if { (eval echo "$as_me:$LINENO: \"$ac_cpp conftest.$ac_ext\"") >&5
-  (eval $ac_cpp conftest.$ac_ext) 2>conftest.er1
-  ac_status=$?
-  egrep -v '^ *\+' conftest.er1 >conftest.err
-  rm -f conftest.er1
-  cat conftest.err >&5
-  echo "$as_me:$LINENO: \$? = $ac_status" >&5
-  (exit $ac_status); } >/dev/null; then
-  if test -s conftest.err; then
-    ac_cpp_err=$ac_c_preproc_warn_flag
-  else
-    ac_cpp_err=
-  fi
-else
-  ac_cpp_err=yes
-fi
-if test -z "$ac_cpp_err"; then
-  ac_header_preproc=yes
-else
-  echo "$as_me: failed program was:" >&5
-  cat conftest.$ac_ext >&5
-  ac_header_preproc=no
-fi
-rm -f conftest.err conftest.$ac_ext
-echo "$as_me:$LINENO: result: $ac_header_preproc" >&5
-echo "${ECHO_T}$ac_header_preproc" >&6
-
-# So?  What about this header?
-case $ac_header_compiler:$ac_header_preproc in
-  yes:no )
-    { echo "$as_me:$LINENO: WARNING: iconv.h: accepted by the compiler, rejected by the preprocessor!" >&5
-echo "$as_me: WARNING: iconv.h: accepted by the compiler, rejected by the preprocessor!" >&2;}
-    { echo "$as_me:$LINENO: WARNING: iconv.h: proceeding with the preprocessor's result" >&5
-echo "$as_me: WARNING: iconv.h: proceeding with the preprocessor's result" >&2;};;
-  no:yes )
-    { echo "$as_me:$LINENO: WARNING: iconv.h: present but cannot be compiled" >&5
-echo "$as_me: WARNING: iconv.h: present but cannot be compiled" >&2;}
-    { echo "$as_me:$LINENO: WARNING: iconv.h: check for missing prerequisite headers?" >&5
-echo "$as_me: WARNING: iconv.h: check for missing prerequisite headers?" >&2;}
-    { echo "$as_me:$LINENO: WARNING: iconv.h: proceeding with the preprocessor's result" >&5
-echo "$as_me: WARNING: iconv.h: proceeding with the preprocessor's result" >&2;};;
-esac
-echo "$as_me:$LINENO: checking for iconv.h" >&5
-echo $ECHO_N "checking for iconv.h... $ECHO_C" >&6
-if test "${ac_cv_header_iconv_h+set}" = set; then
-  echo $ECHO_N "(cached) $ECHO_C" >&6
-else
-  ac_cv_header_iconv_h=$ac_header_preproc
-fi
-echo "$as_me:$LINENO: result: $ac_cv_header_iconv_h" >&5
-echo "${ECHO_T}$ac_cv_header_iconv_h" >&6
-
-fi
-if test $ac_cv_header_iconv_h = yes; then
-  cat >>confdefs.h <<\_ACEOF
-#define USE_JCODE 1
-_ACEOF
-
-fi
-
-
-fi
-
-
-if test "$WITH_JAPANESE" = "yes"; then
-  DO_ICONV_TRUE=
-  DO_ICONV_FALSE='#'
-else
-  DO_ICONV_TRUE='#'
-  DO_ICONV_FALSE=
-fi
-
+#WITH_JAPANESE=no
+#if test "$WITH_JAPANESE" = "yes"; then
+#	AC_CHECK_HEADER([iconv.h], AC_DEFINE(USE_JCODE))
+#fi
+#AM_CONDITIONAL(DO_ICONV, test "$WITH_JAPANESE" = "yes")
 
 
 if test "$mmx" = "yes"; then
@@ -14660,13 +14539,6 @@ echo "$as_me: error: conditional \"DO_PLUGIN\" was never defined.
 Usually this means the macro was only invoked conditionally." >&2;}
    { (exit 1); exit 1; }; }
 fi
-if test -z "${DO_ICONV_TRUE}" && test -z "${DO_ICONV_FALSE}"; then
-  { { echo "$as_me:$LINENO: error: conditional \"DO_ICONV\" was never defined.
-Usually this means the macro was only invoked conditionally." >&5
-echo "$as_me: error: conditional \"DO_ICONV\" was never defined.
-Usually this means the macro was only invoked conditionally." >&2;}
-   { (exit 1); exit 1; }; }
-fi
 if test -z "${USE_MMX_TRUE}" && test -z "${USE_MMX_FALSE}"; then
   { { echo "$as_me:$LINENO: error: conditional \"USE_MMX\" was never defined.
 Usually this means the macro was only invoked conditionally." >&5
@@ -15279,8 +15151,6 @@ s,@DO_PYTHON_TRUE@,$DO_PYTHON_TRUE,;t t
 s,@DO_PYTHON_FALSE@,$DO_PYTHON_FALSE,;t t
 s,@DO_PLUGIN_TRUE@,$DO_PLUGIN_TRUE,;t t
 s,@DO_PLUGIN_FALSE@,$DO_PLUGIN_FALSE,;t t
-s,@DO_ICONV_TRUE@,$DO_ICONV_TRUE,;t t
-s,@DO_ICONV_FALSE@,$DO_ICONV_FALSE,;t t
 s,@USE_MMX_TRUE@,$USE_MMX_TRUE,;t t
 s,@USE_MMX_FALSE@,$USE_MMX_FALSE,;t t
 s,@gdkpixbufcsourcepath@,$gdkpixbufcsourcepath,;t t
@@ -15999,7 +15869,11 @@ echo python .............. : $python $PY_VERSION
 echo mmx tinting ......... : $mmx
 #echo zvt shell tab ....... : $zvt
 echo plugin interface .... : $plugin\	nls/gettext ......... : $USE_NLS
-echo link with socks5 .... : $socks\	xft text ............ : $xft
+if test "$xft" = no; then
+  echo link with socks5 .... : $socks\	text backend ........ : pango
+else
+  echo link with socks5 .... : $socks\	text backend ........ : xft
+fi
 echo openssl support ..... : $openssl
 #\	japanese conversion . : $WITH_JAPANESE
 echo ipv6 support ........ : $ipv6
