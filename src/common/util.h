@@ -11,6 +11,9 @@
  *        --+ Dagmar d'Surreal
  */
 
+#ifndef XCHAT_UTIL_H
+#define XCHAT_UTIL_H
+
 #define rfc_tolower(c) (rfc_tolowertab[(unsigned char)(c)])
 
 extern const unsigned char rfc_tolowertab[];
@@ -33,3 +36,5 @@ char *errorstring (int err);
 int waitline (int sok, char *buf, int bufsize);
 unsigned long make_ping_time (void);
 void download_move_to_completed_dir (char *dcc_dir, char *dcc_completed_dir, char *output_name, int dccpermissions);
+
+#endif

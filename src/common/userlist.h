@@ -1,5 +1,8 @@
 #include <time.h>
 
+#ifndef XCHAT_USERLIST_H
+#define XCHAT_USERLIST_H
+
 struct User
 {
 	char nick[NICKLEN];
@@ -36,3 +39,5 @@ void ul_update_entry (session *sess, char *name, char mode, char sign);
 void update_all_of (char *name);
 GSList *userlist_flat_list (session *sess);
 void userlist_rehash (session *sess);
+
+#endif

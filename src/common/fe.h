@@ -1,6 +1,9 @@
 #include "userlist.h"
 #include "dcc.h"
 
+#ifndef XCHAT_FE_H
+#define XCHAT_FE_H
+
 int fe_args (int argc, char *argv[]);
 void fe_init (void);
 void fe_main (void);
@@ -73,3 +76,5 @@ void fe_get_str (char *prompt, char *def, void *callback, void *ud);
 void fe_get_int (char *prompt, int def, void *callback, void *ud);
 void fe_ctrl_gui (session *sess, int action, int arg);
 void fe_confirm (const char *message, void (*yesproc)(void *), void (*noproc)(void *), void *ud);
+
+#endif

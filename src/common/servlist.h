@@ -1,3 +1,6 @@
+#ifndef XCHAT_SERVLIST_H
+#define XCHAT_SERVLIST_H
+
 typedef struct ircserver
 {
 	char *hostname;
@@ -45,3 +48,5 @@ ircnet *servlist_net_find (char *name, int *pos);
 void servlist_server_remove (ircnet *net, ircserver *serv);
 ircserver *servlist_server_add (ircnet *net, char *name);
 ircserver *servlist_server_find (ircnet *net, char *name, int *pos);
+
+#endif

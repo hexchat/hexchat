@@ -1,5 +1,8 @@
 #include "textenums.h"
 
+#ifndef XCHAT_TEXT_H
+#define XCHAT_TEXT_H
+
 #define EMIT_SIGNAL(i, sess, a, b, c, d, e) text_emit(i, sess, a, b, c, d)
 #define WORD_URL     1
 #define WORD_NICK    2
@@ -31,3 +34,5 @@ void text_emit (int index, session *sess, char *a, char *b, char *c, char *d);
 int text_emit_by_name (char *name, session *sess, char *a, char *b, char *c, char *d);
 char *text_validate (char **text, int *len);
 int get_stamp_str (char *fmt, time_t tim, char **ret);
+
+#endif

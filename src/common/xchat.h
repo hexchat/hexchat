@@ -6,6 +6,9 @@
 #include <glib/gstrfuncs.h>
 #include <time.h>			/* need time_t */
 
+#ifndef XCHAT_H
+#define XCHAT_H
+
 #include "history.h"
 
 #ifndef HAVE_SNPRINTF
@@ -467,3 +470,5 @@ struct popup
 	char *cmd;
 	char *name;
 };
+
+#endif

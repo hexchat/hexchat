@@ -1,3 +1,6 @@
+#ifndef XCHAT_NETWORK_H
+#define XCHAT_NETWORK_H
+
 typedef struct netstore_
 {
 #ifdef NETWORK_PRIVATE
@@ -21,3 +24,5 @@ char *net_resolve (netstore *ns, char *hostname, int port, char **real_host);
 void net_bind (netstore *tobindto, int sok4, int sok6);
 char *net_ip (unsigned long addr);
 void net_sockets (int *sok4, int *sok6);
+
+#endif

@@ -3,14 +3,13 @@
 # Copyright (C) 2000, 2004 Free Software Foundation, Inc.
 # Volosenkov Dmitry <_bil_@mail.ru>, 1999.
 # Valek Filippov <frob@df.ru>, 2001.
-#  <zebar@elinar-broiler.ru>, 2004.
 # Peter Astakhov <astakhovp@mail.ru>, 2004.
 msgid ""
 msgstr ""
 "Project-Id-Version: xchat-2.0.7pre1.ru\n"
 "Report-Msgid-Bugs-To: www.xchat.org\n"
 "POT-Creation-Date: 2003-12-26 19:31+1100\n"
-"PO-Revision-Date: 2004-01-26 12:09+0300\n"
+"PO-Revision-Date: 2004-01-31 10:41+0300\n"
 "Last-Translator: Peter Astakhov <astakhovp@mail.ru>\n"
 "Language-Team: Russian <ru@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -199,7 +198,7 @@ msgstr "COUNTRY <код>, находит код страны, например: 
 
 #: src/common/outbound.c:2591
 msgid "CTCP <nick> <message>, send the CTCP message to nick, common messages are VERSION and USERINFO"
-msgstr "CTCP <псевдоним> <сообщение>, посылает пользователю с указанным псевдонимом CCTP-сообщение, обычные сообщения -- VERSION и USERINFO"
+msgstr "CTCP <ник> <сообщение>, посылает пользователю с указанным ником CCTP-сообщение, обычные сообщения -- VERSION и USERINFO"
 
 #: src/common/outbound.c:2593
 msgid "CYCLE, parts current channel and immediately rejoins"
@@ -287,7 +286,7 @@ msgstr "GATE <адрес> [<порт>], прокси через хост, пор
 
 #: src/common/outbound.c:2637
 msgid "HOP <nick>, gives chanhalf-op status to the nick (needs chanop)"
-msgstr "HOP <Псевдоним>, дает статус полуоператора канала пользователю (требуются права оператора)"
+msgstr "HOP <Ник>, дает статус полуоператора канала пользователю (требуются права оператора)"
 
 #: src/common/outbound.c:2639
 msgid ""
@@ -305,7 +304,7 @@ msgstr ""
 
 #: src/common/outbound.c:2646
 msgid "INVITE <nick> [<channel>], invites someone to a channel, by default the current channel (needs chanop)"
-msgstr "INVITE <Псевдоним> [<канал>], приглашает кого-либо на канал, по умолчанию, на текущий (требует права оператора)"
+msgstr "INVITE <Ник> [<канал>], приглашает кого-либо на канал, по умолчанию, на текущий (требует права оператора)"
 
 #: src/common/outbound.c:2647
 msgid "JOIN <channel>, joins the channel"
@@ -313,11 +312,11 @@ msgstr "JOIN <канал>, зайти на канал"
 
 #: src/common/outbound.c:2649
 msgid "KICK <nick>, kicks the nick from the current channel (needs chanop)"
-msgstr "KICK <Псевдоним>, удаляет человека с текущего канала (нужны права оператора)"
+msgstr "KICK <Ник>, удаляет человека с текущего канала (нужны права оператора)"
 
 #: src/common/outbound.c:2651
 msgid "KICKBAN <nick>, bans then kicks the nick from the current channel (needs chanop)"
-msgstr "KICKBAN <Псевдоним>, удаляет и ставит бан с данного канала (требуются права оператора)"
+msgstr "KICKBAN <Ник>, удаляет и ставит бан с данного канала (требуются права оператора)"
 
 #: src/common/outbound.c:2654
 msgid "LAGCHECK, forces a new lag check"
@@ -353,7 +352,7 @@ msgstr "MOP, Устанавливает всем пользователям те
 
 #: src/common/outbound.c:2670
 msgid "MSG <nick> <message>, sends a private message"
-msgstr "MSG <Псевдоним> <сообщение>, отправляет приватное сообщение"
+msgstr "MSG <Ник> <сообщение>, отправляет приватное сообщение"
 
 #: src/common/outbound.c:2673
 msgid "NAMES, Lists the nicks on the current channel"
@@ -361,7 +360,7 @@ msgstr "NAMES, показывает список посетителей теку
 
 #: src/common/outbound.c:2675
 msgid "NCTCP <nick> <message>, Sends a CTCP notice"
-msgstr "NCTCP <Псевдоним> <сообщение>, отправляет CTCP сообщение"
+msgstr "NCTCP <Ник> <сообщение>, отправляет CTCP сообщение"
 
 #: src/common/outbound.c:2676
 msgid "NEWSERVER <hostname> [<port>]"
@@ -369,19 +368,19 @@ msgstr "NEWSERVER <ИмяСервера> [<порт>]"
 
 #: src/common/outbound.c:2677
 msgid "NICK <nickname>, sets your nick"
-msgstr "/NICK <Псевдоним>, меняет ваш псевдоним"
+msgstr "/NICK <Ник>, меняет ваш ник"
 
 #: src/common/outbound.c:2680
 msgid "NOTICE <nick/channel> <message>, sends a notice. Notices are a type of message that should be auto reacted to"
-msgstr "NOTICE <Псевдоним/канал> <сообщение>, посылает уведомление. Уведомление - тип сообщений that should be auto reacted to"
+msgstr "NOTICE <Ник/канал> <сообщение>, посылает уведомление. Уведомление - тип сообщений that should be auto reacted to"
 
 #: src/common/outbound.c:2682
 msgid "NOTIFY [<nick>], lists your notify list or adds someone to it"
-msgstr "NOTIFY [<Псевдоним>], показывает список ваших уведомлений или добавляет что-либо к ним"
+msgstr "NOTIFY [<Ник>], показывает список ваших уведомлений или добавляет что-либо к ним"
 
 #: src/common/outbound.c:2684
 msgid "OP <nick>, gives chanop status to the nick (needs chanop)"
-msgstr "OP <Псевдоним>, дает пользователю статус оператора канала (требуются права администратора)"
+msgstr "OP <Ник>, дает пользователю статус оператора канала (требуются права администратора)"
 
 #: src/common/outbound.c:2686
 msgid "PART [<channel>] [<reason>], leaves the channel, by default the current one"
@@ -389,11 +388,11 @@ msgstr "PART [<Канал>] [<Причина>], выйти с канала, по
 
 #: src/common/outbound.c:2688
 msgid "PING <nick | channel>, CTCP pings nick or channel"
-msgstr "PING <Псевдоним | канал>, CTCP-пинг пользователя или канала"
+msgstr "PING <Ник | канал>, CTCP-пинг пользователя или канала"
 
 #: src/common/outbound.c:2690
 msgid "QUERY <nick>, opens up a new privmsg window to someone"
-msgstr "QUERY <Псевдоним>, открыть новое окно приватных сообщений"
+msgstr "QUERY <Ник>, открыть новое окно приватных сообщений"
 
 #: src/common/outbound.c:2692
 msgid "QUIT [<reason>], disconnects from the current server"
@@ -457,7 +456,7 @@ msgstr "UNLOAD <имя>, выгрузить плагин или скрипт"
 
 #: src/common/outbound.c:2730
 msgid "VOICE <nick>, gives voice status to someone (needs chanop)"
-msgstr "VOICE <Псевдоним>, дает право голоса кому-либо (требуются права оператора)"
+msgstr "VOICE <Ник>, дает право голоса кому-либо (требуются права оператора)"
 
 #: src/common/outbound.c:2732
 msgid "WALLCHAN <message>, writes the message to all channels"
@@ -521,7 +520,7 @@ msgstr "Переключаемся к следующему серверу %s...\
 #: src/common/servlist.c:972
 #, c-format
 msgid "Warning: \"%s\" character set is unknown. No conversion will be applied for network %s."
-msgstr "Предупреждение: кодовая страница \"%s\" неизвестна. Трансляции для %s сети не будет."
+msgstr "Предупреждение: кодировка \"%s\" неизвестна. Трансляции для %s сети не будет."
 
 #: src/common/textevents.h:6
 msgid "-%C10-%C11-%O$t$1 added to notify list."
@@ -854,7 +853,7 @@ msgstr "-%C10-%C11-%O$t$1 уже используется. Пытаемся ка
 
 #: src/common/textevents.h:252
 msgid "-%C10-%C11-%O$tNickname already in use. Use /NICK to try another."
-msgstr "-%C10-%C11-%O$tПсевдоним уже используется. Используйте /NICK, чтобы попробовать другой."
+msgstr "-%C10-%C11-%O$tНик уже используется. Используйте /NICK, чтобы попробовать другой."
 
 #: src/common/textevents.h:255
 msgid "-%C10-%C11-%O$tNo such DCC."
@@ -1084,7 +1083,7 @@ msgstr "Адрес компьютера персоны"
 #: src/common/text.c:1057 src/common/text.c:1065 src/common/text.c:1099
 #: src/common/text.c:1104
 msgid "Nickname"
-msgstr "Псевдоним"
+msgstr "Ник"
 
 #: src/common/text.c:662
 msgid "The action"
@@ -1145,7 +1144,7 @@ msgstr "Причина"
 
 #: src/common/text.c:700 src/common/text.c:756
 msgid "The nick of the person leaving"
-msgstr "Псевдоним вышедшего"
+msgstr "Ник вышедшего"
 
 #: src/common/text.c:707 src/common/text.c:713
 msgid "The time"
@@ -1193,7 +1192,7 @@ msgstr "CTCP событие"
 
 #: src/common/text.c:779
 msgid "The nick of the person who set the key"
-msgstr "Псевдоним персоны, установившей ключ"
+msgstr "Ник персоны, установившей ключ"
 
 #: src/common/text.c:780
 msgid "The key"
@@ -1201,7 +1200,7 @@ msgstr "Ключ"
 
 #: src/common/text.c:784
 msgid "The nick of the person who set the limit"
-msgstr "Псевдоним персоны, установившей лимит"
+msgstr "Ник персоны, установившей лимит"
 
 #: src/common/text.c:785
 msgid "The limit"
@@ -1213,11 +1212,11 @@ msgstr "Ник человека, установившего оператора"
 
 #: src/common/text.c:790
 msgid "The nick of the person who has been op'ed"
-msgstr "Псевдоним персоны, кому дали права оператора"
+msgstr "Ник персоны, кому дали права оператора"
 
 #: src/common/text.c:794
 msgid "The nick of the person who has been halfop'ed"
-msgstr "Псевдоним персоны, кому дали права полуоператора"
+msgstr "Ник персоны, кому дали права полуоператора"
 
 #: src/common/text.c:795
 msgid "The nick of the person who did the halfop'ing"
@@ -1233,7 +1232,7 @@ msgstr "Ник человека, которому дали право голос
 
 #: src/common/text.c:804
 msgid "The nick of the person who did the banning"
-msgstr "Псевдоним забанившего"
+msgstr "Ник забанившего"
 
 #: src/common/text.c:805 src/common/text.c:832
 msgid "The ban mask"
@@ -1241,7 +1240,7 @@ msgstr "Маска бана"
 
 #: src/common/text.c:809
 msgid "The nick who removed the key"
-msgstr "Псевдоним удалившего ключ"
+msgstr "Ник удалившего ключ"
 
 #: src/common/text.c:813
 msgid "The nick who removed the limit"
@@ -1249,35 +1248,35 @@ msgstr "Ник удалившего ограничение"
 
 #: src/common/text.c:817
 msgid "The nick of the person of did the deop'ing"
-msgstr "Псевдоним персоны, который де-опнул"
+msgstr "Ник персоны, который де-опнул"
 
 #: src/common/text.c:818
 msgid "The nick of the person who has been deop'ed"
-msgstr "Псевдоним персоны, которого де-опили."
+msgstr "Ник персоны, которого де-опили."
 
 #: src/common/text.c:821
 msgid "The nick of the person of did the dehalfop'ing"
-msgstr "Псевдоним персоны, который снял статус полуоператора"
+msgstr "Ник персоны, который снял статус полуоператора"
 
 #: src/common/text.c:822
 msgid "The nick of the person who has been dehalfop'ed"
-msgstr "Псевдоним персоны, с которой сняли статус полуоператора"
+msgstr "Ник персоны, с которой сняли статус полуоператора"
 
 #: src/common/text.c:826
 msgid "The nick of the person of did the devoice'ing"
-msgstr "Псевдоним персоны, который снял право голоса"
+msgstr "Ник персоны, который снял право голоса"
 
 #: src/common/text.c:827
 msgid "The nick of the person who has been devoice'ed"
-msgstr "Псевдоним персоны, с которой сняли право голоса"
+msgstr "Ник персоны, с которой сняли право голоса"
 
 #: src/common/text.c:831
 msgid "The nick of the person of did the unban'ing"
-msgstr "Псевдоним персоны, снявшей бан."
+msgstr "Ник персоны, снявшей бан."
 
 #: src/common/text.c:836
 msgid "The nick of the person who did the exempt"
-msgstr "Псевдоним персоны, вызвавшей исключение"
+msgstr "Ник персоны, вызвавшей исключение"
 
 #: src/common/text.c:837 src/common/text.c:842
 msgid "The exempt mask"
@@ -1285,11 +1284,11 @@ msgstr "Маска исключения"
 
 #: src/common/text.c:841
 msgid "The nick of the person removed the exempt"
-msgstr "Псевдоним персоны, убравшей исключение"
+msgstr "Ник персоны, убравшей исключение"
 
 #: src/common/text.c:846
 msgid "The nick of the person who did the invite"
-msgstr "Псевдоним персоны, сделавшей приглашение"
+msgstr "Ник персоны, сделавшей приглашение"
 
 #: src/common/text.c:847 src/common/text.c:852
 msgid "The invite mask"
@@ -1297,11 +1296,11 @@ msgstr "Маска приглашения"
 
 #: src/common/text.c:851
 msgid "The nick of the person removed the invite"
-msgstr "Псевдоним персоны, удалившей приглашение"
+msgstr "Ник персоны, удалившей приглашение"
 
 #: src/common/text.c:856
 msgid "The nick of the person setting the mode"
-msgstr "Псевдоним персоны, установившего режим"
+msgstr "Ник персоны, установившего режим"
 
 #: src/common/text.c:857
 msgid "The mode's sign (+/-)"
@@ -1383,11 +1382,11 @@ msgstr "Пользователи"
 
 #: src/common/text.c:938
 msgid "Nickname in use"
-msgstr "Псевдоним используется"
+msgstr "Ник используется"
 
 #: src/common/text.c:939
 msgid "Nick being tried"
-msgstr "Пробуем псевдоним"
+msgstr "Пробуем ник"
 
 #: src/common/text.c:943
 msgid "Error String"
@@ -1499,7 +1498,7 @@ msgstr "Секунд."
 
 #: src/common/text.c:1113
 msgid "Nick of person who have been invited"
-msgstr "Псевдоним приглашенного"
+msgstr "Ник приглашенного"
 
 #: src/common/text.c:1120
 msgid "Banmask"
@@ -2811,7 +2810,7 @@ msgstr "Многоплатформенный IRC-клиент"
 
 #: src/fe-gtk/ascii.c:131
 msgid "Character Chart"
-msgstr "Наборы символов"
+msgstr "Кодировка"
 
 #: src/fe-gtk/banlist.c:148 src/fe-gtk/banlist.c:232
 msgid "You must select some bans."
@@ -3136,11 +3135,11 @@ msgstr "Команда  Следующая команда  содержит с
 
 #: src/fe-gtk/fkeys.c:167
 msgid "This command changes the text in the entry to finish an incomplete nickname or command. If Data 1 is set then double-tabbing in a string will select the last nick, not the next"
-msgstr "Команда заменяет текст, дополняя псевдонимы и команды. Если Данные 1 установлены, двойной Tab выбирает последний псевдоним, не следующий."
+msgstr "Команда заменяет текст, дополняя ники и команды. Если Данные 1 установлены, двойной Tab выбирает последний ник, не следующий."
 
 #: src/fe-gtk/fkeys.c:169
 msgid "This command scrolls up and down through the list of nicks. If Data 1 is set to anything it will scroll up, else it scrolls down"
-msgstr "Команда прокручивает список псевдонимов. Если Данные 1 установлены - прокручивает вверх, иначе - вниз."
+msgstr "Команда прокручивает список ников. Если Данные 1 установлены - прокручивает вверх, иначе - вниз."
 
 #: src/fe-gtk/fkeys.c:171
 msgid "This command checks the last word entered in the entry against the replace list and replaces it if it finds a match"
@@ -3441,7 +3440,7 @@ msgstr ""
 
 #: src/fe-gtk/maingui.c:1905
 msgid "Enter new nickname:"
-msgstr "Введите новый псевдоним:"
+msgstr "Введите новый ник:"
 
 #: src/fe-gtk/menu.c:141
 msgid "Host unknown"
@@ -3576,9 +3575,9 @@ msgid ""
 msgstr ""
 "Кнопки списка пользователей - Специальные коды:\n"
 "\n"
-"%a  =  все выбранные псевдонимы\n"
+"%a  =  все выбранные ники\n"
 "%c  =  текущий канал\n"
-"%h  =  адреса выбранных псевдонимов\n"
+"%h  =  адреса выбранных ников\n"
 "%m  = информация о компьютере\n"
 "%n  =  ваш ник\n"
 "%s  =  выбранный ник\n"
@@ -3598,9 +3597,9 @@ msgid ""
 msgstr ""
 "Кнопки диалога - Специальные коды:\n"
 "\n"
-"%a  =  все выбранные псевдонимы\n"
+"%a  =  все выбранные ники\n"
 "%c  =  текущий канал\n"
-"%h  =  адреса выбранных псевдонимов\n"
+"%h  =  адреса выбранных ников\n"
 "%m  = информация о компьютере\n"
 "%n  =  ваш ник\n"
 "%s  =  выбранный ник\n"
@@ -3624,7 +3623,7 @@ msgstr ""
 "\n"
 "%d  =  данные (целый ctcp)\n"
 "%m  =  инфо о компьютере\n"
-"%s  =  псевдоним пославшего ctcp\n"
+"%s  =  ник пославшего ctcp\n"
 "%t  =  время/дата\n"
 "%2  =  слово 2\n"
 "%3  =  слово 3\n"
@@ -3925,7 +3924,7 @@ msgstr "Подключен"
 
 #: src/fe-gtk/notifygui.c:277
 msgid "Enter nickname to add:"
-msgstr "Введите псевдоним для добавления:"
+msgstr "Введите ник для добавления:"
 
 #: src/fe-gtk/notifygui.c:293
 msgid "X-Chat: Notify List"
@@ -4043,7 +4042,7 @@ msgstr "Глобальная информация о пользователе"
 
 #: src/fe-gtk/servlistgui.c:834
 msgid "Nick Names:"
-msgstr "Псевдоним:"
+msgstr "Ник:"
 
 #: src/fe-gtk/servlistgui.c:853 src/fe-gtk/servlistgui.c:1056
 msgid "User Name:"
@@ -4067,11 +4066,11 @@ msgstr "Серверы"
 
 #: src/fe-gtk/servlistgui.c:1014
 msgid "Character Set:"
-msgstr "Набор символов:"
+msgstr "Кодировка:"
 
 #: src/fe-gtk/servlistgui.c:1054
 msgid "Nick Name:"
-msgstr "Псевдоним:"
+msgstr "Ник:"
 
 #: src/fe-gtk/servlistgui.c:1059
 msgid "Server Password:"
@@ -4200,7 +4199,7 @@ msgstr "Рассматривать %nnn как ASCII-код"
 
 #: src/fe-gtk/setup.c:100
 msgid "Automatic nick completion"
-msgstr "Автоматическое завершение псевдонимов"
+msgstr "Автоматическое завершение ников"
 
 #: src/fe-gtk/setup.c:101
 msgid "Interpret %C, %B as Color, Bold etc"
@@ -4212,7 +4211,7 @@ msgstr "Использовать цвета и шрифт текстовой н�
 
 #: src/fe-gtk/setup.c:103
 msgid "Nick completion suffix:"
-msgstr "Суффикс дополнения псевдонимов:"
+msgstr "Суффикс дополнения ников:"
 
 #: src/fe-gtk/setup.c:109
 msgid "Off"
@@ -4396,7 +4395,7 @@ msgstr "Автоматически Открывать окно DCC Chat "
 
 #: src/fe-gtk/setup.c:183
 msgid "Save nickname in filenames"
-msgstr "Записать псевдонимы в файл"
+msgstr "Записать ники в файл"
 
 #: src/fe-gtk/setup.c:184
 msgid "Auto open DCC receive list"

@@ -1,5 +1,8 @@
 /* cfgfiles.h */
 
+#ifndef XCHAT_CFGFILES_H
+#define XCHAT_CFGFILES_H
+
 extern char *xdir_fs;
 extern char *xdir_utf;
 
@@ -41,3 +44,5 @@ struct prefs
 #define TYPE_STR 0
 #define TYPE_INT 1
 #define TYPE_BOOL 2
+
+#endif

@@ -1,3 +1,6 @@
+#ifndef XCHAT_OUTBOUND_H
+#define XCHAT_OUTBOUND_H
+
 extern const struct commands xc_cmds[];
 
 int load_trans_table (char *full_path);
@@ -11,3 +14,5 @@ void check_special_chars (char *cmd, int do_ascii);
 void notc_msg (session *sess);
 void server_sendpart (server * serv, char *channel, char *reason);
 void server_sendquit (session * sess);
+
+#endif

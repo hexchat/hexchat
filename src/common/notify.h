@@ -1,3 +1,6 @@
+#ifndef XCHAT_NOTIFY_H
+#define XCHAT_NOTIFY_H
+
 struct notify
 {
 	char *name;
@@ -34,3 +37,5 @@ struct notify_per_server *notify_find_server_entry (struct notify *notify, struc
 /* the old ISON stuff - remove me? */
 void notify_markonline (server *serv, char *word[]);
 int notify_checklist (void);
+
+#endif

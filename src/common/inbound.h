@@ -1,3 +1,6 @@
+#ifndef XCHAT_INBOUND_H
+#define XCHAT_INBOUND_H
+
 void inbound_next_nick (session *sess, char *nick);
 void inbound_uback (server *serv);
 void inbound_uaway (server *serv);
@@ -30,3 +33,5 @@ void inbound_action (session *sess, char *chan, char *from, char *text, int from
 void inbound_newnick (server *serv, char *nick, char *newnick, int quiet);
 void set_server_name (server *serv, char *name);
 void do_dns (session *sess, char *nick, char *host);
+
+#endif

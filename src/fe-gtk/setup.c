@@ -590,7 +590,11 @@ setup_create_entry (GtkWidget *table, int row, const setting *set)
 	     setup_prefs.proxy_type != 4)
 		gtk_widget_set_sensitive (wid, FALSE);
 
+#ifdef WIN32
 	if (set->type == ST_ENTRY)
+#else
+	if (set->type == ST_ENTRY || set->type == ST_EOPEN)
+#endif
 		gtk_table_attach (GTK_TABLE (table), wid, 1, 5, row, row + 1,
 								GTK_EXPAND | GTK_FILL, GTK_FILL, 0, 0);
 	else

@@ -2,6 +2,9 @@
 
 #include <time.h>						/* for time_t */
 
+#ifndef XCHAT_DCC_H
+#define XCHAT_DCC_H
+
 #define STAT_QUEUED 0
 #define STAT_ACTIVE 1
 #define STAT_FAILED 2
@@ -85,3 +88,5 @@ void dcc_show_list (session *sess);
 void open_dcc_recv_window (void);
 void open_dcc_send_window (void);
 void open_dcc_chat_window (void);
+
+#endif

@@ -1,3 +1,6 @@
+#ifndef XCHAT_COMMONPLUGIN_H
+#define XCHAT_COMMONPLUGIN_H
+
 #ifdef PLUGIN_C
 struct _xchat_plugin
 {
@@ -109,3 +112,5 @@ int plugin_emit_server (session *sess, char *name, char *word[], char *word_eol[
 int plugin_emit_print (session *sess, char *word[]);
 int plugin_emit_dummy_print (session *sess, char *name);
 int plugin_show_help (session *sess, char *cmd);
+
+#endif

@@ -1,3 +1,6 @@
+#ifndef XCHAT_IGNORE_H
+#define XCHAT_IGNORE_H
+
 extern GSList *ignore_list;
 
 extern int ignored_ctcp;
@@ -31,3 +34,5 @@ void ignore_save (void);
 void ignore_gui_open (void);
 void ignore_gui_update (int level);
 int flood_check (char *nick, char *ip, server *serv, session *sess, int what);
+
+#endif

@@ -1,3 +1,6 @@
+#ifndef XCHAT_C_H
+#define XCHAT_C_H
+
 extern struct xchatprefs prefs;
 
 extern int auto_connect;
@@ -34,3 +37,5 @@ void lag_check (void);
 void kill_session_callback (session * killsess);
 void xchat_exit (void);
 void xchat_exec (char *cmd);
+
+#endif
