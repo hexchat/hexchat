@@ -25,7 +25,7 @@
 #define TINT_VALUE 195				/* 195/255 of the brightness. */
 #define MOTION_MONITOR				/* URL hilights. */
 #define SMOOTH_SCROLL				/* line-by-line or pixel scroll? */
-#define SCROLL_HACK					/* use gdk_window_scroll? */
+#define SCROLL_HACK					/* use XCopyArea scroll, or full redraw? */
 #undef COLOR_HILIGHT				/* Color instead of underline? */
 #define USE_GDK_PIXBUF
 
@@ -65,6 +65,7 @@
 #ifdef WIN32
 #include <windows.h>
 #include <gdk/win32/gdkwin32.h>
+#undef SCROLL_HACK
 #endif
 
 /* is delimiter */
@@ -95,7 +96,6 @@ struct textentry
 	gint16 left_len;
 	gint16 lines_taken;
 	unsigned int mb:1;	/* is multibyte? */
-	unsigned int new:1;	/* new and hasn't been drawn yet? */
 };
 
 enum
@@ -708,6 +708,7 @@ gtk_xtext_adjustment_changed (GtkAdjustment * adj, GtkXText * xtext)
 															xtext);
 		}
 	}
+
 	xtext->buffer->old_value = adj->value;
 }
 
@@ -1188,6 +1189,15 @@ gtk_xtext_paint (GtkWidget *widget, GdkRectangle *area)
 		gtk_xtext_render_page (xtext);
 		return;
 	}
+
+	/*gdk_draw_rectangle (xtext->draw_buf, xtext->light_gc, 0,
+						area->x, area->y, area->width, area->height);
+	gdk_flush ();
+	usleep(1500000);
+	gdk_draw_rectangle (xtext->draw_buf, xtext->light_gc, 1,
+						area->x, area->y, area->width, area->height);
+	gdk_flush ();
+	usleep(1500000);*/
 
 	xtext_draw_bg (xtext, area->x, area->y, area->width, area->height);
 
@@ -3258,7 +3268,6 @@ gtk_xtext_render_line (GtkXText * xtext, textentry * ent, int line,
 	taken = 0;
 	str = ent->str;
 	indent = ent->indent;
-	ent->new = 0;
 
 #ifdef XCHAT
 	/* draw the timestamp */
@@ -3701,33 +3710,6 @@ gtk_xtext_render_ents (GtkXText * xtext, textentry * enta, textentry * entb)
 	}
 }
 
-#ifdef SCROLL_HACK
-
-static int
-gtk_xtext_draw_new_lines (GtkXText *xtext)
-{
-	textentry *ent;
-	int ret = 0;
-
-	ent = xtext->buffer->text_last;
-	while (ent)
-	{
-		if (!ent->new)
-			break;
-		ent = ent->prev;
-	}
-
-	if (ent && ent->next)
-	{
-		gtk_xtext_render_ents (xtext, ent->next, xtext->buffer->text_last);
-		ret = 1;
-	}
-
-	return ret;
-}
-
-#endif
-
 /* render a whole page/window, starting from 'startline' */
 
 static void
@@ -3771,13 +3753,14 @@ gtk_xtext_render_page (GtkXText * xtext)
 
 #ifdef SCROLL_HACK
 {
-	int pos, ended = 0, overlap;
+	int pos, overlap;
 	GdkRectangle area;
 
 	pos = xtext->adj->value * xtext->fontsize;
 	overlap = xtext->buffer->last_pixel_pos - pos;
 	xtext->buffer->last_pixel_pos = pos;
 
+									/* dont scroll PageUp/Down, it looks ugly */
 	if (!xtext->pixmap && abs (overlap) < height - (3*xtext->fontsize))
 	{
 		/* so the obscured regions are exposed */
@@ -3786,10 +3769,8 @@ gtk_xtext_render_page (GtkXText * xtext)
 		{
 			gdk_draw_drawable (xtext->draw_buf, xtext->fgc, xtext->draw_buf,
 									 0, -overlap, 0, 0, width, height + overlap);
-			area.y = (height + overlap) - xtext->fontsize;
-			area.height = (-overlap) + xtext->fontsize;
-			if (xtext->buffer->scrollbar_down)
-				ended = gtk_xtext_draw_new_lines (xtext);
+			area.y = (height + overlap) - (xtext->fontsize * 2);
+			area.height = (-overlap) + (xtext->fontsize * 2);
 		} else
 		{
 			gdk_draw_drawable (xtext->draw_buf, xtext->fgc, xtext->draw_buf,
@@ -3799,7 +3780,7 @@ gtk_xtext_render_page (GtkXText * xtext)
 		}
 		gdk_gc_set_exposures (xtext->fgc, FALSE);
 
-		if (!ended && area.height > 0)
+		if (area.height > 0)
 		{
 			area.x = 0;
 			area.width = width;
@@ -3982,23 +3963,26 @@ static int
 gtk_xtext_render_page_timeout (GtkXText * xtext)
 {
 	GtkAdjustment *adj = xtext->adj;
-	gfloat val;
+/*	gfloat val;*/
 
-	if (xtext->buffer->scrollbar_down)
+	xtext->add_io_tag = 0;
+
+	/* less than a complete page? */
+	if (xtext->buffer->num_lines <= adj->page_size)
+	{
+		xtext->buffer->old_value = -1;
+		adj->value = 0;
+		gtk_xtext_render_page (xtext);
+	} else if (xtext->buffer->scrollbar_down)
 	{
 		gtk_xtext_adjustment_set (xtext->buffer, FALSE);
 		gtk_adjustment_set_value (adj, adj->upper - adj->page_size);
 	} else
 	{
-		val = adj->value;
+/*		val = adj->value;*/
 		gtk_xtext_adjustment_set (xtext->buffer, TRUE);
-		gtk_adjustment_set_value (adj, val);
+/*		gtk_adjustment_set_value (adj, val);*/
 	}
-
-	if (adj->value >= adj->upper - adj->page_size || adj->value < 1)
-		gtk_xtext_render_page (xtext);
-
-	xtext->add_io_tag = 0;
 
 	return 0;
 }
@@ -4042,10 +4026,8 @@ gtk_xtext_append_entry (xtext_buffer *buf, textentry * ent)
 	{
 #ifdef SCROLL_HACK
 		/* this could be improved */
-		if (!buf->scrollbar_down || (buf->num_lines - 1) <= buf->xtext->adj->page_size)
+		if ((buf->num_lines - 1) <= buf->xtext->adj->page_size)
 			dontscroll (buf);
-		else
-			ent->new = 1;
 #endif
 
 		if (!buf->xtext->add_io_tag)
@@ -4260,8 +4242,6 @@ gtk_xtext_buffer_show (GtkXText *xtext, xtext_buffer *buf, int render)
 	/* now change to the new buffer */
 	xtext->buffer = buf;
 	dontscroll (buf);	/* force scrolling off */
-	if (buf->text_last)
-		buf->text_last->new = 0;
 	xtext->adj->value = buf->old_value;
 	xtext->adj->upper = buf->num_lines;
 	if (xtext->adj->upper == 0)
