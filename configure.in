@@ -518,6 +518,7 @@ fi
 dnl if we don't have this, use g_snprintf instead
 AC_CHECK_FUNCS(snprintf)
 AC_CHECK_FUNCS(vsnprintf)
+AC_CHECK_FUNCS(stat64)
 
 dnl old solaris doesn't have this
 AC_CHECK_FUNCS(setenv)

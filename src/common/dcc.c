@@ -22,6 +22,8 @@
  * Jim Seymour (jseymour@LinxNet.com)
  */
 
+/* we only use 32 bits, but without this define, you get only 31! */
+#define _FILE_OFFSET_BITS 64
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -1214,6 +1216,14 @@ dcc_send (struct session *sess, char *tbuf, char *to, char *file, int maxcps)
 
 	if (stat (file_fs, &st) != -1)
 	{
+#ifdef HAVE_STAT64
+		if (st.st_size > 4294967295U)
+		{
+			PrintText (sess, "Cannot send files larger than 4 GB.\n");
+			goto noaxs;
+		}
+#endif
+
 		if (*file_part (file_fs) && !S_ISDIR (st.st_mode))
 		{
 			if (st.st_size > 0)
@@ -1266,8 +1276,9 @@ dcc_send (struct session *sess, char *tbuf, char *to, char *file, int maxcps)
 			}
 		}
 	}
-	g_free (file_fs);
 	PrintTextf (sess, _("Cannot access %s\n"), dcc->file);
+noaxs:
+	g_free (file_fs);
 	dcc_close (dcc, 0, TRUE);
 }
 

@@ -122,9 +122,6 @@ struct xchatprefs
 	char dnsprogram[72];
 	char hostname[127];
 	char cmdchar[4];
-#ifdef USE_TRANS
-	char trans_file[256];
-#endif
 	char logmask[256];
 	char stamp_format[64];
 	char timestamp_log_format[64];
