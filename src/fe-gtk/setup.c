@@ -1,4 +1,3 @@
-#define GTK_DISABLE_DEPRECATED
 
 #include <stdio.h>
 #include <stdlib.h>

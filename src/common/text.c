@@ -249,7 +249,7 @@ text_word_check (char *word)
 	dots = 0;
 	for (i = 0; i < len; i++)
 	{
-		if (word[i] == '.')
+		if (word[i] == '.' && i > 1)
 			dots++;
 		else if (!isdigit (word[i]))
 		{

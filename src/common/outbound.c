@@ -748,7 +748,7 @@ cmd_dcc (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 
 			do
 			{
-				dcc_send (sess, tbuf, nick, file, maxcps);
+				dcc_send (sess, nick, file, maxcps);
 				i++;
 				file = word[i];
 			}

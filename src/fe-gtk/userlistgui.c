@@ -326,7 +326,6 @@ userlist_dnd_drop (GtkTreeView *widget, GdkDragContext *context,
 						 guint info, guint ttime, gpointer userdata)
 {
 	struct User *user;
-	char tbuf[400];
 	char *p, *data, *next;
 	GtkTreePath *path;
 	GtkTreeModel *model;
@@ -353,7 +352,7 @@ userlist_dnd_drop (GtkTreeView *widget, GdkDragContext *context,
 			if (strncmp (p, "///", 3) == 0)
 				p += 3;
 #endif
-			dcc_send (current_sess, tbuf, user->nick, p, prefs.dcc_max_send_cps);
+			dcc_send (current_sess, user->nick, p, prefs.dcc_max_send_cps);
 		}
 		if (!next)
 			break;

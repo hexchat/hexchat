@@ -91,10 +91,8 @@ static struct dccwindow dcccwin;	/* chat */
 static void
 dcc_send_filereq_file (struct my_dcc_send *mdc, char *file)
 {
-	char tbuf[400];
-
 	if (file)
-		dcc_send (mdc->sess, tbuf, mdc->nick, file, mdc->maxcps);
+		dcc_send (mdc->sess, mdc->nick, file, mdc->maxcps);
 	else
 	{
 		free (mdc->nick);

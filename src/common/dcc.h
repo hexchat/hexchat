@@ -76,7 +76,7 @@ void dcc_check_timeouts (void);
 void dcc_change_nick (server *serv, char *oldnick, char *newnick);
 void dcc_notify_kill (struct server *serv);
 struct DCC *dcc_write_chat (char *nick, char *text);
-void dcc_send (struct session *sess, char *tbuf, char *to, char *file, int maxcps);
+void dcc_send (struct session *sess, char *to, char *file, int maxcps);
 struct DCC *find_dcc (char *nick, char *file, int type);
 void dcc_get_nick (struct session *sess, char *nick);
 void dcc_chat (session *sess, char *nick);

@@ -1811,7 +1811,10 @@ mg_create_userlist (session_gui *gui, GtkWidget *box, int pack)
 	gtk_widget_set_size_request (ulist, 86, -1);
 
 	if (prefs.style_namelistgad)
+	{
 		gtk_widget_set_style (ulist, input_style);
+		gtk_widget_modify_base (ulist, GTK_STATE_NORMAL, &colors[19]);
+	}
 
 	mg_create_meters (gui, vbox);
 

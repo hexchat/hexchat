@@ -1119,20 +1119,19 @@ dcc_listen_init (struct DCC *dcc, session *sess)
 
 static struct session *dccsess;
 static char *dccto;				  /* lame!! */
-static char *dcctbuf;
 static int dccmaxcps;
 static int recursive = FALSE;
 
 static void
 dcc_send_wild (char *file)
 {
-	dcc_send (dccsess, dcctbuf, dccto, file, dccmaxcps);
+	dcc_send (dccsess, dccto, file, dccmaxcps);
 }
 
 /* tbuf is at least 400 bytes */
 
 void
-dcc_send (struct session *sess, char *tbuf, char *to, char *file, int maxcps)
+dcc_send (struct session *sess, char *to, char *file, int maxcps)
 {
 	char outbuf[512];
 	struct stat st;
@@ -1154,7 +1153,6 @@ dcc_send (struct session *sess, char *tbuf, char *to, char *file, int maxcps)
 
 		dccsess = sess;
 		dccto = to;
-		dcctbuf = tbuf;
 		dccmaxcps = maxcps;
 
 		free (file);

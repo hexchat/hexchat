@@ -142,6 +142,9 @@ static const struct defaultserver def[] =
 	{0,			"nc.d-t-net.de"},
 	{0,			"wakka.d-t-net.de"},
 
+	{"DeepIRC", 0},
+	{0,			"irc.deepirc.net"},
+
 	{"EFnet",	0},
 	{0,			"irc.Prison.NET"},
 	{0,			"irc.Qeast.net"},
@@ -640,7 +643,7 @@ static gint
 servlist_cycle_cb (server *serv)
 {
 	PrintTextf (serv->server_session,
-		"Cycling to next server in %s...\n", ((ircnet *)serv->network)->name);
+		_("Cycling to next server in %s...\n"), ((ircnet *)serv->network)->name);
 	servlist_connect (serv->server_session, serv->network);
 
 	return 0;
