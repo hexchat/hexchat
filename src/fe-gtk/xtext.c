@@ -923,7 +923,11 @@ gtk_xtext_realize (GtkWidget * widget)
 		gdk_gc_set_fill (xtext->bgc, GDK_TILED);
 	}
 
+#if (GTK_MAJOR_VERSION == 2) && (GTK_MINOR_VERSION == 0)
+	xtext->hand_cursor = gdk_cursor_new (GDK_HAND1);
+#else
 	xtext->hand_cursor = gdk_cursor_new_for_display (gdk_drawable_get_display (widget->window), GDK_HAND1);
+#endif
 
 	gdk_window_set_back_pixmap (widget->window, NULL, FALSE);
 
@@ -2084,8 +2088,12 @@ gtk_xtext_selection_get (GtkWidget * widget,
 			gint format;
 			gint new_length;
 
+#if (GTK_MAJOR_VERSION == 2) && (GTK_MINOR_VERSION == 0)
+			gdk_string_to_compound_text (
+#else
 			gdk_string_to_compound_text_for_display (
 												gdk_drawable_get_display (widget->window),
+#endif
 												stripped, &encoding, &format, &new_text,
 												&new_length);
 			gtk_selection_data_set (selection_data_ptr, encoding, format,
@@ -2965,7 +2973,11 @@ shade_pixmap_gdk (GtkXText * xtext, Pixmap p, int x, int y, int w, int h)
 	int offset;
 	int r, g, b, a;
 
+#if (GTK_MAJOR_VERSION == 2) && (GTK_MINOR_VERSION == 0)
+	pp = gdk_pixmap_foreign_new (p);
+#else
 	pp = gdk_pixmap_foreign_new_for_display (gdk_drawable_get_display (GTK_WIDGET (xtext)->window), p);
+#endif
 	cmap = gtk_widget_get_colormap (GTK_WIDGET (xtext));
 	gdk_drawable_get_size (pp, &width, &height);
 	depth = gdk_drawable_get_depth (pp);
@@ -3029,7 +3041,12 @@ shade_pixmap_gdk (GtkXText * xtext, Pixmap p, int x, int y, int w, int h)
 												 0, 0, w, h, GDK_RGB_DITHER_NORMAL, 0, 0);
 	} else
 	{
+#if (GTK_MAJOR_VERSION == 2) && (GTK_MINOR_VERSION == 0)
+		gdk_pixbuf_render_pixmap_and_mask (pixbuf, &shaded_pixmap, NULL, 0);
+#else
+
 		gdk_pixbuf_render_pixmap_and_mask_for_colormap (pixbuf, cmap, &shaded_pixmap, NULL, 0);
+#endif
 	}
 	g_object_unref (pixbuf);
 
@@ -3182,7 +3199,11 @@ gtk_xtext_load_trans (GtkXText * xtext)
 	{
 noshade:
 #endif
+#if (GTK_MAJOR_VERSION == 2) && (GTK_MINOR_VERSION == 0)
+		xtext->pixmap = gdk_pixmap_foreign_new (rootpix);
+#else
 		xtext->pixmap = gdk_pixmap_foreign_new_for_display (gdk_drawable_get_display (GTK_WIDGET (xtext)->window), rootpix);
+#endif
 		gdk_gc_set_tile (xtext->bgc, xtext->pixmap);
 		gdk_gc_set_ts_origin (xtext->bgc, -x, -y);
 #if defined(USE_GDK_PIXBUF) || defined(USE_MMX)
