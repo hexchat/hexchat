@@ -1,5 +1,5 @@
 
-EXTRA_DIST=dp_misc.pl ignore.pl sample_script.pl xchatdox2.html
+EXTRA_DIST=dp_misc.pl ignore.pl sample_script.pl xchat-perl18.html
 
 libdir = $(xchatlibdir)/plugins
 
