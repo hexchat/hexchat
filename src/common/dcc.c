@@ -1641,10 +1641,23 @@ handle_dcc (struct session *sess, char *nick, char *word[],
 			dcc->destfile_fs = g_filename_from_utf8 (dcc->destfile, -1, 0, 0, 0);
 
 			dcc->resumable = 0;
-			if (stat (dcc->destfile_fs, &st) != -1)
+			if (access (dcc->destfile_fs, W_OK) == 0)
 			{
-				if (st.st_size < size)
-					dcc->resumable = st.st_size;
+				if (stat (dcc->destfile_fs, &st) != -1)
+				{
+					if (st.st_size < size)
+						dcc->resumable = st.st_size;
+					else
+						dcc->resume_error = 2;
+				} else
+				{
+					dcc->resume_errno = errno;
+					dcc->resume_error = 1;
+				}
+			} else
+			{
+				dcc->resume_errno = errno;
+				dcc->resume_error = 1;
 			}
 
 			dcc->pos = dcc->resumable;
@@ -1679,6 +1692,7 @@ handle_dcc (struct session *sess, char *nick, char *word[],
 				} else
 				{
 dontresume:
+					dcc->resume_error = 3;
 					dcc->resumable = 0;
 					dcc->pos = 0;
 					dcc_connect (dcc);

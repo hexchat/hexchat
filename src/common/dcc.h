@@ -28,6 +28,8 @@ struct DCC
 	int port;
 	int pasvid;						/* mIRC's passive DCC id */
 	int cps;
+	int resume_error;
+	int resume_errno;
 
 	GTimeVal lastcpstv, firstcpstv;
 	unsigned int lastcpspos;

@@ -307,13 +307,37 @@ static void
 resume_clicked (GtkWidget * wid, gpointer none)
 {
 	int row;
+	struct DCC *dcc;
+	char buf[512];
 
 	row = gtkutil_clist_selection (dccrwin.list);
 	if (row != -1)
 	{
 		gtk_clist_unselect_row (GTK_CLIST (dccrwin.list), row, 0);
-		if (!dcc_resume (gtk_clist_get_row_data (GTK_CLIST (dccrwin.list), row)))
-			gtkutil_simpledialog (_("That file is not resumable."));
+		dcc = gtk_clist_get_row_data (GTK_CLIST (dccrwin.list), row);
+		if (!dcc_resume (dcc))
+		{
+			switch (dcc->resume_error)
+			{
+			case 0:	/* unknown error */
+				gtkutil_simpledialog (_("That file is not resumable."));
+				break;
+			case 1:
+				snprintf (buf, sizeof (buf),
+							_(	"Cannot access file: %s\n"
+								"%s.\n"
+								"Resuming not possible."), dcc->destfile,	
+								errorstring (dcc->resume_errno));
+				gtkutil_simpledialog (buf);
+				break;
+			case 2:
+				gtkutil_simpledialog (_("File in download directory is larger "
+											"than file offered. Resuming not possible."));
+				break;
+			case 3:
+				gtkutil_simpledialog (_("Cannot resume the same file from two people."));
+			}
+		}
 	}
 }
 
