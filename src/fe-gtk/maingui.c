@@ -380,6 +380,9 @@ mg_unpopulate (session *sess)
 	gui = sess->gui;
 	res = sess->res;
 
+	if (gui->pane)
+		prefs.paned_pos = gui->pane_pos = gtk_paned_get_position (GTK_PANED (gui->pane));
+
 	res->input_text = strdup (GTK_ENTRY (gui->input_box)->text);
 	res->topic_text = strdup (GTK_ENTRY (gui->topic_entry)->text);
 	res->limit_text = strdup (GTK_ENTRY (gui->limit_entry)->text);
