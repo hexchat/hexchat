@@ -413,7 +413,7 @@ if test "$plugin" = yes; then
 		dnl we just need the -Wl,--export-dynamic, but not -lgmodule-2.0
 		RDYNAMIC_FLAGS="`$pkgconfigpath gmodule-2.0 --libs | $sedpath 's/ -lgmodule-2.0//'`"
 		LIBS="$LIBS $RDYNAMIC_FLAGS"
-		VS="`ld --help | grep version-script`"
+		VS="`ld --help | grep version-script 2> /dev/null`"
 		if test "$VS" != ""; then
 			GUI_LIBS="$GUI_LIBS -Wl,--version-script,\$(srcdir)/../version-script"
 		fi
