@@ -762,9 +762,13 @@ static XS (XS_IRC_command)
 {
 	int junk;
 	dXSARGS;
+	char *cmd = SvPV (ST (0), junk);
 
-	/* skip the forward slash */
-	xchat_command (ph, SvPV (ST (0), junk) + 1);
+	if (cmd[0] == '/')
+		/* skip the forward slash */
+		xchat_command (ph, cmd + 1);
+	else
+		xchat_commandf (ph, "say %s", cmd);
 
 	XSRETURN_EMPTY;
 }
@@ -775,13 +779,20 @@ static XS (XS_IRC_command_with_server)
 	int junk;
 	dXSARGS;
 	void *ctx, *old_ctx;
+	char *cmd = SvPV (ST (0), junk);
 
 	old_ctx = xchat_get_context (ph);
 	ctx = xchat_find_context (ph, SvPV (ST (1), junk), NULL);
 	if (ctx)
 	{
 		xchat_set_context (ph, ctx);
-		xchat_command (ph, SvPV (ST (0), junk) + 1);
+
+		if (cmd[0] == '/')
+			/* skip the forward slash */
+			xchat_command (ph, cmd + 1);
+		else
+			xchat_commandf (ph, "say %s", cmd);
+
 		xchat_set_context (ph, old_ctx);
 		XSRETURN_YES;
 	}
