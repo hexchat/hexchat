@@ -288,6 +288,9 @@ log_handler (const gchar   *log_domain,
 {
 	session *sess;
 
+	if (getenv ("XCHAT_WARNING_IGNORE"))
+		return;
+
 	sess = find_dialog (serv_list->data, "(warnings)");
 	if (!sess)
 		sess = new_ircwindow (serv_list->data, "(warnings)", SESS_DIALOG);

@@ -2,7 +2,7 @@ dnl Process this file with autoconf to produce a configure script.
 
 AC_INIT(src)
 AM_CONFIG_HEADER(config.h)
-AM_INIT_AUTOMAKE(xchat, 2.0.6)
+AM_INIT_AUTOMAKE(xchat, 2.0.7)
 AM_MAINTAINER_MODE
 AC_PROG_CC
 AC_PROG_CPP
@@ -26,6 +26,7 @@ AH_VERBATIM([USE_OPENSSL],[#undef USE_OPENSSL])
 AH_VERBATIM([USE_PLUGIN],[#undef USE_PLUGIN])
 AH_VERBATIM([USE_XFT],[#undef USE_XFT])
 AH_VERBATIM([USE_XLIB],[#undef USE_XLIB])
+AH_VERBATIM([USE_SIGACTION],[#undef USE_SIGACTION])
 dnl AH_VERBATIM([USE_ZVT],[#undef USE_ZVT])
 AH_VERBATIM([USING_FREEBSD],[#undef USING_FREEBSD])
 AH_VERBATIM([USING_LINUX],[#undef USING_LINUX])
@@ -551,6 +552,20 @@ fi
 dnl *********************************************************************
 dnl ** FUNCTIONS/LIBS/CFLAGS ********************************************
 dnl *********************************************************************
+
+AC_MSG_CHECKING(for modern sigaction)
+dnl libc5 on linux and FreeBSD 3.x doesn't have siginfo_t
+dnl and the sa_sigation field.
+AC_TRY_COMPILE(
+	[#include <signal.h>],
+	[struct sigaction act;
+	 siginfo_t *si;
+	 act.sa_sigaction = 0;],
+	[
+		AC_MSG_RESULT(yes)
+		AC_DEFINE(USE_SIGACTION) 
+	],
+	AC_MSG_RESULT(no))
 
 AC_PATH_PROG(gdkpixbufcsourcepath, gdk-pixbuf-csource)
 AC_SUBST(gdkpixbufcsourcepath)

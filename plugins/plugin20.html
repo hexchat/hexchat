@@ -20,7 +20,7 @@ color: #990066
 <h1>XChat 2.0 Plugin Interface</h1>
 
 <small>
-<font size="-12">plugin20.html revision 0.97</font>
+<font size="-12">plugin20.html revision 0.98</font>
 <br>Latest version of this document is available at: <a href="http://xchat.org/docs/plugin20.html">http://xchat.org/docs/plugin20.html</a></small>
 
 <h2>Information:</h2>
@@ -272,7 +272,9 @@ in the <a href="#sample">sample plugin</a> above.
 <h3><a class="cmd" name="xchat_hook_command">&nbsp;xchat_hook_command()&nbsp;</a></h3>
 <b>Prototype:</b> xchat_hook *xchat_hook_command(xchat_plugin *ph, char *name, int pri, xchat_cmd_cb *callb, char *help_text, void *userdata);
 <br>
-<br><b>Description:</b> Adds a new /command.
+<br><b>Description:</b> Adds a new /command. This allows your program to
+handle commands entered at the input box. To capture text without a "/" at 
+the start (non-commands), you may hook a special name of "". i.e xchat_hook_command(ph, "", ...);.
 <br>
 <br><b>Arguments:</b>
 <blockquote><b>ph:</b> Plugin handle (as given to xchat_plugin_init).

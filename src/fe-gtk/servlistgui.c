@@ -85,7 +85,7 @@ servlist_toggles_populate (ircnet *net)
 static const char *pages[]=
 {
 	"UTF-8",
-	"ISO-8859-1 (Western Europe)",
+	"ISO-8859-15 (Western Europe)",
 	"ISO-8859-2 (Central Europe)",
 	"ISO-8859-7 (Greek)",
 	"ISO-8859-8 (Hebrew)",

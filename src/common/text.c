@@ -27,6 +27,7 @@
 #include <sys/stat.h>
 
 #include "xchat.h"
+#include <glib/ghash.h>
 #include "cfgfiles.h"
 #include "plugin.h"
 #include "fe.h"

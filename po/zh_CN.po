@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xchat 2.0.5pre1\n"
 "Report-Msgid-Bugs-To: www.xchat.org\n"
-"POT-Creation-Date: 2003-11-28 14:19+1100\n"
+"POT-Creation-Date: 2004-01-01 23:38+1100\n"
 "PO-Revision-Date: 2003-09-16 23:02+0800\n"
 "Last-Translator: Rongjun Mu <elanmu@sina.com>\n"
 "Language-Team: Chinese (simplified) <i18n-translation@lists.linux.net.cn>\n"
@@ -30,7 +30,7 @@ msgstr "我很忙"
 msgid "Leaving"
 msgstr "离开"
 
-#: src/common/cfgfiles.c:678
+#: src/common/cfgfiles.c:679
 msgid ""
 "* Running IRC as root is stupid! You should\n"
 "  create a User Account and use that to login.\n"
@@ -67,7 +67,7 @@ msgstr "中止"
 msgid "Cannot access %s\n"
 msgstr "无法访问 %s\n"
 
-#: src/common/dcc.c:1795
+#: src/common/dcc.c:1801
 msgid "No active DCCs\n"
 msgstr "无活跃的 DCC\n"
 
@@ -570,12 +570,12 @@ msgstr ""
 msgid "Proxy traversal failed.\n"
 msgstr "代理传送失败。\n"
 
-#: src/common/servlist.c:635
+#: src/common/servlist.c:633
 #, c-format
 msgid "Cycling to next server in %s...\n"
 msgstr ""
 
-#: src/common/servlist.c:975
+#: src/common/servlist.c:973
 #, c-format
 msgid ""
 "Warning: \"%s\" character set is unknown. No conversion will be applied for "
@@ -807,7 +807,8 @@ msgid "-%C10-%C11-%O$tDCC RECV %C11$1%O from %C11$3%O failed. $4."
 msgstr "-%C10-%C11-%O$t从 %C11$3%O  DCC RECV %C11$1%O 失败。$4。"
 
 #: src/common/textevents.h:162
-msgid "-%C10-%C11-%O$tDCC RECV: Cannot open $1 for writing - aborting."
+#, fuzzy
+msgid "-%C10-%C11-%O$tDCC RECV: Cannot open $1 for writing ($2)."
 msgstr "-%C10-%C11-%O$tDCC RECV：不能打开 $1 进行写操作 - 中止。 "
 
 #: src/common/textevents.h:165
@@ -1117,17 +1118,17 @@ msgstr "%C6<%O$1%C6>%O$t$2%O"
 msgid "-%C10-%C11-%O$tYou are now known as $2"
 msgstr "-%C10-%C11-%O$t你已改名为$2"
 
-#: src/common/text.c:301
+#: src/common/text.c:304
 #, c-format
 msgid "**** ENDING LOGGING AT %s\n"
 msgstr "**** %s 结束日志纪录\n"
 
-#: src/common/text.c:418
+#: src/common/text.c:421
 #, c-format
 msgid "**** BEGIN LOGGING AT %s\n"
 msgstr "**** %s 开始日志记录\n"
 
-#: src/common/text.c:437
+#: src/common/text.c:440
 #, c-format
 msgid ""
 "* Can't open log file(s) for writing. Check the\n"
@@ -1136,473 +1137,463 @@ msgstr ""
 "不能打开日志文件进行写操作。请检查\n"
 "%s/chatlogs 的权限设置"
 
-#: src/common/text.c:648
+#: src/common/text.c:651
 msgid "Left message"
 msgstr "左边的消息"
 
-#: src/common/text.c:649
+#: src/common/text.c:652
 msgid "Right message"
 msgstr "右边的消息"
 
-#: src/common/text.c:653
+#: src/common/text.c:656
 msgid "The nick of the joining person"
 msgstr "加入的用户"
 
-#: src/common/text.c:654
+#: src/common/text.c:657
 msgid "The channel being joined"
 msgstr "加入的聊天室"
 
-#: src/common/text.c:655 src/common/text.c:699 src/common/text.c:755
+#: src/common/text.c:658 src/common/text.c:702 src/common/text.c:758
 msgid "The host of the person"
 msgstr "此人的主机"
 
-#: src/common/text.c:659 src/common/text.c:664 src/common/text.c:670
-#: src/common/text.c:737 src/common/text.c:861 src/common/text.c:868
-#: src/common/text.c:873 src/common/text.c:878 src/common/text.c:883
-#: src/common/text.c:889 src/common/text.c:894 src/common/text.c:898
-#: src/common/text.c:903 src/common/text.c:909 src/common/text.c:955
-#: src/common/text.c:964 src/common/text.c:969 src/common/text.c:974
-#: src/common/text.c:983 src/common/text.c:993 src/common/text.c:1000
-#: src/common/text.c:1006 src/common/text.c:1011 src/common/text.c:1016
-#: src/common/text.c:1023 src/common/text.c:1029 src/common/text.c:1035
-#: src/common/text.c:1040 src/common/text.c:1045 src/common/text.c:1049
-#: src/common/text.c:1055 src/common/text.c:1063 src/common/text.c:1097
-#: src/common/text.c:1102
+#: src/common/text.c:662 src/common/text.c:667 src/common/text.c:673
+#: src/common/text.c:740 src/common/text.c:864 src/common/text.c:871
+#: src/common/text.c:876 src/common/text.c:881 src/common/text.c:886
+#: src/common/text.c:892 src/common/text.c:897 src/common/text.c:901
+#: src/common/text.c:906 src/common/text.c:912 src/common/text.c:958
+#: src/common/text.c:967 src/common/text.c:972 src/common/text.c:977
+#: src/common/text.c:986 src/common/text.c:997 src/common/text.c:1004
+#: src/common/text.c:1010 src/common/text.c:1015 src/common/text.c:1020
+#: src/common/text.c:1027 src/common/text.c:1033 src/common/text.c:1039
+#: src/common/text.c:1044 src/common/text.c:1049 src/common/text.c:1053
+#: src/common/text.c:1059 src/common/text.c:1067 src/common/text.c:1101
+#: src/common/text.c:1106
 msgid "Nickname"
 msgstr "昵称"
 
-#: src/common/text.c:660
+#: src/common/text.c:663
 msgid "The action"
 msgstr "动作"
 
-#: src/common/text.c:665
+#: src/common/text.c:668
 msgid "The text"
 msgstr "文本"
 
-#: src/common/text.c:666
+#: src/common/text.c:669
 msgid "Mode char"
 msgstr "char 模式"
 
-#: src/common/text.c:671 src/common/text.c:727 src/common/text.c:733
-#: src/common/text.c:738
+#: src/common/text.c:674 src/common/text.c:730 src/common/text.c:736
+#: src/common/text.c:741
 msgid "The message"
 msgstr "消息"
 
-#: src/common/text.c:675 src/common/text.c:742
+#: src/common/text.c:678 src/common/text.c:745
 msgid "Old nickname"
 msgstr "原昵称"
 
-#: src/common/text.c:676 src/common/text.c:743
+#: src/common/text.c:679 src/common/text.c:746
 msgid "New nickname"
 msgstr "新昵称"
 
-#: src/common/text.c:680
+#: src/common/text.c:683
 msgid "Nick of person who changed the topic"
 msgstr "更改话题的用户"
 
-#: src/common/text.c:681 src/common/text.c:687 src/fe-gtk/chanlist.c:599
+#: src/common/text.c:684 src/common/text.c:690 src/fe-gtk/chanlist.c:599
 #: src/fe-gtk/chanlist.c:700
 msgid "Topic"
 msgstr "话题"
 
-#: src/common/text.c:682 src/common/text.c:686 src/common/text.c:1117
+#: src/common/text.c:685 src/common/text.c:689 src/common/text.c:1121
 #: src/fe-gtk/chanlist.c:597 src/fe-gtk/chanlist.c:691
 #: src/fe-gtk/ignoregui.c:175
 msgid "Channel"
 msgstr "聊天室"
 
-#: src/common/text.c:691 src/common/text.c:749
+#: src/common/text.c:694 src/common/text.c:752
 msgid "The nickname of the kicker"
 msgstr "能踢人的用户"
 
-#: src/common/text.c:692 src/common/text.c:747
+#: src/common/text.c:695 src/common/text.c:750
 msgid "The person being kicked"
 msgstr "被踢者"
 
-#: src/common/text.c:693 src/common/text.c:700 src/common/text.c:704
-#: src/common/text.c:709 src/common/text.c:748 src/common/text.c:756
+#: src/common/text.c:696 src/common/text.c:703 src/common/text.c:707
+#: src/common/text.c:712 src/common/text.c:751 src/common/text.c:759
 msgid "The channel"
 msgstr "聊天室"
 
-#: src/common/text.c:694 src/common/text.c:750 src/common/text.c:757
+#: src/common/text.c:697 src/common/text.c:753 src/common/text.c:760
 msgid "The reason"
 msgstr "原因"
 
-#: src/common/text.c:698 src/common/text.c:754
+#: src/common/text.c:701 src/common/text.c:757
 msgid "The nick of the person leaving"
 msgstr "离开的用户"
 
-#: src/common/text.c:705 src/common/text.c:711
+#: src/common/text.c:708 src/common/text.c:714
 msgid "The time"
 msgstr "时间"
 
-#: src/common/text.c:710
+#: src/common/text.c:713
 msgid "The creator"
 msgstr "创建者"
 
-#: src/common/text.c:715
+#: src/common/text.c:718
 msgid "Nick"
 msgstr "昵称"
 
-#: src/common/text.c:716 src/common/text.c:970
+#: src/common/text.c:719 src/common/text.c:973
 msgid "Reason"
 msgstr "原因"
 
-#: src/common/text.c:717 src/common/text.c:863 src/common/text.c:945
+#: src/common/text.c:720 src/common/text.c:866 src/common/text.c:948
 msgid "Host"
 msgstr "主机"
 
-#: src/common/text.c:721 src/common/text.c:726 src/common/text.c:731
+#: src/common/text.c:724 src/common/text.c:729 src/common/text.c:734
 msgid "Who it's from"
 msgstr "来自者"
 
-#: src/common/text.c:722
+#: src/common/text.c:725
 msgid "The time in x.x format (see below)"
 msgstr "时间格式为 x.x (见下)"
 
-#: src/common/text.c:732 src/common/text.c:773
+#: src/common/text.c:735 src/common/text.c:776
 msgid "The Channel it's going to"
 msgstr "要加入的聊天室"
 
-#: src/common/text.c:761
+#: src/common/text.c:764
 msgid "The sound"
 msgstr "音效"
 
-#: src/common/text.c:762 src/common/text.c:767 src/common/text.c:772
+#: src/common/text.c:765 src/common/text.c:770 src/common/text.c:775
 msgid "The nick of the person"
 msgstr "此人的昵称"
 
-#: src/common/text.c:766 src/common/text.c:771
+#: src/common/text.c:769 src/common/text.c:774
 msgid "The CTCP event"
 msgstr "CTCP 事件"
 
-#: src/common/text.c:777
+#: src/common/text.c:780
 msgid "The nick of the person who set the key"
 msgstr "设置密钥的用户"
 
-#: src/common/text.c:778
+#: src/common/text.c:781
 msgid "The key"
 msgstr "密钥"
 
-#: src/common/text.c:782
+#: src/common/text.c:785
 msgid "The nick of the person who set the limit"
 msgstr "设置限额的用户"
 
-#: src/common/text.c:783
+#: src/common/text.c:786
 msgid "The limit"
 msgstr "限额"
 
-#: src/common/text.c:787
+#: src/common/text.c:790
 msgid "The nick of the person who did the op'ing"
 msgstr "使用了 op 命令的用户"
 
-#: src/common/text.c:788
+#: src/common/text.c:791
 msgid "The nick of the person who has been op'ed"
 msgstr "被授予 op 身份的用户"
 
-#: src/common/text.c:792
+#: src/common/text.c:795
 msgid "The nick of the person who has been halfop'ed"
 msgstr "被授予 halfop 身份的用户"
 
-#: src/common/text.c:793
+#: src/common/text.c:796
 msgid "The nick of the person who did the halfop'ing"
 msgstr "使用 halfop 命令的用户"
 
-#: src/common/text.c:797
+#: src/common/text.c:800
 msgid "The nick of the person who did the voice'ing"
 msgstr "使用 voice 命令的用户"
 
-#: src/common/text.c:798
+#: src/common/text.c:801
 msgid "The nick of the person who has been voice'ed"
 msgstr "被赋予发言权的用户"
 
-#: src/common/text.c:802
+#: src/common/text.c:805
 msgid "The nick of the person who did the banning"
 msgstr "使用 ban 命令的用户"
 
-#: src/common/text.c:803 src/common/text.c:830
+#: src/common/text.c:806 src/common/text.c:833
 msgid "The ban mask"
 msgstr "ban 命令的掩模"
 
-#: src/common/text.c:807
+#: src/common/text.c:810
 msgid "The nick who removed the key"
 msgstr "取消密钥的用户"
 
-#: src/common/text.c:811
+#: src/common/text.c:814
 msgid "The nick who removed the limit"
 msgstr "取消用户限额的用户"
 
-#: src/common/text.c:815
+#: src/common/text.c:818
 msgid "The nick of the person of did the deop'ing"
 msgstr "使用 deop 命令的用户"
 
-#: src/common/text.c:816
+#: src/common/text.c:819
 msgid "The nick of the person who has been deop'ed"
 msgstr "被取消 op 身份的用户"
 
-#: src/common/text.c:819
+#: src/common/text.c:822
 msgid "The nick of the person of did the dehalfop'ing"
 msgstr "使用 dehalfop 命令的用户"
 
-#: src/common/text.c:820
+#: src/common/text.c:823
 msgid "The nick of the person who has been dehalfop'ed"
 msgstr "被取消 halfop 身份的用户"
 
-#: src/common/text.c:824
+#: src/common/text.c:827
 msgid "The nick of the person of did the devoice'ing"
 msgstr "使用 devoice 命令的用户"
 
-#: src/common/text.c:825
+#: src/common/text.c:828
 msgid "The nick of the person who has been devoice'ed"
 msgstr "被取消发言权的用户"
 
-#: src/common/text.c:829
+#: src/common/text.c:832
 msgid "The nick of the person of did the unban'ing"
 msgstr "使用 unban 命令的用户"
 
-#: src/common/text.c:834
+#: src/common/text.c:837
 msgid "The nick of the person who did the exempt"
 msgstr "使用 exempt 命令的用户"
 
-#: src/common/text.c:835 src/common/text.c:840
+#: src/common/text.c:838 src/common/text.c:843
 msgid "The exempt mask"
 msgstr "exempt 掩模"
 
-#: src/common/text.c:839
+#: src/common/text.c:842
 msgid "The nick of the person removed the exempt"
 msgstr "取消 exempt 的用户"
 
-#: src/common/text.c:844
+#: src/common/text.c:847
 msgid "The nick of the person who did the invite"
 msgstr "使用 invite 命令的用户"
 
-#: src/common/text.c:845 src/common/text.c:850
+#: src/common/text.c:848 src/common/text.c:853
 msgid "The invite mask"
 msgstr "invite 掩模"
 
-#: src/common/text.c:849
+#: src/common/text.c:852
 msgid "The nick of the person removed the invite"
 msgstr "取消 invite 的用户"
 
-#: src/common/text.c:854
+#: src/common/text.c:857
 msgid "The nick of the person setting the mode"
 msgstr "设置模式的用户"
 
-#: src/common/text.c:855
+#: src/common/text.c:858
 msgid "The mode's sign (+/-)"
 msgstr "模式的符号(+/-)"
 
-#: src/common/text.c:856
+#: src/common/text.c:859
 msgid "The mode letter"
 msgstr "模式字母"
 
-#: src/common/text.c:857
+#: src/common/text.c:860
 msgid "The channel it's being set on"
 msgstr "被设置的聊天室"
 
-#: src/common/text.c:862
+#: src/common/text.c:865
 msgid "Username"
 msgstr "用户名"
 
-#: src/common/text.c:864
+#: src/common/text.c:867
 msgid "Full name"
 msgstr "全名"
 
-#: src/common/text.c:869
+#: src/common/text.c:872
 msgid "Channel Membership/\"is an IRC operator\""
 msgstr "聊天室成员/“是 IRC 管理员”"
 
-#: src/common/text.c:874
+#: src/common/text.c:877
 msgid "Server Information"
 msgstr "服务器信息"
 
-#: src/common/text.c:879 src/common/text.c:884
+#: src/common/text.c:882 src/common/text.c:887
 msgid "Idle time"
 msgstr "发呆时间"
 
-#: src/common/text.c:885
+#: src/common/text.c:888
 msgid "Signon time"
 msgstr "登录时间"
 
-#: src/common/text.c:890
+#: src/common/text.c:893
 msgid "Away reason"
 msgstr "离开原因"
 
-#: src/common/text.c:899 src/common/text.c:904 src/common/text.c:912
-#: src/common/text.c:1089
+#: src/common/text.c:902 src/common/text.c:907 src/common/text.c:915
+#: src/common/text.c:1093
 msgid "Message"
 msgstr "消息"
 
-#: src/common/text.c:905
+#: src/common/text.c:908
 msgid "Account"
 msgstr "帐户"
 
-#: src/common/text.c:910
+#: src/common/text.c:913
 msgid "Real user@host"
 msgstr "真实用户@主机"
 
-#: src/common/text.c:911
+#: src/common/text.c:914
 msgid "Real IP"
 msgstr "真实 IP"
 
-#: src/common/text.c:916 src/common/text.c:925 src/common/text.c:931
-#: src/common/text.c:1112
+#: src/common/text.c:919 src/common/text.c:928 src/common/text.c:934
+#: src/common/text.c:1116
 msgid "Channel Name"
 msgstr "聊天室名"
 
-#: src/common/text.c:920 src/common/text.c:1075 src/fe-gtk/textgui.c:379
+#: src/common/text.c:923 src/common/text.c:1079 src/fe-gtk/textgui.c:383
 msgid "Text"
 msgstr "文本"
 
-#: src/common/text.c:921 src/common/text.c:927 src/common/text.c:1113
+#: src/common/text.c:924 src/common/text.c:930 src/common/text.c:1117
 msgid "Server Name"
 msgstr "服务器名"
 
-#: src/common/text.c:926
+#: src/common/text.c:929
 msgid "Nick of person who invited you"
 msgstr "邀请您的用户"
 
-#: src/common/text.c:932 src/fe-gtk/chanlist.c:598
+#: src/common/text.c:935 src/fe-gtk/chanlist.c:598
 msgid "Users"
 msgstr "用户"
 
-#: src/common/text.c:936
+#: src/common/text.c:939
 msgid "Nickname in use"
 msgstr "昵称已被使用"
 
-#: src/common/text.c:937
+#: src/common/text.c:940
 msgid "Nick being tried"
 msgstr "已试用过的昵称"
 
-#: src/common/text.c:941
-msgid "Error String"
-msgstr "错误的字符串"
-
-#: src/common/text.c:946 src/common/text.c:1079
-msgid "IP"
-msgstr "IP 地址"
-
-#: src/common/text.c:947 src/common/text.c:976
-msgid "Port"
-msgstr "端口"
-
-#: src/common/text.c:951
-msgid "PID"
-msgstr "进程号"
-
-#: src/common/text.c:959
-msgid "Channel name"
-msgstr "聊天室名"
-
-#: src/common/text.c:960 src/common/text.c:965
-msgid "Modes string"
-msgstr "模式字符串"
-
-#: src/common/text.c:975 src/common/text.c:1012 src/common/text.c:1017
-#: src/common/text.c:1058
-msgid "IP address"
-msgstr "IP 地址"
-
-#: src/common/text.c:977 src/common/text.c:994 src/common/text.c:1024
-msgid "Error name"
-msgstr "错误名称"
-
-#: src/common/text.c:981 src/common/text.c:1005
-msgid "DCC Type"
-msgstr "DCC 类型"
-
-#: src/common/text.c:982 src/common/text.c:987 src/common/text.c:991
-#: src/common/text.c:998 src/common/text.c:1018 src/common/text.c:1022
-#: src/common/text.c:1028 src/common/text.c:1034 src/common/text.c:1041
-#: src/common/text.c:1050 src/common/text.c:1056
-msgid "Filename"
-msgstr "文件名"
-
-#: src/common/text.c:992 src/common/text.c:999
-msgid "Destination filename"
-msgstr "目标文件名"
-
-#: src/common/text.c:1001 src/common/text.c:1030
-msgid "CPS"
-msgstr "CPS"
-
-#: src/common/text.c:1007
-msgid "Error string"
-msgstr "错误字符串"
-
-#: src/common/text.c:1036
-msgid "Pathname"
-msgstr "路径名"
-
-#: src/common/text.c:1051 src/fe-gtk/dccgui.c:483 src/fe-gtk/dccgui.c:633
-msgid "Position"
-msgstr "位置"
-
-#: src/common/text.c:1057 src/fe-gtk/dccgui.c:482 src/fe-gtk/dccgui.c:632
-msgid "Size"
-msgstr "大小"
-
-#: src/common/text.c:1062
-msgid "DCC String"
-msgstr "DCC 字符串"
-
-#: src/common/text.c:1067
-msgid "Number of notify items"
-msgstr "通知条目数"
-
-#: src/common/text.c:1071
-msgid "Servername"
-msgstr "服务器名"
-
-#: src/common/text.c:1083
-msgid "Old Filename"
-msgstr "旧文件名"
-
-#: src/common/text.c:1084
-msgid "New Filename"
-msgstr "新文件名"
-
-#: src/common/text.c:1088
-msgid "Receiver"
-msgstr "接收者"
-
-#: src/common/text.c:1093
-msgid "Hostmask"
-msgstr "主机掩码"
-
-#: src/common/text.c:1098
-msgid "Hostname"
-msgstr "主机名"
-
-#: src/common/text.c:1103
-msgid "The Packet"
-msgstr "包"
-
-#: src/common/text.c:1107
-msgid "Seconds"
-msgstr "秒"
-
-#: src/common/text.c:1111
-msgid "Nick of person who have been invited"
-msgstr "被邀请的用户"
-
-#: src/common/text.c:1118
-msgid "Banmask"
-msgstr "ban 的掩模"
-
-#: src/common/text.c:1119
-msgid "Who set the ban"
-msgstr "设置禁令的用户"
-
-#: src/common/text.c:1120
-msgid "Ban time"
-msgstr "封禁时间"
-
-#: src/common/text.c:1124
+#: src/common/text.c:944 src/common/text.c:980 src/common/text.c:991
+#: src/common/text.c:998 src/common/text.c:1011 src/common/text.c:1028
+#: src/common/text.c:1128
 msgid "Error"
 msgstr "错误"
 
-#: src/common/text.c:1158
+#: src/common/text.c:949 src/common/text.c:1083
+msgid "IP"
+msgstr "IP 地址"
+
+#: src/common/text.c:950 src/common/text.c:979
+msgid "Port"
+msgstr "端口"
+
+#: src/common/text.c:954
+msgid "PID"
+msgstr "进程号"
+
+#: src/common/text.c:962
+msgid "Channel name"
+msgstr "聊天室名"
+
+#: src/common/text.c:963 src/common/text.c:968
+msgid "Modes string"
+msgstr "模式字符串"
+
+#: src/common/text.c:978 src/common/text.c:1016 src/common/text.c:1021
+#: src/common/text.c:1062
+msgid "IP address"
+msgstr "IP 地址"
+
+#: src/common/text.c:984 src/common/text.c:1009
+msgid "DCC Type"
+msgstr "DCC 类型"
+
+#: src/common/text.c:985 src/common/text.c:990 src/common/text.c:995
+#: src/common/text.c:1002 src/common/text.c:1022 src/common/text.c:1026
+#: src/common/text.c:1032 src/common/text.c:1038 src/common/text.c:1045
+#: src/common/text.c:1054 src/common/text.c:1060
+msgid "Filename"
+msgstr "文件名"
+
+#: src/common/text.c:996 src/common/text.c:1003
+msgid "Destination filename"
+msgstr "目标文件名"
+
+#: src/common/text.c:1005 src/common/text.c:1034
+msgid "CPS"
+msgstr "CPS"
+
+#: src/common/text.c:1040
+msgid "Pathname"
+msgstr "路径名"
+
+#: src/common/text.c:1055 src/fe-gtk/dccgui.c:483 src/fe-gtk/dccgui.c:633
+msgid "Position"
+msgstr "位置"
+
+#: src/common/text.c:1061 src/fe-gtk/dccgui.c:482 src/fe-gtk/dccgui.c:632
+msgid "Size"
+msgstr "大小"
+
+#: src/common/text.c:1066
+msgid "DCC String"
+msgstr "DCC 字符串"
+
+#: src/common/text.c:1071
+msgid "Number of notify items"
+msgstr "通知条目数"
+
+#: src/common/text.c:1075
+msgid "Servername"
+msgstr "服务器名"
+
+#: src/common/text.c:1087
+msgid "Old Filename"
+msgstr "旧文件名"
+
+#: src/common/text.c:1088
+msgid "New Filename"
+msgstr "新文件名"
+
+#: src/common/text.c:1092
+msgid "Receiver"
+msgstr "接收者"
+
+#: src/common/text.c:1097
+msgid "Hostmask"
+msgstr "主机掩码"
+
+#: src/common/text.c:1102
+msgid "Hostname"
+msgstr "主机名"
+
+#: src/common/text.c:1107
+msgid "The Packet"
+msgstr "包"
+
+#: src/common/text.c:1111
+msgid "Seconds"
+msgstr "秒"
+
+#: src/common/text.c:1115
+msgid "Nick of person who have been invited"
+msgstr "被邀请的用户"
+
+#: src/common/text.c:1122
+msgid "Banmask"
+msgstr "ban 的掩模"
+
+#: src/common/text.c:1123
+msgid "Who set the ban"
+msgstr "设置禁令的用户"
+
+#: src/common/text.c:1124
+msgid "Ban time"
+msgstr "封禁时间"
+
+#: src/common/text.c:1162
 #, c-format
 msgid ""
 "Error parsing event %s.\n"
@@ -1610,6 +1601,13 @@ msgid ""
 msgstr ""
 "解析事件 %s 时出错。\n"
 "载入默认值"
+
+#: src/common/text.c:1672
+#, fuzzy, c-format
+msgid ""
+"Cannot read sound file:\n"
+"%s"
+msgstr "无法读取该文件。"
 
 #: src/common/util.c:292
 msgid "Remote host closed socket"
@@ -1635,1244 +1633,1244 @@ msgstr "无法分配该地址"
 msgid "Connection reset by peer"
 msgstr "连接被对端重设"
 
-#: src/common/util.c:724
+#: src/common/util.c:733
 msgid "Andorra"
 msgstr "安道尔"
 
-#: src/common/util.c:725
+#: src/common/util.c:734
 msgid "United Arab Emirates"
 msgstr "阿拉伯联合酋长国"
 
-#: src/common/util.c:726
+#: src/common/util.c:735
 msgid "Afghanistan"
 msgstr "阿富汗"
 
-#: src/common/util.c:727
+#: src/common/util.c:736
 msgid "Antigua and Barbuda"
 msgstr "安提瓜和巴布达"
 
-#: src/common/util.c:728
+#: src/common/util.c:737
 msgid "Anguilla"
 msgstr "安圭拉"
 
-#: src/common/util.c:729
+#: src/common/util.c:738
 msgid "Albania"
 msgstr "阿尔巴尼亚"
 
-#: src/common/util.c:730
+#: src/common/util.c:739
 msgid "Armenia"
 msgstr "亚美尼亚"
 
-#: src/common/util.c:731
+#: src/common/util.c:740
 msgid "Netherlands Antilles"
 msgstr "荷属安的列斯"
 
-#: src/common/util.c:732
+#: src/common/util.c:741
 msgid "Angola"
 msgstr "安哥拉"
 
-#: src/common/util.c:733
+#: src/common/util.c:742
 msgid "Antarctica"
 msgstr "南极洲"
 
-#: src/common/util.c:734
+#: src/common/util.c:743
 msgid "Argentina"
 msgstr "阿根廷"
 
-#: src/common/util.c:735
+#: src/common/util.c:744
 msgid "Reverse DNS"
 msgstr "反向 DNS"
 
-#: src/common/util.c:736
+#: src/common/util.c:745
 msgid "American Samoa"
 msgstr "美属萨摩亚"
 
-#: src/common/util.c:737
+#: src/common/util.c:746
 msgid "Austria"
 msgstr "奥地利"
 
-#: src/common/util.c:738
+#: src/common/util.c:747
 msgid "Nato Fiel"
 msgstr ""
 
-#: src/common/util.c:739
+#: src/common/util.c:748
 msgid "Australia"
 msgstr "澳大利亚"
 
-#: src/common/util.c:740
+#: src/common/util.c:749
 msgid "Aruba"
 msgstr "阿鲁巴"
 
-#: src/common/util.c:741
+#: src/common/util.c:750
 msgid "Azerbaijan"
 msgstr "阿塞拜疆"
 
-#: src/common/util.c:742
+#: src/common/util.c:751
 msgid "Bosnia and Herzegovina"
 msgstr "波斯尼亚和黑塞哥维那"
 
-#: src/common/util.c:743
+#: src/common/util.c:752
 msgid "Barbados"
 msgstr "巴巴多斯"
 
-#: src/common/util.c:744
+#: src/common/util.c:753
 msgid "Bangladesh"
 msgstr "孟加拉国"
 
-#: src/common/util.c:745
+#: src/common/util.c:754
 msgid "Belgium"
 msgstr "比利时"
 
-#: src/common/util.c:746
+#: src/common/util.c:755
 msgid "Burkina Faso"
 msgstr "布基纳法索"
 
-#: src/common/util.c:747
+#: src/common/util.c:756
 msgid "Bulgaria"
 msgstr "保加利亚"
 
-#: src/common/util.c:748
+#: src/common/util.c:757
 msgid "Bahrain"
 msgstr "巴林"
 
-#: src/common/util.c:749
+#: src/common/util.c:758
 msgid "Burundi"
 msgstr "布隆迪"
 
-#: src/common/util.c:750
+#: src/common/util.c:759
 msgid "Businesses"
 msgstr "商业"
 
-#: src/common/util.c:751
+#: src/common/util.c:760
 msgid "Benin"
 msgstr "贝宁"
 
-#: src/common/util.c:752
+#: src/common/util.c:761
 msgid "Bermuda"
 msgstr "百慕大群岛"
 
-#: src/common/util.c:753
+#: src/common/util.c:762
 msgid "Brunei Darussalam"
 msgstr "文莱 德鲁萨兰"
 
-#: src/common/util.c:754
+#: src/common/util.c:763
 msgid "Bolivia"
 msgstr "玻利维亚"
 
-#: src/common/util.c:755
+#: src/common/util.c:764
 msgid "Brazil"
 msgstr "巴西"
 
-#: src/common/util.c:756
+#: src/common/util.c:765
 msgid "Bahamas"
 msgstr "巴哈马群岛"
 
-#: src/common/util.c:757
+#: src/common/util.c:766
 msgid "Bhutan"
 msgstr "不丹"
 
-#: src/common/util.c:758
+#: src/common/util.c:767
 msgid "Bouvet Island"
 msgstr "波维特岛"
 
-#: src/common/util.c:759
+#: src/common/util.c:768
 msgid "Botswana"
 msgstr "博茨瓦纳"
 
-#: src/common/util.c:760
+#: src/common/util.c:769
 msgid "Belarus"
 msgstr "白俄罗斯"
 
-#: src/common/util.c:761
+#: src/common/util.c:770
 msgid "Belize"
 msgstr "伯利兹"
 
-#: src/common/util.c:762
+#: src/common/util.c:771
 msgid "Canada"
 msgstr "加拿大"
 
-#: src/common/util.c:763
+#: src/common/util.c:772
 msgid "Cocos Islands"
 msgstr "科科斯群岛"
 
-#: src/common/util.c:764
+#: src/common/util.c:773
 msgid "Central African Republic"
 msgstr "中非共和国"
 
-#: src/common/util.c:765
+#: src/common/util.c:774
 msgid "Congo"
 msgstr "刚果"
 
-#: src/common/util.c:766
+#: src/common/util.c:775
 msgid "Switzerland"
 msgstr "瑞士"
 
-#: src/common/util.c:767
+#: src/common/util.c:776
 msgid "Cote D'ivoire"
 msgstr "科特迪瓦"
 
-#: src/common/util.c:768
+#: src/common/util.c:777
 msgid "Cook Islands"
 msgstr "库克群岛"
 
-#: src/common/util.c:769
+#: src/common/util.c:778
 msgid "Chile"
 msgstr "智利"
 
-#: src/common/util.c:770
+#: src/common/util.c:779
 msgid "Cameroon"
 msgstr "喀麦隆"
 
-#: src/common/util.c:771
+#: src/common/util.c:780
 msgid "China"
 msgstr "中国"
 
-#: src/common/util.c:772
+#: src/common/util.c:781
 msgid "Colombia"
 msgstr "哥伦比亚"
 
-#: src/common/util.c:773
+#: src/common/util.c:782
 msgid "Internic Commercial"
 msgstr "Internic 商业性组织"
 
-#: src/common/util.c:774
+#: src/common/util.c:783
 msgid "Costa Rica"
 msgstr "哥斯达黎加"
 
-#: src/common/util.c:775
+#: src/common/util.c:784
 msgid "Former Czechoslovakia"
 msgstr "前捷克斯洛伐克"
 
-#: src/common/util.c:776
+#: src/common/util.c:785
 msgid "Cuba"
 msgstr "古巴"
 
-#: src/common/util.c:777
+#: src/common/util.c:786
 msgid "Cape Verde"
 msgstr "佛得角"
 
-#: src/common/util.c:778
+#: src/common/util.c:787
 msgid "Christmas Island"
 msgstr "圣诞岛"
 
-#: src/common/util.c:779
+#: src/common/util.c:788
 msgid "Cyprus"
 msgstr "塞浦路斯"
 
-#: src/common/util.c:780
+#: src/common/util.c:789
 msgid "Czech Republic"
 msgstr "捷克共和国"
 
-#: src/common/util.c:781
+#: src/common/util.c:790
 msgid "Germany"
 msgstr "德国"
 
-#: src/common/util.c:782
+#: src/common/util.c:791
 msgid "Djibouti"
 msgstr "吉布提"
 
-#: src/common/util.c:783
+#: src/common/util.c:792
 msgid "Denmark"
 msgstr "丹麦"
 
-#: src/common/util.c:784
+#: src/common/util.c:793
 msgid "Dominica"
 msgstr "多米尼加"
 
-#: src/common/util.c:785
+#: src/common/util.c:794
 msgid "Dominican Republic"
 msgstr "多米尼加共和国"
 
-#: src/common/util.c:786
+#: src/common/util.c:795
 msgid "Algeria"
 msgstr "阿尔及利亚"
 
-#: src/common/util.c:787
+#: src/common/util.c:796
 msgid "Ecuador"
 msgstr "厄瓜多尔"
 
-#: src/common/util.c:788
+#: src/common/util.c:797
 msgid "Educational Institution"
 msgstr "教育机构"
 
-#: src/common/util.c:789
+#: src/common/util.c:798
 msgid "Estonia"
 msgstr "爱沙尼亚"
 
-#: src/common/util.c:790
+#: src/common/util.c:799
 msgid "Egypt"
 msgstr "埃及"
 
-#: src/common/util.c:791
+#: src/common/util.c:800
 msgid "Western Sahara"
 msgstr "西撒哈拉"
 
-#: src/common/util.c:792
+#: src/common/util.c:801
 msgid "Eritrea"
 msgstr "厄立特里亚"
 
-#: src/common/util.c:793
+#: src/common/util.c:802
 msgid "Spain"
 msgstr "西班牙"
 
-#: src/common/util.c:794
+#: src/common/util.c:803
 msgid "Ethiopia"
 msgstr "埃塞俄比亚"
 
-#: src/common/util.c:795
+#: src/common/util.c:804
 msgid "Finland"
 msgstr "芬兰"
 
-#: src/common/util.c:796
+#: src/common/util.c:805
 msgid "Fiji"
 msgstr "斐济"
 
-#: src/common/util.c:797
+#: src/common/util.c:806
 msgid "Falkland Islands"
 msgstr "福克兰群岛"
 
-#: src/common/util.c:798
+#: src/common/util.c:807
 msgid "Micronesia"
 msgstr "密克罗尼西亚"
 
-#: src/common/util.c:799
+#: src/common/util.c:808
 msgid "Faroe Islands"
 msgstr "法罗群岛"
 
-#: src/common/util.c:800
+#: src/common/util.c:809
 msgid "France"
 msgstr "法国"
 
-#: src/common/util.c:801
+#: src/common/util.c:810
 msgid "France, Metropolitan"
 msgstr "法国，欧洲本土"
 
-#: src/common/util.c:802
+#: src/common/util.c:811
 msgid "Gabon"
 msgstr "加蓬"
 
-#: src/common/util.c:803
+#: src/common/util.c:812
 msgid "Great Britain"
 msgstr "大不列颠"
 
-#: src/common/util.c:804
+#: src/common/util.c:813
 msgid "Grenada"
 msgstr "格林纳达"
 
-#: src/common/util.c:805
+#: src/common/util.c:814
 msgid "Georgia"
 msgstr "格鲁吉亚"
 
-#: src/common/util.c:806
+#: src/common/util.c:815
 msgid "French Guiana"
 msgstr "法属圭亚那"
 
-#: src/common/util.c:807
+#: src/common/util.c:816
 msgid "British Channel Isles"
 msgstr "不列颠海峡群岛"
 
-#: src/common/util.c:808
+#: src/common/util.c:817
 msgid "Ghana"
 msgstr "加纳"
 
-#: src/common/util.c:809
+#: src/common/util.c:818
 msgid "Gibraltar"
 msgstr "直布罗陀"
 
-#: src/common/util.c:810
+#: src/common/util.c:819
 msgid "Greenland"
 msgstr "格陵兰"
 
-#: src/common/util.c:811
+#: src/common/util.c:820
 msgid "Gambia"
 msgstr "冈比亚"
 
-#: src/common/util.c:812
+#: src/common/util.c:821
 msgid "Guinea"
 msgstr "几内亚"
 
-#: src/common/util.c:813
+#: src/common/util.c:822
 msgid "Government"
 msgstr "政府部门"
 
-#: src/common/util.c:814
+#: src/common/util.c:823
 msgid "Guadeloupe"
 msgstr "瓜德罗普岛"
 
-#: src/common/util.c:815
+#: src/common/util.c:824
 msgid "Equatorial Guinea"
 msgstr "赤道几内亚"
 
-#: src/common/util.c:816
+#: src/common/util.c:825
 msgid "Greece"
 msgstr "希腊"
 
-#: src/common/util.c:817
+#: src/common/util.c:826
 msgid "S. Georgia and S. Sandwich Isles."
 msgstr "南乔治亚和南桑德韦奇群岛"
 
-#: src/common/util.c:818
+#: src/common/util.c:827
 msgid "Guatemala"
 msgstr "危地马拉"
 
-#: src/common/util.c:819
+#: src/common/util.c:828
 msgid "Guam"
 msgstr "关岛"
 
-#: src/common/util.c:820
+#: src/common/util.c:829
 msgid "Guinea-Bissau"
 msgstr "几内亚比绍共和国"
 
-#: src/common/util.c:821
+#: src/common/util.c:830
 msgid "Guyana"
 msgstr "圭亚那"
 
-#: src/common/util.c:822
+#: src/common/util.c:831
 msgid "Hong Kong"
 msgstr "中国香港"
 
-#: src/common/util.c:823
+#: src/common/util.c:832
 msgid "Heard and McDonald Islands"
 msgstr "赫德与麦克唐纳群岛"
 
-#: src/common/util.c:824
+#: src/common/util.c:833
 msgid "Honduras"
 msgstr "洪都拉斯"
 
-#: src/common/util.c:825
+#: src/common/util.c:834
 msgid "Croatia"
 msgstr "克罗地亚"
 
-#: src/common/util.c:826
+#: src/common/util.c:835
 msgid "Haiti"
 msgstr "海地"
 
-#: src/common/util.c:827
+#: src/common/util.c:836
 msgid "Hungary"
 msgstr "匈牙利"
 
-#: src/common/util.c:828
+#: src/common/util.c:837
 msgid "Indonesia"
 msgstr "印度尼西亚"
 
-#: src/common/util.c:829
+#: src/common/util.c:838
 msgid "Ireland"
 msgstr "爱尔兰"
 
-#: src/common/util.c:830
+#: src/common/util.c:839
 msgid "Israel"
 msgstr "以色列"
 
-#: src/common/util.c:831
+#: src/common/util.c:840
 msgid "India"
 msgstr "印度"
 
-#: src/common/util.c:832
+#: src/common/util.c:841
 msgid "Informational"
 msgstr "信息的"
 
-#: src/common/util.c:833
+#: src/common/util.c:842
 msgid "International"
 msgstr "国际的"
 
-#: src/common/util.c:834
+#: src/common/util.c:843
 msgid "British Indian Ocean Territory"
 msgstr "英属印度洋地区"
 
-#: src/common/util.c:835
+#: src/common/util.c:844
 msgid "Iraq"
 msgstr "伊拉克"
 
-#: src/common/util.c:836
+#: src/common/util.c:845
 msgid "Iran"
 msgstr "伊朗"
 
-#: src/common/util.c:837
+#: src/common/util.c:846
 msgid "Iceland"
 msgstr "冰岛"
 
-#: src/common/util.c:838
+#: src/common/util.c:847
 msgid "Italy"
 msgstr "意大利"
 
-#: src/common/util.c:839
+#: src/common/util.c:848
 msgid "Jamaica"
 msgstr "牙买加"
 
-#: src/common/util.c:840
+#: src/common/util.c:849
 msgid "Jordan"
 msgstr "约旦"
 
-#: src/common/util.c:841
+#: src/common/util.c:850
 msgid "Japan"
 msgstr "日本"
 
-#: src/common/util.c:842
+#: src/common/util.c:851
 msgid "Kenya"
 msgstr "肯尼亚"
 
-#: src/common/util.c:843
+#: src/common/util.c:852
 msgid "Kyrgyzstan"
 msgstr "吉尔吉斯斯坦"
 
-#: src/common/util.c:844
+#: src/common/util.c:853
 msgid "Cambodia"
 msgstr "柬埔寨"
 
-#: src/common/util.c:845
+#: src/common/util.c:854
 msgid "Kiribati"
 msgstr "基里巴斯"
 
-#: src/common/util.c:846
+#: src/common/util.c:855
 msgid "Comoros"
 msgstr "科摩罗"
 
-#: src/common/util.c:847
+#: src/common/util.c:856
 msgid "St. Kitts and Nevis"
 msgstr "圣基茨和那维斯"
 
-#: src/common/util.c:848
+#: src/common/util.c:857
 msgid "North Korea"
 msgstr "北朝鲜"
 
-#: src/common/util.c:849
+#: src/common/util.c:858
 msgid "South Korea"
 msgstr "韩国"
 
-#: src/common/util.c:850
+#: src/common/util.c:859
 msgid "Kuwait"
 msgstr "科威特"
 
-#: src/common/util.c:851
+#: src/common/util.c:860
 msgid "Cayman Islands"
 msgstr "开曼群岛"
 
-#: src/common/util.c:852
+#: src/common/util.c:861
 msgid "Kazakhstan"
 msgstr "哈萨克斯坦"
 
-#: src/common/util.c:853
+#: src/common/util.c:862
 msgid "Laos"
 msgstr "老挝"
 
-#: src/common/util.c:854
+#: src/common/util.c:863
 msgid "Lebanon"
 msgstr "黎巴嫩"
 
-#: src/common/util.c:855
+#: src/common/util.c:864
 msgid "Saint Lucia"
 msgstr "圣卢西亚岛"
 
-#: src/common/util.c:856
+#: src/common/util.c:865
 msgid "Liechtenstein"
 msgstr "列支敦士登"
 
-#: src/common/util.c:857
+#: src/common/util.c:866
 msgid "Sri Lanka"
 msgstr "斯里兰卡"
 
-#: src/common/util.c:858
+#: src/common/util.c:867
 msgid "Liberia"
 msgstr "利比里亚"
 
-#: src/common/util.c:859
+#: src/common/util.c:868
 msgid "Lesotho"
 msgstr "莱索托"
 
-#: src/common/util.c:860
+#: src/common/util.c:869
 msgid "Lithuania"
 msgstr "立陶宛"
 
-#: src/common/util.c:861
+#: src/common/util.c:870
 msgid "Luxembourg"
 msgstr "卢森堡"
 
-#: src/common/util.c:862
+#: src/common/util.c:871
 msgid "Latvia"
 msgstr "拉脱维亚"
 
-#: src/common/util.c:863
+#: src/common/util.c:872
 msgid "Libya"
 msgstr "利比亚"
 
-#: src/common/util.c:864
+#: src/common/util.c:873
 msgid "Morocco"
 msgstr "摩洛哥"
 
-#: src/common/util.c:865
+#: src/common/util.c:874
 msgid "Monaco"
 msgstr "摩纳哥"
 
-#: src/common/util.c:866
+#: src/common/util.c:875
 msgid "Moldova"
 msgstr "摩尔多瓦共和国"
 
-#: src/common/util.c:867
+#: src/common/util.c:876
 msgid "United States Medical"
 msgstr "美国医疗组织"
 
-#: src/common/util.c:868
+#: src/common/util.c:877
 msgid "Madagascar"
 msgstr "马达加斯加"
 
-#: src/common/util.c:869
+#: src/common/util.c:878
 msgid "Marshall Islands"
 msgstr "马绍尔群岛"
 
-#: src/common/util.c:870
+#: src/common/util.c:879
 msgid "Military"
 msgstr "军事"
 
-#: src/common/util.c:871
+#: src/common/util.c:880
 msgid "Macedonia"
 msgstr "马其顿"
 
-#: src/common/util.c:872
+#: src/common/util.c:881
 msgid "Mali"
 msgstr "马里"
 
-#: src/common/util.c:873
+#: src/common/util.c:882
 msgid "Myanmar"
 msgstr "缅甸"
 
-#: src/common/util.c:874
+#: src/common/util.c:883
 msgid "Mongolia"
 msgstr "蒙古"
 
-#: src/common/util.c:875
+#: src/common/util.c:884
 msgid "Macau"
 msgstr "中国澳门"
 
-#: src/common/util.c:876
+#: src/common/util.c:885
 msgid "Northern Mariana Islands"
 msgstr "北马里亚纳群岛"
 
-#: src/common/util.c:877
+#: src/common/util.c:886
 msgid "Martinique"
 msgstr "马提尼克岛"
 
-#: src/common/util.c:878
+#: src/common/util.c:887
 msgid "Mauritania"
 msgstr "毛里塔尼亚"
 
-#: src/common/util.c:879
+#: src/common/util.c:888
 msgid "Montserrat"
 msgstr "蒙特塞拉特"
 
-#: src/common/util.c:880
+#: src/common/util.c:889
 msgid "Malta"
 msgstr "马耳他"
 
-#: src/common/util.c:881
+#: src/common/util.c:890
 msgid "Mauritius"
 msgstr "毛里求斯"
 
-#: src/common/util.c:882
+#: src/common/util.c:891
 msgid "Maldives"
 msgstr "马尔代夫"
 
-#: src/common/util.c:883
+#: src/common/util.c:892
 msgid "Malawi"
 msgstr "马拉维"
 
-#: src/common/util.c:884
+#: src/common/util.c:893
 msgid "Mexico"
 msgstr "墨西哥"
 
-#: src/common/util.c:885
+#: src/common/util.c:894
 msgid "Malaysia"
 msgstr "马来西亚"
 
-#: src/common/util.c:886
+#: src/common/util.c:895
 msgid "Mozambique"
 msgstr "莫桑比克"
 
-#: src/common/util.c:887
+#: src/common/util.c:896
 msgid "Namibia"
 msgstr "纳米比亚"
 
-#: src/common/util.c:888
+#: src/common/util.c:897
 msgid "New Caledonia"
 msgstr "新喀里多尼亚"
 
-#: src/common/util.c:889
+#: src/common/util.c:898
 msgid "Niger"
 msgstr "尼日尔"
 
-#: src/common/util.c:890
+#: src/common/util.c:899
 msgid "Internic Network"
 msgstr "Internic 网络"
 
-#: src/common/util.c:891
+#: src/common/util.c:900
 msgid "Norfolk Island"
 msgstr "诺福克岛"
 
-#: src/common/util.c:892
+#: src/common/util.c:901
 msgid "Nigeria"
 msgstr "尼日利亚"
 
-#: src/common/util.c:893
+#: src/common/util.c:902
 msgid "Nicaragua"
 msgstr "尼加拉瓜"
 
-#: src/common/util.c:894
+#: src/common/util.c:903
 msgid "Netherlands"
 msgstr "荷兰"
 
-#: src/common/util.c:895
+#: src/common/util.c:904
 msgid "Norway"
 msgstr "挪威"
 
-#: src/common/util.c:896
+#: src/common/util.c:905
 msgid "Nepal"
 msgstr "尼泊尔"
 
-#: src/common/util.c:897
+#: src/common/util.c:906
 msgid "Nauru"
 msgstr "瑙鲁"
 
-#: src/common/util.c:898
+#: src/common/util.c:907
 msgid "Neutral Zone"
 msgstr "中立地区"
 
-#: src/common/util.c:899
+#: src/common/util.c:908
 msgid "Niue"
 msgstr "纽埃"
 
-#: src/common/util.c:900
+#: src/common/util.c:909
 msgid "New Zealand"
 msgstr "新西兰"
 
-#: src/common/util.c:901
+#: src/common/util.c:910
 msgid "Oman"
 msgstr "阿曼"
 
-#: src/common/util.c:902
+#: src/common/util.c:911
 msgid "Internic Non-Profit Organization"
 msgstr "Internic 非赢利性组织"
 
-#: src/common/util.c:903
+#: src/common/util.c:912
 msgid "Panama"
 msgstr "巴拿马"
 
-#: src/common/util.c:904
+#: src/common/util.c:913
 msgid "Peru"
 msgstr "秘鲁"
 
-#: src/common/util.c:905
+#: src/common/util.c:914
 msgid "French Polynesia"
 msgstr "法属波利尼西亚"
 
-#: src/common/util.c:906
+#: src/common/util.c:915
 msgid "Papua New Guinea"
 msgstr "巴布亚新几内亚"
 
-#: src/common/util.c:907
+#: src/common/util.c:916
 msgid "Philippines"
 msgstr "菲律宾"
 
-#: src/common/util.c:908
+#: src/common/util.c:917
 msgid "Pakistan"
 msgstr "巴基斯坦"
 
-#: src/common/util.c:909
+#: src/common/util.c:918
 msgid "Poland"
 msgstr "波兰"
 
-#: src/common/util.c:910
+#: src/common/util.c:919
 msgid "St. Pierre and Miquelon"
 msgstr "圣皮埃尔和麦克伦群岛"
 
-#: src/common/util.c:911
+#: src/common/util.c:920
 msgid "Pitcairn"
 msgstr "皮特康岛"
 
-#: src/common/util.c:912
+#: src/common/util.c:921
 msgid "Puerto Rico"
 msgstr "波多黎各"
 
-#: src/common/util.c:913
+#: src/common/util.c:922
 msgid "Portugal"
 msgstr "葡萄牙"
 
-#: src/common/util.c:914
+#: src/common/util.c:923
 msgid "Palau"
 msgstr "帕劳"
 
-#: src/common/util.c:915
+#: src/common/util.c:924
 msgid "Paraguay"
 msgstr "巴拉圭"
 
-#: src/common/util.c:916
+#: src/common/util.c:925
 msgid "Qatar"
 msgstr "卡塔尔"
 
-#: src/common/util.c:917
+#: src/common/util.c:926
 msgid "Reunion"
 msgstr "留尼汪"
 
-#: src/common/util.c:918
+#: src/common/util.c:927
 msgid "Romania"
 msgstr "罗马尼亚"
 
-#: src/common/util.c:919
+#: src/common/util.c:928
 msgid "Old School ARPAnet"
 msgstr "教育ARPAnet"
 
-#: src/common/util.c:920
+#: src/common/util.c:929
 msgid "Russian Federation"
 msgstr "俄罗斯联邦"
 
-#: src/common/util.c:921
+#: src/common/util.c:930
 msgid "Rwanda"
 msgstr "卢旺达"
 
-#: src/common/util.c:922
+#: src/common/util.c:931
 msgid "Saudi Arabia"
 msgstr "沙特阿拉伯"
 
-#: src/common/util.c:923
+#: src/common/util.c:932
 msgid "Solomon Islands"
 msgstr "所罗门群岛"
 
-#: src/common/util.c:924
+#: src/common/util.c:933
 msgid "Seychelles"
 msgstr "塞舌尔群岛"
 
-#: src/common/util.c:925
+#: src/common/util.c:934
 msgid "Sudan"
 msgstr "苏丹"
 
-#: src/common/util.c:926
+#: src/common/util.c:935
 msgid "Sweden"
 msgstr "瑞典"
 
-#: src/common/util.c:927
+#: src/common/util.c:936
 msgid "Singapore"
 msgstr "新加坡"
 
-#: src/common/util.c:928
+#: src/common/util.c:937
 msgid "St. Helena"
 msgstr "圣赫勒拿岛"
 
-#: src/common/util.c:929
+#: src/common/util.c:938
 msgid "Slovenia"
 msgstr "斯洛文尼亚"
 
-#: src/common/util.c:930
+#: src/common/util.c:939
 msgid "Svalbard and Jan Mayen Islands"
 msgstr "斯瓦尔巴特和扬马延岛"
 
-#: src/common/util.c:931
+#: src/common/util.c:940
 msgid "Slovak Republic"
 msgstr "斯洛伐克共和国"
 
-#: src/common/util.c:932
+#: src/common/util.c:941
 msgid "Sierra Leone"
 msgstr "塞拉利昂"
 
-#: src/common/util.c:933
+#: src/common/util.c:942
 msgid "San Marino"
 msgstr "圣马力诺"
 
-#: src/common/util.c:934
+#: src/common/util.c:943
 msgid "Senegal"
 msgstr "塞内加尔"
 
-#: src/common/util.c:935
+#: src/common/util.c:944
 msgid "Somalia"
 msgstr "索马里"
 
-#: src/common/util.c:936
+#: src/common/util.c:945
 msgid "Suriname"
 msgstr "苏里南"
 
-#: src/common/util.c:937
+#: src/common/util.c:946
 msgid "Sao Tome and Principe"
 msgstr "圣多美和普林西比"
 
-#: src/common/util.c:938
+#: src/common/util.c:947
 msgid "Former USSR"
 msgstr "前苏联"
 
-#: src/common/util.c:939
+#: src/common/util.c:948
 msgid "El Salvador"
 msgstr "萨尔瓦多"
 
-#: src/common/util.c:940
+#: src/common/util.c:949
 msgid "Syria"
 msgstr "叙利亚"
 
-#: src/common/util.c:941
+#: src/common/util.c:950
 msgid "Swaziland"
 msgstr "斯威士兰"
 
-#: src/common/util.c:942
+#: src/common/util.c:951
 msgid "Turks and Caicos Islands"
 msgstr "特克斯和凯科斯群岛"
 
-#: src/common/util.c:943
+#: src/common/util.c:952
 msgid "Chad"
 msgstr "乍得"
 
-#: src/common/util.c:944
+#: src/common/util.c:953
 msgid "French Southern Territories"
 msgstr "法属南部地区"
 
-#: src/common/util.c:945
+#: src/common/util.c:954
 msgid "Togo"
 msgstr "多哥"
 
-#: src/common/util.c:946
+#: src/common/util.c:955
 msgid "Thailand"
 msgstr "泰国"
 
-#: src/common/util.c:947
+#: src/common/util.c:956
 msgid "Tajikistan"
 msgstr "塔吉克斯坦"
 
-#: src/common/util.c:948
+#: src/common/util.c:957
 msgid "Tokelau"
 msgstr "托克劳群岛"
 
-#: src/common/util.c:949
+#: src/common/util.c:958
 msgid "Turkmenistan"
 msgstr "土库曼斯坦"
 
-#: src/common/util.c:950
+#: src/common/util.c:959
 msgid "Tunisia"
 msgstr "突尼斯"
 
-#: src/common/util.c:951
+#: src/common/util.c:960
 msgid "Tonga"
 msgstr "汤加"
 
-#: src/common/util.c:952
+#: src/common/util.c:961
 msgid "East Timor"
 msgstr "东帝汶"
 
-#: src/common/util.c:953
+#: src/common/util.c:962
 msgid "Turkey"
 msgstr "土耳其"
 
-#: src/common/util.c:954
+#: src/common/util.c:963
 msgid "Trinidad and Tobago"
 msgstr "特立尼达和多巴哥"
 
-#: src/common/util.c:955
+#: src/common/util.c:964
 msgid "Tuvalu"
 msgstr "图瓦卢"
 
-#: src/common/util.c:956
+#: src/common/util.c:965
 msgid "Taiwan"
 msgstr "台湾"
 
-#: src/common/util.c:957
+#: src/common/util.c:966
 msgid "Tanzania"
 msgstr "坦桑尼亚"
 
-#: src/common/util.c:958
+#: src/common/util.c:967
 msgid "Ukraine"
 msgstr "乌克兰"
 
-#: src/common/util.c:959
+#: src/common/util.c:968
 msgid "Uganda"
 msgstr "乌干达"
 
-#: src/common/util.c:960
+#: src/common/util.c:969
 msgid "United Kingdom"
 msgstr "英国"
 
-#: src/common/util.c:961
+#: src/common/util.c:970
 msgid "US Minor Outlying Islands"
 msgstr "美国周边岛屿"
 
-#: src/common/util.c:962
+#: src/common/util.c:971
 msgid "United States of America"
 msgstr "美利坚合众国"
 
-#: src/common/util.c:963
+#: src/common/util.c:972
 msgid "Uruguay"
 msgstr "乌拉圭"
 
-#: src/common/util.c:964
+#: src/common/util.c:973
 msgid "Uzbekistan"
 msgstr "乌兹别克斯坦"
 
-#: src/common/util.c:965
+#: src/common/util.c:974
 msgid "Vatican City State"
 msgstr "梵蒂冈"
 
-#: src/common/util.c:966
+#: src/common/util.c:975
 msgid "St. Vincent and the grenadines"
 msgstr "圣文森特和格林纳丁斯"
 
-#: src/common/util.c:967
+#: src/common/util.c:976
 msgid "Venezuela"
 msgstr "委内瑞拉"
 
-#: src/common/util.c:968
+#: src/common/util.c:977
 msgid "British Virgin Islands"
 msgstr "英属维尔京群岛"
 
-#: src/common/util.c:969
+#: src/common/util.c:978
 msgid "US Virgin Islands"
 msgstr "美属维尔京群岛"
 
-#: src/common/util.c:970
+#: src/common/util.c:979
 msgid "Vietnam"
 msgstr "越南"
 
-#: src/common/util.c:971
+#: src/common/util.c:980
 msgid "Vanuatu"
 msgstr "瓦鲁阿图"
 
-#: src/common/util.c:972
+#: src/common/util.c:981
 msgid "Wallis and Futuna Islands"
 msgstr "瓦利斯和富图群岛"
 
-#: src/common/util.c:973
+#: src/common/util.c:982
 msgid "Samoa"
 msgstr "萨摩亚"
 
-#: src/common/util.c:974
+#: src/common/util.c:983
 msgid "Yemen"
 msgstr "也门"
 
-#: src/common/util.c:975
+#: src/common/util.c:984
 msgid "Mayotte"
 msgstr "马约特群岛"
 
-#: src/common/util.c:976
+#: src/common/util.c:985
 msgid "Yugoslavia"
 msgstr "南斯拉夫"
 
-#: src/common/util.c:977
+#: src/common/util.c:986
 msgid "South Africa"
 msgstr "南非"
 
-#: src/common/util.c:978
+#: src/common/util.c:987
 msgid "Zambia"
 msgstr "赞比亚"
 
-#: src/common/util.c:979
+#: src/common/util.c:988
 msgid "Zaire"
 msgstr "扎伊尔"
 
-#: src/common/util.c:980
+#: src/common/util.c:989
 msgid "Zimbabwe"
 msgstr "津巴布韦"
 
-#: src/common/util.c:986 src/common/util.c:996 src/fe-gtk/menu.c:503
+#: src/common/util.c:995 src/common/util.c:1005 src/fe-gtk/menu.c:503
 #: src/fe-gtk/menu.c:507 src/fe-gtk/menu.c:511 src/fe-gtk/menu.c:515
 #: src/fe-gtk/menu.c:519
 msgid "Unknown"
 msgstr "未知"
 
-#: src/common/xchat.c:902
+#: src/common/xchat.c:908
 msgid "Direct client-to-client"
 msgstr "直接客户端到客户端"
 
-#: src/common/xchat.c:903
+#: src/common/xchat.c:909
 msgid "Send File"
 msgstr "发送文件"
 
-#: src/common/xchat.c:904
+#: src/common/xchat.c:910
 msgid "Offer Chat"
 msgstr "请求聊天"
 
-#: src/common/xchat.c:905
+#: src/common/xchat.c:911
 msgid "Abort Chat"
 msgstr "中止聊天"
 
-#: src/common/xchat.c:906 src/fe-gtk/plugingui.c:74
+#: src/common/xchat.c:912 src/fe-gtk/plugingui.c:74
 msgid "Version"
 msgstr "版本"
 
-#: src/common/xchat.c:907
+#: src/common/xchat.c:913
 msgid "Userinfo"
 msgstr "个人信息"
 
-#: src/common/xchat.c:908
+#: src/common/xchat.c:914
 msgid "Clientinfo"
 msgstr "客户端信息"
 
-#: src/common/xchat.c:909 src/common/xchat.c:941 src/common/xchat.c:991
+#: src/common/xchat.c:915 src/common/xchat.c:947 src/common/xchat.c:997
 msgid "Ping"
 msgstr "Ping"
 
-#: src/common/xchat.c:910
+#: src/common/xchat.c:916
 msgid "Time"
 msgstr "时间"
 
-#: src/common/xchat.c:911
+#: src/common/xchat.c:917
 msgid "Finger"
 msgstr "Finger"
 
-#: src/common/xchat.c:912
+#: src/common/xchat.c:918
 msgid "Oper"
 msgstr "操作"
 
-#: src/common/xchat.c:913
+#: src/common/xchat.c:919
 msgid "Kill this user"
 msgstr "杀死此用户"
 
-#: src/common/xchat.c:914
+#: src/common/xchat.c:920
 msgid "Mode"
 msgstr "模式"
 
-#: src/common/xchat.c:915
+#: src/common/xchat.c:921
 msgid "Give Voice"
 msgstr "给发言权"
 
-#: src/common/xchat.c:916
+#: src/common/xchat.c:922
 msgid "Take Voice"
 msgstr "取消发言权"
 
-#: src/common/xchat.c:917
+#: src/common/xchat.c:923
 msgid "Give Ops"
 msgstr "给 Op 权限"
 
-#: src/common/xchat.c:918
+#: src/common/xchat.c:924
 msgid "Take Ops"
 msgstr "取消 Op 权限"
 
-#: src/common/xchat.c:919
+#: src/common/xchat.c:925
 msgid "Ignore"
 msgstr "忽略"
 
-#: src/common/xchat.c:920
+#: src/common/xchat.c:926
 msgid "Ignore User"
 msgstr "忽略用户"
 
-#: src/common/xchat.c:921
+#: src/common/xchat.c:927
 msgid "UnIgnore User"
 msgstr "取消忽略用户"
 
-#: src/common/xchat.c:922
+#: src/common/xchat.c:928
 msgid "Kick/Ban"
 msgstr "踢出/封禁"
 
-#: src/common/xchat.c:923 src/common/xchat.c:975
+#: src/common/xchat.c:929 src/common/xchat.c:981
 msgid "Kick"
 msgstr "踢"
 
-#: src/common/xchat.c:924 src/common/xchat.c:925 src/common/xchat.c:926
-#: src/common/xchat.c:927 src/common/xchat.c:928 src/common/xchat.c:974
+#: src/common/xchat.c:930 src/common/xchat.c:931 src/common/xchat.c:932
+#: src/common/xchat.c:933 src/common/xchat.c:934 src/common/xchat.c:980
 msgid "Ban"
 msgstr "封禁"
 
-#: src/common/xchat.c:929 src/common/xchat.c:930 src/common/xchat.c:931
-#: src/common/xchat.c:932
+#: src/common/xchat.c:935 src/common/xchat.c:936 src/common/xchat.c:937
+#: src/common/xchat.c:938
 msgid "KickBan"
 msgstr "踢出并封禁"
 
-#: src/common/xchat.c:933 src/fe-gtk/dccgui.c:528 src/fe-gtk/dccgui.c:669
+#: src/common/xchat.c:939 src/fe-gtk/dccgui.c:528 src/fe-gtk/dccgui.c:669
 msgid "Info"
 msgstr "信息"
 
-#: src/common/xchat.c:934
+#: src/common/xchat.c:940
 msgid "Who"
 msgstr "Who"
 
-#: src/common/xchat.c:935 src/common/xchat.c:988
+#: src/common/xchat.c:941 src/common/xchat.c:994
 msgid "WhoIs"
 msgstr "WhoIs"
 
-#: src/common/xchat.c:936
+#: src/common/xchat.c:942
 msgid "DNS Lookup"
 msgstr "DNS 查询"
 
-#: src/common/xchat.c:937
+#: src/common/xchat.c:943
 msgid "Trace"
 msgstr "Trace"
 
-#: src/common/xchat.c:938
+#: src/common/xchat.c:944
 msgid "UserHost"
 msgstr "用户主机"
 
-#: src/common/xchat.c:939
+#: src/common/xchat.c:945
 msgid "External"
 msgstr "外部程序"
 
-#: src/common/xchat.c:940
+#: src/common/xchat.c:946
 msgid "Traceroute"
 msgstr "Traceroute"
 
-#: src/common/xchat.c:942
+#: src/common/xchat.c:948
 msgid "Telnet"
 msgstr "Telnet"
 
-#: src/common/xchat.c:943
+#: src/common/xchat.c:949
 msgid "Open Dialog Window"
 msgstr "打开对话窗口"
 
-#: src/common/xchat.c:955
+#: src/common/xchat.c:961
 msgid "Disconnect"
 msgstr "断开连接"
 
-#: src/common/xchat.c:956
+#: src/common/xchat.c:962
 msgid "Reconnect"
 msgstr "重新连接"
 
-#: src/common/xchat.c:957
+#: src/common/xchat.c:963
 msgid "Leave Channel"
 msgstr "离开聊天室"
 
-#: src/common/xchat.c:958
+#: src/common/xchat.c:964
 msgid "Join Channel..."
 msgstr "加入聊天室..."
 
-#: src/common/xchat.c:959
+#: src/common/xchat.c:965
 msgid "Enter Channel to Join:"
 msgstr "输入要加入的聊天室："
 
-#: src/common/xchat.c:960
+#: src/common/xchat.c:966
 msgid "Server Links"
 msgstr "服务器列表"
 
-#: src/common/xchat.c:961
+#: src/common/xchat.c:967
 msgid "Ping Server"
 msgstr "ping 服务器"
 
-#: src/common/xchat.c:962
+#: src/common/xchat.c:968
 msgid "Hide Version"
 msgstr "隐藏版本信息"
 
-#: src/common/xchat.c:972
+#: src/common/xchat.c:978
 msgid "Op"
 msgstr "给管理员权限"
 
-#: src/common/xchat.c:973
+#: src/common/xchat.c:979
 msgid "DeOp"
 msgstr "取消管理员权限"
 
-#: src/common/xchat.c:976
+#: src/common/xchat.c:982
 msgid "bye"
 msgstr "道别"
 
-#: src/common/xchat.c:977
+#: src/common/xchat.c:983
 #, c-format
 msgid "Enter reason to kick %s:"
 msgstr "输入踢 %s 的原因："
 
-#: src/common/xchat.c:978
+#: src/common/xchat.c:984
 msgid "Sendfile"
 msgstr "发送文件"
 
-#: src/common/xchat.c:979
+#: src/common/xchat.c:985
 msgid "Dialog"
 msgstr "对话"
 
-#: src/common/xchat.c:989
+#: src/common/xchat.c:995
 msgid "Send"
 msgstr "发送"
 
-#: src/common/xchat.c:990
+#: src/common/xchat.c:996
 msgid "Chat"
 msgstr "聊天"
 
-#: src/common/xchat.c:992 src/fe-gtk/banlist.c:314 src/fe-gtk/search.c:117
+#: src/common/xchat.c:998 src/fe-gtk/banlist.c:314 src/fe-gtk/search.c:117
 #: src/fe-gtk/urlgrab.c:200
 msgid "Clear"
 msgstr "清除"
@@ -3120,7 +3118,7 @@ msgstr "下移"
 msgid "Cancel"
 msgstr "取消"
 
-#: src/fe-gtk/editlist.c:349 src/fe-gtk/textgui.c:460 src/fe-gtk/urlgrab.c:204
+#: src/fe-gtk/editlist.c:349 src/fe-gtk/textgui.c:464 src/fe-gtk/urlgrab.c:204
 msgid "Save"
 msgstr "保存"
 
@@ -3175,11 +3173,11 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/fe-gtk/fe-gtk.c:614
+#: src/fe-gtk/fe-gtk.c:617
 msgid "Search buffer is empty.\n"
 msgstr "搜索缓冲区目前无内容。\n"
 
-#: src/fe-gtk/fe-gtk.c:691
+#: src/fe-gtk/fe-gtk.c:694
 #, c-format
 msgid "%d bytes"
 msgstr ""
@@ -4029,31 +4027,31 @@ msgstr "最后一次看到"
 msgid "Offline"
 msgstr "离线"
 
-#: src/fe-gtk/notifygui.c:172
+#: src/fe-gtk/notifygui.c:169
 msgid "Never"
 msgstr "从不"
 
-#: src/fe-gtk/notifygui.c:190
+#: src/fe-gtk/notifygui.c:187
 msgid "Online"
 msgstr "上线"
 
-#: src/fe-gtk/notifygui.c:280
+#: src/fe-gtk/notifygui.c:277
 msgid "Enter nickname to add:"
 msgstr "输入要新增的昵称："
 
-#: src/fe-gtk/notifygui.c:296
+#: src/fe-gtk/notifygui.c:293
 msgid "X-Chat: Notify List"
 msgstr "X-Chat：通知列表"
 
-#: src/fe-gtk/notifygui.c:309 src/fe-gtk/servlistgui.c:712
+#: src/fe-gtk/notifygui.c:306 src/fe-gtk/servlistgui.c:712
 msgid "Add"
 msgstr "添加"
 
-#: src/fe-gtk/notifygui.c:311
+#: src/fe-gtk/notifygui.c:308
 msgid "Remove"
 msgstr "删除"
 
-#: src/fe-gtk/plugingui.c:76 src/fe-gtk/textgui.c:383
+#: src/fe-gtk/plugingui.c:76 src/fe-gtk/textgui.c:387
 msgid "Description"
 msgstr "描述"
 
@@ -4401,7 +4399,7 @@ msgstr "在小于此值的通道上设置为离开状态："
 msgid "Windows"
 msgstr "窗口"
 
-#: src/fe-gtk/setup.c:143 src/fe-gtk/setup.c:842
+#: src/fe-gtk/setup.c:143 src/fe-gtk/setup.c:845
 msgid "Tabs"
 msgstr "标签"
 
@@ -4784,104 +4782,104 @@ msgstr "高亮显示："
 msgid "Away User:"
 msgstr "离开的用户："
 
-#: src/fe-gtk/setup.c:838
+#: src/fe-gtk/setup.c:841
 msgid "Interface"
 msgstr "界面"
 
-#: src/fe-gtk/setup.c:839
+#: src/fe-gtk/setup.c:842
 msgid "Text box"
 msgstr "文本框"
 
-#: src/fe-gtk/setup.c:840
+#: src/fe-gtk/setup.c:843
 msgid "Input box"
 msgstr "输入框"
 
-#: src/fe-gtk/setup.c:841
+#: src/fe-gtk/setup.c:844
 msgid "User list"
 msgstr "用户列表"
 
-#: src/fe-gtk/setup.c:843
+#: src/fe-gtk/setup.c:846
 msgid "Colors"
 msgstr "颜色"
 
-#: src/fe-gtk/setup.c:845
+#: src/fe-gtk/setup.c:848
 msgid "Chatting"
 msgstr "聊天"
 
-#: src/fe-gtk/setup.c:846
+#: src/fe-gtk/setup.c:849
 msgid "General"
 msgstr "常规"
 
-#: src/fe-gtk/setup.c:847
+#: src/fe-gtk/setup.c:850
 msgid "Logging"
 msgstr "日志"
 
-#: src/fe-gtk/setup.c:849
+#: src/fe-gtk/setup.c:852
 msgid "Network"
 msgstr "网络"
 
-#: src/fe-gtk/setup.c:850
+#: src/fe-gtk/setup.c:853
 msgid "Network setup"
 msgstr "网络设置"
 
-#: src/fe-gtk/setup.c:851
+#: src/fe-gtk/setup.c:854
 msgid "File transfers"
 msgstr "文件传输"
 
-#: src/fe-gtk/setup.c:956
+#: src/fe-gtk/setup.c:959
 msgid "Categories"
 msgstr "类别"
 
-#: src/fe-gtk/setup.c:1082
+#: src/fe-gtk/setup.c:1085
 msgid "Some settings were changed that require a restart to take full effect."
 msgstr "有些设置需要重新启动 xchat 才会生效。"
 
-#: src/fe-gtk/setup.c:1109
+#: src/fe-gtk/setup.c:1112
 msgid "X-Chat: Preferences"
 msgstr "X-Chat：首选项"
 
-#: src/fe-gtk/textgui.c:180
+#: src/fe-gtk/textgui.c:184
 msgid "There was an error parsing the string"
 msgstr "解析字符串时出错"
 
-#: src/fe-gtk/textgui.c:188
+#: src/fe-gtk/textgui.c:192
 #, c-format
 msgid "This signal is only passed %d args, $%d is invalid"
 msgstr "该信号只接受 %d 个参数，$%d 无效"
 
-#: src/fe-gtk/textgui.c:300 src/fe-gtk/textgui.c:322
+#: src/fe-gtk/textgui.c:304 src/fe-gtk/textgui.c:326
 msgid "Print Texts File"
 msgstr "打印文本文件"
 
-#: src/fe-gtk/textgui.c:378
+#: src/fe-gtk/textgui.c:382
 msgid "Event"
 msgstr "事件"
 
-#: src/fe-gtk/textgui.c:380
+#: src/fe-gtk/textgui.c:384
 msgid "Sound"
 msgstr "音效"
 
-#: src/fe-gtk/textgui.c:382
+#: src/fe-gtk/textgui.c:386
 msgid "$ Number"
 msgstr "$ 数字"
 
-#: src/fe-gtk/textgui.c:392
+#: src/fe-gtk/textgui.c:396
 msgid "Edit Events"
 msgstr "编辑事件"
 
-#: src/fe-gtk/textgui.c:430
+#: src/fe-gtk/textgui.c:434
 msgid "Sound file: "
 msgstr "音效文件："
 
-#: src/fe-gtk/textgui.c:465
+#: src/fe-gtk/textgui.c:469
 msgid "Save As"
 msgstr "另存为"
 
-#: src/fe-gtk/textgui.c:470
+#: src/fe-gtk/textgui.c:474
 msgid "Load From"
 msgstr "从...载入"
 
-#: src/fe-gtk/textgui.c:475
+#: src/fe-gtk/textgui.c:479
 msgid "Test All"
 msgstr "测试全部"
 
@@ -4917,6 +4915,15 @@ msgstr "保存列表到文件"
 #, c-format
 msgid "%d ops, %d total"
 msgstr "%d 个管理员，共 %d 人"
+
+#~ msgid "Error String"
+#~ msgstr "错误的字符串"
+
+#~ msgid "Error name"
+#~ msgstr "错误名称"
+
+#~ msgid "Error string"
+#~ msgstr "错误字符串"
 
 #~ msgid "Proxy port:"
 #~ msgstr "代理端口："

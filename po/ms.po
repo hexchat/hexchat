@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xchat 2.0.2pre1\n"
 "Report-Msgid-Bugs-To: www.xchat.org\n"
-"POT-Creation-Date: 2003-11-28 14:19+1100\n"
+"POT-Creation-Date: 2004-01-01 23:38+1100\n"
 "PO-Revision-Date: 2003-04-20 19:51+0800\n"
 "Last-Translator: Hasbullah Bin Pit <sebol@ikhlas.com>\n"
 "Language-Team: Malay <translation-team-ms@lists.sourceforge.net>\n"
@@ -27,7 +27,7 @@ msgstr "Saya sibuk"
 msgid "Leaving"
 msgstr "Latvia"
 
-#: src/common/cfgfiles.c:678
+#: src/common/cfgfiles.c:679
 msgid ""
 "* Running IRC as root is stupid! You should\n"
 "  create a User Account and use that to login.\n"
@@ -64,7 +64,7 @@ msgstr "Dibatalkan"
 msgid "Cannot access %s\n"
 msgstr "Tak dapat mengakses %s\n"
 
-#: src/common/dcc.c:1795
+#: src/common/dcc.c:1801
 msgid "No active DCCs\n"
 msgstr "Tiada DCC aktif\n"
 
@@ -530,12 +530,12 @@ msgstr ""
 msgid "Proxy traversal failed.\n"
 msgstr "Notifikasi Pemindahan gagal"
 
-#: src/common/servlist.c:635
+#: src/common/servlist.c:633
 #, c-format
 msgid "Cycling to next server in %s...\n"
 msgstr ""
 
-#: src/common/servlist.c:975
+#: src/common/servlist.c:973
 #, c-format
 msgid ""
 "Warning: \"%s\" character set is unknown. No conversion will be applied for "
@@ -764,8 +764,9 @@ msgid "-%C10-%C11-%O$tDCC RECV %C11$1%O from %C11$3%O failed. $4."
 msgstr ""
 
 #: src/common/textevents.h:162
-msgid "-%C10-%C11-%O$tDCC RECV: Cannot open $1 for writing - aborting."
-msgstr ""
+#, fuzzy
+msgid "-%C10-%C11-%O$tDCC RECV: Cannot open $1 for writing ($2)."
+msgstr "-%C10-%C11-%O$tDCC CHAT dengan %C11$1%O hilang. $4."
 
 #: src/common/textevents.h:165
 msgid ""
@@ -1072,511 +1073,507 @@ msgstr ""
 msgid "-%C10-%C11-%O$tYou are now known as $2"
 msgstr ""
 
-#: src/common/text.c:301
+#: src/common/text.c:304
 #, c-format
 msgid "**** ENDING LOGGING AT %s\n"
 msgstr "**** AKHIR LOG PADA %s\n"
 
-#: src/common/text.c:418
+#: src/common/text.c:421
 #, c-format
 msgid "**** BEGIN LOGGING AT %s\n"
 msgstr "**** BEGIN LOGGING AT %s\n"
 
-#: src/common/text.c:437
+#: src/common/text.c:440
 #, c-format
 msgid ""
 "* Can't open log file(s) for writing. Check the\n"
 "  permissions on %s/xchatlogs"
 msgstr ""
 
-#: src/common/text.c:648
+#: src/common/text.c:651
 #, fuzzy
 msgid "Left message"
 msgstr "Mesej"
 
-#: src/common/text.c:649
+#: src/common/text.c:652
 #, fuzzy
 msgid "Right message"
 msgstr "Mesej"
 
-#: src/common/text.c:653
+#: src/common/text.c:656
 msgid "The nick of the joining person"
 msgstr "Gelaran bagi orang yang masuk"
 
-#: src/common/text.c:654
+#: src/common/text.c:657
 msgid "The channel being joined"
 msgstr "Saluran yang disertai"
 
-#: src/common/text.c:655 src/common/text.c:699 src/common/text.c:755
+#: src/common/text.c:658 src/common/text.c:702 src/common/text.c:758
 msgid "The host of the person"
 msgstr "Hos orang itu"
 
-#: src/common/text.c:659 src/common/text.c:664 src/common/text.c:670
-#: src/common/text.c:737 src/common/text.c:861 src/common/text.c:868
-#: src/common/text.c:873 src/common/text.c:878 src/common/text.c:883
-#: src/common/text.c:889 src/common/text.c:894 src/common/text.c:898
-#: src/common/text.c:903 src/common/text.c:909 src/common/text.c:955
-#: src/common/text.c:964 src/common/text.c:969 src/common/text.c:974
-#: src/common/text.c:983 src/common/text.c:993 src/common/text.c:1000
-#: src/common/text.c:1006 src/common/text.c:1011 src/common/text.c:1016
-#: src/common/text.c:1023 src/common/text.c:1029 src/common/text.c:1035
-#: src/common/text.c:1040 src/common/text.c:1045 src/common/text.c:1049
-#: src/common/text.c:1055 src/common/text.c:1063 src/common/text.c:1097
-#: src/common/text.c:1102
+#: src/common/text.c:662 src/common/text.c:667 src/common/text.c:673
+#: src/common/text.c:740 src/common/text.c:864 src/common/text.c:871
+#: src/common/text.c:876 src/common/text.c:881 src/common/text.c:886
+#: src/common/text.c:892 src/common/text.c:897 src/common/text.c:901
+#: src/common/text.c:906 src/common/text.c:912 src/common/text.c:958
+#: src/common/text.c:967 src/common/text.c:972 src/common/text.c:977
+#: src/common/text.c:986 src/common/text.c:997 src/common/text.c:1004
+#: src/common/text.c:1010 src/common/text.c:1015 src/common/text.c:1020
+#: src/common/text.c:1027 src/common/text.c:1033 src/common/text.c:1039
+#: src/common/text.c:1044 src/common/text.c:1049 src/common/text.c:1053
+#: src/common/text.c:1059 src/common/text.c:1067 src/common/text.c:1101
+#: src/common/text.c:1106
 msgid "Nickname"
 msgstr "Gelaran"
 
-#: src/common/text.c:660
+#: src/common/text.c:663
 msgid "The action"
 msgstr "Aksi"
 
-#: src/common/text.c:665
+#: src/common/text.c:668
 msgid "The text"
 msgstr "Teks"
 
-#: src/common/text.c:666
+#: src/common/text.c:669
 msgid "Mode char"
 msgstr "Aksara mod"
 
-#: src/common/text.c:671 src/common/text.c:727 src/common/text.c:733
-#: src/common/text.c:738
+#: src/common/text.c:674 src/common/text.c:730 src/common/text.c:736
+#: src/common/text.c:741
 msgid "The message"
 msgstr "Mesej"
 
-#: src/common/text.c:675 src/common/text.c:742
+#: src/common/text.c:678 src/common/text.c:745
 msgid "Old nickname"
 msgstr "Gelaran lama"
 
-#: src/common/text.c:676 src/common/text.c:743
+#: src/common/text.c:679 src/common/text.c:746
 msgid "New nickname"
 msgstr "Gelaran baru"
 
-#: src/common/text.c:680
+#: src/common/text.c:683
 msgid "Nick of person who changed the topic"
 msgstr "Gelaran orang yang menukar topik"
 
-#: src/common/text.c:681 src/common/text.c:687 src/fe-gtk/chanlist.c:599
+#: src/common/text.c:684 src/common/text.c:690 src/fe-gtk/chanlist.c:599
 #: src/fe-gtk/chanlist.c:700
 msgid "Topic"
 msgstr "Topik"
 
-#: src/common/text.c:682 src/common/text.c:686 src/common/text.c:1117
+#: src/common/text.c:685 src/common/text.c:689 src/common/text.c:1121
 #: src/fe-gtk/chanlist.c:597 src/fe-gtk/chanlist.c:691
 #: src/fe-gtk/ignoregui.c:175
 msgid "Channel"
 msgstr "Saluran"
 
-#: src/common/text.c:691 src/common/text.c:749
+#: src/common/text.c:694 src/common/text.c:752
 msgid "The nickname of the kicker"
 msgstr "Namagelaran penendang"
 
-#: src/common/text.c:692 src/common/text.c:747
+#: src/common/text.c:695 src/common/text.c:750
 msgid "The person being kicked"
 msgstr "Orang yang ditendang"
 
-#: src/common/text.c:693 src/common/text.c:700 src/common/text.c:704
-#: src/common/text.c:709 src/common/text.c:748 src/common/text.c:756
+#: src/common/text.c:696 src/common/text.c:703 src/common/text.c:707
+#: src/common/text.c:712 src/common/text.c:751 src/common/text.c:759
 msgid "The channel"
 msgstr "Saluran"
 
-#: src/common/text.c:694 src/common/text.c:750 src/common/text.c:757
+#: src/common/text.c:697 src/common/text.c:753 src/common/text.c:760
 msgid "The reason"
 msgstr "Alasan"
 
-#: src/common/text.c:698 src/common/text.c:754
+#: src/common/text.c:701 src/common/text.c:757
 msgid "The nick of the person leaving"
 msgstr "Gelaran orang yang keluar"
 
-#: src/common/text.c:705 src/common/text.c:711
+#: src/common/text.c:708 src/common/text.c:714
 msgid "The time"
 msgstr "Masa"
 
-#: src/common/text.c:710
+#: src/common/text.c:713
 msgid "The creator"
 msgstr "Pencipta"
 
-#: src/common/text.c:715
+#: src/common/text.c:718
 msgid "Nick"
 msgstr "Gelaran"
 
-#: src/common/text.c:716 src/common/text.c:970
+#: src/common/text.c:719 src/common/text.c:973
 msgid "Reason"
 msgstr "Alasan"
 
-#: src/common/text.c:717 src/common/text.c:863 src/common/text.c:945
+#: src/common/text.c:720 src/common/text.c:866 src/common/text.c:948
 msgid "Host"
 msgstr "Hos"
 
-#: src/common/text.c:721 src/common/text.c:726 src/common/text.c:731
+#: src/common/text.c:724 src/common/text.c:729 src/common/text.c:734
 msgid "Who it's from"
 msgstr ""
 
-#: src/common/text.c:722
+#: src/common/text.c:725
 msgid "The time in x.x format (see below)"
 msgstr "Masa dalam format x.x (lihat bawah)"
 
-#: src/common/text.c:732 src/common/text.c:773
+#: src/common/text.c:735 src/common/text.c:776
 msgid "The Channel it's going to"
 msgstr "Saluran ini akan"
 
-#: src/common/text.c:761
+#: src/common/text.c:764
 msgid "The sound"
 msgstr "Bunyi"
 
-#: src/common/text.c:762 src/common/text.c:767 src/common/text.c:772
+#: src/common/text.c:765 src/common/text.c:770 src/common/text.c:775
 msgid "The nick of the person"
 msgstr "Gelaran orang itu"
 
-#: src/common/text.c:766 src/common/text.c:771
+#: src/common/text.c:769 src/common/text.c:774
 msgid "The CTCP event"
 msgstr "Acara CTCP"
 
-#: src/common/text.c:777
+#: src/common/text.c:780
 msgid "The nick of the person who set the key"
 msgstr "Gelaran orang yang menetapkan kekunci"
 
-#: src/common/text.c:778
+#: src/common/text.c:781
 msgid "The key"
 msgstr "Kekunci"
 
-#: src/common/text.c:782
+#: src/common/text.c:785
 msgid "The nick of the person who set the limit"
 msgstr "Gelaran orang yang menetapkan had"
 
-#: src/common/text.c:783
+#: src/common/text.c:786
 msgid "The limit"
 msgstr "Had"
 
-#: src/common/text.c:787
+#: src/common/text.c:790
 msgid "The nick of the person who did the op'ing"
 msgstr "Gelaran orang yang memberi op"
 
-#: src/common/text.c:788
+#: src/common/text.c:791
 #, fuzzy
 msgid "The nick of the person who has been op'ed"
 msgstr "Gelaran orang yang telah di'op'kan"
 
-#: src/common/text.c:792
+#: src/common/text.c:795
 msgid "The nick of the person who has been halfop'ed"
 msgstr "Gelaran orang yang di'semi-op'kan"
 
-#: src/common/text.c:793
+#: src/common/text.c:796
 msgid "The nick of the person who did the halfop'ing"
 msgstr "Gelaran orang yang melakukan semi-op"
 
-#: src/common/text.c:797
+#: src/common/text.c:800
 msgid "The nick of the person who did the voice'ing"
 msgstr "Gelaran orang yang melakukan voice"
 
-#: src/common/text.c:798
+#: src/common/text.c:801
 msgid "The nick of the person who has been voice'ed"
 msgstr "Gelaran orang yang telah di'voice'kan"
 
-#: src/common/text.c:802
+#: src/common/text.c:805
 msgid "The nick of the person who did the banning"
 msgstr ""
 
-#: src/common/text.c:803 src/common/text.c:830
+#: src/common/text.c:806 src/common/text.c:833
 msgid "The ban mask"
 msgstr ""
 
-#: src/common/text.c:807
+#: src/common/text.c:810
 msgid "The nick who removed the key"
 msgstr "Gelaran orang yang membuang kekunci"
 
-#: src/common/text.c:811
+#: src/common/text.c:814
 #, fuzzy
 msgid "The nick who removed the limit"
 msgstr "Klik untuk membuang Tatacara"
 
-#: src/common/text.c:815
+#: src/common/text.c:818
 msgid "The nick of the person of did the deop'ing"
 msgstr "Gelaran orang yang menarikbalik op"
 
-#: src/common/text.c:816
+#: src/common/text.c:819
 #, fuzzy
 msgid "The nick of the person who has been deop'ed"
 msgstr "Pecahan jumlah kerja yang telah selesai"
 
-#: src/common/text.c:819
+#: src/common/text.c:822
 msgid "The nick of the person of did the dehalfop'ing"
 msgstr ""
 
-#: src/common/text.c:820
+#: src/common/text.c:823
 msgid "The nick of the person who has been dehalfop'ed"
 msgstr ""
 
-#: src/common/text.c:824
+#: src/common/text.c:827
 msgid "The nick of the person of did the devoice'ing"
 msgstr ""
 
-#: src/common/text.c:825
+#: src/common/text.c:828
 msgid "The nick of the person who has been devoice'ed"
 msgstr ""
 
-#: src/common/text.c:829
+#: src/common/text.c:832
 msgid "The nick of the person of did the unban'ing"
 msgstr ""
 
-#: src/common/text.c:834
+#: src/common/text.c:837
 msgid "The nick of the person who did the exempt"
 msgstr ""
 
-#: src/common/text.c:835 src/common/text.c:840
+#: src/common/text.c:838 src/common/text.c:843
 msgid "The exempt mask"
 msgstr ""
 
-#: src/common/text.c:839
+#: src/common/text.c:842
 msgid "The nick of the person removed the exempt"
 msgstr ""
 
-#: src/common/text.c:844
+#: src/common/text.c:847
 msgid "The nick of the person who did the invite"
 msgstr ""
 
-#: src/common/text.c:845 src/common/text.c:850
+#: src/common/text.c:848 src/common/text.c:853
 #, fuzzy
 msgid "The invite mask"
 msgstr "Masa ketika permulaan"
 
-#: src/common/text.c:849
+#: src/common/text.c:852
 msgid "The nick of the person removed the invite"
 msgstr ""
 
-#: src/common/text.c:854
+#: src/common/text.c:857
 msgid "The nick of the person setting the mode"
 msgstr ""
 
-#: src/common/text.c:855
+#: src/common/text.c:858
 msgid "The mode's sign (+/-)"
 msgstr ""
 
-#: src/common/text.c:856
+#: src/common/text.c:859
 #, fuzzy
 msgid "The mode letter"
 msgstr "Padaman Jadual"
 
-#: src/common/text.c:857
+#: src/common/text.c:860
 msgid "The channel it's being set on"
 msgstr ""
 
-#: src/common/text.c:862
+#: src/common/text.c:865
 msgid "Username"
 msgstr "Namapengguna"
 
-#: src/common/text.c:864
+#: src/common/text.c:867
 msgid "Full name"
 msgstr "Nama penuh"
 
-#: src/common/text.c:869
+#: src/common/text.c:872
 msgid "Channel Membership/\"is an IRC operator\""
 msgstr ""
 
-#: src/common/text.c:874
+#: src/common/text.c:877
 msgid "Server Information"
 msgstr "Maklumat Pelayan"
 
-#: src/common/text.c:879 src/common/text.c:884
+#: src/common/text.c:882 src/common/text.c:887
 msgid "Idle time"
 msgstr "Masa leka"
 
-#: src/common/text.c:885
+#: src/common/text.c:888
 #, fuzzy
 msgid "Signon time"
 msgstr "_T.tangan"
 
-#: src/common/text.c:890
+#: src/common/text.c:893
 msgid "Away reason"
 msgstr "Alasan away"
 
 # libgnomeui/gnome-messagebox.c:147 libgnomeui/gnome-messagebox.c:280
-#: src/common/text.c:899 src/common/text.c:904 src/common/text.c:912
-#: src/common/text.c:1089
+#: src/common/text.c:902 src/common/text.c:907 src/common/text.c:915
+#: src/common/text.c:1093
 msgid "Message"
 msgstr "Mesej"
 
-#: src/common/text.c:905
+#: src/common/text.c:908
 #, fuzzy
 msgid "Account"
 msgstr "Terima"
 
-#: src/common/text.c:910
+#: src/common/text.c:913
 #, fuzzy
 msgid "Real user@host"
 msgstr "Sorok/Papar Opsyen"
 
-#: src/common/text.c:911
+#: src/common/text.c:914
 msgid "Real IP"
 msgstr ""
 
-#: src/common/text.c:916 src/common/text.c:925 src/common/text.c:931
-#: src/common/text.c:1112
+#: src/common/text.c:919 src/common/text.c:928 src/common/text.c:934
+#: src/common/text.c:1116
 msgid "Channel Name"
 msgstr "Nama Saluran"
 
 # libgnomeui/gnome-stock.c:844
-#: src/common/text.c:920 src/common/text.c:1075 src/fe-gtk/textgui.c:379
+#: src/common/text.c:923 src/common/text.c:1079 src/fe-gtk/textgui.c:383
 msgid "Text"
 msgstr "Teks"
 
-#: src/common/text.c:921 src/common/text.c:927 src/common/text.c:1113
+#: src/common/text.c:924 src/common/text.c:930 src/common/text.c:1117
 msgid "Server Name"
 msgstr "Nama Pelayan"
 
-#: src/common/text.c:926
+#: src/common/text.c:929
 msgid "Nick of person who invited you"
 msgstr "Gelaran orang yang anda ingin jemput"
 
-#: src/common/text.c:932 src/fe-gtk/chanlist.c:598
+#: src/common/text.c:935 src/fe-gtk/chanlist.c:598
 msgid "Users"
 msgstr "Pengguna"
 
-#: src/common/text.c:936
+#: src/common/text.c:939
 msgid "Nickname in use"
 msgstr "Gelaran sudah digunakan"
 
-#: src/common/text.c:937
+#: src/common/text.c:940
 msgid "Nick being tried"
 msgstr "Gelaran sedang dicuba"
 
-#: src/common/text.c:941
-msgid "Error String"
-msgstr "Rentetan Ralat"
+# libgnomeui/gnome-messagebox.c:129 libgnomeui/gnome-messagebox.c:262
+#: src/common/text.c:944 src/common/text.c:980 src/common/text.c:991
+#: src/common/text.c:998 src/common/text.c:1011 src/common/text.c:1028
+#: src/common/text.c:1128
+msgid "Error"
+msgstr "Ralat"
 
-#: src/common/text.c:946 src/common/text.c:1079
+#: src/common/text.c:949 src/common/text.c:1083
 msgid "IP"
 msgstr "IP"
 
-#: src/common/text.c:947 src/common/text.c:976
+#: src/common/text.c:950 src/common/text.c:979
 msgid "Port"
 msgstr "Liang"
 
-#: src/common/text.c:951
+#: src/common/text.c:954
 msgid "PID"
 msgstr "PID"
 
-#: src/common/text.c:959
+#: src/common/text.c:962
 msgid "Channel name"
 msgstr "Nama saluran"
 
 # libgnomeui/gnome-dentry-edit.c:389
-#: src/common/text.c:960 src/common/text.c:965
+#: src/common/text.c:963 src/common/text.c:968
 msgid "Modes string"
 msgstr "Rentetan mod"
 
-#: src/common/text.c:975 src/common/text.c:1012 src/common/text.c:1017
-#: src/common/text.c:1058
+#: src/common/text.c:978 src/common/text.c:1016 src/common/text.c:1021
+#: src/common/text.c:1062
 msgid "IP address"
 msgstr "Alamat IP"
 
-# libgnomeui/gnome-messagebox.c:129 libgnomeui/gnome-messagebox.c:262
-#: src/common/text.c:977 src/common/text.c:994 src/common/text.c:1024
-msgid "Error name"
-msgstr "Nama ralat"
-
-#: src/common/text.c:981 src/common/text.c:1005
+#: src/common/text.c:984 src/common/text.c:1009
 msgid "DCC Type"
 msgstr "Jenis DCC"
 
-#: src/common/text.c:982 src/common/text.c:987 src/common/text.c:991
-#: src/common/text.c:998 src/common/text.c:1018 src/common/text.c:1022
-#: src/common/text.c:1028 src/common/text.c:1034 src/common/text.c:1041
-#: src/common/text.c:1050 src/common/text.c:1056
+#: src/common/text.c:985 src/common/text.c:990 src/common/text.c:995
+#: src/common/text.c:1002 src/common/text.c:1022 src/common/text.c:1026
+#: src/common/text.c:1032 src/common/text.c:1038 src/common/text.c:1045
+#: src/common/text.c:1054 src/common/text.c:1060
 msgid "Filename"
 msgstr "Namafail"
 
-#: src/common/text.c:992 src/common/text.c:999
+#: src/common/text.c:996 src/common/text.c:1003
 msgid "Destination filename"
 msgstr "Fail destinasi"
 
-#: src/common/text.c:1001 src/common/text.c:1030
+#: src/common/text.c:1005 src/common/text.c:1034
 msgid "CPS"
 msgstr "CPS"
 
-#: src/common/text.c:1007
-msgid "Error string"
-msgstr "Rentetan ralat"
-
-#: src/common/text.c:1036
+#: src/common/text.c:1040
 msgid "Pathname"
 msgstr "Nama path"
 
-#: src/common/text.c:1051 src/fe-gtk/dccgui.c:483 src/fe-gtk/dccgui.c:633
+#: src/common/text.c:1055 src/fe-gtk/dccgui.c:483 src/fe-gtk/dccgui.c:633
 msgid "Position"
 msgstr "Posisi"
 
 # Saiz bra
-#: src/common/text.c:1057 src/fe-gtk/dccgui.c:482 src/fe-gtk/dccgui.c:632
+#: src/common/text.c:1061 src/fe-gtk/dccgui.c:482 src/fe-gtk/dccgui.c:632
 msgid "Size"
 msgstr "Saiz"
 
-#: src/common/text.c:1062
+#: src/common/text.c:1066
 msgid "DCC String"
 msgstr "Rentetan DCC"
 
-#: src/common/text.c:1067
+#: src/common/text.c:1071
 msgid "Number of notify items"
 msgstr "Bilangan item makluman"
 
-#: src/common/text.c:1071
+#: src/common/text.c:1075
 msgid "Servername"
 msgstr "Nama Pelayan"
 
-#: src/common/text.c:1083
+#: src/common/text.c:1087
 msgid "Old Filename"
 msgstr "Namafail Lama"
 
-#: src/common/text.c:1084
+#: src/common/text.c:1088
 msgid "New Filename"
 msgstr "Namafail Baru"
 
-#: src/common/text.c:1088
+#: src/common/text.c:1092
 msgid "Receiver"
 msgstr "Penerima"
 
-#: src/common/text.c:1093
+#: src/common/text.c:1097
 msgid "Hostmask"
 msgstr "Hosmask"
 
-#: src/common/text.c:1098
+#: src/common/text.c:1102
 msgid "Hostname"
 msgstr "Namahos"
 
-#: src/common/text.c:1103
+#: src/common/text.c:1107
 msgid "The Packet"
 msgstr "Paket"
 
-#: src/common/text.c:1107
+#: src/common/text.c:1111
 msgid "Seconds"
 msgstr "Saat"
 
-#: src/common/text.c:1111
+#: src/common/text.c:1115
 msgid "Nick of person who have been invited"
 msgstr "TGelaran bagi siapa yang telah dijemput"
 
-#: src/common/text.c:1118
+#: src/common/text.c:1122
 msgid "Banmask"
 msgstr "Banmask"
 
-#: src/common/text.c:1119
+#: src/common/text.c:1123
 msgid "Who set the ban"
 msgstr "Siapa yang menetapkan ban"
 
-#: src/common/text.c:1120
+#: src/common/text.c:1124
 msgid "Ban time"
 msgstr "Masa ban"
 
-# libgnomeui/gnome-messagebox.c:129 libgnomeui/gnome-messagebox.c:262
-#: src/common/text.c:1124
-msgid "Error"
-msgstr "Ralat"
-
-#: src/common/text.c:1158
+#: src/common/text.c:1162
 #, fuzzy, c-format
 msgid ""
 "Error parsing event %s.\n"
 "Loading default"
 msgstr "Ralat menetapkan kekunci %s kembali ke default: %s\n"
+
+#: src/common/text.c:1672
+#, fuzzy, c-format
+msgid ""
+"Cannot read sound file:\n"
+"%s"
+msgstr "Tidak dapat membaca fail itu."
 
 #: src/common/util.c:292
 #, fuzzy
@@ -1604,1268 +1601,1268 @@ msgstr "Tak dapat mengumpukkan alamat"
 msgid "Connection reset by peer"
 msgstr "Sambungan ditolak"
 
-#: src/common/util.c:724
+#: src/common/util.c:733
 msgid "Andorra"
 msgstr "Andorra"
 
-#: src/common/util.c:725
+#: src/common/util.c:734
 msgid "United Arab Emirates"
 msgstr "Emiriah Arab Bersatu"
 
-#: src/common/util.c:726
+#: src/common/util.c:735
 msgid "Afghanistan"
 msgstr "Afghanistan"
 
-#: src/common/util.c:727
+#: src/common/util.c:736
 msgid "Antigua and Barbuda"
 msgstr ""
 
-#: src/common/util.c:728
+#: src/common/util.c:737
 msgid "Anguilla"
 msgstr "Anguilla"
 
-#: src/common/util.c:729
+#: src/common/util.c:738
 msgid "Albania"
 msgstr "Albania"
 
-#: src/common/util.c:730
+#: src/common/util.c:739
 msgid "Armenia"
 msgstr "Armenia"
 
-#: src/common/util.c:731
+#: src/common/util.c:740
 msgid "Netherlands Antilles"
 msgstr "Netherlands Antilles"
 
-#: src/common/util.c:732
+#: src/common/util.c:741
 msgid "Angola"
 msgstr "Angola"
 
-#: src/common/util.c:733
+#: src/common/util.c:742
 msgid "Antarctica"
 msgstr "Antarctika"
 
-#: src/common/util.c:734
+#: src/common/util.c:743
 msgid "Argentina"
 msgstr "Argentina"
 
-#: src/common/util.c:735
+#: src/common/util.c:744
 msgid "Reverse DNS"
 msgstr "DNS Songsang"
 
-#: src/common/util.c:736
+#: src/common/util.c:745
 msgid "American Samoa"
 msgstr "Samoa Amerika"
 
-#: src/common/util.c:737
+#: src/common/util.c:746
 msgid "Austria"
 msgstr "Austria"
 
-#: src/common/util.c:738
+#: src/common/util.c:747
 msgid "Nato Fiel"
 msgstr "Nato Fiel"
 
-#: src/common/util.c:739
+#: src/common/util.c:748
 msgid "Australia"
 msgstr "Australia"
 
-#: src/common/util.c:740
+#: src/common/util.c:749
 msgid "Aruba"
 msgstr "Aruba"
 
-#: src/common/util.c:741
+#: src/common/util.c:750
 msgid "Azerbaijan"
 msgstr "Azerbaijan"
 
-#: src/common/util.c:742
+#: src/common/util.c:751
 msgid "Bosnia and Herzegovina"
 msgstr "Bosnia Herzegovina"
 
-#: src/common/util.c:743
+#: src/common/util.c:752
 msgid "Barbados"
 msgstr "Barbados"
 
-#: src/common/util.c:744
+#: src/common/util.c:753
 msgid "Bangladesh"
 msgstr "Bangladesh"
 
-#: src/common/util.c:745
+#: src/common/util.c:754
 msgid "Belgium"
 msgstr "Belgium"
 
-#: src/common/util.c:746
+#: src/common/util.c:755
 msgid "Burkina Faso"
 msgstr "Burkina Faso"
 
-#: src/common/util.c:747
+#: src/common/util.c:756
 msgid "Bulgaria"
 msgstr "Bulgaria"
 
-#: src/common/util.c:748
+#: src/common/util.c:757
 msgid "Bahrain"
 msgstr "Bahrain"
 
-#: src/common/util.c:749
+#: src/common/util.c:758
 msgid "Burundi"
 msgstr "Burundi"
 
-#: src/common/util.c:750
+#: src/common/util.c:759
 msgid "Businesses"
 msgstr ""
 
-#: src/common/util.c:751
+#: src/common/util.c:760
 msgid "Benin"
 msgstr "Benin"
 
-#: src/common/util.c:752
+#: src/common/util.c:761
 msgid "Bermuda"
 msgstr "Bermuda"
 
-#: src/common/util.c:753
+#: src/common/util.c:762
 msgid "Brunei Darussalam"
 msgstr "Brunei Darussalam"
 
-#: src/common/util.c:754
+#: src/common/util.c:763
 msgid "Bolivia"
 msgstr "Bolivia"
 
-#: src/common/util.c:755
+#: src/common/util.c:764
 msgid "Brazil"
 msgstr "Brazil"
 
-#: src/common/util.c:756
+#: src/common/util.c:765
 msgid "Bahamas"
 msgstr "Bahamas"
 
-#: src/common/util.c:757
+#: src/common/util.c:766
 msgid "Bhutan"
 msgstr "Bhutan"
 
-#: src/common/util.c:758
+#: src/common/util.c:767
 msgid "Bouvet Island"
 msgstr "Bouvet Island"
 
-#: src/common/util.c:759
+#: src/common/util.c:768
 msgid "Botswana"
 msgstr "Botswana"
 
-#: src/common/util.c:760
+#: src/common/util.c:769
 msgid "Belarus"
 msgstr "Belarus"
 
-#: src/common/util.c:761
+#: src/common/util.c:770
 msgid "Belize"
 msgstr "Belize"
 
-#: src/common/util.c:762
+#: src/common/util.c:771
 msgid "Canada"
 msgstr "Kanada"
 
-#: src/common/util.c:763
+#: src/common/util.c:772
 msgid "Cocos Islands"
 msgstr "Kepulauan Coco"
 
-#: src/common/util.c:764
+#: src/common/util.c:773
 msgid "Central African Republic"
 msgstr "Republik Afrika Tengah"
 
-#: src/common/util.c:765
+#: src/common/util.c:774
 msgid "Congo"
 msgstr "Kongo"
 
-#: src/common/util.c:766
+#: src/common/util.c:775
 msgid "Switzerland"
 msgstr "Switzerland"
 
-#: src/common/util.c:767
+#: src/common/util.c:776
 msgid "Cote D'ivoire"
 msgstr "Cote D'ivoire"
 
-#: src/common/util.c:768
+#: src/common/util.c:777
 msgid "Cook Islands"
 msgstr "Kepulauan Cook"
 
-#: src/common/util.c:769
+#: src/common/util.c:778
 msgid "Chile"
 msgstr "Chile"
 
-#: src/common/util.c:770
+#: src/common/util.c:779
 msgid "Cameroon"
 msgstr "Cameroon"
 
-#: src/common/util.c:771
+#: src/common/util.c:780
 msgid "China"
 msgstr "China"
 
-#: src/common/util.c:772
+#: src/common/util.c:781
 msgid "Colombia"
 msgstr "Kolombia"
 
-#: src/common/util.c:773
+#: src/common/util.c:782
 msgid "Internic Commercial"
 msgstr "Internic Komersil"
 
-#: src/common/util.c:774
+#: src/common/util.c:783
 msgid "Costa Rica"
 msgstr "Costa Rica"
 
-#: src/common/util.c:775
+#: src/common/util.c:784
 msgid "Former Czechoslovakia"
 msgstr "Bekas Czechoslovakia"
 
-#: src/common/util.c:776
+#: src/common/util.c:785
 msgid "Cuba"
 msgstr "Cuba"
 
-#: src/common/util.c:777
+#: src/common/util.c:786
 msgid "Cape Verde"
 msgstr "Cape Verde"
 
-#: src/common/util.c:778
+#: src/common/util.c:787
 msgid "Christmas Island"
 msgstr "Kepulauan Krismas"
 
-#: src/common/util.c:779
+#: src/common/util.c:788
 msgid "Cyprus"
 msgstr "Cyprus"
 
-#: src/common/util.c:780
+#: src/common/util.c:789
 msgid "Czech Republic"
 msgstr "Republik Czech"
 
-#: src/common/util.c:781
+#: src/common/util.c:790
 msgid "Germany"
 msgstr "Jerman"
 
-#: src/common/util.c:782
+#: src/common/util.c:791
 msgid "Djibouti"
 msgstr "Djibouti"
 
-#: src/common/util.c:783
+#: src/common/util.c:792
 msgid "Denmark"
 msgstr "Denmark"
 
-#: src/common/util.c:784
+#: src/common/util.c:793
 msgid "Dominica"
 msgstr "Dominica"
 
-#: src/common/util.c:785
+#: src/common/util.c:794
 msgid "Dominican Republic"
 msgstr "Republik Dominica"
 
-#: src/common/util.c:786
+#: src/common/util.c:795
 msgid "Algeria"
 msgstr "Algeria"
 
-#: src/common/util.c:787
+#: src/common/util.c:796
 msgid "Ecuador"
 msgstr "Ecuador"
 
-#: src/common/util.c:788
+#: src/common/util.c:797
 msgid "Educational Institution"
 msgstr "Istitusi Pendidikan"
 
-#: src/common/util.c:789
+#: src/common/util.c:798
 msgid "Estonia"
 msgstr "Estonia"
 
-#: src/common/util.c:790
+#: src/common/util.c:799
 msgid "Egypt"
 msgstr "Mesir"
 
-#: src/common/util.c:791
+#: src/common/util.c:800
 msgid "Western Sahara"
 msgstr "Sahara Barat"
 
-#: src/common/util.c:792
+#: src/common/util.c:801
 msgid "Eritrea"
 msgstr "Eritrea"
 
-#: src/common/util.c:793
+#: src/common/util.c:802
 msgid "Spain"
 msgstr "Sepanyol"
 
-#: src/common/util.c:794
+#: src/common/util.c:803
 msgid "Ethiopia"
 msgstr "Ethiopia"
 
-#: src/common/util.c:795
+#: src/common/util.c:804
 msgid "Finland"
 msgstr "Finland"
 
 # libgnomeui/gnome-druid.c:136
-#: src/common/util.c:796
+#: src/common/util.c:805
 msgid "Fiji"
 msgstr "Fiji"
 
-#: src/common/util.c:797
+#: src/common/util.c:806
 msgid "Falkland Islands"
 msgstr "Kepulauan Falkland"
 
-#: src/common/util.c:798
+#: src/common/util.c:807
 msgid "Micronesia"
 msgstr "Micronesia"
 
-#: src/common/util.c:799
+#: src/common/util.c:808
 msgid "Faroe Islands"
 msgstr "Kepulauan Faroe"
 
-#: src/common/util.c:800
+#: src/common/util.c:809
 msgid "France"
 msgstr "Perancis"
 
-#: src/common/util.c:801
+#: src/common/util.c:810
 msgid "France, Metropolitan"
 msgstr ""
 
-#: src/common/util.c:802
+#: src/common/util.c:811
 msgid "Gabon"
 msgstr "Gabon"
 
-#: src/common/util.c:803
+#: src/common/util.c:812
 msgid "Great Britain"
 msgstr "Britain"
 
-#: src/common/util.c:804
+#: src/common/util.c:813
 msgid "Grenada"
 msgstr "Grenada"
 
-#: src/common/util.c:805
+#: src/common/util.c:814
 msgid "Georgia"
 msgstr "Georgia"
 
-#: src/common/util.c:806
+#: src/common/util.c:815
 msgid "French Guiana"
 msgstr "French Guiana"
 
-#: src/common/util.c:807
+#: src/common/util.c:816
 #, fuzzy
 msgid "British Channel Isles"
 msgstr "British Virgin Islands"
 
-#: src/common/util.c:808
+#: src/common/util.c:817
 msgid "Ghana"
 msgstr "Ghana"
 
-#: src/common/util.c:809
+#: src/common/util.c:818
 msgid "Gibraltar"
 msgstr "Gibraltar"
 
-#: src/common/util.c:810
+#: src/common/util.c:819
 msgid "Greenland"
 msgstr "Greenland"
 
-#: src/common/util.c:811
+#: src/common/util.c:820
 msgid "Gambia"
 msgstr "Gambia"
 
-#: src/common/util.c:812
+#: src/common/util.c:821
 msgid "Guinea"
 msgstr "Guinea"
 
-#: src/common/util.c:813
+#: src/common/util.c:822
 msgid "Government"
 msgstr "Kerajaan"
 
-#: src/common/util.c:814
+#: src/common/util.c:823
 msgid "Guadeloupe"
 msgstr "Guadeloupe"
 
-#: src/common/util.c:815
+#: src/common/util.c:824
 msgid "Equatorial Guinea"
 msgstr "Equitorial Guinea"
 
-#: src/common/util.c:816
+#: src/common/util.c:825
 msgid "Greece"
 msgstr "Greek"
 
-#: src/common/util.c:817
+#: src/common/util.c:826
 msgid "S. Georgia and S. Sandwich Isles."
 msgstr "S. Georgia dan S. Sandwich Isles."
 
-#: src/common/util.c:818
+#: src/common/util.c:827
 msgid "Guatemala"
 msgstr "Guatemala"
 
-#: src/common/util.c:819
+#: src/common/util.c:828
 msgid "Guam"
 msgstr "Guam"
 
-#: src/common/util.c:820
+#: src/common/util.c:829
 msgid "Guinea-Bissau"
 msgstr "Guinea-Bissau"
 
-#: src/common/util.c:821
+#: src/common/util.c:830
 msgid "Guyana"
 msgstr "Guyana"
 
-#: src/common/util.c:822
+#: src/common/util.c:831
 msgid "Hong Kong"
 msgstr "Hong Kong"
 
-#: src/common/util.c:823
+#: src/common/util.c:832
 #, fuzzy
 msgid "Heard and McDonald Islands"
 msgstr "Kepulauan Caicos dan Turks"
 
-#: src/common/util.c:824
+#: src/common/util.c:833
 msgid "Honduras"
 msgstr "Honduras"
 
-#: src/common/util.c:825
+#: src/common/util.c:834
 msgid "Croatia"
 msgstr "Croatia"
 
-#: src/common/util.c:826
+#: src/common/util.c:835
 msgid "Haiti"
 msgstr "Haiti"
 
-#: src/common/util.c:827
+#: src/common/util.c:836
 msgid "Hungary"
 msgstr "Hungary"
 
-#: src/common/util.c:828
+#: src/common/util.c:837
 msgid "Indonesia"
 msgstr "Indonesia"
 
-#: src/common/util.c:829
+#: src/common/util.c:838
 msgid "Ireland"
 msgstr "Ireland"
 
-#: src/common/util.c:830
+#: src/common/util.c:839
 msgid "Israel"
 msgstr "Israel"
 
-#: src/common/util.c:831
+#: src/common/util.c:840
 msgid "India"
 msgstr "India"
 
-#: src/common/util.c:832
+#: src/common/util.c:841
 #, fuzzy
 msgid "Informational"
 msgstr "Antarabangsa"
 
-#: src/common/util.c:833
+#: src/common/util.c:842
 msgid "International"
 msgstr "Antarabangsa"
 
-#: src/common/util.c:834
+#: src/common/util.c:843
 #, fuzzy
 msgid "British Indian Ocean Territory"
 msgstr "Wilayah Utara"
 
-#: src/common/util.c:835
+#: src/common/util.c:844
 msgid "Iraq"
 msgstr "Iraq"
 
-#: src/common/util.c:836
+#: src/common/util.c:845
 msgid "Iran"
 msgstr "Iran"
 
-#: src/common/util.c:837
+#: src/common/util.c:846
 msgid "Iceland"
 msgstr "Iceland"
 
-#: src/common/util.c:838
+#: src/common/util.c:847
 msgid "Italy"
 msgstr "Itali"
 
-#: src/common/util.c:839
+#: src/common/util.c:848
 msgid "Jamaica"
 msgstr "Jamaica"
 
-#: src/common/util.c:840
+#: src/common/util.c:849
 msgid "Jordan"
 msgstr "Jordan"
 
-#: src/common/util.c:841
+#: src/common/util.c:850
 msgid "Japan"
 msgstr "Jepun"
 
-#: src/common/util.c:842
+#: src/common/util.c:851
 msgid "Kenya"
 msgstr "Kenya"
 
-#: src/common/util.c:843
+#: src/common/util.c:852
 msgid "Kyrgyzstan"
 msgstr "Kyrgyzstan"
 
-#: src/common/util.c:844
+#: src/common/util.c:853
 msgid "Cambodia"
 msgstr "Cambodia"
 
-#: src/common/util.c:845
+#: src/common/util.c:854
 msgid "Kiribati"
 msgstr "Kiribati"
 
-#: src/common/util.c:846
+#: src/common/util.c:855
 msgid "Comoros"
 msgstr "Comoros"
 
-#: src/common/util.c:847
+#: src/common/util.c:856
 msgid "St. Kitts and Nevis"
 msgstr "St. Kitts dan Nevis"
 
-#: src/common/util.c:848
+#: src/common/util.c:857
 msgid "North Korea"
 msgstr "Korea Utara"
 
-#: src/common/util.c:849
+#: src/common/util.c:858
 msgid "South Korea"
 msgstr "Korea Selatan"
 
-#: src/common/util.c:850
+#: src/common/util.c:859
 msgid "Kuwait"
 msgstr "Kuwait"
 
-#: src/common/util.c:851
+#: src/common/util.c:860
 msgid "Cayman Islands"
 msgstr "Kepulauan Cayman"
 
-#: src/common/util.c:852
+#: src/common/util.c:861
 msgid "Kazakhstan"
 msgstr "Kazakhstan"
 
-#: src/common/util.c:853
+#: src/common/util.c:862
 msgid "Laos"
 msgstr "Laos"
 
-#: src/common/util.c:854
+#: src/common/util.c:863
 msgid "Lebanon"
 msgstr "Lebanon"
 
-#: src/common/util.c:855
+#: src/common/util.c:864
 msgid "Saint Lucia"
 msgstr "Saint Lucia"
 
-#: src/common/util.c:856
+#: src/common/util.c:865
 msgid "Liechtenstein"
 msgstr "Liechtenstein"
 
-#: src/common/util.c:857
+#: src/common/util.c:866
 msgid "Sri Lanka"
 msgstr "Sri Lanka"
 
-#: src/common/util.c:858
+#: src/common/util.c:867
 msgid "Liberia"
 msgstr "Liberia"
 
-#: src/common/util.c:859
+#: src/common/util.c:868
 msgid "Lesotho"
 msgstr "Lesotho"
 
-#: src/common/util.c:860
+#: src/common/util.c:869
 msgid "Lithuania"
 msgstr "Lithuania"
 
-#: src/common/util.c:861
+#: src/common/util.c:870
 msgid "Luxembourg"
 msgstr "Luxembourg"
 
-#: src/common/util.c:862
+#: src/common/util.c:871
 msgid "Latvia"
 msgstr "Latvia"
 
-#: src/common/util.c:863
+#: src/common/util.c:872
 msgid "Libya"
 msgstr "Libya"
 
-#: src/common/util.c:864
+#: src/common/util.c:873
 msgid "Morocco"
 msgstr "Morocco"
 
-#: src/common/util.c:865
+#: src/common/util.c:874
 msgid "Monaco"
 msgstr "Monaco"
 
-#: src/common/util.c:866
+#: src/common/util.c:875
 msgid "Moldova"
 msgstr "Moldova"
 
-#: src/common/util.c:867
+#: src/common/util.c:876
 msgid "United States Medical"
 msgstr "Perubatan Amerika Syarikat"
 
-#: src/common/util.c:868
+#: src/common/util.c:877
 msgid "Madagascar"
 msgstr "Madagascar"
 
-#: src/common/util.c:869
+#: src/common/util.c:878
 msgid "Marshall Islands"
 msgstr "Kepulauan Marshall"
 
-#: src/common/util.c:870
+#: src/common/util.c:879
 msgid "Military"
 msgstr "Tentera"
 
-#: src/common/util.c:871
+#: src/common/util.c:880
 msgid "Macedonia"
 msgstr "Macedonia"
 
-#: src/common/util.c:872
+#: src/common/util.c:881
 msgid "Mali"
 msgstr "Mali"
 
-#: src/common/util.c:873
+#: src/common/util.c:882
 msgid "Myanmar"
 msgstr "Myanmar"
 
-#: src/common/util.c:874
+#: src/common/util.c:883
 msgid "Mongolia"
 msgstr "Mongolia"
 
-#: src/common/util.c:875
+#: src/common/util.c:884
 msgid "Macau"
 msgstr "Macau"
 
-#: src/common/util.c:876
+#: src/common/util.c:885
 #, fuzzy
 msgid "Northern Mariana Islands"
 msgstr "Ireland Utara"
 
-#: src/common/util.c:877
+#: src/common/util.c:886
 msgid "Martinique"
 msgstr "Martinique"
 
-#: src/common/util.c:878
+#: src/common/util.c:887
 msgid "Mauritania"
 msgstr "Mauritania"
 
-#: src/common/util.c:879
+#: src/common/util.c:888
 msgid "Montserrat"
 msgstr "Montserrat"
 
-#: src/common/util.c:880
+#: src/common/util.c:889
 msgid "Malta"
 msgstr "Malta"
 
-#: src/common/util.c:881
+#: src/common/util.c:890
 msgid "Mauritius"
 msgstr "Mauritius"
 
-#: src/common/util.c:882
+#: src/common/util.c:891
 msgid "Maldives"
 msgstr "Maldives"
 
-#: src/common/util.c:883
+#: src/common/util.c:892
 msgid "Malawi"
 msgstr "Malawi"
 
-#: src/common/util.c:884
+#: src/common/util.c:893
 msgid "Mexico"
 msgstr "Mexico"
 
-#: src/common/util.c:885
+#: src/common/util.c:894
 msgid "Malaysia"
 msgstr "Malaysia"
 
-#: src/common/util.c:886
+#: src/common/util.c:895
 msgid "Mozambique"
 msgstr "Mozambique"
 
-#: src/common/util.c:887
+#: src/common/util.c:896
 msgid "Namibia"
 msgstr "Namibia"
 
-#: src/common/util.c:888
+#: src/common/util.c:897
 msgid "New Caledonia"
 msgstr "New Caledonia"
 
-#: src/common/util.c:889
+#: src/common/util.c:898
 msgid "Niger"
 msgstr "Niger"
 
-#: src/common/util.c:890
+#: src/common/util.c:899
 msgid "Internic Network"
 msgstr "Rangkaian Internic"
 
-#: src/common/util.c:891
+#: src/common/util.c:900
 msgid "Norfolk Island"
 msgstr "Kepulauan Norfolk"
 
-#: src/common/util.c:892
+#: src/common/util.c:901
 msgid "Nigeria"
 msgstr "Nigeria"
 
-#: src/common/util.c:893
+#: src/common/util.c:902
 msgid "Nicaragua"
 msgstr "Nicaragua"
 
-#: src/common/util.c:894
+#: src/common/util.c:903
 msgid "Netherlands"
 msgstr "Belanda"
 
-#: src/common/util.c:895
+#: src/common/util.c:904
 msgid "Norway"
 msgstr "Norway"
 
-#: src/common/util.c:896
+#: src/common/util.c:905
 msgid "Nepal"
 msgstr "Nepal"
 
-#: src/common/util.c:897
+#: src/common/util.c:906
 msgid "Nauru"
 msgstr "Nauru"
 
-#: src/common/util.c:898
+#: src/common/util.c:907
 msgid "Neutral Zone"
 msgstr "Zon Berkecuali"
 
-#: src/common/util.c:899
+#: src/common/util.c:908
 msgid "Niue"
 msgstr "Niue"
 
-#: src/common/util.c:900
+#: src/common/util.c:909
 msgid "New Zealand"
 msgstr "New Zealand"
 
-#: src/common/util.c:901
+#: src/common/util.c:910
 msgid "Oman"
 msgstr "Oman"
 
-#: src/common/util.c:902
+#: src/common/util.c:911
 msgid "Internic Non-Profit Organization"
 msgstr "Oraganisasi bukan-komersil Internic"
 
-#: src/common/util.c:903
+#: src/common/util.c:912
 msgid "Panama"
 msgstr "Panama"
 
-#: src/common/util.c:904
+#: src/common/util.c:913
 msgid "Peru"
 msgstr "Peru"
 
-#: src/common/util.c:905
+#: src/common/util.c:914
 msgid "French Polynesia"
 msgstr "French Polynesia"
 
-#: src/common/util.c:906
+#: src/common/util.c:915
 msgid "Papua New Guinea"
 msgstr "Papua New Guinea"
 
-#: src/common/util.c:907
+#: src/common/util.c:916
 msgid "Philippines"
 msgstr "Filipina"
 
-#: src/common/util.c:908
+#: src/common/util.c:917
 msgid "Pakistan"
 msgstr "Pakistan"
 
-#: src/common/util.c:909
+#: src/common/util.c:918
 msgid "Poland"
 msgstr "Poland"
 
-#: src/common/util.c:910
+#: src/common/util.c:919
 msgid "St. Pierre and Miquelon"
 msgstr "St. Perre and Miquelon"
 
-#: src/common/util.c:911
+#: src/common/util.c:920
 msgid "Pitcairn"
 msgstr "Pitcairn"
 
-#: src/common/util.c:912
+#: src/common/util.c:921
 msgid "Puerto Rico"
 msgstr "Puerto Rico"
 
-#: src/common/util.c:913
+#: src/common/util.c:922
 msgid "Portugal"
 msgstr "Portugal"
 
-#: src/common/util.c:914
+#: src/common/util.c:923
 msgid "Palau"
 msgstr "Palau"
 
-#: src/common/util.c:915
+#: src/common/util.c:924
 msgid "Paraguay"
 msgstr "Paraguay"
 
-#: src/common/util.c:916
+#: src/common/util.c:925
 msgid "Qatar"
 msgstr "Qatar"
 
-#: src/common/util.c:917
+#: src/common/util.c:926
 #, fuzzy
 msgid "Reunion"
 msgstr "Kawasan"
 
-#: src/common/util.c:918
+#: src/common/util.c:927
 msgid "Romania"
 msgstr "Romania"
 
-#: src/common/util.c:919
+#: src/common/util.c:928
 msgid "Old School ARPAnet"
 msgstr "ARPAnet Sekolah Lama"
 
-#: src/common/util.c:920
+#: src/common/util.c:929
 msgid "Russian Federation"
 msgstr "Persekutuan Rusia"
 
-#: src/common/util.c:921
+#: src/common/util.c:930
 msgid "Rwanda"
 msgstr "Rwanda"
 
-#: src/common/util.c:922
+#: src/common/util.c:931
 msgid "Saudi Arabia"
 msgstr "Arab Saudi"
 
-#: src/common/util.c:923
+#: src/common/util.c:932
 msgid "Solomon Islands"
 msgstr "Kepulauan Solomon"
 
-#: src/common/util.c:924
+#: src/common/util.c:933
 msgid "Seychelles"
 msgstr "Seychelles"
 
-#: src/common/util.c:925
+#: src/common/util.c:934
 msgid "Sudan"
 msgstr "Sudan"
 
-#: src/common/util.c:926
+#: src/common/util.c:935
 msgid "Sweden"
 msgstr "Sweden"
 
-#: src/common/util.c:927
+#: src/common/util.c:936
 msgid "Singapore"
 msgstr "Singapura"
 
-#: src/common/util.c:928
+#: src/common/util.c:937
 msgid "St. Helena"
 msgstr "St. Helena"
 
-#: src/common/util.c:929
+#: src/common/util.c:938
 msgid "Slovenia"
 msgstr "Slovenia"
 
-#: src/common/util.c:930
+#: src/common/util.c:939
 msgid "Svalbard and Jan Mayen Islands"
 msgstr "Svalbard and Jan Mayen Islands"
 
-#: src/common/util.c:931
+#: src/common/util.c:940
 msgid "Slovak Republic"
 msgstr "Republik Slovak"
 
-#: src/common/util.c:932
+#: src/common/util.c:941
 msgid "Sierra Leone"
 msgstr "Sierra Leone"
 
-#: src/common/util.c:933
+#: src/common/util.c:942
 msgid "San Marino"
 msgstr "San Marino"
 
-#: src/common/util.c:934
+#: src/common/util.c:943
 msgid "Senegal"
 msgstr "Senegal"
 
-#: src/common/util.c:935
+#: src/common/util.c:944
 msgid "Somalia"
 msgstr "Somalia"
 
-#: src/common/util.c:936
+#: src/common/util.c:945
 msgid "Suriname"
 msgstr "Surinam"
 
-#: src/common/util.c:937
+#: src/common/util.c:946
 msgid "Sao Tome and Principe"
 msgstr "Sao Tome and Principe"
 
-#: src/common/util.c:938
+#: src/common/util.c:947
 msgid "Former USSR"
 msgstr "Bekas Soviet"
 
-#: src/common/util.c:939
+#: src/common/util.c:948
 msgid "El Salvador"
 msgstr "El Salvador"
 
-#: src/common/util.c:940
+#: src/common/util.c:949
 msgid "Syria"
 msgstr "Syria"
 
-#: src/common/util.c:941
+#: src/common/util.c:950
 msgid "Swaziland"
 msgstr "Swaziland"
 
-#: src/common/util.c:942
+#: src/common/util.c:951
 msgid "Turks and Caicos Islands"
 msgstr "Kepulauan Caicos dan Turks"
 
-#: src/common/util.c:943
+#: src/common/util.c:952
 msgid "Chad"
 msgstr "Chad"
 
-#: src/common/util.c:944
+#: src/common/util.c:953
 #, fuzzy
 msgid "French Southern Territories"
 msgstr "Wilayah Utara"
 
-#: src/common/util.c:945
+#: src/common/util.c:954
 msgid "Togo"
 msgstr "Togo"
 
-#: src/common/util.c:946
+#: src/common/util.c:955
 msgid "Thailand"
 msgstr "Thailand"
 
-#: src/common/util.c:947
+#: src/common/util.c:956
 msgid "Tajikistan"
 msgstr "Tajikistan"
 
-#: src/common/util.c:948
+#: src/common/util.c:957
 msgid "Tokelau"
 msgstr "Tokelau"
 
-#: src/common/util.c:949
+#: src/common/util.c:958
 msgid "Turkmenistan"
 msgstr "Turkmenistan"
 
-#: src/common/util.c:950
+#: src/common/util.c:959
 msgid "Tunisia"
 msgstr "Tunisia"
 
-#: src/common/util.c:951
+#: src/common/util.c:960
 msgid "Tonga"
 msgstr "Tonga"
 
-#: src/common/util.c:952
+#: src/common/util.c:961
 msgid "East Timor"
 msgstr "Timor Larose"
 
-#: src/common/util.c:953
+#: src/common/util.c:962
 msgid "Turkey"
 msgstr "Turki"
 
-#: src/common/util.c:954
+#: src/common/util.c:963
 msgid "Trinidad and Tobago"
 msgstr "Trinidad dan Tobago"
 
-#: src/common/util.c:955
+#: src/common/util.c:964
 msgid "Tuvalu"
 msgstr "Tuvalu"
 
-#: src/common/util.c:956
+#: src/common/util.c:965
 msgid "Taiwan"
 msgstr "Taiwan"
 
-#: src/common/util.c:957
+#: src/common/util.c:966
 msgid "Tanzania"
 msgstr "Tanzania"
 
-#: src/common/util.c:958
+#: src/common/util.c:967
 msgid "Ukraine"
 msgstr "Ukraine"
 
-#: src/common/util.c:959
+#: src/common/util.c:968
 msgid "Uganda"
 msgstr "Uganda"
 
-#: src/common/util.c:960
+#: src/common/util.c:969
 msgid "United Kingdom"
 msgstr "United Kingdom"
 
-#: src/common/util.c:961
+#: src/common/util.c:970
 #, fuzzy
 msgid "US Minor Outlying Islands"
 msgstr "Kepulauan Society"
 
-#: src/common/util.c:962
+#: src/common/util.c:971
 msgid "United States of America"
 msgstr "Amerika Syarikat"
 
-#: src/common/util.c:963
+#: src/common/util.c:972
 msgid "Uruguay"
 msgstr "Uruguay"
 
-#: src/common/util.c:964
+#: src/common/util.c:973
 msgid "Uzbekistan"
 msgstr "Uzbekistan"
 
-#: src/common/util.c:965
+#: src/common/util.c:974
 #, fuzzy
 msgid "Vatican City State"
 msgstr "Vatican City"
 
-#: src/common/util.c:966
+#: src/common/util.c:975
 #, fuzzy
 msgid "St. Vincent and the grenadines"
 msgstr "St. Vincent and the Grenadines"
 
-#: src/common/util.c:967
+#: src/common/util.c:976
 msgid "Venezuela"
 msgstr "Venezuela"
 
-#: src/common/util.c:968
+#: src/common/util.c:977
 msgid "British Virgin Islands"
 msgstr "British Virgin Islands"
 
-#: src/common/util.c:969
+#: src/common/util.c:978
 msgid "US Virgin Islands"
 msgstr "Pulau Virgin Amerika Syarikat"
 
-#: src/common/util.c:970
+#: src/common/util.c:979
 msgid "Vietnam"
 msgstr "Vietnam"
 
-#: src/common/util.c:971
+#: src/common/util.c:980
 msgid "Vanuatu"
 msgstr "Vanuatu"
 
-#: src/common/util.c:972
+#: src/common/util.c:981
 msgid "Wallis and Futuna Islands"
 msgstr "Kepulauan Futuna dan Wallis"
 
-#: src/common/util.c:973
+#: src/common/util.c:982
 msgid "Samoa"
 msgstr "Samoa"
 
-#: src/common/util.c:974
+#: src/common/util.c:983
 msgid "Yemen"
 msgstr "Yaman"
 
-#: src/common/util.c:975
+#: src/common/util.c:984
 #, fuzzy
 msgid "Mayotte"
 msgstr "Kepulauan Mayotte"
 
-#: src/common/util.c:976
+#: src/common/util.c:985
 msgid "Yugoslavia"
 msgstr "Yugoslavia"
 
-#: src/common/util.c:977
+#: src/common/util.c:986
 msgid "South Africa"
 msgstr "Afrika Selatan"
 
-#: src/common/util.c:978
+#: src/common/util.c:987
 msgid "Zambia"
 msgstr "Zambia"
 
-#: src/common/util.c:979
+#: src/common/util.c:988
 msgid "Zaire"
 msgstr "Zaire"
 
-#: src/common/util.c:980
+#: src/common/util.c:989
 msgid "Zimbabwe"
 msgstr "Zimbabwe"
 
-#: src/common/util.c:986 src/common/util.c:996 src/fe-gtk/menu.c:503
+#: src/common/util.c:995 src/common/util.c:1005 src/fe-gtk/menu.c:503
 #: src/fe-gtk/menu.c:507 src/fe-gtk/menu.c:511 src/fe-gtk/menu.c:515
 #: src/fe-gtk/menu.c:519
 msgid "Unknown"
 msgstr "Entah"
 
-#: src/common/xchat.c:902
+#: src/common/xchat.c:908
 msgid "Direct client-to-client"
 msgstr ""
 
-#: src/common/xchat.c:903
+#: src/common/xchat.c:909
 #, fuzzy
 msgid "Send File"
 msgstr "Kirim fail kepada %s"
 
-#: src/common/xchat.c:904
+#: src/common/xchat.c:910
 msgid "Offer Chat"
 msgstr ""
 
-#: src/common/xchat.c:905
+#: src/common/xchat.c:911
 #, fuzzy
 msgid "Abort Chat"
 msgstr "Perihal X-Chat"
 
-#: src/common/xchat.c:906 src/fe-gtk/plugingui.c:74
+#: src/common/xchat.c:912 src/fe-gtk/plugingui.c:74
 msgid "Version"
 msgstr "Versi"
 
 # libgnomeui/gnome-scores.c:99
-#: src/common/xchat.c:907
+#: src/common/xchat.c:913
 #, fuzzy
 msgid "Userinfo"
 msgstr "Pengguna"
 
-#: src/common/xchat.c:908
+#: src/common/xchat.c:914
 msgid "Clientinfo"
 msgstr ""
 
-#: src/common/xchat.c:909 src/common/xchat.c:941 src/common/xchat.c:991
+#: src/common/xchat.c:915 src/common/xchat.c:947 src/common/xchat.c:997
 msgid "Ping"
 msgstr "Ping"
 
-#: src/common/xchat.c:910
+#: src/common/xchat.c:916
 msgid "Time"
 msgstr "Masa"
 
-#: src/common/xchat.c:911
+#: src/common/xchat.c:917
 #, fuzzy
 msgid "Finger"
 msgstr "Niger"
 
-#: src/common/xchat.c:912
+#: src/common/xchat.c:918
 #, fuzzy
 msgid "Oper"
 msgstr "Buka"
 
-#: src/common/xchat.c:913
+#: src/common/xchat.c:919
 msgid "Kill this user"
 msgstr ""
 
-#: src/common/xchat.c:914
+#: src/common/xchat.c:920
 msgid "Mode"
 msgstr "Mod"
 
-#: src/common/xchat.c:915
+#: src/common/xchat.c:921
 msgid "Give Voice"
 msgstr ""
 
-#: src/common/xchat.c:916
+#: src/common/xchat.c:922
 msgid "Take Voice"
 msgstr ""
 
-#: src/common/xchat.c:917
+#: src/common/xchat.c:923
 msgid "Give Ops"
 msgstr "Beri Ops"
 
-#: src/common/xchat.c:918
+#: src/common/xchat.c:924
 msgid "Take Ops"
 msgstr "Ambil Ops"
 
-#: src/common/xchat.c:919
+#: src/common/xchat.c:925
 msgid "Ignore"
 msgstr "Abai"
 
-#: src/common/xchat.c:920
+#: src/common/xchat.c:926
 msgid "Ignore User"
 msgstr "Abaikan Pengguna"
 
-#: src/common/xchat.c:921
+#: src/common/xchat.c:927
 msgid "UnIgnore User"
 msgstr "Nyah-abai Pengguna"
 
-#: src/common/xchat.c:922
+#: src/common/xchat.c:928
 msgid "Kick/Ban"
 msgstr "Tendang/Ban"
 
-#: src/common/xchat.c:923 src/common/xchat.c:975
+#: src/common/xchat.c:929 src/common/xchat.c:981
 msgid "Kick"
 msgstr "Tendang"
 
-#: src/common/xchat.c:924 src/common/xchat.c:925 src/common/xchat.c:926
-#: src/common/xchat.c:927 src/common/xchat.c:928 src/common/xchat.c:974
+#: src/common/xchat.c:930 src/common/xchat.c:931 src/common/xchat.c:932
+#: src/common/xchat.c:933 src/common/xchat.c:934 src/common/xchat.c:980
 #, fuzzy
 msgid "Ban"
 msgstr "Bhutan"
 
-#: src/common/xchat.c:929 src/common/xchat.c:930 src/common/xchat.c:931
-#: src/common/xchat.c:932
+#: src/common/xchat.c:935 src/common/xchat.c:936 src/common/xchat.c:937
+#: src/common/xchat.c:938
 msgid "KickBan"
 msgstr ""
 
-#: src/common/xchat.c:933 src/fe-gtk/dccgui.c:528 src/fe-gtk/dccgui.c:669
+#: src/common/xchat.c:939 src/fe-gtk/dccgui.c:528 src/fe-gtk/dccgui.c:669
 msgid "Info"
 msgstr "Maklumat"
 
-#: src/common/xchat.c:934
+#: src/common/xchat.c:940
 msgid "Who"
 msgstr "Siapa"
 
-#: src/common/xchat.c:935 src/common/xchat.c:988
+#: src/common/xchat.c:941 src/common/xchat.c:994
 msgid "WhoIs"
 msgstr ""
 
-#: src/common/xchat.c:936
+#: src/common/xchat.c:942
 msgid "DNS Lookup"
 msgstr "Carian DNS"
 
-#: src/common/xchat.c:937
+#: src/common/xchat.c:943
 msgid "Trace"
 msgstr "Surih"
 
-#: src/common/xchat.c:938
+#: src/common/xchat.c:944
 msgid "UserHost"
 msgstr "HosPengguna"
 
-#: src/common/xchat.c:939
+#: src/common/xchat.c:945
 msgid "External"
 msgstr "Luaran"
 
-#: src/common/xchat.c:940
+#: src/common/xchat.c:946
 msgid "Traceroute"
 msgstr "Traceroute"
 
-#: src/common/xchat.c:942
+#: src/common/xchat.c:948
 msgid "Telnet"
 msgstr "Telnet"
 
-#: src/common/xchat.c:943
+#: src/common/xchat.c:949
 msgid "Open Dialog Window"
 msgstr "Buka Tetingkap Dialog"
 
-#: src/common/xchat.c:955
+#: src/common/xchat.c:961
 msgid "Disconnect"
 msgstr "Putus"
 
-#: src/common/xchat.c:956
+#: src/common/xchat.c:962
 msgid "Reconnect"
 msgstr "UlangSambung"
 
-#: src/common/xchat.c:957
+#: src/common/xchat.c:963
 #, fuzzy
 msgid "Leave Channel"
 msgstr "Saluran"
 
-#: src/common/xchat.c:958
+#: src/common/xchat.c:964
 msgid "Join Channel..."
 msgstr "Sertai Saluran..."
 
-#: src/common/xchat.c:959
+#: src/common/xchat.c:965
 #, fuzzy
 msgid "Enter Channel to Join:"
 msgstr "Saluran ini akan"
 
-#: src/common/xchat.c:960
+#: src/common/xchat.c:966
 msgid "Server Links"
 msgstr "Pautan Pelayan"
 
-#: src/common/xchat.c:961
+#: src/common/xchat.c:967
 msgid "Ping Server"
 msgstr "Ping Pelayan"
 
-#: src/common/xchat.c:962
+#: src/common/xchat.c:968
 msgid "Hide Version"
 msgstr "Sorok Versi"
 
-#: src/common/xchat.c:972
+#: src/common/xchat.c:978
 msgid "Op"
 msgstr "Op"
 
-#: src/common/xchat.c:973
+#: src/common/xchat.c:979
 msgid "DeOp"
 msgstr ""
 
-#: src/common/xchat.c:976
+#: src/common/xchat.c:982
 msgid "bye"
 msgstr ""
 
-#: src/common/xchat.c:977
+#: src/common/xchat.c:983
 #, c-format
 msgid "Enter reason to kick %s:"
 msgstr "Masukkan alasan untuk tendang %s:"
 
-#: src/common/xchat.c:978
+#: src/common/xchat.c:984
 #, fuzzy
 msgid "Sendfile"
 msgstr "Fail bunyi: "
 
-#: src/common/xchat.c:979
+#: src/common/xchat.c:985
 msgid "Dialog"
 msgstr "Dialog"
 
-#: src/common/xchat.c:989
+#: src/common/xchat.c:995
 #, fuzzy
 msgid "Send"
 msgstr "Hantar"
 
-#: src/common/xchat.c:990
+#: src/common/xchat.c:996
 #, fuzzy
 msgid "Chat"
 msgstr "Chad"
 
-#: src/common/xchat.c:992 src/fe-gtk/banlist.c:314 src/fe-gtk/search.c:117
+#: src/common/xchat.c:998 src/fe-gtk/banlist.c:314 src/fe-gtk/search.c:117
 #: src/fe-gtk/urlgrab.c:200
 msgid "Clear"
 msgstr "Kosongkan"
@@ -3114,7 +3111,7 @@ msgstr "Turun Bawah"
 msgid "Cancel"
 msgstr "Batal"
 
-#: src/fe-gtk/editlist.c:349 src/fe-gtk/textgui.c:460 src/fe-gtk/urlgrab.c:204
+#: src/fe-gtk/editlist.c:349 src/fe-gtk/textgui.c:464 src/fe-gtk/urlgrab.c:204
 msgid "Save"
 msgstr "Simpan"
 
@@ -3171,11 +3168,11 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/fe-gtk/fe-gtk.c:614
+#: src/fe-gtk/fe-gtk.c:617
 msgid "Search buffer is empty.\n"
 msgstr "Penimbal carian kosong.\n"
 
-#: src/fe-gtk/fe-gtk.c:691
+#: src/fe-gtk/fe-gtk.c:694
 #, c-format
 msgid "%d bytes"
 msgstr ""
@@ -3976,31 +3973,31 @@ msgstr "Terakhir Dilihat"
 msgid "Offline"
 msgstr "LuarTalian"
 
-#: src/fe-gtk/notifygui.c:172
+#: src/fe-gtk/notifygui.c:169
 msgid "Never"
 msgstr "Tidak sekali"
 
-#: src/fe-gtk/notifygui.c:190
+#: src/fe-gtk/notifygui.c:187
 msgid "Online"
 msgstr "DalamTalian"
 
-#: src/fe-gtk/notifygui.c:280
+#: src/fe-gtk/notifygui.c:277
 msgid "Enter nickname to add:"
 msgstr "Masukkan nama gelaran untuk ditambah:"
 
-#: src/fe-gtk/notifygui.c:296
+#: src/fe-gtk/notifygui.c:293
 msgid "X-Chat: Notify List"
 msgstr "X-Chat: Senarai Makluman"
 
-#: src/fe-gtk/notifygui.c:309 src/fe-gtk/servlistgui.c:712
+#: src/fe-gtk/notifygui.c:306 src/fe-gtk/servlistgui.c:712
 msgid "Add"
 msgstr "Tambah"
 
-#: src/fe-gtk/notifygui.c:311
+#: src/fe-gtk/notifygui.c:308
 msgid "Remove"
 msgstr "Buang"
 
-#: src/fe-gtk/plugingui.c:76 src/fe-gtk/textgui.c:383
+#: src/fe-gtk/plugingui.c:76 src/fe-gtk/textgui.c:387
 msgid "Description"
 msgstr "Huraian"
 
@@ -4367,7 +4364,7 @@ msgstr ""
 msgid "Windows"
 msgstr "Tetingkap"
 
-#: src/fe-gtk/setup.c:143 src/fe-gtk/setup.c:842
+#: src/fe-gtk/setup.c:143 src/fe-gtk/setup.c:845
 msgid "Tabs"
 msgstr "Tab"
 
@@ -4775,104 +4772,104 @@ msgstr ""
 msgid "Away User:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:838
+#: src/fe-gtk/setup.c:841
 msgid "Interface"
 msgstr "Antaramuka"
 
-#: src/fe-gtk/setup.c:839
+#: src/fe-gtk/setup.c:842
 msgid "Text box"
 msgstr "Kekotak teks"
 
-#: src/fe-gtk/setup.c:840
+#: src/fe-gtk/setup.c:843
 msgid "Input box"
 msgstr "kotak input"
 
-#: src/fe-gtk/setup.c:841
+#: src/fe-gtk/setup.c:844
 msgid "User list"
 msgstr "Senarai pengguna"
 
-#: src/fe-gtk/setup.c:843
+#: src/fe-gtk/setup.c:846
 msgid "Colors"
 msgstr "Warna"
 
-#: src/fe-gtk/setup.c:845
+#: src/fe-gtk/setup.c:848
 msgid "Chatting"
 msgstr "Berchat"
 
-#: src/fe-gtk/setup.c:846
+#: src/fe-gtk/setup.c:849
 msgid "General"
 msgstr "Umum"
 
-#: src/fe-gtk/setup.c:847
+#: src/fe-gtk/setup.c:850
 msgid "Logging"
 msgstr "Menglog"
 
-#: src/fe-gtk/setup.c:849
+#: src/fe-gtk/setup.c:852
 msgid "Network"
 msgstr "Rangkaian"
 
-#: src/fe-gtk/setup.c:850
+#: src/fe-gtk/setup.c:853
 msgid "Network setup"
 msgstr "Tetapan rangkaian"
 
-#: src/fe-gtk/setup.c:851
+#: src/fe-gtk/setup.c:854
 msgid "File transfers"
 msgstr "Pemindahan fail"
 
-#: src/fe-gtk/setup.c:956
+#: src/fe-gtk/setup.c:959
 msgid "Categories"
 msgstr "Kategori"
 
-#: src/fe-gtk/setup.c:1082
+#: src/fe-gtk/setup.c:1085
 msgid "Some settings were changed that require a restart to take full effect."
 msgstr ""
 
-#: src/fe-gtk/setup.c:1109
+#: src/fe-gtk/setup.c:1112
 msgid "X-Chat: Preferences"
 msgstr "X-Chat: Keutamaan"
 
-#: src/fe-gtk/textgui.c:180
+#: src/fe-gtk/textgui.c:184
 msgid "There was an error parsing the string"
 msgstr "Terdapat ralat menghantar rentetan"
 
-#: src/fe-gtk/textgui.c:188
+#: src/fe-gtk/textgui.c:192
 #, c-format
 msgid "This signal is only passed %d args, $%d is invalid"
 msgstr ""
 
-#: src/fe-gtk/textgui.c:300 src/fe-gtk/textgui.c:322
+#: src/fe-gtk/textgui.c:304 src/fe-gtk/textgui.c:326
 msgid "Print Texts File"
 msgstr "Cetak Fail Teks"
 
-#: src/fe-gtk/textgui.c:378
+#: src/fe-gtk/textgui.c:382
 msgid "Event"
 msgstr "Acara"
 
-#: src/fe-gtk/textgui.c:380
+#: src/fe-gtk/textgui.c:384
 msgid "Sound"
 msgstr "Bunyi"
 
-#: src/fe-gtk/textgui.c:382
+#: src/fe-gtk/textgui.c:386
 msgid "$ Number"
 msgstr "$ Nombor"
 
-#: src/fe-gtk/textgui.c:392
+#: src/fe-gtk/textgui.c:396
 msgid "Edit Events"
 msgstr "Edit Acara"
 
-#: src/fe-gtk/textgui.c:430
+#: src/fe-gtk/textgui.c:434
 msgid "Sound file: "
 msgstr "Fail bunyi: "
 
-#: src/fe-gtk/textgui.c:465
+#: src/fe-gtk/textgui.c:469
 msgid "Save As"
 msgstr "Simpan Sebagai"
 
-#: src/fe-gtk/textgui.c:470
+#: src/fe-gtk/textgui.c:474
 msgid "Load From"
 msgstr "Muatkan Dari"
 
-#: src/fe-gtk/textgui.c:475
+#: src/fe-gtk/textgui.c:479
 msgid "Test All"
 msgstr "Uji Semua"
 
@@ -4908,6 +4905,16 @@ msgstr "Simpan senarai ke satu fail"
 #, c-format
 msgid "%d ops, %d total"
 msgstr ""
+
+#~ msgid "Error String"
+#~ msgstr "Rentetan Ralat"
+
+# libgnomeui/gnome-messagebox.c:129 libgnomeui/gnome-messagebox.c:262
+#~ msgid "Error name"
+#~ msgstr "Nama ralat"
+
+#~ msgid "Error string"
+#~ msgstr "Rentetan ralat"
 
 #~ msgid "Proxy port:"
 #~ msgstr "Liang proksi:"

@@ -21,7 +21,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xchat 2.0.5pre1\n"
 "Report-Msgid-Bugs-To: www.xchat.org\n"
-"POT-Creation-Date: 2003-11-28 14:19+1100\n"
+"POT-Creation-Date: 2004-01-01 23:38+1100\n"
 "PO-Revision-Date: 2003-11-20 14:51-0500\n"
 "Last-Translator: Aleksandar Jelenak <jelenak@netlinkplus.net>\n"
 "Language-Team: Serbian <sr@li.org>\n"
@@ -41,7 +41,7 @@ msgstr "Заузет сам"
 msgid "Leaving"
 msgstr "Одлазим"
 
-#: src/common/cfgfiles.c:678
+#: src/common/cfgfiles.c:679
 msgid ""
 "* Running IRC as root is stupid! You should\n"
 "  create a User Account and use that to login.\n"
@@ -78,7 +78,7 @@ msgstr "Прекинуто"
 msgid "Cannot access %s\n"
 msgstr "Нема приступа %s\n"
 
-#: src/common/dcc.c:1795
+#: src/common/dcc.c:1801
 msgid "No active DCCs\n"
 msgstr "Нема активних DCC-ова\n"
 
@@ -586,12 +586,12 @@ msgstr ""
 msgid "Proxy traversal failed.\n"
 msgstr "Неуспео контакт са заступником.\n"
 
-#: src/common/servlist.c:635
+#: src/common/servlist.c:633
 #, c-format
 msgid "Cycling to next server in %s...\n"
 msgstr ""
 
-#: src/common/servlist.c:975
+#: src/common/servlist.c:973
 #, c-format
 msgid ""
 "Warning: \"%s\" character set is unknown. No conversion will be applied for "
@@ -615,9 +615,8 @@ msgid "-%C10-%C11-%O$t$1 is now known as $2"
 msgstr "Име -%C10-%C11-%O$t$1 је промењено у $2"
 
 #: src/common/textevents.h:18
-#, fuzzy
 msgid "%C13*%O$t$1%O $2%O"
-msgstr "%C13*%O$t$1 $2%O"
+msgstr "%C13*%O$t$1%O $2%O"
 
 #: src/common/textevents.h:21
 msgid "%C13*%O$t%C8%B$1%B%O $2%O"
@@ -823,8 +822,8 @@ msgid "-%C10-%C11-%O$tDCC RECV %C11$1%O from %C11$3%O failed. $4."
 msgstr "-%C10-%C11-%O$tDCC RECV %C11$1%O од %C11$3%O неуспела. $4."
 
 #: src/common/textevents.h:162
-msgid "-%C10-%C11-%O$tDCC RECV: Cannot open $1 for writing - aborting."
-msgstr "-%C10-%C11-%O$tDCC RECV: Не може се писати у $1 - прекидам."
+msgid "-%C10-%C11-%O$tDCC RECV: Cannot open $1 for writing ($2)."
+msgstr "-%C10-%C11-%O$tDCC RECV: Не може се писати у $1 ($2)."
 
 #: src/common/textevents.h:165
 msgid ""
@@ -895,7 +894,6 @@ msgid "Ignore on %C11$1%O changed."
 msgstr "Занемари кад се промени %C11$1%O."
 
 #: src/common/textevents.h:210
-#, fuzzy
 msgid "%C08,02                                                              %O"
 msgstr ""
 "%C08,02                                                              %O"
@@ -1144,17 +1142,17 @@ msgstr "%C6<%O$1%C6>%O$t$2%O"
 msgid "-%C10-%C11-%O$tYou are now known as $2"
 msgstr "-%C10-%C11-%O$tПроменили сте име у $2"
 
-#: src/common/text.c:301
+#: src/common/text.c:304
 #, c-format
 msgid "**** ENDING LOGGING AT %s\n"
 msgstr "**** КРАЈ ЗАПИСА У ДНЕВНИКУ У %s\n"
 
-#: src/common/text.c:418
+#: src/common/text.c:421
 #, c-format
 msgid "**** BEGIN LOGGING AT %s\n"
 msgstr "**** ПОЧЕТАК ЗАПИСА У ДНЕВНИКУ У %s\n"
 
-#: src/common/text.c:437
+#: src/common/text.c:440
 #, c-format
 msgid ""
 "* Can't open log file(s) for writing. Check the\n"
@@ -1163,473 +1161,463 @@ msgstr ""
 "* Дневник се не може отворити за упис. Проверите\n"
 "  права приступа за %s/xchatlogs"
 
-#: src/common/text.c:648
+#: src/common/text.c:651
 msgid "Left message"
 msgstr "Порука слева"
 
-#: src/common/text.c:649
+#: src/common/text.c:652
 msgid "Right message"
 msgstr "Порука здесна"
 
-#: src/common/text.c:653
+#: src/common/text.c:656
 msgid "The nick of the joining person"
 msgstr "Име особе која се прикључује"
 
-#: src/common/text.c:654
+#: src/common/text.c:657
 msgid "The channel being joined"
 msgstr "Канал на који се прикључује"
 
-#: src/common/text.c:655 src/common/text.c:699 src/common/text.c:755
+#: src/common/text.c:658 src/common/text.c:702 src/common/text.c:758
 msgid "The host of the person"
 msgstr "Рачунар на коме ради"
 
-#: src/common/text.c:659 src/common/text.c:664 src/common/text.c:670
-#: src/common/text.c:737 src/common/text.c:861 src/common/text.c:868
-#: src/common/text.c:873 src/common/text.c:878 src/common/text.c:883
-#: src/common/text.c:889 src/common/text.c:894 src/common/text.c:898
-#: src/common/text.c:903 src/common/text.c:909 src/common/text.c:955
-#: src/common/text.c:964 src/common/text.c:969 src/common/text.c:974
-#: src/common/text.c:983 src/common/text.c:993 src/common/text.c:1000
-#: src/common/text.c:1006 src/common/text.c:1011 src/common/text.c:1016
-#: src/common/text.c:1023 src/common/text.c:1029 src/common/text.c:1035
-#: src/common/text.c:1040 src/common/text.c:1045 src/common/text.c:1049
-#: src/common/text.c:1055 src/common/text.c:1063 src/common/text.c:1097
-#: src/common/text.c:1102
+#: src/common/text.c:662 src/common/text.c:667 src/common/text.c:673
+#: src/common/text.c:740 src/common/text.c:864 src/common/text.c:871
+#: src/common/text.c:876 src/common/text.c:881 src/common/text.c:886
+#: src/common/text.c:892 src/common/text.c:897 src/common/text.c:901
+#: src/common/text.c:906 src/common/text.c:912 src/common/text.c:958
+#: src/common/text.c:967 src/common/text.c:972 src/common/text.c:977
+#: src/common/text.c:986 src/common/text.c:997 src/common/text.c:1004
+#: src/common/text.c:1010 src/common/text.c:1015 src/common/text.c:1020
+#: src/common/text.c:1027 src/common/text.c:1033 src/common/text.c:1039
+#: src/common/text.c:1044 src/common/text.c:1049 src/common/text.c:1053
+#: src/common/text.c:1059 src/common/text.c:1067 src/common/text.c:1101
+#: src/common/text.c:1106
 msgid "Nickname"
 msgstr "Надимак"
 
-#: src/common/text.c:660
+#: src/common/text.c:663
 msgid "The action"
 msgstr "Наредба"
 
-#: src/common/text.c:665
+#: src/common/text.c:668
 msgid "The text"
 msgstr "Текст"
 
-#: src/common/text.c:666
+#: src/common/text.c:669
 msgid "Mode char"
 msgstr "Ознака за приступ"
 
-#: src/common/text.c:671 src/common/text.c:727 src/common/text.c:733
-#: src/common/text.c:738
+#: src/common/text.c:674 src/common/text.c:730 src/common/text.c:736
+#: src/common/text.c:741
 msgid "The message"
 msgstr "Порука"
 
-#: src/common/text.c:675 src/common/text.c:742
+#: src/common/text.c:678 src/common/text.c:745
 msgid "Old nickname"
 msgstr "Стари надимак"
 
-#: src/common/text.c:676 src/common/text.c:743
+#: src/common/text.c:679 src/common/text.c:746
 msgid "New nickname"
 msgstr "Нови надимак"
 
-#: src/common/text.c:680
+#: src/common/text.c:683
 msgid "Nick of person who changed the topic"
 msgstr "Име особе која је променила тему"
 
-#: src/common/text.c:681 src/common/text.c:687 src/fe-gtk/chanlist.c:599
+#: src/common/text.c:684 src/common/text.c:690 src/fe-gtk/chanlist.c:599
 #: src/fe-gtk/chanlist.c:700
 msgid "Topic"
 msgstr "Тема"
 
-#: src/common/text.c:682 src/common/text.c:686 src/common/text.c:1117
+#: src/common/text.c:685 src/common/text.c:689 src/common/text.c:1121
 #: src/fe-gtk/chanlist.c:597 src/fe-gtk/chanlist.c:691
 #: src/fe-gtk/ignoregui.c:175
 msgid "Channel"
 msgstr "Канал"
 
-#: src/common/text.c:691 src/common/text.c:749
+#: src/common/text.c:694 src/common/text.c:752
 msgid "The nickname of the kicker"
 msgstr "Име избацивача"
 
-#: src/common/text.c:692 src/common/text.c:747
+#: src/common/text.c:695 src/common/text.c:750
 msgid "The person being kicked"
 msgstr "Избачена особа"
 
-#: src/common/text.c:693 src/common/text.c:700 src/common/text.c:704
-#: src/common/text.c:709 src/common/text.c:748 src/common/text.c:756
+#: src/common/text.c:696 src/common/text.c:703 src/common/text.c:707
+#: src/common/text.c:712 src/common/text.c:751 src/common/text.c:759
 msgid "The channel"
 msgstr "Канал"
 
-#: src/common/text.c:694 src/common/text.c:750 src/common/text.c:757
+#: src/common/text.c:697 src/common/text.c:753 src/common/text.c:760
 msgid "The reason"
 msgstr "Разлог"
 
-#: src/common/text.c:698 src/common/text.c:754
+#: src/common/text.c:701 src/common/text.c:757
 msgid "The nick of the person leaving"
 msgstr "Име особе која одлази"
 
-#: src/common/text.c:705 src/common/text.c:711
+#: src/common/text.c:708 src/common/text.c:714
 msgid "The time"
 msgstr "Време"
 
-#: src/common/text.c:710
+#: src/common/text.c:713
 msgid "The creator"
 msgstr "Креатор"
 
-#: src/common/text.c:715
+#: src/common/text.c:718
 msgid "Nick"
 msgstr "Име"
 
-#: src/common/text.c:716 src/common/text.c:970
+#: src/common/text.c:719 src/common/text.c:973
 msgid "Reason"
 msgstr "Разлог"
 
-#: src/common/text.c:717 src/common/text.c:863 src/common/text.c:945
+#: src/common/text.c:720 src/common/text.c:866 src/common/text.c:948
 msgid "Host"
 msgstr "Рачунар"
 
-#: src/common/text.c:721 src/common/text.c:726 src/common/text.c:731
+#: src/common/text.c:724 src/common/text.c:729 src/common/text.c:734
 msgid "Who it's from"
 msgstr "Од кога долази"
 
-#: src/common/text.c:722
+#: src/common/text.c:725
 msgid "The time in x.x format (see below)"
 msgstr "Време у формату x.x (видети испод)"
 
-#: src/common/text.c:732 src/common/text.c:773
+#: src/common/text.c:735 src/common/text.c:776
 msgid "The Channel it's going to"
 msgstr "Канал на који иде"
 
-#: src/common/text.c:761
+#: src/common/text.c:764
 msgid "The sound"
 msgstr "Звук"
 
-#: src/common/text.c:762 src/common/text.c:767 src/common/text.c:772
+#: src/common/text.c:765 src/common/text.c:770 src/common/text.c:775
 msgid "The nick of the person"
 msgstr "Име особе"
 
-#: src/common/text.c:766 src/common/text.c:771
+#: src/common/text.c:769 src/common/text.c:774
 msgid "The CTCP event"
 msgstr "CTCP догађај"
 
-#: src/common/text.c:777
+#: src/common/text.c:780
 msgid "The nick of the person who set the key"
 msgstr "Име особе која је поставила кључ"
 
-#: src/common/text.c:778
+#: src/common/text.c:781
 msgid "The key"
 msgstr "Кључ"
 
-#: src/common/text.c:782
+#: src/common/text.c:785
 msgid "The nick of the person who set the limit"
 msgstr "Име особе која је поставила ограничење"
 
-#: src/common/text.c:783
+#: src/common/text.c:786
 msgid "The limit"
 msgstr "Ограничење"
 
-#: src/common/text.c:787
+#: src/common/text.c:790
 msgid "The nick of the person who did the op'ing"
 msgstr "Име особе која је доделила опа"
 
-#: src/common/text.c:788
+#: src/common/text.c:791
 msgid "The nick of the person who has been op'ed"
 msgstr "Име особе која је добила опа"
 
-#: src/common/text.c:792
+#: src/common/text.c:795
 msgid "The nick of the person who has been halfop'ed"
 msgstr "Име особе која је добила полу-опа"
 
-#: src/common/text.c:793
+#: src/common/text.c:796
 msgid "The nick of the person who did the halfop'ing"
 msgstr "Име особе која је доделила полу-опа"
 
-#: src/common/text.c:797
+#: src/common/text.c:800
 msgid "The nick of the person who did the voice'ing"
 msgstr "Име особе која је дала реч"
 
-#: src/common/text.c:798
+#: src/common/text.c:801
 msgid "The nick of the person who has been voice'ed"
 msgstr "Име особе која је добила реч"
 
-#: src/common/text.c:802
+#: src/common/text.c:805
 msgid "The nick of the person who did the banning"
 msgstr "Име особе која је забранила"
 
-#: src/common/text.c:803 src/common/text.c:830
+#: src/common/text.c:806 src/common/text.c:833
 msgid "The ban mask"
 msgstr "Шаблон за забрану"
 
-#: src/common/text.c:807
+#: src/common/text.c:810
 msgid "The nick who removed the key"
 msgstr "Име особе која је склонила кључ"
 
-#: src/common/text.c:811
+#: src/common/text.c:814
 msgid "The nick who removed the limit"
 msgstr "Име особе која је уклонила ограничење"
 
-#: src/common/text.c:815
+#: src/common/text.c:818
 msgid "The nick of the person of did the deop'ing"
 msgstr "Име особе која је одузела опа"
 
-#: src/common/text.c:816
+#: src/common/text.c:819
 msgid "The nick of the person who has been deop'ed"
 msgstr "Име особе којој је одузет оп"
 
-#: src/common/text.c:819
+#: src/common/text.c:822
 msgid "The nick of the person of did the dehalfop'ing"
 msgstr "Име особе која је доделила полу-опа"
 
-#: src/common/text.c:820
+#: src/common/text.c:823
 msgid "The nick of the person who has been dehalfop'ed"
 msgstr "Име особе којој је одузет полу-оп"
 
-#: src/common/text.c:824
+#: src/common/text.c:827
 msgid "The nick of the person of did the devoice'ing"
 msgstr "Име особе која је одузела реч"
 
-#: src/common/text.c:825
+#: src/common/text.c:828
 msgid "The nick of the person who has been devoice'ed"
 msgstr "Име особе којој је одузета реч"
 
-#: src/common/text.c:829
+#: src/common/text.c:832
 msgid "The nick of the person of did the unban'ing"
 msgstr "Име особе која је укинула забрану"
 
-#: src/common/text.c:834
+#: src/common/text.c:837
 msgid "The nick of the person who did the exempt"
 msgstr "Име особе која је поставила искључење"
 
-#: src/common/text.c:835 src/common/text.c:840
+#: src/common/text.c:838 src/common/text.c:843
 msgid "The exempt mask"
 msgstr "Шаблон за искључење"
 
-#: src/common/text.c:839
+#: src/common/text.c:842
 msgid "The nick of the person removed the exempt"
 msgstr "Име особе која је уклонила искључење"
 
-#: src/common/text.c:844
+#: src/common/text.c:847
 msgid "The nick of the person who did the invite"
 msgstr "Име особе која је позвала"
 
-#: src/common/text.c:845 src/common/text.c:850
+#: src/common/text.c:848 src/common/text.c:853
 msgid "The invite mask"
 msgstr "Шаблон за позив"
 
-#: src/common/text.c:849
+#: src/common/text.c:852
 msgid "The nick of the person removed the invite"
 msgstr "Име особе која је уклонила позив"
 
-#: src/common/text.c:854
+#: src/common/text.c:857
 msgid "The nick of the person setting the mode"
 msgstr "Име особе која је поставила приступ"
 
-#: src/common/text.c:855
+#: src/common/text.c:858
 msgid "The mode's sign (+/-)"
 msgstr "Знак приступа (+/-)"
 
-#: src/common/text.c:856
+#: src/common/text.c:859
 msgid "The mode letter"
 msgstr "Ознака приступа"
 
-#: src/common/text.c:857
+#: src/common/text.c:860
 msgid "The channel it's being set on"
 msgstr "Канал на ком стоји"
 
-#: src/common/text.c:862
+#: src/common/text.c:865
 msgid "Username"
 msgstr "Кор. име"
 
-#: src/common/text.c:864
+#: src/common/text.c:867
 msgid "Full name"
 msgstr "Пуно име"
 
-#: src/common/text.c:869
+#: src/common/text.c:872
 msgid "Channel Membership/\"is an IRC operator\""
 msgstr "Припадност каналу/\"је IRC оператор\""
 
-#: src/common/text.c:874
+#: src/common/text.c:877
 msgid "Server Information"
 msgstr "Подаци о серверу"
 
-#: src/common/text.c:879 src/common/text.c:884
+#: src/common/text.c:882 src/common/text.c:887
 msgid "Idle time"
 msgstr "Одсутан"
 
-#: src/common/text.c:885
+#: src/common/text.c:888
 msgid "Signon time"
 msgstr "Време пријаве"
 
-#: src/common/text.c:890
+#: src/common/text.c:893
 msgid "Away reason"
 msgstr "Разлог за одсуство"
 
-#: src/common/text.c:899 src/common/text.c:904 src/common/text.c:912
-#: src/common/text.c:1089
+#: src/common/text.c:902 src/common/text.c:907 src/common/text.c:915
+#: src/common/text.c:1093
 msgid "Message"
 msgstr "Порука"
 
-#: src/common/text.c:905
+#: src/common/text.c:908
 msgid "Account"
 msgstr "Налог"
 
-#: src/common/text.c:910
+#: src/common/text.c:913
 msgid "Real user@host"
 msgstr "Прави user@host"
 
-#: src/common/text.c:911
+#: src/common/text.c:914
 msgid "Real IP"
 msgstr "Прави IP"
 
-#: src/common/text.c:916 src/common/text.c:925 src/common/text.c:931
-#: src/common/text.c:1112
+#: src/common/text.c:919 src/common/text.c:928 src/common/text.c:934
+#: src/common/text.c:1116
 msgid "Channel Name"
 msgstr "Име канала"
 
-#: src/common/text.c:920 src/common/text.c:1075 src/fe-gtk/textgui.c:379
+#: src/common/text.c:923 src/common/text.c:1079 src/fe-gtk/textgui.c:383
 msgid "Text"
 msgstr "Текст"
 
-#: src/common/text.c:921 src/common/text.c:927 src/common/text.c:1113
+#: src/common/text.c:924 src/common/text.c:930 src/common/text.c:1117
 msgid "Server Name"
 msgstr "Име сервера"
 
-#: src/common/text.c:926
+#: src/common/text.c:929
 msgid "Nick of person who invited you"
 msgstr "Име особе која је позвала"
 
-#: src/common/text.c:932 src/fe-gtk/chanlist.c:598
+#: src/common/text.c:935 src/fe-gtk/chanlist.c:598
 msgid "Users"
 msgstr "Корисници"
 
-#: src/common/text.c:936
+#: src/common/text.c:939
 msgid "Nickname in use"
 msgstr "Имена у употреби"
 
-#: src/common/text.c:937
+#: src/common/text.c:940
 msgid "Nick being tried"
 msgstr "Испробана имена"
 
-#: src/common/text.c:941
-msgid "Error String"
-msgstr "Грешка"
-
-#: src/common/text.c:946 src/common/text.c:1079
-msgid "IP"
-msgstr "IP"
-
-#: src/common/text.c:947 src/common/text.c:976
-msgid "Port"
-msgstr "Порт"
-
-#: src/common/text.c:951
-msgid "PID"
-msgstr "PID"
-
-#: src/common/text.c:959
-msgid "Channel name"
-msgstr "Име канала"
-
-#: src/common/text.c:960 src/common/text.c:965
-msgid "Modes string"
-msgstr "Права приступа"
-
-#: src/common/text.c:975 src/common/text.c:1012 src/common/text.c:1017
-#: src/common/text.c:1058
-msgid "IP address"
-msgstr "IP адреса"
-
-#: src/common/text.c:977 src/common/text.c:994 src/common/text.c:1024
-msgid "Error name"
-msgstr "Врста грешке"
-
-#: src/common/text.c:981 src/common/text.c:1005
-msgid "DCC Type"
-msgstr "Врста DCC"
-
-#: src/common/text.c:982 src/common/text.c:987 src/common/text.c:991
-#: src/common/text.c:998 src/common/text.c:1018 src/common/text.c:1022
-#: src/common/text.c:1028 src/common/text.c:1034 src/common/text.c:1041
-#: src/common/text.c:1050 src/common/text.c:1056
-msgid "Filename"
-msgstr "Датотека"
-
-#: src/common/text.c:992 src/common/text.c:999
-msgid "Destination filename"
-msgstr "Циљна датотека"
-
-#: src/common/text.c:1001 src/common/text.c:1030
-msgid "CPS"
-msgstr "зн./сек."
-
-#: src/common/text.c:1007
-msgid "Error string"
-msgstr "Грешка"
-
-#: src/common/text.c:1036
-msgid "Pathname"
-msgstr "Путања"
-
-#: src/common/text.c:1051 src/fe-gtk/dccgui.c:483 src/fe-gtk/dccgui.c:633
-msgid "Position"
-msgstr "Место"
-
-#: src/common/text.c:1057 src/fe-gtk/dccgui.c:482 src/fe-gtk/dccgui.c:632
-msgid "Size"
-msgstr "Величина"
-
-#: src/common/text.c:1062
-msgid "DCC String"
-msgstr "DCC текст"
-
-#: src/common/text.c:1067
-msgid "Number of notify items"
-msgstr "Број посматраних улаза"
-
-#: src/common/text.c:1071
-msgid "Servername"
-msgstr "Име сервера"
-
-#: src/common/text.c:1083
-msgid "Old Filename"
-msgstr "Стара датотека"
-
-#: src/common/text.c:1084
-msgid "New Filename"
-msgstr "Нова датотека"
-
-#: src/common/text.c:1088
-msgid "Receiver"
-msgstr "Прималац"
-
-#: src/common/text.c:1093
-msgid "Hostmask"
-msgstr "Шаблон рач."
-
-#: src/common/text.c:1098
-msgid "Hostname"
-msgstr "Име рач."
-
-#: src/common/text.c:1103
-msgid "The Packet"
-msgstr "Пакет"
-
-#: src/common/text.c:1107
-msgid "Seconds"
-msgstr "Секунде"
-
-#: src/common/text.c:1111
-msgid "Nick of person who have been invited"
-msgstr "Име позване особе"
-
-#: src/common/text.c:1118
-msgid "Banmask"
-msgstr "Шаблон забране"
-
-#: src/common/text.c:1119
-msgid "Who set the ban"
-msgstr "Ко је забранио"
-
-#: src/common/text.c:1120
-msgid "Ban time"
-msgstr "Време забране"
-
-#: src/common/text.c:1124
+#: src/common/text.c:944 src/common/text.c:980 src/common/text.c:991
+#: src/common/text.c:998 src/common/text.c:1011 src/common/text.c:1028
+#: src/common/text.c:1128
 msgid "Error"
 msgstr "Грешка"
 
-#: src/common/text.c:1158
+#: src/common/text.c:949 src/common/text.c:1083
+msgid "IP"
+msgstr "IP"
+
+#: src/common/text.c:950 src/common/text.c:979
+msgid "Port"
+msgstr "Порт"
+
+#: src/common/text.c:954
+msgid "PID"
+msgstr "PID"
+
+#: src/common/text.c:962
+msgid "Channel name"
+msgstr "Име канала"
+
+#: src/common/text.c:963 src/common/text.c:968
+msgid "Modes string"
+msgstr "Права приступа"
+
+#: src/common/text.c:978 src/common/text.c:1016 src/common/text.c:1021
+#: src/common/text.c:1062
+msgid "IP address"
+msgstr "IP адреса"
+
+#: src/common/text.c:984 src/common/text.c:1009
+msgid "DCC Type"
+msgstr "Врста DCC"
+
+#: src/common/text.c:985 src/common/text.c:990 src/common/text.c:995
+#: src/common/text.c:1002 src/common/text.c:1022 src/common/text.c:1026
+#: src/common/text.c:1032 src/common/text.c:1038 src/common/text.c:1045
+#: src/common/text.c:1054 src/common/text.c:1060
+msgid "Filename"
+msgstr "Датотека"
+
+#: src/common/text.c:996 src/common/text.c:1003
+msgid "Destination filename"
+msgstr "Циљна датотека"
+
+#: src/common/text.c:1005 src/common/text.c:1034
+msgid "CPS"
+msgstr "зн./сек."
+
+#: src/common/text.c:1040
+msgid "Pathname"
+msgstr "Путања"
+
+#: src/common/text.c:1055 src/fe-gtk/dccgui.c:483 src/fe-gtk/dccgui.c:633
+msgid "Position"
+msgstr "Место"
+
+#: src/common/text.c:1061 src/fe-gtk/dccgui.c:482 src/fe-gtk/dccgui.c:632
+msgid "Size"
+msgstr "Величина"
+
+#: src/common/text.c:1066
+msgid "DCC String"
+msgstr "DCC текст"
+
+#: src/common/text.c:1071
+msgid "Number of notify items"
+msgstr "Број посматраних улаза"
+
+#: src/common/text.c:1075
+msgid "Servername"
+msgstr "Име сервера"
+
+#: src/common/text.c:1087
+msgid "Old Filename"
+msgstr "Стара датотека"
+
+#: src/common/text.c:1088
+msgid "New Filename"
+msgstr "Нова датотека"
+
+#: src/common/text.c:1092
+msgid "Receiver"
+msgstr "Прималац"
+
+#: src/common/text.c:1097
+msgid "Hostmask"
+msgstr "Шаблон рач."
+
+#: src/common/text.c:1102
+msgid "Hostname"
+msgstr "Име рач."
+
+#: src/common/text.c:1107
+msgid "The Packet"
+msgstr "Пакет"
+
+#: src/common/text.c:1111
+msgid "Seconds"
+msgstr "Секунде"
+
+#: src/common/text.c:1115
+msgid "Nick of person who have been invited"
+msgstr "Име позване особе"
+
+#: src/common/text.c:1122
+msgid "Banmask"
+msgstr "Шаблон забране"
+
+#: src/common/text.c:1123
+msgid "Who set the ban"
+msgstr "Ко је забранио"
+
+#: src/common/text.c:1124
+msgid "Ban time"
+msgstr "Време забране"
+
+#: src/common/text.c:1162
 #, c-format
 msgid ""
 "Error parsing event %s.\n"
@@ -1637,6 +1625,13 @@ msgid ""
 msgstr ""
 "Грешка у догађају %s.\n"
 "Мењам за подразумевани."
+
+#: src/common/text.c:1672
+#, fuzzy, c-format
+msgid ""
+"Cannot read sound file:\n"
+"%s"
+msgstr "Ова се датотека не може читати."
 
 #: src/common/util.c:292
 msgid "Remote host closed socket"
@@ -1662,1244 +1657,1244 @@ msgstr "Не може се доделити та адреса"
 msgid "Connection reset by peer"
 msgstr "Веза прекинута на другом крају"
 
-#: src/common/util.c:724
+#: src/common/util.c:733
 msgid "Andorra"
 msgstr "Андора"
 
-#: src/common/util.c:725
+#: src/common/util.c:734
 msgid "United Arab Emirates"
 msgstr "Уједињени арапски емирати"
 
-#: src/common/util.c:726
+#: src/common/util.c:735
 msgid "Afghanistan"
 msgstr "Авганистан"
 
-#: src/common/util.c:727
+#: src/common/util.c:736
 msgid "Antigua and Barbuda"
 msgstr "Антигва и Барбуда"
 
-#: src/common/util.c:728
+#: src/common/util.c:737
 msgid "Anguilla"
 msgstr "Ангуила"
 
-#: src/common/util.c:729
+#: src/common/util.c:738
 msgid "Albania"
 msgstr "Албанија"
 
-#: src/common/util.c:730
+#: src/common/util.c:739
 msgid "Armenia"
 msgstr "Јерменија"
 
-#: src/common/util.c:731
+#: src/common/util.c:740
 msgid "Netherlands Antilles"
 msgstr "Холандски антили"
 
-#: src/common/util.c:732
+#: src/common/util.c:741
 msgid "Angola"
 msgstr "Ангола"
 
-#: src/common/util.c:733
+#: src/common/util.c:742
 msgid "Antarctica"
 msgstr "Антарктик"
 
-#: src/common/util.c:734
+#: src/common/util.c:743
 msgid "Argentina"
 msgstr "Аргентина"
 
-#: src/common/util.c:735
+#: src/common/util.c:744
 msgid "Reverse DNS"
 msgstr "Обратни DNS"
 
-#: src/common/util.c:736
+#: src/common/util.c:745
 msgid "American Samoa"
 msgstr "Америчка Самоа"
 
-#: src/common/util.c:737
+#: src/common/util.c:746
 msgid "Austria"
 msgstr "Аустрија"
 
-#: src/common/util.c:738
+#: src/common/util.c:747
 msgid "Nato Fiel"
 msgstr "Нато терен"
 
-#: src/common/util.c:739
+#: src/common/util.c:748
 msgid "Australia"
 msgstr "Аустралија"
 
-#: src/common/util.c:740
+#: src/common/util.c:749
 msgid "Aruba"
 msgstr "Аруба"
 
-#: src/common/util.c:741
+#: src/common/util.c:750
 msgid "Azerbaijan"
 msgstr "Азербејџан"
 
-#: src/common/util.c:742
+#: src/common/util.c:751
 msgid "Bosnia and Herzegovina"
 msgstr "Босна и Херцеговина"
 
-#: src/common/util.c:743
+#: src/common/util.c:752
 msgid "Barbados"
 msgstr "Барбадос"
 
-#: src/common/util.c:744
+#: src/common/util.c:753
 msgid "Bangladesh"
 msgstr "Бангладеш"
 
-#: src/common/util.c:745
+#: src/common/util.c:754
 msgid "Belgium"
 msgstr "Белгија"
 
-#: src/common/util.c:746
+#: src/common/util.c:755
 msgid "Burkina Faso"
 msgstr "Буркина Фасо"
 
-#: src/common/util.c:747
+#: src/common/util.c:756
 msgid "Bulgaria"
 msgstr "Бугарска"
 
-#: src/common/util.c:748
+#: src/common/util.c:757
 msgid "Bahrain"
 msgstr "Бахреин"
 
-#: src/common/util.c:749
+#: src/common/util.c:758
 msgid "Burundi"
 msgstr "Бурунди"
 
-#: src/common/util.c:750
+#: src/common/util.c:759
 msgid "Businesses"
 msgstr "Комерцијала"
 
-#: src/common/util.c:751
+#: src/common/util.c:760
 msgid "Benin"
 msgstr "Бенин"
 
-#: src/common/util.c:752
+#: src/common/util.c:761
 msgid "Bermuda"
 msgstr "Бермуда"
 
-#: src/common/util.c:753
+#: src/common/util.c:762
 msgid "Brunei Darussalam"
 msgstr "Брунеји Дар-Ес-Салам"
 
-#: src/common/util.c:754
+#: src/common/util.c:763
 msgid "Bolivia"
 msgstr "Боливија"
 
-#: src/common/util.c:755
+#: src/common/util.c:764
 msgid "Brazil"
 msgstr "Бразил"
 
-#: src/common/util.c:756
+#: src/common/util.c:765
 msgid "Bahamas"
 msgstr "Бахами"
 
-#: src/common/util.c:757
+#: src/common/util.c:766
 msgid "Bhutan"
 msgstr "Бутан"
 
-#: src/common/util.c:758
+#: src/common/util.c:767
 msgid "Bouvet Island"
 msgstr "Острво Буве"
 
-#: src/common/util.c:759
+#: src/common/util.c:768
 msgid "Botswana"
 msgstr "Боцвана"
 
-#: src/common/util.c:760
+#: src/common/util.c:769
 msgid "Belarus"
 msgstr "Белорусија"
 
-#: src/common/util.c:761
+#: src/common/util.c:770
 msgid "Belize"
 msgstr "Белизе"
 
-#: src/common/util.c:762
+#: src/common/util.c:771
 msgid "Canada"
 msgstr "Канада"
 
-#: src/common/util.c:763
+#: src/common/util.c:772
 msgid "Cocos Islands"
 msgstr "Кокосова острва"
 
-#: src/common/util.c:764
+#: src/common/util.c:773
 msgid "Central African Republic"
 msgstr "Централноафричка република"
 
-#: src/common/util.c:765
+#: src/common/util.c:774
 msgid "Congo"
 msgstr "Конго"
 
-#: src/common/util.c:766
+#: src/common/util.c:775
 msgid "Switzerland"
 msgstr "Швајцарска"
 
-#: src/common/util.c:767
+#: src/common/util.c:776
 msgid "Cote D'ivoire"
 msgstr "Обала слоноваче"
 
-#: src/common/util.c:768
+#: src/common/util.c:777
 msgid "Cook Islands"
 msgstr "Кукова острва"
 
-#: src/common/util.c:769
+#: src/common/util.c:778
 msgid "Chile"
 msgstr "Чиле"
 
-#: src/common/util.c:770
+#: src/common/util.c:779
 msgid "Cameroon"
 msgstr "Камерун"
 
-#: src/common/util.c:771
+#: src/common/util.c:780
 msgid "China"
 msgstr "Кина"
 
-#: src/common/util.c:772
+#: src/common/util.c:781
 msgid "Colombia"
 msgstr "Колумбија"
 
-#: src/common/util.c:773
+#: src/common/util.c:782
 msgid "Internic Commercial"
 msgstr "Комерцијални домени"
 
-#: src/common/util.c:774
+#: src/common/util.c:783
 msgid "Costa Rica"
 msgstr "Костарика"
 
-#: src/common/util.c:775
+#: src/common/util.c:784
 msgid "Former Czechoslovakia"
 msgstr "Србија и Црна Гора (некад било: Чехословачка)"
 
-#: src/common/util.c:776
+#: src/common/util.c:785
 msgid "Cuba"
 msgstr "Куба"
 
-#: src/common/util.c:777
+#: src/common/util.c:786
 msgid "Cape Verde"
 msgstr "Зеленортска острва"
 
-#: src/common/util.c:778
+#: src/common/util.c:787
 msgid "Christmas Island"
 msgstr "Божићна острва"
 
-#: src/common/util.c:779
+#: src/common/util.c:788
 msgid "Cyprus"
 msgstr "Кипар"
 
-#: src/common/util.c:780
+#: src/common/util.c:789
 msgid "Czech Republic"
 msgstr "Република Чешка"
 
-#: src/common/util.c:781
+#: src/common/util.c:790
 msgid "Germany"
 msgstr "Немачка"
 
-#: src/common/util.c:782
+#: src/common/util.c:791
 msgid "Djibouti"
 msgstr "Џибути"
 
-#: src/common/util.c:783
+#: src/common/util.c:792
 msgid "Denmark"
 msgstr "Данска"
 
-#: src/common/util.c:784
+#: src/common/util.c:793
 msgid "Dominica"
 msgstr "Доминика"
 
-#: src/common/util.c:785
+#: src/common/util.c:794
 msgid "Dominican Republic"
 msgstr "Доминиканска република"
 
-#: src/common/util.c:786
+#: src/common/util.c:795
 msgid "Algeria"
 msgstr "Алжир"
 
-#: src/common/util.c:787
+#: src/common/util.c:796
 msgid "Ecuador"
 msgstr "Еквадор"
 
-#: src/common/util.c:788
+#: src/common/util.c:797
 msgid "Educational Institution"
 msgstr "Образовне установе"
 
-#: src/common/util.c:789
+#: src/common/util.c:798
 msgid "Estonia"
 msgstr "Естонија"
 
-#: src/common/util.c:790
+#: src/common/util.c:799
 msgid "Egypt"
 msgstr "Египат"
 
-#: src/common/util.c:791
+#: src/common/util.c:800
 msgid "Western Sahara"
 msgstr "Западна Сахара"
 
-#: src/common/util.c:792
+#: src/common/util.c:801
 msgid "Eritrea"
 msgstr "Еритреја"
 
-#: src/common/util.c:793
+#: src/common/util.c:802
 msgid "Spain"
 msgstr "Шпанија"
 
-#: src/common/util.c:794
+#: src/common/util.c:803
 msgid "Ethiopia"
 msgstr "Етиопија"
 
-#: src/common/util.c:795
+#: src/common/util.c:804
 msgid "Finland"
 msgstr "Финска"
 
-#: src/common/util.c:796
+#: src/common/util.c:805
 msgid "Fiji"
 msgstr "Фиџи"
 
-#: src/common/util.c:797
+#: src/common/util.c:806
 msgid "Falkland Islands"
 msgstr "Фоклендска острва"
 
-#: src/common/util.c:798
+#: src/common/util.c:807
 msgid "Micronesia"
 msgstr "Микронезија"
 
-#: src/common/util.c:799
+#: src/common/util.c:808
 msgid "Faroe Islands"
 msgstr "Фарска острва"
 
-#: src/common/util.c:800
+#: src/common/util.c:809
 msgid "France"
 msgstr "Француска"
 
-#: src/common/util.c:801
+#: src/common/util.c:810
 msgid "France, Metropolitan"
 msgstr "Француска, Метрополитан"
 
-#: src/common/util.c:802
+#: src/common/util.c:811
 msgid "Gabon"
 msgstr "Габон"
 
-#: src/common/util.c:803
+#: src/common/util.c:812
 msgid "Great Britain"
 msgstr "Велика Британија"
 
-#: src/common/util.c:804
+#: src/common/util.c:813
 msgid "Grenada"
 msgstr "Гренада"
 
-#: src/common/util.c:805
+#: src/common/util.c:814
 msgid "Georgia"
 msgstr "Грузија"
 
-#: src/common/util.c:806
+#: src/common/util.c:815
 msgid "French Guiana"
 msgstr "Француска Гвајана"
 
-#: src/common/util.c:807
+#: src/common/util.c:816
 msgid "British Channel Isles"
 msgstr "Британска Каналска острва"
 
-#: src/common/util.c:808
+#: src/common/util.c:817
 msgid "Ghana"
 msgstr "Гана"
 
-#: src/common/util.c:809
+#: src/common/util.c:818
 msgid "Gibraltar"
 msgstr "Гибралтар"
 
-#: src/common/util.c:810
+#: src/common/util.c:819
 msgid "Greenland"
 msgstr "Гренланд"
 
-#: src/common/util.c:811
+#: src/common/util.c:820
 msgid "Gambia"
 msgstr "Гамбија"
 
-#: src/common/util.c:812
+#: src/common/util.c:821
 msgid "Guinea"
 msgstr "Гвинеја"
 
-#: src/common/util.c:813
+#: src/common/util.c:822
 msgid "Government"
 msgstr "Владине установе"
 
-#: src/common/util.c:814
+#: src/common/util.c:823
 msgid "Guadeloupe"
 msgstr "Гвадалупе"
 
-#: src/common/util.c:815
+#: src/common/util.c:824
 msgid "Equatorial Guinea"
 msgstr "Екваторијална Гвинеја"
 
-#: src/common/util.c:816
+#: src/common/util.c:825
 msgid "Greece"
 msgstr "Грчка"
 
-#: src/common/util.c:817
+#: src/common/util.c:826
 msgid "S. Georgia and S. Sandwich Isles."
 msgstr "С. Џорџија и С. Сендвичка острва"
 
-#: src/common/util.c:818
+#: src/common/util.c:827
 msgid "Guatemala"
 msgstr "Гватемала"
 
-#: src/common/util.c:819
+#: src/common/util.c:828
 msgid "Guam"
 msgstr "Гуам"
 
-#: src/common/util.c:820
+#: src/common/util.c:829
 msgid "Guinea-Bissau"
 msgstr "Гвинеја Бисао"
 
-#: src/common/util.c:821
+#: src/common/util.c:830
 msgid "Guyana"
 msgstr "Гијана"
 
-#: src/common/util.c:822
+#: src/common/util.c:831
 msgid "Hong Kong"
 msgstr "Хонг Конг"
 
-#: src/common/util.c:823
+#: src/common/util.c:832
 msgid "Heard and McDonald Islands"
 msgstr "Хердова и Макдоналдова острва"
 
-#: src/common/util.c:824
+#: src/common/util.c:833
 msgid "Honduras"
 msgstr "Хондурас"
 
-#: src/common/util.c:825
+#: src/common/util.c:834
 msgid "Croatia"
 msgstr "Хрватска"
 
-#: src/common/util.c:826
+#: src/common/util.c:835
 msgid "Haiti"
 msgstr "Хаити"
 
-#: src/common/util.c:827
+#: src/common/util.c:836
 msgid "Hungary"
 msgstr "Мађарска"
 
-#: src/common/util.c:828
+#: src/common/util.c:837
 msgid "Indonesia"
 msgstr "Индонезија"
 
-#: src/common/util.c:829
+#: src/common/util.c:838
 msgid "Ireland"
 msgstr "Ирска"
 
-#: src/common/util.c:830
+#: src/common/util.c:839
 msgid "Israel"
 msgstr "Израел"
 
-#: src/common/util.c:831
+#: src/common/util.c:840
 msgid "India"
 msgstr "Индија"
 
-#: src/common/util.c:832
+#: src/common/util.c:841
 msgid "Informational"
 msgstr "Информациони домен"
 
-#: src/common/util.c:833
+#: src/common/util.c:842
 msgid "International"
 msgstr "Међународни домени"
 
-#: src/common/util.c:834
+#: src/common/util.c:843
 msgid "British Indian Ocean Territory"
 msgstr "Британска Индијска острва"
 
-#: src/common/util.c:835
+#: src/common/util.c:844
 msgid "Iraq"
 msgstr "Ирак"
 
-#: src/common/util.c:836
+#: src/common/util.c:845
 msgid "Iran"
 msgstr "Иран"
 
-#: src/common/util.c:837
+#: src/common/util.c:846
 msgid "Iceland"
 msgstr "Исланд"
 
-#: src/common/util.c:838
+#: src/common/util.c:847
 msgid "Italy"
 msgstr "Италија"
 
-#: src/common/util.c:839
+#: src/common/util.c:848
 msgid "Jamaica"
 msgstr "Јамајка"
 
-#: src/common/util.c:840
+#: src/common/util.c:849
 msgid "Jordan"
 msgstr "Јордан"
 
-#: src/common/util.c:841
+#: src/common/util.c:850
 msgid "Japan"
 msgstr "Јапан"
 
-#: src/common/util.c:842
+#: src/common/util.c:851
 msgid "Kenya"
 msgstr "Кенија"
 
-#: src/common/util.c:843
+#: src/common/util.c:852
 msgid "Kyrgyzstan"
 msgstr "Киргистан"
 
-#: src/common/util.c:844
+#: src/common/util.c:853
 msgid "Cambodia"
 msgstr "Камбоџа"
 
-#: src/common/util.c:845
+#: src/common/util.c:854
 msgid "Kiribati"
 msgstr "Кирибати"
 
-#: src/common/util.c:846
+#: src/common/util.c:855
 msgid "Comoros"
 msgstr "Комори"
 
-#: src/common/util.c:847
+#: src/common/util.c:856
 msgid "St. Kitts and Nevis"
 msgstr "Св. Китс и Невис"
 
-#: src/common/util.c:848
+#: src/common/util.c:857
 msgid "North Korea"
 msgstr "Северна Кореја"
 
-#: src/common/util.c:849
+#: src/common/util.c:858
 msgid "South Korea"
 msgstr "Јужна Кореја"
 
-#: src/common/util.c:850
+#: src/common/util.c:859
 msgid "Kuwait"
 msgstr "Кувајт"
 
-#: src/common/util.c:851
+#: src/common/util.c:860
 msgid "Cayman Islands"
 msgstr "Кајманска острва"
 
-#: src/common/util.c:852
+#: src/common/util.c:861
 msgid "Kazakhstan"
 msgstr "Казахстан"
 
-#: src/common/util.c:853
+#: src/common/util.c:862
 msgid "Laos"
 msgstr "Лаос"
 
-#: src/common/util.c:854
+#: src/common/util.c:863
 msgid "Lebanon"
 msgstr "Либан"
 
-#: src/common/util.c:855
+#: src/common/util.c:864
 msgid "Saint Lucia"
 msgstr "Света Луција"
 
-#: src/common/util.c:856
+#: src/common/util.c:865
 msgid "Liechtenstein"
 msgstr "Лихтенштајн"
 
-#: src/common/util.c:857
+#: src/common/util.c:866
 msgid "Sri Lanka"
 msgstr "Шри Ланка"
 
-#: src/common/util.c:858
+#: src/common/util.c:867
 msgid "Liberia"
 msgstr "Либерија"
 
-#: src/common/util.c:859
+#: src/common/util.c:868
 msgid "Lesotho"
 msgstr "Лесото"
 
-#: src/common/util.c:860
+#: src/common/util.c:869
 msgid "Lithuania"
 msgstr "Литванија"
 
-#: src/common/util.c:861
+#: src/common/util.c:870
 msgid "Luxembourg"
 msgstr "Луксембург"
 
-#: src/common/util.c:862
+#: src/common/util.c:871
 msgid "Latvia"
 msgstr "Латвија"
 
-#: src/common/util.c:863
+#: src/common/util.c:872
 msgid "Libya"
 msgstr "Либија"
 
-#: src/common/util.c:864
+#: src/common/util.c:873
 msgid "Morocco"
 msgstr "Мароко"
 
-#: src/common/util.c:865
+#: src/common/util.c:874
 msgid "Monaco"
 msgstr "Монако"
 
-#: src/common/util.c:866
+#: src/common/util.c:875
 msgid "Moldova"
 msgstr "Молдова"
 
-#: src/common/util.c:867
+#: src/common/util.c:876
 msgid "United States Medical"
 msgstr "Америчке медицинске установе"
 
-#: src/common/util.c:868
+#: src/common/util.c:877
 msgid "Madagascar"
 msgstr "Мадагаскар"
 
-#: src/common/util.c:869
+#: src/common/util.c:878
 msgid "Marshall Islands"
 msgstr "Маршалска острва"
 
-#: src/common/util.c:870
+#: src/common/util.c:879
 msgid "Military"
 msgstr "Војни домени"
 
-#: src/common/util.c:871
+#: src/common/util.c:880
 msgid "Macedonia"
 msgstr "Македонија"
 
-#: src/common/util.c:872
+#: src/common/util.c:881
 msgid "Mali"
 msgstr "Мали"
 
-#: src/common/util.c:873
+#: src/common/util.c:882
 msgid "Myanmar"
 msgstr "Мианмар"
 
-#: src/common/util.c:874
+#: src/common/util.c:883
 msgid "Mongolia"
 msgstr "Монголија"
 
-#: src/common/util.c:875
+#: src/common/util.c:884
 msgid "Macau"
 msgstr "Макао"
 
-#: src/common/util.c:876
+#: src/common/util.c:885
 msgid "Northern Mariana Islands"
 msgstr "Северна Маријанска острва"
 
-#: src/common/util.c:877
+#: src/common/util.c:886
 msgid "Martinique"
 msgstr "Мартиник"
 
-#: src/common/util.c:878
+#: src/common/util.c:887
 msgid "Mauritania"
 msgstr "Мауританија"
 
-#: src/common/util.c:879
+#: src/common/util.c:888
 msgid "Montserrat"
 msgstr "Монсерат"
 
-#: src/common/util.c:880
+#: src/common/util.c:889
 msgid "Malta"
 msgstr "Малта"
 
-#: src/common/util.c:881
+#: src/common/util.c:890
 msgid "Mauritius"
 msgstr "Маурицијус"
 
-#: src/common/util.c:882
+#: src/common/util.c:891
 msgid "Maldives"
 msgstr "Малдиви"
 
-#: src/common/util.c:883
+#: src/common/util.c:892
 msgid "Malawi"
 msgstr "Малави"
 
-#: src/common/util.c:884
+#: src/common/util.c:893
 msgid "Mexico"
 msgstr "Мексико"
 
-#: src/common/util.c:885
+#: src/common/util.c:894
 msgid "Malaysia"
 msgstr "Малезија"
 
-#: src/common/util.c:886
+#: src/common/util.c:895
 msgid "Mozambique"
 msgstr "Мозамбик"
 
-#: src/common/util.c:887
+#: src/common/util.c:896
 msgid "Namibia"
 msgstr "Намибија"
 
-#: src/common/util.c:888
+#: src/common/util.c:897
 msgid "New Caledonia"
 msgstr "Нова Каледонија"
 
-#: src/common/util.c:889
+#: src/common/util.c:898
 msgid "Niger"
 msgstr "Нигер"
 
-#: src/common/util.c:890
+#: src/common/util.c:899
 msgid "Internic Network"
 msgstr "Интерник мрежа"
 
-#: src/common/util.c:891
+#: src/common/util.c:900
 msgid "Norfolk Island"
 msgstr "Норфолшка острва"
 
-#: src/common/util.c:892
+#: src/common/util.c:901
 msgid "Nigeria"
 msgstr "Нигерија"
 
-#: src/common/util.c:893
+#: src/common/util.c:902
 msgid "Nicaragua"
 msgstr "Никарагва"
 
-#: src/common/util.c:894
+#: src/common/util.c:903
 msgid "Netherlands"
 msgstr "Холандија"
 
-#: src/common/util.c:895
+#: src/common/util.c:904
 msgid "Norway"
 msgstr "Норвешка"
 
-#: src/common/util.c:896
+#: src/common/util.c:905
 msgid "Nepal"
 msgstr "Непал"
 
-#: src/common/util.c:897
+#: src/common/util.c:906
 msgid "Nauru"
 msgstr "Науру"
 
-#: src/common/util.c:898
+#: src/common/util.c:907
 msgid "Neutral Zone"
 msgstr "Неутрална зона"
 
-#: src/common/util.c:899
+#: src/common/util.c:908
 msgid "Niue"
 msgstr "Ниуе"
 
-#: src/common/util.c:900
+#: src/common/util.c:909
 msgid "New Zealand"
 msgstr "Нови Зеланд"
 
-#: src/common/util.c:901
+#: src/common/util.c:910
 msgid "Oman"
 msgstr "Оман"
 
-#: src/common/util.c:902
+#: src/common/util.c:911
 msgid "Internic Non-Profit Organization"
 msgstr "Непрофитна организација интерник"
 
-#: src/common/util.c:903
+#: src/common/util.c:912
 msgid "Panama"
 msgstr "Панама"
 
-#: src/common/util.c:904
+#: src/common/util.c:913
 msgid "Peru"
 msgstr "Перу"
 
-#: src/common/util.c:905
+#: src/common/util.c:914
 msgid "French Polynesia"
 msgstr "Француска Полинезија"
 
-#: src/common/util.c:906
+#: src/common/util.c:915
 msgid "Papua New Guinea"
 msgstr "Папуа Нова Гвинеја"
 
-#: src/common/util.c:907
+#: src/common/util.c:916
 msgid "Philippines"
 msgstr "Филипини"
 
-#: src/common/util.c:908
+#: src/common/util.c:917
 msgid "Pakistan"
 msgstr "Пакистан"
 
-#: src/common/util.c:909
+#: src/common/util.c:918
 msgid "Poland"
 msgstr "Пољска"
 
-#: src/common/util.c:910
+#: src/common/util.c:919
 msgid "St. Pierre and Miquelon"
 msgstr "Св. Пјер и Микелон"
 
-#: src/common/util.c:911
+#: src/common/util.c:920
 msgid "Pitcairn"
 msgstr "Питкаирн"
 
-#: src/common/util.c:912
+#: src/common/util.c:921
 msgid "Puerto Rico"
 msgstr "Порторико"
 
-#: src/common/util.c:913
+#: src/common/util.c:922
 msgid "Portugal"
 msgstr "Португал"
 
-#: src/common/util.c:914
+#: src/common/util.c:923
 msgid "Palau"
 msgstr "Палау"
 
-#: src/common/util.c:915
+#: src/common/util.c:924
 msgid "Paraguay"
 msgstr "Парагвај"
 
-#: src/common/util.c:916
+#: src/common/util.c:925
 msgid "Qatar"
 msgstr "Катар"
 
-#: src/common/util.c:917
+#: src/common/util.c:926
 msgid "Reunion"
 msgstr "Реинион"
 
-#: src/common/util.c:918
+#: src/common/util.c:927
 msgid "Romania"
 msgstr "Румунија"
 
-#: src/common/util.c:919
+#: src/common/util.c:928
 msgid "Old School ARPAnet"
 msgstr "Старовремски ARPAnet"
 
-#: src/common/util.c:920
+#: src/common/util.c:929
 msgid "Russian Federation"
 msgstr "Руска федерација"
 
-#: src/common/util.c:921
+#: src/common/util.c:930
 msgid "Rwanda"
 msgstr "Руанда"
 
-#: src/common/util.c:922
+#: src/common/util.c:931
 msgid "Saudi Arabia"
 msgstr "Саудијска Арабија"
 
-#: src/common/util.c:923
+#: src/common/util.c:932
 msgid "Solomon Islands"
 msgstr "Соломонова острва"
 
-#: src/common/util.c:924
+#: src/common/util.c:933
 msgid "Seychelles"
 msgstr "Сејшели"
 
-#: src/common/util.c:925
+#: src/common/util.c:934
 msgid "Sudan"
 msgstr "Судан"
 
-#: src/common/util.c:926
+#: src/common/util.c:935
 msgid "Sweden"
 msgstr "Шведска"
 
-#: src/common/util.c:927
+#: src/common/util.c:936
 msgid "Singapore"
 msgstr "Сингапур"
 
-#: src/common/util.c:928
+#: src/common/util.c:937
 msgid "St. Helena"
 msgstr "Св. Јелена"
 
-#: src/common/util.c:929
+#: src/common/util.c:938
 msgid "Slovenia"
 msgstr "Словенија"
 
-#: src/common/util.c:930
+#: src/common/util.c:939
 msgid "Svalbard and Jan Mayen Islands"
 msgstr "Свалбард и Јан Мајен острва"
 
-#: src/common/util.c:931
+#: src/common/util.c:940
 msgid "Slovak Republic"
 msgstr "Словачка република"
 
-#: src/common/util.c:932
+#: src/common/util.c:941
 msgid "Sierra Leone"
 msgstr "Сијера Леоне"
 
-#: src/common/util.c:933
+#: src/common/util.c:942
 msgid "San Marino"
 msgstr "Сан Марино"
 
-#: src/common/util.c:934
+#: src/common/util.c:943
 msgid "Senegal"
 msgstr "Сенегал"
 
-#: src/common/util.c:935
+#: src/common/util.c:944
 msgid "Somalia"
 msgstr "Сомалија"
 
-#: src/common/util.c:936
+#: src/common/util.c:945
 msgid "Suriname"
 msgstr "Суринам"
 
-#: src/common/util.c:937
+#: src/common/util.c:946
 msgid "Sao Tome and Principe"
 msgstr "Сао Томе и Принципе"
 
-#: src/common/util.c:938
+#: src/common/util.c:947
 msgid "Former USSR"
 msgstr "Бивши СССР"
 
-#: src/common/util.c:939
+#: src/common/util.c:948
 msgid "El Salvador"
 msgstr "Ел Салвадор"
 
-#: src/common/util.c:940
+#: src/common/util.c:949
 msgid "Syria"
 msgstr "Сирија"
 
-#: src/common/util.c:941
+#: src/common/util.c:950
 msgid "Swaziland"
 msgstr "Свазиленд"
 
-#: src/common/util.c:942
+#: src/common/util.c:951
 msgid "Turks and Caicos Islands"
 msgstr "Туркс и Каикос острва"
 
-#: src/common/util.c:943
+#: src/common/util.c:952
 msgid "Chad"
 msgstr "Чад"
 
-#: src/common/util.c:944
+#: src/common/util.c:953
 msgid "French Southern Territories"
 msgstr "Француске јужне територије"
 
-#: src/common/util.c:945
+#: src/common/util.c:954
 msgid "Togo"
 msgstr "Того"
 
-#: src/common/util.c:946
+#: src/common/util.c:955
 msgid "Thailand"
 msgstr "Тајланд"
 
-#: src/common/util.c:947
+#: src/common/util.c:956
 msgid "Tajikistan"
 msgstr "Таџикистан"
 
-#: src/common/util.c:948
+#: src/common/util.c:957
 msgid "Tokelau"
 msgstr "Токелау"
 
-#: src/common/util.c:949
+#: src/common/util.c:958
 msgid "Turkmenistan"
 msgstr "Туркменистан"
 
-#: src/common/util.c:950
+#: src/common/util.c:959
 msgid "Tunisia"
 msgstr "Тунис"
 
-#: src/common/util.c:951
+#: src/common/util.c:960
 msgid "Tonga"
 msgstr "Тонга"
 
-#: src/common/util.c:952
+#: src/common/util.c:961
 msgid "East Timor"
 msgstr "Источни Тимор"
 
-#: src/common/util.c:953
+#: src/common/util.c:962
 msgid "Turkey"
 msgstr "Турска"
 
-#: src/common/util.c:954
+#: src/common/util.c:963
 msgid "Trinidad and Tobago"
 msgstr "Тринидад и Тобаго"
 
-#: src/common/util.c:955
+#: src/common/util.c:964
 msgid "Tuvalu"
 msgstr "Тувалу"
 
-#: src/common/util.c:956
+#: src/common/util.c:965
 msgid "Taiwan"
 msgstr "Тајван"
 
-#: src/common/util.c:957
+#: src/common/util.c:966
 msgid "Tanzania"
 msgstr "Танзанија"
 
-#: src/common/util.c:958
+#: src/common/util.c:967
 msgid "Ukraine"
 msgstr "Украjина"
 
-#: src/common/util.c:959
+#: src/common/util.c:968
 msgid "Uganda"
 msgstr "Уганда"
 
-#: src/common/util.c:960
+#: src/common/util.c:969
 msgid "United Kingdom"
 msgstr "Велика Британија"
 
-#: src/common/util.c:961
+#: src/common/util.c:970
 msgid "US Minor Outlying Islands"
 msgstr "Мања америчка истурена острва"
 
-#: src/common/util.c:962
+#: src/common/util.c:971
 msgid "United States of America"
 msgstr "Сједињене америчке државе"
 
-#: src/common/util.c:963
+#: src/common/util.c:972
 msgid "Uruguay"
 msgstr "Уругвај"
 
-#: src/common/util.c:964
+#: src/common/util.c:973
 msgid "Uzbekistan"
 msgstr "Узбекистан"
 
-#: src/common/util.c:965
+#: src/common/util.c:974
 msgid "Vatican City State"
 msgstr "Град-држава Ватикан"
 
-#: src/common/util.c:966
+#: src/common/util.c:975
 msgid "St. Vincent and the grenadines"
 msgstr "Св. Винсент и гренадини"
 
-#: src/common/util.c:967
+#: src/common/util.c:976
 msgid "Venezuela"
 msgstr "Венецуела"
 
-#: src/common/util.c:968
+#: src/common/util.c:977
 msgid "British Virgin Islands"
 msgstr "Британска Девичанска острва"
 
-#: src/common/util.c:969
+#: src/common/util.c:978
 msgid "US Virgin Islands"
 msgstr "Америчка Девичанска острва"
 
-#: src/common/util.c:970
+#: src/common/util.c:979
 msgid "Vietnam"
 msgstr "Вијетнам"
 
-#: src/common/util.c:971
+#: src/common/util.c:980
 msgid "Vanuatu"
 msgstr "Вануату"
 
-#: src/common/util.c:972
+#: src/common/util.c:981
 msgid "Wallis and Futuna Islands"
 msgstr "Острвље Валис и Фортуна"
 
-#: src/common/util.c:973
+#: src/common/util.c:982
 msgid "Samoa"
 msgstr "Самоа"
 
-#: src/common/util.c:974
+#: src/common/util.c:983
 msgid "Yemen"
 msgstr "Јемен"
 
-#: src/common/util.c:975
+#: src/common/util.c:984
 msgid "Mayotte"
 msgstr "Мајот"
 
-#: src/common/util.c:976
+#: src/common/util.c:985
 msgid "Yugoslavia"
 msgstr "Југославија"
 
-#: src/common/util.c:977
+#: src/common/util.c:986
 msgid "South Africa"
 msgstr "Јужна Африка"
 
-#: src/common/util.c:978
+#: src/common/util.c:987
 msgid "Zambia"
 msgstr "Замбија"
 
-#: src/common/util.c:979
+#: src/common/util.c:988
 msgid "Zaire"
 msgstr "Заир"
 
-#: src/common/util.c:980
+#: src/common/util.c:989
 msgid "Zimbabwe"
 msgstr "Зимбабве"
 
-#: src/common/util.c:986 src/common/util.c:996 src/fe-gtk/menu.c:503
+#: src/common/util.c:995 src/common/util.c:1005 src/fe-gtk/menu.c:503
 #: src/fe-gtk/menu.c:507 src/fe-gtk/menu.c:511 src/fe-gtk/menu.c:515
 #: src/fe-gtk/menu.c:519
 msgid "Unknown"
 msgstr "Непознато"
 
-#: src/common/xchat.c:902
+#: src/common/xchat.c:908
 msgid "Direct client-to-client"
 msgstr "Директни приступ клијенту"
 
-#: src/common/xchat.c:903
+#: src/common/xchat.c:909
 msgid "Send File"
 msgstr "Пошаљи датотеку"
 
-#: src/common/xchat.c:904
+#: src/common/xchat.c:910
 msgid "Offer Chat"
 msgstr "Понуди разговор"
 
-#: src/common/xchat.c:905
+#: src/common/xchat.c:911
 msgid "Abort Chat"
 msgstr "Прекини разговор"
 
-#: src/common/xchat.c:906 src/fe-gtk/plugingui.c:74
+#: src/common/xchat.c:912 src/fe-gtk/plugingui.c:74
 msgid "Version"
 msgstr "Верзија"
 
-#: src/common/xchat.c:907
+#: src/common/xchat.c:913
 msgid "Userinfo"
 msgstr "Информације"
 
-#: src/common/xchat.c:908
+#: src/common/xchat.c:914
 msgid "Clientinfo"
 msgstr "Инф. о клијенту"
 
-#: src/common/xchat.c:909 src/common/xchat.c:941 src/common/xchat.c:991
+#: src/common/xchat.c:915 src/common/xchat.c:947 src/common/xchat.c:997
 msgid "Ping"
 msgstr "Ping"
 
-#: src/common/xchat.c:910
+#: src/common/xchat.c:916
 msgid "Time"
 msgstr "Време"
 
-#: src/common/xchat.c:911
+#: src/common/xchat.c:917
 msgid "Finger"
 msgstr "Finger"
 
-#: src/common/xchat.c:912
+#: src/common/xchat.c:918
 msgid "Oper"
 msgstr "Опер"
 
-#: src/common/xchat.c:913
+#: src/common/xchat.c:919
 msgid "Kill this user"
 msgstr "Дај реч"
 
-#: src/common/xchat.c:914
+#: src/common/xchat.c:920
 msgid "Mode"
 msgstr "Приступ"
 
-#: src/common/xchat.c:915
+#: src/common/xchat.c:921
 msgid "Give Voice"
 msgstr "Дај реч"
 
-#: src/common/xchat.c:916
+#: src/common/xchat.c:922
 msgid "Take Voice"
 msgstr "Одузми реч"
 
-#: src/common/xchat.c:917
+#: src/common/xchat.c:923
 msgid "Give Ops"
 msgstr "Дај опа"
 
-#: src/common/xchat.c:918
+#: src/common/xchat.c:924
 msgid "Take Ops"
 msgstr "Одузми опа"
 
-#: src/common/xchat.c:919
+#: src/common/xchat.c:925
 msgid "Ignore"
 msgstr "Занемари"
 
-#: src/common/xchat.c:920
+#: src/common/xchat.c:926
 msgid "Ignore User"
 msgstr "Занемари корисника"
 
-#: src/common/xchat.c:921
+#: src/common/xchat.c:927
 msgid "UnIgnore User"
 msgstr "Врати занем."
 
-#: src/common/xchat.c:922
+#: src/common/xchat.c:928
 msgid "Kick/Ban"
 msgstr "Шут/забр."
 
-#: src/common/xchat.c:923 src/common/xchat.c:975
+#: src/common/xchat.c:929 src/common/xchat.c:981
 msgid "Kick"
 msgstr "Шут"
 
-#: src/common/xchat.c:924 src/common/xchat.c:925 src/common/xchat.c:926
-#: src/common/xchat.c:927 src/common/xchat.c:928 src/common/xchat.c:974
+#: src/common/xchat.c:930 src/common/xchat.c:931 src/common/xchat.c:932
+#: src/common/xchat.c:933 src/common/xchat.c:934 src/common/xchat.c:980
 msgid "Ban"
 msgstr "Забр."
 
-#: src/common/xchat.c:929 src/common/xchat.c:930 src/common/xchat.c:931
-#: src/common/xchat.c:932
+#: src/common/xchat.c:935 src/common/xchat.c:936 src/common/xchat.c:937
+#: src/common/xchat.c:938
 msgid "KickBan"
 msgstr "Шут и забр."
 
-#: src/common/xchat.c:933 src/fe-gtk/dccgui.c:528 src/fe-gtk/dccgui.c:669
+#: src/common/xchat.c:939 src/fe-gtk/dccgui.c:528 src/fe-gtk/dccgui.c:669
 msgid "Info"
 msgstr "Информ."
 
-#: src/common/xchat.c:934
+#: src/common/xchat.c:940
 msgid "Who"
 msgstr "Ко је"
 
-#: src/common/xchat.c:935 src/common/xchat.c:988
+#: src/common/xchat.c:941 src/common/xchat.c:994
 msgid "WhoIs"
 msgstr "WhoIs"
 
-#: src/common/xchat.c:936
+#: src/common/xchat.c:942
 msgid "DNS Lookup"
 msgstr "DNS потрага"
 
-#: src/common/xchat.c:937
+#: src/common/xchat.c:943
 msgid "Trace"
 msgstr "Следи"
 
-#: src/common/xchat.c:938
+#: src/common/xchat.c:944
 msgid "UserHost"
 msgstr "Рачунар"
 
-#: src/common/xchat.c:939
+#: src/common/xchat.c:945
 msgid "External"
 msgstr "Спољњи"
 
-#: src/common/xchat.c:940
+#: src/common/xchat.c:946
 msgid "Traceroute"
 msgstr "Следи"
 
-#: src/common/xchat.c:942
+#: src/common/xchat.c:948
 msgid "Telnet"
 msgstr "Telnet"
 
-#: src/common/xchat.c:943
+#: src/common/xchat.c:949
 msgid "Open Dialog Window"
 msgstr "Започни разговор"
 
-#: src/common/xchat.c:955
+#: src/common/xchat.c:961
 msgid "Disconnect"
 msgstr "Искључи се"
 
-#: src/common/xchat.c:956
+#: src/common/xchat.c:962
 msgid "Reconnect"
 msgstr "Опет повежи"
 
-#: src/common/xchat.c:957
+#: src/common/xchat.c:963
 msgid "Leave Channel"
 msgstr "Напусти канал"
 
-#: src/common/xchat.c:958
+#: src/common/xchat.c:964
 msgid "Join Channel..."
 msgstr "Прикључи се..."
 
-#: src/common/xchat.c:959
+#: src/common/xchat.c:965
 msgid "Enter Channel to Join:"
 msgstr "Унесите име канала:"
 
-#: src/common/xchat.c:960
+#: src/common/xchat.c:966
 msgid "Server Links"
 msgstr "Везе са серверима"
 
-#: src/common/xchat.c:961
+#: src/common/xchat.c:967
 msgid "Ping Server"
 msgstr "Одзив сервера"
 
-#: src/common/xchat.c:962
+#: src/common/xchat.c:968
 msgid "Hide Version"
 msgstr "Сакриј верзију"
 
-#: src/common/xchat.c:972
+#: src/common/xchat.c:978
 msgid "Op"
 msgstr "Оп"
 
-#: src/common/xchat.c:973
+#: src/common/xchat.c:979
 msgid "DeOp"
 msgstr "Деоп"
 
-#: src/common/xchat.c:976
+#: src/common/xchat.c:982
 msgid "bye"
 msgstr "Ћао"
 
-#: src/common/xchat.c:977
+#: src/common/xchat.c:983
 #, c-format
 msgid "Enter reason to kick %s:"
 msgstr "Разлог да се избаци %s:"
 
-#: src/common/xchat.c:978
+#: src/common/xchat.c:984
 msgid "Sendfile"
 msgstr "Пошаљи фајл"
 
-#: src/common/xchat.c:979
+#: src/common/xchat.c:985
 msgid "Dialog"
 msgstr "Разговор"
 
-#: src/common/xchat.c:989
+#: src/common/xchat.c:995
 msgid "Send"
 msgstr "Слање"
 
-#: src/common/xchat.c:990
+#: src/common/xchat.c:996
 msgid "Chat"
 msgstr "Прича"
 
-#: src/common/xchat.c:992 src/fe-gtk/banlist.c:314 src/fe-gtk/search.c:117
+#: src/common/xchat.c:998 src/fe-gtk/banlist.c:314 src/fe-gtk/search.c:117
 #: src/fe-gtk/urlgrab.c:200
 msgid "Clear"
 msgstr "Обриши"
@@ -3149,7 +3144,7 @@ msgstr "На доле"
 msgid "Cancel"
 msgstr "Откажи"
 
-#: src/fe-gtk/editlist.c:349 src/fe-gtk/textgui.c:460 src/fe-gtk/urlgrab.c:204
+#: src/fe-gtk/editlist.c:349 src/fe-gtk/textgui.c:464 src/fe-gtk/urlgrab.c:204
 msgid "Save"
 msgstr "Сними"
 
@@ -3204,11 +3199,11 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/fe-gtk/fe-gtk.c:614
+#: src/fe-gtk/fe-gtk.c:617
 msgid "Search buffer is empty.\n"
 msgstr "Запис за претрагу је празан.\n"
 
-#: src/fe-gtk/fe-gtk.c:691
+#: src/fe-gtk/fe-gtk.c:694
 #, c-format
 msgid "%d bytes"
 msgstr ""
@@ -4072,31 +4067,31 @@ msgstr "Био је ту"
 msgid "Offline"
 msgstr "Није на вези"
 
-#: src/fe-gtk/notifygui.c:172
+#: src/fe-gtk/notifygui.c:169
 msgid "Never"
 msgstr "Никада"
 
-#: src/fe-gtk/notifygui.c:190
+#: src/fe-gtk/notifygui.c:187
 msgid "Online"
 msgstr "На вези"
 
-#: src/fe-gtk/notifygui.c:280
+#: src/fe-gtk/notifygui.c:277
 msgid "Enter nickname to add:"
 msgstr "Унесите име које треба додати:"
 
-#: src/fe-gtk/notifygui.c:296
+#: src/fe-gtk/notifygui.c:293
 msgid "X-Chat: Notify List"
 msgstr "X-Chat: Списак посматраних"
 
-#: src/fe-gtk/notifygui.c:309 src/fe-gtk/servlistgui.c:712
+#: src/fe-gtk/notifygui.c:306 src/fe-gtk/servlistgui.c:712
 msgid "Add"
 msgstr "Додај"
 
-#: src/fe-gtk/notifygui.c:311
+#: src/fe-gtk/notifygui.c:308
 msgid "Remove"
 msgstr "Уклони"
 
-#: src/fe-gtk/plugingui.c:76 src/fe-gtk/textgui.c:383
+#: src/fe-gtk/plugingui.c:76 src/fe-gtk/textgui.c:387
 msgid "Description"
 msgstr "Опис"
 
@@ -4444,7 +4439,7 @@ msgstr "Прати одсутне на каналима са мање од:"
 msgid "Windows"
 msgstr "Прозори"
 
-#: src/fe-gtk/setup.c:143 src/fe-gtk/setup.c:842
+#: src/fe-gtk/setup.c:143 src/fe-gtk/setup.c:845
 msgid "Tabs"
 msgstr "Језичци"
 
@@ -4827,104 +4822,104 @@ msgstr "Истицање:"
 msgid "Away User:"
 msgstr "Одсутан корисник:"
 
-#: src/fe-gtk/setup.c:838
+#: src/fe-gtk/setup.c:841
 msgid "Interface"
 msgstr "Сучеље"
 
-#: src/fe-gtk/setup.c:839
+#: src/fe-gtk/setup.c:842
 msgid "Text box"
 msgstr "Унос текста"
 
-#: src/fe-gtk/setup.c:840
+#: src/fe-gtk/setup.c:843
 msgid "Input box"
 msgstr "Улазни прозор"
 
-#: src/fe-gtk/setup.c:841
+#: src/fe-gtk/setup.c:844
 msgid "User list"
 msgstr "Списак корисника"
 
-#: src/fe-gtk/setup.c:843
+#: src/fe-gtk/setup.c:846
 msgid "Colors"
 msgstr "Боје"
 
-#: src/fe-gtk/setup.c:845
+#: src/fe-gtk/setup.c:848
 msgid "Chatting"
 msgstr "Разговори"
 
-#: src/fe-gtk/setup.c:846
+#: src/fe-gtk/setup.c:849
 msgid "General"
 msgstr "Опште"
 
-#: src/fe-gtk/setup.c:847
+#: src/fe-gtk/setup.c:850
 msgid "Logging"
 msgstr "Записивање"
 
-#: src/fe-gtk/setup.c:849
+#: src/fe-gtk/setup.c:852
 msgid "Network"
 msgstr "Мрежа"
 
-#: src/fe-gtk/setup.c:850
+#: src/fe-gtk/setup.c:853
 msgid "Network setup"
 msgstr "Подешавање мреже"
 
-#: src/fe-gtk/setup.c:851
+#: src/fe-gtk/setup.c:854
 msgid "File transfers"
 msgstr "Пренос датотека"
 
-#: src/fe-gtk/setup.c:956
+#: src/fe-gtk/setup.c:959
 msgid "Categories"
 msgstr "Врсте"
 
-#: src/fe-gtk/setup.c:1082
+#: src/fe-gtk/setup.c:1085
 msgid "Some settings were changed that require a restart to take full effect."
 msgstr "Неке измене ће постати видљиве тек када следећи пут покренете програм."
 
-#: src/fe-gtk/setup.c:1109
+#: src/fe-gtk/setup.c:1112
 msgid "X-Chat: Preferences"
 msgstr "X-Chat: Поставке"
 
-#: src/fe-gtk/textgui.c:180
+#: src/fe-gtk/textgui.c:184
 msgid "There was an error parsing the string"
 msgstr "Грешка при читању текста"
 
-#: src/fe-gtk/textgui.c:188
+#: src/fe-gtk/textgui.c:192
 #, c-format
 msgid "This signal is only passed %d args, $%d is invalid"
 msgstr "Овај сигнал је допремио %d аргумената, $%d није исправан"
 
-#: src/fe-gtk/textgui.c:300 src/fe-gtk/textgui.c:322
+#: src/fe-gtk/textgui.c:304 src/fe-gtk/textgui.c:326
 msgid "Print Texts File"
 msgstr "Штампај датотеку текстова"
 
-#: src/fe-gtk/textgui.c:378
+#: src/fe-gtk/textgui.c:382
 msgid "Event"
 msgstr "Догађај"
 
-#: src/fe-gtk/textgui.c:380
+#: src/fe-gtk/textgui.c:384
 msgid "Sound"
 msgstr "Звук"
 
-#: src/fe-gtk/textgui.c:382
+#: src/fe-gtk/textgui.c:386
 msgid "$ Number"
 msgstr "$ број"
 
-#: src/fe-gtk/textgui.c:392
+#: src/fe-gtk/textgui.c:396
 msgid "Edit Events"
 msgstr "Уреди догађаје"
 
-#: src/fe-gtk/textgui.c:430
+#: src/fe-gtk/textgui.c:434
 msgid "Sound file: "
 msgstr "Звучни запис:"
 
-#: src/fe-gtk/textgui.c:465
+#: src/fe-gtk/textgui.c:469
 msgid "Save As"
 msgstr "Сними као"
 
-#: src/fe-gtk/textgui.c:470
+#: src/fe-gtk/textgui.c:474
 msgid "Load From"
 msgstr "Учитај из"
 
-#: src/fe-gtk/textgui.c:475
+#: src/fe-gtk/textgui.c:479
 msgid "Test All"
 msgstr "Пробај све"
 
@@ -4960,6 +4955,15 @@ msgstr "Сними списак у датотеку"
 #, c-format
 msgid "%d ops, %d total"
 msgstr "%d оп., %d ук."
+
+#~ msgid "Error String"
+#~ msgstr "Грешка"
+
+#~ msgid "Error name"
+#~ msgstr "Врста грешке"
+
+#~ msgid "Error string"
+#~ msgstr "Грешка"
 
 #~ msgid "Proxy port:"
 #~ msgstr "Порт:"

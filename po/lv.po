@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xchat\n"
 "Report-Msgid-Bugs-To: www.xchat.org\n"
-"POT-Creation-Date: 2003-11-28 14:19+1100\n"
+"POT-Creation-Date: 2004-01-01 23:38+1100\n"
 "PO-Revision-Date: 2002-12-26 03:36+0200\n"
 "Last-Translator: Artis Trops <hornet@navigators.lv>\n"
 "Language-Team: Latvian <ll10nt@os.lv>\n"
@@ -27,7 +27,7 @@ msgstr "Esmu aizņemts"
 msgid "Leaving"
 msgstr "Latvija"
 
-#: src/common/cfgfiles.c:678
+#: src/common/cfgfiles.c:679
 msgid ""
 "* Running IRC as root is stupid! You should\n"
 "  create a User Account and use that to login.\n"
@@ -64,7 +64,7 @@ msgstr "Izbeigts"
 msgid "Cannot access %s\n"
 msgstr "Nevar piekļūt %s\n"
 
-#: src/common/dcc.c:1795
+#: src/common/dcc.c:1801
 msgid "No active DCCs\n"
 msgstr "Nav aktīvu DCC\n"
 
@@ -592,12 +592,12 @@ msgstr ""
 msgid "Proxy traversal failed.\n"
 msgstr "Starpservera šķērsošana neizdevās.\n"
 
-#: src/common/servlist.c:635
+#: src/common/servlist.c:633
 #, c-format
 msgid "Cycling to next server in %s...\n"
 msgstr ""
 
-#: src/common/servlist.c:975
+#: src/common/servlist.c:973
 #, c-format
 msgid ""
 "Warning: \"%s\" character set is unknown. No conversion will be applied for "
@@ -822,7 +822,7 @@ msgid "-%C10-%C11-%O$tDCC RECV %C11$1%O from %C11$3%O failed. $4."
 msgstr ""
 
 #: src/common/textevents.h:162
-msgid "-%C10-%C11-%O$tDCC RECV: Cannot open $1 for writing - aborting."
+msgid "-%C10-%C11-%O$tDCC RECV: Cannot open $1 for writing ($2)."
 msgstr ""
 
 #: src/common/textevents.h:165
@@ -1128,495 +1128,484 @@ msgstr ""
 msgid "-%C10-%C11-%O$tYou are now known as $2"
 msgstr ""
 
-#: src/common/text.c:301
+#: src/common/text.c:304
 #, c-format
 msgid "**** ENDING LOGGING AT %s\n"
 msgstr "**** BEIDZU IEGRĀMATOŠANU IEKŠ %s\n"
 
-#: src/common/text.c:418
+#: src/common/text.c:421
 #, c-format
 msgid "**** BEGIN LOGGING AT %s\n"
 msgstr "**** SĀKU IEGRĀMATOŠANU IEKŠ %s\n"
 
-#: src/common/text.c:437
+#: src/common/text.c:440
 #, c-format
 msgid ""
 "* Can't open log file(s) for writing. Check the\n"
 "  permissions on %s/xchatlogs"
 msgstr ""
 
-#: src/common/text.c:648
+#: src/common/text.c:651
 #, fuzzy
 msgid "Left message"
 msgstr "Ziņa"
 
-#: src/common/text.c:649
+#: src/common/text.c:652
 #, fuzzy
 msgid "Right message"
 msgstr "Ziņa"
 
-#: src/common/text.c:653
+#: src/common/text.c:656
 msgid "The nick of the joining person"
 msgstr "Pievienojušās personas segvārds"
 
-#: src/common/text.c:654
+#: src/common/text.c:657
 msgid "The channel being joined"
 msgstr "Kanāls, kuram pievienojas"
 
-#: src/common/text.c:655 src/common/text.c:699 src/common/text.c:755
+#: src/common/text.c:658 src/common/text.c:702 src/common/text.c:758
 msgid "The host of the person"
 msgstr "Personas hostdators"
 
-#: src/common/text.c:659 src/common/text.c:664 src/common/text.c:670
-#: src/common/text.c:737 src/common/text.c:861 src/common/text.c:868
-#: src/common/text.c:873 src/common/text.c:878 src/common/text.c:883
-#: src/common/text.c:889 src/common/text.c:894 src/common/text.c:898
-#: src/common/text.c:903 src/common/text.c:909 src/common/text.c:955
-#: src/common/text.c:964 src/common/text.c:969 src/common/text.c:974
-#: src/common/text.c:983 src/common/text.c:993 src/common/text.c:1000
-#: src/common/text.c:1006 src/common/text.c:1011 src/common/text.c:1016
-#: src/common/text.c:1023 src/common/text.c:1029 src/common/text.c:1035
-#: src/common/text.c:1040 src/common/text.c:1045 src/common/text.c:1049
-#: src/common/text.c:1055 src/common/text.c:1063 src/common/text.c:1097
-#: src/common/text.c:1102
+#: src/common/text.c:662 src/common/text.c:667 src/common/text.c:673
+#: src/common/text.c:740 src/common/text.c:864 src/common/text.c:871
+#: src/common/text.c:876 src/common/text.c:881 src/common/text.c:886
+#: src/common/text.c:892 src/common/text.c:897 src/common/text.c:901
+#: src/common/text.c:906 src/common/text.c:912 src/common/text.c:958
+#: src/common/text.c:967 src/common/text.c:972 src/common/text.c:977
+#: src/common/text.c:986 src/common/text.c:997 src/common/text.c:1004
+#: src/common/text.c:1010 src/common/text.c:1015 src/common/text.c:1020
+#: src/common/text.c:1027 src/common/text.c:1033 src/common/text.c:1039
+#: src/common/text.c:1044 src/common/text.c:1049 src/common/text.c:1053
+#: src/common/text.c:1059 src/common/text.c:1067 src/common/text.c:1101
+#: src/common/text.c:1106
 msgid "Nickname"
 msgstr "Segvārds"
 
-#: src/common/text.c:660
+#: src/common/text.c:663
 msgid "The action"
 msgstr "Darbība"
 
-#: src/common/text.c:665
+#: src/common/text.c:668
 msgid "The text"
 msgstr "Teksts"
 
-#: src/common/text.c:666
+#: src/common/text.c:669
 msgid "Mode char"
 msgstr "Režīma burts"
 
-#: src/common/text.c:671 src/common/text.c:727 src/common/text.c:733
-#: src/common/text.c:738
+#: src/common/text.c:674 src/common/text.c:730 src/common/text.c:736
+#: src/common/text.c:741
 msgid "The message"
 msgstr "Ziņa"
 
-#: src/common/text.c:675 src/common/text.c:742
+#: src/common/text.c:678 src/common/text.c:745
 msgid "Old nickname"
 msgstr "Vecais segvārds"
 
-#: src/common/text.c:676 src/common/text.c:743
+#: src/common/text.c:679 src/common/text.c:746
 msgid "New nickname"
 msgstr "Jauns segvārds"
 
-#: src/common/text.c:680
+#: src/common/text.c:683
 msgid "Nick of person who changed the topic"
 msgstr "Personas segvārds, kura izmainīja tematu"
 
-#: src/common/text.c:681 src/common/text.c:687 src/fe-gtk/chanlist.c:599
+#: src/common/text.c:684 src/common/text.c:690 src/fe-gtk/chanlist.c:599
 #: src/fe-gtk/chanlist.c:700
 msgid "Topic"
 msgstr "Temats"
 
-#: src/common/text.c:682 src/common/text.c:686 src/common/text.c:1117
+#: src/common/text.c:685 src/common/text.c:689 src/common/text.c:1121
 #: src/fe-gtk/chanlist.c:597 src/fe-gtk/chanlist.c:691
 #: src/fe-gtk/ignoregui.c:175
 msgid "Channel"
 msgstr "Kanāls"
 
-#: src/common/text.c:691 src/common/text.c:749
+#: src/common/text.c:694 src/common/text.c:752
 msgid "The nickname of the kicker"
 msgstr "Izmetēja segvārds"
 
-#: src/common/text.c:692 src/common/text.c:747
+#: src/common/text.c:695 src/common/text.c:750
 msgid "The person being kicked"
 msgstr "Persona, kuru izmeta"
 
-#: src/common/text.c:693 src/common/text.c:700 src/common/text.c:704
-#: src/common/text.c:709 src/common/text.c:748 src/common/text.c:756
+#: src/common/text.c:696 src/common/text.c:703 src/common/text.c:707
+#: src/common/text.c:712 src/common/text.c:751 src/common/text.c:759
 msgid "The channel"
 msgstr "Kanāls"
 
-#: src/common/text.c:694 src/common/text.c:750 src/common/text.c:757
+#: src/common/text.c:697 src/common/text.c:753 src/common/text.c:760
 msgid "The reason"
 msgstr "Iemesls"
 
-#: src/common/text.c:698 src/common/text.c:754
+#: src/common/text.c:701 src/common/text.c:757
 msgid "The nick of the person leaving"
 msgstr "Personas segvārds, kura atstāj"
 
-#: src/common/text.c:705 src/common/text.c:711
+#: src/common/text.c:708 src/common/text.c:714
 msgid "The time"
 msgstr "Laiks"
 
-#: src/common/text.c:710
+#: src/common/text.c:713
 msgid "The creator"
 msgstr "Veidotājs"
 
-#: src/common/text.c:715
+#: src/common/text.c:718
 msgid "Nick"
 msgstr "Segvārds"
 
-#: src/common/text.c:716 src/common/text.c:970
+#: src/common/text.c:719 src/common/text.c:973
 msgid "Reason"
 msgstr "Iemesls"
 
-#: src/common/text.c:717 src/common/text.c:863 src/common/text.c:945
+#: src/common/text.c:720 src/common/text.c:866 src/common/text.c:948
 msgid "Host"
 msgstr "Hostdators"
 
-#: src/common/text.c:721 src/common/text.c:726 src/common/text.c:731
+#: src/common/text.c:724 src/common/text.c:729 src/common/text.c:734
 msgid "Who it's from"
 msgstr "No kā tas ir"
 
-#: src/common/text.c:722
+#: src/common/text.c:725
 msgid "The time in x.x format (see below)"
 msgstr "Laiks x.x formātā (skaties zemāk)"
 
-#: src/common/text.c:732 src/common/text.c:773
+#: src/common/text.c:735 src/common/text.c:776
 msgid "The Channel it's going to"
 msgstr "Kanāls gatavojas"
 
-#: src/common/text.c:761
+#: src/common/text.c:764
 msgid "The sound"
 msgstr "Skaņa"
 
-#: src/common/text.c:762 src/common/text.c:767 src/common/text.c:772
+#: src/common/text.c:765 src/common/text.c:770 src/common/text.c:775
 msgid "The nick of the person"
 msgstr "Personas segvārds"
 
-#: src/common/text.c:766 src/common/text.c:771
+#: src/common/text.c:769 src/common/text.c:774
 msgid "The CTCP event"
 msgstr "CTCP notikums"
 
-#: src/common/text.c:777
+#: src/common/text.c:780
 msgid "The nick of the person who set the key"
 msgstr "Personas segvārds, kura uzstādīja atslēgu"
 
-#: src/common/text.c:778
+#: src/common/text.c:781
 msgid "The key"
 msgstr "Atslēga"
 
-#: src/common/text.c:782
+#: src/common/text.c:785
 msgid "The nick of the person who set the limit"
 msgstr "Personas segvārds, kura uzstādīja limitu"
 
-#: src/common/text.c:783
+#: src/common/text.c:786
 msgid "The limit"
 msgstr "Limits"
 
-#: src/common/text.c:787
+#: src/common/text.c:790
 msgid "The nick of the person who did the op'ing"
 msgstr "Personas segvārds, kura op'oja"
 
-#: src/common/text.c:788
+#: src/common/text.c:791
 msgid "The nick of the person who has been op'ed"
 msgstr "Personas segvārds, kuru op'oja"
 
-#: src/common/text.c:792
+#: src/common/text.c:795
 msgid "The nick of the person who has been halfop'ed"
 msgstr "Personas segvārds, kuru pus-op'oja"
 
-#: src/common/text.c:793
+#: src/common/text.c:796
 msgid "The nick of the person who did the halfop'ing"
 msgstr "Personas segvārds, kura pus-op'oja"
 
-#: src/common/text.c:797
+#: src/common/text.c:800
 msgid "The nick of the person who did the voice'ing"
 msgstr "Personas segvārds, kura iedeva balsi"
 
-#: src/common/text.c:798
+#: src/common/text.c:801
 msgid "The nick of the person who has been voice'ed"
 msgstr "Personas segvārds, kurai iedeva balsi"
 
-#: src/common/text.c:802
+#: src/common/text.c:805
 msgid "The nick of the person who did the banning"
 msgstr "Personas segvārds, kura izraidīja"
 
-#: src/common/text.c:803 src/common/text.c:830
+#: src/common/text.c:806 src/common/text.c:833
 msgid "The ban mask"
 msgstr "Izraidījuma maska"
 
-#: src/common/text.c:807
+#: src/common/text.c:810
 msgid "The nick who removed the key"
 msgstr "Segvārds, kurš noņēma atslēgu"
 
-#: src/common/text.c:811
+#: src/common/text.c:814
 msgid "The nick who removed the limit"
 msgstr "Segvārds, kurš noņēma limitu"
 
-#: src/common/text.c:815
+#: src/common/text.c:818
 msgid "The nick of the person of did the deop'ing"
 msgstr "Personas segvārds, kura deop'oja"
 
-#: src/common/text.c:816
+#: src/common/text.c:819
 msgid "The nick of the person who has been deop'ed"
 msgstr "Personas segvārds, kuru deop'oja"
 
-#: src/common/text.c:819
+#: src/common/text.c:822
 msgid "The nick of the person of did the dehalfop'ing"
 msgstr "Personas segvārds, kura pus-op'oja"
 
-#: src/common/text.c:820
+#: src/common/text.c:823
 msgid "The nick of the person who has been dehalfop'ed"
 msgstr "Personas segvārds, kuru pus-op'oja"
 
-#: src/common/text.c:824
+#: src/common/text.c:827
 msgid "The nick of the person of did the devoice'ing"
 msgstr "Personas segvārds, kura noņēma balsi"
 
-#: src/common/text.c:825
+#: src/common/text.c:828
 msgid "The nick of the person who has been devoice'ed"
 msgstr "Personas segvārds, kurai noņēma balsi"
 
-#: src/common/text.c:829
+#: src/common/text.c:832
 msgid "The nick of the person of did the unban'ing"
 msgstr "Personas segvārds, kura noņēma izraidījumu"
 
-#: src/common/text.c:834
+#: src/common/text.c:837
 msgid "The nick of the person who did the exempt"
 msgstr "Personas segvārds, kura atbrīvoja"
 
-#: src/common/text.c:835 src/common/text.c:840
+#: src/common/text.c:838 src/common/text.c:843
 msgid "The exempt mask"
 msgstr "Atbrīvošanas maska"
 
-#: src/common/text.c:839
+#: src/common/text.c:842
 msgid "The nick of the person removed the exempt"
 msgstr "Personas segvārds, kura noņēma atbrīvojumu"
 
-#: src/common/text.c:844
+#: src/common/text.c:847
 msgid "The nick of the person who did the invite"
 msgstr "Personas segvārds, kura ielūdza"
 
-#: src/common/text.c:845 src/common/text.c:850
+#: src/common/text.c:848 src/common/text.c:853
 msgid "The invite mask"
 msgstr "Ielūguma maska"
 
-#: src/common/text.c:849
+#: src/common/text.c:852
 msgid "The nick of the person removed the invite"
 msgstr "Personas segvārds, kura noņēma ielūgumu"
 
-#: src/common/text.c:854
+#: src/common/text.c:857
 msgid "The nick of the person setting the mode"
 msgstr "Personas segvārds, kura uzstadīja režīmu"
 
-#: src/common/text.c:855
+#: src/common/text.c:858
 msgid "The mode's sign (+/-)"
 msgstr "Režīma zīme (+/-)"
 
-#: src/common/text.c:856
+#: src/common/text.c:859
 msgid "The mode letter"
 msgstr "Režīma burts"
 
-#: src/common/text.c:857
+#: src/common/text.c:860
 msgid "The channel it's being set on"
 msgstr "Kanāls, kuram tas tika uzstādīts"
 
-#: src/common/text.c:862
+#: src/common/text.c:865
 msgid "Username"
 msgstr "Lietotājvārds"
 
-#: src/common/text.c:864
+#: src/common/text.c:867
 msgid "Full name"
 msgstr "Pilns vārds"
 
-#: src/common/text.c:869
+#: src/common/text.c:872
 msgid "Channel Membership/\"is an IRC operator\""
 msgstr "Kanāla Piederība/\"ir IRC operātors\""
 
-#: src/common/text.c:874
+#: src/common/text.c:877
 msgid "Server Information"
 msgstr "Serva Informācija"
 
-#: src/common/text.c:879 src/common/text.c:884
+#: src/common/text.c:882 src/common/text.c:887
 msgid "Idle time"
 msgstr "Dīkstāves laiks"
 
-#: src/common/text.c:885
+#: src/common/text.c:888
 msgid "Signon time"
 msgstr "Ierašanās laiks"
 
-#: src/common/text.c:890
+#: src/common/text.c:893
 msgid "Away reason"
 msgstr "Prombūtnes iemesls"
 
-#: src/common/text.c:899 src/common/text.c:904 src/common/text.c:912
-#: src/common/text.c:1089
+#: src/common/text.c:902 src/common/text.c:907 src/common/text.c:915
+#: src/common/text.c:1093
 msgid "Message"
 msgstr "Ziņojums"
 
-#: src/common/text.c:905
+#: src/common/text.c:908
 #, fuzzy
 msgid "Account"
 msgstr "Pieņemt"
 
-#: src/common/text.c:910
+#: src/common/text.c:913
 #, fuzzy
 msgid "Real user@host"
 msgstr "Parādīt/Paslēpt lietotāju sarakstu"
 
-#: src/common/text.c:911
+#: src/common/text.c:914
 msgid "Real IP"
 msgstr ""
 
-#: src/common/text.c:916 src/common/text.c:925 src/common/text.c:931
-#: src/common/text.c:1112
+#: src/common/text.c:919 src/common/text.c:928 src/common/text.c:934
+#: src/common/text.c:1116
 msgid "Channel Name"
 msgstr "Kanāla Nosaukums"
 
-#: src/common/text.c:920 src/common/text.c:1075 src/fe-gtk/textgui.c:379
+#: src/common/text.c:923 src/common/text.c:1079 src/fe-gtk/textgui.c:383
 msgid "Text"
 msgstr "Teksts"
 
-#: src/common/text.c:921 src/common/text.c:927 src/common/text.c:1113
+#: src/common/text.c:924 src/common/text.c:930 src/common/text.c:1117
 msgid "Server Name"
 msgstr "Servera Nosaukums"
 
-#: src/common/text.c:926
+#: src/common/text.c:929
 msgid "Nick of person who invited you"
 msgstr "Personas segvārds, kura jūs ielūdza"
 
-#: src/common/text.c:932 src/fe-gtk/chanlist.c:598
+#: src/common/text.c:935 src/fe-gtk/chanlist.c:598
 msgid "Users"
 msgstr "Lietotāji"
 
-#: src/common/text.c:936
+#: src/common/text.c:939
 msgid "Nickname in use"
 msgstr "Segvārds jau lietošanā"
 
-#: src/common/text.c:937
+#: src/common/text.c:940
 msgid "Nick being tried"
 msgstr "Mēģināmais segvārds"
 
-#: src/common/text.c:941
-msgid "Error String"
-msgstr "Kļūdas Virkne"
-
-#: src/common/text.c:946 src/common/text.c:1079
-msgid "IP"
-msgstr "IP"
-
-#: src/common/text.c:947 src/common/text.c:976
-msgid "Port"
-msgstr "Ports"
-
-#: src/common/text.c:951
-msgid "PID"
-msgstr "PID"
-
-#: src/common/text.c:959
-msgid "Channel name"
-msgstr "Kanāla nosaukums"
-
-#: src/common/text.c:960 src/common/text.c:965
-msgid "Modes string"
-msgstr "Režīma rinda"
-
-#: src/common/text.c:975 src/common/text.c:1012 src/common/text.c:1017
-#: src/common/text.c:1058
-msgid "IP address"
-msgstr "IP adrese"
-
-#: src/common/text.c:977 src/common/text.c:994 src/common/text.c:1024
-#, fuzzy
-msgid "Error name"
-msgstr "Kļūda"
-
-#: src/common/text.c:981 src/common/text.c:1005
-msgid "DCC Type"
-msgstr "DCC Tips"
-
-#: src/common/text.c:982 src/common/text.c:987 src/common/text.c:991
-#: src/common/text.c:998 src/common/text.c:1018 src/common/text.c:1022
-#: src/common/text.c:1028 src/common/text.c:1034 src/common/text.c:1041
-#: src/common/text.c:1050 src/common/text.c:1056
-msgid "Filename"
-msgstr "Faila nosaukums"
-
-#: src/common/text.c:992 src/common/text.c:999
-msgid "Destination filename"
-msgstr "Mērķa faila nosaukums"
-
-#: src/common/text.c:1001 src/common/text.c:1030
-msgid "CPS"
-msgstr "CPS"
-
-#: src/common/text.c:1007
-msgid "Error string"
-msgstr "Kļūdas virkne"
-
-#: src/common/text.c:1036
-msgid "Pathname"
-msgstr "Ceļa nosaukums"
-
-#: src/common/text.c:1051 src/fe-gtk/dccgui.c:483 src/fe-gtk/dccgui.c:633
-msgid "Position"
-msgstr "Pozīcija"
-
-#: src/common/text.c:1057 src/fe-gtk/dccgui.c:482 src/fe-gtk/dccgui.c:632
-msgid "Size"
-msgstr "Izmērs"
-
-#: src/common/text.c:1062
-msgid "DCC String"
-msgstr "DCC Virkne"
-
-#: src/common/text.c:1067
-msgid "Number of notify items"
-msgstr "Paziņojamo priekšmetu skaits"
-
-#: src/common/text.c:1071
-msgid "Servername"
-msgstr "Servervārds"
-
-#: src/common/text.c:1083
-msgid "Old Filename"
-msgstr "Vecais Faila nosaukums"
-
-#: src/common/text.c:1084
-msgid "New Filename"
-msgstr "Jaunais Faila nosaukums"
-
-#: src/common/text.c:1088
-msgid "Receiver"
-msgstr "Saņēmējs"
-
-#: src/common/text.c:1093
-msgid "Hostmask"
-msgstr "Hostdatora maska"
-
-#: src/common/text.c:1098
-msgid "Hostname"
-msgstr "Hostdatora vārds"
-
-#: src/common/text.c:1103
-msgid "The Packet"
-msgstr "Pakete"
-
-#: src/common/text.c:1107
-msgid "Seconds"
-msgstr "Sekundes"
-
-#: src/common/text.c:1111
-msgid "Nick of person who have been invited"
-msgstr "Personas segvārds, kura tikusi ielūgta"
-
-#: src/common/text.c:1118
-msgid "Banmask"
-msgstr "Izraidījuma maska"
-
-#: src/common/text.c:1119
-msgid "Who set the ban"
-msgstr "Kurš uzstādīja izraidījumu"
-
-#: src/common/text.c:1120
-msgid "Ban time"
-msgstr "Izraidījuma laiks"
-
-#: src/common/text.c:1124
+#: src/common/text.c:944 src/common/text.c:980 src/common/text.c:991
+#: src/common/text.c:998 src/common/text.c:1011 src/common/text.c:1028
+#: src/common/text.c:1128
 msgid "Error"
 msgstr "Kļūda"
 
-#: src/common/text.c:1158
+#: src/common/text.c:949 src/common/text.c:1083
+msgid "IP"
+msgstr "IP"
+
+#: src/common/text.c:950 src/common/text.c:979
+msgid "Port"
+msgstr "Ports"
+
+#: src/common/text.c:954
+msgid "PID"
+msgstr "PID"
+
+#: src/common/text.c:962
+msgid "Channel name"
+msgstr "Kanāla nosaukums"
+
+#: src/common/text.c:963 src/common/text.c:968
+msgid "Modes string"
+msgstr "Režīma rinda"
+
+#: src/common/text.c:978 src/common/text.c:1016 src/common/text.c:1021
+#: src/common/text.c:1062
+msgid "IP address"
+msgstr "IP adrese"
+
+#: src/common/text.c:984 src/common/text.c:1009
+msgid "DCC Type"
+msgstr "DCC Tips"
+
+#: src/common/text.c:985 src/common/text.c:990 src/common/text.c:995
+#: src/common/text.c:1002 src/common/text.c:1022 src/common/text.c:1026
+#: src/common/text.c:1032 src/common/text.c:1038 src/common/text.c:1045
+#: src/common/text.c:1054 src/common/text.c:1060
+msgid "Filename"
+msgstr "Faila nosaukums"
+
+#: src/common/text.c:996 src/common/text.c:1003
+msgid "Destination filename"
+msgstr "Mērķa faila nosaukums"
+
+#: src/common/text.c:1005 src/common/text.c:1034
+msgid "CPS"
+msgstr "CPS"
+
+#: src/common/text.c:1040
+msgid "Pathname"
+msgstr "Ceļa nosaukums"
+
+#: src/common/text.c:1055 src/fe-gtk/dccgui.c:483 src/fe-gtk/dccgui.c:633
+msgid "Position"
+msgstr "Pozīcija"
+
+#: src/common/text.c:1061 src/fe-gtk/dccgui.c:482 src/fe-gtk/dccgui.c:632
+msgid "Size"
+msgstr "Izmērs"
+
+#: src/common/text.c:1066
+msgid "DCC String"
+msgstr "DCC Virkne"
+
+#: src/common/text.c:1071
+msgid "Number of notify items"
+msgstr "Paziņojamo priekšmetu skaits"
+
+#: src/common/text.c:1075
+msgid "Servername"
+msgstr "Servervārds"
+
+#: src/common/text.c:1087
+msgid "Old Filename"
+msgstr "Vecais Faila nosaukums"
+
+#: src/common/text.c:1088
+msgid "New Filename"
+msgstr "Jaunais Faila nosaukums"
+
+#: src/common/text.c:1092
+msgid "Receiver"
+msgstr "Saņēmējs"
+
+#: src/common/text.c:1097
+msgid "Hostmask"
+msgstr "Hostdatora maska"
+
+#: src/common/text.c:1102
+msgid "Hostname"
+msgstr "Hostdatora vārds"
+
+#: src/common/text.c:1107
+msgid "The Packet"
+msgstr "Pakete"
+
+#: src/common/text.c:1111
+msgid "Seconds"
+msgstr "Sekundes"
+
+#: src/common/text.c:1115
+msgid "Nick of person who have been invited"
+msgstr "Personas segvārds, kura tikusi ielūgta"
+
+#: src/common/text.c:1122
+msgid "Banmask"
+msgstr "Izraidījuma maska"
+
+#: src/common/text.c:1123
+msgid "Who set the ban"
+msgstr "Kurš uzstādīja izraidījumu"
+
+#: src/common/text.c:1124
+msgid "Ban time"
+msgstr "Izraidījuma laiks"
+
+#: src/common/text.c:1162
 #, c-format
 msgid ""
 "Error parsing event %s.\n"
@@ -1624,6 +1613,13 @@ msgid ""
 msgstr ""
 "Kļūda parsējot notikumu %s.\n"
 "Lādēju noklusēto"
+
+#: src/common/text.c:1672
+#, fuzzy, c-format
+msgid ""
+"Cannot read sound file:\n"
+"%s"
+msgstr "Nevar nolasīt to failu."
 
 #: src/common/util.c:292
 msgid "Remote host closed socket"
@@ -1649,1275 +1645,1275 @@ msgstr "Nevaru piešķirt to adresi"
 msgid "Connection reset by peer"
 msgstr "Savienojuma pārtraukums"
 
-#: src/common/util.c:724
+#: src/common/util.c:733
 msgid "Andorra"
 msgstr "Andora"
 
-#: src/common/util.c:725
+#: src/common/util.c:734
 msgid "United Arab Emirates"
 msgstr "Apvienotie Arābu Emirāti"
 
-#: src/common/util.c:726
+#: src/common/util.c:735
 msgid "Afghanistan"
 msgstr "Afganistāna"
 
-#: src/common/util.c:727
+#: src/common/util.c:736
 msgid "Antigua and Barbuda"
 msgstr "Antigva un Barbuda"
 
-#: src/common/util.c:728
+#: src/common/util.c:737
 msgid "Anguilla"
 msgstr "Angilja"
 
-#: src/common/util.c:729
+#: src/common/util.c:738
 msgid "Albania"
 msgstr "Albānija"
 
-#: src/common/util.c:730
+#: src/common/util.c:739
 msgid "Armenia"
 msgstr "Armēnija"
 
-#: src/common/util.c:731
+#: src/common/util.c:740
 msgid "Netherlands Antilles"
 msgstr "Nīderlandes Antiļas"
 
-#: src/common/util.c:732
+#: src/common/util.c:741
 msgid "Angola"
 msgstr "Angola"
 
-#: src/common/util.c:733
+#: src/common/util.c:742
 msgid "Antarctica"
 msgstr "Antarktika"
 
-#: src/common/util.c:734
+#: src/common/util.c:743
 msgid "Argentina"
 msgstr "Argentīna"
 
-#: src/common/util.c:735
+#: src/common/util.c:744
 msgid "Reverse DNS"
 msgstr "Reverss DNS"
 
-#: src/common/util.c:736
+#: src/common/util.c:745
 msgid "American Samoa"
 msgstr "Amērikas Samoa"
 
-#: src/common/util.c:737
+#: src/common/util.c:746
 msgid "Austria"
 msgstr "Austrija"
 
-#: src/common/util.c:738
+#: src/common/util.c:747
 msgid "Nato Fiel"
 msgstr "Nato Fiel"
 
-#: src/common/util.c:739
+#: src/common/util.c:748
 msgid "Australia"
 msgstr "Austrālija"
 
-#: src/common/util.c:740
+#: src/common/util.c:749
 msgid "Aruba"
 msgstr "Aruba"
 
-#: src/common/util.c:741
+#: src/common/util.c:750
 msgid "Azerbaijan"
 msgstr "Azerbaidžāna"
 
-#: src/common/util.c:742
+#: src/common/util.c:751
 msgid "Bosnia and Herzegovina"
 msgstr "Bosnija un Hercogovina"
 
-#: src/common/util.c:743
+#: src/common/util.c:752
 msgid "Barbados"
 msgstr "Barbadosa"
 
-#: src/common/util.c:744
+#: src/common/util.c:753
 msgid "Bangladesh"
 msgstr "Bangladeša"
 
-#: src/common/util.c:745
+#: src/common/util.c:754
 msgid "Belgium"
 msgstr "Beļģija"
 
-#: src/common/util.c:746
+#: src/common/util.c:755
 msgid "Burkina Faso"
 msgstr "Burkinafaso"
 
-#: src/common/util.c:747
+#: src/common/util.c:756
 msgid "Bulgaria"
 msgstr "Bulgārija"
 
-#: src/common/util.c:748
+#: src/common/util.c:757
 msgid "Bahrain"
 msgstr "Bahreina"
 
-#: src/common/util.c:749
+#: src/common/util.c:758
 msgid "Burundi"
 msgstr "Burundi"
 
-#: src/common/util.c:750
+#: src/common/util.c:759
 msgid "Businesses"
 msgstr ""
 
-#: src/common/util.c:751
+#: src/common/util.c:760
 msgid "Benin"
 msgstr "Benina"
 
-#: src/common/util.c:752
+#: src/common/util.c:761
 msgid "Bermuda"
 msgstr "Bermuda"
 
-#: src/common/util.c:753
+#: src/common/util.c:762
 msgid "Brunei Darussalam"
 msgstr "Bruneja"
 
-#: src/common/util.c:754
+#: src/common/util.c:763
 msgid "Bolivia"
 msgstr "Bolīvija"
 
-#: src/common/util.c:755
+#: src/common/util.c:764
 msgid "Brazil"
 msgstr "Brazīlija"
 
-#: src/common/util.c:756
+#: src/common/util.c:765
 msgid "Bahamas"
 msgstr "Bahamas"
 
-#: src/common/util.c:757
+#: src/common/util.c:766
 msgid "Bhutan"
 msgstr "Butāna"
 
-#: src/common/util.c:758
+#: src/common/util.c:767
 msgid "Bouvet Island"
 msgstr "Bovetu salas"
 
-#: src/common/util.c:759
+#: src/common/util.c:768
 msgid "Botswana"
 msgstr "Botsvāna"
 
-#: src/common/util.c:760
+#: src/common/util.c:769
 msgid "Belarus"
 msgstr "Baltkrievija"
 
-#: src/common/util.c:761
+#: src/common/util.c:770
 msgid "Belize"
 msgstr "Beliza"
 
-#: src/common/util.c:762
+#: src/common/util.c:771
 msgid "Canada"
 msgstr "Kanāda"
 
-#: src/common/util.c:763
+#: src/common/util.c:772
 msgid "Cocos Islands"
 msgstr "Kokosu salas"
 
-#: src/common/util.c:764
+#: src/common/util.c:773
 msgid "Central African Republic"
 msgstr "Centrālāfrikas Republika"
 
-#: src/common/util.c:765
+#: src/common/util.c:774
 msgid "Congo"
 msgstr "Kongo"
 
-#: src/common/util.c:766
+#: src/common/util.c:775
 msgid "Switzerland"
 msgstr "Šveice"
 
-#: src/common/util.c:767
+#: src/common/util.c:776
 msgid "Cote D'ivoire"
 msgstr "Kotdivuāra"
 
-#: src/common/util.c:768
+#: src/common/util.c:777
 msgid "Cook Islands"
 msgstr "Kuka salas"
 
-#: src/common/util.c:769
+#: src/common/util.c:778
 msgid "Chile"
 msgstr "Čīle"
 
-#: src/common/util.c:770
+#: src/common/util.c:779
 msgid "Cameroon"
 msgstr "Kamerūna"
 
-#: src/common/util.c:771
+#: src/common/util.c:780
 msgid "China"
 msgstr "Ķīna"
 
-#: src/common/util.c:772
+#: src/common/util.c:781
 msgid "Colombia"
 msgstr "Kolumbija"
 
-#: src/common/util.c:773
+#: src/common/util.c:782
 msgid "Internic Commercial"
 msgstr "Starptautiskā Komercsabiedrība"
 
-#: src/common/util.c:774
+#: src/common/util.c:783
 msgid "Costa Rica"
 msgstr "Kostarika"
 
-#: src/common/util.c:775
+#: src/common/util.c:784
 msgid "Former Czechoslovakia"
 msgstr "Bijusī Čehoslovākija"
 
-#: src/common/util.c:776
+#: src/common/util.c:785
 msgid "Cuba"
 msgstr "Kuba"
 
-#: src/common/util.c:777
+#: src/common/util.c:786
 msgid "Cape Verde"
 msgstr "Kapoverde"
 
-#: src/common/util.c:778
+#: src/common/util.c:787
 msgid "Christmas Island"
 msgstr "Ziemassvētku Salas"
 
-#: src/common/util.c:779
+#: src/common/util.c:788
 msgid "Cyprus"
 msgstr "Kipra"
 
-#: src/common/util.c:780
+#: src/common/util.c:789
 msgid "Czech Republic"
 msgstr "Čehija"
 
-#: src/common/util.c:781
+#: src/common/util.c:790
 msgid "Germany"
 msgstr "Vācija"
 
-#: src/common/util.c:782
+#: src/common/util.c:791
 msgid "Djibouti"
 msgstr "Džibutija"
 
-#: src/common/util.c:783
+#: src/common/util.c:792
 msgid "Denmark"
 msgstr "Dānija"
 
-#: src/common/util.c:784
+#: src/common/util.c:793
 msgid "Dominica"
 msgstr "Dominika"
 
-#: src/common/util.c:785
+#: src/common/util.c:794
 msgid "Dominican Republic"
 msgstr "Domenicānas Republika"
 
-#: src/common/util.c:786
+#: src/common/util.c:795
 msgid "Algeria"
 msgstr "Alžīrija"
 
-#: src/common/util.c:787
+#: src/common/util.c:796
 msgid "Ecuador"
 msgstr "Ekvadora"
 
-#: src/common/util.c:788
+#: src/common/util.c:797
 msgid "Educational Institution"
 msgstr "Mācību Iestāde"
 
-#: src/common/util.c:789
+#: src/common/util.c:798
 msgid "Estonia"
 msgstr "Igaunija"
 
-#: src/common/util.c:790
+#: src/common/util.c:799
 msgid "Egypt"
 msgstr "Ēģipte"
 
-#: src/common/util.c:791
+#: src/common/util.c:800
 msgid "Western Sahara"
 msgstr "Rietumsahāra"
 
-#: src/common/util.c:792
+#: src/common/util.c:801
 msgid "Eritrea"
 msgstr "Eritreja"
 
-#: src/common/util.c:793
+#: src/common/util.c:802
 msgid "Spain"
 msgstr "Spānija"
 
-#: src/common/util.c:794
+#: src/common/util.c:803
 msgid "Ethiopia"
 msgstr "Etiopija"
 
-#: src/common/util.c:795
+#: src/common/util.c:804
 msgid "Finland"
 msgstr "Somija"
 
-#: src/common/util.c:796
+#: src/common/util.c:805
 msgid "Fiji"
 msgstr "Fidži"
 
-#: src/common/util.c:797
+#: src/common/util.c:806
 msgid "Falkland Islands"
 msgstr "Folklenda salas"
 
-#: src/common/util.c:798
+#: src/common/util.c:807
 msgid "Micronesia"
 msgstr "Mikronēzija"
 
-#: src/common/util.c:799
+#: src/common/util.c:808
 msgid "Faroe Islands"
 msgstr "Farēru salas"
 
-#: src/common/util.c:800
+#: src/common/util.c:809
 msgid "France"
 msgstr "Francija"
 
-#: src/common/util.c:801
+#: src/common/util.c:810
 msgid "France, Metropolitan"
 msgstr "Francija, Galvaspilsēta"
 
-#: src/common/util.c:802
+#: src/common/util.c:811
 msgid "Gabon"
 msgstr "Gabona"
 
-#: src/common/util.c:803
+#: src/common/util.c:812
 msgid "Great Britain"
 msgstr "Lielbritānija"
 
-#: src/common/util.c:804
+#: src/common/util.c:813
 msgid "Grenada"
 msgstr "Grenada"
 
-#: src/common/util.c:805
+#: src/common/util.c:814
 msgid "Georgia"
 msgstr "Džordžija"
 
-#: src/common/util.c:806
+#: src/common/util.c:815
 msgid "French Guiana"
 msgstr "Franču Gviāna"
 
-#: src/common/util.c:807
+#: src/common/util.c:816
 msgid "British Channel Isles"
 msgstr "Britu Kanāla salas"
 
-#: src/common/util.c:808
+#: src/common/util.c:817
 msgid "Ghana"
 msgstr "Gana"
 
-#: src/common/util.c:809
+#: src/common/util.c:818
 msgid "Gibraltar"
 msgstr "Gibraltārs"
 
-#: src/common/util.c:810
+#: src/common/util.c:819
 msgid "Greenland"
 msgstr "Grenlande"
 
-#: src/common/util.c:811
+#: src/common/util.c:820
 msgid "Gambia"
 msgstr "Gambija"
 
-#: src/common/util.c:812
+#: src/common/util.c:821
 msgid "Guinea"
 msgstr "Gvineja"
 
-#: src/common/util.c:813
+#: src/common/util.c:822
 msgid "Government"
 msgstr "Valdība"
 
-#: src/common/util.c:814
+#: src/common/util.c:823
 msgid "Guadeloupe"
 msgstr "Gvadelupa"
 
-#: src/common/util.c:815
+#: src/common/util.c:824
 msgid "Equatorial Guinea"
 msgstr "Ekvatoriālā Gvineja"
 
-#: src/common/util.c:816
+#: src/common/util.c:825
 msgid "Greece"
 msgstr "Grieķija"
 
-#: src/common/util.c:817
+#: src/common/util.c:826
 msgid "S. Georgia and S. Sandwich Isles."
 msgstr "Svētā Džordžija un Svētā Sendvidža salas."
 
-#: src/common/util.c:818
+#: src/common/util.c:827
 msgid "Guatemala"
 msgstr "Gvatemala"
 
-#: src/common/util.c:819
+#: src/common/util.c:828
 msgid "Guam"
 msgstr "Guama"
 
-#: src/common/util.c:820
+#: src/common/util.c:829
 msgid "Guinea-Bissau"
 msgstr "Gvineja-Bisava"
 
-#: src/common/util.c:821
+#: src/common/util.c:830
 msgid "Guyana"
 msgstr "Gajāna"
 
-#: src/common/util.c:822
+#: src/common/util.c:831
 msgid "Hong Kong"
 msgstr "Hongkonga"
 
-#: src/common/util.c:823
+#: src/common/util.c:832
 msgid "Heard and McDonald Islands"
 msgstr "Herda un Makdonalda salas"
 
-#: src/common/util.c:824
+#: src/common/util.c:833
 msgid "Honduras"
 msgstr "Hondurasa"
 
-#: src/common/util.c:825
+#: src/common/util.c:834
 msgid "Croatia"
 msgstr "Horvātija"
 
-#: src/common/util.c:826
+#: src/common/util.c:835
 msgid "Haiti"
 msgstr "Haiti"
 
-#: src/common/util.c:827
+#: src/common/util.c:836
 msgid "Hungary"
 msgstr "Ungārija"
 
-#: src/common/util.c:828
+#: src/common/util.c:837
 msgid "Indonesia"
 msgstr "Indonēzija"
 
-#: src/common/util.c:829
+#: src/common/util.c:838
 msgid "Ireland"
 msgstr "Īrija"
 
-#: src/common/util.c:830
+#: src/common/util.c:839
 msgid "Israel"
 msgstr "Izraēla"
 
-#: src/common/util.c:831
+#: src/common/util.c:840
 msgid "India"
 msgstr "Indija"
 
-#: src/common/util.c:832
+#: src/common/util.c:841
 #, fuzzy
 msgid "Informational"
 msgstr "Starptautisks"
 
-#: src/common/util.c:833
+#: src/common/util.c:842
 msgid "International"
 msgstr "Starptautisks"
 
-#: src/common/util.c:834
+#: src/common/util.c:843
 msgid "British Indian Ocean Territory"
 msgstr "Britu Indija okeāna teritorija"
 
-#: src/common/util.c:835
+#: src/common/util.c:844
 msgid "Iraq"
 msgstr "Irāka"
 
-#: src/common/util.c:836
+#: src/common/util.c:845
 msgid "Iran"
 msgstr "Irāna"
 
-#: src/common/util.c:837
+#: src/common/util.c:846
 msgid "Iceland"
 msgstr "Islande"
 
-#: src/common/util.c:838
+#: src/common/util.c:847
 msgid "Italy"
 msgstr "Itālija"
 
-#: src/common/util.c:839
+#: src/common/util.c:848
 msgid "Jamaica"
 msgstr "Jamaika"
 
-#: src/common/util.c:840
+#: src/common/util.c:849
 msgid "Jordan"
 msgstr "Jordānija"
 
-#: src/common/util.c:841
+#: src/common/util.c:850
 msgid "Japan"
 msgstr "Japāna"
 
-#: src/common/util.c:842
+#: src/common/util.c:851
 msgid "Kenya"
 msgstr "Kenija"
 
-#: src/common/util.c:843
+#: src/common/util.c:852
 msgid "Kyrgyzstan"
 msgstr "Kirgizstāna"
 
-#: src/common/util.c:844
+#: src/common/util.c:853
 msgid "Cambodia"
 msgstr "Kambodža"
 
-#: src/common/util.c:845
+#: src/common/util.c:854
 msgid "Kiribati"
 msgstr "Kiribati"
 
-#: src/common/util.c:846
+#: src/common/util.c:855
 msgid "Comoros"
 msgstr "Komoros salas"
 
-#: src/common/util.c:847
+#: src/common/util.c:856
 msgid "St. Kitts and Nevis"
 msgstr "Svētā Kita un Nevis salas"
 
-#: src/common/util.c:848
+#: src/common/util.c:857
 msgid "North Korea"
 msgstr "Ziemeļkoreja"
 
-#: src/common/util.c:849
+#: src/common/util.c:858
 msgid "South Korea"
 msgstr "Dienvidkoreja"
 
-#: src/common/util.c:850
+#: src/common/util.c:859
 msgid "Kuwait"
 msgstr "Kuveita"
 
-#: src/common/util.c:851
+#: src/common/util.c:860
 msgid "Cayman Islands"
 msgstr "Kaimanu salas"
 
-#: src/common/util.c:852
+#: src/common/util.c:861
 msgid "Kazakhstan"
 msgstr "Kazahstāna"
 
-#: src/common/util.c:853
+#: src/common/util.c:862
 msgid "Laos"
 msgstr "Laosa"
 
-#: src/common/util.c:854
+#: src/common/util.c:863
 msgid "Lebanon"
 msgstr "Libāna"
 
-#: src/common/util.c:855
+#: src/common/util.c:864
 msgid "Saint Lucia"
 msgstr "Sentlūsija"
 
-#: src/common/util.c:856
+#: src/common/util.c:865
 msgid "Liechtenstein"
 msgstr "Lihtenšteina"
 
-#: src/common/util.c:857
+#: src/common/util.c:866
 msgid "Sri Lanka"
 msgstr "Šrilanka"
 
-#: src/common/util.c:858
+#: src/common/util.c:867
 msgid "Liberia"
 msgstr "Libērija"
 
-#: src/common/util.c:859
+#: src/common/util.c:868
 msgid "Lesotho"
 msgstr "Lesoto"
 
-#: src/common/util.c:860
+#: src/common/util.c:869
 msgid "Lithuania"
 msgstr "Lietuva"
 
-#: src/common/util.c:861
+#: src/common/util.c:870
 msgid "Luxembourg"
 msgstr "Luksemburga"
 
-#: src/common/util.c:862
+#: src/common/util.c:871
 msgid "Latvia"
 msgstr "Latvija"
 
-#: src/common/util.c:863
+#: src/common/util.c:872
 msgid "Libya"
 msgstr "Libāna"
 
-#: src/common/util.c:864
+#: src/common/util.c:873
 msgid "Morocco"
 msgstr "Maroko"
 
-#: src/common/util.c:865
+#: src/common/util.c:874
 msgid "Monaco"
 msgstr "Monako"
 
-#: src/common/util.c:866
+#: src/common/util.c:875
 msgid "Moldova"
 msgstr "Moldāvija"
 
-#: src/common/util.c:867
+#: src/common/util.c:876
 msgid "United States Medical"
 msgstr "Savienoto Valstu Medicīnas"
 
-#: src/common/util.c:868
+#: src/common/util.c:877
 msgid "Madagascar"
 msgstr "Madagaskara"
 
-#: src/common/util.c:869
+#: src/common/util.c:878
 msgid "Marshall Islands"
 msgstr "Maršalu Salas"
 
-#: src/common/util.c:870
+#: src/common/util.c:879
 msgid "Military"
 msgstr "Militārs"
 
-#: src/common/util.c:871
+#: src/common/util.c:880
 msgid "Macedonia"
 msgstr "Maķedonija"
 
-#: src/common/util.c:872
+#: src/common/util.c:881
 msgid "Mali"
 msgstr "Mali"
 
-#: src/common/util.c:873
+#: src/common/util.c:882
 msgid "Myanmar"
 msgstr "Mjanma"
 
-#: src/common/util.c:874
+#: src/common/util.c:883
 msgid "Mongolia"
 msgstr "Mongolija"
 
-#: src/common/util.c:875
+#: src/common/util.c:884
 msgid "Macau"
 msgstr "Makao"
 
-#: src/common/util.c:876
+#: src/common/util.c:885
 msgid "Northern Mariana Islands"
 msgstr "Ziemeļmarina"
 
-#: src/common/util.c:877
+#: src/common/util.c:886
 msgid "Martinique"
 msgstr "Martinika"
 
-#: src/common/util.c:878
+#: src/common/util.c:887
 msgid "Mauritania"
 msgstr "Mauritānija"
 
-#: src/common/util.c:879
+#: src/common/util.c:888
 msgid "Montserrat"
 msgstr "Montserata"
 
-#: src/common/util.c:880
+#: src/common/util.c:889
 msgid "Malta"
 msgstr "Malta"
 
-#: src/common/util.c:881
+#: src/common/util.c:890
 msgid "Mauritius"
 msgstr "Mauritānija"
 
-#: src/common/util.c:882
+#: src/common/util.c:891
 msgid "Maldives"
 msgstr "Maldīvija"
 
-#: src/common/util.c:883
+#: src/common/util.c:892
 msgid "Malawi"
 msgstr "Malāvija"
 
-#: src/common/util.c:884
+#: src/common/util.c:893
 msgid "Mexico"
 msgstr "Mexico"
 
-#: src/common/util.c:885
+#: src/common/util.c:894
 msgid "Malaysia"
 msgstr "Malaizija"
 
-#: src/common/util.c:886
+#: src/common/util.c:895
 msgid "Mozambique"
 msgstr "Mozambika"
 
-#: src/common/util.c:887
+#: src/common/util.c:896
 msgid "Namibia"
 msgstr "Namībija"
 
-#: src/common/util.c:888
+#: src/common/util.c:897
 msgid "New Caledonia"
 msgstr "Jaunkaldonija"
 
-#: src/common/util.c:889
+#: src/common/util.c:898
 msgid "Niger"
 msgstr "Nigēra"
 
-#: src/common/util.c:890
+#: src/common/util.c:899
 msgid "Internic Network"
 msgstr "Starptautiskais Tīkls"
 
-#: src/common/util.c:891
+#: src/common/util.c:900
 msgid "Norfolk Island"
 msgstr "Norfolkas salas"
 
-#: src/common/util.c:892
+#: src/common/util.c:901
 msgid "Nigeria"
 msgstr "Nigērija"
 
-#: src/common/util.c:893
+#: src/common/util.c:902
 msgid "Nicaragua"
 msgstr "Nikaragva"
 
-#: src/common/util.c:894
+#: src/common/util.c:903
 msgid "Netherlands"
 msgstr "Nīderlande"
 
-#: src/common/util.c:895
+#: src/common/util.c:904
 msgid "Norway"
 msgstr "Norvēģija"
 
-#: src/common/util.c:896
+#: src/common/util.c:905
 msgid "Nepal"
 msgstr "Nepāla"
 
-#: src/common/util.c:897
+#: src/common/util.c:906
 msgid "Nauru"
 msgstr "Nauru"
 
-#: src/common/util.c:898
+#: src/common/util.c:907
 msgid "Neutral Zone"
 msgstr "Neitrālā Zona"
 
-#: src/common/util.c:899
+#: src/common/util.c:908
 msgid "Niue"
 msgstr "Niue"
 
-#: src/common/util.c:900
+#: src/common/util.c:909
 msgid "New Zealand"
 msgstr "Jaunzēlande"
 
-#: src/common/util.c:901
+#: src/common/util.c:910
 msgid "Oman"
 msgstr "Omāna"
 
-#: src/common/util.c:902
+#: src/common/util.c:911
 msgid "Internic Non-Profit Organization"
 msgstr "Starptautiska Bezpeļņas Organizācija"
 
-#: src/common/util.c:903
+#: src/common/util.c:912
 msgid "Panama"
 msgstr "Panama"
 
-#: src/common/util.c:904
+#: src/common/util.c:913
 msgid "Peru"
 msgstr "Peru"
 
-#: src/common/util.c:905
+#: src/common/util.c:914
 msgid "French Polynesia"
 msgstr "Franču Polinēzija"
 
-#: src/common/util.c:906
+#: src/common/util.c:915
 msgid "Papua New Guinea"
 msgstr "Papua Jaungvineja"
 
-#: src/common/util.c:907
+#: src/common/util.c:916
 msgid "Philippines"
 msgstr "Filipīnas"
 
-#: src/common/util.c:908
+#: src/common/util.c:917
 msgid "Pakistan"
 msgstr "Pakistāna"
 
-#: src/common/util.c:909
+#: src/common/util.c:918
 msgid "Poland"
 msgstr "Polija"
 
-#: src/common/util.c:910
+#: src/common/util.c:919
 msgid "St. Pierre and Miquelon"
 msgstr "Svētā Pjēra un Mikvelona salas"
 
-#: src/common/util.c:911
+#: src/common/util.c:920
 msgid "Pitcairn"
 msgstr "Pitkērna"
 
-#: src/common/util.c:912
+#: src/common/util.c:921
 msgid "Puerto Rico"
 msgstr "Puertoriko"
 
-#: src/common/util.c:913
+#: src/common/util.c:922
 msgid "Portugal"
 msgstr "Portugāle"
 
-#: src/common/util.c:914
+#: src/common/util.c:923
 msgid "Palau"
 msgstr "Palau"
 
-#: src/common/util.c:915
+#: src/common/util.c:924
 msgid "Paraguay"
 msgstr "Paragvaja"
 
-#: src/common/util.c:916
+#: src/common/util.c:925
 msgid "Qatar"
 msgstr "Katara"
 
-#: src/common/util.c:917
+#: src/common/util.c:926
 msgid "Reunion"
 msgstr "Reinjona"
 
-#: src/common/util.c:918
+#: src/common/util.c:927
 msgid "Romania"
 msgstr "Rumānija"
 
-#: src/common/util.c:919
+#: src/common/util.c:928
 msgid "Old School ARPAnet"
 msgstr "Vecās Skolas ARPAnet"
 
-#: src/common/util.c:920
+#: src/common/util.c:929
 msgid "Russian Federation"
 msgstr "Krievijas Federācija"
 
-#: src/common/util.c:921
+#: src/common/util.c:930
 msgid "Rwanda"
 msgstr "Ruanda"
 
-#: src/common/util.c:922
+#: src/common/util.c:931
 msgid "Saudi Arabia"
 msgstr "Saudu Arābija"
 
-#: src/common/util.c:923
+#: src/common/util.c:932
 msgid "Solomon Islands"
 msgstr "Zālamana salas"
 
-#: src/common/util.c:924
+#: src/common/util.c:933
 msgid "Seychelles"
 msgstr "Seišelas"
 
-#: src/common/util.c:925
+#: src/common/util.c:934
 msgid "Sudan"
 msgstr "Sudāna"
 
-#: src/common/util.c:926
+#: src/common/util.c:935
 msgid "Sweden"
 msgstr "Zviedrija"
 
-#: src/common/util.c:927
+#: src/common/util.c:936
 msgid "Singapore"
 msgstr "Singapūra"
 
-#: src/common/util.c:928
+#: src/common/util.c:937
 msgid "St. Helena"
 msgstr "Svētās Helēnas sala"
 
-#: src/common/util.c:929
+#: src/common/util.c:938
 msgid "Slovenia"
 msgstr "Slovēnija"
 
-#: src/common/util.c:930
+#: src/common/util.c:939
 msgid "Svalbard and Jan Mayen Islands"
 msgstr "Svelbāna un Žana Maijena salas"
 
-#: src/common/util.c:931
+#: src/common/util.c:940
 msgid "Slovak Republic"
 msgstr "Slovākija"
 
-#: src/common/util.c:932
+#: src/common/util.c:941
 msgid "Sierra Leone"
 msgstr "Sjerra Leone"
 
-#: src/common/util.c:933
+#: src/common/util.c:942
 msgid "San Marino"
 msgstr "San Marino"
 
-#: src/common/util.c:934
+#: src/common/util.c:943
 msgid "Senegal"
 msgstr "Senegāla"
 
-#: src/common/util.c:935
+#: src/common/util.c:944
 msgid "Somalia"
 msgstr "Somālija"
 
-#: src/common/util.c:936
+#: src/common/util.c:945
 msgid "Suriname"
 msgstr "Surinama"
 
-#: src/common/util.c:937
+#: src/common/util.c:946
 msgid "Sao Tome and Principe"
 msgstr "Santome un Prinsipi"
 
-#: src/common/util.c:938
+#: src/common/util.c:947
 msgid "Former USSR"
 msgstr "Bijušā PSRS"
 
-#: src/common/util.c:939
+#: src/common/util.c:948
 msgid "El Salvador"
 msgstr "Salvadora"
 
-#: src/common/util.c:940
+#: src/common/util.c:949
 msgid "Syria"
 msgstr "Sīrija"
 
-#: src/common/util.c:941
+#: src/common/util.c:950
 msgid "Swaziland"
 msgstr "Šveice"
 
-#: src/common/util.c:942
+#: src/common/util.c:951
 msgid "Turks and Caicos Islands"
 msgstr "Tērksas un Kaikosas salas"
 
-#: src/common/util.c:943
+#: src/common/util.c:952
 msgid "Chad"
 msgstr "Čada"
 
-#: src/common/util.c:944
+#: src/common/util.c:953
 msgid "French Southern Territories"
 msgstr "Francijas Dienvidu Teritorijas"
 
-#: src/common/util.c:945
+#: src/common/util.c:954
 msgid "Togo"
 msgstr "Togo"
 
-#: src/common/util.c:946
+#: src/common/util.c:955
 msgid "Thailand"
 msgstr "Taizeme"
 
-#: src/common/util.c:947
+#: src/common/util.c:956
 msgid "Tajikistan"
 msgstr "Tadžikistāna"
 
-#: src/common/util.c:948
+#: src/common/util.c:957
 msgid "Tokelau"
 msgstr "Tokelau"
 
-#: src/common/util.c:949
+#: src/common/util.c:958
 msgid "Turkmenistan"
 msgstr "Turkmenistāna"
 
-#: src/common/util.c:950
+#: src/common/util.c:959
 msgid "Tunisia"
 msgstr "Tunisija"
 
-#: src/common/util.c:951
+#: src/common/util.c:960
 msgid "Tonga"
 msgstr "Tonga"
 
-#: src/common/util.c:952
+#: src/common/util.c:961
 msgid "East Timor"
 msgstr "Austrumtimora"
 
-#: src/common/util.c:953
+#: src/common/util.c:962
 msgid "Turkey"
 msgstr "Turcija"
 
-#: src/common/util.c:954
+#: src/common/util.c:963
 msgid "Trinidad and Tobago"
 msgstr "Trinidada un Tobago"
 
-#: src/common/util.c:955
+#: src/common/util.c:964
 msgid "Tuvalu"
 msgstr "Tuvalu"
 
-#: src/common/util.c:956
+#: src/common/util.c:965
 msgid "Taiwan"
 msgstr "Taivāna"
 
-#: src/common/util.c:957
+#: src/common/util.c:966
 msgid "Tanzania"
 msgstr "Tanzānija"
 
-#: src/common/util.c:958
+#: src/common/util.c:967
 msgid "Ukraine"
 msgstr "Ukraina"
 
-#: src/common/util.c:959
+#: src/common/util.c:968
 msgid "Uganda"
 msgstr "Uganda"
 
-#: src/common/util.c:960
+#: src/common/util.c:969
 msgid "United Kingdom"
 msgstr "Apvienotā Karaliste"
 
-#: src/common/util.c:961
+#: src/common/util.c:970
 msgid "US Minor Outlying Islands"
 msgstr "ASV Mazās Pieguļošās Salas"
 
-#: src/common/util.c:962
+#: src/common/util.c:971
 msgid "United States of America"
 msgstr "Amērikas Savienotās Valstis"
 
-#: src/common/util.c:963
+#: src/common/util.c:972
 msgid "Uruguay"
 msgstr "Urugvaja"
 
-#: src/common/util.c:964
+#: src/common/util.c:973
 msgid "Uzbekistan"
 msgstr "Uzbekistāna"
 
-#: src/common/util.c:965
+#: src/common/util.c:974
 msgid "Vatican City State"
 msgstr "Vatikānas Pilsētvalsts"
 
-#: src/common/util.c:966
+#: src/common/util.c:975
 msgid "St. Vincent and the grenadines"
 msgstr "Svētā Vincenta salas"
 
-#: src/common/util.c:967
+#: src/common/util.c:976
 msgid "Venezuela"
 msgstr "Venecuēla"
 
-#: src/common/util.c:968
+#: src/common/util.c:977
 msgid "British Virgin Islands"
 msgstr "Britu Virdžīnu Salas"
 
-#: src/common/util.c:969
+#: src/common/util.c:978
 msgid "US Virgin Islands"
 msgstr "ASV Virdžīnu Salas"
 
-#: src/common/util.c:970
+#: src/common/util.c:979
 msgid "Vietnam"
 msgstr "Vjetnama"
 
-#: src/common/util.c:971
+#: src/common/util.c:980
 msgid "Vanuatu"
 msgstr "Vanuatu"
 
-#: src/common/util.c:972
+#: src/common/util.c:981
 msgid "Wallis and Futuna Islands"
 msgstr "Volisa un Futuna salas"
 
-#: src/common/util.c:973
+#: src/common/util.c:982
 msgid "Samoa"
 msgstr "Samoa"
 
-#: src/common/util.c:974
+#: src/common/util.c:983
 msgid "Yemen"
 msgstr "Jemena"
 
-#: src/common/util.c:975
+#: src/common/util.c:984
 msgid "Mayotte"
 msgstr "Majota"
 
-#: src/common/util.c:976
+#: src/common/util.c:985
 msgid "Yugoslavia"
 msgstr "Dienvidslāvija"
 
-#: src/common/util.c:977
+#: src/common/util.c:986
 msgid "South Africa"
 msgstr "Dienvidāfrija"
 
-#: src/common/util.c:978
+#: src/common/util.c:987
 msgid "Zambia"
 msgstr "Zambija"
 
-#: src/common/util.c:979
+#: src/common/util.c:988
 msgid "Zaire"
 msgstr "Zaira"
 
-#: src/common/util.c:980
+#: src/common/util.c:989
 msgid "Zimbabwe"
 msgstr "Zimbabve"
 
-#: src/common/util.c:986 src/common/util.c:996 src/fe-gtk/menu.c:503
+#: src/common/util.c:995 src/common/util.c:1005 src/fe-gtk/menu.c:503
 #: src/fe-gtk/menu.c:507 src/fe-gtk/menu.c:511 src/fe-gtk/menu.c:515
 #: src/fe-gtk/menu.c:519
 msgid "Unknown"
 msgstr "Nezināms"
 
-#: src/common/xchat.c:902
+#: src/common/xchat.c:908
 msgid "Direct client-to-client"
 msgstr ""
 
-#: src/common/xchat.c:903
+#: src/common/xchat.c:909
 #, fuzzy
 msgid "Send File"
 msgstr "Skaņas fails:"
 
-#: src/common/xchat.c:904
+#: src/common/xchat.c:910
 msgid "Offer Chat"
 msgstr ""
 
-#: src/common/xchat.c:905
+#: src/common/xchat.c:911
 #, fuzzy
 msgid "Abort Chat"
 msgstr "Par X-Chat"
 
-#: src/common/xchat.c:906 src/fe-gtk/plugingui.c:74
+#: src/common/xchat.c:912 src/fe-gtk/plugingui.c:74
 msgid "Version"
 msgstr "Versija"
 
-#: src/common/xchat.c:907
+#: src/common/xchat.c:913
 #, fuzzy
 msgid "Userinfo"
 msgstr "Lietotājs"
 
-#: src/common/xchat.c:908
+#: src/common/xchat.c:914
 msgid "Clientinfo"
 msgstr ""
 
-#: src/common/xchat.c:909 src/common/xchat.c:941 src/common/xchat.c:991
+#: src/common/xchat.c:915 src/common/xchat.c:947 src/common/xchat.c:997
 msgid "Ping"
 msgstr ""
 
-#: src/common/xchat.c:910
+#: src/common/xchat.c:916
 #, fuzzy
 msgid "Time"
 msgstr "Laiks"
 
-#: src/common/xchat.c:911
+#: src/common/xchat.c:917
 #, fuzzy
 msgid "Finger"
 msgstr "Nigēra"
 
-#: src/common/xchat.c:912
+#: src/common/xchat.c:918
 #, fuzzy
 msgid "Oper"
 msgstr "Atvērt"
 
-#: src/common/xchat.c:913
+#: src/common/xchat.c:919
 msgid "Kill this user"
 msgstr ""
 
-#: src/common/xchat.c:914
+#: src/common/xchat.c:920
 #, fuzzy
 msgid "Mode"
 msgstr "Mod"
 
-#: src/common/xchat.c:915
+#: src/common/xchat.c:921
 msgid "Give Voice"
 msgstr ""
 
-#: src/common/xchat.c:916
+#: src/common/xchat.c:922
 msgid "Take Voice"
 msgstr ""
 
-#: src/common/xchat.c:917
+#: src/common/xchat.c:923
 msgid "Give Ops"
 msgstr ""
 
-#: src/common/xchat.c:918
+#: src/common/xchat.c:924
 msgid "Take Ops"
 msgstr ""
 
-#: src/common/xchat.c:919
+#: src/common/xchat.c:925
 #, fuzzy
 msgid "Ignore"
 msgstr "Neignorēt"
 
-#: src/common/xchat.c:920
+#: src/common/xchat.c:926
 #, fuzzy
 msgid "Ignore User"
 msgstr "Ignorēšanas Maska:"
 
-#: src/common/xchat.c:921
+#: src/common/xchat.c:927
 #, fuzzy
 msgid "UnIgnore User"
 msgstr "Neignorēt"
 
-#: src/common/xchat.c:922
+#: src/common/xchat.c:928
 #, fuzzy
 msgid "Kick/Ban"
 msgstr "Segvārds"
 
-#: src/common/xchat.c:923 src/common/xchat.c:975
+#: src/common/xchat.c:929 src/common/xchat.c:981
 #, fuzzy
 msgid "Kick"
 msgstr "Segvārds"
 
-#: src/common/xchat.c:924 src/common/xchat.c:925 src/common/xchat.c:926
-#: src/common/xchat.c:927 src/common/xchat.c:928 src/common/xchat.c:974
+#: src/common/xchat.c:930 src/common/xchat.c:931 src/common/xchat.c:932
+#: src/common/xchat.c:933 src/common/xchat.c:934 src/common/xchat.c:980
 #, fuzzy
 msgid "Ban"
 msgstr "Butāna"
 
-#: src/common/xchat.c:929 src/common/xchat.c:930 src/common/xchat.c:931
-#: src/common/xchat.c:932
+#: src/common/xchat.c:935 src/common/xchat.c:936 src/common/xchat.c:937
+#: src/common/xchat.c:938
 #, fuzzy
 msgid "KickBan"
 msgstr "Segvārds"
 
-#: src/common/xchat.c:933 src/fe-gtk/dccgui.c:528 src/fe-gtk/dccgui.c:669
+#: src/common/xchat.c:939 src/fe-gtk/dccgui.c:528 src/fe-gtk/dccgui.c:669
 msgid "Info"
 msgstr "Info"
 
-#: src/common/xchat.c:934
+#: src/common/xchat.c:940
 msgid "Who"
 msgstr ""
 
-#: src/common/xchat.c:935 src/common/xchat.c:988
+#: src/common/xchat.c:941 src/common/xchat.c:994
 msgid "WhoIs"
 msgstr ""
 
-#: src/common/xchat.c:936
+#: src/common/xchat.c:942
 msgid "DNS Lookup"
 msgstr ""
 
-#: src/common/xchat.c:937
+#: src/common/xchat.c:943
 #, fuzzy
 msgid "Trace"
 msgstr "Francija"
 
-#: src/common/xchat.c:938
+#: src/common/xchat.c:944
 #, fuzzy
 msgid "UserHost"
 msgstr "Lietotāji"
 
-#: src/common/xchat.c:939
+#: src/common/xchat.c:945
 msgid "External"
 msgstr ""
 
-#: src/common/xchat.c:940
+#: src/common/xchat.c:946
 msgid "Traceroute"
 msgstr ""
 
-#: src/common/xchat.c:942
+#: src/common/xchat.c:948
 #, fuzzy
 msgid "Telnet"
 msgstr "Dzēst"
 
-#: src/common/xchat.c:943
+#: src/common/xchat.c:949
 #, fuzzy
 msgid "Open Dialog Window"
 msgstr "Automātiski Atvērt Dialoga Logus"
 
-#: src/common/xchat.c:955
+#: src/common/xchat.c:961
 #, fuzzy
 msgid "Disconnect"
 msgstr "Pieslēgties"
 
-#: src/common/xchat.c:956
+#: src/common/xchat.c:962
 #, fuzzy
 msgid "Reconnect"
 msgstr "Pieslēgties"
 
-#: src/common/xchat.c:957
+#: src/common/xchat.c:963
 #, fuzzy
 msgid "Leave Channel"
 msgstr "Atstāt Kanālu"
 
-#: src/common/xchat.c:958
+#: src/common/xchat.c:964
 #, fuzzy
 msgid "Join Channel..."
 msgstr "Pievienoties Kanālam"
 
-#: src/common/xchat.c:959
+#: src/common/xchat.c:965
 #, fuzzy
 msgid "Enter Channel to Join:"
 msgstr "Kanāls gatavojas"
 
-#: src/common/xchat.c:960
+#: src/common/xchat.c:966
 #, fuzzy
 msgid "Server Links"
 msgstr "Serveru Saraksts..."
 
-#: src/common/xchat.c:961
+#: src/common/xchat.c:967
 #, fuzzy
 msgid "Ping Server"
 msgstr "Serveris"
 
-#: src/common/xchat.c:962
+#: src/common/xchat.c:968
 #, fuzzy
 msgid "Hide Version"
 msgstr "Versija"
 
-#: src/common/xchat.c:972
+#: src/common/xchat.c:978
 #, fuzzy
 msgid "Op"
 msgstr "Atvērt"
 
-#: src/common/xchat.c:973
+#: src/common/xchat.c:979
 msgid "DeOp"
 msgstr ""
 
-#: src/common/xchat.c:976
+#: src/common/xchat.c:982
 msgid "bye"
 msgstr ""
 
-#: src/common/xchat.c:977
+#: src/common/xchat.c:983
 #, c-format
 msgid "Enter reason to kick %s:"
 msgstr ""
 
-#: src/common/xchat.c:978
+#: src/common/xchat.c:984
 #, fuzzy
 msgid "Sendfile"
 msgstr "Skaņas fails:"
 
-#: src/common/xchat.c:979
+#: src/common/xchat.c:985
 msgid "Dialog"
 msgstr ""
 
-#: src/common/xchat.c:989
+#: src/common/xchat.c:995
 #, fuzzy
 msgid "Send"
 msgstr "Aizs"
 
-#: src/common/xchat.c:990
+#: src/common/xchat.c:996
 #, fuzzy
 msgid "Chat"
 msgstr "Čada"
 
-#: src/common/xchat.c:992 src/fe-gtk/banlist.c:314 src/fe-gtk/search.c:117
+#: src/common/xchat.c:998 src/fe-gtk/banlist.c:314 src/fe-gtk/search.c:117
 #: src/fe-gtk/urlgrab.c:200
 msgid "Clear"
 msgstr "Attīrīt"
@@ -3165,7 +3161,7 @@ msgstr "Lejup"
 msgid "Cancel"
 msgstr "Atcelt"
 
-#: src/fe-gtk/editlist.c:349 src/fe-gtk/textgui.c:460 src/fe-gtk/urlgrab.c:204
+#: src/fe-gtk/editlist.c:349 src/fe-gtk/textgui.c:464 src/fe-gtk/urlgrab.c:204
 msgid "Save"
 msgstr "Saglabāt"
 
@@ -3219,11 +3215,11 @@ msgid ""
 "%s"
 msgstr ""
 
-#: src/fe-gtk/fe-gtk.c:614
+#: src/fe-gtk/fe-gtk.c:617
 msgid "Search buffer is empty.\n"
 msgstr "Meklēšanas buferis ir tukšs.\n"
 
-#: src/fe-gtk/fe-gtk.c:691
+#: src/fe-gtk/fe-gtk.c:694
 #, c-format
 msgid "%d bytes"
 msgstr ""
@@ -4103,31 +4099,31 @@ msgstr "Pēdējoreiz redzēts"
 msgid "Offline"
 msgstr "Bezsaistē"
 
-#: src/fe-gtk/notifygui.c:172
+#: src/fe-gtk/notifygui.c:169
 msgid "Never"
 msgstr "Nekad"
 
-#: src/fe-gtk/notifygui.c:190
+#: src/fe-gtk/notifygui.c:187
 msgid "Online"
 msgstr "Tiešsaistē"
 
-#: src/fe-gtk/notifygui.c:280
+#: src/fe-gtk/notifygui.c:277
 msgid "Enter nickname to add:"
 msgstr "Ievadiet pievienojamo segvārdu:"
 
-#: src/fe-gtk/notifygui.c:296
+#: src/fe-gtk/notifygui.c:293
 msgid "X-Chat: Notify List"
 msgstr "X-Chat: Paziņojumu Saraksts"
 
-#: src/fe-gtk/notifygui.c:309 src/fe-gtk/servlistgui.c:712
+#: src/fe-gtk/notifygui.c:306 src/fe-gtk/servlistgui.c:712
 msgid "Add"
 msgstr "Pievienot"
 
-#: src/fe-gtk/notifygui.c:311
+#: src/fe-gtk/notifygui.c:308
 msgid "Remove"
 msgstr "Izņemt"
 
-#: src/fe-gtk/plugingui.c:76 src/fe-gtk/textgui.c:383
+#: src/fe-gtk/plugingui.c:76 src/fe-gtk/textgui.c:387
 msgid "Description"
 msgstr "Apraksts"
 
@@ -4481,7 +4477,7 @@ msgstr ""
 msgid "Windows"
 msgstr "Logi"
 
-#: src/fe-gtk/setup.c:143 src/fe-gtk/setup.c:842
+#: src/fe-gtk/setup.c:143 src/fe-gtk/setup.c:845
 msgid "Tabs"
 msgstr "Sadaļas"
 
@@ -4870,104 +4866,104 @@ msgstr "Izgaismot:"
 msgid "Away User:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:838
+#: src/fe-gtk/setup.c:841
 msgid "Interface"
 msgstr "Saskarne"
 
-#: src/fe-gtk/setup.c:839
+#: src/fe-gtk/setup.c:842
 msgid "Text box"
 msgstr "Teksta lodziņš"
 
-#: src/fe-gtk/setup.c:840
+#: src/fe-gtk/setup.c:843
 msgid "Input box"
 msgstr "Ievades lodziņš"
 
-#: src/fe-gtk/setup.c:841
+#: src/fe-gtk/setup.c:844
 msgid "User list"
 msgstr "Lietotāja saraksts"
 
-#: src/fe-gtk/setup.c:843
+#: src/fe-gtk/setup.c:846
 msgid "Colors"
 msgstr "Krāsas"
 
-#: src/fe-gtk/setup.c:845
+#: src/fe-gtk/setup.c:848
 msgid "Chatting"
 msgstr "Tērzēju"
 
-#: src/fe-gtk/setup.c:846
+#: src/fe-gtk/setup.c:849
 msgid "General"
 msgstr "Vispārīgi"
 
-#: src/fe-gtk/setup.c:847
+#: src/fe-gtk/setup.c:850
 msgid "Logging"
 msgstr "Iegrāmatošana"
 
-#: src/fe-gtk/setup.c:849
+#: src/fe-gtk/setup.c:852
 msgid "Network"
 msgstr "Tīkls"
 
-#: src/fe-gtk/setup.c:850
+#: src/fe-gtk/setup.c:853
 msgid "Network setup"
 msgstr "Tīkla uzstādīšana"
 
-#: src/fe-gtk/setup.c:851
+#: src/fe-gtk/setup.c:854
 msgid "File transfers"
 msgstr "Failu pārsūtīšanas"
 
-#: src/fe-gtk/setup.c:956
+#: src/fe-gtk/setup.c:959
 msgid "Categories"
 msgstr "Kategorijas"
 
-#: src/fe-gtk/setup.c:1082
+#: src/fe-gtk/setup.c:1085
 msgid "Some settings were changed that require a restart to take full effect."
 msgstr ""
 
-#: src/fe-gtk/setup.c:1109
+#: src/fe-gtk/setup.c:1112
 msgid "X-Chat: Preferences"
 msgstr "X-Chat: Uzstādījumi"
 
-#: src/fe-gtk/textgui.c:180
+#: src/fe-gtk/textgui.c:184
 msgid "There was an error parsing the string"
 msgstr "Atgadījās kļūda parsējot virkni"
 
-#: src/fe-gtk/textgui.c:188
+#: src/fe-gtk/textgui.c:192
 #, c-format
 msgid "This signal is only passed %d args, $%d is invalid"
 msgstr "Šis signāls izdeva tikai %d argumentus, $%d ir nepareizs"
 
-#: src/fe-gtk/textgui.c:300 src/fe-gtk/textgui.c:322
+#: src/fe-gtk/textgui.c:304 src/fe-gtk/textgui.c:326
 msgid "Print Texts File"
 msgstr "Drukāt Teksta Failu"
 
-#: src/fe-gtk/textgui.c:378
+#: src/fe-gtk/textgui.c:382
 msgid "Event"
 msgstr "Notikums"
 
-#: src/fe-gtk/textgui.c:380
+#: src/fe-gtk/textgui.c:384
 msgid "Sound"
 msgstr "Skaņa"
 
-#: src/fe-gtk/textgui.c:382
+#: src/fe-gtk/textgui.c:386
 msgid "$ Number"
 msgstr "$ Numurs"
 
-#: src/fe-gtk/textgui.c:392
+#: src/fe-gtk/textgui.c:396
 msgid "Edit Events"
 msgstr "Rediģēt Notikumus"
 
-#: src/fe-gtk/textgui.c:430
+#: src/fe-gtk/textgui.c:434
 msgid "Sound file: "
 msgstr "Skaņas fails:"
 
-#: src/fe-gtk/textgui.c:465
+#: src/fe-gtk/textgui.c:469
 msgid "Save As"
 msgstr "Saglabāt Kā"
 
-#: src/fe-gtk/textgui.c:470
+#: src/fe-gtk/textgui.c:474
 msgid "Load From"
 msgstr "Ielādēt No"
 
-#: src/fe-gtk/textgui.c:475
+#: src/fe-gtk/textgui.c:479
 msgid "Test All"
 msgstr "Testēt Visus"
 
@@ -5006,6 +5002,16 @@ msgstr "Nevar ierakstīt tajā failā."
 #, c-format
 msgid "%d ops, %d total"
 msgstr ""
+
+#~ msgid "Error String"
+#~ msgstr "Kļūdas Virkne"
+
+#, fuzzy
+#~ msgid "Error name"
+#~ msgstr "Kļūda"
+
+#~ msgid "Error string"
+#~ msgstr "Kļūdas virkne"
 
 #~ msgid "Proxy port:"
 #~ msgstr "Starpservera ports:"
