@@ -616,7 +616,7 @@ ssl_do_connect (server * serv)
 		return (0);					  /* remove it (0) */
 	} else
 	{
-		if (serv->ssl->session->time + SSLTMOUT < time (NULL))
+		if (serv->ssl->session && serv->ssl->session->time + SSLTMOUT < time (NULL))
 		{
 			snprintf (buf, sizeof (buf), "SSL handshake timed out");
 			EMIT_SIGNAL (XP_TE_CONNFAIL, serv->server_session, buf, NULL,
