@@ -306,21 +306,20 @@ backend_font_open (GtkXText *xtext, char *name)
 }
 
 inline static int
-backend_get_char_width (GtkXText *xtext, unsigned char *str, int *mbl_ret,
-								int is_mb)
+backend_get_char_width (GtkXText *xtext, unsigned char *str, int *mbl_ret)
 {
-	if (*str >= 128)
+	XGlyphInfo ext;
+
+	if (*str < 128)
 	{
-		XGlyphInfo ext;
-
-		*mbl_ret = charlen (str);
-		XftTextExtentsUtf8 (GDK_DISPLAY (), xtext->font, str, *mbl_ret, &ext);
-
-		return ext.xOff;
+		*mbl_ret = 1;
+		return xtext->fontwidth[(int)*str];
 	}
 
-	*mbl_ret = 1;
-	return xtext->fontwidth[(int)*str];
+	*mbl_ret = charlen (str);
+	XftTextExtentsUtf8 (GDK_DISPLAY (), xtext->font, str, *mbl_ret, &ext);
+
+	return ext.xOff;
 }
 
 static int
@@ -424,7 +423,6 @@ backend_deinit (GtkXText *xtext)
 static void
 backend_font_open (GtkXText *xtext, char *name)
 {
-/*	PangoRectangle rect;*/
 	PangoLanguage *lang;
 	PangoContext *context;
 	PangoFontMetrics *metrics;
@@ -460,17 +458,6 @@ backend_font_open (GtkXText *xtext, char *name)
 	xtext->font->ascent = pango_font_metrics_get_ascent (metrics) / PANGO_SCALE;
 	xtext->font->descent = pango_font_metrics_get_descent (metrics) / PANGO_SCALE;
 	pango_font_metrics_unref (metrics);
-
-	/* oooh, good kludge */
-	/*pango_layout_set_text (xtext->layout, "jy", 2);
-	pango_layout_get_pixel_extents (xtext->layout, NULL, &rect);
-	xtext->font->ascent = rect.height - rect.y;
-	xtext->font->descent = rect.y;
-	if (xtext->font->descent < 2)
-	{
-		xtext->font->ascent -= 2;
-		xtext->font->descent = 2;
-	}*/
 }
 
 static int
@@ -484,7 +471,6 @@ backend_get_text_width (GtkXText *xtext, char *str, int len, int is_mb)
 	if (*str == 0)
 		return 0;
 
-	/*backend_init (xtext);*/
 	pango_layout_set_text (xtext->layout, str, len);
 	pango_layout_get_pixel_size (xtext->layout, &width, NULL);
 
@@ -492,8 +478,7 @@ backend_get_text_width (GtkXText *xtext, char *str, int len, int is_mb)
 }
 
 inline static int
-backend_get_char_width (GtkXText *xtext, unsigned char *str,
-								int *mbl_ret, int is_mb)
+backend_get_char_width (GtkXText *xtext, unsigned char *str, int *mbl_ret)
 {
 	int width;
 
@@ -1049,7 +1034,7 @@ find_x (GtkXText *xtext, textentry *ent, unsigned char *text, int x, int indent)
 				text++;
 				break;
 			default:
-				xx += backend_get_char_width (xtext, text, &mbl, ent->mb);
+				xx += backend_get_char_width (xtext, text, &mbl);
 				text += mbl;
 				if (xx >= x)
 					return i + (orig - ent->str);
@@ -2181,7 +2166,7 @@ gtk_xtext_strip_color (unsigned char *text, int len, unsigned char *outbuf,
 
 	while (len > 0)
 	{
-		if (*text & 0x80)
+		if (*text >= 128)
 			mb = TRUE;
 
 		if ((col && isdigit (*text) && nc < 2) ||
@@ -3210,7 +3195,7 @@ find_next_wrap (GtkXText * xtext, textentry * ent, unsigned char *str,
 				str++;
 				break;
 			default:
-				str_width += backend_get_char_width (xtext, str, &mbl, ent->mb);
+				str_width += backend_get_char_width (xtext, str, &mbl);
 				if (str_width > win_width)
 				{
 					if (xtext->wordwrap)

@@ -828,10 +828,10 @@ irc_inline (server *serv, char *buf, int len)
 			text++;
 
 		process_numeric (sess, outbuf, atoi (word[2]), word, word_eol, text);
-		goto xit;
+	} else
+	{
+		process_named_msg (sess, type, outbuf, word, word_eol);
 	}
-
-	process_named_msg (sess, type, outbuf, word, word_eol);
 
 xit:
 	if (pdibuf != pdibuf_static)

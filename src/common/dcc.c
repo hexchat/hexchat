@@ -433,9 +433,14 @@ dcc_write_chat (char *nick, char *text)
 		len = strlen (text);
 
 		if (dcc->serv->encoding == NULL)	/* system */
-			locale = g_locale_from_utf8 (text, len, NULL, &loc_len, NULL);
-		else
+		{
+			locale = NULL;
+			if (!prefs.utf8_locale)
+				locale = g_locale_from_utf8 (text, len, NULL, &loc_len, NULL);
+		} else
+		{
 			locale = g_convert (text, len, dcc->serv->encoding, "UTF-8", 0, &loc_len, 0);
+		}
 
 		if (locale)
 		{

@@ -245,6 +245,7 @@ struct xchatprefs
 	unsigned int whois_on_notifyonline;
 	unsigned int persist_chans;
 	unsigned int wait_on_exit;
+	unsigned int utf8_locale;
 
 	unsigned int ctcp_number_limit;	/*flood */
 	unsigned int ctcp_time_limit;	/*seconds of floods */

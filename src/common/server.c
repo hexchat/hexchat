@@ -84,9 +84,14 @@ tcp_send_real (server *serv, char *buf, int len)
 	fe_add_rawlog (serv, buf, len, TRUE);
 
 	if (serv->encoding == NULL)	/* system */
-		locale = g_locale_from_utf8 (buf, len, NULL, &loc_len, NULL);
-	else
+	{
+		locale = NULL;
+		if (!prefs.utf8_locale)
+			locale = g_locale_from_utf8 (buf, len, NULL, &loc_len, NULL);
+	} else
+	{
 		locale = g_convert (buf, len, serv->encoding, "UTF-8", 0, &loc_len, 0);
+	}
 
 	if (locale)
 	{
@@ -248,9 +253,14 @@ server_inline (server *serv, char *line, int len)
 	int utf_len;
 
 	if (serv->encoding == NULL)	/* system */
-		utf = g_locale_to_utf8 (line, len, NULL, &utf_len, NULL);
-	else
+	{
+		utf = NULL;
+		if (!prefs.utf8_locale)
+			utf = g_locale_to_utf8 (line, len, NULL, &utf_len, NULL);
+	} else
+	{
 		utf = g_convert (line, len, "UTF-8", serv->encoding, 0, &utf_len, 0);
+	}
 
 	if (utf)
 	{
@@ -348,7 +358,7 @@ server_read (GIOChannel *source, GIOCondition condition, server *serv)
 
 			default:
 				serv->linebuf[serv->pos] = lbuf[i];
-				if (serv->pos > 519)
+				if (serv->pos >= (sizeof (serv->linebuf) - 1))
 					fprintf (stderr,
 								"*** XCHAT WARNING: Buffer overflow - shit server!\n");
 				else

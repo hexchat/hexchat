@@ -782,6 +782,7 @@ static void
 xchat_init (void)
 {
 	char buf[512];
+	const char *cs = NULL;
 
 #ifdef WIN32
 	WSADATA wsadata;
@@ -799,6 +800,9 @@ xchat_init (void)
 	/* Deal with SIGUSR1's */
 	signal (SIGUSR1, sighup_handler);
 #endif
+
+	if (g_get_charset (&cs))
+		prefs.utf8_locale = TRUE;
 
 	load_text_events ();
 	notify_load ();
