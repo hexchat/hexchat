@@ -15,7 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#define VERSION "1.0.52"
+#define VERSION "1.0.53"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -2136,7 +2136,7 @@ static void Tcl_Plugin_DeInit()
 static void banner()
 {
     xchat_printf(ph, "Tcl plugin for XChat - Version %s\n", VERSION);
-    xchat_print(ph, "Copyright 2002-2003 Daniel P. Stasinski\n");
+    xchat_print(ph, "Copyright 2002-2005 Daniel P. Stasinski\n");
     xchat_print(ph, "http://www.scriptkitties.com/tclplugin/\n");
 }
 
@@ -2208,3 +2208,11 @@ int xchat_plugin_deinit()
     return 1;
 }
 
+void xchat_plugin_get_info(char **name, char **desc, char **version, void **reserved)
+{
+   *name = "tclplugin";
+   *desc = "Tcl plugin for XChat";
+   *version = VERSION;
+   if (reserved)
+      *reserved = NULL;
+}
