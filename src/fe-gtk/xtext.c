@@ -116,7 +116,7 @@ static guint xtext_signals[LAST_SIGNAL];
 
 #ifdef XCHAT
 char *nocasestrstr (const char *text, const char *tofind);	/* util.c */
-int get_stamp_str (time_t, char *, int);
+int xtext_get_stamp_str (time_t, char **);
 #endif
 static void gtk_xtext_render_page (GtkXText * xtext);
 static void gtk_xtext_calc_lines (xtext_buffer *buf, int);
@@ -3325,11 +3325,12 @@ gtk_xtext_render_line (GtkXText * xtext, textentry * ent, int line,
 	/* draw the timestamp */
 	if (xtext->buffer->time_stamp && !xtext->skip_stamp)
 	{
-		char time_str[64];
-		int stamp_size = get_stamp_str (ent->stamp, time_str, sizeof (time_str));
+		char *time_str;
+		int stamp_size = xtext_get_stamp_str (ent->stamp, &time_str);
 		y = (xtext->fontsize * line) + xtext->font->ascent - xtext->pixel_offset;
 		gtk_xtext_render_str (xtext, y, ent, time_str, stamp_size,
 									 win_width, 2, line);
+		g_free (time_str);
 	}
 #endif
 
@@ -3471,10 +3472,11 @@ gtk_xtext_set_font (GtkXText *xtext, char *name)
 
 #ifdef XCHAT
 	{
-		char time_str[64];
-		int stamp_size = get_stamp_str (time(0), time_str, sizeof (time_str));
+		char *time_str;
+		int stamp_size = xtext_get_stamp_str (time(0), &time_str);
 		xtext->stamp_width =
 			gtk_xtext_text_width (xtext, time_str, stamp_size, NULL) + MARGIN;
+		g_free (time_str);
 	}
 #endif
 

@@ -140,13 +140,13 @@ nick_command_parse (session *sess, char *cmd, char *nick, char *allnick)
 	char *host = _("Host unknown");
 	struct User *user;
 
-	if (sess->type == SESS_DIALOG)
+/*	if (sess->type == SESS_DIALOG)
 	{
 		buf = (char *)(GTK_ENTRY (sess->gui->topic_entry)->text);
 		buf = strrchr (buf, '@');
 		if (buf)
 			host = buf + 1;
-	} else
+	} else*/
 	{
 		user = find_name (sess, nick);
 		if (user && user->hostname)

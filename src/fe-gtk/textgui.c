@@ -52,10 +52,12 @@ static GtkWidget *pevent_dialog = NULL, *pevent_dialog_twid,
 	*pevent_dialog_entry, *pevent_dialog_sound_entry,
 	*pevent_dialog_list, *pevent_dialog_hlist;
 
+
+/* this is only used in xtext.c for indented timestamping */
 int
-get_stamp_str (time_t tim, char *dest, int size)
+xtext_get_stamp_str (char *fmt, time_t tim, char **ret)
 {
-	return strftime (dest, size, prefs.stamp_format, localtime (&tim));
+	return get_stamp_str (prefs.stamp_format, tim, ret);
 }
 
 static void
@@ -71,12 +73,13 @@ PrintTextLine (xtext_buffer *xtbuf, unsigned char *text, int len, int indent)
 	{
 		if (prefs.timestamp)
 		{
-			char buf[64];
 			int stamp_size;
+			char *stamp;
 
-			stamp_size = get_stamp_str (time (0), buf, sizeof (buf));
+			stamp_size = get_stamp_str (prefs.stamp_format, time (0), &stamp);
 			new_text = malloc (len + stamp_size + 1);
-			memcpy (new_text, buf, stamp_size);
+			memcpy (new_text, stamp, stamp_size);
+			g_free (stamp);
 			memcpy (new_text + stamp_size, text, len);
 			gtk_xtext_append (xtbuf, new_text, len + stamp_size);
 			free (new_text);

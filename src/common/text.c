@@ -381,21 +381,41 @@ log_open (session *sess)
 										  sess->server->networkname);
 }
 
+int
+get_stamp_str (char *fmt, time_t tim, char **ret)
+{
+	char dest[128];
+	int len;
+
+	len = strftime (dest, sizeof (dest), fmt, localtime (&tim));
+	if (len)
+	{
+		if (prefs.utf8_locale)
+			*ret = g_strdup (dest);
+		else
+			*ret = g_locale_to_utf8 (dest, len, 0, &len, 0);
+	}
+
+	return len;
+}
+
 static void
 log_write (session *sess, char *text)
 {
-	time_t timval;
 	char *temp;
-	char tim[32];
+	char *stamp;
+	int len;
 
 	if (sess->logfd != -1 && prefs.logging)
 	{
 		if (prefs.timestamp_logs)
 		{
-			timval = time (0);
-			strftime (tim, sizeof (tim), prefs.timestamp_log_format,
-						 localtime (&timval));
-			write (sess->logfd, tim, strlen (tim));
+			len = get_stamp_str (prefs.timestamp_log_format, time (0), &stamp);
+			if (len)
+			{
+				write (sess->logfd, stamp, len);
+				g_free (stamp);
+			}
 		}
 		temp = strip_color (text);
 		write (sess->logfd, temp, strlen (temp));

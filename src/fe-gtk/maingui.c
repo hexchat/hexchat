@@ -1284,11 +1284,18 @@ mg_dialog_button_cb (GtkWidget *wid, char *cmd)
 {
 	/* the longest cmd is 12, and the longest nickname is 64 */
 	char buf[128];
+	char *host = "";
+	char *topic;
 
 	if (!current_sess)
 		return;
 
-	auto_insert (buf, cmd, 0, 0, "", "", "", "", "", current_sess->channel);
+	topic = (char *)(GTK_ENTRY (current_sess->gui->topic_entry)->text);
+	topic = strrchr (topic, '@');
+	if (topic)
+		host = topic + 1;
+
+	auto_insert (buf, cmd, 0, 0, "", "", "", host, "", current_sess->channel);
 
 	handle_command (current_sess, buf, TRUE);
 
@@ -2201,7 +2208,11 @@ fe_dlgbuttons_update (session *sess)
 	gtk_box_pack_start (GTK_BOX (gui->topic_bar), box, 0, 0, 0);
 	gtk_box_reorder_child (GTK_BOX (gui->topic_bar), box, 3);
 	mg_create_dialogbuttons (box);
+
 	gtk_widget_show_all (box);
+
+	if (sess->type != SESS_DIALOG)
+		gtk_widget_hide (sess->gui->dialogbutton_box);
 }
 
 void
