@@ -1392,7 +1392,11 @@ setup_create_sound_page (void)
 							(GtkAttachOptions) (GTK_FILL),
 							(GtkAttachOptions) (0), 0, 0);
 
+#ifdef GTK_STOCK_MEDIA_PLAY
+	sound_play = gtk_button_new_from_stock (GTK_STOCK_MEDIA_PLAY);
+#else
 	sound_play = gtk_button_new_with_mnemonic (_("_Play"));
+#endif
 	g_signal_connect (G_OBJECT (sound_play), "clicked",
 							G_CALLBACK (setup_snd_play_cb), sndfile_entry);
 	gtk_widget_show (sound_play);

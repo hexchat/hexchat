@@ -276,15 +276,19 @@ fe_userlist_rehash (session *sess, struct User *user)
 {
 	GtkTreeIter *iter;
 	int sel;
+	int do_away = TRUE;
 
 	iter = find_row (GTK_TREE_VIEW (sess->gui->user_tree),
 						  sess->res->user_model, user, &sel);
 	if (!iter)
 		return;
 
+	if (prefs.away_size_max < 1 || !prefs.away_track)
+		do_away = FALSE;
+
 	gtk_list_store_set (GTK_LIST_STORE (sess->res->user_model), iter,
 							  2, user->hostname,
-							  4, (prefs.away_size_max > 0)
+							  4, (do_away)
 									?	(user->away ? &colors[COL_AWAY] : NULL)
 									:	(NULL),
 							  -1);
@@ -296,26 +300,20 @@ fe_userlist_insert (session *sess, struct User *newuser, int row, int sel)
 	GtkTreeModel *model = sess->res->user_model;
 	GdkPixbuf *pix;
 	GtkTreeIter iter;
+	int do_away = TRUE;
 
-	/* TreeView is no faster with this! Why?? */
-/*	if (after)
-	{
-		gtk_list_store_insert_after (GTK_LIST_STORE (model), iter,
-											  (GtkTreeIter *)after->gui);
-	} else
-	{*/
-		/* row 0 does an *_prepend() */
-		gtk_list_store_insert (GTK_LIST_STORE (model), &iter, row);
-	/*}*/
-
+	gtk_list_store_insert (GTK_LIST_STORE (model), &iter, row);
 	pix = get_user_icon (sess->server, newuser);
+
+	if (prefs.away_size_max < 1 || !prefs.away_track)
+		do_away = FALSE;
 
 	gtk_list_store_set (GTK_LIST_STORE (model), &iter,
 							  0, pix,
 							  1, newuser->nick,
 							  2, newuser->hostname,
 							  3, newuser,
-							  4, (prefs.away_size_max > 0)
+							  4, (do_away)
 									?	(newuser->away ? &colors[COL_AWAY] : NULL)
 									:	(NULL),
 							  -1);

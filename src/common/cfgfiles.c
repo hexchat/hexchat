@@ -888,16 +888,25 @@ cmd_set (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	int wild = FALSE;
 	int quiet = FALSE;
+	int erase = FALSE;
 	int i = 0, finds = 0, found;
-	char *var = word[2];
-	char *val = word_eol[3];
+	int idx = 2;
+	char *var, *val;
 
 	if (strcasecmp (word[2], "-quiet") == 0)
 	{
-		var = word[3];
-		val = word_eol[4];
+		idx++;
 		quiet = TRUE;
 	}
+
+	if (strcasecmp (word[2], "-e") == 0)
+	{
+		idx++;
+		erase = TRUE;
+	}
+
+	var = word[idx];
+	val = word_eol[idx+1];
 
 	if (!*var)
 	{
@@ -924,7 +933,7 @@ cmd_set (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			switch (vars[i].type)
 			{
 			case TYPE_STR:
-				if (*val)
+				if (erase || *val)
 				{
 					strncpy ((char *) &prefs + vars[i].offset, val, vars[i].len);
 					((char *) &prefs)[vars[i].offset + vars[i].len - 1] = 0;

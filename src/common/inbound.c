@@ -134,6 +134,18 @@ find_session_from_nick (char *nick, server *serv)
 	return 0;
 }
 
+static session *
+inbound_open_dialog (server *serv, char *from)
+{
+	session *sess;
+
+	sess = new_ircwindow (serv, from, SESS_DIALOG, 0);
+	/* for playing sounds */
+	EMIT_SIGNAL (XP_TE_OPENDIALOG, sess, NULL, NULL, NULL, NULL, 0);
+
+	return sess;
+}
+
 void
 inbound_privmsg (server *serv, char *from, char *ip, char *text, int id)
 {
@@ -151,7 +163,8 @@ inbound_privmsg (server *serv, char *from, char *ip, char *text, int id)
 		if (!sess)
 		{
 			if (flood_check (from, ip, serv, current_sess, 1))
-				sess = new_ircwindow (serv, from, SESS_DIALOG, 0);	/* Create a dialog session */
+				/* Create a dialog session */
+				sess = inbound_open_dialog (serv, from);
 			else
 				sess = serv->server_session;
 		}
@@ -278,7 +291,7 @@ inbound_action (session *sess, char *chan, char *from, char *text, int fromme)
 			sess = find_dialog (serv, from);
 			/* if non found, open a new one */
 			if (!sess && prefs.autodialog)
-				sess = new_ircwindow (serv, from, SESS_DIALOG, 0);
+				sess = inbound_open_dialog (serv, from);
 		}
 	}
 

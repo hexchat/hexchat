@@ -27,7 +27,11 @@ int main()
 		args[strlen(args)-1] = 0;
 		fgets(buf, sizeof(buf), stdin);
 
-		printf("\n{\"%s\", %s, %d, \nN_(\"%s\")},\n",
+		if (def[0] == 0)
+			printf("\n{\"%s\", %s, %d, \n\"\"},\n",
+							 name, help, atoi(args));
+		else
+			printf("\n{\"%s\", %s, %d, \nN_(\"%s\")},\n",
 							 name, help, atoi(args), def);
 		defines[i] = strdup (num);
 		i++;

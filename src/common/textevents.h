@@ -278,6 +278,9 @@ N_("%C22*%O$tNotify: $1 is offline ($2).")},
 {"Notify Online", pevt_generic_nick_help, 2, 
 N_("%C22*%O$tNotify: $1 is online ($2).")},
 
+{"Open Dialog", pevt_generic_none_help, 0, 
+""},
+
 {"Part", pevt_part_help, 3, 
 N_("%C23*%O$t%C23$1 (%O%C23$2) has left $3")},
 

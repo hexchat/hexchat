@@ -519,6 +519,34 @@ backend_get_char_width (GtkXText *xtext, unsigned char *str, int *mbl_ret)
 	return width;
 }
 
+/* simplified version of gdk_draw_layout_line_with_colors() */
+
+static void 
+xtext_draw_layout_line (GdkDrawable      *drawable,
+								GdkGC            *gc,
+								gint              x, 
+								gint              y,
+								PangoLayoutLine  *line)
+{
+	GSList *tmp_list = line->runs;
+	PangoRectangle logical_rect;
+	gint x_off = 0;
+
+	while (tmp_list)
+	{
+		PangoLayoutRun *run = tmp_list->data;
+
+		pango_glyph_string_extents (run->glyphs, run->item->analysis.font,
+											 NULL, &logical_rect);
+
+		gdk_draw_glyphs (drawable, gc, run->item->analysis.font,
+							  x + x_off / PANGO_SCALE, y, run->glyphs);
+
+		x_off += logical_rect.width;
+		tmp_list = tmp_list->next;
+	}
+}
+
 static void
 backend_draw_text (GtkXText *xtext, int dofill, GdkGC *gc, int x, int y,
 						 char *str, int len, int str_width, int is_mb)
@@ -549,6 +577,16 @@ backend_draw_text (GtkXText *xtext, int dofill, GdkGC *gc, int x, int y,
 	}
 
 	line = pango_layout_get_lines (xtext->layout)->data;
+
+#if 1
+	xtext_draw_layout_line (xtext->draw_buf, gc, x, y, line);
+	if (xtext->overdraw)
+		xtext_draw_layout_line (xtext->draw_buf, gc, x, y, line);
+
+	if (xtext->bold)
+		xtext_draw_layout_line (xtext->draw_buf, gc, x + 1, y, line);
+
+#else
 	gdk_draw_layout_line_with_colors (xtext->draw_buf, gc, x, y, line, 0, 0);
 	if (xtext->overdraw)
 		gdk_draw_layout_line_with_colors (xtext->draw_buf, gc, x, y, line, 0, 0);
@@ -556,6 +594,7 @@ backend_draw_text (GtkXText *xtext, int dofill, GdkGC *gc, int x, int y,
 	if (xtext->bold)
 		gdk_draw_layout_line_with_colors (xtext->draw_buf, gc, x + 1, y, line,
 													 0, 0);
+#endif
 }
 
 /*static void
@@ -1220,11 +1259,11 @@ gtk_xtext_draw_marker (GtkXText * xtext, textentry * ent, int y)
 
 	if (xtext->buffer->marker_pos == ent)
 	{
-		render_y = y + xtext->font->descent - xtext->fontsize * ent->lines_taken;
+		render_y = y + xtext->font->descent;
 	}
 	else if (xtext->buffer->marker_pos == ent->next && ent->next != NULL)
 	{
-		render_y = y + xtext->font->descent;
+		render_y = y + xtext->font->descent + xtext->fontsize * ent->lines_taken;
 	}
 	else return;
 
@@ -2179,10 +2218,15 @@ gtk_xtext_selection_get_text (GtkXText *xtext, int *len_ret)
 	*pos = 0;
 
 	if (xtext->color_paste)
-		stripped = gtk_xtext_conv_color (txt, strlen (txt), &len);
-	else
+	{
+		/*stripped = gtk_xtext_conv_color (txt, strlen (txt), &len);*/
+		stripped = txt;
+		len = strlen (txt);
+	} else
+	{
 		stripped = gtk_xtext_strip_color (txt, strlen (txt), NULL, &len, 0);
-	free (txt);
+		free (txt);
+	}
 
 	*len_ret = len;
 	return stripped;
@@ -3812,11 +3856,12 @@ gtk_xtext_render_line (GtkXText * xtext, textentry * ent, int line,
 							  int lines_max, int subline, int win_width)
 {
 	unsigned char *str;
-	int indent, taken, entline, len, y;
+	int indent, taken, entline, len, y, start_subline;
 
 	entline = taken = 0;
 	str = ent->str;
 	indent = ent->indent;
+	start_subline = subline;
 
 #ifdef XCHAT
 	/* draw the timestamp */
@@ -3862,7 +3907,7 @@ gtk_xtext_render_line (GtkXText * xtext, textentry * ent, int line,
 												indent, line, FALSE))
 			{
 				/* small optimization */
-				gtk_xtext_draw_marker (xtext, ent, y + xtext->fontsize * (ent->lines_taken - taken -1));
+				gtk_xtext_draw_marker (xtext, ent, y - xtext->fontsize * (taken + start_subline + 1));
 				return ent->lines_taken - subline;
 			}
 		} else
@@ -3887,7 +3932,7 @@ gtk_xtext_render_line (GtkXText * xtext, textentry * ent, int line,
 	}
 	while (str < ent->str + ent->str_len);
 
-	gtk_xtext_draw_marker (xtext, ent, y);
+	gtk_xtext_draw_marker (xtext, ent, y - xtext->fontsize * (taken + start_subline));
 
 	return taken;
 }
