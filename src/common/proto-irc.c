@@ -487,7 +487,7 @@ process_numeric (session * sess, int n,
 			unsigned int away = 0;
 			session *who_sess = find_channel (serv, word[4]);
 
-			if (strchr (word[9], 'G'))
+			if (*word[9] == 'G')
 				away = 1;
 
 			inbound_user_info (sess, word[4], word[5], word[6], word[7],
@@ -509,7 +509,7 @@ process_numeric (session * sess, int n,
 			unsigned int away = 0;
 			session *who_sess = find_channel (serv, word[4]);
 
-			if (strchr (word[6], 'G'))
+			if (*word[6] == 'G')
 				away = 1;
 
 			/* :SanJose.CA.us.undernet.org 354 z1 #zed1 z1 H@ */

@@ -10,6 +10,7 @@ Source: http://xchat.org/files/source/2.0/xchat-%{version}.tar.bz2
 Buildroot: %{_tmppath}/%{name}-%{version}-root
 Requires: gtk2
 Requires: openssl
+BuildRequires: gettext
 
 %description
 A GUI IRC client with DCC file transfers, C plugin interface, Perl
