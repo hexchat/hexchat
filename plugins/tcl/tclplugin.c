@@ -1968,6 +1968,9 @@ static void banner()
 
 int xchat_plugin_init(xchat_plugin * plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg)
 {
+
+    ph = plugin_handle;
+
 #ifdef WIN32
     static int have_lib = 0;
     HINSTANCE lib;
@@ -1995,8 +1998,6 @@ int xchat_plugin_init(xchat_plugin * plugin_handle, char **plugin_name, char **p
         return 0;
     }
     initialized = 1;
-
-    ph = plugin_handle;
 
     *plugin_name = "Tcl plugin";
     *plugin_desc = "TCL scripting interface";
