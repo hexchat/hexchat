@@ -629,6 +629,14 @@ dcc_read (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 
 	if (dcc->fp == -1)
 	{
+
+		/* try to create the download dir (even if it exists, no harm) */
+#ifdef WIN32
+		mkdir (prefs.dccdir);
+#else
+		mkdir (prefs.dccdir, S_IRUSR | S_IWUSR | S_IXUSR);
+#endif
+
 		if (dcc->resumable)
 		{
 			dcc->fp = open (dcc->destfile_fs, O_WRONLY | O_APPEND | OFLAGS);

@@ -15,7 +15,7 @@ N_("-%C10-%C11-%O$tCannot join%C11 %B$1 %O(You are banned).")},
 N_("-%C10-%C11-%O$t$1 is now known as $2")},
 
 {"Channel Action", pevt_chanaction_help, 2, 0,
-N_("%C13*%O$t$1 $2%O")},
+N_("%C13*%O$t$1%O $2%O")},
 
 {"Channel Action Hilight", pevt_chanaction_help, 2, 0,
 N_("%C13*%O$t%C8%B$1%B%O $2%O")},

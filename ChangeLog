@@ -6,7 +6,7 @@
  2.0.6
 ----------------------------------------------------------------------
 
- - Updated translations (sl).
+ - Updated translations (de, sl).
  - Fixed detection of Python on amd64 (Mads Martin Joergensen).
  - Don't loose editbox contents when pressing up, then down arrow
    (Ricky Clarkson).
@@ -29,10 +29,11 @@
  - Use sigaction inplace of signal() for better compatibility.
  - Win32: Don't try to open logfiles with a "\" in them, windows wont
    allow it.
+ - Backported HTTP authentication code from 1.8.11 (you can now
+   specify a username and password for HTTP proxies).
  - 
  - 
- - 
- - Smaller bug fixes: [822199]
+ - Smaller bug fixes: [822199] [786267] [783172] [811971] [756048].
 
 
 ----------------------------------------------------------------------

@@ -60,6 +60,7 @@ enum
 	ST_RADIO,
 	ST_NUMBER,
 	ST_HSCALE,
+	ST_FRAME,
 	ST_LABEL
 };
 
@@ -245,9 +246,15 @@ static const setting network_settings[] =
 {
 	{ST_ENTRY,	N_("Address to bind to:"), P_OFFSET(hostname), 0, 0, sizeof prefs.hostname},
 	{ST_LABEL,	N_("(Only useful for computers with multiple addresses).")},
-	{ST_ENTRY,	N_("Proxy server:"), P_OFFSET(proxy_host), 0, 0, sizeof prefs.proxy_host},
-	{ST_NUMBER,	N_("Proxy port:"), P_OFFINT(proxy_port), 0, 0, 65535},
-	{ST_MENU,	N_("Proxy type:"), P_OFFINT(proxy_type), 0, proxytypes, 0},
+	{ST_FRAME,	N_("Proxy server"), 0, 0, 0, 0},
+	{ST_ENTRY,	N_("Hostname:"), P_OFFSET(proxy_host), 0, 0, sizeof prefs.proxy_host},
+	{ST_ENTRY,	N_("Username:"), P_OFFSET(proxy_user), 0, 0, sizeof prefs.proxy_user},
+	{ST_ENTRY,	N_("Password:"), P_OFFSET(proxy_pass), 0, 0, sizeof prefs.proxy_pass},
+	{ST_NUMBER,	N_("Port:"), P_OFFINT(proxy_port), 0, 0, 65535},
+	{ST_MENU,	N_("Type:"), P_OFFINT(proxy_type), 0, proxytypes, 0},
+
+	{ST_TOGGLE,	N_("Authenticate to the proxy server (only HTTP)"), P_OFFINT(proxy_auth), 0, 0, 0},
+
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
@@ -392,11 +399,24 @@ setup_create_radio (GtkWidget *table, int row, setting *set)
 }
 #endif
 
+static GtkWidget *proxy_user; 	/* username GtkEntry */
+static GtkWidget *proxy_pass; 	/* password GtkEntry */
+
+
 static void
 setup_menu_cb (GtkWidget *item, const setting *set)
 {
-	setup_set_int (&setup_prefs, set,
-						GPOINTER_TO_INT (g_object_get_data (G_OBJECT (item), "n")));
+	int n = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (item), "n"));
+
+	/* set the prefs.<field> */
+	setup_set_int (&setup_prefs, set, n);
+
+	if (g_object_get_data (G_OBJECT (item), "p"))
+	{
+		/* only HTTP can use a username/pass */
+		gtk_widget_set_sensitive (proxy_user, (n == 4));
+		gtk_widget_set_sensitive (proxy_pass, (n == 4));
+	}
 }
 
 static void
@@ -421,6 +441,11 @@ setup_create_menu (GtkWidget *table, int row, const setting *set)
 	{
 		item = gtk_menu_item_new_with_label (_(text[i]));
 		g_object_set_data (G_OBJECT (item), "n", GINT_TO_POINTER (i));
+
+		/* set a flag for the callback to use */
+		if (text == proxytypes)
+			g_object_set_data (G_OBJECT (item), "p", GINT_TO_POINTER (1));	
+
 		gtk_widget_show (item);
 		gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
 		g_signal_connect (G_OBJECT (item), "activate",
@@ -528,6 +553,17 @@ setup_create_entry (GtkWidget *table, int row, const setting *set)
 	g_signal_connect (G_OBJECT (wid), "changed",
 							G_CALLBACK (setup_entry_cb), (gpointer)set);
 
+	if (set->offset == P_OFFSET(proxy_user))
+		proxy_user = wid;
+	if (set->offset == P_OFFSET(proxy_pass))
+		proxy_pass = wid; 
+
+	/* only http can auth */
+	if ( (set->offset == P_OFFSET(proxy_pass) ||
+			set->offset == P_OFFSET(proxy_user)) &&
+	     setup_prefs.proxy_type != 4)
+		gtk_widget_set_sensitive (wid, FALSE);
+
 	if (set->type == ST_ENTRY)
 		gtk_table_attach (GTK_TABLE (table), wid, 1, 5, row, row + 1,
 								GTK_EXPAND | GTK_FILL, GTK_FILL, 0, 0);
@@ -548,34 +584,56 @@ setup_create_entry (GtkWidget *table, int row, const setting *set)
 }
 
 static GtkWidget *
-setup_create_page (const setting *set)
+setup_create_frame (char *label, GtkWidget **left, GtkWidget **right, GtkWidget *box)
 {
-	int i, row;
-	GtkWidget *tab, *box, *hbox, *left, *right;
+	GtkWidget *tab, *hbox, *frame, *inbox = box;
 
-	box = gtk_vbox_new (FALSE, 20);
-	gtk_container_set_border_width (GTK_CONTAINER (box), 4);
+	if (label)
+	{
+		frame = gtk_frame_new (label);
+		inbox = gtk_vbox_new (FALSE, 3);
+		gtk_container_set_border_width (GTK_CONTAINER (inbox), 5);
+		gtk_container_add (GTK_CONTAINER (frame), inbox);
+		gtk_container_add (GTK_CONTAINER (box), frame);
+	}
 
 	tab = gtk_table_new (3, 2, FALSE);
 	gtk_container_set_border_width (GTK_CONTAINER (tab), 2);
 	gtk_table_set_row_spacings (GTK_TABLE (tab), 2);
 	gtk_table_set_col_spacings (GTK_TABLE (tab), 3);
-	gtk_container_add (GTK_CONTAINER (box), tab);
+	gtk_container_add (GTK_CONTAINER (inbox), tab);
 
 	hbox = gtk_hbox_new (FALSE, 0);
-	gtk_container_add (GTK_CONTAINER (box), hbox);
+	gtk_container_add (GTK_CONTAINER (inbox), hbox);
 
-	left = gtk_vbox_new (FALSE, 0);
-	gtk_container_add (GTK_CONTAINER (hbox), left);
+	*left = gtk_vbox_new (FALSE, 0);
+	gtk_container_add (GTK_CONTAINER (hbox), *left);
 
-	right = gtk_vbox_new (FALSE, 0);
-	gtk_container_add (GTK_CONTAINER (hbox), right);
+	*right = gtk_vbox_new (FALSE, 0);
+	gtk_container_add (GTK_CONTAINER (hbox), *right);
+
+	return tab;
+}
+
+static GtkWidget *
+setup_create_page (const setting *set)
+{
+	int i, row;
+	GtkWidget *tab, *box, *left, *right;
+
+	box = gtk_vbox_new (FALSE, 20);
+	gtk_container_set_border_width (GTK_CONTAINER (box), 4);
+
+	tab = setup_create_frame (NULL, &left, &right, box);
 
 	i = row = 0;
 	while (set[i].type != ST_END)
 	{
 		switch (set[i].type)
 		{
+		case ST_FRAME:
+			tab = setup_create_frame (_(set[i].label), &left, &right, box);
+			break;
 		case ST_EFONT:
 		case ST_ENTRY:
 		case ST_EFILE:

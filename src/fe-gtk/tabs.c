@@ -724,8 +724,12 @@ tab_set_attrlist (GtkWidget *tab, PangoAttrList *list)
 void
 tab_rename (GtkWidget *tab, char *name, int trunc_len)
 {
-	PangoAttrList *attr = gtk_label_get_attributes (GTK_LABEL (GTK_BIN (tab)->child));
+	PangoAttrList *attr = NULL;
 	char *new_name;
+
+	/* Toplevel window's tabs are not working here, why? */
+	if (GTK_IS_LABEL (GTK_BIN (tab)->child))
+		attr = gtk_label_get_attributes (GTK_LABEL (GTK_BIN (tab)->child));
 
 	new_name = truncate_tab_name (name, trunc_len);
 	if (new_name)

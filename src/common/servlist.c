@@ -116,6 +116,9 @@ static const struct defaultserver def[] =
 	{0,			"irc.azzurra.org"},
 	{0,			"crypto.azzurra.org"},
 
+	{"Buzzpot", 0},
+	{0,			"irc.chatspike.net"},
+
 	{"ChatJunkies",	0, "#xchat"},
 	{0,			"irc.chatjunkies.org"},
 	{0,			"nl.chatjunkies.org"},
@@ -450,6 +453,14 @@ static const struct defaultserver def[] =
 	{"UnderNet",	0},
 	{0,			"us.undernet.org"},
 	{0,			"eu.undernet.org"},
+
+	{"UniBG",		0},
+	{0,			"irc.lirex.com"},
+	{0,			"irc.naturella.com"},
+	{0,			"irc.spnet.net"},
+	{0,			"irc.techno-link.com"},
+	{0,			"irc.telecoms.bg"},
+	{0,			"irc.tu-varna.edu"},
 
 	{"Unsecurity",	0},
 	{0,			"irc.unsecurity.org"},
