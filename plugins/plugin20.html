@@ -501,7 +501,7 @@ tab-window is focused by the window manager.
 <br>word[3] Nick
 <br>word[4] The Message
 </blockquote>
-"Key Press" - Called when some keys are pressed in the input-box. It provides these elements in the word[] array:<blockquote>word[1] Key Value
+"Key Press" - Called when some keys are pressed in the input-box (since 2.4.2). It provides these elements in the word[] array:<blockquote>word[1] Key Value
 <br>word[2] State Bitfield (shift, capslock, alt)
 <br>word[3] String version of the key
 <br>word[4] Length of the string (may be 0 for unprintable keys)
@@ -761,7 +761,7 @@ A few extra bits of information are available that don't appear in the /set list
 <br>
 <blockquote>
 	<table border=0 cellpadding=5>
-	<tr><td width="18%">state_cursor</td><td>Current input-box cursor position (characters, not bytes).</td></tr>
+	<tr><td width="18%">state_cursor</td><td>Current input-box cursor position (characters, not bytes). Since 2.4.2.</td></tr>
 	</table>
 </blockquote>
 <br><b>Arguments:</b>
