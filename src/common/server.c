@@ -1251,7 +1251,7 @@ server_connect (server *serv, char *hostname, int port, int no_login)
 	{
 		/* use default port for this server type */
 		port = 6667;
-#ifdef USE_SSL
+#ifdef USE_OPENSSL
 		if (serv->use_ssl)
 			port = 9999;
 #endif

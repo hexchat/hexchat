@@ -958,7 +958,7 @@ xchat_list_fields (xchat_plugin *ph, const char *name)
 {
 	static const char *dcc_fields[] =
 	{
-		"icps",		"sdestfile","sfile",		"snick",		"ipos",
+		"iaddress32","icps",		"sdestfile","sfile",		"snick",		"ipos",
 		"iresume",	"isize",		"istatus", 	"itype",		NULL
 	};
 	static const char *channels_fields[] =
@@ -1064,6 +1064,8 @@ xchat_list_int (xchat_plugin *ph, xchat_list *xlist, const char *name)
 		{
 		case 0x181a6: /* cps */
 			return ((struct DCC *)data)->cps;
+		case 0x34207553: /* address32 */
+			return ((struct DCC *)data)->addr;
 		case 0x1b254: /* pos */
 			return ((struct DCC *)data)->pos;
 		case 0xc84dc82d: /* resume */

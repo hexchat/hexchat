@@ -22,9 +22,6 @@ incompatibilities from 1.8.x:
 - user_list and user_list_short:
   If a user has both op and voice, only the op flag will be 1.
 
-- dcc_list
-  The address field is always 0.
-
 - add_user_list/sub_user_list/clear_user_list
   These functions do nothing.
 
@@ -743,9 +740,8 @@ static XS (XS_IRC_dcc_list)
 			else
 				XST_mIV (i, xchat_list_int (ph, list, "resume"));
 			i++;
-			XST_mIV (i, 0);	/* FIXME: addr */
+			XST_mIV (i, xchat_list_int (ph, list, "address32"));
 			i++;
-
 			file = xchat_list_str (ph, list, "destfile");
 			if (!file)
 				file = "";
@@ -1104,12 +1100,26 @@ perl_command_load (char *word[], char *word_eol[], void *userdata)
 	return XCHAT_EAT_NONE;
 }
 
+
+/* Reinit safeguard */
+
+static int initialized = 0;
+static int reinit_tried = 0;
+
 int
 xchat_plugin_init (xchat_plugin *plugin_handle,
 				char **plugin_name, char **plugin_desc, char **plugin_version,
 				char *arg)
 {
 	ph = plugin_handle;
+	
+	if (initialized != 0)
+	{
+		xchat_print (ph, "Perl interface already loaded\n");
+		reinit_tried++;
+		return 0;
+	}
+	initialized = 1;
 
 	*plugin_name = "Perl";
 	*plugin_version = VERSION;
@@ -1121,13 +1131,23 @@ xchat_plugin_init (xchat_plugin *plugin_handle,
 
 	perl_auto_load ();
 
+	xchat_print (ph, "Perl interface loaded\n");
+
 	return 1;
 }
 
 int
 xchat_plugin_deinit (xchat_plugin *plugin_handle)
 {
+	if (reinit_tried)
+	{
+		reinit_tried--;
+		return 1;
+	}
+
 	perl_end ();
+
+	xchat_print (plugin_handle, "Perl interface unloaded\n");
 
 	return 1;
 }
