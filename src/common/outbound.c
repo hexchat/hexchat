@@ -2651,6 +2651,7 @@ auto_insert (char *dest, unsigned char *src, char *word[], char *word_eol[],
 	struct tm *tm_ptr;
 	char *utf;
 	int utf_len;
+	char *orig = dest;
 
 	while (src[0])
 	{
@@ -2681,10 +2682,20 @@ auto_insert (char *dest, unsigned char *src, char *word[], char *word_eol[],
 						num = src[0] - '0';	/* ascii to decimal */
 						if (*word[num] == 0)
 							return 0;
+
 						if (src[-1] == '%')
-							strcpy (dest, word[num]);
+							utf = word[num];
 						else
-							strcpy (dest, word_eol[num]);
+							utf = word_eol[num];
+
+						/* avoid recusive usercommand overflow */
+						if ((dest - orig) + strlen (utf) >= 2048)
+						{
+							PrintText (0, "UserCommand buffer overflow.\n");
+							return 0;
+						}
+
+						strcpy (dest, utf);
 						dest += strlen (dest);
 					}
 				}
