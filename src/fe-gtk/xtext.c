@@ -623,8 +623,8 @@ gtk_xtext_init (GtkXText * xtext)
 	g_object_ref (G_OBJECT (xtext->adj));
 	gtk_object_sink ((GtkObject *) xtext->adj);
 
-	g_signal_connect (G_OBJECT (xtext->adj), "value_changed",
-							G_CALLBACK (gtk_xtext_adjustment_changed), xtext);
+	xtext->vc_signal_tag = g_signal_connect (G_OBJECT (xtext->adj),
+				"value_changed", G_CALLBACK (gtk_xtext_adjustment_changed), xtext);
 	{
 		static const GtkTargetEntry targets[] = {
 			{ "UTF8_STRING", 0, TARGET_UTF8_STRING },
@@ -2086,7 +2086,7 @@ static gboolean
 gtk_xtext_scroll (GtkWidget *widget, GdkEventScroll *event)
 {
 	GtkXText *xtext = GTK_XTEXT (widget);
-	int new_value;
+	gfloat new_value;
 
 	if (event->direction == GDK_SCROLL_UP)		/* mouse wheel pageUp */
 	{
@@ -4045,15 +4045,18 @@ gtk_xtext_render_page_timeout (GtkXText * xtext)
 	{
 		xtext->buffer->old_value = -1;
 		adj->value = 0;
-		gtk_xtext_render_page (xtext);
 	} else if (xtext->buffer->scrollbar_down)
 	{
+		g_signal_handler_block (xtext->adj, xtext->vc_signal_tag);
 		gtk_xtext_adjustment_set (xtext->buffer, FALSE);
 		gtk_adjustment_set_value (adj, adj->upper - adj->page_size);
+		g_signal_handler_unblock (xtext->adj, xtext->vc_signal_tag);
 	} else
 	{
-		gtk_xtext_adjustment_set (xtext->buffer, TRUE);
+		gtk_xtext_adjustment_set (xtext->buffer, FALSE);
 	}
+
+	gtk_xtext_render_page (xtext);
 
 	return 0;
 }
