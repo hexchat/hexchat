@@ -547,6 +547,9 @@ load_config (void)
 	if ((realname && realname[0] == 0) || !realname)
 		realname = username;
 
+	username = g_locale_to_utf8 (username, -1, 0, 0, 0);
+	realname = g_locale_to_utf8 (realname, -1, 0, 0, 0);
+
 	memset (&prefs, 0, sizeof (struct xchatprefs));
 
 	/* put in default values, anything left out is automatically zero */
@@ -690,6 +693,9 @@ load_config (void)
 		prefs.mainwindow_height = 138;
 	if (prefs.mainwindow_width < 106)
 		prefs.mainwindow_width = 106;
+
+	g_free ((char *)username);
+	g_free ((char *)realname);
 }
 
 int

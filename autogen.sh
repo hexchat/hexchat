@@ -28,7 +28,7 @@ fi
 
 echo searching for GNU gettext intl directory...
 
-dirs="/usr/share /usr/local/share /opt/share /usr /usr/local /opt /usr/gnu/share"
+dirs="/usr/share /usr/local/share /opt/share /usr /usr/local /opt /usr/gnu/share /opt/local /opt/local/share"
 found=0
 for try in $dirs; do
 	echo -n " -> $try/gettext/intl... "

@@ -398,7 +398,16 @@ static session *ps;
 static void
 plugin_auto_load_cb (char *filename)
 {
-	plugin_load (ps, filename, NULL);
+	char *pMsg;
+
+	pMsg = plugin_load (ps, filename, NULL);
+	if (pMsg)
+	{
+		PrintText (ps, "AutoLoad failed for: ");
+		PrintText (ps, filename);
+		PrintText (ps, "\n");
+		PrintText (ps, pMsg);
+	}
 }
 
 void
