@@ -744,23 +744,15 @@ dcc_connect_finished (GIOChannel *source, GIOCondition condition, struct DCC *dc
 	}
 
 #ifdef WIN32
-	PrintTextf (0, "\0034DEBUG\t\017connect() finished, condition is $%x\n",
-					condition);
 	if (condition & G_IO_ERR)
 	{
-		int val, ret;
-		socklen_t len;
+		int len;
 
 		/* find the last errno for this socket */
-		len = sizeof (val);
-		ret = getsockopt (dcc->sok, SOL_SOCKET, SO_ERROR, (char *)&val, &len);
-		PrintTextf (0, "\0034DEBUG\t\017getsockopt() returned %d. Value is %d\n",
-						ret, val);
-		if (ret == -1)
-			PrintTextf (0, "\0034DEBUG\t\017WSAGetLastError() returned %d\n",
-							sock_error ());
+		len = sizeof (er);
+		getsockopt (dcc->sok, SOL_SOCKET, SO_ERROR, (char *)&er, &len);
 		EMIT_SIGNAL (XP_TE_DCCCONFAIL, dcc->serv->front_session,
-						 dcctypes[(int) dcc->type], dcc->nick, errorstring (val),
+						 dcctypes[(int) dcc->type], dcc->nick, errorstring (er),
 						 NULL, 0);
 		dcc->dccstat = STAT_FAILED;
 		update_dcc_window (dcc->type);
