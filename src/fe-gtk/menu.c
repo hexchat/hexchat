@@ -1228,8 +1228,8 @@ static struct mymenu mymenu[] = {
 	{N_("Save Text..."), menu_savebuffer, GTK_STOCK_SAVE, M_MENUSTOCK, 0, 1},
 
 	{N_("_Help"), 0, 0, M_NEWMENU, 0, 1},	/* 62 */
-	{N_("Contents"), menu_docs, GTK_STOCK_HELP, M_MENUSTOCK, 0, 1, GDK_F1},
-	{N_("About"), menu_about, 0, M_MENU, 0, 1},
+	{N_("_Contents"), menu_docs, GTK_STOCK_HELP, M_MENUSTOCK, 0, 1, GDK_F1},
+	{N_("_About"), menu_about, 0, M_MENU, 0, 1},
 
 	{0, 0, 0, M_END, 0, 0},
 };
