@@ -2514,7 +2514,7 @@ gtk_xtext_render_str (GtkXText * xtext, int y, textentry * ent, unsigned char *s
 	if (!xtext->skip_border_fills)
 	{
 		/* draw background to the left of the text */
-		if (str == ent->str && indent && xtext->buffer->time_stamp)
+		if (str == ent->str && indent > MARGIN && xtext->buffer->time_stamp)
 		{
 			/* don't overwrite the timestamp */
 			if (indent > xtext->stamp_width)
