@@ -28,7 +28,8 @@ BEGIN {
 		       constants => [
 				     qw(PRI_HIGHEST PRI_HIGH PRI_NORM PRI_LOW),
 				     qw(PRI_LOWEST EAT_NONE EAT_XCHAT),
-				     qw(EAT_PLUGIN EAT_ALL),
+				     qw(EAT_PLUGIN EAT_ALL FD_READ FD_WRITE),
+				     qw(FD_EXCEPTION FD_NOTSOCKET),
 				    ],
 		       hooks => [
 				 qw(hook_server hook_command),
@@ -44,13 +45,24 @@ BEGIN {
 
 }
 
+sub Xchat::register {
+  my ($name, $version, $description, $callback) = @_;
+  $description = "" unless defined $description;
+  $callback = undef unless $callback;
+  my $filename = caller;
+  $filename =~ s/.*:://;
+
+  $filename =~ s/_([[:xdigit:]]{2})/+pack('H*',$1)/eg;
+  Xchat::_register( $name, $version, $description, $callback, $filename );
+}
 sub Xchat::hook_server {
   return undef unless @_ >= 2;
 
   my $message = shift;
   my $callback = shift;
   my $options = shift;
-  
+  my $package = caller;
+  $callback = Xchat::_fix_callback( $package, $callback );
   my ($priority, $data) = ( Xchat::PRI_NORM, undef );
   
   if ( ref( $options ) eq 'HASH' ) {
@@ -72,7 +84,8 @@ sub Xchat::hook_command {
   my $command = shift;
   my $callback = shift;
   my $options = shift;
-
+  my $package = caller;
+  $callback = Xchat::_fix_callback( $package, $callback );
   my ($priority, $help_text, $data) = ( Xchat::PRI_NORM, '', undef );
 
   if ( ref( $options ) eq 'HASH' ) {
@@ -98,7 +111,8 @@ sub Xchat::hook_print {
   my $event = shift;
   my $callback = shift;
   my $options = shift;
-
+  my $package = caller;
+  $callback = Xchat::_fix_callback( $package, $callback );
   my ($priority, $data) = ( Xchat::PRI_NORM, undef );
 
   if ( ref( $options ) eq 'HASH' ) {
@@ -118,10 +132,10 @@ sub Xchat::hook_print {
 sub Xchat::hook_timer {
   return undef unless @_ >= 2;
 
-  my $timeout = shift;
-  my $callback = shift;
-  my $data = shift;
-
+  my ($timeout, $callback, $data) = @_;
+  my $package = caller;
+  $callback = Xchat::_fix_callback( $package, $callback );
+ 
   if( ref( $data ) eq 'HASH' && exists( $data->{data} )
       && defined( $data->{data} ) ) {
     $data = $data->{data};
@@ -130,6 +144,39 @@ sub Xchat::hook_timer {
   return Xchat::_hook_timer( $timeout, $callback, $data );
 
 }
+
+# sub Xchat::hook_fd {
+#   return undef unless @_ >= 2;
+#   my ($fd, $callback, $options) = @_;
+#   my $fileno = fileno $fd;
+#   return undef unless defined $fileno; # no underlying fd for this handle
+
+#   my $package = caller;
+#   $callback = Xchat::_fix_callback( $package, $callback );
+ 
+#   my ($flags, $data) = (Xchat::FD_READ, undef);
+  
+#   if( ref( $options ) eq 'HASH' ) {
+#     if( exists( $options->{flags} ) && defined( $options->{flags} ) ) {
+#       $flags = $options->{flags};
+#     }
+#     if( exists( $options->{data} ) && defined( $options->{data} ) ) {
+#       $data = $options->{data};
+#     }
+#   }
+
+#   my $cb = sub {
+#     my $userdata = shift;
+#     no strict 'refs';
+#     return &{$userdata->{CB}}($userdata->{FD}, $userdata->{FLAGS},
+# 			      $userdata->{DATA},
+# 			     );
+#   };
+#   return Xchat::_hook_fd( $fileno, $cb, $flags,
+# 			  { DATA => $data, FD => $fd, CB => $callback,
+# 			    FLAGS => $flags,
+# 			  } );
+# }
 
 sub Xchat::print {
 
@@ -254,6 +301,17 @@ sub Xchat::strip_code {
   }
 }
 
+sub Xchat::_fix_callback {
+  my ($package, $callback) = @_;
+
+  unless( ref $callback ) {
+    # change the package to the correct one in case it was hardcoded
+    $callback =~ s/^.*:://;
+    $callback = qq[${package}::$callback];
+  }
+  return $callback;
+}
+
 $SIG{__WARN__} = sub {
   local $, = "\n";
   my ($package, $file, $line, $sub) = caller(1);
@@ -263,43 +321,53 @@ $SIG{__WARN__} = sub {
 
 sub Xchat::Embed::load {
   my $file = shift @_;
-
-  if( open FH, $file ) {
-	 my $data = do {local $/; <FH>};
-	 close FH;
-
-# 	 my $package = Xchat::Embed::valid_package( $file );
-# 	 if( $data =~ m/^\s*package .*?;/m ) {
-# 		$data =~ s/^\s*package .*?;/package $package;/m;
-# 	 } else {
-# 		$data = "package $package;" . $data;
-# 	 }
-	 eval $data;
-
-	 if( $@ ) {
-		# something went wrong
-		Xchat::print( "Error loading '$file':\n$@\n" );
-		return 1;
-	 }
-
-  } else {
-
-	 Xchat::print( "Error opening '$file': $!\n" );
-	 return 2;
+  my $package = Xchat::Embed::valid_package( $file );
+  
+  if( exists $INC{$package} ) {
+    Xchat::print( qq{'$file' already loaded.} );
+    return 2;
   }
+  
+  if( open FH, $file ) {
+    my $data = do {local $/; <FH>};
+    close FH;
 
+    if( my @matches = $data =~ m/^\s*package .*?;/m ) {
+      if( @matches > 1 ) {
+	Xchat::print( "Too many package defintions, only 1 is allowed" );
+	return 1;
+      }
+
+      $data =~ s/^\s*package .*?;/package $package;/m;
+    } else {
+      $data = "package $package;" . $data;
+    }
+    eval $data;
+
+    if( $@ ) {
+      # something went wrong
+      Xchat::print( "Error loading '$file':\n$@\n" );
+      return 1;
+    }
+    $INC{$package} = 1;
+  } else {
+    
+    Xchat::print( "Error opening '$file': $!\n" );
+    return 2;
+  }
+  
   return 0;
 }
 
-# sub Xchat::Embed::valid_package {
+sub Xchat::Embed::valid_package {
 
-#   my $string = shift @_;
-#   $string =~ s/\.pl$//i;
-#   $string =~ s/([^A-Za-z0-9\/])/sprintf("_%2x",unpack("C",$1))/eg;
-#   # second pass only for words starting with a digit
-#   $string =~ s|/(\d)|sprintf("/_%2x",unpack("C",$1))|eg;
+  my $string = shift @_;
+  #$string =~ s/\.pl$//i;
+  $string =~ s|([^A-Za-z0-9/])|'_'.unpack("H*",$1)|eg;
+  # pass only for words starting with a digit
+  #$string =~ s|/(\d)|'_'.unpack("H*",$1)|eg;
 
-#   # Dress it up as a real package name
-#   $string =~ s|/|::|g;
-#   return "Xchat::Embed" . $string;
-# }
+  #Dress it up as a real package name
+  $string =~ s|/|::|g;
+  return "Xchat::Embed" . $string;
+}

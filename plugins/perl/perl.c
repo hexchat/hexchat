@@ -46,7 +46,7 @@ static DWORD
 child (char *str)
 {
 	MessageBoxA (0, str, "Perl DLL Error",
-					 MB_OK|MB_ICONHAND|MB_SETFOREGROUND|MB_TASKMODAL);
+		     MB_OK|MB_ICONHAND|MB_SETFOREGROUND|MB_TASKMODAL);
 	return 0;
 }
 
@@ -163,6 +163,35 @@ execute_perl( SV *function, char *args)
 
 	return ret_value;
 }
+
+/* static int */
+/* fd_cb (int fd, int flags, void *userdata) */
+/* { */
+/* 	HookData *data = (HookData *)userdata; */
+	
+/* 	dSP; */
+/* 	ENTER; */
+/* 	SAVETMPS; */
+
+/* 	PUSHMARK (SP); */
+/* 	XPUSHs (data->userdata); */
+/* 	PUTBACK; */
+
+/* 	call_sv (data->callback, G_EVAL); */
+/* 	SPAGAIN; */
+/* 	if (SvTRUE (ERRSV)) */
+/* 	{ */
+/* 		xchat_printf (ph, "Error in fd callback %s", */
+/* 				SvPV_nolen (ERRSV)); */
+/* 		POPs; /\* remove undef from the top of the stack *\/ */
+/* 	} */
+	
+/* 	PUTBACK; */
+/* 	FREETMPS; */
+/* 	LEAVE; */
+	
+/* 	return XCHAT_EAT_ALL; */
+/* } */
 
 static int
 timer_cb (void *userdata)
@@ -429,44 +458,26 @@ print_cb (char *word[], void *userdata)
 
 /* custom IRC perl functions for scripting */
 
-/* Xchat::register (scriptname, version, desc, shutdowncallback,)
- *  all scripts should call this at startup
+/* Xchat::_register (scriptname, version, desc, shutdowncallback, filename)
  *
  */
 
 static XS (XS_Xchat_register)
 {
-	char *name, *ver, *desc;
+	char *name, *ver, *desc, *filename;
 	SV *callback;
 	PerlScript *scp;
 	dXSARGS;
-	if (items < 2 || items > 4) {
+	if (items != 5) {
 		xchat_printf (ph,
-		"Usage: Xchat::register(scriptname, version, [desc,[shutdowncallback]])");
+		"Usage: Xchat::_register(scriptname, version, desc,shutdowncallback, filename)");
 	} else {
 		name = SvPV_nolen (ST (0));
 		ver = SvPV_nolen (ST (1));
-		desc = NULL;
-		callback = &PL_sv_undef;
+		desc = SvPV_nolen (ST (2));
+		callback = ST (3);
+		filename = SvPV_nolen(ST (4));
 
-		switch(items)
-		{
-		case 3:
-		  if(SvTRUE (ST (2))) {
-		    desc = SvPV_nolen (ST (2));
-		  }
-		  break;
-		case 4:
-		  if(SvTRUE (ST (2))) {
-		    desc = SvPV_nolen (ST (2));
-		  }
-		  callback = ST (3);
-		  break;
-		}
-	  
-		if(desc == NULL ) {
-			desc = "";
-		}
 		scp = malloc (sizeof (PerlScript));
 		scp->name = strdup (name);
 		scp->version = strdup (ver);
@@ -474,9 +485,9 @@ static XS (XS_Xchat_register)
 	  
 		scp->shutdowncallback = sv_mortalcopy (callback);
 		SvREFCNT_inc (scp->shutdowncallback);
-		/* FIXME: no filename */
-		scp->gui_entry = xchat_plugingui_add (ph, scp->name, scp->name,
-															scp->desc, scp->version, NULL);
+
+		scp->gui_entry = xchat_plugingui_add (ph, filename, scp->name,
+						      scp->desc, scp->version, NULL);
 	  
 		perl_list = g_slist_prepend (perl_list, scp);
 	  
@@ -731,7 +742,7 @@ static XS (XS_Xchat_hook_print)
 	}
 }
 
-/* Xchat::_hook_timer(timeout, callback, [userdata]) */
+/* Xchat::_hook_timer(timeout, callback, userdata) */
 static XS (XS_Xchat_hook_timer)
 {
 	int	timeout;
@@ -768,6 +779,46 @@ static XS (XS_Xchat_hook_timer)
 		XSRETURN_IV (PTR2UV(RETVAL));
 	}
 }
+
+/* Xchat::_hook_fd(fd, callback, flags, userdata) */
+/* static XS (XS_Xchat_hook_fd) */
+/* { */
+/* 	int	fd; */
+/* 	SV *	callback; */
+/* 	int	flags; */
+/* 	SV *	userdata; */
+/* 	xchat_hook * RETVAL; */
+/* 	HookData *data; */
+
+/* 	dXSARGS; */
+
+/* 	if (items != 4) { */
+/* 		xchat_print (ph, */
+/* 		"Usage: Xchat::_hook_fd(fd, callback, flags, userdata)"); */
+/* 	} else { */
+/* 		fd = (int)SvIV (ST (0)); */
+/* 		callback = ST (1); */
+/* 		flags = (int)SvIV (ST (2)); */
+/* 		userdata = ST (3); */
+/* 		data = NULL; */
+/* 		data = malloc (sizeof (HookData)); */
+
+/* 		if (data == NULL) { */
+/* 			XSRETURN_UNDEF; */
+/* 		} */
+
+/* 		data->name = NULL; */
+/* 		data->callback = sv_mortalcopy (callback); */
+/* 		SvREFCNT_inc (data->callback); */
+/* 		data->userdata = sv_mortalcopy (userdata); */
+/* 		SvREFCNT_inc (data->userdata); */
+/* 		RETVAL = xchat_hook_fd (ph, fd, flags, fd_cb, data); */
+/* 		data->hook = RETVAL; */
+/* 		hook_list = g_slist_append (hook_list, RETVAL); */
+
+/* 		XSRETURN_IV (PTR2UV(RETVAL)); */
+/* 	} */
+/* } */
 
 static XS(XS_Xchat_unhook)
 {
@@ -1016,11 +1067,12 @@ xs_init (pTHX)
 	   scripts by the 'use perlmod;' construction*/
 	newXS ("DynaLoader::boot_DynaLoader", boot_DynaLoader, file);
 	/* load up all the custom IRC perl functions */
-	newXS("Xchat::register", XS_Xchat_register, "Xchat");
+	newXS("Xchat::_register", XS_Xchat_register, "Xchat");
 	newXS("Xchat::_hook_server", XS_Xchat_hook_server, "Xchat");
 	newXS("Xchat::_hook_command", XS_Xchat_hook_command, "Xchat");
 	newXS("Xchat::_hook_print", XS_Xchat_hook_print, "Xchat");
 	newXS("Xchat::_hook_timer", XS_Xchat_hook_timer, "Xchat");
+/* 	newXS("Xchat::_hook_fd", XS_Xchat_hook_fd, "Xchat"); */
 	newXS("Xchat::unhook", XS_Xchat_unhook, "Xchat");
 	newXS("Xchat::_print", XS_Xchat_print, "Xchat");
 	newXS("Xchat::_command", XS_Xchat_command, "Xchat");
@@ -1067,15 +1119,9 @@ perl_init (void)
 	char *perl_args[] = { "", "-e", "0", "-w" };
 	const char perl_definitions[] =
 	{
-	  /* We use to function one to load a file the other to
-	     execute the string obtained from the first and holding
-	     the file conents. This allows to have a realy local $/
-	     without introducing temp variables to hold the old
-	     value. Just a question of style:) 
-	     We also redefine the $SIG{__WARN__} handler to have XChat
+	  /* Redefine the $SIG{__WARN__} handler to have XChat
 	     printing warnings in the main window. (TheHobbit)*/
 	  
-	  "use strict; use warnings;"
 	  "BEGIN {\n"
 	  "$INC{'Xchat.pm'} = 'DUMMY';\n"
 	  "}\n"
@@ -1105,7 +1151,8 @@ perl_init (void)
 	  "constants => [\n"
 	  "qw(PRI_HIGHEST PRI_HIGH PRI_NORM PRI_LOW),\n"
 	  "qw(PRI_LOWEST EAT_NONE EAT_XCHAT),\n"
-	  "qw(EAT_PLUGIN EAT_ALL),\n"
+	  "qw(EAT_PLUGIN EAT_ALL FD_READ FD_WRITE),\n"
+	  "qw(FD_EXCEPTION FD_NOTSOCKET),\n"
 	  "],\n"
 	  "hooks => [\n"
 	  "qw(hook_server hook_command),\n"
@@ -1119,11 +1166,22 @@ perl_init (void)
 	  "],\n"
 	  ");\n"
 	  "}\n"
+	  "sub Xchat::register {\n"
+	  "my ($name, $version, $description, $callback) = @_;\n"
+	  "$description = \"\" unless defined $description;\n"
+	  "$callback = undef unless $callback;\n"
+	  "my $filename = caller;\n"
+	  "$filename =~ s/.*:://;\n"
+	  "$filename =~ s/_([[:xdigit:]]{2})/+pack('H*',$1)/eg;\n"
+	  "Xchat::_register( $name, $version, $description, $callback, $filename );\n"
+	  "}\n"
 	  "sub Xchat::hook_server {\n"
 	  "return undef unless @_ >= 2;\n"
 	  "my $message = shift;\n"
 	  "my $callback = shift;\n"
 	  "my $options = shift;\n"
+	  "my $package = caller;\n"
+	  "$callback = Xchat::_fix_callback( $package, $callback );\n"
 	  "my ($priority, $data) = ( Xchat::PRI_NORM, undef );\n"
 	  "if ( ref( $options ) eq 'HASH' ) {\n"
 	  "if ( exists( $options->{priority} ) && defined( $options->{priority} ) ) {\n"
@@ -1140,6 +1198,8 @@ perl_init (void)
 	  "my $command = shift;\n"
 	  "my $callback = shift;\n"
 	  "my $options = shift;\n"
+	  "my $package = caller;\n"
+	  "$callback = Xchat::_fix_callback( $package, $callback );\n"
 	  "my ($priority, $help_text, $data) = ( Xchat::PRI_NORM, '', undef );\n"
 	  "if ( ref( $options ) eq 'HASH' ) {\n"
 	  "if ( exists( $options->{priority} ) && defined( $options->{priority} ) ) {\n"
@@ -1160,6 +1220,8 @@ perl_init (void)
 	  "my $event = shift;\n"
 	  "my $callback = shift;\n"
 	  "my $options = shift;\n"
+	  "my $package = caller;\n"
+	  "$callback = Xchat::_fix_callback( $package, $callback );\n"
 	  "my ($priority, $data) = ( Xchat::PRI_NORM, undef );\n"
 	  "if ( ref( $options ) eq 'HASH' ) {\n"
 	  "if ( exists( $options->{priority} ) && defined( $options->{priority} ) ) {\n"
@@ -1173,9 +1235,9 @@ perl_init (void)
 	  "}\n"
 	  "sub Xchat::hook_timer {\n"
 	  "return undef unless @_ >= 2;\n"
-	  "my $timeout = shift;\n"
-	  "my $callback = shift;\n"
-	  "my $data = shift;\n"
+	  "my ($timeout, $callback, $data) = @_;\n"
+	  "my $package = caller;\n"
+	  "$callback = Xchat::_fix_callback( $package, $callback );\n"
 	  "if( ref( $data ) eq 'HASH' && exists( $data->{data} )\n"
 	  "&& defined( $data->{data} ) ) {\n"
 	  "$data = $data->{data};\n"
@@ -1286,6 +1348,14 @@ perl_init (void)
 	  "$_[0] =~ s/$pattern//g;\n"
 	  "}\n"
 	  "}\n"
+	  "sub Xchat::_fix_callback {\n"
+	  "my ($package, $callback) = @_;\n"
+	  "unless( ref $callback ) {\n"
+	  "$callback =~ s/^.*:://;\n"
+	  "$callback = qq[${package}::$callback];\n"
+	  "}\n"
+	  "return $callback;\n"
+	  "}\n"
 	  "$SIG{__WARN__} = sub {\n"
 	  "local $, = \"\\n\";\n"
 	  "my ($package, $file, $line, $sub) = caller(1);\n"
@@ -1294,39 +1364,48 @@ perl_init (void)
 	  "};\n"
 	  "sub Xchat::Embed::load {\n"
 	  "my $file = shift @_;\n"
+	  "my $package = Xchat::Embed::valid_package( $file );\n"
+	  "if( exists $INC{$package} ) {\n"
+	  "Xchat::print( qq{'$file' already loaded.} );\n"
+	  "return 2;\n"
+	  "}\n"
 	  "if( open FH, $file ) {\n"
 	  "my $data = do {local $/; <FH>};\n"
 	  "close FH;\n"
+	  "if( $data =~ m/^\\s*package .*?;/m ) {\n"
+	  "$data =~ s/^\\s*package .*?;/package $package;/m;\n"
+	  "} else {\n"
+	  "$data = \"package $package;\" . $data;\n"
+	  "}\n"
 	  "eval $data;\n"
 	  "if( $@ ) {\n"
 	  "Xchat::print( \"Error loading '$file':\\n$@\\n\" );\n"
 	  "return 1;\n"
 	  "}\n"
+	  "$INC{$package} = 1;\n"
 	  "} else {\n"
 	  "Xchat::print( \"Error opening '$file': $!\\n\" );\n"
 	  "return 2;\n"
 	  "}\n"
 	  "return 0;\n"
 	  "}\n"
+	  "sub Xchat::Embed::valid_package {\n"
+	  "my $string = shift @_;\n"
+	  "$string =~ s|([^A-Za-z0-9/])|'_'.unpack(\"H*\",$1)|eg;\n"
+	  "$string =~ s|/|::|g;\n"
+	  "return \"Xchat::Embed\" . $string;\n"
+	  "}\n"
 #ifdef OLD_PERL
-	  "sub IRC::_fix_callback {\n"
-	  "my ($package, $callback) = @_;\n"
-	  "unless( ref $callback ) {\n"
-	  "$callback =~ s/^.*:://;\n"
-	  "$callback = qq[${package}::$callback];\n"
-	  "}\n"
-	  "return $callback;\n"
-	  "}\n"
 	  "sub IRC::register {\n"
 	  "my ($script_name, $version, $callback) = @_;\n"
 	  "my $package = caller;\n"
-	  "$callback = IRC::_fix_callback( $package, $callback) if $callback;\n"
+	  "$callback = Xchat::_fix_callback( $package, $callback) if $callback;\n"
 	  "Xchat::register( $script_name, $version, undef, $callback );\n"
 	  "}\n"
 	  "sub IRC::add_command_handler {\n"
 	  "my ($command, $callback) = @_;\n"
 	  "my $package = caller;\n"
-	  "$callback = IRC::_fix_callback( $package, $callback );\n"
+	  "$callback = Xchat::_fix_callback( $package, $callback );\n"
 	  "my $start_index = $command ? 1 : 0;\n"
 	  "Xchat::hook_command( $command,\n"
 	  "sub {\n"
@@ -1339,7 +1418,7 @@ perl_init (void)
 	  "sub IRC::add_message_handler {\n"
 	  "my ($message, $callback) = @_;\n"
 	  "my $package = caller;\n"
-	  "$callback = IRC::_fix_callback( $package, $callback );\n"
+	  "$callback = Xchat::_fix_callback( $package, $callback );\n"
 	  "Xchat::hook_server( $message,\n"
 	  "sub {\n"
 	  "no strict 'refs';\n"
@@ -1351,7 +1430,7 @@ perl_init (void)
 	  "sub IRC::add_print_handler {\n"
 	  "my ($event, $callback) = @_;\n"
 	  "my $package = caller;\n"
-	  "$callback = IRC::_fix_callback( $package, $callback );\n"
+	  "$callback = Xchat::_fix_callback( $package, $callback );\n"
 	  "Xchat::hook_print( $event,\n"
 	  "sub {\n"
 	  "my @word = @{$_[0]};\n"
@@ -1364,7 +1443,7 @@ perl_init (void)
 	  "sub IRC::add_timeout_handler {\n"
 	  "my ($timeout, $callback) = @_;\n"
 	  "my $package = caller;\n"
-	  "$callback = IRC::_fix_callback( $package, $callback );\n"
+	  "$callback = Xchat::_fix_callback( $package, $callback );\n"
 	  "Xchat::hook_timer( $timeout,\n"
 	  "sub {\n"
 	  "no strict 'refs';\n"
@@ -1531,6 +1610,11 @@ perl_init (void)
 	  "return;\n"
 	  "}\n"
 	  "}\n"
+	  "sub IRC::add_user_list {}\n"
+	  "sub IRC::sub_user_list {}\n"
+	  "sub IRC::clear_user_list {}\n"
+	  "sub IRC::notify_list {}\n"
+	  "sub IRC::perl_script_list {}\n"
 #endif
 
 	};
