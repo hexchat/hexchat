@@ -15,7 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#define VERSION "1.0.28"
+#define VERSION "1.0.30"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -29,10 +29,6 @@
 
 #ifdef WIN32
 #include <windows.h>
-#endif
-
-#ifdef WIN32
-#define strcasecmp stricmp
 #endif
 
 #include "xchat-plugin.h"
@@ -1373,7 +1369,7 @@ static int tcl_queries(ClientData cd, Tcl_Interp * irp, int argc, char *argv[])
         CHECKCTX(ctx);
         xchat_set_context(ph, ctx);
     }
-    
+
     server = (char *) xchat_get_info(ph, "server");
 
     Tcl_DStringInit(&ds);
@@ -2017,8 +2013,20 @@ static void banner()
 
 int xchat_plugin_init(xchat_plugin * plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg)
 {
+#ifdef WIN32
+    HINSTANCE lib;
+#endif
 
     ph = plugin_handle;
+
+#ifdef WIN32
+    lib = LoadLibraryA(TCL_DLL);
+    if (!lib) {
+        xchat_print(ph, "You must have ActiveTCL installed in order to run TCL scripts.\n" "http://aspn.activestate.com/ASPN/Tcl/\n" "Make sure TCL's bin directory is in your PATH.\n\n");
+        return 0;
+    }
+    FreeLibrary(lib);
+#endif
 
     if (initialized != 0) {
         banner();
