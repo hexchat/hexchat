@@ -382,7 +382,7 @@ sub Xchat::Embed::load {
       $data =~ s/^\s*package .*?;/package $package;/m;
     } else {
       $data = "package $package;" . $data;
-    }Xchat::print $data;
+    }
     eval $data;
 
     if( $@ ) {
