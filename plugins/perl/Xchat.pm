@@ -376,13 +376,13 @@ sub Xchat::Embed::load {
 
       # fixes things up for code calling subs with fully qualified names
       if( @matches == 1 ) {
-        $data =~ s/$matches[0]:://g;
+        $data =~ s/$matches[0]::/${package}::/g;
       }
 
       $data =~ s/^\s*package .*?;/package $package;/m;
     } else {
       $data = "package $package;" . $data;
-    }
+    }Xchat::print $data;
     eval $data;
 
     if( $@ ) {
