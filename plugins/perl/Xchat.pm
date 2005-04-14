@@ -295,7 +295,7 @@ sub Xchat::user_info {
 }
 
 sub Xchat::context_info {
-  my $ctx = shift @_;
+  my $ctx = shift @_ || Xchat::get_context;
   my $old_ctx = Xchat::get_context;
   my @fields = (qw(away channel host inputbox libdirfs network nick server),
 		qw(topic version win_status xchatdir xchatdirfs state_cursor),
