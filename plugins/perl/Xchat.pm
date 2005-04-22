@@ -5,16 +5,7 @@ BEGIN {
 {
   package Xchat;
   use base qw(Exporter);
-  our @EXPORT = (qw(PRI_HIGHEST PRI_HIGH PRI_NORM PRI_LOW PRI_LOWEST),
-		 qw(EAT_NONE EAT_XCHAT EAT_PLUGIN EAT_ALL),
-		);
-  our @EXPORT_OK = (qw(register hook_server hook_command hook_print),
-		    qw(hook_timer unhook print command find_context),
-		    qw(get_context set_context get_info get_prefs emit_print),
-		    qw(nickcmp get_list context_info strip_code),
-		    qw(PRI_HIGHEST PRI_HIGH PRI_NORM PRI_LOW PRI_LOWEST),
-		    qw(EAT_NONE EAT_XCHAT EAT_PLUGIN EAT_ALL),
-		   );
+
   our %EXPORT_TAGS = ( all => [
 			       qw(register hook_server hook_command),
 			       qw(hook_print hook_timer unhook print command),
@@ -23,13 +14,13 @@ BEGIN {
 			       qw(get_list context_info strip_code),
 			       qw(PRI_HIGHEST PRI_HIGH PRI_NORM PRI_LOW),
 			       qw(PRI_LOWEST EAT_NONE EAT_XCHAT EAT_PLUGIN),
-			       qw(EAT_ALL),
+			       qw(EAT_ALL KEEP REMOVE),
 			      ],
 		       constants => [
 				     qw(PRI_HIGHEST PRI_HIGH PRI_NORM PRI_LOW),
 				     qw(PRI_LOWEST EAT_NONE EAT_XCHAT),
 				     qw(EAT_PLUGIN EAT_ALL FD_READ FD_WRITE),
-				     qw(FD_EXCEPTION FD_NOTSOCKET),
+				     qw(FD_EXCEPTION FD_NOTSOCKET KEEP REMOVE),
 				    ],
 		       hooks => [
 				 qw(hook_server hook_command),
@@ -42,6 +33,9 @@ BEGIN {
 				qw(strip_code),
 			       ],
 		     );
+
+  our @EXPORT = @{$EXPORT_TAGS{contants}};
+  our @EXPORT_OK = @{$EXPORT_TAGS{all}};
 
 sub Xchat::register {
   my ($name, $version, $description, $callback) = @_;
