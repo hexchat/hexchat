@@ -628,44 +628,20 @@ void
 menu_urlmenu (GdkEventButton *event, char *url)
 {
 	GtkWidget *menu;
-	char *tmp;
+	char *tmp, *chop;
 
 	if (str_copy)
 		free (str_copy);
-
-#if 0
-	/* replace all commas with %2c */
-	str_copy = malloc ((strlen (url) * 3) + 1);
-	i = 0;
-	while (*url)
-	{
-		if (*url == ',')
-		{
-			str_copy[i++] = '%';
-			str_copy[i++] = '2';
-			str_copy[i] = 'c';
-#ifdef WIN32
-		} else if (*url == '\\')
-		{
-			str_copy[i++] = '\\';
-			str_copy[i] = '\\';
-#endif
-		} else
-			str_copy[i] = *url;
-		i++;
-		url++;
-	}
-	str_copy[i] = 0;
-#else
 	str_copy = strdup (url);
-#endif
 
 	menu = gtk_menu_new ();
-	if (strlen (str_copy) > 51)
+	/* more than 51 chars? Chop it */
+	if (g_utf8_strlen (str_copy, -1) >= 52)
 	{
 		tmp = strdup (str_copy);
-		tmp[47] = tmp[48] = tmp[49] = '.';
-		tmp[50] = 0;
+		chop = g_utf8_offset_to_pointer (tmp, 48);
+		chop[0] = chop[1] = chop[2] = '.';
+		chop[3] = 0;
 		menu_quick_item (0, tmp, menu, 1, 0);
 		free (tmp);
 	} else
