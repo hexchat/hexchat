@@ -31,6 +31,7 @@
 #include "cfgfiles.h"
 #include "plugin.h"
 #include "fe.h"
+#include "server.h"
 #include "util.h"
 #include "outbound.h"
 #include "xchatc.h"
@@ -335,7 +336,7 @@ log_open (session *sess)
 
 	log_close (sess);
 	sess->logfd = log_open_file (sess->server->servername, sess->channel,
-										  get_network (sess, FALSE));
+										  server_get_network (sess->server, FALSE));
 
 	if (!log_error && sess->logfd == -1)
 	{

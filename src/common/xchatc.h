@@ -28,7 +28,6 @@ extern GSList *tabmenu_list;
 session * find_channel (server *serv, char *chan);
 session * find_dialog (server *serv, char *nick);
 session * new_ircwindow (server *serv, char *name, int type, int focus);
-void set_server_defaults (server *serv);
 struct away_msg *find_away_message (struct server *serv, char *nick);
 void save_away_message (server *serv, char *nick, char *msg);
 int is_server (server * serv);
@@ -37,6 +36,5 @@ void lag_check (void);
 void kill_session_callback (session * killsess);
 void xchat_exit (void);
 void xchat_exec (char *cmd);
-char *get_network (session *sess, gboolean fallback);
 
 #endif

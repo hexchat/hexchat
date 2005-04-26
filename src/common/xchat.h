@@ -453,6 +453,7 @@ typedef struct server
 	unsigned int have_capab:1;	/* supports CAPAB (005 tells us) */
 	unsigned int have_idmsg:1;	/* freenode's IDENTIFY-MSG */
 	unsigned int have_except:1;	/* ban exemptions +e */
+	unsigned int using_cp1255:1;	/* encoding is CP1255/WINDOWS-1255? */
 	int use_who:1;				/* whether to use WHO command to get dcc_ip */
 #ifdef USE_OPENSSL
 	int use_ssl:1;					  /* is server SSL capable? */

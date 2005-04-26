@@ -27,6 +27,7 @@
 #include "outbound.h"
 #include "cfgfiles.h"
 #include "ignore.h"
+#include "server.h"
 #include "servlist.h"
 #include "modes.h"
 #include "notify.h"
@@ -905,7 +906,7 @@ xchat_find_context (xchat_plugin *ph, const char *servname, const char *channel)
 	while (slist)
 	{
 		serv = slist->data;
-		netname = get_network (serv->front_session, TRUE);
+		netname = server_get_network (serv, TRUE);
 
 		if (servname == NULL ||
 			 rfc_casecmp (servname, serv->servername) == 0 ||
@@ -977,7 +978,7 @@ xchat_get_info (xchat_plugin *ph, const char *id)
 		return XCHATLIBDIR;
 
 	case 0x6de15a2e:	/* network */
-		return get_network (sess, FALSE);
+		return server_get_network (sess->server, FALSE);
 
 	case 0x339763: /* nick */
 		return sess->server->nick;
@@ -1238,7 +1239,7 @@ xchat_list_str (xchat_plugin *ph, xchat_list *xlist, const char *name)
 		case 0x38b735af: /* context */
 			return data;	/* this is a session * */
 		case 0x6de15a2e: /* network */
-			return get_network ((session *)data, FALSE);
+			return server_get_network (((session *)data)->server, FALSE);
 		case 0x8455e723: /* nickprefixes */
 			return ((session *)data)->server->nick_prefixes;
 		case 0x829689ad: /* nickmodes */

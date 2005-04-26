@@ -327,63 +327,6 @@ new_session (server *serv, char *from, int type, int focus)
 	return sess;
 }
 
-void
-set_server_defaults (server *serv)
-{
-	if (serv->chantypes)
-		free (serv->chantypes);
-	if (serv->chanmodes)
-		free (serv->chanmodes);
-	if (serv->nick_prefixes)
-		free (serv->nick_prefixes);
-	if (serv->nick_modes)
-		free (serv->nick_modes);
-	/*if (serv->encoding)
-	{
-		free (serv->encoding);
-		serv->encoding = NULL;
-	}*/
-
-	serv->chantypes = strdup ("#&!+");
-	serv->chanmodes = strdup ("beI,k,l");
-	serv->nick_prefixes = strdup ("@%+");
-	serv->nick_modes = strdup ("ohv");
-
-	serv->nickcount = 1;
-	serv->nickservtype = 0;
-	serv->end_of_motd = FALSE;
-	serv->is_away = FALSE;
-	serv->supports_watch = FALSE;
-	serv->bad_prefix = FALSE;
-	serv->use_who = TRUE;
-	serv->have_idmsg = FALSE;
-	serv->have_except = FALSE;
-}
-
-static server *
-new_server (void)
-{
-	static int id = 0;
-	server *serv;
-
-	serv = malloc (sizeof (struct server));
-	memset (serv, 0, sizeof (struct server));
-
-	/* use server.c and proto-irc.c functions */
-	server_fill_her_up (serv);
-
-	serv->id = id++;
-	serv->sok = -1;
-	strcpy (serv->nick, prefs.nick1);
-	set_server_defaults (serv);
-
-	serv_list = g_slist_prepend (serv_list, serv);
-
-	fe_new_server (serv);
-
-	return serv;
-}
-
 session *
 new_ircwindow (server *serv, char *name, int type, int focus)
 {
@@ -392,7 +335,7 @@ new_ircwindow (server *serv, char *name, int type, int focus)
 	switch (type)
 	{
 	case SESS_SERVER:
-		serv = new_server ();
+		serv = server_new ();
 		if (prefs.use_server_tab)
 		{
 			register unsigned int oldh = prefs.hideuserlist;
@@ -423,18 +366,6 @@ new_ircwindow (server *serv, char *name, int type, int focus)
 	plugin_emit_dummy_print (sess, "Open Context");
 
 	return sess;
-}
-
-char *
-get_network (session *sess, gboolean fallback)
-{
-	if (sess->server->network)
-		return ((ircnet *)sess->server->network)->name;
-
-	if (fallback)
-		return sess->server->servername;
-
-	return NULL;
 }
 
 static void

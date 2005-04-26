@@ -306,6 +306,11 @@ server_inline (server *serv, char *line, int len)
 			conv_line[len] = 0;
 			conv_len = len;
 
+			/* if CP1255, convert it with the NUL terminator.
+				Works around SF bug #1122089 */
+			if (serv->using_cp1255)
+				conv_len++;
+
 			do
 			{
 				err = NULL;
@@ -333,6 +338,8 @@ server_inline (server *serv, char *line, int len)
 			{
 				line = utf_line_allocated;
 				len = utf_len;
+				if (serv->using_cp1255 && len > 0)
+					len--;
 			}
 			else
 			{
@@ -1498,7 +1505,7 @@ server_connect (server *serv, char *hostname, int port, int no_login)
 	safe_strcpy (serv->servername, hostname, sizeof (serv->servername));
 	safe_strcpy (serv->hostname, hostname, sizeof (serv->hostname));
 
-	set_server_defaults (serv);
+	server_set_defaults (serv);
 	serv->connecting = TRUE;
 	serv->port = port;
 	serv->no_login = no_login;
@@ -1544,7 +1551,8 @@ server_connect (server *serv, char *hostname, int port, int no_login)
 		fe_input_add (serv->childread, FIA_READ|FIA_FD, server_read_child, serv);
 }
 
-void server_fill_her_up (server *serv)
+void
+server_fill_her_up (server *serv)
 {
 	serv->connect = server_connect;
 	serv->disconnect = server_disconnect;
@@ -1553,4 +1561,97 @@ void server_fill_her_up (server *serv)
 	serv->auto_reconnect = auto_reconnect;
 
 	proto_fill_her_up (serv);
+}
+
+void
+server_set_encoding (server *serv, char *new_encoding)
+{
+	char *space;
+
+	if (serv->encoding)
+	{
+		free (serv->encoding);
+		/* can be left as NULL to indicate UTF-8 */
+		serv->encoding = NULL;
+		serv->using_cp1255 = FALSE;
+	}
+
+	if (new_encoding)
+	{
+		serv->encoding = strdup (new_encoding);
+		/* the serverlist GUI might have added a space 
+			and short description - remove it. */
+		space = strchr (serv->encoding, ' ');
+		if (space)
+			space[0] = 0;
+
+		/* server_inline() uses this flag */
+		if (!strcasecmp (serv->encoding, "CP1255") ||
+			 !strcasecmp (serv->encoding, "WINDOWS-1255"))
+			serv->using_cp1255 = TRUE;
+	}
+}
+
+server *
+server_new (void)
+{
+	static int id = 0;
+	server *serv;
+
+	serv = malloc (sizeof (struct server));
+	memset (serv, 0, sizeof (struct server));
+
+	/* use server.c and proto-irc.c functions */
+	server_fill_her_up (serv);
+
+	serv->id = id++;
+	serv->sok = -1;
+	strcpy (serv->nick, prefs.nick1);
+	server_set_defaults (serv);
+
+	serv_list = g_slist_prepend (serv_list, serv);
+
+	fe_new_server (serv);
+
+	return serv;
+}
+
+void
+server_set_defaults (server *serv)
+{
+	if (serv->chantypes)
+		free (serv->chantypes);
+	if (serv->chanmodes)
+		free (serv->chanmodes);
+	if (serv->nick_prefixes)
+		free (serv->nick_prefixes);
+	if (serv->nick_modes)
+		free (serv->nick_modes);
+
+	serv->chantypes = strdup ("#&!+");
+	serv->chanmodes = strdup ("beI,k,l");
+	serv->nick_prefixes = strdup ("@%+");
+	serv->nick_modes = strdup ("ohv");
+
+	serv->nickcount = 1;
+	serv->nickservtype = 0;
+	serv->end_of_motd = FALSE;
+	serv->is_away = FALSE;
+	serv->supports_watch = FALSE;
+	serv->bad_prefix = FALSE;
+	serv->use_who = TRUE;
+	serv->have_idmsg = FALSE;
+	serv->have_except = FALSE;
+}
+
+char *
+server_get_network (server *serv, gboolean fallback)
+{
+	if (serv->network)
+		return ((ircnet *)serv->network)->name;
+
+	if (fallback)
+		return serv->servername;
+
+	return NULL;
 }

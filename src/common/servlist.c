@@ -492,7 +492,6 @@ servlist_connect (session *sess, ircnet *net)
 	ircserver *ircserv;
 	GSList *list;
 	char *port;
-	char *space;
 	server *serv;
 
 	if (!sess)
@@ -558,18 +557,7 @@ servlist_connect (session *sess, ircnet *net)
 	} else
 		serv->connect (serv, ircserv->hostname, 6667, FALSE);
 
-	if (serv->encoding)
-	{
-		free (serv->encoding);
-		serv->encoding = NULL;
-	}
-	if (net->encoding)
-	{
-		serv->encoding = strdup (net->encoding);
-		space = strchr (serv->encoding, ' ');
-		if (space)
-			space[0] = 0;
-	}
+	server_set_encoding (serv, net->encoding);
 }
 
 int

@@ -656,9 +656,7 @@ inbound_005 (server * serv, char *word[])
 		{
 			if (strcasecmp (word[w] + 8, "UTF-8") == 0)
 			{
-				if (serv->encoding)
-					free (serv->encoding);
-				serv->encoding = strdup ("UTF-8");
+				server_set_encoding (serv, NULL);
 			}
 		} else if (strcmp (word[w], "NAMESX") == 0)
 		{
