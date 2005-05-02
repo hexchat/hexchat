@@ -34,7 +34,7 @@ BEGIN {
 			       ],
 		     );
 
-  our @EXPORT = @{$EXPORT_TAGS{contants}};
+  our @EXPORT = @{$EXPORT_TAGS{constants}};
   our @EXPORT_OK = @{$EXPORT_TAGS{all}};
 
 sub Xchat::register {
