@@ -214,7 +214,7 @@ plugingui_open (void)
 	plugin_window = gtk_dialog_new ();
 	g_signal_connect (G_OBJECT (plugin_window), "destroy",
 							G_CALLBACK (plugingui_close), 0);
-	gtk_window_set_default_size (GTK_WINDOW (plugin_window), 450, 200);
+	gtk_window_set_default_size (GTK_WINDOW (plugin_window), 500, 250);
 	vbox = GTK_DIALOG (plugin_window)->vbox;
 	action_area = GTK_DIALOG (plugin_window)->action_area;
 	gtk_container_set_border_width (GTK_CONTAINER (vbox), 4);

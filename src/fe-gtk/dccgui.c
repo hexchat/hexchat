@@ -400,30 +400,46 @@ resume_clicked (GtkWidget * wid, gpointer none)
 static void
 abort_clicked (GtkWidget * wid, gpointer none)
 {
-	int row;
+	int * rows;
+	int i, num_rows;
 	struct DCC *dcc;
 
-	row = gtkutil_clist_selection (dccrwin.list);
-	if (row != -1)
+	num_rows = gtkutil_clist_multiple_selection (dccrwin.list, &rows, 256);
+	gtk_clist_freeze( GTK_CLIST(dccrwin.list) );
+
+	for (i = num_rows - 1; i >= 0; i--)
 	{
-		dcc = gtk_clist_get_row_data (GTK_CLIST (dccrwin.list), row);
-		dcc_abort (dcc->serv->front_session, dcc);
+		dcc = gtk_clist_get_row_data (GTK_CLIST (dccrwin.list), rows[i]);
+		if ( dcc )
+		{
+			dcc_abort (dcc->serv->front_session, dcc);
+		}
 	}
+	gtk_clist_thaw( GTK_CLIST(dccrwin.list) );
+	free ( rows );
 }
 
 static void
 accept_clicked (GtkWidget * wid, gpointer none)
 {
-	int row;
+	int * rows;
+	int i, num_rows;
 	struct DCC *dcc;
 
-	row = gtkutil_clist_selection (dccrwin.list);
-	if (row != -1)
+	num_rows = gtkutil_clist_multiple_selection (dccrwin.list, &rows, 256);
+	gtk_clist_freeze( GTK_CLIST(dccrwin.list) );
+
+	for (i = num_rows - 1; i >= 0; i--)
 	{
-		dcc = gtk_clist_get_row_data (GTK_CLIST (dccrwin.list), row);
-		gtk_clist_unselect_row (GTK_CLIST (dccrwin.list), row, 0);
-		dcc_get (dcc);
+		dcc = gtk_clist_get_row_data (GTK_CLIST (dccrwin.list), rows[i]);
+		if ( dcc )
+		{
+			gtk_clist_unselect_row (GTK_CLIST (dccrwin.list), rows[i], 0);
+			dcc_get (dcc);
+		}
 	}
+	gtk_clist_thaw( GTK_CLIST(dccrwin.list) );
+	free ( rows );
 }
 
 static void
@@ -502,6 +518,7 @@ int
 fe_dcc_open_recv_win (int passive)
 {
 	GtkWidget *vbox, *bbox;
+	int i;
 #ifdef USE_GNOME
 	gchar *titles[] =
 		{ NULL, NULL, NULL, NULL, "%", "KB/s", NULL, NULL, NULL };
@@ -534,19 +551,20 @@ fe_dcc_open_recv_win (int passive)
 	dccrwin.list = gtkutil_clist_new (9, titles, vbox, GTK_POLICY_ALWAYS,
 												 recv_row_selected, 0,
 												 0, 0, GTK_SELECTION_SINGLE);
+	for(i=0; i < 9; i++)
+	{
+		gtk_clist_set_column_auto_resize(GTK_CLIST(dccrwin.list), i, TRUE);
+	}
 #else
 	dccrwin.list = gtkutil_clist_new (8, titles, vbox, GTK_POLICY_ALWAYS,
 												 recv_row_selected, 0,
 												 0, 0, GTK_SELECTION_SINGLE);
+	for(i=0; i < 8; i++)
+	{
+		gtk_clist_set_column_auto_resize(GTK_CLIST(dccrwin.list), i, TRUE);
+	}
 #endif
-	gtk_clist_set_column_width (GTK_CLIST (dccrwin.list), 0, 65);
-	gtk_clist_set_column_width (GTK_CLIST (dccrwin.list), 1, 100);
-	gtk_clist_set_column_width (GTK_CLIST (dccrwin.list), 2, 50);
-	gtk_clist_set_column_width (GTK_CLIST (dccrwin.list), 3, 50);
-	gtk_clist_set_column_width (GTK_CLIST (dccrwin.list), 4, 30);
-	gtk_clist_set_column_width (GTK_CLIST (dccrwin.list), 5, 50);
-	gtk_clist_set_column_width (GTK_CLIST (dccrwin.list), 6, 60);
-	gtk_clist_set_column_width (GTK_CLIST (dccrwin.list), 7, 60);
+	gtk_clist_set_selection_mode(GTK_CLIST(dccrwin.list), GTK_SELECTION_MULTIPLE);
 	gtk_clist_set_column_justification (GTK_CLIST (dccrwin.list), 4,
 													GTK_JUSTIFY_CENTER);
 
@@ -652,21 +670,32 @@ info_send_clicked (GtkWidget * wid, gpointer none)
 static void
 abort_send_clicked (GtkWidget * wid, gpointer none)
 {
-	int row;
+	int * rows;
+	int i, num_rows;
 	struct DCC *dcc;
 
-	row = gtkutil_clist_selection (dccswin.list);
-	if (row != -1)
+	num_rows = gtkutil_clist_multiple_selection (dccswin.list, &rows, 256);
+	gtk_clist_freeze( GTK_CLIST(dccswin.list) );
+
+	/* we go from the end to the begining, because if we remove a row it might affect
+	the rows that's coming after it */
+	for (i = num_rows - 1; i >= 0; i--)
 	{
-		dcc = gtk_clist_get_row_data (GTK_CLIST (dccswin.list), row);
-		dcc_abort (dcc->serv->front_session, dcc);
+		dcc = gtk_clist_get_row_data (GTK_CLIST (dccswin.list), rows[i]);
+		if ( dcc )
+		{
+			dcc_abort (dcc->serv->front_session, dcc);
+		}
 	}
+	gtk_clist_thaw( GTK_CLIST(dccswin.list) );
+	free ( rows );
 }
 
 int
 fe_dcc_open_send_win (int passive)
 {
 	GtkWidget *vbox, *bbox;
+	int i;
 	gchar *titles[] =
 		{ NULL, NULL, NULL, NULL, NULL, "%", "KB/s", NULL, NULL };
 
@@ -692,14 +721,13 @@ fe_dcc_open_send_win (int passive)
 	dccswin.list = gtkutil_clist_new (9, titles, vbox, GTK_POLICY_ALWAYS,
 												 send_row_selected, 0,
 												 0, 0, GTK_SELECTION_SINGLE);
-	gtk_clist_set_column_width (GTK_CLIST (dccswin.list), 0, 65);
-	gtk_clist_set_column_width (GTK_CLIST (dccswin.list), 1, 100);
-	gtk_clist_set_column_width (GTK_CLIST (dccswin.list), 2, 50);
-	gtk_clist_set_column_width (GTK_CLIST (dccswin.list), 3, 50);
-	gtk_clist_set_column_width (GTK_CLIST (dccswin.list), 4, 50);
-	gtk_clist_set_column_width (GTK_CLIST (dccswin.list), 5, 30);
-	gtk_clist_set_column_width (GTK_CLIST (dccswin.list), 6, 50);
-	gtk_clist_set_column_width (GTK_CLIST (dccswin.list), 7, 50);
+
+	for(i=0; i < 9; i++)
+	{
+		gtk_clist_set_column_auto_resize(GTK_CLIST(dccswin.list), i, TRUE);
+	}
+	gtk_clist_set_selection_mode(GTK_CLIST(dccswin.list), GTK_SELECTION_MULTIPLE);
+
 	gtk_clist_set_column_justification (GTK_CLIST (dccswin.list), 5,
 													GTK_JUSTIFY_CENTER);
 
@@ -723,30 +751,50 @@ fe_dcc_open_send_win (int passive)
 static void
 accept_chat_clicked (GtkWidget * wid, gpointer none)
 {
-	int row;
+	int * rows;
+	int i, num_rows;
 	struct DCC *dcc;
 
-	row = gtkutil_clist_selection (dcccwin.list);
-	if (row != -1)
+	num_rows = gtkutil_clist_multiple_selection (dcccwin.list, &rows, 256);
+	gtk_clist_freeze( GTK_CLIST(dcccwin.list) );
+
+	/* we go from the end to the begining, because if we remove a row it might affect
+	the rows that's coming after it */
+	for (i = num_rows - 1; i >= 0; i--)
 	{
-		dcc = gtk_clist_get_row_data (GTK_CLIST (dcccwin.list), row);
-		gtk_clist_unselect_row (GTK_CLIST (dcccwin.list), row, 0);
-		dcc_get (dcc);
+		dcc = gtk_clist_get_row_data (GTK_CLIST (dcccwin.list), rows[i]);
+		if ( dcc )
+		{
+			gtk_clist_unselect_row (GTK_CLIST (dcccwin.list), rows[i], 0);
+			dcc_get (dcc);
+		}
 	}
+	gtk_clist_thaw( GTK_CLIST(dcccwin.list) );
+	free ( rows );
 }
 
 static void
 abort_chat_clicked (GtkWidget * wid, gpointer none)
 {
-	int row;
+	int * rows;
+	int i, num_rows;
 	struct DCC *dcc;
 
-	row = gtkutil_clist_selection (dcccwin.list);
-	if (row != -1)
+	num_rows = gtkutil_clist_multiple_selection (dcccwin.list, &rows, 256);
+	gtk_clist_freeze( GTK_CLIST(dcccwin.list) );
+
+	/* we go from the end to the begining, because if we remove a row it might affect
+	the rows that's coming after it */
+	for (i = num_rows - 1; i >= 0; i--)
 	{
-		dcc = gtk_clist_get_row_data (GTK_CLIST (dcccwin.list), row);
-		dcc_abort (dcc->serv->front_session, dcc);
+		dcc = gtk_clist_get_row_data (GTK_CLIST (dcccwin.list), rows[i]);
+		if ( dcc )
+		{
+			dcc_abort (dcc->serv->front_session, dcc);
+		}
 	}
+	gtk_clist_thaw( GTK_CLIST(dcccwin.list) );
+	free ( rows );
 }
 
 static void
@@ -792,6 +840,7 @@ fe_dcc_open_chat_win (int passive)
 {
 	GtkWidget *vbox, *bbox;
 	gchar *titles[5];
+	int i;
 
 	titles[0] = _("Status");
 	titles[1] = _("To/From");
@@ -813,10 +862,12 @@ fe_dcc_open_chat_win (int passive)
 	dcccwin.list = gtkutil_clist_new (5, titles, vbox, GTK_POLICY_ALWAYS,
 												 chat_row_selected, 0,
 												 0, 0, GTK_SELECTION_BROWSE);
-	gtk_clist_set_column_width (GTK_CLIST (dcccwin.list), 0, 65);
-	gtk_clist_set_column_width (GTK_CLIST (dcccwin.list), 1, 100);
-	gtk_clist_set_column_width (GTK_CLIST (dcccwin.list), 2, 65);
-	gtk_clist_set_column_width (GTK_CLIST (dcccwin.list), 3, 65);
+
+	for(i=0; i < 5; i++)
+	{
+		gtk_clist_set_column_auto_resize(GTK_CLIST(dcccwin.list), i, TRUE);
+	}
+	gtk_clist_set_selection_mode(GTK_CLIST(dcccwin.list), GTK_SELECTION_MULTIPLE);
 
 	bbox = gtk_hbutton_box_new ();
 	gtk_button_box_set_layout (GTK_BUTTON_BOX (bbox), GTK_BUTTONBOX_SPREAD);

@@ -95,6 +95,7 @@ static const char *pages[]=
 	"KOI8-R (Cyrillic)",
 	"CP1251 (Cyrillic)",
 	"CP1256 (Arabic)",
+	"CP1257 (Baltic)",
 	"GB18030 (Chinese)",
 	NULL
 };

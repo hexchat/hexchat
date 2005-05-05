@@ -511,7 +511,7 @@ servlist_connect (session *sess, ircnet *net)
 	sess->willjoinchannel[0] = 0;
 	serv->password[0] = 0;
 
-	if (net->autojoin && !sess->server->recondelay_tag)
+	if (net->autojoin)
 		safe_strcpy (sess->willjoinchannel, net->autojoin,
 						 sizeof (sess->willjoinchannel));
 	if (net->pass)

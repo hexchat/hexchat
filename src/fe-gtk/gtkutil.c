@@ -545,6 +545,30 @@ gtkutil_clist_selection (GtkWidget * clist)
 	return -1;
 }
 
+static int
+int_compare (const int * elem1, const int * elem2)
+{
+	return (*elem1) - (*elem2);
+}
+
+int
+gtkutil_clist_multiple_selection (GtkWidget * clist, int ** rows, const int max_rows)
+{
+	int i = 0;
+	GList *tmp_clist;
+	*rows = malloc (sizeof (int) * max_rows );
+	memset( *rows, -1, max_rows * sizeof(int) );
+
+	for( tmp_clist = GTK_CLIST(clist)->selection;
+			tmp_clist && i < max_rows; tmp_clist = tmp_clist->next, i++)
+	{
+		(*rows)[i] = GPOINTER_TO_INT( tmp_clist->data );
+	}
+	qsort(*rows, i, sizeof(int), int_compare);
+	return i;
+
+}
+
 void
 add_tip (GtkWidget * wid, char *text)
 {
@@ -574,6 +598,9 @@ gtkutil_window_new (char *title, char *role, int width, int height, int flags)
 
 	win = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gtkutil_set_icon (win);
+#ifdef WIN32
+	gtk_window_set_wmclass (GTK_WINDOW (win), "X-Chat", "xchat");
+#endif
 	gtk_window_set_title (GTK_WINDOW (win), title);
 	gtk_window_set_default_size (GTK_WINDOW (win), width, height);
 	gtk_window_set_role (GTK_WINDOW (win), role);

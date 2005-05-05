@@ -118,16 +118,27 @@ menu_about (GtkWidget * wid, gpointer sess)
 				"<span size=\"x-large\"><b>X-Chat "VERSION"</b></span>\n\n"
 				"%s\n\n"
 				"%s\n"
-				"<b>Charset</b>: %s <b>Renderer</b>: %s\n"
+				"<b>Charset</b>: %s "
+#ifdef WIN32 
+				"<b>GTK+</b>: %i.%i.%i\n"
+#else
+				"<b>Renderer</b>: %s\n"
+#endif
 				"<b>Compiled</b>: "__DATE__"\n\n"
 				"<small>\302\251 1998-2005 Peter \305\275elezn\303\275 &lt;zed@xchat.org></small>",
 					_("A multiplatform IRC Client"),
 					get_cpu_str(),
 					locale,
+#ifdef WIN32
+					gtk_major_version,
+					gtk_minor_version,
+					gtk_micro_version
+#else
 #ifdef USE_XFT
 					"Xft"
 #else
 					"Pango"
+#endif
 #endif
 					);
 	gtk_label_set_markup (GTK_LABEL (label), buf);

@@ -2,13 +2,31 @@
 --|   X-Chat ChangeLog   |--------------------------------------------
   `----------------------'
 
+To see more details of bugs, go to this URL:
+http://sf.net/tracker/?func=detail&atid=100239&group_id=239&aid=NUMBER
+Where "NUMBER" is the bug number.
+
 ----------------------------------------------------------------------
  2.4.4
 ----------------------------------------------------------------------
 
- - Updated translations ().
+ - Updated translations (hi, pa, vi, zh_TW).
  - People's away message is now shown in the right-click menu, if
    known (Christopher Aillon).
+ - The "Bind to:" setting can now be set to 0.0.0.0 [1176256].
+ - Plugin API: Don't crash if a print-event closes the current context
+   and doesn't eat the event [1175674].
+ - Disabled parsing of quotation marks for /JOIN, so you can join
+   channels with a quote in them (Dan Fruehauf).
+ - Fixed truncation of the URL in the right-click menu. Now handles
+   UTF-8 properly [1188229].
+ - Fixed use of CP1255 charset, which would chop the last char when
+   receiving messages [1122089].
+ - The DCC windows now allow multiple selection and the columns auto
+   resize (Dan Fruehauf).
+ - Perl: <fill me in>.
+ - 
+ - 
  - 
 
 

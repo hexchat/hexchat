@@ -21,6 +21,8 @@ GtkWidget *gtkutil_clist_new (int columns, char *titles[], GtkWidget * box,
 										void *unselect_callback,
 										gpointer unselect_userdata, int selection_mode);
 int gtkutil_clist_selection (GtkWidget * clist);
+int gtkutil_clist_multiple_selection (GtkWidget * clist,
+													int ** rows, const int max_rows);
 void add_tip (GtkWidget * wid, char *text);
 void show_and_unfocus (GtkWidget * wid);
 void gtkutil_set_icon (GtkWidget *win);
