@@ -1571,7 +1571,7 @@ server_set_encoding (server *serv, char *new_encoding)
 	if (serv->encoding)
 	{
 		free (serv->encoding);
-		/* can be left as NULL to indicate UTF-8 */
+		/* can be left as NULL to indicate system encoding */
 		serv->encoding = NULL;
 		serv->using_cp1255 = FALSE;
 	}
