@@ -123,7 +123,9 @@ struct xchatprefs
 	char background[PATHLEN + 1];
 	char dccdir[PATHLEN + 1];
 	char dcc_completed_dir[PATHLEN + 1];
-	char bluestring[300];
+	char irc_extra_hilight[300];
+	char irc_no_hilight[300];
+	char irc_nick_hilight[300];
 	char dnsprogram[72];
 	char hostname[127];
 	char cmdchar[4];
@@ -154,6 +156,7 @@ struct xchatprefs
 	int max_auto_indent;
 	int dcc_blocksize;
 	int max_lines;
+	int text_max_newlines;
 	int notify_timeout;
 	int dcctimeout;
 	int dccstalltimeout;

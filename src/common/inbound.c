@@ -218,7 +218,7 @@ inbound_privmsg (server *serv, char *from, char *ip, char *text, int id)
 static int
 SearchNick (char *text, char *nicks)
 {
-	char S[300];	/* size of bluestring in xchatprefs */
+	char S[300];	/* size of irc_extra_hilight in xchatprefs */
 	char *n;
 	char *p;
 	char *t;
@@ -257,9 +257,36 @@ SearchNick (char *text, char *nicks)
 }
 
 static int
-is_hilight (char *text, session *sess, server *serv)
+FromNick (char *nick, char *nicks)
 {
-	if ((SearchNick (text, serv->nick)) || SearchNick (text, prefs.bluestring))
+	char S[300];	/* size of irc_no_hilight in xchatprefs */
+	char *n;
+	char *t;
+
+	if (nicks == NULL || nicks[0] == 0)
+		return 0;
+
+	safe_strcpy (S, nicks, sizeof (S));
+	n = strtok (S, ",");
+	while (n != NULL)
+	{
+		t = nick;
+		if (nocasestrstr(t, n))
+			return 1;
+		n = strtok (NULL, ",");
+	}
+	return 0;
+}
+
+static int
+is_hilight (char *from, char *text, session *sess, server *serv)
+{
+	if (FromNick(from, prefs.irc_no_hilight))
+		return 0;
+
+	if (SearchNick (text, serv->nick) ||
+		 SearchNick (text, prefs.irc_extra_hilight) ||
+		 FromNick (from, prefs.irc_nick_hilight))
 	{
 #ifdef WIN32
 		if (sess != current_tab)
@@ -321,7 +348,7 @@ inbound_action (session *sess, char *chan, char *from, char *text, int fromme)
 
 	if (!fromme)
 	{
-		hilight = is_hilight (text, sess, serv);
+		hilight = is_hilight (from, text, sess, serv);
 		if (hilight && prefs.beephilight)
 			beep = TRUE;
 
@@ -404,7 +431,7 @@ inbound_chanmsg (server *serv, session *sess, char *chan, char *from, char *text
 		if (prefs.beepchans || sess->beep)
 			sound_beep (sess);
 
-	if (is_hilight (text, sess, serv))
+	if (is_hilight (from, text, sess, serv))
 	{
 		hilight = TRUE;
 		if (prefs.beephilight)

@@ -730,6 +730,127 @@ process_numeric (session * sess, int n,
 	}
 }
 
+static void
+dequote_ctcp (char *text)
+{
+#define M_QUOTE '\020'
+#define X_DELIM '\001'
+#define X_QUOTE '\134'
+	/* find and dequote low-level CTCP quoting */
+	char	*ptr = text;
+	int new_lines = 0;
+
+	if (prefs.text_max_newlines < 1)
+		return;
+
+	while ((ptr = strchr(ptr, M_QUOTE)) != NULL)
+	{
+		switch(*(ptr+1))
+		{
+		  case 'r':
+			*(ptr+1) = '\r';
+			break;
+		  case 'n':
+			if (*(ptr+2) != 0) /* don't allow trailing \n */
+			{
+				*(ptr+1) = '\n';
+				new_lines++;
+			} else
+			{
+				*(ptr+1) = 0;
+			}
+			break;
+		  case '0':
+			*(ptr+1) = 0;
+			break;
+		}
+		memmove(ptr, ptr+1, strlen(ptr+1)+1);
+		ptr++;
+
+		/* reached the limit? ignore the rest */
+		if (new_lines >= prefs.text_max_newlines)
+			break;
+	}
+}
+
+static void
+process_privmsg (session *sess, char *nick, char *ip, char *text, char *word[], char *word_eol[])
+{
+	server *serv = sess->server;
+	char *to = word[3];
+	int id = FALSE;	/* identified */
+
+	if (!(*to))
+		return;
+
+	text = word_eol[4];
+	if (*text == ':')
+		text++;
+	if (serv->have_idmsg)
+	{
+		if (*text == '+')
+		{
+			id = TRUE;
+			text++;
+		} else if (*text == '-')
+			text++;
+	}
+
+	dequote_ctcp (text);
+
+	{ /* find, handle, and remove CTCP messages */
+		char	*start, *end;
+
+		while (((start = strchr(text, X_DELIM)) != NULL) && ((end = strchr(start+1, X_DELIM)) != NULL))
+		{
+			*end = 0;
+
+			if (strncasecmp(start+1, "ACTION ", sizeof("ACTION ")-1) != 0)
+				flood_check(nick, ip, serv, sess, 0);
+			if (strncasecmp(text, "DCC ", sizeof("DCC ")-1) == 0)
+				/* redo this with handle_quotes TRUE */
+				process_data_init (word[1], word_eol[1], word, word_eol, TRUE);
+			else
+				/* redo this to update the word[] array (word_eol[] was changed via 'text' ptr) */
+				process_data_init (word[1], word_eol[1], word, word_eol, FALSE);
+
+			{ /* inline CTCP dequote */
+				char	*ptr = start+1;
+
+				while ((ptr = strchr(ptr, X_QUOTE)) != NULL)
+				{
+					switch(*(ptr+1))
+					{
+					  case 'a':
+						*(ptr+1) = X_DELIM;
+						break;
+					}
+					memmove(ptr, ptr+1, strlen(ptr+1)+1);
+					ptr++;
+				}
+			}
+
+			ctcp_handle(sess, to, nick, start+1, word, word_eol);
+			memmove(start, end+1, strlen(end+1)+1);
+		}
+	}
+
+	if (*text != 0)
+	{
+		if (is_channel (serv, to))
+		{
+			if (ignore_check (word[1], IG_CHAN))
+				return;
+			inbound_chanmsg (serv, NULL, to, nick, text, FALSE, id);
+		} else
+		{
+			if (ignore_check (word[1], IG_PRIV))
+				return;
+			inbound_privmsg (serv, nick, ip, text, id);
+		}
+	}
+}
+
 /* handle named messages that starts with a ':' */
 
 static void
@@ -824,49 +945,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 	}
 	if (!strcmp ("PRIVMSG", type))
 	{
-		char *to = word[3];
-		int len;
-		int id = FALSE;	/* identified */
-		if (*to)
-		{
-			text = word_eol[4];
-			if (*text == ':')
-				text++;
-			if (serv->have_idmsg)
-			{
-				if (*text == '+')
-				{
-					id = TRUE;
-					text++;
-				} else if (*text == '-')
-					text++;
-			}
-			len = strlen (text);
-			if (text[0] == 1 && text[len - 1] == 1)	/* ctcp */
-			{
-				text[len - 1] = 0;
-				text++;
-				if (strncasecmp (text, "ACTION", 6) != 0)
-					flood_check (nick, ip, serv, sess, 0);
-				if (strncasecmp (text, "DCC ", 4) == 0)
-					/* redo this with handle_quotes TRUE */
-					process_data_init (word[1], word_eol[1], word, word_eol, TRUE);
-				ctcp_handle (sess, to, nick, text, word, word_eol);
-			} else
-			{
-				if (is_channel (serv, to))
-				{
-					if (ignore_check (word[1], IG_CHAN))
-						return;
-					inbound_chanmsg (serv, NULL, to, nick, text, FALSE, id);
-				} else
-				{
-					if (ignore_check (word[1], IG_PRIV))
-						return;
-					inbound_privmsg (serv, nick, ip, text, id);
-				}
-			}
-		}
+		process_privmsg (sess, nick, ip, text, word, word_eol);
 		return;
 	}
 	if (!strcmp ("PONG", type))

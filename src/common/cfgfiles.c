@@ -460,16 +460,18 @@ const struct prefs vars[] = {
 	{"irc_auto_rejoin", P_OFFINT (autorejoin), TYPE_BOOL},
 	{"irc_ban_type", P_OFFINT (bantype), TYPE_INT},
 	{"irc_conf_mode", P_OFFINT (confmode), TYPE_BOOL},
-	{"irc_extra_hilight", P_OFFSET (bluestring), TYPE_STR},
+	{"irc_extra_hilight", P_OFFSET (irc_extra_hilight), TYPE_STR},
 	{"irc_hide_version", P_OFFINT (hidever), TYPE_BOOL},
 	{"irc_id_ytext", P_OFFSET (irc_id_ytext), TYPE_STR},
 	{"irc_id_ntext", P_OFFSET (irc_id_ntext), TYPE_STR},
 	{"irc_invisible", P_OFFINT (invisible), TYPE_BOOL},
 	{"irc_logging", P_OFFINT (logging), TYPE_BOOL},
 	{"irc_logmask", P_OFFSET (logmask), TYPE_STR},
+	{"irc_nick_hilight", P_OFFSET (irc_nick_hilight), TYPE_STR},
 	{"irc_nick1", P_OFFSET (nick1), TYPE_STR},
 	{"irc_nick2", P_OFFSET (nick2), TYPE_STR},
 	{"irc_nick3", P_OFFSET (nick3), TYPE_STR},
+	{"irc_no_hilight", P_OFFSET (irc_no_hilight), TYPE_STR},
 	{"irc_part_reason", P_OFFSET (partreason), TYPE_STR},
 	{"irc_quit_reason", P_OFFSET (quitreason), TYPE_STR},
 	{"irc_raw_modes", P_OFFINT (raw_modes), TYPE_BOOL},
@@ -525,6 +527,7 @@ const struct prefs vars[] = {
 	{"text_indent", P_OFFINT (indent_nicks), TYPE_BOOL},
 	{"text_max_indent", P_OFFINT (max_auto_indent), TYPE_INT},
 	{"text_max_lines", P_OFFINT (max_lines), TYPE_INT},
+	{"text_max_newlines", P_OFFINT (text_max_newlines), TYPE_INT},
 	{"text_show_marker", P_OFFINT (show_marker), TYPE_BOOL},
 	{"text_show_sep", P_OFFINT (show_separator), TYPE_BOOL},
 	{"text_stripcolor", P_OFFINT (stripcolor), TYPE_BOOL},
@@ -609,6 +612,7 @@ load_config (void)
 	prefs.nu_color = 4;
 	prefs.dccpermissions = 0600;
 	prefs.max_lines = 300;
+	prefs.text_max_newlines = 6;
 	prefs.mainwindow_width = 640;
 	prefs.mainwindow_height = 400;
 	prefs.dialog_width = 500;
