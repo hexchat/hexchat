@@ -128,8 +128,20 @@ ctcp_handle (session *sess, char *to, char *nick,
 	{
 		if (!strncasecmp (msg, "SOUND", 5))
 		{
-			EMIT_SIGNAL (XP_TE_CTCPSND, sess->server->front_session, word[5],
-							 nick, NULL, NULL, 0);
+			if (is_channel (sess->server, to))
+			{
+				chansess = find_channel (sess->server, to);
+				if (!chansess)
+					chansess = sess;
+
+				EMIT_SIGNAL (XP_TE_CTCPSNDC, chansess, word[5],
+								 nick, to, NULL, 0);
+			} else
+			{
+				EMIT_SIGNAL (XP_TE_CTCPSND, sess->server->front_session, word[5],
+								 nick, NULL, NULL, 0);
+			}
+
 			snprintf (outbuf, sizeof (outbuf), "%s/%s", prefs.sounddir, word[5]);
 			if (strchr (word[5], '/') == 0 && access (outbuf, R_OK) == 0)
 			{
@@ -151,6 +163,6 @@ generic:
 		chansess = find_channel (sess->server, to);
 		if (!chansess)
 			chansess = sess;
-		EMIT_SIGNAL (XP_TE_CTCPGENC, sess, msg, nick, to, NULL, 0);
+		EMIT_SIGNAL (XP_TE_CTCPGENC, chansess, msg, nick, to, NULL, 0);
 	}
 }

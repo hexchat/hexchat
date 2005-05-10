@@ -674,6 +674,7 @@ static char * const pevt_partreason_help[] = {
 static char * const pevt_ctcpsnd_help[] = {
 	N_("The sound"),
 	N_("The nick of the person"),
+	N_("The channel"),
 };
 
 static char * const pevt_ctcpgen_help[] = {

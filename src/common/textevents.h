@@ -113,6 +113,9 @@ N_("%C19>%O$1%C19<%O$tCTCP $2")},
 {"CTCP Sound", pevt_ctcpsnd_help, 2, 
 N_("%C22*%O$tReceived a CTCP Sound $1 from $2")},
 
+{"CTCP Sound to Channel", pevt_ctcpsnd_help, 3, 
+N_("%C22*%O$tReceived a CTCP Sound $1 from $2 (to $3)")},
+
 {"DCC CHAT Abort", pevt_dccchatabort_help, 1, 
 N_("%C22*%O$tDCC CHAT to %C26$1%O aborted.")},
 
