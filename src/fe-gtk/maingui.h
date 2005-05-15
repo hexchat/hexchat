@@ -21,3 +21,4 @@ void mg_x_click_cb (GtkWidget *button, gpointer userdata);
 void mg_link_cb (GtkWidget *but, gpointer userdata);
 void mg_progressbar_create (session_gui *gui);
 void mg_progressbar_destroy (session_gui *gui);
+void mg_dnd_drop_file (session *sess, char *target, char *uri);

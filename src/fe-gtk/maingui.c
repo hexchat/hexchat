@@ -1115,12 +1115,61 @@ mg_tab_press_cb (GtkWidget *wid, GdkEventButton *event, session *sess)
 	return TRUE;
 }
 
+void
+mg_dnd_drop_file (session *sess, char *target, char *uri)
+{
+	char *p, *data, *next, *fname;
+
+	p = data = strdup (uri);
+	while (*p)
+	{
+		next = strchr (p, '\r');
+		if (strncasecmp ("file:", p, 5) == 0)
+		{
+			if (next)
+				*next = 0;
+			fname = g_filename_from_uri (p, NULL, NULL);
+			if (fname)
+			{
+				/* dcc_send() expects utf-8 */
+				p = g_filename_to_utf8 (fname, -1, 0, 0, 0);
+				if (p)
+				{
+					dcc_send (sess, target, p, prefs.dcc_max_send_cps, 0);
+					g_free (p);
+				}
+				g_free (fname);
+			}
+		}
+		if (!next)
+			break;
+		p = next + 1;
+		if (*p == '\n')
+			p++;
+	}
+	free (data);
+
+}
+
+static void
+mg_dialog_dnd_drop (GtkWidget * widget, GdkDragContext * context, gint x,
+						  gint y, GtkSelectionData * selection_data, guint info,
+						  guint32 time, session *sess)
+{
+	/* sess->channel is really the nickname of dialogs */
+	mg_dnd_drop_file (sess, sess->channel, selection_data->data);
+}
+
 /* add a tabbed channel */
 
 static void
 mg_add_chan (session *sess)
 {
 	char *name = _("<none>");
+	static const GtkTargetEntry dnd_targets[] =
+	{
+		{"text/uri-list", 0, 1}
+	};
 
 	if (sess->channel[0])
 		name = sess->channel;
@@ -1143,6 +1192,16 @@ mg_add_chan (session *sess)
 		gtk_xtext_set_time_stamp (sess->res->buffer, prefs.timestamp);
 		sess->res->user_model = userlist_create_model ();
 	}
+
+#ifndef WIN32	/* needs more work */
+	if (sess->type == SESS_DIALOG)
+	{
+		gtk_drag_dest_set (sess->gui->xtext, GTK_DEST_DEFAULT_ALL, dnd_targets,
+								 1, GDK_ACTION_MOVE | GDK_ACTION_COPY | GDK_ACTION_LINK);
+		gtk_signal_connect (GTK_OBJECT (sess->gui->xtext), "drag_data_received",
+								  GTK_SIGNAL_FUNC (mg_dialog_dnd_drop), sess);
+	}
+#endif
 }
 
 static void
