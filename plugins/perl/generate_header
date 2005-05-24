@@ -27,7 +27,7 @@ sub toc {
   for( @lines ) {
     if( /^\s*$/s ) { $_ = ""; next; }
     if( /^\s*#/ ) { $_ = ""; next; }
-    s/(?<!\\)\\/\\\\/g;
+    s/\\/\\\\/g; # double the number of \'s
     s/"/\\"/g;
     s/^\s*/"/;
     s/\n/\\n"\n/;
