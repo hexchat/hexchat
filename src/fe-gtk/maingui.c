@@ -164,6 +164,23 @@ flash_window (GtkWidget *win)
 	flash (&fi);
 	/*FlashWindowEx (&fi);*/
 }
+#else
+
+#ifdef USE_XLIB
+#include <gdk/gdkx.h>
+
+static void
+flash_window (GtkWidget *win)
+{
+	XWMHints *hints;
+
+	hints = XGetWMHints(GDK_WINDOW_XDISPLAY(win->window), GDK_WINDOW_XWINDOW(win->window));
+	hints->flags |= XUrgencyHint;
+	XSetWMHints(GDK_WINDOW_XDISPLAY(win->window),
+	            GDK_WINDOW_XWINDOW(win->window), hints);
+	XFree(hints);
+}
+#endif
 #endif
 
 /* set a tab plain, red, light-red, or blue */
@@ -202,7 +219,7 @@ fe_set_tab_color (struct session *sess, int col, int flash)
 		}
 	}
 
-#ifdef WIN32
+#if defined(WIN32) || defined(USE_XLIB)
 	if (flash && prefs.flash_hilight)
 		flash_window (sess->gui->window);
 #endif
@@ -1198,8 +1215,8 @@ mg_add_chan (session *sess)
 	{
 		gtk_drag_dest_set (sess->gui->xtext, GTK_DEST_DEFAULT_ALL, dnd_targets,
 								 1, GDK_ACTION_MOVE | GDK_ACTION_COPY | GDK_ACTION_LINK);
-		gtk_signal_connect (GTK_OBJECT (sess->gui->xtext), "drag_data_received",
-								  GTK_SIGNAL_FUNC (mg_dialog_dnd_drop), sess);
+		g_signal_connect (G_OBJECT (sess->gui->xtext), "drag_data_received",
+								G_CALLBACK (mg_dialog_dnd_drop), sess);
 	}
 #endif
 }

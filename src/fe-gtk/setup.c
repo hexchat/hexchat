@@ -274,7 +274,7 @@ static const setting general_settings[] =
 #endif
 
 	{ST_HEADER,	N_("Alerts"),0,0,0},
-#ifdef WIN32
+#if defined(WIN32) || defined(USE_XLIB)
 	{ST_TOGGLE,	N_("Flash taskbar on highlighted messages"), P_OFFINTNL(flash_hilight), 0, 0, 0},
 #endif
 	{ST_TOGGLE,	N_("Beep on highlighted messages"), P_OFFINTNL(beephilight), 0, 0, 0},
