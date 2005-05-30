@@ -23,6 +23,7 @@ my %escape_map = ( '[' => qr![\\\[{]!,
                    '(' => qr!\(!,
                    ')' => qr!\)!,
                );
+
 my $escapes = join "", keys %escape_map;
 $escapes = qr/[\Q$escapes\E]/;
 
@@ -74,9 +75,9 @@ sub complete {
     my $partial;
 
     # continuing from a previous completion
-    if ( exists $completions->{nicks} && @{$completions->{nicks}}
-         && $cursor_pos == $completions->{pos}
-         && $word =~ /^\Q$completions->{nicks}[$completions->{index}]/ ) {
+    if( exists $completions->{nicks} && @{$completions->{nicks}}
+        && $cursor_pos == $completions->{pos}
+        && $word =~ /^\Q$completions->{nicks}[$completions->{index}]/ ) {
       $completions->{index} =
         ( $completions->{index} + 1 ) % @{$completions->{nicks}};
       $completed = $completions->{nicks}[ $completions->{index} ];
@@ -107,7 +108,7 @@ sub complete {
       $partial = 1;
     }
 
-    if ( $completed ) {
+    if( $completed ) {
 
       # move the cursor back to the front
       Xchat::command( "setcursor -$cursor_pos" );
