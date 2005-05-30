@@ -527,7 +527,6 @@ const struct prefs vars[] = {
 	{"text_indent", P_OFFINT (indent_nicks), TYPE_BOOL},
 	{"text_max_indent", P_OFFINT (max_auto_indent), TYPE_INT},
 	{"text_max_lines", P_OFFINT (max_lines), TYPE_INT},
-	{"text_max_newlines", P_OFFINT (text_max_newlines), TYPE_INT},
 	{"text_show_marker", P_OFFINT (show_marker), TYPE_BOOL},
 	{"text_show_sep", P_OFFINT (show_separator), TYPE_BOOL},
 	{"text_stripcolor", P_OFFINT (stripcolor), TYPE_BOOL},
@@ -612,7 +611,6 @@ load_config (void)
 	prefs.nu_color = 4;
 	prefs.dccpermissions = 0600;
 	prefs.max_lines = 300;
-	prefs.text_max_newlines = 6;
 	prefs.mainwindow_width = 640;
 	prefs.mainwindow_height = 400;
 	prefs.dialog_width = 500;

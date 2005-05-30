@@ -72,7 +72,7 @@ nick_cmp (struct User *user1, struct User *user2, server *serv)
 	case 3:
 		return -1 * serv->p_cmp (user1->nick, user2->nick);
 	default:
-		return 1;
+		return -1;
 	}
 }
 

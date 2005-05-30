@@ -1277,13 +1277,17 @@ load_text_events ()
 	pevent_make_pntevts ();
 }
 
-static void
-display_event (char *i, session *sess, int numargs, char **args)
+void
+format_event (session *sess, int index, char **args, char *o, int sizeofo)
 {
-	int len, oi, ii;
-	char *ar, o[4096], d, a, done_all = FALSE;
+	int len, oi, ii, numargs;
+	char *i, *ar, d, a, done_all = FALSE;
+
+	i = pntevts[index];
+	numargs = te[index].num_args;
 
 	oi = ii = len = d = a = 0;
+	o[0] = 0;
 
 	if (i == NULL)
 		return;
@@ -1296,9 +1300,10 @@ display_event (char *i, session *sess, int numargs, char **args)
 		case 0:
 			memcpy (&len, &(i[ii]), sizeof (int));
 			ii += sizeof (int);
-			if (oi + len > sizeof (o))
+			if (oi + len > sizeofo)
 			{
 				printf ("Overflow in display_event (%s)\n", i);
+				o[0] = 0;
 				return;
 			}
 			memcpy (&(o[oi]), &(i[ii]), len);
@@ -1349,8 +1354,16 @@ display_event (char *i, session *sess, int numargs, char **args)
 	}
 	o[oi] = 0;
 	if (*o == '\n')
-		return;
-	PrintText (sess, o);
+		o[0] = 0;
+}
+
+static void
+display_event (session *sess, int event, char **args)
+{
+	char o[4096];
+	format_event (sess, event, args, o, sizeof (o));
+	if (o[0])
+		PrintText (sess, o);
 }
 
 int
@@ -1561,7 +1574,7 @@ text_emit (int index, session *sess, char *a, char *b, char *c, char *d)
 
 	/* If a plugin's callback executes "/close", 'sess' may be invalid */
 	if (is_session (sess))
-		display_event (pntevts[index], sess, te[index].num_args, word);
+		display_event (sess, index, word);
 }
 
 int

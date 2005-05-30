@@ -414,9 +414,17 @@ ban (session * sess, char *tbuf, char *mask, char *bantypestr, int deop)
 		if (mask[0] == '~' || mask[0] == '+' ||
 		    mask[0] == '=' || mask[0] == '^' || mask[0] == '-')
 		{
-			safe_strcpy (username, mask+1, sizeof (username));
+			/* the ident is prefixed with something, we replace that sign with an * */
+			safe_strcpy (username+1, mask+1, sizeof (username)-1);
+			username[0] = '*';
+		} else if (at - mask < USERNAMELEN)
+		{
+			/* we just add an * in the begining of the ident */
+			safe_strcpy (username+1, mask, sizeof (username)-1);
+			username[0] = '*';
 		} else
 		{
+			/* ident might be too long, we just ban what it gives and add an * in the end */
 			safe_strcpy (username, mask, sizeof (username));
 		}
 		*at = '@';
@@ -458,11 +466,11 @@ ban (session * sess, char *tbuf, char *mask, char *bantypestr, int deop)
 				break;
 
 			case 2:
-				sprintf (tbuf, "%s %s *!*%s@%s.*", mode, p2, username, domain);
+				sprintf (tbuf, "%s %s *!%s@%s.*", mode, p2, username, domain);
 				break;
 
 			case 3:
-				sprintf (tbuf, "%s %s *!*%s@%s", mode, p2, username, fullhost);
+				sprintf (tbuf, "%s %s *!%s@%s", mode, p2, username, fullhost);
 				break;
 			}
 		} else
@@ -478,11 +486,11 @@ ban (session * sess, char *tbuf, char *mask, char *bantypestr, int deop)
 				break;
 
 			case 2:
-				sprintf (tbuf, "%s %s *!*%s@*%s", mode, p2, username, domain);
+				sprintf (tbuf, "%s %s *!%s@*%s", mode, p2, username, domain);
 				break;
 
 			case 3:
-				sprintf (tbuf, "%s %s *!*%s@%s", mode, p2, username, fullhost);
+				sprintf (tbuf, "%s %s *!%s@%s", mode, p2, username, fullhost);
 				break;
 			}
 		}

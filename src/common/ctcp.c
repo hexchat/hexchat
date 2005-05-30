@@ -54,8 +54,17 @@ ctcp_check (session *sess, char *nick, char *word[], char *word_eol[],
 				char *ctcp)
 {
 	int ret = 0;
+	char *po;
 	struct popup *pop;
 	GSList *list = ctcp_list;
+
+	po = strchr (ctcp, '\001');
+	if (po)
+		*po = 0;
+
+	po = strchr (word_eol[5], '\001');
+	if (po)
+		*po = 0;
 
 	while (list)
 	{
@@ -74,6 +83,7 @@ void
 ctcp_handle (session *sess, char *to, char *nick,
 				 char *msg, char *word[], char *word_eol[])
 {
+	char *po;
 	session *chansess;
 	server *serv = sess->server;
 	char outbuf[1024];
@@ -128,6 +138,10 @@ ctcp_handle (session *sess, char *to, char *nick,
 	{
 		if (!strncasecmp (msg, "SOUND", 5))
 		{
+			po = strchr (word[5], '\001');
+			if (po)
+				po[0] = 0;
+
 			if (is_channel (sess->server, to))
 			{
 				chansess = find_channel (sess->server, to);
@@ -154,6 +168,10 @@ ctcp_handle (session *sess, char *to, char *nick,
 	}
 
 generic:
+	po = strchr (msg, '\001');
+	if (po)
+		po[0] = 0;
+
 	if (!is_channel (sess->server, to))
 	{
 		EMIT_SIGNAL (XP_TE_CTCPGEN, sess->server->front_session, msg, nick,

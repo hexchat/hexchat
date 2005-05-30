@@ -460,10 +460,12 @@ server_connected (server * serv)
 		if (serv->network)
 		{
 			serv->p_login (serv,
-								(((ircnet *)serv->network)->user) ?
+								(!(((ircnet *)serv->network)->flags & FLAG_USE_GLOBAL) &&
+								 (((ircnet *)serv->network)->user)) ?
 								(((ircnet *)serv->network)->user) :
 								prefs.username,
-								(((ircnet *)serv->network)->real) ?
+								(!(((ircnet *)serv->network)->flags & FLAG_USE_GLOBAL) &&
+								 (((ircnet *)serv->network)->real)) ?
 								(((ircnet *)serv->network)->real) :
 								prefs.realname);
 		} else

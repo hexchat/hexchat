@@ -73,9 +73,10 @@ void *xchat_realloc (char *old, int len, char *file, int line);
 #define NICKLEN		64				/* including the NULL, so 63 really */
 #define CHANLEN		300
 #define PDIWORDS		32
+#define USERNAMELEN 10
 
-#define safe_strcpy(dest,src,len)	{strncpy(dest,src,len); \
-												dest[len-1] = 0;}
+#define safe_strcpy(dest,src,len)	{strncpy((dest),(src),(len)); \
+												(dest)[len-1] = 0;}
 
 #if defined(ENABLE_NLS) && !defined(_)
 #  include <libintl.h>
@@ -156,7 +157,6 @@ struct xchatprefs
 	int max_auto_indent;
 	int dcc_blocksize;
 	int max_lines;
-	int text_max_newlines;
 	int notify_timeout;
 	int dcctimeout;
 	int dccstalltimeout;
