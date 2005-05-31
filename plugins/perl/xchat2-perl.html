@@ -83,6 +83,7 @@ written using the old interface will continue to work. If there are any
 problems, questions, comments or suggestions please email them to the address
 on the bottom of this page.</p>
 <p>
+<b>NOTE: The shebang (the line starting with #!) is completely ignored.</b>
 </p>
 <h2><a name="constants">Constants</a></h2>
 <p>
@@ -154,9 +155,9 @@ on the bottom of this page.</p>
 </p>
 <h3><a name="xchat__hook_timer___timeout__callback_____options____data___"><code>Xchat::hook_timer( $timeout,$callback, [\%options | $data] )</code></a></h3>
 <ul>
-<li><strong><a name="item_c_3c_24message_3e__2d_server_message_to_hook"><code>$message</code> 		-	server message to hook</a></strong><br />
+<li><strong><a name="item_c_3c_24message_3e__2d_server_message_to_hook"><code>$message</code> 		-	server message to hook such as PRIVMSG <a></strong><br />
 </li>
-<li><strong><a name="item_c_3c_24command_3e__2d_command_to_execute_without_t"><code>$command</code> 		-	command to execute without the leading /</a></strong><br />
+<li><strong><a name="item_c_3c_24command_3e__2d_command_to_execute_without_t"><code>$command</code> 		-	command to intercept, without the leading /</a></strong><br />
 </li>
 <li><strong><a name="item_advanced"><code>$event</code> 		-	one of the events listed in Settings-&gt;Advanced-&gt;Text Events</a></strong><br />
 </li>
@@ -165,7 +166,7 @@ on the bottom of this page.</p>
 <li><strong><a name="item_c_3c_24callback_3e__2d_callback_function_2c_this_i"><code>$callback</code> 	-	callback function, this is called whenever
 						the hooked event is trigged, the following are
 						the conditions that will trigger	the different hooks.
-						This can be either a string, a reference to a
+						This can be either a reference to a
 						function or an anonymous sub reference.</a></strong><br />
 </li>
 <li><strong><a name="item__5c_25options__2d_a_hash_reference_containing_addi">\%options	-	a hash reference containing addional options for the hooks</a></strong><br />
