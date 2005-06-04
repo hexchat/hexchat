@@ -16,13 +16,7 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
  */
 
-/* #include <stdlib.h> */
-/* #include <stdio.h> */
 #include <string.h>
-/* #include <sys/types.h> */
-/* #include <sys/stat.h> */
-/* #include <fcntl.h> */
-/* #include <dirent.h> */
 #ifdef ENABLE_NLS
 #include <locale.h>
 #endif
@@ -1097,7 +1091,7 @@ perl_init (void)
 
 
 static int
-perl_load_file (char *script_name)
+perl_load_file (char *filename)
 {
 #ifdef WIN32
 	static HINSTANCE lib = NULL;
@@ -1123,27 +1117,9 @@ perl_load_file (char *script_name)
 	}
 
 	return execute_perl (sv_2mortal (newSVpv ("Xchat::Embed::load", 0)),
-								  script_name);
+                        filename);
 	
 }
-
-/* checks for "~" in a file and expands */
-
-/* static char * */
-/* expand_homedir (char *file) */
-/* { */
-/* #ifndef WIN32 */
-/* 	char *ret; */
-
-/* 	if (*file == '~') */
-/* 	{ */
-/* 		ret = malloc (strlen (file) + strlen (g_get_home_dir ()) + 1); */
-/* 		sprintf (ret, "%s%s", g_get_home_dir (), file + 1); */
-/* 		return ret; */
-/* 	} */
-/* #endif */
-/* 	return strdup (file); */
-/* } */
 
 static void
 perl_end (void)
@@ -1182,11 +1158,11 @@ perl_command_unload (char *word[], char *word_eol[], void *userdata)
 	int len;
 
 	/* try it by filename */
-	len = strlen (word[2]);
-	if (len > 3 && strcasecmp (".pl", word[2] + len - 3) == 0)
+	len = strlen (word_eol[2]);
+	if (len > 3 && strcasecmp (".pl", word_eol[2] + len - 3) == 0)
 	{
 		execute_perl (sv_2mortal (newSVpv ("Xchat::Embed::unload", 0)),
-                    word[2]);
+                    word_eol[2]);
 		return XCHAT_EAT_XCHAT;
 	}
 
@@ -1198,10 +1174,10 @@ perl_command_load (char *word[], char *word_eol[], void *userdata)
 {
 	int len;
 
-	len = strlen (word[2]);
-	if (len > 3 && strcasecmp (".pl", word[2] + len - 3) == 0)
+	len = strlen (word_eol[2]);
+	if (len > 3 && strcasecmp (".pl", word_eol[2] + len - 3) == 0)
 	{
-     perl_load_file(word[2]);
+     perl_load_file(word_eol[2]);
      return XCHAT_EAT_XCHAT;
 	}
 
