@@ -379,7 +379,7 @@ use Symbol();
 }
 
 $SIG{__WARN__} = sub {
-  my ($package) = caller;Xchat::print($package);
+  my ($package) = caller;
   my $filename = Xchat::Embed::pkg_info( $package )->{filename};
   my $message = shift @_;
   $message =~ s/\(eval \d+\)/$filename/;
@@ -399,6 +399,7 @@ $SIG{__WARN__} = sub {
     my $package = file2pkg( $file );
 
     if ( exists $scripts{$package} ) {
+      my $pkg_info
       Xchat::print( qq{'$file' already loaded.\n} );
       return 2;
     }
