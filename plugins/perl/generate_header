@@ -25,8 +25,8 @@ sub header {
 sub toc {
   my @lines = @_;
   for( @lines ) {
-    if( /^\s*$/s ) { $_ = ""; next; }
-    if( /^\s*#/ ) { $_ = ""; next; }
+    if( /^\s*$/s ) { $_ = qq{"\\n"\n}; next; }
+    if( /^\s*#/ ) { $_ = qq{"\\n"\n}; next; }
     s/\\/\\\\/g; # double the number of \'s
     s/"/\\"/g;
     s/^\s*/"/;
