@@ -173,6 +173,8 @@ use Symbol();
     return undef unless defined $fileno; # no underlying fd for this handle
     
     my ($package) = caller;
+    ($package) = caller(1) if $package eq 'IRC';
+
     $callback = Xchat::Embed::fix_callback( $package, $callback );
     
     my ($flags, $data) = (Xchat::FD_READ, undef);
@@ -194,10 +196,7 @@ use Symbol();
                               );
     };
     
-    my ($package) = caller;
-    ($package) = caller(1) if $package eq 'IRC';
     my $pkg_info = Xchat::Embed::pkg_info( $package );
-    
     my $hook = Xchat::Internal::hook_fd( $fileno, $cb, $flags,
                                          { DATA => $data, FD => $fd, CB => $callback,
                                            FLAGS => $flags,
