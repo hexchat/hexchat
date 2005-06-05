@@ -481,7 +481,7 @@ $SIG{__WARN__} = sub {
         }
       }
       
-      if( exists $pkg_info->{gui_engry} ) {
+      if( exists $pkg_info->{gui_entry} ) {
         plugingui_remove( $pkg_info->{gui_entry} );
       }
       
