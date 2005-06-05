@@ -404,8 +404,10 @@ $SIG{__WARN__} = sub {
     my $package = file2pkg( $file );
 
     if ( exists $scripts{$package} ) {
-      my $pkg_info
-      Xchat::print( qq{'$file' already loaded.\n} );
+      my $pkg_info = pkg_info( $package );
+      my $filename = File::Basename::basename( $pkg_info->{filename} );
+      Xchat::print( qq{'$filename' already loaded from '$pkg_info->{filename}'.\n} );
+      Xchat::print( 'If this is a different script then it rename and try loading it again.' );
       return 2;
     }
 
@@ -459,24 +461,36 @@ $SIG{__WARN__} = sub {
     my $package = file2pkg( $file );
     my $pkg_info = pkg_info( $package );
 
-    for my $hook ( @{$pkg_info->{hooks}} ) {
-      Xchat::unhook( $hook, $package );
-    }
+    if( $pkg_info ) {
+
+      if( exists $pkg_info->{hooks} ) {
+        for my $hook ( @{$pkg_info->{hooks}} ) {
+          Xchat::unhook( $hook, $package );
+        }
+      }
 
     # take care of the shutdown callback
-    if( ref $pkg_info->{shutdown} eq 'CODE' ) {
-      $pkg_info->{shutdown}->();
-    } elsif( $pkg_info->{shutdown} ) {
-      eval {
-        no strict 'refs';
-        &{$pkg_info->{shutdown}};
-      };
+      if( exists $pkg_info->{shutdown} ) {
+        if( ref $pkg_info->{shutdown} eq 'CODE' ) {
+          $pkg_info->{shutdown}->();
+        } elsif( $pkg_info->{shutdown} ) {
+          eval {
+            no strict 'refs';
+            &{$pkg_info->{shutdown}};
+          };
+        }
+      }
+      
+      if( exists $pkg_info->{gui_engry} ) {
+        plugingui_remove( $pkg_info->{gui_entry} );
+      }
+      
+      Symbol::delete_package( $package );
+      delete $scripts{$package};
+      return Xchat::EAT_ALL;
+    } else {
+      return Xchat::EAT_NONE;
     }
-
-    plugingui_remove( $pkg_info->{gui_entry} );
-    Symbol::delete_package( $package );
-    delete $scripts{$package};
-    return Xchat::EAT_ALL;
   }
 
   sub unload_all {
