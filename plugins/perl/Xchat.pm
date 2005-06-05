@@ -379,10 +379,15 @@ use Symbol();
 }
 
 $SIG{__WARN__} = sub {
-  my ($package) = caller;
-  my $filename = Xchat::Embed::pkg_info( $package )->{filename};
   my $message = shift @_;
-  $message =~ s/\(eval \d+\)/$filename/;
+  my ($package) = caller;
+  my $pkg_info = Xchat::Embed::pkg_info( $package );
+  
+  if( $pkg_info ) {
+    my $filename = $pkg_info->{filename};
+    $message =~ s/\(eval \d+\)/$filename/;
+  }
+    
   Xchat::print( $message );
 };
 
