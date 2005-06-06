@@ -405,7 +405,7 @@ print_cb (char *word[], void *userdata)
 
 /* custom IRC perl functions for scripting */
 
-/* Xchat::_register (scriptname, version, desc, shutdowncallback, filename)
+/* Xchat::Internal::register (scriptname, version, desc, shutdowncallback, filename)
  *
  */
 
@@ -415,7 +415,7 @@ static XS (XS_Xchat_register)
 	dXSARGS;
 	if (items != 4) {
 		xchat_printf (ph,
-		"Usage: Xchat::_register(scriptname, version, desc, filename)");
+		"Usage: Xchat::Internal::register(scriptname, version, desc, filename)");
 	} else {
 	  /* the strdup is required otherwise opening the
 		  Scripts and Plugin window gives 
@@ -443,7 +443,7 @@ static XS (XS_Xchat_print)
 
 	dXSARGS;
 	if (items != 1 ) {
-		xchat_print (ph, "Usage: Xchat::_print(text)");
+		xchat_print (ph, "Usage: Xchat::Internal::print(text)");
 	} else {
 		text = SvPV_nolen (ST (0));
 		xchat_print (ph, text);
@@ -556,7 +556,7 @@ static XS (XS_Xchat_get_prefs)
 	}
 }
 
-/* Xchat::_hook_server(name, priority, callback, userdata) */
+/* Xchat::Internal::hook_server(name, priority, callback, userdata) */
 static XS (XS_Xchat_hook_server)
 {
 
@@ -571,7 +571,7 @@ static XS (XS_Xchat_hook_server)
 
 	if (items != 4) {
 		xchat_print (ph,
-				"Usage: Xchat::_hook_server(name, priority, callback, userdata)");
+				"Usage: Xchat::Internal::hook_server(name, priority, callback, userdata)");
 	} else {
 		name = SvPV_nolen (ST (0));
 		pri = (int)SvIV(ST (1));
@@ -593,7 +593,7 @@ static XS (XS_Xchat_hook_server)
 	}
 }
 
-/* Xchat::_hook_command(name, priority, callback, help_text, userdata) */
+/* Xchat::Internal::hook_command(name, priority, callback, help_text, userdata) */
 static XS(XS_Xchat_hook_command)
 {
 	char *name;
@@ -607,7 +607,7 @@ static XS(XS_Xchat_hook_command)
 	dXSARGS;
 	
 	if (items != 5) {
-		xchat_print (ph, "Usage: Xchat::_hook_command(name, priority, callback, help_text, userdata)");
+		xchat_print (ph, "Usage: Xchat::Internal::hook_command(name, priority, callback, help_text, userdata)");
 	} else {
 		name = SvPV_nolen (ST (0));
 		pri = (int)SvIV(ST (1));
@@ -632,7 +632,7 @@ static XS(XS_Xchat_hook_command)
 
 }
 
-/* Xchat::_hook_print(name, priority, callback, [userdata]) */
+/* Xchat::Internal::hook_print(name, priority, callback, [userdata]) */
 static XS (XS_Xchat_hook_print)
 {
 
@@ -645,7 +645,7 @@ static XS (XS_Xchat_hook_print)
 	dXSARGS;
 	if (items != 4) {
 		xchat_print (ph,
-				"Usage: Xchat::_hook_print(name, priority, callback, userdata)");
+				"Usage: Xchat::Internal::hook_print(name, priority, callback, userdata)");
 	} else {
 		name = SvPV_nolen (ST (0));
 		pri = (int)SvIV(ST (1));
@@ -669,7 +669,7 @@ static XS (XS_Xchat_hook_print)
 	}
 }
 
-/* Xchat::_hook_timer(timeout, callback, userdata) */
+/* Xchat::Internal::hook_timer(timeout, callback, userdata) */
 static XS (XS_Xchat_hook_timer)
 {
 	int timeout;
@@ -682,7 +682,7 @@ static XS (XS_Xchat_hook_timer)
 
 	if (items != 3) {
 		xchat_print (ph,
-		"Usage: Xchat::_hook_timer(timeout, callback, userdata)");
+		"Usage: Xchat::Internal::hook_timer(timeout, callback, userdata)");
 	} else {
 		timeout = (int)SvIV(ST (0));
 		callback = ST (1);
@@ -705,7 +705,7 @@ static XS (XS_Xchat_hook_timer)
 	}
 }
 
-/* Xchat::_hook_fd(fd, callback, flags, userdata) */
+/* Xchat::Internal::hook_fd(fd, callback, flags, userdata) */
 static XS (XS_Xchat_hook_fd)
 {
 		int fd;
@@ -719,7 +719,7 @@ static XS (XS_Xchat_hook_fd)
 
 		if (items != 4) {
 			xchat_print (ph,
-			"Usage: Xchat::_hook_fd(fd, callback, flags, userdata)");
+			"Usage: Xchat::Internal::hook_fd(fd, callback, flags, userdata)");
 		} else {
 			fd = (int)SvIV (ST (0));
 			callback = ST (1);
@@ -770,14 +770,14 @@ static XS(XS_Xchat_unhook)
    XSRETURN_EMPTY;
 }
 
-/* Xchat::_command(command) */
+/* Xchat::Internal::command(command) */
 static XS (XS_Xchat_command)
 {
 	char *cmd = NULL;
 
 	dXSARGS;
 	if (items != 1 ) {
-		xchat_print (ph, "Usage: Xchat::_command(command)");
+		xchat_print (ph, "Usage: Xchat::Internal::command(command)");
 	} else {
 		cmd = SvPV_nolen (ST (0));
 		xchat_command (ph, cmd);
@@ -1153,6 +1153,21 @@ perl_command_reloadall (char *word[], char *word_eol[], void *userdata)
 }
 
 static int
+perl_command_load (char *word[], char *word_eol[], void *userdata)
+{
+	int len;
+
+	len = strlen (word_eol[2]);
+	if (len > 3 && strcasecmp (".pl", word_eol[2] + len - 3) == 0)
+	{
+     perl_load_file(word_eol[2]);
+     return XCHAT_EAT_XCHAT;
+	}
+
+	return XCHAT_EAT_NONE;
+}
+
+static int
 perl_command_unload (char *word[], char *word_eol[], void *userdata)
 {
 	int len;
@@ -1170,20 +1185,21 @@ perl_command_unload (char *word[], char *word_eol[], void *userdata)
 }
 
 static int
-perl_command_load (char *word[], char *word_eol[], void *userdata)
+perl_command_reload (char *word[], char *word_eol[], void *userdata)
 {
 	int len;
 
+	/* try it by filename */
 	len = strlen (word_eol[2]);
 	if (len > 3 && strcasecmp (".pl", word_eol[2] + len - 3) == 0)
 	{
-     perl_load_file(word_eol[2]);
-     return XCHAT_EAT_XCHAT;
+		execute_perl (sv_2mortal (newSVpv ("Xchat::Embed::reload", 0)),
+                    word_eol[2]);
+		return XCHAT_EAT_XCHAT;
 	}
 
 	return XCHAT_EAT_NONE;
 }
-
 static void
 perl_auto_load (void)
 {
@@ -1223,8 +1239,8 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name,
 	xchat_plugin_get_info (plugin_name, plugin_desc, plugin_version, NULL);
 
 	xchat_hook_command (ph, "load", XCHAT_PRI_NORM, perl_command_load, 0, 0);
-	xchat_hook_command (ph, "unload", XCHAT_PRI_NORM, perl_command_unload, 0,
-							  0);
+	xchat_hook_command (ph, "unload", XCHAT_PRI_NORM, perl_command_unload, 0, 0);
+   xchat_hook_command (ph, "reload", XCHAT_PRI_NORM, perl_command_reload, 0, 0);
 	xchat_hook_command (ph, "unloadall", XCHAT_PRI_NORM, perl_command_unloadall,
 							  0, 0);
 	xchat_hook_command (ph, "reloadall", XCHAT_PRI_NORM, perl_command_reloadall,

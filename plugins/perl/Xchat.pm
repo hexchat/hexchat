@@ -444,7 +444,7 @@ $SIG{__WARN__} = sub {
         Xchat::print( "Error loading '$file':\n$@\n" );
 
         # make sure the script list doesn't contain false information
-        delete $scripts{$package};
+        unload( $scripts{$package}{filename} );
         return 1;
       }
 
@@ -493,6 +493,20 @@ $SIG{__WARN__} = sub {
     }
   }
 
+  sub reload {
+    my $file = shift @_;
+    my $package = file2pkg( $file );
+    my $pkg_info = pkg_info( $package );
+    my $fullpath = $file;
+
+    if( $pkg_info ) {
+      $fullpath = $pkg_info->{filename};
+      unload( $file );
+    }
+    load( $fullpath );
+    return Xchat::EAT_ALL;
+  }
+
   sub unload_all {
     for my $package ( keys %scripts ) {
       unload( $scripts{$package}->{filename} );
@@ -512,11 +526,6 @@ $SIG{__WARN__} = sub {
       }
       closedir $dir_handle;
     }
-    
-  }
-
-  sub remove_timer_hook {
-    my $hook = shift @_;
     
   }
 
