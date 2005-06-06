@@ -543,7 +543,7 @@ dcc_read_chat (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 		}
 
 		if (!dcc->iotag)
-			dcc->iotag = fe_input_add (dcc->sok, FIA_READ|FIA_EX, dcc_read, dcc);
+			dcc->iotag = fe_input_add (dcc->sok, FIA_READ|FIA_EX, dcc_read_chat, dcc);
 
 		len = recv (dcc->sok, lbuf, sizeof (lbuf) - 2, 0);
 		if (len < 1)

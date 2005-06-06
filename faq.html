@@ -34,7 +34,7 @@ p { margin: 3% }
 
 <h2>2. Section Two: Using X-Chat.</h2>
 <p>
-<a href="#q21">1. How do I enable identd in X-Chat? (How do I get rid of the ~ infront of my username?)</a>
+<a href="#q21">1. How do I enable identd in X-Chat? (How do I get rid of the ~ in front of my username?)</a>
 <br/><br/>
 <a href="#q22">2. How do I auto join more than one channel with keys?</a>
 <br/><br/>
@@ -44,7 +44,7 @@ p { margin: 3% }
 <br/><br/>
 <a href="#q25">5. How do I connect through a proxy?</a>
 <br/><br/>
-<a href="#q26">6. How do I show @ and + infront of nicknames that are Op and Voice when they talk?</a>
+<a href="#q26">6. How do I show @ and + in front of nicknames that are Op and Voice when they talk?</a>
 <br/><br/>
 <a href="#q27">7. How do I change the Op and Voice icons in the userlist?</a>
 <br/><br/>
@@ -62,7 +62,7 @@ p { margin: 3% }
 <br/><br/>
 <a href="#q214">14. How do I execute multiple commands in one line?</a>
 <br/><br/>
-<a href="#q215">15. How do I enable Emacs keybindings in XChat?</a>
+<a href="#q215">15. How do I enable Emacs key bindings in XChat?</a>
 <br/><br/>
 <a href="#q216">16. I get this error: "Unknown file type abc.yz. Maybe you need to install the Perl or Python plugin?"</a>
 <br/><br/>
@@ -111,7 +111,7 @@ It means you don't have GNU gettext installed. There are two solutions:
 <ul>
 <li>Install GNU gettext and try again.</li>
 <li>Use <i>./configure --disable-nls</i>. This will disable foreign
-language support and all menus and GUI will be in english only.</li>
+language support and all menus and GUI will be in English only.</li>
 </ul>
 
 <br/><h3><a name="q12">2. How do I compile X-Chat on my Sun OS system?</a></h3>
@@ -133,13 +133,13 @@ language support and all menus and GUI will be in english only.</li>
     As an alternative, you can try this experimental identd server: <a href="http://xchat.org/auth/">xchat_auth</a>
 
 <br/><br/><u>WINDOWS:</u><br/>
-    The win32 version of X-Chat comes with a builtin identd server. It is
+    The win32 version of X-Chat comes with a built-in identd server. It is
     enabled by default, but can be disabled with <i>/set identd 0</i>.
 </p>
 
 <br/><h3><a name="q22">2. How do I auto join more than one channel with keys?</a></h3>
 <p>
-   In the Serverlist's channel column enter multiple channels and separate 
+   In the Server list's channel column enter multiple channels and separate 
    them by commas, eg:  "#linux,#warez,#chat". Do not put spaces between the
    channels. If the channels also have keys (passwords), then the syntax is:
    "#channel1,#channel2,#channel3 key1,key2,key3"
@@ -151,7 +151,7 @@ language support and all menus and GUI will be in english only.</li>
 
 <br/><h3><a name="q23">3. How do I autoconnect and join a channel when X-Chat loads?</a></h3>
 <p>
-In the Serverlist, select the Network you want to auto-connect to, click Edit
+In the Server list, select the Network you want to auto-connect to, click Edit
 and turn ON the "Auto connect to this network at startup" checkbox.
 </p>
 
@@ -169,7 +169,7 @@ information there. Authentication (using a username and password) is
 only supported for HTTP and Socks5.
 </p>
 
-<br/><h3><a name="q26">6. How do I show @ and + infront of nicknames that are Op and Voice when they talk?</a></h3>
+<br/><h3><a name="q26">6. How do I show @ and + in front of nicknames that are Op and Voice when they talk?</a></h3>
 <p>
 To display @ and + characters next to nicknames as they talk, do the following:
 </p>
@@ -186,7 +186,7 @@ list at the top of the window.
 
 <br/><h3><a name="q27">7. How do I change the Op and Voice icons in the userlist?</a></h3>
 <p>
-The default icons are hardcoded (compiled) in. You can override them by creating
+The default icons are hard coded (compiled) in. You can override them by creating
 some PNG files in ${PREFIX}/share/xchat. ${PREFIX} is usually /usr, so that
 would translate to /usr/share/xchat. If you compiled from source tarball without
 specifying a prefix, it will be /usr/local instead.
@@ -199,19 +199,19 @@ specifying a prefix, it will be /usr/local instead.
 </p>
 <ul>
 <li>
-      Right click the nickname in the userlist, and choose a bantype from the
+      Right click the nickname in the userlist, and choose a ban type from the
       "Kick/Ban" submenu.
 </li>
 <li>
 		You can also do it manually:
 
-         /ban &lt;nick> &lt;bantype>
+         /ban &lt;nick> &lt;ban type>
 
-      where the &lt;bantype> is a number from 0 to 3.
+      where the &lt;ban type> is a number from 0 to 3.
 </li>
 
 <li>
-           /set irc_ban_type &lt;bantype>
+           /set irc_ban_type &lt;ban type>
       sets the default ban type to use for all bans. The different types are:
 
 <ul>
@@ -267,15 +267,15 @@ Unofficial <a href="http://dfx.at/xchat/">patches are available here</a>.
 
 <br/><h3><a name="q213">13. Why doesn't DCC send work behind IPNat or IPMasq?</a></h3>
 <p>
-   If you are behind a IP-NAT or IP-Masqeraude system, you will most likely have
-   an address like 192.168.0.0. This address is not useable on the internet, and
+   If you are behind a IP-NAT or IP-Masquerade system, you will most likely have
+   an address like 192.168.0.0. This address is not usable on the Internet, and
    must be translated.
 </p><p>
    When offering a DCC file, xchat will tell the receiver your address. If it says
    192.168.0.0, the receiver will not be able to connect. One way to make it send
    your "real" address is to enable the "Get my IP from IRC Server" option in xchat.
-   In version 2, it's available in Prefereces -> File Transfers. When you turn
-   this option ON, you will have to relogin to the server before it'll take effect.
+   In version 2, it's available in Preferences -> File Transfers. When you turn
+   this option ON, you will have to re-login to the server before it'll take effect.
 </p>
 
 <br/><h3><a name="q214">14. How do I execute multiple commands in one line?</a></h3>
@@ -285,7 +285,7 @@ Unofficial <a href="http://dfx.at/xchat/">patches are available here</a>.
 <ul>
 <li>You can create two UserCommands, with the same name, and then execute
 the UserCommand. It will be executed in the same order as it's written
-in the UserCommands gui.</li>
+in the UserCommands GUI.</li>
 <li>/LOAD -e &lt;textfile>, where &lt;textfile> is a full pathname to a file
 containing commands on each line.</li>
 <li>
@@ -293,14 +293,14 @@ Separate your commands with CTRL-SHIFT-a. This will appear as a little box
 with numbers on it (doesn't work on Windows).</li>
 </ul>
 
-<br/><h3><a name="q215">15. How do I enable Emacs keybindings in XChat?</a></h3>
+<br/><h3><a name="q215">15. How do I enable Emacs key bindings in XChat?</a></h3>
 <p>
-The standard Emacs keybindings, such as ctrl-w, ctrl-u etc, are supported by
-GTK+ 2.0, but normally disabled. If you run Gnome 2, you can reenable them in
+The standard Emacs key bindings, such as CTRL-w, CTRL-u etc, are supported by
+GTK+ 2.0, but normally disabled. If you run Gnome 2, you can re-enable them in
 your Gnome menu under: Preferences -> Keyboard Shortcuts.
 </p>
 <p>
-If you don't use Gnome 2, but still want Emacs keybindings, it's beyond the
+If you don't use Gnome 2, but still want Emacs key bindings, it's beyond the
 scope of this document. You might find some hints here:
 <a href="http://www.gtk.org/gtk-2.4.0-notes.html">GTK+ 2.4.0 release notes</a>.
 </p>
@@ -316,7 +316,7 @@ the plugin for running those scripts isn't loaded.
 <li>The plugins directory can be found by issuing the shell command
 	<pre>strings `which xchat` | grep plugins</pre>
 	Be sure to use the correct quotes.</li>
-<li>All *.so files are autoloaded at startup (*.dll on Windows).</li>
+<li>All *.so files are auto-loaded at startup (*.dll on Windows).</li>
 <li>If you downloaded a binary package, maybe the packager decided to exclude the Perl or Python plugins.</li>
 </ul>
 
@@ -330,7 +330,7 @@ sound filename (or use the Browse button).
 <br/><h3><a name="q218">18. How do I auto-load scripts at startup?</a></h3>
 <p>
 You just have to place the scripts into XChat's data directory. XChat
-will auto-load scripts if they have the right extention .e.g If a filename
+will auto-load scripts if they have the right extension .e.g If a filename
 ends in .pl, it will be loaded as a Perl script.
 This data directory is different on each platform:
 <br/><br/>
@@ -373,7 +373,7 @@ There are two plugins available that allow this:
 <br/><h3><a name="q31">1. Why does X-Chat leak so much memory?</a></h3>
 <p>
 The simple answer is, it doesn't! There are some GTK+ pixmap based themes around that
-leak alot of memory. Please try using a different theme and see if that resolves the
+leak a lot of memory. Please try using a different theme and see if that resolves the
 problem. X-Chat itself only allocates about 40kb of memory through malloc()!
 </p>
 

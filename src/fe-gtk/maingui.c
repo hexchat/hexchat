@@ -170,15 +170,30 @@ flash_window (GtkWidget *win)
 #include <gdk/gdkx.h>
 
 static void
-flash_window (GtkWidget *win)
+set_window_urgency (GtkWidget *win, gboolean set)
 {
 	XWMHints *hints;
 
 	hints = XGetWMHints(GDK_WINDOW_XDISPLAY(win->window), GDK_WINDOW_XWINDOW(win->window));
-	hints->flags |= XUrgencyHint;
+	if (set)
+		hints->flags |= XUrgencyHint;
+	else
+		hints->flags &= ~XUrgencyHint;
 	XSetWMHints(GDK_WINDOW_XDISPLAY(win->window),
 	            GDK_WINDOW_XWINDOW(win->window), hints);
 	XFree(hints);
+}
+
+static void
+flash_window (GtkWidget *win)
+{
+	set_window_urgency (win, TRUE);
+}
+
+static void
+unflash_window (GtkWidget *win)
+{
+	set_window_urgency (win, FALSE);
 }
 #endif
 #endif
@@ -2263,6 +2278,11 @@ mg_topwin_focus_cb (GtkWindow * win, GdkEventFocus *event, session *sess)
 	if (!sess->server->server_session)
 		sess->server->server_session = sess;
 	gtk_xtext_check_marker_visibility(GTK_XTEXT (current_sess->gui->xtext));
+#ifndef WIN32
+#ifdef USE_XLIB
+	unflash_window (GTK_WIDGET (win));
+#endif
+#endif
 	plugin_emit_dummy_print (sess, "Focus Window");
 	return FALSE;
 }
