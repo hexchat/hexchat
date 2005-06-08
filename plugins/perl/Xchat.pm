@@ -384,10 +384,8 @@ $SIG{__WARN__} = sub {
   my $pkg_info = Xchat::Embed::pkg_info( $package );
   
   if( $pkg_info ) {
-    my $filename = $pkg_info->{filename};
-    $message =~ s/\(eval \d+\)/$filename/;
+    $message =~ s/\(eval \d+\)/$pkg_info->{filename}/;
   }
-    
   Xchat::print( $message );
 };
 
@@ -514,20 +512,20 @@ $SIG{__WARN__} = sub {
     return Xchat::EAT_ALL;
   }
 
-  sub auto_load {
+#   sub auto_load {
 
-    my $dir = Xchat::get_info( "xchatdirfs" ) || Xchat::get_info( "xchatdir" );
-    if( opendir my $dir_handle, $dir ) {
-      my @files = readdir $dir_handle;
+#     my $dir = Xchat::get_info( "xchatdirfs" ) || Xchat::get_info( "xchatdir" );
+#     if( opendir my $dir_handle, $dir ) {
+#       my @files = readdir $dir_handle;
 
-      for( @files ) {
-        my $fullpath = File::Spec->catfile( $dir, $_ );
-        load( $fullpath ) if $fullpath =~ m/\.pl$/i;
-      }
-      closedir $dir_handle;
-    }
+#       for( @files ) {
+#         my $fullpath = File::Spec->catfile( $dir, $_ );
+#         load( $fullpath ) if $fullpath =~ m/\.pl$/i;
+#       }
+#       closedir $dir_handle;
+#     }
     
-  }
+#   }
 
   sub expand_homedir {
     my $file = shift @_;
