@@ -111,6 +111,7 @@ struct _xchat_plugin
 	session *context;
 	void *deinit_callback;	/* pointer to xchat_plugin_deinit */
 	unsigned int fake:1;		/* fake plugin. Added by xchat_plugingui_add() */
+	unsigned int free_strings:1;		/* free name,desc,version? */
 };
 #endif
 

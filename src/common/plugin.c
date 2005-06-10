@@ -164,6 +164,15 @@ plugin_free (xchat_plugin *pl, int do_deinit, int allow_refuse)
 #endif
 
 xit:
+	if (pl->free_strings)
+	{
+		if (pl->name)
+			free (pl->name);
+		if (pl->desc)
+			free (pl->desc);
+		if (pl->version)
+			free (pl->version);
+	}
 	if (pl->filename)
 		free ((char *)pl->filename);
 	free (pl);
@@ -180,7 +189,7 @@ xit:
 static xchat_plugin *
 plugin_list_add (xchat_context *ctx, char *filename, const char *name,
 					  const char *desc, const char *version, void *handle,
-					  void *deinit_func, int fake)
+					  void *deinit_func, int fake, int free_strings)
 {
 	xchat_plugin *pl;
 
@@ -193,6 +202,7 @@ plugin_list_add (xchat_context *ctx, char *filename, const char *name,
 	pl->version = (char *)version;
 	pl->deinit_callback = deinit_func;
 	pl->fake = fake;
+	pl->free_strings = free_strings;	/* free() name,desc,version? */
 
 	plugin_list = g_slist_prepend (plugin_list, pl);
 
@@ -227,7 +237,7 @@ plugin_add (session *sess, char *filename, void *handle, void *init_func,
 		file = strdup (filename);
 
 	pl = plugin_list_add (sess, file, file, NULL, NULL, handle, deinit_func,
-								 fake);
+								 fake, FALSE);
 
 	if (!fake)
 	{
@@ -1385,8 +1395,8 @@ xchat_plugingui_add (xchat_plugin *ph, const char *filename,
 							const char *version, char *reserved)
 {
 #ifdef USE_PLUGIN
-	ph = plugin_list_add (NULL, strdup (filename), name, desc, version, NULL,
-								 NULL, TRUE);
+	ph = plugin_list_add (NULL, strdup (filename), strdup (name), strdup (desc),
+								 strdup (version), NULL, NULL, TRUE, TRUE);
 	fe_pluginlist_update ();
 #endif
 

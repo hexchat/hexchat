@@ -555,7 +555,7 @@ servlist_connect (session *sess, ircnet *net)
 
 		*port = '/';
 	} else
-		serv->connect (serv, ircserv->hostname, 6667, FALSE);
+		serv->connect (serv, ircserv->hostname, -1, FALSE);
 
 	server_set_encoding (serv, net->encoding);
 }
