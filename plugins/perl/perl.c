@@ -17,6 +17,7 @@
  */
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -32,22 +33,9 @@
 #undef PACKAGE
 #include "../../config.h"		  /* for #define OLD_PERL */
 #include "xchat-plugin.h"
-#include <EXTERN.h>
-#define WIN32IOP_H
-#include <perl.h>
-
-typedef struct
-{
-  SV *callback;
-  SV *userdata;
-  xchat_hook *hook; /* required for timers */
-  
-} HookData;
 
 static xchat_plugin *ph; /* plugin handle */
-static PerlInterpreter *my_perl = NULL;
 
-extern void boot_DynaLoader (pTHX_ CV* cv);
 static int perl_load_file (char *script_name);
 
 #ifdef WIN32
@@ -101,7 +89,21 @@ perl_auto_load (void)
 	}
 }
 
+#include <EXTERN.h>
+#define WIN32IOP_H
+#include <perl.h>
 #include <XSUB.h>
+
+typedef struct
+{
+  SV *callback;
+  SV *userdata;
+  xchat_hook *hook; /* required for timers */
+  
+} HookData;
+
+static PerlInterpreter *my_perl = NULL;
+extern void boot_DynaLoader (pTHX_ CV* cv);
 
 /*
   this is used for autoload and shutdown callbacks
@@ -434,10 +436,10 @@ static XS (XS_Xchat_register)
 					 
 	 gui_entry = xchat_plugingui_add (ph, filename, name,
 												 desc, version, NULL);
-/*     free (name); */
-/*     free (version); */
-/*     free (desc); */
-/*     free (filename); */
+    free (name);
+    free (version);
+    free (desc);
+    free (filename);
 	 XSRETURN_UV (PTR2UV (gui_entry));
 					 
   }
@@ -769,15 +771,17 @@ static XS(XS_Xchat_unhook)
 	 hook = INT2PTR(xchat_hook *,SvUV(ST (0)));
 	 userdata = (HookData*)xchat_unhook (ph, hook);
 
-	 if (userdata->callback) {
-		SvREFCNT_dec (userdata->callback);
-	 }
-
-	 if (userdata->userdata) {
-		XPUSHs(sv_mortalcopy (userdata->userdata));
-		SvREFCNT_dec (userdata->userdata);
-		retCount = 1;
-	 }
+    if (userdata != NULL ) {
+      if (userdata->callback) {
+        SvREFCNT_dec (userdata->callback);
+      }
+      
+      if (userdata->userdata) {
+        XPUSHs(sv_mortalcopy (userdata->userdata));
+        SvREFCNT_dec (userdata->userdata);
+        retCount = 1;
+      }
+    }
 	 Safefree (userdata);
 	 XSRETURN(retCount);
   }

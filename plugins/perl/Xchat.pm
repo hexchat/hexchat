@@ -410,10 +410,10 @@ $SIG{__WARN__} = sub {
     }
 
     if ( open FH, $file ) {
-      my $data = do {local $/; <FH>};
+      my $source = do {local $/; <FH>};
       close FH;
 
-      if ( my $replacements = $data =~ s/^\s*package ([\w:]+).*?;//mg ) {
+      if ( my $replacements = $source =~ s/^\s*package ([\w:]+).*?;//mg ) {
         my $original_package = $1;
 
         if ( $replacements > 1 ) {
@@ -422,11 +422,9 @@ $SIG{__WARN__} = sub {
         }
 
         # fixes things up for code calling subs with fully qualified names
-        $data =~ s/${original_package}:://g;
+        $source =~ s/${original_package}:://g;
 
       }
-
-      $data = "package $package; $data";
 
       # this must come before the eval or the filename will not be found in
       # Xchat::register
@@ -434,7 +432,7 @@ $SIG{__WARN__} = sub {
 
       {
         no strict; no warnings;
-        eval $data;
+        eval "package $package; $source;";
       }
 
       if ( $@ ) {
