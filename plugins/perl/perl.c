@@ -1168,7 +1168,7 @@ perl_command_load (char *word[], char *word_eol[], void *userdata)
 	int len;
 	char *file;
 
-	if (strstr (word[2], " ") != NULL) {
+	if (strchr (word[2], ' ') != NULL) {
 		file = word[2];
 	} else {
 		file = word_eol[2];
@@ -1189,7 +1189,7 @@ perl_command_unload (char *word[], char *word_eol[], void *userdata)
 	int len;
 	char *file;
 	if (my_perl != NULL) {
-		if (strstr (word[2], " ") != NULL) {
+		if (strchr (word[2], ' ') != NULL) {
 			file = word[2];
 		} else {
 			file = word_eol[2];
@@ -1213,7 +1213,7 @@ perl_command_reload (char *word[], char *word_eol[], void *userdata)
 	int len;
 	char *file;
 	if (my_perl != NULL) {
-		if (strstr (word[2], " ") != NULL) {
+		if (strchr (word[2], ' ') != NULL) {
 			file = word[2];
 		} else {
 			file = word_eol[2];
