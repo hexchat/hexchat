@@ -52,8 +52,8 @@ use Symbol();
     $description = "" unless defined $description;
 
     $pkg_info->{shutdown} = $callback;
-    $pkg_info->{gui_entry} = Xchat::Internal::register( $name, $version, $description,
-                                               $filename );
+    $pkg_info->{gui_entry} =
+      Xchat::Internal::register( $name, $version, $description,	$filename );
 
     # keep with old behavior
     return ();
@@ -191,8 +191,8 @@ use Symbol();
     my $cb = sub {
       my $userdata = shift;
       no strict 'refs';
-      return $userdata->{CB}->($userdata->{FD}, $userdata->{FLAGS},
-                               $userdata->{DATA},
+      return &{$userdata->{CB}}($userdata->{FD}, $userdata->{FLAGS},
+			       $userdata->{DATA},
                               );
     };
     
