@@ -376,7 +376,7 @@ print_cb (char *word[], void *userdata)
 	}
 
 	for (count = 1; count <= last_index; count++) {
-		if (word[count] == NULL || word[count][0] != 0) {
+		if (word[count] == NULL || word[count][0] == 0) {
 			av_push (wd, &PL_sv_undef);
 		} else {
 			av_push (wd, newSVpv (word[count], 0));
