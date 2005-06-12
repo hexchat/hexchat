@@ -38,6 +38,12 @@ Where "NUMBER" is the bug number.
 	- enabled reloading scripts using XS modules
 	- moved some functions into Xchat::Embed
 	- implement Xchat::hook_fd
+	- fixed handling of filenames with spaces in them
+	- added /reload which works like /load but it will do an unload first
+	  it is not necessary to use the full path with this command, just the
+	  file name is enough
+	- fix print callbacks for cases where there are NULL elements between
+	  non-NULL elements
  - Fixed: "XChat can't ban users with long idents" (Dan Fruehauf)
    [1159447].
  - Implemented taskbar flashing on unix. Requires a window manager
