@@ -354,8 +354,8 @@ print_cb (char *word[], void *userdata)
 
 	HookData *data = (HookData *) userdata;
 	int retVal = 0;
-	int count = 0;
-
+	int count = 1;
+	int last_index = 31;
 	/* must be initialized after SAVETMPS */
 	AV *wd = NULL;
 
@@ -366,13 +366,24 @@ print_cb (char *word[], void *userdata)
 	wd = newAV ();
 	sv_2mortal ((SV *) wd);
 
-	for (count = 1;
-		  (count < 32) && (word[count] != NULL) && (word[count][0] != 0);
-		  count++) {
-		av_push (wd, newSVpv (word[count], 0));
+	/* need to scan backwards to find the index of the last element since some
+	   events such as "DCC Timeout" can have NULL elements in between non NULL
+	   elements */
+
+	while (last_index >= 0
+			 && (word[last_index] == NULL || word[last_index][0] == 0)) {
+		last_index--;
 	}
 
-	/*               xchat_printf (ph, "Recieved %d words in print callback", av_len (wd)); */
+	for (count = 1; count <= last_index; count++) {
+		if (word[count] == NULL || word[count][0] != 0) {
+			av_push (wd, &PL_sv_undef);
+		} else {
+			av_push (wd, newSVpv (word[count], 0));
+		}
+	}
+
+	/*xchat_printf (ph, "Recieved %d words in print callback", av_len (wd)+1); */
 	PUSHMARK (SP);
 	XPUSHs (newRV_noinc ((SV *) wd));
 	XPUSHs (data->userdata);
