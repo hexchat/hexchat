@@ -42,6 +42,7 @@ sub complete {
   my $context = Xchat::get_context;
   $completions{$context} ||= {};
   my $completions = $completions{$context};
+  $completions->{pos} ||= -1;
   my $suffix = Xchat::get_prefs( "completion_suffix" );
   $suffix =~ s/\s+//g;
   $suffix .= " ";
