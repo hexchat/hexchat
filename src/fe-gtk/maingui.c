@@ -2268,6 +2268,11 @@ mg_tabwin_focus_cb (GtkWindow * win, GdkEventFocus *event, gpointer userdata)
 		gtk_xtext_check_marker_visibility (GTK_XTEXT (current_sess->gui->xtext));
 		plugin_emit_dummy_print (current_sess, "Focus Window");
 	}
+#ifndef WIN32
+#ifdef USE_XLIB
+	unflash_window (GTK_WIDGET (win));
+#endif
+#endif
 	return FALSE;
 }
 
