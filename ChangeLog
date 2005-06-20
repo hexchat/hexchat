@@ -24,32 +24,23 @@ Where "NUMBER" is the bug number.
    receiving messages [1122089].
  - The DCC windows now allow multiple selection and the columns auto
    resize (Dan Fruehauf).
- - Added "CTCP Sound to Channel" event.
+ - Added "CTCP Sound to Channel" event [1159445].
  - You can now drag and drop files into dialog windows to start file
    transfers.
  - Perl:
- 	- Generate perl_definitions[] for including.
-	- Fix to allow fully qualified variable names to work as	well.
-	- fix bug that can leave the interpreter uninitialized
-	- removed enums for hook types since they aren't needed anymore
-	- removed the name member from HookData structure
-	- removed the PerlScript structure
-	- enabled individual script unloading
-	- enabled reloading scripts using XS modules
-	- moved some functions into Xchat::Embed
-	- implement Xchat::hook_fd
-	- fixed handling of filenames with spaces in them
-	- added /reload which works like /load but it will do an unload first
-	  it is not necessary to use the full path with this command, just the
-	  file name is enough
-	- fix print callbacks for cases where there are NULL elements between
-	  non-NULL elements
+   - Fix to allow fully qualified variable names to work as well.
+   - Enabled individual script unloading.
+   - Enabled reloading scripts using XS modules.
+   - Fixed handling of filenames with spaces in them.
+   - Added /reload which works like /load but it will do an unload first
+     it is not necessary to use the full path with this command, just
+     the file name is enough.
+   - Fix print callbacks for cases where there are NULL elements between
+     non-NULL elements.
  - Fixed: "XChat can't ban users with long idents" (Dan Fruehauf)
    [1159447].
  - Implemented taskbar flashing on unix. Requires a window manager
    or taskbar that supports XUrgency flag (Adil).
- - 
- - 
 
 
 ----------------------------------------------------------------------

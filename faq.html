@@ -300,6 +300,11 @@ GTK+ 2.0, but normally disabled. If you run Gnome 2, you can re-enable them in
 your Gnome menu under: Preferences -> Keyboard Shortcuts.
 </p>
 <p>
+<i>Note</i>: This doesn't work in the latest Gnome (2.8 and newer). In this case, you need
+to run "gconf-editor", and directly change the key /desktop/gnome/interface/gtk_key_theme
+from "Default" to "Emacs". Then you need to re-start XChat.
+</p>
+<p>
 If you don't use Gnome 2, but still want Emacs key bindings, it's beyond the
 scope of this document. You might find some hints here:
 <a href="http://www.gtk.org/gtk-2.4.0-notes.html">GTK+ 2.4.0 release notes</a>.
