@@ -155,7 +155,7 @@ on the bottom of this page.</p>
 </p>
 <h3><a name="xchat__hook_timer___timeout__callback_____options____data___"><code>Xchat::hook_timer( $timeout,$callback, [\%options | $data] )</code></a></h3>
 <ul>
-<li><strong><a name="item_c_3c_24message_3e__2d_server_message_to_hook"><code>$message</code> 		-	server message to hook such as PRIVMSG <a></strong><br />
+<li><strong><a name="item_c_3c_24message_3e__2d_server_message_to_hook"><code>$message</code> 		-	server message to hook such as PRIVMSG </a></strong><br />
 </li>
 <li><strong><a name="item_c_3c_24command_3e__2d_command_to_execute_without_t"><code>$command</code> 		-	command to intercept, without the leading /</a></strong><br />
 </li>
@@ -172,6 +172,13 @@ on the bottom of this page.</p>
 <li><strong><a name="item__5c_25options__2d_a_hash_reference_containing_addi">\%options	-	a hash reference containing addional options for the hooks</a></strong><br />
 </li>
 </ul>
+<p>
+These functions can be to intercept various events.
+hook_server can be used to intercept any incoming message from the IRC server.
+hook_command can be used to intercept any command, if the command doesn't currently exist then a new one is created.
+hook_print can be used to intercept any of the events listed in Setttings->Advanced->Text Events.
+hook_timer can be used to create a new timer.
+</p>
 <p>Valid keys for \%options:</p>
 <table border=1>	<tr>
 	<td>data</td>	<td>Additional data that is to be associated with the<br>
