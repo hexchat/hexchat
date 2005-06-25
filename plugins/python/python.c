@@ -2052,7 +2052,9 @@ xchat_plugin_init(xchat_plugin *plugin_handle,
 	}
 	initialized = 1;
 
-	xchat_plugin_get_info (plugin_name, plugin_desc, plugin_version, NULL);
+	*plugin_name = "Python";
+	*plugin_version = VERSION;
+	*plugin_desc = "Python scripting interface";
 
 	/* Initialize python. */
 	Py_SetProgramName("xchat");

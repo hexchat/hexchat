@@ -28,6 +28,7 @@
 
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gdk-pixbuf/gdk-pixdata.h>
+#include <gtk/gtkstock.h>
 
 #include "../pixmaps/inline_pngs.h"
 
@@ -80,7 +81,10 @@ pixmap_load_from_file (char *filename)
 void
 pixmaps_init (void)
 {
+#ifndef GTK_STOCK_ABOUT
+	/* we use the stock version in gtk 2.6+ */
 	pix_about = gdk_pixbuf_new_from_inline (-1, aboutpng, FALSE, 0);
+#endif
 	pix_book = gdk_pixbuf_new_from_inline (-1, bookpng, FALSE, 0);
 	pix_xchat = gdk_pixbuf_new_from_inline (-1, xchatpng, FALSE, 0);
 
