@@ -986,7 +986,8 @@ token_foreach (char *str, char sep,
 
 		} else
 		{
-			str += g_utf8_skip[*((unsigned char *)str)];
+			/* chars $00-$7f can never be embedded in utf-8 */
+			str++;
 		}
 	}
 

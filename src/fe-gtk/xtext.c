@@ -78,7 +78,7 @@
 
 #ifdef SCROLL_HACK
 /* force scrolling off */
-#define dontscroll(buf) (buf)->last_pixel_pos = 2147483647
+#define dontscroll(buf) (buf)->last_pixel_pos = 0x7fffffff
 #else
 #define dontscroll(buf)
 #endif
@@ -335,7 +335,7 @@ backend_get_char_width (GtkXText *xtext, unsigned char *str, int *mbl_ret)
 }
 
 static int
-backend_get_text_width (GtkXText *xtext, char *str, int len, int is_mb)
+backend_get_text_width (GtkXText *xtext, guchar *str, int len, int is_mb)
 {
 	XGlyphInfo ext;
 
@@ -485,7 +485,7 @@ backend_font_open (GtkXText *xtext, char *name)
 }
 
 static int
-backend_get_text_width (GtkXText *xtext, char *str, int len, int is_mb)
+backend_get_text_width (GtkXText *xtext, guchar *str, int len, int is_mb)
 {
 	int width;
 
@@ -2387,7 +2387,6 @@ gtk_xtext_strip_color (unsigned char *text, int len, unsigned char *outbuf,
 	int i = 0;
 	int col = FALSE;
 	unsigned char *new_str;
-	int mbl;
 	int mb = FALSE;
 
 	if (outbuf == NULL)
@@ -2422,27 +2421,8 @@ gtk_xtext_strip_color (unsigned char *text, int len, unsigned char *outbuf,
 			case ATTR_UNDERLINE:
 				break;
 			default:
-				mbl = charlen (text);
-				if (mbl == 1)
-				{
-					new_str[i] = *text;
-					i++;
-					text++;
-					len--;
-				} else
-				{
-					mb = TRUE;
-
-					len -= mbl;
-					/* safe-guard against invalid utf8 */
-					if (len < 0)
-						/* avoid memcpy beyond buffer */
-						mbl += len;
-					memcpy (&new_str[i], text, mbl);
-					i += mbl;
-					text += mbl;
-				}
-				continue;
+				new_str[i] = *text;
+				i++;
 			}
 		}
 		text++;
@@ -4694,7 +4674,7 @@ gtk_xtext_append_entry (xtext_buffer *buf, textentry * ent)
 	{
 		if (ent->str[i] == '\t')
 			ent->str[i] = ' ';
-		i += charlen (ent->str + i);
+		i++;
 	}
 
 	ent->stamp = time (0);

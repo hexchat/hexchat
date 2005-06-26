@@ -1721,6 +1721,18 @@ cmd_help (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 }
 
 static int
+cmd_id (struct session *sess, char *tbuf, char *word[], char *word_eol[])
+{
+	if (word[2][0])
+	{
+		sess->server->p_nickserv (sess->server, word[2]);
+		return TRUE;
+	}
+
+	return FALSE;
+}
+
+static int
 cmd_ignore (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	int i;
@@ -2782,6 +2794,7 @@ const struct commands xc_cmds[] = {
 	{"HELP", cmd_help, 0, 0, 1, 0},
 	{"HOP", cmd_hop, 1, 1, 1,
 	 N_("HOP <nick>, gives chanhalf-op status to the nick (needs chanop)")},
+	{"ID", cmd_id, 1, 0, 1, N_("ID <password>, identifies yourself to nickserv")},
 	{"IGNORE", cmd_ignore, 0, 0, 1,
 	 N_("IGNORE <mask> <types..> <options..>\n"
 	 "    mask - host mask to ignore, eg: *!*@*.aol.com\n"
