@@ -1907,7 +1907,7 @@ gtk_xtext_motion_notify (GtkWidget * widget, GdkEventMotion * event)
 	word = gtk_xtext_get_word (xtext, x, y, &word_ent, &offset, &len);
 	if (word)
 	{
-		if (xtext->urlcheck_function (GTK_WIDGET (xtext), word) > 0)
+		if (xtext->urlcheck_function (GTK_WIDGET (xtext), word, len) > 0)
 		{
 			if (!xtext->cursor_hand ||
 				 xtext->hilight_ent != word_ent ||
@@ -4915,7 +4915,7 @@ gtk_xtext_set_tint (GtkXText *xtext, int tint_red, int tint_green, int tint_blue
 }
 
 void
-gtk_xtext_set_urlcheck_function (GtkXText *xtext, int (*urlcheck_function) (GtkWidget *, char *))
+gtk_xtext_set_urlcheck_function (GtkXText *xtext, int (*urlcheck_function) (GtkWidget *, char *, int))
 {
 	xtext->urlcheck_function = urlcheck_function;
 }

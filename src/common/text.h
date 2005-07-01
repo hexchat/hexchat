@@ -19,7 +19,7 @@ struct text_event
 	char *def;
 };
 
-int text_word_check (char *word);
+int text_word_check (char *word, int len);
 void PrintText (session *sess, char *text);
 void PrintTextf (session *sess, char *format, ...);
 void log_close (session *sess);

@@ -47,61 +47,17 @@ struct pevt_stage1
 	struct pevt_stage1 *next;
 };
 
-
-/* Make ip:port urls clikable (127.0.0.1:80 etc)
-*  patch by Alex <alex@cosinus.org> & dobler <dobler@barrysworld.com>
-*/
-
-static int
-q3link (char *word)
-{
-	char *s;
-	int i;
-	int d = 0;
-
-	if ((s = strchr (word,':')) != NULL)
-	{
-		for (i = 0; i < s - word; i++)
-		{
-			if (word[i] == '.')
-				d++;
-			else if (!isdigit (word[i]))
-			{
-				d = 0;
-				break;
-			}
-		}
-
-		if (d == 3)
-		{
-			s++;
-			d = 0;
-
-			while (*s != 0)
-			{
-				if (!isdigit (*s++))
-					return (0);
-				d++;
-			}
-			if (d > 0)
-				return (1);
-		}
-	}
-	return (0);
-}
-
-/* check if a word is clickable */
+/* check if a word is clickable. This is called on mouse motion events, so
+   keep it FAST! This new version was found to be almost 3x faster than
+   2.4.4 release. */
 
 int
-text_word_check (char *word)
+text_word_check (char *word, int len)
 {
 	session *sess = current_sess;
 	char *at, *dot;
 	int i, dots;
-	int len = strlen (word);
-
-	if(q3link(word))
-		return WORD_URL;
+	char temp[4];
 
 	if ((word[0] == '@' || word[0] == '+' || word[0] == '^' || word[0] == '%' || word[0] == '*' ) && word[1] == '#')
 		return WORD_CHANNEL;
@@ -109,32 +65,57 @@ text_word_check (char *word)
 	if ((word[0] == '#' || word[0] == '&') && word[1] != '#' && word[1] != 0)
 		return WORD_CHANNEL;
 
-	if (!strncasecmp (word, "irc.", 4) && word[4] != '.')
-		return WORD_URL;
+	/* force a 32bit CMP.L - should be Endian neutral */
+#define CMPL(a, b) (*(guint32 *)(a) == *(guint32 *)(b))
+	/* force a 16bit CMP.W */
+#define CMPW(a, b) (*(guint16 *)(a) == *(guint16 *)(b))
 
-	if (!strncasecmp (word, "ftp.", 4) && word[4] != '.')
-		return WORD_URL;
+	if (len > 4 && word[4] != '.')
+	{
+		temp[0] = tolower (word[0]);
+		temp[1] = tolower (word[1]);
+		temp[2] = tolower (word[2]);
+		temp[3] = tolower (word[3]);
 
-	if (!strncasecmp (word, "www.", 4) && word[4] != '.')
-		return WORD_URL;
+		if (CMPL (temp, "irc."))
+			return WORD_URL;
+		if (CMPL (temp, "ftp."))
+			return WORD_URL;
+		if (CMPL (temp, "www."))
+			return WORD_URL;
 
-	if (!strncasecmp (word, "irc://", 6) && word[6] != 0)
-		return WORD_URL;
+		if (len > 7 && word[4] == '/' && word[5] == '/')
+		{
+			if (CMPL (temp, "irc:"))	/* irc:// */
+				return WORD_URL;
+			if (CMPL (temp, "ftp:"))	/* ftp:// */
+				return WORD_URL;
+		}
 
-	if (!strncasecmp (word, "ftp://", 6) && word[6] != 0)
-		return WORD_URL;
+		/* check for ABCD://... */
+		if (len > 8 && word[4] == ':' && word[5] == '/' && word[6] == '/')
+		{
+			if (CMPL (temp, "http"))		/* http:// */
+				return WORD_URL;
+			if (CMPL (temp, "file"))		/* file:// */
+				return WORD_URL;
+		}
 
-	if (!strncasecmp (word, "http://", 7) && word[7] != 0)
-		return WORD_URL;
+		/* check for https:// */
+		if (len > 9 && word[5] == ':' && word[6] == '/' && word[7] == '/')
+		{
+			if (CMPL (temp, "http") && (word[4] == 's' || word[4] == 'S'))
+				return WORD_URL;
+		}
 
-	if (!strncasecmp (word, "file://", 7) && word[7] != 0)
-		return WORD_URL;
-
-	if (!strncasecmp (word, "https://", 8) && word[8] != 0)
-		return WORD_URL;
-
-	if (!strncasecmp (word, "gopher://", 9) && word[9] != 0)
-		return WORD_URL;
+		/* check for gopher:// */
+		if (len > 10 && word[6] == ':' && word[7] == '/' && word[8] == '/')
+		{
+			if (CMPL (temp, "goph"))
+				if (CMPW (word + 4, "er") || CMPW (word + 4, "ER"))
+					return WORD_URL;
+		}
+	}
 
 	if (( (word[0]=='@' || word[0]=='+') && find_name (sess, word+1)) || find_name (sess, word))
 		return WORD_NICK;
@@ -157,8 +138,8 @@ text_word_check (char *word)
 	for (i = 0; i < len; i++)
 	{
 		if (word[i] == '.' && i > 1)
-			dots++;
-		else if (!isdigit (word[i]))
+			dots++;	/* allow 127.0.0.1:80 */
+		else if (!isdigit (word[i]) && word[i] != ':')
 		{
 			dots = 0;
 			break;
@@ -167,23 +148,33 @@ text_word_check (char *word)
 	if (dots == 3)
 		return WORD_HOST;
 
-	if (!strncasecmp (word + len - 5, ".html", 5))
-		return WORD_HOST;
-
-	if (!strncasecmp (word + len - 4, ".org", 4))
-		return WORD_HOST;
-
-	if (!strncasecmp (word + len - 4, ".net", 4))
-		return WORD_HOST;
-
-	if (!strncasecmp (word + len - 4, ".com", 4))
-		return WORD_HOST;
-
-	if (!strncasecmp (word + len - 4, ".edu", 4))
-		return WORD_HOST;
-
 	if (len > 5)
 	{
+		/* create a lowercase version of the last 4 letters */
+		temp[0] = tolower (word[len - 4]);
+		temp[1] = tolower (word[len - 3]);
+		temp[2] = tolower (word[len - 2]);
+		temp[3] = tolower (word[len - 1]);
+
+		if (word[len - 5] == '.')
+		{
+			if (CMPL (temp, "html"))
+				return WORD_HOST;
+			if (CMPL (temp, "info"))
+				return WORD_HOST;
+			if (CMPL (temp, "name"))
+				return WORD_HOST;
+		}
+
+		if (CMPL (temp, ".org"))
+			return WORD_HOST;
+		if (CMPL (temp, ".net"))
+			return WORD_HOST;
+		if (CMPL (temp, ".com"))
+			return WORD_HOST;
+		if (CMPL (temp, ".edu"))
+			return WORD_HOST;
+
 		if (word[len - 3] == '.' &&
 			 isalpha (word[len - 2]) && isalpha (word[len - 1]))
 			return WORD_HOST;

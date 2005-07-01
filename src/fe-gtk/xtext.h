@@ -163,7 +163,7 @@ struct _GtkXText
 	unsigned char scratch_buffer[4096];
 
 	void (*error_function) (int type);
-	int (*urlcheck_function) (GtkWidget * xtext, char *word);
+	int (*urlcheck_function) (GtkWidget * xtext, char *word, int len);
 
 	int jump_out_offset;	/* point at which to stop rendering */
 	int jump_in_offset;	/* "" start rendering */
@@ -244,7 +244,7 @@ void gtk_xtext_set_show_separator (GtkXText *xtext, gboolean show_separator);
 void gtk_xtext_set_thin_separator (GtkXText *xtext, gboolean thin_separator);
 void gtk_xtext_set_time_stamp (xtext_buffer *buf, gboolean timestamp);
 void gtk_xtext_set_tint (GtkXText *xtext, int tint_red, int tint_green, int tint_blue);
-void gtk_xtext_set_urlcheck_function (GtkXText *xtext, int (*urlcheck_function) (GtkWidget *, char *));
+void gtk_xtext_set_urlcheck_function (GtkXText *xtext, int (*urlcheck_function) (GtkWidget *, char *, int));
 void gtk_xtext_set_wordwrap (GtkXText *xtext, gboolean word_wrap);
 
 xtext_buffer *gtk_xtext_buffer_new (GtkXText *xtext);

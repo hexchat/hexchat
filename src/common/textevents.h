@@ -405,7 +405,7 @@ N_("%C23*$tYou have left channel $3 (%O%C23$4%O%C23)")},
 N_("%C22*%O$tYou've invited%C26 $1%O to%C26 $2%O (%C26$3%O)")},
 
 {"Your Message", pevt_chanmsg_help, 4, 
-N_("%C31%B%B$4$1%O$t%C30$2")},
+N_("%C31%B%B$4$1%O%C30$t$2")},
 
 {"Your Nick Changing", pevt_uchangenick_help, 2, 
 N_("%C22*%O$tYou are now known as $2")},

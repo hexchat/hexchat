@@ -691,7 +691,7 @@ static char defaultconf_urlhandlers[] =
 		"NAME Run new Opera\n"				"CMD !opera %s\n\n"\
 	"NAME ENDSUB\n"							"CMD \n\n"\
 	"NAME SUB\n"								"CMD Send URL to...\n\n"\
-		"NAME Gnome URL Handler\n"			"CMD !gnome-moz-remote %s\n\n"\
+		"NAME Gnome URL Handler\n"			"CMD !gnome-open %s\n\n"\
 		"NAME Lynx\n"							"CMD !"XTERM"lynx %s\n\n"\
 		"NAME Links\n"							"CMD !"XTERM"links %s\n\n"\
 		"NAME w3m\n"							"CMD !"XTERM"w3m %s\n\n"\

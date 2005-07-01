@@ -1803,18 +1803,17 @@ mg_create_topicbar (session *sess, GtkWidget *box, char *name)
 /* check if a word is clickable */
 
 static int
-mg_word_check (GtkWidget * xtext, char *word)
+mg_word_check (GtkWidget * xtext, char *word, int len)
 {
-	return text_word_check (word);	/* common/text.c */
+	return text_word_check (word, len);	/* common/text.c */
 }
 
 /* mouse click inside text area */
 
 static void
-mg_word_clicked (GtkWidget *xtext, char *word, GdkEventButton *even,
-					  session *sess)
+mg_word_clicked (GtkWidget *xtext, char *word, GdkEventButton *even)
 {
-	sess = current_sess;
+	session *sess = current_sess;
 
 	if (even->button == 1)			/* left button */
 	{
@@ -1826,7 +1825,7 @@ mg_word_clicked (GtkWidget *xtext, char *word, GdkEventButton *even,
 
 		if (even->state & GDK_CONTROL_MASK)
 		{
-			switch (mg_word_check (xtext, word))
+			switch (mg_word_check (xtext, word, strlen (word)))
 			{
 			case WORD_URL:
 			case WORD_HOST:
@@ -1845,7 +1844,7 @@ mg_word_clicked (GtkWidget *xtext, char *word, GdkEventButton *even,
 		return;
 	}
 
-	switch (mg_word_check (xtext, word))
+	switch (mg_word_check (xtext, word, strlen (word)))
 	{
 	case 0:
 		menu_middlemenu (sess, even);
