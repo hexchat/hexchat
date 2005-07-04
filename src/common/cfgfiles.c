@@ -481,6 +481,7 @@ const struct prefs vars[] = {
 	{"irc_user_name", P_OFFSET (username), TYPE_STR},
 	{"irc_wallops", P_OFFINT (wallops), TYPE_BOOL},
 	{"irc_who_join", P_OFFINT (userhost), TYPE_BOOL},
+	{"irc_whois_front", P_OFFINT (irc_whois_front), TYPE_BOOL},
 
 	{"net_auto_reconnect", P_OFFINT (autoreconnect), TYPE_BOOL},
 	{"net_auto_reconnectonfail", P_OFFINT (autoreconnectonfail), TYPE_BOOL},

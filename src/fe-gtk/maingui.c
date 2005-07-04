@@ -44,12 +44,12 @@
 #include "../common/xchat.h"
 #include "../common/fe.h"
 #include "../common/server.h"
-#include "../common/text.h"
 #include "../common/xchatc.h"
 #include "../common/outbound.h"
 #include "../common/inbound.h"
 #include "../common/plugin.h"
 #include "../common/modes.h"
+#include "../common/url.h"
 #include "fe-gtk.h"
 #include "banlist.h"
 #include "gtkutil.h"
@@ -1116,9 +1116,6 @@ mg_tab_press_cb (GtkWidget *wid, GdkEventButton *event, session *sess)
 		gtk_widget_show (item);
 	}
 
-	if (sess)
-		mg_create_color_menu (menu, sess);
-
 	item = gtk_menu_item_new_with_label (_("Go to"));
 	gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
 
@@ -1805,7 +1802,20 @@ mg_create_topicbar (session *sess, GtkWidget *box, char *name)
 static int
 mg_word_check (GtkWidget * xtext, char *word, int len)
 {
-	return text_word_check (word, len);	/* common/text.c */
+	session *sess = current_sess;
+	int ret;
+
+	ret = url_check_word (word, len);	/* common/url.c */
+	if (ret == 0)
+	{
+		if (( (word[0]=='@' || word[0]=='+') && find_name (sess, word+1)) || find_name (sess, word))
+			return WORD_NICK;
+
+		if (sess->type == SESS_DIALOG)
+			return WORD_DIALOG;
+	}
+
+	return ret;
 }
 
 /* mouse click inside text area */
@@ -2165,6 +2175,12 @@ mg_set_tabs_pos (session_gui *gui, int pos)
 }
 
 static void
+mg_inputbox_rightclick (GtkEntry *entry, GtkWidget *menu)
+{
+	mg_create_color_menu (menu, NULL);
+}
+
+static void
 mg_create_entry (session *sess, GtkWidget *box)
 {
 	GtkWidget *hbox, *but, *entry;
@@ -2192,6 +2208,8 @@ mg_create_entry (session *sess, GtkWidget *box)
 							G_CALLBACK (mg_inputbox_focus), gui);
 	g_signal_connect (G_OBJECT (entry), "activate",
 							G_CALLBACK (mg_inputbox_cb), gui);
+	g_signal_connect (G_OBJECT (entry), "populate_popup",
+							G_CALLBACK (mg_inputbox_rightclick), NULL);
 	gtk_container_add (GTK_CONTAINER (hbox), entry);
 	gtk_widget_grab_focus (entry);
 

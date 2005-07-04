@@ -506,7 +506,7 @@ dcc_chat_line (struct DCC *dcc, char *line, char *tbuf)
 		return 0;
 	}
 
-	url_check (line);
+	url_check_line (line, len);
 
 	if (line[0] == 1 && !strncasecmp (line + 1, "ACTION", 6))
 	{

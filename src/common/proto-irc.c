@@ -317,8 +317,13 @@ static void
 process_numeric (session * sess, int n,
 					  char *word[], char *word_eol[], char *text)
 {
-	session *realsess;
 	server *serv = sess->server;
+	/* show whois is the server tab */
+	session *whois_sess = serv->server_session;
+
+	/* unless this setting is on */
+	if (prefs.irc_whois_front)
+		whois_sess = serv->front_session;
 
 	switch (n)
 	{
@@ -417,7 +422,7 @@ process_numeric (session * sess, int n,
 		goto def;
 
 	case 312:
-		EMIT_SIGNAL (XP_TE_WHOIS3, serv->server_session, word[4], word_eol[5], NULL, NULL, 0);
+		EMIT_SIGNAL (XP_TE_WHOIS3, whois_sess, word[4], word_eol[5], NULL, NULL, 0);
 		break;
 
 	case 311:
@@ -426,7 +431,7 @@ process_numeric (session * sess, int n,
 
 	case 314:
 		inbound_user_info_start (sess, word[4]);
-		EMIT_SIGNAL (XP_TE_WHOIS1, serv->server_session, word[4], word[5],
+		EMIT_SIGNAL (XP_TE_WHOIS1, whois_sess, word[4], word[5],
 						 word[6], word_eol[8] + 1, 0);
 		break;
 
@@ -441,13 +446,13 @@ process_numeric (session * sess, int n,
 						"%02ld:%02ld:%02ld", idle / 3600, (idle / 60) % 60,
 						idle % 60);
 			if (timestamp == 0)
-				EMIT_SIGNAL (XP_TE_WHOIS4, serv->server_session, word[4],
+				EMIT_SIGNAL (XP_TE_WHOIS4, whois_sess, word[4],
 								 outbuf, NULL, NULL, 0);
 			else
 			{
 				tim = ctime (&timestamp);
 				tim[19] = 0; 	/* get rid of the \n */
-				EMIT_SIGNAL (XP_TE_WHOIS4T, serv->server_session, word[4],
+				EMIT_SIGNAL (XP_TE_WHOIS4T, whois_sess, word[4],
 								 outbuf, tim, NULL, 0);
 			}
 		}
@@ -455,19 +460,19 @@ process_numeric (session * sess, int n,
 
 	case 318:
 		serv->inside_whois = 0;
-		EMIT_SIGNAL (XP_TE_WHOIS6, serv->server_session, word[4], NULL,
+		EMIT_SIGNAL (XP_TE_WHOIS6, whois_sess, word[4], NULL,
 						 NULL, NULL, 0);
 		break;
 
 	case 313:
 	case 319:
-		EMIT_SIGNAL (XP_TE_WHOIS2, serv->server_session, word[4],
+		EMIT_SIGNAL (XP_TE_WHOIS2, whois_sess, word[4],
 						 word_eol[5] + 1, NULL, NULL, 0);
 		break;
 
 	case 307:	/* dalnet version */
 	case 320:	/* :is an identified user */
-		EMIT_SIGNAL (XP_TE_WHOIS_ID, serv->server_session, word[4],
+		EMIT_SIGNAL (XP_TE_WHOIS_ID, whois_sess, word[4],
 						 word_eol[5] + 1, NULL, NULL, 0);
 		break;
 
@@ -526,9 +531,9 @@ process_numeric (session * sess, int n,
 		break;
 
 	case 330:
-		EMIT_SIGNAL (XP_TE_WHOIS_AUTH, serv->server_session, word[4],
-			word_eol[6] + 1, word[5], NULL, 0);
-                break;
+		EMIT_SIGNAL (XP_TE_WHOIS_AUTH, whois_sess, word[4],
+						 word_eol[6] + 1, word[5], NULL, 0);
+		break;
 
 	case 332:
 		inbound_topic (serv, word[4],
@@ -709,7 +714,7 @@ process_numeric (session * sess, int n,
 		if (serv->inside_whois && word[4][0])
 		{
 			/* some unknown WHOIS reply, ircd coders make them up weekly */
-			EMIT_SIGNAL (XP_TE_WHOIS_SPECIAL, serv->server_session, word[4],
+			EMIT_SIGNAL (XP_TE_WHOIS_SPECIAL, whois_sess, word[4],
 							(word_eol[5][0] == ':') ? word_eol[5] + 1 : word_eol[5],
 							 word[2], NULL, 0);
 			return;
@@ -718,7 +723,7 @@ process_numeric (session * sess, int n,
 	def:
 		if (is_channel (serv, word[4]))
 		{
-			realsess = find_channel (serv, word[4]);
+			session *realsess = find_channel (serv, word[4]);
 			if (!realsess)
 				realsess = serv->server_session;
 			EMIT_SIGNAL (XP_TE_SERVTEXT, realsess, text, word[1], NULL, NULL, 0);
@@ -738,6 +743,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 	server *serv = sess->server;
 	char ip[128], nick[NICKLEN];
 	char *text, *ex;
+	int len = strlen (type);
 
 	/* fill in the "ip" and "nick" buffers */
 	ex = strchr (word[1], '!');
@@ -753,169 +759,181 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 		ex[0] = '!';
 	}
 
-	if (!strcmp ("INVITE", type))
+	if (len == 4)
 	{
-		if (ignore_check (word[1], IG_INVI))
+		/* this should compile to a bunch of: CMP.L, JE ... nice & fast */
+		switch (*((guint32 *)type))
+		{
+		case WORDL('J','O','I','N'):
+			{
+				char *chan = word[3];
+
+				if (*chan == ':')
+					chan++;
+				if (!serv->p_cmp (nick, serv->nick))
+					inbound_ujoin (serv, chan, nick, ip);
+				else
+					inbound_join (serv, chan, nick, ip);
+			}
 			return;
 
-		EMIT_SIGNAL (XP_TE_INVITED, sess, word[4] + 1, nick, serv->servername,
-						 NULL, 0);
-		return;
-	}
-	if (!strcmp ("JOIN", type))
-	{
-		char *chan = word[3];
-
-		if (*chan == ':')
-			chan++;
-		if (!serv->p_cmp (nick, serv->nick))
-			inbound_ujoin (serv, chan, nick, ip);
-		else
-			inbound_join (serv, chan, nick, ip);
-		return;
-	}
-	if (!strcmp ("MODE", type))
-	{
-		handle_mode (serv, word, word_eol, nick, FALSE);	/* modes.c */
-		return;
-	}
-	if (!strcmp ("NICK", type))
-	{
-		inbound_newnick (serv, nick, (word_eol[3][0] == ':')
-								? word_eol[3] + 1 : word_eol[3], FALSE);
-		return;
-	}
-	if (!strcmp ("NOTICE", type))
-	{
-		int id = FALSE;	/* identified */
-
-		text = word_eol[4];
-		if (*text == ':')
-			text++;
-
-		if (serv->have_idmsg)
-		{
-			if (*text == '+')
+		case WORDL('K','I','C','K'):
 			{
-				id = TRUE;
-				text++;
-			} else if (*text == '-')
-				text++;
-		}
-
-		if (!ignore_check (word[1], IG_NOTI))
-			inbound_notice (serv, word[3], nick, text, ip, id);
-		return;
-	}
-	if (!strcmp ("PART", type))
-	{
-		char *chan = word[3];
-		char *reason = word_eol[4];
-
-		if (*chan == ':')
-			chan++;
-		if (*reason == ':')
-			reason++;
-		if (!strcmp (nick, serv->nick))
-			inbound_upart (serv, chan, ip, reason);
-		else
-			inbound_part (serv, chan, nick, ip, reason);
-		return;
-	}
-	if (!strcmp ("PRIVMSG", type))
-	{
-		char *to = word[3];
-		int len;
-		int id = FALSE;	/* identified */
-		if (*to)
-		{
-			text = word_eol[4];
-			if (*text == ':')
-				text++;
-			if (serv->have_idmsg)
-			{
-				if (*text == '+')
+				char *kicked = word[4];
+				char *reason = word_eol[5];
+				if (*kicked)
 				{
-					id = TRUE;
-					text++;
-				} else if (*text == '-')
-					text++;
-			}
-			len = strlen (text);
-			if (text[0] == 1 && text[len - 1] == 1)	/* ctcp */
-			{
-				text[len - 1] = 0;
-				text++;
-				if (strncasecmp (text, "ACTION", 6) != 0)
-					flood_check (nick, ip, serv, sess, 0);
-				if (strncasecmp (text, "DCC ", 4) == 0)
-					/* redo this with handle_quotes TRUE */
-					process_data_init (word[1], word_eol[1], word, word_eol, TRUE);
-				ctcp_handle (sess, to, nick, text, word, word_eol);
-			} else
-			{
-				if (is_channel (serv, to))
-				{
-					if (ignore_check (word[1], IG_CHAN))
-						return;
-					inbound_chanmsg (serv, NULL, to, nick, text, FALSE, id);
-				} else
-				{
-					if (ignore_check (word[1], IG_PRIV))
-						return;
-					inbound_privmsg (serv, nick, ip, text, id);
+					if (*reason == ':')
+						reason++;
+					if (!strcmp (kicked, serv->nick))
+	 					inbound_ukick (serv, word[3], nick, reason);
+					else
+						inbound_kick (serv, word[3], kicked, nick, reason);
 				}
 			}
+			return;
+
+		case WORDL('K','I','L','L'):
+			EMIT_SIGNAL (XP_TE_KILL, sess, nick, word_eol[5], NULL, NULL, 0);
+			return;
+
+		case WORDL('M','O','D','E'):
+			handle_mode (serv, word, word_eol, nick, FALSE);	/* modes.c */
+			return;
+
+		case WORDL('N','I','C','K'):
+			inbound_newnick (serv, nick, (word_eol[3][0] == ':')
+									? word_eol[3] + 1 : word_eol[3], FALSE);
+			return;
+
+		case WORDL('P','A','R','T'):
+			{
+				char *chan = word[3];
+				char *reason = word_eol[4];
+
+				if (*chan == ':')
+					chan++;
+				if (*reason == ':')
+					reason++;
+				if (!strcmp (nick, serv->nick))
+					inbound_upart (serv, chan, ip, reason);
+				else
+					inbound_part (serv, chan, nick, ip, reason);
+			}
+			return;
+
+		case WORDL('P','O','N','G'):
+			inbound_ping_reply (serv->server_session,
+								 (word[4][0] == ':') ? word[4] + 1 : word[4], word[3]);
+			return;
+
+		case WORDL('Q','U','I','T'):
+			inbound_quit (serv, nick, ip,
+							  (word_eol[3][0] == ':') ? word_eol[3] + 1 : word_eol[3]);
+			return;
 		}
-		return;
-	}
-	if (!strcmp ("PONG", type))
-	{
-		inbound_ping_reply (serv->server_session,
-							 (word[4][0] == ':') ? word[4] + 1 : word[4], word[3]);
-		return;
-	}
-	if (!strcmp ("QUIT", type))
-	{
-		inbound_quit (serv, nick, ip,
-			(word_eol[3][0] == ':') ? word_eol[3] + 1 : word_eol[3]);
-		return;
-	}
-	if (!strcmp ("TOPIC", type))
-	{
-		inbound_topicnew (serv, nick, word[3],
-			(word_eol[4][0] == ':') ? word_eol[4] + 1 : word_eol[4]);
-		return;
-	}
-	if (!strcmp ("KICK", type))
-	{
-		char *kicked = word[4];
-		char *reason = word_eol[5];
-		if (*kicked)
-		{
-			if (*reason == ':')
-				reason++;
-			if (!strcmp (kicked, serv->nick))
- 				inbound_ukick (serv, word[3], nick, reason);
-			else
-				inbound_kick (serv, word[3], kicked, nick, reason);
-		}
-		return;
-	}
-	if (!strcmp ("KILL", type))
-	{
-		EMIT_SIGNAL (XP_TE_KILL, sess, nick, word_eol[5], NULL, NULL, 0);
-		return;
-	}
-	if (!strcmp ("WALLOPS", type))
-	{
-		text = word_eol[3];
-		if (*text == ':')
-			text++;
-		EMIT_SIGNAL (XP_TE_WALLOPS, sess, nick, text, NULL, NULL, 0);
-		return;
+
+		goto garbage;
 	}
 
+	else if (len >= 5)
+	{
+		/* this should compile to a bunch of: CMP.L, JE ... nice & fast */
+		switch (*((guint32 *)type))
+		{
+		case WORDL('I','N','V','I'):
+			if (ignore_check (word[1], IG_INVI))
+				return;
+			EMIT_SIGNAL (XP_TE_INVITED, sess, word[4] + 1, nick, serv->servername,
+							 NULL, 0);
+			return;
+
+		case WORDL('N','O','T','I'):
+			{
+				int id = FALSE;	/* identified */
+
+				text = word_eol[4];
+				if (*text == ':')
+					text++;
+
+				if (serv->have_idmsg)
+				{
+					if (*text == '+')
+					{
+						id = TRUE;
+						text++;
+					} else if (*text == '-')
+						text++;
+				}
+
+				if (!ignore_check (word[1], IG_NOTI))
+					inbound_notice (serv, word[3], nick, text, ip, id);
+			}
+			return;
+
+		case WORDL('P','R','I','V'):
+			{
+				char *to = word[3];
+				int len;
+				int id = FALSE;	/* identified */
+				if (*to)
+				{
+					text = word_eol[4];
+					if (*text == ':')
+						text++;
+					if (serv->have_idmsg)
+					{
+						if (*text == '+')
+						{
+							id = TRUE;
+							text++;
+						} else if (*text == '-')
+							text++;
+					}
+					len = strlen (text);
+					if (text[0] == 1 && text[len - 1] == 1)	/* ctcp */
+					{
+						text[len - 1] = 0;
+						text++;
+						if (strncasecmp (text, "ACTION", 6) != 0)
+							flood_check (nick, ip, serv, sess, 0);
+						if (strncasecmp (text, "DCC ", 4) == 0)
+							/* redo this with handle_quotes TRUE */
+							process_data_init (word[1], word_eol[1], word, word_eol, TRUE);
+						ctcp_handle (sess, to, nick, text, word, word_eol);
+					} else
+					{
+						if (is_channel (serv, to))
+						{
+							if (ignore_check (word[1], IG_CHAN))
+								return;
+							inbound_chanmsg (serv, NULL, to, nick, text, FALSE, id);
+						} else
+						{
+							if (ignore_check (word[1], IG_PRIV))
+								return;
+							inbound_privmsg (serv, nick, ip, text, id);
+						}
+					}
+				}
+			}
+			return;
+
+		case WORDL('T','O','P','I'):
+			inbound_topicnew (serv, nick, word[3],
+									(word_eol[4][0] == ':') ? word_eol[4] + 1 : word_eol[4]);
+			return;
+
+		case WORDL('W','A','L','L'):
+			text = word_eol[3];
+			if (*text == ':')
+				text++;
+			EMIT_SIGNAL (XP_TE_WALLOPS, sess, nick, text, NULL, NULL, 0);
+			return;
+		}
+	}
+
+garbage:
 	/* unknown message */
 	PrintTextf (sess, "GARBAGE: %s\n", word_eol[1]);
 }

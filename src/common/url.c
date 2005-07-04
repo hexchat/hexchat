@@ -88,14 +88,21 @@ url_find (char *urltext)
 }
 
 static void
-url_add (char *urltext)
+url_add (char *urltext, int len)
 {
-	char *data = strdup (urltext);
+	char *data = malloc (len + 1);
 	if (!data)
 		return;
+	memcpy (data, urltext, len);
+	data[len] = 0;
 
-	if (data[strlen (data) - 1] == '.')	/* chop trailing dot */
-		data[strlen (data) - 1] = 0;
+	if (data[len - 1] == '.')	/* chop trailing dot */
+	{
+		len--;
+		data[len] = 0;
+	}
+	if (data[len - 1] == ')')	/* chop trailing ) */
+		data[len - 1] = 0;
 
 	if (url_find (data))
 	{
@@ -110,37 +117,176 @@ url_add (char *urltext)
 	fe_url_add (data);
 }
 
-void
-url_check (char *buf)
+/* check if a word is clickable. This is called on mouse motion events, so
+   keep it FAST! This new version was found to be almost 3x faster than
+   2.4.4 release. */
+
+int
+url_check_word (char *word, int len)
 {
-	char *sp, *po = buf + 1;
-	unsigned char t;
+	char *at, *dot;
+	int i, dots;
+	char temp[4];
+	guint32 pre;
+
+	if ((word[0] == '@' || word[0] == '+' || word[0] == '^' || word[0] == '%' || word[0] == '*' ) && word[1] == '#')
+		return WORD_CHANNEL;
+
+	if ((word[0] == '#' || word[0] == '&') && word[1] != '#' && word[1] != 0)
+		return WORD_CHANNEL;
+
+	if (len > 4 && word[4] != '.')
+	{
+		temp[0] = tolower (word[0]);
+		temp[1] = tolower (word[1]);
+		temp[2] = tolower (word[2]);
+		temp[3] = tolower (word[3]);
+
+		pre = *((guint32 *)temp);
+
+		if (CMPL (pre, 'i','r','c','.'))
+			return WORD_URL;
+		if (CMPL (pre, 'f','t','p','.'))
+			return WORD_URL;
+		if (CMPL (pre, 'w','w','w','.'))
+			return WORD_URL;
+
+		if (len > 7 && word[4] == '/' && word[5] == '/')
+		{
+			if (CMPL (pre, 'i','r','c',':'))	/* irc:// */
+				return WORD_URL;
+			if (CMPL (pre, 'f','t','p',':'))	/* ftp:// */
+				return WORD_URL;
+		}
+
+		/* check for ABCD://... */
+		if (len > 8 && word[4] == ':' && word[5] == '/' && word[6] == '/')
+		{
+			if (CMPL (pre, 'h','t','t','p'))		/* http:// */
+				return WORD_URL;
+			if (CMPL (pre, 'f','i','l','e'))		/* file:// */
+				return WORD_URL;
+			if (CMPL (pre, 'r','t','s','p'))		/* rtsp:// */
+				return WORD_URL;
+		}
+
+		/* check for https:// */
+		if (len > 9 && word[5] == ':' && word[6] == '/' && word[7] == '/')
+		{
+			if (CMPL (pre, 'h','t','t','p') && (word[4] == 's' || word[4] == 'S'))
+				return WORD_URL;
+		}
+
+		/* check for gopher:// */
+		if (len > 10 && word[6] == ':' && word[7] == '/' && word[8] == '/')
+		{
+			if (CMPL (pre, 'g','o','p','h'))
+				if (CMPW (word + 4, 'e','r') || CMPW (word + 4, 'E','R'))
+					return WORD_URL;
+		}
+	}
+
+	at = strchr (word, '@');	  /* check for email addy */
+	dot = strrchr (word, '.');
+	if (at && dot)
+	{
+		if (at < dot)
+		{
+			if (strchr (word, '*'))
+				return WORD_HOST;
+			else
+				return WORD_EMAIL;
+		}
+	}
+ 
+	/* check if it's an IP number */
+	dots = 0;
+	for (i = 0; i < len; i++)
+	{
+		if (word[i] == '.' && i > 1)
+			dots++;	/* allow 127.0.0.1:80 */
+		else if (!isdigit (word[i]) && word[i] != ':')
+		{
+			dots = 0;
+			break;
+		}
+	}
+	if (dots == 3)
+		return WORD_HOST;
+
+	if (len > 5)
+	{
+		/* create a lowercase version of the last 4 letters */
+		temp[0] = tolower (word[len - 4]);
+		temp[1] = tolower (word[len - 3]);
+		temp[2] = tolower (word[len - 2]);
+		temp[3] = tolower (word[len - 1]);
+
+		pre = *((guint32 *)temp);
+
+		if (word[len - 5] == '.')
+		{
+			if (CMPL (pre, 'h','t','m','l'))
+				return WORD_HOST;
+			if (CMPL (pre, 'i','n','f','o'))
+				return WORD_HOST;
+			if (CMPL (pre, 'n','a','m','e'))
+				return WORD_HOST;
+		}
+
+		if (CMPL (pre, '.','o','r','g'))
+			return WORD_HOST;
+		if (CMPL (pre, '.','n','e','t'))
+			return WORD_HOST;
+		if (CMPL (pre, '.','c','o','m'))
+			return WORD_HOST;
+		if (CMPL (pre, '.','e','d','u'))
+			return WORD_HOST;
+
+		if (word[len - 3] == '.' &&
+			 isalpha (word[len - 2]) && isalpha (word[len - 1]))
+			return WORD_HOST;
+	}
+
+	return 0;
+}
+
+void
+url_check_line (char *buf, int len)
+{
+	char *po = buf;
+	char *start;
+	int wlen;
 
 	if (buf[0] == ':' && buf[1] != 0)
 		po++;
 
-	while (po[0])
-	{
-		if (strncasecmp (po, "http:", 5) == 0 ||
-			 strncasecmp (po, "www.", 4) == 0 ||
-			 strncasecmp (po, "ftp.", 4) == 0 ||
-			 strncasecmp (po, "ftp:", 4) == 0 ||
-			 strncasecmp (po, "irc://", 6) == 0 ||
-			 strncasecmp (po, "irc.", 4) == 0)
-			break;
-		po++;
-	}
+	start = po;
 
-	if (po[0])
+	/* check each "word" (space separated) */
+	while (1)
 	{
-		sp = strchr (po, ' ');
-		if (sp)
+		switch (po[0])
 		{
-			t = sp[0];
-			sp[0] = 0;
-			url_add (po);
-			sp[0] = t;
-		} else
-			url_add (po);
+		case 0:
+		case ' ':
+			wlen = po - start;
+			if (wlen > 1)
+			{
+				if (url_check_word (start, wlen) == WORD_URL)
+				{
+					url_add (start, wlen);
+					po += wlen;
+				}
+			}
+			if (po[0] == 0)
+				return;
+			po++;
+			start = po;
+			break;
+
+		default:
+			po++;
+		}
 	}
 }
