@@ -32,6 +32,7 @@
 #include <gtk/gtkhbbox.h>
 #include <gtk/gtkhbox.h>
 #include <gtk/gtkstock.h>
+#include <gtk/gtkmessagedialog.h>
 
 #include "../common/xchat.h"
 #include "../common/xchatc.h"
@@ -342,21 +343,35 @@ dcc_update_recv_win (void)
 static void
 dcc_info (struct DCC *dcc)
 {
-	char tbuf[256];
-	snprintf (tbuf, 255, _("      File: %s\n"
-				 "   To/From: %s\n"
-				 "      Size: %u\n"
-				 "      Port: %d\n"
-				 " IP Number: %s\n"
-				 "Start Time: %s"
-				 "   Max CPS: %d\n"),
-				 dcc->file,
-				 dcc->nick,
-				 dcc->size,
-				 dcc->port,
-				 net_ip (dcc->addr), ctime (&dcc->starttime),
-				 dcc->maxcps);
-	gtkutil_simpledialog (tbuf);
+	char max[48];
+	char siz[48];
+	GtkWidget *dialog;
+
+	if (dcc->maxcps)
+		sprintf (max, "%.2f KB/s", (float)dcc->maxcps / 1024.0);
+	else
+		snprintf (max, sizeof (max), "%s", _("None"));
+
+	proper_unit (dcc->size, siz, sizeof (siz));
+
+	dialog = gtk_message_dialog_new_with_markup (NULL, 0, GTK_MESSAGE_INFO, GTK_BUTTONS_OK,
+				 "<tt><b>%-13s</b></tt> %s\n"
+				 "<tt><b>%-13s</b></tt> %s\n"
+				 "<tt><b>%-13s</b></tt> %s (%u bytes)\n"
+				 "<tt><b>%-13s</b></tt> %s : %d\n"
+				 "<tt><b>%-13s</b></tt> %s"
+				 "<tt><b>%-13s</b></tt> %s\n",
+				 _("File:"), (dcc->type == TYPE_RECV) ? dcc->destfile : dcc->file,
+				 (dcc->type == TYPE_RECV) ? _("From:") : _("To:"), dcc->nick,
+				 _("Size:"), siz, dcc->size,
+				 _("Address:"), net_ip (dcc->addr), dcc->port,
+				 _("Started:"), ctime (&dcc->starttime),
+				 _("Speed limit:"), max);
+	g_signal_connect (G_OBJECT (dialog), "response",
+							G_CALLBACK (gtk_widget_destroy), 0);
+	gtk_window_set_resizable (GTK_WINDOW (dialog), FALSE);
+	gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
+	gtk_widget_show (dialog);
 }
 
 static void

@@ -346,7 +346,7 @@ process_numeric (session * sess, int n,
 			serv->nickservtype = 1;
 
 		/* use /NS */
-		else if (strcasecmp (word[7], "freenode") == 0)
+		else if (strcasecmp (word[7], "FreeNode") == 0)
 			serv->nickservtype = 2;
 
 		goto def;
