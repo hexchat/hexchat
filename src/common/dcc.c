@@ -985,11 +985,15 @@ dcc_read_ack (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 	recv (sok, (char *) &ack, 4, 0);
 	dcc->ack = ntohl (ack);
 
-	/* fix for BitchX */
-	if (dcc->ack < dcc->resumable)
-		dcc->ackoffset = TRUE;
-	if (dcc->ackoffset)
-		dcc->ack += dcc->resumable;
+	/* this could mess up when xfering >32bit files */
+	if (dcc->size <= 0xffffffff)
+	{
+		/* fix for BitchX */
+		if (dcc->ack < dcc->resumable)
+			dcc->ackoffset = TRUE;
+		if (dcc->ackoffset)
+			dcc->ack += dcc->resumable;
+	}
 
 	/* DCC complete check */
 	if (dcc->pos >= dcc->size && dcc->ack >= (dcc->size & 0xffffffff))
@@ -1588,6 +1592,7 @@ is_resumable (struct DCC *dcc)
 			{
 				if (d != dcc && strcmp (d->destfile, dcc->destfile) == 0)
 				{
+					dcc->resume_error = 3;	/* dccgui.c uses it */
 					dcc->resumable = 0;
 					dcc->pos = 0;
 					break;
