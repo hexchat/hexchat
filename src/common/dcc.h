@@ -19,6 +19,17 @@
 
 #define CPS_AVG_WINDOW 10
 
+/* can we do 64-bit dcc? */
+#if defined(G_HAVE_GINT64) && defined(G_GINT64_FORMAT) && defined(HAVE_STRTOULL)
+#define USE_DCC64
+/* we really get only 63 bits, since st_size is signed */
+#define DCC_SIZE gint64
+#define DCC_SFMT G_GINT64_FORMAT
+#else
+#define DCC_SIZE unsigned int
+#define DCC_SFMT "u"
+#endif
+
 struct DCC
 {
 	struct server *serv;
@@ -35,13 +46,13 @@ struct DCC
 	int resume_errno;
 
 	GTimeVal lastcpstv, firstcpstv;
-	unsigned int lastcpspos;
+	DCC_SIZE lastcpspos;
 	int maxcps;
 
-	unsigned int size;
-	unsigned int resumable;
-	unsigned int ack;
-	unsigned int pos;
+	DCC_SIZE size;
+	DCC_SIZE resumable;
+	DCC_SIZE ack;
+	DCC_SIZE pos;
 	time_t starttime;
 	time_t offertime;
 	time_t lasttime;
@@ -82,7 +93,7 @@ struct DCC *dcc_write_chat (char *nick, char *text);
 void dcc_send (struct session *sess, char *to, char *file, int maxcps, int passive);
 struct DCC *find_dcc (char *nick, char *file, int type);
 void dcc_get_nick (struct session *sess, char *nick);
-void dcc_chat (session *sess, char *nick);
+void dcc_chat (session *sess, char *nick, int passive);
 void handle_dcc (session *sess, char *nick, char *word[], char *word_eol[]);
 void dcc_show_list (session *sess);
 void open_dcc_recv_window (void);

@@ -588,9 +588,8 @@ if test "$gtkfe" != no -a "_$gdkpixbufcsourcepath" = _; then
 fi
 
 dnl if we don't have this, use g_snprintf instead
-AC_CHECK_FUNCS(snprintf)
-AC_CHECK_FUNCS(vsnprintf)
-AC_CHECK_FUNCS(memrchr)
+AC_CHECK_FUNCS(snprintf vsnprintf)
+AC_CHECK_FUNCS(memrchr strtoull atoll)
 
 AC_CHECK_FUNC(gethostbyname, ,
 	AC_CHECK_LIB(resolv, gethostbyname, ,

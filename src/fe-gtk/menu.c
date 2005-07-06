@@ -255,7 +255,19 @@ menu_quick_item (char *cmd, char *label, GtkWidget * menu, int flags,
 	if (!label)
 		item = gtk_menu_item_new ();
 	else
-		item = gtk_menu_item_new_with_label (label);
+	{
+		if (flags & (1 << 1))
+		{
+			item = gtk_menu_item_new_with_label ("");
+			gtk_label_set_markup (GTK_LABEL (GTK_BIN (item)->child), label);
+		} else
+		{
+			if (flags & (1 << 2))
+				item = gtk_menu_item_new_with_mnemonic (label);
+			else
+				item = gtk_menu_item_new_with_label (label);
+		}
+	}
 	gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
 	g_object_set_data (G_OBJECT (item), "u", userdata);
 	if (cmd)
@@ -282,7 +294,7 @@ menu_quick_item_with_callback (void *callback, char *label, GtkWidget * menu,
 }
 
 static GtkWidget *
-menu_quick_sub (char *name, GtkWidget *menu, GtkWidget **sub_item_ret)
+menu_quick_sub (char *name, GtkWidget *menu, GtkWidget **sub_item_ret, int do_list)
 {
 	GtkWidget *sub_menu;
 	GtkWidget *sub_item;
@@ -300,8 +312,9 @@ menu_quick_sub (char *name, GtkWidget *menu, GtkWidget **sub_item_ret)
 	if (sub_item_ret)
 		*sub_item_ret = sub_item;
 
-	/* We create a new element in the list */
-	submenu_list = g_slist_prepend (submenu_list, sub_menu);
+	if (do_list)
+		/* We create a new element in the list */
+		submenu_list = g_slist_prepend (submenu_list, sub_menu);
 	return sub_menu;
 }
 
@@ -377,7 +390,7 @@ menu_create (GtkWidget *menu, GSList *list, char *target, int check_path)
 		if (!strncasecmp (pop->name, "SUB", 3))
 		{
 			childcount = 0;
-			tempmenu = menu_quick_sub (pop->cmd, tempmenu, &subitem);
+			tempmenu = menu_quick_sub (pop->cmd, tempmenu, &subitem, 1);
 
 		} else if (!strncasecmp (pop->name, "TOGGLE", 6))
 		{
@@ -452,15 +465,16 @@ void
 menu_nickmenu (session *sess, GdkEventButton *event, char *nick, int num_sel)
 {
 	char buf[256];
+	char *fmt;
 	struct User *user;
 	struct away_msg *away;
-	GtkWidget *wid, *submenu, *menu = gtk_menu_new ();
+	GtkWidget *submenu, *menu = gtk_menu_new ();
 
 	if (str_copy)
 		free (str_copy);
 	str_copy = strdup (nick);
 
-	submenu_list = 0;	/* first time though, might not be 0 */
+	submenu_list = 0;	/* first time through, might not be 0 */
 
 	/* more than 1 nick selected? */
 	if (num_sel > 1)
@@ -473,42 +487,44 @@ menu_nickmenu (session *sess, GdkEventButton *event, char *nick, int num_sel)
 		user = find_name_global (current_sess->server, nick);
 		if (user)
 		{
-			submenu = menu_quick_sub (nick, menu, NULL);
+			submenu = menu_quick_sub (nick, menu, NULL, 1);
 
-			snprintf (buf, sizeof (buf), _("User: %s"),
+			/* let the translators tweak this if need be */
+			fmt = _("<tt><b>%-11s</b></tt> %s");
+
+			snprintf (buf, sizeof (buf), fmt, _("User:"),
 						user->hostname ? user->hostname : _("Unknown"));
-			menu_quick_item (0, buf, submenu, 0, 0);
+			menu_quick_item (0, buf, submenu, 2, 0);
 
-			snprintf (buf, sizeof (buf), _("Country: %s"),
+			snprintf (buf, sizeof (buf), fmt, _("Country:"),
 						user->hostname ? country(user->hostname) : _("Unknown"));
-			menu_quick_item (0, buf, submenu, 0, 0);
+			menu_quick_item (0, buf, submenu, 2, 0);
 
-			snprintf (buf, sizeof (buf), _("Realname: %s"),
+			snprintf (buf, sizeof (buf), fmt, _("Real Name:"),
 						user->realname ? user->realname : _("Unknown"));
-			menu_quick_item (0, buf, submenu, 0, 0);
+			menu_quick_item (0, buf, submenu, 2, 0);
 
-			snprintf (buf, sizeof (buf), _("Server: %s"),
+			snprintf (buf, sizeof (buf), fmt, _("Server:"),
 						user->servername ? user->servername : _("Unknown"));
-			menu_quick_item (0, buf, submenu, 0, 0);
+			menu_quick_item (0, buf, submenu, 2, 0);
 
 			if (user->away)
 			{
 				away = find_away_message (current_sess->server, nick);
 				if (away)
 				{
-					snprintf (buf, sizeof (buf), _("Away Msg: %s"),
+					snprintf (buf, sizeof (buf), fmt, _("Away Msg:"),
 								 away->message ? away->message : _("Unknown"));
-					menu_quick_item (0, buf, submenu, 0, 0);
+					menu_quick_item (0, buf, submenu, 2, 0);
 				}
 			}
 
-			snprintf (buf, sizeof (buf), _("Last Msg: %s"),
+			snprintf (buf, sizeof (buf), fmt, _("Last Msg:"),
 						user->lasttalk ? ctime (&(user->lasttalk)) : _("Unknown"));
 			if (user->lasttalk)
 				buf[strlen (buf) - 1] = 0;
-			wid = menu_quick_item (0, buf, submenu, 0, 0);
+			menu_quick_item (0, buf, submenu, 2, 0);
 
-			gtk_label_set_justify (GTK_LABEL (GTK_BIN (wid)->child), GTK_JUSTIFY_LEFT);
 			menu_quick_endsub ();
 			menu_quick_item (0, 0, menu, 1, 0);
 		}
@@ -1341,6 +1357,198 @@ menu_canacaccel (GtkWidget *widget, guint signal_id, gpointer user_data)
 
 #endif
 
+static GtkMenuItem *
+menu_find_item (GtkWidget *menu, char *name)
+{
+	GList *items = ((GtkMenuShell *) menu)->children;
+	GtkMenuItem *item;
+	GtkWidget *child;
+
+	while (items)
+	{
+		item = items->data;
+		child = GTK_BIN (item)->child;
+		if (child)	/* separators arn't labels, skip them */
+		{
+			if (!strcmp (gtk_label_get_text (GTK_LABEL (child)), name))
+			{
+				printf(" YY match (%s == %s)\n", gtk_label_get_text (GTK_LABEL (child)), name);
+				return item;
+			}
+
+			printf(" no match (%s != %s)\n", gtk_label_get_text (GTK_LABEL (child)), name);
+		}
+		items = items->next;
+	}
+
+	return NULL;
+}
+
+static GtkWidget *
+menu_find_path (GtkWidget *menu, char *path)
+{
+	GtkMenuItem *item;
+	char *s;
+	char name[128];
+	int len;
+
+	printf("Search: %s...\n", path);
+
+	s = strchr (path, '/');
+	if (!s)
+	{
+		len = strlen (path);
+		memcpy (name, path, len + 1);
+	} else
+	{
+		len = s - path;
+		memcpy (name, path, len);
+		name[len] = 0;
+	}
+
+	item = menu_find_item (menu, name);
+	if (!item)
+	{
+		printf("failed\n");
+		return NULL;
+	}
+	printf("FOUND!\n");
+
+	menu = gtk_menu_item_get_submenu (item);
+	if (!menu)
+		return NULL;
+
+	path += len;
+	if (*path == 0)
+	{
+		printf("all done\n");
+		return menu;
+	}
+	return menu_find_path (menu, path + 1);
+}
+
+static int
+menu_add_item (GtkWidget *menu, int pos, char *path, char *label, char *command)
+{
+	GtkWidget *item;
+
+	menu = menu_find_path (menu, path);
+	if (menu)
+	{
+		item = menu_quick_item (command, label, menu, 4, 0);
+		if (pos != -1)
+			gtk_menu_reorder_child (GTK_MENU (menu), item, pos);
+		return 1;
+	}
+
+	return 0;
+}
+
+static int
+menu_add_sub (GtkWidget *menu, int pos, char *path, char *label)
+{
+	GtkWidget *item;
+
+	if (path[0] != 0)
+		menu = menu_find_path (menu, path);
+	if (menu)
+	{
+		item = menu_quick_sub (label, menu, NULL, 0);
+/*		if (pos != -1)
+			gtk_menu_reorder_child (GTK_MENU (menu), item, pos);*/
+		return 1;
+	}
+
+	return 0;
+}
+
+static int
+menu_del (GtkWidget *menu, char *path, char *label)
+{
+	GtkWidget *item;
+
+	if (path[0] != 0)
+		menu = menu_find_path (menu, path);
+	if (menu)
+	{
+		item = (GtkWidget *)menu_find_item (menu, label);
+		if (item)
+		{
+			gtk_widget_destroy (item);
+			return 1;
+		}
+	}
+
+	return 0;
+}
+
+int
+fe_menu_add (int pos, char *path, char *label, char *command)
+{
+	GSList *list;
+	int ret = 0;
+	int tabdone = FALSE;
+	session *sess;
+
+	list = sess_list;
+	while (list)
+	{
+		sess = list->data;
+		/* do it only once for tab sessions, since they share a GUI */
+		if (!sess->gui->is_tab || !tabdone)
+		{
+			if (command)
+				ret = menu_add_item (sess->gui->menu, pos, path, label, command);
+			else
+				ret = menu_add_sub (sess->gui->menu, pos, path, label);
+			if (sess->gui->is_tab)
+				tabdone = TRUE;
+		}
+		list = list->next;
+	}
+	return ret;
+}
+
+int
+fe_menu_add_toggle (int pos, char *path, char *label, char *scmd, char *ucmd, int state)
+{
+
+	return 0;
+}
+
+int
+fe_menu_del (char *path, char *label)
+{
+	GSList *list;
+	int ret = 0;
+
+	list = sess_list;
+	while (list)
+	{
+		ret = menu_del (((session *)list->data)->gui->menu, path, label);
+		list = list->next;
+	}
+	return ret;
+}
+
+static void
+menu_add_plugin_items (GtkWidget *menu)
+{
+	GSList *list;
+	menu_entry *me;
+
+	list = menu_list;	/* outbound.c */
+	while (list)
+	{
+		me = list->data;
+		if (me->command)
+			menu_add_item (menu, me->pos, me->path, me->label, me->command);
+		else
+			menu_add_sub (menu, me->pos, me->path, me->label);
+		list = list->next;
+	}
+}
+
 GtkWidget *
 menu_create_main (void *accel_group, int bar, int away, int toplevel,
 						GtkWidget **away_item_ret, GtkWidget **user_menu_ret)
@@ -1476,7 +1684,10 @@ normalitem:
 			if (!submenu)
 			{
 				if (menu)
+				{
 					gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu_item), menu);
+					menu_add_plugin_items (menu_bar);
+				}
 				if (usermenu)
 					usermenu_create (usermenu);
 				if (bar)

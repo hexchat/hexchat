@@ -722,25 +722,30 @@ plugin_command_list(GList *tmp_list)
 	return tmp_list;
 }
 
+void
+plugin_command_foreach (session *sess, void *userdata,
+			void (*cb) (session *sess, void *userdata, char *name, char *help))
+{
+	GSList *list;
+	xchat_hook *hook;
+
+	list = hook_list;
+	while (list)
+	{
+		hook = list->data;
+		if (hook->type == HOOK_COMMAND && hook->name[0])
+		{
+			cb (sess, userdata, hook->name, hook->help_text);
+		}
+		list = list->next;
+	}
+}
+
 int
 plugin_show_help (session *sess, char *cmd)
 {
 	GSList *list;
 	xchat_hook *hook;
-
-	/* show all help commands */
-	if (cmd == NULL)
-	{
-		list = hook_list;
-		while (list)
-		{
-			hook = list->data;
-			if (hook->type == HOOK_COMMAND)
-				PrintText (sess, hook->name);
-			list = list->next;
-		}
-		return 1;
-	}
 
 	list = plugin_hook_find (hook_list, HOOK_COMMAND, cmd);
 	if (list)

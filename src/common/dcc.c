@@ -54,6 +54,12 @@
 #include "url.h"
 #include "xchatc.h"
 
+#ifdef USE_DCC64
+#define BIG_STR_TO_INT(x) strtoull(x,NULL,10)
+#else
+#warning Not able to use 64-bit DCC
+#define BIG_STR_TO_INT(x) strtoul(x,NULL,10)
+#endif
 
 static char *dcctypes[] = { "SEND", "RECV", "CHAT", "CHAT" };
 
@@ -77,7 +83,15 @@ static gboolean dcc_read_ack (GIOChannel *source, GIOCondition condition, struct
 
 static int new_id()
 {
-	static int id = 1;
+	static int id = 0;
+	if (id == 0)
+	{
+		/* start the first ID at a random number for pseudo security */
+		srand (time (0));
+		/* 1 - 255 */
+		id = 1 + (int) ((float)255 * rand()/(RAND_MAX+1.0));
+		/* ignore overflows, since it can go to 2 billion */
+	}
 	return id++;
 }
 
@@ -113,7 +127,7 @@ dcc_calc_cps (struct DCC *dcc)
 	double timediff, startdiff;
 	int glob_throttle_bit, wasthrottled;
 	int *cpssum, glob_limit;
-	unsigned int pos, posdiff;
+	DCC_SIZE pos, posdiff;
 
 	g_get_current_time (&now);
 
@@ -616,7 +630,7 @@ static void
 dcc_send_ack (struct DCC *dcc)
 {
 	/* send in 32-bit big endian */
-	guint32 pos = htonl (dcc->pos);
+	guint32 pos = htonl (dcc->pos & 0xffffffff);
 	send (dcc->sok, (char *) &pos, 4, 0);
 }
 
@@ -852,8 +866,8 @@ dcc_connect (struct DCC *dcc)
 		/* possible problems with filenames containing spaces? */
 		if (dcc->type == TYPE_RECV)
 			snprintf (tbuf, sizeof (tbuf), strchr (dcc->file, ' ') ?
-					"DCC SEND \"%s\" %lu %d %u %d" :
-					"DCC SEND %s %lu %d %u %d", dcc->file,
+					"DCC SEND \"%s\" %lu %d %"DCC_SFMT" %d" :
+					"DCC SEND %s %lu %d %"DCC_SFMT" %d", dcc->file,
 					dcc->addr, dcc->port, dcc->size, dcc->pasvid);
 		else
 			snprintf (tbuf, sizeof (tbuf), "DCC CHAT chat %lu %d %d",
@@ -978,7 +992,7 @@ dcc_read_ack (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 		dcc->ack += dcc->resumable;
 
 	/* DCC complete check */
-	if (dcc->pos >= dcc->size && dcc->ack >= dcc->size)
+	if (dcc->pos >= dcc->size && dcc->ack >= (dcc->size & 0xffffffff))
 	{
 		dcc_calc_average_cps (dcc);
 		dcc_close (dcc, STAT_DONE, FALSE);
@@ -1225,11 +1239,14 @@ dcc_send (struct session *sess, char *to, char *file, int maxcps, int passive)
 
 	if (stat (file_fs, &st) != -1)
 	{
+
+#ifndef USE_DCC64
 		if (sizeof (st.st_size) > 4 && st.st_size > 4294967295U)
 		{
 			PrintText (sess, "Cannot send files larger than 4 GB.\n");
 			goto noaxs;
 		}
+#endif
 
 		if (*file_part (file_fs) && !S_ISDIR (st.st_mode))
 		{
@@ -1271,15 +1288,15 @@ dcc_send (struct session *sess, char *to, char *file, int maxcps, int passive)
 						{
 							dcc->pasvid = new_id();
 							snprintf (outbuf, sizeof (outbuf), (havespaces) ?
-									"DCC SEND \"%s\" %lu %d %u %d" :
-									"DCC SEND %s %lu %d %u %d",
+									"DCC SEND \"%s\" %lu %d %"DCC_SFMT" %d" :
+									"DCC SEND %s %lu %d %"DCC_SFMT" %d",
 									file_part (dcc->file), 199ul,
 									0, dcc->size, dcc->pasvid);
 						} else
 						{
 							snprintf (outbuf, sizeof (outbuf), (havespaces) ?
-									"DCC SEND \"%s\" %lu %d %u" :
-									"DCC SEND %s %lu %d %u",
+									"DCC SEND \"%s\" %lu %d %"DCC_SFMT :
+									"DCC SEND %s %lu %d %"DCC_SFMT,
 									file_part (dcc->file), dcc->addr,
 									dcc->port, dcc->size);
 						}
@@ -1311,13 +1328,12 @@ find_dcc_from_id (int id, int type)
 	{
 		dcc = (struct DCC *) list->data;
 		if (dcc->pasvid == id &&
-		dcc->dccstat == STAT_QUEUED && dcc->type == type)
+			 dcc->dccstat == STAT_QUEUED && dcc->type == type)
 		return dcc;
 		list = list->next;
 	}
 	return 0;
 }
-
 
 static struct DCC *
 find_dcc_from_port (int port, int type)
@@ -1451,7 +1467,7 @@ new_dcc (void)
 }
 
 void
-dcc_chat (struct session *sess, char *nick)
+dcc_chat (struct session *sess, char *nick, int passive)
 {
 	char outbuf[512];
 	struct DCC *dcc;
@@ -1495,7 +1511,7 @@ dcc_chat (struct session *sess, char *nick)
 	dcc->dccstat = STAT_QUEUED;
 	dcc->type = TYPE_CHATSEND;
 	dcc->nick = strdup (nick);
-	if (dcc_listen_init (dcc, sess))
+	if (passive || dcc_listen_init (dcc, sess))
 	{
 		if (prefs.autoopendccchatwindow)
 		{
@@ -1503,8 +1519,17 @@ dcc_chat (struct session *sess, char *nick)
 				fe_dcc_add (dcc);
 		} else
 			fe_dcc_add (dcc);
-		snprintf (outbuf, sizeof (outbuf), "DCC CHAT chat %lu %d",
-						dcc->addr, dcc->port);
+
+		if (passive)
+		{
+			dcc->pasvid = new_id ();
+			snprintf (outbuf, sizeof (outbuf), "DCC CHAT chat 199 %d %d",
+						 dcc->port, dcc->pasvid);
+		} else
+		{
+			snprintf (outbuf, sizeof (outbuf), "DCC CHAT chat %lu %d",
+						 dcc->addr, dcc->port);
+		}
 		dcc->serv->p_ctcp (dcc->serv, nick, outbuf);
 		EMIT_SIGNAL (XP_TE_DCCCHATOFFERING, sess, nick, NULL, NULL, NULL, 0);
 	} else
@@ -1584,8 +1609,8 @@ dcc_resume (struct DCC *dcc)
 	{
 		/* filename contains spaces? Quote them! */
 		snprintf (tbuf, sizeof (tbuf) - 10, strchr (dcc->file, ' ') ?
-					  "DCC RESUME \"%s\" %d %u" :
-					  "DCC RESUME %s %d %u",
+					  "DCC RESUME \"%s\" %d %"DCC_SFMT :
+					  "DCC RESUME %s %d %"DCC_SFMT,
 					  dcc->file, dcc->port, dcc->resumable);
 
 		if (dcc->pasvid)
@@ -1754,6 +1779,7 @@ handle_dcc (struct session *sess, char *nick, char *word[],
 	char *type = word[5];
 	int port, pasvid = 0;
 	unsigned long size, addr;
+	int psend = 0;
 
 	if (!strcasecmp (type, "CHAT"))
 	{
@@ -1762,6 +1788,11 @@ handle_dcc (struct session *sess, char *nick, char *word[],
 
 		if (port == 0)
 			pasvid = atoi (word[9]);
+		else if (word[9][0] != 0)
+		{
+			pasvid = atoi (word[9]);
+			psend = 1;
+		}
 
 		if (!addr /*|| (port < 1024 && port != 0)*/
 			|| port > 0xffff || (port == 0 && pasvid == 0))
@@ -1769,6 +1800,22 @@ handle_dcc (struct session *sess, char *nick, char *word[],
 			dcc_malformed (sess, nick, word_eol[4] + 2);
 			return;
 		}
+
+		if (psend)
+		{
+			dcc = find_dcc_from_id (pasvid, TYPE_CHATSEND);
+			if (dcc)
+			{
+				dcc->addr = addr;
+				dcc->port = port;
+				dcc_connect (dcc);
+			} else
+			{
+				dcc_malformed (sess, nick, word_eol[4] + 2);
+			}
+			return;
+		}
+
 		dcc = find_dcc (nick, "", TYPE_CHATSEND);
 		if (dcc)
 			dcc_close (dcc, 0, TRUE);
@@ -1797,7 +1844,7 @@ handle_dcc (struct session *sess, char *nick, char *word[],
 			dcc = find_dcc (nick, word[6], TYPE_SEND);
 		if (dcc)
 		{
-			size = strtoul (word[8], NULL, 10);
+			size = BIG_STR_TO_INT (word[8]);
 			dcc->resumable = size;
 			if (dcc->resumable < dcc->size)
 			{
@@ -1808,18 +1855,18 @@ handle_dcc (struct session *sess, char *nick, char *word[],
 				/* Checking if dcc is passive and if filename contains spaces */
 				if (dcc->pasvid)
 					snprintf (tbuf, sizeof (tbuf), strchr (file_part (dcc->file), ' ') ?
-							"DCC ACCEPT \"%s\" %d %u %d" :
-							"DCC ACCEPT %s %d %u %d",
+							"DCC ACCEPT \"%s\" %d %"DCC_SFMT" %d" :
+							"DCC ACCEPT %s %d %"DCC_SFMT" %d",
 							file_part (dcc->file), port, dcc->resumable, dcc->pasvid);
 				else
 					snprintf (tbuf, sizeof (tbuf), strchr (file_part (dcc->file), ' ') ?
-							"DCC ACCEPT \"%s\" %d %u" :
-							"DCC ACCEPT %s %d %u",
+							"DCC ACCEPT \"%s\" %d %"DCC_SFMT :
+							"DCC ACCEPT %s %d %"DCC_SFMT,
 							file_part (dcc->file), port, dcc->resumable);
 
 				dcc->serv->p_ctcp (dcc->serv, dcc->nick, tbuf);
 			}
-			sprintf (tbuf, "%u", dcc->pos);
+			sprintf (tbuf, "%"DCC_SFMT, dcc->pos);
 			EMIT_SIGNAL (XP_TE_DCCRESUMEREQUEST, sess, nick,
 							 file_part (dcc->file), tbuf, NULL, 0);
 		}
@@ -1838,11 +1885,10 @@ handle_dcc (struct session *sess, char *nick, char *word[],
 	if (!strcasecmp (type, "SEND"))
 	{
 		char *file = file_part (word[6]);
-		int psend = 0;
 
 		port = atoi (word[8]);
 		addr = strtoul (word[7], NULL, 10);
-		size = strtoul (word[9], NULL, 10);
+		size = BIG_STR_TO_INT (word[9]);
 
 		if (port == 0) /* Passive dcc requested */
 			pasvid = atoi (word[10]);
@@ -1909,7 +1955,7 @@ dcc_show_list (struct session *sess)
 	{
 		dcc = (struct DCC *) list->data;
 		i++;
-		PrintTextf (sess, " %s  %-10.10s %-7.7s %-7u %-7u %s\n",
+		PrintTextf (sess, " %s  %-10.10s %-7.7s %-7"DCC_SFMT" %-7"DCC_SFMT" %s\n",
 					 dcctypes[dcc->type], dcc->nick,
 					 _(dccstat[dcc->dccstat].name), dcc->size, dcc->pos,
 					 file_part (dcc->file));

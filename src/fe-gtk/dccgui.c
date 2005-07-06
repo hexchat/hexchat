@@ -53,15 +53,15 @@
 #define MEGABYTE (KILOBYTE * 1024)
 #define GIGABYTE (MEGABYTE * 1024)
 
-static void proper_unit (unsigned int size, char *buf, int buf_len)
+static void proper_unit (DCC_SIZE size, char *buf, int buf_len)
 {
 	if (size <= KILOBYTE)
 	{
-		snprintf (buf, buf_len, "%uB", size);
+		snprintf (buf, buf_len, "%"DCC_SFMT"B", size);
 	}
 	else if (size > KILOBYTE && size <= MEGABYTE)
 	{
-		snprintf (buf, buf_len, "%ukB", size / KILOBYTE);
+		snprintf (buf, buf_len, "%"DCC_SFMT"kB", size / KILOBYTE);
 	}
 	else
 	{
@@ -357,7 +357,7 @@ dcc_info (struct DCC *dcc)
 	dialog = gtk_message_dialog_new_with_markup (NULL, 0, GTK_MESSAGE_INFO, GTK_BUTTONS_OK,
 				 "<tt><b>%-13s</b></tt> %s\n"
 				 "<tt><b>%-13s</b></tt> %s\n"
-				 "<tt><b>%-13s</b></tt> %s (%u bytes)\n"
+				 "<tt><b>%-13s</b></tt> %s (%"DCC_SFMT" bytes)\n"
 				 "<tt><b>%-13s</b></tt> %s : %d\n"
 				 "<tt><b>%-13s</b></tt> %s"
 				 "<tt><b>%-13s</b></tt> %s\n",

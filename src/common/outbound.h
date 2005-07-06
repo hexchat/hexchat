@@ -2,6 +2,16 @@
 #define XCHAT_OUTBOUND_H
 
 extern const struct commands xc_cmds[];
+extern GSList *menu_list;
+
+/* for storage of /menu entries */
+typedef struct
+{
+	int pos;
+	char *path;
+	char *label;
+	char *command;
+} menu_entry;
 
 int load_trans_table (char *full_path);
 int auto_insert (char *dest, int destlen, unsigned char *src, char *word[], char *word_eol[],

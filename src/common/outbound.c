@@ -736,11 +736,12 @@ cmd_dcc (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			}
 			return FALSE;
 		}
-		if (!strcasecmp (type, "CHAT"))
+		if ((!strcasecmp (type, "CHAT")) || (!strcasecmp (type, "PCHAT")))
 		{
 			char *nick = word[3];
+			int passive = (!strcasecmp(type, "PCHAT")) ? 1 : 0;
 			if (*nick)
-				dcc_chat (sess, nick);
+				dcc_chat (sess, nick, passive);
 			return TRUE;
 		}
 		if (!strcasecmp (type, "LIST"))
@@ -967,6 +968,117 @@ cmd_mdeop (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	free (nicks);
 
 	return TRUE;
+}
+
+GSList *menu_list = NULL;
+
+static int
+menu_del (char *path, char *label)
+{
+	GSList *list;
+	menu_entry *me;
+
+	list = menu_list;
+	while (list)
+	{
+		me = list->data;
+		if (!strcmp (me->label, label) && !strcmp (me->path, path))
+		{
+			menu_list = g_slist_remove (menu_list, me);
+			fe_menu_del (path, label);
+			free (me->path);
+			if (me->label)
+				free (me->label);
+			if (me->command)
+				free (me->command);
+			free (me);
+			return 1;
+		}
+		list = list->next;
+	}
+	return 0;
+}
+
+static void
+menu_add (char *path, char *label, char *command, int pos)
+{
+	menu_entry *me;
+
+	me = malloc (sizeof (menu_entry));
+	me->pos = pos;
+	me->path = strdup (path);
+	me->label = NULL;
+	me->command = NULL;
+	if (label)
+		me->label = strdup (label);
+	if (command)
+		me->command = strdup (command);
+
+	menu_list = g_slist_append (menu_list, me);
+	fe_menu_add (pos, path, label, me->command);
+}
+
+static int
+cmd_menu (struct session *sess, char *tbuf, char *word[], char *word_eol[])
+{
+	int idx = 2;
+	int len;
+	int pos = -1;
+	int state;
+	int toggle = FALSE;
+	char *label;
+
+	if (!word[2][0] || !word[3][0])
+		return FALSE;
+
+	/* -pX to specify menu position */
+	if (word[2][0] == '-' && word[2][1] == 'p')
+	{
+		pos = atoi (word[2] + 2);
+		idx++;
+	}
+
+	/* -tX to specify toggle item with default state */
+	if (word[idx][0] == '-' && word[idx][1] == 't')
+	{
+		state = atoi (word[idx] + 2);
+		idx++;
+		toggle = TRUE;
+	}
+
+	/* the path */
+	path_part (word[idx+1], tbuf, 512);
+	len = strlen (tbuf);
+	if (len)
+		tbuf[len - 1] = 0;
+
+	/* the name of the item */
+	label = file_part (word[idx + 1]);
+	if (label[0] == '-' && label[1] == 0)
+		label = NULL;	/* separator */
+
+	if (!strcasecmp (word[idx], "ADD"))
+	{
+		if (toggle)
+		{
+			
+		} else
+		{
+			if (word[idx + 2][0])
+				menu_add (tbuf, label, word[idx + 2], pos);
+			else
+				menu_add (tbuf, label, NULL, pos);
+		}
+		return TRUE;
+	}
+
+	if (!strcasecmp (word[idx], "DEL"))
+	{
+		menu_del (tbuf, label);
+		return TRUE;
+	}
+
+	return FALSE;
 }
 
 static int
@@ -1622,6 +1734,10 @@ cmd_gui (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			fe_ctrl_gui (sess, 6, 0);
 		else
 			return FALSE;
+	} else if (!strcasecmp (word[2], "MSGBOX"))
+	{
+		fe_message (word[3], FALSE);
+		return TRUE;
 	} else
 	{
 		return FALSE;
@@ -1630,11 +1746,71 @@ cmd_gui (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	return TRUE;
 }
 
+typedef struct
+{
+	int longfmt;
+	int i, t;
+	char *buf;
+} help_list;
+
+static void
+show_help_line (session *sess, help_list *hl, char *name, char *usage)
+{
+	int j, len, max;
+	char *p;
+
+	if (hl->longfmt)	/* long format for /HELP -l */
+	{
+		if (!usage || usage[0] == 0)
+			PrintTextf (sess, "   \0034%s\003 :\n", name);
+		else
+			PrintTextf (sess, "   \0034%s\003 : %s\n", name, _(usage));
+		return;
+	}
+
+	/* append the name into buffer, but convert to uppercase */
+	len = strlen (hl->buf);
+	p = name;
+	while (*p)
+	{
+		hl->buf[len] = toupper (*p);
+		len++;
+		p++;
+	}
+	hl->buf[len] = 0;
+
+	hl->t++;
+	if (hl->t == 5)
+	{
+		hl->t = 0;
+		strcat (hl->buf, "\n");
+		PrintText (sess, hl->buf);
+		hl->buf[0] = ' ';
+		hl->buf[1] = ' ';
+		hl->buf[2] = 0;
+	} else
+	{
+		/* append some spaces after the command name */
+		max = strlen (name);
+		if (max < 10)
+		{
+			max = 10 - max;
+			for (j = 0; j < max; j++)
+			{
+				hl->buf[len] = ' ';
+				len++;
+				hl->buf[len] = 0;
+			}
+		}
+	}
+}
+
 static int
 cmd_help (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	int i = 0, longfmt = 0;
 	char *helpcmd = "";
+	GSList *list;
 
 	if (tbuf)
 		helpcmd = word[2];
@@ -1647,75 +1823,54 @@ cmd_help (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	} else
 	{
 		struct popup *pop;
-		GSList *list = command_list;
 		char *buf = malloc (4096);
-		int t = 1, j;
-		strcpy (buf, _("\nCommands Available:\n\n  "));
-		if (longfmt)
+		help_list hl;
+
+		hl.longfmt = longfmt;
+		hl.buf = buf;
+
+		PrintTextf (sess, "\n%s\n\n", _("Commands Available:"));
+		buf[0] = ' ';
+		buf[1] = ' ';
+		buf[2] = 0;
+		hl.t = 0;
+		hl.i = 0;
+		while (xc_cmds[i].name)
 		{
-			while (1)
-			{
-				if (!xc_cmds[i].name)
-					break;
-				if (!xc_cmds[i].help || *xc_cmds[i].help == '\0')
-					snprintf (buf, 4096, "   \0034%s\003 :\n", xc_cmds[i].name);
-				else
-					snprintf (buf, 4096, "   \0034%s\003 : %s\n", xc_cmds[i].name,
-								 _(xc_cmds[i].help));
-				PrintText (sess, buf);
-				i++;
-			}
-			buf[0] = 0;
-		} else
-		{
-			while (1)
-			{
-				if (!xc_cmds[i].name)
-					break;
-				strcat (buf, xc_cmds[i].name);
-				t++;
-				if (t == 6)
-				{
-					t = 1;
-					strcat (buf, "\n  ");
-				} else
-					for (j = 0; j < (10 - strlen (xc_cmds[i].name)); j++)
-						strcat (buf, " ");
-				i++;
-			}
+			show_help_line (sess, &hl, xc_cmds[i].name, xc_cmds[i].help);
+			i++;
 		}
-		strcat (buf,
-				  _("\n\nType /HELP <command> for more information, or /HELP -l\n\n"));
-		strcat (buf, _("User defined commands:\n\n  "));
-		t = 1;
+		strcat (buf, "\n");
+		PrintText (sess, buf);
+
+		PrintTextf (sess, "\n%s\n\n", _("User defined commands:"));
+		buf[0] = ' ';
+		buf[1] = ' ';
+		buf[2] = 0;
+		hl.t = 0;
+		hl.i = 0;
+		list = command_list;
 		while (list)
 		{
-			pop = (struct popup *) list->data;
-			strcat (buf, pop->name);
-			t++;
-			if (t == 6)
-			{
-				t = 1;
-				strcat (buf, "\n");
-				PrintText (sess, buf);
-				strcpy (buf, "  ");
-			} else
-			{
-				if (strlen (pop->name) < 10)
-				{
-					for (j = 0; j < (10 - strlen (pop->name)); j++)
-						strcat (buf, " ");
-				}
-			}
+			pop = list->data;
+			show_help_line (sess, &hl, pop->name, pop->cmd);
 			list = list->next;
 		}
 		strcat (buf, "\n");
 		PrintText (sess, buf);
+
+		PrintTextf (sess, "\n%s\n\n", _("Plugin defined commands:"));
+		buf[0] = ' ';
+		buf[1] = ' ';
+		buf[2] = 0;
+		hl.t = 0;
+		hl.i = 0;
+		plugin_command_foreach (sess, &hl, show_help_line);
+		strcat (buf, "\n");
+		PrintText (sess, buf);
 		free (buf);
 
-		PrintText (sess, "\nPlugin defined commands:\n\n");
-		plugin_show_help (sess, NULL);
-
+		PrintTextf (sess, "\n%s\n\n", _("Type /HELP <command> for more information, or /HELP -l"));
 	}
 	return TRUE;
 }
@@ -2752,10 +2907,12 @@ const struct commands xc_cmds[] = {
 	 N_("CYCLE, parts current channel and immediately rejoins")},
 	{"DCC", cmd_dcc, 0, 0, 1,
 	 N_("\n"
-	 "DCC GET <nick>                     - accept an offered file\n"
-	 "DCC SEND [-maxcps=#] <nick> [file] - send a file to someone\n"
-	 "DCC LIST                           - show DCC list\n"
-	 "DCC CHAT <nick>                    - offer DCC CHAT to someone\n"
+	 "DCC GET <nick>                      - accept an offered file\n"
+	 "DCC SEND [-maxcps=#] <nick> [file]  - send a file to someone\n"
+	 "DCC PSEND [-maxcps=#] <nick> [file] - send a file using passive mode\n"
+	 "DCC LIST                            - show DCC list\n"
+	 "DCC CHAT <nick>                     - offer DCC CHAT to someone\n"
+	 "DCC PCHAT <nick>                    - offer DCC CHAT using passive mode\n"
 	 "DCC CLOSE <type> <nick> <file>         example:\n"
 	 "         /dcc close send johnsmith file.tar.gz")},
 	{"DEBUG", cmd_debug, 0, 0, 1, 0},
@@ -2790,7 +2947,7 @@ const struct commands xc_cmds[] = {
 	 N_("GATE <host> [<port>], proxies through a host, port defaults to 23")},
 	{"GETINT", cmd_getint, 0, 0, 1, "GETINT <default> <command> <prompt>"},
 	{"GETSTR", cmd_getstr, 0, 0, 1, "GETSTR <default> <command> <prompt>"},
-	{"GUI", cmd_gui, 0, 0, 1, "GUI [SHOW|HIDE|FOCUS|FLASH|ICONIFY|MENU TOGGLE|COLOR <n>]"},
+	{"GUI", cmd_gui, 0, 0, 1, "GUI [SHOW|HIDE|FOCUS|FLASH|ICONIFY|MENU TOGGLE|COLOR <n>|MSGBOX <text>]"},
 	{"HELP", cmd_help, 0, 0, 1, 0},
 	{"HOP", cmd_hop, 1, 1, 1,
 	 N_("HOP <nick>, gives chanhalf-op status to the nick (needs chanop)")},
@@ -2823,6 +2980,7 @@ const struct commands xc_cmds[] = {
 	 N_("MDEOP, Mass deop's all chanops in the current channel (needs chanop)")},
 	{"ME", cmd_me, 0, 0, 1,
 	 N_("ME <action>, sends the action to the current channel (actions are written in the 3rd person, like /me jumps)")},
+	{"MENU", cmd_menu, 0, 0, 1, "MENU [-pX] [-tX] {ADD|DEL} <path> [command] [unselect command]"},
 	{"MKICK", cmd_mkick, 1, 1, 1,
 	 N_("MKICK, Mass kicks everyone except you in the current channel (needs chanop)")},
 	{"MODE", cmd_mode, 1, 0, 1, 0},
