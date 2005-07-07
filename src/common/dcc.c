@@ -1292,9 +1292,9 @@ dcc_send (struct session *sess, char *to, char *file, int maxcps, int passive)
 						{
 							dcc->pasvid = new_id();
 							snprintf (outbuf, sizeof (outbuf), (havespaces) ?
-									"DCC SEND \"%s\" %lu %d %"DCC_SFMT" %d" :
-									"DCC SEND %s %lu %d %"DCC_SFMT" %d",
-									file_part (dcc->file), 199ul,
+									"DCC SEND \"%s\" 199 %d %"DCC_SFMT" %d" :
+									"DCC SEND %s 199 %d %"DCC_SFMT" %d",
+									file_part (dcc->file),
 									0, dcc->size, dcc->pasvid);
 						} else
 						{
@@ -1697,7 +1697,7 @@ dcc_add_chat (session *sess, char *nick, int port, unsigned long addr, int pasvi
 }
 
 static struct DCC *
-dcc_add_file (session *sess, char *file, unsigned long size, int port, char *nick, unsigned long addr, int pasvid)
+dcc_add_file (session *sess, char *file, DCC_SIZE size, int port, char *nick, unsigned long addr, int pasvid)
 {
 	struct DCC *dcc;
 	char tbuf[512];
@@ -1767,7 +1767,7 @@ dcc_add_file (session *sess, char *file, unsigned long size, int port, char *nic
 		} else
 			fe_dcc_add (dcc);
 	}
-	sprintf (tbuf, "%lu", size);
+	sprintf (tbuf, "%"DCC_SFMT, size);
 	snprintf (tbuf + 24, 300, "%s:%d", net_ip (dcc->addr), dcc->port);
 	EMIT_SIGNAL (XP_TE_DCCSENDOFFER, sess->server->front_session, nick,
 					 file, tbuf, tbuf + 24, 0);
@@ -1783,7 +1783,8 @@ handle_dcc (struct session *sess, char *nick, char *word[],
 	struct DCC *dcc;
 	char *type = word[5];
 	int port, pasvid = 0;
-	unsigned long size, addr;
+	unsigned long addr;
+	DCC_SIZE size;
 	int psend = 0;
 
 	if (!strcasecmp (type, "CHAT"))
