@@ -163,7 +163,6 @@ static const struct defaultserver def[] =
 	{0,			"irc.lagged.org"},
 	{0,			"irc.lightning.net"},
 	{0,			"irc.mindspring.com"},
-	{0,			"irc.rt.ru"},
 	{0,			"irc.easynews.com"},
 	{0,			"irc.servercentral.net"},
 
@@ -251,21 +250,17 @@ static const struct defaultserver def[] =
 	{0,			"tonsberg.no.eu.irclink.net"},
 
 	{"IRCNet",		0},
-	{0,				"irc.stealth.net/5550"},
+	{0,				"irc.ircnet.com"},
+	{0,				"irc.stealth.net/6668"},
 	{0,				"ircnet.demon.co.uk"},
 	{0,				"ircnet.hinet.hr"},
 	{0,				"irc.datacomm.ch"},
 	{0,				"ircnet.kaptech.fr"},
-	{0,				"irc.flashnet.it"},
-	{0,				"irc.cwitaly.it"},
 	{0,				"ircnet.easynet.co.uk"},
 	{0,				"random.ircd.de"},
 	{0,				"ircnet.netvision.net.il"},
 	{0,				"irc.seed.net.tw"},
 	{0,				"irc.cs.hut.fi"},
-
-	{"IRCSoulZ",	0},
-	{0,			"irc.ircsoulz.net"},
 
 	{"Irctoo.net",	0},
 	{0,			"irc.canadian.net"},
@@ -315,21 +310,12 @@ static const struct defaultserver def[] =
 	{"OFTC",	0},
 	{0,			"irc.oftc.net"},
 
-	{"OnlyIRC",		0},
-	{0,			"irc.onlyirc.net"},
-
 	{"OtherNet",	0},
 	{0,			"irc.othernet.org"},
 
 	{"OzNet",	0},
 	{0,			"sydney.oz.org"},
 	{0,			"melbourne.oz.org"},
-
-	{"Progameplayer",	0},
-	{0,			"irc.progameplayer.com"},
-	{0,			"melancholia.oh.us.progameplayer.com"},
-	{0,			"deimos.oh.us.progameplayer.com"},
-	{0,			"paradigm.oh.us.progameplayer.com"},
 
 	{"PTlink",	0},
 	{0,			"irc.PTlink.net"},
@@ -366,9 +352,6 @@ static const struct defaultserver def[] =
 	{0,			"iscte.PTnet.org"},
 	{0,			"ubi.PTnet.org"},
 
-	{"QChat.net",	0},
-	{0,			"irc.qchat.net"},
-
 	{"QuakeNet",	0},
 	{0,			"irc.quakenet.org"},
 	{0,			"irc.se.quakenet.org"},
@@ -379,11 +362,6 @@ static const struct defaultserver def[] =
 	{0,			"irc.uk.quakenet.org"},
 	{0,			"irc.de.quakenet.org"},
 	{0,			"irc.it.quakenet.org"},
-
-	{"RealmNET",	0},
-	{0,			"irc.realmnet.com"},
-	{0,			"irc.eu.realmnet.com"},
-	{0,			"irc.us.realmnet.com"},
 
 	{"RebelChat",	0},
 	{0,			"irc.rebelchat.org"},
@@ -397,9 +375,6 @@ static const struct defaultserver def[] =
 	{0,			"unwashed.recycled-irc.org"},
 	{0,			"garbage.recycled-irc.org"},
 	{0,			"dustbin.recycled-irc.org"},
-
-	{"RedeBrasilIRC",	0},
-	{0,			"irc.redebrasilirc.org"},
 
 	{"RizeNET", 0},
 	{0,			"irc.rizenet.org"},
@@ -441,12 +416,6 @@ static const struct defaultserver def[] =
 	{0,			"tahoma.starchat.net"},
 	{0,			"neo.starchat.net"},
 
-	{"SubCultNet",	0},
-	{0,			"irc.subcult.ch"},
-	{0,			"irc.phuncrew.ch"},
-	{0,			"irc.mgz.ch"},
-	{0,			"irc.nazgul.ch/6666"},
-
 	{"TNI3",			0},
 	{0,			"irc.tni3.com"},
 
@@ -464,9 +433,6 @@ static const struct defaultserver def[] =
 	{0,			"irc.techno-link.com"},
 	{0,			"irc.telecoms.bg"},
 	{0,			"irc.tu-varna.edu"},
-
-	{"Unsecurity",	0},
-	{0,			"irc.unsecurity.org"},
 
 	{"Worldnet",		0},
 	{0,			"irc.worldnet.net"},
