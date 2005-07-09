@@ -83,7 +83,6 @@ void fe_set_inputbox_contents (struct session *sess, char *text);
 void fe_set_inputbox_cursor (struct session *sess, int delta, int pos);
 void fe_open_url (const char *url);
 int fe_menu_del (char *path, char *label);
-int fe_menu_add (int pos, char *path, char *label, char *command);
-int fe_menu_add_toggle (int pos, char *path, char *label, char *scmd, char *ucmd, int state);
+int fe_menu_add (int pos, char *path, char *label, char *cmd, char *ucmd, int *state);
 
 #endif

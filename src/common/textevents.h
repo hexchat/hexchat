@@ -60,7 +60,7 @@ N_("%C22*%O$t$1 sets mode $2$3 $4")},
 N_("%C22*%O$t%C22Channel $1 modes: $2")},
 
 {"Channel Msg Hilight", pevt_chanmsg_help, 4, 
-N_("$4%C21%B$1%O$t%C21$2")},
+N_("$4%C21%B$1%O%C21$t$2")},
 
 {"Channel Notice", pevt_channotice_help, 3, 
 N_("%C28-%C29$1/$2%C28-%O$t$3")},
@@ -291,7 +291,7 @@ N_("%C22*%O$tNotify: $1 is online ($2).")},
 N_("%C23*%O$t%C23$1 (%O%C23$2) has left $3")},
 
 {"Part with Reason", pevt_partreason_help, 4, 
-N_("%C23*%O$t%C23$1 (%O%C23$2) has left $3 (%O%C23$4)")},
+N_("%C23*%O$t%C23$1 (%O%C23$2) has left $3 (%O%C23%B%B$4%O%C23)")},
 
 {"Ping Reply", pevt_pingrep_help, 2, 
 N_("%C22*%O$tPing reply from $1: $2 second(s)")},
@@ -309,7 +309,7 @@ N_("%C18%B%B$3$1%O$t$2")},
 N_("%C22*%O$tA process is already running")},
 
 {"Quit", pevt_quit_help, 3, 
-N_("%C23*%O$t%C23$1 has quit (%O%C23$2)")},
+N_("%C23*%O$t%C23$1 has quit (%O%C23%B%B$2%O%C23)")},
 
 {"Raw Modes", pevt_rawmodes_help, 2, 
 N_("%C22*%O$t$1 sets modes%B %C30[%O$2%B%C30]")},
@@ -399,7 +399,7 @@ N_("%C23*$tYou have been kicked from $2 by $3 ($4%O%C23)")},
 N_("%C23*$tYou have left channel $3")},
 
 {"You Part with Reason", pevt_partreason_help, 4, 
-N_("%C23*$tYou have left channel $3 (%O%C23$4%O%C23)")},
+N_("%C23*$tYou have left channel $3 (%O%C23%B%B$4%O%C23)")},
 
 {"Your Invitation", pevt_uinvite_help, 3, 
 N_("%C22*%O$tYou've invited%C26 $1%O to%C26 $2%O (%C26$3%O)")},

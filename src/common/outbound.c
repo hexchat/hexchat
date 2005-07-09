@@ -991,6 +991,8 @@ menu_del (char *path, char *label)
 				free (me->label);
 			if (me->command)
 				free (me->command);
+			if (me->ucmd)
+				free (me->ucmd);
 			free (me);
 			return 1;
 		}
@@ -1000,22 +1002,27 @@ menu_del (char *path, char *label)
 }
 
 static void
-menu_add (char *path, char *label, char *command, int pos)
+menu_add (char *path, char *label, char *cmd, char *ucmd, int pos, int state)
 {
 	menu_entry *me;
 
 	me = malloc (sizeof (menu_entry));
 	me->pos = pos;
+	me->state = state;
 	me->path = strdup (path);
 	me->label = NULL;
 	me->command = NULL;
+	me->ucmd = NULL;
+
 	if (label)
 		me->label = strdup (label);
-	if (command)
-		me->command = strdup (command);
+	if (cmd)
+		me->command = strdup (cmd);
+	if (ucmd)
+		me->ucmd = strdup (ucmd);
 
 	menu_list = g_slist_append (menu_list, me);
-	fe_menu_add (pos, path, label, me->command);
+	fe_menu_add (pos, path, label, me->command, me->ucmd, &(me->state));
 }
 
 static int
@@ -1061,13 +1068,13 @@ cmd_menu (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	{
 		if (toggle)
 		{
-			
+			menu_add (tbuf, label, word[idx + 2], word[idx + 3], pos, state);
 		} else
 		{
 			if (word[idx + 2][0])
-				menu_add (tbuf, label, word[idx + 2], pos);
+				menu_add (tbuf, label, word[idx + 2], NULL, pos, 0);
 			else
-				menu_add (tbuf, label, NULL, pos);
+				menu_add (tbuf, label, NULL, NULL, pos, 0);
 		}
 		return TRUE;
 	}
