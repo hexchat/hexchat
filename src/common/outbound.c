@@ -22,6 +22,7 @@
 #include <stdio.h>
 #include <ctype.h>
 #include <limits.h>
+#include <errno.h>
 
 #define WANTSOCKET
 #define WANTARPA
@@ -2090,23 +2091,34 @@ cmd_load (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	char *error, *arg, *nl, *file;
 	int len;
 
+	if (!word[2][0])
+		return FALSE;
+
 	if (strcmp (word[2], "-e") == 0)
 	{
 		file = expand_homedir (word[3]);
 		fp = fopen (file, "r");
-		free (file);
-		if (fp)
+		if (!fp)
 		{
-			tbuf[1024] = 0;
-			while (fgets (tbuf, 1024, fp))
-			{
-				nl = strchr (tbuf, '\n');
-				if (nl)
-					*nl = 0;
-				handle_command (sess, tbuf, TRUE);
-			}
-			fclose (fp);
+			PrintTextf (sess, "Cannot access %s\n", file);
+			PrintText (sess, errorstring (errno));
+			free (file);
+			return TRUE;
 		}
+		free (file);
+
+		tbuf[1024] = 0;
+		while (fgets (tbuf, 1024, fp))
+		{
+			nl = strchr (tbuf, '\n');
+			if (nl)
+				*nl = 0;
+			if (tbuf[0] == prefs.cmdchar[0])
+				handle_command (sess, tbuf + 1, TRUE);
+			else
+				handle_command (sess, tbuf, TRUE);
+		}
+		fclose (fp);
 		return TRUE;
 	}
 
@@ -2979,7 +2991,7 @@ const struct commands xc_cmds[] = {
 	{"LASTLOG", cmd_lastlog, 0, 0, 1,
 	 N_("LASTLOG <string>, searches for a string in the buffer")},
 	{"LIST", cmd_list, 1, 0, 1, 0},
-	{"LOAD", cmd_load, 0, 0, 1, N_("LOAD <file>, loads a plugin or script")},
+	{"LOAD", cmd_load, 0, 0, 1, N_("LOAD [-e] <file>, loads a plugin or script")},
 
 	{"MDEHOP", cmd_mdehop, 1, 1, 1,
 	 N_("MDEHOP, Mass deop's all chanhalf-ops in the current channel (needs chanop)")},
