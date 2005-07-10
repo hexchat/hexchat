@@ -1301,7 +1301,7 @@ pevt_build_string (const char *input, char **output, int *max_arg)
 			fe_message ("String ends in $a", FALSE);
 			return 1;
 		 a_range_error:
-			fe_message ("$a value is greater then 255", FALSE);
+			fe_message ("$a value is greater than 255", FALSE);
 			return 1;
 		}
 		if (d == 't')

@@ -436,7 +436,7 @@ setup_create_spin (GtkWidget *table, int row, const setting *set)
 		add_tip (wid, _(set->tooltip));
 	gtk_spin_button_set_value (GTK_SPIN_BUTTON (wid),
 										setup_get_int (&setup_prefs, set));
-	g_signal_connect (G_OBJECT (wid), "value-changed",
+	g_signal_connect (G_OBJECT (wid), "value_changed",
 							G_CALLBACK (setup_spin_cb), (gpointer)set);
 	gtk_box_pack_start (GTK_BOX (rbox), wid, 0, 0, 0);
 

@@ -640,7 +640,7 @@ chanlist_opengui (struct server *serv)
 	wid = gtk_spin_button_new_with_range (0, 999999, 1);
 	gtk_spin_button_set_value (GTK_SPIN_BUTTON (wid),
 										serv->gui->chanlist_minusers);
-	g_signal_connect (G_OBJECT (wid), "value-changed",
+	g_signal_connect (G_OBJECT (wid), "value_changed",
 							G_CALLBACK (chanlist_minusers), serv);
 	gtk_table_attach (GTK_TABLE (table), wid, 1, 2, 0, 1,
 							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
@@ -655,7 +655,7 @@ chanlist_opengui (struct server *serv)
 	wid = gtk_spin_button_new_with_range (0, 999999, 1);
 	gtk_spin_button_set_value (GTK_SPIN_BUTTON (wid),
 										serv->gui->chanlist_maxusers);
-	g_signal_connect (G_OBJECT (wid), "value-changed",
+	g_signal_connect (G_OBJECT (wid), "value_changed",
 							G_CALLBACK (chanlist_maxusers), serv);
 	gtk_table_attach (GTK_TABLE (table), wid, 1, 2, 2, 3,
 							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
