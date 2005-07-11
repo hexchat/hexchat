@@ -725,7 +725,7 @@ static char * const pevt_generic_nick_help[] = {
 };
 
 static char * const pevt_chanmodes_help[] = {
-	N_("Channel name"),
+	N_("Channel Name"),
 	N_("Modes string"),
 };
 
@@ -838,7 +838,7 @@ static char * const pevt_notifynumber_help[] = {
 };
 
 static char * const pevt_serverlookup_help[] = {
-	N_("Servername"),
+	N_("Server Name"),
 };
 
 static char * const pevt_servererror_help[] = {

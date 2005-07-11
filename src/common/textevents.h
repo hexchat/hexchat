@@ -243,7 +243,7 @@ N_("%C21*%O$t%C21$1 has kicked $2 from $3 ($4%O%C21)")},
 N_("%C22*%O$tYou have been killed by $1 ($2%O%C22)")},
 
 {"Message Send", pevt_ctcpsend_help, 2, 
-N_("%C19>%O$1%C19<%O$t$2%O")},
+N_("%C19>%O$1%C19<%O$t$2")},
 
 {"Motd", pevt_servertext_help, 1, 
 N_("%C16*%O$t$1%O")},

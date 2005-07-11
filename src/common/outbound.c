@@ -973,6 +973,19 @@ cmd_mdeop (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 
 GSList *menu_list = NULL;
 
+static void
+menu_free (menu_entry *me)
+{
+	free (me->path);
+	if (me->label)
+		free (me->label);
+	if (me->command)
+		free (me->command);
+	if (me->ucmd)
+		free (me->ucmd);
+	free (me);
+}
+
 static int
 menu_del (char *path, char *label)
 {
@@ -987,14 +1000,7 @@ menu_del (char *path, char *label)
 		{
 			menu_list = g_slist_remove (menu_list, me);
 			fe_menu_del (path, label);
-			free (me->path);
-			if (me->label)
-				free (me->label);
-			if (me->command)
-				free (me->command);
-			if (me->ucmd)
-				free (me->ucmd);
-			free (me);
+			menu_free (me);
 			return 1;
 		}
 		list = list->next;
@@ -1022,8 +1028,11 @@ menu_add (char *path, char *label, char *cmd, char *ucmd, int pos, int state)
 	if (ucmd)
 		me->ucmd = strdup (ucmd);
 
-	menu_list = g_slist_append (menu_list, me);
-	fe_menu_add (pos, path, label, me->command, me->ucmd, &(me->state));
+	if (fe_menu_add (pos, me->path, me->label, me->command, me->ucmd, &(me->state)) == 2)
+		/* updated an existing item only */
+		menu_free (me);
+	else
+		menu_list = g_slist_append (menu_list, me);
 }
 
 static int

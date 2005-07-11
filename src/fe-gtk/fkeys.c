@@ -744,7 +744,7 @@ key_dialog_show ()
 
 	vbox2 = gtk_vbox_new (0, 2);
 	gtk_box_pack_end (GTK_BOX (hbox), vbox2, 1, 1, 0);
-	wid = gtk_button_new_with_label (_("Add new"));
+	wid = gtk_button_new_with_label (_("Add New"));
 	gtk_box_pack_start (GTK_BOX (vbox2), wid, 0, 0, 0);
 	gtk_signal_connect (GTK_OBJECT (wid), "clicked",
 							  GTK_SIGNAL_FUNC (key_dialog_add_new), list);

@@ -305,10 +305,7 @@ menu_quick_sub (char *name, GtkWidget *menu, GtkWidget **sub_item_ret, int do_li
 	/* Code to add a submenu */
 	sub_menu = gtk_menu_new ();
 	sub_item = gtk_menu_item_new_with_label (name);
-	if (pos != -1)
-		gtk_menu_shell_insert (GTK_MENU_SHELL (menu), sub_item, pos);
-	else
-		gtk_menu_shell_append (GTK_MENU_SHELL (menu), sub_item);
+	gtk_menu_shell_insert (GTK_MENU_SHELL (menu), sub_item, pos);
 	gtk_widget_show (sub_item);
 	gtk_menu_item_set_submenu (GTK_MENU_ITEM (sub_item), sub_menu);
 
@@ -682,7 +679,7 @@ static void
 menu_chan_cycle (GtkWidget * menu, char *chan)
 {
 	if (current_sess)
-		handle_command (current_sess, "cycle", FALSE);
+		handle_command (current_sess, "CYCLE", FALSE);
 }
 
 static void
@@ -1454,9 +1451,41 @@ menu_find_path (GtkWidget *menu, char *path)
 }
 
 static void
+menu_toggle_set_state (char *path, char *label, int state)
+{
+	GSList *list;
+	int tabdone = FALSE;
+	session *sess;
+	GtkWidget *menu, *item;
+
+	list = sess_list;
+	while (list)
+	{
+		sess = list->data;
+		/* do it only once for tab sessions, since they share a GUI */
+		if (!sess->gui->is_tab || !tabdone)
+		{
+			menu = menu_find_path (sess->gui->menu, path);
+			if (menu)
+			{
+				item = (GtkWidget *)menu_find_item (menu, label);
+				if (item && GTK_IS_CHECK_MENU_ITEM (item))
+				{
+					/* must avoid calling the callback here */
+					GTK_CHECK_MENU_ITEM (item)->active = state;
+				}
+			}
+			if (sess->gui->is_tab)
+				tabdone = TRUE;
+		}
+		list = list->next;
+	}
+}
+
+static void
 menu_toggle_cb (GtkCheckMenuItem *item, int *state)
 {
-	char *cmd;
+	char *cmd, *path, *label;
 
 	if (item->active)
 	{
@@ -1469,6 +1498,12 @@ menu_toggle_cb (GtkCheckMenuItem *item, int *state)
 	}
 
 	handle_command (current_sess, cmd, FALSE);
+
+	/* update the state, incase this was changed via right-click. */
+	/* This will update all other windows and menu bars */
+	path = g_object_get_data (G_OBJECT (item), "path");
+	label = g_object_get_data (G_OBJECT (item), "label");
+	menu_toggle_set_state (path, label, *state);
 }
 
 static int
@@ -1481,9 +1516,19 @@ menu_add_toggle (GtkWidget *menu, int pos, char *path, char *label, char *cmd, c
 	menu = menu_find_path (menu, path);
 	if (menu)
 	{
+		/* already exists? Change toggle state only */
+		item = (GtkWidget *)menu_find_item (menu, label);
+		if (item)
+		{
+			GTK_CHECK_MENU_ITEM (item)->active = *state;
+			return 2;
+		}
+
 		item = menu_toggle_item (label, menu, menu_toggle_cb, state, *state);
 		g_object_set_data (G_OBJECT (item), "cmd", cmd);
 		g_object_set_data (G_OBJECT (item), "ucmd", ucmd);
+		g_object_set_data (G_OBJECT (item), "path", path);
+		g_object_set_data (G_OBJECT (item), "label", label);
 		if (pos != -1)
 			gtk_menu_reorder_child (GTK_MENU (menu), item, pos);
 		return 1;
@@ -1544,6 +1589,8 @@ menu_del (GtkWidget *menu, char *path, char *label)
 
 	return 0;
 }
+
+/* fe_menu_add returns: 0-fail 1-success 2-updated existing toggle item */
 
 int
 fe_menu_add (int pos, char *path, char *label, char *cmd, char *ucmd, int *state)

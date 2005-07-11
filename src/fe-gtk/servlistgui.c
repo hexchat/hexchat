@@ -1035,7 +1035,7 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 									  &edit_label_user, 0);
 
 	edit_entry_real =
-		servlist_create_entry (table3, _("Real na_me:"), 7, net->real,
+		servlist_create_entry (table3, _("Rea_l name:"), 7, net->real,
 									  &edit_label_real, 0);
 
 	label21 = bold_label (_("Connecting"));

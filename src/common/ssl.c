@@ -165,11 +165,11 @@ _SSL_get_cert_info (struct cert_info *cert_info, SSL * ssl)
 	peer_pkey = X509_get_pubkey (peer_cert);
 
 	strncpy (cert_info->algorithm,
-				(alg == NID_undef) ? "UNKNOWN" : OBJ_nid2ln (alg),
+				(alg == NID_undef) ? "Unknown" : OBJ_nid2ln (alg),
 				sizeof (cert_info->algorithm));
 	cert_info->algorithm_bits = EVP_PKEY_bits (peer_pkey);
 	strncpy (cert_info->sign_algorithm,
-				(sign_alg == NID_undef) ? "UNKNOWN" : OBJ_nid2ln (sign_alg),
+				(sign_alg == NID_undef) ? "Unknown" : OBJ_nid2ln (sign_alg),
 				sizeof (cert_info->sign_algorithm));
 	/* EVP_PKEY_bits(ca_pkey)); */
 	cert_info->sign_algorithm_bits = 0;

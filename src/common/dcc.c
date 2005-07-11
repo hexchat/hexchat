@@ -1844,7 +1844,7 @@ handle_dcc (struct session *sess, char *nick, char *word[],
 		return;
 	}
 
-	if (!strcasecmp (type, "RESUME"))
+	if (!strcasecmp (type, "Resume"))
 	{
 		port = atoi (word[7]);
 
@@ -1888,7 +1888,7 @@ handle_dcc (struct session *sess, char *nick, char *word[],
 		}
 		return;
 	}
-	if (!strcasecmp (type, "ACCEPT"))
+	if (!strcasecmp (type, "Accept"))
 	{
 		port = atoi (word[7]);
 		dcc = find_dcc_from_port (port, TYPE_RECV);

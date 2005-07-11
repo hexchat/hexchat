@@ -268,8 +268,8 @@ server_inline (server *serv, char *line, int len)
 	/* Checks whether we're set to use UTF-8 charset */
 	if ((serv->encoding == NULL && prefs.utf8_locale) ||
 	    (serv->encoding != NULL &&
-		 (strcasecmp (serv->encoding, "utf8") == 0 ||
-		  strcasecmp (serv->encoding, "utf-8") == 0)))
+		 (strcasecmp (serv->encoding, "UTF8") == 0 ||
+		  strcasecmp (serv->encoding, "UTF-8") == 0)))
 	{
 		/* The user has the UTF-8 charset set, either via /charset
 		command or from his UTF-8 locale. Thus, we first try the
