@@ -876,14 +876,14 @@ mg_ircdestroy (GtkWidget *tab, session *sess)
 static void
 mg_tabdestroy_cb (GtkWidget *tab, session *sess)
 {
-	if (tab == active_tab && !xchat_is_quitting)
+	if (tab == active_tab && mg_gui)
 		mg_find_replacement_focus (tab);
 
 	if (sess == NULL)
 		mg_gendestroy (tab);
 	else
 	{
-		if (!xchat_is_quitting)
+		if (mg_gui)	/* NULL if the last tab was just killed via WM */
 			tab_group_cleanup (sess->gui->tabs_box);
 		mg_ircdestroy (tab, sess);
 	}
@@ -1365,7 +1365,8 @@ mg_dcc_active (void)
 	while (list)
 	{
 		dcc = list->data;
-		if (dcc->dccstat == STAT_ACTIVE)
+		if ((dcc->type == TYPE_SEND || dcc->type == TYPE_RECV) &&
+			 dcc->dccstat == STAT_ACTIVE)
 			return 1;
 		list = list->next;
 	}
@@ -2915,7 +2916,7 @@ fe_session_callback (session *sess)
 	if (sess->gui->bartag)
 		fe_timeout_remove (sess->gui->bartag);
 
-	if (sess->gui != mg_gui)
+	if (sess->gui != &static_mg_gui)
 		free (sess->gui);
 	free (sess->res);
 }

@@ -361,19 +361,36 @@ xchat_command(ph, "GUI .....");.
 </p>
 <blockquote>
 	<table border=0 cellpadding=4>
-	<tr><td>GUI HIDE</td><td>Hide the main xchat window completely (this is used by the Systray plugin).</td></tr>
-	<tr><td>GUI SHOW</td><td>Show it again.</td></tr>
+	<tr><td>GUI COLOR n</td><td>Change the tab color of the current context, where n is a number from 0 to 3.</td></tr>
 	<tr><td>GUI FOCUS</td><td>Focus the current window or tab.</td></tr>
-	<tr><td>GUI FLASH</td><td>Flash the taskbar button (win32 only). It will flash only if the window isn't focused and will stop when it is focused by the user.</td></tr>
+	<tr><td>GUI FLASH</td><td>Flash the taskbar button. It will flash only if the window isn't focused and will stop when it is focused by the user.</td></tr>
+	<tr><td>GUI HIDE</td><td>Hide the main xchat window completely (this is used by the Systray plugin).</td></tr>
 	<tr><td>GUI ICONIFY</td><td>Iconify (minimize to taskbar) the current xchat window.</td></tr>
-	<tr><td>GUI COLOR n</td><td>Change the tab color of the current context,
-where n is a number from 0 to 3.</td></tr>
+	<tr><td>GUI MSGBOX text</td><td>Displays a asynchronous message box with your text (new for 2.4.5).</td></tr>
+	<tr><td>GUI SHOW</td><td>Show the main xchat window (if currently hidden).</td></tr>
 	</table>
 </blockquote>
 <p>
 Note, the FLASH, ICONIFY and COLOR args were added in xchat 2.0.8, they
 will not work with previous versions.
-</p><br>
+</p>
+Starting from 2.4.5 you can add your own items to the menu bar. The menu command has this syntax:
+<pre>
+	MENU [-pX] [-tX] {ADD|DEL} &lt;path> [command] [unselect command]</pre>
+For example:
+<pre>
+	MENU ADD FServe
+	MENU ADD "FServe/Show File List" "fs list"
+	MENU -t1 ADD "FServe/Enabled" "fs on" "fs off"
+</pre>
+The -t1 parameter specifies a TOGGLE menu item, and sets the initial state to ON (1). It would
+be recommended to execute "MENU DEL FServe" inside your xchat_plugin_deinit function.
+<br><br>It's also possible to add items to XChat's existing menus, for example:<br>
+<pre>	MENU -p0 ADD "Settings/Sub Menu"
+	MENU -t0 ADD "Settings/Sub Menu/My Setting" myseton mysetoff
+</pre>
+However, internal names and layouts of XChat's menu may change in the future, so use at own risk.
+<br><br>
 
 <h3><a name=unicode>Handling UTF-8/Unicode strings</a></h3>
 <p>
@@ -412,7 +429,7 @@ static void get_file_name(char *name)
 	if(n)
 	{
 		/* now we have WIDECHARs, so we can _wopen() or CreateFileW() */
-		fd = _wopen(loc_name, O_RDONLY);
+		fd = _wopen(loc_name, O_RDONLY | O_BINARY);
 		...
 		...
 	}
