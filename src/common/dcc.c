@@ -1258,7 +1258,9 @@ dcc_send (struct session *sess, char *to, char *file, int maxcps, int passive)
 		if (sizeof (st.st_size) > 4 && st.st_size > 4294967295U)
 		{
 			PrintText (sess, "Cannot send files larger than 4 GB.\n");
-			goto noaxs;
+			g_free (file_fs);
+			dcc_close (dcc, 0, TRUE);
+			return;
 		}
 #endif
 
@@ -1328,7 +1330,6 @@ dcc_send (struct session *sess, char *to, char *file, int maxcps, int passive)
 		}
 	}
 	PrintTextf (sess, _("Cannot access %s\n"), dcc->file);
-noaxs:
 	g_free (file_fs);
 	dcc_close (dcc, 0, TRUE);
 }

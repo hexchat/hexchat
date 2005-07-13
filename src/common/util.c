@@ -1559,3 +1559,40 @@ mkdir_utf8 (char *dir)
 
 	return ret;
 }
+
+/* separates a string according to a 'sep' char, then calls the callback
+   function for each token found */
+
+int
+token_foreach (char *str, char sep,
+					int (*callback) (char *str, void *ud), void *ud)
+{
+	char t, *start = str;
+
+	while (1)
+	{
+		if (*str == sep || *str == 0)
+		{
+			t = *str;
+			*str = 0;
+			if (callback (start, ud) < 1)
+			{
+				*str = t;
+				return FALSE;
+			}
+			*str = t;
+
+			if (*str == 0)
+				break;
+			str++;
+			start = str;
+
+		} else
+		{
+			/* chars $00-$7f can never be embedded in utf-8 */
+			str++;
+		}
+	}
+
+	return TRUE;
+}

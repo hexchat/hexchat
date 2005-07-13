@@ -564,7 +564,7 @@ gtkutil_clist_multiple_selection (GtkWidget * clist, int ** rows, const int max_
 	{
 		(*rows)[i] = GPOINTER_TO_INT( tmp_clist->data );
 	}
-	qsort(*rows, i, sizeof(int), int_compare);
+	qsort(*rows, i, sizeof(int), (void *)int_compare);
 	return i;
 
 }

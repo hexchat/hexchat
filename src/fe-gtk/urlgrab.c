@@ -36,6 +36,7 @@
 
 #include "../common/xchat.h"
 #include "../common/cfgfiles.h"
+#include "../common/fe.h"
 #include "../common/url.h"
 #include "../common/tree.h"
 #include "gtkutil.h"
@@ -149,7 +150,7 @@ url_button_save (void)
 }
 
 void
-fe_url_add (char *urltext)
+fe_url_add (const char *urltext)
 {
 	GtkListStore *store;
 	GtkTreeIter iter;

@@ -1882,7 +1882,7 @@ cmd_help (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		buf[2] = 0;
 		hl.t = 0;
 		hl.i = 0;
-		plugin_command_foreach (sess, &hl, show_help_line);
+		plugin_command_foreach (sess, &hl, (void *)show_help_line);
 		strcat (buf, "\n");
 		PrintText (sess, buf);
 		free (buf);

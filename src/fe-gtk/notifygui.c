@@ -39,6 +39,7 @@
 #include "../common/xchat.h"
 #include "../common/notify.h"
 #include "../common/cfgfiles.h"
+#include "../common/fe.h"
 #include "../common/util.h"
 #include "../common/userlist.h"
 #include "gtkutil.h"
