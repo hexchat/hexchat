@@ -986,25 +986,95 @@ menu_free (menu_entry *me)
 	free (me);
 }
 
+/* strings equal? but ignore underscores */
+
+int
+menu_streq (const char *s1, const char *s2, int def)
+{
+	/* for separators */
+	if (s1 == NULL && s2 == NULL)
+		return 0;
+	if (s1 == NULL || s2 == NULL)
+		return 1;
+	while (*s1)
+	{
+		if (*s1 == '_')
+			s1++;
+		if (*s2 == '_')
+			s2++;
+		if (*s1 != *s2)
+			return 1;
+		s1++;
+		s2++;
+	}
+	if (!*s2)
+		return 0;
+	return def;
+}
+
+static void
+menu_del_children (char *path, char *label)
+{
+	GSList *list, *next;
+	menu_entry *me;
+	char buf[512];
+
+	snprintf (buf, sizeof (buf), "%s/%s", path, label);
+
+	printf("FINDING CHILDREN TO DELETE...\n");
+	list = menu_list;
+	while (list)
+	{
+		me = list->data;
+		next = list->next;
+		if (!menu_streq (buf, me->path, 0))
+		{
+			printf(" YY match [%s == %s] DELETE %s\n", me->path, buf, me->label);
+			menu_list = g_slist_remove (menu_list, me);
+			menu_free (me);
+		} else
+			printf(" no match (%s != %s)\n", me->path, buf);
+		list = next;
+	}
+}
+
 static int
 menu_del (char *path, char *label)
 {
 	GSList *list;
 	menu_entry *me;
+	int i;
+
+	printf("common/outbound.c::menu_del |%s| |%s|\n", path, label);
 
 	list = menu_list;
 	while (list)
 	{
 		me = list->data;
-		if (!strcmp (me->label, label) && !strcmp (me->path, path))
+		if (!menu_streq (me->label, label, 1) && !menu_streq (me->path, path, 1))
 		{
 			menu_list = g_slist_remove (menu_list, me);
 			fe_menu_del (path, label);
 			menu_free (me);
+			/* delete this item's children, if any */
+			menu_del_children (path, label);
 			return 1;
 		}
 		list = list->next;
 	}
+
+	printf("-- menu list contains: ------------\n");
+	list = menu_list;
+	i = 0;
+	while (list)
+	{
+		me = list->data;
+		printf("%d. |%s| |%s|\n", i, me->label, me->path);
+		list = list->next;
+		i++;
+	}
+	printf("-- end ----------------------------\n");
+
 	return 0;
 }
 

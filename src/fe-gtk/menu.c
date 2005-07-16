@@ -1360,23 +1360,6 @@ menu_canacaccel (GtkWidget *widget, guint signal_id, gpointer user_data)
 
 /* === STUFF FOR /MENU === */
 
-/* strings equal? but ignore underscores in s1 */
-
-static int
-menu_streq (const char *s1, const char *s2)
-{
-	while (*s1)
-	{
-		if (*s1 == '_')
-			s1++;
-		if (*s1 != *s2)
-			return 1;
-		s1++;
-		s2++;
-	}
-	return 0;
-}
-
 static GtkMenuItem *
 menu_find_item (GtkWidget *menu, char *name)
 {
@@ -1394,13 +1377,18 @@ menu_find_item (GtkWidget *menu, char *name)
 			labeltext = g_object_get_data (G_OBJECT (item), "name");
 			if (!labeltext)
 				labeltext = gtk_label_get_text (GTK_LABEL (child));
-			if (!menu_streq (labeltext, name))
+			if (!menu_streq (labeltext, name, 1))
 			{
-				printf(" YY match (%s == %s)\n", labeltext, name);
+				printf(" YY match [%s == %s]\n", labeltext, name);
 				return item;
 			}
 
 			printf(" no match (%s != %s)\n", labeltext, name);
+
+		} else if (name == NULL)
+		{
+			printf(" YY match [separator]\n");
+			return item;
 		}
 		items = items->next;
 	}
@@ -1609,7 +1597,7 @@ fe_menu_add (int pos, char *path, char *label, char *cmd, char *ucmd, int *state
 		{
 			if (ucmd)	/* have unselect-cmd? Must be a toggle item */
 				ret = menu_add_toggle (sess->gui->menu, pos, path, label, cmd, ucmd, state);
-			else if (cmd)
+			else if (cmd || !label)	/* label=NULL for separators */
 				ret = menu_add_item (sess->gui->menu, pos, path, label, cmd);
 			else
 				ret = menu_add_sub (sess->gui->menu, pos, path, label);
