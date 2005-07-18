@@ -294,7 +294,7 @@ menu_quick_item_with_callback (void *callback, char *label, GtkWidget * menu,
 }
 
 static GtkWidget *
-menu_quick_sub (char *name, GtkWidget *menu, GtkWidget **sub_item_ret, int do_list, int pos)
+menu_quick_sub (char *name, GtkWidget *menu, GtkWidget **sub_item_ret, int flags, int pos)
 {
 	GtkWidget *sub_menu;
 	GtkWidget *sub_item;
@@ -304,7 +304,10 @@ menu_quick_sub (char *name, GtkWidget *menu, GtkWidget **sub_item_ret, int do_li
 
 	/* Code to add a submenu */
 	sub_menu = gtk_menu_new ();
-	sub_item = gtk_menu_item_new_with_label (name);
+	if (flags & 4)
+		sub_item = gtk_menu_item_new_with_mnemonic (name);
+	else
+		sub_item = gtk_menu_item_new_with_label (name);
 	gtk_menu_shell_insert (GTK_MENU_SHELL (menu), sub_item, pos);
 	gtk_widget_show (sub_item);
 	gtk_menu_item_set_submenu (GTK_MENU_ITEM (sub_item), sub_menu);
@@ -312,7 +315,7 @@ menu_quick_sub (char *name, GtkWidget *menu, GtkWidget **sub_item_ret, int do_li
 	if (sub_item_ret)
 		*sub_item_ret = sub_item;
 
-	if (do_list)
+	if (flags & 1)
 		/* We create a new element in the list */
 		submenu_list = g_slist_prepend (submenu_list, sub_menu);
 	return sub_menu;
@@ -1005,7 +1008,7 @@ menu_savedefault (GtkWidget * wid, gpointer none)
 static void
 menu_chanlist (GtkWidget * wid, gpointer none)
 {
-	chanlist_opengui (current_sess->server);
+	chanlist_opengui (current_sess->server, FALSE);
 }
 
 static void
@@ -1551,7 +1554,7 @@ menu_add_sub (GtkWidget *menu, int pos, char *path, char *label)
 		menu = menu_find_path (menu, path);
 	if (menu)
 	{
-		menu_quick_sub (label, menu, &item, 0, pos);
+		menu_quick_sub (label, menu, &item, 4, pos);
 		return 1;
 	}
 

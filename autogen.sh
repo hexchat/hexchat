@@ -72,7 +72,7 @@ fi
 
 
 echo running $ACLOCAL...
-$ACLOCAL
+$ACLOCAL $ACLOCAL_FLAGS
 if test "$?" != "0"; then
 	echo aclocal failed, stopping.
 	exit 2

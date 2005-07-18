@@ -588,7 +588,7 @@ chanlist_closegui (GtkWidget *wid, server *serv)
 }
 
 void
-chanlist_opengui (struct server *serv)
+chanlist_opengui (struct server *serv, int do_refresh)
 {
 	gchar *titles[3];
 	GtkWidget *frame, *vbox, *hbox, *table, *wid;
@@ -765,4 +765,7 @@ chanlist_opengui (struct server *serv)
 	chanlist_reset_sort_vars (serv);
 
 	gtk_widget_show (serv->gui->chanlist_window);
+
+	if (do_refresh)
+		chanlist_do_refresh (serv);
 }
