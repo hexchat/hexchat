@@ -1014,16 +1014,24 @@ dcc_read_ack (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 	/* DCC complete check */
 	if (dcc->pos >= dcc->size && dcc->ack >= (dcc->size & 0xffffffff))
 	{
+		dcc->ack = dcc->size;	/* force 100% ack for >4 GB */
 		dcc_calc_average_cps (dcc);
 		dcc_close (dcc, STAT_DONE, FALSE);
 		sprintf (buf, "%d", dcc->cps);
 		EMIT_SIGNAL (XP_TE_DCCSENDCOMP, dcc->serv->front_session,
 						 file_part (dcc->file), dcc->nick, buf, NULL, 0);
 	}
-	else if ((!dcc->fastsend) && (dcc->ack >= dcc->pos))
+	else if ((!dcc->fastsend) && (dcc->ack >= (dcc->pos & 0xffffffff)))
 	{
 		dcc_send_data (NULL, 0, (gpointer)dcc);
 	}
+
+#ifdef USE_DCC64
+	/* take the top 32 of "bytes send" and bottom 32 of "ack" */
+	dcc->ack = (dcc->pos & G_GINT64_CONSTANT (0xffffffff00000000)) |
+					(dcc->ack & 0xffffffff);
+	/* dcc->ack is only used for CPS and PERCENTAGE calcs from now on... */
+#endif
 
 	return TRUE;
 }

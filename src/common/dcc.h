@@ -20,7 +20,7 @@
 #define CPS_AVG_WINDOW 10
 
 /* can we do 64-bit dcc? */
-#if defined(G_HAVE_GINT64) && defined(G_GINT64_FORMAT) && defined(HAVE_STRTOULL)
+#if defined(G_GINT64_FORMAT) && defined(HAVE_STRTOULL)
 #define USE_DCC64
 /* we really get only 63 bits, since st_size is signed */
 #define DCC_SIZE gint64
