@@ -1019,7 +1019,10 @@ menu_del_children (char *path, char *label)
 	menu_entry *me;
 	char buf[512];
 
-	snprintf (buf, sizeof (buf), "%s/%s", path, label);
+	if (path[0])
+		snprintf (buf, sizeof (buf), "%s/%s", path, label);
+	else
+		snprintf (buf, sizeof (buf), "%s", label);
 
 	printf("FINDING CHILDREN TO DELETE...\n");
 	list = menu_list;

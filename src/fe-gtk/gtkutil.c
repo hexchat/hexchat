@@ -572,7 +572,9 @@ gtkutil_clist_multiple_selection (GtkWidget * clist, int ** rows, const int max_
 void
 add_tip (GtkWidget * wid, char *text)
 {
-	GtkTooltips *tip = gtk_tooltips_new ();
+	static GtkTooltips *tip = NULL;
+	if (!tip)
+		tip = gtk_tooltips_new ();
 	gtk_tooltips_set_tip (tip, wid, text, 0);
 }
 

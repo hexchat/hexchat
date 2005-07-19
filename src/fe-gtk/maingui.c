@@ -614,7 +614,7 @@ mg_set_topic_tip (session *sess)
 			 GTK_ENTRY (sess->gui->topic_entry)->text[0])
 			add_tip (sess->gui->topic_entry, GTK_ENTRY (sess->gui->topic_entry)->text);
 		else
-			add_tip (sess->gui->topic_entry, ""); /* hSP: set topic to empty in case it isn't set.. */
+			add_tip (sess->gui->topic_entry, NULL);
 	}
 }
 

@@ -121,20 +121,11 @@ fe_new_window (struct session *sess, int focus)
 #ifdef ENABLE_NLS
 	"NLS "
 #endif
-#ifdef USE_TRANS
-	"Trans "
-#endif
-#ifdef USE_HEBREW
-	"Hebrew "
-#endif
 #ifdef USE_OPENSSL
 	"OpenSSL "
 #endif
 #ifdef SOCKS
 	"Socks5 "
-#endif
-#ifdef USE_JCODE
-	"JCode "
 #endif
 #ifdef USE_IPV6
 	"IPv6"
@@ -831,4 +822,12 @@ void fe_set_inputbox_cursor (struct session *sess, int delta, int pos)
 }
 void fe_open_url (const char *url)
 {
+}
+int fe_menu_del (char *path, char *label)
+{
+	return 0;
+}
+int fe_menu_add (int pos, char *path, char *label, char *cmd, char *ucmd, int *state)
+{
+	return 0;
 }
