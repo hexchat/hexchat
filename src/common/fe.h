@@ -4,6 +4,18 @@
 #ifndef XCHAT_FE_H
 #define XCHAT_FE_H
 
+/* for storage of /menu entries */
+typedef struct
+{
+	int pos;	/* position */
+	int state;	/* state of toggle items */
+	int enable;	/* enabled? sensitivity */
+	char *path;
+	char *label;
+	char *cmd;
+	char *ucmd;	/* unselect command (toggles) */
+} menu_entry;
+
 int fe_args (int argc, char *argv[]);
 void fe_init (void);
 void fe_main (void);
@@ -82,7 +94,8 @@ int fe_get_inputbox_cursor (struct session *sess);
 void fe_set_inputbox_contents (struct session *sess, char *text);
 void fe_set_inputbox_cursor (struct session *sess, int delta, int pos);
 void fe_open_url (const char *url);
-int fe_menu_del (char *path, char *label);
-int fe_menu_add (int pos, char *path, char *label, char *cmd, char *ucmd, int *state);
+void fe_menu_del (menu_entry *);
+void fe_menu_add (menu_entry *);
+void fe_menu_update (menu_entry *);
 
 #endif

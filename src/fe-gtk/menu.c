@@ -1441,31 +1441,32 @@ menu_find_path (GtkWidget *menu, char *path)
 	return menu_find_path (menu, path + 1);
 }
 
-static void
-menu_toggle_set_state (char *path, char *label, int state)
+static GtkWidget *
+menu_find (GtkWidget *menu, char *path, char *label)
 {
-	GSList *list;
+	GtkWidget *item = NULL;
+
+	if (path[0] != 0)
+		menu = menu_find_path (menu, path);
+	if (menu)
+		item = (GtkWidget *)menu_find_item (menu, label);
+	return item;
+}
+
+static void
+menu_foreach_gui (menu_entry *me, void (*callback) (GtkWidget *, menu_entry *))
+{
+	GSList *list = sess_list;
 	int tabdone = FALSE;
 	session *sess;
-	GtkWidget *menu, *item;
 
-	list = sess_list;
 	while (list)
 	{
 		sess = list->data;
 		/* do it only once for tab sessions, since they share a GUI */
 		if (!sess->gui->is_tab || !tabdone)
 		{
-			menu = menu_find_path (sess->gui->menu, path);
-			if (menu)
-			{
-				item = (GtkWidget *)menu_find_item (menu, label);
-				if (item && GTK_IS_CHECK_MENU_ITEM (item))
-				{
-					/* must avoid calling the callback here */
-					GTK_CHECK_MENU_ITEM (item)->active = state;
-				}
-			}
+			callback (sess->gui->menu, me);
 			if (sess->gui->is_tab)
 				tabdone = TRUE;
 		}
@@ -1474,158 +1475,121 @@ menu_toggle_set_state (char *path, char *label, int state)
 }
 
 static void
-menu_toggle_cb (GtkCheckMenuItem *item, int *state)
+menu_update_cb (GtkWidget *menu, menu_entry *me)
 {
-	char *cmd, *path, *label;
+	GtkWidget *item;
 
+	item = menu_find (menu, me->path, me->label);
+	if (item)
+	{
+		gtk_widget_set_sensitive (item, me->enable);
+		/* must do it without triggering the callback */
+		if (GTK_IS_CHECK_MENU_ITEM (item))
+			GTK_CHECK_MENU_ITEM (item)->active = me->state;
+	}
+}
+
+/* toggle state changed via mouse click */
+static void
+menu_toggle_cb (GtkCheckMenuItem *item, menu_entry *me)
+{
 	if (item->active)
 	{
-		*state = 1;
-		cmd = g_object_get_data (G_OBJECT (item), "cmd");
+		me->state = 1;
+		handle_command (current_sess, me->cmd, FALSE);
 	} else
 	{
-		*state = 0;
-		cmd = g_object_get_data (G_OBJECT (item), "ucmd");
+		me->state = 0;
+		handle_command (current_sess, me->ucmd, FALSE);
 	}
-
-	handle_command (current_sess, cmd, FALSE);
 
 	/* update the state, incase this was changed via right-click. */
 	/* This will update all other windows and menu bars */
-	path = g_object_get_data (G_OBJECT (item), "path");
-	label = g_object_get_data (G_OBJECT (item), "label");
-	menu_toggle_set_state (path, label, *state);
+	menu_foreach_gui (me, menu_update_cb);
 }
 
-static int
-menu_add_toggle (GtkWidget *menu, int pos, char *path, char *label, char *cmd, char *ucmd, int *state)
+static void
+menu_add_toggle (GtkWidget *menu, menu_entry *me)
 {
 	GtkWidget *item;
 
-	printf("find_path: |%s| |%s|\n", path, label);
-
-	menu = menu_find_path (menu, path);
+	menu = menu_find_path (menu, me->path);
 	if (menu)
 	{
-		/* already exists? Change toggle state only */
-		item = (GtkWidget *)menu_find_item (menu, label);
-		if (item)
-		{
-			GTK_CHECK_MENU_ITEM (item)->active = *state;
-			return 2;
-		}
-
-		item = menu_toggle_item (label, menu, menu_toggle_cb, state, *state);
-		g_object_set_data (G_OBJECT (item), "cmd", cmd);
-		g_object_set_data (G_OBJECT (item), "ucmd", ucmd);
-		g_object_set_data (G_OBJECT (item), "path", path);
-		g_object_set_data (G_OBJECT (item), "label", label);
-		if (pos != -1)
-			gtk_menu_reorder_child (GTK_MENU (menu), item, pos);
-		return 1;
+		item = menu_toggle_item (me->label, menu, menu_toggle_cb, me, me->state);
+		gtk_widget_set_sensitive (item, me->enable);
+		if (me->pos != -1)
+			gtk_menu_reorder_child (GTK_MENU (menu), item, me->pos);
 	}
-
-	return 0;
 }
 
-static int
-menu_add_item (GtkWidget *menu, int pos, char *path, char *label, char *command)
+static void
+menu_add_item (GtkWidget *menu, menu_entry *me)
 {
 	GtkWidget *item;
 
-	menu = menu_find_path (menu, path);
+	menu = menu_find_path (menu, me->path);
 	if (menu)
 	{
-		item = menu_quick_item (command, label, menu, 4, 0);
-		if (pos != -1)
-			gtk_menu_reorder_child (GTK_MENU (menu), item, pos);
-		return 1;
+		item = menu_quick_item (me->cmd, me->label, menu, 4, 0);
+		gtk_widget_set_sensitive (item, me->enable);
+		if (me->pos != -1)
+			gtk_menu_reorder_child (GTK_MENU (menu), item, me->pos);
 	}
-
-	return 0;
 }
 
-static int
-menu_add_sub (GtkWidget *menu, int pos, char *path, char *label)
+static void
+menu_add_sub (GtkWidget *menu, menu_entry *me)
 {
 	GtkWidget *item;
 
-	if (path[0] != 0)
-		menu = menu_find_path (menu, path);
+	if (me->path[0] != 0)
+		menu = menu_find_path (menu, me->path);
 	if (menu)
 	{
-		menu_quick_sub (label, menu, &item, 4, pos);
-		return 1;
+		menu_quick_sub (me->label, menu, &item, 4, me->pos);
+		gtk_widget_set_sensitive (item, me->enable);
 	}
-
-	return 0;
 }
 
-static int
-menu_del (GtkWidget *menu, char *path, char *label)
+static void
+menu_del_cb (GtkWidget *menu, menu_entry *me)
 {
-	GtkWidget *item;
-
-	if (path[0] != 0)
-		menu = menu_find_path (menu, path);
-	if (menu)
-	{
-		item = (GtkWidget *)menu_find_item (menu, label);
-		if (item)
-		{
-			gtk_widget_destroy (item);
-			return 1;
-		}
-	}
-
-	return 0;
+	GtkWidget *item = menu_find (menu, me->path, me->label);
+	if (item)
+		gtk_widget_destroy (item);
 }
 
-/* fe_menu_add returns: 0-fail 1-success 2-updated existing toggle item */
-
-int
-fe_menu_add (int pos, char *path, char *label, char *cmd, char *ucmd, int *state)
+static void
+menu_add_cb (GtkWidget *menu, menu_entry *me)
 {
-	GSList *list;
-	int ret = 0;
-	int tabdone = FALSE;
-	session *sess;
-
-	list = sess_list;
-	while (list)
-	{
-		sess = list->data;
-		/* do it only once for tab sessions, since they share a GUI */
-		if (!sess->gui->is_tab || !tabdone)
-		{
-			if (ucmd)	/* have unselect-cmd? Must be a toggle item */
-				ret = menu_add_toggle (sess->gui->menu, pos, path, label, cmd, ucmd, state);
-			else if (cmd || !label)	/* label=NULL for separators */
-				ret = menu_add_item (sess->gui->menu, pos, path, label, cmd);
-			else
-				ret = menu_add_sub (sess->gui->menu, pos, path, label);
-			if (sess->gui->is_tab)
-				tabdone = TRUE;
-		}
-		list = list->next;
-	}
-	return ret;
+	if (me->ucmd)	/* have unselect-cmd? Must be a toggle item */
+		menu_add_toggle (menu, me);
+	else if (me->cmd || !me->label)	/* label=NULL for separators */
+		menu_add_item (menu, me);
+	else
+		menu_add_sub (menu, me);
 }
 
-int
-fe_menu_del (char *path, char *label)
+void
+fe_menu_add (menu_entry *me)
 {
-	GSList *list;
-	int ret = 0;
-
-	list = sess_list;
-	while (list)
-	{
-		ret = menu_del (((session *)list->data)->gui->menu, path, label);
-		list = list->next;
-	}
-	return ret;
+	menu_foreach_gui (me, menu_add_cb);
 }
+
+void
+fe_menu_del (menu_entry *me)
+{
+	menu_foreach_gui (me, menu_del_cb);
+}
+
+void
+fe_menu_update (menu_entry *me)
+{
+	menu_foreach_gui (me, menu_update_cb);
+}
+
+/* used to add custom menus to the right-click menu */
 
 static void
 menu_add_plugin_items (GtkWidget *menu)
@@ -1637,12 +1601,7 @@ menu_add_plugin_items (GtkWidget *menu)
 	while (list)
 	{
 		me = list->data;
-		if (me->ucmd)	/* have unselect-cmd? Must be a toggle item */
-			menu_add_toggle (menu, me->pos, me->path, me->label, me->command, me->ucmd, &(me->state));
-		else if (me->command)
-			menu_add_item (menu, me->pos, me->path, me->label, me->command);
-		else
-			menu_add_sub (menu, me->pos, me->path, me->label);
+		menu_add_cb (menu, me);
 		list = list->next;
 	}
 }

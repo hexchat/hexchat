@@ -823,11 +823,12 @@ void fe_set_inputbox_cursor (struct session *sess, int delta, int pos)
 void fe_open_url (const char *url)
 {
 }
-int fe_menu_del (char *path, char *label)
+void fe_menu_del (menu_entry *me)
 {
-	return 0;
 }
-int fe_menu_add (int pos, char *path, char *label, char *cmd, char *ucmd, int *state)
+void fe_menu_add (menu_entry *me)
 {
-	return 0;
+}
+void fe_menu_update (menu_entry *me)
+{
 }

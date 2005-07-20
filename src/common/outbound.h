@@ -4,17 +4,6 @@
 extern const struct commands xc_cmds[];
 extern GSList *menu_list;
 
-/* for storage of /menu entries */
-typedef struct
-{
-	int pos;	/* position */
-	int state;	/* state of toggle items */
-	char *path;
-	char *label;
-	char *command;
-	char *ucmd;	/* unselect command (toggles) */
-} menu_entry;
-
 int load_trans_table (char *full_path);
 int auto_insert (char *dest, int destlen, unsigned char *src, char *word[], char *word_eol[],
 				 char *a, char *c, char *d, char *h, char *n, char *s);

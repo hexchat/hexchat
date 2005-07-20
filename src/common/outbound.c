@@ -979,8 +979,8 @@ menu_free (menu_entry *me)
 	free (me->path);
 	if (me->label)
 		free (me->label);
-	if (me->command)
-		free (me->command);
+	if (me->cmd)
+		free (me->cmd);
 	if (me->ucmd)
 		free (me->ucmd);
 	free (me);
@@ -1010,6 +1010,26 @@ menu_streq (const char *s1, const char *s2, int def)
 	if (!*s2)
 		return 0;
 	return def;
+}
+
+static menu_entry *
+menu_entry_find (char *path, char *label)
+{
+	GSList *list;
+	menu_entry *me;
+
+	list = menu_list;
+	while (list)
+	{
+		me = list->data;
+		if (!strcmp (path, me->path))
+		{
+			if (me->label && !strcmp (label, me->label))
+				return me;
+		}
+		list = list->next;
+	}
+	return NULL;
 }
 
 static void
@@ -1057,7 +1077,7 @@ menu_del (char *path, char *label)
 		if (!menu_streq (me->label, label, 1) && !menu_streq (me->path, path, 1))
 		{
 			menu_list = g_slist_remove (menu_list, me);
-			fe_menu_del (path, label);
+			fe_menu_del (me);
 			menu_free (me);
 			/* delete this item's children, if any */
 			menu_del_children (path, label);
@@ -1082,30 +1102,39 @@ menu_del (char *path, char *label)
 }
 
 static void
-menu_add (char *path, char *label, char *cmd, char *ucmd, int pos, int state)
+menu_add (char *path, char *label, char *cmd, char *ucmd, int pos, int state, int enable)
 {
 	menu_entry *me;
+
+	/* already exists? */
+	me = menu_entry_find (path, label);
+	if (me)
+	{
+		/* update only */
+		me->state = state;
+		me->enable = enable;
+		fe_menu_update (me);
+		return;
+	}
 
 	me = malloc (sizeof (menu_entry));
 	me->pos = pos;
 	me->state = state;
+	me->enable = enable;
 	me->path = strdup (path);
 	me->label = NULL;
-	me->command = NULL;
+	me->cmd = NULL;
 	me->ucmd = NULL;
 
 	if (label)
 		me->label = strdup (label);
 	if (cmd)
-		me->command = strdup (cmd);
+		me->cmd = strdup (cmd);
 	if (ucmd)
 		me->ucmd = strdup (ucmd);
 
-	if (fe_menu_add (pos, me->path, me->label, me->command, me->ucmd, &(me->state)) == 2)
-		/* updated an existing item only */
-		menu_free (me);
-	else
-		menu_list = g_slist_append (menu_list, me);
+	fe_menu_add (me);
+	menu_list = g_slist_append (menu_list, me);
 }
 
 static int
@@ -1116,6 +1145,7 @@ cmd_menu (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	int pos = -1;
 	int state;
 	int toggle = FALSE;
+	int enable = TRUE;
 	char *label;
 
 	if (!word[2][0] || !word[3][0])
@@ -1136,6 +1166,13 @@ cmd_menu (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		toggle = TRUE;
 	}
 
+	/* -eX enabled or not? */
+	if (word[idx][0] == '-' && word[idx][1] == 'e')
+	{
+		enable = atoi (word[idx] + 2);
+		idx++;
+	}
+
 	/* the path */
 	path_part (word[idx+1], tbuf, 512);
 	len = strlen (tbuf);
@@ -1151,13 +1188,13 @@ cmd_menu (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	{
 		if (toggle)
 		{
-			menu_add (tbuf, label, word[idx + 2], word[idx + 3], pos, state);
+			menu_add (tbuf, label, word[idx + 2], word[idx + 3], pos, state, enable);
 		} else
 		{
 			if (word[idx + 2][0])
-				menu_add (tbuf, label, word[idx + 2], NULL, pos, 0);
+				menu_add (tbuf, label, word[idx + 2], NULL, pos, 0, enable);
 			else
-				menu_add (tbuf, label, NULL, NULL, pos, 0);
+				menu_add (tbuf, label, NULL, NULL, pos, 0, enable);
 		}
 		return TRUE;
 	}
@@ -3081,7 +3118,7 @@ const struct commands xc_cmds[] = {
 	 N_("MDEOP, Mass deop's all chanops in the current channel (needs chanop)")},
 	{"ME", cmd_me, 0, 0, 1,
 	 N_("ME <action>, sends the action to the current channel (actions are written in the 3rd person, like /me jumps)")},
-	{"MENU", cmd_menu, 0, 0, 1, "MENU [-pX] [-tX] {ADD|DEL} <path> [command] [unselect command]"},
+	{"MENU", cmd_menu, 0, 0, 1, "MENU [-pX] [-tX] [-eX] {ADD|DEL} <path> [command] [unselect command]"},
 	{"MKICK", cmd_mkick, 1, 1, 1,
 	 N_("MKICK, Mass kicks everyone except you in the current channel (needs chanop)")},
 	{"MODE", cmd_mode, 1, 0, 1, 0},

@@ -16,20 +16,22 @@ Where "NUMBER" is the bug number.
  - Added "/set irc_whois_front 1" option to show WHOIS in front tab.
  - Lots of speed ups under the hood, mainly in handling of URL
    highlighting during mouse motion. Also now allows underlining
-   .name and .info domains.
- - Moved the "insert color code" menu into the text box's right-click.
+   .name and .info domains [1230265].
+ - Moved the "Insert color code" menu into the input box's right-
+   click menu.
  - Fixed "Your Message" messing up when starting with a comma
    [1230269].
  - Added /id command to identify yourself to nickserv.
- - /gui msgbox
- - /menu
- - dcc pchat
- - Info button
- - nick right-click menu
- - 64-bit dcc
- - /help output
- - 
- - 
+ - Added /gui MSGBOX <text> for scripters.
+ - Added /menu command which lets plugins/scripts add their own
+   menu items.
+ - Added support for passive DCC chat via /DCC PCHAT <nick>.
+ - Added support for DCC sending and receiving very large files
+   (above 4 GB).
+ - Improved layout of "Info" button in the DCC windows.
+ - Improved layout of the nick-name right-click menu.
+ - Improved /help command's display of plugins/script commands.
+ - Fixed a bug in detaching tabs [1228926].
 
 
 ----------------------------------------------------------------------

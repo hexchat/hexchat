@@ -38,7 +38,7 @@ margin-right: 32px;
 <h1>XChat 2.0 Plugin Interface</h1>
 
 <small>
-<font size="-12">plugin20.html revision 1.07</font>
+<font size="-12">plugin20.html revision 1.08</font>
 <br>Latest version of this document is available at: <a href="http://xchat.org/docs/plugin20.html">http://xchat.org/docs/plugin20.html</a></small>
 
 <h2>Information:</h2>
@@ -376,15 +376,20 @@ will not work with previous versions.
 </p>
 Starting from 2.4.5 you can add your own items to the menu bar. The menu command has this syntax:
 <pre>
-	MENU [-pX] [-tX] {ADD|DEL} &lt;path> [command] [unselect command]</pre>
+	MENU [-pX] [-tX] [-eX] {ADD|DEL} &lt;path> [command] [unselect command]</pre>
 For example:
 <pre>
-	MENU ADD FServe
+	MENU -p5 ADD FServe
 	MENU ADD "FServe/Show File List" "fs list"
+	MENU ADD FServe/-
 	MENU -t1 ADD "FServe/Enabled" "fs on" "fs off"
+	MENU -e0 ADD "FServe/Do Something" "fs action"
 </pre>
 The -t1 parameter specifies a TOGGLE menu item, and sets the initial state to ON (1). It would
-be recommended to execute "MENU DEL FServe" inside your xchat_plugin_deinit function.
+be recommended to execute "MENU DEL FServe" inside your xchat_plugin_deinit function. The special
+item with name "-" will add a separator line. The -eX parameter specifies if you want to enable
+or disable (shade out) the item. If you want to change an item's toggle state or enabled flag,
+just ADD an item with exactly the same name and command and specify the -tX -eX parameters you need.
 <br><br>It's also possible to add items to XChat's existing menus, for example:<br>
 <pre>	MENU -p0 ADD "Settings/Sub Menu"
 	MENU -t0 ADD "Settings/Sub Menu/My Setting" myseton mysetoff
