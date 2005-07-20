@@ -1508,48 +1508,46 @@ menu_toggle_cb (GtkCheckMenuItem *item, menu_entry *me)
 	menu_foreach_gui (me, menu_update_cb);
 }
 
-static void
+static GtkWidget *
 menu_add_toggle (GtkWidget *menu, menu_entry *me)
 {
-	GtkWidget *item;
+	GtkWidget *item = NULL;
 
 	menu = menu_find_path (menu, me->path);
 	if (menu)
 	{
 		item = menu_toggle_item (me->label, menu, menu_toggle_cb, me, me->state);
-		gtk_widget_set_sensitive (item, me->enable);
 		if (me->pos != -1)
 			gtk_menu_reorder_child (GTK_MENU (menu), item, me->pos);
 	}
+	return item;
 }
 
-static void
+static GtkWidget *
 menu_add_item (GtkWidget *menu, menu_entry *me)
 {
-	GtkWidget *item;
+	GtkWidget *item = NULL;
 
 	menu = menu_find_path (menu, me->path);
 	if (menu)
 	{
 		item = menu_quick_item (me->cmd, me->label, menu, 4, 0);
-		gtk_widget_set_sensitive (item, me->enable);
 		if (me->pos != -1)
 			gtk_menu_reorder_child (GTK_MENU (menu), item, me->pos);
 	}
+	return item;
 }
 
-static void
+static GtkWidget *
 menu_add_sub (GtkWidget *menu, menu_entry *me)
 {
-	GtkWidget *item;
+	GtkWidget *item = NULL;
 
 	if (me->path[0] != 0)
 		menu = menu_find_path (menu, me->path);
 	if (menu)
-	{
 		menu_quick_sub (me->label, menu, &item, 4, me->pos);
-		gtk_widget_set_sensitive (item, me->enable);
-	}
+	return item;
 }
 
 static void
@@ -1563,12 +1561,23 @@ menu_del_cb (GtkWidget *menu, menu_entry *me)
 static void
 menu_add_cb (GtkWidget *menu, menu_entry *me)
 {
+	GtkWidget *item;
+
 	if (me->ucmd)	/* have unselect-cmd? Must be a toggle item */
-		menu_add_toggle (menu, me);
+		item = menu_add_toggle (menu, me);
 	else if (me->cmd || !me->label)	/* label=NULL for separators */
-		menu_add_item (menu, me);
+		item = menu_add_item (menu, me);
 	else
-		menu_add_sub (menu, me);
+		item = menu_add_sub (menu, me);
+
+	if (item)
+	{
+		gtk_widget_set_sensitive (item, me->enable);
+		if (me->key)
+			gtk_widget_add_accelerator (item, "activate",
+											g_object_get_data (G_OBJECT (menu), "accel"),
+											me->key, me->modifier, GTK_ACCEL_VISIBLE);
+	}
 }
 
 void
@@ -1627,6 +1636,9 @@ menu_create_main (void *accel_group, int bar, int away, int toplevel,
 		menu_bar = gtk_menu_bar_new ();
 	else
 		menu_bar = gtk_menu_new ();
+
+	/* /MENU needs to know this later */
+	g_object_set_data (G_OBJECT (menu_bar), "accel", accel_group);
 
 #if GTK_CHECK_VERSION(2,4,0)
 	g_signal_connect (G_OBJECT (menu_bar), "can-activate-accel",

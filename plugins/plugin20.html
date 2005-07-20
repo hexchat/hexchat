@@ -374,24 +374,33 @@ xchat_command(ph, "GUI .....");.
 Note, the FLASH, ICONIFY and COLOR args were added in xchat 2.0.8, they
 will not work with previous versions.
 </p>
-Starting from 2.4.5 you can add your own items to the menu bar. The menu command has this syntax:
+<a name=menu>Starting from 2.4.5 you can add your own items to the menu bar. The menu command has this syntax</a>:
 <pre>
-	MENU [-pX] [-tX] [-eX] {ADD|DEL} &lt;path> [command] [unselect command]</pre>
+	MENU [-eX] [-k&lt;mod>,&lt;key>] [-pX] [-tX] {ADD|DEL} &lt;path> [command] [unselect command]</pre>
 For example:
 <pre>
 	MENU -p5 ADD FServe
 	MENU ADD "FServe/Show File List" "fs list"
 	MENU ADD FServe/-
-	MENU -t1 ADD "FServe/Enabled" "fs on" "fs off"
+	MENU -k4,101 -t1 ADD "FServe/Enabled" "fs on" "fs off"
 	MENU -e0 ADD "FServe/Do Something" "fs action"
 </pre>
-The -t1 parameter specifies a TOGGLE menu item, and sets the initial state to ON (1). It would
-be recommended to execute "MENU DEL FServe" inside your xchat_plugin_deinit function. The special
-item with name "-" will add a separator line. The -eX parameter specifies if you want to enable
-or disable (shade out) the item. If you want to change an item's toggle state or enabled flag,
+In the example above, it would be recommended to execute "MENU DEL FServe" inside your xchat_plugin_deinit function. The special item with name "-" will add a separator line.
+<br><br>
+Parameters and flags:
+<blockquote>
+<table border=1>
+<tr><td>-eX</td><td>Set enable flag to X. -e0 for disable, -e1 for enable. This lets you create a disabled (shaded) item.</td></tr>
+<tr><td>-k&lt;mod>,&lt;key></td><td>Specify a keyboard shortcut. "mod" is the modifier which is a bitwise OR of: 1-SHIFT 4-CTRL 8-ALT in decimal. "key" is the key value in decimal, e.g. -k5,101 would specify SHIFT-CTRL-E.</td></tr>
+<tr><td>-pX</td><td>Specify a menu item's position number. e.g. -p5 will cause the item to be inserted in the 5th place.</td></tr>
+<tr><td>-tX</td><td>Specify a toggle menu item with an initial state. -t0 for an "unticked" item and -t1 for a "ticked" item.</td></tr>
+</table>
+</blockquote>
+
+If you want to change an item's toggle state or enabled flag,
 just ADD an item with exactly the same name and command and specify the -tX -eX parameters you need.
 <br><br>It's also possible to add items to XChat's existing menus, for example:<br>
-<pre>	MENU -p0 ADD "Settings/Sub Menu"
+<pre>	MENU ADD "Settings/Sub Menu"
 	MENU -t0 ADD "Settings/Sub Menu/My Setting" myseton mysetoff
 </pre>
 However, internal names and layouts of XChat's menu may change in the future, so use at own risk.

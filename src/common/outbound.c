@@ -1024,7 +1024,7 @@ menu_entry_find (char *path, char *label)
 		me = list->data;
 		if (!strcmp (path, me->path))
 		{
-			if (me->label && !strcmp (label, me->label))
+			if (me->label && label && !strcmp (label, me->label))
 				return me;
 		}
 		list = list->next;
@@ -1039,6 +1039,8 @@ menu_del_children (char *path, char *label)
 	menu_entry *me;
 	char buf[512];
 
+	if (!label)
+		label = "";
 	if (path[0])
 		snprintf (buf, sizeof (buf), "%s/%s", path, label);
 	else
@@ -1102,7 +1104,7 @@ menu_del (char *path, char *label)
 }
 
 static void
-menu_add (char *path, char *label, char *cmd, char *ucmd, int pos, int state, int enable)
+menu_add (char *path, char *label, char *cmd, char *ucmd, int pos, int state, int enable, int mod, int key)
 {
 	menu_entry *me;
 
@@ -1121,6 +1123,8 @@ menu_add (char *path, char *label, char *cmd, char *ucmd, int pos, int state, in
 	me->pos = pos;
 	me->state = state;
 	me->enable = enable;
+	me->modifier = mod;
+	me->key = key;
 	me->path = strdup (path);
 	me->label = NULL;
 	me->cmd = NULL;
@@ -1146,13 +1150,33 @@ cmd_menu (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	int state;
 	int toggle = FALSE;
 	int enable = TRUE;
+	int key = 0;
+	int mod = 0;
 	char *label;
 
 	if (!word[2][0] || !word[3][0])
 		return FALSE;
 
+	/* -eX enabled or not? */
+	if (word[idx][0] == '-' && word[idx][1] == 'e')
+	{
+		enable = atoi (word[idx] + 2);
+		idx++;
+	}
+
+	/* -k<mod>,<key> key binding */
+	if (word[idx][0] == '-' && word[idx][1] == 'k')
+	{
+		char *comma = strchr (word[idx], ',');
+		if (!comma)
+			return FALSE;
+		mod = atoi (word[idx] + 2);
+		key = atoi (comma + 1);
+		idx++;
+	}
+
 	/* -pX to specify menu position */
-	if (word[2][0] == '-' && word[2][1] == 'p')
+	if (word[idx][0] == '-' && word[idx][1] == 'p')
 	{
 		pos = atoi (word[2] + 2);
 		idx++;
@@ -1164,13 +1188,6 @@ cmd_menu (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		state = atoi (word[idx] + 2);
 		idx++;
 		toggle = TRUE;
-	}
-
-	/* -eX enabled or not? */
-	if (word[idx][0] == '-' && word[idx][1] == 'e')
-	{
-		enable = atoi (word[idx] + 2);
-		idx++;
 	}
 
 	/* the path */
@@ -1188,13 +1205,13 @@ cmd_menu (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	{
 		if (toggle)
 		{
-			menu_add (tbuf, label, word[idx + 2], word[idx + 3], pos, state, enable);
+			menu_add (tbuf, label, word[idx + 2], word[idx + 3], pos, state, enable, mod, key);
 		} else
 		{
 			if (word[idx + 2][0])
-				menu_add (tbuf, label, word[idx + 2], NULL, pos, 0, enable);
+				menu_add (tbuf, label, word[idx + 2], NULL, pos, 0, enable, mod, key);
 			else
-				menu_add (tbuf, label, NULL, NULL, pos, 0, enable);
+				menu_add (tbuf, label, NULL, NULL, pos, 0, enable, mod, key);
 		}
 		return TRUE;
 	}
@@ -3118,7 +3135,7 @@ const struct commands xc_cmds[] = {
 	 N_("MDEOP, Mass deop's all chanops in the current channel (needs chanop)")},
 	{"ME", cmd_me, 0, 0, 1,
 	 N_("ME <action>, sends the action to the current channel (actions are written in the 3rd person, like /me jumps)")},
-	{"MENU", cmd_menu, 0, 0, 1, "MENU [-pX] [-tX] [-eX] {ADD|DEL} <path> [command] [unselect command]"},
+	{"MENU", cmd_menu, 0, 0, 1, "MENU [-eX] [-k<mod>,<key>] [-pX] [-tX] {ADD|DEL} <path> [command] [unselect command]"},
 	{"MKICK", cmd_mkick, 1, 1, 1,
 	 N_("MKICK, Mass kicks everyone except you in the current channel (needs chanop)")},
 	{"MODE", cmd_mode, 1, 0, 1, 0},

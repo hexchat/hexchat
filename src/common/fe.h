@@ -9,7 +9,9 @@ typedef struct
 {
 	int pos;	/* position */
 	int state;	/* state of toggle items */
-	int enable;	/* enabled? sensitivity */
+	short enable;	/* enabled? sensitivity */
+	short modifier;	/* keybinding */
+	int key;
 	char *path;
 	char *label;
 	char *cmd;
