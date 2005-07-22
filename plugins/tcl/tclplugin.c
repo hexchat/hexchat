@@ -15,7 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
-#define VERSION "1.0.55"
+#define VERSION "1.0.56"
 
 #include <stdio.h>
 #include <stdlib.h>
