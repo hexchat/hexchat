@@ -357,7 +357,7 @@ undef is the same as
 </p>
 <h3><a name="xchat__command___command____channel___server____"><code>Xchat::command( $command, [$channel,[$server]] )</code></a></h3>
 <ul>
-<li><strong><a name="item_c_3c_24command_3e__2d_the_command_to_execute"><code>$command</code>	-	the command to execute</a></strong><br />
+<li><strong><a name="item_c_3c_24command_3e__2d_the_command_to_execute"><code>$command</code>	-	the command to execute, without the leading /</a></strong><br />
 </li>
 <li><strong><code>$channel</code>	-	channel or tab with the given name where <code>$command</code> will be executed</strong><br />
 </li>
@@ -365,13 +365,13 @@ undef is the same as
 					that is associated with <code>$server</code></a></strong><br />
 </li>
 </ul>
-<p>Either or both of <code>$channel</code> and <code>$server</code> can be undef.</p>
+<p>Either or both of <code>$channel</code> and <code>$server</code> can be omitted.</p>
 <p>If called as <code>Xchat::command( $command )</code>, it will always return true.
 If called with either the channel or the channel and the server
 specified then it will return true if a context is found and false
 otherwise. The command will not be executed if the context is not found.
 The meaning of setting <code>$channel</code> or <code>$server</code> to undef is the same
-as find_context.</p>
+as find_context. If an argument is omitted, it defaults to undef.</p>
 <p>
 </p>
 <h3><a name="xchat__commandf___format__list__"><code>Xchat::commandf( $format, LIST )</code></a></h3>
@@ -390,7 +390,7 @@ as find_context.</p>
 <li><strong><a name="item_c_3c_24server_3e__2d_name_of_a_server"><code>$server</code>	-	name of a server</a></strong><br />
 </li>
 </ul>
-<p>Either or both of <code>$channel</code> and $server can be undef. Calling
+<p>Either or both of <code>$channel</code> and $server can be omitted. Calling
 <code>Xchat::find_context()</code> is the same as calling
 <code>Xchat::find_context( undef, undef)</code> and
 <code>Xchat::find_context( $channel )</code> is
