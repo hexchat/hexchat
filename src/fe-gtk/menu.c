@@ -163,6 +163,7 @@ userlist_button_cb (GtkWidget * button, char *cmd)
 		nicks = malloc (sizeof (char *) * 2);
 		nicks[0] = sess->channel;
 		nicks[1] = NULL;
+		num_sel = 1;
 	} else
 	{
 		/* find number of selected rows */
@@ -1381,16 +1382,9 @@ menu_find_item (GtkWidget *menu, char *name)
 			if (!labeltext)
 				labeltext = gtk_label_get_text (GTK_LABEL (child));
 			if (!menu_streq (labeltext, name, 1))
-			{
-				printf(" YY match [%s == %s]\n", labeltext, name);
 				return item;
-			}
-
-			printf(" no match (%s != %s)\n", labeltext, name);
-
 		} else if (name == NULL)
 		{
-			printf(" YY match [separator]\n");
 			return item;
 		}
 		items = items->next;
@@ -1407,8 +1401,6 @@ menu_find_path (GtkWidget *menu, char *path)
 	char name[128];
 	int len;
 
-	printf("Search: %s...\n", path);
-
 	/* grab the next part of the path */
 	s = strchr (path, '/');
 	len = s - path;
@@ -1420,11 +1412,7 @@ menu_find_path (GtkWidget *menu, char *path)
 
 	item = menu_find_item (menu, name);
 	if (!item)
-	{
-		printf("failed\n");
 		return NULL;
-	}
-	printf("FOUND!\n");
 
 	menu = gtk_menu_item_get_submenu (item);
 	if (!menu)
@@ -1432,11 +1420,7 @@ menu_find_path (GtkWidget *menu, char *path)
 
 	path += len;
 	if (*path == 0)
-	{
-		printf("all done: |%s| len=%d\n", path-len, len);
 		return menu;
-	}
-	printf("not all done: |%s| len=%d\n", path-len, len);
 
 	return menu_find_path (menu, path + 1);
 }

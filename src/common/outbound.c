@@ -1046,7 +1046,6 @@ menu_del_children (char *path, char *label)
 	else
 		snprintf (buf, sizeof (buf), "%s", label);
 
-	printf("FINDING CHILDREN TO DELETE...\n");
 	list = menu_list;
 	while (list)
 	{
@@ -1054,11 +1053,9 @@ menu_del_children (char *path, char *label)
 		next = list->next;
 		if (!menu_streq (buf, me->path, 0))
 		{
-			printf(" YY match [%s == %s] DELETE %s\n", me->path, buf, me->label);
 			menu_list = g_slist_remove (menu_list, me);
 			menu_free (me);
-		} else
-			printf(" no match (%s != %s)\n", me->path, buf);
+		}
 		list = next;
 	}
 }
@@ -1068,9 +1065,6 @@ menu_del (char *path, char *label)
 {
 	GSList *list;
 	menu_entry *me;
-	int i;
-
-	printf("common/outbound.c::menu_del |%s| |%s|\n", path, label);
 
 	list = menu_list;
 	while (list)
@@ -1087,18 +1081,6 @@ menu_del (char *path, char *label)
 		}
 		list = list->next;
 	}
-
-	printf("-- menu list contains: ------------\n");
-	list = menu_list;
-	i = 0;
-	while (list)
-	{
-		me = list->data;
-		printf("%d. |%s| |%s|\n", i, me->label, me->path);
-		list = list->next;
-		i++;
-	}
-	printf("-- end ----------------------------\n");
 
 	return 0;
 }
