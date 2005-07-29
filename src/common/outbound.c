@@ -1549,7 +1549,7 @@ exec_data (GIOChannel *source, GIOCondition condition, struct nbexec *s)
 	}
 	else
 		readpos = buf = malloc(2050);
-	
+
 	rd = read (sok, readpos, 2048);
 	if (rd < 1)
 	{
@@ -1596,7 +1596,7 @@ exec_data (GIOChannel *source, GIOCondition condition, struct nbexec *s)
 		else
 			PrintText (s->sess, buf);
 	}
-	
+
 	free(buf);
 	return TRUE;
 }
@@ -2315,13 +2315,13 @@ cmd_mode (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	/* +channel channels are dying, let those servers whine about modes.
 	 * return info about current channel if available and no info is given */
-	if ((*word[2] == '+') || (*word[2] == 0) || (!is_channel(sess->server, word[2]) && 
+	if ((*word[2] == '+') || (*word[2] == 0) || (!is_channel(sess->server, word[2]) &&
 				!(rfc_casecmp(sess->server->nick, word[2]) == 0)))
 	{
 		if(sess->channel[0] == 0)
 			return FALSE;
 		sess->server->p_mode (sess->server, sess->channel, word_eol[2]);
-	}	
+	}
 	else
 		sess->server->p_mode (sess->server, word[2], word_eol[3]);
 	return TRUE;
@@ -2584,8 +2584,8 @@ cmd_reconnect (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 				serv->auto_reconnect (serv, TRUE, -1);
 			list = list->next;
 		}
-	}	
-	/* If it isn't "ALL" and there is something 
+	}
+	/* If it isn't "ALL" and there is something
 	there it *should* be a server they are trying to connect to*/
 	else if (*word[2])
 	{
@@ -2612,7 +2612,7 @@ cmd_reconnect (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	else
 	{
 		serv->auto_reconnect (serv, TRUE, -1);
-	}	
+	}
 	prefs.recon_delay = tmp;
 
 	return TRUE;
@@ -2902,6 +2902,28 @@ userlist_cb (struct User *user, session *sess)
 }
 
 static int
+cmd_uselect (struct session *sess, char *tbuf, char *word[], char *word_eol[])
+{
+	int idx = 2;
+	int clear = TRUE;
+	int scroll = FALSE;
+
+	if (strcmp (word[2], "-a") == 0)	/* ADD (don't clear selections) */
+	{
+		clear = FALSE;
+		idx++;
+	}
+	if (strcmp (word[idx], "-s") == 0)	/* SCROLL TO */
+	{
+		scroll = TRUE;
+		idx++;
+	}
+	/* always valid, no args means clear the selection list */
+	fe_uselect (sess, word + idx, clear, scroll);
+	return TRUE;
+}
+
+static int
 cmd_userlist (struct session *sess, char *tbuf, char *word[],
 				  char *word_eol[])
 {
@@ -3150,8 +3172,8 @@ const struct commands xc_cmds[] = {
 	 N_("QUOTE <text>, sends the text in raw form to the server")},
 #ifdef USE_OPENSSL
 	{"RECONNECT", cmd_reconnect, 0, 0, 1,
-	 N_("RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as /RECONNECT to reconnect to the current server or with /RECONNECT ALL to reconnect to all the open servers")}, 
-#else 
+	 N_("RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as /RECONNECT to reconnect to the current server or with /RECONNECT ALL to reconnect to all the open servers")},
+#else
 	{"RECONNECT", cmd_reconnect, 0, 0, 1,
 	 N_("RECONNECT [<host>] [<port>] [<password>], Can be called just as /RECONNECT to reconnect to the current server or with /RECONNECT ALL to reconnect to all the open servers")},
 #endif
@@ -3184,6 +3206,8 @@ const struct commands xc_cmds[] = {
 	{"UNIGNORE", cmd_unignore, 0, 0, 1, N_("UNIGNORE <mask> [QUIET]")},
 	{"UNLOAD", cmd_unload, 0, 0, 1, N_("UNLOAD <name>, unloads a plugin or script")},
 	{"URL", cmd_url, 0, 0, 1, N_("URL <url>, opens a URL in your browser")},
+	{"USELECT", cmd_uselect, 0, 1, 0,
+	 N_("USELECT [-a] [-s] <nick1> <nick2> etc, highlights nick(s) in channel userlist")},
 	{"USERLIST", cmd_userlist, 1, 1, 1, 0},
 	{"VOICE", cmd_voice, 1, 1, 1,
 	 N_("VOICE <nick>, gives voice status to someone (needs chanop)")},

@@ -113,13 +113,23 @@ fe_userlist_numbers (session *sess)
 	}
 }
 
+static void
+scroll_to_iter (GtkTreeIter *iter, GtkTreeView *treeview, GtkTreeModel *model)
+{
+	GtkTreePath *path = gtk_tree_model_get_path (model, iter);
+	if (path)
+	{
+		gtk_tree_view_scroll_to_cell (treeview, path, NULL, TRUE, 0.5, 0.5);
+		gtk_tree_path_free (path);
+	}
+}
+
 /* select a row in the userlist by nick-name */
 
 void
 userlist_select (session *sess, char *name)
 {
 	GtkTreeIter iter;
-	GtkTreePath *path;
 	GtkTreeView *treeview = GTK_TREE_VIEW (sess->gui->user_tree);
 	GtkTreeModel *model = gtk_tree_view_get_model (treeview);
 	GtkTreeSelection *selection = gtk_tree_view_get_selection (treeview);
@@ -138,13 +148,7 @@ userlist_select (session *sess, char *name)
 					gtk_tree_selection_select_iter (selection, &iter);
 
 				/* and make sure it's visible */
-				path = gtk_tree_model_get_path (model, &iter);
-				if (path)
-				{
-					gtk_tree_view_scroll_to_cell (treeview, path, NULL, TRUE, 0.5, 0.5);
-					gtk_tree_path_free (path);
-				}
-
+				scroll_to_iter (&iter, treeview, model);
 				return;
 			}
 		}
@@ -584,4 +588,43 @@ userlist_show (session *sess)
 {
 	gtk_tree_view_set_model (GTK_TREE_VIEW (sess->gui->user_tree),
 									 sess->res->user_model);
+}
+
+void
+fe_uselect (session *sess, char *word[], int do_clear, int scroll_to)
+{
+	int thisname;
+	char *name;
+	GtkTreeIter iter;
+	GtkTreeView *treeview = GTK_TREE_VIEW (sess->gui->user_tree);
+	GtkTreeModel *model = gtk_tree_view_get_model (treeview);
+	GtkTreeSelection *selection = gtk_tree_view_get_selection (treeview);
+	struct User *row_user;
+
+	if (gtk_tree_model_get_iter_first (model, &iter))
+	{
+		if (do_clear)
+			gtk_tree_selection_unselect_all (selection);
+
+		do
+		{
+			if (*word[0])
+			{
+				gtk_tree_model_get (model, &iter, 3, &row_user, -1);
+				thisname = 0;
+				while ( *(name = word[thisname++]) )
+				{
+					if (sess->server->p_cmp (row_user->nick, name) == 0)
+					{
+						gtk_tree_selection_select_iter (selection, &iter);
+						if (scroll_to)
+							scroll_to_iter (&iter, treeview, model);
+						break;
+					}
+				}
+			}
+
+		}
+		while (gtk_tree_model_iter_next (model, &iter));
+	}
 }

@@ -255,7 +255,11 @@ log_write (session *sess, char *text)
 			}
 		}
 		temp = strip_color (text, -1, 1, 1);
-		write (sess->logfd, temp, strlen (temp));
+		len = strlen (temp);
+		write (sess->logfd, temp, len);
+		/* lots of scripts/plugins print without a \n at the end */
+		if (temp[len - 1] != '\n')
+			write (sess->logfd, "\n", 1);	/* emulate what xtext would display */
 		free (temp);
 	}
 }

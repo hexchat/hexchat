@@ -1,69 +1,71 @@
-# Vietnamese translation for xchat-2.4.2.
+# Vietnamese translation for xchat-2.4.5.
 # This file is put in the public domain.
 # Clytie Siddall <clytie@riverland.net.au>, 2005.
 msgid ""
 msgstr ""
-"Project-Id-Version: xchat 2.4.2\n"
+"Project-Id-Version: xchat 2.4.5\n"
 "Report-Msgid-Bugs-To: www.xchat.org\n"
-"POT-Creation-Date: 2005-03-07 18:50+1100\n"
-"PO-Revision-Date: 2005-04-08 20:34+0930\n"
+"POT-Creation-Date: 2005-07-23 19:49+1000\n"
+"PO-Revision-Date: 2005-07-28 17:29+0930\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <gnomevi-list@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0\n"
+"X-Generator: LocFactoryEditor 1.2.2\n"
 
 #: src/common/cfgfiles.c:350
 msgid "Cannot create ~/.xchat2"
-msgstr "Không tạo được thư mục ~/.xchat2"
+msgstr "Không tạo được thư mục « ~/.xchat2 »."
 
-#: src/common/cfgfiles.c:672
+#: src/common/cfgfiles.c:676
 msgid "I'm busy"
-msgstr "Tiếc là hiện nay tôi bận"
+msgstr "Tôi đang bận"
 
-#: src/common/cfgfiles.c:673
+#: src/common/cfgfiles.c:677
 msgid "Leaving"
 msgstr "Tôi đi"
 
-#: src/common/cfgfiles.c:719
+#: src/common/cfgfiles.c:723
 msgid ""
 "* Running IRC as root is stupid! You should\n"
 "  create a User Account and use that to login.\n"
 msgstr ""
-"* Không là ý kiến tốt để chạy IRC vớí tư cách là người gốc (root).\n"
+"* Không là ý kiến tốt để chạy IRC vớí tư cách là người chủ (root).\n"
 "Hãy tạo một tài khoản người dùng và sử dụng nó để đăng nhập.\n"
 " \n"
 
-#: src/common/dcc.c:61
+#: src/common/dcc.c:67
 msgid "Waiting"
 msgstr "Đang đời"
 
-#: src/common/dcc.c:62
+#: src/common/dcc.c:68
 msgid "Active"
 msgstr "Hoặt động"
 
-#: src/common/dcc.c:63
+#: src/common/dcc.c:69
 msgid "Failed"
-msgstr "Không làm việc được"
+msgstr "Thấy bại"
 
-#: src/common/dcc.c:64
+#: src/common/dcc.c:70
 msgid "Done"
 msgstr "Xong rồi"
 
-#: src/common/dcc.c:65
+#: src/common/dcc.c:71
 msgid "Connect"
 msgstr "Kết nối"
 
-#: src/common/dcc.c:66
+#: src/common/dcc.c:72
 msgid "Aborted"
-msgstr "Bị hủy bỏ rồi"
+msgstr "Bị hủy bỏ"
 
-#: src/common/dcc.c:1299
+#: src/common/dcc.c:1340
 #, c-format
 msgid "Cannot access %s\n"
-msgstr "Không truy cập được %s\n"
+msgstr "Không truy cập được « %s ».\n"
 
-#: src/common/dcc.c:1919
+#: src/common/dcc.c:1990
 msgid "No active DCCs\n"
 msgstr "Không có DCC (trò chuyện trực tiếp) hoặt động nào\n"
 
@@ -82,12 +84,12 @@ msgstr "Không"
 #: src/common/ignore.c:373
 #, c-format
 msgid "You are being CTCP flooded from %s, ignoring %s\n"
-msgstr "Bây giờ bạn tràn ngập CTCP từ %s nên bỏ qua %s\n"
+msgstr "Bây giờ bạn tràn ngập CTCP từ « %s » nên bỏ qua « %s ».\n"
 
 #: src/common/ignore.c:398
 #, c-format
 msgid "You are being MSG flooded from %s, setting gui_auto_open_dialog OFF.\n"
-msgstr "Bây giờ bạn tràn ngập MSG từ %s nên TẮT tùy chọn tự động mở đối thoại giao diện  (gui_auto_open_dialog).\n"
+msgstr "Bây giờ bạn tràn ngập MSG từ « %s » nên TẮT tùy chọn tự động mở đối thoại giao diện  (gui_auto_open_dialog).\n"
 
 #: src/common/notify.c:400
 #, c-format
@@ -99,186 +101,178 @@ msgstr "  %-20s trực tuyến\n"
 msgid "  %-20s offline\n"
 msgstr "  %-20s ngoạị tuyến\n"
 
-#: src/common/outbound.c:70
+#: src/common/outbound.c:71
 msgid "No channel joined. Try /join #<channel>\n"
-msgstr "Chưa vào kênh nào: hãy thử lệnh /join #<kênh>\n"
+msgstr "Chưa vào kênh nào: hãy thử lệnh « /join #<kênh> »\n"
 
-#: src/common/outbound.c:76
+#: src/common/outbound.c:77
 msgid "Not connected. Try /server <host> [<port>]\n"
-msgstr "Chưa kêt nối được: hãy thử lệnh /server <máy_chủ> [<cổng>]\n"
+msgstr "Chưa kêt nối được: hãy thử lệnh « /server <máy_phục_vụ> [<cổng>] »\n"
 
-#: src/common/outbound.c:1375
+#: src/common/outbound.c:1660
 msgid "I need /bin/sh to run!\n"
-msgstr "Cần đến thư mục/tập tin này để chạy được: /bin/sh\n"
+msgstr "Cần đến thư « /bin/sh » để chạy được.\n"
 
-#: src/common/outbound.c:1618
-msgid ""
-"\n"
-"Commands Available:\n"
-"\n"
-"  "
-msgstr ""
-"\n"
-"Lệnh sẵn sàng:\n"
-"\n"
-"  "
+#: src/common/outbound.c:1976
+msgid "Commands Available:"
+msgstr "Lệnh sẵn sàng:"
 
-#: src/common/outbound.c:1653
-msgid ""
-"\n"
-"\n"
-"Type /HELP <command> for more information, or /HELP -l\n"
-"\n"
-msgstr ""
-"\n"
-"\n"
-"Hãy gõ lệnh /HELP <lệnh> để xem thông tin thêm (help - trợ giúp), hay /HELP -l\n"
-"\n"
+#: src/common/outbound.c:1990
+msgid "User defined commands:"
+msgstr "Lệnh tự định nghĩa:"
 
-#: src/common/outbound.c:1654
-msgid ""
-"User defined commands:\n"
-"\n"
-"  "
-msgstr ""
-"Lệnh tự định nghĩa:\n"
-"\n"
-"  "
+#: src/common/outbound.c:2006
+msgid "Plugin defined commands:"
+msgstr "Lệnh do bộ cầm phít định nghĩa:"
 
-#: src/common/outbound.c:1746
+#: src/common/outbound.c:2017
+msgid "Type /HELP <command> for more information, or /HELP -l"
+msgstr "Hãy gõ lệnh « /HELP <lệnh> » để xem thông tin thêm (help: trợ giúp), hay « /HELP -l »."
+
+#: src/common/outbound.c:2092
 #, c-format
 msgid "Unknown arg '%s' ignored."
-msgstr "Không biết đối số '%s' nên bỏ qua nó."
+msgstr "Không biết đối số « %s » nên bỏ qua nó."
 
-#: src/common/outbound.c:2524
+#: src/common/outbound.c:2881
 msgid "No such plugin found.\n"
-msgstr "Không tìm thấy trình cầm phít như vậy.\n"
+msgstr "Không tìm thấy bộ cầm phít như vậy.\n"
 
-#: src/common/outbound.c:2529 src/fe-gtk/plugingui.c:185
+#: src/common/outbound.c:2886 src/fe-gtk/plugingui.c:185
 msgid "That plugin is refusing to unload.\n"
-msgstr "Trình cầm phít ấy không bỏ nạp đươc.\n"
+msgstr "Bộ cầm phít ấy không bỏ tải đươc.\n"
 
-#: src/common/outbound.c:2686
+#: src/common/outbound.c:3043
 msgid "ADDBUTTON <name> <action>, adds a button under the user-list"
-msgstr "Lệnh ADDBUTTON <tên> <hành_động> thì _thêm_ một _cái nút_ ở dưới danh sách người dùng"
+msgstr "Lệnh « ADDBUTTON <tên> <hành_động> » thì _thêm_ một _cái nút_ ở dưới danh sách người dùng"
 
-#: src/common/outbound.c:2688
+#: src/common/outbound.c:3045
 msgid "ALLCHAN <cmd>, sends a command to all channels you're in"
-msgstr "Lệnh ALLCHAN <lệnh> thì gởi lệnh ấy cho _mọi kênh_ hiện có của bạn"
+msgstr "Lệnh « ALLCHAN <lệnh> » thì gởi lệnh ấy cho _mọi kênh_ hiện có của bạn"
 
-#: src/common/outbound.c:2690
+#: src/common/outbound.c:3047
+msgid "ALLCHANL <cmd>, sends a command to all channels you're in"
+msgstr "Lệnh « ALLCHAN <lệnh> » thì gởi lệnh ấy cho _mọi kênh_ hiện có của bạn"
+
+#: src/common/outbound.c:3049
 msgid "ALLSERV <cmd>, sends a command to all servers you're in"
-msgstr "Lệnh ALLSERV <lệnh> thì gởi lệnh ấy cho _mọi máy chủ_ hiện có của bạn"
+msgstr "Lệnh « ALLSERV <lệnh> » thì gởi lệnh ấy cho _mọi máy phục vụ_ hiện có của bạn"
 
-#: src/common/outbound.c:2691
+#: src/common/outbound.c:3050
 msgid "AWAY [<reason>], sets you away"
-msgstr "Lệnh AWAY [<lý do>] lập trang thái của bạn thành _Vắng mặt_"
+msgstr "Lệnh « AWAY [<lý do>] » lập trang thái của bạn thành _Vắng mặt_"
 
-#: src/common/outbound.c:2693
+#: src/common/outbound.c:3052
 msgid "BAN <mask> [<bantype>], bans everyone matching the mask from the current channel. If they are already on the channel this doesn't kick them (needs chanop)"
-msgstr "Lệnh BAN <mặt_nạ> [<cách_đuổi>] thì _đuổi_ mọi người khớp với mặt nạ ấy ra kênh hiện có. Cần đến quyền Thao tác (chanop) để đuổi ra người nào trên kênh rồi."
+msgstr "Lệnh « BAN <mặt_nạ> [<cách_đuổi>] » thì _đuổi_ mọi người khớp với mặt nạ ấy ra kênh hiện có. Cần đến quyền Thao tác (chanop) để đuổi ra người nào trên kênh rồi."
 
-#: src/common/outbound.c:2695
+#: src/common/outbound.c:3054
 msgid "CLEAR, Clears the current text window"
-msgstr "Lệnh CLEAR thì _xóa_ cửa sổ câu hiện có"
+msgstr "Lệnh « CLEAR » thì _xóa_ cửa sổ văn bản hiện có."
 
-#: src/common/outbound.c:2696
+#: src/common/outbound.c:3055
 msgid "CLOSE, Closes the current window/tab"
-msgstr "Lệnh CLOSE thi _đóng_ cửa sổ/thanh hiện có"
+msgstr "Lệnh « CLOSE » thi _đóng_ cửa sổ/thanh hiện có."
 
-#: src/common/outbound.c:2699
+#: src/common/outbound.c:3058
 msgid "COUNTRY [-s] <code|wildcard>, finds a country code, eg: au = australia"
-msgstr "Lệnh COUNTRY  [-s] <mã|đại_diện> thì tìm thấy _quốc gia_, v.d. mã au = Úc"
+msgstr "Lệnh « COUNTRY  [-s] <mã|đại_diện> » thì tìm thấy _quốc gia_, v.d. mã au = Úc"
 
-#: src/common/outbound.c:2701
+#: src/common/outbound.c:3060
 msgid "CTCP <nick> <message>, send the CTCP message to nick, common messages are VERSION and USERINFO"
-msgstr "Lệnh CTCP <tên_hiệu> <tin_nhẳn> thì gởi cho tên hiệu ấy tin nhẳn CTCP ấy: hai tin nhẳn thường là VERSION (phiên bản) và USERINFO (thông tin người dùng)"
+msgstr "Lệnh « CTCP <tên_hiệu> <tin_nhẳn> » thì gởi cho tên hiệu ấy tin nhẳn CTCP: hai tin nhẳn thường là « VERSION » (phiên bản) và « USERINFO » (thông tin người dùng)."
 
-#: src/common/outbound.c:2703
+#: src/common/outbound.c:3062
 msgid "CYCLE, parts current channel and immediately rejoins"
-msgstr "Lệnh CYCLE thì rời kênh hiện đi rồi vào lại ngay (_quay lại_)"
+msgstr "Lệnh « CYCLE » thì rời kênh hiện đi rồi vào lại ngay (_quay lại_)."
 
-#: src/common/outbound.c:2705
+#: src/common/outbound.c:3064
 msgid ""
 "\n"
-"DCC GET <nick>                     - accept an offered file\n"
-"DCC SEND [-maxcps=#] <nick> [file] - send a file to someone\n"
-"DCC LIST                           - show DCC list\n"
-"DCC CHAT <nick>                    - offer DCC CHAT to someone\n"
+"DCC GET <nick>                      - accept an offered file\n"
+"DCC SEND [-maxcps=#] <nick> [file]  - send a file to someone\n"
+"DCC PSEND [-maxcps=#] <nick> [file] - send a file using passive mode\n"
+"DCC LIST                            - show DCC list\n"
+"DCC CHAT <nick>                     - offer DCC CHAT to someone\n"
+"DCC PCHAT <nick>                    - offer DCC CHAT using passive mode\n"
 "DCC CLOSE <type> <nick> <file>         example:\n"
 "         /dcc close send johnsmith file.tar.gz"
 msgstr ""
 "\n"
-"Lệnh DCC (Trò chuyện trực tiếp) thường dụng:\n"
-"\n"
 "Lệnh DCC GET <tên_hiệu> \t\tthì chấp nhận tập tin đã đưa ra (_gọi_)\n"
 "Lệnh DCC SEND [-maxcps=#] <tên_hiệu> [tập_tin]      thì _gởi_ tập tin ấy cho người ấy\n"
+"Lệnh DCC PSEND [-maxcps=#] <tên_hiệu> [tập_tin]\t\tthì _gởi_ tập tin ấy dùng chế độ _bị động_\n"
 "Lệnh DCC LIST   \t\t\t\tthì hiển thị _danh sách_ DCC\n"
 "Lệnh DCC CHAT <tên_hiệu> \tthì đưa ra _trò chuyện_ DCC với người ấy\n"
+"Lệnh DCC PCHAT <tên_hiệu>\t\tđưa ra _trờ chuyện_ DCC dùng chế độ _bị động_\n"
 "Lệnh DCC CLOSE <loại> <tên_hiệu> <tập_tin>   (_đóng_)      thí dụ:\n"
-"         /dcc close send nguyenvan tập_tin.tar.gz (gởi cho người nguyenvan tập_tin.tar.gz)"
+"         « /dcc close send nguyenvan tập_tin.tar.gz » (gởi cho người nguyenvan tập_tin.tar.gz)"
 
-#: src/common/outbound.c:2715
+#: src/common/outbound.c:3076
 msgid "DEHOP <nick>, removes chanhalf-op status from the nick on the current channel (needs chanop)"
-msgstr "Lệnh DEHOP <tên_hiệu> thì bỏ ra tên hiệu ấy trạng thái Thao tác kênh nửa (chanhalf-op) trên kênh hiện có (cần đến trạng thái Thao tác kênh) - DE (bỏ ra) Half (nửa) OPerator (Thao tác viên)"
+msgstr "Lệnh « DEHOP <tên_hiệu> » thì bỏ ra tên hiệu ấy trạng thái Thao tác kênh nửa (chanhalf-op) trên kênh hiện có (cần đến trạng thái Thao tác kênh) — DE (bỏ ra) Half (nửa) OPerator (Thao tác viên)."
 
-#: src/common/outbound.c:2717
+#: src/common/outbound.c:3078
 msgid "DELBUTTON <name>, deletes a button from under the user-list"
-msgstr "Lệnh DELBUTTON <tên> thi _xóa bỏ cái nút_ ấy ra dưới danh sách người dùng (DELete - xóa bỏ)"
+msgstr "Lệnh « DELBUTTON <tên> » thi _xóa bỏ cái nút_ ấy ra dưới danh sách người dùng (DELete — xóa bỏ)."
 
-#: src/common/outbound.c:2719
+#: src/common/outbound.c:3080
 msgid "DEOP <nick>, removes chanop status from the nick on the current channel (needs chanop)"
-msgstr "Lệnh DEOP <tên_hiệu> thì bỏ ra tên hiệu ấy trạng thái Thao tác kênh (chanop) trên kênh hiện có (cần đến trạng thái Thao tác kênh (chanop)) - DE (bỏ) OPerator (Thao tác viên)"
+msgstr "Lệnh « DEOP <tên_hiệu> » thì bỏ ra tên hiệu ấy trạng thái Thao tác kênh (chanop) trên kênh hiện có (cần đến trạng thái Thao tác kênh (chanop)) — DE (bỏ) OPerator (Thao tác viên)."
 
-#: src/common/outbound.c:2721
+#: src/common/outbound.c:3082
 msgid "DEVOICE <nick>, removes voice status from the nick on the current channel (needs chanop)"
-msgstr "Lệnh DEVOICE <tên_hiệu> thì _bỏ ra_ tên hiệu ấy trạng thái _nói tiếng_ trên kênh hiện có (cần đến trạng thái Thao tác kênh (chanop))"
+msgstr "Lệnh « DEVOICE <tên_hiệu> » thì _bỏ ra_ tên hiệu ấy trạng thái _tiếng nói_ trên kênh hiện có (cần đến trạng thái Thao tác kênh [chanop])."
 
-#: src/common/outbound.c:2722
+#: src/common/outbound.c:3083
 msgid "DISCON, Disconnects from server"
-msgstr "Lệnh DISCON thì ngắt kết nối ra máy chủ - DISCONnect (ngắt kết nối)"
+msgstr "Lệnh « DISCON » thì ngắt kết nối ra máy phục vụ — DISCONnect (ngắt kết nối)."
 
-#: src/common/outbound.c:2723
+#: src/common/outbound.c:3084
 msgid "DNS <nick|host|ip>, Finds a users IP number"
-msgstr "Lệnh DNS <tên_hiệu|máy_chủ|ip> thì tìm thấy địa chỉ IP của người dùng ấy - Domain Name System (Hệ thống tên miền)"
+msgstr "Lệnh « DNS <tên_hiệu|máy_phục_vụ|ip> » thì tìm thấy địa chỉ IP của người dùng ấy — Domain Name System (Hệ thống tên miền)."
 
-#: src/common/outbound.c:2724
+#: src/common/outbound.c:3085
 msgid "ECHO <text>, Prints text locally"
-msgstr "Lệnh ECHO <câu> thì in ra câu ấy địa phương (_vọng_)"
+msgstr "Lệnh « ECHO <đoạn> » thì in ra đoạn ấy một cách địa phương (_vọng_)."
 
-#: src/common/outbound.c:2727
+#: src/common/outbound.c:3088
 msgid "EXEC [-o] <command>, runs the command. If -o flag is used then output is sent to current channel, else is printed to current text box"
-msgstr "Lệnh EXEC [-o] <lệnh> thì chạy lệnh ấy. Nếu sử dụng cờ -o thì gởi dữ liệu xuất cho kênh hiện có, không thì in ra dữ liệu xuất vào hộp câu hiện có - EXECute (thi hành)"
+msgstr "Lệnh « EXEC [-o] <lệnh> » thì _thực hiện_ lệnh ấy. Nếu có dùng cờ -o thì gởi dữ liệu xuất cho kênh hiện có, nếu không thì in ra dữ liệu xuất vào hộp văn bản hiện có — EXECute (thực hiện)."
 
-#: src/common/outbound.c:2729
+#: src/common/outbound.c:3090
 msgid "EXECCONT, sends the process SIGCONT"
-msgstr "Lệnh EXECCONT thì gởi tiến trình SIGCONT"
+msgstr "Lệnh « EXECCONT » thì gởi tiến trình « SIGCONT »."
 
-#: src/common/outbound.c:2732
+#: src/common/outbound.c:3093
 msgid "EXECKILL [-9], kills a running exec in the current session. If -9 is given the process is SIGKILL'ed"
-msgstr "Lệnh EXECKILL [-9] thì buộc kết thức tiến trình exec đang chạy trong phiên hiện có. Nếu sử dụng cờ -9 thì SIGKILL tiến trình ấy"
+msgstr "Lệnh « EXECKILL [-9] » thì buộc kết thức tiến trình « exec » đang chạy trong phiên làm việc hiện có. Nếu có dùng cờ -9 thì « SIGKILL » tiến trình ấy."
 
-#: src/common/outbound.c:2734
+#: src/common/outbound.c:3095
 msgid "EXECSTOP, sends the process SIGSTOP"
-msgstr "Lệnh EXECSTOP thì gởi tiến trình SIGSTOP"
+msgstr "Lệnh « EXECSTOP » thì gởi tiến trình « SIGSTOP »."
 
-#: src/common/outbound.c:2735
+#: src/common/outbound.c:3096
 msgid "EXECWRITE, sends data to the processes stdin"
-msgstr "Lệnh EXECWRITE thi gởi dữ liệu cho thiết bị gõ chuẩn (stdin) của tiến trình - EXECute (thi hành) WRITE (ghi)"
+msgstr "Lệnh « EXECWRITE » thi gởi dữ liệu cho thiết bị gõ chuẩn của tiến trình » EXECute (thi hành) WRITE (ghi)."
 
-#: src/common/outbound.c:2739
+#: src/common/outbound.c:3100
 msgid "FLUSHQ, flushes the current server's send queue"
-msgstr "Lệnh FLUSHQ thì _xóa sạch hàng đợi_ gởi của máy chủ hiện có - Queue (hàng đời)"
+msgstr "Lệnh « FLUSHQ » thì _xóa sạch hàng đợi_ gởi của máy phục vụ hiện có — Queue (hàng đời)."
 
-#: src/common/outbound.c:2741
+#: src/common/outbound.c:3102
 msgid "GATE <host> [<port>], proxies through a host, port defaults to 23"
-msgstr "Lệnh GATE <máy_chủ> [<cổng>] thì sử dụng máy chủ ủy nhiệm; _cổng_ mặc định là 23"
+msgstr "Lệnh GATE <máy_phục_vụ> [<cổng>] thì sử dụng máy phục vụ ủy nhiệm; _cổng_ mặc định là 23"
 
-#: src/common/outbound.c:2747
+#: src/common/outbound.c:3108
 msgid "HOP <nick>, gives chanhalf-op status to the nick (needs chanop)"
-msgstr "Lệnh HOP <tên_hiệu> thì đưa ra tên hiệu ấy trạng thái Thao tác kênh nửa (cần đến trạng thái Thao tác kênh [chanop]) - Half (nửa) OPerator (Thao tac viên)"
+msgstr "Lệnh « HOP <tên_hiệu> » thì đưa ra tên hiệu ấy trạng thái Thao tác kênh nửa (cần đến trạng thái Thao tác kênh [chanop]) — Half (nửa) OPerator (Thao tac viên)."
 
-#: src/common/outbound.c:2749
+#: src/common/outbound.c:3109
+msgid "ID <password>, identifies yourself to nickserv"
+msgstr "Lệnh « <password> » thì nhận diện bạn với máy phục vụ tên hiệu — (_mật khẩu_)."
+
+#: src/common/outbound.c:3111
 msgid ""
 "IGNORE <mask> <types..> <options..>\n"
 "    mask - host mask to ignore, eg: *!*@*.aol.com\n"
@@ -286,195 +280,195 @@ msgid ""
 "            PRIV, CHAN, NOTI, CTCP, DCC, INVI, ALL\n"
 "    options - NOSAVE, QUIET"
 msgstr ""
-"Lệnh IGNORE <mặt_nạ> <loại..> <tùy_chọn..>\n"
-"    IGNORE - bỏ ra\n"
-"    mặt nạ - mặt nạ máy chủ để bỏ qua, v.d.: *!*@*.aol.com\n"
-"    loại - loại dữ liệu để bỏ qua, là một hay tất cả của:\n"
+"Lệnh « IGNORE <mặt_nạ> <loại..> <tùy_chọn..> »\n"
+"    IGNORE — bỏ qua\n"
+"    mặt nạ — mặt nạ máy phục vụ cần bỏ qua, v.d.: *!*@*.aol.com\n"
+"    loại — loại dữ liệu cần bỏ qua, giá trị là một hay tất cả của:\n"
 "            PRIV (riêng), CHAN (kênh), NOTI (thông báo), CTCP, DCC (trò chuyện trực tiếp), INVI (mời), ALL (tất cả)\n"
-"    tùy chọn - NOSAVE (không lưu), QUIET (im)"
+"    tùy chọn — NOSAVE (không lưu), QUIET (im)"
 
-#: src/common/outbound.c:2756
+#: src/common/outbound.c:3118
 msgid "INVITE <nick> [<channel>], invites someone to a channel, by default the current channel (needs chanop)"
-msgstr "Lệnh INVITE <tên_hiệu> [<kênh>] thì _mời_ người ấy vào kênh ấy; mặc định là kênh hiện có (cần đến trạng thái Thao tác kênh [chanop])"
+msgstr "Lệnh « INVITE <tên_hiệu> [<kênh>] » thì _mời_ người ấy vào kênh ấy; mặc định là kênh hiện có (cần đến trạng thái Thao tác kênh [chanop])."
 
-#: src/common/outbound.c:2757
+#: src/common/outbound.c:3119
 msgid "JOIN <channel>, joins the channel"
-msgstr "Lệnh JOIN <kênh> thi _vào_ kênh ấy"
+msgstr "Lệnh « JOIN <kênh> » thi _vào_ kênh ấy."
 
-#: src/common/outbound.c:2759
+#: src/common/outbound.c:3121
 msgid "KICK <nick>, kicks the nick from the current channel (needs chanop)"
-msgstr "Lệnh KICK <tên_hiệu> thi _đá_ người ấy ra kênh hiện có (cần đến trạng thái Thao tác kênh [chanop])"
+msgstr "Lệnh « KICK <tên_hiệu> » thi _đá_ người ấy ra kênh hiện có (cần đến trạng thái Thao tác kênh [chanop])."
 
-#: src/common/outbound.c:2761
+#: src/common/outbound.c:3123
 msgid "KICKBAN <nick>, bans then kicks the nick from the current channel (needs chanop)"
-msgstr "Lệnh KICKBAN <tên_hiệu> thì _đuổi_ rồi _đá_ người ấy ra kênh hiện có (cần đến trạng thái Thao tác kênh [chanop])"
+msgstr "Lệnh « KICKBAN <tên_hiệu> » thì _đuổi_ rồi _đá_ người ấy ra kênh hiện có (cần đến trạng thái Thao tác kênh [chanop])."
 
-#: src/common/outbound.c:2764
+#: src/common/outbound.c:3126
 msgid "LAGCHECK, forces a new lag check"
-msgstr "Lệnh LAGCHECK buộc _kiểm tra sự trễ_ kết nối một lần nữa"
+msgstr "Lệnh « LAGCHECK » buộc _kiểm tra sự trễ_ kết nối một lần nữa."
 
-#: src/common/outbound.c:2766
+#: src/common/outbound.c:3128
 msgid "LASTLOG <string>, searches for a string in the buffer"
-msgstr "Lệnh LASTLOG <chuỗi> tìm kiếm chuối ấy trong bộ đệm (_bản ghi trước_)"
+msgstr "Lệnh « LASTLOG <chuỗi> » tìm kiếm chuối ấy trong bộ đệm (_bản ghi cuối cùng_)."
 
-#: src/common/outbound.c:2768
-msgid "LOAD <file>, loads a plugin or script"
-msgstr "Lệnh LOAD <tập_tin> thì _nạp_ trình cầm phít hay tập lệnh"
+#: src/common/outbound.c:3130
+msgid "LOAD [-e] <file>, loads a plugin or script"
+msgstr "Lệnh « LOAD [-e] <tập_tin> » thì _tải_ bộ một cầm phít hay tập lệnh nào đó."
 
-#: src/common/outbound.c:2771
+#: src/common/outbound.c:3133
 msgid "MDEHOP, Mass deop's all chanhalf-ops in the current channel (needs chanop)"
-msgstr "Lệnh MDEHOP thì bỏ trạng thái Thao tác kênh nửa (chanhalf-op) ra mọi người trên kênh hiện có (cần đến trạng thái Thao tác kênh [chanop]) - Mass (số nhiều) DE (bỏ) Half (nửa) OPerator (Thao tác viên)"
+msgstr "Lệnh « MDEHOP » thì bỏ trạng thái Thao tác kênh nửa (chanhalf-op) ra mọi người trên kênh hiện có (cần đến trạng thái Thao tác kênh [chanop]) — Mass (số nhiều) DE (bỏ) Half (nửa) OPerator (Thao tác viên)."
 
-#: src/common/outbound.c:2773
+#: src/common/outbound.c:3135
 msgid "MDEOP, Mass deop's all chanops in the current channel (needs chanop)"
-msgstr "Lệnh MDEOP thì bỏ trạng thái Thao tác kênh (chanop) ra mọi người trên kênh hiện có (cần đến trạng thái Thao tác kênh [chanop]) - Mass (số nhiều) DE (bỏ) OPerator (Thao tác viên)"
+msgstr "Lệnh « MDEOP » thì bỏ trạng thái Thao tác kênh (chanop) ra mọi người trên kênh hiện có (cần đến trạng thái Thao tác kênh [chanop]) — Mass (số nhiều) DE (bỏ) OPerator (Thao tác viên)"
 
-#: src/common/outbound.c:2775
+#: src/common/outbound.c:3137
 msgid "ME <action>, sends the action to the current channel (actions are written in the 3rd person, like /me jumps)"
-msgstr "Lệnh ME <hành_động> thì gởi hành động ấy cho kênh hiện có (v.d. \"ME jumps\" có nghĩa là «Tôi nhảy») - ME (tôi)"
+msgstr "Lệnh « ME <hành_động> » thì gởi hành động ấy cho kênh hiện có (v.d. « ME jumps » có nghĩa là « Tôi nhảy ») — ME (tôi, mình)."
 
-#: src/common/outbound.c:2777
+#: src/common/outbound.c:3140
 msgid "MKICK, Mass kicks everyone except you in the current channel (needs chanop)"
-msgstr "Lệnh MKICK thì _đá_ mọi người (trừ bạn) ra kênh hiện có (cần đến trạng thái Thao tác kênh [chanop]) - Mass (số nhiều)"
+msgstr "Lệnh « MKICK » thì _đá_ mọi người (trừ bạn) ra kênh hiện có (cần đến trạng thái Thao tác kênh [chanop]) — Mass (số nhiều)."
 
-#: src/common/outbound.c:2780
+#: src/common/outbound.c:3143
 msgid "MOP, Mass op's all users in the current channel (needs chanop)"
-msgstr "Lệnh MOP thì đưa ra mọi người dùng trạng thái Thao tác kênh (chanop) trên kênh hiện có (cần đến trạng thái Thao tác kênh [chanop]) - Mass (số nhiều) OPerator (Thao tác viên)"
+msgstr "Lệnh « MOP » thì đưa ra mọi người dùng có trạng thái Thao tác kênh (chanop) trên kênh hiện có (cần đến trạng thái Thao tác kênh [chanop]) — Mass (số nhiều) OPerator (Thao tác viên)."
 
-#: src/common/outbound.c:2781
+#: src/common/outbound.c:3144
 msgid "MSG <nick> <message>, sends a private message"
-msgstr "Lệnh MSG <tên_hiệu> <tin_nhẳn> thì gởi _tin nhẳn_ riêng - MeSsaGe (tin nhẳn)"
+msgstr "Lệnh « MSG <tên_hiệu> <tin_nhẳn> » thì gởi _tin nhẳn_ riêng — MeSsaGe (tin nhẳn)."
 
-#: src/common/outbound.c:2784
+#: src/common/outbound.c:3147
 msgid "NAMES, Lists the nicks on the current channel"
-msgstr "Lệnh NAMES thì liệt kê mọi _tên_ hiệu trên kênh hiện có"
+msgstr "Lệnh « NAMES » thì liệt kê mọi _tên_ hiệu trên kênh hiện có."
 
-#: src/common/outbound.c:2786
+#: src/common/outbound.c:3149
 msgid "NCTCP <nick> <message>, Sends a CTCP notice"
-msgstr "Lệnh NCTCP <tên_hiệu> <tin_nhẳn> thì gởi thông báo CTCP - Notice (thông báo)"
+msgstr "Lệnh « NCTCP <tên_hiệu> <tin_nhẳn> » thì gởi thông báo CTCP — Notice (thông báo)."
 
-#: src/common/outbound.c:2787
+#: src/common/outbound.c:3150
 msgid "NEWSERVER <hostname> [<port>]"
-msgstr "Lệnh NEWSERVER <tên_máy_chủ> [<cổng>] thì lập _máy chủ mới_"
+msgstr "Lệnh « NEWSERVER <tên_máy_phục_vụ> [<cổng>] » thì lập _máy phục vụ mới_."
 
-#: src/common/outbound.c:2788
+#: src/common/outbound.c:3151
 msgid "NICK <nickname>, sets your nick"
-msgstr "Lệnh NICK <tên_hiệu> thì lập _tên hiệu_ của bạn - NICKname (tên hiệu: viết tắt)"
+msgstr "Lệnh « NICK <tên_hiệu> » thì lập _tên hiệu_ của bạn — NICKname (tên hiệu: viết tắt)."
 
-#: src/common/outbound.c:2791
+#: src/common/outbound.c:3154
 msgid "NOTICE <nick/channel> <message>, sends a notice. Notices are a type of message that should be auto reacted to"
-msgstr "Lệnh NOTICE <tên_hiệu/kênh> <tin_nhản> thì gởi _thông báo_: thông báo là loại tin nhẳn sẽ nhận trả lời tự động"
+msgstr "Lệnh « NOTICE <tên_hiệu/kênh> <tin_nhản> » thì gởi _thông báo_: thông báo là loại tin nhẳn nên nhận trả lời tự động."
 
-#: src/common/outbound.c:2793
+#: src/common/outbound.c:3156
 msgid "NOTIFY [<nick>], lists your notify list or adds someone to it"
-msgstr "Lệnh NOTIFY [<tên_hiệu>] thì liệt kê danh sách _thông báo_ của bạn, hay thêm người nào vào nó"
+msgstr "Lệnh « NOTIFY [<tên_hiệu>] » thì liệt kê danh sách _thông báo_ của bạn, hay thêm người nào vào nó."
 
-#: src/common/outbound.c:2795
+#: src/common/outbound.c:3158
 msgid "OP <nick>, gives chanop status to the nick (needs chanop)"
-msgstr "Lệnh OP <tên_hiệu> thì đưa ra tên hiệu ấy trạng thái Thao tác kênh (chanop) (cần đến trạng thái Thao tác kênh [chanop]) - OPerator (Thao tác viên)"
+msgstr "Lệnh « OP <tên_hiệu> » thì đưa ra tên hiệu ấy có trạng thái Thao tác kênh (chanop) (cần đến trạng thái Thao tác kênh [chanop]) — OPerator (Thao tác viên)."
 
-#: src/common/outbound.c:2797
+#: src/common/outbound.c:3160
 msgid "PART [<channel>] [<reason>], leaves the channel, by default the current one"
-msgstr "Lệnh PART [<kênh>] [<lý_do>] thì rời kênh ấy đi; mặc định là kênh hiện có - dePART (rời đi)"
+msgstr "Lệnh « PART [<kênh>] [<lý_do>] » thì rời kênh ấy đi; mặc định là kênh hiện có — dePART (rời đi)."
 
-#: src/common/outbound.c:2799
+#: src/common/outbound.c:3162
 msgid "PING <nick | channel>, CTCP pings nick or channel"
-msgstr "Lệnh PING <tên_hiệu | kênh> thì thi hành tiến trình ping CTCP với tên hiêu hay kênh ấy"
+msgstr "Lệnh « PING <tên_hiệu | kênh> » thì thi hành tiến trình ping CTCP với tên hiêu hay kênh ấy."
 
-#: src/common/outbound.c:2801
+#: src/common/outbound.c:3164
 msgid "QUERY <nick>, opens up a new privmsg window to someone"
-msgstr "Lệnh QUERY <tên_hiệu> thì mở một cửa sổ tin nhẳn riêng mới cho người ấy (_câu hỏi_)"
+msgstr "Lệnh « QUERY <tên_hiệu> » thì mở một cửa sổ tin nhẳn riêng mới cho người ấy (_truy_vấn_)."
 
-#: src/common/outbound.c:2803
+#: src/common/outbound.c:3166
 msgid "QUIT [<reason>], disconnects from the current server"
-msgstr "Lệnh QUIT [<lý_do>] thì ngắt kết nối ra máy chủ hiện có (_thoát_)"
+msgstr "Lệnh « QUIT [<lý_do>] » thì ngắt kết nối ra máy phục vụ hiện có (_thoát_)."
 
-#: src/common/outbound.c:2805
+#: src/common/outbound.c:3168
 msgid "QUOTE <text>, sends the text in raw form to the server"
-msgstr "Lệnh QUOTE <câu> thì gởi câu ấy dạng thô cho máy chủ (_trích dẫn_)"
+msgstr "Lệnh « QUOTE <đoạn> » thì gởi đoạn ấy dạng thô cho máy phục vụ (_trích dẫn_)."
 
-#: src/common/outbound.c:2808
+#: src/common/outbound.c:3171
 msgid "RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as /RECONNECT to reconnect to the current server or with /RECONNECT ALL to reconnect to all the open servers"
 msgstr ""
-"Lệnh RECONNECT [-ssl] [<máy_chủ>] [<cổng>] [<mật_khẩu>]\n"
-"có thể kết nối lại đến mấy chủ hiện có giống như chỉ đơn giản sử dụng /RECONNECT, hay kết nối lại đến mọi máy chủ mở với /RECONNECT ALL (phương pháp SSL bảo vậ dữ liệu sẽ chuyển giao)"
+"Lệnh « RECONNECT [-ssl] [<máy_phục_cụ>] [<cổng>] [<mật_khẩu>] »\n"
+"có thể kết nối lại đến mấy phục vụ hiện có khi chỉ đơn giản sử dụng « /RECONNECT », hay kết nối lại đến mọi máy phục vụ đang mở với « /RECONNECT ALL » (phương pháp SSL bảo vệ dữ liệu sẽ chuyển giao)."
 
-#: src/common/outbound.c:2811
+#: src/common/outbound.c:3174
 msgid "RECONNECT [<host>] [<port>] [<password>], Can be called just as /RECONNECT to reconnect to the current server or with /RECONNECT ALL to reconnect to all the open servers"
 msgstr ""
-"Lệnh RECONNECT [<máy_chủ>] [<cổng>] [<mật_khẩu>]\n"
-"có thể kết nối lại đến mấy chủ hiện có giống như chỉ đơn giản sử dụng /RECONNECT, hay kết nối lại đến mọi máy chủ mở với /RECONNECT ALL (không có bảo vệ dữ liệu với SSL)"
+"Lệnh « RECONNECT [<máy_phục_vụ>] [<cổng>] [<mật_khẩu>] »\n"
+"có thể kết nối lại đến mấy phục vụ hiện khi chỉ đơn giản sử dụng « /RECONNECT », hay kết nối lại đến mọi máy phục vụ mở với « /RECONNECT ALL » (không có bảo vệ dữ liệu với SSL)."
 
-#: src/common/outbound.c:2813
+#: src/common/outbound.c:3176
 msgid "RECV <text>, send raw data to xchat, as if it was received from the irc server"
-msgstr "Lệnh RECV <câu> thì gởi dữ liệu thô vào trình xchat, như máy chủ irc có thể gởi - RECeiVe (nhận)"
+msgstr "Lệnh « RECV <đoạn> » thì gởi dữ liệu thô vào trình xchat, như máy phục vụ irc có thể gởi — RECeiVe (nhận)."
 
-#: src/common/outbound.c:2816
+#: src/common/outbound.c:3179
 msgid "SAY <text>, sends the text to the object in the current window"
-msgstr "Lệnh SAY <câu> thì gởi câu ấy cho đối tượng trong cửa sổ hiện có (_nói_)"
+msgstr "Lệnh « SAY <đoạn> » thì gởi đoạn ấy cho đối tượng trong cửa sổ hiện có (_nói_)."
 
-#: src/common/outbound.c:2819
+#: src/common/outbound.c:3182
 msgid "SERVCHAN [-ssl] <host> <port> <channel>, connects and joins a channel"
-msgstr "Lệnh SERVCHAN [-ssl] <máy_chủ> <cổng> <kênh> thì kết nối đến kênh ấy và vào nó (phương pháp SSL bảo vệ dữ liệu sẽ chuyển giao) (phương pháp SSL bảo vệ dữ liệu sẽ chuyển giao) - SERVer (máy chủ) CHANnel (kênh)"
+msgstr "Lệnh « SERVCHAN [-ssl] <máy_phục_vụ> <cổng> <kênh> » thì kết nối đến kênh ấy rồi vào nó (phương pháp SSL bảo vệ dữ liệu sẽ chuyển giao) — SERVer (máy phục vụ) CHANnel (kênh)."
 
-#: src/common/outbound.c:2822
+#: src/common/outbound.c:3185
 msgid "SERVCHAN <host> <port> <channel>, connects and joins a channel"
-msgstr "Lệnh SERVCHAN <máy_chủ> <cổng> <kênh> thì kết nối đến kênh ấy và vào nó (không có bảo vệ dữ liệu với SSL) - SERVer (máy chủ) CHANnel (kênh)"
+msgstr "Lệnh « SERVCHAN <máy_phục_vụ> <cổng> <kênh> » thì kết nối đến kênh ấy rồi vào nó (không có bảo vệ dữ liệu với SSL) — SERVer (máy phục vụ) CHANnel (kênh)."
 
-#: src/common/outbound.c:2826
+#: src/common/outbound.c:3189
 msgid "SERVER [-ssl] <host> [<port>] [<password>], connects to a server, the default port is 6667 for normal connections, and 9999 for ssl connections"
-msgstr "Lệnh SERVER [-ssl] <máy_chủ> [<cổng>] [<mật_khẩu>] thì kết nối đến _máy chủ_ ấy: cổng mặc định là số 6667 cho kết nối thường, và số 9999 cho kết nối loại ssl (phương pháp SSL bảo vệ dữ liệu sẽ chuyển giao)"
+msgstr "Lệnh « SERVER [-ssl] <máy_phục_vụ> [<cổng>] [<mật_khẩu>] » thì kết nối đến _máy phục vụ_ ấy: cổng mặc định là số 6667 cho kết nối thường, và số 9999 cho kết nối loại SSL (phương pháp SSL bảo vệ dữ liệu sẽ chuyển giao)."
 
-#: src/common/outbound.c:2829
+#: src/common/outbound.c:3192
 msgid "SERVER <host> [<port>] [<password>], connects to a server, the default port is 6667"
-msgstr "Lệnh SERVER <máy_chủ> [<cổng>] [<mật_khẩu>] thì kết nối đến _mấy chủ_ ấy; cổng mặc định là số 6667 (không có bảo vệ dữ liệu với SSL)"
+msgstr "Lệnh « SERVER <máy_phục_vụ> [<cổng>] [<mật_khẩu>] » thì kết nối đến _mấy phục vụ_ ấy; cổng mặc định là số 6667 (không có bảo vệ dữ liệu với SSL)."
 
-#: src/common/outbound.c:2831
+#: src/common/outbound.c:3194
 msgid "SET [-quiet] <variable> [<value>]"
-msgstr "Lệnh SET [-quiet] <biến> [<giá_trị>] thì _lập_ giá trị cho biến ấy; tùy chọn -quiet (im) có nghĩa là không in ra chi tiết"
+msgstr "Lệnh « SET [-quiet] <biến> [<giá_trị>] » thì _lập_ giá trị cho biến ấy; tùy chọn « -quiet » (im) có nghĩa là không in ra chi tiết."
 
-#: src/common/outbound.c:2832
+#: src/common/outbound.c:3195
 msgid "SETCURSOR [-|+]<position>"
-msgstr "Lệnh SETCURSOR [-|+]<vị_trí> thi _lập_ vị trí cho _con trỏ_"
+msgstr "Lệnh « SETCURSOR [-|+]<vị_trí> » thi _lập_ vị trí cho _con trỏ_."
 
-#: src/common/outbound.c:2836
+#: src/common/outbound.c:3199
 msgid "TOPIC [<topic>], sets the topic if one is given, else shows the current topic"
-msgstr "Lệnh TOPIC [<chủ_đè>], thì lập _chủ đề_ nếu đưa ra nó, nếu không thì hiển thị chủ đề hiện có"
+msgstr "Lệnh « TOPIC [<chủ_đè>] » thì lập _chủ đề_ nếu đưa ra nó, nếu không thì hiển thị chủ đề hiện có."
 
-#: src/common/outbound.c:2838
+#: src/common/outbound.c:3201
 msgid "UNBAN <mask> [<mask>...], unbans the specified masks."
-msgstr "Lệnh UNBAN <mặt_nạ> [<mặt_nạ>...] thì _bỏ_ trạng thái _bị đuổi ra_ những mặt nạ được ghi rõ"
+msgstr "Lệnh « UNBAN <mặt_nạ> [<mặt_nạ>...] » thì _bỏ_ trạng thái _bị đuổi ra_ những mặt nạ được ghi rõ."
 
-#: src/common/outbound.c:2839
+#: src/common/outbound.c:3202
 msgid "UNIGNORE <mask> [QUIET]"
-msgstr "Lệnh UNIGNORE <mặt_nạ> [QUIET] thì _bỏ_ trạng thái _bị bỏ qua ra_ mặt nạ ấy (tùy chọn QUIET (im) có nghĩa là không in ra chi tiết)"
+msgstr "Lệnh « UNIGNORE <mặt_nạ> [QUIET] » thì _bỏ_ trạng thái _bị bỏ qua ra_ mặt nạ ấy (tùy chọn « QUIET » (im) có nghĩa là không in ra chi tiết)."
 
-#: src/common/outbound.c:2840
+#: src/common/outbound.c:3203
 msgid "UNLOAD <name>, unloads a plugin or script"
-msgstr "Lệnh UNLOAD <tên> thi _bỏ nạp_ trình cầm phít hay tập lệnh"
+msgstr "Lệnh « UNLOAD <tên> » thi _bỏ tải_ một bộ cầm phít hay tập lệnh nào đó."
 
-#: src/common/outbound.c:2841
+#: src/common/outbound.c:3204
 msgid "URL <url>, opens a URL in your browser"
-msgstr "URL <url> thì  mở _địa chỉ Mạng_ ấy trong trình duyệt Mạng của bạn"
+msgstr "URL <địa_chỉ_Mạng> thì  mở _địa chỉ Mạng_ ấy trong trình duyệt Mạng của bạn."
 
-#: src/common/outbound.c:2844
+#: src/common/outbound.c:3207
 msgid "VOICE <nick>, gives voice status to someone (needs chanop)"
-msgstr "Lệnh VOICE <tên_hiệu> thì đưa ra người ấy trạng thái _nói tiếng_ (cần đến trạng thái Thao tác kênh [chanop])"
+msgstr "Lệnh « VOICE <tên_hiệu> » thì đưa ra người ấy trạng thái _tiếng nói_ (cần đến trạng thái Thao tác kênh [chanop])."
 
-#: src/common/outbound.c:2846
+#: src/common/outbound.c:3209
 msgid "WALLCHAN <message>, writes the message to all channels"
-msgstr "Lệnh WALLCHAN <tin_nhẳn> thì ghi tin nhẳn ấy vào mọi kênh - Write (ghi) ALL (mọị) CHANnel (kênh)"
+msgstr "Lệnh « WALLCHAN <tin_nhẳn> » thì ghi tin nhẳn ấy vào mọi kênh — Write (ghi) ALL (mọị) CHANnel (kênh)."
 
-#: src/common/outbound.c:2848
+#: src/common/outbound.c:3211
 msgid "WALLCHOP <message>, sends the message to all chanops on the current channel"
-msgstr "Lệnh WALLCHOP <tin_nhẳn> thì gởi tin nhẳn ấy cho _mọi người Thao tác kênh [chanop]_ trên kênh hiện có - Write (ghi) ALL (mọi) CHannel (kênh) OPerator (Thao tác viên)"
+msgstr "Lệnh « WALLCHOP <tin_nhẳn> » thì gởi tin nhẳn ấy cho _mọi người Thao tác kênh [chanop]_ trên kênh hiện có — Write (ghi) ALL (mọi) CHannel (kênh) OPerator (Thao tác viên)."
 
-#: src/common/outbound.c:2881
+#: src/common/outbound.c:3244
 #, c-format
 msgid "Usage: %s\n"
 msgstr "Cách sử dụng: %s\n"
 
-#: src/common/outbound.c:2886
+#: src/common/outbound.c:3249
 msgid ""
 "\n"
 "No help available on that command.\n"
@@ -482,56 +476,56 @@ msgstr ""
 "\n"
 "Tiếc là không có trợ giúp sẵn sàng về lệnh ấy.\n"
 
-#: src/common/outbound.c:2892
+#: src/common/outbound.c:3255
 msgid "No such command.\n"
 msgstr "Không có lệnh như vậy.\n"
 
-#: src/common/outbound.c:3216
+#: src/common/outbound.c:3579
 msgid "Bad arguments for user command.\n"
 msgstr "Lệnh người dùng có đối số sai.\n"
 
-#: src/common/outbound.c:3380
+#: src/common/outbound.c:3743
 msgid "Too many recursive usercommands, aborting."
 msgstr "Quá nhiều lệnh đệ qui của người dùng nên hủy bỏ."
 
-#: src/common/outbound.c:3453
+#: src/common/outbound.c:3820
 msgid "Unknown Command. Try /help\n"
-msgstr "Không biết lệnh ấy: bạn hãy thử lệnh /help (trợ giúp)\n"
+msgstr "Không biết lệnh ấy: bạn hãy thử lệnh « /help » (trợ giúp).\n"
 
-#: src/common/plugin.c:359 src/common/plugin.c:400
+#: src/common/plugin.c:371 src/common/plugin.c:412
 msgid "No xchat_plugin_init symbol; is this really an xchat plugin?"
-msgstr "Không có ký hiệu xchat_plugin_init (khởi động trình cầm phít xchat): đây thật là trình cầm phít xchat không?"
+msgstr "Không có ký hiệu « xchat_plugin_init » (khởi động bộ cầm phít xchat): đây thật là bộ cầm phít xchat không?"
 
-#: src/common/server.c:586
+#: src/common/server.c:596
 msgid "Are you sure this is a SSL capable server and port?\n"
-msgstr "Bạn có chắc đây là máy chủ và cổng có khả năng SSL không?\n"
+msgstr "Bạn có chắc đây là máy phục vụ và cổng có khả năng SSL không?\n"
 
-#: src/common/server.c:937
+#: src/common/server.c:947
 #, c-format
 msgid ""
 "Cannot resolve hostname %s\n"
 "Check your IP Settings!\n"
 msgstr ""
-"Không quyết định được tên máy chủ %s\n"
+"Không quyết định được tên máy « %s ».\n"
 "Hãy kiểm tra thiết lập IP của bạn.\n"
 
-#: src/common/server.c:942
+#: src/common/server.c:952
 msgid "Proxy traversal failed.\n"
-msgstr "Không đi qua máy chủ ủy nhiệm được.\n"
+msgstr "Không đi qua máy phục vụ ủy nhiệm được.\n"
 
-#: src/common/servlist.c:644
+#: src/common/servlist.c:606
 #, c-format
 msgid "Cycling to next server in %s...\n"
-msgstr "Sẽ quay lại đến mấy chủ tới sau %s...\n"
+msgstr "Sẽ quay lại đến mấy phục vụ tới sau %s...\n"
 
-#: src/common/servlist.c:1056
+#: src/common/servlist.c:983
 #, c-format
 msgid "Warning: \"%s\" character set is unknown. No conversion will be applied for network %s."
-msgstr "Cảnh báo: không biết bộ ký tự \"%s\" nên sẽ không áp dụng chuyển đổi vào mạng %s."
+msgstr "Cảnh báo: không biết bộ ký tự « %s » nên sẽ không áp dụng chuyển đổi vào mạng « %s »."
 
 #: src/common/textevents.h:6
 msgid "%C22*%O$t$1 added to notify list."
-msgstr "Đã thêm %C22*%O$t$1 vào danh sách thông báo."
+msgstr "Mới thêm %C22*%O$t$1 vào danh sách thông báo."
 
 #: src/common/textevents.h:9
 msgid "%C22*%O$t$1 Banlist:%C19 $4%C20 $2%C21 $3"
@@ -543,7 +537,7 @@ msgstr "%C22*%O$tKhông vào được%C26 %B$1 %O(vì bạn bị đuổi ra)."
 
 #: src/common/textevents.h:18
 msgid "%C22*%O$t$1 is now known as $2"
-msgstr "%C22*%O$t$1 bây giờ được biết như là $2"
+msgstr "%C22*%O$t$1 lúc bây giờ được biết như là $2"
 
 #: src/common/textevents.h:21
 msgid "%C18*$t$1%O $2"
@@ -559,7 +553,7 @@ msgstr "%C22*%O$t$1 đuổi $2 ra"
 
 #: src/common/textevents.h:30
 msgid "%C22*%O$tChannel $1 created on $2"
-msgstr "%C22*%O$tKênh$1 được tạo trên $2"
+msgstr "%C22*%O$tKênh$1 được tạo vào $2"
 
 #: src/common/textevents.h:33
 msgid "%C22*%O$t%C26$1%O removes channel half-operator status from%C26 $2"
@@ -571,7 +565,7 @@ msgstr "%C22*%O$t%C26$1%O bỏ trạng thái Thao tác kênh ra%C26 $2"
 
 #: src/common/textevents.h:39
 msgid "%C22*%O$t%C26$1%O removes voice from%C26 $2"
-msgstr "%C22*%O$t%C26$1%O bỏ trạng thái Nói tiếng ra%C26 $2"
+msgstr "%C22*%O$t%C26$1%O bỏ trạng thái « Tiếng nói » ra%C26 $2"
 
 #: src/common/textevents.h:42
 msgid "%C22*%O$t$1 sets exempt on $2"
@@ -602,8 +596,8 @@ msgid "%C22*%O$t%C22Channel $1 modes: $2"
 msgstr "%C22*%O$t%C22Kênh $1 chế độ: $2"
 
 #: src/common/textevents.h:63
-msgid "$4%C21%B$1%O$t%C21$2"
-msgstr "$4%C21%B$1%O$t%C21$2"
+msgid "$4%C21%B$1%O%C21$t$2"
+msgstr "$4%C21%B$1%O%C21$t$2"
 
 #: src/common/textevents.h:66
 msgid "%C28-%C29$1/$2%C28-%O$t$3"
@@ -627,7 +621,7 @@ msgstr "%C22*%O$t$1 bỏ từ khóa kênh ra"
 
 #: src/common/textevents.h:81
 msgid "%C22*%O$t$1 removes user limit"
-msgstr "%C22*%O$t$1 bỏ tối đa người dùng ra"
+msgstr "%C22*%O$t$1 bỏ giới hạn người dùng ra"
 
 #: src/common/textevents.h:84
 msgid "%C22*%O$t$1 sets channel keyword to $2"
@@ -635,7 +629,7 @@ msgstr "%C22*%O$t$1 lập từ khóa kênh thành $2"
 
 #: src/common/textevents.h:87
 msgid "%C22*%O$t$1 sets channel limit to $2"
-msgstr "%C22*%O$t$1 lập tối đa kênh thành $2"
+msgstr "%C22*%O$t$1 lập giới hạn kênh thành $2"
 
 #: src/common/textevents.h:90
 msgid "%C22*%O$t$1 removes ban on $2"
@@ -647,11 +641,11 @@ msgstr "%C22*%O$t%C26$1%O đưa ra %C26 $2 trạng thái Nói tiếng"
 
 #: src/common/textevents.h:96
 msgid "%C22*%O$t%C22Connected. Now logging in..."
-msgstr "%C22*%O$t%C22Kết nối rồì. Bây giờ đăng nhập..."
+msgstr "%C22*%O$t%C22Kết nối rồì. Đang đăng nhập..."
 
 #: src/common/textevents.h:99
 msgid "%C22*%O$t%C22Connecting to $1 ($2) port $3%O..."
-msgstr "%C22*%O$t%C22Đang kết nối đến $1 ($2) qua cổng $3%O..."
+msgstr "%C22*%O$t%C22Đang kết nối đến $1 ($2) trên cổng $3%O..."
 
 #: src/common/textevents.h:102
 msgid "%C21*%O$t%C21Connection failed. Error: $1"
@@ -671,871 +665,865 @@ msgstr "%C19>%O$1%C19<%O$tCTCP $2"
 
 #: src/common/textevents.h:114
 msgid "%C22*%O$tReceived a CTCP Sound $1 from $2"
-msgstr "%C22*%O$tMới nhận âm thanh CTCP $1 từ $2"
+msgstr "%C22*%O$tMới nhận âm thanh CTCP $1 từ $2."
 
 #: src/common/textevents.h:117
+msgid "%C22*%O$tReceived a CTCP Sound $1 from $2 (to $3)"
+msgstr "%C22*%O$tMới nhận âm thanh CTCP $1 từ $2 (cho $3)."
+
+#: src/common/textevents.h:120
 msgid "%C22*%O$tDCC CHAT to %C26$1%O aborted."
 msgstr "%C22*%O$tTrò chuyện trực tiếp (DCC) với %C26$1%O bị hủy bỏ."
 
-#: src/common/textevents.h:120
-msgid "%C22*%O$tDCC CHAT connection established to %C26$1 %C30[%O$2%C30]"
-msgstr "%C22*%O$tMới kết nối được để trò chuyện trực tiếp (DCC) với %C26$1 %C30[%O$2%C30]"
-
 #: src/common/textevents.h:123
+msgid "%C22*%O$tDCC CHAT connection established to %C26$1 %C30[%O$2%C30]"
+msgstr "%C22*%O$tMới kết nối được để trò chuyện trực tiếp (DCC) với %C26$1 %C30[%O$2%C30]."
+
+#: src/common/textevents.h:126
 msgid "%C22*%O$tDCC CHAT to %C26$1%O lost ($4)."
 msgstr "%C22*%O$tTrò chuyện trực tiếp (DCC) cho %C26$1%O bị mất ($4)."
 
-#: src/common/textevents.h:126
-msgid "%C22*%O$tReceived a DCC CHAT offer from $1"
-msgstr "%C22*%O$tMới nhận lời mời trò chuyện trực tiếp (DCC) từ $1"
-
 #: src/common/textevents.h:129
-msgid "%C22*%O$tOffering DCC CHAT to $1"
-msgstr "%C22*%O$tĐang mời $1 tro chuyện trực tiếp (DCC)"
+msgid "%C22*%O$tReceived a DCC CHAT offer from $1"
+msgstr "%C22*%O$tMới nhận lời mời trò chuyện trực tiếp (DCC) từ $1."
 
 #: src/common/textevents.h:132
-msgid "%C22*%O$tAlready offering CHAT to $1"
-msgstr "%C22*%O$tĐã mời $1 trò chuyện rồi"
+msgid "%C22*%O$tOffering DCC CHAT to $1"
+msgstr "%C22*%O$tĐang mời $1 tro chuyện trực tiếp (DCC)."
 
 #: src/common/textevents.h:135
+msgid "%C22*%O$tAlready offering CHAT to $1"
+msgstr "%C22*%O$tĐã mời $1 trò chuyện rồi."
+
+#: src/common/textevents.h:138
 msgid "%C22*%O$tDCC $1 connect attempt to%C26 $2%O failed (err=$3)."
 msgstr "%C22*%O$tDCC $1 việc cố kết nối đến%C26 $2%O không thành công (lỗi=$3)."
 
-#: src/common/textevents.h:138
-msgid "%C22*%O$tReceived '$1%O' from $2"
-msgstr "%C22*%O$tMới nhận '$1%O' từ $2"
-
 #: src/common/textevents.h:141
+msgid "%C22*%O$tReceived '$1%O' from $2"
+msgstr "%C22*%O$tMới nhận « $1%O » từ $2."
+
+#: src/common/textevents.h:144
 #, c-format
 msgid "%C24,18 Type  To/From    Status  Size    Pos     File         "
 msgstr "%C24,18 Loại    Cho/Từ    TrThái  Cỡ     Vị trí    Tệp         "
 
-#: src/common/textevents.h:144
-msgid "%C22*%O$tReceived a malformed DCC request from %C26$1%O.%010%C22*%O$tContents of packet: $2"
-msgstr "%C22*%O$tMới nhận yêu cầu khuyết tật trò chuyện trực tiếp (DCC) từ %C26$1%O.%010%C22*%O$tNội dung gói: $2"
-
 #: src/common/textevents.h:147
-msgid "%C22*%O$tOffering%C26 $1%O to%C26 $2"
-msgstr "%C22*%O$tĐang đưa ra%C26 $2 %C26 $1%O "
+msgid "%C22*%O$tReceived a malformed DCC request from %C26$1%O.%010%C22*%O$tContents of packet: $2"
+msgstr "%C22*%O$tMới nhận yêu cầu dạng sai trò chuyện trực tiếp (DCC) từ %C26$1%O.%010%C22*%O$tNội dung gói: $2"
 
 #: src/common/textevents.h:150
+msgid "%C22*%O$tOffering%C26 $1%O to%C26 $2"
+msgstr "%C22*%O$tĐang đưa ra%C26 $2 có %C26 $1%O."
+
+#: src/common/textevents.h:153
 msgid "%C22*%O$tNo such DCC offer."
 msgstr "%C22*%O$tKhông có lời mời trò chuyện trực tiếp (DCC) như vậy."
 
-#: src/common/textevents.h:153
+#: src/common/textevents.h:156
 msgid "%C22*%O$tDCC RECV%C26 $2%O to%C26 $1%O aborted."
 msgstr "%C22*%O$tNHẬN DCC%C26 $2%O cho%C26 $1%O bị hủy bỏ."
 
-#: src/common/textevents.h:156
+#: src/common/textevents.h:159
 msgid "%C22*%O$tDCC RECV%C26 $1%O from%C26 $3%O complete %C30[%C26$4%O cps%C30]%O."
 msgstr "%C22*%O$tNHẬN DCC%C26 $1%O từ%C26 $3%O hoàn thành %C30[%C26$4%O cps%C30]%O."
 
-#: src/common/textevents.h:159
-msgid "%C22*%O$tDCC RECV connection established to%C26 $1 %C30[%O$2%C30]"
-msgstr "%C22*%O$tĐã kết nối loại NHẬN DCC đếnC26 $1 %C30[%O$2%C30]"
-
 #: src/common/textevents.h:162
+msgid "%C22*%O$tDCC RECV connection established to%C26 $1 %C30[%O$2%C30]"
+msgstr "%C22*%O$tĐã kết nối loại NHẬN DCC đếnC26 $1 %C30[%O$2%C30]."
+
+#: src/common/textevents.h:165
 msgid "%C22*%O$tDCC RECV%C26 $1%O from%C26 $3%O failed ($4)."
 msgstr "%C22*%O$tNHẬN DCC%C26 $1%O từ%C26 $3%O không thành công ($4)."
 
-#: src/common/textevents.h:165
+#: src/common/textevents.h:168
 msgid "%C22*%O$tDCC RECV: Cannot open $1 for writing ($2)."
 msgstr "%C22*%O$tNHẬN DCC: Không mở được $1 để ghi ($2)."
 
-#: src/common/textevents.h:168
-msgid "%C22*%O$tThe file%C26 $1%C already exists, saving it as%C26 $2%O instead."
-msgstr "%C22*%O$tCó tập tin%C26 $1%C rồi: sẽ lưu nó như là %C26 $2%O thay thế."
-
 #: src/common/textevents.h:171
+msgid "%C22*%O$tThe file%C26 $1%C already exists, saving it as%C26 $2%O instead."
+msgstr "%C22*%O$tTập tin%C26 $1%C đã có: sẽ lưu nó là %C26 $2%O thay thế."
+
+#: src/common/textevents.h:174
 msgid "%C22*%O$t%C26$1 %Ohas requested to resume%C26 $2 %Cfrom%C26 $3%C."
 msgstr "%C22*%O$t%C26$1 %Ođã yêu cầu tiếp tục%C26 $2 %Ctừ%C26 $3%C."
 
-#: src/common/textevents.h:174
+#: src/common/textevents.h:177
 msgid "%C22*%O$tDCC SEND%C26 $2%O to%C26 $1%O aborted."
 msgstr "%C22*%O$tGỞI DCC%C26 $2%O cho%C26 $1%O bị hủy bỏ."
 
-#: src/common/textevents.h:177
+#: src/common/textevents.h:180
 msgid "%C22*%O$tDCC SEND%C26 $1%O to%C26 $2%O complete %C30[%C26$3%O cps%C30]%O."
 msgstr "%C22*%O$tGỞI DCC%C26 $1%O cho%C26 $2%O hoàn thành %C30[%C26$3%O cps%C30]%O."
 
-#: src/common/textevents.h:180
-msgid "%C22*%O$tDCC SEND connection established to%C26 $1 %C30[%O$2%C30]"
-msgstr "%C22*%O$tĐã kết nối DCC GỞI đến%C26 $1 %C30[%O$2%C30]"
-
 #: src/common/textevents.h:183
+msgid "%C22*%O$tDCC SEND connection established to%C26 $1 %C30[%O$2%C30]"
+msgstr "%C22*%O$tĐã kết nối DCC GỞI đến%C26 $1 %C30[%O$2%C30]."
+
+#: src/common/textevents.h:186
 msgid "%C22*%O$tDCC SEND%C26 $1%O to%C26 $2%O failed. $3"
 msgstr "%C22*%O$tKhông kết nối DCC GỞI%C26 $1%O đến%C26 $2%O được. $3"
 
-#: src/common/textevents.h:186
-msgid "%C22*%O$t%C26$1 %Ohas offered%C26 $2 %O(%C26$3 %Obytes)"
-msgstr "%C22*%O$t%C26$1 %Ođã mời%C26 $2 %O(%C26$3 %Obyte)"
-
 #: src/common/textevents.h:189
-msgid "%C22*%O$tDCC $1%C26 $2 %Oto%C26 $3 %Cstalled - aborting."
-msgstr "%C22*%O$tDCC $1%C26 $2 %Ođến%C26 $3 %Cngừng - hủy bỏ."
+msgid "%C22*%O$t%C26$1 %Ohas offered%C26 $2 %O(%C26$3 %Obytes)"
+msgstr "%C22*%O$t%C26$1 %Ođã mời%C26 $2 %O(%C26$3 %Obyte)."
 
 #: src/common/textevents.h:192
-msgid "%C22*%O$tDCC $1%C26 $2 %Oto%C26 $3 %Otimed out - aborting."
-msgstr "%C22*%O$tDCC $1%C26 $2 %Ođến%C26 $3 %Othời hạn rồì - hủy bỏ."
+msgid "%C22*%O$tDCC $1%C26 $2 %Oto%C26 $3 %Cstalled - aborting."
+msgstr "%C22*%O$tDCC $1%C26 $2 %Ođến%C26 $3 %Cngừng — hủy bỏ."
 
 #: src/common/textevents.h:195
+msgid "%C22*%O$tDCC $1%C26 $2 %Oto%C26 $3 %Otimed out - aborting."
+msgstr "%C22*%O$tDCC $1%C26 $2 %Ođến%C26 $3 %Ohết hạn nên hủy bỏ."
+
+#: src/common/textevents.h:198
 msgid "%C22*%O$t$1 deleted from notify list."
 msgstr "Mới xóa bỏ %C22*%O$t$1 ra danh sách thông báo."
 
-#: src/common/textevents.h:198
-msgid "%C22*%O$tDisconnected ($1)."
-msgstr "%C22*%O$tNgắt kết nối ($1)."
-
 #: src/common/textevents.h:201
-msgid "%C22*%O$tFound your IP: [$1]"
-msgstr "%C22*%O$tTìm thấy địa chỉ IP của bạn rồi: [$1]"
+msgid "%C22*%O$tDisconnected ($1)."
+msgstr "%C22*%O$tBị ngắt kết nối ($1)."
 
 #: src/common/textevents.h:204
+msgid "%C22*%O$tFound your IP: [$1]"
+msgstr "%C22*%O$tTìm thấy địa chỉ IP của bạn: [$1]"
+
+#: src/common/textevents.h:207
 msgid "$1$t$2"
 msgstr "$1$t$2"
 
-#: src/common/textevents.h:207
+#: src/common/textevents.h:210
 msgid "%O%C26$1%O added to ignore list."
 msgstr "Mới thêm %O%C26$1%O vào danh sách bỏ qua."
 
-#: src/common/textevents.h:210
+#: src/common/textevents.h:213
 msgid "Ignore on %C26$1%O changed."
 msgstr "Đã thay đổi trang thái bỏ qua về %C26$1%O."
 
-#: src/common/textevents.h:213
+#: src/common/textevents.h:216
 #, c-format
 msgid "%C24,18                                                              "
 msgstr "%C24,18                                                              "
 
-#: src/common/textevents.h:216
+#: src/common/textevents.h:219
 #, c-format
 msgid "%C24,18 Hostmask                  PRIV NOTI CHAN CTCP DCC  INVI UNIG "
-msgstr "%C24,18 Mặt nạ máy chủ         RIÊN TBÁO KÊNH  CTCP DCC  MỜI BỎBỎ "
+msgstr "%C24,18 Mặt nạ máy         RIÊN TBÁO KÊNH  CTCP DCC  MỜI BỎBỎ "
 
-#: src/common/textevents.h:219
+#: src/common/textevents.h:222
 msgid "%O%C26$1%O removed from ignore list."
 msgstr "Mới bỏ %O%C26$1%O ra danh sách bỏ qua."
 
-#: src/common/textevents.h:222
+#: src/common/textevents.h:225
 msgid "  Ignore list is empty."
 msgstr "  Danh sách bỏ qua la trống không."
 
-#: src/common/textevents.h:225
+#: src/common/textevents.h:228
 msgid "%C22*%O$tCannot join%C26 %B$1 %O(Channel is invite only)."
 msgstr "%C22*%O$tKhông vào được%C26 %B$1 %O(Phải có lời mời)."
 
-#: src/common/textevents.h:228
-msgid "%C22*%O$tYou have been invited to%C26 $1%O by%C26 $2%C (%C26$3%C)"
-msgstr "%C22*%O$tBạn được mời vào%C26 $1%O bởi%C26 $2%C (%C26$3%C)"
-
 #: src/common/textevents.h:231
-msgid "%C19*%O$t%C19%B$1 %B($3) has joined $2"
-msgstr "%C19*%O$t%C19%B$1 %B($3) mới vao $2"
+msgid "%C22*%O$tYou have been invited to%C26 $1%O by%C26 $2%C (%C26$3%C)"
+msgstr "%C22*%O$tBạn được mời vào%C26 $1%O bởi%C26 $2%C (%C26$3%C)."
 
 #: src/common/textevents.h:234
+msgid "%C19*%O$t%C19%B$1 %B($3) has joined $2"
+msgstr "%C19*%O$t%C19%B$1 %B($3) mới vao $2."
+
+#: src/common/textevents.h:237
 msgid "%C22*%O$tCannot join%C26 %B$1 %O(Requires keyword)."
 msgstr "%C22*%O$tKhông vào được%C26 %B$1 %O(Cần đến từ khóa)."
 
-#: src/common/textevents.h:237
-msgid "%C21*%O$t%C21$1 has kicked $2 from $3 ($4%O%C21)"
-msgstr "%C21*%O$t%C21$1 mới đá $2 ra $3 ($4%O%C21)"
-
 #: src/common/textevents.h:240
-msgid "%C22*%O$tYou have been killed by $1 ($2%O%C22)"
-msgstr "%C22*%O$tBạn mới bị «giêt» bởi $1 ($2%O%C22)"
+msgid "%C21*%O$t%C21$1 has kicked $2 from $3 ($4%O%C21)"
+msgstr "%C21*%O$t%C21$1 mới đá $2 ra $3 ($4%O%C21)."
 
 #: src/common/textevents.h:243
-msgid "%C19>%O$1%C19<%O$t$2%O"
-msgstr "%C19>%O$1%C19<%O$t$2%O"
+msgid "%C22*%O$tYou have been killed by $1 ($2%O%C22)"
+msgstr "%C22*%O$tBạn mới bị «giêt» bởi $1 ($2%O%C22)."
 
-#: src/common/textevents.h:246
-msgid "%C16*%O$t$1%O"
-msgstr "%C16*%O$t$1%O"
-
-#: src/common/textevents.h:249
-msgid "%C22*%O$t%C22MOTD Skipped."
-msgstr "Đã bỏ qua %C22*%O$t%C22MOTD (Message Of The Day - Thông điệp của hôm nay)."
-
-#: src/common/textevents.h:252
-msgid "%C22*%O$t$1 already in use. Retrying with $2..."
-msgstr "Sử dụng %C22*%O$t$1 rồi nên thử lái vơi $2..."
-
-#: src/common/textevents.h:255
-msgid "%C22*%O$tNickname already in use. Use /NICK to try another."
-msgstr "%C22*%O$tTên hiệu đã chọn nên hay sử dụng lệnh /NICK để thử môt tên hiệu khác."
-
-#: src/common/textevents.h:258
-msgid "%C22*%O$tNo such DCC."
-msgstr "%C22*%O$tKhông có DCC như vậy."
-
-#: src/common/textevents.h:261
-msgid "%C22*%O$tNo process is currently running"
-msgstr "%C22*%O$tKhông có tiến trình đang chạy"
-
-#: src/common/textevents.h:264
-msgid "%C28-%C29$1%C28-%O$t$2"
-msgstr "%C28-%C29$1%C28-%O$t$2"
-
-#: src/common/textevents.h:267
+#: src/common/textevents.h:246 src/common/textevents.h:270
 msgid "%C19>%O$1%C19<%O$t$2"
 msgstr "%C19>%O$1%C19<%O$t$2"
 
-#: src/common/textevents.h:270
+#: src/common/textevents.h:249
+msgid "%C16*%O$t$1%O"
+msgstr "%C16*%O$t$1%O"
+
+#: src/common/textevents.h:252
+msgid "%C22*%O$t%C22MOTD Skipped."
+msgstr "Đã bỏ qua %C22*%O$t%C22MOTD (Message Of The Day — Thông điệp của hôm nay)."
+
+#: src/common/textevents.h:255
+msgid "%C22*%O$t$1 already in use. Retrying with $2..."
+msgstr "%C22*%O$t$1 đang dùng nên thử lái vơi $2..."
+
+#: src/common/textevents.h:258
+msgid "%C22*%O$tNickname already in use. Use /NICK to try another."
+msgstr "%C22*%O$tTên hiệu đã chọn nên hay sử dụng lệnh « /NICK » để thử môt tên hiệu khác."
+
+#: src/common/textevents.h:261
+msgid "%C22*%O$tNo such DCC."
+msgstr "%C22*%O$tKhông có DCC như vậy."
+
+#: src/common/textevents.h:264
+msgid "%C22*%O$tNo process is currently running"
+msgstr "%C22*%O$tKhông có tiến trình đang chạy."
+
+#: src/common/textevents.h:267
+msgid "%C28-%C29$1%C28-%O$t$2"
+msgstr "%C28-%C29$1%C28-%O$t$2"
+
+#: src/common/textevents.h:273
 msgid "$tNotify list is empty."
 msgstr "$tDanh sách thông báo la trống không."
 
-#: src/common/textevents.h:273
+#: src/common/textevents.h:276
 msgid "%C24,18 %B  Notify List                           "
 msgstr "%C24,18 %B  Danh sách thông báo                       "
 
-#: src/common/textevents.h:276
+#: src/common/textevents.h:279
 msgid "%C22*%O$t$1 users in notify list."
 msgstr "%C22*%O$t$1 người dùng trong danh sách thông báo."
 
-#: src/common/textevents.h:279
+#: src/common/textevents.h:282
 msgid "%C22*%O$tNotify: $1 is offline ($2)."
 msgstr "%C22*%O$tThông báo: $1 ngoại tuyến ($2)."
 
-#: src/common/textevents.h:282
+#: src/common/textevents.h:285
 msgid "%C22*%O$tNotify: $1 is online ($2)."
 msgstr "%C22*%O$tThông báo: $1 trực tuyến ($2)."
 
-#: src/common/textevents.h:288
-msgid "%C23*%O$t%C23$1 (%O%C23$2) has left $3"
-msgstr "%C23*%O$t%C23$1 (%O%C23$2) đã rời $3 đi"
-
 #: src/common/textevents.h:291
-msgid "%C23*%O$t%C23$1 (%O%C23$2) has left $3 (%O%C23$4)"
-msgstr "%C23*%O$t%C23$1 (%O%C23$2) đa rời $3 đi (%O%C23$4)"
+msgid "%C23*%O$t%C23$1 (%O%C23$2) has left $3"
+msgstr "%C23*%O$t%C23$1 (%O%C23$2) đã rời $3 đi."
 
 #: src/common/textevents.h:294
-msgid "%C22*%O$tPing reply from $1: $2 second(s)"
-msgstr "%C22*%O$tTrả lời ping từ $1: $2 giây"
+msgid "%C23*%O$t%C23$1 (%O%C23$2) has left $3 (%O%C23%B%B$4%O%C23)"
+msgstr "%C23*%O$t%C23$1 (%O%C23$2) đa rời $3 đi (%O%C23%B%B$4%O%C23)."
 
 #: src/common/textevents.h:297
+msgid "%C22*%O$tPing reply from $1: $2 second(s)"
+msgstr "%C22*%O$tTrả lời ping từ $1: $2 giây."
+
+#: src/common/textevents.h:300
 msgid "%C22*%O$tNo ping reply for $1 seconds, disconnecting."
 msgstr "%C22*%O$tKhông nhận trả lời ping được $1 giây nên ngắt kết nối."
 
-#: src/common/textevents.h:300
+#: src/common/textevents.h:303
 msgid "%C28*%C29$3$1%C28*$t%O$2"
 msgstr "%C28*%C29$3$1%C28*$t%O$2"
 
-#: src/common/textevents.h:303
+#: src/common/textevents.h:306
 msgid "%C18%B%B$3$1%O$t$2"
 msgstr "%C18%B%B$3$1%O$t$2"
 
-#: src/common/textevents.h:306
-msgid "%C22*%O$tA process is already running"
-msgstr "%C22*%O$tCó một tiến trình chạy rôi."
-
 #: src/common/textevents.h:309
-msgid "%C23*%O$t%C23$1 has quit (%O%C23$2)"
-msgstr "%C23*%O$t%C23$1 đã thoát (%O%C23$2)"
+msgid "%C22*%O$tA process is already running"
+msgstr "%C22*%O$tCó một tiến trình đang chạy."
 
 #: src/common/textevents.h:312
+msgid "%C23*%O$t%C23$1 has quit (%O%C23%B%B$2%O%C23)"
+msgstr "%C23*%O$t%C23$1 đã thoát (%O%C23%B%B$2%O%C23)."
+
+#: src/common/textevents.h:315
 msgid "%C22*%O$t$1 sets modes%B %C30[%O$2%B%C30]"
 msgstr "%C22*%O$t$1 lập chế độ%B %C30[%O$2%B%C30]"
 
-#: src/common/textevents.h:315
+#: src/common/textevents.h:318
 msgid "%C28-%C29$1/Wallops%C28-%O$t$2"
 msgstr "%C28-%C29$1/Quất mạnh%C28-%O$t$2"
 
-#: src/common/textevents.h:318
-msgid "%C22*%O$tLooking up IP number for%C26 $1%O..."
-msgstr "%C22*%O$tTra cứu số IP cho%C26 $1%O..."
-
 #: src/common/textevents.h:321
+msgid "%C22*%O$tLooking up IP number for%C26 $1%O..."
+msgstr "%C22*%O$tĐang tra cứu số IP cho%C26 $1%O..."
+
+#: src/common/textevents.h:324
 msgid "%C22*%O$t%C22Connected."
 msgstr "%C22*%O$t%C22Kết nối rồi."
 
-#: src/common/textevents.h:324 src/common/textevents.h:330
-#: src/common/textevents.h:333
+#: src/common/textevents.h:327 src/common/textevents.h:333
+#: src/common/textevents.h:336
 msgid "%C22*%O$t$1"
 msgstr "%C22*%O$t$1"
 
-#: src/common/textevents.h:327
+#: src/common/textevents.h:330
 msgid "%C22*%O$t%C22Looking up $1"
-msgstr "%C22*%O$t%C22Tra cứu $1"
-
-#: src/common/textevents.h:336
-msgid "%C22*%O$tStopped previous connection attempt (pid=$1)"
-msgstr "%C22*%O$tĐã thôi việc cố kết nối trước (pid=$1)"
+msgstr "%C22*%O$t%C22Đang tra cứu $1."
 
 #: src/common/textevents.h:339
+msgid "%C22*%O$tStopped previous connection attempt (pid=$1)"
+msgstr "%C22*%O$tĐã thôi việc cố kết nối trước (pid=$1)."
+
+#: src/common/textevents.h:342
 msgid "%C29*%O$t%C29Topic for $1%C %C29is: $2"
 msgstr "%C29*%O$t%C29Chủ đề cho $1%C %C29là: $2"
 
-#: src/common/textevents.h:342
+#: src/common/textevents.h:345
 msgid "%C22*%O$t$1 has changed the topic to: $2"
 msgstr "%C22*%O$t$1 mới thay đổi chủ đề thành: $2"
 
-#: src/common/textevents.h:345
-msgid "%C29*%O$t%C29Topic for $1%C %C29set by $2%C %C29at $3"
-msgstr "%C29*%O$t%C29Chủ đề cho $1%C %C29đã lập do $2%C %C29vào lúc $3"
-
 #: src/common/textevents.h:348
-msgid "%C22*%O$tUnknown host. Maybe you misspelled it?"
-msgstr "%C22*%O$tKhông biết máy chủ ấy: có lẽ chính tả sai không?"
+msgid "%C29*%O$t%C29Topic for $1%C %C29set by $2%C %C29at $3"
+msgstr "%C29*%O$t%C29Chủ đề cho $1%C %C29 lập do $2%C %C29vào lúc $3"
 
 #: src/common/textevents.h:351
+msgid "%C22*%O$tUnknown host. Maybe you misspelled it?"
+msgstr "%C22*%O$tKhông biết máy ấy: có lẽ chính tả sai không?"
+
+#: src/common/textevents.h:354
 msgid "%C22*%O$tCannot join%C26 %B$1 %O(User limit reached)."
 msgstr "%C22*%O$tKhông vào được%C26 %B$1 %O(Quá nhiều người)."
 
-#: src/common/textevents.h:354
+#: src/common/textevents.h:357
 msgid "%C22*%O$t%C26Users on $1:%C $2"
 msgstr "%C22*%O$t%C26Người dùng trên $1:%C $2"
 
-#: src/common/textevents.h:357
+#: src/common/textevents.h:360
 msgid "%C22*%O$t%C28[%O$1%C28] %O$2%C27 $3"
 msgstr "%C22*%O$t%C28[%O$1%C28] %O$2%C27 $3"
 
-#: src/common/textevents.h:360
+#: src/common/textevents.h:363
 msgid "%C22*%O$t%C28[%O$1%C28] %Cis away %C30(%O$2%O%C30)"
 msgstr "%C22*%O$t%C28[%O$1%C28] %Cvắng mặt %C30(%O$2%O%C30)"
 
-#: src/common/textevents.h:363 src/common/textevents.h:369
-#: src/common/textevents.h:384 src/common/textevents.h:387
+#: src/common/textevents.h:366 src/common/textevents.h:372
+#: src/common/textevents.h:387 src/common/textevents.h:390
 msgid "%C22*%O$t%C28[%O$1%C28]%O $2"
 msgstr "%C22*%O$t%C28[%O$1%C28]%O $2"
 
-#: src/common/textevents.h:366
+#: src/common/textevents.h:369
 msgid "%C22*%O$t%C28[%O$1%C28] %OEnd of WHOIS list."
 msgstr "%C22*%O$t%C28[%O$1%C28] %OKết thức danh sách WHOIS (là ai?)"
 
-#: src/common/textevents.h:372
+#: src/common/textevents.h:375
 msgid "%C22*%O$t%C28[%O$1%C28]%O idle%C26 $2"
 msgstr "%C22*%O$t%C28[%O$1%C28]%O nhàn rỗi%C26 $2"
 
-#: src/common/textevents.h:375
+#: src/common/textevents.h:378
 msgid "%C22*%O$t%C28[%O$1%C28]%O idle%C26 $2%O, signon:%C26 $3"
 msgstr "%C22*%O$t%C28[%O$1%C28]%O nhàn rỗi%C26 $2%O, đăng nhập:%C26 $3"
 
-#: src/common/textevents.h:378
+#: src/common/textevents.h:381
 msgid "%C22*%O$t%C28[%O$1%C28] %C30(%O$2@$3%C30)%O: $4"
 msgstr "%C22*%O$t%C28[%O$1%C28] %C30(%O$2@$3%C30)%O: $4"
 
-#: src/common/textevents.h:381
+#: src/common/textevents.h:384
 msgid "%C22*%O$t%C28[%O$1%C28] %Oreal user@host%C27 $2%O, real IP%C27 $3"
-msgstr "%C22*%O$t%C28[%O$1%C28] %Ongươi dùng thật@máy chủ%C27 $2%O, địạ chỉ IP thật%C27 $3"
-
-#: src/common/textevents.h:390
-msgid "%C19*%O$t%C19Now talking on $2"
-msgstr "%C19*%O$t%C19Bây giờ nói chuyện trên $2"
+msgstr "%C22*%O$t%C28[%O$1%C28] %Ongươi dùng thật@máy phục vụ%C27 $2%O, địa chỉ IP thật%C27 $3"
 
 #: src/common/textevents.h:393
+msgid "%C19*%O$t%C19Now talking on $2"
+msgstr "%C19*%O$t%C19Đang nói chuyện trên $2"
+
+#: src/common/textevents.h:396
 msgid "%C23*$tYou have been kicked from $2 by $3 ($4%O%C23)"
 msgstr "%C23*$tBạn mới bị đá ra $2 bởi $3 ($4%O%C23)"
 
-#: src/common/textevents.h:396
+#: src/common/textevents.h:399
 #, c-format
 msgid "%C23*$tYou have left channel $3"
-msgstr "%C23*$tBạn rời kênh $3 đi rồi"
-
-#: src/common/textevents.h:399
-msgid "%C23*$tYou have left channel $3 (%O%C23$4%O%C23)"
-msgstr "%C23*$tBạn rời kênh $3 đi rồi (%O%C23$4%O%C23)"
+msgstr "%C23*$tBạn mới rời kênh $3 đi."
 
 #: src/common/textevents.h:402
+msgid "%C23*$tYou have left channel $3 (%O%C23%B%B$4%O%C23)"
+msgstr "%C23*$tBạn mới rời kênh $3 đi (%O%C23%B%B$4%O%C23)"
+
+#: src/common/textevents.h:405
 msgid "%C22*%O$tYou've invited%C26 $1%O to%C26 $2%O (%C26$3%O)"
 msgstr "%C22*%O$tBạn đã mời%C26 $1%O vào%C26 $2%O (%C26$3%O)"
 
-#: src/common/textevents.h:405
-msgid "%C31%B%B$4$1%O$t%C30$2"
-msgstr "%C31%B%B$4$1%O$t%C30$2"
-
 #: src/common/textevents.h:408
-msgid "%C22*%O$tYou are now known as $2"
-msgstr "%C22*%O$tBây giờ bạn được biết như là $2"
+msgid "%C31%B%B$4$1%O%C30$t$2"
+msgstr "%C31%B%B$4$1%O%C30$t$2"
 
-#: src/common/text.c:207
+#: src/common/textevents.h:411
+msgid "%C22*%O$tYou are now known as $2"
+msgstr "%C22*%O$tLúc bây giờ bạn được biết như là $2."
+
+#: src/common/text.c:61
 #, c-format
 msgid "**** ENDING LOGGING AT %s\n"
-msgstr "**** XONG GHI VÀO %s\n"
+msgstr "**** GHI XONG VÀO %s\n"
 
-#: src/common/text.c:325
+#: src/common/text.c:179
 #, c-format
 msgid "**** BEGIN LOGGING AT %s\n"
 msgstr "**** BẮT ĐẦU GHI VÀO %s\n"
 
-#: src/common/text.c:344
+#: src/common/text.c:198
 #, c-format
 msgid ""
 "* Can't open log file(s) for writing. Check the\n"
 "  permissions on %s/xchatlogs"
 msgstr ""
-"* Không mở được tập tin bản ghi để ghi: hãy\n"
-"  kiểm tra quyền truy cập %s/xchatlogs"
+"* Không mở được tập tin bản ghi để ghi:\n"
+"  hãy kiểm tra quyền truy cập « %s/xchatlogs »."
 
-#: src/common/text.c:559
+#: src/common/text.c:413
 msgid "Left message"
 msgstr "Tin nhẳn bên trái"
 
-#: src/common/text.c:560
+#: src/common/text.c:414
 msgid "Right message"
 msgstr "Tin nhẳn bên phải"
 
-#: src/common/text.c:564
+#: src/common/text.c:418
 msgid "The nick of the joining person"
-msgstr "Tên hiệu của người vào"
+msgstr "Tên hiệu của người đang vào"
 
-#: src/common/text.c:565
+#: src/common/text.c:419
 msgid "The channel being joined"
-msgstr "Kênh sẽ vào"
+msgstr "Kênh cần vào"
 
-#: src/common/text.c:566 src/common/text.c:611 src/common/text.c:668
+#: src/common/text.c:420 src/common/text.c:465 src/common/text.c:522
 msgid "The host of the person"
-msgstr "Máy chủ của người ấy"
+msgstr "Máy của người ấy"
 
-#: src/common/text.c:570 src/common/text.c:575 src/common/text.c:582
-#: src/common/text.c:649 src/common/text.c:774 src/common/text.c:781
-#: src/common/text.c:786 src/common/text.c:791 src/common/text.c:796
-#: src/common/text.c:802 src/common/text.c:807 src/common/text.c:811
-#: src/common/text.c:817 src/common/text.c:823 src/common/text.c:869
-#: src/common/text.c:878 src/common/text.c:883 src/common/text.c:888
-#: src/common/text.c:897 src/common/text.c:908 src/common/text.c:915
-#: src/common/text.c:921 src/common/text.c:926 src/common/text.c:931
-#: src/common/text.c:938 src/common/text.c:944 src/common/text.c:950
-#: src/common/text.c:955 src/common/text.c:960 src/common/text.c:964
-#: src/common/text.c:970 src/common/text.c:978 src/common/text.c:1012
-#: src/common/text.c:1017
+#: src/common/text.c:424 src/common/text.c:429 src/common/text.c:436
+#: src/common/text.c:503 src/common/text.c:629 src/common/text.c:636
+#: src/common/text.c:641 src/common/text.c:646 src/common/text.c:651
+#: src/common/text.c:657 src/common/text.c:662 src/common/text.c:666
+#: src/common/text.c:672 src/common/text.c:678 src/common/text.c:724
+#: src/common/text.c:733 src/common/text.c:738 src/common/text.c:743
+#: src/common/text.c:752 src/common/text.c:763 src/common/text.c:770
+#: src/common/text.c:776 src/common/text.c:781 src/common/text.c:786
+#: src/common/text.c:793 src/common/text.c:799 src/common/text.c:805
+#: src/common/text.c:810 src/common/text.c:815 src/common/text.c:819
+#: src/common/text.c:825 src/common/text.c:833 src/common/text.c:867
+#: src/common/text.c:872
 msgid "Nickname"
 msgstr "Tên hiệu"
 
-#: src/common/text.c:571
+#: src/common/text.c:425
 msgid "The action"
 msgstr "Hành động"
 
-#: src/common/text.c:576
+#: src/common/text.c:430
 msgid "The text"
-msgstr "Câu"
+msgstr "Đoạn"
 
-#: src/common/text.c:577
+#: src/common/text.c:431
 msgid "Mode char"
 msgstr "Ký tự chế độ"
 
-#: src/common/text.c:578 src/common/text.c:651
+#: src/common/text.c:432 src/common/text.c:505
 msgid "Identified text"
-msgstr "Câu đã nhận biết"
+msgstr "Đoạn đã nhận biết"
 
-#: src/common/text.c:583 src/common/text.c:639 src/common/text.c:645
-#: src/common/text.c:650
+#: src/common/text.c:437 src/common/text.c:493 src/common/text.c:499
+#: src/common/text.c:504
 msgid "The message"
 msgstr "Tin nhẳn"
 
-#: src/common/text.c:587 src/common/text.c:655
+#: src/common/text.c:441 src/common/text.c:509
 msgid "Old nickname"
 msgstr "Tên hiệu cũ"
 
-#: src/common/text.c:588 src/common/text.c:656
+#: src/common/text.c:442 src/common/text.c:510
 msgid "New nickname"
 msgstr "Tên hiệu mới"
 
-#: src/common/text.c:592
+#: src/common/text.c:446
 msgid "Nick of person who changed the topic"
 msgstr "Tên hiệu của người đã thay đổi chủ đề"
 
-#: src/common/text.c:593 src/common/text.c:599 src/fe-gtk/chanlist.c:599
+#: src/common/text.c:447 src/common/text.c:453 src/fe-gtk/chanlist.c:599
 #: src/fe-gtk/chanlist.c:700
 msgid "Topic"
 msgstr "Chủ đề"
 
-#: src/common/text.c:594 src/common/text.c:598 src/common/text.c:1032
+#: src/common/text.c:448 src/common/text.c:452 src/common/text.c:887
 #: src/fe-gtk/chanlist.c:597 src/fe-gtk/chanlist.c:691
 #: src/fe-gtk/ignoregui.c:176
 msgid "Channel"
 msgstr "Kênh"
 
-#: src/common/text.c:603 src/common/text.c:662
+#: src/common/text.c:457 src/common/text.c:516
 msgid "The nickname of the kicker"
 msgstr "Tên hiệu của người đá"
 
-#: src/common/text.c:604 src/common/text.c:660
+#: src/common/text.c:458 src/common/text.c:514
 msgid "The person being kicked"
 msgstr "Người bị đá"
 
-#: src/common/text.c:605 src/common/text.c:612 src/common/text.c:616
-#: src/common/text.c:621 src/common/text.c:661 src/common/text.c:669
+#: src/common/text.c:459 src/common/text.c:466 src/common/text.c:470
+#: src/common/text.c:475 src/common/text.c:515 src/common/text.c:523
+#: src/common/text.c:530
 msgid "The channel"
 msgstr "Kênh"
 
-#: src/common/text.c:606 src/common/text.c:663 src/common/text.c:670
+#: src/common/text.c:460 src/common/text.c:517 src/common/text.c:524
 msgid "The reason"
 msgstr "Lý do"
 
-#: src/common/text.c:610 src/common/text.c:667
+#: src/common/text.c:464 src/common/text.c:521
 msgid "The nick of the person leaving"
-msgstr "Tên hiệu của người rời đi"
+msgstr "Tên hiệu của người đang rời đi"
 
-#: src/common/text.c:617 src/common/text.c:623
+#: src/common/text.c:471 src/common/text.c:477
 msgid "The time"
 msgstr "Giờ"
 
-#: src/common/text.c:622
+#: src/common/text.c:476
 msgid "The creator"
 msgstr "Tác giả"
 
-#: src/common/text.c:627
+#: src/common/text.c:481
 msgid "Nick"
 msgstr "Tên hiệu"
 
-#: src/common/text.c:628 src/common/text.c:884
+#: src/common/text.c:482 src/common/text.c:739
 msgid "Reason"
 msgstr "Lý do"
 
-#: src/common/text.c:629 src/common/text.c:776 src/common/text.c:859
+#: src/common/text.c:483 src/common/text.c:631 src/common/text.c:714
 msgid "Host"
-msgstr "Máy chủ"
+msgstr "Máy"
 
-#: src/common/text.c:633 src/common/text.c:638 src/common/text.c:643
+#: src/common/text.c:487 src/common/text.c:492 src/common/text.c:497
 msgid "Who it's from"
 msgstr "Người gởi"
 
-#: src/common/text.c:634
+#: src/common/text.c:488
 msgid "The time in x.x format (see below)"
 msgstr "Giờ dạng x.x (xem dưới)"
 
-#: src/common/text.c:644 src/common/text.c:686
+#: src/common/text.c:498 src/common/text.c:541
 msgid "The Channel it's going to"
 msgstr "Kênh sẽ nhận nó"
 
-#: src/common/text.c:674
+#: src/common/text.c:528
 msgid "The sound"
 msgstr "Âm thanh"
 
-#: src/common/text.c:675 src/common/text.c:680 src/common/text.c:685
+#: src/common/text.c:529 src/common/text.c:535 src/common/text.c:540
 msgid "The nick of the person"
 msgstr "Tên hiệu của người ấy"
 
-#: src/common/text.c:679 src/common/text.c:684
+#: src/common/text.c:534 src/common/text.c:539
 msgid "The CTCP event"
 msgstr "Sự kiện CTCP"
 
-#: src/common/text.c:690
+#: src/common/text.c:545
 msgid "The nick of the person who set the key"
 msgstr "Tên hiệu của người đã lập khóa"
 
-#: src/common/text.c:691
+#: src/common/text.c:546
 msgid "The key"
 msgstr "Khóa"
 
-#: src/common/text.c:695
+#: src/common/text.c:550
 msgid "The nick of the person who set the limit"
-msgstr "Tên hiệu của người đã lập tối đa"
+msgstr "Tên hiệu của người đã lập giới hạn"
 
-#: src/common/text.c:696
+#: src/common/text.c:551
 msgid "The limit"
-msgstr "Tối đa"
+msgstr "Giới hạn"
 
-#: src/common/text.c:700
+#: src/common/text.c:555
 msgid "The nick of the person who did the op'ing"
 msgstr "Tên hiệu của người đã lập trạng thái Thao tác (OPerator)"
 
-#: src/common/text.c:701
+#: src/common/text.c:556
 msgid "The nick of the person who has been op'ed"
 msgstr "Tên hiệu của người đã nhận trạng thái Thao tác (OPerator)"
 
-#: src/common/text.c:705
+#: src/common/text.c:560
 msgid "The nick of the person who has been halfop'ed"
 msgstr "Tên hiệu của người đã nhận trạng thái Thao tác nửa (HalfOperator)"
 
-#: src/common/text.c:706
+#: src/common/text.c:561
 msgid "The nick of the person who did the halfop'ing"
 msgstr "Tên hiệu của người đã lập trạng thái Thao tác nửa (HalfOPerator)"
 
-#: src/common/text.c:710
+#: src/common/text.c:565
 msgid "The nick of the person who did the voice'ing"
-msgstr "Tên hiệu của người đã lập trạng thái Nói tiếng (Voice)"
+msgstr "Tên hiệu của người đã lập trạng thái Tiếng Nói (Voice)"
 
-#: src/common/text.c:711
+#: src/common/text.c:566
 msgid "The nick of the person who has been voice'ed"
-msgstr "Tên hiệu của người đã nhận trạng thái Nói tiếng (Voice)"
+msgstr "Tên hiệu của người đã nhận trạng thái Tiếng Nói (Voice)"
 
-#: src/common/text.c:715
+#: src/common/text.c:570
 msgid "The nick of the person who did the banning"
-msgstr "Tên hiệu của người đã đuổi người ấy ra"
+msgstr "Tên hiệu của người đã đuổi người khác"
 
-#: src/common/text.c:716 src/common/text.c:743
+#: src/common/text.c:571 src/common/text.c:598
 msgid "The ban mask"
 msgstr "Mặt nạ đuổi ra"
 
-#: src/common/text.c:720
+#: src/common/text.c:575
 msgid "The nick who removed the key"
-msgstr "Tên hiệu đã bỏ khóa ra"
+msgstr "Tên hiệu đã loại bỏ khóa ra"
 
-#: src/common/text.c:724
+#: src/common/text.c:579
 msgid "The nick who removed the limit"
-msgstr "Tên hiệu đã bỏ tối đa ra"
+msgstr "Tên hiệu đã loại bỏ giới hạn ra"
 
-#: src/common/text.c:728
+#: src/common/text.c:583
 msgid "The nick of the person of did the deop'ing"
-msgstr "Tên hiệu của người đã bỏ trạng thái Thao tác - DE (bỏ) OPerator (Thao tác viên)"
+msgstr "Tên hiệu của người đã bỏ trạng thái Thao tác — DE (bỏ) OPerator (Thao tác viên)"
 
-#: src/common/text.c:729
+#: src/common/text.c:584
 msgid "The nick of the person who has been deop'ed"
-msgstr "Tên hiệu của người mất trạng thái Thao tác - DE (bỏ) OPerator (Thao tác viên)"
+msgstr "Tên hiệu của người mất trạng thái Thao tác — DE (bỏ) OPerator (Thao tác viên)"
 
-#: src/common/text.c:732
+#: src/common/text.c:587
 msgid "The nick of the person of did the dehalfop'ing"
-msgstr "Tên hiệu của người đã bỏ trạng thái Thao tác nửa - DE (bỏ) Half (nửa) OPerator (Thao tác viên)"
+msgstr "Tên hiệu của người đã bỏ trạng thái Thao tác nửa — DE (bỏ) Half (nửa) OPerator (Thao tác viên)"
 
-#: src/common/text.c:733
+#: src/common/text.c:588
 msgid "The nick of the person who has been dehalfop'ed"
-msgstr "Tên hiệu của người mất trạng thái Thao tác nửa - DE (bỏ) Half (nửa) OPerator (Thao tác viên)"
+msgstr "Tên hiệu của người mất trạng thái Thao tác nửa — DE (bỏ) Half (nửa) OPerator (Thao tác viên)"
 
-#: src/common/text.c:737
+#: src/common/text.c:592
 msgid "The nick of the person of did the devoice'ing"
 msgstr "Tên hiệu của người đã bỏ trạng thái Nói tiếng"
 
-#: src/common/text.c:738
+#: src/common/text.c:593
 msgid "The nick of the person who has been devoice'ed"
 msgstr "Tên hiệu của người mất trạng thái Nói tiếng)"
 
-#: src/common/text.c:742
+#: src/common/text.c:597
 msgid "The nick of the person of did the unban'ing"
-msgstr "Tên hiệu của người đã bỏ trạng thái Bị đuổỉ ra - UN (bỏ) BAN (đuổi ra)"
+msgstr "Tên hiệu của người đã bỏ trạng thái Bị đuổỉ ra — UN (bỏ) BAN (đuổi ra)"
 
-#: src/common/text.c:747
+#: src/common/text.c:602
 msgid "The nick of the person who did the exempt"
 msgstr "Tên hiệu của người đã lập trạng thái miễn"
 
-#: src/common/text.c:748 src/common/text.c:753
+#: src/common/text.c:603 src/common/text.c:608
 msgid "The exempt mask"
 msgstr "Mặt nạ miễn"
 
-#: src/common/text.c:752
+#: src/common/text.c:607
 msgid "The nick of the person removed the exempt"
 msgstr "Tên hiệu của người đã bỏ trạng thái miễn"
 
-#: src/common/text.c:757
+#: src/common/text.c:612
 msgid "The nick of the person who did the invite"
 msgstr "Tên hiệu của người mời"
 
-#: src/common/text.c:758 src/common/text.c:763
+#: src/common/text.c:613 src/common/text.c:618
 msgid "The invite mask"
 msgstr "Mặt nạ mờì"
 
-#: src/common/text.c:762
+#: src/common/text.c:617
 msgid "The nick of the person removed the invite"
 msgstr "Tên hiệu của người đã bỏ lời mời)"
 
-#: src/common/text.c:767
+#: src/common/text.c:622
 msgid "The nick of the person setting the mode"
 msgstr "Tên hiệu của người lập chế độ"
 
-#: src/common/text.c:768
+#: src/common/text.c:623
 msgid "The mode's sign (+/-)"
 msgstr "Dấu của chế độ (+/-)"
 
-#: src/common/text.c:769
+#: src/common/text.c:624
 msgid "The mode letter"
 msgstr "Chữ chế độ"
 
-#: src/common/text.c:770
+#: src/common/text.c:625
 msgid "The channel it's being set on"
 msgstr "Lập trên kênh này"
 
-#: src/common/text.c:775
+#: src/common/text.c:630
 msgid "Username"
-msgstr "Tên đăng nhập"
+msgstr "Tên người dùng"
 
-#: src/common/text.c:777
+#: src/common/text.c:632
 msgid "Full name"
 msgstr "Tên họ"
 
-#: src/common/text.c:782
+#: src/common/text.c:637
 msgid "Channel Membership/\"is an IRC operator\""
 msgstr "Tư cách thành viên/\"là toán tử IRC\""
 
-#: src/common/text.c:787
+#: src/common/text.c:642
 msgid "Server Information"
-msgstr "Thông tin máy chủ"
+msgstr "Thông tin máy phục vụ"
 
-#: src/common/text.c:792 src/common/text.c:797
+#: src/common/text.c:647 src/common/text.c:652
 msgid "Idle time"
 msgstr "Thời gian nhàn rỗi"
 
-#: src/common/text.c:798
+#: src/common/text.c:653
 msgid "Signon time"
 msgstr "Giờ đăng nhập"
 
-#: src/common/text.c:803
+#: src/common/text.c:658
 msgid "Away reason"
 msgstr "Lý do vắng mặt"
 
-#: src/common/text.c:812 src/common/text.c:818 src/common/text.c:826
-#: src/common/text.c:1004
+#: src/common/text.c:667 src/common/text.c:673 src/common/text.c:681
+#: src/common/text.c:859
 msgid "Message"
 msgstr "Tin nhẳn"
 
-#: src/common/text.c:819
+#: src/common/text.c:674
 msgid "Account"
 msgstr "Tài khoản"
 
-#: src/common/text.c:824
+#: src/common/text.c:679
 msgid "Real user@host"
-msgstr "Người dùng thât@máy chủ"
+msgstr "Người dùng thât@máy"
 
-#: src/common/text.c:825
+#: src/common/text.c:680
 msgid "Real IP"
 msgstr "Địa chỉ IP"
 
-#: src/common/text.c:830 src/common/text.c:839 src/common/text.c:845
-#: src/common/text.c:1027
+#: src/common/text.c:685 src/common/text.c:694 src/common/text.c:700
+#: src/common/text.c:728 src/common/text.c:882
 msgid "Channel Name"
 msgstr "Tên kênh"
 
-#: src/common/text.c:834 src/common/text.c:990 src/fe-gtk/textgui.c:338
+#: src/common/text.c:689 src/common/text.c:845 src/fe-gtk/textgui.c:338
 msgid "Text"
-msgstr "Câu"
+msgstr "Đoạn"
 
-#: src/common/text.c:835 src/common/text.c:841 src/common/text.c:1028
+#: src/common/text.c:690 src/common/text.c:696 src/common/text.c:841
+#: src/common/text.c:883
 msgid "Server Name"
-msgstr "Tên máy chủ"
+msgstr "Tên máy phục vụ"
 
-#: src/common/text.c:840
+#: src/common/text.c:695
 msgid "Nick of person who invited you"
 msgstr "Tên hiệu của người đã mời bạn"
 
-#: src/common/text.c:846 src/fe-gtk/chanlist.c:598
+#: src/common/text.c:701 src/fe-gtk/chanlist.c:598
 msgid "Users"
 msgstr "Người dùng"
 
-#: src/common/text.c:850
+#: src/common/text.c:705
 msgid "Nickname in use"
 msgstr "Tên hiệu đã chọn rồi"
 
-#: src/common/text.c:851
+#: src/common/text.c:706
 msgid "Nick being tried"
-msgstr "Tên hiệu được thử hiện có"
+msgstr "Tên hiệu đang được thử ra"
 
-#: src/common/text.c:855 src/common/text.c:891 src/common/text.c:902
-#: src/common/text.c:909 src/common/text.c:922 src/common/text.c:939
-#: src/common/text.c:1039 src/common/util.c:352
+#: src/common/text.c:710 src/common/text.c:746 src/common/text.c:757
+#: src/common/text.c:764 src/common/text.c:777 src/common/text.c:794
+#: src/common/text.c:894 src/common/util.c:352
 msgid "Error"
 msgstr "Lỗi"
 
-#: src/common/text.c:860 src/common/text.c:994
+#: src/common/text.c:715 src/common/text.c:849
 msgid "IP"
 msgstr "IP"
 
-#: src/common/text.c:861 src/common/text.c:890
+#: src/common/text.c:716 src/common/text.c:745
 msgid "Port"
 msgstr "Cổng"
 
-#: src/common/text.c:865
+#: src/common/text.c:720
 msgid "PID"
 msgstr "PID"
 
-#: src/common/text.c:873
-msgid "Channel name"
-msgstr "Tên kênh"
-
-#: src/common/text.c:874 src/common/text.c:879
+#: src/common/text.c:729 src/common/text.c:734
 msgid "Modes string"
 msgstr "Chuỗi chế độ"
 
-#: src/common/text.c:889 src/common/text.c:927 src/common/text.c:932
-#: src/common/text.c:973
+#: src/common/text.c:744 src/common/text.c:782 src/common/text.c:787
+#: src/common/text.c:828
 msgid "IP address"
 msgstr "Địa chỉ IP"
 
-#: src/common/text.c:895 src/common/text.c:920
+#: src/common/text.c:750 src/common/text.c:775
 msgid "DCC Type"
 msgstr "Loại DCC"
 
-#: src/common/text.c:896 src/common/text.c:901 src/common/text.c:906
-#: src/common/text.c:913 src/common/text.c:933 src/common/text.c:937
-#: src/common/text.c:943 src/common/text.c:949 src/common/text.c:956
-#: src/common/text.c:965 src/common/text.c:971
+#: src/common/text.c:751 src/common/text.c:756 src/common/text.c:761
+#: src/common/text.c:768 src/common/text.c:788 src/common/text.c:792
+#: src/common/text.c:798 src/common/text.c:804 src/common/text.c:811
+#: src/common/text.c:820 src/common/text.c:826
 msgid "Filename"
 msgstr "Tên tập tin"
 
-#: src/common/text.c:907 src/common/text.c:914
+#: src/common/text.c:762 src/common/text.c:769
 msgid "Destination filename"
-msgstr "Tên tập tin nơi nhận"
+msgstr "Tên tập tin đích"
 
-#: src/common/text.c:916 src/common/text.c:945
+#: src/common/text.c:771 src/common/text.c:800
 msgid "CPS"
 msgstr "CPS"
 
-#: src/common/text.c:951
+#: src/common/text.c:806
 msgid "Pathname"
-msgstr "Đường dẫn"
+msgstr "Tên đường dẫn"
 
-#: src/common/text.c:966 src/fe-gtk/dccgui.c:518 src/fe-gtk/dccgui.c:676
+#: src/common/text.c:821 src/fe-gtk/dccgui.c:537 src/fe-gtk/dccgui.c:707
 msgid "Position"
 msgstr "Vị trí"
 
-#: src/common/text.c:972 src/fe-gtk/dccgui.c:517 src/fe-gtk/dccgui.c:675
+#: src/common/text.c:827 src/fe-gtk/dccgui.c:536 src/fe-gtk/dccgui.c:706
 msgid "Size"
 msgstr "Cỡ"
 
-#: src/common/text.c:977
+#: src/common/text.c:832
 msgid "DCC String"
 msgstr "Chuỗi DCC"
 
-#: src/common/text.c:982
+#: src/common/text.c:837
 msgid "Number of notify items"
 msgstr "Số mục thông báo"
 
-#: src/common/text.c:986
-msgid "Servername"
-msgstr "Tên máy chủ"
-
-#: src/common/text.c:998
+#: src/common/text.c:853
 msgid "Old Filename"
 msgstr "Tên tập tin cũ"
 
-#: src/common/text.c:999
+#: src/common/text.c:854
 msgid "New Filename"
 msgstr "Tên tập tin mới"
 
-#: src/common/text.c:1003
+#: src/common/text.c:858
 msgid "Receiver"
-msgstr "Máy/người nhận"
+msgstr "Bộ nhận"
 
-#: src/common/text.c:1008
+#: src/common/text.c:863
 msgid "Hostmask"
-msgstr "Mặt nạ máy chủ"
+msgstr "Mặt nạ máy"
 
-#: src/common/text.c:1013
+#: src/common/text.c:868
 msgid "Hostname"
-msgstr "Tên máy chủ"
+msgstr "Tên máy"
 
-#: src/common/text.c:1018
+#: src/common/text.c:873
 msgid "The Packet"
 msgstr "Gói"
 
-#: src/common/text.c:1022
+#: src/common/text.c:877
 msgid "Seconds"
 msgstr "Giây"
 
-#: src/common/text.c:1026
+#: src/common/text.c:881
 msgid "Nick of person who have been invited"
 msgstr "Tên người được mời"
 
-#: src/common/text.c:1033
+#: src/common/text.c:888
 msgid "Banmask"
 msgstr "Mặt nạ đuổi ra"
 
-#: src/common/text.c:1034
+#: src/common/text.c:889
 msgid "Who set the ban"
 msgstr "Người lập đuổi ra"
 
-#: src/common/text.c:1035
+#: src/common/text.c:890
 msgid "Ban time"
 msgstr "Thời gian đuổi ra"
 
-#: src/common/text.c:1075
+#: src/common/text.c:930
 #, c-format
 msgid ""
 "Error parsing event %s.\n"
 "Loading default."
 msgstr ""
-"Gặp lỗi khi phân tách sự kiện %s.\n"
-"Nạp dữ liệu mặc định."
+"Gặp lỗi khi phân tách sự kiện « %s ».\n"
+"Đang tải mặc định."
 
-#: src/common/text.c:1713
+#: src/common/text.c:1583
 #, c-format
 msgid ""
 "Cannot read sound file:\n"
@@ -1546,27 +1534,27 @@ msgstr ""
 
 #: src/common/util.c:296
 msgid "Remote host closed socket"
-msgstr "Máy chủ từ xa mới đóng ổ cắm"
+msgstr "Máy từ xa mới đóng ổ cắm."
 
 #: src/common/util.c:301
 msgid "Connection refused"
-msgstr "Kết nối bị từ chối rồi"
+msgstr "Kết nối bị từ chối."
 
 #: src/common/util.c:304
 msgid "No route to host"
-msgstr "Không có đường dẫn đến máy chủ"
+msgstr "Không có đường dẫn đến máy."
 
 #: src/common/util.c:306
 msgid "Connection timed out"
-msgstr "Kết nối hết thời gian rồi"
+msgstr "Kết nối hết thời gian."
 
 #: src/common/util.c:308
 msgid "Cannot assign that address"
-msgstr "Không gán được địa chỉ ấy"
+msgstr "Không gán được địa chỉ ấy."
 
 #: src/common/util.c:310
 msgid "Connection reset by peer"
-msgstr "Kết nối bị ngắt do máy ngang hàng"
+msgstr "Kết nối bị ngắt do ngang hàng."
 
 #: src/common/util.c:821
 msgid "Andorra"
@@ -1722,11 +1710,11 @@ msgstr "Bê-li-xê"
 
 #: src/common/util.c:859
 msgid "Canada"
-msgstr "Gia-na-đại"
+msgstr "Ca-na-đa"
 
 #: src/common/util.c:860
 msgid "Cocos Islands"
-msgstr "Quần đảo Cocox"
+msgstr "Quần đảo Cô-côc-x"
 
 #: src/common/util.c:861
 msgid "Democratic Republic of Congo"
@@ -1786,7 +1774,7 @@ msgstr "Cu-ba"
 
 #: src/common/util.c:875
 msgid "Cape Verde"
-msgstr "Cáp-ve-đ"
+msgstr "Cáp-ve-đe"
 
 #: src/common/util.c:876
 msgid "Christmas Island"
@@ -2098,7 +2086,7 @@ msgstr "Le-ba-non"
 
 #: src/common/util.c:953
 msgid "Saint Lucia"
-msgstr "Xan Lu-xi"
+msgstr "Xan Lu-xia"
 
 #: src/common/util.c:954
 msgid "Liechtenstein"
@@ -2600,235 +2588,235 @@ msgstr "Dăm-bi-a"
 msgid "Zimbabwe"
 msgstr "Dim-ba-bu-ê"
 
-#: src/common/util.c:1088 src/common/util.c:1098 src/fe-gtk/menu.c:478
-#: src/fe-gtk/menu.c:482 src/fe-gtk/menu.c:486 src/fe-gtk/menu.c:490
-#: src/fe-gtk/menu.c:494
+#: src/common/util.c:1088 src/common/util.c:1098 src/fe-gtk/menu.c:499
+#: src/fe-gtk/menu.c:503 src/fe-gtk/menu.c:507 src/fe-gtk/menu.c:511
+#: src/fe-gtk/menu.c:520 src/fe-gtk/menu.c:526
 msgid "Unknown"
 msgstr "Chưa biết"
 
-#: src/common/xchat.c:929
+#: src/common/xchat.c:860
 msgid "Direct client-to-client"
-msgstr "Trực tiếp máy-đến-máy"
+msgstr "Trực tiếp khách-đến-khách"
 
-#: src/common/xchat.c:930
+#: src/common/xchat.c:861
 msgid "Send File"
 msgstr "Gởi tập tin"
 
-#: src/common/xchat.c:931
+#: src/common/xchat.c:862
 msgid "Offer Chat"
 msgstr "Mời trò chuyện"
 
-#: src/common/xchat.c:932
+#: src/common/xchat.c:863
 msgid "Abort Chat"
-msgstr "Thôi trò chuyện"
+msgstr "Hủy bỏ trò chuyện"
 
-#: src/common/xchat.c:933 src/fe-gtk/plugingui.c:73
+#: src/common/xchat.c:864 src/fe-gtk/plugingui.c:73
 msgid "Version"
 msgstr "Phiên bản"
 
-#: src/common/xchat.c:934
+#: src/common/xchat.c:865
 msgid "Userinfo"
 msgstr "Thông tin người dùng"
 
-#: src/common/xchat.c:935
+#: src/common/xchat.c:866
 msgid "Clientinfo"
-msgstr "Thông tin ứng dụng khách"
+msgstr "Thông tin khách"
 
-#: src/common/xchat.c:936 src/common/xchat.c:970 src/common/xchat.c:1021
+#: src/common/xchat.c:867 src/common/xchat.c:901 src/common/xchat.c:952
 msgid "Ping"
 msgstr "Ping"
 
-#: src/common/xchat.c:937
+#: src/common/xchat.c:868
 msgid "Time"
 msgstr "Thòi gian"
 
-#: src/common/xchat.c:938
+#: src/common/xchat.c:869
 msgid "Finger"
 msgstr "Finger"
 
-#: src/common/xchat.c:939
+#: src/common/xchat.c:870
 msgid "Oper"
 msgstr "Tháo tác"
 
-#: src/common/xchat.c:940
+#: src/common/xchat.c:871
 msgid "Kill this user"
 msgstr "«Giết» người này"
 
-#: src/common/xchat.c:941
+#: src/common/xchat.c:872
 msgid "Mode"
 msgstr "Chế độ"
 
-#: src/common/xchat.c:942
+#: src/common/xchat.c:873
 msgid "Give Ops"
 msgstr "Cho Tháo tác"
 
-#: src/common/xchat.c:943
+#: src/common/xchat.c:874
 msgid "Take Ops"
 msgstr "Bỏ Tháo tác"
 
-#: src/common/xchat.c:944
+#: src/common/xchat.c:875
 msgid "Give Half-Ops"
 msgstr "Cho Tháo tác nửa"
 
-#: src/common/xchat.c:945
+#: src/common/xchat.c:876
 msgid "Take Half-Ops"
 msgstr "Bỏ Thao tác nửa"
 
-#: src/common/xchat.c:946
+#: src/common/xchat.c:877
 msgid "Give Voice"
-msgstr "Cho Nói"
+msgstr "Cho Tiếng nói"
 
-#: src/common/xchat.c:947
+#: src/common/xchat.c:878
 msgid "Take Voice"
-msgstr "Không cho Nói"
+msgstr "Bỏ Tiếng nói"
 
-#: src/common/xchat.c:948
+#: src/common/xchat.c:879
 msgid "Ignore"
 msgstr "Bỏ qua"
 
-#: src/common/xchat.c:949
+#: src/common/xchat.c:880
 msgid "Ignore User"
 msgstr "Bỏ qua người"
 
-#: src/common/xchat.c:950
+#: src/common/xchat.c:881
 msgid "UnIgnore User"
-msgstr "Không bỏ qua người"
+msgstr "Thôi bỏ qua người"
 
-#: src/common/xchat.c:951
+#: src/common/xchat.c:882
 msgid "Kick/Ban"
 msgstr "Đá/Đuổi"
 
-#: src/common/xchat.c:952 src/common/xchat.c:1004
+#: src/common/xchat.c:883 src/common/xchat.c:935
 msgid "Kick"
 msgstr "Đá"
 
-#: src/common/xchat.c:953 src/common/xchat.c:954 src/common/xchat.c:955
-#: src/common/xchat.c:956 src/common/xchat.c:957 src/common/xchat.c:1003
+#: src/common/xchat.c:884 src/common/xchat.c:885 src/common/xchat.c:886
+#: src/common/xchat.c:887 src/common/xchat.c:888 src/common/xchat.c:934
 msgid "Ban"
 msgstr "Đuổi"
 
-#: src/common/xchat.c:958 src/common/xchat.c:959 src/common/xchat.c:960
-#: src/common/xchat.c:961
+#: src/common/xchat.c:889 src/common/xchat.c:890 src/common/xchat.c:891
+#: src/common/xchat.c:892
 msgid "KickBan"
 msgstr "Đá đuổi"
 
-#: src/common/xchat.c:962 src/fe-gtk/dccgui.c:564 src/fe-gtk/dccgui.c:712
+#: src/common/xchat.c:893 src/fe-gtk/dccgui.c:584 src/fe-gtk/dccgui.c:742
 msgid "Info"
 msgstr "Thông tin"
 
-#: src/common/xchat.c:963
+#: src/common/xchat.c:894
 msgid "Who"
 msgstr "Ai"
 
-#: src/common/xchat.c:964 src/common/xchat.c:1017
+#: src/common/xchat.c:895 src/common/xchat.c:948
 msgid "WhoIs"
-msgstr "Whois"
+msgstr "Whois (là ai?)"
 
-#: src/common/xchat.c:965
+#: src/common/xchat.c:896
 msgid "DNS Lookup"
 msgstr "Tra cứu DNS"
 
-#: src/common/xchat.c:966
+#: src/common/xchat.c:897
 msgid "Trace"
 msgstr "Dấu vết"
 
-#: src/common/xchat.c:967
+#: src/common/xchat.c:898
 msgid "UserHost"
 msgstr "Người/máy"
 
-#: src/common/xchat.c:968
+#: src/common/xchat.c:899
 msgid "External"
-msgstr "Ở ngoài"
+msgstr "Bên ngoài"
 
-#: src/common/xchat.c:969
+#: src/common/xchat.c:900
 msgid "Traceroute"
 msgstr "Tìm thấy dấu vết đường"
 
-#: src/common/xchat.c:971
+#: src/common/xchat.c:902
 msgid "Telnet"
 msgstr "Telnet"
 
-#: src/common/xchat.c:972
+#: src/common/xchat.c:903
 msgid "Open Dialog Window"
 msgstr "Mở cửa sổ đối thoại"
 
-#: src/common/xchat.c:984
+#: src/common/xchat.c:915
 msgid "Disconnect"
 msgstr "Ngắt kết nối"
 
-#: src/common/xchat.c:985
+#: src/common/xchat.c:916
 msgid "Reconnect"
 msgstr "Kết nối lại"
 
-#: src/common/xchat.c:986
+#: src/common/xchat.c:917
 msgid "Leave Channel"
 msgstr "Rời kênh đi"
 
-#: src/common/xchat.c:987
+#: src/common/xchat.c:918
 msgid "Join Channel..."
 msgstr "Vào kênh..."
 
-#: src/common/xchat.c:988
+#: src/common/xchat.c:919
 msgid "Enter Channel to Join:"
-msgstr "Gõ kênh để vào:"
+msgstr "Gõ kênh cần vào:"
 
-#: src/common/xchat.c:989
+#: src/common/xchat.c:920
 msgid "Server Links"
-msgstr "Liên kết máy chủ"
+msgstr "Liên kết máy phục vụ"
 
-#: src/common/xchat.c:990
+#: src/common/xchat.c:921
 msgid "Ping Server"
-msgstr "Máy chủ ping"
+msgstr "Máy phục vụ ping"
 
-#: src/common/xchat.c:991
+#: src/common/xchat.c:922
 msgid "Hide Version"
-msgstr " Ẩn phiên bản"
+msgstr "Ẩn phiên bản"
 
-#: src/common/xchat.c:1001
+#: src/common/xchat.c:932
 msgid "Op"
 msgstr "Tháo tác"
 
-#: src/common/xchat.c:1002
+#: src/common/xchat.c:933
 msgid "DeOp"
 msgstr "Bỏ thao tác"
 
-#: src/common/xchat.c:1005
+#: src/common/xchat.c:936
 msgid "bye"
 msgstr "tạm biệt"
 
-#: src/common/xchat.c:1006
+#: src/common/xchat.c:937
 #, c-format
 msgid "Enter reason to kick %s:"
-msgstr "Gõ lý do sẽ đá: %s"
+msgstr "Gõ lý do đá: %s"
 
-#: src/common/xchat.c:1007
+#: src/common/xchat.c:938
 msgid "Sendfile"
 msgstr "Gởi tập tin"
 
-#: src/common/xchat.c:1008
+#: src/common/xchat.c:939
 msgid "Dialog"
 msgstr "Đôi thoại"
 
-#: src/common/xchat.c:1018
+#: src/common/xchat.c:949
 msgid "Send"
 msgstr "Gởi"
 
-#: src/common/xchat.c:1019
+#: src/common/xchat.c:950
 msgid "Chat"
 msgstr "Trò chuyện"
 
-#: src/common/xchat.c:1020 src/fe-gtk/banlist.c:319 src/fe-gtk/ignoregui.c:388
-#: src/fe-gtk/search.c:117 src/fe-gtk/urlgrab.c:200
+#: src/common/xchat.c:951 src/fe-gtk/banlist.c:319 src/fe-gtk/ignoregui.c:388
+#: src/fe-gtk/search.c:117 src/fe-gtk/urlgrab.c:201
 msgid "Clear"
 msgstr "Xóa"
 
 #: src/fe-gtk/about.c:102
 msgid "About X-Chat"
-msgstr "Về trình X-Chat"
+msgstr "Giới thiệu X-Chat"
 
-#: src/fe-gtk/about.c:124
+#: src/fe-gtk/about.c:129
 msgid "A multiplatform IRC Client"
-msgstr "Ứng dụng khách IRC đa nền"
+msgstr "Khách IRC đa nền"
 
 #: src/fe-gtk/ascii.c:131
 msgid "Character Chart"
@@ -2842,7 +2830,7 @@ msgstr "Phải chọn sự đuổi ra."
 msgid "Mask"
 msgstr "Mặt nạ "
 
-#: src/fe-gtk/banlist.c:254 src/fe-gtk/dccgui.c:520
+#: src/fe-gtk/banlist.c:254 src/fe-gtk/dccgui.c:539
 msgid "From"
 msgstr "Từ"
 
@@ -2865,7 +2853,7 @@ msgstr "Xén"
 
 #: src/fe-gtk/banlist.c:321
 msgid "Refresh"
-msgstr "Làm tươi"
+msgstr "Cập nhật"
 
 #: src/fe-gtk/chanlist.c:120
 #, c-format
@@ -2876,7 +2864,7 @@ msgstr "Thống kê người/kênh: %d/%d người trên %d/%d kênh"
 msgid "I can't save an empty list!"
 msgstr "Không lưu được danh sách trống không."
 
-#: src/fe-gtk/chanlist.c:539 src/fe-gtk/menu.c:924
+#: src/fe-gtk/chanlist.c:539 src/fe-gtk/menu.c:934 src/fe-gtk/urlgrab.c:148
 msgid "Select an output filename"
 msgstr "Hãy chọn tên tập tin xuất"
 
@@ -2891,11 +2879,11 @@ msgstr "Liệt kê các tùy chọn trình bày:"
 
 #: src/fe-gtk/chanlist.c:634
 msgid "Minimum Users:"
-msgstr "Tối thiểu người:"
+msgstr "Số nguời tối thiểu:"
 
 #: src/fe-gtk/chanlist.c:649
 msgid "Maximum Users:"
-msgstr "Tối đa người:"
+msgstr "Số người tối đa:"
 
 #: src/fe-gtk/chanlist.c:664
 msgid "Regex Match:"
@@ -2903,7 +2891,7 @@ msgstr "Khớp biểu thức chính quy:"
 
 #: src/fe-gtk/chanlist.c:685
 msgid "Apply Match to:"
-msgstr "Áp dụng điều khớp vào:"
+msgstr "Khớp với:"
 
 #: src/fe-gtk/chanlist.c:709
 msgid "Apply"
@@ -2911,43 +2899,58 @@ msgstr "Áp dụng"
 
 #: src/fe-gtk/chanlist.c:751
 msgid "Refresh the list"
-msgstr "Làm tươi danh sách"
+msgstr "Cập nhật danh sách"
 
 #: src/fe-gtk/chanlist.c:753
 msgid "Save the list"
 msgstr "Lưu danh sách"
 
-#: src/fe-gtk/chanlist.c:755 src/fe-gtk/menu.c:721
+#: src/fe-gtk/chanlist.c:755 src/fe-gtk/menu.c:731
 msgid "Join Channel"
 msgstr "Vào kênh"
 
-#: src/fe-gtk/dccgui.c:126
+#: src/fe-gtk/dccgui.c:117
 #, c-format
 msgid "Send file to %s"
-msgstr "Gởi tập tin vào %s"
+msgstr "Gởi tập tin vào « %s »"
 
-#: src/fe-gtk/dccgui.c:346
-#, c-format
-msgid ""
-"      File: %s\n"
-"   To/From: %s\n"
-"      Size: %u\n"
-"      Port: %d\n"
-" IP Number: %s\n"
-"Start Time: %s   Max CPS: %d\n"
-msgstr ""
-"      Tập tin: %s\n"
-"   Cho/Từ: %s\n"
-"      Cỡ: %u\n"
-"      Cổng: %d\n"
-" Số IP: %s\n"
-"Giờ bắt đầu: %s   Tối đa CPS: %d\n"
+#: src/fe-gtk/dccgui.c:340
+msgid "None"
+msgstr "Không có"
 
-#: src/fe-gtk/dccgui.c:379
+#: src/fe-gtk/dccgui.c:351
+msgid "File:"
+msgstr "Tập tin:"
+
+#: src/fe-gtk/dccgui.c:352
+msgid "From:"
+msgstr "Từ:"
+
+#: src/fe-gtk/dccgui.c:352
+msgid "To:"
+msgstr "Cho:"
+
+#: src/fe-gtk/dccgui.c:353
+msgid "Size:"
+msgstr "Cỡ:"
+
+#: src/fe-gtk/dccgui.c:354
+msgid "Address:"
+msgstr "Địa chỉ:"
+
+#: src/fe-gtk/dccgui.c:355
+msgid "Started:"
+msgstr "Bắt đầu:"
+
+#: src/fe-gtk/dccgui.c:356
+msgid "Speed limit:"
+msgstr "Giới hạn tốc độ:"
+
+#: src/fe-gtk/dccgui.c:381
 msgid "That file is not resumable."
-msgstr "Không tiếp tục được tập tin ấy."
+msgstr "Không thể tiếp tục tập tin ấy."
 
-#: src/fe-gtk/dccgui.c:383
+#: src/fe-gtk/dccgui.c:385
 #, c-format
 msgid ""
 "Cannot access file: %s\n"
@@ -2956,82 +2959,82 @@ msgid ""
 msgstr ""
 "Không truy cập được tập tin: %s\n"
 "%s.\n"
-"Không tiếp tục được."
+"Không thể tiếp tục."
 
-#: src/fe-gtk/dccgui.c:390
+#: src/fe-gtk/dccgui.c:392
 msgid "File in download directory is larger than file offered. Resuming not possible."
 msgstr "Tập tin trong thư mục tải về là lớn hơn tập tin đã cho nên không tiếp tục được."
 
-#: src/fe-gtk/dccgui.c:394
+#: src/fe-gtk/dccgui.c:396
 msgid "Cannot resume the same file from two people."
 msgstr "Không tiếp tục được cùng một tập tin từ hai người khác."
 
-#: src/fe-gtk/dccgui.c:509
+#: src/fe-gtk/dccgui.c:528
 msgid "MIME Type"
 msgstr "Loại MIME"
 
-#: src/fe-gtk/dccgui.c:515 src/fe-gtk/dccgui.c:673 src/fe-gtk/dccgui.c:796
-#: src/fe-gtk/notifygui.c:110
+#: src/fe-gtk/dccgui.c:534 src/fe-gtk/dccgui.c:704 src/fe-gtk/dccgui.c:847
+#: src/fe-gtk/notifygui.c:111
 msgid "Status"
-msgstr "Tình trạng"
+msgstr "Trạng thái"
 
-#: src/fe-gtk/dccgui.c:516 src/fe-gtk/dccgui.c:674 src/fe-gtk/plugingui.c:74
+#: src/fe-gtk/dccgui.c:535 src/fe-gtk/dccgui.c:705 src/fe-gtk/plugingui.c:74
 msgid "File"
 msgstr "Tập tin"
 
-#: src/fe-gtk/dccgui.c:519 src/fe-gtk/dccgui.c:678
+#: src/fe-gtk/dccgui.c:538 src/fe-gtk/dccgui.c:709
 msgid "ETA"
 msgstr "Giờ tới xấp xỉ"
 
-#: src/fe-gtk/dccgui.c:529
+#: src/fe-gtk/dccgui.c:548
 msgid "X-Chat: File Receive List"
 msgstr "X-Chat: Danh sách nhận tập tin"
 
-#: src/fe-gtk/dccgui.c:558 src/fe-gtk/dccgui.c:711 src/fe-gtk/dccgui.c:826
+#: src/fe-gtk/dccgui.c:578 src/fe-gtk/dccgui.c:741 src/fe-gtk/dccgui.c:879
 msgid "Abort"
 msgstr "Hủy bỏ"
 
-#: src/fe-gtk/dccgui.c:560 src/fe-gtk/dccgui.c:827
+#: src/fe-gtk/dccgui.c:580 src/fe-gtk/dccgui.c:880
 msgid "Accept"
 msgstr "Chấp nhận"
 
-#: src/fe-gtk/dccgui.c:562
+#: src/fe-gtk/dccgui.c:582
 msgid "Resume"
 msgstr "Tiếp tục"
 
-#: src/fe-gtk/dccgui.c:566
+#: src/fe-gtk/dccgui.c:586
 msgid "Open"
 msgstr "Mở"
 
-#: src/fe-gtk/dccgui.c:677
+#: src/fe-gtk/dccgui.c:708
 msgid "Ack"
 msgstr "Ghi nhập"
 
-#: src/fe-gtk/dccgui.c:679
+#: src/fe-gtk/dccgui.c:710
 msgid "To"
 msgstr "Cho"
 
-#: src/fe-gtk/dccgui.c:689
+#: src/fe-gtk/dccgui.c:720
 msgid "X-Chat: File Send List"
 msgstr "X-Chat: Danh sách gởi tập tin"
 
-#: src/fe-gtk/dccgui.c:797
+#: src/fe-gtk/dccgui.c:848
 msgid "To/From"
 msgstr "Cho/Từ"
 
-#: src/fe-gtk/dccgui.c:798
+#: src/fe-gtk/dccgui.c:849
 msgid "Recv"
 msgstr "Nhận"
 
-#: src/fe-gtk/dccgui.c:799
+#: src/fe-gtk/dccgui.c:850
 msgid "Sent"
-msgstr "Gởi rồi"
+msgstr "Gởi"
 
-#: src/fe-gtk/dccgui.c:800
+#: src/fe-gtk/dccgui.c:851
 msgid "StartTime"
 msgstr "Giờ bắt đầu"
 
-#: src/fe-gtk/dccgui.c:810
+#: src/fe-gtk/dccgui.c:861
 msgid "X-Chat: DCC Chat List"
 msgstr "X-Chat: Danh sách trò chuyện trực tiếp (DCC)"
 
@@ -3041,7 +3044,7 @@ msgstr "*Mới*"
 
 #: src/fe-gtk/editlist.c:140
 msgid "EDIT ME"
-msgstr "Nhập ở đây"
+msgstr "Gõ vào đây"
 
 #: src/fe-gtk/editlist.c:305 src/fe-gtk/plugingui.c:72
 msgid "Name"
@@ -3063,15 +3066,15 @@ msgstr "Đi xuống"
 msgid "Cancel"
 msgstr "Thôi"
 
-#: src/fe-gtk/editlist.c:349 src/fe-gtk/textgui.c:413 src/fe-gtk/urlgrab.c:204
+#: src/fe-gtk/editlist.c:349 src/fe-gtk/textgui.c:413 src/fe-gtk/urlgrab.c:205
 msgid "Save"
 msgstr "Lưu"
 
-#: src/fe-gtk/editlist.c:357
+#: src/fe-gtk/editlist.c:357 src/fe-gtk/fkeys.c:747
 msgid "Add New"
 msgstr "Thêm mới"
 
-#: src/fe-gtk/editlist.c:361 src/fe-gtk/fkeys.c:751 src/fe-gtk/ignoregui.c:386
+#: src/fe-gtk/editlist.c:361 src/fe-gtk/fkeys.c:752 src/fe-gtk/ignoregui.c:386
 msgid "Delete"
 msgstr "Xóa bỏ"
 
@@ -3089,7 +3092,7 @@ msgstr "Tùy chọn"
 
 #: src/fe-gtk/fe-gtk.c:171
 msgid "don't auto connect"
-msgstr "không tự động kết nối"
+msgstr "đừng tự động kết nối"
 
 #: src/fe-gtk/fe-gtk.c:172
 msgid "DIRECTORY"
@@ -3097,15 +3100,15 @@ msgstr "Thư mục"
 
 #: src/fe-gtk/fe-gtk.c:173
 msgid "use a different config dir"
-msgstr "sử dụng một tập tin cấu hình khác"
+msgstr "dùng thư mục cấu hình khác"
 
 #: src/fe-gtk/fe-gtk.c:174
 msgid "don't auto load any plugins"
-msgstr "không tự động tải trình cầm phít nào"
+msgstr "đừng tự động tải bộ cầm phít nào"
 
 #: src/fe-gtk/fe-gtk.c:175
 msgid "show plugin auto-load dir"
-msgstr "hiển thị thư mục của trình cầm phít sẽ tự động nạp"
+msgstr "hiển thị thư mục của bộ cầm phít cần tự động tải"
 
 #: src/fe-gtk/fe-gtk.c:176
 msgid "show user config dir"
@@ -3122,7 +3125,7 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
-"Không mở được phông chữ\n"
+"Không mở phông chữ được:\n"
 "\n"
 "%s"
 
@@ -3133,55 +3136,55 @@ msgstr "Bộ đệm tìm kiếm là trống không.\n"
 #: src/fe-gtk/fe-gtk.c:699
 #, c-format
 msgid "%d bytes"
-msgstr "%d bytes"
+msgstr "%d byte"
 
 #: src/fe-gtk/fkeys.c:155
 msgid "The Run Command action runs the data in Data 1 as if it has been typed into the entry box where you pressed the key sequence. Thus it can contain text (which will be sent to the channel/person), commands or user commands. When run all \\n characters in Data 1 are used to deliminate seperate commands so it is possible to run more than one command. If you want a \\ in the actual text run then enter \\\\"
-msgstr "Hành động Chạy lệnh thì thi hành dữ liệu trong Dữ liệu 1 giống như đã gõ nó trong hộp nhập nơi nào bạn đã bấm dãy phím ấy. Vậy nó có thể bao gồm câu (sẽ gởi câu ấy cho kênh/người), lệnh hay lệnh của người dùng. Khi thi hành thì sử dụng mọi ký tự \\n trong Dữ liệu 1 để phân cách những lệnh khác để mà có thể chạy nhiều lệnh. Nếu muốn ký tự \\ trong câu thật thì hãy gõ \\\\."
+msgstr "Hành động « Chạy lệnh » thì thi hành dữ liệu trong « Dữ liệu 1 » giống như đã gõ nó trong hộp nhập nơi nào bạn đã bấm dãy phím ấy. Vậy nó có thể bao gồm đoạn (sẽ gởi nó cho kênh/người), lệnh hay lệnh của người dùng. Khi thi hành thì sử dụng mọi ký tự « \\n » trong « Dữ liệu 1 » để phân cách những lệnh khác để mà có thể chạy nhiều lệnh. Nếu muốn ký tự « \\ » trong câu thật thì hãy gõ « \\\\ »."
 
 #: src/fe-gtk/fkeys.c:157
 msgid "The Change Page command switches between pages in the notebook. Set Data 1 to the page you want to switch to. If Data 2 is set to anything then the switch will be relative to the current position"
-msgstr "Lệnh Đổi trang thì trao đổi giữa trang khác nhau trong cuốn vở. Hãy lập Dữ liệụ 1 thành trang mà bạn muốn trao đổi tới nó. Nếu đã lập Dữ liêu 2 thành gì, thì việc trao đổi sẽ cân xứng với vị trí hiện có."
+msgstr "Lệnh « Đổi trang » thì chuyển đổi giữa trang trong cuốn vở. Hãy lập « Dữ liệụ 1 » thành trang mà bạn muốn chuyển đổi tới nó. Nếu đã lập « Dữ liêu 2 » thành gì, thì việc trao đổi sẽ cân xứng với vị trí hiện có."
 
 #: src/fe-gtk/fkeys.c:159
 msgid "The Insert in Buffer command will insert the contents of Data 1 into the entry where the key sequence was pressed at the current cursor position"
-msgstr "Lệnh Chèn vào bộ đệm thì chèn nội dung của Dữ liệu 1 vào trường nơi mà bạn đã bấm phím, tại vị tri con trỏ hiện có."
+msgstr "Lệnh « Chèn vào bộ đệm » thì chèn nội dung của « Dữ liệu 1 » vào trường nơi mà bạn đã bấm phím, tại vị tri con trỏ hiện có."
 
 #: src/fe-gtk/fkeys.c:161
 msgid "The Scroll Page command scrolls the text widget up or down one page or one line. Set Data 1 to either Up, Down, +1 or -1."
-msgstr "Lệnh Cuộn trang thì cuộn thành phần văn bản lên hay xuống một trang hay một dòng. Hãy lập Dữ liệu 1 thành Lên, Xuống, +1 hay -1."
+msgstr "Lệnh « Cuộn trang » thì cuộn ô điều khiển văn bản lên hay xuống một trang hay một dòng. Hãy lập « Dữ liệu 1 » thành Lên, Xuống, +1 hay -1."
 
 #: src/fe-gtk/fkeys.c:163
 msgid "The Set Buffer command sets the entry where the key sequence was entered to the contents of Data 1"
-msgstr "Lệnh Lập bộ đệm thì lập trường nơi mà đã gõ dãy phím thành nội bộ Dữ liệu 1."
+msgstr "Lệnh « Lập bộ đệm » thì lập trường nơi mà đã gõ dãy phím thành nội bộ « Dữ liệu 1 »."
 
 #: src/fe-gtk/fkeys.c:165
 msgid "The Last Command command sets the entry to contain the last command entered - the same as pressing up in a shell"
-msgstr "Lệnh Lệnh trước thì lập trường để chứa lệnh mới gõ - giống như khi bấm phím mũi lên trong hệ vỏ."
+msgstr "Lệnh « Lệnh trước » thì lập trường để chứa lệnh mới gõ — giống như khi bấm phím mũi lên trong hệ vỏ."
 
 #: src/fe-gtk/fkeys.c:167
 msgid "The Next Command command sets the entry to contain the next command entered - the same as pressing down in a shell"
-msgstr "Lệnh Lệnh sau thì lập trường để chứa lệnh sẽ gõ sau này - giống như khi bấm phím mũi xuống trong hệ vỏ."
+msgstr "Lệnh « Lệnh kế » thì lập trường chứa lệnh sẽ gõ sau này — giống như khi bấm phím mũi xuống trong hệ vỏ."
 
 #: src/fe-gtk/fkeys.c:169
 msgid "This command changes the text in the entry to finish an incomplete nickname or command. If Data 1 is set then double-tabbing in a string will select the last nick, not the next"
-msgstr "Lệnh này thì thay đổi câu trong trường để nhập xong một tên hiệu hay lệnh chưa hoàn thành. Nếu đã lập Dữ liệu 1 thế khi bám phím Tab hai lần trong chuỗi nào sẽ chọn tên hiệu trước, không phải tên hiệu sau."
+msgstr "Lệnh này thì thay đổi đoạn trong trường nhập xong một tên hiệu hay lệnh chưa hoàn thành. Nếu đã lập « Dữ liệu 1 » thế khi bám phím Tab hai lần trong chuỗi nào sẽ chọn tên hiệu trước, không phải tên hiệu sau."
 
 #: src/fe-gtk/fkeys.c:171
 msgid "This command scrolls up and down through the list of nicks. If Data 1 is set to anything it will scroll up, else it scrolls down"
-msgstr "Lệnh này cuộn lên và xuống danh sách tên hiệu. Nếu đã lập Dữ liệu 1 thành gì thì sẽ cuộn lên, không nếu thi sẽ cuộn xuống."
+msgstr "Lệnh này cuộn lên và xuống danh sách các tên hiệu. Nếu đã lập « Dữ liệu 1 » thành gì thì sẽ cuộn lên, không nếu thi sẽ cuộn xuống."
 
 #: src/fe-gtk/fkeys.c:173
 msgid "This command checks the last word entered in the entry against the replace list and replaces it if it finds a match"
-msgstr "Lệnh này so từ đã nhập trước trong trường với danh sách thay thế, rồi thay thế được nếu tìm thấy từ khớp được."
+msgstr "Lệnh này so từ đã nhập trước trong trường với danh sách thay thế, rồi thay thế nếu tìm thấy từ khớp."
 
 #: src/fe-gtk/fkeys.c:175
 msgid "This command moves the front tab left by one"
-msgstr "Lệnh này di động tab ở trươc về bên trái một điều."
+msgstr "Lệnh này di động tab trươc về bên trái bằng một điều."
 
 #: src/fe-gtk/fkeys.c:177
 msgid "This command moves the front tab right by one"
-msgstr "Lệnh này di động tab ở trươc về bên phải một điều."
+msgstr "Lệnh này di động tab trươc về bên phải bằng một điều."
 
 #: src/fe-gtk/fkeys.c:179
 msgid "This command moves the current tab family to the left"
@@ -3193,83 +3196,79 @@ msgstr "Lệnh này di động nhóm tab hiện có về bên phải."
 
 #: src/fe-gtk/fkeys.c:183
 msgid "Push input line into history but doesn't send to server"
-msgstr "Gởi dòng gõ vào lịch sử nhưng không gởi cho máy chủ."
+msgstr "Gởi dòng gõ vào lịch sử nhưng không gởi cho máy phục vụ."
 
 #: src/fe-gtk/fkeys.c:195
 msgid "There was an error loading key bindings configuration"
-msgstr "Gặp lỗi khi nạp cấu hình ánh xạ phím"
+msgstr "Gặp lỗi khi tải cấu hình ánh xạ phím."
 
-#: src/fe-gtk/fkeys.c:439 src/fe-gtk/fkeys.c:440 src/fe-gtk/fkeys.c:441
-#: src/fe-gtk/fkeys.c:442 src/fe-gtk/fkeys.c:724 src/fe-gtk/fkeys.c:730
-#: src/fe-gtk/fkeys.c:735 src/fe-gtk/maingui.c:905 src/fe-gtk/maingui.c:921
-#: src/fe-gtk/maingui.c:1064 src/fe-gtk/maingui.c:1117
-#: src/fe-gtk/maingui.c:2494
+#: src/fe-gtk/fkeys.c:440 src/fe-gtk/fkeys.c:441 src/fe-gtk/fkeys.c:442
+#: src/fe-gtk/fkeys.c:443 src/fe-gtk/fkeys.c:725 src/fe-gtk/fkeys.c:731
+#: src/fe-gtk/fkeys.c:736 src/fe-gtk/maingui.c:943 src/fe-gtk/maingui.c:959
+#: src/fe-gtk/maingui.c:1102 src/fe-gtk/maingui.c:1197
+#: src/fe-gtk/maingui.c:2619
 msgid "<none>"
 msgstr "<không có>"
 
-#: src/fe-gtk/fkeys.c:688
+#: src/fe-gtk/fkeys.c:689
 msgid "Mod"
 msgstr "Đổi"
 
-#: src/fe-gtk/fkeys.c:689 src/fe-gtk/fkeys.c:784
+#: src/fe-gtk/fkeys.c:690 src/fe-gtk/fkeys.c:785
 msgid "Key"
 msgstr "Phím"
 
-#: src/fe-gtk/fkeys.c:690
+#: src/fe-gtk/fkeys.c:691
 msgid "Action"
 msgstr "Hành động"
 
-#: src/fe-gtk/fkeys.c:699
+#: src/fe-gtk/fkeys.c:700
 msgid "X-Chat: Keyboard Shortcuts"
 msgstr "X-Chat: Phím tắt"
 
-#: src/fe-gtk/fkeys.c:746
-msgid "Add new"
-msgstr "Thêm mới"
-
-#: src/fe-gtk/fkeys.c:777
+#: src/fe-gtk/fkeys.c:778
 msgid "Shift"
 msgstr "Shift"
 
-#: src/fe-gtk/fkeys.c:779
+#: src/fe-gtk/fkeys.c:780
 msgid "Alt"
 msgstr "Alt"
 
-#: src/fe-gtk/fkeys.c:781
+#: src/fe-gtk/fkeys.c:782
 msgid "Ctrl"
 msgstr "Ctrl"
 
-#: src/fe-gtk/fkeys.c:788
+#: src/fe-gtk/fkeys.c:789
 msgid "Data 1"
 msgstr "Dữ liệu 1"
 
-#: src/fe-gtk/fkeys.c:791
+#: src/fe-gtk/fkeys.c:792
 msgid "Data 2"
 msgstr "Dữ liệu 2"
 
-#: src/fe-gtk/fkeys.c:834
+#: src/fe-gtk/fkeys.c:835
 msgid "Error opening keys config file\n"
-msgstr "Gặp lỗi khi mở tập tin cấu hình phím\n"
+msgstr "Gặp lỗi khi mở tập tin cấu hình phím.\n"
 
-#: src/fe-gtk/fkeys.c:1005
+#: src/fe-gtk/fkeys.c:1006
 #, c-format
 msgid ""
 "Unknown keyname %s in key bindings config file\n"
 "Load aborted, please fix %s/keybindings.conf\n"
 msgstr ""
-"Gặp tên phím không biết %s trong tập tin cấu hình ánh xạ phím\n"
-"Thôi nạp nên hãy sửa %s/keybindings.conf\n"
+"Gặp tên phím không biết « %s » trong tập tin cấu hình ánh xạ phím.\n"
+"Thôi tải nên hãy sửa « %s/keybindings.conf ».\n"
 
-#: src/fe-gtk/fkeys.c:1043
+#: src/fe-gtk/fkeys.c:1044
 #, c-format
 msgid ""
 "Unknown action %s in key bindings config file\n"
 "Load aborted, Please fix %s/keybindings\n"
 msgstr ""
-"Gặp hành động không biết %s trong tập tin cấu hình ánh xạ phím\n"
-"Thôi nạp nên hãy sửa %s/keybindings\n"
+"Gặp hành động không biết « %s » trong tập tin cấu hình ánh xạ phím.\n"
+"Thôi tải nên hãy sửa « %s/keybindings ».\n"
 
-#: src/fe-gtk/fkeys.c:1064
+#: src/fe-gtk/fkeys.c:1065
 #, c-format
 msgid ""
 "Expecting Data line (beginning Dx{:|!}) but got:\n"
@@ -3277,19 +3276,19 @@ msgid ""
 "\n"
 "Load aborted, Please fix %s/keybindings\n"
 msgstr ""
-"Ngờ dòng Dữ liêu (bắt đầu Dx{:|!}) nhưng nhận:\n"
+"Ngờ dòng Dữ liêu (bắt đầu « Dx{:|!}) » nhưng nhận:\n"
 "%s\n"
 "\n"
-"Thôi nạp nên hãy sửa %s/keybindings\n"
+"Thôi tải nên hãy sửa « %s/keybindings ».\n"
 
-#: src/fe-gtk/fkeys.c:1133
+#: src/fe-gtk/fkeys.c:1134
 #, c-format
 msgid ""
 "Key bindings config file is corrupt, load aborted\n"
 "Please fix %s/keybindings.conf\n"
 msgstr ""
 "Tập tin cấu hình ánh xạ phím bị hỏng.\n"
-"Thôi nạp nên hãy sửa %s/keybindings.conf\n"
+"Thôi tải nên hãy sửa « %s/keybindings.conf ».\n"
 
 #: src/fe-gtk/gtkutil.c:154
 msgid "Cannot write to that file."
@@ -3301,9 +3300,9 @@ msgstr "Không đọc được tập tin ây."
 
 #: src/fe-gtk/ignoregui.c:117 src/fe-gtk/ignoregui.c:263
 msgid "That mask already exists."
-msgstr "Có mặt nạ ấy rồi."
+msgstr "Mặt nạ đã có."
 
-#: src/fe-gtk/ignoregui.c:177 src/fe-gtk/maingui.c:1573
+#: src/fe-gtk/ignoregui.c:177 src/fe-gtk/maingui.c:1668
 msgid "Private"
 msgstr "Riêng"
 
@@ -3325,11 +3324,11 @@ msgstr "Mời"
 
 #: src/fe-gtk/ignoregui.c:182
 msgid "Unignore"
-msgstr "Bỏ bỏ qua"
+msgstr "Thôi bỏ qua"
 
 #: src/fe-gtk/ignoregui.c:307
 msgid "Enter mask to ignore:"
-msgstr "Hãy gõ mạt nạ để bỏ qua:"
+msgstr "Hãy gõ mạt nạ cần bỏ qua:"
 
 #: src/fe-gtk/ignoregui.c:354
 msgid "X-Chat: Ignore list"
@@ -3359,104 +3358,104 @@ msgstr "CTCP:"
 msgid "Invite:"
 msgstr "Mời:"
 
-#: src/fe-gtk/ignoregui.c:384 src/fe-gtk/notifygui.c:306
+#: src/fe-gtk/ignoregui.c:384 src/fe-gtk/notifygui.c:307
 msgid "Add"
 msgstr "Thêm"
 
-#: src/fe-gtk/maingui.c:318
+#: src/fe-gtk/maingui.c:350
 msgid "Dialog with"
 msgstr "Đôi thoại với"
 
-#: src/fe-gtk/maingui.c:574
+#: src/fe-gtk/maingui.c:606
 #, c-format
 msgid "Topic for %s is: %s"
-msgstr "Chủ đề cho %s là: %s"
+msgstr "Chủ đề cho « %s » là: %s"
 
-#: src/fe-gtk/maingui.c:578
+#: src/fe-gtk/maingui.c:610
 msgid "No topic is set"
 msgstr "Chưa lập chủ đề"
 
-#: src/fe-gtk/maingui.c:974
+#: src/fe-gtk/maingui.c:1012
 msgid "No other tabs open, quit xchat?"
 msgstr "Không có thanh nữa còn mở thì thoát xchat không?"
 
-#: src/fe-gtk/maingui.c:1020
+#: src/fe-gtk/maingui.c:1058
 msgid "Insert color code"
-msgstr "Chèn mã màuy"
+msgstr "Chèn mã màu"
 
-#: src/fe-gtk/maingui.c:1069
+#: src/fe-gtk/maingui.c:1107
 msgid "Beep on message"
 msgstr "Phát tiếng bíp khi nhạn tin nhẳn"
 
-#: src/fe-gtk/maingui.c:1072
+#: src/fe-gtk/maingui.c:1110
 msgid "Show join/part messages"
 msgstr "Hiển thị tin nhẳn vào/rời"
 
-#: src/fe-gtk/maingui.c:1074
+#: src/fe-gtk/maingui.c:1112
 msgid "Color paste"
 msgstr "Dán màu"
 
-#: src/fe-gtk/maingui.c:1084
+#: src/fe-gtk/maingui.c:1119
 msgid "Go to"
-msgstr "Đi"
+msgstr "Đi tới"
 
-#: src/fe-gtk/maingui.c:1097 src/fe-gtk/menu.c:1251
+#: src/fe-gtk/maingui.c:1132 src/fe-gtk/menu.c:1261
 msgid "Close Tab"
 msgstr "Đóng thanh"
 
-#: src/fe-gtk/maingui.c:1100 src/fe-gtk/menu.c:1404
+#: src/fe-gtk/maingui.c:1135 src/fe-gtk/menu.c:1674
 msgid "Detach Tab"
 msgstr "Gỡ thanh ra"
 
-#: src/fe-gtk/maingui.c:1291
+#: src/fe-gtk/maingui.c:1386
 msgid "Some file transfers still active, quit xchat?"
-msgstr "Có việc chuyển giao tập tin còn hoặt động thì thoát xchat không?"
+msgstr "Có một số việc chuyển giao tập tin còn hoặt động nhưng thoát xchat không?"
 
-#: src/fe-gtk/maingui.c:1441 src/fe-gtk/maingui.c:1547
+#: src/fe-gtk/maingui.c:1536 src/fe-gtk/maingui.c:1642
 msgid "User limit must be a number!\n"
-msgstr "Tối đa người dùng phải là số.\n"
+msgstr "Giới hạn người dùng phải là con số.\n"
 
-#: src/fe-gtk/maingui.c:1569
+#: src/fe-gtk/maingui.c:1664
 msgid "Topic Protection"
 msgstr "Bảo vệ chủ đề"
 
-#: src/fe-gtk/maingui.c:1570
+#: src/fe-gtk/maingui.c:1665
 msgid "No outside messages"
-msgstr "Không có tin nhẳn ngoài"
+msgstr "Không có tin nhẳn bên ngoài."
 
-#: src/fe-gtk/maingui.c:1571
+#: src/fe-gtk/maingui.c:1666
 msgid "Secret"
 msgstr "Mật"
 
-#: src/fe-gtk/maingui.c:1572
+#: src/fe-gtk/maingui.c:1667
 msgid "Invite Only"
 msgstr "Chỉ mời"
 
-#: src/fe-gtk/maingui.c:1574
+#: src/fe-gtk/maingui.c:1669
 msgid "Moderated"
 msgstr "Có điều tiết viên"
 
-#: src/fe-gtk/maingui.c:1575
+#: src/fe-gtk/maingui.c:1670
 msgid "Ban List"
 msgstr "Danh sách đuổi ra"
 
-#: src/fe-gtk/maingui.c:1577
+#: src/fe-gtk/maingui.c:1672
 msgid "Keyword"
 msgstr "Từ khóa"
 
-#: src/fe-gtk/maingui.c:1589
+#: src/fe-gtk/maingui.c:1684
 msgid "User Limit"
-msgstr "Tối đa ngườiu"
+msgstr "Giới hạn người dùng"
 
-#: src/fe-gtk/maingui.c:1605
+#: src/fe-gtk/maingui.c:1700
 msgid "Close this tab/window"
 msgstr "Đóng thanh/cửa sổ này"
 
-#: src/fe-gtk/maingui.c:1702
+#: src/fe-gtk/maingui.c:1797
 msgid "Show/Hide userlist"
 msgstr "Hiển thị/ẩn danh sách người dùng"
 
-#: src/fe-gtk/maingui.c:1815
+#: src/fe-gtk/maingui.c:1922
 msgid ""
 "Unable to set transparent background!\n"
 "\n"
@@ -3468,80 +3467,84 @@ msgstr ""
 "Có lẽ bạn sử dụng trình quản lý cửa sổ\n"
 "không tuân theo mà chưa được hỗ trợ.\n"
 
-#: src/fe-gtk/maingui.c:2008
+#: src/fe-gtk/maingui.c:2115
 msgid "Enter new nickname:"
 msgstr "Hãy gõ tên hiệu mới"
 
 #: src/fe-gtk/menu.c:116
 msgid "Host unknown"
-msgstr "Không biết máy chủ"
+msgstr "Không biết máy"
 
-#: src/fe-gtk/menu.c:477
+#: src/fe-gtk/menu.c:496
 #, c-format
-msgid "User: %s"
-msgstr "Người dùng: %s"
+msgid "<tt><b>%-11s</b></tt> %s"
+msgstr "<tt><b>%-11s</b></tt> %s"
 
-#: src/fe-gtk/menu.c:481
-#, c-format
-msgid "Country: %s"
-msgstr "Quốc gia: %s"
+#: src/fe-gtk/menu.c:498
+msgid "User:"
+msgstr "Người dùng:"
 
-#: src/fe-gtk/menu.c:485
-#, c-format
-msgid "Realname: %s"
-msgstr "Tên thật: %s"
+#: src/fe-gtk/menu.c:502
+msgid "Country:"
+msgstr "Quốc gia:"
 
-#: src/fe-gtk/menu.c:489
-#, c-format
-msgid "Server: %s"
-msgstr "Máy chủ: %s"
+#: src/fe-gtk/menu.c:506
+msgid "Real Name:"
+msgstr "Tên thật:"
 
-#: src/fe-gtk/menu.c:493
-#, c-format
-msgid "Last Msg: %s"
-msgstr "Tin nhẳn trước: %s"
+#: src/fe-gtk/menu.c:510
+msgid "Server:"
+msgstr "Máy phục vụ:"
 
-#: src/fe-gtk/menu.c:578
+#: src/fe-gtk/menu.c:519
+msgid "Away Msg:"
+msgstr "Thông điệp vắng mặt:"
+
+#: src/fe-gtk/menu.c:525
+msgid "Last Msg:"
+msgstr "Tin nhẳn trước:"
+
+#: src/fe-gtk/menu.c:612
 msgid "Menu Bar"
 msgstr "Thanh trình đơn"
 
-#: src/fe-gtk/menu.c:579
+#: src/fe-gtk/menu.c:613
 msgid "Topic Bar"
 msgstr "Thanh chủ đề"
 
-#: src/fe-gtk/menu.c:583 src/fe-gtk/setup.c:159
+#: src/fe-gtk/menu.c:617 src/fe-gtk/setup.c:159
 msgid "User List"
 msgstr "Danh sách người dùng"
 
-#: src/fe-gtk/menu.c:586
+#: src/fe-gtk/menu.c:620
 msgid "Mode Buttons"
 msgstr "Nút chế độ"
 
-#: src/fe-gtk/menu.c:592
+#: src/fe-gtk/menu.c:626
 msgid "User List Buttons"
 msgstr "Nút danh sách người dùng"
 
-#: src/fe-gtk/menu.c:662 src/fe-gtk/urlgrab.c:202
+#: src/fe-gtk/menu.c:672 src/fe-gtk/urlgrab.c:203
 msgid "Copy selected URL"
-msgstr "Sao chép địa chỉ Mạng đã chọn"
+msgstr "Chép địa chỉ Mạng đã chọn"
 
-#: src/fe-gtk/menu.c:725
+#: src/fe-gtk/menu.c:735
 msgid "Part Channel"
 msgstr "Rời kênh đi"
 
-#: src/fe-gtk/menu.c:727
+#: src/fe-gtk/menu.c:737
 msgid "Cycle Channel"
 msgstr "Quay kênh lại"
 
-#: src/fe-gtk/menu.c:750
+#: src/fe-gtk/menu.c:760
 msgid "X-Chat: User menu"
 msgstr "X-Chat: Trình đơn người dùng"
 
-#: src/fe-gtk/menu.c:759
+#: src/fe-gtk/menu.c:769
 msgid "Edit This Menu..."
 msgstr "Hiệu chỉnh trình đơn này..."
 
-#: src/fe-gtk/menu.c:866
+#: src/fe-gtk/menu.c:876
 msgid ""
 "*WARNING*\n"
 "Auto accepting DCC to your home directory\n"
@@ -3549,17 +3552,17 @@ msgid ""
 "Someone could send you a .bash_profile"
 msgstr ""
 "*CẢNH BÁO*\n"
-"Không tốt, không an toàn để tự động chấp nhận\n"
+"Không tốt, không an toàn khi tự động chấp nhận\n"
 "trò chuyện trực tiếp (DCC) thành thư mục chính\n"
 "của bạn. Thí dụ, người khác có thể gởi\n"
-"một tập tin loại .bash_profile cho bạn\n"
+"một tập tin loại « .bash_profile » cho bạn\n"
 "(điều kiện hệ thống của bạn)."
 
-#: src/fe-gtk/menu.c:994
+#: src/fe-gtk/menu.c:1004
 msgid "Settings saved."
 msgstr "Mới lưu thiết lập."
 
-#: src/fe-gtk/menu.c:1031
+#: src/fe-gtk/menu.c:1041
 msgid ""
 "User Commands - Special codes:\n"
 "\n"
@@ -3579,7 +3582,7 @@ msgid ""
 "%2 would be \"john\"\n"
 "&2 would be \"john hello\"."
 msgstr ""
-"Lệnh người dùng - Mã đặc biệt:\n"
+"Lệnh người dùng — Mã đặc biệt:\n"
 "\n"
 "%c  =  kênh hiện có\n"
 "%m  =  thông tin máy\n"
@@ -3588,16 +3591,16 @@ msgstr ""
 "%v  =  phiên bản xchat\n"
 "%2  =  từ 2\n"
 "%3  =  từ 3\n"
-"&2  =  từ 2 đán kết thức dòng\n"
+"&2  =  từ 2 đến kết thức dòng\n"
 "&3  =  từ 3 đến kết thức dòng\n"
 "\n"
 "v.d.:\n"
 "/cmd Chào bạn\n"
 "\n"
-"%2 là \"Chào\"\n"
-"&2 là \"Chào bạn\"."
+"%2 là « Chào »\n"
+"&2 là « Chào bạn »."
 
-#: src/fe-gtk/menu.c:1046
+#: src/fe-gtk/menu.c:1056
 msgid ""
 "Userlist Buttons - Special codes:\n"
 "\n"
@@ -3609,17 +3612,17 @@ msgid ""
 "%s  =  selected nick\n"
 "%t  =  time/date\n"
 msgstr ""
-"Cái nút trên danh sách người dùng - Mã đặt biệt:\n"
+"Cái nút trên danh sách người dùng — Mã đặt biệt:\n"
 "\n"
 "%a  =  mọi tên hiệu đã chọn\n"
 "%c  =  kênh hiện có\n"
-"%h  =  tên máy chủ của tên hiệu đã chọn\n"
+"%h  =  tên máy của tên hiệu đã chọn\n"
 "%m  =  thông tin máy\n"
 "%n  =  tên hiệu bạn\n"
 "%s  =  tên hiệu đã chọn\n"
 "%t  =  giờ/ngày\n"
 
-#: src/fe-gtk/menu.c:1055
+#: src/fe-gtk/menu.c:1065
 msgid ""
 "Dialog Buttons - Special codes:\n"
 "\n"
@@ -3631,17 +3634,17 @@ msgid ""
 "%s  =  selected nick\n"
 "%t  =  time/date\n"
 msgstr ""
-"Cái nút trong đối thoại:\n"
+"Cái nút trong đối thoại — Mã đặc biệt:\n"
 "\n"
 "%a  =  mọi tên hiệu đã chọn\n"
 "%c  =  kênh hiện có\n"
-"%h  =  tên máy chủ của tên hiệu đã chọn\n"
+"%h  =  tên máy của tên hiệu đã chọn\n"
 "%m  =  thông tin máy\n"
 "%n  =  tên hiệu bạn\n"
 "%s  =  tên hiệu đã chọn\n"
-"%t  =  giờ/ngàỳ\n"
+"%t  =  giờ/ngày\n"
 
-#: src/fe-gtk/menu.c:1064
+#: src/fe-gtk/menu.c:1074
 msgid ""
 "CTCP Replies - Special codes:\n"
 "\n"
@@ -3655,9 +3658,9 @@ msgid ""
 "&3  =  word 3 to the end of line\n"
 "\n"
 msgstr ""
-"Trả lời CTCP - Mã đặc biệt:\n"
+"Trả lời CTCP — Mã đặc biệt:\n"
 "\n"
-"%d  =  dữ liệu (CTCP toàn)\n"
+"%d  =  dữ liệu (toàn CTCP)\n"
 "%m  =  thông tin máy\n"
 "%s  =  tên hiệu đã gởi CTCP\n"
 "%t  =  giờ/ngày\n"
@@ -3667,7 +3670,7 @@ msgstr ""
 "&3  =  từ 3 đến kết thức dòng\n"
 "\n"
 
-#: src/fe-gtk/menu.c:1074
+#: src/fe-gtk/menu.c:1084
 #, c-format
 msgid ""
 "URL Handlers - Special codes:\n"
@@ -3682,298 +3685,298 @@ msgstr ""
 "\n"
 "%s  =  chuỗi của địa chỉ Mạng\n"
 "\n"
-"Khi để ký tự ! trước lệnh thì\n"
-"gởi nó cho hệ vỏ thay thế \\ncho trình XChat."
+"Khi để ký tự « ! » trước lệnh thì\n"
+"gởi nó cho hệ vỏ thay thế cho trình X-Chat."
 
-#: src/fe-gtk/menu.c:1083
+#: src/fe-gtk/menu.c:1093
 msgid "X-Chat: User Defined Commands"
 msgstr "X-Chat: Lệnh tự định nghĩa"
 
-#: src/fe-gtk/menu.c:1090
+#: src/fe-gtk/menu.c:1100
 msgid "X-Chat: Userlist Popup menu"
 msgstr "X-Chat: Trình đơn bât lên danh sách người dùng"
 
-#: src/fe-gtk/menu.c:1097
+#: src/fe-gtk/menu.c:1107
 msgid "X-Chat: Replace"
 msgstr "X-Chat: Thay thế"
 
-#: src/fe-gtk/menu.c:1104
+#: src/fe-gtk/menu.c:1114
 msgid "X-Chat: URL Handlers"
 msgstr "X-Chat: Quản lý địa chỉ Mạng"
 
-#: src/fe-gtk/menu.c:1123
+#: src/fe-gtk/menu.c:1133
 msgid "X-Chat: Userlist buttons"
 msgstr "X-Chat: Cái nút trên danh sách người dùng"
 
-#: src/fe-gtk/menu.c:1130
+#: src/fe-gtk/menu.c:1140
 msgid "X-Chat: Dialog buttons"
 msgstr "X-Chat: Cái nút trong đối thoại"
 
-#: src/fe-gtk/menu.c:1137
+#: src/fe-gtk/menu.c:1147
 msgid "X-Chat: CTCP Replies"
 msgstr "X-Chat: Trả lời CTCP"
 
-#: src/fe-gtk/menu.c:1225
+#: src/fe-gtk/menu.c:1235
 msgid "_X-Chat"
 msgstr "_X-Chat"
 
-#: src/fe-gtk/menu.c:1226
+#: src/fe-gtk/menu.c:1236
 msgid "Server List..."
-msgstr "Danh sách máy chủ..."
+msgstr "Danh sách máy phục vụ..."
 
-#: src/fe-gtk/menu.c:1229
+#: src/fe-gtk/menu.c:1239
 msgid "New"
 msgstr "Mới"
 
-#: src/fe-gtk/menu.c:1230
+#: src/fe-gtk/menu.c:1240
 msgid "Server Tab..."
-msgstr "Thanh máy chủ..."
+msgstr "Thanh máy phục vụ..."
 
-#: src/fe-gtk/menu.c:1231
+#: src/fe-gtk/menu.c:1241
 msgid "Channel Tab..."
 msgstr "Thanh kênh..."
 
-#: src/fe-gtk/menu.c:1232
+#: src/fe-gtk/menu.c:1242
 msgid "Server Window..."
-msgstr "Cửa sổ máy chủ..."
+msgstr "Cửa sổ máy phục vụ..."
 
-#: src/fe-gtk/menu.c:1233
+#: src/fe-gtk/menu.c:1243
 msgid "Channel Window..."
 msgstr "Cửa sổ kênh..."
 
-#: src/fe-gtk/menu.c:1238 src/fe-gtk/menu.c:1240
+#: src/fe-gtk/menu.c:1248 src/fe-gtk/menu.c:1250
 msgid "Load Plugin or Script..."
-msgstr "Nạp trình cầm phít hay tâp lênh..."
+msgstr "Tải bộ cầm phít hay tâp lênh..."
 
-#: src/fe-gtk/menu.c:1244
+#: src/fe-gtk/menu.c:1254
 msgid "New Shell Tab..."
 msgstr "Thanh vỏ mới..."
 
-#: src/fe-gtk/menu.c:1253
+#: src/fe-gtk/menu.c:1263
 msgid "Quit"
 msgstr "Thoát"
 
-#: src/fe-gtk/menu.c:1255
+#: src/fe-gtk/menu.c:1265
 msgid "_IRC"
 msgstr "_IRC"
 
-#: src/fe-gtk/menu.c:1256
+#: src/fe-gtk/menu.c:1266
 msgid "Invisible"
 msgstr "Vô hình"
 
-#: src/fe-gtk/menu.c:1257
+#: src/fe-gtk/menu.c:1267
 msgid "Receive Wallops"
 msgstr "Nhận quất mạnh"
 
-#: src/fe-gtk/menu.c:1258
+#: src/fe-gtk/menu.c:1268
 msgid "Receive Server Notices"
-msgstr "Nhận thông báo máy chủ"
+msgstr "Nhận thông báo máy phục vụ"
 
-#: src/fe-gtk/menu.c:1260
+#: src/fe-gtk/menu.c:1270
 msgid "Marked Away"
 msgstr "Có nhãn Vắng mặt"
 
-#: src/fe-gtk/menu.c:1262
+#: src/fe-gtk/menu.c:1272
 msgid "Auto Rejoin when Kicked"
 msgstr "Tự động vào lại khi bị đá ra"
 
-#: src/fe-gtk/menu.c:1263
+#: src/fe-gtk/menu.c:1273
 msgid "Auto Reconnect to Server"
-msgstr "Tự động kết nối đến máy chủ"
+msgstr "Tự động kết nối lại đến máy phục vụ"
 
-#: src/fe-gtk/menu.c:1264
+#: src/fe-gtk/menu.c:1274
 msgid "Never-give-up ReConnect"
 msgstr "Cố kết nối lại suốt"
 
-#: src/fe-gtk/menu.c:1266
+#: src/fe-gtk/menu.c:1276
 msgid "Auto Open Dialog Windows"
 msgstr "Tự động mở cửa sổ đối thoại"
 
-#: src/fe-gtk/menu.c:1267
+#: src/fe-gtk/menu.c:1277
 msgid "Auto Accept Direct Chat"
 msgstr "Tự động chấp nhận Trò chuyện trực tiếp (DCC)"
 
-#: src/fe-gtk/menu.c:1268
+#: src/fe-gtk/menu.c:1278
 msgid "Auto Accept Files"
 msgstr "Tự động chấp nhận tập tin"
 
-#: src/fe-gtk/menu.c:1270
+#: src/fe-gtk/menu.c:1280
 msgid "_Server"
-msgstr "_Máy chủ"
+msgstr "_Máy phục vụ"
 
-#: src/fe-gtk/menu.c:1272
+#: src/fe-gtk/menu.c:1282
 msgid "S_ettings"
 msgstr "Thiết _lập"
 
-#: src/fe-gtk/menu.c:1273
+#: src/fe-gtk/menu.c:1283
 msgid "Preferences..."
 msgstr "Sở thích..."
 
-#: src/fe-gtk/menu.c:1275
+#: src/fe-gtk/menu.c:1285
 msgid "Advanced"
 msgstr "Cấp cao"
 
-#: src/fe-gtk/menu.c:1276
+#: src/fe-gtk/menu.c:1286
 msgid "Auto Replace..."
 msgstr "Tự động thay thế..."
 
-#: src/fe-gtk/menu.c:1277
+#: src/fe-gtk/menu.c:1287
 msgid "CTCP Replies..."
 msgstr "Trả lơi CTCP..."
 
-#: src/fe-gtk/menu.c:1278
+#: src/fe-gtk/menu.c:1288
 msgid "Dialog Buttons..."
 msgstr "Nút đối thoại..."
 
-#: src/fe-gtk/menu.c:1279
+#: src/fe-gtk/menu.c:1289
 msgid "Keyboard Shortcuts..."
 msgstr "Phím tắt..."
 
-#: src/fe-gtk/menu.c:1280
+#: src/fe-gtk/menu.c:1290
 msgid "Text Events..."
-msgstr "Sự kiện câu..."
+msgstr "Sự kiện chữ..."
 
-#: src/fe-gtk/menu.c:1281
+#: src/fe-gtk/menu.c:1291
 msgid "URL Handlers..."
 msgstr "Quản lý địa chỉ Mạng..."
 
-#: src/fe-gtk/menu.c:1282
+#: src/fe-gtk/menu.c:1292
 msgid "User Commands..."
 msgstr "Lệnh người dùng..."
 
-#: src/fe-gtk/menu.c:1283
+#: src/fe-gtk/menu.c:1293
 msgid "Userlist Buttons..."
 msgstr "Nút danh sách người dùng"
 
-#: src/fe-gtk/menu.c:1284
+#: src/fe-gtk/menu.c:1294
 msgid "Userlist Popup..."
 msgstr "Danh sách người dùng bật lên..."
 
-#: src/fe-gtk/menu.c:1289
+#: src/fe-gtk/menu.c:1299
 msgid "Reload Settings"
-msgstr "Nạp thiết lập lại"
+msgstr "Tải lại thiết lập"
 
-#: src/fe-gtk/menu.c:1291
+#: src/fe-gtk/menu.c:1301
 msgid "Save Settings now"
-msgstr "Lưu thiết lập bây giờ"
+msgstr "Lưu thiết lập ngay bây giờ"
 
-#: src/fe-gtk/menu.c:1292
+#: src/fe-gtk/menu.c:1302
 msgid "Save Settings on exit"
 msgstr "Lưu thiết lập khi thoát"
 
-#: src/fe-gtk/menu.c:1295
+#: src/fe-gtk/menu.c:1305
 msgid "_Window"
 msgstr "_Cửa sổ"
 
-#: src/fe-gtk/menu.c:1296
+#: src/fe-gtk/menu.c:1306
 msgid "Ban List..."
 msgstr "Danh sách đuổi ra..."
 
-#: src/fe-gtk/menu.c:1297
+#: src/fe-gtk/menu.c:1307
 msgid "Channel List..."
 msgstr "Danh sách kênh..."
 
-#: src/fe-gtk/menu.c:1298
+#: src/fe-gtk/menu.c:1308
 msgid "Character Chart..."
 msgstr "Sơ đồ ký tự..."
 
-#: src/fe-gtk/menu.c:1299
+#: src/fe-gtk/menu.c:1309
 msgid "Direct Chat..."
 msgstr "Trò chuyện trực tiếp..."
 
-#: src/fe-gtk/menu.c:1300
+#: src/fe-gtk/menu.c:1310
 msgid "File Receive..."
 msgstr "Nhận tập tin..."
 
-#: src/fe-gtk/menu.c:1301
+#: src/fe-gtk/menu.c:1311
 msgid "File Send..."
 msgstr "Gởi tâp tin..."
 
-#: src/fe-gtk/menu.c:1302
+#: src/fe-gtk/menu.c:1312
 msgid "Ignore List..."
 msgstr "Danh sách bỏ qua..."
 
-#: src/fe-gtk/menu.c:1303
+#: src/fe-gtk/menu.c:1313
 msgid "Notify List..."
 msgstr "Danh sách thông báo..."
 
-#: src/fe-gtk/menu.c:1304
+#: src/fe-gtk/menu.c:1314
 msgid "Plugins and Scripts..."
-msgstr "Trình cầm phít và tập lệnh..."
+msgstr "Bộ cầm phít và tập lệnh..."
 
-#: src/fe-gtk/menu.c:1305
+#: src/fe-gtk/menu.c:1315
 msgid "Raw Log..."
 msgstr "Bản ghi thô..."
 
-#: src/fe-gtk/menu.c:1306
+#: src/fe-gtk/menu.c:1316
 msgid "URL Grabber..."
 msgstr "Lấy địa chỉ Mạng..."
 
-#: src/fe-gtk/menu.c:1308
+#: src/fe-gtk/menu.c:1318
 msgid "Reset Marker Line"
-msgstr "Lập dòng đánh dấu lại"
+msgstr "Lập lại dòng đánh dấu"
 
-#: src/fe-gtk/menu.c:1309
+#: src/fe-gtk/menu.c:1319
 msgid "C_lear Text"
-msgstr "_Xóa câu"
+msgstr "_Xóa văn bản"
 
-#: src/fe-gtk/menu.c:1310
+#: src/fe-gtk/menu.c:1320
 msgid "Search Text..."
-msgstr "Tìm kiếm câu..."
+msgstr "Tìm kiếm trong văn bản..."
 
-#: src/fe-gtk/menu.c:1311
+#: src/fe-gtk/menu.c:1321
 msgid "Save Text..."
-msgstr "Lưu câu..."
+msgstr "Lưu văn bản..."
 
-#: src/fe-gtk/menu.c:1313
+#: src/fe-gtk/menu.c:1323
 msgid "_Help"
 msgstr "Trợ _giúp"
 
-#: src/fe-gtk/menu.c:1314
+#: src/fe-gtk/menu.c:1324
 msgid "_Contents"
 msgstr "_Nội dụng"
 
-#: src/fe-gtk/menu.c:1316 src/fe-gtk/menu.c:1318
+#: src/fe-gtk/menu.c:1326 src/fe-gtk/menu.c:1328
 msgid "_About"
-msgstr "_Về XChat"
+msgstr "_Giới thiệu"
 
-#: src/fe-gtk/menu.c:1406
+#: src/fe-gtk/menu.c:1676
 msgid "Attach Tab"
 msgstr "Đính thanh"
 
-#: src/fe-gtk/notifygui.c:109
+#: src/fe-gtk/notifygui.c:110
 msgid "User"
 msgstr "Người dùng"
 
-#: src/fe-gtk/notifygui.c:111
-msgid "Server"
-msgstr "Máy chủ"
-
 #: src/fe-gtk/notifygui.c:112
-msgid "Last Seen"
-msgstr "Gặp gần nhất"
+msgid "Server"
+msgstr "Máy phục vụ"
 
-#: src/fe-gtk/notifygui.c:149
+#: src/fe-gtk/notifygui.c:113
+msgid "Last Seen"
+msgstr "Gặp cuối cùng"
+
+#: src/fe-gtk/notifygui.c:150
 msgid "Offline"
 msgstr "Ngoại tuyến"
 
-#: src/fe-gtk/notifygui.c:169 src/fe-gtk/setup.c:199
+#: src/fe-gtk/notifygui.c:170 src/fe-gtk/setup.c:199
 msgid "Never"
 msgstr "Không bao giờ"
 
-#: src/fe-gtk/notifygui.c:187
+#: src/fe-gtk/notifygui.c:188
 msgid "Online"
 msgstr "Trực tuyến"
 
-#: src/fe-gtk/notifygui.c:277
+#: src/fe-gtk/notifygui.c:278
 msgid "Enter nickname to add:"
-msgstr "Hãy gõ tên hiệu để thêm"
+msgstr "Hãy gõ tên hiệu cần thêm"
 
-#: src/fe-gtk/notifygui.c:293
+#: src/fe-gtk/notifygui.c:294
 msgid "X-Chat: Notify List"
 msgstr "X-Chat: Danh sách thông báo"
 
-#: src/fe-gtk/notifygui.c:308
+#: src/fe-gtk/notifygui.c:309
 msgid "Remove"
 msgstr "Bỏ ra"
 
@@ -3983,19 +3986,19 @@ msgstr "Mô tả"
 
 #: src/fe-gtk/plugingui.c:150
 msgid "Select a Plugin or Script to load"
-msgstr "Hãy chọn trình cầm phít hay tập lệnh để thêm"
+msgstr "Hãy chọn bộ cầm phít hay tập lệnh cần thêm"
 
 #: src/fe-gtk/plugingui.c:222
 msgid "X-Chat: Plugins and Scripts"
-msgstr "X-Chat: Trình cầm phít và tập lệnh"
+msgstr "X-Chat: Bộ cầm phít và tập lệnh"
 
 #: src/fe-gtk/plugingui.c:228
 msgid "_Load..."
-msgstr "_Nạp..."
+msgstr "_Tải..."
 
 #: src/fe-gtk/plugingui.c:231
 msgid "_UnLoad"
-msgstr "_Bỏ nạp"
+msgstr "_Bỏ tải"
 
 #: src/fe-gtk/plugingui.c:235
 msgid "_Close"
@@ -4020,7 +4023,7 @@ msgstr "Lưu bản ghi thô..."
 
 #: src/fe-gtk/search.c:47
 msgid "The window you opened this Search for doesn't exist anymore."
-msgstr "Bạn mở việc tìm kiếm cho cửa sổ không còn có lại."
+msgstr "Cửa sổ bạn đã mỏ cho việc tìm kiếm này không còn tồn tại lại."
 
 #: src/fe-gtk/search.c:91
 msgid "X-Chat: Search"
@@ -4038,160 +4041,156 @@ msgstr "Tìm"
 msgid "Close"
 msgstr "Đóng"
 
-#: src/fe-gtk/servlistgui.c:161 src/fe-gtk/servlistgui.c:260
+#: src/fe-gtk/servlistgui.c:162 src/fe-gtk/servlistgui.c:261
 msgid "New Network"
 msgstr "mạng mới"
 
-#: src/fe-gtk/servlistgui.c:493
+#: src/fe-gtk/servlistgui.c:494
 #, c-format
 msgid "Really remove network \"%s\" and all its servers?"
-msgstr "Bạn thật muốn bỏ mạng \"%s\" và tất cả máy chủ của nó ra không?"
+msgstr "Bạn thật muốn bỏ mạng « %s » và tất cả máy phục vụ của nó ra không?"
 
-#: src/fe-gtk/servlistgui.c:614 src/fe-gtk/servlistgui.c:630
+#: src/fe-gtk/servlistgui.c:618 src/fe-gtk/servlistgui.c:637
 msgid "User name and Real name cannot be left blank."
-msgstr "Không cho phép trường Tên đăng nhập và Tên thật trống không."
+msgstr "Không cho phép trường « Tên đăng nhập » và « Tên thật » bị bỏ rỗng."
 
-#: src/fe-gtk/servlistgui.c:981
+#: src/fe-gtk/servlistgui.c:988
 #, c-format
 msgid "X-Chat: Edit %s"
-msgstr "X-Chat: Hiệu chỉnh %s"
+msgstr "X-Chat: Hiệu chỉnh « %s »"
 
-#: src/fe-gtk/servlistgui.c:1000
+#: src/fe-gtk/servlistgui.c:1007
 #, c-format
 msgid "Servers for %s"
-msgstr "Máy chủ cho %s"
+msgstr "Máy phục vụ cho « %s »"
 
-#: src/fe-gtk/servlistgui.c:1011
+#: src/fe-gtk/servlistgui.c:1018
 msgid "Connect to selected server only"
-msgstr "Chỉ kết nối đến máy chủ đã chọn thôi"
+msgstr "Kết nối đến chỉ máy phục vụ đã chọn thôi"
 
-#: src/fe-gtk/servlistgui.c:1012
+#: src/fe-gtk/servlistgui.c:1019
 msgid "Don't cycle through all the servers when the connection fails."
-msgstr "Không quay lại qua tất cả máy chủ khi kết nối bị ngắt."
+msgstr "Không quay lại qua tất cả máy phục vụ khi kết nối bị ngắt."
 
-#: src/fe-gtk/servlistgui.c:1014
+#: src/fe-gtk/servlistgui.c:1021
 msgid "Your Details"
 msgstr "Thông tin cá nhân"
 
-#: src/fe-gtk/servlistgui.c:1020
+#: src/fe-gtk/servlistgui.c:1027
 msgid "Use global user information"
 msgstr "Sử dụng thông tin người dùng toàn cục"
 
-#: src/fe-gtk/servlistgui.c:1023 src/fe-gtk/servlistgui.c:1255
+#: src/fe-gtk/servlistgui.c:1030 src/fe-gtk/servlistgui.c:1262
 msgid "_Nick name:"
 msgstr "Tên _hiệu:"
 
-#: src/fe-gtk/servlistgui.c:1027 src/fe-gtk/servlistgui.c:1276
+#: src/fe-gtk/servlistgui.c:1034 src/fe-gtk/servlistgui.c:1283
 msgid "_User name:"
-msgstr "Tên _đăng nhập:"
+msgstr "Tên _người dùng:"
 
-#: src/fe-gtk/servlistgui.c:1031
-msgid "Real na_me:"
-msgstr "Tên _thật:"
-
-#: src/fe-gtk/servlistgui.c:1034
-msgid "Connecting"
-msgstr "Đang kết nối"
-
-#: src/fe-gtk/servlistgui.c:1040
-msgid "Auto connect to this network at startup"
-msgstr "Tự động kết nối đến mạng này khi khởi đông"
-
-#: src/fe-gtk/servlistgui.c:1042
-msgid "Use a proxy server"
-msgstr "Sử dụng máy chủ ủy nhiệm"
-
-#: src/fe-gtk/servlistgui.c:1044
-msgid "Use SSL for all the servers on this network"
-msgstr "Sử dụng SSL cho mọi máy chủ trên mạng này"
-
-#: src/fe-gtk/servlistgui.c:1049
-msgid "Accept invalid SSL certificate"
-msgstr "Chấp nhận chứng nhận SSL không hợp lệ"
-
-#: src/fe-gtk/servlistgui.c:1055
-msgid "C_hannels to join:"
-msgstr "_Kênh để vào:"
-
-#: src/fe-gtk/servlistgui.c:1057
-msgid "Channels to join, separated by commas, but not spaces!"
-msgstr "Kênh để vào, phân ranh bằng dấu phẩy còn không có dấu cách"
-
-#: src/fe-gtk/servlistgui.c:1060
-msgid "Connect command:"
-msgstr "Lệnh kết nối:"
-
-#: src/fe-gtk/servlistgui.c:1062
-msgid "Extra command to execute after connecting. If you need more than one, set this to LOAD -e <filename>, where <filename> is a text-file full of commands to execute."
-msgstr "Lệnh thêm để thi hành sau kết nối được. Nếu cần nhiều lệnh thì hãy lập lệnh này thành LOAD -e <tên_tập_tin>, mà tập tin ấy chứa danh sách lệnh để thi hành. (load - nạp)"
-
-#: src/fe-gtk/servlistgui.c:1065
-msgid "Nickserv password:"
-msgstr "Mật khẩu máy chủ tên hiệu:"
-
-#: src/fe-gtk/servlistgui.c:1070
-msgid "Server password:"
-msgstr "Mật khẩu máy chủ:"
-
-#: src/fe-gtk/servlistgui.c:1072
-msgid "Password for the server, if in doubt, leave blank."
-msgstr "Mật khẩu cho mấy chu: nếu không chắc thì không gõ gì."
-
-#: src/fe-gtk/servlistgui.c:1075
-msgid "Character set:"
-msgstr "Bộ ký tự:"
-
-#: src/fe-gtk/servlistgui.c:1148
-msgid "_Edit"
-msgstr "_Hiệu chỉnh"
-
-#: src/fe-gtk/servlistgui.c:1229
-msgid "X-Chat: Server List"
-msgstr "X-Chat: Danh sách máy chủ"
-
-#: src/fe-gtk/servlistgui.c:1245
-msgid "User Information"
-msgstr "Thông tin người dùng"
-
-#: src/fe-gtk/servlistgui.c:1262
-msgid "Second choice:"
-msgstr "Chọn thứ hai:"
-
-#: src/fe-gtk/servlistgui.c:1269
-msgid "Third choice:"
-msgstr "Chọn thứ ba:"
-
-#: src/fe-gtk/servlistgui.c:1283
+#: src/fe-gtk/servlistgui.c:1038 src/fe-gtk/servlistgui.c:1290
 msgid "Rea_l name:"
 msgstr "Tên _thật:"
 
-#: src/fe-gtk/servlistgui.c:1329
+#: src/fe-gtk/servlistgui.c:1041
+msgid "Connecting"
+msgstr "Đang kết nối"
+
+#: src/fe-gtk/servlistgui.c:1047
+msgid "Auto connect to this network at startup"
+msgstr "Tự động kết nối đến mạng này khi khởi đông"
+
+#: src/fe-gtk/servlistgui.c:1049
+msgid "Use a proxy server"
+msgstr "Sử dụng máy phục vụ ủy nhiệm"
+
+#: src/fe-gtk/servlistgui.c:1051
+msgid "Use SSL for all the servers on this network"
+msgstr "Sử dụng SSL cho mọi máy phục vụ trên mạng này"
+
+#: src/fe-gtk/servlistgui.c:1056
+msgid "Accept invalid SSL certificate"
+msgstr "Chấp nhận chứng nhận SSL không hợp lệ"
+
+#: src/fe-gtk/servlistgui.c:1062
+msgid "C_hannels to join:"
+msgstr "_Kênh cần vào:"
+
+#: src/fe-gtk/servlistgui.c:1064
+msgid "Channels to join, separated by commas, but not spaces!"
+msgstr "Kênh cần vào, định giới bằng dấu phẩy còn không có dấu cách."
+
+#: src/fe-gtk/servlistgui.c:1067
+msgid "Connect command:"
+msgstr "Lệnh kết nối:"
+
+#: src/fe-gtk/servlistgui.c:1069
+msgid "Extra command to execute after connecting. If you need more than one, set this to LOAD -e <filename>, where <filename> is a text-file full of commands to execute."
+msgstr "Lệnh thêm cần thi hành sau kết nối được. Nếu cần nhiều lệnh thì hãy lập lệnh này thành « LOAD -e <tên_tập_tin> », mà tập tin ấy chứa danh sách lệnh cần thi hành. (load: tải)"
+
+#: src/fe-gtk/servlistgui.c:1072
+msgid "Nickserv password:"
+msgstr "Mật khẩu máy phục vụ tên hiệu:"
+
+#: src/fe-gtk/servlistgui.c:1077
+msgid "Server password:"
+msgstr "Mật khẩu máy phục vụ:"
+
+#: src/fe-gtk/servlistgui.c:1079
+msgid "Password for the server, if in doubt, leave blank."
+msgstr "Mật khẩu cho mấy chu: nếu không chắc thì bỏ rỗng."
+
+#: src/fe-gtk/servlistgui.c:1082
+msgid "Character set:"
+msgstr "Bộ ký tự:"
+
+#: src/fe-gtk/servlistgui.c:1155
+msgid "_Edit"
+msgstr "_Hiệu chỉnh"
+
+#: src/fe-gtk/servlistgui.c:1236
+msgid "X-Chat: Server List"
+msgstr "X-Chat: Danh sách máy phục vụ"
+
+#: src/fe-gtk/servlistgui.c:1252
+msgid "User Information"
+msgstr "Thông tin người dùng"
+
+#: src/fe-gtk/servlistgui.c:1269
+msgid "Second choice:"
+msgstr "Sự chọn thứ hai:"
+
+#: src/fe-gtk/servlistgui.c:1276
+msgid "Third choice:"
+msgstr "Sự chọn thứ ba:"
+
+#: src/fe-gtk/servlistgui.c:1336
 msgid "Networks"
 msgstr "mạng"
 
-#: src/fe-gtk/servlistgui.c:1370
+#: src/fe-gtk/servlistgui.c:1377
 msgid "Skip server list on startup"
-msgstr "Bỏ qua danh sách máy chủ khi khởi động"
+msgstr "Bỏ qua danh sách máy phục vụ khi khởi động"
 
-#: src/fe-gtk/servlistgui.c:1401
+#: src/fe-gtk/servlistgui.c:1408
 msgid "_Edit..."
 msgstr "_Hiệu chỉnh..."
 
-#: src/fe-gtk/servlistgui.c:1408
+#: src/fe-gtk/servlistgui.c:1415
 msgid "_Sort"
-msgstr "Sắp _xếp"
+msgstr "_Sắp xếp"
 
-#: src/fe-gtk/servlistgui.c:1424
+#: src/fe-gtk/servlistgui.c:1438
 msgid "C_onnect"
 msgstr "_Kết nối"
 
-#: src/fe-gtk/servlistgui.c:1433
+#: src/fe-gtk/servlistgui.c:1447
 msgid "Connect in new tab"
 msgstr "Kết nối trong thanh mới"
 
 #: src/fe-gtk/setup.c:95
 msgid "Text Box Appearance"
-msgstr "Hình thức hộp câu"
+msgstr "Hình thức hộp chữ"
 
 #: src/fe-gtk/setup.c:96
 msgid "Font:"
@@ -4203,7 +4202,7 @@ msgstr "Ảnh nền:"
 
 #: src/fe-gtk/setup.c:98
 msgid "Scrollback lines:"
-msgstr "Dòng cuộn về:"
+msgstr "Dòng cuộn ngược:"
 
 #: src/fe-gtk/setup.c:99
 msgid "Transparent background"
@@ -4219,7 +4218,7 @@ msgstr "Sắp chữ các tên hiệu xuống bên phải"
 
 #: src/fe-gtk/setup.c:102
 msgid "Tint (shade) transparency"
-msgstr "Bóng độ trong suốttra"
+msgstr "Bóng độ trong suốt"
 
 #: src/fe-gtk/setup.c:103
 msgid "Colored nick names"
@@ -4227,7 +4226,7 @@ msgstr "Tên hiệu có màu"
 
 #: src/fe-gtk/setup.c:104
 msgid "Give each person on IRC a different color"
-msgstr "Cho mỗi người trên IRC một màu khác"
+msgstr "Cho mỗi người trên IRC có một màu khác"
 
 #: src/fe-gtk/setup.c:105
 msgid "Strip mIRC colors"
@@ -4239,7 +4238,7 @@ msgstr "Hiển thị dòng đánh dấu"
 
 #: src/fe-gtk/setup.c:107
 msgid "Insert a red line after the last read text."
-msgstr "Chèn dòng màu đỏ sau câu đã đọc trước."
+msgstr "Chèn dòng màu đỏ sau đoạn đã đọc cuối cùng."
 
 #: src/fe-gtk/setup.c:108
 msgid "Tint Settings"
@@ -4257,7 +4256,7 @@ msgstr "Màu xanh lá cây:"
 msgid "Blue:"
 msgstr "Màu xanh nước biển:"
 
-#: src/fe-gtk/setup.c:113 src/fe-gtk/setup.c:312
+#: src/fe-gtk/setup.c:113 src/fe-gtk/setup.c:313
 msgid "Time Stamps"
 msgstr "Nhãn thời gian"
 
@@ -4267,7 +4266,7 @@ msgstr "Dạng nhãn thời gian:"
 
 #: src/fe-gtk/setup.c:115
 msgid "See strftime manpage for details."
-msgstr "Hãy sử dụng lệnh man strftime để tìm thấy chi tiết."
+msgstr "Hãy sử dụng lệnh « man strftime » để tìm thấy chi tiết."
 
 #: src/fe-gtk/setup.c:116
 msgid "Enable time stamps"
@@ -4275,7 +4274,7 @@ msgstr "Hiệu lực nhãn thời gian"
 
 #: src/fe-gtk/setup.c:123
 msgid "Nick Completion"
-msgstr "Xong tên hiệu"
+msgstr "Gõ xong tên hiệu"
 
 #: src/fe-gtk/setup.c:124
 msgid "Automatic nick completion"
@@ -4296,7 +4295,7 @@ msgstr "Mã hộp gõ"
 #: src/fe-gtk/setup.c:129
 #, c-format
 msgid "Interpret %nnn as an ASCII value"
-msgstr "Giải thích %nnn là một giá trị ASCII"
+msgstr "Giải thích « %nnn » là một giá trị ASCII."
 
 #: src/fe-gtk/setup.c:130
 msgid "Interpret %C, %B as Color, Bold etc"
@@ -4308,7 +4307,7 @@ msgstr "Hình thức hộp gõ"
 
 #: src/fe-gtk/setup.c:133 src/fe-gtk/setup.c:163
 msgid "Use the Text box font and colors"
-msgstr "Sử dụng phông chữ và màu của hộp Câu"
+msgstr "Sử dụng phông chữ và màu của hộp Văn bản"
 
 #: src/fe-gtk/setup.c:140
 msgid "Off"
@@ -4320,7 +4319,7 @@ msgstr "Đồ thị"
 
 #: src/fe-gtk/setup.c:142
 msgid "Info text"
-msgstr "Câu thông tin"
+msgstr "Đoạn thông tin"
 
 #: src/fe-gtk/setup.c:143
 msgid "Both"
@@ -4352,7 +4351,7 @@ msgstr "Sắp xếp danh sách người dùng theo:"
 
 #: src/fe-gtk/setup.c:161
 msgid "Show hostnames in user list"
-msgstr "Hiển thị tên máy chủ trong danh sách người dùng"
+msgstr "Hiển thị tên máy trong danh sách người dùng"
 
 #: src/fe-gtk/setup.c:162
 msgid "User list buttons enabled"
@@ -4360,7 +4359,7 @@ msgstr "Mọi cái nút trên danh sách người dùng là hoặt động"
 
 #: src/fe-gtk/setup.c:164
 msgid "Resizable user list"
-msgstr "Danh sách người dùng có thể thay đổi cỡ"
+msgstr "Danh sách người dùng có thể thay đổi kích cỡ."
 
 #: src/fe-gtk/setup.c:166
 msgid "Away tracking"
@@ -4398,7 +4397,7 @@ msgstr "Bộ đo van tiết lưu:"
 msgid "Windows"
 msgstr "Cửa sổ"
 
-#: src/fe-gtk/setup.c:183 src/fe-gtk/setup.c:207 src/fe-gtk/setup.c:1446
+#: src/fe-gtk/setup.c:183 src/fe-gtk/setup.c:207 src/fe-gtk/setup.c:1447
 msgid "Tabs"
 msgstr "Thanh"
 
@@ -4420,7 +4419,7 @@ msgstr "Bên phải"
 
 #: src/fe-gtk/setup.c:193
 msgid "Hidden"
-msgstr "Đã ẩn"
+msgstr "Bị ẩn"
 
 #: src/fe-gtk/setup.c:200
 msgid "Always"
@@ -4432,11 +4431,11 @@ msgstr "Chỉ thanh đã yêu cầu"
 
 #: src/fe-gtk/setup.c:208
 msgid "Open an extra tab for server messages"
-msgstr "Mở thanh thêm cho thông điệp máy chủ"
+msgstr "Mở thanh thêm cho thông điệp máy phục vụ"
 
 #: src/fe-gtk/setup.c:209
 msgid "Open an extra tab for server notices"
-msgstr "Mở thanh thêm cho thông báo máy chủ"
+msgstr "Mở thanh thêm cho thông báo máy phục vụ"
 
 #: src/fe-gtk/setup.c:210
 msgid "Small tabs"
@@ -4516,7 +4515,7 @@ msgstr "Địa chỉ IP DCC:"
 
 #: src/fe-gtk/setup.c:236
 msgid "Claim you are at this address when offering files."
-msgstr "Sử dụng địa chỉ này khi đưa ra tập tin."
+msgstr "Tuyên bố tại địa chỉ này khi đưa ra tập tin."
 
 #: src/fe-gtk/setup.c:237
 msgid "First DCC send port:"
@@ -4528,19 +4527,19 @@ msgstr "Cổng gởi DCC cuối cùng:"
 
 #: src/fe-gtk/setup.c:239
 msgid "(Leave ports at zero for full range)."
-msgstr "(Hãy giữ mọi cổng có giá trị số không cho miền toàn)."
+msgstr "(Hãy giữ mọi cổng có giá trị số không cho toàn phạm vị)."
 
 #: src/fe-gtk/setup.c:240
 msgid "Get my address from the IRC server"
-msgstr "Gọi địa chỉ tôi từ máy chủ IRC"
+msgstr "Gọi địa chỉ tôi từ máy phục vụ IRC"
 
 #: src/fe-gtk/setup.c:241
 msgid "Asks the IRC server for your real address. Use this if you have a 192.168.*.* address!"
-msgstr "Gọi địa chỉ thật của bạn từ máy chủ IRC. Hãy sử dụng tùy chon này nếu có địa chỉ số 192.168.*.*"
+msgstr "Gọi địa chỉ thật của bạn từ máy phục vụ IRC. Hãy sử dụng tùy chon này nếu có địa chỉ số « 192.168.*.* »."
 
 #: src/fe-gtk/setup.c:243
 msgid "Maximum File Transfer Speeds (bytes per second)"
-msgstr "Tối đa tốc độ chuyển giao tập tin (byte mỗi giây)"
+msgstr "Tốc độ chuyển giao tập tin tối đa (byte trong mỗi giây)"
 
 #: src/fe-gtk/setup.c:244
 msgid "One upload:"
@@ -4548,7 +4547,7 @@ msgstr "Một việc tải lên:"
 
 #: src/fe-gtk/setup.c:245 src/fe-gtk/setup.c:247
 msgid "Maximum speed for one transfer"
-msgstr "Tối đa tốc độ cho môt việc chuyển giao"
+msgstr "Tốc độ tối đa cho môt việc chuyển giao"
 
 #: src/fe-gtk/setup.c:246
 msgid "One download:"
@@ -4560,7 +4559,7 @@ msgstr "Tất cả việc tải lên phối hợp nhau:"
 
 #: src/fe-gtk/setup.c:249 src/fe-gtk/setup.c:251
 msgid "Maximum speed for all files"
-msgstr "Tối đa tốc độ cho tất cả tập tin"
+msgstr "Tốc độ tối đa cho tất cả tập tin"
 
 #: src/fe-gtk/setup.c:250
 msgid "All downloads combined:"
@@ -4588,7 +4587,7 @@ msgstr "Vắng mặt"
 
 #: src/fe-gtk/setup.c:264
 msgid "Announce away messages"
-msgstr "Thông báo tin nhẳn vắng mặt nào"
+msgstr "Thông báo tin nhẳn vắng mặt"
 
 #: src/fe-gtk/setup.c:265
 msgid "Announce your away messages to all channels"
@@ -4608,11 +4607,11 @@ msgstr "Tự động bỏ nhãn Vắng mặt"
 
 #: src/fe-gtk/setup.c:267
 msgid "Unmark yourself as away before sending messages"
-msgstr "Bỏ nhãn Vắng mặt của bạn khi gởi tin nhẳn"
+msgstr "Bỏ nhãn Vắng mặt của bạn trước khi gởi tin nhẳn"
 
 #: src/fe-gtk/setup.c:270
 msgid "(Can be a text file relative to ~/.xchat2/)."
-msgstr "(Có thể là tâp tin văn bản cân xứng với ~/.xchat2/)."
+msgstr "(Có thể là tâp tin văn bản cân xứng với « ~/.xchat2/ »)."
 
 #: src/fe-gtk/setup.c:272
 msgid "(Can be a text file relative to config dir)."
@@ -4624,361 +4623,365 @@ msgstr "Cảnh giác"
 
 #: src/fe-gtk/setup.c:278
 msgid "Flash taskbar on highlighted messages"
-msgstr "Chớp thanh việc trên tin nhẳn có nổi bật"
+msgstr "Chớp thanh công việc khi nhận tin nhẳn có nổi bật"
 
 #: src/fe-gtk/setup.c:280
 msgid "Beep on highlighted messages"
-msgstr "Phát tiếng bíp trên tin nhẳn có nổi bật"
+msgstr "Phát tiếng bíp khi nhận tin nhẳn có nổi bật"
 
 #: src/fe-gtk/setup.c:281
 msgid "Extra words to highlight on:"
-msgstr "Từ thêm để nổi bật:"
+msgstr "Từ thêm cần nổi bật:"
 
 #: src/fe-gtk/setup.c:282
-msgid "(Separate multiple words with commas)."
-msgstr "(Phân ranh nhiều từ bằng dấu phẩy)."
+msgid "Nicks not to highlight on:"
+msgstr "Tên hiệu không cần nổi bật:"
 
 #: src/fe-gtk/setup.c:283
+msgid "(Separate multiple words with commas)."
+msgstr "(Định giới nhiều từ bằng dấu phẩy)."
+
+#: src/fe-gtk/setup.c:284
 msgid "Beep on private messages"
 msgstr "Phát tiếng bíp khi nhận tin nhẳn riêng"
 
-#: src/fe-gtk/setup.c:284
+#: src/fe-gtk/setup.c:285
 msgid "Beep on channel messages"
 msgstr "Phát tiếng bíp khi nhận tin nhẳn kênh"
 
-#: src/fe-gtk/setup.c:291
+#: src/fe-gtk/setup.c:292
 msgid "Advanced Settings"
 msgstr "Thiết lập cấp cao"
 
-#: src/fe-gtk/setup.c:292
+#: src/fe-gtk/setup.c:293
 msgid "Auto reconnect delay:"
 msgstr "Trễ khi tự động kết nối lại:"
 
-#: src/fe-gtk/setup.c:293
+#: src/fe-gtk/setup.c:294
 msgid "Display MODEs in raw form"
 msgstr "Trình bày CHẾ ĐỘ dạng thô"
 
-#: src/fe-gtk/setup.c:294
+#: src/fe-gtk/setup.c:295
 msgid "Whois on notify"
-msgstr "Sử dụng dịch vụ Whois (là ai?) khi thông báol"
+msgstr "Dùng dịch vụ Whois (là ai?) khi thông báo"
 
-#: src/fe-gtk/setup.c:294
+#: src/fe-gtk/setup.c:295
 msgid "Sends a /WHOIS when a user comes online in your notify list"
-msgstr "Gởi một lệnh /WHOIS khi người dùng mới trực tuyến trong danh sách thông báo của bạn"
-
-#: src/fe-gtk/setup.c:295
-msgid "Hide join and part messages"
-msgstr "Ẩn mọi tin nhẳn vào/rời"
-
-#: src/fe-gtk/setup.c:295
-msgid "Hide channel join/part messages by default"
-msgstr "Mặc định là ẩn tin nhẳn vào/rời kênh"
+msgstr "Gởi một lệnh « /WHOIS » khi người dùng mới trực tuyến trong danh sách thông báo của bạn."
 
 #: src/fe-gtk/setup.c:296
+msgid "Hide join and part messages"
+msgstr "Ẩn mọi tin nhẳn vào/rời."
+
+#: src/fe-gtk/setup.c:296
+msgid "Hide channel join/part messages by default"
+msgstr "Mặc định là ẩn tin nhẳn vào/rời kênh."
+
+#: src/fe-gtk/setup.c:297
 msgid "Auto Open DCC Windows"
 msgstr "Tự động mở cửa sổ DCC"
 
-#: src/fe-gtk/setup.c:297
+#: src/fe-gtk/setup.c:298
 msgid "Send window"
 msgstr "Cửa sô Gởi"
 
-#: src/fe-gtk/setup.c:298
+#: src/fe-gtk/setup.c:299
 msgid "Receive window"
 msgstr "Cửa sổ Nhận"
 
-#: src/fe-gtk/setup.c:299
+#: src/fe-gtk/setup.c:300
 msgid "Chat window"
 msgstr "Cửa sổ Trò chuyện"
 
-#: src/fe-gtk/setup.c:307 src/fe-gtk/setup.c:1451
+#: src/fe-gtk/setup.c:308 src/fe-gtk/setup.c:1452
 msgid "Logging"
-msgstr "Tạo bản ghi"
-
-#: src/fe-gtk/setup.c:308
-msgid "Enable logging of conversations"
-msgstr "Tạo bản ghi của đối thoại"
+msgstr "Ghi lưu"
 
 #: src/fe-gtk/setup.c:309
-msgid "Log filename mask:"
-msgstr "Ghi mặt nạ tên tập tin:"
+msgid "Enable logging of conversations"
+msgstr "Hiệu lực ghi lưu đối thoại"
 
 #: src/fe-gtk/setup.c:310
+msgid "Log filename mask:"
+msgstr "Ghi lưu mặt nạ tên tập tin:"
+
+#: src/fe-gtk/setup.c:311
 #, c-format
 msgid "(%s=Server %c=Channel %n=Network)."
-msgstr "(%s=Máy chủ %c=Kênh %n=mạng)."
-
-#: src/fe-gtk/setup.c:313
-msgid "Insert timestamps in logs"
-msgstr "Nhãn thời gian trong bản ghi"
+msgstr "(%s=Máy phục vụ %c=Kênh %n=mạng)."
 
 #: src/fe-gtk/setup.c:314
-msgid "Log timestamp format:"
-msgstr "Dạng nhãn thời gian trong ban ghi:"
+msgid "Insert timestamps in logs"
+msgstr "Ghi giờ trong bản ghi"
 
 #: src/fe-gtk/setup.c:315
-msgid "(See strftime manpage for details)."
-msgstr "(Hãy sử dụng lệnh man strftime để tìm thấy chi tiết)."
+msgid "Log timestamp format:"
+msgstr "Dạng nhãn thời gian trong bản ghi:"
 
-#: src/fe-gtk/setup.c:322
-msgid "(Disabled)"
-msgstr "(Không hoặt đông)"
+#: src/fe-gtk/setup.c:316
+msgid "(See strftime manpage for details)."
+msgstr "(Hãy sử dụng lệnh « man strftime » để tìm thấy chi tiết)."
 
 #: src/fe-gtk/setup.c:323
+msgid "(Disabled)"
+msgstr "(Bị tắt)"
+
+#: src/fe-gtk/setup.c:324
 msgid "Wingate"
 msgstr "Wingate"
 
-#: src/fe-gtk/setup.c:324
+#: src/fe-gtk/setup.c:325
 msgid "Socks4"
 msgstr "Socks4"
 
-#: src/fe-gtk/setup.c:325
+#: src/fe-gtk/setup.c:326
 msgid "Socks5"
 msgstr "Socks5"
 
-#: src/fe-gtk/setup.c:326
+#: src/fe-gtk/setup.c:327
 msgid "HTTP"
 msgstr "HTTP"
 
-#: src/fe-gtk/setup.c:332
+#: src/fe-gtk/setup.c:333
 msgid "Your Address"
 msgstr "Địa chỉ của bạn"
 
-#: src/fe-gtk/setup.c:333
-msgid "Bind to:"
-msgstr "Ánh xạ với:"
-
 #: src/fe-gtk/setup.c:334
+msgid "Bind to:"
+msgstr "Đóng kết với:"
+
+#: src/fe-gtk/setup.c:335
 msgid "(Only useful for computers with multiple addresses)."
 msgstr "(Chỉ có ích trên máy vi tính có nhiều địa chỉ)."
 
-#: src/fe-gtk/setup.c:336
-msgid "Proxy Server"
-msgstr "Máy chủ ủy nhiệm"
-
 #: src/fe-gtk/setup.c:337
-msgid "Hostname:"
-msgstr "Tên máy chủ:"
+msgid "Proxy Server"
+msgstr "Máy phục vụ ủy nhiệm"
 
 #: src/fe-gtk/setup.c:338
-msgid "Username:"
-msgstr "Tên đăng nhập:"
+msgid "Hostname:"
+msgstr "Tên máy:"
 
 #: src/fe-gtk/setup.c:339
+msgid "Username:"
+msgstr "Tên người dùng:"
+
+#: src/fe-gtk/setup.c:340
 msgid "Password:"
 msgstr "Mật khẩu:"
 
-#: src/fe-gtk/setup.c:340
+#: src/fe-gtk/setup.c:341
 msgid "Port:"
 msgstr "Cổng:"
 
-#: src/fe-gtk/setup.c:341
+#: src/fe-gtk/setup.c:342
 msgid "Type:"
 msgstr "Loại:"
 
-#: src/fe-gtk/setup.c:343
+#: src/fe-gtk/setup.c:344
 msgid "Authenticate to the proxy server (HTTP and Socks5)"
-msgstr "Xác thức với máy chủ ủy nhiệm (HTTP và Socks5)"
-
-#: src/fe-gtk/setup.c:566
-msgid "(disabled)"
-msgstr "(không hoặt động)"
+msgstr "Xác thức với máy phục vụ ủy nhiệm (HTTP và Socks5)"
 
 #: src/fe-gtk/setup.c:567
+msgid "(disabled)"
+msgstr "(bị tắt)"
+
+#: src/fe-gtk/setup.c:568
 msgid "A star (*)"
 msgstr "Một dấu sao (*)"
 
-#: src/fe-gtk/setup.c:568
+#: src/fe-gtk/setup.c:569
 msgid "A red star (*)"
 msgstr "Một dấu sao màu đỏ (*)"
 
-#: src/fe-gtk/setup.c:569
+#: src/fe-gtk/setup.c:570
 msgid "Underlined"
 msgstr "Đã gạch dưới"
 
-#: src/fe-gtk/setup.c:666
+#: src/fe-gtk/setup.c:667
 msgid "Select an Image File"
 msgstr "Chọn tập tin ảnh"
 
-#: src/fe-gtk/setup.c:702
+#: src/fe-gtk/setup.c:703
 msgid "Select font"
 msgstr "Chọn phông chữ"
 
-#: src/fe-gtk/setup.c:776
+#: src/fe-gtk/setup.c:777
 msgid "Browse..."
 msgstr "Duyệt..."
 
-#: src/fe-gtk/setup.c:893
+#: src/fe-gtk/setup.c:894
 msgid "Mark identified users with:"
-msgstr "Nhãn người dùng đã nhận biết với:"
+msgstr "Nhãn người dùng đã nhận biết dùng:"
 
-#: src/fe-gtk/setup.c:895
+#: src/fe-gtk/setup.c:896
 msgid "Mark not-identified users with:"
-msgstr "Nhãn người dùng chưa nhận biết với:"
+msgstr "Nhãn người dùng chưa nhận biết dùng:"
 
-#: src/fe-gtk/setup.c:958
+#: src/fe-gtk/setup.c:959
 msgid "Select color"
 msgstr "Chọn màu"
 
-#: src/fe-gtk/setup.c:1038
+#: src/fe-gtk/setup.c:1039
 msgid "Text Colors"
-msgstr "Màu câu"
+msgstr "Màu chữ"
 
-#: src/fe-gtk/setup.c:1040
+#: src/fe-gtk/setup.c:1041
 msgid "mIRC colors:"
 msgstr "Màu mIRC:"
 
-#: src/fe-gtk/setup.c:1048
+#: src/fe-gtk/setup.c:1049
 msgid "Extra colors:"
 msgstr "Màu thêm:"
 
-#: src/fe-gtk/setup.c:1056 src/fe-gtk/setup.c:1061
+#: src/fe-gtk/setup.c:1057 src/fe-gtk/setup.c:1062
 msgid "Foreground:"
 msgstr "Tiền cảnh:"
 
-#: src/fe-gtk/setup.c:1057 src/fe-gtk/setup.c:1062
+#: src/fe-gtk/setup.c:1058 src/fe-gtk/setup.c:1063
 msgid "Background:"
 msgstr "Nền:"
 
-#: src/fe-gtk/setup.c:1059
+#: src/fe-gtk/setup.c:1060
 msgid "Marking Text"
-msgstr "Đánh dấu câu"
+msgstr "Đánh dấu chữ"
 
-#: src/fe-gtk/setup.c:1064
+#: src/fe-gtk/setup.c:1065
 msgid "Interface Colors"
 msgstr "Màu giao diện"
 
-#: src/fe-gtk/setup.c:1066
+#: src/fe-gtk/setup.c:1067
 msgid "New data:"
 msgstr "Dữ liệu mới:"
 
-#: src/fe-gtk/setup.c:1067
+#: src/fe-gtk/setup.c:1068
 msgid "Marker line:"
 msgstr "Dòng đánh dấu:"
 
-#: src/fe-gtk/setup.c:1068
+#: src/fe-gtk/setup.c:1069
 msgid "New message:"
 msgstr "Tin nhẳn mới:"
 
-#: src/fe-gtk/setup.c:1069
+#: src/fe-gtk/setup.c:1070
 msgid "Away user:"
 msgstr "Người dùng vắng mặt:"
 
-#: src/fe-gtk/setup.c:1070
+#: src/fe-gtk/setup.c:1071
 msgid "Highlight:"
 msgstr "Nổi bật:"
 
-#: src/fe-gtk/setup.c:1166 src/fe-gtk/textgui.c:337
+#: src/fe-gtk/setup.c:1167 src/fe-gtk/textgui.c:337
 msgid "Event"
 msgstr "Sự kiện"
 
-#: src/fe-gtk/setup.c:1172
+#: src/fe-gtk/setup.c:1173
 msgid "Sound file"
 msgstr "Tập tin âm thanh"
 
-#: src/fe-gtk/setup.c:1207
+#: src/fe-gtk/setup.c:1208
 msgid "Select a sound file"
 msgstr "Chon tập tin âm thanh"
 
-#: src/fe-gtk/setup.c:1279
+#: src/fe-gtk/setup.c:1280
 msgid "Sound playing method:"
-msgstr "Cách phát âm thanh:"
+msgstr "Phương pháp phát âm thanh:"
 
-#: src/fe-gtk/setup.c:1287
+#: src/fe-gtk/setup.c:1288
 msgid "External sound playing _program:"
-msgstr "Chương trình bên ngoài _phát âm thanh:"
+msgstr "Trình bên ngoài _phát âm thanh:"
 
-#: src/fe-gtk/setup.c:1305
+#: src/fe-gtk/setup.c:1306
 msgid "_External program"
 msgstr "Trình b_ên ngoài"
 
-#: src/fe-gtk/setup.c:1315
+#: src/fe-gtk/setup.c:1316
 msgid "_Automatic"
 msgstr "_Tự động"
 
-#: src/fe-gtk/setup.c:1328
+#: src/fe-gtk/setup.c:1329
 msgid "Sound files _directory:"
 msgstr "Thư _mục tập tin âm thanh:"
 
-#: src/fe-gtk/setup.c:1367
+#: src/fe-gtk/setup.c:1368
 msgid "Sound file:"
 msgstr "Tập tin âm thanh:"
 
-#: src/fe-gtk/setup.c:1382
+#: src/fe-gtk/setup.c:1383
 msgid "_Browse..."
 msgstr "_Duyệt..."
 
-#: src/fe-gtk/setup.c:1393
+#: src/fe-gtk/setup.c:1394
 msgid "_Play"
 msgstr "_Phát"
 
-#: src/fe-gtk/setup.c:1442
+#: src/fe-gtk/setup.c:1443
 msgid "Interface"
 msgstr "Giao diện"
 
-#: src/fe-gtk/setup.c:1443
-msgid "Text box"
-msgstr "Hộp câu"
-
 #: src/fe-gtk/setup.c:1444
+msgid "Text box"
+msgstr "Hộp văn bản"
+
+#: src/fe-gtk/setup.c:1445
 msgid "Input box"
 msgstr "Hộp gõ"
 
-#: src/fe-gtk/setup.c:1445
+#: src/fe-gtk/setup.c:1446
 msgid "User list"
 msgstr "Danh sách người dùng"
 
-#: src/fe-gtk/setup.c:1447
+#: src/fe-gtk/setup.c:1448
 msgid "Colors"
 msgstr "Màu"
 
-#: src/fe-gtk/setup.c:1449
-msgid "Chatting"
-msgstr "Trò chuyện"
-
 #: src/fe-gtk/setup.c:1450
+msgid "Chatting"
+msgstr "Đang trò chuyện"
+
+#: src/fe-gtk/setup.c:1451
 msgid "General"
 msgstr "Chung"
 
-#: src/fe-gtk/setup.c:1452
+#: src/fe-gtk/setup.c:1453
 msgid "Sound"
 msgstr "Âm thanh"
 
-#: src/fe-gtk/setup.c:1455
+#: src/fe-gtk/setup.c:1456
 msgid "Network"
 msgstr "mạng"
 
-#: src/fe-gtk/setup.c:1456
+#: src/fe-gtk/setup.c:1457
 msgid "Network setup"
 msgstr "Thiết lập mạng"
 
-#: src/fe-gtk/setup.c:1457
+#: src/fe-gtk/setup.c:1458
 msgid "File transfers"
-msgstr "Chuyển giao tập tin"
+msgstr "Việc chuyển giao tập tin"
 
-#: src/fe-gtk/setup.c:1564
+#: src/fe-gtk/setup.c:1565
 msgid "Categories"
 msgstr "Loại"
 
-#: src/fe-gtk/setup.c:1694
+#: src/fe-gtk/setup.c:1695
 msgid "Some settings were changed that require a restart to take full effect."
-msgstr "Đã thay đổi một sô thiết lập nên cần phải khởi động lại để sử dụng chúng cho đúng."
+msgstr "Đã thay đổi một sô thiết lập nên cần phải khởi động lại để để giá trị mới có tác dụng."
 
-#: src/fe-gtk/setup.c:1722
+#: src/fe-gtk/setup.c:1723
 msgid "X-Chat: Preferences"
 msgstr "X-Chat: Sở thích"
 
 #: src/fe-gtk/textgui.c:160
 msgid "There was an error parsing the string"
-msgstr "Gặp lỗi khi phân tách chuỗi ấy"
+msgstr "Gặp lỗi khi phân tách chuỗi ấy."
 
 #: src/fe-gtk/textgui.c:168
 #, c-format
 msgid "This signal is only passed %d args, $%d is invalid"
-msgstr "Tín hiệu này chỉ gởi %d đối sô, $%d không hợp lệ"
+msgstr "Tín hiệu này chỉ gởi %d đối sô, $%d không hợp lệ."
 
 #: src/fe-gtk/textgui.c:276 src/fe-gtk/textgui.c:299
 msgid "Print Texts File"
-msgstr "In tập tin câu"
+msgstr "In tập tin văn bản"
 
 #: src/fe-gtk/textgui.c:340
 msgid "$ Number"
@@ -4990,41 +4993,37 @@ msgstr "Hiệu chỉnh sự kiện"
 
 #: src/fe-gtk/textgui.c:418
 msgid "Save As"
-msgstr "Lưu như là"
+msgstr "Lưu là"
 
 #: src/fe-gtk/textgui.c:423
 msgid "Load From"
-msgstr "Nạp từ"
+msgstr "Tải từ"
 
 #: src/fe-gtk/textgui.c:428
 msgid "Test All"
-msgstr "Thử tất cả"
+msgstr "Kiểm tra tất cả"
 
-#: src/fe-gtk/urlgrab.c:97
+#: src/fe-gtk/urlgrab.c:98
 msgid "URL"
 msgstr "Địa chỉ Mạng"
 
-#: src/fe-gtk/urlgrab.c:147
-msgid "Select a file to save to"
-msgstr "Chọn lưu vào tập tin nào?"
-
-#: src/fe-gtk/urlgrab.c:187
+#: src/fe-gtk/urlgrab.c:188
 msgid "X-Chat: URL Grabber"
 msgstr "X-Chat: Lấy địa chỉ Mạng"
 
-#: src/fe-gtk/urlgrab.c:200
+#: src/fe-gtk/urlgrab.c:201
 msgid "Clear list"
 msgstr "Xóa danh sách"
 
-#: src/fe-gtk/urlgrab.c:202
+#: src/fe-gtk/urlgrab.c:203
 msgid "Copy"
-msgstr "Sao chép"
+msgstr "Chép"
 
-#: src/fe-gtk/urlgrab.c:204
+#: src/fe-gtk/urlgrab.c:205
 msgid "Save list to a file"
 msgstr "Lưu danh sách vào tập tin"
 
-#: src/fe-gtk/userlistgui.c:108
+#: src/fe-gtk/userlistgui.c:107
 #, c-format
 msgid "%d ops, %d total"
 msgstr "%d thao tác viên, %d tổng số"

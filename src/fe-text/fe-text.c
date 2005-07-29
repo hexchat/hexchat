@@ -99,12 +99,12 @@ fe_new_window (struct session *sess, int focus)
 		return;
 	done_intro = 1;
 
-	snprintf (buf, sizeof (buf),	
+	snprintf (buf, sizeof (buf),
 				"\n"
 				" \017xchat \00310"VERSION"\n"
 				" \017Running on \00310%s \017glib \00310%d.%d.%d\n"
 				" \017This binary compiled \00310"__DATE__"\017\n",
-				get_cpu_str(), 
+				get_cpu_str(),
 				glib_major_version, glib_minor_version, glib_micro_version);
 	fe_print_text (sess, buf);
 
@@ -629,7 +629,7 @@ fe_is_banwindow (struct session *sess)
 void
 fe_add_ban_list (struct session *sess, char *mask, char *who, char *when, int is_exemption)
 {
-}               
+}
 void
 fe_ban_list_end (struct session *sess, int is_exemption)
 {
@@ -830,5 +830,8 @@ void fe_menu_add (menu_entry *me)
 {
 }
 void fe_menu_update (menu_entry *me)
+{
+}
+void fe_uselect (struct session *sess, char *word[], int do_clear, int scroll_to)
 {
 }

@@ -99,5 +99,6 @@ void fe_open_url (const char *url);
 void fe_menu_del (menu_entry *);
 void fe_menu_add (menu_entry *);
 void fe_menu_update (menu_entry *);
+void fe_uselect (session *sess, char *word[], int do_clear, int scroll_to);
 
 #endif
