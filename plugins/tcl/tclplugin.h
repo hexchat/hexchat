@@ -1,8 +1,8 @@
 /***************************************************************************
-                          tclplugin.h  -  TCL plugin for xchat 2.x
-                             -------------------
+                           tclplugin.h  -  TCL plugin header file
+                           -------------------------------------------------
     begin                : Sat Nov  9 17:31:20 MST 2002
-    copyright            : (C) 2002 by Daniel P. Stasinski
+    copyright            : Copyright 2002-2005 Daniel P. Stasinski
     email                : mooooooo@avenues.org
  ***************************************************************************/
 
@@ -86,6 +86,7 @@ static int tcl_topic(ClientData cd, Tcl_Interp * irp, int argc, const char *argv
 static int tcl_version(ClientData cd, Tcl_Interp * irp, int argc, const char *argv[]);
 static int tcl_xchatdir(ClientData cd, Tcl_Interp * irp, int argc, const char *argv[]);
 static int tcl_xchat_nickcmp(ClientData cd, Tcl_Interp * irp, int argc, const char *argv[]);
+static int tcl_strip(ClientData cd, Tcl_Interp * irp, int argc, const char *argv[]);
 static int Command_Alias(char *word[], char *word_eol[], void *userdata);
 static int Null_Command_Alias(char *word[], char *word_eol[], void *userdata);
 static int Command_TCL(char *word[], char *word_eol[], void *userdata);

@@ -1,3 +1,20 @@
+/***************************************************************************
+                           printecents.h  -  TCL plugin header file
+                           -------------------------------------------------
+    begin                : Sat Nov  9 17:31:20 MST 2002
+    copyright            : Copyright 2002-2005 Daniel P. Stasinski
+    email                : mooooooo@avenues.org
+ ***************************************************************************/
+
+/***************************************************************************
+ *                                                                         *
+ *   This program is free software; you can redistribute it and/or modify  *
+ *   it under the terms of the GNU General Public License as published by  *
+ *   the Free Software Foundation; either version 2 of the License, or     *
+ *   (at your option) any later version.                                   *
+ *                                                                         *
+ ***************************************************************************/
+
 typedef struct {
     char *event;
     char *emit;
@@ -12,6 +29,7 @@ enum
 	XC_TABOPEN,
 	XC_TABCLOSE,
 	XC_TABFOCUS,
+	XC_KEYPRESS,
 	XC_ADDNOTIFY,
 	XC_BANLIST,
 	XC_BANNED,
@@ -157,6 +175,7 @@ static print_event xc[] = {
 	{ "XC_TABOPEN", "Open Context", -2, NULL },
 	{ "XC_TABCLOSE", "Close Context", -2, NULL },
 	{ "XC_TABFOCUS", "Focus Tab", -2, NULL },
+	{ "XC_KEYPRESS", "Key Press", 4, NULL },
 	{ "XC_ADDNOTIFY", "Add Notify", 1, NULL },
 	{ "XC_BANLIST", "Ban List", 4, NULL },
 	{ "XC_BANNED", "Banned", 1, NULL },
