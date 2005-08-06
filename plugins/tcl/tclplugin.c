@@ -15,8 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
-static char RCSID[] = "$Id: tclplugin.c,v 1.57 2005-08-05 01:35:23 mooooooo Exp $";
-static char RCSVERSION[] = "$Revision: 1.57 $";
+static char RCSID[] = "$Id: tclplugin.c,v 1.58 2005-08-06 16:19:51 mooooooo Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -90,7 +89,7 @@ static char unknown[] = {
 "}\n"
 "proc ::__xctcl_errorInfo { } {\n"
 "      set text [split $::errorInfo \\n]\n"
-"      puts [join [lrange $text 0 [expr {[llength $text] - 4}]] \\n]\n"
+"      puts [string trim [join [lrange $text 0 [expr {[llength $text] - 4}]] \\n]]\n"
 "}\n"
 };
 
@@ -2176,7 +2175,7 @@ int xchat_plugin_init(xchat_plugin * plugin_handle, char **plugin_name, char **p
     HINSTANCE lib;
 #endif
 
-    sscanf(RCSVERSION, "$Revision: 1.57 $", VERSION);
+    strncpy(VERSION, &RCSID[19], 5);
 
     ph = plugin_handle;
 
@@ -2242,7 +2241,7 @@ int xchat_plugin_deinit()
 
 void xchat_plugin_get_info(char **name, char **desc, char **version, void **reserved)
 {
-   sscanf(RCSVERSION, "$Revision: 1.57 $", VERSION);
+   strncpy(VERSION, &RCSID[19], 5);
    *name = "tclplugin";
    *desc = "Tcl plugin for XChat";
    *version = VERSION;
