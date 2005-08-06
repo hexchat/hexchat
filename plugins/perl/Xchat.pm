@@ -111,7 +111,7 @@ use Symbol();
 
     my $pkg_info = Xchat::Embed::pkg_info( $package );
     my $hook = Xchat::Internal::hook_command( $command, $priority, $callback,
-                                     $help_text, $data);
+					      $help_text, $data);
     push @{$pkg_info->{hooks}}, $hook if defined $hook;
     return $hook;
 
@@ -179,11 +179,11 @@ use Symbol();
     
     my ($flags, $data) = (Xchat::FD_READ, undef);
     
-    if( ref( $options ) eq 'HASH' ) {
-      if( exists( $options->{flags} ) && defined( $options->{flags} ) ) {
+    if ( ref( $options ) eq 'HASH' ) {
+      if ( exists( $options->{flags} ) && defined( $options->{flags} ) ) {
         $flags = $options->{flags};
       }
-      if( exists( $options->{data} ) && defined( $options->{data} ) ) {
+      if ( exists( $options->{data} ) && defined( $options->{data} ) ) {
         $data = $options->{data};
       }
     }
@@ -192,8 +192,8 @@ use Symbol();
       my $userdata = shift;
       no strict 'refs';
       return &{$userdata->{CB}}($userdata->{FD}, $userdata->{FLAGS},
-			       $userdata->{DATA},
-                              );
+				$userdata->{DATA},
+			       );
     };
     
     my $pkg_info = Xchat::Embed::pkg_info( $package );
@@ -211,7 +211,7 @@ use Symbol();
     ($package) = caller unless $package;
     my $pkg_info = Xchat::Embed::pkg_info( $package );
 
-    if( $hook =~ /^\d+$/ && grep { $_ == $hook } @{$pkg_info->{hooks}} ) {
+    if ( $hook =~ /^\d+$/ && grep { $_ == $hook } @{$pkg_info->{hooks}} ) {
       $pkg_info->{hooks} = [grep { $_ != $hook } @{$pkg_info->{hooks}}];
       return Xchat::Internal::unhook( $hook );
     }
@@ -253,39 +253,39 @@ use Symbol();
 
   }
 
-  sub printf {
-    my $format = shift;
-    Xchat::print( sprintf( $format, @_ ) );
-  }
-
-  sub command {
-
-    my $command = shift;
-    my @commands;
-    if ( ref( $command ) eq 'ARRAY' ) {
-      @commands = @$command;
-    } else {
-      @commands = ($command);
+    sub printf {
+      my $format = shift;
+      Xchat::print( sprintf( $format, @_ ) );
     }
-    if ( @_ >= 1 ) {
-      my ($channel, $server) = @_;
-      my $old_ctx = Xchat::get_context();
-      my $ctx = Xchat::find_context( $channel, $server );
 
-      if ( $ctx ) {
-        Xchat::set_context( $ctx );
-        Xchat::Internal::command( $_ ) foreach @commands;
-        Xchat::set_context( $old_ctx );
-        return 1;
-      } else {
-        return 0;
+      sub command {
+
+	my $command = shift;
+	my @commands;
+	if ( ref( $command ) eq 'ARRAY' ) {
+	  @commands = @$command;
+	} else {
+	  @commands = ($command);
+	}
+	if ( @_ >= 1 ) {
+	  my ($channel, $server) = @_;
+	  my $old_ctx = Xchat::get_context();
+	  my $ctx = Xchat::find_context( $channel, $server );
+
+	  if ( $ctx ) {
+	    Xchat::set_context( $ctx );
+	    Xchat::Internal::command( $_ ) foreach @commands;
+	    Xchat::set_context( $old_ctx );
+	    return 1;
+	  } else {
+	    return 0;
+	  }
+	} else {
+	  Xchat::Internal::command( $_ ) foreach @commands;
+	  return 1;
+	}
+
       }
-    } else {
-      Xchat::Internal::command( $_ ) foreach @commands;
-      return 1;
-    }
-
-  }
 
   sub commandf {
     my $format = shift;
@@ -383,7 +383,7 @@ $SIG{__WARN__} = sub {
   my ($package) = caller;
   my $pkg_info = Xchat::Embed::pkg_info( $package );
   
-  if( $pkg_info ) {
+  if ( $pkg_info ) {
     $message =~ s/\(eval \d+\)/$pkg_info->{filename}/;
   }
   Xchat::print( $message );
@@ -413,10 +413,13 @@ $SIG{__WARN__} = sub {
       my $source = do {local $/; <FH>};
       close FH;
 
+      # we shouldn't care about things after __END__
+      $source =~ s/^__END__.*//ms;
+
       if ( my $replacements = $source =~ s/^\s*package ([\w:]+).*?;//mg ) {
         my $original_package = $1;
 
-        if ( $replacements > 1 ) {
+	if ( $replacements > 1 ) {
           Xchat::print( "Too many package defintions, only 1 is allowed\n" );
           return 1;
         }
@@ -457,19 +460,19 @@ $SIG{__WARN__} = sub {
     my $package = file2pkg( $file );
     my $pkg_info = pkg_info( $package );
 
-    if( $pkg_info ) {
+    if ( $pkg_info ) {
 
-      if( exists $pkg_info->{hooks} ) {
+      if ( exists $pkg_info->{hooks} ) {
         for my $hook ( @{$pkg_info->{hooks}} ) {
           Xchat::unhook( $hook, $package );
         }
       }
 
-    # take care of the shutdown callback
-      if( exists $pkg_info->{shutdown} ) {
-        if( ref $pkg_info->{shutdown} eq 'CODE' ) {
+      # take care of the shutdown callback
+      if ( exists $pkg_info->{shutdown} ) {
+        if ( ref $pkg_info->{shutdown} eq 'CODE' ) {
           $pkg_info->{shutdown}->();
-        } elsif( $pkg_info->{shutdown} ) {
+        } elsif ( $pkg_info->{shutdown} ) {
           eval {
             no strict 'refs';
             &{$pkg_info->{shutdown}};
@@ -477,7 +480,7 @@ $SIG{__WARN__} = sub {
         }
       }
       
-      if( exists $pkg_info->{gui_entry} ) {
+      if ( exists $pkg_info->{gui_entry} ) {
         plugingui_remove( $pkg_info->{gui_entry} );
       }
       
@@ -495,7 +498,7 @@ $SIG{__WARN__} = sub {
     my $pkg_info = pkg_info( $package );
     my $fullpath = $file;
 
-    if( $pkg_info ) {
+    if ( $pkg_info ) {
       $fullpath = $pkg_info->{filename};
       unload( $file );
     }
@@ -510,25 +513,25 @@ $SIG{__WARN__} = sub {
     return Xchat::EAT_ALL;
   }
 
-#   sub auto_load {
+  #   sub auto_load {
 
-#     my $dir = Xchat::get_info( "xchatdirfs" ) || Xchat::get_info( "xchatdir" );
-#     if( opendir my $dir_handle, $dir ) {
-#       my @files = readdir $dir_handle;
+  #     my $dir = Xchat::get_info( "xchatdirfs" ) || Xchat::get_info( "xchatdir" );
+  #     if( opendir my $dir_handle, $dir ) {
+  #       my @files = readdir $dir_handle;
 
-#       for( @files ) {
-#         my $fullpath = File::Spec->catfile( $dir, $_ );
-#         load( $fullpath ) if $fullpath =~ m/\.pl$/i;
-#       }
-#       closedir $dir_handle;
-#     }
+  #       for( @files ) {
+  #         my $fullpath = File::Spec->catfile( $dir, $_ );
+  #         load( $fullpath ) if $fullpath =~ m/\.pl$/i;
+  #       }
+  #       closedir $dir_handle;
+  #     }
     
-#   }
+  #   }
 
   sub expand_homedir {
     my $file = shift @_;
     
-    if( $^O eq "MSWin32" ) {
+    if ( $^O eq "MSWin32" ) {
       $file =~ s/^~/$ENV{USERPROFILE}/;
     } else {
       $file =~
