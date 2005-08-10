@@ -187,7 +187,8 @@ set_window_urgency (GtkWidget *win, gboolean set)
 static void
 flash_window (GtkWidget *win)
 {
-	set_window_urgency (win, TRUE);
+	if (!gtk_window_has_toplevel_focus (GTK_WINDOW (win)))
+		set_window_urgency (win, TRUE);
 }
 
 static void
