@@ -40,6 +40,7 @@ struct defaultserver
 	char *network;
 	char *host;
 	char *channel;
+	char *charset;
 };
 
 static const struct defaultserver def[] =
@@ -383,6 +384,13 @@ static const struct defaultserver def[] =
 	{0,			"evelance.rizenet.org"},
 	{0,			"lisa.rizenet.org"},
 	{0,			"scott.rizenet.org"},
+
+	{"RusNet", 0, 0, "KOI8-R"},
+	{0,			"irc.tomsk.net"},
+	{0,			"irc.rinet.ru"},
+	{0,			"irc.run.net"},
+	{0,			"irc.ru"},
+	{0,			"irc.lucky.net"},
 
 	{"SceneNet",	0},
 	{0,			"irc.scene.org"},
@@ -803,6 +811,11 @@ servlist_load_defaults (void)
 #endif
 			if (def[i].channel)
 				net->autojoin = strdup (def[i].channel);
+			if (def[i].charset)
+			{
+				free (net->encoding);
+				net->encoding = strdup (def[i].charset);
+			}
 			if (!strcmp (def[i].network, "ChatJunkies"))
 				prefs.slist_select = j;
 			j++;
