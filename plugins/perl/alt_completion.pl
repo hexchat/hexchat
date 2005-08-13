@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-Xchat::register( "Tab Completion", "1.0102",
+Xchat::register( "Tab Completion", "1.0103",
                  "Alternative tab completion behavior" );
 Xchat::hook_print( "Key Press", \&complete );
 Xchat::hook_print( "Close Context", \&close_context );
@@ -44,8 +44,7 @@ sub complete {
   my $completions = $completions{$context};
   $completions->{pos} ||= -1;
   my $suffix = Xchat::get_prefs( "completion_suffix" );
-  $suffix =~ s/\s+//g;
-  $suffix .= " ";
+  $suffix =~ s/^\s+//;
   
   my $input = Xchat::get_info( "inputbox" );
   my $cursor_pos = Xchat::get_info( "state_cursor" );
@@ -86,11 +85,15 @@ sub complete {
       # fix $word so { equals [, ] equals }, \ equals |
       # and escape regex metacharacters
       $word =~ s/($escapes)/$escape_map{$1}/g;
-      $completions->{nicks} = [ map { $_->{nick} }
-                                sort { $b->{lasttalk} <=> $a->{lasttalk}}
-                                grep { $_->{nick} =~ /^$word/i }
-                                Xchat::get_list( "users" )
-                              ];
+      $completions->{nicks} = [
+			map { $_->{nick} }
+			sort {
+				($a->{nick} eq Xchat::get_info("nick") || 
+				 $b->{nick} eq Xchat::get_info("nick"))
+					? -1 : $b->{lasttalk} <=> $a->{lasttalk}
+			}
+			grep { $_->{nick} =~ /^$word/i } Xchat::get_list( "users" )
+		];
       $completions->{index} = 0;
       $completed = $completions->{nicks}[ $completions->{index} ];
     }
