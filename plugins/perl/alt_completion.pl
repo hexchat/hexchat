@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 
-Xchat::register( "Tab Completion", "1.0103",
+Xchat::register( "Tab Completion", "1.0104",
                  "Alternative tab completion behavior" );
 Xchat::hook_print( "Key Press", \&complete );
 Xchat::hook_print( "Close Context", \&close_context );
@@ -106,7 +106,7 @@ sub complete {
       # don't print if we tabbed in the beginning and the list of possible
       # completions includes all nicks in the channel
       if( @{$completions->{nicks}} < Xchat::get_list("users") ) {
-        Xchat::print( join " ", @{$completions->{nicks}} );
+        Xchat::print( join " ", @{$completions->{nicks}}, "\n" );
       }
       $completed = lcs( $completions->{nicks} );
       $partial = 1;
