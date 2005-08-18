@@ -276,7 +276,6 @@ url_check_line (char *buf, int len)
 				if (url_check_word (start, wlen) == WORD_URL)
 				{
 					url_add (start, wlen);
-					po += wlen;
 				}
 			}
 			if (po[0] == 0)

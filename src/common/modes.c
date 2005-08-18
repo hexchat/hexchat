@@ -575,7 +575,7 @@ handle_mode (server * serv, char *word[], char *word_eol[],
 			break;
 		default:
 			argstr = "";
-			if (all_modes_have_args || mode_has_arg (serv, sign, *modes))
+			if ((all_modes_have_args || mode_has_arg (serv, sign, *modes)) && arg < (num_args+1))
 			{
 				arg++;
 				argstr = word[arg + offset];
