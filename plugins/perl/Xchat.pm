@@ -561,18 +561,12 @@ sub pkg_info {
 }
 
 sub find_pkg {
-	my $level = 0;
+	my $level = 1;
 	my $package = (caller( $level ))[0];
 	while( $package !~ /^Xchat::Script::/ ) {
 		$level++;
 		$package = (caller( $level ))[0];
-	} continue {
-		Xchat::print( "   "x($level-1) .
-			join("<<>>",(caller( $level ))[0,3]) . "\n");
 	}
-
-	Xchat::print( "RETURNED($package)\n" );
-	# -1 for main, -1 for load()
 	return $package;
 }
 
