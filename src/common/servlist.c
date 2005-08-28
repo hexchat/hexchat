@@ -268,6 +268,9 @@ static const struct defaultserver def[] =
 	{0,			"irc.canadian.net"},
 	{0,			"irc.irctoo.net"},
 
+	{"Krstarica", 0},
+	{0,			"irc.krstarica.com"},
+
 	{"Librenet",	0},
 	{0,			"irc.librenet.net"},
 	{0,			"ielf.fr.librenet.net"},
@@ -308,6 +311,9 @@ static const struct defaultserver def[] =
 
 	{"NullusNet",	0},
 	{0,			"irc.nullus.net"},
+
+	{"Oceanius", 0},
+	{0,			"irc.oceanius.com"},
 
 	{"OFTC",	0},
 	{0,			"irc.oftc.net"},

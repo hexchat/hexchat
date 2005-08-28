@@ -185,7 +185,6 @@ struct xchatprefs
 	int recon_delay;
 	int bantype;
 	int userlist_sort;
-	int nu_color;
 	unsigned long local_ip;
 	unsigned long dcc_ip;
 	char dcc_ip_str[DOMAINLEN + 1];
@@ -196,7 +195,6 @@ struct xchatprefs
 	unsigned int mainwindow_save;
 	unsigned int perc_color;
 	unsigned int perc_ascii;
-	unsigned int use_trans;
 	unsigned int autosave;
 	unsigned int autodialog;
 	unsigned int autosave_url;
@@ -229,7 +227,6 @@ struct xchatprefs
 	unsigned int dcc_send_fillspaces;
 	unsigned int dcc_remove;
 	unsigned int slist_skip;
-	unsigned int slist_edit;
 	unsigned int slist_select;
 	unsigned int filterbeep;
 	unsigned int beepmsg;
@@ -242,7 +239,6 @@ struct xchatprefs
 	unsigned int timestamp_logs;
 	unsigned int newtabstofront;
 	unsigned int dccwithnick;
-	unsigned int hilitenotify;
 	unsigned int hidever;
 	unsigned int ip_from_server;
 	unsigned int raw_modes;
@@ -271,7 +267,6 @@ struct xchatprefs
 	unsigned int perlwarnings;
 	unsigned int lagometer;
 	unsigned int throttlemeter;
-	unsigned int hebrew;
 	unsigned int pingtimeout;
 	unsigned int whois_on_notifyonline;
 	unsigned int wait_on_exit;

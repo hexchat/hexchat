@@ -423,7 +423,6 @@ const struct prefs vars[] = {
 	{"gui_input_style", P_OFFINT (style_inputbox), TYPE_BOOL},
 	{"gui_lagometer", P_OFFINT (lagometer), TYPE_INT},
 	{"gui_mode_buttons", P_OFFINT (chanmodebuttons), TYPE_BOOL},
-	{"gui_slist_edit", P_OFFINT (slist_edit), TYPE_BOOL},
 	{"gui_slist_select", P_OFFINT (slist_select), TYPE_INT},
 	{"gui_slist_skip", P_OFFINT (slist_skip), TYPE_BOOL},
 	{"gui_throttlemeter", P_OFFINT (throttlemeter), TYPE_INT},
@@ -431,7 +430,6 @@ const struct prefs vars[] = {
 	{"gui_ulist_buttons", P_OFFINT (userlistbuttons), TYPE_BOOL},
 	{"gui_ulist_doubleclick", P_OFFSET (doubleclickuser), TYPE_STR},
 	{"gui_ulist_hide", P_OFFINT (hideuserlist), TYPE_BOOL},
-	{"gui_ulist_hilight_notify", P_OFFINT (hilitenotify), TYPE_BOOL},
 	{"gui_ulist_pos", P_OFFINT (paned_pos), TYPE_INT},
 	{"gui_ulist_resizable", P_OFFINT (paned_userlist), TYPE_BOOL},
 	{"gui_ulist_show_hosts", P_OFFINT(showhostname_in_userlist), TYPE_BOOL},
@@ -497,7 +495,6 @@ const struct prefs vars[] = {
 	{"net_reconnect_delay", P_OFFINT (recon_delay), TYPE_INT},
 	{"net_throttle", P_OFFINT (throttle), TYPE_BOOL},
 
-	{"notify_color", P_OFFINT (nu_color), TYPE_INT},
 	{"notify_timeout", P_OFFINT (notify_timeout), TYPE_INT},
 	{"notify_whois_online", P_OFFINT (whois_on_notifyonline), TYPE_BOOL},
 
@@ -609,7 +606,6 @@ load_config (void)
 	prefs.use_server_tab = 1;
 	prefs.privmsgtab = 1;
 	/*prefs.style_inputbox = 1;*/
-	prefs.nu_color = 4;
 	prefs.dccpermissions = 0600;
 	prefs.max_lines = 300;
 	prefs.mainwindow_width = 640;
