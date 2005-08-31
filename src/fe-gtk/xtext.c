@@ -911,6 +911,9 @@ gtk_xtext_unrealize (GtkWidget * widget)
 {
 	backend_deinit (GTK_XTEXT (widget));
 
+	/* if there are still events in the queue, this'll avoid segfault */
+	gdk_window_set_user_data (widget->window, NULL);
+
 	if (parent_class->unrealize)
 		(* GTK_WIDGET_CLASS (parent_class)->unrealize) (widget);
 }

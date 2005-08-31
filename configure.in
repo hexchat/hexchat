@@ -656,15 +656,17 @@ AC_SUBST(TCL_CFLAGS)
 PLUGIN_INCLUDES='-I$(top_srcdir)/plugins'
 AC_SUBST(PLUGIN_INCLUDES)
 
-if test "x${prefix}" = "xNONE"; then
-	AC_DEFINE_UNQUOTED(PREFIX, "${ac_default_prefix}")
-	AC_DEFINE_UNQUOTED(XCHATLIBDIR, "${ac_default_prefix}/lib/xchat")
-	AC_DEFINE_UNQUOTED(XCHATSHAREDIR, "${ac_default_prefix}/share/xchat")
-else
-	AC_DEFINE_UNQUOTED(PREFIX, "${prefix}")
-	AC_DEFINE_UNQUOTED(XCHATLIBDIR, "${prefix}/lib/xchat")
-	AC_DEFINE_UNQUOTED(XCHATSHAREDIR, "${prefix}/share/xchat")
-fi
+dnl for plugin.c and pixmaps.c
+test "x$prefix" = xNONE && prefix="$ac_default_prefix"
+test "x$exec_prefix" = xNONE && exec_prefix="$prefix"
+
+AC_DEFINE_UNQUOTED(PREFIX, "${prefix}")
+
+XCHATLIBDIR=`eval echo ${libdir}/xchat`
+AC_DEFINE_UNQUOTED(XCHATLIBDIR, "$XCHATLIBDIR")
+
+XCHATSHAREDIR=`eval echo ${datadir}/xchat`
+AC_DEFINE_UNQUOTED(XCHATSHAREDIR, "$XCHATSHAREDIR")
 
 dnl for plugins/xxx/Makefile.am
 xchatlibdir=${libdir}/xchat
