@@ -319,7 +319,7 @@ server_inline (server *serv, char *line, int len)
 				utf_line_allocated = g_convert_with_fallback (conv_line, conv_len, "UTF-8", encoding, "?", &read_len, &utf_len, &err);
 				if (err != NULL)
 				{
-					if (err->code == G_CONVERT_ERROR_ILLEGAL_SEQUENCE)
+					if (err->code == G_CONVERT_ERROR_ILLEGAL_SEQUENCE && conv_len > (read_len + 1))
 					{
 						/* Make our best bet by removing the erroneous char.
 						   This will work for casual 8-bit strings with non-standard chars. */
