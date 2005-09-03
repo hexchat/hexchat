@@ -385,7 +385,7 @@ server_read (GIOChannel *source, GIOCondition condition, server *serv)
 			error = 0;
 			if (len < 0)
 			{
-				if (would_block_again ())
+				if (would_block ())
 					return TRUE;
 				error = sock_error ();
 			}

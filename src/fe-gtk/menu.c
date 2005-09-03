@@ -161,7 +161,7 @@ userlist_button_cb (GtkWidget * button, char *cmd)
 	{
 		/* fake a selection */
 		nicks = malloc (sizeof (char *) * 2);
-		nicks[0] = sess->channel;
+		nicks[0] = g_strdup (sess->channel);
 		nicks[1] = NULL;
 		num_sel = 1;
 	} else
@@ -203,9 +203,13 @@ userlist_button_cb (GtkWidget * button, char *cmd)
 		nick_command_parse (sess, cmd, nick, allnicks);
 	}
 
-	if (nicks)
-		free (nicks);
+	while (num_sel)
+	{
+		num_sel--;
+		g_free (nicks[num_sel]);
+	}
 
+	free (nicks);
 	free (allnicks);
 }
 
@@ -439,9 +443,10 @@ menu_create (GtkWidget *menu, GSList *list, char *target, int check_path)
 }
 
 static void
-menu_destroy (GtkObject *object, gpointer objtounref)
+menu_destroy (GtkWidget *menu, gpointer objtounref)
 {
-	gtk_widget_destroy (GTK_WIDGET (object));
+	gtk_widget_destroy (menu);
+	g_object_unref (menu);
 	if (objtounref)
 		g_object_unref (G_OBJECT (objtounref));
 }
@@ -454,13 +459,12 @@ menu_popup (GtkWidget *menu, GdkEventButton *event, gpointer objtounref)
 		gtk_menu_set_screen (GTK_MENU (menu), gdk_drawable_get_screen (event->window));
 #endif
 
+	g_object_ref (menu);
+	gtk_object_sink (GTK_OBJECT (menu));
 	g_signal_connect (G_OBJECT (menu), "selection-done",
 							G_CALLBACK (menu_destroy), objtounref);
-	if (event == NULL)
-		gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL, 0, 0);
-	else
-		gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL,
-							 0, event->time);
+	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL,
+						 0, event ? event->time : 0);
 }
 
 static char *str_copy = 0;		/* for all pop-up menus */

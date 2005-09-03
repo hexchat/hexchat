@@ -486,7 +486,10 @@ userlist_click_cb (GtkWidget *widget, GdkEventButton *event, gpointer userdata)
 			return TRUE;
 		}
 		if (nicks)
+		{
+			g_free (nicks[0]);
 			free (nicks);
+		}
 
 		sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (widget));
 		if (gtk_tree_view_get_path_at_pos (GTK_TREE_VIEW (widget),

@@ -288,17 +288,9 @@ is_hilight (char *from, char *text, session *sess, server *serv)
 		 SearchNick (text, prefs.irc_extra_hilight) ||
 		 FromNick (from, prefs.irc_nick_hilight))
 	{
-#ifdef WIN32
 		if (sess != current_tab)
 			sess->nick_said = TRUE;
 		fe_set_hilight (sess);
-#else
-		if (sess != current_tab)
-		{
-			sess->nick_said = TRUE;
-			fe_set_hilight (sess);
-		}
-#endif
 		return 1;
 	}
 	return 0;

@@ -563,7 +563,7 @@ if test "x$GCC" = "xyes"; then
 	fi
 fi
 
-# does this compiler support -Wno-pointer-sign ?
+dnl does this compiler support -Wno-pointer-sign ?
 AC_MSG_CHECKING([if gcc accepts -Wno-pointer-sign ])
 
 safe_CFLAGS=$CFLAGS
@@ -583,6 +583,28 @@ CFLAGS=$safe_CFLAGS
 
 if test x$no_pointer_sign = xyes; then
 	CFLAGS="$CFLAGS -Wno-pointer-sign"
+fi
+
+dnl does this compiler support -funsigned-char ?
+AC_MSG_CHECKING([if gcc accepts -funsigned-char ])
+
+safe_CFLAGS=$CFLAGS
+CFLAGS="-funsigned-char"
+
+AC_TRY_COMPILE(, [
+int main () { return 0 ; }
+],
+[
+unsigned_char=yes
+AC_MSG_RESULT([yes])
+], [
+unsigned_char=no
+AC_MSG_RESULT([no])
+])
+CFLAGS=$safe_CFLAGS
+
+if test x$unsigned_char = xyes; then
+	CFLAGS="$CFLAGS -funsigned-char"
 fi
 
 dnl *********************************************************************

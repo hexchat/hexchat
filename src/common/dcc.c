@@ -469,6 +469,8 @@ dcc_chat_line (struct DCC *dcc, char *line, char *tbuf)
 	gsize utf_len;
 
 	len = strlen (line);
+	if (dcc->serv->using_cp1255)
+		len++;	/* include the NUL terminator */
 
 	if (dcc->serv->encoding == NULL)     /* system */
 		utf = g_locale_to_utf8 (line, len, NULL, &utf_len, NULL);
@@ -480,6 +482,9 @@ dcc_chat_line (struct DCC *dcc, char *line, char *tbuf)
 		line = utf;
 		len = utf_len;
 	}
+
+	if (dcc->serv->using_cp1255 && len > 0)
+		len--;
 
 	/* we really need valid UTF-8 now */
 	conv = text_validate (&line, &len);
@@ -564,7 +569,7 @@ dcc_read_chat (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 		{
 			if (len < 0)
 			{
-				if (would_block_again ())
+				if (would_block ())
 					return TRUE;
 			}
 			sprintf (tbuf, "%d", dcc->port);
@@ -708,7 +713,7 @@ dcc_read (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 		{
 			if (n < 0)
 			{
-				if (would_block_again ())
+				if (would_block ())
 				{
 					if (need_ack)
 						dcc_send_ack (dcc);
@@ -987,7 +992,7 @@ dcc_read_ack (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 	{
 		if (len < 0)
 		{
-			if (would_block_again ())
+			if (would_block ())
 				return TRUE;
 		}
 		EMIT_SIGNAL (XP_TE_DCCSENDFAIL, dcc->serv->front_session,

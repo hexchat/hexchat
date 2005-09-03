@@ -464,6 +464,8 @@ fe_set_hilight (struct session *sess)
 {
 	if (sess->gui->is_tab)
 		fe_set_tab_color (sess, 3, TRUE);	/* blue, with taskbar flash */
+	else
+		fe_set_tab_color (sess, -1, TRUE);	/* taskbar flash only */
 }
 
 static void

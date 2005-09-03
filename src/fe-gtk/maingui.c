@@ -187,8 +187,7 @@ set_window_urgency (GtkWidget *win, gboolean set)
 static void
 flash_window (GtkWidget *win)
 {
-	if (!gtk_window_has_toplevel_focus (GTK_WINDOW (win)))
-		set_window_urgency (win, TRUE);
+	set_window_urgency (win, TRUE);
 }
 
 static void
@@ -236,7 +235,7 @@ fe_set_tab_color (struct session *sess, int col, int flash)
 	}
 
 #if defined(WIN32) || defined(USE_XLIB)
-	if (flash && prefs.flash_hilight)
+	if (flash && prefs.flash_hilight && fe_gui_info (sess, 0) != 1)
 		flash_window (sess->gui->window);
 #endif
 }
@@ -827,6 +826,8 @@ mg_topdestroy_cb (GtkWidget *win, session *sess)
 {
 /*	printf("enter mg_topdestroy. sess %p was destroyed\n", sess);*/
 
+	/* kill the text buffer */
+	gtk_xtext_buffer_free (sess->res->buffer);
 	/* kill the user list */
 	g_object_unref (G_OBJECT (sess->res->user_model));
 
@@ -975,9 +976,10 @@ mg_create_sess_tree (GtkWidget *menu)
 }
 
 static void
-mg_menu_destroy (GtkMenuShell *menushell, GtkWidget *menu)
+mg_menu_destroy (GtkWidget *menu, gpointer userdata)
 {
 	gtk_widget_destroy (menu);
+	g_object_unref (menu);
 }
 
 static void
@@ -1139,8 +1141,12 @@ mg_tab_press_cb (GtkWidget *wid, GdkEventButton *event, session *sess)
 	if (sess && tabmenu_list)
 		menu_create (menu, tabmenu_list, sess->channel, FALSE);
 
+	if (event->window)
+		gtk_menu_set_screen (GTK_MENU (menu), gdk_drawable_get_screen (event->window));
+	g_object_ref (menu);
+	gtk_object_sink (GTK_OBJECT (menu));
 	g_signal_connect (G_OBJECT (menu), "selection-done",
-							G_CALLBACK (mg_menu_destroy), menu);
+							G_CALLBACK (mg_menu_destroy), NULL);
 	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL, 0, event->time);
 	return TRUE;
 }
@@ -1462,6 +1468,8 @@ mg_link_irctab (session *sess, int focus)
 	mg_unpopulate (sess);
 	mg_changui_destroy (sess);
 	mg_changui_new (sess, sess->res, 1, focus);
+	/* the buffer is now attached to a different widget */
+	((xtext_buffer *)sess->res->buffer)->xtext = (GtkXText *)sess->gui->xtext;
 }
 
 static void
