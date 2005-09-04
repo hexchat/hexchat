@@ -665,8 +665,8 @@ load_config (void)
 			snprintf (prefs.dccdir, sizeof (prefs.dccdir), "%s\\Downloads", get_xdir_utf8 ());
 	}
 #else
-	sprintf (prefs.sounddir, "%s/sounds", get_xdir_utf8 ());
-	sprintf (prefs.dccdir, "%s/downloads", get_xdir_utf8 ());
+	snprintf (prefs.sounddir, sizeof (prefs.sounddir), "%s/sounds", get_xdir_utf8 ());
+	snprintf (prefs.dccdir, sizeof (prefs.dccdir), "%s/downloads", get_xdir_utf8 ());
 #endif
 	strcpy (prefs.doubleclickuser, "QUOTE WHOIS %s %s");
 	strcpy (prefs.awayreason, _("I'm busy"));
