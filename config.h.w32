@@ -3,15 +3,10 @@
 #define USE_GMODULE
 #define USE_PLUGIN
 #define PACKAGE "xchat"
-#define VERSION "2.4.4unoffical"
+#define VERSION "2.4.5un"
 #define XCHATLIBDIR "."
 #define XCHATSHAREDIR "."
 #define OLD_PERL
 #ifndef USE_IPV6
 #define socklen_t int
-#endif
-#if _INTEGRAL_MAX_BITS >= 64
-#define stat _stati64
-#define lseek _lseeki64
-#define fstat _fstati64
 #endif

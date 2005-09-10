@@ -675,11 +675,16 @@ menu_urlmenu (GdkEventButton *event, char *url)
 	menu_quick_item (0, 0, menu, 1, 0);
 
 	menu_quick_item_with_callback (copy_to_clipboard_cb, _("Copy selected URL"), menu, str_copy);
+#ifndef WIN32
+	if (!strchr (str_copy, '`'))
+	{
+#endif
 #ifdef WIN32
-	menu_quick_item_with_callback (open_url_cb, "Open URL", menu, str_copy);
+		menu_quick_item_with_callback (open_url_cb, "Open URL", menu, str_copy);
 #endif
 
-	menu_create (menu, urlhandler_list, str_copy, TRUE);
+		menu_create (menu, urlhandler_list, str_copy, TRUE);
+	}
 	menu_popup (menu, event, NULL);
 }
 
