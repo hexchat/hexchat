@@ -726,6 +726,7 @@ static char * const pevt_sconnect_help[] = {
 
 static char * const pevt_generic_nick_help[] = {
 	N_("Nickname"),
+	N_("Server Name")
 };
 
 static char * const pevt_chanmodes_help[] = {
