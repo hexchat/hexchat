@@ -185,5 +185,5 @@ sub common_string {
 	);
 	
 	
-return substr( $nick1, 0, $index );
+	return substr( $nick1, 0, $index );
 }
