@@ -34,7 +34,7 @@ struct DCC
 {
 	struct server *serv;
 	struct dcc_chat *dccchat;
-	unsigned long addr;			/* the 32bit IP number, host byte order */
+	guint32 addr;					/* the 32bit IP number, host byte order */
 	int fp;							/* file pointer */
 	int sok;
 	int iotag;						/* reading io tag */
@@ -96,8 +96,6 @@ void dcc_get_nick (struct session *sess, char *nick);
 void dcc_chat (session *sess, char *nick, int passive);
 void handle_dcc (session *sess, char *nick, char *word[], char *word_eol[]);
 void dcc_show_list (session *sess);
-void open_dcc_recv_window (void);
-void open_dcc_send_window (void);
-void open_dcc_chat_window (void);
+guint32 dcc_get_my_address (void);
 
 #endif

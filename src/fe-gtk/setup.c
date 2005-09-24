@@ -99,10 +99,8 @@ static const setting textbox_settings[] =
 	{ST_TOGGLE, N_("Transparent background"), P_OFFINTNL(transparent),0,0,0},
 	{ST_TOGGLR, N_("Indent nick names"), P_OFFINTNL(indent_nicks),
 					N_("Make nick names right-justified"),0,0},
-	{ST_TOGGLE, N_("Tint (shade) transparency"), P_OFFINTNL(tint),0,0,0},
-	{ST_TOGGLR, N_("Colored nick names"), P_OFFINTNL(colorednicks),
+	{ST_TOGGLE, N_("Colored nick names"), P_OFFINTNL(colorednicks),
 					N_("Give each person on IRC a different color"),0,0},
-	{ST_TOGGLE, N_("Strip mIRC colors"), P_OFFINTNL(stripcolor),0,0,0},
 	{ST_TOGGLR, N_("Show marker line"), P_OFFINTNL(show_marker),
 					N_("Insert a red line after the last read text."),0,0},
 	{ST_HEADER, N_("Tint Settings"), 0,0,0},
@@ -453,6 +451,8 @@ setup_apply_tint (int *tag)
 	prefs.tint_red = setup_prefs.tint_red;
 	prefs.tint_green = setup_prefs.tint_green;
 	prefs.tint_blue = setup_prefs.tint_blue;
+	if (prefs.tint_red != 0 && prefs.tint_green != 0 && prefs.tint_blue != 0)
+		prefs.tint = 1;
 	mg_update_xtext (current_sess->gui->xtext);
 	*tag = 0;
 	return 0;
@@ -1645,6 +1645,10 @@ setup_apply (struct xchatprefs *pr)
 		do_ulist = TRUE;
 
 	memcpy (&prefs, pr, sizeof (prefs));
+
+	prefs.tint = 0;
+	if (prefs.tint_red != 0 && prefs.tint_green != 0 && prefs.tint_blue != 0)
+		prefs.tint = 1;
 
 	mkdir_utf8 (prefs.dccdir);
 	mkdir_utf8 (prefs.dcc_completed_dir);

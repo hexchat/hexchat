@@ -347,7 +347,7 @@ check_prefs_dir (void)
 #else
 		if (mkdir (dir, S_IRUSR | S_IWUSR | S_IXUSR) != 0)
 #endif
-			fe_message (_("Cannot create ~/.xchat2"), FALSE);
+			fe_message (_("Cannot create ~/.xchat2"), FE_MSG_ERROR);
 	}
 }
 
@@ -510,6 +510,7 @@ const struct prefs vars[] = {
 	{"tab_chans", P_OFFINT (tabchannels), TYPE_BOOL},
 	{"tab_dialogs", P_OFFINT (privmsgtab), TYPE_BOOL},
 	{"tab_dnd",  P_OFFINT (tab_dnd), TYPE_BOOL},
+	{"tab_layout", P_OFFINT (tab_layout), TYPE_INT},
 	{"tab_new_to_front", P_OFFINT (newtabstofront), TYPE_INT},
 	{"tab_notices", P_OFFINT (notices_tabs), TYPE_BOOL},
 	{"tab_position", P_OFFINT (tabs_position), TYPE_INT},
@@ -582,6 +583,7 @@ load_config (void)
 
 	/* put in default values, anything left out is automatically zero */
 	prefs.local_ip = 0xffffffff;
+	prefs.show_marker = 1;
 	prefs.completion_amount = 5;
 	prefs.away_timeout = 60;
 	prefs.away_size_max = 300;
@@ -717,7 +719,7 @@ load_config (void)
 		/* OS/2 uses UID 0 all the time */
 		if (getuid () == 0)
 			fe_message (_("* Running IRC as root is stupid! You should\n"
-							"  create a User Account and use that to login.\n"), TRUE);
+							"  create a User Account and use that to login.\n"), FE_MSG_WARN|FE_MSG_WAIT);
 #endif
 #endif /* !WIN32 */
 

@@ -86,7 +86,7 @@ typedef struct restore_gui
 	GtkWidget *banlist_treeview;
 	GtkWidget *banlist_butRefresh;
 
-	GtkWidget *tab;		/* toggleButton */
+	void *tab;			/* (chan *) */
 
 	/* information stored when this tab isn't front-most */
 	void *user_model;	/* for filling the GtkTreeView */
@@ -134,12 +134,13 @@ typedef struct session_gui
 		*nick_box,		/* contains label to the left of input_box */
 		*nick_label,
 		*op_xpm,			/* icon to the left of nickname */
-		*tabs_box,	/* where the tabs are */
 		*namelistinfo,	/* label above userlist */
 		*input_box,
 		*flag_wid[NUM_FLAG_WIDS],		/* channelmode buttons */
 		*limit_entry,		  /* +l */
 		*key_entry;		  /* +k */
+
+	void *chanview;	/* chanview.h */
 
 	int bartag;		/*connecting progressbar timeout */
 

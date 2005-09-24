@@ -289,6 +289,9 @@ static const struct defaultserver def[] =
 	{"Majistic",	0},
 	{0,			"irc.majistic.net"},
 
+	{"MIXXnet",		0},
+	{0,			"irc.mixxnet.net"},
+
 	{"NeverNET",	0},
 	{0,			"irc.nevernet.net"},
 	{0,			"imagine.nevernet.net"},
@@ -1001,7 +1004,7 @@ servlist_save (void)
 			{
 				snprintf (buf, sizeof (buf), _("Warning: \"%s\" character set is unknown. No conversion will be applied for network %s."),
 							 net->encoding, net->name);
-				fe_message (buf, FALSE);
+				fe_message (buf, FE_MSG_WARN);
 			}
 		}
 

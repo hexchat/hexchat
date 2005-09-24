@@ -608,25 +608,6 @@ servlist_savegui (void)
 }
 
 static void
-servlist_connectnew_cb (GtkWidget *button, gpointer userdata)
-{
-	if (!selected_net)
-		return;
-
-	if (servlist_savegui () != 0)
-	{
-		gtkutil_simpledialog (_("User name and Real name cannot be left blank."));
-		return;
-	}
-
-	/* give it a NULL sess and it'll open a new tab for us */
-	servlist_connect (NULL, selected_net);
-
-	gtk_widget_destroy (serverlist_win);
-	serverlist_win = NULL;
-}
-
-static void
 servlist_connect_cb (GtkWidget *button, gpointer userdata)
 {
 	if (!selected_net)
@@ -639,6 +620,8 @@ servlist_connect_cb (GtkWidget *button, gpointer userdata)
 	}
 
 	if (!is_session (servlist_sess))
+		servlist_sess = NULL;
+	else if (servlist_sess->server->connected)
 		servlist_sess = NULL;
 
 	servlist_connect (servlist_sess, selected_net);
@@ -904,6 +887,7 @@ no_servlist (GtkWidget * igad, gpointer serv)
 		prefs.slist_skip = FALSE;
 }
 
+#if 0		/* GTK auto-find already does this */
 static gboolean
 servlist_key_cb (GtkWidget *wid, GdkEventKey *evt, gpointer tree)
 {
@@ -939,6 +923,7 @@ servlist_key_cb (GtkWidget *wid, GdkEventKey *evt, gpointer tree)
 
 	return FALSE;
 }
+#endif
 
 static GtkWidget *
 bold_label (char *text)
@@ -1225,7 +1210,6 @@ servlist_open_networks (void)
 	GtkWidget *hseparator1;
 	GtkWidget *hbuttonbox1;
 	GtkWidget *button_connect;
-	GtkWidget *button_connectnew;
 	GtkWidget *button_close;
 	GtkTreeModel *model;
 	GtkListStore *store;
@@ -1235,9 +1219,9 @@ servlist_open_networks (void)
 	gtk_container_set_border_width (GTK_CONTAINER (servlist), 4);
 	gtk_window_set_title (GTK_WINDOW (servlist), _("X-Chat: Server List"));
 #ifdef WIN32
-	gtk_window_set_default_size (GTK_WINDOW (servlist), 374, 426);
+	gtk_window_set_default_size (GTK_WINDOW (servlist), 334, 426);
 #else
-	gtk_window_set_default_size (GTK_WINDOW (servlist), 414, 478);
+	gtk_window_set_default_size (GTK_WINDOW (servlist), 374, 478);
 #endif
 	gtk_window_set_position (GTK_WINDOW (servlist), GTK_WIN_POS_MOUSE);
 	gtk_window_set_role (GTK_WINDOW (servlist), "servlist");
@@ -1435,22 +1419,9 @@ servlist_open_networks (void)
 	gtk_container_add (GTK_CONTAINER (hbuttonbox1), button_close);
 	GTK_WIDGET_SET_FLAGS (button_close, GTK_CAN_DEFAULT);
 
-	button_connect = gtk_button_new_with_mnemonic (_("C_onnect"));
-	gtk_widget_show (button_connect);
-	g_signal_connect (G_OBJECT (button_connect), "clicked",
-							G_CALLBACK (servlist_connect_cb), 0);
-	gtk_container_add (GTK_CONTAINER (hbuttonbox1), button_connect);
+	button_connect = gtkutil_button (hbuttonbox1, GTK_STOCK_CONNECT, NULL,
+												servlist_connect_cb, NULL, _("C_onnect"));
 	GTK_WIDGET_SET_FLAGS (button_connect, GTK_CAN_DEFAULT);
-
-	if (servlist_sess)
-	{
-		button_connectnew = gtk_button_new_with_mnemonic (_("Connect in new tab"));
-		gtk_widget_show (button_connectnew);
-		g_signal_connect (G_OBJECT (button_connectnew), "clicked",
-								G_CALLBACK (servlist_connectnew_cb), 0);
-		gtk_container_add (GTK_CONTAINER (hbuttonbox1), button_connectnew);
-		GTK_WIDGET_SET_FLAGS (button_connectnew, GTK_CAN_DEFAULT);
-	}
 
 	gtk_label_set_mnemonic_widget (GTK_LABEL (label3), entry1);
 	gtk_label_set_mnemonic_widget (GTK_LABEL (label6), entry4);
@@ -1481,8 +1452,8 @@ fe_serverlist_open (session *sess)
 						 	G_CALLBACK (servlist_delete_cb), 0);
 	g_signal_connect (G_OBJECT (gtk_tree_view_get_selection (GTK_TREE_VIEW (networks_tree))),
 							"changed", G_CALLBACK (servlist_network_row_cb), NULL);
-	g_signal_connect (G_OBJECT (networks_tree), "key_press_event",
-							G_CALLBACK (servlist_key_cb), networks_tree);
+/*	g_signal_connect (G_OBJECT (networks_tree), "key_press_event",
+							G_CALLBACK (servlist_key_cb), networks_tree);*/
 	g_signal_connect (G_OBJECT (networks_tree), "key_press_event",
 							G_CALLBACK (servlist_net_keypress_cb), 0);
 

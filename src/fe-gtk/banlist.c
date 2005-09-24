@@ -109,7 +109,7 @@ banlist_do_refresh (struct session *sess)
 
 		handle_command (sess, "ban", FALSE);
 	} else
-		gtkutil_simpledialog ("Not connected.");
+		fe_message (_("Not connected."), FE_MSG_ERROR);
 }
 
 static void
@@ -150,7 +150,7 @@ banlist_unban (GtkWidget * wid, struct session *sess)
 
 	if (num_sel < 1)
 	{
-		gtkutil_simpledialog (_("You must select some bans."));
+		fe_message (_("You must select some bans."), FE_MSG_ERROR);
 		return;
 	}
 
@@ -234,8 +234,7 @@ banlist_crop (GtkWidget * wid, struct session *sess)
 
 		banlist_unban (wid, sess);
 	} else
-		gtkutil_simpledialog (_("You must select some bans."));
-
+		fe_message (_("You must select some bans."), FE_MSG_ERROR);
 }
 
 static GtkWidget *
@@ -294,7 +293,10 @@ banlist_opengui (struct session *sess)
 	}
 
 	if (sess->type != SESS_CHANNEL)
+	{
+		fe_message (_("You can only open the Ban List window while in a channel tab."), FE_MSG_ERROR);
 		return;
+	}
 
 	snprintf (tbuf, sizeof tbuf, _("X-Chat: Ban List (%s)"),
 					sess->server->servername);

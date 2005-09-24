@@ -52,13 +52,7 @@ void *xchat_realloc (char *old, int len, char *file, int line);
 #endif
 
 /* force a 32bit CMP.L */
-#ifdef _MSC_VER
-#define CMPL(a, c0, c1, c2, c3) (*(guint32 *)(a) == (guint32)(c0 | (c1 << 8) | (c2 << 16) | (c3 << 24)))
-#else
 #define CMPL(a, c0, c1, c2, c3) (a == (guint32)(c0 | (c1 << 8) | (c2 << 16) | (c3 << 24)))
-#endif
-/* force a 16bit CMP.W */
-#define CMPW(a, c0, c1) (*(guint16 *)(a) == (guint16)(c0 | (c1 << 8)))
 #define WORDL(c0, c1, c2, c3) (guint32)(c0 | (c1 << 8) | (c2 << 16) | (c3 << 24))
 #define WORDW(c0, c1) (guint16)(c0 | (c1 << 8))
 
@@ -162,6 +156,7 @@ struct xchatprefs
 	int away_size_max;
 	int paned_pos;
 	int tabs_position;
+	int tab_layout;
 	int max_auto_indent;
 	int dcc_blocksize;
 	int max_lines;
@@ -185,8 +180,8 @@ struct xchatprefs
 	int recon_delay;
 	int bantype;
 	int userlist_sort;
-	unsigned long local_ip;
-	unsigned long dcc_ip;
+	guint32 local_ip;
+	guint32 dcc_ip;
 	char dcc_ip_str[DOMAINLEN + 1];
 
 	unsigned int tab_small;

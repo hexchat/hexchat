@@ -798,6 +798,57 @@ xchat_init (void)
 	ignore_load ();
 
 	snprintf (buf, sizeof (buf),
+		"NAME %s\n"						"CMD query %%s\n\n"\
+		"NAME %s\n"						"CMD send %%s\n\n"\
+		"NAME %s\n"						"CMD dns %%s\n\n"\
+
+		"NAME SUB\n"					"CMD %s\n\n"\
+			"NAME %s\n"					"CMD op %%a\n\n"\
+			"NAME %s\n"					"CMD deop %%a\n\n"\
+			"NAME SEP\n"				"CMD \n\n"\
+			"NAME %s\n"					"CMD voice %%a\n\n"\
+			"NAME %s\n"					"CMD devoice %%a\n"\
+			"NAME SEP\n"				"CMD \n\n"\
+			"NAME SUB\n"				"CMD %s\n\n"\
+				"NAME %s\n"				"CMD kick %%s\n\n"\
+				"NAME %s\n"				"CMD ban %%s\n\n"\
+				"NAME SEP\n"			"CMD \n\n"\
+				"NAME %s *!*@*.host\n""CMD ban %%s 0\n\n"\
+				"NAME %s *!*@domain\n""CMD ban %%s 1\n\n"\
+				"NAME %s *!*user@*.host\n""CMD ban %%s 2\n\n"\
+				"NAME %s *!*user@domain\n""CMD ban %%s 3\n\n"\
+				"NAME SEP\n"			"CMD \n\n"\
+				"NAME %s *!*@*.host\n""CMD kickban %%s 0\n\n"\
+				"NAME %s *!*@domain\n""CMD kickban %%s 1\n\n"\
+				"NAME %s *!*user@*.host\n""CMD kickban %%s 2\n\n"\
+				"NAME %s *!*user@domain\n""CMD kickban %%s 3\n\n"\
+			"NAME ENDSUB\n"			"CMD \n\n"\
+		"NAME ENDSUB\n"				"CMD \n\n",
+
+		_("Open Dialog Window"),
+		_("Send a File"),
+		_("Find Address"),
+		_("Operator Actions"),
+
+		_("Give Ops"),
+		_("Take Ops"),
+		_("Give Voice"),
+		_("Take Voice"),
+
+		_("Kick/Ban"),
+		_("Kick"),
+		_("Ban"),
+		_("Ban"),
+		_("Ban"),
+		_("Ban"),
+		_("Ban"),
+		_("KickBan"),
+		_("KickBan"),
+		_("KickBan"),
+		_("KickBan"));
+
+#if 0
+	snprintf (buf, sizeof (buf),
 	"NAME SUB\n"				"CMD %s\n\n"\
 		"NAME %s\n"				"CMD dcc send %%s\n\n"\
 		"NAME %s\n"				"CMD dcc chat %%s\n\n"\
@@ -902,6 +953,7 @@ xchat_init (void)
 		_("Telnet"),
 		_("Open Dialog Window")
 		);
+#endif
 	list_loadconf ("popup.conf", &popup_list, buf);
 
 	snprintf (buf, sizeof (buf),
@@ -927,7 +979,7 @@ xchat_init (void)
 		"NAME %s\n"		"CMD deop %%a\n\n"
 		"NAME %s\n"		"CMD ban %%s\n\n"
 		"NAME %s\n"		"CMD getstr %s \"kick %%s\" \"%s\"\n\n"
-		"NAME %s\n"		"CMD dcc send %%s\n\n"
+		"NAME %s\n"		"CMD send %%s\n\n"
 		"NAME %s\n"		"CMD query %%s\n\n",
 				_("Op"),
 				_("DeOp"),
@@ -941,7 +993,7 @@ xchat_init (void)
 
 	snprintf (buf, sizeof (buf),
 		"NAME %s\n"				"CMD whois %%s %%s\n\n"
-		"NAME %s\n"				"CMD dcc send %%s\n\n"
+		"NAME %s\n"				"CMD send %%s\n\n"
 		"NAME %s\n"				"CMD dcc chat %%s\n\n"
 		"NAME %s\n"				"CMD clear\n\n"
 		"NAME %s\n"				"CMD ping %%s\n\n",

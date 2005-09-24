@@ -197,7 +197,7 @@ log_open (session *sess)
 		snprintf (message, sizeof (message),
 					_("* Can't open log file(s) for writing. Check the\n" \
 					  "  permissions on %s/xchatlogs"), get_xdir_utf8 ());
-		fe_message (message, TRUE);
+		fe_message (message, FE_MSG_WAIT | FE_MSG_ERROR);
 
 		log_error = TRUE;
 	}
@@ -933,7 +933,7 @@ pevent_make_pntevts ()
 		{
 			snprintf (out, sizeof (out),
 						 _("Error parsing event %s.\nLoading default."), te[i].name);
-			fe_message (out, FALSE);
+			fe_message (out, FE_MSG_WARN);
 			free (pntevts_text[i]);
 			len = strlen (te[i].def) + 1;
 			pntevts_text[i] = malloc (len);
@@ -1275,7 +1275,7 @@ pevt_build_string (const char *input, char **output, int *max_arg)
 		}
 		if (ii == len)
 		{
-			fe_message ("String ends with a $", FALSE);
+			fe_message ("String ends with a $", FE_MSG_WARN);
 			return 1;
 		}
 		d = i[ii++];
@@ -1303,10 +1303,10 @@ pevt_build_string (const char *input, char **output, int *max_arg)
 			continue;
 
 		 a_len_error:
-			fe_message ("String ends in $a", FALSE);
+			fe_message ("String ends in $a", FE_MSG_WARN);
 			return 1;
 		 a_range_error:
-			fe_message ("$a value is greater than 255", FALSE);
+			fe_message ("$a value is greater than 255", FE_MSG_WARN);
 			return 1;
 		}
 		if (d == 't')
@@ -1329,7 +1329,7 @@ pevt_build_string (const char *input, char **output, int *max_arg)
 		if (d < '1' || d > '9')
 		{
 			snprintf (o, sizeof (o), "Error, invalid argument $%c\n", d);
-			fe_message (o, FALSE);
+			fe_message (o, FE_MSG_WARN);
 			return 1;
 		}
 		d -= '0';
@@ -1586,7 +1586,7 @@ sound_play (const char *file)
 	} else
 	{
 		snprintf (buf, sizeof (buf), _("Cannot read sound file:\n%s"), wavfile);
-		fe_message (buf, FALSE);
+		fe_message (buf, FE_MSG_ERROR);
 	}
 
 	g_free (file_fs);

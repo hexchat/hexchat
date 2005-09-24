@@ -1498,7 +1498,7 @@ cont:				esc = FALSE;
 					k = 0;
 				} else
 				{
-					if (isdigit (buf[i]) && k < (sizeof (numb) - 1))
+					if (isdigit ((unsigned char) buf[i]) && k < (sizeof (numb) - 1))
 					{
 						numb[k] = buf[i];
 						k++;
@@ -1639,7 +1639,7 @@ cmd_exec (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		{
 			if (access ("/bin/sh", X_OK) != 0)
 			{
-				fe_message (_("I need /bin/sh to run!\n"), FALSE);
+				fe_message (_("I need /bin/sh to run!\n"), FE_MSG_ERROR);
 				return TRUE;
 			}
 		}
@@ -1862,7 +1862,7 @@ cmd_gui (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			return FALSE;
 	} else if (!strcasecmp (word[2], "MSGBOX"))
 	{
-		fe_message (word[3], FALSE);
+		fe_message (word[3], FE_MSG_INFO);
 		return TRUE;
 	} else
 	{
@@ -1899,7 +1899,7 @@ show_help_line (session *sess, help_list *hl, char *name, char *usage)
 	p = name;
 	while (*p)
 	{
-		hl->buf[len] = toupper (*p);
+		hl->buf[len] = toupper ((unsigned char) *p);
 		len++;
 		p++;
 	}
@@ -2136,7 +2136,7 @@ cmd_kickban (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 
 		user = find_name (sess, nick);
 
-		if (isdigit (reason[0]) && reason[1] == 0)
+		if (isdigit ((unsigned char) reason[0]) && reason[1] == 0)
 		{
 			ban (sess, tbuf, nick, reason, (user && user->op));
 			reason[0] = 0;
@@ -2640,6 +2640,39 @@ cmd_say (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		return TRUE;
 	}
 	return FALSE;
+}
+
+static int
+cmd_send (struct session *sess, char *tbuf, char *word[], char *word_eol[])
+{
+	guint32 addr;
+	socklen_t len;
+	struct sockaddr_in SAddr;
+
+	if (!word[2][0])
+		return FALSE;
+
+	addr = dcc_get_my_address ();
+	if (addr == 0)
+	{
+		/* use the one from our connected server socket */
+		memset (&SAddr, 0, sizeof (struct sockaddr_in));
+		len = sizeof (SAddr);
+		getsockname (sess->server->sok, (struct sockaddr *) &SAddr, &len);
+		addr = SAddr.sin_addr.s_addr;
+	}
+	addr = ntohl (addr);
+
+	if ((addr & 0xffff0000) == 0xc0a80000 ||	/* 192.168.x.x */
+		 (addr & 0xff000000) == 0x0a000000)		/* 10.x.x.x */
+		/* we got a private net address, let's PSEND or it'll fail */
+		snprintf (tbuf, 512, "DCC PSEND %s", word_eol[2]);
+	else
+		snprintf (tbuf, 512, "DCC SEND %s", word_eol[2]);
+
+	handle_command (sess, tbuf, FALSE);
+
+	return TRUE;
 }
 
 static int
@@ -3181,6 +3214,7 @@ const struct commands xc_cmds[] = {
 
 	{"SAY", cmd_say, 0, 0, 1,
 	 N_("SAY <text>, sends the text to the object in the current window")},
+	{"SEND", cmd_send, 0, 0, 1, N_("SEND <nick> [<file>]")},
 #ifdef USE_OPENSSL
 	{"SERVCHAN", cmd_servchan, 0, 0, 1,
 	 N_("SERVCHAN [-ssl] <host> <port> <channel>, connects and joins a channel")},
@@ -3287,9 +3321,9 @@ auto_insert (char *dest, int destlen, unsigned char *src, char *word[],
 	{
 		if (src[0] == '%' || src[0] == '&')
 		{
-			if (isdigit (src[1]))
+			if (isdigit ((unsigned char) src[1]))
 			{
-				if (isdigit (src[2]) && isdigit (src[3]))
+				if (isdigit ((unsigned char) src[2]) && isdigit ((unsigned char) src[3]))
 				{
 					buf[0] = src[1];
 					buf[1] = src[2];
@@ -3442,8 +3476,8 @@ check_special_chars (char *cmd, int do_ascii) /* check for %X */
 				occur++;
 				if (	do_ascii &&
 						j + 3 < len &&
-						(isdigit (cmd[j + 1]) && isdigit (cmd[j + 2]) &&
-						isdigit (cmd[j + 3])))
+						(isdigit ((unsigned char) cmd[j + 1]) && isdigit ((unsigned char) cmd[j + 2]) &&
+						isdigit ((unsigned char) cmd[j + 3])))
 				{
 					tbuf[0] = cmd[j + 1];
 					tbuf[1] = cmd[j + 2];
@@ -3746,7 +3780,7 @@ handle_command (session *sess, char *cmd, int check_spch)
 
 	if (command_level > 99)
 	{
-		fe_message (_("Too many recursive usercommands, aborting."), FALSE);
+		fe_message (_("Too many recursive usercommands, aborting."), FE_MSG_ERROR);
 		return TRUE;
 	}
 	command_level++;

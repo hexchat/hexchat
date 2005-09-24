@@ -1885,6 +1885,7 @@ gtk_xtext_motion_notify (GtkWidget * widget, GdkEventMotion * event)
 		xtext->select_end_x = x;
 		xtext->select_end_y = y;
 		gtk_xtext_selection_update (xtext, event, y);
+		xtext->hilighting = TRUE;
 		return FALSE;
 	}
 #ifdef MOTION_MONITOR
@@ -2059,10 +2060,17 @@ gtk_xtext_button_release (GtkWidget * widget, GdkEventButton * event)
 			gtk_xtext_unselect (xtext);
 			return FALSE;
 		}
-		word = gtk_xtext_get_word (xtext, event->x, event->y, 0, 0, 0);
-		g_signal_emit (G_OBJECT (xtext), xtext_signals[WORD_CLICK], 0,
-							word ? word : NULL, event);
+
+		if (!xtext->hilighting)
+		{
+			word = gtk_xtext_get_word (xtext, event->x, event->y, 0, 0, 0);
+			g_signal_emit (G_OBJECT (xtext), xtext_signals[WORD_CLICK], 0, word ? word : NULL, event);
+		} else
+		{
+			xtext->hilighting = FALSE;
+		}
 	}
+
 
 	return FALSE;
 }

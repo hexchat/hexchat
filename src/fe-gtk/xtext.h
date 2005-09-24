@@ -186,6 +186,7 @@ struct _GtkXText
 	unsigned int parsing_color:1;
 	unsigned int backcolor:1;
 	unsigned int button_down:1;
+	unsigned int hilighting:1;
 	unsigned int bold:1;
 	unsigned int underline:1;
 	unsigned int transparent:1;

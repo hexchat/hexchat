@@ -42,6 +42,7 @@
 #include "../common/xchatc.h"
 #include "../common/outbound.h"
 #include "../common/util.h"
+#include "../common/fe.h"
 #include "gtkutil.h"
 #include "maingui.h"
 
@@ -296,7 +297,7 @@ chanlist_do_refresh (struct server *serv)
 
 		handle_command (serv->server_session, "list", FALSE);
 	} else
-		gtkutil_simpledialog ("Not connected.");
+		fe_message (_("Not connected."), FE_MSG_ERROR);
 }
 
 static void
@@ -533,7 +534,7 @@ chanlist_save (GtkWidget * wid, struct server *serv)
 	if (!gtk_clist_get_text
 		 (GTK_CLIST (serv->gui->chanlist_list), 0, 0, &temp))
 	{
-		gtkutil_simpledialog (_("I can't save an empty list!"));
+		fe_message (_("I can't save an empty list!"), FE_MSG_ERROR);
 		return;
 	}
 	gtkutil_file_req (_("Select an output filename"), chanlist_filereq_done,

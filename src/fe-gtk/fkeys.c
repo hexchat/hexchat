@@ -1668,7 +1668,7 @@ static int
 key_action_move_tab_left (GtkWidget * wid, GdkEventKey * ent, char *d1,
 								  char *d2, struct session *sess)
 {
-	mg_move_tab (sess->res->tab, +1);
+	mg_move_tab (sess, +1);
 	return 2;						  /* don't allow default action */
 }
 
@@ -1676,7 +1676,7 @@ static int
 key_action_move_tab_right (GtkWidget * wid, GdkEventKey * ent, char *d1,
 									char *d2, struct session *sess)
 {
-	mg_move_tab (sess->res->tab, -1);
+	mg_move_tab (sess, -1);
 	return 2;						  /* -''- */
 }
 
@@ -1684,7 +1684,7 @@ static int
 key_action_move_tab_family_left (GtkWidget * wid, GdkEventKey * ent, char *d1,
 								  char *d2, struct session *sess)
 {
-	mg_move_tab_family (sess->res->tab, +1);
+	mg_move_tab_family (sess, +1);
 	return 2;						  /* don't allow default action */
 }
 
@@ -1692,7 +1692,7 @@ static int
 key_action_move_tab_family_right (GtkWidget * wid, GdkEventKey * ent, char *d1,
 									char *d2, struct session *sess)
 {
-	mg_move_tab_family (sess->res->tab, -1);
+	mg_move_tab_family (sess, -1);
 	return 2;						  /* -''- */
 }
 

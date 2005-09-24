@@ -28,7 +28,12 @@ void fe_timeout_remove (int tag);
 void fe_new_window (struct session *sess, int focus);
 void fe_new_server (struct server *serv);
 void fe_add_rawlog (struct server *serv, char *text, int len, int outbound);
-void fe_message (char *msg, int wait);
+#define FE_MSG_WAIT 1
+#define FE_MSG_INFO 2
+#define FE_MSG_WARN 4
+#define FE_MSG_ERROR 8
+#define FE_MSG_HASTITLE 16
+void fe_message (char *msg, int flags);
 #define FIA_READ 1
 #define FIA_WRITE 2
 #define FIA_EX 4

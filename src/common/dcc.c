@@ -57,7 +57,6 @@
 #ifdef USE_DCC64
 #define BIG_STR_TO_INT(x) strtoull(x,NULL,10)
 #else
-#warning Not able to use 64-bit DCC
 #define BIG_STR_TO_INT(x) strtoul(x,NULL,10)
 #endif
 
@@ -887,11 +886,11 @@ dcc_connect (struct DCC *dcc)
 		/* possible problems with filenames containing spaces? */
 		if (dcc->type == TYPE_RECV)
 			snprintf (tbuf, sizeof (tbuf), strchr (dcc->file, ' ') ?
-					"DCC SEND \"%s\" %lu %d %"DCC_SFMT" %d" :
-					"DCC SEND %s %lu %d %"DCC_SFMT" %d", dcc->file,
+					"DCC SEND \"%s\" %u %d %"DCC_SFMT" %d" :
+					"DCC SEND %s %u %d %"DCC_SFMT" %d", dcc->file,
 					dcc->addr, dcc->port, dcc->size, dcc->pasvid);
 		else
-			snprintf (tbuf, sizeof (tbuf), "DCC CHAT chat %lu %d %d",
+			snprintf (tbuf, sizeof (tbuf), "DCC CHAT chat %u %d %d",
 				dcc->addr, dcc->port, dcc->pasvid);
 		dcc->serv->p_ctcp (dcc->serv, dcc->nick, tbuf);
 	}
@@ -1099,12 +1098,35 @@ dcc_accept (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 	return TRUE;
 }
 
+guint32
+dcc_get_my_address (void)	/* the address we'll tell the other person */
+{
+	struct hostent *dns_query;
+	guint32 addr = 0;
+
+	if (prefs.ip_from_server && prefs.dcc_ip)
+		addr = prefs.dcc_ip;
+	else if (prefs.dcc_ip_str[0])
+	{
+	   dns_query = gethostbyname ((const char *) prefs.dcc_ip_str);
+
+	   if (dns_query != NULL &&
+	       dns_query->h_length == 4 &&
+	       dns_query->h_addr_list[0] != NULL)
+		{
+			/*we're offered at least one IPv4 address: we take the first*/
+			addr = *((guint32*) dns_query->h_addr_list[0]);
+		}
+	}
+
+	return addr;
+}
+
 static int
 dcc_listen_init (struct DCC *dcc, session *sess)
 {
-	unsigned long my_addr;
+	guint32 my_addr;
 	struct sockaddr_in SAddr;
-	struct hostent *dns_query;
 	int i, bindretval = -1;
 	socklen_t len;
 
@@ -1169,24 +1191,7 @@ dcc_listen_init (struct DCC *dcc, session *sess)
 	/*if we have a dcc_ip, we use that, so the remote client can connect*/
 	/*else we try to take an address from dcc_ip_str*/
 	/*if something goes wrong we tell the client to connect to our LAN ip*/
-
-	dcc->addr = 0;
-
-	if (prefs.ip_from_server != 0 && prefs.dcc_ip != 0)
-		dcc->addr = prefs.dcc_ip;
-	else if (prefs.dcc_ip_str[0])
-	{
-	   dns_query = gethostbyname ((const char *) prefs.dcc_ip_str);
-
-	   if (dns_query != NULL &&
-	       dns_query->h_length == 4 &&
-	       dns_query->h_addr_list[0] != NULL)
-		  {
-		    /*we're offered at least one IPv4 address: we take the first*/
-
-		    dcc->addr = (unsigned long) *((guint32*) dns_query->h_addr_list[0]);
-		  }
-	}
+	dcc->addr = dcc_get_my_address ();
 
 	/*if nothing else worked we use the address we bound to*/
 	if (dcc->addr == 0)
@@ -1324,8 +1329,8 @@ dcc_send (struct session *sess, char *to, char *file, int maxcps, int passive)
 						} else
 						{
 							snprintf (outbuf, sizeof (outbuf), (havespaces) ?
-									"DCC SEND \"%s\" %lu %d %"DCC_SFMT :
-									"DCC SEND %s %lu %d %"DCC_SFMT,
+									"DCC SEND \"%s\" %u %d %"DCC_SFMT :
+									"DCC SEND %s %u %d %"DCC_SFMT,
 									file_part (dcc->file), dcc->addr,
 									dcc->port, dcc->size);
 						}
@@ -1555,7 +1560,7 @@ dcc_chat (struct session *sess, char *nick, int passive)
 						 dcc->port, dcc->pasvid);
 		} else
 		{
-			snprintf (outbuf, sizeof (outbuf), "DCC CHAT chat %lu %d",
+			snprintf (outbuf, sizeof (outbuf), "DCC CHAT chat %u %d",
 						 dcc->addr, dcc->port);
 		}
 		dcc->serv->p_ctcp (dcc->serv, nick, outbuf);
@@ -1681,7 +1686,7 @@ dcc_deny_chat (void *ud)
 }
 
 static struct DCC *
-dcc_add_chat (session *sess, char *nick, int port, unsigned long addr, int pasvid)
+dcc_add_chat (session *sess, char *nick, int port, guint32 addr, int pasvid)
 {
 	struct DCC *dcc;
 
@@ -1721,7 +1726,7 @@ dcc_add_chat (session *sess, char *nick, int port, unsigned long addr, int pasvi
 }
 
 static struct DCC *
-dcc_add_file (session *sess, char *file, DCC_SIZE size, int port, char *nick, unsigned long addr, int pasvid)
+dcc_add_file (session *sess, char *file, DCC_SIZE size, int port, char *nick, guint32 addr, int pasvid)
 {
 	struct DCC *dcc;
 	char tbuf[512];
@@ -1807,7 +1812,7 @@ handle_dcc (struct session *sess, char *nick, char *word[],
 	struct DCC *dcc;
 	char *type = word[5];
 	int port, pasvid = 0;
-	unsigned long addr;
+	guint32 addr;
 	DCC_SIZE size;
 	int psend = 0;
 

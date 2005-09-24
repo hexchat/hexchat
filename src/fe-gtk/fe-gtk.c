@@ -31,6 +31,7 @@
 #include <gtk/gtkbox.h>
 #include <gtk/gtklabel.h>
 #include <gtk/gtktogglebutton.h>
+#include <gtk/gtkmessagedialog.h>
 #include <gtk/gtkversion.h>
 
 #include "../common/xchat.h"
@@ -48,7 +49,6 @@
 #include "notifygui.h"
 #include "textgui.h"
 #include "fkeys.h"
-#include "tabs.h"
 #include "urlgrab.h"
 
 #ifdef USE_XLIB
@@ -383,25 +383,27 @@ fe_new_server (struct server *serv)
 	memset (serv->gui, 0, sizeof (struct server_gui));
 }
 
-static void
-null_this_var (GtkWidget * unused, GtkWidget ** dialog)
-{
-	*dialog = 0;
-}
-
 void
-fe_message (char *msg, int wait)
+fe_message (char *msg, int flags)
 {
 	GtkWidget *dialog;
+	int type = GTK_MESSAGE_WARNING;
 
-	dialog = gtkutil_simpledialog (msg);
-	if (wait)
-	{
-		g_signal_connect (G_OBJECT (dialog), "destroy",
-								G_CALLBACK (null_this_var), &dialog);
-		while (dialog)
-			gtk_main_iteration ();
-	}
+	if (flags & FE_MSG_ERROR)
+		type = GTK_MESSAGE_ERROR;
+	if (flags & FE_MSG_INFO)
+		type = GTK_MESSAGE_INFO;
+
+	dialog = gtk_message_dialog_new (NULL, 0, type, GTK_BUTTONS_OK,
+						 "%s", msg);
+	g_signal_connect (G_OBJECT (dialog), "response",
+							G_CALLBACK (gtk_widget_destroy), 0);
+	gtk_window_set_resizable (GTK_WINDOW (dialog), FALSE);
+	gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
+	gtk_widget_show (dialog);
+
+	if (flags & FE_MSG_WAIT)
+		gtk_dialog_run (GTK_DIALOG (dialog));
 }
 
 void
@@ -544,7 +546,7 @@ void
 fe_close_window (struct session *sess)
 {
 	if (sess->gui->is_tab)
-		gtk_widget_destroy (sess->res->tab);
+		mg_tab_close (sess);
 	else
 		gtk_widget_destroy (sess->gui->window);
 }

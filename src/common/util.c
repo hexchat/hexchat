@@ -435,8 +435,8 @@ strip_color (char *text, int len, int do_color, int do_attr)
 
 	while (len > 0)
 	{
-		if ((col && isdigit (*text) && nc < 2) ||
-			 (col && *text == ',' && isdigit (*(text+1)) && nc < 3))
+		if ((col && isdigit ((unsigned char) *text) && nc < 2) ||
+			 (col && *text == ',' && isdigit ((unsigned char) *(text+1)) && nc < 3))
 		{
 			nc++;
 			if (*text == ',')
@@ -1084,7 +1084,7 @@ country (char *hostname)
 	char *p;
 	domain_t *dom;
 
-	if (!hostname || !*hostname || isdigit (hostname[strlen (hostname) - 1]))
+	if (!hostname || !*hostname || isdigit ((unsigned char) hostname[strlen (hostname) - 1]))
 		return _("Unknown");
 	if ((p = strrchr (hostname, '.')))
 		p++;
@@ -1156,7 +1156,7 @@ int my_poptParseArgvString(const char * s, int * argcPtr, char *** argvPtr) {
 		if (*src != quote) *buf++ = '\\';
 	    }
 	    *buf++ = *src;
-	} else if (isspace(*src)) {
+	} else if (isspace((unsigned char) *src)) {
 	    if (*argv[argc]) {
 		buf++, argc++;
 		if (argc == argvAlloced) {

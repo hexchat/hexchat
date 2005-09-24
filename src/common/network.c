@@ -22,6 +22,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <unistd.h>
+#include <glib.h>
 
 #include "../../config.h"				  /* grab USE_IPV6 define */
 
@@ -48,7 +49,7 @@ net_set_socket_options (int sok)
 }
 
 char *
-net_ip (unsigned long addr)
+net_ip (guint32 addr)
 {
 	struct in_addr ia;
 
