@@ -493,7 +493,9 @@ menu_nickmenu (session *sess, GdkEventButton *event, char *nick, int num_sel)
 		menu_quick_item (0, 0, menu, 1, 0);
 	} else
 	{
-		user = find_name_global (current_sess->server, nick);
+		user = find_name (sess, nick);	/* lasttalk is channel specific */
+		if (!user)
+			user = find_name_global (current_sess->server, nick);
 		if (user)
 		{
 			submenu = menu_quick_sub (nick, menu, NULL, 1, -1);
@@ -529,10 +531,18 @@ menu_nickmenu (session *sess, GdkEventButton *event, char *nick, int num_sel)
 				}
 			}
 
-			snprintf (buf, sizeof (buf), fmt, _("Last Msg:"),
-						user->lasttalk ? ctime (&(user->lasttalk)) : _("Unknown"));
 			if (user->lasttalk)
-				buf[strlen (buf) - 1] = 0;
+			{
+				char min[96];
+
+				snprintf (min, sizeof (min), _("%u minutes ago"),
+							(unsigned int) ((time (0) - user->lasttalk) / 60));
+				snprintf (buf, sizeof (buf), fmt, _("Last Msg:"), min);
+			} else
+			{
+				snprintf (buf, sizeof (buf), fmt, _("Last Msg:"), _("Unknown"));
+			}
+
 			menu_quick_item (0, buf, submenu, 2, 0);
 
 			menu_quick_endsub ();

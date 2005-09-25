@@ -103,6 +103,7 @@ PrintTextRaw (void *xtbuf, unsigned char *text, int indent)
 {
 	char *last_text = text;
 	int len = 0;
+	int beep_done = FALSE;
 
 	/* split the text into separate lines */
 	while (1)
@@ -122,8 +123,12 @@ PrintTextRaw (void *xtbuf, unsigned char *text, int indent)
 			break;
 		case ATTR_BEEP:
 			*text = ' ';
-			if (!prefs.filterbeep)
-				gdk_beep ();
+			if (!beep_done) /* beeps may be slow, so only do 1 per line */
+			{
+				beep_done = TRUE;
+				if (!prefs.filterbeep)
+					gdk_beep ();
+			}
 		default:
 			text++;
 			len++;

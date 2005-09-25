@@ -1369,6 +1369,7 @@ servlist_open_networks (void)
 							(GtkAttachOptions) (0), 0, 0);
 
 	vbuttonbox2 = gtk_vbutton_box_new ();
+	gtk_box_set_spacing (GTK_BOX (vbuttonbox2), 3);
 	gtk_button_box_set_layout (GTK_BUTTON_BOX (vbuttonbox2), GTK_BUTTONBOX_START);
 	gtk_widget_show (vbuttonbox2);
 	gtk_table_attach (GTK_TABLE (table4), vbuttonbox2, 1, 2, 0, 1,

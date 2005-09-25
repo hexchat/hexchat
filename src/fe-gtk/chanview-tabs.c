@@ -216,6 +216,12 @@ tab_scroll_cb (GtkWidget *widget, GdkEventScroll *event, gpointer cv)
 }
 
 static void
+cv_tabs_xclick_cb (GtkWidget *button, chanview *cv)
+{
+
+}
+
+static void
 cv_tabs_init (chanview *cv)
 {
 	GtkWidget *box;
@@ -231,7 +237,7 @@ cv_tabs_init (chanview *cv)
 	((tabview *)cv)->outer = outer;
 	g_signal_connect (G_OBJECT (outer), "size_allocate",
 							G_CALLBACK (cv_tabs_sizealloc), cv);
-	gtk_container_set_border_width (GTK_CONTAINER (outer), 2);
+//	gtk_container_set_border_width (GTK_CONTAINER (outer), 2);
 	gtk_widget_show (outer);
 
 	viewport = gtk_viewport_new (0, 0);
@@ -274,6 +280,10 @@ cv_tabs_init (chanview *cv)
 							G_CALLBACK (tab_scroll_cb), cv);
 	gtk_box_pack_end (GTK_BOX (outer), button, 0, 0, 0);
 	gtk_widget_show (arrow);
+
+	button = gtkutil_button (outer, GTK_STOCK_CLOSE, NULL, cv_tabs_xclick_cb,
+									 cv, 0);
+	gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
 
 	gtk_container_add (GTK_CONTAINER (cv->box), outer);
 }
