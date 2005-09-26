@@ -4,7 +4,8 @@ typedef struct _chan chan;
 chanview *chanview_new (int type);
 void chanview_set_callbacks (chanview *cv,
 	void (*cb_focus) (chanview *, chan *, void *family, void *userdata),
-	gboolean (*cb_contextmenu) (GdkEventButton *event, chan *, void *userdata),
+	void (*cb_xbutton) (chanview *, chan *, void *family, void *userdata),
+	gboolean (*cb_contextmenu) (chanview *, chan *, void *family, void *userdata, GdkEventButton *),
 	int (*cb_compare) (void *a, void *b));
 void chanview_set_impl (chanview *cv, int type);
 chan *chanview_add (chanview *cv, char *name, void *family, void *userdata);

@@ -98,8 +98,10 @@ typedef struct restore_gui
 	gfloat old_ul_value;	/* old userlist value (for adj) */
 	gfloat lag_value;	/* lag-o-meter */
 	char *lag_text;	/* lag-o-meter text */
+	char *lag_tip;		/* lag-o-meter tooltip */
 	gfloat queue_value; /* outbound queue meter */
 	char *queue_text;		/* outbound queue text */
+	char *queue_tip;		/* outbound queue tooltip */
 	struct User *myself;	/* it's me in the Userlist */
 	short flag_wid_state[NUM_FLAG_WIDS];
 	unsigned int c_graph:1;	/* connecting graph, is there one? */
@@ -128,8 +130,6 @@ typedef struct session_gui
 		*topic_bar,
 		*pane,
 		*menu,
-		*away_item,
-		*user_menu,
 		*bar,				/* connecting progress bar */
 		*nick_box,		/* contains label to the left of input_box */
 		*nick_label,
@@ -139,6 +139,10 @@ typedef struct session_gui
 		*flag_wid[NUM_FLAG_WIDS],		/* channelmode buttons */
 		*limit_entry,		  /* +l */
 		*key_entry;		  /* +k */
+
+#define MENU_ID_NUM 9
+
+	GtkWidget *menu_item[MENU_ID_NUM+1]; /* some items we may change state of */
 
 	void *chanview;	/* chanview.h */
 

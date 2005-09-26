@@ -29,7 +29,8 @@ struct _chanview
 
 	/* callbacks */
 	void (*cb_focus) (chanview *, chan *, void *family, void *userdata);
-	gboolean (*cb_contextmenu) (GdkEventButton *, chan *, void *userdata);
+	void (*cb_xbutton) (chanview *, chan *, void *family, void *userdata);
+	gboolean (*cb_contextmenu) (chanview *, chan *, void *family, void *userdata, GdkEventButton *);
 	int (*cb_compare) (void *a, void *b);
 
 	/* impl */
@@ -118,7 +119,7 @@ chanview_populate (chanview *cv)
 void
 chanview_set_impl (chanview *cv, int type)
 {
-	printf("chanview_set_impl(%d)\n", type);
+	printf("chanview_set_impl(%d : %s)\n", type, type ? "TREE" : "TABS");
 
 	/* cleanup the old one */
 	if (cv->func_cleanup)
@@ -143,7 +144,7 @@ chanview_set_impl (chanview *cv, int type)
 		cv->func_cleanup = cv_tabs_cleanup;
 		break;
 
-	case 1:
+	default:
 		cv->func_init = cv_tree_init;
 		cv->func_postinit = cv_tree_postinit;
 		cv->func_add = cv_tree_add;
@@ -167,6 +168,10 @@ chanview_set_impl (chanview *cv, int type)
 	printf("chanview_set_impl populate done\n");
 
 	cv->func_postinit (cv);
+
+	/* force re-focus */
+	if (cv->focused)
+		cv->func_focus (cv->focused);
 }
 
 static void
@@ -231,10 +236,12 @@ chanview_new (int type)
 void
 chanview_set_callbacks (chanview *cv,
 	void (*cb_focus) (chanview *, chan *, void *family, void *userdata),
-	gboolean (*cb_contextmenu) (GdkEventButton *event, chan *, void *userdata),
+	void (*cb_xbutton) (chanview *, chan *, void *family, void *userdata),
+	gboolean (*cb_contextmenu) (chanview *, chan *, void *family, void *userdata, GdkEventButton *),
 	int (*cb_compare) (void *a, void *b))
 {
 	cv->cb_focus = cb_focus;
+	cv->cb_xbutton = cb_xbutton;
 	cv->cb_contextmenu = cb_contextmenu;
 	cv->cb_compare = cb_compare;
 }

@@ -218,7 +218,7 @@ tab_scroll_cb (GtkWidget *widget, GdkEventScroll *event, gpointer cv)
 static void
 cv_tabs_xclick_cb (GtkWidget *button, chanview *cv)
 {
-
+	cv->cb_xbutton (cv, cv->focused, cv->focused->family, cv->focused->userdata);
 }
 
 static void
@@ -237,7 +237,7 @@ cv_tabs_init (chanview *cv)
 	((tabview *)cv)->outer = outer;
 	g_signal_connect (G_OBJECT (outer), "size_allocate",
 							G_CALLBACK (cv_tabs_sizealloc), cv);
-//	gtk_container_set_border_width (GTK_CONTAINER (outer), 2);
+/*	gtk_container_set_border_width (GTK_CONTAINER (outer), 2);*/
 	gtk_widget_show (outer);
 
 	viewport = gtk_viewport_new (0, 0);
@@ -256,19 +256,6 @@ cv_tabs_init (chanview *cv)
 	gtk_widget_show (box);
 
 	button = gtk_button_new ();
-	((tabview *)cv)->b1 = button;
-	arrow = gtk_arrow_new (cv->vertical ? GTK_ARROW_DOWN : GTK_ARROW_RIGHT,
-								  GTK_SHADOW_NONE);
-	gtk_container_add (GTK_CONTAINER (button), arrow);
-	gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
-	g_signal_connect (G_OBJECT (button), "clicked",
-							G_CALLBACK (tab_scroll_right_down_clicked), cv);
-	g_signal_connect (G_OBJECT (button), "scroll_event",
-							G_CALLBACK (tab_scroll_cb), cv);
-	gtk_box_pack_end (GTK_BOX (outer), button, 0, 0, 0);
-	gtk_widget_show (arrow);
-
-	button = gtk_button_new ();
 	((tabview *)cv)->b2 = button;
 	arrow = gtk_arrow_new (cv->vertical ? GTK_ARROW_UP : GTK_ARROW_LEFT,
 								  GTK_SHADOW_NONE);
@@ -278,12 +265,26 @@ cv_tabs_init (chanview *cv)
 							G_CALLBACK (tab_scroll_left_up_clicked), cv);
 	g_signal_connect (G_OBJECT (button), "scroll_event",
 							G_CALLBACK (tab_scroll_cb), cv);
-	gtk_box_pack_end (GTK_BOX (outer), button, 0, 0, 0);
+	gtk_box_pack_start (GTK_BOX (outer), button, 0, 0, 0);
+	gtk_widget_show (arrow);
+
+	button = gtk_button_new ();
+	((tabview *)cv)->b1 = button;
+	arrow = gtk_arrow_new (cv->vertical ? GTK_ARROW_DOWN : GTK_ARROW_RIGHT,
+								  GTK_SHADOW_NONE);
+	gtk_container_add (GTK_CONTAINER (button), arrow);
+	gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
+	g_signal_connect (G_OBJECT (button), "clicked",
+							G_CALLBACK (tab_scroll_right_down_clicked), cv);
+	g_signal_connect (G_OBJECT (button), "scroll_event",
+							G_CALLBACK (tab_scroll_cb), cv);
+	gtk_box_pack_start (GTK_BOX (outer), button, 0, 0, 0);
 	gtk_widget_show (arrow);
 
 	button = gtkutil_button (outer, GTK_STOCK_CLOSE, NULL, cv_tabs_xclick_cb,
 									 cv, 0);
 	gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
+	GTK_WIDGET_UNSET_FLAGS (button, GTK_CAN_FOCUS);
 
 	gtk_container_add (GTK_CONTAINER (cv->box), outer);
 }
@@ -510,7 +511,7 @@ tab_toggled_cb (GtkToggleButton *tab, chan *ch)
 static gboolean
 tab_click_cb (GtkWidget *wid, GdkEventButton *event, chan *ch)
 {
-	return ch->cv->cb_contextmenu (event, ch, ch->userdata);
+	return ch->cv->cb_contextmenu (ch->cv, ch, ch->family, ch->userdata, event);
 }
 
 static void *
@@ -654,61 +655,7 @@ cv_tabs_change_orientation (chanview *cv)
 
 	/* now rebuild a new tabbar or tree */
 	cv->func_init (cv);
-
 	chanview_populate (cv);
-
-#if 0
-	GtkWidget *box;
-	GtkWidget *new_group;
-	GList *boxes;
-
-	new_group = tab_group_new (g_object_get_data (G_OBJECT (group), "c"),
-										g_object_get_data (G_OBJECT (group), "o"),
-										vertical,
-						/* sort: boolean */
-						GPOINTER_TO_INT (g_object_get_data (G_OBJECT (group), "s")));
-	g_object_set_data (G_OBJECT (new_group), "foc",
-						g_object_get_data (G_OBJECT (group), "foc"));
-	box = g_object_get_data (G_OBJECT (group), "i");
-	boxes = GTK_BOX (box)->children;
-	while (boxes)
-	{
-		GtkWidget *family_box;
-		GList *children;
-
-		family_box = ((GtkBoxChild *) boxes->data)->widget;
-		children = GTK_BOX (family_box)->children;
-
-		while (children)
-		{
-			GtkWidget *child;
-
-			child = ((GtkBoxChild *) children->data)->widget;
-
-			if (GTK_IS_TOGGLE_BUTTON (child))
-			{
-				void *family;
-
-				gtk_widget_ref (child);
-				gtk_container_remove (GTK_CONTAINER (family_box), child);
-				g_signal_handlers_disconnect_by_func (G_OBJECT (child),
-									G_CALLBACK (tab_pressed_cb), group);
-				g_signal_connect (G_OBJECT (child), "pressed",
-									G_CALLBACK (tab_pressed_cb), new_group);
-				family = g_object_get_data (G_OBJECT (child), "f");
-				g_object_set_data (G_OBJECT (child), "g", new_group);
-				tab_add_real (new_group, child, family);
-				gtk_widget_unref (child);
-				children = GTK_BOX (family_box)->children;
-			} else
-				children = children->next;
-		}
-
-		boxes = boxes->next;
-	}
-
-	return new_group;
-#endif
 }
 
 /* switch to the tab number specified */

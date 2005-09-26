@@ -1119,6 +1119,7 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 								NULL);
 
 	vbuttonbox1 = gtk_vbutton_box_new ();
+	gtk_box_set_spacing (GTK_BOX (vbuttonbox1), 3);
 	gtk_button_box_set_layout (GTK_BUTTON_BOX (vbuttonbox1), GTK_BUTTONBOX_START);
 	gtk_widget_show (vbuttonbox1);
 	gtk_box_pack_start (GTK_BOX (hbox1), vbuttonbox1, FALSE, FALSE, 3);

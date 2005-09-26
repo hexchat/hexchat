@@ -642,7 +642,8 @@ fe_set_lag (server *serv, int lag)
 	GSList *list = sess_list;
 	session *sess;
 	gdouble per;
-	char tip[64];
+	char lagtext[64];
+	char lagtip[64];
 	unsigned long nowtim;
 
 	if (lag == -1)
@@ -657,7 +658,9 @@ fe_set_lag (server *serv, int lag)
 	if (per > 1.0)
 		per = 1.0;
 
-	snprintf (tip, sizeof (tip) - 1, "%s%d.%ds",
+	snprintf (lagtext, sizeof (lagtext) - 1, "%s%d.%ds",
+				 serv->lag_sent ? "+" : "", lag / 10, lag % 10);
+	snprintf (lagtip, sizeof (lagtip) - 1, "Lag: %s%d.%d seconds",
 				 serv->lag_sent ? "+" : "", lag / 10, lag % 10);
 
 	while (list)
@@ -665,18 +668,25 @@ fe_set_lag (server *serv, int lag)
 		sess = list->data;
 		if (sess->server == serv)
 		{
+			if (sess->res->lag_tip)
+				free (sess->res->lag_tip);
+			sess->res->lag_tip = strdup (lagtip);
+
 			if (!sess->gui->is_tab || current_tab == sess)
 			{
 				if (sess->gui->lagometer)
+				{
 					gtk_progress_bar_set_fraction ((GtkProgressBar *) sess->gui->lagometer, per);
+					add_tip (sess->gui->lagometer->parent, lagtip);
+				}
 				if (sess->gui->laginfo)
-					gtk_label_set_text ((GtkLabel *) sess->gui->laginfo, tip);
+					gtk_label_set_text ((GtkLabel *) sess->gui->laginfo, lagtext);
 			} else
 			{
 				sess->res->lag_value = per;
 				if (sess->res->lag_text)
 					free (sess->res->lag_text);
-				sess->res->lag_text = strdup (tip);
+				sess->res->lag_text = strdup (lagtext);
 			}
 		}
 		list = list->next;
@@ -690,6 +700,7 @@ fe_set_throttle (server *serv)
 	struct session *sess;
 	float per;
 	char tbuf[64];
+	char tip[64];
 
 	per = (float) serv->sendq_len / 1024.0;
 	if (per > 1.0)
@@ -701,11 +712,19 @@ fe_set_throttle (server *serv)
 		if (sess->server == serv)
 		{
 			snprintf (tbuf, sizeof (tbuf) - 1, _("%d bytes"), serv->sendq_len);
+			snprintf (tip, sizeof (tip) - 1, _("Network send queue: %d bytes"), serv->sendq_len);
+
+			if (sess->res->queue_tip)
+				free (sess->res->queue_tip);
+			sess->res->queue_tip = strdup (tip);
 
 			if (!sess->gui->is_tab || current_tab == sess)
 			{
 				if (sess->gui->throttlemeter)
+				{
 					gtk_progress_bar_set_fraction ((GtkProgressBar *) sess->gui->throttlemeter, per);
+					add_tip (sess->gui->throttlemeter->parent, tip);
+				}
 				if (sess->gui->throttleinfo)
 					gtk_label_set_text ((GtkLabel *) sess->gui->throttleinfo, tbuf);
 			} else

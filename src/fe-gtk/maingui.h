@@ -9,8 +9,6 @@ void mg_move_tab (session *, int delta);
 void mg_move_tab_family (session *, int delta);
 void mg_bring_tofront (void *ch);
 void mg_userlist_showhide (session *sess, int show);
-void mg_chanmodebuttons_showhide (session *sess, int show);
-void mg_topic_showhide (session *sess);
 void mg_userlist_toggle (void);
 void mg_set_topic_tip (session *sess);
 void *mg_create_generic_tab (char *name, char *title, int force_toplevel, int link_buttons, void *close_callback, void *userdata, int width, int height, GtkWidget **vbox_ret, void *family);

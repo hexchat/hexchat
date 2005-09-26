@@ -25,10 +25,11 @@ cv_tree_sel_cb (GtkTreeSelection *sel, chanview *cv)
 static gboolean
 cv_tree_click_cb (GtkTreeView *tree, GdkEventButton *event, chanview *cv)
 {
-	chan *ch = cv->focused;	/* FIXME */
+	chan *ch;
 	GtkTreeSelection *sel;
 	GtkTreePath *path;
 	GtkTreeIter iter;
+	int ret = FALSE;
 
 	if (event->button != 3)
 		return FALSE;
@@ -39,12 +40,13 @@ cv_tree_click_cb (GtkTreeView *tree, GdkEventButton *event, chanview *cv)
 /*		gtk_tree_selection_unselect_all (sel);
 		gtk_tree_selection_select_path (sel, path);*/
 		if (gtk_tree_model_get_iter (GTK_TREE_MODEL (cv->store), &iter, path))
+		{
 			gtk_tree_model_get (GTK_TREE_MODEL (cv->store), &iter, COL_CHAN, &ch, -1);
+			ret = cv->cb_contextmenu (cv, ch, ch->family, ch->userdata, event);
+		}
 		gtk_tree_path_free (path);
 	}
-
-	printf("tree click\n");
-	return cv->cb_contextmenu (event, ch, ch->userdata);
+	return ret;
 }
 
 static void
@@ -54,6 +56,7 @@ cv_tree_init (chanview *cv)
 	GtkCellRenderer *renderer;
 
 	win = gtk_scrolled_window_new (0, 0);
+	gtk_container_set_border_width (GTK_CONTAINER (win), 3);
 	gtk_container_add (GTK_CONTAINER (cv->box), win);
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (win),
 											  GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
@@ -72,7 +75,7 @@ cv_tree_init (chanview *cv)
 
 	g_signal_connect (G_OBJECT (gtk_tree_view_get_selection (GTK_TREE_VIEW (view))),
 							"changed", G_CALLBACK (cv_tree_sel_cb), cv);
-	g_signal_connect (G_OBJECT (view), "button_press_event",
+	g_signal_connect (G_OBJECT (view), "button-press-event",
 							G_CALLBACK (cv_tree_click_cb), cv);
 	((treeview *)cv)->tree = GTK_TREE_VIEW (view);
 	((treeview *)cv)->scrollw = win;
@@ -127,6 +130,42 @@ cv_tree_focus (chan *ch)
 
 /* this thing is overly complicated */
 
+static int
+cv_tree_find_number_of_chan (chanview *cv, chan *find_ch)
+{
+	GtkTreeIter iter, inner;
+	chan *ch;
+	int i = 0;
+
+	if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (cv->store), &iter))
+	{
+		do
+		{
+			gtk_tree_model_get (GTK_TREE_MODEL (cv->store), &iter, COL_CHAN, &ch, -1);
+			if (ch == find_ch)
+				return i;
+			i++;
+
+			if (gtk_tree_model_iter_children (GTK_TREE_MODEL (cv->store), &inner, &iter))
+			{
+				do
+				{
+					gtk_tree_model_get (GTK_TREE_MODEL (cv->store), &inner, COL_CHAN, &ch, -1);
+					if (ch == find_ch)
+						return i;
+					i++;
+				}
+				while (gtk_tree_model_iter_next (GTK_TREE_MODEL (cv->store), &inner));
+			}
+		}
+		while (gtk_tree_model_iter_next (GTK_TREE_MODEL (cv->store), &iter));
+	}
+
+	return 0;	/* WARNING */
+}
+
+/* this thing is overly complicated too */
+
 static chan *
 cv_tree_find_chan_by_number (chanview *cv, int num)
 {
@@ -170,21 +209,24 @@ cv_tree_move_focus (chanview *cv, gboolean relative, int num)
 {
 	chan *ch;
 
-	if (!relative)
+	if (relative)
 	{
-		ch = cv_tree_find_chan_by_number (cv, num);
-		if (ch)
-			cv_tree_focus (ch);
+		num += cv_tree_find_number_of_chan (cv, cv->focused);
+		num %= cv->size;
+		/* make it wrap around at both ends */
+		if (num < 0)
+			num = cv->size - 1;
 	}
-	else
-	{
 
-	}
+	ch = cv_tree_find_chan_by_number (cv, num);
+	if (ch)
+		cv_tree_focus (ch);
 }
 
 static void
 cv_tree_remove (chan *ch)
 {
+	/* nothing to do, it's already removed in the store */
 }
 
 static void
@@ -208,6 +250,7 @@ cv_tree_cleanup (chanview *cv)
 static void
 cv_tree_set_color (chan *ch, PangoAttrList *list)
 {
+	/* nothing to do, it's already set in the store */
 }
 
 static void
