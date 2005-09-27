@@ -56,10 +56,12 @@ cv_tree_init (chanview *cv)
 	GtkCellRenderer *renderer;
 
 	win = gtk_scrolled_window_new (0, 0);
-	gtk_container_set_border_width (GTK_CONTAINER (win), 3);
-	gtk_container_add (GTK_CONTAINER (cv->box), win);
+	/*gtk_container_set_border_width (GTK_CONTAINER (win), 1);*/
+	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (win),
+													 GTK_SHADOW_IN);
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (win),
 											  GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+	gtk_container_add (GTK_CONTAINER (cv->box), win);
 	gtk_widget_show (win);
 
 	view = gtk_tree_view_new_with_model (GTK_TREE_MODEL (cv->store));
@@ -254,7 +256,7 @@ cv_tree_set_color (chan *ch, PangoAttrList *list)
 }
 
 static void
-cv_tree_rename (chan *ch, char *name, int trunc_len)
+cv_tree_rename (chan *ch, char *name)
 {
 	/* nothing to do, it's already renamed in the store */
 }

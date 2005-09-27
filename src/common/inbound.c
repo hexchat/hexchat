@@ -919,7 +919,24 @@ inbound_notice (server *serv, char *to, char *nick, char *msg, char *ip, int id)
 				msg += 14;
 		} else
 		{
-			sess = find_session_from_nick (nick, serv);
+											/* paranoia check */
+			if (msg[0] == '[' && (!serv->have_idmsg || id))
+			{
+				/* guess where chanserv meant to post this -sigh- */
+				if (!strcasecmp (nick, "ChanServ") && !find_dialog (serv, nick))
+				{
+					char *dest = strdup (msg + 1);
+					char *end = strchr (dest, ']');
+					if (end)
+					{
+						*end = 0;
+						sess = find_channel (serv, dest);
+					}
+					free (dest);
+				}
+			}
+			if (!sess)
+				sess = find_session_from_nick (nick, serv);
 		}
 		if (!sess)
 		{

@@ -44,7 +44,7 @@ struct _chanview
 	void (*func_move_family) (chan *, int delta);
 	void (*func_focus) (chan *);
 	void (*func_set_color) (chan *, PangoAttrList *);
-	void (*func_rename) (chan *, char *, int);
+	void (*func_rename) (chan *, char *);
 	void (*func_cleanup) (chanview *);
 
 	unsigned int sorted:1;
@@ -213,15 +213,15 @@ chanview_box_destroy_cb (GtkWidget *box, chanview *cv)
 }
 
 chanview *
-chanview_new (int type)
+chanview_new (int type, int trunc_len, gboolean sort)
 {
 	chanview *cv;
 
 	cv = calloc (1, sizeof (chanview));
 	cv->store = gtk_tree_store_new (3, G_TYPE_STRING, G_TYPE_POINTER, PANGO_TYPE_ATTR_LIST);
 	cv->box = gtk_hbox_new (0, 0);
-	cv->trunc_len = 64;
-	cv->sorted = TRUE;
+	cv->trunc_len = trunc_len;
+	cv->sorted = sort;
 	gtk_widget_show (cv->box);
 	chanview_set_impl (cv, type);
 
@@ -378,7 +378,8 @@ void
 chan_rename (chan *ch, char *new_name, int trunc_len)
 {
 	gtk_tree_store_set (ch->cv->store, &ch->iter, COL_NAME, new_name, -1);
-	ch->cv->func_rename (ch, new_name, trunc_len);
+	ch->cv->trunc_len = trunc_len;
+	ch->cv->func_rename (ch, new_name);
 }
 
 void

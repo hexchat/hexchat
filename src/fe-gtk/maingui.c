@@ -2182,11 +2182,11 @@ mg_set_tabs_pos (session_gui *gui, int pos)
 		break;
 	case 2: /* left */
 		gtk_table_attach (GTK_TABLE (gui->main_table), tabs_box,
-							0, 1, 1, 2, GTK_FILL, GTK_FILL, 0, 0);
+							0, 1, 1, 2, GTK_FILL, GTK_FILL, 2, 3);
 		break;
 	case 3: /* right */
 		gtk_table_attach (GTK_TABLE (gui->main_table), tabs_box,
-							2, 3, 1, 2, GTK_FILL, GTK_FILL, 0, 0);
+							2, 3, 1, 2, GTK_FILL, GTK_FILL, 2, 3);
 		break;
 	case 4: /* hidden */
 		gtk_widget_hide (tabs_box);
@@ -2303,7 +2303,7 @@ mg_create_tabs (session_gui *gui)
 	if (prefs.tabs_position == 2 || prefs.tabs_position == 3)
 		vert = TRUE;
 
-	gui->chanview = chanview_new (prefs.tab_layout);
+	gui->chanview = chanview_new (prefs.tab_layout, prefs.truncchans, prefs.tab_sort);
 	chanview_set_callbacks (gui->chanview, mg_switch_tab_cb, mg_xbutton_cb,
 									mg_tab_contextmenu_cb, mg_tabs_compare);
 	gtk_table_attach (GTK_TABLE (gui->main_table), chanview_get_box (gui->chanview),

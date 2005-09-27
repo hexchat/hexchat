@@ -1,7 +1,7 @@
 typedef struct _chanview chanview;
 typedef struct _chan chan;
 
-chanview *chanview_new (int type);
+chanview *chanview_new (int type, int trunc_len, gboolean sort);
 void chanview_set_callbacks (chanview *cv,
 	void (*cb_focus) (chanview *, chan *, void *family, void *userdata),
 	void (*cb_xbutton) (chanview *, chan *, void *family, void *userdata),

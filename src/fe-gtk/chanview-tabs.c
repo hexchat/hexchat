@@ -19,8 +19,10 @@ static int tab_right_is_moving = 0;
  *
  * tab (togglebuttons inside boxes):
  *   "u" userdata passed to tab-focus callback function (sess)
- *   "f" family
  *   "c" the tab's (chan *)
+ *
+ * box (family box)
+ *   "f" family
  *
  */
 
@@ -221,14 +223,33 @@ cv_tabs_xclick_cb (GtkWidget *button, chanview *cv)
 	cv->cb_xbutton (cv, cv->focused, cv->focused->family, cv->focused->userdata);
 }
 
+/* make a Scroll (arrow) button */
+
+static GtkWidget *
+make_sbutton (GtkArrowType type, void *click_cb, void *userdata)
+{
+	GtkWidget *button, *arrow;
+
+	button = gtk_button_new ();
+	arrow = gtk_arrow_new (type, GTK_SHADOW_NONE);
+	gtk_container_add (GTK_CONTAINER (button), arrow);
+	gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
+	g_signal_connect (G_OBJECT (button), "clicked",
+							G_CALLBACK (click_cb), userdata);
+	g_signal_connect (G_OBJECT (button), "scroll_event",
+							G_CALLBACK (tab_scroll_cb), userdata);
+	gtk_widget_show (arrow);
+
+	return button;
+}
+
 static void
 cv_tabs_init (chanview *cv)
 {
-	GtkWidget *box;
+	GtkWidget *box, *hbox = NULL;
 	GtkWidget *viewport;
 	GtkWidget *outer;
 	GtkWidget *button;
-	GtkWidget *arrow;
 
 	if (cv->vertical)
 		outer = gtk_vbox_new (0, 0);
@@ -255,31 +276,34 @@ cv_tabs_init (chanview *cv)
 	gtk_container_add (GTK_CONTAINER (viewport), box);
 	gtk_widget_show (box);
 
-	button = gtk_button_new ();
-	((tabview *)cv)->b2 = button;
-	arrow = gtk_arrow_new (cv->vertical ? GTK_ARROW_UP : GTK_ARROW_LEFT,
-								  GTK_SHADOW_NONE);
-	gtk_container_add (GTK_CONTAINER (button), arrow);
-	gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
-	g_signal_connect (G_OBJECT (button), "clicked",
-							G_CALLBACK (tab_scroll_left_up_clicked), cv);
-	g_signal_connect (G_OBJECT (button), "scroll_event",
-							G_CALLBACK (tab_scroll_cb), cv);
-	gtk_box_pack_start (GTK_BOX (outer), button, 0, 0, 0);
-	gtk_widget_show (arrow);
+	/* if vertical, the buttons can be side by side */
+	if (cv->vertical)
+	{
+		hbox = gtk_hbox_new (FALSE, 0);
+		gtk_box_pack_start (GTK_BOX (outer), hbox, 0, 0, 0);
+		gtk_widget_show (hbox);
+	}
 
-	button = gtk_button_new ();
-	((tabview *)cv)->b1 = button;
-	arrow = gtk_arrow_new (cv->vertical ? GTK_ARROW_DOWN : GTK_ARROW_RIGHT,
-								  GTK_SHADOW_NONE);
-	gtk_container_add (GTK_CONTAINER (button), arrow);
-	gtk_button_set_relief (GTK_BUTTON (button), GTK_RELIEF_NONE);
-	g_signal_connect (G_OBJECT (button), "clicked",
-							G_CALLBACK (tab_scroll_right_down_clicked), cv);
-	g_signal_connect (G_OBJECT (button), "scroll_event",
-							G_CALLBACK (tab_scroll_cb), cv);
-	gtk_box_pack_start (GTK_BOX (outer), button, 0, 0, 0);
-	gtk_widget_show (arrow);
+	/* make the Scroll buttons */
+	((tabview *)cv)->b2 = make_sbutton (cv->vertical ?
+													GTK_ARROW_UP : GTK_ARROW_LEFT,
+													tab_scroll_left_up_clicked,
+													cv);
+
+	((tabview *)cv)->b1 = make_sbutton (cv->vertical ?
+													GTK_ARROW_DOWN : GTK_ARROW_RIGHT,
+													tab_scroll_right_down_clicked,
+													cv);
+
+	if (hbox)
+	{
+		gtk_container_add (GTK_CONTAINER (hbox), ((tabview *)cv)->b2);
+		gtk_container_add (GTK_CONTAINER (hbox), ((tabview *)cv)->b1);
+	} else
+	{
+		gtk_box_pack_start (GTK_BOX (outer), ((tabview *)cv)->b2, 0, 0, 0);
+		gtk_box_pack_start (GTK_BOX (outer), ((tabview *)cv)->b1, 0, 0, 0);
+	}
 
 	button = gtkutil_button (outer, GTK_STOCK_CLOSE, NULL, cv_tabs_xclick_cb,
 									 cv, 0);
@@ -313,12 +337,11 @@ truncate_tab_name (char *name, int max)
 }
 
 static void
-tab_add_sorted (chanview *cv, GtkWidget *box, GtkWidget *tab)
+tab_add_sorted (chanview *cv, GtkWidget *box, GtkWidget *tab, chan *ch)
 {
 	GList *list;
 	GtkBoxChild *child;
 	int i = 0;
-	int (*cmp) (void *a, void *b);
 	void *b;
 
 	if (!cv->sorted)
@@ -332,10 +355,7 @@ tab_add_sorted (chanview *cv, GtkWidget *box, GtkWidget *tab)
     *   - move tab if renamed (dialogs) */
 
 	/* userdata, passed to mg_tabs_compare() */
-	b = g_object_get_data (G_OBJECT (tab), "u");
-
-	/* compare function, as set by tab_group_new() */
-	cmp = cv->cb_compare;
+	b = ch->userdata;
 
 	list = GTK_BOX (box)->children;
 	while (list)
@@ -345,7 +365,7 @@ tab_add_sorted (chanview *cv, GtkWidget *box, GtkWidget *tab)
 		{
 			void *a = g_object_get_data (G_OBJECT (child->widget), "u");
 
-			if (cmp (a, b) > 0)
+			if (cv->cb_compare (a, b) > 0)
 			{
 				gtk_box_pack_start (GTK_BOX (box), tab, 0, 0, 0);
 				gtk_box_reorder_child (GTK_BOX (box), tab, i);
@@ -400,7 +420,7 @@ cv_tabs_prune (chanview *cv)
 }
 
 static void
-tab_add_real (chanview *cv, GtkWidget *tab, void *family)
+tab_add_real (chanview *cv, GtkWidget *tab, chan *ch)
 {
 	GList *boxes, *children;
 	GtkWidget *sep, *box, *inner;
@@ -415,9 +435,9 @@ tab_add_real (chanview *cv, GtkWidget *tab, void *family)
 		child = boxes->data;
 		box = child->widget;
 
-		if (g_object_get_data (G_OBJECT (box), "f") == family)
+		if (g_object_get_data (G_OBJECT (box), "f") == ch->family)
 		{
-			tab_add_sorted (cv, box, tab);
+			tab_add_sorted (cv, box, tab, ch);
 			gtk_widget_queue_resize (inner->parent);
 			return;
 		}
@@ -457,7 +477,7 @@ tab_add_real (chanview *cv, GtkWidget *tab, void *family)
 	gtk_box_pack_end (GTK_BOX (box), sep, 0, 0, 4);
 	gtk_widget_show (sep);
 	gtk_box_pack_start (GTK_BOX (inner), box, 0, 0, 0);
-	g_object_set_data (G_OBJECT (box), "f", family);
+	g_object_set_data (G_OBJECT (box), "f", ch->family);
 	gtk_box_pack_start (GTK_BOX (box), tab, 0, 0, 0);
 	gtk_widget_show (tab);
 	gtk_widget_show (box);
@@ -544,7 +564,7 @@ cv_tabs_add (chanview *cv, chan *ch, char *name, GtkTreeIter *parent)
 						 	G_CALLBACK (tab_toggled_cb), ch);
 	g_object_set_data (G_OBJECT (but), "u", ch->userdata);
 
-	tab_add_real (cv, but, ch->family);
+	tab_add_real (cv, but, ch);
 
 	return but;
 }
@@ -756,7 +776,7 @@ cv_tabs_set_color (chan *ch, PangoAttrList *list)
 }
 
 static void
-cv_tabs_rename (chan *ch, char *name, int trunc_len)
+cv_tabs_rename (chan *ch, char *name)
 {
 	PangoAttrList *attr = NULL;
 	char *new_name;
@@ -770,7 +790,7 @@ cv_tabs_rename (chan *ch, char *name, int trunc_len)
 			pango_attr_list_ref (attr);
 	}
 
-	new_name = truncate_tab_name (name, trunc_len);
+	new_name = truncate_tab_name (name, ch->cv->trunc_len);
 	if (new_name)
 	{
 		gtk_button_set_label (GTK_BUTTON (tab), new_name);
