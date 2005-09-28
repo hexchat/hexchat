@@ -949,7 +949,7 @@ menu_detach (GtkWidget * wid, gpointer none)
 static void
 menu_close (GtkWidget * wid, gpointer none)
 {
-	mg_x_click_cb (NULL, NULL);
+	mg_close_sess (current_sess);
 }
 
 static void
@@ -1027,6 +1027,21 @@ menu_servernotice (GtkWidget * wid, gpointer none)
 			mode[0] = '-';
 		serv->p_mode (serv, serv->nick, mode);
 	}
+}
+
+static void
+menu_disconnect (GtkWidget * wid, gpointer none)
+{
+	handle_command (current_sess, "DISCON", FALSE);
+}
+
+static void
+menu_reconnect (GtkWidget * wid, gpointer none)
+{
+	if (current_sess->server->hostname[0])
+		handle_command (current_sess, "RECONNECT", FALSE);
+	else
+		fe_serverlist_open (current_sess);
 }
 
 static void
@@ -1346,14 +1361,15 @@ static struct mymenu mymenu[] = {
 		{N_("Both"), menu_rpopup, 0, M_MENURADIO, 0, 0, 1},
 		{0, 0, 0, M_END, 0, 0, 0},	/* 31 */
 
-	{N_("_IRC"), 0, 0, M_NEWMENU, 0, 0, 1},
-	{N_("_Disconnect"), menu_invisible, GTK_STOCK_DISCONNECT, M_MENUSTOCK, MENU_ID_DISCONNECT, 0, 1},
-	{N_("_Reconnect"), menu_invisible, GTK_STOCK_CONNECT, M_MENUSTOCK, 0, 0, 1},
+	{N_("_Server"), 0, 0, M_NEWMENU, 0, 0, 1},
+	{N_("_Disconnect"), menu_disconnect, GTK_STOCK_DISCONNECT, M_MENUSTOCK, MENU_ID_DISCONNECT, 0, 1},
+	{N_("_Reconnect"), menu_reconnect, GTK_STOCK_CONNECT, M_MENUSTOCK, 0, 0, 1},
 	{0, 0, 0, M_SEP, 0, 0, 0},
 #define AWAY_OFFSET (36)
 	{N_("Marked Away"), menu_away, 0, M_MENUTOG, MENU_ID_AWAY, 0, 1, GDK_a},
 	{0, 0, 0, M_SEP, 0, 0, 0},														/* 37 */
-	{N_("WOrk in progress"), menu_away, 0, M_MENUITEM, 0, 0, 1},
+	{N_("What should go here?"), menu_away, 0, M_MENUITEM, 0, 0, 1},
+	{N_("Any ideas?"), menu_away, 0, M_MENUITEM, 0, 0, 1},
 
 //	{N_("_Server"), (void *) -1, 0, M_NEWMENU, MENU_ID_USERMENU, 0, 1},	/* 32 */
 
@@ -1796,7 +1812,8 @@ togitem:
 													 mymenu[i].state);*/
 			if (mymenu[i].key != 0)
 				gtk_widget_add_accelerator (item, "activate", accel_group,
-									mymenu[i].key, GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
+									mymenu[i].key, mymenu[i].key == GDK_a ?
+									GDK_MOD1_MASK : GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
 			if (mymenu[i].callback)
 				g_signal_connect (G_OBJECT (item), "toggled",
 										G_CALLBACK (mymenu[i].callback), 0);

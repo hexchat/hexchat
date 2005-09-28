@@ -16,12 +16,13 @@ chan *chanview_get_focused (chanview *cv);
 GtkOrientation chanview_get_orientation (chanview *cv);
 void chanview_set_orientation (chanview *cv, gboolean vertical);
 
+void *chan_get_family (chan *ch);
 void chan_focus (chan *ch);
 void chan_move (chan *ch, int delta);
 void chan_move_family (chan *ch, int delta);
 void chan_set_color (chan *ch, PangoAttrList *list);
 void chan_rename (chan *ch, char *new_name, int trunc_len);
-void chan_remove (chan *ch);
+gboolean chan_remove (chan *ch);
 
 #define FOCUS_NEW_ALL 1
 #define FOCUS_NEW_ONLY_ASKED 2

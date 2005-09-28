@@ -301,7 +301,7 @@ banlist_opengui (struct session *sess)
 	snprintf (tbuf, sizeof tbuf, _("X-Chat: Ban List (%s)"),
 					sess->server->servername);
 
-	sess->res->banlist_window = mg_create_generic_tab ("banlist", tbuf, FALSE,
+	sess->res->banlist_window = mg_create_generic_tab ("BanList", tbuf, FALSE,
 					TRUE, banlist_closegui, sess, 550, 200, &vbox1, sess->server);
 
 	/* create banlist view */

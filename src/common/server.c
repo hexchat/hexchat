@@ -479,6 +479,7 @@ server_connected (server * serv)
 	}
 
 	set_server_name (serv, serv->servername);
+	fe_server_event (serv, FE_SE_CONNECT, 0);
 }
 
 #ifdef WIN32
@@ -1023,6 +1024,8 @@ server_disconnect (session * sess, int sendquit, int err)
 	{
 		server_sendquit (sess);
 	}
+
+	fe_server_event (serv, FE_SE_DISCONNECT, 0);
 
 	/* close all sockets & io tags */
 	switch (server_cleanup (serv))

@@ -66,6 +66,7 @@ void fe_userlist_rehash (struct session *sess, struct User *user);
 void fe_userlist_move (struct session *sess, struct User *user, int new_row);
 void fe_userlist_numbers (struct session *sess);
 void fe_userlist_clear (struct session *sess);
+void fe_uselect (session *sess, char *word[], int do_clear, int scroll_to);
 void fe_dcc_add (struct DCC *dcc);
 void fe_dcc_update (struct DCC *dcc);
 void fe_dcc_remove (struct DCC *dcc);
@@ -104,6 +105,9 @@ void fe_open_url (const char *url);
 void fe_menu_del (menu_entry *);
 void fe_menu_add (menu_entry *);
 void fe_menu_update (menu_entry *);
-void fe_uselect (session *sess, char *word[], int do_clear, int scroll_to);
+#define FE_SE_CONNECT 0
+#define FE_SE_LOGGEDIN 1
+#define FE_SE_DISCONNECT 2
+void fe_server_event (server *serv, int type, int arg);
 
 #endif

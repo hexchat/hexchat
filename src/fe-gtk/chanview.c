@@ -246,6 +246,31 @@ chanview_set_callbacks (chanview *cv,
 	cv->cb_compare = cb_compare;
 }
 
+/* find a place to insert this new entry, based on the compare function */
+
+static void
+chanview_insert_sorted (chanview *cv, GtkTreeIter *add_iter, GtkTreeIter *parent, void *ud)
+{
+	GtkTreeIter iter;
+	chan *ch;
+
+	if (cv->sorted && gtk_tree_model_iter_children (GTK_TREE_MODEL (cv->store), &iter, parent))
+	{
+		do
+		{
+			gtk_tree_model_get (GTK_TREE_MODEL (cv->store), &iter, COL_CHAN, &ch, -1);
+			if (ch->family && cv->cb_compare (ch->userdata, ud) > 0)
+			{
+				gtk_tree_store_insert_before (cv->store, add_iter, parent, &iter);
+				return;
+			}
+		}
+		while (gtk_tree_model_iter_next (GTK_TREE_MODEL (cv->store), &iter));
+	}
+
+	gtk_tree_store_append (cv->store, add_iter, parent);
+}
+
 /* find a parent node with the same "family" pointer (i.e. the Server tab) */
 
 static int
@@ -280,7 +305,7 @@ chanview_add (chanview *cv, char *name, void *family, void *userdata)
 
 	if (chanview_find_parent (cv, family, &parent_iter))
 	{
-		gtk_tree_store_append (cv->store, &iter, &parent_iter);
+		chanview_insert_sorted (cv, &iter, &parent_iter, userdata);
 		has_parent = TRUE;
 	} else
 	{
@@ -346,6 +371,12 @@ chanview_set_orientation (chanview *cv, gboolean vertical)
 	}
 }
 
+void *
+chan_get_family (chan *ch)
+{
+	return ch->family;
+}
+
 void
 chan_focus (chan *ch)
 {
@@ -382,13 +413,16 @@ chan_rename (chan *ch, char *new_name, int trunc_len)
 	ch->cv->func_rename (ch, new_name);
 }
 
-void
+gboolean
 chan_remove (chan *ch)
 {
 	GtkTreeIter iter;
 	chan *new_ch;
 
 	printf("remove ch=%p (focused ch=%p)\n", ch, ch->cv->focused); 
+
+	if (gtk_tree_model_iter_has_child (GTK_TREE_MODEL (ch->cv->store), &ch->iter))
+		return FALSE;
 
 	ch->cv->func_remove (ch);
 
@@ -414,4 +448,5 @@ errout:
 	ch->cv->size--;
 	gtk_tree_store_remove (ch->cv->store, &ch->iter);
 	free (ch);
+	return TRUE;
 }

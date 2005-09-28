@@ -545,7 +545,7 @@ fe_dcc_open_recv_win (int passive)
 		return TRUE;
 	}
 	dccrwin.window =
-			  mg_create_generic_tab ("dccrecv", _("X-Chat: File Receive List"),
+			  mg_create_generic_tab ("Downloads", _("XChat: File Receive List"),
 						FALSE, TRUE, close_dcc_recv_window, NULL, 601, 200, &vbox, 0);
 	g_signal_connect (G_OBJECT (dccrwin.window), "key_release_event",
 							G_CALLBACK (recv_key_press), 0);
@@ -717,7 +717,7 @@ fe_dcc_open_send_win (int passive)
 	}
 
 	dccswin.window =
-			  mg_create_generic_tab ("dccsend", _("X-Chat: File Send List"),
+			  mg_create_generic_tab ("Uploads", _("XChat: File Send List"),
 						FALSE, TRUE, close_dcc_send_window, NULL, 595, 200, &vbox, 0);
 
 	dccswin.list = gtkutil_clist_new (9, titles, vbox, GTK_POLICY_ALWAYS,
@@ -858,7 +858,7 @@ fe_dcc_open_chat_win (int passive)
 	}
 
 	dcccwin.window =
-			  mg_create_generic_tab ("dccchat", _("X-Chat: DCC Chat List"),
+			  mg_create_generic_tab ("DCCChat", _("X-Chat: DCC Chat List"),
 						FALSE, TRUE, close_dcc_chat_window, NULL, 550, 180, &vbox, 0);
 
 	dcccwin.list = gtkutil_clist_new (5, titles, vbox, GTK_POLICY_ALWAYS,

@@ -365,7 +365,7 @@ tab_add_sorted (chanview *cv, GtkWidget *box, GtkWidget *tab, chan *ch)
 		{
 			void *a = g_object_get_data (G_OBJECT (child->widget), "u");
 
-			if (cv->cb_compare (a, b) > 0)
+			if (ch->family && cv->cb_compare (a, b) > 0)
 			{
 				gtk_box_pack_start (GTK_BOX (box), tab, 0, 0, 0);
 				gtk_box_reorder_child (GTK_BOX (box), tab, i);

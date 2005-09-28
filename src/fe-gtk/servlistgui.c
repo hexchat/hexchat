@@ -10,11 +10,7 @@
 #include <gtk/gtkversion.h>
 #include <gtk/gtkcheckbutton.h>
 #include <gtk/gtkcellrenderertext.h>
-#if GTK_CHECK_VERSION(2,4,0)
 #include <gtk/gtkcomboboxentry.h>
-#else
-#include <gtk/gtkcombo.h>
-#endif
 #include <gtk/gtkentry.h>
 #include <gtk/gtkhbox.h>
 #include <gtk/gtkhbbox.h>
@@ -840,12 +836,7 @@ servlist_create_charsetcombo (void)
 {
 	GtkWidget *cb;
 	int i;
-#if GTK_CHECK_VERSION(2,4,0)
-#else
-	static GList *cbitems = NULL;
-#endif
 
-#if GTK_CHECK_VERSION(2,4,0)
 	cb = gtk_combo_box_entry_new_text ();
 	gtk_combo_box_append_text (GTK_COMBO_BOX (cb), "System default");
 	i = 0;
@@ -856,24 +847,6 @@ servlist_create_charsetcombo (void)
 	}
 	g_signal_connect (G_OBJECT (GTK_BIN (cb)->child), "changed",
 							G_CALLBACK (servlist_combo_cb), NULL);
-#else
-	/* === OLD GTK 2.0/2.2 code === */
-	if (cbitems == NULL)
-	{
-		cbitems = g_list_append (cbitems, "System default");
-		i = 0;
-		while (pages[i])
-		{
-			cbitems = g_list_append (cbitems, (char *)pages[i]);
-			i++;
-		}
-	}
-
-	cb = gtk_combo_new ();
-	gtk_combo_set_popdown_strings (GTK_COMBO (cb), cbitems);
-	g_signal_connect (G_OBJECT (GTK_COMBO (cb)->entry), "changed",
-							G_CALLBACK (servlist_combo_cb), NULL);
-#endif
 
 	return cb;
 }
@@ -1030,8 +1003,8 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 
 	servlist_create_check (3, net->flags & FLAG_AUTO_CONNECT, table3,
 								  9, 1, _("Auto connect to this network at startup"));
-	servlist_create_check (4, net->flags & FLAG_USE_PROXY, table3,
-								  10, 1, _("Use a proxy server"));
+/*	servlist_create_check (4, net->flags & FLAG_USE_PROXY, table3,
+								  10, 1, _("Use a proxy server"));*/
 	check = servlist_create_check (2, net->flags & FLAG_USE_SSL, table3,
 								  11, 1, _("Use SSL for all the servers on this network"));
 #ifndef USE_OPENSSL
@@ -1073,11 +1046,7 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 
 	comboboxentry_charset = servlist_create_charsetcombo ();
 	ignore_changed = TRUE;
-#if GTK_CHECK_VERSION(2,4,0)
 	gtk_entry_set_text (GTK_ENTRY (GTK_BIN (comboboxentry_charset)->child), net->encoding ? net->encoding : "System default");
-#else
-	gtk_entry_set_text (GTK_ENTRY (GTK_COMBO (comboboxentry_charset)->entry), net->encoding ? net->encoding : "System default");
-#endif
 	ignore_changed = FALSE;
 	gtk_widget_show (comboboxentry_charset);
 	gtk_table_attach (GTK_TABLE (table3), comboboxentry_charset, 2, 3, 17, 18,

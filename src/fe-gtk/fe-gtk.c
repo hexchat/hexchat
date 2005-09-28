@@ -751,7 +751,7 @@ fe_ctrl_gui (session *sess, int action, int arg)
 		gtk_window_present (GTK_WINDOW (sess->gui->window));
 		break;
 	case 2:
-		mg_bring_tofront (sess->res->tab); break;
+		mg_bring_tofront_sess (sess); break;
 	case 3:
 		fe_set_tab_color (sess, -1, TRUE); break; /* flash */
 	case 4:
@@ -891,5 +891,23 @@ fe_open_url (const char *url)
 	{
 		fe_open_url_locale (loc);
 		g_free (loc);
+	}
+}
+
+void
+fe_server_event (server *serv, int type, int arg)
+{
+	switch (type)
+	{
+	case FE_SE_CONNECT:
+		/* enable Reconnect and Disconnect menu items */
+		break;
+
+	case FE_SE_LOGGEDIN:	/* end of MOTD */
+		break;
+
+	case FE_SE_DISCONNECT:
+		/* disable Disconnect menu item */
+		break;
 	}
 }
