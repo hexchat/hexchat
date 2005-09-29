@@ -115,7 +115,6 @@ typedef struct session_gui
 		*window,	/* toplevel */
 		*topic_entry,
 		*note_book,
-		*main_vbox,	/* container in TOPLEVEL window */
 		*main_table,
 		*user_tree,	/* GtkTreeView */
 		*user_box,
@@ -123,6 +122,7 @@ typedef struct session_gui
 		*button_box,	/* userlist buttons' box */
 		*dialogbutton_box,
 		*topicbutton_box,
+		*meter_box,	/* all the meters inside this */
 		*lagometer,
 		*laginfo,
 		*throttlemeter,
@@ -140,7 +140,7 @@ typedef struct session_gui
 		*limit_entry,		  /* +l */
 		*key_entry;		  /* +k */
 
-#define MENU_ID_NUM 9
+#define MENU_ID_NUM 10
 
 	GtkWidget *menu_item[MENU_ID_NUM+1]; /* some items we may change state of */
 

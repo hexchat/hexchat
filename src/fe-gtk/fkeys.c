@@ -800,7 +800,7 @@ key_dialog_show ()
 	gtk_xtext_set_tint (GTK_XTEXT (wid), prefs.tint_red, prefs.tint_green, prefs.tint_blue);
 	gtk_xtext_set_background (GTK_XTEXT (wid),
 									  channelwin_pix,
-									  prefs.transparent, prefs.tint);
+									  prefs.transparent);
 	gtk_widget_set_usize (wid, 0, 75);
 	gtk_box_pack_start (GTK_BOX (hbox2), wid, 1, 1, 1);
 	gtk_xtext_set_font (GTK_XTEXT (wid), prefs.font_normal);

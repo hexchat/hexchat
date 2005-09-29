@@ -617,7 +617,7 @@ chanlist_opengui (struct server *serv, int do_refresh)
 		serv->gui->chanlist_maxusers = 9999;
 
 	serv->gui->chanlist_window =
-		mg_create_generic_tab ("chanlist", tbuf, FALSE, TRUE, chanlist_closegui,
+		mg_create_generic_tab ("ChanList", tbuf, FALSE, TRUE, chanlist_closegui,
 								serv, 450, 356, &vbox, serv);
 
 	frame = gtk_frame_new (_("List display options:"));

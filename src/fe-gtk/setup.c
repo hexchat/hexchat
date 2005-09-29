@@ -103,7 +103,7 @@ static const setting textbox_settings[] =
 					N_("Give each person on IRC a different color"),0,0},
 	{ST_TOGGLR, N_("Show marker line"), P_OFFINTNL(show_marker),
 					N_("Insert a red line after the last read text."),0,0},
-	{ST_HEADER, N_("Tint Settings"), 0,0,0},
+	{ST_HEADER, N_("Transparency Settings"), 0,0,0},
 	{ST_HSCALE, N_("Red:"), P_OFFINTNL(tint_red),0,0,0},
 	{ST_HSCALE, N_("Green:"), P_OFFINTNL(tint_green),0,0,0},
 	{ST_HSCALE, N_("Blue:"), P_OFFINTNL(tint_blue),0,0,0},
@@ -133,14 +133,14 @@ static const setting inputbox_settings[] =
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
-static const char *const lagmenutext[] = 
+/*static const char *const lagmenutext[] = 
 {
 	N_("Off"),
 	N_("Graph"),
 	N_("Info text"),
 	N_("Both"),
 	NULL
-};
+};*/
 
 static const char *const ulmenutext[] = 
 {
@@ -162,15 +162,15 @@ static const setting userlist_settings[] =
 	{ST_TOGGLE, N_("Resizable user list"), P_OFFINTNL(paned_userlist),0,0,0},
 
 	{ST_HEADER,	N_("Away tracking"),0,0,0},
-	{ST_TOGGLE,	N_("Enable away tracking"), P_OFFINTNL(away_track),0,0,0},
+	{ST_TOGGLE,	N_("Track the Away status of users and mark them in a different color"), P_OFFINTNL(away_track),0,0,0},
 	{ST_NUMBER, N_("On channels smaller than:"), P_OFFINTNL(away_size_max),0,0,10000},
 
 	{ST_HEADER,	N_("Action Upon Double Click"),0,0,0},
 	{ST_ENTRY,	N_("Execute command:"), P_OFFSETNL(doubleclickuser), 0, 0, sizeof prefs.doubleclickuser},
 
-	{ST_HEADER,	N_("Extra Gadgets"),0,0,0},
+/*	{ST_HEADER,	N_("Extra Gadgets"),0,0,0},
 	{ST_MENU,	N_("Lag meter:"), P_OFFINTNL(lagometer), 0, lagmenutext, 0},
-	{ST_MENU,	N_("Throttle meter:"), P_OFFINTNL(throttlemeter), 0, lagmenutext, 0},
+	{ST_MENU,	N_("Throttle meter:"), P_OFFINTNL(throttlemeter), 0, lagmenutext, 0},*/
 
 	{ST_END, 0, 0, 0, 0, 0}
 };
@@ -451,8 +451,6 @@ setup_apply_tint (int *tag)
 	prefs.tint_red = setup_prefs.tint_red;
 	prefs.tint_green = setup_prefs.tint_green;
 	prefs.tint_blue = setup_prefs.tint_blue;
-	if (prefs.tint_red != 0 && prefs.tint_green != 0 && prefs.tint_blue != 0)
-		prefs.tint = 1;
 	mg_update_xtext (current_sess->gui->xtext);
 	*tag = 0;
 	return 0;
@@ -1519,6 +1517,7 @@ static void
 setup_create_tree (GtkWidget *box, GtkWidget *book)
 {
 	GtkWidget *tree;
+	GtkWidget *frame;
 	GtkTreeStore *model;
 	GtkTreeIter iter;
 	GtkTreeIter child_iter;
@@ -1564,8 +1563,11 @@ setup_create_tree (GtkWidget *box, GtkWidget *book)
 	gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (tree),
 							    -1, _("Categories"), renderer, "text", 0, NULL);
 	gtk_tree_view_expand_all (GTK_TREE_VIEW (tree));
-	gtk_box_pack_start (GTK_BOX (box), tree, 0, 0, 0);
-	gtk_box_reorder_child (GTK_BOX (box), tree, 0);
+
+	frame = gtk_frame_new (NULL);
+	gtk_container_add (GTK_CONTAINER (frame), tree);
+	gtk_box_pack_start (GTK_BOX (box), frame, 0, 0, 0);
+	gtk_box_reorder_child (GTK_BOX (box), frame, 0);
 
 	if (sel_iter)
 	{
@@ -1645,10 +1647,6 @@ setup_apply (struct xchatprefs *pr)
 		do_ulist = TRUE;
 
 	memcpy (&prefs, pr, sizeof (prefs));
-
-	prefs.tint = 0;
-	if (prefs.tint_red != 0 && prefs.tint_green != 0 && prefs.tint_blue != 0)
-		prefs.tint = 1;
 
 	mkdir_utf8 (prefs.dccdir);
 	mkdir_utf8 (prefs.dcc_completed_dir);

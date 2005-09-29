@@ -783,6 +783,7 @@ auto_reconnect (server *serv, int send_quit, int err)
 		serv->reconnect_away = serv->is_away;
 
 	serv->recondelay_tag = fe_timeout_add (del, timeout_auto_reconnect, serv);
+	fe_server_event (serv, FE_SE_RECONDELAY, del);
 }
 
 static void

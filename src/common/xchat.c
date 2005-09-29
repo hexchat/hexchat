@@ -957,15 +957,11 @@ xchat_init (void)
 	list_loadconf ("popup.conf", &popup_list, buf);
 
 	snprintf (buf, sizeof (buf),
-		"NAME %s\n"				"CMD discon\n\n"
-		"NAME %s\n"				"CMD reconnect\n\n"
 		"NAME %s\n"				"CMD part\n\n"
 		"NAME %s\n"				"CMD getstr # join \"%s\"\n\n"
 		"NAME %s\n"				"CMD quote LINKS\n\n"
 		"NAME %s\n"				"CMD ping\n\n"
 		"NAME TOGGLE %s\n"	"CMD irc_hide_version\n\n",
-				_("Disconnect"),
-				_("Reconnect"),
 				_("Leave Channel"),
 				_("Join Channel..."),
 				_("Enter Channel to Join:"),

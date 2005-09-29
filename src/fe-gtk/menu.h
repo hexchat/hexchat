@@ -20,7 +20,8 @@ void menu_bar_toggle (void);
 #define MENU_ID_LAYOUT_TABS 6
 #define MENU_ID_LAYOUT_TREE 7
 #define MENU_ID_DISCONNECT 8
-#define MENU_ID_USERMENU 9
+#define MENU_ID_RECONNECT 9
+#define MENU_ID_USERMENU 10
 
 #if (MENU_ID_NUM < MENU_ID_USERMENU)
 #error MENU_ID_NUM is set wrong

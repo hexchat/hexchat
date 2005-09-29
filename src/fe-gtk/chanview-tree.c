@@ -130,82 +130,6 @@ cv_tree_focus (chan *ch)
 	}
 }
 
-/* this thing is overly complicated */
-
-static int
-cv_tree_find_number_of_chan (chanview *cv, chan *find_ch)
-{
-	GtkTreeIter iter, inner;
-	chan *ch;
-	int i = 0;
-
-	if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (cv->store), &iter))
-	{
-		do
-		{
-			gtk_tree_model_get (GTK_TREE_MODEL (cv->store), &iter, COL_CHAN, &ch, -1);
-			if (ch == find_ch)
-				return i;
-			i++;
-
-			if (gtk_tree_model_iter_children (GTK_TREE_MODEL (cv->store), &inner, &iter))
-			{
-				do
-				{
-					gtk_tree_model_get (GTK_TREE_MODEL (cv->store), &inner, COL_CHAN, &ch, -1);
-					if (ch == find_ch)
-						return i;
-					i++;
-				}
-				while (gtk_tree_model_iter_next (GTK_TREE_MODEL (cv->store), &inner));
-			}
-		}
-		while (gtk_tree_model_iter_next (GTK_TREE_MODEL (cv->store), &iter));
-	}
-
-	return 0;	/* WARNING */
-}
-
-/* this thing is overly complicated too */
-
-static chan *
-cv_tree_find_chan_by_number (chanview *cv, int num)
-{
-	GtkTreeIter iter, inner;
-	chan *ch;
-	int i = 0;
-
-	if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (cv->store), &iter))
-	{
-		do
-		{
-			if (i == num)
-			{
-				gtk_tree_model_get (GTK_TREE_MODEL (cv->store), &iter, COL_CHAN, &ch, -1);
-				return ch;
-			}
-			i++;
-
-			if (gtk_tree_model_iter_children (GTK_TREE_MODEL (cv->store), &inner, &iter))
-			{
-				do
-				{
-					if (i == num)
-					{
-						gtk_tree_model_get (GTK_TREE_MODEL (cv->store), &inner, COL_CHAN, &ch, -1);
-						return ch;
-					}
-					i++;
-				}
-				while (gtk_tree_model_iter_next (GTK_TREE_MODEL (cv->store), &inner));
-			}
-		}
-		while (gtk_tree_model_iter_next (GTK_TREE_MODEL (cv->store), &iter));
-	}
-
-	return NULL;
-}
-
 static void
 cv_tree_move_focus (chanview *cv, gboolean relative, int num)
 {
@@ -213,14 +137,14 @@ cv_tree_move_focus (chanview *cv, gboolean relative, int num)
 
 	if (relative)
 	{
-		num += cv_tree_find_number_of_chan (cv, cv->focused);
+		num += cv_find_number_of_chan (cv, cv->focused);
 		num %= cv->size;
 		/* make it wrap around at both ends */
 		if (num < 0)
 			num = cv->size - 1;
 	}
 
-	ch = cv_tree_find_chan_by_number (cv, num);
+	ch = cv_find_chan_by_number (cv, num);
 	if (ch)
 		cv_tree_focus (ch);
 }

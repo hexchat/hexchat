@@ -60,6 +60,9 @@ struct _chan
 	void *impl;	/* togglebutton or null */
 };
 
+static chan *cv_find_chan_by_number (chanview *cv, int num);
+static int cv_find_number_of_chan (chanview *cv, chan *find_ch);
+
 
 /* ======= TABS ======= */
 
@@ -413,11 +416,87 @@ chan_rename (chan *ch, char *new_name, int trunc_len)
 	ch->cv->func_rename (ch, new_name);
 }
 
+/* this thing is overly complicated */
+
+static int
+cv_find_number_of_chan (chanview *cv, chan *find_ch)
+{
+	GtkTreeIter iter, inner;
+	chan *ch;
+	int i = 0;
+
+	if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (cv->store), &iter))
+	{
+		do
+		{
+			gtk_tree_model_get (GTK_TREE_MODEL (cv->store), &iter, COL_CHAN, &ch, -1);
+			if (ch == find_ch)
+				return i;
+			i++;
+
+			if (gtk_tree_model_iter_children (GTK_TREE_MODEL (cv->store), &inner, &iter))
+			{
+				do
+				{
+					gtk_tree_model_get (GTK_TREE_MODEL (cv->store), &inner, COL_CHAN, &ch, -1);
+					if (ch == find_ch)
+						return i;
+					i++;
+				}
+				while (gtk_tree_model_iter_next (GTK_TREE_MODEL (cv->store), &inner));
+			}
+		}
+		while (gtk_tree_model_iter_next (GTK_TREE_MODEL (cv->store), &iter));
+	}
+
+	return 0;	/* WARNING */
+}
+
+/* this thing is overly complicated too */
+
+static chan *
+cv_find_chan_by_number (chanview *cv, int num)
+{
+	GtkTreeIter iter, inner;
+	chan *ch;
+	int i = 0;
+
+	if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (cv->store), &iter))
+	{
+		do
+		{
+			if (i == num)
+			{
+				gtk_tree_model_get (GTK_TREE_MODEL (cv->store), &iter, COL_CHAN, &ch, -1);
+				return ch;
+			}
+			i++;
+
+			if (gtk_tree_model_iter_children (GTK_TREE_MODEL (cv->store), &inner, &iter))
+			{
+				do
+				{
+					if (i == num)
+					{
+						gtk_tree_model_get (GTK_TREE_MODEL (cv->store), &inner, COL_CHAN, &ch, -1);
+						return ch;
+					}
+					i++;
+				}
+				while (gtk_tree_model_iter_next (GTK_TREE_MODEL (cv->store), &inner));
+			}
+		}
+		while (gtk_tree_model_iter_next (GTK_TREE_MODEL (cv->store), &iter));
+	}
+
+	return NULL;
+}
+
 gboolean
 chan_remove (chan *ch)
 {
-	GtkTreeIter iter;
 	chan *new_ch;
+	int i, num;
 
 	printf("remove ch=%p (focused ch=%p)\n", ch, ch->cv->focused); 
 
@@ -432,19 +511,29 @@ chan_remove (chan *ch)
 		ch->cv->focused = NULL;
 
 		/* try to move the focus to some other valid channel */
-		memcpy (&iter, &ch->iter, sizeof (iter));
-
-		/* FIXME: support depth 1 */
-		if (!gtk_tree_model_iter_next (GTK_TREE_MODEL (ch->cv->store), &iter))
-			if (!gtk_tree_model_get_iter_first (GTK_TREE_MODEL (ch->cv->store), &iter))
-				goto errout;
-
-		gtk_tree_model_get (GTK_TREE_MODEL (ch->cv->store), &iter, COL_CHAN, &new_ch, -1);
-		printf("moving focus to ch=%p\n", new_ch);
-		chan_focus (new_ch);	/* this'll will set ch->cv->focused for us too */
+		num = cv_find_number_of_chan (ch->cv, ch);
+		/* move to the one left of the closing tab */
+		new_ch = cv_find_chan_by_number (ch->cv, num - 1);
+		if (new_ch && new_ch != ch)
+		{
+			printf("moving focus to ch=%p\n", new_ch);
+			chan_focus (new_ch);	/* this'll will set ch->cv->focused for us too */
+		} else
+		{
+			/* if it fails, try focus from tab 0 and up */
+			for (i = 0; i < ch->cv->size; i++)
+			{
+				new_ch = cv_find_chan_by_number (ch->cv, i);
+				if (new_ch && new_ch != ch)
+				{
+					printf("!!FALLBACK!! moving focus to ch=%p (i=%d)\n", new_ch, i);
+					chan_focus (new_ch);	/* this'll will set ch->cv->focused for us too */
+					break;
+				}
+			}
+		}
 	}
 
-errout:
 	ch->cv->size--;
 	gtk_tree_store_remove (ch->cv->store, &ch->iter);
 	free (ch);

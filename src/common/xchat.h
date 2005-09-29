@@ -172,6 +172,7 @@ struct xchatprefs
 	int mainwindow_width;
 	int mainwindow_height;
 	int gui_win_state;
+	int gui_usermenu;
 	int dialog_left;
 	int dialog_top;
 	int dialog_width;
@@ -215,7 +216,6 @@ struct xchatprefs
 	unsigned int autoopendccrecvwindow;
 	unsigned int autoopendccchatwindow;
 	unsigned int transparent;
-	unsigned int tint;
 	unsigned int stripcolor;
 	unsigned int timestamp;
 	unsigned int fastdccsend;

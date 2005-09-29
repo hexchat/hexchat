@@ -326,7 +326,7 @@ fe_userlist_insert (session *sess, struct User *newuser, int row, int sel)
 	{
 		sess->res->myself = newuser;
 		if (!sess->gui->is_tab || sess == current_tab)
-			mg_set_access_icon (sess->gui, pix);
+			mg_set_access_icon (sess->gui, pix, sess->server->is_away);
 	}
 
 #if 0

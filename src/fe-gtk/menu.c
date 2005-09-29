@@ -504,16 +504,16 @@ menu_nickmenu (session *sess, GdkEventButton *event, char *nick, int num_sel)
 			/* let the translators tweak this if need be */
 			fmt = _("<tt><b>%-11s</b></tt> %s");
 
+			snprintf (buf, sizeof (buf), fmt, _("Real Name:"),
+						user->realname ? user->realname : _("Unknown"));
+			menu_quick_item (0, buf, submenu, 2, 0);
+
 			snprintf (buf, sizeof (buf), fmt, _("User:"),
 						user->hostname ? user->hostname : _("Unknown"));
 			menu_quick_item (0, buf, submenu, 2, 0);
 
 			snprintf (buf, sizeof (buf), fmt, _("Country:"),
 						user->hostname ? country(user->hostname) : _("Unknown"));
-			menu_quick_item (0, buf, submenu, 2, 0);
-
-			snprintf (buf, sizeof (buf), fmt, _("Real Name:"),
-						user->realname ? user->realname : _("Unknown"));
 			menu_quick_item (0, buf, submenu, 2, 0);
 
 			snprintf (buf, sizeof (buf), fmt, _("Server:"),
@@ -619,7 +619,8 @@ menu_setting_foreach (void (*callback) (session *), int id, guint state)
 		{
 			if (sess->gui->is_tab)
 				maindone = TRUE;
-			GTK_CHECK_MENU_ITEM (sess->gui->menu_item[id])->active = state;
+			if (id != -1)
+				GTK_CHECK_MENU_ITEM (sess->gui->menu_item[id])->active = state;
 			if (callback)
 				callback (sess);
 		}
@@ -842,33 +843,30 @@ usermenu_destroy (GtkWidget * menu)
 void
 usermenu_update (void)
 {
-#if 0
 	int done_main = FALSE;
 	GSList *list = sess_list;
 	session *sess;
+	GtkWidget *menu;
 
 	while (list)
 	{
 		sess = list->data;
+		menu = sess->gui->menu_item[MENU_ID_USERMENU];
 		if (sess->gui->is_tab)
 		{
-			if (!done_main)
+			if (!done_main && menu)
 			{
-				if (sess->gui->user_menu)
-				{
-					usermenu_destroy (sess->gui->user_menu);
-					usermenu_create (sess->gui->user_menu);
-					done_main = TRUE;
-				}
+				usermenu_destroy (menu);
+				usermenu_create (menu);
+				done_main = TRUE;
 			}
-		} else
+		} else if (menu)
 		{
-			usermenu_destroy (sess->gui->user_menu);
-			usermenu_create (sess->gui->user_menu);
+			usermenu_destroy (menu);
+			usermenu_create (menu);
 		}
 		list = list->next;
 	}
-#endif
 }
 
 static void
@@ -1317,6 +1315,56 @@ menu_layout_cb (GtkWidget *item, gpointer none)
 	}
 }
 
+static void
+menu_apply_metres_cb (session *sess)
+{
+	mg_update_meters (sess->gui);
+}
+
+static void
+menu_metres_off (GtkWidget *item, gpointer none)
+{
+	if (GTK_CHECK_MENU_ITEM (item)->active)
+	{
+		prefs.lagometer = 0;
+		prefs.throttlemeter = 0;
+		menu_setting_foreach (menu_apply_metres_cb, -1, 0);
+	}
+}
+
+static void
+menu_metres_text (GtkWidget *item, gpointer none)
+{
+	if (GTK_CHECK_MENU_ITEM (item)->active)
+	{
+		prefs.lagometer = 2;
+		prefs.throttlemeter = 2;
+		menu_setting_foreach (menu_apply_metres_cb, -1, 0);
+	}
+}
+
+static void
+menu_metres_graph (GtkWidget *item, gpointer none)
+{
+	if (GTK_CHECK_MENU_ITEM (item)->active)
+	{
+		prefs.lagometer = 1;
+		prefs.throttlemeter = 1;
+		menu_setting_foreach (menu_apply_metres_cb, -1, 0);
+	}
+}
+
+static void
+menu_metres_both (GtkWidget *item, gpointer none)
+{
+	if (GTK_CHECK_MENU_ITEM (item)->active)
+	{
+		prefs.lagometer = 3;
+		prefs.throttlemeter = 3;
+		menu_setting_foreach (menu_apply_metres_cb, -1, 0);
+	}
+}
+
 static struct mymenu mymenu[] = {
 	{N_("_XChat"), 0, 0, M_NEWMENU, 0, 0, 1},
 	{N_("Server List..."), menu_open_server_list, (char *)&pix_book, M_MENUPIX, 0, 0, 1, GDK_s},
@@ -1355,10 +1403,11 @@ static struct mymenu mymenu[] = {
 		{N_("T_ree"), 0, 0, M_MENURADIO, MENU_ID_LAYOUT_TREE, 0, 1},
 		{0, 0, 0, M_END, 0, 0, 0},
 	{N_("_Network Metres"), 0, 0, M_MENUSUB, 0, 0, 1},	/* 26 */
-		{N_("Off"), menu_rpopup, 0, M_MENURADIO, 0, 0, 1},
-		{N_("Text"), menu_rpopup, 0, M_MENURADIO, 0, 0, 1},
-		{N_("Graph"), menu_rpopup, 0, M_MENURADIO, 0, 0, 1},
-		{N_("Both"), menu_rpopup, 0, M_MENURADIO, 0, 0, 1},
+#define METRE_OFFSET (27)
+		{N_("Off"), menu_metres_off, 0, M_MENURADIO, 0, 0, 1},
+		{N_("Graph"), menu_metres_graph, 0, M_MENURADIO, 0, 0, 1},
+		{N_("Text"), menu_metres_text, 0, M_MENURADIO, 0, 0, 1},
+		{N_("Both"), menu_metres_both, 0, M_MENURADIO, 0, 0, 1},
 		{0, 0, 0, M_END, 0, 0, 0},	/* 31 */
 
 	{N_("_Server"), 0, 0, M_NEWMENU, 0, 0, 1},
@@ -1371,9 +1420,9 @@ static struct mymenu mymenu[] = {
 	{N_("What should go here?"), menu_away, 0, M_MENUITEM, 0, 0, 1},
 	{N_("Any ideas?"), menu_away, 0, M_MENUITEM, 0, 0, 1},
 
-//	{N_("_Server"), (void *) -1, 0, M_NEWMENU, MENU_ID_USERMENU, 0, 1},	/* 32 */
+	{N_("_Usermenu"), 0, 0, M_NEWMENU, MENU_ID_USERMENU, 0, 1},	/* 40 */
 
-	{N_("S_ettings"), 0, 0, M_NEWMENU, 0, 0, 1},	/* 33 */
+	{N_("S_ettings"), 0, 0, M_NEWMENU, 0, 0, 1},
 	{N_("Preferences..."), menu_settings, GTK_STOCK_PREFERENCES, M_MENUSTOCK, 0, 0, 1},
 
 	{N_("Advanced"), 0, GTK_STOCK_JUSTIFY_LEFT, M_MENUSUB, 0, 0, 1},
@@ -1387,14 +1436,6 @@ static struct mymenu mymenu[] = {
 		{N_("Userlist Buttons..."), menu_ulbuttons, 0, M_MENUITEM, 0, 0, 1},
 		{N_("Userlist Popup..."), menu_ulpopup, 0, M_MENUITEM, 0, 0, 1},
 		{0, 0, 0, M_END, 0, 0, 0},		/* 45 */
-
-#if 0
-	{0, 0, 0, M_SEP, 0, 0, 0},	/* 56 */
-	{N_("Reload Settings"), menu_reload, GTK_STOCK_REVERT_TO_SAVED, M_MENUSTOCK, 0, 0, 1},
-	{0, 0, 0, M_SEP, 0, 0, 0},
-	{N_("Save Settings now"), menu_savedefault, GTK_STOCK_SAVE, M_MENUSTOCK, 0, 0, 1},
-	{N_("Save Settings on exit"), menu_saveexit, 0, M_MENUTOG, 0, 1, 1},
-#endif
 
 	{N_("_Window"), 0, 0, M_NEWMENU, 0, 0, 1},
 	{N_("Ban List..."), menu_banlist, 0, M_MENUITEM, 0, 0, 1},
@@ -1414,11 +1455,7 @@ static struct mymenu mymenu[] = {
 
 	{N_("_Help"), 0, 0, M_NEWMENU, 0, 0, 1},	/* 62 */
 	{N_("_Contents"), menu_docs, GTK_STOCK_HELP, M_MENUSTOCK, 0, 0, 1, GDK_F1},
-#ifdef GTK_STOCK_ABOUT
 	{N_("_About"), menu_about, GTK_STOCK_ABOUT, M_MENUSTOCK, 0, 0, 1},
-#else
-	{N_("_About"), menu_about, (char *)&pix_about, M_MENUPIX, 0, 0, 1},
-#endif
 
 	{0, 0, 0, M_END, 0, 0, 0},
 };
@@ -1704,6 +1741,7 @@ menu_create_main (void *accel_group, int bar, int away, int toplevel,
 	GtkWidget *usermenu = 0;
 	GtkWidget *submenu = 0;
 	int close_mask = GDK_CONTROL_MASK;
+	int away_mask = GDK_MOD1_MASK;
 	char *key_theme = NULL;
 	GtkSettings *settings;
 	GSList *group = NULL;
@@ -1740,6 +1778,25 @@ menu_create_main (void *accel_group, int bar, int away, int toplevel,
 		mymenu[TABS_OFFSET+1].state = 1;
 	}
 
+	mymenu[METRE_OFFSET].state = 0;
+	mymenu[METRE_OFFSET+1].state = 0;
+	mymenu[METRE_OFFSET+2].state = 0;
+	mymenu[METRE_OFFSET+3].state = 0;
+	switch (prefs.lagometer)
+	{
+	case 0:
+		mymenu[METRE_OFFSET].state = 1;
+		break;
+	case 1:
+		mymenu[METRE_OFFSET+1].state = 1;
+		break;
+	case 2:
+		mymenu[METRE_OFFSET+2].state = 1;
+		break;
+	default:
+		mymenu[METRE_OFFSET+3].state = 1;
+	}
+
 	/* change Close binding to ctrl-shift-w when using emacs keys */
 	settings = gtk_widget_get_settings (menu_bar);
 	if (settings)
@@ -1753,6 +1810,14 @@ menu_create_main (void *accel_group, int bar, int away, int toplevel,
 		}
 	}
 
+	/* Away binding to ctrl-alt-a if the _Help menu conflicts (FR/PT/IT) */
+	{
+		char *help = _("_Help");
+		char *under = strchr (help, '_');
+		if (under && (under[1] == 'a' || under[1] == 'A'))
+			away_mask = GDK_MOD1_MASK | GDK_CONTROL_MASK;
+	}
+
 	if (!toplevel)
 		mymenu[DETACH_OFFSET].text = _("Detach Tab");
 	else
@@ -1761,13 +1826,19 @@ menu_create_main (void *accel_group, int bar, int away, int toplevel,
 	while (1)
 	{
 		item = NULL;
+		if (mymenu[i].id == MENU_ID_USERMENU && !prefs.gui_usermenu)
+		{
+			i++;
+			continue;
+		}
+
 		switch (mymenu[i].type)
 		{
 		case M_NEWMENU:
 			if (menu)
 				gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu_item), menu);
-			menu = gtk_menu_new ();
-			if (mymenu[i].callback == (void *) -1)
+			item = menu = gtk_menu_new ();
+			if (mymenu[i].id == MENU_ID_USERMENU)
 				usermenu = menu;
 			menu_item = gtk_menu_item_new_with_mnemonic (_(mymenu[i].text));
 			/* record the English name for /menu */
@@ -1807,13 +1878,14 @@ normalitem:
 		case M_MENUTOG:
 			item = gtk_check_menu_item_new_with_mnemonic (_(mymenu[i].text));
 togitem:
+			/* must avoid callback for Radio buttons */
 			GTK_CHECK_MENU_ITEM (item)->active = mymenu[i].state;
 			/*gtk_check_menu_item_set_active (GTK_CHECK_MENU_ITEM (item),
 													 mymenu[i].state);*/
 			if (mymenu[i].key != 0)
 				gtk_widget_add_accelerator (item, "activate", accel_group,
-									mymenu[i].key, mymenu[i].key == GDK_a ?
-									GDK_MOD1_MASK : GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
+									mymenu[i].key, mymenu[i].id == MENU_ID_AWAY ?
+									away_mask : GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
 			if (mymenu[i].callback)
 				g_signal_connect (G_OBJECT (item), "toggled",
 										G_CALLBACK (mymenu[i].callback), 0);

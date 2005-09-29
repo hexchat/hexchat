@@ -4050,10 +4050,13 @@ gtk_xtext_set_font (GtkXText *xtext, char *name)
 }
 
 void
-gtk_xtext_set_background (GtkXText * xtext, GdkPixmap * pixmap, int trans,
-								  int shaded)
+gtk_xtext_set_background (GtkXText * xtext, GdkPixmap * pixmap, gboolean trans)
 {
 	GdkGCValues val;
+	gboolean shaded = FALSE;
+
+	if (trans && (xtext->tint_red != 0 || xtext->tint_green != 0 || xtext->tint_blue != 0))
+		shaded = TRUE;
 
 #if !defined(USE_XLIB) && !defined(WIN32)
 	shaded = FALSE;
@@ -4923,6 +4926,9 @@ gtk_xtext_set_tint (GtkXText *xtext, int tint_red, int tint_green, int tint_blue
 	xtext->tint_red = tint_red;
 	xtext->tint_green = tint_green;
 	xtext->tint_blue = tint_blue;
+
+	/*if (xtext->tint_red != 0 || xtext->tint_green != 0 || xtext->tint_blue != 0)
+		shaded = TRUE;*/
 }
 
 void

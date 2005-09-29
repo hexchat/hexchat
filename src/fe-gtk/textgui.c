@@ -378,7 +378,7 @@ pevent_dialog_show ()
 	pevent_dialog_twid = gtk_xtext_new (colors, 0);
 	gtk_xtext_set_tint (GTK_XTEXT (pevent_dialog_twid), prefs.tint_red, prefs.tint_green, prefs.tint_blue);
 	gtk_xtext_set_background (GTK_XTEXT (pevent_dialog_twid),
-									  channelwin_pix, prefs.transparent, prefs.tint);
+									  channelwin_pix, prefs.transparent);
 
 	pevent_dialog_entry = gtk_entry_new_with_max_length (255);
 	gtk_widget_set_usize (pevent_dialog_entry, 96, 0);

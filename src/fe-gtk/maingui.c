@@ -1,5 +1,5 @@
 /* X-Chat
- * Copyright (C) 2002 Peter Zelezny.
+ * Copyright (C) 1998-2005 Peter Zelezny.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -79,6 +79,7 @@ GtkWidget *parent_window = NULL;			/* the master window */
 
 GtkStyle *input_style;
 
+static PangoAttrList *away_list;
 static PangoAttrList *newdata_list;
 static PangoAttrList *nickseen_list;
 static PangoAttrList *newmsg_list;
@@ -86,7 +87,7 @@ static PangoAttrList *plain_list = NULL;
 
 
 static PangoAttrList *
-mg_attr_list_create (GdkColor *col)
+mg_attr_list_create (GdkColor *col, int canbesmall)
 {
 	PangoAttribute *attr;
 	PangoAttrList *list;
@@ -101,7 +102,7 @@ mg_attr_list_create (GdkColor *col)
 		pango_attr_list_insert (list, attr);
 	}
 
-	if (prefs.tab_small)
+	if (canbesmall && prefs.tab_small)
 	{
 #ifdef WIN32
 		attr = pango_attr_scale_new (PANGO_SCALE_SMALL);
@@ -125,12 +126,14 @@ mg_create_tab_colors (void)
 		pango_attr_list_unref (newmsg_list);
 		pango_attr_list_unref (newdata_list);
 		pango_attr_list_unref (nickseen_list);
+		pango_attr_list_unref (away_list);
 	}
 
-	plain_list = mg_attr_list_create (NULL);
-	newdata_list = mg_attr_list_create (&colors[COL_NEW_DATA]);
-	nickseen_list = mg_attr_list_create (&colors[COL_HILIGHT]);
-	newmsg_list = mg_attr_list_create (&colors[COL_NEW_MSG]);
+	plain_list = mg_attr_list_create (NULL, 1);
+	newdata_list = mg_attr_list_create (&colors[COL_NEW_DATA], 1);
+	nickseen_list = mg_attr_list_create (&colors[COL_HILIGHT], 1);
+	newmsg_list = mg_attr_list_create (&colors[COL_NEW_MSG], 1);
+	away_list = mg_attr_list_create (&colors[COL_AWAY], 0);
 }
 
 #ifdef WIN32
@@ -245,10 +248,17 @@ fe_set_tab_color (struct session *sess, int col, int flash)
 #endif
 }
 
+static void
+mg_set_myself_away (session_gui *gui, gboolean away)
+{
+	gtk_label_set_attributes (GTK_LABEL (GTK_BIN (gui->nick_label)->child),
+									  away ? away_list : plain_list);
+}
+
 /* change the little icon to the left of your nickname */
 
 void
-mg_set_access_icon (session_gui *gui, GdkPixbuf *pix)
+mg_set_access_icon (session_gui *gui, GdkPixbuf *pix, gboolean away)
 {
 	if (gui->op_xpm)
 	{
@@ -262,6 +272,8 @@ mg_set_access_icon (session_gui *gui, GdkPixbuf *pix)
 		gtk_box_pack_start (GTK_BOX (gui->nick_box), gui->op_xpm, 0, 0, 0);
 		gtk_widget_show (gui->op_xpm);
 	}
+
+	mg_set_myself_away (gui, away);
 }
 
 static gboolean
@@ -635,9 +647,9 @@ mg_populate_userlist (session *sess)
 	{
 		gui = sess->gui;
 		if (sess->type == SESS_DIALOG)
-			mg_set_access_icon (sess->gui, NULL);
+			mg_set_access_icon (sess->gui, NULL, sess->server->is_away);
 		else
-			mg_set_access_icon (sess->gui, get_user_icon (sess->server, sess->res->myself));
+			mg_set_access_icon (sess->gui, get_user_icon (sess->server, sess->res->myself), sess->server->is_away);
 		userlist_show (sess);
 		userlist_set_value (sess->gui->user_tree, sess->res->old_ul_value);
 	}
@@ -773,7 +785,11 @@ mg_populate (session *sess)
 		mg_progressbar_create (gui);
 	}
 
+	/* menu items */
 	GTK_CHECK_MENU_ITEM (gui->menu_item[MENU_ID_AWAY])->active = sess->server->is_away;
+	gtk_widget_set_sensitive (gui->menu_item[MENU_ID_AWAY], sess->server->connected);
+	gtk_widget_set_sensitive (gui->menu_item[MENU_ID_DISCONNECT],
+									  sess->server->connected || sess->server->recondelay_tag);
 
 	mg_set_topic_tip (sess);
 
@@ -1014,10 +1030,12 @@ mg_xbutton_cb (chanview *cv, chan *ch, void *family, gpointer userdata)
 	}
 	else			/* non-irc utility tab */
 	{
-		/* destroy the vbox (from notebook) */
-		gtk_widget_destroy (userdata);
 		/* remove the tab */
-		chan_remove (ch);
+		if (chan_remove (ch))
+			/* destroy the vbox (from notebook) */
+			gtk_widget_destroy (userdata);
+		else
+			fe_message ("Can't close that tab, it still has children.", FE_MSG_ERROR);
 	}
 }
 
@@ -1414,26 +1432,9 @@ mg_link_irctab (session *sess, int focus)
 	((xtext_buffer *)sess->res->buffer)->xtext = (GtkXText *)sess->gui->xtext;
 }
 
-static void
-mg_link_gentab (GtkWidget *tab)
-{
-#if 0
-	GtkWidget *win, *box, *vbox;
-
-	box = g_object_get_data (G_OBJECT (tab), "box");
-	gtk_widget_reparent (box, vbox);
-#endif
-}
-
 void
 mg_link_cb (GtkWidget *but, gpointer userdata)
 {
-	/*if (userdata)
-	{
-		mg_link_gentab (userdata);
-		return;
-	}*/
-
 	mg_link_irctab (current_sess, 0);
 }
 
@@ -1721,12 +1722,7 @@ mg_create_topicbar (session *sess, GtkWidget *box, char *name)
 	mg_create_link_buttons (hbox, NULL);
 
 	if (!gui->is_tab)
-	{
 		sess->res->tab = NULL;
-/*gtk_toggle_button_new_with_label (name);
-		gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (sess->res->tab), TRUE);
-		gtk_box_pack_start (GTK_BOX (hbox), sess->res->tab, 0, 0, 0);*/
-	}
 
 	gui->topic_entry = topic = gtk_entry_new ();
 	gtk_widget_set_name (topic, "xchat-inputbox");
@@ -1849,7 +1845,7 @@ mg_update_xtext (GtkWidget *wid)
 	gtk_xtext_set_palette (xtext, colors);
 	gtk_xtext_set_max_lines (xtext, prefs.max_lines);
 	gtk_xtext_set_tint (xtext, prefs.tint_red, prefs.tint_green, prefs.tint_blue);
-	gtk_xtext_set_background (xtext, channelwin_pix, prefs.transparent, prefs.tint);
+	gtk_xtext_set_background (xtext, channelwin_pix, prefs.transparent);
 	gtk_xtext_set_wordwrap (xtext, prefs.wordwrap);
 	gtk_xtext_set_show_marker (xtext, prefs.show_marker);
 	gtk_xtext_set_show_separator (xtext, prefs.indent_nicks ? prefs.show_separator : 0);
@@ -1931,9 +1927,12 @@ mg_create_infoframe (GtkWidget *box)
 }
 
 static void
-mg_create_meters (session_gui *gui, GtkWidget *box)
+mg_create_meters (session_gui *gui, GtkWidget *parent_box)
 {
-	GtkWidget *infbox = box, *wid;
+	GtkWidget *infbox, *wid, *box;
+
+	gui->meter_box = infbox = box = gtk_vbox_new (0, 1);
+	gtk_box_pack_end (GTK_BOX (parent_box), box, 0, 0, 0);
 
 	if ((prefs.lagometer & 2) || (prefs.throttlemeter & 2))
 	{
@@ -1970,6 +1969,19 @@ mg_create_meters (session_gui *gui, GtkWidget *box)
 		gui->throttleinfo = wid = mg_create_infoframe (infbox);
 		gtk_label_set_text ((GtkLabel *) wid, "Throttle");
 	}
+}
+
+void
+mg_update_meters (session_gui *gui)
+{
+	gtk_widget_destroy (gui->meter_box);
+	gui->lagometer = NULL;
+	gui->laginfo = NULL;
+	gui->throttlemeter = NULL;
+	gui->throttleinfo = NULL;
+
+	mg_create_meters (gui, gui->button_box_parent);
+	gtk_widget_show_all (gui->meter_box);
 }
 
 static void
@@ -2011,10 +2023,10 @@ mg_create_center (session *sess, session_gui *gui, GtkWidget *box)
 {
 	GtkWidget *vbox, *hbox, *paned;
 
-	hbox = gtk_hbox_new (FALSE, 0);
-
 	if (prefs.paned_userlist)
 	{
+		hbox = gtk_hbox_new (FALSE, 0);
+
 		gui->pane = paned = gtk_hpaned_new ();
 		gtk_paned_pack1 (GTK_PANED (paned), hbox, TRUE, TRUE);
 
@@ -2043,6 +2055,7 @@ mg_create_center (session *sess, session_gui *gui, GtkWidget *box)
 
 	} else
 	{
+		hbox = gtk_hbox_new (FALSE, 3);
 		gtk_container_add (GTK_CONTAINER (box), hbox);
 
 		vbox = gtk_vbox_new (FALSE, 0);
@@ -2232,11 +2245,6 @@ mg_tabs_compare (session *a, session *b)
 static void
 mg_create_tabs (session_gui *gui)
 {
-	gboolean vert = FALSE;
-
-	if (prefs.tabs_position == 2 || prefs.tabs_position == 3)
-		vert = TRUE;
-
 	gui->chanview = chanview_new (prefs.tab_layout, prefs.truncchans, prefs.tab_sort);
 	chanview_set_callbacks (gui->chanview, mg_switch_tab_cb, mg_xbutton_cb,
 									mg_tab_contextmenu_cb, mg_tabs_compare);
@@ -2460,7 +2468,7 @@ mg_create_tabwindow (session *sess)
 
 	palette_alloc (win);
 
-	sess->gui->main_vbox = vbox = gtk_vbox_new (FALSE, 0);
+	vbox = gtk_vbox_new (FALSE, 0);
 	gtk_container_add (GTK_CONTAINER (win), vbox);
 
 	sess->gui->main_table = table = gtk_table_new (3, 3, FALSE);
@@ -2534,6 +2542,7 @@ mg_add_generic_tab (char *name, char *title, void *family, GtkWidget *box)
 	/* family always passed as NULL */
 	ch = chanview_add (mg_gui->chanview, name, NULL, box);
 	chan_set_color (ch, plain_list);
+	/* FIXME: memory leak */
 	g_object_set_data (G_OBJECT (box), "title", strdup (title));
 	g_object_set_data (G_OBJECT (box), "ch", ch);
 
@@ -2684,7 +2693,11 @@ fe_set_away (server *serv)
 		if (sess->server == serv)
 		{
 			if (!sess->gui->is_tab || sess == current_tab)
+			{
 				GTK_CHECK_MENU_ITEM (sess->gui->menu_item[MENU_ID_AWAY])->active = serv->is_away;
+				/* gray out my nickname */
+				mg_set_myself_away (sess->gui, serv->is_away);
+			}
 		}
 		list = list->next;
 	}
@@ -2693,7 +2706,8 @@ fe_set_away (server *serv)
 void
 fe_set_channel (session *sess)
 {
-	chan_rename (sess->res->tab, sess->channel, prefs.truncchans);
+	if (sess->res->tab != NULL)
+		chan_rename (sess->res->tab, sess->channel, prefs.truncchans);
 }
 
 void
@@ -2813,14 +2827,19 @@ mg_move_tab_family (session *sess, int delta)
 }
 
 void
-mg_set_title (GtkWidget *button, char *title)
+mg_set_title (GtkWidget *vbox, char *title) /* for non-irc tab/window only */
 {
 	char *old;
 
-	old = g_object_get_data (G_OBJECT (button), "title");
-	g_object_set_data (G_OBJECT (button), "title", strdup (title));
+	old = g_object_get_data (G_OBJECT (vbox), "title");
 	if (old)
+	{
+		g_object_set_data (G_OBJECT (vbox), "title", strdup (title));
 		free (old);
+	} else
+	{
+		gtk_window_set_title (GTK_WINDOW (vbox), title);
+	}
 }
 
 void

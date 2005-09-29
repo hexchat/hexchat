@@ -108,6 +108,7 @@ void fe_menu_update (menu_entry *);
 #define FE_SE_CONNECT 0
 #define FE_SE_LOGGEDIN 1
 #define FE_SE_DISCONNECT 2
+#define FE_SE_RECONDELAY 3
 void fe_server_event (server *serv, int type, int arg);
 
 #endif

@@ -1189,9 +1189,9 @@ servlist_open_networks (void)
 	gtk_container_set_border_width (GTK_CONTAINER (servlist), 4);
 	gtk_window_set_title (GTK_WINDOW (servlist), _("X-Chat: Server List"));
 #ifdef WIN32
-	gtk_window_set_default_size (GTK_WINDOW (servlist), 334, 426);
+	gtk_window_set_default_size (GTK_WINDOW (servlist), 324, 426);
 #else
-	gtk_window_set_default_size (GTK_WINDOW (servlist), 374, 478);
+	gtk_window_set_default_size (GTK_WINDOW (servlist), 364, 478);
 #endif
 	gtk_window_set_position (GTK_WINDOW (servlist), GTK_WIN_POS_MOUSE);
 	gtk_window_set_role (GTK_WINDOW (servlist), "servlist");
