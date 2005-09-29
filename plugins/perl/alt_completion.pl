@@ -91,11 +91,13 @@ sub complete {
 			$completions->{nicks} = [
 				map { $_->{nick} }
 					sort {
-						(
-							$a->{nick} eq Xchat::get_info("nick") || 
-							$b->{nick} eq Xchat::get_info("nick")
-						)
-						? -1 : $b->{lasttalk} <=> $a->{lasttalk}
+						if( $a->{nick} eq Xchat::get_info("nick") ) {
+							return 1;
+						} elsif( $b->{nick} eq Xchat::get_info("nick") ) {
+							 return -1;
+						} else {
+							return $b->{lasttalk} <=> $a->{lasttalk};
+						}
 					}
 						grep { $_->{nick} =~ /^$word/i } Xchat::get_list( "users" )
 			];
