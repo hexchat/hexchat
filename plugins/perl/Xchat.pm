@@ -13,34 +13,34 @@ use strict;
 use warnings;
 
 our %EXPORT_TAGS = (
-	all => [
-		qw(register hook_server hook_command),
-		qw(hook_print hook_timer unhook print command),
-		qw(find_context get_context set_context),
-		qw(get_info get_prefs emit_print nickcmp),
-		qw(get_list context_info strip_code),
-		qw(PRI_HIGHEST PRI_HIGH PRI_NORM PRI_LOW),
-		qw(PRI_LOWEST EAT_NONE EAT_XCHAT EAT_PLUGIN),
-		qw(EAT_ALL KEEP REMOVE),
-	],
+#	all => [
+##		qw(register hook_server hook_command),
+#		qw(hook_print hook_timer unhook print command),
+#		qw(find_context get_context set_context),
+#		qw(get_info get_prefs emit_print nickcmp),
+#		qw(get_list context_info strip_code),
+#		qw(PRI_HIGHEST PRI_HIGH PRI_NORM PRI_LOW),
+#		qw(PRI_LOWEST EAT_NONE EAT_XCHAT EAT_PLUGIN),
+#		qw(EAT_ALL KEEP REMOVE),
+#	],
 	constants => [
-		qw(PRI_HIGHEST PRI_HIGH PRI_NORM PRI_LOW),
-		qw(PRI_LOWEST EAT_NONE EAT_XCHAT),
-		qw(EAT_PLUGIN EAT_ALL FD_READ FD_WRITE),
-		qw(FD_EXCEPTION FD_NOTSOCKET KEEP REMOVE),
+		qw(PRI_HIGHEST PRI_HIGH PRI_NORM PRI_LOW PRI_LOWEST), # priorities
+		qw(EAT_NONE EAT_XCHAT EAT_PLUGIN EAT_ALL), # callback return values
+		qw(FD_READ FD_WRITE FD_EXCEPTION FD_NOTSOCKET), # fd flags
+		qw(KEEP REMOVE), # timers
 	],
 	hooks => [
-		qw(hook_server hook_command),
-		qw(hook_print hook_timer unhook),
+		qw(hook_server hook_command hook_print hook_timer unhook),
 	],
 	util => [
-		qw(register print command find_context),
-		qw(get_context set_context get_info get_prefs),
-		qw(emit_print nickcmp get_list context_info),
-		qw(strip_code),
+		qw(register nickcmp strip_code), # misc
+		qw(print prnt printf prntf command commandf emit_print), # output
+		qw(find_context get_context set_context), # context
+		qw(get_info get_prefs get_list context_info), # input
 	],
 );
 
+$EXPORT_TAGS{all} = [ map { @{$_} } @EXPORT_TAGS{qw(constants hooks util)}];
 our @EXPORT = @{$EXPORT_TAGS{constants}};
 our @EXPORT_OK = @{$EXPORT_TAGS{all}};
 
@@ -260,6 +260,11 @@ sub printf {
 	my $format = shift;
 	Xchat::print( sprintf( $format, @_ ) );
 }
+
+# make Xchat::prnt() and Xchat::prntf() as aliases for Xchat::print() and 
+# Xchat::printf(), mainly useful when these functions are exported
+*Xchat::prnt = *Xchat::print{CODE};
+*Xchat::prntf = *Xchat::printf{CODE};
 
 sub command {
 	my $command = shift;
