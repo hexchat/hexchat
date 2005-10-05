@@ -800,7 +800,7 @@ xchat_init (void)
 	snprintf (buf, sizeof (buf),
 		"NAME %s\n"						"CMD query %%s\n\n"\
 		"NAME %s\n"						"CMD send %%s\n\n"\
-		"NAME %s\n"						"CMD dns %%s\n\n"\
+		"NAME %s\n"						"CMD whois %%s %%s\n\n"\
 
 		"NAME SUB\n"					"CMD %s\n\n"\
 			"NAME %s\n"					"CMD op %%a\n\n"\
@@ -827,7 +827,7 @@ xchat_init (void)
 
 		_("Open Dialog Window"),
 		_("Send a File"),
-		_("Find Address"),
+		_("User Info (WHOIS)"),
 		_("Operator Actions"),
 
 		_("Give Ops"),

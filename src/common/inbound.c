@@ -1032,12 +1032,17 @@ inbound_nameslist_end (server *serv, char *chan)
 	return FALSE;
 }
 
-static void
+static gboolean
 check_willjoin_channels (server *serv)
 {
 	char *po;
 	session *sess;
 	GSList *list = sess_list;
+	int i = 0;
+
+	/* shouldnt really happen, the io tag is destroyed in server.c */
+	if (!is_server (serv))
+		return FALSE;
 
 	while (list)
 	{
@@ -1055,10 +1060,14 @@ check_willjoin_channels (server *serv)
 				po = strchr (sess->waitchannel, ' ');
 				if (po)
 					*po = 0;
+				i++;
 			}
 		}
 		list = list->next;
 	}
+	serv->joindelay_tag = 0;
+	fe_server_event (serv, FE_SE_LOGGEDIN, i);
+	return FALSE;
 }
 
 void
@@ -1296,7 +1305,13 @@ inbound_login_end (session *sess, char *text)
 				serv->p_nickserv (serv, ((ircnet *)serv->network)->nickserv);
 		}
 
-		check_willjoin_channels (serv);
+		/* send JOIN now or wait? */
+		if (serv->network && ((ircnet *)serv->network)->nickserv &&
+			 prefs.irc_join_delay)
+			serv->joindelay_tag = fe_timeout_add (prefs.irc_join_delay * 1000,
+															  check_willjoin_channels, serv);
+		else
+			check_willjoin_channels (serv);
 		if (serv->supports_watch)
 			notify_send_watches (serv);
 		serv->end_of_motd = TRUE;
@@ -1310,4 +1325,16 @@ inbound_login_end (session *sess, char *text)
 	}
 	EMIT_SIGNAL (XP_TE_MOTD, serv->server_session, text, NULL,
 					 NULL, NULL, 0);
+}
+
+void
+inbound_identified (server *serv)	/* 'MODE +e MYSELF' on freenode */
+{
+	if (serv->joindelay_tag)
+	{
+		/* stop waiting, just auto JOIN now */
+		fe_timeout_remove (serv->joindelay_tag);
+		serv->joindelay_tag = 0;
+		check_willjoin_channels (serv);
+	}
 }

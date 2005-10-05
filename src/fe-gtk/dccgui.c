@@ -547,6 +547,8 @@ fe_dcc_open_recv_win (int passive)
 	dccrwin.window =
 			  mg_create_generic_tab ("Downloads", _("XChat: File Receive List"),
 						FALSE, TRUE, close_dcc_recv_window, NULL, 601, 200, &vbox, 0);
+	if (!prefs.windows_as_tabs)
+		gtk_window_set_position (GTK_WINDOW (dccrwin.window), GTK_WIN_POS_NONE);
 	g_signal_connect (G_OBJECT (dccrwin.window), "key_release_event",
 							G_CALLBACK (recv_key_press), 0);
 #ifdef USE_GNOME

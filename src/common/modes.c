@@ -391,6 +391,10 @@ handle_single_mode (mode_run *mr, char sign, char mode, char *nick,
 	fe_update_mode_buttons (sess, mode, sign);
 
  genmode:
+	/* Received umode +e. If we're waiting to send JOIN then send now! */
+	if (mode == 'e' && sign == '+' && !serv->p_cmp (chan, serv->nick))
+		inbound_identified (serv);
+
 	if (!quiet)
 	{
 		if (*arg)

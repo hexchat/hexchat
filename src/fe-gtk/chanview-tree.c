@@ -18,7 +18,7 @@ cv_tree_sel_cb (GtkTreeSelection *sel, chanview *cv)
 		gtk_tree_model_get (model, &iter, COL_CHAN, &ch, -1);
 
 		cv->focused = ch;
-		cv->cb_focus (cv, ch, ch->family, ch->userdata);
+		cv->cb_focus (cv, ch, ch->tag, ch->userdata);
 	}
 }
 
@@ -42,7 +42,7 @@ cv_tree_click_cb (GtkTreeView *tree, GdkEventButton *event, chanview *cv)
 		if (gtk_tree_model_get_iter (GTK_TREE_MODEL (cv->store), &iter, path))
 		{
 			gtk_tree_model_get (GTK_TREE_MODEL (cv->store), &iter, COL_CHAN, &ch, -1);
-			ret = cv->cb_contextmenu (cv, ch, ch->family, ch->userdata, event);
+			ret = cv->cb_contextmenu (cv, ch, ch->tag, ch->userdata, event);
 		}
 		gtk_tree_path_free (path);
 	}
@@ -65,6 +65,7 @@ cv_tree_init (chanview *cv)
 	gtk_widget_show (win);
 
 	view = gtk_tree_view_new_with_model (GTK_TREE_MODEL (cv->store));
+	GTK_WIDGET_UNSET_FLAGS (view, GTK_CAN_FOCUS);
 	gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (view), FALSE);
 	gtk_container_add (GTK_CONTAINER (win), view);
 

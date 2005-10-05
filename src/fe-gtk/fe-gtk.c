@@ -792,6 +792,21 @@ fe_gui_info (session *sess, int info_type)
 	return -1;
 }
 
+void *
+fe_gui_info_ptr (session *sess, int info_type)
+{
+	switch (info_type)
+	{
+	case 0:	/* native window pointer (for plugins) */
+#ifdef WIN32
+		return GDK_WINDOW_HWND (sess->gui->window);
+#else
+		return sess->gui->window;
+#endif
+	}
+	return NULL;
+}
+
 char *
 fe_get_inputbox_contents (session *sess)
 {

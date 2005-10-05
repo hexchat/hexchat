@@ -220,7 +220,7 @@ tab_scroll_cb (GtkWidget *widget, GdkEventScroll *event, gpointer cv)
 static void
 cv_tabs_xclick_cb (GtkWidget *button, chanview *cv)
 {
-	cv->cb_xbutton (cv, cv->focused, cv->focused->family, cv->focused->userdata);
+	cv->cb_xbutton (cv, cv->focused, cv->focused->tag, cv->focused->userdata);
 }
 
 /* make a Scroll (arrow) button */
@@ -365,7 +365,7 @@ tab_add_sorted (chanview *cv, GtkWidget *box, GtkWidget *tab, chan *ch)
 		{
 			void *a = g_object_get_data (G_OBJECT (child->widget), "u");
 
-			if (ch->family && cv->cb_compare (a, b) > 0)
+			if (ch->tag == 0 && cv->cb_compare (a, b) > 0)
 			{
 				gtk_box_pack_start (GTK_BOX (box), tab, 0, 0, 0);
 				gtk_box_reorder_child (GTK_BOX (box), tab, i);
@@ -514,7 +514,7 @@ tab_pressed_cb (GtkToggleButton *tab, chan *ch)
 
 	if (/*tab->active*/is_switching)
 		/* call the focus callback */
-		cv->cb_focus (cv, ch, ch->family, ch->userdata);
+		cv->cb_focus (cv, ch, ch->tag, ch->userdata);
 }
 
 /* called for keyboard tab toggles only */
@@ -531,7 +531,7 @@ tab_toggled_cb (GtkToggleButton *tab, chan *ch)
 static gboolean
 tab_click_cb (GtkWidget *wid, GdkEventButton *event, chan *ch)
 {
-	return ch->cv->cb_contextmenu (ch->cv, ch, ch->family, ch->userdata, event);
+	return ch->cv->cb_contextmenu (ch->cv, ch, ch->tag, ch->userdata, event);
 }
 
 static void *
@@ -778,17 +778,13 @@ cv_tabs_set_color (chan *ch, PangoAttrList *list)
 static void
 cv_tabs_rename (chan *ch, char *name)
 {
-	PangoAttrList *attr = NULL;
+	PangoAttrList *attr;
 	char *new_name;
 	GtkWidget *tab = ch->impl;
 
-	/* Toplevel window's tabs are not working here, why? */
-	if (GTK_IS_LABEL (GTK_BIN (tab)->child))
-	{
-		attr = gtk_label_get_attributes (GTK_LABEL (GTK_BIN (tab)->child));
-		if (attr)
-			pango_attr_list_ref (attr);
-	}
+	attr = gtk_label_get_attributes (GTK_LABEL (GTK_BIN (tab)->child));
+	if (attr)
+		pango_attr_list_ref (attr);
 
 	new_name = truncate_tab_name (name, ch->cv->trunc_len);
 	if (new_name)

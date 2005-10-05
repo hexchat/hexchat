@@ -20,6 +20,8 @@ Where "NUMBER" is the bug number.
  - Strip mIRC colour from away message in right-click menu.
  - Warn when opening banlist in non-channel.
  ~ Reorganised and simplified IRC/Server menus and new View menu.
+ - The editable Server menu is no more, if you want it type
+   /set gui_usermenu 1.
  - Option to view channels in tabs or tree structure.
  - Shorter titlebar text for better viewing in taskbar.
  - Disabled key-search in server list, as GTK's auto-find does this
@@ -40,8 +42,18 @@ Where "NUMBER" is the bug number.
    French).
  - Your nickname in the bottom-left corner now turns gray when you are
    marked away, just like the userlist.
+ - Introduced a delay before joining channels, to allow for FreeNode's
+   short comings. If a umode +e is received it'll send auto-join
+   channels immediately.
+ - Plugin API: Added win_ptr to xchat_get_info.
+ - Non-irc (utility) tabs can now be detached aswell.
+ - Fixed behaviour problems of the userlist pane, which might be set
+   incorrectly if the window was resized while a server-tab is focued.
+ - Added a confirm-dialog when trying to close a server-tab with
+   children.
  - 
-
+ - 
+ - 
 ~ = still incomplete.
 
 

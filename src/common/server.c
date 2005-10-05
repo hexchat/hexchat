@@ -228,7 +228,7 @@ void
 tcp_sendf (server *serv, char *fmt, ...)
 {
 	va_list args;
-	/* keep this buffer in BSS. Converting UTF-8 to ISO-8895-x might make the
+	/* keep this buffer in BSS. Converting UTF-8 to ISO-8859-x might make the
       string shorter, so allow alot more than 512 for now. */
 	static char send_buf[1540];	/* good code hey (no it's not overflowable) */
 	int len;
@@ -502,6 +502,12 @@ server_stopconnecting (server * serv)
 	{
 		fe_input_remove (serv->iotag);
 		serv->iotag = 0;
+	}
+
+	if (serv->joindelay_tag)
+	{
+		fe_timeout_remove (serv->joindelay_tag);
+		serv->joindelay_tag = 0;
 	}
 
 #ifndef WIN32
@@ -975,6 +981,12 @@ server_cleanup (server * serv)
 	{
 		fe_input_remove (serv->iotag);
 		serv->iotag = 0;
+	}
+
+	if (serv->joindelay_tag)
+	{
+		fe_timeout_remove (serv->joindelay_tag);
+		serv->joindelay_tag = 0;
 	}
 
 #ifdef USE_OPENSSL
@@ -1554,8 +1566,8 @@ server_connect (server *serv, char *hostname, int port, int no_login)
 	}
 #endif
 	serv->childpid = pid;
-	serv->iotag =
-		fe_input_add (serv->childread, FIA_READ|FIA_FD, server_read_child, serv);
+	serv->iotag = fe_input_add (serv->childread, FIA_READ, server_read_child,
+										 serv);
 }
 
 void

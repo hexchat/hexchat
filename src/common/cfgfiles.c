@@ -430,9 +430,9 @@ const struct prefs vars[] = {
 	{"gui_ulist_buttons", P_OFFINT (userlistbuttons), TYPE_BOOL},
 	{"gui_ulist_doubleclick", P_OFFSET (doubleclickuser), TYPE_STR},
 	{"gui_ulist_hide", P_OFFINT (hideuserlist), TYPE_BOOL},
-	{"gui_ulist_pos", P_OFFINT (paned_pos), TYPE_INT},
 	{"gui_ulist_resizable", P_OFFINT (paned_userlist), TYPE_BOOL},
 	{"gui_ulist_show_hosts", P_OFFINT(showhostname_in_userlist), TYPE_BOOL},
+	{"gui_ulist_size", P_OFFINT (paned_pos), TYPE_INT},
 	{"gui_ulist_sort", P_OFFINT (userlist_sort), TYPE_INT},
 	{"gui_ulist_style", P_OFFINT (style_namelistgad), TYPE_BOOL},
 	{"gui_usermenu", P_OFFINT (gui_usermenu), TYPE_BOOL},
@@ -461,15 +461,16 @@ const struct prefs vars[] = {
 	{"irc_conf_mode", P_OFFINT (confmode), TYPE_BOOL},
 	{"irc_extra_hilight", P_OFFSET (irc_extra_hilight), TYPE_STR},
 	{"irc_hide_version", P_OFFINT (hidever), TYPE_BOOL},
-	{"irc_id_ytext", P_OFFSET (irc_id_ytext), TYPE_STR},
 	{"irc_id_ntext", P_OFFSET (irc_id_ntext), TYPE_STR},
+	{"irc_id_ytext", P_OFFSET (irc_id_ytext), TYPE_STR},
 	{"irc_invisible", P_OFFINT (invisible), TYPE_BOOL},
+	{"irc_join_delay", P_OFFINT (irc_join_delay), TYPE_INT},
 	{"irc_logging", P_OFFINT (logging), TYPE_BOOL},
 	{"irc_logmask", P_OFFSET (logmask), TYPE_STR},
-	{"irc_nick_hilight", P_OFFSET (irc_nick_hilight), TYPE_STR},
 	{"irc_nick1", P_OFFSET (nick1), TYPE_STR},
 	{"irc_nick2", P_OFFSET (nick2), TYPE_STR},
 	{"irc_nick3", P_OFFSET (nick3), TYPE_STR},
+	{"irc_nick_hilight", P_OFFSET (irc_nick_hilight), TYPE_STR},
 	{"irc_no_hilight", P_OFFSET (irc_no_hilight), TYPE_STR},
 	{"irc_part_reason", P_OFFSET (partreason), TYPE_STR},
 	{"irc_quit_reason", P_OFFSET (quitreason), TYPE_STR},
@@ -583,6 +584,7 @@ load_config (void)
 
 	/* put in default values, anything left out is automatically zero */
 	prefs.local_ip = 0xffffffff;
+	prefs.irc_join_delay = 2;
 	prefs.show_marker = 1;
 	prefs.newtabstofront = 2;
 	prefs.completion_amount = 5;

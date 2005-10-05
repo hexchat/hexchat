@@ -96,11 +96,11 @@ static const setting textbox_settings[] =
 	{ST_EFONT,  N_("Font:"), P_OFFSETNL(font_normal), 0, 0, sizeof prefs.font_normal},
 	{ST_EFILE,  N_("Background image:"), P_OFFSETNL(background), 0, 0, sizeof prefs.background},
 	{ST_NUMBER,	N_("Scrollback lines:"), P_OFFINTNL(max_lines),0,0,100000},
-	{ST_TOGGLE, N_("Transparent background"), P_OFFINTNL(transparent),0,0,0},
-	{ST_TOGGLR, N_("Indent nick names"), P_OFFINTNL(indent_nicks),
-					N_("Make nick names right-justified"),0,0},
 	{ST_TOGGLE, N_("Colored nick names"), P_OFFINTNL(colorednicks),
 					N_("Give each person on IRC a different color"),0,0},
+	{ST_TOGGLR, N_("Indent nick names"), P_OFFINTNL(indent_nicks),
+					N_("Make nick names right-justified"),0,0},
+	{ST_TOGGLE, N_("Transparent background"), P_OFFINTNL(transparent),0,0,0},
 	{ST_TOGGLR, N_("Show marker line"), P_OFFINTNL(show_marker),
 					N_("Insert a red line after the last read text."),0,0},
 	{ST_HEADER, N_("Transparency Settings"), 0,0,0},
@@ -157,7 +157,6 @@ static const setting userlist_settings[] =
 	{ST_HEADER,	N_("User List"),0,0,0},
 	{ST_MENU,	N_("User list sorted by:"), P_OFFINTNL(userlist_sort), 0, ulmenutext, 0},
 	{ST_TOGGLE, N_("Show hostnames in user list"), P_OFFINTNL(showhostname_in_userlist), 0, 0, 0},
-	{ST_TOGGLE, N_("User list buttons enabled"), P_OFFINTNL(userlistbuttons), 0, 0, 0},
 	{ST_TOGGLE, N_("Use the Text box font and colors"), P_OFFINTNL(style_namelistgad),0,0,0},
 	{ST_TOGGLE, N_("Resizable user list"), P_OFFINTNL(paned_userlist),0,0,0},
 
@@ -305,7 +304,7 @@ static const setting logging_settings[] =
 {
 	{ST_HEADER,	N_("Logging"),0,0,0},
 	{ST_TOGGLE,	N_("Enable logging of conversations"), P_OFFINTNL(logging), 0, 0, 0},
-	{ST_ENTRY,	N_("Log filename mask:"), P_OFFSETNL(logmask), 0, 0, sizeof prefs.logmask},
+	{ST_ENTRY,	N_("Log filename:"), P_OFFSETNL(logmask), 0, 0, sizeof prefs.logmask},
 	{ST_LABEL,	N_("(%s=Server %c=Channel %n=Network).")},
 
 	{ST_HEADER,	N_("Time Stamps"),0,0,0},
@@ -538,7 +537,7 @@ setup_menu_cb (GtkWidget *item, const setting *set)
 	}
 }
 
-#if 0
+/*
 static const char *id_strings[] =
 {
 	"",
@@ -605,7 +604,7 @@ setup_create_id_menu (GtkWidget *table, char *label, int row, char *dest)
 							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
 }
 
-#endif
+*/
 
 static void
 setup_create_menu (GtkWidget *table, int row, const setting *set)
@@ -1641,6 +1640,8 @@ setup_apply (struct xchatprefs *pr)
 	if (DIFF (tab_small))
 		noapply = TRUE;
 	if (DIFF (tab_sort))
+		noapply = TRUE;
+	if (DIFF (use_server_tab))
 		noapply = TRUE;
 
 	if (color_change || (DIFF (away_size_max)) || (DIFF (away_track)))

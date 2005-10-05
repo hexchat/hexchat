@@ -28,9 +28,9 @@ struct _chanview
 	int trunc_len;
 
 	/* callbacks */
-	void (*cb_focus) (chanview *, chan *, void *family, void *userdata);
-	void (*cb_xbutton) (chanview *, chan *, void *family, void *userdata);
-	gboolean (*cb_contextmenu) (chanview *, chan *, void *family, void *userdata, GdkEventButton *);
+	void (*cb_focus) (chanview *, chan *, int tag, void *userdata);
+	void (*cb_xbutton) (chanview *, chan *, int tag, void *userdata);
+	gboolean (*cb_contextmenu) (chanview *, chan *, int tag, void *userdata, GdkEventButton *);
 	int (*cb_compare) (void *a, void *b);
 
 	/* impl */
@@ -58,6 +58,8 @@ struct _chan
 	void *userdata;	/* session * */
 	void *family;		/* server * or null */
 	void *impl;	/* togglebutton or null */
+	short allow_closure;	/* allow it to be closed when it still has children? */
+	short tag;
 };
 
 static chan *cv_find_chan_by_number (chanview *cv, int num);
@@ -106,10 +108,16 @@ chanview_pop_cb (chanview *cv, GtkTreeIter *iter)
 {
 	chan *ch;
 	char *name;
+	PangoAttrList *attr;
 
 	gtk_tree_model_get (GTK_TREE_MODEL (cv->store), iter,
-							  COL_NAME, &name, COL_CHAN, &ch, -1);
+							  COL_NAME, &name, COL_CHAN, &ch, COL_ATTR, &attr, -1);
 	ch->impl = cv->func_add (cv, ch, name, NULL);
+	if (attr)
+	{
+		cv->func_set_color (ch, attr);
+		pango_attr_list_unref (attr);
+	}
 	g_free (name);
 }
 
@@ -238,9 +246,9 @@ chanview_new (int type, int trunc_len, gboolean sort)
 
 void
 chanview_set_callbacks (chanview *cv,
-	void (*cb_focus) (chanview *, chan *, void *family, void *userdata),
-	void (*cb_xbutton) (chanview *, chan *, void *family, void *userdata),
-	gboolean (*cb_contextmenu) (chanview *, chan *, void *family, void *userdata, GdkEventButton *),
+	void (*cb_focus) (chanview *, chan *, int tag, void *userdata),
+	void (*cb_xbutton) (chanview *, chan *, int tag, void *userdata),
+	gboolean (*cb_contextmenu) (chanview *, chan *, int tag, void *userdata, GdkEventButton *),
 	int (*cb_compare) (void *a, void *b))
 {
 	cv->cb_focus = cb_focus;
@@ -262,7 +270,7 @@ chanview_insert_sorted (chanview *cv, GtkTreeIter *add_iter, GtkTreeIter *parent
 		do
 		{
 			gtk_tree_model_get (GTK_TREE_MODEL (cv->store), &iter, COL_CHAN, &ch, -1);
-			if (ch->family && cv->cb_compare (ch->userdata, ud) > 0)
+			if (ch->tag == 0 && cv->cb_compare (ch->userdata, ud) > 0)
 			{
 				gtk_tree_store_insert_before (cv->store, add_iter, parent, &iter);
 				return;
@@ -277,7 +285,7 @@ chanview_insert_sorted (chanview *cv, GtkTreeIter *add_iter, GtkTreeIter *parent
 /* find a parent node with the same "family" pointer (i.e. the Server tab) */
 
 static int
-chanview_find_parent (chanview *cv, void *family, GtkTreeIter *search_iter)
+chanview_find_parent (chanview *cv, void *family, GtkTreeIter *search_iter, chan *avoid)
 {
 	chan *search_ch;
 
@@ -288,7 +296,7 @@ chanview_find_parent (chanview *cv, void *family, GtkTreeIter *search_iter)
 		{
 			gtk_tree_model_get (GTK_TREE_MODEL (cv->store), search_iter, 
 									  COL_CHAN, &search_ch, -1);
-			if (family == search_ch->family /*&&
+			if (family == search_ch->family && search_ch != avoid /*&&
 				 gtk_tree_store_iter_depth (cv->store, search_iter) == 0*/)
 				return TRUE;
 		}
@@ -298,15 +306,15 @@ chanview_find_parent (chanview *cv, void *family, GtkTreeIter *search_iter)
 	return FALSE;
 }
 
-chan *
-chanview_add (chanview *cv, char *name, void *family, void *userdata)
+static chan *
+chanview_add_real (chanview *cv, char *name, void *family, void *userdata,
+						 gboolean allow_closure, int tag, chan *ch, chan *avoid)
 {
 	GtkTreeIter parent_iter;
 	GtkTreeIter iter;
-	chan *ch;
 	gboolean has_parent = FALSE;
 
-	if (chanview_find_parent (cv, family, &parent_iter))
+	if (chanview_find_parent (cv, family, &parent_iter, avoid))
 	{
 		chanview_insert_sorted (cv, &iter, &parent_iter, userdata);
 		has_parent = TRUE;
@@ -315,10 +323,15 @@ chanview_add (chanview *cv, char *name, void *family, void *userdata)
 		gtk_tree_store_append (cv->store, &iter, NULL);
 	}
 
-	ch = calloc (1, sizeof (chan));
-	ch->userdata = userdata;
-	ch->family = family;
-	ch->cv = cv;
+	if (!ch)
+	{
+		ch = calloc (1, sizeof (chan));
+		ch->userdata = userdata;
+		ch->family = family;
+		ch->cv = cv;
+		ch->allow_closure = allow_closure;
+		ch->tag = tag;
+	}
 	memcpy (&(ch->iter), &iter, sizeof (iter));
 
 	gtk_tree_store_set (cv->store, &iter, COL_NAME, name, COL_CHAN, ch, -1);
@@ -329,9 +342,13 @@ chanview_add (chanview *cv, char *name, void *family, void *userdata)
 	else
 		ch->impl = cv->func_add (cv, ch, name, &parent_iter);
 
-printf("chanview_add(): new impl %p (ch=%p)\n", ch->impl, ch);
-
 	return ch;
+}
+
+chan *
+chanview_add (chanview *cv, char *name, void *family, void *userdata, gboolean allow_closure, int tag)
+{
+	return chanview_add_real (cv, name, family, userdata, allow_closure, tag, NULL, NULL);
 }
 
 int
@@ -374,10 +391,10 @@ chanview_set_orientation (chanview *cv, gboolean vertical)
 	}
 }
 
-void *
-chan_get_family (chan *ch)
+int
+chan_get_tag (chan *ch)
 {
-	return ch->family;
+	return ch->tag;
 }
 
 void
@@ -492,6 +509,33 @@ cv_find_chan_by_number (chanview *cv, int num)
 	return NULL;
 }
 
+static void
+chan_emancipate_children (chan *ch)
+{
+	char *name;
+	chan *childch;
+	GtkTreeIter childiter;
+	PangoAttrList *attr;
+
+	while (gtk_tree_model_iter_children (GTK_TREE_MODEL (ch->cv->store), &childiter, &ch->iter))
+	{
+		/* remove and re-add all the children, but avoid using "ch" as parent */
+		gtk_tree_model_get (GTK_TREE_MODEL (ch->cv->store), &childiter,
+								  COL_NAME, &name, COL_CHAN, &childch, COL_ATTR, &attr, -1);
+		printf("emancipate : %s\n", name);
+		ch->cv->func_remove (childch);
+		gtk_tree_store_remove (ch->cv->store, &childiter);
+		ch->cv->size--;
+		chanview_add_real (childch->cv, name, childch->family, childch->userdata, childch->allow_closure, childch->tag, childch, ch);
+		if (attr)
+		{
+			childch->cv->func_set_color (childch, attr);
+			pango_attr_list_unref (attr);
+		}
+		g_free (name);
+	}
+}
+
 gboolean
 chan_remove (chan *ch)
 {
@@ -500,9 +544,12 @@ chan_remove (chan *ch)
 
 	printf("remove ch=%p (focused ch=%p)\n", ch, ch->cv->focused); 
 
-	if (gtk_tree_model_iter_has_child (GTK_TREE_MODEL (ch->cv->store), &ch->iter))
+	/* is this ch allowed to be closed while still having children? */
+	if (gtk_tree_model_iter_has_child (GTK_TREE_MODEL (ch->cv->store), &ch->iter)
+		 && !ch->allow_closure)
 		return FALSE;
 
+	chan_emancipate_children (ch);
 	ch->cv->func_remove (ch);
 
 	/* is it the focused one? */

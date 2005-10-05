@@ -192,7 +192,6 @@ static const struct defaultserver def[] =
 
 	{"FEFNet",	0},
 	{0,			"irc.fef.net"},
-	{0,			"irc.villagenet.com"},
 	{0,			"irc.ggn.net"},
 	{0,			"irc.vendetta.com"},
 

@@ -1014,6 +1014,9 @@ xchat_get_info (xchat_plugin *ph, const char *id)
 	case 0x14f51cd8: /* version */
 		return VERSION;
 
+	case 0x506d600b: /* native win_ptr */
+		return fe_gui_info_ptr (sess, 0);
+
 	case 0x6d3431b5: /* win_status */
 		switch (fe_gui_info (sess, 0))	/* check window status */
 		{

@@ -70,7 +70,7 @@ irc_nickserv (server *serv, char *pass)
 	switch (serv->nickservtype)
 	{
 	case 0:
-		tcp_sendf (serv, "PRIVMSG NickServ :identify %s\r\n", pass);
+		tcp_sendf (serv, "PRIVMSG NICKSERV :identify %s\r\n", pass);
 		break;
 	case 1:
 		tcp_sendf (serv, "NICKSERV :identify %s\r\n", pass);

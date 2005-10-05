@@ -230,6 +230,7 @@ struct xchatprefs
 	unsigned int flash_hilight;
 	unsigned int truncchans;
 	unsigned int privmsgtab;
+	unsigned int irc_join_delay;
 	unsigned int logging;
 	unsigned int timestamp_logs;
 	unsigned int newtabstofront;
@@ -394,6 +395,7 @@ typedef struct server
 	int childpid;
 	int iotag;
 	int recondelay_tag;				/* reconnect delay timeout */
+	int joindelay_tag;				/* waiting before we send JOIN */
 	char hostname[128];				/* real ip number */
 	char servername[128];			/* what the server says is its name */
 	char password[86];
