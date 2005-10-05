@@ -58,6 +58,7 @@ static GtkWidget *entry_greal;
 /* edit area */
 static GtkWidget *edit_win;
 static GtkWidget *edit_entry_nick;
+static GtkWidget *edit_entry_nick2;
 static GtkWidget *edit_entry_user;
 static GtkWidget *edit_entry_real;
 static GtkWidget *edit_entry_join;
@@ -65,6 +66,7 @@ static GtkWidget *edit_entry_pass;
 static GtkWidget *edit_entry_cmd;
 static GtkWidget *edit_entry_nickserv;
 static GtkWidget *edit_label_nick;
+static GtkWidget *edit_label_nick2;
 static GtkWidget *edit_label_real;
 static GtkWidget *edit_label_user;
 static GtkWidget *edit_tree;
@@ -436,6 +438,7 @@ servlist_edit_close_cb (GtkWidget *button, gpointer userdata)
 	ircnet *net = selected_net;
 
 	servlist_update_from_entry (&net->nick, edit_entry_nick);
+	servlist_update_from_entry (&net->nick2, edit_entry_nick2);
 	servlist_update_from_entry (&net->user, edit_entry_user);
 	servlist_update_from_entry (&net->real, edit_entry_real);
 
@@ -690,6 +693,9 @@ servlist_check_cb (GtkWidget *but, gpointer num_p)
 			gtk_widget_hide (edit_label_nick);
 			gtk_widget_hide (edit_entry_nick);
 
+			gtk_widget_hide (edit_label_nick2);
+			gtk_widget_hide (edit_entry_nick2);
+
 			gtk_widget_hide (edit_label_user);
 			gtk_widget_hide (edit_entry_user);
 
@@ -699,6 +705,9 @@ servlist_check_cb (GtkWidget *but, gpointer num_p)
 		{
 			gtk_widget_show (edit_label_nick);
 			gtk_widget_show (edit_entry_nick);
+
+			gtk_widget_show (edit_label_nick2);
+			gtk_widget_show (edit_entry_nick2);
 
 			gtk_widget_show (edit_label_user);
 			gtk_widget_show (edit_entry_user);
@@ -988,58 +997,62 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 		servlist_create_entry (table3, _("_Nick name:"), 5, net->nick,
 									  &edit_label_nick, 0);
 
+	edit_entry_nick2 =
+		servlist_create_entry (table3, _("Second choice:"), 6, net->nick2,
+									  &edit_label_nick2, 0);
+
 	edit_entry_user =
-		servlist_create_entry (table3, _("_User name:"), 6, net->user,
+		servlist_create_entry (table3, _("_User name:"), 7, net->user,
 									  &edit_label_user, 0);
 
 	edit_entry_real =
-		servlist_create_entry (table3, _("Rea_l name:"), 7, net->real,
+		servlist_create_entry (table3, _("Rea_l name:"), 8, net->real,
 									  &edit_label_real, 0);
 
 	label21 = bold_label (_("Connecting"));
-	gtk_table_attach (GTK_TABLE (table3), label21, 0, 3, 8, 9,
+	gtk_table_attach (GTK_TABLE (table3), label21, 0, 3, 9, 10,
 							(GtkAttachOptions) (GTK_FILL),
 							(GtkAttachOptions) (0), 0, 3);
 
 	servlist_create_check (3, net->flags & FLAG_AUTO_CONNECT, table3,
-								  9, 1, _("Auto connect to this network at startup"));
+								  11, 1, _("Auto connect to this network at startup"));
 /*	servlist_create_check (4, net->flags & FLAG_USE_PROXY, table3,
-								  10, 1, _("Use a proxy server"));*/
+								  12, 1, _("Use a proxy server"));*/
 	check = servlist_create_check (2, net->flags & FLAG_USE_SSL, table3,
-								  11, 1, _("Use SSL for all the servers on this network"));
+								  13, 1, _("Use SSL for all the servers on this network"));
 #ifndef USE_OPENSSL
 	gtk_widget_set_sensitive (check, FALSE);
 #endif
 	check = servlist_create_check (5, net->flags & FLAG_ALLOW_INVALID, table3,
-								  12, 1, _("Accept invalid SSL certificate"));
+								  14, 1, _("Accept invalid SSL certificate"));
 #ifndef USE_OPENSSL
 	gtk_widget_set_sensitive (check, FALSE);
 #endif
 
 	edit_entry_join =
-		servlist_create_entry (table3, _("C_hannels to join:"), 13,
+		servlist_create_entry (table3, _("C_hannels to join:"), 15,
 									  net->autojoin, 0,
 				  _("Channels to join, separated by commas, but not spaces!"));
 
 	edit_entry_cmd =
-		servlist_create_entry (table3, _("Connect command:"), 14,
+		servlist_create_entry (table3, _("Connect command:"), 16,
 									  net->command, 0,
 					_("Extra command to execute after connecting. If you need more than one, set this to LOAD -e <filename>, where <filename> is a text-file full of commands to execute."));
 
 	edit_entry_nickserv =
-		servlist_create_entry (table3, _("Nickserv password:"), 15,
+		servlist_create_entry (table3, _("Nickserv password:"), 17,
 									  net->nickserv, 0, 0);
 	gtk_entry_set_visibility (GTK_ENTRY (edit_entry_nickserv), FALSE);
 
 	edit_entry_pass =
-		servlist_create_entry (table3, _("Server password:"), 16,
+		servlist_create_entry (table3, _("Server password:"), 18,
 									  net->pass, 0,
 					_("Password for the server, if in doubt, leave blank."));
 	gtk_entry_set_visibility (GTK_ENTRY (edit_entry_pass), FALSE);
 
 	label34 = gtk_label_new (_("Character set:"));
 	gtk_widget_show (label34);
-	gtk_table_attach (GTK_TABLE (table3), label34, 1, 2, 17, 18,
+	gtk_table_attach (GTK_TABLE (table3), label34, 1, 2, 19, 20,
 							(GtkAttachOptions) (GTK_FILL),
 							(GtkAttachOptions) (0), 0, 0);
 	gtk_misc_set_alignment (GTK_MISC (label34), 0, 0.5);
@@ -1049,7 +1062,7 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 	gtk_entry_set_text (GTK_ENTRY (GTK_BIN (comboboxentry_charset)->child), net->encoding ? net->encoding : "System default");
 	ignore_changed = FALSE;
 	gtk_widget_show (comboboxentry_charset);
-	gtk_table_attach (GTK_TABLE (table3), comboboxentry_charset, 2, 3, 17, 18,
+	gtk_table_attach (GTK_TABLE (table3), comboboxentry_charset, 2, 3, 19, 20,
 							(GtkAttachOptions) (GTK_FILL),
 							(GtkAttachOptions) (GTK_FILL), 0, 0);
 
@@ -1135,6 +1148,9 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 	{
 		gtk_widget_hide (edit_label_nick);
 		gtk_widget_hide (edit_entry_nick);
+
+		gtk_widget_hide (edit_label_nick2);
+		gtk_widget_hide (edit_entry_nick2);
 
 		gtk_widget_hide (edit_label_user);
 		gtk_widget_hide (edit_entry_user);

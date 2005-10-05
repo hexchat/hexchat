@@ -10,6 +10,7 @@ typedef struct ircnet
 {
 	char *name;
 	char *nick;
+	char *nick2;
 	char *user;
 	char *real;
 	char *pass;

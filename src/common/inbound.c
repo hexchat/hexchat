@@ -1073,17 +1073,26 @@ check_willjoin_channels (server *serv)
 void
 inbound_next_nick (session *sess, char *nick)
 {
-	sess->server->nickcount++;
+	char *newnick;
+	server *serv = sess->server;
+	ircnet *net;
 
-	switch (sess->server->nickcount)
+	serv->nickcount++;
+
+	switch (serv->nickcount)
 	{
 	case 2:
-		sess->server->p_change_nick (sess->server, prefs.nick2);
-		EMIT_SIGNAL (XP_TE_NICKCLASH, sess, nick, prefs.nick2, NULL, NULL, 0);
+		newnick = prefs.nick2;
+		net = serv->network;
+		/* use network specific "Second choice"? */
+		if (net && !(net->flags & FLAG_USE_GLOBAL) && net->nick2)
+			newnick = net->nick2;
+		serv->p_change_nick (serv, newnick);
+		EMIT_SIGNAL (XP_TE_NICKCLASH, sess, nick, newnick, NULL, NULL, 0);
 		break;
 
 	case 3:
-		sess->server->p_change_nick (sess->server, prefs.nick3);
+		serv->p_change_nick (serv, prefs.nick3);
 		EMIT_SIGNAL (XP_TE_NICKCLASH, sess, nick, prefs.nick3, NULL, NULL, 0);
 		break;
 

@@ -750,6 +750,8 @@ servlist_net_remove (ircnet *net)
 
 	if (net->nick)
 		free (net->nick);
+	if (net->nick2)
+		free (net->nick2);
 	if (net->user)
 		free (net->user);
 	if (net->real)
@@ -860,6 +862,9 @@ servlist_load (void)
 			{
 			case 'I':
 				net->nick = strdup (buf + 2);
+				break;
+			case 'i':
+				net->nick2 = strdup (buf + 2);
 				break;
 			case 'U':
 				net->user = strdup (buf + 2);
@@ -983,6 +988,8 @@ servlist_save (void)
 		fprintf (fp, "N=%s\n", net->name);
 		if (net->nick)
 			fprintf (fp, "I=%s\n", net->nick);
+		if (net->nick2)
+			fprintf (fp, "i=%s\n", net->nick2);
 		if (net->user)
 			fprintf (fp, "U=%s\n", net->user);
 		if (net->real)
