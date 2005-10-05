@@ -1234,8 +1234,6 @@ perl_command_reload (char *word[], char *word_eol[], void *userdata)
 
 		len = strlen (file);
 
-
-		len = strlen (word_eol[2]);
 		if (len > 3 && strcasecmp (".pl", file + len - 3) == 0) {
 			execute_perl (sv_2mortal (newSVpv ("Xchat::Embed::reload", 0)),
 							  file);
