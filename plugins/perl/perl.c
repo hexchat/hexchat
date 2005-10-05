@@ -1160,7 +1160,7 @@ perl_command_unloadall (char *word[], char *word_eol[], void *userdata)
 		return XCHAT_EAT_XCHAT;
 	}
 
-	return XCHAT_EAT_NONE;
+	return XCHAT_EAT_XCHAT;
 }
 
 static int
@@ -1172,7 +1172,7 @@ perl_command_reloadall (char *word[], char *word_eol[], void *userdata)
 
 		return XCHAT_EAT_XCHAT;
 	}
-	return XCHAT_EAT_NONE;
+	return XCHAT_EAT_XCHAT;
 }
 
 static int
@@ -1242,7 +1242,7 @@ perl_command_reload (char *word[], char *word_eol[], void *userdata)
 			return XCHAT_EAT_XCHAT;
 		}
 	}
-	return XCHAT_EAT_NONE;
+	return XCHAT_EAT_XCHAT;
 }
 
 void
