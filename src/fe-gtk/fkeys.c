@@ -43,6 +43,7 @@
 #include "../common/xchat.h"
 #include "../common/xchatc.h"
 #include "../common/cfgfiles.h"
+#include "../common/fe.h"
 #include "../common/userlist.h"
 #include "../common/outbound.h"
 #include "../common/util.h"
@@ -191,8 +192,8 @@ key_init ()
 	{
 		key_load_defaults ();
 		if (key_load_kbs (NULL) == 1)
-			gtkutil_simpledialog
-				(_("There was an error loading key bindings configuration"));
+			fe_message (_("There was an error loading key"
+							" bindings configuration"), FE_MSG_ERROR);
 	}
 }
 
@@ -832,7 +833,7 @@ key_save_kbs (char *fn)
 	fd = open (buf, O_CREAT | O_TRUNC | O_WRONLY | OFLAGS, 0x180);
 	if (fd < 0)
 	{
-		gtkutil_simpledialog (_("Error opening keys config file\n"));
+		fe_message (_("Error opening keys config file\n"), FE_MSG_ERROR);
 		return;
 	}
 	write (fd, buf,
@@ -1005,7 +1006,7 @@ key_load_kbs (char *filename)
 				snprintf (ibuf, 1024,
 							 _("Unknown keyname %s in key bindings config file\nLoad aborted, please fix %s/keybindings.conf\n"),
 							 buf, get_xdir_utf8 ());
-				gtkutil_simpledialog (ibuf);
+				fe_message (ibuf, FE_MSG_ERROR);
 				free (ibuf);
 				return 2;
 			}
@@ -1043,7 +1044,7 @@ key_load_kbs (char *filename)
 				snprintf (ibuf, 1024,
 							 _("Unknown action %s in key bindings config file\nLoad aborted, Please fix %s/keybindings\n"),
 							 buf, get_xdir_utf8 ());
-				gtkutil_simpledialog (ibuf);
+				fe_message (ibuf, FE_MSG_ERROR);
 				free (ibuf);
 				return 3;
 			}
@@ -1064,7 +1065,7 @@ key_load_kbs (char *filename)
 				snprintf (ibuf, 1024,
 							 _("Expecting Data line (beginning Dx{:|!}) but got:\n%s\n\nLoad aborted, Please fix %s/keybindings\n"),
 							 buf, get_xdir_utf8 ());
-				gtkutil_simpledialog (ibuf);
+				fe_message (ibuf, FE_MSG_ERROR);
 				free (ibuf);
 				return 4;
 			}
@@ -1134,7 +1135,7 @@ key_load_kbs (char *filename)
 						_("Key bindings config file is corrupt, load aborted\n"
 								 "Please fix %s/keybindings.conf\n"),
 						 get_xdir_utf8 ());
-	gtkutil_simpledialog (ibuf);
+	fe_message (ibuf, FE_MSG_ERROR);
 	free (ibuf);
 	return 5;
 }

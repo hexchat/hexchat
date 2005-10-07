@@ -41,6 +41,7 @@ typedef struct session xchat_context;
 #include "../common/plugin.h"
 #include "../common/util.h"
 #include "../common/outbound.h"
+#include "../common/fe.h"
 #include "../common/xchatc.h"
 #include "gtkutil.h"
 
@@ -182,7 +183,7 @@ plugingui_unload (GtkWidget * wid, gpointer unused)
 #endif
 	{
 		if (plugin_kill (modname, FALSE) == 2)
-			gtkutil_simpledialog (_("That plugin is refusing to unload.\n"));
+			fe_message (_("That plugin is refusing to unload.\n"), FE_MSG_ERROR);
 	} else
 	{
 		/* let python.so or perl.so handle it */

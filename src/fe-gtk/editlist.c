@@ -236,7 +236,7 @@ static void
 editlist_gui_help (GtkWidget * igad)
 {
 /*	if (editlist_help)*/
-		gtkutil_simpledialog (editlist_help);
+		fe_message (editlist_help, FE_MSG_INFO);
 }
 
 static void

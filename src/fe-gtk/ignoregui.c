@@ -114,7 +114,7 @@ mask_edited (GtkCellRendererText *render, gchar *path, gchar *new, gpointer dat)
 	if (!strcmp (old, new))	/* no change */
 		;
 	else if (ignore_exists (new))	/* duplicate, ignore */
-		gtkutil_simpledialog (_("That mask already exists."));
+		fe_message (_("That mask already exists."), FE_MSG_ERROR);
 	else
 	{
 		/* delete old mask, and add new one with original flags */
@@ -260,7 +260,7 @@ ignore_store_new (int cancel, char *mask, gpointer data)
 	/* check if it already exists */
 	if (ignore_exists (mask))
 	{
-		gtkutil_simpledialog (_("That mask already exists."));
+		fe_message (_("That mask already exists."), FE_MSG_ERROR);
 		return;
 	}
 

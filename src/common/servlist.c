@@ -391,7 +391,7 @@ static const struct defaultserver def[] =
 	{0,			"lisa.rizenet.org"},
 	{0,			"scott.rizenet.org"},
 
-	{"RusNet", 0, 0, "KOI8-R"},
+	{"RusNet", 0, 0, "KOI8-R (Cyrillic)"},
 	{0,			"irc.tomsk.net"},
 	{0,			"irc.rinet.ru"},
 	{0,			"irc.run.net"},

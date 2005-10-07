@@ -37,6 +37,7 @@
 #include "../common/xchatc.h"
 #include "../common/cfgfiles.h"
 #include "../common/outbound.h"
+#include "../common/fe.h"
 #include "../common/text.h"
 #include "gtkutil.h"
 #include "xtext.h"
@@ -162,7 +163,7 @@ pevent_dialog_update (GtkWidget * wid, GtkWidget * twid)
 
 	if (pevt_build_string (text, &out, &m) != 0)
 	{
-		gtkutil_simpledialog (_("There was an error parsing the string"));
+		fe_message (_("There was an error parsing the string"), FE_MSG_ERROR);
 		return;
 	}
 	if (m > te[sig].num_args)
@@ -172,7 +173,7 @@ pevent_dialog_update (GtkWidget * wid, GtkWidget * twid)
 		snprintf (out, 4096,
 					 _("This signal is only passed %d args, $%d is invalid"),
 					 te[sig].num_args, m);
-		gtkutil_simpledialog (out);
+		fe_message (out, FE_MSG_WARN);
 		free (out);
 		return;
 	}

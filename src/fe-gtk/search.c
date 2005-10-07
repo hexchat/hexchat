@@ -29,6 +29,7 @@
 #include <gtk/gtkstock.h>
 
 #include "../common/xchat.h"
+#include "../common/fe.h"
 #include "../common/util.h"
 #include "../common/xchatc.h"
 #include "gtkutil.h"
@@ -44,8 +45,8 @@ search_search (session * sess, const char *text)
 {
 	if (!is_session (sess))
 	{
-		gtkutil_simpledialog (_("The window you opened this Search "
-									 "for doesn't exist anymore."));
+		fe_message (_("The window you opened this Search "
+						"for doesn't exist anymore."), FE_MSG_ERROR);
 		return;
 	}
 

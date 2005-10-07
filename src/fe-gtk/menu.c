@@ -929,10 +929,10 @@ menu_autodccsend (GtkWidget * wid, gpointer none)
 	{
 		if (!strcmp ((char *)g_get_home_dir (), prefs.dccdir))
 		{
-			gtkutil_simpledialog (_("*WARNING*\n"
-										 "Auto accepting DCC to your home directory\n"
-										 "can be dangerous and is exploitable. Eg:\n"
-										 "Someone could send you a .bash_profile"));
+			fe_message (_("*WARNING*\n"
+							 "Auto accepting DCC to your home directory\n"
+							 "can be dangerous and is exploitable. Eg:\n"
+							 "Someone could send you a .bash_profile"), FE_MSG_WARN);
 		}
 	}
 #endif
@@ -1072,7 +1072,7 @@ menu_savedefault (GtkWidget * wid, gpointer none)
 {
 	palette_save ();
 	if (save_config ())
-		gtkutil_simpledialog (_("Settings saved."));
+		fe_message (_("Settings saved."), FE_MSG_INFO);
 }
 #endif
 

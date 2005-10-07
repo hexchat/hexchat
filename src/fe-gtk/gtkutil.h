@@ -9,7 +9,6 @@ typedef void (*filereqcallback) (void *, char *file);
 
 void gtkutil_file_req (char *title, void *callback, void *userdata, char *filter, int flags);
 void gtkutil_destroy (GtkWidget * igad, GtkWidget * dgad);
-GtkWidget *gtkutil_simpledialog (char *msg);
 GtkWidget *gtkutil_button (GtkWidget *box, char *stock, char *tip, void *callback,
 				 void *userdata, char *labeltext);
 void gtkutil_label_new (char *text, GtkWidget * box);

@@ -652,6 +652,10 @@ inbound_005 (server * serv, char *word[])
 				fe_set_channel (serv->server_session);
 			}
 
+			/* use /NICKSERV */
+			if (strcasecmp (word[w] + 8, "RusNet") == 0)
+				serv->nickservtype = 1;
+
 		} else if (strncmp (word[w], "CASEMAPPING=", 12) == 0)
 		{
 			if (strcmp (word[w] + 12, "ascii") == 0)	/* bahamut */

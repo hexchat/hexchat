@@ -24,7 +24,7 @@
 
 #include "fe-gtk.h"
 #include "../common/xchat.h"
-#include "gtkutil.h"
+#include "../common/fe.h"
 
 #include <gdk-pixbuf/gdk-pixbuf.h>
 #include <gdk-pixbuf/gdk-pixdata.h>
@@ -72,7 +72,7 @@ pixmap_load_from_file (char *filename)
 	{
 		strcpy (buf, "Cannot open:\n\n");
 		strcpy (buf + 14, filename);
-		gtkutil_simpledialog (buf);
+		fe_message (buf, FE_MSG_ERROR);
 	}
 
 	return pix;

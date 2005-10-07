@@ -38,7 +38,7 @@ margin-right: 32px;
 <h1>XChat 2.0 Plugin Interface</h1>
 
 <small>
-<font size="-12">plugin20.html revision 1.08</font>
+<font size="-12">plugin20.html revision 1.09</font>
 <br>Latest version of this document is available at: <a href="http://xchat.org/docs/plugin20.html">http://xchat.org/docs/plugin20.html</a></small>
 
 <h2>Information:</h2>
@@ -784,6 +784,7 @@ xchat_send_modes(ph, names_to_Op, 3, 0, '+', 'o');
 	<tr><td>server</td><td>current server name (what the server claims to be). NULL if you are not connected.</td></tr>
 	<tr><td>topic</td><td>current channel topic.</td></tr>
 	<tr><td>version</td><td>xchat version number.</td></tr>
+	<tr><td>win_ptr</td><td>native window pointer. Unix: (GtkWindow *) Win32: HWND (since 2.6.0).</td></tr>
 	<tr><td>win_status</td><td>window status: "active", "hidden" or "normal" (since 2.0.9).</td>
 	<tr><td>xchatdir</td><td>xchat config directory, e.g.: /home/user/.xchat2 <small>This string is encoded in UTF-8, which means you _should_ to convert it to "locale" encoding before using functions like open() or OpenFile().</small></td></tr>
 	<tr><td>xchatdirfs</td><td>xchat config directory, e.g.: /home/user/.xchat2 (since 2.0.9).<small>This string is encoded in local file system encoding, making it ideal for direct use with functions like open() or OpenFile().</small></td></tr>

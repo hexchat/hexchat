@@ -357,7 +357,8 @@ typedef struct server
 	void (*p_quit)(struct server *, char *reason);
 	void (*p_kick)(struct server *, char *channel, char *nick, char *reason);
 	void (*p_part)(struct server *, char *channel, char *reason);
-	void (*p_nickserv)(struct server *, char *pass);
+	void (*p_ns_identify)(struct server *, char *pass);
+	void (*p_ns_ghost)(struct server *, char *usname, char *pass);
 	void (*p_join)(struct server *, char *channel, char *key);
 	void (*p_login)(struct server *, char *user, char *realname);
 	void (*p_join_info)(struct server *, char *channel);

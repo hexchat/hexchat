@@ -65,22 +65,34 @@ irc_login (server *serv, char *user, char *realname)
 }
 
 static void
-irc_nickserv (server *serv, char *pass)
+irc_nickserv (server *serv, char *cmd, char *arg1, char *arg2, char *arg3)
 {
 	switch (serv->nickservtype)
 	{
 	case 0:
-		tcp_sendf (serv, "PRIVMSG NICKSERV :identify %s\r\n", pass);
+		tcp_sendf (serv, "PRIVMSG NICKSERV :%s %s%s%s\r\n", cmd, arg1, arg2, arg3);
 		break;
 	case 1:
-		tcp_sendf (serv, "NICKSERV :identify %s\r\n", pass);
+		tcp_sendf (serv, "NICKSERV :%s %s%s%s\r\n", cmd, arg1, arg2, arg3);
 		break;
 	case 2:
-		tcp_sendf (serv, "NS :identify %s\r\n", pass);
+		tcp_sendf (serv, "NS :%s %s%s%s\r\n", cmd, arg1, arg2, arg3);
 		break;
 	case 3:
-		tcp_sendf (serv, "PRIVMSG NS :identify %s\r\n", pass);
+		tcp_sendf (serv, "PRIVMSG NS :%s %s%s%s\r\n", cmd, arg1, arg2, arg3);
 	}
+}
+
+static void
+irc_ns_identify (server *serv, char *pass)
+{
+	irc_nickserv (serv, "IDENTIFY", pass, "", "");
+}
+
+static void
+irc_ns_ghost (server *serv, char *usname, char *pass)
+{
+	irc_nickserv (serv, "GHOST", usname, " ", pass);
 }
 
 static void
@@ -1056,7 +1068,8 @@ proto_fill_her_up (server *serv)
 	serv->p_quit = irc_quit;
 	serv->p_kick = irc_kick;
 	serv->p_part = irc_part;
-	serv->p_nickserv = irc_nickserv;
+	serv->p_ns_identify = irc_ns_identify;
+	serv->p_ns_ghost = irc_ns_ghost;
 	serv->p_join = irc_join;
 	serv->p_login = irc_login;
 	serv->p_join_info = irc_join_info;

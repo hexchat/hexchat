@@ -1061,24 +1061,55 @@ mg_close_sess (session *sess)
 	fe_close_window (sess);
 }
 
+static void
+mg_chan_remove (chan *ch)
+{
+	/* remove the tab from chanview */
+	chan_remove (ch);
+	/* any tabs left? */
+	if (chanview_get_size (mg_gui->chanview) < 1)
+	{
+		/* if not, destroy the main tab window */
+		gtk_widget_destroy (mg_gui->window);
+		current_tab = NULL;
+		active_tab = NULL;
+		mg_gui = NULL;
+		parent_window = NULL;
+	}
+}
+
+/* destroy non-irc tab/window */
+
+static void
+mg_close_gen (chan *ch, GtkWidget *box)
+{
+	char *title = g_object_get_data (G_OBJECT (box), "title");
+
+	if (title)
+		free (title);
+	if (!ch)
+		ch = g_object_get_data (G_OBJECT (box), "ch");
+	if (ch)
+	{
+		/* remove from notebook */
+		gtk_widget_destroy (box);
+		/* remove the tab from chanview */
+		mg_chan_remove (ch);
+	} else
+	{
+		gtk_widget_destroy (gtk_widget_get_toplevel (box));
+	}
+}
+
 /* the "X" close button has been pressed (tab-view) */
 
 static void
 mg_xbutton_cb (chanview *cv, chan *ch, int tag, gpointer userdata)
 {
 	if (tag == TAG_IRC)	/* irc tab */
-	{
 		mg_close_sess (userdata);
-	}
-	else			/* non-irc utility tab */
-	{
-		/* remove the tab */
-		if (chan_remove (ch))
-			/* destroy the vbox (from notebook) */
-			gtk_widget_destroy (userdata);
-		/*else
-			fe_message ("Can't close that tab, it still has children.", FE_MSG_ERROR);*/
-	}
+	else						/* non-irc utility tab */
+		mg_close_gen (ch, userdata);
 }
 
 static void
@@ -1091,13 +1122,14 @@ mg_link_gentab (chan *ch, GtkWidget *box)
 
 	num = gtk_notebook_page_num (GTK_NOTEBOOK (mg_gui->note_book), box);
 	gtk_notebook_remove_page (GTK_NOTEBOOK (mg_gui->note_book), num);
-	chan_remove (ch);
+	mg_chan_remove (ch);
 
 	win = gtkutil_window_new (g_object_get_data (G_OBJECT (box), "title"), "",
 									  GPOINTER_TO_INT (g_object_get_data (G_OBJECT (box), "w")),
 									  GPOINTER_TO_INT (g_object_get_data (G_OBJECT (box), "h")),
 									  3);
-	/*g_object_steal_data (G_OBJECT (box), "title");*/
+	/* so it doesn't try to chan_remove (there's no tab anymore) */
+	g_object_steal_data (G_OBJECT (box), "ch");
 	gtk_container_set_border_width (GTK_CONTAINER (box), 0);
 	gtk_container_add (GTK_CONTAINER (win), box);
 	gtk_widget_show (win);
@@ -1514,18 +1546,7 @@ mg_changui_destroy (session *sess)
 		g_signal_handlers_disconnect_by_func (G_OBJECT (sess->gui->window),
 														  mg_tabwindow_kill_cb, 0);
 		/* remove the tab from the chanview */
-		chan_remove (sess->res->tab);
-		/* any tabs left? */
-		if (chanview_get_size (sess->gui->chanview) < 1)
-		{
-			/* if not, destroy the main tab window */
-			/*gtk_widget_destroy (mg_gui->window);*/
-			ret = mg_gui->window;
-			current_tab = NULL;
-			active_tab = NULL;
-			mg_gui = NULL;
-			parent_window = NULL;
-		}
+		mg_chan_remove (sess->res->tab);
 	} else
 	{
 		/* avoid calling the "destroy" callback */
@@ -1620,7 +1641,7 @@ flagl_hit (GtkWidget * wid, struct session *sess)
 			limit_str = gtk_entry_get_text (GTK_ENTRY (sess->gui->limit_entry));
 			if (check_is_number ((char *)limit_str) == FALSE)
 			{
-				gtkutil_simpledialog (_("User limit must be a number!\n"));
+				fe_message (_("User limit must be a number!\n"), FE_MSG_ERROR);
 				gtk_entry_set_text (GTK_ENTRY (sess->gui->limit_entry), "");
 				gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (wid), FALSE);
 				return;
@@ -1726,7 +1747,7 @@ mg_limit_entry_cb (GtkWidget * igad, gpointer userdata)
 		if (check_is_number ((char *)gtk_entry_get_text (GTK_ENTRY (igad))) == FALSE)
 		{
 			gtk_entry_set_text (GTK_ENTRY (igad), "");
-			gtkutil_simpledialog (_("User limit must be a number!\n"));
+			fe_message (_("User limit must be a number!\n"), FE_MSG_ERROR);
 			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (sess->gui->flag_l), FALSE);
 			return;
 		}
@@ -2002,9 +2023,9 @@ mg_xtext_error (int type)
 	switch (type)
 	{
 	case 0:
-		gtkutil_simpledialog (_("Unable to set transparent background!\n\n"
-										"You may be using a non-compliant window\n"
-										"manager that is not currently supported.\n"));
+		fe_message (_("Unable to set transparent background!\n\n"
+						"You may be using a non-compliant window\n"
+						"manager that is not currently supported.\n"), FE_MSG_WARN);
 		prefs.transparent = 0;
 		/* no others exist yet */
 	}
@@ -2958,10 +2979,10 @@ void
 fe_server_callback (server *serv)
 {
 	if (serv->gui->chanlist_window)
-		gtk_widget_destroy (serv->gui->chanlist_window);
+		mg_close_gen (NULL, serv->gui->chanlist_window);
 
 	if (serv->gui->rawlog_window)
-		gtk_widget_destroy (serv->gui->rawlog_window);
+		mg_close_gen (NULL, serv->gui->rawlog_window);
 
 	free (serv->gui);
 }

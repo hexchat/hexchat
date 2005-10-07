@@ -1021,6 +1021,7 @@ gtk_xtext_realize (GtkWidget * widget)
 #endif
 
 	gdk_window_set_back_pixmap (widget->window, NULL, FALSE);
+	widget->style = gtk_style_attach (widget->style, widget->window);
 
 	backend_init (xtext);
 }

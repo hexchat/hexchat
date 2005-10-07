@@ -378,7 +378,7 @@ resume_clicked (GtkWidget * wid, gpointer none)
 			switch (dcc->resume_error)
 			{
 			case 0:	/* unknown error */
-				gtkutil_simpledialog (_("That file is not resumable."));
+				fe_message (_("That file is not resumable."), FE_MSG_ERROR);
 				break;
 			case 1:
 				snprintf (buf, sizeof (buf),
@@ -386,14 +386,14 @@ resume_clicked (GtkWidget * wid, gpointer none)
 								"%s.\n"
 								"Resuming not possible."), dcc->destfile,	
 								errorstring (dcc->resume_errno));
-				gtkutil_simpledialog (buf);
+				fe_message (buf, FE_MSG_ERROR);
 				break;
 			case 2:
-				gtkutil_simpledialog (_("File in download directory is larger "
-											"than file offered. Resuming not possible."));
+				fe_message (_("File in download directory is larger "
+								"than file offered. Resuming not possible."), FE_MSG_ERROR);
 				break;
 			case 3:
-				gtkutil_simpledialog (_("Cannot resume the same file from two people."));
+				fe_message (_("Cannot resume the same file from two people."), FE_MSG_ERROR);
 			}
 		}
 	}

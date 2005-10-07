@@ -1834,6 +1834,18 @@ cmd_getstr (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 }
 
 static int
+cmd_ghost (struct session *sess, char *tbuf, char *word[], char *word_eol[])
+{
+	if (word[3][0])
+	{
+		sess->server->p_ns_ghost (sess->server, word[2], word[3]);
+		return TRUE;
+	}
+
+	return FALSE; 
+}
+
+static int
 cmd_gui (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	if (!strcasecmp (word[2], "HIDE"))
@@ -2006,7 +2018,7 @@ cmd_id (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	if (word[2][0])
 	{
-		sess->server->p_nickserv (sess->server, word[2]);
+		sess->server->p_ns_identify (sess->server, word[2]);
 		return TRUE;
 	}
 
@@ -3139,6 +3151,7 @@ const struct commands xc_cmds[] = {
 	 N_("GATE <host> [<port>], proxies through a host, port defaults to 23")},
 	{"GETINT", cmd_getint, 0, 0, 1, "GETINT <default> <command> <prompt>"},
 	{"GETSTR", cmd_getstr, 0, 0, 1, "GETSTR <default> <command> <prompt>"},
+	{"GHOST", cmd_ghost, 1, 0, 1, N_("GHOST <nick> <password>, Kills a ghosted nickname")},
 	{"GUI", cmd_gui, 0, 0, 1, "GUI [SHOW|HIDE|FOCUS|FLASH|ICONIFY|MENU TOGGLE|COLOR <n>|MSGBOX <text>]"},
 	{"HELP", cmd_help, 0, 0, 1, 0},
 	{"HOP", cmd_hop, 1, 1, 1,

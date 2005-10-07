@@ -51,6 +51,7 @@
 #endif
 
 #include "../common/xchat.h"
+#include "../common/fe.h"
 #include "gtkutil.h"
 #include "pixmaps.h"
 
@@ -69,22 +70,6 @@ struct file_req
 
 static char last_dir[256] = "";
 
-
-GtkWidget *
-gtkutil_simpledialog (char *msg)
-{
-	GtkWidget *dialog;
-
-	dialog = gtk_message_dialog_new (NULL, 0, GTK_MESSAGE_INFO, GTK_BUTTONS_OK,
-						 "%s", msg);
-	g_signal_connect (G_OBJECT (dialog), "response",
-							G_CALLBACK (gtk_widget_destroy), 0);
-	gtk_window_set_resizable (GTK_WINDOW (dialog), FALSE);
-	gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
-	gtk_widget_show (dialog);
-
-	return dialog;
-}
 
 static void
 gtkutil_file_req_destroy (GtkWidget * wid, struct file_req *freq)
@@ -146,14 +131,14 @@ gtkutil_check_file (char *file, struct file_req *freq)
 			g_free (utf8_file);
 		} else
 		{
-			gtkutil_simpledialog ("Filename encoding is corrupt.");
+			fe_message ("Filename encoding is corrupt.", FE_MSG_ERROR);
 		}
 	} else
 	{
 		if (freq->write)
-			gtkutil_simpledialog (_("Cannot write to that file."));
+			fe_message (_("Cannot write to that file."), FE_MSG_ERROR);
 		else
-			gtkutil_simpledialog (_("Cannot read that file."));
+			fe_message (_("Cannot read that file."), FE_MSG_ERROR);
 	}
 
 	return 1;

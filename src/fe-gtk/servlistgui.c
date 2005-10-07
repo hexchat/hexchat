@@ -36,6 +36,7 @@
 #include "../common/xchatc.h"
 #include "../common/servlist.h"
 #include "../common/cfgfiles.h"
+#include "../common/fe.h"
 
 #include "fe-gtk.h"
 #include "gtkutil.h"
@@ -614,7 +615,7 @@ servlist_connect_cb (GtkWidget *button, gpointer userdata)
 
 	if (servlist_savegui () != 0)
 	{
-		gtkutil_simpledialog (_("User name and Real name cannot be left blank."));
+		fe_message (_("User name and Real name cannot be left blank."), FE_MSG_ERROR);
 		return;
 	}
 
@@ -1041,7 +1042,8 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 
 	edit_entry_nickserv =
 		servlist_create_entry (table3, _("Nickserv password:"), 17,
-									  net->nickserv, 0, 0);
+									  net->nickserv, 0,
+					_("If your nickname requires a password, enter it here. Not all IRC networks support this."));
 	gtk_entry_set_visibility (GTK_ENTRY (edit_entry_nickserv), FALSE);
 
 	edit_entry_pass =

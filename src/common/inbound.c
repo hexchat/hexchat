@@ -1311,7 +1311,7 @@ inbound_login_end (session *sess, char *text)
 
 			/* send nickserv password */
 			if (((ircnet *)serv->network)->nickserv)
-				serv->p_nickserv (serv, ((ircnet *)serv->network)->nickserv);
+				serv->p_ns_identify (serv, ((ircnet *)serv->network)->nickserv);
 		}
 
 		/* send JOIN now or wait? */

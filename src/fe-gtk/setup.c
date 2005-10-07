@@ -12,6 +12,7 @@
 #include "../common/cfgfiles.h"
 #include "../common/text.h"
 #include "../common/userlist.h"
+#include "../common/fe.h"
 #include "../common/xchatc.h"
 #include "fe-gtk.h"
 #include "gtkutil.h"
@@ -1695,8 +1696,8 @@ setup_apply (struct xchatprefs *pr)
 	g_object_unref (old_style);
 
 	if (noapply)
-		gtkutil_simpledialog (_("Some settings were changed that require a"
-									 " restart to take full effect."));
+		fe_message (_("Some settings were changed that require a"
+						" restart to take full effect."), FE_MSG_WARN);
 }
 
 #if 0

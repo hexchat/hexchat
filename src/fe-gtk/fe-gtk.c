@@ -75,21 +75,12 @@ redraw_trans_xtexts (void)
 	while (list)
 	{
 		sess = list->data;
-#ifdef USE_ZVT
-		if (sess->type == SESS_SHELL)
+		if (GTK_XTEXT (sess->gui->xtext)->transparent)
 		{
-			menu_newshell_set_palette (sess);
-			gtk_widget_queue_draw (sess->gui->xtext);
-		} else
-#endif
-		{
-			if (GTK_XTEXT (sess->gui->xtext)->transparent)
-			{
-				if (!sess->gui->is_tab || !done_main)
-					gtk_xtext_refresh (GTK_XTEXT (sess->gui->xtext), 1);
-				if (sess->gui->is_tab)
-					done_main = TRUE;
-			}
+			if (!sess->gui->is_tab || !done_main)
+				gtk_xtext_refresh (GTK_XTEXT (sess->gui->xtext), 1);
+			if (sess->gui->is_tab)
+				done_main = TRUE;
 		}
 		list = list->next;
 	}
@@ -98,7 +89,7 @@ redraw_trans_xtexts (void)
 static GdkFilterReturn
 root_event_cb (GdkXEvent *xev, GdkEventProperty *event, gpointer data)
 {
-	Atom at = None;
+	static Atom at = None;
 	XEvent *xevent = (XEvent *)xev;
 
 	if (xevent->type == PropertyNotify)
@@ -260,7 +251,7 @@ create_input_style (void)
 	if (pango_font_description_get_size (style->font_desc) == 0)
 	{
 		snprintf (buf, sizeof (buf), _("Failed to open font:\n\n%s"), prefs.font_normal);
-		gtkutil_simpledialog (buf);
+		fe_message (buf, FE_MSG_ERROR);
 		pango_font_description_free (style->font_desc);
 		style->font_desc = pango_font_description_from_string ("sans 11");
 	}
@@ -394,8 +385,8 @@ fe_message (char *msg, int flags)
 	if (flags & FE_MSG_INFO)
 		type = GTK_MESSAGE_INFO;
 
-	dialog = gtk_message_dialog_new (NULL, 0, type, GTK_BUTTONS_OK,
-						 "%s", msg);
+	dialog = gtk_message_dialog_new (GTK_WINDOW (parent_window), 0, type,
+												GTK_BUTTONS_OK, "%s", msg);
 	g_signal_connect (G_OBJECT (dialog), "response",
 							G_CALLBACK (gtk_widget_destroy), 0);
 	gtk_window_set_resizable (GTK_WINDOW (dialog), FALSE);
@@ -799,7 +790,7 @@ fe_gui_info_ptr (session *sess, int info_type)
 	{
 	case 0:	/* native window pointer (for plugins) */
 #ifdef WIN32
-		return GDK_WINDOW_HWND (sess->gui->window);
+		return GDK_WINDOW_HWND (sess->gui->window->window);
 #else
 		return sess->gui->window;
 #endif
