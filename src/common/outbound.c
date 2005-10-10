@@ -392,7 +392,7 @@ ban (session * sess, char *tbuf, char *mask, char *bantypestr, int deop)
 	char username[64], fullhost[128], domain[128], *mode, *p2;
 	server *serv = sess->server;
 
-	user = find_name (sess, mask);
+	user = userlist_find (sess, mask);
 	if (user && user->hostname)  /* it's a nickname, let's find a proper ban mask */
 	{
 		if (deop)
@@ -1275,7 +1275,7 @@ cmd_dns (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	{
 		if (strchr (nick, '.') == NULL)
 		{
-			user = find_name (sess, nick);
+			user = userlist_find (sess, nick);
 			if (user && user->hostname)
 			{
 				do_dns (sess, user->nick, user->hostname);
@@ -2146,7 +2146,7 @@ cmd_kickban (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	{
 		/* if the reason is a 1 digit number, treat it as a bantype */
 
-		user = find_name (sess, nick);
+		user = userlist_find (sess, nick);
 
 		if (isdigit ((unsigned char) reason[0]) && reason[1] == 0)
 		{

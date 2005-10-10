@@ -31,14 +31,17 @@ cv_tree_click_cb (GtkTreeView *tree, GdkEventButton *event, chanview *cv)
 	GtkTreeIter iter;
 	int ret = FALSE;
 
-	if (event->button != 3)
+	if (event->button != 3 && event->state == 0)
 		return FALSE;
 
 	sel = gtk_tree_view_get_selection (tree);
 	if (gtk_tree_view_get_path_at_pos (tree, event->x, event->y, &path, 0, 0, 0))
 	{
-/*		gtk_tree_selection_unselect_all (sel);
-		gtk_tree_selection_select_path (sel, path);*/
+		if (event->button == 2)
+		{
+			gtk_tree_selection_unselect_all (sel);
+			gtk_tree_selection_select_path (sel, path);
+		}
 		if (gtk_tree_model_get_iter (GTK_TREE_MODEL (cv->store), &iter, path))
 		{
 			gtk_tree_model_get (GTK_TREE_MODEL (cv->store), &iter, COL_CHAN, &ch, -1);
@@ -75,6 +78,8 @@ cv_tree_init (chanview *cv)
 	gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (view),
 																-1, NULL, renderer,
 									"text", COL_NAME, "attributes", COL_ATTR, NULL);
+	gtk_tree_view_column_set_sizing (gtk_tree_view_get_column (GTK_TREE_VIEW (view), 0),
+												GTK_TREE_VIEW_COLUMN_AUTOSIZE);
 
 	g_signal_connect (G_OBJECT (gtk_tree_view_get_selection (GTK_TREE_VIEW (view))),
 							"changed", G_CALLBACK (cv_tree_sel_cb), cv);

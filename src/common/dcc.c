@@ -1797,7 +1797,7 @@ dcc_add_file (session *sess, char *file, DCC_SIZE size, int port, char *nick, gu
 			fe_dcc_add (dcc);
 	}
 	sprintf (tbuf, "%"DCC_SFMT, size);
-	snprintf (tbuf + 24, 300, "%s:%d", net_ip (dcc->addr), dcc->port);
+	snprintf (tbuf + 24, 300, "%s:%d", net_ip (addr), port);
 	EMIT_SIGNAL (XP_TE_DCCSENDOFFER, sess->server->front_session, nick,
 					 file, tbuf, tbuf + 24, 0);
 

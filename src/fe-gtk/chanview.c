@@ -537,7 +537,7 @@ chan_emancipate_children (chan *ch)
 }
 
 gboolean
-chan_remove (chan *ch)
+chan_remove (chan *ch, gboolean force)
 {
 	chan *new_ch;
 	int i, num;
@@ -545,8 +545,9 @@ chan_remove (chan *ch)
 	printf("remove ch=%p (focused ch=%p)\n", ch, ch->cv->focused); 
 
 	/* is this ch allowed to be closed while still having children? */
-	if (gtk_tree_model_iter_has_child (GTK_TREE_MODEL (ch->cv->store), &ch->iter)
-		 && !ch->allow_closure)
+	if (!force &&
+		 gtk_tree_model_iter_has_child (GTK_TREE_MODEL (ch->cv->store), &ch->iter) &&
+		 !ch->allow_closure)
 		return FALSE;
 
 	chan_emancipate_children (ch);

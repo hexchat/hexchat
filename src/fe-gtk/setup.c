@@ -10,9 +10,10 @@
 
 #include "../common/xchat.h"
 #include "../common/cfgfiles.h"
+#include "../common/fe.h"
 #include "../common/text.h"
 #include "../common/userlist.h"
-#include "../common/fe.h"
+#include "../common/util.h"
 #include "../common/xchatc.h"
 #include "fe-gtk.h"
 #include "gtkutil.h"

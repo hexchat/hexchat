@@ -127,7 +127,7 @@ nick_command_parse (session *sess, char *cmd, char *nick, char *allnick)
 			host = buf + 1;
 	} else*/
 	{
-		user = find_name (sess, nick);
+		user = userlist_find (sess, nick);
 		if (user && user->hostname)
 			host = strchr (user->hostname, '@') + 1;
 	}
@@ -494,9 +494,9 @@ menu_nickmenu (session *sess, GdkEventButton *event, char *nick, int num_sel)
 		menu_quick_item (0, 0, menu, 1, 0);
 	} else
 	{
-		user = find_name (sess, nick);	/* lasttalk is channel specific */
+		user = userlist_find (sess, nick);	/* lasttalk is channel specific */
 		if (!user)
-			user = find_name_global (current_sess->server, nick);
+			user = userlist_find_global (current_sess->server, nick);
 		if (user)
 		{
 			submenu = menu_quick_sub (nick, menu, NULL, 1, -1);
@@ -522,7 +522,7 @@ menu_nickmenu (session *sess, GdkEventButton *event, char *nick, int num_sel)
 
 			if (user->away)
 			{
-				away = find_away_message (current_sess->server, nick);
+				away = server_away_find_message (current_sess->server, nick);
 				if (away)
 				{
 					char *msg = strip_color (away->message ? away->message : _("Unknown"), -1, 1, 1);

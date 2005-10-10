@@ -85,7 +85,7 @@ clear_channel (session *sess)
 	}
 
 	fe_clear_channel (sess);
-	clear_user_list (sess);
+	userlist_clear (sess);
 	fe_set_nonchannel (sess, FALSE);
 	fe_set_title (sess);
 }
@@ -111,13 +111,13 @@ find_session_from_nick (char *nick, server *serv)
 
 	if (serv->front_session)
 	{
-		if (find_name (serv->front_session, nick))
+		if (userlist_find (serv->front_session, nick))
 			return serv->front_session;
 	}
 
 	if (current_sess && current_sess->server == serv)
 	{
-		if (find_name (current_sess, nick))
+		if (userlist_find (current_sess, nick))
 			return current_sess;
 	}
 
@@ -126,7 +126,7 @@ find_session_from_nick (char *nick, server *serv)
 		sess = list->data;
 		if (sess->server == serv)
 		{
-			if (find_name (sess, nick))
+			if (userlist_find (sess, nick))
 				return sess;
 		}
 		list = list->next;
@@ -394,7 +394,7 @@ inbound_chanmsg (server *serv, session *sess, char *chan, char *from, char *text
 		sess->new_data = FALSE;
 	}
 
-	user = find_name (sess, from);
+	user = userlist_find (sess, from);
 	if (user)
 	{
 		nickchar[0] = user->prefix[0];
@@ -461,7 +461,7 @@ inbound_newnick (server *serv, char *nick, char *newnick, int quiet)
 		sess = list->data;
 		if (sess->server == serv)
 		{
-			if (change_nick (sess, nick, newnick) || (me && sess->type == SESS_SERVER))
+			if (userlist_change (sess, nick, newnick) || (me && sess->type == SESS_SERVER))
 			{
 				if (!quiet)
 				{
@@ -553,7 +553,7 @@ inbound_ujoin (server *serv, char *chan, char *nick, char *ip)
 	fe_set_channel (sess);
 	fe_set_title (sess);
 	fe_set_nonchannel (sess, TRUE);
-	clear_user_list (sess);
+	userlist_clear (sess);
 
 	if (prefs.logging)
 		log_open (sess);
@@ -628,7 +628,7 @@ inbound_nameslist (server *serv, char *chan, char *names)
 	if (sess->end_of_names)
 	{
 		sess->end_of_names = FALSE;
-		clear_user_list (sess);
+		userlist_clear (sess);
 	}
 
 	while (1)
@@ -638,12 +638,12 @@ inbound_nameslist (server *serv, char *chan, char *names)
 		case 0:
 			name[pos] = 0;
 			if (pos != 0)
-				add_name (sess, name, 0);
+				userlist_add (sess, name, 0);
 			return;
 		case ' ':
 			name[pos] = 0;
 			pos = 0;
-			add_name (sess, name, 0);
+			userlist_add (sess, name, 0);
 			break;
 		default:
 			name[pos] = *names;
@@ -695,7 +695,7 @@ inbound_join (server *serv, char *chan, char *user, char *ip)
 	{
 		if (!sess->hide_join_part)
 			EMIT_SIGNAL (XP_TE_JOIN, sess, user, chan, ip, NULL, 0);
-		add_name (sess, user, ip);
+		userlist_add (sess, user, ip);
 	}
 }
 
@@ -706,7 +706,7 @@ inbound_kick (server *serv, char *chan, char *user, char *kicker, char *reason)
 	if (sess)
 	{
 		EMIT_SIGNAL (XP_TE_KICK, sess, kicker, user, chan, reason, 0);
-		sub_name (sess, user);
+		userlist_remove (sess, user);
 	}
 }
 
@@ -723,7 +723,7 @@ inbound_part (server *serv, char *chan, char *user, char *ip, char *reason)
 			else
 				EMIT_SIGNAL (XP_TE_PART, sess, user, ip, chan, NULL, 0);
 		}
-		sub_name (sess, user);
+		userlist_remove (sess, user);
 	}
 }
 
@@ -741,42 +741,6 @@ inbound_topictime (server *serv, char *chan, char *nick, time_t stamp)
 }
 
 void
-set_server_name (struct server *serv, char *name)
-{
-	GSList *list = sess_list;
-	session *sess;
-
-	if (name[0] == 0)
-		name = serv->hostname;
-
-	/* strncpy parameters must NOT overlap */
-	if (name != serv->servername)
-	{
-		safe_strcpy (serv->servername, name, sizeof (serv->servername));
-	}
-
-	while (list)
-	{
-		sess = (session *) list->data;
-		if (sess->server == serv)
-			fe_set_title (sess);
-		list = list->next;
-	}
-
-	if (serv->server_session->type == SESS_SERVER)
-	{
-		if (serv->network)
-		{
-			safe_strcpy (serv->server_session->channel, ((ircnet *)serv->network)->name, CHANLEN);
-		} else
-		{
-			safe_strcpy (serv->server_session->channel, name, CHANLEN);
-		}
-		fe_set_channel (serv->server_session);
-	}
-}
-
-void
 inbound_quit (server *serv, char *nick, char *ip, char *reason)
 {
 	GSList *list = sess_list;
@@ -790,7 +754,7 @@ inbound_quit (server *serv, char *nick, char *ip, char *reason)
 		{
  			if (sess == current_sess)
  				was_on_front_session = TRUE;
-			if (sub_name (sess, nick))
+			if (userlist_remove (sess, nick))
 			{
 				if (!sess->hide_join_part)
 					EMIT_SIGNAL (XP_TE_QUIT, sess, nick, reason, ip, NULL, 0);
@@ -910,7 +874,7 @@ inbound_notice (server *serv, char *to, char *nick, char *msg, char *ip, int id)
 				fe_set_channel (sess);
 				fe_set_title (sess);
 				fe_set_nonchannel (sess, FALSE);
-				clear_user_list (sess);
+				userlist_clear (sess);
 				if (prefs.logging)
 					log_open (sess);
 			}
@@ -971,7 +935,7 @@ inbound_notice (server *serv, char *to, char *nick, char *msg, char *ip, int id)
 void
 inbound_away (server *serv, char *nick, char *msg)
 {
-	struct away_msg *away = find_away_message (serv, nick);
+	struct away_msg *away = server_away_find_message (serv, nick);
 	session *sess = NULL;
 	GSList *list;
 
@@ -981,7 +945,7 @@ inbound_away (server *serv, char *nick, char *msg)
 			return;
 	} else
 	{
-		save_away_message (serv, nick, msg);
+		server_away_save_message (serv, nick, msg);
 	}
 
 	if (!serv->inside_whois)
@@ -1140,7 +1104,7 @@ void
 inbound_login_start (session *sess, char *nick, char *servname)
 {
 	inbound_newnick (sess->server, sess->server->nick, nick, TRUE);
-	set_server_name (sess->server, servname);
+	server_set_name (sess->server, servname);
 	if (sess->type == SESS_SERVER && prefs.logging)
 		log_open (sess);
 	/* reset our away status */

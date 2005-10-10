@@ -292,7 +292,7 @@ handle_single_mode (mode_run *mr, char sign, char mode, char *nick,
 	if (strchr (serv->nick_modes, mode))
 	{
 		/* update the user in the userlist */
-		ul_update_entry (sess, /*nickname */ arg, mode, sign);
+		userlist_update_mode (sess, /*nickname */ arg, mode, sign);
 	} else
 	{
 		if (!is_324 && !sess->ignore_mode)

@@ -324,7 +324,6 @@ fe_userlist_insert (session *sess, struct User *newuser, int row, int sel)
 	/* is it me? */
 	if (newuser->me && sess->gui->nick_box)
 	{
-		sess->res->myself = newuser;
 		if (!sess->gui->is_tab || sess == current_tab)
 			mg_set_access_icon (sess->gui, pix, sess->server->is_away);
 	}
@@ -357,7 +356,6 @@ void
 fe_userlist_clear (session *sess)
 {
 	gtk_list_store_clear (sess->res->user_model);
-	sess->res->myself = NULL;
 }
 
 static void

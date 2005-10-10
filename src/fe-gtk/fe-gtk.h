@@ -102,7 +102,6 @@ typedef struct restore_gui
 	gfloat queue_value; /* outbound queue meter */
 	char *queue_text;		/* outbound queue text */
 	char *queue_tip;		/* outbound queue tooltip */
-	struct User *myself;	/* it's me in the Userlist */
 	short flag_wid_state[NUM_FLAG_WIDS];
 	unsigned int c_graph:1;	/* connecting graph, is there one? */
 } restore_gui;

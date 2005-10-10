@@ -65,6 +65,9 @@ extern SSL_CTX *ctx;				  /* xchat.c */
 static struct session *g_sess = NULL;
 #endif
 
+static GSList *away_list = NULL;
+GSList *serv_list = NULL;
+
 static void auto_reconnect (server *serv, int send_quit, int err);
 static void server_disconnect (session * sess, int sendquit, int err);
 static int server_cleanup (server * serv);
@@ -478,7 +481,7 @@ server_connected (server * serv)
 						 NULL, NULL, 0);
 	}
 
-	set_server_name (serv, serv->servername);
+	server_set_name (serv, serv->servername);
 	fe_server_event (serv, FE_SE_CONNECT, 0);
 }
 
@@ -1635,6 +1638,12 @@ server_new (void)
 	return serv;
 }
 
+int
+is_server (server *serv)
+{
+	return g_slist_find (serv_list, serv) ? 1 : 0;
+}
+
 void
 server_set_defaults (server *serv)
 {
@@ -1673,4 +1682,131 @@ server_get_network (server *serv, gboolean fallback)
 		return serv->servername;
 
 	return NULL;
+}
+
+void
+server_set_name (server *serv, char *name)
+{
+	GSList *list = sess_list;
+	session *sess;
+
+	if (name[0] == 0)
+		name = serv->hostname;
+
+	/* strncpy parameters must NOT overlap */
+	if (name != serv->servername)
+	{
+		safe_strcpy (serv->servername, name, sizeof (serv->servername));
+	}
+
+	while (list)
+	{
+		sess = (session *) list->data;
+		if (sess->server == serv)
+			fe_set_title (sess);
+		list = list->next;
+	}
+
+	if (serv->server_session->type == SESS_SERVER)
+	{
+		if (serv->network)
+		{
+			safe_strcpy (serv->server_session->channel, ((ircnet *)serv->network)->name, CHANLEN);
+		} else
+		{
+			safe_strcpy (serv->server_session->channel, name, CHANLEN);
+		}
+		fe_set_channel (serv->server_session);
+	}
+}
+
+struct away_msg *
+server_away_find_message (server *serv, char *nick)
+{
+	struct away_msg *away;
+	GSList *list = away_list;
+	while (list)
+	{
+		away = (struct away_msg *) list->data;
+		if (away->server == serv && !serv->p_cmp (nick, away->nick))
+			return away;
+		list = list->next;
+	}
+	return NULL;
+}
+
+static void
+server_away_free_messages (server *serv)
+{
+	GSList *list, *next;
+	struct away_msg *away;
+
+	list = away_list;
+	while (list)
+	{
+		away = list->data;
+		next = list->next;
+		if (away->server == serv)
+		{
+			away_list = g_slist_remove (away_list, away);
+			if (away->message)
+				free (away->message);
+			free (away);
+			next = away_list;
+		}
+		list = next;
+	}
+}
+
+void
+server_away_save_message (server *serv, char *nick, char *msg)
+{
+	struct away_msg *away = server_away_find_message (serv, nick);
+
+	if (away)						  /* Change message for known user */
+	{
+		if (away->message)
+			free (away->message);
+		away->message = strdup (msg);
+	} else
+		/* Create brand new entry */
+	{
+		away = malloc (sizeof (struct away_msg));
+		if (away)
+		{
+			away->server = serv;
+			safe_strcpy (away->nick, nick, sizeof (away->nick));
+			away->message = strdup (msg);
+			away_list = g_slist_prepend (away_list, away);
+		}
+	}
+}
+
+void
+server_free (server *serv)
+{
+	serv->cleanup (serv);
+
+	serv_list = g_slist_remove (serv_list, serv);
+
+	dcc_notify_kill (serv);
+	serv->flush_queue (serv);
+	server_away_free_messages (serv);
+
+	free (serv->nick_modes);
+	free (serv->nick_prefixes);
+	free (serv->chanmodes);
+	free (serv->chantypes);
+	if (serv->bad_nick_prefixes)
+		free (serv->bad_nick_prefixes);
+	if (serv->last_away_reason)
+		free (serv->last_away_reason);
+	if (serv->encoding)
+		free (serv->encoding);
+
+	fe_server_callback (serv);
+
+	free (serv);
+
+	notify_cleanup ();
 }

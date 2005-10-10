@@ -99,7 +99,7 @@ userlist_set_away (struct session *sess, char *nick, unsigned int away)
 {
 	struct User *user;
 
-	user = find_name (sess, nick);
+	user = userlist_find (sess, nick);
 	if (user)
 	{
 		if (user->away != away)
@@ -117,7 +117,7 @@ userlist_add_hostname (struct session *sess, char *nick, char *hostname,
 {
 	struct User *user;
 
-	user = find_name (sess, nick);
+	user = userlist_find (sess, nick);
 	if (user)
 	{
 		if (!user->hostname && hostname)
@@ -153,7 +153,7 @@ free_user (struct User *user, gpointer data)
 }
 
 void
-free_userlist (session *sess)
+userlist_free (session *sess)
 {
 	tree_foreach (sess->usertree, (tree_traverse_func *)free_user, NULL);
 	tree_destroy (sess->usertree);
@@ -161,6 +161,7 @@ free_userlist (session *sess)
 
 	sess->usertree = NULL;
 	sess->usertree_alpha = NULL;
+	sess->me = NULL;
 
 	sess->ops = 0;
 	sess->hops = 0;
@@ -169,10 +170,10 @@ free_userlist (session *sess)
 }
 
 void
-clear_user_list (session *sess)
+userlist_clear (session *sess)
 {
 	fe_userlist_clear (sess);
-	free_userlist (sess);
+	userlist_free (sess);
 	fe_userlist_numbers (sess);
 }
 
@@ -183,7 +184,7 @@ find_cmp (const char *name, struct User *user, server *serv)
 }
 
 struct User *
-find_name (struct session *sess, char *name)
+userlist_find (struct session *sess, char *name)
 {
 	int pos;
 
@@ -195,7 +196,7 @@ find_name (struct session *sess, char *name)
 }
 
 struct User *
-find_name_global (struct server *serv, char *name)
+userlist_find_global (struct server *serv, char *name)
 {
 	struct User *user;
 	session *sess;
@@ -205,7 +206,7 @@ find_name_global (struct server *serv, char *name)
 		sess = (session *) list->data;
 		if (sess->server == serv)
 		{
-			user = find_name (sess, name);
+			user = userlist_find (sess, name);
 			if (user)
 				return user;
 		}
@@ -236,7 +237,7 @@ update_counts (session *sess, struct User *user, char prefix,
 }
 
 void
-ul_update_entry (session *sess, char *name, char mode, char sign)
+userlist_update_mode (session *sess, char *name, char mode, char sign)
 {
 	int access;
 	int offset = 0;
@@ -245,7 +246,7 @@ ul_update_entry (session *sess, char *name, char mode, char sign)
 	char prefix;
 	struct User *user;
 
-	user = find_name (sess, name);
+	user = userlist_find (sess, name);
 	if (!user)
 		return;
 
@@ -290,9 +291,9 @@ ul_update_entry (session *sess, char *name, char mode, char sign)
 }
 
 int
-change_nick (struct session *sess, char *oldname, char *newname)
+userlist_change (struct session *sess, char *oldname, char *newname)
 {
-	struct User *user = find_name (sess, oldname);
+	struct User *user = userlist_find (sess, oldname);
 	int pos;
 
 	if (user)
@@ -314,12 +315,12 @@ change_nick (struct session *sess, char *oldname, char *newname)
 }
 
 int
-sub_name (struct session *sess, char *name)
+userlist_remove (struct session *sess, char *name)
 {
 	struct User *user;
 	int pos;
 
-	user = find_name (sess, name);
+	user = userlist_find (sess, name);
 	if (!user)
 		return FALSE;
 
@@ -344,7 +345,7 @@ sub_name (struct session *sess, char *name)
 }
 
 void
-add_name (struct session *sess, char *name, char *hostname)
+userlist_add (struct session *sess, char *name, char *hostname)
 {
 	struct User *user;
 	int row, prefix_chars;

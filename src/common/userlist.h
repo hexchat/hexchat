@@ -21,21 +21,18 @@ struct User
 
 #define USERACCESS_SIZE 12
 
-int userlist_add_hostname (struct session *sess, char *nick,
-											 char *hostname, char *realname,
-											 char *servername, unsigned int away);
-
-void userlist_set_away (struct session *sess, char *nick, unsigned int away);
-struct User *find_name (struct session *sess, char *name);
-struct User *find_name_global (struct server *serv, char *name);
-void update_user_list (struct session *sess);
-void clear_user_list (struct session *sess);
-void free_userlist (struct session *sess);
-void add_name (struct session *sess, char *name, char *hostname);
-int sub_name (struct session *sess, char *name);
-int change_nick (struct session *sess, char *oldname, char *newname);
-void ul_update_entry (session *sess, char *name, char mode, char sign);
-void update_all_of (char *name);
+int userlist_add_hostname (session *sess, char *nick,
+									char *hostname, char *realname,
+									char *servername, unsigned int away);
+void userlist_set_away (session *sess, char *nick, unsigned int away);
+struct User *userlist_find (session *sess, char *name);
+struct User *userlist_find_global (server *serv, char *name);
+void userlist_clear (session *sess);
+void userlist_free (session *sess);
+void userlist_add (session *sess, char *name, char *hostname);
+int userlist_remove (session *sess, char *name);
+int userlist_change (session *sess, char *oldname, char *newname);
+void userlist_update_mode (session *sess, char *name, char mode, char sign);
 GSList *userlist_flat_list (session *sess);
 GList *userlist_double_list (session *sess);
 void userlist_rehash (session *sess);

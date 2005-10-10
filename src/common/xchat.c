@@ -60,13 +60,11 @@ GSList *command_list = 0;
 GSList *ctcp_list = 0;
 GSList *replace_list = 0;
 GSList *sess_list = 0;
-GSList *serv_list = 0;
 GSList *dcc_list = 0;
 GSList *ignore_list = 0;
 GSList *usermenu_list = 0;
 GSList *urlhandler_list = 0;
 GSList *tabmenu_list = 0;
-static GSList *away_list = 0;
 
 static int in_xchat_exit = FALSE;
 int xchat_is_quitting = FALSE;
@@ -82,12 +80,6 @@ struct xchatprefs prefs;
 SSL_CTX *ctx = NULL;
 #endif
 
-
-int
-is_server (server * serv)
-{
-	return g_slist_find (serv_list, serv) ? 1 : 0;
-}
 
 int
 is_session (session * sess)
@@ -305,7 +297,7 @@ irc_init (session *sess)
 }
 
 static session *
-new_session (server *serv, char *from, int type, int focus)
+session_new (server *serv, char *from, int type, int focus)
 {
 	session *sess;
 
@@ -340,17 +332,17 @@ new_ircwindow (server *serv, char *name, int type, int focus)
 		{
 			register unsigned int oldh = prefs.hideuserlist;
 			prefs.hideuserlist = 1;
-			sess = new_session (serv, name, SESS_SERVER, focus);
+			sess = session_new (serv, name, SESS_SERVER, focus);
 			prefs.hideuserlist = oldh;
 		} else
 		{
-			sess = new_session (serv, name, SESS_CHANNEL, focus);
+			sess = session_new (serv, name, SESS_CHANNEL, focus);
 		}
 		serv->server_session = sess;
 		serv->front_session = sess;
 		break;
 	case SESS_DIALOG:
-		sess = new_session (serv, name, type, focus);
+		sess = session_new (serv, name, type, focus);
 		if (prefs.logging)
 			log_open (sess);
 		break;
@@ -358,7 +350,7 @@ new_ircwindow (server *serv, char *name, int type, int focus)
 /*	case SESS_CHANNEL:
 	case SESS_NOTICES:
 	case SESS_SNOTICES:*/
-		sess = new_session (serv, name, type, focus);
+		sess = session_new (serv, name, type, focus);
 		break;
 	}
 
@@ -366,82 +358,6 @@ new_ircwindow (server *serv, char *name, int type, int focus)
 	plugin_emit_dummy_print (sess, "Open Context");
 
 	return sess;
-}
-
-static void
-free_away_messages (server *serv)
-{
-	GSList *list, *next;
-	struct away_msg *away;
-
-	list = away_list;
-	while (list)
-	{
-		away = list->data;
-		next = list->next;
-		if (away->server == serv)
-		{
-			away_list = g_slist_remove (away_list, away);
-			if (away->message)
-				free (away->message);
-			free (away);
-			next = away_list;
-		}
-		list = next;
-	}
-}
-
-void
-save_away_message (struct server *serv, char *nick, char *msg)
-{
-	struct away_msg *away = find_away_message (serv, nick);
-
-	if (away)						  /* Change message for known user */
-	{
-		if (away->message)
-			free (away->message);
-		away->message = strdup (msg);
-	} else
-		/* Create brand new entry */
-	{
-		away = malloc (sizeof (struct away_msg));
-		if (away)
-		{
-			away->server = serv;
-			safe_strcpy (away->nick, nick, sizeof (away->nick));
-			away->message = strdup (msg);
-			away_list = g_slist_prepend (away_list, away);
-		}
-	}
-}
-
-static void
-kill_server_callback (server * serv)
-{
-	serv->cleanup (serv);
-
-	serv_list = g_slist_remove (serv_list, serv);
-
-	dcc_notify_kill (serv);
-	serv->flush_queue (serv);
-	free_away_messages (serv);
-
-	free (serv->nick_modes);
-	free (serv->nick_prefixes);
-	free (serv->chanmodes);
-	free (serv->chantypes);
-	if (serv->bad_nick_prefixes)
-		free (serv->bad_nick_prefixes);
-	if (serv->last_away_reason)
-		free (serv->last_away_reason);
-	if (serv->encoding)
-		free (serv->encoding);
-
-	fe_server_callback (serv);
-
-	free (serv);
-
-	notify_cleanup ();
 }
 
 static void
@@ -509,7 +425,7 @@ send_quit_or_part (session * killsess)
 }
 
 void
-kill_session_callback (session * killsess)
+session_free (session *killsess)
 {
 	server *killserv = killsess->server;
 	session *sess;
@@ -548,7 +464,7 @@ kill_session_callback (session * killsess)
 	sess_list = g_slist_remove (sess_list, killsess);
 
 	if (killsess->type == SESS_CHANNEL)
-		free_userlist (killsess);
+		userlist_free (killsess);
 
 	exec_notify_kill (killsess);
 
@@ -581,7 +497,7 @@ kill_session_callback (session * killsess)
 		list = list->next;
 	}
 
-	kill_server_callback (killserv);
+	server_free (killserv);
 }
 
 static void
@@ -596,20 +512,7 @@ free_sessions (void)
 	}
 }
 
-struct away_msg *
-find_away_message (struct server *serv, char *nick)
-{
-	struct away_msg *away;
-	GSList *list = away_list;
-	while (list)
-	{
-		away = (struct away_msg *) list->data;
-		if (away->server == serv && !serv->p_cmp (nick, away->nick))
-			return away;
-		list = list->next;
-	}
-	return 0;
-}
+
 
 #define XTERM "gnome-terminal -x "
 
