@@ -265,6 +265,8 @@ cv_tabs_init (chanview *cv)
 	gtk_viewport_set_shadow_type (GTK_VIEWPORT (viewport), GTK_SHADOW_NONE);
 	g_signal_connect (G_OBJECT (viewport), "size_request",
 							G_CALLBACK (cv_tabs_sizerequest), cv);
+	g_signal_connect (G_OBJECT (viewport), "scroll_event",
+							G_CALLBACK (tab_scroll_cb), cv);
 	gtk_box_pack_start (GTK_BOX (outer), viewport, 1, 1, 0);
 	gtk_widget_show (viewport);
 
@@ -562,8 +564,6 @@ cv_tabs_add (chanview *cv, chan *ch, char *name, GtkTreeIter *parent)
 	/* for keyboard */
 	g_signal_connect (G_OBJECT (but), "toggled",
 						 	G_CALLBACK (tab_toggled_cb), ch);
-	g_signal_connect (G_OBJECT (but), "scroll_event",
-							G_CALLBACK (tab_scroll_cb), cv);
 	g_object_set_data (G_OBJECT (but), "u", ch->userdata);
 
 	tab_add_real (cv, but, ch);
