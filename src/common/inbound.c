@@ -948,10 +948,15 @@ inbound_away (server *serv, char *nick, char *msg)
 		server_away_save_message (serv, nick, msg);
 	}
 
-	if (!serv->inside_whois)
-		sess = find_session_from_nick (nick, serv);
-	if (!sess)
-		sess = serv->server_session;
+	if (prefs.irc_whois_front)
+		sess = serv->front_session;
+	else
+	{
+		if (!serv->inside_whois)
+			sess = find_session_from_nick (nick, serv);
+		if (!sess)
+			sess = serv->server_session;
+	}
 
 	EMIT_SIGNAL (XP_TE_WHOIS5, sess, nick, msg, NULL, NULL, 0);
 
