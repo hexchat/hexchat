@@ -1070,7 +1070,7 @@ perl_init (void)
 	   the xs_init function. (TheHobbit) */
 	int warn;
 	char *perl_args[] = { "", "-e", "0", "-w" };
-	const char perl_definitions[] = {
+	static const char perl_definitions[] = {
 		/* Redefine the $SIG{__WARN__} handler to have XChat
 		   printing warnings in the main window. (TheHobbit) */
 #include "xchat.pm.h"
