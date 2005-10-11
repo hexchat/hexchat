@@ -20,12 +20,15 @@
 #define GTK_IS_XTEXT_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), GTK_TYPE_XTEXT))
 #define GTK_XTEXT_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), GTK_TYPE_XTEXT, GtkXTextClass))
 
-#define ATTR_BOLD '\002'
-#define ATTR_COLOR '\003'
-#define ATTR_BEEP '\007'
-#define ATTR_RESET '\017'
-#define ATTR_REVERSE '\026'
-#define ATTR_UNDERLINE '\037'
+#define ATTR_BOLD			'\002'
+#define ATTR_COLOR		'\003'
+#define ATTR_BLINK		'\006'
+#define ATTR_BEEP			'\007'
+#define ATTR_ITALICS2	'\011'
+#define ATTR_RESET		'\017'
+#define ATTR_REVERSE		'\026'
+#define ATTR_ITALICS		'\035'
+#define ATTR_UNDERLINE	'\037'
 
 /* these match palette.h */
 #define XTEXT_MIRC_COLS 32
@@ -145,10 +148,12 @@ struct _GtkXText
 	XftColor *xft_bg;				/* both point into color[20] */
 	XftDraw *xftdraw;
 	XftFont *font;
+	XftFont *ifont;				/* italics */
 #else
-	struct
+	struct pangofont
 	{
 		PangoFontDescription *font;
+		PangoFontDescription *ifont;	/* italics */
 		int ascent;
 		int descent;
 	} *font, pango_font;
@@ -189,6 +194,7 @@ struct _GtkXText
 	unsigned int hilighting:1;
 	unsigned int bold:1;
 	unsigned int underline:1;
+	unsigned int italics:1;
 	unsigned int transparent:1;
 	unsigned int marker:1;
 	unsigned int separator:1;

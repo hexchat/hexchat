@@ -465,6 +465,7 @@ strip_color (char *text, int len, int do_color, int do_attr)
 			case '\026':			  /*ATTR_REVERSE: */
 			case '\002':			  /*ATTR_BOLD: */
 			case '\037':			  /*ATTR_UNDERLINE: */
+			case '\035':			  /*ATTR_ITALICS: */
 				if (!do_attr)
 				{
 					new_str[i] = *text;
