@@ -32,7 +32,6 @@
 
 #include "../pixmaps/inline_pngs.h"
 
-GdkPixbuf *pix_about;
 GdkPixbuf *pix_xchat;
 GdkPixbuf *pix_book;
 
@@ -41,6 +40,11 @@ GdkPixbuf *pix_red;
 GdkPixbuf *pix_op;
 GdkPixbuf *pix_hop;
 GdkPixbuf *pix_voice;
+
+GdkPixbuf *pix_channel;
+GdkPixbuf *pix_dialog;
+GdkPixbuf *pix_server;
+GdkPixbuf *pix_util;
 
 
 static GdkPixmap *
@@ -78,33 +82,31 @@ pixmap_load_from_file (char *filename)
 	return pix;
 }
 
+#define LOADPIX(vv,pp,ff) \
+	vv = gdk_pixbuf_new_from_file (XCHATSHAREDIR"/"ff, 0); \
+	if (!vv) \
+		vv = gdk_pixbuf_new_from_inline (-1, pp, FALSE, 0);
+
+#define LOADPIX_DISKONLY(vv,ff) \
+	vv = gdk_pixbuf_new_from_file (XCHATSHAREDIR"/"ff, 0);
+
 void
 pixmaps_init (void)
 {
-#ifndef GTK_STOCK_ABOUT
-	/* we use the stock version in gtk 2.6+ */
-	pix_about = gdk_pixbuf_new_from_inline (-1, aboutpng, FALSE, 0);
-#endif
 	pix_book = gdk_pixbuf_new_from_inline (-1, bookpng, FALSE, 0);
 	pix_xchat = gdk_pixbuf_new_from_inline (-1, xchatpng, FALSE, 0);
 
-	pix_purple = gdk_pixbuf_new_from_file (XCHATSHAREDIR"/purple.png", 0);
-	if (!pix_purple)
-		pix_purple = gdk_pixbuf_new_from_inline (-1, purplepng, FALSE, 0);
+	/* userlist icons, with inlined defaults */
+	LOADPIX (pix_hop, hoppng, "hop.png");
+	LOADPIX (pix_purple, purplepng, "purple.png");
+	LOADPIX (pix_red, redpng, "red.png");
+	LOADPIX (pix_op, oppng, "op.png");
+	LOADPIX (pix_voice, voicepng, "voice.png");
 
-	pix_red = gdk_pixbuf_new_from_file (XCHATSHAREDIR"/red.png", 0);
-	if (!pix_red)
-		pix_red = gdk_pixbuf_new_from_inline (-1, redpng, FALSE, 0);
-
-	pix_op = gdk_pixbuf_new_from_file (XCHATSHAREDIR"/op.png", 0);
-	if (!pix_op)
-		pix_op = gdk_pixbuf_new_from_inline (-1, oppng, FALSE, 0);
-
-	pix_hop = gdk_pixbuf_new_from_file (XCHATSHAREDIR"/hop.png", 0);
-	if (!pix_hop)
-		pix_hop = gdk_pixbuf_new_from_inline (-1, hoppng, FALSE, 0);
-
-	pix_voice = gdk_pixbuf_new_from_file (XCHATSHAREDIR"/voice.png", 0);
-	if (!pix_voice)
-		pix_voice = gdk_pixbuf_new_from_inline (-1, voicepng, FALSE, 0);
+	/* treeview icons, no defaults, load from disk only */
+	LOADPIX_DISKONLY (pix_channel,	"channel.png");
+	LOADPIX_DISKONLY (pix_dialog,		"dialog.png");
+	LOADPIX_DISKONLY (pix_server,		"server.png");
+	LOADPIX_DISKONLY (pix_util,		"util.png");
 }
+

@@ -14,6 +14,7 @@
 #define COL_NAME 0		/* (char *) */
 #define COL_CHAN 1		/* (chan *) */
 #define COL_ATTR 2		/* (PangoAttrList *) */
+#define COL_PIXBUF 3		/* (GdkPixbuf *) */
 
 struct _chanview
 {
@@ -49,6 +50,7 @@ struct _chanview
 
 	unsigned int sorted:1;
 	unsigned int vertical:1;
+	unsigned int use_icons:1;
 };
 
 struct _chan
@@ -58,6 +60,7 @@ struct _chan
 	void *userdata;	/* session * */
 	void *family;		/* server * or null */
 	void *impl;	/* togglebutton or null */
+	GdkPixbuf *icon;
 	short allow_closure;	/* allow it to be closed when it still has children? */
 	short tag;
 };
@@ -224,15 +227,17 @@ chanview_box_destroy_cb (GtkWidget *box, chanview *cv)
 }
 
 chanview *
-chanview_new (int type, int trunc_len, gboolean sort)
+chanview_new (int type, int trunc_len, gboolean sort, gboolean use_icons)
 {
 	chanview *cv;
 
 	cv = calloc (1, sizeof (chanview));
-	cv->store = gtk_tree_store_new (3, G_TYPE_STRING, G_TYPE_POINTER, PANGO_TYPE_ATTR_LIST);
+	cv->store = gtk_tree_store_new (4, G_TYPE_STRING, G_TYPE_POINTER,
+											  PANGO_TYPE_ATTR_LIST, GDK_TYPE_PIXBUF);
 	cv->box = gtk_hbox_new (0, 0);
 	cv->trunc_len = trunc_len;
 	cv->sorted = sort;
+	cv->use_icons = use_icons;
 	gtk_widget_show (cv->box);
 	chanview_set_impl (cv, type);
 
@@ -308,7 +313,8 @@ chanview_find_parent (chanview *cv, void *family, GtkTreeIter *search_iter, chan
 
 static chan *
 chanview_add_real (chanview *cv, char *name, void *family, void *userdata,
-						 gboolean allow_closure, int tag, chan *ch, chan *avoid)
+						 gboolean allow_closure, int tag, GdkPixbuf *icon,
+						 chan *ch, chan *avoid)
 {
 	GtkTreeIter parent_iter;
 	GtkTreeIter iter;
@@ -331,10 +337,12 @@ chanview_add_real (chanview *cv, char *name, void *family, void *userdata,
 		ch->cv = cv;
 		ch->allow_closure = allow_closure;
 		ch->tag = tag;
+		ch->icon = icon;
 	}
 	memcpy (&(ch->iter), &iter, sizeof (iter));
 
-	gtk_tree_store_set (cv->store, &iter, COL_NAME, name, COL_CHAN, ch, -1);
+	gtk_tree_store_set (cv->store, &iter, COL_NAME, name, COL_CHAN, ch,
+							  COL_PIXBUF, icon, -1);
 
 	cv->size++;
 	if (!has_parent)
@@ -346,9 +354,9 @@ chanview_add_real (chanview *cv, char *name, void *family, void *userdata,
 }
 
 chan *
-chanview_add (chanview *cv, char *name, void *family, void *userdata, gboolean allow_closure, int tag)
+chanview_add (chanview *cv, char *name, void *family, void *userdata, gboolean allow_closure, int tag, GdkPixbuf *icon)
 {
-	return chanview_add_real (cv, name, family, userdata, allow_closure, tag, NULL, NULL);
+	return chanview_add_real (cv, name, family, userdata, allow_closure, tag, icon, NULL, NULL);
 }
 
 int
@@ -526,7 +534,7 @@ chan_emancipate_children (chan *ch)
 		ch->cv->func_remove (childch);
 		gtk_tree_store_remove (ch->cv->store, &childiter);
 		ch->cv->size--;
-		chanview_add_real (childch->cv, name, childch->family, childch->userdata, childch->allow_closure, childch->tag, childch, ch);
+		chanview_add_real (childch->cv, name, childch->family, childch->userdata, childch->allow_closure, childch->tag, childch->icon, childch, ch);
 		if (attr)
 		{
 			childch->cv->func_set_color (childch, attr);
@@ -541,8 +549,10 @@ chan_remove (chan *ch, gboolean force)
 {
 	chan *new_ch;
 	int i, num;
+	extern int xchat_is_quitting;
 
-	printf("remove ch=%p (focused ch=%p)\n", ch, ch->cv->focused); 
+	if (xchat_is_quitting)	/* avoid lots of looping on exit */
+		return TRUE;
 
 	/* is this ch allowed to be closed while still having children? */
 	if (!force &&
@@ -564,7 +574,6 @@ chan_remove (chan *ch, gboolean force)
 		new_ch = cv_find_chan_by_number (ch->cv, num - 1);
 		if (new_ch && new_ch != ch)
 		{
-			printf("moving focus to ch=%p\n", new_ch);
 			chan_focus (new_ch);	/* this'll will set ch->cv->focused for us too */
 		} else
 		{
@@ -574,7 +583,6 @@ chan_remove (chan *ch, gboolean force)
 				new_ch = cv_find_chan_by_number (ch->cv, i);
 				if (new_ch && new_ch != ch)
 				{
-					printf("!!FALLBACK!! moving focus to ch=%p (i=%d)\n", new_ch, i);
 					chan_focus (new_ch);	/* this'll will set ch->cv->focused for us too */
 					break;
 				}

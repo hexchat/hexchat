@@ -1413,7 +1413,7 @@ static struct mymenu mymenu[] = {
 
 	{N_("_Server"), 0, 0, M_NEWMENU, 0, 0, 1},
 	{N_("_Disconnect"), menu_disconnect, GTK_STOCK_DISCONNECT, M_MENUSTOCK, MENU_ID_DISCONNECT, 0, 1},
-	{N_("_Reconnect"), menu_reconnect, GTK_STOCK_CONNECT, M_MENUSTOCK, 0, 0, 1},
+	{N_("_Reconnect"), menu_reconnect, GTK_STOCK_CONNECT, M_MENUSTOCK, MENU_ID_RECONNECT, 0, 1},
 	{0, 0, 0, M_SEP, 0, 0, 0},
 #define AWAY_OFFSET (36)
 	{N_("Marked Away"), menu_away, 0, M_MENUTOG, MENU_ID_AWAY, 0, 1, GDK_a},
@@ -1447,11 +1447,12 @@ static struct mymenu mymenu[] = {
 	{N_("Raw Log..."), menu_rawlog, 0, M_MENUITEM, 0, 0, 1},	/* 60 */
 	{N_("URL Grabber..."), url_opengui, 0, M_MENUITEM, 0, 0, 1},
 	{0, 0, 0, M_SEP, 0, 0, 0},
+	{N_("Reset Marker Line"), menu_resetmarker, 0, M_MENUITEM, 0, 0, 1, GDK_m},
 	{N_("C_lear Text"), menu_flushbuffer, GTK_STOCK_CLEAR, M_MENUSTOCK, 0, 0, 1, GDK_l},
 	{N_("Search Text..."), menu_search, GTK_STOCK_FIND, M_MENUSTOCK, 0, 0, 1, GDK_f},
 	{N_("Save Text..."), menu_savebuffer, GTK_STOCK_SAVE, M_MENUSTOCK, 0, 0, 1},
 
-	{N_("_Help"), 0, 0, M_NEWMENU, 0, 0, 1},	/* 66 */
+	{N_("_Help"), 0, 0, M_NEWMENU, 0, 0, 1},	/* 67 */
 	{N_("_Contents"), menu_docs, GTK_STOCK_HELP, M_MENUSTOCK, 0, 0, 1, GDK_F1},
 	{N_("_About"), menu_about, GTK_STOCK_ABOUT, M_MENUSTOCK, 0, 0, 1},
 
@@ -1818,13 +1819,13 @@ menu_create_main (void *accel_group, int bar, int away, int toplevel,
 
 	if (!toplevel)
 	{
-		mymenu[DETACH_OFFSET].text = _("_Detach Tab");
-		mymenu[CLOSE_OFFSET].text = _("_Close Tab");
+		mymenu[DETACH_OFFSET].text = N_("_Detach Tab");
+		mymenu[CLOSE_OFFSET].text = N_("_Close Tab");
 	}
 	else
 	{
-		mymenu[DETACH_OFFSET].text = _("_Attach Window");
-		mymenu[CLOSE_OFFSET].text = _("_Close Window");
+		mymenu[DETACH_OFFSET].text = N_("_Attach Window");
+		mymenu[CLOSE_OFFSET].text = N_("_Close Window");
 	}
 
 	while (1)

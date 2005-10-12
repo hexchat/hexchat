@@ -188,6 +188,7 @@ struct xchatprefs
 	unsigned int tab_small;
 	unsigned int tab_dnd;
 	unsigned int tab_sort;
+	unsigned int tab_icons;
 	unsigned int mainwindow_save;
 	unsigned int perc_color;
 	unsigned int perc_ascii;

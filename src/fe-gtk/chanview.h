@@ -1,14 +1,14 @@
 typedef struct _chanview chanview;
 typedef struct _chan chan;
 
-chanview *chanview_new (int type, int trunc_len, gboolean sort);
+chanview *chanview_new (int type, int trunc_len, gboolean sort, gboolean use_icons);
 void chanview_set_callbacks (chanview *cv,
 	void (*cb_focus) (chanview *, chan *, int tag, void *userdata),
 	void (*cb_xbutton) (chanview *, chan *, int tag, void *userdata),
 	gboolean (*cb_contextmenu) (chanview *, chan *, int tag, void *userdata, GdkEventButton *),
 	int (*cb_compare) (void *a, void *b));
 void chanview_set_impl (chanview *cv, int type);
-chan *chanview_add (chanview *cv, char *name, void *family, void *userdata, gboolean allow_closure, int tag);
+chan *chanview_add (chanview *cv, char *name, void *family, void *userdata, gboolean allow_closure, int tag, GdkPixbuf *icon);
 int chanview_get_size (chanview *cv);
 GtkWidget *chanview_get_box (chanview *cv);
 void chanview_move_focus (chanview *cv, gboolean relative, int num);

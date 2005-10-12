@@ -512,6 +512,7 @@ const struct prefs vars[] = {
 	{"tab_chans", P_OFFINT (tabchannels), TYPE_BOOL},
 	{"tab_dialogs", P_OFFINT (privmsgtab), TYPE_BOOL},
 	{"tab_dnd",  P_OFFINT (tab_dnd), TYPE_BOOL},
+	{"tab_icons", P_OFFINT (tab_icons), TYPE_BOOL},
 	{"tab_layout", P_OFFINT (tab_layout), TYPE_INT},
 	{"tab_new_to_front", P_OFFINT (newtabstofront), TYPE_INT},
 	{"tab_notices", P_OFFINT (notices_tabs), TYPE_BOOL},

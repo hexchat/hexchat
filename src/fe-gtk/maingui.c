@@ -60,6 +60,7 @@
 #include "fkeys.h"
 #include "userlistgui.h"
 #include "chanview.h"
+#include "pixmaps.h"
 #include "xtext.h"
 
 #define GUI_SPACING (3)
@@ -1166,20 +1167,49 @@ static void
 mg_color_insert (GtkWidget *item, gpointer userdata)
 {
 	char buf[32];
+	char *text;
+	int num = GPOINTER_TO_INT (userdata);
 
-	sprintf (buf, "\003%02d", GPOINTER_TO_INT (userdata));
-	key_action_insert (current_sess->gui->input_box, 0, buf, 0, 0);
+	if (num > 99)
+	{
+		switch (num)
+		{
+		case 100:
+			text = "\002"; break;
+		case 101:
+			text = "\037"; break;
+		case 102:
+			text = "\035"; break;
+		default:
+			text = "\017"; break;
+		}
+		key_action_insert (current_sess->gui->input_box, 0, text, 0, 0);
+	} else
+	{
+		sprintf (buf, "\003%02d", num);
+		key_action_insert (current_sess->gui->input_box, 0, buf, 0, 0);
+	}
 }
 
 static void
-mg_create_color_menu (GtkWidget *menu, session *sess)
+mg_markup_item (GtkWidget *menu, char *text, int arg)
 {
 	GtkWidget *item;
-	GtkWidget *submenu;
-	char buf[256];
-	int i;
 
-	item = gtk_menu_item_new_with_label (_("Insert Color Code"));
+	item = gtk_menu_item_new_with_label ("");
+	gtk_label_set_markup (GTK_LABEL (GTK_BIN (item)->child), text);
+	g_signal_connect (G_OBJECT (item), "activate",
+							G_CALLBACK (mg_color_insert), GINT_TO_POINTER (arg));
+	gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+	gtk_widget_show (item);
+}
+
+static GtkWidget *
+mg_submenu (GtkWidget *menu, char *text)
+{
+	GtkWidget *submenu, *item;
+
+	item = gtk_menu_item_new_with_label (text);
 	gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
 	gtk_widget_show (item);
 
@@ -1187,17 +1217,42 @@ mg_create_color_menu (GtkWidget *menu, session *sess)
 	gtk_menu_item_set_submenu (GTK_MENU_ITEM (item), submenu);
 	gtk_widget_show (submenu);
 
-	for (i = 0; i < 16; i++)
+	return submenu;
+}
+
+static void
+mg_create_color_menu (GtkWidget *menu, session *sess)
+{
+	GtkWidget *submenu;
+	GtkWidget *subsubmenu;
+	char buf[256];
+	int i;
+
+	submenu = mg_submenu (menu, _("Insert Attribute or Color Code"));
+
+	mg_markup_item (submenu, _("<b>Bold</b>"), 100);
+	mg_markup_item (submenu, _("<u>Underline</u>"), 101);
+	mg_markup_item (submenu, _("<i>Italic</i>"), 102);
+	mg_markup_item (submenu, _("Normal"), 103);
+
+	subsubmenu = mg_submenu (submenu, _("Colors 0-7"));
+
+	for (i = 0; i < 8; i++)
 	{
-		item = gtk_menu_item_new_with_label ("");
 		sprintf (buf, "<tt><sup>%02d</sup> <span background=\"#%02x%02x%02x\">"
 					"   </span></tt>",
 				i, colors[i].red >> 8, colors[i].green >> 8, colors[i].blue >> 8);
-		gtk_label_set_markup (GTK_LABEL (GTK_BIN (item)->child), buf);
-		g_signal_connect (G_OBJECT (item), "activate",
-								G_CALLBACK (mg_color_insert), GINT_TO_POINTER (i));
-		gtk_menu_shell_append (GTK_MENU_SHELL (submenu), item);
-		gtk_widget_show (item);
+		mg_markup_item (subsubmenu, buf, i);
+	}
+
+	subsubmenu = mg_submenu (submenu, _("Colors 8-15"));
+
+	for (i = 8; i < 16; i++)
+	{
+		sprintf (buf, "<tt><sup>%02d</sup> <span background=\"#%02x%02x%02x\">"
+					"   </span></tt>",
+				i, colors[i].red >> 8, colors[i].green >> 8, colors[i].blue >> 8);
+		mg_markup_item (subsubmenu, buf, i);
 	}
 }
 
@@ -1251,10 +1306,10 @@ mg_tab_contextmenu_cb (chanview *cv, chan *ch, int tag, gpointer ud, GdkEventBut
 	gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
 	gtk_widget_show (item);
 
-	mg_create_icon_item (_("Close Tab"), GTK_STOCK_CLOSE, menu,
+	mg_create_icon_item (_("_Close Tab"), GTK_STOCK_CLOSE, menu,
 								mg_destroy_tab_cb, sess);
 	/*if (tag == TAG_IRC)*/
-		mg_create_icon_item (_("Detach Tab"), GTK_STOCK_REDO, menu,
+		mg_create_icon_item (_("_Detach Tab"), GTK_STOCK_REDO, menu,
 									mg_detach_tab_cb, sess);
 
 	if (sess && tabmenu_list)
@@ -1320,6 +1375,7 @@ mg_dialog_dnd_drop (GtkWidget * widget, GdkDragContext * context, gint x,
 static void
 mg_add_chan (session *sess)
 {
+	GdkPixbuf *icon;
 	char *name = _("<none>");
 	static const GtkTargetEntry dnd_targets[] =
 	{
@@ -1329,9 +1385,21 @@ mg_add_chan (session *sess)
 	if (sess->channel[0])
 		name = sess->channel;
 
+	switch (sess->type)
+	{
+	case SESS_CHANNEL:
+		icon = pix_channel;
+		break;
+	case SESS_SERVER:
+		icon = pix_server;
+		break;
+	default:
+		icon = pix_dialog;
+	}
+
 	sess->res->tab = chanview_add (sess->gui->chanview, name, sess->server, sess,
 											 sess->type == SESS_SERVER ? FALSE : TRUE,
-											 TAG_IRC);
+											 TAG_IRC, icon);
 	if (plain_list == NULL)
 		mg_create_tab_colors ();
 
@@ -1511,7 +1579,7 @@ mg_tabwindow_kill_cb (GtkWidget *win, gpointer userdata)
 	GSList *list, *next;
 	session *sess;
 
-	puts("enter mg_tabwindow_kill_cb");
+/*	puts("enter mg_tabwindow_kill_cb");*/
 	xchat_is_quitting = TRUE;
 
 	/* see if there's any non-tab windows left */
@@ -1520,7 +1588,6 @@ mg_tabwindow_kill_cb (GtkWidget *win, gpointer userdata)
 	{
 		sess = list->data;
 		next = list->next;
-		printf("mg_tabwindow_kill_cb: is_tab = %d\n", sess->gui->is_tab);
 		if (!sess->gui->is_tab)
 		{
 			xchat_is_quitting = FALSE;
@@ -2419,7 +2486,7 @@ mg_tabs_compare (session *a, session *b)
 static void
 mg_create_tabs (session_gui *gui)
 {
-	gui->chanview = chanview_new (prefs.tab_layout, prefs.truncchans, prefs.tab_sort);
+	gui->chanview = chanview_new (prefs.tab_layout, prefs.truncchans, prefs.tab_sort, prefs.tab_icons);
 	chanview_set_callbacks (gui->chanview, mg_switch_tab_cb, mg_xbutton_cb,
 									mg_tab_contextmenu_cb, mg_tabs_compare);
 	mg_place_chanview (gui, chanview_get_box (gui->chanview), prefs.tabs_position);
@@ -2679,7 +2746,7 @@ mg_add_generic_tab (char *name, char *title, void *family, GtkWidget *box)
 	gtk_notebook_append_page (GTK_NOTEBOOK (mg_gui->note_book), box, NULL);
 	gtk_widget_show (box);
 
-	ch = chanview_add (mg_gui->chanview, name, NULL, box, TRUE, TAG_UTIL);
+	ch = chanview_add (mg_gui->chanview, name, NULL, box, TRUE, TAG_UTIL, pix_util);
 	chan_set_color (ch, plain_list);
 	/* FIXME: memory leak */
 	g_object_set_data (G_OBJECT (box), "title", strdup (title));
