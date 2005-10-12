@@ -8,9 +8,19 @@
     <method name="print">
       <arg type="s"/>
     </method>
-    <method name="context">
+    <method name="SetContext">
       <arg type="s"/>
       <arg type="s"/>
+    </method>
+    <method name="GetInfo">
+      <arg type="s"/>
+      <arg type="s" direction="out"/>
+    </method>
+    <method name="GetPrefs">
+      <arg type="s"/>
+      <arg type="i" direction="out"/>
+      <arg type="s" direction="out"/>
+      <arg type="i" direction="out"/>
     </method>
   </interface>
 </node>

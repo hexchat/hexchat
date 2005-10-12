@@ -31,14 +31,27 @@ static gchar *opt_command = NULL;
 static gchar *opt_print = NULL;
 static gchar *opt_channel = NULL;
 static gchar *opt_server = NULL;
+static gchar *opt_info = NULL;
+static gchar *opt_prefs = NULL;
 
 static GOptionEntry entries[] = {
   {"url", 'u', 0, G_OPTION_ARG_STRING, &opt_open_url, "Open an irc:// url", "irc://server:port/channel"},
   {"command", 'c', 0, G_OPTION_ARG_STRING, &opt_command, "Execute a xchat command", "\"Command to execute\""},
   {"print", 'p', 0, G_OPTION_ARG_STRING, &opt_print, "Prints some text to the current tab/window", "\"Text to print\""},
-  {"channel", 0, 0, G_OPTION_ARG_STRING, &opt_channel, "Change the context to the channel", "channel"},
-  {"server", 0, 0, G_OPTION_ARG_STRING, &opt_server, "Change the context to the server", "server"},
+  {"channel", 'h', 0, G_OPTION_ARG_STRING, &opt_channel, "Change the context to the channel", "channel"},
+  {"server", 's', 0, G_OPTION_ARG_STRING, &opt_server, "Change the context to the server", "server"},
+  {"info", 'i', 0, G_OPTION_ARG_STRING, &opt_info, "Get some informations from xchat", "id"},
+  {"prefs", 'r', 0, G_OPTION_ARG_STRING, &opt_prefs, "Get settings from xchat", "name"},
 };
+
+static void
+write_error (gchar *message, GError *err)
+{
+  if (!err)
+    return;
+  g_printerr ("%s : %s\n", message, err->message);
+  g_error_free (err);
+}
 
 static void
 send_command (gchar *command)
@@ -47,10 +60,7 @@ send_command (gchar *command)
   if (!dbus_g_proxy_call (remote_object, "command", &error,
                           G_TYPE_STRING, command, G_TYPE_INVALID,
                           G_TYPE_INVALID))
-  {
-    g_printerr ("Failed to complete command : %s\n", error->message);
-    g_error_free (error);
-  }
+    write_error ("Failed to complete command", error);
 }
 
 int
@@ -78,7 +88,7 @@ main (int argc, char **argv)
   bus = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
   if (!bus)
   {
-    g_printerr ("Couldn't connect to session bus : %s\n", error->message);
+    write_error ("Couldn't connect to session bus", error);
     return 1;
   }
   
@@ -87,34 +97,56 @@ main (int argc, char **argv)
                                              DBUS_OBJECT,
                                              DBUS_INTERFACE);
 
+  if (opt_channel || opt_server)
+    if (!dbus_g_proxy_call (remote_object, "SetContext", &error,
+                            G_TYPE_STRING, opt_server,
+                            G_TYPE_STRING, opt_channel, G_TYPE_INVALID,
+                            G_TYPE_INVALID))
+      write_error ("Failed to complete SetContext", error);
   if (opt_command)
     send_command (opt_command);
   if (opt_open_url)
   {
-    char *command;
+    gchar *command;
     command = g_strdup_printf ("newserver %s", opt_open_url);
     send_command (command);
     g_free (command);
   }
   if (opt_print)
-  {
     if (!dbus_g_proxy_call (remote_object, "print", &error,
                             G_TYPE_STRING, opt_print, G_TYPE_INVALID,
                             G_TYPE_INVALID))
-    {
-      g_printerr ("Failed to complete print : %s\n", error->message);
-      g_error_free (error);
-    }
-  }
-  if (opt_channel || opt_server)
+      write_error ("Failed to complete print", error);
+  if (opt_info)
   {
-    if (!dbus_g_proxy_call (remote_object, "context", &error,
-                            G_TYPE_STRING, opt_server,
-                            G_TYPE_STRING, opt_channel, G_TYPE_INVALID,
-                            G_TYPE_INVALID))
+    gchar *info;
+    if (!dbus_g_proxy_call (remote_object, "GetInfo", &error,
+                            G_TYPE_STRING, opt_info, G_TYPE_INVALID,
+                            G_TYPE_STRING, &info, G_TYPE_INVALID))
+      write_error ("Failed to complete GetInfo", error);
+    else
+      g_printf ("%s = %s\n", opt_info, info);
+  }
+  if (opt_prefs)
+  {
+    gchar *str;
+    int type, i;
+    if (!dbus_g_proxy_call (remote_object, "GetPrefs", &error,
+                            G_TYPE_STRING, opt_prefs, G_TYPE_INVALID,
+                            G_TYPE_INT, &type,
+                            G_TYPE_STRING, &str,
+                            G_TYPE_INT, &i, G_TYPE_INVALID))
+      write_error ("Failed to complete GetPrefs", error);
+    else
     {
-      g_printerr ("Failed to complete context : %s\n", error->message);
-      g_error_free (error);
+      if (type == 0)
+        g_printf ("%s doesn't exist\n", opt_prefs);
+      else if (type == 1)
+        g_printf ("%s = %s\n", opt_prefs, str);
+      else if (type == 2)
+        g_printf ("%s = %d\n", opt_prefs, i);
+      else
+        g_printf ("%s = %s\n", opt_prefs, i ? "TRUE" : "FALSE");
     }
   }
 
