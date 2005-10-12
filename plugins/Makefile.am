@@ -20,5 +20,9 @@ if DO_TCL
 tcldir = tcl
 endif
 
+if DO_DBUS
+dbusdir = dbus
+endif
+
 #SUBDIRS = . $(pythondir) $(perldir) mailcheck xdcc
-SUBDIRS = . $(pythondir) $(perldir) $(tcldir)
+SUBDIRS = . $(pythondir) $(perldir) $(tcldir) $(dbusdir)
