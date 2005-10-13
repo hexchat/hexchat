@@ -60,30 +60,46 @@ thread_mbox (char *str)
 #endif
 
 /* leave this before XSUB.h, to avoid readdir() being redefined */
+
 static void
-perl_auto_load (void)
+perl_auto_load_from_path (const char *path)
 {
 	DIR *dir;
 	struct dirent *ent;
-	const char *xdir;
 
-	/* get the dir in local filesystem encoding (what opendir() expects!) */
-	xdir = xchat_get_info (ph, "xchatdirfs");
-	if (!xdir)						  /* xchatdirfs is new for 2.0.9, will fail on older */
-		xdir = xchat_get_info (ph, "xchatdir");
-	dir = opendir (xdir);
+	dir = opendir (path);
 	if (dir) {
 		while ((ent = readdir (dir))) {
 			int len = strlen (ent->d_name);
 			if (len > 3 && strcasecmp (".pl", ent->d_name + len - 3) == 0) {
-				char *file = malloc (len + strlen (xdir) + 2);
-				sprintf (file, "%s/%s", xdir, ent->d_name);
+				char *file = malloc (len + strlen (path) + 2);
+				sprintf (file, "%s/%s", path, ent->d_name);
 				perl_load_file (file);
 				free (file);
 			}
 		}
 		closedir (dir);
 	}
+}
+
+static void
+perl_auto_load (void)
+{
+	const char *xdir;
+
+	/* get the dir in local filesystem encoding (what opendir() expects!) */
+	xdir = xchat_get_info (ph, "xchatdirfs");
+	if (!xdir)						  /* xchatdirfs is new for 2.0.9, will fail on older */
+		xdir = xchat_get_info (ph, "xchatdir");
+
+	/* autoload from ~/.xchat2/ or ${APPDATA}\X-Chat 2\ on win32 */
+	perl_auto_load_from_path (xdir);
+
+#ifdef WIN32
+	/* autoload from  C:\program files\xchat\plugins\ */
+	perl_auto_load_from_path (XCHATLIBDIR"/plugins");
+#endif
+	
 }
 
 #include <EXTERN.h>
