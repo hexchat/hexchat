@@ -68,6 +68,7 @@ cv_tree_init (chanview *cv)
 	gtk_widget_show (win);
 
 	view = gtk_tree_view_new_with_model (GTK_TREE_MODEL (cv->store));
+	gtk_widget_set_name (view, "xchat-tree");
 	GTK_WIDGET_UNSET_FLAGS (view, GTK_CAN_FOCUS);
 	gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (view), FALSE);
 	gtk_container_add (GTK_CONTAINER (win), view);

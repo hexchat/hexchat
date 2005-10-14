@@ -655,12 +655,8 @@ cv_tabs_focus (chan *ch)
 static int
 tab_focus_num_cb (GtkWidget *tab, int num, int want)
 {
-printf("move focus : %d %d\n", num, want);
-
 	if (num == want)
 	{
-printf("move focus : ch=%p\n", g_object_get_data (G_OBJECT (tab), "c"));
-
 		cv_tabs_focus (g_object_get_data (G_OBJECT (tab), "c"));
 		return 1;
 	}
@@ -706,8 +702,6 @@ cv_tabs_move_focus (chanview *cv, gboolean relative, int num)
 static void
 cv_tabs_remove (chan *ch)
 {
-	printf("destroy togglebutton ch=%p\n", ch);
-
 	gtk_widget_destroy (ch->impl);
 	ch->impl = NULL;
 

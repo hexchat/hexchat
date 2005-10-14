@@ -75,7 +75,8 @@ pixmap_load_from_file (char *filename)
 	if (pix == NULL)
 	{
 		strcpy (buf, "Cannot open:\n\n");
-		strcpy (buf + 14, filename);
+		strncpy (buf + 14, filename, sizeof (buf) - 14);
+		buf[sizeof (buf) - 1] = 0;
 		fe_message (buf, FE_MSG_ERROR);
 	}
 
@@ -90,6 +91,8 @@ pixmap_load_from_file (char *filename)
 #define LOADPIX_DISKONLY(vv,ff) \
 	vv = gdk_pixbuf_new_from_file (XCHATSHAREDIR"/"ff, 0);
 
+#define EXT ".png"
+
 void
 pixmaps_init (void)
 {
@@ -97,16 +100,15 @@ pixmaps_init (void)
 	pix_xchat = gdk_pixbuf_new_from_inline (-1, xchatpng, FALSE, 0);
 
 	/* userlist icons, with inlined defaults */
-	LOADPIX (pix_hop, hoppng, "hop.png");
-	LOADPIX (pix_purple, purplepng, "purple.png");
-	LOADPIX (pix_red, redpng, "red.png");
-	LOADPIX (pix_op, oppng, "op.png");
-	LOADPIX (pix_voice, voicepng, "voice.png");
+	LOADPIX (pix_hop, hoppng, "hop"EXT);
+	LOADPIX (pix_purple, purplepng, "purple"EXT);
+	LOADPIX (pix_red, redpng, "red"EXT);
+	LOADPIX (pix_op, oppng, "op"EXT);
+	LOADPIX (pix_voice, voicepng, "voice"EXT);
 
 	/* treeview icons, no defaults, load from disk only */
-	LOADPIX_DISKONLY (pix_channel,	"channel.png");
-	LOADPIX_DISKONLY (pix_dialog,		"dialog.png");
-	LOADPIX_DISKONLY (pix_server,		"server.png");
-	LOADPIX_DISKONLY (pix_util,		"util.png");
+	LOADPIX_DISKONLY (pix_channel,	"channel"EXT);
+	LOADPIX_DISKONLY (pix_dialog,		"dialog"EXT);
+	LOADPIX_DISKONLY (pix_server,		"server"EXT);
+	LOADPIX_DISKONLY (pix_util,		"util"EXT);
 }
-

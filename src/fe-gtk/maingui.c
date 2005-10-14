@@ -2639,10 +2639,7 @@ mg_tabwindow_de_cb (GtkWidget *widget, GdkEvent *event, gpointer user_data)
 	{
 		sess = list->data;
 		if (!sess->gui->is_tab)
-		{
-			printf("mg_tabwindow_de_cb(): toplevel's remain, not quiting\n");
 			return FALSE;
-		}
 		list = list->next;
 	}
 

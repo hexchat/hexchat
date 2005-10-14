@@ -133,13 +133,9 @@ chanview_populate (chanview *cv)
 void
 chanview_set_impl (chanview *cv, int type)
 {
-	printf("chanview_set_impl(%d : %s)\n", type, type ? "TREE" : "TABS");
-
 	/* cleanup the old one */
 	if (cv->func_cleanup)
 		cv->func_cleanup (cv);
-
-	printf("chanview_set_impl cleanup done\n");
 
 	switch (type)
 	{
@@ -176,10 +172,8 @@ chanview_set_impl (chanview *cv, int type)
 
 	/* now rebuild a new tabbar or tree */
 	cv->func_init (cv);
-	printf("chanview_set_impl init done\n");
 
 	chanview_populate (cv);
-	printf("chanview_set_impl populate done\n");
 
 	cv->func_postinit (cv);
 
@@ -215,8 +209,6 @@ chanview_destroy (chanview *cv)
 
 	chanview_destroy_store (cv);
 	free (cv);
-
-	printf("destroy entire chanview %p\n", cv);
 }
 
 static void
@@ -530,7 +522,6 @@ chan_emancipate_children (chan *ch)
 		/* remove and re-add all the children, but avoid using "ch" as parent */
 		gtk_tree_model_get (GTK_TREE_MODEL (ch->cv->store), &childiter,
 								  COL_NAME, &name, COL_CHAN, &childch, COL_ATTR, &attr, -1);
-		printf("emancipate : %s\n", name);
 		ch->cv->func_remove (childch);
 		gtk_tree_store_remove (ch->cv->store, &childiter);
 		ch->cv->size--;
