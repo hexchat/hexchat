@@ -3,10 +3,10 @@
 
 extern struct xchatprefs prefs;
 
-extern int auto_connect;
-extern int skip_plugins;
 extern int xchat_is_quitting;
-extern char *connect_url;
+extern gint arg_skip_plugins;	/* command-line args */
+extern gint arg_dont_autoconnect;
+extern char *arg_url;
 
 extern session *current_sess;
 extern session *current_tab;

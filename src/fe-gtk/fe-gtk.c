@@ -106,10 +106,30 @@ root_event_cb (GdkXEvent *xev, GdkEventProperty *event, gpointer data)
 
 #endif
 
+/* === command-line parameter parsing : requires glib 2.6 === */
+
+static char *arg_cfgdir = NULL;
+static gint arg_show_autoload = 0;
+static gint arg_show_config = 0;
+static gint arg_show_version = 0;
+
+static const GOptionEntry gopt_entries[] = 
+{
+ {"no-auto",	'a', 0, G_OPTION_ARG_NONE,		&arg_dont_autoconnect, N_("Don't auto connect to servers"), NULL},
+ {"cfgdir",		'd', 0, G_OPTION_ARG_STRING,	&arg_cfgdir, N_("Use a different config directory"), "PATH"},
+ {"no-plugins",'n', 0, G_OPTION_ARG_NONE,		&arg_skip_plugins, N_("Don't auto load any plugins"), NULL},
+ {"plugindir",	'p', 0, G_OPTION_ARG_NONE,		&arg_show_autoload, N_("Show plugin auto-load directory"), NULL},
+ {"configdir",	'u', 0, G_OPTION_ARG_NONE,		&arg_show_config, N_("Show user config directory"), NULL},
+ {"url",			 0,  0, G_OPTION_ARG_STRING,	&arg_url, N_("Open an irc://server:port/channel URL"), "URL"},
+ {"version",	'v', 0, G_OPTION_ARG_NONE,		&arg_show_version, N_("Show version information"), NULL},
+ {NULL}
+};
+
 int
 fe_args (int argc, char *argv[])
 {
-	int offset = 0;
+	GError *error = NULL;
+	GOptionContext *context;
 
 #ifdef ENABLE_NLS
 	bindtextdomain (PACKAGE, LOCALEDIR);
@@ -117,71 +137,47 @@ fe_args (int argc, char *argv[])
 	textdomain (PACKAGE);
 #endif
 
-	if (argc > 1)
+	context = g_option_context_new (NULL);
+	g_option_context_add_main_entries (context, gopt_entries, PACKAGE);
+	g_option_context_add_group (context, gtk_get_option_group (TRUE));
+	g_option_context_parse (context, &argc, &argv, &error);
+
+	if (error)
 	{
-		if (!strcasecmp (argv[1], "-v") || !strcasecmp (argv[1], "--version"))
-		{
-			printf (PACKAGE" "VERSION"\n");
-			return 0;
-		}
-		if (!strcasecmp (argv[1], "-p"))
-		{
+		if (error->message)
+			printf ("%s\n", error->message);
+		return 1;
+	}
+
+	g_option_context_free (context);
+
+	if (arg_show_version)
+	{
+		printf (PACKAGE" "VERSION"\n");
+		return 0;
+	}
+
+	if (arg_show_autoload)
+	{
 #ifdef WIN32
-			/* see the chdir() below */
-			char *sl, *exe = strdup (argv[0]);
-			sl = strrchr (exe, '\\');
-			if (sl)
-			{
-				*sl = 0;
-				printf ("%s\\plugins\n", exe);
-			}
+		/* see the chdir() below */
+		char *sl, *exe = strdup (argv[0]);
+		sl = strrchr (exe, '\\');
+		if (sl)
+		{
+			*sl = 0;
+			printf ("%s\\plugins\n", exe);
+		}
 #else
-			printf ("%s\n", XCHATLIBDIR"/plugins");
+		printf ("%s\n", XCHATLIBDIR"/plugins");
 #endif
-			return 0;
-		}
-		if (!strcasecmp (argv[1], "-u"))
-		{
-			printf ("%s\n", get_xdir_fs ());
-			return 0;
-		}
-		if (!strcasecmp (argv[1], "-h") || !strcasecmp (argv[1], "--help"))
-		{
-			printf (PACKAGE" "VERSION"\n"
-					"Usage: %s [OPTIONS]... [URL]\n\n", argv[0]);
-			printf ("%s:\n"
-					"  -a,  --no-auto            %s\n"
-					"  -d,  --cfgdir %-11s %s\n"
-					"  -n,  --no-plugins         %s\n"
-					"  -p                        %s\n"
-					"  -u                        %s\n"
-					"  -v,  --version            %s\n\n"
-					"URL:\n"
-					"  irc://server:port/channel\n\n",
-						_("Options"),
-						_("don't auto connect"),
-						_("DIRECTORY"),
-						_("use a different config dir"),
-						_("don't auto load any plugins"),
-						_("show plugin auto-load dir"),
-						_("show user config dir"),
-						_("show version information")
-					);
-			return 0;
-		}
-		if (!strcasecmp (argv[1], "-a") || !strcasecmp (argv[1], "--no-auto"))
-		{
-			auto_connect = 0;
-			offset++;
-		}
-		if (argc > 1 + offset)
-		{
-			if (!strcasecmp (argv[1+offset], "-n") || !strcasecmp (argv[1+offset], "--no-plugins"))
-			{
-				skip_plugins = 1;
-				offset++;
-			}
-		}
+		return 0;
+	}
+
+	if (arg_show_config)
+	{
+		printf ("%s\n", get_xdir_fs ());
+		return 0;
 	}
 
 #ifdef WIN32
@@ -203,30 +199,23 @@ fe_args (int argc, char *argv[])
 	}
 #endif
 
-	if (argc > 2 + offset)
+	if (arg_cfgdir)	/* we want filesystem encoding */
 	{
-		if (!strcasecmp (argv[1+offset], "-d") || !strcasecmp (argv[1+offset], "--cfgdir"))
-		{
-			xdir_fs = strdup (argv[2+offset]);
-			if (xdir_fs[strlen (xdir_fs) - 1] == '/')
-				xdir_fs[strlen (xdir_fs) - 1] = 0;
-			offset += 2;
-		}
+		xdir_fs = strdup (arg_cfgdir);
+		if (xdir_fs[strlen (xdir_fs) - 1] == '/')
+			xdir_fs[strlen (xdir_fs) - 1] = 0;
+		g_free (arg_cfgdir);
 	}
-
-	if (argc > (offset + 1))
-		connect_url = strdup (argv[offset + 1]);
 
 	gtk_init (&argc, &argv);
 
 #ifdef USE_XLIB
-/*	XSelectInput (GDK_DISPLAY (), GDK_ROOT_WINDOW (), PropertyChangeMask);*/
 	gdk_window_set_events (gdk_get_default_root_window (), GDK_PROPERTY_CHANGE_MASK);
 	gdk_window_add_filter (gdk_get_default_root_window (),
 								  (GdkFilterFunc)root_event_cb, NULL);
 #endif
 
-	return 1;
+	return -1;
 }
 
 const char cursor_color_rc[] =

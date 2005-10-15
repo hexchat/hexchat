@@ -68,9 +68,10 @@ GSList *tabmenu_list = 0;
 
 static int in_xchat_exit = FALSE;
 int xchat_is_quitting = FALSE;
-int auto_connect = TRUE;
-int skip_plugins = FALSE;
-char *connect_url = NULL;
+/* command-line args */
+int arg_dont_autoconnect = FALSE;
+int arg_skip_plugins = FALSE;
+char *arg_url = NULL;
 
 struct session *current_tab;
 struct session *current_sess = 0;
@@ -275,7 +276,7 @@ irc_init (session *sess)
 	done_init = TRUE;
 
 #ifdef USE_PLUGIN
-	if (!skip_plugins)
+	if (!arg_skip_plugins)
 		plugin_auto_load (sess);	/* autoload ~/.xchat *.so */
 #endif
 	plugin_add (sess, NULL, NULL, timer_plugin_init, NULL, NULL, FALSE);
@@ -287,12 +288,12 @@ irc_init (session *sess)
 	fe_timeout_add (prefs.away_timeout * 1000, away_check, 0);
 	fe_timeout_add (500, xchat_misc_checks, 0);
 
-	if (connect_url != NULL)
+	if (arg_url != NULL)
 	{
 		char buf[512];
-		snprintf (buf, sizeof (buf), "server %s", connect_url);
+		snprintf (buf, sizeof (buf), "server %s", arg_url);
 		handle_command (sess, buf, FALSE);
-		free (connect_url);
+		g_free (arg_url);	/* from GOption */
 	}
 }
 
@@ -916,13 +917,13 @@ xchat_init (void)
 		fe_serverlist_open (NULL);
 
 	/* turned OFF via -a arg */
-	if (auto_connect)
+	if (!arg_dont_autoconnect)
 	{
 		/* do any auto connects */
 		if (!servlist_have_auto ())	/* if no new windows open .. */
 		{
 			/* and no serverlist gui ... */
-			if (prefs.slist_skip || connect_url)
+			if (prefs.slist_skip || arg_url)
 				/* we'll have to open one. */
 				new_ircwindow (NULL, NULL, SESS_SERVER, 0);
 		} else
@@ -989,13 +990,15 @@ xchat_exec (char *cmd)
 int
 main (int argc, char *argv[])
 {
+	int ret;
 
 #ifdef SOCKS
 	SOCKSinit (argv[0]);
 #endif
 
-	if (!fe_args (argc, argv))
-		return 0;
+	ret = fe_args (argc, argv);
+	if (ret != -1)
+		return ret;
 
 	load_config ();
 
