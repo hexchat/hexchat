@@ -19,7 +19,9 @@
  * x_claessens@skynet.be
  */
 
+#include "../../config.h"
 #include <dbus/dbus-glib.h>
+#include <unistd.h>
 
 #define DBUS_SERVICE "org.xchat.service"
 #define DBUS_OBJECT "/org/xchat/RemoteObject"
@@ -53,16 +55,6 @@ write_error (gchar *message, GError *err)
   g_error_free (err);
 }
 
-static void
-send_command (gchar *command)
-{
-  GError *error = NULL;
-  if (!dbus_g_proxy_call (remote_object, "command", &error,
-                          G_TYPE_STRING, command, G_TYPE_INVALID,
-                          G_TYPE_INVALID))
-    write_error ("Failed to complete command", error);
-}
-
 int
 main (int argc, char **argv)
 {
@@ -71,8 +63,7 @@ main (int argc, char **argv)
   GOptionContext *context = NULL;
 
   context = g_option_context_new ("");
-  /* FIXME - set translation domain */
-  g_option_context_add_main_entries (context, entries, NULL);
+  g_option_context_add_main_entries (context, entries, PACKAGE);
   g_option_context_parse (context, &argc, &argv, &error);
 
   if (error)
@@ -97,6 +88,24 @@ main (int argc, char **argv)
                                              DBUS_OBJECT,
                                              DBUS_INTERFACE);
 
+  if (opt_open_url)
+  {
+    gchar *command;
+    command = g_strdup_printf ("newserver %s", opt_open_url);
+    if (!dbus_g_proxy_call (remote_object, "command", &error,
+                            G_TYPE_STRING, command, G_TYPE_INVALID,
+                            G_TYPE_INVALID))
+    {
+      if (error->domain == DBUS_GERROR && error->code == DBUS_GERROR_SERVICE_UNKNOWN)
+      {
+        /* No xchat running... */
+        if (fork() == 0)
+          execlp (PACKAGE, PACKAGE, "-a", opt_open_url);
+      } else
+        write_error ("Failed to complete command", error);
+    }
+    g_free (command);
+  }
   if (opt_channel || opt_server)
     if (!dbus_g_proxy_call (remote_object, "SetContext", &error,
                             G_TYPE_STRING, opt_server,
@@ -104,14 +113,10 @@ main (int argc, char **argv)
                             G_TYPE_INVALID))
       write_error ("Failed to complete SetContext", error);
   if (opt_command)
-    send_command (opt_command);
-  if (opt_open_url)
-  {
-    gchar *command;
-    command = g_strdup_printf ("newserver %s", opt_open_url);
-    send_command (command);
-    g_free (command);
-  }
+    if (!dbus_g_proxy_call (remote_object, "command", &error,
+                            G_TYPE_STRING, opt_command, G_TYPE_INVALID,
+                            G_TYPE_INVALID))
+      write_error ("Failed to complete command", error);
   if (opt_print)
     if (!dbus_g_proxy_call (remote_object, "print", &error,
                             G_TYPE_STRING, opt_print, G_TYPE_INVALID,
