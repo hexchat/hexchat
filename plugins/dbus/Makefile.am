@@ -1,5 +1,6 @@
 EXTRA_DIST=dbus-plugin.xml
 libdir = $(xchatlibdir)/plugins
+localedir = $(datadir)/locale
 
 lib_LTLIBRARIES = dbus.la
 dbus_la_SOURCES = dbus-plugin.c
