@@ -21,6 +21,8 @@
 
 #include <dbus/dbus-glib.h>
 #include "xchat-plugin.h"
+#include <glib/gi18n.h>
+
 
 #define PNAME "xchat remote access"
 #define PDESC "plugin for remote access using DBUS";
@@ -110,7 +112,7 @@ remote_object_get_info (RemoteObject *obj, const gchar *id, gchar **ret_info, GE
   info = xchat_get_info (ph, id);
   if (!info)
   {
-    g_set_error (error, g_quark_from_string ("xchat D-BUS plugin"), 1, "%s doesn't exist", id);
+    g_set_error (error, g_quark_from_string ("xchat D-BUS plugin"), 1, _("%s doesn't exist"), id);
     return FALSE;
   }
   *ret_info = g_strdup (info);
@@ -144,7 +146,7 @@ init_dbus(void)
   bus = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
   if (!bus)
   {
-    xchat_printf (ph, "Couldn't connect to session bus : %s\n", error->message);
+    xchat_printf (ph, _("Couldn't connect to session bus : %s\n"), error->message);
     g_error_free (error);
     return FALSE;
   }
@@ -160,7 +162,7 @@ init_dbus(void)
                           G_TYPE_UINT, &request_name_result,
                           G_TYPE_INVALID))
   {
-    xchat_printf (ph, "Failed to acquire "DBUS_SERVICE" : %s\n", error->message);
+    xchat_printf (ph, _("Failed to acquire "DBUS_SERVICE" : %s\n"), error->message);
     g_error_free (error);
     return FALSE;
   }
@@ -194,6 +196,6 @@ xchat_plugin_init(xchat_plugin *plugin_handle,
   *plugin_version = PVERSION;
   success = init_dbus();
   if (success)
-    xchat_print(ph, PNAME " loaded successfully!\n");
+    xchat_print(ph, _(PNAME " loaded successfully!\n"));
   return success;
 }

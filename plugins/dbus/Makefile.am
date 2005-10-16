@@ -5,7 +5,7 @@ lib_LTLIBRARIES = dbus.la
 dbus_la_SOURCES = dbus-plugin.c
 dbus_la_LDFLAGS = -avoid-version -module 
 dbus_la_LIBADD = $(DBUS_LIBS)
-INCLUDES = $(DBUS_CFLAGS) $(COMMON_CFLAGS) -I$(srcdir)/..
+INCLUDES = $(DBUS_CFLAGS) $(COMMON_CFLAGS) -I$(srcdir)/.. -DLOCALEDIR=\"$(localedir)\"
 
 BUILT_SOURCES = dbus-plugin-glue.h
 
