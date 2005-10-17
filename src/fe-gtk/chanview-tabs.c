@@ -320,24 +320,6 @@ cv_tabs_postinit (chanview *cv)
 {
 }
 
-static char *
-truncate_tab_name (char *name, int max)
-{
-	char *buf;
-
-	if (max > 2 && g_utf8_strlen (name, -1) > max)
-	{
-		/* truncate long channel names */
-		buf = malloc (strlen (name) + 4);
-		strcpy (buf, name);
-		g_utf8_offset_to_pointer (buf, max)[0] = 0;
-		strcat (buf, "..");
-		return buf;
-	}
-
-	return NULL;
-}
-
 static void
 tab_add_sorted (chanview *cv, GtkWidget *box, GtkWidget *tab, chan *ch)
 {
@@ -540,15 +522,8 @@ static void *
 cv_tabs_add (chanview *cv, chan *ch, char *name, GtkTreeIter *parent)
 {
 	GtkWidget *but;
-	char *new_name;
 
-	new_name = truncate_tab_name (name, cv->trunc_len);
-	if (new_name)
-	{
-		but = gtk_toggle_button_new_with_label (new_name);
-		free (new_name);
-	} else
-		but = gtk_toggle_button_new_with_label (name);
+	but = gtk_toggle_button_new_with_label (name);
 	gtk_widget_set_name (but, "xchat-tab");
 	g_object_set_data (G_OBJECT (but), "c", ch);
 	/* used to trap right-clicks */
@@ -775,20 +750,13 @@ static void
 cv_tabs_rename (chan *ch, char *name)
 {
 	PangoAttrList *attr;
-	char *new_name;
 	GtkWidget *tab = ch->impl;
 
 	attr = gtk_label_get_attributes (GTK_LABEL (GTK_BIN (tab)->child));
 	if (attr)
 		pango_attr_list_ref (attr);
 
-	new_name = truncate_tab_name (name, ch->cv->trunc_len);
-	if (new_name)
-	{
-		gtk_button_set_label (GTK_BUTTON (tab), new_name);
-		free (new_name);
-	} else
-		gtk_button_set_label (GTK_BUTTON (tab), name);
+	gtk_button_set_label (GTK_BUTTON (tab), name);
 	gtk_widget_queue_resize (tab->parent->parent->parent);
 
 	if (attr)

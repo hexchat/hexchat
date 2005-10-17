@@ -25,6 +25,7 @@ struct _chanview
 	int size;			/* number of channels in view */
 
 	GtkWidget *box;	/* the box we destroy when changing implementations */
+	GtkStyle *style;	/* style used for tree */
 	chan *focused;		/* currently focused channel */
 	int trunc_len;
 
@@ -81,6 +82,23 @@ static int cv_find_number_of_chan (chanview *cv, chan *find_ch);
 
 /* ==== ABSTRACT CHANVIEW ==== */
 
+static char *
+truncate_tab_name (char *name, int max)
+{
+	char *buf;
+
+	if (max > 2 && g_utf8_strlen (name, -1) > max)
+	{
+		/* truncate long channel names */
+		buf = malloc (strlen (name) + 4);
+		strcpy (buf, name);
+		g_utf8_offset_to_pointer (buf, max)[0] = 0;
+		strcat (buf, "..");
+		return buf;
+	}
+
+	return name;
+}
 
 /* iterate through a model, into 1 depth of children */
 
@@ -219,13 +237,15 @@ chanview_box_destroy_cb (GtkWidget *box, chanview *cv)
 }
 
 chanview *
-chanview_new (int type, int trunc_len, gboolean sort, gboolean use_icons)
+chanview_new (int type, int trunc_len, gboolean sort, gboolean use_icons,
+				  GtkStyle *style)
 {
 	chanview *cv;
 
 	cv = calloc (1, sizeof (chanview));
 	cv->store = gtk_tree_store_new (4, G_TYPE_STRING, G_TYPE_POINTER,
 											  PANGO_TYPE_ATTR_LIST, GDK_TYPE_PIXBUF);
+	cv->style = style;
 	cv->box = gtk_hbox_new (0, 0);
 	cv->trunc_len = trunc_len;
 	cv->sorted = sort;
@@ -348,7 +368,17 @@ chanview_add_real (chanview *cv, char *name, void *family, void *userdata,
 chan *
 chanview_add (chanview *cv, char *name, void *family, void *userdata, gboolean allow_closure, int tag, GdkPixbuf *icon)
 {
-	return chanview_add_real (cv, name, family, userdata, allow_closure, tag, icon, NULL, NULL);
+	char *new_name;
+	chan *ret;
+
+	new_name = truncate_tab_name (name, cv->trunc_len);
+
+	ret = chanview_add_real (cv, new_name, family, userdata, allow_closure, tag, icon, NULL, NULL);
+
+	if (new_name != name)
+		free (new_name);
+
+	return ret;
 }
 
 int
@@ -426,11 +456,18 @@ chan_set_color (chan *ch, PangoAttrList *list)
 }
 
 void
-chan_rename (chan *ch, char *new_name, int trunc_len)
+chan_rename (chan *ch, char *name, int trunc_len)
 {
+	char *new_name;
+
+	new_name = truncate_tab_name (name, trunc_len);
+
 	gtk_tree_store_set (ch->cv->store, &ch->iter, COL_NAME, new_name, -1);
-	ch->cv->trunc_len = trunc_len;
 	ch->cv->func_rename (ch, new_name);
+	ch->cv->trunc_len = trunc_len;
+
+	if (new_name != name)
+		free (new_name);
 }
 
 /* this thing is overly complicated */
