@@ -33,10 +33,10 @@ our %EXPORT_TAGS = (
 		qw(hook_server hook_command hook_print hook_timer unhook),
 	],
 	util => [
-		qw(register nickcmp strip_code user_info), # misc
+		qw(register nickcmp strip_code), # misc
 		qw(print prnt printf prntf command commandf emit_print), # output
 		qw(find_context get_context set_context), # context
-		qw(get_info get_prefs get_list context_info), # input
+		qw(get_info get_prefs get_list context_info user_info), # input
 	],
 );
 
@@ -499,6 +499,7 @@ sub unload {
 		delete $scripts{$package};
 		return Xchat::EAT_ALL;
 	} else {
+		Xchat::print( qq{"$file" is not loaded.\n} );
 		return Xchat::EAT_NONE;
 	}
 }
