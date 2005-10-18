@@ -27,6 +27,10 @@
 #define SMOOTH_SCROLL				/* line-by-line or pixel scroll? */
 #define SCROLL_HACK					/* use XCopyArea scroll, or full redraw? */
 #undef COLOR_HILIGHT				/* Color instead of underline? */
+/* Italic is buggy because it assumes drawing an italic string will have
+   identical extents to the normal font. This is only true some of the
+   time, so we can't use this hack yet. */
+#undef ITALIC							/* support Italic? */
 #define GDK_MULTIHEAD_SAFE
 #define USE_DB							/* double buffer */
 
@@ -234,7 +238,9 @@ static void
 backend_font_close (GtkXText *xtext)
 {
 	XftFontClose (GDK_WINDOW_XDISPLAY (xtext->draw_buf), xtext->font);
+#ifdef ITALIC
 	XftFontClose (GDK_WINDOW_XDISPLAY (xtext->draw_buf), xtext->ifont);
+#endif
 }
 
 static void
@@ -319,7 +325,9 @@ backend_font_open (GtkXText *xtext, char *name)
 	Display *dis = GDK_WINDOW_XDISPLAY (xtext->draw_buf);
 
 	xtext->font = backend_font_open_real (dis, name, FALSE);
+#ifdef ITALIC
 	xtext->ifont = backend_font_open_real (dis, name, TRUE);
+#endif
 }
 
 inline static int
@@ -374,8 +382,10 @@ backend_draw_text (GtkXText *xtext, int dofill, GdkGC *gc, int x, int y,
 	}
 
 	font = xtext->font;
+#ifdef ITALIC
 	if (xtext->italics)
 		font = xtext->ifont;
+#endif
 
 	draw_func (xtext->xftdraw, xtext->xft_fg, font, x, y, str, len);
 
@@ -436,7 +446,9 @@ static void
 backend_font_close (GtkXText *xtext)
 {
 	pango_font_description_free (xtext->font->font);
+#ifdef ITALIC
 	pango_font_description_free (xtext->font->ifont);
+#endif
 }
 
 static void
@@ -491,8 +503,10 @@ backend_font_open (GtkXText *xtext, char *name)
 		xtext->font = NULL;
 		return;
 	}
+#ifdef ITALIC
 	xtext->font->ifont = backend_font_open_real (name);
 	pango_font_description_set_style (xtext->font->ifont, PANGO_STYLE_ITALIC);
+#endif
 
 	backend_init (xtext);
 	pango_layout_set_font_description (xtext->layout, xtext->font->font);
@@ -577,8 +591,10 @@ backend_draw_text (GtkXText *xtext, int dofill, GdkGC *gc, int x, int y,
 	GdkColor col;
 	PangoLayoutLine *line;
 
+#ifdef ITALIC
 	if (xtext->italics)
 		pango_layout_set_font_description (xtext->layout, xtext->font->ifont);
+#endif
 
 	pango_layout_set_text (xtext->layout, str, len);
 
@@ -611,8 +627,10 @@ backend_draw_text (GtkXText *xtext, int dofill, GdkGC *gc, int x, int y,
 	if (xtext->bold)
 		xtext_draw_layout_line (xtext->draw_buf, gc, x + 1, y, line);
 
+#ifdef ITALIC
 	if (xtext->italics)
 		pango_layout_set_font_description (xtext->layout, xtext->font->font);
+#endif
 }
 
 /*static void

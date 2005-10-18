@@ -184,15 +184,19 @@ inbound_privmsg (server *serv, char *from, char *ip, char *text, int id)
 		return;
 	}
 
-	if (id)
+	idtext[0] = 0;
+	if (serv->have_idmsg)
 	{
-		safe_strcpy (idtext, prefs.irc_id_ytext, sizeof (idtext));
-	} else
-	{
-		safe_strcpy (idtext, prefs.irc_id_ntext, sizeof (idtext));
+		if (id)
+		{
+			safe_strcpy (idtext, prefs.irc_id_ytext, sizeof (idtext));
+		} else
+		{
+			safe_strcpy (idtext, prefs.irc_id_ntext, sizeof (idtext));
+		}
+		/* convert codes like %C,%U to the proper ones */
+		check_special_chars (idtext, TRUE);
 	}
-	/* convert codes like %C,%U to the proper ones */
-	check_special_chars (idtext, TRUE);
 
 	sess = find_session_from_nick (from, serv);
 	if (!sess)
@@ -409,15 +413,19 @@ inbound_chanmsg (server *serv, session *sess, char *chan, char *from, char *text
 		return;
 	}
 
-	if (id)
+	idtext[0] = 0;
+	if (serv->have_idmsg)
 	{
-		safe_strcpy (idtext, prefs.irc_id_ytext, sizeof (idtext));
-	} else
-	{
-		safe_strcpy (idtext, prefs.irc_id_ntext, sizeof (idtext));
+		if (id)
+		{
+			safe_strcpy (idtext, prefs.irc_id_ytext, sizeof (idtext));
+		} else
+		{
+			safe_strcpy (idtext, prefs.irc_id_ntext, sizeof (idtext));
+		}
+		/* convert codes like %C,%U to the proper ones */
+		check_special_chars (idtext, TRUE);
 	}
-	/* convert codes like %C,%U to the proper ones */
-	check_special_chars (idtext, TRUE);
 
 	if (sess->type != SESS_DIALOG)
 		if (prefs.beepchans || sess->beep)
