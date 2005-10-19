@@ -162,7 +162,7 @@ main (int argc, char **argv)
       else if (type == 2)
         g_printf ("%s = %d\n", opt_prefs, i);
       else
-        g_printf ("%s = %s\n", opt_prefs, i ? _("TRUE") : _("FALSE"));
+        g_printf ("%s = %s\n", opt_prefs, i ? "TRUE" : "FALSE");
     }
   }
 
