@@ -29,6 +29,7 @@
 #include <gtk/gtkclist.h>
 #include <gtk/gtkentry.h>
 #include <gtk/gtkhbox.h>
+#include <gtk/gtkhbbox.h>
 #include <gtk/gtkstock.h>
 #include <gtk/gtkvbox.h>
 #include <gtk/gtkvpaned.h>
@@ -414,23 +415,17 @@ pevent_dialog_show ()
 
 	pevent_dialog_fill (pevent_dialog_list);
 
-	hbox = gtk_hbox_new (0, 2);
-	gtk_box_pack_end (GTK_BOX (vbox), hbox, 0, 0, 0);
-	wid = gtk_button_new_with_label (_("Save"));
+	hbox = gtk_hbutton_box_new ();
+	gtk_box_pack_end (GTK_BOX (vbox), hbox, 0, 0, 2);
+	/*wid = gtk_button_new_with_label (_("Save"));
 	gtk_box_pack_end (GTK_BOX (hbox), wid, 0, 0, 0);
 	gtk_signal_connect (GTK_OBJECT (wid), "clicked",
 							  GTK_SIGNAL_FUNC (pevent_save_cb), NULL);
-	gtk_widget_show (wid);
-	wid = gtk_button_new_with_label (_("Save As"));
-	gtk_box_pack_end (GTK_BOX (hbox), wid, 0, 0, 0);
-	gtk_signal_connect (GTK_OBJECT (wid), "clicked",
-							  GTK_SIGNAL_FUNC (pevent_save_cb), (void *) 1);
-	gtk_widget_show (wid);
-	wid = gtk_button_new_with_label (_("Load From"));
-	gtk_box_pack_end (GTK_BOX (hbox), wid, 0, 0, 0);
-	gtk_signal_connect (GTK_OBJECT (wid), "clicked",
-							  GTK_SIGNAL_FUNC (pevent_load_cb), (void *) 0);
-	gtk_widget_show (wid);
+	gtk_widget_show (wid);*/
+	gtkutil_button (hbox, GTK_STOCK_SAVE_AS, NULL, pevent_save_cb,
+						 (void *) 1, _("Save As..."));
+	gtkutil_button (hbox, GTK_STOCK_OPEN, NULL, pevent_load_cb,
+						 (void *) 0, _("Load From..."));
 	wid = gtk_button_new_with_label (_("Test All"));
 	gtk_box_pack_end (GTK_BOX (hbox), wid, 0, 0, 0);
 	gtk_signal_connect (GTK_OBJECT (wid), "clicked",

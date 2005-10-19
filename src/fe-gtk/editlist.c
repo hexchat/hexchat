@@ -296,14 +296,21 @@ editlist_gui_close (void)
 }
 
 void
-editlist_gui_open (GSList * list, char *title, char *wmclass, char *file,
-						 char *help)
+editlist_gui_open (char *title1, char *title2, GSList * list, char *title, char *wmclass,
+						 char *file, char *help)
 {
 	gchar *titles[2];
 	GtkWidget *vbox, *hbox, *button;
 
-	titles[0] = _("Name");
-	titles[1] = _("Command");
+	if (title1)
+	{
+		titles[0] = title1;
+		titles[1] = title2;
+	} else
+	{
+		titles[0] = _("Name");
+		titles[1] = _("Command");
+	}
 
 	if (editlist_gui_window)
 	{

@@ -1232,7 +1232,7 @@ mg_create_color_menu (GtkWidget *menu, session *sess)
 
 	mg_markup_item (submenu, _("<b>Bold</b>"), 100);
 	mg_markup_item (submenu, _("<u>Underline</u>"), 101);
-	mg_markup_item (submenu, _("<i>Italic</i>"), 102);
+	/*mg_markup_item (submenu, _("<i>Italic</i>"), 102);*/
 	mg_markup_item (submenu, _("Normal"), 103);
 
 	subsubmenu = mg_submenu (submenu, _("Colors 0-7"));
@@ -1364,10 +1364,11 @@ mg_dnd_drop_file (session *sess, char *target, char *uri)
 static void
 mg_dialog_dnd_drop (GtkWidget * widget, GdkDragContext * context, gint x,
 						  gint y, GtkSelectionData * selection_data, guint info,
-						  guint32 time, session *sess)
+						  guint32 time, gpointer ud)
 {
-	/* sess->channel is really the nickname of dialogs */
-	mg_dnd_drop_file (sess, sess->channel, selection_data->data);
+	if (current_sess->type == SESS_DIALOG)
+		/* sess->channel is really the nickname of dialogs */
+		mg_dnd_drop_file (current_sess, current_sess->channel, selection_data->data);
 }
 
 /* add a tabbed channel */
@@ -1377,10 +1378,6 @@ mg_add_chan (session *sess)
 {
 	GdkPixbuf *icon;
 	char *name = _("<none>");
-	static const GtkTargetEntry dnd_targets[] =
-	{
-		{"text/uri-list", 0, 1}
-	};
 
 	if (sess->channel[0])
 		name = sess->channel;
@@ -1411,16 +1408,6 @@ mg_add_chan (session *sess)
 		gtk_xtext_set_time_stamp (sess->res->buffer, prefs.timestamp);
 		sess->res->user_model = userlist_create_model ();
 	}
-
-#ifndef WIN32	/* needs more work */
-	if (sess->type == SESS_DIALOG)
-	{
-		gtk_drag_dest_set (sess->gui->xtext, GTK_DEST_DEFAULT_ALL, dnd_targets,
-								 1, GDK_ACTION_MOVE | GDK_ACTION_COPY | GDK_ACTION_LINK);
-		g_signal_connect (G_OBJECT (sess->gui->xtext), "drag_data_received",
-								G_CALLBACK (mg_dialog_dnd_drop), sess);
-	}
-#endif
 }
 
 static void
@@ -2105,10 +2092,15 @@ mg_xtext_error (int type)
 }
 
 static void
-mg_create_textarea (session_gui *gui, GtkWidget *box)
+mg_create_textarea (session *sess, GtkWidget *box)
 {
 	GtkWidget *inbox, *vbox, *frame;
 	GtkXText *xtext;
+	session_gui *gui = sess->gui;
+	static const GtkTargetEntry dnd_targets[] =
+	{
+		{"text/uri-list", 0, 1}
+	};
 
 	vbox = gtk_vbox_new (FALSE, 0);
 	gtk_container_add (GTK_CONTAINER (box), vbox);
@@ -2135,6 +2127,13 @@ mg_create_textarea (session_gui *gui, GtkWidget *box)
 
 	gui->vscrollbar = gtk_vscrollbar_new (GTK_XTEXT (xtext)->adj);
 	gtk_box_pack_start (GTK_BOX (inbox), gui->vscrollbar, FALSE, TRUE, 0);
+
+#ifndef WIN32	/* needs more work */
+	gtk_drag_dest_set (gui->xtext, GTK_DEST_DEFAULT_ALL, dnd_targets, 1,
+							 GDK_ACTION_MOVE | GDK_ACTION_COPY | GDK_ACTION_LINK);
+	g_signal_connect (G_OBJECT (gui->xtext), "drag_data_received",
+							G_CALLBACK (mg_dialog_dnd_drop), NULL);
+#endif
 }
 
 static GtkWidget *
@@ -2266,7 +2265,7 @@ mg_create_center (session *sess, session_gui *gui, GtkWidget *box)
 
 		gtk_container_add (GTK_CONTAINER (box), paned);
 
-		mg_create_textarea (gui, vbox);
+		mg_create_textarea (sess, vbox);
 		mg_create_entry (sess, vbox);
 
 		hbox = gtk_hbox_new (FALSE, 0);
@@ -2295,7 +2294,7 @@ mg_create_center (session *sess, session_gui *gui, GtkWidget *box)
 		gtk_container_add (GTK_CONTAINER (hbox), vbox);
 		mg_create_topicbar (sess, vbox, NULL);
 
-		mg_create_textarea (gui, vbox);
+		mg_create_textarea (sess, vbox);
 		mg_create_userlist (gui, hbox, TRUE);
 		mg_create_entry (sess, vbox);
 	}
@@ -2327,7 +2326,7 @@ mg_place_chanview (session_gui *gui, GtkWidget *tabs_box, int pos)
 	gtk_table_set_col_spacing (GTK_TABLE (gui->main_table), 1, 0);
 	gtk_table_set_row_spacing (GTK_TABLE (gui->main_table), 0, 0);
 
-	if (prefs.tab_layout == 2)
+	if (prefs.tab_layout == 2 && pos != 2 && pos != 3)
 		pos = 2;		/* force left side for treeview */
 	switch (pos)
 	{
@@ -2368,7 +2367,7 @@ mg_set_tabs_pos (session_gui *gui, int pos)
 			return;
 	}
 
-	if (prefs.tab_layout == 2)
+	if (prefs.tab_layout == 2 && pos != 2 && pos != 3)
 		pos = 2;		/* force left side for treeview */
 
 	tabs_box = chanview_get_box (gui->chanview);
@@ -2490,7 +2489,7 @@ mg_create_tabs (session_gui *gui)
 											prefs.tab_sort, prefs.tab_icons,
 											prefs.style_namelistgad ? input_style : NULL);
 	chanview_set_callbacks (gui->chanview, mg_switch_tab_cb, mg_xbutton_cb,
-									mg_tab_contextmenu_cb, mg_tabs_compare);
+									mg_tab_contextmenu_cb, (void *)mg_tabs_compare);
 	mg_place_chanview (gui, chanview_get_box (gui->chanview), prefs.tabs_position);
 }
 
