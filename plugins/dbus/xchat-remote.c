@@ -65,9 +65,9 @@ main (int argc, char **argv)
   GOptionContext *context = NULL;
 
 #ifdef ENABLE_NLS
-	bindtextdomain (PACKAGE, LOCALEDIR);
-	bind_textdomain_codeset (PACKAGE, "UTF-8");
-	textdomain (PACKAGE);
+  bindtextdomain (PACKAGE, LOCALEDIR);
+  bind_textdomain_codeset (PACKAGE, "UTF-8");
+  textdomain (PACKAGE);
 #endif
 
   context = g_option_context_new (NULL);

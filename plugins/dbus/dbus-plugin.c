@@ -110,11 +110,6 @@ remote_object_get_info (RemoteObject *obj, const gchar *id, gchar **ret_info, GE
 {
   const gchar *info = NULL;
   info = xchat_get_info (ph, id);
-  if (!info)
-  {
-    g_set_error (error, g_quark_from_string ("xchat D-BUS plugin"), 1, _("%s doesn't exist"), id);
-    return FALSE;
-  }
   *ret_info = g_strdup (info);
   return TRUE;
 }
