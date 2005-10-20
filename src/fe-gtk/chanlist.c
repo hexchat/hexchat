@@ -508,7 +508,7 @@ chanlist_filereq_done (struct server *serv, char *file)
 	if (fh == -1)
 		return;
 
-	snprintf (buf, sizeof buf, "X-Chat Channel List: %s - %s\n",
+	snprintf (buf, sizeof buf, "XChat Channel List: %s - %s\n",
 				 serv->servername, ctime (&t));
 	write (fh, buf, strlen (buf));
 
@@ -606,7 +606,7 @@ chanlist_opengui (struct server *serv, int do_refresh)
 		return;
 	}
 
-	snprintf (tbuf, sizeof tbuf, _("X-Chat: Channel List (%s)"),
+	snprintf (tbuf, sizeof tbuf, _("XChat: Channel List (%s)"),
 				 serv->servername);
 
 	serv->gui->chanlist_data_stored_rows = NULL;

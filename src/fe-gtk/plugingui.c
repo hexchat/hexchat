@@ -220,7 +220,7 @@ plugingui_open (void)
 	action_area = GTK_DIALOG (plugin_window)->action_area;
 	gtk_container_set_border_width (GTK_CONTAINER (vbox), 4);
 	gtk_window_set_position (GTK_WINDOW (plugin_window), GTK_WIN_POS_CENTER);
-	gtk_window_set_title (GTK_WINDOW (plugin_window), _("X-Chat: Plugins and Scripts"));
+	gtk_window_set_title (GTK_WINDOW (plugin_window), _("XChat: Plugins and Scripts"));
 
 	view = plugingui_treeview_new (vbox);
 	g_object_set_data (G_OBJECT (plugin_window), "view", view);

@@ -953,7 +953,7 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 
 	editwindow = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gtk_container_set_border_width (GTK_CONTAINER (editwindow), 4);
-	snprintf (buf, sizeof (buf), _("X-Chat: Edit %s"), net->name);
+	snprintf (buf, sizeof (buf), _("XChat: Edit %s"), net->name);
 	gtk_window_set_title (GTK_WINDOW (editwindow), buf);
 	gtk_window_set_default_size (GTK_WINDOW (editwindow), 354, 0);
 	gtk_window_set_position (GTK_WINDOW (editwindow), GTK_WIN_POS_MOUSE);
@@ -1205,7 +1205,7 @@ servlist_open_networks (void)
 
 	servlist = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gtk_container_set_border_width (GTK_CONTAINER (servlist), 4);
-	gtk_window_set_title (GTK_WINDOW (servlist), _("X-Chat: Server List"));
+	gtk_window_set_title (GTK_WINDOW (servlist), _("XChat: Server List"));
 #ifdef WIN32
 	gtk_window_set_default_size (GTK_WINDOW (servlist), 324, 426);
 #else

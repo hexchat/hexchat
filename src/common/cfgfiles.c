@@ -380,6 +380,7 @@ const struct prefs vars[] = {
 
 	{"completion_amount", P_OFFINT (completion_amount), TYPE_INT},
 	{"completion_auto", P_OFFINT (nickcompletion), TYPE_BOOL},
+	{"completion_sort", P_OFFINT (completion_sort), TYPE_INT},
 	{"completion_suffix", P_OFFSET (nick_suffix), TYPE_STR},
 
 	{"dcc_auto_chat", P_OFFINT (autodccchat), TYPE_INT},

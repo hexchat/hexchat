@@ -860,7 +860,7 @@ fe_dcc_open_chat_win (int passive)
 	}
 
 	dcccwin.window =
-			  mg_create_generic_tab ("DCCChat", _("X-Chat: DCC Chat List"),
+			  mg_create_generic_tab ("DCCChat", _("XChat: DCC Chat List"),
 						FALSE, TRUE, close_dcc_chat_window, NULL, 550, 180, &vbox, 0);
 
 	dcccwin.list = gtkutil_clist_new (5, titles, vbox, GTK_POLICY_ALWAYS,

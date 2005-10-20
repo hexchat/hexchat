@@ -89,7 +89,7 @@ search_open (session * sess)
 	GtkWidget *win, *hbox, *vbox, *entry, *wid;
 
 	last = NULL;
-	win = mg_create_generic_tab ("search", _("X-Chat: Search"), TRUE, FALSE,
+	win = mg_create_generic_tab ("search", _("XChat: Search"), TRUE, FALSE,
 								 NULL, NULL, 0, 0, &vbox, 0);
 
 	gtk_container_set_border_width (GTK_CONTAINER (win), 20);

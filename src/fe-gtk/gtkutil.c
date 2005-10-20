@@ -586,7 +586,7 @@ gtkutil_window_new (char *title, char *role, int width, int height, int flags)
 	win = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gtkutil_set_icon (win);
 #ifdef WIN32
-	gtk_window_set_wmclass (GTK_WINDOW (win), "X-Chat", "xchat");
+	gtk_window_set_wmclass (GTK_WINDOW (win), "XChat", "xchat");
 #endif
 	gtk_window_set_title (GTK_WINDOW (win), title);
 	gtk_window_set_default_size (GTK_WINDOW (win), width, height);

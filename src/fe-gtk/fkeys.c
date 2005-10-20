@@ -698,7 +698,7 @@ key_dialog_show ()
 	}
 
 	key_dialog =
-			  mg_create_generic_tab ("editkeys", _("X-Chat: Keyboard Shortcuts"),
+			  mg_create_generic_tab ("editkeys", _("XChat: Keyboard Shortcuts"),
 							TRUE, FALSE, key_dialog_close, NULL, 560, 330, &vbox, 0);
 
 	hbox = gtk_hbox_new (0, 2);
@@ -1394,6 +1394,19 @@ key_action_tab_clean(void)
 /* Used in the followig completers */
 #define COMP_BUF 2048
 
+/* For use in sorting the user list for completion */
+static int
+talked_recent_cmp (struct User *a, struct User *b)
+{
+	if (a->lasttalk < b->lasttalk)
+		return -1;
+
+	if (a->lasttalk > b->lasttalk)
+		return 1;
+
+	return 0;
+}
+
 static int
 key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 							struct session *sess)
@@ -1484,6 +1497,8 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 		{
 			gcomp = g_completion_new((GCompletionFunc)gcomp_nick_func);
 			tmp_list = userlist_double_list(sess); /* create a temp list so we can free the memory */
+			if (prefs.completion_sort == 1)	/* sort in last-talk order? */
+				tmp_list = g_list_sort (tmp_list, (void *)talked_recent_cmp);
 		}
 		else
 		{

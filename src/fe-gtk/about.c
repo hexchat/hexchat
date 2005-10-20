@@ -99,7 +99,7 @@ menu_about (GtkWidget * wid, gpointer sess)
 	about = gtk_dialog_new ();
 	gtk_window_set_position (GTK_WINDOW (about), GTK_WIN_POS_CENTER);
 	gtk_window_set_resizable (GTK_WINDOW (about), FALSE);
-	gtk_window_set_title (GTK_WINDOW (about), _("About X-Chat"));
+	gtk_window_set_title (GTK_WINDOW (about), _("About XChat"));
 	if (parent_window)
 		gtk_window_set_transient_for (GTK_WINDOW (about), parent_window);
 	g_signal_connect (G_OBJECT (about), "destroy",
@@ -115,7 +115,7 @@ menu_about (GtkWidget * wid, gpointer sess)
 	gtk_container_add (GTK_CONTAINER (vbox), label);
 	g_get_charset (&locale);
 	(snprintf) (buf, sizeof (buf),
-				"<span size=\"x-large\"><b>X-Chat "VERSION"</b></span>\n\n"
+				"<span size=\"x-large\"><b>XChat "VERSION"</b></span>\n\n"
 				"%s\n\n"
 				"%s\n"
 				"<b>Charset</b>: %s "

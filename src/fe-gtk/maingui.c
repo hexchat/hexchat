@@ -487,7 +487,10 @@ mg_focus (session *sess)
 		sess->nick_said = FALSE;
 		sess->msg_said = FALSE;
 		sess->new_data = FALSE;
-		fe_set_tab_color (sess, 0, FALSE);
+		/* when called via mg_changui_new, is_tab might be true, but
+			sess->res->tab is still NULL. */
+		if (sess->res->tab)
+			fe_set_tab_color (sess, 0, FALSE);
 	}
 }
 
