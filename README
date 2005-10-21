@@ -1,6 +1,6 @@
 X-Chat README
 ~~~~~~~~~~~~~
- X-Chat Copyright (c) 1998-2004 By Peter Zelezny.
+ X-Chat Copyright (c) 1998-2005 By Peter Zelezny.
 
  This program is released under the GPL with the additional exemption
  that compiling, linking, and/or using OpenSSL is allowed. You may
@@ -18,7 +18,7 @@ What is it?
 
 Requirements:
 ~~~~~~~~~~~~~
- * GTK+ 2.x (this is available at http://www.gtk.org).
+ * GTK+ 2.6 (this is available at http://www.gtk.org).
 
  X-Chat is known to work on, at least:
 
@@ -45,7 +45,7 @@ Notes for packagers:
 Python Scripts:
 ~~~~~~~~~~~~~~~
  Scripts for 1.8.x are not compatible, and a brand new interface has be
- written. Documentation can be found here: http://xchat.org/docs.html.
+ written. Documentation can be found here: http://xchat.org/docs/.
  Consider using the Python interface for your scripts, it's a very nice
  API, allows for loading/unloading individual scripts, and gives you
  almost all the features of the C-Plugin API.
@@ -98,3 +98,6 @@ Control Codes:
            (Eg: %007 sends a BEEP)
 
  %Cforeground,background will produce a color code, eg: %C03,10
+
+ These are now disabled by default (see Settings > Prefs > Input Box).
+ Instead you can insert the real codes via ctrl-k, ctrl-b and ctrl-o.

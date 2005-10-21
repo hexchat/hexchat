@@ -306,7 +306,9 @@ inbound_action (session *sess, char *chan, char *from, char *text, int fromme)
 	session *def = sess;
 	server *serv = sess->server;
 	int beep = FALSE;
+	struct User *user;
 	int hilight = FALSE;
+	char nickchar[2] = "\000";
 
 	if (!fromme)
 	{
@@ -342,6 +344,13 @@ inbound_action (session *sess, char *chan, char *from, char *text, int fromme)
 		}
 	}
 
+	user = userlist_find (sess, from);
+	if (user)
+	{
+		nickchar[0] = user->prefix[0];
+		user->lasttalk = time (0);
+	}
+
 	if (!fromme)
 	{
 		hilight = is_hilight (from, text, sess, serv);
@@ -353,7 +362,7 @@ inbound_action (session *sess, char *chan, char *from, char *text, int fromme)
 
 		if (hilight)
 		{
-			EMIT_SIGNAL (XP_TE_HCHANACTION, sess, from, text, NULL, NULL, 0);
+			EMIT_SIGNAL (XP_TE_HCHANACTION, sess, from, text, nickchar, NULL, 0);
 			return;
 		}
 	}
@@ -362,10 +371,10 @@ inbound_action (session *sess, char *chan, char *from, char *text, int fromme)
 	{
 		char tbuf[NICKLEN + 4];
 		snprintf (tbuf, sizeof (tbuf), "\003%d%s", color_of (from), from);
-		EMIT_SIGNAL (XP_TE_CHANACTION, sess, tbuf, text, NULL, NULL, 0);
+		EMIT_SIGNAL (XP_TE_CHANACTION, sess, tbuf, text, nickchar, NULL, 0);
 	} else
 	{
-		EMIT_SIGNAL (XP_TE_CHANACTION, sess, from, text, NULL, NULL, 0);
+		EMIT_SIGNAL (XP_TE_CHANACTION, sess, from, text, nickchar, NULL, 0);
 	}
 }
 

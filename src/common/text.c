@@ -427,6 +427,7 @@ static char * const pevt_join_help[] = {
 static char * const pevt_chanaction_help[] = {
 	N_("Nickname"),
 	N_("The action"),
+	N_("Mode char"),
 };
 
 static char * const pevt_chanmsg_help[] = {

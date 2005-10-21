@@ -17,10 +17,10 @@ N_("%C22*%O$tCannot join%C26 %B$1 %O(You are banned).")},
 {"Change Nick", pevt_changenick_help, 2, 
 N_("%C22*%O$t$1 is now known as $2")},
 
-{"Channel Action", pevt_chanaction_help, 2, 
+{"Channel Action", pevt_chanaction_help, 3, 
 N_("%C18*$t$1%O $2")},
 
-{"Channel Action Hilight", pevt_chanaction_help, 2, 
+{"Channel Action Hilight", pevt_chanaction_help, 3, 
 N_("%C21*%O$t%C21%B$1%O%C21 $2")},
 
 {"Channel Ban", pevt_chanban_help, 2, 
