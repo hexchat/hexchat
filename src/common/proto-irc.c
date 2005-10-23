@@ -862,8 +862,14 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 		case WORDL('I','N','V','I'):
 			if (ignore_check (word[1], IG_INVI))
 				return;
-			EMIT_SIGNAL (XP_TE_INVITED, sess, word[4] + 1, nick, serv->servername,
-							 NULL, 0);
+			
+			if (word[4][0] == ':')
+				EMIT_SIGNAL (XP_TE_INVITED, sess, word[4] + 1, nick,
+								 serv->servername, NULL, 0);
+			else
+				EMIT_SIGNAL (XP_TE_INVITED, sess, word[4], nick,
+								 serv->servername, NULL, 0);
+				
 			return;
 
 		case WORDL('N','O','T','I'):

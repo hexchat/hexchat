@@ -2449,6 +2449,12 @@ static int
 cmd_newserver (struct session *sess, char *tbuf, char *word[],
 					char *word_eol[])
 {
+	if (strcmp (word[2], "-noconnect") == 0)
+	{
+		new_ircwindow (NULL, word[3], SESS_SERVER, 0);
+		return TRUE;
+	}
+	
 	sess = new_ircwindow (NULL, NULL, SESS_SERVER, 0);
 	cmd_server (sess, tbuf, word, word_eol);
 	return TRUE;
