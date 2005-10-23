@@ -29,7 +29,7 @@ void inbound_chanmsg (server *serv, session *sess, char *chan, char *from, char 
 void clear_channel (session *sess);
 void set_topic (session *sess, char *topic);
 void inbound_privmsg (server *serv, char *from, char *ip, char *text, int id);
-void inbound_action (session *sess, char *chan, char *from, char *text, int fromme);
+void inbound_action (session *sess, char *chan, char *from, char *text, int fromme, int id);
 void inbound_newnick (server *serv, char *nick, char *newnick, int quiet);
 void do_dns (session *sess, char *nick, char *host);
 void inbound_identified (server *serv);

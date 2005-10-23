@@ -918,7 +918,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 						if (strncasecmp (text, "DCC ", 4) == 0)
 							/* redo this with handle_quotes TRUE */
 							process_data_init (word[1], word_eol[1], word, word_eol, TRUE);
-						ctcp_handle (sess, to, nick, text, word, word_eol);
+						ctcp_handle (sess, to, nick, text, word, word_eol, id);
 					} else
 					{
 						if (is_channel (serv, to))

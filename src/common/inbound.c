@@ -146,6 +146,24 @@ inbound_open_dialog (server *serv, char *from)
 	return sess;
 }
 
+static void
+inbound_make_idtext (server *serv, char *idtext, int max, int id)
+{
+	idtext[0] = 0;
+	if (serv->have_idmsg)
+	{
+		if (id)
+		{
+			safe_strcpy (idtext, prefs.irc_id_ytext, max);
+		} else
+		{
+			safe_strcpy (idtext, prefs.irc_id_ntext, max);
+		}
+		/* convert codes like %C,%U to the proper ones */
+		check_special_chars (idtext, TRUE);
+	}
+}
+
 void
 inbound_privmsg (server *serv, char *from, char *ip, char *text, int id)
 {
@@ -184,19 +202,7 @@ inbound_privmsg (server *serv, char *from, char *ip, char *text, int id)
 		return;
 	}
 
-	idtext[0] = 0;
-	if (serv->have_idmsg)
-	{
-		if (id)
-		{
-			safe_strcpy (idtext, prefs.irc_id_ytext, sizeof (idtext));
-		} else
-		{
-			safe_strcpy (idtext, prefs.irc_id_ntext, sizeof (idtext));
-		}
-		/* convert codes like %C,%U to the proper ones */
-		check_special_chars (idtext, TRUE);
-	}
+	inbound_make_idtext (serv, idtext, sizeof (idtext), id);
 
 	sess = find_session_from_nick (from, serv);
 	if (!sess)
@@ -301,7 +307,7 @@ is_hilight (char *from, char *text, session *sess, server *serv)
 }
 
 void
-inbound_action (session *sess, char *chan, char *from, char *text, int fromme)
+inbound_action (session *sess, char *chan, char *from, char *text, int fromme, int id)
 {
 	session *def = sess;
 	server *serv = sess->server;
@@ -422,19 +428,7 @@ inbound_chanmsg (server *serv, session *sess, char *chan, char *from, char *text
 		return;
 	}
 
-	idtext[0] = 0;
-	if (serv->have_idmsg)
-	{
-		if (id)
-		{
-			safe_strcpy (idtext, prefs.irc_id_ytext, sizeof (idtext));
-		} else
-		{
-			safe_strcpy (idtext, prefs.irc_id_ntext, sizeof (idtext));
-		}
-		/* convert codes like %C,%U to the proper ones */
-		check_special_chars (idtext, TRUE);
-	}
+	inbound_make_idtext (serv, idtext, sizeof (idtext), id);
 
 	if (sess->type != SESS_DIALOG)
 		if (prefs.beepchans || sess->beep)
