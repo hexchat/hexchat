@@ -22,7 +22,7 @@ p { margin: 3% }
 </head>
 <body>
 
-<h1>X-Chat 2.4 Frequently Asked Questions</h1>
+<h1>X-Chat 2.6 Frequently Asked Questions</h1>
 
 <h2>1. Section One: Compiling and Installing.</h2>
 <p>
@@ -191,6 +191,13 @@ some PNG files in ${PREFIX}/share/xchat. ${PREFIX} is usually /usr, so that
 would translate to /usr/share/xchat. If you compiled from source tarball without
 specifying a prefix, it will be /usr/local instead.
 <br/><br/>Call the files op.png, hop.png, voice.png, red.png and purple.png. Red and Purple are used for Channel Owner and Founder. They will be loaded at the next startup.
+<br/><br/>
+<u>XChat 2.6.0+ on Windows</u>: On Windows the images will need to be ICO files:<br/>
+C:\Program Files\XChat\Icons\op.ico<br/>
+C:\Program Files\XChat\Icons\hop.ico<br/>
+C:\Program Files\XChat\Icons\voice.ico<br/>
+C:\Program Files\XChat\Icons\red.ico<br/>
+C:\Program Files\XChat\Icons\purple.ico<br/>
 </p>
 
 <br/><h3><a name="q28">8. How do I set different ban types?</a></h3>
@@ -290,7 +297,7 @@ in the UserCommands GUI.</li>
 containing commands on each line.</li>
 <li>
 Separate your commands with CTRL-SHIFT-a. This will appear as a little box
-with numbers on it (doesn't work on Windows).</li>
+with numbers on it.</li>
 </ul>
 
 <br/><h3><a name="q215">15. How do I enable Emacs key bindings in XChat?</a></h3>
@@ -319,8 +326,8 @@ the plugin for running those scripts isn't loaded.
 <li>The Perl, Python and TCL plugins come with XChat in the same archive.</li>
 <li>During ./configure, it will check for Perl, Python and TCL libs and headers, you should check if it failed there.</li>
 <li>The plugins directory can be found by issuing the shell command
-	<pre>strings `which xchat` | grep plugins</pre>
-	Be sure to use the correct quotes.</li>
+	<pre>xchat -p</pre>
+</li>
 <li>All *.so files are auto-loaded at startup (*.dll on Windows).</li>
 <li>If you downloaded a binary package, maybe the packager decided to exclude the Perl or Python plugins.</li>
 </ul>
