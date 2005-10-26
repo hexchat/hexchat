@@ -1,5 +1,5 @@
 
-EXTRA_DIST=alt_completion.pl ignore.pl sample_script.pl xchat2-perldocs.html xchat2-perl.html generate_header Xchat.pm IRC.pm makefile.msc
+EXTRA_DIST=alt_completion.pl xchat2-perldocs.html xchat2-perl.html generate_header Xchat.pm IRC.pm makefile.msc
 
 libdir = $(xchatlibdir)/plugins
 
