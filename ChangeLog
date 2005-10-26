@@ -56,7 +56,7 @@ Where "NUMBER" is the bug number.
  - Auto detect RusNet and use /NICKSERV to identify instead of /MSG.
  - Added /Ghost command.
  - Fixed: The WHOIS away-line ignored irc_whois_front setting.
- - Scroll-wheel now works while hovering over a tab (Khisanth).
+ - Scroll-wheel now works while hovering over a tab (Lian Wan Situ).
  - The input box right-click menu now has bold, underline and italic.
  - Added xchat-remote for launching irc:// URLs in existing xchat
    and other functions (Claessens Xavier).
@@ -69,7 +69,11 @@ Where "NUMBER" is the bug number.
    argument of "Mode char", just like normal message events. The last
    talk time is also now updated on actions.
  - Reworked the Character Chart window so you can find your char.
- - 
+ - Perl:
+ 	- fixed so that printf and commandf are exported
+	- print and printf can also be called as prnt and prntf, this is to avoid
+		clashing with the builtins.
+-			  
 
 
 ----------------------------------------------------------------------
