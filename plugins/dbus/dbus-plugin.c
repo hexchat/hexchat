@@ -157,7 +157,7 @@ init_dbus(void)
                           G_TYPE_UINT, &request_name_result,
                           G_TYPE_INVALID))
   {
-    xchat_printf (ph, _("Failed to acquire "DBUS_SERVICE" : %s\n"), error->message);
+    xchat_printf (ph, _("Failed to acquire %s: %s\n"), DBUS_SERVICE, error->message);
     g_error_free (error);
     return FALSE;
   }
@@ -191,6 +191,6 @@ xchat_plugin_init(xchat_plugin *plugin_handle,
   *plugin_version = PVERSION;
   success = init_dbus();
   if (success)
-    xchat_print(ph, _(PNAME " loaded successfully!\n"));
+    xchat_printf(ph, _("%s loaded successfully!\n"), PNAME);
   return success;
 }
