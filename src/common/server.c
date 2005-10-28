@@ -146,8 +146,8 @@ tcp_send_queue (server *serv)
 	if (!is_server (serv))
 		return 0;
 
-	/* first try priority 1 entries */
-	pri = 1;
+	/* try priority 2,1,0 */
+	pri = 2;
 	while (pri >= 0)
 	{
 		list = serv->outbound_queue;
@@ -203,14 +203,26 @@ tcp_send_len (server *serv, char *buf, int len)
 		return tcp_send_real (serv, buf, len);
 
 	dbuf = malloc (len + 2);	/* first byte is the priority */
-	dbuf[0] = 1;	/* pri 1 for most things */
+	dbuf[0] = 2;	/* pri 2 for most things */
 	memcpy (dbuf + 1, buf, len);
 	dbuf[len + 1] = 0;
 
 	/* privmsg and notice get a lower priority */
 	if (strncasecmp (dbuf + 1, "PRIVMSG", 7) == 0 ||
 		 strncasecmp (dbuf + 1, "NOTICE", 6) == 0)
-		dbuf[0] = 0;
+	{
+		dbuf[0] = 1;
+	}
+	else
+	{
+		/* WHO/MODE get the lowest priority */
+		if (strncasecmp (dbuf + 1, "WHO ", 4) == 0 ||
+		/* but only MODE queries, not changes */
+			(strncasecmp (dbuf + 1, "MODE", 4) == 0 &&
+			 strchr (dbuf, '-') == NULL &&
+			 strchr (dbuf, '+') == NULL))
+			dbuf[0] = 0;
+	}
 
 	serv->outbound_queue = g_slist_append (serv->outbound_queue, dbuf);
 	serv->sendq_len += len; /* tcp_send_queue uses strlen */
