@@ -1,4 +1,4 @@
-EXTRA_DIST=dbus-plugin.xml
+EXTRA_DIST=dbus-plugin.xml apps_xchat_url_handler.schemas
 CLEANFILES = $(BUILT_SOURCES)
 INCLUDES = $(DBUS_CFLAGS) $(COMMON_CFLAGS) -I$(srcdir)/.. -DLOCALEDIR=\"$(localedir)\"
 BUILT_SOURCES = dbus-plugin-glue.h
@@ -18,13 +18,17 @@ bin_PROGRAMS = xchat-remote
 xchat_remote_LDADD = $(DBUS_LIBS)
 xchat_remote_SOURCES = xchat-remote.c
 
-schemadir   = @GCONF_SCHEMA_FILE_DIR@
-schema_DATA = url_handler.schemas
-
+if DO_GCONF
+GCONF_SCHEMA_CONFIG_SOURCE=`$(GCONFTOOL) --get-default-source`
+GCONF_SCHEMA_FILE_DIR=$(sysconfdir)/gconf/schemas
+schemadir   = $(GCONF_SCHEMA_FILE_DIR)
+schema_DATA = apps_xchat_url_handler.schemas
 install-data-local:
-	if test -z "$(DESTDIR)" && test x"$(GCONFTOOL)" != xno; then						\
-		for p in $(schema_DATA) ; do					\
-			GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) $(GCONFTOOL) --makefile-install-rule $(srcdir)/$$p;	\
-		done								\
+	if test -z "$(DESTDIR)" ; then \
+		for p in $(schema_DATA) ; do \
+			GCONF_CONFIG_SOURCE=$(GCONF_SCHEMA_CONFIG_SOURCE) $(GCONFTOOL) --makefile-install-rule $(srcdir)/$$p; \
+		done \
 	fi
-
+else
+install-data-local:
+endif

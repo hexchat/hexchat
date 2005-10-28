@@ -196,9 +196,6 @@ gnome=no
 
 # GConf
 AC_PATH_PROG(GCONFTOOL, gconftool-2, no)
-if test x"$GCONFTOOL" != xno; then
-	AM_GCONF_SOURCE_2  
-fi
 
 dnl *********************************************************************
 dnl ** XFT **************************************************************
@@ -494,6 +491,7 @@ AM_CONDITIONAL(DO_PYTHON, test "x$python" = "xyes")
 AM_CONDITIONAL(DO_TCL, test "x$tcl" = "xyes")
 AM_CONDITIONAL(DO_PLUGIN, test "x$plugin" = "xyes")
 AM_CONDITIONAL(DO_DBUS, test "x$dbus" = "xyes")
+AM_CONDITIONAL(DO_GCONF, test "x$GCONFTOOL" != "xno")
 
 dnl *********************************************************************
 dnl ** SOCKS5 ***********************************************************
