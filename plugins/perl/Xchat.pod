@@ -254,7 +254,7 @@ example:<br />
 Print callbacks<br />
 <br />
 <code>$_[0]</code>	-	array reference containing the values for the
-								text event see Settings-&gt;Lists-&gt;Text Events<br />
+								text event see Settings-&gt;Advanced-&gt;Text Events<br />
 <code>$_[1]</code>	-	the data that was passed to the hook function<br />
 <br />
 Timer callbacks<br />
@@ -281,7 +281,7 @@ For command hooks if C<$command> is "" then C<$cb> will be called for
 messages entered by the user that is not a command.
 
 For print hooks besides those events listed in 
-Settings-> Lists->Text Events, these additional events can be used.
+Settings->Advanced->Text Events, these additional events can be used.
 
 =begin html
 
@@ -591,16 +591,16 @@ Returns C<undef> if there is no setting called called C<$name>.
 =over 3
 
 =item *
-C<$event>	-	name from the Event column in Settings->Lists->Text Events
+C<$event>	-	name from the Event column in Settings->Advanced->Text Events
 
 =item *
 LIST		-	this depends on the Description column on the bottom of
-				Settings-> Lists->Text Events
+				Settings->Advanced->Text Events
 
 =back
 
 This functions is used to generate one of the events listed under
-Settings-> Lists->Text Events
+Settings->Advanced->Text Events
 
 Returns true on success, false on failure
 

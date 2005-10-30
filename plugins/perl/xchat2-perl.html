@@ -265,7 +265,7 @@ example:<br />
 Print callbacks<br />
 <br />
 <code>$_[0]</code>	-	array reference containing the values for the
-								text event see Settings-&gt;Lists-&gt;Text Events<br />
+								text event see Settings-&gt;Advanced-&gt;Text Events<br />
 <code>$_[1]</code>	-	the data that was passed to the hook function<br />
 <br />
 Timer callbacks<br />
@@ -287,7 +287,7 @@ every IRC message than X-Chat receives.</p>
 <p>For command hooks if <code>$command</code> is ``'' then <code>$cb</code> will be called for
 messages entered by the user that is not a command.</p>
 <p>For print hooks besides those events listed in 
-Settings-&gt; Lists-&gt;Text Events, these additional events can be used.</p>
+Settings-&gt;Advanced-&gt;Text Events, these additional events can be used.</p>
 <table border="1">	<tr style="background-color: #dddddd">
 		<td>Event</td>	<td>Description</td>
 	</tr>	<tr>
@@ -495,14 +495,14 @@ context.</p><p>
 </p>
 <h3><a name="xchat__emit_print___event__list__"><code>Xchat::emit_print( $event, LIST )</code></a></h3>
 <ul>
-<li><strong><a name="item_lists"><code>$event</code>	-	name from the Event column in Settings-&gt;Lists-&gt;Text Events</a></strong><br />
+<li><strong><a name="item_lists"><code>$event</code>	-	name from the Event column in Settings-&gt;Advanced-&gt;Text Events</a></strong><br />
 </li>
 <li><strong>LIST		-	this depends on the Description column on the bottom of
-				Settings-&gt; Lists-&gt;Text Events</strong><br />
+				Settings-&gt;Advanced-&gt;Text Events</strong><br />
 </li>
 </ul>
 <p>This functions is used to generate one of the events listed under
-Settings-&gt; Lists-&gt;Text Events</p>
+Settings-&gt;Advanced-&gt;Text Events</p>
 <p>Returns true on success, false on failure</p>
 <p>
 </p>
