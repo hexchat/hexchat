@@ -1,0 +1,899 @@
+=head1 X-Chat 2 Perl Interface
+
+=head2 Introduction
+
+This is the new Perl interface for X-Chat 2.  However, due to changes in
+xchat's plugin code you will need xchat 2.0.8 or above to load this.  Scripts
+written using the old interface will continue to work. If there are any
+problems, questions, comments or suggestions please email them to the address
+on the bottom of this page.
+
+=head2 Constants
+
+=head3 Priorities
+
+=over 3
+
+=item	*
+C<Xchat::PRI_HIGHEST> 
+
+=item *
+C<Xchat::PRI_HIGH> 
+
+=item *
+C<Xchat::PRI_NORM> 
+
+=item *
+C<Xchat::PRI_LOW> 
+
+=item *
+C<Xchat::PRI_LOWEST> 
+
+=back
+
+=head3 Return values
+
+=over 3
+
+=item *
+C<Xchat::EAT_NONE> 		pass the event along
+
+=item *
+C<Xchat::EAT_XCHAT> 		don't let xchat see this event
+
+=item *
+C<Xchat::EAT_PLUGIN> 	don't let other scripts and plugins see this event
+
+=item *
+C<Xchat::EAT_ALL> 		don't let anything see this event
+
+=back
+
+=head4 Timer specific
+
+=over 3
+
+=item *
+C<Xchat::KEEP>				keep the timer going
+
+=item *
+C<Xchat::REMOVE>			remove the timer
+
+=back
+
+=head2 Functions
+
+=head3 C<Xchat::register( $name, $version, [$description,[$callback]] )> 
+
+=over 3
+
+=item *
+C<$name> 				-	The name of this script
+
+=item *
+C<$version> 			-	This script's version
+
+=item *
+C<$description> 	-	A description for this script
+
+=item *
+C<$callback> 		-	This is a function that will be called when the is script
+							unloaded. This can be either a reference to a
+							function or an anonymous sub reference.
+
+=back
+
+This is the first thing to call in every script.
+
+=head3 C<Xchat::hook_server( $message, $callback, [\%options] )> 
+
+=head3 C<Xchat::hook_command( $command, $callback, [\%options] )> 
+
+=head3 C<Xchat::hook_print( $event,$callback, [\%options] )> 
+
+=head3 C<Xchat::hook_timer( $timeout,$callback, [\%options | $data] )> 
+
+These functions can be to intercept various events.
+hook_server can be used to intercept any incoming message from the IRC server.
+hook_command can be used to intercept any command, if the command doesn't currently exist then a new one is created.
+hook_print can be used to intercept any of the events listed in Setttings->Advanced->Text Events
+hook_timer can be used to create a new timer
+
+
+=over 3
+
+=item *
+C<$message> 		-	server message to hook such as PRIVMSG
+
+=item *
+C<$command> 		-	command to intercept, without the leading /
+
+=item *
+C<$event> 		-	one of the events listed in Settings->Advanced->Text Events
+
+=item *
+C<$timeout> 		-	timeout in milliseconds
+
+=item *
+C<$callback> 	-	callback function, this is called whenever
+						the hooked event is trigged, the following are
+						the conditions that will trigger	the different hooks.
+						This can be either a reference to a
+						function or an anonymous sub reference.
+
+=item *
+\%options	-	a hash reference containing addional options for the hooks
+
+=back
+
+Valid keys for \%options:
+
+=begin html
+
+<table border="1">
+
+	<tr>
+	<td>data</td>	<td>Additional data that is to be associated with the<br />
+						hook. For timer hooks this value can be provided either as<br />
+						<code>Xchat::hook_timer( $timeout, $cb,{data=&gt;$data})</code><br />
+						or <code>Xchat::hook_timer( $timeout, $cb, $data )</code>.<br />
+						However, this means that hook_timer cannot be provided<br />
+						with a hash reference containing data as a key.<br />
+
+						example:<br />
+						my $options = { data =&gt; [@arrayOfStuff] };<br />
+						Xchat::hook_timer( $timeout, $cb, $options );<br />
+						<br />
+						In this example, the timer's data will be<br />
+						[@arrayOfStuff] and not { data =&gt; [@arrayOfStuff] }<br />
+						<br />
+						This key is valid for all of the hook functions.<br />
+						<br />
+						Default is undef.<br />
+						</td>
+	</tr>
+
+	<tr>
+		<td>priority</td>	<td>Sets the priority for the hook.<br />
+								It can be set to one of the
+								<code>Xchat::PRI_*</code> constants.<br />
+								<br />
+								This key only applies to server, command
+								and print hooks.<br />
+								<br />
+								Default is <code>Xchat::PRI_NORM</code>.
+								</td>
+
+	</tr>
+
+	<tr>
+		<td>help_text</td>	<td>Text displayed for /help $command.<br />
+									<br />
+									This key only applies to command hooks.<br />
+									<br />
+									Default is "".
+									</td>
+	</tr>
+</table>
+
+=end html
+
+=head4 When callbacks are invoked
+
+Each of the hooks will be triggered at different times depending on the type
+of hook.
+
+=begin html
+
+<table border="1">
+
+	<tr style="background-color: #dddddd">
+		<td>Hook Type</td>	<td>When the callback will be invoked</td>
+	</tr>
+
+	<tr>
+		<td>server hooks</td>	<td>a <code>$message</code> message is 
+										received from the server
+										</td>
+	</tr>
+
+	<tr>
+		<td>command hooks</td>	<td>the <code>$command</code> command is
+										executed, either by the user or from a script
+										</td>
+	</tr>
+
+	<tr>
+		<td>print hooks</td>	<td>X-Chat is about to print the	message for the
+									<code>$event</code> event
+									</td>
+	</tr>
+
+	<tr>
+		<td>timer hooks</td>	<td>called every <code>$timeout</code> milliseconds
+									(1000 millisecond is 1 second)
+									</td>
+	</tr>
+</table>
+
+=end html
+
+
+The value return from these hook functions can be passed to C<Xchat::unhook> 
+to remove the hook.
+
+=head4 Callback Arguments
+
+All callback functions will receive their arguments in C<@_> like every
+other Perl subroutine.
+
+=begin html
+
+<p>
+Server and command callbacks<br />
+<br />
+<code>$_[0]</code>	-	array reference containing the IRC message or command and
+arguments broken into words<br />
+example:<br />
+/command arg1 arg2 arg3<br />
+<code>$_[0][0]</code> -  command<br />
+<code>$_[0][1]</code> -  arg1<br />
+<code>$_[0][2]</code> -  arg2<br />
+<code>$_[0][3]</code> -  arg3<br />
+<br />
+<code>$_[1]</code>	-	array reference containing the Nth word to the last word<br />
+example:<br />
+/command arg1 arg2 arg3<br />
+<code>$_[1][0]</code>	-	command arg1 arg2 arg3<br />
+<code>$_[1][1]</code>	-	arg1 arg2 arg3<br />
+<code>$_[1][2]</code>	-	arg2 arg3<br />
+<code>$_[1][3]</code>	-	arg3<br />
+<br />
+<code>$_[2]</code>	-	the data that was passed to the hook function<br />
+<br />
+Print callbacks<br />
+<br />
+<code>$_[0]</code>	-	array reference containing the values for the
+								text event see Settings-&gt;Lists-&gt;Text Events<br />
+<code>$_[1]</code>	-	the data that was passed to the hook function<br />
+<br />
+Timer callbacks<br />
+<br />
+<code>$_[0]</code>	-	the data that was passed to the hook function<br />
+<br />
+</p>
+
+=end html
+
+=head4 Callback return values
+
+All server, command and print  callbacks should return one of
+the C<Xchat::EAT_*> constants.
+Timer callbacks can return Xchat::REMOVE to remove
+the timer or Xchat::KEEP to keep it going
+
+=head4 Miscellaneous Hook Related Information
+
+For server hooks, if C<$message> is "RAW LINE" then C<$cb> will be called for
+every IRC message than X-Chat receives.
+
+For command hooks if C<$command> is "" then C<$cb> will be called for
+messages entered by the user that is not a command.
+
+For print hooks besides those events listed in 
+Settings-> Lists->Text Events, these additional events can be used.
+
+=begin html
+
+<table border="1">
+
+	<tr style="background-color: #dddddd">
+		<td>Event</td>	<td>Description</td>
+	</tr>
+
+	<tr>
+		<td>"Open Context"</td>	<td>a new context is created</td>
+	</tr>
+
+	<tr>
+		<td>"Close Context"</td>	<td>a context has been close</td>
+	</tr>
+
+	<tr>
+		<td>"Focus Tab"</td>	<td>when a tab is brought to the front</td>
+	</tr>
+
+	<tr>
+		<td>"Focus Window"</td>	<td>when a top level window is focused or the
+										main tab window is focused by the window manager
+										</td>
+	</tr>
+
+	<tr>
+		<td>"DCC Chat Text"</td>	<td>when text from a DCC Chat arrives.
+											<code>$_[0]</code> will have these values<br />
+											<br />
+											<code>$_[0][0]</code>	-	Address<br />
+											<code>$_[0][1]</code>	-	Port<br />
+											<code>$_[0][2]</code>	-	Nick<br />
+											<code>$_[0][3]</code>	-	Message<br />
+											</td>
+	</tr>
+
+	<tr>
+		<td>"Key Press"</td>	<td>used for intercepting key presses, the key value is in $_[0][0]</td>
+	</tr>
+</table>
+
+=end html
+
+=head3 C<Xchat::unhook( $hook )>
+
+=over 3
+
+=item *
+C<$hook> 	-	the hook that was previously returned by one of
+					the C<Xchat::hook_*>	functions
+
+=back
+
+
+This function is used to removed a hook previously added with one of
+the C<Xchat::hook_*> functions
+
+It returns the data that was passed to the C<Xchat::hook_*> function when
+the hook was added
+
+
+=head3 C<Xchat::print( $text | \@lines, [$channel,[$server]] )>
+
+=over 3
+
+=item *
+C<$text>		-	the text to print
+
+=item *
+C<\@lines>	-	array reference containing lines of text to be printed
+					all the elements will be joined together before printing
+
+=item *
+C<$channel>	-	channel or tab with the given name where C<$text>
+					will be printed
+
+=item *
+C<$server>	-	specifies that the text will be printed in a channel or tab
+					that is associated with C<$server>
+
+=back
+
+Either or both of C<$channel> and C<$server> can be undef.
+
+If called as C<Xchat::print( $text )>, it will always return true.
+If called with either the channel or the channel and the server
+specified then it will return true if a context is found and
+false otherwise. The text will not be printed if the context
+is not found.  The meaning of setting C<$channel> or C<$server> to
+undef is the same as
+L<find_context|"xchat::find_context(_[$channel,_[$server]]_)">.
+
+
+=head3 C<Xchat::printf( $format, LIST )>
+
+=over 3
+
+=item *
+C<$format>	-	a format string, see "perldoc -f sprintf" for further detail
+
+=item *
+LIST		-	list of values for the format fields
+
+=back
+
+=head3 C<Xchat::command( $command, [$channel,[$server]] )>
+
+=over 3
+
+=item *
+C<$command>	-	the command to execute, without the leading /
+
+=item *
+C<$channel>	-	channel or tab with the given name where C<$command> will be executed
+
+=item *
+C<$server>	-	specifies that the command will be executed in a channel or tab
+					that is associated with C<$server>
+
+=back
+
+Either or both of C<$channel> and C<$server> can be undef.
+
+If called as C<Xchat::command( $command )>, it will always return true.
+If called with either the channel or the channel and the server
+specified then it will return true if a context is found and false
+otherwise. The command will not be executed if the context is not found.
+The meaning of setting C<$channel> or C<$server> to undef is the same
+as find_context.
+
+
+=head3 C<Xchat::commandf( $format, LIST )>
+
+=over 3
+
+=item *
+C<$format> -  a format string, see "perldoc -f sprintf" for further detail
+
+=item *
+LIST		-	list of values for the format fields
+
+=back
+
+=head3 C<Xchat::find_context( [$channel, [$server]] )>
+
+=over 3
+
+=item *
+C<$channel>	-	name of a channel
+
+=item *
+C<$server>	-	name of a server
+
+=back
+
+Either or both of C<$channel> and $server can be undef. Calling
+C<Xchat::find_context()> is the same as calling
+C<Xchat::find_context( undef, undef)> and
+C<Xchat::find_context( $channel )> is
+the same as C<Xchat::find_context( $channel, undef )>.
+
+If C<$server> is undef, find any channel named $channel.
+If C<$channel> is undef, find the front most window
+or tab named C<$server>.If both $channel and
+C<$server> are undef, find the currently focused tab or window.
+
+Return the context found for one of the above situations or undef if such
+a context cannot be found.
+
+
+=head3 C<Xchat::get_context()> 
+
+Returns the current context.
+
+=head3 C<Xchat::set_context( $context | $channel,[$server] )>
+
+=over 3
+
+=item *
+C<$context>	-	context value as returned from get_context,find_context or one
+					of the fields in the list of hashrefs returned by list_get
+
+=item *
+C<$channel>	-	name of a channel you want to switch context to
+
+=item *
+C<$server>	-	name of a server you want to switch context to
+
+=back
+
+See L<find_context|"xchat::find_context(_[$channel,_[$server]]_)"> for more details on C<$channel> and C<$server>.
+
+Returns true on success, false on failure
+
+=head3 C<Xchat::get_info( $id )>
+
+=over 3
+
+=item *
+C<$id>	-	one of the following case sensitive values
+
+=back
+
+=begin html
+
+<table border="1">
+
+	<tr style="background-color: #dddddd">
+		<td>ID</td>				<td>Return value</td>
+	</tr>
+
+	<tr>
+		<td>away</td>	<td>away reason or undef</td>
+	</tr>
+
+	<tr>
+		<td>channel</td>	<td>current channel name</td>
+	</tr>
+
+	<tr>
+		<td>charset</td>	<td>character-set used in the current context</td>
+	</tr>
+	
+	<tr>
+		<td>host</td>	<td>real hostname of the current server</td>
+	</tr>
+
+	<tr>
+		<td>inputbox</td>	<td>contents of the inputbox</td>
+	</tr>
+	
+	<tr>
+		<td>libdirfs</td>
+		<td>the system wide directory where xchat will look for plugins.
+		this string is in the same encoding as the local file system</td>
+	</tr>
+	
+	<tr>
+		<td>network</td>	<td>current network name or undef</td>
+	</tr>
+
+	<tr>
+		<td>nick</td>	<td>current nick</td>
+	</tr>
+
+	<tr>
+		<td>nickserv</td>	<td>nickserv password for this network or undef</td>
+	</tr>
+
+	<tr>
+		<td>server</td>	<td>current server name <br />
+								(what the server claims to be) undef if not connected
+								</td>
+	</tr>
+
+	<tr>
+		<td>topic</td>	<td>current channel topic</td>
+	</tr>
+
+	<tr>
+		<td>version</td>	<td>xchat version number</td>
+	</tr>
+
+	<tr>
+		<td>win_status</td>
+		<td>status of the xchat window, possible values are "active", "hidden"
+		and "normal"</td>
+	</tr>
+	
+	<tr>
+		<td>xchatdir</td>	<td>xchat config directory<br />
+								examples:<br />
+								/home/user/.xchat2<br />
+								C:\Documents and Settings\user\Application Data\X-Chat 2
+								</td>
+	</tr>
+
+	<tr>
+		<td>state_cursor</td>
+		<td>current inputbox cursor position in characters</td>
+	</tr>
+</table>
+
+<p>This function is used to retrieve certain information about the current
+context.</p>
+
+=end html
+
+=head3 C<Xchat::get_prefs( $name )>
+
+=over 3
+
+=item *
+C<$name>	-	name of a X-Chat setting (available through the /set command)
+
+=back
+
+This function provides a way to retrieve X-Chat's setting information.
+
+Returns C<undef> if there is no setting called called C<$name>.
+
+
+=head3 C<Xchat::emit_print( $event, LIST )>
+
+=over 3
+
+=item *
+C<$event>	-	name from the Event column in Settings->Lists->Text Events
+
+=item *
+LIST		-	this depends on the Description column on the bottom of
+				Settings-> Lists->Text Events
+
+=back
+
+This functions is used to generate one of the events listed under
+Settings-> Lists->Text Events
+
+Returns true on success, false on failure
+
+=head3 C<Xchat::nickcmp( $nick1, $nick2 )>
+
+=over 3
+
+=item *
+C<$nick1, $nick2>	-	the two nicks or channel names that are to be compared
+
+=back
+
+The comparsion is based on the current server. Either a RFC1459 compliant
+string compare or plain ascii will be using depending on the server. The
+comparison is case insensitive.
+
+Returns a number less than, equal to or greater than zero if
+C<$nick1> is 
+found respectively, to be less than, to match, or be greater than
+C<$nick2>.
+
+
+=head3 C<Xchat::get_list( $name )>
+
+=over 3
+
+=item *
+C<$name> -	name of the list, one of the following:
+"channels", "dcc", "ignore", "notify", "users"
+
+=back
+
+This function will return a list of hash references.  The hash references
+will have different keys depend on the list.  An empty list is returned
+if there is no such list.
+
+=begin html
+
+<p>"channels"	-	list of channels, querys and their server</p>
+
+<table border="1">
+
+	<tr style="background-color: #dddddd">
+		<td>Key</td>	<td>Description</td>
+	</tr>
+
+	<tr>
+		<td>channel</td>	<td>tab name</td>
+	</tr>
+
+	<tr>
+		<td>context</td>	<td>can be used with set_context</td>
+	</tr>
+
+	<tr>
+		<td>flags</td>	<td>Server Bits:<br />
+							0 - Connected<br />
+							1 - Connecting<br />
+							2 - Away<br />
+							3 - EndOfMotd(Login complete)<br />
+							4 - Has WHOX<br />
+							</td>
+	</tr>
+
+	<tr>
+		<td>id</td>	<td>Unique server ID	</td>
+	</tr>
+	
+	<tr>
+		<td>maxmodes</td>	<td>Maximum modes per line</td>
+	</tr>
+				
+	<tr>
+		<td>network</td>	<td>network name to which this channel belongs</td>
+	</tr>
+
+	<tr>
+		<td>nickprefixes</td>	<td>Nickname prefixes e.g. "+@"</td>
+	</tr>
+	
+	<tr>
+		<td>nickmodes</td>	<td>Nickname mode chars e.g. "vo"</td>
+	</tr>
+	
+	<tr>
+		<td>server</td>	<td>server name to which this channel belongs</td>
+	</tr>
+
+	<tr>
+		<td>type</td>	<td>the type of this context<br />
+							1 - server<br />
+							2 - channel<br />
+							3 - dialog<br />
+							</td>
+	</tr>
+
+	<tr>
+		<td>users</td>	<td>Number of users in this channel</td>
+	</tr>
+</table>
+
+<p>"dcc"			-	list of DCC file transfers</p>
+<table border="1">
+
+	<tr style="background-color: #dddddd">
+		<td>Key</td>	<td>Value</td>
+	</tr>
+
+	<tr>
+		<td>address32</td>	<td>address of the remote user(ipv4 address)</td>
+	</tr>
+
+	<tr>
+		<td>cps</td>	<td>bytes per second(speed)</td>
+	</tr>
+
+	<tr>
+		<td>destfile</td>	<td>destination full pathname</td>
+	</tr>
+
+	<tr>
+		<td>file</td>	<td>file name</td>
+	</tr>
+
+	<tr>
+		<td>nick</td>
+		<td>nick of the person this DCC connection is connected to</td>
+	</tr>
+
+	<tr>
+		<td>port</td>	<td>TCP port number</td>
+	</tr>
+
+	<tr>
+		<td>pos</td>	<td>bytes sent/received</td>
+	</tr>
+
+	<tr>
+		<td>resume</td>	<td>point at which this file was resumed<br />
+								(zero if it was not resumed)
+								</td>
+	</tr>
+
+	<tr>
+		<td>size</td>	<td>file size in bytes</td>
+	</tr>
+
+	<tr>
+		<td>status</td>	<td>DCC Status:<br />
+								0 - queued<br />
+								1 - active<br />
+								2 - failed<br />
+								3 - done<br />
+								4 - connecting<br />
+								5 - aborted
+								</td>
+	</tr>
+
+	<tr>
+		<td>type</td>	<td>DCC Type:<br />
+							0 - send<br />
+							1 - receive<br />
+							2 - chatrecv<br />
+							3 - chatsend
+							</td>
+	</tr>
+
+</table>
+
+<p>"ignore"		-	current ignore list</p>
+<table border="1">
+
+	<tr style="background-color: #dddddd">
+		<td>Key</td> <td>Value</td>
+	</tr>
+
+	<tr>
+		<td>mask</td>	<td>ignore mask. e.g: *!*@*.aol.com</td>
+	</tr>
+
+	<tr>
+		<td>flags</td>	<td>Bit field of flags.<br />
+							0 - private<br />
+							1 - notice<br />
+							2 - channel<br />
+							3 - ctcp<br />
+							4 - invite<br />
+							5 - unignore<br />
+							6 - nosave<br />
+							7 - dcc<br />
+							</td>
+	</tr>
+
+</table>
+
+<p>"notify" - list of people on notify</p>
+<table border="1">
+	<tr style="background-color: #dddddd">
+		<td>Key</td>	<td>Value</td>
+	</tr>
+
+	<tr>
+		<td>nick</td>	<td>nickname</td>
+	</tr>
+
+	<tr>
+		<td>flags</td>	<td>0 = is online</td>
+	</tr>
+
+	<tr>
+		<td>on</td>	<td>time when user came online</td>
+	</tr>
+
+	<tr>
+		<td>off</td>	<td>time when user went offline</td>
+	</tr>
+
+	<tr>
+		<td>seen</td>	<td>time when user was last verified still online</td>
+	</tr>
+</table>
+
+<p>the values indexed by on, off and seen can be passed to localtime
+and gmtime, see perldoc -f localtime and perldoc -f gmtime for more
+detail</p>
+
+<p>"users"		-	list of users in the current channel</p>
+<table border="1">
+
+	<tr style="background-color: #dddddd">
+		<td>Key</td>	<td>Value</td>
+	</tr>
+
+	<tr>
+		<td>away</td>	<td>away status(boolean)</td>
+	</tr>
+
+	<tr>
+		<td>nick</td>	<td>nick name</td>
+	</tr>
+
+	<tr>
+		<td>host</td>
+		<td>host name in the form: user@host or undef if not known</td>
+	</tr>
+
+	<tr>
+		<td>prefix</td>	<td>prefix character, .e.g: @ or +</td>
+	</tr>
+</table>
+
+=end html
+
+=head3 C<Xchat::user_info( [$nick] )>
+
+=over 3
+
+=item *
+C<$nick>	-	the nick to look for, if this is not given your own nick will be
+				used as default
+
+=back
+
+This function is mainly intended to be used as a shortcut for when you need
+to retrieve some information about only one user in a channel. Otherwise it
+is to use L<get_list|"xchat::get_list(_$name_)">.
+If C<$nick> is found a hash reference containing the same keys as those in the
+"users" list of L<get_list|"xchat::get_list(_$name_)"> is returned otherwise undef is returned.
+
+=head3 C<Xchat::context_info( [$context] )>
+
+=over 3
+
+=item *
+C<$context>	-	context returned from L<get_context|"xchat::get_context()">, L<find_context|"xchat::find_context(_[$channel,_[$server]]_)"> and L<get_list|"xchat::get_list(_$name_)">, this is the context that you want infomation about. If this is omitted, it will default to current context.
+
+=back
+
+This function will return the information normally retrieved with L<get_info|"xchat::get_info(_$id_)">, except this is for the context that is passed in. The information will be returned in the form of a hash. The keys of the hash are the $id you would normally supply to L<get_info|"xchat::get_info(_$id_)">.
+
+=head3 C<Xchat::strip_code( $string )>
+
+=over 3
+
+=item *
+C<$string>	-	string to remove codes from
+
+=back
+
+This function will remove bold, color, beep, reset, reverse and underline codes from C<$string>. If it is called in void context $string will be modified otherwise a modified copy of C<$string> is returned.
+
+=head2 Contact Information
+
+Contact Lian Wan Situ at <atmcmnky@yahoo.com> for questions, comments and
+corrections about this page or the Perl plugin itself.  You can also find me
+in #xchat on FreeNode under the nick Khisanth.
