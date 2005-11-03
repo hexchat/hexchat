@@ -586,7 +586,7 @@ load_config (void)
 
 	/* put in default values, anything left out is automatically zero */
 	prefs.local_ip = 0xffffffff;
-	prefs.irc_join_delay = 2;
+	prefs.irc_join_delay = 3;
 	prefs.show_marker = 1;
 	prefs.newtabstofront = 2;
 	prefs.completion_amount = 5;

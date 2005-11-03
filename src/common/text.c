@@ -89,7 +89,7 @@ log_create_filename (char *buf, char *servname, char *channame, char *netname)
 #else
 				/* win32 can't handle filenames with \|/>< characters */
 				if (*tmp == '\\' || *tmp == '|' || *tmp == '/' ||
-					 *tmp == '>' || *tmp == '<')
+					 *tmp == '>' || *tmp == '<'  || *tmp == ':' || *tmp == '\"' || *tmp == '*' || *tmp == '?')
 #endif
 					*tmp = '_';
 			}
