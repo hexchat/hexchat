@@ -1,16 +1,16 @@
-## RPM spec file designed for Fedora Core 3 ##
+## RPM spec file designed for Fedora Core 4 ##
 
 Summary: Graphical IRC (chat) client
 Summary(fr): Client IRC (chat) avec interface graphique
 Summary(de): IRC-Client (Chat) mit grafischer Oberfläche
 Name: xchat
-Version: 2.4.5
+Version: 2.6.0
 Release: 0
 Epoch: 1
 Group: Applications/Internet
 License: GPL
 URL: http://xchat.org
-Source: http://xchat.org/files/source/2.4/xchat-%{version}.tar.bz2
+Source: http://xchat.org/files/source/2.6/xchat-%{version}.tar.bz2
 Buildroot: %{_tmppath}/%{name}-%{version}-root
 Requires: gtk2 openssl
 BuildRequires: gettext openssl-devel gtk2-devel
@@ -62,6 +62,7 @@ strip -R .note -R .comment $RPM_BUILD_ROOT%{_libdir}/tcl.so
 mv $RPM_BUILD_ROOT%{_libdir}/perl.so $RPM_BUILD_ROOT%{_libdir}/xchat/plugins
 mv $RPM_BUILD_ROOT%{_libdir}/python.so $RPM_BUILD_ROOT%{_libdir}/xchat/plugins
 mv $RPM_BUILD_ROOT%{_libdir}/tcl.so $RPM_BUILD_ROOT%{_libdir}/xchat/plugins
+#mv $RPM_BUILD_ROOT%{_libdir}/dbus-plugin.so $RPM_BUILD_ROOT%{_libdir}/xchat/plugins
 rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
 
 %find_lang %name
@@ -72,9 +73,8 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
 %{_bindir}/xchat
 %{_datadir}/applications/xchat.desktop
 %{_datadir}/pixmaps/xchat.png
-#%{_libdir}/xchat/plugins/perl.so
-#%{_libdir}/xchat/plugins/python.so
-#%{_libdir}/xchat/plugins/tcl.so
+#%{_bindir}/xchat-remote
+#%{_libdir}/xchat/plugins/dbus-plugin.so
 
 %files perl
 %{_libdir}/xchat/plugins/perl.so

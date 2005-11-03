@@ -7,8 +7,7 @@ http://sf.net/tracker/?func=detail&atid=100239&group_id=239&aid=NUMBER
 Where "NUMBER" is the bug number.
 
 ----------------------------------------------------------------------
- 2.5.0 development (i.e. buggy) Don't make any releases of this code
-       yet for any platform! This is a socially binding contract.
+ 2.6.0 - 03/Nov/2005
 ----------------------------------------------------------------------
 
  - Updated translations (nl, zh_TW).
@@ -75,6 +74,8 @@ Where "NUMBER" is the bug number.
   - print and printf can also be called as prnt and prntf, this is to
     avoid clashing with the builtins.
  - Deprioritized MODE/WHO to reduce join lag.
+ - WIN32: Mask out more invalid filename characters when writing to
+   log files.
 
 
 ----------------------------------------------------------------------
