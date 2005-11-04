@@ -109,12 +109,6 @@ fe_new_window (struct session *sess, int focus)
 	fe_print_text (sess, buf);
 
 	fe_print_text (sess, "\n\nCompiled in Features\0032:\017 "
-#ifdef USE_PERL
-	"Perl "
-#endif
-#ifdef USE_PYTHON
-	"Python "
-#endif
 #ifdef USE_PLUGIN
 	"Plugin "
 #endif
@@ -123,9 +117,6 @@ fe_new_window (struct session *sess, int focus)
 #endif
 #ifdef USE_OPENSSL
 	"OpenSSL "
-#endif
-#ifdef SOCKS
-	"Socks5 "
 #endif
 #ifdef USE_IPV6
 	"IPv6"
@@ -406,7 +397,7 @@ fe_args (int argc, char *argv[])
 			return 0;
 		}
 	}
-	return 1;
+	return -1;
 }
 
 void
@@ -557,7 +548,7 @@ fe_new_server (struct server *serv)
 }
 
 void
-fe_message (char *msg, int wait)
+fe_message (char *msg, int flags)
 {
 	puts (msg);
 }
@@ -565,7 +556,7 @@ fe_message (char *msg, int wait)
 void
 fe_close_window (struct session *sess)
 {
-	kill_session_callback (sess);
+	session_free (sess);
 	done = TRUE;
 }
 
@@ -802,6 +793,11 @@ int
 fe_gui_info (session *sess, int info_type)
 {
 	return -1;
+}
+void *
+fe_gui_info_ptr (session *sess, int info_type)
+{
+	return NULL;
 }
 void fe_confirm (const char *message, void (*yesproc)(void *), void (*noproc)(void *), void *ud)
 {
