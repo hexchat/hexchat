@@ -26,19 +26,10 @@
 
 #define PNAME "xchat remote access"
 #define PDESC "plugin for remote access using DBUS";
-#define PVERSION "0.2"
+#define PVERSION "0.5"
 
 #define DBUS_SERVICE "org.xchat.service"
 #define DBUS_OBJECT "/org/xchat/RemoteObject"
-
-static xchat_plugin *ph;
-
-typedef struct 
-{
-  guint id;
-  int return_value;
-  xchat_hook *hook;
-} HookInfo;
 
 typedef struct RemoteObject RemoteObject;
 typedef struct RemoteObjectClass RemoteObjectClass;
@@ -61,8 +52,17 @@ enum
   LAST_SIGNAL
 };
 
-RemoteObject *remote_object;
-static GHashTable *hook_hash_table;
+typedef struct 
+{
+  guint id;
+  int return_value;
+  xchat_hook *hook;
+} HookInfo;
+
+static xchat_plugin *ph;
+static RemoteObject *remote_object;
+static GHashTable *hook_hash_table = NULL;
+static guint num_id = 0;
 static guint signals[LAST_SIGNAL] = { 0 };
 
 #define REMOTE_TYPE_OBJECT              (remote_object_get_type ())
@@ -81,6 +81,7 @@ static gboolean remote_object_set_context (RemoteObject *obj, const gchar *serve
 static gboolean remote_object_get_info (RemoteObject *obj, const gchar *id, gchar **ret_info, GError **error);
 static gboolean remote_object_get_prefs (RemoteObject *obj, const gchar *name, int *ret_type, gchar **ret_str, int *ret_int, GError **error);
 static gboolean remote_object_hook_command (RemoteObject *obj, const char *name, int pri, const char *help_text, int return_value, int *id, GError **error);
+static gboolean remote_object_hook_server (RemoteObject *obj, const char *name, int pri, int return_value, int *id, GError **error);
 static gboolean remote_object_unhook (RemoteObject *obj, int id, GError **error);
 
 #include "dbus-plugin-glue.h"
@@ -153,11 +154,50 @@ remote_object_get_prefs (RemoteObject *obj, const gchar *name, int *ret_type, gc
   return TRUE;
 }
 
+static char**
+build_list (char *word[])
+{
+  guint i, num = 0;
+  char **result;
+  if (!word)
+    return NULL;
+  
+  while (word[num] && word[num][0])
+    num++;
+  result = g_new0 (char*, num + 1);
+  for (i = 0; i < num; i++)
+    result[i] = g_strdup (word[i]);
+
+  return result;
+}
+
+static void
+free_list (char *word[])
+{
+  guint i = 0;
+  if (!word)
+    return;
+
+  while (word[i])
+  {
+    g_free (word[i]);
+    i++;
+  }
+  g_free (word);
+}
+
 static int
 hook_cb (char *word[], char *word_eol[], void *userdata)
 {
   HookInfo *info = (HookInfo*)userdata;
-  g_signal_emit (remote_object, signals[HOOK_SIGNAL], 0, word, word_eol, info->id);
+  char **arg1, **arg2;
+  
+  arg1 = build_list (word+1);
+  arg2 = build_list (word_eol+1);
+  g_signal_emit (remote_object, signals[HOOK_SIGNAL], 0, arg1, arg2, info->id);
+  free_list (arg1);
+  free_list (arg2);
+  
   return info->return_value;
 }
 
@@ -165,12 +205,26 @@ static gboolean
 remote_object_hook_command (RemoteObject *obj, const char *name, int pri, const char *help_text, int return_value, int *id, GError **error)
 {
   HookInfo *info;
-  static guint num = 0;
 
   info = g_new0 (HookInfo, 1);
   info->return_value = return_value;
-  info->id = num++;
+  info->id = num_id++;
   info->hook = xchat_hook_command (ph, name, pri, hook_cb, help_text, info);
+  *id = info->id;
+  g_hash_table_insert (hook_hash_table, &info->id, info);
+
+  return TRUE;
+}
+
+static gboolean
+remote_object_hook_server (RemoteObject *obj, const char *name, int pri, int return_value, int *id, GError **error)
+{
+  HookInfo *info;
+
+  info = g_new0 (HookInfo, 1);
+  info->return_value = return_value;
+  info->id = num_id++;
+  info->hook = xchat_hook_server (ph, name, pri, hook_cb, info);
   *id = info->id;
   g_hash_table_insert (hook_hash_table, &info->id, info);
 
@@ -188,6 +242,8 @@ static void
 hook_info_destroy (gpointer data)
 {
   HookInfo *info = (HookInfo*)data;
+  if (!info)
+    return;
   xchat_unhook (ph, info->hook);
   g_free (info);
 }
@@ -241,6 +297,15 @@ xchat_plugin_get_info(char **name, char **desc, char **version, void **reserved)
   *name = PNAME;
   *desc = PDESC;
   *version = PVERSION;
+}
+
+int
+xchat_plugin_deinit()
+{
+  g_hash_table_destroy (hook_hash_table);
+  /* TODO: Close all D-BUS stuff */
+  xchat_printf (ph, _("%s unloaded successfully!\n"), PNAME);
+  return 1;
 }
 
 int

@@ -1,4 +1,4 @@
-/* xchat-remote - program for remote access xchat using DBUS
+/* example - program to demonstrate some D-BUS stuffs.
  * Copyright (C) 2005 Claessens Xavier
  *
  * This program is free software; you can redistribute it and/or modify
@@ -27,6 +27,8 @@
 #define DBUS_OBJECT "/org/xchat/RemoteObject"
 #define DBUS_INTERFACE "org.xchat.interface"
 
+int command_id, server_id;
+
 static void
 write_error (gchar *message, GError *err)
 {
@@ -40,21 +42,24 @@ static void
 test_command_cb (DBusGProxy *proxy, gchar *word[], gchar *word_eol[], guint id, gpointer user_data)
 {
   GError *error = NULL;
-  gint i = 1;
+  gint i = 0;
   
   g_printf ("signal received: id=%d\n", id);
-  while ((word[i][0] != '\0' && word_eol[i][0] != '\0'))
+  while ((word[i] && word_eol[i]))
   {
     g_printf ("word=%s ; word_eol=%s\n", word[i], word_eol[i]);
     i++;
   }
   
-  if (!dbus_g_proxy_call (proxy, "unhook", &error,
-                          G_TYPE_INT, id,
-                          G_TYPE_INVALID, G_TYPE_INVALID))
-    write_error ("Failed to complete unhook", error);
-  /* Now if you write again "/test blah" in the xchat window you'll
-   * get a "Unknown command" error message */
+  if (id == command_id)
+  {
+    if (!dbus_g_proxy_call (proxy, "unhook", &error,
+                            G_TYPE_INT, id,
+                            G_TYPE_INVALID, G_TYPE_INVALID))
+      write_error ("Failed to complete unhook", error);
+    /* Now if you write again "/test blah" in the xchat window you'll
+     * get a "Unknown command" error message */
+  }
 }
 
 int
@@ -64,7 +69,6 @@ main (int argc, char **argv)
   GError *error = NULL;
   DBusGProxy *remote_object = NULL;
   GMainLoop *mainloop;
-  int id;
 
   g_type_init ();
 
@@ -85,9 +89,17 @@ main (int argc, char **argv)
                           G_TYPE_INT, 0,
                           G_TYPE_STRING, "Simple D-BUS example",
                           G_TYPE_INT, 1, G_TYPE_INVALID,
-                          G_TYPE_INT, &id, G_TYPE_INVALID))
+                          G_TYPE_INT, &command_id, G_TYPE_INVALID))
     write_error ("Failed to complete HookCommand", error);
-  g_printf ("New hook id=%d\n", id);
+  g_printf ("Command hook id=%d\n", command_id);
+
+  if (!dbus_g_proxy_call (remote_object, "HookServer", &error,
+                          G_TYPE_STRING, "RAW LINE",
+                          G_TYPE_INT, 0,
+                          G_TYPE_INT, 0, G_TYPE_INVALID,
+                          G_TYPE_INT, &server_id, G_TYPE_INVALID))
+    write_error ("Failed to complete HookServer", error);
+  g_printf ("Server hook id=%d\n", server_id);
 
   dbus_g_object_register_marshaller (g_cclosure_user_marshal_VOID__POINTER_POINTER_INT,
 				     G_TYPE_NONE,
