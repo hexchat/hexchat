@@ -1,6 +1,6 @@
-EXTRA_DIST=dbus-plugin.xml apps_xchat_url_handler.schemas marshallers.list example.py
+EXTRA_DIST=dbus-plugin.xml apps_xchat_url_handler.schemas marshallers.list example.py README
 INCLUDES = $(DBUS_CFLAGS) $(COMMON_CFLAGS) -I$(srcdir)/.. -DLOCALEDIR=\"$(localedir)\"
-BUILT_SOURCES = dbus-plugin-glue.h marshallers.h
+BUILT_SOURCES = dbus-plugin-glue.h marshallers.h 
 CLEANFILES = $(BUILT_SOURCES)
 
 libdir = $(xchatlibdir)/plugins
@@ -14,6 +14,10 @@ dbus_la_LIBADD = $(DBUS_LIBS)
 bin_PROGRAMS = xchat-remote
 xchat_remote_SOURCES = xchat-remote.c 
 xchat_remote_LDADD = $(DBUS_LIBS)
+
+noinst_PROGRAMS = example
+example_SOURCES = example.c 
+example_LDADD = $(DBUS_LIBS)
 
 dbus-plugin-glue.h: dbus-plugin.xml
 	libtool --mode=execute dbus-binding-tool --prefix=remote_object --mode=glib-server --output=dbus-plugin-glue.h dbus-plugin.xml
