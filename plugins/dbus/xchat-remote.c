@@ -58,6 +58,8 @@ write_error (gchar *message, GError *err)
   g_error_free (err);
 }
 
+#if 0
+
 static void
 test_command_cb (DBusGProxy *proxy, gchar *word[], gchar *word_eol[], guint id, gpointer user_data)
 {
@@ -95,6 +97,8 @@ hook_example ()
   mainloop = g_main_loop_new (NULL, FALSE);
   g_main_loop_run (mainloop);
 }
+
+#endif
 
 int
 main (int argc, char **argv)
