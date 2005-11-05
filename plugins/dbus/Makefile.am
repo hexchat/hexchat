@@ -1,7 +1,7 @@
-EXTRA_DIST=dbus-plugin.xml apps_xchat_url_handler.schemas
-CLEANFILES = $(BUILT_SOURCES)
+EXTRA_DIST=dbus-plugin.xml apps_xchat_url_handler.schemas marshallers.list example.py
 INCLUDES = $(DBUS_CFLAGS) $(COMMON_CFLAGS) -I$(srcdir)/.. -DLOCALEDIR=\"$(localedir)\"
-BUILT_SOURCES = dbus-plugin-glue.h
+BUILT_SOURCES = dbus-plugin-glue.h marshallers.h
+CLEANFILES = $(BUILT_SOURCES)
 
 libdir = $(xchatlibdir)/plugins
 localedir = $(datadir)/locale
@@ -11,12 +11,15 @@ dbus_la_SOURCES = dbus-plugin.c
 dbus_la_LDFLAGS = -avoid-version -module 
 dbus_la_LIBADD = $(DBUS_LIBS)
 
+bin_PROGRAMS = xchat-remote
+xchat_remote_SOURCES = xchat-remote.c 
+xchat_remote_LDADD = $(DBUS_LIBS)
+
 dbus-plugin-glue.h: dbus-plugin.xml
 	libtool --mode=execute dbus-binding-tool --prefix=remote_object --mode=glib-server --output=dbus-plugin-glue.h dbus-plugin.xml
 
-bin_PROGRAMS = xchat-remote
-xchat_remote_LDADD = $(DBUS_LIBS)
-xchat_remote_SOURCES = xchat-remote.c
+marshallers.h: marshallers.list
+	libtool --mode=execute glib-genmarshal --header --body marshallers.list > marshallers.h
 
 if DO_GCONF
 GCONF_SCHEMA_CONFIG_SOURCE=`$(GCONFTOOL) --get-default-source`

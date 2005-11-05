@@ -22,5 +22,17 @@
       <arg type="s" direction="out"/>
       <arg type="i" direction="out"/>
     </method>
+    <method name="HookCommand">
+      <arg type="s"/>
+      <arg type="i"/>
+      <arg type="s"/>
+      <arg type="i"/>
+      <arg type="i" direction="out"/>
+    </method>
+    <method name="unhook">
+      <arg type="i"/>
+    </method>
+
+    <signal name="HookSignal"/>
   </interface>
 </node>

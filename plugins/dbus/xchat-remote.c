@@ -23,6 +23,7 @@
 #include <dbus/dbus-glib.h>
 #include <unistd.h>
 #include <glib/gi18n.h>
+#include "marshallers.h"
 
 #define DBUS_SERVICE "org.xchat.service"
 #define DBUS_OBJECT "/org/xchat/RemoteObject"
@@ -57,13 +58,51 @@ write_error (gchar *message, GError *err)
   g_error_free (err);
 }
 
+static void
+test_command_cb (DBusGProxy *proxy, gchar *word[], gchar *word_eol[], guint id, gpointer user_data)
+{
+  GError *error = NULL;
+  g_printf ("signal recieved: id=%d\n", id);
+  if (!dbus_g_proxy_call (remote_object, "unhook", &error,
+                          G_TYPE_INT, id,
+                          G_TYPE_INVALID, G_TYPE_INVALID))
+    write_error (_("Failed to complete unhook"), error);
+}
+
+static void
+hook_example ()
+{
+  GError *error = NULL;
+  GMainLoop *mainloop;
+  int id;
+
+  if (!dbus_g_proxy_call (remote_object, "HookCommand", &error,
+                          G_TYPE_STRING, "test",
+                          G_TYPE_INT, 0,
+                          G_TYPE_STRING, "Simple D-BUS example",
+                          G_TYPE_INT, 1, G_TYPE_INVALID,
+                          G_TYPE_INT, &id, G_TYPE_INVALID))
+    write_error (_("Failed to complete HookCommand"), error);
+
+  dbus_g_object_register_marshaller (g_cclosure_user_marshal_VOID__POINTER_POINTER_INT,
+				     G_TYPE_NONE,
+				     G_TYPE_STRV, G_TYPE_STRV, G_TYPE_INT,
+				     G_TYPE_INVALID);
+  dbus_g_proxy_add_signal (remote_object, "HookSignal", G_TYPE_STRV, G_TYPE_STRV, G_TYPE_INT, G_TYPE_INVALID);
+  dbus_g_proxy_connect_signal (remote_object, "HookSignal", G_CALLBACK (test_command_cb),
+			       NULL, NULL);
+
+  mainloop = g_main_loop_new (NULL, FALSE);
+  g_main_loop_run (mainloop);
+}
+
 int
 main (int argc, char **argv)
 {
   DBusGConnection *bus = NULL;
   GError *error = NULL;
   GOptionContext *context = NULL;
-
+  
 #ifdef ENABLE_NLS
   bindtextdomain (PACKAGE, LOCALEDIR);
   bind_textdomain_codeset (PACKAGE, "UTF-8");
@@ -77,7 +116,7 @@ main (int argc, char **argv)
   if (error)
   {
     g_printerr (_("xchat-remote: %s\n"
-                "Try `xchat-remote --help' for more information\n"),
+                  "Try `xchat-remote --help' for more information\n"),
                 error->message);
     return 1;
   }
@@ -165,7 +204,9 @@ main (int argc, char **argv)
         g_printf ("%s = %s\n", opt_prefs, i ? "TRUE" : "FALSE");
     }
   }
-
+  
+  //hook_example ();
+  
   g_object_unref (G_OBJECT (remote_object));
   return 0;
 }
