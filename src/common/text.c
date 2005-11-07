@@ -66,94 +66,175 @@ log_close (session *sess)
 }
 
 static void
-log_create_filename (char *buf, char *servname, char *channame, char *netname)
+mkdir_p (char *dir)	/* like "mkdir -p" from a shell, FS encoding */
 {
-	char fn[256];
-	char *tmp, *dir, *sep;
-	int pathlen=510, c=0, mbl;
+	char *start = dir;
 
-	if (!rfc_casecmp (channame, servname))
+	/* the whole thing already exists? */
+	if (access (dir, F_OK) == 0)
+		return;
+
+	while (*dir)
 	{
-		channame = g_strdup ("server");
-	} else
-	{
-		sep = tmp = strdup (channame);
-		while (*tmp)
-		{
-			mbl = g_utf8_skip[((unsigned char *)tmp)[0]];
-			if (mbl == 1)
-			{
-#ifndef WIN32
-				*tmp = rfc_tolower (*tmp);
-				if (*tmp == '/')
-#else
-				/* win32 can't handle filenames with \|/>< characters */
-				if (*tmp == '\\' || *tmp == '|' || *tmp == '/' ||
-					 *tmp == '>' || *tmp == '<'  || *tmp == ':' || *tmp == '\"' || *tmp == '*' || *tmp == '?')
-#endif
-					*tmp = '_';
-			}
-			tmp += mbl;
-		}
-
-		channame = g_filename_from_utf8 (sep, -1, 0, 0, 0);
-		free (sep);
-	}
-
-	snprintf (buf, 512, "%s/xchatlogs", get_xdir_fs ());
-	if (access (buf, F_OK) != 0)
 #ifdef WIN32
-		mkdir (buf);
+		if (dir != start && (*dir == '/' || *dir == '\\'))
 #else
-		mkdir (buf, S_IRUSR | S_IWUSR | S_IXUSR);
+		if (dir != start && *dir == '/')
 #endif
-	auto_insert (fn, sizeof (fn), prefs.logmask, NULL, NULL, "", channame, "", "", netname, servname);
-	g_free (channame);
-
-	snprintf (buf, 512, "%s/xchatlogs/%s", get_xdir_fs (), fn);
-
- 	/* The following code handles subdirectories in logpath and creates
- 	 * them, if they don't exist. Useful with logmasks like "%c/%y.log" in
- 	 * ~/.xchat/xchat.conf.
- 	 *                       -- patch by tvk <tvk@von-koch.com>
- 	 */
-
-	if (access (buf, F_OK) != 0)
-	{
-		snprintf (buf, 512, "%s/xchatlogs/", get_xdir_fs ());
-		pathlen -= strlen(buf);
- 
-		/* how many sub-directories do we have? */
-		sep = fn;
-		while (*sep++) if (*sep=='/') c++;
-			
-		if (c) {
- 			/* create each sub-directory */
-			sep = strdup(fn);
-			dir = strtok(sep, "/");
-		
-			while (c-- && dir != NULL) {
-				strncat (buf, dir, pathlen);
-				strcat (buf, "/");
-				pathlen -= strlen(dir);
- 		
-				if (access (buf, F_OK) != 0)
-#ifdef WIN32	
-					mkdir (buf);
-#else	
-					mkdir (buf, S_IRUSR | S_IWUSR | S_IXUSR);
-#endif	
-				dir = strtok(NULL, "/");
-			}
-
-			/* append the filename */
-			strncat (buf, strrchr(fn, '/')+1, pathlen);
-			free (sep);
-		} else {
-			strncat (buf, fn, pathlen);
+		{
+			*dir = 0;
+#ifdef WIN32
+			mkdir (start);
+#else
+			mkdir (start, S_IRUSR | S_IWUSR | S_IXUSR);
+#endif
+			*dir = '/';
 		}
-
+		dir++;
 	}
+}
+
+static char *
+log_create_filename (char *channame)
+{
+	char *tmp, *ret;
+	int mbl;
+
+	ret = tmp = strdup (channame);
+	while (*tmp)
+	{
+		mbl = g_utf8_skip[((unsigned char *)tmp)[0]];
+		if (mbl == 1)
+		{
+#ifndef WIN32
+			*tmp = rfc_tolower (*tmp);
+			if (*tmp == '/')
+#else
+			/* win32 can't handle filenames with \|/><:"*? characters */
+			if (*tmp == '\\' || *tmp == '|' || *tmp == '/' ||
+				 *tmp == '>'  || *tmp == '<' || *tmp == ':' ||
+				 *tmp == '\"' || *tmp == '*' || *tmp == '?')
+#endif
+				*tmp = '_';
+		}
+		tmp += mbl;
+	}
+
+	return ret;
+}
+
+/* like strcpy, but % turns into %% */
+
+static char *
+log_escape_strcpy (char *dest, char *src, char *end)
+{
+	while (*src)
+	{
+		*dest = *src;
+		if (dest + 1 == end)
+			break;
+		dest++;
+		src++;
+
+		if (*src == '%')
+		{
+			if (dest + 1 == end)
+				break;
+			dest[0] = '%';
+			dest++;
+		}
+	}
+
+	dest[0] = 0;
+	return dest - 1;
+}
+
+/* substitutes %c %n %s into buffer */
+
+static void
+log_insert_vars (char *buf, int bufsize, char *fmt, char *c, char *n, char *s)
+{
+	char *end = buf + bufsize;
+
+	while (1)
+	{
+		switch (fmt[0])
+		{
+		case 0:
+			buf[0] = 0;
+			return;
+
+		case '%':
+			fmt++;
+			switch (fmt[0])
+			{
+			case 'c':
+				buf = log_escape_strcpy (buf, c, end);
+				break;
+			case 'n':
+				buf = log_escape_strcpy (buf, n, end);
+				break;
+			case 's':
+				buf = log_escape_strcpy (buf, s, end);
+				break;
+			default:
+				buf[0] = '%';
+				buf++;
+				buf[0] = fmt[0];
+				break;
+			}
+			break;
+
+		default:
+			buf[0] = fmt[0];
+		}
+		fmt++;
+		buf++;
+		/* doesn't fit? */
+		if (buf == end)
+		{
+			buf[-1] = 0;
+			return;
+		}
+	}
+}
+
+static char *
+log_create_pathname (char *servname, char *channame, char *netname)
+{
+	char fname[384];
+	char fnametime[384];
+	char *fs;
+	struct tm *tm;
+	time_t now;
+
+	if (!netname)
+		netname = "NETWORK";
+
+	/* first, everything is in UTF-8 */
+	if (!rfc_casecmp (channame, servname))
+		channame = strdup ("server");
+	else
+		channame = log_create_filename (channame);
+	log_insert_vars (fname, sizeof (fname), prefs.logmask, channame, netname, servname);
+	free (channame);
+
+	/* insert time/date */
+	now = time (NULL);
+	tm = localtime (&now);
+	strftime (fnametime, sizeof (fnametime), fname, tm);
+
+	/* create final path/filename */
+	snprintf (fname, sizeof (fname), "%s/xchatlogs/%s", get_xdir_utf8 (), fnametime);
+
+	/* now we need it in FileSystem encoding */
+	fs = g_filename_from_utf8 (fname, -1, 0, 0, 0);
+
+	/* create all the subdirectories */
+	if (fs)
+		mkdir_p (fs);
+
+	return fs;
 }
 
 static int
@@ -161,22 +242,25 @@ log_open_file (char *servname, char *channame, char *netname)
 {
 	char buf[512];
 	int fd;
+	char *file;
 	time_t currenttime;
 
-	if (!netname)
-		netname = "NETWORK";
+	file = log_create_pathname (servname, channame, netname);
+	if (!file)
+		return -1;
 
-	log_create_filename (buf, servname, channame, netname);
 #ifdef WIN32
-	fd = open (buf, O_CREAT | O_APPEND | O_WRONLY, S_IREAD|S_IWRITE);
+	fd = open (file, O_CREAT | O_APPEND | O_WRONLY, S_IREAD|S_IWRITE);
 #else
-	fd = open (buf, O_CREAT | O_APPEND | O_WRONLY, 0644);
+	fd = open (file, O_CREAT | O_APPEND | O_WRONLY, 0644);
 #endif
+	g_free (file);
+
 	if (fd == -1)
 		return -1;
 	currenttime = time (NULL);
 	write (fd, buf,
-			 snprintf (buf, 510, _("**** BEGIN LOGGING AT %s\n"),
+			 snprintf (buf, sizeof (buf), _("**** BEGIN LOGGING AT %s\n"),
 						  ctime (&currenttime)));
 
 	return fd;
@@ -241,10 +325,25 @@ log_write (session *sess, char *text)
 {
 	char *temp;
 	char *stamp;
+	char *file;
 	int len;
 
 	if (sess->logfd != -1 && prefs.logging)
 	{
+		/* change to a different log file? */
+		file = log_create_pathname (sess->server->servername, sess->channel,
+											 server_get_network (sess->server, FALSE));
+		if (file)
+		{
+			if (access (file, F_OK) != 0)
+			{
+				close (sess->logfd);
+				sess->logfd = log_open_file (sess->server->servername, sess->channel,
+													  server_get_network (sess->server, FALSE));
+			}
+			g_free (file);
+		}
+
 		if (prefs.timestamp_logs)
 		{
 			len = get_stamp_str (prefs.timestamp_log_format, time (0), &stamp);
