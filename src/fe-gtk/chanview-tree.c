@@ -6,6 +6,16 @@ typedef struct
 	GtkWidget *scrollw;	/* scrolledWindow */
 } treeview;
 
+static void 	/* row-activated, when a row is double clicked */
+cv_tree_activated_cb (GtkTreeView *view, GtkTreePath *path,
+							 GtkTreeViewColumn *column, gpointer data)
+{
+	if (gtk_tree_view_row_expanded (view, path))
+		gtk_tree_view_collapse_row (view, path);
+	else
+		gtk_tree_view_expand_row (view, path, FALSE);
+}
+
 static void		/* row selected callback */
 cv_tree_sel_cb (GtkTreeSelection *sel, chanview *cv)
 {
@@ -101,6 +111,8 @@ cv_tree_init (chanview *cv)
 							"changed", G_CALLBACK (cv_tree_sel_cb), cv);
 	g_signal_connect (G_OBJECT (view), "button-press-event",
 							G_CALLBACK (cv_tree_click_cb), cv);
+	g_signal_connect (G_OBJECT (view), "row-activated",
+							G_CALLBACK (cv_tree_activated_cb), NULL);
 	((treeview *)cv)->tree = GTK_TREE_VIEW (view);
 	((treeview *)cv)->scrollw = win;
 	gtk_widget_show (view);
