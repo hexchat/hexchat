@@ -342,9 +342,52 @@ servlist_move_network (ircnet *net, int delta)
 	}
 }
 
+#if 0
 static gboolean
-servlist_net_keypress_cb (GtkWidget *wid, GdkEventKey *evt, gpointer userdata)
+servlist_auto_find (GtkWidget *wid, GdkEventKey *evt, gpointer tree)
 {
+	GtkTreeModel *model = gtk_tree_view_get_model (tree);
+	GtkTreeIter iter;
+	unsigned char c;
+	unsigned char *net_name;
+
+	if (evt->keyval > 0x7a || evt->keyval < 0x41)
+		return FALSE;
+
+	c = toupper (evt->keyval);
+
+	/* scroll to a network that starts with the letter pressed */
+	if (gtk_tree_model_get_iter_first (model, &iter))
+	{
+		do
+		{
+			gtk_tree_model_get (model, &iter, 0, &net_name, -1);
+			if (net_name)
+			{
+				if (toupper (net_name[0]) == c)
+				{
+					servlist_select_and_show (tree, &iter, GTK_LIST_STORE (model));
+					g_free (net_name);
+					return TRUE;
+				}
+				g_free (net_name);
+			}
+		}
+		while (gtk_tree_model_iter_next (model, &iter));
+	}
+
+	return FALSE;
+}
+#endif
+
+static gboolean
+servlist_net_keypress_cb (GtkWidget *wid, GdkEventKey *evt, gpointer tree)
+{
+#if 0		/* GTK's auto-find does this better */
+	if (servlist_auto_find (wid, evt, tree))
+		return TRUE;
+#endif
+
 	if (!selected_net)
 		return FALSE;
 
@@ -869,44 +912,6 @@ no_servlist (GtkWidget * igad, gpointer serv)
 	else
 		prefs.slist_skip = FALSE;
 }
-
-#if 0		/* GTK auto-find already does this */
-static gboolean
-servlist_key_cb (GtkWidget *wid, GdkEventKey *evt, gpointer tree)
-{
-	GtkTreeModel *model = gtk_tree_view_get_model (tree);
-	GtkTreeIter iter;
-	unsigned char c;
-	unsigned char *net_name;
-
-	if (evt->keyval > 0x7a || evt->keyval < 0x41)
-		return FALSE;
-
-	c = toupper (evt->keyval);
-
-	/* scroll to a network that starts with the letter pressed */
-	if (gtk_tree_model_get_iter_first (model, &iter))
-	{
-		do
-		{
-			gtk_tree_model_get (model, &iter, 0, &net_name, -1);
-			if (net_name)
-			{
-				if (toupper (net_name[0]) == c)
-				{
-					servlist_select_and_show (tree, &iter, GTK_LIST_STORE (model));
-					g_free (net_name);
-					return TRUE;
-				}
-				g_free (net_name);
-			}
-		}
-		while (gtk_tree_model_iter_next (model, &iter));
-	}
-
-	return FALSE;
-}
-#endif
 
 static GtkWidget *
 bold_label (char *text)
@@ -1441,10 +1446,8 @@ fe_serverlist_open (session *sess)
 						 	G_CALLBACK (servlist_delete_cb), 0);
 	g_signal_connect (G_OBJECT (gtk_tree_view_get_selection (GTK_TREE_VIEW (networks_tree))),
 							"changed", G_CALLBACK (servlist_network_row_cb), NULL);
-/*	g_signal_connect (G_OBJECT (networks_tree), "key_press_event",
-							G_CALLBACK (servlist_key_cb), networks_tree);*/
 	g_signal_connect (G_OBJECT (networks_tree), "key_press_event",
-							G_CALLBACK (servlist_net_keypress_cb), 0);
+							G_CALLBACK (servlist_net_keypress_cb), networks_tree);
 
 	gtk_widget_show (serverlist_win);
 }
