@@ -201,7 +201,7 @@ move_row (chan *ch, int delta, GtkTreeIter *parent)
 	{
 		if (gtk_tree_model_iter_next (GTK_TREE_MODEL (store), &dest))
 			gtk_tree_store_swap (store, src, &dest);
-		else	/* move to bottom */
+		else	/* move to top */
 			gtk_tree_store_move_after (store, src, NULL);
 
 	} else
@@ -212,7 +212,7 @@ move_row (chan *ch, int delta, GtkTreeIter *parent)
 			gtk_tree_model_get_iter (GTK_TREE_MODEL (store), &dest, dest_path);
 			gtk_tree_store_swap (store, src, &dest);
 		} else
-		{	/* move to top */
+		{	/* move to bottom */
 			gtk_tree_store_move_before (store, src, NULL);
 		}
 
