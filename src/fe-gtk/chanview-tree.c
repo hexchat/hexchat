@@ -190,13 +190,50 @@ cv_tree_remove (chan *ch)
 }
 
 static void
+move_row (chan *ch, int delta, GtkTreeIter *parent)
+{
+	GtkTreeStore *store = ch->cv->store;
+	GtkTreeIter *src = &ch->iter;
+	GtkTreeIter dest = ch->iter;
+	GtkTreePath *dest_path;
+
+	if (delta < 0) /* down */
+	{
+		if (gtk_tree_model_iter_next (GTK_TREE_MODEL (store), &dest))
+			gtk_tree_store_swap (store, src, &dest);
+		else	/* move to bottom */
+			gtk_tree_store_move_after (store, src, NULL);
+
+	} else
+	{
+		dest_path = gtk_tree_model_get_path (GTK_TREE_MODEL (store), &dest);
+		if (gtk_tree_path_prev (dest_path))
+		{
+			gtk_tree_model_get_iter (GTK_TREE_MODEL (store), &dest, dest_path);
+			gtk_tree_store_swap (store, src, &dest);
+		} else
+		{	/* move to top */
+			gtk_tree_store_move_before (store, src, NULL);
+		}
+
+		gtk_tree_path_free (dest_path);
+	}
+}
+
+static void
 cv_tree_move (chan *ch, int delta)
 {
+	GtkTreeIter parent;
+
+	/* do nothing if this is a server row */
+	if (gtk_tree_model_iter_parent (GTK_TREE_MODEL (ch->cv->store), &parent, &ch->iter))
+		move_row (ch, delta, &parent);
 }
 
 static void
 cv_tree_move_family (chan *ch, int delta)
 {
+	move_row (ch, delta, NULL);
 }
 
 static void
