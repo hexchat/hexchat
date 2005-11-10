@@ -112,7 +112,7 @@ typedef struct
 	SV *callback;
 	SV *userdata;
 	xchat_hook *hook;				  /* required for timers */
-
+	unsigned int depth;
 } HookData;
 
 static PerlInterpreter *my_perl = NULL;
@@ -254,6 +254,9 @@ server_cb (char *word[], char *word_eol[], void *userdata)
 	ENTER;
 	SAVETMPS;
 
+	if (data->depth)
+		return XCHAT_EAT_NONE;
+
 	wd = newAV ();
 	sv_2mortal ((SV *) wd);
 	wd_eol = newAV ();
@@ -278,7 +281,9 @@ server_cb (char *word[], char *word_eol[], void *userdata)
 	XPUSHs (data->userdata);
 	PUTBACK;
 
+	data->depth++;
 	count = call_sv (data->callback, G_EVAL);
+	data->depth--;
 	SPAGAIN;
 	if (SvTRUE (ERRSV)) {
 		xchat_printf (ph, "Error in server callback %s", SvPV_nolen (ERRSV));
@@ -316,6 +321,9 @@ command_cb (char *word[], char *word_eol[], void *userdata)
 	ENTER;
 	SAVETMPS;
 
+	if (data->depth)
+		return XCHAT_EAT_NONE;
+
 	wd = newAV ();
 	sv_2mortal ((SV *) wd);
 	wd_eol = newAV ();
@@ -341,7 +349,9 @@ command_cb (char *word[], char *word_eol[], void *userdata)
 	XPUSHs (data->userdata);
 	PUTBACK;
 
+	data->depth++;
 	count = call_sv (data->callback, G_EVAL);
+	data->depth--;
 	SPAGAIN;
 	if (SvTRUE (ERRSV)) {
 		xchat_printf (ph, "Error in command callback %s", SvPV_nolen (ERRSV));
@@ -379,6 +389,9 @@ print_cb (char *word[], void *userdata)
 	ENTER;
 	SAVETMPS;
 
+	if (data->depth)
+		return XCHAT_EAT_NONE;
+
 	wd = newAV ();
 	sv_2mortal ((SV *) wd);
 
@@ -407,7 +420,9 @@ print_cb (char *word[], void *userdata)
 	XPUSHs (data->userdata);
 	PUTBACK;
 
+	data->depth++;
 	count = call_sv (data->callback, G_EVAL);
+	data->depth--;
 	SPAGAIN;
 	if (SvTRUE (ERRSV)) {
 		xchat_printf (ph, "Error in print callback %s", SvPV_nolen (ERRSV));
@@ -611,6 +626,7 @@ XS (XS_Xchat_hook_server)
 		SvREFCNT_inc (data->callback);
 		data->userdata = sv_mortalcopy (userdata);
 		SvREFCNT_inc (data->userdata);
+		data->depth = 0;
 		hook = xchat_hook_server (ph, name, pri, server_cb, data);
 
 		XSRETURN_UV (PTR2UV (hook));
@@ -651,6 +667,7 @@ XS (XS_Xchat_hook_command)
 		SvREFCNT_inc (data->callback);
 		data->userdata = sv_mortalcopy (userdata);
 		SvREFCNT_inc (data->userdata);
+		data->depth = 0;
 		hook = xchat_hook_command (ph, name, pri, command_cb, help_text, data);
 
 		XSRETURN_UV (PTR2UV (hook));
@@ -689,6 +706,7 @@ XS (XS_Xchat_hook_print)
 		SvREFCNT_inc (data->callback);
 		data->userdata = sv_mortalcopy (userdata);
 		SvREFCNT_inc (data->userdata);
+		data->depth = 0;
 		hook = xchat_hook_print (ph, name, pri, print_cb, data);
 
 		XSRETURN_UV (PTR2UV (hook));
