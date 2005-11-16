@@ -1115,6 +1115,18 @@ gtk_xtext_size_allocate (GtkWidget * widget, GtkAllocation * allocation)
 	}
 }
 
+static void
+gtk_xtext_selection_clear_full (xtext_buffer *buf)
+{
+	textentry *ent = buf->text_first;
+	while (ent)
+	{
+		ent->mark_start = -1;
+		ent->mark_end = -1;
+		ent = ent->next;
+	}
+}
+
 static int
 gtk_xtext_selection_clear (xtext_buffer *buf)
 {
@@ -4605,18 +4617,56 @@ gtk_xtext_clear (xtext_buffer *buf)
 		buf->xtext->buffer->indent = 1;
 }
 
-void *
-gtk_xtext_search (GtkXText * xtext, const unsigned char *text, void *start)
+static gboolean
+gtk_xtext_check_ent_visibility (GtkXText * xtext, textentry *find_ent, int add)
+{
+	textentry *ent;
+	int lines_max;
+	int line = 0;
+	int width;
+	int height;
+
+	gdk_drawable_get_size (GTK_WIDGET (xtext)->window, &width, &height);
+
+	lines_max = ((height + xtext->pixel_offset) / xtext->fontsize) + add;
+	ent = xtext->buffer->pagetop_ent;
+
+	while (ent && line < lines_max)
+	{
+		if (find_ent == ent)
+			return TRUE;
+		line += ent->lines_taken;
+		ent = ent->next;
+	}
+
+	return FALSE;
+}
+
+void
+gtk_xtext_check_marker_visibility (GtkXText * xtext)
+{
+	if (gtk_xtext_check_ent_visibility (xtext, xtext->buffer->marker_pos, 1))
+		xtext->buffer->marker_seen = TRUE;
+}
+
+textentry *
+gtk_xtext_search (GtkXText * xtext, const gchar *text, textentry *start, gboolean case_match, gboolean backward)
 {
 	textentry *ent, *fent;
-	unsigned char *str;
 	int line;
+	gchar *str, *nee, *hay;	/* needle in haystack */
 
-	gtk_xtext_selection_clear (xtext->buffer);
+	gtk_xtext_selection_clear_full (xtext->buffer);
 	xtext->buffer->last_ent_start = NULL;
 	xtext->buffer->last_ent_end = NULL;
 
-	/* validate 'start' */
+	/* set up text comparand for Case Match or Ignore */
+	if (case_match)
+		nee = g_strdup (text);
+	else
+		nee = g_utf8_casefold (text, strlen (text));
+
+	/* Validate that start gives a currently valid ent pointer */
 	ent = xtext->buffer->text_first;
 	while (ent)
 	{
@@ -4627,41 +4677,58 @@ gtk_xtext_search (GtkXText * xtext, const unsigned char *text, void *start)
 	if (!ent)
 		start = NULL;
 
+	/* Choose first ent to look at */
 	if (start)
-		ent = ((textentry *) start)->next;
+		ent = backward? start->prev: start->next;
 	else
-		ent = xtext->buffer->text_first;
+		ent = backward? xtext->buffer->text_last: xtext->buffer->text_first;
+
+	/* Search from there to one end or the other until found */
 	while (ent)
 	{
-		if ((str = nocasestrstr (ent->str, text)))
-		{
-			ent->mark_start = str - ent->str;
-			ent->mark_end = ent->mark_start + strlen (text);
+		/* If Case Ignore, fold before & free after calling strstr */
+		if (case_match)
+			hay = g_strdup (ent->str);
+		else
+			hay = g_utf8_casefold (ent->str, strlen (ent->str));
+		/* Try to find the needle in this haystack */
+		str = g_strstr_len (hay, strlen (hay), nee);
+		g_free (hay);
+		if (str)
 			break;
-		}
-		ent = ent->next;
+		ent = backward? ent->prev: ent->next;
 	}
-
 	fent = ent;
-	ent = xtext->buffer->text_first;
-	line = 0;
-	while (ent)
-	{
-		line += ent->lines_taken;
-		ent = ent->next;
-		if (ent == fent)
-			break;
-	}
-	while (line > xtext->adj->upper - xtext->adj->page_size)
-		line--;
 
-	if (fent != 0)
+	/* Save distance to start, end of found string */
+	if (ent)
 	{
-		xtext->adj->value = line;
-		xtext->buffer->scrollbar_down = FALSE;
-		gtk_adjustment_changed (xtext->adj);
+		ent->mark_start = str - hay;
+		ent->mark_end = ent->mark_start + strlen (nee);
+
+		/* is the match visible? Might need to scroll */
+		if (!gtk_xtext_check_ent_visibility (xtext, ent, 0))
+		{
+			ent = xtext->buffer->text_first;
+			line = 0;
+			while (ent)
+			{
+				line += ent->lines_taken;
+				ent = ent->next;
+				if (ent == fent)
+					break;
+			}
+			while (line > xtext->adj->upper - xtext->adj->page_size)
+				line--;
+
+			xtext->adj->value = line;
+			xtext->buffer->scrollbar_down = FALSE;
+			gtk_adjustment_changed (xtext->adj);
+		}
 	}
-	gtk_xtext_render_page (xtext);
+
+	g_free (nee);
+	gtk_widget_queue_draw (GTK_WIDGET (xtext));
 
 	return fent;
 }
@@ -4698,32 +4765,6 @@ gtk_xtext_render_page_timeout (GtkXText * xtext)
 	}
 
 	return 0;
-}
-
-void
-gtk_xtext_check_marker_visibility(GtkXText * xtext)
-{
-	textentry *ent;
-	int lines_max;
-	int line = 0;
-	int width;
-	int height;
-	
-	gdk_drawable_get_size (GTK_WIDGET (xtext)->window, &width, &height);
-	
-	lines_max = ((height + xtext->pixel_offset) / xtext->fontsize) + 1;
-	ent = xtext->buffer->pagetop_ent;
-	
-	while (ent && line < lines_max)
-	{
-		if (xtext->buffer->marker_pos == ent)
-		{
-			xtext->buffer->marker_seen = TRUE;
-			return;
-		}
-		line += ent->lines_taken;
-		ent = ent->next;
-	}
 }
 
 /* append a textentry to our linked list */

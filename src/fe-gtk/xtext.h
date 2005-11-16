@@ -233,7 +233,7 @@ void gtk_xtext_set_palette (GtkXText * xtext, GdkColor palette[]);
 void gtk_xtext_clear (xtext_buffer *buf);
 void gtk_xtext_save (GtkXText * xtext, int fh);
 void gtk_xtext_refresh (GtkXText * xtext, int do_trans);
-void *gtk_xtext_search (GtkXText * xtext, const unsigned char *text, void *start);
+textentry *gtk_xtext_search (GtkXText * xtext, const gchar *text, textentry *start, gboolean case_match, gboolean backward);
 void gtk_xtext_reset_marker_pos (GtkXText *xtext);
 void gtk_xtext_check_marker_visibility(GtkXText *xtext);
 
