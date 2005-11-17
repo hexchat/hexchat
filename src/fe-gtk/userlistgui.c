@@ -301,25 +301,22 @@ void
 fe_userlist_insert (session *sess, struct User *newuser, int row, int sel)
 {
 	GtkTreeModel *model = sess->res->user_model;
-	GdkPixbuf *pix;
+	GdkPixbuf *pix = get_user_icon (sess->server, newuser);
 	GtkTreeIter iter;
 	int do_away = TRUE;
-
-	gtk_list_store_insert (GTK_LIST_STORE (model), &iter, row);
-	pix = get_user_icon (sess->server, newuser);
 
 	if (prefs.away_size_max < 1 || !prefs.away_track)
 		do_away = FALSE;
 
-	gtk_list_store_set (GTK_LIST_STORE (model), &iter,
-							  0, pix,
-							  1, newuser->nick,
-							  2, newuser->hostname,
-							  3, newuser,
-							  4, (do_away)
-									?	(newuser->away ? &colors[COL_AWAY] : NULL)
-									:	(NULL),
-							  -1);
+	gtk_list_store_insert_with_values (GTK_LIST_STORE (model), &iter, row,
+									0, pix,
+									1, newuser->nick,
+									2, newuser->hostname,
+									3, newuser,
+									4, (do_away)
+										?	(newuser->away ? &colors[COL_AWAY] : NULL)
+										:	(NULL),
+								  -1);
 
 	/* is it me? */
 	if (newuser->me && sess->gui->nick_box)
