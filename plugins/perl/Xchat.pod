@@ -366,6 +366,7 @@ C<$server>	-	specifies that the text will be printed in a channel or tab
 
 =back
 
+The first argument can either be a string or an array reference of strings.
 Either or both of C<$channel> and C<$server> can be undef.
 
 If called as C<Xchat::print( $text )>, it will always return true.
@@ -389,12 +390,15 @@ LIST		-	list of values for the format fields
 
 =back
 
-=head3 C<Xchat::command( $command, [$channel,[$server]] )>
+=head3 C<Xchat::command( $command | \@commands, [$channel,[$server]] )>
 
 =over 3
 
 =item *
 C<$command>	-	the command to execute, without the leading /
+
+=item *
+C<\@commands>	-	array reference containing a list of commands to execute
 
 =item *
 C<$channel>	-	channel or tab with the given name where C<$command> will be executed
@@ -405,6 +409,7 @@ C<$server>	-	specifies that the command will be executed in a channel or tab
 
 =back
 
+The first argument can either be a string or an array reference of strings.
 Either or both of C<$channel> and C<$server> can be undef.
 
 If called as C<Xchat::command( $command )>, it will always return true.

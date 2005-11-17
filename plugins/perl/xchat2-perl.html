@@ -339,7 +339,8 @@ the hook was added</p>
 					that is associated with <code>$server</code></a></strong><br />
 </li>
 </ul>
-<p>Either or both of <code>$channel</code> and <code>$server</code> can be undef.</p>
+<p>The first argument can either be a string or an array reference of strings.<br />
+Either or both of <code>$channel</code> and <code>$server</code> can be undef.</p>
 <p>If called as <code>Xchat::print( $text )</code>, it will always return true.
 If called with either the channel or the channel and the server
 specified then it will return true if a context is found and
@@ -358,9 +359,11 @@ undef is the same as
 </ul>
 <p>
 </p>
-<h3><a name="xchat__command___command____channel___server____"><code>Xchat::command( $command, [$channel,[$server]] )</code></a></h3>
+<h3><a name="xchat__command___command____channel___server____"><code>Xchat::command( $command | \@commands, [$channel,[$server]] )</code></a></h3>
 <ul>
 <li><strong><a name="item_c_3c_24command_3e__2d_the_command_to_execute_2c_wi"><code>$command</code>	-	the command to execute, without the leading /</a></strong><br />
+<li><strong><code>\@command</code>	-	array reference containing a list of commands to execute</strong><br />
+</li>
 </li>
 <li><strong><code>$channel</code>	-	channel or tab with the given name where <code>$command</code> will be executed</strong><br />
 </li>
@@ -368,7 +371,8 @@ undef is the same as
 					that is associated with <code>$server</code></a></strong><br />
 </li>
 </ul>
-<p>Either or both of <code>$channel</code> and <code>$server</code> can be undef.</p>
+<p>The first argument can either be a string or an array reference of strings.<br />
+Either or both of <code>$channel</code> and <code>$server</code> can be undef.</p>
 <p>If called as <code>Xchat::command( $command )</code>, it will always return true.
 If called with either the channel or the channel and the server
 specified then it will return true if a context is found and false
