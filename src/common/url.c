@@ -262,7 +262,7 @@ url_check_line (char *buf, int len)
 		case 0:
 		case ' ':
 			wlen = po - start;
-			if (wlen > 1)
+			if (wlen > 2)
 			{
 				if (url_check_word (start, wlen) == WORD_URL)
 				{

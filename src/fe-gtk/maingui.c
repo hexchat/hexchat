@@ -211,7 +211,8 @@ unflash_window (GtkWidget *win)
 
 void
 fe_set_tab_color (struct session *sess, int col, int flash)
-{
+{	
+	struct session *server_sess = sess->server->server_session;
 	if (sess->gui->is_tab && (col == 0 || sess != current_tab))
 	{
 		switch (col)
@@ -220,25 +221,37 @@ fe_set_tab_color (struct session *sess, int col, int flash)
 			sess->new_data = FALSE;
 			sess->msg_said = FALSE;
 			sess->nick_said = FALSE;
-			chan_set_color (sess->res->tab, plain_list);
+			chan_set_color (sess->res->tab, plain_list);			
 			break;
 		case 1:	/* new data has been displayed (dark red) */
-			sess->new_data = TRUE;
-			sess->msg_said = FALSE;
-			sess->nick_said = FALSE;
+			server_sess->new_data = sess->new_data = TRUE;
+			server_sess->msg_said = sess->msg_said = FALSE;
+			server_sess->nick_said = sess->nick_said = FALSE;
 			chan_set_color (sess->res->tab, newdata_list);
+
+			if (chan_is_collapsed (sess->res->tab))
+				chan_set_color (chan_get_parent (sess->res->tab), newdata_list);
+				
 			break;
 		case 2:	/* new message arrived in channel (light red) */
-			sess->new_data = FALSE;
-			sess->msg_said = TRUE;
-			sess->nick_said = FALSE;
+			server_sess->new_data = sess->new_data = FALSE;
+			server_sess->msg_said = sess->msg_said = TRUE;
+			server_sess->nick_said = sess->nick_said = FALSE;
 			chan_set_color (sess->res->tab, newmsg_list);
+			
+			if (chan_is_collapsed (sess->res->tab))
+				chan_set_color (chan_get_parent (sess->res->tab), newmsg_list);
+			
 			break;
 		case 3:	/* your nick has been seen (blue) */
-			sess->new_data = FALSE;
-			sess->msg_said = FALSE;
-			sess->nick_said = TRUE;
+			server_sess->new_data = sess->new_data = FALSE;
+			server_sess->msg_said = sess->msg_said = FALSE;
+			server_sess->nick_said = sess->nick_said = TRUE;
 			chan_set_color (sess->res->tab, nickseen_list);
+
+			if (chan_is_collapsed (sess->res->tab))
+				chan_set_color (chan_get_parent (sess->res->tab), nickseen_list);
+				
 			break;
 		}
 	}
@@ -1144,26 +1157,24 @@ mg_link_gentab (chan *ch, GtkWidget *box)
 }
 
 static void
-mg_detach_tab_cb (GtkWidget *item, session *sess)
+mg_detach_tab_cb (GtkWidget *item, chan *ch)
 {
-	chan *ch = chanview_get_focused (mg_gui->chanview);
-
 	if (chan_get_tag (ch) == TAG_IRC)	/* IRC tab */
 	{
-		mg_link_irctab (sess, 1);
+		/* userdata is session * */
+		mg_link_irctab (chan_get_userdata (ch), 1);
 		return;
 	}
 
-	mg_link_gentab (ch, (GtkWidget *) sess);	/* non-IRC tab */
+	/* userdata is GtkWidget * */
+	mg_link_gentab (ch, chan_get_userdata (ch));	/* non-IRC tab */
 }
 
 static void
-mg_destroy_tab_cb (GtkWidget *item, session *sess)
+mg_destroy_tab_cb (GtkWidget *item, chan *ch)
 {
-	chan *ch = chanview_get_focused (mg_gui->chanview);
-
 	/* treat it just like the X button press */
-	mg_xbutton_cb (mg_gui->chanview, ch, chan_get_tag (ch), sess);
+	mg_xbutton_cb (mg_gui->chanview, ch, chan_get_tag (ch), chan_get_userdata (ch));
 }
 
 static void
@@ -1310,10 +1321,10 @@ mg_tab_contextmenu_cb (chanview *cv, chan *ch, int tag, gpointer ud, GdkEventBut
 	gtk_widget_show (item);
 
 	mg_create_icon_item (_("_Close Tab"), GTK_STOCK_CLOSE, menu,
-								mg_destroy_tab_cb, sess);
+								mg_destroy_tab_cb, ch);
 	/*if (tag == TAG_IRC)*/
 		mg_create_icon_item (_("_Detach Tab"), GTK_STOCK_REDO, menu,
-									mg_detach_tab_cb, sess);
+									mg_detach_tab_cb, ch);
 
 	if (sess && tabmenu_list)
 		menu_create (menu, tabmenu_list, sess->channel, FALSE);
@@ -2163,7 +2174,7 @@ mg_create_meters (session_gui *gui, GtkWidget *parent_box)
 	GtkWidget *infbox, *wid, *box;
 
 	gui->meter_box = infbox = box = gtk_vbox_new (0, 1);
-	gtk_box_pack_end (GTK_BOX (parent_box), box, 0, 0, 0);
+	gtk_box_pack_start (GTK_BOX (parent_box), box, 0, 0, 0);
 
 	if ((prefs.lagometer & 2) || (prefs.throttlemeter & 2))
 	{

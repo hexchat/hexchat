@@ -765,3 +765,15 @@ cv_tabs_rename (chan *ch, char *name)
 		pango_attr_list_unref (attr);
 	}
 }
+
+static gboolean
+cv_tabs_is_collapsed (chan *ch)
+{
+	return FALSE;
+}
+
+static chan *
+cv_tabs_get_parent (chan *ch)
+{
+	return NULL;
+}

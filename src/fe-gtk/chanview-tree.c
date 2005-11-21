@@ -255,3 +255,35 @@ cv_tree_rename (chan *ch, char *name)
 {
 	/* nothing to do, it's already renamed in the store */
 }
+
+static chan *
+cv_tree_get_parent (chan *ch)
+{
+	chan *parent_ch = NULL;
+	GtkTreeIter parent;
+
+	if (gtk_tree_model_iter_parent (GTK_TREE_MODEL (ch->cv->store), &parent, &ch->iter))
+	{
+		gtk_tree_model_get (GTK_TREE_MODEL (ch->cv->store), &parent, COL_CHAN, &parent_ch, -1);
+	}
+
+	return parent_ch;
+}
+
+static gboolean
+cv_tree_is_collapsed (chan *ch)
+{
+	chan *parent = cv_tree_get_parent (ch);
+	GtkTreePath *path = NULL;
+	gboolean ret;
+
+	if (parent == NULL)
+		return FALSE;
+
+	path = gtk_tree_model_get_path (GTK_TREE_MODEL (parent->cv->store),
+											  &parent->iter);
+	ret = !gtk_tree_view_row_expanded (((treeview *)parent->cv)->tree, path);
+	gtk_tree_path_free (path);
+	
+	return ret;
+}

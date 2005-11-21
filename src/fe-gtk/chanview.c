@@ -47,6 +47,8 @@ struct _chanview
 	void (*func_focus) (chan *);
 	void (*func_set_color) (chan *, PangoAttrList *);
 	void (*func_rename) (chan *, char *);
+	gboolean (*func_is_collapsed) (chan *);
+	chan *(*func_get_parent) (chan *);
 	void (*func_cleanup) (chanview *);
 
 	unsigned int sorted:1;
@@ -169,6 +171,8 @@ chanview_set_impl (chanview *cv, int type)
 		cv->func_focus = cv_tabs_focus;
 		cv->func_set_color = cv_tabs_set_color;
 		cv->func_rename = cv_tabs_rename;
+		cv->func_is_collapsed = cv_tabs_is_collapsed;
+		cv->func_get_parent = cv_tabs_get_parent;
 		cv->func_cleanup = cv_tabs_cleanup;
 		break;
 
@@ -184,6 +188,8 @@ chanview_set_impl (chanview *cv, int type)
 		cv->func_focus = cv_tree_focus;
 		cv->func_set_color = cv_tree_set_color;
 		cv->func_rename = cv_tree_rename;
+		cv->func_is_collapsed = cv_tree_is_collapsed;
+		cv->func_get_parent = cv_tree_get_parent;
 		cv->func_cleanup = cv_tree_cleanup;
 		break;
 	}
@@ -399,12 +405,6 @@ chanview_move_focus (chanview *cv, gboolean relative, int num)
 	cv->func_move_focus (cv, relative, num);
 }
 
-chan *
-chanview_get_focused (chanview *cv)
-{
-	return cv->focused;
-}
-
 GtkOrientation
 chanview_get_orientation (chanview *cv)
 {
@@ -425,6 +425,12 @@ int
 chan_get_tag (chan *ch)
 {
 	return ch->tag;
+}
+
+void *
+chan_get_userdata (chan *ch)
+{
+	return ch->userdata;
 }
 
 void
@@ -622,4 +628,16 @@ chan_remove (chan *ch, gboolean force)
 	gtk_tree_store_remove (ch->cv->store, &ch->iter);
 	free (ch);
 	return TRUE;
+}
+
+gboolean
+chan_is_collapsed (chan *ch)
+{
+	return ch->cv->func_is_collapsed (ch);
+}
+
+chan *
+chan_get_parent (chan *ch)
+{
+	return ch->cv->func_get_parent (ch);
 }
