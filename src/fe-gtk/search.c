@@ -125,11 +125,13 @@ search_open (session * sess)
 	gtk_widget_grab_focus (entry);
 
 	wid = gtk_check_button_new_with_mnemonic (_("_Match case"));
+	GTK_TOGGLE_BUTTON (wid)->active = case_match;
 	g_signal_connect (G_OBJECT (wid), "toggled", G_CALLBACK (search_caseign_cb), sess);
 	gtk_container_add (GTK_CONTAINER (vbox), wid);
 	gtk_widget_show (wid);
 
 	wid = gtk_check_button_new_with_mnemonic (_("Search _backwards"));
+	GTK_TOGGLE_BUTTON (wid)->active = search_backward;
 	g_signal_connect (G_OBJECT (wid), "toggled", G_CALLBACK (search_dirbwd_cb), sess);
 	gtk_container_add (GTK_CONTAINER (vbox), wid);
 	gtk_widget_show (wid);
