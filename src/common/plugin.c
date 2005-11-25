@@ -1114,6 +1114,7 @@ xchat_list_get (xchat_plugin *ph, const char *name)
 		{
 			list->type = LIST_USERS;
 			list->head = list->next = userlist_flat_list (ph->context);
+			fe_userlist_set_selected (ph->context);
 			break;
 		}	/* fall through */
 
@@ -1179,7 +1180,7 @@ xchat_list_fields (xchat_plugin *ph, const char *name)
 	};
 	static const char * const users_fields[] =
 	{
-		"iaway", "shost", "tlasttalk", "snick", "sprefix", NULL
+		"iaway", "shost", "tlasttalk", "snick", "sprefix", "iselected", NULL
 	};
 	static const char * const list_of_lists[] =
 	{
@@ -1391,6 +1392,8 @@ xchat_list_int (xchat_plugin *ph, xchat_list *xlist, const char *name)
 		{
 		case 0x2de2ee:	/* away */
 			return ((struct User *)data)->away;
+		case 0x4705f29b: /* selected */
+			return ((struct User *)data)->selected;
 		}
 		break;
 

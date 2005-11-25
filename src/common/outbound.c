@@ -3203,7 +3203,7 @@ const struct commands xc_cmds[] = {
 	 N_("NAMES, Lists the nicks on the current channel")},
 	{"NCTCP", cmd_nctcp, 1, 0, 1,
 	 N_("NCTCP <nick> <message>, Sends a CTCP notice")},
-	{"NEWSERVER", cmd_newserver, 0, 0, 1, N_("NEWSERVER <hostname> [<port>]")},
+	{"NEWSERVER", cmd_newserver, 0, 0, 1, N_("NEWSERVER [-noconnect] <hostname> [<port>]")},
 	{"NICK", cmd_nick, 0, 0, 1, N_("NICK <nickname>, sets your nick")},
 
 	{"NOTICE", cmd_notice, 1, 0, 1,

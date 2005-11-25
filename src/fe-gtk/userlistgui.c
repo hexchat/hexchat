@@ -201,6 +201,28 @@ userlist_selection_list (GtkWidget *widget, int *num_ret)
 	return nicks;
 }
 
+void
+fe_userlist_set_selected (struct session *sess)
+{
+	GtkListStore *store = sess->res->user_model;
+	GtkTreeSelection *selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (sess->gui->user_tree));
+	GtkTreeIter iter;
+	struct User *user;
+	if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (store), &iter))
+	{
+		do
+		{
+			gtk_tree_model_get (GTK_TREE_MODEL (store), &iter, 3, &user, -1);
+
+			if (gtk_tree_selection_iter_is_selected (selection, &iter))
+				user->selected = 1;
+			else
+				user->selected = 0;
+				
+		} while (gtk_tree_model_iter_next (GTK_TREE_MODEL (store), &iter));
+	}
+}
+
 static GtkTreeIter *
 find_row (GtkTreeView *treeview, GtkTreeModel *model, struct User *user,
 			 int *selected)
