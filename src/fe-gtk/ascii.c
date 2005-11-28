@@ -136,7 +136,7 @@ ascii_open (void)
 										  NULL, NULL, 0, 0, &vbox, NULL);
 	gtk_container_set_border_width (GTK_CONTAINER (win), 5);
 
-	label = gtk_label_new ("");
+	label = gtk_label_new (NULL);
 
 	table_pos = table;
 	i = 0;
