@@ -92,7 +92,7 @@ static PangoAttrList *plain_list = NULL;
 
 
 static PangoAttrList *
-mg_attr_list_create (GdkColor *col, int canbesmall)
+mg_attr_list_create (GdkColor *col, gboolean small)
 {
 	PangoAttribute *attr;
 	PangoAttrList *list;
@@ -107,7 +107,7 @@ mg_attr_list_create (GdkColor *col, int canbesmall)
 		pango_attr_list_insert (list, attr);
 	}
 
-	if (canbesmall && prefs.tab_small)
+	if (small)
 	{
 		attr = pango_attr_scale_new (PANGO_SCALE_SMALL);
 		attr->start_index = 0;
@@ -130,11 +130,11 @@ mg_create_tab_colors (void)
 		pango_attr_list_unref (away_list);
 	}
 
-	plain_list = mg_attr_list_create (NULL, 1);
-	newdata_list = mg_attr_list_create (&colors[COL_NEW_DATA], 1);
-	nickseen_list = mg_attr_list_create (&colors[COL_HILIGHT], 1);
-	newmsg_list = mg_attr_list_create (&colors[COL_NEW_MSG], 1);
-	away_list = mg_attr_list_create (&colors[COL_AWAY], 0);
+	plain_list = mg_attr_list_create (NULL, prefs.tab_small);
+	newdata_list = mg_attr_list_create (&colors[COL_NEW_DATA], prefs.tab_small);
+	nickseen_list = mg_attr_list_create (&colors[COL_HILIGHT], prefs.tab_small);
+	newmsg_list = mg_attr_list_create (&colors[COL_NEW_MSG], prefs.tab_small);
+	away_list = mg_attr_list_create (&colors[COL_AWAY], FALSE);
 }
 
 #ifdef WIN32
@@ -281,7 +281,7 @@ static void
 mg_set_myself_away (session_gui *gui, gboolean away)
 {
 	gtk_label_set_attributes (GTK_LABEL (GTK_BIN (gui->nick_label)->child),
-									  away ? away_list : plain_list);
+									  away ? away_list : NULL);
 }
 
 /* change the little icon to the left of your nickname */
