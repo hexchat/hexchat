@@ -26,7 +26,7 @@
 
 #include "fe-gtk.h"
 
-#include <gtk/gtkclist.h>
+#include <gtk/gtkbutton.h>
 #include <gtk/gtkentry.h>
 #include <gtk/gtkhbox.h>
 #include <gtk/gtkhbbox.h>
@@ -53,6 +53,14 @@ extern char *pntevts[];
 static GtkWidget *pevent_dialog = NULL, *pevent_dialog_twid,
 	*pevent_dialog_entry,
 	*pevent_dialog_list, *pevent_dialog_hlist;
+
+enum
+{
+	COL_EVENT_NAME,
+	COL_EVENT_TEXT,
+	COL_ROW,
+	N_COLUMNS
+};
 
 
 /* this is only used in xtext.c for indented timestamping */
@@ -148,16 +156,16 @@ pevent_dialog_close (GtkWidget *wid, gpointer arg)
 static void
 pevent_dialog_update (GtkWidget * wid, GtkWidget * twid)
 {
-	int row, len, m;
+	int len, m;
 	const char *text;
 	char *out;
 	int sig;
+	GtkTreeIter iter;
+	GtkListStore *store;
 
-	row = gtkutil_clist_selection (pevent_dialog_list);
-	if (row == -1)
+	if (!gtkutil_treeview_get_selected (GTK_TREE_VIEW (pevent_dialog_list),
+													&iter, COL_ROW, &sig, -1))
 		return;
-
-	sig = GPOINTER_TO_INT(gtk_clist_get_row_data (GTK_CLIST (pevent_dialog_list), row));
 
 	text = gtk_entry_get_text (GTK_ENTRY (wid));
 	len = strlen (text);
@@ -178,7 +186,9 @@ pevent_dialog_update (GtkWidget * wid, GtkWidget * twid)
 		free (out);
 		return;
 	}
-	gtk_clist_set_text (GTK_CLIST (pevent_dialog_list), row, 1, text);
+
+	store = (GtkListStore *)gtk_tree_view_get_model (GTK_TREE_VIEW (pevent_dialog_list));
+	gtk_list_store_set (store, &iter, COL_EVENT_TEXT, text, -1);
 
 	if (pntevts_text[sig])
 		free (pntevts_text[sig]);
@@ -203,69 +213,75 @@ pevent_dialog_update (GtkWidget * wid, GtkWidget * twid)
 }
 
 static void
-pevent_dialog_unselect (GtkWidget * clist, gint row, gint column,
-								GdkEventButton * even, gpointer none)
-{
-	gtk_entry_set_text (GTK_ENTRY (pevent_dialog_entry), "");
-	gtk_clist_clear (GTK_CLIST (pevent_dialog_hlist));
-}
-
-static void
 pevent_dialog_hfill (GtkWidget * list, int e)
 {
-	gchar *nnew[2];
 	int i = 0;
-	char *text, buf[64];
+	char *text;
+	GtkTreeIter iter;
+	GtkListStore *store;
 
-	gtk_clist_clear (GTK_CLIST (list));
+	store = (GtkListStore *)gtk_tree_view_get_model (GTK_TREE_VIEW (pevent_dialog_hlist));
+	gtk_list_store_clear (store);
 	while (i < te[e].num_args)
 	{
 		text = _(te[e].help[i]);
 		i++;
-		snprintf (buf, sizeof (buf), "%d", i);
 		if (text[0] == '\001')
 			text++;
-		nnew[0] = buf;
-		nnew[1] = text;
-		gtk_clist_append (GTK_CLIST (list), nnew);
+		gtk_list_store_insert_with_values (store, &iter, -1,
+													  0, i,
+													  1, text, -1);
 	}
 }
 
 static void
-pevent_dialog_select (GtkWidget * clist, gint row, gint column,
-							 GdkEventButton * even, gpointer none)
+pevent_dialog_unselect (void)
 {
-	char *cmd;
-	int sig;
+	gtk_entry_set_text (GTK_ENTRY (pevent_dialog_entry), "");
+	gtk_list_store_clear ((GtkListStore *)gtk_tree_view_get_model (GTK_TREE_VIEW (pevent_dialog_hlist)));
+}
 
-	row = gtkutil_clist_selection (pevent_dialog_list);
-	if (row != -1)
+static void
+pevent_dialog_select (GtkTreeSelection *sel, gpointer store)
+{
+	char *text;
+	int sig;
+	GtkTreeIter iter;
+
+	if (!gtkutil_treeview_get_selected (GTK_TREE_VIEW (pevent_dialog_list),
+													&iter, COL_ROW, &sig, -1))
 	{
-		gtk_clist_get_text (GTK_CLIST (clist), row, 1, &cmd);
-		gtk_entry_set_text (GTK_ENTRY (pevent_dialog_entry), cmd);
-		sig = GPOINTER_TO_INT(gtk_clist_get_row_data (GTK_CLIST (clist), row));
+		pevent_dialog_unselect ();
+	}
+	else
+	{
+		gtk_tree_model_get (store, &iter, COL_EVENT_TEXT, &text, -1);
+		gtk_entry_set_text (GTK_ENTRY (pevent_dialog_entry), text);
+		g_free (text);
 		pevent_dialog_hfill (pevent_dialog_hlist, sig);
-	} else
-	{
-		pevent_dialog_unselect (0, 0, 0, 0, 0);
 	}
 }
 
 static void
 pevent_dialog_fill (GtkWidget * list)
 {
-	int i, row;
-	gchar *nnew[3];
+	int i;
+	GtkListStore *store;
+	GtkTreeIter iter;
 
-	gtk_clist_clear (GTK_CLIST (list));
+	store = (GtkListStore *)gtk_tree_view_get_model (GTK_TREE_VIEW (list));
+	gtk_list_store_clear (store);
 
-	for (i = 0; i < NUM_XP; i++)
+	i = NUM_XP;
+	do
 	{
-		nnew[0] = te[i].name;
-		nnew[1] = pntevts_text[i];
-		row = gtk_clist_append (GTK_CLIST (list), nnew);
-		gtk_clist_set_row_data (GTK_CLIST (list), row, GINT_TO_POINTER(i));
+		i--;
+		gtk_list_store_insert_with_values (store, &iter, 0,
+													  COL_EVENT_NAME, te[i].name,
+													  COL_EVENT_TEXT, pntevts_text[i],
+													  COL_ROW, i, -1);
 	}
+	while (i != 0);
 }
 
 static void
@@ -295,7 +311,7 @@ pevent_load_req_cb (void *arg1, char *file)
 		pevent_load (file);
 		pevent_make_pntevts ();
 		pevent_dialog_fill (pevent_dialog_list);
-		pevent_dialog_select (pevent_dialog_list, -1, -1, NULL, NULL);
+		pevent_dialog_unselect ();
 		prefs.save_pevents = 1;
 	}
 }
@@ -337,15 +353,9 @@ pevent_test_cb (GtkWidget * wid, GtkWidget * twid)
 void
 pevent_dialog_show ()
 {
-	GtkWidget *vbox, *vbox2, *hbox, *tbox, *wid, *bh, *th;
-	gchar *titles[2];
-	gchar *help_titles[2];
-
-	titles[0] = _("Event");
-	titles[1] = _("Text");
-
-	help_titles[0] = _("$ Number");
-	help_titles[1] = _("Description");
+	GtkWidget *vbox, *hbox, *tbox, *wid, *bh, *th;
+	GtkListStore *store, *hstore;
+	GtkTreeSelection *sel;
 
 	if (pevent_dialog)
 	{
@@ -358,9 +368,6 @@ pevent_dialog_show ()
 											 TRUE, FALSE, pevent_dialog_close, NULL,
 											 600, 455, &vbox, 0);
 
-	vbox2 = gtk_vbox_new (0, 2);
-	gtk_container_set_border_width (GTK_CONTAINER (vbox), 4);
-
 	wid = gtk_vpaned_new ();
 	th = gtk_vbox_new (0, 2);
 	bh = gtk_vbox_new (0, 2);
@@ -370,12 +377,15 @@ pevent_dialog_show ()
 	gtk_paned_pack2 (GTK_PANED (wid), bh, 0, 1);
 	gtk_box_pack_start (GTK_BOX (vbox), wid, 1, 1, 0);
 	gtk_widget_show (wid);
-	pevent_dialog_list = gtkutil_clist_new (2, titles, th, GTK_POLICY_ALWAYS,
-														 pevent_dialog_select, 0,
-														 pevent_dialog_unselect, 0,
-														 GTK_SELECTION_BROWSE);
-	gtk_clist_set_column_width (GTK_CLIST (pevent_dialog_list), 0, 80);
-	gtk_clist_set_column_width (GTK_CLIST (pevent_dialog_list), 1, 380);
+
+	store = gtk_list_store_new (N_COLUMNS, G_TYPE_STRING,
+	                            G_TYPE_STRING, G_TYPE_INT);
+	pevent_dialog_list = gtkutil_treeview_new (th, GTK_TREE_MODEL (store), NULL,
+															 COL_EVENT_NAME, _("Event"),
+															 COL_EVENT_TEXT, _("Text"), -1);
+	sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (pevent_dialog_list));
+	g_signal_connect (G_OBJECT (sel), "changed",
+							G_CALLBACK (pevent_dialog_select), store);
 
 	pevent_dialog_twid = gtk_xtext_new (colors, 0);
 	gtk_xtext_set_tint (GTK_XTEXT (pevent_dialog_twid), prefs.tint_red, prefs.tint_green, prefs.tint_blue);
@@ -383,12 +393,8 @@ pevent_dialog_show ()
 									  channelwin_pix, prefs.transparent);
 
 	pevent_dialog_entry = gtk_entry_new_with_max_length (255);
-	gtk_widget_set_usize (pevent_dialog_entry, 96, 0);
-
-	gtk_signal_connect (GTK_OBJECT (pevent_dialog_entry), "activate",
-							  GTK_SIGNAL_FUNC (pevent_dialog_update),
-							  pevent_dialog_twid);
-
+	g_signal_connect (G_OBJECT (pevent_dialog_entry), "activate",
+							G_CALLBACK (pevent_dialog_update), pevent_dialog_twid);
 	gtk_box_pack_start (GTK_BOX (bh), pevent_dialog_entry, 0, 0, 0);
 	gtk_widget_show (pevent_dialog_entry);
 
@@ -402,18 +408,15 @@ pevent_dialog_show ()
 
 	gtk_widget_show (pevent_dialog_twid);
 
-	wid = gtk_vscrollbar_new (GTK_XTEXT (pevent_dialog_twid)->adj);
-	gtk_box_pack_start (GTK_BOX (tbox), wid, FALSE, FALSE, 0);
-	show_and_unfocus (wid);
-
-	pevent_dialog_hlist = gtkutil_clist_new (2, help_titles, bh,
-														  GTK_POLICY_ALWAYS,
-														  NULL, 0, NULL, 0,
-														  GTK_SELECTION_BROWSE);
-	gtk_clist_set_column_width (GTK_CLIST (pevent_dialog_list), 0, 120);
+	hstore = gtk_list_store_new (2, G_TYPE_INT, G_TYPE_STRING);
+	pevent_dialog_hlist = gtkutil_treeview_new (bh, GTK_TREE_MODEL (hstore),
+															  NULL,
+															  0, _("$ Number"),
+															  1, _("Description"), -1);
 	gtk_widget_show (pevent_dialog_hlist);
 
 	pevent_dialog_fill (pevent_dialog_list);
+	gtk_widget_show (pevent_dialog_list);
 
 	hbox = gtk_hbutton_box_new ();
 	gtk_box_pack_end (GTK_BOX (vbox), hbox, 0, 0, 2);
@@ -428,14 +431,14 @@ pevent_dialog_show ()
 						 (void *) 0, _("Load From..."));
 	wid = gtk_button_new_with_label (_("Test All"));
 	gtk_box_pack_end (GTK_BOX (hbox), wid, 0, 0, 0);
-	gtk_signal_connect (GTK_OBJECT (wid), "clicked",
-							  GTK_SIGNAL_FUNC (pevent_test_cb), pevent_dialog_twid);
+	g_signal_connect (G_OBJECT (wid), "clicked",
+							G_CALLBACK (pevent_test_cb), pevent_dialog_twid);
 	gtk_widget_show (wid);
 
 	wid = gtk_button_new_from_stock (GTK_STOCK_OK);
 	gtk_box_pack_start (GTK_BOX (hbox), wid, 0, 0, 0);
-	gtk_signal_connect (GTK_OBJECT (wid), "clicked",
-							  GTK_SIGNAL_FUNC (pevent_ok_cb), NULL);
+	g_signal_connect (G_OBJECT (wid), "clicked",
+							G_CALLBACK (pevent_ok_cb), NULL);
 	gtk_widget_show (wid);
 
 	gtk_widget_show (hbox);
