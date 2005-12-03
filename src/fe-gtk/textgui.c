@@ -33,6 +33,7 @@
 #include <gtk/gtkstock.h>
 #include <gtk/gtkvbox.h>
 #include <gtk/gtkvpaned.h>
+#include <gtk/gtkvscrollbar.h>
 
 #include "../common/xchat.h"
 #include "../common/xchatc.h"
@@ -405,6 +406,10 @@ pevent_dialog_show ()
 	gtk_widget_set_usize (pevent_dialog_twid, 150, 20);
 	gtk_container_add (GTK_CONTAINER (tbox), pevent_dialog_twid);
 	gtk_xtext_set_font (GTK_XTEXT (pevent_dialog_twid), prefs.font_normal);
+
+	wid = gtk_vscrollbar_new (GTK_XTEXT (pevent_dialog_twid)->adj);
+	gtk_box_pack_start (GTK_BOX (tbox), wid, FALSE, FALSE, 0);
+	show_and_unfocus (wid);
 
 	gtk_widget_show (pevent_dialog_twid);
 
