@@ -35,10 +35,17 @@
       <arg type="i"/>
       <arg type="i" direction="out"/>
     </method>
+    <method name="HookPrint">
+      <arg type="s"/>
+      <arg type="i"/>
+      <arg type="i"/>
+      <arg type="i" direction="out"/>
+    </method>
     <method name="unhook">
       <arg type="i"/>
     </method>
-
-    <signal name="HookSignal"/>
+    <signal name="CommandSignal"/>
+    <signal name="ServerSignal"/>
+    <signal name="PrintSignal"/>
   </interface>
 </node>

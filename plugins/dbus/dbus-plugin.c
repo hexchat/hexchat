@@ -48,7 +48,9 @@ struct RemoteObjectClass
 
 enum
 {
-  HOOK_SIGNAL,
+  SERVER_SIGNAL,
+  COMMAND_SIGNAL,
+  PRINT_SIGNAL,
   LAST_SIGNAL
 };
 
@@ -82,6 +84,7 @@ static gboolean remote_object_get_info (RemoteObject *obj, const gchar *id, gcha
 static gboolean remote_object_get_prefs (RemoteObject *obj, const gchar *name, int *ret_type, gchar **ret_str, int *ret_int, GError **error);
 static gboolean remote_object_hook_command (RemoteObject *obj, const char *name, int pri, const char *help_text, int return_value, int *id, GError **error);
 static gboolean remote_object_hook_server (RemoteObject *obj, const char *name, int pri, int return_value, int *id, GError **error);
+static gboolean remote_object_hook_print (RemoteObject *obj, const char *name, int pri, int return_value, int *id, GError **error);
 static gboolean remote_object_unhook (RemoteObject *obj, int id, GError **error);
 
 #include "dbus-plugin-glue.h"
@@ -95,14 +98,30 @@ remote_object_init (RemoteObject *obj)
 static void
 remote_object_class_init (RemoteObjectClass *klass)
 {
-  signals[HOOK_SIGNAL] =
-    g_signal_new ("hook_signal",
+  signals[SERVER_SIGNAL] =
+    g_signal_new ("server_signal",
 		  G_OBJECT_CLASS_TYPE (klass),
                   G_SIGNAL_RUN_LAST,
                   0,
                   NULL, NULL,
                   g_cclosure_user_marshal_VOID__POINTER_POINTER_INT,
                   G_TYPE_NONE, 3, G_TYPE_STRV, G_TYPE_STRV, G_TYPE_INT);
+  signals[COMMAND_SIGNAL] =
+    g_signal_new ("command_signal",
+		  G_OBJECT_CLASS_TYPE (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL,
+                  g_cclosure_user_marshal_VOID__POINTER_POINTER_INT,
+                  G_TYPE_NONE, 3, G_TYPE_STRV, G_TYPE_STRV, G_TYPE_INT);
+  signals[PRINT_SIGNAL] =
+    g_signal_new ("print_signal",
+		  G_OBJECT_CLASS_TYPE (klass),
+                  G_SIGNAL_RUN_LAST,
+                  0,
+                  NULL, NULL,
+                  g_cclosure_user_marshal_VOID__POINTER_POINTER_INT,
+                  G_TYPE_NONE, 2, G_TYPE_STRV, G_TYPE_INT);
 }
 
 /* Implementation of services */
@@ -187,16 +206,44 @@ free_list (char *word[])
 }
 
 static int
-hook_cb (char *word[], char *word_eol[], void *userdata)
+server_hook_cb (char *word[], char *word_eol[], void *userdata)
 {
   HookInfo *info = (HookInfo*)userdata;
   char **arg1, **arg2;
   
   arg1 = build_list (word+1);
   arg2 = build_list (word_eol+1);
-  g_signal_emit (remote_object, signals[HOOK_SIGNAL], 0, arg1, arg2, info->id);
+  g_signal_emit (remote_object, signals[SERVER_SIGNAL], 0, arg1, arg2, info->id);
   free_list (arg1);
   free_list (arg2);
+  
+  return info->return_value;
+}
+
+static int
+command_hook_cb (char *word[], char *word_eol[], void *userdata)
+{
+  HookInfo *info = (HookInfo*)userdata;
+  char **arg1, **arg2;
+  
+  arg1 = build_list (word+1);
+  arg2 = build_list (word_eol+1);
+  g_signal_emit (remote_object, signals[COMMAND_SIGNAL], 0, arg1, arg2, info->id);
+  free_list (arg1);
+  free_list (arg2);
+  
+  return info->return_value;
+}
+
+static int
+print_hook_cb (char *word[], void *userdata)
+{
+  HookInfo *info = (HookInfo*)userdata;
+  char **arg1;
+  
+  arg1 = build_list (word+1);
+  g_signal_emit (remote_object, signals[PRINT_SIGNAL], 0, arg1, info->id);
+  free_list (arg1);
   
   return info->return_value;
 }
@@ -209,7 +256,7 @@ remote_object_hook_command (RemoteObject *obj, const char *name, int pri, const 
   info = g_new0 (HookInfo, 1);
   info->return_value = return_value;
   info->id = num_id++;
-  info->hook = xchat_hook_command (ph, name, pri, hook_cb, help_text, info);
+  info->hook = xchat_hook_command (ph, name, pri, command_hook_cb, help_text, info);
   *id = info->id;
   g_hash_table_insert (hook_hash_table, &info->id, info);
 
@@ -224,12 +271,28 @@ remote_object_hook_server (RemoteObject *obj, const char *name, int pri, int ret
   info = g_new0 (HookInfo, 1);
   info->return_value = return_value;
   info->id = num_id++;
-  info->hook = xchat_hook_server (ph, name, pri, hook_cb, info);
+  info->hook = xchat_hook_server (ph, name, pri, server_hook_cb, info);
   *id = info->id;
   g_hash_table_insert (hook_hash_table, &info->id, info);
 
   return TRUE;
 }
+
+static gboolean
+remote_object_hook_print (RemoteObject *obj, const char *name, int pri, int return_value, int *id, GError **error)
+{
+  HookInfo *info;
+
+  info = g_new0 (HookInfo, 1);
+  info->return_value = return_value;
+  info->id = num_id++;
+  info->hook = xchat_hook_print (ph, name, pri, print_hook_cb, info);
+  *id = info->id;
+  g_hash_table_insert (hook_hash_table, &info->id, info);
+
+  return TRUE;
+}
+
 
 static gboolean
 remote_object_unhook (RemoteObject *obj, int id, GError **error)
@@ -306,10 +369,13 @@ xchat_plugin_get_info(char **name, char **desc, char **version, void **reserved)
 int
 xchat_plugin_deinit()
 {
-  g_hash_table_destroy (hook_hash_table);
-  /* TODO: Close all D-BUS stuff */
-  xchat_printf (ph, _("%s unloaded successfully!\n"), PNAME);
-  return 1;
+  /* TODO: Close all D-BUS stuff
+   * This is impossible yet. D-BUS doesn't support unloading and cause xchat
+   * to crash if we unload the plugin.
+   */
+  //g_hash_table_destroy (hook_hash_table);
+  //xchat_printf (ph, _("%s unloaded successfully!\n"), PNAME);
+  return 0;
 }
 
 int
@@ -329,5 +395,9 @@ xchat_plugin_init(xchat_plugin *plugin_handle,
   success = init_dbus();
   if (success)
     xchat_printf(ph, _("%s loaded successfully!\n"), PNAME);
-  return success;
+  /* TODO: Close all D-BUS stuff if success == FALSE
+   * This is impossible yet. D-BUS doesn't support unloading and cause xchat
+   * to crash if we unload the plugin.
+   */
+  return TRUE; 
 }

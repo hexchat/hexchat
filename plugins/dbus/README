@@ -48,16 +48,36 @@ Switch the D-BUS plugin to another context. It does xchat_find_context() then xc
   - Returns:
     - int: The ID of the hook.
 
+"HookPrint"
+  - Parameters:
+    - gchar*: Name of the print event.
+    - int: Priority of this command.
+    - int: Value to returns when the command is catched. See XCHAT_EAT_*.
+  - Returns:
+    - int: The ID of the hook.
+
 "unhook"
   - Parameters:
-    - int: ID of the hook to unhook. (the return value of "HookCommand" or "HookServer").
+    - int: ID of the hook to unhook. (the return value of "HookCommand", "HookServer" or "HookPrint").
 
 
 
 Available signals:
 
-"HookSignal"
+"ServerSignal"
   - Parameters:
     - gchar**: word returned by xchat.
     - gchar**: word_eol returned bu xchat.
-    - int: the ID of the hook. (the return value of "HookCommand" or "HookServer").
+    - int: the ID of the hook. (the return value of "HookServer").
+
+"CommandSignal"
+  - Parameters:
+    - gchar**: word returned by xchat.
+    - gchar**: word_eol returned bu xchat.
+    - int: the ID of the hook. (the return value of "HookCommand").
+
+"PrintSignal"
+  - Parameters:
+    - gchar**: word returned by xchat.
+    - gchar**: word_eol returned bu xchat.
+    - int: the ID of the hook. (the return value of "HookPrint").

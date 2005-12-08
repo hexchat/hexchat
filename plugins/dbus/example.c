@@ -105,8 +105,11 @@ main (int argc, char **argv)
 				     G_TYPE_NONE,
 				     G_TYPE_STRV, G_TYPE_STRV, G_TYPE_INT,
 				     G_TYPE_INVALID);
-  dbus_g_proxy_add_signal (remote_object, "HookSignal", G_TYPE_STRV, G_TYPE_STRV, G_TYPE_INT, G_TYPE_INVALID);
-  dbus_g_proxy_connect_signal (remote_object, "HookSignal", G_CALLBACK (test_command_cb),
+  dbus_g_proxy_add_signal (remote_object, "CommandSignal", G_TYPE_STRV, G_TYPE_STRV, G_TYPE_INT, G_TYPE_INVALID);
+  dbus_g_proxy_connect_signal (remote_object, "CommandSignal", G_CALLBACK (test_command_cb),
+			       NULL, NULL);
+  dbus_g_proxy_add_signal (remote_object, "ServerSignal", G_TYPE_STRV, G_TYPE_STRV, G_TYPE_INT, G_TYPE_INVALID);
+  dbus_g_proxy_connect_signal (remote_object, "ServerSignal", G_CALLBACK (test_command_cb),
 			       NULL, NULL);
 
   /* Now you can write on the xchat windows: "/test arg1 arg2" */
