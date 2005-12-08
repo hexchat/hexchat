@@ -19,7 +19,7 @@
  * x_claessens@skynet.be
  */
 
-#include "../../config.h"
+#include <config.h>
 #include <dbus/dbus-glib.h>
 #include <unistd.h>
 #include <glib/gi18n.h>

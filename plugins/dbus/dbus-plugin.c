@@ -19,6 +19,7 @@
  * x_claessens@skynet.be
  */
 
+#include <config.h>
 #include <dbus/dbus-glib.h>
 #include "xchat-plugin.h"
 #include <glib/gi18n.h>

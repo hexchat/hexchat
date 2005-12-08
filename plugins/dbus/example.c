@@ -19,6 +19,7 @@
  * x_claessens@skynet.be
  */
 
+#include <config.h>
 #include <dbus/dbus-glib.h>
 #include <unistd.h>
 #include "marshallers.h"
