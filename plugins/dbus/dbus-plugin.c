@@ -23,13 +23,16 @@
 #include "xchat-plugin.h"
 #include <glib/gi18n.h>
 
-
-#define PNAME "xchat remote access"
-#define PDESC "plugin for remote access using DBUS";
-#define PVERSION "0.5"
+#define PNAME _("xchat remote access")
+#define PDESC _("plugin for remote access using DBUS")
+#define PVERSION "0.6"
 
 #define DBUS_SERVICE "org.xchat.service"
 #define DBUS_OBJECT "/org/xchat/RemoteObject"
+
+void xchat_plugin_get_info(char **name, char **desc, char **version, void **reserved);
+int  xchat_plugin_deinit(void);
+int  xchat_plugin_init(xchat_plugin *plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg);
 
 typedef struct RemoteObject RemoteObject;
 typedef struct RemoteObjectClass RemoteObjectClass;

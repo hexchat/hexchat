@@ -472,11 +472,12 @@ dnl # Check for DBUS libraries
 dnl #######################################################################
 
 if test "x$dbus" = "xyes" ; then
-   AC_CHECK_PROG(dbus, dbus-binding-tool, yes, no)
-fi
-
-if test "x$dbus" = "xyes" ; then
-   	PKG_CHECK_MODULES(DBUS, [dbus-1 >= 0.35 dbus-glib-1 >= 0.35], dbus=yes, dbus=no)
+	PKG_CHECK_MODULES(DBUS, [dbus-1 >= 0.35 dbus-glib-1 >= 0.35], dbus=yes, dbus=no)
+	AC_PATH_PROG(DBUS_BINDING_TOOL, dbus-binding-tool, no)
+	AC_PATH_PROG(GLIB_GENMARSHAL, glib-genmarshal, no)
+	if test "x$DBUS_BINDING_TOOL" = "xno" || test "x$GLIB_GENMARSHAL" = "xno" ; then
+		dbus="no"
+	fi
 fi
 
 dnl *********************************************************************

@@ -1,10 +1,17 @@
-EXTRA_DIST=dbus-plugin.xml apps_xchat_url_handler.schemas marshallers.list example.py README
-INCLUDES = $(DBUS_CFLAGS) $(COMMON_CFLAGS) -I$(srcdir)/.. -DLOCALEDIR=\"$(localedir)\"
-BUILT_SOURCES = dbus-plugin-glue.h marshallers.h 
-CLEANFILES = $(BUILT_SOURCES)
-
 libdir = $(xchatlibdir)/plugins
 localedir = $(datadir)/locale
+
+EXTRA_DIST =				\
+	dbus-plugin.xml			\
+	apps_xchat_url_handler.schemas	\
+	marshallers.list		\
+	README
+
+BUILT_SOURCES =				\
+	marshallers.h			\
+	dbus-plugin-glue.h
+
+CLEANFILES = $(BUILT_SOURCES)
 
 lib_LTLIBRARIES = dbus.la
 dbus_la_SOURCES = dbus-plugin.c
@@ -19,11 +26,17 @@ noinst_PROGRAMS = example
 example_SOURCES = example.c 
 example_LDADD = $(DBUS_LIBS)
 
+INCLUDES =					\
+	$(COMMON_CFLAGS)			\
+	$(DBUS_CFLAGS)				\
+	-DLOCALEDIR=\"$(localedir)\"		\
+	-I$(srcdir)/..
+
 dbus-plugin-glue.h: dbus-plugin.xml
-	libtool --mode=execute dbus-binding-tool --prefix=remote_object --mode=glib-server --output=dbus-plugin-glue.h dbus-plugin.xml
+	libtool --mode=execute $(DBUS_BINDING_TOOL) --prefix=remote_object --mode=glib-server --output=$@ $<
 
 marshallers.h: marshallers.list
-	libtool --mode=execute glib-genmarshal --header --body marshallers.list > marshallers.h
+	libtool --mode=execute $(GLIB_GENMARSHAL)  --header --body $< > $@
 
 if DO_GCONF
 GCONF_SCHEMA_CONFIG_SOURCE=`$(GCONFTOOL) --get-default-source`
