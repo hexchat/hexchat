@@ -44,10 +44,10 @@ test_command_cb (DBusGProxy *proxy, gchar *word[], gchar *word_eol[], guint id, 
   GError *error = NULL;
   gint i = 0;
   
-  g_printf ("signal received: id=%d\n", id);
+  g_print ("signal received: id=%d\n", id);
   while ((word[i] && word_eol[i]))
   {
-    g_printf ("word=%s ; word_eol=%s\n", word[i], word_eol[i]);
+    g_print ("word=%s ; word_eol=%s\n", word[i], word_eol[i]);
     i++;
   }
   
@@ -91,7 +91,7 @@ main (int argc, char **argv)
                           G_TYPE_INT, 1, G_TYPE_INVALID,
                           G_TYPE_INT, &command_id, G_TYPE_INVALID))
     write_error ("Failed to complete HookCommand", error);
-  g_printf ("Command hook id=%d\n", command_id);
+  g_print ("Command hook id=%d\n", command_id);
 
   if (!dbus_g_proxy_call (remote_object, "HookServer", &error,
                           G_TYPE_STRING, "RAW LINE",
@@ -99,7 +99,7 @@ main (int argc, char **argv)
                           G_TYPE_INT, 0, G_TYPE_INVALID,
                           G_TYPE_INT, &server_id, G_TYPE_INVALID))
     write_error ("Failed to complete HookServer", error);
-  g_printf ("Server hook id=%d\n", server_id);
+  g_print ("Server hook id=%d\n", server_id);
 
   dbus_g_object_register_marshaller (g_cclosure_user_marshal_VOID__POINTER_POINTER_INT,
 				     G_TYPE_NONE,
