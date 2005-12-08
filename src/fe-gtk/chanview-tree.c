@@ -4,6 +4,7 @@ typedef struct
 {
 	GtkTreeView *tree;
 	GtkWidget *scrollw;	/* scrolledWindow */
+	int idle_tag;
 } treeview;
 
 static void 	/* row-activated, when a row is double clicked */
@@ -94,7 +95,7 @@ cv_tree_init (chanview *cv)
 																	-1, NULL, renderer,
 																	"pixbuf", COL_PIXBUF, NULL);
 		gtk_tree_view_column_set_sizing (gtk_tree_view_get_column (GTK_TREE_VIEW (view), 0),
-													GTK_TREE_VIEW_COLUMN_AUTOSIZE);
+													GTK_TREE_VIEW_COLUMN_GROW_ONLY);
 	}
 
 	/* main column */
@@ -103,9 +104,9 @@ cv_tree_init (chanview *cv)
 	gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (view),
 																-1, NULL, renderer,
 									"text", COL_NAME, "attributes", COL_ATTR, NULL);
-	gtk_tree_view_column_set_sizing (gtk_tree_view_get_column (GTK_TREE_VIEW (view),
+/*	gtk_tree_view_column_set_sizing (gtk_tree_view_get_column (GTK_TREE_VIEW (view),
 												cv->use_icons ? 1 : 0),
-												GTK_TREE_VIEW_COLUMN_AUTOSIZE);
+												GTK_TREE_VIEW_COLUMN_AUTOSIZE);*/
 
 	g_signal_connect (G_OBJECT (gtk_tree_view_get_selection (GTK_TREE_VIEW (view))),
 							"changed", G_CALLBACK (cv_tree_sel_cb), cv);
@@ -183,10 +184,28 @@ cv_tree_move_focus (chanview *cv, gboolean relative, int num)
 		cv_tree_focus (ch);
 }
 
+static gboolean
+cv_timeout (chanview *cv)
+{
+	int colnum = cv->use_icons ? 1 : 0;
+	GtkTreeViewColumn *col;
+
+	col = gtk_tree_view_get_column (GTK_TREE_VIEW (((treeview *)cv)->tree), colnum);
+	gtk_tree_view_column_set_sizing (col, GTK_TREE_VIEW_COLUMN_GROW_ONLY);
+
+	((treeview *)cv)->idle_tag = 0;
+	return FALSE;
+}
+
 static void
 cv_tree_remove (chan *ch)
 {
-	/* nothing to do, it's already removed in the store */
+	chanview *cv = ch->cv;
+	int colnum = cv->use_icons ? 1 : 0;
+	GtkTreeViewColumn *col = gtk_tree_view_get_column (GTK_TREE_VIEW (((treeview *)cv)->tree), colnum);
+	gtk_tree_view_column_set_sizing (col, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
+	//gtk_tree_view_column_set_sizing (col, GTK_TREE_VIEW_COLUMN_GROW_ONLY);
+	((treeview *)cv)->idle_tag = g_idle_add (cv_timeout, cv);
 }
 
 static void
@@ -239,6 +258,12 @@ cv_tree_move_family (chan *ch, int delta)
 static void
 cv_tree_cleanup (chanview *cv)
 {
+	if (((treeview *)cv)->idle_tag)
+	{
+		g_source_remove (((treeview *)cv)->idle_tag);
+		((treeview *)cv)->idle_tag = 0;
+	}
+
 	if (cv->box)
 		/* kill the scrolled window */
 		gtk_widget_destroy (((treeview *)cv)->scrollw);
