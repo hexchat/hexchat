@@ -1559,7 +1559,13 @@ exec_data (GIOChannel *source, GIOCondition condition, struct nbexec *s)
 			buf[len] = '\0';
 			exec_handle_colors(buf, len);
 			if (s->tochannel)
+			{
+				/* must turn off auto-completion temporarily */
+				unsigned int old = prefs.nickcompletion;
+				prefs.nickcompletion = 0;
 				handle_multiline (s->sess, buf, FALSE, TRUE);
+				prefs.nickcompletion = old;
+			}
 			else
 				PrintText (s->sess, buf);
 		}
