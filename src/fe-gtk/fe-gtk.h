@@ -139,8 +139,7 @@ typedef struct session_gui
 		*limit_entry,		  /* +l */
 		*key_entry;		  /* +k */
 
-#define MENU_ID_NUM 10
-
+#define MENU_ID_NUM 11
 	GtkWidget *menu_item[MENU_ID_NUM+1]; /* some items we may change state of */
 
 	void *chanview;	/* chanview.h */

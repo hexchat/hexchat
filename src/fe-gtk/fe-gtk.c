@@ -226,13 +226,11 @@ const char cursor_color_rc[] =
 	"widget \"*.xchat-inputbox\" style : application \"xc-ib-st\"";
 
 GtkStyle *
-create_input_style (void)
+create_input_style (GtkStyle *style)
 {
-	GtkStyle *style;
 	char buf[256];
 	static int done_rc = FALSE;
 
-	style = gtk_style_new ();
 	pango_font_description_free (style->font_desc);
 	style->font_desc = pango_font_description_from_string (prefs.font_normal);
 
@@ -268,7 +266,7 @@ fe_init (void)
 	pixmaps_init ();
 
 	channelwin_pix = pixmap_load_from_file (prefs.background);
-	input_style = create_input_style ();
+	input_style = create_input_style (gtk_style_new ());
 }
 
 void
@@ -904,6 +902,11 @@ fe_server_event (server *serv, int type, int arg)
 
 			switch (type)
 			{
+			case FE_SE_CONNECTING:	/* connecting in progress */
+				/* enable Disconnect item */
+				gtk_widget_set_sensitive (gui->menu_item[MENU_ID_DISCONNECT], 1);
+				break;
+
 			case FE_SE_CONNECT:
 				/* enable Disconnect and Away menu items */
 				gtk_widget_set_sensitive (gui->menu_item[MENU_ID_AWAY], 1);
@@ -911,12 +914,14 @@ fe_server_event (server *serv, int type, int arg)
 				break;
 
 			case FE_SE_LOGGEDIN:	/* end of MOTD */
+				gtk_widget_set_sensitive (gui->menu_item[MENU_ID_JOIN], 1);
 				break;
 
 			case FE_SE_DISCONNECT:
 				/* disable Disconnect and Away menu items */
 				gtk_widget_set_sensitive (gui->menu_item[MENU_ID_AWAY], 0);
 				gtk_widget_set_sensitive (gui->menu_item[MENU_ID_DISCONNECT], 0);
+				gtk_widget_set_sensitive (gui->menu_item[MENU_ID_JOIN], 0);
 				break;
 
 			case FE_SE_RECONDELAY:

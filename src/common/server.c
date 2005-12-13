@@ -555,6 +555,7 @@ server_stopconnecting (server * serv)
 	fe_progressbar_end (serv);
 
 	serv->connecting = FALSE;
+	fe_server_event (serv, FE_SE_DISCONNECT, 0);
 }
 
 #ifdef USE_OPENSSL
@@ -1544,6 +1545,7 @@ server_connect (server *serv, char *hostname, int port, int no_login)
 	serv->port = port;
 	serv->no_login = no_login;
 
+	fe_server_event (serv, FE_SE_CONNECTING, 0);
 	fe_set_away (serv);
 	server_flush_queue (serv);
 

@@ -826,6 +826,7 @@ mg_populate (session *sess)
 	/* menu items */
 	GTK_CHECK_MENU_ITEM (gui->menu_item[MENU_ID_AWAY])->active = sess->server->is_away;
 	gtk_widget_set_sensitive (gui->menu_item[MENU_ID_AWAY], sess->server->connected);
+	gtk_widget_set_sensitive (gui->menu_item[MENU_ID_JOIN], sess->server->end_of_motd);
 	gtk_widget_set_sensitive (gui->menu_item[MENU_ID_DISCONNECT],
 									  sess->server->connected || sess->server->recondelay_tag);
 

@@ -54,7 +54,7 @@
 #endif
 
 
-GtkStyle *create_input_style (void);
+GtkStyle *create_input_style (GtkStyle *);
 
 #define LABEL_INDENT 6
 
@@ -227,6 +227,7 @@ static const setting filexfer_settings[] =
 	{ST_HEADER, N_("Files and Directories"), 0, 0, 0},
 	{ST_EOPEN,	N_("Download files to:"), P_OFFSETNL(dccdir), 0, 0, sizeof prefs.dccdir},
 	{ST_EOPEN,	N_("Move completed files to:"), P_OFFSETNL(dcc_completed_dir), 0, 0, sizeof prefs.dcc_completed_dir},
+	{ST_TOGGLE, N_("Auto accept file offers"), P_OFFINTNL(autodccsend), 0, 0, 0},
 	{ST_TOGGLE, N_("Save nick name in filenames"), P_OFFINTNL(dccwithnick), 0, 0, 0},
 	{ST_TOGGLE, N_("Convert spaces to underscore before sending"), P_OFFINTNL(dcc_send_fillspaces),0,0,0},
 
@@ -1621,7 +1622,6 @@ setup_apply (struct xchatprefs *pr)
 	GSList *list;
 	int done_main = FALSE;
 	session *sess;
-	GtkStyle *old_style;
 	int new_pix = FALSE;
 	int noapply = FALSE;
 	int do_ulist = FALSE;
@@ -1663,8 +1663,7 @@ setup_apply (struct xchatprefs *pr)
 		channelwin_pix = pixmap_load_from_file (prefs.background);
 	}
 
-	old_style = input_style;
-	input_style = create_input_style ();
+	input_style = create_input_style (input_style);
 
 	list = sess_list;
 	while (list)
@@ -1695,8 +1694,6 @@ setup_apply (struct xchatprefs *pr)
 	}
 
 	mg_apply_setup ();
-
-	g_object_unref (old_style);
 
 	if (noapply)
 		fe_message (_("Some settings were changed that require a"

@@ -30,12 +30,14 @@
 
 #include "fe-gtk.h"
 
+#include <gtk/gtkhbox.h>
 #include <gtk/gtkcheckmenuitem.h>
 #include <gtk/gtkentry.h>
 #include <gtk/gtkimage.h>
 #include <gtk/gtkimagemenuitem.h>
 #include <gtk/gtkradiomenuitem.h>
 #include <gtk/gtklabel.h>
+#include <gtk/gtkmessagedialog.h>
 #include <gtk/gtkmenu.h>
 #include <gtk/gtkmenubar.h>
 #include <gtk/gtkstock.h>
@@ -1043,6 +1045,61 @@ menu_reconnect (GtkWidget * wid, gpointer none)
 }
 
 static void
+menu_join_cb (GtkWidget *dialog, gint response, GtkEntry *entry)
+{
+	switch (response)
+	{
+	case GTK_RESPONSE_ACCEPT:
+		menu_chan_join (NULL, entry->text);
+		break;
+
+	case GTK_RESPONSE_HELP:
+		chanlist_opengui (current_sess->server, TRUE);
+		break;
+	}
+
+	gtk_widget_destroy (dialog);
+}
+
+static void
+menu_join_entry_cb (GtkWidget *entry, GtkDialog *dialog)
+{
+	gtk_dialog_response (dialog, GTK_RESPONSE_ACCEPT);
+}
+
+static void
+menu_join (GtkWidget * wid, gpointer none)
+{
+	GtkWidget *hbox, *dialog, *entry, *label;
+
+	dialog = gtk_dialog_new_with_buttons (_("Join Channel"),
+									GTK_WINDOW (parent_window), 0,
+									_("Retrieve channel list..."), GTK_RESPONSE_HELP,
+									GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
+									GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
+									NULL);
+	gtk_box_set_homogeneous (GTK_BOX (GTK_DIALOG (dialog)->vbox), TRUE);
+	gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
+	hbox = gtk_hbox_new (TRUE, 0);
+
+	entry = gtk_entry_new ();
+	gtk_entry_set_text (GTK_ENTRY (entry), "#");
+	g_signal_connect (G_OBJECT (entry), "activate",
+						 	G_CALLBACK (menu_join_entry_cb), dialog);
+	gtk_box_pack_end (GTK_BOX (hbox), entry, 0, 0, 0);
+
+	label = gtk_label_new (_("Enter Channel to Join:"));
+	gtk_box_pack_end (GTK_BOX (hbox), label, 0, 0, 0);
+
+	g_signal_connect (G_OBJECT (dialog), "response",
+						   G_CALLBACK (menu_join_cb), entry);
+
+	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), hbox);
+
+	gtk_widget_show_all (dialog);
+}
+
+static void
 menu_away (GtkWidget * wid, gpointer none)
 {
 	handle_command (current_sess, "away", FALSE);
@@ -1414,11 +1471,12 @@ static struct mymenu mymenu[] = {
 	{N_("_Server"), 0, 0, M_NEWMENU, 0, 0, 1},
 	{N_("_Disconnect"), menu_disconnect, GTK_STOCK_DISCONNECT, M_MENUSTOCK, MENU_ID_DISCONNECT, 0, 1},
 	{N_("_Reconnect"), menu_reconnect, GTK_STOCK_CONNECT, M_MENUSTOCK, MENU_ID_RECONNECT, 0, 1},
+	{N_("Join Channel"), menu_join, GTK_STOCK_JUMP_TO, M_MENUSTOCK, MENU_ID_JOIN, 0, 1},
 	{0, 0, 0, M_SEP, 0, 0, 0},
-#define AWAY_OFFSET (36)
+#define AWAY_OFFSET (37)
 	{N_("Marked Away"), menu_away, 0, M_MENUTOG, MENU_ID_AWAY, 0, 1, GDK_a},
 
-	{N_("_Usermenu"), 0, 0, M_NEWMENU, MENU_ID_USERMENU, 0, 1},	/* 37 */
+	{N_("_Usermenu"), 0, 0, M_NEWMENU, MENU_ID_USERMENU, 0, 1},	/* 38 */
 
 	{N_("S_ettings"), 0, 0, M_NEWMENU, 0, 0, 1},
 	{N_("Preferences..."), menu_settings, GTK_STOCK_PREFERENCES, M_MENUSTOCK, 0, 0, 1},
@@ -1433,7 +1491,7 @@ static struct mymenu mymenu[] = {
 		{N_("User Commands..."), menu_usercommands, 0, M_MENUITEM, 0, 0, 1},
 		{N_("Userlist Buttons..."), menu_ulbuttons, 0, M_MENUITEM, 0, 0, 1},
 		{N_("Userlist Popup..."), menu_ulpopup, 0, M_MENUITEM, 0, 0, 1},
-		{0, 0, 0, M_END, 0, 0, 0},		/* 50 */
+		{0, 0, 0, M_END, 0, 0, 0},		/* 51 */
 
 	{N_("_Window"), 0, 0, M_NEWMENU, 0, 0, 1},
 	{N_("Ban List..."), menu_banlist, 0, M_MENUITEM, 0, 0, 1},
@@ -1444,7 +1502,7 @@ static struct mymenu mymenu[] = {
 	{N_("Ignore List..."), ignore_gui_open, 0, M_MENUITEM, 0, 0, 1},
 	{N_("Notify List..."), notify_opengui, 0, M_MENUITEM, 0, 0, 1},
 	{N_("Plugins and Scripts..."), menu_pluginlist, 0, M_MENUITEM, 0, 0, 1},
-	{N_("Raw Log..."), menu_rawlog, 0, M_MENUITEM, 0, 0, 1},	/* 60 */
+	{N_("Raw Log..."), menu_rawlog, 0, M_MENUITEM, 0, 0, 1},	/* 61 */
 	{N_("URL Grabber..."), url_opengui, 0, M_MENUITEM, 0, 0, 1},
 	{0, 0, 0, M_SEP, 0, 0, 0},
 	{N_("Reset Marker Line"), menu_resetmarker, 0, M_MENUITEM, 0, 0, 1, GDK_m},
@@ -1452,7 +1510,7 @@ static struct mymenu mymenu[] = {
 	{N_("Search Text..."), menu_search, GTK_STOCK_FIND, M_MENUSTOCK, 0, 0, 1, GDK_f},
 	{N_("Save Text..."), menu_savebuffer, GTK_STOCK_SAVE, M_MENUSTOCK, 0, 0, 1},
 
-	{N_("_Help"), 0, 0, M_NEWMENU, 0, 0, 1},	/* 67 */
+	{N_("_Help"), 0, 0, M_NEWMENU, 0, 0, 1},	/* 68 */
 	{N_("_Contents"), menu_docs, GTK_STOCK_HELP, M_MENUSTOCK, 0, 0, 1, GDK_F1},
 	{N_("_About"), menu_about, GTK_STOCK_ABOUT, M_MENUSTOCK, 0, 0, 1},
 
