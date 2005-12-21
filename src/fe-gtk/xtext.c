@@ -145,7 +145,7 @@ static int gtk_xtext_find_subline (GtkXText *xtext, textentry *ent, int line);
 static char *gtk_xtext_conv_color (unsigned char *text, int len, int *newlen);
 static unsigned char *
 gtk_xtext_strip_color (unsigned char *text, int len, unsigned char *outbuf,
-							  int *newlen, int *mb_ret);
+							  int *newlen, int *mb_ret, int strip_hidden);
 
 /* some utility functions first */
 
@@ -697,6 +697,7 @@ gtk_xtext_init (GtkXText * xtext)
 	xtext->bold = FALSE;
 	xtext->underline = FALSE;
 	xtext->italics = FALSE;
+	xtext->hidden = FALSE;
 	xtext->font = NULL;
 #ifdef USE_XFT
 	xtext->xftdraw = NULL;
@@ -1154,9 +1155,11 @@ find_x (GtkXText *xtext, textentry *ent, unsigned char *text, int x, int indent)
 	int xx = indent;
 	int i = 0;
 	int col = FALSE;
+	int hidden = FALSE;
 	int nc = 0;
 	unsigned char *orig = text;
 	int mbl;
+	int char_width;
 
 	while (*text)
 	{
@@ -1184,8 +1187,13 @@ find_x (GtkXText *xtext, textentry *ent, unsigned char *text, int x, int indent)
 			case ATTR_ITALICS:
 				text++;
 				break;
+			case ATTR_HIDDEN:
+				hidden = !hidden;
+				text++;
+				break;
 			default:
-				xx += backend_get_char_width (xtext, text, &mbl);
+				char_width = backend_get_char_width (xtext, text, &mbl);
+				if (!hidden) xx += char_width;
 				text += mbl;
 				if (xx >= x)
 					return i + (orig - ent->str);
@@ -1843,7 +1851,7 @@ gtk_xtext_get_word (GtkXText * xtext, int x, int y, textentry ** ret_ent,
 	if (ret_len)
 		*ret_len = str - word;
 
-	return gtk_xtext_strip_color (word, len, xtext->scratch_buffer, NULL, NULL);
+	return gtk_xtext_strip_color (word, len, xtext->scratch_buffer, NULL, NULL, FALSE);
 }
 
 #ifdef MOTION_MONITOR
@@ -2285,7 +2293,7 @@ gtk_xtext_selection_get_text (GtkXText *xtext, int *len_ret)
 		len = strlen (txt);
 	} else
 	{
-		stripped = gtk_xtext_strip_color (txt, strlen (txt), NULL, &len, 0);
+		stripped = gtk_xtext_strip_color (txt, strlen (txt), NULL, &len, 0, FALSE);
 		free (txt);
 	}
 
@@ -2441,13 +2449,16 @@ gtk_xtext_get_type (void)
 
 /* strip MIRC colors and other attribs. */
 
+/* CL: needs to strip hidden when called by gtk_xtext_text_width, but not when copying text */
+
 static unsigned char *
 gtk_xtext_strip_color (unsigned char *text, int len, unsigned char *outbuf,
-							  int *newlen, int *mb_ret)
+							  int *newlen, int *mb_ret, int strip_hidden)
 {
 	int nc = 0;
 	int i = 0;
 	int col = FALSE;
+	int hidden = FALSE;
 	unsigned char *new_str;
 	int mb = FALSE;
 
@@ -2483,9 +2494,12 @@ gtk_xtext_strip_color (unsigned char *text, int len, unsigned char *outbuf,
 			case ATTR_UNDERLINE:
 			case ATTR_ITALICS:
 				break;
+			case ATTR_HIDDEN:
+				hidden = !hidden;
+				break;
 			default:
-				new_str[i] = *text;
-				i++;
+				if (!(hidden && strip_hidden))
+					new_str[i++] = *text;
 			}
 		}
 		text++;
@@ -2523,6 +2537,7 @@ gtk_xtext_conv_color (unsigned char *text, int len, int *newlen)
 		case ATTR_BOLD:
 		case ATTR_UNDERLINE:
 		case ATTR_ITALICS:
+		case ATTR_HIDDEN:
 			j += 3;
 			i++;
 			break;
@@ -2557,6 +2572,9 @@ gtk_xtext_conv_color (unsigned char *text, int len, int *newlen)
 			break;
 		case ATTR_ITALICS:
 			cchar = 'I';
+			break;
+		case ATTR_HIDDEN:
+			cchar = 'H';
 			break;
 		case ATTR_BEEP:
 			break;
@@ -2602,7 +2620,7 @@ gtk_xtext_text_width (GtkXText *xtext, unsigned char *text, int len,
 	int new_len, mb;
 
 	new_buf = gtk_xtext_strip_color (text, len, xtext->scratch_buffer,
-												&new_len, &mb);
+												&new_len, &mb, TRUE);
 
 	if (mb_ret)
 		*mb_ret = mb;
@@ -2620,7 +2638,7 @@ gtk_xtext_render_flush (GtkXText * xtext, int x, int y, unsigned char *str,
 	GdkDrawable *pix = NULL;
 	int dest_x, dest_y;
 
-	if (xtext->dont_render || len < 1)
+	if (xtext->dont_render || len < 1 || xtext->hidden)
 		return 0;
 
 	str_width = backend_get_text_width (xtext, str, len, is_mb);
@@ -2751,6 +2769,7 @@ gtk_xtext_reset (GtkXText * xtext, int mark, int attribs)
 		xtext->underline = FALSE;
 		xtext->bold = FALSE;
 		xtext->italics = FALSE;
+		xtext->hidden = FALSE;
 	}
 	if (!mark)
 	{
@@ -2969,6 +2988,12 @@ gtk_xtext_render_str (GtkXText * xtext, int y, textentry * ent,
 			case ATTR_ITALICS:
 				x += gtk_xtext_render_flush (xtext, x, y, pstr, j, gc, ent->mb);
 				xtext->italics = !xtext->italics;
+				pstr += j + 1;
+				j = 0;
+				break;
+			case ATTR_HIDDEN:
+				x += gtk_xtext_render_flush (xtext, x, y, pstr, j, gc, ent->mb);
+				xtext->hidden = !xtext->hidden;
 				pstr += j + 1;
 				j = 0;
 				break;
@@ -3765,8 +3790,10 @@ find_next_wrap (GtkXText * xtext, textentry * ent, unsigned char *str,
 	unsigned char *orig_str = str;
 	int str_width = indent;
 	int col = FALSE;
+	int hidden = FALSE;
 	int nc = 0;
 	int mbl;
+	int char_width;
 	int ret;
 	int limit_offset = 0;
 
@@ -3808,8 +3835,14 @@ find_next_wrap (GtkXText * xtext, textentry * ent, unsigned char *str,
 				limit_offset++;
 				str++;
 				break;
+			case ATTR_HIDDEN:
+				hidden = !hidden;
+				limit_offset++;
+				str++;
+				break;
 			default:
-				str_width += backend_get_char_width (xtext, str, &mbl);
+				char_width = backend_get_char_width (xtext, str, &mbl);
+				if (!hidden) str_width += char_width;
 				if (str_width > win_width)
 				{
 					if (xtext->wordwrap)
@@ -4185,7 +4218,7 @@ gtk_xtext_save (GtkXText * xtext, int fh)
 	while (ent)
 	{
 		buf = gtk_xtext_strip_color (ent->str, ent->str_len, NULL,
-											  &newlen, NULL);
+											  &newlen, NULL, FALSE);
 		write (fh, buf, newlen);
 		write (fh, "\n", 1);
 		free (buf);

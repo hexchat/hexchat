@@ -667,7 +667,7 @@ servlist_connect_cb (GtkWidget *button, gpointer userdata)
 	else if (servlist_sess->server->connected)
 		servlist_sess = NULL;
 
-	servlist_connect (servlist_sess, selected_net);
+	servlist_connect (servlist_sess, selected_net, TRUE);
 
 	gtk_widget_destroy (serverlist_win);
 	serverlist_win = NULL;

@@ -472,6 +472,8 @@ strip_color (char *text, int len, int do_color, int do_attr)
 					i++;
 				}
 				break;
+			case '\001':	/* CL: invisible text (for event formats only) */	/* this takes care of the topic */
+				break;
 			default:
 				new_str[i] = *text;
 				i++;

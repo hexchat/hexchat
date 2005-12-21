@@ -1505,17 +1505,18 @@ pevt_build_string (const char *input, char **output, int *max_arg)
 void
 text_emit (int index, session *sess, char *a, char *b, char *c, char *d)
 {
-	char *word[PDIWORDS];
+	char *word[PDIWORDS], *p;
 	int i;
 
-	if (!a)
-		a = "\000";
-	if (!b)
-		b = "\000";
-	if (!c)
-		c = "\000";
-	if (!d)
-		d = "\000";
+	/* CL: we use \001 as the invisible text code, but it's for use in the event format strings only: nuke it from incoming text */
+	if (!a) a = "\000";
+	else for (p = a; *p != '\000'; p++) if (*p == '\001') *p = ' ';
+	if (!b) b = "\000";
+	else for (p = b; *p != '\000'; p++) if (*p == '\001') *p = ' ';
+	if (!c) c = "\000";
+	else for (p = c; *p != '\000'; p++) if (*p == '\001') *p = ' ';
+	if (!d) d = "\000";
+	else for (p = d; *p != '\000'; p++) if (*p == '\001') *p = ' ';
 
 	word[0] = te[index].name;
 	word[1] = a;

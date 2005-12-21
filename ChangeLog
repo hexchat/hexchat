@@ -10,7 +10,7 @@ Where "NUMBER" is the bug number.
  2.6.1 - dd/mmm/2006
 ----------------------------------------------------------------------
 
- - Updated translations (de, el, fi, gl, hu, ko, pa, sq).
+ - Updated translations (de, el, fi, gl, hu, ko, pa, sq, vi).
  - Fixed building of xchat-text (although not recommended!).
  - Added support for log rotation based on time or date.
  - Double-click in tree layout will now expand/collapse (Khisanth).
@@ -18,14 +18,23 @@ Where "NUMBER" is the bug number.
  - Largely re-written "Search Text" function with much better
    behaviour and match case on/off and search backwards options 
    (Richard Hitt and Me).
- - Parent tab color (Khisanth).
+ - The parent row in the tree layout now changes color if you have
+   that group collapsed (Khisanth).
  - Fixed crash when trying to Detach or Close a utility tab via
    right-click, when it's not the currently focused tab.
  - Plugin API: Added selected flag to "users" list (Khisanth).
  - Made DCC resume handle case-insensitive file systems properly.
  - Fixed the flashing when you click on a colored treeview row.
  - Fixed auto-completion during /exec -o [1375530].
- - 
+ - Added "Join Channel" menu item to the Server menu.
+ - Unshade the Disconnect menu item when a connection is in progress.
+ - Fixed a possible crash in changing color settings before changing
+   to/from the tree layout (SF bug #1349088).
+ - Added "Auto accept file offers" to the File Transfer settings.
+ - Added support for brackets "<>" around nicknames in cut and paste,
+   without displaying them (hidden text) (Camillo Lugaresi).
+ - Fixed opening URL irc://NetWork/#channel not joining the channel
+   [1362155].
  - 
  - 
  - Perl:

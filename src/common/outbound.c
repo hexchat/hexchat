@@ -3536,6 +3536,9 @@ check_special_chars (char *cmd, int do_ascii) /* check for %X */
 					case 'O':
 						buf[i] = '\017';
 						break;
+					case 'H':	/* CL: invisible text code */
+						buf[i] = '\001';
+						break;
 					case '%':
 						buf[i] = '%';
 						break;

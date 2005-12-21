@@ -51,7 +51,7 @@ N_("%C22*%O$t$1 sets invite on $2")},
 N_("%UChannel          Users   Topic")},
 
 {"Channel Message", pevt_chanmsg_help, 4, 
-N_("%C18%B%B$4$1%O%C18%O$t$2")},
+N_("%C18%H<%H$4$1%H>%H%O$t$2")},
 
 {"Channel Mode Generic", pevt_chanmodegen_help, 4, 
 N_("%C22*%O$t$1 sets mode $2$3 $4")},
@@ -60,7 +60,7 @@ N_("%C22*%O$t$1 sets mode $2$3 $4")},
 N_("%C22*%O$t%C22Channel $1 modes: $2")},
 
 {"Channel Msg Hilight", pevt_chanmsg_help, 4, 
-N_("$4%C21%B$1%O%C21$t$2")},
+N_("$4%C21%B%H<%H$1%H>%H%O%C21$t$2")},
 
 {"Channel Notice", pevt_channotice_help, 3, 
 N_("%C28-%C29$1/$2%C28-%O$t$3")},
@@ -303,7 +303,7 @@ N_("%C22*%O$tNo ping reply for $1 seconds, disconnecting.")},
 N_("%C28*%C29$3$1%C28*$t%O$2")},
 
 {"Private Message to Dialog", pevt_dprivmsg_help, 3, 
-N_("%C18%B%B$3$1%O$t$2")},
+N_("%C18%H<%H$3$1%H>%H%O$t$2")},
 
 {"Process Already Running", pevt_generic_none_help, 0, 
 N_("%C22*%O$tA process is already running")},
@@ -405,7 +405,7 @@ N_("%C23*$tYou have left channel $3 (%O%C23%B%B$4%O%C23)")},
 N_("%C22*%O$tYou've invited%C26 $1%O to%C26 $2%O (%C26$3%O)")},
 
 {"Your Message", pevt_chanmsg_help, 4, 
-N_("%C31%B%B$4$1%O%C30$t$2")},
+N_("%C31%H<%H$4$1%H>%H%O%C30$t$2")},
 
 {"Your Nick Changing", pevt_uchangenick_help, 2, 
 N_("%C22*%O$tYou are now known as $2")},

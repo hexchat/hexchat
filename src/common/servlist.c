@@ -231,6 +231,9 @@ static const struct defaultserver def[] =
 	{"Hashmark",	0},
 	{0,			"irc.hashmark.net"},
 
+	{"IdleMonkeys", 0},
+	{0,			"irc.idlemonkeys.net"},
+
 	{"Infinity-IRC",	0},
 	{0,			"Atlanta.GA.US.Infinity-IRC.Org"},
 	{0,			"Babylon.NY.US.Infinity-IRC.Org"},
@@ -434,9 +437,6 @@ static const struct defaultserver def[] =
 	{"TNI3",			0},
 	{0,			"irc.tni3.com"},
 
-	{"TopGamers",	0},
-	{0,			"irc.topgamers.net"},
-
 	{"UnderNet",	0},
 	{0,			"us.undernet.org"},
 	{0,			"eu.undernet.org"},
@@ -475,7 +475,7 @@ GSList *network_list = 0;
 
 
 void
-servlist_connect (session *sess, ircnet *net)
+servlist_connect (session *sess, ircnet *net, gboolean join)
 {
 	ircserver *ircserv;
 	GSList *list;
@@ -496,12 +496,16 @@ servlist_connect (session *sess, ircnet *net)
 	/* incase a protocol switch is added to the servlist gui */
 	server_fill_her_up (sess->server);
 
-	sess->willjoinchannel[0] = 0;
-	serv->password[0] = 0;
+	if (join)
+	{
+		sess->willjoinchannel[0] = 0;
 
-	if (net->autojoin)
-		safe_strcpy (sess->willjoinchannel, net->autojoin,
-						 sizeof (sess->willjoinchannel));
+		if (net->autojoin)
+			safe_strcpy (sess->willjoinchannel, net->autojoin,
+							 sizeof (sess->willjoinchannel));
+	}
+
+	serv->password[0] = 0;
 	if (net->pass)
 		safe_strcpy (serv->password, net->pass, sizeof (serv->password));
 
@@ -560,7 +564,7 @@ servlist_connect_by_netname (session *sess, char *network)
 
 		if (strcasecmp (net->name, network) == 0)
 		{
-			servlist_connect (sess, net);
+			servlist_connect (sess, net, FALSE);
 			return 1;
 		}
 
@@ -603,7 +607,7 @@ servlist_auto_connect (session *sess)
 
 		if (net->flags & FLAG_AUTO_CONNECT)
 		{
-			servlist_connect (sess, net);
+			servlist_connect (sess, net, TRUE);
 			ret = 1;
 		}
 
@@ -618,7 +622,7 @@ servlist_cycle_cb (server *serv)
 {
 	PrintTextf (serv->server_session,
 		_("Cycling to next server in %s...\n"), ((ircnet *)serv->network)->name);
-	servlist_connect (serv->server_session, serv->network);
+	servlist_connect (serv->server_session, serv->network, TRUE);
 
 	return 0;
 }
@@ -650,7 +654,7 @@ servlist_cycle (server *serv)
 			if (del)
 				serv->recondelay_tag = fe_timeout_add (del, servlist_cycle_cb, serv);
 			else
-				servlist_connect (serv->server_session, net);
+				servlist_connect (serv->server_session, net, TRUE);
 
 			return TRUE;
 		}
