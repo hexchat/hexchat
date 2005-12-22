@@ -79,7 +79,6 @@ _SSL_context_init (void (*info_cb_func), int server)
 
 #ifdef WIN32
 	/* under win32, OpenSSL needs to be seeded with some randomness */
-	srand (time (0));
 	for (i = 0; i < 128; i++)
 	{
 		r = rand ();

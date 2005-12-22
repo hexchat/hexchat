@@ -86,9 +86,8 @@ static int new_id()
 	if (id == 0)
 	{
 		/* start the first ID at a random number for pseudo security */
-		srand (time (0));
 		/* 1 - 255 */
-		id = 1 + (int) ((float)255 * rand()/(RAND_MAX+1.0));
+		id = RAND_INT(255) + 1;
 		/* ignore overflows, since it can go to 2 billion */
 	}
 	return id++;

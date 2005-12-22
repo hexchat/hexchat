@@ -205,7 +205,7 @@ cv_tree_remove (chan *ch)
 	GtkTreeViewColumn *col = gtk_tree_view_get_column (GTK_TREE_VIEW (((treeview *)cv)->tree), colnum);
 	gtk_tree_view_column_set_sizing (col, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
 	if (((treeview *)cv)->idle_tag == 0)
-		((treeview *)cv)->idle_tag = g_idle_add (cv_timeout, cv);
+		((treeview *)cv)->idle_tag = g_idle_add ((GSourceFunc)cv_timeout, cv);
 }
 
 static void

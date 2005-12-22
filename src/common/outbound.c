@@ -106,8 +106,7 @@ random_line (char *file_name)
 
 	/* go down a random number */
 	rewind (fh);
-	srand (time (0));
-	ran = rand () % lines;
+	ran = RAND_INT (lines);
 	do
 	{
 		fgets (buf, sizeof (buf), fh);

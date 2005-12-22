@@ -991,6 +991,8 @@ int
 main (int argc, char *argv[])
 {
 	int ret;
+	
+	srand (time (0));	/* CL: do this only once! */
 
 #ifdef SOCKS
 	SOCKSinit (argv[0]);

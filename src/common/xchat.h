@@ -497,4 +497,7 @@ struct popup
 	char *name;
 };
 
+/* CL: get a random int in the range [0..n-1]. DON'T use rand() % n, it gives terrible results. */
+#define RAND_INT(n) ((int)(rand() / (RAND_MAX + 1.0) * (n)))
+
 #endif
