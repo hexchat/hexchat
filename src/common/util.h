@@ -32,7 +32,13 @@ char *country (char *);
 void country_search (char *pattern, void *ud, void (*print)(void *, char *, ...));
 char *get_cpu_str (void);
 int util_exec (char *cmd);
-char *strip_color (char *text, int len, int do_color, int do_attr);
+#define STRIP_COLOR 1
+#define STRIP_ATTRIB 2
+#define STRIP_HIDDEN 4
+#define STRIP_ALL 7
+char *strip_color (char *text, int len, int flags);
+int strip_color2 (char *src, int len, char *dst, int flags);
+int strip_hidden_attribute (char *src, char *dst);
 char *errorstring (int err);
 int waitline (int sok, char *buf, int bufsize, int);
 unsigned long make_ping_time (void);

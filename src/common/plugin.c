@@ -1469,7 +1469,7 @@ xchat_send_modes (xchat_plugin *ph, const char **targets, int ntargets, int mode
 char *
 xchat_strip (xchat_plugin *ph, const char *str, int len, int flags)
 {
-	return strip_color ((char *)str, len, (flags & 1), (flags & 2));
+	return strip_color ((char *)str, len, flags);
 }
 
 void

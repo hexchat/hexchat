@@ -421,44 +421,49 @@ expand_homedir (char *file)
 }
 
 char *
-strip_color (char *text, int len, int do_color, int do_attr)
+strip_color (char *text, int len, int flags)
 {
-	int nc = 0;
-	int i = 0;
-	int col = 0;
 	char *new_str;
 
 	if (len == -1)
 		len = strlen (text);
 
 	new_str = malloc (len + 2);
+	strip_color2 (text, len, new_str, flags);
+	return new_str;
+}
 
-	while (len > 0)
+/* CL: strip_color2 strips src and writes the output at dst; pass the same pointer
+	in both arguments to strip in place. */
+int
+strip_color2 (char *src, int len, char *dst, int flags)
+{
+	int rcol = 0, bgcol = 0;
+	char *start = dst;
+
+	if (len == -1) len = strlen (src);
+	while (len-- > 0)
 	{
-		if ((col && isdigit ((unsigned char) *text) && nc < 2) ||
-			 (col && *text == ',' && isdigit ((unsigned char) *(text+1)) && nc < 3))
+		if (rcol > 0 && (isdigit ((unsigned char)*src) ||
+			(*src == ',' && isdigit ((unsigned char)src[1]) && !bgcol)))
 		{
-			nc++;
-			if (*text == ',')
-				nc = 0;
-			if (!do_color)
+			if (src[1] != ',') rcol--;
+			if (*src == ',')
 			{
-				new_str[i] = *text;
-				i++;
+				rcol = 2;
+				bgcol = 1;
 			}
 		} else
 		{
-			col = 0;
-			switch (*text)
+			rcol = bgcol = 0;
+			switch (*src)
 			{
 			case '\003':			  /*ATTR_COLOR: */
-				col = 1;
-				nc = 0;
-				if (!do_color)
-				{
-					new_str[i] = *text;
-					i++;
-				}
+				if (!(flags & STRIP_COLOR)) goto pass_char;
+				rcol = 2;
+				break;
+			case '\001':	/* CL: invisible text (for event formats only) */	/* this takes care of the topic */
+				if (!(flags & STRIP_HIDDEN)) goto pass_char;
 				break;
 			case '\007':			  /*ATTR_BEEP: */
 			case '\017':			  /*ATTR_RESET: */
@@ -466,26 +471,34 @@ strip_color (char *text, int len, int do_color, int do_attr)
 			case '\002':			  /*ATTR_BOLD: */
 			case '\037':			  /*ATTR_UNDERLINE: */
 			case '\035':			  /*ATTR_ITALICS: */
-				if (!do_attr)
-				{
-					new_str[i] = *text;
-					i++;
-				}
-				break;
-			case '\001':	/* CL: invisible text (for event formats only) */	/* this takes care of the topic */
+				if (!(flags & STRIP_ATTRIB)) goto pass_char;
 				break;
 			default:
-				new_str[i] = *text;
-				i++;
+			pass_char:
+				*dst++ = *src;
 			}
 		}
-		text++;
-		len--;
+		src++;
 	}
+	*dst = 0;
 
-	new_str[i] = 0;
+	return (int) (dst - start);
+}
 
-	return new_str;
+int
+strip_hidden_attribute (char *src, char *dst)
+{
+	int len = 0;
+	while (*src != '\000')
+	{
+		if (*src != '\001')
+		{
+			*dst++ = *src;
+			len++;
+		}
+		src++;
+	}
+	return len;
 }
 
 #if defined (USING_LINUX) || defined (USING_FREEBSD) || defined (__APPLE__)

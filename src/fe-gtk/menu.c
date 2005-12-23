@@ -527,7 +527,7 @@ menu_nickmenu (session *sess, GdkEventButton *event, char *nick, int num_sel)
 				away = server_away_find_message (current_sess->server, nick);
 				if (away)
 				{
-					char *msg = strip_color (away->message ? away->message : _("Unknown"), -1, 1, 1);
+					char *msg = strip_color (away->message ? away->message : _("Unknown"), -1, STRIP_ALL);
 					snprintf (buf, sizeof (buf), fmt, _("Away Msg:"), msg);
 					menu_quick_item (0, buf, submenu, 2, 0);
 					free (msg);

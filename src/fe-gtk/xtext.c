@@ -1154,9 +1154,8 @@ find_x (GtkXText *xtext, textentry *ent, unsigned char *text, int x, int indent)
 {
 	int xx = indent;
 	int i = 0;
-	int col = FALSE;
+	int rcol = 0, bgcol = 0;
 	int hidden = FALSE;
-	int nc = 0;
 	unsigned char *orig = text;
 	int mbl;
 	int char_width;
@@ -1164,21 +1163,22 @@ find_x (GtkXText *xtext, textentry *ent, unsigned char *text, int x, int indent)
 	while (*text)
 	{
 		mbl = 1;
-		if ((col && isdigit (*text) && nc < 2) ||
-			 (col && *text == ',' && isdigit (*(text+1)) && nc < 3))
+		if (rcol > 0 && (isdigit (*text) || (*text == ',' && isdigit (text[1]) && !bgcol)))
 		{
-			nc++;
+			if (text[1] != ',') rcol--;
 			if (*text == ',')
-				nc = 0;
+			{
+				rcol = 2;
+				bgcol = 1;
+			}
 			text++;
 		} else
 		{
-			col = FALSE;
+			rcol = bgcol = 0;
 			switch (*text)
 			{
 			case ATTR_COLOR:
-				col = TRUE;
-				nc = 0;
+				rcol = 2;
 			case ATTR_BEEP:
 			case ATTR_RESET:
 			case ATTR_REVERSE:
@@ -2455,9 +2455,8 @@ static unsigned char *
 gtk_xtext_strip_color (unsigned char *text, int len, unsigned char *outbuf,
 							  int *newlen, int *mb_ret, int strip_hidden)
 {
-	int nc = 0;
 	int i = 0;
-	int col = FALSE;
+	int rcol = 0, bgcol = 0;
 	int hidden = FALSE;
 	unsigned char *new_str;
 	int mb = FALSE;
@@ -2472,20 +2471,21 @@ gtk_xtext_strip_color (unsigned char *text, int len, unsigned char *outbuf,
 		if (*text >= 128)
 			mb = TRUE;
 
-		if ((col && isdigit (*text) && nc < 2) ||
-			 (col && *text == ',' && isdigit (*(text+1)) && nc < 3))
+		if (rcol > 0 && (isdigit (*text) || (*text == ',' && isdigit (text[1]) && !bgcol)))
 		{
-			nc++;
+			if (text[1] != ',') rcol--;
 			if (*text == ',')
-				nc = 0;
+			{
+				rcol = 2;
+				bgcol = 1;
+			}
 		} else
 		{
-			col = FALSE;
+			rcol = bgcol = 0;
 			switch (*text)
 			{
 			case ATTR_COLOR:
-				col = TRUE;
-				nc = 0;
+				rcol = 2;
 				break;
 			case ATTR_BEEP:
 			case ATTR_RESET:
@@ -2882,7 +2882,7 @@ gtk_xtext_render_str (GtkXText * xtext, int y, textentry * ent,
 #endif
 
 		if ((xtext->parsing_color && isdigit (str[i]) && xtext->nc < 2) ||
-			 (xtext->parsing_color && str[i] == ',' && isdigit (str[i+1]) && xtext->nc < 3))
+			 (xtext->parsing_color && str[i] == ',' && isdigit (str[i+1]) && xtext->nc < 3 && !xtext->parsing_backcolor))
 		{
 			pstr++;
 			if (str[i] == ',')
@@ -3789,9 +3789,8 @@ find_next_wrap (GtkXText * xtext, textentry * ent, unsigned char *str,
 	unsigned char *last_space = str;
 	unsigned char *orig_str = str;
 	int str_width = indent;
-	int col = FALSE;
+	int rcol = 0, bgcol = 0;
 	int hidden = FALSE;
-	int nc = 0;
 	int mbl;
 	int char_width;
 	int ret;
@@ -3810,22 +3809,23 @@ find_next_wrap (GtkXText * xtext, textentry * ent, unsigned char *str,
 
 	while (1)
 	{
-		if ((col && isdigit (*str) && nc < 2) ||
-			 (col && *str == ',' && isdigit (*(str+1)) && nc < 3))
+		if (rcol > 0 && (isdigit (*str) || (*str == ',' && isdigit (str[1]) && !bgcol)))
 		{
-			nc++;
+			if (str[1] != ',') rcol--;
 			if (*str == ',')
-				nc = 0;
+			{
+				rcol = 2;
+				bgcol = 1;
+			}
 			limit_offset++;
 			str++;
 		} else
 		{
-			col = FALSE;
+			rcol = bgcol = 0;
 			switch (*str)
 			{
 			case ATTR_COLOR:
-				col = TRUE;
-				nc = 0;
+				rcol = 2;
 			case ATTR_BEEP:
 			case ATTR_RESET:
 			case ATTR_REVERSE:

@@ -548,7 +548,6 @@ dcc_read_chat (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 	int i, len, dead;
 	char tbuf[1226];
 	char lbuf[1026];
-	char *temp;
 
 	while (1)
 	{
@@ -587,16 +586,7 @@ dcc_read_chat (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 				break;
 			case '\n':
 				dcc->dccchat->linebuf[dcc->dccchat->pos] = 0;
-
-				if (prefs.stripcolor)
-				{
-					temp = strip_color (dcc->dccchat->linebuf, -1, 1, 1);
-					dead = dcc_chat_line (dcc, temp, tbuf);
-					free (temp);
-				} else
-				{
-					dead = dcc_chat_line (dcc, dcc->dccchat->linebuf, tbuf);
-				}
+				dead = dcc_chat_line (dcc, dcc->dccchat->linebuf, tbuf);
 
 				if (dead || !dcc->dccchat) /* the dcc has been closed, don't use (DCC *)! */
 					return TRUE;

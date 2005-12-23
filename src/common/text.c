@@ -353,7 +353,7 @@ log_write (session *sess, char *text)
 				g_free (stamp);
 			}
 		}
-		temp = strip_color (text, -1, 1, 1);
+		temp = strip_color (text, -1, STRIP_ALL);
 		len = strlen (temp);
 		write (sess->logfd, temp, len);
 		/* lots of scripts/plugins print without a \n at the end */
@@ -1235,6 +1235,11 @@ load_text_events ()
 	pevent_make_pntevts ();
 }
 
+/*
+	CL: format_event now handles filtering of arguments:
+	1) if prefs.stripcolor is set, filter all style control codes from arguments
+	2) always strip \001 (ATTR_HIDDEN) from arguments: it is only for use in the format string itself
+*/
 void
 format_event (session *sess, int index, char **args, char *o, int sizeofo)
 {
@@ -1283,8 +1288,8 @@ format_event (session *sess, int index, char **args, char *o, int sizeofo)
 				printf ("arg[%d] is NULL in print event\n", a + 1);
 			} else
 			{
-				len = strlen (ar);
-				memcpy (&o[oi], ar, len);
+				if (prefs.stripcolor) len = strip_color2 (ar, -1, &o[oi], STRIP_ALL);
+				else len = strip_hidden_attribute (ar, &o[oi]);
 				oi += len;
 			}
 			break;
@@ -1505,24 +1510,14 @@ pevt_build_string (const char *input, char **output, int *max_arg)
 void
 text_emit (int index, session *sess, char *a, char *b, char *c, char *d)
 {
-	char *word[PDIWORDS], *p;
+	char *word[PDIWORDS];
 	int i;
 
-	/* CL: we use \001 as the invisible text code, but it's for use in the event format strings only: nuke it from incoming text */
-	if (!a) a = "\000";
-	else for (p = a; *p != '\000'; p++) if (*p == '\001') *p = ' ';
-	if (!b) b = "\000";
-	else for (p = b; *p != '\000'; p++) if (*p == '\001') *p = ' ';
-	if (!c) c = "\000";
-	else for (p = c; *p != '\000'; p++) if (*p == '\001') *p = ' ';
-	if (!d) d = "\000";
-	else for (p = d; *p != '\000'; p++) if (*p == '\001') *p = ' ';
-
 	word[0] = te[index].name;
-	word[1] = a;
-	word[2] = b;
-	word[3] = c;
-	word[4] = d;
+	word[1] = (a ? a : "\000");
+	word[2] = (b ? b : "\000");
+	word[3] = (c ? c : "\000");
+	word[4] = (d ? d : "\000");
 	for (i = 5; i < PDIWORDS; i++)
 		word[i] = "\000";
 

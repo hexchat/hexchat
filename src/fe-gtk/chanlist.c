@@ -365,7 +365,7 @@ fe_add_chan_list (struct server *serv, char *chan, char *users, char *topic)
 	next_row = (gchar **) malloc (sizeof (gchar *) * 3);
 	next_row[0] = strdup (chan);
 	next_row[1] = strdup (users);
-	next_row[2] = strip_color (topic, -1, 1, 1);
+	next_row[2] = strip_color (topic, -1, STRIP_ALL);
 
 	/* add this row to the data */
 	chanlist_data_prepend_row (serv, next_row);
