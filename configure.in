@@ -29,7 +29,6 @@ AH_VERBATIM([USE_PLUGIN],[#undef USE_PLUGIN])
 AH_VERBATIM([USE_XFT],[#undef USE_XFT])
 AH_VERBATIM([USE_XLIB],[#undef USE_XLIB])
 AH_VERBATIM([USE_SIGACTION],[#undef USE_SIGACTION])
-dnl AH_VERBATIM([USE_ZVT],[#undef USE_ZVT])
 AH_VERBATIM([USING_FREEBSD],[#undef USING_FREEBSD])
 AH_VERBATIM([USING_LINUX],[#undef USING_LINUX])
 AH_VERBATIM([socklen_t],[#undef socklen_t])
@@ -89,10 +88,6 @@ AC_ARG_ENABLE(textfe,
 dnl AC_ARG_ENABLE(gnome,
 dnl [  --disable-gnome         disable use of gnome],
 dnl        gnome=$enableval, gnome=yes)
-
-dnl AC_ARG_ENABLE(zvt,
-dnl [  --disable-zvt           disable zvt/shelltab feature],
-dnl         zvt=$enableval, zvt=yes)
 
 AC_ARG_ENABLE(xlib,
 [  --disable-xlib          disable use of xlib (for non X11 systems)],
@@ -165,7 +160,6 @@ fi
 
 if test "$gtkfe" != yes; then
 	gnome=no
-	zvt=no
 	COMMON_LIBS="$GLIB_LIBS"
 	COMMON_CFLAGS="$GLIB_CFLAGS"
 fi
@@ -230,26 +224,6 @@ if test "$xlib" = yes; then
 else
 	shm=no
 fi
-
-dnl *********************************************************************
-dnl ** ZVT/SHELLTAB *****************************************************
-dnl *********************************************************************
-
-zvt=no
-#if test "$zvt" = yes; then
-#	if test "$gnome" = no; then
-#		AC_PATH_PROG(gnomepath, gnome-config)
-#	fi
-#	AC_MSG_CHECKING(for zvt)
-#	if test "_$gnomepath" = "_"; then
-#		AC_MSG_RESULT([No gnome-config, can't do it.])
-#		zvt=no
-#	else
-#		GUI_LIBS="$GUI_LIBS `$gnomepath zvt --libs`"
-#		AC_DEFINE(USE_ZVT)
-#		AC_MSG_RESULT(yes)
-#	fi
-#fi
 
 dnl *********************************************************************
 dnl ** PERL *************************************************************
@@ -680,6 +654,12 @@ ac_cv_type_socklen_t=no)
 if test $ac_cv_type_socklen_t = no; then
 	AC_DEFINE(socklen_t, int)
 fi
+
+dnl Mac OS X and Darwin use lookupd, which caches DNS queries by default
+AC_EGREP_CPP(lookupd, dnl
+[#if (defined(__APPLE__) && defined(__MACH__))
+	lookupd
+#endif], AC_DEFINE([LOOKUPD],1,[Define to 1 if the system uses lookupd]))
 
 dnl freebsd needs this
 LIBS="$LIBS $INTLLIBS"

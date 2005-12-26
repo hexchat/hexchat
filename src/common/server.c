@@ -1561,6 +1561,9 @@ server_connect (server *serv, char *hostname, int port, int no_login)
 										(LPTHREAD_START_ROUTINE)server_child,
 										serv, 0, (DWORD *)&pid));
 #else
+#ifdef LOOKUPD
+	rand();	/* CL: net_resolve calls rand() when LOOKUPD is set, so prepare a different seed for each child. This method giver a bigger variation in seed values than calling srand(time(0)) in the child itself. */
+#endif
 	switch (pid = fork ())
 	{
 	case -1:

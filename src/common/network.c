@@ -24,7 +24,7 @@
 #include <unistd.h>
 #include <glib.h>
 
-#include "../../config.h"				  /* grab USE_IPV6 define */
+#include "../../config.h"				  /* grab USE_IPV6 and LOOKUPD defines */
 
 #define WANTSOCKET
 #define WANTARPA
@@ -33,6 +33,8 @@
 
 #define NETWORK_PRIVATE
 #include "network.h"
+
+#define RAND_INT(n) ((int)(rand() / (RAND_MAX + 1.0) * (n)))
 
 
 /* ================== COMMON ================= */
@@ -82,6 +84,18 @@ net_store_new (void)
 
 /* =================== IPV4 ================== */
 
+/*
+	A note about net_resolve and lookupd:
+
+	Many IRC networks rely on round-robin DNS for load balancing, rotating the list
+	of IP address on each query. However, this method breaks when DNS queries are
+	cached. Mac OS X and Darwin handle DNS lookups through the lookupd daemon, which
+	caches queries in its default configuration: thus, if we always pick the first
+	address, we will be stuck with the same host (which might be down!) until the
+	TTL reaches 0 or lookupd is reset (typically, at reboot). Therefore, we need to
+	pick a random address from the result list, instead of always using the first.
+*/
+
 char *
 net_resolve (netstore * ns, char *hostname, int port, char **real_host)
 {
@@ -90,8 +104,16 @@ net_resolve (netstore * ns, char *hostname, int port, char **real_host)
 		return NULL;
 
 	memset (&ns->addr, 0, sizeof (ns->addr));
+#ifdef LOOKUPD
+	int count = 0;
+	while (ns->ip4_hostent->h_addr_list[count]) count++;
+	memcpy (&ns->addr.sin_addr,
+			ns->ip4_hostent->h_addr_list[RAND_INT(count)],
+			ns->ip4_hostent->h_length);
+#else
 	memcpy (&ns->addr.sin_addr, ns->ip4_hostent->h_addr,
 			  ns->ip4_hostent->h_length);
+#endif
 	ns->addr.sin_port = htons (port);
 	ns->addr.sin_family = AF_INET;
 
@@ -148,6 +170,18 @@ net_resolve (netstore * ns, char *hostname, int port, char **real_host)
 		ret = getaddrinfo (hostname, portstring, &hints, &ns->ip6_hostent);
 	if (ret != 0)
 		return NULL;
+
+#ifdef LOOKUPD	/* See note about lookupd above the IPv4 version of net_resolve. */
+	struct addrinfo *tmp;
+	int count = 0;
+
+	for (tmp = ns->ip6_hostent; tmp; tmp = tmp->ai_next)
+		count ++;
+
+	count = RAND_INT(count);
+	
+	while (count--) ns->ip6_hostent = ns->ip6_hostent->ai_next;
+#endif
 
 	/* find the numeric IP number */
 	ipstring[0] = 0;
