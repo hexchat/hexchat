@@ -43,6 +43,13 @@ struct server_gui
 	GtkWidget *rawlog_window;
 	GtkWidget *rawlog_textlist;
 
+	/* join dialog */
+	GtkWidget *joind_win;
+	GtkWidget *joind_entry;
+	GtkWidget *joind_radio1;
+	GtkWidget *joind_radio2;
+	GtkWidget *joind_check;
+
 	/* chanlist variables */
 	GtkWidget *chanlist_wild;
 	GtkWidget *chanlist_window;
