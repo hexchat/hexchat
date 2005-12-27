@@ -3085,6 +3085,8 @@ mg_set_title (GtkWidget *vbox, char *title) /* for non-irc tab/window only */
 void
 fe_server_callback (server *serv)
 {
+	joind (1, serv);
+
 	if (serv->gui->chanlist_window)
 		mg_close_gen (NULL, serv->gui->chanlist_window);
 

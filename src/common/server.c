@@ -1039,6 +1039,8 @@ server_disconnect (session * sess, int sendquit, int err)
 	GSList *list;
 	char tbuf[64];
 
+	joind (1, serv);
+
 	/* send our QUIT reason */
 	if (sendquit && serv->connected)
 	{

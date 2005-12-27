@@ -174,6 +174,7 @@ struct xchatprefs
 	int completion_sort;
 	int gui_win_state;
 	int gui_usermenu;
+	int gui_join_dialog;
 	int dialog_left;
 	int dialog_top;
 	int dialog_width;

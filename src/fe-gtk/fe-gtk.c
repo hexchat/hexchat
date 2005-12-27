@@ -903,6 +903,7 @@ fe_server_event (server *serv, int type, int arg)
 			switch (type)
 			{
 			case FE_SE_CONNECTING:	/* connecting in progress */
+			case FE_SE_RECONDELAY:	/* reconnect delay begun */
 				/* enable Disconnect item */
 				gtk_widget_set_sensitive (gui->menu_item[MENU_ID_DISCONNECT], 1);
 				break;
@@ -915,6 +916,9 @@ fe_server_event (server *serv, int type, int arg)
 
 			case FE_SE_LOGGEDIN:	/* end of MOTD */
 				gtk_widget_set_sensitive (gui->menu_item[MENU_ID_JOIN], 1);
+				/* if number of auto-join channels is zero, open joind */
+				if (arg == 0)
+					joind (0, serv);
 				break;
 
 			case FE_SE_DISCONNECT:
@@ -922,11 +926,6 @@ fe_server_event (server *serv, int type, int arg)
 				gtk_widget_set_sensitive (gui->menu_item[MENU_ID_AWAY], 0);
 				gtk_widget_set_sensitive (gui->menu_item[MENU_ID_DISCONNECT], 0);
 				gtk_widget_set_sensitive (gui->menu_item[MENU_ID_JOIN], 0);
-				break;
-
-			case FE_SE_RECONDELAY:
-				/* enable Disconnect menu item */
-				gtk_widget_set_sensitive (gui->menu_item[MENU_ID_DISCONNECT], 1);
 			}
 		}
 		list = list->next;

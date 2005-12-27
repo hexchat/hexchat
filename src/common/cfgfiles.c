@@ -422,6 +422,7 @@ const struct prefs vars[] = {
 	{"gui_dialog_width", P_OFFINT (dialog_width), TYPE_INT},
 	{"gui_hide_menu", P_OFFINT (hidemenu), TYPE_BOOL},
 	{"gui_input_style", P_OFFINT (style_inputbox), TYPE_BOOL},
+	{"gui_join_dialog", P_OFFINT (gui_join_dialog), TYPE_BOOL},
 	{"gui_lagometer", P_OFFINT (lagometer), TYPE_INT},
 	{"gui_mode_buttons", P_OFFINT (chanmodebuttons), TYPE_BOOL},
 	{"gui_slist_select", P_OFFINT (slist_select), TYPE_INT},
@@ -619,6 +620,7 @@ load_config (void)
 	prefs.mainwindow_height = 400;
 	prefs.dialog_width = 500;
 	prefs.dialog_height = 256;
+	prefs.gui_join_dialog = 1;
 	prefs.dcctimeout = 180;
 	prefs.dccstalltimeout = 60;
 	prefs.notify_timeout = 15;

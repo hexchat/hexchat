@@ -20,8 +20,7 @@ if DO_PLUGIN
 plugingui_c = plugingui.c
 endif
 
-xchat_SOURCES = about.c ascii.c banlist.c chanlist.c chanview.c dccgui.c editlist.c \
-	fe-gtk.c fkeys.c gtkutil.c ignoregui.c menu.c maingui.c $(mmx_cmod_S) \
-	notifygui.c palette.c pixmaps.c $(plugingui_c) rawlog.c \
-	search.c servlistgui.c setup.c textgui.c \
-	urlgrab.c userlistgui.c xtext.c
+xchat_SOURCES = about.c ascii.c banlist.c chanlist.c chanview.c dccgui.c \
+	editlist.c fe-gtk.c fkeys.c gtkutil.c ignoregui.c joind.c menu.c maingui.c \
+	$(mmx_cmod_S) notifygui.c palette.c pixmaps.c $(plugingui_c) rawlog.c \
+	search.c servlistgui.c setup.c textgui.c urlgrab.c userlistgui.c xtext.c
