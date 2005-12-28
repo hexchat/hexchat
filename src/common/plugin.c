@@ -1042,12 +1042,17 @@ xchat_get_prefs (xchat_plugin *ph, const char *name, const char **string, int *i
 	int i = 0;
 
 	/* some special run-time info (not really prefs, but may aswell throw it in here) */
-	if (!strcmp (name, "state_cursor"))
+	switch (str_hash (name))
 	{
-		*integer = fe_get_inputbox_cursor (ph->context);
-		return 2;
-	}
+		case 0xf82136c4: /* state_cursor */
+			*integer = fe_get_inputbox_cursor (ph->context);
+			return 2;
 
+		case 0xd1b: /* id */
+			*integer = ph->context->server->id;
+			return 2;
+	}
+	
 	do
 	{
 		if (!strcasecmp (name, vars[i].name))

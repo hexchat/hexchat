@@ -26,11 +26,6 @@
 #include <stdarg.h>
 
 #include "xchat.h"
-
-#ifdef WIN32
-#include "inet.h"	/* for gethostname() */
-#endif
-
 #include "ctcp.h"
 #include "fe.h"
 #include "ignore.h"
@@ -48,20 +43,13 @@
 static void
 irc_login (server *serv, char *user, char *realname)
 {
-	char hostname[128];
-
 	if (serv->password[0])
 		tcp_sendf (serv, "PASS %s\r\n", serv->password);
-
-	gethostname (hostname, sizeof (hostname) - 1);
-	hostname[sizeof (hostname) - 1] = 0;
-	if (hostname[0] == 0)
-		strcpy (hostname, "0");
 
 	tcp_sendf (serv,
 				  "NICK %s\r\n"
 				  "USER %s %s %s :%s\r\n",
-				  serv->nick, user, hostname, serv->servername, realname);
+				  serv->nick, user, user, serv->servername, realname);
 }
 
 static void
