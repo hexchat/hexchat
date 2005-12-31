@@ -51,8 +51,12 @@ sub register {
 	my ($name, $version, $description, $callback) = @_;
 	$description = "" unless defined $description;
 	$pkg_info->{shutdown} = $callback;
+	
+	# remove the placeholder that was put in place when the script was loaded
+	Xchat::Embed::plugingui_remove( $pkg_info->{gui_entry} );
+	
 	$pkg_info->{gui_entry} =
-	Xchat::Internal::register( $name, $version, $description, $filename );
+		Xchat::Internal::register( $name, $version, $description, $filename );
 	# keep with old behavior
 	return ();
 }
@@ -319,7 +323,7 @@ sub get_info {
 	my $info;
 	
 	if( defined( $id ) ) {
-		if( grep { $id eq $_ } qw(state_cursor) ) {
+		if( grep { $id eq $_ } qw(state_cursor id) ) {
 			$info = Xchat::get_prefs( $id );
 		} else {
 			$info = Xchat::Internal::get_info( $id );
@@ -344,8 +348,9 @@ sub context_info {
 	my $ctx = shift @_ || Xchat::get_context;
 	my $old_ctx = Xchat::get_context;
 	my @fields = (
-		qw(away channel charset host inputbox libdirfs network nick nickserv),
-		qw(server topic version win_status xchatdir xchatdirfs state_cursor),
+		qw(away channel charset host id inputbox libdirfs network),
+		qw(nick nickserv server topic version win_status xchatdir xchatdirfs),
+		qw(state_cursor),
 	);
 	
 	if( Xchat::set_context( $ctx ) ) {
@@ -449,6 +454,11 @@ sub load {
 		$scripts{$package}{filename} = $file;
 
 		{
+			$scripts{$package}{gui_entry} =
+				Xchat::Internal::register(
+					"???", "???", "This script did not call register()", $file
+				);
+			
 			no strict; no warnings;
 			eval "package $package; $source;";
 		}
@@ -464,6 +474,7 @@ sub load {
 		Xchat::print( "Error opening '$file': $!\n" );
 		return 2;
 	}
+
 	return 0;
 }
 
