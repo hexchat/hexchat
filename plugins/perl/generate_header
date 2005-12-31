@@ -3,17 +3,6 @@
 use strict;
 use warnings;
 
-my $output = "xchat.pm.h";
-
-open my $header, ">", $output or die "Couldn't open '$output': $!";
-
-print $header header( "Xchat.pm" );
-print $header "#ifdef OLD_PERL\n";
-print $header header( "IRC.pm" );
-print $header "#endif\n";
-
-close $header;
-
 sub header {
   my $file = shift;
   open my $input, "<", $file or die "Couldn't open '$file':$!";
@@ -34,3 +23,13 @@ sub toc {
   }
   return @lines;
 }
+
+my $output = "xchat.pm.h";
+
+open my $header, ">", $output or die "Couldn't open '$output': $!";
+#select $header;
+print $header header( "Xchat.pm" );
+print $header "#ifdef OLD_PERL\n";
+print $header header( "IRC.pm" );
+print $header "#endif\n";
+close $header;

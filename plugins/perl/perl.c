@@ -469,7 +469,7 @@ XS (XS_Xchat_register)
 		gui_entry = xchat_plugingui_add (ph, filename, name,
 													desc, version, NULL);
 
-		XSRETURN_UV (PTR2UV (gui_entry));
+		XSRETURN_IV (PTR2UV (gui_entry));
 
 	}
 }
@@ -542,7 +542,7 @@ XS (XS_Xchat_emit_print)
 
 		}
 
-		XSRETURN_UV (RETVAL);
+		XSRETURN_IV (RETVAL);
 	}
 }
 static
@@ -582,7 +582,7 @@ XS (XS_Xchat_get_prefs)
 			XSRETURN_PV (str);
 			break;
 		case 2:
-			XSRETURN_UV (integer);
+			XSRETURN_IV (integer);
 			break;
 		case 3:
 			if (integer) {
@@ -629,7 +629,7 @@ XS (XS_Xchat_hook_server)
 		data->depth = 0;
 		hook = xchat_hook_server (ph, name, pri, server_cb, data);
 
-		XSRETURN_UV (PTR2UV (hook));
+		XSRETURN_IV (PTR2UV (hook));
 	}
 }
 
@@ -670,7 +670,7 @@ XS (XS_Xchat_hook_command)
 		data->depth = 0;
 		hook = xchat_hook_command (ph, name, pri, command_cb, help_text, data);
 
-		XSRETURN_UV (PTR2UV (hook));
+		XSRETURN_IV (PTR2UV (hook));
 	}
 
 }
@@ -709,7 +709,7 @@ XS (XS_Xchat_hook_print)
 		data->depth = 0;
 		hook = xchat_hook_print (ph, name, pri, print_cb, data);
 
-		XSRETURN_UV (PTR2UV (hook));
+		XSRETURN_IV (PTR2UV (hook));
 	}
 }
 
@@ -746,7 +746,7 @@ XS (XS_Xchat_hook_timer)
 		hook = xchat_hook_timer (ph, timeout, timer_cb, data);
 		data->hook = hook;
 
-		XSRETURN_UV (PTR2UV (hook));
+		XSRETURN_IV (PTR2UV (hook));
 	}
 }
 
@@ -784,7 +784,7 @@ XS (XS_Xchat_hook_fd)
 		SvREFCNT_inc (data->userdata);
 		hook = xchat_hook_fd (ph, fd, flags, fd_cb, data);
 
-		XSRETURN_UV (PTR2UV (hook));
+		XSRETURN_IV (PTR2UV (hook));
 	}
 }
 
@@ -883,7 +883,7 @@ XS (XS_Xchat_find_context)
 		RETVAL = xchat_find_context (ph, server, chan);
 		if (RETVAL != NULL) {
 			/*                      xchat_print (ph, "XSUB - context found"); */
-			XSRETURN_UV (PTR2UV (RETVAL));
+			XSRETURN_IV (PTR2UV (RETVAL));
 		} else {
 			/*           xchat_print (ph, "XSUB - context not found"); */
 			XSRETURN_UNDEF;
@@ -898,7 +898,7 @@ XS (XS_Xchat_get_context)
 	if (items != 0) {
 		xchat_print (ph, "Usage: Xchat::get_context()");
 	} else {
-		XSRETURN_UV (PTR2UV (xchat_get_context (ph)));
+		XSRETURN_IV (PTR2UV (xchat_get_context (ph)));
 	}
 }
 

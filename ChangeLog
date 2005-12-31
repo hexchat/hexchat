@@ -42,12 +42,14 @@ Where "NUMBER" is the bug number.
    multiple IP numbers (SG / CL).
  - Added a dialog window to help newbies join a channel.
  - Plugin API: Added "id" to xchat_get_prefs (Lian Wan Situ).
- - 
+ - Plugin API: Changed xchat_find_context (ph, channel, NULL) to return
+   results from the same server group as the current context when
+   possible.(Lian Wan Situ)
  - 
  - Perl:
   - using emit_print/command/recv will no longer trigger their own
     callbacks
-
+  - Fix compiling issues with versions older than 5.8.2.
 
 ----------------------------------------------------------------------
  2.6.0 - 03/Nov/2005
