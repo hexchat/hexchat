@@ -52,9 +52,6 @@ sub register {
 	$description = "" unless defined $description;
 	$pkg_info->{shutdown} = $callback;
 	
-	# remove the placeholder that was put in place when the script was loaded
-	Xchat::Embed::plugingui_remove( $pkg_info->{gui_entry} );
-	
 	$pkg_info->{gui_entry} =
 		Xchat::Internal::register( $name, $version, $description, $filename );
 	# keep with old behavior
@@ -454,13 +451,15 @@ sub load {
 		$scripts{$package}{filename} = $file;
 
 		{
-			$scripts{$package}{gui_entry} =
-				Xchat::Internal::register(
-					"???", "???", "This script did not call register()", $file
-				);
-			
 			no strict; no warnings;
 			eval "package $package; $source;";
+
+			unless( exists $scripts{$package}{gui_entry} ) {
+				$scripts{$package}{gui_entry} =
+					Xchat::Internal::register(
+						"???", "???", "This script did not call register()", $file
+					);
+			}
 		}
 		
 		if( $@ ) {
