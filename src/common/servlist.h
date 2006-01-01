@@ -46,6 +46,7 @@ int servlist_check_encoding (char *charset);
 ircnet *servlist_net_add (char *name, char *comment, int prepend);
 void servlist_net_remove (ircnet *net);
 ircnet *servlist_net_find (char *name, int *pos);
+ircnet *servlist_net_find_from_server (char *server_name);
 
 void servlist_server_remove (ircnet *net, ircserver *serv);
 ircserver *servlist_server_add (ircnet *net, char *name);

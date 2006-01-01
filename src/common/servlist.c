@@ -686,6 +686,36 @@ servlist_server_find (ircnet *net, char *name, int *pos)
 	return NULL;
 }
 
+/* find a network (e.g. (ircnet *) to "FreeNode") from a hostname
+   (e.g. "irc.eu.freenode.net") */
+
+ircnet *
+servlist_net_find_from_server (char *server_name)
+{
+	GSList *list = network_list;
+	GSList *slist;
+	ircnet *net;
+	ircserver *serv;
+
+	while (list)
+	{
+		net = list->data;
+
+		slist = net->servlist;
+		while (slist)
+		{
+			serv = slist->data;
+			if (strcasecmp (serv->hostname, server_name) == 0)
+				return net;
+			slist = slist->next;
+		}
+
+		list = list->next;
+	}
+
+	return NULL;
+}
+
 ircnet *
 servlist_net_find (char *name, int *pos)
 {

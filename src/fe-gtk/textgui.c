@@ -30,6 +30,7 @@
 #include <gtk/gtkentry.h>
 #include <gtk/gtkhbox.h>
 #include <gtk/gtkhbbox.h>
+#include <gtk/gtkliststore.h>
 #include <gtk/gtkstock.h>
 #include <gtk/gtkvbox.h>
 #include <gtk/gtkvpaned.h>

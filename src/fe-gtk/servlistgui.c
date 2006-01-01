@@ -1022,8 +1022,8 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 
 	servlist_create_check (3, net->flags & FLAG_AUTO_CONNECT, table3,
 								  11, 1, _("Auto connect to this network at startup"));
-/*	servlist_create_check (4, net->flags & FLAG_USE_PROXY, table3,
-								  12, 1, _("Use a proxy server"));*/
+	servlist_create_check (4, net->flags & FLAG_USE_PROXY, table3,
+								  12, 1, _("Use a proxy server"));
 	check = servlist_create_check (2, net->flags & FLAG_USE_SSL, table3,
 								  13, 1, _("Use SSL for all the servers on this network"));
 #ifndef USE_OPENSSL

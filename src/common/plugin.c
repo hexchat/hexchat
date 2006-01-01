@@ -909,7 +909,7 @@ xchat_set_context (xchat_plugin *ph, xchat_context *context)
 xchat_context *
 xchat_find_context (xchat_plugin *ph, const char *servname, const char *channel)
 {
-	GSList *slist, *clist;
+	GSList *slist, *clist, *sessions = NULL;
 	server *serv;
 	session *sess;
 	char *netname;
@@ -938,12 +938,29 @@ xchat_find_context (xchat_plugin *ph, const char *servname, const char *channel)
 				if (sess->server == serv)
 				{
 					if (rfc_casecmp (channel, sess->channel) == 0)
-						return sess;
+					{
+						if (sess->server == ph->context->server)
+						{
+							g_slist_free (sessions);
+							return sess;
+						} else
+						{
+							sessions = g_slist_prepend (sessions, sess);
+						}
+					}
 				}
 				clist = clist->next;
 			}
 		}
 		slist = slist->next;
+	}
+
+	if (sessions)
+	{
+		sessions = g_slist_reverse (sessions);
+		sess = sessions->data;
+		g_slist_free (sessions);
+		return sess;
 	}
 
 	return NULL;

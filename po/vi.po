@@ -1,17 +1,17 @@
 # Vietnamese translation for XChat.
 # Copyright © 2005 Free Software Foundation, Inc.
 # Clytie Siddall <clytie@riverland.net.au>, 2005.
-#
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: xchat 2.6.0\n"
+"Project-Id-Version: xchat-2.6.1\n"
 "Report-Msgid-Bugs-To: www.xchat.org\n"
-"POT-Creation-Date: 2005-12-18 22:45+1100\n"
-"PO-Revision-Date: 2005-12-17 19:00+1030\n"
+"POT-Creation-Date: 2005-12-27 19:08+1100\n"
+"PO-Revision-Date: 2005-12-30 15:17+1030\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: Vietnamese <gnomevi-list@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=1; plural=0\n"
 "X-Generator: LocFactoryEditor 1.5.1b\n"
@@ -20,15 +20,15 @@ msgstr ""
 msgid "Cannot create ~/.xchat2"
 msgstr "Không tạo được thư mục <~/.xchat2>."
 
-#: src/common/cfgfiles.c:679
+#: src/common/cfgfiles.c:681
 msgid "I'm busy"
 msgstr "Tôi đang bận"
 
-#: src/common/cfgfiles.c:680
+#: src/common/cfgfiles.c:682
 msgid "Leaving"
 msgstr "Tôi đi"
 
-#: src/common/cfgfiles.c:726
+#: src/common/cfgfiles.c:728
 msgid ""
 "* Running IRC as root is stupid! You should\n"
 "  create a User Account and use that to login.\n"
@@ -61,12 +61,12 @@ msgstr "Kết nối"
 msgid "Aborted"
 msgstr "Bị hủy bỏ"
 
-#: src/common/dcc.c:1350
+#: src/common/dcc.c:1339
 #, c-format
 msgid "Cannot access %s\n"
 msgstr "Không truy cập được « %s ».\n"
 
-#: src/common/dcc.c:2030
+#: src/common/dcc.c:2019
 msgid "No active DCCs\n"
 msgstr "Không có DCC (trò chuyện trực tiếp) hoặt động nào\n"
 
@@ -74,13 +74,13 @@ msgstr "Không có DCC (trò chuyện trực tiếp) hoặt động nào\n"
 #: src/common/ignore.c:132 src/common/ignore.c:136 src/common/ignore.c:140
 #: src/common/ignore.c:144
 msgid "YES  "
-msgstr "Có"
+msgstr "Có  "
 
 #: src/common/ignore.c:122 src/common/ignore.c:126 src/common/ignore.c:130
 #: src/common/ignore.c:134 src/common/ignore.c:138 src/common/ignore.c:142
 #: src/common/ignore.c:146
 msgid "NO   "
-msgstr "Không"
+msgstr "Không   "
 
 #: src/common/ignore.c:373
 #, c-format
@@ -90,9 +90,7 @@ msgstr "Bạn đang bị tấn công bằng CTCP bởi %s nên bỏ qua %s.\n"
 #: src/common/ignore.c:398
 #, c-format
 msgid "You are being MSG flooded from %s, setting gui_auto_open_dialog OFF.\n"
-msgstr ""
-"Bạn đang bị tấn công bằng MSG bởi %s nên lập tùy chọn tự động mở đối thoại "
-"giao diện (gui_auto_open_dialog) bị TẮT.\n"
+msgstr "Bạn đang bị tấn công bằng MSG bởi %s nên lập tùy chọn tự động mở đối thoại giao diện (gui_auto_open_dialog) bị TẮT.\n"
 
 #: src/common/notify.c:400
 #, c-format
@@ -112,99 +110,84 @@ msgstr "Chưa vào kênh nào: hãy thử lệnh « /join #<kênh> »\n"
 msgid "Not connected. Try /server <host> [<port>]\n"
 msgstr "Chưa kêt nối được: hãy thử lệnh « /server <máy_phục_vụ> [<cổng>] »\n"
 
-#: src/common/outbound.c:1648
+#: src/common/outbound.c:1647
 msgid "I need /bin/sh to run!\n"
 msgstr "Cần đến thư « /bin/sh » để chạy được.\n"
 
-#: src/common/outbound.c:1976
+#: src/common/outbound.c:1975
 msgid "Commands Available:"
 msgstr "Các lệnh sẵn sàng:"
 
-#: src/common/outbound.c:1990
+#: src/common/outbound.c:1989
 msgid "User defined commands:"
 msgstr "Các lệnh tự định nghĩa:"
 
-#: src/common/outbound.c:2006
+#: src/common/outbound.c:2005
 msgid "Plugin defined commands:"
 msgstr "Các lệnh do bộ cầm phít định nghĩa:"
 
-#: src/common/outbound.c:2017
+#: src/common/outbound.c:2016
 msgid "Type /HELP <command> for more information, or /HELP -l"
-msgstr ""
-"Hãy gõ lệnh « /HELP <lệnh> » để xem thông tin thêm (help: trợ giúp), hay « /"
-"HELP -l »."
+msgstr "Hãy gõ lệnh « /HELP <lệnh> » để xem thông tin thêm (help: trợ giúp), hay « /HELP -l »."
 
-#: src/common/outbound.c:2092
+#: src/common/outbound.c:2091
 #, c-format
 msgid "Unknown arg '%s' ignored."
 msgstr "Không biết đối số « %s » nên bỏ qua nó."
 
-#: src/common/outbound.c:2920
+#: src/common/outbound.c:2919
 msgid "No such plugin found.\n"
 msgstr "Không tìm thấy bộ cầm phít như vậy.\n"
 
-#: src/common/outbound.c:2925 src/fe-gtk/plugingui.c:186
+#: src/common/outbound.c:2924 src/fe-gtk/plugingui.c:186
 msgid "That plugin is refusing to unload.\n"
 msgstr "Bộ cầm phít đó không bỏ tải đươc.\n"
 
-#: src/common/outbound.c:3104
+#: src/common/outbound.c:3103
 msgid "ADDBUTTON <name> <action>, adds a button under the user-list"
-msgstr ""
-"ADDBUTTON <tên> <hành_động>, _thêm_ một _cái nút_ <tên> thực hiện <hành "
-"động> ở dưới danh sách người dùng."
+msgstr "ADDBUTTON <tên> <hành_động>, _thêm_ một _cái nút_ <tên> thực hiện <hành động> ở dưới danh sách người dùng."
 
-#: src/common/outbound.c:3106
+#: src/common/outbound.c:3105
 msgid "ALLCHAN <cmd>, sends a command to all channels you're in"
 msgstr "ALLCHAN <lệnh>,  gửi lệnh này đến tất cả các kênh mà bạn đang có mặt."
 
-#: src/common/outbound.c:3108
+#: src/common/outbound.c:3107
 msgid "ALLCHANL <cmd>, sends a command to all channels you're in"
 msgstr "ALLCHANL <lệnh>, gởi lệnh này đến tất cả các kênh mà bạn đang có mặt."
 
-#: src/common/outbound.c:3110
+#: src/common/outbound.c:3109
 msgid "ALLSERV <cmd>, sends a command to all servers you're in"
-msgstr ""
-"ALLSERV <lệnh>, gởi lệnh này đến tất cả các máy phục vụ mà bạn đang có mặt."
+msgstr "ALLSERV <lệnh>, gởi lệnh này đến tất cả các máy phục vụ mà bạn đang có mặt."
 
-#: src/common/outbound.c:3111
+#: src/common/outbound.c:3110
 msgid "AWAY [<reason>], sets you away"
 msgstr "AWAY [<lý do>], đặt trang thái của bạn thành _Vắng mặt_"
 
-#: src/common/outbound.c:3113
-msgid ""
-"BAN <mask> [<bantype>], bans everyone matching the mask from the current "
-"channel. If they are already on the channel this doesn't kick them (needs "
-"chanop)"
-msgstr ""
-"BAN <bộ_lọc> [<kiểu_đuổi>], _đuổi_ mọi người khớp với bộ lọc này ra kênh "
-"hiện tại. Cần quyền quan trị kệnh (chanop) để đuổi ra người nào đang trên "
-"kênh."
+#: src/common/outbound.c:3112
+msgid "BAN <mask> [<bantype>], bans everyone matching the mask from the current channel. If they are already on the channel this doesn't kick them (needs chanop)"
+msgstr "BAN <bộ_lọc> [<kiểu_đuổi>], _đuổi_ mọi người khớp với bộ lọc này ra kênh hiện tại. Cần quyền quan trị kệnh (chanop) để đuổi ra người nào đang trên kênh."
 
-#: src/common/outbound.c:3115
+#: src/common/outbound.c:3114
 msgid "CLEAR, Clears the current text window"
 msgstr "CLEAR, _xóa_ cửa sổ văn bản hiện tại."
 
-#: src/common/outbound.c:3116
+#: src/common/outbound.c:3115
 msgid "CLOSE, Closes the current window/tab"
 msgstr "CLOSE, _đóng_ cửa sổ/thanh hiện tại."
 
-#: src/common/outbound.c:3119
+#: src/common/outbound.c:3118
 msgid "COUNTRY [-s] <code|wildcard>, finds a country code, eg: au = australia"
 msgstr "COUNTRY  [-s] <mã|đại_diện>, tìm thấy _quốc gia_, v.d. mã au = Úc"
 
-#: src/common/outbound.c:3121
-msgid ""
-"CTCP <nick> <message>, send the CTCP message to nick, common messages are "
-"VERSION and USERINFO"
-msgstr ""
-"CTCP <tên_hiệu> <tin_nhẳn>, gởi cho <tên_hiệu> <tin nhẳn> CTCP: hai tin nhẳn "
-"thường là VERSION (phiên bản) và USERINFO (thông tin người dùng)."
+#: src/common/outbound.c:3120
+msgid "CTCP <nick> <message>, send the CTCP message to nick, common messages are VERSION and USERINFO"
+msgstr "CTCP <tên_hiệu> <tin_nhẳn>, gởi cho <tên_hiệu> <tin nhẳn> CTCP: hai tin nhẳn thường là VERSION (phiên bản) và USERINFO (thông tin người dùng)."
 
-#: src/common/outbound.c:3123
+#: src/common/outbound.c:3122
 msgid "CYCLE, parts current channel and immediately rejoins"
 msgstr "CYCLE, rời kênh hiện tại đi rồi vào lại ngay (_quay lại_)."
 
-#: src/common/outbound.c:3125
+#: src/common/outbound.c:3124
 msgid ""
 "\n"
 "DCC GET <nick>                      - accept an offered file\n"
@@ -218,121 +201,83 @@ msgid ""
 msgstr ""
 "\n"
 "DCC GET <tên_hiệu> \t\tchấp nhận tập tin đã đưa ra (_lấy_)\n"
-"DCC SEND [-maxcps=#] <tên_hiệu> [tập_tin]\t\t _gởi_ tập tin này cho người có "
-"tên hiệu này\n"
-"DCC PSEND [-maxcps=#] <tên_hiệu> [tập_tin]\t\tthì _gởi_ tập tin này bằng chế "
-"độ _bị động_\n"
+"DCC SEND [-maxcps=#] <tên_hiệu> [tập_tin]\t\t _gởi_ tập tin này cho người có tên hiệu này\n"
+"DCC PSEND [-maxcps=#] <tên_hiệu> [tập_tin]\t\tthì _gởi_ tập tin này bằng chế độ _bị động_\n"
 "DCC LIST   \t\t\t\thiển thị _danh sách_ DCC\n"
 "DCC CHAT <tên_hiệu> \tđưa ra _trò chuyện_ DCC với người có tên hiệu này\n"
 "DCC PCHAT <tên_hiệu>\t\tđưa ra _trờ chuyện_ DCC bằng chế độ _bị động_\n"
 "DCC CLOSE <kiểu> <tên_hiệu> <tập_tin>   (_đóng_)      thí dụ:\n"
-"         </dcc close send nguyenvan tập_tin.tar.gz> (gởi cho người nguyenvan "
-"tập_tin.tar.gz)"
+"         </dcc close send nguyenvan tập_tin.tar.gz> (gởi cho người nguyenvan tập_tin.tar.gz)"
 
-#: src/common/outbound.c:3137
-msgid ""
-"DEHOP <nick>, removes chanhalf-op status from the nick on the current "
-"channel (needs chanop)"
-msgstr ""
-"DEHOP <tên_hiệu>, bỏ ra <tên hiệu> trạng thái quản trị kênh nửa (chanhalf-"
-"op) trên kênh hiện tại (cần quyền quản trị kênh) — DE (bỏ ra) Half (nửa) "
-"OPerator (quản trị viên)."
+#: src/common/outbound.c:3136
+msgid "DEHOP <nick>, removes chanhalf-op status from the nick on the current channel (needs chanop)"
+msgstr "DEHOP <tên_hiệu>, bỏ ra <tên hiệu> trạng thái quản trị kênh nửa (chanhalf-op) trên kênh hiện tại (cần quyền quản trị kênh) — DE (bỏ ra) Half (nửa) OPerator (quản trị viên)."
 
-#: src/common/outbound.c:3139
+#: src/common/outbound.c:3138
 msgid "DELBUTTON <name>, deletes a button from under the user-list"
-msgstr ""
-"DELBUTTON <tên>, _xóa bỏ cái nút_ <tên> ra dưới danh sách người dùng (DELete "
-"— xóa bỏ)."
+msgstr "DELBUTTON <tên>, _xóa bỏ cái nút_ <tên> ra dưới danh sách người dùng (DELete — xóa bỏ)."
 
-#: src/common/outbound.c:3141
-msgid ""
-"DEOP <nick>, removes chanop status from the nick on the current channel "
-"(needs chanop)"
-msgstr ""
-"DEOP <tên_hiệu>, bỏ ra <tên hiệu> trạng thái quản trị kênh (chanop) trên "
-"kênh hiện tại (cần quyền quản trị kênh (chanop)) — DE (bỏ) OPerator (quản "
-"trị viên)."
+#: src/common/outbound.c:3140
+msgid "DEOP <nick>, removes chanop status from the nick on the current channel (needs chanop)"
+msgstr "DEOP <tên_hiệu>, bỏ ra <tên hiệu> trạng thái quản trị kênh (chanop) trên kênh hiện tại (cần quyền quản trị kênh (chanop)) — DE (bỏ) OPerator (quản trị viên)."
+
+#: src/common/outbound.c:3142
+msgid "DEVOICE <nick>, removes voice status from the nick on the current channel (needs chanop)"
+msgstr "DEVOICE <tên_hiệu>, _bỏ ra_ <tên hiệu> trạng thái _tiếng nói_ trên kênh hiện tại (cần quyền quản trị kênh [chanop])."
 
 #: src/common/outbound.c:3143
-msgid ""
-"DEVOICE <nick>, removes voice status from the nick on the current channel "
-"(needs chanop)"
-msgstr ""
-"DEVOICE <tên_hiệu>, _bỏ ra_ <tên hiệu> trạng thái _tiếng nói_ trên kênh hiện "
-"tại (cần quyền quản trị kênh [chanop])."
-
-#: src/common/outbound.c:3144
 msgid "DISCON, Disconnects from server"
 msgstr "DISCON, ngắt kết nối ra máy phục vụ — DISCONnect (ngắt kết nối)."
 
-#: src/common/outbound.c:3145
+#: src/common/outbound.c:3144
 msgid "DNS <nick|host|ip>, Finds a users IP number"
-msgstr ""
-"DNS <tên_hiệu|máy_phục_vụ|ip>, tìm thấy địa chỉ IP của <ten hiệu> — Domain "
-"Name System (Hệ thống tên miền)."
+msgstr "DNS <tên_hiệu|máy_phục_vụ|ip>, tìm thấy địa chỉ IP của <ten hiệu> — Domain Name System (Hệ thống tên miền)."
 
-#: src/common/outbound.c:3146
+#: src/common/outbound.c:3145
 msgid "ECHO <text>, Prints text locally"
 msgstr "ECHO <đoạn>, in ra <đoạn> một cách địa phương (_vọng_)."
 
-#: src/common/outbound.c:3149
-msgid ""
-"EXEC [-o] <command>, runs the command. If -o flag is used then output is "
-"sent to current channel, else is printed to current text box"
-msgstr ""
-"EXEC [-o] <lệnh>, _thực hiện_ <lệnh>. Nếu thêm cờ « -o » thì gởi dữ liệu "
-"xuất cho kênh hiện tại, nếu không thì in ra nó vào hộp văn bản hiện tại — "
-"EXECute (thực hiện)."
+#: src/common/outbound.c:3148
+msgid "EXEC [-o] <command>, runs the command. If -o flag is used then output is sent to current channel, else is printed to current text box"
+msgstr "EXEC [-o] <lệnh>, _thực hiện_ <lệnh>. Nếu thêm cờ « -o » thì gởi dữ liệu xuất cho kênh hiện tại, nếu không thì in ra nó vào hộp văn bản hiện tại — EXECute (thực hiện)."
 
-#: src/common/outbound.c:3151
+#: src/common/outbound.c:3150
 msgid "EXECCONT, sends the process SIGCONT"
 msgstr "EXECCONT, gởi tiến trình SIGCONT."
 
-#: src/common/outbound.c:3154
-msgid ""
-"EXECKILL [-9], kills a running exec in the current session. If -9 is given "
-"the process is SIGKILL'ed"
-msgstr ""
-"EXECKILL [-9], buộc kết thức tiến trình đang chạy trong phiên làm việc hiện "
-"tại. Nếu thêm cờ « -9 » thì SIGKILL tiến trình này."
+#: src/common/outbound.c:3153
+msgid "EXECKILL [-9], kills a running exec in the current session. If -9 is given the process is SIGKILL'ed"
+msgstr "EXECKILL [-9], buộc kết thức tiến trình đang chạy trong phiên làm việc hiện tại. Nếu thêm cờ « -9 » thì SIGKILL tiến trình này."
 
-#: src/common/outbound.c:3156
+#: src/common/outbound.c:3155
 msgid "EXECSTOP, sends the process SIGSTOP"
 msgstr "EXECSTOP, gởi tiến trình SIGSTOP."
 
-#: src/common/outbound.c:3157
+#: src/common/outbound.c:3156
 msgid "EXECWRITE, sends data to the processes stdin"
-msgstr ""
-"EXECWRITE, gởi dữ liệu cho thiết bị gõ chuẩn của tiến trình — EXECute (thi "
-"hành) WRITE (ghi)."
+msgstr "EXECWRITE, gởi dữ liệu cho thiết bị gõ chuẩn của tiến trình — EXECute (thi hành) WRITE (ghi)."
 
-#: src/common/outbound.c:3161
+#: src/common/outbound.c:3160
 msgid "FLUSHQ, flushes the current server's send queue"
-msgstr ""
-"FLUSHQ, _xóa sạch hàng đợi_ gởi của máy phục vụ hiện tại — Queue (hàng đời)."
+msgstr "FLUSHQ, _xóa sạch hàng đợi_ gởi của máy phục vụ hiện tại — Queue (hàng đời)."
 
-#: src/common/outbound.c:3163
+#: src/common/outbound.c:3162
 msgid "GATE <host> [<port>], proxies through a host, port defaults to 23"
-msgstr ""
-"GATE <máy_phục_vụ> [<cổng>], sử dụng máy ủy nhiệm; <cổng> mặc định là 23."
+msgstr "GATE <máy_phục_vụ> [<cổng>], sử dụng máy ủy nhiệm; <cổng> mặc định là 23."
 
-#: src/common/outbound.c:3166
+#: src/common/outbound.c:3165
 msgid "GHOST <nick> <password>, Kills a ghosted nickname"
-msgstr ""
-"GHOST <tên_hiệu> <mật_khẩu>, buộc kết thức tên hiệu _ma_ (bị ngắt còn máy "
-"phục vụ chưa thay đổi trạng thái)"
+msgstr "GHOST <tên_hiệu> <mật_khẩu>, buộc kết thức tên hiệu _ma_ (bị ngắt còn máy phục vụ chưa thay đổi trạng thái)"
+
+#: src/common/outbound.c:3169
+msgid "HOP <nick>, gives chanhalf-op status to the nick (needs chanop)"
+msgstr "HOP <tên_hiệu>, đưa ra <tên hiệu> trạng thái quản trị kênh nửa (cần quyền quản trị kênh [chanop]) — Half (nửa) OPerator (quản trị viên)."
 
 #: src/common/outbound.c:3170
-msgid "HOP <nick>, gives chanhalf-op status to the nick (needs chanop)"
-msgstr ""
-"HOP <tên_hiệu>, đưa ra <tên hiệu> trạng thái quản trị kênh nửa (cần quyền "
-"quản trị kênh [chanop]) — Half (nửa) OPerator (quản trị viên)."
-
-#: src/common/outbound.c:3171
 msgid "ID <password>, identifies yourself to nickserv"
 msgstr "ID <mật_khẩu>, _nhận diện_ bạn với máy phục vụ tên hiệu — IDentify"
 
-#: src/common/outbound.c:3173
+#: src/common/outbound.c:3172
 msgid ""
 "IGNORE <mask> <types..> <options..>\n"
 "    mask - host mask to ignore, eg: *!*@*.aol.com\n"
@@ -348,287 +293,192 @@ msgstr ""
 "\t\t\tDCC (trò chuyện trực tiếp), INVI (mời), ALL (tất cả)\n"
 "    tùy chọn — NOSAVE (không lưu), QUIET (không hiện chi tiết)"
 
-#: src/common/outbound.c:3180
-msgid ""
-"INVITE <nick> [<channel>], invites someone to a channel, by default the "
-"current channel (needs chanop)"
-msgstr ""
-"INVITE <tên_hiệu> [<kênh>], _mời_ <tên hiệu> vào <kênh>; mặc định là kênh "
-"hiện tại (cần quyền quản trị kênh [chanop])."
+#: src/common/outbound.c:3179
+msgid "INVITE <nick> [<channel>], invites someone to a channel, by default the current channel (needs chanop)"
+msgstr "INVITE <tên_hiệu> [<kênh>], _mời_ <tên hiệu> vào <kênh>; mặc định là kênh hiện tại (cần quyền quản trị kênh [chanop])."
 
-#: src/common/outbound.c:3181
+#: src/common/outbound.c:3180
 msgid "JOIN <channel>, joins the channel"
 msgstr "JOIN <kênh>, _vào_ <kênh>."
 
-#: src/common/outbound.c:3183
+#: src/common/outbound.c:3182
 msgid "KICK <nick>, kicks the nick from the current channel (needs chanop)"
-msgstr ""
-"KICK <tên_hiệu>, _đá_ <tên hiệu> ra kênh hiện tại (cần quyền quản trị kênh "
-"[chanop])."
+msgstr "KICK <tên_hiệu>, _đá_ <tên hiệu> ra kênh hiện tại (cần quyền quản trị kênh [chanop])."
 
-#: src/common/outbound.c:3185
-msgid ""
-"KICKBAN <nick>, bans then kicks the nick from the current channel (needs "
-"chanop)"
-msgstr ""
-"KICKBAN <tên_hiệu>, _đuổi_ rồi _đá_ <tên hiệu> ra kênh hiện tại (cần quyền "
-"quản trị kênh [chanop])."
+#: src/common/outbound.c:3184
+msgid "KICKBAN <nick>, bans then kicks the nick from the current channel (needs chanop)"
+msgstr "KICKBAN <tên_hiệu>, _đuổi_ rồi _đá_ <tên hiệu> ra kênh hiện tại (cần quyền quản trị kênh [chanop])."
 
-#: src/common/outbound.c:3188
+#: src/common/outbound.c:3187
 msgid "LAGCHECK, forces a new lag check"
 msgstr "LAGCHECK, buộc _kiểm tra sự trễ_ tái kết nối."
 
-#: src/common/outbound.c:3190
+#: src/common/outbound.c:3189
 msgid "LASTLOG <string>, searches for a string in the buffer"
 msgstr "LASTLOG <chuỗi>, tìm kiếm <chuỗi> trong bộ đệm (_bản ghi cuối cùng_)."
 
-#: src/common/outbound.c:3192
+#: src/common/outbound.c:3191
 msgid "LOAD [-e] <file>, loads a plugin or script"
 msgstr "LOAD [-e] <tập_tin>, _tải_ một bộ cầm phít hay tập lệnh nào đó."
 
-#: src/common/outbound.c:3195
-msgid ""
-"MDEHOP, Mass deop's all chanhalf-ops in the current channel (needs chanop)"
-msgstr ""
-"MDEHOP, bỏ trạng thái quản trị kênh nửa (chanhalf-op) ra mọi người trên kênh "
-"hiện tại (cần quyền quản trị kênh [chanop]) — Mass (số nhiều) DE (bỏ) Half "
-"(nửa) OPerator (quản trị viên)."
+#: src/common/outbound.c:3194
+msgid "MDEHOP, Mass deop's all chanhalf-ops in the current channel (needs chanop)"
+msgstr "MDEHOP, bỏ trạng thái quản trị kênh nửa (chanhalf-op) ra mọi người trên kênh hiện tại (cần quyền quản trị kênh [chanop]) — Mass (số nhiều) DE (bỏ) Half (nửa) OPerator (quản trị viên)."
 
-#: src/common/outbound.c:3197
+#: src/common/outbound.c:3196
 msgid "MDEOP, Mass deop's all chanops in the current channel (needs chanop)"
-msgstr ""
-"MDEOP, bỏ trạng thái quản trị kênh (chanop) ra mọi người trên kênh hiện tại "
-"(cần quyền quản trị kênh [chanop]) — Mass (số nhiều) DE (bỏ) OPerator (quản "
-"trị viên)"
+msgstr "MDEOP, bỏ trạng thái quản trị kênh (chanop) ra mọi người trên kênh hiện tại (cần quyền quản trị kênh [chanop]) — Mass (số nhiều) DE (bỏ) OPerator (quản trị viên)"
 
-#: src/common/outbound.c:3199
-msgid ""
-"ME <action>, sends the action to the current channel (actions are written in "
-"the 3rd person, like /me jumps)"
-msgstr ""
-"ME <hành_động>, gởi <hành động> cho kênh hiện tại (v.d. « /me jumps » gởi « "
-"<tên hiệu> nhảy » — ME (tôi, mình)."
+#: src/common/outbound.c:3198
+msgid "ME <action>, sends the action to the current channel (actions are written in the 3rd person, like /me jumps)"
+msgstr "ME <hành_động>, gởi <hành động> cho kênh hiện tại (v.d. « /me jumps » gởi « <tên hiệu> nhảy » — ME (tôi, mình)."
 
-#: src/common/outbound.c:3202
-msgid ""
-"MKICK, Mass kicks everyone except you in the current channel (needs chanop)"
-msgstr ""
-"MKICK, _đá_ mọi người (trừ bạn) ra kênh hiện tại (cần quyền quản trị kênh "
-"[chanop]) — Mass (số nhiều)."
+#: src/common/outbound.c:3201
+msgid "MKICK, Mass kicks everyone except you in the current channel (needs chanop)"
+msgstr "MKICK, _đá_ mọi người (trừ bạn) ra kênh hiện tại (cần quyền quản trị kênh [chanop]) — Mass (số nhiều)."
+
+#: src/common/outbound.c:3204
+msgid "MOP, Mass op's all users in the current channel (needs chanop)"
+msgstr "MOP, đưa ra mọi người dùng có trạng thái quản trị kênh (chanop) trên kênh hiện tại (cần quyền quản trị kênh [chanop]) — Mass (số nhiều) OPerator (quản trị viên)."
 
 #: src/common/outbound.c:3205
-msgid "MOP, Mass op's all users in the current channel (needs chanop)"
-msgstr ""
-"MOP, đưa ra mọi người dùng có trạng thái quản trị kênh (chanop) trên kênh "
-"hiện tại (cần quyền quản trị kênh [chanop]) — Mass (số nhiều) OPerator (quản "
-"trị viên)."
-
-#: src/common/outbound.c:3206
 msgid "MSG <nick> <message>, sends a private message"
 msgstr "MSG <tên_hiệu> <tin_nhẳn>, gởi <tin nhẳn> riêng — MeSsaGe (tin nhẳn)."
 
-#: src/common/outbound.c:3209
+#: src/common/outbound.c:3208
 msgid "NAMES, Lists the nicks on the current channel"
 msgstr "NAMES, liệt kê mọi _tên_ hiệu trên kênh hiện tại."
 
-#: src/common/outbound.c:3211
+#: src/common/outbound.c:3210
 msgid "NCTCP <nick> <message>, Sends a CTCP notice"
 msgstr "NCTCP <tên_hiệu> <tin_nhẳn>, gởi thông báo CTCP — Notice (thông báo)."
 
-#: src/common/outbound.c:3212
-#, fuzzy
+#: src/common/outbound.c:3211
 msgid "NEWSERVER [-noconnect] <hostname> [<port>]"
-msgstr "NEWSERVER <tên_máy> [<cổng>], đặt _máy phục vụ mới_."
+msgstr "NEWSERVER [-noconnect] <hostname> [<port>]"
 
-#: src/common/outbound.c:3213
+#: src/common/outbound.c:3212
 msgid "NICK <nickname>, sets your nick"
-msgstr ""
-"NICK <tên_hiệu>, đặt <tên hiệu> của bạn — NICKname (tên hiệu [viết tắt])."
+msgstr "NICK <tên_hiệu>, đặt <tên hiệu> của bạn — NICKname (tên hiệu [viết tắt])."
 
-#: src/common/outbound.c:3216
-msgid ""
-"NOTICE <nick/channel> <message>, sends a notice. Notices are a type of "
-"message that should be auto reacted to"
-msgstr ""
-"NOTICE <tên_hiệu/kênh> <tin_nhản>, gởi một _thông báo_: thông báo là kiểu "
-"tin nhẳn nên nhận trả lời tự động."
+#: src/common/outbound.c:3215
+msgid "NOTICE <nick/channel> <message>, sends a notice. Notices are a type of message that should be auto reacted to"
+msgstr "NOTICE <tên_hiệu/kênh> <tin_nhản>, gởi một _thông báo_: thông báo là kiểu tin nhẳn nên nhận trả lời tự động."
 
-#: src/common/outbound.c:3218
+#: src/common/outbound.c:3217
 msgid "NOTIFY [<nick>], lists your notify list or adds someone to it"
-msgstr ""
-"NOTIFY [<tên_hiệu>], liệt kê danh sách _thông báo_ của bạn, hoặc thêm người "
-"nào vào nó."
+msgstr "NOTIFY [<tên_hiệu>], liệt kê danh sách _thông báo_ của bạn, hoặc thêm người nào vào nó."
 
-#: src/common/outbound.c:3220
+#: src/common/outbound.c:3219
 msgid "OP <nick>, gives chanop status to the nick (needs chanop)"
-msgstr ""
-"OP <tên_hiệu>, đưa ra <tên hiệu> có trạng thái quản trị kênh (chanop) (cần "
-"quyền quản trị kênh [chanop]) — OPerator (quản trị viên)."
+msgstr "OP <tên_hiệu>, đưa ra <tên hiệu> có trạng thái quản trị kênh (chanop) (cần quyền quản trị kênh [chanop]) — OPerator (quản trị viên)."
 
-#: src/common/outbound.c:3222
-msgid ""
-"PART [<channel>] [<reason>], leaves the channel, by default the current one"
-msgstr ""
-"PART [<kênh>] [<lý_do>], rời <kênh> đi; mặc định là kênh hiện tại — dePART "
-"(rời đi)."
+#: src/common/outbound.c:3221
+msgid "PART [<channel>] [<reason>], leaves the channel, by default the current one"
+msgstr "PART [<kênh>] [<lý_do>], rời <kênh> đi; mặc định là kênh hiện tại — dePART (rời đi)."
 
-#: src/common/outbound.c:3224
+#: src/common/outbound.c:3223
 msgid "PING <nick | channel>, CTCP pings nick or channel"
-msgstr ""
-"PING <tên_hiệu | kênh>, thực hiện tiến trình « ping » CTCP với <tên hiêu> "
-"hay <kênh>."
+msgstr "PING <tên_hiệu | kênh>, thực hiện tiến trình « ping » CTCP với <tên hiêu> hay <kênh>."
 
-#: src/common/outbound.c:3226
+#: src/common/outbound.c:3225
 msgid "QUERY <nick>, opens up a new privmsg window to someone"
-msgstr ""
-"QUERY <tên_hiệu>, mở cửa sổ tin nhẳn riêng mới tới <tên hiệu> (_truy_vấn_)."
+msgstr "QUERY <tên_hiệu>, mở cửa sổ tin nhẳn riêng mới tới <tên hiệu> (_truy_vấn_)."
 
-#: src/common/outbound.c:3228
+#: src/common/outbound.c:3227
 msgid "QUIT [<reason>], disconnects from the current server"
 msgstr "QUIT [<lý_do>], ngắt kết nối ra máy phục vụ hiện tại (_thoát_)."
 
-#: src/common/outbound.c:3230
+#: src/common/outbound.c:3229
 msgid "QUOTE <text>, sends the text in raw form to the server"
 msgstr "QUOTE <đoạn>, gởi <đoạn> dạng thô cho máy phục vụ (_trích dẫn_)."
 
-#: src/common/outbound.c:3233
-msgid ""
-"RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as /"
-"RECONNECT to reconnect to the current server or with /RECONNECT ALL to "
-"reconnect to all the open servers"
-msgstr ""
-"RECONNECT [-ssl] [<máy_phục_cụ>] [<cổng>] [<mật_khẩu>], có thể tái kết nối "
-"đến mấy phục vụ hiện tại khi chỉ đơn giản bằng « /RECONNECT », hoặc tại kết "
-"nối đến mọi máy phục vụ đang mở bằng « /RECONNECT ALL » (phương pháp SSL bảo "
-"vệ dữ liệu cần truyền)."
+#: src/common/outbound.c:3232
+msgid "RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as /RECONNECT to reconnect to the current server or with /RECONNECT ALL to reconnect to all the open servers"
+msgstr "RECONNECT [-ssl] [<máy_phục_cụ>] [<cổng>] [<mật_khẩu>], có thể tái kết nối đến mấy phục vụ hiện tại khi chỉ đơn giản bằng « /RECONNECT », hoặc tại kết nối đến mọi máy phục vụ đang mở bằng « /RECONNECT ALL » (phương pháp SSL bảo vệ dữ liệu cần truyền)."
 
-#: src/common/outbound.c:3236
-msgid ""
-"RECONNECT [<host>] [<port>] [<password>], Can be called just as /RECONNECT "
-"to reconnect to the current server or with /RECONNECT ALL to reconnect to "
-"all the open servers"
-msgstr ""
-"RECONNECT [<máy_phục_vụ>] [<cổng>] [<mật_khẩu>], có thể tái kết nối đến mấy "
-"phục vụ hiện tại chỉ đơn giản bằng « /RECONNECT », hay kết nối lại đến mọi "
-"máy phục vụ đang mở bằng « /RECONNECT ALL » (không có SSL bảo vệ dữ liệu)."
+#: src/common/outbound.c:3235
+msgid "RECONNECT [<host>] [<port>] [<password>], Can be called just as /RECONNECT to reconnect to the current server or with /RECONNECT ALL to reconnect to all the open servers"
+msgstr "RECONNECT [<máy_phục_vụ>] [<cổng>] [<mật_khẩu>], có thể tái kết nối đến mấy phục vụ hiện tại chỉ đơn giản bằng « /RECONNECT », hay kết nối lại đến mọi máy phục vụ đang mở bằng « /RECONNECT ALL » (không có SSL bảo vệ dữ liệu)."
 
-#: src/common/outbound.c:3238
-msgid ""
-"RECV <text>, send raw data to xchat, as if it was received from the irc "
-"server"
-msgstr ""
-"RECV <đoạn>, gởi dữ liệu thô vào trình xchat, dạng do máy phục vụ IRC gởi — "
-"RECeiVe (nhận)."
+#: src/common/outbound.c:3237
+msgid "RECV <text>, send raw data to xchat, as if it was received from the irc server"
+msgstr "RECV <đoạn>, gởi dữ liệu thô vào trình xchat, dạng do máy phục vụ IRC gởi — RECeiVe (nhận)."
 
-#: src/common/outbound.c:3241
+#: src/common/outbound.c:3240
 msgid "SAY <text>, sends the text to the object in the current window"
 msgstr "SAY <đoạn>, gởi <đoạn> cho đối tượng trong cửa sổ hiện tại (_nói_)."
 
-#: src/common/outbound.c:3242
+#: src/common/outbound.c:3241
 msgid "SEND <nick> [<file>]"
 msgstr "SEND <tên_hiệu> [<tập_tin>], _gởi_ tập tin cho tên hiệu"
 
-#: src/common/outbound.c:3245
+#: src/common/outbound.c:3244
 msgid "SERVCHAN [-ssl] <host> <port> <channel>, connects and joins a channel"
-msgstr ""
-"SERVCHAN [-ssl] <máy_phục_vụ> <cổng> <kênh>, kết nối đến <kênh> rồi vào nó "
-"(phương pháp SSL bảo vệ dữ liệu sẽ truyền) — SERVer (máy phục vụ) CHANnel "
-"(kênh)."
+msgstr "SERVCHAN [-ssl] <máy_phục_vụ> <cổng> <kênh>, kết nối đến <kênh> rồi vào nó (phương pháp SSL bảo vệ dữ liệu sẽ truyền) — SERVer (máy phục vụ) CHANnel (kênh)."
 
-#: src/common/outbound.c:3248
+#: src/common/outbound.c:3247
 msgid "SERVCHAN <host> <port> <channel>, connects and joins a channel"
-msgstr ""
-"SERVCHAN <máy_phục_vụ> <cổng> <kênh>, kết nối đến <kênh> rồi vào nó (không "
-"có SSL bảo vệ dữ liệu) — SERVer (máy phục vụ) CHANnel (kênh)."
+msgstr "SERVCHAN <máy_phục_vụ> <cổng> <kênh>, kết nối đến <kênh> rồi vào nó (không có SSL bảo vệ dữ liệu) — SERVer (máy phục vụ) CHANnel (kênh)."
 
-#: src/common/outbound.c:3252
-msgid ""
-"SERVER [-ssl] <host> [<port>] [<password>], connects to a server, the "
-"default port is 6667 for normal connections, and 9999 for ssl connections"
-msgstr ""
-"SERVER [-ssl] <máy_phục_vụ> [<cổng>] [<mật_khẩu>], kết nối đến <máy phục "
-"vụ>: <cổng> mặc định là số 6667 cho kết nối chuẩn, và số 9999 cho kết nối "
-"kiểu SSL (phương pháp SSL bảo vệ dữ liệu sẽ truyền)."
+#: src/common/outbound.c:3251
+msgid "SERVER [-ssl] <host> [<port>] [<password>], connects to a server, the default port is 6667 for normal connections, and 9999 for ssl connections"
+msgstr "SERVER [-ssl] <máy_phục_vụ> [<cổng>] [<mật_khẩu>], kết nối đến <máy phục vụ>: <cổng> mặc định là số 6667 cho kết nối chuẩn, và số 9999 cho kết nối kiểu SSL (phương pháp SSL bảo vệ dữ liệu sẽ truyền)."
 
-#: src/common/outbound.c:3255
-msgid ""
-"SERVER <host> [<port>] [<password>], connects to a server, the default port "
-"is 6667"
-msgstr ""
-"SERVER <máy_phục_vụ> [<cổng>] [<mật_khẩu>], kết nối đến <mấy phục vụ>; cổng "
-"mặc định là số 6667 (không có SSL bảo vệ dữ liệu)."
+#: src/common/outbound.c:3254
+msgid "SERVER <host> [<port>] [<password>], connects to a server, the default port is 6667"
+msgstr "SERVER <máy_phục_vụ> [<cổng>] [<mật_khẩu>], kết nối đến <mấy phục vụ>; cổng mặc định là số 6667 (không có SSL bảo vệ dữ liệu)."
+
+#: src/common/outbound.c:3256
+msgid "SET [-quiet] <variable> [<value>]"
+msgstr "SET [-quiet] <biến> [<giá_trị>], _đặt_ giá trị cho <biến>; tùy chọn « -quiet » (im) có nghĩa là không in ra chi tiết."
 
 #: src/common/outbound.c:3257
-msgid "SET [-quiet] <variable> [<value>]"
-msgstr ""
-"SET [-quiet] <biến> [<giá_trị>], _đặt_ giá trị cho <biến>; tùy chọn « -quiet "
-"» (im) có nghĩa là không in ra chi tiết."
-
-#: src/common/outbound.c:3258
 msgid "SETCURSOR [-|+]<position>"
 msgstr "SETCURSOR [-|+]<vị_trí>, _đặt_ <vị trí> cho _con trỏ_."
 
-#: src/common/outbound.c:3262
-msgid ""
-"TOPIC [<topic>], sets the topic if one is given, else shows the current topic"
-msgstr ""
-"TOPIC [<chủ_đè>], lập <chủ đề> nếu nó đã cho, nếu không thì hiển thị chủ đề "
-"hiện tại."
+#: src/common/outbound.c:3261
+msgid "TOPIC [<topic>], sets the topic if one is given, else shows the current topic"
+msgstr "TOPIC [<chủ_đè>], lập <chủ đề> nếu nó đã cho, nếu không thì hiển thị chủ đề hiện tại."
+
+#: src/common/outbound.c:3263
+msgid "UNBAN <mask> [<mask>...], unbans the specified masks."
+msgstr "UNBAN <bộ_lọc> [<bộ_lọc>...], _bỏ_ trạng thái _bị đuổi_ ra những bộ lọc được gõ."
 
 #: src/common/outbound.c:3264
-msgid "UNBAN <mask> [<mask>...], unbans the specified masks."
-msgstr ""
-"UNBAN <bộ_lọc> [<bộ_lọc>...], _bỏ_ trạng thái _bị đuổi_ ra những bộ lọc được "
-"gõ."
+msgid "UNIGNORE <mask> [QUIET]"
+msgstr "UNIGNORE <bộ_lọc> [QUIET], _bỏ_ trạng thái _bị bỏ qua_ ra <bộ lọc> (tùy chọn « QUIET » (im) có nghĩa là đừng in ra chi tiết)."
 
 #: src/common/outbound.c:3265
-msgid "UNIGNORE <mask> [QUIET]"
-msgstr ""
-"UNIGNORE <bộ_lọc> [QUIET], _bỏ_ trạng thái _bị bỏ qua_ ra <bộ lọc> (tùy chọn "
-"« QUIET » (im) có nghĩa là đừng in ra chi tiết)."
-
-#: src/common/outbound.c:3266
 msgid "UNLOAD <name>, unloads a plugin or script"
 msgstr "UNLOAD <tên>,_bỏ tải_ một bộ cầm phít hay tập lệnh nào đó."
 
-#: src/common/outbound.c:3267
+#: src/common/outbound.c:3266
 msgid "URL <url>, opens a URL in your browser"
 msgstr "URL <địa_chỉ_Mạng>, mở <địa chỉ Mạng> trong trình duyệt Mạng của bạn."
 
-#: src/common/outbound.c:3269
-msgid ""
-"USELECT [-a] [-s] <nick1> <nick2> etc, highlights nick(s) in channel userlist"
-msgstr ""
-"USELECT [-a] [-s] <tên_hiệu1> <tên_hiệu2> v.v., nổi bật những tên hiệu này "
-"trong danh sách các người dùng trên kênh — User (người dùng) SELECT (lựa "
-"chọn)."
+#: src/common/outbound.c:3268
+msgid "USELECT [-a] [-s] <nick1> <nick2> etc, highlights nick(s) in channel userlist"
+msgstr "USELECT [-a] [-s] <tên_hiệu1> <tên_hiệu2> v.v., nổi bật những tên hiệu này trong danh sách các người dùng trên kênh — User (người dùng) SELECT (lựa chọn)."
 
-#: src/common/outbound.c:3272
+#: src/common/outbound.c:3271
 msgid "VOICE <nick>, gives voice status to someone (needs chanop)"
-msgstr ""
-"VOICE <tên_hiệu>, đưa ra <tên hiệu> trạng thái _tiếng nói_ (cần quyền quản "
-"trị kênh [chanop])."
+msgstr "VOICE <tên_hiệu>, đưa ra <tên hiệu> trạng thái _tiếng nói_ (cần quyền quản trị kênh [chanop])."
 
-#: src/common/outbound.c:3274
+#: src/common/outbound.c:3273
 msgid "WALLCHAN <message>, writes the message to all channels"
-msgstr ""
-"WALLCHAN <tin_nhẳn>, ghi <tin nhẳn> vào mọi kênh — Write (ghi) ALL (mọị) "
-"CHANnel (kênh)."
+msgstr "WALLCHAN <tin_nhẳn>, ghi <tin nhẳn> vào mọi kênh — Write (ghi) ALL (mọị) CHANnel (kênh)."
 
-#: src/common/outbound.c:3276
-msgid ""
-"WALLCHOP <message>, sends the message to all chanops on the current channel"
-msgstr ""
-"WALLCHOP <tin_nhẳn>, gởi <tin nhẳn> cho _mọi quản trị kênh [chanop]_ trên "
-"kênh hiện tại — Write (ghi) ALL (mọi) CHannel (kênh) OPerator (quản trị "
-"viên)."
+#: src/common/outbound.c:3275
+msgid "WALLCHOP <message>, sends the message to all chanops on the current channel"
+msgstr "WALLCHOP <tin_nhẳn>, gởi <tin nhẳn> cho _mọi quản trị kênh [chanop]_ trên kênh hiện tại — Write (ghi) ALL (mọi) CHannel (kênh) OPerator (quản trị viên)."
 
-#: src/common/outbound.c:3309
+#: src/common/outbound.c:3308
 #, c-format
 msgid "Usage: %s\n"
 msgstr "Cách sử dụng: %s\n"
 
-#: src/common/outbound.c:3314
+#: src/common/outbound.c:3313
 msgid ""
 "\n"
 "No help available on that command.\n"
@@ -636,33 +486,31 @@ msgstr ""
 "\n"
 "Không có trợ giúp cho lệnh này.\n"
 
-#: src/common/outbound.c:3320
+#: src/common/outbound.c:3319
 msgid "No such command.\n"
 msgstr "Không có lệnh như vậy.\n"
 
-#: src/common/outbound.c:3644
+#: src/common/outbound.c:3646
 msgid "Bad arguments for user command.\n"
 msgstr "Lệnh người dùng có đối số sai.\n"
 
-#: src/common/outbound.c:3808
+#: src/common/outbound.c:3810
 msgid "Too many recursive usercommands, aborting."
 msgstr "Quá nhiều lệnh người dùng đệ qui nên hủy bỏ."
 
-#: src/common/outbound.c:3885
+#: src/common/outbound.c:3887
 msgid "Unknown Command. Try /help\n"
 msgstr "Không biết lệnh này: bạn hãy thử lệnh « /help » (trợ giúp).\n"
 
 #: src/common/plugin.c:371 src/common/plugin.c:412
 msgid "No xchat_plugin_init symbol; is this really an xchat plugin?"
-msgstr ""
-"Không có ký hiệu « xchat_plugin_init » (khởi động bộ cầm phít xchat): điều "
-"này thật là bộ cầm phít xchat sao?"
+msgstr "Không có ký hiệu « xchat_plugin_init » (khởi động bộ cầm phít xchat): điều này thật là bộ cầm phít xchat sao?"
 
-#: src/common/server.c:619
+#: src/common/server.c:610
 msgid "Are you sure this is a SSL capable server and port?\n"
 msgstr "Bạn có chắc điều này là máy phục vụ và cổng có khả năng SSL không?\n"
 
-#: src/common/server.c:971
+#: src/common/server.c:962
 #, c-format
 msgid ""
 "Cannot resolve hostname %s\n"
@@ -671,7 +519,7 @@ msgstr ""
 "Không tìm thấy tên máy « %s ».\n"
 "Hãy kiểm tra thiết lập IP của bạn.\n"
 
-#: src/common/server.c:976
+#: src/common/server.c:967
 msgid "Proxy traversal failed.\n"
 msgstr "Việc đi qua máy phục vụ ủy nhiệm bị lỗi.\n"
 
@@ -682,12 +530,8 @@ msgstr "Đang quay lại đến mấy phục vụ kế tiếp sau %s...\n"
 
 #: src/common/servlist.c:1013
 #, c-format
-msgid ""
-"Warning: \"%s\" character set is unknown. No conversion will be applied for "
-"network %s."
-msgstr ""
-"Cảnh báo: không biết bộ ký tự « %s » nên không áp dụng chuyển đổi vào mạng %"
-"s."
+msgid "Warning: \"%s\" character set is unknown. No conversion will be applied for network %s."
+msgstr "Cảnh báo: không biết bộ ký tự « %s » nên không áp dụng chuyển đổi vào mạng %s."
 
 #: src/common/textevents.h:6
 msgid "%C22*%O$t$1 added to notify list."
@@ -739,7 +583,7 @@ msgstr "%C22*%O$t$1 lập trạng thái miễn cho $2"
 
 #: src/common/textevents.h:45
 msgid "%C22*%O$t%C26$1%O gives channel half-operator status to%C26 $2"
-msgstr "%C22*%O$t%C26$1%O đưa ra%C26 $2 trạng thái quản trị kênh nửa "
+msgstr "%C22*%O$t%C26$1%O đưa ra%C26 $2 trạng thái quản trị kênh nửa"
 
 #: src/common/textevents.h:48
 msgid "%C22*%O$t$1 sets invite on $2"
@@ -749,9 +593,10 @@ msgstr "%C22*%O$t$1 lập trạng thái mời cho $2"
 msgid "%UChannel          Users   Topic"
 msgstr "%UKênh      \t     Người  Chủ đề"
 
+# Variable: don't translate / Biến: đừng dịch
 #: src/common/textevents.h:54
-msgid "%C18%B%B$4$1%O%C18%O$t$2"
-msgstr "%C18%B%B$4$1%O%C18%O$t$2"
+msgid "%C18%H<%H$4$1%H>%H%O$t$2"
+msgstr "%C18%H<%H$4$1%H>%H%O$t$2"
 
 #: src/common/textevents.h:57
 msgid "%C22*%O$t$1 sets mode $2$3 $4"
@@ -761,9 +606,10 @@ msgstr "%C22*%O$t$1 lập chế độ $2$3 $4"
 msgid "%C22*%O$t%C22Channel $1 modes: $2"
 msgstr "%C22*%O$t%C22Kênh $1 chế độ: $2"
 
+# Variable: don't translate / Biến: đừng dịch
 #: src/common/textevents.h:63
-msgid "$4%C21%B$1%O%C21$t$2"
-msgstr "$4%C21%B$1%O%C21$t$2"
+msgid "$4%C21%B%H<%H$1%H>%H%O%C21$t$2"
+msgstr "$4%C21%B%H<%H$1%H>%H%O%C21$t$2"
 
 #: src/common/textevents.h:66
 msgid "%C28-%C29$1/$2%C28-%O$t$3"
@@ -771,7 +617,7 @@ msgstr "%C28-%C29$1/$2%C28-%O$t$3"
 
 #: src/common/textevents.h:69
 msgid "%C22*%O$t%C26$1%O gives channel operator status to%C26 $2"
-msgstr "%C22*%O$t%C26$1%O đưa ra%C26 $2 trạng thái quản trị kênh "
+msgstr "%C22*%O$t%C26$1%O đưa ra%C26 $2 trạng thái quản trị kênh"
 
 #: src/common/textevents.h:72
 msgid "%C22*%O$t$1 removes exempt on $2"
@@ -843,9 +689,7 @@ msgstr "%C22*%O$tTrò chuyện trực tiếp (DCC) với %C26$1%O bị hủy b�
 
 #: src/common/textevents.h:123
 msgid "%C22*%O$tDCC CHAT connection established to %C26$1 %C30[%O$2%C30]"
-msgstr ""
-"%C22*%O$tMới kết nối được để trò chuyện trực tiếp (DCC) với %C26$1 %C30[%O$2%"
-"C30]."
+msgstr "%C22*%O$tMới kết nối được để trò chuyện trực tiếp (DCC) với %C26$1 %C30[%O$2%C30]."
 
 #: src/common/textevents.h:126
 msgid "%C22*%O$tDCC CHAT to %C26$1%O lost ($4)."
@@ -877,12 +721,8 @@ msgid "%C24,18 Type  To/From    Status  Size    Pos     File         "
 msgstr "%C24,18 Kiểu    Cho/Từ    TrThái  Cỡ     Vị trí    Tệp         "
 
 #: src/common/textevents.h:147
-msgid ""
-"%C22*%O$tReceived a malformed DCC request from %C26$1%O.%010%C22*%O"
-"$tContents of packet: $2"
-msgstr ""
-"%C22*%O$tMới nhận yêu cầu dạng sai trò chuyện trực tiếp (DCC) từ %C26$1%O.%"
-"010%C22*%O$tNội dung gói: $2"
+msgid "%C22*%O$tReceived a malformed DCC request from %C26$1%O.%010%C22*%O$tContents of packet: $2"
+msgstr "%C22*%O$tMới nhận yêu cầu dạng sai trò chuyện trực tiếp (DCC) từ %C26$1%O.%010%C22*%O$tNội dung gói: $2"
 
 #: src/common/textevents.h:150
 msgid "%C22*%O$tOffering%C26 $1%O to%C26 $2"
@@ -897,10 +737,8 @@ msgid "%C22*%O$tDCC RECV%C26 $2%O to%C26 $1%O aborted."
 msgstr "%C22*%O$tNHẬN DCC%C26 $2%O cho%C26 $1%O bị hủy bỏ."
 
 #: src/common/textevents.h:159
-msgid ""
-"%C22*%O$tDCC RECV%C26 $1%O from%C26 $3%O complete %C30[%C26$4%O cps%C30]%O."
-msgstr ""
-"%C22*%O$tNHẬN DCC%C26 $1%O từ%C26 $3%O hoàn thành %C30[%C26$4%O cps%C30]%O."
+msgid "%C22*%O$tDCC RECV%C26 $1%O from%C26 $3%O complete %C30[%C26$4%O cps%C30]%O."
+msgstr "%C22*%O$tNHẬN DCC%C26 $1%O từ%C26 $3%O hoàn thành %C30[%C26$4%O cps%C30]%O."
 
 #: src/common/textevents.h:162
 msgid "%C22*%O$tDCC RECV connection established to%C26 $1 %C30[%O$2%C30]"
@@ -915,8 +753,7 @@ msgid "%C22*%O$tDCC RECV: Cannot open $1 for writing ($2)."
 msgstr "%C22*%O$tNHẬN DCC: Không thể mở $1 để ghi ($2)."
 
 #: src/common/textevents.h:171
-msgid ""
-"%C22*%O$tThe file%C26 $1%C already exists, saving it as%C26 $2%O instead."
+msgid "%C22*%O$tThe file%C26 $1%C already exists, saving it as%C26 $2%O instead."
 msgstr "%C22*%O$tTập tin%C26 $1%C đã có: sẽ lưu nó dạng %C26 $2%O thay thế."
 
 #: src/common/textevents.h:174
@@ -928,10 +765,8 @@ msgid "%C22*%O$tDCC SEND%C26 $2%O to%C26 $1%O aborted."
 msgstr "%C22*%O$tGỞI DCC%C26 $2%O cho%C26 $1%O bị hủy bỏ."
 
 #: src/common/textevents.h:180
-msgid ""
-"%C22*%O$tDCC SEND%C26 $1%O to%C26 $2%O complete %C30[%C26$3%O cps%C30]%O."
-msgstr ""
-"%C22*%O$tGỞI DCC%C26 $1%O cho%C26 $2%O hoàn thành %C30[%C26$3%O cps%C30]%O."
+msgid "%C22*%O$tDCC SEND%C26 $1%O to%C26 $2%O complete %C30[%C26$3%O cps%C30]%O."
+msgstr "%C22*%O$tGỞI DCC%C26 $1%O cho%C26 $2%O hoàn thành %C30[%C26$3%O cps%C30]%O."
 
 #: src/common/textevents.h:183
 msgid "%C22*%O$tDCC SEND connection established to%C26 $1 %C30[%O$2%C30]"
@@ -1029,8 +864,7 @@ msgstr "%C16*%O$t$1%O"
 
 #: src/common/textevents.h:252
 msgid "%C22*%O$t%C22MOTD Skipped."
-msgstr ""
-"%C22*%O$t%C22MOTD (Message Of The Day — Thông điệp của hôm nay) bị nhảy qua."
+msgstr "%C22*%O$t%C22MOTD (Message Of The Day — Thông điệp của hôm nay) bị nhảy qua."
 
 #: src/common/textevents.h:255
 msgid "%C22*%O$t$1 already in use. Retrying with $2..."
@@ -1038,9 +872,7 @@ msgstr "%C22*%O$t$1 đang dùng nên thử lái vơi $2..."
 
 #: src/common/textevents.h:258
 msgid "%C22*%O$tNickname already in use. Use /NICK to try another."
-msgstr ""
-"%C22*%O$tTên hiệu đã chọn nên hay sử dụng lệnh « /NICK » để chọn tên hiệu "
-"khác."
+msgstr "%C22*%O$tTên hiệu đã chọn nên hay sử dụng lệnh « /NICK » để chọn tên hiệu khác."
 
 #: src/common/textevents.h:261
 msgid "%C22*%O$tNo such DCC."
@@ -1060,7 +892,7 @@ msgstr "$tDanh sách thông báo la trống không."
 
 #: src/common/textevents.h:276
 msgid "%C24,18 %B  Notify List                           "
-msgstr "%C24,18 %B  Danh sách thông báo                       "
+msgstr "%C24,18 %B  Danh sách thông báo                           "
 
 #: src/common/textevents.h:279
 msgid "%C22*%O$t$1 users in notify list."
@@ -1094,9 +926,10 @@ msgstr "%C22*%O$tChưa nhận trả lời ping sau $1 giây nên ngắt kết n�
 msgid "%C28*%C29$3$1%C28*$t%O$2"
 msgstr "%C28*%C29$3$1%C28*$t%O$2"
 
+# Variable: don't translate / Biến: đừng dịch
 #: src/common/textevents.h:306
-msgid "%C18%B%B$3$1%O$t$2"
-msgstr "%C18%B%B$3$1%O$t$2"
+msgid "%C18%H<%H$3$1%H>%H%O$t$2"
+msgstr "%C18%H<%H$3$1%H>%H%O$t$2"
 
 #: src/common/textevents.h:309
 msgid "%C22*%O$tA process is already running"
@@ -1190,9 +1023,7 @@ msgstr "%C22*%O$t%C28[%O$1%C28] %C30(%O$2@$3%C30)%O: $4"
 
 #: src/common/textevents.h:384
 msgid "%C22*%O$t%C28[%O$1%C28] %Oreal user@host%C27 $2%O, real IP%C27 $3"
-msgstr ""
-"%C22*%O$t%C28[%O$1%C28] %Ongươi dùng thật@máy%C27 $2%O, địa chỉ IP thật%C27 "
-"$3"
+msgstr "%C22*%O$t%C28[%O$1%C28] %Ongươi dùng thật@máy%C27 $2%O, địa chỉ IP thật%C27 $3"
 
 #: src/common/textevents.h:393
 msgid "%C19*%O$t%C19Now talking on $2"
@@ -1215,9 +1046,10 @@ msgstr "%C23*$tBạn mới rời kênh $3 đi (%O%C23%B%B$4%O%C23)"
 msgid "%C22*%O$tYou've invited%C26 $1%O to%C26 $2%O (%C26$3%O)"
 msgstr "%C22*%O$tBạn đã mời%C26 $1%O vào%C26 $2%O (%C26$3%O)"
 
+# Variable: don't translate / Biến: đừng dịch
 #: src/common/textevents.h:408
-msgid "%C31%B%B$4$1%O%C30$t$2"
-msgstr "%C31%B%B$4$1%O%C30$t$2"
+msgid "%C31%H<%H$4$1%H>%H%O%C30$t$2"
+msgstr "%C31%H<%H$4$1%H>%H%O%C30$t$2"
 
 #: src/common/textevents.h:411
 msgid "%C22*%O$tYou are now known as $2"
@@ -1706,7 +1538,7 @@ msgstr ""
 "Gặp lỗi khi phân tách sự kiện « %s ».\n"
 "Đang tải mặc định."
 
-#: src/common/text.c:1688
+#: src/common/text.c:1684
 #, c-format
 msgid ""
 "Cannot read sound file:\n"
@@ -1739,1039 +1571,1039 @@ msgstr "Không thể gán địa chỉ đó"
 msgid "Connection reset by peer"
 msgstr "Kết nối bị ngắt do ngang hàng."
 
-#: src/common/util.c:822
+#: src/common/util.c:837
 msgid "Andorra"
 msgstr "Ăn-đoa-râ"
 
-#: src/common/util.c:823
+#: src/common/util.c:838
 msgid "United Arab Emirates"
 msgstr "Các Tiểu Vương quốc A-rập Thống nhất"
 
-#: src/common/util.c:824
+#: src/common/util.c:839
 msgid "Afghanistan"
-msgstr "Quốc gia Hồi giáo Chuyển tiếp "
+msgstr "Quốc gia Hồi giáo Chuyển tiếp"
 
-#: src/common/util.c:825
+#: src/common/util.c:840
 msgid "Antigua and Barbuda"
 msgstr "Ănh-thí-gụ-a và Ba-bu-đa"
 
-#: src/common/util.c:826
+#: src/common/util.c:841
 msgid "Anguilla"
 msgstr "Ăng-ouí-la"
 
-#: src/common/util.c:827
+#: src/common/util.c:842
 msgid "Albania"
 msgstr "An-ba-ni"
 
-#: src/common/util.c:828
+#: src/common/util.c:843
 msgid "Armenia"
 msgstr "Ac-mê-ni"
 
-#: src/common/util.c:829
+#: src/common/util.c:844
 msgid "Netherlands Antilles"
 msgstr "An-thi-li Hoà-lan"
 
-#: src/common/util.c:830
+#: src/common/util.c:845
 msgid "Angola"
 msgstr "Ăng-gô-la"
 
-#: src/common/util.c:831
+#: src/common/util.c:846
 msgid "Antarctica"
 msgstr "Nam cực"
 
-#: src/common/util.c:832
+#: src/common/util.c:847
 msgid "Argentina"
 msgstr "Ác-hen-ti-na"
 
-#: src/common/util.c:833
+#: src/common/util.c:848
 msgid "Reverse DNS"
 msgstr "DNS ngược"
 
-#: src/common/util.c:834
+#: src/common/util.c:849
 msgid "American Samoa"
 msgstr "Xa-mô-a Mỹ"
 
-#: src/common/util.c:835
+#: src/common/util.c:850
 msgid "Austria"
 msgstr "Ao"
 
-#: src/common/util.c:836
+#: src/common/util.c:851
 msgid "Nato Fiel"
 msgstr "Nato Fiel"
 
-#: src/common/util.c:837
+#: src/common/util.c:852
 msgid "Australia"
 msgstr "Úc"
 
-#: src/common/util.c:838
+#: src/common/util.c:853
 msgid "Aruba"
 msgstr "Ă-ru-ba"
 
-#: src/common/util.c:839
+#: src/common/util.c:854
 msgid "Azerbaijan"
 msgstr "Ai-déc-bai-gian"
 
-#: src/common/util.c:840
+#: src/common/util.c:855
 msgid "Bosnia and Herzegovina"
 msgstr "Bô-xni-a và Héc-xê-gô-vi-na"
 
-#: src/common/util.c:841
+#: src/common/util.c:856
 msgid "Barbados"
 msgstr "Bác-ba-đốt"
 
-#: src/common/util.c:842
+#: src/common/util.c:857
 msgid "Bangladesh"
 msgstr "Bang-la-đexợ"
 
-#: src/common/util.c:843
+#: src/common/util.c:858
 msgid "Belgium"
 msgstr "Bỉ"
 
-#: src/common/util.c:844
+#: src/common/util.c:859
 msgid "Burkina Faso"
 msgstr "Buốc-khi-na Pha-xô"
 
-#: src/common/util.c:845
+#: src/common/util.c:860
 msgid "Bulgaria"
 msgstr "Bun-ga-ri"
 
-#: src/common/util.c:846
+#: src/common/util.c:861
 msgid "Bahrain"
 msgstr "Ba-ren"
 
-#: src/common/util.c:847
+#: src/common/util.c:862
 msgid "Burundi"
 msgstr "Bu-run-đi"
 
-#: src/common/util.c:848
+#: src/common/util.c:863
 msgid "Businesses"
 msgstr "Kinh doanh"
 
-#: src/common/util.c:849
+#: src/common/util.c:864
 msgid "Benin"
 msgstr "Bê-ninh"
 
-#: src/common/util.c:850
+#: src/common/util.c:865
 msgid "Bermuda"
 msgstr "Be-mư-đa"
 
-#: src/common/util.c:851
+#: src/common/util.c:866
 msgid "Brunei Darussalam"
 msgstr "Bợru-này Đa-ru-xa-làm"
 
-#: src/common/util.c:852
+#: src/common/util.c:867
 msgid "Bolivia"
 msgstr "Bô-li-vi-a"
 
-#: src/common/util.c:853
+#: src/common/util.c:868
 msgid "Brazil"
 msgstr "Bra-xin"
 
-#: src/common/util.c:854
+#: src/common/util.c:869
 msgid "Bahamas"
 msgstr "Ba-ha-ma"
 
-#: src/common/util.c:855
+#: src/common/util.c:870
 msgid "Bhutan"
 msgstr "Bu-thăn"
 
-#: src/common/util.c:856
+#: src/common/util.c:871
 msgid "Bouvet Island"
 msgstr "Quần đảo Bu-vê"
 
-#: src/common/util.c:857
+#: src/common/util.c:872
 msgid "Botswana"
 msgstr "Bốt-xoa-na"
 
-#: src/common/util.c:858
+#: src/common/util.c:873
 msgid "Belarus"
 msgstr "Be-la-ruxợ"
 
-#: src/common/util.c:859
+#: src/common/util.c:874
 msgid "Belize"
 msgstr "Bê-li-xê"
 
-#: src/common/util.c:860
+#: src/common/util.c:875
 msgid "Canada"
 msgstr "Ca-na-đa"
 
-#: src/common/util.c:861
+#: src/common/util.c:876
 msgid "Cocos Islands"
 msgstr "Quần đảo Cô-côc-x"
 
-#: src/common/util.c:862
+#: src/common/util.c:877
 msgid "Democratic Republic of Congo"
 msgstr "Cộng hoà Dân chủ Công-gô"
 
-#: src/common/util.c:863
+#: src/common/util.c:878
 msgid "Central African Republic"
 msgstr "Cộng hoà Châu phi Trung ương"
 
-#: src/common/util.c:864
+#: src/common/util.c:879
 msgid "Congo"
 msgstr "Công-gô"
 
-#: src/common/util.c:865
+#: src/common/util.c:880
 msgid "Switzerland"
-msgstr "Thụy Sĩ "
+msgstr "Thụy Sĩ"
 
-#: src/common/util.c:866
+#: src/common/util.c:881
 msgid "Cote d'Ivoire"
 msgstr "Cộng hoà Cốt đi-vouă"
 
-#: src/common/util.c:867
+#: src/common/util.c:882
 msgid "Cook Islands"
 msgstr "Quần đảo Khu-kh"
 
-#: src/common/util.c:868
+#: src/common/util.c:883
 msgid "Chile"
-msgstr "Chi lê "
+msgstr "Chi lê"
 
-#: src/common/util.c:869
+#: src/common/util.c:884
 msgid "Cameroon"
 msgstr "Ca-mơ-run"
 
-#: src/common/util.c:870
+#: src/common/util.c:885
 msgid "China"
-msgstr "Trung Quốc "
+msgstr "Trung Quốc"
 
-#: src/common/util.c:871
+#: src/common/util.c:886
 msgid "Colombia"
 msgstr "Cô-lôm-bi-a"
 
-#: src/common/util.c:872
+#: src/common/util.c:887
 msgid "Internic Commercial"
 msgstr "Thương nghiệp Internic"
 
-#: src/common/util.c:873
+#: src/common/util.c:888
 msgid "Costa Rica"
 msgstr "Cốt-x-tha Ri-ca"
 
-#: src/common/util.c:874
+#: src/common/util.c:889
 msgid "Serbia and Montenegro"
 msgstr "Xéc-bi và Mon-te-ne-gợ-rô"
 
-#: src/common/util.c:875
+#: src/common/util.c:890
 msgid "Cuba"
 msgstr "Cu-ba"
 
-#: src/common/util.c:876
+#: src/common/util.c:891
 msgid "Cape Verde"
 msgstr "Cáp-ve-đe"
 
-#: src/common/util.c:877
+#: src/common/util.c:892
 msgid "Christmas Island"
 msgstr "Đảo Kh-ri-x-mạ-x"
 
-#: src/common/util.c:878
+#: src/common/util.c:893
 msgid "Cyprus"
 msgstr "Síp"
 
-#: src/common/util.c:879
+#: src/common/util.c:894
 msgid "Czech Republic"
 msgstr "Cộng hoà Séc"
 
-#: src/common/util.c:880
+#: src/common/util.c:895
 msgid "Germany"
 msgstr "Đức"
 
-#: src/common/util.c:881
+#: src/common/util.c:896
 msgid "Djibouti"
 msgstr "Gi-bu-ti"
 
-#: src/common/util.c:882
+#: src/common/util.c:897
 msgid "Denmark"
 msgstr "Đan mạch"
 
-#: src/common/util.c:883
+#: src/common/util.c:898
 msgid "Dominica"
 msgstr "Đô-mi-ni-cạ"
 
-#: src/common/util.c:884
+#: src/common/util.c:899
 msgid "Dominican Republic"
-msgstr "Cộng hoà Đô-mi-ni-cạ "
+msgstr "Cộng hoà Đô-mi-ni-cạ"
 
-#: src/common/util.c:885
+#: src/common/util.c:900
 msgid "Algeria"
 msgstr "An-giê-ri"
 
-#: src/common/util.c:886
+#: src/common/util.c:901
 msgid "Ecuador"
 msgstr "Ê-cu-a-đoa"
 
-#: src/common/util.c:887
+#: src/common/util.c:902
 msgid "Educational Institution"
 msgstr "Tổ chức giáo dục"
 
-#: src/common/util.c:888
+#: src/common/util.c:903
 msgid "Estonia"
 msgstr "E-xtô-ni-a"
 
-#: src/common/util.c:889
+#: src/common/util.c:904
 msgid "Egypt"
 msgstr "Ai-cập"
 
-#: src/common/util.c:890
+#: src/common/util.c:905
 msgid "Western Sahara"
 msgstr "Sa-ha-ra Tây"
 
-#: src/common/util.c:891
+#: src/common/util.c:906
 msgid "Eritrea"
 msgstr "Ê-ri-tơ-rê-a"
 
-#: src/common/util.c:892
+#: src/common/util.c:907
 msgid "Spain"
-msgstr "Tây-ban-nha "
+msgstr "Tây-ban-nha"
 
-#: src/common/util.c:893
+#: src/common/util.c:908
 msgid "Ethiopia"
 msgstr "Ê-ti-ô-pi"
 
-#: src/common/util.c:894
+#: src/common/util.c:909
 msgid "Finland"
-msgstr "Phần lan "
+msgstr "Phần lan"
 
-#: src/common/util.c:895
+#: src/common/util.c:910
 msgid "Fiji"
 msgstr "Phi-gi"
 
-#: src/common/util.c:896
+#: src/common/util.c:911
 msgid "Falkland Islands"
 msgstr "Quần đảo Phoa-kh-lận-đ (Mal-vi-na)"
 
-#: src/common/util.c:897
+#: src/common/util.c:912
 msgid "Micronesia"
 msgstr "Mi-kh-rô-nê-xi-a"
 
-#: src/common/util.c:898
+#: src/common/util.c:913
 msgid "Faroe Islands"
 msgstr "Quần đảo Pha-rô"
 
-#: src/common/util.c:899
+#: src/common/util.c:914
 msgid "France"
 msgstr "Pháp"
 
-#: src/common/util.c:900
+#: src/common/util.c:915
 msgid "France, Metropolitan"
 msgstr "Pháp, thành phố"
 
-#: src/common/util.c:901
+#: src/common/util.c:916
 msgid "Gabon"
 msgstr "Ga-bông"
 
-#: src/common/util.c:902
+#: src/common/util.c:917
 msgid "Great Britain"
 msgstr "Vương quốc Thống nhất Anh va Ai-len Bắc"
 
-#: src/common/util.c:903
+#: src/common/util.c:918
 msgid "Grenada"
 msgstr "Grê-na-đa"
 
-#: src/common/util.c:904
+#: src/common/util.c:919
 msgid "Georgia"
 msgstr "Gi-oa-gi-a"
 
-#: src/common/util.c:905
+#: src/common/util.c:920
 msgid "French Guiana"
 msgstr "Ghi-a-na Pháp"
 
-#: src/common/util.c:906
+#: src/common/util.c:921
 msgid "British Channel Isles"
 msgstr "Quần đảo kênh Anh"
 
-#: src/common/util.c:907
+#: src/common/util.c:922
 msgid "Ghana"
 msgstr "Ga-na"
 
-#: src/common/util.c:908
+#: src/common/util.c:923
 msgid "Gibraltar"
 msgstr "Gi-boa-tha"
 
-#: src/common/util.c:909
+#: src/common/util.c:924
 msgid "Greenland"
 msgstr "Đảo băng"
 
-#: src/common/util.c:910
+#: src/common/util.c:925
 msgid "Gambia"
 msgstr "Găm-bi-a"
 
-#: src/common/util.c:911
+#: src/common/util.c:926
 msgid "Guinea"
 msgstr "Ghi-nê"
 
-#: src/common/util.c:912
+#: src/common/util.c:927
 msgid "Government"
 msgstr "Chính phủ"
 
-#: src/common/util.c:913
+#: src/common/util.c:928
 msgid "Guadeloupe"
 msgstr "Gu-a-đe-luc"
 
-#: src/common/util.c:914
+#: src/common/util.c:929
 msgid "Equatorial Guinea"
 msgstr "Ghi-nê Xích-đạo"
 
-#: src/common/util.c:915
+#: src/common/util.c:930
 msgid "Greece"
-msgstr "Hy-lạp "
+msgstr "Hy-lạp"
 
-#: src/common/util.c:916
+#: src/common/util.c:931
 msgid "S. Georgia and S. Sandwich Isles"
 msgstr "Quần đảo xan Gi-oa-gi-a và xan Xan-oui-giợ"
 
-#: src/common/util.c:917
+#: src/common/util.c:932
 msgid "Guatemala"
 msgstr "Gua-tê-ma-la"
 
-#: src/common/util.c:918
+#: src/common/util.c:933
 msgid "Guam"
 msgstr "Gu-ăm"
 
-#: src/common/util.c:919
+#: src/common/util.c:934
 msgid "Guinea-Bissau"
 msgstr "Ghi-nê Bít-xao"
 
-#: src/common/util.c:920
+#: src/common/util.c:935
 msgid "Guyana"
 msgstr "Guy-a-na"
 
-#: src/common/util.c:921
+#: src/common/util.c:936
 msgid "Hong Kong"
 msgstr "Hông Kông"
 
-#: src/common/util.c:922
+#: src/common/util.c:937
 msgid "Heard and McDonald Islands"
 msgstr "Quần đảo Hơđ và Mơc-đo-nựn"
 
-#: src/common/util.c:923
+#: src/common/util.c:938
 msgid "Honduras"
 msgstr "Hôn-đu-rát"
 
-#: src/common/util.c:924
+#: src/common/util.c:939
 msgid "Croatia"
 msgstr "Crô-a-ti-a"
 
-#: src/common/util.c:925
+#: src/common/util.c:940
 msgid "Haiti"
 msgstr "Ha-i-ti"
 
-#: src/common/util.c:926
+#: src/common/util.c:941
 msgid "Hungary"
 msgstr "Hung-ga-ri"
 
-#: src/common/util.c:927
+#: src/common/util.c:942
 msgid "Indonesia"
 msgstr "Nam Dương"
 
-#: src/common/util.c:928
+#: src/common/util.c:943
 msgid "Ireland"
 msgstr "Ai-len"
 
-#: src/common/util.c:929
+#: src/common/util.c:944
 msgid "Israel"
 msgstr "Do thái"
 
-#: src/common/util.c:930
+#: src/common/util.c:945
 msgid "India"
 msgstr "Ấn-độ"
 
-#: src/common/util.c:931
+#: src/common/util.c:946
 msgid "Informational"
 msgstr "Cung cấp thông tin"
 
-#: src/common/util.c:932
+#: src/common/util.c:947
 msgid "International"
 msgstr "Quốc tế"
 
-#: src/common/util.c:933
+#: src/common/util.c:948
 msgid "British Indian Ocean Territory"
 msgstr "Miền Đại dương Ấn-độ Anh"
 
-#: src/common/util.c:934
+#: src/common/util.c:949
 msgid "Iraq"
 msgstr "I-rắc"
 
-#: src/common/util.c:935
+#: src/common/util.c:950
 msgid "Iran"
 msgstr "I-ran"
 
-#: src/common/util.c:936
+#: src/common/util.c:951
 msgid "Iceland"
 msgstr "Băng đảo"
 
-#: src/common/util.c:937
+#: src/common/util.c:952
 msgid "Italy"
 msgstr "Ý"
 
-#: src/common/util.c:938
+#: src/common/util.c:953
 msgid "Jamaica"
 msgstr "Gia-mê-ca"
 
-#: src/common/util.c:939
+#: src/common/util.c:954
 msgid "Jordan"
 msgstr "Gi-oa-đan"
 
-#: src/common/util.c:940
+#: src/common/util.c:955
 msgid "Japan"
 msgstr "Nhật bản"
 
-#: src/common/util.c:941
+#: src/common/util.c:956
 msgid "Kenya"
 msgstr "Khi-nia"
 
-#: src/common/util.c:942
+#: src/common/util.c:957
 msgid "Kyrgyzstan"
 msgstr "Cư-rơ-gư-xtan"
 
-#: src/common/util.c:943
+#: src/common/util.c:958
 msgid "Cambodia"
 msgstr "Căm bốt"
 
-#: src/common/util.c:944
+#: src/common/util.c:959
 msgid "Kiribati"
 msgstr "Ki-ri-ba-ti"
 
-#: src/common/util.c:945
+#: src/common/util.c:960
 msgid "Comoros"
 msgstr "Cô-mô-rô-x"
 
-#: src/common/util.c:946
+#: src/common/util.c:961
 msgid "St. Kitts and Nevis"
 msgstr "Xan Kith-x và Ne-vịt"
 
-#: src/common/util.c:947
+#: src/common/util.c:962
 msgid "North Korea"
 msgstr "Bắc Hàn"
 
-#: src/common/util.c:948
+#: src/common/util.c:963
 msgid "South Korea"
 msgstr "Nam Hàn"
 
-#: src/common/util.c:949
+#: src/common/util.c:964
 msgid "Kuwait"
 msgstr "Cu-ouai-th"
 
-#: src/common/util.c:950
+#: src/common/util.c:965
 msgid "Cayman Islands"
 msgstr "Quần đảo Cay-man"
 
-#: src/common/util.c:951
+#: src/common/util.c:966
 msgid "Kazakhstan"
 msgstr "Ca-da-kh-x-than"
 
-#: src/common/util.c:952
+#: src/common/util.c:967
 msgid "Laos"
 msgstr "Lào"
 
-#: src/common/util.c:953
+#: src/common/util.c:968
 msgid "Lebanon"
 msgstr "Le-ba-non"
 
-#: src/common/util.c:954
+#: src/common/util.c:969
 msgid "Saint Lucia"
 msgstr "Xan Lu-xia"
 
-#: src/common/util.c:955
+#: src/common/util.c:970
 msgid "Liechtenstein"
 msgstr "Lich-ten-xtên"
 
-#: src/common/util.c:956
+#: src/common/util.c:971
 msgid "Sri Lanka"
 msgstr "Xri-lan-ca"
 
-#: src/common/util.c:957
+#: src/common/util.c:972
 msgid "Liberia"
 msgstr "Li-bê-ri-a"
 
-#: src/common/util.c:958
+#: src/common/util.c:973
 msgid "Lesotho"
 msgstr "Lê-xô-thô"
 
-#: src/common/util.c:959
+#: src/common/util.c:974
 msgid "Lithuania"
 msgstr "Li-tu-a-ni-a"
 
-#: src/common/util.c:960
+#: src/common/util.c:975
 msgid "Luxembourg"
 msgstr "Lúc-xăm-buac"
 
-#: src/common/util.c:961
+#: src/common/util.c:976
 msgid "Latvia"
 msgstr "Lát-vi-a"
 
-#: src/common/util.c:962
+#: src/common/util.c:977
 msgid "Libya"
 msgstr "Li-bi-a"
 
-#: src/common/util.c:963
+#: src/common/util.c:978
 msgid "Morocco"
 msgstr "Ma-rốc"
 
-#: src/common/util.c:964
+#: src/common/util.c:979
 msgid "Monaco"
 msgstr "Mô-na-cô"
 
-#: src/common/util.c:965
+#: src/common/util.c:980
 msgid "Moldova"
 msgstr "Moa-đô-va"
 
-#: src/common/util.c:966
+#: src/common/util.c:981
 msgid "United States Medical"
 msgstr "Y Mỹ"
 
-#: src/common/util.c:967
+#: src/common/util.c:982
 msgid "Madagascar"
 msgstr "Ma-đa-gát-xca"
 
-#: src/common/util.c:968
+#: src/common/util.c:983
 msgid "Marshall Islands"
 msgstr "Quần đảo Mác-san"
 
-#: src/common/util.c:969
+#: src/common/util.c:984
 msgid "Military"
 msgstr "Quân đội"
 
-#: src/common/util.c:970
+#: src/common/util.c:985
 msgid "Macedonia"
 msgstr "Maxêđôni"
 
-#: src/common/util.c:971
+#: src/common/util.c:986
 msgid "Mali"
 msgstr "Ma-li"
 
-#: src/common/util.c:972
+#: src/common/util.c:987
 msgid "Myanmar"
 msgstr "Miến điện"
 
-#: src/common/util.c:973
+#: src/common/util.c:988
 msgid "Mongolia"
 msgstr "Mông Cổ"
 
-#: src/common/util.c:974
+#: src/common/util.c:989
 msgid "Macau"
 msgstr "Ma-cau"
 
-#: src/common/util.c:975
+#: src/common/util.c:990
 msgid "Northern Mariana Islands"
 msgstr "Quần đảo Ma-ri-a-na Bắc"
 
-#: src/common/util.c:976
+#: src/common/util.c:991
 msgid "Martinique"
 msgstr "Mác-thi-ni-kh"
 
-#: src/common/util.c:977
+#: src/common/util.c:992
 msgid "Mauritania"
 msgstr "Mô-ri-ta-ni-a"
 
-#: src/common/util.c:978
+#: src/common/util.c:993
 msgid "Montserrat"
 msgstr "Mon-xe-rạc"
 
-#: src/common/util.c:979
+#: src/common/util.c:994
 msgid "Malta"
 msgstr "Mantơ"
 
-#: src/common/util.c:980
+#: src/common/util.c:995
 msgid "Mauritius"
 msgstr "Mô-ri-xơ"
 
-#: src/common/util.c:981
+#: src/common/util.c:996
 msgid "Maldives"
 msgstr "Mal-đi-vợx"
 
-#: src/common/util.c:982
+#: src/common/util.c:997
 msgid "Malawi"
 msgstr "Ma-la-uy"
 
-#: src/common/util.c:983
+#: src/common/util.c:998
 msgid "Mexico"
 msgstr "Mê-hi-cô"
 
-#: src/common/util.c:984
+#: src/common/util.c:999
 msgid "Malaysia"
 msgstr "Ma-lay-xi-a"
 
-#: src/common/util.c:985
+#: src/common/util.c:1000
 msgid "Mozambique"
 msgstr "Mô-dăm-bích"
 
-#: src/common/util.c:986
+#: src/common/util.c:1001
 msgid "Namibia"
 msgstr "Na-mi-bi-a"
 
-#: src/common/util.c:987
+#: src/common/util.c:1002
 msgid "New Caledonia"
 msgstr "Niu Ca-lê-đô-ni-a"
 
-#: src/common/util.c:988
+#: src/common/util.c:1003
 msgid "Niger"
 msgstr "Ni-giê"
 
-#: src/common/util.c:989
+#: src/common/util.c:1004
 msgid "Internic Network"
 msgstr "mạng Internic"
 
-#: src/common/util.c:990
+#: src/common/util.c:1005
 msgid "Norfolk Island"
 msgstr "Đảo Noa-phực"
 
-#: src/common/util.c:991
+#: src/common/util.c:1006
 msgid "Nigeria"
 msgstr "Ni-giê-ri-a"
 
-#: src/common/util.c:992
+#: src/common/util.c:1007
 msgid "Nicaragua"
 msgstr "Ni-ca-ra-gua"
 
-#: src/common/util.c:993
+#: src/common/util.c:1008
 msgid "Netherlands"
-msgstr "Hoà-lan "
+msgstr "Hoà-lan"
 
-#: src/common/util.c:994
+#: src/common/util.c:1009
 msgid "Norway"
-msgstr "Na-uy "
+msgstr "Na-uy"
 
-#: src/common/util.c:995
+#: src/common/util.c:1010
 msgid "Nepal"
 msgstr "Nê-pan"
 
-#: src/common/util.c:996
+#: src/common/util.c:1011
 msgid "Nauru"
 msgstr "Nau-ru"
 
-#: src/common/util.c:997
+#: src/common/util.c:1012
 msgid "Neutral Zone"
 msgstr "Khu vực Trung lập"
 
-#: src/common/util.c:998
+#: src/common/util.c:1013
 msgid "Niue"
 msgstr "Ni-u-e"
 
-#: src/common/util.c:999
+#: src/common/util.c:1014
 msgid "New Zealand"
 msgstr "Niu Di-lân"
 
-#: src/common/util.c:1000
+#: src/common/util.c:1015
 msgid "Oman"
 msgstr "Ô-man"
 
-#: src/common/util.c:1001
+#: src/common/util.c:1016
 msgid "Internic Non-Profit Organization"
 msgstr "Tổ chức Phi lợi nhuận Internic"
 
-#: src/common/util.c:1002
+#: src/common/util.c:1017
 msgid "Panama"
 msgstr "Ba-na-ma"
 
-#: src/common/util.c:1003
+#: src/common/util.c:1018
 msgid "Peru"
 msgstr "Pê-ru"
 
-#: src/common/util.c:1004
+#: src/common/util.c:1019
 msgid "French Polynesia"
 msgstr "Pô-li-nê-di Pháp"
 
-#: src/common/util.c:1005
+#: src/common/util.c:1020
 msgid "Papua New Guinea"
 msgstr "Ba-bu-a Niu Ghi-nê"
 
-#: src/common/util.c:1006
+#: src/common/util.c:1021
 msgid "Philippines"
 msgstr "Phi-li-pin"
 
-#: src/common/util.c:1007
+#: src/common/util.c:1022
 msgid "Pakistan"
 msgstr "Ba-ki-x-thăn"
 
-#: src/common/util.c:1008
+#: src/common/util.c:1023
 msgid "Poland"
 msgstr "Ba-lan"
 
-#: src/common/util.c:1009
+#: src/common/util.c:1024
 msgid "St. Pierre and Miquelon"
 msgstr "Xan Pi-e và Mi-kê-lon"
 
-#: src/common/util.c:1010
+#: src/common/util.c:1025
 msgid "Pitcairn"
 msgstr "Bi-th-khenh"
 
-#: src/common/util.c:1011
+#: src/common/util.c:1026
 msgid "Puerto Rico"
 msgstr "Bu-éc-thô Ri-cô"
 
-#: src/common/util.c:1012
+#: src/common/util.c:1027
 msgid "Palestinian Territory"
 msgstr "Hạt Pa-le-xtin"
 
-#: src/common/util.c:1013
+#: src/common/util.c:1028
 msgid "Portugal"
 msgstr "Bồ-đào-nha"
 
-#: src/common/util.c:1014
+#: src/common/util.c:1029
 msgid "Palau"
 msgstr "Ba-lau"
 
-#: src/common/util.c:1015
+#: src/common/util.c:1030
 msgid "Paraguay"
 msgstr "Ba-ra-guay"
 
-#: src/common/util.c:1016
+#: src/common/util.c:1031
 msgid "Qatar"
 msgstr "Ca-tă"
 
-#: src/common/util.c:1017
+#: src/common/util.c:1032
 msgid "Reunion"
 msgstr "Rê-u-ni-ợnh"
 
-#: src/common/util.c:1018
+#: src/common/util.c:1033
 msgid "Romania"
-msgstr "Ru-ma-ni "
+msgstr "Ru-ma-ni"
 
-#: src/common/util.c:1019
+#: src/common/util.c:1034
 msgid "Old School ARPAnet"
 msgstr "ARPAnet kiểu cũ"
 
-#: src/common/util.c:1020
+#: src/common/util.c:1035
 msgid "Russian Federation"
 msgstr "Liên bang Nga"
 
-#: src/common/util.c:1021
+#: src/common/util.c:1036
 msgid "Rwanda"
 msgstr "Ru-oanh-đa"
 
-#: src/common/util.c:1022
+#: src/common/util.c:1037
 msgid "Saudi Arabia"
 msgstr "A-rập Xau-đi"
 
-#: src/common/util.c:1023
+#: src/common/util.c:1038
 msgid "Solomon Islands"
 msgstr "Đô-la Quần Đảo So-lo-mon"
 
-#: src/common/util.c:1024
+#: src/common/util.c:1039
 msgid "Seychelles"
 msgstr "Xây-sen"
 
-#: src/common/util.c:1025
+#: src/common/util.c:1040
 msgid "Sudan"
 msgstr "Su-đan"
 
-#: src/common/util.c:1026
+#: src/common/util.c:1041
 msgid "Sweden"
 msgstr "Thuỵ Điển"
 
-#: src/common/util.c:1027
+#: src/common/util.c:1042
 msgid "Singapore"
 msgstr "Xin-ga-po"
 
-#: src/common/util.c:1028
+#: src/common/util.c:1043
 msgid "St. Helena"
 msgstr "Xan He-le-na"
 
-#: src/common/util.c:1029
+#: src/common/util.c:1044
 msgid "Slovenia"
 msgstr "Xlô-ven"
 
-#: src/common/util.c:1030
+#: src/common/util.c:1045
 msgid "Svalbard and Jan Mayen Islands"
 msgstr "Quần đảo X-van-băt và Dan May-en"
 
-#: src/common/util.c:1031
+#: src/common/util.c:1046
 msgid "Slovak Republic"
 msgstr "Cộng hoà Xlô-vác"
 
-#: src/common/util.c:1032
+#: src/common/util.c:1047
 msgid "Sierra Leone"
 msgstr "Xi-ê-ra Lê-ôn"
 
-#: src/common/util.c:1033
+#: src/common/util.c:1048
 msgid "San Marino"
 msgstr "Xan Ma-ri-nô"
 
-#: src/common/util.c:1034
+#: src/common/util.c:1049
 msgid "Senegal"
 msgstr "Xê-nê-gan"
 
-#: src/common/util.c:1035
+#: src/common/util.c:1050
 msgid "Somalia"
 msgstr "So-ma-li"
 
-#: src/common/util.c:1036
+#: src/common/util.c:1051
 msgid "Suriname"
 msgstr "Xu-ri-nam"
 
-#: src/common/util.c:1037
+#: src/common/util.c:1052
 msgid "Sao Tome and Principe"
 msgstr "Xao Tô-mê và Prin-xi-pê"
 
-#: src/common/util.c:1038
+#: src/common/util.c:1053
 msgid "Former USSR"
 msgstr "Liên xô trước"
 
-#: src/common/util.c:1039
+#: src/common/util.c:1054
 msgid "El Salvador"
 msgstr "En-san-va-đoa"
 
-#: src/common/util.c:1040
+#: src/common/util.c:1055
 msgid "Syria"
 msgstr "Xi-ri"
 
-#: src/common/util.c:1041
+#: src/common/util.c:1056
 msgid "Swaziland"
 msgstr "Xoua-di-lan"
 
-#: src/common/util.c:1042
+#: src/common/util.c:1057
 msgid "Turks and Caicos Islands"
 msgstr "Quần đảo Tuốc và Cai-cox"
 
-#: src/common/util.c:1043
+#: src/common/util.c:1058
 msgid "Chad"
-msgstr "Chê-đ "
+msgstr "Chê-đ"
 
-#: src/common/util.c:1044
+#: src/common/util.c:1059
 msgid "French Southern Territories"
 msgstr "Miền Nam Pháp"
 
-#: src/common/util.c:1045
+#: src/common/util.c:1060
 msgid "Togo"
 msgstr "Tô-gô"
 
-#: src/common/util.c:1046
+#: src/common/util.c:1061
 msgid "Thailand"
 msgstr "Thái lan"
 
-#: src/common/util.c:1047
+#: src/common/util.c:1062
 msgid "Tajikistan"
 msgstr "Tha-gi-ki-xthan"
 
-#: src/common/util.c:1048
+#: src/common/util.c:1063
 msgid "Tokelau"
 msgstr "To-ke-lau"
 
-#: src/common/util.c:1049
+#: src/common/util.c:1064
 msgid "Turkmenistan"
 msgstr "Tuốc-mê-ni-xtan"
 
-#: src/common/util.c:1050
+#: src/common/util.c:1065
 msgid "Tunisia"
 msgstr "Tu-ni-xi-a"
 
-#: src/common/util.c:1051
+#: src/common/util.c:1066
 msgid "Tonga"
 msgstr "Tông-ga"
 
-#: src/common/util.c:1052
+#: src/common/util.c:1067
 msgid "East Timor"
 msgstr "Thi-mọa Đông"
 
-#: src/common/util.c:1053
+#: src/common/util.c:1068
 msgid "Turkey"
 msgstr "Thổ nhĩ kỳ"
 
-#: src/common/util.c:1054
+#: src/common/util.c:1069
 msgid "Trinidad and Tobago"
 msgstr "Trinh-i-đat và To-ba-gô"
 
-#: src/common/util.c:1055
+#: src/common/util.c:1070
 msgid "Tuvalu"
 msgstr "Tu-va-lu"
 
-#: src/common/util.c:1056
+#: src/common/util.c:1071
 msgid "Taiwan"
 msgstr "Đài Loan"
 
-#: src/common/util.c:1057
+#: src/common/util.c:1072
 msgid "Tanzania"
-msgstr "Thanh-da-ni-a "
+msgstr "Thanh-da-ni-a"
 
-#: src/common/util.c:1058
+#: src/common/util.c:1073
 msgid "Ukraine"
 msgstr "Ukraina"
 
-#: src/common/util.c:1059
+#: src/common/util.c:1074
 msgid "Uganda"
 msgstr "U-gan-đa"
 
-#: src/common/util.c:1060
+#: src/common/util.c:1075
 msgid "United Kingdom"
 msgstr "Vương quốc Anh Thống nhất"
 
-#: src/common/util.c:1061
+#: src/common/util.c:1076
 msgid "US Minor Outlying Islands"
 msgstr "Quần đảo ở xa nhỏ Mỹ"
 
-#: src/common/util.c:1062
+#: src/common/util.c:1077
 msgid "United States of America"
 msgstr "Mỹ"
 
-#: src/common/util.c:1063
+#: src/common/util.c:1078
 msgid "Uruguay"
 msgstr "U-ru-guay"
 
-#: src/common/util.c:1064
+#: src/common/util.c:1079
 msgid "Uzbekistan"
 msgstr "U-dơ-bê-ki-xtan"
 
-#: src/common/util.c:1065
+#: src/common/util.c:1080
 msgid "Vatican City State"
 msgstr "Bang Thành phố Va-ti-can)"
 
-#: src/common/util.c:1066
+#: src/common/util.c:1081
 msgid "St. Vincent and the Grenadines"
 msgstr "Xan Vin-xen và Gợ-re-na-đinh"
 
-#: src/common/util.c:1067
+#: src/common/util.c:1082
 msgid "Venezuela"
 msgstr "Vê-nê-du-ê-la"
 
-#: src/common/util.c:1068
+#: src/common/util.c:1083
 msgid "British Virgin Islands"
 msgstr "Quần đảo Vơ-ginh Anh"
 
-#: src/common/util.c:1069
+#: src/common/util.c:1084
 msgid "US Virgin Islands"
 msgstr "Quần đảo Vơ-ginh Mỹ"
 
-#: src/common/util.c:1070
+#: src/common/util.c:1085
 msgid "Vietnam"
 msgstr "Việt Nam"
 
-#: src/common/util.c:1071
+#: src/common/util.c:1086
 msgid "Vanuatu"
 msgstr "Va-nu-a-tu"
 
-#: src/common/util.c:1072
+#: src/common/util.c:1087
 msgid "Wallis and Futuna Islands"
 msgstr "Quần đảo Oua-lit và Phu-tu-na"
 
-#: src/common/util.c:1073
+#: src/common/util.c:1088
 msgid "Samoa"
 msgstr "Xa-moa"
 
-#: src/common/util.c:1074
+#: src/common/util.c:1089
 msgid "Yemen"
 msgstr "Y-ê-men"
 
-#: src/common/util.c:1075
+#: src/common/util.c:1090
 msgid "Mayotte"
 msgstr "May-oth"
 
-#: src/common/util.c:1076
+#: src/common/util.c:1091
 msgid "Yugoslavia"
 msgstr "Nam Tư"
 
-#: src/common/util.c:1077
+#: src/common/util.c:1092
 msgid "South Africa"
 msgstr "Nam Phi"
 
-#: src/common/util.c:1078
+#: src/common/util.c:1093
 msgid "Zambia"
 msgstr "Dăm-bi-a"
 
-#: src/common/util.c:1079
+#: src/common/util.c:1094
 msgid "Zimbabwe"
 msgstr "Dim-ba-bu-ê"
 
-#: src/common/util.c:1089 src/common/util.c:1099 src/fe-gtk/menu.c:510
+#: src/common/util.c:1104 src/common/util.c:1114 src/fe-gtk/menu.c:510
 #: src/fe-gtk/menu.c:514 src/fe-gtk/menu.c:518 src/fe-gtk/menu.c:522
 #: src/fe-gtk/menu.c:530 src/fe-gtk/menu.c:546
 msgid "Unknown"
@@ -3022,7 +2854,7 @@ msgstr "Phải chọn một số việc đuổi ra."
 
 #: src/fe-gtk/banlist.c:252 src/fe-gtk/ignoregui.c:175
 msgid "Mask"
-msgstr "Lọc "
+msgstr "Lọc"
 
 #: src/fe-gtk/banlist.c:253
 msgid "From"
@@ -3084,9 +2916,8 @@ msgid "Maximum Users:"
 msgstr "Số người dùng tối đa:"
 
 #: src/fe-gtk/chanlist.c:672
-#, fuzzy
 msgid "Pattern Match:"
-msgstr "Khớp biểu thức chính quy:"
+msgstr "Khớp mẫu :biểu thức chính quy:"
 
 #: src/fe-gtk/chanlist.c:674
 msgid "Regex Match:"
@@ -3134,21 +2965,16 @@ msgstr ""
 "Nên không thể tiếp tục."
 
 #: src/fe-gtk/dccgui.c:506
-msgid ""
-"File in download directory is larger than file offered. Resuming not "
-"possible."
-msgstr ""
-"Trong thư mục tải về có tập tin lớn hơn điều đã đưa ra nên không thể tiếp "
-"tục."
+msgid "File in download directory is larger than file offered. Resuming not possible."
+msgstr "Trong thư mục tải về có tập tin lớn hơn điều đã đưa ra nên không thể tiếp tục."
 
 #: src/fe-gtk/dccgui.c:510
 msgid "Cannot resume the same file from two people."
 msgstr "Không thể tiếp tục cùng một tập tin từ hai người khác."
 
 #: src/fe-gtk/dccgui.c:739
-#, fuzzy
 msgid "XChat: Uploads and Downloads"
-msgstr "XChat: Lệnh tự định nghĩa"
+msgstr "XChat: Tải lên/về"
 
 #: src/fe-gtk/dccgui.c:755 src/fe-gtk/dccgui.c:992 src/fe-gtk/notifygui.c:111
 msgid "Status"
@@ -3168,17 +2994,15 @@ msgstr "Cả hai"
 
 #: src/fe-gtk/dccgui.c:789
 msgid "Uploads"
-msgstr ""
+msgstr "Tải lên"
 
 #: src/fe-gtk/dccgui.c:795
-#, fuzzy
 msgid "Downloads"
-msgstr "Tải tập tin về:"
+msgstr "Tải về"
 
 #: src/fe-gtk/dccgui.c:800
-#, fuzzy
 msgid "Details"
-msgstr "Thông tin cá nhân"
+msgstr "Chi tiết"
 
 #: src/fe-gtk/dccgui.c:811
 msgid "File:"
@@ -3202,7 +3026,7 @@ msgstr "Tiếp tục"
 
 #: src/fe-gtk/dccgui.c:821
 msgid "Open Folder..."
-msgstr ""
+msgstr "Mở thư mục..."
 
 #: src/fe-gtk/dccgui.c:981
 msgid "XChat: DCC Chat List"
@@ -3217,7 +3041,6 @@ msgid "Sent"
 msgstr "Gởi"
 
 #: src/fe-gtk/dccgui.c:996
-#, fuzzy
 msgid "Start Time"
 msgstr "Giờ bắt đầu"
 
@@ -3323,96 +3146,44 @@ msgid "Network send queue: %d bytes"
 msgstr "Hàng đợi gởi mạng: %d byte"
 
 #: src/fe-gtk/fkeys.c:156
-msgid ""
-"The Run Command action runs the data in Data 1 as if it has been typed into "
-"the entry box where you pressed the key sequence. Thus it can contain text "
-"(which will be sent to the channel/person), commands or user commands. When "
-"run all \\n characters in Data 1 are used to deliminate seperate commands so "
-"it is possible to run more than one command. If you want a \\ in the actual "
-"text run then enter \\\\"
-msgstr ""
-"Hành động « Chạy lệnh » chạy dữ liệu trong « Dữ liệu 1 » như thể nó đã được "
-"gõ vào hộp nhập nơi bạn đã bấm dãy phím đó. Vậy nó có thể bao gồm câu chữ "
-"(mà sẽ được gởi cho kênh/người đó), lệnh hay lệnh của người dùng. Khi chạy, "
-"mọi ký tự « \\n » trong « Dữ liệu 1 » được dùng để phân cách những lệnh "
-"khác, vì thế có thể chạy nhiều lệnh. Nếu bạn muốn xem ký tự « \\ » trong câu "
-"thật thì hãy gõ « \\\\ » thay thế."
+msgid "The Run Command action runs the data in Data 1 as if it has been typed into the entry box where you pressed the key sequence. Thus it can contain text (which will be sent to the channel/person), commands or user commands. When run all \\n characters in Data 1 are used to deliminate seperate commands so it is possible to run more than one command. If you want a \\ in the actual text run then enter \\\\"
+msgstr "Hành động « Chạy lệnh » chạy dữ liệu trong « Dữ liệu 1 » như thể nó đã được gõ vào hộp nhập nơi bạn đã bấm dãy phím đó. Vậy nó có thể bao gồm câu chữ (mà sẽ được gởi cho kênh/người đó), lệnh hay lệnh của người dùng. Khi chạy, mọi ký tự « \\n » trong « Dữ liệu 1 » được dùng để phân cách những lệnh khác, vì thế có thể chạy nhiều lệnh. Nếu bạn muốn xem ký tự « \\ » trong câu thật thì hãy gõ « \\\\ » thay thế."
 
 #: src/fe-gtk/fkeys.c:158
-msgid ""
-"The Change Page command switches between pages in the notebook. Set Data 1 "
-"to the page you want to switch to. If Data 2 is set to anything then the "
-"switch will be relative to the current position"
-msgstr ""
-"Lệnh « Đổi trang » chuyển đổi giữa trang trong cuốn vở. Hãy lập « Dữ liệụ 1 "
-"» thành trang nơi bạn muốn chuyển đổi. Nếu « Dữ liêu 2 » được lập thành gì, "
-"thì việc chuyển đổi sẽ cân xứng với vị trí hiện có."
+msgid "The Change Page command switches between pages in the notebook. Set Data 1 to the page you want to switch to. If Data 2 is set to anything then the switch will be relative to the current position"
+msgstr "Lệnh « Đổi trang » chuyển đổi giữa trang trong cuốn vở. Hãy lập « Dữ liệụ 1 » thành trang nơi bạn muốn chuyển đổi. Nếu « Dữ liêu 2 » được lập thành gì, thì việc chuyển đổi sẽ cân xứng với vị trí hiện có."
 
 #: src/fe-gtk/fkeys.c:160
-msgid ""
-"The Insert in Buffer command will insert the contents of Data 1 into the "
-"entry where the key sequence was pressed at the current cursor position"
-msgstr ""
-"Lệnh « Chèn vào bộ đệm » chèn nội dung của « Dữ liệu 1 » vào trường nơi bạn "
-"đã bấm dãy phím đó, tại vị tri con trỏ hiện có."
+msgid "The Insert in Buffer command will insert the contents of Data 1 into the entry where the key sequence was pressed at the current cursor position"
+msgstr "Lệnh « Chèn vào bộ đệm » chèn nội dung của « Dữ liệu 1 » vào trường nơi bạn đã bấm dãy phím đó, tại vị tri con trỏ hiện có."
 
 #: src/fe-gtk/fkeys.c:162
-msgid ""
-"The Scroll Page command scrolls the text widget up or down one page or one "
-"line. Set Data 1 to either Up, Down, +1 or -1."
-msgstr ""
-"Lệnh « Cuộn trang » cuộn ô điều khiển văn bản lên hay xuống bằng một trang "
-"hay một dòng. Hãy lập « Dữ liệu 1 » thành Lên, Xuống, +1 hay -1."
+msgid "The Scroll Page command scrolls the text widget up or down one page or one line. Set Data 1 to either Up, Down, +1 or -1."
+msgstr "Lệnh « Cuộn trang » cuộn ô điều khiển văn bản lên hay xuống bằng một trang hay một dòng. Hãy lập « Dữ liệu 1 » thành Lên, Xuống, +1 hay -1."
 
 #: src/fe-gtk/fkeys.c:164
-msgid ""
-"The Set Buffer command sets the entry where the key sequence was entered to "
-"the contents of Data 1"
-msgstr ""
-"Lệnh « Lập bộ đệm » lập trường nơi dãy phím được gõ thành nội dung của « Dữ "
-"liệu 1 »."
+msgid "The Set Buffer command sets the entry where the key sequence was entered to the contents of Data 1"
+msgstr "Lệnh « Lập bộ đệm » lập trường nơi dãy phím được gõ thành nội dung của « Dữ liệu 1 »."
 
 #: src/fe-gtk/fkeys.c:166
-msgid ""
-"The Last Command command sets the entry to contain the last command entered "
-"- the same as pressing up in a shell"
-msgstr ""
-"Lệnh « Lệnh trước » lập trường để chứa lệnh mới gõ — giống như khi bấm phím "
-"mũi lên trong hệ vỏ."
+msgid "The Last Command command sets the entry to contain the last command entered - the same as pressing up in a shell"
+msgstr "Lệnh « Lệnh trước » lập trường để chứa lệnh mới gõ — giống như khi bấm phím mũi lên trong hệ vỏ."
 
 #: src/fe-gtk/fkeys.c:168
-msgid ""
-"The Next Command command sets the entry to contain the next command entered "
-"- the same as pressing down in a shell"
-msgstr ""
-"Lệnh « Lệnh kế » thì lập trường chứa lệnh kế tiếp được gõ — giống như khi "
-"bấm phím mũi xuống trong hệ vỏ."
+msgid "The Next Command command sets the entry to contain the next command entered - the same as pressing down in a shell"
+msgstr "Lệnh « Lệnh kế » thì lập trường chứa lệnh kế tiếp được gõ — giống như khi bấm phím mũi xuống trong hệ vỏ."
 
 #: src/fe-gtk/fkeys.c:170
-msgid ""
-"This command changes the text in the entry to finish an incomplete nickname "
-"or command. If Data 1 is set then double-tabbing in a string will select the "
-"last nick, not the next"
-msgstr ""
-"Lệnh này thay đổi chuỗi chữ trong trường nhập để xong tên hiệu hay lệnh chưa "
-"hoàn thành. Nếu « Dữ liệu 1 » được lập thế việc bám phím Tab hai lần trong "
-"chuỗi nào sẽ chọn tên hiệu trước, không phải tên hiệu sau."
+msgid "This command changes the text in the entry to finish an incomplete nickname or command. If Data 1 is set then double-tabbing in a string will select the last nick, not the next"
+msgstr "Lệnh này thay đổi chuỗi chữ trong trường nhập để xong tên hiệu hay lệnh chưa hoàn thành. Nếu « Dữ liệu 1 » được lập thế việc bám phím Tab hai lần trong chuỗi nào sẽ chọn tên hiệu trước, không phải tên hiệu sau."
 
 #: src/fe-gtk/fkeys.c:172
-msgid ""
-"This command scrolls up and down through the list of nicks. If Data 1 is set "
-"to anything it will scroll up, else it scrolls down"
-msgstr ""
-"Lệnh này cuộn lên và xuống danh sách các tên hiệu. Nếu « Dữ liệu 1 » được "
-"lập thành gì thì nó sẽ cuộn lên, không nếu thi nó sẽ cuộn xuống."
+msgid "This command scrolls up and down through the list of nicks. If Data 1 is set to anything it will scroll up, else it scrolls down"
+msgstr "Lệnh này cuộn lên và xuống danh sách các tên hiệu. Nếu « Dữ liệu 1 » được lập thành gì thì nó sẽ cuộn lên, không nếu thi nó sẽ cuộn xuống."
 
 #: src/fe-gtk/fkeys.c:174
-msgid ""
-"This command checks the last word entered in the entry against the replace "
-"list and replaces it if it finds a match"
-msgstr ""
-"Lệnh này so từ mới nhập vào trường với danh sách thay thế, và thay thế nó "
-"nếu tìm thấy từ khớp."
+msgid "This command checks the last word entered in the entry against the replace list and replaces it if it finds a match"
+msgstr "Lệnh này so từ mới nhập vào trường với danh sách thay thế, và thay thế nó nếu tìm thấy từ khớp."
 
 #: src/fe-gtk/fkeys.c:176
 msgid "This command moves the front tab left by one"
@@ -3598,6 +3369,51 @@ msgstr "Mời:"
 msgid "Add"
 msgstr "Thêm"
 
+#: src/fe-gtk/joind.c:82
+msgid "Channel name too short, try again."
+msgstr "Tên kênh quá ngắn nên hãy thử lại."
+
+#: src/fe-gtk/joind.c:128
+msgid "XChat: Connection Complete"
+msgstr "XChat: Kết nối hoàn tất"
+
+#: src/fe-gtk/joind.c:153
+#, c-format
+msgid "Connection to %s complete."
+msgstr "Kết nối đến %s hoàn tất."
+
+#: src/fe-gtk/joind.c:162
+msgid "In the Server-List window, no channel (chat room) has been entered to be automatically joined for this network."
+msgstr "Trong cửa sổ Danh sách Máy phục vụ, chưa gõ kênh (phòng trò chuyện) cần tham gia tự động cho mạng này."
+
+#: src/fe-gtk/joind.c:168
+msgid "What would you like to do next?"
+msgstr "Tiếp sau đây bạn có muốn làm gì?"
+
+#: src/fe-gtk/joind.c:174
+msgid "_Nothing, I'll join a channel later."
+msgstr "_Gì cả, tôi sẽ tham gia kênh sau này."
+
+#: src/fe-gtk/joind.c:183
+msgid "_Join this channel:"
+msgstr "Tham _gia kênh này:"
+
+#: src/fe-gtk/joind.c:195
+msgid "If you know the name of the channel you want to join, enter it here."
+msgstr "Nến bạn có biết tên kênh cần tham gia, hãy gõ nó vào đây."
+
+#: src/fe-gtk/joind.c:202
+msgid "O_pen the Channel-List window."
+msgstr "_Mở cửa sổ Danh sách Kênh."
+
+#: src/fe-gtk/joind.c:209
+msgid "Retrieving the Channel-List may take a minute or two."
+msgstr "Việc lấy Danh sách Kênh có lẽ sẽ mất một hai phút."
+
+#: src/fe-gtk/joind.c:216
+msgid "_Always show this dialog after connecting."
+msgstr "_Luôn hiển thị hộp thoại này một khi kết nối."
+
 #: src/fe-gtk/maingui.c:396
 msgid "Dialog with"
 msgstr "Đôi thoại với"
@@ -3613,12 +3429,8 @@ msgstr "Chưa lập chủ đề"
 
 #: src/fe-gtk/maingui.c:956
 #, c-format
-msgid ""
-"This server still has %d channels or dialogs associated with it. Close them "
-"all?"
-msgstr ""
-"Máy phục vụ này vẫn còn có %d kênh hay đối thoại được liên quan đến nó. Đóng "
-"hết không?"
+msgid "This server still has %d channels or dialogs associated with it. Close them all?"
+msgstr "Máy phục vụ này vẫn còn có %d kênh hay đối thoại được liên quan đến nó. Đóng hết không?"
 
 #: src/fe-gtk/maingui.c:1086
 msgid "No other tabs open, quit xchat?"
@@ -3674,8 +3486,7 @@ msgstr "_Gỡ thanh ra"
 
 #: src/fe-gtk/maingui.c:1581
 msgid "Some file transfers still active, quit xchat?"
-msgstr ""
-"Có một số việc truyền tập tin còn hoặt động nhưng thoát khỏi xchat không?"
+msgstr "Có một số việc truyền tập tin còn hoặt động nhưng thoát khỏi xchat không?"
 
 #: src/fe-gtk/maingui.c:1734 src/fe-gtk/maingui.c:1840
 msgid "User limit must be a number!\n"
@@ -3772,12 +3583,8 @@ msgid "Last Msg:"
 msgstr "Tin nhẳn trước:"
 
 #: src/fe-gtk/menu.c:646
-msgid ""
-"The Menubar is now hidden. You can show it again by pressing F9 or right-"
-"clicking in a blank part of the main text area."
-msgstr ""
-"Thanh trình đơn mới ẩn. Bạn có thể hiển thị lại nó bằng cách bấm phím F9 "
-"hoặc nhắp-phải vào phần rỗng nào trong vùng văn bản chính."
+msgid "The Menubar is now hidden. You can show it again by pressing F9 or right-clicking in a blank part of the main text area."
+msgstr "Thanh trình đơn mới ẩn. Bạn có thể hiển thị lại nó bằng cách bấm phím F9 hoặc nhắp-phải vào phần rỗng nào trong vùng văn bản chính."
 
 #: src/fe-gtk/menu.c:726
 msgid "Copy Selected Link"
@@ -3811,14 +3618,11 @@ msgid ""
 "Someone could send you a .bash_profile"
 msgstr ""
 "•• CẢNH BÁO ••\n"
-"Việc tự động chấp nhận DCC vào thư mục chính của bạn có lẽ nguy hiểm và cho "
-"phép người khác tấn công hệ thống bạn. V.d. người khác có thể gởi cho bạn "
-"một « .bash_profile »."
+"Việc tự động chấp nhận DCC vào thư mục chính của bạn có lẽ nguy hiểm và cho phép người khác tấn công hệ thống bạn. V.d. người khác có thể gởi cho bạn một « .bash_profile »."
 
 #: src/fe-gtk/menu.c:1077
-#, fuzzy
 msgid "Retrieve channel list..."
-msgstr "Danh sách Kênh..."
+msgstr "Lấy Danh sách Kênh..."
 
 #: src/fe-gtk/menu.c:1132
 msgid "Settings saved."
@@ -4293,7 +4097,7 @@ msgstr "Cửa sổ đã mỏ cho việc tìm kiếm này không còn tồn tại
 
 #: src/fe-gtk/search.c:65
 msgid "Search hit end, not found."
-msgstr ""
+msgstr "Tìm kiếm gặp kết thức, không tìm thấy gì."
 
 #: src/fe-gtk/search.c:109
 msgid "XChat: Search"
@@ -4305,16 +4109,15 @@ msgstr "Tìm:"
 
 #: src/fe-gtk/search.c:127
 msgid "_Match case"
-msgstr ""
+msgstr "_Khớp hoa/thường"
 
 #: src/fe-gtk/search.c:133
 msgid "Search _backwards"
-msgstr ""
+msgstr "Tìm _ngược"
 
 #: src/fe-gtk/search.c:146
-#, fuzzy
 msgid "_Find"
-msgstr "Tìm"
+msgstr "_Tìm"
 
 #: src/fe-gtk/servlistgui.c:161 src/fe-gtk/servlistgui.c:260
 msgid "New Network"
@@ -4400,26 +4203,16 @@ msgid "Connect command:"
 msgstr "Lệnh kết nối:"
 
 #: src/fe-gtk/servlistgui.c:1046
-msgid ""
-"Extra command to execute after connecting. If you need more than one, set "
-"this to LOAD -e <filename>, where <filename> is a text-file full of commands "
-"to execute."
-msgstr ""
-"Lệnh thêm cần thi hành sau khi kết nối được. Nếu cần thiết nhiều lệnh thì "
-"hãy lập lệnh này thành « LOAD -e <tên_tập_tin> », mà tập tin kiểu văn bản "
-"chứa danh sách lệnh cần thi hành. (load: tải)"
+msgid "Extra command to execute after connecting. If you need more than one, set this to LOAD -e <filename>, where <filename> is a text-file full of commands to execute."
+msgstr "Lệnh thêm cần thi hành sau khi kết nối được. Nếu cần thiết nhiều lệnh thì hãy lập lệnh này thành « LOAD -e <tên_tập_tin> », mà tập tin kiểu văn bản chứa danh sách lệnh cần thi hành. (load: tải)"
 
 #: src/fe-gtk/servlistgui.c:1049
 msgid "Nickserv password:"
 msgstr "Mật khẩu máy phục vụ tên hiệu :"
 
 #: src/fe-gtk/servlistgui.c:1051
-msgid ""
-"If your nickname requires a password, enter it here. Not all IRC networks "
-"support this."
-msgstr ""
-"Nếu tên hiệu bạn cần thiết mật khẩu, hãy gõ nó vào đây. Không phải tất cả "
-"các mạng IRC hỗ trợ tính năng này."
+msgid "If your nickname requires a password, enter it here. Not all IRC networks support this."
+msgstr "Nếu tên hiệu bạn cần thiết mật khẩu, hãy gõ nó vào đây. Không phải tất cả các mạng IRC hỗ trợ tính năng này."
 
 #: src/fe-gtk/servlistgui.c:1055
 msgid "Server password:"
@@ -4624,8 +4417,7 @@ msgstr "Theo dõi Vắng mặt"
 
 #: src/fe-gtk/setup.c:166
 msgid "Track the Away status of users and mark them in a different color"
-msgstr ""
-"Theo dõi trạng thái Vắng mặt của mọi người dùng, và nhãn chúng bằng màu khác"
+msgstr "Theo dõi trạng thái Vắng mặt của mọi người dùng, và nhãn chúng bằng màu khác"
 
 #: src/fe-gtk/setup.c:167
 msgid "On channels smaller than:"
@@ -4745,7 +4537,7 @@ msgstr "Di động tập tin tải về xong sang:"
 
 #: src/fe-gtk/setup.c:230
 msgid "Auto accept file offers"
-msgstr ""
+msgstr "Tự động chấp nhận tập tin đã đưa ra"
 
 #: src/fe-gtk/setup.c:231
 msgid "Save nick name in filenames"
@@ -4784,12 +4576,8 @@ msgid "Get my address from the IRC server"
 msgstr "Lấy địa chỉ tôi từ máy phục vụ IRC"
 
 #: src/fe-gtk/setup.c:241
-msgid ""
-"Asks the IRC server for your real address. Use this if you have a 192.168.*."
-"* address!"
-msgstr ""
-"Gọi địa chỉ thật của bạn từ máy phục vụ IRC. Hãy sử dụng tùy chon này nếu có "
-"địa chỉ số « 192.168.*.* »."
+msgid "Asks the IRC server for your real address. Use this if you have a 192.168.*.* address!"
+msgstr "Gọi địa chỉ thật của bạn từ máy phục vụ IRC. Hãy sử dụng tùy chon này nếu có địa chỉ số « 192.168.*.* »."
 
 #: src/fe-gtk/setup.c:243
 msgid "Maximum File Transfer Speeds (bytes per second)"
@@ -4921,9 +4709,7 @@ msgstr "Whois khi thông báo"
 
 #: src/fe-gtk/setup.c:295
 msgid "Sends a /WHOIS when a user comes online in your notify list"
-msgstr ""
-"Gởi lệnh « /WHOIS » (là ai?) khi người dùng mới trực tuyến trong danh sách "
-"thông báo của bạn."
+msgstr "Gởi lệnh « /WHOIS » (là ai?) khi người dùng mới trực tuyến trong danh sách thông báo của bạn."
 
 #: src/fe-gtk/setup.c:296
 msgid "Hide join and part messages"
@@ -5204,9 +4990,7 @@ msgstr "Loại"
 
 #: src/fe-gtk/setup.c:1699
 msgid "Some settings were changed that require a restart to take full effect."
-msgstr ""
-"Một sô thiết lập đã được thay đổi nên cần phải khởi động lại để hoạt động "
-"đầy đủ."
+msgstr "Một sô thiết lập đã được thay đổi nên cần phải khởi động lại để hoạt động đầy đủ."
 
 #: src/fe-gtk/setup.c:1727
 msgid "XChat: Preferences"
@@ -5370,11 +5154,11 @@ msgstr "%s không tồn tại\n"
 
 #: plugins/dbus/dbus-plugin.c:27
 msgid "xchat remote access"
-msgstr ""
+msgstr "truy cập từ xa XChat"
 
 #: plugins/dbus/dbus-plugin.c:28
 msgid "plugin for remote access using DBUS"
-msgstr ""
+msgstr "bộ cầm phít cho truy cập từ xa bằng DBUS"
 
 #: plugins/dbus/dbus-plugin.c:333
 #, c-format
@@ -5382,56 +5166,11 @@ msgid "Couldn't connect to session bus : %s\n"
 msgstr "Không thể kết nối đến bộ nối phiên chạy: %s\n"
 
 #: plugins/dbus/dbus-plugin.c:353
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to acquire %s: %s\n"
-msgstr "Không thể lấy "
+msgstr "Lỗi lấy %s: %s\n"
 
 #: plugins/dbus/dbus-plugin.c:401
-#, fuzzy, c-format
+#, c-format
 msgid "%s loaded successfully!\n"
-msgstr " đã được tải.\n"
-
-#~ msgid "None"
-#~ msgstr "Không có"
-
-#~ msgid "From:"
-#~ msgstr "Từ:"
-
-#~ msgid "To:"
-#~ msgstr "Cho:"
-
-#~ msgid "Size:"
-#~ msgstr "Cỡ:"
-
-#~ msgid "Started:"
-#~ msgstr "Bắt đầu:"
-
-#~ msgid "Speed limit:"
-#~ msgstr "Giới hạn tốc độ:"
-
-#~ msgid "MIME Type"
-#~ msgstr "Kiểu MIME"
-
-#~ msgid "XChat: File Receive List"
-#~ msgstr "XChat: Danh sách Nhận Tập tin"
-
-#~ msgid "Open"
-#~ msgstr "Mở"
-
-#~ msgid "Ack"
-#~ msgstr "Ghi nhập"
-
-#~ msgid "To"
-#~ msgstr "Cho"
-
-#~ msgid "XChat: File Send List"
-#~ msgstr "XChat: Danh sách Gởi Tập tin"
-
-#~ msgid "To/From"
-#~ msgstr "Cho/Từ"
-
-#~ msgid "Close"
-#~ msgstr "Đóng"
-
-#~ msgid " : %s\n"
-#~ msgstr " : %s\n"
+msgstr "%s đã được tải.\n"

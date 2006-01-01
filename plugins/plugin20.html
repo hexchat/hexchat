@@ -740,7 +740,8 @@ xchat_send_modes(ph, names_to_Op, 3, 0, '+', 'o');
 <h3><a class=cmd name="xchat_find_context">&nbsp;xchat_find_context()&nbsp;</a></h3>
 <b>Prototype:</b> xchat_context *xchat_find_context(xchat_plugin *ph, const char *servname, const char *channel);
 <br>
-<br><b>Description:</b> Finds a context based on a channel and servername. If servname is NULL, it finds any channel (or query) by the given name. If channel is NULL, it finds the front-most tab/window of the given servname. If NULL is given for both arguments, the currently focused tab/window will be returned.
+<br><b>Description:</b> Finds a context based on a channel and servername. If servname is NULL, it finds any channel (or query) by the given name. If channel is NULL, it finds the front-most tab/window of the given servname. If NULL is given for both arguments, the currently focused tab/window will be returned.<br>
+Changed in 2.6.1. If servname is NULL, it finds the channel (or query) by the given name in the same server group as the current context. If that doesn't exists then find any by the given name.
 <br>
 <br><b>Arguments:</b>
 <blockquote><b>ph:</b> Plugin handle (as given to xchat_plugin_init).
