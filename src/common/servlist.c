@@ -24,6 +24,7 @@
 #include <unistd.h>
 
 #include "xchat.h"
+#include <glib/ghash.h>
 
 #include "cfgfiles.h"
 #include "fe.h"
@@ -717,7 +718,7 @@ servlist_net_find_from_server (char *server_name)
 }
 
 ircnet *
-servlist_net_find (char *name, int *pos)
+servlist_net_find (char *name, int *pos, int (*cmpfunc) (const char *, const char *))
 {
 	GSList *list = network_list;
 	ircnet *net;
@@ -726,7 +727,7 @@ servlist_net_find (char *name, int *pos)
 	while (list)
 	{
 		net = list->data;
-		if (strcmp (net->name, name) == 0)
+		if (cmpfunc (net->name, name) == 0)
 		{
 			if (pos)
 				*pos = i;
@@ -858,7 +859,7 @@ servlist_load_defaults (void)
 				free (net->encoding);
 				net->encoding = strdup (def[i].charset);
 			}
-			if (!strcmp (def[i].network, "ChatJunkies"))
+			if (g_str_hash (def[i].network) == 0x8e1b96f7)
 				prefs.slist_select = j;
 			j++;
 		} else

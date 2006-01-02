@@ -2979,7 +2979,7 @@ cmd_url (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			/* maybe we're already connected to this net */
 
 			/* check for "FreeNode" */
-			net = servlist_net_find (server_name, NULL);
+			net = servlist_net_find (server_name, NULL, strcasecmp);
 			/* check for "irc.eu.freenode.net" */
 			if (!net)
 				net = servlist_net_find_from_server (server_name);

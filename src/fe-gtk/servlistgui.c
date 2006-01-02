@@ -604,7 +604,7 @@ servlist_find_selected_net (GtkTreeSelection *sel)
 	if (gtk_tree_selection_get_selected (sel, &model, &iter))
 	{
 		gtk_tree_model_get (model, &iter, 0, &netname, -1);
-		net = servlist_net_find (netname, &pos);
+		net = servlist_net_find (netname, &pos, strcmp);
 		g_free (netname);
 		if (net)
 			prefs.slist_select = pos;
@@ -686,7 +686,7 @@ servlist_celledit_cb (GtkCellRendererText *cell, gchar *arg1, gchar *arg2,
 	gtk_tree_model_get_iter (model, &iter, path);
 	gtk_tree_model_get (model, &iter, 0, &netname, -1);
 
-	net = servlist_net_find (netname, NULL);
+	net = servlist_net_find (netname, NULL, strcmp);
 	g_free (netname);
 	if (net)
 	{
