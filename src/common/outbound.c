@@ -2741,17 +2741,61 @@ cmd_settext (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 }
 
 static int
+parse_irc_url (char *url, char *server_name[], char *port[], char *channel[], int *use_ssl)
+{
+	char *co;
+#ifdef USE_OPENSSL
+	if (strncasecmp ("ircs://", url, 7) == 0)
+	{
+		*use_ssl = TRUE;
+		*server_name = url + 7;
+		goto urlserv;
+	}
+#endif
+
+	if (strncasecmp ("irc://", url, 6) == 0)
+	{
+		*server_name = url + 6;
+#ifdef USE_OPENSSL
+urlserv:
+#endif
+		/* check for port */
+		co = strchr (*server_name, ':');
+		if (co)
+		{
+			*port = co + 1;
+			*co = 0;
+		} else
+			co = *server_name;
+		/* check for channel - mirc style */
+		co = strchr (co + 1, '/');
+		if (co)
+		{
+			*co = 0;
+			co++;
+			if (*co == '#')
+				*channel = co+1;
+			else
+				*channel = co;
+			
+		}
+		return TRUE;
+	}
+	return FALSE;
+}
+
+static int
 cmd_server (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	int offset = 0;
-	char *server_name;
-	char *port;
-	char *pass;
-	char *co;
-	server *serv = sess->server;
-#ifdef USE_OPENSSL
+	char *server_name = NULL;
+	char *port = NULL;
+	char *pass = NULL;
+	char *channel = NULL;
 	int use_ssl = FALSE;
+	server *serv = sess->server;
 
+#ifdef USE_OPENSSL
 	/* BitchX uses -ssl, mIRC uses -e, let's support both */
 	if (strcmp (word[2], "-ssl") == 0 || strcmp (word[2], "-e") == 0)
 	{
@@ -2760,10 +2804,16 @@ cmd_server (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	}
 #endif
 
-	server_name = word[2 + offset];
-	port = word[3 + offset];
-	pass = word[4 + offset];
-
+	if (!parse_irc_url (word[2 + offset], &server_name, &port, &channel, &use_ssl))
+		server_name = word[2 + offset];
+	if (port)
+		pass = word[3 + offset];
+	else
+	{
+		port = word[3 + offset];
+		pass = word[4 + offset];
+	}
+	
 	if (!(*server_name))
 		return FALSE;
 
@@ -2773,45 +2823,10 @@ cmd_server (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	if (strncasecmp (word_eol[1], "SERVCHAN ", 9))
 		sess->willjoinchannel[0] = 0;
 
-#ifdef USE_OPENSSL
-	if (strncasecmp ("ircs://", server_name, 7) == 0)
+	if (channel)
 	{
-		use_ssl = TRUE;
-		server_name += 7;
-		goto urlserv;
-	}
-#endif
-
-	if (strncasecmp ("irc://", server_name, 6) == 0)
-	{
-		server_name += 6;
-#ifdef USE_OPENSSL
-urlserv:
-#endif
-		/* check for port */
-		co = strchr (server_name, ':');
-		if (co)
-		{
-			port = co + 1;
-			*co = 0;
-			pass = word[3 + offset];
-		} else
-			co = server_name;
-		/* check for channel - mirc style */
-		co = strchr (co + 1, '/');
-		if (co)
-		{
-			*co = 0;
-			co++;
-			if (*co == '#')
-			{
-				safe_strcpy (sess->willjoinchannel, co, CHANLEN);
-			} else
-			{
-				sess->willjoinchannel[0] = '#';
-				safe_strcpy ((sess->willjoinchannel + 1), co, (CHANLEN - 1));
-			}
-		}
+		sess->willjoinchannel[0] = '#';
+		safe_strcpy ((sess->willjoinchannel + 1), channel, (CHANLEN - 1));
 	}
 
 	/* support +7000 style ports like mIRC */
@@ -2929,12 +2944,72 @@ cmd_unload (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	return FALSE;
 }
 
+static server *
+find_server_from_net (void *net)
+{
+	GSList *list = serv_list;
+	server *serv;
+
+	while (list)
+	{
+		serv = list->data;
+		if (serv->network == net && serv->connected)
+			return serv;
+		list = list->next;
+	}
+
+	return NULL;
+}
+
 static int
 cmd_url (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	if (word[2][0])
 	{
-		fe_open_url (word[2]);
+		char *server_name = NULL;
+		char *port = NULL;
+		char *channel = NULL;
+		char *url = g_strdup (word[2]);
+		int use_ssl = FALSE;
+		void *net;
+		server *serv;
+
+		if (parse_irc_url (url, &server_name, &port, &channel, &use_ssl))
+		{
+			/* maybe we're already connected to this net */
+
+			/* check for "FreeNode" */
+			net = servlist_net_find (server_name, NULL);
+			/* check for "irc.eu.freenode.net" */
+			if (!net)
+				net = servlist_net_find_from_server (server_name);
+
+			if (net)
+			{
+				/* found the network, but are we connected? */
+				serv = find_server_from_net (net);
+				if (serv)
+				{
+					/* already connected, JOIN only. FIXME: support keys? */
+					if (channel[0] != '#')
+					{
+						tbuf[0] = '#';
+						/* tbuf is 4kb */
+						safe_strcpy ((tbuf + 1), channel, 256);
+						serv->p_join (serv, tbuf, "");
+					}
+					else
+						serv->p_join (serv, channel, "");
+					return TRUE;
+				}
+			}
+
+			/* not connected to this net, open new window */
+			cmd_newserver (sess, tbuf, word, word_eol);
+
+		} else
+			fe_open_url (word[2]);
+		g_free (url);
 		return TRUE;
 	}
 

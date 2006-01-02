@@ -99,7 +99,7 @@ main (int argc, char **argv)
   if (opt_open_url)
   {
     gchar *command;
-    command = g_strdup_printf ("newserver %s", opt_open_url);
+    command = g_strdup_printf ("url %s", opt_open_url);
     if (!dbus_g_proxy_call (remote_object, "command", &error,
                             G_TYPE_STRING, command, G_TYPE_INVALID,
                             G_TYPE_INVALID))
