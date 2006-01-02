@@ -2991,15 +2991,11 @@ cmd_url (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 				if (serv)
 				{
 					/* already connected, JOIN only. FIXME: support keys? */
-					if (channel[0] != '#')
-					{
-						tbuf[0] = '#';
-						/* tbuf is 4kb */
-						safe_strcpy ((tbuf + 1), channel, 256);
-						serv->p_join (serv, tbuf, "");
-					}
-					else
-						serv->p_join (serv, channel, "");
+					tbuf[0] = '#';
+					/* tbuf is 4kb */
+					safe_strcpy ((tbuf + 1), channel, 256);
+					serv->p_join (serv, tbuf, "");
+					g_free (url);
 					return TRUE;
 				}
 			}
