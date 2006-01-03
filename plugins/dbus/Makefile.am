@@ -33,10 +33,10 @@ INCLUDES =					\
 	-I$(srcdir)/..
 
 dbus-plugin-glue.h: dbus-plugin.xml
-	libtool --mode=execute $(DBUS_BINDING_TOOL) --prefix=remote_object --mode=glib-server --output=$@ $<
+	$(LIBTOOL) --mode=execute $(DBUS_BINDING_TOOL) --prefix=remote_object --mode=glib-server --output=$@ $<
 
 marshallers.h: marshallers.list
-	libtool --mode=execute $(GLIB_GENMARSHAL)  --header --body $< > $@
+	$(LIBTOOL) --mode=execute $(GLIB_GENMARSHAL)  --header --body $< > $@
 
 if DO_GCONF
 GCONF_SCHEMA_CONFIG_SOURCE=`$(GCONFTOOL) --get-default-source`
