@@ -94,8 +94,6 @@ cv_tree_init (chanview *cv)
 		gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (view),
 																	-1, NULL, renderer,
 																	"pixbuf", COL_PIXBUF, NULL);
-		gtk_tree_view_column_set_sizing (gtk_tree_view_get_column (GTK_TREE_VIEW (view), 0),
-													GTK_TREE_VIEW_COLUMN_GROW_ONLY);
 	}
 
 	/* main column */
@@ -104,9 +102,6 @@ cv_tree_init (chanview *cv)
 	gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (view),
 																-1, NULL, renderer,
 									"text", COL_NAME, "attributes", COL_ATTR, NULL);
-/*	gtk_tree_view_column_set_sizing (gtk_tree_view_get_column (GTK_TREE_VIEW (view),
-												cv->use_icons ? 1 : 0),
-												GTK_TREE_VIEW_COLUMN_AUTOSIZE);*/
 
 	g_signal_connect (G_OBJECT (gtk_tree_view_get_selection (GTK_TREE_VIEW (view))),
 							"changed", G_CALLBACK (cv_tree_sel_cb), cv);
