@@ -453,6 +453,9 @@ static const struct defaultserver def[] =
 	{0,			"irc.telecoms.bg"},
 	{0,			"irc.tu-varna.edu"},
 
+	{"Whiffle",	0},
+	{0,			"irc.whiffle.org"},
+
 	{"Worldnet",		0},
 	{0,			"irc.worldnet.net"},
 	{0,			"irc.fr.worldnet.net"},
