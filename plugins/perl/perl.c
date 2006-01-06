@@ -215,7 +215,7 @@ timer_cb (void *userdata)
 			if (retVal == 0) {
 				/* if 0 is return the timer is going to get unhooked */
 				PUSHMARK (SP);
-				XPUSHs (sv_2mortal (newSVuv (PTR2UV (data->hook))));
+				XPUSHs (sv_2mortal (newSViv (PTR2IV (data->hook))));
 				PUTBACK;
 
 				call_pv ("Xchat::unhook", G_EVAL);
@@ -469,7 +469,7 @@ XS (XS_Xchat_register)
 		gui_entry = xchat_plugingui_add (ph, filename, name,
 													desc, version, NULL);
 
-		XSRETURN_IV (PTR2UV (gui_entry));
+		XSRETURN_IV (PTR2IV (gui_entry));
 
 	}
 }
@@ -629,7 +629,7 @@ XS (XS_Xchat_hook_server)
 		data->depth = 0;
 		hook = xchat_hook_server (ph, name, pri, server_cb, data);
 
-		XSRETURN_IV (PTR2UV (hook));
+		XSRETURN_IV (PTR2IV (hook));
 	}
 }
 
@@ -670,7 +670,7 @@ XS (XS_Xchat_hook_command)
 		data->depth = 0;
 		hook = xchat_hook_command (ph, name, pri, command_cb, help_text, data);
 
-		XSRETURN_IV (PTR2UV (hook));
+		XSRETURN_IV (PTR2IV (hook));
 	}
 
 }
@@ -709,7 +709,7 @@ XS (XS_Xchat_hook_print)
 		data->depth = 0;
 		hook = xchat_hook_print (ph, name, pri, print_cb, data);
 
-		XSRETURN_IV (PTR2UV (hook));
+		XSRETURN_IV (PTR2IV (hook));
 	}
 }
 
@@ -746,7 +746,7 @@ XS (XS_Xchat_hook_timer)
 		hook = xchat_hook_timer (ph, timeout, timer_cb, data);
 		data->hook = hook;
 
-		XSRETURN_IV (PTR2UV (hook));
+		XSRETURN_IV (PTR2IV (hook));
 	}
 }
 
@@ -784,7 +784,7 @@ XS (XS_Xchat_hook_fd)
 		SvREFCNT_inc (data->userdata);
 		hook = xchat_hook_fd (ph, fd, flags, fd_cb, data);
 
-		XSRETURN_IV (PTR2UV (hook));
+		XSRETURN_IV (PTR2IV (hook));
 	}
 }
 
@@ -883,7 +883,7 @@ XS (XS_Xchat_find_context)
 		RETVAL = xchat_find_context (ph, server, chan);
 		if (RETVAL != NULL) {
 			/*                      xchat_print (ph, "XSUB - context found"); */
-			XSRETURN_IV (PTR2UV (RETVAL));
+			XSRETURN_IV (PTR2IV (RETVAL));
 		} else {
 			/*           xchat_print (ph, "XSUB - context not found"); */
 			XSRETURN_UNDEF;
@@ -898,7 +898,7 @@ XS (XS_Xchat_get_context)
 	if (items != 0) {
 		xchat_print (ph, "Usage: Xchat::get_context()");
 	} else {
-		XSRETURN_IV (PTR2UV (xchat_get_context (ph)));
+		XSRETURN_IV (PTR2IV (xchat_get_context (ph)));
 	}
 }
 
@@ -994,7 +994,7 @@ XS (XS_Xchat_get_list)
 				case 'p':
 					/*                                       xchat_printf (ph, "pointer: %s", fields[i]+1); */
 					hv_store (hash, fields[i] + 1, strlen (fields[i] + 1),
-								 newSVuv (PTR2UV (xchat_list_str (ph, list,
+								 newSViv (PTR2IV (xchat_list_str (ph, list,
 																			 fields[i] + 1)
 											 )), 0);
 					break;
