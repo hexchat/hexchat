@@ -283,7 +283,7 @@ the timer or Xchat::KEEP to keep it going</p>
 </p>
 <h4><a name="miscellaneous_hook_related_information">Miscellaneous Hook Related Information</a></h4>
 <p>For server hooks, if <code>$message</code> is ``RAW LINE'' then <code>$cb</code> will be called for
-every IRC message than X-Chat receives.</p>
+every IRC message that X-Chat receives.</p>
 <p>For command hooks if <code>$command</code> is ``'' then <code>$cb</code> will be called for
 messages entered by the user that is not a command.</p>
 <p>For print hooks besides those events listed in 
@@ -310,7 +310,13 @@ Settings-&gt;Advanced-&gt;Text Events, these additional events can be used.</p>
 											<code>$_[0][3]</code>	-	Message<br />
 											</td>
 	</tr> <tr>
-		<td>"Key Press"</td>	<td>used for intercepting key presses, the key value is in $_[0][0]</td>
+		<td>"Key Press"</td>
+		<td>
+			used for intercepting key presses<br />
+			the key value is in $_[0][0]<br />
+			the modifier value is in $_[0][1]<br />
+			both are integers
+		</td>
 </table><p>
 </p>
 <h3><a name="xchat__unhook___hook__"><code>Xchat::unhook( $hook )</code></a></h3>
@@ -446,6 +452,9 @@ a context cannot be found.</p>
 	<tr>
 		<td>host</td>	<td>real hostname of the current server</td>
 	</tr>	<tr>
+	<tr>
+		<td>id</td>	<td>unique server id</td>
+	</tr> <tr>
 		<td>inputbox</td>	<td>contents of the inputbox</td>
 	</tr>
 	
@@ -462,9 +471,14 @@ a context cannot be found.</p>
 	</tr>	<tr>
 		<td>nickserv</td>	<td>nickserv password for this network or undef</td>
 	</tr>	<tr>
-		<td>server</td>	<td>current server name <br />
-								(what the server claims to be) undef if not connected
-								</td>
+		<td>server</td>
+		<td>
+			current server name <br />
+			(what the server claims to be) undef if not connected
+		</td>
+	</tr> <tr>
+		<td>state_cursor</td>
+		<td>current inputbox cursor position in characters</td>
 	</tr>	<tr>
 		<td>topic</td>	<td>current channel topic</td>
 	</tr>	<tr>
@@ -481,9 +495,6 @@ a context cannot be found.</p>
 								/home/user/.xchat2<br />
 								C:\Documents and Settings\user\Application Data\X-Chat 2
 								</td>
-	</tr>	<tr>
-		<td>state_cursor</td>
-		<td>current inputbox cursor position in characters</td>
 	</tr>
 </table><p>This function is used to retrieve certain information about the current
 context.</p><p>
