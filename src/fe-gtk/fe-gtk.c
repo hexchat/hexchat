@@ -926,6 +926,8 @@ fe_server_event (server *serv, int type, int arg)
 				gtk_widget_set_sensitive (gui->menu_item[MENU_ID_AWAY], 0);
 				gtk_widget_set_sensitive (gui->menu_item[MENU_ID_DISCONNECT], 0);
 				gtk_widget_set_sensitive (gui->menu_item[MENU_ID_JOIN], 0);
+				/* close the join-dialog, if one exists */
+				joind (1, serv);
 			}
 		}
 		list = list->next;
