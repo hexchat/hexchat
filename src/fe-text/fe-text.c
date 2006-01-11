@@ -667,6 +667,10 @@ fe_userlist_clear (struct session *sess)
 {
 }
 void
+fe_userlist_set_selected (struct session *sess)
+{
+}
+void
 fe_dcc_add (struct DCC *dcc)
 {
 }

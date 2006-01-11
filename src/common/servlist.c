@@ -560,7 +560,7 @@ servlist_connect (session *sess, ircnet *net, gboolean join)
 }
 
 int
-servlist_connect_by_netname (session *sess, char *network)
+servlist_connect_by_netname (session *sess, char *network, gboolean join)
 {
 	ircnet *net;
 	GSList *list = network_list;
@@ -571,7 +571,7 @@ servlist_connect_by_netname (session *sess, char *network)
 
 		if (strcasecmp (net->name, network) == 0)
 		{
-			servlist_connect (sess, net, FALSE);
+			servlist_connect (sess, net, join);
 			return 1;
 		}
 

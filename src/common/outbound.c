@@ -2793,6 +2793,7 @@ cmd_server (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	char *pass = NULL;
 	char *channel = NULL;
 	int use_ssl = FALSE;
+	int is_url = TRUE;
 	server *serv = sess->server;
 
 #ifdef USE_OPENSSL
@@ -2805,7 +2806,10 @@ cmd_server (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 #endif
 
 	if (!parse_irc_url (word[2 + offset], &server_name, &port, &channel, &use_ssl))
+	{
+		is_url = FALSE;
 		server_name = word[2 + offset];
+	}
 	if (port)
 		pass = word[3 + offset];
 	else
@@ -2848,7 +2852,7 @@ cmd_server (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 #endif
 
 	/* try to connect by Network name */
-	if (servlist_connect_by_netname (sess, server_name))
+	if (servlist_connect_by_netname (sess, server_name, !is_url))
 		return TRUE;
 
 	if (*port)
