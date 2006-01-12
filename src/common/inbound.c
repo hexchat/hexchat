@@ -44,23 +44,6 @@
 #include "xchatc.h"
 
 
-/* black n white(0/1) are bad colors for nicks, and we'll use color 2 for us */
-/* also light/dark gray (14/15) */
-/* 5,7,8 are all shades of yellow which happen to look dman near the same */
-
-static char rcolors[] = { 19, 20, 22, 24, 25, 26, 27, 28, 29 };
-
-static int
-color_of (char *name)
-{
-	int i = 0, sum = 0;
-
-	while (name[i])
-		sum += name[i++];
-	sum %= sizeof (rcolors) / sizeof (char);
-	return rcolors[sum];
-}
-
 void
 clear_channel (session *sess)
 {
@@ -373,15 +356,7 @@ inbound_action (session *sess, char *chan, char *from, char *text, int fromme, i
 		}
 	}
 
-	if (prefs.colorednicks)
-	{
-		char tbuf[NICKLEN + 4];
-		snprintf (tbuf, sizeof (tbuf), "\003%d%s", color_of (from), from);
-		EMIT_SIGNAL (XP_TE_CHANACTION, sess, tbuf, text, nickchar, NULL, 0);
-	} else
-	{
-		EMIT_SIGNAL (XP_TE_CHANACTION, sess, from, text, nickchar, NULL, 0);
-	}
+	EMIT_SIGNAL (XP_TE_CHANACTION, sess, from, text, nickchar, NULL, 0);
 }
 
 void
@@ -444,12 +419,6 @@ inbound_chanmsg (server *serv, session *sess, char *chan, char *from, char *text
 		EMIT_SIGNAL (XP_TE_DPRIVMSG, sess, from, text, idtext, NULL, 0);
 	else if (hilight)
 		EMIT_SIGNAL (XP_TE_HCHANMSG, sess, from, text, nickchar, idtext, 0);
-	else if (prefs.colorednicks)
-	{
-		char tbuf[NICKLEN + 4];
-		snprintf (tbuf, sizeof (tbuf), "\003%d%s", color_of (from), from);
-		EMIT_SIGNAL (XP_TE_CHANMSG, sess, tbuf, text, nickchar, idtext, 0);
-	}
 	else
 		EMIT_SIGNAL (XP_TE_CHANMSG, sess, from, text, nickchar, idtext, 0);
 }

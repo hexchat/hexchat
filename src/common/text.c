@@ -1240,8 +1240,10 @@ load_text_events ()
 	1) if prefs.stripcolor is set, filter all style control codes from arguments
 	2) always strip \001 (ATTR_HIDDEN) from arguments: it is only for use in the format string itself
 */
+#define ARG_FLAG(argn) (1 << argn)
+
 void
-format_event (session *sess, int index, char **args, char *o, int sizeofo)
+format_event (session *sess, int index, char **args, char *o, int sizeofo, unsigned int stripcolor_args)
 {
 	int len, oi, ii, numargs;
 	char *i, *ar, d, a, done_all = FALSE;
@@ -1288,7 +1290,7 @@ format_event (session *sess, int index, char **args, char *o, int sizeofo)
 				printf ("arg[%d] is NULL in print event\n", a + 1);
 			} else
 			{
-				if (prefs.stripcolor) len = strip_color2 (ar, -1, &o[oi], STRIP_ALL);
+				if (stripcolor_args & ARG_FLAG(a + 1)) len = strip_color2 (ar, -1, &o[oi], STRIP_ALL);
 				else len = strip_hidden_attribute (ar, &o[oi]);
 				oi += len;
 			}
@@ -1321,10 +1323,10 @@ format_event (session *sess, int index, char **args, char *o, int sizeofo)
 }
 
 static void
-display_event (session *sess, int event, char **args)
+display_event (session *sess, int event, char **args, unsigned int stripcolor_args)
 {
 	char o[4096];
-	format_event (sess, event, args, o, sizeof (o));
+	format_event (sess, event, args, o, sizeof (o), stripcolor_args);
 	if (o[0])
 		PrintText (sess, o);
 }
@@ -1505,6 +1507,25 @@ pevt_build_string (const char *input, char **output, int *max_arg)
 	return 0;
 }
 
+
+/* black n white(0/1) are bad colors for nicks, and we'll use color 2 for us */
+/* also light/dark gray (14/15) */
+/* 5,7,8 are all shades of yellow which happen to look dman near the same */
+
+static char rcolors[] = { 19, 20, 22, 24, 25, 26, 27, 28, 29 };
+
+static int
+color_of (char *name)
+{
+	int i = 0, sum = 0;
+
+	while (name[i])
+		sum += name[i++];
+	sum %= sizeof (rcolors) / sizeof (char);
+	return rcolors[sum];
+}
+
+
 /* called by EMIT_SIGNAL macro */
 
 void
@@ -1512,6 +1533,15 @@ text_emit (int index, session *sess, char *a, char *b, char *c, char *d)
 {
 	char *word[PDIWORDS];
 	int i;
+	unsigned int stripcolor_args = (prefs.stripcolor ? 0xFFFFFFFF : 0);
+	char tbuf[NICKLEN + 4];
+
+	if (prefs.colorednicks && (index == XP_TE_CHANACTION || index == XP_TE_CHANMSG))
+	{
+		snprintf (tbuf, sizeof (tbuf), "\003%d%s", color_of (a), a);
+		a = tbuf;
+		stripcolor_args &= ~ARG_FLAG(1);	/* don't strip color from this argument */
+	}
 
 	word[0] = te[index].name;
 	word[1] = (a ? a : "\000");
@@ -1528,7 +1558,7 @@ text_emit (int index, session *sess, char *a, char *b, char *c, char *d)
 
 	/* If a plugin's callback executes "/close", 'sess' may be invalid */
 	if (is_session (sess))
-		display_event (sess, index, word);
+		display_event (sess, index, word, stripcolor_args);
 }
 
 int
