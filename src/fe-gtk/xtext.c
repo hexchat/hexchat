@@ -2791,7 +2791,7 @@ gtk_xtext_reset (GtkXText * xtext, int mark, int attribs)
 static int
 gtk_xtext_render_str (GtkXText * xtext, int y, textentry * ent,
 							 unsigned char *str, int len, int win_width, int indent,
-							 int line, int left_only)
+							 int line, int left_only, int *x_size_ret)
 {
 	GdkGC *gc;
 	int i = 0, x = indent, j = 0;
@@ -3150,6 +3150,10 @@ gtk_xtext_render_str (GtkXText * xtext, int y, textentry * ent,
 	}
 
 	xtext->dont_render2 = FALSE;
+
+	/* return how much we drew in the x direction */
+	if (x_size_ret)
+		*x_size_ret = x - indent;
 
 	return ret;
 }
@@ -3957,12 +3961,27 @@ gtk_xtext_render_line (GtkXText * xtext, textentry * ent, int line,
 		char *time_str;
 		int stamp_size = xtext_get_stamp_str (ent->stamp, &time_str);
 		int tmp = ent->mb;
+		int xsize;
+
 		y = (xtext->fontsize * line) + xtext->font->ascent - xtext->pixel_offset;
 		ent->mb = TRUE;
 		gtk_xtext_render_str (xtext, y, ent, time_str, stamp_size,
-									 win_width, 2, line, TRUE);
+									 win_width, 2, line, TRUE, &xsize);
 		ent->mb = tmp;
 		g_free (time_str);
+
+		/* with a non-fixed-width font, sometimes we don't draw enough
+			background i.e. when this stamp is shorter than xtext->stamp_width */
+		xsize += MARGIN;
+		if (xsize < xtext->stamp_width)
+		{
+			y -= xtext->font->ascent;
+			xtext_draw_bg (xtext,
+								xsize,	/* x */
+								y,			/* y */
+								xtext->stamp_width - xsize,	/* width */
+								xtext->fontsize					/* height */);
+		}
 	}
 #endif
 
@@ -3991,7 +4010,7 @@ gtk_xtext_render_line (GtkXText * xtext, textentry * ent, int line,
 		if (!subline)
 		{
 			if (!gtk_xtext_render_str (xtext, y, ent, str, len, win_width,
-												indent, line, FALSE))
+												indent, line, FALSE, NULL))
 			{
 				/* small optimization */
 				gtk_xtext_draw_marker (xtext, ent, y - xtext->fontsize * (taken + start_subline + 1));
@@ -4001,7 +4020,7 @@ gtk_xtext_render_line (GtkXText * xtext, textentry * ent, int line,
 		{
 			xtext->dont_render = TRUE;
 			gtk_xtext_render_str (xtext, y, ent, str, len, win_width,
-										 indent, line, FALSE);
+										 indent, line, FALSE, NULL);
 			xtext->dont_render = FALSE;
 			subline--;
 			line--;
