@@ -378,7 +378,7 @@ mg_inputbox_cb (GtkWidget *igad, session_gui *gui)
 void
 fe_set_title (session *sess)
 {
-	char tbuf[256];
+	char tbuf[384];
 	int type;
 
 	if (sess->gui->is_tab && sess != current_tab)
@@ -649,16 +649,17 @@ mg_restore_entry (GtkWidget *entry, char **text)
 void
 mg_set_topic_tip (session *sess)
 {
-	char buf[512];
+	char *text;
 
 	switch (sess->type)
 	{
 	case SESS_CHANNEL:
 		if (sess->topic)
 		{
-			snprintf (buf, sizeof (buf), _("Topic for %s is: %s"), sess->channel,
+			text = g_strdup_printf (_("Topic for %s is: %s"), sess->channel,
 						 sess->topic);
-			add_tip (sess->gui->topic_entry, buf);
+			add_tip (sess->gui->topic_entry, text);
+			g_free (text);
 		} else
 			add_tip (sess->gui->topic_entry, _("No topic is set"));
 		break;
