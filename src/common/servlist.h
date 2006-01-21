@@ -32,7 +32,8 @@ extern GSList *network_list;
 #define FLAG_AUTO_CONNECT		8
 #define FLAG_USE_PROXY			16
 #define FLAG_ALLOW_INVALID		32
-#define FLAG_COUNT				6
+#define FLAG_FAVORITE			64	/* only used by XChat-Aqua for now */
+#define FLAG_COUNT				7
 
 void servlist_init (void);
 int servlist_save (void);
