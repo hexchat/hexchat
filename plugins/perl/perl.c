@@ -157,6 +157,35 @@ execute_perl (SV * function, char *args)
 	return ret_value;
 }
 
+static char *
+get_filename (char *word[], char *word_eol[])
+{
+	int len;
+	char *file;
+
+	len = strlen (word[2]);
+
+	/* if called as /load "filename.pl" the only difference between word and
+	 * word_eol will be the two quotes
+	 */
+	
+	if (strchr (word[2], ' ') != NULL
+		|| (strlen (word_eol[2]) - strlen(word[2])) == 2 )
+	{
+		file = word[2];
+	} else {
+		file = word_eol[2];
+	}
+
+	len = strlen (file);
+
+	if (len > 3 && strncasecmp (".pl", file + len - 3, 3) == 0) {
+		return file;
+	}
+
+	return NULL;
+}
+
 static int
 fd_cb (int fd, int flags, void *userdata)
 {
@@ -1212,17 +1241,10 @@ perl_command_reloadall (char *word[], char *word_eol[], void *userdata)
 static int
 perl_command_load (char *word[], char *word_eol[], void *userdata)
 {
-	int len;
-	char *file;
+	char *file = get_filename (word, word_eol);
 
-	if (strchr (word[2], ' ') != NULL) {
-		file = word[2];
-	} else {
-		file = word_eol[2];
-	}
-
-	len = strlen (file);
-	if (len > 3 && strcasecmp (".pl", file + len - 3) == 0) {
+	if (file != NULL )
+	{
 		perl_load_file (file);
 		return XCHAT_EAT_XCHAT;
 	}
@@ -1233,22 +1255,11 @@ perl_command_load (char *word[], char *word_eol[], void *userdata)
 static int
 perl_command_unload (char *word[], char *word_eol[], void *userdata)
 {
-	int len;
-	char *file;
-	if (my_perl != NULL) {
-		if (strchr (word[2], ' ') != NULL) {
-			file = word[2];
-		} else {
-			file = word_eol[2];
-		}
-
-		len = strlen (file);
-
-		if (len > 3 && strcasecmp (".pl", file + len - 3) == 0) {
-			execute_perl (sv_2mortal (newSVpv ("Xchat::Embed::unload", 0)),
-							  file);
-			return XCHAT_EAT_XCHAT;
-		}
+	char *file = get_filename (word, word_eol);
+	
+	if (my_perl != NULL && file != NULL) {
+		execute_perl (sv_2mortal (newSVpv ("Xchat::Embed::unload", 0)), file);
+		return XCHAT_EAT_XCHAT;
 	}
 
 	return XCHAT_EAT_NONE;
@@ -1257,23 +1268,13 @@ perl_command_unload (char *word[], char *word_eol[], void *userdata)
 static int
 perl_command_reload (char *word[], char *word_eol[], void *userdata)
 {
-	int len;
-	char *file;
-	if (my_perl != NULL) {
-		if (strchr (word[2], ' ') != NULL) {
-			file = word[2];
-		} else {
-			file = word_eol[2];
-		}
-
-		len = strlen (file);
-
-		if (len > 3 && strcasecmp (".pl", file + len - 3) == 0) {
-			execute_perl (sv_2mortal (newSVpv ("Xchat::Embed::reload", 0)),
-							  file);
-			return XCHAT_EAT_XCHAT;
-		}
+	char *file = get_filename (word, word_eol);
+	
+	if (my_perl != NULL && file != NULL) {
+		execute_perl (sv_2mortal (newSVpv ("Xchat::Embed::reload", 0)), file);
+		return XCHAT_EAT_XCHAT;
 	}
+	
 	return XCHAT_EAT_XCHAT;
 }
 

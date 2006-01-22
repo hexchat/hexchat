@@ -366,7 +366,7 @@ sub context_info {
 sub strip_code {
 	my $pattern = qr[
 		\cB| #Bold
-		\cC\d{0,2}(?:,\d{0,2})?| #Color
+		\cC\d{0,2}(?:,\d{1,2})?| #Color
 		\cG| #Beep
 		\cO| #Reset
 		\cV| #Reverse
