@@ -72,7 +72,7 @@ struct dccstat_info dccstat[] = {
 };
 
 static int dcc_global_throttle;	/* 0x1 = sends, 0x2 = gets */
-static int dcc_sendcpssum, dcc_getcpssum;
+/*static*/ int dcc_sendcpssum, dcc_getcpssum;
 
 static struct DCC *new_dcc (void);
 static void dcc_close (struct DCC *dcc, int dccstat, int destroy);
@@ -735,9 +735,9 @@ dcc_read (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 		if (dcc->pos >= dcc->size)
 		{
 			dcc_send_ack (dcc);
-			dcc_calc_average_cps (dcc);
-			sprintf (buf, "%d", dcc->cps);
 			dcc_close (dcc, STAT_DONE, FALSE);
+			dcc_calc_average_cps (dcc);	/* this must be done _after_ dcc_close, or dcc_remove_from_sum will see the wrong value in dcc->cps */
+			sprintf (buf, "%d", dcc->cps);
 			EMIT_SIGNAL (XP_TE_DCCRECVCOMP, dcc->serv->front_session,
 							 dcc->file, dcc->destfile, dcc->nick, buf, 0);
 			return TRUE;
@@ -1008,8 +1008,8 @@ dcc_read_ack (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 	if (dcc->pos >= dcc->size && dcc->ack >= (dcc->size & 0xffffffff))
 	{
 		dcc->ack = dcc->size;	/* force 100% ack for >4 GB */
-		dcc_calc_average_cps (dcc);
 		dcc_close (dcc, STAT_DONE, FALSE);
+		dcc_calc_average_cps (dcc);	/* this must be done _after_ dcc_close, or dcc_remove_from_sum will see the wrong value in dcc->cps */
 		sprintf (buf, "%d", dcc->cps);
 		EMIT_SIGNAL (XP_TE_DCCSENDCOMP, dcc->serv->front_session,
 						 file_part (dcc->file), dcc->nick, buf, NULL, 0);
