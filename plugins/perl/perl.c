@@ -349,7 +349,7 @@ command_cb (char *word[], char *word_eol[], void *userdata)
 	dSP;
 	ENTER;
 	SAVETMPS;
-
+	
 	if (data->depth)
 		return XCHAT_EAT_NONE;
 
@@ -801,6 +801,16 @@ XS (XS_Xchat_hook_fd)
 		flags = (int) SvIV (ST (2));
 		userdata = ST (3);
 		data = NULL;
+
+#ifdef WIN32
+		if ((flags & XCHAT_FD_NOTSOCKET) == 0) {
+			fd = _get_osfhandle(fd);
+			if (fd < 0) {
+				xchat_print(ph, "Invalid file descriptor");
+				XSRETURN_UNDEF;
+			}
+		}
+#endif
 
 		data = malloc (sizeof (HookData));
 		if (data == NULL) {
