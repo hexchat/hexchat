@@ -2246,6 +2246,8 @@ cmd_load (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		while (fgets (tbuf, 1024, fp))
 		{
 			nl = strchr (tbuf, '\n');
+			if (nl == tbuf) /* skip empty commands */
+				continue;
 			if (nl)
 				*nl = 0;
 			if (tbuf[0] == prefs.cmdchar[0])

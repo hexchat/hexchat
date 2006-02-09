@@ -14,6 +14,9 @@ Where "NUMBER" is the bug number.
    "/server irc://freenode".
  - Fixed building of xchat-text (although not recommended!).
  - Fixed using Strip mIRC colors & Color nicks at the same time.
+ - Fixed a bug in timestamp drawing using non-fixed-width font [1404341].
+ - Fixed display of realname in the nick-name right-click menu when
+   it contains a '<' or '&' character [1403069].
  - 
  - 
  - 
@@ -22,6 +25,7 @@ Where "NUMBER" is the bug number.
   * Fixed filename checks so that '/load "filenameWithoutSpaces.pl"'
     will also work (Lian Wan Situ)
   * Fixed hook_fd to work with pipes on Windows. (Vince Pit)
+
 
 ----------------------------------------------------------------------
  2.6.1 - 06/Jan/2006
