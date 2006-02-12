@@ -455,7 +455,7 @@ dcc_write_chat (char *nick, char *text)
 				1 - the dcc is closed! */
 
 static int
-dcc_chat_line (struct DCC *dcc, char *line, char *tbuf)
+dcc_chat_line (struct DCC *dcc, char *line)
 {
 	session *sess;
 	char *word[PDIWORDS];
@@ -465,6 +465,7 @@ dcc_chat_line (struct DCC *dcc, char *line, char *tbuf)
 	int ret, i;
 	int len;
 	gsize utf_len;
+	char portbuf[32];
 
 	len = strlen (line);
 	if (dcc->serv->using_cp1255)
@@ -491,11 +492,11 @@ dcc_chat_line (struct DCC *dcc, char *line, char *tbuf)
 	if (!sess)
 		sess = dcc->serv->front_session;
 
-	sprintf (tbuf, "%d", dcc->port);
+	sprintf (portbuf, "%d", dcc->port);
 
 	word[0] = "DCC Chat Text";
 	word[1] = net_ip (dcc->addr);
-	word[2] = tbuf;
+	word[2] = portbuf;
 	word[3] = dcc->nick;
 	word[4] = line;
 	for (i = 5; i < PDIWORDS; i++)
@@ -546,8 +547,8 @@ static gboolean
 dcc_read_chat (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 {
 	int i, len, dead;
-	char tbuf[1226];
-	char lbuf[1026];
+	char portbuf[32];
+	char lbuf[2050];
 
 	while (1)
 	{
@@ -569,9 +570,9 @@ dcc_read_chat (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 				if (would_block ())
 					return TRUE;
 			}
-			sprintf (tbuf, "%d", dcc->port);
+			sprintf (portbuf, "%d", dcc->port);
 			EMIT_SIGNAL (XP_TE_DCCCHATF, dcc->serv->front_session, dcc->nick,
-							 net_ip (dcc->addr), tbuf,
+							 net_ip (dcc->addr), portbuf,
 							 errorstring ((len < 0) ? sock_error () : 0), 0);
 			dcc_close (dcc, STAT_FAILED, FALSE);
 			return TRUE;
@@ -586,7 +587,7 @@ dcc_read_chat (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 				break;
 			case '\n':
 				dcc->dccchat->linebuf[dcc->dccchat->pos] = 0;
-				dead = dcc_chat_line (dcc, dcc->dccchat->linebuf, tbuf);
+				dead = dcc_chat_line (dcc, dcc->dccchat->linebuf);
 
 				if (dead || !dcc->dccchat) /* the dcc has been closed, don't use (DCC *)! */
 					return TRUE;
@@ -597,7 +598,7 @@ dcc_read_chat (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 				break;
 			default:
 				dcc->dccchat->linebuf[dcc->dccchat->pos] = lbuf[i];
-				if (dcc->dccchat->pos < 1022)
+				if (dcc->dccchat->pos < (sizeof (dcc->dccchat->linebuf) - 1))
 					dcc->dccchat->pos++;
 			}
 			i++;

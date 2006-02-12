@@ -71,7 +71,7 @@ struct DCC
 
 struct dcc_chat
 {
-	char linebuf[1024];
+	char linebuf[2048];
 	int pos;
 };
 
