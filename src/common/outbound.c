@@ -3737,10 +3737,8 @@ handle_say (session *sess, char *text, int check_spch)
 	char *word_eol[PDIWORDS];
 	char pdibuf_static[1024];
 	char newcmd_static[1024];
-	char tbuf_static[4096];
 	char *pdibuf = pdibuf_static;
 	char *newcmd = newcmd_static;
-	char *tbuf = tbuf_static;
 	int len;
 	int newcmdlen = sizeof newcmd_static;
 
@@ -3756,9 +3754,6 @@ handle_say (session *sess, char *text, int check_spch)
 
 	if (len + NICKLEN >= newcmdlen)
 		newcmd = malloc (newcmdlen = len + NICKLEN + 1);
-
-	if (len * 2 >= sizeof tbuf_static)
-		tbuf = malloc (len * 2 + 1);
 
 	if (check_spch && prefs.perc_color)
 		check_special_chars (text, prefs.perc_ascii);
@@ -3858,9 +3853,6 @@ xit:
 
 	if (newcmd != newcmd_static)
 		free (newcmd);
-
-	if (tbuf != tbuf_static)
-		free (tbuf);
 }
 
 /* handle a command, without the '/' prefix */
