@@ -804,6 +804,9 @@ XS (XS_Xchat_hook_fd)
 
 #ifdef WIN32
 		if ((flags & XCHAT_FD_NOTSOCKET) == 0) {
+			/* this _get_osfhandle if from win32iop.h in the perl distribution,
+			 *  not the one provided by Windows
+			 */ 
 			fd = _get_osfhandle(fd);
 			if (fd < 0) {
 				xchat_print(ph, "Invalid file descriptor");
