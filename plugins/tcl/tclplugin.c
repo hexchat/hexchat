@@ -15,7 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
-static char RCSID[] = "$Id: tclplugin.c,v 1.59 2005-08-11 02:37:55 mooooooo Exp $";
+static char RCSID[] = "$Id: tclplugin.c,v 1.60 2006-02-19 16:04:35 mooooooo Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -1574,6 +1574,7 @@ static int tcl_users(ClientData cd, Tcl_Interp * irp, int argc, const char *argv
         Tcl_DStringAppendElement(&ds, "prefix");
         Tcl_DStringAppendElement(&ds, "away");
         Tcl_DStringAppendElement(&ds, "lasttalk");
+        Tcl_DStringAppendElement(&ds, "selected");
         Tcl_DStringEndSublist(&ds);
 
         while (xchat_list_next(ph, list)) {
@@ -1583,6 +1584,7 @@ static int tcl_users(ClientData cd, Tcl_Interp * irp, int argc, const char *argv
             Tcl_DStringAppendElement(&ds, (const char *) xchat_list_str(ph, list, "prefix"));
             Tcl_DStringAppendElement(&ds, myitoa((long)xchat_list_int(ph, list, "away")));
             Tcl_DStringAppendElement(&ds, myitoa((long)xchat_list_time(ph, list, "lasttalk")));
+            Tcl_DStringAppendElement(&ds, myitoa((long)xchat_list_int(ph, list, "selected")));
             Tcl_DStringEndSublist(&ds);
         }
 
