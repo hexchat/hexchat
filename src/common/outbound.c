@@ -806,8 +806,11 @@ cmd_dcc (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 
 			return TRUE;
 		}
-	} else
-		dcc_show_list (sess);
+
+		return FALSE;
+	}
+
+	dcc_show_list (sess);
 	return TRUE;
 }
 

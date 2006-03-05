@@ -96,6 +96,7 @@ static const char *pages[]=
 	"CP1256 (Arabic)",
 	"CP1257 (Baltic)",
 	"GB18030 (Chinese)",
+	"TIS-620 (Thai)",
 	NULL
 };
 
