@@ -655,6 +655,8 @@ inbound_005 (server * serv, char *word[])
 			/* use /NICKSERV */
 			if (strcasecmp (word[w] + 8, "RusNet") == 0)
 				serv->nickservtype = 1;
+			else if (strcasecmp (word[w] + 8, "UniBG") == 0)
+				serv->nickservtype = 3;
 
 		} else if (strncmp (word[w], "CASEMAPPING=", 12) == 0)
 		{
