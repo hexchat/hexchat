@@ -887,8 +887,7 @@ servlist_load (void)
 	char *tmp;
 	ircnet *net = NULL;
 
-	snprintf (buf, sizeof (buf), "%s/servlist_.conf", get_xdir_fs ());
-	fp = fopen (buf, "r");
+	fp = xchat_fopen_file ("servlist_.conf", "r", 0);
 	if (!fp)
 		return FALSE;
 
@@ -1011,7 +1010,8 @@ servlist_save (void)
 	snprintf (buf, sizeof (buf), "%s/servlist_.conf", get_xdir_fs ());
 	if (access (buf, F_OK) != 0)
 		first = TRUE;
-	fp = fopen (buf, "w");
+
+	fp = xchat_fopen_file ("servlist_.conf", "w", 0);
 	if (!fp)
 		return FALSE;
 

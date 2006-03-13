@@ -66,13 +66,10 @@ void
 notify_save (void)
 {
 	int fh;
-	char buf[256];
 	struct notify *notify;
 	GSList *list = notify_list;
 
-	snprintf (buf, sizeof buf, "%s/notify.conf", get_xdir_fs ());
-
-	fh = open (buf, O_TRUNC | O_WRONLY | O_CREAT | OFLAGS, 0600);
+	fh = xchat_open_file ("notify.conf", O_TRUNC | O_WRONLY | O_CREAT, 0600, XOF_DOMODE);
 	if (fh != -1)
 	{
 		while (list)
@@ -92,9 +89,7 @@ notify_load (void)
 	int fh;
 	char buf[256];
 
-	snprintf (buf, sizeof buf, "%s/notify.conf", get_xdir_fs ());
-
-	fh = open (buf, O_RDONLY | OFLAGS);
+	fh = xchat_open_file ("notify.conf", O_RDONLY, 0, 0);
 	if (fh != -1)
 	{
 		while (waitline (fh, buf, sizeof buf, FALSE) != -1)

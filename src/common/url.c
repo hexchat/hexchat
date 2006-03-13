@@ -59,7 +59,7 @@ url_save (const char *fname, const char *mode)
 {
 	FILE *fd;
 
-	fd = fopen (fname, mode);
+	fd = xchat_fopen_file (fname, mode, 0);
 	if (fd == NULL)
 		return;
 
@@ -70,12 +70,7 @@ url_save (const char *fname, const char *mode)
 void
 url_autosave (void)
 {
-	char *buf;
-
-	buf = malloc (512);
-	snprintf (buf, 512, "%s/url.save", get_xdir_fs ());
-	url_save (buf, "a");
-	free (buf);
+	url_save ("url.save", "a");
 }
 
 static int

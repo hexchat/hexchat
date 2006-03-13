@@ -24,6 +24,10 @@ void list_loadconf (char *file, GSList ** list, char *defaultconf);
 int list_delentry (GSList ** list, char *name);
 void list_addentry (GSList ** list, char *cmd, char *name);
 int cmd_set (session *sess, char *tbuf, char *word[], char *word_eol[]);
+int xchat_open_file (char *file, int flags, int mode, int xof_flags);
+FILE *xchat_fopen_file (const char *file, const char *mode, int xof_flags);
+#define XOF_DOMODE 1
+#define XOF_FULLPATH 2
 
 #define STRUCT_OFFSET_STR(type,field) \
 ( (unsigned int) (((char *) (&(((type *) NULL)->field)))- ((char *) NULL)) )

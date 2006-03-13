@@ -1115,14 +1115,11 @@ pevent_load (char *filename)
 	int penum = 0;
 	char *ofs;
 
-	buf = malloc (1000);
 	if (filename == NULL)
-		snprintf (buf, 1000, "%s/pevents.conf", get_xdir_fs ());
-   else
-      safe_strcpy (buf, filename, 1000);
+		fd = xchat_open_file ("pevents.conf", O_RDONLY, 0, 0);
+	else
+		fd = xchat_open_file (filename, O_RDONLY, 0, XOF_FULLPATH);
 
-	fd = open (buf, O_RDONLY | OFLAGS);
-	free (buf);
 	if (fd == -1)
 		return 1;
 	if (fstat (fd, &st) != 0)
@@ -1583,10 +1580,11 @@ pevent_save (char *fn)
 	char buf[1024];
 
 	if (!fn)
-		snprintf (buf, sizeof (buf), "%s/pevents.conf", get_xdir_fs ());
+		fd = xchat_open_file ("pevents.conf", O_CREAT | O_TRUNC | O_WRONLY,
+									 0x180, XOF_DOMODE);
 	else
-		safe_strcpy (buf, fn, sizeof (buf));
-	fd = open (buf, O_CREAT | O_TRUNC | O_WRONLY | OFLAGS, 0x180);
+		fd = xchat_open_file (fn, O_CREAT | O_TRUNC | O_WRONLY, 0x180,
+									 XOF_FULLPATH | XOF_DOMODE);
 	if (fd == -1)
 	{
 		/*
@@ -1747,8 +1745,7 @@ sound_load ()
 
 	memset (&sound_files, 0, sizeof (char *) * (NUM_XP));
 
-	snprintf (buf, sizeof (buf), "%s/sound.conf", get_xdir_fs ());
-	fd = open (buf, O_RDONLY | OFLAGS);
+	fd = xchat_open_file ("sound.conf", O_RDONLY, 0, 0);
 	if (fd == -1)
 		return;
 
@@ -1778,8 +1775,8 @@ sound_save ()
 	int fd, i;
 	char buf[512];
 
-	snprintf (buf, sizeof (buf), "%s/sound.conf", get_xdir_fs ());
-	fd = open (buf, O_CREAT | O_TRUNC | O_WRONLY | OFLAGS, 0x180);
+	fd = xchat_open_file ("sound.conf", O_CREAT | O_TRUNC | O_WRONLY, 0x180,
+								 XOF_DOMODE);
 	if (fd == -1)
 		return;
 

@@ -124,12 +124,10 @@ palette_load (void)
 	int red, green, blue;
 	int upgrade = FALSE;
 
-	snprintf (prefname, sizeof (prefname), "%s/colors.conf", get_xdir_fs ());
-	fh = open (prefname, O_RDONLY | OFLAGS);
+	fh = xchat_open_file ("colors.conf", O_RDONLY, 0, 0);
 	if (fh == -1)
 	{
-		snprintf (prefname, sizeof (prefname), "%s/palette.conf", get_xdir_fs ());
-	   fh = open (prefname, O_RDONLY | OFLAGS);
+		fh = xchat_open_file ("palette.conf", O_RDONLY, 0, 0);
 		upgrade = TRUE;
 	}
 
@@ -208,8 +206,7 @@ palette_save (void)
 	int i, j, fh;
 	char prefname[256];
 
-	snprintf (prefname, sizeof (prefname), "%s/colors.conf", get_xdir_fs ());
-	fh = open (prefname, O_TRUNC | O_WRONLY | O_CREAT | OFLAGS, 0600);
+	fh = xchat_open_file ("colors.conf", O_TRUNC | O_WRONLY | O_CREAT, 0600, XOF_DOMODE);
 	if (fh != -1)
 	{
 		/* mIRC colors 0-31 are here */

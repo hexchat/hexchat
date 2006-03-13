@@ -326,8 +326,8 @@ dcc_close (struct DCC *dcc, int dccstat, int destroy)
 			{			
 				/* mgl: change this to use destfile_fs for correctness and to */
 				/* handle the case where dccwithnick is set */
-				download_move_to_completed_dir(prefs.dccdir, prefs.dcc_completed_dir, 
-					dcc->destfile_fs, prefs.dccpermissions);
+				move_file_utf8 (prefs.dccdir, prefs.dcc_completed_dir, 
+									 file_part (dcc->destfile), prefs.dccpermissions);
 			}
 
 		}

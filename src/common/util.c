@@ -1391,170 +1391,180 @@ const unsigned char rfc_tolowertab[] =
 	0xfa, 0xfb, 0xfc, 0xfd, 0xfe, 0xff
 };*/
 
-/* Code borrowed from gtk-gnutella */
-/* Takes care of moving a file from a temporary download location to a completed location */
-void
-download_move_to_completed_dir (char *dcc_dir, char *dcc_completed_dir, 
-	char *output_name, int dccpermissions)
+/*static int
+rename_utf8 (char *oldname, char *newname)
 {
-	/* Move a complete file to move_file_path */
-	/* mgl: this used to take just a filename and move it between dirs */
-	/* now it takes the full path of the target download and moves it */
+	int sav, res;
+	char *fso, *fsn;
 
-	char dl_src[4096];
-	char dl_dest[4096];
+	fso = g_filename_from_utf8 (oldname, -1, 0, 0, 0);
+	if (!fso)
+		return FALSE;
+	fsn = g_filename_from_utf8 (newname, -1, 0, 0, 0);
+	if (!fsn)
+	{
+		g_free (fso);
+		return FALSE;
+	}
+
+	res = rename (fso, fsn);
+	sav = errno;
+	g_free (fso);
+	g_free (fsn);
+	errno = sav;
+	return res;
+}
+
+static int
+unlink_utf8 (char *fname)
+{
+	int res;
+	char *fs;
+
+	fs = g_filename_from_utf8 (fname, -1, 0, 0, 0);
+	if (!fs)
+		return FALSE;
+
+	res = unlink (fs);
+	g_free (fs);
+	return res;
+}*/
+
+static gboolean
+file_exists_utf8 (char *fname)
+{
+	int res;
+	char *fs;
+
+	fs = g_filename_from_utf8 (fname, -1, 0, 0, 0);
+	if (!fs)
+		return FALSE;
+
+	res = access (fs, F_OK);
+	g_free (fs);
+	if (res == 0)
+		return TRUE;
+	return FALSE;
+}
+
+static gboolean
+copy_file (char *dl_src, char *dl_dest, int permissions)	/* FS encoding */
+{
+	int tmp_src, tmp_dest;
+	gboolean ok = FALSE;
 	char dl_tmp[4096];
-	char *output_fname;
 	int return_tmp, return_tmp2;
 
+	if ((tmp_src = open (dl_src, O_RDONLY | OFLAGS)) == -1)
+	{
+		fprintf (stderr, "Unable to open() file '%s' (%s) !", dl_src,
+				  strerror (errno));
+		return FALSE;
+	}
+
+	if ((tmp_dest =
+		 open (dl_dest, O_WRONLY | O_CREAT | O_TRUNC | OFLAGS, permissions)) < 0)
+	{
+		close (tmp_src);
+		fprintf (stderr, "Unable to create file '%s' (%s) !", dl_src,
+				  strerror (errno));
+		return FALSE;
+	}
+
+	for (;;)
+	{
+		return_tmp = read (tmp_src, dl_tmp, sizeof (dl_tmp));
+
+		if (!return_tmp)
+		{
+			ok = TRUE;
+			break;
+		}
+
+		if (return_tmp < 0)
+		{
+			fprintf (stderr, "download_move_to_completed_dir(): "
+				"error reading while moving file to save directory (%s)",
+				 strerror (errno));
+			break;
+		}
+
+		return_tmp2 = write (tmp_dest, dl_tmp, return_tmp);
+
+		if (return_tmp2 < 0)
+		{
+			fprintf (stderr, "download_move_to_completed_dir(): "
+				"error writing while moving file to save directory (%s)",
+				 strerror (errno));
+			break;
+		}
+
+		if (return_tmp < sizeof (dl_tmp))
+		{
+			ok = TRUE;
+			break;
+		}
+	}
+
+	close (tmp_dest);
+	close (tmp_src);
+	return ok;
+}
+
+/* Takes care of moving a file from a temporary download location to a completed location. Now in UTF-8. */
+void
+move_file_utf8 (char *src_dir, char *dst_dir, char *fname, int dccpermissions)
+{
+	char src[4096];
+	char dst[4096];
+	int res, i;
+	char *src_fs;	/* FileSystem encoding */
+	char *dst_fs;
+
 	/* if dcc_dir and dcc_completed_dir are the same then we are done */
-	if (0 == strcmp (dcc_dir, dcc_completed_dir) ||
-		 0 == dcc_completed_dir[0])
+	if (0 == strcmp (src_dir, dst_dir) ||
+		 0 == dst_dir[0])
 		return;			/* Already in "completed dir" */
 
-	/* mgl: since output_name is a full path, we just copy it */
-	strncpy (dl_src, output_name, sizeof(dl_src));
-	dl_src[sizeof(dl_src)-1] = '\0';
+	snprintf (src, sizeof (src), "%s/%s", src_dir, fname);
+	snprintf (dst, sizeof (dst), "%s/%s", dst_dir, fname);
 
-	/* mgl: output_name being a full path, we need to extract the filename */
-	/* off the end of it before continuing */
-
-	/* no path sep or no file after pathsep?  very suspicious, bail now! */
-	if ((NULL == (output_fname = strrchr(output_name, '/')))
-			|| !*(output_fname + 1))
-		return;
-	/* get the next char after the pathsep */
-	++output_fname;
-	/* throw the filename onto the directory name of the completed directory */
-	/* FIXME: dcc_completed_dir is UTF8, not fs encoding! */
-	snprintf (dl_dest, sizeof (dl_dest), "%s/%s", dcc_completed_dir,
-			   output_fname);
-	/* the rest should continue as before, but use output_fname */
-
-	dl_dest[sizeof(dl_dest)-1] = '\0';
-
-	/*
-	 * If, by extraordinary, there is already a file in the "completed dir"
-	 * with the same name, don't overwrite the existing file.
-	 *
-	 * NB: we assume either there is only one gnutella servent running, or if
-	 * several ones are running, that they are configured to use different
-	 * download and completed dirs.
-	 *
-	 *		--RAM, 03/11/2001
-	 */
-
-	if (access (dl_dest, F_OK) == 0)
+	/* already exists in completed dir? Append a number */
+	if (file_exists_utf8 (dst))
 	{
-		int destlen = strlen (dl_dest);
-		int i;
-		struct stat buf;
-
-		/*
-		 * There must be enough room for us to append the ".xx" extensions.
-		 * That's 3 chars, plus the trailing NUL.
-		 */
-
-		if (destlen >= sizeof (dl_dest) - 4)
+		for (i = 0; ; i++)
 		{
-			fprintf(stderr, "Found '%s' in completed dir, and path already too long",
-				output_fname);
-			return;
-		}
-
-		strncpy (dl_tmp, dl_dest, destlen);
-
-		for (i = 1; i < 100; i++)
-		{
-			char ext[4];
-
-			snprintf (ext, 4, ".%02d", i);
-			dl_tmp[destlen] = '\0';				/* Ignore prior attempt */
-			strncat (dl_tmp+destlen, ext, 3);	/* Append .01, .02, ...*/
-			if (-1 == stat (dl_tmp, &buf))
+			snprintf (dst, sizeof (dst), "%s/%s.%d", dst_dir, fname, i);
+			if (!file_exists_utf8 (dst))
 				break;
 		}
-
-		if (i == 100)
-		{
-			fprintf (stderr, "Found '%s' in completed dir, "
-				"and was unable to find another unique name",
-				output_fname);
-			return;
-		}
-
-		strncat (dl_dest+destlen, dl_tmp+destlen, 3);
 	}
 
-	/* First try and link it to the new locatation */
-
-	return_tmp = rename (dl_src, dl_dest);
-
-	if (return_tmp == -1 && (errno == EXDEV || errno == EPERM))
+	/* convert UTF-8 to filesystem encoding */
+	src_fs = g_filename_from_utf8 (src, -1, 0, 0, 0);
+	if (!src_fs)
+		return;
+	dst_fs = g_filename_from_utf8 (dst, -1, 0, 0, 0);
+	if (!dst_fs)
 	{
-		/* link failed becase either the two paths aren't on the */
+		g_free (src_fs);
+		return;
+	}
+
+	/* first try a simple rename move */
+	res = rename (src_fs, dst_fs);
+
+	if (res == -1 && (errno == EXDEV || errno == EPERM))
+	{
+		/* link failed because either the two paths aren't on the */
 		/* same filesystem or the filesystem doesn't support hard */
 		/* links, so we have to do a copy. */
-
-		int tmp_src, tmp_dest;
-		gboolean ok = FALSE;
-
-		if ((tmp_src = open (dl_src, O_RDONLY | OFLAGS)) == -1)
-		{
-			fprintf (stderr, "Unable to open() file '%s' (%s) !", dl_src,
-					  strerror (errno));
-			return;
-		}
-
-		if ((tmp_dest =
-			 open (dl_dest, O_WRONLY | O_CREAT | O_TRUNC | OFLAGS, dccpermissions)) < 0)
-		{
-			close (tmp_src);
-			fprintf (stderr, "Unable to create file '%s' (%s) !", dl_src,
-					  strerror (errno));
-			return;
-		}
-
-		for (;;)
-		{
-			return_tmp = read (tmp_src, dl_tmp, sizeof (dl_tmp));
-
-			if (!return_tmp)
-			{
-				ok = TRUE;
-				break;
-			}
-
-			if (return_tmp < 0)
-			{
-				fprintf (stderr, "download_move_to_completed_dir(): "
-					"error reading while moving file to save directory (%s)",
-					 strerror (errno));
-				break;
-			}
-
-			return_tmp2 = write (tmp_dest, dl_tmp, return_tmp);
-
-			if (return_tmp2 < 0)
-			{
-				fprintf (stderr, "download_move_to_completed_dir(): "
-					"error writing while moving file to save directory (%s)",
-					 strerror (errno));
-				break;
-			}
-
-			if (return_tmp < sizeof(dl_tmp))
-			{
-				ok = TRUE;
-				break;
-			}
-		}
-
-		close (tmp_dest);
-		close (tmp_src);
-		if (ok)
-			unlink (dl_src);
+		if (copy_file (src_fs, dst_fs, dccpermissions))
+			unlink (src_fs);
 	}
+
+	g_free (dst_fs);
+	g_free (src_fs);
 }
 
 int

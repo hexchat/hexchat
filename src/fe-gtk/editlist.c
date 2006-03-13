@@ -164,8 +164,7 @@ editlist_gui_save (GtkWidget * igad)
 	char buf[512];
 	char *a, *b;
 
-	snprintf (buf, sizeof buf, "%s/%s", get_xdir_fs (), editlist_file);
-	fh = open (buf, O_TRUNC | O_WRONLY | O_CREAT | OFLAGS, 0600);
+	fh = xchat_open_file (editlist_file, O_TRUNC | O_WRONLY | O_CREAT, 0600, XOF_DOMODE);
 	if (fh != -1)
 	{
 		while (1)

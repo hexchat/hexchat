@@ -43,7 +43,7 @@
 #include "ignore.h"
 #include "util.h"
 #include "fe.h"
-#include "cfgfiles.h"			  /* get_xdir() */
+#include "cfgfiles.h"			  /* xchat_fopen_file() */
 #include "network.h"				/* net_ip() */
 #include "modes.h"
 #include "notify.h"
@@ -87,8 +87,7 @@ random_line (char *file_name)
 	if (!file_name[0])
 		goto nofile;
 
-	snprintf (buf, sizeof (buf), "%s/%s", get_xdir_fs (), file_name);
-	fh = fopen (buf, "r");
+	fh = xchat_fopen_file (file_name, "r", 0);
 	if (!fh)
 	{
 	 nofile:
@@ -2235,7 +2234,7 @@ cmd_load (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	if (strcmp (word[2], "-e") == 0)
 	{
 		file = expand_homedir (word[3]);
-		fp = fopen (file, "r");
+		fp = xchat_fopen_file (file, "r", XOF_FULLPATH);
 		if (!fp)
 		{
 			PrintTextf (sess, "Cannot access %s\n", file);

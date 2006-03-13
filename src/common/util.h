@@ -42,7 +42,7 @@ int strip_hidden_attribute (char *src, char *dst);
 char *errorstring (int err);
 int waitline (int sok, char *buf, int bufsize, int);
 unsigned long make_ping_time (void);
-void download_move_to_completed_dir (char *dcc_dir, char *dcc_completed_dir, char *output_name, int dccpermissions);
+void move_file_utf8 (char *src_dir, char *dst_dir, char *fname, int dccpermissions);
 int mkdir_utf8 (char *dir);
 int token_foreach (char *str, char sep, int (*callback) (char *str, void *ud), void *ud);
 

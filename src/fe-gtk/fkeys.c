@@ -412,11 +412,9 @@ key_load_defaults ()
 		"CS\nPrior\nMove tab family left\nD1!\nD2!\n\n"\
 		"CS\nNext\nMove tab family right\nD1!\nD2!\n\n"\
 		"None\nF9\nRun Command\nD1:/GUI MENU TOGGLE\nD2!\n\n"
-	char buf[512];
 	int fd;
 
-	snprintf (buf, 512, "%s/keybindings.conf", get_xdir_fs ());
-	fd = open (buf, O_CREAT | O_TRUNC | O_WRONLY | OFLAGS, 0x180);
+	fd = xchat_open_file ("keybindings.conf", O_CREAT | O_TRUNC | O_WRONLY, 0x180, XOF_DOMODE);
 	if (fd < 0)
 		/* ???!!! */
 		return;
@@ -825,12 +823,11 @@ key_save_kbs (char *fn)
 	struct key_binding *kb;
 
 	if (!fn)
-		snprintf (buf, 510, "%s/keybindings.conf", get_xdir_fs ());
+		fd = xchat_open_file ("keybindings.conf", O_CREAT | O_TRUNC | O_WRONLY,
+									 0x180, XOF_DOMODE);
 	else
-	{
-		safe_strcpy (buf, fn, sizeof (buf));
-	}
-	fd = open (buf, O_CREAT | O_TRUNC | O_WRONLY | OFLAGS, 0x180);
+		fd = xchat_open_file (fn, O_CREAT | O_TRUNC | O_WRONLY,
+									 0x180, XOF_DOMODE | XOF_FULLPATH);
 	if (fd < 0)
 	{
 		fe_message (_("Error opening keys config file\n"), FE_MSG_ERROR);
@@ -953,14 +950,10 @@ key_load_kbs (char *filename)
 	struct key_binding *kb = NULL, *last = NULL;
 	int fd, len, pnt = 0, state = 0, n;
 
-	buf = malloc (1000);
 	if (filename == NULL)
-		snprintf (buf, 1000, "%s/keybindings.conf", get_xdir_fs ());
+		fd = xchat_open_file ("keybindings.conf", O_RDONLY, 0, 0);
 	else
-		strcpy (buf, filename);
-
-	fd = open (buf, O_RDONLY | OFLAGS);
-	free (buf);
+		fd = xchat_open_file (filename, O_RDONLY, 0, XOF_FULLPATH);
 	if (fd < 0)
 		return 1;
 	if (fstat (fd, &st) != 0)

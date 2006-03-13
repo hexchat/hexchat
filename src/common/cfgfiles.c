@@ -976,3 +976,30 @@ cmd_set (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 
 	return TRUE;
 }
+
+int
+xchat_open_file (char *file, int flags, int mode, int xof_flags)
+{
+	char buf[1024];
+
+	if (xof_flags & XOF_FULLPATH)
+		return open (file, flags | OFLAGS);
+
+	snprintf (buf, sizeof (buf), "%s/%s", get_xdir_fs (), file);
+	if (xof_flags & XOF_DOMODE)
+		return open (buf, flags | OFLAGS, mode);
+	else
+		return open (buf, flags | OFLAGS);
+}
+
+FILE *
+xchat_fopen_file (const char *file, const char *mode, int xof_flags)
+{
+	char buf[1024];
+
+	if (xof_flags & XOF_FULLPATH)
+		return fopen (file, mode);
+
+	snprintf (buf, sizeof (buf), "%s/%s", get_xdir_fs (), file);
+	return fopen (buf, mode);
+}
