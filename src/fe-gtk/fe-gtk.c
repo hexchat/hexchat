@@ -829,9 +829,9 @@ fe_set_inputbox_contents (session *sess, char *text)
 		gtk_entry_set_text (GTK_ENTRY (sess->gui->input_box), text);
 	} else
 	{
-		if (sess->res->topic_text)
-			free (sess->res->topic_text);
-		sess->res->topic_text = strdup (text);
+		if (sess->res->input_text)
+			free (sess->res->input_text);
+		sess->res->input_text = strdup (text);
 	}
 }
 

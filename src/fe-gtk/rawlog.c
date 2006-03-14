@@ -34,6 +34,7 @@
 
 #include "../common/xchat.h"
 #include "../common/xchatc.h"
+#include "../common/cfgfiles.h"
 #include "../common/server.h"
 #include "gtkutil.h"
 #include "palette.h"
@@ -57,7 +58,8 @@ rawlog_save (server *serv, char *file)
 	if (file)
 	{
 		if (serv->gui->rawlog_window)
-			fh = open (file, O_TRUNC | O_WRONLY | O_CREAT, 0600);
+			fh = xchat_open_file (file, O_TRUNC | O_WRONLY | O_CREAT,
+										 0600, XOF_DOMODE | XOF_FULLPATH);
 		if (fh != -1)
 		{
 			gtk_xtext_save (GTK_XTEXT (serv->gui->rawlog_textlist), fh);

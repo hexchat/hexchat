@@ -49,7 +49,6 @@
 #include <gtk/gtkcellrenderertext.h>
 #include <gtk/gtkhscale.h>
 #ifdef WIN32
-#include <windows.h>
 #include "../common/fe.h"
 #endif
 
@@ -830,7 +829,7 @@ setup_create_frame (GtkWidget **left, GtkWidget *box)
 static void
 open_data_cb (GtkWidget *button, gpointer data)
 {
-	ShellExecute (0, "open", get_xdir_fs (), NULL, NULL, SW_SHOWNORMAL);
+	fe_open_url (get_xdir_utf8 ());
 }
 #endif
 
