@@ -10,6 +10,7 @@ Where "NUMBER" is the bug number.
  2.6.2 - dd/Jul/2006
 ----------------------------------------------------------------------
 
+ - Updated translations (de, fr, ja, sv).
  - Made "/server freenode" send auto-join channels but not
    "/server irc://freenode".
  - Fixed building of xchat-text (although not recommended!).
@@ -17,14 +18,21 @@ Where "NUMBER" is the bug number.
  - Fixed a bug in timestamp drawing using non-fixed-width font [1404341].
  - Fixed display of realname in the nick-name right-click menu when
    it contains a '<' or '&' character [1403069].
+ - Added support for UniBG's nickserv (ongeboren).
+ - The move-to-complete-dir routine now treats encoding/UTF8 correctly.
+ - Show help when using wrong args for /DCC, instead of silence.
+ - Support receiving 2048 bytes per line from server and dcc-chat, so we
+   can support 512 UTF-8 characters that some servers now send.
  - 
  - 
  - 
+ -
+ - TCL: Added 'selected' flag to users list.
  - Perl:
   * Fixed strip_code so that it no longer take off extra commas (LifeIsPain)
   * Fixed filename checks so that '/load "filenameWithoutSpaces.pl"'
     will also work (Lian Wan Situ)
-  * Fixed hook_fd to work with pipes on Windows. (Vince Pit)
+  * Fixed hook_fd to work with sockets on Windows (Vince Pit).
 
 
 ----------------------------------------------------------------------

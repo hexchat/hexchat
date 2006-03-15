@@ -476,8 +476,8 @@ static char *str_copy = 0;		/* for all pop-up menus */
 void
 menu_nickmenu (session *sess, GdkEventButton *event, char *nick, int num_sel)
 {
-	char buf[256];
-	char *fmt;
+	char buf[512];
+	char *real, *fmt;
 	struct User *user;
 	struct away_msg *away;
 	GtkWidget *submenu, *menu = gtk_menu_new ();
@@ -506,8 +506,15 @@ menu_nickmenu (session *sess, GdkEventButton *event, char *nick, int num_sel)
 			/* let the translators tweak this if need be */
 			fmt = _("<tt><b>%-11s</b></tt> %s");
 
-			snprintf (buf, sizeof (buf), fmt, _("Real Name:"),
-						user->realname ? user->realname : _("Unknown"));
+			if (user->realname)
+			{
+				real = g_markup_escape_text (user->realname, -1);
+				snprintf (buf, sizeof (buf), fmt, _("Real Name:"), real);
+				g_free (real);
+			} else
+			{
+				snprintf (buf, sizeof (buf), fmt, _("Real Name:"), _("Unknown"));
+			}
 			menu_quick_item (0, buf, submenu, 2, 0);
 
 			snprintf (buf, sizeof (buf), fmt, _("User:"),
@@ -528,9 +535,11 @@ menu_nickmenu (session *sess, GdkEventButton *event, char *nick, int num_sel)
 				if (away)
 				{
 					char *msg = strip_color (away->message ? away->message : _("Unknown"), -1, STRIP_ALL);
-					snprintf (buf, sizeof (buf), fmt, _("Away Msg:"), msg);
-					menu_quick_item (0, buf, submenu, 2, 0);
+					real = g_markup_escape_text (msg, -1);
 					free (msg);
+					snprintf (buf, sizeof (buf), fmt, _("Away Msg:"), real);
+					g_free (real);
+					menu_quick_item (0, buf, submenu, 2, 0);
 				}
 			}
 

@@ -344,7 +344,7 @@ function. Then, to compile, type this at your command prompt:<br><br>
 <br>&nbsp;link /DLL /out:plugin.dll /SUBSYSTEM:WINDOWS plugin.obj /def:plugin.def
 <br><br>
 <font color="#00FF00">GCC (MINGW)</font>
-<br>&nbsp;gcc -Os -DWIN32 -c plugin.c<br>
+<br>&nbsp;gcc -Wall -Os -DWIN32 -c plugin.c<br>
 <br>&nbsp;dllwrap --def plugin.def --dllname plugin.dll plugin.o<br><br>
 </div>
 <br>For a complete example, have a look at the source code of the <a href="http://xchat.org/win32/testing/xcdns-src.zip">DNS Plugin</a>, which also contains a Makefile.
