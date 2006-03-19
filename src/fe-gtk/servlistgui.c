@@ -48,6 +48,13 @@
 static GtkWidget *serverlist_win = NULL;
 static GtkWidget *networks_tree;	/* network TreeView */
 static int ignore_changed = FALSE;
+#ifdef WIN32
+static int win_width = 324;
+static int win_height = 426;
+#else
+static int win_width = 364;
+static int win_height = 478;
+#endif
 
 /* global user info */
 static GtkWidget *entry_nick1;
@@ -500,6 +507,14 @@ static gint
 servlist_editwin_delete_cb (GtkWidget *win, GdkEventAny *event, gpointer none)
 {
 	servlist_edit_close_cb (NULL, NULL);
+	return FALSE;
+}
+
+static gboolean
+servlist_configure_cb (GtkWindow *win, GdkEventConfigure *event, gpointer none)
+{
+	/* remember the window size */
+	gtk_window_get_size (win, &win_width, &win_height);
 	return FALSE;
 }
 
@@ -1212,11 +1227,7 @@ servlist_open_networks (void)
 	servlist = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gtk_container_set_border_width (GTK_CONTAINER (servlist), 4);
 	gtk_window_set_title (GTK_WINDOW (servlist), _("XChat: Server List"));
-#ifdef WIN32
-	gtk_window_set_default_size (GTK_WINDOW (servlist), 324, 426);
-#else
-	gtk_window_set_default_size (GTK_WINDOW (servlist), 364, 478);
-#endif
+	gtk_window_set_default_size (GTK_WINDOW (servlist), win_width, win_height);
 	gtk_window_set_position (GTK_WINDOW (servlist), GTK_WIN_POS_MOUSE);
 	gtk_window_set_role (GTK_WINDOW (servlist), "servlist");
 	gtk_window_set_type_hint (GTK_WINDOW (servlist), GDK_WINDOW_TYPE_HINT_DIALOG);
@@ -1445,6 +1456,8 @@ fe_serverlist_open (session *sess)
 
 	g_signal_connect (G_OBJECT (serverlist_win), "delete_event",
 						 	G_CALLBACK (servlist_delete_cb), 0);
+	g_signal_connect (G_OBJECT (serverlist_win), "configure_event",
+							G_CALLBACK (servlist_configure_cb), 0);
 	g_signal_connect (G_OBJECT (gtk_tree_view_get_selection (GTK_TREE_VIEW (networks_tree))),
 							"changed", G_CALLBACK (servlist_network_row_cb), NULL);
 	g_signal_connect (G_OBJECT (networks_tree), "key_press_event",
