@@ -1882,7 +1882,12 @@ cmd_gui (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	} else if (!strcasecmp (word[2], "MSGBOX"))
 	{
 		fe_message (word[3], FE_MSG_INFO);
-		return TRUE;
+	} else if (!strcasecmp (word[2], "ATTACH"))
+	{
+		fe_ctrl_gui (sess, 7, 2);
+	} else if (!strcasecmp (word[2], "DETACH"))
+	{
+		fe_ctrl_gui (sess, 7, 1);
 	} else
 	{
 		return FALSE;
@@ -3242,7 +3247,8 @@ const struct commands xc_cmds[] = {
 	{"GETINT", cmd_getint, 0, 0, 1, "GETINT <default> <command> <prompt>"},
 	{"GETSTR", cmd_getstr, 0, 0, 1, "GETSTR <default> <command> <prompt>"},
 	{"GHOST", cmd_ghost, 1, 0, 1, N_("GHOST <nick> <password>, Kills a ghosted nickname")},
-	{"GUI", cmd_gui, 0, 0, 1, "GUI [SHOW|HIDE|FOCUS|FLASH|ICONIFY|MENU TOGGLE|COLOR <n>|MSGBOX <text>]"},
+	{"GUI", cmd_gui, 0, 0, 1, "GUI [ATTACH|DETACH|SHOW|HIDE|FOCUS|FLASH|ICONIFY|COLOR <n>]\n"
+									  "       GUI [MSGBOX <text>|MENU TOGGLE]"},
 	{"HELP", cmd_help, 0, 0, 1, 0},
 	{"HOP", cmd_hop, 1, 1, 1,
 	 N_("HOP <nick>, gives chanhalf-op status to the nick (needs chanop)")},

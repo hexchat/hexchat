@@ -952,7 +952,7 @@ menu_autodccsend (GtkWidget * wid, gpointer none)
 static void
 menu_detach (GtkWidget * wid, gpointer none)
 {
-	mg_link_cb (NULL, NULL);
+	mg_detach (current_sess, 0);
 }
 
 static void

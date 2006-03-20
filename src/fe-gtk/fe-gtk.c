@@ -739,6 +739,8 @@ fe_ctrl_gui (session *sess, int action, int arg)
 	case 6:
 		menu_bar_toggle ();	/* toggle menubar on/off */
 		break;
+	case 7:
+		mg_detach (sess, arg);	/* arg: 0=toggle 1=detach 2=attach */
 	}
 }
 

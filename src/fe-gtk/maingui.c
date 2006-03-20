@@ -1680,9 +1680,24 @@ mg_link_irctab (session *sess, int focus)
 }
 
 void
-mg_link_cb (GtkWidget *but, gpointer userdata)
+mg_detach (session *sess, int mode)
 {
-	mg_link_irctab (current_sess, 1);
+	switch (mode)
+	{
+	/* detach only */
+	case 1:
+		if (sess->gui->is_tab)
+			mg_link_irctab (sess, 1);
+		break;
+	/* attach only */
+	case 2:
+		if (!sess->gui->is_tab)
+			mg_link_irctab (sess, 1);
+		break;
+	/* toggle */
+	default:
+		mg_link_irctab (sess, 1);
+	}
 }
 
 static int
