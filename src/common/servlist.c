@@ -490,7 +490,7 @@ servlist_connect (session *sess, ircnet *net, gboolean join)
 	server *serv;
 
 	if (!sess)
-		sess = new_ircwindow (NULL, NULL, SESS_SERVER, 0);
+		sess = new_ircwindow (NULL, NULL, SESS_SERVER, TRUE);
 
 	serv = sess->server;
 
