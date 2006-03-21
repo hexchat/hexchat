@@ -608,6 +608,7 @@ load_config (void)
 	prefs.autoreconnect = 1;
 	prefs.recon_delay = 10;
 	prefs.tabchannels = 1;
+	prefs.tab_layout = 2;	/* 0=Tabs 1=Reserved 2=Tree */
 	prefs.tab_sort = 1;
 	prefs.paned_userlist = 1;
 	prefs.newtabstofront = 2;
