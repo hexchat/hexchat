@@ -59,6 +59,7 @@
 #ifdef USE_DEBUG
 extern int current_mem_usage;
 #endif
+#define TBUFSIZE 4096
 
 static void help (session *sess, char *tbuf, char *helpcmd, int quiet);
 static int cmd_server (session *sess, char *tbuf, char *word[], char *word_eol[]);
@@ -352,7 +353,7 @@ cmd_away (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 						(gone / 60) % 60, gone % 60);
 		} else
 		{
-			sprintf (tbuf, "me is away: %s", reason);
+			snprintf (tbuf, TBUFSIZE, "me is away: %s", reason);
 		}
 
 		list = sess_list;
@@ -457,19 +458,19 @@ ban (session * sess, char *tbuf, char *mask, char *bantypestr, int deop)
 			switch (bantype)
 			{
 			case 0:
-				sprintf (tbuf, "%s %s *!*@%s.*", mode, p2, domain);
+				snprintf (tbuf, TBUFSIZE, "%s %s *!*@%s.*", mode, p2, domain);
 				break;
 
 			case 1:
-				sprintf (tbuf, "%s %s *!*@%s", mode, p2, fullhost);
+				snprintf (tbuf, TBUFSIZE, "%s %s *!*@%s", mode, p2, fullhost);
 				break;
 
 			case 2:
-				sprintf (tbuf, "%s %s *!%s@%s.*", mode, p2, username, domain);
+				snprintf (tbuf, TBUFSIZE, "%s %s *!%s@%s.*", mode, p2, username, domain);
 				break;
 
 			case 3:
-				sprintf (tbuf, "%s %s *!%s@%s", mode, p2, username, fullhost);
+				snprintf (tbuf, TBUFSIZE, "%s %s *!%s@%s", mode, p2, username, fullhost);
 				break;
 			}
 		} else
@@ -477,26 +478,26 @@ ban (session * sess, char *tbuf, char *mask, char *bantypestr, int deop)
 			switch (bantype)
 			{
 			case 0:
-				sprintf (tbuf, "%s %s *!*@*%s", mode, p2, domain);
+				snprintf (tbuf, TBUFSIZE, "%s %s *!*@*%s", mode, p2, domain);
 				break;
 
 			case 1:
-				sprintf (tbuf, "%s %s *!*@%s", mode, p2, fullhost);
+				snprintf (tbuf, TBUFSIZE, "%s %s *!*@%s", mode, p2, fullhost);
 				break;
 
 			case 2:
-				sprintf (tbuf, "%s %s *!%s@*%s", mode, p2, username, domain);
+				snprintf (tbuf, TBUFSIZE, "%s %s *!%s@*%s", mode, p2, username, domain);
 				break;
 
 			case 3:
-				sprintf (tbuf, "%s %s *!%s@%s", mode, p2, username, fullhost);
+				snprintf (tbuf, TBUFSIZE, "%s %s *!%s@%s", mode, p2, username, fullhost);
 				break;
 			}
 		}
 
 	} else
 	{
-		sprintf (tbuf, "+b %s", mask);
+		snprintf (tbuf, TBUFSIZE, "+b %s", mask);
 	}
 	serv->p_mode (serv, sess->channel, tbuf);
 }
@@ -1287,7 +1288,7 @@ cmd_dns (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			}
 		} else
 		{
-			sprintf (tbuf, "exec -d %s %s", prefs.dnsprogram, nick);
+			snprintf (tbuf, TBUFSIZE, "exec -d %s %s", prefs.dnsprogram, nick);
 			handle_command (sess, tbuf, FALSE);
 		}
 		return TRUE;
@@ -2313,7 +2314,7 @@ cmd_me (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		return TRUE;
 	}
 
-	sprintf (tbuf, "\001ACTION %s\001\r", act);
+	snprintf (tbuf, TBUFSIZE, "\001ACTION %s\001\r", act);
 	/* first try through DCC CHAT */
 	if (dcc_write_chat (sess->channel, tbuf))
 	{
@@ -3390,7 +3391,7 @@ help (session *sess, char *tbuf, char *helpcmd, int quiet)
 	{
 		if (cmd->help)
 		{
-			sprintf (tbuf, _("Usage: %s\n"), _(cmd->help));
+			snprintf (tbuf, TBUFSIZE, _("Usage: %s\n"), _(cmd->help));
 			PrintText (sess, tbuf);
 		} else
 		{
@@ -3667,7 +3668,7 @@ nick_comp_cb (struct User *user, nickdata *data)
 		lenu = strlen (user->nick);
 		if (lenu == data->len)
 		{
-			sprintf (data->tbuf, "%s%s", user->nick, data->space);
+			snprintf (data->tbuf, TBUFSIZE, "%s%s", user->nick, data->space);
 			data->len = -1;
 			return FALSE;
 		} else if (lenu < data->bestlen)
@@ -3711,7 +3712,7 @@ perform_nick_completion (struct session *sess, char *cmd, char *tbuf)
 
 				if (data.best)
 				{
-					sprintf (tbuf, "%s%s", data.best->nick, space - 1);
+					snprintf (tbuf, TBUFSIZE, "%s%s", data.best->nick, space - 1);
 					return;
 				}
 			}
@@ -3876,7 +3877,7 @@ handle_command (session *sess, char *cmd, int check_spch)
 	static int command_level = 0;
 	struct commands *int_cmd;
 	char pdibuf_static[1024];
-	char tbuf_static[4096];
+	char tbuf_static[TBUFSIZE];
 	char *pdibuf;
 	char *tbuf;
 	int len;
