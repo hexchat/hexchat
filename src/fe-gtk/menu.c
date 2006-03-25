@@ -1092,6 +1092,7 @@ menu_join (GtkWidget * wid, gpointer none)
 	hbox = gtk_hbox_new (TRUE, 0);
 
 	entry = gtk_entry_new ();
+	GTK_ENTRY (entry)->editable = 0;	/* avoid auto-selection */
 	gtk_entry_set_text (GTK_ENTRY (entry), "#");
 	g_signal_connect (G_OBJECT (entry), "activate",
 						 	G_CALLBACK (menu_join_entry_cb), dialog);
@@ -1106,6 +1107,9 @@ menu_join (GtkWidget * wid, gpointer none)
 	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), hbox);
 
 	gtk_widget_show_all (dialog);
+
+	gtk_editable_set_editable (GTK_EDITABLE (entry), TRUE);
+	gtk_editable_set_position (GTK_EDITABLE (entry), 1);
 }
 
 static void
