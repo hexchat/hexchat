@@ -122,9 +122,6 @@ static const struct defaultserver def[] =
 	{"Beirut", 0},
 	{0,			"irc.beirut.com"},
 
-	{"Buzzpot", 0},
-	{0,			"irc.chatspike.net"},
-
 	{"ChatJunkies",	0, "#xchat"},
 	{0,			"irc.chatjunkies.org"},
 	{0,			"nl.chatjunkies.org"},
@@ -136,6 +133,9 @@ static const struct defaultserver def[] =
 	{"ChatSociety", 0},
 	{0,			"us.chatsociety.net"},
 	{0,			"eu.chatsociety.net"},
+
+	{"ChatSpike", 0},
+	{0,			"irc.chatspike.net"},
 
 	{"CoolChat",	0},
 	{0,			"irc.coolchat.net"},
@@ -292,6 +292,9 @@ static const struct defaultserver def[] =
 
 	{"Majistic",	0},
 	{0,			"irc.majistic.net"},
+
+	{"MindForge",	0},
+	{0,			"irc.mindforge.org"},
 
 	{"MIXXnet",		0},
 	{0,			"irc.mixxnet.net"},
@@ -862,7 +865,9 @@ servlist_load_defaults (void)
 				net->autojoin = strdup (def[i].channel);
 			if (def[i].charset)
 			{
+#ifdef WIN32
 				free (net->encoding);
+#endif
 				net->encoding = strdup (def[i].charset);
 			}
 			if (g_str_hash (def[i].network) == 0x8e1b96f7)
