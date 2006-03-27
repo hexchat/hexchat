@@ -39,7 +39,7 @@ static void
 ctcp_reply (session *sess, char *nick, char *word[], char *word_eol[],
 				char *conf)
 {
-	char tbuf[2048];
+	char tbuf[4096];	/* can receive 2048 from IRC, so this is enough */
 
 	conf = strdup (conf);
 	/* process %C %B etc */
