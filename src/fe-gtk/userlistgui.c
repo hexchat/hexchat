@@ -208,6 +208,11 @@ fe_userlist_set_selected (struct session *sess)
 	GtkTreeSelection *selection = gtk_tree_view_get_selection (GTK_TREE_VIEW (sess->gui->user_tree));
 	GtkTreeIter iter;
 	struct User *user;
+
+	/* if it's not front-most tab it doesn't own the GtkTreeView! */
+	if (store != (GtkListStore*) gtk_tree_view_get_model (GTK_TREE_VIEW (sess->gui->user_tree)))
+		return;
+
 	if (gtk_tree_model_get_iter_first (GTK_TREE_MODEL (store), &iter))
 	{
 		do

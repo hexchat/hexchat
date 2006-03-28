@@ -111,6 +111,7 @@ cv_tree_init (chanview *cv)
 							G_CALLBACK (cv_tree_activated_cb), NULL);
 	((treeview *)cv)->tree = GTK_TREE_VIEW (view);
 	((treeview *)cv)->scrollw = win;
+	((treeview *)cv)->idle_tag = 0;
 	gtk_widget_show (view);
 }
 
