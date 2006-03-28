@@ -918,7 +918,8 @@ xchat_init (void)
 
 	servlist_init ();							/* load server list */
 
-	if (!prefs.slist_skip)
+	/* if we got a URL, don't open the server list GUI */
+	if (!prefs.slist_skip && !arg_url)
 		fe_serverlist_open (NULL);
 
 	/* turned OFF via -a arg */
@@ -937,7 +938,7 @@ xchat_init (void)
 		}
 	} else
 	{
-		if (prefs.slist_skip)
+		if (prefs.slist_skip || arg_url)
 			new_ircwindow (NULL, NULL, SESS_SERVER, 0);
 	}
 }
