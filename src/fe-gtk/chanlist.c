@@ -374,6 +374,12 @@ fe_add_chan_list (struct server *serv, char *chan, char *users, char *topic)
 	chanlist_place_row_in_gui (serv, next_row);
 }
 
+void
+fe_chan_list_end (struct server *serv)
+{
+	gtk_widget_set_sensitive (serv->gui->chanlist_refresh, TRUE);
+}
+
 /**
  * The next several functions simply handle signals from widgets to update 
  * the list and state variables. 

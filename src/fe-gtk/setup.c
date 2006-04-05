@@ -1646,6 +1646,8 @@ setup_apply (struct xchatprefs *pr)
 		noapply = TRUE;
 	if (DIFF (style_namelistgad))
 		noapply = TRUE;
+	if (DIFF (truncchans))
+		noapply = TRUE;
 
 	if (color_change || (DIFF (away_size_max)) || (DIFF (away_track)))
 		do_ulist = TRUE;

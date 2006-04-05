@@ -2243,7 +2243,7 @@ cmd_load (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		fp = xchat_fopen_file (file, "r", XOF_FULLPATH);
 		if (!fp)
 		{
-			PrintTextf (sess, "Cannot access %s\n", file);
+			PrintTextf (sess, _("Cannot access %s\n"), file);
 			PrintText (sess, errorstring (errno));
 			free (file);
 			return TRUE;

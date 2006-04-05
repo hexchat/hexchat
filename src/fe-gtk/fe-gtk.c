@@ -502,12 +502,6 @@ fe_is_banwindow (struct session *sess)
 }
 
 void
-fe_chan_list_end (struct server *serv)
-{
-	gtk_widget_set_sensitive (serv->gui->chanlist_refresh, TRUE);
-}
-
-void
 fe_notify_update (char *name)
 {
 	if (!name)
