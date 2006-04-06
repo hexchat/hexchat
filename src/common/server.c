@@ -1156,6 +1156,10 @@ traverse_socks5 (int print_fd, int sok, char *serverAddr, int port)
 	if (recv (sok, buf, 2, 0) != 2)
 		goto read_error;
 
+	/* did the server say no auth required? */
+	if (buf[0] == 5 && buf[1] == 0)
+		auth = 0;
+
 	if (auth)
 	{
 		int len_u=0, len_p=0;
@@ -1215,7 +1219,8 @@ traverse_socks5 (int print_fd, int sok, char *serverAddr, int port)
 		goto read_error;
 	if (buf[0] != 5 && buf[1] != 0)
 	{
-		proxy_error (print_fd, "SOCKS\tProxy refused to connect to that host or port.\n");
+		snprintf (buf, sizeof (buf), "SOCKS\tProxy refused to connect to that host (error %d).\n", buf[1]);
+		proxy_error (print_fd, buf);
 		return 1;
 	}
 	if (buf[3] == 1)
