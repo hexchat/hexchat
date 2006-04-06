@@ -34,6 +34,7 @@
 #include <gtk/gtklabel.h>
 #include <gtk/gtkmenuitem.h>
 #include <gtk/gtkprogressbar.h>
+#include <gtk/gtkscrolledwindow.h>
 #include <gtk/gtkstock.h>
 #include <gtk/gtktable.h>
 #include <gtk/gtknotebook.h>
@@ -63,6 +64,11 @@
 #include "pixmaps.h"
 #include "xtext.h"
 
+#ifdef USE_GTKSPELL
+#include <gtk/gtktextview.h>
+#include <gtkspell/gtkspell.h>
+#endif
+
 #define GUI_SPACING (3)
 #define GUI_BORDER (1)
 #define SCROLLBAR_SPACING (2)
@@ -90,6 +96,56 @@ static PangoAttrList *nickseen_list;
 static PangoAttrList *newmsg_list;
 static PangoAttrList *plain_list = NULL;
 
+
+#ifdef USE_GTKSPELL
+
+/* use these when it's a GtkTextView instead of GtkEntry */
+
+char *
+SPELL_ENTRY_GET_TEXT (GtkWidget *entry)
+{
+	GtkTextBuffer *buf = gtk_text_view_get_buffer (GTK_TEXT_VIEW (entry));
+	GtkTextIter start_iter, end_iter;
+
+	gtk_text_buffer_get_start_iter (buf, &start_iter);
+	gtk_text_buffer_get_end_iter (buf, &end_iter);
+
+	return gtk_text_buffer_get_text (buf, &start_iter, &end_iter, FALSE);
+}
+
+void
+SPELL_ENTRY_SET_POS (GtkWidget *entry, int pos)
+{
+	GtkTextIter iter;
+	GtkTextBuffer *buf = gtk_text_view_get_buffer (GTK_TEXT_VIEW (entry));
+
+	gtk_text_buffer_get_iter_at_offset (buf, &iter, pos);
+	gtk_text_buffer_place_cursor (buf, &iter);
+}
+
+int
+SPELL_ENTRY_GET_POS (GtkWidget *entry)
+{
+	GtkTextIter cursor;
+	GtkTextBuffer *buf = gtk_text_view_get_buffer (GTK_TEXT_VIEW (entry));
+
+	gtk_text_buffer_get_iter_at_mark (buf, &cursor, gtk_text_buffer_get_insert (buf));
+	return gtk_text_iter_get_offset (&cursor);
+}
+
+void
+SPELL_ENTRY_INSERT (GtkWidget *entry, const char *text, int len, int *pos)
+{
+	GtkTextIter iter;
+	GtkTextBuffer *buf = gtk_text_view_get_buffer (GTK_TEXT_VIEW (entry));
+
+	gtk_text_buffer_get_start_iter (buf, &iter);
+	gtk_text_iter_set_offset (&iter, *pos);
+	gtk_text_buffer_insert (buf, &iter, text, len); /* FIXME: bytes/chars? */
+	*pos += len;
+}
+
+#endif
 
 static PangoAttrList *
 mg_attr_list_create (GdkColor *col, gboolean small)
@@ -331,10 +387,10 @@ mg_inputbox_focus (GtkWidget *widget, GdkEventFocus *event, session_gui *gui)
 	return FALSE;
 }
 
-static void
+void
 mg_inputbox_cb (GtkWidget *igad, session_gui *gui)
 {
-	char *cmd = GTK_ENTRY (igad)->text;
+	char *cmd;
 	static int ignore = FALSE;
 	GSList *list;
 	session *sess = NULL;
@@ -342,14 +398,17 @@ mg_inputbox_cb (GtkWidget *igad, session_gui *gui)
 	if (ignore)
 		return;
 
+	cmd = SPELL_ENTRY_GET_TEXT (igad);
 	if (cmd[0] == 0)
 		return;
 
+#ifndef USE_GTKSPELL
 	cmd = strdup (cmd);
+#endif
 
 	/* avoid recursive loop */
 	ignore = TRUE;
-	gtk_entry_set_text (GTK_ENTRY (igad), "");
+	SPELL_ENTRY_SET_TEXT (igad, "");
 	ignore = FALSE;
 
 	/* where did this event come from? */
@@ -372,7 +431,12 @@ mg_inputbox_cb (GtkWidget *igad, session_gui *gui)
 
 	if (sess)
 		handle_multiline (sess, cmd, TRUE, FALSE);
+
+#ifdef USE_GTKSPELL
+	SPELL_ENTRY_FREE_TEXT (cmd);
+#else
 	free (cmd);
+#endif
 }
 
 void
@@ -495,9 +559,9 @@ mg_focus (session *sess)
 	current_sess = sess;
 
 	/* dirty trick to avoid auto-selection */
-	GTK_ENTRY (sess->gui->input_box)->editable = 0;
+	SPELL_ENTRY_SET_EDITABLE (sess->gui->input_box, FALSE);
 	gtk_widget_grab_focus (sess->gui->input_box);
-	gtk_editable_set_editable (GTK_EDITABLE (sess->gui->input_box), TRUE);
+	SPELL_ENTRY_SET_EDITABLE (sess->gui->input_box, TRUE);
 
 	sess->server->front_session = sess;
 
@@ -574,6 +638,7 @@ mg_unpopulate (session *sess)
 	restore_gui *res;
 	session_gui *gui;
 	int i;
+	char *tmp;
 
 	gui = sess->gui;
 	res = sess->res;
@@ -587,7 +652,9 @@ mg_unpopulate (session *sess)
 		prefs.paned_pos = gui->pane_pos = i;
 	}
 
-	res->input_text = strdup (GTK_ENTRY (gui->input_box)->text);
+	tmp = SPELL_ENTRY_GET_TEXT (gui->input_box);
+	res->input_text = strdup (tmp);
+	SPELL_ENTRY_FREE_TEXT (tmp);
 	res->topic_text = strdup (GTK_ENTRY (gui->topic_entry)->text);
 	res->limit_text = strdup (GTK_ENTRY (gui->limit_entry)->text);
 	res->key_text = strdup (GTK_ENTRY (gui->key_entry)->text);
@@ -644,6 +711,21 @@ mg_restore_entry (GtkWidget *entry, char **text)
 		gtk_entry_set_text (GTK_ENTRY (entry), "");
 	}
 	gtk_editable_set_position (GTK_EDITABLE (entry), -1);
+}
+
+static void
+mg_restore_speller (GtkWidget *entry, char **text)
+{
+	if (*text)
+	{
+		SPELL_ENTRY_SET_TEXT (entry, *text);
+		free (*text);
+		*text = NULL;
+	} else
+	{
+		SPELL_ENTRY_SET_TEXT (entry, "");
+	}
+	SPELL_ENTRY_SET_POS (entry, -1);
 }
 
 void
@@ -770,7 +852,7 @@ mg_populate (session *sess)
 
 	/* restore all the GtkEntry's */
 	mg_restore_entry (gui->topic_entry, &res->topic_text);
-	mg_restore_entry (gui->input_box, &res->input_text);
+	mg_restore_speller (gui->input_box, &res->input_text);
 	mg_restore_entry (gui->key_entry, &res->key_text);
 	mg_restore_entry (gui->limit_entry, &res->limit_text);
 	mg_restore_label (gui->laginfo, &res->lag_text);
@@ -1940,9 +2022,9 @@ mg_dialog_button_cb (GtkWidget *wid, char *cmd)
 	handle_command (current_sess, buf, TRUE);
 
 	/* dirty trick to avoid auto-selection */
-	GTK_ENTRY (current_sess->gui->input_box)->editable = 0;
+	SPELL_ENTRY_SET_EDITABLE (current_sess->gui->input_box, FALSE);
 	gtk_widget_grab_focus (current_sess->gui->input_box);
-	gtk_editable_set_editable (GTK_EDITABLE (current_sess->gui->input_box), TRUE);
+	SPELL_ENTRY_SET_EDITABLE (current_sess->gui->input_box, TRUE);
 }
 
 static void
@@ -2452,7 +2534,7 @@ mg_inputbox_rightclick (GtkEntry *entry, GtkWidget *menu)
 static void
 mg_create_entry (session *sess, GtkWidget *box)
 {
-	GtkWidget *hbox, *but, *entry;
+	GtkWidget *sw, *hbox, *but, *entry;
 	session_gui *gui = sess->gui;
 
 	hbox = gtk_hbox_new (FALSE, 0);
@@ -2468,18 +2550,34 @@ mg_create_entry (session *sess, GtkWidget *box)
 	g_signal_connect (G_OBJECT (but), "clicked",
 							G_CALLBACK (mg_nickclick_cb), NULL);
 
+#ifdef USE_GTKSPELL
+	gui->input_box = entry = gtk_text_view_new ();
+	gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (entry), GTK_WRAP_WORD_CHAR);
+	gtkspell_new_attach ((GtkTextView *)entry, NULL, NULL);
+
+	sw = gtk_scrolled_window_new (NULL, NULL);
+	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (sw),
+													 GTK_SHADOW_IN);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw),
+												GTK_POLICY_AUTOMATIC,
+												GTK_POLICY_NEVER);
+	gtk_container_add (GTK_CONTAINER (sw), entry);
+	gtk_container_add (GTK_CONTAINER (hbox), sw);
+#else	
 	gui->input_box = entry = gtk_entry_new ();
-	gtk_widget_set_name (entry, "xchat-inputbox");
 	gtk_entry_set_max_length (GTK_ENTRY (gui->input_box), 2048);
+	g_signal_connect (G_OBJECT (entry), "activate",
+							G_CALLBACK (mg_inputbox_cb), gui);
+	gtk_container_add (GTK_CONTAINER (hbox), entry);
+#endif
+
+	gtk_widget_set_name (entry, "xchat-inputbox");
 	g_signal_connect (G_OBJECT (entry), "key_press_event",
 							G_CALLBACK (key_handle_key_press), NULL);
 	g_signal_connect (G_OBJECT (entry), "focus_in_event",
 							G_CALLBACK (mg_inputbox_focus), gui);
-	g_signal_connect (G_OBJECT (entry), "activate",
-							G_CALLBACK (mg_inputbox_cb), gui);
 	g_signal_connect (G_OBJECT (entry), "populate_popup",
 							G_CALLBACK (mg_inputbox_rightclick), NULL);
-	gtk_container_add (GTK_CONTAINER (hbox), entry);
 	gtk_widget_grab_focus (entry);
 
 	if (prefs.style_inputbox)

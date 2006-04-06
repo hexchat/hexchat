@@ -24,3 +24,4 @@ void mg_progressbar_destroy (session_gui *gui);
 void mg_dnd_drop_file (session *sess, char *target, char *uri);
 void mg_change_layout (int type);
 void mg_update_meters (session_gui *);
+void mg_inputbox_cb (GtkWidget *igad, session_gui *gui);

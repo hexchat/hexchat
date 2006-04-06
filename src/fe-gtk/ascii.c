@@ -118,9 +118,9 @@ ascii_click (GtkWidget * wid, gpointer userdata)
 	{
 		text = gtk_button_get_label (GTK_BUTTON (wid));
 		wid = current_sess->gui->input_box;
-		tmp_pos = gtk_editable_get_position (GTK_EDITABLE (wid));
-		gtk_editable_insert_text (GTK_EDITABLE (wid), text, -1, &tmp_pos);
-		gtk_editable_set_position (GTK_EDITABLE (wid), tmp_pos);
+		tmp_pos = SPELL_ENTRY_GET_POS (wid);
+		SPELL_ENTRY_INSERT (wid, text, -1, &tmp_pos);
+		SPELL_ENTRY_SET_POS (wid, tmp_pos);
 	}
 }
 

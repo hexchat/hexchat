@@ -49,6 +49,10 @@
 #include "pixmaps.h"
 #include "userlistgui.h"
 
+#ifdef USE_GTKSPELL
+#include <gtk/gtktextview.h>
+#endif
+
 
 GdkPixbuf *
 get_user_icon (server *serv, struct User *user)
@@ -548,9 +552,9 @@ userlist_key_cb (GtkWidget *wid, GdkEventKey *evt, gpointer userdata)
 	if (evt->keyval >= GDK_asterisk && evt->keyval <= GDK_z)
 	{
 		/* dirty trick to avoid auto-selection */
-		GTK_ENTRY (current_sess->gui->input_box)->editable = 0;
+		SPELL_ENTRY_SET_EDITABLE (current_sess->gui->input_box, FALSE);
 		gtk_widget_grab_focus (current_sess->gui->input_box);
-		GTK_ENTRY (current_sess->gui->input_box)->editable = 1;
+		SPELL_ENTRY_SET_EDITABLE (current_sess->gui->input_box, TRUE);
 		gtk_widget_event (current_sess->gui->input_box, (GdkEvent *)evt);
 		return TRUE;
 	}

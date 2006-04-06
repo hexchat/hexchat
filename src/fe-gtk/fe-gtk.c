@@ -56,6 +56,10 @@
 #include <gtk/gtkinvisible.h>
 #endif
 
+#ifdef USE_GTKSPELL
+#include <gtk/gtktextview.h>
+#endif
+
 #ifdef WIN32
 #include <windows.h>
 #endif
@@ -789,7 +793,7 @@ fe_get_inputbox_contents (session *sess)
 		return sess->res->input_text;
 
 	/* current focused tab */
-	return GTK_ENTRY (sess->gui->input_box)->text;
+	return SPELL_ENTRY_GET_TEXT (sess->gui->input_box);
 }
 
 int
@@ -800,7 +804,7 @@ fe_get_inputbox_cursor (session *sess)
 		return 0;
 
 	/* current focused tab */
-	return gtk_editable_get_position (GTK_EDITABLE (sess->gui->input_box));
+	return SPELL_ENTRY_GET_POS (sess->gui->input_box);
 }
 
 void
@@ -809,8 +813,8 @@ fe_set_inputbox_cursor (session *sess, int delta, int pos)
 	if (!sess->gui->is_tab || sess == current_tab)
 	{
 		if (delta)
-			pos += gtk_editable_get_position (GTK_EDITABLE (sess->gui->input_box));
-		gtk_editable_set_position (GTK_EDITABLE (sess->gui->input_box), pos);
+			pos += SPELL_ENTRY_GET_POS (sess->gui->input_box);
+		SPELL_ENTRY_SET_POS (sess->gui->input_box, pos);
 	} else
 	{
 		/* we don't support changing non-front tabs yet */
@@ -822,7 +826,7 @@ fe_set_inputbox_contents (session *sess, char *text)
 {
 	if (!sess->gui->is_tab || sess == current_tab)
 	{
-		gtk_entry_set_text (GTK_ENTRY (sess->gui->input_box), text);
+		SPELL_ENTRY_SET_TEXT (sess->gui->input_box, text);
 	} else
 	{
 		if (sess->res->input_text)

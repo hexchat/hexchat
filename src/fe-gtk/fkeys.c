@@ -58,6 +58,9 @@
 #include "textgui.h"
 #include "fkeys.h"
 
+#ifdef USE_GTKSPELL
+#include <gtk/gtktextview.h>
+#endif
 
 static void replace_handle (GtkWidget * wid);
 void key_action_tab_clean (void);
@@ -308,13 +311,14 @@ key_handle_key_press (GtkWidget *wid, GdkEventKey *evt, session *sess)
 	if (keyval == GDK_space)
 		key_action_tab_clean ();
 
-	/* check if it's a return or enter */
-	/* ---handled by the "activate" signal in maingui.c */
-/*	if ((evt->keyval == GDK_Return) || (evt->keyval == GDK_KP_Enter))
-		mg_inputbox_cb (wid, sess);
-
-	if (evt->keyval == GDK_KP_Enter)
-		gtk_signal_emit_stop_by_name (GTK_OBJECT (wid), "key_press_event");*/
+#ifdef USE_GTKSPELL
+	/* gtktextview has no 'activate' event, so we trap ENTER here */
+	if ((evt->keyval == GDK_Return) || (evt->keyval == GDK_KP_Enter))
+	{
+		gtk_signal_emit_stop_by_name (GTK_OBJECT (wid), "key_press_event");
+		mg_inputbox_cb (wid, sess->gui);
+	}
+#endif
 
 	return 0;
 }
@@ -1220,9 +1224,9 @@ key_action_insert (GtkWidget * wid, GdkEventKey * evt, char *d1, char *d2,
 	if (!d1)
 		return 1;
 
-	tmp_pos = gtk_editable_get_position (GTK_EDITABLE (wid));
-	gtk_editable_insert_text (GTK_EDITABLE (wid), d1, strlen (d1), &tmp_pos);
-	gtk_editable_set_position (GTK_EDITABLE (wid), tmp_pos);
+	tmp_pos = SPELL_ENTRY_GET_POS (wid);
+	SPELL_ENTRY_INSERT (wid, d1, strlen (d1), &tmp_pos);
+	SPELL_ENTRY_SET_POS (wid, tmp_pos);
 	return 2;
 }
 
@@ -1290,8 +1294,8 @@ key_action_set_buffer (GtkWidget * wid, GdkEventKey * evt, char *d1, char *d2,
 	if (d1[0] == 0)
 		return 1;
 
-	gtk_entry_set_text (GTK_ENTRY (wid), d1);
-	gtk_editable_set_position (GTK_EDITABLE (wid), -1);
+	SPELL_ENTRY_SET_TEXT (wid, d1);
+	SPELL_ENTRY_SET_POS (wid, -1);
 
 	return 2;
 }
@@ -1302,11 +1306,11 @@ key_action_history_up (GtkWidget * wid, GdkEventKey * ent, char *d1, char *d2,
 {
 	char *new_line;
 
-	new_line = history_up (&sess->history, (char *)GTK_ENTRY (wid)->text);
+	new_line = history_up (&sess->history, SPELL_ENTRY_GET_TEXT (wid));
 	if (new_line)
 	{
-		gtk_entry_set_text (GTK_ENTRY (wid), new_line);
-		gtk_editable_set_position (GTK_EDITABLE (wid), -1);
+		SPELL_ENTRY_SET_TEXT (wid, new_line);
+		SPELL_ENTRY_SET_POS (wid, -1);
 	}
 
 	return 2;
@@ -1321,8 +1325,8 @@ key_action_history_down (GtkWidget * wid, GdkEventKey * ent, char *d1,
 	new_line = history_down (&sess->history);
 	if (new_line)
 	{
-		gtk_entry_set_text (GTK_ENTRY (wid), new_line);
-		gtk_editable_set_position (GTK_EDITABLE (wid), -1);
+		SPELL_ENTRY_SET_TEXT (wid, new_line);
+		SPELL_ENTRY_SET_POS (wid, -1);
 	}
 
 	return 2;
@@ -1412,16 +1416,16 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 	GCompletion *gcomp = NULL;
 
 	/* force the IM Context to reset */
-	gtk_editable_set_editable (GTK_EDITABLE (t), FALSE);
-	gtk_editable_set_editable (GTK_EDITABLE (t), TRUE);
+	SPELL_ENTRY_SET_EDITABLE (t, FALSE);
+	SPELL_ENTRY_SET_EDITABLE (t, TRUE);
 
-	text = GTK_ENTRY (t)->text;
+	text = SPELL_ENTRY_GET_TEXT (t);
 	if (text[0] == 0)
 		return 1;
 
 	len = g_utf8_strlen (text, -1); /* must be null terminated */
 
-	cursor_pos = gtk_editable_get_position (GTK_EDITABLE (t));
+	cursor_pos = SPELL_ENTRY_GET_POS (t);
 
 	buf[0] = 0; /* make sure we don't get garbage in the buffer */
 
@@ -1604,8 +1608,8 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 							strcat (buf, " ");
 							strncat (buf, postfix, COMP_BUF - cursor_pos -1);
 						}
-						gtk_entry_set_text (GTK_ENTRY (t), buf);
-						gtk_editable_set_position (GTK_EDITABLE (t), g_utf8_pointer_to_offset(buf, buf + cursor_pos));
+						SPELL_ENTRY_SET_TEXT (t, buf);
+						SPELL_ENTRY_SET_POS (t, g_utf8_pointer_to_offset(buf, buf + cursor_pos));
 						buf[0] = 0;
 					}
 					else
@@ -1646,8 +1650,8 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 		cursor_pos = strlen (buf);
 		if (postfix)
 			strncat (buf, postfix, COMP_BUF - cursor_pos - 2);
-		gtk_entry_set_text (GTK_ENTRY (t), buf);
-		gtk_editable_set_position (GTK_EDITABLE (t), g_utf8_pointer_to_offset(buf, buf + cursor_pos));
+		SPELL_ENTRY_SET_TEXT (t, buf);
+		SPELL_ENTRY_SET_POS (t, g_utf8_pointer_to_offset(buf, buf + cursor_pos));
 	}
 	if (gcomp)
 		g_completion_free(gcomp);
@@ -1709,8 +1713,8 @@ static int
 key_action_put_history (GtkWidget * wid, GdkEventKey * ent, char *d1,
 									char *d2, struct session *sess)
 {
-	history_add (&sess->history, (char *)GTK_ENTRY (wid)->text);
-	gtk_entry_set_text (GTK_ENTRY (wid), "");
+	history_add (&sess->history, SPELL_ENTRY_GET_TEXT (wid));
+	SPELL_ENTRY_SET_TEXT (wid, "");
 	return 2;						  /* -''- */
 }
 
@@ -1733,7 +1737,7 @@ replace_handle (GtkWidget *t)
 	char outbuf[4096];
 	int c, len, xlen;
 
-	text = gtk_entry_get_text (GTK_ENTRY (t));
+	text = SPELL_ENTRY_GET_TEXT (t);
 
 	len = strlen (text);
 	if (len < 1)
@@ -1785,8 +1789,8 @@ replace_handle (GtkWidget *t)
 			else
 				snprintf (word, sizeof (word), "%s%s", pop->cmd, postfix);
 			strcat (outbuf, word);
-			gtk_entry_set_text (GTK_ENTRY (t), outbuf);
-			gtk_editable_set_position (GTK_EDITABLE (t), -1);
+			SPELL_ENTRY_SET_TEXT (t, outbuf);
+			SPELL_ENTRY_SET_POS (t, -1);
 			return;
 		}
 		list = list->next;
