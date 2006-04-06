@@ -1085,6 +1085,15 @@ server_disconnect (session * sess, int sendquit, int err)
 	notify_cleanup ();
 }
 
+/* send a "print text" command to the parent process - MUST END IN \n! */
+
+static void
+proxy_error (int fd, char *msg)
+{
+	write (fd, "0\n", 2);
+	write (fd, msg, strlen (msg));
+}
+
 struct sock_connect
 {
 	char version;
@@ -1099,10 +1108,10 @@ struct sock_connect
  *          1 socks traversal failed */
 
 static int
-traverse_socks (int sok, char *serverAddr, int port)
+traverse_socks (int print_fd, int sok, char *serverAddr, int port)
 {
 	struct sock_connect sc;
-	unsigned char buf[10];
+	unsigned char buf[256];
 
 	sc.version = 4;
 	sc.type = 1;
@@ -1116,6 +1125,8 @@ traverse_socks (int sok, char *serverAddr, int port)
 	if (buf[1] == 90)
 		return 0;
 
+	snprintf (buf, sizeof (buf), "SOCKS\tServer reported error %d.\n", buf[1]);
+	proxy_error (print_fd, buf);
 	return 1;
 }
 
@@ -1127,38 +1138,34 @@ struct sock5_connect1
 };
 
 static int
-traverse_socks5 (int sok, char *serverAddr, int port)
+traverse_socks5 (int print_fd, int sok, char *serverAddr, int port)
 {
 	struct sock5_connect1 sc1;
 	unsigned char *sc2;
 	unsigned int packetlen, addrlen;
 	unsigned char buf[260];
+	int auth = prefs.proxy_auth && prefs.proxy_user[0] && prefs.proxy_pass[0];
 
 	sc1.version = 5;
 	sc1.nmethods = 1;
-	if ( prefs.proxy_auth )
-	{
-		if ( !prefs.proxy_user[0] || !prefs.proxy_pass[0] )
-		{
-			return 1;
-		}
+	if (auth)
 		sc1.method = 2;  /* Username/Password Authentication (UPA) */
-	}
 	else
-	{
 		sc1.method = 0;  /* NO Authentication */
-	}
 	send (sok, (char *) &sc1, 3, 0);
 	if (recv (sok, buf, 2, 0) != 2)
-		return 1;
+		goto read_error;
 
-	if ( prefs.proxy_auth )
+	if (auth)
 	{
 		int len_u=0, len_p=0;
 
 		/* authentication sub-negotiation (RFC1929) */
 		if ( buf[0] != 5 || buf[1] != 2 )  /* UPA not supported by server */
+		{
+			proxy_error (print_fd, "SOCKS\tServer doesn't support UPA authentication.\n");
 			return 1;
+		}
 
 		memset (buf, 0, sizeof(buf));
 
@@ -1173,14 +1180,21 @@ traverse_socks5 (int sok, char *serverAddr, int port)
 
 		send (sok, buf, 3 + len_u + len_p, 0);
 		if ( recv (sok, buf, 2, 0) != 2 )
-			return 1;
+			goto read_error;
 		if ( buf[1] != 0 )
+		{
+			proxy_error (print_fd, "SOCKS\tAuthentication failed. "
+							 "Is username and password correct?\n");
 			return 1; /* UPA failed! */
+		}
 	}
 	else
 	{
 		if (buf[0] != 5 || buf[1] != 0)
+		{
+			proxy_error (print_fd, "SOCKS\tAuthentication required but disabled in settings.\n");
 			return 1;
+		}
 	}
 
 	addrlen = strlen (serverAddr);
@@ -1198,31 +1212,38 @@ traverse_socks5 (int sok, char *serverAddr, int port)
 	free (sc2);
 	/* consume all of the reply */
 	if (recv (sok, buf, 4, 0) != 4)
-		return 1;
+		goto read_error;
 	if (buf[0] != 5 && buf[1] != 0)
+	{
+		proxy_error (print_fd, "SOCKS\tProxy refused to connect to that host or port.\n");
 		return 1;
+	}
 	if (buf[3] == 1)
 	{
 		if (recv (sok, buf, 6, 0) != 6)
-			return 1;
+			goto read_error;
 	} else if (buf[3] == 4)
 	{
 		if (recv (sok, buf, 18, 0) != 18)
-			return 1;
+			goto read_error;
 	} else if (buf[3] == 3)
 	{
 		if (recv (sok, buf, 1, 0) != 1)
-			return 1;
+			goto read_error;
 		packetlen = buf[0] + 2;	/* can't exceed 260 */
 		if (recv (sok, buf, packetlen, 0) != packetlen)
-			return 1;
+			goto read_error;
 	}
 
-	return 0;
+	return 0;	/* success */
+
+read_error:
+	proxy_error (print_fd, "SOCKS\tRead error from server.\n");
+	return 1;
 }
 
 static int
-traverse_wingate (int sok, char *serverAddr, int port)
+traverse_wingate (int print_fd, int sok, char *serverAddr, int port)
 {
 	char buf[128];
 
@@ -1347,11 +1368,11 @@ traverse_proxy (int print_fd, int sok, char *ip, int port)
 	switch (prefs.proxy_type)
 	{
 	case 1:
-		return traverse_wingate (sok, ip, port);
+		return traverse_wingate (print_fd, sok, ip, port);
 	case 2:
-		return traverse_socks (sok, ip, port);
+		return traverse_socks (print_fd, sok, ip, port);
 	case 3:
-		return traverse_socks5 (sok, ip, port);
+		return traverse_socks5 (print_fd, sok, ip, port);
 	case 4:
 		return traverse_http (print_fd, sok, ip, port);
 	}
