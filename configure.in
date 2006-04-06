@@ -127,7 +127,7 @@ AC_ARG_ENABLE(shm,
         shm=$enableval, shm=no)
 
 AC_ARG_ENABLE(spell,
-[  --disable-spell      disable GtkSpell (default: yes)],
+[  --disable-spell         disable use of GtkSpell],
 		  spell=$enableval, spell=yes)
 
 dnl *********************************************************************
@@ -437,7 +437,11 @@ if test "$plugin" = yes; then
 		dnl we just need the -Wl,--export-dynamic, but not -lgmodule-2.0
 		RDYNAMIC_FLAGS="`$pkgconfigpath gmodule-2.0 --libs | $sedpath 's/ -lgmodule-2.0//'`"
 		LIBS="$LIBS $RDYNAMIC_FLAGS"
-		VS="`ld --help | grep version-script 2> /dev/null`"
+		if test "$LD" = ""; then
+			VS="`ld --help | grep version-script 2> /dev/null`"
+		else
+			VS="`$LD --help | grep version-script 2> /dev/null`"
+		fi
 		if test "$VS" != ""; then
 			GUI_LIBS="$GUI_LIBS -Wl,--version-script,\$(srcdir)/../version-script"
 		fi
