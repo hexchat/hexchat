@@ -1211,29 +1211,32 @@ traverse_socks5 (int print_fd, int sok, char *serverAddr, int port)
 	sc2[4] = (unsigned char) addrlen;	/* hostname length */
 	memcpy (sc2 + 5, serverAddr, addrlen);
 	*((unsigned short *) (sc2 + 5 + addrlen)) = htons (port);
-
 	send (sok, sc2, packetlen, 0);
 	free (sc2);
+
 	/* consume all of the reply */
 	if (recv (sok, buf, 4, 0) != 4)
 		goto read_error;
-	if (buf[0] != 5 && buf[1] != 0)
+	if (buf[0] != 5 || buf[1] != 0)
 	{
-		snprintf (buf, sizeof (buf), "SOCKS\tProxy refused to connect to that host (error %d).\n", buf[1]);
+		if (buf[1] == 2)
+			snprintf (buf, sizeof (buf), "SOCKS\tProxy refused to connect to host (not allowed).\n");
+		else
+			snprintf (buf, sizeof (buf), "SOCKS\tProxy failed to connect to host (error %d).\n", buf[1]);
 		proxy_error (print_fd, buf);
 		return 1;
 	}
-	if (buf[3] == 1)
+	if (buf[3] == 1)	/* IPV4 32bit address */
 	{
 		if (recv (sok, buf, 6, 0) != 6)
 			goto read_error;
-	} else if (buf[3] == 4)
+	} else if (buf[3] == 4)	/* IPV6 128bit address */
 	{
 		if (recv (sok, buf, 18, 0) != 18)
 			goto read_error;
-	} else if (buf[3] == 3)
+	} else if (buf[3] == 3)	/* string, 1st byte is size */
 	{
-		if (recv (sok, buf, 1, 0) != 1)
+		if (recv (sok, buf, 1, 0) != 1)	/* read the string size */
 			goto read_error;
 		packetlen = buf[0] + 2;	/* can't exceed 260 */
 		if (recv (sok, buf, packetlen, 0) != packetlen)
