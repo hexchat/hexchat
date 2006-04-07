@@ -108,9 +108,9 @@ SPELL_ENTRY_GET_TEXT (GtkWidget *entry)
 	GtkTextBuffer *buf = gtk_text_view_get_buffer (GTK_TEXT_VIEW (entry));
 	GtkTextIter start_iter, end_iter;
 
-	g_free (last);
-	gtk_text_buffer_get_start_iter (buf, &start_iter);
+	gtk_text_buffer_get_iter_at_offset (buf, &start_iter, 0);
 	gtk_text_buffer_get_end_iter (buf, &end_iter);
+	g_free (last);
 	last = gtk_text_buffer_get_text (buf, &start_iter, &end_iter, FALSE);
 	return last;
 }
@@ -142,8 +142,7 @@ SPELL_ENTRY_INSERT (GtkWidget *entry, const char *text, int len, int *pos)
 	GtkTextBuffer *buf = gtk_text_view_get_buffer (GTK_TEXT_VIEW (entry));
 
 	/* len is bytes. pos is chars. */
-	gtk_text_buffer_get_start_iter (buf, &iter);
-	gtk_text_iter_set_offset (&iter, *pos);
+	gtk_text_buffer_get_iter_at_offset (buf, &iter, *pos);
 	gtk_text_buffer_insert (buf, &iter, text, len);
 	*pos += g_utf8_strlen (text, len);
 }
