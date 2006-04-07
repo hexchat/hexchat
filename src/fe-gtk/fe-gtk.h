@@ -166,7 +166,6 @@ extern GdkPixmap *dialogwin_pix;
 
 #ifdef USE_GTKSPELL
 char *SPELL_ENTRY_GET_TEXT (GtkWidget *entry);
-#define SPELL_ENTRY_FREE_TEXT(t) g_free(t)
 #define SPELL_ENTRY_SET_TEXT(e,txt) gtk_text_buffer_set_text (gtk_text_view_get_buffer(GTK_TEXT_VIEW(e)),txt,-1);
 #define SPELL_ENTRY_SET_EDITABLE(e,v) gtk_text_view_set_editable(GTK_TEXT_VIEW(e), v)
 int SPELL_ENTRY_GET_POS (GtkWidget *entry);
@@ -174,7 +173,6 @@ void SPELL_ENTRY_SET_POS (GtkWidget *entry, int pos);
 void SPELL_ENTRY_INSERT (GtkWidget *entry, const char *text, int len, int *pos);
 #else
 #define SPELL_ENTRY_GET_TEXT(e) (GTK_ENTRY(e)->text)
-#define SPELL_ENTRY_FREE_TEXT(t)
 #define SPELL_ENTRY_SET_TEXT(e,txt) gtk_entry_set_text(GTK_ENTRY(e),txt)
 #define SPELL_ENTRY_SET_EDITABLE(e,v) gtk_entry_set_editable(GTK_EDITABLE(e),v)
 #define SPELL_ENTRY_GET_POS(e) gtk_editable_get_position(GTK_EDITABLE(e))

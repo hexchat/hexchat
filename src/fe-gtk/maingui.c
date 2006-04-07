@@ -104,13 +104,15 @@ static PangoAttrList *plain_list = NULL;
 char *
 SPELL_ENTRY_GET_TEXT (GtkWidget *entry)
 {
+	static char *last = NULL;	/* warning: don't overlap 2 GET_TEXT calls! */
 	GtkTextBuffer *buf = gtk_text_view_get_buffer (GTK_TEXT_VIEW (entry));
 	GtkTextIter start_iter, end_iter;
 
+	g_free (last);
 	gtk_text_buffer_get_start_iter (buf, &start_iter);
 	gtk_text_buffer_get_end_iter (buf, &end_iter);
-
-	return gtk_text_buffer_get_text (buf, &start_iter, &end_iter, FALSE);
+	last = gtk_text_buffer_get_text (buf, &start_iter, &end_iter, FALSE);
+	return last;
 }
 
 void
@@ -139,10 +141,11 @@ SPELL_ENTRY_INSERT (GtkWidget *entry, const char *text, int len, int *pos)
 	GtkTextIter iter;
 	GtkTextBuffer *buf = gtk_text_view_get_buffer (GTK_TEXT_VIEW (entry));
 
+	/* len is bytes. pos is chars. */
 	gtk_text_buffer_get_start_iter (buf, &iter);
 	gtk_text_iter_set_offset (&iter, *pos);
-	gtk_text_buffer_insert (buf, &iter, text, len); /* FIXME: bytes/chars? */
-	*pos += len;
+	gtk_text_buffer_insert (buf, &iter, text, len);
+	*pos += g_utf8_strlen (text, len);
 }
 
 #endif
@@ -402,9 +405,7 @@ mg_inputbox_cb (GtkWidget *igad, session_gui *gui)
 	if (cmd[0] == 0)
 		return;
 
-#ifndef USE_GTKSPELL
 	cmd = strdup (cmd);
-#endif
 
 	/* avoid recursive loop */
 	ignore = TRUE;
@@ -432,11 +433,7 @@ mg_inputbox_cb (GtkWidget *igad, session_gui *gui)
 	if (sess)
 		handle_multiline (sess, cmd, TRUE, FALSE);
 
-#ifdef USE_GTKSPELL
-	SPELL_ENTRY_FREE_TEXT (cmd);
-#else
 	free (cmd);
-#endif
 }
 
 void
@@ -638,7 +635,6 @@ mg_unpopulate (session *sess)
 	restore_gui *res;
 	session_gui *gui;
 	int i;
-	char *tmp;
 
 	gui = sess->gui;
 	res = sess->res;
@@ -652,9 +648,7 @@ mg_unpopulate (session *sess)
 		prefs.paned_pos = gui->pane_pos = i;
 	}
 
-	tmp = SPELL_ENTRY_GET_TEXT (gui->input_box);
-	res->input_text = strdup (tmp);
-	SPELL_ENTRY_FREE_TEXT (tmp);
+	res->input_text = strdup (SPELL_ENTRY_GET_TEXT (gui->input_box));
 	res->topic_text = strdup (GTK_ENTRY (gui->topic_entry)->text);
 	res->limit_text = strdup (GTK_ENTRY (gui->limit_entry)->text);
 	res->key_text = strdup (GTK_ENTRY (gui->key_entry)->text);
