@@ -300,7 +300,7 @@ key_handle_key_press (GtkWidget *wid, GdkEventKey *evt, session *sess)
 			case 0:
 				return 1;
 			case 2:
-				gtk_signal_emit_stop_by_name (GTK_OBJECT (wid),
+				g_signal_stop_emission_by_name (G_OBJECT (wid),
 														"key_press_event");
 				return 1;
 			}
@@ -308,17 +308,21 @@ key_handle_key_press (GtkWidget *wid, GdkEventKey *evt, session *sess)
 		last = kb;
 		kb = kb->next;
 	}
-	if (keyval == GDK_space)
-		key_action_tab_clean ();
 
-#ifdef USE_GTKSPELL
-	/* gtktextview has no 'activate' event, so we trap ENTER here */
-	if ((evt->keyval == GDK_Return) || (evt->keyval == GDK_KP_Enter))
+	switch (keyval)
 	{
-		gtk_signal_emit_stop_by_name (GTK_OBJECT (wid), "key_press_event");
+	case GDK_space:
+		key_action_tab_clean ();
+		break;
+
+#if defined(USE_GTKSPELL) && !defined(WIN32)
+	/* gtktextview has no 'activate' event, so we trap ENTER here */
+	case GDK_Return:
+	case GDK_KP_Enter:
+		g_signal_stop_emission_by_name (G_OBJECT (wid), "key_press_event");
 		mg_inputbox_cb (wid, sess->gui);
-	}
 #endif
+	}
 
 	return 0;
 }
@@ -643,7 +647,7 @@ key_dialog_set_key (GtkWidget * entry, GdkEventKey * evt, void *none)
 	kb->keyname = key_get_key_name (kb->keyval);
 	gtk_clist_set_text (GTK_CLIST (key_dialog_kb_clist), row, 1, kb->keyname);
 	gtk_entry_set_text (GTK_ENTRY (entry), kb->keyname);
-	gtk_signal_emit_stop_by_name (GTK_OBJECT (entry), "key_press_event");
+	g_signal_stop_emission_by_name (G_OBJECT (entry), "key_press_event");
 }
 
 static void

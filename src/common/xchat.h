@@ -258,6 +258,7 @@ struct xchatprefs
 	unsigned int thin_separator;
 	unsigned int auto_indent;
 	unsigned int wordwrap;
+	unsigned int gui_input_spell;
 	unsigned int throttle;
 	unsigned int fudgeservernotice;
 	unsigned int topicbar;

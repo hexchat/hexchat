@@ -421,6 +421,7 @@ const struct prefs vars[] = {
 	{"gui_dialog_top", P_OFFINT (dialog_top), TYPE_INT},
 	{"gui_dialog_width", P_OFFINT (dialog_width), TYPE_INT},
 	{"gui_hide_menu", P_OFFINT (hidemenu), TYPE_BOOL},
+	{"gui_input_spell", P_OFFINT (gui_input_spell), TYPE_BOOL},
 	{"gui_input_style", P_OFFINT (style_inputbox), TYPE_BOOL},
 	{"gui_join_dialog", P_OFFINT (gui_join_dialog), TYPE_BOOL},
 	{"gui_lagometer", P_OFFINT (lagometer), TYPE_INT},
@@ -605,6 +606,7 @@ load_config (void)
 	prefs.wordwrap = 1;
 	prefs.autosave = 1;
 	prefs.autodialog = 1;
+	prefs.gui_input_spell = 1;
 	prefs.autoreconnect = 1;
 	prefs.recon_delay = 10;
 	prefs.tabchannels = 1;
