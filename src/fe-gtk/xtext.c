@@ -1629,7 +1629,7 @@ lamejump:
 }
 
 static void
-gtk_xtext_selection_draw (GtkXText * xtext, GdkEventMotion * event)
+gtk_xtext_selection_draw (GtkXText * xtext, GdkEventMotion * event, gboolean render)
 {
 	textentry *ent;
 	textentry *ent_end;
@@ -1718,7 +1718,8 @@ gtk_xtext_selection_draw (GtkXText * xtext, GdkEventMotion * event)
 		}
 	}
 
-	gtk_xtext_selection_render (xtext, ent_start, offset_start, ent_end, offset_end);
+	if (render)
+		gtk_xtext_selection_render (xtext, ent_start, offset_start, ent_end, offset_end);
 }
 
 static gint
@@ -1762,7 +1763,7 @@ gtk_xtext_scrollup_timeout (GtkXText * xtext)
 }
 
 static void
-gtk_xtext_selection_update (GtkXText * xtext, GdkEventMotion * event, int p_y)
+gtk_xtext_selection_update (GtkXText * xtext, GdkEventMotion * event, int p_y, gboolean render)
 {
 	int win_height;
 	int moved;
@@ -1795,7 +1796,7 @@ gtk_xtext_selection_update (GtkXText * xtext, GdkEventMotion * event, int p_y)
 	moved = (int)xtext->adj->value - xtext->select_start_adj;
 	xtext->select_start_y -= (moved * xtext->fontsize);
 	xtext->select_start_adj = xtext->adj->value;
-	gtk_xtext_selection_draw (xtext, event);
+	gtk_xtext_selection_draw (xtext, event, render);
 }
 
 static char *
@@ -1902,15 +1903,41 @@ gtk_xtext_leave_notify (GtkWidget * widget, GdkEventCrossing * event)
 
 #endif
 
+/* check if we should mark time stamps, and if a redraw is needed */
+
+static gboolean
+gtk_xtext_check_mark_stamp (GtkXText *xtext, GdkModifierType mask)
+{
+	gboolean redraw = FALSE;
+
+	if ((mask & GDK_SHIFT_MASK))
+	{
+		if (!xtext->mark_stamp)
+		{
+			redraw = TRUE;	/* must redraw all */
+			xtext->mark_stamp = TRUE;
+		}
+	} else
+	{
+		if (xtext->mark_stamp)
+		{
+			redraw = TRUE;	/* must redraw all */
+			xtext->mark_stamp = FALSE;
+		}
+	}
+	return redraw;
+}
+
 static gboolean
 gtk_xtext_motion_notify (GtkWidget * widget, GdkEventMotion * event)
 {
 	GtkXText *xtext = GTK_XTEXT (widget);
-	int tmp, x, y, offset, len, line_x;
+	GdkModifierType mask;
+	int redraw, tmp, x, y, offset, len, line_x;
 	unsigned char *word;
 	textentry *word_ent;
 
-	gdk_window_get_pointer (widget->window, &x, &y, 0);
+	gdk_window_get_pointer (widget->window, &x, &y, &mask);
 
 	if (xtext->moving_separator)
 	{
@@ -1937,14 +1964,24 @@ gtk_xtext_motion_notify (GtkWidget * widget, GdkEventMotion * event)
 
 	if (xtext->button_down)
 	{
+		redraw = gtk_xtext_check_mark_stamp (xtext, mask);
 		gtk_grab_add (widget);
 		/*gdk_pointer_grab (widget->window, TRUE,
 									GDK_BUTTON_RELEASE_MASK |
 									GDK_BUTTON_MOTION_MASK, NULL, NULL, 0);*/
 		xtext->select_end_x = x;
 		xtext->select_end_y = y;
-		gtk_xtext_selection_update (xtext, event, y);
+		gtk_xtext_selection_update (xtext, event, y, !redraw);
 		xtext->hilighting = TRUE;
+
+		/* user has pressed or released SHIFT, must redraw entire selection */
+		if (redraw)
+		{
+			xtext->force_stamp = TRUE;
+			gtk_xtext_render_ents (xtext, xtext->buffer->last_ent_start,
+										  xtext->buffer->last_ent_end);
+			xtext->force_stamp = FALSE;
+		}
 		return FALSE;
 	}
 #ifdef MOTION_MONITOR
@@ -2117,6 +2154,7 @@ gtk_xtext_button_release (GtkWidget * widget, GdkEventButton * event)
 			 xtext->buffer->last_ent_start)
 		{
 			gtk_xtext_unselect (xtext);
+			xtext->mark_stamp = FALSE;
 			return FALSE;
 		}
 
@@ -2138,11 +2176,12 @@ static gboolean
 gtk_xtext_button_press (GtkWidget * widget, GdkEventButton * event)
 {
 	GtkXText *xtext = GTK_XTEXT (widget);
+	GdkModifierType mask;
 	textentry *ent;
 	unsigned char *word;
 	int line_x, x, y, offset, len;
 
-	gdk_window_get_pointer (widget->window, &x, &y, 0);
+	gdk_window_get_pointer (widget->window, &x, &y, &mask);
 
 	if (event->button == 3 || event->button == 2) /* right/middle click */
 	{
@@ -2162,6 +2201,7 @@ gtk_xtext_button_press (GtkWidget * widget, GdkEventButton * event)
 
 	if (event->type == GDK_2BUTTON_PRESS)	/* WORD select */
 	{
+		gtk_xtext_check_mark_stamp (xtext, mask);
 		if (gtk_xtext_get_word (xtext, x, y, &ent, &offset, &len))
 		{
 			if (len == 0)
@@ -2179,6 +2219,7 @@ gtk_xtext_button_press (GtkWidget * widget, GdkEventButton * event)
 
 	if (event->type == GDK_3BUTTON_PRESS)	/* LINE select */
 	{
+		gtk_xtext_check_mark_stamp (xtext, mask);
 		if (gtk_xtext_get_word (xtext, x, y, &ent, 0, 0))
 		{
 			gtk_xtext_selection_clear (xtext->buffer);
@@ -2247,6 +2288,15 @@ gtk_xtext_selection_get_text (GtkXText *xtext, int *len_ret)
 	{
 		if (ent->mark_start != -1)
 		{
+			/* include timestamp? */
+			if (ent->mark_start == 0 && xtext->mark_stamp)
+			{
+				char *time_str;
+				int stamp_size = xtext_get_stamp_str (ent->stamp, &time_str);
+				g_free (time_str);
+				len += stamp_size;
+			}
+
 			if (ent->mark_end - ent->mark_start > 0)
 				len += (ent->mark_end - ent->mark_start) + 1;
 			else
@@ -2275,6 +2325,16 @@ gtk_xtext_selection_get_text (GtkXText *xtext, int *len_ret)
 			first = FALSE;
 			if (ent->mark_end - ent->mark_start > 0)
 			{
+				/* include timestamp? */
+				if (ent->mark_start == 0 && xtext->mark_stamp)
+				{
+					char *time_str;
+					int stamp_size = xtext_get_stamp_str (ent->stamp, &time_str);
+					memcpy (pos, time_str, stamp_size);
+					g_free (time_str);
+					pos += stamp_size;
+				}
+
 				memcpy (pos, ent->str + ent->mark_start,
 						  ent->mark_end - ent->mark_start);
 				pos += ent->mark_end - ent->mark_start;
@@ -3940,6 +4000,66 @@ gtk_xtext_find_subline (GtkXText *xtext, textentry *ent, int line)
 	return 0;
 }
 
+/* horrible hack for drawing time stamps */
+
+static void
+gtk_xtext_render_stamp (GtkXText * xtext, textentry * ent,
+								char *text, int len, int line, int win_width)
+{
+	textentry tmp_ent;
+	int jo, ji, hs;
+	int xsize, y;
+
+	/* trashing ent here, so make a backup first */
+	memcpy (&tmp_ent, ent, sizeof (tmp_ent));
+	ent->mb = TRUE;	/* make non-english days of the week work */
+	jo = xtext->jump_out_offset;	/* back these up */
+	ji = xtext->jump_in_offset;
+	hs = xtext->hilight_start;
+	xtext->jump_out_offset = 0;
+	xtext->jump_in_offset = 0;
+	xtext->hilight_start = 0xffff;	/* temp disable */
+
+	if (xtext->mark_stamp)
+	{
+		/* if this line is marked, mark this stamp too */
+		if (ent->mark_start == 0)	
+		{
+			ent->mark_start = 0;
+			ent->mark_end = len;
+		}
+		else
+		{
+			ent->mark_start = -1;
+			ent->mark_end = -1;
+		}
+		ent->str = text;
+	}
+
+	y = (xtext->fontsize * line) + xtext->font->ascent - xtext->pixel_offset;
+	gtk_xtext_render_str (xtext, y, ent, text, len,
+								 win_width, 2, line, TRUE, &xsize);
+
+	/* restore everything back to how it was */
+	memcpy (ent, &tmp_ent, sizeof (tmp_ent));
+	xtext->jump_out_offset = jo;
+	xtext->jump_in_offset = ji;
+	xtext->hilight_start = hs;
+
+	/* with a non-fixed-width font, sometimes we don't draw enough
+		background i.e. when this stamp is shorter than xtext->stamp_width */
+	xsize += MARGIN;
+	if (xsize < xtext->stamp_width)
+	{
+		y -= xtext->font->ascent;
+		xtext_draw_bg (xtext,
+							xsize,	/* x */
+							y,			/* y */
+							xtext->stamp_width - xsize,	/* width */
+							xtext->fontsize					/* height */);
+	}
+}
+
 /* render a single line, which may wrap to more lines */
 
 static int
@@ -3956,32 +4076,15 @@ gtk_xtext_render_line (GtkXText * xtext, textentry * ent, int line,
 
 #ifdef XCHAT
 	/* draw the timestamp */
-	if (xtext->auto_indent && xtext->buffer->time_stamp && !xtext->skip_stamp)
+	if (xtext->auto_indent && xtext->buffer->time_stamp &&
+		 (!xtext->skip_stamp || xtext->mark_stamp || xtext->force_stamp))
 	{
 		char *time_str;
-		int stamp_size = xtext_get_stamp_str (ent->stamp, &time_str);
-		int tmp = ent->mb;
-		int xsize;
+		int len;
 
-		y = (xtext->fontsize * line) + xtext->font->ascent - xtext->pixel_offset;
-		ent->mb = TRUE;
-		gtk_xtext_render_str (xtext, y, ent, time_str, stamp_size,
-									 win_width, 2, line, TRUE, &xsize);
-		ent->mb = tmp;
+		len = xtext_get_stamp_str (ent->stamp, &time_str);
+		gtk_xtext_render_stamp (xtext, ent, time_str, len, line, win_width);
 		g_free (time_str);
-
-		/* with a non-fixed-width font, sometimes we don't draw enough
-			background i.e. when this stamp is shorter than xtext->stamp_width */
-		xsize += MARGIN;
-		if (xsize < xtext->stamp_width)
-		{
-			y -= xtext->font->ascent;
-			xtext_draw_bg (xtext,
-								xsize,	/* x */
-								y,			/* y */
-								xtext->stamp_width - xsize,	/* width */
-								xtext->fontsize					/* height */);
-		}
 	}
 #endif
 

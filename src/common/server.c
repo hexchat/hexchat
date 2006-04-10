@@ -1280,7 +1280,7 @@ three_to_four (char *from, char *to)
 	to[3] = tab64 [ from[2] & 63 ];
 };
 
-static void
+void
 base64_encode (char *to, char *from, unsigned int len)
 {
 	while (len >= 3)

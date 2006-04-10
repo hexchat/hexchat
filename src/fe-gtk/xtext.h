@@ -183,39 +183,48 @@ struct _GtkXText
 	int clip_y;			/* clipping (y directions) */
 	int clip_y2;		/* from y to y2 */
 
-	unsigned int auto_indent:1;
-	unsigned int moving_separator:1;
-	unsigned int word_or_line_select:1;
-	unsigned int color_paste:1;
-	unsigned int thinline:1;
-	unsigned int parsing_backcolor:1;
-	unsigned int parsing_color:1;
-	unsigned int backcolor:1;
-	unsigned int button_down:1;
-	unsigned int hilighting:1;
+	/* current text states */
 	unsigned int bold:1;
 	unsigned int underline:1;
 	unsigned int italics:1;
-	unsigned int transparent:1;
-	unsigned int marker:1;
-	unsigned int separator:1;
-	unsigned int shaded:1;
-	unsigned int wordwrap:1;
+	unsigned int hidden:1;
+
+	/* text parsing states */
+	unsigned int parsing_backcolor:1;
+	unsigned int parsing_color:1;
+	unsigned int backcolor:1;
+
+	/* various state information */
+	unsigned int moving_separator:1;
+	unsigned int word_or_line_select:1;
+	unsigned int button_down:1;
+	unsigned int hilighting:1;
 	unsigned int dont_render:1;
 	unsigned int dont_render2:1;
 	unsigned int cursor_hand:1;
 	unsigned int cursor_resize:1;
 	unsigned int skip_border_fills:1;
 	unsigned int skip_stamp:1;
+	unsigned int mark_stamp:1;	/* Cut&Paste with stamps? */
+	unsigned int force_stamp:1;	/* force redrawing it */
 	unsigned int render_hilights_only:1;
 	unsigned int in_hilight:1;
 	unsigned int un_hilight:1;
 	unsigned int recycle:1;
 	unsigned int avoid_trans:1;
-	unsigned int overdraw:1;
 	unsigned int indent_changed:1;
 	unsigned int shm:1;
-	unsigned int hidden:1;
+
+	/* settings/prefs */
+	unsigned int auto_indent:1;
+	unsigned int color_paste:1;
+	unsigned int thinline:1;
+	unsigned int transparent:1;
+	unsigned int shaded:1;
+	unsigned int marker:1;
+	unsigned int separator:1;
+	unsigned int wordwrap:1;
+	unsigned int overdraw:1;
 };
 
 struct _GtkXTextClass

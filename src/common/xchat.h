@@ -141,6 +141,7 @@ struct xchatprefs
 	char proxy_host[64];
 	int proxy_port;
 	int proxy_type; /* 0=disabled, 1=wingate 2=socks4, 3=socks5, 4=http */
+	int proxy_use; /* 0=all 1=IRC_ONLY 2=DCC_ONLY */
 	unsigned int proxy_auth;
 	char proxy_user[32];
 	char proxy_pass[32];

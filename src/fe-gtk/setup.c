@@ -327,6 +327,14 @@ static const char *const proxytypes[] =
 	NULL
 };
 
+static const char *const proxyuse[] =
+{
+	N_("All Connections"),
+	N_("IRC Server Only"),
+	N_("DCC Only"),
+	NULL
+};
+
 static const setting network_settings[] =
 {
 	{ST_HEADER,	N_("Your Address"), 0, 0, 0, 0},
@@ -335,12 +343,14 @@ static const setting network_settings[] =
 
 	{ST_HEADER,	N_("Proxy Server"), 0, 0, 0, 0},
 	{ST_ENTRY,	N_("Hostname:"), P_OFFSETNL(proxy_host), 0, 0, sizeof prefs.proxy_host},
-	{ST_ENTRY,	N_("Username:"), P_OFFSETNL(proxy_user), 0, 0, sizeof prefs.proxy_user},
-	{ST_ENTRY,	N_("Password:"), P_OFFSETNL(proxy_pass), 0, GINT_TO_POINTER(1), sizeof prefs.proxy_pass},
 	{ST_NUMBER,	N_("Port:"), P_OFFINTNL(proxy_port), 0, 0, 65535},
 	{ST_MENU,	N_("Type:"), P_OFFINTNL(proxy_type), 0, proxytypes, 0},
 
 	{ST_TOGGLE,	N_("Authenticate to the proxy server (HTTP and Socks5)"), P_OFFINTNL(proxy_auth), 0, 0, 0},
+	{ST_ENTRY,	N_("Username:"), P_OFFSETNL(proxy_user), 0, 0, sizeof prefs.proxy_user},
+	{ST_ENTRY,	N_("Password:"), P_OFFSETNL(proxy_pass), 0, GINT_TO_POINTER(1), sizeof prefs.proxy_pass},
+
+	{ST_MENU,	N_("Use Proxy For:"), P_OFFINTNL(proxy_use), 0, proxyuse, 0},
 
 	{ST_END, 0, 0, 0, 0, 0}
 };
@@ -488,17 +498,17 @@ setup_create_hscale (GtkWidget *table, int row, const setting *set)
 
 #if 0
 static int
-setup_create_radio (GtkWidget *table, int row, setting *set)
+setup_create_radio (GtkWidget *table, int row, const setting *set)
 {
 	GtkWidget *wid;
 	int i;
-	char **text = set->list;
+	const char **text = (const char **)set->list;
 	GSList *group;
 
-	wid = gtk_label_new (set->label);
+	wid = gtk_label_new (_(set->label));
 	gtk_misc_set_alignment (GTK_MISC (wid), 0.0, 0.5);
 	gtk_table_attach (GTK_TABLE (table), wid, 2, 3, row, row + 1,
-							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
+							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, LABEL_INDENT, 0);
 
 	i = 0;
 	group = NULL;
@@ -508,7 +518,7 @@ setup_create_radio (GtkWidget *table, int row, setting *set)
 		if (set->tooltip)
 			add_tip (wid, _(set->tooltip));
 		group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (wid));
-		gtk_table_attach_defaults (GTK_TABLE (table), wid, 3, 5, row, row + 1);
+		gtk_table_attach_defaults (GTK_TABLE (table), wid, 3, 4, row, row + 1);
 		if (i == setup_get_int (&setup_prefs, set))
 			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (wid), TRUE);
 		i++;
@@ -563,10 +573,10 @@ setup_create_id_menu (GtkWidget *table, char *label, int row, char *dest)
 	int i, def = 0;
 	static const char *text[] =
 	{
-		N_("(disabled)"),
-		N_("A star (*)"),
-		N_("A red star (*)"),
-		N_("Underlined")
+		("(disabled)"),
+		("A star (*)"),
+		("A red star (*)"),
+		("Underlined")
 	};
 
 	wid = gtk_label_new (label);

@@ -34,6 +34,7 @@ struct DCC
 {
 	struct server *serv;
 	struct dcc_chat *dccchat;
+	struct proxy_state *proxy;
 	guint32 addr;					/* the 32bit IP number, host byte order */
 	int fp;							/* file pointer */
 	int sok;
@@ -67,6 +68,15 @@ struct DCC
 										/* the resume point? */
 	unsigned int throttled:2;	/* 0x1 = per send/get throttle
 											0x2 = global throttle */
+};
+
+#define MAX_PROXY_BUFFER 1024
+struct proxy_state
+{
+	int phase;
+	unsigned char buffer[MAX_PROXY_BUFFER];
+	int buffersize;
+	int bufferused;
 };
 
 struct dcc_chat
