@@ -300,6 +300,8 @@ dcc_lookup_proxy (char *host, struct sockaddr_in *addr)
 	return FALSE;
 }
 
+#define DCC_USE_PROXY() (prefs.proxy_host[0] && prefs.proxy_type>0 && prefs.proxy_use!=1)
+
 static int
 dcc_connect_sok (struct DCC *dcc)
 {
@@ -312,7 +314,7 @@ dcc_connect_sok (struct DCC *dcc)
 
 	memset (&addr, 0, sizeof (addr));
 	addr.sin_family = AF_INET;
-	if (prefs.proxy_host[0] && prefs.proxy_type > 0)
+	if (DCC_USE_PROXY ())
 	{
 		if (!dcc_lookup_proxy (prefs.proxy_host, &addr))
 		{
@@ -1430,7 +1432,7 @@ dcc_connect (struct DCC *dcc)
 			fe_dcc_update (dcc);
 			return;
 		}
-		if (prefs.proxy_host[0] && prefs.proxy_type > 0)
+		if (DCC_USE_PROXY ())
 			dcc->iotag = fe_input_add (dcc->sok, FIA_WRITE|FIA_EX, dcc_proxy_connect, dcc);
 		else
 			dcc->iotag = fe_input_add (dcc->sok, FIA_WRITE|FIA_EX, dcc_connect_finished, dcc);

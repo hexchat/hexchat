@@ -51,7 +51,10 @@
 #ifdef WIN32
 #include "../common/fe.h"
 #endif
-
+#ifdef USE_GTKSPELL
+#include <gtk/gtktextview.h>
+#include <gtkspell/gtkspell.h>
+#endif
 
 GtkStyle *create_input_style (GtkStyle *);
 
@@ -119,17 +122,22 @@ static const setting textbox_settings[] =
 
 static const setting inputbox_settings[] =
 {
+	{ST_HEADER, N_("Input box"),0,0,0},
+	{ST_TOGGLE, N_("Use the Text box font and colors"), P_OFFINTNL(style_inputbox),0,0,0},
+#ifdef USE_GTKSPELL
+	{ST_TOGGLE, N_("Spell checking"), P_OFFINTNL(gui_input_spell),0,0,0},
+#endif
+
 	{ST_HEADER, N_("Nick Completion"),0,0,0},
 	{ST_TOGGLE, N_("Automatic nick completion"), P_OFFINTNL(nickcompletion),
 					N_("Completes nick names without using the TAB key"),0,0},
 	{ST_ENTRY,	N_("Nick completion suffix:"), P_OFFSETNL(nick_suffix),0,0,sizeof prefs.nick_suffix},
 
+#if 0	/* obsolete */
 	{ST_HEADER, N_("Input Box Codes"),0,0,0},
 	{ST_TOGGLE, N_("Interpret %nnn as an ASCII value"), P_OFFINTNL(perc_ascii),0,0,0},
 	{ST_TOGGLE, N_("Interpret %C, %B as Color, Bold etc"), P_OFFINTNL(perc_color),0,0,0},
-
-	{ST_HEADER, N_("Input Box Appearance"),0,0,0},
-	{ST_TOGGLE, N_("Use the Text box font and colors"), P_OFFINTNL(style_inputbox),0,0,0},
+#endif
 
 	{ST_END, 0, 0, 0, 0, 0}
 };
@@ -350,7 +358,7 @@ static const setting network_settings[] =
 	{ST_ENTRY,	N_("Username:"), P_OFFSETNL(proxy_user), 0, 0, sizeof prefs.proxy_user},
 	{ST_ENTRY,	N_("Password:"), P_OFFSETNL(proxy_pass), 0, GINT_TO_POINTER(1), sizeof prefs.proxy_pass},
 
-	{ST_MENU,	N_("Use Proxy For:"), P_OFFINTNL(proxy_use), 0, proxyuse, 0},
+	{ST_MENU,	N_("Use proxy for:"), P_OFFINTNL(proxy_use), 0, proxyuse, 0},
 
 	{ST_END, 0, 0, 0, 0, 0}
 };
@@ -621,7 +629,7 @@ setup_create_id_menu (GtkWidget *table, char *label, int row, char *dest)
 static void
 setup_create_menu (GtkWidget *table, int row, const setting *set)
 {
-	GtkWidget *wid, *menu, *item;
+	GtkWidget *wid, *box, *menu, *item;
 	int i;
 	const char **text = (const char **)set->list;
 
@@ -656,7 +664,11 @@ setup_create_menu (GtkWidget *table, int row, const setting *set)
 	gtk_option_menu_set_history (GTK_OPTION_MENU (wid),
 										  setup_get_int (&setup_prefs, set));
 
-	gtk_table_attach (GTK_TABLE (table), wid, 3, 4, row, row + 1,
+	box = gtk_hbox_new (0, 0);
+	gtk_box_pack_start (GTK_BOX (box), wid, 0, 0, 0);
+	gtk_widget_show (box);
+
+	gtk_table_attach (GTK_TABLE (table), box, 3, 4, row, row + 1,
 							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
 }
 
@@ -1055,7 +1067,7 @@ setup_create_color_page (void)
 	for (i = 0; i < 16; i++)
 		setup_create_color_button (tab, i, 1, i+3);
 
-	label = gtk_label_new (_("Extra colors:"));
+	label = gtk_label_new (_("Local colors:"));
 	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
 	gtk_table_attach (GTK_TABLE (tab), label, 2, 3, 2, 3,
 							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, LABEL_INDENT, 0);
@@ -1598,6 +1610,10 @@ setup_apply_entry_style (GtkWidget *entry)
 static void
 setup_apply_to_sess (session_gui *gui)
 {
+#ifdef USE_GTKSPELL
+	GtkSpell *spell;
+#endif
+
 	mg_update_xtext (gui->xtext);
 
 	if (prefs.style_namelistgad)
@@ -1623,6 +1639,20 @@ setup_apply_to_sess (session_gui *gui)
 		gtk_widget_show (gui->button_box);
 	else
 		gtk_widget_hide (gui->button_box);
+
+#ifdef USE_GTKSPELL
+	spell = gtkspell_get_from_text_view (GTK_TEXT_VIEW (gui->input_box));
+	if (prefs.gui_input_spell)
+	{
+		if (!spell)
+			gtkspell_new_attach (GTK_TEXT_VIEW (gui->input_box), NULL, NULL);
+	}
+	else
+	{
+		if (spell)
+			gtkspell_detach (spell);
+	}
+#endif
 }
 
 static void

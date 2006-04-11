@@ -1427,7 +1427,10 @@ server_child (server * serv)
 	}
 
 	/* first resolve where we want to connect to */
-	if (!serv->dont_use_proxy && prefs.proxy_host[0] && prefs.proxy_type > 0)
+	if (!serv->dont_use_proxy && /* blocked in serverlist? */
+		prefs.proxy_host[0] &&
+		prefs.proxy_type > 0 &&
+		prefs.proxy_use != 2)	/* proxy is NOT dcc-only */
 	{
 		snprintf (buf, sizeof (buf), "9\n%s\n", prefs.proxy_host);
 		write (serv->childwrite, buf, strlen (buf));

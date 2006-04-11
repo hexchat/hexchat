@@ -11,7 +11,9 @@ Where "NUMBER" is the bug number.
 ----------------------------------------------------------------------
 
  - Updated translations (hu, zh_TW).
- - Fixed (xc262-fix-ircurl.diff).
+ - Fixed opening a irc:// URL via "xchat -a --url=abc123" command while
+   "Skip serverlist on startup" is off. This fix is only relevant when
+   opening an initial instance of xchat (i.e not via dbus).
  - Fixed the tree layout "flashing" (redrawing slowly) after you
    switched to tabs and back to tree.
  - Fixed plugin/script get_list("users") causing a critical GDK warning
