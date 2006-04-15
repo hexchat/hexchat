@@ -1010,11 +1010,11 @@ dcc_wingate_proxy_traverse (GIOChannel *source, GIOCondition condition, struct D
 
 struct sock_connect
 {
-        char version;
-        char type;
-        unsigned short port;
-        unsigned long address;
-        char username[10];
+	char version;
+	char type;
+	guint16 port;
+	guint32 address;
+	char username[10];
 };
 static gboolean
 dcc_socks_proxy_traverse (GIOChannel *source, GIOCondition condition, struct DCC *dcc)

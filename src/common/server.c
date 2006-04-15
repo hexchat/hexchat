@@ -1098,8 +1098,8 @@ struct sock_connect
 {
 	char version;
 	char type;
-	unsigned short port;
-	unsigned long address;
+	guint16 port;
+	guint32 address;
 	char username[10];
 };
 
