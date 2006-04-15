@@ -1125,7 +1125,7 @@ traverse_socks (int print_fd, int sok, char *serverAddr, int port)
 	if (buf[1] == 90)
 		return 0;
 
-	snprintf (buf, sizeof (buf), "SOCKS\tServer reported error %d.\n", buf[1]);
+	snprintf (buf, sizeof (buf), "SOCKS\tServer reported error %d,%d.\n", buf[0], buf[1]);
 	proxy_error (print_fd, buf);
 	return 1;
 }
@@ -1156,8 +1156,14 @@ traverse_socks5 (int print_fd, int sok, char *serverAddr, int port)
 	if (recv (sok, buf, 2, 0) != 2)
 		goto read_error;
 
+	if (buf[0] != 5)
+	{
+		proxy_error (print_fd, "SOCKS\tServer is not socks version 5.\n");
+		return 1;
+	}
+
 	/* did the server say no auth required? */
-	if (buf[0] == 5 && buf[1] == 0)
+	if (buf[1] == 0)
 		auth = 0;
 
 	if (auth)
@@ -1165,7 +1171,7 @@ traverse_socks5 (int print_fd, int sok, char *serverAddr, int port)
 		int len_u=0, len_p=0;
 
 		/* authentication sub-negotiation (RFC1929) */
-		if ( buf[0] != 5 || buf[1] != 2 )  /* UPA not supported by server */
+		if (buf[1] != 2)  /* UPA not supported by server */
 		{
 			proxy_error (print_fd, "SOCKS\tServer doesn't support UPA authentication.\n");
 			return 1;
@@ -1194,7 +1200,7 @@ traverse_socks5 (int print_fd, int sok, char *serverAddr, int port)
 	}
 	else
 	{
-		if (buf[0] != 5 || buf[1] != 0)
+		if (buf[1] != 0)
 		{
 			proxy_error (print_fd, "SOCKS\tAuthentication required but disabled in settings.\n");
 			return 1;

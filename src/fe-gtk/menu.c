@@ -932,24 +932,6 @@ menu_rawlog (GtkWidget * wid, gpointer none)
 }
 
 static void
-menu_autodccsend (GtkWidget * wid, gpointer none)
-{
-	prefs.autodccsend = !prefs.autodccsend;
-#ifndef WIN32
-	if (prefs.autodccsend)
-	{
-		if (!strcmp ((char *)g_get_home_dir (), prefs.dccdir))
-		{
-			fe_message (_("*WARNING*\n"
-							 "Auto accepting DCC to your home directory\n"
-							 "can be dangerous and is exploitable. Eg:\n"
-							 "Someone could send you a .bash_profile"), FE_MSG_WARN);
-		}
-	}
-#endif
-}
-
-static void
 menu_detach (GtkWidget * wid, gpointer none)
 {
 	mg_detach (current_sess, 0);
@@ -1000,42 +982,6 @@ menu_savebuffer (GtkWidget * wid, gpointer none)
 {
 	gtkutil_file_req (_("Select an output filename"), savebuffer_req_done,
 							current_sess, NULL, FRF_WRITE);
-}
-
-static void
-menu_wallops (GtkWidget * wid, gpointer none)
-{
-	char mode[3];
-	server *serv = current_sess->server;
-	prefs.wallops = !prefs.wallops;
-	if (serv->connected)
-	{
-		mode[1] = 'w';
-		mode[2] = '\0';
-		if (prefs.wallops)
-			mode[0] = '+';
-		else
-			mode[0] = '-';
-		serv->p_mode (serv, serv->nick, mode);
-	}
-}
-
-static void
-menu_servernotice (GtkWidget * wid, gpointer none)
-{
-	char mode[3];
-	server *serv = current_sess->server;
-	prefs.servernotice = !prefs.servernotice;
-	if (serv->connected)
-	{
-		mode[1] = 's';
-		mode[2] = '\0';
-		if (prefs.servernotice)
-			mode[0] = '+';
-		else
-			mode[0] = '-';
-		serv->p_mode (serv, serv->nick, mode);
-	}
 }
 
 static void
@@ -1117,34 +1063,6 @@ menu_away (GtkWidget * wid, gpointer none)
 {
 	handle_command (current_sess, "away", FALSE);
 }
-
-static void
-menu_invisible (GtkWidget * wid, gpointer none)
-{
-	char mode[3];
-	server *serv = current_sess->server;
-	prefs.invisible = !prefs.invisible;
-	if (current_sess->server->connected)
-	{
-		mode[1] = 'i';
-		mode[2] = '\0';
-		if (prefs.invisible)
-			mode[0] = '+';
-		else
-			mode[0] = '-';
-		serv->p_mode (serv, serv->nick, mode);
-	}
-}
-
-#if 0
-static void
-menu_savedefault (GtkWidget * wid, gpointer none)
-{
-	palette_save ();
-	if (save_config ())
-		fe_message (_("Settings saved."), FE_MSG_INFO);
-}
-#endif
 
 static void
 menu_chanlist (GtkWidget * wid, gpointer none)
@@ -1288,59 +1206,6 @@ menu_ctcpguiopen (void)
 	editlist_gui_open (NULL, NULL, ctcp_list, _("XChat: CTCP Replies"), "ctcpreply",
 							 "ctcpreply.conf", ctcp_help);
 }
-
-#if 0
-static void
-menu_reload (void)
-{
-	char *buf = malloc (strlen (default_file ()) + 12);
-	load_config ();
-	sprintf (buf, "%s reloaded.", default_file ());
-	fe_message (buf, FE_MSG_INFO);
-	free (buf);
-}
-#endif
-
-static void
-menu_autorejoin (GtkWidget *wid, gpointer none)
-{
-	prefs.autorejoin = !prefs.autorejoin;
-}
-
-static void
-menu_autoreconnect (GtkWidget *wid, gpointer none)
-{
-	prefs.autoreconnect = !prefs.autoreconnect;
-}
-
-static void
-menu_autoreconnectonfail (GtkWidget *wid, gpointer none)
-{
-	prefs.autoreconnectonfail = !prefs.autoreconnectonfail;
-}
-
-static void
-menu_autodialog (GtkWidget *wid, gpointer none)
-{
-	if (GTK_CHECK_MENU_ITEM (wid)->active)
-		prefs.autodialog = 1;
-	else
-		prefs.autodialog = 0;
-}
-
-static void
-menu_autodccchat (GtkWidget *wid, gpointer none)
-{
-	prefs.autodccchat = !prefs.autodccchat;
-}
-
-#if 0
-static void
-menu_saveexit (GtkWidget *wid, gpointer none)
-{
-	prefs.autosave = !prefs.autosave;
-}
-#endif
 
 static void
 menu_docs (GtkWidget *wid, gpointer none)

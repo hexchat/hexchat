@@ -1656,6 +1656,18 @@ setup_apply_to_sess (session_gui *gui)
 }
 
 static void
+unslash (char *dir)
+{
+	int len = strlen (dir) - 1;
+#ifdef WIN32
+	if (dir[len] == '/' || dir[len] == '\\')
+#else
+	if (dir[len] == '/')
+#endif
+		dir[len] = 0;
+}
+
+static void
 setup_apply (struct xchatprefs *pr)
 {
 	GSList *list;
@@ -1693,6 +1705,10 @@ setup_apply (struct xchatprefs *pr)
 		do_ulist = TRUE;
 
 	memcpy (&prefs, pr, sizeof (prefs));
+
+	/* remove trailing slashes */
+	unslash (prefs.dccdir);
+	unslash (prefs.dcc_completed_dir);
 
 	mkdir_utf8 (prefs.dccdir);
 	mkdir_utf8 (prefs.dcc_completed_dir);
@@ -1739,6 +1755,19 @@ setup_apply (struct xchatprefs *pr)
 	if (noapply)
 		fe_message (_("Some settings were changed that require a"
 						" restart to take full effect."), FE_MSG_WARN);
+
+#ifndef WIN32
+	if (prefs.autodccsend)
+	{
+		if (!strcmp ((char *)g_get_home_dir (), prefs.dccdir))
+		{
+			fe_message (_("*WARNING*\n"
+							 "Auto accepting DCC to your home directory\n"
+							 "can be dangerous and is exploitable. Eg:\n"
+							 "Someone could send you a .bash_profile"), FE_MSG_WARN);
+		}
+	}
+#endif
 }
 
 #if 0
