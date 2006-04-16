@@ -580,20 +580,6 @@ fe_beep (void)
 	gdk_beep ();
 }
 
-typedef struct {
-	session *sess;
-	char *sstr;
-} fe_lastlog_info;
-
-static void
-fe_lastlog_foreach (GtkXText *xtext, unsigned char *text, void *data)
-{
-	fe_lastlog_info *info = data;
-
-	if (nocasestrstr (text, info->sstr))
-		PrintText (info->sess, text);
-}
-
 void
 fe_lastlog (session *sess, session *lastlog_sess, char *sstr)
 {
@@ -603,12 +589,7 @@ fe_lastlog (session *sess, session *lastlog_sess, char *sstr)
 	}
 	else
 	{
-		fe_lastlog_info info;
-
-		info.sess = lastlog_sess;
-		info.sstr = sstr;
-
-		gtk_xtext_foreach (sess->res->buffer, fe_lastlog_foreach, &info);
+		gtk_xtext_lastlog (lastlog_sess->res->buffer, sess->res->buffer, sstr);
 	}
 }
 

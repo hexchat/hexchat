@@ -5109,6 +5109,29 @@ gtk_xtext_is_empty (xtext_buffer *buf)
 }
 
 void
+gtk_xtext_lastlog (xtext_buffer *out, xtext_buffer *search_area, char *sstr)
+{
+	textentry *ent = search_area->text_first;
+
+	while (ent)
+	{
+		if (nocasestrstr (ent->str, sstr))
+		{
+			/* copy the text over */
+			if (search_area->indent)
+				gtk_xtext_append_indent (out, ent->str, ent->left_len,
+												 ent->str + ent->left_len + 1,
+												 ent->str_len - ent->left_len - 1);
+			else
+				gtk_xtext_append (out, ent->str, ent->str_len);
+			/* copy the timestamp over */
+			out->text_last->stamp = ent->stamp;
+		}
+		ent = ent->next;
+	}
+}
+
+void
 gtk_xtext_foreach (xtext_buffer *buf, GtkXTextForeach func, void *data)
 {
 	textentry *ent = buf->text_first;
