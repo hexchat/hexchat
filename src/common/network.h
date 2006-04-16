@@ -24,5 +24,11 @@ char *net_resolve (netstore *ns, char *hostname, int port, char **real_host);
 void net_bind (netstore *tobindto, int sok4, int sok6);
 char *net_ip (guint32 addr);
 void net_sockets (int *sok4, int *sok6);
+/* functions for MSPROXY only! */
+void udp_sockets (int *sok4, int *sok6);
+void net_store_fill_any (netstore *ns);
+void net_store_fill_v4 (netstore *ns, guint32 addr, int port);
+guint32 net_getsockaddr_v4 (netstore *ns);
+int net_getsockport(int sok4, int sok6);
 
 #endif

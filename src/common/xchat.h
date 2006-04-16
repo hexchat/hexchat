@@ -345,6 +345,14 @@ typedef struct session
 	int done_away_check:1;	/* done checking for away status changes */
 } session;
 
+struct msproxy_state_t
+{
+	gint32				clientid;
+	gint32				serverid;
+	unsigned char		seq_recv;		/* seq number of last packet recv.	*/
+	unsigned char		seq_sent;		/* seq number of last packet sent.	*/
+};
+
 typedef struct server
 {
 	/*  server control operations (in server*.c) */
@@ -389,8 +397,12 @@ typedef struct server
 
 	int port;
 	int sok;					/* is equal to sok4 or sok6 (the one we are using) */
-	int sok4;				/* tcp4 socket */
-	int sok6;				/* tcp6 socket */
+	int sok4;					/* tcp4 socket */
+	int sok6;					/* tcp6 socket */
+	int proxy_sok;				/* Additional information for MS Proxy beast */
+	int proxy_sok4;
+	int proxy_sok6;
+	struct msproxy_state_t msp_state;
 	int id;					/* unique ID number (for plugin API) */
 #ifdef USE_OPENSSL
 	SSL *ssl;

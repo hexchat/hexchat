@@ -300,7 +300,7 @@ dcc_lookup_proxy (char *host, struct sockaddr_in *addr)
 	return FALSE;
 }
 
-#define DCC_USE_PROXY() (prefs.proxy_host[0] && prefs.proxy_type>0 && prefs.proxy_use!=1)
+#define DCC_USE_PROXY() (prefs.proxy_host[0] && prefs.proxy_type>0 && prefs.proxy_type<5 && prefs.proxy_use!=1)
 
 static int
 dcc_connect_sok (struct DCC *dcc)

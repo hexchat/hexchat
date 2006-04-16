@@ -1226,7 +1226,7 @@ servlist_open_networks (void)
 
 	servlist = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gtk_container_set_border_width (GTK_CONTAINER (servlist), 4);
-	gtk_window_set_title (GTK_WINDOW (servlist), _("XChat: Server List"));
+	gtk_window_set_title (GTK_WINDOW (servlist), _("XChat: Network List"));
 	gtk_window_set_default_size (GTK_WINDOW (servlist), win_width, win_height);
 	gtk_window_set_position (GTK_WINDOW (servlist), GTK_WIN_POS_MOUSE);
 	gtk_window_set_role (GTK_WINDOW (servlist), "servlist");
@@ -1363,7 +1363,7 @@ servlist_open_networks (void)
 								NULL);
 
 	checkbutton_skip =
-		gtk_check_button_new_with_mnemonic (_("Skip server list on startup"));
+		gtk_check_button_new_with_mnemonic (_("Skip network list on startup"));
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (checkbutton_skip),
 											prefs.slist_skip);
 	g_signal_connect (G_OBJECT (checkbutton_skip), "toggled",

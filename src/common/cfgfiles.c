@@ -495,8 +495,8 @@ const struct prefs vars[] = {
 	{"net_proxy_pass", P_OFFSET (proxy_pass), TYPE_STR},
 	{"net_proxy_port", P_OFFINT (proxy_port), TYPE_INT},
 	{"net_proxy_type", P_OFFINT (proxy_type), TYPE_INT},
-	{"net_proxy_user", P_OFFSET (proxy_user), TYPE_STR},
 	{"net_proxy_use", P_OFFINT (proxy_use), TYPE_INT},
+	{"net_proxy_user", P_OFFSET (proxy_user), TYPE_STR},
 
 	{"net_reconnect_delay", P_OFFINT (recon_delay), TYPE_INT},
 	{"net_throttle", P_OFFINT (throttle), TYPE_BOOL},

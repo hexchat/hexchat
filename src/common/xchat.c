@@ -53,6 +53,10 @@
 #include "ssl.h"
 #endif
 
+#ifdef USE_MSPROXY
+#include "msproxy.h"
+#endif
+
 GSList *popup_list = 0;
 GSList *button_list = 0;
 GSList *dlgbutton_list = 0;
@@ -245,6 +249,9 @@ static int
 xchat_misc_checks (void)		/* this gets called every 1/2 second */
 {
 	static int count = 0;
+#ifdef USE_MSPROXY
+	static int count2 = 0;
+#endif
 
 	count++;
 
@@ -259,6 +266,15 @@ xchat_misc_checks (void)		/* this gets called every 1/2 second */
 			lag_check ();
 		count = 0;
 	}
+
+#ifdef USE_MSPROXY	
+	count2++;
+	if (count2 >= 720)			/* 720 every 6 minutes */
+	{
+		msproxy_keepalive ();
+		count2 = 0;
+	}
+#endif
 
 	return 1;
 }

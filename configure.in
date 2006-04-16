@@ -19,6 +19,7 @@ AH_VERBATIM([PREFIX],[#undef PREFIX])
 AH_VERBATIM([XCHATLIBDIR],[#undef XCHATLIBDIR])
 AH_VERBATIM([XCHATSHAREDIR],[#undef XCHATSHAREDIR])
 AH_VERBATIM([SOCKS],[#undef SOCKS])
+AH_VERBATIM([USE_MSPROXY],[#undef USE_MSPROXY])
 AH_VERBATIM([USE_DEBUG],[#undef USE_DEBUG])
 dnl AH_VERBATIM([USE_GNOME],[#undef USE_GNOME])
 AH_VERBATIM([USE_SHM],[#undef USE_SHM])
@@ -512,6 +513,17 @@ if test "$socks" = yes; then
 fi
 
 dnl *********************************************************************
+dnl ** MS PROXY *********************************************************
+dnl *********************************************************************
+
+have_ntlm="no"
+AC_CHECK_LIB(ntlm, ntlm_smb_encrypt, have_ntlm=yes)
+if test "$have_ntlm" = yes; then
+	LIBS="$LIBS -lntlm"
+	AC_DEFINE(USE_MSPROXY)
+fi
+
+dnl *********************************************************************
 dnl ** XShm *************************************************************
 dnl *********************************************************************
 
@@ -757,6 +769,7 @@ else
   echo text backend ........ : xft\	nls/gettext ......... : $USE_NLS
 fi
 echo openssl support ..... : $openssl\	ipv6 support ........ : $ipv6
+echo msproxy ntlm \(ISA\) .. : $have_ntlm
 echo
 echo The binary will be installed in $prefix/bin
 echo
