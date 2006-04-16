@@ -32,7 +32,7 @@ sub complete {
 	# if $_[0][0] contains the value of the key pressed
 	# the value for tab is 0xFF09
 	# we don't care about other keys
-	return Xchat::EAT_NONE unless $_[0][0] == 0xFF09;
+	return Xchat::EAT_NONE unless $_[0][0] == 0xFF09 and $_[0][1] == 0x0;
 	
 	# we also don't care about other kinds of tabs besides channel tabs
 	return Xchat::EAT_NONE unless Xchat::get_info( "channel" ) =~ m/^(?:#|&)/;
