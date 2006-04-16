@@ -4745,6 +4745,8 @@ gtk_xtext_clear (xtext_buffer *buf)
 {
 	textentry *next;
 
+	if (buf->xtext->auto_indent)
+		buf->indent = MARGIN;
 	buf->scrollbar_down = TRUE;
 	buf->last_ent_start = NULL;
 	buf->last_ent_end = NULL;
@@ -4767,9 +4769,6 @@ gtk_xtext_clear (xtext_buffer *buf)
 	{
 		gtk_xtext_calc_lines (buf, FALSE);
 	}
-
-	if (buf->xtext->auto_indent)
-		buf->xtext->buffer->indent = 1;
 }
 
 static gboolean
