@@ -186,6 +186,27 @@ get_filename (char *word[], char *word_eol[])
 	return NULL;
 }
 
+static AV *
+array2av (char *array[])
+{
+	int count = 0;
+	SV *temp = NULL;
+	AV *av = newAV();
+	sv_2mortal ((SV *)av);
+
+	for (
+		count = 1;
+		count < 32 && array[count] != NULL && array[count][0] != 0;
+		count++
+	) {
+		temp = newSVpv (array[count], 0);
+		SvUTF8_on (temp);
+		av_push (av, temp);
+	}
+
+	return av;
+}
+
 static int
 fd_cb (int fd, int flags, void *userdata)
 {
@@ -275,10 +296,6 @@ server_cb (char *word[], char *word_eol[], void *userdata)
 	int retVal = 0;
 	int count = 0;
 
-	/* these must be initialized after SAVETMPS */
-	AV *wd = NULL;
-	AV *wd_eol = NULL;
-
 	dSP;
 	ENTER;
 	SAVETMPS;
@@ -286,27 +303,11 @@ server_cb (char *word[], char *word_eol[], void *userdata)
 	if (data->depth)
 		return XCHAT_EAT_NONE;
 
-	wd = newAV ();
-	sv_2mortal ((SV *) wd);
-	wd_eol = newAV ();
-	sv_2mortal ((SV *) wd_eol);
-
-	for (count = 1;
-		  (count < 32) && (word[count] != NULL) && (word[count][0] != 0);
-		  count++) {
-		av_push (wd, newSVpv (word[count], 0));
-	}
-
-	for (count = 1; (count < 32) && (word_eol[count] != NULL)
-		  && (word_eol[count][0] != 0); count++) {
-		av_push (wd_eol, newSVpv (word_eol[count], 0));
-	}
-
 	/*               xchat_printf (ph, */
 	/*                               "Recieved %d words in server callback", av_len (wd)); */
 	PUSHMARK (SP);
-	XPUSHs (newRV_noinc ((SV *) wd));
-	XPUSHs (newRV_noinc ((SV *) wd_eol));
+	XPUSHs (newRV_noinc ((SV *) array2av (word)));
+	XPUSHs (newRV_noinc ((SV *) array2av (word_eol)));
 	XPUSHs (data->userdata);
 	PUTBACK;
 
@@ -342,10 +343,6 @@ command_cb (char *word[], char *word_eol[], void *userdata)
 	int retVal = 0;
 	int count = 0;
 
-	/* these must be initialized after SAVETMPS */
-	AV *wd = NULL;
-	AV *wd_eol = NULL;
-
 	dSP;
 	ENTER;
 	SAVETMPS;
@@ -353,28 +350,11 @@ command_cb (char *word[], char *word_eol[], void *userdata)
 	if (data->depth)
 		return XCHAT_EAT_NONE;
 
-	wd = newAV ();
-	sv_2mortal ((SV *) wd);
-	wd_eol = newAV ();
-	sv_2mortal ((SV *) wd_eol);
-
-	for (count = 1;
-		  (count < 32) && (word[count] != NULL) && (word[count][0] != 0);
-		  count++) {
-		av_push (wd, newSVpv (word[count], 0));
-	}
-
-	for (count = 1;
-		  (count < 32) && (word_eol[count] != NULL) &&
-		  (word_eol[count][0] != 0); count++) {
-		av_push (wd_eol, newSVpv (word_eol[count], 0));
-	}
-
 	/*               xchat_printf (ph, "Recieved %d words in command callback", */
 	/*                               av_len (wd)); */
 	PUSHMARK (SP);
-	XPUSHs (newRV_noinc ((SV *) wd));
-	XPUSHs (newRV_noinc ((SV *) wd_eol));
+	XPUSHs (newRV_noinc ((SV *) array2av (word)));
+	XPUSHs (newRV_noinc ((SV *) array2av (word_eol)));
 	XPUSHs (data->userdata);
 	PUTBACK;
 
@@ -408,6 +388,7 @@ print_cb (char *word[], void *userdata)
 {
 
 	HookData *data = (HookData *) userdata;
+	SV *temp = NULL;
 	int retVal = 0;
 	int count = 1;
 	int last_index = 31;
@@ -439,7 +420,9 @@ print_cb (char *word[], void *userdata)
 		} else if (word[count][0] == 0) {
 			av_push (wd, newSVpvn ("",0));	
 		} else {
-			av_push (wd, newSVpv (word[count], 0));
+			temp = newSVpv (word[count], 0);
+			SvUTF8_on (temp);
+			av_push (wd, temp);
 		}
 	}
 
@@ -577,6 +560,7 @@ XS (XS_Xchat_emit_print)
 static
 XS (XS_Xchat_get_info)
 {
+	SV *temp = NULL;
 	dXSARGS;
 	if (items != 1) {
 		xchat_print (ph, "Usage: Xchat::get_info(id)");
@@ -588,7 +572,25 @@ XS (XS_Xchat_get_info)
 		if (RETVAL == NULL) {
 			XSRETURN_UNDEF;
 		}
-		XSRETURN_PV (RETVAL);
+
+		if (!strncmp ("win_ptr", SvPV_nolen (id), 7)) {
+			XSRETURN_IV (PTR2IV (RETVAL));
+		} else {
+			
+			if (
+				!strncmp ("libdirfs", SvPV_nolen (id), 8) ||
+				!strncmp ("xchatdirfs", SvPV_nolen (id), 10)
+			) {
+				XSRETURN_PV (RETVAL);
+			} else {
+				temp = newSVpv (RETVAL, 0);
+				SvUTF8_on (temp);
+				PUSHMARK (SP);
+				XPUSHs (sv_2mortal (temp));
+				PUTBACK;
+				return;
+			}
+		}
 	}
 }
 
@@ -597,6 +599,7 @@ XS (XS_Xchat_get_prefs)
 {
 	const char *str;
 	int integer;
+	SV *temp = NULL;
 	dXSARGS;
 	if (items != 1) {
 		xchat_print (ph, "Usage: Xchat::get_prefs(name)");
@@ -608,7 +611,13 @@ XS (XS_Xchat_get_prefs)
 			XSRETURN_UNDEF;
 			break;
 		case 1:
-			XSRETURN_PV (str);
+			temp = newSVpv (str, 0);
+			SvUTF8_on (temp);
+			SP -= items;
+			PUSHMARK (SP);
+			XPUSHs (sv_2mortal (temp));
+			PUTBACK;
+			return;
 			break;
 		case 2:
 			XSRETURN_IV (integer);
