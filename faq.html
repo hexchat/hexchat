@@ -58,7 +58,7 @@ p { margin: 3% }
 <br/><br/>
 <a href="#q212">12. How can I run the /dccserver command?</a>
 <br/><br/>
-<a href="#q213">13. Why doesn't DCC send work behind IPNat or IPMasq?</a>
+<a href="#q213">13. Why doesn't DCC send work behind a router (IPNat/ADSL)?</a>
 <br/><br/>
 <a href="#q214">14. How do I execute multiple commands in one line?</a>
 <br/><br/>
@@ -128,7 +128,7 @@ language support and all menus and GUI will be in English only.</li>
 <p>
 <u>UNIX:</u><br/>
     Identd isn't actually apart of X-Chat. You will need to download and install 
-    your own ident server. Most distributions, including RedHat, come with an 
+    your own ident server. Most distributions, including Fedora, come with an 
     ident server program called pidentd. Make sure it is enabled in
     /etc/xinetd.conf or read you distribution's documentation.
 
@@ -270,21 +270,32 @@ that is quite nonstandard. There is no code for doing this, mainly because
 /dccserver runs on port 59 which in turn would require running X-Chat as
 root. Why do you need this anyway? Just use normal DCC.
 <br/><br/>
-Unofficial <a href="http://dfx.at/xchat/">patches are available here</a>.
+Unofficial unix <a href="http://dfx.at/xchat/">patches are available here</a>.
 <br/><br/><u><b>Update</b></u>: DCC Server feature has been added in the official Windows release 2.4.1b.
 </p>
 
-<br/><h3><a name="q213">13. Why doesn't DCC send work behind IPNat or IPMasq?</a></h3>
+<br/><h3><a name="q213">13. Why doesn't DCC send work behind a router (IPNat/ADSL)?</a></h3>
 <p>
-   If you are behind a IP-NAT or IP-Masquerade system, you will most likely have
-   an address like 192.168.0.0. This address is not usable on the Internet, and
+   If you are behind a IP-NAT or ADSL router, you will most likely have
+   an address like 192.168.0.1. This address is not usable on the Internet, and
    must be translated.
 </p><p>
    When offering a DCC file, xchat will tell the receiver your address. If it says
-   192.168.0.0, the receiver will not be able to connect. One way to make it send
+   192.168.0.1, the receiver will not be able to connect. One way to make it send
    your "real" address is to enable the "Get my IP from IRC Server" option in xchat.
-   In version 2, it's available in Preferences -> File Transfers. When you turn
-   this option ON, you will have to re-login to the server before it'll take effect.
+   This option is available in Preferences -> File Transfers. When you turn it
+   ON, you will have to re-login to the server before it'll take effect.
+</p><p>
+	You will also need to forward some ports for use in DCC send. You may pick almost
+	any port range you wish, for example, in xchat set:
+</p>
+<pre>		<b>First DCC send port</b>: 4990
+		 <b>Last DCC send port</b>: 5000
+</pre>
+<p>
+	This will allow you to send up to ten files at the same time, which should be plenty
+	for most people. Lastly, configure your router/modem to forward ports 4990-5000 to
+	your PC's address. You'll have to consult your router/modem's manual on how to do this.
 </p>
 
 <br/><h3><a name="q214">14. How do I execute multiple commands in one line?</a></h3>
@@ -292,14 +303,14 @@ Unofficial <a href="http://dfx.at/xchat/">patches are available here</a>.
    There are three ways to do this:
 </p>
 <ul>
-<li>You can create two UserCommands, with the same name, and then execute
-the UserCommand. It will be executed in the same order as it's written
-in the UserCommands GUI.</li>
 <li>/LOAD -e &lt;textfile>, where &lt;textfile> is a full pathname to a file
 containing commands on each line.</li>
 <li>
 Separate your commands with CTRL-SHIFT-a. This will appear as a little box
 with numbers on it.</li>
+<li>You can create two UserCommands, with the same name, and then execute
+the UserCommand. It will be executed in the same order as it's written
+in the UserCommands GUI.</li>
 </ul>
 
 <br/><h3><a name="q215">15. How do I enable Emacs key bindings in XChat?</a></h3>
@@ -371,7 +382,7 @@ Where "~" represents your home directory i.e.: $HOME/.xchat2/
 <br/>
 <br/><u>Windows</u>
 <br/>
-<br/><b>Windows 95/98/Me</b>: C:\Windows\Application Data\X-Chat 2\xchatlogs
+<br/><b>Windows 98/ME</b>: C:\Windows\Application Data\X-Chat 2\xchatlogs
 <br/><b>Windows XP/2000</b>: C:\Documents and Settings\<i><b>username</b></i>\Application Data\X-Chat 2\xchatlogs
 </p>
 
