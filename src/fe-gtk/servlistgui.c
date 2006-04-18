@@ -89,7 +89,7 @@ static GtkWidget *servlist_open_edit (GtkWidget *parent, ircnet *net);
 
 static const char *pages[]=
 {
-	"UTF-8",
+	"UTF-8 (Unicode)",
 	"ISO-8859-15 (Western Europe)",
 	"ISO-8859-2 (Central Europe)",
 	"ISO-8859-7 (Greek)",
@@ -269,7 +269,7 @@ servlist_addnet_cb (GtkWidget *item, GtkTreeView *treeview)
 #ifdef WIN32
 	/* Windows gets UTF-8 for new users. Unix gets "System Default",
 		which is often UTF-8 anyway! */
-	net->encoding = strdup ("UTF-8");
+	net->encoding = strdup ("UTF-8 (Unicode)");
 #endif
 	servlist_server_add (net, "newserver/6667");
 

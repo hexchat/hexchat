@@ -669,7 +669,11 @@ chanlist_opengui (struct server *serv, int do_refresh)
 							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
 	gtk_widget_show (wid);
 
+#ifdef WIN32
+	wid = gtk_label_new (_("Pattern Match:"));
+#else
 	wid = gtk_label_new (_("Regex Match:"));
+#endif
 	gtk_misc_set_alignment (GTK_MISC (wid), 1.0, 0.5);
 	gtk_table_attach (GTK_TABLE (table), wid, 2, 3, 0, 1,
 							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);

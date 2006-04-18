@@ -342,18 +342,18 @@ dcc_info (struct DCC *dcc)
 	proper_unit (dcc->size, siz, sizeof (siz));
 
 	dialog = gtk_message_dialog_new_with_markup (NULL, 0, GTK_MESSAGE_INFO, GTK_BUTTONS_OK,
-				 "<tt><b>%-13s</b></tt> %s\n"
-				 "<tt><b>%-13s</b></tt> %s\n"
-				 "<tt><b>%-13s</b></tt> %s (%"DCC_SFMT" bytes)\n"
-				 "<tt><b>%-13s</b></tt> %s : %d\n"
-				 "<tt><b>%-13s</b></tt> %s"
-				 "<tt><b>%-13s</b></tt> %s\n",
-				 _("File:"), (dcc->type == TYPE_RECV) ? dcc->destfile : dcc->file,
-				 (dcc->type == TYPE_RECV) ? _("From:") : _("To:"), dcc->nick,
-				 _("Size:"), siz, dcc->size,
-				 _("Address:"), net_ip (dcc->addr), dcc->port,
-				 _("Started:"), ctime (&dcc->starttime),
-				 _("Speed limit:"), max);
+				 "<tt><b>%-13s:</b></tt> %s\n"
+				 "<tt><b>%-13s:</b></tt> %s\n"
+				 "<tt><b>%-13s:</b></tt> %s (%"DCC_SFMT" bytes)\n"
+				 "<tt><b>%-13s:</b></tt> %s : %d\n"
+				 "<tt><b>%-13s:</b></tt> %s"
+				 "<tt><b>%-13s:</b></tt> %s\n",
+				 _("File"), (dcc->type == TYPE_RECV) ? dcc->destfile : dcc->file,
+				 (dcc->type == TYPE_RECV) ? _("From") : _("To"), dcc->nick,
+				 _("Size"), siz, dcc->size,
+				 _("Address"), net_ip (dcc->addr), dcc->port,
+				 _("Started"), ctime (&dcc->starttime),
+				 _("Speed limit"), max);
 	g_signal_connect (G_OBJECT (dialog), "response",
 							G_CALLBACK (gtk_widget_destroy), 0);
 	gtk_window_set_resizable (GTK_WINDOW (dialog), FALSE);
@@ -525,7 +525,7 @@ fe_dcc_open_recv_win (int passive)
 	gchar *titles[] =
 		{ NULL, NULL, NULL, NULL, "%", "KB/s", NULL, NULL, NULL };
 
-	titles[8] = _("MIME Type");
+	titles[8] = "MIME Type";
 #else
 	gchar *titles[] =
 		{ NULL, NULL, NULL, NULL, "%", "KB/s", NULL, NULL };
@@ -718,6 +718,14 @@ fe_dcc_open_send_win (int passive)
 		return TRUE;
 	}
 
+#if 0
+	N_("XChat: Uploads und Downloads"),
+	N_("Downloads"),
+	N_("Uploads"),
+	N_("Details"),
+	N_("Open Folder..."),
+#endif
+
 	dccswin.window =
 			  mg_create_generic_tab ("Uploads", _("XChat: File Send List"),
 						FALSE, TRUE, close_dcc_send_window, NULL, 595, 200, &vbox, 0);
@@ -850,7 +858,7 @@ fe_dcc_open_chat_win (int passive)
 	titles[1] = _("To/From");
 	titles[2] = _("Recv");
 	titles[3] = _("Sent");
-	titles[4] = _("StartTime");
+	titles[4] = _("Start Time");
 
 	if (dcccwin.window)
 	{
