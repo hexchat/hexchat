@@ -1648,7 +1648,7 @@ sound_find_command (void)
 }
 
 void
-sound_play (const char *file)
+sound_play (const char *file, gboolean quiet)
 {
 	char buf[512];
 	char wavfile[512];
@@ -1658,9 +1658,6 @@ sound_play (const char *file)
 	/* the pevents GUI editor triggers this after removing a soundfile */
 	if (!file[0])
 		return;
-
-	memset (buf, 0, sizeof (buf));
-	memset (wavfile, 0, sizeof (wavfile));
 
 #ifdef WIN32
 	/* check for fullpath, windows style */
@@ -1677,6 +1674,7 @@ sound_play (const char *file)
 	{
 		strncpy (wavfile, file, sizeof (wavfile));
 	}
+	wavfile[sizeof (wavfile) - 1] = 0;	/* ensure termination */
 
 	file_fs = g_filename_from_utf8 (wavfile, -1, 0, 0, 0);
 	if (!file_fs)
@@ -1709,8 +1707,11 @@ sound_play (const char *file)
 
 	} else
 	{
-		snprintf (buf, sizeof (buf), _("Cannot read sound file:\n%s"), wavfile);
-		fe_message (buf, FE_MSG_ERROR);
+		if (!quiet)
+		{
+			snprintf (buf, sizeof (buf), _("Cannot read sound file:\n%s"), wavfile);
+			fe_message (buf, FE_MSG_ERROR);
+		}
 	}
 
 	g_free (file_fs);
@@ -1720,7 +1721,7 @@ void
 sound_play_event (int i)
 {
 	if (sound_files[i])
-		sound_play (sound_files[i]);
+		sound_play (sound_files[i], FALSE);
 }
 
 static void

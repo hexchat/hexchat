@@ -29,7 +29,7 @@ char *text_validate (char **text, int *len);
 int get_stamp_str (char *fmt, time_t tim, char **ret);
 void format_event (session *sess, int index, char **args, char *o, int sizeofo, unsigned int stripcolor_args);
 
-void sound_play (const char *file);
+void sound_play (const char *file, gboolean quiet);
 void sound_play_event (int i);
 void sound_beep (session *);
 void sound_load ();
