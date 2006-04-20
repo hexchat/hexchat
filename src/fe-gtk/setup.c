@@ -74,7 +74,7 @@ enum
 	ST_ENTRY,
 	ST_EFONT,
 	ST_EFILE,
-	ST_EOPEN,
+	ST_EFOLDER,
 	ST_MENU,
 	ST_RADIO,
 	ST_NUMBER,
@@ -232,8 +232,8 @@ static const setting tabs_settings[] =
 static const setting filexfer_settings[] =
 {
 	{ST_HEADER, N_("Files and Directories"), 0, 0, 0},
-	{ST_EOPEN,	N_("Download files to:"), P_OFFSETNL(dccdir), 0, 0, sizeof prefs.dccdir},
-	{ST_EOPEN,	N_("Move completed files to:"), P_OFFSETNL(dcc_completed_dir), 0, 0, sizeof prefs.dcc_completed_dir},
+	{ST_EFOLDER,N_("Download files to:"), P_OFFSETNL(dccdir), 0, 0, sizeof prefs.dccdir},
+	{ST_EFOLDER,N_("Move completed files to:"), P_OFFSETNL(dcc_completed_dir), 0, 0, sizeof prefs.dcc_completed_dir},
 	{ST_TOGGLE, N_("Auto accept file offers"), P_OFFINTNL(autodccsend), 0, 0, 0},
 	{ST_TOGGLE, N_("Save nick name in filenames"), P_OFFINTNL(dccwithnick), 0, 0, 0},
 	{ST_TOGGLE, N_("Convert spaces to underscore before sending"), P_OFFINTNL(dcc_send_fillspaces),0,0,0},
@@ -714,14 +714,11 @@ setup_fontsel_cancel (GtkWidget *button, GtkFontSelectionDialog *dialog)
 	gtk_widget_destroy (GTK_WIDGET (dialog));
 }
 
-#ifdef WIN32
 static void
-setup_browsefolder_cb (GtkWidget *button, GtkWidget *entry)
+setup_browsefolder_cb (GtkWidget *button, GtkEntry *entry)
 {
-	if (GTK_ENTRY (entry)->text[0])
-		fe_open_url (GTK_ENTRY (entry)->text);
+	gtkutil_file_req (_("Select Download Folder"), setup_filereq_cb, entry, entry->text, FRF_CHOOSEFOLDER);
 }
-#endif
 
 static void
 setup_browsefont_cb (GtkWidget *button, GtkWidget *entry)
@@ -792,11 +789,7 @@ setup_create_entry (GtkWidget *table, int row, const setting *set)
 	     (setup_prefs.proxy_type != 4 && setup_prefs.proxy_type != 3 && setup_prefs.proxy_type != 5) )
 		gtk_widget_set_sensitive (wid, FALSE);
 
-#ifdef WIN32
 	if (set->type == ST_ENTRY)
-#else
-	if (set->type == ST_ENTRY || set->type == ST_EOPEN)
-#endif
 		gtk_table_attach (GTK_TABLE (table), wid, 3, 6, row, row + 1,
 								GTK_EXPAND | GTK_FILL, GTK_FILL, 0, 0);
 	else
@@ -812,11 +805,9 @@ setup_create_entry (GtkWidget *table, int row, const setting *set)
 		if (set->type == ST_EFONT)
 			g_signal_connect (G_OBJECT (bwid), "clicked",
 									G_CALLBACK (setup_browsefont_cb), wid);
-#ifdef WIN32
-		if (set->type == ST_EOPEN)
+		if (set->type == ST_EFOLDER)
 			g_signal_connect (G_OBJECT (bwid), "clicked",
 									G_CALLBACK (setup_browsefolder_cb), wid);
-#endif
 	}
 }
 
@@ -885,7 +876,7 @@ setup_create_page (const setting *set)
 		case ST_EFONT:
 		case ST_ENTRY:
 		case ST_EFILE:
-		case ST_EOPEN:
+		case ST_EFOLDER:
 			setup_create_entry (tab, row, &set[i]);
 			break;
 		case ST_TOGGLR:

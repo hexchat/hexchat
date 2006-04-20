@@ -6,6 +6,7 @@ typedef void (*filereqcallback) (void *, char *file);
 #define FRF_WRITE 1
 #define FRF_MULTIPLE 2
 #define FRF_ADDFOLDER 4
+#define FRF_CHOOSEFOLDER 8
 
 void gtkutil_file_req (char *title, void *callback, void *userdata, char *filter, int flags);
 void gtkutil_destroy (GtkWidget * igad, GtkWidget * dgad);

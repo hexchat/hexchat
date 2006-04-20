@@ -766,6 +766,8 @@ break_while:
       default:
 	if (rfc_tolower(*s) != rfc_tolower(ch))
 	{
+	  if (!*s)
+	    return 0;
 	  m = bm;
 	  s = bs;
 	  goto got_star;

@@ -44,11 +44,7 @@
 #include <gtk/gtkcellrenderertext.h>
 #include <gtk/gtkcellrenderertoggle.h>
 #include <gtk/gtkversion.h>
-#if GTK_CHECK_VERSION(2,4,0)
 #include <gtk/gtkfilechooserdialog.h>
-#else
-#include <gtk/gtkfilesel.h>
-#endif
 
 #include "../common/xchat.h"
 #include "../common/fe.h"
@@ -65,7 +61,7 @@ struct file_req
 	GtkWidget *dialog;
 	void *userdata;
 	filereqcallback callback;
-	int write;
+	int flags;		/* FRF_* flags */
 };
 
 static char last_dir[256] = "";
@@ -86,7 +82,7 @@ gtkutil_check_file (char *file, struct file_req *freq)
 
 	path_part (file, last_dir, sizeof (last_dir));
 
-	if (stat (file, &st) != -1)
+	if (!(freq->flags & FRF_CHOOSEFOLDER) && stat (file, &st) != -1)
 	{
 		if (S_ISDIR (st.st_mode))
 		{
@@ -96,17 +92,12 @@ gtkutil_check_file (char *file, struct file_req *freq)
 
 			if (tmp[strlen(tmp)-1] != '/')
 				strcat (tmp, "/");
-#if GTK_CHECK_VERSION(2,4,0)
 			gtk_file_chooser_set_filename (GTK_FILE_CHOOSER (freq->dialog), tmp);
-#else
-			gtk_file_selection_set_filename (GTK_FILE_SELECTION (freq->dialog),
-														tmp);
-#endif
 			free (tmp);
 			return 0;
 		}
 	}
-	if (freq->write)
+	if (freq->flags & FRF_WRITE)
 	{
 		if (access (last_dir, W_OK) == 0)
 			axs = TRUE;
@@ -114,7 +105,7 @@ gtkutil_check_file (char *file, struct file_req *freq)
 	{
 		if (stat (file, &st) != -1)
 		{
-			if (!S_ISDIR (st.st_mode))
+			if (!S_ISDIR (st.st_mode) || (freq->flags & FRF_CHOOSEFOLDER))
 				axs = TRUE;
 		}
 	}
@@ -135,7 +126,7 @@ gtkutil_check_file (char *file, struct file_req *freq)
 		}
 	} else
 	{
-		if (freq->write)
+		if (freq->flags & FRF_WRITE)
 			fe_message (_("Cannot write to that file."), FE_MSG_ERROR);
 		else
 			fe_message (_("Cannot read that file."), FE_MSG_ERROR);
@@ -147,12 +138,11 @@ gtkutil_check_file (char *file, struct file_req *freq)
 static void
 gtkutil_file_req_done (GtkWidget * wid, struct file_req *freq)
 {
-#if GTK_CHECK_VERSION(2,4,0)
 	int kill = 0;
 	GSList *files, *cur;
 	GtkFileChooser *fs = GTK_FILE_CHOOSER (freq->dialog);
 
-	if (gtk_file_chooser_get_select_multiple (fs))
+	if (freq->flags & FRF_MULTIPLE)
 	{
 		files = cur = gtk_file_chooser_get_filenames (fs);
 		while (cur)
@@ -165,36 +155,15 @@ gtkutil_file_req_done (GtkWidget * wid, struct file_req *freq)
 			g_slist_free (files);
 	} else
 	{
-		kill = gtkutil_check_file (gtk_file_chooser_get_filename (fs), freq);
+		if (freq->flags & FRF_CHOOSEFOLDER)
+			kill = gtkutil_check_file (gtk_file_chooser_get_current_folder (fs), freq);
+		else
+			kill = gtkutil_check_file (gtk_file_chooser_get_filename (fs), freq);
 	}
-#else
-	int i = 0, kill = 0;
-	gchar **files;
-	GtkFileSelection *fs = GTK_FILE_SELECTION (freq->dialog);
-
-	if (gtk_file_selection_get_select_multiple (fs))
-	{
-		files = gtk_file_selection_get_selections (fs);
-		if (files)
-		{
-			while (files[i])
-			{
-				kill |= gtkutil_check_file (files[i], freq);
-				i++;
-			}
-			g_strfreev (files);
-		}
-	} else
-	{
-		kill |= gtkutil_check_file ((char *)gtk_file_selection_get_filename (fs), freq);
-	}
-#endif
 
 	if (kill)	/* this should call the "destroy" cb, where we free(freq) */
 		gtk_widget_destroy (freq->dialog);
 }
-
-#if GTK_CHECK_VERSION(2,4,0)
 
 static void
 gtkutil_file_req_response (GtkWidget *dialog, gint res, struct file_req *freq)
@@ -211,16 +180,6 @@ gtkutil_file_req_response (GtkWidget *dialog, gint res, struct file_req *freq)
 	}
 }
 
-#else
-
-static void
-gtkutil_file_req_cancel (GtkWidget * wid, struct file_req *freq)
-{
-	gtk_widget_destroy (freq->dialog);
-}
-
-#endif
- 
 void
 gtkutil_file_req (char *title, void *callback, void *userdata, char *filter,
 						int flags)
@@ -229,8 +188,6 @@ gtkutil_file_req (char *title, void *callback, void *userdata, char *filter,
 	GtkWidget *dialog;
 	extern char *get_xdir_fs (void);
 
-#if GTK_CHECK_VERSION(2,4,0)
-	/* == GTK 2.4 uses the new GtkFileChooser, which is much nicer! */
 	if (flags & FRF_WRITE)
 		dialog = gtk_file_chooser_dialog_new (title, NULL,
 												GTK_FILE_CHOOSER_ACTION_SAVE,
@@ -250,38 +207,20 @@ gtkutil_file_req (char *title, void *callback, void *userdata, char *filter,
 	if (flags & FRF_ADDFOLDER)
 		gtk_file_chooser_add_shortcut_folder (GTK_FILE_CHOOSER (dialog),
 														  get_xdir_fs (), NULL);
+	if (flags & FRF_CHOOSEFOLDER)
+	{
+		gtk_file_chooser_set_action (GTK_FILE_CHOOSER (dialog), GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
+		gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), filter);
+	}
 
 	freq = malloc (sizeof (struct file_req));
 	freq->dialog = dialog;
-	freq->write = (flags & FRF_WRITE);
+	freq->flags = flags;
 	freq->callback = callback;
 	freq->userdata = userdata;
 
 	g_signal_connect (G_OBJECT (dialog), "response",
 							G_CALLBACK (gtkutil_file_req_response), freq);
-
-#else
-	dialog = gtk_file_selection_new (title);
-	if (flags & FRF_MULTIPLE)
-		gtk_file_selection_set_select_multiple (GTK_FILE_SELECTION (dialog), TRUE);
-	if (last_dir[0])
-		gtk_file_selection_set_filename (GTK_FILE_SELECTION (dialog), last_dir);
-
-	freq = malloc (sizeof (struct file_req));
-	freq->dialog = dialog;
-	freq->write = (flags & FRF_WRITE);
-	freq->callback = callback;
-	freq->userdata = userdata;
-
-	g_signal_connect (G_OBJECT
-							  (GTK_FILE_SELECTION (dialog)->cancel_button),
-							  "clicked", G_CALLBACK (gtkutil_file_req_cancel),
-							  (gpointer) freq);
-	g_signal_connect (G_OBJECT (GTK_FILE_SELECTION (dialog)->ok_button),
-							  "clicked", G_CALLBACK (gtkutil_file_req_done),
-							  (gpointer) freq);
-#endif
-
 	g_signal_connect (G_OBJECT (dialog), "destroy",
 						   G_CALLBACK (gtkutil_file_req_destroy), (gpointer) freq);
 	gtk_widget_show (dialog);

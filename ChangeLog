@@ -6,11 +6,14 @@ To see more details of bugs, go to this URL:
 http://sf.net/tracker/?func=detail&atid=100239&group_id=239&aid=NUMBER
 Where "NUMBER" is the bug number.
 
+There are always more changes than listed here, these are just the
+highlights. The full CVS log is available at www.xchat.org/cvslog/
+
 ----------------------------------------------------------------------
  2.6.3 - DD/MMM/2006
 ----------------------------------------------------------------------
 
- - Updated translations (hu, zh_TW).
+ - Updated translations (de, gl, hu, zh_TW).
  - Fixed opening a irc:// URL via "xchat -a --url=abc123" command while
    "Skip serverlist on startup" is off. This fix is only relevant when
    opening an initial instance of xchat (i.e not via dbus).
@@ -28,6 +31,7 @@ Where "NUMBER" is the bug number.
  - You can now mark and copy timestamps if you hold down SHIFT.
  - Timestamps are now preserved in the /lastlog command. Also fixed a
    bug where the separator line disappeared during /lastlog.
+ - Added a Browse button to the DCC download folder setting.
  - 
  - Perl:
   * Turn on utf8 flag for things that should have it on.
