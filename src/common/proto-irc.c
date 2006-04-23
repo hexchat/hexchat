@@ -656,6 +656,12 @@ process_numeric (session * sess, int n,
 		fe_ban_list_end (sess, FALSE);
 		break;
 
+	case 369:	/* WHOWAS end */
+	case 406:	/* WHOWAS error */
+		EMIT_SIGNAL (XP_TE_SERVTEXT, whois_sess, text, word[1], NULL, NULL, 0);
+		serv->inside_whois = 0;
+		break;
+
 	case 372:	/* motd text */
 	case 375:	/* motd start */
 		if (!prefs.skipmotd || serv->motd_skipped)
