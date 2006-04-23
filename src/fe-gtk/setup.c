@@ -39,10 +39,8 @@
 #include <gtk/gtktreeview.h>
 #include <gtk/gtkhbbox.h>
 #include <gtk/gtkhseparator.h>
-#include <gtk/gtkmenu.h>
-#include <gtk/gtkmenuitem.h>
 #include <gtk/gtkradiobutton.h>
-#include <gtk/gtkoptionmenu.h>
+#include <gtk/gtkcombobox.h>
 #include <gtk/gtkliststore.h>
 #include <gtk/gtktreestore.h>
 #include <gtk/gtktreeselection.h>
@@ -477,7 +475,7 @@ setup_create_spin (GtkWidget *table, int row, const setting *set)
 
 	align = gtk_alignment_new (0.0, 0.5, 0.0, 0.0);
 	gtk_table_attach (GTK_TABLE (table), align, 3, 4, row, row + 1,
-							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
+							GTK_EXPAND | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
 
 	rbox = gtk_hbox_new (0, 0);
 	gtk_container_add (GTK_CONTAINER (align), rbox);
@@ -583,14 +581,14 @@ static GtkWidget *proxy_pass; 	/* password GtkEntry */
 
 
 static void
-setup_menu_cb (GtkWidget *item, const setting *set)
+setup_menu_cb (GtkWidget *cbox, const setting *set)
 {
-	int n = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (item), "n"));
+	int n = gtk_combo_box_get_active (GTK_COMBO_BOX (cbox));
 
 	/* set the prefs.<field> */
 	setup_set_int (&setup_prefs, set, n);
 
-	if (g_object_get_data (G_OBJECT (item), "p"))
+	if (set->list == proxytypes)
 	{
 		/* only HTTP and Socks5 can use a username/pass */
 		gtk_widget_set_sensitive (proxy_user, (n == 3 || n == 4 || n == 5));
@@ -670,47 +668,29 @@ setup_create_id_menu (GtkWidget *table, char *label, int row, char *dest)
 static void
 setup_create_menu (GtkWidget *table, int row, const setting *set)
 {
-	GtkWidget *wid, *box, *menu, *item;
-	int i;
+	GtkWidget *wid, *cbox, *box;
 	const char **text = (const char **)set->list;
+	int i;
 
 	wid = gtk_label_new (_(set->label));
 	gtk_misc_set_alignment (GTK_MISC (wid), 0.0, 0.5);
 	gtk_table_attach (GTK_TABLE (table), wid, 2, 3, row, row + 1,
 							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, LABEL_INDENT, 0);
 
-	wid = gtk_option_menu_new ();
-	if (set->tooltip)
-		add_tip (wid, _(set->tooltip));
-	menu = gtk_menu_new ();
+	cbox = gtk_combo_box_new_text ();
 
-	i = 0;
-	while (text[i])
-	{
-		item = gtk_menu_item_new_with_label (_(text[i]));
-		g_object_set_data (G_OBJECT (item), "n", GINT_TO_POINTER (i));
+	for (i = 0; text[i]; i++)
+		gtk_combo_box_append_text (GTK_COMBO_BOX (cbox), _(text[i]));
 
-		/* set a flag for the callback to use */
-		if (text == proxytypes)
-			g_object_set_data (G_OBJECT (item), "p", GINT_TO_POINTER (1));	
-
-		gtk_widget_show (item);
-		gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
-		g_signal_connect (G_OBJECT (item), "activate",
-								G_CALLBACK (setup_menu_cb), (gpointer)set);
-		i++;
-	}
-
-	gtk_option_menu_set_menu (GTK_OPTION_MENU (wid), menu);
-	gtk_option_menu_set_history (GTK_OPTION_MENU (wid),
-										  setup_get_int (&setup_prefs, set));
+	gtk_combo_box_set_active (GTK_COMBO_BOX (cbox),
+									  setup_get_int (&setup_prefs, set));
+	g_signal_connect (G_OBJECT (cbox), "changed",
+							G_CALLBACK (setup_menu_cb), (gpointer)set);
 
 	box = gtk_hbox_new (0, 0);
-	gtk_box_pack_start (GTK_BOX (box), wid, 0, 0, 0);
-	gtk_widget_show (box);
-
+	gtk_box_pack_start (GTK_BOX (box), cbox, 0, 0, 0);
 	gtk_table_attach (GTK_TABLE (table), box, 3, 4, row, row + 1,
-							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
+							GTK_EXPAND | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
 }
 
 static void
