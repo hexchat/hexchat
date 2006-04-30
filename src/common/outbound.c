@@ -2581,9 +2581,14 @@ static int
 cmd_query (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	char *nick = word[2];
+	session *nick_sess;
+
 	if (*nick && !is_channel (sess->server, nick))
 	{
-		if (!find_dialog (sess->server, nick))
+		nick_sess = find_dialog (sess->server, nick);
+		if (nick_sess)
+			fe_ctrl_gui (nick_sess, 2, 0);	/* bring-to-front */
+		else
 			new_ircwindow (sess->server, nick, SESS_DIALOG, 1);
 		return TRUE;
 	}

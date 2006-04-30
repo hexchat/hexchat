@@ -56,11 +56,14 @@ enum
 	SERVER_COLUMN,
 	SEEN_COLUMN,
 	COLOUR_COLUMN,
+	NPS_COLUMN, 	/* struct notify_per_server * */
 	N_COLUMNS
 };
 
 
 static GtkWidget *notify_window = 0;
+static GtkWidget *notify_button_opendialog;
+static GtkWidget *notify_button_remove;
 
 
 static void
@@ -86,6 +89,24 @@ notify_treecell_property_mapper (GtkTreeViewColumn *col, GtkCellRenderer *cell,
 	                    model_column, &text, -1);
 	g_object_set (G_OBJECT (cell), "text", text, NULL);
 	g_object_set (G_OBJECT (cell), "foreground-gdk", colour, NULL);
+	g_free (text);
+}
+
+static void
+notify_row_cb (GtkTreeSelection *sel, GtkTreeView *view)
+{
+	GtkTreeIter iter;
+	struct notify_per_server *servnot;
+
+	if (gtkutil_treeview_get_selected (view, &iter, NPS_COLUMN, &servnot, -1))
+	{
+		gtk_widget_set_sensitive (notify_button_opendialog, servnot ? servnot->ison : 0);
+		gtk_widget_set_sensitive (notify_button_remove, TRUE);
+		return;
+	}
+
+	gtk_widget_set_sensitive (notify_button_opendialog, FALSE);
+	gtk_widget_set_sensitive (notify_button_remove, FALSE);
 }
 
 static GtkWidget *
@@ -101,7 +122,8 @@ notify_treeview_new (GtkWidget *box)
 	                            G_TYPE_STRING,
 	                            G_TYPE_STRING,
 	                            G_TYPE_STRING,
-	                            G_TYPE_POINTER	/* can't specify colour! */
+	                            G_TYPE_POINTER,	/* can't specify colour! */
+										 G_TYPE_POINTER
 	                           );
 	g_return_val_if_fail (store != NULL, NULL);
 
@@ -115,6 +137,9 @@ notify_treeview_new (GtkWidget *box)
 	for (col_id=0; (col = gtk_tree_view_get_column (GTK_TREE_VIEW (view), col_id));
 	     col_id++)
 			gtk_tree_view_column_set_alignment (col, 0.5);
+
+	g_signal_connect (G_OBJECT (gtk_tree_view_get_selection (GTK_TREE_VIEW (view))),
+							"changed", G_CALLBACK (notify_row_cb), view);
 
 	gtk_widget_show (view);
 	return view;
@@ -176,12 +201,12 @@ notify_gui_update (void)
 			if (!valid)	/* create new tree row if required */
 				gtk_list_store_append (store, &iter);
 			gtk_list_store_set (store, &iter, 0, name, 1, status,
-			                    2, server, 3, seen, 4, &colors[4], -1);
+			                    2, server, 3, seen, 4, &colors[4], 5, NULL, -1);
 			if (valid)
 				valid = gtk_tree_model_iter_next (GTK_TREE_MODEL (store), &iter);
 
-    } else
-    {                 
+		} else
+		{
 			/* Online - add one line per server */
 			servcount = 0;
 			slist = notify->server_list;
@@ -200,15 +225,15 @@ notify_gui_update (void)
 					if (!valid)	/* create new tree row if required */
 						gtk_list_store_append (store, &iter);
 					gtk_list_store_set (store, &iter, 0, name, 1, status,
-					                    2, server, 3, seen, 4, &colors[3], -1);
+					                    2, server, 3, seen, 4, &colors[3], 5, servnot, -1);
 					if (valid)
 						valid = gtk_tree_model_iter_next (GTK_TREE_MODEL (store), &iter);
 
-          servcount++;
-        }
-        slist = slist->next;
-      }
-    }
+					servcount++;
+				}
+				slist = slist->next;
+			}
+		}
 		
 		list = list->next;
 	}
@@ -220,6 +245,25 @@ notify_gui_update (void)
 		valid = gtk_tree_model_iter_next (GTK_TREE_MODEL (store),
                                       &iter);
 		gtk_list_store_remove (store, &old);
+	}
+}
+
+static void
+notify_opendialog_clicked (GtkWidget * igad)
+{
+	GtkTreeView *view;
+	GtkTreeIter iter;
+	struct notify_per_server *servnot;
+	char cmd[NICKLEN + 16];
+
+	view = g_object_get_data (G_OBJECT (notify_window), "view");
+	if (gtkutil_treeview_get_selected (view, &iter, NPS_COLUMN, &servnot, -1))
+	{
+		if (servnot)
+		{
+			snprintf (cmd, sizeof (cmd), "query %s", servnot->notify->name);
+			handle_command (servnot->server->front_session, cmd, FALSE);
+		}
 	}
 }
 
@@ -305,8 +349,17 @@ notify_opengui (void)
 
 	gtkutil_button (bbox, GTK_STOCK_NEW, 0, notify_add_clicked, 0,
 	                _("Add"));
+
+	notify_button_remove =
 	gtkutil_button (bbox, GTK_STOCK_DELETE, 0, notify_remove_clicked, 0,
 	                _("Remove"));
+
+	notify_button_opendialog =
+	gtkutil_button (bbox, NULL, 0, notify_opendialog_clicked, 0,
+	                _("Open Dialog"));
+
+	gtk_widget_set_sensitive (notify_button_opendialog, FALSE);
+	gtk_widget_set_sensitive (notify_button_remove, FALSE);
 
 	notify_gui_update ();
 

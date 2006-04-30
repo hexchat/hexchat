@@ -156,6 +156,9 @@ static const struct defaultserver def[] =
 	{0,			"nc.d-t-net.de"},
 	{0,			"wakka.d-t-net.de"},
 
+	{"DarkMyst", 0},
+	{0,			"irc.darkmyst.org"},
+
 	{"DeepIRC", 0},
 	{0,			"irc.deepirc.net"},
 

@@ -340,7 +340,7 @@ static const char *const proxyuse[] =
 {
 	N_("All Connections"),
 	N_("IRC Server Only"),
-	N_("DCC Only"),
+	N_("DCC Get Only"),
 	NULL
 };
 
@@ -358,9 +358,9 @@ static const setting network_settings[] =
 
 	{ST_HEADER,	N_("Proxy Authentication"), 0, 0, 0, 0},
 #ifdef USE_MSPROXY
-	{ST_TOGGLE,	N_("Authenticate to the proxy server (MS Proxy, HTTP and Socks5)"), P_OFFINTNL(proxy_auth), 0, 0, 0},
+	{ST_TOGGLE,	N_("Use Authentication (MS Proxy, HTTP or Socks5 only)"), P_OFFINTNL(proxy_auth), 0, 0, 0},
 #else
-	{ST_TOGGLE,	N_("Authenticate to the proxy server (HTTP and Socks5)"), P_OFFINTNL(proxy_auth), 0, 0, 0},
+	{ST_TOGGLE,	N_("Use Authentication (HTTP or Socks5 only)"), P_OFFINTNL(proxy_auth), 0, 0, 0},
 #endif
 	{ST_ENTRY,	N_("Username:"), P_OFFSETNL(proxy_user), 0, 0, sizeof prefs.proxy_user},
 	{ST_ENTRY,	N_("Password:"), P_OFFSETNL(proxy_pass), 0, GINT_TO_POINTER(1), sizeof prefs.proxy_pass},
@@ -1689,13 +1689,16 @@ setup_apply_to_sess (session_gui *gui)
 static void
 unslash (char *dir)
 {
-	int len = strlen (dir) - 1;
+	if (dir[0])
+	{
+		int len = strlen (dir) - 1;
 #ifdef WIN32
-	if (dir[len] == '/' || dir[len] == '\\')
+		if (dir[len] == '/' || dir[len] == '\\')
 #else
-	if (dir[len] == '/')
+		if (dir[len] == '/')
 #endif
-		dir[len] = 0;
+			dir[len] = 0;
+	}
 }
 
 static void

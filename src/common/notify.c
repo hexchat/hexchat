@@ -57,6 +57,7 @@ notify_find_server_entry (struct notify *notify, struct server *serv)
 	{
 		memset (servnot, 0, sizeof (struct notify_per_server));
 		servnot->server = serv;
+		servnot->notify = notify;
 		notify->server_list = g_slist_prepend (notify->server_list, servnot);
 	}
 	return servnot;

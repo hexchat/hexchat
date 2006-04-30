@@ -10,6 +10,7 @@ struct notify
 struct notify_per_server
 {
 	struct server *server;
+	struct notify *notify;
 	time_t laston;
 	time_t lastseen;
 	time_t lastoff;
