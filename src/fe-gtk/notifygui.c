@@ -348,7 +348,7 @@ notify_opengui (void)
 	gtk_widget_show (bbox);
 
 	gtkutil_button (bbox, GTK_STOCK_NEW, 0, notify_add_clicked, 0,
-	                _("Add"));
+	                _("Add..."));
 
 	notify_button_remove =
 	gtkutil_button (bbox, GTK_STOCK_DELETE, 0, notify_remove_clicked, 0,

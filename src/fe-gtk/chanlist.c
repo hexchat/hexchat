@@ -761,7 +761,7 @@ chanlist_opengui (struct server *serv, int do_refresh)
 	serv->gui->chanlist_refresh =
 		gtkutil_button (hbox, GTK_STOCK_REFRESH, 0, chanlist_refresh, serv,
 							_("Refresh the list"));
-	gtkutil_button (hbox, GTK_STOCK_SAVE, 0, chanlist_save, serv,
+	gtkutil_button (hbox, GTK_STOCK_SAVE_AS, 0, chanlist_save, serv,
 						_("Save the list"));
 	gtkutil_button (hbox, GTK_STOCK_JUMP_TO, 0, chanlist_join, serv,
 						 _("Join Channel"));

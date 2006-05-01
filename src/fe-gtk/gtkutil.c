@@ -379,7 +379,8 @@ gtkutil_button (GtkWidget *box, char *stock, char *tip, void *callback,
 	if (stock)
 	{
 		img = gtk_image_new_from_stock (stock, GTK_ICON_SIZE_MENU);
-		gtk_widget_set_usize (img, 8, 6);
+		if (stock == GTK_STOCK_GOTO_LAST)
+			gtk_widget_set_usize (img, 10, 6);
 		gtk_container_add (GTK_CONTAINER (bbox), img);
 		gtk_widget_show (img);
 	}

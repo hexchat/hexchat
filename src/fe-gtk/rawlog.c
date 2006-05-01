@@ -78,7 +78,7 @@ rawlog_clearbutton (GtkWidget * wid, server *serv)
 static int
 rawlog_savebutton (GtkWidget * wid, server *serv)
 {
-	gtkutil_file_req (_("Save rawlog"), rawlog_save, serv, NULL, FRF_WRITE);
+	gtkutil_file_req (_("Save As..."), rawlog_save, serv, NULL, FRF_WRITE);
 	return FALSE;
 }
 
@@ -125,8 +125,8 @@ open_rawlog (struct server *serv)
 	gtkutil_button (hbox, GTK_STOCK_CLEAR, NULL, rawlog_clearbutton,
 						 serv, _("Clear rawlog"));
 
-	gtkutil_button (hbox, GTK_STOCK_SAVE, NULL, rawlog_savebutton,
-						 serv, _("Save rawlog..."));
+	gtkutil_button (hbox, GTK_STOCK_SAVE_AS, NULL, rawlog_savebutton,
+						 serv, _("Save As..."));
 
 	gtk_widget_show (serv->gui->rawlog_window);
 }

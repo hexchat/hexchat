@@ -201,8 +201,8 @@ url_opengui ()
 						 _("Clear list"), url_button_clear, 0, _("Clear"));
 	gtkutil_button (hbox, GTK_STOCK_COPY,
 						 _("Copy selected URL"), url_button_copy, view, _("Copy"));
-	gtkutil_button (hbox, GTK_STOCK_SAVE,
-						 _("Save list to a file"), url_button_save, 0, _("Save"));
+	gtkutil_button (hbox, GTK_STOCK_SAVE_AS,
+						 _("Save list to a file"), url_button_save, 0, _("Save As..."));
 
 	gtk_widget_show (urlgrabberwindow);
 
