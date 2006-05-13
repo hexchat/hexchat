@@ -1235,7 +1235,7 @@ load_text_events ()
 /*
 	CL: format_event now handles filtering of arguments:
 	1) if prefs.stripcolor is set, filter all style control codes from arguments
-	2) always strip \001 (ATTR_HIDDEN) from arguments: it is only for use in the format string itself
+	2) always strip \010 (ATTR_HIDDEN) from arguments: it is only for use in the format string itself
 */
 #define ARG_FLAG(argn) (1 << argn)
 

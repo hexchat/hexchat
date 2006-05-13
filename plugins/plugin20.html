@@ -420,50 +420,59 @@ If you're lazy... The correct thing to do is to convert the string to "system lo
 otherwise your plugin will fail on non-ascii characters.
 <br><br>
 Here are examples on how to do this conversion on Unix and Windows. In this example, someone will
-CTCP you the message "GET -filename-".
+CTCP you the message "SHOWFILE &lt;filename&gt;".
 <br><br>
 </p>
 <pre>
 static int ctcp_cb(char *word[], char *word_eol[], void *userdata)
 {
-	if(strcmp(word[1], "GET") == 0)
+	if(strcmp(word[1], "SHOWFILE") == 0)
 	{
-		get_file_name(word[2]);
+		get_file_name(nick, word[2]);
 	}
 
 	return XCHAT_EAT_XCHAT;
 }
 
-static void get_file_name(char *name)
+static void get_file_name(char *nick, char *fname)
 {
-	/* the name is in UTF-8, because it came from the xchat API */
+	char buf[256];
+	FILE *fp;
+
+<font color="#777777">	/* the fname is in UTF-8, because it came from the xchat API */</font>
 </pre><font color="#33aa44">#ifdef _WIN32</font><pre>
-	char loc_name[512];
+	wchar_t wide_name[MAX_PATH];
 	int n;
 
-	/* convert UTF-8 to WIDECHARs (NOTE: Win98 or above required) */
-	n = MultiByteToWideChar(CP_UTF8, 0, name, -1, loc_name, sizeof(loc_name) / 2);
-	if(n)
-	{
-		/* now we have WIDECHARs, so we can _wopen() or CreateFileW() */
-		fd = _wopen(loc_name, O_RDONLY | O_BINARY);
-		...
-		...
-	}
+<font color="#777777">	/* convert UTF-8 to WIDECHARs (aka UTF-16LE) */</font>
+	n = MultiByteToWideChar(CP_UTF8, 0, fname, -1, wide_name, MAX_PATH);
+	if(!n)
+		return;
+
+<font color="#777777">	/* now we have WIDECHARs, so we can _wopen() or CreateFileW(). */
+	/* _wfopen actually requires NT4, Win2000, XP or newer. */</font>
+	fp = _wfopen(wide_name, "r");
 </pre><font color="#33aa44">#else</font><pre>
 	char *loc_name;
 
-	/* convert UTF-8 to System Encoding */
-	loc_name = g_filename_from_utf8(name, -1, 0, 0, 0);
-	if(loc_name)
-	{
-		/* now open using the system's encoding */
-		fd = open(loc_name, O_RDONLY);
-		...
-		...
-		g_free(loc_name);
-	}
+<font color="#777777">	/* convert UTF-8 to System Encoding */</font>
+	loc_name = g_filename_from_utf8(fname, -1, 0, 0, 0);
+	if(!loc_name)
+		return;
+
+<font color="#777777">	/* now open using the system's encoding */</font>
+	fp = fopen(loc_name, "r");
+	g_free(loc_name);
 </pre><font color="#33aa44">#endif</font><pre>
+	if (fp)
+	{
+		while (fgets (buf, sizeof(buf), fp))
+		{
+<font color="#777777">			/* send every line to the user that requested it */</font>
+			xchat_commandf (ph, "QUOTE NOTICE %s :%s", nick, buf);
+		}
+		close (fp);
+	}
 }
 </pre>
 

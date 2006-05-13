@@ -111,6 +111,7 @@ open_rawlog (struct server *serv)
 
 	gtk_container_add (GTK_CONTAINER (hbox), serv->gui->rawlog_textlist);
 	gtk_xtext_set_font (GTK_XTEXT (serv->gui->rawlog_textlist), prefs.font_normal);
+	GTK_XTEXT (serv->gui->rawlog_textlist)->ignore_hidden = 1;
 	gtk_widget_show (serv->gui->rawlog_textlist);
 
 	vscrollbar = gtk_vscrollbar_new (GTK_XTEXT (serv->gui->rawlog_textlist)->adj);

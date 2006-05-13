@@ -462,7 +462,7 @@ strip_color2 (char *src, int len, char *dst, int flags)
 				if (!(flags & STRIP_COLOR)) goto pass_char;
 				rcol = 2;
 				break;
-			case '\001':	/* CL: invisible text (for event formats only) */	/* this takes care of the topic */
+			case HIDDEN_CHAR:	/* CL: invisible text (for event formats only) */	/* this takes care of the topic */
 				if (!(flags & STRIP_HIDDEN)) goto pass_char;
 				break;
 			case '\007':			  /*ATTR_BEEP: */
@@ -491,7 +491,7 @@ strip_hidden_attribute (char *src, char *dst)
 	int len = 0;
 	while (*src != '\000')
 	{
-		if (*src != '\001')
+		if (*src != HIDDEN_CHAR)
 		{
 			*dst++ = *src;
 			len++;

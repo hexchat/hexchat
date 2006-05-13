@@ -794,17 +794,10 @@ dcc_read (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 }
 
 static void
-dcc_open_query (session *sess, char *nick)
+dcc_open_query (server *serv, char *nick)
 {
-	char *cmd;
-
 	if (prefs.autodialog)
-	{
-		cmd = malloc (8 + strlen (nick));
-		sprintf (cmd, "query %s", nick);
-		handle_command (sess, cmd, FALSE);
-		free (cmd);
-	}
+		open_query (serv, nick);
 }
 
 static gboolean
@@ -889,7 +882,7 @@ dcc_connect_finished (GIOChannel *source, GIOCondition condition, struct DCC *dc
 						 dcc->nick, host, dcc->file, NULL, 0);
 		break;
 	case TYPE_CHATSEND:	/* pchat */
-		dcc_open_query (dcc->serv->server_session, dcc->nick);
+		dcc_open_query (dcc->serv, dcc->nick);
 	case TYPE_CHATRECV:	/* normal chat */
 		dcc->iotag = fe_input_add (dcc->sok, FIA_READ|FIA_EX, dcc_read_chat, dcc);
 		dcc->dccchat = malloc (sizeof (struct dcc_chat));
@@ -1616,7 +1609,7 @@ dcc_accept (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 		break;
 
 	case TYPE_CHATSEND:
-		dcc_open_query (dcc->serv->server_session, dcc->nick);
+		dcc_open_query (dcc->serv, dcc->nick);
 		dcc->iotag = fe_input_add (dcc->sok, FIA_READ|FIA_EX, dcc_read_chat, dcc);
 		dcc->dccchat = malloc (sizeof (struct dcc_chat));
 		dcc->dccchat->pos = 0;

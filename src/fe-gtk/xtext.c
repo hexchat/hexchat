@@ -1188,10 +1188,13 @@ find_x (GtkXText *xtext, textentry *ent, unsigned char *text, int x, int indent)
 				text++;
 				break;
 			case ATTR_HIDDEN:
+				if (xtext->ignore_hidden)
+					goto def;
 				hidden = !hidden;
 				text++;
 				break;
 			default:
+			def:
 				char_width = backend_get_char_width (xtext, text, &mbl);
 				if (!hidden) xx += char_width;
 				text += mbl;
@@ -2680,7 +2683,7 @@ gtk_xtext_text_width (GtkXText *xtext, unsigned char *text, int len,
 	int new_len, mb;
 
 	new_buf = gtk_xtext_strip_color (text, len, xtext->scratch_buffer,
-												&new_len, &mb, TRUE);
+												&new_len, &mb, !xtext->ignore_hidden);
 
 	if (mb_ret)
 		*mb_ret = mb;
@@ -3053,7 +3056,7 @@ gtk_xtext_render_str (GtkXText * xtext, int y, textentry * ent,
 				break;
 			case ATTR_HIDDEN:
 				x += gtk_xtext_render_flush (xtext, x, y, pstr, j, gc, ent->mb);
-				xtext->hidden = !xtext->hidden;
+				xtext->hidden = (!xtext->hidden) & (!xtext->ignore_hidden);
 				pstr += j + 1;
 				j = 0;
 				break;
@@ -3900,11 +3903,14 @@ find_next_wrap (GtkXText * xtext, textentry * ent, unsigned char *str,
 				str++;
 				break;
 			case ATTR_HIDDEN:
+				if (xtext->ignore_hidden)
+					goto def;
 				hidden = !hidden;
 				limit_offset++;
 				str++;
 				break;
 			default:
+			def:
 				char_width = backend_get_char_width (xtext, str, &mbl);
 				if (!hidden) str_width += char_width;
 				if (str_width > win_width)

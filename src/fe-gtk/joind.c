@@ -108,17 +108,13 @@ joind_show_dialog (server *serv)
 	GtkWidget *hbox1;
 	GtkWidget *image1;
 	GtkWidget *vbox2;
-	GtkWidget *label1;
-	GtkWidget *label5;
-	GtkWidget *label2;
+	GtkWidget *label;
 	GtkWidget *radiobutton1;
+	GtkWidget *radiobutton2;
+	GtkWidget *radiobutton3;
 	GSList *radiobutton1_group;
 	GtkWidget *hbox2;
-	GtkWidget *radiobutton2;
 	GtkWidget *entry1;
-	GtkWidget *label3;
-	GtkWidget *radiobutton5;
-	GtkWidget *label4;
 	GtkWidget *checkbutton1;
 	GtkWidget *dialog_action_area1;
 	GtkWidget *okbutton1;
@@ -154,23 +150,22 @@ joind_show_dialog (server *serv)
 	snprintf (buf2, sizeof (buf2), _("Connection to %s complete."),
 				 server_get_network (serv, TRUE));
 	snprintf (buf, sizeof (buf), "\n<b>%s</b>", buf2);
-	label1 = gtk_label_new (buf);
-	gtk_widget_show (label1);
-	gtk_box_pack_start (GTK_BOX (vbox2), label1, FALSE, FALSE, 0);
-	gtk_label_set_use_markup (GTK_LABEL (label1), TRUE);
-	gtk_misc_set_alignment (GTK_MISC (label1), 0, 0.5);
+	label = gtk_label_new (buf);
+	gtk_widget_show (label);
+	gtk_box_pack_start (GTK_BOX (vbox2), label, FALSE, FALSE, 0);
+	gtk_label_set_use_markup (GTK_LABEL (label), TRUE);
+	gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
 
-	label5 = gtk_label_new (_("In the Server-List window, no channel (chat room) has been entered to be automatically joined for this network."));
-	gtk_widget_show (label5);
-	gtk_box_pack_start (GTK_BOX (vbox2), label5, FALSE, FALSE, 0);
-	GTK_LABEL (label5)->wrap = TRUE;
-	gtk_misc_set_alignment (GTK_MISC (label5), 0, 0.5);
+	label = gtk_label_new (_("In the Server-List window, no channel (chat room) has been entered to be automatically joined for this network."));
+	gtk_widget_show (label);
+	gtk_box_pack_start (GTK_BOX (vbox2), label, FALSE, FALSE, 0);
+	GTK_LABEL (label)->wrap = TRUE;
+	gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
 
-	label2 = gtk_label_new (_("What would you like to do next?"));
-	gtk_widget_show (label2);
-	gtk_box_pack_start (GTK_BOX (vbox2), label2, FALSE, FALSE, 0);
-	GTK_LABEL (label5)->wrap = TRUE;
-	gtk_misc_set_alignment (GTK_MISC (label2), 0, 0.5);
+	label = gtk_label_new (_("What would you like to do next?"));
+	gtk_widget_show (label);
+	gtk_box_pack_start (GTK_BOX (vbox2), label, FALSE, FALSE, 0);
+	gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
 
 	serv->gui->joind_radio1 = radiobutton1 = gtk_radio_button_new_with_mnemonic (NULL, _("_Nothing, I'll join a channel later."));
 	gtk_widget_show (radiobutton1);
@@ -194,25 +189,25 @@ joind_show_dialog (server *serv)
 
 	snprintf (buf, sizeof (buf), "<small>     %s</small>",
 				 _("If you know the name of the channel you want to join, enter it here."));
-	label3 = gtk_label_new (buf);
-	gtk_widget_show (label3);
-	gtk_box_pack_start (GTK_BOX (vbox2), label3, FALSE, FALSE, 0);
-	gtk_label_set_use_markup (GTK_LABEL (label3), TRUE);
-	gtk_misc_set_alignment (GTK_MISC (label3), 0, 0.5);
+	label = gtk_label_new (buf);
+	gtk_widget_show (label);
+	gtk_box_pack_start (GTK_BOX (vbox2), label, FALSE, FALSE, 0);
+	gtk_label_set_use_markup (GTK_LABEL (label), TRUE);
+	gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
 
-	radiobutton5 = gtk_radio_button_new_with_mnemonic (NULL, _("O_pen the Channel-List window."));
-	gtk_widget_show (radiobutton5);
-	gtk_box_pack_start (GTK_BOX (vbox2), radiobutton5, FALSE, FALSE, 0);
-	gtk_radio_button_set_group (GTK_RADIO_BUTTON (radiobutton5), radiobutton1_group);
-	radiobutton1_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (radiobutton5));
+	radiobutton3 = gtk_radio_button_new_with_mnemonic (NULL, _("O_pen the Channel-List window."));
+	gtk_widget_show (radiobutton3);
+	gtk_box_pack_start (GTK_BOX (vbox2), radiobutton3, FALSE, FALSE, 0);
+	gtk_radio_button_set_group (GTK_RADIO_BUTTON (radiobutton3), radiobutton1_group);
+	radiobutton1_group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (radiobutton3));
 
 	snprintf (buf, sizeof (buf), "<small>     %s</small>",
 				 _("Retrieving the Channel-List may take a minute or two."));
-	label4 = gtk_label_new (buf);
-	gtk_widget_show (label4);
-	gtk_box_pack_start (GTK_BOX (vbox2), label4, FALSE, FALSE, 0);
-	gtk_label_set_use_markup (GTK_LABEL (label4), TRUE);
-	gtk_misc_set_alignment (GTK_MISC (label4), 0, 0.5);
+	label = gtk_label_new (buf);
+	gtk_widget_show (label);
+	gtk_box_pack_start (GTK_BOX (vbox2), label, FALSE, FALSE, 0);
+	gtk_label_set_use_markup (GTK_LABEL (label), TRUE);
+	gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
 
 	serv->gui->joind_check = checkbutton1 = gtk_check_button_new_with_mnemonic (_("_Always show this dialog after connecting."));
 	if (prefs.gui_join_dialog)

@@ -79,6 +79,7 @@ void *xchat_realloc (char *old, int len, char *file, int line);
 #define CHANLEN		300
 #define PDIWORDS		32
 #define USERNAMELEN 10
+#define HIDDEN_CHAR	8			/* invisible character for xtext */
 
 #define safe_strcpy(dest,src,len)	{strncpy((dest),(src),(len)); \
 												(dest)[len-1] = 0;}
