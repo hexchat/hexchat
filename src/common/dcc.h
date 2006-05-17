@@ -107,5 +107,6 @@ void dcc_chat (session *sess, char *nick, int passive);
 void handle_dcc (session *sess, char *nick, char *word[], char *word_eol[]);
 void dcc_show_list (session *sess);
 guint32 dcc_get_my_address (void);
+void dcc_get_with_destfile (struct DCC *dcc, char *utf8file);
 
 #endif

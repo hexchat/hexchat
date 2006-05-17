@@ -1986,6 +1986,21 @@ dcc_get (struct DCC *dcc)
 	}
 }
 
+/* for "Save As..." dialog */
+
+void
+dcc_get_with_destfile (struct DCC *dcc, char *file)
+{
+	g_free (dcc->destfile);
+	dcc->destfile = g_strdup (file);	/* utf-8 */
+
+	/* get the local filesystem encoding */
+	g_free (dcc->destfile_fs);
+	dcc->destfile_fs = g_filename_from_utf8 (dcc->destfile, -1, 0, 0, 0);
+
+	dcc_get (dcc);
+}
+
 void
 dcc_get_nick (struct session *sess, char *nick)
 {
@@ -2272,7 +2287,7 @@ dcc_add_chat (session *sess, char *nick, int port, guint32 addr, int pasvid)
 		else if (prefs.autodccchat == 2)
 		{
 			char buff[128];
-			snprintf (buff, sizeof (buff), "%s is offering DCC Chat.  Do you want to accept?", nick);
+			snprintf (buff, sizeof (buff), "%s is offering DCC Chat. Do you want to accept?", nick);
 			fe_confirm (buff, dcc_confirm_chat, dcc_deny_chat, dcc);
 		}
 	}
@@ -2340,9 +2355,8 @@ dcc_add_file (session *sess, char *file, DCC_SIZE size, int port, char *nick, gu
 		}
 		else if (prefs.autodccsend == 2)
 		{
-			char buff[128];
-			snprintf (buff, sizeof (buff), "%s is offering \"%s\" via DCC.  Do you want to accept the transfer?", nick, file);
-			fe_confirm (buff, dcc_confirm_send, dcc_deny_send, dcc);
+			snprintf (tbuf, sizeof (tbuf), _("%s is offering \"%s\". Do you want to accept?"), nick, file);
+			fe_confirm (tbuf, dcc_confirm_send, dcc_deny_send, dcc);
 		}
 		if (prefs.autoopendccrecvwindow)
 		{

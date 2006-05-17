@@ -181,7 +181,7 @@ gtkutil_file_req_response (GtkWidget *dialog, gint res, struct file_req *freq)
 }
 
 void
-gtkutil_file_req (char *title, void *callback, void *userdata, char *filter,
+gtkutil_file_req (const char *title, void *callback, void *userdata, char *filter,
 						int flags)
 {
 	struct file_req *freq;
@@ -189,11 +189,15 @@ gtkutil_file_req (char *title, void *callback, void *userdata, char *filter,
 	extern char *get_xdir_fs (void);
 
 	if (flags & FRF_WRITE)
+	{
 		dialog = gtk_file_chooser_dialog_new (title, NULL,
 												GTK_FILE_CHOOSER_ACTION_SAVE,
 												GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 												GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
 												NULL);
+		if (filter)	/* filter becomes initial name when saving */
+			gtk_file_chooser_set_current_name (GTK_FILE_CHOOSER (dialog), filter);
+	}
 	else
 		dialog = gtk_file_chooser_dialog_new (title, NULL,
 												GTK_FILE_CHOOSER_ACTION_OPEN,

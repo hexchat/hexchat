@@ -723,9 +723,21 @@ fe_ctrl_gui (session *sess, int action, int arg)
 	}
 }
 
+static void
+dcc_saveas_cb (struct DCC *dcc, char *file)
+{
+	if (file)
+		dcc_get_with_destfile (dcc, file);
+	else if (dcc->dccstat == STAT_QUEUED)
+		dcc_abort (dcc->serv->front_session, dcc);
+}
+
 void
 fe_confirm (const char *message, void (*yesproc)(void *), void (*noproc)(void *), void *ud)
 {
+	/* warning, assuming fe_confirm is used by DCC only! */
+	if (((struct DCC *)ud)->file)
+		gtkutil_file_req (message, dcc_saveas_cb, ud, ((struct DCC *)ud)->file, FRF_WRITE|FRF_FILTERISINITIAL);
 }
 
 int

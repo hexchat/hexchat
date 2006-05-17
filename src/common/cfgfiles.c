@@ -455,7 +455,6 @@ const struct prefs vars[] = {
 	{"input_command_char", P_OFFSET (cmdchar), TYPE_STR},
 	{"input_filter_beep", P_OFFINT (filterbeep), TYPE_BOOL},
 	{"input_flash_hilight", P_OFFINT (flash_hilight), TYPE_BOOL},
-	{"input_fudge_snotice", P_OFFINT (fudgeservernotice), TYPE_BOOL},
 	{"input_perc_ascii", P_OFFINT (perc_ascii), TYPE_BOOL},
 	{"input_perc_color", P_OFFINT (perc_color), TYPE_BOOL},
 
@@ -515,7 +514,6 @@ const struct prefs vars[] = {
 
 	{"tab_chans", P_OFFINT (tabchannels), TYPE_BOOL},
 	{"tab_dialogs", P_OFFINT (privmsgtab), TYPE_BOOL},
-	{"tab_dnd",  P_OFFINT (tab_dnd), TYPE_BOOL},
 	{"tab_icons", P_OFFINT (tab_icons), TYPE_BOOL},
 	{"tab_layout", P_OFFINT (tab_layout), TYPE_INT},
 	{"tab_new_to_front", P_OFFINT (newtabstofront), TYPE_INT},
@@ -647,10 +645,10 @@ load_config (void)
 	prefs.autoopendccsendwindow = 1;
 	prefs.autoopendccchatwindow = 1;
 	prefs.userhost = 1;
-	prefs.dcc_send_fillspaces = 1;
 	prefs.mainwindow_save = 1;
 	prefs.bantype = 2;
 	prefs.flash_hilight = 1;
+	prefs.autodccsend = 2;	/* browse mode */
 #ifdef WIN32
 	prefs.identd = 1;
 #endif

@@ -190,7 +190,6 @@ struct xchatprefs
 	char dcc_ip_str[DOMAINLEN + 1];
 
 	unsigned int tab_small;
-	unsigned int tab_dnd;
 	unsigned int tab_sort;
 	unsigned int tab_icons;
 	unsigned int mainwindow_save;
@@ -262,7 +261,6 @@ struct xchatprefs
 	unsigned int wordwrap;
 	unsigned int gui_input_spell;
 	unsigned int throttle;
-	unsigned int fudgeservernotice;
 	unsigned int topicbar;
 	unsigned int hideuserlist;
 	unsigned int hidemenu;

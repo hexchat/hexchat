@@ -227,14 +227,21 @@ static const setting tabs_settings[] =
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
+static const char *const dccaccept[] =
+{
+	N_("No"),
+	N_("Yes"),
+	N_("Browse for save folder every time"),
+	NULL
+};
+
 static const setting filexfer_settings[] =
 {
 	{ST_HEADER, N_("Files and Directories"), 0, 0, 0},
+	{ST_MENU,	N_("Auto accept file offers:"), P_OFFINTNL(autodccsend), 0, dccaccept, 0},
 	{ST_EFOLDER,N_("Download files to:"), P_OFFSETNL(dccdir), 0, 0, sizeof prefs.dccdir},
 	{ST_EFOLDER,N_("Move completed files to:"), P_OFFSETNL(dcc_completed_dir), 0, 0, sizeof prefs.dcc_completed_dir},
-	{ST_TOGGLE, N_("Auto accept file offers"), P_OFFINTNL(autodccsend), 0, 0, 0},
 	{ST_TOGGLE, N_("Save nick name in filenames"), P_OFFINTNL(dccwithnick), 0, 0, 0},
-	{ST_TOGGLE, N_("Convert spaces to underscore before sending"), P_OFFINTNL(dcc_send_fillspaces),0,0,0},
 
 	{ST_HEADER, N_("Network Settings"), 0, 0, 0},
 	{ST_TOGGLE, N_("Get my address from the IRC server"), P_OFFINTNL(ip_from_server),
