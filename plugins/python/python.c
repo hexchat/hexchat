@@ -479,7 +479,7 @@ Callback_Print(char *word[], void *userdata)
 	 * build our own here. */
 	while (word[listsize] && word[listsize][0])
 		listsize++;
-	word_eol = (char **) g_malloc(sizeof(char*)*listsize+1);
+	word_eol = (char **) g_malloc(sizeof(char*)*(listsize+1));
 	if (word_eol == NULL) {
 		xchat_print(ph, "Not enough memory to alloc word_eol "
 				"for python plugin callback.");
@@ -1412,13 +1412,14 @@ static PyObject *
 Module_xchat_get_prefs(PyObject *self, PyObject *args)
 {
 	PyObject *res;
-	const void *info;
+	const char *info;
+	int integer;
 	char *name;
 	int type;
 	if (!PyArg_ParseTuple(args, "s:get_prefs", &name))
 		return NULL;
 	BEGIN_XCHAT_CALLS(NONE);
-	type = xchat_get_prefs(ph, name, (const char**)&info, (int*)&info);
+	type = xchat_get_prefs(ph, name, &info, &integer);
 	END_XCHAT_CALLS();
 	switch (type) {
 		case 0:
@@ -1430,7 +1431,7 @@ Module_xchat_get_prefs(PyObject *self, PyObject *args)
 			break;
 		case 2:
 		case 3:
-			res = PyInt_FromLong((int)info);
+			res = PyInt_FromLong(integer);
 			break;
 		default:
 			PyErr_Format(PyExc_RuntimeError,
