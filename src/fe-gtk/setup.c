@@ -1798,7 +1798,7 @@ setup_apply (struct xchatprefs *pr)
 						" restart to take full effect."), FE_MSG_WARN);
 
 #ifndef WIN32
-	if (prefs.autodccsend)
+	if (prefs.autodccsend == 1)
 	{
 		if (!strcmp ((char *)g_get_home_dir (), prefs.dccdir))
 		{

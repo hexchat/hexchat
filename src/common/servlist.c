@@ -635,9 +635,12 @@ servlist_auto_connect (session *sess)
 static gint
 servlist_cycle_cb (server *serv)
 {
-	PrintTextf (serv->server_session,
-		_("Cycling to next server in %s...\n"), ((ircnet *)serv->network)->name);
-	servlist_connect (serv->server_session, serv->network, TRUE);
+	if (serv->network)
+	{
+		PrintTextf (serv->server_session,
+			_("Cycling to next server in %s...\n"), ((ircnet *)serv->network)->name);
+		servlist_connect (serv->server_session, serv->network, TRUE);
+	}
 
 	return 0;
 }
