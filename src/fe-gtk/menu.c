@@ -1302,7 +1302,7 @@ menu_metres_both (GtkWidget *item, gpointer none)
 
 static struct mymenu mymenu[] = {
 	{N_("_XChat"), 0, 0, M_NEWMENU, 0, 0, 1},
-	{N_("_Server List..."), menu_open_server_list, (char *)&pix_book, M_MENUPIX, 0, 0, 1, GDK_s},
+	{N_("Network Li_st..."), menu_open_server_list, (char *)&pix_book, M_MENUPIX, 0, 0, 1, GDK_s},
 	{0, 0, 0, M_SEP, 0, 0, 0},
 
 	{N_("_New"), 0, GTK_STOCK_NEW, M_MENUSUB, 0, 0, 1},

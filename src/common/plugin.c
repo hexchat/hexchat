@@ -971,6 +971,22 @@ xchat_get_info (xchat_plugin *ph, const char *id)
 {
 	session *sess;
 
+	/* do the session independant ones first */
+	switch (str_hash (id))
+	{
+	case 0x325acab5:	/* libdirfs */
+		return XCHATLIBDIR;
+
+	case 0x14f51cd8: /* version */
+		return VERSION;
+
+	case 0xdd9b1abd:	/* xchatdir */
+		return get_xdir_utf8 ();
+
+	case 0xe33f6c4a:	/* xchatdirfs */
+		return get_xdir_fs ();
+	}
+
 	sess = ph->context;
 	if (!is_session (sess))
 	{
@@ -1006,9 +1022,6 @@ xchat_get_info (xchat_plugin *ph, const char *id)
 	case 0x1c0e99c1: /* inputbox */
 		return fe_get_inputbox_contents (sess);
 
-	case 0x325acab5:	/* libdirfs */
-		return XCHATLIBDIR;
-
 	case 0x6de15a2e:	/* network */
 		return server_get_network (sess->server, FALSE);
 
@@ -1028,9 +1041,6 @@ xchat_get_info (xchat_plugin *ph, const char *id)
 	case 0x696cd2f: /* topic */
 		return sess->topic;
 
-	case 0x14f51cd8: /* version */
-		return VERSION;
-
 	case 0x506d600b: /* native win_ptr */
 		return fe_gui_info_ptr (sess, 0);
 
@@ -1042,12 +1052,6 @@ xchat_get_info (xchat_plugin *ph, const char *id)
 		case 2: return "hidden";
 		}
 		return NULL;
-
-	case 0xdd9b1abd:	/* xchatdir */
-		return get_xdir_utf8 ();
-
-	case 0xe33f6c4a:	/* xchatdirfs */
-		return get_xdir_fs ();
 	}
 
 	return NULL;
