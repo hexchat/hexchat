@@ -1369,7 +1369,7 @@ servlist_open_networks (void)
 	g_signal_connect (G_OBJECT (checkbutton_skip), "toggled",
 							G_CALLBACK (no_servlist), 0);
 	gtk_widget_show (checkbutton_skip);
-	gtk_table_attach (GTK_TABLE (table4), checkbutton_skip, 0, 1, 1, 2,
+	gtk_table_attach (GTK_TABLE (table4), checkbutton_skip, 0, 2, 1, 2,
 							(GtkAttachOptions) (GTK_FILL),
 							(GtkAttachOptions) (0), 0, 0);
 
