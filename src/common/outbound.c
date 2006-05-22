@@ -3522,7 +3522,7 @@ auto_insert (char *dest, int destlen, unsigned char *src, char *word[],
 					utf[19] = 0;
 					break;
 				case 'v':
-					utf = VERSION; break;
+					utf = PACKAGE_VERSION; break;
 					break;
 				case 'y':
 					now = time (0);

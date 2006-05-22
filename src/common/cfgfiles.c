@@ -765,7 +765,7 @@ save_config (void)
 		return 0;
 	}
 
-	if (!cfg_put_str (fh, "version", VERSION))
+	if (!cfg_put_str (fh, "version", PACKAGE_VERSION))
 	{
 		free (new_config);
 		return 0;

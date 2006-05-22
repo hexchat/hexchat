@@ -67,7 +67,7 @@ menu_about (GtkWidget * wid, gpointer sess)
 				666, get_cpu_str());
 #endif
 
-	gtk_widget_show (gnome_about_new ("X-Chat", VERSION,
+	gtk_widget_show (gnome_about_new ("X-Chat", PACKAGE_VERSION,
 							"(C) 1998-2005 Peter Zelezny", author, buf, 0));
 }
 
@@ -115,7 +115,7 @@ menu_about (GtkWidget * wid, gpointer sess)
 	gtk_container_add (GTK_CONTAINER (vbox), label);
 	g_get_charset (&locale);
 	(snprintf) (buf, sizeof (buf),
-				"<span size=\"x-large\"><b>XChat "VERSION"</b></span>\n\n"
+				"<span size=\"x-large\"><b>XChat "PACKAGE_VERSION"</b></span>\n\n"
 				"%s\n\n"
 				"%s\n"
 				"<b>Charset</b>: %s "

@@ -65,13 +65,13 @@ main (int argc, char **argv)
   GOptionContext *context = NULL;
   
 #ifdef ENABLE_NLS
-  bindtextdomain (PACKAGE, LOCALEDIR);
-  bind_textdomain_codeset (PACKAGE, "UTF-8");
-  textdomain (PACKAGE);
+  bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
+  bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+  textdomain (GETTEXT_PACKAGE);
 #endif
 
   context = g_option_context_new (NULL);
-  g_option_context_add_main_entries (context, entries, PACKAGE);
+  g_option_context_add_main_entries (context, entries, GETTEXT_PACKAGE);
   g_option_context_parse (context, &argc, &argv, &error);
 
   if (error)
@@ -110,7 +110,7 @@ main (int argc, char **argv)
         if (fork() == 0)
         {
           gchar *url = g_strdup_printf ("--url=%s", opt_open_url);
-          execl (PREFIX"/bin/"PACKAGE, PACKAGE, "-a", url, NULL);
+          execl (PREFIX"/bin/"PACKAGE_NAME, PACKAGE_NAME, "-a", url, NULL);
         }
       } else
         write_error (_("Failed to complete command"), error);

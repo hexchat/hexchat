@@ -136,13 +136,13 @@ fe_args (int argc, char *argv[])
 	GOptionContext *context;
 
 #ifdef ENABLE_NLS
-	bindtextdomain (PACKAGE, LOCALEDIR);
-	bind_textdomain_codeset (PACKAGE, "UTF-8");
-	textdomain (PACKAGE);
+	bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
+	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+	textdomain (GETTEXT_PACKAGE);
 #endif
 
 	context = g_option_context_new (NULL);
-	g_option_context_add_main_entries (context, gopt_entries, PACKAGE);
+	g_option_context_add_main_entries (context, gopt_entries, GETTEXT_PACKAGE);
 	g_option_context_add_group (context, gtk_get_option_group (TRUE));
 	g_option_context_parse (context, &argc, &argv, &error);
 
@@ -157,7 +157,7 @@ fe_args (int argc, char *argv[])
 
 	if (arg_show_version)
 	{
-		printf (PACKAGE" "VERSION"\n");
+		printf (PACKAGE_NAME" "PACKAGE_VERSION"\n");
 		return 0;
 	}
 

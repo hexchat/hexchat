@@ -1306,7 +1306,7 @@ xchat_plugin_get_info (char **name, char **desc, char **version,
 {
 	*name = "Perl";
 	*desc = "Perl scripting interface";
-	*version = VERSION;
+	*version = PACKAGE_VERSION;
 	if (reserved)
 		*reserved = NULL;
 }
@@ -1332,7 +1332,7 @@ xchat_plugin_init (xchat_plugin * plugin_handle, char **plugin_name,
 
 	*plugin_name = "Perl";
 	*plugin_desc = "Perl scripting interface";
-	*plugin_version = VERSION;
+	*plugin_version = PACKAGE_VERSION;
 
 	xchat_hook_command (ph, "load", XCHAT_PRI_NORM, perl_command_load, 0, 0);
 	xchat_hook_command (ph, "unload", XCHAT_PRI_NORM, perl_command_unload, 0,

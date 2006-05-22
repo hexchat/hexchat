@@ -38,7 +38,7 @@ margin-right: 32px;
 <h1>XChat 2.0 Plugin Interface</h1>
 
 <small>
-<font size="-12">plugin20.html revision 2.63</font>
+<font size="-12">plugin20.html revision 2.64</font>
 <br>Latest version of this document is available at: <a href="http://xchat.org/docs/plugin20.html">http://xchat.org/docs/plugin20.html</a></small>
 
 <h2>Information:</h2>
@@ -710,7 +710,9 @@ removed, so you don't need to call this within your xchat_plugin_deinit() functi
 <b>Prototype:</b> int xchat_emit_print(xchat_plugin *ph, const char *event_name, ...);
 <br>
 <br><b>Description:</b> Generates a print event. This can be any
-event found in the Preferences > Advanced > Text Events window.
+event found in the Preferences > Advanced > Text Events window. The vararg parameter list
+MUST always be NULL terminated. Special care should be taken when calling this function
+inside a print callback (from xchat_hook_print), as not to cause endless recursion.
 <br>
 <br><b>Arguments:</b>
 <blockquote><b>ph:</b> Plugin handle (as given to xchat_plugin_init).

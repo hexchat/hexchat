@@ -1034,7 +1034,7 @@ servlist_save (void)
 	if (first)
 		chmod (buf, 0600);
 #endif
-	fprintf (fp, "v="VERSION"\n\n");
+	fprintf (fp, "v="PACKAGE_VERSION"\n\n");
 
 	list = network_list;
 	while (list)

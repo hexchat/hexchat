@@ -101,7 +101,7 @@ fe_new_window (struct session *sess, int focus)
 
 	snprintf (buf, sizeof (buf),
 				"\n"
-				" \017xchat \00310"VERSION"\n"
+				" \017xchat \00310"PACKAGE_VERSION"\n"
 				" \017Running on \00310%s \017glib \00310%d.%d.%d\n"
 				" \017This binary compiled \00310"__DATE__"\017\n",
 				get_cpu_str(),
@@ -393,7 +393,7 @@ fe_args (int argc, char *argv[])
 	{
 		if (!strcasecmp (argv[1], "--version") || !strcasecmp (argv[1], "-v"))
 		{
-			puts (VERSION);
+			puts (PACKAGE_VERSION);
 			return 0;
 		}
 	}
@@ -428,8 +428,9 @@ fe_main (void)
 		new_ircwindow (NULL, NULL, SESS_SERVER, 0);
 
 #ifdef ENABLE_NLS
-	bindtextdomain (PACKAGE, PREFIX"/share/locale");
-	textdomain (PACKAGE);
+	bindtextdomain (GETTEXT_PACKAGE, PREFIX"/share/locale");
+	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+	textdomain (GETTEXT_PACKAGE);
 #endif
 
 	while (!done)

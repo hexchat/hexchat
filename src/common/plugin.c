@@ -970,15 +970,16 @@ const char *
 xchat_get_info (xchat_plugin *ph, const char *id)
 {
 	session *sess;
+	guint32 hash = str_hash (id);
 
 	/* do the session independant ones first */
-	switch (str_hash (id))
+	switch (hash)
 	{
 	case 0x325acab5:	/* libdirfs */
 		return XCHATLIBDIR;
 
 	case 0x14f51cd8: /* version */
-		return VERSION;
+		return PACKAGE_VERSION;
 
 	case 0xdd9b1abd:	/* xchatdir */
 		return get_xdir_utf8 ();
@@ -994,7 +995,7 @@ xchat_get_info (xchat_plugin *ph, const char *id)
 		return NULL;
 	}
 
-	switch (str_hash (id))
+	switch (hash)
 	{
 	case 0x2de2ee: /* away */
 		if (sess->server->is_away)
@@ -1454,10 +1455,11 @@ int
 xchat_emit_print (xchat_plugin *ph, const char *event_name, ...)
 {
 	va_list args;
+	/* currently only 4 because no events use more than 4.
+		This can be easily expanded without breaking the API. */
 	char *argv[4] = {NULL, NULL, NULL, NULL};
 	int i = 0;
 
-	memset (&argv, 0, sizeof (argv));
 	va_start (args, event_name);
 	while (1)
 	{

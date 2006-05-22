@@ -4,7 +4,7 @@ have_automake=false
 if automake --version < /dev/null > /dev/null 2>&1 ; then
 	automake_version=`automake --version | grep 'automake (GNU automake)' | sed 's/^[^0-9]*\(.*\)/\1/'`
 	case $automake_version in
-	   1.2*|1.3*|1.4|1.4*)
+	   1.2*|1.3*|1.4|1.4*|1.5*|1.6*|1.7*|1.8*)
 		;;
 	   *)
 		have_automake=true
@@ -15,11 +15,11 @@ if $have_automake ; then
 	AUTOMAKE="automake"
 	ACLOCAL="aclocal"
 else
-	if automake-1.7 --version < /dev/null > /dev/null 2>&1 ; then
-		AUTOMAKE="automake-1.7"
-		ACLOCAL="aclocal-1.7"
+	if automake-1.9 --version < /dev/null > /dev/null 2>&1 ; then
+		AUTOMAKE="automake-1.9"
+		ACLOCAL="aclocal-1.9"
 	else
-		echo "automake missing or too old. This requires atleast automake 1.5"
+		echo "automake missing or too old. This requires atleast automake 1.9"
 		exit 1
 	fi
 fi
