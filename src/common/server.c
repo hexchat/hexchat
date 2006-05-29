@@ -1595,7 +1595,7 @@ static void
 server_connect (server *serv, char *hostname, int port, int no_login)
 {
 	int pid, read_des[2];
-	session *sess;
+	session *sess = serv->server_session;
 
 #ifdef USE_OPENSSL
 	if (!ctx && serv->use_ssl)
@@ -1611,7 +1611,7 @@ server_connect (server *serv, char *hostname, int port, int no_login)
 	if (!hostname[0])
 		return;
 
-	if (port < 0 || port >= 65536)
+	if (port < 0)
 	{
 		/* use default port for this server type */
 		port = 6667;
@@ -1620,8 +1620,7 @@ server_connect (server *serv, char *hostname, int port, int no_login)
 			port = 9999;
 #endif
 	}
-
-	sess = serv->server_session;
+	port &= 0xffff;	/* wrap around */
 
 	if (serv->connected || serv->connecting || serv->recondelay_tag)
 		server_disconnect (sess, TRUE, -1);
