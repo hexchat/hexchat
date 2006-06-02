@@ -506,6 +506,16 @@ key_dialog_delete (GtkWidget * button, GtkCList * list)
 }
 
 static void
+key_print_text (GtkXText *xtext, char *text)
+{
+	unsigned int old = prefs.timestamp;
+	prefs.timestamp = 0;	/* temporarily disable stamps */
+	gtk_xtext_clear (GTK_XTEXT (xtext)->buffer);
+	PrintTextRaw (GTK_XTEXT (xtext)->buffer, text, 0);
+	prefs.timestamp = old;
+}
+
+static void
 key_dialog_sel_act (GtkWidget * un, int num)
 {
 	int row = gtkutil_clist_selection (key_dialog_kb_clist);
@@ -519,8 +529,7 @@ key_dialog_sel_act (GtkWidget * un, int num)
 								  _(key_actions[num].name));
 		if (key_actions[num].help)
 		{
-			gtk_xtext_clear (GTK_XTEXT (key_dialog_text)->buffer);
-			PrintTextRaw (GTK_XTEXT (key_dialog_text)->buffer, _(key_actions[num].help), 0);
+			key_print_text (GTK_XTEXT (key_dialog_text), _(key_actions[num].help));
 		}
 	}
 }
@@ -542,8 +551,7 @@ key_dialog_sel_row (GtkWidget * clist, gint row, gint column,
 											  kb->action);
 		if (key_actions[kb->action].help)
 		{
-			gtk_xtext_clear (GTK_XTEXT (key_dialog_text)->buffer);
-			PrintTextRaw (GTK_XTEXT (key_dialog_text)->buffer, _(key_actions[kb->action].help), 0);
+			key_print_text (GTK_XTEXT (key_dialog_text), _(key_actions[kb->action].help));
 		}
 	}
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (key_dialog_tog_c),
