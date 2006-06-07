@@ -63,6 +63,7 @@ struct DCC
 	char *nick;
 	unsigned char type;		  /* 0 = SEND  1 = RECV  2 = CHAT */
 	unsigned char dccstat;	  /* 0 = QUEUED  1 = ACTIVE  2 = FAILED  3 = DONE */
+	unsigned int resume_sent:1;	/* resume request sent */
 	unsigned int fastsend:1;
 	unsigned int ackoffset:1;	/* is reciever sending acks as an offset from */
 										/* the resume point? */

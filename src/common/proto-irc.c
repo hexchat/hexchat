@@ -674,7 +674,8 @@ process_numeric (session * sess, int n,
 		inbound_login_end (sess, text);
 		break;
 
-	case 433:
+	case 433:	/* nickname in use */
+	case 432:	/* erroneous nickname */
 		if (serv->end_of_motd)
 			goto def;
 		inbound_next_nick (sess,  word[4]);

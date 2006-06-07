@@ -1958,6 +1958,93 @@ dcc_change_nick (struct server *serv, char *oldnick, char *newnick)
 	}
 }
 
+/* is the destination file the same? new_dcc is not opened yet */
+
+static int
+is_same_file (struct DCC *dcc, struct DCC *new_dcc)
+{
+	struct stat st_a, st_b;
+
+	/* if it's the same filename, must be same */
+	if (strcmp (dcc->destfile, new_dcc->destfile) == 0)
+		return TRUE;
+
+	/* now handle case-insensitive Filesystems: HFS+, FAT */
+#ifdef WIN32
+#error implement me!
+#else
+	/* this fstat() shouldn't really fail */
+	if ((dcc->fp == -1 ? stat (dcc->destfile_fs, &st_a) : fstat (dcc->fp, &st_a)) == -1)
+		return FALSE;
+	if (stat (new_dcc->destfile_fs, &st_b) == -1)
+		return FALSE;
+
+	/* same inode, same device, same file! */
+	if (st_a.st_ino == st_b.st_ino &&
+		 st_a.st_dev == st_b.st_dev)
+		return TRUE;
+#endif
+
+	return FALSE;
+}
+
+static int
+is_resumable (struct DCC *dcc)
+{
+	dcc->resumable = 0;
+
+	/* Check the file size */
+	if (access (dcc->destfile_fs, W_OK) == 0)
+	{
+		struct stat st;
+
+		if (stat (dcc->destfile_fs, &st) != -1)
+		{
+			if (st.st_size < dcc->size)
+			{
+				dcc->resumable = st.st_size;
+				dcc->pos = st.st_size;
+			}
+			else
+				dcc->resume_error = 2;
+		} else
+		{
+			dcc->resume_errno = errno;
+			dcc->resume_error = 1;
+		}
+	} else
+	{
+		dcc->resume_errno = errno;
+		dcc->resume_error = 1;
+	}
+
+	/* Now verify that this DCC is not already in progress from someone else */
+
+	if (dcc->resumable)
+	{
+		GSList *list = dcc_list;
+		struct DCC *d;
+		while (list)
+		{
+			d = list->data;
+			if (d->type == TYPE_RECV && d->dccstat != STAT_ABORTED &&
+				 d->dccstat != STAT_DONE && d->dccstat != STAT_FAILED)
+			{
+				if (d != dcc && is_same_file (d, dcc))
+				{
+					dcc->resume_error = 3;	/* dccgui.c uses it */
+					dcc->resumable = 0;
+					dcc->pos = 0;
+					break;
+				}
+			}
+			list = list->next;
+		}
+	}
+
+	return dcc->resumable;
+}
+
 void
 dcc_get (struct DCC *dcc)
 {
@@ -1997,6 +2084,9 @@ dcc_get_with_destfile (struct DCC *dcc, char *file)
 	/* get the local filesystem encoding */
 	g_free (dcc->destfile_fs);
 	dcc->destfile_fs = g_filename_from_utf8 (dcc->destfile, -1, 0, 0, 0);
+
+	/* since destfile changed, must check resumability again */
+	is_resumable (dcc);
 
 	dcc_get (dcc);
 }
@@ -2117,93 +2207,6 @@ dcc_malformed (struct session *sess, char *nick, char *data)
 	EMIT_SIGNAL (XP_TE_MALFORMED, sess, nick, data, NULL, NULL, 0);
 }
 
-/* is the destination file the same? new_dcc is not opened yet */
-
-static int
-is_same_file (struct DCC *dcc, struct DCC *new_dcc)
-{
-	struct stat st_a, st_b;
-
-	/* if it's the same filename, must be same */
-	if (strcmp (dcc->destfile, new_dcc->destfile) == 0)
-		return TRUE;
-
-	/* now handle case-insensitive Filesystems: HFS+, FAT */
-#ifdef WIN32
-#error implement me!
-#else
-	/* this fstat() shouldn't really fail */
-	if ((dcc->fp == -1 ? stat (dcc->destfile_fs, &st_a) : fstat (dcc->fp, &st_a)) == -1)
-		return FALSE;
-	if (stat (new_dcc->destfile_fs, &st_b) == -1)
-		return FALSE;
-
-	/* same inode, same device, same file! */
-	if (st_a.st_ino == st_b.st_ino &&
-		 st_a.st_dev == st_b.st_dev)
-		return TRUE;
-#endif
-
-	return FALSE;
-}
-
-static int
-is_resumable (struct DCC *dcc)
-{
-	dcc->resumable = 0;
-
-	/* Check the file size */
-	if (access (dcc->destfile_fs, W_OK) == 0)
-	{
-		struct stat st;
-
-		if (stat (dcc->destfile_fs, &st) != -1)
-		{
-			if (st.st_size < dcc->size)
-			{
-				dcc->resumable = st.st_size;
-				dcc->pos = st.st_size;
-			}
-			else
-				dcc->resume_error = 2;
-		} else
-		{
-			dcc->resume_errno = errno;
-			dcc->resume_error = 1;
-		}
-	} else
-	{
-		dcc->resume_errno = errno;
-		dcc->resume_error = 1;
-	}
-
-	/* Now verify that this DCC is not already in progress from someone else */
-
-	if (dcc->resumable)
-	{
-		GSList *list = dcc_list;
-		struct DCC *d;
-		while (list)
-		{
-			d = list->data;
-			if (d->type == TYPE_RECV && d->dccstat != STAT_ABORTED &&
-				 d->dccstat != STAT_DONE && d->dccstat != STAT_FAILED)
-			{
-				if (d != dcc && is_same_file (d, dcc))
-				{
-					dcc->resume_error = 3;	/* dccgui.c uses it */
-					dcc->resumable = 0;
-					dcc->pos = 0;
-					break;
-				}
-			}
-			list = list->next;
-		}
-	}
-
-	return dcc->resumable;
-}
-
 int
 dcc_resume (struct DCC *dcc)
 {
@@ -2211,6 +2214,7 @@ dcc_resume (struct DCC *dcc)
 
 	if (dcc->dccstat == STAT_QUEUED && dcc->resumable)
 	{
+		dcc->resume_sent = 1;
 		/* filename contains spaces? Quote them! */
 		snprintf (tbuf, sizeof (tbuf) - 10, strchr (dcc->file, ' ') ?
 					  "DCC RESUME \"%s\" %d %"DCC_SFMT :

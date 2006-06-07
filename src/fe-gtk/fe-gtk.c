@@ -728,7 +728,7 @@ dcc_saveas_cb (struct DCC *dcc, char *file)
 {
 	if (file)
 		dcc_get_with_destfile (dcc, file);
-	else if (dcc->dccstat == STAT_QUEUED)
+	else if (dcc->dccstat == STAT_QUEUED && dcc->resume_sent == 0)
 		dcc_abort (dcc->serv->front_session, dcc);
 }
 
@@ -736,8 +736,11 @@ void
 fe_confirm (const char *message, void (*yesproc)(void *), void (*noproc)(void *), void *ud)
 {
 	/* warning, assuming fe_confirm is used by DCC only! */
-	if (((struct DCC *)ud)->file)
-		gtkutil_file_req (message, dcc_saveas_cb, ud, ((struct DCC *)ud)->file, FRF_WRITE|FRF_FILTERISINITIAL);
+	struct DCC *dcc = ud;
+
+	if (dcc->file)
+		gtkutil_file_req (message, dcc_saveas_cb, ud, dcc->file,
+								FRF_WRITE|FRF_FILTERISINITIAL|FRF_NOASKOVERWRITE);
 }
 
 int
@@ -846,7 +849,7 @@ fe_open_url_locale (const char *url)
 		return;
 	}
 
-	moz = g_find_program_in_path ("gnome-moz-remote");
+	moz = g_find_program_in_path ("firefox");
 	if (moz)
 	{
 		snprintf (tbuf, sizeof (tbuf), "%s %s", moz, url);
