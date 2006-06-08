@@ -10,10 +10,10 @@ There are always more changes than listed here, these are just the
 highlights. The full CVS log is available at www.xchat.org/cvslog/
 
 ----------------------------------------------------------------------
- 2.6.3 - DD/MMM/2006
+ 2.6.4 - DD/Jun/2006
 ----------------------------------------------------------------------
 
- - Updated translations (de, es, gl, hu, zh_TW).
+ - Updated translations (de, el, es, gl, hu, nl, sv, vi, zh_TW).
  - Fixed opening a irc:// URL via "xchat -a --url=abc123" command while
    "Skip serverlist on startup" is off. This fix is only relevant when
    opening an initial instance of xchat (i.e not via dbus).
@@ -37,7 +37,8 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Fixed CTCPs being truncated in the RawLog window.
  - Added an option to open a "Save As..." dialog when receiving a
    DCC file offer.
- - Fixed debian bug #364858.
+ - Fixed a crash if you try to remove a network from the list while
+   it's in a auto-reconnect delay [debian bug #364858].
  - Python: Fixed some memory usage bugs.
  - Perl: Turned on utf8 flag for things that should have it on.
 

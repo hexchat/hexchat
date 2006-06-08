@@ -65,7 +65,7 @@
 
 #define VERSION_MAJOR 0
 #define VERSION_MINOR 1
-#define VERSION "0.4"
+#define VERSION "0.5"
 
 #ifdef WIN32
 #undef WITH_THREAD /* Thread support locks up xchat on Win32. */

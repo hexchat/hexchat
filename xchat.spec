@@ -7,7 +7,7 @@ Summary: Graphical IRC (chat) client
 Summary(fr): Client IRC (chat) avec interface graphique
 Summary(de): IRC-Client (Chat) mit grafischer Oberfläche
 Name: xchat
-Version: 2.6.2
+Version: 2.6.4
 Release: 0
 Epoch: 1
 Group: Applications/Internet
