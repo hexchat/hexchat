@@ -1534,7 +1534,10 @@ server_child (server * serv)
 	if (!serv->dont_use_proxy && (prefs.proxy_type == 5))
 		error = net_connect (ns_server, serv->proxy_sok4, serv->proxy_sok6, &psok);
 	else
+	{
 		error = net_connect (ns_server, serv->sok4, serv->sok6, &sok);
+		psok = sok;
+	}
 
 	if (error != 0)
 	{
