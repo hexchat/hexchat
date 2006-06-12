@@ -228,7 +228,7 @@ sub unhook {
 
 sub print {
 	my $text = shift @_;
-	return 1 unless $text;
+	return 1 unless defined $text;
 	if( ref( $text ) eq 'ARRAY' ) {
 		if( $, ) {
 			$text = join $, , @$text;
