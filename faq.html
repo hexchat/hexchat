@@ -76,6 +76,8 @@ p { margin: 3% }
 <br/><br/>
 <a href="#q221">21. Can I select and copy text with the time stamps?</a>
 <br/><br/>
+<a href="#q222">22. What's the deal with opening URLs in XChat?</a>
+<br/><br/>
 </p>
 
 <h2>3. Section Three: Contributions, Development and Bugs.</h2>
@@ -180,8 +182,9 @@ In the menus, open up Settings -> Advanced -> Text Events. Find the
 <i>Channel Message</i> event in the list. The $3 code can be inserted to
 print the user's mode-character (e.g. @ or +). For example, you might want
 to change the default:
-<br/><br/>%C2&lt;%O$1%C2>%O$t$2%O<br/><br/>To:
-<br/><br/>%C2&lt;<b>%O$3</b>%O$1%C2>%O$t$2%O
+
+<br/><br/>%C18%H&lt;%H$4$1%H>%H%O$t$2<br/><br/>To:
+<br/><br/>%C18%H&lt;%H$4<b>$3</b>$1%H>%H%O$t$2
 <br/><br/>Don't forget to press Enter, so the changes take effect in the
 list at the top of the window.
 </p>
@@ -397,6 +400,22 @@ There are two plugins available that allow this:
 <p>
 Yes, but this requires at least XChat 2.6.3. Simply hold down SHIFT while marking
 the text and the time stamps will be included.
+</p>
+
+<br/><h3><a name="q222">22. What's the deal with opening URLs in XChat?</a></h3>
+<p>
+Right-clicking on a URL and selecting <i>Open Link in Browser</i> will open the link
+in your "preferred browser".
+<br/><br/>
+In Gnome, your preferred browser can be changed in <b>System &gt; Preferences &gt; More Preferences &gt; Preferred Applications</b>.
+If you're not using Gnome, e.g KDE or some other desktop environment, you're fresh out of luck! Any patches to automatically
+support opening a URL in KDE's preferred browser would be happily accepted.
+<br/><br/>
+While holding down CTRL you can single left-click a URL to open it in your preferred browser.
+<br/><br/>
+You can also add more items to the right-click menu in XChat: <b>Settings &gt; Advanced &gt; URL Handlers</b>.
+<br/>For example, you could add an entry like <b>!firefox -a firefox -remote 'openURL(%s,new-tab)'</b>
+<br/>But this kind of messing around shouldn't be necessary, it just works automatically in Gnome and Windows!
 </p>
 
 <br/><h2>3. Section Three: Contributions, Development and Bugs.</h2>
