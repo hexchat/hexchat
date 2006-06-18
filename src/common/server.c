@@ -1635,6 +1635,18 @@ server_connect (server *serv, char *hostname, int port, int no_login)
 	safe_strcpy (serv->servername, hostname, sizeof (serv->servername));
 	safe_strcpy (serv->hostname, hostname, sizeof (serv->hostname));
 
+#ifdef USE_OPENSSL
+	if (serv->use_ssl)
+	{
+		char cert_file[256];
+
+		snprintf (cert_file, sizeof (cert_file), "%s/%s.pem",
+					 get_xdir_fs (), server_get_network (serv, TRUE));
+		if (SSL_CTX_use_certificate_file (ctx, cert_file, SSL_FILETYPE_PEM) != 1)
+			SSL_CTX_use_PrivateKey_file (ctx, cert_file, SSL_FILETYPE_PEM);
+	}
+#endif
+
 	server_set_defaults (serv);
 	serv->connecting = TRUE;
 	serv->port = port;
