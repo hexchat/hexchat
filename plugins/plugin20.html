@@ -442,11 +442,9 @@ static void get_file_name(char *nick, char *fname)
 <font color="#777777">	/* the fname is in UTF-8, because it came from the xchat API */</font>
 </pre><font color="#33aa44">#ifdef _WIN32</font><pre>
 	wchar_t wide_name[MAX_PATH];
-	int n;
 
 <font color="#777777">	/* convert UTF-8 to WIDECHARs (aka UTF-16LE) */</font>
-	n = MultiByteToWideChar(CP_UTF8, 0, fname, -1, wide_name, MAX_PATH);
-	if(!n)
+	if (MultiByteToWideChar(CP_UTF8, 0, fname, -1, wide_name, MAX_PATH) < 1)
 		return;
 
 <font color="#777777">	/* now we have WIDECHARs, so we can _wopen() or CreateFileW(). */
@@ -471,7 +469,7 @@ static void get_file_name(char *nick, char *fname)
 <font color="#777777">			/* send every line to the user that requested it */</font>
 			xchat_commandf (ph, "QUOTE NOTICE %s :%s", nick, buf);
 		}
-		close (fp);
+		fclose (fp);
 	}
 }
 </pre>
