@@ -730,10 +730,16 @@ fe_ctrl_gui (session *sess, int action, int arg)
 static void
 dcc_saveas_cb (struct DCC *dcc, char *file)
 {
-	if (file)
-		dcc_get_with_destfile (dcc, file);
-	else if (dcc->dccstat == STAT_QUEUED && dcc->resume_sent == 0)
-		dcc_abort (dcc->serv->front_session, dcc);
+	if (is_dcc (dcc))
+	{
+		if (dcc->dccstat == STAT_QUEUED)
+		{
+			if (file)
+				dcc_get_with_destfile (dcc, file);
+			else if (dcc->resume_sent == 0)
+				dcc_abort (dcc->serv->front_session, dcc);
+		}
+	}
 }
 
 void

@@ -94,6 +94,7 @@ struct dccstat_info
 
 extern struct dccstat_info dccstat[];
 
+gboolean is_dcc (struct DCC *dcc);
 void dcc_abort (session *sess, struct DCC *dcc);
 void dcc_get (struct DCC *dcc);
 int dcc_resume (struct DCC *dcc);

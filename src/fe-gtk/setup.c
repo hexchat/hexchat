@@ -118,6 +118,13 @@ static const setting textbox_settings[] =
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
+static const char *const tabcompmenu[] = 
+{
+	N_("A-Z"),
+	N_("Last-spoke order"),
+	NULL
+};
+
 static const setting inputbox_settings[] =
 {
 	{ST_HEADER, N_("Input box"),0,0,0},
@@ -130,6 +137,7 @@ static const setting inputbox_settings[] =
 	{ST_TOGGLE, N_("Automatic nick completion (without TAB key)"), P_OFFINTNL(nickcompletion),
 					0,0,0},
 	{ST_ENTRY,	N_("Nick completion suffix:"), P_OFFSETNL(nick_suffix),0,0,sizeof prefs.nick_suffix},
+	{ST_MENU,	N_("Nick completion sorted:"), P_OFFINTNL(completion_sort), 0, tabcompmenu, 0},
 
 #if 0	/* obsolete */
 	{ST_HEADER, N_("Input Box Codes"),0,0,0},

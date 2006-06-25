@@ -209,6 +209,19 @@ dcc_remove_from_sum (struct DCC *dcc)
 		dcc_getcpssum -= dcc->cps;
 }
 
+gboolean
+is_dcc (struct DCC *dcc)
+{
+	GSList *list = dcc_list;
+	while (list)
+	{
+		if (list->data == dcc)
+			return TRUE;
+		list = list->next;
+	}
+	return FALSE;
+}
+
 /* this is called from xchat.c:xchat_misc_checks() every 2 seconds. */
 
 void
