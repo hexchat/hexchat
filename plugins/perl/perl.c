@@ -588,7 +588,6 @@ XS (XS_Xchat_get_info)
 				PUSHMARK (SP);
 				XPUSHs (sv_2mortal (temp));
 				PUTBACK;
-				return;
 			}
 		}
 	}
@@ -614,10 +613,9 @@ XS (XS_Xchat_get_prefs)
 			temp = newSVpv (str, 0);
 			SvUTF8_on (temp);
 			SP -= items;
-			PUSHMARK (SP);
+			sp = mark;
 			XPUSHs (sv_2mortal (temp));
 			PUTBACK;
-			return;
 			break;
 		case 2:
 			XSRETURN_IV (integer);
@@ -1026,24 +1024,12 @@ XS (XS_Xchat_get_list)
 					if (field != NULL) {
 						hv_store (hash, fields[i] + 1, strlen (fields[i] + 1),
 									 newSVpvn (field, strlen (field)), 0);
-						/*                                              xchat_printf (ph, */
-						/*                                                      "string: %s - %d - %s",  */
-						/*                                                      fields[i]+1, */
-						/*                                                      strlen(fields[i]+1), */
-						/*                                                      field, strlen(field) */
-						/*                                                              ); */
 					} else {
 						hv_store (hash, fields[i] + 1, strlen (fields[i] + 1),
 									 &PL_sv_undef, 0);
-						/*                                              xchat_printf (ph, */
-						/*                                                      "string: %s - %d - undef",       */
-						/*                                                              fields[i]+1, */
-						/*                                                              strlen(fields[i]+1) */
-						/*                                                              ); */
 					}
 					break;
 				case 'p':
-					/*                                       xchat_printf (ph, "pointer: %s", fields[i]+1); */
 					hv_store (hash, fields[i] + 1, strlen (fields[i] + 1),
 								 newSViv (PTR2IV (xchat_list_str (ph, list,
 																			 fields[i] + 1)
@@ -1053,9 +1039,6 @@ XS (XS_Xchat_get_list)
 					hv_store (hash, fields[i] + 1, strlen (fields[i] + 1),
 								 newSVuv (xchat_list_int (ph, list, fields[i] + 1)),
 								 0);
-					/*                                       xchat_printf (ph, "int: %s - %d",fields[i]+1, */
-					/*                                                        xchat_list_int (ph, list, fields[i]+1) */
-					/*                                                       ); */
 					break;
 				case 't':
 					hv_store (hash, fields[i] + 1, strlen (fields[i] + 1),
