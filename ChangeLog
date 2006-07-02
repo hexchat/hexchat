@@ -18,9 +18,13 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Fixed the invisible cursor color when using GTKSpell and a black
    input box (when "Use the text box font & colors" is ON).
  - Allow loading a cert/privatekey file from ~/.xchat2/<NetWorkName>.pem
+ - Improved the fallback routine when you receive non-UTF8 messages. It
+   can now handle CP1252 from mIRC users and the ISO-8859-15 Euro symbol.
  - 
  - 
  - 
+ - Plugin API: The second args to xchat_list_int and xchat_list_str can
+   now be NULL as a shortcut to "channels" list for current context only.
  - Perl (Lian Wan Situ)
   * Fixed a bug with Xchat::print that prevents printing out a
     single 0(Lian Wan Situ)

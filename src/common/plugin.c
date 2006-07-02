@@ -1271,9 +1271,17 @@ const char *
 xchat_list_str (xchat_plugin *ph, xchat_list *xlist, const char *name)
 {
 	guint32 hash = str_hash (name);
-	gpointer data = xlist->pos->data;
+	gpointer data = ph->context;
+	int type = LIST_CHANNELS;
 
-	switch (xlist->type)
+	/* a NULL xlist is a shortcut to current "channels" context */
+	if (xlist)
+	{
+		data = xlist->pos->data;
+		type = xlist->type;
+	}
+
+	switch (type)
 	{
 	case LIST_CHANNELS:
 		switch (hash)
@@ -1343,10 +1351,17 @@ int
 xchat_list_int (xchat_plugin *ph, xchat_list *xlist, const char *name)
 {
 	guint32 hash = str_hash (name);
-	gpointer data = xlist->pos->data;
-	int tmp;
+	gpointer data = ph->context;
+	int tmp, type = LIST_CHANNELS;
 
-	switch (xlist->type)
+	/* a NULL xlist is a shortcut to current "channels" context */
+	if (xlist)
+	{
+		data = xlist->pos->data;
+		type = xlist->type;
+	}
+
+	switch (type)
 	{
 	case LIST_DCC:
 		switch (hash)
