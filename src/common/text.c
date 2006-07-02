@@ -363,40 +363,140 @@ log_write (session *sess, char *text)
 	}
 }
 
+/* converts a CP1252/ISO-8859-1(5) hybrid to UTF-8                           */
+/* Features: 1. It never fails, all 00-FF chars are converted to valid UTF-8 */
+/*           2. Uses CP1252 in the range 80-9f because ISO doesn't have any- */
+/*              thing useful in this range and it helps us receive from mIRC */
+/*           3. The five undefined chars in CP1252 80-9f are replaced with   */
+/*              ISO-8859-15 control codes.                                   */
+/*           4. Handles 0xa4 as a Euro symbol ala ISO-8859-15.               */
+/*           5. Uses ISO-8859-1 (which matches CP1252) for everything else.  */
+/*           6. This routine measured 3x faster than g_convert :)            */
+
+static unsigned char *
+iso_8859_1_to_utf8 (unsigned char *text, int len, gsize *bytes_written)
+{
+	unsigned int idx;
+	unsigned char *res, *output;
+	static const unsigned char lowtable[] = /* 74 byte table for 80-a4 */
+	{
+	/* compressed utf-8 table: if the first byte's 0x20 bit is set, it
+	   indicates a 2-byte utf-8 sequence, otherwise prepend a 0xe2. */
+		0x82, 0xac, /* 80 Euro. CP1252 from here on... */
+		0xe2, 0x81, /* 81 NA */
+		0x80, 0x9a, /* 82 */
+		0xe6, 0x92, /* 83 */
+		0x80, 0x9e, /* 84 */
+		0x80, 0xa6, /* 85 */
+		0x80, 0xa0, /* 86 */
+		0x80, 0xa1, /* 87 */
+		0xeb, 0x86, /* 88 */
+		0x80, 0xb0, /* 89 */
+		0xe5, 0xa0, /* 8a */
+		0x80, 0xb9, /* 8b */
+		0xe5, 0x92, /* 8c */
+		0xe2, 0x8d, /* 8d NA */
+		0xe5, 0xbd, /* 8e */
+		0xe2, 0x8f, /* 8f NA */
+		0xe2, 0x90, /* 90 NA */
+		0x80, 0x98, /* 91 */
+		0x80, 0x99, /* 92 */
+		0x80, 0x9c, /* 93 */
+		0x80, 0x9d, /* 94 */
+		0x80, 0xa2, /* 95 */
+		0x80, 0x93, /* 96 */
+		0x80, 0x94, /* 97 */
+		0xeb, 0x9c, /* 98 */
+		0x84, 0xa2, /* 99 */
+		0xe5, 0xa1, /* 9a */
+		0x80, 0xba, /* 9b */
+		0xe5, 0x93, /* 9c */
+		0xe2, 0x9d, /* 9d NA */
+		0xe5, 0xbe, /* 9e */
+		0xe5, 0xb8, /* 9f */
+		0xe2, 0xa0, /* a0 */
+		0xe2, 0xa1, /* a1 */
+		0xe2, 0xa2, /* a2 */
+		0xe2, 0xa3, /* a3 */
+		0x82, 0xac  /* a4 ISO-8859-15 Euro. */
+	};
+
+	/* worst case scenario: every byte turns into 3 bytes */
+	res = output = g_malloc ((len * 3) + 1);
+	if (!output)
+		return NULL;
+
+	while (len)
+	{
+		if (G_LIKELY (*text < 0x80))
+		{
+			*output = *text;	/* ascii maps directly */
+		}
+		else if (*text <= 0xa4)	/* 80-a4 use a lookup table */
+		{
+			idx = *text - 0x80;
+			idx = idx + idx;
+			if (lowtable[idx] & 0x20)
+			{
+				*output++ = lowtable[idx++] & 0xdf; /* 2 byte utf-8 */
+				*output = lowtable[idx];
+			}
+			else
+			{
+				*output++ = 0xe2;	/* 3 byte utf-8 */
+				*output++ = lowtable[idx++];
+				*output = lowtable[idx];
+			}
+		}
+		else if (*text < 0xc0)
+		{
+			*output++ = 0xc2;
+			*output = *text;
+		}
+		else
+		{
+			*output++ = 0xc3;
+			*output = *text - 0x40;
+		}
+		output++;
+		text++;
+		len--;
+	}
+	*output = 0;	/* terminate */
+	*bytes_written = output - res;
+
+	return res;
+}
+
 char *
 text_validate (char **text, int *len)
 {
 	char *utf;
 	gsize utf_len;
-	GError *error = NULL;
 
 	/* valid utf8? */
 	if (g_utf8_validate (*text, *len, 0))
 		return NULL;
 
+#ifdef WIN32
+	if (GetACP () == 1252) /* our routine is better than raw 1252 */
+#else
 	if (prefs.utf8_locale)
+#endif
 		/* fallback to iso-8859-1 */
-		utf = g_convert (*text, *len, "UTF-8", "ISO-8859-1", 0, &utf_len, &error);
+		utf = iso_8859_1_to_utf8 (*text, *len, &utf_len);
 	else
 	{
 		/* fallback to locale */
 		utf = g_locale_to_utf8 (*text, *len, 0, &utf_len, NULL);
 		if (!utf)
-			utf = g_convert (*text, *len, "UTF-8", "ISO-8859-1", 0, &utf_len, &error);
+			utf = iso_8859_1_to_utf8 (*text, *len, &utf_len);
 	}
 
 	if (!utf) 
 	{
-		if (error)
-		{
-			*text = g_strdup_printf ("\0034ICONV\017 %s\n", error->message);
-			*len = strlen (*text);
-			g_error_free (error);
-		} else
-		{
-			*text = g_strdup ("%INVALID%");
-			*len = 9;
-		}
+		*text = g_strdup ("%INVALID%");
+		*len = 9;
 	} else
 	{
 		*text = utf;
