@@ -1399,7 +1399,13 @@ xchat_list_int (xchat_plugin *ph, xchat_list *xlist, const char *name)
 		case 0xd1b:	/* id */
 			return ((struct session *)data)->server->id;
 		case 0x5cfee87:	/* flags */
-			tmp = ((struct session *)data)->server->have_idmsg;   /* bit 5 */
+			tmp = ((struct session *)data)->beep;            /* bit 8 */
+			tmp <<= 1;
+			tmp |= ((struct session *)data)->color_paste;        /* 7 */
+			tmp <<= 1;
+			tmp |= ((struct session *)data)->hide_join_part;     /* 6 */
+			tmp <<= 1;
+			tmp |= ((struct session *)data)->server->have_idmsg; /* 5 */
 			tmp <<= 1;
 			tmp |= ((struct session *)data)->server->have_whox;  /* 4 */
 			tmp <<= 1;
