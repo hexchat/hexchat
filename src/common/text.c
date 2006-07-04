@@ -378,47 +378,47 @@ iso_8859_1_to_utf8 (unsigned char *text, int len, gsize *bytes_written)
 {
 	unsigned int idx;
 	unsigned char *res, *output;
-	static const unsigned char lowtable[] = /* 74 byte table for 80-a4 */
+	static const unsigned short lowtable[] = /* 74 byte table for 80-a4 */
 	{
 	/* compressed utf-8 table: if the first byte's 0x20 bit is set, it
 	   indicates a 2-byte utf-8 sequence, otherwise prepend a 0xe2. */
-		0x82, 0xac, /* 80 Euro. CP1252 from here on... */
-		0xe2, 0x81, /* 81 NA */
-		0x80, 0x9a, /* 82 */
-		0xe6, 0x92, /* 83 */
-		0x80, 0x9e, /* 84 */
-		0x80, 0xa6, /* 85 */
-		0x80, 0xa0, /* 86 */
-		0x80, 0xa1, /* 87 */
-		0xeb, 0x86, /* 88 */
-		0x80, 0xb0, /* 89 */
-		0xe5, 0xa0, /* 8a */
-		0x80, 0xb9, /* 8b */
-		0xe5, 0x92, /* 8c */
-		0xe2, 0x8d, /* 8d NA */
-		0xe5, 0xbd, /* 8e */
-		0xe2, 0x8f, /* 8f NA */
-		0xe2, 0x90, /* 90 NA */
-		0x80, 0x98, /* 91 */
-		0x80, 0x99, /* 92 */
-		0x80, 0x9c, /* 93 */
-		0x80, 0x9d, /* 94 */
-		0x80, 0xa2, /* 95 */
-		0x80, 0x93, /* 96 */
-		0x80, 0x94, /* 97 */
-		0xeb, 0x9c, /* 98 */
-		0x84, 0xa2, /* 99 */
-		0xe5, 0xa1, /* 9a */
-		0x80, 0xba, /* 9b */
-		0xe5, 0x93, /* 9c */
-		0xe2, 0x9d, /* 9d NA */
-		0xe5, 0xbe, /* 9e */
-		0xe5, 0xb8, /* 9f */
-		0xe2, 0xa0, /* a0 */
-		0xe2, 0xa1, /* a1 */
-		0xe2, 0xa2, /* a2 */
-		0xe2, 0xa3, /* a3 */
-		0x82, 0xac  /* a4 ISO-8859-15 Euro. */
+		0x82ac, /* 80 Euro. CP1252 from here on... */
+		0xe281, /* 81 NA */
+		0x809a, /* 82 */
+		0xe692, /* 83 */
+		0x809e, /* 84 */
+		0x80a6, /* 85 */
+		0x80a0, /* 86 */
+		0x80a1, /* 87 */
+		0xeb86, /* 88 */
+		0x80b0, /* 89 */
+		0xe5a0, /* 8a */
+		0x80b9, /* 8b */
+		0xe592, /* 8c */
+		0xe28d, /* 8d NA */
+		0xe5bd, /* 8e */
+		0xe28f, /* 8f NA */
+		0xe290, /* 90 NA */
+		0x8098, /* 91 */
+		0x8099, /* 92 */
+		0x809c, /* 93 */
+		0x809d, /* 94 */
+		0x80a2, /* 95 */
+		0x8093, /* 96 */
+		0x8094, /* 97 */
+		0xeb9c, /* 98 */
+		0x84a2, /* 99 */
+		0xe5a1, /* 9a */
+		0x80ba, /* 9b */
+		0xe593, /* 9c */
+		0xe29d, /* 9d NA */
+		0xe5be, /* 9e */
+		0xe5b8, /* 9f */
+		0xe2a0, /* a0 */
+		0xe2a1, /* a1 */
+		0xe2a2, /* a2 */
+		0xe2a3, /* a3 */
+		0x82ac  /* a4 ISO-8859-15 Euro. */
 	};
 
 	/* worst case scenario: every byte turns into 3 bytes */
@@ -435,17 +435,16 @@ iso_8859_1_to_utf8 (unsigned char *text, int len, gsize *bytes_written)
 		else if (*text <= 0xa4)	/* 80-a4 use a lookup table */
 		{
 			idx = *text - 0x80;
-			idx = idx + idx;
-			if (lowtable[idx] & 0x20)
+			if (lowtable[idx] & 0x2000)
 			{
-				*output++ = lowtable[idx++] & 0xdf; /* 2 byte utf-8 */
-				*output = lowtable[idx];
+				*output++ = (lowtable[idx] >> 8) & 0xdf; /* 2 byte utf-8 */
+				*output = lowtable[idx] & 0xff;
 			}
 			else
 			{
 				*output++ = 0xe2;	/* 3 byte utf-8 */
-				*output++ = lowtable[idx++];
-				*output = lowtable[idx];
+				*output++ = (lowtable[idx] >> 8) & 0xff;
+				*output = lowtable[idx] & 0xff;
 			}
 		}
 		else if (*text < 0xc0)
