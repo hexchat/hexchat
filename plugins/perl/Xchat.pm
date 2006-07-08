@@ -491,14 +491,14 @@ sub unload {
 		
 		# take care of the shutdown callback
 		if( exists $pkg_info->{shutdown} ) {
-			if( ref $pkg_info->{shutdown} eq 'CODE' ) {
-				$pkg_info->{shutdown}->();
-			} elsif ( $pkg_info->{shutdown} ) {
-				eval {
+			eval {
+				if( ref $pkg_info->{shutdown} eq 'CODE' ) {
+					$pkg_info->{shutdown}->();
+				} elsif ( $pkg_info->{shutdown} ) {
 					no strict 'refs';
 					&{$pkg_info->{shutdown}};
-				};
-			}
+				}
+			};
 		}
 
 		if( exists $pkg_info->{gui_entry} ) {
