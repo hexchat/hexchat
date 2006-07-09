@@ -372,38 +372,34 @@ fe_get_int (char *msg, int def, void *callback, void *userdata)
 
 GtkWidget *
 gtkutil_button (GtkWidget *box, char *stock, char *tip, void *callback,
-				 void *userdata, char *labeltext)
+					 void *userdata, char *labeltext)
 {
-	GtkWidget *wid, *img, *label, *bbox;
+	GtkWidget *wid, *img, *bbox;
 
 	wid = gtk_button_new ();
-	g_signal_connect (G_OBJECT (wid), "clicked",
-							G_CALLBACK (callback), userdata);
 
-	bbox = gtk_hbox_new (0, 0);
-	gtk_container_add (GTK_CONTAINER (wid), bbox);
-	gtk_widget_show (bbox);
-
-	if (stock)
+	if (labeltext)
 	{
+		gtk_button_set_label (GTK_BUTTON (wid), labeltext);
+		gtk_button_set_image (GTK_BUTTON (wid), gtk_image_new_from_stock (stock, GTK_ICON_SIZE_MENU));
+		gtk_container_add (GTK_CONTAINER (box), wid);
+	}
+	else
+	{
+		bbox = gtk_hbox_new (0, 0);
+		gtk_container_add (GTK_CONTAINER (wid), bbox);
+		gtk_widget_show (bbox);
+
 		img = gtk_image_new_from_stock (stock, GTK_ICON_SIZE_MENU);
 		if (stock == GTK_STOCK_GOTO_LAST)
 			gtk_widget_set_usize (img, 10, 6);
 		gtk_container_add (GTK_CONTAINER (bbox), img);
 		gtk_widget_show (img);
-	}
-
-	if (labeltext)
-	{
-		label = gtk_label_new_with_mnemonic (labeltext);
-		gtk_container_add (GTK_CONTAINER (bbox), label);
-		gtk_widget_show (label);
-		gtk_container_add (GTK_CONTAINER (box), wid);
-	} else
-	{
 		gtk_box_pack_start (GTK_BOX (box), wid, 0, 0, 0);
 	}
 
+	g_signal_connect (G_OBJECT (wid), "clicked",
+							G_CALLBACK (callback), userdata);
 	gtk_widget_show (wid);
 	if (tip)
 		add_tip (wid, tip);
