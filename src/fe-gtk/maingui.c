@@ -2547,6 +2547,7 @@ mg_create_entry (session *sess, GtkWidget *box)
 	gui->input_box = entry = gtk_text_view_new ();
 	gtk_widget_set_size_request (entry, 0, 1);
 	gtk_text_view_set_wrap_mode (GTK_TEXT_VIEW (entry), GTK_WRAP_NONE);
+	gtk_text_view_set_accepts_tab (GTK_TEXT_VIEW (entry), FALSE);
 	if (prefs.gui_input_spell)
 		gtkspell_new_attach (GTK_TEXT_VIEW (entry), NULL, NULL);
 
@@ -3050,6 +3051,13 @@ fe_set_away (server *serv)
 }
 
 void
+fe_set_color_paste (session *sess, int status)
+{
+	sess->color_paste = status;
+	if (!sess->gui->is_tab || sess == current_tab)
+		GTK_XTEXT (sess->gui->xtext)->color_paste = status;
+}
+void
 fe_set_channel (session *sess)
 {
 	if (sess->res->tab != NULL)
@@ -3210,6 +3218,9 @@ fe_server_callback (server *serv)
 void
 fe_session_callback (session *sess)
 {
+	if (sess->res->banlist_window)
+		mg_close_gen (NULL, sess->res->banlist_window);
+
 	if (sess->res->input_text)
 		free (sess->res->input_text);
 

@@ -1213,9 +1213,14 @@ inbound_banlist (session *sess, time_t stamp, char *chan, char *mask, char *bann
 
 	sess = find_channel (serv, chan);
 	if (!sess)
+	{
 		sess = serv->front_session;
+		goto nowindow;
+	}
+
    if (!fe_is_banwindow (sess))
 	{
+nowindow:
 		/* let proto-irc.c do the 'goto def' for exemptions */
 		if (is_exemption)
 			return FALSE;

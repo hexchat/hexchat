@@ -1628,3 +1628,31 @@ token_foreach (char *str, char sep,
 
 	return TRUE;
 }
+
+/* 31 bit string hash functions */
+
+guint32
+str_hash (const char *key)
+{
+	const char *p = key;
+	guint32 h = *p;
+
+	if (h)
+		for (p += 1; *p != '\0'; p++)
+			h = (h << 5) - h + *p;
+
+	return h;
+}
+
+guint32
+str_ihash (const unsigned char *key)
+{
+	const char *p = key;
+	guint32 h = rfc_tolowertab [(guint)*p];
+
+	if (h)
+		for (p += 1; *p != '\0'; p++)
+			h = (h << 5) - h + rfc_tolowertab [(guint)*p];
+
+	return h;
+}

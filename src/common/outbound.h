@@ -15,6 +15,6 @@ void notc_msg (session *sess);
 void server_sendpart (server * serv, char *channel, char *reason);
 void server_sendquit (session * sess);
 int menu_streq (const char *s1, const char *s2, int def);
-void open_query (server *serv, char *nick);
+void open_query (server *serv, char *nick, gboolean focus_existing);
 
 #endif

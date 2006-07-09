@@ -627,7 +627,10 @@ process_numeric (session * sess, int n,
 	case 349:	/* end of exemption list */
 		sess = find_channel (serv, word[4]);
 		if (!sess)
+		{
 			sess = serv->front_session;
+			goto def;
+		}
 		if (!fe_is_banwindow (sess))
 			goto def;
 		fe_ban_list_end (sess, TRUE);
@@ -650,7 +653,10 @@ process_numeric (session * sess, int n,
 	case 368:
 		sess = find_channel (serv, word[4]);
 		if (!sess)
+		{
 			sess = serv->front_session;
+			goto def;
+		}
 		if (!fe_is_banwindow (sess))
 			goto def;
 		fe_ban_list_end (sess, FALSE);

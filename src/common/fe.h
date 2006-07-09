@@ -92,6 +92,7 @@ void fe_lastlog (session *sess, session *lastlog_sess, char *sstr);
 void fe_set_lag (server *serv, int lag);
 void fe_set_throttle (server *serv);
 void fe_set_away (server *serv);
+void fe_set_color_paste (session *sess, int status);
 void fe_serverlist_open (session *sess);
 void fe_get_str (char *prompt, char *def, void *callback, void *ud);
 void fe_get_int (char *prompt, int def, void *callback, void *ud);

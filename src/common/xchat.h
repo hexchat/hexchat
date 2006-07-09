@@ -491,7 +491,7 @@ struct commands
 	cmd_callback callback;
 	char needserver;
 	char needchannel;
-	char handle_quotes;
+	gint16 handle_quotes;
 	char *help;
 };
 

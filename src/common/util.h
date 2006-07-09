@@ -45,5 +45,7 @@ unsigned long make_ping_time (void);
 void move_file_utf8 (char *src_dir, char *dst_dir, char *fname, int dccpermissions);
 int mkdir_utf8 (char *dir);
 int token_foreach (char *str, char sep, int (*callback) (char *str, void *ud), void *ud);
+guint32 str_hash (const char *key);
+guint32 str_ihash (const unsigned char *key);
 
 #endif

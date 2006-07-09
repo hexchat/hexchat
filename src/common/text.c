@@ -421,6 +421,9 @@ iso_8859_1_to_utf8 (unsigned char *text, int len, gsize *bytes_written)
 		0x82ac  /* a4 ISO-8859-15 Euro. */
 	};
 
+	if (len == -1)
+		len = strlen (text);
+
 	/* worst case scenario: every byte turns into 3 bytes */
 	res = output = g_malloc ((len * 3) + 1);
 	if (!output)
@@ -478,7 +481,7 @@ text_validate (char **text, int *len)
 		return NULL;
 
 #ifdef WIN32
-	if (GetACP () == 1252) /* our routine is better than raw 1252 */
+	if (GetACP () == 1252) /* our routine is better than iconv's 1252 */
 #else
 	if (prefs.utf8_locale)
 #endif
@@ -1336,7 +1339,7 @@ load_text_events ()
 	1) if prefs.stripcolor is set, filter all style control codes from arguments
 	2) always strip \010 (ATTR_HIDDEN) from arguments: it is only for use in the format string itself
 */
-#define ARG_FLAG(argn) (1 << argn)
+#define ARG_FLAG(argn) (1 << (argn))
 
 void
 format_event (session *sess, int index, char **args, char *o, int sizeofo, unsigned int stripcolor_args)

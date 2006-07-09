@@ -775,6 +775,10 @@ fe_set_away (server *serv)
 {
 }
 void
+fe_set_color_paste (session *sess, int status)
+{
+}
+void
 fe_serverlist_open (session *sess)
 {
 }

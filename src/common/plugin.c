@@ -107,21 +107,6 @@ static GSList *hook_list = NULL;
 extern const struct prefs vars[];	/* cfgfiles.c */
 
 
-/* 31 bit string hash function */
-
-static guint32
-str_hash (const char *key)
-{
-	const char *p = key;
-	guint32 h = *p;
-
-	if (h)
-		for (p += 1; *p != '\0'; p++)
-			h = (h << 5) - h + *p;
-
-	return h;
-}
-
 /* unload a plugin and remove it from our linked list */
 
 static int

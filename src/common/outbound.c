@@ -538,6 +538,45 @@ cmd_unban (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 }
 
 static int
+cmd_chanopt (struct session *sess, char *tbuf, char *word[], char *word_eol[])
+{
+	int state;
+	if (!strcasecmp (word[3], "ON"))
+	{
+		state = TRUE;
+	} else if (!strcasecmp (word[3], "OFF"))
+	{
+		state = FALSE;
+	} else
+	{
+		if (!strcasecmp (word[2], "CONFMODE"))
+			state = sess->hide_join_part;
+		else if (!strcasecmp (word[2], "COLORPASTE"))
+			state = sess->color_paste;
+		else if (!strcasecmp (word[2], "BEEP"))
+			state = sess->beep;
+		else
+			return FALSE;
+
+		PrintTextf (sess, "%s is %s\n", word[2], state ? "ON" : "OFF");
+		return TRUE;
+	}
+
+	if (!strcasecmp (word[2], "CONFMODE"))
+	{
+		sess->hide_join_part = state;
+	} else if (!strcasecmp (word[2], "COLORPASTE"))
+	{
+		fe_set_color_paste (sess, state);
+	} else if (!strcasecmp (word[2], "BEEP"))
+	{
+		sess->beep = state;
+	}
+
+	return TRUE;
+}
+
+static int
 cmd_charset (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	server *serv = sess->server;
@@ -574,6 +613,18 @@ cmd_clear (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	GSList *list = sess_list;
 	char *reason = word_eol[2];
 
+	if (reason[0] == 0)
+	{
+		fe_text_clear (sess);
+		return TRUE;
+	}
+
+	if (strcasecmp (reason, "HISTORY") == 0)
+	{
+		history_free (&sess->history);
+		return TRUE;
+	}
+
 	if (strncasecmp (reason, "all", 3) == 0)
 	{
 		while (list)
@@ -583,12 +634,10 @@ cmd_clear (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 				fe_text_clear (list->data);
 			list = list->next;
 		}
-	} else
-	{
-		fe_text_clear (sess);
+		return TRUE;
 	}
 
-	return TRUE;
+	return FALSE;
 }
 
 static int
@@ -1856,41 +1905,24 @@ cmd_ghost (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 static int
 cmd_gui (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
-	if (!strcasecmp (word[2], "HIDE"))
+	switch (str_ihash (word[2]))
 	{
-		fe_ctrl_gui (sess, 0, 0);
-	} else if (!strcasecmp (word[2], "SHOW"))
-	{
-		fe_ctrl_gui (sess, 1, 0);
-	} else if (!strcasecmp (word[2], "FOCUS"))
-	{
-		fe_ctrl_gui (sess, 2, 0);
-	} else if (!strcasecmp (word[2], "FLASH"))
-	{
-		fe_ctrl_gui (sess, 3, 0);
-	} else if (!strcasecmp (word[2], "COLOR"))
-	{
-		fe_ctrl_gui (sess, 4, atoi (word[3]));
-	} else if (!strcasecmp (word[2], "ICONIFY"))
-	{
-		fe_ctrl_gui (sess, 5, 0);
-	} else if (!strcasecmp (word[2], "MENU"))
-	{
+	case 0xac1eee45: fe_ctrl_gui (sess, 7, 2); break; /* ATTACH */
+	case 0x05a72f63: fe_ctrl_gui (sess, 4, atoi (word[3])); break; /* COLOR */
+	case 0xb06a1793: fe_ctrl_gui (sess, 7, 1); break; /* DETACH */
+	case 0x05cfeff0: fe_ctrl_gui (sess, 3, 0); break; /* FLASH */
+	case 0x05d154d8: fe_ctrl_gui (sess, 2, 0); break; /* FOCUS */
+	case 0x0030dd42: fe_ctrl_gui (sess, 0, 0); break; /* HIDE */
+	case 0x61addbe3: fe_ctrl_gui (sess, 5, 0); break; /* ICONIFY */
+	case 0xc0851aaa: fe_message (word[3], FE_MSG_INFO); break; /* MSGBOX */
+	case 0x0035dafd: fe_ctrl_gui (sess, 1, 0); break; /* SHOW */
+	case 0x0033155f: /* MENU */
 		if (!strcasecmp (word[3], "TOGGLE"))
 			fe_ctrl_gui (sess, 6, 0);
 		else
 			return FALSE;
-	} else if (!strcasecmp (word[2], "MSGBOX"))
-	{
-		fe_message (word[3], FE_MSG_INFO);
-	} else if (!strcasecmp (word[2], "ATTACH"))
-	{
-		fe_ctrl_gui (sess, 7, 2);
-	} else if (!strcasecmp (word[2], "DETACH"))
-	{
-		fe_ctrl_gui (sess, 7, 1);
-	} else
-	{
+		break;
+	default:
 		return FALSE;
 	}
 
@@ -2578,25 +2610,32 @@ cmd_ping (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 }
 
 void
-open_query (server *serv, char *nick)
+open_query (server *serv, char *nick, gboolean focus_existing)
 {
 	session *sess;
 
 	sess = find_dialog (serv, nick);
-	if (sess)
-		fe_ctrl_gui (sess, 2, 0);	/* bring-to-front */
-	else
+	if (!sess)
 		new_ircwindow (serv, nick, SESS_DIALOG, 1);
+	else if (focus_existing)
+		fe_ctrl_gui (sess, 2, 0);	/* bring-to-front */
 }
 
 static int
 cmd_query (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	char *nick = word[2];
+	gboolean focus = TRUE;
+
+	if (strcmp (word[2], "-nofocus") == 0)
+	{
+		nick = word[3];
+		focus = FALSE;
+	}
 
 	if (*nick && !is_channel (sess->server, nick))
 	{
-		open_query (sess->server, nick);
+		open_query (sess->server, nick, focus);
 		return TRUE;
 	}
 	return FALSE;
@@ -3207,8 +3246,14 @@ const struct commands xc_cmds[] = {
 	{"AWAY", cmd_away, 1, 0, 1, N_("AWAY [<reason>], sets you away")},
 	{"BAN", cmd_ban, 1, 1, 1,
 	 N_("BAN <mask> [<bantype>], bans everyone matching the mask from the current channel. If they are already on the channel this doesn't kick them (needs chanop)")},
+	{"CHANOPT", cmd_chanopt, 0, 0, 1,
+	 N_("Set per channel options\n"
+	 "CHANOPT CONFMODE ON|OFF - Toggle conf mode/showing of join and part messages\n"
+	 "CHANOPT COLORPASTE ON|OFF - Toggle color paste\n"
+	 "CHANOPT BEEP ON|OFF - Toggle beep on message"
+	)},
 	{"CHARSET", cmd_charset, 0, 0, 1, 0},
-	{"CLEAR", cmd_clear, 0, 0, 1, N_("CLEAR, Clears the current text window")},
+	{"CLEAR", cmd_clear, 0, 0, 1, N_("CLEAR [ALL|HISTORY], Clears the current text window or command history")},
 	{"CLOSE", cmd_close, 0, 0, 1, N_("CLOSE, Closes the current window/tab")},
 
 	{"COUNTRY", cmd_country, 0, 0, 1,
@@ -3320,7 +3365,7 @@ const struct commands xc_cmds[] = {
 	{"PING", cmd_ping, 1, 0, 1,
 	 N_("PING <nick | channel>, CTCP pings nick or channel")},
 	{"QUERY", cmd_query, 0, 0, 1,
-	 N_("QUERY <nick>, opens up a new privmsg window to someone")},
+	 N_("QUERY [-nofocus] <nick>, opens up a new privmsg window to someone")},
 	{"QUIT", cmd_quit, 0, 0, 1,
 	 N_("QUIT [<reason>], disconnects from the current server")},
 	{"QUOTE", cmd_quote, 1, 0, 1,
