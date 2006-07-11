@@ -439,6 +439,7 @@ const struct prefs vars[] = {
 	{"gui_ulist_sort", P_OFFINT (userlist_sort), TYPE_INT},
 	{"gui_ulist_style", P_OFFINT (style_namelistgad), TYPE_BOOL},
 	{"gui_usermenu", P_OFFINT (gui_usermenu), TYPE_BOOL},
+	{"gui_url_mod", P_OFFINT (gui_url_mod), TYPE_INT},
 	{"gui_win_height", P_OFFINT (mainwindow_height), TYPE_INT},
 	{"gui_win_left", P_OFFINT (mainwindow_left), TYPE_INT},
 	{"gui_win_save", P_OFFINT (mainwindow_save), TYPE_BOOL},
@@ -645,6 +646,7 @@ load_config (void)
 	prefs.autoopendccsendwindow = 1;
 	prefs.autoopendccchatwindow = 1;
 	prefs.userhost = 1;
+	prefs.gui_url_mod = 4;	/* ctrl */
 	prefs.mainwindow_save = 1;
 	prefs.bantype = 2;
 	prefs.flash_hilight = 1;

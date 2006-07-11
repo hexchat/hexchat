@@ -2119,7 +2119,7 @@ mg_word_clicked (GtkWidget *xtext, char *word, GdkEventButton *even)
 			return;
 		}
 
-		if (even->state & GDK_CONTROL_MASK)
+		if ((even->state & 13) == prefs.gui_url_mod)
 		{
 			switch (mg_word_check (xtext, word, strlen (word)))
 			{
