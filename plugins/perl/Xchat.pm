@@ -2,6 +2,22 @@ BEGIN {
 	$INC{'Xchat.pm'} = 'DUMMY';
 }
 
+BEGIN {
+	$SIG{__WARN__} = sub {
+		my $message = shift @_;
+		my ($package) = caller;
+		my $pkg_info = Xchat::Embed::pkg_info( $package );
+	
+		if( $pkg_info ) {
+			if( $message =~ /\(eval 1\)/ ) {
+				$message =~ s/\(eval 1\)/(PERL PLUGIN CODE)/;
+			} else {
+				$message =~ s/\(eval \d+\)/$pkg_info->{filename}/;
+			}
+		}
+		Xchat::print( $message );
+	};
+}
 use File::Spec();
 use File::Basename();
 use Symbol();
@@ -306,7 +322,7 @@ sub set_context {
 		my ($channel, $server) = @_;
 		$context = Xchat::find_context( $channel, $server );
 	} elsif( @_ == 1 ) {
-		if( $_[0] =~ /^\d+$/ ) {
+		if( defined $_[0] && $_[0] =~ /^\d+$/ ) {
 			$context = $_[0];
 		} else {
 			$context = Xchat::find_context( $_[0] );
@@ -349,12 +365,16 @@ sub context_info {
 		qw(nick nickserv server topic version win_status xchatdir xchatdirfs),
 		qw(state_cursor),
 	);
-	
+
 	if( Xchat::set_context( $ctx ) ) {
 		my %info;
 		for my $field ( @fields ) {
 			$info{$field} = Xchat::get_info( $field );
 		}
+		
+		my $ctx_info = Xchat::Internal::context_info;
+		@info{keys %$ctx_info} = values %$ctx_info;
+		
 		Xchat::set_context( $old_ctx );
 		return %info if wantarray;
 		return \%info;
@@ -383,17 +403,6 @@ sub strip_code {
 }
 
 } # end of Xchat package
-
-$SIG{__WARN__} = sub {
-	my $message = shift @_;
-	my ($package) = caller;
-	my $pkg_info = Xchat::Embed::pkg_info( $package );
-	
-	if( $pkg_info ) {
-		$message =~ s/\(eval \d+\)/$pkg_info->{filename}/;
-	}
-	Xchat::print( $message );
-};
 
 {
 package Xchat::Embed;
@@ -491,6 +500,7 @@ sub unload {
 		
 		# take care of the shutdown callback
 		if( exists $pkg_info->{shutdown} ) {
+			# allow incorrectly written scripts to be unloaded
 			eval {
 				if( ref $pkg_info->{shutdown} eq 'CODE' ) {
 					$pkg_info->{shutdown}->();

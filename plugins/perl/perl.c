@@ -594,6 +594,50 @@ XS (XS_Xchat_get_info)
 }
 
 static
+XS (XS_Xchat_context_info)
+{
+	HV *hash;
+	const char *const *fields;
+	const char *field;
+	int i = 0;
+	dXSARGS;
+
+	fields = xchat_list_fields (ph, "channels" );
+	hash = newHV ();
+	sv_2mortal ((SV *) hash);
+	while (fields[i] != NULL) {
+		switch (fields[i][0]) {
+			case 's':
+				field = xchat_list_str (ph, NULL, fields[i] + 1);
+				if (field != NULL) {
+					hv_store (hash, fields[i] + 1, strlen (fields[i] + 1),
+						newSVpvn (field, strlen (field)), 0);
+				} else {
+					hv_store (hash, fields[i] + 1, strlen (fields[i] + 1),
+						&PL_sv_undef, 0);
+				}
+				break;
+			case 'p':
+				hv_store (hash, fields[i] + 1, strlen (fields[i] + 1),
+					newSViv (PTR2IV (xchat_list_str (ph, NULL, fields[i] + 1))), 0);
+				break;
+			case 'i':
+				hv_store (hash, fields[i] + 1, strlen (fields[i] + 1),
+					newSVuv (xchat_list_int (ph, NULL, fields[i] + 1)), 0);
+				break;
+			case 't':
+				hv_store (hash, fields[i] + 1, strlen (fields[i] + 1),
+					newSVnv (xchat_list_time (ph, NULL, fields[i] + 1)), 0);
+				break;
+		}
+			i++;
+	}
+
+	XPUSHs (newRV_noinc ((SV *) hash));
+	XSRETURN (1);
+}
+
+static
 XS (XS_Xchat_get_prefs)
 {
 	const char *str;
@@ -1095,7 +1139,8 @@ xs_init (pTHX)
 	newXS ("Xchat::Internal::command", XS_Xchat_command, __FILE__);
 	newXS ("Xchat::Internal::set_context", XS_Xchat_set_context, __FILE__);
 	newXS ("Xchat::Internal::get_info", XS_Xchat_get_info, __FILE__);
-
+	newXS ("Xchat::Internal::context_info", XS_Xchat_context_info, __FILE__);
+	
 	newXS ("Xchat::find_context", XS_Xchat_find_context, __FILE__);
 	newXS ("Xchat::get_context", XS_Xchat_get_context, __FILE__);
 	newXS ("Xchat::get_prefs", XS_Xchat_get_prefs, __FILE__);
