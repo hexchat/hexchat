@@ -28,8 +28,10 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Added an option of using 'Last-Spoke' nick completion order in Settings >
    Input Box.
  - The /QUERY command now has -nofocus arg, which scripts might find useful.
- - 
- - 
+ - You can now /set gui_url_mod 0, to allow left-clicking URLs (default is
+   4, for CTRL).
+ - XChat will now respect gtk-button-images=0 set in ~/.gtkrc-2.0.
+ - Python on Win32: Fixed restricted mode errors [1512076].
  - Plugin API:
   * The second args to xchat_list_int and xchat_list_str can now be NULL as
     a shortcut to "channels" list for current context only.

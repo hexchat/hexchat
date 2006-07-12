@@ -1985,7 +1985,7 @@ is_same_file (struct DCC *dcc, struct DCC *new_dcc)
 
 	/* now handle case-insensitive Filesystems: HFS+, FAT */
 #ifdef WIN32
-#error implement me!
+#warning no win32 implementation - behaviour may be unreliable
 #else
 	/* this fstat() shouldn't really fail */
 	if ((dcc->fp == -1 ? stat (dcc->destfile_fs, &st_a) : fstat (dcc->fp, &st_a)) == -1)
