@@ -32,7 +32,7 @@ void fe_add_rawlog (struct server *serv, char *text, int len, int outbound);
 #define FE_MSG_INFO 2
 #define FE_MSG_WARN 4
 #define FE_MSG_ERROR 8
-#define FE_MSG_HASTITLE 16
+#define FE_MSG_MARKUP 16
 void fe_message (char *msg, int flags);
 #define FIA_READ 1
 #define FIA_WRITE 2

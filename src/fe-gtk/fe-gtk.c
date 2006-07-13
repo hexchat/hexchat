@@ -382,6 +382,8 @@ fe_message (char *msg, int flags)
 
 	dialog = gtk_message_dialog_new (GTK_WINDOW (parent_window), 0, type,
 												GTK_BUTTONS_OK, "%s", msg);
+	if (flags & FE_MSG_MARKUP)
+		gtk_message_dialog_set_markup (GTK_MESSAGE_DIALOG (dialog), msg);
 	g_signal_connect (G_OBJECT (dialog), "response",
 							G_CALLBACK (gtk_widget_destroy), 0);
 	gtk_window_set_resizable (GTK_WINDOW (dialog), FALSE);

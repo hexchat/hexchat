@@ -150,7 +150,7 @@ SPELL_ENTRY_INSERT (GtkWidget *entry, const char *text, int len, int *pos)
 #endif
 
 static PangoAttrList *
-mg_attr_list_create (GdkColor *col, gboolean small)
+mg_attr_list_create (GdkColor *col, int size)
 {
 	PangoAttribute *attr;
 	PangoAttrList *list;
@@ -165,9 +165,9 @@ mg_attr_list_create (GdkColor *col, gboolean small)
 		pango_attr_list_insert (list, attr);
 	}
 
-	if (small)
+	if (size > 0)
 	{
-		attr = pango_attr_scale_new (PANGO_SCALE_SMALL);
+		attr = pango_attr_scale_new (size == 1 ? PANGO_SCALE_SMALL : PANGO_SCALE_X_SMALL);
 		attr->start_index = 0;
 		attr->end_index = 0xffff;
 		pango_attr_list_insert (list, attr);

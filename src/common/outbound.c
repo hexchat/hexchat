@@ -1914,7 +1914,7 @@ cmd_gui (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	case 0x05d154d8: fe_ctrl_gui (sess, 2, 0); break; /* FOCUS */
 	case 0x0030dd42: fe_ctrl_gui (sess, 0, 0); break; /* HIDE */
 	case 0x61addbe3: fe_ctrl_gui (sess, 5, 0); break; /* ICONIFY */
-	case 0xc0851aaa: fe_message (word[3], FE_MSG_INFO); break; /* MSGBOX */
+	case 0xc0851aaa: fe_message (word[3], FE_MSG_INFO|FE_MSG_MARKUP); break; /* MSGBOX */
 	case 0x0035dafd: fe_ctrl_gui (sess, 1, 0); break; /* SHOW */
 	case 0x0033155f: /* MENU */
 		if (!strcasecmp (word[3], "TOGGLE"))
