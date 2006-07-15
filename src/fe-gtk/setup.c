@@ -1698,6 +1698,10 @@ setup_apply_to_sess (session_gui *gui)
 			gtkspell_detach (spell);
 	}
 #endif
+
+#ifdef USE_LIBSEXY
+	sexy_spell_entry_is_checked (gui->input_box, prefs.gui_input_spell);
+#endif
 }
 
 static void

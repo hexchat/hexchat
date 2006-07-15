@@ -69,6 +69,10 @@
 #include <gtkspell/gtkspell.h>
 #endif
 
+#ifdef USE_LIBSEXY
+#include "sexy-spell-entry.h"
+#endif
+
 #define GUI_SPACING (3)
 #define GUI_BORDER (1)
 #define SCROLLBAR_SPACING (2)
@@ -2559,8 +2563,12 @@ mg_create_entry (session *sess, GtkWidget *box)
 												GTK_POLICY_NEVER);
 	gtk_container_add (GTK_CONTAINER (sw), entry);
 	gtk_container_add (GTK_CONTAINER (hbox), sw);
-#else	
+#else
+#ifdef USE_LIBSEXY
+	gui->input_box = entry = sexy_spell_entry_new ();
+#else
 	gui->input_box = entry = gtk_entry_new ();
+#endif
 	gtk_entry_set_max_length (GTK_ENTRY (gui->input_box), 2048);
 	g_signal_connect (G_OBJECT (entry), "activate",
 							G_CALLBACK (mg_inputbox_cb), gui);
