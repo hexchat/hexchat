@@ -110,7 +110,7 @@ main (int argc, char **argv)
         if (fork() == 0)
         {
           gchar *url = g_strdup_printf ("--url=%s", opt_open_url);
-          execl (PREFIX"/bin/"PACKAGE_NAME, PACKAGE_NAME, "-a", url, NULL);
+          execl (PREFIX"/bin/"PACKAGE_TARNAME, PACKAGE_TARNAME, "-a", url, NULL);
         }
       } else
         write_error (_("Failed to complete command"), error);
