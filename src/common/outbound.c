@@ -1137,7 +1137,7 @@ menu_del (char *path, char *label)
 }
 
 static void
-menu_add (char *path, char *label, char *cmd, char *ucmd, int pos, int state, int enable, int mod, int key)
+menu_add (char *path, char *label, char *cmd, char *ucmd, int pos, int state, int markup, int enable, int mod, int key)
 {
 	menu_entry *me;
 
@@ -1155,6 +1155,7 @@ menu_add (char *path, char *label, char *cmd, char *ucmd, int pos, int state, in
 	me = malloc (sizeof (menu_entry));
 	me->pos = pos;
 	me->state = state;
+	me->markup = markup;
 	me->enable = enable;
 	me->modifier = mod;
 	me->key = key;
@@ -1183,6 +1184,7 @@ cmd_menu (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	int state;
 	int toggle = FALSE;
 	int enable = TRUE;
+	int markup = FALSE;
 	int key = 0;
 	int mod = 0;
 	char *label;
@@ -1205,6 +1207,13 @@ cmd_menu (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			return FALSE;
 		mod = atoi (word[idx] + 2);
 		key = atoi (comma + 1);
+		idx++;
+	}
+
+	/* -m to specify PangoMarkup language */
+	if (word[idx][0] == '-' && word[idx][1] == 'm')
+	{
+		markup = TRUE;
 		idx++;
 	}
 
@@ -1236,15 +1245,23 @@ cmd_menu (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 
 	if (!strcasecmp (word[idx], "ADD"))
 	{
+		if (markup)
+		{
+			char *p;	/* to force pango closing tags through */
+			for (p = label; *p; p++)
+				if (*p == 3)
+					*p = '/';
+		}
+
 		if (toggle)
 		{
-			menu_add (tbuf, label, word[idx + 2], word[idx + 3], pos, state, enable, mod, key);
+			menu_add (tbuf, label, word[idx + 2], word[idx + 3], pos, state, markup, enable, mod, key);
 		} else
 		{
 			if (word[idx + 2][0])
-				menu_add (tbuf, label, word[idx + 2], NULL, pos, 0, enable, mod, key);
+				menu_add (tbuf, label, word[idx + 2], NULL, pos, 0, markup, enable, mod, key);
 			else
-				menu_add (tbuf, label, NULL, NULL, pos, 0, enable, mod, key);
+				menu_add (tbuf, label, NULL, NULL, pos, 0, markup, enable, mod, key);
 		}
 		return TRUE;
 	}
@@ -2802,6 +2819,18 @@ cmd_settext (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 }
 
 static int
+cmd_splay (struct session *sess, char *tbuf, char *word[], char *word_eol[])
+{
+	if (*word[2])
+	{
+		sound_play (word[2], FALSE);
+		return TRUE;
+	}
+
+	return FALSE;
+}
+
+static int
 parse_irc_url (char *url, char *server_name[], char *port[], char *channel[], int *use_ssl)
 {
 	char *co;
@@ -3339,7 +3368,7 @@ const struct commands xc_cmds[] = {
 	 N_("MDEOP, Mass deop's all chanops in the current channel (needs chanop)")},
 	{"ME", cmd_me, 0, 0, 1,
 	 N_("ME <action>, sends the action to the current channel (actions are written in the 3rd person, like /me jumps)")},
-	{"MENU", cmd_menu, 0, 0, 1, "MENU [-eX] [-k<mod>,<key>] [-pX] [-tX] {ADD|DEL} <path> [command] [unselect command]"},
+	{"MENU", cmd_menu, 0, 0, 1, "MENU [-eX] [-k<mod>,<key>] [-m] [-pX] [-tX] {ADD|DEL} <path> [command] [unselect command]"},
 	{"MKICK", cmd_mkick, 1, 1, 1,
 	 N_("MKICK, Mass kicks everyone except you in the current channel (needs chanop)")},
 	{"MODE", cmd_mode, 1, 0, 1, 0},
@@ -3400,6 +3429,7 @@ const struct commands xc_cmds[] = {
 	{"SETCURSOR", cmd_setcursor, 0, 0, 1, N_("SETCURSOR [-|+]<position>")},
 	{"SETTAB", cmd_settab, 0, 0, 1, 0},
 	{"SETTEXT", cmd_settext, 0, 0, 1, 0},
+	{"SPLAY", cmd_splay, 0, 0, 1, "SPLAY <soundfile>"},
 	{"TOPIC", cmd_topic, 1, 1, 1,
 	 N_("TOPIC [<topic>], sets the topic if one is given, else shows the current topic")},
 	{"UNBAN", cmd_unban, 1, 1, 1,

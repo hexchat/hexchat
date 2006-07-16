@@ -157,7 +157,7 @@ fe_args (int argc, char *argv[])
 
 	if (arg_show_version)
 	{
-		printf (PACKAGE_NAME" "PACKAGE_VERSION"\n");
+		printf (PACKAGE_TARNAME" "PACKAGE_VERSION"\n");
 		return 0;
 	}
 

@@ -31,11 +31,17 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - You can now /set gui_url_mod 0, to allow left-clicking URLs (default is
    4, for CTRL).
  - XChat will now respect gtk-button-images=0 set in ~/.gtkrc-2.0.
- - Python on Win32: Fixed restricted mode errors [1512076].
+ - Added a ./configure option to use your preferred spelling library:
+   --enable-spell=type. Where type can be: none static libsexy gtkspell.
+   Note that using gtkspell will force the inputbox to become a GtkTextView.
+ - Advanced users can /set tab_small 2, to get _extra_ small tabs.
+ - Added /SPLAY <soundfile>.
  - Plugin API:
   * The second args to xchat_list_int and xchat_list_str can now be NULL as
     a shortcut to "channels" list for current context only.
   * Added bits 6-8 to the field "flags" in the "channels" list.
+  * /GUI MSGBOX <text> can now contain Pango markup.
+  * Added -m arg to /MENU. See plugin20.html for more.
  - Perl (Lian Wan Situ)
   * Fixed a bug with Xchat::print that prevents printing out a
     single 0(Lian Wan Situ)

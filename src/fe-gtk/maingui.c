@@ -2566,6 +2566,7 @@ mg_create_entry (session *sess, GtkWidget *box)
 #else
 #ifdef USE_LIBSEXY
 	gui->input_box = entry = sexy_spell_entry_new ();
+	sexy_spell_entry_set_checked ((SexySpellEntry *)entry, prefs.gui_input_spell);
 #else
 	gui->input_box = entry = gtk_entry_new ();
 #endif

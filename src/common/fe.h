@@ -8,7 +8,8 @@
 typedef struct
 {
 	int pos;	/* position */
-	int state;	/* state of toggle items */
+	short state;	/* state of toggle items */
+	short markup;	/* use pango markup? */
 	short enable;	/* enabled? sensitivity */
 	short modifier;	/* keybinding */
 	int key;

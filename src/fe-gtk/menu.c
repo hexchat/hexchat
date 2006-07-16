@@ -99,6 +99,10 @@ struct mymenu
 	guint key;				/* GDK_x */
 };
 
+#define XCMENU_DOLIST 1
+#define XCMENU_SHADED 1
+#define XCMENU_MARKUP 2
+#define XCMENU_MNEMONIC 4
 
 /* execute a userlistbutton/popupmenu command */
 
@@ -265,13 +269,13 @@ menu_quick_item (char *cmd, char *label, GtkWidget * menu, int flags,
 		item = gtk_menu_item_new ();
 	else
 	{
-		if (flags & (1 << 1))
+		if (flags & XCMENU_MARKUP)
 		{
 			item = gtk_menu_item_new_with_label ("");
 			gtk_label_set_markup (GTK_LABEL (GTK_BIN (item)->child), label);
 		} else
 		{
-			if (flags & (1 << 2))
+			if (flags & XCMENU_MNEMONIC)
 				item = gtk_menu_item_new_with_mnemonic (label);
 			else
 				item = gtk_menu_item_new_with_label (label);
@@ -282,7 +286,7 @@ menu_quick_item (char *cmd, char *label, GtkWidget * menu, int flags,
 	if (cmd)
 		g_signal_connect (G_OBJECT (item), "activate",
 								G_CALLBACK (popup_menu_cb), cmd);
-	if (flags & (1 << 0))
+	if (flags & XCMENU_SHADED)
 		gtk_widget_set_sensitive (GTK_WIDGET (item), FALSE);
 	gtk_widget_show (item);
 
@@ -313,10 +317,18 @@ menu_quick_sub (char *name, GtkWidget *menu, GtkWidget **sub_item_ret, int flags
 
 	/* Code to add a submenu */
 	sub_menu = gtk_menu_new ();
-	if (flags & 4)
-		sub_item = gtk_menu_item_new_with_mnemonic (name);
+	if (flags & XCMENU_MARKUP)
+	{
+		sub_item = gtk_menu_item_new_with_label ("");
+		gtk_label_set_markup (GTK_LABEL (GTK_BIN (sub_item)->child), name);
+	}
 	else
-		sub_item = gtk_menu_item_new_with_label (name);
+	{
+		if (flags & XCMENU_MNEMONIC)
+			sub_item = gtk_menu_item_new_with_mnemonic (name);
+		else
+			sub_item = gtk_menu_item_new_with_label (name);
+	}
 	gtk_menu_shell_insert (GTK_MENU_SHELL (menu), sub_item, pos);
 	gtk_widget_show (sub_item);
 	gtk_menu_item_set_submenu (GTK_MENU_ITEM (sub_item), sub_menu);
@@ -324,7 +336,7 @@ menu_quick_sub (char *name, GtkWidget *menu, GtkWidget **sub_item_ret, int flags
 	if (sub_item_ret)
 		*sub_item_ret = sub_item;
 
-	if (flags & 1)
+	if (flags & XCMENU_DOLIST)
 		/* We create a new element in the list */
 		submenu_list = g_slist_prepend (submenu_list, sub_menu);
 	return sub_menu;
@@ -402,7 +414,7 @@ menu_create (GtkWidget *menu, GSList *list, char *target, int check_path)
 		if (!strncasecmp (pop->name, "SUB", 3))
 		{
 			childcount = 0;
-			tempmenu = menu_quick_sub (pop->cmd, tempmenu, &subitem, 1, -1);
+			tempmenu = menu_quick_sub (pop->cmd, tempmenu, &subitem, XCMENU_DOLIST, -1);
 
 		} else if (!strncasecmp (pop->name, "TOGGLE", 6))
 		{
@@ -423,7 +435,7 @@ menu_create (GtkWidget *menu, GSList *list, char *target, int check_path)
 
 		} else if (!strncasecmp (pop->name, "SEP", 3))
 		{
-			menu_quick_item (0, 0, tempmenu, 1, 0);
+			menu_quick_item (0, 0, tempmenu, XCMENU_SHADED, 0);
 
 		} else
 		{
@@ -493,7 +505,7 @@ menu_nickmenu (session *sess, GdkEventButton *event, char *nick, int num_sel)
 	{
 		snprintf (buf, sizeof (buf), "%d nicks selected.", num_sel);
 		menu_quick_item (0, buf, menu, 0, 0);
-		menu_quick_item (0, 0, menu, 1, 0);
+		menu_quick_item (0, 0, menu, XCMENU_SHADED, 0);
 	} else
 	{
 		user = userlist_find (sess, nick);	/* lasttalk is channel specific */
@@ -501,7 +513,7 @@ menu_nickmenu (session *sess, GdkEventButton *event, char *nick, int num_sel)
 			user = userlist_find_global (current_sess->server, nick);
 		if (user)
 		{
-			submenu = menu_quick_sub (nick, menu, NULL, 1, -1);
+			submenu = menu_quick_sub (nick, menu, NULL, XCMENU_DOLIST, -1);
 
 			/* let the translators tweak this if need be */
 			fmt = _("<tt><b>%-11s</b></tt> %s");
@@ -515,19 +527,19 @@ menu_nickmenu (session *sess, GdkEventButton *event, char *nick, int num_sel)
 			{
 				snprintf (buf, sizeof (buf), fmt, _("Real Name:"), _("Unknown"));
 			}
-			menu_quick_item (0, buf, submenu, 2, 0);
+			menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0);
 
 			snprintf (buf, sizeof (buf), fmt, _("User:"),
 						user->hostname ? user->hostname : _("Unknown"));
-			menu_quick_item (0, buf, submenu, 2, 0);
+			menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0);
 
 			snprintf (buf, sizeof (buf), fmt, _("Country:"),
 						user->hostname ? country(user->hostname) : _("Unknown"));
-			menu_quick_item (0, buf, submenu, 2, 0);
+			menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0);
 
 			snprintf (buf, sizeof (buf), fmt, _("Server:"),
 						user->servername ? user->servername : _("Unknown"));
-			menu_quick_item (0, buf, submenu, 2, 0);
+			menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0);
 
 			if (user->away)
 			{
@@ -539,7 +551,7 @@ menu_nickmenu (session *sess, GdkEventButton *event, char *nick, int num_sel)
 					free (msg);
 					snprintf (buf, sizeof (buf), fmt, _("Away Msg:"), real);
 					g_free (real);
-					menu_quick_item (0, buf, submenu, 2, 0);
+					menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0);
 				}
 			}
 
@@ -555,10 +567,10 @@ menu_nickmenu (session *sess, GdkEventButton *event, char *nick, int num_sel)
 				snprintf (buf, sizeof (buf), fmt, _("Last Msg:"), _("Unknown"));
 			}
 
-			menu_quick_item (0, buf, submenu, 2, 0);
+			menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0);
 
 			menu_quick_endsub ();
-			menu_quick_item (0, 0, menu, 1, 0);
+			menu_quick_item (0, 0, menu, XCMENU_SHADED, 0);
 		}
 	}
 
@@ -726,13 +738,13 @@ menu_urlmenu (GdkEventButton *event, char *url)
 		chop = g_utf8_offset_to_pointer (tmp, 48);
 		chop[0] = chop[1] = chop[2] = '.';
 		chop[3] = 0;
-		menu_quick_item (0, tmp, menu, 1, 0);
+		menu_quick_item (0, tmp, menu, XCMENU_SHADED, 0);
 		free (tmp);
 	} else
 	{
-		menu_quick_item (0, str_copy, menu, 1, 0);
+		menu_quick_item (0, str_copy, menu, XCMENU_SHADED, 0);
 	}
-	menu_quick_item (0, 0, menu, 1, 0);
+	menu_quick_item (0, 0, menu, XCMENU_SHADED, 0);
 
 	/* Two hardcoded entries */
 	if (strncmp (str_copy, "irc://", 6) == 0 ||
@@ -792,8 +804,8 @@ menu_chanmenu (struct session *sess, GdkEventButton * event, char *chan)
 
 	menu = gtk_menu_new ();
 
-	menu_quick_item (0, chan, menu, 1, str_copy);
-	menu_quick_item (0, 0, menu, 1, str_copy);
+	menu_quick_item (0, chan, menu, XCMENU_SHADED, str_copy);
+	menu_quick_item (0, 0, menu, XCMENU_SHADED, str_copy);
 
 	if (!is_joined)
 		menu_quick_item_with_callback (menu_chan_join, _("Join Channel"), menu,
@@ -833,7 +845,7 @@ static void
 usermenu_create (GtkWidget *menu)
 {
 	menu_create (menu, usermenu_list, "", FALSE);
-	menu_quick_item (0, 0, menu, 1, 0);	/* sep */
+	menu_quick_item (0, 0, menu, XCMENU_SHADED, 0);	/* sep */
 	menu_quick_item_with_callback (menu_usermenu, _("Edit This Menu..."), menu, 0);
 }
 
@@ -1578,7 +1590,7 @@ menu_add_item (GtkWidget *menu, menu_entry *me)
 	menu = menu_find_path (menu, me->path);
 	if (menu)
 	{
-		item = menu_quick_item (me->cmd, me->label, menu, 4, 0);
+		item = menu_quick_item (me->cmd, me->label, menu, me->markup ? XCMENU_MARKUP : XCMENU_MNEMONIC, 0);
 		if (me->pos != -1)
 			gtk_menu_reorder_child (GTK_MENU (menu), item, me->pos);
 	}
@@ -1593,7 +1605,7 @@ menu_add_sub (GtkWidget *menu, menu_entry *me)
 	if (me->path[0] != 0)
 		menu = menu_find_path (menu, me->path);
 	if (menu)
-		menu_quick_sub (me->label, menu, &item, 4, me->pos);
+		menu_quick_sub (me->label, menu, &item, me->markup ? XCMENU_MARKUP : XCMENU_MNEMONIC, me->pos);
 	return item;
 }
 
