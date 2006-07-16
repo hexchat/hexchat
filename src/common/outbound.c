@@ -1171,8 +1171,15 @@ menu_add (char *path, char *label, char *cmd, char *ucmd, int pos, int state, in
 	if (ucmd)
 		me->ucmd = strdup (ucmd);
 
-	fe_menu_add (me);
 	menu_list = g_slist_append (menu_list, me);
+	label = fe_menu_add (me);
+	if (label)
+	{
+		/* FE has given us a stripped label */
+		free (me->label);
+		me->label = strdup (label);
+		g_free (label); /* this is from pango */
+	}
 }
 
 static int
@@ -1243,16 +1250,16 @@ cmd_menu (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	if (label[0] == '-' && label[1] == 0)
 		label = NULL;	/* separator */
 
+	if (markup)
+	{
+		char *p;	/* to force pango closing tags through */
+		for (p = label; *p; p++)
+			if (*p == 3)
+				*p = '/';
+	}
+
 	if (!strcasecmp (word[idx], "ADD"))
 	{
-		if (markup)
-		{
-			char *p;	/* to force pango closing tags through */
-			for (p = label; *p; p++)
-				if (*p == 3)
-					*p = '/';
-		}
-
 		if (toggle)
 		{
 			menu_add (tbuf, label, word[idx + 2], word[idx + 3], pos, state, markup, enable, mod, key);

@@ -379,7 +379,7 @@ will not work with previous versions.
 </p>
 <a name=menu>Starting from 2.4.5 you can add your own items to the menu bar. The menu command has this syntax</a>:
 <pre>
-	MENU [-eX] [-k&lt;mod>,&lt;key>] [-pX] [-tX] {ADD|DEL} &lt;path> [command] [unselect command]</pre>
+	MENU [-eX] [-k&lt;mod>,&lt;key>] [-m] [-pX] [-tX] {ADD|DEL} &lt;path> [command] [unselect command]</pre>
 For example:
 <pre>
 	MENU -p5 ADD FServe
@@ -395,6 +395,7 @@ Parameters and flags:
 <table border=1>
 <tr><td>-eX</td><td>Set enable flag to X. -e0 for disable, -e1 for enable. This lets you create a disabled (shaded) item.</td></tr>
 <tr><td>-k&lt;mod>,&lt;key></td><td>Specify a keyboard shortcut. "mod" is the modifier which is a bitwise OR of: 1-SHIFT 4-CTRL 8-ALT in decimal. "key" is the key value in decimal, e.g. -k5,101 would specify SHIFT-CTRL-E.</td></tr>
+<tr><td>-m</td><td>Specify that this label should be treated as <a href="http://developer.gnome.org/doc/API/2.0/pango/PangoMarkupFormat.html">Pango Markup</a> language. Since forward slash ("/") is already used in menu paths, you should replace closing tags with an ASCII 003 instead e.g.: xchat_command(ph, "MENU -m ADD \"&lt;b>Bold Menu&lt;\003b>\""); (new for 2.6.6).</td></tr>
 <tr><td>-pX</td><td>Specify a menu item's position number. e.g. -p5 will cause the item to be inserted in the 5th place.</td></tr>
 <tr><td>-tX</td><td>Specify a toggle menu item with an initial state. -t0 for an "unticked" item and -t1 for a "ticked" item.</td></tr>
 </table>

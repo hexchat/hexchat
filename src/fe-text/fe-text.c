@@ -831,8 +831,9 @@ void fe_open_url (const char *url)
 void fe_menu_del (menu_entry *me)
 {
 }
-void fe_menu_add (menu_entry *me)
+char *fe_menu_add (menu_entry *me)
 {
+	return NULL;
 }
 void fe_menu_update (menu_entry *me)
 {

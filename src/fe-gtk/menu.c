@@ -1639,10 +1639,21 @@ menu_add_cb (GtkWidget *menu, menu_entry *me)
 	}
 }
 
-void
+char *
 fe_menu_add (menu_entry *me)
 {
+	char *text;
+
 	menu_foreach_gui (me, menu_add_cb);
+
+	if (!me->markup)
+		return NULL;
+
+	if (!pango_parse_markup (me->label, -1, 0, NULL, &text, NULL, NULL))
+		return NULL;
+
+	/* return the label with markup stripped */
+	return text;
 }
 
 void
