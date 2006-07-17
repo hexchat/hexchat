@@ -134,10 +134,10 @@ initialize_enchant ()
 	GModule *enchant;
 	gpointer funcptr;
 
-	enchant = g_module_open("libenchant.so.1", 0);
+	enchant = g_module_open("libenchant", 0);
 	if (enchant == NULL)
 	{
-		enchant = g_module_open("libenchant.so", 0);
+		enchant = g_module_open("libenchant.so.1", 0);
 		if (enchant == NULL)
 			return;
 	}
@@ -311,9 +311,9 @@ add_to_dictionary(GtkWidget *menuitem, SexySpellEntry *entry)
 	get_word_extents_from_position(entry, &start, &end, entry->priv->mark_character);
 	word = gtk_editable_get_chars(GTK_EDITABLE(entry), start, end);
 
-	dict = (struct EnchantDict *) g_object_get_data(G_OBJECT(menuitem), "gtkspell-dict");
+	dict = (struct EnchantDict *) g_object_get_data(G_OBJECT(menuitem), "enchant-dict");
 	if (dict)
-		enchant_dict_add_to_personal(dict, word, g_utf8_strlen(word, -1));
+		enchant_dict_add_to_personal(dict, word, -1);
 
 	g_free(word);
 
@@ -341,7 +341,7 @@ ignore_all(GtkWidget *menuitem, SexySpellEntry *entry)
 
 	for (li = entry->priv->dict_list; li; li = g_slist_next (li)) {
 		struct EnchantDict *dict = (struct EnchantDict *) li->data;
-		enchant_dict_add_to_session(dict, word, g_utf8_strlen(word, -1));
+		enchant_dict_add_to_session(dict, word, -1);
 	}
 
 	g_free(word);
@@ -384,12 +384,12 @@ replace_word(GtkWidget *menuitem, SexySpellEntry *entry)
 							 &start);
 	gtk_editable_set_position(GTK_EDITABLE(entry), cursor);
 
-	dict = (struct EnchantDict *) g_object_get_data(G_OBJECT(menuitem), "gtkspell-dict");
+	dict = (struct EnchantDict *) g_object_get_data(G_OBJECT(menuitem), "enchant-dict");
 
         if (dict)
 		enchant_dict_store_replacement(dict,
-					       oldword, g_utf8_strlen(oldword, -1),
-					       newword, g_utf8_strlen(newword, -1));
+					       oldword, -1,
+					       newword, -1);
 
 	g_free(oldword);
 }
@@ -404,7 +404,7 @@ build_suggestion_menu(SexySpellEntry *entry, GtkWidget *menu, struct EnchantDict
 	if (!have_enchant)
 		return;
 
-	suggestions = enchant_dict_suggest(dict, word, g_utf8_strlen(word, -1), &n_suggestions);
+	suggestions = enchant_dict_suggest(dict, word, -1, &n_suggestions);
 
 	if (suggestions == NULL || n_suggestions == 0) {
 		/* no suggestions.  put something in the menu anyway... */
@@ -432,7 +432,7 @@ build_suggestion_menu(SexySpellEntry *entry, GtkWidget *menu, struct EnchantDict
 			}
 
 			mi = gtk_menu_item_new_with_label(suggestions[i]);
-			g_object_set_data(G_OBJECT(mi), "gtkspell-dict", dict);
+			g_object_set_data(G_OBJECT(mi), "enchant-dict", dict);
 			g_signal_connect(G_OBJECT(mi), "activate", G_CALLBACK(replace_word), entry);
 			gtk_widget_show(mi);
 			gtk_menu_shell_append(GTK_MENU_SHELL(menu), mi);
@@ -505,12 +505,12 @@ build_spelling_menu(SexySpellEntry *entry, const gchar *word)
 
 #if 1
 	dict = (struct EnchantDict *) entry->priv->dict_list->data;
-	g_object_set_data(G_OBJECT(mi), "gtkspell-dict", dict);
+	g_object_set_data(G_OBJECT(mi), "enchant-dict", dict);
 	g_signal_connect(G_OBJECT(mi), "activate", G_CALLBACK(add_to_dictionary), entry);
 #else
 	if (g_slist_length(entry->priv->dict_list) == 1) {
 		dict = (struct EnchantDict *) entry->priv->dict_list->data;
-		g_object_set_data(G_OBJECT(mi), "gtkspell-dict", dict);
+		g_object_set_data(G_OBJECT(mi), "enchant-dict", dict);
 		g_signal_connect(G_OBJECT(mi), "activate", G_CALLBACK(add_to_dictionary), entry);
 	} else {
 		GSList *li;
@@ -531,7 +531,7 @@ build_spelling_menu(SexySpellEntry *entry, const gchar *word)
 				submi = gtk_menu_item_new_with_label(lang);
 			}
 			g_free(lang);
-			g_object_set_data(G_OBJECT(submi), "gtkspell-dict", dict);
+			g_object_set_data(G_OBJECT(submi), "enchant-dict", dict);
 
 			g_signal_connect(G_OBJECT(submi), "activate", G_CALLBACK(add_to_dictionary), entry);
 
