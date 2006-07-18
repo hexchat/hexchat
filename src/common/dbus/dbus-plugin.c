@@ -29,7 +29,7 @@
 
 #define PNAME _("remote access")
 #define PDESC _("plugin for remote access using DBUS")
-#define PVERSION "0.9"
+#define PVERSION ""
 
 #define DBUS_SERVICE "org.xchat.service"
 #define DBUS_OBJECT "/org/xchat/RemoteObject"
