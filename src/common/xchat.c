@@ -57,6 +57,10 @@
 #include "msproxy.h"
 #endif
 
+#ifdef USE_DBUS
+#include "dbus/dbus-plugin.h"
+#endif
+
 GSList *popup_list = 0;
 GSList *button_list = 0;
 GSList *dlgbutton_list = 0;
@@ -295,6 +299,11 @@ irc_init (session *sess)
 	if (!arg_skip_plugins)
 		plugin_auto_load (sess);	/* autoload ~/.xchat *.so */
 #endif
+
+#ifdef USE_DBUS
+	plugin_add (sess, NULL, NULL, dbus_plugin_init, NULL, NULL, FALSE);
+#endif
+
 	plugin_add (sess, NULL, NULL, timer_plugin_init, NULL, NULL, FALSE);
 
 	if (prefs.notify_timeout)

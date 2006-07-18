@@ -43,10 +43,17 @@ if USE_OPENSSL
 ssl_c = ssl.c
 endif
 
+if USE_DBUS
+dbusdir = dbus
+dbus_c = dbus/dbus-plugin.c
+endif
+
+SUBDIRS = $(dbusdir) .
+
 libxchatcommon_a_SOURCES = cfgfiles.c ctcp.c dcc.c history.c ignore.c \
 	inbound.c modes.c msproxy.c network.c notify.c outbound.c \
 	plugin.c plugin-timer.c proto-irc.c server.c servlist.c $(ssl_c) \
-	text.c tree.c url.c userlist.c util.c xchat.c
+	text.c tree.c url.c userlist.c util.c xchat.c $(dbus_c)
 
 textevents: make-te
 	./make-te < textevents.in > textevents.h 2> textenums.h

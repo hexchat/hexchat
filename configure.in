@@ -49,6 +49,7 @@ AH_VERBATIM([USE_SIGACTION],[#undef USE_SIGACTION])
 AH_VERBATIM([USING_FREEBSD],[#undef USING_FREEBSD])
 AH_VERBATIM([USING_LINUX],[#undef USING_LINUX])
 AH_VERBATIM([socklen_t],[#undef socklen_t])
+AH_VERBATIM([USE_DBUS],[#undef USE_DBUS])
 
 AC_PATH_PROG(sedpath, sed)
 if test "_$sedpath" = _; then
@@ -459,11 +460,15 @@ dnl # Check for DBUS libraries
 dnl #######################################################################
 
 if test "x$dbus" = "xyes" ; then
-	PKG_CHECK_MODULES(DBUS, [dbus-1 >= 0.35 dbus-glib-1 >= 0.35], dbus=yes, dbus=no)
+	PKG_CHECK_MODULES(DBUS, [dbus-1 >= 0.60 dbus-glib-1 >= 0.60], dbus=yes, dbus=no)
 	AC_PATH_PROG(DBUS_BINDING_TOOL, dbus-binding-tool, no)
 	AC_PATH_PROG(GLIB_GENMARSHAL, glib-genmarshal, no)
 	if test "x$DBUS_BINDING_TOOL" = "xno" || test "x$GLIB_GENMARSHAL" = "xno" ; then
 		dbus="no"
+	else
+		COMMON_LIBS="$COMMON_LIBS $DBUS_LIBS"
+		COMMON_CFLAGS="$COMMON_CFLAGS $DBUS_CFLAGS"
+		AC_DEFINE(USE_DBUS)
 	fi
 fi
 
@@ -511,7 +516,7 @@ AM_CONDITIONAL(DO_PERL, test "x$perl" = "xyes")
 AM_CONDITIONAL(DO_PYTHON, test "x$python" = "xyes")
 AM_CONDITIONAL(DO_TCL, test "x$tcl" = "xyes")
 AM_CONDITIONAL(DO_PLUGIN, test "x$plugin" = "xyes")
-AM_CONDITIONAL(DO_DBUS, test "x$dbus" = "xyes")
+AM_CONDITIONAL(USE_DBUS, test "x$dbus" = "xyes")
 AM_CONDITIONAL(DO_GCONF, test "x$GCONFTOOL" != "xno")
 
 dnl *********************************************************************
@@ -721,6 +726,8 @@ dnl freebsd needs this
 LIBS="$LIBS $INTLLIBS"
 CFLAGS="$CFLAGS $CPPFLAGS"
 
+GUI_LIBS="$GUI_LIBS $COMMON_LIBS"
+
 dnl make these visible to all Makefiles
 AC_SUBST(GUI_LIBS)
 AC_SUBST(GUI_CFLAGS)
@@ -759,6 +766,7 @@ AC_OUTPUT([
 Makefile
 src/Makefile
 src/common/Makefile
+src/common/dbus/Makefile
 src/fe-text/Makefile
 src/fe-gtk/Makefile
 src/pixmaps/Makefile
@@ -766,7 +774,6 @@ plugins/Makefile
 plugins/python/Makefile
 plugins/perl/Makefile
 plugins/tcl/Makefile
-plugins/dbus/Makefile
 intl/Makefile
 po/Makefile.in
 ])
@@ -777,17 +784,17 @@ echo
 echo Building GTK+ Interface .... : $gtkfe
 echo Building TEXT Interface .... : $textfe
 echo
-echo PLUGINS: Perl: $perl Python: $python TCL: $tcl DBUS: $dbus
+echo PLUGINS: Perl: $perl Python: $python TCL: $tcl
 echo
-echo mmx tinting ......... : $mmx\	spelling ............ : $spell
-echo XShm tinting ........ : $shm\	plugin interface .... : $plugin
+echo mmx tinting ......... : $mmx\	spelling .............. : $spell
+echo XShm tinting ........ : $shm\	plugin interface ...... : $plugin
 if test "$xft" = no; then
-  echo text backend ........ : pango\	nls/gettext ......... : $USE_NLS
+  echo text backend ........ : pango\	nls/gettext ........... : $USE_NLS
 else
-  echo text backend ........ : xft\	nls/gettext ......... : $USE_NLS
+  echo text backend ........ : xft\	nls/gettext ........... : $USE_NLS
 fi
-echo openssl support ..... : $openssl\	ipv6 support ........ : $ipv6
-echo msproxy ntlm \(ISA\) .. : $have_ntlm
+echo openssl support ..... : $openssl\	ipv6 support .......... : $ipv6
+echo dbus support ........ : $dbus\	msproxy ntlm \(ISA\) .. : $have_ntlm
 echo
 echo The binary will be installed in $prefix/bin
 echo

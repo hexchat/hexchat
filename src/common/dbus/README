@@ -1,24 +1,31 @@
 For more help you can see the xchat plugin interface documentation.
 http://www.xchat.org/docs/plugin20.html
-WARNING: The dbus interface may change in the future. DBUS plugin isn't
-         stable yet and may have bugs especially when more than one client
-         are using the DBUS service at the same time.
+WARNING: The dbus interface may change in the future.
 
 Available methods:
 
-"command"
+"Command"
   - Parameters:
     - gchar*: the command name without the "/". (e.g. "nick pseudo")
 
-"print"
+"Print"
   - Parameters:
     - gchar*: text to print on the xchat window.
 
-"SetContext"
-Switch the D-BUS plugin to another context. It does xchat_find_context() then xchat_set_context()
+"FindContext"
   - Parameters:
     - gchar*: the server name. Can be NULL.
     - gchar*: the channel name. Can be NULL.
+  - Returns:
+    - guint: context ID
+
+"GetContext"
+  - Returns:
+    - guint: current context's ID
+
+"SetContext"
+  - Parameters:
+    - guint: context ID to switch, returned by "FindContext" or "GetContext"
 
 "GetInfo"
   - Parameters:
@@ -59,7 +66,7 @@ Switch the D-BUS plugin to another context. It does xchat_find_context() then xc
   - Returns:
     - int: The ID of the hook.
 
-"unhook"
+"Unhook"
   - Parameters:
     - int: ID of the hook to unhook. (the return value of "HookCommand", "HookServer" or "HookPrint").
 
