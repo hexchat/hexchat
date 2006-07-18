@@ -27,9 +27,8 @@
 #include <glib/gi18n.h>
 #include "../xchat-plugin.h"
 
-#define PNAME _("xchat remote access")
+#define PNAME _("remote access")
 #define PDESC _("plugin for remote access using DBUS")
-#define DOMAIN "dbus plugin"
 #define PVERSION "0.9"
 
 #define DBUS_SERVICE "org.xchat.service"
