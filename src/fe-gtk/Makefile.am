@@ -10,7 +10,7 @@ EXTRA_DIST = makefile.msc \
 	about.h ascii.h banlist.h chanlist.h chanview.h chanview-tabs.c \
 	chanview-tree.c editlist.h fe-gtk.h fkeys.h gtkutil.h maingui.h menu.h \
 	mmx_cmod.S mmx_cmod.h notifygui.h palette.h pixmaps.h plugingui.c \
-	plugingui.h rawlog.h search.h textgui.h urlgrab.h userlistgui.h xtext.h
+	plugingui.h rawlog.h search.h sexy-spell-entry.h textgui.h urlgrab.h userlistgui.h xtext.h
 
 if USE_MMX
 mmx_cmod_S = mmx_cmod.S

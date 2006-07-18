@@ -904,8 +904,8 @@ XS (XS_Xchat_unhook)
 				SvREFCNT_dec (userdata->userdata);
 				retCount = 1;
 			}
+			free (userdata);
 		}
-		free (userdata);
 		XSRETURN (retCount);
 	}
 	XSRETURN_EMPTY;
