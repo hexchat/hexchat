@@ -3,6 +3,7 @@
 <node name="/">
   <interface name="org.xchat.interface">
     <method name="Command">
+      <annotation name="org.freedesktop.DBus.GLib.Async" value=""/>
       <arg type="s" name="command" direction="in"/>
     </method>
     <method name="Print">
