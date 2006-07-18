@@ -48,7 +48,7 @@ Available methods:
     - gchar*: String of text to display when the user executes /help for this command. May be NULL if you're lazy.
     - int: Value to returns when the command is catched. See XCHAT_EAT_*.
   - Returns:
-    - int: The ID of the hook.
+    - guint: The ID of the hook.
 
 "HookServer"
   - Parameters:
@@ -56,7 +56,7 @@ Available methods:
     - int: Priority of this command.
     - int: Value to returns when the command is catched. See XCHAT_EAT_*.
   - Returns:
-    - int: The ID of the hook.
+    - guint: The ID of the hook.
 
 "HookPrint"
   - Parameters:
@@ -64,11 +64,41 @@ Available methods:
     - int: Priority of this command.
     - int: Value to returns when the command is catched. See XCHAT_EAT_*.
   - Returns:
-    - int: The ID of the hook.
+    - guint: The ID of the hook.
 
 "Unhook"
   - Parameters:
-    - int: ID of the hook to unhook. (the return value of "HookCommand", "HookServer" or "HookPrint").
+    - guint: ID of the hook to unhook. (the return value of "HookCommand", "HookServer" or "HookPrint").
+
+"ListGet"
+  - Parameters:
+    - gchar*: The list name.
+  - Returns:
+    - guint: List ID.
+
+"ListNext"
+  - Parameters:
+    - guint: List ID returned by "ListGet".
+  - Returns:
+    - gboolean: says if there is no more item in the list.
+
+"ListStr"
+  - Parameters:
+    - guint: List ID returned by "ListGet".
+    - gchar*: Name of the information needed.
+  - Returns:
+    - gchar*: The information requested.
+
+"ListInt"
+  - Parameters:
+    - guint: List ID returned by "ListGet".
+    - gchar*: Name of the information needed.
+  - Returns:
+    - guint: The information requested.
+
+"ListFree"
+  - Parameters:
+    - guint: List ID returned by "ListGet".
 
 
 

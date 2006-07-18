@@ -4,6 +4,7 @@ EXTRA_DIST =				\
 	dbus-plugin.xml			\
 	apps_xchat_url_handler.schemas	\
 	marshallers.list		\
+	example.py			\
 	README
 
 BUILT_SOURCES =				\

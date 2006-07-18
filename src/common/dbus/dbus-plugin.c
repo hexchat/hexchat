@@ -19,6 +19,21 @@
  * xclaesse@gmail.com
  */
 
+/* TODO:
+ * implement full C plugin API. Functions remaining:
+ *	- xchat_nickcmp
+ *	- xchat_list_fields
+ *	- xchat_list_time
+ *	- xchat_plugingui_add
+ *	- xchat_plugingui_remove
+ *	- xchat_emit_print (is it possible to send valist through D-Bus ?)
+ *	- xchat_send_modes
+ *	- xchat_strip
+ *	- xchat_free
+ * Move hash tables (hook and list) to ClientInfo struct like that clients
+ * can't interfer each others by using random hook/list IDs.
+ */
+
 #define DBUS_API_SUBJECT_TO_CHANGE
 
 #include <config.h>
@@ -55,7 +70,9 @@ typedef enum
 	REMOTE_OBJECT_ERROR_FIND_CONTEXT,
 	REMOTE_OBJECT_ERROR_FIND_ID,
 	REMOTE_OBJECT_ERROR_GET_INFO,
-	REMOTE_OBJECT_ERROR_GET_PREFS
+	REMOTE_OBJECT_ERROR_GET_PREFS,
+	REMOTE_OBJECT_ERROR_LIST_ID,
+	REMOTE_OBJECT_ERROR_LIST_NAME,
 } RemoteObjectError;
 
 enum
@@ -84,8 +101,10 @@ static xchat_plugin *ph;
 static RemoteObject *remote_object;
 static guint last_hook_id = 0;
 static guint last_context_id = 0;
+static guint last_list_id = 0;
 static GHashTable *hook_hash_table = NULL;
 static GHashTable *client_hash_table = NULL;
+static GHashTable *list_hash_table = NULL;
 static GList *context_list = NULL;
 static guint signals[LAST_SIGNAL] = { 0 };
 
@@ -158,6 +177,32 @@ static gboolean		remote_object_unhook		(RemoteObject *obj,
 							 guint id,
 							 GError **error);
 
+static gboolean		remote_object_list_get		(RemoteObject *obj,
+							 const char *name,
+							 guint *ret_id,
+							 GError **error);
+
+static gboolean		remote_object_list_next		(RemoteObject *obj,
+							 guint id,
+							 gboolean *ret,
+							 GError **error);
+
+static gboolean		remote_object_list_str		(RemoteObject *obj,
+							 guint id,
+							 const char *name,
+							 char **ret_str,
+							 GError **error);
+
+static gboolean		remote_object_list_int		(RemoteObject *obj,
+							 guint id,
+							 const char *name,
+							 int *ret_int,
+							 GError **error);
+
+static gboolean		remote_object_list_free		(RemoteObject *obj,
+							 guint id,
+							 GError **error);
+
 #include "dbus-plugin-glue.h"
 #include "marshallers.h"
 
@@ -186,6 +231,8 @@ remote_object_error_get_type (void)
 			ENUM_ENTRY (REMOTE_OBJECT_ERROR_FIND_ID, "FindID"),
 			ENUM_ENTRY (REMOTE_OBJECT_ERROR_GET_INFO, "GetInfo"),
 			ENUM_ENTRY (REMOTE_OBJECT_ERROR_GET_PREFS, "GetPrefs"),
+			ENUM_ENTRY (REMOTE_OBJECT_ERROR_LIST_ID, "ListID"),
+			ENUM_ENTRY (REMOTE_OBJECT_ERROR_LIST_NAME, "ListName"),
 			{ 0, 0, 0 }
 		};
 		etype = g_enum_register_static ("RemoteObjectError", values);
@@ -661,6 +708,126 @@ hook_info_destroy (gpointer data)
 	g_free (info);
 }
 
+static gboolean
+remote_object_list_get (RemoteObject *obj,
+			const char *name,
+			guint *ret_id,
+			GError **error)
+{
+	xchat_list *xlist;
+	guint *id;
+
+	xlist = xchat_list_get (ph, name);
+	if (xlist == NULL) {
+		g_set_error (error,
+			     REMOTE_OBJECT_ERROR,
+			     REMOTE_OBJECT_ERROR_LIST_NAME,
+			     _("\"%s\" list name not found"),
+			     name);
+
+		return FALSE;
+	}
+	id = g_new0 (guint, 1);
+	*id = last_list_id++;
+	*ret_id = *id;
+	g_hash_table_insert (list_hash_table,
+			     id,
+			     xlist);
+
+	return TRUE;
+}
+
+static gboolean
+remote_object_list_next	(RemoteObject *obj,
+			 guint id,
+			 gboolean *ret,
+			 GError **error)
+{
+	xchat_list *xlist;
+
+	xlist = g_hash_table_lookup (list_hash_table, &id);
+	if (xlist == NULL) {
+		g_set_error (error,
+			     REMOTE_OBJECT_ERROR,
+			     REMOTE_OBJECT_ERROR_LIST_ID,
+			     _("xchat list ID not found"));
+
+		return FALSE;
+	}
+	*ret = xchat_list_next (ph, xlist);
+
+	return TRUE;
+}			 
+
+static gboolean
+remote_object_list_str (RemoteObject *obj,
+			guint id,
+			const char *name,
+			char **ret_str,
+			GError **error)
+{
+	xchat_list *xlist;
+
+	xlist = g_hash_table_lookup (list_hash_table, &id);
+	if (xlist == NULL) {
+		g_set_error (error,
+			     REMOTE_OBJECT_ERROR,
+			     REMOTE_OBJECT_ERROR_LIST_ID,
+			     _("xchat list ID not found"));
+
+		return FALSE;
+	}
+	*ret_str = g_strdup (xchat_list_str (ph, xlist, name));
+
+	return TRUE;
+}
+
+static gboolean
+remote_object_list_int (RemoteObject *obj,
+			guint id,
+			const char *name,
+			int *ret_int,
+			GError **error)
+{
+	xchat_list *xlist;
+
+	xlist = g_hash_table_lookup (list_hash_table, &id);
+	if (xlist == NULL) {
+		g_set_error (error,
+			     REMOTE_OBJECT_ERROR,
+			     REMOTE_OBJECT_ERROR_LIST_ID,
+			     _("xchat list ID not found"));
+
+		return FALSE;
+	}
+	*ret_int = xchat_list_int (ph, xlist, name);
+
+	return TRUE;
+}
+
+static gboolean
+remote_object_list_free (RemoteObject *obj,
+			 guint id,
+			 GError **error)
+{
+	if (!g_hash_table_remove (list_hash_table, &id)) {
+		g_set_error (error,
+			     REMOTE_OBJECT_ERROR,
+			     REMOTE_OBJECT_ERROR_LIST_ID,
+			     _("xchat list ID not found"));
+
+		return FALSE;
+	}
+	
+	return TRUE;
+}
+
+static void
+list_info_destroy (gpointer data)
+{
+	xchat_list_free (ph, (xchat_list*)data);
+}
+
 /* DBUS stuffs */
 
 static void
@@ -799,6 +966,11 @@ dbus_plugin_init (xchat_plugin *plugin_handle,
 					       g_str_equal,
 					       g_free,
 					       NULL);
+		list_hash_table =
+			g_hash_table_new_full (g_int_hash,
+					       g_int_equal,
+					       g_free,
+					       list_info_destroy);
 
 		xchat_hook_print (ph, "Open Context",
 				  XCHAT_PRI_NORM,

@@ -60,6 +60,27 @@
     <method name="Unhook">
       <arg type="u" name="id" direction="in"/>
     </method>
+    <method name="ListGet">
+      <arg type="s" name="name" direction="in"/>
+      <arg type="u" name="ret_id" direction="out"/>
+    </method>
+    <method name="ListNext">
+      <arg type="u" name="id" direction="in"/>
+      <arg type="b" name="ret" direction="out"/>
+    </method>
+    <method name="ListStr">
+      <arg type="u" name="id" direction="in"/>
+      <arg type="s" name="name" direction="in"/>
+      <arg type="s" name="ret_str" direction="out"/>
+    </method>
+    <method name="ListInt">
+      <arg type="u" name="id" direction="in"/>
+      <arg type="s" name="name" direction="in"/>
+      <arg type="i" name="ret_int" direction="out"/>
+    </method>
+    <method name="ListFree">
+      <arg type="u" name="id" direction="in"/>
+    </method>
     <signal name="CommandSignal"/>
     <signal name="ServerSignal"/>
     <signal name="PrintSignal"/>
