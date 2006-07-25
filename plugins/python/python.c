@@ -65,10 +65,12 @@
 
 #define VERSION_MAJOR 0
 #define VERSION_MINOR 1
-#define VERSION "0.5"
 
 #ifdef WIN32
 #undef WITH_THREAD /* Thread support locks up xchat on Win32. */
+#define VERSION "0.6/2.4"	/* Linked to python24.dll */
+#else
+#define VERSION "0.6"
 #endif
 
 #define NONE 0
@@ -106,6 +108,8 @@
 #define END_XCHAT_CALLS()
 #endif
 
+#ifdef WITH_THREAD
+
 #define BEGIN_PLUGIN(plg) \
 	do { \
 	xchat_context *begin_plugin_ctx = xchat_get_context(ph); \
@@ -118,6 +122,27 @@
 	Plugin_ReleaseThread(plg); \
 	ACQUIRE_XCHAT_LOCK(); \
 	} while (0)
+
+#else /* !WITH_THREAD (win32) */
+
+static PyThreadState *pTempThread;
+
+#define BEGIN_PLUGIN(plg) \
+	do { \
+	xchat_context *begin_plugin_ctx = xchat_get_context(ph); \
+	RELEASE_XCHAT_LOCK(); \
+	PyEval_AcquireLock(); \
+	pTempThread = PyThreadState_Swap(((PluginObject *)(plg))->tstate); \
+	Plugin_SetContext(plg, begin_plugin_ctx); \
+	} while (0)
+#define END_PLUGIN(plg) \
+	do { \
+	((PluginObject *)(plg))->tstate = PyThreadState_Swap(pTempThread); \
+	PyEval_ReleaseLock(); \
+	ACQUIRE_XCHAT_LOCK(); \
+	} while (0)
+
+#endif /* !WITH_THREAD */
 
 #define Plugin_Swap(x) \
 	PyThreadState_Swap(((PluginObject *)(x))->tstate)
@@ -278,7 +303,7 @@ static PyObject *xchatout = NULL;
 static PyThread_type_lock xchat_lock = NULL;
 #endif
 
-static char *usage = "\
+static const char usage[] = "\
 Usage: /PY LOAD   <filename>\n\
            UNLOAD <filename|name>\n\
            RELOAD <filename|name>\n\
@@ -288,7 +313,7 @@ Usage: /PY LOAD   <filename>\n\
            ABOUT\n\
 \n";
 
-static char *about = "\
+static const char about[] = "\
 \n\
 X-Chat Python Interface " VERSION "\n\
 \n\
@@ -1284,6 +1309,7 @@ Plugin_Delete(PyObject *plugin)
 	Plugin_RemoveAllHooks(plugin);
 	xchat_plugingui_remove(ph, ((PluginObject *)plugin)->gui);
 	Py_DECREF(plugin);
+	/*PyThreadState_Swap(tstate); needed? */
 	Py_EndInterpreter(tstate);
 }
 
@@ -1865,8 +1891,7 @@ static int
 IInterp_Cmd(char *word[], char *word_eol[], void *userdata)
 {
 	char *channel = (char *) xchat_get_info(ph, "channel");
-	g_return_val_if_fail(channel != NULL, 0);
-	if (channel[0] == '>' && strcmp(channel, ">>python<<") == 0) {
+	if (channel && channel[0] == '>' && strcmp(channel, ">>python<<") == 0) {
 		xchat_printf(ph, ">>> %s\n", word_eol[1]);
 		IInterp_Exec(word_eol[1]);
 		return 1;
