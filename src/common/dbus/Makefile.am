@@ -1,7 +1,8 @@
 localedir = $(datadir)/locale
 
 EXTRA_DIST =				\
-	dbus-plugin.xml			\
+	remote-object.xml		\
+	manager-object.xml		\
 	apps_xchat_url_handler.schemas	\
 	marshallers.list		\
 	example.py			\
@@ -9,7 +10,8 @@ EXTRA_DIST =				\
 
 BUILT_SOURCES =				\
 	marshallers.h			\
-	dbus-plugin-glue.h
+	remote-object-glue.h		\
+	manager-object-glue.h
 
 CLEANFILES = $(BUILT_SOURCES)
 
@@ -17,19 +19,27 @@ INCLUDES =					\
 	$(COMMON_CFLAGS)			\
 	-DLOCALEDIR=\"$(localedir)\"
 
-bin_PROGRAMS = xchat-remote
-xchat_remote_SOURCES = xchat-remote.c 
-xchat_remote_LDADD = $(DBUS_LIBS) $(GLIB_LIBS)
-
 noinst_PROGRAMS = example
 example_SOURCES = example.c 
 example_LDADD = $(DBUS_LIBS) $(GLIB_LIBS)
 
-dbus-plugin-glue.h: dbus-plugin.xml
+manager-object-glue.h: manager-object.xml
+	$(LIBTOOL) --mode=execute $(DBUS_BINDING_TOOL) --prefix=manager_object --mode=glib-server --output=$@ $<
+
+remote-object-glue.h: remote-object.xml
 	$(LIBTOOL) --mode=execute $(DBUS_BINDING_TOOL) --prefix=remote_object --mode=glib-server --output=$@ $<
 
 marshallers.h: marshallers.list
 	$(LIBTOOL) --mode=execute $(GLIB_GENMARSHAL)  --header --body $< > $@
+
+# Dbus service file
+servicedir = $(DBUS_SERVICES_DIR)
+service_in_files = org.xchat.service.service.in
+service_DATA = $(service_in_files:.service.in=.service)
+
+# Rule to make the service file with bindir expanded
+$(service_DATA): $(service_in_files) Makefile
+	@sed -e "s|\@bindir\@|$(bindir)|" $< > $@
 
 if DO_GCONF
 GCONF_SCHEMA_CONFIG_SOURCE = `$(GCONFTOOL) --get-default-source`

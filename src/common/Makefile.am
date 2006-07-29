@@ -45,7 +45,7 @@ endif
 
 if USE_DBUS
 dbusdir = dbus
-dbus_c = dbus/dbus-plugin.c
+dbus_files = dbus/dbus-plugin.c dbus/dbus-client.c
 endif
 
 SUBDIRS = $(dbusdir) .
@@ -53,7 +53,7 @@ SUBDIRS = $(dbusdir) .
 libxchatcommon_a_SOURCES = cfgfiles.c ctcp.c dcc.c history.c ignore.c \
 	inbound.c modes.c msproxy.c network.c notify.c outbound.c \
 	plugin.c plugin-timer.c proto-irc.c server.c servlist.c $(ssl_c) \
-	text.c tree.c url.c userlist.c util.c xchat.c $(dbus_c)
+	text.c tree.c url.c userlist.c util.c xchat.c $(dbus_files)
 
 textevents: make-te
 	./make-te < textevents.in > textevents.h 2> textenums.h

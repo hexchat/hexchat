@@ -1,4 +1,4 @@
-/* dbus-plugin.c - xchat plugin for remote access using DBUS
+/* dbus-plugin.c - xchat plugin for remote access using D-Bus
  * Copyright (C) 2006 Claessens Xavier
  *
  * This program is free software; you can redistribute it and/or modify
@@ -30,8 +30,6 @@
  *	- xchat_send_modes
  *	- xchat_strip
  *	- xchat_free
- * Move hash tables (hook and list) to ClientInfo struct like that clients
- * can't interfer each others by using random hook/list IDs.
  */
 
 #define DBUS_API_SUBJECT_TO_CHANGE
@@ -47,7 +45,43 @@
 #define PVERSION ""
 
 #define DBUS_SERVICE "org.xchat.service"
-#define DBUS_OBJECT "/org/xchat/RemoteObject"
+#define DBUS_OBJECT_PATH "/org/xchat"
+
+static xchat_plugin *ph;
+static guint last_context_id = 0;
+static GList *contexts = NULL;
+static GHashTable *clients = NULL;
+static DBusGConnection *connection;
+
+typedef struct ManagerObject ManagerObject;
+typedef struct ManagerObjectClass ManagerObjectClass;
+
+GType Manager_object_get_type (void);
+
+struct ManagerObject
+{
+	GObject parent;
+};
+
+struct ManagerObjectClass
+{
+	GObjectClass parent;
+};
+
+#define MANAGER_TYPE_OBJECT              (manager_object_get_type ())
+#define MANAGER_OBJECT(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), MANAGER_TYPE_OBJECT, ManagerObject))
+#define MANAGER_OBJECT_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), MANAGER_TYPE_OBJECT, ManagerObjectClass))
+#define MANAGER_IS_OBJECT(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), MANAGER_TYPE_OBJECT))
+#define MANAGER_IS_OBJECT_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), MANAGER_TYPE_OBJECT))
+#define MANAGER_OBJECT_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), MANAGER_TYPE_OBJECT, ManagerObjectClass))
+
+G_DEFINE_TYPE (ManagerObject, manager_object, G_TYPE_OBJECT)
+
+static gboolean		manager_object_connect		(ManagerObject *obj,
+							 DBusGMethodInvocation *context);
+
+static gboolean		manager_object_disconnect	(ManagerObject *obj,
+							 DBusGMethodInvocation *context);
 
 typedef struct RemoteObject RemoteObject;
 typedef struct RemoteObjectClass RemoteObjectClass;
@@ -57,12 +91,33 @@ GType Remote_object_get_type (void);
 struct RemoteObject
 {
 	GObject parent;
+
+	guint last_hook_id;
+	guint last_list_id;
+	xchat_context *context;
+	char *path;
+	GHashTable *hooks;
+	GHashTable *lists;
 };
 
 struct RemoteObjectClass
 {
 	GObjectClass parent;
 };
+
+typedef struct 
+{
+	guint id;
+	int return_value;
+	xchat_hook *hook;
+	RemoteObject *obj;
+} HookInfo;
+
+typedef struct
+{
+	guint id;
+	xchat_context *context;
+} ContextInfo;
 
 typedef enum
 {
@@ -71,7 +126,6 @@ typedef enum
 	REMOTE_OBJECT_ERROR_FIND_ID,
 	REMOTE_OBJECT_ERROR_GET_INFO,
 	REMOTE_OBJECT_ERROR_GET_PREFS,
-	REMOTE_OBJECT_ERROR_LIST_ID,
 	REMOTE_OBJECT_ERROR_LIST_NAME,
 } RemoteObjectError;
 
@@ -83,29 +137,6 @@ enum
 	LAST_SIGNAL
 };
 
-typedef struct 
-{
-	guint id;
-	int return_value;
-	char *client;
-	xchat_hook *hook;
-} HookInfo;
-
-typedef struct
-{
-	guint id;
-	xchat_context *context;
-} ContextInfo;
-
-static xchat_plugin *ph;
-static RemoteObject *remote_object;
-static guint last_hook_id = 0;
-static guint last_context_id = 0;
-static guint last_list_id = 0;
-static GHashTable *hook_hash_table = NULL;
-static GHashTable *client_hash_table = NULL;
-static GHashTable *list_hash_table = NULL;
-static GList *context_list = NULL;
 static guint signals[LAST_SIGNAL] = { 0 };
 
 #define REMOTE_TYPE_OBJECT              (remote_object_get_type ())
@@ -123,11 +154,11 @@ G_DEFINE_TYPE (RemoteObject, remote_object, G_TYPE_OBJECT)
 
 static gboolean		remote_object_command		(RemoteObject *obj,
 							 const char *command,
-							 DBusGMethodInvocation *context);
+							 GError **error);
 
 static gboolean		remote_object_print		(RemoteObject *obj,
 							 const char *text,
-							 DBusGMethodInvocation *context);
+							 GError **error);
 
 static gboolean		remote_object_find_context	(RemoteObject *obj,
 							 const char *server,
@@ -136,42 +167,50 @@ static gboolean		remote_object_find_context	(RemoteObject *obj,
 							 GError **error);
 
 static gboolean		remote_object_get_context	(RemoteObject *obj,
-							 DBusGMethodInvocation *context);
+							 guint *ret_id,
+							 GError **error);
 
 static gboolean		remote_object_set_context	(RemoteObject *obj,
 							 guint id,
-							 DBusGMethodInvocation *context);
+							 GError **error);
 
 static gboolean		remote_object_print		(RemoteObject *obj,
 							 const char *text,
-							 DBusGMethodInvocation *context);
+							 GError **error);
 
 static gboolean		remote_object_get_info		(RemoteObject *obj,
 							 const char *id,
-							 DBusGMethodInvocation *context);
+							 char **ret_info,
+							 GError **error);
 
 static gboolean		remote_object_get_prefs		(RemoteObject *obj,
 							 const char *name,
-							 DBusGMethodInvocation *context);
+							 int *ret_type,
+							 char **ret_str,
+							 int *ret_int,
+							 GError **error);
 
 static gboolean		remote_object_hook_command	(RemoteObject *obj,
 							 const char *name,
 							 int pri,
 							 const char *help_text,
 							 int return_value,
-							 DBusGMethodInvocation *context);
+							 guint *ret_id,
+							 GError **error);
 
 static gboolean		remote_object_hook_server	(RemoteObject *obj,
 							 const char *name,
 							 int pri,
 							 int return_value,
-							 DBusGMethodInvocation *context);
+							 guint *ret_id,
+							 GError **error);
 
 static gboolean		remote_object_hook_print	(RemoteObject *obj,
 							 const char *name,
 							 int pri,
 							 int return_value,
-							 DBusGMethodInvocation *context);
+							 guint *ret_id,
+							 GError **error);
 
 static gboolean		remote_object_unhook		(RemoteObject *obj,
 							 guint id,
@@ -203,8 +242,66 @@ static gboolean		remote_object_list_free		(RemoteObject *obj,
 							 guint id,
 							 GError **error);
 
-#include "dbus-plugin-glue.h"
+#include "manager-object-glue.h"
+#include "remote-object-glue.h"
 #include "marshallers.h"
+
+/* Manager Object */
+
+static void
+manager_object_init (ManagerObject *obj)
+{
+}
+
+static void
+manager_object_class_init (ManagerObjectClass *klass)
+{
+}
+
+static gboolean
+manager_object_connect (ManagerObject *obj,
+			DBusGMethodInvocation *context)
+{
+	static guint count = 0;
+	char *sender, *path;
+	RemoteObject *remote_object;
+	
+	sender = dbus_g_method_get_sender (context);
+	remote_object = g_hash_table_lookup (clients, sender);
+	if (remote_object != NULL) {
+		dbus_g_method_return (context, remote_object->path);
+		g_free (sender);
+		return TRUE;
+	}
+	path = g_strdup_printf (DBUS_OBJECT_PATH"/%d", count++);
+	remote_object = g_object_new (REMOTE_TYPE_OBJECT, NULL);
+	remote_object->path = path;
+	dbus_g_connection_register_g_object (connection,
+					     path,
+					     G_OBJECT (remote_object));
+	g_hash_table_insert (clients,
+			     sender,
+			     remote_object);
+	dbus_g_method_return (context, path);
+
+	return TRUE;
+}
+
+static gboolean
+manager_object_disconnect (ManagerObject *obj,
+			   DBusGMethodInvocation *context)
+{
+	char *sender;
+	
+	sender = dbus_g_method_get_sender (context);
+	g_hash_table_remove (clients, sender);
+	g_free (sender);
+
+	dbus_g_method_return (context);
+	return TRUE;
+}
+
+/* Remote Object */
 
 GQuark
 remote_object_error_quark (void)
@@ -231,7 +328,6 @@ remote_object_error_get_type (void)
 			ENUM_ENTRY (REMOTE_OBJECT_ERROR_FIND_ID, "FindID"),
 			ENUM_ENTRY (REMOTE_OBJECT_ERROR_GET_INFO, "GetInfo"),
 			ENUM_ENTRY (REMOTE_OBJECT_ERROR_GET_PREFS, "GetPrefs"),
-			ENUM_ENTRY (REMOTE_OBJECT_ERROR_LIST_ID, "ListID"),
 			ENUM_ENTRY (REMOTE_OBJECT_ERROR_LIST_NAME, "ListName"),
 			{ 0, 0, 0 }
 		};
@@ -242,13 +338,61 @@ remote_object_error_get_type (void)
 }
 
 static void
+hook_info_destroy (gpointer data)
+{
+	HookInfo *info = (HookInfo*)data;
+
+	if (info == NULL) {
+		return;
+	}
+	xchat_unhook (ph, info->hook);
+	g_free (info);
+}
+
+static void
+list_info_destroy (gpointer data)
+{
+	xchat_list_free (ph, (xchat_list*)data);
+}
+
+static void
+remote_object_finalize (GObject *obj)
+{
+	RemoteObject *self = (RemoteObject*)obj;
+
+	g_hash_table_destroy (self->lists);
+	g_hash_table_destroy (self->hooks);
+	g_free (self->path);
+
+	G_OBJECT_CLASS (remote_object_parent_class)->finalize (obj);
+}
+
+static void
 remote_object_init (RemoteObject *obj)
 {
+		obj->hooks =
+			g_hash_table_new_full (g_int_hash,
+					       g_int_equal,
+					       NULL,
+					       hook_info_destroy);
+
+		obj->lists =
+			g_hash_table_new_full (g_int_hash,
+					       g_int_equal,
+					       g_free,
+					       list_info_destroy);
+	obj->last_hook_id = 0;
+	obj->last_list_id = 0;
+	obj->context = xchat_get_context (ph);
 }
 
 static void
 remote_object_class_init (RemoteObjectClass *klass)
 {
+	GObjectClass *gobject_class = G_OBJECT_CLASS (klass);
+
+	gobject_class->finalize = remote_object_finalize;
+
 	signals[SERVER_SIGNAL] =
 		g_signal_new ("server_signal",
 			      G_OBJECT_CLASS_TYPE (klass),
@@ -279,7 +423,6 @@ remote_object_class_init (RemoteObjectClass *klass)
 			      G_TYPE_NONE,
 			      2, G_TYPE_STRV, G_TYPE_UINT);
 }
-
 /* Implementation of services */
 
 static guint
@@ -287,7 +430,7 @@ context_list_find_id (xchat_context *context)
 {
 	GList *l = NULL;
 
-	for (l = context_list; l != NULL; l = l->next) {
+	for (l = contexts; l != NULL; l = l->next) {
 		if (((ContextInfo*)l->data)->context == context) {
 			return ((ContextInfo*)l->data)->id;
 		}
@@ -301,7 +444,7 @@ context_list_find_context (guint id)
 {
 	GList *l = NULL;
 
-	for (l = context_list; l != NULL; l = l->next) {
+	for (l = contexts; l != NULL; l = l->next) {
 		if (((ContextInfo*)l->data)->id == id) {
 			return ((ContextInfo*)l->data)->context;
 		}
@@ -310,24 +453,15 @@ context_list_find_context (guint id)
 	return NULL;
 }
 
-static int
-switch_context (DBusGMethodInvocation *context)
+static gboolean
+remote_object_switch_context (RemoteObject *obj, GError **error)
 {
-	xchat_context *xcontext;
-	char *sender;
-
-	sender = dbus_g_method_get_sender (context);
-	xcontext = g_hash_table_lookup (client_hash_table, sender);
-	g_free (sender);
-	
-	if (!xchat_set_context (ph, xcontext)) {
-		GError *error;
-
-		error = g_error_new (REMOTE_OBJECT_ERROR,
-				     REMOTE_OBJECT_ERROR_SET_CONTEXT,
-				     _("switch to an invalide xchat context"));
-		dbus_g_method_return_error (context, error);
-		g_error_free (error);
+	if (!xchat_set_context (ph, obj->context)) {
+		obj->context = xchat_get_context (ph);
+		g_set_error (error,
+			     REMOTE_OBJECT_ERROR,
+			     REMOTE_OBJECT_ERROR_SET_CONTEXT,
+			     _("switch to an invalide xchat context"));
 
 		return FALSE;
 	}
@@ -338,28 +472,24 @@ switch_context (DBusGMethodInvocation *context)
 static gboolean
 remote_object_command (RemoteObject *obj,
 		       const char *command,
-		       DBusGMethodInvocation *context)
+		       GError **error)
 {
-	if (!switch_context (context)) {
+	if (!remote_object_switch_context(obj, error)) {
 		return FALSE;
 	}
 	xchat_command (ph, command);
-
-	dbus_g_method_return (context);
 	return TRUE;
 }
 
 static gboolean
 remote_object_print (RemoteObject *obj,
 		     const char *text,
-		     DBusGMethodInvocation *context)
+		     GError **error)
 {
-	if (!switch_context (context)) {
+	if (!remote_object_switch_context(obj, error)) {
 		return FALSE;
 	}
 	xchat_print (ph, text);
-
-	dbus_g_method_return (context);
 	return TRUE;
 }
 
@@ -370,7 +500,7 @@ remote_object_find_context (RemoteObject *obj,
 			    guint *ret_id,
 			    GError **error)
 {
-	xchat_context *xcontext = NULL;
+	xchat_context *context;
 
 	if (*server == '\0') {
 		server = NULL;
@@ -379,13 +509,14 @@ remote_object_find_context (RemoteObject *obj,
 		channel = NULL;
 	}
 
-	xcontext = xchat_find_context (ph, server, channel);
-	*ret_id = context_list_find_id (xcontext);
+	context = xchat_find_context (ph, server, channel);
+	*ret_id = context_list_find_id (context);
 	if (*ret_id == 0) {
 		g_set_error (error,
 			     REMOTE_OBJECT_ERROR,
 			     REMOTE_OBJECT_ERROR_FIND_CONTEXT,
 			     _("xchat context not found"));
+
 		return FALSE;
 	}
 
@@ -394,105 +525,91 @@ remote_object_find_context (RemoteObject *obj,
 
 static gboolean
 remote_object_get_context (RemoteObject *obj,
-			   DBusGMethodInvocation *context)
+			   guint *ret_id,
+			   GError **error)
 {
-	xchat_context *xcontext;
-	guint id;
+	*ret_id = context_list_find_id (obj->context);
+	if (*ret_id == 0) {
+		obj->context = xchat_get_context (ph);
+		g_set_error (error,
+			     REMOTE_OBJECT_ERROR,
+			     REMOTE_OBJECT_ERROR_FIND_CONTEXT,
+			     _("xchat context not found"));
 
-	if (!switch_context (context)) {
 		return FALSE;
 	}
-	xcontext = xchat_get_context (ph);
-	id = context_list_find_id (xcontext);
 
-	dbus_g_method_return (context, id);
 	return TRUE;
 }
 
 static gboolean
 remote_object_set_context (RemoteObject *obj,
 			   guint id,
-			   DBusGMethodInvocation *context)
+			   GError **error)
 {
-	xchat_context *xcontext;
-	char *sender;
+	xchat_context *context;
 	
-	xcontext = context_list_find_context (id);
-	if (xcontext == NULL) {
-		GError *error;
-		
-		error = g_error_new (REMOTE_OBJECT_ERROR,
-				     REMOTE_OBJECT_ERROR_FIND_ID,
-				     _("xchat context ID not found"));
-		dbus_g_method_return_error (context, error);
-		g_error_free (error);
+	context = context_list_find_context (id);
+	if (context == NULL) {
+		g_set_error (error,
+			     REMOTE_OBJECT_ERROR,
+			     REMOTE_OBJECT_ERROR_FIND_ID,
+			     _("xchat context ID not found"));
 
 		return FALSE;
 	}
-	sender = dbus_g_method_get_sender (context);
-	g_hash_table_insert (client_hash_table,
-			     sender,
-			     xcontext);
-	
-	dbus_g_method_return (context);
+	obj->context = context;
+
 	return TRUE;
 }
 
 static gboolean
 remote_object_get_info (RemoteObject *obj,
 			const char *id,
-			DBusGMethodInvocation *context)
+			char **ret_info,
+			GError **error)
 {
-	const char *ret_info;
-
-	if (!switch_context (context)) {
+	if (!remote_object_switch_context(obj, error)) {
 		return FALSE;
 	}
-	ret_info = xchat_get_info (ph, id);
-	if (ret_info == 0) {
-		GError *error;
-		
-		error = g_error_new (REMOTE_OBJECT_ERROR,
-				     REMOTE_OBJECT_ERROR_GET_INFO,
-				     _("info \"%s\" does not exist"),
-				     id);
-		dbus_g_method_return_error (context, error);
-		g_error_free (error);
+	*ret_info = g_strdup (xchat_get_info (ph, id));
+	if (*ret_info == NULL) {
+		g_set_error (error,
+			     REMOTE_OBJECT_ERROR,
+			     REMOTE_OBJECT_ERROR_GET_INFO,
+			     _("info \"%s\" does not exist"),
+			     id);
 
 		return FALSE;
 	}
 	
-	dbus_g_method_return (context, ret_info);
 	return TRUE;
 }
 
 static gboolean
 remote_object_get_prefs (RemoteObject *obj,
 			 const char *name,
-			 DBusGMethodInvocation *context)
+			 int *ret_type,
+			 char **ret_str,
+			 int *ret_int,
+			 GError **error)
 {
-	const char *ret_str;
-	int ret_int;
-	int ret_type;
-
-	if (!switch_context (context)) {
+	const char *str;
+	if (!remote_object_switch_context(obj, error)) {
 		return FALSE;
 	}
-	ret_type = xchat_get_prefs (ph, name, &ret_str, &ret_int);
-	if (ret_type == 0) {
-		GError *error;
-		
-		error = g_error_new (REMOTE_OBJECT_ERROR,
-				     REMOTE_OBJECT_ERROR_GET_PREFS,
-				     _("preference \"%s\" does not exist"),
-				     name);
-		dbus_g_method_return_error (context, error);
-		g_error_free (error);
+	*ret_type = xchat_get_prefs (ph, name, &str, ret_int);
+	if (*ret_type == 0) {
+		g_set_error (error,
+			     REMOTE_OBJECT_ERROR,
+			     REMOTE_OBJECT_ERROR_GET_PREFS,
+			     _("preference \"%s\" does not exist"),
+			     name);
 
 		return FALSE;
 	}
+	*ret_str = g_strdup (str);
 
-	dbus_g_method_return (context, ret_type, ret_str, ret_int);
 	return TRUE;
 }
 
@@ -519,21 +636,6 @@ build_list (char *word[])
 	return result;
 }
 
-static gboolean
-check_hook_info (HookInfo *info)
-{
-	if (g_hash_table_lookup (client_hash_table, info->client) == NULL) {
-		g_hash_table_remove (hook_hash_table, &info->id);
-		return FALSE;
-	}
-
-	g_hash_table_insert (client_hash_table,
-			     g_strdup (info->client),
-			     xchat_get_context (ph));
-
-	return TRUE;
-}
-
 static int
 server_hook_cb (char *word[],
 		char *word_eol[],
@@ -543,13 +645,9 @@ server_hook_cb (char *word[],
 	char **arg1;
 	char **arg2;
 
-	if (!check_hook_info (info)) {
-		return XCHAT_EAT_NONE;
-	}
-
 	arg1 = build_list (word + 1);
 	arg2 = build_list (word_eol + 1);
-	g_signal_emit (remote_object,
+	g_signal_emit (info->obj,
 		       signals[SERVER_SIGNAL],
 		       0,
 		       arg1, arg2, info->id);
@@ -568,13 +666,9 @@ command_hook_cb (char *word[],
 	char **arg1;
 	char **arg2;
 
-	if (!check_hook_info (info)) {
-		return XCHAT_EAT_NONE;
-	}
-  
 	arg1 = build_list (word + 1);
 	arg2 = build_list (word_eol + 1);
-	g_signal_emit (remote_object,
+	g_signal_emit (info->obj,
 		       signals[COMMAND_SIGNAL],
 		       0,
 		       arg1, arg2, info->id);
@@ -591,12 +685,8 @@ print_hook_cb (char *word[],
 	HookInfo *info = (HookInfo*)userdata;
 	char **arg1;
 
-	if (!check_hook_info (info)) {
-		return XCHAT_EAT_NONE;
-	}
-
 	arg1 = build_list (word + 1);
-	g_signal_emit (remote_object,
+	g_signal_emit (info->obj,
 		       signals[PRINT_SIGNAL],
 		       0,
 		       arg1, info->id);
@@ -611,23 +701,24 @@ remote_object_hook_command (RemoteObject *obj,
 			    int priority,
 			    const char *help_text,
 			    int return_value,
-			    DBusGMethodInvocation *context)
+			    guint *ret_id,
+			    GError **error)
 {
 	HookInfo *info;
 
 	info = g_new0 (HookInfo, 1);
-	info->client = dbus_g_method_get_sender (context);
+	info->obj = obj;
 	info->return_value = return_value;
-	info->id = last_hook_id++;
+	info->id = obj->last_hook_id++;
 	info->hook = xchat_hook_command (ph,
 					 name,
 					 priority,
 					 command_hook_cb,
 					 help_text,
 					 info);
-	g_hash_table_insert (hook_hash_table, &info->id, info);
+	g_hash_table_insert (obj->hooks, &info->id, info);
+	*ret_id = info->id;
 
-	dbus_g_method_return (context, info->id);
 	return TRUE;
 }
 
@@ -636,22 +727,23 @@ remote_object_hook_server (RemoteObject *obj,
 			   const char *name,
 			   int priority,
 			   int return_value,
-			   DBusGMethodInvocation *context)
+			   guint *ret_id,
+			   GError **error)
 {
 	HookInfo *info;
 
 	info = g_new0 (HookInfo, 1);
-	info->client = dbus_g_method_get_sender (context);
+	info->obj = obj;
 	info->return_value = return_value;
-	info->id = last_hook_id++;
+	info->id = obj->last_hook_id++;
 	info->hook = xchat_hook_server (ph,
 					name,
 					priority,
 					server_hook_cb,
 					info);
-	g_hash_table_insert (hook_hash_table, &info->id, info);
+	g_hash_table_insert (obj->hooks, &info->id, info);
+	*ret_id = info->id;
 
-	dbus_g_method_return (context, info->id);
 	return TRUE;
 }
 
@@ -660,22 +752,23 @@ remote_object_hook_print (RemoteObject *obj,
 			  const char *name,
 			  int priority,
 			  int return_value,
-			  DBusGMethodInvocation *context)
+			  guint *ret_id,
+			  GError **error)
 {
 	HookInfo *info;
 
 	info = g_new0 (HookInfo, 1);
-	info->client = dbus_g_method_get_sender (context);
+	info->obj = obj;
 	info->return_value = return_value;
-	info->id = last_hook_id++;
+	info->id = obj->last_hook_id++;
 	info->hook = xchat_hook_print (ph,
 				       name,
 				       priority,
 				       print_hook_cb,
 				       info);
-	g_hash_table_insert (hook_hash_table, &info->id, info);
+	g_hash_table_insert (obj->hooks, &info->id, info);
+	*ret_id = info->id;
 
-	dbus_g_method_return (context, info->id);
 	return TRUE;
 }
 
@@ -684,28 +777,15 @@ remote_object_unhook (RemoteObject *obj,
 		      guint id,
 		      GError **error)
 {
-	if (!g_hash_table_remove (hook_hash_table, &id)) {
+	if (!g_hash_table_remove (obj->hooks, &id)) {
 		g_set_error (error,
 			     REMOTE_OBJECT_ERROR,
 			     REMOTE_OBJECT_ERROR_FIND_ID,
-			     _("xchat context ID not found"));
+			     _("xchat hook ID not found"));
 
 		return FALSE;
 	}
 	return TRUE;
-}
-
-static void
-hook_info_destroy (gpointer data)
-{
-	HookInfo *info = (HookInfo*)data;
-
-	if (info == NULL) {
-		return;
-	}
-	xchat_unhook (ph, info->hook);
-	g_free (info->client);
-	g_free (info);
 }
 
 static gboolean
@@ -728,9 +808,9 @@ remote_object_list_get (RemoteObject *obj,
 		return FALSE;
 	}
 	id = g_new0 (guint, 1);
-	*id = last_list_id++;
+	*id = obj->last_list_id++;
 	*ret_id = *id;
-	g_hash_table_insert (list_hash_table,
+	g_hash_table_insert (obj->lists,
 			     id,
 			     xlist);
 
@@ -745,11 +825,11 @@ remote_object_list_next	(RemoteObject *obj,
 {
 	xchat_list *xlist;
 
-	xlist = g_hash_table_lookup (list_hash_table, &id);
+	xlist = g_hash_table_lookup (obj->lists, &id);
 	if (xlist == NULL) {
 		g_set_error (error,
 			     REMOTE_OBJECT_ERROR,
-			     REMOTE_OBJECT_ERROR_LIST_ID,
+			     REMOTE_OBJECT_ERROR_FIND_ID,
 			     _("xchat list ID not found"));
 
 		return FALSE;
@@ -768,11 +848,11 @@ remote_object_list_str (RemoteObject *obj,
 {
 	xchat_list *xlist;
 
-	xlist = g_hash_table_lookup (list_hash_table, &id);
+	xlist = g_hash_table_lookup (obj->lists, &id);
 	if (xlist == NULL) {
 		g_set_error (error,
 			     REMOTE_OBJECT_ERROR,
-			     REMOTE_OBJECT_ERROR_LIST_ID,
+			     REMOTE_OBJECT_ERROR_FIND_ID,
 			     _("xchat list ID not found"));
 
 		return FALSE;
@@ -791,11 +871,11 @@ remote_object_list_int (RemoteObject *obj,
 {
 	xchat_list *xlist;
 
-	xlist = g_hash_table_lookup (list_hash_table, &id);
+	xlist = g_hash_table_lookup (obj->lists, &id);
 	if (xlist == NULL) {
 		g_set_error (error,
 			     REMOTE_OBJECT_ERROR,
-			     REMOTE_OBJECT_ERROR_LIST_ID,
+			     REMOTE_OBJECT_ERROR_FIND_ID,
 			     _("xchat list ID not found"));
 
 		return FALSE;
@@ -810,22 +890,16 @@ remote_object_list_free (RemoteObject *obj,
 			 guint id,
 			 GError **error)
 {
-	if (!g_hash_table_remove (list_hash_table, &id)) {
+	if (!g_hash_table_remove (obj->lists, &id)) {
 		g_set_error (error,
 			     REMOTE_OBJECT_ERROR,
-			     REMOTE_OBJECT_ERROR_LIST_ID,
+			     REMOTE_OBJECT_ERROR_FIND_ID,
 			     _("xchat list ID not found"));
 
 		return FALSE;
 	}
 	
 	return TRUE;
-}
-
-static void
-list_info_destroy (gpointer data)
-{
-	xchat_list_free (ph, (xchat_list*)data);
 }
 
 /* DBUS stuffs */
@@ -839,25 +913,25 @@ name_owner_changed (DBusGProxy *driver_proxy,
 {
 	if (*new_owner == '\0') {
 		/* this name has vanished */
-		g_hash_table_remove (client_hash_table, name);
+		g_hash_table_remove (clients, name);
 	} else if (*old_owner == '\0') {
 		/* this name has been added */
-		g_hash_table_insert (client_hash_table,
-				     g_strdup (name),
-				     xchat_get_context (ph));
 	}
 }
 
 static gboolean
 init_dbus (void)
 {
-	DBusGConnection *connection;
 	DBusGProxy *proxy;
+	ManagerObject *manager;
 	guint request_name_result;
 	GError *error = NULL;
 
 	dbus_g_object_type_install_info (REMOTE_TYPE_OBJECT,
 					 &dbus_glib_remote_object_object_info);
+
+	dbus_g_object_type_install_info (MANAGER_TYPE_OBJECT,
+					 &dbus_glib_manager_object_object_info);
 
 	dbus_g_error_domain_register (REMOTE_OBJECT_ERROR,
 				      NULL,
@@ -865,7 +939,7 @@ init_dbus (void)
 
 	connection = dbus_g_bus_get (DBUS_BUS_SESSION, &error);
 	if (connection == NULL) {
-		xchat_printf (ph, _("Couldn't connect to session bus : %s\n"),
+		xchat_printf (ph, _("Couldn't connect to session bus: %s\n"),
 			      error->message);
 		g_error_free (error);
 		return FALSE;
@@ -899,10 +973,10 @@ init_dbus (void)
 				     G_CALLBACK (name_owner_changed),
 				     NULL, NULL);
 
-	remote_object = g_object_new (REMOTE_TYPE_OBJECT, NULL);
+	manager = g_object_new (MANAGER_TYPE_OBJECT, NULL);
 	dbus_g_connection_register_g_object (connection,
-					     DBUS_OBJECT,
-					     G_OBJECT (remote_object));
+					     DBUS_OBJECT_PATH"/Manager",
+					     G_OBJECT (manager));
 
 	return TRUE;
 }
@@ -918,7 +992,7 @@ open_context_cb (char *word[],
 	info = g_new0 (ContextInfo, 1);
 	info->id = ++last_context_id;
 	info->context = xchat_get_context (ph);
-	context_list = g_list_prepend (context_list, info);
+	contexts = g_list_prepend (contexts, info);
 
 	return XCHAT_EAT_NONE;
 }
@@ -928,12 +1002,12 @@ close_context_cb (char *word[],
 		  void *userdata)
 {
 	GList *l;
-	xchat_context *xcontext = xchat_get_context (ph);
+	xchat_context *context = xchat_get_context (ph);
 
-	for (l = context_list; l != NULL; l = l->next) {
-		if (((ContextInfo*)l->data)->context == xcontext) {
+	for (l = contexts; l != NULL; l = l->next) {
+		if (((ContextInfo*)l->data)->context == context) {
 			g_free (l->data);
-			context_list = g_list_delete_link (context_list, l);
+			contexts = g_list_delete_link (contexts, l);
 			break;
 		}
 	}
@@ -956,21 +1030,11 @@ dbus_plugin_init (xchat_plugin *plugin_handle,
 	if (init_dbus()) {
 		xchat_printf (ph, _("%s loaded successfully!\n"), PNAME);
 
-		hook_hash_table =
-			g_hash_table_new_full (g_int_hash,
-					       g_int_equal,
-					       NULL,
-					       hook_info_destroy);
-		client_hash_table =
+		clients =
 			g_hash_table_new_full (g_str_hash,
 					       g_str_equal,
 					       g_free,
-					       NULL);
-		list_hash_table =
-			g_hash_table_new_full (g_int_hash,
-					       g_int_equal,
-					       g_free,
-					       list_info_destroy);
+					       g_object_unref);
 
 		xchat_hook_print (ph, "Open Context",
 				  XCHAT_PRI_NORM,

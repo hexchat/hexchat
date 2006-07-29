@@ -57,10 +57,6 @@
 #include "msproxy.h"
 #endif
 
-#ifdef USE_DBUS
-#include "dbus/dbus-plugin.h"
-#endif
-
 GSList *popup_list = 0;
 GSList *button_list = 0;
 GSList *dlgbutton_list = 0;
@@ -80,6 +76,12 @@ int xchat_is_quitting = FALSE;
 int arg_dont_autoconnect = FALSE;
 int arg_skip_plugins = FALSE;
 char *arg_url = NULL;
+gint arg_existing = FALSE;
+
+#ifdef USE_DBUS
+#include "dbus/dbus-client.h"
+#include "dbus/dbus-plugin.h"
+#endif /* USE_DBUS */
 
 struct session *current_tab;
 struct session *current_sess = 0;
@@ -1032,6 +1034,10 @@ main (int argc, char *argv[])
 	ret = fe_args (argc, argv);
 	if (ret != -1)
 		return ret;
+	
+#ifdef USE_DBUS
+	xchat_remote ();
+#endif
 
 	load_config ();
 

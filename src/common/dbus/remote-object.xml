@@ -1,13 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <node name="/">
-  <interface name="org.xchat.interface">
+  <interface name="org.xchat.remote">
     <method name="Command">
-      <annotation name="org.freedesktop.DBus.GLib.Async" value=""/>
       <arg type="s" name="command" direction="in"/>
     </method>
     <method name="Print">
-      <annotation name="org.freedesktop.DBus.GLib.Async" value=""/>
       <arg type="s" name="text" direction="in"/>
     </method>
     <method name="FindContext">
@@ -16,27 +14,22 @@
       <arg type="u" name="ret_id" direction="out"/>
     </method>
     <method name="GetContext">
-      <annotation name="org.freedesktop.DBus.GLib.Async" value=""/>
       <arg type="u" name="ret_id" direction="out"/>
     </method>
     <method name="SetContext">
-      <annotation name="org.freedesktop.DBus.GLib.Async" value=""/>
       <arg type="u" name="id" direction="in"/>
     </method>
     <method name="GetInfo">
-      <annotation name="org.freedesktop.DBus.GLib.Async" value=""/>
       <arg type="s" name="id" direction="in"/>
       <arg type="s" name="ret_info" direction="out"/>
     </method>
     <method name="GetPrefs">
-      <annotation name="org.freedesktop.DBus.GLib.Async" value=""/>
       <arg type="s" name="name" direction="in"/>
       <arg type="i" name="ret_type" direction="out"/>
       <arg type="s" name="ret_str" direction="out"/>
       <arg type="i" name="ret_int" direction="out"/>
     </method>
     <method name="HookCommand">
-      <annotation name="org.freedesktop.DBus.GLib.Async" value=""/>
       <arg type="s" name="name" direction="in"/>
       <arg type="i" name="priority" direction="in"/>
       <arg type="s" name="help_text" direction="in"/>
@@ -44,14 +37,12 @@
       <arg type="u" name="ret_id" direction="out"/>
     </method>
     <method name="HookServer">
-      <annotation name="org.freedesktop.DBus.GLib.Async" value=""/>
       <arg type="s" name="name" direction="in"/>
       <arg type="i" name="priority" direction="in"/>
       <arg type="i" name="return_value" direction="in"/>
       <arg type="u" name="ret_id" direction="out"/>
     </method>
     <method name="HookPrint">
-      <annotation name="org.freedesktop.DBus.GLib.Async" value=""/>
       <arg type="s" name="name" direction="in"/>
       <arg type="i" name="priority" direction="in"/>
       <arg type="i" name="return_value" direction="in"/>
@@ -81,8 +72,20 @@
     <method name="ListFree">
       <arg type="u" name="id" direction="in"/>
     </method>
-    <signal name="CommandSignal"/>
-    <signal name="ServerSignal"/>
-    <signal name="PrintSignal"/>
+    <signal name="CommandSignal">
+      <arg type="as" name="word"/>
+      <arg type="as" name="word_eol"/>
+      <arg type="i" name="id"/>
+    </signal>
+    <signal name="ServerSignal">
+      <arg type="as" name="word"/>
+      <arg type="as" name="word_eol"/>
+      <arg type="i" name="id"/>
+    </signal>
+    <signal name="PrintSignal">
+      <arg type="as" name="word"/>
+      <arg type="as" name="word_eol"/>
+      <arg type="i" name="id"/>
+    </signal>
   </interface>
 </node>

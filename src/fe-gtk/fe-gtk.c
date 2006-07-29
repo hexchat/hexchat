@@ -119,13 +119,14 @@ static gint arg_show_version = 0;
 
 static const GOptionEntry gopt_entries[] = 
 {
- {"no-auto",	'a', 0, G_OPTION_ARG_NONE,		&arg_dont_autoconnect, N_("Don't auto connect to servers"), NULL},
- {"cfgdir",		'd', 0, G_OPTION_ARG_STRING,	&arg_cfgdir, N_("Use a different config directory"), "PATH"},
- {"no-plugins",'n', 0, G_OPTION_ARG_NONE,		&arg_skip_plugins, N_("Don't auto load any plugins"), NULL},
- {"plugindir",	'p', 0, G_OPTION_ARG_NONE,		&arg_show_autoload, N_("Show plugin auto-load directory"), NULL},
- {"configdir",	'u', 0, G_OPTION_ARG_NONE,		&arg_show_config, N_("Show user config directory"), NULL},
- {"url",			 0,  0, G_OPTION_ARG_STRING,	&arg_url, N_("Open an irc://server:port/channel URL"), "URL"},
- {"version",	'v', 0, G_OPTION_ARG_NONE,		&arg_show_version, N_("Show version information"), NULL},
+ {"no-auto",	'a', 0, G_OPTION_ARG_NONE,	&arg_dont_autoconnect, N_("Don't auto connect to servers"), NULL},
+ {"cfgdir",	'd', 0, G_OPTION_ARG_STRING,	&arg_cfgdir, N_("Use a different config directory"), "PATH"},
+ {"no-plugins",	'n', 0, G_OPTION_ARG_NONE,	&arg_skip_plugins, N_("Don't auto load any plugins"), NULL},
+ {"plugindir",	'p', 0, G_OPTION_ARG_NONE,	&arg_show_autoload, N_("Show plugin auto-load directory"), NULL},
+ {"configdir",	'u', 0, G_OPTION_ARG_NONE,	&arg_show_config, N_("Show user config directory"), NULL},
+ {"url",	 0,  0, G_OPTION_ARG_STRING,	&arg_url, N_("Open an irc://server:port/channel URL"), "URL"},
+ {"existing",	'e', 0, G_OPTION_ARG_NONE,	&arg_existing, N_("Open URL in an existing XChat"), NULL},
+ {"version",	'v', 0, G_OPTION_ARG_NONE,	&arg_show_version, N_("Show version information"), NULL},
  {NULL}
 };
 

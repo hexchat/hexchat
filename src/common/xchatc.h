@@ -7,6 +7,7 @@ extern int xchat_is_quitting;
 extern gint arg_skip_plugins;	/* command-line args */
 extern gint arg_dont_autoconnect;
 extern char *arg_url;
+extern gint arg_existing;
 
 extern session *current_sess;
 extern session *current_tab;
