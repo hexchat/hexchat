@@ -121,12 +121,11 @@ typedef struct
 
 typedef enum
 {
-	REMOTE_OBJECT_ERROR_SET_CONTEXT,
-	REMOTE_OBJECT_ERROR_FIND_CONTEXT,
+	REMOTE_OBJECT_ERROR_CONTEXT,
 	REMOTE_OBJECT_ERROR_FIND_ID,
 	REMOTE_OBJECT_ERROR_GET_INFO,
 	REMOTE_OBJECT_ERROR_GET_PREFS,
-	REMOTE_OBJECT_ERROR_LIST_NAME,
+	REMOTE_OBJECT_ERROR_LIST,
 } RemoteObjectError;
 
 enum
@@ -323,12 +322,11 @@ remote_object_error_get_type (void)
 
 	if (etype == 0) {
 		static const GEnumValue values[] = {
-			ENUM_ENTRY (REMOTE_OBJECT_ERROR_SET_CONTEXT, "SetContext"),
-			ENUM_ENTRY (REMOTE_OBJECT_ERROR_FIND_CONTEXT, "FindContext"),
+			ENUM_ENTRY (REMOTE_OBJECT_ERROR_CONTEXT, "Context"),
 			ENUM_ENTRY (REMOTE_OBJECT_ERROR_FIND_ID, "FindID"),
 			ENUM_ENTRY (REMOTE_OBJECT_ERROR_GET_INFO, "GetInfo"),
 			ENUM_ENTRY (REMOTE_OBJECT_ERROR_GET_PREFS, "GetPrefs"),
-			ENUM_ENTRY (REMOTE_OBJECT_ERROR_LIST_NAME, "ListName"),
+			ENUM_ENTRY (REMOTE_OBJECT_ERROR_LIST, "List"),
 			{ 0, 0, 0 }
 		};
 		etype = g_enum_register_static ("RemoteObjectError", values);
@@ -460,7 +458,7 @@ remote_object_switch_context (RemoteObject *obj, GError **error)
 		obj->context = xchat_get_context (ph);
 		g_set_error (error,
 			     REMOTE_OBJECT_ERROR,
-			     REMOTE_OBJECT_ERROR_SET_CONTEXT,
+			     REMOTE_OBJECT_ERROR_CONTEXT,
 			     _("switch to an invalide xchat context"));
 
 		return FALSE;
@@ -514,7 +512,7 @@ remote_object_find_context (RemoteObject *obj,
 	if (*ret_id == 0) {
 		g_set_error (error,
 			     REMOTE_OBJECT_ERROR,
-			     REMOTE_OBJECT_ERROR_FIND_CONTEXT,
+			     REMOTE_OBJECT_ERROR_CONTEXT,
 			     _("xchat context not found"));
 
 		return FALSE;
@@ -533,7 +531,7 @@ remote_object_get_context (RemoteObject *obj,
 		obj->context = xchat_get_context (ph);
 		g_set_error (error,
 			     REMOTE_OBJECT_ERROR,
-			     REMOTE_OBJECT_ERROR_FIND_CONTEXT,
+			     REMOTE_OBJECT_ERROR_CONTEXT,
 			     _("xchat context not found"));
 
 		return FALSE;
@@ -797,11 +795,14 @@ remote_object_list_get (RemoteObject *obj,
 	xchat_list *xlist;
 	guint *id;
 
+	if (!remote_object_switch_context(obj, error)) {
+		return FALSE;
+	}
 	xlist = xchat_list_get (ph, name);
 	if (xlist == NULL) {
 		g_set_error (error,
 			     REMOTE_OBJECT_ERROR,
-			     REMOTE_OBJECT_ERROR_LIST_NAME,
+			     REMOTE_OBJECT_ERROR_LIST,
 			     _("\"%s\" list name not found"),
 			     name);
 
@@ -857,6 +858,14 @@ remote_object_list_str (RemoteObject *obj,
 
 		return FALSE;
 	}
+	if (g_str_equal (name, "context")) {
+		g_set_error (error,
+			     REMOTE_OBJECT_ERROR,
+			     REMOTE_OBJECT_ERROR_LIST,
+			     _("Context should be get with ListInt"));
+
+		return FALSE;
+	}
 	*ret_str = g_strdup (xchat_list_str (ph, xlist, name));
 
 	return TRUE;
@@ -880,7 +889,13 @@ remote_object_list_int (RemoteObject *obj,
 
 		return FALSE;
 	}
-	*ret_int = xchat_list_int (ph, xlist, name);
+	if (g_str_equal (name, "context")) {
+		xchat_context *context;
+		context = (xchat_context*)xchat_list_str (ph, xlist, name);
+		*ret_int = context_list_find_id (context);
+	} else {
+		*ret_int = xchat_list_int (ph, xlist, name);
+	}
 
 	return TRUE;
 }
