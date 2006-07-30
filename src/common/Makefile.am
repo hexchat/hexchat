@@ -1,6 +1,6 @@
 ## Process this file with automake to produce Makefile.in
 
-noinst_LIBRARIES = libxchatcommon.a
+noinst_LTLIBRARIES = libxchatcommon.la
 
 INCLUDES = $(COMMON_CFLAGS)
 
@@ -45,15 +45,15 @@ endif
 
 if USE_DBUS
 dbusdir = dbus
-dbus_files = dbus/dbus-plugin.c dbus/dbus-client.c
+libxchatcommon_la_LIBADD =				\
+	$(top_builddir)/src/common/dbus/libxchatdbus.la
 endif
-
 SUBDIRS = $(dbusdir) .
 
-libxchatcommon_a_SOURCES = cfgfiles.c ctcp.c dcc.c history.c ignore.c \
+libxchatcommon_la_SOURCES = cfgfiles.c ctcp.c dcc.c history.c ignore.c \
 	inbound.c modes.c msproxy.c network.c notify.c outbound.c \
 	plugin.c plugin-timer.c proto-irc.c server.c servlist.c $(ssl_c) \
-	text.c tree.c url.c userlist.c util.c xchat.c $(dbus_files)
+	text.c tree.c url.c userlist.c util.c xchat.c
 
 textevents: make-te
 	./make-te < textevents.in > textevents.h 2> textenums.h

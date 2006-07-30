@@ -4,7 +4,7 @@ bin_PROGRAMS = xchat
 
 INCLUDES = $(GUI_CFLAGS) -DG_DISABLE_CAST_CHECKS -DLOCALEDIR=\"$(localedir)\"
 
-xchat_LDADD = ../common/libxchatcommon.a $(GUI_LIBS)
+xchat_LDADD = ../common/libxchatcommon.la $(GUI_LIBS)
 
 EXTRA_DIST = makefile.msc \
 	about.h ascii.h banlist.h chanlist.h chanview.h chanview-tabs.c \

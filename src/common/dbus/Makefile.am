@@ -1,5 +1,15 @@
 localedir = $(datadir)/locale
 
+noinst_LTLIBRARIES = libxchatdbus.la
+libxchatdbus_la_SOURCES =			\
+	dbus-plugin.c				\
+	dbus-plugin.h				\
+	dbus-client.c				\
+	dbus-client.h
+libxchatdbus_la_CFLAGS =				\
+	$(DBUS_CFLAGS)				\
+	$(AM_CFLAGS)
+
 EXTRA_DIST =				\
 	remote-object.xml		\
 	manager-object.xml		\
