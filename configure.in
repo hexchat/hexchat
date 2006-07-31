@@ -460,10 +460,13 @@ dnl # Check for DBUS libraries
 dnl #######################################################################
 
 if test "x$dbus" = "xyes" ; then
-	PKG_CHECK_MODULES(DBUS, [dbus-1 >= 0.60 dbus-glib-1 >= 0.60], dbus=yes, dbus=no)
+	PKG_CHECK_MODULES(DBUS, [dbus-1 >= 0.60 dbus-glib-1 >= 0.60], dbus=yes, [
+		AC_MSG_RESULT(no)
+		dbus=no
+	])
 	AC_PATH_PROG(DBUS_BINDING_TOOL, dbus-binding-tool, no)
 	AC_PATH_PROG(GLIB_GENMARSHAL, glib-genmarshal, no)
-	if test "x$DBUS_BINDING_TOOL" = "xno" || test "x$GLIB_GENMARSHAL" = "xno" ; then
+	if test "x$DBUS_BINDING_TOOL" = "xno" || test "x$GLIB_GENMARSHAL" = "xno" || test "x$dbus" = "xno" ; then
 		dbus="no"
 	else
 		COMMON_LIBS="$COMMON_LIBS $DBUS_LIBS"

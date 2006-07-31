@@ -459,7 +459,7 @@ remote_object_switch_context (RemoteObject *obj, GError **error)
 		g_set_error (error,
 			     REMOTE_OBJECT_ERROR,
 			     REMOTE_OBJECT_ERROR_CONTEXT,
-			     _("switch to an invalide xchat context"));
+			     _("switch to an invalid xchat context"));
 
 		return FALSE;
 	}
