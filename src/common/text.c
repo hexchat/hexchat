@@ -1113,8 +1113,8 @@ pevent_load_defaults ()
 		if (pntevts_text[i])
 			free (pntevts_text[i]);
 
-		/* don't gettext() the blank ones */
-		if (i == XP_TE_OPENDIALOG || i == XP_TE_BEEP)
+		/* make-te.c sets this 128 flag (DON'T call gettext() flag) */
+		if (te[i].num_args & 128)
 			pntevts_text[i] = strdup (te[i].def);
 		else
 			pntevts_text[i] = strdup (_(te[i].def));
@@ -1124,7 +1124,7 @@ pevent_load_defaults ()
 void
 pevent_make_pntevts ()
 {
-	int i, m, len;
+	int i, m;
 	char out[1024];
 
 	for (i = 0; i < NUM_XP; i++)
@@ -1137,9 +1137,11 @@ pevent_make_pntevts ()
 						 _("Error parsing event %s.\nLoading default."), te[i].name);
 			fe_message (out, FE_MSG_WARN);
 			free (pntevts_text[i]);
-			len = strlen (te[i].def) + 1;
-			pntevts_text[i] = malloc (len);
-			memcpy (pntevts_text[i], te[i].def, len);
+			/* make-te.c sets this 128 flag (DON'T call gettext() flag) */
+			if (te[i].num_args & 128)
+				pntevts_text[i] = strdup (te[i].def);
+			else
+				pntevts_text[i] = strdup (_(te[i].def));
 			if (pevt_build_string (pntevts_text[i], &(pntevts[i]), &m) != 0)
 			{
 				fprintf (stderr,
@@ -1306,7 +1308,7 @@ pevent_load (char *filename)
 static void
 pevent_check_all_loaded ()
 {
-	int i, len;
+	int i;
 
 	for (i = 0; i < NUM_XP; i++)
 	{
@@ -1315,9 +1317,11 @@ pevent_check_all_loaded ()
 			/*printf ("%s\n", te[i].name);
 			snprintf(out, sizeof(out), "The data for event %s failed to load. Reverting to defaults.\nThis may be because a new version of XChat is loading an old config file.\n\nCheck all print event texts are correct", evtnames[i]);
 			   gtkutil_simpledialog(out); */
-			len = strlen (te[i].def) + 1;
-			pntevts_text[i] = malloc (len);
-			memcpy (pntevts_text[i], te[i].def, len);
+			/* make-te.c sets this 128 flag (DON'T call gettext() flag) */
+			if (te[i].num_args & 128)
+				pntevts_text[i] = strdup (te[i].def);
+			else
+				pntevts_text[i] = strdup (_(te[i].def));
 		}
 	}
 }
@@ -1348,7 +1352,7 @@ format_event (session *sess, int index, char **args, char *o, int sizeofo, unsig
 	char *i, *ar, d, a, done_all = FALSE;
 
 	i = pntevts[index];
-	numargs = te[index].num_args;
+	numargs = te[index].num_args & 0x7f;
 
 	oi = ii = len = d = a = 0;
 	o[0] = 0;

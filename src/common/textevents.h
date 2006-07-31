@@ -11,17 +11,17 @@ N_("%C22*%O$t$1 Banlist:%C19 $4%C20 $2%C21 $3")},
 {"Banned", pevt_generic_channel_help, 1, 
 N_("%C22*%O$tCannot join%C26 %B$1 %O(You are banned).")},
 
-{"Beep", pevt_generic_none_help, 0, 
+{"Beep", pevt_generic_none_help, 128, 
 ""},
 
 {"Change Nick", pevt_changenick_help, 2, 
 N_("%C22*%O$t$1 is now known as $2")},
 
-{"Channel Action", pevt_chanaction_help, 3, 
-N_("%C18*$t$1%O $2")},
+{"Channel Action", pevt_chanaction_help, 131, 
+"%C18*$t$1%O $2"},
 
-{"Channel Action Hilight", pevt_chanaction_help, 3, 
-N_("%C21*%O$t%C21%B$1%O%C21 $2")},
+{"Channel Action Hilight", pevt_chanaction_help, 131, 
+"%C21*%O$t%C21%B$1%O%C21 $2"},
 
 {"Channel Ban", pevt_chanban_help, 2, 
 N_("%C22*%O$t$1 sets ban on $2")},
@@ -50,8 +50,8 @@ N_("%C22*%O$t$1 sets invite on $2")},
 {"Channel List", pevt_generic_none_help, 0, 
 N_("%UChannel          Users   Topic")},
 
-{"Channel Message", pevt_chanmsg_help, 4, 
-N_("%C18%H<%H$4$1%H>%H%O$t$2")},
+{"Channel Message", pevt_chanmsg_help, 132, 
+"%C18%H<%H$4$1%H>%H%O$t$2"},
 
 {"Channel Mode Generic", pevt_chanmodegen_help, 4, 
 N_("%C22*%O$t$1 sets mode $2$3 $4")},
@@ -59,11 +59,11 @@ N_("%C22*%O$t$1 sets mode $2$3 $4")},
 {"Channel Modes", pevt_chanmodes_help, 2, 
 N_("%C22*%O$t%C22Channel $1 modes: $2")},
 
-{"Channel Msg Hilight", pevt_chanmsg_help, 4, 
-N_("$4%C21%B%H<%H$1%H>%H%O%C21$t$2")},
+{"Channel Msg Hilight", pevt_chanmsg_help, 132, 
+"$4%C21%B%H<%H$1%H>%H%O%C21$t$2"},
 
-{"Channel Notice", pevt_channotice_help, 3, 
-N_("%C28-%C29$1/$2%C28-%O$t$3")},
+{"Channel Notice", pevt_channotice_help, 131, 
+"%C28-%C29$1/$2%C28-%O$t$3"},
 
 {"Channel Operator", pevt_chanop_help, 2, 
 N_("%C22*%O$t%C26$1%O gives channel operator status to%C26 $2")},
@@ -203,8 +203,8 @@ N_("%C22*%O$tDisconnected ($1).")},
 {"Found IP", pevt_foundip_help, 1, 
 N_("%C22*%O$tFound your IP: [$1]")},
 
-{"Generic Message", pevt_genmsg_help, 2, 
-N_("$1$t$2")},
+{"Generic Message", pevt_genmsg_help, 130, 
+"$1$t$2"},
 
 {"Ignore Add", pevt_ignoreaddremove_help, 1, 
 N_("%O%C26$1%O added to ignore list.")},
@@ -242,11 +242,11 @@ N_("%C21*%O$t%C21$1 has kicked $2 from $3 ($4%O%C21)")},
 {"Killed", pevt_kill_help, 2, 
 N_("%C22*%O$tYou have been killed by $1 ($2%O%C22)")},
 
-{"Message Send", pevt_ctcpsend_help, 2, 
-N_("%C19>%O$1%C19<%O$t$2")},
+{"Message Send", pevt_ctcpsend_help, 130, 
+"%C19>%O$1%C19<%O$t$2"},
 
-{"Motd", pevt_servertext_help, 1, 
-N_("%C16*%O$t$1%O")},
+{"Motd", pevt_servertext_help, 129, 
+"%C16*%O$t$1%O"},
 
 {"MOTD Skipped", pevt_generic_none_help, 0, 
 N_("%C22*%O$t%C22MOTD Skipped.")},
@@ -263,11 +263,11 @@ N_("%C22*%O$tNo such DCC.")},
 {"No Running Process", pevt_generic_none_help, 0, 
 N_("%C22*%O$tNo process is currently running")},
 
-{"Notice", pevt_notice_help, 2, 
-N_("%C28-%C29$1%C28-%O$t$2")},
+{"Notice", pevt_notice_help, 130, 
+"%C28-%C29$1%C28-%O$t$2"},
 
-{"Notice Send", pevt_ctcpsend_help, 2, 
-N_("%C19>%O$1%C19<%O$t$2")},
+{"Notice Send", pevt_ctcpsend_help, 130, 
+"%C19>%O$1%C19<%O$t$2"},
 
 {"Notify Empty", pevt_generic_none_help, 0, 
 N_("$tNotify list is empty.")},
@@ -284,7 +284,7 @@ N_("%C22*%O$tNotify: $1 is offline ($2).")},
 {"Notify Online", pevt_generic_nick_help, 2, 
 N_("%C22*%O$tNotify: $1 is online ($2).")},
 
-{"Open Dialog", pevt_generic_none_help, 0, 
+{"Open Dialog", pevt_generic_none_help, 128, 
 ""},
 
 {"Part", pevt_part_help, 3, 
@@ -299,11 +299,11 @@ N_("%C22*%O$tPing reply from $1: $2 second(s)")},
 {"Ping Timeout", pevt_pingtimeout_help, 1, 
 N_("%C22*%O$tNo ping reply for $1 seconds, disconnecting.")},
 
-{"Private Message", pevt_privmsg_help, 3, 
-N_("%C28*%C29$3$1%C28*$t%O$2")},
+{"Private Message", pevt_privmsg_help, 131, 
+"%C28*%C29$3$1%C28*$t%O$2"},
 
-{"Private Message to Dialog", pevt_dprivmsg_help, 3, 
-N_("%C18%H<%H$3$1%H>%H%O$t$2")},
+{"Private Message to Dialog", pevt_dprivmsg_help, 131, 
+"%C18%H<%H$3$1%H>%H%O$t$2"},
 
 {"Process Already Running", pevt_generic_none_help, 0, 
 N_("%C22*%O$tA process is already running")},
@@ -323,17 +323,17 @@ N_("%C22*%O$tLooking up IP number for%C26 $1%O...")},
 {"Server Connected", pevt_generic_none_help, 0, 
 N_("%C22*%O$t%C22Connected.")},
 
-{"Server Error", pevt_servererror_help, 1, 
-N_("%C22*%O$t$1")},
+{"Server Error", pevt_servererror_help, 129, 
+"%C22*%O$t$1"},
 
 {"Server Lookup", pevt_serverlookup_help, 1, 
 N_("%C22*%O$t%C22Looking up $1")},
 
-{"Server Notice", pevt_servertext_help, 2, 
-N_("%C22*%O$t$1")},
+{"Server Notice", pevt_servertext_help, 130, 
+"%C22*%O$t$1"},
 
-{"Server Text", pevt_servertext_help, 2, 
-N_("%C22*%O$t$1")},
+{"Server Text", pevt_servertext_help, 130, 
+"%C22*%O$t$1"},
 
 {"Stop Connection", pevt_sconnect_help, 1, 
 N_("%C22*%O$tStopped previous connection attempt (pid=$1)")},
@@ -404,8 +404,8 @@ N_("%C23*$tYou have left channel $3 (%O%C23%B%B$4%O%C23)")},
 {"Your Invitation", pevt_uinvite_help, 3, 
 N_("%C22*%O$tYou've invited%C26 $1%O to%C26 $2%O (%C26$3%O)")},
 
-{"Your Message", pevt_chanmsg_help, 4, 
-N_("%C31%H<%H$4$1%H>%H%O%C30$t$2")},
+{"Your Message", pevt_chanmsg_help, 132, 
+"%C31%H<%H$4$1%H>%H%O%C30$t$2"},
 
 {"Your Nick Changing", pevt_uchangenick_help, 2, 
 N_("%C22*%O$tYou are now known as $2")},

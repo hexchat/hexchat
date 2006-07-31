@@ -177,13 +177,13 @@ pevent_dialog_update (GtkWidget * wid, GtkWidget * twid)
 		fe_message (_("There was an error parsing the string"), FE_MSG_ERROR);
 		return;
 	}
-	if (m > te[sig].num_args)
+	if (m > (te[sig].num_args & 0x7f))
 	{
 		free (out);
 		out = malloc (4096);
 		snprintf (out, 4096,
 					 _("This signal is only passed %d args, $%d is invalid"),
-					 te[sig].num_args, m);
+					 te[sig].num_args & 0x7f, m);
 		fe_message (out, FE_MSG_WARN);
 		free (out);
 		return;
@@ -224,7 +224,7 @@ pevent_dialog_hfill (GtkWidget * list, int e)
 
 	store = (GtkListStore *)gtk_tree_view_get_model (GTK_TREE_VIEW (pevent_dialog_hlist));
 	gtk_list_store_clear (store);
-	while (i < te[e].num_args)
+	while (i < (te[e].num_args & 0x7f))
 	{
 		text = _(te[e].help[i]);
 		i++;

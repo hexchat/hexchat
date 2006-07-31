@@ -342,7 +342,8 @@ process_numeric (session * sess, int n,
 		}
 
 		/* use /NICKSERV */
-		if (strcasecmp (word[7], "DALnet") == 0)
+		if (strcasecmp (word[7], "DALnet") == 0 ||
+			 strcasecmp (word[7], "BRASnet") == 0)
 			serv->nickservtype = 1;
 
 		/* use /NS */

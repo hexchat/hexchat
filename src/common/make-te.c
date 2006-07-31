@@ -27,9 +27,9 @@ int main()
 		args[strlen(args)-1] = 0;
 		fgets(buf, sizeof(buf), stdin);
 
-		if (def[0] == 0)
-			printf("\n{\"%s\", %s, %d, \n\"\"},\n",
-							 name, help, atoi(args));
+		if (args[0] == 'n')
+			printf("\n{\"%s\", %s, %d, \n\"%s\"},\n",
+							 name, help, atoi(args+1) | 128, def);
 		else
 			printf("\n{\"%s\", %s, %d, \nN_(\"%s\")},\n",
 							 name, help, atoi(args), def);
