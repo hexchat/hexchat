@@ -1,12 +1,12 @@
 localedir = $(datadir)/locale
 
-noinst_LTLIBRARIES = libxchatdbus.la
-libxchatdbus_la_SOURCES =			\
+noinst_LIBRARIES = libxchatdbus.a
+libxchatdbus_a_SOURCES =			\
 	dbus-plugin.c				\
 	dbus-plugin.h				\
 	dbus-client.c				\
 	dbus-client.h
-libxchatdbus_la_CFLAGS =				\
+libxchatdbus_a_CFLAGS =				\
 	$(DBUS_CFLAGS)				\
 	$(AM_CFLAGS)
 
