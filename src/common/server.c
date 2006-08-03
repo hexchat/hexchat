@@ -806,6 +806,13 @@ auto_reconnect (server *serv, int send_quit, int err)
 #endif
 		serv->reconnect_away = serv->is_away;
 
+	/* is this server in a reconnect delay? remove it! */
+	if (serv->recondelay_tag)
+	{
+		fe_timeout_remove (serv->recondelay_tag);
+		serv->recondelay_tag = 0;
+	}
+
 	serv->recondelay_tag = fe_timeout_add (del, timeout_auto_reconnect, serv);
 	fe_server_event (serv, FE_SE_RECONDELAY, del);
 }

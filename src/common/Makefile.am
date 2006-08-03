@@ -46,7 +46,7 @@ endif
 if USE_DBUS
 dbusdir = dbus
 libxchatcommon_a_LIBADD =				\
-	$(top_builddir)/src/common/dbus/libxchatdbus.a
+	$(top_builddir)/src/common/dbus/dbus-*.$(OBJEXT)
 endif
 SUBDIRS = $(dbusdir) .
 

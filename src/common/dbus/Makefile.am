@@ -1,14 +1,9 @@
-localedir = $(datadir)/locale
-
 noinst_LIBRARIES = libxchatdbus.a
 libxchatdbus_a_SOURCES =			\
 	dbus-plugin.c				\
 	dbus-plugin.h				\
 	dbus-client.c				\
 	dbus-client.h
-libxchatdbus_a_CFLAGS =				\
-	$(DBUS_CFLAGS)				\
-	$(AM_CFLAGS)
 
 EXTRA_DIST =				\
 	remote-object.xml		\
@@ -25,9 +20,7 @@ BUILT_SOURCES =				\
 
 CLEANFILES = $(BUILT_SOURCES)
 
-INCLUDES =					\
-	$(COMMON_CFLAGS)			\
-	-DLOCALEDIR=\"$(localedir)\"
+INCLUDES = $(COMMON_CFLAGS) $(DBUS_CFLAGS)
 
 noinst_PROGRAMS = example
 example_SOURCES = example.c 

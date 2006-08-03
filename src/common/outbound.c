@@ -1227,7 +1227,7 @@ cmd_menu (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	/* -pX to specify menu position */
 	if (word[idx][0] == '-' && word[idx][1] == 'p')
 	{
-		pos = atoi (word[2] + 2);
+		pos = atoi (word[idx] + 2);
 		idx++;
 	}
 
