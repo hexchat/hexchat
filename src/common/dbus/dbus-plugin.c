@@ -472,9 +472,7 @@ remote_object_command (RemoteObject *obj,
 		       const char *command,
 		       GError **error)
 {
-	if (!remote_object_switch_context(obj, error)) {
-		return FALSE;
-	}
+	remote_object_switch_context(obj, NULL);
 	xchat_command (ph, command);
 	return TRUE;
 }
@@ -484,9 +482,7 @@ remote_object_print (RemoteObject *obj,
 		     const char *text,
 		     GError **error)
 {
-	if (!remote_object_switch_context(obj, error)) {
-		return FALSE;
-	}
+	remote_object_switch_context(obj, NULL);
 	xchat_print (ph, text);
 	return TRUE;
 }
@@ -567,9 +563,7 @@ remote_object_get_info (RemoteObject *obj,
 			char **ret_info,
 			GError **error)
 {
-	if (!remote_object_switch_context(obj, error)) {
-		return FALSE;
-	}
+	remote_object_switch_context(obj, NULL);
 	*ret_info = g_strdup (xchat_get_info (ph, id));
 	if (*ret_info == NULL) {
 		g_set_error (error,
@@ -593,9 +587,8 @@ remote_object_get_prefs (RemoteObject *obj,
 			 GError **error)
 {
 	const char *str;
-	if (!remote_object_switch_context(obj, error)) {
-		return FALSE;
-	}
+
+	remote_object_switch_context(obj, NULL);
 	*ret_type = xchat_get_prefs (ph, name, &str, ret_int);
 	if (*ret_type == 0) {
 		g_set_error (error,
@@ -795,9 +788,7 @@ remote_object_list_get (RemoteObject *obj,
 	xchat_list *xlist;
 	guint *id;
 
-	if (!remote_object_switch_context(obj, error)) {
-		return FALSE;
-	}
+	remote_object_switch_context(obj, NULL);
 	xlist = xchat_list_get (ph, name);
 	if (xlist == NULL) {
 		g_set_error (error,
