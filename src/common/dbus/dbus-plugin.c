@@ -21,9 +21,6 @@
 
 /* TODO:
  * implement full C plugin API. Functions remaining:
- *	- xchat_nickcmp
- *	- xchat_list_fields
- *	- xchat_list_time
  *	- xchat_plugingui_add
  *	- xchat_plugingui_remove
  *	- xchat_send_modes
@@ -237,6 +234,17 @@ static gboolean		remote_object_list_int		(RemoteObject *obj,
 							 int *ret_int,
 							 GError **error);
 
+static gboolean		remote_object_list_time		(RemoteObject *obj,
+							 guint id,
+							 const char *name,
+							 guint64 *ret_time,
+							 GError **error);
+
+static gboolean		remote_object_list_fields	(RemoteObject *obj,
+							 const char *name,
+							 char ***ret,
+							 GError **error);
+
 static gboolean		remote_object_list_free		(RemoteObject *obj,
 							 guint id,
 							 GError **error);
@@ -244,6 +252,12 @@ static gboolean		remote_object_list_free		(RemoteObject *obj,
 static gboolean		remote_object_emit_print	(RemoteObject *obj,
 							 const char *event_name,
 							 const char *args[],
+							 GError **error);
+
+static gboolean		remote_object_nickcmp		(RemoteObject *obj,
+							 const char *nick1,
+							 const char *nick2,
+							 int *ret,
 							 GError **error);
 
 #include "manager-object-glue.h"
@@ -838,11 +852,9 @@ remote_object_list_next	(RemoteObject *obj,
 	return TRUE;
 }			 
 
-static gboolean
-remote_object_list_str (RemoteObject *obj,
+static xchat_list*
+remote_object_get_list (RemoteObject *obj,
 			guint id,
-			const char *name,
-			char **ret_str,
 			GError **error)
 {
 	xchat_list *xlist;
@@ -853,9 +865,25 @@ remote_object_list_str (RemoteObject *obj,
 			     REMOTE_OBJECT_ERROR,
 			     REMOTE_OBJECT_ERROR_FIND_ID,
 			     _("xchat list ID not found"));
+	}
+	
+	return xlist;
+}
 
+static gboolean
+remote_object_list_str (RemoteObject *obj,
+			guint id,
+			const char *name,
+			char **ret_str,
+			GError **error)
+{
+	xchat_list *xlist;
+	
+	xlist = remote_object_get_list (obj, id, error);
+	if (xlist == NULL) {
 		return FALSE;
 	}
+	
 	if (g_str_equal (name, "context")) {
 		g_set_error (error,
 			     REMOTE_OBJECT_ERROR,
@@ -877,16 +905,12 @@ remote_object_list_int (RemoteObject *obj,
 			GError **error)
 {
 	xchat_list *xlist;
-
-	xlist = g_hash_table_lookup (obj->lists, &id);
+	
+	xlist = remote_object_get_list (obj, id, error);
 	if (xlist == NULL) {
-		g_set_error (error,
-			     REMOTE_OBJECT_ERROR,
-			     REMOTE_OBJECT_ERROR_FIND_ID,
-			     _("xchat list ID not found"));
-
 		return FALSE;
 	}
+
 	if (g_str_equal (name, "context")) {
 		xchat_context *context;
 		context = (xchat_context*)xchat_list_str (ph, xlist, name);
@@ -895,6 +919,35 @@ remote_object_list_int (RemoteObject *obj,
 		*ret_int = xchat_list_int (ph, xlist, name);
 	}
 
+	return TRUE;
+}
+
+static gboolean
+remote_object_list_time (RemoteObject *obj,
+			 guint id,
+			 const char *name,
+			 guint64 *ret_time,
+			 GError **error)
+{
+	xchat_list *xlist;
+	
+	xlist = remote_object_get_list (obj, id, error);
+	if (xlist == NULL) {
+		return FALSE;
+	}
+	*ret_time = xchat_list_time (ph, xlist, name);
+	
+	return TRUE;
+}
+
+static gboolean
+remote_object_list_fields (RemoteObject *obj,
+			   const char *name,
+			   char ***ret,
+			   GError **error)
+{
+	*ret = g_strdupv ((char**)xchat_list_fields (ph, name));
+	
 	return TRUE;
 }
 
@@ -922,14 +975,10 @@ remote_object_emit_print (RemoteObject *obj,
 			  GError **error)
 {
 	const char *argv[4] = {NULL, NULL, NULL, NULL};
-	int i = 0;
+	int i;
 	
-	while (i < 4) {
-		if (args[i] == NULL) {
-			break;
-		}
+	for (i = 0; i < 4 && args[i] != NULL; i++) {
 		argv[i] = args[i];
-		i++;
 	}
 
 	remote_object_switch_context(obj, NULL);
@@ -943,6 +992,19 @@ remote_object_emit_print (RemoteObject *obj,
 		return FALSE;
 	}
 
+	return TRUE;
+}
+
+static gboolean
+remote_object_nickcmp (RemoteObject *obj,
+		       const char *nick1,
+		       const char *nick2,
+		       int *ret,
+		       GError **error)
+{
+	remote_object_switch_context(obj, NULL);
+	*ret = xchat_nickcmp (ph, nick1, nick2);
+	
 	return TRUE;
 }
 
@@ -1074,11 +1136,10 @@ dbus_plugin_init (xchat_plugin *plugin_handle,
 	if (init_dbus()) {
 		xchat_printf (ph, _("%s loaded successfully!\n"), PNAME);
 
-		clients =
-			g_hash_table_new_full (g_str_hash,
-					       g_str_equal,
-					       g_free,
-					       g_object_unref);
+		clients = g_hash_table_new_full (g_str_hash,
+						 g_str_equal,
+						 g_free,
+						 g_object_unref);
 
 		xchat_hook_print (ph, "Open Context",
 				  XCHAT_PRI_NORM,

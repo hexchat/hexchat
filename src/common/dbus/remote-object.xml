@@ -69,12 +69,26 @@
       <arg type="s" name="name" direction="in"/>
       <arg type="i" name="ret_int" direction="out"/>
     </method>
+    <method name="ListTime">
+      <arg type="u" name="id" direction="in"/>
+      <arg type="s" name="name" direction="in"/>
+      <arg type="t" name="ret_time" direction="out"/>
+    </method>
+    <method name="ListFields">
+      <arg type="s" name="name" direction="in"/>
+      <arg type="as" name="ret" direction="out"/>
+    </method>
     <method name="ListFree">
       <arg type="u" name="id" direction="in"/>
     </method>
     <method name="EmitPrint">
       <arg type="s" name="event_name" direction="in"/>
       <arg type="as" name="args" direction="in"/>
+    </method>
+    <method name="Nickcmp">
+      <arg type="s" name="nick1" direction="in"/>
+      <arg type="s" name="nick2" direction="in"/>
+      <arg type="i" name="ret" direction="out"/>
     </method>
 
     <signal name="CommandSignal">

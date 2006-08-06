@@ -17,6 +17,6 @@ while xchat.ListNext (channels):
 	xchat.EmitPrint ("Channel Message", ["John", "Hi there", "@"])
 	users = xchat.ListGet ("users")
 	while xchat.ListNext (users):
-		print xchat.ListStr (users, "nick")
+		print "Nick: " + xchat.ListStr (users, "nick")
 	xchat.ListFree (users)
 xchat.ListFree (channels)

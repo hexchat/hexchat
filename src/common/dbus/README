@@ -51,7 +51,8 @@ Available methods for org.xchat.remote:
   - Parameters:
     - gchar*: Setting name required.
   - Returns:
-    - int: 0-Failed 1-Returned a string 2-Returned an Integer 3-Returned a Boolean.
+    - int: 0-Failed 1-Returned a string 2-Returned an Integer
+           3-Returned a Boolean.
     - gchar*: the information requested if it's a string.
     - int: the information requested if it's a integer or boolean.
 
@@ -59,7 +60,8 @@ Available methods for org.xchat.remote:
   - Parameters:
     - gchar*: Name of the command (without the forward slash).
     - int: Priority of this command.
-    - gchar*: String of text to display when the user executes /help for this command. May be NULL if you're lazy.
+    - gchar*: String of text to display when the user executes /help
+              for this command. May be NULL if you're lazy.
     - int: Value to returns when the command is catched. See XCHAT_EAT_*.
   - Returns:
     - guint: The ID of the hook.
@@ -82,7 +84,8 @@ Available methods for org.xchat.remote:
 
 "Unhook"
   - Parameters:
-    - guint: ID of the hook to unhook. (the return value of "HookCommand", "HookServer" or "HookPrint").
+    - guint: ID of the hook to unhook.
+      (the return value of "HookCommand", "HookServer" or "HookPrint")
 
 "ListGet"
   - Parameters:
@@ -111,6 +114,19 @@ Warning: "context" attribut of "channels" list should be get with "ListInt"
   - Returns:
     - guint: The information requested.
 
+"ListTime"
+  - Parameters:
+    - guint: List ID returned by "ListGet".
+    - gchar*: Name of the information needed.
+  - Returns:
+    - guint64: The information requested.
+
+"ListFields"
+  - Parameters:
+    - gchar*: The list name.
+  - Returns:
+    - gchar**: information names in this list.
+
 "ListFree"
   - Parameters:
     - guint: List ID returned by "ListGet".
@@ -119,6 +135,14 @@ Warning: "context" attribut of "channels" list should be get with "ListInt"
   - Parameters:
     - gchar*: Text event to print.
     - gchar**: NULL terminated array of string.
+
+"Nickcmp"
+  - Parameters:
+    - gchar*: String to compare.
+    - gchar*: String to compare.
+  - Returns:
+    - int: An integer less than, equal to, or greater than zero if s1 is found,
+           respectively, to be less than, to match, or be greater than s2. 
 
 
 Available signals:
