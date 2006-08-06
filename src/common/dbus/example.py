@@ -14,6 +14,7 @@ while xchat.ListNext (channels):
 	name = xchat.ListStr (channels, "channel")
 	print "------- " + name + " -------"
 	xchat.SetContext (xchat.ListInt (channels, "context"))
+	xchat.EmitPrint ("Channel Message", ["John", "Hi there", "@"])
 	users = xchat.ListGet ("users")
 	while xchat.ListNext (users):
 		print xchat.ListStr (users, "nick")

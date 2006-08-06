@@ -26,7 +26,6 @@
  *	- xchat_list_time
  *	- xchat_plugingui_add
  *	- xchat_plugingui_remove
- *	- xchat_emit_print (is it possible to send valist through D-Bus ?)
  *	- xchat_send_modes
  *	- xchat_strip
  *	- xchat_free
@@ -126,6 +125,7 @@ typedef enum
 	REMOTE_OBJECT_ERROR_GET_INFO,
 	REMOTE_OBJECT_ERROR_GET_PREFS,
 	REMOTE_OBJECT_ERROR_LIST,
+	REMOTE_OBJECT_ERROR_EMIT_PRINT
 } RemoteObjectError;
 
 enum
@@ -241,6 +241,11 @@ static gboolean		remote_object_list_free		(RemoteObject *obj,
 							 guint id,
 							 GError **error);
 
+static gboolean		remote_object_emit_print	(RemoteObject *obj,
+							 const char *event_name,
+							 const char *args[],
+							 GError **error);
+
 #include "manager-object-glue.h"
 #include "remote-object-glue.h"
 #include "marshallers.h"
@@ -327,6 +332,7 @@ remote_object_error_get_type (void)
 			ENUM_ENTRY (REMOTE_OBJECT_ERROR_GET_INFO, "GetInfo"),
 			ENUM_ENTRY (REMOTE_OBJECT_ERROR_GET_PREFS, "GetPrefs"),
 			ENUM_ENTRY (REMOTE_OBJECT_ERROR_LIST, "List"),
+			ENUM_ENTRY (REMOTE_OBJECT_ERROR_EMIT_PRINT, "EmitPrint"),
 			{ 0, 0, 0 }
 		};
 		etype = g_enum_register_static ("RemoteObjectError", values);
@@ -421,6 +427,7 @@ remote_object_class_init (RemoteObjectClass *klass)
 			      G_TYPE_NONE,
 			      2, G_TYPE_STRV, G_TYPE_UINT);
 }
+
 /* Implementation of services */
 
 static guint
@@ -905,6 +912,37 @@ remote_object_list_free (RemoteObject *obj,
 		return FALSE;
 	}
 	
+	return TRUE;
+}
+
+static gboolean
+remote_object_emit_print (RemoteObject *obj,
+			  const char *event_name,
+			  const char *args[],
+			  GError **error)
+{
+	const char *argv[4] = {NULL, NULL, NULL, NULL};
+	int i = 0;
+	
+	while (i < 4) {
+		if (args[i] == NULL) {
+			break;
+		}
+		argv[i] = args[i];
+		i++;
+	}
+
+	remote_object_switch_context(obj, NULL);
+	if (!xchat_emit_print (ph, event_name, argv[1], argv[2],
+					       argv[3], argv[4])) {
+		g_set_error (error,
+			     REMOTE_OBJECT_ERROR,
+			     REMOTE_OBJECT_ERROR_EMIT_PRINT,
+			     _("xchat print event unknown"));
+
+		return FALSE;
+	}
+
 	return TRUE;
 }
 

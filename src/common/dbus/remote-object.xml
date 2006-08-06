@@ -72,6 +72,11 @@
     <method name="ListFree">
       <arg type="u" name="id" direction="in"/>
     </method>
+    <method name="EmitPrint">
+      <arg type="s" name="event_name" direction="in"/>
+      <arg type="as" name="args" direction="in"/>
+    </method>
+
     <signal name="CommandSignal">
       <arg type="as" name="word"/>
       <arg type="as" name="word_eol"/>
