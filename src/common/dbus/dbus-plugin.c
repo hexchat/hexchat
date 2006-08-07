@@ -476,7 +476,9 @@ static gboolean
 remote_object_switch_context (RemoteObject *obj, GError **error)
 {
 	if (!xchat_set_context (ph, obj->context)) {
-		obj->context = xchat_get_context (ph);
+		/* our context closed. Just use the "front" context for now */
+		obj->context = xchat_find_context (ph, NULL, NULL);
+		xchat_set_context (ph, obj->context);
 		g_set_error (error,
 			     REMOTE_OBJECT_ERROR,
 			     REMOTE_OBJECT_ERROR_CONTEXT,
@@ -830,28 +832,6 @@ remote_object_list_get (RemoteObject *obj,
 	return TRUE;
 }
 
-static gboolean
-remote_object_list_next	(RemoteObject *obj,
-			 guint id,
-			 gboolean *ret,
-			 GError **error)
-{
-	xchat_list *xlist;
-
-	xlist = g_hash_table_lookup (obj->lists, &id);
-	if (xlist == NULL) {
-		g_set_error (error,
-			     REMOTE_OBJECT_ERROR,
-			     REMOTE_OBJECT_ERROR_FIND_ID,
-			     _("xchat list ID not found"));
-
-		return FALSE;
-	}
-	*ret = xchat_list_next (ph, xlist);
-
-	return TRUE;
-}			 
-
 static xchat_list*
 remote_object_get_list (RemoteObject *obj,
 			guint id,
@@ -869,6 +849,23 @@ remote_object_get_list (RemoteObject *obj,
 	
 	return xlist;
 }
+
+static gboolean
+remote_object_list_next	(RemoteObject *obj,
+			 guint id,
+			 gboolean *ret,
+			 GError **error)
+{
+	xchat_list *xlist;
+	
+	xlist = remote_object_get_list (obj, id, error);
+	if (xlist == NULL) {
+		return FALSE;
+	}
+	*ret = xchat_list_next (ph, xlist);
+
+	return TRUE;
+}			 
 
 static gboolean
 remote_object_list_str (RemoteObject *obj,
