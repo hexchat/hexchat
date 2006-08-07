@@ -20,3 +20,5 @@ while xchat.ListNext (channels):
 		print "Nick: " + xchat.ListStr (users, "nick")
 	xchat.ListFree (users)
 xchat.ListFree (channels)
+
+print xchat.Strip ("\00312Blue\003 \002Bold!\002", -1, 1|2)

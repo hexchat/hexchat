@@ -90,6 +90,18 @@
       <arg type="s" name="nick2" direction="in"/>
       <arg type="i" name="ret" direction="out"/>
     </method>
+    <method name="Strip">
+      <arg type="s" name="str" direction="in"/>
+      <arg type="i" name="len" direction="in"/>
+      <arg type="i" name="flag" direction="in"/>
+      <arg type="s" name="ret_str" direction="out"/>
+    </method>
+    <method name="SendModes">
+      <arg type="as" name="targets" direction="in"/>
+      <arg type="i" name="modes_per_line" direction="in"/>
+      <arg type="y" name="sign" direction="in"/>
+      <arg type="y" name="mode" direction="in"/>
+    </method>
 
     <signal name="CommandSignal">
       <arg type="as" name="word"/>

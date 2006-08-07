@@ -23,9 +23,6 @@
  * implement full C plugin API. Functions remaining:
  *	- xchat_plugingui_add
  *	- xchat_plugingui_remove
- *	- xchat_send_modes
- *	- xchat_strip
- *	- xchat_free
  */
 
 #define DBUS_API_SUBJECT_TO_CHANGE
@@ -258,6 +255,20 @@ static gboolean		remote_object_nickcmp		(RemoteObject *obj,
 							 const char *nick1,
 							 const char *nick2,
 							 int *ret,
+							 GError **error);
+
+static gboolean		remote_object_strip		(RemoteObject *obj,
+							 const char *str,
+							 int len,
+							 int flag,
+							 char **ret_str,
+							 GError **error);
+
+static gboolean		remote_object_send_modes	(RemoteObject *obj,
+							 const char *targets[],
+							 int modes_per_line,
+							 char sign,
+							 char mode,
 							 GError **error);
 
 #include "manager-object-glue.h"
@@ -1001,6 +1012,36 @@ remote_object_nickcmp (RemoteObject *obj,
 {
 	remote_object_switch_context(obj, NULL);
 	*ret = xchat_nickcmp (ph, nick1, nick2);
+	
+	return TRUE;
+}
+
+static gboolean
+remote_object_strip (RemoteObject *obj,
+		     const char *str,
+		     int len,
+		     int flag,
+		     char **ret_str,
+		     GError **error)
+{
+	*ret_str = xchat_strip (ph, str, len, flag);
+	
+	return TRUE;
+}
+
+static gboolean
+remote_object_send_modes (RemoteObject *obj,
+			  const char *targets[],
+			  int modes_per_line,
+			  char sign,
+			  char mode,
+			  GError **error)
+{
+	remote_object_switch_context(obj, NULL);
+	xchat_send_modes (ph, targets,
+			  g_strv_length ((char**)targets),
+			  modes_per_line,
+			  sign, mode);
 	
 	return TRUE;
 }

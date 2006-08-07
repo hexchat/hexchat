@@ -144,6 +144,22 @@ Warning: "context" attribut of "channels" list should be get with "ListInt"
     - int: An integer less than, equal to, or greater than zero if s1 is found,
            respectively, to be less than, to match, or be greater than s2. 
 
+"Strip"
+  - Parameters:
+    - gchar*: String to strip.
+    - int: Length of the string (or -1 for NULL terminated).
+    - int: Bit-field of flags: 0-Strip mIRC colors, 1-Strip text attributes. 
+  - Returns:
+    - gchar*: striped string.
+
+"SendModes"
+  - Parameters:
+    - gchar**: NULL terminated array of targets (strings). The names of people
+               whom the action will be performed on.
+    - int: Maximum modes to send per line.
+    - gchar: Mode sign, '-' or '+'.
+    - gchar: Mode char, e.g. 'o' for Ops.
+
 
 Available signals:
 
