@@ -7,7 +7,6 @@ libxchatdbus_a_SOURCES =			\
 
 EXTRA_DIST =				\
 	remote-object.xml		\
-	manager-object.xml		\
 	apps_xchat_url_handler.schemas	\
 	marshallers.list		\
 	example.py			\
@@ -15,8 +14,7 @@ EXTRA_DIST =				\
 
 BUILT_SOURCES =				\
 	marshallers.h			\
-	remote-object-glue.h		\
-	manager-object-glue.h
+	remote-object-glue.h
 
 CLEANFILES = $(BUILT_SOURCES)
 
@@ -25,9 +23,6 @@ INCLUDES = $(COMMON_CFLAGS) $(DBUS_CFLAGS)
 noinst_PROGRAMS = example
 example_SOURCES = example.c 
 example_LDADD = $(DBUS_LIBS) $(GLIB_LIBS)
-
-manager-object-glue.h: manager-object.xml
-	$(LIBTOOL) --mode=execute $(DBUS_BINDING_TOOL) --prefix=manager_object --mode=glib-server --output=$@ $<
 
 remote-object-glue.h: remote-object.xml
 	$(LIBTOOL) --mode=execute $(DBUS_BINDING_TOOL) --prefix=remote_object --mode=glib-server --output=$@ $<

@@ -25,9 +25,8 @@
 #include "../xchatc.h"
 
 #define DBUS_SERVICE "org.xchat.service"
-#define DBUS_MANAGER "/org/xchat/Manager"
-#define DBUS_MANAGER_INTERFACE "org.xchat.manager"
-#define DBUS_REMOTE_INTERFACE "org.xchat.remote"
+#define DBUS_REMOTE "/org/xchat/Remote"
+#define DBUS_REMOTE_INTERFACE "org.xchat.plugin"
 
 static void
 write_error (char *message,
@@ -50,8 +49,6 @@ xchat_remote (void)
 	DBusGConnection *connection;
 	DBusGProxy *dbus = NULL;
 	DBusGProxy *remote_object = NULL;
-	DBusGProxy *manager = NULL;
-	char *path;
 	gboolean xchat_running;
 	GError *error = NULL;
 
@@ -86,34 +83,17 @@ xchat_remote (void)
 		write_error (_("Failed to complete NameHasOwner"), &error);
 		xchat_running = FALSE;
 	}
-	g_object_unref (G_OBJECT (dbus));
+	g_object_unref (dbus);
 
 	if (!xchat_running) {
 		//dbus_g_connection_unref (connection);
 		return;
 	}
 
-	/* Connect to the running xchat instance to get a remote object */
-	manager = dbus_g_proxy_new_for_name (connection,
-					     DBUS_SERVICE,
-					     DBUS_MANAGER,
-					     DBUS_MANAGER_INTERFACE);
-	if (!dbus_g_proxy_call (manager, "Connect",
-				&error,
-				G_TYPE_INVALID,
-				G_TYPE_STRING, &path, G_TYPE_INVALID)) {
-		write_error (_("Failed to complete Connect"), &error);
-		//dbus_g_connection_unref (connection);
-		g_object_unref (G_OBJECT (manager));
-
-		return;
-	}
-	g_object_unref (G_OBJECT (manager));
 	remote_object = dbus_g_proxy_new_for_name (connection,
 						   DBUS_SERVICE,
-						   path,
+						   DBUS_REMOTE,
 						   DBUS_REMOTE_INTERFACE);
-	g_free (path);
 
 	if (arg_url) {
 		char *command = g_strdup_printf ("url %s", arg_url);

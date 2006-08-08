@@ -1,7 +1,18 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <node name="/">
-  <interface name="org.xchat.remote">
+
+  <interface name="org.xchat.connection">
+    <method name="Connect">
+      <annotation name="org.freedesktop.DBus.GLib.Async" value=""/>
+      <arg type="s" name="path" direction="out"/>
+    </method>  
+    <method name="Disconnect">
+      <annotation name="org.freedesktop.DBus.GLib.Async" value=""/>
+    </method>
+  </interface>
+
+  <interface name="org.xchat.plugin">
     <method name="Command">
       <arg type="s" name="command" direction="in"/>
     </method>

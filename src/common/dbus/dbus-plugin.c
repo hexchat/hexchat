@@ -46,36 +46,6 @@ static GList *contexts = NULL;
 static GHashTable *clients = NULL;
 static DBusGConnection *connection;
 
-typedef struct ManagerObject ManagerObject;
-typedef struct ManagerObjectClass ManagerObjectClass;
-
-GType Manager_object_get_type (void);
-
-struct ManagerObject
-{
-	GObject parent;
-};
-
-struct ManagerObjectClass
-{
-	GObjectClass parent;
-};
-
-#define MANAGER_TYPE_OBJECT              (manager_object_get_type ())
-#define MANAGER_OBJECT(object)           (G_TYPE_CHECK_INSTANCE_CAST ((object), MANAGER_TYPE_OBJECT, ManagerObject))
-#define MANAGER_OBJECT_CLASS(klass)      (G_TYPE_CHECK_CLASS_CAST ((klass), MANAGER_TYPE_OBJECT, ManagerObjectClass))
-#define MANAGER_IS_OBJECT(object)        (G_TYPE_CHECK_INSTANCE_TYPE ((object), MANAGER_TYPE_OBJECT))
-#define MANAGER_IS_OBJECT_CLASS(klass)   (G_TYPE_CHECK_CLASS_TYPE ((klass), MANAGER_TYPE_OBJECT))
-#define MANAGER_OBJECT_GET_CLASS(obj)    (G_TYPE_INSTANCE_GET_CLASS ((obj), MANAGER_TYPE_OBJECT, ManagerObjectClass))
-
-G_DEFINE_TYPE (ManagerObject, manager_object, G_TYPE_OBJECT)
-
-static gboolean		manager_object_connect		(ManagerObject *obj,
-							 DBusGMethodInvocation *context);
-
-static gboolean		manager_object_disconnect	(ManagerObject *obj,
-							 DBusGMethodInvocation *context);
-
 typedef struct RemoteObject RemoteObject;
 typedef struct RemoteObjectClass RemoteObjectClass;
 
@@ -144,6 +114,12 @@ static guint signals[LAST_SIGNAL] = { 0 };
 G_DEFINE_TYPE (RemoteObject, remote_object, G_TYPE_OBJECT)
 
 /* Available services */
+
+static gboolean		remote_object_connect		(RemoteObject *obj,
+							 DBusGMethodInvocation *context);
+
+static gboolean		remote_object_disconnect	(RemoteObject *obj,
+							 DBusGMethodInvocation *context);
 
 static gboolean		remote_object_command		(RemoteObject *obj,
 							 const char *command,
@@ -271,64 +247,14 @@ static gboolean		remote_object_send_modes	(RemoteObject *obj,
 							 char mode,
 							 GError **error);
 
-#include "manager-object-glue.h"
 #include "remote-object-glue.h"
 #include "marshallers.h"
 
-/* Manager Object */
+/* Useful functions */
 
-static void
-manager_object_init (ManagerObject *obj)
-{
-}
-
-static void
-manager_object_class_init (ManagerObjectClass *klass)
-{
-}
-
-static gboolean
-manager_object_connect (ManagerObject *obj,
-			DBusGMethodInvocation *context)
-{
-	static guint count = 0;
-	char *sender, *path;
-	RemoteObject *remote_object;
-	
-	sender = dbus_g_method_get_sender (context);
-	remote_object = g_hash_table_lookup (clients, sender);
-	if (remote_object != NULL) {
-		dbus_g_method_return (context, remote_object->path);
-		g_free (sender);
-		return TRUE;
-	}
-	path = g_strdup_printf (DBUS_OBJECT_PATH"/%d", count++);
-	remote_object = g_object_new (REMOTE_TYPE_OBJECT, NULL);
-	remote_object->path = path;
-	dbus_g_connection_register_g_object (connection,
-					     path,
-					     G_OBJECT (remote_object));
-	g_hash_table_insert (clients,
-			     sender,
-			     remote_object);
-	dbus_g_method_return (context, path);
-
-	return TRUE;
-}
-
-static gboolean
-manager_object_disconnect (ManagerObject *obj,
-			   DBusGMethodInvocation *context)
-{
-	char *sender;
-	
-	sender = dbus_g_method_get_sender (context);
-	g_hash_table_remove (clients, sender);
-	g_free (sender);
-
-	dbus_g_method_return (context);
-	return TRUE;
-}
+static char**		build_list			(char *word[]);
+static guint		context_list_find_id		(xchat_context *context);
+static xchat_context*	context_list_find_context	(guint id);
 
 /* Remote Object */
 
@@ -399,17 +325,18 @@ remote_object_finalize (GObject *obj)
 static void
 remote_object_init (RemoteObject *obj)
 {
-		obj->hooks =
-			g_hash_table_new_full (g_int_hash,
-					       g_int_equal,
-					       NULL,
-					       hook_info_destroy);
+	obj->hooks =
+		g_hash_table_new_full (g_int_hash,
+				       g_int_equal,
+				       NULL,
+				       hook_info_destroy);
 
-		obj->lists =
-			g_hash_table_new_full (g_int_hash,
-					       g_int_equal,
-					       g_free,
-					       list_info_destroy);
+	obj->lists =
+		g_hash_table_new_full (g_int_hash,
+				       g_int_equal,
+				       g_free,
+				       list_info_destroy);
+	obj->path = NULL;
 	obj->last_hook_id = 0;
 	obj->last_list_id = 0;
 	obj->context = xchat_get_context (ph);
@@ -455,34 +382,6 @@ remote_object_class_init (RemoteObjectClass *klass)
 
 /* Implementation of services */
 
-static guint
-context_list_find_id (xchat_context *context)
-{
-	GList *l = NULL;
-
-	for (l = contexts; l != NULL; l = l->next) {
-		if (((ContextInfo*)l->data)->context == context) {
-			return ((ContextInfo*)l->data)->id;
-		}
-	}
-
-	return 0;
-}
-
-static xchat_context*
-context_list_find_context (guint id)
-{
-	GList *l = NULL;
-
-	for (l = contexts; l != NULL; l = l->next) {
-		if (((ContextInfo*)l->data)->id == id) {
-			return ((ContextInfo*)l->data)->context;
-		}
-	}
-
-	return NULL;
-}
-
 static gboolean
 remote_object_switch_context (RemoteObject *obj, GError **error)
 {
@@ -498,6 +397,49 @@ remote_object_switch_context (RemoteObject *obj, GError **error)
 		return FALSE;
 	}
 
+	return TRUE;
+}
+
+static gboolean
+remote_object_connect (RemoteObject *obj,
+		       DBusGMethodInvocation *context)
+{
+	static guint count = 0;
+	char *sender, *path;
+	RemoteObject *remote_object;
+	
+	sender = dbus_g_method_get_sender (context);
+	remote_object = g_hash_table_lookup (clients, sender);
+	if (remote_object != NULL) {
+		dbus_g_method_return (context, remote_object->path);
+		g_free (sender);
+		return TRUE;
+	}
+	path = g_strdup_printf (DBUS_OBJECT_PATH"/%d", count++);
+	remote_object = g_object_new (REMOTE_TYPE_OBJECT, NULL);
+	remote_object->path = path;
+	dbus_g_connection_register_g_object (connection,
+					     path,
+					     G_OBJECT (remote_object));
+	g_hash_table_insert (clients,
+			     sender,
+			     remote_object);
+	dbus_g_method_return (context, path);
+
+	return TRUE;
+}
+
+static gboolean
+remote_object_disconnect (RemoteObject *obj,
+			  DBusGMethodInvocation *context)
+{
+	char *sender;
+	
+	sender = dbus_g_method_get_sender (context);
+	g_hash_table_remove (clients, sender);
+	g_free (sender);
+
+	dbus_g_method_return (context);
 	return TRUE;
 }
 
@@ -636,29 +578,6 @@ remote_object_get_prefs (RemoteObject *obj,
 	*ret_str = g_strdup (str);
 
 	return TRUE;
-}
-
-static char**
-build_list (char *word[])
-{
-	guint i;
-	guint num = 0;
-	char **result;
-
-	if (word == NULL) {
-		return NULL;
-	}
-  
-	while (word[num] && word[num][0]) {
-		num++;
-	}
-	
-	result = g_new0 (char*, num + 1);
-	for (i = 0; i < num; i++) {
-		result[i] = g_strdup (word[i]);
-	}
-
-	return result;
 }
 
 static int
@@ -1058,8 +977,6 @@ name_owner_changed (DBusGProxy *driver_proxy,
 	if (*new_owner == '\0') {
 		/* this name has vanished */
 		g_hash_table_remove (clients, name);
-	} else if (*old_owner == '\0') {
-		/* this name has been added */
 	}
 }
 
@@ -1067,15 +984,12 @@ static gboolean
 init_dbus (void)
 {
 	DBusGProxy *proxy;
-	ManagerObject *manager;
+	RemoteObject *remote;
 	guint request_name_result;
 	GError *error = NULL;
 
 	dbus_g_object_type_install_info (REMOTE_TYPE_OBJECT,
 					 &dbus_glib_remote_object_object_info);
-
-	dbus_g_object_type_install_info (MANAGER_TYPE_OBJECT,
-					 &dbus_glib_manager_object_object_info);
 
 	dbus_g_error_domain_register (REMOTE_OBJECT_ERROR,
 				      NULL,
@@ -1117,15 +1031,66 @@ init_dbus (void)
 				     G_CALLBACK (name_owner_changed),
 				     NULL, NULL);
 
-	manager = g_object_new (MANAGER_TYPE_OBJECT, NULL);
+	remote = g_object_new (REMOTE_TYPE_OBJECT, NULL);
 	dbus_g_connection_register_g_object (connection,
-					     DBUS_OBJECT_PATH"/Manager",
-					     G_OBJECT (manager));
+					     DBUS_OBJECT_PATH"/Remote",
+					     G_OBJECT (remote));
 
 	return TRUE;
 }
 
 /* xchat_plugin stuffs */
+
+static char**
+build_list (char *word[])
+{
+	guint i;
+	guint num = 0;
+	char **result;
+
+	if (word == NULL) {
+		return NULL;
+	}
+  
+	while (word[num] && word[num][0]) {
+		num++;
+	}
+	
+	result = g_new0 (char*, num + 1);
+	for (i = 0; i < num; i++) {
+		result[i] = g_strdup (word[i]);
+	}
+
+	return result;
+}
+
+static guint
+context_list_find_id (xchat_context *context)
+{
+	GList *l = NULL;
+
+	for (l = contexts; l != NULL; l = l->next) {
+		if (((ContextInfo*)l->data)->context == context) {
+			return ((ContextInfo*)l->data)->id;
+		}
+	}
+
+	return 0;
+}
+
+static xchat_context*
+context_list_find_context (guint id)
+{
+	GList *l = NULL;
+
+	for (l = contexts; l != NULL; l = l->next) {
+		if (((ContextInfo*)l->data)->id == id) {
+			return ((ContextInfo*)l->data)->context;
+		}
+	}
+
+	return NULL;
+}
 
 static int
 open_context_cb (char *word[],

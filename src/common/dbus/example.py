@@ -3,11 +3,11 @@
 import dbus
 
 bus = dbus.SessionBus()
-proxy_obj = bus.get_object('org.xchat.service', '/org/xchat/Manager')
-manager = dbus.Interface(proxy_obj, 'org.xchat.manager')
-path = manager.Connect ()
-proxy_obj = bus.get_object('org.xchat.service', path)
-xchat = dbus.Interface(proxy_obj, 'org.xchat.remote')
+proxy = bus.get_object('org.xchat.service', '/org/xchat/Remote')
+remote = dbus.Interface(proxy, 'org.xchat.connection')
+path = remote.Connect ()
+proxy = bus.get_object('org.xchat.service', path)
+xchat = dbus.Interface(proxy, 'org.xchat.plugin')
 
 channels = xchat.ListGet ("channels")
 while xchat.ListNext (channels):
@@ -22,3 +22,4 @@ while xchat.ListNext (channels):
 xchat.ListFree (channels)
 
 print xchat.Strip ("\00312Blue\003 \002Bold!\002", -1, 1|2)
+

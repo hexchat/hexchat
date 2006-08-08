@@ -25,9 +25,9 @@
 #include "marshallers.h"
 
 #define DBUS_SERVICE "org.xchat.service"
-#define DBUS_MANAGER "/org/xchat/Manager"
-#define DBUS_MANAGER_INTERFACE "org.xchat.manager"
-#define DBUS_REMOTE_INTERFACE "org.xchat.remote"
+#define DBUS_REMOTE "/org/xchat/Remote"
+#define DBUS_REMOTE_CONNECTION_INTERFACE "org.xchat.connection"
+#define DBUS_REMOTE_PLUGIN_INTERFACE "org.xchat.plugin"
 
 guint command_id;
 guint server_id;
@@ -88,7 +88,6 @@ int
 main (int argc, char **argv)
 {
 	DBusGConnection *connection;
-	DBusGProxy *manager;
 	DBusGProxy *remote_object;
 	GMainLoop *mainloop;
 	gchar *path;
@@ -102,22 +101,23 @@ main (int argc, char **argv)
 		return EXIT_FAILURE;
 	}
   
-	manager = dbus_g_proxy_new_for_name (connection,
-					     DBUS_SERVICE,
-					     DBUS_MANAGER,
-					     DBUS_MANAGER_INTERFACE);
-	if (!dbus_g_proxy_call (manager, "Connect",
+	remote_object = dbus_g_proxy_new_for_name (connection,
+						   DBUS_SERVICE,
+						   DBUS_REMOTE,
+						   DBUS_REMOTE_CONNECTION_INTERFACE);
+	if (!dbus_g_proxy_call (remote_object, "Connect",
 				&error,
 				G_TYPE_INVALID,
 				G_TYPE_STRING, &path, G_TYPE_INVALID)) {
 		write_error ("Failed to complete Connect", &error);
 		return EXIT_FAILURE;
 	}
+	g_object_unref (remote_object);
 
 	remote_object = dbus_g_proxy_new_for_name (connection,
 						   DBUS_SERVICE,
 						   path,
-						   DBUS_REMOTE_INTERFACE);
+						   DBUS_REMOTE_PLUGIN_INTERFACE);
 	g_free (path);
 
 	if (!dbus_g_proxy_call (remote_object, "HookCommand",
@@ -170,8 +170,6 @@ main (int argc, char **argv)
 	/* Now you can write on the xchat windows: "/test arg1 arg2 ..." */
 	mainloop = g_main_loop_new (NULL, FALSE);
 	g_main_loop_run (mainloop);
-  
-	g_object_unref (G_OBJECT (remote_object));
 
 	return EXIT_SUCCESS;
 }

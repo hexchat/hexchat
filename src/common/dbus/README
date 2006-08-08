@@ -2,21 +2,22 @@ For more help you can see the xchat plugin interface documentation.
 http://www.xchat.org/docs/plugin20.html
 WARNING: The dbus interface may change in the future.
 
-First you have to connect to the manager, it will returns the path to
-your remote object.
+You can use the "/org/xchat/Remote" object with interface "org.xchat.plugin",
+but his context can be changed by other clients at any moment and
+you may receive signal asked by other clients. So for more complex usage it's
+better to get your own remote object. Using "Connect" method on interface
+"org.xchat.connection"
 
-Available methods for org.xchat.manager:
+Available methods on org.xchat.connection interface:
 
 "Connect"
   - Returns:
-    - gchar*: Your object's path.
+  - gchar*: Your own object's path.
 
 "Disconnect"
   No parameter, no return value. It frees your remote object.
 
-You can now connect to your remote object.
-
-Available methods for org.xchat.remote:
+Available methods on org.xchat.plugin interface:
 
 "Command"
   - Parameters:
