@@ -11,8 +11,13 @@ better to get your own remote object. Using "Connect" method on interface
 Available methods on org.xchat.connection interface:
 
 "Connect"
+  - Parameters:
+    - gchar*: filename
+    - gchar*: name
+    - gchar*: description
+    - gchar*: version
   - Returns:
-  - gchar*: Your own object's path.
+    - gchar*: Your own object's path.
 
 "Disconnect"
   No parameter, no return value. It frees your remote object.
@@ -181,3 +186,7 @@ Available signals:
     - gchar**: word returned by xchat.
     - gchar**: word_eol returned bu xchat.
     - int: the ID of the hook. (the return value of "HookPrint").
+
+"UnloadSignal"
+  emited when the user asks to unload your program.
+  Please exit(0); when received !

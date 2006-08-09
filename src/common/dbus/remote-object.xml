@@ -5,6 +5,10 @@
   <interface name="org.xchat.connection">
     <method name="Connect">
       <annotation name="org.freedesktop.DBus.GLib.Async" value=""/>
+      <arg type="s" name="filename" direction="in"/>
+      <arg type="s" name="name" direction="in"/>
+      <arg type="s" name="desc" direction="in"/>
+      <arg type="s" name="version" direction="in"/>
       <arg type="s" name="path" direction="out"/>
     </method>  
     <method name="Disconnect">
@@ -129,5 +133,6 @@
       <arg type="as" name="word_eol"/>
       <arg type="i" name="id"/>
     </signal>
+    <signal name="UnloadSignal"/>
   </interface>
 </node>

@@ -5,7 +5,10 @@ import dbus
 bus = dbus.SessionBus()
 proxy = bus.get_object('org.xchat.service', '/org/xchat/Remote')
 remote = dbus.Interface(proxy, 'org.xchat.connection')
-path = remote.Connect ()
+path = remote.Connect ("example.py",
+		       "Python example",
+		       "Example of a D-Bus client written in python",
+		       "1.0")
 proxy = bus.get_object('org.xchat.service', path)
 xchat = dbus.Interface(proxy, 'org.xchat.plugin')
 

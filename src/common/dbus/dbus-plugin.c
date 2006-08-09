@@ -19,12 +19,6 @@
  * xclaesse@gmail.com
  */
 
-/* TODO:
- * implement full C plugin API. Functions remaining:
- *	- xchat_plugingui_add
- *	- xchat_plugingui_remove
- */
-
 #define DBUS_API_SUBJECT_TO_CHANGE
 
 #include <config.h>
@@ -58,9 +52,11 @@ struct RemoteObject
 	guint last_hook_id;
 	guint last_list_id;
 	xchat_context *context;
-	char *path;
+	char *dbus_path;
+	char *filename;
 	GHashTable *hooks;
 	GHashTable *lists;
+	void *handle;
 };
 
 struct RemoteObjectClass
@@ -97,6 +93,7 @@ enum
 	SERVER_SIGNAL,
 	COMMAND_SIGNAL,
 	PRINT_SIGNAL,
+	UNLOAD_SIGNAL,
 	LAST_SIGNAL
 };
 
@@ -116,6 +113,10 @@ G_DEFINE_TYPE (RemoteObject, remote_object, G_TYPE_OBJECT)
 /* Available services */
 
 static gboolean		remote_object_connect		(RemoteObject *obj,
+							 const char *filename,
+							 const char *name,
+							 const char *desc,
+							 const char *version,
 							 DBusGMethodInvocation *context);
 
 static gboolean		remote_object_disconnect	(RemoteObject *obj,
@@ -317,7 +318,9 @@ remote_object_finalize (GObject *obj)
 
 	g_hash_table_destroy (self->lists);
 	g_hash_table_destroy (self->hooks);
-	g_free (self->path);
+	g_free (self->dbus_path);
+	g_free (self->filename);
+	xchat_plugingui_remove (ph, self->handle);
 
 	G_OBJECT_CLASS (remote_object_parent_class)->finalize (obj);
 }
@@ -336,7 +339,8 @@ remote_object_init (RemoteObject *obj)
 				       g_int_equal,
 				       g_free,
 				       list_info_destroy);
-	obj->path = NULL;
+	obj->dbus_path = NULL;
+	obj->filename = NULL;
 	obj->last_hook_id = 0;
 	obj->last_list_id = 0;
 	obj->context = xchat_get_context (ph);
@@ -378,6 +382,16 @@ remote_object_class_init (RemoteObjectClass *klass)
 			      g_cclosure_user_marshal_VOID__POINTER_POINTER_UINT,
 			      G_TYPE_NONE,
 			      2, G_TYPE_STRV, G_TYPE_UINT);
+
+	signals[UNLOAD_SIGNAL] =
+		g_signal_new ("unload_signal",
+			      G_OBJECT_CLASS_TYPE (klass),
+			      G_SIGNAL_RUN_LAST,
+			      0,
+			      NULL, NULL,
+			      g_cclosure_marshal_VOID__VOID,
+			      G_TYPE_NONE,
+			      0);
 }
 
 /* Implementation of services */
@@ -402,6 +416,10 @@ remote_object_switch_context (RemoteObject *obj, GError **error)
 
 static gboolean
 remote_object_connect (RemoteObject *obj,
+		       const char *filename,
+		       const char *name,
+		       const char *desc,
+		       const char *version,
 		       DBusGMethodInvocation *context)
 {
 	static guint count = 0;
@@ -411,21 +429,28 @@ remote_object_connect (RemoteObject *obj,
 	sender = dbus_g_method_get_sender (context);
 	remote_object = g_hash_table_lookup (clients, sender);
 	if (remote_object != NULL) {
-		dbus_g_method_return (context, remote_object->path);
+		dbus_g_method_return (context, remote_object->dbus_path);
 		g_free (sender);
 		return TRUE;
 	}
 	path = g_strdup_printf (DBUS_OBJECT_PATH"/%d", count++);
 	remote_object = g_object_new (REMOTE_TYPE_OBJECT, NULL);
-	remote_object->path = path;
+	remote_object->dbus_path = path;
+	remote_object->filename = g_path_get_basename (filename);
+	remote_object->handle = xchat_plugingui_add (ph,
+						     remote_object->filename,
+						     name,
+						     desc,
+						     version, NULL);
 	dbus_g_connection_register_g_object (connection,
 					     path,
 					     G_OBJECT (remote_object));
+
 	g_hash_table_insert (clients,
 			     sender,
 			     remote_object);
-	dbus_g_method_return (context, path);
 
+	dbus_g_method_return (context, path);
 	return TRUE;
 }
 
@@ -1124,6 +1149,33 @@ close_context_cb (char *word[],
 	return XCHAT_EAT_NONE;
 }
 
+static gboolean
+clients_find_filename_foreach (gpointer key,
+			       gpointer value,
+			       gpointer user_data)
+{
+	RemoteObject *obj = REMOTE_OBJECT (value);
+	return g_str_equal (obj->filename, (char*)user_data);
+}
+
+static int
+unload_plugin_cb (char *word[], char *word_eol[], void *userdata)
+{
+	RemoteObject *obj;
+	
+	obj = g_hash_table_find (clients,
+				 clients_find_filename_foreach,
+				 word[2]);
+	if (obj != NULL) {
+		g_signal_emit (obj, 
+			       signals[UNLOAD_SIGNAL],
+			       0);
+		return XCHAT_EAT_ALL;
+	}
+	
+	return XCHAT_EAT_NONE;
+}
+
 int
 dbus_plugin_init (xchat_plugin *plugin_handle,
 		  char **plugin_name,
@@ -1153,6 +1205,10 @@ dbus_plugin_init (xchat_plugin *plugin_handle,
 				  XCHAT_PRI_NORM,
 				  close_context_cb,
 				  NULL);
+
+		xchat_hook_command (ph, "unload",
+				    XCHAT_PRI_HIGHEST,
+				    unload_plugin_cb, NULL, NULL);
 	}
 
 	return TRUE; 

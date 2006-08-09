@@ -84,6 +84,13 @@ test_command_cb (DBusGProxy *proxy,
 	}
 }
 
+static void
+unload_cb (void)
+{
+	g_print ("Good bye !\n");
+	exit (EXIT_SUCCESS);
+}
+
 int
 main (int argc, char **argv)
 {
@@ -107,6 +114,10 @@ main (int argc, char **argv)
 						   DBUS_REMOTE_CONNECTION_INTERFACE);
 	if (!dbus_g_proxy_call (remote_object, "Connect",
 				&error,
+				G_TYPE_STRING, argv[0],
+				G_TYPE_STRING, "example",
+				G_TYPE_STRING, "Example of a D-Bus client",
+				G_TYPE_STRING, "1.0",
 				G_TYPE_INVALID,
 				G_TYPE_STRING, &path, G_TYPE_INVALID)) {
 		write_error ("Failed to complete Connect", &error);
@@ -149,6 +160,11 @@ main (int argc, char **argv)
 		G_TYPE_STRV, G_TYPE_STRV, G_TYPE_UINT,
 		G_TYPE_INVALID);
 
+	dbus_g_object_register_marshaller (
+		g_cclosure_marshal_VOID__VOID,
+		G_TYPE_NONE,
+		G_TYPE_INVALID);
+
 	dbus_g_proxy_add_signal (remote_object, "CommandSignal",
 				 G_TYPE_STRV,
 				 G_TYPE_STRV,
@@ -165,6 +181,12 @@ main (int argc, char **argv)
 				 G_TYPE_INVALID);
 	dbus_g_proxy_connect_signal (remote_object, "ServerSignal",
 				     G_CALLBACK (test_server_cb),
+				     NULL, NULL);
+
+	dbus_g_proxy_add_signal (remote_object, "UnloadSignal",
+				 G_TYPE_INVALID);
+	dbus_g_proxy_connect_signal (remote_object, "UnloadSignal",
+				     G_CALLBACK (unload_cb),
 				     NULL, NULL);
 
 	/* Now you can write on the xchat windows: "/test arg1 arg2 ..." */
