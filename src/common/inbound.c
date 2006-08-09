@@ -771,8 +771,8 @@ inbound_ping_reply (session *sess, char *timestring, char *from)
 	if (lag)
 	{
 		sess->server->lag_sent = 0;
-		snprintf (outbuf, sizeof (outbuf), "%ld.%ld", dif / 100000, (dif / 10000) % 100);
-		fe_set_lag (sess->server, (int)((float)atof (outbuf)));
+		sess->server->lag = dif / 1000;
+		fe_set_lag (sess->server, dif / 100000);
 		return;
 	}
 

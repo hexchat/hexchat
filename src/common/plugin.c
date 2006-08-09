@@ -1178,8 +1178,8 @@ xchat_list_fields (xchat_plugin *ph, const char *name)
 	};
 	static const char * const channels_fields[] =
 	{
-		"schannel",	"schantypes", "pcontext", "iflags", "iid", "imaxmodes",
-		"snetwork", "snickmodes", "snickprefixes", "sserver", "itype", "iusers",
+		"schannel",	"schantypes", "pcontext", "iflags", "iid", "ilag", "imaxmodes",
+		"snetwork", "snickmodes", "snickprefixes", "iqueue", "sserver", "itype", "iusers",
 		NULL
 	};
 	static const char * const ignore_fields[] =
@@ -1402,8 +1402,12 @@ xchat_list_int (xchat_plugin *ph, xchat_list *xlist, const char *name)
 			tmp <<= 1;
 			tmp |= ((struct session *)data)->server->connected;  /* 0 */
 			return tmp;
+		case 0x1a192: /* lag */
+			return ((struct session *)data)->server->lag;
 		case 0x1916144c: /* maxmodes */
 			return ((struct session *)data)->server->modes_per_line;
+		case 0x66f1911: /* queue */
+			return ((struct session *)data)->server->sendq_len;
 		case 0x368f3a:	/* type */
 			return ((struct session *)data)->type;
 		case 0x6a68e08: /* users */

@@ -1803,7 +1803,7 @@ server_set_defaults (server *serv)
 	serv->nick_modes = strdup ("ohv");
 
 	serv->nickcount = 1;
-	serv->nickservtype = 0;
+	serv->nickservtype = 1;
 	serv->end_of_motd = FALSE;
 	serv->is_away = FALSE;
 	serv->supports_watch = FALSE;

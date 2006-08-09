@@ -437,6 +437,7 @@ typedef struct server
 	time_t next_send;						/* cptr->since in ircu */
 	time_t prev_now;					/* previous now-time */
 	int sendq_len;						/* queue size */
+	int lag;								/* milliseconds */
 
 	struct session *front_session;	/* front-most window/tab */
 	struct session *server_session;	/* server window/tab */
