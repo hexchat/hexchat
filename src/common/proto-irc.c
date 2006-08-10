@@ -925,7 +925,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 							flood_check (nick, ip, serv, sess, 0);
 						if (strncasecmp (text, "DCC ", 4) == 0)
 							/* redo this with handle_quotes TRUE */
-							process_data_init (word[1], word_eol[1], word, word_eol, TRUE);
+							process_data_init (word[1], word_eol[1], word, word_eol, TRUE, FALSE);
 						ctcp_handle (sess, to, nick, text, word, word_eol, id);
 					} else
 					{
@@ -1013,7 +1013,7 @@ irc_inline (server *serv, char *buf, int len)
 	if (buf[0] == ':')
 	{
 		/* split line into words and words_to_end_of_line */
-		process_data_init (pdibuf, buf, word, word_eol, FALSE);
+		process_data_init (pdibuf, buf, word, word_eol, FALSE, FALSE);
 
 		/* find a context for this message */
 		if (is_channel (serv, word[3]))
@@ -1035,7 +1035,7 @@ irc_inline (server *serv, char *buf, int len)
 
 	} else
 	{
-		process_data_init (pdibuf, buf, word, word_eol, FALSE);
+		process_data_init (pdibuf, buf, word, word_eol, FALSE, FALSE);
 		word[0] = type = word[1];
 		if (plugin_emit_server (sess, type, word, word_eol))
 			goto xit;

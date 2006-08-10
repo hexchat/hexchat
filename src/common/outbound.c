@@ -155,7 +155,8 @@ server_sendquit (session * sess)
 
 void
 process_data_init (char *buf, char *cmd, char *word[],
-						 char *word_eol[], int handle_quotes)
+						 char *word_eol[], gboolean handle_quotes,
+						 gboolean allow_escape_quotes)
 {
 	int wordcount = 2;
 	int space = FALSE;
@@ -184,6 +185,12 @@ process_data_init (char *buf, char *cmd, char *word[],
 		case '\042':
 			if (!handle_quotes)
 				goto def;
+			/* two quotes turn into 1 */
+			if (allow_escape_quotes && cmd[1] == '\042')
+			{
+				cmd++;
+				goto def;
+			}
 			if (quote)
 			{
 				quote = FALSE;
@@ -3862,7 +3869,7 @@ handle_say (session *sess, char *text, int check_spch)
 		check_special_chars (text, prefs.perc_ascii);
 
 	/* split the text into words and word_eol */
-	process_data_init (pdibuf, text, word, word_eol, TRUE);
+	process_data_init (pdibuf, text, word, word_eol, TRUE, FALSE);
 
 	/* a command of "" can be hooked for non-commands */
 	if (plugin_emit_command (sess, "", word, word_eol))
@@ -3997,11 +4004,11 @@ handle_command (session *sess, char *cmd, int check_spch)
 		tbuf = tbuf_static;
 
 	/* split the text into words and word_eol */
-	process_data_init (pdibuf, cmd, word, word_eol, TRUE);
+	process_data_init (pdibuf, cmd, word, word_eol, TRUE, TRUE);
 	int_cmd = find_internal_command (word[1]);
 	/* redo it without quotes processing, for some commands like /JOIN */
 	if (int_cmd && !int_cmd->handle_quotes)
-		process_data_init (pdibuf, cmd, word, word_eol, FALSE);
+		process_data_init (pdibuf, cmd, word, word_eol, FALSE, FALSE);
 
 	if (check_spch && prefs.perc_color)
 		check_special_chars (cmd, prefs.perc_ascii);
