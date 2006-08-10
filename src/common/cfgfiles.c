@@ -331,7 +331,7 @@ char *
 get_xdir_utf8 (void)
 {
 	if (!xdir_utf)	/* never free this, keep it for program life time */
-		xdir_utf = g_filename_to_utf8 (get_xdir_fs (), -1, 0, 0, 0);
+		xdir_utf = xchat_filename_to_utf8 (get_xdir_fs (), -1, 0, 0, 0);
 
 	return xdir_utf;
 }

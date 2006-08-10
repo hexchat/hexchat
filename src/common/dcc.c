@@ -724,7 +724,7 @@ dcc_read (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 				dcc->destfile_fs = g_strdup (buf);
 
 				old = dcc->destfile;
-				dcc->destfile = g_filename_to_utf8 (buf, -1, 0, 0, 0);
+				dcc->destfile = xchat_filename_to_utf8 (buf, -1, 0, 0, 0);
 
 				EMIT_SIGNAL (XP_TE_DCCRENAME, dcc->serv->front_session,
 								 old, dcc->destfile, NULL, NULL, 0);
@@ -1787,7 +1787,7 @@ dcc_send (struct session *sess, char *to, char *file, int maxcps, int passive)
 		free (file);
 
 		/* for_files() will use opendir, so we need local FS encoding */
-		path_fs = g_filename_from_utf8 (path, -1, 0, 0, 0);
+		path_fs = xchat_filename_from_utf8 (path, -1, 0, 0, 0);
 		if (path_fs)
 		{
 			recursive = TRUE;
@@ -1806,7 +1806,7 @@ dcc_send (struct session *sess, char *to, char *file, int maxcps, int passive)
 	dcc->maxcps = maxcps;
 
 	/* get the local filesystem encoding */
-	file_fs = g_filename_from_utf8 (file, -1, 0, 0, 0);
+	file_fs = xchat_filename_from_utf8 (file, -1, 0, 0, 0);
 
 	if (stat (file_fs, &st) != -1)
 	{
@@ -2097,7 +2097,7 @@ dcc_get_with_destfile (struct DCC *dcc, char *file)
 
 	/* get the local filesystem encoding */
 	g_free (dcc->destfile_fs);
-	dcc->destfile_fs = g_filename_from_utf8 (dcc->destfile, -1, 0, 0, 0);
+	dcc->destfile_fs = xchat_filename_from_utf8 (dcc->destfile, -1, 0, 0, 0);
 
 	/* since destfile changed, must check resumability again */
 	is_resumable (dcc);
@@ -2349,7 +2349,7 @@ dcc_add_file (session *sess, char *file, DCC_SIZE size, int port, char *nick, gu
 		strcat (dcc->destfile, file);
 
 		/* get the local filesystem encoding */
-		dcc->destfile_fs = g_filename_from_utf8 (dcc->destfile, -1, 0, 0, 0);
+		dcc->destfile_fs = xchat_filename_from_utf8 (dcc->destfile, -1, 0, 0, 0);
 
 		dcc->resumable = 0;
 		dcc->pos = 0;

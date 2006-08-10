@@ -1403,10 +1403,10 @@ rename_utf8 (char *oldname, char *newname)
 	int sav, res;
 	char *fso, *fsn;
 
-	fso = g_filename_from_utf8 (oldname, -1, 0, 0, 0);
+	fso = xchat_filename_from_utf8 (oldname, -1, 0, 0, 0);
 	if (!fso)
 		return FALSE;
-	fsn = g_filename_from_utf8 (newname, -1, 0, 0, 0);
+	fsn = xchat_filename_from_utf8 (newname, -1, 0, 0, 0);
 	if (!fsn)
 	{
 		g_free (fso);
@@ -1427,7 +1427,7 @@ unlink_utf8 (char *fname)
 	int res;
 	char *fs;
 
-	fs = g_filename_from_utf8 (fname, -1, 0, 0, 0);
+	fs = xchat_filename_from_utf8 (fname, -1, 0, 0, 0);
 	if (!fs)
 		return FALSE;
 
@@ -1442,7 +1442,7 @@ file_exists_utf8 (char *fname)
 	int res;
 	char *fs;
 
-	fs = g_filename_from_utf8 (fname, -1, 0, 0, 0);
+	fs = xchat_filename_from_utf8 (fname, -1, 0, 0, 0);
 	if (!fs)
 		return FALSE;
 
@@ -1547,10 +1547,10 @@ move_file_utf8 (char *src_dir, char *dst_dir, char *fname, int dccpermissions)
 	}
 
 	/* convert UTF-8 to filesystem encoding */
-	src_fs = g_filename_from_utf8 (src, -1, 0, 0, 0);
+	src_fs = xchat_filename_from_utf8 (src, -1, 0, 0, 0);
 	if (!src_fs)
 		return;
-	dst_fs = g_filename_from_utf8 (dst, -1, 0, 0, 0);
+	dst_fs = xchat_filename_from_utf8 (dst, -1, 0, 0, 0);
 	if (!dst_fs)
 	{
 		g_free (src_fs);
@@ -1578,7 +1578,7 @@ mkdir_utf8 (char *dir)
 {
 	int ret;
 
-	dir = g_filename_from_utf8 (dir, -1, 0, 0, 0);
+	dir = xchat_filename_from_utf8 (dir, -1, 0, 0, 0);
 	if (!dir)
 		return -1;
 

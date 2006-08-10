@@ -228,10 +228,12 @@ needed for a long time after calling xchat_list_str. The types of lists and fiel
 <tr><td>context</td><td>(xchat_context *) pointer. Can be used with xchat_set_context</td><td>string</td></tr>
 <tr><td>flags</td><td>Server/Channel Bits:<br>0=Connected 1=Connecting 2=Away 3=EndOfMotd (Login complete) 4=Has WHOX 5=Has IDMSG (FreeNode)<br>6=Hide Join/Parts 7=Color Paste 8=Beep on Message<br><small>(Bits 0-5 added in 2.0.9. Bits 6-8 added in 2.6.6)</small></td><td>int</td></tr>
 <tr><td>id</td><td>Unique server ID<br><small>(Added in version 2.0.8. Older versions will return -1)</small></td><td>int</td></tr>
+<tr><td>lag</td><td>Lag in milliseconds<br><small>(Added in version 2.6.8. Older versions will return -1)</small></td><td>int</td>
 <tr><td>maxmodes</td><td>Maximum modes per line<br><small>(Added in version 2.0.9. Older versions will return -1)</small></td><td>int</td>
 <tr><td>network</td><td>Network name to which this channel belongs<br><small>(Added in version 2.0.2. Older versions will return NULL)</small></td><td>string</td></tr>
 <tr><td>nickprefixes</td><td>Nickname prefixes e.g. "@+"<br><small>(Added in version 2.0.9. Older versions will return NULL)</small></td><td>string</td>
 <tr><td>nickmodes</td><td>Nickname mode chars e.g. "ov"<br><small>(Added in version 2.0.9. Older versions will return NULL)</small></td><td>string</td>
+<tr><td>queue</td><td>Number of bytes in the send-queue<br><small>(Added in version 2.6.8. Older versions will return -1)</small></td><td>int</td>
 <tr><td>server</td><td>Server name to which this channel belongs</td><td>string</td></tr>
 <tr><td>type</td><td>Type of context this is: 1-Server 2-Channel 3-Dialog<br><small>(Added in version 2.0.2. Older versions will return -1)</small></td><td>int</td></tr>
 <tr><td>users</td><td>Number of users in this channel<br><small>(Added in version 2.0.8. Older versions will return -1)</small></td><td>int</td></tr>

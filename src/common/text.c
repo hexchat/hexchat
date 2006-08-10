@@ -228,7 +228,7 @@ log_create_pathname (char *servname, char *channame, char *netname)
 	snprintf (fname, sizeof (fname), "%s/xchatlogs/%s", get_xdir_utf8 (), fnametime);
 
 	/* now we need it in FileSystem encoding */
-	fs = g_filename_from_utf8 (fname, -1, 0, 0, 0);
+	fs = xchat_filename_from_utf8 (fname, -1, 0, 0, 0);
 
 	/* create all the subdirectories */
 	if (fs)
@@ -1782,7 +1782,7 @@ sound_play (const char *file, gboolean quiet)
 	}
 	wavfile[sizeof (wavfile) - 1] = 0;	/* ensure termination */
 
-	file_fs = g_filename_from_utf8 (wavfile, -1, 0, 0, 0);
+	file_fs = xchat_filename_from_utf8 (wavfile, -1, 0, 0, 0);
 	if (!file_fs)
 		return;
 

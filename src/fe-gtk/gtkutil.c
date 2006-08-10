@@ -115,7 +115,7 @@ gtkutil_check_file (char *file, struct file_req *freq)
 		char *utf8_file;
 		/* convert to UTF8. It might be converted back to locale by
 			server.c's g_convert */
-		utf8_file = g_filename_to_utf8 (file, -1, NULL, NULL, NULL);
+		utf8_file = xchat_filename_to_utf8 (file, -1, NULL, NULL, NULL);
 		if (utf8_file)
 		{
 			freq->callback (freq->userdata, utf8_file);

@@ -1452,7 +1452,7 @@ mg_dnd_drop_file (session *sess, char *target, char *uri)
 			if (fname)
 			{
 				/* dcc_send() expects utf-8 */
-				p = g_filename_to_utf8 (fname, -1, 0, 0, 0);
+				p = xchat_filename_to_utf8 (fname, -1, 0, 0, 0);
 				if (p)
 				{
 					dcc_send (sess, target, p, prefs.dcc_max_send_cps, 0);
