@@ -81,11 +81,7 @@ typedef struct
 typedef enum
 {
 	REMOTE_OBJECT_ERROR_CONTEXT,
-	REMOTE_OBJECT_ERROR_FIND_ID,
-	REMOTE_OBJECT_ERROR_GET_INFO,
-	REMOTE_OBJECT_ERROR_GET_PREFS,
 	REMOTE_OBJECT_ERROR_LIST,
-	REMOTE_OBJECT_ERROR_EMIT_PRINT
 } RemoteObjectError;
 
 enum
@@ -226,6 +222,7 @@ static gboolean		remote_object_list_free		(RemoteObject *obj,
 static gboolean		remote_object_emit_print	(RemoteObject *obj,
 							 const char *event_name,
 							 const char *args[],
+							 gboolean *ret,
 							 GError **error);
 
 static gboolean		remote_object_nickcmp		(RemoteObject *obj,
@@ -280,11 +277,7 @@ remote_object_error_get_type (void)
 	if (etype == 0) {
 		static const GEnumValue values[] = {
 			ENUM_ENTRY (REMOTE_OBJECT_ERROR_CONTEXT, "Context"),
-			ENUM_ENTRY (REMOTE_OBJECT_ERROR_FIND_ID, "FindID"),
-			ENUM_ENTRY (REMOTE_OBJECT_ERROR_GET_INFO, "GetInfo"),
-			ENUM_ENTRY (REMOTE_OBJECT_ERROR_GET_PREFS, "GetPrefs"),
 			ENUM_ENTRY (REMOTE_OBJECT_ERROR_LIST, "List"),
-			ENUM_ENTRY (REMOTE_OBJECT_ERROR_EMIT_PRINT, "EmitPrint"),
 			{ 0, 0, 0 }
 		};
 		etype = g_enum_register_static ("RemoteObjectError", values);
@@ -397,18 +390,12 @@ remote_object_class_init (RemoteObjectClass *klass)
 /* Implementation of services */
 
 static gboolean
-remote_object_switch_context (RemoteObject *obj, GError **error)
+remote_object_switch_context (RemoteObject *obj)
 {
 	if (!xchat_set_context (ph, obj->context)) {
 		/* our context closed. Just use the "front" context for now */
 		obj->context = xchat_find_context (ph, NULL, NULL);
 		xchat_set_context (ph, obj->context);
-		g_set_error (error,
-			     REMOTE_OBJECT_ERROR,
-			     REMOTE_OBJECT_ERROR_CONTEXT,
-			     _("switch to an invalid xchat context"));
-
-		return FALSE;
 	}
 
 	return TRUE;
@@ -473,7 +460,7 @@ remote_object_command (RemoteObject *obj,
 		       const char *command,
 		       GError **error)
 {
-	remote_object_switch_context(obj, NULL);
+	remote_object_switch_context(obj);
 	xchat_command (ph, command);
 	return TRUE;
 }
@@ -483,7 +470,7 @@ remote_object_print (RemoteObject *obj,
 		     const char *text,
 		     GError **error)
 {
-	remote_object_switch_context(obj, NULL);
+	remote_object_switch_context(obj);
 	xchat_print (ph, text);
 	return TRUE;
 }
@@ -503,17 +490,8 @@ remote_object_find_context (RemoteObject *obj,
 	if (*channel == '\0') {
 		channel = NULL;
 	}
-
 	context = xchat_find_context (ph, server, channel);
 	*ret_id = context_list_find_id (context);
-	if (*ret_id == 0) {
-		g_set_error (error,
-			     REMOTE_OBJECT_ERROR,
-			     REMOTE_OBJECT_ERROR_CONTEXT,
-			     _("xchat context not found"));
-
-		return FALSE;
-	}
 
 	return TRUE;
 }
@@ -524,16 +502,6 @@ remote_object_get_context (RemoteObject *obj,
 			   GError **error)
 {
 	*ret_id = context_list_find_id (obj->context);
-	if (*ret_id == 0) {
-		obj->context = xchat_get_context (ph);
-		g_set_error (error,
-			     REMOTE_OBJECT_ERROR,
-			     REMOTE_OBJECT_ERROR_CONTEXT,
-			     _("xchat context not found"));
-
-		return FALSE;
-	}
-
 	return TRUE;
 }
 
@@ -548,8 +516,8 @@ remote_object_set_context (RemoteObject *obj,
 	if (context == NULL) {
 		g_set_error (error,
 			     REMOTE_OBJECT_ERROR,
-			     REMOTE_OBJECT_ERROR_FIND_ID,
-			     _("xchat context ID not found"));
+			     REMOTE_OBJECT_ERROR_CONTEXT,
+			     _("invalid context ID"));
 
 		return FALSE;
 	}
@@ -564,18 +532,8 @@ remote_object_get_info (RemoteObject *obj,
 			char **ret_info,
 			GError **error)
 {
-	remote_object_switch_context(obj, NULL);
+	remote_object_switch_context(obj);
 	*ret_info = g_strdup (xchat_get_info (ph, id));
-	if (*ret_info == NULL) {
-		g_set_error (error,
-			     REMOTE_OBJECT_ERROR,
-			     REMOTE_OBJECT_ERROR_GET_INFO,
-			     _("info \"%s\" does not exist"),
-			     id);
-
-		return FALSE;
-	}
-	
 	return TRUE;
 }
 
@@ -589,17 +547,8 @@ remote_object_get_prefs (RemoteObject *obj,
 {
 	const char *str;
 
-	remote_object_switch_context(obj, NULL);
+	remote_object_switch_context(obj);
 	*ret_type = xchat_get_prefs (ph, name, &str, ret_int);
-	if (*ret_type == 0) {
-		g_set_error (error,
-			     REMOTE_OBJECT_ERROR,
-			     REMOTE_OBJECT_ERROR_GET_PREFS,
-			     _("preference \"%s\" does not exist"),
-			     name);
-
-		return FALSE;
-	}
 	*ret_str = g_strdup (str);
 
 	return TRUE;
@@ -749,8 +698,8 @@ remote_object_unhook (RemoteObject *obj,
 	if (!g_hash_table_remove (obj->hooks, &id)) {
 		g_set_error (error,
 			     REMOTE_OBJECT_ERROR,
-			     REMOTE_OBJECT_ERROR_FIND_ID,
-			     _("xchat hook ID not found"));
+			     REMOTE_OBJECT_ERROR_CONTEXT,
+			     _("invalid context ID"));
 
 		return FALSE;
 	}
@@ -766,16 +715,11 @@ remote_object_list_get (RemoteObject *obj,
 	xchat_list *xlist;
 	guint *id;
 
-	remote_object_switch_context(obj, NULL);
+	remote_object_switch_context(obj);
 	xlist = xchat_list_get (ph, name);
 	if (xlist == NULL) {
-		g_set_error (error,
-			     REMOTE_OBJECT_ERROR,
-			     REMOTE_OBJECT_ERROR_LIST,
-			     _("\"%s\" list name not found"),
-			     name);
-
-		return FALSE;
+		*ret_id = 0;
+		return TRUE;
 	}
 	id = g_new0 (guint, 1);
 	*id = obj->last_list_id++;
@@ -798,8 +742,8 @@ remote_object_get_list (RemoteObject *obj,
 	if (xlist == NULL) {
 		g_set_error (error,
 			     REMOTE_OBJECT_ERROR,
-			     REMOTE_OBJECT_ERROR_FIND_ID,
-			     _("xchat list ID not found"));
+			     REMOTE_OBJECT_ERROR_LIST,
+			     _("invalid list ID"));
 	}
 	
 	return xlist;
@@ -911,8 +855,8 @@ remote_object_list_free (RemoteObject *obj,
 	if (!g_hash_table_remove (obj->lists, &id)) {
 		g_set_error (error,
 			     REMOTE_OBJECT_ERROR,
-			     REMOTE_OBJECT_ERROR_FIND_ID,
-			     _("xchat list ID not found"));
+			     REMOTE_OBJECT_ERROR_LIST,
+			     _("invalid list ID"));
 
 		return FALSE;
 	}
@@ -924,6 +868,7 @@ static gboolean
 remote_object_emit_print (RemoteObject *obj,
 			  const char *event_name,
 			  const char *args[],
+			  gboolean *ret,
 			  GError **error)
 {
 	const char *argv[4] = {NULL, NULL, NULL, NULL};
@@ -933,16 +878,9 @@ remote_object_emit_print (RemoteObject *obj,
 		argv[i] = args[i];
 	}
 
-	remote_object_switch_context(obj, NULL);
-	if (!xchat_emit_print (ph, event_name, argv[1], argv[2],
-					       argv[3], argv[4])) {
-		g_set_error (error,
-			     REMOTE_OBJECT_ERROR,
-			     REMOTE_OBJECT_ERROR_EMIT_PRINT,
-			     _("xchat print event unknown"));
-
-		return FALSE;
-	}
+	remote_object_switch_context(obj);
+	*ret = xchat_emit_print (ph, event_name, argv[1], argv[2],
+						 argv[3], argv[4]);
 
 	return TRUE;
 }
@@ -954,7 +892,7 @@ remote_object_nickcmp (RemoteObject *obj,
 		       int *ret,
 		       GError **error)
 {
-	remote_object_switch_context(obj, NULL);
+	remote_object_switch_context(obj);
 	*ret = xchat_nickcmp (ph, nick1, nick2);
 	
 	return TRUE;
@@ -981,7 +919,7 @@ remote_object_send_modes (RemoteObject *obj,
 			  char mode,
 			  GError **error)
 {
-	remote_object_switch_context(obj, NULL);
+	remote_object_switch_context(obj);
 	xchat_send_modes (ph, targets,
 			  g_strv_length ((char**)targets),
 			  modes_per_line,
