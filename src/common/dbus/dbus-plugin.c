@@ -485,7 +485,10 @@ remote_object_get_info (RemoteObject *obj,
 			char **ret_info,
 			GError **error)
 {
-	if (!xchat_set_context (ph, obj->context)) {
+	/* win_ptr is a GtkWindow* casted to char* and will crash
+	 * D-Bus if we send it as a string */
+	if (!xchat_set_context (ph, obj->context) ||
+	    g_str_equal (id, "win_ptr")) {
 		*ret_info = NULL;
 		return TRUE;
 	}
@@ -586,7 +589,7 @@ remote_object_hook_command (RemoteObject *obj,
 	info = g_new0 (HookInfo, 1);
 	info->obj = obj;
 	info->return_value = return_value;
-	info->id = obj->last_hook_id++;
+	info->id = ++obj->last_hook_id;
 	info->hook = xchat_hook_command (ph,
 					 name,
 					 priority,
@@ -612,7 +615,7 @@ remote_object_hook_server (RemoteObject *obj,
 	info = g_new0 (HookInfo, 1);
 	info->obj = obj;
 	info->return_value = return_value;
-	info->id = obj->last_hook_id++;
+	info->id = ++obj->last_hook_id;
 	info->hook = xchat_hook_server (ph,
 					name,
 					priority,
@@ -637,7 +640,7 @@ remote_object_hook_print (RemoteObject *obj,
 	info = g_new0 (HookInfo, 1);
 	info->obj = obj;
 	info->return_value = return_value;
-	info->id = obj->last_hook_id++;
+	info->id = ++obj->last_hook_id;
 	info->hook = xchat_hook_print (ph,
 				       name,
 				       priority,
@@ -676,8 +679,8 @@ remote_object_list_get (RemoteObject *obj,
 		*ret_id = 0;
 		return TRUE;
 	}
-	id = g_new0 (guint, 1);
-	*id = obj->last_list_id++;
+	id = g_new (guint, 1);
+	*id = ++obj->last_list_id;
 	*ret_id = *id;
 	g_hash_table_insert (obj->lists,
 			     id,
@@ -778,6 +781,9 @@ remote_object_list_fields (RemoteObject *obj,
 			   GError **error)
 {
 	*ret = g_strdupv ((char**)xchat_list_fields (ph, name));
+	if (*ret == NULL) {
+		*ret = g_new0 (char*, 1);
+	}
 	return TRUE;
 }
 
@@ -806,8 +812,8 @@ remote_object_emit_print (RemoteObject *obj,
 
 	*ret = xchat_set_context (ph, obj->context);
 	if (*ret) {
-		*ret = xchat_emit_print (ph, event_name, argv[1], argv[2],
-							 argv[3], argv[4]);
+		*ret = xchat_emit_print (ph, event_name, argv[0], argv[1],
+							 argv[2], argv[3]);
 	}
 
 	return TRUE;
