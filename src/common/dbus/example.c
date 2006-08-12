@@ -47,10 +47,11 @@ static void
 test_server_cb (DBusGProxy *proxy,
 		char *word[],
 		char *word_eol[],
-		guint id,
+		guint hook_id,
+		guint context_id,
 		gpointer user_data)
 {
-	if (id == server_id) {
+	if (hook_id == server_id) {
 		g_print ("message: %s\n", word_eol[0]);
 	}
 }
@@ -59,15 +60,16 @@ static void
 test_command_cb (DBusGProxy *proxy,
 		 char *word[],
 		 char *word_eol[],
-		 guint id,
+		 guint hook_id,
+		 guint context_id,
 		 gpointer user_data)
 {
 	GError *error = NULL;
 
-	if (id == command_id) {
+	if (hook_id == command_id) {
 		if (!dbus_g_proxy_call (proxy, "Unhook",
 					&error,
-					G_TYPE_UINT, id,
+					G_TYPE_UINT, hook_id,
 					G_TYPE_INVALID, G_TYPE_INVALID)) {
 			write_error ("Failed to complete unhook", &error);
 		}
@@ -155,9 +157,9 @@ main (int argc, char **argv)
 	g_print ("Server hook id=%d\n", server_id);
 
 	dbus_g_object_register_marshaller (
-		g_cclosure_user_marshal_VOID__POINTER_POINTER_UINT,
+		g_cclosure_user_marshal_VOID__POINTER_POINTER_UINT_UINT,
 		G_TYPE_NONE,
-		G_TYPE_STRV, G_TYPE_STRV, G_TYPE_UINT,
+		G_TYPE_STRV, G_TYPE_STRV, G_TYPE_UINT, G_TYPE_UINT,
 		G_TYPE_INVALID);
 
 	dbus_g_object_register_marshaller (
@@ -169,6 +171,7 @@ main (int argc, char **argv)
 				 G_TYPE_STRV,
 				 G_TYPE_STRV,
 				 G_TYPE_UINT,
+				 G_TYPE_UINT,
 				 G_TYPE_INVALID);
 	dbus_g_proxy_connect_signal (remote_object, "CommandSignal",
 				     G_CALLBACK (test_command_cb),
@@ -177,6 +180,7 @@ main (int argc, char **argv)
 	dbus_g_proxy_add_signal (remote_object, "ServerSignal",
 				 G_TYPE_STRV,
 				 G_TYPE_STRV,
+				 G_TYPE_UINT,
 				 G_TYPE_UINT,
 				 G_TYPE_INVALID);
 	dbus_g_proxy_connect_signal (remote_object, "ServerSignal",

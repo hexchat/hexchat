@@ -177,19 +177,21 @@ Available signals:
   - Parameters:
     - gchar**: word returned by xchat.
     - gchar**: word_eol returned bu xchat.
-    - int: the ID of the hook. (the return value of "HookServer").
+    - guint: the ID of the hook. (the return value of "HookServer").
+    - guint: the ID of the context where the event come from.
 
 "CommandSignal"
   - Parameters:
     - gchar**: word returned by xchat.
     - gchar**: word_eol returned bu xchat.
-    - int: the ID of the hook. (the return value of "HookCommand").
+    - guint: the ID of the hook. (the return value of "HookCommand").
+    - guint: the ID of the context where the event come from.
 
 "PrintSignal"
   - Parameters:
     - gchar**: word returned by xchat.
-    - gchar**: word_eol returned bu xchat.
-    - int: the ID of the hook. (the return value of "HookPrint").
+    - guint: the ID of the hook. (the return value of "HookPrint").
+    - guint: the ID of the context where the event come from.
 
 "UnloadSignal"
   emited when the user asks to unload your program.

@@ -123,17 +123,19 @@
     <signal name="CommandSignal">
       <arg type="as" name="word"/>
       <arg type="as" name="word_eol"/>
-      <arg type="i" name="id"/>
+      <arg type="u" name="hook_id"/>
+      <arg type="u" name="context_id"/>
     </signal>
     <signal name="ServerSignal">
       <arg type="as" name="word"/>
       <arg type="as" name="word_eol"/>
-      <arg type="i" name="id"/>
+      <arg type="u" name="hook_id"/>
+      <arg type="u" name="context_id"/>
     </signal>
     <signal name="PrintSignal">
       <arg type="as" name="word"/>
-      <arg type="as" name="word_eol"/>
-      <arg type="i" name="id"/>
+      <arg type="u" name="hook_id"/>
+      <arg type="u" name="context_id"/>
     </signal>
     <signal name="UnloadSignal"/>
   </interface>

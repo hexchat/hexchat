@@ -317,9 +317,9 @@ remote_object_class_init (RemoteObjectClass *klass)
 			      G_SIGNAL_RUN_LAST,
 			      0,
 			      NULL, NULL,
-			      g_cclosure_user_marshal_VOID__POINTER_POINTER_UINT,
+			      g_cclosure_user_marshal_VOID__POINTER_POINTER_UINT_UINT,
 			      G_TYPE_NONE,
-			      3, G_TYPE_STRV, G_TYPE_STRV, G_TYPE_UINT);
+			      4, G_TYPE_STRV, G_TYPE_STRV, G_TYPE_UINT, G_TYPE_UINT);
 
 	signals[COMMAND_SIGNAL] =
 		g_signal_new ("command_signal",
@@ -327,9 +327,9 @@ remote_object_class_init (RemoteObjectClass *klass)
 			      G_SIGNAL_RUN_LAST,
 			      0,
 			      NULL, NULL,
-			      g_cclosure_user_marshal_VOID__POINTER_POINTER_UINT,
+			      g_cclosure_user_marshal_VOID__POINTER_POINTER_UINT_UINT,
 			      G_TYPE_NONE,
-			      3, G_TYPE_STRV, G_TYPE_STRV, G_TYPE_UINT);
+			      4, G_TYPE_STRV, G_TYPE_STRV, G_TYPE_UINT, G_TYPE_UINT);
 
 	signals[PRINT_SIGNAL] =
 		g_signal_new ("print_signal",
@@ -337,9 +337,9 @@ remote_object_class_init (RemoteObjectClass *klass)
 			      G_SIGNAL_RUN_LAST,
 			      0,
 			      NULL, NULL,
-			      g_cclosure_user_marshal_VOID__POINTER_POINTER_UINT,
+			      g_cclosure_user_marshal_VOID__POINTER_POINTER_UINT_UINT,
 			      G_TYPE_NONE,
-			      2, G_TYPE_STRV, G_TYPE_UINT);
+			      3, G_TYPE_STRV, G_TYPE_UINT, G_TYPE_UINT);
 
 	signals[UNLOAD_SIGNAL] =
 		g_signal_new ("unload_signal",
@@ -527,10 +527,12 @@ server_hook_cb (char *word[],
 
 	arg1 = build_list (word + 1);
 	arg2 = build_list (word_eol + 1);
+	info->obj->context = xchat_get_context (ph);
 	g_signal_emit (info->obj,
 		       signals[SERVER_SIGNAL],
 		       0,
-		       arg1, arg2, info->id);
+		       arg1, arg2, info->id,
+		       context_list_find_id (info->obj->context));
 	g_strfreev (arg1);
 	g_strfreev (arg2);
   
@@ -548,10 +550,12 @@ command_hook_cb (char *word[],
 
 	arg1 = build_list (word + 1);
 	arg2 = build_list (word_eol + 1);
+	info->obj->context = xchat_get_context (ph);
 	g_signal_emit (info->obj,
 		       signals[COMMAND_SIGNAL],
 		       0,
-		       arg1, arg2, info->id);
+		       arg1, arg2, info->id,
+		       context_list_find_id (info->obj->context));
 	g_strfreev (arg1);
 	g_strfreev (arg2);
   
@@ -566,10 +570,12 @@ print_hook_cb (char *word[],
 	char **arg1;
 
 	arg1 = build_list (word + 1);
+	info->obj->context = xchat_get_context (ph);
 	g_signal_emit (info->obj,
 		       signals[PRINT_SIGNAL],
 		       0,
-		       arg1, info->id);
+		       arg1, info->id,
+		       context_list_find_id (info->obj->context));
 	g_strfreev (arg1);
   
 	return info->return_value;
