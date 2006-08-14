@@ -2967,6 +2967,13 @@ cmd_server (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		/* -1 for default port */
 		serv->connect (serv, server_name, -1, FALSE);
 	}
+
+	/* try to associate this connection with a listed network */
+	if (!serv->network)
+		/* search for this hostname in the entire server list */
+		serv->network = servlist_net_find_from_server (server_name);
+		/* may return NULL, but that's OK */
+
 	return TRUE;
 }
 
@@ -3053,6 +3060,23 @@ cmd_unload (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 }
 
 static server *
+find_server_from_hostname (char *hostname)
+{
+	GSList *list = serv_list;
+	server *serv;
+
+	while (list)
+	{
+		serv = list->data;
+		if (!strcasecmp (hostname, serv->hostname) && serv->connected)
+			return serv;
+		list = list->next;
+	}
+
+	return NULL;
+}
+
+static server *
 find_server_from_net (void *net)
 {
 	GSList *list = serv_list;
@@ -3067,6 +3091,16 @@ find_server_from_net (void *net)
 	}
 
 	return NULL;
+}
+
+static void
+url_join_only (server *serv, char *tbuf, char *channel)
+{
+	/* already connected, JOIN only. FIXME: support keys? */
+	tbuf[0] = '#';
+	/* tbuf is 4kb */
+	safe_strcpy ((tbuf + 1), channel, 256);
+	serv->p_join (serv, tbuf, "");
 }
 
 static int
@@ -3098,11 +3132,18 @@ cmd_url (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 				serv = find_server_from_net (net);
 				if (serv)
 				{
-					/* already connected, JOIN only. FIXME: support keys? */
-					tbuf[0] = '#';
-					/* tbuf is 4kb */
-					safe_strcpy ((tbuf + 1), channel, 256);
-					serv->p_join (serv, tbuf, "");
+					url_join_only (serv, tbuf, channel);
+					g_free (url);
+					return TRUE;
+				}
+			}
+			else
+			{
+				/* an un-listed connection */
+				serv = find_server_from_hostname (server_name);
+				if (serv)
+				{
+					url_join_only (serv, tbuf, channel);
 					g_free (url);
 					return TRUE;
 				}
