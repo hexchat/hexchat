@@ -244,7 +244,7 @@ sub unhook {
 
 sub print {
 	my $text = shift @_;
-	return 1 unless defined $text;
+	return "" unless defined $text;
 	if( ref( $text ) eq 'ARRAY' ) {
 		if( $, ) {
 			$text = join $, , @$text;
@@ -285,6 +285,7 @@ sub printf {
 
 sub command {
 	my $command = shift;
+	return "" unless defined $command;
 	my @commands;
 	
 	if( ref( $command ) eq 'ARRAY' ) {
@@ -346,7 +347,7 @@ sub get_info {
 }
 
 sub user_info {
-	my $nick = shift @_ || Xchat::get_info( "nick" );
+	my $nick = Xchat::strip_code(shift @_ || Xchat::get_info( "nick" ));
 	my $user;
 	for (Xchat::get_list( "users" ) ) {
 		if ( Xchat::nickcmp( $_->{nick}, $nick ) == 0 ) {
