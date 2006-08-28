@@ -719,7 +719,7 @@ fe_dcc_open_send_win (int passive)
 	}
 
 #if 0
-	N_("XChat: Uploads und Downloads"),
+	N_("XChat: Uploads and Downloads"),
 	N_("Downloads"),
 	N_("Uploads"),
 	N_("Details"),

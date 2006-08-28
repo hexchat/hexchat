@@ -1640,7 +1640,9 @@ server_connect (server *serv, char *hostname, int port, int no_login)
 	EMIT_SIGNAL (XP_TE_SERVERLOOKUP, sess, hostname, NULL, NULL, NULL, 0);
 
 	safe_strcpy (serv->servername, hostname, sizeof (serv->servername));
-	safe_strcpy (serv->hostname, hostname, sizeof (serv->hostname));
+	/* overlap illegal in strncpy */
+	if (hostname != serv->hostname)
+		safe_strcpy (serv->hostname, hostname, sizeof (serv->hostname));
 
 #ifdef USE_OPENSSL
 	if (serv->use_ssl)
