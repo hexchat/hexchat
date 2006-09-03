@@ -1180,7 +1180,7 @@ xchat_list_fields (xchat_plugin *ph, const char *name)
 	static const char * const dcc_fields[] =
 	{
 		"iaddress32","icps",		"sdestfile","sfile",		"snick",	"iport",
-		"ipos",		"iresume",	"isize",		"istatus", 	"itype",		NULL
+		"ipos", "iresume", "isize", "isizehigh", "istatus", "itype", NULL
 	};
 	static const char * const channels_fields[] =
 	{
@@ -1368,7 +1368,9 @@ xchat_list_int (xchat_plugin *ph, xchat_list *xlist, const char *name)
 		case 0xc84dc82d: /* resume */
 			return ((struct DCC *)data)->resumable;
 		case 0x35e001: /* size */
-			return ((struct DCC *)data)->size;
+			return ((struct DCC *)data)->size & 0xffffffff;
+		case 0x3284d523: /* sizehigh */
+			return (((struct DCC *)data)->size >> 32) & 0xffffffff;
 		case 0xcacdcff2: /* status */
 			return ((struct DCC *)data)->dccstat;
 		case 0x368f3a: /* type */

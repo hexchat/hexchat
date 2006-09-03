@@ -251,7 +251,8 @@ needed for a long time after calling xchat_list_str. The types of lists and fiel
 <tr><td>port</td><td>TCP port number</td><td>int</td></tr>
 <tr><td>pos</td><td>Bytes sent/received</td><td>int</td></tr>
 <tr><td>resume</td><td>Point at which this file was resumed (or zero if it was not resumed)</td><td>int</td></tr>
-<tr><td>size</td><td>File size in bytes</td><td>int</td></tr>
+<tr><td>size</td><td>File size in bytes, low order 32 bits (cast it to unsigned)</td><td>int</td></tr>
+<tr><td>sizehigh</td><td>File size in bytes, high order 32 bits</td><td>int</td></tr>
 <tr><td>status</td><td>DCC Status: 0-Queued 1-Active 2-Failed 3-Done 4-Connecting 5-Aborted</td><td>int</td></tr>
 <tr><td>type</td><td>DCC Type: 0-Send 1-Receive 2-ChatRecv 3-ChatSend</td><td>int</td></tr>
 </table>
