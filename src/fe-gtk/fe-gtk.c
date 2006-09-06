@@ -144,7 +144,7 @@ fe_args (int argc, char *argv[])
 
 	context = g_option_context_new (NULL);
 	g_option_context_add_main_entries (context, gopt_entries, GETTEXT_PACKAGE);
-	g_option_context_add_group (context, gtk_get_option_group (TRUE));
+	g_option_context_add_group (context, gtk_get_option_group (FALSE));
 	g_option_context_parse (context, &argc, &argv, &error);
 
 	if (error)

@@ -444,7 +444,8 @@ send_quit_or_part (session * killsess)
 			}
 		} else
 		{
-			if (killsess->type == SESS_CHANNEL && killsess->channel[0])
+			if (killsess->type == SESS_CHANNEL && killsess->channel[0] &&
+				 !killserv->sent_quit)
 			{
 				server_sendpart (killserv, killsess->channel, 0);
 			}

@@ -1005,6 +1005,9 @@ mg_tab_close_cb (GtkWidget *dialog, gint arg1, session *sess)
 	gtk_widget_destroy (dialog);
 	if (arg1 == GTK_RESPONSE_OK && is_session (sess))
 	{
+		/* force it NOT to send individual PARTs */
+		sess->server->sent_quit = TRUE;
+
 		for (list = sess_list; list;)
 		{
 			next = list->next;
@@ -1013,6 +1016,9 @@ mg_tab_close_cb (GtkWidget *dialog, gint arg1, session *sess)
 				fe_close_window ((session *)list->data);
 			list = next;
 		}
+
+		/* just send one QUIT - better for BNCs */
+		sess->server->sent_quit = FALSE;
 		fe_close_window (sess);
 	}
 }
