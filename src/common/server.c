@@ -1651,7 +1651,7 @@ server_connect (server *serv, char *hostname, int port, int no_login)
 
 		snprintf (cert_file, sizeof (cert_file), "%s/%s.pem",
 					 get_xdir_fs (), server_get_network (serv, TRUE));
-		if (SSL_CTX_use_certificate_file (ctx, cert_file, SSL_FILETYPE_PEM) != 1)
+		if (SSL_CTX_use_certificate_file (ctx, cert_file, SSL_FILETYPE_PEM) == 1)
 			SSL_CTX_use_PrivateKey_file (ctx, cert_file, SSL_FILETYPE_PEM);
 	}
 #endif
