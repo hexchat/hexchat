@@ -13,7 +13,7 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  2.6.x - DD/MMM/2006
 ----------------------------------------------------------------------
 
- - Updated translations (fi, it, ja).
+ - Updated translations (be, fi, it, ja).
  - D-Bus stuff <expand comment> (Claessens Xavier).
  - Python: Fixed "restricted mode" errors on win32 [1512076].
  - Special-cased BRASnet for nickserv.
@@ -22,6 +22,11 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Plugin API:
    * Added fields: lag, queue to the "channels" list.
    * Added fields: sizehigh to the "dcc" list.
+ - Handle gracefully plugins that try to execute commands with invalid
+   UTF-8.
+ - Fixed: [1544960] quitting via tabs behaves bad on bncs.
+ - Fixed: [1551620] --version flag needs display.
+ - 
  - 
  - 
  - Perl (Lian Wan Situ)
