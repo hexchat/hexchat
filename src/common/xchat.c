@@ -911,7 +911,7 @@ xchat_init (void)
 		"NAME %s\n"		"CMD op %%a\n\n"
 		"NAME %s\n"		"CMD deop %%a\n\n"
 		"NAME %s\n"		"CMD ban %%s\n\n"
-		"NAME %s\n"		"CMD getstr %s \"kick %%s\" \"%s\"\n\n"
+		"NAME %s\n"		"CMD getstr \"%s\" \"kick %%s\" \"%s\"\n\n"
 		"NAME %s\n"		"CMD send %%s\n\n"
 		"NAME %s\n"		"CMD query %%s\n\n",
 				_("Op"),
