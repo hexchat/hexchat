@@ -6,14 +6,15 @@
 # Pablo Gonzalo del Campo <pablodc@bigfoot.com>,2002
 # Ramón Rey Vicente <ramon.rey@hispalinux.es>, 2003,2004
 # Rafael Bermúdez <rafaelbermudez@gmail.com>, 2006
+# Rubén C. Díaz Alonso <outime@gmail.com>, 2006
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: xchat 2.6.2\n"
+"Project-Id-Version: xchat 2.6.7\n"
 "Report-Msgid-Bugs-To: www.xchat.org\n"
-"POT-Creation-Date: 2006-06-09 00:12+1000\n"
-"PO-Revision-Date: 2006-04-30 13:56-0700\n"
-"Last-Translator: Rafael Bermúdez <rafaelbermudez@gmail.com>\n"
+"POT-Creation-Date: 2006-06-15 00:12+1000\n"
+"PO-Revision-Date: 2006-08-30 13:56-0700\n"
+"Last-Translator: Rubén C. Díaz Alonso <outime@gmail.com>\n"
 "Language-Team: Spanish <es@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,7 +30,7 @@ msgstr "Estoy ocupado"
 
 #: src/common/cfgfiles.c:684
 msgid "Leaving"
-msgstr "Abandonando"
+msgstr "Saliendo"
 
 #: src/common/cfgfiles.c:730
 msgid ""
@@ -71,7 +72,7 @@ msgstr "No se puede acceder a %s\n"
 #: src/common/dcc.c:2362
 #, c-format
 msgid "%s is offering \"%s\". Do you want to accept?"
-msgstr ""
+msgstr "%s está ofreciendo \"%s\". ¿Deseas aceptar?"
 
 #: src/common/dcc.c:2573
 msgid "No active DCCs\n"
@@ -181,7 +182,7 @@ msgid ""
 "channel. If they are already on the channel this doesn't kick them (needs "
 "chanop)"
 msgstr ""
-"BAN <máscara> [<tipo de veto>], veta a todos aquellos que concuerden con la "
+"BAN <máscara> [<tipo de veto>], banea a todos aquellos que concuerden con la "
 "máscara del canal actual. Si ya están en el canal esto no les expulsa (es "
 "necesario ser operador del canal)"
 
@@ -366,7 +367,7 @@ msgid ""
 "KICKBAN <nick>, bans then kicks the nick from the current channel (needs "
 "chanop)"
 msgstr ""
-"KICKBAN <apodo>, veta y luego expulsa al apodo del canal actual (necesita "
+"KICKBAN <apodo>, banea y luego expulsa al apodo del canal actual (necesita "
 "ser operador del canal)"
 
 #: src/common/outbound.c:3285
@@ -552,7 +553,7 @@ msgid ""
 "TOPIC [<topic>], sets the topic if one is given, else shows the current topic"
 msgstr ""
 "TOPIC [<asunto>], Establece el asunto si se provee uno, si no, muestra el "
-"asunto actual"
+"topic actual"
 
 #: src/common/outbound.c:3361
 msgid "UNBAN <mask> [<mask>...], unbans the specified masks."
@@ -666,11 +667,11 @@ msgstr "%C22*%O$t$1 añadido a la lista de notificaciones."
 
 #: src/common/textevents.h:9
 msgid "%C22*%O$t$1 Banlist:%C19 $4%C20 $2%C21 $3"
-msgstr "%C22*%O$t$1 Lista de vetados:%C19 $4%C20 $2%C21 $3"
+msgstr "%C22*%O$t$1 Lista de bans:%C19 $4%C20 $2%C21 $3"
 
 #: src/common/textevents.h:12
 msgid "%C22*%O$tCannot join%C26 %B$1 %O(You are banned)."
-msgstr "%C22*%O$tNo puede entrar%C26 %B$1 %O(Está vetado)."
+msgstr "%C22*%O$tNo puede entrar%C26 %B$1 %O(Estás baneado)."
 
 #: src/common/textevents.h:18
 msgid "%C22*%O$t$1 is now known as $2"
@@ -686,7 +687,7 @@ msgstr "%C21*%O$t%C21%B$1%O%C21 $2"
 
 #: src/common/textevents.h:27
 msgid "%C22*%O$t$1 sets ban on $2"
-msgstr "%C22*%O$t$1 veta a $2"
+msgstr "%C22*%O$t$1 banea a $2"
 
 #: src/common/textevents.h:30
 msgid "%C22*%O$tChannel $1 created on $2"
@@ -694,15 +695,15 @@ msgstr "%C22*%O$tCanal $1 creado en $2"
 
 #: src/common/textevents.h:33
 msgid "%C22*%O$t%C26$1%O removes channel half-operator status from%C26 $2"
-msgstr "%C22*%O$t%C26$1%O quita el estado de semi-operador del canal a%C26 $2"
+msgstr "%C22*%O$t%C26$1%O quita semi-OP a%C26 $2"
 
 #: src/common/textevents.h:36
 msgid "%C22*%O$t%C26$1%O removes channel operator status from%C26 $2"
-msgstr "%C22*%O$t%C26$1%O quita el estado de operador del canal a%C26 $2"
+msgstr "%C22*%O$t%C26$1%O quita OP de a%C26 $2"
 
 #: src/common/textevents.h:39
 msgid "%C22*%O$t%C26$1%O removes voice from%C26 $2"
-msgstr "%C22*%O$t%C26$1%O quita voz a %C26 $2"
+msgstr "%C22*%O$t%C26$1%O quita voz a%C26 $2"
 
 #: src/common/textevents.h:42
 msgid "%C22*%O$t$1 sets exempt on $2"
@@ -710,7 +711,7 @@ msgstr "%C22*%O$t$1 establece a $2 como exento"
 
 #: src/common/textevents.h:45
 msgid "%C22*%O$t%C26$1%O gives channel half-operator status to%C26 $2"
-msgstr "%C22*%O$t%C26$1%O da estado de semi-operador del canal a%C26 $2"
+msgstr "%C22*%O$t%C26$1%O da estado de semi-OP a%C26 $2"
 
 #: src/common/textevents.h:48
 msgid "%C22*%O$t$1 sets invite on $2"
@@ -730,31 +731,31 @@ msgstr "%C22*%O$t$1 establece modo $2$3 $4"
 
 #: src/common/textevents.h:60
 msgid "%C22*%O$t%C22Channel $1 modes: $2"
-msgstr "C22*%O$t%C22Canal $1 modos: $2"
+msgstr "%C22*%O$t%C22Canal $1 modos: $2"
 
 #: src/common/textevents.h:63
 msgid "$4%C21%B%H<%H$1%H>%H%O%C21$t$2"
-msgstr "4%C21%B%H<%H$1%H>%H%O%C21$t$2"
+msgstr "$4%C21%B%H<%H$1%H>%H%O%C21$t$2"
 
 #: src/common/textevents.h:66
 msgid "%C28-%C29$1/$2%C28-%O$t$3"
-msgstr "C28-%C29$1/$2%C28-%O$t$3"
+msgstr "%C28-%C29$1/$2%C28-%O$t$3"
 
 #: src/common/textevents.h:69
 msgid "%C22*%O$t%C26$1%O gives channel operator status to%C26 $2"
-msgstr "%C22*%O$t%C26$1%O da estado de operador de canal a%C26 $2"
+msgstr "%C22*%O$t%C26$1%O da OP a%C26 $2"
 
 #: src/common/textevents.h:72
 msgid "%C22*%O$t$1 removes exempt on $2"
-msgstr "C22*%O$t$1 quita la exención a $2"
+msgstr "%C22*%O$t$1 quita la exención a $2"
 
 #: src/common/textevents.h:75
 msgid "%C22*%O$t$1 removes invite on $2"
-msgstr "C22*%O$t$1 quita invitación a $2"
+msgstr "%C22*%O$t$1 quita invitación a $2"
 
 #: src/common/textevents.h:78
 msgid "%C22*%O$t$1 removes channel keyword"
-msgstr "C22*%O$t$1 quita contraseña del canal"
+msgstr "%C22*%O$t$1 quita contraseña del canal"
 
 #: src/common/textevents.h:81
 msgid "%C22*%O$t$1 removes user limit"
@@ -766,7 +767,7 @@ msgstr "%C22*%O$t$1 establece contraseña del canal del canal como $2"
 
 #: src/common/textevents.h:87
 msgid "%C22*%O$t$1 sets channel limit to $2"
-msgstr "C22*%O$t$1 establece límite del canal a $2"
+msgstr "%C22*%O$t$1 establece límite del canal a $2"
 
 #: src/common/textevents.h:90
 msgid "%C22*%O$t$1 removes ban on $2"
@@ -774,16 +775,16 @@ msgstr "%C22*%O$t$1 quita veto a $2"
 
 #: src/common/textevents.h:93
 msgid "%C22*%O$t%C26$1%O gives voice to%C26 $2"
-msgstr "%C22*%O$t%C26$1%O da voz a %C26 $2"
+msgstr "%C22*%O$t%C26$1%O da voz a%C26 $2"
 
 #: src/common/textevents.h:96
 #, fuzzy
 msgid "%C22*%O$t%C22Connected. Now logging in..."
-msgstr "C22*%O$t$122Conectado. Ahora registrándose.."
+msgstr "%C22*%O$t%C22Conectado. Ahora registrándose.."
 
 #: src/common/textevents.h:99
 msgid "%C22*%O$t%C22Connecting to $1 ($2) port $3%O..."
-msgstr "%C22*%O$t%C22Conectando a %1 ($2) puerto $3%O..."
+msgstr "%C22*%O$t%C22Conectando a $1 ($2) puerto $3%O..."
 
 #: src/common/textevents.h:102
 msgid "%C21*%O$t%C21Connection failed. Error: $1"
@@ -1113,15 +1114,15 @@ msgstr "%C22*%O$tSe paró el anterior intento de conexión (pid=$1)"
 
 #: src/common/textevents.h:342
 msgid "%C29*%O$t%C29Topic for $1%C %C29is: $2"
-msgstr "%C29*%O$t%C29El asunto para $1%C %C29es $2"
+msgstr "%C29*%O$t%C29El topic para $1%C %C29es $2"
 
 #: src/common/textevents.h:345
 msgid "%C22*%O$t$1 has changed the topic to: $2"
-msgstr "%C22*%O$t$1 ha cambiado el asunto a: $2"
+msgstr "%C22*%O$t$1 ha cambiado el topic a: $2"
 
 #: src/common/textevents.h:348
 msgid "%C29*%O$t%C29Topic for $1%C %C29set by $2%C %C29at $3"
-msgstr "%C29*%O$t%C29Asunto para $1%C %C29definido por $2%C %C29en $3"
+msgstr "%C29*%O$t%C29Topic para $1%C %C29definido por $2%C %C29en $3"
 
 #: src/common/textevents.h:351
 msgid "%C22*%O$tUnknown host. Maybe you misspelled it?"
@@ -1173,7 +1174,7 @@ msgstr ""
 
 #: src/common/textevents.h:393
 msgid "%C19*%O$t%C19Now talking on $2"
-msgstr "%C19*%O$t%C19Está hablando ahora en $2"
+msgstr "%C19*%O$t%C19Has entrado en $2"
 
 #: src/common/textevents.h:396
 msgid "%C23*$tYou have been kicked from $2 by $3 ($4%O%C23)"
@@ -1285,12 +1286,12 @@ msgstr "Nuevo apodo"
 
 #: src/common/text.c:550
 msgid "Nick of person who changed the topic"
-msgstr "Apodo de la persona que ha cambiado el asunto"
+msgstr "Apodo de la persona que ha cambiado el topic"
 
 #: src/common/text.c:551 src/common/text.c:557 src/fe-gtk/chanlist.c:607
 #: src/fe-gtk/chanlist.c:712
 msgid "Topic"
-msgstr "Asunto"
+msgstr "Topic"
 
 #: src/common/text.c:552 src/common/text.c:556 src/common/text.c:992
 #: src/fe-gtk/chanlist.c:605 src/fe-gtk/chanlist.c:703
@@ -2804,7 +2805,7 @@ msgstr "Tomar voz"
 
 #: src/common/xchat.c:763 src/common/xchat.c:858
 msgid "Kick/Ban"
-msgstr "Echar/Vetar"
+msgstr "Echar/Banear"
 
 #: src/common/xchat.c:764 src/common/xchat.c:859 src/common/xchat.c:908
 msgid "Kick"
@@ -2815,13 +2816,13 @@ msgstr "Echar"
 #: src/common/xchat.c:861 src/common/xchat.c:862 src/common/xchat.c:863
 #: src/common/xchat.c:864 src/common/xchat.c:907
 msgid "Ban"
-msgstr "Vetar"
+msgstr "Banear"
 
 #: src/common/xchat.c:770 src/common/xchat.c:771 src/common/xchat.c:772
 #: src/common/xchat.c:773 src/common/xchat.c:865 src/common/xchat.c:866
 #: src/common/xchat.c:867 src/common/xchat.c:868
 msgid "KickBan"
-msgstr "Echar y vetar"
+msgstr "Echar y banear"
 
 #: src/common/xchat.c:836
 msgid "Direct client-to-client"
@@ -3011,7 +3012,7 @@ msgstr "No conectado."
 
 #: src/fe-gtk/banlist.c:153 src/fe-gtk/banlist.c:237
 msgid "You must select some bans."
-msgstr "Debe seleccionar algún vetado"
+msgstr "Debe seleccionar algún baneado"
 
 #: src/fe-gtk/banlist.c:252 src/fe-gtk/ignoregui.c:175
 msgid "Mask"
@@ -3027,12 +3028,12 @@ msgstr "Fecha"
 
 #: src/fe-gtk/banlist.c:297
 msgid "You can only open the Ban List window while in a channel tab."
-msgstr ""
+msgstr "Sólo puedes abrir la lista de bans mientras hay pestaña de canal."
 
 #: src/fe-gtk/banlist.c:301
 #, c-format
 msgid "XChat: Ban List (%s)"
-msgstr "XChat: Lista de vetados (ban) (%s)"
+msgstr "XChat: Lista de bans (%s)"
 
 #: src/fe-gtk/banlist.c:317
 msgid "Unban"
@@ -3210,7 +3211,7 @@ msgstr "Descargar archivos en:"
 
 #: src/fe-gtk/dccgui.c:724
 msgid "Uploads"
-msgstr ""
+msgstr "Subidos"
 
 #: src/fe-gtk/dccgui.c:725
 #, fuzzy
@@ -3219,7 +3220,7 @@ msgstr "Sus datos"
 
 #: src/fe-gtk/dccgui.c:726
 msgid "Open Folder..."
-msgstr ""
+msgstr "Abrir carpeta..."
 
 #: src/fe-gtk/dccgui.c:730
 msgid "XChat: File Send List"
@@ -3260,7 +3261,7 @@ msgstr "Nombre"
 
 #: src/fe-gtk/editlist.c:311
 msgid "Command"
-msgstr "Orden"
+msgstr "Comando"
 
 #: src/fe-gtk/editlist.c:339
 msgid "Move Up"
@@ -3693,11 +3694,11 @@ msgstr "Diálogo con"
 #: src/fe-gtk/maingui.c:734
 #, c-format
 msgid "Topic for %s is: %s"
-msgstr "Asunto para %s es: %s"
+msgstr "Topic para %s es: %s"
 
 #: src/fe-gtk/maingui.c:739
 msgid "No topic is set"
-msgstr "No está definido ningun asunto"
+msgstr "No está definido ningun topic"
 
 #: src/fe-gtk/maingui.c:1032
 #, c-format
@@ -3771,7 +3772,7 @@ msgstr "¡El límite de usuarios debe ser un número!\n"
 
 #: src/fe-gtk/maingui.c:1953
 msgid "Topic Protection"
-msgstr "Protección del asunto"
+msgstr "Protección del topic"
 
 #: src/fe-gtk/maingui.c:1954
 msgid "No outside messages"
@@ -4102,7 +4103,7 @@ msgstr "Barra del menú"
 
 #: src/fe-gtk/menu.c:1332
 msgid "_Topicbar"
-msgstr "Barra del asunto"
+msgstr "Barra del topic"
 
 #: src/fe-gtk/menu.c:1333
 msgid "_Userlist Buttons"
@@ -4215,7 +4216,7 @@ msgstr "_Ventana"
 
 #: src/fe-gtk/menu.c:1375
 msgid "Ban List..."
-msgstr "Lista de vetados..."
+msgstr "Lista de bans..."
 
 #: src/fe-gtk/menu.c:1376
 msgid "Channel List..."
