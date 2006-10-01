@@ -262,15 +262,16 @@ notify_watch (server * serv, char *nick, int add)
 }
 
 static void
-notify_watch_all (char *nick, int add)
+notify_watch_all (struct notify *notify, int add)
 {
 	server *serv;
 	GSList *list = serv_list;
 	while (list)
 	{
 		serv = list->data;
-		if (serv->connected && serv->end_of_motd && serv->supports_watch)
-			notify_watch (serv, nick, add);
+		if (serv->connected && serv->end_of_motd && serv->supports_watch &&
+			 notify_do_network (notify, serv))
+			notify_watch (serv, notify->name, add);
 		list = list->next;
 	}
 }
@@ -481,7 +482,7 @@ notify_deluser (char *name)
 				free (servnot);
 			}
 			notify_list = g_slist_remove (notify_list, notify);
-			notify_watch_all (name, FALSE);
+			notify_watch_all (notify, FALSE);
 			if (notify->networks)
 				free (notify->networks);
 			free (notify->name);
@@ -535,7 +536,7 @@ notify_adduser (char *name, char *networks)
 		notify_checklist ();
 		fe_notify_update (notify->name);
 		fe_notify_update (0);
-		notify_watch_all (name, TRUE);
+		notify_watch_all (notify, TRUE);
 	}
 }
 
