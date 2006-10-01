@@ -32,6 +32,7 @@
 #include <gtk/gtkhbbox.h>
 #include <gtk/gtkstock.h>
 #include <gtk/gtkliststore.h>
+#include <gtk/gtkmessagedialog.h>
 #include <gtk/gtktreeview.h>
 #include <gtk/gtktreeselection.h>
 
@@ -125,7 +126,7 @@ banlist_refresh (GtkWidget * wid, struct session *sess)
 }
 
 static void
-banlist_unban (GtkWidget * wid, struct session *sess)
+banlist_unban (gpointer none, struct session *sess)
 {
 	GtkTreeModel *model;
 	GtkTreeSelection *sel;
@@ -181,13 +182,32 @@ banlist_unban (GtkWidget * wid, struct session *sess)
 }
 
 static void
-banlist_clear (GtkWidget * wid, struct session *sess)
+banlist_clear_cb (GtkDialog *dialog, gint response, gpointer sess)
 {
 	GtkTreeSelection *sel;
 
-	sel = gtk_tree_view_get_selection (get_view (sess));
-	gtk_tree_selection_select_all (sel);
-	banlist_unban (wid, sess);
+	gtk_widget_destroy (GTK_WIDGET (dialog));
+
+	if (response == GTK_RESPONSE_OK)
+	{
+		sel = gtk_tree_view_get_selection (get_view (sess));
+		gtk_tree_selection_select_all (sel);
+		banlist_unban (NULL, sess);
+	}
+}
+
+static void
+banlist_clear (GtkWidget * wid, struct session *sess)
+{
+	GtkWidget *dialog;
+
+	dialog = gtk_message_dialog_new (NULL, 0,
+								GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL,
+					_("Are you sure you want to remove all bans in %s?"), sess->channel);
+	g_signal_connect (G_OBJECT (dialog), "response",
+							G_CALLBACK (banlist_clear_cb), sess);
+	gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
+	gtk_widget_show (dialog);
 }
 
 static void
@@ -232,7 +252,7 @@ banlist_crop (GtkWidget * wid, struct session *sess)
 		g_slist_foreach (list, (GFunc)g_free, NULL);
 		g_slist_free (list);
 
-		banlist_unban (wid, sess);
+		banlist_unban (NULL, sess);
 	} else
 		fe_message (_("You must select some bans."), FE_MSG_ERROR);
 }
