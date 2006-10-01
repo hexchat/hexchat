@@ -2569,9 +2569,16 @@ static int
 cmd_notify (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	int i = 1;
+	char *net = NULL;
 
 	if (*word[2])
 	{
+		if (strcmp (word[2], "-n") == 0)	/* comma sep network list */
+		{
+			net = word[3];
+			i += 2;
+		}
+
 		while (1)
 		{
 			i++;
@@ -2582,7 +2589,7 @@ cmd_notify (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 				EMIT_SIGNAL (XP_TE_DELNOTIFY, sess, word[i], NULL, NULL, NULL, 0);
 				return TRUE;
 			}
-			notify_adduser (word[i]);
+			notify_adduser (word[i], net);
 			EMIT_SIGNAL (XP_TE_ADDNOTIFY, sess, word[i], NULL, NULL, NULL, 0);
 		}
 	} else
@@ -3441,7 +3448,7 @@ const struct commands xc_cmds[] = {
 	{"NOTICE", cmd_notice, 1, 0, 1,
 	 N_("NOTICE <nick/channel> <message>, sends a notice. Notices are a type of message that should be auto reacted to")},
 	{"NOTIFY", cmd_notify, 0, 0, 1,
-	 N_("NOTIFY [<nick>], lists your notify list or adds someone to it")},
+	 N_("NOTIFY [-n network1[,network2,...]] [<nick>], displays your notify list or adds someone to it")},
 	{"OP", cmd_op, 1, 1, 1,
 	 N_("OP <nick>, gives chanop status to the nick (needs chanop)")},
 	{"PART", cmd_part, 1, 1, 1,

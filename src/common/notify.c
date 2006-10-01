@@ -39,6 +39,30 @@ GSList *notify_list = 0;
 int notify_tag = 0;
 
 
+
+static int
+notify_netcmp (char *str, void *serv)
+{
+	if (rfc_casecmp (str, server_get_network (serv, TRUE)) == 0)
+		return 0;	/* finish & return FALSE from token_foreach() */
+
+	return 1;	/* keep going... */
+}
+
+/* monitor this nick on this particular network? */
+
+static gboolean
+notify_do_network (struct notify *notify, server *serv)
+{
+	if (!notify->networks)	/* ALL networks for this nick */
+		return TRUE;
+
+	if (token_foreach (notify->networks, ',', notify_netcmp, serv))
+		return FALSE;	/* network list doesn't contain this one */
+
+	return TRUE;
+}
+
 struct notify_per_server *
 notify_find_server_entry (struct notify *notify, struct server *serv)
 {
@@ -52,6 +76,12 @@ notify_find_server_entry (struct notify *notify, struct server *serv)
 			return servnot;
 		list = list->next;
 	}
+
+	/* not found, should we add it, or is this not a network where
+      we're monitoring this nick? */
+	if (!notify_do_network (notify, serv))
+		return NULL;
+
 	servnot = malloc (sizeof (struct notify_per_server));
 	if (servnot)
 	{
@@ -77,6 +107,11 @@ notify_save (void)
 		{
 			notify = (struct notify *) list->data;
 			write (fh, notify->name, strlen (notify->name));
+			if (notify->networks)
+			{
+				write (fh, " ", 1);
+				write (fh, notify->networks, strlen (notify->networks));
+			}
 			write (fh, "\n", 1);
 			list = list->next;
 		}
@@ -89,6 +124,7 @@ notify_load (void)
 {
 	int fh;
 	char buf[256];
+	char *sep;
 
 	fh = xchat_open_file ("notify.conf", O_RDONLY, 0, 0);
 	if (fh != -1)
@@ -96,7 +132,16 @@ notify_load (void)
 		while (waitline (fh, buf, sizeof buf, FALSE) != -1)
 		{
 			if (buf[0] != '#' && buf[0] != 0)
-				notify_adduser (buf);
+			{
+				sep = strchr (buf, ' ');
+				if (sep)
+				{
+					sep[0] = 0;
+					notify_adduser (buf, sep + 1);					
+				}
+				else
+					notify_adduser (buf, NULL);
+			}
 		}
 		close (fh);
 	}
@@ -140,8 +185,8 @@ notify_announce_offline (server * serv, struct notify_per_server *servnot,
 	servnot->ison = FALSE;
 	servnot->lastoff = time (0);
 	if (!quiet)
-		EMIT_SIGNAL (XP_TE_NOTIFYOFFLINE, sess, nick, serv->servername, NULL,
-						 NULL, 0);
+		EMIT_SIGNAL (XP_TE_NOTIFYOFFLINE, sess, nick, serv->servername,
+						 server_get_network (serv, TRUE), NULL, 0);
 	fe_notify_update (nick);
 	fe_notify_update (0);
 }
@@ -160,8 +205,8 @@ notify_announce_online (server * serv, struct notify_per_server *servnot,
 
 	servnot->ison = TRUE;
 	servnot->laston = time (0);
-	EMIT_SIGNAL (XP_TE_NOTIFYONLINE, sess, nick, serv->servername, NULL,
-					 NULL, 0);
+	EMIT_SIGNAL (XP_TE_NOTIFYONLINE, sess, nick, serv->servername,
+					 server_get_network (serv, TRUE), NULL, 0);
 	fe_notify_update (nick);
 	fe_notify_update (0);
 
@@ -266,13 +311,15 @@ notify_send_watches (server * serv)
 	{
 		notify = list->data;
 
-		len += strlen (notify->name) + 2 /* + and space */;
-
-		if (len > 500)
+		if (notify_do_network (notify, serv))
 		{
-			notify_flush_watches (serv, point, list);
-			len = strlen (notify->name) + 2;
-			point = list;
+			len += strlen (notify->name) + 2 /* + and space */;
+			if (len > 500)
+			{
+				notify_flush_watches (serv, point, list);
+				len = strlen (notify->name) + 2;
+				point = list;
+			}
 		}
 
 		list = list->next;
@@ -331,49 +378,54 @@ notify_markonline (server *serv, char *word[])
 
 /* yuck! Old routine for ISON notify */
 
-int
-notify_checklist (void)
+static void
+notify_checklist_for_server (server *serv)
 {
-	char *outbuf;
-	struct server *serv;
+	char outbuf[512];
 	struct notify *notify;
 	GSList *list = notify_list;
 	int i = 0;
 
-	if (!list)
-		return 1;
-
-	outbuf = malloc (512);
-
 	strcpy (outbuf, "ISON ");
 	while (list)
 	{
-		i++;
-		notify = (struct notify *) list->data;
-		strcat (outbuf, notify->name);
-		strcat (outbuf, " ");
-		if (strlen (outbuf) > 460)
+		notify = list->data;
+		if (notify_do_network (notify, serv))
 		{
-			/* LAME: we can't send more than 512 bytes to the server, but     *
-			 * if we split it in two packets, our offline detection wouldn't  *
-			 work                                                           */
-			/*fprintf (stderr, _("*** XCHAT WARNING: notify list too large.\n"));*/
-			break;
+			i++;
+			strcat (outbuf, notify->name);
+			strcat (outbuf, " ");
+			if (strlen (outbuf) > 460)
+			{
+				/* LAME: we can't send more than 512 bytes to the server, but     *
+				 * if we split it in two packets, our offline detection wouldn't  *
+				 work                                                           */
+				/*fprintf (stderr, _("*** XCHAT WARNING: notify list too large.\n"));*/
+				break;
+			}
 		}
 		list = list->next;
 	}
+
 	if (i)
+		serv->p_raw (serv, outbuf);
+}
+
+int
+notify_checklist (void)	/* check ISON list */
+{
+	struct server *serv;
+	GSList *list = serv_list;
+
+	while (list)
 	{
-		list = serv_list;
-		while (list)
+		serv = list->data;
+		if (serv->connected && serv->end_of_motd && !serv->supports_watch)
 		{
-			serv = (struct server *) list->data;
-			if (serv->connected && serv->end_of_motd && !serv->supports_watch)
-				serv->p_raw (serv, outbuf);
-			list = list->next;
+			notify_checklist_for_server (serv);
 		}
+		list = list->next;
 	}
-	free (outbuf);
 	return 1;
 }
 
@@ -430,6 +482,8 @@ notify_deluser (char *name)
 			}
 			notify_list = g_slist_remove (notify_list, notify);
 			notify_watch_all (name, FALSE);
+			if (notify->networks)
+				free (notify->networks);
 			free (notify->name);
 			free (notify);
 			fe_notify_update (0);
@@ -440,8 +494,27 @@ notify_deluser (char *name)
 	return 0;
 }
 
+static char *
+despacify_dup (char *str)
+{
+	char *p, *res = malloc (strlen (str) + 1);
+
+	p = res;
+	while (1)
+	{
+		if (*str != ' ')
+		{
+			*p = *str;
+			if (*p == 0)
+				return res;
+			p++;
+		}
+		str++;
+	}
+}
+
 void
-notify_adduser (char *name)
+notify_adduser (char *name, char *networks)
 {
 	struct notify *notify = malloc (sizeof (struct notify));
 	if (notify)
@@ -455,6 +528,8 @@ notify_adduser (char *name)
 		{
 			notify->name = strdup (name);
 		}
+		if (networks)
+			notify->networks = despacify_dup (networks);
 		notify->server_list = 0;
 		notify_list = g_slist_prepend (notify_list, notify);
 		notify_checklist ();

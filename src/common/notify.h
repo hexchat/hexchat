@@ -4,6 +4,7 @@
 struct notify
 {
 	char *name;
+	char *networks;	/* network names, comma sep */
 	GSList *server_list;
 };
 
@@ -26,7 +27,7 @@ void notify_set_offline (server * serv, char *nick, int quiet);
 void notify_send_watches (server * serv);
 
 /* the general stuff */
-void notify_adduser (char *name);
+void notify_adduser (char *name, char *networks);
 int notify_deluser (char *name);
 void notify_cleanup (void);
 void notify_load (void);

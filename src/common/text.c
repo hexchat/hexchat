@@ -923,12 +923,13 @@ static char * const pevt_connect_help[] = {
 };
 
 static char * const pevt_sconnect_help[] = {
-	N_("PID"),
+	"PID"
 };
 
 static char * const pevt_generic_nick_help[] = {
 	N_("Nickname"),
-	N_("Server Name")
+	N_("Server Name"),
+	N_("Network")
 };
 
 static char * const pevt_chanmodes_help[] = {

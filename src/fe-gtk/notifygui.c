@@ -31,7 +31,11 @@
 #include <gtk/gtkhbbox.h>
 #include <gtk/gtkscrolledwindow.h>
 
+#include <gtk/gtklabel.h>
 #include <gtk/gtkliststore.h>
+#include <gtk/gtkentry.h>
+#include <gtk/gtkmessagedialog.h>
+#include <gtk/gtktable.h>
 #include <gtk/gtktreeview.h>
 #include <gtk/gtktreeselection.h>
 #include <gtk/gtkcellrenderertext.h>
@@ -40,6 +44,7 @@
 #include "../common/notify.h"
 #include "../common/cfgfiles.h"
 #include "../common/fe.h"
+#include "../common/server.h"
 #include "../common/util.h"
 #include "../common/userlist.h"
 #include "gtkutil.h"
@@ -131,7 +136,7 @@ notify_treeview_new (GtkWidget *box)
 	                             notify_treecell_property_mapper,
 	                             USER_COLUMN, _("User"),
 	                             STATUS_COLUMN, _("Status"),
-	                             SERVER_COLUMN, _("Server"),
+	                             SERVER_COLUMN, _("Network"),
 	                             SEEN_COLUMN, _("Last Seen"), -1);
 
 	for (col_id=0; (col = gtk_tree_view_get_column (GTK_TREE_VIEW (view), col_id));
@@ -155,6 +160,7 @@ notify_gui_update (void)
 	gchar *name, *status, *server, *seen;
 	int online, servcount;
 	time_t lastseen;
+	char agobuf[128];
 
 	GtkListStore *store;
 	GtkTreeView *view;
@@ -195,8 +201,8 @@ notify_gui_update (void)
 				seen = _("Never");
 			else
 			{
-				seen = ctime (&lastseen);
-				seen[strlen (seen) - 1] = 0; /* remove the \n */
+				snprintf (agobuf, sizeof (agobuf), "%d minutes ago", (int)(time (0) - lastseen) / 60);
+				seen = agobuf;
 			}
 			if (!valid)	/* create new tree row if required */
 				gtk_list_store_append (store, &iter);
@@ -218,9 +224,10 @@ notify_gui_update (void)
 				{
 					if (servcount > 0)
 						name = "";
-					server = servnot->server->servername;
-					seen = ctime (&servnot->lastseen);
-					seen[strlen (seen) - 1] = 0; /* remove the \n */
+					server = server_get_network (servnot->server, TRUE);
+
+					snprintf (agobuf, sizeof (agobuf), "%d minutes ago", (int)(time (0) - lastseen) / 60);
+					seen = agobuf;
 
 					if (!valid)	/* create new tree row if required */
 						gtk_list_store_append (store, &iter);
@@ -306,16 +313,82 @@ notify_remove_clicked (GtkWidget * igad)
 }
 
 static void
-notifygui_add (int cancel, char *text, gpointer userdata)
+notifygui_add_cb (GtkDialog *dialog, gint response, gpointer entry)
 {
-	if (!cancel && text[0])
-		notify_adduser (text);
+	char *networks;
+	char *text;
+
+	text = GTK_ENTRY (entry)->text;
+	if (text[0] && response == GTK_RESPONSE_ACCEPT)
+	{
+		networks = GTK_ENTRY (g_object_get_data (G_OBJECT (entry), "net"))->text;
+		if (strcasecmp (networks, "ALL") == 0 || networks[0] == 0)
+			notify_adduser (text, NULL);
+		else
+			notify_adduser (text, networks);
+	}
+
+	gtk_widget_destroy (GTK_WIDGET (dialog));
+}
+
+static void
+notifygui_add_enter (GtkWidget *entry, GtkWidget *dialog)
+{
+	gtk_dialog_response (GTK_DIALOG (dialog), GTK_RESPONSE_ACCEPT);
 }
 
 static void
 notify_add_clicked (GtkWidget * igad)
 {
-	fe_get_str (_("Enter nickname to add:"), "", notifygui_add, NULL);
+	GtkWidget *dialog;
+	GtkWidget *entry;
+	GtkWidget *label;
+	GtkWidget *wid;
+	GtkWidget *table;
+	char *msg = _("Enter nickname to add:");
+	char buf[256];
+
+	dialog = gtk_dialog_new_with_buttons (msg, NULL, 0,
+										GTK_STOCK_CANCEL, GTK_RESPONSE_REJECT,
+										GTK_STOCK_OK, GTK_RESPONSE_ACCEPT,
+										NULL);
+	if (parent_window)
+		gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (parent_window));
+	gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
+
+	table = gtk_table_new (2, 3, FALSE);
+	gtk_container_set_border_width (GTK_CONTAINER (table), 12);
+	gtk_table_set_row_spacings (GTK_TABLE (table), 3);
+	gtk_table_set_col_spacings (GTK_TABLE (table), 8);
+	gtk_container_add (GTK_CONTAINER (GTK_DIALOG (dialog)->vbox), table);
+
+	label = gtk_label_new (msg);
+	gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 0, 1);
+
+	entry = gtk_entry_new ();
+	g_signal_connect (G_OBJECT (entry), "activate",
+						 	G_CALLBACK (notifygui_add_enter), dialog);
+	gtk_table_attach_defaults (GTK_TABLE (table), entry, 1, 2, 0, 1);
+
+	g_signal_connect (G_OBJECT (dialog), "response",
+						   G_CALLBACK (notifygui_add_cb), entry);
+
+	label = gtk_label_new (_("Notify on these networks:"));
+	gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 2, 3);
+
+	wid = gtk_entry_new ();
+	g_object_set_data (G_OBJECT (entry), "net", wid);
+	g_signal_connect (G_OBJECT (wid), "activate",
+						 	G_CALLBACK (notifygui_add_enter), dialog);
+	gtk_entry_set_text (GTK_ENTRY (wid), "ALL");
+	gtk_table_attach_defaults (GTK_TABLE (table), wid, 1, 2, 2, 3);
+
+	label = gtk_label_new (NULL);
+	snprintf (buf, sizeof (buf), "<i><span size=\"smaller\">%s</span></i>", _("Comma separated list of networks is accepted."));
+	gtk_label_set_markup (GTK_LABEL (label), buf);
+	gtk_table_attach_defaults (GTK_TABLE (table), label, 1, 2, 3, 4);
+
+	gtk_widget_show_all (dialog);
 }
 
 void

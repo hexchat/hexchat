@@ -278,11 +278,11 @@ N_("%C24,18 %B  Notify List                           ")},
 {"Notify Number", pevt_notifynumber_help, 1, 
 N_("%C22*%O$t$1 users in notify list.")},
 
-{"Notify Offline", pevt_generic_nick_help, 2, 
-N_("%C22*%O$tNotify: $1 is offline ($2).")},
+{"Notify Offline", pevt_generic_nick_help, 3, 
+N_("%C22*%O$tNotify: $1 is offline ($3).")},
 
-{"Notify Online", pevt_generic_nick_help, 2, 
-N_("%C22*%O$tNotify: $1 is online ($2).")},
+{"Notify Online", pevt_generic_nick_help, 3, 
+N_("%C22*%O$tNotify: $1 is online ($3).")},
 
 {"Open Dialog", pevt_generic_none_help, 128, 
 ""},
