@@ -403,7 +403,7 @@ ban (session * sess, char *tbuf, char *mask, char *bantypestr, int deop)
 	{
 		if (deop)
 		{
-			mode = "-o+b";
+			mode = "-o+b ";
 			p2 = user->nick;
 		} else
 		{
@@ -465,19 +465,19 @@ ban (session * sess, char *tbuf, char *mask, char *bantypestr, int deop)
 			switch (bantype)
 			{
 			case 0:
-				snprintf (tbuf, TBUFSIZE, "%s %s *!*@%s.*", mode, p2, domain);
+				snprintf (tbuf, TBUFSIZE, "%s%s *!*@%s.*", mode, p2, domain);
 				break;
 
 			case 1:
-				snprintf (tbuf, TBUFSIZE, "%s %s *!*@%s", mode, p2, fullhost);
+				snprintf (tbuf, TBUFSIZE, "%s%s *!*@%s", mode, p2, fullhost);
 				break;
 
 			case 2:
-				snprintf (tbuf, TBUFSIZE, "%s %s *!%s@%s.*", mode, p2, username, domain);
+				snprintf (tbuf, TBUFSIZE, "%s%s *!%s@%s.*", mode, p2, username, domain);
 				break;
 
 			case 3:
-				snprintf (tbuf, TBUFSIZE, "%s %s *!%s@%s", mode, p2, username, fullhost);
+				snprintf (tbuf, TBUFSIZE, "%s%s *!%s@%s", mode, p2, username, fullhost);
 				break;
 			}
 		} else
@@ -485,19 +485,19 @@ ban (session * sess, char *tbuf, char *mask, char *bantypestr, int deop)
 			switch (bantype)
 			{
 			case 0:
-				snprintf (tbuf, TBUFSIZE, "%s %s *!*@*%s", mode, p2, domain);
+				snprintf (tbuf, TBUFSIZE, "%s%s *!*@*%s", mode, p2, domain);
 				break;
 
 			case 1:
-				snprintf (tbuf, TBUFSIZE, "%s %s *!*@%s", mode, p2, fullhost);
+				snprintf (tbuf, TBUFSIZE, "%s%s *!*@%s", mode, p2, fullhost);
 				break;
 
 			case 2:
-				snprintf (tbuf, TBUFSIZE, "%s %s *!%s@*%s", mode, p2, username, domain);
+				snprintf (tbuf, TBUFSIZE, "%s%s *!%s@*%s", mode, p2, username, domain);
 				break;
 
 			case 3:
-				snprintf (tbuf, TBUFSIZE, "%s %s *!%s@%s", mode, p2, username, fullhost);
+				snprintf (tbuf, TBUFSIZE, "%s%s *!%s@%s", mode, p2, username, fullhost);
 				break;
 			}
 		}
