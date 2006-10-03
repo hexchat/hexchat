@@ -270,6 +270,8 @@ needed for a long time after calling xchat_list_str. The types of lists and fiel
 "notify" - list of people on notify.
 <blockquote> <table border=1>
 <tr bgcolor="#dddddd"><td>Name</td><td>Description</td><td>Type</td></tr>
+<tr><td>networks</td><td>Networks to which this nick applies. Comma separated. May be NULL.
+<br><small>(Added in version 2.6.8)</small></td><td>string</td></tr>
 <tr><td>nick</td><td>Nickname</td><td>string</td></tr>
 <tr><td>flags</td><td>Bit field of flags. 0=Is online.</td><td>int</td></tr>
 <tr><td>on</td><td>Time when user came online.</td><td>time_t</td></tr>
@@ -287,7 +289,7 @@ server.</small>
 <blockquote> <table border=1>
 <tr bgcolor="#dddddd"><td>Name</td><td>Description</td><td>Type</td></tr>
 <tr><td>away</td><td>Away status (boolean)<br><small>(Added in version 2.0.6. Older versions will return -1)</small></td><td>int</td></tr>
-<tr><td>lasttalk</td><td>Last time the user was seen talking<br><small>(Added in version 2.4.2. Older versions will return -1)</td><td>time_t</td></tr>
+<tr><td>lasttalk</td><td>Last time the user was seen talking<br><small>(Added in version 2.4.2. Older versions will return -1)</small></td><td>time_t</td></tr>
 <tr><td>nick</td><td>Nick name</td><td>string</td></tr>
 <tr><td>host</td><td>Host name in the form: user@host (or NULL if not known).</td><td>string</td></tr>
 <tr><td>prefix</td><td>Prefix character, .e.g: @ or +. Points to a single char.</td><td>string</td></tr>

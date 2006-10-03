@@ -142,8 +142,9 @@ nick_command_parse (session *sess, char *cmd, char *nick, char *allnick)
 	len = strlen (cmd) + strlen (nick) + strlen (allnick) + 512;
 	buf = malloc (len);
 
-	auto_insert (buf, len, cmd, 0, 0, allnick, sess->channel, "", host,
-						sess->server->nick, nick);
+	auto_insert (buf, len, cmd, 0, 0, allnick, sess->channel, "",
+					 server_get_network (sess->server, TRUE), host,
+					 sess->server->nick, nick);
 
 	nick_command (sess, buf);
 
@@ -1111,6 +1112,7 @@ menu_pluginlist (void)
 
 #define usercommands_help  _("User Commands - Special codes:\n\n"\
                            "%c  =  current channel\n"\
+									"%e  =  current network name\n"\
 									"%m  =  machine info\n"\
                            "%n  =  your nick\n"\
 									"%t  =  time/date\n"\
@@ -1127,6 +1129,7 @@ menu_pluginlist (void)
 #define ulbutton_help       _("Userlist Buttons - Special codes:\n\n"\
                            "%a  =  all selected nicks\n"\
                            "%c  =  current channel\n"\
+									"%e  =  current network name\n"\
                            "%h  =  selected nick's hostname\n"\
 									"%m  =  machine info\n"\
                            "%n  =  your nick\n"\
@@ -1136,6 +1139,7 @@ menu_pluginlist (void)
 #define dlgbutton_help      _("Dialog Buttons - Special codes:\n\n"\
                            "%a  =  all selected nicks\n"\
                            "%c  =  current channel\n"\
+									"%e  =  current network name\n"\
                            "%h  =  selected nick's hostname\n"\
 									"%m  =  machine info\n"\
                            "%n  =  your nick\n"\
@@ -1144,6 +1148,7 @@ menu_pluginlist (void)
 
 #define ctcp_help          _("CTCP Replies - Special codes:\n\n"\
                            "%d  =  data (the whole ctcp)\n"\
+									"%e  =  current network name\n"\
 									"%m  =  machine info\n"\
                            "%s  =  nick who sent the ctcp\n"\
                            "%t  =  time/date\n"\

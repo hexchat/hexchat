@@ -232,7 +232,8 @@ struct xchatprefs
 	unsigned int beepmsg;
 	unsigned int beepchans;
 	unsigned int beephilight;
-	unsigned int flash_hilight;
+	unsigned int input_flash_hilight;
+	unsigned int input_flash_priv;
 	unsigned int truncchans;
 	unsigned int privmsgtab;
 	unsigned int irc_join_delay;

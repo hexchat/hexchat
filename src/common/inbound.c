@@ -170,6 +170,9 @@ inbound_privmsg (server *serv, char *from, char *ip, char *text, int id)
 		if (prefs.beepmsg || (sess && sess->beep))
 			sound_beep (sess);
 
+		if (prefs.input_flash_priv)
+			fe_flash_window (sess);
+
 		if (ip && ip[0])
 		{
 			if (prefs.logging && sess->logfd != -1 &&
@@ -201,6 +204,9 @@ inbound_privmsg (server *serv, char *from, char *ip, char *text, int id)
 
 	if (prefs.beepmsg || sess->beep)
 		sound_beep (sess);
+
+	if (prefs.input_flash_priv)
+		fe_flash_window (sess);
 
 	if (sess->type == SESS_DIALOG)
 		EMIT_SIGNAL (XP_TE_DPRIVMSG, sess, from, text, idtext, NULL, 0);
@@ -348,6 +354,9 @@ inbound_action (session *sess, char *chan, char *from, char *text, int fromme, i
 
 		if (beep || sess->beep)
 			sound_beep (sess);
+
+		if (prefs.input_flash_priv)
+			fe_flash_window (sess);
 
 		if (hilight)
 		{

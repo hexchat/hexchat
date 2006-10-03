@@ -455,7 +455,8 @@ const struct prefs vars[] = {
 	{"input_beep_msg", P_OFFINT (beepmsg), TYPE_BOOL},
 	{"input_command_char", P_OFFSET (cmdchar), TYPE_STR},
 	{"input_filter_beep", P_OFFINT (filterbeep), TYPE_BOOL},
-	{"input_flash_hilight", P_OFFINT (flash_hilight), TYPE_BOOL},
+	{"input_flash_hilight", P_OFFINT (input_flash_hilight), TYPE_BOOL},
+	{"input_flash_priv", P_OFFINT (input_flash_priv), TYPE_BOOL},
 	{"input_perc_ascii", P_OFFINT (perc_ascii), TYPE_BOOL},
 	{"input_perc_color", P_OFFINT (perc_color), TYPE_BOOL},
 
@@ -649,7 +650,7 @@ load_config (void)
 	prefs.gui_url_mod = 4;	/* ctrl */
 	prefs.mainwindow_save = 1;
 	prefs.bantype = 2;
-	prefs.flash_hilight = 1;
+	prefs.input_flash_priv = prefs.input_flash_hilight = 1;
 	prefs.autodccsend = 2;	/* browse mode */
 #ifdef WIN32
 	prefs.identd = 1;

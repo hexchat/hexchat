@@ -269,10 +269,21 @@ unflash_window (GtkWidget *win)
 #endif
 #endif
 
+/* flash the taskbar button */
+
+void
+fe_flash_window (session *sess)
+{
+#if defined(WIN32) || defined(USE_XLIB)
+	if (fe_gui_info (sess, 0) != 1)	/* only do it if not focused */
+		flash_window (sess->gui->window);
+#endif
+}
+
 /* set a tab plain, red, light-red, or blue */
 
 void
-fe_set_tab_color (struct session *sess, int col, int flash)
+fe_set_tab_color (struct session *sess, int col)
 {
 	struct session *server_sess = sess->server->server_session;
 	if (sess->gui->is_tab && (col == 0 || sess != current_tab))
@@ -332,11 +343,6 @@ fe_set_tab_color (struct session *sess, int col, int flash)
 			break;
 		}
 	}
-
-#if defined(WIN32) || defined(USE_XLIB)
-	if (flash && prefs.flash_hilight && fe_gui_info (sess, 0) != 1)
-		flash_window (sess->gui->window);
-#endif
 }
 
 static void
@@ -582,7 +588,7 @@ mg_focus (session *sess)
 		/* when called via mg_changui_new, is_tab might be true, but
 			sess->res->tab is still NULL. */
 		if (sess->res->tab)
-			fe_set_tab_color (sess, 0, FALSE);
+			fe_set_tab_color (sess, 0);
 	}
 }
 
@@ -1379,7 +1385,7 @@ mg_tab_contextmenu_cb (chanview *cv, chan *ch, int tag, gpointer ud, GdkEventBut
 	session *sess = ud;
 
 	/* shift-click to close a tab */
-	if (event->state & GDK_SHIFT_MASK)
+	if ((event->state & GDK_SHIFT_MASK) && event->type == GDK_BUTTON_PRESS)
 	{
 		mg_xbutton_cb (cv, ch, tag, ud);
 		return FALSE;
@@ -2020,7 +2026,9 @@ mg_dialog_button_cb (GtkWidget *wid, char *cmd)
 	if (topic)
 		host = topic + 1;
 
-	auto_insert (buf, sizeof (buf), cmd, 0, 0, "", "", "", host, "", current_sess->channel);
+	auto_insert (buf, sizeof (buf), cmd, 0, 0, "", "", "",
+					 server_get_network (current_sess->server, TRUE), host, "",
+					 current_sess->channel);
 
 	handle_command (current_sess, buf, TRUE);
 
