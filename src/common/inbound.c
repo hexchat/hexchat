@@ -355,7 +355,8 @@ inbound_action (session *sess, char *chan, char *from, char *text, int fromme, i
 		if (beep || sess->beep)
 			sound_beep (sess);
 
-		if (prefs.input_flash_priv)
+		/* private action, flash? */
+		if (!is_channel (serv, chan) && prefs.input_flash_priv)
 			fe_flash_window (sess);
 
 		if (hilight)
