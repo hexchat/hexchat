@@ -25,6 +25,9 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
    * Added fields: networks to the "notify" list.
    * Handle gracefully plugins that try to execute commands with invalid
      UTF-8.
+   * Added /GETFILE command, to open a file dialog.
+   * Command hooks that start with a period ('.') will now be hidden from
+     /HELP and /HELP -l.
  - Fixed: [1544960] quitting via tabs behaves bad on bncs.
  - Fixed: [1551620] --version flag needs display.
  - Fixed: [1539236] problem with the /url command (irc:// handling).

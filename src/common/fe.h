@@ -98,6 +98,15 @@ void fe_set_color_paste (session *sess, int status);
 void fe_serverlist_open (session *sess);
 void fe_get_str (char *prompt, char *def, void *callback, void *ud);
 void fe_get_int (char *prompt, int def, void *callback, void *ud);
+#define FRF_WRITE 1	/* save file */
+#define FRF_MULTIPLE 2	/* multi-select */
+#define FRF_ADDFOLDER 4	/* add ~/.xchat2 to favourites */
+#define FRF_CHOOSEFOLDER 8	/* choosing a folder only */
+#define FRF_FILTERISINITIAL 16	/* unused */
+#define FRF_NOASKOVERWRITE 32	/* don't ask to overwrite existing files */
+void fe_get_file (const char *title, char *initial,
+				 void (*callback) (void *userdata, char *file), void *userdata,
+				 int flags);
 void fe_ctrl_gui (session *sess, int action, int arg);
 int fe_gui_info (session *sess, int info_type);
 void *fe_gui_info_ptr (session *sess, int info_type);

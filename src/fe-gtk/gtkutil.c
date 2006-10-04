@@ -48,6 +48,7 @@
 
 #include "../common/xchat.h"
 #include "../common/fe.h"
+#include "../common/util.h"
 #include "gtkutil.h"
 #include "pixmaps.h"
 
@@ -195,8 +196,13 @@ gtkutil_file_req (const char *title, void *callback, void *userdata, char *filte
 												GTK_STOCK_CANCEL, GTK_RESPONSE_CANCEL,
 												GTK_STOCK_SAVE, GTK_RESPONSE_ACCEPT,
 												NULL);
-		if (filter)	/* filter becomes initial name when saving */
-			gtk_file_chooser_set_current_name (GTK_FILE_CHOOSER (dialog), filter);
+		if (filter && filter[0])	/* filter becomes initial name when saving */
+		{
+			char temp[1024];
+			path_part (filter, temp, sizeof (temp));
+			gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), temp);
+			gtk_file_chooser_set_current_name (GTK_FILE_CHOOSER (dialog), file_part (filter));
+		}
 #if GTK_CHECK_VERSION(2,8,0)
 		if (!(flags & FRF_NOASKOVERWRITE))
 			gtk_file_chooser_set_do_overwrite_confirmation (GTK_FILE_CHOOSER (dialog), TRUE);
@@ -219,6 +225,11 @@ gtkutil_file_req (const char *title, void *callback, void *userdata, char *filte
 	{
 		gtk_file_chooser_set_action (GTK_FILE_CHOOSER (dialog), GTK_FILE_CHOOSER_ACTION_SELECT_FOLDER);
 		gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), filter);
+	}
+	else
+	{
+		if (filter && (flags & FRF_FILTERISINITIAL))
+			gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), filter);
 	}
 
 	freq = malloc (sizeof (struct file_req));

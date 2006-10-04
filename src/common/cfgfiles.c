@@ -893,16 +893,16 @@ cmd_set (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	int idx = 2;
 	char *var, *val;
 
-	if (strcasecmp (word[2], "-quiet") == 0)
-	{
-		idx++;
-		quiet = TRUE;
-	}
-
 	if (strcasecmp (word[2], "-e") == 0)
 	{
 		idx++;
 		erase = TRUE;
+	}
+
+	if (strcasecmp (word[idx], "-quiet") == 0)
+	{
+		idx++;
+		quiet = TRUE;
 	}
 
 	var = word[idx];

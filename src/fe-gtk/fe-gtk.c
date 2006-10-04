@@ -943,3 +943,14 @@ fe_server_event (server *serv, int type, int arg)
 		list = list->next;
 	}
 }
+
+void
+fe_get_file (const char *title, char *initial,
+				 void (*callback) (void *userdata, char *file), void *userdata,
+				 int flags)
+				
+{
+	/* OK: Call callback once per file, then once more with file=NULL. */
+	/* CANCEL: Call callback once with file=NULL. */
+	gtkutil_file_req (title, callback, userdata, initial, flags | FRF_FILTERISINITIAL);
+}

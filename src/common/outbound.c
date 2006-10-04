@@ -1889,6 +1889,57 @@ cmd_getint (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 }
 
 static void
+get_file_cb (char *cmd, char *file)
+{
+	char buf[PATH_MAX + 128];
+
+	/* execute the command once per file, then once more with
+      no args */
+	if (file)
+	{
+		snprintf (buf, sizeof (buf), "%s %s", cmd, file);
+		handle_command (current_sess, buf, FALSE);
+	}
+	else
+	{
+		handle_command (current_sess, cmd, FALSE);
+		free (cmd);
+	}
+}
+
+static int
+cmd_getfile (struct session *sess, char *tbuf, char *word[], char *word_eol[])
+{
+	int idx = 2;
+	int flags = 0;
+
+	if (!word[3][0])
+		return FALSE;
+
+	if (!strcmp (word[2], "-folder"))
+	{
+		flags |= FRF_CHOOSEFOLDER;
+		idx++;
+	}
+
+	if (!strcmp (word[idx], "-multi"))
+	{
+		flags |= FRF_MULTIPLE;
+		idx++;
+	}
+
+	if (!strcmp (word[idx], "-save"))
+	{
+		flags |= FRF_WRITE;
+		idx++;
+	}
+
+	fe_get_file (word[idx+1], word[idx+2], (void *)get_file_cb, strdup (word[idx]), flags);
+
+	return TRUE;
+}
+
+static void
 get_str_cb (int cancel, char *val, getvalinfo *info)
 {
 	char buf[512];
@@ -1972,6 +2023,9 @@ show_help_line (session *sess, help_list *hl, char *name, char *usage)
 {
 	int j, len, max;
 	char *p;
+
+	if (name[0] == '.')	/* hidden command? */
+		return;
 
 	if (hl->longfmt)	/* long format for /HELP -l */
 	{
@@ -3394,6 +3448,7 @@ const struct commands xc_cmds[] = {
 	{"GATE", cmd_gate, 0, 0, 1,
 	 N_("GATE <host> [<port>], proxies through a host, port defaults to 23")},
 	{"GETINT", cmd_getint, 0, 0, 1, "GETINT <default> <command> <prompt>"},
+	{"GETFILE", cmd_getfile, 0, 0, 1, "GETFILE [-folder] [-multi] [-save] <command> <title> [<initial>]"},
 	{"GETSTR", cmd_getstr, 0, 0, 1, "GETSTR <default> <command> <prompt>"},
 	{"GHOST", cmd_ghost, 1, 0, 1, N_("GHOST <nick> <password>, Kills a ghosted nickname")},
 	{"GUI", cmd_gui, 0, 0, 1, "GUI [ATTACH|DETACH|SHOW|HIDE|FOCUS|FLASH|ICONIFY|COLOR <n>]\n"
@@ -3487,7 +3542,7 @@ const struct commands xc_cmds[] = {
 	{"SERVER", cmd_server, 0, 0, 1,
 	 N_("SERVER <host> [<port>] [<password>], connects to a server, the default port is 6667")},
 #endif
-	{"SET", cmd_set, 0, 0, 1, N_("SET [-quiet] <variable> [<value>]")},
+	{"SET", cmd_set, 0, 0, 1, N_("SET [-e] [-quiet] <variable> [<value>]")},
 	{"SETCURSOR", cmd_setcursor, 0, 0, 1, N_("SETCURSOR [-|+]<position>")},
 	{"SETTAB", cmd_settab, 0, 0, 1, 0},
 	{"SETTEXT", cmd_settext, 0, 0, 1, 0},
