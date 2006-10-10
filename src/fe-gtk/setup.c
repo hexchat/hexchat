@@ -972,7 +972,7 @@ setup_create_page (const setting *set)
 
 	if (set == logging_settings)
 	{
-		GtkWidget *but = gtk_button_new_with_label ("Open Data Folder");
+		GtkWidget *but = gtk_button_new_with_label (_("Open Data Folder"));
 		gtk_box_pack_start (GTK_BOX (left), but, 0, 0, 0);
 		g_signal_connect (G_OBJECT (but), "clicked",
 								G_CALLBACK (open_data_cb), 0);

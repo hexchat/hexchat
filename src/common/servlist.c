@@ -988,6 +988,13 @@ servlist_check_encoding (char *charset)
 	if (c)
 		c[0] = 0;
 
+	if (!strcasecmp (charset, "IRC")) /* special case */
+	{
+		if (c)
+			c[0] = ' ';
+		return TRUE;
+	}
+
 	gic = g_iconv_open (charset, "UTF-8");
 
 	if (c)

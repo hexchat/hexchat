@@ -70,13 +70,15 @@ p { margin: 3% }
 <br/><br/>
 <a href="#q218">18. How do I auto-load scripts at startup?</a>
 <br/><br/>
-<a href="#q219">19. Where are the log files saved to?</a>
+<a href="#q219">19. How do I minimize X-Chat to the System Tray (Notification Area)?</a>
 <br/><br/>
-<a href="#q220">20. How do I minimize X-Chat to the System Tray (Notification Area)?</a>
+<a href="#q220">20. Can I select and copy text with the time stamps?</a>
 <br/><br/>
-<a href="#q221">21. Can I select and copy text with the time stamps?</a>
+<a href="#q221">21. What's the deal with opening URLs in XChat?</a>
 <br/><br/>
-<a href="#q222">22. What's the deal with opening URLs in XChat?</a>
+<a href="#q222">22. Where are the log files saved to?</a>
+<br/><br/>
+<a href="#q223">23. How do I rotate log files every so often?</a>
 <br/><br/>
 </p>
 
@@ -375,34 +377,20 @@ C:\Documents and Settings\<i><b>username</b></i>\Application Data\X-Chat 2\
 Where "~" represents your home directory i.e.: $HOME/.xchat2/
 </p>
 
-<br/><h3><a name="q219">19. Where are the log files saved to?</a></h3>
-<p>
-<u>UNIX</u>
-<br/>
-<br/>~/.xchat2/xchatlogs/
-<br/>where ~ represents your home directory.
-<br/>
-<br/>
-<br/><u>Windows</u>
-<br/>
-<br/><b>Windows 98/ME</b>: C:\Windows\Application Data\X-Chat 2\xchatlogs
-<br/><b>Windows XP/2000</b>: C:\Documents and Settings\<i><b>username</b></i>\Application Data\X-Chat 2\xchatlogs
-</p>
-
-<br/><h3><a name="q220">20. How do I minimize X-Chat to the System Tray (Notification Area)?</a></h3>
+<br/><h3><a name="q219">19. How do I minimize X-Chat to the System Tray (Notification Area)?</a></h3>
 <p>
 There are two plugins available that allow this:
 <br/>Unix: <a href="http://www.blight.tk/">SysTray Plugin</a>
 <br/>Windows: <a href="http://www.sinisterdevelopments.com/">xTray</a>
 </p>
 
-<br/><h3><a name="q221">21. Can I select and copy text with the time stamps?</a></h3>
+<br/><h3><a name="q220">20. Can I select and copy text with the time stamps?</a></h3>
 <p>
 Yes, but this requires at least XChat 2.6.3. Simply hold down SHIFT while marking
 the text and the time stamps will be included.
 </p>
 
-<br/><h3><a name="q222">22. What's the deal with opening URLs in XChat?</a></h3>
+<br/><h3><a name="q221">21. What's the deal with opening URLs in XChat?</a></h3>
 <p>
 Right-clicking on a URL and selecting <i>Open Link in Browser</i> will open the link
 in your "preferred browser".
@@ -416,6 +404,44 @@ While holding down CTRL you can single left-click a URL to open it in your prefe
 You can also add more items to the right-click menu in XChat: <b>Settings &gt; Advanced &gt; URL Handlers</b>.
 <br/>For example, you could add an entry like <b>!firefox -a firefox -remote 'openURL(%s,new-tab)'</b>
 <br/>But this kind of messing around shouldn't be necessary, it just works automatically in Gnome and Windows!
+</p>
+
+<br/><h3><a name="q222">22. Where are the log files saved to?</a></h3>
+<p>
+<u>UNIX</u>
+<br/>
+<br/>~/.xchat2/xchatlogs/
+<br/>where ~ represents your home directory.
+<br/>
+<br/>
+<br/><u>Windows</u>
+<br/>
+<br/><b>Windows 98/ME</b>: C:\Windows\Application Data\X-Chat 2\xchatlogs
+<br/><b>Windows XP/2000</b>: C:\Documents and Settings\<i><b>username</b></i>\Application Data\X-Chat 2\xchatlogs
+</p>
+
+<br/><h3><a name="q223">23. How do I rotate log files every so often?</a></h3>
+<p>
+Requires: 2.6.1+
+<br/><br/>
+By default settings, no rotation occurs, your log files will just keep getting larger.
+<br/><br/>
+Go to <b>Settings</b> &gt; <b>Preferences</b> &gt; <b>Logging</b> and change the log filename to any one of these:
+</p>
+<blockquote>
+<table border="1" cellpadding="6" rules="all">
+<tr><td><b>Setting</b></td><td><b>Example filename that would be written</b></td></tr>
+<tr><td>%Y-%m-%d/%n-%c.log&nbsp;</td><td>2006-12-30/FreeNode-#channel.log</td></tr>
+<tr><td>%n/%Y-%m-%d/%c.log</td><td>FreeNode/2006-12-30/#channel.log</td></tr>
+<tr><td>%n-%c.log</td><td>FreeNode/#channel.log (no rotation)</td></tr>
+</table>
+</blockquote>
+<p>
+%Y, %m and %d represents the current year, month and date respectively. %n is the
+network name, e.g. "FreeNode" or "UnderNet", and finally, %c is the channel. In these
+examples, a new log filename and folder would be created after midnight.
+<br/><br/>
+You can find more possibilities at <a href="http://xchat.org/docs/log/">http://xchat.org/docs/log/</a>.
 </p>
 
 <br/><h2>3. Section Three: Contributions, Development and Bugs.</h2>

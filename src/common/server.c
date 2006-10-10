@@ -110,8 +110,13 @@ tcp_send_real (server *serv, char *buf, int len)
 		}
 	} else
 	{
-		locale = g_convert_with_fallback (buf, len, serv->encoding, "UTF-8",
-													 "?", 0, &loc_len, 0);
+		if (serv->using_irc)	/* using "IRC" encoding (CP1252/UTF-8 hybrid) */
+			/* if all chars fit inside CP1252, use that. Otherwise this
+			   returns NULL and we send UTF-8. */
+			locale = g_convert (buf, len, "CP1252", "UTF-8", 0, &loc_len, 0);
+		else
+			locale = g_convert_with_fallback (buf, len, serv->encoding, "UTF-8",
+														 "?", 0, &loc_len, 0);
 	}
 
 	if (locale)
@@ -292,8 +297,9 @@ server_inline (server *serv, char *line, int len)
 	char *utf_line_allocated = NULL;
 
 	/* Checks whether we're set to use UTF-8 charset */
-	if ((serv->encoding == NULL && prefs.utf8_locale) ||
-	    (serv->encoding != NULL &&
+	if (serv->using_irc ||				/* 1. using CP1252/UTF-8 Hybrid */
+		(serv->encoding == NULL && prefs.utf8_locale) || /* OR 2. using system default->UTF-8 */
+	    (serv->encoding != NULL &&				/* OR 3. explicitly set to UTF-8 */
 		 (strcasecmp (serv->encoding, "UTF8") == 0 ||
 		  strcasecmp (serv->encoding, "UTF-8") == 0)))
 	{
@@ -1739,6 +1745,7 @@ server_set_encoding (server *serv, char *new_encoding)
 		/* can be left as NULL to indicate system encoding */
 		serv->encoding = NULL;
 		serv->using_cp1255 = FALSE;
+		serv->using_irc = FALSE;
 	}
 
 	if (new_encoding)
@@ -1750,10 +1757,12 @@ server_set_encoding (server *serv, char *new_encoding)
 		if (space)
 			space[0] = 0;
 
-		/* server_inline() uses this flag */
+		/* server_inline() uses these flags */
 		if (!strcasecmp (serv->encoding, "CP1255") ||
 			 !strcasecmp (serv->encoding, "WINDOWS-1255"))
 			serv->using_cp1255 = TRUE;
+		else if (!strcasecmp (serv->encoding, "IRC"))
+			serv->using_irc = TRUE;
 	}
 }
 

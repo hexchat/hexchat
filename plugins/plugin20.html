@@ -493,6 +493,8 @@ static void get_file_name(char *nick, char *fname)
 handle commands entered at the input box. To capture text without a "/" at 
 the start (non-commands), you may hook a special name of "". i.e xchat_hook_command(ph, "", ...);.
 <br>
+Starting from version 2.6.8, commands hooked that begin with a period ('.') will be hidden in /HELP and /HELP -l.
+<br>
 <br><b>Arguments:</b>
 <blockquote><b>ph:</b> Plugin handle (as given to xchat_plugin_init).
 <br><b>name:</b> Name of the command (without the forward slash).

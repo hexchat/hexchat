@@ -1891,7 +1891,7 @@ cmd_getint (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 static void
 get_file_cb (char *cmd, char *file)
 {
-	char buf[PATH_MAX + 128];
+	char buf[1024 + 128];
 
 	/* execute the command once per file, then once more with
       no args */

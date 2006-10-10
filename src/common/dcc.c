@@ -492,7 +492,10 @@ dcc_write_chat (char *nick, char *text)
 				locale = g_locale_from_utf8 (text, len, NULL, &loc_len, NULL);
 		} else
 		{
-			locale = g_convert (text, len, dcc->serv->encoding, "UTF-8", 0, &loc_len, 0);
+			if (dcc->serv->using_irc)	/* using "IRC" encoding (CP1252/UTF-8 hybrid) */
+				locale = g_convert (text, len, "CP1252", "UTF-8", 0, &loc_len, 0);
+			else
+				locale = g_convert (text, len, dcc->serv->encoding, "UTF-8", 0, &loc_len, 0);
 		}
 
 		if (locale)
@@ -532,7 +535,9 @@ dcc_chat_line (struct DCC *dcc, char *line)
 	if (dcc->serv->using_cp1255)
 		len++;	/* include the NUL terminator */
 
-	if (dcc->serv->encoding == NULL)     /* system */
+	if (dcc->serv->using_irc) /* using "IRC" encoding (CP1252/UTF-8 hybrid) */
+		utf = NULL;
+	else if (dcc->serv->encoding == NULL)     /* system */
 		utf = g_locale_to_utf8 (line, len, NULL, &utf_len, NULL);
 	else
 		utf = g_convert (line, len, "UTF-8", dcc->serv->encoding, 0, &utf_len, 0);
