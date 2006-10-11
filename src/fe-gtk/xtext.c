@@ -5113,15 +5113,18 @@ gtk_xtext_is_empty (xtext_buffer *buf)
 	return buf->text_first == NULL;
 }
 
-void
-gtk_xtext_lastlog (xtext_buffer *out, xtext_buffer *search_area, char *sstr)
+int
+gtk_xtext_lastlog (xtext_buffer *out, xtext_buffer *search_area,
+						 int (*cmp_func) (char *, void *), void *userdata)
 {
 	textentry *ent = search_area->text_first;
+	int matches = 0;
 
 	while (ent)
 	{
-		if (nocasestrstr (ent->str, sstr))
+		if (cmp_func (ent->str, userdata))
 		{
+			matches++;
 			/* copy the text over */
 			if (search_area->indent)
 				gtk_xtext_append_indent (out, ent->str, ent->left_len,
@@ -5134,6 +5137,8 @@ gtk_xtext_lastlog (xtext_buffer *out, xtext_buffer *search_area, char *sstr)
 		}
 		ent = ent->next;
 	}
+
+	return matches;
 }
 
 void

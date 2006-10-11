@@ -2307,7 +2307,7 @@ cmd_lagcheck (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 }
 
 static void
-lastlog (session *sess, char *search)
+lastlog (session *sess, char *search, gboolean regexp)
 {
 	session *lastlog_sess;
 
@@ -2321,7 +2321,7 @@ lastlog (session *sess, char *search)
 
 	fe_text_clear (lastlog_sess);
 
-	fe_lastlog (sess, lastlog_sess, search);
+	fe_lastlog (sess, lastlog_sess, search, regexp);
 }
 
 static int
@@ -2329,7 +2329,10 @@ cmd_lastlog (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	if (*word_eol[2])
 	{
-		lastlog (sess, word_eol[2]);
+		if (!strcmp (word[2], "-r"))
+			lastlog (sess, word_eol[3], TRUE);
+		else
+			lastlog (sess, word_eol[2], FALSE);
 		return TRUE;
 	}
 
@@ -3960,7 +3963,7 @@ handle_say (session *sess, char *text, int check_spch)
 
 	if (strcmp (sess->channel, "(lastlog)") == 0)
 	{
-		lastlog (sess->lastlog_sess, text);
+		lastlog (sess->lastlog_sess, text, FALSE);
 		return;
 	}
 

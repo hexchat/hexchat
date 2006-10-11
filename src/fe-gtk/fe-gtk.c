@@ -588,17 +588,42 @@ fe_beep (void)
 	gdk_beep ();
 }
 
-void
-fe_lastlog (session *sess, session *lastlog_sess, char *sstr)
+#ifndef WIN32
+static int
+lastlog_regex_cmp (char *a, regex_t *reg)
 {
+	return !regexec (reg, a, 1, NULL, REG_NOTBOL);
+}
+#endif
+
+void
+fe_lastlog (session *sess, session *lastlog_sess, char *sstr, gboolean regexp)
+{
+#ifndef WIN32
+	regex_t reg;
+#endif
+
 	if (gtk_xtext_is_empty (sess->res->buffer))
 	{
 		PrintText (lastlog_sess, _("Search buffer is empty.\n"));
+		return;
 	}
-	else
+
+	if (!regexp)
 	{
-		gtk_xtext_lastlog (lastlog_sess->res->buffer, sess->res->buffer, sstr);
+		gtk_xtext_lastlog (lastlog_sess->res->buffer, sess->res->buffer,
+								 (void *) nocasestrstr, sstr);
+		return;
 	}
+
+#ifndef WIN32
+	if (regcomp (&reg, sstr, REG_ICASE | REG_EXTENDED | REG_NOSUB) == 0)
+	{
+		gtk_xtext_lastlog (lastlog_sess->res->buffer, sess->res->buffer,
+								 (void *) lastlog_regex_cmp, &reg);
+		regfree (&reg);
+	}
+#endif
 }
 
 void
