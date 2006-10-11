@@ -2317,10 +2317,11 @@ lastlog (session *sess, char *search, gboolean regexp)
 	lastlog_sess = find_dialog (sess->server, "(lastlog)");
 	if (!lastlog_sess)
 		lastlog_sess = new_ircwindow (sess->server, "(lastlog)", SESS_DIALOG, 0);
+
 	lastlog_sess->lastlog_sess = sess;
+	lastlog_sess->lastlog_regexp = regexp;	/* remember the search type */
 
 	fe_text_clear (lastlog_sess);
-
 	fe_lastlog (sess, lastlog_sess, search, regexp);
 }
 
@@ -3963,7 +3964,7 @@ handle_say (session *sess, char *text, int check_spch)
 
 	if (strcmp (sess->channel, "(lastlog)") == 0)
 	{
-		lastlog (sess->lastlog_sess, text, FALSE);
+		lastlog (sess->lastlog_sess, text, sess->lastlog_regexp);
 		return;
 	}
 
