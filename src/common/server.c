@@ -1100,6 +1100,7 @@ server_disconnect (session * sess, int sendquit, int err)
 	server *serv = sess->server;
 	GSList *list;
 	char tbuf[64];
+	gboolean shutup = FALSE;
 
 	/* send our QUIT reason */
 	if (sendquit && serv->connected)
@@ -1119,6 +1120,8 @@ server_disconnect (session * sess, int sendquit, int err)
 		sprintf (tbuf, "%d", sess->server->childpid);
 		EMIT_SIGNAL (XP_TE_STOPCONNECT, sess, tbuf, NULL, NULL, NULL, 0);
 		return;
+	case 3:
+		shutup = TRUE;	/* won't print "disconnected" in channels */
 	}
 
 	server_flush_queue (serv);
@@ -1129,9 +1132,10 @@ server_disconnect (session * sess, int sendquit, int err)
 		sess = (struct session *) list->data;
 		if (sess->server == serv)
 		{
-			/* print "Disconnected" to each window using this server */
-			EMIT_SIGNAL (XP_TE_DISCON, sess, errorstring (err), NULL, NULL, NULL,
-							 0);
+			if (!shutup || sess->type == SESS_SERVER)
+				/* print "Disconnected" to each window using this server */
+				EMIT_SIGNAL (XP_TE_DISCON, sess, errorstring (err), NULL, NULL, NULL, 0);
+
 			if (!sess->channel[0] || sess->type == SESS_CHANNEL)
 				clear_channel (sess);
 		}

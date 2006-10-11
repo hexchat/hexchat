@@ -528,7 +528,7 @@ get_cpu_info (double *mhz, int *cpus)
 			break;
 		if (!strncmp (buf, "cycle frequency [Hz]\t:", 22))	/* alpha */
 		{
-			*mhz = atoi (buf + 23) / 1048576;
+			*mhz = atoi (buf + 23) / 1000000;
 		} else if (!strncmp (buf, "cpu MHz\t\t:", 10))	/* i386 */
 		{
 			*mhz = atof (buf + 11) + 0.5;
