@@ -22,6 +22,7 @@
 #include <time.h>					  /* asctime() */
 #include <string.h>				  /* strncpy() */
 #include "ssl.h"					  /* struct cert_info */
+#include "inet.h"
 #include "../../config.h"		  /* HAVE_SNPRINTF */
 
 #ifndef HAVE_SNPRINTF
@@ -256,7 +257,8 @@ _SSL_recv (SSL * ssl, char *buf, int len)
 		break;
 	case SSL_ERROR_SYSCALL:
 		/* ??? */
-		perror ("SSL_read/read");
+		if (!would_block ())
+			perror ("SSL_read/read");
 		break;
 	case SSL_ERROR_ZERO_RETURN:
 		/* fprintf(stdeerr, "SSL closed on read\n"); */

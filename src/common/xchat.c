@@ -565,6 +565,7 @@ static char defaultconf_commands[] =
 	"NAME DIALOG\n"		"CMD query %2\n\n"\
 	"NAME DMSG\n"			"CMD msg =%2 &3\n\n"\
 	"NAME EXIT\n"			"CMD quit\n\n"\
+	"NAME GREP\n"			"CMD lastlog -r &2\n\n"\
 	"NAME J\n"				"CMD join &2\n\n"\
 	"NAME KILL\n"			"CMD quote KILL %2 :&3\n\n"\
 	"NAME LEAVE\n"			"CMD part &2\n\n"\
