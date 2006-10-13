@@ -5,10 +5,10 @@
 # Stathis Kamperis <ekamperi@auth.gr>, 2006
 msgid ""
 msgstr ""
-"Project-Id-Version: xchat 2.6.3\n"
+"Project-Id-Version: xchat 2.6.7\n"
 "Report-Msgid-Bugs-To: www.xchat.org\n"
-"POT-Creation-Date: 2006-05-27 02:52+0300\n"
-"PO-Revision-Date: 2006-06-01 16:52+0200\n"
+"POT-Creation-Date: 2006-10-04 13:56+1000\n"
+"PO-Revision-Date: 2006-10-12 23:45+0200\n"
 "Last-Translator: Stavros Giannouris <stavrosg2002@freemail.gr>\n"
 "Language-Team: Greek <nls@tux.hellug.gr>\n"
 "MIME-Version: 1.0\n"
@@ -16,22 +16,21 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: KBabel 1.10.1\n"
-"X-Poedit-Language: Greek\n"
 "X-Poedit-Country: GREECE\n"
 
 #: src/common/cfgfiles.c:350
 msgid "Cannot create ~/.xchat2"
 msgstr "Δεν ήταν δυνατή η δημιουργία του ~/.xchat2"
 
-#: src/common/cfgfiles.c:683
+#: src/common/cfgfiles.c:686
 msgid "I'm busy"
 msgstr "Είμαι απασχολημένος/η"
 
-#: src/common/cfgfiles.c:684
+#: src/common/cfgfiles.c:687
 msgid "Leaving"
 msgstr "Αποχώρησε"
 
-#: src/common/cfgfiles.c:730
+#: src/common/cfgfiles.c:733
 msgid ""
 "* Running IRC as root is stupid! You should\n"
 "  create a User Account and use that to login.\n"
@@ -56,8 +55,7 @@ msgstr "Απέτυχε"
 msgid "Done"
 msgstr "Έγινε"
 
-#: src/common/dcc.c:71
-#: src/fe-gtk/menu.c:740
+#: src/common/dcc.c:71 src/fe-gtk/menu.c:753
 msgid "Connect"
 msgstr "Σύνδεση"
 
@@ -65,37 +63,34 @@ msgstr "Σύνδεση"
 msgid "Aborted"
 msgstr "Ματαιώθηκε"
 
-#: src/common/dcc.c:1875
-#: src/common/outbound.c:2246
+#: src/common/dcc.c:1887 src/common/outbound.c:2363
 #, c-format
 msgid "Cannot access %s\n"
 msgstr "Αδυναμία πρόσβασης στο %s\n"
 
-#: src/common/dcc.c:2358
+#: src/common/dcc.c:1888 src/common/text.c:916 src/common/text.c:954
+#: src/common/text.c:965 src/common/text.c:972 src/common/text.c:985
+#: src/common/text.c:1002 src/common/text.c:1102 src/common/util.c:352
+msgid "Error"
+msgstr "Σφάλμα"
+
+#: src/common/dcc.c:2376
 #, c-format
 msgid "%s is offering \"%s\". Do you want to accept?"
 msgstr "Ο/Η %s σας προσφέρει το \"%s\". Θέλετε να το δεχτείτε;"
 
-#: src/common/dcc.c:2569
+#: src/common/dcc.c:2587
 msgid "No active DCCs\n"
 msgstr "Δεν υπάρχουν ενεργά DCC\n"
 
-#: src/common/ignore.c:120
-#: src/common/ignore.c:124
-#: src/common/ignore.c:128
-#: src/common/ignore.c:132
-#: src/common/ignore.c:136
-#: src/common/ignore.c:140
+#: src/common/ignore.c:120 src/common/ignore.c:124 src/common/ignore.c:128
+#: src/common/ignore.c:132 src/common/ignore.c:136 src/common/ignore.c:140
 #: src/common/ignore.c:144
 msgid "YES  "
 msgstr "ΝΑΙ  "
 
-#: src/common/ignore.c:122
-#: src/common/ignore.c:126
-#: src/common/ignore.c:130
-#: src/common/ignore.c:134
-#: src/common/ignore.c:138
-#: src/common/ignore.c:142
+#: src/common/ignore.c:122 src/common/ignore.c:126 src/common/ignore.c:130
+#: src/common/ignore.c:134 src/common/ignore.c:138 src/common/ignore.c:142
 #: src/common/ignore.c:146
 msgid "NO   "
 msgstr "ΟΧΙ   "
@@ -110,12 +105,12 @@ msgstr "Πλημμυρίζεστε με μηνύματα CTCP από τον %s. 
 msgid "You are being MSG flooded from %s, setting gui_auto_open_dialog OFF.\n"
 msgstr ""
 
-#: src/common/notify.c:396
+#: src/common/notify.c:449
 #, c-format
 msgid "  %-20s online\n"
 msgstr "  %-20s συνδέθηκε\n"
 
-#: src/common/notify.c:398
+#: src/common/notify.c:451
 #, c-format
 msgid "  %-20s offline\n"
 msgstr "  %-20s αποσυνδέθηκε\n"
@@ -128,85 +123,92 @@ msgstr "Δεν έχετε συνδεθεί σε κανάλι. Δοκιμάστε
 msgid "Not connected. Try /server <host> [<port>]\n"
 msgstr "Δεν έχετε συνδεθεί. Δοκιμάστε /server <διακομιστής> [<θύρα>]\n"
 
-#: src/common/outbound.c:1650
+#: src/common/outbound.c:1730
 msgid "I need /bin/sh to run!\n"
 msgstr "Το /bin/sh χρειάζεται για την εκτέλεση!\n"
 
-#: src/common/outbound.c:1983
+#: src/common/outbound.c:2100
 msgid "Commands Available:"
 msgstr "Διαθέσιμες εντολές:"
 
-#: src/common/outbound.c:1997
+#: src/common/outbound.c:2114
 msgid "User defined commands:"
 msgstr "Εντολές ορισμένες από το χρήστη:"
 
-#: src/common/outbound.c:2013
+#: src/common/outbound.c:2130
 msgid "Plugin defined commands:"
 msgstr "Εντολές ορισμένες από πρόσθετο:"
 
-#: src/common/outbound.c:2024
+#: src/common/outbound.c:2141
 msgid "Type /HELP <command> for more information, or /HELP -l"
 msgstr "Πληκτρολογείστε /HELP <εντολή> για περισσότερες πληροφορίες, ή /HELP -l"
 
-#: src/common/outbound.c:2099
+#: src/common/outbound.c:2216
 #, c-format
 msgid "Unknown arg '%s' ignored."
 msgstr "Η άγνωστη επιλογή '%s' αγνοήθηκε."
 
-#: src/common/outbound.c:2960
+#: src/common/outbound.c:3110
 msgid "No such plugin found.\n"
 msgstr "Δε βρέθηκε τέτοιο πρόσθετο.\n"
 
-#: src/common/outbound.c:2965
-#: src/fe-gtk/plugingui.c:186
+#: src/common/outbound.c:3115 src/fe-gtk/plugingui.c:186
 msgid "That plugin is refusing to unload.\n"
 msgstr "Αυτό το πρόσθετο αρνείται να αποφορτωθεί.\n"
 
-#: src/common/outbound.c:3200
+#: src/common/outbound.c:3384
 msgid "ADDBUTTON <name> <action>, adds a button under the user-list"
 msgstr "ADDBUTTON <όνομα> <δράση>, προσθέτει ένα κουμπί στη λίστα χρηστών"
 
-#: src/common/outbound.c:3202
+#: src/common/outbound.c:3386
 msgid "ALLCHAN <cmd>, sends a command to all channels you're in"
 msgstr "ALLCHAN <εντολή>, στέλνει μια εντολή σε όλα τα κανάλια που βρίσκεστε"
 
-#: src/common/outbound.c:3204
+#: src/common/outbound.c:3388
 msgid "ALLCHANL <cmd>, sends a command to all channels you're in"
 msgstr "ALLCHANL <εντολή>, στέλνει μια εντολή σε όλα τα κανάλια που βρίσκεστε"
 
-#: src/common/outbound.c:3206
+#: src/common/outbound.c:3390
 msgid "ALLSERV <cmd>, sends a command to all servers you're in"
 msgstr "ALLSERV <εντολή>, στέλνει μια εντολή στους διακομιστές που βρίσκεστε"
 
-#: src/common/outbound.c:3207
+#: src/common/outbound.c:3391
 msgid "AWAY [<reason>], sets you away"
 msgstr "AWAY [<αιτία>], σας ορίζει ως απών"
 
-#: src/common/outbound.c:3209
+#: src/common/outbound.c:3393
 msgid "BAN <mask> [<bantype>], bans everyone matching the mask from the current channel. If they are already on the channel this doesn't kick them (needs chanop)"
 msgstr "BAN <μάσκα> [<τύπος ban>], κάνει ban σε όποιο ταιριάζει στη μάσκα από το τρέχον κανάλι. Εάν είναι ήδη στο κανάλι δεν τους κάνει kick (χρειάζεται chanop)"
 
-#: src/common/outbound.c:3211
-msgid "CLEAR, Clears the current text window"
-msgstr "CLEAR, Καθαρίζει το τρέχον παράθυρο κειμένου"
+#: src/common/outbound.c:3395
+msgid ""
+"Set per channel options\n"
+"CHANOPT CONFMODE ON|OFF - Toggle conf mode/showing of join and part messages\n"
+"CHANOPT COLORPASTE ON|OFF - Toggle color paste\n"
+"CHANOPT BEEP ON|OFF - Toggle beep on message"
+msgstr ""
 
-#: src/common/outbound.c:3212
+#: src/common/outbound.c:3401
+msgid "CLEAR [ALL|HISTORY], Clears the current text window or command history"
+msgstr "CLEAR [ALL|HISTORY], Καθαρίζει το τρέχον παράθυρο κειμένου"
+
+#: src/common/outbound.c:3402
 msgid "CLOSE, Closes the current window/tab"
 msgstr "CLOSE, Κλείνει το τρέχον παράθυρο/καρτέλα"
 
-#: src/common/outbound.c:3215
+#: src/common/outbound.c:3405
 msgid "COUNTRY [-s] <code|wildcard>, finds a country code, eg: au = australia"
 msgstr "COUNTRY <κωδικός>, βρίσκει τον κωδικό μιας χώρας, πχ: gr = greece"
 
-#: src/common/outbound.c:3217
+#: src/common/outbound.c:3407
 msgid "CTCP <nick> <message>, send the CTCP message to nick, common messages are VERSION and USERINFO"
 msgstr "CTCP <nick> <μήνυμα>, στέλνει ένα μήνυμα CTCP στο nick, συνηθέστερα μηνύματα είναι τα VERSION και USERINFO"
 
-#: src/common/outbound.c:3219
+#: src/common/outbound.c:3409
 msgid "CYCLE, parts current channel and immediately rejoins"
 msgstr "CYCLE, αποσυνδέεται από το τρέχον κανάλι και επανασυνδέεται άμεσα"
 
-#: src/common/outbound.c:3221
+#: src/common/outbound.c:3411
 msgid ""
 "\n"
 "DCC GET <nick>                      - accept an offered file\n"
@@ -228,75 +230,75 @@ msgstr ""
 "DCC CLOSE <τύπος> <nick> <αρχείο>      παράδειγμα:\n"
 "         /dcc close send mixalhs file.tar.gz"
 
-#: src/common/outbound.c:3233
+#: src/common/outbound.c:3423
 msgid "DEHOP <nick>, removes chanhalf-op status from the nick on the current channel (needs chanop)"
 msgstr "DEHOP <nick>, αφαίρεση της κατάστασης chanhalf-op από το nick στο τρέχον κανάλι (χρειάζεται chanop)"
 
-#: src/common/outbound.c:3235
+#: src/common/outbound.c:3425
 msgid "DELBUTTON <name>, deletes a button from under the user-list"
 msgstr "DELBUTTON <όνομα>, διαγραφή ενός κουμπιού κάτω από τη λίστα χρηστών"
 
-#: src/common/outbound.c:3237
+#: src/common/outbound.c:3427
 msgid "DEOP <nick>, removes chanop status from the nick on the current channel (needs chanop)"
 msgstr "DEOP <nick>, αφαίρεση της κατάστασης chanop από το nick στο τρέχον κανάλι (χρειάζεται chanop)"
 
-#: src/common/outbound.c:3239
+#: src/common/outbound.c:3429
 msgid "DEVOICE <nick>, removes voice status from the nick on the current channel (needs chanop)"
 msgstr "DEVOICE <nick>, αφαίρεση της κατάστασης voice από το nick στο τρέχον κανάλι (χρειάζεται chanop)"
 
-#: src/common/outbound.c:3240
+#: src/common/outbound.c:3430
 msgid "DISCON, Disconnects from server"
 msgstr "DISCON, Αποσύνδεση από το διακομιστή"
 
-#: src/common/outbound.c:3241
+#: src/common/outbound.c:3431
 msgid "DNS <nick|host|ip>, Finds a users IP number"
 msgstr "DNS <nick|διακομιστής|ip>, Ανίχνευση του αριθμού IP ενός χρήστη"
 
-#: src/common/outbound.c:3242
+#: src/common/outbound.c:3432
 msgid "ECHO <text>, Prints text locally"
 msgstr "ECHO <κείμενο>, Τοπική εκτύπωση κειμένου"
 
-#: src/common/outbound.c:3245
+#: src/common/outbound.c:3435
 msgid "EXEC [-o] <command>, runs the command. If -o flag is used then output is sent to current channel, else is printed to current text box"
 msgstr "EXEC [-o] <εντολή>, εκτελεί την εντολή. Εάν δοθεί το -o τότε η έξοδος θα σταλθεί στο τρέχον κανάλι, αλλιώς στέλνεται στο τρέχον κουτί κειμένου"
 
-#: src/common/outbound.c:3247
+#: src/common/outbound.c:3437
 msgid "EXECCONT, sends the process SIGCONT"
 msgstr "EXECCONT, στέλνει στη διεργασία ένα SIGCONT σήμα"
 
-#: src/common/outbound.c:3250
+#: src/common/outbound.c:3440
 msgid "EXECKILL [-9], kills a running exec in the current session. If -9 is given the process is SIGKILL'ed"
 msgstr "EXECKILL [-9], σκοτώνει ένα εκτελούμενο exec στη τρέχουσα συνεδρία. Εάν δοθεί το -9 τότε στέλνει στη διεργασία ένα SIGKILL σήμα"
 
-#: src/common/outbound.c:3252
+#: src/common/outbound.c:3442
 msgid "EXECSTOP, sends the process SIGSTOP"
 msgstr "EXECSTOP, στέλνει στη διεργασία ένα SIGSTOP σήμα"
 
-#: src/common/outbound.c:3253
+#: src/common/outbound.c:3443
 msgid "EXECWRITE, sends data to the processes stdin"
 msgstr "EXECWRITE, στέλνει δεδομένα στο ρεύμα stdin της διεργασίας"
 
-#: src/common/outbound.c:3257
+#: src/common/outbound.c:3447
 msgid "FLUSHQ, flushes the current server's send queue"
 msgstr "FLUSHQ, καθαρίζει σειρά αποστολής του τρέχοντος διακομιστή"
 
-#: src/common/outbound.c:3259
+#: src/common/outbound.c:3449
 msgid "GATE <host> [<port>], proxies through a host, port defaults to 23"
 msgstr "GATE <διακομιστής> [<port>], θέτει proxy ένα διακομιστή, εξ'ορισμού θύρα 23"
 
-#: src/common/outbound.c:3262
+#: src/common/outbound.c:3453
 msgid "GHOST <nick> <password>, Kills a ghosted nickname"
 msgstr "GHOST <ψευδώνυμο> <συνθηματικό>, Αποσυνδέει ένα ψευδώνυμο-φάντασμα"
 
-#: src/common/outbound.c:3267
+#: src/common/outbound.c:3458
 msgid "HOP <nick>, gives chanhalf-op status to the nick (needs chanop)"
 msgstr "HOP <nick>, δίνει κατάσταση chanhalf-op στο nick (χρειάζεται chanop)"
 
-#: src/common/outbound.c:3268
+#: src/common/outbound.c:3459
 msgid "ID <password>, identifies yourself to nickserv"
 msgstr "ID <κωδικός>, "
 
-#: src/common/outbound.c:3270
+#: src/common/outbound.c:3461
 msgid ""
 "IGNORE <mask> <types..> <options..>\n"
 "    mask - host mask to ignore, eg: *!*@*.aol.com\n"
@@ -310,192 +312,192 @@ msgstr ""
 "           PRIV, CHAN, NOTI, CTCP, INVI, ALL\n"
 "   επιλογές - NOSAVE, QUIET"
 
-#: src/common/outbound.c:3277
+#: src/common/outbound.c:3468
 msgid "INVITE <nick> [<channel>], invites someone to a channel, by default the current channel (needs chanop)"
 msgstr "/INVITE <nick> [<κανάλι>], καλεί κάποιον σε ένα κανάλι, εξ'ορισμού το τρέχον  κανάλι (χρειάζεται chanop)"
 
-#: src/common/outbound.c:3278
+#: src/common/outbound.c:3469
 msgid "JOIN <channel>, joins the channel"
 msgstr "JOIN <κανάλι>, συνδέεται στο κανάλι"
 
-#: src/common/outbound.c:3280
+#: src/common/outbound.c:3471
 msgid "KICK <nick>, kicks the nick from the current channel (needs chanop)"
 msgstr "KICK <nick>, διώχνει το nick από τρέχον κανάλι (χρειάζεται chanop)"
 
-#: src/common/outbound.c:3282
+#: src/common/outbound.c:3473
 msgid "KICKBAN <nick>, bans then kicks the nick from the current channel (needs chanop)"
 msgstr "KICKBAN <nick>, κάνει ban και διώχνει το nick από τρέχον κανάλι (χρειάζεται chanop)"
 
-#: src/common/outbound.c:3285
+#: src/common/outbound.c:3476
 msgid "LAGCHECK, forces a new lag check"
 msgstr "LAGCHECK, απαίτηση νέου ελέγχου για lag"
 
-#: src/common/outbound.c:3287
+#: src/common/outbound.c:3478
 msgid "LASTLOG <string>, searches for a string in the buffer"
 msgstr "LASTLOG <string>, αναζήτηση ενός string στη προσωρινή μνήμη."
 
-#: src/common/outbound.c:3289
+#: src/common/outbound.c:3480
 msgid "LOAD [-e] <file>, loads a plugin or script"
 msgstr "LOAD [-e] <αρχείο>, φορτώνει ένα πρόσθετο ή ένα script"
 
-#: src/common/outbound.c:3292
+#: src/common/outbound.c:3483
 msgid "MDEHOP, Mass deop's all chanhalf-ops in the current channel (needs chanop)"
 msgstr "MDEHOP, Μαζικό deop όλων των chanhalf-ops στο τρέχον κανάλι (χρειάζεται chanop)"
 
-#: src/common/outbound.c:3294
+#: src/common/outbound.c:3485
 msgid "MDEOP, Mass deop's all chanops in the current channel (needs chanop)"
 msgstr "MDEOP, Μαζικό deop όλων των chanops στο τρέχον κανάλι (χρειάζεται chanop)"
 
-#: src/common/outbound.c:3296
+#: src/common/outbound.c:3487
 msgid "ME <action>, sends the action to the current channel (actions are written in the 3rd person, like /me jumps)"
 msgstr "ME <δράση>, στέλνει τη δράση στο τρέχον κανάλι (οι δράσεις γράφονται στο τρίτο πρόσωπο, πχ. /me kanei mia toumpa)"
 
-#: src/common/outbound.c:3299
+#: src/common/outbound.c:3490
 msgid "MKICK, Mass kicks everyone except you in the current channel (needs chanop)"
 msgstr "MKICK, Μαζικό kick όλων εκτός από εσένα στο τρέχον κανάλι (χρειάζεται chanop)"
 
-#: src/common/outbound.c:3302
+#: src/common/outbound.c:3493
 msgid "MOP, Mass op's all users in the current channel (needs chanop)"
 msgstr "MOP, Δίνει μαζικά op σε όλους τους χρήστες στο τρέχον κανάλι (χρειάζεται chanop)"
 
-#: src/common/outbound.c:3303
+#: src/common/outbound.c:3494
 msgid "MSG <nick> <message>, sends a private message"
 msgstr "MSG <nick> <μήνυμα>, στέλνει ένα προσωπικό μήνυμα"
 
-#: src/common/outbound.c:3306
+#: src/common/outbound.c:3497
 msgid "NAMES, Lists the nicks on the current channel"
 msgstr "NAMES, Δείχνει μια λίστα με όλα τα ονόματα στο τρέχον κανάλι"
 
-#: src/common/outbound.c:3308
+#: src/common/outbound.c:3499
 msgid "NCTCP <nick> <message>, Sends a CTCP notice"
 msgstr "NCTCP <nick> <μήνυμα>, Στέλνει μία CTCP αναγγελία"
 
-#: src/common/outbound.c:3309
+#: src/common/outbound.c:3500
 msgid "NEWSERVER [-noconnect] <hostname> [<port>]"
 msgstr "NEWSERVER [-noconnect] <διακομιστής> [<θύρα>]"
 
-#: src/common/outbound.c:3310
+#: src/common/outbound.c:3501
 msgid "NICK <nickname>, sets your nick"
 msgstr "NICK <ψευδώνυμο>, θέτει το ψευδώνυμο σας"
 
-#: src/common/outbound.c:3313
+#: src/common/outbound.c:3504
 msgid "NOTICE <nick/channel> <message>, sends a notice. Notices are a type of message that should be auto reacted to"
 msgstr "NOTICE <nick/κανάλι> <μήνυμα>, στέλνει μια αναγγελία. Οι αναγγελίες είναι τύποι μηνυμάτων που θα πρέπει να αντιδρά αυτόματα(auto reacted to)"
 
-#: src/common/outbound.c:3315
-msgid "NOTIFY [<nick>], lists your notify list or adds someone to it"
-msgstr "NOTIFY [<nick>], δείχνει τη λίστα ειδοποίησης ή προσθέτει κάποιον"
+#: src/common/outbound.c:3506
+msgid "NOTIFY [-n network1[,network2,...]] [<nick>], displays your notify list or adds someone to it"
+msgstr "NOTIFY [-n δίκτυο1[,δίκτυο2,...]] [<ψευδώνυμο>], δείχνει τη λίστα ειδοποίησης σας ή προσθέτει κάποιον"
 
-#: src/common/outbound.c:3317
+#: src/common/outbound.c:3508
 msgid "OP <nick>, gives chanop status to the nick (needs chanop)"
 msgstr "OP <nick>, δίνει κατάσταση chanop στο nick, (χρειάζεται chanop)"
 
-#: src/common/outbound.c:3319
+#: src/common/outbound.c:3510
 msgid "PART [<channel>] [<reason>], leaves the channel, by default the current one"
 msgstr "PART [<κανάλι>] [<αιτία>], φεύγει από το κανάλι, εξ'ορισμού το τρέχον"
 
-#: src/common/outbound.c:3321
+#: src/common/outbound.c:3512
 msgid "PING <nick | channel>, CTCP pings nick or channel"
 msgstr "PING <nick | κανάλι>, κάνει ένα CTCP ping στο nick ή το κανάλι"
 
-#: src/common/outbound.c:3323
-msgid "QUERY <nick>, opens up a new privmsg window to someone"
-msgstr "QUERY <nick>, ανοίγει ένα παράθυρο για προσωπική συζήτηση"
+#: src/common/outbound.c:3514
+msgid "QUERY [-nofocus] <nick>, opens up a new privmsg window to someone"
+msgstr "QUERY [-nofocus] <nick>, ανοίγει ένα παράθυρο για προσωπική συζήτηση"
 
-#: src/common/outbound.c:3325
+#: src/common/outbound.c:3516
 msgid "QUIT [<reason>], disconnects from the current server"
 msgstr "QUIT [<αιτία>], αποσύνδεση από τον τρέχοντα διακομιστή"
 
-#: src/common/outbound.c:3327
+#: src/common/outbound.c:3518
 msgid "QUOTE <text>, sends the text in raw form to the server"
 msgstr "QUOTE <κείμενο>, στέλνει ένα κείμενο σε ωμή μορφή στο διακομιστή"
 
-#: src/common/outbound.c:3330
+#: src/common/outbound.c:3521
 msgid "RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as /RECONNECT to reconnect to the current server or with /RECONNECT ALL to reconnect to all the open servers"
 msgstr "RECONΝECT [-ssl] [<διακομιστής>] [<port>] [<password>] , Μπορεί να κληθεί απλά σαν /reconnect για επανασύνδεση στον τρέχοντα διακομιστή ή με /reconnect all για όλους τους ανοικτούς διακομιστές"
 
-#: src/common/outbound.c:3333
+#: src/common/outbound.c:3524
 msgid "RECONNECT [<host>] [<port>] [<password>], Can be called just as /RECONNECT to reconnect to the current server or with /RECONNECT ALL to reconnect to all the open servers"
 msgstr "RECONΝECT [<διακομιστής>] [<port>] [<password>], Μπορεί να κληθεί απλά σαν /reconnect για επανασύνδεση στον τρέχοντα διακομιστή ή με /reconnect all για όλους τους ανοικτούς διακομιστές"
 
-#: src/common/outbound.c:3335
+#: src/common/outbound.c:3526
 msgid "RECV <text>, send raw data to xchat, as if it was received from the irc server"
 msgstr "RECV <κείμενο>, στέλνει ωμά δεδομένα στο xchat, όπως λαμβάνονται από τον irc server"
 
-#: src/common/outbound.c:3338
+#: src/common/outbound.c:3529
 msgid "SAY <text>, sends the text to the object in the current window"
 msgstr "SAY <κείμενο>, στέλνει το κείμενο στο αντικείμενο στο παράθυρο"
 
-#: src/common/outbound.c:3339
+#: src/common/outbound.c:3530
 msgid "SEND <nick> [<file>]"
 msgstr "SEND <ψευδώνυμο> [<αρχείο>]"
 
-#: src/common/outbound.c:3342
+#: src/common/outbound.c:3533
 msgid "SERVCHAN [-ssl] <host> <port> <channel>, connects and joins a channel"
 msgstr "SERVCHAN [-ssl] <διακομιστής> <port> <κανάλι>, σύνδεση σε διακομιστή και κανάλι"
 
-#: src/common/outbound.c:3345
+#: src/common/outbound.c:3536
 msgid "SERVCHAN <host> <port> <channel>, connects and joins a channel"
 msgstr "SERVCHAN <διακομιστής> <port> <κανάλι>, σύνδεση σε διακομιστή και κανάλι"
 
-#: src/common/outbound.c:3349
+#: src/common/outbound.c:3540
 msgid "SERVER [-ssl] <host> [<port>] [<password>], connects to a server, the default port is 6667 for normal connections, and 9999 for ssl connections"
 msgstr "SERVER [-ssl] <διακομιστής> [<port>] [<password>], σύνδεση σε ένα διακομιστή,εξ'ορισμού port το 6667"
 
-#: src/common/outbound.c:3352
+#: src/common/outbound.c:3543
 msgid "SERVER <host> [<port>] [<password>], connects to a server, the default port is 6667"
 msgstr "SERVER <διακομιστής> [<port>] [<password>], σύνδεση σε ένα διακομιστή, εξ'ορισμού port το 6667"
 
-#: src/common/outbound.c:3354
-msgid "SET [-quiet] <variable> [<value>]"
-msgstr "SET [-quiet] <μεταβλητή> [<τιμή>]"
+#: src/common/outbound.c:3545
+msgid "SET [-e] [-quiet] <variable> [<value>]"
+msgstr "SET [-e] [-quiet] <μεταβλητή> [<τιμή>]"
 
-#: src/common/outbound.c:3355
+#: src/common/outbound.c:3546
 msgid "SETCURSOR [-|+]<position>"
 msgstr "SETCURSOR [-|+]<θέση>"
 
-#: src/common/outbound.c:3359
+#: src/common/outbound.c:3551
 msgid "TOPIC [<topic>], sets the topic if one is given, else shows the current topic"
 msgstr "TOPIC [<θέμα>], θέτει το θέμα αν δοθεί κάποιο, αλλιώς δείχνει το τρέχον"
 
-#: src/common/outbound.c:3361
+#: src/common/outbound.c:3553
 msgid "UNBAN <mask> [<mask>...], unbans the specified masks."
 msgstr "UNBAN <mask> [<mask>...], κάνει unban με τις ορισμένες επιλογές"
 
-#: src/common/outbound.c:3362
+#: src/common/outbound.c:3554
 msgid "UNIGNORE <mask> [QUIET]"
 msgstr "UNIGNORE <μάσκα> [QUIET]"
 
-#: src/common/outbound.c:3363
+#: src/common/outbound.c:3555
 msgid "UNLOAD <name>, unloads a plugin or script"
 msgstr "UNLOAD <αρχείο>, αποφορτώνει ένα Perl script"
 
-#: src/common/outbound.c:3364
+#: src/common/outbound.c:3556
 msgid "URL <url>, opens a URL in your browser"
 msgstr "URL <url>, ανοίγει ένα URL στον περιηγητή σας"
 
-#: src/common/outbound.c:3366
+#: src/common/outbound.c:3558
 msgid "USELECT [-a] [-s] <nick1> <nick2> etc, highlights nick(s) in channel userlist"
 msgstr "USELECT [-a] [-s] <χρήστης1> <χρήστης2> κλπ, επισημαίνει τον(ους) χρήστη(ες) στη λίστα χρηστών"
 
-#: src/common/outbound.c:3369
+#: src/common/outbound.c:3561
 msgid "VOICE <nick>, gives voice status to someone (needs chanop)"
 msgstr "VOICE <nick>, δίνει κατάσταση voice σε κάποιον (θέλει chanop)"
 
-#: src/common/outbound.c:3371
+#: src/common/outbound.c:3563
 msgid "WALLCHAN <message>, writes the message to all channels"
 msgstr "WALLCHAN <μήνυμα>, αποστολή του μηνύματος σε όλα τα κανάλια"
 
-#: src/common/outbound.c:3373
+#: src/common/outbound.c:3565
 msgid "WALLCHOP <message>, sends the message to all chanops on the current channel"
 msgstr "WALLCHOP <μήνυμα>, αποστολή του μηνύματος σε όλους τους chanops στο τρέχον κανάλι"
 
-#: src/common/outbound.c:3406
+#: src/common/outbound.c:3598
 #, c-format
 msgid "Usage: %s\n"
 msgstr "Χρήση: %s\n"
 
-#: src/common/outbound.c:3411
+#: src/common/outbound.c:3603
 msgid ""
 "\n"
 "No help available on that command.\n"
@@ -503,24 +505,23 @@ msgstr ""
 "\n"
 "Δεν υπάρχει διαθέσιμη βοήθεια για αυτή την εντολή.\n"
 
-#: src/common/outbound.c:3417
+#: src/common/outbound.c:3609
 msgid "No such command.\n"
 msgstr "Δεν υπάρχει τέτοια εντολή.\n"
 
-#: src/common/outbound.c:3744
+#: src/common/outbound.c:3939
 msgid "Bad arguments for user command.\n"
 msgstr "Κακές επιλογές για την εντολή χρήστη.\n"
 
-#: src/common/outbound.c:3900
+#: src/common/outbound.c:4095
 msgid "Too many recursive usercommands, aborting."
 msgstr "Εγκατάλειψη, πάρα πολλές επαναλαμβανόμενες εντολές χρήστη."
 
-#: src/common/outbound.c:3977
+#: src/common/outbound.c:4172
 msgid "Unknown Command. Try /help\n"
 msgstr "Άγνωστη εντολή. Δοκιμάστε /help\n"
 
-#: src/common/plugin.c:371
-#: src/common/plugin.c:412
+#: src/common/plugin.c:356 src/common/plugin.c:397
 msgid "No xchat_plugin_init symbol; is this really an xchat plugin?"
 msgstr "Δεν υπάρχει το σύμβολο xchat_plugin_init· σίγουρα είναι πρόσθετο xchat;"
 
@@ -528,7 +529,7 @@ msgstr "Δεν υπάρχει το σύμβολο xchat_plugin_init· σίγου
 msgid "Are you sure this is a SSL capable server and port?\n"
 msgstr "Είστε σίγουρος/η ότι αυτός ο διακομιστής και η θύρα είναι ικανά για SSL;\n"
 
-#: src/common/server.c:1005
+#: src/common/server.c:1012
 #, c-format
 msgid ""
 "Cannot resolve hostname %s\n"
@@ -537,7 +538,7 @@ msgstr ""
 "Δεν ήταν δυνατή η εύρεση του ονόματος διακομιστή %s\n"
 "Ελέγξτε τις ρυθμίσεις IP σας!\n"
 
-#: src/common/server.c:1010
+#: src/common/server.c:1017
 msgid "Proxy traversal failed.\n"
 msgstr "Απέτυχε η διάβαση από το proxy\n"
 
@@ -566,14 +567,6 @@ msgstr "%C22*%O$tΔεν ήταν δυνατή η σύνδεση στο%C26 %B$1 
 #: src/common/textevents.h:18
 msgid "%C22*%O$t$1 is now known as $2"
 msgstr "%C22*%O$t$1 λέγεται τώρα $2"
-
-#: src/common/textevents.h:21
-msgid "%C18*$t$1%O $2"
-msgstr "%C18*$t$1%O $2"
-
-#: src/common/textevents.h:24
-msgid "%C21*%O$t%C21%B$1%O%C21 $2"
-msgstr "%C21*%O$t%C21%B$1%O%C21 $2"
 
 #: src/common/textevents.h:27
 msgid "%C22*%O$t$1 sets ban on $2"
@@ -611,10 +604,6 @@ msgstr "%C22*%O$t$1 προσκαλεί τον/την $2"
 msgid "%UChannel          Users   Topic"
 msgstr "%UΚανάλι           Χρήστες Θέμα"
 
-#: src/common/textevents.h:54
-msgid "%C18%H<%H$4$1%H>%H%O$t$2"
-msgstr "%C18%H<%H$4$1%H>%H%O$t$2"
-
 #: src/common/textevents.h:57
 msgid "%C22*%O$t$1 sets mode $2$3 $4"
 msgstr ""
@@ -622,14 +611,6 @@ msgstr ""
 #: src/common/textevents.h:60
 msgid "%C22*%O$t%C22Channel $1 modes: $2"
 msgstr "%C22*%O$t%C22Καταστάσεις καναλιού $1: $2"
-
-#: src/common/textevents.h:63
-msgid "$4%C21%B%H<%H$1%H>%H%O%C21$t$2"
-msgstr "$4%C21%B%H<%H$1%H>%H%O%C21$t$2"
-
-#: src/common/textevents.h:66
-msgid "%C28-%C29$1/$2%C28-%O$t$3"
-msgstr "%C28-%C29$1/$2%C28-%O$t$3"
 
 #: src/common/textevents.h:69
 msgid "%C22*%O$t%C26$1%O gives channel operator status to%C26 $2"
@@ -766,7 +747,7 @@ msgstr "%C22*%O$tDCC RECV%C26 $1%O από%C26 $3%O απέτυχε ($4)."
 
 #: src/common/textevents.h:168
 msgid "%C22*%O$tDCC RECV: Cannot open $1 for writing ($2)."
-msgstr ""
+msgstr "%C22*%O$tDCC RECV: Δεν είναι δυνατό το άνοιγμα του $1 για εγγραφή ($2)."
 
 #: src/common/textevents.h:171
 msgid "%C22*%O$tThe file%C26 $1%C already exists, saving it as%C26 $2%O instead."
@@ -815,10 +796,6 @@ msgstr "%C22*%O$tΑποσυνδεθήκατε ($1)."
 #: src/common/textevents.h:204
 msgid "%C22*%O$tFound your IP: [$1]"
 msgstr "%C22*%O$tΒρέθηκε η διεύθυνση IP σας: [$1]"
-
-#: src/common/textevents.h:207
-msgid "$1$t$2"
-msgstr "$1$t$2"
 
 #: src/common/textevents.h:210
 msgid "%O%C26$1%O added to ignore list."
@@ -870,15 +847,6 @@ msgstr "%C21*%O$t%C21$1 πέταξε έξω τον/την $2 από το $3 ($4%
 msgid "%C22*%O$tYou have been killed by $1 ($2%O%C22)"
 msgstr "%C22*%O$tΣας έκανε kill ο/η $1 ($2%O%C22)"
 
-#: src/common/textevents.h:246
-#: src/common/textevents.h:270
-msgid "%C19>%O$1%C19<%O$t$2"
-msgstr "%C19>%O$1%C19<%O$t$2"
-
-#: src/common/textevents.h:249
-msgid "%C16*%O$t$1%O"
-msgstr "%C16*%O$t$1%O"
-
 #: src/common/textevents.h:252
 msgid "%C22*%O$t%C22MOTD Skipped."
 msgstr "%C22*%O$t%C22Το μήνυμα της ημέρας παραλείφθηκε."
@@ -899,10 +867,6 @@ msgstr "%C22*%O$tΔεν υπάρχει τέτοιο DCC."
 msgid "%C22*%O$tNo process is currently running"
 msgstr "%C22*%O$tΔεν τρέχει καμία διεργασία"
 
-#: src/common/textevents.h:267
-msgid "%C28-%C29$1%C28-%O$t$2"
-msgstr "%C28-%C29$1%C28-%O$t$2"
-
 #: src/common/textevents.h:273
 msgid "$tNotify list is empty."
 msgstr "$tΗ λίστα ειδοποίησης είναι άδεια."
@@ -916,12 +880,12 @@ msgid "%C22*%O$t$1 users in notify list."
 msgstr "%C22*%O$t$1 χρήστες στη λίστα ειδοποίησης."
 
 #: src/common/textevents.h:282
-msgid "%C22*%O$tNotify: $1 is offline ($2)."
-msgstr "%C22*%O$tΕπισήμανση: ο/η $1 αποσυνδέθηκε ($2)."
+msgid "%C22*%O$tNotify: $1 is offline ($3)."
+msgstr "%C22*%O$tΕιδοποίηση: ο/η $1 αποσυνδέθηκε ($3)."
 
 #: src/common/textevents.h:285
-msgid "%C22*%O$tNotify: $1 is online ($2)."
-msgstr "%C22*%O$tΕπισήμανση: ο/η $1 είναι συνδεδεμένος ($2)."
+msgid "%C22*%O$tNotify: $1 is online ($3)."
+msgstr "%C22*%O$tΕιδοποίηση: ο/η $1 έχει συνδεθεί ($3)."
 
 #: src/common/textevents.h:291
 msgid "%C23*%O$t%C23$1 (%O%C23$2) has left $3"
@@ -938,14 +902,6 @@ msgstr "%C22*%O$tΑπάντηση ping από $1: $2 δευτερόλεπτο(α
 #: src/common/textevents.h:300
 msgid "%C22*%O$tNo ping reply for $1 seconds, disconnecting."
 msgstr "%C22*%O$tΔεν υπάρχει απάντηση ping για $1 δευτερόλεπτα, αποσύνδεση."
-
-#: src/common/textevents.h:303
-msgid "%C28*%C29$3$1%C28*$t%O$2"
-msgstr "%C28*%C29$3$1%C28*$t%O$2"
-
-#: src/common/textevents.h:306
-msgid "%C18%H<%H$3$1%H>%H%O$t$2"
-msgstr "%C18%H<%H$3$1%H>%H%O$t$2"
 
 #: src/common/textevents.h:309
 msgid "%C22*%O$tA process is already running"
@@ -970,12 +926,6 @@ msgstr "%C22*%O$tΕύρεση διεύθυνσης IP για %C26 $1%O..."
 #: src/common/textevents.h:324
 msgid "%C22*%O$t%C22Connected."
 msgstr "%C22*%O$t%C22Συνδέθηκε."
-
-#: src/common/textevents.h:327
-#: src/common/textevents.h:333
-#: src/common/textevents.h:336
-msgid "%C22*%O$t$1"
-msgstr "%C22*%O$t$1"
 
 #: src/common/textevents.h:330
 msgid "%C22*%O$t%C22Looking up $1"
@@ -1017,10 +967,8 @@ msgstr "%C22*%O$t%C28[%O$1%C28] %O$2%C27 $3"
 msgid "%C22*%O$t%C28[%O$1%C28] %Cis away %C30(%O$2%O%C30)"
 msgstr "%C22*%O$t%C28[%O$1%C28] %Cαπουσιάζει %C30(%O$2%O%C30)"
 
-#: src/common/textevents.h:366
-#: src/common/textevents.h:372
-#: src/common/textevents.h:387
-#: src/common/textevents.h:390
+#: src/common/textevents.h:366 src/common/textevents.h:372
+#: src/common/textevents.h:387 src/common/textevents.h:390
 msgid "%C22*%O$t%C28[%O$1%C28]%O $2"
 msgstr "%C22*%O$t%C28[%O$1%C28]%O $2"
 
@@ -1063,11 +1011,7 @@ msgstr "%C23*$tΕγκαταλείψατε το κανάλι $3 (%O%C23%B%B$4%O%C
 
 #: src/common/textevents.h:405
 msgid "%C22*%O$tYou've invited%C26 $1%O to%C26 $2%O (%C26$3%O)"
-msgstr "%C22*%O$tΠροσκληθήκατε%C26 $1%O στο%C26 $2%O (%C26$3%O)"
-
-#: src/common/textevents.h:408
-msgid "%C31%H<%H$4$1%H>%H%O%C30$t$2"
-msgstr "%C31%H<%H$4$1%H>%H%O%C30$t$2"
+msgstr "%C22*%O$tΠροσκαλέσατε τον/την %C26 $1%O στο%C26 $2%O (%C26$3%O)"
 
 #: src/common/textevents.h:411
 msgid "%C22*%O$tYou are now known as $2"
@@ -1092,557 +1036,457 @@ msgstr ""
 "* Αδυναμία ανοίγματος αρχείου(ων) καταγραφής για εγγραφή.\n"
 "  Ελέγξτε τα δικαιώματα στο %s/xchatlogs"
 
-#: src/common/text.c:516
+#: src/common/text.c:618
 msgid "Left message"
 msgstr "Αριστερό μήνυμα"
 
-#: src/common/text.c:517
+#: src/common/text.c:619
 msgid "Right message"
 msgstr "Δεξί μήνυμα"
 
-#: src/common/text.c:521
+#: src/common/text.c:623
 msgid "The nick of the joining person"
 msgstr "Το ψευδώνυμο του συνδεόμενου ατόμου"
 
-#: src/common/text.c:522
+#: src/common/text.c:624
 msgid "The channel being joined"
 msgstr "Το συνδεόμενο κανάλι"
 
-#: src/common/text.c:523
-#: src/common/text.c:569
-#: src/common/text.c:626
+#: src/common/text.c:625 src/common/text.c:671 src/common/text.c:728
 msgid "The host of the person"
 msgstr "Ο διακομιστής του ατόμου"
 
-#: src/common/text.c:527
-#: src/common/text.c:533
-#: src/common/text.c:540
-#: src/common/text.c:607
-#: src/common/text.c:733
-#: src/common/text.c:740
-#: src/common/text.c:745
-#: src/common/text.c:750
-#: src/common/text.c:755
-#: src/common/text.c:761
-#: src/common/text.c:766
-#: src/common/text.c:770
-#: src/common/text.c:776
-#: src/common/text.c:782
-#: src/common/text.c:828
-#: src/common/text.c:838
-#: src/common/text.c:843
-#: src/common/text.c:848
-#: src/common/text.c:857
-#: src/common/text.c:868
-#: src/common/text.c:875
-#: src/common/text.c:881
-#: src/common/text.c:886
-#: src/common/text.c:891
-#: src/common/text.c:898
-#: src/common/text.c:904
-#: src/common/text.c:910
-#: src/common/text.c:915
-#: src/common/text.c:920
-#: src/common/text.c:924
-#: src/common/text.c:930
-#: src/common/text.c:938
-#: src/common/text.c:972
-#: src/common/text.c:977
+#: src/common/text.c:629 src/common/text.c:635 src/common/text.c:642
+#: src/common/text.c:709 src/common/text.c:835 src/common/text.c:842
+#: src/common/text.c:847 src/common/text.c:852 src/common/text.c:857
+#: src/common/text.c:863 src/common/text.c:868 src/common/text.c:872
+#: src/common/text.c:878 src/common/text.c:884 src/common/text.c:930
+#: src/common/text.c:941 src/common/text.c:946 src/common/text.c:951
+#: src/common/text.c:960 src/common/text.c:971 src/common/text.c:978
+#: src/common/text.c:984 src/common/text.c:989 src/common/text.c:994
+#: src/common/text.c:1001 src/common/text.c:1007 src/common/text.c:1013
+#: src/common/text.c:1018 src/common/text.c:1023 src/common/text.c:1027
+#: src/common/text.c:1033 src/common/text.c:1041 src/common/text.c:1075
+#: src/common/text.c:1080
 msgid "Nickname"
 msgstr "Ψευδώνυμο"
 
-#: src/common/text.c:528
+#: src/common/text.c:630
 msgid "The action"
 msgstr "Η δράση"
 
-#: src/common/text.c:529
-#: src/common/text.c:535
+#: src/common/text.c:631 src/common/text.c:637
 msgid "Mode char"
 msgstr "Χαρακτήρας κατάστασης"
 
-#: src/common/text.c:534
+#: src/common/text.c:636
 msgid "The text"
 msgstr "Το κείμενο"
 
-#: src/common/text.c:536
-#: src/common/text.c:609
+#: src/common/text.c:638 src/common/text.c:711
 msgid "Identified text"
 msgstr "Στοιχισμένο κείμενο"
 
-#: src/common/text.c:541
-#: src/common/text.c:597
-#: src/common/text.c:603
-#: src/common/text.c:608
+#: src/common/text.c:643 src/common/text.c:699 src/common/text.c:705
+#: src/common/text.c:710
 msgid "The message"
 msgstr "Το μήνυμα"
 
-#: src/common/text.c:545
-#: src/common/text.c:613
+#: src/common/text.c:647 src/common/text.c:715
 msgid "Old nickname"
 msgstr "Παλιό ψευδώνυμο"
 
-#: src/common/text.c:546
-#: src/common/text.c:614
+#: src/common/text.c:648 src/common/text.c:716
 msgid "New nickname"
 msgstr "Νέο ψευδώνυμο"
 
-#: src/common/text.c:550
+#: src/common/text.c:652
 msgid "Nick of person who changed the topic"
 msgstr "Το ψευδώνυμο του ατόμου που άλλαξε το θέμα"
 
-#: src/common/text.c:551
-#: src/common/text.c:557
-#: src/fe-gtk/chanlist.c:607
+#: src/common/text.c:653 src/common/text.c:659 src/fe-gtk/chanlist.c:607
 #: src/fe-gtk/chanlist.c:712
 msgid "Topic"
 msgstr "Θέμα"
 
-#: src/common/text.c:552
-#: src/common/text.c:556
-#: src/common/text.c:992
-#: src/fe-gtk/chanlist.c:605
-#: src/fe-gtk/chanlist.c:703
+#: src/common/text.c:654 src/common/text.c:658 src/common/text.c:1095
+#: src/fe-gtk/chanlist.c:605 src/fe-gtk/chanlist.c:703
 #: src/fe-gtk/ignoregui.c:176
 msgid "Channel"
 msgstr "Κανάλι"
 
-#: src/common/text.c:561
-#: src/common/text.c:620
+#: src/common/text.c:663 src/common/text.c:722
 msgid "The nickname of the kicker"
 msgstr "Το ψευδώνυμο του ατόμου που έκανε kick"
 
-#: src/common/text.c:562
-#: src/common/text.c:618
+#: src/common/text.c:664 src/common/text.c:720
 msgid "The person being kicked"
 msgstr "Το άτομο που έγινε kick"
 
-#: src/common/text.c:563
-#: src/common/text.c:570
-#: src/common/text.c:574
-#: src/common/text.c:579
-#: src/common/text.c:619
-#: src/common/text.c:627
-#: src/common/text.c:634
+#: src/common/text.c:665 src/common/text.c:672 src/common/text.c:676
+#: src/common/text.c:681 src/common/text.c:721 src/common/text.c:729
+#: src/common/text.c:736
 msgid "The channel"
 msgstr "Το κανάλι"
 
-#: src/common/text.c:564
-#: src/common/text.c:621
-#: src/common/text.c:628
+#: src/common/text.c:666 src/common/text.c:723 src/common/text.c:730
 msgid "The reason"
 msgstr "Η αιτία"
 
-#: src/common/text.c:568
-#: src/common/text.c:625
+#: src/common/text.c:670 src/common/text.c:727
 msgid "The nick of the person leaving"
 msgstr "Το ψευδώνυμο του ατόμου που φεύγει"
 
-#: src/common/text.c:575
-#: src/common/text.c:581
+#: src/common/text.c:677 src/common/text.c:683
 msgid "The time"
 msgstr "Η ώρα"
 
-#: src/common/text.c:580
+#: src/common/text.c:682
 msgid "The creator"
 msgstr "Ο δημιουργός"
 
-#: src/common/text.c:585
+#: src/common/text.c:687
 msgid "Nick"
 msgstr "Ψευδώνυμο"
 
-#: src/common/text.c:586
-#: src/common/text.c:844
+#: src/common/text.c:688 src/common/text.c:947
 msgid "Reason"
 msgstr "Αιτία"
 
-#: src/common/text.c:587
-#: src/common/text.c:735
-#: src/common/text.c:818
+#: src/common/text.c:689 src/common/text.c:837 src/common/text.c:920
 msgid "Host"
 msgstr "Διακομιστής"
 
-#: src/common/text.c:591
-#: src/common/text.c:596
-#: src/common/text.c:601
+#: src/common/text.c:693 src/common/text.c:698 src/common/text.c:703
 msgid "Who it's from"
 msgstr "Από ποιον είναι"
 
-#: src/common/text.c:592
+#: src/common/text.c:694
 msgid "The time in x.x format (see below)"
 msgstr "Η ώρα σε x.x μορφή (δείτε παρακάτω)"
 
-#: src/common/text.c:602
-#: src/common/text.c:645
+#: src/common/text.c:704 src/common/text.c:747
 msgid "The Channel it's going to"
 msgstr "Το κανάλι πρόκειται να"
 
-#: src/common/text.c:632
+#: src/common/text.c:734
 msgid "The sound"
 msgstr "Ο ήχος"
 
-#: src/common/text.c:633
-#: src/common/text.c:639
-#: src/common/text.c:644
+#: src/common/text.c:735 src/common/text.c:741 src/common/text.c:746
 msgid "The nick of the person"
 msgstr "Το ψευδώνυμο του ατόμου"
 
-#: src/common/text.c:638
-#: src/common/text.c:643
+#: src/common/text.c:740 src/common/text.c:745
 msgid "The CTCP event"
 msgstr "Το γεγονός CTCP"
 
-#: src/common/text.c:649
+#: src/common/text.c:751
 msgid "The nick of the person who set the key"
 msgstr "Το ψευδώνυμο του ατόμου που έθεσε το κλειδί"
 
-#: src/common/text.c:650
+#: src/common/text.c:752
 msgid "The key"
 msgstr "Το κλειδί"
 
-#: src/common/text.c:654
+#: src/common/text.c:756
 msgid "The nick of the person who set the limit"
 msgstr "Το ψευδώνυμο του ατόμου που έθεσε το όριο"
 
-#: src/common/text.c:655
+#: src/common/text.c:757
 msgid "The limit"
 msgstr "Το όριο"
 
-#: src/common/text.c:659
+#: src/common/text.c:761
 msgid "The nick of the person who did the op'ing"
 msgstr "Το ψευδώνυμο του ατόμου που έδωσε το op"
 
-#: src/common/text.c:660
+#: src/common/text.c:762
 msgid "The nick of the person who has been op'ed"
 msgstr "Το ψευδώνυμο του ατόμου που του δόθηκε op"
 
-#: src/common/text.c:664
+#: src/common/text.c:766
 msgid "The nick of the person who has been halfop'ed"
 msgstr "Το ψευδώνυμο του ατόμου που του δόθηκε halfop"
 
-#: src/common/text.c:665
+#: src/common/text.c:767
 msgid "The nick of the person who did the halfop'ing"
 msgstr "Το ψευδώνυμο του ατόμου που έδωσε το halfop"
 
-#: src/common/text.c:669
+#: src/common/text.c:771
 msgid "The nick of the person who did the voice'ing"
 msgstr "Το ψευδώνυμο του ατόμου που έδωσε το voice"
 
-#: src/common/text.c:670
+#: src/common/text.c:772
 msgid "The nick of the person who has been voice'ed"
 msgstr "Το ψευδώνυμο του ατόμου που του δόθηκε voice"
 
-#: src/common/text.c:674
+#: src/common/text.c:776
 msgid "The nick of the person who did the banning"
 msgstr "Το ψευδώνυμο του ατόμου που έκανε το ban"
 
-#: src/common/text.c:675
-#: src/common/text.c:702
+#: src/common/text.c:777 src/common/text.c:804
 msgid "The ban mask"
 msgstr "Η μάσκα του ban"
 
-#: src/common/text.c:679
+#: src/common/text.c:781
 msgid "The nick who removed the key"
 msgstr "Το ψευδώνυμο που αφαίρεσε το κλειδί"
 
-#: src/common/text.c:683
+#: src/common/text.c:785
 msgid "The nick who removed the limit"
 msgstr "Το ψευδώνυμο που αφαίρεσε το όριο"
 
-#: src/common/text.c:687
+#: src/common/text.c:789
 msgid "The nick of the person of did the deop'ing"
 msgstr "Το ψευδώνυμο του ατόμου που έκανε το deop"
 
-#: src/common/text.c:688
+#: src/common/text.c:790
 msgid "The nick of the person who has been deop'ed"
 msgstr "Το ψευδώνυμο του ατόμου που του έγινε deop"
 
-#: src/common/text.c:691
+#: src/common/text.c:793
 msgid "The nick of the person of did the dehalfop'ing"
 msgstr "Το ψευδώνυμο του ατόμου που έκανε το dehalfop"
 
-#: src/common/text.c:692
+#: src/common/text.c:794
 msgid "The nick of the person who has been dehalfop'ed"
 msgstr "Το ψευδώνυμο του ατόμου που του έγινε dehalfop"
 
-#: src/common/text.c:696
+#: src/common/text.c:798
 msgid "The nick of the person of did the devoice'ing"
 msgstr "Το ψευδώνυμο του ατόμου που έκανε το devoice"
 
-#: src/common/text.c:697
+#: src/common/text.c:799
 msgid "The nick of the person who has been devoice'ed"
 msgstr "Το ψευδώνυμο του ατόμου που του έγινε devoice"
 
-#: src/common/text.c:701
+#: src/common/text.c:803
 msgid "The nick of the person of did the unban'ing"
 msgstr "Το ψευδώνυμο του ατόμου που έκανε το unban"
 
-#: src/common/text.c:706
+#: src/common/text.c:808
 msgid "The nick of the person who did the exempt"
 msgstr "Το ψευδώνυμο του ατόμου που έκανε την εξαίρεση"
 
-#: src/common/text.c:707
-#: src/common/text.c:712
+#: src/common/text.c:809 src/common/text.c:814
 msgid "The exempt mask"
 msgstr "Η μάσκα της εξαίρεσης"
 
-#: src/common/text.c:711
+#: src/common/text.c:813
 msgid "The nick of the person removed the exempt"
 msgstr "Το ψευδώνυμο του ατόμου που αφαίρεσε την εξαίρεση"
 
-#: src/common/text.c:716
+#: src/common/text.c:818
 msgid "The nick of the person who did the invite"
 msgstr "Το ψευδώνυμο του ατόμου που έκανε το invite"
 
-#: src/common/text.c:717
-#: src/common/text.c:722
+#: src/common/text.c:819 src/common/text.c:824
 msgid "The invite mask"
 msgstr "Η μάσκα invite"
 
-#: src/common/text.c:721
+#: src/common/text.c:823
 msgid "The nick of the person removed the invite"
 msgstr "Το ψευδώνυμο του ατόμου που αφαίρεσε το invite"
 
-#: src/common/text.c:726
+#: src/common/text.c:828
 msgid "The nick of the person setting the mode"
 msgstr "Το ψευδώνυμο του ατόμου που θέτει τη κατάσταση"
 
-#: src/common/text.c:727
+#: src/common/text.c:829
 msgid "The mode's sign (+/-)"
 msgstr "Το πρόσημο της κατάστασης (+/-)"
 
-#: src/common/text.c:728
+#: src/common/text.c:830
 msgid "The mode letter"
 msgstr "Το γράμμα της κατάστασης"
 
-#: src/common/text.c:729
+#: src/common/text.c:831
 msgid "The channel it's being set on"
 msgstr "Το κανάλι στο οποίο ρυθμίστηκε"
 
-#: src/common/text.c:734
+#: src/common/text.c:836
 msgid "Username"
 msgstr "Όνομα χρήστη"
 
-#: src/common/text.c:736
+#: src/common/text.c:838
 msgid "Full name"
 msgstr "Πλήρες όνομα"
 
-#: src/common/text.c:741
+#: src/common/text.c:843
 msgid "Channel Membership/\"is an IRC operator\""
 msgstr "Μέλη καναλιού/\"είναι ένας IRC operator\""
 
-#: src/common/text.c:746
+#: src/common/text.c:848
 msgid "Server Information"
 msgstr "Πληροφορίες διακομιστή"
 
-#: src/common/text.c:751
-#: src/common/text.c:756
+#: src/common/text.c:853 src/common/text.c:858
 msgid "Idle time"
 msgstr "Χρόνος αδράνειας"
 
-#: src/common/text.c:757
+#: src/common/text.c:859
 msgid "Signon time"
 msgstr "Ώρα σύνδεσης"
 
-#: src/common/text.c:762
+#: src/common/text.c:864
 msgid "Away reason"
 msgstr "Αιτία απουσίας"
 
-#: src/common/text.c:771
-#: src/common/text.c:777
-#: src/common/text.c:785
-#: src/common/text.c:964
+#: src/common/text.c:873 src/common/text.c:879 src/common/text.c:887
+#: src/common/text.c:1067
 msgid "Message"
 msgstr "Μήνυμα"
 
-#: src/common/text.c:778
+#: src/common/text.c:880
 msgid "Account"
 msgstr "Λογαριασμός"
 
-#: src/common/text.c:783
+#: src/common/text.c:885
 msgid "Real user@host"
 msgstr "Πραγματικά χρήστης@διακομιστής"
 
-#: src/common/text.c:784
+#: src/common/text.c:886
 msgid "Real IP"
 msgstr "Πραγματική διεύθυνση IP"
 
-#: src/common/text.c:789
-#: src/common/text.c:798
-#: src/common/text.c:804
-#: src/common/text.c:833
-#: src/common/text.c:987
+#: src/common/text.c:891 src/common/text.c:900 src/common/text.c:906
+#: src/common/text.c:936 src/common/text.c:1090
 msgid "Channel Name"
 msgstr "Όνομα καναλιού"
 
-#: src/common/text.c:793
-#: src/common/text.c:950
-#: src/fe-gtk/menu.c:1166
-#: src/fe-gtk/menu.c:1345
-#: src/fe-gtk/textgui.c:387
+#: src/common/text.c:895 src/common/text.c:1053 src/fe-gtk/menu.c:1183
+#: src/fe-gtk/menu.c:1362 src/fe-gtk/textgui.c:387
 msgid "Text"
 msgstr "Κείμενο"
 
-#: src/common/text.c:794
-#: src/common/text.c:800
-#: src/common/text.c:829
-#: src/common/text.c:946
-#: src/common/text.c:988
+#: src/common/text.c:896 src/common/text.c:902 src/common/text.c:931
+#: src/common/text.c:1049 src/common/text.c:1091
 msgid "Server Name"
 msgstr "Όνομα διακομιστή"
 
-#: src/common/text.c:799
+#: src/common/text.c:901
 msgid "Nick of person who invited you"
 msgstr "Το ψευδώνυμο του ατόμου που σας προσκάλεσε"
 
-#: src/common/text.c:805
-#: src/fe-gtk/chanlist.c:606
+#: src/common/text.c:907 src/fe-gtk/chanlist.c:606
 msgid "Users"
 msgstr "Χρήστες"
 
-#: src/common/text.c:809
+#: src/common/text.c:911
 msgid "Nickname in use"
 msgstr "Το ψευδώνυμο είναι σε χρήση"
 
-#: src/common/text.c:810
+#: src/common/text.c:912
 msgid "Nick being tried"
 msgstr "Το ψευδώνυμο δοκιμάζεται"
 
-#: src/common/text.c:814
-#: src/common/text.c:851
-#: src/common/text.c:862
-#: src/common/text.c:869
-#: src/common/text.c:882
-#: src/common/text.c:899
-#: src/common/text.c:999
-#: src/common/util.c:352
-msgid "Error"
-msgstr "Σφάλμα"
-
-#: src/common/text.c:819
-#: src/common/text.c:954
+#: src/common/text.c:921 src/common/text.c:1057
 msgid "IP"
 msgstr "IP"
 
-#: src/common/text.c:820
-#: src/common/text.c:850
+#: src/common/text.c:922 src/common/text.c:953
 msgid "Port"
 msgstr "Θύρα"
 
-#: src/common/text.c:824
-msgid "PID"
-msgstr "PID"
+#: src/common/text.c:932 src/fe-gtk/notifygui.c:139 src/fe-gtk/setup.c:1526
+msgid "Network"
+msgstr "Δίκτυο"
 
-#: src/common/text.c:834
-#: src/common/text.c:839
+#: src/common/text.c:937 src/common/text.c:942
 msgid "Modes string"
 msgstr "String καταστάσεων"
 
-#: src/common/text.c:849
-#: src/common/text.c:887
-#: src/common/text.c:892
-#: src/common/text.c:933
+#: src/common/text.c:952 src/common/text.c:990 src/common/text.c:995
+#: src/common/text.c:1036
 msgid "IP address"
 msgstr "Διεύθυνση IP"
 
-#: src/common/text.c:855
-#: src/common/text.c:880
+#: src/common/text.c:958 src/common/text.c:983
 msgid "DCC Type"
 msgstr "Τύπος DCC"
 
-#: src/common/text.c:856
-#: src/common/text.c:861
-#: src/common/text.c:866
-#: src/common/text.c:873
-#: src/common/text.c:893
-#: src/common/text.c:897
-#: src/common/text.c:903
-#: src/common/text.c:909
-#: src/common/text.c:916
-#: src/common/text.c:925
-#: src/common/text.c:931
+#: src/common/text.c:959 src/common/text.c:964 src/common/text.c:969
+#: src/common/text.c:976 src/common/text.c:996 src/common/text.c:1000
+#: src/common/text.c:1006 src/common/text.c:1012 src/common/text.c:1019
+#: src/common/text.c:1028 src/common/text.c:1034
 msgid "Filename"
 msgstr "Όνομα αρχείου"
 
-#: src/common/text.c:867
-#: src/common/text.c:874
+#: src/common/text.c:970 src/common/text.c:977
 msgid "Destination filename"
 msgstr "Όνομα αρχείου προορισμού"
 
-#: src/common/text.c:876
-#: src/common/text.c:905
+#: src/common/text.c:979 src/common/text.c:1008
 msgid "CPS"
 msgstr "CPS"
 
-#: src/common/text.c:911
+#: src/common/text.c:1014
 msgid "Pathname"
 msgstr "Όνομα διαδρομής"
 
-#: src/common/text.c:926
-#: src/fe-gtk/dccgui.c:537
-#: src/fe-gtk/dccgui.c:709
+#: src/common/text.c:1029 src/fe-gtk/dccgui.c:537 src/fe-gtk/dccgui.c:709
 msgid "Position"
 msgstr "Θέση"
 
-#: src/common/text.c:932
-#: src/fe-gtk/dccgui.c:353
-#: src/fe-gtk/dccgui.c:536
+#: src/common/text.c:1035 src/fe-gtk/dccgui.c:353 src/fe-gtk/dccgui.c:536
 #: src/fe-gtk/dccgui.c:708
 msgid "Size"
 msgstr "Μέγεθος"
 
-#: src/common/text.c:937
+#: src/common/text.c:1040
 msgid "DCC String"
 msgstr ""
 
-#: src/common/text.c:942
+#: src/common/text.c:1045
 msgid "Number of notify items"
 msgstr "Αριθμός ειδοποιούμενων αντικειμένων"
 
-#: src/common/text.c:958
+#: src/common/text.c:1061
 msgid "Old Filename"
 msgstr "Παλιό όνομα αρχείου"
 
-#: src/common/text.c:959
+#: src/common/text.c:1062
 msgid "New Filename"
 msgstr "Νέο όνομα αρχείου"
 
-#: src/common/text.c:963
+#: src/common/text.c:1066
 msgid "Receiver"
 msgstr "Παραλήπτης"
 
-#: src/common/text.c:968
+#: src/common/text.c:1071
 msgid "Hostmask"
 msgstr "Μάσκα διακομιστή"
 
-#: src/common/text.c:973
+#: src/common/text.c:1076
 msgid "Hostname"
 msgstr "Όνομα διακομιστή"
 
-#: src/common/text.c:978
+#: src/common/text.c:1081
 msgid "The Packet"
 msgstr "Το πακέτο"
 
-#: src/common/text.c:982
+#: src/common/text.c:1085
 msgid "Seconds"
 msgstr "Δευτερόλεπτα"
 
-#: src/common/text.c:986
+#: src/common/text.c:1089
 msgid "Nick of person who have been invited"
 msgstr "Το ψευδώνυμο του ατόμου που έχει προσκληθεί"
 
-#: src/common/text.c:993
+#: src/common/text.c:1096
 msgid "Banmask"
 msgstr "Μάσκα ban"
 
-#: src/common/text.c:994
+#: src/common/text.c:1097
 msgid "Who set the ban"
 msgstr "Ποιος έθεσε το ban"
 
-#: src/common/text.c:995
+#: src/common/text.c:1098
 msgid "Ban time"
 msgstr "Ώρα ban"
 
-#: src/common/text.c:1035
+#: src/common/text.c:1138
 #, c-format
 msgid ""
 "Error parsing event %s.\n"
@@ -1651,7 +1495,7 @@ msgstr ""
 "Σφάλμα κατά την ανάλυση του γεγονότος %s.\n"
 "Φόρτωμα προκαθορισμένου."
 
-#: src/common/text.c:1712
+#: src/common/text.c:1819
 #, c-format
 msgid ""
 "Cannot read sound file:\n"
@@ -2604,8 +2448,7 @@ msgstr "Τατζικιστάν"
 msgid "Tokelau"
 msgstr "Τοκελάου"
 
-#: src/common/util.c:1069
-#: src/common/util.c:1073
+#: src/common/util.c:1069 src/common/util.c:1073
 msgid "East Timor"
 msgstr "Ανατολικό Τιμούρ"
 
@@ -2729,269 +2572,269 @@ msgstr "Ζάμπια"
 msgid "Zimbabwe"
 msgstr "Ζιμπάμπουε"
 
-#: src/common/util.c:1110
-#: src/common/util.c:1120
-#: src/fe-gtk/menu.c:516
-#: src/fe-gtk/menu.c:521
-#: src/fe-gtk/menu.c:525
-#: src/fe-gtk/menu.c:529
-#: src/fe-gtk/menu.c:537
-#: src/fe-gtk/menu.c:555
+#: src/common/util.c:1110 src/common/util.c:1120 src/fe-gtk/menu.c:529
+#: src/fe-gtk/menu.c:534 src/fe-gtk/menu.c:538 src/fe-gtk/menu.c:542
+#: src/fe-gtk/menu.c:550 src/fe-gtk/menu.c:568
 msgid "Unknown"
 msgstr "Άγνωστο"
 
-#: src/common/xchat.c:753
-#: src/common/xchat.c:879
+#: src/common/xchat.c:765 src/common/xchat.c:891
 msgid "Open Dialog Window"
 msgstr "Άνοιγμα παραθύρου διαλόγου"
 
-#: src/common/xchat.c:754
+#: src/common/xchat.c:766
 msgid "Send a File"
 msgstr "Αποστολή αρχείου"
 
-#: src/common/xchat.c:755
+#: src/common/xchat.c:767
 msgid "User Info (WHOIS)"
 msgstr "Πληροφορίες χρήστη (WHOIS)"
 
-#: src/common/xchat.c:756
+#: src/common/xchat.c:768
 msgid "Operator Actions"
 msgstr "Ενέργειες Operator"
 
-#: src/common/xchat.c:758
-#: src/common/xchat.c:849
+#: src/common/xchat.c:770 src/common/xchat.c:861
 msgid "Give Ops"
 msgstr "Απόδοση Chanops"
 
-#: src/common/xchat.c:759
-#: src/common/xchat.c:850
+#: src/common/xchat.c:771 src/common/xchat.c:862
 msgid "Take Ops"
 msgstr "Αφαίρεση Chanops"
 
-#: src/common/xchat.c:760
-#: src/common/xchat.c:853
+#: src/common/xchat.c:772 src/common/xchat.c:865
 msgid "Give Voice"
 msgstr "Απόδοση Voice"
 
-#: src/common/xchat.c:761
-#: src/common/xchat.c:854
+#: src/common/xchat.c:773 src/common/xchat.c:866
 msgid "Take Voice"
 msgstr "Αφαίρεση Voice"
 
-#: src/common/xchat.c:763
-#: src/common/xchat.c:858
+#: src/common/xchat.c:775 src/common/xchat.c:870
 msgid "Kick/Ban"
 msgstr "Kick/Ban"
 
-#: src/common/xchat.c:764
-#: src/common/xchat.c:859
-#: src/common/xchat.c:908
+#: src/common/xchat.c:776 src/common/xchat.c:871 src/common/xchat.c:920
 msgid "Kick"
 msgstr "Kick"
 
-#: src/common/xchat.c:765
-#: src/common/xchat.c:766
-#: src/common/xchat.c:767
-#: src/common/xchat.c:768
-#: src/common/xchat.c:769
-#: src/common/xchat.c:860
-#: src/common/xchat.c:861
-#: src/common/xchat.c:862
-#: src/common/xchat.c:863
-#: src/common/xchat.c:864
-#: src/common/xchat.c:907
+#: src/common/xchat.c:777 src/common/xchat.c:778 src/common/xchat.c:779
+#: src/common/xchat.c:780 src/common/xchat.c:781 src/common/xchat.c:872
+#: src/common/xchat.c:873 src/common/xchat.c:874 src/common/xchat.c:875
+#: src/common/xchat.c:876 src/common/xchat.c:919
 msgid "Ban"
 msgstr "Ban"
 
-#: src/common/xchat.c:770
-#: src/common/xchat.c:771
-#: src/common/xchat.c:772
-#: src/common/xchat.c:773
-#: src/common/xchat.c:865
-#: src/common/xchat.c:866
-#: src/common/xchat.c:867
-#: src/common/xchat.c:868
+#: src/common/xchat.c:782 src/common/xchat.c:783 src/common/xchat.c:784
+#: src/common/xchat.c:785 src/common/xchat.c:877 src/common/xchat.c:878
+#: src/common/xchat.c:879 src/common/xchat.c:880
 msgid "KickBan"
 msgstr "KickBan"
 
-#: src/common/xchat.c:836
+#: src/common/xchat.c:848
 msgid "Direct client-to-client"
 msgstr "Σε απευθείας σύνδεση (DCC)"
 
-#: src/common/xchat.c:837
+#: src/common/xchat.c:849
 msgid "Send File"
 msgstr "Αποστολή αρχείου"
 
-#: src/common/xchat.c:838
+#: src/common/xchat.c:850
 msgid "Offer Chat"
 msgstr "Συνομιλία"
 
-#: src/common/xchat.c:839
+#: src/common/xchat.c:851
 msgid "Abort Chat"
 msgstr "Ακύρωση συνομιλίας"
 
-#: src/common/xchat.c:840
-#: src/fe-gtk/plugingui.c:74
+#: src/common/xchat.c:852 src/fe-gtk/plugingui.c:74
 msgid "Version"
 msgstr "Έκδοση"
 
-#: src/common/xchat.c:841
+#: src/common/xchat.c:853
 msgid "Userinfo"
 msgstr "Πληροφορίες χρήστη"
 
-#: src/common/xchat.c:842
+#: src/common/xchat.c:854
 msgid "Clientinfo"
 msgstr "Πληροφορίες πελάτη"
 
-#: src/common/xchat.c:843
-#: src/common/xchat.c:877
-#: src/common/xchat.c:925
+#: src/common/xchat.c:855 src/common/xchat.c:889 src/common/xchat.c:937
 msgid "Ping"
 msgstr "Ping"
 
-#: src/common/xchat.c:844
+#: src/common/xchat.c:856
 msgid "Time"
 msgstr "Ώρα"
 
-#: src/common/xchat.c:845
+#: src/common/xchat.c:857
 msgid "Finger"
 msgstr "Finger"
 
-#: src/common/xchat.c:846
+#: src/common/xchat.c:858
 msgid "Oper"
 msgstr "Oper"
 
-#: src/common/xchat.c:847
+#: src/common/xchat.c:859
 msgid "Kill this user"
 msgstr "Kill this user"
 
-#: src/common/xchat.c:848
+#: src/common/xchat.c:860
 msgid "Mode"
 msgstr "Κατάσταση"
 
-#: src/common/xchat.c:851
+#: src/common/xchat.c:863
 msgid "Give Half-Ops"
 msgstr "Απόδοση Half-Ops"
 
-#: src/common/xchat.c:852
+#: src/common/xchat.c:864
 msgid "Take Half-Ops"
 msgstr "Αφαίρεση Half-Ops"
 
-#: src/common/xchat.c:855
+#: src/common/xchat.c:867
 msgid "Ignore"
 msgstr "Αγνόησε"
 
-#: src/common/xchat.c:856
+#: src/common/xchat.c:868
 msgid "Ignore User"
 msgstr "Αγνόησε χρήστη"
 
-#: src/common/xchat.c:857
+#: src/common/xchat.c:869
 msgid "UnIgnore User"
 msgstr "ΑποΑγνόηση χρήστη"
 
-#: src/common/xchat.c:869
-#: src/fe-gtk/dccgui.c:586
-#: src/fe-gtk/dccgui.c:752
+#: src/common/xchat.c:881 src/fe-gtk/dccgui.c:586 src/fe-gtk/dccgui.c:752
 msgid "Info"
 msgstr "Πληροφορίες"
 
-#: src/common/xchat.c:870
+#: src/common/xchat.c:882
 msgid "Who"
 msgstr "Ποιος"
 
-#: src/common/xchat.c:871
-#: src/common/xchat.c:921
+#: src/common/xchat.c:883 src/common/xchat.c:933
 msgid "WhoIs"
 msgstr "ΠοιοςΕίναι"
 
-#: src/common/xchat.c:872
+#: src/common/xchat.c:884
 msgid "DNS Lookup"
 msgstr "DNS Lookup"
 
-#: src/common/xchat.c:873
+#: src/common/xchat.c:885
 msgid "Trace"
 msgstr "Εντοπισμός"
 
-#: src/common/xchat.c:874
+#: src/common/xchat.c:886
 msgid "UserHost"
 msgstr ""
 
-#: src/common/xchat.c:875
+#: src/common/xchat.c:887
 msgid "External"
 msgstr "Εξωτερικό"
 
-#: src/common/xchat.c:876
+#: src/common/xchat.c:888
 msgid "Traceroute"
 msgstr "Traceroute"
 
-#: src/common/xchat.c:878
+#: src/common/xchat.c:890
 msgid "Telnet"
 msgstr "Telnet"
 
-#: src/common/xchat.c:890
+#: src/common/xchat.c:902
 msgid "Leave Channel"
 msgstr "Εγκατάλειψη καναλιού"
 
-#: src/common/xchat.c:891
-#: src/fe-gtk/menu.c:1352
+#: src/common/xchat.c:903 src/fe-gtk/menu.c:1369
 msgid "Join Channel..."
 msgstr "Σύνδεση στο κανάλι...."
 
-#: src/common/xchat.c:892
-#: src/fe-gtk/menu.c:1047
+#: src/common/xchat.c:904 src/fe-gtk/menu.c:1060
 msgid "Enter Channel to Join:"
 msgstr "Εισάγετε το κανάλι προς σύνδεση:"
 
-#: src/common/xchat.c:893
+#: src/common/xchat.c:905
 msgid "Server Links"
 msgstr "Συνδέσεις διακομιστών"
 
-#: src/common/xchat.c:894
+#: src/common/xchat.c:906
 msgid "Ping Server"
 msgstr "Ping στο διακομιστή"
 
-#: src/common/xchat.c:895
+#: src/common/xchat.c:907
 msgid "Hide Version"
 msgstr "Απόκρυψη έκδοσης"
 
-#: src/common/xchat.c:905
+#: src/common/xchat.c:917
 msgid "Op"
 msgstr "Op"
 
-#: src/common/xchat.c:906
+#: src/common/xchat.c:918
 msgid "DeOp"
 msgstr "DeOp"
 
-#: src/common/xchat.c:909
+#: src/common/xchat.c:921
 msgid "bye"
 msgstr "αντίο"
 
-#: src/common/xchat.c:910
+#: src/common/xchat.c:922
 #, c-format
 msgid "Enter reason to kick %s:"
 msgstr "Εισάγετε αιτία για το kick του %s:"
 
-#: src/common/xchat.c:911
+#: src/common/xchat.c:923
 msgid "Sendfile"
 msgstr "Αποστολή"
 
-#: src/common/xchat.c:912
+#: src/common/xchat.c:924
 msgid "Dialog"
 msgstr "Διάλογος"
 
-#: src/common/xchat.c:922
+#: src/common/xchat.c:934
 msgid "Send"
 msgstr "Αποστολή"
 
-#: src/common/xchat.c:923
+#: src/common/xchat.c:935
 msgid "Chat"
 msgstr "Διάλογος"
 
-#: src/common/xchat.c:924
-#: src/fe-gtk/banlist.c:321
-#: src/fe-gtk/ignoregui.c:388
+#: src/common/xchat.c:936 src/fe-gtk/banlist.c:341 src/fe-gtk/ignoregui.c:388
 #: src/fe-gtk/urlgrab.c:201
 msgid "Clear"
 msgstr "Καθαρισμός"
+
+#: src/common/dbus/dbus-client.c:71
+msgid "Couldn't connect to session bus"
+msgstr "Δεν ήταν δυνατή η σύνδεση στο δίαυλο μηνυμάτων"
+
+#: src/common/dbus/dbus-client.c:85
+msgid "Failed to complete NameHasOwner"
+msgstr "Η ολοκλήρωση της εντολής NameHasOwner απέτυχε"
+
+#: src/common/dbus/dbus-client.c:106
+msgid "Failed to complete Command"
+msgstr "Η ολοκλήρωση της εντολής απέτυχε"
+
+#: src/common/dbus/dbus-plugin.c:30
+msgid "remote access"
+msgstr "απομακρυσμένη πρόσβαση"
+
+#: src/common/dbus/dbus-plugin.c:31
+msgid "plugin for remote access using DBUS"
+msgstr "πρόσθετο για απομακρυσμένη πρόσβαση μέσω DBUS"
+
+#: src/common/dbus/dbus-plugin.c:897
+#, c-format
+msgid "Couldn't connect to session bus: %s\n"
+msgstr "Δεν ήταν δυνατή η σύνδεση στο δίαυλο μηνυμάτων: %s\n"
+
+#: src/common/dbus/dbus-plugin.c:914
+#, c-format
+msgid "Failed to acquire %s: %s\n"
+msgstr "Η λήψη του %s απέτυχε: %s\n"
+
+#: src/common/dbus/dbus-plugin.c:1064
+#, c-format
+msgid "%s loaded successfully!\n"
+msgstr "Το %s φορτώθηκε με επιτυχία!\n"
 
 #: src/fe-gtk/about.c:102
 msgid "About XChat"
@@ -3005,49 +2848,49 @@ msgstr "Πελάτης IRC πολλαπλών πλατφόρμων"
 msgid "Character Chart"
 msgstr "Χάρτης χαρακτήρων"
 
-#: src/fe-gtk/banlist.c:112
-#: src/fe-gtk/chanlist.c:301
+#: src/fe-gtk/banlist.c:113 src/fe-gtk/chanlist.c:301
 msgid "Not connected."
 msgstr "Δεν υπάρχει σύνδεση."
 
-#: src/fe-gtk/banlist.c:153
-#: src/fe-gtk/banlist.c:237
+#: src/fe-gtk/banlist.c:154 src/fe-gtk/banlist.c:257
 msgid "You must select some bans."
 msgstr "Πρέπει να επιλέξετε μερικά ban."
 
-#: src/fe-gtk/banlist.c:252
-#: src/fe-gtk/ignoregui.c:175
+#: src/fe-gtk/banlist.c:206
+#, c-format
+msgid "Are you sure you want to remove all bans in %s?"
+msgstr "Θέλετε σίγουρα να αφαιρέσετε όλα τα bans στο %s;"
+
+#: src/fe-gtk/banlist.c:272 src/fe-gtk/ignoregui.c:175
 msgid "Mask"
 msgstr "Μάσκα"
 
-#: src/fe-gtk/banlist.c:253
-#: src/fe-gtk/dccgui.c:352
-#: src/fe-gtk/dccgui.c:539
+#: src/fe-gtk/banlist.c:273 src/fe-gtk/dccgui.c:352 src/fe-gtk/dccgui.c:539
 msgid "From"
 msgstr "Από"
 
-#: src/fe-gtk/banlist.c:254
+#: src/fe-gtk/banlist.c:274
 msgid "Date"
 msgstr "Ημερομηνία"
 
-#: src/fe-gtk/banlist.c:297
+#: src/fe-gtk/banlist.c:317
 msgid "You can only open the Ban List window while in a channel tab."
 msgstr "Μπορείτε να ανοίξετε τη λίστα ban μόνο μέσα από μια καρτέλα καναλιού."
 
-#: src/fe-gtk/banlist.c:301
+#: src/fe-gtk/banlist.c:321
 #, c-format
 msgid "XChat: Ban List (%s)"
 msgstr "XChat: Λίστα Ban (%s)"
 
-#: src/fe-gtk/banlist.c:317
+#: src/fe-gtk/banlist.c:337
 msgid "Unban"
 msgstr "Αφαίρεση Ban"
 
-#: src/fe-gtk/banlist.c:319
+#: src/fe-gtk/banlist.c:339
 msgid "Crop"
 msgstr "Απομάκρυνση υπολοίπων"
 
-#: src/fe-gtk/banlist.c:323
+#: src/fe-gtk/banlist.c:343
 msgid "Refresh"
 msgstr "Ανανέωση"
 
@@ -3060,9 +2903,7 @@ msgstr "Στατιστικά χρηστών και καναλιών: %d/%d χρ�
 msgid "I can't save an empty list!"
 msgstr "Δεν είναι δυνατή η αποθήκευση μιας άδειας λίστας!"
 
-#: src/fe-gtk/chanlist.c:547
-#: src/fe-gtk/menu.c:983
-#: src/fe-gtk/urlgrab.c:148
+#: src/fe-gtk/chanlist.c:547 src/fe-gtk/menu.c:996 src/fe-gtk/urlgrab.c:148
 msgid "Select an output filename"
 msgstr "Επιλέξτε όνομα αρχείου"
 
@@ -3107,9 +2948,7 @@ msgstr "Ανανέωση λίστας"
 msgid "Save the list"
 msgstr "Αποθήκευση λίστας"
 
-#: src/fe-gtk/chanlist.c:767
-#: src/fe-gtk/menu.c:799
-#: src/fe-gtk/menu.c:1030
+#: src/fe-gtk/chanlist.c:767 src/fe-gtk/menu.c:812 src/fe-gtk/menu.c:1043
 msgid "Join Channel"
 msgstr "Σύνδεση στο κανάλι"
 
@@ -3122,15 +2961,12 @@ msgstr "Αποστολή αρχείου στο %s"
 msgid "None"
 msgstr "Κανένα"
 
-#: src/fe-gtk/dccgui.c:351
-#: src/fe-gtk/dccgui.c:535
-#: src/fe-gtk/dccgui.c:707
+#: src/fe-gtk/dccgui.c:351 src/fe-gtk/dccgui.c:535 src/fe-gtk/dccgui.c:707
 #: src/fe-gtk/plugingui.c:75
 msgid "File"
 msgstr "Αρχείο"
 
-#: src/fe-gtk/dccgui.c:352
-#: src/fe-gtk/dccgui.c:712
+#: src/fe-gtk/dccgui.c:352 src/fe-gtk/dccgui.c:712
 msgid "To"
 msgstr "Προς"
 
@@ -3169,15 +3005,12 @@ msgstr "Το αρχείο στον κατάλογο ληφθέντων αρχε�
 msgid "Cannot resume the same file from two people."
 msgstr "Η συνέχιση λήψης του ίδιου αρχείου από δυο ανθρώπους είναι αδύνατη."
 
-#: src/fe-gtk/dccgui.c:534
-#: src/fe-gtk/dccgui.c:706
-#: src/fe-gtk/dccgui.c:857
-#: src/fe-gtk/notifygui.c:133
+#: src/fe-gtk/dccgui.c:534 src/fe-gtk/dccgui.c:706 src/fe-gtk/dccgui.c:857
+#: src/fe-gtk/notifygui.c:138
 msgid "Status"
 msgstr "Κατάσταση"
 
-#: src/fe-gtk/dccgui.c:538
-#: src/fe-gtk/dccgui.c:711
+#: src/fe-gtk/dccgui.c:538 src/fe-gtk/dccgui.c:711
 msgid "ETA"
 msgstr "Απομένει"
 
@@ -3185,14 +3018,11 @@ msgstr "Απομένει"
 msgid "XChat: File Receive List"
 msgstr "XChat: Λίστα λήψης αρχείων"
 
-#: src/fe-gtk/dccgui.c:580
-#: src/fe-gtk/dccgui.c:751
-#: src/fe-gtk/dccgui.c:889
+#: src/fe-gtk/dccgui.c:580 src/fe-gtk/dccgui.c:751 src/fe-gtk/dccgui.c:889
 msgid "Abort"
 msgstr "Ακύρωση"
 
-#: src/fe-gtk/dccgui.c:582
-#: src/fe-gtk/dccgui.c:890
+#: src/fe-gtk/dccgui.c:582 src/fe-gtk/dccgui.c:890
 msgid "Accept"
 msgstr "Αποδοχή"
 
@@ -3209,8 +3039,8 @@ msgid "Ack"
 msgstr "Ack"
 
 #: src/fe-gtk/dccgui.c:722
-msgid "XChat: Uploads und Downloads"
-msgstr "XChat: Λήψεις και αποστολές αρχείων"
+msgid "XChat: Uploads and Downloads"
+msgstr "XChat: Αποστολές και λήψεις αρχείων"
 
 #: src/fe-gtk/dccgui.c:723
 msgid "Downloads"
@@ -3260,8 +3090,7 @@ msgstr "*ΝΕΟ*"
 msgid "EDIT ME"
 msgstr "ΔΙΟΡΘΩΣΕ ΜΕ"
 
-#: src/fe-gtk/editlist.c:310
-#: src/fe-gtk/plugingui.c:73
+#: src/fe-gtk/editlist.c:310 src/fe-gtk/plugingui.c:73
 msgid "Name"
 msgstr "Όνομα"
 
@@ -3285,14 +3114,11 @@ msgstr "Άκυρο"
 msgid "Save"
 msgstr "Αποθήκευση"
 
-#: src/fe-gtk/editlist.c:363
-#: src/fe-gtk/fkeys.c:757
+#: src/fe-gtk/editlist.c:363 src/fe-gtk/fkeys.c:765
 msgid "Add New"
 msgstr "Προσθήκη νέου"
 
-#: src/fe-gtk/editlist.c:367
-#: src/fe-gtk/fkeys.c:762
-#: src/fe-gtk/ignoregui.c:386
+#: src/fe-gtk/editlist.c:367 src/fe-gtk/fkeys.c:770 src/fe-gtk/ignoregui.c:386
 msgid "Delete"
 msgstr "Διαγραφή"
 
@@ -3329,10 +3155,14 @@ msgid "Open an irc://server:port/channel URL"
 msgstr "Άνοιγμα ενός URL τύπου irc://server:port/channel"
 
 #: src/fe-gtk/fe-gtk.c:128
+msgid "Open URL in an existing XChat"
+msgstr "Άνοιγμα του URL σε ένα υπάρχον XChat"
+
+#: src/fe-gtk/fe-gtk.c:129
 msgid "Show version information"
 msgstr "Προβολή πληροφοριών έκδοσης"
 
-#: src/fe-gtk/fe-gtk.c:244
+#: src/fe-gtk/fe-gtk.c:249
 #, c-format
 msgid ""
 "Failed to open font:\n"
@@ -3343,27 +3173,23 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/fe-gtk/fe-gtk.c:588
+#: src/fe-gtk/fe-gtk.c:596
 msgid "Search buffer is empty.\n"
 msgstr "Η μνήμη εύρεσης είναι άδεια.\n"
 
-#: src/fe-gtk/fe-gtk.c:671
+#: src/fe-gtk/fe-gtk.c:679
 #, c-format
 msgid "%d bytes"
 msgstr "%d bytes"
 
-#: src/fe-gtk/fe-gtk.c:672
+#: src/fe-gtk/fe-gtk.c:680
 #, c-format
 msgid "Network send queue: %d bytes"
 msgstr "Ουρά αποστολής: %d bytes"
 
 #: src/fe-gtk/fkeys.c:159
-msgid ""
-"The Run Command action runs the data in Data 1 as if it has been typed into the entry box where you pressed the key sequence. Thus it can contain text (which will be sent to the channel/person), commands or user commands. When run all \\n"
-" characters in Data 1 are used to deliminate seperate commands so it is possible to run more than one command. If you want a \\ in the actual text run then enter \\\\"
-msgstr ""
-"Η πράξη Εκτέλεση Εντολής εκτελεί τα δεδομένα στο Data 1 σαν να είχαν δοθεί στο κουτί εισαγωγής όπου πατήθηκε η ακολουθία των πλήκτρων. Έτσι μπορεί να περιέχει κείμενο (που θα σταλθεί στο κανάλι/άτομο), εντολές ή εντολές χρήστη. Κατά την εκτέλεση όλοι οι \\n"
-" χαρακτήρες στο Data 1 οριοθετούν ξεχωριστές εντολές, ώστε να είναι δυνατή η εκτέλεση πάνω από μίας εντολής. Εάν θέλετε το \\ στο κείμενο, εκτελέστε και μετά πατήστε \\\\"
+msgid "The Run Command action runs the data in Data 1 as if it has been typed into the entry box where you pressed the key sequence. Thus it can contain text (which will be sent to the channel/person), commands or user commands. When run all \\n characters in Data 1 are used to deliminate seperate commands so it is possible to run more than one command. If you want a \\ in the actual text run then enter \\\\"
+msgstr "Η πράξη Εκτέλεση Εντολής εκτελεί τα δεδομένα στο Data 1 σαν να είχαν δοθεί στο κουτί εισαγωγής όπου πατήθηκε η ακολουθία των πλήκτρων. Έτσι μπορεί να περιέχει κείμενο (που θα σταλθεί στο κανάλι/άτομο), εντολές ή εντολές χρήστη. Κατά την εκτέλεση όλοι οι \\n χαρακτήρες στο Data 1 οριοθετούν ξεχωριστές εντολές, ώστε να είναι δυνατή η εκτέλεση πάνω από μίας εντολής. Εάν θέλετε το \\ στο κείμενο, εκτελέστε και μετά πατήστε \\\\"
 
 #: src/fe-gtk/fkeys.c:161
 msgid "The Change Page command switches between pages in the notebook. Set Data 1 to the page you want to switch to. If Data 2 is set to anything then the switch will be relative to the current position"
@@ -3425,63 +3251,55 @@ msgstr "Προώθηση της γραμμής εισαγωγής στο ιστ�
 msgid "There was an error loading key bindings configuration"
 msgstr "Σφάλμα κατά το φόρτωμα των ρυθμίσεων των πλήκτρων συντόμευσης"
 
-#: src/fe-gtk/fkeys.c:450
-#: src/fe-gtk/fkeys.c:451
-#: src/fe-gtk/fkeys.c:452
-#: src/fe-gtk/fkeys.c:453
-#: src/fe-gtk/fkeys.c:735
-#: src/fe-gtk/fkeys.c:741
-#: src/fe-gtk/fkeys.c:746
-#: src/fe-gtk/maingui.c:1092
-#: src/fe-gtk/maingui.c:1108
-#: src/fe-gtk/maingui.c:1385
-#: src/fe-gtk/maingui.c:1486
-#: src/fe-gtk/maingui.c:2935
+#: src/fe-gtk/fkeys.c:450 src/fe-gtk/fkeys.c:451 src/fe-gtk/fkeys.c:452
+#: src/fe-gtk/fkeys.c:453 src/fe-gtk/fkeys.c:743 src/fe-gtk/fkeys.c:749
+#: src/fe-gtk/fkeys.c:754 src/fe-gtk/maingui.c:1108 src/fe-gtk/maingui.c:1124
+#: src/fe-gtk/maingui.c:1401 src/fe-gtk/maingui.c:1502
+#: src/fe-gtk/maingui.c:2959
 msgid "<none>"
 msgstr "<κανένα>"
 
-#: src/fe-gtk/fkeys.c:699
+#: src/fe-gtk/fkeys.c:707
 msgid "Mod"
-msgstr ""
+msgstr "Mod"
 
-#: src/fe-gtk/fkeys.c:700
-#: src/fe-gtk/fkeys.c:795
+#: src/fe-gtk/fkeys.c:708 src/fe-gtk/fkeys.c:803
 msgid "Key"
 msgstr "Πλήκτρο"
 
-#: src/fe-gtk/fkeys.c:701
+#: src/fe-gtk/fkeys.c:709
 msgid "Action"
 msgstr "Δράση"
 
-#: src/fe-gtk/fkeys.c:710
+#: src/fe-gtk/fkeys.c:718
 msgid "XChat: Keyboard Shortcuts"
 msgstr "XChat: Συντομεύσεις πληκτρολογίου"
 
-#: src/fe-gtk/fkeys.c:788
+#: src/fe-gtk/fkeys.c:796
 msgid "Shift"
 msgstr "Shift"
 
-#: src/fe-gtk/fkeys.c:790
+#: src/fe-gtk/fkeys.c:798
 msgid "Alt"
 msgstr "Alt"
 
-#: src/fe-gtk/fkeys.c:792
+#: src/fe-gtk/fkeys.c:800
 msgid "Ctrl"
 msgstr "Ctrl"
 
-#: src/fe-gtk/fkeys.c:799
+#: src/fe-gtk/fkeys.c:807
 msgid "Data 1"
-msgstr ""
+msgstr "Δεδομένα 1"
 
-#: src/fe-gtk/fkeys.c:802
+#: src/fe-gtk/fkeys.c:810
 msgid "Data 2"
-msgstr ""
+msgstr "Δεδομένα 2"
 
-#: src/fe-gtk/fkeys.c:844
+#: src/fe-gtk/fkeys.c:852
 msgid "Error opening keys config file\n"
 msgstr "Σφάλμα κατά το άνοιγμα του αρχείου ρυθμίσεων των πλήκτρων\n"
 
-#: src/fe-gtk/fkeys.c:1011
+#: src/fe-gtk/fkeys.c:1019
 #, c-format
 msgid ""
 "Unknown keyname %s in key bindings config file\n"
@@ -3490,7 +3308,7 @@ msgstr ""
 "Άγνωστο όνομα πλήκτρου %s στο αρχείο ρυθμίσεων των συντομεύσεων πληκτρολογίου\n"
 "Ακυρώθηκε το φόρτωμα, παρακαλώ διορθώστε το %s/keybindings.conf\n"
 
-#: src/fe-gtk/fkeys.c:1049
+#: src/fe-gtk/fkeys.c:1057
 #, c-format
 msgid ""
 "Unknown action %s in key bindings config file\n"
@@ -3499,7 +3317,7 @@ msgstr ""
 "Άγνωστη δράση %s στο αρχείο ρυθμίσεων των συντομεύσεων πληκτρολογίου\n"
 "Ακυρώθηκε το φόρτωμα, παρακαλώ διορθώστε το %s/keybindings.conf\n"
 
-#: src/fe-gtk/fkeys.c:1070
+#: src/fe-gtk/fkeys.c:1078
 #, c-format
 msgid ""
 "Expecting Data line (beginning Dx{:|!}) but got:\n"
@@ -3512,7 +3330,7 @@ msgstr ""
 "\n"
 "Το φόρτωμα ακυρώθηκε. Παρακαλώ διορθώστε το %s/keybindings\n"
 
-#: src/fe-gtk/fkeys.c:1139
+#: src/fe-gtk/fkeys.c:1147
 #, c-format
 msgid ""
 "Key bindings config file is corrupt, load aborted\n"
@@ -3521,21 +3339,19 @@ msgstr ""
 "Το αρχείο συντομεύσεων πληκτρολογίου είναι κατεστραμμένο, και δεν φορτώθηκε\n"
 "Παρακαλώ διορθώστε το %s/keybindings.conf\n"
 
-#: src/fe-gtk/gtkutil.c:130
+#: src/fe-gtk/gtkutil.c:131
 msgid "Cannot write to that file."
 msgstr "Δεν ήταν δυνατή η εγγραφή σε αυτό το αρχείο."
 
-#: src/fe-gtk/gtkutil.c:132
+#: src/fe-gtk/gtkutil.c:133
 msgid "Cannot read that file."
 msgstr "Δεν ήταν δυνατή η ανάγνωση αυτού του αρχείου."
 
-#: src/fe-gtk/ignoregui.c:117
-#: src/fe-gtk/ignoregui.c:263
+#: src/fe-gtk/ignoregui.c:117 src/fe-gtk/ignoregui.c:263
 msgid "That mask already exists."
 msgstr "Αυτή η μάσκα υπάρχει ήδη"
 
-#: src/fe-gtk/ignoregui.c:177
-#: src/fe-gtk/maingui.c:1957
+#: src/fe-gtk/ignoregui.c:177 src/fe-gtk/maingui.c:1973
 msgid "Private"
 msgstr "Προσωπικό"
 
@@ -3591,8 +3407,7 @@ msgstr "CTCP:"
 msgid "Invite:"
 msgstr "Πρόσκληση:"
 
-#: src/fe-gtk/ignoregui.c:384
-#: src/fe-gtk/notifygui.c:347
+#: src/fe-gtk/ignoregui.c:384 src/fe-gtk/notifygui.c:420
 msgid "Add..."
 msgstr "Προσθήκη..."
 
@@ -3641,124 +3456,121 @@ msgstr "Η λήψη της λίστας καναλιών μπορεί να πά�
 msgid "_Always show this dialog after connecting."
 msgstr "_Να εμφανίζεται πάντα αυτό το πλαίσιο διαλόγου μετά τη σύνδεση."
 
-#: src/fe-gtk/maingui.c:456
+#: src/fe-gtk/maingui.c:466
 msgid "Dialog with"
 msgstr "Διάλογος με"
 
-#: src/fe-gtk/maingui.c:734
+#: src/fe-gtk/maingui.c:744
 #, c-format
 msgid "Topic for %s is: %s"
 msgstr "Το θέμα για το %s είναι: %s"
 
-#: src/fe-gtk/maingui.c:739
+#: src/fe-gtk/maingui.c:749
 msgid "No topic is set"
 msgstr "Δεν έχει οριστεί θέμα"
 
-#: src/fe-gtk/maingui.c:1032
+#: src/fe-gtk/maingui.c:1048
 #, c-format
 msgid "This server still has %d channels or dialogs associated with it. Close them all?"
 msgstr "Αυτός ο διακομιστής έχει ακόμα %d κανάλια ή συνομιλίες ανοιχτά. Να κλείσουν όλα;"
 
-#: src/fe-gtk/maingui.c:1162
+#: src/fe-gtk/maingui.c:1178
 msgid "No other tabs open, quit xchat?"
 msgstr "Δεν υπάρχουν άλλες ανοικτές καρτέλες, έξοδος από το xchat;"
 
-#: src/fe-gtk/maingui.c:1337
+#: src/fe-gtk/maingui.c:1353
 msgid "Insert Attribute or Color Code"
 msgstr "Εισαγωγή ιδιότητας ή χρωματικού κώδικα"
 
-#: src/fe-gtk/maingui.c:1339
+#: src/fe-gtk/maingui.c:1355
 msgid "<b>Bold</b>"
 msgstr "<b>Έντονα</b>"
 
-#: src/fe-gtk/maingui.c:1340
+#: src/fe-gtk/maingui.c:1356
 msgid "<u>Underline</u>"
 msgstr "<u>Υπογραμμισμένο</u>"
 
-#: src/fe-gtk/maingui.c:1342
+#: src/fe-gtk/maingui.c:1358
 msgid "Normal"
 msgstr "Κανονικό"
 
-#: src/fe-gtk/maingui.c:1344
+#: src/fe-gtk/maingui.c:1360
 msgid "Colors 0-7"
 msgstr "Χρώματα 0-7"
 
-#: src/fe-gtk/maingui.c:1354
+#: src/fe-gtk/maingui.c:1370
 msgid "Colors 8-15"
 msgstr "Χρώματα 8-15"
 
-#: src/fe-gtk/maingui.c:1390
+#: src/fe-gtk/maingui.c:1406
 msgid "Beep on message"
 msgstr "Μπιπ σε μήνυμα"
 
-#: src/fe-gtk/maingui.c:1393
+#: src/fe-gtk/maingui.c:1409
 msgid "Show join/part messages"
 msgstr "Εμφάνιση μηνυμάτων εισόδου/εξόδου"
 
-#: src/fe-gtk/maingui.c:1395
+#: src/fe-gtk/maingui.c:1411
 msgid "Color paste"
 msgstr "Επικόλληση χρωμάτων"
 
-#: src/fe-gtk/maingui.c:1402
+#: src/fe-gtk/maingui.c:1418
 msgid "Go to"
 msgstr "Μετάβαση σε"
 
-#: src/fe-gtk/maingui.c:1415
-#: src/fe-gtk/menu.c:1759
+#: src/fe-gtk/maingui.c:1431 src/fe-gtk/menu.c:1787
 msgid "_Close Tab"
 msgstr "_Κλείσιμο καρτέλας"
 
-#: src/fe-gtk/maingui.c:1418
-#: src/fe-gtk/menu.c:1758
+#: src/fe-gtk/maingui.c:1434 src/fe-gtk/menu.c:1786
 msgid "_Detach Tab"
 msgstr "_Απόσπαση καρτέλας"
 
-#: src/fe-gtk/maingui.c:1657
+#: src/fe-gtk/maingui.c:1673
 msgid "Some file transfers still active, quit xchat?"
 msgstr "Υπάρχουν ενεργές μεταφορές αρχείων, επιβεβαίωση εγκατάλειψης;"
 
-#: src/fe-gtk/maingui.c:1825
-#: src/fe-gtk/maingui.c:1931
+#: src/fe-gtk/maingui.c:1841 src/fe-gtk/maingui.c:1947
 msgid "User limit must be a number!\n"
 msgstr "Το όριο χρηστών πρέπει να είναι αριθμός!\n"
 
-#: src/fe-gtk/maingui.c:1953
+#: src/fe-gtk/maingui.c:1969
 msgid "Topic Protection"
 msgstr "Προστασία θέματος"
 
-#: src/fe-gtk/maingui.c:1954
+#: src/fe-gtk/maingui.c:1970
 msgid "No outside messages"
 msgstr "Όχι εξωτερικά μηνύματα"
 
-#: src/fe-gtk/maingui.c:1955
+#: src/fe-gtk/maingui.c:1971
 msgid "Secret"
 msgstr "Μυστικό"
 
-#: src/fe-gtk/maingui.c:1956
+#: src/fe-gtk/maingui.c:1972
 msgid "Invite Only"
 msgstr "Μόνο επί πρόσκληση"
 
-#: src/fe-gtk/maingui.c:1958
+#: src/fe-gtk/maingui.c:1974
 msgid "Moderated"
 msgstr "Ελεγχόμενο"
 
-#: src/fe-gtk/maingui.c:1959
+#: src/fe-gtk/maingui.c:1975
 msgid "Ban List"
 msgstr "Λίστα Ban"
 
-#: src/fe-gtk/maingui.c:1961
+#: src/fe-gtk/maingui.c:1977
 msgid "Keyword"
 msgstr "Λέξη κλειδί"
 
-#: src/fe-gtk/maingui.c:1973
+#: src/fe-gtk/maingui.c:1989
 msgid "User Limit"
 msgstr "Όριο χρηστών"
 
-#: src/fe-gtk/maingui.c:2082
+#: src/fe-gtk/maingui.c:2100
 msgid "Show/Hide userlist"
 msgstr "Εμφάνιση/Απόκρυψη λίστας χρηστών"
 
-#: src/fe-gtk/maingui.c:2207
+#: src/fe-gtk/maingui.c:2225
 msgid ""
 "Unable to set transparent background!\n"
 "\n"
@@ -3770,87 +3582,86 @@ msgstr ""
 "Πιθανόν να χρησιμοποιείτε έναν μη-σύμμορφο διαχειριστή\n"
 "παραθύρων που δεν υποστηρίζεται προς το παρόν.\n"
 
-#: src/fe-gtk/maingui.c:2439
+#: src/fe-gtk/maingui.c:2457
 msgid "Enter new nickname:"
 msgstr "Εισάγετε νέο ψευδώνυμο:"
 
-#: src/fe-gtk/menu.c:120
+#: src/fe-gtk/menu.c:124
 msgid "Host unknown"
 msgstr "Άγνωστος διακομιστής"
 
-#: src/fe-gtk/menu.c:507
+#: src/fe-gtk/menu.c:520
 #, c-format
 msgid "<tt><b>%-11s</b></tt> %s"
 msgstr "<tt><b>%-11s</b></tt> %s"
 
-#: src/fe-gtk/menu.c:512
-#: src/fe-gtk/menu.c:516
+#: src/fe-gtk/menu.c:525 src/fe-gtk/menu.c:529
 msgid "Real Name:"
 msgstr "Αληθινό όνομα:"
 
-#: src/fe-gtk/menu.c:520
+#: src/fe-gtk/menu.c:533
 msgid "User:"
 msgstr "Χρήστης:"
 
-#: src/fe-gtk/menu.c:524
+#: src/fe-gtk/menu.c:537
 msgid "Country:"
 msgstr "Χώρα:"
 
-#: src/fe-gtk/menu.c:528
+#: src/fe-gtk/menu.c:541
 msgid "Server:"
 msgstr "Διακομιστής:"
 
-#: src/fe-gtk/menu.c:540
+#: src/fe-gtk/menu.c:553
 msgid "Away Msg:"
 msgstr "Μήνυμα απουσίας:"
 
-#: src/fe-gtk/menu.c:550
+#: src/fe-gtk/menu.c:563
 #, c-format
 msgid "%u minutes ago"
 msgstr "πριν από %u λεπτά"
 
-#: src/fe-gtk/menu.c:552
-#: src/fe-gtk/menu.c:555
+#: src/fe-gtk/menu.c:565 src/fe-gtk/menu.c:568
 msgid "Last Msg:"
 msgstr "Τελευταίο μήνυμα:"
 
-#: src/fe-gtk/menu.c:655
+#: src/fe-gtk/menu.c:668
 msgid "The Menubar is now hidden. You can show it again by pressing F9 or right-clicking in a blank part of the main text area."
 msgstr "Τα μενού είναι κρυμμένα. Μπορείτε να τα εμφανίσετε ξανά πατώντας το F9 ή με δεξί κλικ σε ένα άδειο σημείο στο κυρίως παράθυρο."
 
-#: src/fe-gtk/menu.c:742
+#: src/fe-gtk/menu.c:755
 msgid "Open Link in Browser"
 msgstr "Άνοιγμα συνδέσμου στον περιηγητή"
 
-#: src/fe-gtk/menu.c:743
+#: src/fe-gtk/menu.c:756
 msgid "Copy Selected Link"
 msgstr "Αντιγραφή επιλεγμένου συνδέσμου"
 
-#: src/fe-gtk/menu.c:803
+#: src/fe-gtk/menu.c:816
 msgid "Part Channel"
 msgstr "Εγκατάλειψη καναλιού"
 
-#: src/fe-gtk/menu.c:805
+#: src/fe-gtk/menu.c:818
 msgid "Cycle Channel"
 msgstr "Επανασύνδεση στο κανάλι"
 
-#: src/fe-gtk/menu.c:828
+#: src/fe-gtk/menu.c:841
 msgid "XChat: User menu"
 msgstr "XChat: Μενού χρήστη"
 
-#: src/fe-gtk/menu.c:837
+#: src/fe-gtk/menu.c:850
 msgid "Edit This Menu..."
 msgstr "Επεξεργασία αυτού του μενού..."
 
-#: src/fe-gtk/menu.c:1032
+#: src/fe-gtk/menu.c:1045
 msgid "Retrieve channel list..."
 msgstr "Λίστα καναλιών..."
 
-#: src/fe-gtk/menu.c:1100
+#: src/fe-gtk/menu.c:1113
 msgid ""
 "User Commands - Special codes:\n"
 "\n"
 "%c  =  current channel\n"
+"%e  =  current network name\n"
 "%m  =  machine info\n"
 "%n  =  your nick\n"
 "%t  =  time/date\n"
@@ -3869,6 +3680,7 @@ msgstr ""
 "Εντολές χρήστη - Ειδικοί κώδικες:\n"
 "\n"
 "%c  =  τρέχον κανάλι\n"
+"%e  = όνομα τρέχοντος δικτύου\n"
 "%m  =  πληροφορίες συστήματος\n"
 "%n  =  το ψευδώνυμο σας\n"
 "%t  =  ώρα/ημερομηνία\n"
@@ -3884,12 +3696,13 @@ msgstr ""
 "%2 θα είναι \"john\"\n"
 "&2 θα είναι \"john γειά\"."
 
-#: src/fe-gtk/menu.c:1115
+#: src/fe-gtk/menu.c:1129
 msgid ""
 "Userlist Buttons - Special codes:\n"
 "\n"
 "%a  =  all selected nicks\n"
 "%c  =  current channel\n"
+"%e  =  current network name\n"
 "%h  =  selected nick's hostname\n"
 "%m  =  machine info\n"
 "%n  =  your nick\n"
@@ -3900,18 +3713,20 @@ msgstr ""
 "\n"
 "%a  =  όλα τα επιλεγμένα ψευδώνυμα\n"
 "%c  =  τρέχον κανάλι\n"
+"%e  = όνομα τρέχοντος δικτύου\n"
 "%h  =  διακομιστής επιλεγμένου ψευδώνυμου\n"
 "%m  =  πληροφορίες συστήματος\n"
 "%n  =  το ψευδώνυμο σας\n"
 "%s  =  επιλεγμένο ψευδώνυμο\n"
 "%t  =  ώρα/ημερομηνία\n"
 
-#: src/fe-gtk/menu.c:1124
+#: src/fe-gtk/menu.c:1139
 msgid ""
 "Dialog Buttons - Special codes:\n"
 "\n"
 "%a  =  all selected nicks\n"
 "%c  =  current channel\n"
+"%e  =  current network name\n"
 "%h  =  selected nick's hostname\n"
 "%m  =  machine info\n"
 "%n  =  your nick\n"
@@ -3922,17 +3737,19 @@ msgstr ""
 "\n"
 "%a  =  όλα τα επιλεγμένα ψευδώνυμα\n"
 "%c  =  τρέχον κανάλι\n"
+"%e  = όνομα τρέχοντος δικτύου\n"
 "%h  =  διακομιστής επιλεγμένου ψευδώνυμου\n"
 "%m  =  πληροφορίες συστήματος\n"
 "%n  =  το ψευδώνυμο σας\n"
 "%s  =  επιλεγμένο ψευδώνυμο\n"
 "%t  =  ώρα/ημερομηνία\n"
 
-#: src/fe-gtk/menu.c:1133
+#: src/fe-gtk/menu.c:1149
 msgid ""
 "CTCP Replies - Special codes:\n"
 "\n"
 "%d  =  data (the whole ctcp)\n"
+"%e  =  current network name\n"
 "%m  =  machine info\n"
 "%s  =  nick who sent the ctcp\n"
 "%t  =  time/date\n"
@@ -3945,6 +3762,7 @@ msgstr ""
 "Απαντήσεις CTCP - Ειδικοί κώδικες:\n"
 "\n"
 "%d  =  δεδομένα (ολόκληρο το ctcp)\n"
+"%e  = όνομα τρέχοντος δικτύου\n"
 "%m  =  πληροφορίες συστήματος\n"
 "%s  =  ψευδώνυμο αυτού που έστειλε το ctcp\n"
 "%t  =  ώρα/δεδομένα\n"
@@ -3954,7 +3772,7 @@ msgstr ""
 "&3  =  λέξη 3 μέχρι το τέλος της γραμμής\n"
 "\n"
 
-#: src/fe-gtk/menu.c:1143
+#: src/fe-gtk/menu.c:1160
 #, c-format
 msgid ""
 "URL Handlers - Special codes:\n"
@@ -3973,315 +3791,315 @@ msgstr ""
 "δείχνει ότι πρέπει να σταλθεί στο\n"
 "κέλυφος αντί στο XChat"
 
-#: src/fe-gtk/menu.c:1152
+#: src/fe-gtk/menu.c:1169
 msgid "XChat: User Defined Commands"
 msgstr "XChat: Εντολές καθορισμένες από το χρήστη"
 
-#: src/fe-gtk/menu.c:1159
+#: src/fe-gtk/menu.c:1176
 msgid "XChat: Userlist Popup menu"
 msgstr "XChat: Αναδυόμενο μενού λίστας χρηστών"
 
-#: src/fe-gtk/menu.c:1166
+#: src/fe-gtk/menu.c:1183
 msgid "Replace with"
 msgstr "Αντικατάσταση με"
 
-#: src/fe-gtk/menu.c:1166
+#: src/fe-gtk/menu.c:1183
 msgid "XChat: Replace"
 msgstr "XChat: Αντικατάσταση"
 
-#: src/fe-gtk/menu.c:1173
+#: src/fe-gtk/menu.c:1190
 msgid "XChat: URL Handlers"
 msgstr "XChat: Χειριστές διευθύνσεων"
 
-#: src/fe-gtk/menu.c:1192
+#: src/fe-gtk/menu.c:1209
 msgid "XChat: Userlist buttons"
 msgstr "XChat: Κουμπιά λίστας χρηστών"
 
-#: src/fe-gtk/menu.c:1199
+#: src/fe-gtk/menu.c:1216
 msgid "XChat: Dialog buttons"
 msgstr "XChat: Κουμπιά διαλόγου"
 
-#: src/fe-gtk/menu.c:1206
+#: src/fe-gtk/menu.c:1223
 msgid "XChat: CTCP Replies"
 msgstr "XChat: Απαντήσεις CTCP"
 
-#: src/fe-gtk/menu.c:1304
+#: src/fe-gtk/menu.c:1321
 msgid "_XChat"
 msgstr "_XChat"
 
-#: src/fe-gtk/menu.c:1305
+#: src/fe-gtk/menu.c:1322
 msgid "Network Li_st..."
 msgstr "Λί_στα δικτύων"
 
-#: src/fe-gtk/menu.c:1308
+#: src/fe-gtk/menu.c:1325
 msgid "_New"
 msgstr "_Νέο"
 
-#: src/fe-gtk/menu.c:1309
+#: src/fe-gtk/menu.c:1326
 msgid "Server Tab..."
 msgstr "Καρτέλα διακομιστή..."
 
-#: src/fe-gtk/menu.c:1310
+#: src/fe-gtk/menu.c:1327
 msgid "Channel Tab..."
 msgstr "Καρτέλα καναλιού..."
 
-#: src/fe-gtk/menu.c:1311
+#: src/fe-gtk/menu.c:1328
 msgid "Server Window..."
 msgstr "Παράθυρο διακομιστή..."
 
-#: src/fe-gtk/menu.c:1312
+#: src/fe-gtk/menu.c:1329
 msgid "Channel Window..."
 msgstr "Παράθυρο καναλιού..."
 
-#: src/fe-gtk/menu.c:1317
-#: src/fe-gtk/menu.c:1319
+#: src/fe-gtk/menu.c:1334 src/fe-gtk/menu.c:1336
 msgid "_Load Plugin or Script..."
 msgstr "_Φόρτωση πρόσθετου ή δέσμης ενεργειών..."
 
-#: src/fe-gtk/menu.c:1327
+#: src/fe-gtk/menu.c:1344
 msgid "_Quit"
 msgstr "_Έξοδος"
 
-#: src/fe-gtk/menu.c:1329
+#: src/fe-gtk/menu.c:1346
 msgid "_View"
 msgstr "_Προβολή"
 
-#: src/fe-gtk/menu.c:1331
+#: src/fe-gtk/menu.c:1348
 msgid "_Menubar"
 msgstr "_Μπάρα μενού"
 
-#: src/fe-gtk/menu.c:1332
+#: src/fe-gtk/menu.c:1349
 msgid "_Topicbar"
 msgstr "Μπάρα _θέματος"
 
-#: src/fe-gtk/menu.c:1333
+#: src/fe-gtk/menu.c:1350
 msgid "_Userlist Buttons"
 msgstr "Κουμπιά λίστας _χρηστών..."
 
-#: src/fe-gtk/menu.c:1334
+#: src/fe-gtk/menu.c:1351
 msgid "M_ode Buttons"
 msgstr "Κουμπιά _λειτουργιών "
 
-#: src/fe-gtk/menu.c:1336
+#: src/fe-gtk/menu.c:1353
 msgid "_Layout"
 msgstr "_Διάταξη"
 
-#: src/fe-gtk/menu.c:1338
+#: src/fe-gtk/menu.c:1355
 msgid "_Tabs"
 msgstr "_Καρτέλες"
 
-#: src/fe-gtk/menu.c:1339
+#: src/fe-gtk/menu.c:1356
 msgid "T_ree"
 msgstr "Δεντ_ροδιάταξη"
 
-#: src/fe-gtk/menu.c:1341
+#: src/fe-gtk/menu.c:1358
 msgid "_Network Meters"
 msgstr "Μ_ετρητές δικτύου"
 
-#: src/fe-gtk/menu.c:1343
+#: src/fe-gtk/menu.c:1360
 msgid "Off"
 msgstr "Κλειστό"
 
-#: src/fe-gtk/menu.c:1344
+#: src/fe-gtk/menu.c:1361
 msgid "Graph"
 msgstr "Γράφημα"
 
-#: src/fe-gtk/menu.c:1346
+#: src/fe-gtk/menu.c:1363
 msgid "Both"
 msgstr "Και τα δύο"
 
-#: src/fe-gtk/menu.c:1349
+#: src/fe-gtk/menu.c:1366
 msgid "_Server"
 msgstr "Διακομι_στής"
 
-#: src/fe-gtk/menu.c:1350
+#: src/fe-gtk/menu.c:1367
 msgid "_Disconnect"
 msgstr "_Αποσύνδεση"
 
-#: src/fe-gtk/menu.c:1351
+#: src/fe-gtk/menu.c:1368
 msgid "_Reconnect"
 msgstr "_Επανασύνδεση"
 
-#: src/fe-gtk/menu.c:1355
+#: src/fe-gtk/menu.c:1372
 msgid "Marked Away"
 msgstr "Σημείωση απουσίας"
 
-#: src/fe-gtk/menu.c:1357
+#: src/fe-gtk/menu.c:1374
 msgid "_Usermenu"
 msgstr "Μενού _χρήστη"
 
-#: src/fe-gtk/menu.c:1359
+#: src/fe-gtk/menu.c:1376
 msgid "S_ettings"
 msgstr "Ρυθμίσ_εις"
 
-#: src/fe-gtk/menu.c:1360
+#: src/fe-gtk/menu.c:1377
 msgid "_Preferences"
 msgstr "Προτιμήσεις"
 
-#: src/fe-gtk/menu.c:1362
+#: src/fe-gtk/menu.c:1379
 msgid "Advanced"
 msgstr "Για προχωρημένους"
 
-#: src/fe-gtk/menu.c:1363
+#: src/fe-gtk/menu.c:1380
 msgid "Auto Replace..."
 msgstr "Αυτόματη αντικατάσταση..."
 
-#: src/fe-gtk/menu.c:1364
+#: src/fe-gtk/menu.c:1381
 msgid "CTCP Replies..."
 msgstr "Απαντήσεις CTCP..."
 
-#: src/fe-gtk/menu.c:1365
+#: src/fe-gtk/menu.c:1382
 msgid "Dialog Buttons..."
 msgstr "Κουμπιά διαλόγου..."
 
-#: src/fe-gtk/menu.c:1366
+#: src/fe-gtk/menu.c:1383
 msgid "Keyboard Shortcuts..."
 msgstr "Συντομεύσεις πληκτρολογίου..."
 
-#: src/fe-gtk/menu.c:1367
+#: src/fe-gtk/menu.c:1384
 msgid "Text Events..."
 msgstr "Γεγονότα κειμένου..."
 
-#: src/fe-gtk/menu.c:1368
+#: src/fe-gtk/menu.c:1385
 msgid "URL Handlers..."
 msgstr "Χειριστές διευθύνσεων..."
 
-#: src/fe-gtk/menu.c:1369
+#: src/fe-gtk/menu.c:1386
 msgid "User Commands..."
 msgstr "Εντολές χρήστη..."
 
-#: src/fe-gtk/menu.c:1370
+#: src/fe-gtk/menu.c:1387
 msgid "Userlist Buttons..."
 msgstr "Κουμπιά λίστας χρηστών..."
 
-#: src/fe-gtk/menu.c:1371
+#: src/fe-gtk/menu.c:1388
 msgid "Userlist Popup..."
 msgstr "Μενού λίστας χρηστών..."
 
-#: src/fe-gtk/menu.c:1374
+#: src/fe-gtk/menu.c:1391
 msgid "_Window"
 msgstr "_Παράθυρα"
 
-#: src/fe-gtk/menu.c:1375
+#: src/fe-gtk/menu.c:1392
 msgid "Ban List..."
 msgstr "Λίστα Ban..."
 
-#: src/fe-gtk/menu.c:1376
+#: src/fe-gtk/menu.c:1393
 msgid "Channel List..."
 msgstr "Λίστα καναλιών..."
 
-#: src/fe-gtk/menu.c:1377
+#: src/fe-gtk/menu.c:1394
 msgid "Character Chart..."
 msgstr "Χάρτης χαρακτήρων..."
 
-#: src/fe-gtk/menu.c:1378
+#: src/fe-gtk/menu.c:1395
 msgid "Direct Chat..."
 msgstr "Άμεση συνομιλία..."
 
-#: src/fe-gtk/menu.c:1379
+#: src/fe-gtk/menu.c:1396
 msgid "File Transfers..."
 msgstr "Μεταφορές αρχείων..."
 
-#: src/fe-gtk/menu.c:1380
+#: src/fe-gtk/menu.c:1397
 msgid "Ignore List..."
 msgstr "Λίστα αγνοημένων..."
 
-#: src/fe-gtk/menu.c:1381
+#: src/fe-gtk/menu.c:1398
 msgid "Notify List..."
 msgstr "Λίστα ειδοποίησης..."
 
-#: src/fe-gtk/menu.c:1382
+#: src/fe-gtk/menu.c:1399
 msgid "Plugins and Scripts..."
 msgstr "Πρόσθετα και δέσμες ενεργειών..."
 
-#: src/fe-gtk/menu.c:1383
+#: src/fe-gtk/menu.c:1400
 msgid "Raw Log..."
 msgstr "Ωμή καταγραφή..."
 
-#: src/fe-gtk/menu.c:1384
+#: src/fe-gtk/menu.c:1401
 msgid "URL Grabber..."
 msgstr "Καταγραφέας URL..."
 
-#: src/fe-gtk/menu.c:1386
+#: src/fe-gtk/menu.c:1403
 msgid "Reset Marker Line"
 msgstr "Επαναφορά διαχωριστικής γραμμής"
 
-#: src/fe-gtk/menu.c:1387
+#: src/fe-gtk/menu.c:1404
 msgid "C_lear Text"
 msgstr "Καθα_ρισμός κειμένου"
 
-#: src/fe-gtk/menu.c:1388
+#: src/fe-gtk/menu.c:1405
 msgid "Search Text..."
 msgstr "Εύρεση κειμένου..."
 
-#: src/fe-gtk/menu.c:1389
+#: src/fe-gtk/menu.c:1406
 msgid "Save Text..."
 msgstr "Αποθήκευση κειμένου..."
 
-#: src/fe-gtk/menu.c:1391
-#: src/fe-gtk/menu.c:1750
+#: src/fe-gtk/menu.c:1408 src/fe-gtk/menu.c:1778
 msgid "_Help"
 msgstr "_Βοήθεια"
 
-#: src/fe-gtk/menu.c:1392
+#: src/fe-gtk/menu.c:1409
 msgid "_Contents"
 msgstr "Περι_εχόμενα"
 
-#: src/fe-gtk/menu.c:1393
+#: src/fe-gtk/menu.c:1410
 msgid "_About"
 msgstr "_Περί"
 
-#: src/fe-gtk/menu.c:1763
+#: src/fe-gtk/menu.c:1791
 msgid "_Attach Window"
 msgstr "_Σύνδεση παραθύρου"
 
-#: src/fe-gtk/menu.c:1764
+#: src/fe-gtk/menu.c:1792
 msgid "_Close Window"
 msgstr "_Κλείσιμο παραθύρου"
 
-#: src/fe-gtk/notifygui.c:132
+#: src/fe-gtk/notifygui.c:137
 msgid "User"
 msgstr "Χρήστης"
 
-#: src/fe-gtk/notifygui.c:134
-msgid "Server"
-msgstr "Διακομιστής"
-
-#: src/fe-gtk/notifygui.c:135
+#: src/fe-gtk/notifygui.c:140
 msgid "Last Seen"
 msgstr "Τελευταία εμφάνιση"
 
-#: src/fe-gtk/notifygui.c:175
+#: src/fe-gtk/notifygui.c:181
 msgid "Offline"
 msgstr "Αποσυνδεδεμένος"
 
-#: src/fe-gtk/notifygui.c:195
-#: src/fe-gtk/setup.c:203
+#: src/fe-gtk/notifygui.c:201 src/fe-gtk/setup.c:214
 msgid "Never"
 msgstr "Ποτέ"
 
-#: src/fe-gtk/notifygui.c:213
+#: src/fe-gtk/notifygui.c:219
 msgid "Online"
 msgstr "Συνδεδεμένος"
 
-#: src/fe-gtk/notifygui.c:318
+#: src/fe-gtk/notifygui.c:348
 msgid "Enter nickname to add:"
 msgstr "Εισάγετε ψευδώνυμο για προσθήκη:"
 
-#: src/fe-gtk/notifygui.c:334
+#: src/fe-gtk/notifygui.c:376
+msgid "Notify on these networks:"
+msgstr "Ειδοποίηση σε αυτά τα δίκτυα:"
+
+#: src/fe-gtk/notifygui.c:387
+msgid "Comma separated list of networks is accepted."
+msgstr "Είναι αποδεκτή μια λίστα δικτύων χωρισμένη με κόμματα."
+
+#: src/fe-gtk/notifygui.c:407
 msgid "XChat: Notify List"
 msgstr "XChat: Λίστα ειδοποίησης"
 
-#: src/fe-gtk/notifygui.c:351
+#: src/fe-gtk/notifygui.c:424
 msgid "Remove"
 msgstr "Αφαίρεση"
 
-#: src/fe-gtk/notifygui.c:355
+#: src/fe-gtk/notifygui.c:428
 msgid "Open Dialog"
 msgstr "Άνοιγμα διαλόγου"
 
-#: src/fe-gtk/plugingui.c:76
-#: src/fe-gtk/textgui.c:421
+#: src/fe-gtk/plugingui.c:76 src/fe-gtk/textgui.c:421
 msgid "Description"
 msgstr "Περιγραφή"
 
@@ -4301,14 +4119,11 @@ msgstr "_Άνοιγμα..."
 msgid "_UnLoad"
 msgstr "Α_ποφόρτωση"
 
-#: src/fe-gtk/plugingui.c:236
-#: src/fe-gtk/search.c:144
+#: src/fe-gtk/plugingui.c:236 src/fe-gtk/search.c:144
 msgid "_Close"
 msgstr "_Κλείσιμο"
 
-#: src/fe-gtk/rawlog.c:81
-#: src/fe-gtk/rawlog.c:130
-#: src/fe-gtk/textgui.c:435
+#: src/fe-gtk/rawlog.c:81 src/fe-gtk/rawlog.c:130 src/fe-gtk/textgui.c:435
 #: src/fe-gtk/urlgrab.c:205
 msgid "Save As..."
 msgstr "Αποθήκευση ως..."
@@ -4350,8 +4165,7 @@ msgstr "Αναζήτηση πρός τα _πίσω"
 msgid "_Find"
 msgstr "_Εύρεση"
 
-#: src/fe-gtk/servlistgui.c:169
-#: src/fe-gtk/servlistgui.c:268
+#: src/fe-gtk/servlistgui.c:169 src/fe-gtk/servlistgui.c:268
 msgid "New Network"
 msgstr "Νέο δίκτυο"
 
@@ -4390,23 +4204,19 @@ msgstr "Οι λεπτομέρειες σας"
 msgid "Use global user information"
 msgstr "Χρήση γενικών πληροφοριών χρήστη"
 
-#: src/fe-gtk/servlistgui.c:1019
-#: src/fe-gtk/servlistgui.c:1251
+#: src/fe-gtk/servlistgui.c:1019 src/fe-gtk/servlistgui.c:1251
 msgid "_Nick name:"
 msgstr "Ψευδώ_νυμο:"
 
-#: src/fe-gtk/servlistgui.c:1023
-#: src/fe-gtk/servlistgui.c:1258
+#: src/fe-gtk/servlistgui.c:1023 src/fe-gtk/servlistgui.c:1258
 msgid "Second choice:"
 msgstr "Δεύτερη επιλογή:"
 
-#: src/fe-gtk/servlistgui.c:1027
-#: src/fe-gtk/servlistgui.c:1272
+#: src/fe-gtk/servlistgui.c:1027 src/fe-gtk/servlistgui.c:1272
 msgid "_User name:"
 msgstr "Όν_ομα χρήστη:"
 
-#: src/fe-gtk/servlistgui.c:1031
-#: src/fe-gtk/servlistgui.c:1279
+#: src/fe-gtk/servlistgui.c:1031 src/fe-gtk/servlistgui.c:1279
 msgid "Rea_l name:"
 msgstr "Πρ_αγματικό όνομα:"
 
@@ -4502,781 +4312,777 @@ msgstr "Ταξινόμη_ση"
 msgid "C_onnect"
 msgstr "Σύν_δεση"
 
-#: src/fe-gtk/setup.c:97
+#: src/fe-gtk/setup.c:100
 msgid "Text Box Appearance"
 msgstr "Εμφάνιση πλαισίου κειμένου"
 
-#: src/fe-gtk/setup.c:98
+#: src/fe-gtk/setup.c:101
 msgid "Font:"
 msgstr "Γραμματοσειρά:"
 
-#: src/fe-gtk/setup.c:99
+#: src/fe-gtk/setup.c:102
 msgid "Background image:"
 msgstr "Εικόνα παρασκηνίου:"
 
-#: src/fe-gtk/setup.c:100
+#: src/fe-gtk/setup.c:103
 msgid "Scrollback lines:"
 msgstr "Συγκράτηση γραμμών:"
 
-#: src/fe-gtk/setup.c:101
+#: src/fe-gtk/setup.c:104
 msgid "Colored nick names"
 msgstr "Χρωματισμένα ψευδώνυμα"
 
-#: src/fe-gtk/setup.c:102
+#: src/fe-gtk/setup.c:105
 msgid "Give each person on IRC a different color"
 msgstr "Δίνει στο ψευδώνυμο του καθένα διαφορετικό χρώμα"
 
-#: src/fe-gtk/setup.c:103
+#: src/fe-gtk/setup.c:106
 msgid "Indent nick names"
 msgstr "Στοίχιση ψευδωνύμων"
 
-#: src/fe-gtk/setup.c:104
+#: src/fe-gtk/setup.c:107
 msgid "Make nick names right-justified"
 msgstr "Στοιχίζει δεξιά τα ψευδώνυμα"
 
-#: src/fe-gtk/setup.c:105
+#: src/fe-gtk/setup.c:108
 msgid "Transparent background"
 msgstr "Διαφανές παρασκήνιο"
 
-#: src/fe-gtk/setup.c:106
+#: src/fe-gtk/setup.c:109
 msgid "Show marker line"
 msgstr "Χρήση διαχωριστικής γραμμής"
 
-#: src/fe-gtk/setup.c:107
+#: src/fe-gtk/setup.c:110
 msgid "Insert a red line after the last read text."
 msgstr "Εισάγει μια κόκκινη γραμμή μετά το κείμενο που έχει διαβαστεί."
 
-#: src/fe-gtk/setup.c:108
+#: src/fe-gtk/setup.c:111
 msgid "Transparency Settings"
 msgstr "Ρυθμίσεις διαφάνειας"
 
-#: src/fe-gtk/setup.c:109
+#: src/fe-gtk/setup.c:112
 msgid "Red:"
 msgstr "Κόκκινο:"
 
-#: src/fe-gtk/setup.c:110
+#: src/fe-gtk/setup.c:113
 msgid "Green:"
 msgstr "Πράσινο:"
 
-#: src/fe-gtk/setup.c:111
+#: src/fe-gtk/setup.c:114
 msgid "Blue:"
 msgstr "Μπλε:"
 
-#: src/fe-gtk/setup.c:113
-#: src/fe-gtk/setup.c:325
+#: src/fe-gtk/setup.c:116 src/fe-gtk/setup.c:336
 msgid "Time Stamps"
 msgstr "Επισήμανση ώρας"
 
-#: src/fe-gtk/setup.c:114
+#: src/fe-gtk/setup.c:117
 msgid "Enable time stamps"
 msgstr "Ενεργοποίηση καταγραφής ώρας"
 
-#: src/fe-gtk/setup.c:115
+#: src/fe-gtk/setup.c:118
 msgid "Time stamp format:"
 msgstr "Μορφή ώρας καταγραφής:"
 
-#: src/fe-gtk/setup.c:116
-#: src/fe-gtk/setup.c:328
+#: src/fe-gtk/setup.c:119 src/fe-gtk/setup.c:339
 msgid "See strftime manpage for details."
 msgstr "Δείτε την σελίδα man του strftime για λεπτομέρειες."
 
-#: src/fe-gtk/setup.c:123
-#: src/fe-gtk/setup.c:1504
+#: src/fe-gtk/setup.c:126 src/fe-gtk/setup.c:166
+msgid "A-Z"
+msgstr "A-Z"
+
+#: src/fe-gtk/setup.c:127
+msgid "Last-spoke order"
+msgstr ""
+
+#: src/fe-gtk/setup.c:133 src/fe-gtk/setup.c:1515
 msgid "Input box"
 msgstr "Πλαίσιο εισόδου"
 
-#: src/fe-gtk/setup.c:124
-#: src/fe-gtk/setup.c:166
+#: src/fe-gtk/setup.c:134 src/fe-gtk/setup.c:177
 msgid "Use the Text box font and colors"
 msgstr "Χρήση γραμματοσειράς και χρωμάτων του πλαισίου κειμένου"
 
-#: src/fe-gtk/setup.c:126
+#: src/fe-gtk/setup.c:136
 msgid "Spell checking"
 msgstr "Έλεγχος ορθογραφίας"
 
-#: src/fe-gtk/setup.c:129
+#: src/fe-gtk/setup.c:139
 msgid "Nick Completion"
 msgstr "Συμπλήρωση ψευδωνύμων"
 
-#: src/fe-gtk/setup.c:130
+#: src/fe-gtk/setup.c:140
 msgid "Automatic nick completion (without TAB key)"
 msgstr "Αυτόματη συμπλήρωση ψευδωνύμων (χωρίς το TAB)"
 
-#: src/fe-gtk/setup.c:132
+#: src/fe-gtk/setup.c:142
 msgid "Nick completion suffix:"
 msgstr "Επίθεμα συμπλήρωσης ψευδωνύμων:"
 
-#: src/fe-gtk/setup.c:135
+#: src/fe-gtk/setup.c:143
+msgid "Nick completion sorted:"
+msgstr "Η αυτόματη συμπλήρωση ταξινομείται κατά:"
+
+#: src/fe-gtk/setup.c:146
 msgid "Input Box Codes"
 msgstr "Κώδικες πλαισίου εισαγωγής"
 
-#: src/fe-gtk/setup.c:136
+#: src/fe-gtk/setup.c:147
 #, c-format
 msgid "Interpret %nnn as an ASCII value"
 msgstr "Μετάφραση του %nnn σαν ASCII τιμή"
 
-#: src/fe-gtk/setup.c:137
+#: src/fe-gtk/setup.c:148
 msgid "Interpret %C, %B as Color, Bold etc"
 msgstr "Μετάφραση %C, %B σαν Χρώμα, Έντονο κείμενο κλπ"
 
-#: src/fe-gtk/setup.c:154
+#: src/fe-gtk/setup.c:165
 msgid "A-Z, Ops first"
 msgstr "A-Z, Ops πρώτα"
 
-#: src/fe-gtk/setup.c:155
-msgid "A-Z"
-msgstr "A-Z"
-
-#: src/fe-gtk/setup.c:156
+#: src/fe-gtk/setup.c:167
 msgid "Z-A, Ops last"
 msgstr "Z-A, Ops τελευταίοι"
 
-#: src/fe-gtk/setup.c:157
+#: src/fe-gtk/setup.c:168
 msgid "Z-A"
 msgstr "Z-A"
 
-#: src/fe-gtk/setup.c:158
+#: src/fe-gtk/setup.c:169
 msgid "Unsorted"
 msgstr "Αταξινόμητο"
 
-#: src/fe-gtk/setup.c:164
+#: src/fe-gtk/setup.c:175
 msgid "User List"
 msgstr "Λίστα χρηστών"
 
-#: src/fe-gtk/setup.c:165
+#: src/fe-gtk/setup.c:176
 msgid "Show hostnames in user list"
 msgstr "Προβολή ονομάτων διακομιστών στη λίστα χρηστών"
 
-#: src/fe-gtk/setup.c:167
+#: src/fe-gtk/setup.c:178
 msgid "Resizable user list"
 msgstr "Μεταβλητή λίστα χρηστών"
 
-#: src/fe-gtk/setup.c:168
+#: src/fe-gtk/setup.c:179
 msgid "User list sorted by:"
 msgstr "Ταξινόμηση λίστας χρηστών κατά:"
 
-#: src/fe-gtk/setup.c:170
+#: src/fe-gtk/setup.c:181
 msgid "Away tracking"
 msgstr "Παρακολούθηση απουσιών"
 
-#: src/fe-gtk/setup.c:171
+#: src/fe-gtk/setup.c:182
 msgid "Track the Away status of users and mark them in a different color"
 msgstr "Παρακολούθηση των απουσιών και επισήμανση των απόντων χρηστών με διαφορετικό χρώμα"
 
-#: src/fe-gtk/setup.c:172
+#: src/fe-gtk/setup.c:183
 msgid "On channels smaller than:"
 msgstr "Σε κανάλια μικρότερα από:"
 
-#: src/fe-gtk/setup.c:174
+#: src/fe-gtk/setup.c:185
 msgid "Action Upon Double Click"
 msgstr "Ενέργεια κατά το διπλό κλικ"
 
-#: src/fe-gtk/setup.c:175
+#: src/fe-gtk/setup.c:186
 msgid "Execute command:"
 msgstr "Εκτέλεση εντολής:"
 
-#: src/fe-gtk/setup.c:186
+#: src/fe-gtk/setup.c:197
 msgid "Windows"
 msgstr "Παράθυρα"
 
-#: src/fe-gtk/setup.c:187
-#: src/fe-gtk/setup.c:211
-#: src/fe-gtk/setup.c:1506
+#: src/fe-gtk/setup.c:198 src/fe-gtk/setup.c:222 src/fe-gtk/setup.c:1517
 msgid "Tabs"
 msgstr "Καρτέλες"
 
-#: src/fe-gtk/setup.c:193
+#: src/fe-gtk/setup.c:204
 msgid "Bottom"
 msgstr "Βάση"
 
-#: src/fe-gtk/setup.c:194
+#: src/fe-gtk/setup.c:205
 msgid "Top"
 msgstr "Κορυφή"
 
-#: src/fe-gtk/setup.c:195
+#: src/fe-gtk/setup.c:206
 msgid "Left"
 msgstr "Αριστερά"
 
-#: src/fe-gtk/setup.c:196
+#: src/fe-gtk/setup.c:207
 msgid "Right"
 msgstr "Δεξιά"
 
-#: src/fe-gtk/setup.c:197
+#: src/fe-gtk/setup.c:208
 msgid "Hidden"
 msgstr "Κρυφό"
 
-#: src/fe-gtk/setup.c:204
+#: src/fe-gtk/setup.c:215
 msgid "Always"
 msgstr "Πάντα"
 
-#: src/fe-gtk/setup.c:205
+#: src/fe-gtk/setup.c:216
 msgid "Only requested tabs"
 msgstr "Μόνο οι καρτέλες που ζητήθηκαν"
 
-#: src/fe-gtk/setup.c:212
+#: src/fe-gtk/setup.c:223
 msgid "Open an extra tab for server messages"
 msgstr "Άνοιγμα καρτέλας για τα μηνύματα διακομιστή"
 
-#: src/fe-gtk/setup.c:213
+#: src/fe-gtk/setup.c:224
 msgid "Open an extra tab for server notices"
 msgstr "Άνοιγμα καρτέλας για τις ειδοποιήσεις διακομιστή"
 
-#: src/fe-gtk/setup.c:214
+#: src/fe-gtk/setup.c:225
+msgid "Open a new tab when you receive a private message"
+msgstr "Άνοιγμα καρτέλας για τα νέα προσωπικά μηνύματα"
+
+#: src/fe-gtk/setup.c:226
 msgid "Sort tabs in alphabetical order"
 msgstr "Ταξινόμηση καρτελών με αλφαβητική σειρά"
 
-#: src/fe-gtk/setup.c:215
+#: src/fe-gtk/setup.c:227
 msgid "Small tabs"
 msgstr "Μικρές καρτέλες"
 
-#: src/fe-gtk/setup.c:216
+#: src/fe-gtk/setup.c:228
 msgid "Focus new tabs:"
 msgstr "Εστίαση νέων καρτελών:"
 
-#: src/fe-gtk/setup.c:217
-msgid "Shorten tab labels to:"
-msgstr "Συντόμευση καρτελών σε:"
-
-#: src/fe-gtk/setup.c:217
-msgid "letters."
-msgstr "χαρακτήρες."
-
-#: src/fe-gtk/setup.c:219
-msgid "Tabs Location"
-msgstr "Τοποθέτηση καρτελών"
-
-#: src/fe-gtk/setup.c:220
+#: src/fe-gtk/setup.c:229
 msgid "Show tabs at:"
 msgstr "Εμφάνιση καρτελών στο:"
 
-#: src/fe-gtk/setup.c:222
+#: src/fe-gtk/setup.c:230
+msgid "Shorten tab labels to:"
+msgstr "Συντόμευση καρτελών σε:"
+
+#: src/fe-gtk/setup.c:230
+msgid "letters."
+msgstr "χαρακτήρες."
+
+#: src/fe-gtk/setup.c:232
 msgid "Tabs or Windows"
 msgstr "Καρτέλες ή παράθυρα"
 
-#: src/fe-gtk/setup.c:223
+#: src/fe-gtk/setup.c:233
 msgid "Open channels in:"
 msgstr "Άνοιγμα καναλιών σε:"
 
-#: src/fe-gtk/setup.c:224
+#: src/fe-gtk/setup.c:234
 msgid "Open dialogs in:"
 msgstr "Άνοιγμα διαλόγων σε:"
 
-#: src/fe-gtk/setup.c:225
+#: src/fe-gtk/setup.c:235
 msgid "Open utilities in:"
 msgstr "Άνοιγμα εργαλείων σε:"
 
-#: src/fe-gtk/setup.c:225
+#: src/fe-gtk/setup.c:235
 msgid "Open DCC, Ignore, Notify etc, in tabs or windows?"
 msgstr "Καρτέλες ή παράθυρα για τα DCC, Ignore, Notify κλπ.;"
 
-#: src/fe-gtk/setup.c:232
+#: src/fe-gtk/setup.c:242
 msgid "No"
 msgstr "Όχι"
 
-#: src/fe-gtk/setup.c:233
+#: src/fe-gtk/setup.c:243
 msgid "Yes"
 msgstr "Ναι"
 
-#: src/fe-gtk/setup.c:234
+#: src/fe-gtk/setup.c:244
 msgid "Browse for save folder every time"
 msgstr "Επιλογή φακέλου αποθήκευσης κάθε φορά"
 
-#: src/fe-gtk/setup.c:240
+#: src/fe-gtk/setup.c:250
 msgid "Files and Directories"
 msgstr "Αρχεία και Κατάλογοι"
 
-#: src/fe-gtk/setup.c:241
+#: src/fe-gtk/setup.c:251
 msgid "Auto accept file offers:"
 msgstr "Αυτόματη αποδοχή αρχείων:"
 
-#: src/fe-gtk/setup.c:242
+#: src/fe-gtk/setup.c:252
 msgid "Download files to:"
 msgstr "Αποθήκευση αρχείων στο:"
 
-#: src/fe-gtk/setup.c:243
+#: src/fe-gtk/setup.c:253
 msgid "Move completed files to:"
 msgstr "Μετακίνηση ολοκληρωμένων αρχείων στο:"
 
-#: src/fe-gtk/setup.c:244
+#: src/fe-gtk/setup.c:254
 msgid "Save nick name in filenames"
 msgstr "Αποθήκευση ψευδωνύμων στα ονόματα αρχείων"
 
-#: src/fe-gtk/setup.c:246
+#: src/fe-gtk/setup.c:256
 msgid "Network Settings"
 msgstr "Ρυθμίσεις δικτύου"
 
-#: src/fe-gtk/setup.c:247
+#: src/fe-gtk/setup.c:257
 msgid "Get my address from the IRC server"
 msgstr "Λήψη της διεύθυνσης IP από τον διακομιστή IRC"
 
-#: src/fe-gtk/setup.c:248
+#: src/fe-gtk/setup.c:258
 msgid "Asks the IRC server for your real address. Use this if you have a 192.168.*.* address!"
 msgstr "Ερώτηση στον διακομιστή IRC για την πραγματική σας διεύθυνση. Χρησιμοποιείστε το όταν έχετε διεύθυνση IP της μορφής 192.168.*.* ή 10.*.*.* !"
 
-#: src/fe-gtk/setup.c:249
+#: src/fe-gtk/setup.c:259
 msgid "DCC IP address:"
 msgstr "DCC διεύθυνση IP:"
 
-#: src/fe-gtk/setup.c:250
+#: src/fe-gtk/setup.c:260
 msgid "Claim you are at this address when offering files."
 msgstr "Απαίτηση τής χρήσης αυτής της διευθύνσης κατα την προσφορά αρχείων."
 
-#: src/fe-gtk/setup.c:251
+#: src/fe-gtk/setup.c:261
 msgid "First DCC send port:"
 msgstr "Αρχική θύρα DCC αποστολής:"
 
-#: src/fe-gtk/setup.c:252
+#: src/fe-gtk/setup.c:262
 msgid "Last DCC send port:"
 msgstr "Τελική θύρα DCC αποστολής:"
 
-#: src/fe-gtk/setup.c:253
+#: src/fe-gtk/setup.c:263
 msgid "!Leave ports at zero for full range."
 msgstr "!Αφήστε τις θύρες στο 0 για πλήρες εύρος."
 
-#: src/fe-gtk/setup.c:255
+#: src/fe-gtk/setup.c:265
 msgid "Maximum File Transfer Speeds (bytes per second)"
 msgstr "Μέγιστες ταχύτητες μεταφοράς αρχείων (bytes ανά δευτερόλεπτο)"
 
-#: src/fe-gtk/setup.c:256
+#: src/fe-gtk/setup.c:266
 msgid "One upload:"
 msgstr "Αποστολή ενός αρχείου:"
 
-#: src/fe-gtk/setup.c:257
-#: src/fe-gtk/setup.c:259
+#: src/fe-gtk/setup.c:267 src/fe-gtk/setup.c:269
 msgid "Maximum speed for one transfer"
 msgstr "Μέγιστη ταχύτητα για μια μεταφορά"
 
-#: src/fe-gtk/setup.c:258
+#: src/fe-gtk/setup.c:268
 msgid "One download:"
 msgstr "Λήψη ενός αρχείου:"
 
-#: src/fe-gtk/setup.c:260
+#: src/fe-gtk/setup.c:270
 msgid "All uploads combined:"
 msgstr "Όλες οι αποστολές αρχείων μαζί:"
 
-#: src/fe-gtk/setup.c:261
-#: src/fe-gtk/setup.c:263
+#: src/fe-gtk/setup.c:271 src/fe-gtk/setup.c:273
 msgid "Maximum speed for all files"
 msgstr "Μέγιστη ταχύτητα για όλα τα αρχεία"
 
-#: src/fe-gtk/setup.c:262
+#: src/fe-gtk/setup.c:272
 msgid "All downloads combined:"
 msgstr "Όλες οι λήψεις αρχείων συνδυασμένες:"
 
-#: src/fe-gtk/setup.c:270
+#: src/fe-gtk/setup.c:280
 msgid "Default Messages"
 msgstr "Προκαθορισμένα μηνύματα"
 
-#: src/fe-gtk/setup.c:271
+#: src/fe-gtk/setup.c:281
 msgid "Quit:"
 msgstr "Έξοδος:"
 
-#: src/fe-gtk/setup.c:272
+#: src/fe-gtk/setup.c:282
 msgid "Leave channel:"
 msgstr "Εγκατάλειψη καναλιού:"
 
-#: src/fe-gtk/setup.c:273
+#: src/fe-gtk/setup.c:283
 msgid "Away:"
 msgstr "Απουσία:"
 
-#: src/fe-gtk/setup.c:275
+#: src/fe-gtk/setup.c:285
 msgid "Away"
 msgstr "Απουσία"
 
-#: src/fe-gtk/setup.c:276
+#: src/fe-gtk/setup.c:286
 msgid "Announce away messages"
 msgstr "Ανακοίνωση μηνυμάτων απουσίας"
 
-#: src/fe-gtk/setup.c:277
+#: src/fe-gtk/setup.c:287
 msgid "Announce your away messages to all channels"
 msgstr "Ανακοίνωση της απουσίας σας σε όλα τα κανάλια"
 
-#: src/fe-gtk/setup.c:278
+#: src/fe-gtk/setup.c:288
 msgid "Show away once"
 msgstr "Εμφάνιση του μηνύματος απουσίας μια φορά"
 
-#: src/fe-gtk/setup.c:278
+#: src/fe-gtk/setup.c:288
 msgid "Show identical away messages only once"
 msgstr "Εμφάνιση των όμοιων μηνυμάτων ειδοποίησης μόνο μια φορά"
 
-#: src/fe-gtk/setup.c:279
+#: src/fe-gtk/setup.c:289
 msgid "Automatically unmark away"
 msgstr "Αυτόματη απενεργοποίηση της απουσίας"
 
-#: src/fe-gtk/setup.c:279
+#: src/fe-gtk/setup.c:289
 msgid "Unmark yourself as away before sending messages"
 msgstr "Απενεργοποίηση της σημείωσης της απουσίας πριν την αποστολή μηνυμάτων"
 
-#: src/fe-gtk/setup.c:282
+#: src/fe-gtk/setup.c:292
 msgid "(Can be a text file relative to ~/.xchat2/)."
 msgstr "(Μπορεί να είναι αρχείο κειμένου σχετικό με ~/.xchat2/)."
 
-#: src/fe-gtk/setup.c:284
+#: src/fe-gtk/setup.c:294
 msgid "(Can be a text file relative to config dir)."
 msgstr "(Μπορεί να είναι αρχείο κειμένου σχετικό με τον κατάλογο ρυθμίσεων)."
 
-#: src/fe-gtk/setup.c:288
+#: src/fe-gtk/setup.c:298
 msgid "Alerts"
 msgstr "Συναγερμοί"
 
-#: src/fe-gtk/setup.c:290
+#: src/fe-gtk/setup.c:300
 msgid "Flash taskbar on highlighted messages"
 msgstr "Ειδοποίηση στην γραμμή εργασιών για τα επισημασμένα μηνύματα"
 
-#: src/fe-gtk/setup.c:292
+#: src/fe-gtk/setup.c:301
+msgid "Flash taskbar on any private messages"
+msgstr "Ειδοποίηση στην γραμμή εργασιών για τα προσωπικά μηνύματα"
+
+#: src/fe-gtk/setup.c:303
 msgid "Beep on highlighted messages"
 msgstr "Μπιπ για επεσημασμένα μηνύματα"
 
-#: src/fe-gtk/setup.c:293
+#: src/fe-gtk/setup.c:304
 msgid "Beep on private messages"
 msgstr "Μπιπ για προσωπικά μηνύματα"
 
-#: src/fe-gtk/setup.c:294
+#: src/fe-gtk/setup.c:305
 msgid "Beep on channel messages"
 msgstr "Μπιπ για μηνύματα στο κανάλι"
 
-#: src/fe-gtk/setup.c:295
+#: src/fe-gtk/setup.c:306
 msgid "Extra words to highlight on:"
 msgstr "Επιπλέον λέξεις για επισήμανση:"
 
-#: src/fe-gtk/setup.c:296
+#: src/fe-gtk/setup.c:307
 msgid "Nicks not to highlight on:"
 msgstr "Ψευδώνυμα στα οποία δε θα γίνεται επισήμανση:"
 
-#: src/fe-gtk/setup.c:297
+#: src/fe-gtk/setup.c:308
 msgid "Separate multiple words with commas."
 msgstr "Διαχωρίστε πολλές λέξεις με κόμματα."
 
-#: src/fe-gtk/setup.c:304
+#: src/fe-gtk/setup.c:315
 msgid "Advanced Settings"
 msgstr "Προχωρημένες ρυθμίσεις"
 
-#: src/fe-gtk/setup.c:305
+#: src/fe-gtk/setup.c:316
 msgid "Auto reconnect delay:"
 msgstr "Καθυστέρηση στην αυτόματη επανασύνδεση:"
 
-#: src/fe-gtk/setup.c:306
+#: src/fe-gtk/setup.c:317
 msgid "Display MODEs in raw form"
 msgstr "Εμφάνιση των καταστάσεων (MODE) σε ωμή μορφή"
 
-#: src/fe-gtk/setup.c:307
+#: src/fe-gtk/setup.c:318
 msgid "Whois on notify"
 msgstr "Whois κατά την ειδοποίηση"
 
-#: src/fe-gtk/setup.c:307
+#: src/fe-gtk/setup.c:318
 msgid "Sends a /WHOIS when a user comes online in your notify list"
 msgstr "Κάνει ένα /WHOIS όταν συνδεθεί ένας χρήστης που βρίσκεται στη λίστα ειδοποίησής σας."
 
-#: src/fe-gtk/setup.c:308
+#: src/fe-gtk/setup.c:319
 msgid "Hide join and part messages"
 msgstr "Απόκρυψη μηνυμάτων εισόδου/εξόδου"
 
-#: src/fe-gtk/setup.c:308
+#: src/fe-gtk/setup.c:319
 msgid "Hide channel join/part messages by default"
 msgstr "Προκαθορισμένη απόκρυψη μηνυμάτων εισόδου/εξόδου"
 
-#: src/fe-gtk/setup.c:309
+#: src/fe-gtk/setup.c:320
 msgid "Auto Open DCC Windows"
 msgstr "Αυτόματο άνοιγμα παραθύρων DCC"
 
-#: src/fe-gtk/setup.c:310
+#: src/fe-gtk/setup.c:321
 msgid "Send window"
 msgstr "Παράθυρο αποστολής"
 
-#: src/fe-gtk/setup.c:311
+#: src/fe-gtk/setup.c:322
 msgid "Receive window"
 msgstr "Παράθυρο λήψης"
 
-#: src/fe-gtk/setup.c:312
+#: src/fe-gtk/setup.c:323
 msgid "Chat window"
 msgstr "Παράθυρο συζήτησης"
 
-#: src/fe-gtk/setup.c:320
-#: src/fe-gtk/setup.c:1511
+#: src/fe-gtk/setup.c:331 src/fe-gtk/setup.c:1522
 msgid "Logging"
 msgstr "Καταγραφή"
 
-#: src/fe-gtk/setup.c:321
+#: src/fe-gtk/setup.c:332
 msgid "Enable logging of conversations"
 msgstr "Ενεργοποίηση της καταγραφής των συζητήσεων"
 
-#: src/fe-gtk/setup.c:322
+#: src/fe-gtk/setup.c:333
 msgid "Log filename:"
 msgstr "Όνομα αρχείων καταγραφής:"
 
-#: src/fe-gtk/setup.c:323
+#: src/fe-gtk/setup.c:334
 #, c-format
 msgid "%s=Server %c=Channel %n=Network."
 msgstr "%s=Διακομιστής %c=Κανάλι %n=Δίκτυο."
 
-#: src/fe-gtk/setup.c:326
+#: src/fe-gtk/setup.c:337
 msgid "Insert timestamps in logs"
 msgstr "Χρονοσήμανση των αρχείων καταγραφής"
 
-#: src/fe-gtk/setup.c:327
+#: src/fe-gtk/setup.c:338
 msgid "Log timestamp format:"
 msgstr "Μορφή καταγραφόμενης ώρας:"
 
-#: src/fe-gtk/setup.c:335
+#: src/fe-gtk/setup.c:346
 msgid "(Disabled)"
 msgstr "(Απενεργοποιημένο)"
 
-#: src/fe-gtk/setup.c:336
+#: src/fe-gtk/setup.c:347
 msgid "Wingate"
-msgstr ""
+msgstr "Wingate"
 
-#: src/fe-gtk/setup.c:337
+#: src/fe-gtk/setup.c:348
 msgid "Socks4"
 msgstr "Socks4"
 
-#: src/fe-gtk/setup.c:338
+#: src/fe-gtk/setup.c:349
 msgid "Socks5"
 msgstr "Socks5"
 
-#: src/fe-gtk/setup.c:339
+#: src/fe-gtk/setup.c:350
 msgid "HTTP"
 msgstr "HTTP"
 
-#: src/fe-gtk/setup.c:341
+#: src/fe-gtk/setup.c:352
 msgid "MS Proxy (ISA)"
-msgstr ""
+msgstr "Διαμεσολαβητής της MS (ISA)"
 
-#: src/fe-gtk/setup.c:348
+#: src/fe-gtk/setup.c:359
 msgid "All Connections"
 msgstr "Όλες οι συνδέσεις"
 
-#: src/fe-gtk/setup.c:349
+#: src/fe-gtk/setup.c:360
 msgid "IRC Server Only"
 msgstr "Μόνο διακομιστές IRC"
 
-#: src/fe-gtk/setup.c:350
+#: src/fe-gtk/setup.c:361
 msgid "DCC Get Only"
 msgstr ""
 
-#: src/fe-gtk/setup.c:356
+#: src/fe-gtk/setup.c:367
 msgid "Your Address"
 msgstr "Η διεύθυνσή σας"
 
-#: src/fe-gtk/setup.c:357
+#: src/fe-gtk/setup.c:368
 msgid "Bind to:"
 msgstr "Διεύθυνση για τη σύνδεση:"
 
-#: src/fe-gtk/setup.c:358
+#: src/fe-gtk/setup.c:369
 msgid "Only useful for computers with multiple addresses."
 msgstr "Χρήσιμο μόνο για υπολογιστές με πολλαπλές διευθύνσεις."
 
-#: src/fe-gtk/setup.c:360
+#: src/fe-gtk/setup.c:371
 msgid "Proxy Server"
 msgstr "Διακομιστής Proxy"
 
-#: src/fe-gtk/setup.c:361
+#: src/fe-gtk/setup.c:372
 msgid "Hostname:"
 msgstr "Όνομα διακομιστή:"
 
-#: src/fe-gtk/setup.c:362
+#: src/fe-gtk/setup.c:373
 msgid "Port:"
 msgstr "Θύρα:"
 
-#: src/fe-gtk/setup.c:363
+#: src/fe-gtk/setup.c:374
 msgid "Type:"
 msgstr "Τύπος:"
 
-#: src/fe-gtk/setup.c:364
+#: src/fe-gtk/setup.c:375
 msgid "Use proxy for:"
 msgstr "Χρήση διακομιστή proxy για:"
 
-#: src/fe-gtk/setup.c:366
+#: src/fe-gtk/setup.c:377
 msgid "Proxy Authentication"
 msgstr "Πιστοποίηση proxy"
 
-#: src/fe-gtk/setup.c:368
+#: src/fe-gtk/setup.c:379
 msgid "Use Authentication (MS Proxy, HTTP or Socks5 only)"
 msgstr "Χρήση πιστοποίησης (μόνο MS Proxy, HTTP και Socks5)"
 
-#: src/fe-gtk/setup.c:370
+#: src/fe-gtk/setup.c:381
 msgid "Use Authentication (HTTP or Socks5 only)"
 msgstr "Χρήση πιστοποίησης (μόνο HTTP και Socks5)"
 
-#: src/fe-gtk/setup.c:372
+#: src/fe-gtk/setup.c:383
 msgid "Username:"
 msgstr "Όνομα χρήστη:"
 
-#: src/fe-gtk/setup.c:373
+#: src/fe-gtk/setup.c:384
 msgid "Password:"
 msgstr "Συνθηματικό διακομιστή:"
 
-#: src/fe-gtk/setup.c:716
+#: src/fe-gtk/setup.c:727
 msgid "Select an Image File"
 msgstr "Επιλογή ενός αρχείου εικόνας"
 
-#: src/fe-gtk/setup.c:740
+#: src/fe-gtk/setup.c:751
 msgid "Select Download Folder"
 msgstr "Επιλογή φακέλου αρχείων"
 
-#: src/fe-gtk/setup.c:749
+#: src/fe-gtk/setup.c:760
 msgid "Select font"
 msgstr "Επιλογή γραμματοσειράς"
 
-#: src/fe-gtk/setup.c:820
+#: src/fe-gtk/setup.c:831
 msgid "Browse..."
 msgstr "Περιήγηση..."
 
-#: src/fe-gtk/setup.c:955
+#: src/fe-gtk/setup.c:966
 msgid "Mark identified users with:"
 msgstr "Επισήμανση των καταχωρημένων χρηστών με:"
 
-#: src/fe-gtk/setup.c:957
+#: src/fe-gtk/setup.c:968
 msgid "Mark not-identified users with:"
 msgstr "Επισήμανση των μη-καταχωρημένων χρηστών με:"
 
-#: src/fe-gtk/setup.c:1018
+#: src/fe-gtk/setup.c:1029
 msgid "Select color"
 msgstr "Επιλογή χρώματος"
 
-#: src/fe-gtk/setup.c:1098
+#: src/fe-gtk/setup.c:1109
 msgid "Text Colors"
 msgstr "Χρώματα κειμένου"
 
-#: src/fe-gtk/setup.c:1100
+#: src/fe-gtk/setup.c:1111
 msgid "mIRC colors:"
 msgstr "χρώματα mIRC:"
 
-#: src/fe-gtk/setup.c:1108
+#: src/fe-gtk/setup.c:1119
 msgid "Local colors:"
 msgstr "Τοπικά χρώματα:"
 
-#: src/fe-gtk/setup.c:1116
-#: src/fe-gtk/setup.c:1121
+#: src/fe-gtk/setup.c:1127 src/fe-gtk/setup.c:1132
 msgid "Foreground:"
 msgstr "Πλάνο:"
 
-#: src/fe-gtk/setup.c:1117
-#: src/fe-gtk/setup.c:1122
+#: src/fe-gtk/setup.c:1128 src/fe-gtk/setup.c:1133
 msgid "Background:"
 msgstr "Φόντο:"
 
-#: src/fe-gtk/setup.c:1119
+#: src/fe-gtk/setup.c:1130
 msgid "Marking Text"
 msgstr "Χρώμα επισήμανσης:"
 
-#: src/fe-gtk/setup.c:1124
+#: src/fe-gtk/setup.c:1135
 msgid "Interface Colors"
 msgstr "Χρώματα διεπαφής"
 
-#: src/fe-gtk/setup.c:1126
+#: src/fe-gtk/setup.c:1137
 msgid "New data:"
 msgstr "Νέα δεδομένα:"
 
-#: src/fe-gtk/setup.c:1127
+#: src/fe-gtk/setup.c:1138
 msgid "Marker line:"
 msgstr "Γραμμή επισήμανσης:"
 
-#: src/fe-gtk/setup.c:1128
+#: src/fe-gtk/setup.c:1139
 msgid "New message:"
 msgstr "Νέο μήνυμα:"
 
-#: src/fe-gtk/setup.c:1129
+#: src/fe-gtk/setup.c:1140
 msgid "Away user:"
 msgstr "Χρήστης απουσίας:"
 
-#: src/fe-gtk/setup.c:1130
+#: src/fe-gtk/setup.c:1141
 msgid "Highlight:"
 msgstr "Επισήμανση:"
 
-#: src/fe-gtk/setup.c:1226
-#: src/fe-gtk/textgui.c:386
+#: src/fe-gtk/setup.c:1237 src/fe-gtk/textgui.c:386
 msgid "Event"
 msgstr "Γεγονός"
 
-#: src/fe-gtk/setup.c:1232
+#: src/fe-gtk/setup.c:1243
 msgid "Sound file"
 msgstr "Αρχείο ήχου"
 
-#: src/fe-gtk/setup.c:1267
+#: src/fe-gtk/setup.c:1278
 msgid "Select a sound file"
 msgstr "Επιλογή αρχείου ήχου"
 
-#: src/fe-gtk/setup.c:1339
+#: src/fe-gtk/setup.c:1350
 msgid "Sound playing method:"
 msgstr "Μέθοδος αναπαραγωγής ήχων:"
 
-#: src/fe-gtk/setup.c:1347
+#: src/fe-gtk/setup.c:1358
 msgid "External sound playing _program:"
 msgstr "Εξωτερικό _πρόγραμμα αναπαραγωγής ήχων:"
 
-#: src/fe-gtk/setup.c:1365
+#: src/fe-gtk/setup.c:1376
 msgid "_External program"
 msgstr "_Εξωτερικό πρόγραμμα"
 
-#: src/fe-gtk/setup.c:1375
+#: src/fe-gtk/setup.c:1386
 msgid "_Automatic"
 msgstr "_Αυτόματο"
 
-#: src/fe-gtk/setup.c:1388
+#: src/fe-gtk/setup.c:1399
 msgid "Sound files _directory:"
 msgstr "Κατάλογος αρχείων ή_χου:"
 
-#: src/fe-gtk/setup.c:1427
+#: src/fe-gtk/setup.c:1438
 msgid "Sound file:"
 msgstr "Αρχείο ήχου:"
 
-#: src/fe-gtk/setup.c:1442
+#: src/fe-gtk/setup.c:1453
 msgid "_Browse..."
 msgstr "_Περιήγηση..."
 
-#: src/fe-gtk/setup.c:1453
+#: src/fe-gtk/setup.c:1464
 msgid "_Play"
 msgstr "_Αναπαραγωγή"
 
-#: src/fe-gtk/setup.c:1502
+#: src/fe-gtk/setup.c:1513
 msgid "Interface"
 msgstr "Διεπαφή"
 
-#: src/fe-gtk/setup.c:1503
+#: src/fe-gtk/setup.c:1514
 msgid "Text box"
 msgstr "Πλαίσιο κείμενου"
 
-#: src/fe-gtk/setup.c:1505
+#: src/fe-gtk/setup.c:1516
 msgid "User list"
 msgstr "Λίστα χρηστών"
 
-#: src/fe-gtk/setup.c:1507
+#: src/fe-gtk/setup.c:1518
 msgid "Colors"
 msgstr "Χρώματα"
 
-#: src/fe-gtk/setup.c:1509
+#: src/fe-gtk/setup.c:1520
 msgid "Chatting"
 msgstr "Συνομιλία"
 
-#: src/fe-gtk/setup.c:1510
+#: src/fe-gtk/setup.c:1521
 msgid "General"
 msgstr "Γενικές"
 
-#: src/fe-gtk/setup.c:1512
+#: src/fe-gtk/setup.c:1523
 msgid "Sound"
 msgstr "Ήχος"
 
-#: src/fe-gtk/setup.c:1515
-msgid "Network"
-msgstr "Δίκτυο"
-
-#: src/fe-gtk/setup.c:1516
+#: src/fe-gtk/setup.c:1527
 msgid "Network setup"
 msgstr "Ρυθμίσεις δικτύου"
 
-#: src/fe-gtk/setup.c:1517
+#: src/fe-gtk/setup.c:1528
 msgid "File transfers"
 msgstr "Μεταφορές αρχείων"
 
-#: src/fe-gtk/setup.c:1625
+#: src/fe-gtk/setup.c:1636
 msgid "Categories"
 msgstr "Κατηγορίες"
 
-#: src/fe-gtk/setup.c:1797
+#: src/fe-gtk/setup.c:1812
 msgid "Some settings were changed that require a restart to take full effect."
 msgstr "Άλλαξαν ορισμένες ρυθμίσεις που απαιτούν επανεκκίνηση για να ενεργοποιηθούν."
 
-#: src/fe-gtk/setup.c:1805
+#: src/fe-gtk/setup.c:1820
 msgid ""
 "*WARNING*\n"
 "Auto accepting DCC to your home directory\n"
@@ -5288,7 +5094,7 @@ msgstr ""
 "είναι επικίνδυνη και εκμεταλλεύσιμη. Πχ:\n"
 "Κάποιος μπορεί να σας στείλει ένα .bash_profile"
 
-#: src/fe-gtk/setup.c:1838
+#: src/fe-gtk/setup.c:1853
 msgid "XChat: Preferences"
 msgstr "XChat: Προτιμήσεις"
 
@@ -5301,8 +5107,7 @@ msgstr "Σφάλμα κατά την ανάλυση του αλφαριθμητ�
 msgid "This signal is only passed %d args, $%d is invalid"
 msgstr "Αυτό το σήμα παίρνει μόνο %d επιλογές, $%d δεν είναι έγκυρο"
 
-#: src/fe-gtk/textgui.c:301
-#: src/fe-gtk/textgui.c:324
+#: src/fe-gtk/textgui.c:301 src/fe-gtk/textgui.c:324
 msgid "Print Texts File"
 msgstr "Τυπώνει αρχεία κειμένου"
 
@@ -5351,154 +5156,153 @@ msgstr "Αποθήκευση λίστας σε αρχείο"
 msgid "%d ops, %d total"
 msgstr "%d ops, %d σύνολο"
 
-#: plugins/dbus/xchat-remote.c:41
-msgid "Open an irc:// url"
-msgstr "Άνοιγμα συνδέσμου τύπου irc://"
+#~ msgid "%C18*$t$1%O $2"
+#~ msgstr "%C18*$t$1%O $2"
 
-#: plugins/dbus/xchat-remote.c:41
-msgid "irc://server:port/channel"
-msgstr "irc://διακομιστής:θύρα/κανάλι"
+#~ msgid "%C21*%O$t%C21%B$1%O%C21 $2"
+#~ msgstr "%C21*%O$t%C21%B$1%O%C21 $2"
 
-#: plugins/dbus/xchat-remote.c:42
-msgid "Execute a xchat command"
-msgstr "Εκτέλεση μιας εντολής του xchat"
+#~ msgid "%C18%H<%H$4$1%H>%H%O$t$2"
+#~ msgstr "%C18%H<%H$4$1%H>%H%O$t$2"
 
-#: plugins/dbus/xchat-remote.c:42
-msgid "\"Command to execute\""
-msgstr "\"Εντολή προς εκτέλεση\""
+#~ msgid "$4%C21%B%H<%H$1%H>%H%O%C21$t$2"
+#~ msgstr "$4%C21%B%H<%H$1%H>%H%O%C21$t$2"
 
-#: plugins/dbus/xchat-remote.c:43
-msgid "Prints some text to the current tab/window"
-msgstr "Εμφανίζει κείμενο στην τρέχουσα καρτέλα/παράθυρο"
+#~ msgid "%C28-%C29$1/$2%C28-%O$t$3"
+#~ msgstr "%C28-%C29$1/$2%C28-%O$t$3"
 
-#: plugins/dbus/xchat-remote.c:43
-msgid "\"Text to print\""
-msgstr "\"Κείμενο προς εμφάνιση\""
+#~ msgid "$1$t$2"
+#~ msgstr "$1$t$2"
 
-#: plugins/dbus/xchat-remote.c:44
-msgid "Change the context to the channel"
-msgstr ""
+#~ msgid "%C19>%O$1%C19<%O$t$2"
+#~ msgstr "%C19>%O$1%C19<%O$t$2"
 
-#: plugins/dbus/xchat-remote.c:44
-msgid "channel"
-msgstr "κανάλι"
+#~ msgid "%C16*%O$t$1%O"
+#~ msgstr "%C16*%O$t$1%O"
 
-#: plugins/dbus/xchat-remote.c:45
-msgid "Change the context to the server"
-msgstr ""
+#~ msgid "%C28-%C29$1%C28-%O$t$2"
+#~ msgstr "%C28-%C29$1%C28-%O$t$2"
 
-#: plugins/dbus/xchat-remote.c:45
-msgid "server"
-msgstr "διακομιστής"
+#~ msgid "%C28*%C29$3$1%C28*$t%O$2"
+#~ msgstr "%C28*%C29$3$1%C28*$t%O$2"
 
-#: plugins/dbus/xchat-remote.c:46
-msgid "Get some informations from xchat"
-msgstr "Λήψη πληροφοριών από το xchat"
+#~ msgid "%C18%H<%H$3$1%H>%H%O$t$2"
+#~ msgstr "%C18%H<%H$3$1%H>%H%O$t$2"
 
-#: plugins/dbus/xchat-remote.c:46
-msgid "id"
-msgstr ""
+#~ msgid "%C22*%O$t$1"
+#~ msgstr "%C22*%O$t$1"
 
-#: plugins/dbus/xchat-remote.c:47
-msgid "Get settings from xchat"
-msgstr "Λήψη ρυθμίσεων από το xchat"
+#~ msgid "%C31%H<%H$4$1%H>%H%O%C30$t$2"
+#~ msgstr "%C31%H<%H$4$1%H>%H%O%C30$t$2"
 
-#: plugins/dbus/xchat-remote.c:47
-msgid "name"
-msgstr "όνομα"
+#~ msgid "PID"
+#~ msgstr "PID"
 
-#: plugins/dbus/xchat-remote.c:79
-#, c-format
-msgid ""
-"xchat-remote: %s\n"
-"Try `xchat-remote --help' for more information\n"
-msgstr ""
-"xchat-remote: %s\n"
-"Δοκιμάστε `xchat-remote --help' για περισσότερες πληροφορίες\n"
+#~ msgid "Server"
+#~ msgstr "Διακομιστής"
 
-#: plugins/dbus/xchat-remote.c:90
-msgid "Couldn't connect to session bus"
-msgstr "Δεν ήταν δυνατή η σύνδεση στο δίαυλο μηνυμάτων"
+#~ msgid "Tabs Location"
+#~ msgstr "Τοποθέτηση καρτελών"
 
-#: plugins/dbus/xchat-remote.c:116
-#: plugins/dbus/xchat-remote.c:130
-msgid "Failed to complete command"
-msgstr "Η εκτέλεση της εντολής απέτυχε"
+#~ msgid "Open an irc:// url"
+#~ msgstr "Άνοιγμα συνδέσμου τύπου irc://"
 
-#: plugins/dbus/xchat-remote.c:125
-msgid "Failed to complete SetContext"
-msgstr "Η εκτέλεση της εντολής SetContext απέτυχε"
+#~ msgid "irc://server:port/channel"
+#~ msgstr "irc://διακομιστής:θύρα/κανάλι"
 
-#: plugins/dbus/xchat-remote.c:135
-msgid "Failed to complete print"
-msgstr "Η εκτύπωση απέτυχε"
+#~ msgid "Execute a xchat command"
+#~ msgstr "Εκτέλεση μιας εντολής του xchat"
 
-#: plugins/dbus/xchat-remote.c:142
-msgid "Failed to complete GetInfo"
-msgstr "Η εκτέλεση της εντολής GetInfo απέτυχε"
+#~ msgid "\"Command to execute\""
+#~ msgstr "\"Εντολή προς εκτέλεση\""
 
-#: plugins/dbus/xchat-remote.c:155
-msgid "Failed to complete GetPrefs"
-msgstr "Η εκτέλεση της εντολής GetPrefs απέτυχε"
+#~ msgid "Prints some text to the current tab/window"
+#~ msgstr "Εμφανίζει κείμενο στην τρέχουσα καρτέλα/παράθυρο"
 
-#: plugins/dbus/xchat-remote.c:159
-#, c-format
-msgid "%s doesn't exist\n"
-msgstr "Το %s δεν υπάρχει\n"
+#~ msgid "\"Text to print\""
+#~ msgstr "\"Κείμενο προς εμφάνιση\""
 
-#: plugins/dbus/dbus-plugin.c:27
-msgid "xchat remote access"
-msgstr "απομακρυσμένη πρόσβαση xchat"
+#~ msgid "channel"
+#~ msgstr "κανάλι"
 
-#: plugins/dbus/dbus-plugin.c:28
-msgid "plugin for remote access using DBUS"
-msgstr "πρόσθετο για απομακρυσμένη πρόσβαση μέσω DBUS"
+#~ msgid "server"
+#~ msgstr "διακομιστής"
 
-#: plugins/dbus/dbus-plugin.c:333
-#, c-format
-msgid "Couldn't connect to session bus : %s\n"
-msgstr "Δεν ήταν δυνατή η σύνδεση στο δίαυλο μηνυμάτων: %s\n"
+#~ msgid "Get some informations from xchat"
+#~ msgstr "Λήψη πληροφοριών από το xchat"
 
-#: plugins/dbus/dbus-plugin.c:353
-#, c-format
-msgid "Failed to acquire %s: %s\n"
-msgstr "Η λήψη του %s απέτυχε: %s\n"
+#~ msgid "Get settings from xchat"
+#~ msgstr "Λήψη ρυθμίσεων από το xchat"
 
-#: plugins/dbus/dbus-plugin.c:401
-#, c-format
-msgid "%s loaded successfully!\n"
-msgstr "Το %s φορτώθηκε με επιτυχία!\n"
+#~ msgid "name"
+#~ msgstr "όνομα"
+
+#~ msgid ""
+#~ "xchat-remote: %s\n"
+#~ "Try `xchat-remote --help' for more information\n"
+#~ msgstr ""
+#~ "xchat-remote: %s\n"
+#~ "Δοκιμάστε `xchat-remote --help' για περισσότερες πληροφορίες\n"
+
+#~ msgid "Failed to complete SetContext"
+#~ msgstr "Η εκτέλεση της εντολής SetContext απέτυχε"
+
+#~ msgid "Failed to complete print"
+#~ msgstr "Η εκτύπωση απέτυχε"
+
+#~ msgid "Failed to complete GetInfo"
+#~ msgstr "Η εκτέλεση της εντολής GetInfo απέτυχε"
+
+#~ msgid "Failed to complete GetPrefs"
+#~ msgstr "Η εκτέλεση της εντολής GetPrefs απέτυχε"
+
+#~ msgid "%s doesn't exist\n"
+#~ msgstr "Το %s δεν υπάρχει\n"
 
 #~ msgid "France, Metropolitan"
 #~ msgstr "Γαλλία, Μητροπολιτική"
+
 #~ msgid "Neutral Zone"
 #~ msgstr "Ουδέτερη Ζώνη"
+
 #~ msgid "File:"
 #~ msgstr "Αρχείο:"
+
 #~ msgid "From:"
 #~ msgstr "Από:"
+
 #~ msgid "To:"
 #~ msgstr "Προς:"
+
 #~ msgid "Size:"
 #~ msgstr "Μέγεθος:"
+
 #~ msgid "MIME Type"
 #~ msgstr "Τύπος MIME"
+
 #~ msgid "Settings saved."
 #~ msgstr "Αποθήκευση ρυθμίσεων"
+
 #~ msgid "_Server List..."
 #~ msgstr "Λίστα _διακομιστών..."
+
 #~ msgid "Save rawlog"
 #~ msgstr "Αποθήκευση ωμής καταγραφής"
+
 #~ msgid "Save rawlog..."
 #~ msgstr "Αποθήκευση ωμής καταγραφής..."
+
 #~ msgid "XChat: Server List"
 #~ msgstr "XChat: Λίστα διακομιστών"
+
 #~ msgid "Completes nick names without using the TAB key"
 #~ msgstr "Συμπληρώνει τα ψευδώνυμα χωρίς τη χρήση του πλήκτρου TAB"
+
 #~ msgid "Input Box Appearance"
 #~ msgstr "Εμφάνιση πλαισίου εισαγωγής"
+
 #~ msgid "Convert spaces to underscore before sending"
 #~ msgstr "Μετάφραση των κενών σε κάτω παύλες πριν την αποστολή"
+
 #~ msgid "(See strftime manpage for details)."
 #~ msgstr "(Δείτε τη καρτέλα man του strftime για λεπτομέρειες)."
-
