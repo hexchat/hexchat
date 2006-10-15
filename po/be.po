@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: xchat 2.6.7\n"
 "Report-Msgid-Bugs-To: www.xchat.org\n"
 "POT-Creation-Date: 2006-10-04 13:56+1000\n"
-"PO-Revision-Date: 2006-10-14 03:21+0300\n"
+"PO-Revision-Date: 2006-10-14 20:03+0300\n"
 "Last-Translator: Pavel Piatruk <berserker@neolocation.com>\n"
 "Language-Team: Belarusian <i18n@mova.org>\n"
 "MIME-Version: 1.0\n"
@@ -34,7 +34,7 @@ msgid ""
 msgstr ""
 "* Выконваць IRC з-пад root'a - глупства.\n"
 "  Вы павінны стварыць карыстальніцкі\n"
-"  ўваход у сістэму і ўжываць яго\n"
+"  рахунак у сістэме і ўжываць яго\n"
 
 #: src/common/dcc.c:67
 msgid "Waiting"
@@ -78,7 +78,7 @@ msgstr "%s прапаноўвае \"%s\". Вы згодны?"
 
 #: src/common/dcc.c:2587
 msgid "No active DCCs\n"
-msgstr "Няма актыўных каналах дадзеных (DCC)\n"
+msgstr "Няма актыўных каналаў данніх (DCC)\n"
 
 #: src/common/ignore.c:120 src/common/ignore.c:124 src/common/ignore.c:128
 #: src/common/ignore.c:132 src/common/ignore.c:136 src/common/ignore.c:140
@@ -159,15 +159,15 @@ msgstr "ADDBUTTON <імя> <дзеянне>, дадае кнопку пад сп
 
 #: src/common/outbound.c:3386
 msgid "ALLCHAN <cmd>, sends a command to all channels you're in"
-msgstr "ALLCHAN <каманда>, дасылае каманду на ўсе каналы, на якія вы зайшлі"
+msgstr "ALLCHAN <каманда>, дасылае каманду на ўсе каналы, куды вы зайшлі"
 
 #: src/common/outbound.c:3388
 msgid "ALLCHANL <cmd>, sends a command to all channels you're in"
-msgstr "ALLCHANL <каманда>, дасылае каманду на ўсе каналы, на якія вы зайшлі"
+msgstr "ALLCHANL <каманда>, дасылае каманду на ўсе каналы, куды вы зайшлі"
 
 #: src/common/outbound.c:3390
 msgid "ALLSERV <cmd>, sends a command to all servers you're in"
-msgstr "ALLSERV <каманда>, дасылае каманду на ўсе сервера, з якімі вы злучаны"
+msgstr "ALLSERV <каманда>, дасылае каманду на ўсе серверы, з якімі вы злучаны"
 
 #: src/common/outbound.c:3391
 msgid "AWAY [<reason>], sets you away"
@@ -175,7 +175,7 @@ msgstr "AWAY [<прычына>], усталяваць статус \"адыйш�
 
 #: src/common/outbound.c:3393
 msgid "BAN <mask> [<bantype>], bans everyone matching the mask from the current channel. If they are already on the channel this doesn't kick them (needs chanop)"
-msgstr "BAN <маска> [<тыпзабароны>], забараняе доступ да каналу кожнаму, хто адпавядае маске. Калі гэткія карыстальнікі ужо на канале, яны не будуць выпхнутыя. (Трэба правы аператара)"
+msgstr "BAN <маска> [<тыпзабароны>], забараняе доступ да канала кожнаму, хто адпавядае маске. Калі гэткія карыстальнікі ўжо на канале, яны не будуць выпхнутыя. (Трэба правы аператара)"
 
 #: src/common/outbound.c:3395
 msgid ""
@@ -185,7 +185,7 @@ msgid ""
 "CHANOPT BEEP ON|OFF - Toggle beep on message"
 msgstr ""
 "Наладкі адносна канала\n"
-"CHANOPT CONFMODE ON|OFF - Пераключыцца паміж рэжымам канферэнцыі і паказам уваходных і пакідальных паведамленняў\n"
+"CHANOPT CONFMODE ON|OFF - Пераключыцца паміж рэжымам канферэнцыі і паказам уваходных і выходзячых паведамленняў\n"
 "CHANOPT COLORPASTE ON|OFF - Пераключыць устаўку колераў\n"
 "CHANOPT BEEP ON|OFF - Пераключыць пішчанне пры паведамленні"
 
@@ -207,7 +207,7 @@ msgstr "CTCP <мянушка> <паведамленне>, дасылае мян�
 
 #: src/common/outbound.c:3409
 msgid "CYCLE, parts current channel and immediately rejoins"
-msgstr "CYCLE, выйсці з бягучага каналу і адразу зайсці зноў"
+msgstr "CYCLE, выйсці з бягучага канала і адразу зайсці зноў"
 
 #: src/common/outbound.c:3411
 msgid ""
@@ -245,7 +245,7 @@ msgstr "DEOP <мянушка>, выдаляе статус аператара ў
 
 #: src/common/outbound.c:3429
 msgid "DEVOICE <nick>, removes voice status from the nick on the current channel (needs chanop)"
-msgstr "DEVOICE <мянушка>, выдаляе права голасу ў мянушкі на бягучым канале(патрэбен статус аператара)"
+msgstr "DEVOICE <мянушка>, выдаляе права голасу ў мянушкі на бягучым канале (патрэбен статус аператара)"
 
 #: src/common/outbound.c:3430
 msgid "DISCON, Disconnects from server"
@@ -261,7 +261,7 @@ msgstr "ECHO <тэкст>, Выводзіць тэкст на лакальнай
 
 #: src/common/outbound.c:3435
 msgid "EXEC [-o] <command>, runs the command. If -o flag is used then output is sent to current channel, else is printed to current text box"
-msgstr "EXEC [-o] <каманда>, запускае каманду. Калі выкарастаны параметр -o, вывад будзе дасланы ў бягучы канал, інакш  у бягучае тэкставае акно"
+msgstr "EXEC [-o] <каманда>, запускае каманду. Калі ўжыты параметр -o, вывад будзе дасланы ў бягучы канал, інакш у бягучае тэкставае акно"
 
 #: src/common/outbound.c:3437
 msgid "EXECCONT, sends the process SIGCONT"
@@ -269,7 +269,7 @@ msgstr "EXECCONT, дасылае працэсу сігнал SIGCONT"
 
 #: src/common/outbound.c:3440
 msgid "EXECKILL [-9], kills a running exec in the current session. If -9 is given the process is SIGKILL'ed"
-msgstr "EXECKILL [-9], забівае выконваючуюся каманду ў бягучай сесіі. Калі адзначаны флаг-9, працэсу дасылается сігнал SIGKILL"
+msgstr "EXECKILL [-9], забівае выконваючуюся каманду ў бягучай сесіі. Калі адзначаны флаг -9, працэсу дасылается сігнал SIGKILL"
 
 #: src/common/outbound.c:3442
 msgid "EXECSTOP, sends the process SIGSTOP"
@@ -277,7 +277,7 @@ msgstr "EXECSTOP, дасылае працэсу сігнал SIGSTOP"
 
 #: src/common/outbound.c:3443
 msgid "EXECWRITE, sends data to the processes stdin"
-msgstr "EXECWRITE, дасылае дадзеныя на стандартны ўваход працэса (stdin)"
+msgstr "EXECWRITE, дасылае данні на стандартны ўваход працэса (stdin)"
 
 #: src/common/outbound.c:3447
 msgid "FLUSHQ, flushes the current server's send queue"
@@ -285,7 +285,7 @@ msgstr "FLUSHQ, скінуць чаргу дасылкі на бягучы се�
 
 #: src/common/outbound.c:3449
 msgid "GATE <host> [<port>], proxies through a host, port defaults to 23"
-msgstr "GATE <вузел> [<порт>], далучыцца праз host, прадвызначаны порт 23"
+msgstr "GATE <вузел> [<порт>], далучыцца праз вузел, прадвызначаны порт 23"
 
 #: src/common/outbound.c:3453
 msgid "GHOST <nick> <password>, Kills a ghosted nickname"
@@ -309,7 +309,7 @@ msgid ""
 msgstr ""
 "IGNORE <маска> <тыпы..> <уласцівасці..>\n"
 "    маска - маска для ігнаравання, напрыклад: *!*@*.aol.com\n"
-"    types - тыпы дадзеных для ігнаравання:\n"
+"    тыпы - тыпы дадзеных для ігнаравання:\n"
 "            PRIV, CHAN, NOTI, CTCP, DCC, INVI, ALL\n"
 "    уласцівасці - NOSAVE, QUIET"
 
@@ -323,11 +323,11 @@ msgstr "JOIN <канал>, увайсці на канал"
 
 #: src/common/outbound.c:3471
 msgid "KICK <nick>, kicks the nick from the current channel (needs chanop)"
-msgstr "KICK <мянушка>, выпхнуць карыстальніка з бягучага каналу (патрэбен статус аператара)"
+msgstr "KICK <мянушка>, выпхнуць карыстальніка з бягучага канала (патрэбен статус аператара)"
 
 #: src/common/outbound.c:3473
 msgid "KICKBAN <nick>, bans then kicks the nick from the current channel (needs chanop)"
-msgstr "KICKBAN <мянушка>, забараняе, а потым выпіхвае карыстальніка з бягучага каналу (патрэбен статус аператара)"
+msgstr "KICKBAN <мянушка>, забараняе, а потым выпіхвае карыстальніка з бягучага канала (патрэбен статус аператара)"
 
 #: src/common/outbound.c:3476
 msgid "LAGCHECK, forces a new lag check"
@@ -343,11 +343,11 @@ msgstr "LOAD [-e] <файл>, загрузіць плагін ці скрыпт"
 
 #: src/common/outbound.c:3483
 msgid "MDEHOP, Mass deop's all chanhalf-ops in the current channel (needs chanop)"
-msgstr "MDEHOP, Адабраць паў-аператара ва ўсіх карыстальнікаў бягучага каналу (патрэбен статус аператара)"
+msgstr "MDEHOP, Адабраць паў-аператара ва ўсіх карыстальнікаў бягучага канала (патрэбен статус аператара)"
 
 #: src/common/outbound.c:3485
 msgid "MDEOP, Mass deop's all chanops in the current channel (needs chanop)"
-msgstr "MDEOP, Адабраць аператара ва ўсіх карыстальнікаў бягучага каналу (патрабуе статус аператара)"
+msgstr "MDEOP, Адабраць аператара ва ўсіх карыстальнікаў бягучага канала (патрабуе статус аператара)"
 
 #: src/common/outbound.c:3487
 msgid "ME <action>, sends the action to the current channel (actions are written in the 3rd person, like /me jumps)"
@@ -355,11 +355,11 @@ msgstr "ME <дзеянне>, дасылае дзеянне на бягучы к�
 
 #: src/common/outbound.c:3490
 msgid "MKICK, Mass kicks everyone except you in the current channel (needs chanop)"
-msgstr "MKICK, Выпхнуць усіх карыстальнікаў з бягучага каналу, акрамя вас (патрэбен статус аператара)"
+msgstr "MKICK, Выпхнуць усіх карыстальнікаў з бягучага канала, акрамя вас (патрэбен статус аператара)"
 
 #: src/common/outbound.c:3493
 msgid "MOP, Mass op's all users in the current channel (needs chanop)"
-msgstr "MOP, Надаць усім карыстальнікам бягучага каналу статус аператара (патрэбен статус аператара)"
+msgstr "MOP, Надаць усім карыстальнікам бягучага канала статус аператара (патрэбен статус аператара)"
 
 #: src/common/outbound.c:3494
 msgid "MSG <nick> <message>, sends a private message"
@@ -391,7 +391,7 @@ msgstr "NOTIFY [-n сеціва1[,сеціва2]] [<мянушка>], перал
 
 #: src/common/outbound.c:3508
 msgid "OP <nick>, gives chanop status to the nick (needs chanop)"
-msgstr "OP <nick>, дае мянушцы статус аператара каналу (патрэбен статус аператара)"
+msgstr "OP <nick>, дае мянушцы статус аператара канала (патрэбен статус аператара)"
 
 #: src/common/outbound.c:3510
 msgid "PART [<channel>] [<reason>], leaves the channel, by default the current one"
@@ -411,7 +411,7 @@ msgstr "QUIT [<прычына>], адлучыцца ад бягучага сер
 
 #: src/common/outbound.c:3518
 msgid "QUOTE <text>, sends the text in raw form to the server"
-msgstr "QUOTE <тэкст>, даслаць тэкст у неапрацованай да сервера"
+msgstr "QUOTE <тэкст>, даслаць тэкст у неапрацованай форме да сервера"
 
 #: src/common/outbound.c:3521
 msgid "RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as /RECONNECT to reconnect to the current server or with /RECONNECT ALL to reconnect to all the open servers"
@@ -443,7 +443,7 @@ msgstr "SERVCHAN <вузел> <порт> <канал>, злучыцца і ўв�
 
 #: src/common/outbound.c:3540
 msgid "SERVER [-ssl] <host> [<port>] [<password>], connects to a server, the default port is 6667 for normal connections, and 9999 for ssl connections"
-msgstr "SERVER [-ssl] <вузел> [<порт>] [<пароль>], злучыцца з серверам, прадвызначаныпорт 6667 для звычайнай сувязі і 9999 для ssl-злучэнняў"
+msgstr "SERVER [-ssl] <вузел> [<порт>] [<пароль>], злучыцца з серверам, прадвызначаны порт 6667, для звычайнай сувязі і 9999 для ssl-злучэнняў"
 
 #: src/common/outbound.c:3543
 msgid "SERVER <host> [<port>] [<password>], connects to a server, the default port is 6667"
@@ -524,11 +524,11 @@ msgstr "Невядомая каманда. Паспрабуйце /help\n"
 
 #: src/common/plugin.c:356 src/common/plugin.c:397
 msgid "No xchat_plugin_init symbol; is this really an xchat plugin?"
-msgstr "Няма сімвала xchat_plugin_init; гэта сапраўды плагін Xchat?"
+msgstr "Няма сімвала xchat_plugin_init; ці гэта сапраўды плагін Xchat?"
 
 #: src/common/server.c:621
 msgid "Are you sure this is a SSL capable server and port?\n"
-msgstr "Вы ўпэўнены, што гэта сумяшчальны з SSL сервер і порт?\n"
+msgstr "Ці вы ўпэўнены, што гэта сумяшчальны з SSL сервер і порт?\n"
 
 #: src/common/server.c:1012
 #, c-format
@@ -551,7 +551,7 @@ msgstr "Спрабую іншы сервер %s...\n"
 #: src/common/servlist.c:1065
 #, c-format
 msgid "Warning: \"%s\" character set is unknown. No conversion will be applied for network %s."
-msgstr "Увага: \"%s\" знаказбор невядомы. Ніякага пераўтварэння знакаў для сетцы %s не будзе."
+msgstr "Увага: \"%s\" знаказбор невядомы. Ніякага пераўтварэння знакаў для сеціва %s не будзе."
 
 #: src/common/textevents.h:6
 msgid "%C22*%O$t$1 added to notify list."
@@ -611,11 +611,11 @@ msgstr "%C22*%O$t$1 усталяваў рэжым $2$3 $4"
 
 #: src/common/textevents.h:60
 msgid "%C22*%O$t%C22Channel $1 modes: $2"
-msgstr "%C22*%O$t%C22Рэжымы каналу $1: $2"
+msgstr "%C22*%O$t%C22Рэжымы канала $1: $2"
 
 #: src/common/textevents.h:69
 msgid "%C22*%O$t%C26$1%O gives channel operator status to%C26 $2"
-msgstr "%C22*%O$t%C26$1%O даў статус аператара каналу %C26 $2"
+msgstr "%C22*%O$t%C26$1%O даў статус аператара канала %C26 $2"
 
 #: src/common/textevents.h:72
 msgid "%C22*%O$t$1 removes exempt on $2"
@@ -627,7 +627,7 @@ msgstr "%C22*%O$t$1 выдаліў запрашэнне на $2"
 
 #: src/common/textevents.h:78
 msgid "%C22*%O$t$1 removes channel keyword"
-msgstr "%C22*%O$t$1 выдаліў ключавое слова каналу"
+msgstr "%C22*%O$t$1 выдаліў ключавое слова канала"
 
 #: src/common/textevents.h:81
 msgid "%C22*%O$t$1 removes user limit"
@@ -635,11 +635,11 @@ msgstr "%C22*%O$t$1 выдаліў абмежаванне карыстальні
 
 #: src/common/textevents.h:84
 msgid "%C22*%O$t$1 sets channel keyword to $2"
-msgstr "%C22*%O$t$1 усталяваў ключавое слова каналу: $2"
+msgstr "%C22*%O$t$1 усталяваў ключавое слова канала: $2"
 
 #: src/common/textevents.h:87
 msgid "%C22*%O$t$1 sets channel limit to $2"
-msgstr "%C22*%O$t$1 усталяваў абмежаванне каналу ў $2"
+msgstr "%C22*%O$t$1 усталяваў абмежаванне канала ў $2"
 
 #: src/common/textevents.h:90
 msgid "%C22*%O$t$1 removes ban on $2"
@@ -659,7 +659,7 @@ msgstr "%C22*%O$t%C22Злучэнне з $1 ($2), порт $3%O..."
 
 #: src/common/textevents.h:102
 msgid "%C21*%O$t%C21Connection failed. Error: $1"
-msgstr "Злучэнне скасавана. Памылка: $1"
+msgstr "Злучэнне не атрымалася. Памылка: $1"
 
 #: src/common/textevents.h:105
 msgid "%C22*%O$tReceived a CTCP $1 from $2"
@@ -675,11 +675,11 @@ msgstr "%C19>%O$1%C19<%O$tCTCP $2"
 
 #: src/common/textevents.h:114
 msgid "%C22*%O$tReceived a CTCP Sound $1 from $2"
-msgstr "%C22*%O$tАтрыман CTCP-гук $1 ад $2"
+msgstr "%C22*%O$tАтрыманы CTCP-гук $1 ад $2"
 
 #: src/common/textevents.h:117
 msgid "%C22*%O$tReceived a CTCP Sound $1 from $2 (to $3)"
-msgstr "%C22*%O$tАтрыман CTCP-гук $1 ад $2 (да $3)"
+msgstr "%C22*%O$tАтрыманы CTCP-гук $1 ад $2 (да $3)"
 
 #: src/common/textevents.h:120
 msgid "%C22*%O$tDCC CHAT to %C26$1%O aborted."
@@ -796,7 +796,7 @@ msgstr "%C22*%O$tЗлучэнне страчана ($1)."
 
 #: src/common/textevents.h:204
 msgid "%C22*%O$tFound your IP: [$1]"
-msgstr "%C22*%O$tЗнойдзен ваш IP: [$1]"
+msgstr "%C22*%O$tЗнойдзены ваш IP: [$1]"
 
 #: src/common/textevents.h:210
 msgid "%O%C26$1%O added to ignore list."
@@ -854,7 +854,7 @@ msgstr "%C22*%O$t%C22\"Паведамленне дня\" прапушчана."
 
 #: src/common/textevents.h:255
 msgid "%C22*%O$t$1 already in use. Retrying with $2..."
-msgstr "%C22*%O$t$1 ужо выкарстоўваецца. Спрабую $2..."
+msgstr "%C22*%O$t$1 ужо выкарыстоўваецца. Спрабую $2..."
 
 #: src/common/textevents.h:258
 msgid "%C22*%O$tNickname already in use. Use /NICK to try another."
@@ -874,7 +874,7 @@ msgstr "$tСпіс абвяшчэнняў пусты."
 
 #: src/common/textevents.h:276
 msgid "%C24,18 %B  Notify List                           "
-msgstr "%C24,18 %B  Спіс абвяшчэняў                       "
+msgstr "%C24,18 %B  Спіс абвяшчэнняў                       "
 
 #: src/common/textevents.h:279
 msgid "%C22*%O$t$1 users in notify list."
@@ -1034,7 +1034,7 @@ msgid ""
 "* Can't open log file(s) for writing. Check the\n"
 "  permissions on %s/xchatlogs"
 msgstr ""
-"* Нельга адкрыць лог-файл(ы) для запісу. Праверце\n"
+"* Немагчыма адкрыць лог-файл(ы) для запісу. Праверце\n"
 "  правы на %s/xchatlogs"
 
 #: src/common/text.c:618
@@ -1527,11 +1527,11 @@ msgstr "Немагчыма ўжыць гэта адрас"
 
 #: src/common/util.c:310
 msgid "Connection reset by peer"
-msgstr "Злучэнне адмоўлена на тым баку"
+msgstr "Злучэнне пераўсталяваны тым бокам"
 
 #: src/common/util.c:839
 msgid "Ascension Island"
-msgstr "Какосавы астравы"
+msgstr "Узнясення астравы"
 
 #: src/common/util.c:840
 msgid "Andorra"
@@ -1543,7 +1543,7 @@ msgstr "Злучаныя Арабскія Эміраты"
 
 #: src/common/util.c:842
 msgid "Afghanistan"
-msgstr "Афганістан"
+msgstr "Аўганістан"
 
 #: src/common/util.c:843
 msgid "Antigua and Barbuda"
@@ -1703,7 +1703,7 @@ msgstr "Дэмакратычная Рэспубліка Конга"
 
 #: src/common/util.c:882
 msgid "Central African Republic"
-msgstr "Цэнтральнаафрыканская Рэспубліка"
+msgstr "Цэнтральна-Афрыканская Рэспубліка"
 
 #: src/common/util.c:883
 msgid "Congo"
@@ -1715,7 +1715,7 @@ msgstr "Швейцарыя"
 
 #: src/common/util.c:885
 msgid "Cote d'Ivoire"
-msgstr "Бераг Слановай Косьці"
+msgstr "Кот д'Івуар"
 
 #: src/common/util.c:886
 msgid "Cook Islands"
@@ -2255,7 +2255,7 @@ msgstr "Новая Зеландыя"
 
 #: src/common/util.c:1020
 msgid "Oman"
-msgstr "Оман"
+msgstr "Аман"
 
 #: src/common/util.c:1021
 msgid "Internic Non-Profit Organization"
@@ -2311,7 +2311,7 @@ msgstr "Партугалія"
 
 #: src/common/util.c:1034
 msgid "Palau"
-msgstr "Палау"
+msgstr "Палаў"
 
 #: src/common/util.c:1035
 msgid "Paraguay"
@@ -2335,7 +2335,7 @@ msgstr "Старое сеціва ARPAnet"
 
 #: src/common/util.c:1040
 msgid "Russian Federation"
-msgstr "Расея"
+msgstr "Расія"
 
 #: src/common/util.c:1041
 msgid "Rwanda"
@@ -2343,7 +2343,7 @@ msgstr "Руанда"
 
 #: src/common/util.c:1042
 msgid "Saudi Arabia"
-msgstr "Саудаўская Арабія"
+msgstr "Саўдаўская Арабія"
 
 #: src/common/util.c:1043
 msgid "Solomon Islands"
@@ -2359,11 +2359,11 @@ msgstr "Судан"
 
 #: src/common/util.c:1046
 msgid "Sweden"
-msgstr "Швэцыя"
+msgstr "Швецыя"
 
 #: src/common/util.c:1047
 msgid "Singapore"
-msgstr "Сынгапур"
+msgstr "Сінгапур"
 
 #: src/common/util.c:1048
 msgid "St. Helena"
@@ -2383,7 +2383,7 @@ msgstr "Славакія"
 
 #: src/common/util.c:1052
 msgid "Sierra Leone"
-msgstr "Сьерра-Леонэ"
+msgstr "Сьера-Леонэ"
 
 #: src/common/util.c:1053
 msgid "San Marino"
@@ -2391,7 +2391,7 @@ msgstr "Сан-Марына"
 
 #: src/common/util.c:1054
 msgid "Senegal"
-msgstr "Сэнэгал"
+msgstr "Сенегал"
 
 #: src/common/util.c:1055
 msgid "Somalia"
@@ -2447,7 +2447,7 @@ msgstr "Таджыкістан"
 
 #: src/common/util.c:1068
 msgid "Tokelau"
-msgstr "Такелау"
+msgstr "Такелаў"
 
 #: src/common/util.c:1069 src/common/util.c:1073
 msgid "East Timor"
@@ -2455,7 +2455,7 @@ msgstr "Усходні Тымор"
 
 #: src/common/util.c:1070
 msgid "Turkmenistan"
-msgstr "Туркмэністан"
+msgstr "Туркменістан"
 
 #: src/common/util.c:1071
 msgid "Tunisia"
@@ -2503,7 +2503,7 @@ msgstr "Малыя аддаленыя астравы ЗША"
 
 #: src/common/util.c:1083
 msgid "United States of America"
-msgstr "Злучаныя Штаты Амэрыкі"
+msgstr "Злучаныя Штаты Амерыкі"
 
 #: src/common/util.c:1084
 msgid "Uruguay"
@@ -2662,7 +2662,7 @@ msgstr "Звесткі аб кліенце"
 
 #: src/common/xchat.c:855 src/common/xchat.c:889 src/common/xchat.c:937
 msgid "Ping"
-msgstr "Пінг"
+msgstr "Ping"
 
 #: src/common/xchat.c:856
 msgid "Time"
@@ -2915,7 +2915,7 @@ msgstr "XChat: Спіс каналаў (%s)"
 
 #: src/fe-gtk/chanlist.c:630
 msgid "List display options:"
-msgstr "Параметры адлюстравання спісу:"
+msgstr "Параметры паказу спіса:"
 
 #: src/fe-gtk/chanlist.c:642
 msgid "Minimum Users:"
@@ -2960,7 +2960,7 @@ msgstr "Даслаць файл %s"
 
 #: src/fe-gtk/dccgui.c:340
 msgid "None"
-msgstr "Скончана"
+msgstr "Няма"
 
 #: src/fe-gtk/dccgui.c:351 src/fe-gtk/dccgui.c:535 src/fe-gtk/dccgui.c:707
 #: src/fe-gtk/plugingui.c:75
@@ -3004,7 +3004,7 @@ msgstr "Файл у тэчцы спампоўванняў большы за пр
 
 #: src/fe-gtk/dccgui.c:396
 msgid "Cannot resume the same file from two people."
-msgstr "Немагчыма працягнуць той жа самы файл ад двух чалавек."
+msgstr "Немагчыма працягнуць той жа самы файл з двух чалавек."
 
 #: src/fe-gtk/dccgui.c:534 src/fe-gtk/dccgui.c:706 src/fe-gtk/dccgui.c:857
 #: src/fe-gtk/notifygui.c:138
@@ -3190,11 +3190,11 @@ msgstr "Сеціўная чарга дасылкі: %d байтаў"
 
 #: src/fe-gtk/fkeys.c:159
 msgid "The Run Command action runs the data in Data 1 as if it has been typed into the entry box where you pressed the key sequence. Thus it can contain text (which will be sent to the channel/person), commands or user commands. When run all \\n characters in Data 1 are used to deliminate seperate commands so it is possible to run more than one command. If you want a \\ in the actual text run then enter \\\\"
-msgstr "Дзеянне Выканаць Каманду выконвае Данні 1 як каманду, быццам яна была ўведзена ў полі ўводу, у якім была націснута паслядоўнасць клавішаў. Можа змяшчаць тэкст (які будзе дасланы да канала ці асобы), каманды або каманды карыстальніка. Падчас выканання ўсе знакі \\n у Данніх 1 будуць скарыстованы для пазначэння падзелаў паміж камандамі, такім чынам, магчыма выканаць больш за адну каманду. Калі вы жадаеце ўжыць \\ у тэксце каманды, пішыце замест гэтага \\\\"
+msgstr "Дзеянне Выканаць Каманду выконвае Данні 1 як каманду, быццам яна была ўведзена ў полі ўводу, у якім была націснута паслядоўнасць клавішаў. Можа змяшчаць тэкст (які будзе дасланы да канала ці асобы), каманды або каманды карыстальніка. Падчас выканання ўсе знакі \\n у Данніх 1 будуць скарыставаны для пазначэння падзелаў паміж камандамі, такім чынам, магчыма выканаць больш за адну каманду. Калі вы жадаеце ўжыць \\ у тэксце каманды, пішыце замест гэтага \\\\"
 
 #: src/fe-gtk/fkeys.c:161
 msgid "The Change Page command switches between pages in the notebook. Set Data 1 to the page you want to switch to. If Data 2 is set to anything then the switch will be relative to the current position"
-msgstr "Каманда Змяніць Старонку пераключае паміж старонкамі ў нататніку. Усталюйце Данні 1 на старонку, куды трэба пераключыцца. Калі Данні 2 ўсталяваны, то будзе лічыцца адносна бягучай пазіцыі."
+msgstr "Каманда Змяніць Старонку пераключае старонкі ў нататніку. Усталюйце Данні 1 на старонку, куды трэба пераключыцца. Калі Данні 2 ўсталяваны, то будзе лічыцца адносна бягучай пазіцыі."
 
 #: src/fe-gtk/fkeys.c:163
 msgid "The Insert in Buffer command will insert the contents of Data 1 into the entry where the key sequence was pressed at the current cursor position"
@@ -3226,7 +3226,7 @@ msgstr "Гэта каманда пракручвае ўніз і ўверх сп
 
 #: src/fe-gtk/fkeys.c:177
 msgid "This command checks the last word entered in the entry against the replace list and replaces it if it finds a match"
-msgstr "Гэта каманда правярае апошняе ўведзена слова ў спісу заменаў і замяняе ў выпадку знаходжання адпаведнасці"
+msgstr "Гэта каманда правярае апошняе ўведзенае слова ў спіс заменаў і замяняе ў выпадку знаходжання адпаведнасці"
 
 #: src/fe-gtk/fkeys.c:179
 msgid "This command moves the front tab left by one"
@@ -3337,7 +3337,7 @@ msgid ""
 "Key bindings config file is corrupt, load aborted\n"
 "Please fix %s/keybindings.conf\n"
 msgstr ""
-"Файл наладак клавішаў пашкоджаны, corrupt, загрузка перарвана\n"
+"Файл наладак клавішаў пашкоджаны, загрузка перарвана\n"
 "Выпраўце %s/keybindings\n"
 
 #: src/fe-gtk/gtkutil.c:131
@@ -3414,7 +3414,7 @@ msgstr "Дадаць..."
 
 #: src/fe-gtk/joind.c:83
 msgid "Channel name too short, try again."
-msgstr "Імя Каналу занадта кароткае, паспрабуйце зноў."
+msgstr "Імя канала занадта кароткае, паспрабуйце зноў."
 
 #: src/fe-gtk/joind.c:125
 msgid "XChat: Connection Complete"
@@ -3427,7 +3427,7 @@ msgstr "Злучэнне з %s выканана."
 
 #: src/fe-gtk/joind.c:159
 msgid "In the Server-List window, no channel (chat room) has been entered to be automatically joined for this network."
-msgstr "У акне спіса сервераў ніводнага каналу (пакоя размовы) не было ўведзена для аўтаматычнага ўваходу для гэтага сеціва."
+msgstr "У акне спіса сервераў ніводнага канала (пакоя размовы) не было ўведзена для аўтаматычнага ўваходу для гэтага сеціва."
 
 #: src/fe-gtk/joind.c:165
 msgid "What would you like to do next?"
@@ -3443,7 +3443,7 @@ msgstr "_Увайсці на канал:"
 
 #: src/fe-gtk/joind.c:191
 msgid "If you know the name of the channel you want to join, enter it here."
-msgstr "Калі вы ведаеце імя каналу для ўваходу, увядзіце яго тут."
+msgstr "Калі вы ведаеце імя канала для ўваходу, увядзіце яго тут."
 
 #: src/fe-gtk/joind.c:198
 msgid "O_pen the Channel-List window."
@@ -3557,7 +3557,7 @@ msgstr "Мадэраваны"
 
 #: src/fe-gtk/maingui.c:1975
 msgid "Ban List"
-msgstr "Спіс забароненых"
+msgstr "Спіс забарон"
 
 #: src/fe-gtk/maingui.c:1977
 msgid "Keyword"
@@ -3588,7 +3588,7 @@ msgstr "Увядзіце новую мянушку:"
 
 #: src/fe-gtk/menu.c:124
 msgid "Host unknown"
-msgstr "Хост невядомы"
+msgstr "Вузел невядомы"
 
 #: src/fe-gtk/menu.c:520
 #, c-format
@@ -3782,12 +3782,12 @@ msgid ""
 "indicates it should be sent to a\n"
 "shell instead of XChat"
 msgstr ""
-"Апрацоўшчыкі URL - Спецыялныя кады:\n"
+"Апрацоўшчыкі URL - Спецыяльныя кады:\n"
 "\n"
 "%s  =  радок URL\n"
 "\n"
 "Змяшчэнне ! (клічніка) наперадзе каманды\n"
-"азначае, што яе будзе апрацаоўваць камандная\n"
+"азначае, што яе будзе апрацоўваць камандная\n"
 "абалонка, а не XChat"
 
 #: src/fe-gtk/menu.c:1169
@@ -4253,7 +4253,7 @@ msgstr "Каманда злучэння"
 
 #: src/fe-gtk/servlistgui.c:1062
 msgid "Extra command to execute after connecting. If you need more than one, set this to LOAD -e <filename>, where <filename> is a text-file full of commands to execute."
-msgstr "Дадатковыя каманды для выканання пасля злучэння. Калі патрэбна больш, чым адна,  прапішыце LOAD -e <файл>, дзе <файл> гэта тэкставы файл з камандамі."
+msgstr "Дадатковыя каманды для выканання пасля злучэння. Калі патрэбна больш за адну,  прапішыце LOAD -e <файл>, дзе <файл> гэта тэкставы файл з камандамі."
 
 #: src/fe-gtk/servlistgui.c:1065
 msgid "Nickserv password:"
@@ -4574,7 +4574,7 @@ msgstr "Адкрываць дыялогі ў:"
 
 #: src/fe-gtk/setup.c:235
 msgid "Open utilities in:"
-msgstr "Адкрываць уціліты ў:"
+msgstr "Адкрываць сродкі ў:"
 
 #: src/fe-gtk/setup.c:235
 msgid "Open DCC, Ignore, Notify etc, in tabs or windows?"
@@ -4718,7 +4718,7 @@ msgstr "Здымаць статус \"Адышэдшы\" перад дасылк
 
 #: src/fe-gtk/setup.c:292
 msgid "(Can be a text file relative to ~/.xchat2/)."
-msgstr "(Можа быць імем тэкставага файла адносна to ~/.xchat2/)."
+msgstr "(Можа быць імем тэкставага файла адносна ~/.xchat2/)."
 
 #: src/fe-gtk/setup.c:294
 msgid "(Can be a text file relative to config dir)."
@@ -4782,11 +4782,11 @@ msgstr "Дасылать /WHOIS, калі карыстальнік са спіс
 
 #: src/fe-gtk/setup.c:319
 msgid "Hide join and part messages"
-msgstr "Скрываць паведамленні аб уваходзе і адыходзе"
+msgstr "Схаваць паведамленні аб уваходзе і адыходзе"
 
 #: src/fe-gtk/setup.c:319
 msgid "Hide channel join/part messages by default"
-msgstr "Скрываць паведамленні аб уваходзе/адыходзе"
+msgstr "Схаваць паведамленні аб уваходзе/адыходзе"
 
 #: src/fe-gtk/setup.c:320
 msgid "Auto Open DCC Windows"
@@ -4935,11 +4935,11 @@ msgstr "Агляд.."
 
 #: src/fe-gtk/setup.c:966
 msgid "Mark identified users with:"
-msgstr "Пазначаць ідэнціфікаваных карыстальнікаў:"
+msgstr "Пазначаць ідэнтыфікаваных карыстальнікаў:"
 
 #: src/fe-gtk/setup.c:968
 msgid "Mark not-identified users with:"
-msgstr "Пазначаць неідэнціфікаваных карыстальнікаў:"
+msgstr "Пазначаць неідэнтыфікаваных карыстальнікаў:"
 
 #: src/fe-gtk/setup.c:1029
 msgid "Select color"
@@ -5011,15 +5011,15 @@ msgstr "Спосаб граць гук:"
 
 #: src/fe-gtk/setup.c:1358
 msgid "External sound playing _program:"
-msgstr "Вонкавая праграма для прайграння гуку:"
+msgstr "Вонкавая праграма для _прайгравання гуку:"
 
 #: src/fe-gtk/setup.c:1376
 msgid "_External program"
-msgstr "Вонкавая праграма"
+msgstr "_Вонкавая праграма"
 
 #: src/fe-gtk/setup.c:1386
 msgid "_Automatic"
-msgstr "Аўтаматычна"
+msgstr "_Аўтаматычна"
 
 #: src/fe-gtk/setup.c:1399
 msgid "Sound files _directory:"

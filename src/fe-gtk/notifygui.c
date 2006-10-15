@@ -201,7 +201,7 @@ notify_gui_update (void)
 				seen = _("Never");
 			else
 			{
-				snprintf (agobuf, sizeof (agobuf), "%d minutes ago", (int)(time (0) - lastseen) / 60);
+				snprintf (agobuf, sizeof (agobuf), _("%d minutes ago"), (int)(time (0) - lastseen) / 60);
 				seen = agobuf;
 			}
 			if (!valid)	/* create new tree row if required */
@@ -226,7 +226,7 @@ notify_gui_update (void)
 						name = "";
 					server = server_get_network (servnot->server, TRUE);
 
-					snprintf (agobuf, sizeof (agobuf), "%d minutes ago", (int)(time (0) - lastseen) / 60);
+					snprintf (agobuf, sizeof (agobuf), _("%d minutes ago"), (int)(time (0) - lastseen) / 60);
 					seen = agobuf;
 
 					if (!valid)	/* create new tree row if required */
