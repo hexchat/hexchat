@@ -10,6 +10,7 @@ EXTRA_DIST =				\
 	apps_xchat_url_handler.schemas	\
 	marshallers.list		\
 	example.py			\
+	org.xchat.service.service.in \
 	README
 
 BUILT_SOURCES =				\
