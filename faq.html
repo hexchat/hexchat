@@ -405,6 +405,12 @@ You can also add more items to the right-click menu in XChat: <b>Settings &gt; A
 <br/>For example, you could add an entry like <b>!firefox -a firefox -remote 'openURL(%s,new-tab)'</b>
 <br/>But this kind of messing around shouldn't be necessary, it just works automatically in Gnome and Windows!
 </p>
+<p>
+<u>Note for Debian and Ubuntu</u>: Integration with Gnome is broken on this distro! Please set
+<i>sensible-browser</i> instead. We have no control over what the Debian packagers do, so complain
+to them for this screw up. Example:
+<i>sudo update-alternatives --set x-www-browser /usr/bin/firefox</i>
+</p>
 
 <br/><h3><a name="q222">22. Where are the log files saved to?</a></h3>
 <p>

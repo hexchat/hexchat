@@ -26,6 +26,7 @@
 #include "server.h"
 #include "text.h"
 #include "fe.h"
+#include "util.h"
 #ifdef HAVE_STRINGS_H
 #include <strings.h>
 #endif

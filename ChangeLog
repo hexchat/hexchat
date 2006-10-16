@@ -10,11 +10,12 @@ There are always more changes than listed here, these are just the
 highlights. The full CVS log is available at www.xchat.org/cvslog/
 
 ------------------------------------------------------------------------------
- 2.6.x - DD/Oct/2006
+ 2.6.8 - 16/Oct/2006
 ------------------------------------------------------------------------------
 
- - Updated translations (be, de, el, es, fi, it, ja, lt, ru, sv).
- - Removed "xchat-remote" and "dbus.so", it's now apart of the "xchat" binary
+ - Updated translations (be, de, el, es, fi, hu, it, ja, lt, pt, ru, sv, vi).
+ - Removed "xchat-remote" and "dbus.so", it's now apart of the "xchat" binary.
+   There is now a new dbus interface, see src/common/dbus/README for details.
    (Claessens Xavier).
  - Python: Fixed "restricted mode" errors on win32 [1512076].
  - Special-cased BRASnet for nickserv.
@@ -42,7 +43,9 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Added a new encoding choice: "IRC (Latin-1/UTF-8 hybrid)".
    How it works is described at: http://forum.xchat.org/viewtopic.php?t=3180
  - Added /LastLog -r <regexp>.
- - The DCC windows have been remodeled and are much nicer now.
+ - The DCC windows have been remodeled and are much nicer now. Ported to
+   GtkTreeView, the buttons are context sensitive, the window remembers its
+   size and uploads and downloads are combined in one window.
  - Perl (Lian Wan Situ)
   * Changed Xchat::print and Xchat::command to return false if they are called
     with either no arguments or undef
