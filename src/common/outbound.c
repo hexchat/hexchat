@@ -3451,8 +3451,8 @@ const struct commands xc_cmds[] = {
 	 N_("FLUSHQ, flushes the current server's send queue")},
 	{"GATE", cmd_gate, 0, 0, 1,
 	 N_("GATE <host> [<port>], proxies through a host, port defaults to 23")},
-	{"GETINT", cmd_getint, 0, 0, 1, "GETINT <default> <command> <prompt>"},
 	{"GETFILE", cmd_getfile, 0, 0, 1, "GETFILE [-folder] [-multi] [-save] <command> <title> [<initial>]"},
+	{"GETINT", cmd_getint, 0, 0, 1, "GETINT <default> <command> <prompt>"},
 	{"GETSTR", cmd_getstr, 0, 0, 1, "GETSTR <default> <command> <prompt>"},
 	{"GHOST", cmd_ghost, 1, 0, 1, N_("GHOST <nick> <password>, Kills a ghosted nickname")},
 	{"GUI", cmd_gui, 0, 0, 1, "GUI [ATTACH|DETACH|SHOW|HIDE|FOCUS|FLASH|ICONIFY|COLOR <n>]\n"

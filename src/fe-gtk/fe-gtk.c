@@ -878,8 +878,11 @@ fe_open_url_locale (const char *url)
 #else
 	char tbuf[512], *moz;
 
-	/* gnome 2.4+ has this */
-	moz = g_find_program_in_path ("gnome-open");
+	/* Think twice about patching this (yes you Debian!). Using gnome-open makes
+      it user friendly, by letting the user change their browser in Gnome:
+      System -> Preferences -> More Preferences -> Preferred Applications.
+      More info at http://xchat.org/faq/#q221 */
+	moz = g_find_program_in_path ("gnome-open"); /* Gnome 2.4+ has this */
 	if (moz)
 	{
 		snprintf (tbuf, sizeof (tbuf), "%s %s", moz, url);
