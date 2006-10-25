@@ -685,6 +685,11 @@ inbound_005 (server * serv, char *word[])
 		} else if (strcmp (word[w], "EXCEPTS") == 0)
 		{
 			serv->have_except = TRUE;
+		} else if (strncmp (word[w], "ELIST=", 6) == 0)
+		{
+			/* supports LIST >< min/max user counts? */
+			if (strchr (word[w] + 6, 'U') || strchr (word[w] + 6, 'u'))
+				serv->use_listargs = TRUE;
 		}
 
 		w++;

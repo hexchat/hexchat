@@ -75,7 +75,7 @@ gtkutil_file_req_destroy (GtkWidget * wid, struct file_req *freq)
 	free (freq);
 }
 
-static int
+static void
 gtkutil_check_file (char *file, struct file_req *freq)
 {
 	struct stat st;
@@ -83,21 +83,7 @@ gtkutil_check_file (char *file, struct file_req *freq)
 
 	path_part (file, last_dir, sizeof (last_dir));
 
-	if (!(freq->flags & FRF_CHOOSEFOLDER) && stat (file, &st) != -1)
-	{
-		if (S_ISDIR (st.st_mode))
-		{
-			char *tmp = malloc (strlen (file) + 2);
-
-			strcpy (tmp, file);
-
-			if (tmp[strlen(tmp)-1] != '/')
-				strcat (tmp, "/");
-			gtk_file_chooser_set_filename (GTK_FILE_CHOOSER (freq->dialog), tmp);
-			free (tmp);
-			return 0;
-		}
-	}
+	/* check if the file is readable or writable */
 	if (freq->flags & FRF_WRITE)
 	{
 		if (access (last_dir, W_OK) == 0)
@@ -132,14 +118,11 @@ gtkutil_check_file (char *file, struct file_req *freq)
 		else
 			fe_message (_("Cannot read that file."), FE_MSG_ERROR);
 	}
-
-	return 1;
 }
 
 static void
 gtkutil_file_req_done (GtkWidget * wid, struct file_req *freq)
 {
-	int kill = 0;
 	GSList *files, *cur;
 	GtkFileChooser *fs = GTK_FILE_CHOOSER (freq->dialog);
 
@@ -148,7 +131,7 @@ gtkutil_file_req_done (GtkWidget * wid, struct file_req *freq)
 		files = cur = gtk_file_chooser_get_filenames (fs);
 		while (cur)
 		{
-			kill |= gtkutil_check_file (cur->data, freq);
+			gtkutil_check_file (cur->data, freq);
 			g_free (cur->data);
 			cur = cur->next;
 		}
@@ -157,13 +140,13 @@ gtkutil_file_req_done (GtkWidget * wid, struct file_req *freq)
 	} else
 	{
 		if (freq->flags & FRF_CHOOSEFOLDER)
-			kill = gtkutil_check_file (gtk_file_chooser_get_current_folder (fs), freq);
+			gtkutil_check_file (gtk_file_chooser_get_current_folder (fs), freq);
 		else
-			kill = gtkutil_check_file (gtk_file_chooser_get_filename (fs), freq);
+			gtkutil_check_file (gtk_file_chooser_get_filename (fs), freq);
 	}
 
-	if (kill)	/* this should call the "destroy" cb, where we free(freq) */
-		gtk_widget_destroy (freq->dialog);
+	/* this should call the "destroy" cb, where we free(freq) */
+	gtk_widget_destroy (freq->dialog);
 }
 
 static void
@@ -393,7 +376,8 @@ gtkutil_button (GtkWidget *box, char *stock, char *tip, void *callback,
 	{
 		gtk_button_set_label (GTK_BUTTON (wid), labeltext);
 		gtk_button_set_image (GTK_BUTTON (wid), gtk_image_new_from_stock (stock, GTK_ICON_SIZE_MENU));
-		gtk_container_add (GTK_CONTAINER (box), wid);
+		if (box)
+			gtk_container_add (GTK_CONTAINER (box), wid);
 	}
 	else
 	{

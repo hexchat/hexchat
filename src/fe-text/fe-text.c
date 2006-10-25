@@ -584,7 +584,7 @@ fe_set_hilight (struct session *sess)
 {
 }
 void
-fe_set_tab_color (struct session *sess, int col, int flash)
+fe_set_tab_color (struct session *sess, int col)
 {
 }
 void
@@ -759,7 +759,7 @@ fe_userlist_hide (session * sess)
 {
 }
 void
-fe_lastlog (session * sess, session * lastlog_sess, char *sstr)
+fe_lastlog (session * sess, session * lastlog_sess, char *sstr, gboolean regexp)
 {
 }
 void
@@ -843,5 +843,14 @@ void fe_uselect (struct session *sess, char *word[], int do_clear, int scroll_to
 }
 void
 fe_server_event (server *serv, int type, int arg)
+{
+}
+void
+fe_flash_window (struct session *sess)
+{
+}
+void fe_get_file (const char *title, char *initial,
+				 void (*callback) (void *userdata, char *file), void *userdata,
+				 int flags)
 {
 }

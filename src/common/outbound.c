@@ -2343,7 +2343,7 @@ cmd_lastlog (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 static int
 cmd_list (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
-	sess->server->p_list_channels (sess->server, word_eol[2]);
+	sess->server->p_list_channels (sess->server, word_eol[2], 1);
 
 	return TRUE;
 }

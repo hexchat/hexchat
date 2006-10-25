@@ -386,7 +386,7 @@ typedef struct server
 	void (*p_action)(struct server *, char *channel, char *act);
 	void (*p_notice)(struct server *, char *channel, char *text);
 	void (*p_topic)(struct server *, char *channel, char *topic);
-	void (*p_list_channels)(struct server *, char *arg);
+	void (*p_list_channels)(struct server *, char *arg, int min_users);
 	void (*p_change_nick)(struct server *, char *new_nick);
 	void (*p_names)(struct server *, char *channel);
 	void (*p_ping)(struct server *, char *to, char *timestring);

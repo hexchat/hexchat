@@ -241,7 +241,7 @@ irc_topic (server *serv, char *channel, char *topic)
 }
 
 static void
-irc_list_channels (server *serv, char *arg)
+irc_list_channels (server *serv, char *arg, int min_users)
 {
 	if (arg[0])
 	{
@@ -250,8 +250,7 @@ irc_list_channels (server *serv, char *arg)
 	}
 
 	if (serv->use_listargs)
-								/* 1234567890123456 */
-		tcp_send_len (serv, "LIST >0,<10000\r\n", 16);
+		tcp_sendf (serv, "LIST >%d,<10000\r\n", min_users - 1);
 	else
 		tcp_send_len (serv, "LIST\r\n", 6);
 }
