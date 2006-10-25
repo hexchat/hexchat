@@ -273,7 +273,7 @@ path_part (char *file, char *path, int pathlen)
 }
 
 char *				/* like strstr(), but nocase */
-nocasestrstr (char *s, char *wanted)
+nocasestrstr (const char *s, const char *wanted)
 {
 	register const int len = strlen (wanted);
 

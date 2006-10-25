@@ -51,24 +51,26 @@ struct server_gui
 	GtkWidget *joind_check;
 
 	/* chanlist variables */
-	GtkWidget *chanlist_wild;
+	GtkWidget *chanlist_wild;		/* GtkEntry */
 	GtkWidget *chanlist_window;
 	GtkWidget *chanlist_list;
-	GtkWidget *chanlist_refresh;
 	GtkWidget *chanlist_label;
+	GtkWidget *chanlist_min_spin;	/* minusers GtkSpinButton */
+	GtkWidget *chanlist_refresh;	/* buttons */
+	GtkWidget *chanlist_join;
+	GtkWidget *chanlist_savelist;
+	GtkWidget *chanlist_search;
 
 	GSList *chanlist_data_stored_rows;	/* stored list so it can be resorted  */
-
-	gchar chanlist_wild_text[256];	/* text for the match expression */
+	GSList *chanlist_pending_rows;
+	gint chanlist_tag;
 
 	gboolean chanlist_match_wants_channel;	/* match in channel name */
 	gboolean chanlist_match_wants_topic;	/* match in topic */
 
 #ifndef WIN32
 	regex_t chanlist_match_regex;	/* compiled regular expression here */
-	unsigned int have_regex:1;
-#else
-	char *chanlist_match_regex;
+	unsigned int have_regex;
 #endif
 
 	guint chanlist_users_found_count;	/* users total for all channels */
@@ -76,12 +78,12 @@ struct server_gui
 	guint chanlist_channels_found_count;	/* channel total for /LIST operation */
 	guint chanlist_channels_shown_count;	/* total number of displayed 
 														   channels */
-	gint chanlist_last_column;	  /* track the last list column user clicked */
-
-	GtkSortType chanlist_sort_type;
 
 	int chanlist_maxusers;
 	int chanlist_minusers;
+	int chanlist_minusers_downloaded;	/* used by LIST IRC command */
+	int chanlist_search_type;		/* 0=simple 1=pattern/wildcard 2=regexp */
+	gboolean chanlist_caption_is_stale;
 };
 
 /* this struct is persistant even when delinking/relinking */
