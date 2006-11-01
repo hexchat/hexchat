@@ -876,26 +876,53 @@ fe_open_url_locale (const char *url)
 #ifdef WIN32
 	ShellExecute (0, "open", url, NULL, NULL, SW_SHOWNORMAL);
 #else
-	char tbuf[512], *moz;
+	char tbuf[512], *browser;
+	const char *var;
 
-	/* Think twice about patching this (yes you Debian!). Using gnome-open makes
-      it user friendly, by letting the user change their browser in Gnome:
-      System -> Preferences -> More Preferences -> Preferred Applications.
-      More info at http://xchat.org/faq/#q221 */
-	moz = g_find_program_in_path ("gnome-open"); /* Gnome 2.4+ has this */
-	if (moz)
+	/* universal desktop URL opener (from xdg-utils). Supports gnome,kde,xfce4. */
+	browser = g_find_program_in_path ("xdg-open");
+	if (browser)
 	{
-		snprintf (tbuf, sizeof (tbuf), "%s %s", moz, url);
-		g_free (moz);
+		snprintf (tbuf, sizeof (tbuf), "%s %s", browser, url);
+		g_free (browser);
 		xchat_exec (tbuf);
 		return;
 	}
 
-	moz = g_find_program_in_path ("firefox");
-	if (moz)
+	/* try to detect GNOME */
+	var = g_getenv ("GNOME_DESKTOP_SESSION_ID");
+	if (var)
 	{
-		snprintf (tbuf, sizeof (tbuf), "%s %s", moz, url);
-		g_free (moz);
+		browser = g_find_program_in_path ("gnome-open"); /* Gnome 2.4+ has this */
+		if (browser)
+		{
+			snprintf (tbuf, sizeof (tbuf), "%s %s", browser, url);
+			g_free (browser);
+			xchat_exec (tbuf);
+			return;
+		}
+	}
+
+	/* try to detect KDE */
+	var = g_getenv ("KDE_FULL_SESSION");
+	if (var)
+	{
+		browser = g_find_program_in_path ("kfmclient");
+		if (browser)
+		{
+			snprintf (tbuf, sizeof (tbuf), "%s exec %s", browser, url);
+			g_free (browser);
+			xchat_exec (tbuf);
+			return;
+		}
+	}
+
+	/* everything failed, what now? just try firefox */
+	browser = g_find_program_in_path ("firefox");
+	if (browser)
+	{
+		snprintf (tbuf, sizeof (tbuf), "%s %s", browser, url);
+		g_free (browser);
 	} else
 	{
 		snprintf (tbuf, sizeof (tbuf), "mozilla -remote 'openURL(%s)'", url);

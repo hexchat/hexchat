@@ -50,6 +50,9 @@ struct DCC
 	DCC_SIZE lastcpspos;
 	int maxcps;
 
+	unsigned char ack_buf[4];	/* buffer for reading 4-byte ack */
+	int ack_pos;
+
 	DCC_SIZE size;
 	DCC_SIZE resumable;
 	DCC_SIZE ack;

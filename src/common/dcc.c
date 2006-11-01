@@ -222,7 +222,7 @@ is_dcc (struct DCC *dcc)
 	return FALSE;
 }
 
-/* this is called from xchat.c:xchat_misc_checks() every 2 seconds. */
+/* this is called from xchat.c:xchat_misc_checks() every 1 second. */
 
 void
 dcc_check_timeouts (void)
@@ -1522,31 +1522,13 @@ abortit:
 	return TRUE;
 }
 
-static gboolean
-dcc_read_ack (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
+static void
+dcc_handle_new_ack (struct DCC *dcc)
 {
-	int len;
 	guint32 ack;
 	char buf[16];
-	int sok = dcc->sok;
 
-	len = recv (sok, (char *) &ack, 4, MSG_PEEK);
-	if (len < 1)
-	{
-		if (len < 0)
-		{
-			if (would_block ())
-				return TRUE;
-		}
-		EMIT_SIGNAL (XP_TE_DCCSENDFAIL, dcc->serv->front_session,
-						 file_part (dcc->file), dcc->nick,
-						 errorstring ((len < 0) ? sock_error () : 0), NULL, 0);
-		dcc_close (dcc, STAT_FAILED, FALSE);
-		return TRUE;
-	}
-	if (len < 4)
-		return TRUE;
-	recv (sok, (char *) &ack, 4, 0);
+	memcpy (&ack, dcc->ack_buf, 4);
 	dcc->ack = ntohl (ack);
 
 	/* this could mess up when xfering >32bit files */
@@ -1580,8 +1562,39 @@ dcc_read_ack (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 					(dcc->ack & 0xffffffff);
 	/* dcc->ack is only used for CPS and PERCENTAGE calcs from now on... */
 #endif
+}
 
-	return TRUE;
+static gboolean
+dcc_read_ack (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
+{
+	int len;
+
+	while (1)
+	{
+		/* try to fill up 4 bytes */
+		len = recv (dcc->sok, dcc->ack_buf, 4 - dcc->ack_pos, 0);
+		if (len < 1)
+		{
+			if (len < 0)
+			{
+				if (would_block ())	/* ok - keep waiting */
+					return TRUE;
+			}
+			EMIT_SIGNAL (XP_TE_DCCSENDFAIL, dcc->serv->front_session,
+							 file_part (dcc->file), dcc->nick,
+							 errorstring ((len < 0) ? sock_error () : 0), NULL, 0);
+			dcc_close (dcc, STAT_FAILED, FALSE);
+			return TRUE;
+		}
+
+		dcc->ack_pos += len;
+		if (dcc->ack_pos >= 4)
+		{
+			dcc->ack_pos = 0;
+			dcc_handle_new_ack (dcc);
+		}
+		/* loop again until would_block() returns true */
+	}
 }
 
 static gboolean
