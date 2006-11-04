@@ -1233,7 +1233,7 @@ int my_poptParseArgvString(const char * s, int * argcPtr, char *** argvPtr) {
 }
 
 int
-util_exec (char *cmd)
+util_exec (const char *cmd)
 {
 	int pid;
 	char **argv;
@@ -1261,6 +1261,31 @@ util_exec (char *cmd)
 #else
 	spawnvp (_P_DETACH, argv[0], argv);
 	free (argv);
+	return 0;
+#endif
+}
+
+int
+util_execv (const char *argv[])
+{
+	int pid, fd;
+
+#ifndef WIN32
+	pid = fork ();
+	if (pid == -1)
+		return -1;
+	if (pid == 0)
+	{
+		/* Now close all open file descriptors except stdin, stdout and stderr */
+		for (fd = 3; fd < 1024; fd++) close(fd);
+		execv (argv[0], argv);
+		_exit (0);
+	} else
+	{
+		return pid;
+	}
+#else
+	spawnv (_P_DETACH, argv[0], argv);
 	return 0;
 #endif
 }

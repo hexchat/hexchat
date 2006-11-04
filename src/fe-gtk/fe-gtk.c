@@ -870,64 +870,70 @@ fe_set_inputbox_contents (session *sess, char *text)
 	}
 }
 
+#ifndef WIN32
+
+static gboolean
+try_browser (const char *browser, const char *url)
+{
+	const char *argv[3];
+	char *path;
+
+	path = g_find_program_in_path (browser);
+	if (!path)
+		return 0;
+
+	argv[0] = path;
+	argv[1] = url;
+	argv[2] = NULL;
+	xchat_execv (argv);
+	g_free (path);
+	return 1;
+}
+
+#endif
+
 static void
 fe_open_url_locale (const char *url)
 {
 #ifdef WIN32
 	ShellExecute (0, "open", url, NULL, NULL, SW_SHOWNORMAL);
 #else
-	char tbuf[512], *browser;
-	const char *var;
+	char *browser;
+	const char *argv[4];
 
 	/* universal desktop URL opener (from xdg-utils). Supports gnome,kde,xfce4. */
-	browser = g_find_program_in_path ("xdg-open");
-	if (browser)
-	{
-		snprintf (tbuf, sizeof (tbuf), "%s %s", browser, url);
-		g_free (browser);
-		xchat_exec (tbuf);
+	if (try_browser ("xdg-open", url))
 		return;
-	}
 
 	/* try to detect GNOME */
-	var = g_getenv ("GNOME_DESKTOP_SESSION_ID");
-	if (var)
+	if (g_getenv ("GNOME_DESKTOP_SESSION_ID"))
 	{
-		browser = g_find_program_in_path ("gnome-open"); /* Gnome 2.4+ has this */
-		if (browser)
-		{
-			snprintf (tbuf, sizeof (tbuf), "%s %s", browser, url);
-			g_free (browser);
-			xchat_exec (tbuf);
+		if (try_browser ("gnome-open", url)) /* Gnome 2.4+ has this */
 			return;
-		}
 	}
 
 	/* try to detect KDE */
-	var = g_getenv ("KDE_FULL_SESSION");
-	if (var)
+	if (g_getenv ("KDE_FULL_SESSION"))
 	{
 		browser = g_find_program_in_path ("kfmclient");
 		if (browser)
 		{
-			snprintf (tbuf, sizeof (tbuf), "%s exec %s", browser, url);
+			argv[0] = browser;
+			argv[1] = "exec";
+			argv[2] = url;
+			argv[3] = NULL;
+			xchat_execv (argv);
 			g_free (browser);
-			xchat_exec (tbuf);
 			return;
 		}
 	}
 
 	/* everything failed, what now? just try firefox */
-	browser = g_find_program_in_path ("firefox");
-	if (browser)
-	{
-		snprintf (tbuf, sizeof (tbuf), "%s %s", browser, url);
-		g_free (browser);
-	} else
-	{
-		snprintf (tbuf, sizeof (tbuf), "mozilla -remote 'openURL(%s)'", url);
-	}
-	xchat_exec (tbuf);
+	if (try_browser ("firefox", url))
+		return;
+
+	/* fresh out of ideas... */
+	try_browser ("mozilla", url);
 #endif
 }
 

@@ -32,6 +32,7 @@ int is_session (session * sess);
 void session_free (session *killsess);
 void lag_check (void);
 void xchat_exit (void);
-void xchat_exec (char *cmd);
+void xchat_exec (const char *cmd);
+void xchat_execv (const char *argv[]);
 
 #endif
