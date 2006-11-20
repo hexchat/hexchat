@@ -1760,6 +1760,13 @@ setup_apply (struct xchatprefs *pr)
 	if (color_change || (DIFF (away_size_max)) || (DIFF (away_track)))
 		do_ulist = TRUE;
 
+	if (pr->tabs_position < 2 && pr->tabs_position != 4 &&
+		 pr->tab_layout == 2 && pr->tabs_position != prefs.tabs_position)
+		fe_message (_("You cannot place the tree on the top or bottom!\n"
+						"Please change to the <b>Tabs</b> layout in the <b>View</b>"
+						" menu first."),
+						FE_MSG_WARN | FE_MSG_MARKUP);
+
 	memcpy (&prefs, pr, sizeof (prefs));
 
 	/* remove trailing slashes */

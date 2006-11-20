@@ -1227,16 +1227,21 @@ static int
 perl_load_file (char *filename)
 {
 #ifdef WIN32
-	static HINSTANCE lib = NULL;
+	static HMODULE lib = NULL;
 
 	if (!lib) {
-		lib = LoadLibrary (PERL_DLL);
+		lib = LoadLibraryA (PERL_DLL);
 		if (!lib) {
-			thread_mbox ("Cannot open " PERL_DLL "\n\n"
-							 "You must have ActivePerl installed in order to\n"
-							 "run perl scripts.\n\n"
-							 "http://www.activestate.com/ActivePerl/\n\n"
-							 "Make sure perl's bin directory is in your PATH.");
+			if (GetLastError () == ERROR_BAD_EXE_FORMAT)
+				/* http://forum.xchat.org/viewtopic.php?t=3277 */
+				thread_mbox ("Cannot use this " PERL_DLL "\n\n"
+								 "32-bit ActivePerl is required.");
+			else
+				thread_mbox ("Cannot open " PERL_DLL "\n\n"
+								 "You must have ActivePerl installed in order to\n"
+								 "run perl scripts.\n\n"
+								 "http://www.activestate.com/ActivePerl/\n\n"
+								 "Make sure perl's bin directory is in your PATH.");
 			return FALSE;
 		}
 		FreeLibrary (lib);
