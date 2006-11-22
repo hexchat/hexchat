@@ -1404,6 +1404,8 @@ servlist_open_networks (void)
 	GTK_WIDGET_SET_FLAGS (button_edit, GTK_CAN_DEFAULT);
 
 	button_sort = gtk_button_new_with_mnemonic (_("_Sort"));
+	add_tip (button_sort, _("Sorts the network list in alphabetical order. "
+				"Use SHIFT-UP and SHIFT-DOWN keys to move a row."));
 	g_signal_connect (G_OBJECT (button_sort), "clicked",
 							G_CALLBACK (servlist_sort), 0);
 	gtk_widget_show (button_sort);

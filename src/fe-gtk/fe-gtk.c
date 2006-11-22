@@ -873,9 +873,9 @@ fe_set_inputbox_contents (session *sess, char *text)
 #ifndef WIN32
 
 static gboolean
-try_browser (const char *browser, const char *url)
+try_browser (const char *browser, const char *arg, const char *url)
 {
-	const char *argv[3];
+	const char *argv[4];
 	char *path;
 
 	path = g_find_program_in_path (browser);
@@ -885,6 +885,12 @@ try_browser (const char *browser, const char *url)
 	argv[0] = path;
 	argv[1] = url;
 	argv[2] = NULL;
+	if (arg)
+	{
+		argv[1] = arg;
+		argv[2] = url;
+		argv[3] = NULL;
+	}
 	xchat_execv (argv);
 	g_free (path);
 	return 1;
@@ -898,42 +904,30 @@ fe_open_url_locale (const char *url)
 #ifdef WIN32
 	ShellExecute (0, "open", url, NULL, NULL, SW_SHOWNORMAL);
 #else
-	char *browser;
-	const char *argv[4];
-
 	/* universal desktop URL opener (from xdg-utils). Supports gnome,kde,xfce4. */
-	if (try_browser ("xdg-open", url))
+	if (try_browser ("xdg-open", NULL, url))
 		return;
 
 	/* try to detect GNOME */
 	if (g_getenv ("GNOME_DESKTOP_SESSION_ID"))
 	{
-		if (try_browser ("gnome-open", url)) /* Gnome 2.4+ has this */
+		if (try_browser ("gnome-open", NULL, url)) /* Gnome 2.4+ has this */
 			return;
 	}
 
 	/* try to detect KDE */
 	if (g_getenv ("KDE_FULL_SESSION"))
 	{
-		browser = g_find_program_in_path ("kfmclient");
-		if (browser)
-		{
-			argv[0] = browser;
-			argv[1] = "exec";
-			argv[2] = url;
-			argv[3] = NULL;
-			xchat_execv (argv);
-			g_free (browser);
+		if (try_browser ("kfmclient", "exec", url))
 			return;
-		}
 	}
 
 	/* everything failed, what now? just try firefox */
-	if (try_browser ("firefox", url))
+	if (try_browser ("firefox", NULL, url))
 		return;
 
 	/* fresh out of ideas... */
-	try_browser ("mozilla", url);
+	try_browser ("mozilla", NULL, url);
 #endif
 }
 
