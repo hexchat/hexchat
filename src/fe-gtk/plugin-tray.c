@@ -154,6 +154,17 @@ fe_tray_set_flash (const char *filename1, const char *filename2, int tout)
 }
 
 void
+fe_tray_message (void)
+{
+	/* don't change it if it's HIGHLIGHT or MESSAGE already */
+	if (!sticon || tray_status == TS_HIGHLIGHT || tray_status == TS_MESSAGE)
+		return;
+
+	tray_stop_flash ();
+	tray_set_flash (ICON_MSG);
+}
+
+void
 fe_tray_set_icon (const char *filename)
 {
 	tray_apply_setup ();

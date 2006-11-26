@@ -1055,24 +1055,20 @@ mg_tab_close (session *sess)
 }
 
 static void
-mg_tree_cb (GtkWidget *item, session *sess)
-{
-	if (is_session (sess))
-	{
-		if (sess->gui->is_tab)
-			mg_bring_tofront_sess (sess);
-		else
-			gtk_window_present (GTK_WINDOW (sess->gui->window));
-	}
-}
-
-static void
 mg_colorpaste_cb (GtkCheckMenuItem *item, session *sess)
 {
 	sess->color_paste = FALSE;
 	if (item->active)
 		sess->color_paste = TRUE;
 	GTK_XTEXT (sess->gui->xtext)->color_paste = sess->color_paste;
+}
+
+static void
+mg_traymsg_cb (GtkCheckMenuItem *item, session *sess)
+{
+	sess->tray = FALSE;
+	if (item->active)
+		sess->tray = TRUE;
 }
 
 static void
@@ -1089,53 +1085,6 @@ mg_hidejp_cb (GtkCheckMenuItem *item, session *sess)
 	sess->hide_join_part = TRUE;
 	if (item->active)
 		sess->hide_join_part = FALSE;
-}
-
-static void
-mg_create_sess_tree (GtkWidget *menu)
-{
-	GtkWidget *top_item, *item, *submenu;
-	GSList *list, *ilist;
-	server *serv;
-	session *sess;
-
-	list = serv_list;
-	while (list)
-	{
-		serv = list->data;
-
-		if (serv->servername[0] == 0)
-			top_item = gtk_menu_item_new_with_label (_("<none>"));
-		else
-			top_item = gtk_menu_item_new_with_label (server_get_network (serv, TRUE));
-
-		gtk_menu_shell_prepend (GTK_MENU_SHELL (menu), top_item);
-		gtk_widget_show (top_item);
-
-		submenu = gtk_menu_new ();
-
-		ilist = sess_list;
-		while (ilist)
-		{
-			sess = ilist->data;
-			if (sess->server == serv)
-			{
-				if (sess->channel[0] == 0)
-					item = gtk_menu_item_new_with_label (_("<none>"));
-				else
-					item = gtk_menu_item_new_with_label (sess->channel);
-				g_signal_connect (G_OBJECT (item), "activate",
-										G_CALLBACK (mg_tree_cb), sess);
-				gtk_menu_shell_prepend (GTK_MENU_SHELL (submenu), item);
-				gtk_widget_show (item);
-			}
-			ilist = ilist->next;
-		}
-
-		gtk_menu_item_set_submenu (GTK_MENU_ITEM (top_item), submenu);
-
-		list = list->next;
-	}
 }
 
 static void
@@ -1381,8 +1330,9 @@ mg_create_color_menu (GtkWidget *menu, session *sess)
 static gboolean
 mg_tab_contextmenu_cb (chanview *cv, chan *ch, int tag, gpointer ud, GdkEventButton *event)
 {
-	GtkWidget *menu, *submenu, *item;
+	GtkWidget *menu, *item;
 	session *sess = ud;
+	char buf[256];
 
 	/* shift-click to close a tab */
 	if ((event->state & GDK_SHIFT_MASK) && event->type == GDK_BUTTON_PRESS)
@@ -1398,30 +1348,31 @@ mg_tab_contextmenu_cb (chanview *cv, chan *ch, int tag, gpointer ud, GdkEventBut
 
 	if (tag == TAG_IRC)
 	{
-		item = gtk_menu_item_new_with_label (sess->channel[0] ? sess->channel : _("<none>"));
+		char *name = g_markup_escape_text (sess->channel[0] ? sess->channel : _("<none>"), -1);
+		snprintf (buf, sizeof (buf), "<span foreground=\"#3344cc\"><b>%s</b></span>", name);
+		g_free (name);
+		item = gtk_menu_item_new_with_label ("");
+		gtk_label_set_markup (GTK_LABEL (GTK_BIN (item)->child), buf);
 		gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+		gtk_widget_show (item);
 
-		submenu = gtk_menu_new ();
+		/* separator */
+		item = gtk_menu_item_new ();
+		gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+		gtk_widget_show (item);
 
-		menu_toggle_item (_("Beep on message"), submenu, mg_beepmsg_cb, sess,
+		menu_toggle_item (_("Beep on message"), menu, mg_beepmsg_cb, sess,
 								sess->beep);
+		if (prefs.gui_tray)
+			menu_toggle_item (_("Flash tray on message"), menu, mg_traymsg_cb, sess,
+									sess->tray);
 		if (sess->type == SESS_CHANNEL)
-			menu_toggle_item (_("Show join/part messages"), submenu, mg_hidejp_cb,
+			menu_toggle_item (_("Show join/part messages"), menu, mg_hidejp_cb,
 									sess, !sess->hide_join_part);
-		menu_toggle_item (_("Color paste"), submenu, mg_colorpaste_cb, sess,
+		menu_toggle_item (_("Color paste"), menu, mg_colorpaste_cb, sess,
 								sess->color_paste);
 
-		gtk_menu_item_set_submenu (GTK_MENU_ITEM (item), submenu);
-		gtk_widget_show (item);
 	}
-
-	item = gtk_menu_item_new_with_label (_("Go to"));
-	gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
-
-	submenu = gtk_menu_new ();
-	mg_create_sess_tree (submenu);
-	gtk_menu_item_set_submenu (GTK_MENU_ITEM (item), submenu);
-	gtk_widget_show (item);
 
 	/* separator */
 	item = gtk_menu_item_new ();

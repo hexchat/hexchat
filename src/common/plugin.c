@@ -1394,7 +1394,9 @@ xchat_list_int (xchat_plugin *ph, xchat_list *xlist, const char *name)
 		case 0xd1b:	/* id */
 			return ((struct session *)data)->server->id;
 		case 0x5cfee87:	/* flags */
-			tmp = ((struct session *)data)->beep;            /* bit 8 */
+			tmp = ((struct session *)data)->tray;            /* bit 9 */
+			tmp <<= 1;
+			tmp |= ((struct session *)data)->beep;               /* 8 */
 			tmp <<= 1;
 			tmp |= ((struct session *)data)->color_paste;        /* 7 */
 			tmp <<= 1;

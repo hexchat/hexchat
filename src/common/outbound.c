@@ -562,6 +562,8 @@ cmd_chanopt (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			state = sess->color_paste;
 		else if (!strcasecmp (word[2], "BEEP"))
 			state = sess->beep;
+		else if (!strcasecmp (word[2], "TRAY"))
+			state = sess->tray;
 		else
 			return FALSE;
 
@@ -578,6 +580,9 @@ cmd_chanopt (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	} else if (!strcasecmp (word[2], "BEEP"))
 	{
 		sess->beep = state;
+	} else if (!strcasecmp (word[2], "TRAY"))
+	{
+		sess->tray = state;
 	}
 
 	return TRUE;
@@ -3434,7 +3439,8 @@ const struct commands xc_cmds[] = {
 	 N_("Set per channel options\n"
 	 "CHANOPT CONFMODE ON|OFF - Toggle conf mode/showing of join and part messages\n"
 	 "CHANOPT COLORPASTE ON|OFF - Toggle color paste\n"
-	 "CHANOPT BEEP ON|OFF - Toggle beep on message"
+	 "CHANOPT BEEP ON|OFF - Toggle beep on message\n"
+	 "CHANOPT TRAY ON|OFF - Toggle tray blink on message"
 	)},
 	{"CHARSET", cmd_charset, 0, 0, 1, 0},
 	{"CLEAR", cmd_clear, 0, 0, 1, N_("CLEAR [ALL|HISTORY], Clears the current text window or command history")},
