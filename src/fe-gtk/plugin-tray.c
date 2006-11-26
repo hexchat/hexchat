@@ -17,6 +17,14 @@ typedef enum	/* current icon status */
 	TS_CUSTOM /* plugin */
 } TrayStatus;
 
+enum	/* prefs.gui_tray_blink bits */
+{
+	BIT_MESSAGE = 2,
+	BIT_HIGHLIGHT = 5,
+	BIT_PRIVMSG = 8,
+	BIT_FILEOFFER = 11
+};
+
 typedef GdkPixbuf TrayIcon;
 #define tray_icon_from_file(f) gdk_pixbuf_new_from_file(f,NULL)
 #define tray_icon_free(i) g_object_unref(i)
@@ -246,10 +254,10 @@ tray_menu_cb (GtkWidget *widget, guint button, guint time, gpointer userdata)
 		tray_make_item (menu, NULL, tray_menu_quit_cb, NULL);
 
 		submenu = mg_submenu (menu, _("_Blink on"));
-		blink_item (2, submenu, _("Channel Message"));
-		blink_item (5, submenu, _("Highlighted Message"));
-		blink_item (8, submenu, _("Private Message"));
-		blink_item (11, submenu, _("File Offer"));
+		blink_item (BIT_MESSAGE, submenu, _("Channel Message"));
+		blink_item (BIT_HIGHLIGHT, submenu, _("Highlighted Message"));
+		blink_item (BIT_PRIVMSG, submenu, _("Private Message"));
+		blink_item (BIT_FILEOFFER, submenu, _("File Offer"));
 
 		tray_make_item (menu, NULL, tray_menu_quit_cb, NULL);
 		mg_create_icon_item (_("_Exit..."), GTK_STOCK_QUIT, menu, tray_menu_quit_cb, NULL);
@@ -303,17 +311,21 @@ tray_hilight_cb (char *word[], void *userdata)
 	if (tray_status == TS_HIGHLIGHT)
 		return XCHAT_EAT_NONE;
 
-	tray_set_flash (ICON_HILIGHT);
+	if (prefs.gui_tray_blink & (1 << BIT_HIGHLIGHT))
+		tray_set_flash (ICON_HILIGHT);
+
 	return XCHAT_EAT_NONE;
 }
 
 static int
 tray_message_cb (char *word[], void *userdata)
 {
-	if (tray_status == TS_MESSAGE)
+	if (tray_status == TS_MESSAGE || tray_status == TS_HIGHLIGHT)
 		return XCHAT_EAT_NONE;
 
-	tray_set_flash (ICON_MSG);
+	if (prefs.gui_tray_blink & (1 << BIT_MESSAGE))
+		tray_set_flash (ICON_MSG);
+
 	return XCHAT_EAT_NONE;
 }
 
@@ -323,7 +335,9 @@ tray_priv_cb (char *word[], void *userdata)
 	if (tray_status == TS_HIGHLIGHT)
 		return XCHAT_EAT_NONE;
 
-	tray_set_flash (ICON_HILIGHT);
+	if (prefs.gui_tray_blink & (1 << BIT_PRIVMSG))
+		tray_set_flash (ICON_HILIGHT);
+
 	return XCHAT_EAT_NONE;
 }
 
@@ -333,7 +347,9 @@ tray_dcc_cb (char *word[], void *userdata)
 	if (tray_status == TS_FILEOFFER)
 		return XCHAT_EAT_NONE;
 
-	tray_set_flash (ICON_FILE);
+	if (prefs.gui_tray_blink & (1 << BIT_FILEOFFER))
+		tray_set_flash (ICON_FILE);
+
 	return XCHAT_EAT_NONE;
 }
 

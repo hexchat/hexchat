@@ -812,5 +812,10 @@ if test "$gtkfe" = no; then
 	echo
 fi
 
+if test "$spell" = "gtkspell"; then
+	echo Warning: GTK SPELL is not the recommended spelling library.
+	echo
+fi
+
 echo configure complete, now type \'make\' and pray.
 echo

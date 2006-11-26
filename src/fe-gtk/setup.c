@@ -275,6 +275,23 @@ static const setting filexfer_settings[] =
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
+static const setting alert_settings[] =
+{
+	{ST_HEADER,	N_("Alerts"),0,0,0},
+	{ST_TOGGLE,	N_("Enable system tray icon"), P_OFFINTNL(gui_tray), 0, 0, 0},
+#if defined(WIN32) || defined(USE_XLIB)
+	{ST_TOGGLE,	N_("Flash taskbar on highlighted messages"), P_OFFINTNL(input_flash_hilight), 0, 0, 0},
+	{ST_TOGGLE,	N_("Flash taskbar on private messages"), P_OFFINTNL(input_flash_priv), 0, 0, 0},
+#endif
+	{ST_TOGGLE,	N_("Beep on highlighted messages"), P_OFFINTNL(beephilight), 0, 0, 0},
+	{ST_TOGGLE,	N_("Beep on private messages"), P_OFFINTNL(beepmsg), 0, 0, 0},
+	{ST_TOGGLE,	N_("Beep on channel messages"), P_OFFINTNL(beepchans), 0, 0, 0},
+	{ST_ENTRY,	N_("Extra words to highlight on:"), P_OFFSETNL(irc_extra_hilight), 0, 0, sizeof prefs.irc_extra_hilight},
+	{ST_ENTRY,	N_("Nicks not to highlight on:"), P_OFFSETNL(irc_no_hilight), 0, 0, sizeof prefs.irc_no_hilight},
+	{ST_LABEL,	N_("Separate multiple words with commas.")},
+	{ST_END, 0, 0, 0, 0, 0}
+};
+
 static const setting general_settings[] =
 {
 	{ST_HEADER,	N_("Default Messages"),0,0,0},
@@ -287,26 +304,6 @@ static const setting general_settings[] =
 					N_("Announce your away messages to all channels"), 0, 0},
 	{ST_TOGGLE,	N_("Show away once"), P_OFFINTNL(show_away_once), N_("Show identical away messages only once"), 0, 0},
 	{ST_TOGGLE,	N_("Automatically unmark away"), P_OFFINTNL(auto_unmark_away), N_("Unmark yourself as away before sending messages"), 0, 0},
-#if 0
-#ifndef WIN32
-	{ST_LABEL,	N_("(Can be a text file relative to ~/.xchat2/).")},
-#else
-	{ST_LABEL,	N_("(Can be a text file relative to config dir).")},
-#endif
-#endif
-
-	{ST_HEADER,	N_("Alerts"),0,0,0},
-	{ST_TOGGLE,	N_("Enable system tray (notification area) icon"), P_OFFINTNL(gui_tray), 0, 0, 0},
-#if defined(WIN32) || defined(USE_XLIB)
-	{ST_TOGGLE,	N_("Flash taskbar on highlighted messages"), P_OFFINTNL(input_flash_hilight), 0, 0, 0},
-	{ST_TOGGLE,	N_("Flash taskbar on any private messages"), P_OFFINTNL(input_flash_priv), 0, 0, 0},
-#endif
-	{ST_TOGGLE,	N_("Beep on highlighted messages"), P_OFFINTNL(beephilight), 0, 0, 0},
-	{ST_TOGGLE,	N_("Beep on private messages"), P_OFFINTNL(beepmsg), 0, 0, 0},
-	{ST_TOGGLE,	N_("Beep on channel messages"), P_OFFINTNL(beepchans), 0, 0, 0},
-	{ST_ENTRY,	N_("Extra words to highlight on:"), P_OFFSETNL(irc_extra_hilight), 0, 0, sizeof prefs.irc_extra_hilight},
-	{ST_ENTRY,	N_("Nicks not to highlight on:"), P_OFFSETNL(irc_no_hilight), 0, 0, sizeof prefs.irc_no_hilight},
-	{ST_LABEL,	N_("Separate multiple words with commas.")},
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
@@ -1519,6 +1516,7 @@ static const char *const cata[] =
 		N_("Colors"),
 		NULL,
 	N_("Chatting"),
+		N_("Alerts"),
 		N_("General"),
 		N_("Logging"),
 		N_("Sound"),
@@ -1543,12 +1541,12 @@ setup_create_pages (GtkWidget *box)
 	setup_add_page (cata[3], book, setup_create_page (userlist_settings));
 	setup_add_page (cata[4], book, setup_create_page (tabs_settings));
 	setup_add_page (cata[5], book, setup_create_color_page ());
-	setup_add_page (cata[8], book, setup_create_page (general_settings));
-	setup_add_page (cata[9], book, setup_create_page (logging_settings));
-	setup_add_page (cata[10], book, setup_create_sound_page ());
-	/*setup_add_page (cata[11], book, setup_create_page (advanced_settings));*/
-	setup_add_page (cata[13], book, setup_create_page (network_settings));
-	setup_add_page (cata[14], book, setup_create_page (filexfer_settings));
+	setup_add_page (cata[8], book, setup_create_page (alert_settings));
+	setup_add_page (cata[9], book, setup_create_page (general_settings));
+	setup_add_page (cata[10], book, setup_create_page (logging_settings));
+	setup_add_page (cata[11], book, setup_create_sound_page ());
+	setup_add_page (cata[14], book, setup_create_page (network_settings));
+	setup_add_page (cata[15], book, setup_create_page (filexfer_settings));
 
 	gtk_notebook_set_show_tabs (GTK_NOTEBOOK (book), FALSE);
 	gtk_notebook_set_show_border (GTK_NOTEBOOK (book), FALSE);
