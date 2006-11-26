@@ -338,6 +338,15 @@ log_handler (const gchar   *log_domain,
 
 #endif
 
+int tray_plugin_init (void *, char **, char **, char **, char *);
+
+static int
+fe_idle (gpointer data)
+{
+	plugin_add (sess_list->data, NULL, NULL, tray_plugin_init, NULL, NULL, FALSE);
+	return 0;
+}
+
 void
 fe_new_window (session *sess, int focus)
 {
@@ -361,6 +370,9 @@ fe_new_window (session *sess, int focus)
 	g_log_set_handler ("Gdk", G_LOG_LEVEL_CRITICAL|G_LOG_LEVEL_WARNING, (GLogFunc)log_handler, 0);
 	g_log_set_handler ("Gtk", G_LOG_LEVEL_CRITICAL|G_LOG_LEVEL_WARNING, (GLogFunc)log_handler, 0);
 #endif
+
+	if (!sess_list->next)
+		g_idle_add (fe_idle, NULL);
 }
 
 void

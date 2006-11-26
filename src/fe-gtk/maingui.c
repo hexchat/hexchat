@@ -1145,7 +1145,7 @@ mg_menu_destroy (GtkWidget *menu, gpointer userdata)
 	g_object_unref (menu);
 }
 
-static void
+void
 mg_create_icon_item (char *label, char *stock, GtkWidget *menu,
 							void *callback, void *userdata)
 {
@@ -1326,12 +1326,12 @@ mg_markup_item (GtkWidget *menu, char *text, int arg)
 	gtk_widget_show (item);
 }
 
-static GtkWidget *
+GtkWidget *
 mg_submenu (GtkWidget *menu, char *text)
 {
 	GtkWidget *submenu, *item;
 
-	item = gtk_menu_item_new_with_label (text);
+	item = gtk_menu_item_new_with_mnemonic (text);
 	gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
 	gtk_widget_show (item);
 

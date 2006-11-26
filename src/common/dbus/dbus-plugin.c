@@ -1061,7 +1061,7 @@ dbus_plugin_init (xchat_plugin *plugin_handle,
 	*plugin_version = PVERSION;
 
 	if (init_dbus()) {
-		xchat_printf (ph, _("%s loaded successfully!\n"), PNAME);
+		/*xchat_printf (ph, _("%s loaded successfully!\n"), PNAME);*/
 
 		clients = g_hash_table_new_full (g_str_hash,
 						 g_str_equal,

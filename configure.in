@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([XChat],[2.6.8],[http://www.xchat.org/],[xchat])
+AC_INIT([XChat],[2.7.0],[http://www.xchat.org/],[xchat])
 
 AC_PREREQ([2.59])
 AC_COPYRIGHT([Copyright (C) 1998-2006 Peter Zelezny])
@@ -25,7 +25,7 @@ GETTEXT_PACKAGE=xchat
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE",[Gettext package name])
 
-ALL_LINGUAS="be de el es fi fr gl hu it ja ko lt nl pa pt ru sq sr sv vi zh_TW"
+ALL_LINGUAS="be cs de el es fi fr gl hu it ja ko lt nl pa pt ru sq sr sv vi zh_TW"
 AM_GNU_GETTEXT
 
 dnl displaced from acconfig.h
@@ -159,7 +159,7 @@ dnl *********************************************************************
 dnl ** GTK **************************************************************
 dnl *********************************************************************
 
-AM_PATH_GTK_2_0(2.6.0, havegtk=yes, havegtk=no)
+AM_PATH_GTK_2_0(2.10.0, havegtk=yes, havegtk=no)
 
 if test "$havegtk" = no; then
 	gtkfe=no

@@ -27,6 +27,6 @@ endif
 
 xchat_SOURCES = about.c ascii.c banlist.c chanlist.c chanview.c custom-list.c \
 	dccgui.c editlist.c fe-gtk.c fkeys.c gtkutil.c ignoregui.c joind.c menu.c \
-	maingui.c $(mmx_cmod_S) notifygui.c palette.c pixmaps.c $(plugingui_c) \
+	maingui.c $(mmx_cmod_S) notifygui.c palette.c pixmaps.c plugin-tray.c $(plugingui_c) \
 	rawlog.c search.c servlistgui.c setup.c $(sexy_spell_entry_c) textgui.c \
 	urlgrab.c userlistgui.c xtext.c

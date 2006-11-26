@@ -41,6 +41,10 @@ GdkPixbuf *pix_op;
 GdkPixbuf *pix_hop;
 GdkPixbuf *pix_voice;
 
+GdkPixbuf *pix_tray_msg;
+GdkPixbuf *pix_tray_hilight;
+GdkPixbuf *pix_tray_file;
+
 GdkPixbuf *pix_channel;
 GdkPixbuf *pix_dialog;
 GdkPixbuf *pix_server;
@@ -105,6 +109,11 @@ pixmaps_init (void)
 	LOADPIX (pix_red, redpng, "red"EXT);
 	LOADPIX (pix_op, oppng, "op"EXT);
 	LOADPIX (pix_voice, voicepng, "voice"EXT);
+
+	/* tray icons, with inlined defaults */
+	LOADPIX (pix_tray_msg, traymsgpng, "message"EXT);
+	LOADPIX (pix_tray_hilight, trayhilightpng, "highlight"EXT);
+	LOADPIX (pix_tray_file, trayfilepng, "fileoffer"EXT);
 
 	/* treeview icons, no defaults, load from disk only */
 	LOADPIX_DISKONLY (pix_channel,	"channel"EXT);

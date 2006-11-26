@@ -85,17 +85,17 @@ chanlist_match (server *serv, const char *str)
 {
 	switch (serv->gui->chanlist_search_type)
 	{
-	case 0:
-		return nocasestrstr (str, GTK_ENTRY (serv->gui->chanlist_wild)->text) ? 1 : 0;
 	case 1:
 		return match (GTK_ENTRY (serv->gui->chanlist_wild)->text, str);
 #ifndef WIN32
-	default:
+	case 2:
 		if (!serv->gui->have_regex)
 			return 0;
 		/* regex returns 0 if it's a match: */
 		return !regexec (&serv->gui->chanlist_match_regex, str, 1, NULL, REG_NOTBOL);
 #endif
+	default:	/* case 0: */
+		return nocasestrstr (str, GTK_ENTRY (serv->gui->chanlist_wild)->text) ? 1 : 0;
 	}
 }
 
@@ -416,8 +416,6 @@ chanlist_find_cb (GtkWidget * wid, server *serv)
 	if (regcomp (&serv->gui->chanlist_match_regex, GTK_ENTRY (wid)->text,
 					 REG_ICASE | REG_EXTENDED | REG_NOSUB) == 0)
 		serv->gui->have_regex = 1;
-#else
-#error not ready yet
 #endif
 }
 
@@ -433,18 +431,28 @@ chanlist_match_topic_button_toggled (GtkWidget * wid, server *serv)
 	serv->gui->chanlist_match_wants_topic = GTK_TOGGLE_BUTTON (wid)->active;
 }
 
-static void
-chanlist_join (GtkWidget * wid, server *serv)
+static char *
+chanlist_get_selected (server *serv, gboolean get_topic)
 {
 	char *chan;
-	char tbuf[CHANLEN + 6];
 	GtkTreeSelection *sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (serv->gui->chanlist_list));
 	GtkTreeModel *model;
 	GtkTreeIter iter;
 
-	if (gtk_tree_selection_get_selected (sel, &model, &iter))
+	if (!gtk_tree_selection_get_selected (sel, &model, &iter))
+		return NULL;
+
+	gtk_tree_model_get (model, &iter, get_topic ? COL_TOPIC : COL_CHANNEL, &chan, -1);
+	return chan;
+}
+
+static void
+chanlist_join (GtkWidget * wid, server *serv)
+{
+	char tbuf[CHANLEN + 6];
+	char *chan = chanlist_get_selected (serv, FALSE);
+	if (chan)
 	{
-		gtk_tree_model_get (model, &iter, COL_CHANNEL, &chan, -1);
 		if (serv->connected && (strcmp (chan, "*") != 0))
 		{
 			snprintf (tbuf, sizeof (tbuf), "join %s", chan);
@@ -524,6 +532,72 @@ chanlist_dclick_cb (GtkTreeView *view, GtkTreePath *path,
 						  GtkTreeViewColumn *column, gpointer data)
 {
 	chanlist_join (0, (server *) data);	/* double clicked a row */
+}
+
+static void
+chanlist_menu_destroy (GtkWidget *menu, gpointer userdata)
+{
+	gtk_widget_destroy (menu);
+	g_object_unref (menu);
+}
+
+static void
+chanlist_copychannel (GtkWidget *item, server *serv)
+{
+	char *chan = chanlist_get_selected (serv, FALSE);
+	if (chan)
+	{
+		gtkutil_copy_to_clipboard (item, NULL, chan);
+		g_free (chan);
+	}
+}
+
+static void
+chanlist_copytopic (GtkWidget *item, server *serv)
+{
+	char *topic = chanlist_get_selected (serv, TRUE);
+	if (topic)
+	{
+		gtkutil_copy_to_clipboard (item, NULL, topic);
+		g_free (topic);
+	}
+}
+
+static gboolean
+chanlist_button_cb (GtkTreeView *tree, GdkEventButton *event, server *serv)
+{
+	GtkWidget *menu;
+	GtkTreeSelection *sel;
+	GtkTreePath *path;
+
+	if (event->button != 3)
+		return FALSE;
+
+	if (!gtk_tree_view_get_path_at_pos (tree, event->x, event->y, &path, 0, 0, 0))
+		return FALSE;
+
+	/* select what they right-clicked on */
+	sel = gtk_tree_view_get_selection (tree);
+	gtk_tree_selection_unselect_all (sel);
+	gtk_tree_selection_select_path (sel, path);
+	gtk_tree_path_free (path);
+
+	menu = gtk_menu_new ();
+	if (event->window)
+		gtk_menu_set_screen (GTK_MENU (menu), gdk_drawable_get_screen (event->window));
+	g_object_ref (menu);
+	gtk_object_sink (GTK_OBJECT (menu));
+	g_signal_connect (G_OBJECT (menu), "selection-done",
+							G_CALLBACK (chanlist_menu_destroy), NULL);
+	mg_create_icon_item (_("_Join Channel"), GTK_STOCK_JUMP_TO, menu,
+								chanlist_join, serv);
+	mg_create_icon_item (_("_Copy Channel Name"), GTK_STOCK_COPY, menu,
+								chanlist_copychannel, serv);
+	mg_create_icon_item (_("Copy _Topic Text"), GTK_STOCK_COPY, menu,
+								chanlist_copytopic, serv);
+	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL, 0, event->time);
+
+	return TRUE;
 }
 
 static void
@@ -633,6 +707,8 @@ chanlist_opengui (server *serv, int do_refresh)
 
 	g_signal_connect (G_OBJECT (view), "row_activated",
 							G_CALLBACK (chanlist_dclick_cb), serv);
+	g_signal_connect (G_OBJECT (view), "button-press-event",
+							G_CALLBACK (chanlist_button_cb), serv);
 
 	chanlist_add_column (view, COL_CHANNEL, 96, _("Channel"), FALSE);
 	chanlist_add_column (view, COL_USERS,   50, _("Users"),   TRUE);

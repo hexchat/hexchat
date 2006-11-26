@@ -25,3 +25,5 @@ void mg_dnd_drop_file (session *sess, char *target, char *uri);
 void mg_change_layout (int type);
 void mg_update_meters (session_gui *);
 void mg_inputbox_cb (GtkWidget *igad, session_gui *gui);
+void mg_create_icon_item (char *label, char *stock, GtkWidget *menu, void *callback, void *userdata);
+GtkWidget *mg_submenu (GtkWidget *menu, char *text);

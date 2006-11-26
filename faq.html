@@ -46,7 +46,7 @@ p { margin: 3% }
 <br/><br/>
 <a href="#q26">6. How do I show @ and + in front of nicknames that are Op and Voice when they talk?</a>
 <br/><br/>
-<a href="#q27">7. How do I change the Op and Voice icons in the userlist?</a>
+<a href="#q27">7. How do I change the Op and Voice userlist icons and Tree View icons?</a>
 <br/><br/>
 <a href="#q28">8. How do I set different ban types?</a>
 <br/><br/>
@@ -74,7 +74,7 @@ p { margin: 3% }
 <br/><br/>
 <a href="#q220">20. Can I select and copy text with the time stamps?</a>
 <br/><br/>
-<a href="#q221">21. What's the deal with opening URLs in XChat?</a>
+<a href="#q221">21. What's the deal with opening URLs in XChat on Linux/Unix?</a>
 <br/><br/>
 <a href="#q222">22. Where are the log files saved to?</a>
 <br/><br/>
@@ -191,20 +191,28 @@ to change the default:
 list at the top of the window.
 </p>
 
-<br/><h3><a name="q27">7. How do I change the Op and Voice icons in the userlist?</a></h3>
+<br/><h3><a name="q27">7. How do I change the Op and Voice userlist icons and Tree View icons?</a></h3>
 <p>
-The default icons are hard coded (compiled) in. You can override them by creating
+<u>Unix/Linux</u>
+<br/>The default icons are hard coded (compiled) in. You can override them by creating
 some PNG files in ${PREFIX}/share/xchat. ${PREFIX} is usually /usr, so that
 would translate to /usr/share/xchat. If you compiled from source tarball without
 specifying a prefix, it will be /usr/local instead.
-<br/><br/>Call the files op.png, hop.png, voice.png, red.png and purple.png. Red and Purple are used for Channel Owner and Founder. They will be loaded at the next startup.
+<br/><br/><b>Userlist icons</b>: Call the files op.png, hop.png, voice.png, red.png and purple.png. Red and Purple are used for Channel Owner and Founder. They will be loaded at the next startup.
+<br/><br/><b>Tree View icons</b>: Call the files channel.png, dialog.png, server.png and util.png. Type <b>/set tab_icons 1</b> to enable them and then restart XChat.
 <br/><br/>
-<u>XChat 2.6.0+ on Windows</u>: On Windows the images will need to be ICO files:<br/>
+<u>XChat 2.6.0+ on Windows</u>
+<br/>On Windows the images will need to be ICO files:<br/>
 C:\Program Files\XChat\Icons\op.ico<br/>
 C:\Program Files\XChat\Icons\hop.ico<br/>
 C:\Program Files\XChat\Icons\voice.ico<br/>
 C:\Program Files\XChat\Icons\red.ico<br/>
-C:\Program Files\XChat\Icons\purple.ico<br/>
+C:\Program Files\XChat\Icons\purple.ico
+<small><br/><br/></small>
+C:\Program Files\XChat\Icons\server.ico<br/>
+C:\Program Files\XChat\Icons\channel.ico<br/>
+C:\Program Files\XChat\Icons\dialog.ico<br/>
+C:\Program Files\XChat\Icons\util.ico<br/>
 </p>
 
 <br/><h3><a name="q28">8. How do I set different ban types?</a></h3>
@@ -390,26 +398,41 @@ Yes, but this requires at least XChat 2.6.3. Simply hold down SHIFT while markin
 the text and the time stamps will be included.
 </p>
 
-<br/><h3><a name="q221">21. What's the deal with opening URLs in XChat?</a></h3>
+<br/><h3><a name="q221">21. What's the deal with opening URLs in XChat on Unix/Linux?</a></h3>
 <p>
 Right-clicking on a URL and selecting <i>Open Link in Browser</i> will open the link
-in your "preferred browser".
+in your "preferred browser". In Gnome, your preferred browser can be changed in System > Preferences > More Preferences > Preferred Applications.
 <br/><br/>
-In Gnome, your preferred browser can be changed in <b>System &gt; Preferences &gt; More Preferences &gt; Preferred Applications</b>.
-If you're not using Gnome, e.g KDE or some other desktop environment, you're fresh out of luck! Any patches to automatically
-support opening a URL in KDE's preferred browser would be happily accepted.
+<b><u>Notes for 2.8.0 or newer:</u></b>
+<br/><br/>
+Everything should just work automatically without any changes from you. Here's how the current
+logic works:
+</p>
+
+<ul>
+<li>First, it tries to run xdg-open, which is a universal URL handler from freedesktop.org. Most modern Linux desktops will have this now, or in the near future.</li>
+<li>If xdg-open doesn't exist, it will try to detect a running Gnome or KDE desktop. This is done via the environment variables GNOME_DESKTOP_SESSION_ID and KDE_FULL_SESSION.</li>
+<li>If Gnome is detected, it will execute: gnome-open &lt;url></li>
+<li>If KDE is detected, it will execute: kfmclient exec &lt;url></li>
+</ul>
+
+<p>
+<b><u>Notes for 2.6.8 or older:</u></b>
+<br/><br/>
+If you're not using Gnome, e.g KDE or some other desktop environment, you're fresh out of luck!
+<br/><u>Note for Debian and Ubuntu</u>: Integration with Gnome is broken on this distro! Please set
+<i>sensible-browser</i> instead. We have no control over what the Debian packagers do, so complain
+to them for this screw up. Example:
+<i>sudo update-alternatives --set x-www-browser /usr/bin/firefox</i>
+
+<br/><br/>
+<b><u>More details</u></b>
 <br/><br/>
 While holding down CTRL you can single left-click a URL to open it in your preferred browser. If you really want to change this to plain left-click you can type: <b>/set gui_url_mod 0</b>, provided you have XChat 2.6.6 or newer.
 <br/><br/>
 You can also add more items to the right-click menu in XChat: <b>Settings &gt; Advanced &gt; URL Handlers</b>.
 <br/>For example, you could add an entry like <b>!firefox -a firefox -remote 'openURL(%s,new-tab)'</b>
-<br/>But this kind of messing around shouldn't be necessary, it just works automatically in Gnome and Windows!
-</p>
-<p>
-<u>Note for Debian and Ubuntu</u>: Integration with Gnome is broken on this distro! Please set
-<i>sensible-browser</i> instead. We have no control over what the Debian packagers do, so complain
-to them for this screw up. Example:
-<i>sudo update-alternatives --set x-www-browser /usr/bin/firefox</i>
+<br/>But this kind of messing around shouldn't be necessary, it just works automatically in Gnome, KDE and Windows with 2.6.10+!
 </p>
 
 <br/><h3><a name="q222">22. Where are the log files saved to?</a></h3>

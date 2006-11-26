@@ -302,7 +302,7 @@ N_("%C22*%O$tNo ping reply for $1 seconds, disconnecting.")},
 {"Private Message", pevt_privmsg_help, 131, 
 "%C28*%C29$3$1%C28*$t%O$2"},
 
-{"Private Message to Dialog", pevt_dprivmsg_help, 131, 
+{"Private Message to Dialog", pevt_privmsg_help, 131, 
 "%C18%H<%H$3$1%H>%H%O$t$2"},
 
 {"Process Already Running", pevt_generic_none_help, 0, 
@@ -314,7 +314,7 @@ N_("%C23*%O$t%C23$1 has quit (%O%C23%B%B$2%O%C23)")},
 {"Raw Modes", pevt_rawmodes_help, 2, 
 N_("%C22*%O$t$1 sets modes%B %C30[%O$2%B%C30]")},
 
-{"Receive Wallops", pevt_dprivmsg_help, 2, 
+{"Receive Wallops", pevt_privmsg_help, 2, 
 N_("%C28-%C29$1/Wallops%C28-%O$t$2")},
 
 {"Resolving User", pevt_resolvinguser_help, 2, 

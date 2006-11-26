@@ -296,6 +296,7 @@ static const setting general_settings[] =
 #endif
 
 	{ST_HEADER,	N_("Alerts"),0,0,0},
+	{ST_TOGGLE,	N_("Enable system tray (notification area) icon"), P_OFFINTNL(gui_tray), 0, 0, 0},
 #if defined(WIN32) || defined(USE_XLIB)
 	{ST_TOGGLE,	N_("Flash taskbar on highlighted messages"), P_OFFINTNL(input_flash_hilight), 0, 0, 0},
 	{ST_TOGGLE,	N_("Flash taskbar on any private messages"), P_OFFINTNL(input_flash_priv), 0, 0, 0},
@@ -1814,6 +1815,7 @@ setup_apply (struct xchatprefs *pr)
 	}
 
 	mg_apply_setup ();
+	tray_apply_setup ();
 
 	if (noapply)
 		fe_message (_("Some settings were changed that require a"

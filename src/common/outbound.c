@@ -3073,6 +3073,41 @@ cmd_topic (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 }
 
 static int
+cmd_tray (struct session *sess, char *tbuf, char *word[], char *word_eol[])
+{
+	if (strcmp (word[2], "-b") == 0)
+	{
+		fe_tray_set_balloon (word[3], word[4][0] ? word[4] : NULL);
+		return TRUE;
+	}
+
+	if (strcmp (word[2], "-t") == 0)
+	{
+		fe_tray_set_tooltip (word[3][0] ? word[3] : NULL);
+		return TRUE;
+	}
+
+	if (strcmp (word[2], "-i") != 0)
+		return FALSE;
+
+	if (!word[3][0])
+	{
+		fe_tray_set_icon (NULL);	/* default xchat icon */
+		return TRUE;
+	}
+
+	if (!word[4][0])
+	{
+		fe_tray_set_icon (word[3]);	/* fixed custom icon */
+		return TRUE;
+	}
+
+	/* flash between 2 icons */
+	fe_tray_set_flash (word[4], word[5][0] ? word[5] : NULL, atoi (word[3]));
+	return TRUE;
+}
+
+static int
 cmd_unignore (struct session *sess, char *tbuf, char *word[],
 				  char *word_eol[])
 {
@@ -3553,6 +3588,13 @@ const struct commands xc_cmds[] = {
 	{"SPLAY", cmd_splay, 0, 0, 1, "SPLAY <soundfile>"},
 	{"TOPIC", cmd_topic, 1, 1, 1,
 	 N_("TOPIC [<topic>], sets the topic if one is given, else shows the current topic")},
+	{"TRAY", cmd_tray, 0, 0, 1,
+	 N_("\nTRAY -i <timeout> <file1> [<file2>] Flash tray between two icons.\n"
+		   "TRAY -i <filename>                  Set tray to a fixed icon.\n"
+		   "TRAY -i                             Reset tray icon to default.\n"
+			"TRAY -t <text>                      Set the tray tooltip.\n"
+			"TRAY -b <title> <text>              Set the tray balloon."
+			)},
 	{"UNBAN", cmd_unban, 1, 1, 1,
 	 N_("UNBAN <mask> [<mask>...], unbans the specified masks.")},
 	{"UNIGNORE", cmd_unignore, 0, 0, 1, N_("UNIGNORE <mask> [QUIET]")},

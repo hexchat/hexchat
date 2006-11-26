@@ -641,6 +641,7 @@ static char * const pevt_chanmsg_help[] = {
 static char * const pevt_privmsg_help[] = {
 	N_("Nickname"),
 	N_("The message"),
+	N_("Identified text")
 };
 
 static char * const pevt_changenick_help[] = {
@@ -703,12 +704,6 @@ static char * const pevt_channotice_help[] = {
 	N_("Who it's from"),
 	N_("The Channel it's going to"),
 	N_("The message"),
-};
-
-static char * const pevt_dprivmsg_help[] = {
-	N_("Nickname"),
-	N_("The message"),
-	N_("Identified text"),
 };
 
 static char * const pevt_uchangenick_help[] = {

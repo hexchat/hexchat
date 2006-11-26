@@ -1522,11 +1522,12 @@ abortit:
 	return TRUE;
 }
 
-static void
+static gboolean
 dcc_handle_new_ack (struct DCC *dcc)
 {
 	guint32 ack;
 	char buf[16];
+	gboolean done = FALSE;
 
 	memcpy (&ack, dcc->ack_buf, 4);
 	dcc->ack = ntohl (ack);
@@ -1550,6 +1551,7 @@ dcc_handle_new_ack (struct DCC *dcc)
 		sprintf (buf, "%d", dcc->cps);
 		EMIT_SIGNAL (XP_TE_DCCSENDCOMP, dcc->serv->front_session,
 						 file_part (dcc->file), dcc->nick, buf, NULL, 0);
+		done = TRUE;
 	}
 	else if ((!dcc->fastsend) && (dcc->ack >= (dcc->pos & 0xffffffff)))
 	{
@@ -1562,6 +1564,8 @@ dcc_handle_new_ack (struct DCC *dcc)
 					(dcc->ack & 0xffffffff);
 	/* dcc->ack is only used for CPS and PERCENTAGE calcs from now on... */
 #endif
+
+	return done;
 }
 
 static gboolean
@@ -1591,7 +1595,8 @@ dcc_read_ack (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 		if (dcc->ack_pos >= 4)
 		{
 			dcc->ack_pos = 0;
-			dcc_handle_new_ack (dcc);
+			if (dcc_handle_new_ack (dcc))
+				return TRUE;
 		}
 		/* loop again until would_block() returns true */
 	}

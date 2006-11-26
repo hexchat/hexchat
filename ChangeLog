@@ -10,14 +10,30 @@ There are always more changes than listed here, these are just the
 highlights. The full CVS log is available at www.xchat.org/cvslog/
 
 ------------------------------------------------------------------------------
- 2.6.8 - DD/MM/YYYY
+ 2.x.x - DD/MMM/2006
 ------------------------------------------------------------------------------
 
- -
- -
+ - Updated translations (cs, de, hu).
+ - Added partial support for numeric 005 token ELIST (min users only).
+ - Brand new channel list window: GtkTreeView, nicer layout, less CPU power
+   when downloading very large list, uses less memory, supports regexp/
+   patternmatch/substring search and supports downloading LIST with minusers to
+   save time (only on some networks that support ELIST).
+ - Overhauled URL opening on Unix, it now tries xdg-open first, then auto-
+   detects Gnome or KDE to run gnome-open or kfmclient. URLs with quotes
+   should also work now (changed to execv()).
+ - Settings: Warn the user when trying to put the tree on the top/bottom.
+ - DCC ack reading
+ - Tray
+ - Req GTK 2.10
+ - 
+ - 
  - Perl (Lian Wan Situ)
   * Fixed hook_command so that it won't override the help message for builtin
     commands unless a help message was specified.
+  * Perl Win32: Warn the user about trying to load 64-bit ActivePerl.
+
+
 ------------------------------------------------------------------------------
  2.6.8 - 16/Oct/2006
 ------------------------------------------------------------------------------
