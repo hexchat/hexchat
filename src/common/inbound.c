@@ -171,7 +171,7 @@ inbound_privmsg (server *serv, char *from, char *ip, char *text, int id)
 			sound_beep (sess);
 
 		if (sess && sess->tray)
-			fe_tray_message ();
+			fe_tray_set_icon (2);
 
 		if (prefs.input_flash_priv)
 			fe_flash_window (sess);
@@ -359,7 +359,7 @@ inbound_action (session *sess, char *chan, char *from, char *text, int fromme, i
 			sound_beep (sess);
 
 		if (sess->tray)
-			fe_tray_message ();
+			fe_tray_set_icon (2);
 
 		/* private action, flash? */
 		if (!is_channel (serv, chan) && prefs.input_flash_priv)
@@ -427,7 +427,7 @@ inbound_chanmsg (server *serv, session *sess, char *chan, char *from, char *text
 			sound_beep (sess);
 
 		if (sess->tray)
-			fe_tray_message ();
+			fe_tray_set_icon (2);
 	}
 
 	if (is_hilight (from, text, sess, serv))

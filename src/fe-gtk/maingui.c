@@ -1364,7 +1364,7 @@ mg_tab_contextmenu_cb (chanview *cv, chan *ch, int tag, gpointer ud, GdkEventBut
 		menu_toggle_item (_("Beep on message"), menu, mg_beepmsg_cb, sess,
 								sess->beep);
 		if (prefs.gui_tray)
-			menu_toggle_item (_("Flash tray on message"), menu, mg_traymsg_cb, sess,
+			menu_toggle_item (_("Blink tray on message"), menu, mg_traymsg_cb, sess,
 									sess->tray);
 		if (sess->type == SESS_CHANNEL)
 			menu_toggle_item (_("Show join/part messages"), menu, mg_hidejp_cb,

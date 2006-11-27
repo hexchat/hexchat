@@ -3092,18 +3092,24 @@ cmd_tray (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		return TRUE;
 	}
 
-	if (strcmp (word[2], "-i") != 0)
+	if (strcmp (word[2], "-i") == 0)
+	{
+		fe_tray_set_icon (atoi (word[3]));
+		return TRUE;
+	}
+
+	if (strcmp (word[2], "-f") != 0)
 		return FALSE;
 
 	if (!word[3][0])
 	{
-		fe_tray_set_icon (NULL);	/* default xchat icon */
+		fe_tray_set_file (NULL);	/* default xchat icon */
 		return TRUE;
 	}
 
 	if (!word[4][0])
 	{
-		fe_tray_set_icon (word[3]);	/* fixed custom icon */
+		fe_tray_set_file (word[3]);	/* fixed custom icon */
 		return TRUE;
 	}
 
@@ -3595,9 +3601,9 @@ const struct commands xc_cmds[] = {
 	{"TOPIC", cmd_topic, 1, 1, 1,
 	 N_("TOPIC [<topic>], sets the topic if one is given, else shows the current topic")},
 	{"TRAY", cmd_tray, 0, 0, 1,
-	 N_("\nTRAY -i <timeout> <file1> [<file2>] Flash tray between two icons.\n"
-		   "TRAY -i <filename>                  Set tray to a fixed icon.\n"
-		   "TRAY -i                             Reset tray icon to default.\n"
+	 N_("\nTRAY -f <timeout> <file1> [<file2>] Flash tray between two icons.\n"
+		   "TRAY -f <filename>                  Set tray to a fixed icon.\n"
+			"TRAY -i <number>                    Flash tray with an internal icon.\n"
 			"TRAY -t <text>                      Set the tray tooltip.\n"
 			"TRAY -b <title> <text>              Set the tray balloon."
 			)},

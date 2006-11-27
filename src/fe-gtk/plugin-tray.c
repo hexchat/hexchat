@@ -1,3 +1,5 @@
+/* Copyright (C) 2006 Peter Zelezny. */
+
 #include <string.h>
 #include "../common/xchat-plugin.h"
 #include "../common/xchat.h"
@@ -154,18 +156,30 @@ fe_tray_set_flash (const char *filename1, const char *filename2, int tout)
 }
 
 void
-fe_tray_message (void)
+fe_tray_set_icon (int icon)
 {
-	/* don't change it if it's HIGHLIGHT or MESSAGE already */
-	if (!sticon || tray_status == TS_HIGHLIGHT || tray_status == TS_MESSAGE)
+	tray_apply_setup ();
+	if (!sticon)
 		return;
 
 	tray_stop_flash ();
-	tray_set_flash (ICON_MSG);
+
+	switch (icon)
+	{
+	case BIT_MESSAGE:
+		tray_set_flash (ICON_MSG);
+		break;
+	case BIT_HIGHLIGHT:
+	case BIT_PRIVMSG:
+		tray_set_flash (ICON_HILIGHT);
+		break;
+	case BIT_FILEOFFER:
+		tray_set_flash (ICON_FILE);
+	}
 }
 
 void
-fe_tray_set_icon (const char *filename)
+fe_tray_set_file (const char *filename)
 {
 	tray_apply_setup ();
 	if (!sticon)
@@ -182,15 +196,29 @@ fe_tray_set_icon (const char *filename)
 }
 
 static void
-tray_menu_restore_cb (GtkWidget *item, gpointer userdata)
+tray_toggle_visibility (void)
 {
-	const char *st = xchat_get_info (ph, "win_status");
+	static int x, y;
+	GtkWindow *win = (GtkWindow *)xchat_get_info (ph, "win_ptr");
 
 	tray_stop_flash ();
-	if (!strcmp (st, "hidden"))
-		xchat_command (ph, "GUI SHOW");
-	else
+
+	if (GTK_WIDGET_VISIBLE (win))
+	{
+		gtk_window_get_position (win, &x, &y);
 		xchat_command (ph, "GUI HIDE");
+	}
+	else
+	{
+		xchat_command (ph, "GUI SHOW");
+		gtk_window_move (win, x, y);
+	}
+}
+
+static void
+tray_menu_restore_cb (GtkWidget *item, gpointer userdata)
+{
+	tray_toggle_visibility ();
 }
 
 static void
@@ -285,23 +313,6 @@ tray_menu_cb (GtkWidget *widget, guint button, guint time, gpointer userdata)
 }
 
 static void
-tray_activate_cb (GtkWidget *widget, gpointer userdata)
-{
-	const char *st;
-
-	st = xchat_get_info (ph, "win_status");
-	if (!strcmp (st, "hidden") || !strcmp (st, "normal"))
-	{
-		tray_stop_flash ();
-		xchat_command (ph, "GUI SHOW");
-	}
-	else
-	{
-		xchat_command (ph, "GUI HIDE");
-	}
-}
-
-static void
 tray_init (void)
 {
 	flash_tag = 0;
@@ -313,7 +324,7 @@ tray_init (void)
 	g_signal_connect (G_OBJECT (sticon), "popup-menu",
 							G_CALLBACK (tray_menu_cb), sticon);
 	g_signal_connect (G_OBJECT (sticon), "activate",
-							G_CALLBACK (tray_activate_cb), NULL);
+							G_CALLBACK (tray_menu_restore_cb), NULL);
 }
 
 static int
