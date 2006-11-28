@@ -41,18 +41,21 @@ margin-right: 32px;
 <font size="-12">plugin20.html revision 2.66</font>
 <br>Latest version of this document is available at: <a href="http://xchat.org/docs/plugin20.html">http://xchat.org/docs/plugin20.html</a></small>
 
-<h2>Information:</h2>
+<h2>1. Documentation:</h2>
 <blockquote>
-<a href="#intro">Introduction</a>
-<br><a href="#sample">Sample plugin</a>
-<br><a href="#word">What is word and word_eol?</a>
-<br><a href="#lists">Lists and fields</a>
-<br><a href="#win32">Plugins on Windows (Win32)</a>
-<br><a href="#gui">Controlling the GUI</a>
-<br><a href="#unicode">Handling UTF-8/Unicode strings</a>
+<a href="#intro">1.0 Introduction</a>
+<br><a href="#sample">1.1 Sample plugin</a>
+<br><a href="#word">1.2 What is word and word_eol?</a>
+<br><a href="#lists">1.3 Lists and fields</a>
+<br><a href="#win32">1.4 Plugins on Windows (Win32)</a>
+<br><a href="#gui">1.5 Controlling the GUI</a>
+<br>&nbsp; <a href="#gui">1.5.1 Basic Control</a>
+<br>&nbsp; <a href="#menu">1.5.2 Custom Menu Items</a>
+<br>&nbsp; <a href="#tray">1.5.3 System Tray</a>
+<br><a href="#unicode">1.6 Handling UTF-8/Unicode strings</a>
 </blockquote>
 
-<h2>Functions:</h2>
+<h2>2. Function reference:</h2>
 <blockquote>
 <a href="#xchat_hook_command">xchat_hook_command</a>
 <br><a href="#xchat_hook_fd">xchat_hook_fd</a>
@@ -226,7 +229,7 @@ needed for a long time after calling xchat_list_str. The types of lists and fiel
 <tr><td>channel</td><td>Channel or query name</td><td>string</td></tr>
 <tr><td>chantypes</td><td>Channel types e.g. "#!&amp;"<br><small>(Added in version 2.0.9. Older versions will return NULL)</small></td><td>string</td>
 <tr><td>context</td><td>(xchat_context *) pointer. Can be used with xchat_set_context</td><td>string</td></tr>
-<tr><td>flags</td><td>Server/Channel Bits:<br>0=Connected 1=Connecting 2=Away 3=EndOfMotd (Login complete) 4=Has WHOX 5=Has IDMSG (FreeNode)<br>6=Hide Join/Parts 7=Color Paste 8=Beep on Message<br><small>(Bits 0-5 added in 2.0.9. Bits 6-8 added in 2.6.6)</small></td><td>int</td></tr>
+<tr><td>flags</td><td>Server/Channel Bits:<br>0=Connected 1=Connecting 2=Away 3=EndOfMotd (Login complete) 4=Has WHOX 5=Has IDMSG (FreeNode)<br>6=Hide Join/Parts 7=Color Paste 8=Beep on Message 9=Blink Tray on Message<br><small>(Bits 0-5 added in 2.0.9. Bits 6-8 added in 2.6.6. Bit 9 added in 2.8.0)</small></td><td>int</td></tr>
 <tr><td>id</td><td>Unique server ID<br><small>(Added in version 2.0.8. Older versions will return -1)</small></td><td>int</td></tr>
 <tr><td>lag</td><td>Lag in milliseconds<br><small>(Added in version 2.6.8. Older versions will return -1)</small></td><td>int</td>
 <tr><td>maxmodes</td><td>Maximum modes per line<br><small>(Added in version 2.0.9. Older versions will return -1)</small></td><td>int</td>
@@ -397,7 +400,7 @@ In the example above, it would be recommended to execute "MENU DEL FServe" insid
 <br><br>
 Parameters and flags:
 <blockquote>
-<table border=1>
+<table border=1 cellpadding=4 rules=all>
 <tr><td>-eX</td><td>Set enable flag to X. -e0 for disable, -e1 for enable. This lets you create a disabled (shaded) item.</td></tr>
 <tr><td>-k&lt;mod>,&lt;key></td><td>Specify a keyboard shortcut. "mod" is the modifier which is a bitwise OR of: 1-SHIFT 4-CTRL 8-ALT in decimal. "key" is the key value in decimal, e.g. -k5,101 would specify SHIFT-CTRL-E.</td></tr>
 <tr><td>-m</td><td>Specify that this label should be treated as <a href="http://developer.gnome.org/doc/API/2.0/pango/PangoMarkupFormat.html">Pango Markup</a> language. Since forward slash ("/") is already used in menu paths, you should replace closing tags with an ASCII 003 instead e.g.: xchat_command(ph, "MENU -m ADD \"&lt;b>Bold Menu&lt;\003b>\""); (new for 2.6.6).</td></tr>
@@ -413,6 +416,17 @@ just ADD an item with exactly the same name and command and specify the -tX -eX 
 	MENU -t0 ADD "Settings/Sub Menu/My Setting" myseton mysetoff
 </pre>
 However, internal names and layouts of XChat's menu may change in the future, so use at own risk.
+<br><br>
+<a name=tray>Starting from 2.8.0 you can manipulate XChat's system tray icon using the /TRAY command</a>:
+<pre>
+ Usage: 
+ TRAY -f &lt;timeout> &lt;file1> [&lt;file2>] Flash tray between two icons. Leave off file2 to use default xchat icon.
+ TRAY -f &lt;filename>                  Set tray to a fixed icon.
+ TRAY -i &lt;number>                    Flash tray with an internal icon.
+ TRAY -t &lt;text>                      Set the tray tooltip.
+ TRAY -b &lt;title> &lt;text>              Set the tray balloon [currently Windows only].
+</pre>
+Filenames can be ICO or PNG format. PNG format is support on Linux/BSD and Windows XP (but requires installation of GDI+ on Windows 2000). Set a timeout of -1 to use XChat's default.
 <br><br>
 
 <h3><a name=unicode>Handling UTF-8/Unicode strings</a></h3>

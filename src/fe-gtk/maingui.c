@@ -445,6 +445,23 @@ mg_inputbox_cb (GtkWidget *igad, session_gui *gui)
 	free (cmd);
 }
 
+static gboolean
+has_key (char *modes)
+{
+	if (!modes)
+		return FALSE;
+	/* this is a crude check, but "-k" can't exist, so it works. */
+	while (*modes)
+	{
+		if (*modes == 'k')
+			return TRUE;
+		if (*modes == ' ')
+			return FALSE;
+		modes++;
+	}
+	return FALSE;
+}
+
 void
 fe_set_title (session *sess)
 {
@@ -470,10 +487,17 @@ fe_set_title (session *sess)
 					 sess->server->nick, server_get_network (sess->server, TRUE));
 		break;
 	case SESS_CHANNEL:
-		snprintf (tbuf, sizeof (tbuf),
-					 "XChat: %s @ %s / %s (%s)",
-					 sess->server->nick, server_get_network (sess->server, TRUE),
-					 sess->channel, sess->current_modes ? sess->current_modes : "");
+		/* don't display keys in the titlebar */
+		if (has_key (sess->current_modes))
+			snprintf (tbuf, sizeof (tbuf),
+						 "XChat: %s @ %s / %s",
+						 sess->server->nick, server_get_network (sess->server, TRUE),
+						 sess->channel);
+		else
+			snprintf (tbuf, sizeof (tbuf),
+						 "XChat: %s @ %s / %s (%s)",
+						 sess->server->nick, server_get_network (sess->server, TRUE),
+						 sess->channel, sess->current_modes ? sess->current_modes : "");
 		break;
 	case SESS_NOTICES:
 	case SESS_SNOTICES:
