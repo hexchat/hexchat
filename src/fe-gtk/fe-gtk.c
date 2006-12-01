@@ -765,6 +765,9 @@ fe_ctrl_gui (session *sess, int action, int arg)
 		break;
 	case 7:
 		mg_detach (sess, arg);	/* arg: 0=toggle 1=detach 2=attach */
+		break;
+	case 8:
+		setup_apply_real (TRUE, TRUE);
 	}
 }
 

@@ -14,6 +14,7 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
 ------------------------------------------------------------------------------
 
  - Updated translations (cs, de, hu).
+ - XChat now requires at least GTK+ 2.10.
  - Added partial support for numeric 005 token ELIST (min users only).
  - Brand new channel list window: GtkTreeView, nicer layout, less CPU power
    when downloading very large list, uses less memory, supports regexp/
@@ -24,12 +25,15 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
    should also work now (changed to execv()).
  - Settings: Warn the user when trying to put the tree on the top/bottom.
  - DCC ack reading
- - Tray
- - Req GTK 2.10
+ - Tray.
  - Channel modes are no longer shown in the titlebar if they contain a key.
+ - Added /GUI APPLY command, which does that same as pressing OK in the
+   settings window (e.g use it after /set). Mainly for scripters.
  - 
  - 
  - 
+ - Plugin API:
+  * Added event_text to xchat_get_info().
  - Perl (Lian Wan Situ)
   * Fixed hook_command so that it won't override the help message for builtin
     commands unless a help message was specified.

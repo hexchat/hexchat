@@ -1409,9 +1409,9 @@ http_read_line (int print_fd, int sok, char *buf, int len)
 static int
 traverse_http (int print_fd, int sok, char *serverAddr, int port)
 {
-	char buf[256];
-	char auth_data[128];
-	char auth_data2[68];
+	char buf[512];
+	char auth_data[256];
+	char auth_data2[252];
 	int n, n2;
 
 	n = snprintf (buf, sizeof (buf), "CONNECT %s:%d HTTP/1.0\r\n",

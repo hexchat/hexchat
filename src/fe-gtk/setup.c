@@ -1722,51 +1722,12 @@ unslash (char *dir)
 	}
 }
 
-static void
-setup_apply (struct xchatprefs *pr)
+void
+setup_apply_real (int new_pix, int do_ulist)
 {
 	GSList *list;
-	int done_main = FALSE;
 	session *sess;
-	int new_pix = FALSE;
-	int noapply = FALSE;
-	int do_ulist = FALSE;
-
-	if (strcmp (pr->background, prefs.background) != 0)
-		new_pix = TRUE;
-
-#define DIFF(a) (pr->a != prefs.a)
-
-	if (DIFF (paned_userlist))
-		noapply = TRUE;
-	if (DIFF (lagometer))
-		noapply = TRUE;
-	if (DIFF (throttlemeter))
-		noapply = TRUE;
-	if (DIFF (showhostname_in_userlist))
-		noapply = TRUE;
-	if (DIFF (tab_small))
-		noapply = TRUE;
-	if (DIFF (tab_sort))
-		noapply = TRUE;
-	if (DIFF (use_server_tab))
-		noapply = TRUE;
-	if (DIFF (style_namelistgad))
-		noapply = TRUE;
-	if (DIFF (truncchans))
-		noapply = TRUE;
-
-	if (color_change || (DIFF (away_size_max)) || (DIFF (away_track)))
-		do_ulist = TRUE;
-
-	if (pr->tabs_position < 2 && pr->tabs_position != 4 &&
-		 pr->tab_layout == 2 && pr->tabs_position != prefs.tabs_position)
-		fe_message (_("You cannot place the tree on the top or bottom!\n"
-						"Please change to the <b>Tabs</b> layout in the <b>View</b>"
-						" menu first."),
-						FE_MSG_WARN | FE_MSG_MARKUP);
-
-	memcpy (&prefs, pr, sizeof (prefs));
+	int done_main = FALSE;
 
 	/* remove trailing slashes */
 	unslash (prefs.dccdir);
@@ -1814,6 +1775,52 @@ setup_apply (struct xchatprefs *pr)
 
 	mg_apply_setup ();
 	tray_apply_setup ();
+}
+
+static void
+setup_apply (struct xchatprefs *pr)
+{
+	int new_pix = FALSE;
+	int noapply = FALSE;
+	int do_ulist = FALSE;
+
+	if (strcmp (pr->background, prefs.background) != 0)
+		new_pix = TRUE;
+
+#define DIFF(a) (pr->a != prefs.a)
+
+	if (DIFF (paned_userlist))
+		noapply = TRUE;
+	if (DIFF (lagometer))
+		noapply = TRUE;
+	if (DIFF (throttlemeter))
+		noapply = TRUE;
+	if (DIFF (showhostname_in_userlist))
+		noapply = TRUE;
+	if (DIFF (tab_small))
+		noapply = TRUE;
+	if (DIFF (tab_sort))
+		noapply = TRUE;
+	if (DIFF (use_server_tab))
+		noapply = TRUE;
+	if (DIFF (style_namelistgad))
+		noapply = TRUE;
+	if (DIFF (truncchans))
+		noapply = TRUE;
+
+	if (color_change || (DIFF (away_size_max)) || (DIFF (away_track)))
+		do_ulist = TRUE;
+
+	if (pr->tabs_position < 2 && pr->tabs_position != 4 &&
+		 pr->tab_layout == 2 && pr->tabs_position != prefs.tabs_position)
+		fe_message (_("You cannot place the tree on the top or bottom!\n"
+						"Please change to the <b>Tabs</b> layout in the <b>View</b>"
+						" menu first."),
+						FE_MSG_WARN | FE_MSG_MARKUP);
+
+	memcpy (&prefs, pr, sizeof (prefs));
+
+	setup_apply_real (new_pix, do_ulist);
 
 	if (noapply)
 		fe_message (_("Some settings were changed that require a"

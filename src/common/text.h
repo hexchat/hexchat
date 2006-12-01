@@ -28,7 +28,8 @@ int text_emit_by_name (char *name, session *sess, char *a, char *b, char *c, cha
 char *text_validate (char **text, int *len);
 int get_stamp_str (char *fmt, time_t tim, char **ret);
 void format_event (session *sess, int index, char **args, char *o, int sizeofo, unsigned int stripcolor_args);
-
+char *text_find_text_fmt (char *name);
+ 
 void sound_play (const char *file, gboolean quiet);
 void sound_play_event (int i);
 void sound_beep (session *);

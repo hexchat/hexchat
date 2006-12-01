@@ -4,6 +4,7 @@
 #include "../common/xchat-plugin.h"
 #include "../common/xchat.h"
 #include "../common/xchatc.h"
+#include "../common/server.h"
 #include "fe-gtk.h"
 #include "pixmaps.h"
 #include "maingui.h"
@@ -45,12 +46,80 @@ static xchat_plugin *ph;
 static TrayIcon *custom_icon1;
 static TrayIcon *custom_icon2;
 
+static int tray_priv_count = 0;
+static int tray_pub_count = 0;
+static int tray_hilight_count = 0;
+static int tray_file_count = 0;
+
+
 void tray_apply_setup (void);
 
+
+
+static int
+tray_count_channels (void)
+{
+	int cons = 0;
+	GSList *list;
+	session *sess;
+
+	for (list = sess_list; list; list = list->next)
+	{
+		sess = list->data;
+		if (sess->server->connected && sess->channel[0] &&
+			 sess->type == SESS_CHANNEL)
+			cons++;
+	}
+	return cons;
+}
+
+static int
+tray_count_networks (void)
+{
+	int cons = 0;
+	GSList *list;
+
+	for (list = serv_list; list; list = list->next)
+	{
+		if (((server *)list->data)->connected)
+			cons++;
+	}
+	return cons;
+}
+
+void
+fe_tray_set_tooltip (const char *text)
+{
+	if (sticon)
+		gtk_status_icon_set_tooltip (sticon, text);
+}
+
+void
+fe_tray_set_balloon (const char *title, const char *text)
+{
+/*	if (sticon)
+		gtk_status_icon_set_balloon (sticon, title, text);*/
+}
+
+static void
+tray_set_tipf (const char *format, ...)
+{
+	va_list args;
+	char *buf;
+
+	va_start (args, format);
+	buf = g_strdup_vprintf (format, args);
+	va_end (args);
+
+	fe_tray_set_tooltip (buf);
+	g_free (buf);
+}
 
 static void
 tray_stop_flash (void)
 {
+	int nets, chans;
+
 	if (flash_tag)
 	{
 		g_source_remove (flash_tag);
@@ -58,8 +127,16 @@ tray_stop_flash (void)
 	}
 
 	if (sticon)
+	{
 		gtk_status_icon_set_from_pixbuf (sticon, ICON_NORMAL);
-	tray_status = TS_NONE;
+		nets = tray_count_networks ();
+		chans = tray_count_channels ();
+		if (nets)
+			tray_set_tipf (_("XChat: Connected to %u networks and %u channels"),
+								nets, chans);
+		else
+			fe_tray_set_tooltip (_("Not connected."));
+	}
 
 	if (custom_icon1)
 	{
@@ -72,6 +149,17 @@ tray_stop_flash (void)
 		tray_icon_free (custom_icon2);
 		custom_icon2 = NULL;
 	}
+
+	tray_status = TS_NONE;
+}
+
+static void
+tray_reset_counts (void)
+{
+	tray_priv_count = 0;
+	tray_pub_count = 0;
+	tray_hilight_count = 0;
+	tray_file_count = 0;
 }
 
 static int
@@ -118,20 +206,6 @@ tray_set_flash (TrayIcon *icon)
 
 	gtk_status_icon_set_from_pixbuf (sticon, icon);
 	flash_tag = g_timeout_add (TIMEOUT, (GSourceFunc) tray_timeout_cb, icon);
-}
-
-void
-fe_tray_set_tooltip (const char *text)
-{
-	if (sticon)
-		gtk_status_icon_set_tooltip (sticon, text);
-}
-
-void
-fe_tray_set_balloon (const char *title, const char *text)
-{
-/*	if (sticon)
-		gtk_status_icon_set_balloon (sticon, title, text);*/
 }
 
 void
@@ -202,6 +276,7 @@ tray_toggle_visibility (void)
 	GtkWindow *win = (GtkWindow *)xchat_get_info (ph, "win_ptr");
 
 	tray_stop_flash ();
+	tray_reset_counts ();
 
 	if (GTK_WIDGET_VISIBLE (win))
 	{
@@ -229,14 +304,15 @@ tray_dialog_cb (GtkWidget *dialog, gint arg1, gpointer userdata)
 		gtk_widget_destroy ((GtkWidget *)xchat_get_info (ph, "win_ptr"));
 }
 
+
 static void
 tray_menu_quit_cb (GtkWidget *item, gpointer userdata)
 {
 	GtkWidget *dialog;
 
-	dialog = gtk_message_dialog_new (GTK_WINDOW (parent_window), 0,
+	dialog = gtk_message_dialog_new_with_markup (GTK_WINDOW (parent_window), 0,
 					GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL,
-					_("Quit XChat. Are you sure?"));
+					_("You are connected to <b>%u</b> IRC networks.\nAre you sure you want to quit?"), tray_count_networks ());
 	g_signal_connect (G_OBJECT (dialog), "response",
 							G_CALLBACK (tray_dialog_cb), NULL);
 	gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
@@ -299,7 +375,7 @@ tray_menu_cb (GtkWidget *widget, guint button, guint time, gpointer userdata)
 		blink_item (BIT_FILEOFFER, submenu, _("File Offer"));
 
 		tray_make_item (menu, NULL, tray_menu_quit_cb, NULL);
-		mg_create_icon_item (_("_Exit..."), GTK_STOCK_QUIT, menu, tray_menu_quit_cb, NULL);
+		mg_create_icon_item (_("Quit..."), GTK_STOCK_QUIT, menu, tray_menu_quit_cb, NULL);
 	}
 
 	st = xchat_get_info (ph, "win_status");
@@ -321,6 +397,8 @@ tray_init (void)
 	custom_icon2 = NULL;
 
 	sticon = gtk_status_icon_new_from_pixbuf (ICON_NORMAL);
+	if (!sticon)
+		return;
 	g_signal_connect (G_OBJECT (sticon), "popup-menu",
 							G_CALLBACK (tray_menu_cb), sticon);
 	g_signal_connect (G_OBJECT (sticon), "activate",
@@ -334,7 +412,18 @@ tray_hilight_cb (char *word[], void *userdata)
 		return XCHAT_EAT_NONE;
 
 	if (prefs.gui_tray_blink & (1 << BIT_HIGHLIGHT))
+	{
 		tray_set_flash (ICON_HILIGHT);
+
+		/* FIXME: hides any previous private messages */
+		tray_hilight_count++;
+		if (tray_hilight_count == 1)
+			tray_set_tipf (_("XChat: Highlighed message from: %s (%s)"),
+								word[1], xchat_get_info (ph, "channel"));
+		else
+			tray_set_tipf (_("XChat: %u highlighted messages, latest from: %s (%s)"),
+								tray_hilight_count, word[1], xchat_get_info (ph, "channel"));
+	}
 
 	return XCHAT_EAT_NONE;
 }
@@ -346,7 +435,16 @@ tray_message_cb (char *word[], void *userdata)
 		return XCHAT_EAT_NONE;
 
 	if (prefs.gui_tray_blink & (1 << BIT_MESSAGE))
+	{
 		tray_set_flash (ICON_MSG);
+
+		tray_pub_count++;
+		if (tray_pub_count == 1)
+			tray_set_tipf (_("XChat: New public message from: %s (%s)"),
+								word[1], xchat_get_info (ph, "channel"));
+		else
+			tray_set_tipf (_("XChat: %u new public messages."), tray_pub_count);
+	}
 
 	return XCHAT_EAT_NONE;
 }
@@ -354,11 +452,27 @@ tray_message_cb (char *word[], void *userdata)
 static int
 tray_priv_cb (char *word[], void *userdata)
 {
+	const char *network;
+
 	if (tray_status == TS_HIGHLIGHT)
 		return XCHAT_EAT_NONE;
 
 	if (prefs.gui_tray_blink & (1 << BIT_PRIVMSG))
+	{
 		tray_set_flash (ICON_HILIGHT);
+
+		network = xchat_get_info (ph, "network");
+		if (!network)
+			network = xchat_get_info (ph, "server");
+
+		tray_priv_count++;
+		if (tray_priv_count == 1)
+			tray_set_tipf (_("XChat: Private message from: %s (%s)"),
+								word[1], network);
+		else
+			tray_set_tipf (_("XChat: %u private messages, latest from: %s (%s)"),
+								tray_priv_count, word[1], network);
+	}
 
 	return XCHAT_EAT_NONE;
 }
@@ -366,11 +480,27 @@ tray_priv_cb (char *word[], void *userdata)
 static int
 tray_dcc_cb (char *word[], void *userdata)
 {
+	const char *network;
+
 	if (tray_status == TS_FILEOFFER)
 		return XCHAT_EAT_NONE;
 
 	if (prefs.gui_tray_blink & (1 << BIT_FILEOFFER))
+	{
 		tray_set_flash (ICON_FILE);
+
+		network = xchat_get_info (ph, "network");
+		if (!network)
+			network = xchat_get_info (ph, "server");
+
+		tray_file_count++;
+		if (tray_file_count == 1)
+			tray_set_tipf (_("XChat: File offer from: %s (%s)"),
+								word[1], network);
+		else
+			tray_set_tipf (_("XChat: %u file offers, latest from: %s (%s)"),
+								tray_file_count, word[1], network);
+	}
 
 	return XCHAT_EAT_NONE;
 }
@@ -379,6 +509,7 @@ static int
 tray_focus_cb (char *word[], void *userdata)
 {
 	tray_stop_flash ();
+	tray_reset_counts ();
 	return XCHAT_EAT_NONE;
 }
 

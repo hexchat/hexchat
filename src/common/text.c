@@ -1660,6 +1660,18 @@ text_emit (int index, session *sess, char *a, char *b, char *c, char *d)
 		display_event (sess, index, word, stripcolor_args);
 }
 
+char *
+text_find_text_fmt (char *name)
+{
+	int i = 0;
+
+	i = pevent_find (name, &i);
+	if (i >= 0)
+		return pntevts_text[i];
+
+	return NULL;
+}
+
 int
 text_emit_by_name (char *name, session *sess, char *a, char *b, char *c, char *d)
 {
