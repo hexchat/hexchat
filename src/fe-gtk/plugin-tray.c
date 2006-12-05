@@ -449,30 +449,46 @@ tray_message_cb (char *word[], void *userdata)
 	return XCHAT_EAT_NONE;
 }
 
-static int
-tray_priv_cb (char *word[], void *userdata)
+static void
+tray_priv (char *from)
 {
 	const char *network;
 
+	tray_set_flash (ICON_HILIGHT);
+
+	network = xchat_get_info (ph, "network");
+	if (!network)
+		network = xchat_get_info (ph, "server");
+
+	tray_priv_count++;
+	if (tray_priv_count == 1)
+		tray_set_tipf (_("XChat: Private message from: %s (%s)"),
+							from, network);
+	else
+		tray_set_tipf (_("XChat: %u private messages, latest from: %s (%s)"),
+							tray_priv_count, from, network);
+}
+
+static int
+tray_priv_cb (char *word[], void *userdata)
+{
 	if (tray_status == TS_HIGHLIGHT)
 		return XCHAT_EAT_NONE;
 
 	if (prefs.gui_tray_blink & (1 << BIT_PRIVMSG))
-	{
-		tray_set_flash (ICON_HILIGHT);
+		tray_priv (word[1]);
 
-		network = xchat_get_info (ph, "network");
-		if (!network)
-			network = xchat_get_info (ph, "server");
+	return XCHAT_EAT_NONE;
+}
 
-		tray_priv_count++;
-		if (tray_priv_count == 1)
-			tray_set_tipf (_("XChat: Private message from: %s (%s)"),
-								word[1], network);
-		else
-			tray_set_tipf (_("XChat: %u private messages, latest from: %s (%s)"),
-								tray_priv_count, word[1], network);
-	}
+static int
+tray_invited_cb (char *word[], void *userdata)
+{
+	if (tray_status == TS_HIGHLIGHT)
+		return XCHAT_EAT_NONE;
+
+	if (prefs.gui_tray_blink & (1 << BIT_PRIVMSG))
+		tray_priv (word[2]);
 
 	return XCHAT_EAT_NONE;
 }
@@ -561,6 +577,7 @@ tray_plugin_init (xchat_plugin *plugin_handle, char **plugin_name,
 	xchat_hook_print (ph, "Private Message", -1, tray_priv_cb, NULL);
 	xchat_hook_print (ph, "Private Message to Dialog", -1, tray_priv_cb, NULL);
 	xchat_hook_print (ph, "Notice", -1, tray_priv_cb, NULL);
+	xchat_hook_print (ph, "Invited", -1, tray_invited_cb, NULL);
 
 	xchat_hook_print (ph, "DCC Offer", -1, tray_dcc_cb, NULL);
 

@@ -1,4 +1,4 @@
-## RPM spec file designed for Fedora Core 4 or 5 ##
+## RPM spec file designed for Fedora Core 4, 5 or 6 ##
 
 # set this to 0 for FC4
 %define fedora5_or_newer 1
@@ -7,7 +7,7 @@ Summary: Graphical IRC (chat) client
 Summary(fr): Client IRC (chat) avec interface graphique
 Summary(de): IRC-Client (Chat) mit grafischer Oberfläche
 Name: xchat
-Version: 2.6.8
+Version: 2.7.90
 Release: 0
 Epoch: 1
 Group: Applications/Internet
@@ -63,10 +63,6 @@ mkdir -p $RPM_BUILD_ROOT%{_datadir}/applications $RPM_BUILD_ROOT%{_datadir}/pixm
 strip -R .note -R .comment $RPM_BUILD_ROOT%{_libdir}/perl.so
 strip -R .note -R .comment $RPM_BUILD_ROOT%{_libdir}/python.so
 strip -R .note -R .comment $RPM_BUILD_ROOT%{_libdir}/tcl.so
-%if %{fedora5_or_newer}
-strip -R .note -R .comment $RPM_BUILD_ROOT%{_libdir}/dbus.so
-mv $RPM_BUILD_ROOT%{_libdir}/dbus.so $RPM_BUILD_ROOT%{_libdir}/xchat/plugins
-%endif
 mv $RPM_BUILD_ROOT%{_libdir}/perl.so $RPM_BUILD_ROOT%{_libdir}/xchat/plugins
 mv $RPM_BUILD_ROOT%{_libdir}/python.so $RPM_BUILD_ROOT%{_libdir}/xchat/plugins
 mv $RPM_BUILD_ROOT%{_libdir}/tcl.so $RPM_BUILD_ROOT%{_libdir}/xchat/plugins
@@ -92,8 +88,6 @@ unset GCONF_CONFIG_SOURCE
 %{_datadir}/applications/xchat.desktop
 %{_datadir}/pixmaps/xchat.png
 %if %{fedora5_or_newer}
-%{_bindir}/xchat-remote
-%{_libdir}/xchat/plugins/dbus.so
 %{_sysconfdir}/gconf/schemas/apps_xchat_url_handler.schemas
 %endif
 

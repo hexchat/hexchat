@@ -10,11 +10,14 @@ There are always more changes than listed here, these are just the
 highlights. The full CVS log is available at www.xchat.org/cvslog/
 
 ------------------------------------------------------------------------------
- 2.x.x - DD/MMM/2006
+ 2.7.90 - 03/Dec/2006 (Development Release)
 ------------------------------------------------------------------------------
 
  - Updated translations (cs, de, hu).
  - XChat now requires at least GTK+ 2.10.
+ - Added a system tray icon (aka Notification Area). This is probably the
+   biggest feature addition in this series. Also added a /TRAY command so
+   scripts can manipulate the icon.
  - Added partial support for numeric 005 token ELIST (min users only).
  - Brand new channel list window: GtkTreeView, nicer layout, less CPU power
    when downloading very large list, uses less memory, supports regexp/
@@ -24,14 +27,12 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
    detects Gnome or KDE to run gnome-open or kfmclient. URLs with quotes
    should also work now (changed to execv()).
  - Settings: Warn the user when trying to put the tree on the top/bottom.
- - DCC ack reading
- - Tray.
+ - Fixed DCC ack reading so it doesn't use MSG_PEEK.
  - Channel modes are no longer shown in the titlebar if they contain a key.
  - Added /GUI APPLY command, which does that same as pressing OK in the
    settings window (e.g use it after /set). Mainly for scripters.
- - 
- - 
- - 
+ - Allow changing the logging folder if the log filename is set to a full path
+   in the settings window (starts with a '/').
  - Plugin API:
   * Added event_text to xchat_get_info().
  - Perl (Lian Wan Situ)
