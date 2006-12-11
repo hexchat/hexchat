@@ -1405,17 +1405,18 @@ mg_tab_contextmenu_cb (chanview *cv, chan *ch, int tag, gpointer ud, GdkEventBut
 
 	mg_create_icon_item (_("_Close Tab"), GTK_STOCK_CLOSE, menu,
 								mg_destroy_tab_cb, ch);
-	/*if (tag == TAG_IRC)*/
-		mg_create_icon_item (_("_Detach Tab"), GTK_STOCK_REDO, menu,
-									mg_detach_tab_cb, ch);
+	mg_create_icon_item (_("_Detach Tab"), GTK_STOCK_REDO, menu,
+								mg_detach_tab_cb, ch);
 
 	if (sess && tabmenu_list)
 		menu_create (menu, tabmenu_list, sess->channel, FALSE);
+	menu_add_plugin_items (menu, "\x4$TAB");
 
 	if (event->window)
 		gtk_menu_set_screen (GTK_MENU (menu), gdk_drawable_get_screen (event->window));
 	g_object_ref (menu);
-	gtk_object_sink (GTK_OBJECT (menu));
+	g_object_ref_sink (menu);
+	g_object_unref (menu);
 	g_signal_connect (G_OBJECT (menu), "selection-done",
 							G_CALLBACK (mg_menu_destroy), NULL);
 	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL, 0, event->time);

@@ -372,7 +372,10 @@ inbound_action (session *sess, char *chan, char *from, char *text, int fromme, i
 		}
 	}
 
-	EMIT_SIGNAL (XP_TE_CHANACTION, sess, from, text, nickchar, NULL, 0);
+	if (fromme)
+		EMIT_SIGNAL (XP_TE_UACTION, sess, from, text, nickchar, NULL, 0);
+	else
+		EMIT_SIGNAL (XP_TE_CHANACTION, sess, from, text, nickchar, NULL, 0);
 }
 
 void

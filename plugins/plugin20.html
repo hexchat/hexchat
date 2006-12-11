@@ -418,6 +418,21 @@ just ADD an item with exactly the same name and command and specify the -tX -eX 
 </pre>
 However, internal names and layouts of XChat's menu may change in the future, so use at own risk.
 <br><br>
+From 2.8.0, you can also change menus other than the main one (i.e popup menus). Currently they are:
+<blockquote>
+<table border=1 cellpadding=4 rules=all>
+<tr bgcolor="#999999"><td>Root Name</td><td>Menu</td></tr>
+<tr><td>$TAB</td><td>Tab menu (right click a channel/query)</td></tr>
+<tr><td>$TRAY</td><td>System Tray menu</td></tr>
+<tr><td>$URL</td><td>URL link menu</td></tr>
+<tr><td>$NICK</td><td>Userlist nick-name popup menu</td></tr>
+</table>
+</blockquote>
+<pre>
+	Example: MENU -p0 ADD "$TAB/Cycle Channel" cycle
+</pre>
+
+<br>
 <a name=tray>Starting from 2.8.0 you can manipulate XChat's system tray icon using the /TRAY command</a>:
 <pre>
  Usage: 

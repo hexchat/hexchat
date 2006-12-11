@@ -13,7 +13,7 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  2.7.90 - 03/Dec/2006 (Development Release)
 ------------------------------------------------------------------------------
 
- - Updated translations (cs, de, hu).
+ - Updated translations (cs, de, gl, hu).
  - XChat now requires at least GTK+ 2.10.
  - Added a system tray icon (aka Notification Area). This is probably the
    biggest feature addition in this series. Also added a /TRAY command so
@@ -33,6 +33,10 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
    settings window (e.g use it after /set). Mainly for scripters.
  - Allow changing the logging folder if the log filename is set to a full path
    in the settings window (starts with a '/').
+ - Added 'Your Action' text event.
+ - Separated out /away and /back commands so it's obvious what they'll do.
+ - Extended the /MENU command to work for popup menus too. See plugin20.html
+   for details.
  - Plugin API:
   * Added event_text to xchat_get_info().
  - Perl (Lian Wan Situ)

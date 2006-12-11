@@ -477,7 +477,8 @@ menu_popup (GtkWidget *menu, GdkEventButton *event, gpointer objtounref)
 #endif
 
 	g_object_ref (menu);
-	gtk_object_sink (GTK_OBJECT (menu));
+	g_object_ref_sink (menu);
+	g_object_unref (menu);
 	g_signal_connect (G_OBJECT (menu), "selection-done",
 							G_CALLBACK (menu_destroy), objtounref);
 	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL,
@@ -579,6 +580,7 @@ menu_nickmenu (session *sess, GdkEventButton *event, char *nick, int num_sel)
 		menu_create (menu, popup_list, NULL, FALSE);
 	else
 		menu_create (menu, popup_list, str_copy, FALSE);
+	menu_add_plugin_items (menu, "\x5$NICK");
 	menu_popup (menu, event, NULL);
 }
 
@@ -756,6 +758,7 @@ menu_urlmenu (GdkEventButton *event, char *url)
 	menu_quick_item_with_callback (copy_to_clipboard_cb, _("Copy Selected Link"), menu, str_copy);
 	/* custom ones from urlhandlers.conf */
 	menu_create (menu, urlhandler_list, str_copy, TRUE);
+	menu_add_plugin_items (menu, "\x4$URL");
 	menu_popup (menu, event, NULL);
 }
 
@@ -1524,6 +1527,9 @@ menu_foreach_gui (menu_entry *me, void (*callback) (GtkWidget *, menu_entry *))
 	int tabdone = FALSE;
 	session *sess;
 
+	if (!me->is_main)
+		return;	/* not main menu */
+
 	while (list)
 	{
 		sess = list->data;
@@ -1576,8 +1582,10 @@ static GtkWidget *
 menu_add_toggle (GtkWidget *menu, menu_entry *me)
 {
 	GtkWidget *item = NULL;
+	char *path = me->path + me->root_offset;
 
-	menu = menu_find_path (menu, me->path);
+	if (path[0] != 0)
+		menu = menu_find_path (menu, path);
 	if (menu)
 	{
 		item = menu_toggle_item (me->label, menu, menu_toggle_cb, me, me->state);
@@ -1591,8 +1599,10 @@ static GtkWidget *
 menu_add_item (GtkWidget *menu, menu_entry *me)
 {
 	GtkWidget *item = NULL;
+	char *path = me->path + me->root_offset;
 
-	menu = menu_find_path (menu, me->path);
+	if (path[0] != 0)
+		menu = menu_find_path (menu, path);
 	if (menu)
 	{
 		item = menu_quick_item (me->cmd, me->label, menu, me->markup ? XCMENU_MARKUP : XCMENU_MNEMONIC, 0);
@@ -1606,9 +1616,10 @@ static GtkWidget *
 menu_add_sub (GtkWidget *menu, menu_entry *me)
 {
 	GtkWidget *item = NULL;
+	char *path = me->path + me->root_offset;
 
-	if (me->path[0] != 0)
-		menu = menu_find_path (menu, me->path);
+	if (path[0] != 0)
+		menu = menu_find_path (menu, path);
 	if (menu)
 		menu_quick_sub (me->label, menu, &item, me->markup ? XCMENU_MARKUP : XCMENU_MNEMONIC, me->pos);
 	return item;
@@ -1617,7 +1628,7 @@ menu_add_sub (GtkWidget *menu, menu_entry *me)
 static void
 menu_del_cb (GtkWidget *menu, menu_entry *me)
 {
-	GtkWidget *item = menu_find (menu, me->path, me->label);
+	GtkWidget *item = menu_find (menu, me->path + me->root_offset, me->label);
 	if (item)
 		gtk_widget_destroy (item);
 }
@@ -1676,7 +1687,7 @@ fe_menu_update (menu_entry *me)
 /* used to add custom menus to the right-click menu */
 
 static void
-menu_add_plugin_items (GtkWidget *menu)
+menu_add_plugin_mainmenu_items (GtkWidget *menu)
 {
 	GSList *list;
 	menu_entry *me;
@@ -1685,7 +1696,24 @@ menu_add_plugin_items (GtkWidget *menu)
 	while (list)
 	{
 		me = list->data;
-		menu_add_cb (menu, me);
+		if (me->is_main)
+			menu_add_cb (menu, me);
+		list = list->next;
+	}
+}
+
+void
+menu_add_plugin_items (GtkWidget *menu, char *root)
+{
+	GSList *list;
+	menu_entry *me;
+
+	list = menu_list;	/* outbound.c */
+	while (list)
+	{
+		me = list->data;
+		if (!me->is_main && !strncmp (me->path, root + 1, root[0]))
+			menu_add_cb (menu, me);
 		list = list->next;
 	}
 }
@@ -1895,7 +1923,7 @@ togitem:
 				if (menu)
 				{
 					gtk_menu_item_set_submenu (GTK_MENU_ITEM (menu_item), menu);
-					menu_add_plugin_items (menu_bar);
+					menu_add_plugin_mainmenu_items (menu_bar);
 				}
 				if (usermenu)
 					usermenu_create (usermenu);

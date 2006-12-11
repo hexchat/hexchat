@@ -727,7 +727,8 @@ gtk_xtext_init (GtkXText * xtext)
 
 	xtext->adj = (GtkAdjustment *) gtk_adjustment_new (0, 0, 1, 1, 1, 1);
 	g_object_ref (G_OBJECT (xtext->adj));
-	gtk_object_sink ((GtkObject *) xtext->adj);
+	g_object_ref_sink (G_OBJECT (xtext->adj));
+	g_object_unref (G_OBJECT (xtext->adj));
 
 	xtext->vc_signal_tag = g_signal_connect (G_OBJECT (xtext->adj),
 				"value_changed", G_CALLBACK (gtk_xtext_adjustment_changed), xtext);

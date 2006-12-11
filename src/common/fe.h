@@ -7,11 +7,16 @@
 /* for storage of /menu entries */
 typedef struct
 {
-	int pos;	/* position */
-	short state;	/* state of toggle items */
-	short markup;	/* use pango markup? */
-	short enable;	/* enabled? sensitivity */
+	short pos;	/* position */
 	short modifier;	/* keybinding */
+	short root_offset;	/* bytes to offset ->path */
+	short padding;
+
+	char is_main;	/* is part of the Main menu? (not a popup) */
+	char state;	/* state of toggle items */
+	char markup;	/* use pango markup? */
+	char enable;	/* enabled? sensitivity */
+
 	int key;
 	char *path;
 	char *label;

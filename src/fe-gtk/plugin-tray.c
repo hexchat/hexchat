@@ -197,6 +197,10 @@ tray_set_flash (TrayIcon *icon)
 	if (!sticon)
 		return;
 
+	/* already flashing the same icon */
+	if (flash_tag && gtk_status_icon_get_pixbuf (sticon) == icon)
+		return;
+
 	/* no flashing if window is focused */
 	st = xchat_get_info (ph, "win_status");
 	if (!strcmp (st, "active"))
@@ -319,7 +323,7 @@ tray_menu_quit_cb (GtkWidget *item, gpointer userdata)
 	gtk_widget_show (dialog);
 }
 
-static GtkWidget *
+static void
 tray_make_item (GtkWidget *menu, char *label, void *callback, void *userdata)
 {
 	GtkWidget *item;
@@ -332,7 +336,6 @@ tray_make_item (GtkWidget *menu, char *label, void *callback, void *userdata)
 	g_signal_connect (G_OBJECT (item), "activate",
 							G_CALLBACK (callback), userdata);
 	gtk_widget_show (item);
-	return item;
 }
 
 static void
@@ -354,35 +357,44 @@ blink_item (int bit, GtkWidget *menu, char *label)
 }
 
 static void
+tray_menu_destroy (GtkWidget *menu, gpointer userdata)
+{
+	gtk_widget_destroy (menu);
+	g_object_unref (menu);
+}
+
+static void
 tray_menu_cb (GtkWidget *widget, guint button, guint time, gpointer userdata)
 {
-	static GtkWidget *menu = NULL;
-	static GtkWidget *restore_item;
+	GtkWidget *menu;
 	GtkWidget *submenu;
-	const char *st;
+	const char *st = xchat_get_info (ph, "win_status");
 
-	if (!menu)
-	{
-		menu = gtk_menu_new ();
+	menu = gtk_menu_new ();
+	/*gtk_menu_set_screen (GTK_MENU (menu), gtk_widget_get_screen (widget));*/
 
-		restore_item = tray_make_item (menu, _("_Restore"), tray_menu_restore_cb, NULL);
-		tray_make_item (menu, NULL, tray_menu_quit_cb, NULL);
-
-		submenu = mg_submenu (menu, _("_Blink on"));
-		blink_item (BIT_MESSAGE, submenu, _("Channel Message"));
-		blink_item (BIT_HIGHLIGHT, submenu, _("Highlighted Message"));
-		blink_item (BIT_PRIVMSG, submenu, _("Private Message"));
-		blink_item (BIT_FILEOFFER, submenu, _("File Offer"));
-
-		tray_make_item (menu, NULL, tray_menu_quit_cb, NULL);
-		mg_create_icon_item (_("Quit..."), GTK_STOCK_QUIT, menu, tray_menu_quit_cb, NULL);
-	}
-
-	st = xchat_get_info (ph, "win_status");
 	if (!strcmp (st, "hidden"))
-		gtk_label_set_text_with_mnemonic (GTK_LABEL (GTK_BIN (restore_item)->child), _("_Restore"));
+		tray_make_item (menu, _("_Restore"), tray_menu_restore_cb, NULL);
 	else
-		gtk_label_set_text_with_mnemonic (GTK_LABEL (GTK_BIN (restore_item)->child), _("_Hide"));
+		tray_make_item (menu, _("_Hide"), tray_menu_restore_cb, NULL);
+	tray_make_item (menu, NULL, tray_menu_quit_cb, NULL);
+
+	submenu = mg_submenu (menu, _("_Blink on"));
+	blink_item (BIT_MESSAGE, submenu, _("Channel Message"));
+	blink_item (BIT_HIGHLIGHT, submenu, _("Highlighted Message"));
+	blink_item (BIT_PRIVMSG, submenu, _("Private Message"));
+	blink_item (BIT_FILEOFFER, submenu, _("File Offer"));
+
+	tray_make_item (menu, NULL, tray_menu_quit_cb, NULL);
+	mg_create_icon_item (_("Quit..."), GTK_STOCK_QUIT, menu, tray_menu_quit_cb, NULL);
+
+	menu_add_plugin_items (menu, "\x5$TRAY");
+
+	g_object_ref (menu);
+	g_object_ref_sink (menu);
+	g_object_unref (menu);
+	g_signal_connect (G_OBJECT (menu), "selection-done",
+							G_CALLBACK (tray_menu_destroy), NULL);
 
 	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, gtk_status_icon_position_menu,
 						 userdata, button, time);

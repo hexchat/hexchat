@@ -559,7 +559,6 @@ static char defaultconf_commands[] =
 	"NAME AME\n"			"CMD allchan me &2\n\n"\
 	"NAME ANICK\n"			"CMD allserv nick &2\n\n"\
 	"NAME AMSG\n"			"CMD allchan say &2\n\n"\
-	"NAME BACK\n"			"CMD away\n\n"\
 	"NAME BANLIST\n"		"CMD quote MODE %c +b\n\n"\
 	"NAME CHAT\n"			"CMD dcc chat %2\n\n"\
 	"NAME DIALOG\n"		"CMD query %2\n\n"\

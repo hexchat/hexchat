@@ -330,41 +330,28 @@ cmd_away (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	GSList *list;
 	char *reason = word_eol[2];
-	int back = FALSE;
-	unsigned int gone;
 
-	if (!(*reason) && sess->server->is_away)
+	if (!(*reason))
 	{
-		/* mark back */
-		sess->server->p_set_back (sess->server);
-		back = TRUE;
-	} else
-	{
-		if (!(*reason))
+		if (sess->server->is_away)
 		{
-			if (sess->server->reconnect_away)
-				reason = sess->server->last_away_reason;
-			else
-				/* must manage memory pointed to by random_line() */
-				reason = random_line (prefs.awayreason);
+			if (sess->server->last_away_reason)
+				PrintTextf (sess, _("Already marked away: %s\n"), sess->server->last_away_reason);
+			return FALSE;
 		}
-		sess->server->p_set_away (sess->server, reason);
+
+		if (sess->server->reconnect_away)
+			reason = sess->server->last_away_reason;
+		else
+			/* must manage memory pointed to by random_line() */
+			reason = random_line (prefs.awayreason);
 	}
+	sess->server->p_set_away (sess->server, reason);
 
 	if (prefs.show_away_message)
 	{
-		if (back)
-		{
-			gone = time (NULL) - sess->server->away_time;
-			sprintf (tbuf, "me is back (gone %.2d:%.2d:%.2d)", gone / 3600,
-						(gone / 60) % 60, gone % 60);
-		} else
-		{
-			snprintf (tbuf, TBUFSIZE, "me is away: %s", reason);
-		}
-
-		list = sess_list;
-		while (list)
+		snprintf (tbuf, TBUFSIZE, "me is away: %s", reason);
+		for (list = sess_list; list; list = list->next)
 		{
 			/* am I the right server and not a dialog box */
 			if (((struct session *) list->data)->server == sess->server
@@ -373,18 +360,58 @@ cmd_away (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			{
 				handle_command ((session *) list->data, tbuf, TRUE);
 			}
-			list = list->next;
 		}
 	}
 
 	if (sess->server->last_away_reason != reason)
 	{
-		free (sess->server->last_away_reason);
+		if (sess->server->last_away_reason)
+			free (sess->server->last_away_reason);
+
 		if (reason == word_eol[2])
 			sess->server->last_away_reason = strdup (reason);
 		else
 			sess->server->last_away_reason = reason;
 	}
+
+	return TRUE;
+}
+
+static int
+cmd_back (struct session *sess, char *tbuf, char *word[], char *word_eol[])
+{
+	GSList *list;
+	unsigned int gone;
+
+	if (sess->server->is_away)
+	{
+		sess->server->p_set_back (sess->server);
+
+		if (prefs.show_away_message)
+		{
+			gone = time (NULL) - sess->server->away_time;
+			sprintf (tbuf, "me is back (gone %.2d:%.2d:%.2d)", gone / 3600,
+						(gone / 60) % 60, gone % 60);
+			for (list = sess_list; list; list = list->next)
+			{
+				/* am I the right server and not a dialog box */
+				if (((struct session *) list->data)->server == sess->server
+					 && ((struct session *) list->data)->type == SESS_CHANNEL
+					 && ((struct session *) list->data)->channel[0])
+				{
+					handle_command ((session *) list->data, tbuf, TRUE);
+				}
+			}
+		}
+	}
+	else
+	{
+		PrintText (sess, _("Already marked back.\n"));
+	}
+
+	if (sess->server->last_away_reason)
+		free (sess->server->last_away_reason);
+	sess->server->last_away_reason = NULL;
 
 	return TRUE;
 }
@@ -1148,6 +1175,25 @@ menu_del (char *path, char *label)
 	return 0;
 }
 
+static short
+menu_is_mainmenu_root (char *path, short *offset)
+{
+	static const char *menus[] = {"\x4$TAB","\x5$TRAY","\x4$URL","\x5$NICK"};
+	int i;
+
+	for (i = 0; i < 4; i++)
+	{
+		if (!strncmp (path, menus[i] + 1, menus[i][0]))
+		{
+			*offset = menus[i][0] + 1;	/* number of bytes to offset the root */
+			return 0;	/* is not main menu */
+		}
+	}
+
+	*offset = 0;
+	return 1;	/* is main menu */
+}
+
 static void
 menu_add (char *path, char *label, char *cmd, char *ucmd, int pos, int state, int markup, int enable, int mod, int key)
 {
@@ -1166,10 +1212,12 @@ menu_add (char *path, char *label, char *cmd, char *ucmd, int pos, int state, in
 
 	me = malloc (sizeof (menu_entry));
 	me->pos = pos;
+	me->modifier = mod;
+	me->padding = 0;
+	me->is_main = menu_is_mainmenu_root (path, &me->root_offset);
 	me->state = state;
 	me->markup = markup;
 	me->enable = enable;
-	me->modifier = mod;
 	me->key = key;
 	me->path = strdup (path);
 	me->label = NULL;
@@ -3440,6 +3488,7 @@ const struct commands xc_cmds[] = {
 	{"ALLSERV", cmd_allservers, 0, 0, 1,
 	 N_("ALLSERV <cmd>, sends a command to all servers you're in")},
 	{"AWAY", cmd_away, 1, 0, 1, N_("AWAY [<reason>], sets you away")},
+	{"BACK", cmd_back, 1, 0, 1, N_("BACK, sets you back (not away)")},
 	{"BAN", cmd_ban, 1, 1, 1,
 	 N_("BAN <mask> [<bantype>], bans everyone matching the mask from the current channel. If they are already on the channel this doesn't kick them (needs chanop)")},
 	{"CHANOPT", cmd_chanopt, 0, 0, 1,

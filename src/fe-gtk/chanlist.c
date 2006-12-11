@@ -586,7 +586,8 @@ chanlist_button_cb (GtkTreeView *tree, GdkEventButton *event, server *serv)
 	if (event->window)
 		gtk_menu_set_screen (GTK_MENU (menu), gdk_drawable_get_screen (event->window));
 	g_object_ref (menu);
-	gtk_object_sink (GTK_OBJECT (menu));
+	g_object_ref_sink (menu);
+	g_object_unref (menu);
 	g_signal_connect (G_OBJECT (menu), "selection-done",
 							G_CALLBACK (chanlist_menu_destroy), NULL);
 	mg_create_icon_item (_("_Join Channel"), GTK_STOCK_JUMP_TO, menu,

@@ -415,6 +415,11 @@ plugin_auto_load_cb (char *filename)
 {
 	char *pMsg;
 
+#ifndef WIN32	/* black listed */
+	if (!strcmp (file_part (filename), "dbus.so"))
+		return;
+#endif
+
 	pMsg = plugin_load (ps, filename, NULL);
 	if (pMsg)
 	{

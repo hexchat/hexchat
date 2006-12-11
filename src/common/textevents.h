@@ -401,6 +401,9 @@ N_("%C23*$tYou have left channel $3")},
 {"You Part with Reason", pevt_partreason_help, 4, 
 N_("%C23*$tYou have left channel $3 (%O%C23%B%B$4%O%C23)")},
 
+{"Your Action", pevt_chanaction_help, 131, 
+"%C18*$t$1%O $2"},
+
 {"Your Invitation", pevt_uinvite_help, 3, 
 N_("%C22*%O$tYou've invited%C26 $1%O to%C26 $2%O (%C26$3%O)")},
 
