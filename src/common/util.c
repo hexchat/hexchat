@@ -1178,7 +1178,8 @@ int my_poptParseArgvString(const char * s, int * argcPtr, char *** argvPtr) {
 		if (*src != quote) *buf++ = '\\';
 	    }
 	    *buf++ = *src;
-	} else if (isspace((unsigned char) *src)) {
+	/*} else if (isspace((unsigned char) *src)) {*/
+	} else if (*src == ' ') {
 	    if (*argv[argc]) {
 		buf++, argc++;
 		if (argc == argvAlloced) {
@@ -1266,7 +1267,7 @@ util_exec (const char *cmd)
 }
 
 int
-util_execv (const char *argv[])
+util_execv (char * const argv[])
 {
 	int pid, fd;
 

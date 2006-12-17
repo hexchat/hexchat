@@ -1073,6 +1073,8 @@ menu_free (menu_entry *me)
 		free (me->cmd);
 	if (me->ucmd)
 		free (me->ucmd);
+	if (me->group)
+		free (me->group);
 	free (me);
 }
 
@@ -1175,8 +1177,8 @@ menu_del (char *path, char *label)
 	return 0;
 }
 
-static short
-menu_is_mainmenu_root (char *path, short *offset)
+static char
+menu_is_mainmenu_root (char *path, gint16 *offset)
 {
 	static const char *menus[] = {"\x4$TAB","\x5$TRAY","\x4$URL","\x5$NICK"};
 	int i;
@@ -1195,7 +1197,7 @@ menu_is_mainmenu_root (char *path, short *offset)
 }
 
 static void
-menu_add (char *path, char *label, char *cmd, char *ucmd, int pos, int state, int markup, int enable, int mod, int key)
+menu_add (char *path, char *label, char *cmd, char *ucmd, int pos, int state, int markup, int enable, int mod, int key, char *group)
 {
 	menu_entry *me;
 
@@ -1213,7 +1215,6 @@ menu_add (char *path, char *label, char *cmd, char *ucmd, int pos, int state, in
 	me = malloc (sizeof (menu_entry));
 	me->pos = pos;
 	me->modifier = mod;
-	me->padding = 0;
 	me->is_main = menu_is_mainmenu_root (path, &me->root_offset);
 	me->state = state;
 	me->markup = markup;
@@ -1223,6 +1224,7 @@ menu_add (char *path, char *label, char *cmd, char *ucmd, int pos, int state, in
 	me->label = NULL;
 	me->cmd = NULL;
 	me->ucmd = NULL;
+	me->group = NULL;
 
 	if (label)
 		me->label = strdup (label);
@@ -1230,6 +1232,8 @@ menu_add (char *path, char *label, char *cmd, char *ucmd, int pos, int state, in
 		me->cmd = strdup (cmd);
 	if (ucmd)
 		me->ucmd = strdup (ucmd);
+	if (group)
+		me->group = strdup (group);
 
 	menu_list = g_slist_append (menu_list, me);
 	label = fe_menu_add (me);
@@ -1247,7 +1251,7 @@ cmd_menu (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	int idx = 2;
 	int len;
-	int pos = -1;
+	int pos = 0xffff;
 	int state;
 	int toggle = FALSE;
 	int enable = TRUE;
@@ -1255,6 +1259,7 @@ cmd_menu (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	int key = 0;
 	int mod = 0;
 	char *label;
+	char *group = NULL;
 
 	if (!word[2][0] || !word[3][0])
 		return FALSE;
@@ -1291,6 +1296,14 @@ cmd_menu (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		idx++;
 	}
 
+	/* -rSTATE,GROUP to specify a radio item */
+	if (word[idx][0] == '-' && word[idx][1] == 'r')
+	{
+		state = atoi (word[idx] + 2);
+		group = word[idx] + 4;
+		idx++;
+	}
+
 	/* -tX to specify toggle item with default state */
 	if (word[idx][0] == '-' && word[idx][1] == 't')
 	{
@@ -1298,6 +1311,9 @@ cmd_menu (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		idx++;
 		toggle = TRUE;
 	}
+
+	if (word[idx+1][0] == 0)
+		return FALSE;
 
 	/* the path */
 	path_part (word[idx+1], tbuf, 512);
@@ -1322,13 +1338,13 @@ cmd_menu (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	{
 		if (toggle)
 		{
-			menu_add (tbuf, label, word[idx + 2], word[idx + 3], pos, state, markup, enable, mod, key);
+			menu_add (tbuf, label, word[idx + 2], word[idx + 3], pos, state, markup, enable, mod, key, NULL);
 		} else
 		{
 			if (word[idx + 2][0])
-				menu_add (tbuf, label, word[idx + 2], NULL, pos, 0, markup, enable, mod, key);
+				menu_add (tbuf, label, word[idx + 2], NULL, pos, state, markup, enable, mod, key, group);
 			else
-				menu_add (tbuf, label, NULL, NULL, pos, 0, markup, enable, mod, key);
+				menu_add (tbuf, label, NULL, NULL, pos, state, markup, enable, mod, key, group);
 		}
 		return TRUE;
 	}
@@ -3586,7 +3602,8 @@ const struct commands xc_cmds[] = {
 	 N_("MDEOP, Mass deop's all chanops in the current channel (needs chanop)")},
 	{"ME", cmd_me, 0, 0, 1,
 	 N_("ME <action>, sends the action to the current channel (actions are written in the 3rd person, like /me jumps)")},
-	{"MENU", cmd_menu, 0, 0, 1, "MENU [-eX] [-k<mod>,<key>] [-m] [-pX] [-tX] {ADD|DEL} <path> [command] [unselect command]"},
+	{"MENU", cmd_menu, 0, 0, 1, "MENU [-eX] [-k<mod>,<key>] [-m] [-pX] [-r<X,group>] [-tX] {ADD|DEL} <path> [command] [unselect command]\n"
+										 "       See http://xchat.org/docs/menu/ for more details."},
 	{"MKICK", cmd_mkick, 1, 1, 1,
 	 N_("MKICK, Mass kicks everyone except you in the current channel (needs chanop)")},
 	{"MODE", cmd_mode, 1, 0, 1, 0},

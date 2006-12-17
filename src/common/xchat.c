@@ -1022,7 +1022,7 @@ xchat_exec (const char *cmd)
 }
 
 void
-xchat_execv (const char *argv[])
+xchat_execv (char * const argv[])
 {
 #ifdef WIN32
 	util_execv (argv);

@@ -7,10 +7,9 @@
 /* for storage of /menu entries */
 typedef struct
 {
-	short pos;	/* position */
-	short modifier;	/* keybinding */
-	short root_offset;	/* bytes to offset ->path */
-	short padding;
+	gint32 pos;	/* position */
+	gint16 modifier;	/* keybinding */
+	gint16 root_offset;	/* bytes to offset ->path */
 
 	char is_main;	/* is part of the Main menu? (not a popup) */
 	char state;	/* state of toggle items */
@@ -22,6 +21,7 @@ typedef struct
 	char *label;
 	char *cmd;
 	char *ucmd;	/* unselect command (toggles) */
+	char *group;	/* for radio items or NULL */
 } menu_entry;
 
 int fe_args (int argc, char *argv[]);

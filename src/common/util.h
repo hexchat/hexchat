@@ -32,7 +32,7 @@ char *country (char *);
 void country_search (char *pattern, void *ud, void (*print)(void *, char *, ...));
 char *get_cpu_str (void);
 int util_exec (const char *cmd);
-int util_execv (const char *argv[]);
+int util_execv (char * const argv[]);
 #define STRIP_COLOR 1
 #define STRIP_ATTRIB 2
 #define STRIP_HIDDEN 4

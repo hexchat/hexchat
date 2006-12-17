@@ -33,6 +33,6 @@ void session_free (session *killsess);
 void lag_check (void);
 void xchat_exit (void);
 void xchat_exec (const char *cmd);
-void xchat_execv (const char *argv[]);
+void xchat_execv (char * const argv[]);
 
 #endif

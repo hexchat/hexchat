@@ -1559,6 +1559,23 @@ menu_update_cb (GtkWidget *menu, menu_entry *me)
 	}
 }
 
+/* radio state changed via mouse click */
+static void
+menu_radio_cb (GtkCheckMenuItem *item, menu_entry *me)
+{
+	me->state = 0;
+	if (item->active)
+	{
+		me->state = 1;
+		if (me->cmd)
+			handle_command (current_sess, me->cmd, FALSE);
+	}
+
+	/* update the state, incase this was changed via right-click. */
+	/* This will update all other windows and menu bars */
+	menu_foreach_gui (me, menu_update_cb);
+}
+
 /* toggle state changed via mouse click */
 static void
 menu_toggle_cb (GtkCheckMenuItem *item, menu_entry *me)
@@ -1579,6 +1596,56 @@ menu_toggle_cb (GtkCheckMenuItem *item, menu_entry *me)
 }
 
 static GtkWidget *
+menu_radio_item (char *label, GtkWidget *menu, void *callback, void *userdata,
+						int state, char *groupname)
+{
+	GtkWidget *item;
+	GtkMenuItem *parent;
+	GSList *grouplist = NULL;
+
+	parent = menu_find_item (menu, groupname);
+	if (parent)
+		grouplist = gtk_radio_menu_item_get_group ((GtkRadioMenuItem *)parent);
+
+	item = gtk_radio_menu_item_new_with_label (grouplist, label);
+	gtk_check_menu_item_set_active ((GtkCheckMenuItem*)item, state);
+	gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
+	g_signal_connect (G_OBJECT (item), "activate",
+							G_CALLBACK (callback), userdata);
+	gtk_widget_show (item);
+
+	return item;
+}
+
+static void
+menu_reorder (GtkMenu *menu, GtkWidget *item, int pos)
+{
+	if (pos == 0xffff)	/* outbound.c uses this default */
+		return;
+
+	if (pos < 0)	/* position offset from end/bottom */
+		gtk_menu_reorder_child (menu, item, (g_list_length (GTK_MENU_SHELL (menu)->children) + pos) - 1);
+	else
+		gtk_menu_reorder_child (menu, item, pos);
+}
+
+static GtkWidget *
+menu_add_radio (GtkWidget *menu, menu_entry *me)
+{
+	GtkWidget *item = NULL;
+	char *path = me->path + me->root_offset;
+
+	if (path[0] != 0)
+		menu = menu_find_path (menu, path);
+	if (menu)
+	{
+		item = menu_radio_item (me->label, menu, menu_radio_cb, me, me->state, me->group);
+		menu_reorder (GTK_MENU (menu), item, me->pos);
+	}
+	return item;
+}
+
+static GtkWidget *
 menu_add_toggle (GtkWidget *menu, menu_entry *me)
 {
 	GtkWidget *item = NULL;
@@ -1589,8 +1656,7 @@ menu_add_toggle (GtkWidget *menu, menu_entry *me)
 	if (menu)
 	{
 		item = menu_toggle_item (me->label, menu, menu_toggle_cb, me, me->state);
-		if (me->pos != -1)
-			gtk_menu_reorder_child (GTK_MENU (menu), item, me->pos);
+		menu_reorder (GTK_MENU (menu), item, me->pos);
 	}
 	return item;
 }
@@ -1606,8 +1672,7 @@ menu_add_item (GtkWidget *menu, menu_entry *me)
 	if (menu)
 	{
 		item = menu_quick_item (me->cmd, me->label, menu, me->markup ? XCMENU_MARKUP : XCMENU_MNEMONIC, 0);
-		if (me->pos != -1)
-			gtk_menu_reorder_child (GTK_MENU (menu), item, me->pos);
+		menu_reorder (GTK_MENU (menu), item, me->pos);
 	}
 	return item;
 }
@@ -1617,11 +1682,17 @@ menu_add_sub (GtkWidget *menu, menu_entry *me)
 {
 	GtkWidget *item = NULL;
 	char *path = me->path + me->root_offset;
+	int pos;
 
 	if (path[0] != 0)
 		menu = menu_find_path (menu, path);
 	if (menu)
-		menu_quick_sub (me->label, menu, &item, me->markup ? XCMENU_MARKUP : XCMENU_MNEMONIC, me->pos);
+	{
+		pos = me->pos;
+		if (pos < 0)	/* position offset from end/bottom */
+			pos = g_list_length (GTK_MENU_SHELL (menu)->children) + pos;
+		menu_quick_sub (me->label, menu, &item, me->markup ? XCMENU_MARKUP : XCMENU_MNEMONIC, pos);
+	}
 	return item;
 }
 
@@ -1638,7 +1709,9 @@ menu_add_cb (GtkWidget *menu, menu_entry *me)
 {
 	GtkWidget *item;
 
-	if (me->ucmd)	/* have unselect-cmd? Must be a toggle item */
+	if (me->group)	/* have a group name? Must be a radio item */
+		item = menu_add_radio (menu, me);
+	else if (me->ucmd)	/* have unselect-cmd? Must be a toggle item */
 		item = menu_add_toggle (menu, me);
 	else if (me->cmd || !me->label)	/* label=NULL for separators */
 		item = menu_add_item (menu, me);

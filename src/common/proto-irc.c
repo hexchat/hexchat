@@ -405,6 +405,7 @@ process_numeric (session * sess, int n,
 			}
 
 			serv->skip_next_userhost = FALSE;
+			break;
 		}
 		else goto def;
 
