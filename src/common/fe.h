@@ -22,6 +22,7 @@ typedef struct
 	char *cmd;
 	char *ucmd;	/* unselect command (toggles) */
 	char *group;	/* for radio items or NULL */
+	char *icon;	/* filename */
 } menu_entry;
 
 int fe_args (int argc, char *argv[]);

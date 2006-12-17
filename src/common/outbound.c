@@ -1075,6 +1075,8 @@ menu_free (menu_entry *me)
 		free (me->ucmd);
 	if (me->group)
 		free (me->group);
+	if (me->icon)
+		free (me->icon);
 	free (me);
 }
 
@@ -1197,7 +1199,7 @@ menu_is_mainmenu_root (char *path, gint16 *offset)
 }
 
 static void
-menu_add (char *path, char *label, char *cmd, char *ucmd, int pos, int state, int markup, int enable, int mod, int key, char *group)
+menu_add (char *path, char *label, char *cmd, char *ucmd, int pos, int state, int markup, int enable, int mod, int key, char *group, char *icon)
 {
 	menu_entry *me;
 
@@ -1225,6 +1227,7 @@ menu_add (char *path, char *label, char *cmd, char *ucmd, int pos, int state, in
 	me->cmd = NULL;
 	me->ucmd = NULL;
 	me->group = NULL;
+	me->icon = NULL;
 
 	if (label)
 		me->label = strdup (label);
@@ -1234,6 +1237,8 @@ menu_add (char *path, char *label, char *cmd, char *ucmd, int pos, int state, in
 		me->ucmd = strdup (ucmd);
 	if (group)
 		me->group = strdup (group);
+	if (icon)
+		me->icon = strdup (icon);
 
 	menu_list = g_slist_append (menu_list, me);
 	label = fe_menu_add (me);
@@ -1260,6 +1265,7 @@ cmd_menu (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	int mod = 0;
 	char *label;
 	char *group = NULL;
+	char *icon = NULL;
 
 	if (!word[2][0] || !word[3][0])
 		return FALSE;
@@ -1268,6 +1274,13 @@ cmd_menu (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	if (word[idx][0] == '-' && word[idx][1] == 'e')
 	{
 		enable = atoi (word[idx] + 2);
+		idx++;
+	}
+
+	/* -i<ICONFILE> */
+	if (word[idx][0] == '-' && word[idx][1] == 'i')
+	{
+		icon = word[idx] + 2;
 		idx++;
 	}
 
@@ -1338,13 +1351,13 @@ cmd_menu (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	{
 		if (toggle)
 		{
-			menu_add (tbuf, label, word[idx + 2], word[idx + 3], pos, state, markup, enable, mod, key, NULL);
+			menu_add (tbuf, label, word[idx + 2], word[idx + 3], pos, state, markup, enable, mod, key, NULL, NULL);
 		} else
 		{
 			if (word[idx + 2][0])
-				menu_add (tbuf, label, word[idx + 2], NULL, pos, state, markup, enable, mod, key, group);
+				menu_add (tbuf, label, word[idx + 2], NULL, pos, state, markup, enable, mod, key, group, icon);
 			else
-				menu_add (tbuf, label, NULL, NULL, pos, state, markup, enable, mod, key, group);
+				menu_add (tbuf, label, NULL, NULL, pos, state, markup, enable, mod, key, group, icon);
 		}
 		return TRUE;
 	}

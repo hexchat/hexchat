@@ -263,23 +263,43 @@ menu_toggle_item (char *label, GtkWidget *menu, void *callback, void *userdata,
 
 static GtkWidget *
 menu_quick_item (char *cmd, char *label, GtkWidget * menu, int flags,
-					  gpointer userdata)
+					  gpointer userdata, char *icon)
 {
-	GtkWidget *item;
+	GtkWidget *img, *item;
+
 	if (!label)
 		item = gtk_menu_item_new ();
 	else
 	{
-		if (flags & XCMENU_MARKUP)
+		if (icon)
 		{
-			item = gtk_menu_item_new_with_label ("");
-			gtk_label_set_markup (GTK_LABEL (GTK_BIN (item)->child), label);
-		} else
-		{
-			if (flags & XCMENU_MNEMONIC)
-				item = gtk_menu_item_new_with_mnemonic (label);
+			/*if (flags & XCMENU_MARKUP)
+				item = gtk_image_menu_item_new_with_markup (label);
+			else*/
+				item = gtk_image_menu_item_new_with_mnemonic (label);
+			img = gtk_image_new_from_file (icon);
+			if (img)
+				gtk_image_menu_item_set_image ((GtkImageMenuItem *)item, img);
 			else
-				item = gtk_menu_item_new_with_label (label);
+			{
+				img = gtk_image_new_from_stock (icon, GTK_ICON_SIZE_MENU);
+				if (img)
+					gtk_image_menu_item_set_image ((GtkImageMenuItem *)item, img);
+			}
+		}
+		else
+		{
+			if (flags & XCMENU_MARKUP)
+			{
+				item = gtk_menu_item_new_with_label ("");
+				gtk_label_set_markup_with_mnemonic (GTK_LABEL (GTK_BIN (item)->child), label);
+			} else
+			{
+				if (flags & XCMENU_MNEMONIC)
+					item = gtk_menu_item_new_with_mnemonic (label);
+				else
+					item = gtk_menu_item_new_with_label (label);
+			}
 		}
 	}
 	gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
@@ -436,18 +456,18 @@ menu_create (GtkWidget *menu, GSList *list, char *target, int check_path)
 
 		} else if (!strncasecmp (pop->name, "SEP", 3))
 		{
-			menu_quick_item (0, 0, tempmenu, XCMENU_SHADED, 0);
+			menu_quick_item (0, 0, tempmenu, XCMENU_SHADED, 0, 0);
 
 		} else
 		{
 			if (!check_path || pop->cmd[0] != '!')
 			{
-				menu_quick_item (pop->cmd, pop->name, tempmenu, 0, target);
+				menu_quick_item (pop->cmd, pop->name, tempmenu, 0, target, 0);
 			/* check if the program is in path, if not, leave it out! */
 			} else if (is_in_path (pop->cmd))
 			{
 				childcount++;
-				menu_quick_item (pop->cmd, pop->name, tempmenu, 0, target);
+				menu_quick_item (pop->cmd, pop->name, tempmenu, 0, target, 0);
 			}
 		}
 
@@ -506,8 +526,8 @@ menu_nickmenu (session *sess, GdkEventButton *event, char *nick, int num_sel)
 	if (num_sel > 1)
 	{
 		snprintf (buf, sizeof (buf), "%d nicks selected.", num_sel);
-		menu_quick_item (0, buf, menu, 0, 0);
-		menu_quick_item (0, 0, menu, XCMENU_SHADED, 0);
+		menu_quick_item (0, buf, menu, 0, 0, 0);
+		menu_quick_item (0, 0, menu, XCMENU_SHADED, 0, 0);
 	} else
 	{
 		user = userlist_find (sess, nick);	/* lasttalk is channel specific */
@@ -529,19 +549,19 @@ menu_nickmenu (session *sess, GdkEventButton *event, char *nick, int num_sel)
 			{
 				snprintf (buf, sizeof (buf), fmt, _("Real Name:"), _("Unknown"));
 			}
-			menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0);
+			menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0, 0);
 
 			snprintf (buf, sizeof (buf), fmt, _("User:"),
 						user->hostname ? user->hostname : _("Unknown"));
-			menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0);
+			menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0, 0);
 
 			snprintf (buf, sizeof (buf), fmt, _("Country:"),
 						user->hostname ? country(user->hostname) : _("Unknown"));
-			menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0);
+			menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0, 0);
 
 			snprintf (buf, sizeof (buf), fmt, _("Server:"),
 						user->servername ? user->servername : _("Unknown"));
-			menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0);
+			menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0, 0);
 
 			if (user->away)
 			{
@@ -553,7 +573,7 @@ menu_nickmenu (session *sess, GdkEventButton *event, char *nick, int num_sel)
 					free (msg);
 					snprintf (buf, sizeof (buf), fmt, _("Away Msg:"), real);
 					g_free (real);
-					menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0);
+					menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0, 0);
 				}
 			}
 
@@ -569,10 +589,10 @@ menu_nickmenu (session *sess, GdkEventButton *event, char *nick, int num_sel)
 				snprintf (buf, sizeof (buf), fmt, _("Last Msg:"), _("Unknown"));
 			}
 
-			menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0);
+			menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0, 0);
 
 			menu_quick_endsub ();
-			menu_quick_item (0, 0, menu, XCMENU_SHADED, 0);
+			menu_quick_item (0, 0, menu, XCMENU_SHADED, 0, 0);
 		}
 	}
 
@@ -741,13 +761,13 @@ menu_urlmenu (GdkEventButton *event, char *url)
 		chop = g_utf8_offset_to_pointer (tmp, 48);
 		chop[0] = chop[1] = chop[2] = '.';
 		chop[3] = 0;
-		menu_quick_item (0, tmp, menu, XCMENU_SHADED, 0);
+		menu_quick_item (0, tmp, menu, XCMENU_SHADED, 0, 0);
 		free (tmp);
 	} else
 	{
-		menu_quick_item (0, str_copy, menu, XCMENU_SHADED, 0);
+		menu_quick_item (0, str_copy, menu, XCMENU_SHADED, 0, 0);
 	}
-	menu_quick_item (0, 0, menu, XCMENU_SHADED, 0);
+	menu_quick_item (0, 0, menu, XCMENU_SHADED, 0, 0);
 
 	/* Two hardcoded entries */
 	if (strncmp (str_copy, "irc://", 6) == 0 ||
@@ -808,8 +828,8 @@ menu_chanmenu (struct session *sess, GdkEventButton * event, char *chan)
 
 	menu = gtk_menu_new ();
 
-	menu_quick_item (0, chan, menu, XCMENU_SHADED, str_copy);
-	menu_quick_item (0, 0, menu, XCMENU_SHADED, str_copy);
+	menu_quick_item (0, chan, menu, XCMENU_SHADED, str_copy, 0);
+	menu_quick_item (0, 0, menu, XCMENU_SHADED, str_copy, 0);
 
 	if (!is_joined)
 		menu_quick_item_with_callback (menu_chan_join, _("Join Channel"), menu,
@@ -849,7 +869,7 @@ static void
 usermenu_create (GtkWidget *menu)
 {
 	menu_create (menu, usermenu_list, "", FALSE);
-	menu_quick_item (0, 0, menu, XCMENU_SHADED, 0);	/* sep */
+	menu_quick_item (0, 0, menu, XCMENU_SHADED, 0, 0);	/* sep */
 	menu_quick_item_with_callback (menu_usermenu, _("Edit This Menu..."), menu, 0);
 }
 
@@ -1671,7 +1691,7 @@ menu_add_item (GtkWidget *menu, menu_entry *me)
 		menu = menu_find_path (menu, path);
 	if (menu)
 	{
-		item = menu_quick_item (me->cmd, me->label, menu, me->markup ? XCMENU_MARKUP : XCMENU_MNEMONIC, 0);
+		item = menu_quick_item (me->cmd, me->label, menu, me->markup ? XCMENU_MARKUP : XCMENU_MNEMONIC, 0, me->icon);
 		menu_reorder (GTK_MENU (menu), item, me->pos);
 	}
 	return item;
