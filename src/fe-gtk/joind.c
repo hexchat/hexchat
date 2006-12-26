@@ -240,20 +240,18 @@ joind_show_dialog (server *serv)
 }
 
 void
-joind (int action, server *serv)
+joind_open (server *serv)
 {
-	switch (action)
-	{
-	case 0:
-		if (prefs.gui_join_dialog)
-			joind_show_dialog (serv);
-		break;
+	if (prefs.gui_join_dialog)
+		joind_show_dialog (serv);
+}
 
-	case 1:
-		if (serv->gui->joind_win)
-		{
-			gtk_widget_destroy (serv->gui->joind_win);
-			serv->gui->joind_win = NULL;
-		}
+void
+joind_close (server *serv)
+{
+	if (serv->gui->joind_win)
+	{
+		gtk_widget_destroy (serv->gui->joind_win);
+		serv->gui->joind_win = NULL;
 	}
 }

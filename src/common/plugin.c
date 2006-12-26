@@ -969,7 +969,7 @@ xchat_get_info (xchat_plugin *ph, const char *id)
 	guint32 hash;
 
 	if (!strncmp (id, "event_text", 9))
-		return text_find_text_fmt ((char *)id + 10);
+		return text_find_format_string ((char *)id + 10);
 
 	hash = str_hash (id);
 	/* do the session independant ones first */

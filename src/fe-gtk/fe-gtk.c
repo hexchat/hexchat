@@ -339,11 +339,12 @@ log_handler (const gchar   *log_domain,
 #endif
 
 int tray_plugin_init (void *, char **, char **, char **, char *);
+int tray_plugin_deinit (void *);
 
 static int
 fe_idle (gpointer data)
 {
-	plugin_add (sess_list->data, NULL, NULL, tray_plugin_init, NULL, NULL, FALSE);
+	plugin_add (sess_list->data, NULL, NULL, tray_plugin_init, tray_plugin_deinit, NULL, FALSE);
 	return 0;
 }
 
@@ -998,7 +999,7 @@ fe_server_event (server *serv, int type, int arg)
 				gtk_widget_set_sensitive (gui->menu_item[MENU_ID_JOIN], 1);
 				/* if number of auto-join channels is zero, open joind */
 				if (arg == 0)
-					joind (0, serv);
+					joind_open (serv);
 				break;
 
 			case FE_SE_DISCONNECT:
@@ -1007,7 +1008,7 @@ fe_server_event (server *serv, int type, int arg)
 				gtk_widget_set_sensitive (gui->menu_item[MENU_ID_DISCONNECT], 0);
 				gtk_widget_set_sensitive (gui->menu_item[MENU_ID_JOIN], 0);
 				/* close the join-dialog, if one exists */
-				joind (1, serv);
+				joind_close (serv);
 			}
 		}
 		list = list->next;

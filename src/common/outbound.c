@@ -3615,7 +3615,7 @@ const struct commands xc_cmds[] = {
 	 N_("MDEOP, Mass deop's all chanops in the current channel (needs chanop)")},
 	{"ME", cmd_me, 0, 0, 1,
 	 N_("ME <action>, sends the action to the current channel (actions are written in the 3rd person, like /me jumps)")},
-	{"MENU", cmd_menu, 0, 0, 1, "MENU [-eX] [-k<mod>,<key>] [-m] [-pX] [-r<X,group>] [-tX] {ADD|DEL} <path> [command] [unselect command]\n"
+	{"MENU", cmd_menu, 0, 0, 1, "MENU [-eX] [-i<ICONFILE>] [-k<mod>,<key>] [-m] [-pX] [-r<X,group>] [-tX] {ADD|DEL} <path> [command] [unselect command]\n"
 										 "       See http://xchat.org/docs/menu/ for more details."},
 	{"MKICK", cmd_mkick, 1, 1, 1,
 	 N_("MKICK, Mass kicks everyone except you in the current channel (needs chanop)")},
@@ -3681,9 +3681,9 @@ const struct commands xc_cmds[] = {
 	{"TOPIC", cmd_topic, 1, 1, 1,
 	 N_("TOPIC [<topic>], sets the topic if one is given, else shows the current topic")},
 	{"TRAY", cmd_tray, 0, 0, 1,
-	 N_("\nTRAY -f <timeout> <file1> [<file2>] Flash tray between two icons.\n"
+	 N_("\nTRAY -f <timeout> <file1> [<file2>] Blink tray between two icons.\n"
 		   "TRAY -f <filename>                  Set tray to a fixed icon.\n"
-			"TRAY -i <number>                    Flash tray with an internal icon.\n"
+			"TRAY -i <number>                    Blink tray with an internal icon.\n"
 			"TRAY -t <text>                      Set the tray tooltip.\n"
 			"TRAY -b <title> <text>              Set the tray balloon."
 			)},

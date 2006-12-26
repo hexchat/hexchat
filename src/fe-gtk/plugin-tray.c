@@ -135,7 +135,7 @@ tray_stop_flash (void)
 			tray_set_tipf (_("XChat: Connected to %u networks and %u channels"),
 								nets, chans);
 		else
-			fe_tray_set_tooltip (_("Not connected."));
+			tray_set_tipf ("XChat: %s", _("Not connected."));
 	}
 
 	if (custom_icon1)
@@ -601,9 +601,11 @@ tray_plugin_init (xchat_plugin *plugin_handle, char **plugin_name,
 	return 1;       /* return 1 for success */
 }
 
-/*int
+int
 tray_plugin_deinit (xchat_plugin *plugin_handle)
 {
+#ifdef WIN32
 	tray_cleanup ();
+#endif
 	return 1;
-}*/
+}

@@ -1668,7 +1668,7 @@ text_emit (int index, session *sess, char *a, char *b, char *c, char *d)
 }
 
 char *
-text_find_text_fmt (char *name)
+text_find_format_string (char *name)
 {
 	int i = 0;
 

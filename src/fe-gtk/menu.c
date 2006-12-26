@@ -309,7 +309,7 @@ menu_quick_item (char *cmd, char *label, GtkWidget * menu, int flags,
 								G_CALLBACK (popup_menu_cb), cmd);
 	if (flags & XCMENU_SHADED)
 		gtk_widget_set_sensitive (GTK_WIDGET (item), FALSE);
-	gtk_widget_show (item);
+	gtk_widget_show_all (item);
 
 	return item;
 }
