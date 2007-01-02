@@ -261,6 +261,7 @@ struct xchatprefs
 	unsigned int gui_input_spell;
 	unsigned int gui_tray;
 	unsigned int gui_tray_blink;
+	unsigned int gui_tray_flags;
 	unsigned int throttle;
 	unsigned int topicbar;
 	unsigned int hideuserlist;

@@ -22,7 +22,7 @@ p { margin: 3% }
 </head>
 <body>
 
-<h1>X-Chat 2.6 Frequently Asked Questions</h1>
+<h1>X-Chat 2.8 Frequently Asked Questions</h1>
 
 <h2>1. Section One: Compiling and Installing.</h2>
 <p>
@@ -79,6 +79,8 @@ p { margin: 3% }
 <a href="#q222">22. Where are the log files saved to?</a>
 <br/><br/>
 <a href="#q223">23. How do I rotate log files every so often?</a>
+<br/><br/>
+<a href="#q224">24. How do I enable graphical smilies (emoticons)?</a>
 <br/><br/>
 </p>
 
@@ -378,6 +380,9 @@ It depends on your version of Windows and where it stores the
 <i><b>Application Data</b></i> folder. On Windows XP it is usually:
 <br/><br/>
 C:\Documents and Settings\<i><b>username</b></i>\Application Data\X-Chat 2\
+<br/><b>or simply:</b>
+<br/>
+C:\Program Files\XChat\Plugins\
 <br/><br/><br/>
 <u>UNIX</u>
 <br/><br/>
@@ -390,6 +395,10 @@ Where "~" represents your home directory i.e.: $HOME/.xchat2/
 There are two plugins available that allow this:
 <br/>Unix: <a href="http://www.blight.tk/">SysTray Plugin</a>
 <br/>Windows: <a href="http://www.sinisterdevelopments.com/">xTray</a>
+</p>
+<p>
+Note that XChat 2.8.0+ has its own tray feature, but you can disable it
+in <b>Settings &gt; Preferences &gt; Alerts</b> and still run these plugins, if you prefer.
 </p>
 
 <br/><h3><a name="q220">20. Can I select and copy text with the time stamps?</a></h3>
@@ -471,6 +480,18 @@ network name, e.g. "FreeNode" or "UnderNet", and finally, %c is the channel. In 
 examples, a new log filename and folder would be created after midnight.
 <br/><br/>
 You can find more possibilities at <a href="http://xchat.org/docs/log/">http://xchat.org/docs/log/</a>.
+</p>
+
+<br/><h3><a name="q224">24. How do I enable graphical smilies (emoticons)?</a></h3>
+<p>
+This feature is only available in the official Windows XChat release. You have to
+TICK this feature during installation. If you didn't do this, you can simply run
+the installer again, and TICK the "<b>Eye Candy Theme</b>" when given the option.
+</p><p>
+If you want to use the graphical theme, but disable it just for smilies (i.e leave
+it ON for things like Join/Part, Modes etc only), type this command and restart:
+<br/><br/>
+<b>/set text_emoticons off</b>
 </p>
 
 <br/><h2>3. Section Three: Contributions, Development and Bugs.</h2>

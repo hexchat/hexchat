@@ -273,11 +273,17 @@ fe_tray_set_file (const char *filename)
 	}
 }
 
-static void
+gboolean
 tray_toggle_visibility (void)
 {
 	static int x, y;
-	GtkWindow *win = (GtkWindow *)xchat_get_info (ph, "win_ptr");
+	static GdkScreen *screen;
+	GtkWindow *win;
+
+	if (!sticon)
+		return FALSE;
+
+	win = (GtkWindow *)xchat_get_info (ph, "win_ptr");
 
 	tray_stop_flash ();
 	tray_reset_counts ();
@@ -285,13 +291,18 @@ tray_toggle_visibility (void)
 	if (GTK_WIDGET_VISIBLE (win))
 	{
 		gtk_window_get_position (win, &x, &y);
-		xchat_command (ph, "GUI HIDE");
+		screen = gtk_window_get_screen (win);
+		gtk_widget_hide (GTK_WIDGET (win));
 	}
 	else
 	{
-		xchat_command (ph, "GUI SHOW");
+		gtk_widget_show (GTK_WIDGET (win));
+		gtk_window_present (win);
+		gtk_window_set_screen (win, screen);
 		gtk_window_move (win, x, y);
 	}
+
+	return TRUE;
 }
 
 static void
