@@ -45,7 +45,7 @@ list_addentry (GSList ** list, char *cmd, char *name)
 	int cmd_len = 1, name_len;
 
 	/* remove <2.8.0 stuff */
-	if (!strcmp (cmd, "AWAY") & !strcmp (name, "BACK"))
+	if (!strcmp (cmd, "away") & !strcmp (name, "BACK"))
 		return;
 
 	if (cmd)
