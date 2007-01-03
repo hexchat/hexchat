@@ -1097,7 +1097,7 @@ menu_join (GtkWidget * wid, gpointer none)
 static void
 menu_away (GtkCheckMenuItem *item, gpointer none)
 {
-	handle_command (current_sess, item->active ? "back" : "away", FALSE);
+	handle_command (current_sess, item->active ? "away" : "back", FALSE);
 }
 
 static void

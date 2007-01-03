@@ -7,13 +7,13 @@ Summary: Graphical IRC (chat) client
 Summary(fr): Client IRC (chat) avec interface graphique
 Summary(de): IRC-Client (Chat) mit grafischer Oberfläche
 Name: xchat
-Version: 2.7.90
+Version: 2.8.0
 Release: 0
 Epoch: 1
 Group: Applications/Internet
 License: GPL
 URL: http://xchat.org
-Source: http://xchat.org/files/source/2.6/xchat-%{version}.tar.bz2
+Source: http://xchat.org/files/source/2.8/xchat-%{version}.tar.bz2
 Buildroot: %{_tmppath}/%{name}-%{version}-root
 Requires: gtk2 openssl
 BuildRequires: gettext openssl-devel gtk2-devel dbus-devel
