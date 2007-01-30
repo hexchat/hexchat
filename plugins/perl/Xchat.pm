@@ -482,13 +482,7 @@ sub unload {
 	my $package = file2pkg( $file );
 	my $pkg_info = pkg_info( $package );
 
-	if( $pkg_info ) {
-		if( exists $pkg_info->{hooks} ) {
-			for my $hook ( @{$pkg_info->{hooks}} ) {
-				Xchat::unhook( $hook, $package );
-			}
-		}
-		
+	if( $pkg_info ) {	
 		# take care of the shutdown callback
 		if( exists $pkg_info->{shutdown} ) {
 			# allow incorrectly written scripts to be unloaded
@@ -501,6 +495,13 @@ sub unload {
 				}
 			};
 		}
+
+		if( exists $pkg_info->{hooks} ) {
+			for my $hook ( @{$pkg_info->{hooks}} ) {
+				Xchat::unhook( $hook, $package );
+			}
+		}
+
 
 		if( exists $pkg_info->{gui_entry} ) {
 			plugingui_remove( $pkg_info->{gui_entry} );
