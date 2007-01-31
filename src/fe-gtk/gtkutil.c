@@ -552,17 +552,10 @@ gtkutil_copy_to_clipboard (GtkWidget *widget, GdkAtom selection,
 	win = gtk_widget_get_toplevel (GTK_WIDGET (widget));
 	if (GTK_WIDGET_TOPLEVEL (win))
 	{
-		glong len = g_utf8_strlen (str, -1);
+		int len = strlen (str);
 
 		if (selection)
 		{
-#if (GTK_MAJOR_VERSION == 2) && (GTK_MINOR_VERSION == 0)
-			gtk_clipboard_set_text (gtk_clipboard_get (selection), str, len);
-		} else
-		{
-			clip = gtk_clipboard_get (GDK_SELECTION_PRIMARY);
-			clip2 = gtk_clipboard_get (GDK_SELECTION_CLIPBOARD);
-#else
 			clip = gtk_widget_get_clipboard (win, selection);
 			gtk_clipboard_set_text (clip, str, len);
 		} else
@@ -570,7 +563,6 @@ gtkutil_copy_to_clipboard (GtkWidget *widget, GdkAtom selection,
 			/* copy to both primary X selection and clipboard */
 			clip = gtk_widget_get_clipboard (win, GDK_SELECTION_PRIMARY);
 			clip2 = gtk_widget_get_clipboard (win, GDK_SELECTION_CLIPBOARD);
-#endif
 			gtk_clipboard_set_text (clip, str, len);
 			gtk_clipboard_set_text (clip2, str, len);
 		}
