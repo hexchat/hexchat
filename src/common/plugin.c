@@ -1023,6 +1023,9 @@ xchat_get_info (xchat_plugin *ph, const char *id)
 	case 0x1c0e99c1: /* inputbox */
 		return fe_get_inputbox_contents (sess);
 
+	case 0x633fb30:	/* modes */
+		return sess->current_modes;
+
 	case 0x6de15a2e:	/* network */
 		return server_get_network (sess->server, FALSE);
 
