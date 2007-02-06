@@ -968,8 +968,13 @@ xchat_get_info (xchat_plugin *ph, const char *id)
 	session *sess;
 	guint32 hash;
 
-	if (!strncmp (id, "event_text", 9))
-		return text_find_format_string ((char *)id + 10);
+	/*                 1234567890 */
+	if (!strncmp (id, "event_text", 10))
+	{
+		char *e = (char *)id + 10;
+		if (*e == ' ') e++;	/* 2.8.0 only worked without a space */
+		return text_find_format_string (e);
+	}
 
 	hash = str_hash (id);
 	/* do the session independant ones first */

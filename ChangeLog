@@ -22,6 +22,8 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Plugin API:
   * Added "modes" to xchat_get_info(). Returns the current channel modes, if
     they are known.
+  * Fixed "event_event name" for xchat_get_info() to match the docs exactly,
+    but 2.8.0 (mis)behaviour works too.
  - Perl (Lian Wan Situ)
   * Execute the shutdown callback before removing the hooks so commands
     created by the script can be used in the callback.
