@@ -55,11 +55,14 @@ url_save_cb (char *url, FILE *fd)
 }
 
 void
-url_save (const char *fname, const char *mode)
+url_save (const char *fname, const char *mode, gboolean fullpath)
 {
 	FILE *fd;
 
-	fd = xchat_fopen_file (fname, mode, 0);
+	if (fullpath)
+		fd = xchat_fopen_file (fname, mode, XOF_FULLPATH);
+	else
+		fd = xchat_fopen_file (fname, mode, 0);
 	if (fd == NULL)
 		return;
 
@@ -70,7 +73,7 @@ url_save (const char *fname, const char *mode)
 void
 url_autosave (void)
 {
-	url_save ("url.save", "a");
+	url_save ("url.save", "a", FALSE);
 }
 
 static int

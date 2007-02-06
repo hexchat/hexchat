@@ -86,18 +86,16 @@ static void server_connect (server *serv, char *hostname, int port, int no_login
 
 
 /* actually send to the socket. This might do a character translation or
-   send via SSL */
+   send via SSL. server/dcc both use this function. */
 
-static int
-tcp_send_real (server *serv, char *buf, int len)
+int
+tcp_send_real (void *ssl, int sok, char *encoding, int using_irc, char *buf, int len)
 {
 	int ret;
 	char *locale;
 	gsize loc_len;
 
-	fe_add_rawlog (serv, buf, len, TRUE);
-
-	if (serv->encoding == NULL)	/* system */
+	if (encoding == NULL)	/* system */
 	{
 		locale = NULL;
 		if (!prefs.utf8_locale)
@@ -110,12 +108,12 @@ tcp_send_real (server *serv, char *buf, int len)
 		}
 	} else
 	{
-		if (serv->using_irc)	/* using "IRC" encoding (CP1252/UTF-8 hybrid) */
+		if (using_irc)	/* using "IRC" encoding (CP1252/UTF-8 hybrid) */
 			/* if all chars fit inside CP1252, use that. Otherwise this
 			   returns NULL and we send UTF-8. */
 			locale = g_convert (buf, len, "CP1252", "UTF-8", 0, &loc_len, 0);
 		else
-			locale = g_convert_with_fallback (buf, len, serv->encoding, "UTF-8",
+			locale = g_convert_with_fallback (buf, len, encoding, "UTF-8",
 														 "?", 0, &loc_len, 0);
 	}
 
@@ -123,27 +121,36 @@ tcp_send_real (server *serv, char *buf, int len)
 	{
 		len = loc_len;
 #ifdef USE_OPENSSL
-		if (!serv->ssl)
-			ret = send (serv->sok, locale, len, 0);
+		if (!ssl)
+			ret = send (sok, locale, len, 0);
 		else
-			ret = _SSL_send (serv->ssl, locale, len);
+			ret = _SSL_send (ssl, locale, len);
 #else
-		ret = send (serv->sok, locale, len, 0);
+		ret = send (sok, locale, len, 0);
 #endif
 		g_free (locale);
 	} else
 	{
 #ifdef USE_OPENSSL
-		if (!serv->ssl)
-			ret = send (serv->sok, buf, len, 0);
+		if (!ssl)
+			ret = send (sok, buf, len, 0);
 		else
-			ret = _SSL_send (serv->ssl, buf, len);
+			ret = _SSL_send (ssl, buf, len);
 #else
-		ret = send (serv->sok, buf, len, 0);
+		ret = send (sok, buf, len, 0);
 #endif
 	}
 
 	return ret;
+}
+
+static int
+server_send_real (server *serv, char *buf, int len)
+{
+	fe_add_rawlog (serv, buf, len, TRUE);
+
+	return tcp_send_real (serv->ssl, serv->sok, serv->encoding, serv->using_irc,
+								 buf, len);
 }
 
 /* new throttling system, uses the same method as the Undernet
@@ -192,7 +199,7 @@ tcp_send_queue (server *serv)
 				serv->prev_now = now;
 				fe_set_throttle (serv);
 
-				tcp_send_real (serv, buf, len);
+				server_send_real (serv, buf, len);
 
 				buf--;
 				serv->outbound_queue = g_slist_remove (serv->outbound_queue, buf);
@@ -216,7 +223,7 @@ tcp_send_len (server *serv, char *buf, int len)
 	int noqueue = !serv->outbound_queue;
 
 	if (!prefs.throttle)
-		return tcp_send_real (serv, buf, len);
+		return server_send_real (serv, buf, len);
 
 	dbuf = malloc (len + 2);	/* first byte is the priority */
 	dbuf[0] = 2;	/* pri 2 for most things */

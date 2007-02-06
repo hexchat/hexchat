@@ -1079,7 +1079,6 @@ static const domain_t domain[] =
 		{"UA", N_("Ukraine") },
 		{"UG", N_("Uganda") },
 		{"UK", N_("United Kingdom") },
-		{"UM", N_("US Minor Outlying Islands") },
 		{"US", N_("United States of America") },
 		{"UY", N_("Uruguay") },
 		{"UZ", N_("Uzbekistan") },

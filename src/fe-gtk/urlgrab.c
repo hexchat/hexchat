@@ -139,7 +139,7 @@ static void
 url_save_callback (void *arg1, char *file)
 {
 	if (file)
-		url_save (file, "w");
+		url_save (file, "w", TRUE);
 }
 
 static void

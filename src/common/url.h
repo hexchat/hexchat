@@ -11,7 +11,7 @@ extern void *url_tree;
 #define WORD_DIALOG  -1
 
 void url_clear (void);
-void url_save (const char *fname, const char *mode);
+void url_save (const char *fname, const char *mode, gboolean fullpath);
 void url_autosave (void);
 int url_check_word (char *word, int len);
 void url_check_line (char *buf, int len);

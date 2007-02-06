@@ -473,43 +473,19 @@ struct DCC *
 dcc_write_chat (char *nick, char *text)
 {
 	struct DCC *dcc;
+	int len;
 
 	dcc = find_dcc (nick, "", TYPE_CHATRECV);
 	if (!dcc)
 		dcc = find_dcc (nick, "", TYPE_CHATSEND);
 	if (dcc && dcc->dccstat == STAT_ACTIVE)
 	{
-		char *locale;
-		gsize loc_len;
-		int len;
-
 		len = strlen (text);
-
-		if (dcc->serv->encoding == NULL)	/* system */
-		{
-			locale = NULL;
-			if (!prefs.utf8_locale)
-				locale = g_locale_from_utf8 (text, len, NULL, &loc_len, NULL);
-		} else
-		{
-			if (dcc->serv->using_irc)	/* using "IRC" encoding (CP1252/UTF-8 hybrid) */
-				locale = g_convert (text, len, "CP1252", "UTF-8", 0, &loc_len, 0);
-			else
-				locale = g_convert (text, len, dcc->serv->encoding, "UTF-8", 0, &loc_len, 0);
-		}
-
-		if (locale)
-		{
-			text = locale;
-			len = loc_len;
-		}
-
-		dcc->size += len;
-		send (dcc->sok, text, len, 0);
+		tcp_send_real (NULL, dcc->sok, dcc->serv->encoding, dcc->serv->using_irc,
+							text, len);
 		send (dcc->sok, "\n", 1, 0);
+		dcc->size += len;
 		fe_dcc_update (dcc);
-		if (locale)
-			g_free (locale);
 		return dcc;
 	}
 	return 0;
