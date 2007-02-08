@@ -296,10 +296,10 @@ tray_toggle_visibility (void)
 	}
 	else
 	{
-		gtk_widget_show (GTK_WIDGET (win));
-		gtk_window_present (win);
 		gtk_window_set_screen (win, screen);
 		gtk_window_move (win, x, y);
+		gtk_widget_show (GTK_WIDGET (win));
+		gtk_window_present (win);
 	}
 
 	return TRUE;
