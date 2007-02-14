@@ -1,36 +1,36 @@
 # Hungarian translation of X-Chat
-# Copyright (C) 1999-2000, 2005, 2006 Free Software Foundation, Inc.
+# Copyright (C) 1999-2000, 2005, 2006, 2007 Free Software Foundation, Inc.
 #
 # Horvath Szabolcs <horvathsz@penguinpowered.com>, 1999-2000, 2005.
 # Kata Konkoly <kata@linuxforum.hu>, 2005.
-# Gabor Kelemen <kelemeng@gnome.hu>, 2005, 2006.
+# Gabor Kelemen <kelemeng@gnome.hu>, 2005, 2006, 2007.
 msgid ""
 msgstr ""
-"Project-Id-Version: xchat 2.6.7\n"
+"Project-Id-Version: xchat 2.8.0\n"
 "Report-Msgid-Bugs-To: www.xchat.org\n"
-"POT-Creation-Date: 2006-10-04 13:56+1000\n"
-"PO-Revision-Date: 2006-10-23 00:01+0100\n"
-"Last-Translator: Kelemen Gábor <kelemeng@gnome.hu>\n"
+"POT-Creation-Date: 2007-01-03 23:06+1100\n"
+"PO-Revision-Date: 2007-02-13 00:35+0100\n"
+"Last-Translator: Gabor Kelemen <kelemeng@gnome.hu>\n"
 "Language-Team: Hungarian <translation-team-hu@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.11.2\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: KBabel 1.11.4\n"
+"Plural-Forms:  nplurals=2; plural=(n != 1);\n"
 
-#: src/common/cfgfiles.c:350
+#: src/common/cfgfiles.c:354
 msgid "Cannot create ~/.xchat2"
 msgstr "Nem lehet létrehozni a ~/.xchat2 fájlt"
 
-#: src/common/cfgfiles.c:686
+#: src/common/cfgfiles.c:695
 msgid "I'm busy"
 msgstr "Elfoglalt vagyok"
 
-#: src/common/cfgfiles.c:687
+#: src/common/cfgfiles.c:696
 msgid "Leaving"
 msgstr "Távozom"
 
-#: src/common/cfgfiles.c:733
+#: src/common/cfgfiles.c:742
 msgid ""
 "* Running IRC as root is stupid! You should\n"
 "  create a User Account and use that to login.\n"
@@ -54,7 +54,7 @@ msgstr "Sikertelen"
 msgid "Done"
 msgstr "Kész"
 
-#: src/common/dcc.c:71 src/fe-gtk/menu.c:753
+#: src/common/dcc.c:71 src/fe-gtk/menu.c:775
 msgid "Connect"
 msgstr "Kapcsolódás"
 
@@ -62,23 +62,23 @@ msgstr "Kapcsolódás"
 msgid "Aborted"
 msgstr "Megszakítva"
 
-#: src/common/dcc.c:1887 src/common/outbound.c:2363
+#: src/common/dcc.c:1910 src/common/outbound.c:2450
 #, c-format
 msgid "Cannot access %s\n"
 msgstr "%s nem érhető el\n"
 
-#: src/common/dcc.c:1888 src/common/text.c:916 src/common/text.c:954
-#: src/common/text.c:965 src/common/text.c:972 src/common/text.c:985
-#: src/common/text.c:1002 src/common/text.c:1102 src/common/util.c:352
+#: src/common/dcc.c:1911 src/common/text.c:918 src/common/text.c:956
+#: src/common/text.c:967 src/common/text.c:974 src/common/text.c:987
+#: src/common/text.c:1004 src/common/text.c:1104 src/common/util.c:352
 msgid "Error"
 msgstr "Hiba"
 
-#: src/common/dcc.c:2376
+#: src/common/dcc.c:2399
 #, c-format
 msgid "%s is offering \"%s\". Do you want to accept?"
 msgstr "%s felajánlja a következőt: \"%s\". El kívánja fogadni?"
 
-#: src/common/dcc.c:2587
+#: src/common/dcc.c:2610
 msgid "No active DCCs\n"
 msgstr "Nincs aktív DCC\n"
 
@@ -122,96 +122,111 @@ msgstr "Nincs benn egy csatornán sem. Próbálja meg a /join #<csatorna> paranc
 msgid "Not connected. Try /server <host> [<port>]\n"
 msgstr "Nincs kapcsolat. Próbálja ezt: /server <host> [<port>]\n"
 
-#: src/common/outbound.c:1730
+#: src/common/outbound.c:339
+#, c-format
+msgid "Already marked away: %s\n"
+msgstr "Már megjelölve távollévőként: %s\n"
+
+#: src/common/outbound.c:409
+msgid "Already marked back.\n"
+msgstr "Már megjelölve visszatértként.\n"
+
+#: src/common/outbound.c:1812
 msgid "I need /bin/sh to run!\n"
 msgstr "A /bin/sh-ra szükség van a futáshoz!\n"
 
-#: src/common/outbound.c:2100
+#: src/common/outbound.c:2183
 msgid "Commands Available:"
 msgstr "Elérhető parancsok:"
 
-#: src/common/outbound.c:2114
+#: src/common/outbound.c:2197
 msgid "User defined commands:"
 msgstr "Felhasználó által megadott parancsok:"
 
-#: src/common/outbound.c:2130
+#: src/common/outbound.c:2213
 msgid "Plugin defined commands:"
 msgstr "Bővítmény által megadott parancsok:"
 
-#: src/common/outbound.c:2141
+#: src/common/outbound.c:2224
 msgid "Type /HELP <command> for more information, or /HELP -l"
 msgstr "További információkért adja ki a /HELP <parancs> vagy /HELP -l parancsot"
 
-#: src/common/outbound.c:2216
+#: src/common/outbound.c:2299
 #, c-format
 msgid "Unknown arg '%s' ignored."
 msgstr "\"%s\" ismeretlen argumentum, mellőzve."
 
-#: src/common/outbound.c:3110
+#: src/common/outbound.c:3238
 msgid "No such plugin found.\n"
 msgstr "Nem található ilyen bővítmény.\n"
 
-#: src/common/outbound.c:3115 src/fe-gtk/plugingui.c:186
+#: src/common/outbound.c:3243 src/fe-gtk/plugingui.c:186
 msgid "That plugin is refusing to unload.\n"
 msgstr "Ezt a bővítményt nem lehet kikapcsolni.\n"
 
-#: src/common/outbound.c:3384
+#: src/common/outbound.c:3512
 msgid "ADDBUTTON <name> <action>, adds a button under the user-list"
 msgstr "ADDBUTTON <név> <akció>, a felhasználólista alá helyez el egy gombot"
 
-#: src/common/outbound.c:3386
+#: src/common/outbound.c:3514
 msgid "ALLCHAN <cmd>, sends a command to all channels you're in"
 msgstr "ALLCHAN <parancs>, parancs küldése minden csatornára, ahol benn van"
 
-#: src/common/outbound.c:3388
+#: src/common/outbound.c:3516
 msgid "ALLCHANL <cmd>, sends a command to all channels you're in"
 msgstr "ALLCHANL <parancs>, parancs küldése minden csatornára, ahol benn van"
 
-#: src/common/outbound.c:3390
+#: src/common/outbound.c:3518
 msgid "ALLSERV <cmd>, sends a command to all servers you're in"
 msgstr "ALLSERV <parancs>, parancs küldése minden kiszolgálóra, ahol benn van"
 
-#: src/common/outbound.c:3391
+#: src/common/outbound.c:3519
 msgid "AWAY [<reason>], sets you away"
 msgstr "AWAY [<indoklás>], távollét beállítása"
 
-#: src/common/outbound.c:3393
+#: src/common/outbound.c:3520
+msgid "BACK, sets you back (not away)"
+msgstr "BACK, visszatértnek (nem távollévőnek) jelöli"
+
+#: src/common/outbound.c:3522
 msgid "BAN <mask> [<bantype>], bans everyone matching the mask from the current channel. If they are already on the channel this doesn't kick them (needs chanop)"
 msgstr "BAN <maszk> [<kitiltástípus>], kitilt mindenkit, akire illik a maszk az adott csatornán. Ha már benn vannak a csatornán, nem rúgja ki őket (ehhez chanop-jog kell)"
 
-#: src/common/outbound.c:3395
+#: src/common/outbound.c:3524
 msgid ""
 "Set per channel options\n"
 "CHANOPT CONFMODE ON|OFF - Toggle conf mode/showing of join and part messages\n"
 "CHANOPT COLORPASTE ON|OFF - Toggle color paste\n"
-"CHANOPT BEEP ON|OFF - Toggle beep on message"
+"CHANOPT BEEP ON|OFF - Toggle beep on message\n"
+"CHANOPT TRAY ON|OFF - Toggle tray blink on message"
 msgstr ""
 "Csatornánkénti kapcsolók beállítása\n"
-"CHANOPT CONFMODE ON|OFF - Konferenciamód/ csatlakozási és kilépési üzenetek megjelenítésének átváltása\n"
+"CHANOPT CONFMODE ON|OFF - Konferenciamód / csatlakozási és kilépési üzenetek megjelenítésének átváltása\n"
 "CHANOPT COLORPASTE ON|OFF - Színek beillesztésének átváltása\n"
-"CHANOPT BEEP ON|OFF - Üzenetkor csipogás átváltása"
+"CHANOPT BEEP ON|OFF - Üzenetkor csipogás átváltása\n"
+"CHANOPT TRAY ON|OFF - Üzenetkor villogjon a tálcán"
 
-#: src/common/outbound.c:3401
+#: src/common/outbound.c:3531
 msgid "CLEAR [ALL|HISTORY], Clears the current text window or command history"
 msgstr "CLEAR, [ALL|HISTORY] törli az aktuális szövegablakot vagy a parancstörténetet"
 
-#: src/common/outbound.c:3402
+#: src/common/outbound.c:3532
 msgid "CLOSE, Closes the current window/tab"
 msgstr "CLOSE, bezárja az aktuális ablakot/fület"
 
-#: src/common/outbound.c:3405
+#: src/common/outbound.c:3535
 msgid "COUNTRY [-s] <code|wildcard>, finds a country code, eg: au = australia"
 msgstr "COUNTRY [-s] <kód|helyettesítőkarakter>, országkód keresése, például au = Ausztrália"
 
-#: src/common/outbound.c:3407
+#: src/common/outbound.c:3537
 msgid "CTCP <nick> <message>, send the CTCP message to nick, common messages are VERSION and USERINFO"
 msgstr "CTCP <becenév> <üzenet>, CTCP üzenet küldése a becenévnek, gyakori üzenetek: VERSION és USERINFO"
 
-#: src/common/outbound.c:3409
+#: src/common/outbound.c:3539
 msgid "CYCLE, parts current channel and immediately rejoins"
 msgstr "CYCLE, kilép és azonnal visszalép az adott csatornára"
 
-#: src/common/outbound.c:3411
+#: src/common/outbound.c:3541
 msgid ""
 "\n"
 "DCC GET <nick>                      - accept an offered file\n"
@@ -233,76 +248,76 @@ msgstr ""
 "DCC CLOSE <típus> <becenév> <fájl>         DCC átvitel bezárása; példa:\n"
 "         /dcc close send johnsmith file.tar.gz"
 
-#: src/common/outbound.c:3423
+#: src/common/outbound.c:3553
 msgid "DEHOP <nick>, removes chanhalf-op status from the nick on the current channel (needs chanop)"
 msgstr "DEHOP <becenév>, elveszi a fél-op státuszt az adott csatornán a becenévtől (op-jog szükséges)"
 
-#: src/common/outbound.c:3425
+#: src/common/outbound.c:3555
 msgid "DELBUTTON <name>, deletes a button from under the user-list"
 msgstr "DELBUTTON <név>, gomb törlése a felhasználólista alól"
 
-#: src/common/outbound.c:3427
+#: src/common/outbound.c:3557
 msgid "DEOP <nick>, removes chanop status from the nick on the current channel (needs chanop)"
 msgstr "DEOP <becenév>, op-jog megvonása a becenévtől az adott csatornán (op-jog szükséges)"
 
-#: src/common/outbound.c:3429
+#: src/common/outbound.c:3559
 msgid "DEVOICE <nick>, removes voice status from the nick on the current channel (needs chanop)"
 msgstr "DEVOICE <becenév>, megvonja a voice státuszt a becenévtől az adott csatornán (op-jog szükséges)"
 
-#: src/common/outbound.c:3430
+#: src/common/outbound.c:3560
 msgid "DISCON, Disconnects from server"
 msgstr "DISCON, bontja a kapcsolatot a kiszolgálóval"
 
-#: src/common/outbound.c:3431
+#: src/common/outbound.c:3561
 msgid "DNS <nick|host|ip>, Finds a users IP number"
 msgstr "DNS <becenév|gép|ip>, a felhasználó IP számának keresése"
 
-#: src/common/outbound.c:3432
+#: src/common/outbound.c:3562
 msgid "ECHO <text>, Prints text locally"
 msgstr "ECHO <szöveg>, szöveg helyi megjelenítése"
 
-#: src/common/outbound.c:3435
+#: src/common/outbound.c:3565
 msgid "EXEC [-o] <command>, runs the command. If -o flag is used then output is sent to current channel, else is printed to current text box"
 msgstr "EXEC [-o] <parancs>, parancs futtatása. Ha -o -val használja, a kimenet az aktuális csatornára megy, egyébként az aktuális szövegdobozba"
 
-#: src/common/outbound.c:3437
+#: src/common/outbound.c:3567
 msgid "EXECCONT, sends the process SIGCONT"
 msgstr "EXECCONT, SIGCONT küldése a folyamatnak"
 
-#: src/common/outbound.c:3440
+#: src/common/outbound.c:3570
 msgid "EXECKILL [-9], kills a running exec in the current session. If -9 is given the process is SIGKILL'ed"
 msgstr "EXECKILL [-9], futó exec kilövése az aktuális munkafolyamatban. Ha a -9 kapcsolóval használja, a folyamat SIGKILL szignált kap"
 
-#: src/common/outbound.c:3442
+#: src/common/outbound.c:3572
 msgid "EXECSTOP, sends the process SIGSTOP"
 msgstr "EXECSTOP, SIGSTOP küldése a folyamatnak"
 
-#: src/common/outbound.c:3443
+#: src/common/outbound.c:3573
 msgid "EXECWRITE, sends data to the processes stdin"
 msgstr "EXECWRITE, adatok küldése a folyamat szabványos bemenetére"
 
-#: src/common/outbound.c:3447
+#: src/common/outbound.c:3577
 msgid "FLUSHQ, flushes the current server's send queue"
 msgstr "FLUSHQ, törli az aktuális kiszolgáló küldési várakozási sorát"
 
-#: src/common/outbound.c:3449
+#: src/common/outbound.c:3579
 msgid "GATE <host> [<port>], proxies through a host, port defaults to 23"
 msgstr "GATE <kiszolgáló> [<port>], a kiszolgáló beállítása proxyként, az alapértelmezett portszám a 23"
 
 # FIXME
-#: src/common/outbound.c:3453
+#: src/common/outbound.c:3583
 msgid "GHOST <nick> <password>, Kills a ghosted nickname"
 msgstr "GHOST <becenév> <jelszó>: Egy ghost-olt becenév kilövése"
 
-#: src/common/outbound.c:3458
+#: src/common/outbound.c:3588
 msgid "HOP <nick>, gives chanhalf-op status to the nick (needs chanop)"
 msgstr "HOP <becenév>, fél-op státuszt ad a becenévnek (op-jog szükséges)"
 
-#: src/common/outbound.c:3459
+#: src/common/outbound.c:3589
 msgid "ID <password>, identifies yourself to nickserv"
 msgstr "ID <jelszó>, azonosítja a becenév-kiszolgáló felé"
 
-#: src/common/outbound.c:3461
+#: src/common/outbound.c:3591
 msgid ""
 "IGNORE <mask> <types..> <options..>\n"
 "    mask - host mask to ignore, eg: *!*@*.aol.com\n"
@@ -310,198 +325,214 @@ msgid ""
 "            PRIV, CHAN, NOTI, CTCP, DCC, INVI, ALL\n"
 "    options - NOSAVE, QUIET"
 msgstr ""
-"IGNORE <maszk> <típusok..> <opciok..>\n"
+"IGNORE <maszk> <típusok..> <opciók..>\n"
 "    maszk - a mellőzendő gépek maszkja, például *!*@*.aol.com\n"
 "    típusok - a mellőzendő adatok típusa, a következők legalább egyike:\n"
 "            PRIV, CHAN, NOTI, CTCP, DCC, INVI, ALL\n"
 "    opciók - NOSAVE, QUIET"
 
-#: src/common/outbound.c:3468
+#: src/common/outbound.c:3598
 msgid "INVITE <nick> [<channel>], invites someone to a channel, by default the current channel (needs chanop)"
 msgstr "INVITE <becenév> [<csatorna>], meghívja a becenevet egy csatornára, alapértelmezésben az aktuálisra (op-jog szükséges)"
 
-#: src/common/outbound.c:3469
+#: src/common/outbound.c:3599
 msgid "JOIN <channel>, joins the channel"
 msgstr "JOIN <csatorna>, belépés a csatornára"
 
-#: src/common/outbound.c:3471
+#: src/common/outbound.c:3601
 msgid "KICK <nick>, kicks the nick from the current channel (needs chanop)"
 msgstr "KICK <becenév>, kirúgja a becenevet az adott csatornáról (op-jog szükséges)"
 
-#: src/common/outbound.c:3473
+#: src/common/outbound.c:3603
 msgid "KICKBAN <nick>, bans then kicks the nick from the current channel (needs chanop)"
 msgstr "KICKBAN <becenév>, kitiltja, majd kirúgja a becenevet az aktuális csatornáról (op-jog szükséges)"
 
-#: src/common/outbound.c:3476
+#: src/common/outbound.c:3606
 msgid "LAGCHECK, forces a new lag check"
 msgstr "LAGCHECK, új lag ellenőrzés kikényszerítése"
 
-#: src/common/outbound.c:3478
+#: src/common/outbound.c:3608
 msgid "LASTLOG <string>, searches for a string in the buffer"
 msgstr "LASTLOG <karakterlánc>, karakterlánc keresése a pufferben"
 
-#: src/common/outbound.c:3480
+#: src/common/outbound.c:3610
 msgid "LOAD [-e] <file>, loads a plugin or script"
 msgstr "LOAD [-e] <fájl>, bővítmény vagy parancsfájl betöltése"
 
-#: src/common/outbound.c:3483
+#: src/common/outbound.c:3613
 msgid "MDEHOP, Mass deop's all chanhalf-ops in the current channel (needs chanop)"
 msgstr "MDEHOP, minden fél-op-tól elveszi a fél-op jogot az adott csatornán (op-jog szükséges)"
 
-#: src/common/outbound.c:3485
+#: src/common/outbound.c:3615
 msgid "MDEOP, Mass deop's all chanops in the current channel (needs chanop)"
 msgstr "MDEOP, minden op-tól elveszi az op-jogot az adott csatornán (op-jog szükséges)"
 
-#: src/common/outbound.c:3487
+#: src/common/outbound.c:3617
 msgid "ME <action>, sends the action to the current channel (actions are written in the 3rd person, like /me jumps)"
 msgstr "ME <akció>, az adott tevékenységet az aktuális csatornára küldi (az igék 3. személyben írandók, például: /me ugrál)"
 
-#: src/common/outbound.c:3490
+#: src/common/outbound.c:3621
 msgid "MKICK, Mass kicks everyone except you in the current channel (needs chanop)"
 msgstr "MKICK, tömegesen kirúg mindenkit az adott csatornáról, kivéve Önt (op-jog szükséges)"
 
-#: src/common/outbound.c:3493
+#: src/common/outbound.c:3624
 msgid "MOP, Mass op's all users in the current channel (needs chanop)"
 msgstr "MOP, tömeges op-jog adása mindenkinek az adott csatornán (op-jog szükséges)"
 
-#: src/common/outbound.c:3494
+#: src/common/outbound.c:3625
 msgid "MSG <nick> <message>, sends a private message"
 msgstr "MSG <becenév> <üzenet>, privát üzenet küldése"
 
-#: src/common/outbound.c:3497
+#: src/common/outbound.c:3628
 msgid "NAMES, Lists the nicks on the current channel"
 msgstr "NAMES, felsorolja az aktuális csatornán lévő beceneveket"
 
-#: src/common/outbound.c:3499
+#: src/common/outbound.c:3630
 msgid "NCTCP <nick> <message>, Sends a CTCP notice"
 msgstr "NCTCP <becenév> <üzenet>, CTCP figyelmeztetés küldése"
 
-#: src/common/outbound.c:3500
+#: src/common/outbound.c:3631
 msgid "NEWSERVER [-noconnect] <hostname> [<port>]"
 msgstr "NEWSERVER [-noconnect] <kiszolgálónév> [<port>]"
 
-#: src/common/outbound.c:3501
+#: src/common/outbound.c:3632
 msgid "NICK <nickname>, sets your nick"
 msgstr "NICK <becenév>, beállítja a becenevét"
 
-#: src/common/outbound.c:3504
+#: src/common/outbound.c:3635
 msgid "NOTICE <nick/channel> <message>, sends a notice. Notices are a type of message that should be auto reacted to"
 msgstr "NOTICE <becenév/csatorna> <üzenet>, figyelmeztetés küldése . A figyelmeztetés olyan üzenet, amire automatikusan reagálni kell"
 
-#: src/common/outbound.c:3506
+#: src/common/outbound.c:3637
 msgid "NOTIFY [-n network1[,network2,...]] [<nick>], displays your notify list or adds someone to it"
 msgstr "NOTIFY [-n hálózat1[,hálózat2,...]] [<becenév>], megjeleníti az értesítési listát vagy hozzáad valakit"
 
-#: src/common/outbound.c:3508
+#: src/common/outbound.c:3639
 msgid "OP <nick>, gives chanop status to the nick (needs chanop)"
 msgstr "OP <becenév>, op-jogot ad a becenévnek (op-jog szükséges)"
 
-#: src/common/outbound.c:3510
+#: src/common/outbound.c:3641
 msgid "PART [<channel>] [<reason>], leaves the channel, by default the current one"
 msgstr "PART [<csatorna>] [<indoklás>], kilép a csatornáról, alapértelmezésben az aktuálisról"
 
-#: src/common/outbound.c:3512
+#: src/common/outbound.c:3643
 msgid "PING <nick | channel>, CTCP pings nick or channel"
 msgstr "PING <becenév | csatorna>, CTCP-pingeli a becenevet vagy a csatornát"
 
-#: src/common/outbound.c:3514
+#: src/common/outbound.c:3645
 msgid "QUERY [-nofocus] <nick>, opens up a new privmsg window to someone"
 msgstr "QUERY [-nofocus] <becenév>, új privát üzenetablak megnyitása az adott becenévhez"
 
-#: src/common/outbound.c:3516
+#: src/common/outbound.c:3647
 msgid "QUIT [<reason>], disconnects from the current server"
 msgstr "QUIT [<indoklás>], bontja a kapcsolatot az aktuális kiszolgálóval"
 
-#: src/common/outbound.c:3518
+#: src/common/outbound.c:3649
 msgid "QUOTE <text>, sends the text in raw form to the server"
 msgstr "QUOTE <szöveg>, nyers formában küldi a szöveget a kiszolgálóra"
 
-#: src/common/outbound.c:3521
+#: src/common/outbound.c:3652
 msgid "RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as /RECONNECT to reconnect to the current server or with /RECONNECT ALL to reconnect to all the open servers"
 msgstr "RECONNECT [-ssl] [<kiszolgáló>] [<port>] [<jelszó>], Ugyanúgy használható, mint a /RECONNECT (újracsatlakozás az aktuális kiszolgálóhoz) vagy /RECONNECT ALL (minden nyitott kiszolgálóhoz csatlakozik)"
 
-#: src/common/outbound.c:3524
+#: src/common/outbound.c:3655
 msgid "RECONNECT [<host>] [<port>] [<password>], Can be called just as /RECONNECT to reconnect to the current server or with /RECONNECT ALL to reconnect to all the open servers"
 msgstr "RECONNECT [<host>] [<port>] [<jelszó>], Ugyanúgy használható, mint a /RECONNECT (újracsatlakozás az aktuális kiszolgálóhoz) vagy /RECONNECT ALL (minden nyitott kiszolgálóhoz csatlakozik)"
 
-#: src/common/outbound.c:3526
+#: src/common/outbound.c:3657
 msgid "RECV <text>, send raw data to xchat, as if it was received from the irc server"
 msgstr "RECV <szöveg>, nyers adatok küldése az XChatnek, mintha az irc kiszolgálótól érkezett volna"
 
-#: src/common/outbound.c:3529
+#: src/common/outbound.c:3660
 msgid "SAY <text>, sends the text to the object in the current window"
 msgstr "SAY <szöveg>, szöveget küld az aktuális ablakban lévő objektumba"
 
-#: src/common/outbound.c:3530
+#: src/common/outbound.c:3661
 msgid "SEND <nick> [<file>]"
 msgstr "SEND <becenév> [<fájl>]"
 
-#: src/common/outbound.c:3533
+#: src/common/outbound.c:3664
 msgid "SERVCHAN [-ssl] <host> <port> <channel>, connects and joins a channel"
 msgstr "SERVCHAN [-ssl] <host> <port> <csatorna>, csatlakozik és belép egy adott csatornára"
 
-#: src/common/outbound.c:3536
+#: src/common/outbound.c:3667
 msgid "SERVCHAN <host> <port> <channel>, connects and joins a channel"
 msgstr "SERVCHAN <host> <port> <csatorna>, csatlakozik és belép az adott csatornára"
 
-#: src/common/outbound.c:3540
+#: src/common/outbound.c:3671
 msgid "SERVER [-ssl] <host> [<port>] [<password>], connects to a server, the default port is 6667 for normal connections, and 9999 for ssl connections"
 msgstr "SERVER [-ssl] <host> [<port>] [<jelszó>], csatlakozik a kiszolgálóhoz, az alapértelmezett port 6667 normál kapcsolathoz, és 9999 SSL kapcsolathoz"
 
-#: src/common/outbound.c:3543
+#: src/common/outbound.c:3674
 msgid "SERVER <host> [<port>] [<password>], connects to a server, the default port is 6667"
 msgstr "SERVER <host> [<port>] [<jelszó>], csatlakozik az adott kiszolgálóhoz, az alapértelmezett port a 6667"
 
-#: src/common/outbound.c:3545
+#: src/common/outbound.c:3676
 msgid "SET [-e] [-quiet] <variable> [<value>]"
 msgstr "SET [-e] [-quiet] <változó> [<érték>]"
 
-#: src/common/outbound.c:3546
+#: src/common/outbound.c:3677
 msgid "SETCURSOR [-|+]<position>"
 msgstr "SETCURSOR [-|+]<pozíció>"
 
-#: src/common/outbound.c:3551
+#: src/common/outbound.c:3682
 msgid "TOPIC [<topic>], sets the topic if one is given, else shows the current topic"
 msgstr "TOPIC [<téma>], beállítja a témát, ha megadja, vagy megmutatja az aktuális témát"
 
-#: src/common/outbound.c:3553
-msgid "UNBAN <mask> [<mask>...], unbans the specified masks."
-msgstr "UNBAN <maszk> [<maszk>...], kitiltás feloldása az adott maszkokra"
+#: src/common/outbound.c:3684
+msgid ""
+"\n"
+"TRAY -f <timeout> <file1> [<file2>] Blink tray between two icons.\n"
+"TRAY -f <filename>                  Set tray to a fixed icon.\n"
+"TRAY -i <number>                    Blink tray with an internal icon.\n"
+"TRAY -t <text>                      Set the tray tooltip.\n"
+"TRAY -b <title> <text>              Set the tray balloon."
+msgstr ""
+"\n"
+"TRAY -f <időkorlát> <fájl1> [<fájl2>] Villogjon a tálcán a két ikon között.\n"
+"TRAY -f <fájlnév>                  A tálca beállítása rögzített ikonra.\n"
+"TRAY -i <szám>                    Tálca villogtatása belső ikonnal.\n"
+"TRAY -t <szöveg>                      A tálca gyorstippjének beállítása.\n"
+"TRAY -b <cím> <szöveg>              A tálca feliratának beállítása."
 
-#: src/common/outbound.c:3554
+#: src/common/outbound.c:3691
+msgid "UNBAN <mask> [<mask>...], unbans the specified masks."
+msgstr "UNBAN <maszk> [<maszk>...], kitiltás feloldása az adott maszkokra."
+
+#: src/common/outbound.c:3692
 msgid "UNIGNORE <mask> [QUIET]"
 msgstr "UNIGNORE <maszk> [QUIET] az adott maszk mellőzésének megszüntetése"
 
-#: src/common/outbound.c:3555
+#: src/common/outbound.c:3693
 msgid "UNLOAD <name>, unloads a plugin or script"
 msgstr "UNLOAD <név>, kikapcsol egy bővítményt vagy parancsfájlt"
 
-#: src/common/outbound.c:3556
+#: src/common/outbound.c:3694
 msgid "URL <url>, opens a URL in your browser"
 msgstr "URL <url>, megnyitja az adott URL-t a böngészőben"
 
-#: src/common/outbound.c:3558
+#: src/common/outbound.c:3696
 msgid "USELECT [-a] [-s] <nick1> <nick2> etc, highlights nick(s) in channel userlist"
 msgstr "USELECT [-a] [-s] <nick1> <nick2> stb, kiemeli a beceneve(ke)t a csatorna felhasználólistájában"
 
-#: src/common/outbound.c:3561
+#: src/common/outbound.c:3699
 msgid "VOICE <nick>, gives voice status to someone (needs chanop)"
 msgstr "VOICE <becenév>, voice státuszt ad valakinek (op-jog szükséges)"
 
-#: src/common/outbound.c:3563
+#: src/common/outbound.c:3701
 msgid "WALLCHAN <message>, writes the message to all channels"
 msgstr "WALLCHAN <üzenet>, kiírja az üzenetet az összes csatornára"
 
-#: src/common/outbound.c:3565
+#: src/common/outbound.c:3703
 msgid "WALLCHOP <message>, sends the message to all chanops on the current channel"
 msgstr "WALLCHOP <üzenet>, elküldi az üzenetet az aktuális csatorna összes opjának"
 
-#: src/common/outbound.c:3598
+#: src/common/outbound.c:3736
 #, c-format
 msgid "Usage: %s\n"
 msgstr "Használat: %s\n"
 
-#: src/common/outbound.c:3603
+#: src/common/outbound.c:3741
 msgid ""
 "\n"
 "No help available on that command.\n"
@@ -509,19 +540,19 @@ msgstr ""
 "\n"
 "Ehhez a parancshoz nincs súgó.\n"
 
-#: src/common/outbound.c:3609
+#: src/common/outbound.c:3747
 msgid "No such command.\n"
 msgstr "Nincs ilyen parancs.\n"
 
-#: src/common/outbound.c:3939
+#: src/common/outbound.c:4077
 msgid "Bad arguments for user command.\n"
 msgstr "Hibás argumentum a felhasználói parancs mellett.\n"
 
-#: src/common/outbound.c:4095
+#: src/common/outbound.c:4233
 msgid "Too many recursive usercommands, aborting."
 msgstr "Túl sok rekurzív felhasználói parancs, kilépek."
 
-#: src/common/outbound.c:4172
+#: src/common/outbound.c:4310
 msgid "Unknown Command. Try /help\n"
 msgstr "Ismeretlen parancs. Próbálja a /help parancsot\n"
 
@@ -529,11 +560,11 @@ msgstr "Ismeretlen parancs. Próbálja a /help parancsot\n"
 msgid "No xchat_plugin_init symbol; is this really an xchat plugin?"
 msgstr "Nincs xchat_plugin_init szimbólum; biztos, hogy ez egy XChat bővítmény?"
 
-#: src/common/server.c:621
+#: src/common/server.c:627
 msgid "Are you sure this is a SSL capable server and port?\n"
 msgstr "Biztos, hogy ez SSL-re képes kiszolgáló és port?\n"
 
-#: src/common/server.c:1012
+#: src/common/server.c:1018
 #, c-format
 msgid ""
 "Cannot resolve hostname %s\n"
@@ -542,16 +573,16 @@ msgstr ""
 "Nem lehet feloldani a(z) %s gépnevet\n"
 "Ellenőrizze az IP-beállításait!\n"
 
-#: src/common/server.c:1017
+#: src/common/server.c:1023
 msgid "Proxy traversal failed.\n"
 msgstr "Nem sikerült átjutni a proxyn.\n"
 
-#: src/common/servlist.c:641
+#: src/common/servlist.c:642
 #, c-format
 msgid "Cycling to next server in %s...\n"
 msgstr "Ugrás a következő kiszolgálóra %s múlva...\n"
 
-#: src/common/servlist.c:1065
+#: src/common/servlist.c:1073
 #, c-format
 msgid "Warning: \"%s\" character set is unknown. No conversion will be applied for network %s."
 msgstr "Figyelem: a \"%s\" karakterkészlet ismeretlen. Nem lesz konverzió a(z) %s hálózaton."
@@ -1013,11 +1044,11 @@ msgstr "%C23*$tKilépett a(z) $3 csatornáról"
 msgid "%C23*$tYou have left channel $3 (%O%C23%B%B$4%O%C23)"
 msgstr "%C23*$tKilépett a(z) $3 csatornáról (%O%C23%B%B$4%O%C23)"
 
-#: src/common/textevents.h:405
+#: src/common/textevents.h:408
 msgid "%C22*%O$tYou've invited%C26 $1%O to%C26 $2%O (%C26$3%O)"
 msgstr "%C22*%O$tMeghívta %C26 $1%O-t erre: %C26 $2%O (%C26$3%O)"
 
-#: src/common/textevents.h:411
+#: src/common/textevents.h:414
 msgid "%C22*%O$tYou are now known as $2"
 msgstr "%C22*%O$tMostantól ezen a néven ismert: $2"
 
@@ -1026,12 +1057,12 @@ msgstr "%C22*%O$tMostantól ezen a néven ismert: $2"
 msgid "**** ENDING LOGGING AT %s\n"
 msgstr "**** NAPLÓZÁS BEFEJEZÉSE EKKOR: %s\n"
 
-#: src/common/text.c:263
+#: src/common/text.c:270
 #, c-format
 msgid "**** BEGIN LOGGING AT %s\n"
 msgstr "**** NAPLÓZÁS KEZDETE EKKOR: %s\n"
 
-#: src/common/text.c:282
+#: src/common/text.c:289
 #, c-format
 msgid ""
 "* Can't open log file(s) for writing. Check the\n"
@@ -1040,457 +1071,453 @@ msgstr ""
 "* Nem lehet írni a naplófájl(oka)t. Ellenőrizze a\n"
 "  jogosultságokat a(z) %s/xchatlogs fájlon"
 
-#: src/common/text.c:618
+#: src/common/text.c:625
 msgid "Left message"
 msgstr "Bal oldali üzenet"
 
-#: src/common/text.c:619
+#: src/common/text.c:626
 msgid "Right message"
 msgstr "Jobb oldali üzenet"
 
-#: src/common/text.c:623
+#: src/common/text.c:630
 msgid "The nick of the joining person"
 msgstr "A csatlakozó személy beceneve"
 
-#: src/common/text.c:624
+#: src/common/text.c:631
 msgid "The channel being joined"
 msgstr "A csatorna, amelyre belép"
 
-#: src/common/text.c:625 src/common/text.c:671 src/common/text.c:728
+#: src/common/text.c:632 src/common/text.c:679 src/common/text.c:730
 msgid "The host of the person"
 msgstr "A személy gépe"
 
-#: src/common/text.c:629 src/common/text.c:635 src/common/text.c:642
-#: src/common/text.c:709 src/common/text.c:835 src/common/text.c:842
-#: src/common/text.c:847 src/common/text.c:852 src/common/text.c:857
-#: src/common/text.c:863 src/common/text.c:868 src/common/text.c:872
-#: src/common/text.c:878 src/common/text.c:884 src/common/text.c:930
-#: src/common/text.c:941 src/common/text.c:946 src/common/text.c:951
-#: src/common/text.c:960 src/common/text.c:971 src/common/text.c:978
-#: src/common/text.c:984 src/common/text.c:989 src/common/text.c:994
-#: src/common/text.c:1001 src/common/text.c:1007 src/common/text.c:1013
-#: src/common/text.c:1018 src/common/text.c:1023 src/common/text.c:1027
-#: src/common/text.c:1033 src/common/text.c:1041 src/common/text.c:1075
-#: src/common/text.c:1080
+#: src/common/text.c:636 src/common/text.c:642 src/common/text.c:649
+#: src/common/text.c:837 src/common/text.c:844 src/common/text.c:849
+#: src/common/text.c:854 src/common/text.c:859 src/common/text.c:865
+#: src/common/text.c:870 src/common/text.c:874 src/common/text.c:880
+#: src/common/text.c:886 src/common/text.c:932 src/common/text.c:943
+#: src/common/text.c:948 src/common/text.c:953 src/common/text.c:962
+#: src/common/text.c:973 src/common/text.c:980 src/common/text.c:986
+#: src/common/text.c:991 src/common/text.c:996 src/common/text.c:1003
+#: src/common/text.c:1009 src/common/text.c:1015 src/common/text.c:1020
+#: src/common/text.c:1025 src/common/text.c:1029 src/common/text.c:1035
+#: src/common/text.c:1043 src/common/text.c:1077 src/common/text.c:1082
 msgid "Nickname"
 msgstr "Becenév"
 
-#: src/common/text.c:630
+#: src/common/text.c:637
 msgid "The action"
 msgstr "A művelet"
 
-#: src/common/text.c:631 src/common/text.c:637
+#: src/common/text.c:638 src/common/text.c:644
 msgid "Mode char"
 msgstr "Mód karakter"
 
-#: src/common/text.c:636
+#: src/common/text.c:643
 msgid "The text"
 msgstr "A szöveg"
 
-#: src/common/text.c:638 src/common/text.c:711
+#: src/common/text.c:645 src/common/text.c:651
 msgid "Identified text"
 msgstr "Azonosított szöveg"
 
-#: src/common/text.c:643 src/common/text.c:699 src/common/text.c:705
-#: src/common/text.c:710
+#: src/common/text.c:650 src/common/text.c:707 src/common/text.c:713
 msgid "The message"
 msgstr "Az üzenet"
 
-#: src/common/text.c:647 src/common/text.c:715
+#: src/common/text.c:655 src/common/text.c:717
 msgid "Old nickname"
 msgstr "Régi becenév"
 
-#: src/common/text.c:648 src/common/text.c:716
+#: src/common/text.c:656 src/common/text.c:718
 msgid "New nickname"
 msgstr "Új becenév"
 
-#: src/common/text.c:652
+#: src/common/text.c:660
 msgid "Nick of person who changed the topic"
 msgstr "A témát megváltoztató személy beceneve"
 
-#: src/common/text.c:653 src/common/text.c:659 src/fe-gtk/chanlist.c:607
-#: src/fe-gtk/chanlist.c:712
+#: src/common/text.c:661 src/common/text.c:667 src/fe-gtk/chanlist.c:716
+#: src/fe-gtk/chanlist.c:819
 msgid "Topic"
 msgstr "Téma"
 
-#: src/common/text.c:654 src/common/text.c:658 src/common/text.c:1095
-#: src/fe-gtk/chanlist.c:605 src/fe-gtk/chanlist.c:703
-#: src/fe-gtk/ignoregui.c:176
+#: src/common/text.c:662 src/common/text.c:666 src/common/text.c:1097
+#: src/fe-gtk/chanlist.c:714 src/fe-gtk/ignoregui.c:176
 msgid "Channel"
 msgstr "Csatorna"
 
-#: src/common/text.c:663 src/common/text.c:722
+#: src/common/text.c:671 src/common/text.c:724
 msgid "The nickname of the kicker"
 msgstr "A kirúgó beceneve"
 
-#: src/common/text.c:664 src/common/text.c:720
+#: src/common/text.c:672 src/common/text.c:722
 msgid "The person being kicked"
 msgstr "A kirúgott személy"
 
-#: src/common/text.c:665 src/common/text.c:672 src/common/text.c:676
-#: src/common/text.c:681 src/common/text.c:721 src/common/text.c:729
-#: src/common/text.c:736
+#: src/common/text.c:673 src/common/text.c:680 src/common/text.c:684
+#: src/common/text.c:689 src/common/text.c:723 src/common/text.c:731
+#: src/common/text.c:738
 msgid "The channel"
 msgstr "A csatorna"
 
-#: src/common/text.c:666 src/common/text.c:723 src/common/text.c:730
+#: src/common/text.c:674 src/common/text.c:725 src/common/text.c:732
 msgid "The reason"
 msgstr "Az indoklás"
 
-#: src/common/text.c:670 src/common/text.c:727
+#: src/common/text.c:678 src/common/text.c:729
 msgid "The nick of the person leaving"
 msgstr "A kilépő személy beceneve"
 
-#: src/common/text.c:677 src/common/text.c:683
+#: src/common/text.c:685 src/common/text.c:691
 msgid "The time"
 msgstr "Az idő"
 
-#: src/common/text.c:682
+#: src/common/text.c:690
 msgid "The creator"
 msgstr "A létrehozó"
 
-#: src/common/text.c:687
+#: src/common/text.c:695 src/fe-gtk/dccgui.c:763 src/fe-gtk/dccgui.c:994
 msgid "Nick"
 msgstr "Becenév"
 
-#: src/common/text.c:688 src/common/text.c:947
+#: src/common/text.c:696 src/common/text.c:949
 msgid "Reason"
 msgstr "Indoklás"
 
-#: src/common/text.c:689 src/common/text.c:837 src/common/text.c:920
+#: src/common/text.c:697 src/common/text.c:839 src/common/text.c:922
 msgid "Host"
 msgstr "Kiszolgáló"
 
-#: src/common/text.c:693 src/common/text.c:698 src/common/text.c:703
+#: src/common/text.c:701 src/common/text.c:706 src/common/text.c:711
 msgid "Who it's from"
 msgstr "Kitől jött"
 
-#: src/common/text.c:694
+#: src/common/text.c:702
 msgid "The time in x.x format (see below)"
 msgstr "Az idő x.x formátumban (lásd lejjebb)"
 
-#: src/common/text.c:704 src/common/text.c:747
+#: src/common/text.c:712 src/common/text.c:749
 msgid "The Channel it's going to"
 msgstr "A csatorna, amelyre megy"
 
-#: src/common/text.c:734
+#: src/common/text.c:736
 msgid "The sound"
 msgstr "A hang"
 
-#: src/common/text.c:735 src/common/text.c:741 src/common/text.c:746
+#: src/common/text.c:737 src/common/text.c:743 src/common/text.c:748
 msgid "The nick of the person"
 msgstr "A személy beceneve"
 
-#: src/common/text.c:740 src/common/text.c:745
+#: src/common/text.c:742 src/common/text.c:747
 msgid "The CTCP event"
 msgstr "A CTCP esemény"
 
-#: src/common/text.c:751
+#: src/common/text.c:753
 msgid "The nick of the person who set the key"
 msgstr "A személy beceneve, aki a kulcsot beállította"
 
-#: src/common/text.c:752
+#: src/common/text.c:754
 msgid "The key"
 msgstr "A kulcs"
 
-#: src/common/text.c:756
+#: src/common/text.c:758
 msgid "The nick of the person who set the limit"
 msgstr "A személy beceneve, aki beállította a limitet"
 
-#: src/common/text.c:757
+#: src/common/text.c:759
 msgid "The limit"
 msgstr "A limit"
 
-#: src/common/text.c:761
+#: src/common/text.c:763
 msgid "The nick of the person who did the op'ing"
 msgstr "Annak a beceneve, aki az op-jogot adta"
 
-#: src/common/text.c:762
+#: src/common/text.c:764
 msgid "The nick of the person who has been op'ed"
 msgstr "Annak a beceneve, aki op-jogot kapott"
 
-#: src/common/text.c:766
+#: src/common/text.c:768
 msgid "The nick of the person who has been halfop'ed"
 msgstr "Annak a beceneve, aki fél-op jogot kapott"
 
-#: src/common/text.c:767
+#: src/common/text.c:769
 msgid "The nick of the person who did the halfop'ing"
 msgstr "Annak a beceneve, aki a fél-op jogot adta"
 
-#: src/common/text.c:771
+#: src/common/text.c:773
 msgid "The nick of the person who did the voice'ing"
 msgstr "Annak a beceneve, aki voice jogot adott"
 
-#: src/common/text.c:772
+#: src/common/text.c:774
 msgid "The nick of the person who has been voice'ed"
 msgstr "Annak a beceneve, aki voice jogot kapott"
 
-#: src/common/text.c:776
+#: src/common/text.c:778
 msgid "The nick of the person who did the banning"
 msgstr "Annak a beceneve, aki a kitiltást végezte"
 
-#: src/common/text.c:777 src/common/text.c:804
+#: src/common/text.c:779 src/common/text.c:806
 msgid "The ban mask"
 msgstr "A kitiltásmaszk"
 
-#: src/common/text.c:781
+#: src/common/text.c:783
 msgid "The nick who removed the key"
 msgstr "Annak a beceneve, aki eltávolította a kulcsot"
 
-#: src/common/text.c:785
+#: src/common/text.c:787
 msgid "The nick who removed the limit"
 msgstr "Annak a beceneve, aki eltávolította a limitet"
 
-#: src/common/text.c:789
+#: src/common/text.c:791
 msgid "The nick of the person of did the deop'ing"
 msgstr "Annak a beceneve, aki elvette az op-jogot"
 
-#: src/common/text.c:790
+#: src/common/text.c:792
 msgid "The nick of the person who has been deop'ed"
 msgstr "Annak a beceneve, akitől elvették az op-jogot"
 
-#: src/common/text.c:793
+#: src/common/text.c:795
 msgid "The nick of the person of did the dehalfop'ing"
 msgstr "Annak a beceneve, aki elvette a fél-op jogot"
 
-#: src/common/text.c:794
+#: src/common/text.c:796
 msgid "The nick of the person who has been dehalfop'ed"
 msgstr "Annak a beceneve, akitől elvették a fél-op jogot"
 
-#: src/common/text.c:798
+#: src/common/text.c:800
 msgid "The nick of the person of did the devoice'ing"
 msgstr "Annak a beceneve, aki megvonta a voice jogot"
 
-#: src/common/text.c:799
+#: src/common/text.c:801
 msgid "The nick of the person who has been devoice'ed"
 msgstr "Annak a beceneve, akitől megvonták a voice jogot"
 
-#: src/common/text.c:803
+#: src/common/text.c:805
 msgid "The nick of the person of did the unban'ing"
 msgstr "Annak a beceneve, aki a kitiltást visszavonta"
 
-#: src/common/text.c:808
+#: src/common/text.c:810
 msgid "The nick of the person who did the exempt"
 msgstr "Annak a beceneve, aki a kivételezést beállította"
 
-#: src/common/text.c:809 src/common/text.c:814
+#: src/common/text.c:811 src/common/text.c:816
 msgid "The exempt mask"
 msgstr "A kivételezés maszkja"
 
-#: src/common/text.c:813
+#: src/common/text.c:815
 msgid "The nick of the person removed the exempt"
 msgstr "Annak a beceneve, aki a kivételezést eltávolította"
 
-#: src/common/text.c:818
+#: src/common/text.c:820
 msgid "The nick of the person who did the invite"
 msgstr "Annak a beceneve, aki a meghívást küldte"
 
-#: src/common/text.c:819 src/common/text.c:824
+#: src/common/text.c:821 src/common/text.c:826
 msgid "The invite mask"
 msgstr "A meghívás maszkja"
 
-#: src/common/text.c:823
+#: src/common/text.c:825
 msgid "The nick of the person removed the invite"
 msgstr "Annak a beceneve, aki a meghívást visszavonta"
 
-#: src/common/text.c:828
+#: src/common/text.c:830
 msgid "The nick of the person setting the mode"
 msgstr "Annak a beceneve, aki a módot beállította"
 
-#: src/common/text.c:829
+#: src/common/text.c:831
 msgid "The mode's sign (+/-)"
 msgstr "A mód előjele (+/-)"
 
-#: src/common/text.c:830
+#: src/common/text.c:832
 msgid "The mode letter"
 msgstr "A mód betűjele"
 
-#: src/common/text.c:831
+#: src/common/text.c:833
 msgid "The channel it's being set on"
 msgstr "A csatorna, amelyre beállítják"
 
-#: src/common/text.c:836
+#: src/common/text.c:838
 msgid "Username"
 msgstr "Felhasználónév"
 
-#: src/common/text.c:838
+#: src/common/text.c:840
 msgid "Full name"
 msgstr "Teljes név"
 
-#: src/common/text.c:843
+#: src/common/text.c:845
 msgid "Channel Membership/\"is an IRC operator\""
 msgstr "Csatornatagság/\"IRC operátor\""
 
-#: src/common/text.c:848
+#: src/common/text.c:850
 msgid "Server Information"
 msgstr "Kiszolgálóinformáció"
 
-#: src/common/text.c:853 src/common/text.c:858
+#: src/common/text.c:855 src/common/text.c:860
 msgid "Idle time"
 msgstr "Tétlenség ideje"
 
-#: src/common/text.c:859
+#: src/common/text.c:861
 msgid "Signon time"
 msgstr "Bejelentkezés ideje"
 
-#: src/common/text.c:864
+#: src/common/text.c:866
 msgid "Away reason"
 msgstr "Távollét oka"
 
-#: src/common/text.c:873 src/common/text.c:879 src/common/text.c:887
-#: src/common/text.c:1067
+#: src/common/text.c:875 src/common/text.c:881 src/common/text.c:889
+#: src/common/text.c:1069
 msgid "Message"
 msgstr "Üzenet"
 
-#: src/common/text.c:880
+#: src/common/text.c:882
 msgid "Account"
 msgstr "Fiók"
 
-#: src/common/text.c:885
+#: src/common/text.c:887
 msgid "Real user@host"
 msgstr "Valós user@host"
 
-#: src/common/text.c:886
+#: src/common/text.c:888
 msgid "Real IP"
 msgstr "Valós IP"
 
-#: src/common/text.c:891 src/common/text.c:900 src/common/text.c:906
-#: src/common/text.c:936 src/common/text.c:1090
+#: src/common/text.c:893 src/common/text.c:902 src/common/text.c:908
+#: src/common/text.c:938 src/common/text.c:1092
 msgid "Channel Name"
 msgstr "Csatorna neve"
 
-#: src/common/text.c:895 src/common/text.c:1053 src/fe-gtk/menu.c:1183
-#: src/fe-gtk/menu.c:1362 src/fe-gtk/textgui.c:387
+#: src/common/text.c:897 src/common/text.c:1055 src/fe-gtk/menu.c:1206
+#: src/fe-gtk/menu.c:1385 src/fe-gtk/textgui.c:387
 msgid "Text"
 msgstr "Szöveg"
 
-#: src/common/text.c:896 src/common/text.c:902 src/common/text.c:931
-#: src/common/text.c:1049 src/common/text.c:1091
+#: src/common/text.c:898 src/common/text.c:904 src/common/text.c:933
+#: src/common/text.c:1051 src/common/text.c:1093
 msgid "Server Name"
 msgstr "Kiszolgáló neve"
 
-#: src/common/text.c:901
+#: src/common/text.c:903
 msgid "Nick of person who invited you"
 msgstr "Annak a beceneve, aki meghívta"
 
-#: src/common/text.c:907 src/fe-gtk/chanlist.c:606
+#: src/common/text.c:909 src/fe-gtk/chanlist.c:715
 msgid "Users"
 msgstr "Felhasználók"
 
-#: src/common/text.c:911
+#: src/common/text.c:913
 msgid "Nickname in use"
 msgstr "A becenév használatban van"
 
-#: src/common/text.c:912
+#: src/common/text.c:914
 msgid "Nick being tried"
 msgstr "Próbált becenév"
 
-#: src/common/text.c:921 src/common/text.c:1057
+#: src/common/text.c:923 src/common/text.c:1059
 msgid "IP"
 msgstr "IP"
 
-#: src/common/text.c:922 src/common/text.c:953
+#: src/common/text.c:924 src/common/text.c:955
 msgid "Port"
 msgstr "Port"
 
-#: src/common/text.c:932 src/fe-gtk/notifygui.c:139 src/fe-gtk/setup.c:1526
+#: src/common/text.c:934 src/fe-gtk/notifygui.c:139 src/fe-gtk/setup.c:1525
 msgid "Network"
 msgstr "Hálózat"
 
-#: src/common/text.c:937 src/common/text.c:942
+#: src/common/text.c:939 src/common/text.c:944
 msgid "Modes string"
 msgstr "Módok karakterlánca"
 
-#: src/common/text.c:952 src/common/text.c:990 src/common/text.c:995
-#: src/common/text.c:1036
+#: src/common/text.c:954 src/common/text.c:992 src/common/text.c:997
+#: src/common/text.c:1038
 msgid "IP address"
 msgstr "IP cím"
 
-#: src/common/text.c:958 src/common/text.c:983
+#: src/common/text.c:960 src/common/text.c:985
 msgid "DCC Type"
 msgstr "DCC típus"
 
-#: src/common/text.c:959 src/common/text.c:964 src/common/text.c:969
-#: src/common/text.c:976 src/common/text.c:996 src/common/text.c:1000
-#: src/common/text.c:1006 src/common/text.c:1012 src/common/text.c:1019
-#: src/common/text.c:1028 src/common/text.c:1034
+#: src/common/text.c:961 src/common/text.c:966 src/common/text.c:971
+#: src/common/text.c:978 src/common/text.c:998 src/common/text.c:1002
+#: src/common/text.c:1008 src/common/text.c:1014 src/common/text.c:1021
+#: src/common/text.c:1030 src/common/text.c:1036
 msgid "Filename"
 msgstr "Fájlnév"
 
-#: src/common/text.c:970 src/common/text.c:977
+#: src/common/text.c:972 src/common/text.c:979
 msgid "Destination filename"
 msgstr "Cél fájlnév"
 
-#: src/common/text.c:979 src/common/text.c:1008
+#: src/common/text.c:981 src/common/text.c:1010
 msgid "CPS"
 msgstr "CPS"
 
-#: src/common/text.c:1014
+#: src/common/text.c:1016
 msgid "Pathname"
 msgstr "Elérési út"
 
-#: src/common/text.c:1029 src/fe-gtk/dccgui.c:537 src/fe-gtk/dccgui.c:709
+#: src/common/text.c:1031 src/fe-gtk/dccgui.c:759
 msgid "Position"
 msgstr "Pozíció"
 
-#: src/common/text.c:1035 src/fe-gtk/dccgui.c:353 src/fe-gtk/dccgui.c:536
-#: src/fe-gtk/dccgui.c:708
+#: src/common/text.c:1037 src/fe-gtk/dccgui.c:758
 msgid "Size"
 msgstr "Méret"
 
-#: src/common/text.c:1040
+#: src/common/text.c:1042
 msgid "DCC String"
 msgstr "DCC karakterlánc"
 
-#: src/common/text.c:1045
+#: src/common/text.c:1047
 msgid "Number of notify items"
 msgstr "Az értesítési bejegyzések száma"
 
-#: src/common/text.c:1061
+#: src/common/text.c:1063
 msgid "Old Filename"
 msgstr "Régi fájlnév"
 
-#: src/common/text.c:1062
+#: src/common/text.c:1064
 msgid "New Filename"
 msgstr "Új fájlnév"
 
-#: src/common/text.c:1066
+#: src/common/text.c:1068
 msgid "Receiver"
 msgstr "Címzett"
 
-#: src/common/text.c:1071
+#: src/common/text.c:1073
 msgid "Hostmask"
 msgstr "Kiszolgálómaszk"
 
-#: src/common/text.c:1076
+#: src/common/text.c:1078
 msgid "Hostname"
 msgstr "Kiszolgálónév"
 
-#: src/common/text.c:1081
+#: src/common/text.c:1083
 msgid "The Packet"
 msgstr "A csomag"
 
-#: src/common/text.c:1085
+#: src/common/text.c:1087
 msgid "Seconds"
 msgstr "másodperc"
 
-#: src/common/text.c:1089
+#: src/common/text.c:1091
 msgid "Nick of person who have been invited"
 msgstr "Annak a beceneve, akit meghívtak"
 
-#: src/common/text.c:1096
+#: src/common/text.c:1098
 msgid "Banmask"
 msgstr "Kitiltásmaszk"
 
-#: src/common/text.c:1097
+#: src/common/text.c:1099
 msgid "Who set the ban"
 msgstr "Ki állította be a kitiltást"
 
-#: src/common/text.c:1098
+#: src/common/text.c:1100
 msgid "Ban time"
 msgstr "Kitiltás ideje"
 
-#: src/common/text.c:1138
+#: src/common/text.c:1140
 #, c-format
 msgid ""
 "Error parsing event %s.\n"
@@ -1499,7 +1526,7 @@ msgstr ""
 "Hiba a(z) %s esemény feldolgozásakor.\n"
 "Az alapértelmezés kerül betöltésre."
 
-#: src/common/text.c:1819
+#: src/common/text.c:1833
 #, c-format
 msgid ""
 "Cannot read sound file:\n"
@@ -2576,9 +2603,9 @@ msgstr "Zambia"
 msgid "Zimbabwe"
 msgstr "Zimbabwe"
 
-#: src/common/util.c:1110 src/common/util.c:1120 src/fe-gtk/menu.c:529
-#: src/fe-gtk/menu.c:534 src/fe-gtk/menu.c:538 src/fe-gtk/menu.c:542
-#: src/fe-gtk/menu.c:550 src/fe-gtk/menu.c:568
+#: src/common/util.c:1110 src/common/util.c:1120 src/fe-gtk/menu.c:550
+#: src/fe-gtk/menu.c:555 src/fe-gtk/menu.c:559 src/fe-gtk/menu.c:563
+#: src/fe-gtk/menu.c:571 src/fe-gtk/menu.c:589
 msgid "Unknown"
 msgstr "Ismeretlen"
 
@@ -2707,7 +2734,7 @@ msgstr "Felhasználó mellőzése"
 msgid "UnIgnore User"
 msgstr "Felhasználó mellőzésének megszüntetése"
 
-#: src/common/xchat.c:881 src/fe-gtk/dccgui.c:586 src/fe-gtk/dccgui.c:752
+#: src/common/xchat.c:881
 msgid "Info"
 msgstr "Információk"
 
@@ -2747,11 +2774,11 @@ msgstr "Telnet"
 msgid "Leave Channel"
 msgstr "Csatorna elhagyása"
 
-#: src/common/xchat.c:903 src/fe-gtk/menu.c:1369
+#: src/common/xchat.c:903 src/fe-gtk/menu.c:1392
 msgid "Join Channel..."
 msgstr "Csatlakozás csatornához..."
 
-#: src/common/xchat.c:904 src/fe-gtk/menu.c:1060
+#: src/common/xchat.c:904 src/fe-gtk/menu.c:1083
 msgid "Enter Channel to Join:"
 msgstr "Írja be a csatorna nevét, amelyhez csatlakozni akar:"
 
@@ -2803,7 +2830,7 @@ msgstr "Csevegés"
 #: src/common/xchat.c:936 src/fe-gtk/banlist.c:341 src/fe-gtk/ignoregui.c:388
 #: src/fe-gtk/urlgrab.c:201
 msgid "Clear"
-msgstr "Törlés"
+msgstr "Összes törlése"
 
 #: src/common/dbus/dbus-client.c:71
 msgid "Couldn't connect to session bus"
@@ -2835,11 +2862,6 @@ msgstr "Nem lehet csatlakozni a munkamenetbuszhoz: %s\n"
 msgid "Failed to acquire %s: %s\n"
 msgstr "A(z) %s lekérése nem sikerült: %s\n"
 
-#: src/common/dbus/dbus-plugin.c:1064
-#, c-format
-msgid "%s loaded successfully!\n"
-msgstr "%s betöltése sikeres\n"
-
 #: src/fe-gtk/about.c:102
 msgid "About XChat"
 msgstr "Az XChat névjegye"
@@ -2852,7 +2874,8 @@ msgstr "Többplatformos IRC-kliens"
 msgid "Character Chart"
 msgstr "Karaktertábla"
 
-#: src/fe-gtk/banlist.c:113 src/fe-gtk/chanlist.c:301
+#: src/fe-gtk/banlist.c:113 src/fe-gtk/chanlist.c:299
+#: src/fe-gtk/plugin-tray.c:138
 msgid "Not connected."
 msgstr "Nincs kapcsolat."
 
@@ -2870,7 +2893,7 @@ msgstr "Valóban el kívánja távolítani az összes kitiltást a következőn:
 msgid "Mask"
 msgstr "Maszk"
 
-#: src/fe-gtk/banlist.c:273 src/fe-gtk/dccgui.c:352 src/fe-gtk/dccgui.c:539
+#: src/fe-gtk/banlist.c:273
 msgid "From"
 msgstr "Kitől"
 
@@ -2899,99 +2922,98 @@ msgstr "Levágás"
 msgid "Refresh"
 msgstr "Frissítés"
 
-#: src/fe-gtk/chanlist.c:122
+#: src/fe-gtk/chanlist.c:111
 #, c-format
-msgid "User and Channel Statistics: %d/%d Users on %d/%d Channels"
-msgstr "Felhasználó- és csatorna-statisztika: %d/%d felhasználó van %d/%d csatornán"
+msgid "Displaying %d/%d users on %d/%d channels."
+msgstr "%d/%d felhasználó megjelenítése %d/%d csatornán."
 
-#: src/fe-gtk/chanlist.c:544
-msgid "I can't save an empty list!"
-msgstr "Üres listát nem lehet menteni!"
-
-#: src/fe-gtk/chanlist.c:547 src/fe-gtk/menu.c:996 src/fe-gtk/urlgrab.c:148
+#: src/fe-gtk/chanlist.c:514 src/fe-gtk/menu.c:1019 src/fe-gtk/urlgrab.c:148
 msgid "Select an output filename"
 msgstr "Válasszon egy kimeneti fájlnevet"
 
-#: src/fe-gtk/chanlist.c:615
+#: src/fe-gtk/chanlist.c:593 src/fe-gtk/chanlist.c:749
+msgid "_Join Channel"
+msgstr "Belépés _csatornára"
+
+#: src/fe-gtk/chanlist.c:595
+msgid "_Copy Channel Name"
+msgstr "Csatornané_v másolása"
+
+#: src/fe-gtk/chanlist.c:597
+msgid "Copy _Topic Text"
+msgstr "Té_ma szövegének másolása"
+
+#: src/fe-gtk/chanlist.c:675
 #, c-format
 msgid "XChat: Channel List (%s)"
 msgstr "XChat: Csatornalista (%s)"
 
-#: src/fe-gtk/chanlist.c:630
-msgid "List display options:"
-msgstr "Megjelenítési lehetőségek listája:"
+#: src/fe-gtk/chanlist.c:731
+msgid "_Search"
+msgstr "_Keresés"
 
-#: src/fe-gtk/chanlist.c:642
-msgid "Minimum Users:"
-msgstr "Felhasználók minimum:"
+#: src/fe-gtk/chanlist.c:737
+msgid "_Download List"
+msgstr "_Lista letöltése"
 
-#: src/fe-gtk/chanlist.c:657
-msgid "Maximum Users:"
-msgstr "Felhasználók maximum:"
+#: src/fe-gtk/chanlist.c:743
+msgid "Save _List..."
+msgstr "List_a mentése..."
 
-#: src/fe-gtk/chanlist.c:673
-msgid "Pattern Match:"
-msgstr "Mintaillesztés:"
+#: src/fe-gtk/chanlist.c:756
+msgid "Show only:"
+msgstr "Megjelenítés:"
 
-#: src/fe-gtk/chanlist.c:675
-msgid "Regex Match:"
-msgstr "Regex-illesztés:"
+#: src/fe-gtk/chanlist.c:768
+msgid "channels with"
+msgstr "csak a(z)"
 
-#: src/fe-gtk/chanlist.c:697
-msgid "Apply Match to:"
-msgstr "Illesztés alkalmazása erre:"
+#: src/fe-gtk/chanlist.c:781
+msgid "to"
+msgstr "és"
 
-#: src/fe-gtk/chanlist.c:721
-msgid "Apply"
-msgstr "Alkalmaz"
+#: src/fe-gtk/chanlist.c:793
+msgid "users."
+msgstr "közötti felhasználószámú csatornák."
 
-#: src/fe-gtk/chanlist.c:763
-msgid "Refresh the list"
-msgstr "Lista frissítése"
+#: src/fe-gtk/chanlist.c:799
+msgid "Look in:"
+msgstr "Keresés:"
 
-#: src/fe-gtk/chanlist.c:765
-msgid "Save the list"
-msgstr "Lista mentése"
+#: src/fe-gtk/chanlist.c:811
+msgid "Channel name"
+msgstr "Csatorna neve"
 
-#: src/fe-gtk/chanlist.c:767 src/fe-gtk/menu.c:812 src/fe-gtk/menu.c:1043
-msgid "Join Channel"
-msgstr "Belépés csatornára"
+#: src/fe-gtk/chanlist.c:832
+msgid "Search type:"
+msgstr "Keresés típusa:"
 
-#: src/fe-gtk/dccgui.c:117
+#: src/fe-gtk/chanlist.c:839
+msgid "Simple Search"
+msgstr "Egyszerű keresés"
+
+#: src/fe-gtk/chanlist.c:840
+msgid "Pattern Match (Wildcards)"
+msgstr "Mintaillesztés (helyettesítő karakterek)"
+
+#: src/fe-gtk/chanlist.c:842
+msgid "Regular Expression"
+msgstr "Reguláris kifejezés"
+
+#: src/fe-gtk/chanlist.c:853 src/fe-gtk/search.c:118
+msgid "Find:"
+msgstr "Keresés:"
+
+#: src/fe-gtk/dccgui.c:166
 #, c-format
 msgid "Send file to %s"
 msgstr "Fájl küldése %s számára"
 
-#: src/fe-gtk/dccgui.c:340
-msgid "None"
-msgstr "Nincs"
-
-#: src/fe-gtk/dccgui.c:351 src/fe-gtk/dccgui.c:535 src/fe-gtk/dccgui.c:707
-#: src/fe-gtk/plugingui.c:75
-msgid "File"
-msgstr "Fájl"
-
-#: src/fe-gtk/dccgui.c:352 src/fe-gtk/dccgui.c:712
-msgid "To"
-msgstr "Címzett"
-
-#: src/fe-gtk/dccgui.c:354
-msgid "Address"
-msgstr "Cím"
-
-#: src/fe-gtk/dccgui.c:355
-msgid "Started"
-msgstr "Indítva"
-
-#: src/fe-gtk/dccgui.c:356
-msgid "Speed limit"
-msgstr "Sebességkorlát"
-
-#: src/fe-gtk/dccgui.c:381
+#: src/fe-gtk/dccgui.c:496
 msgid "That file is not resumable."
 msgstr "Ezt a fájlt nem lehet folytatni."
 
-#: src/fe-gtk/dccgui.c:385
+#: src/fe-gtk/dccgui.c:500
 #, c-format
 msgid ""
 "Cannot access file: %s\n"
@@ -3002,90 +3024,85 @@ msgstr ""
 "%s.\n"
 "A folytatás nem lehetséges."
 
-#: src/fe-gtk/dccgui.c:392
+#: src/fe-gtk/dccgui.c:507
 msgid "File in download directory is larger than file offered. Resuming not possible."
 msgstr "A letöltési könyvtárban lévő fájl nagyobb, mint a felkínált. A folytatás nem lehetséges."
 
-#: src/fe-gtk/dccgui.c:396
+#: src/fe-gtk/dccgui.c:511
 msgid "Cannot resume the same file from two people."
 msgstr "Nem lehet ugyanazt a fájlt két embertől folytatni."
 
-#: src/fe-gtk/dccgui.c:534 src/fe-gtk/dccgui.c:706 src/fe-gtk/dccgui.c:857
-#: src/fe-gtk/notifygui.c:138
-msgid "Status"
-msgstr "Állapot"
-
-#: src/fe-gtk/dccgui.c:538 src/fe-gtk/dccgui.c:711
-msgid "ETA"
-msgstr "ETA"
-
-#: src/fe-gtk/dccgui.c:548
-msgid "XChat: File Receive List"
-msgstr "XChat: Fájlfogadási lista"
-
-#: src/fe-gtk/dccgui.c:580 src/fe-gtk/dccgui.c:751 src/fe-gtk/dccgui.c:889
-msgid "Abort"
-msgstr "Megszakítás"
-
-#: src/fe-gtk/dccgui.c:582 src/fe-gtk/dccgui.c:890
-msgid "Accept"
-msgstr "Elfogadás"
-
-#: src/fe-gtk/dccgui.c:584
-msgid "Resume"
-msgstr "Folytatás"
-
-#: src/fe-gtk/dccgui.c:588
-msgid "Open"
-msgstr "Megnyitás"
-
-#: src/fe-gtk/dccgui.c:710
-msgid "Ack"
-msgstr "Ack"
-
-#: src/fe-gtk/dccgui.c:722
+#: src/fe-gtk/dccgui.c:740
 msgid "XChat: Uploads and Downloads"
 msgstr "XChat: Feltöltések és letöltések"
 
-#: src/fe-gtk/dccgui.c:723
-msgid "Downloads"
-msgstr "Letöltések"
+#: src/fe-gtk/dccgui.c:756 src/fe-gtk/dccgui.c:993 src/fe-gtk/notifygui.c:138
+msgid "Status"
+msgstr "Állapot"
 
-#: src/fe-gtk/dccgui.c:724
+#: src/fe-gtk/dccgui.c:757 src/fe-gtk/plugingui.c:75
+msgid "File"
+msgstr "Fájl"
+
+#: src/fe-gtk/dccgui.c:762
+msgid "ETA"
+msgstr "ETA"
+
+#: src/fe-gtk/dccgui.c:784 src/fe-gtk/menu.c:1386
+msgid "Both"
+msgstr "Mindkettő"
+
+#: src/fe-gtk/dccgui.c:790
 msgid "Uploads"
 msgstr "Feltöltések"
 
-#: src/fe-gtk/dccgui.c:725
+#: src/fe-gtk/dccgui.c:796
+msgid "Downloads"
+msgstr "Letöltések"
+
+#: src/fe-gtk/dccgui.c:801
 msgid "Details"
 msgstr "Részletek"
 
-#: src/fe-gtk/dccgui.c:726
+#: src/fe-gtk/dccgui.c:812
+msgid "File:"
+msgstr "Fájl:"
+
+#: src/fe-gtk/dccgui.c:813
+msgid "Address:"
+msgstr "Cím:"
+
+#: src/fe-gtk/dccgui.c:819 src/fe-gtk/dccgui.c:1014
+msgid "Abort"
+msgstr "Megszakítás"
+
+#: src/fe-gtk/dccgui.c:820 src/fe-gtk/dccgui.c:1015
+msgid "Accept"
+msgstr "Elfogadás"
+
+#: src/fe-gtk/dccgui.c:821
+msgid "Resume"
+msgstr "Folytatás"
+
+#: src/fe-gtk/dccgui.c:822
 msgid "Open Folder..."
 msgstr "Mappa megnyitása..."
 
-#: src/fe-gtk/dccgui.c:730
-msgid "XChat: File Send List"
-msgstr "XChat: Fájlküldési lista"
+#: src/fe-gtk/dccgui.c:982
+msgid "XChat: DCC Chat List"
+msgstr "XChat: DCC csevegés lista"
 
-#: src/fe-gtk/dccgui.c:858
-msgid "To/From"
-msgstr "Kinek/kitől"
-
-#: src/fe-gtk/dccgui.c:859
+#: src/fe-gtk/dccgui.c:995
 msgid "Recv"
 msgstr "Bejövő"
 
-#: src/fe-gtk/dccgui.c:860
+#: src/fe-gtk/dccgui.c:996
 msgid "Sent"
 msgstr "Elküldött"
 
-#: src/fe-gtk/dccgui.c:861
+#: src/fe-gtk/dccgui.c:997
 msgid "Start Time"
 msgstr "Kezdés időpontja"
-
-#: src/fe-gtk/dccgui.c:871
-msgid "XChat: DCC Chat List"
-msgstr "XChat: DCC csevegés lista"
 
 #: src/fe-gtk/editlist.c:139
 msgid "*NEW*"
@@ -3178,31 +3195,31 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/fe-gtk/fe-gtk.c:596
+#: src/fe-gtk/fe-gtk.c:621
 msgid "Search buffer is empty.\n"
 msgstr "A keresési puffer üres.\n"
 
-#: src/fe-gtk/fe-gtk.c:679
+#: src/fe-gtk/fe-gtk.c:717
 #, c-format
 msgid "%d bytes"
 msgstr "%d bájt"
 
-#: src/fe-gtk/fe-gtk.c:680
+#: src/fe-gtk/fe-gtk.c:718
 #, c-format
 msgid "Network send queue: %d bytes"
 msgstr "Hálózati küldési sor: %d bájt"
 
 #: src/fe-gtk/fkeys.c:159
 msgid "The Run Command action runs the data in Data 1 as if it has been typed into the entry box where you pressed the key sequence. Thus it can contain text (which will be sent to the channel/person), commands or user commands. When run all \\n characters in Data 1 are used to deliminate seperate commands so it is possible to run more than one command. If you want a \\ in the actual text run then enter \\\\"
-msgstr "A \"Parancs futtatása\" akció úgy futtatja az Adat1-ben lévő adatokat, mintha abba a beviteli mezőbe írta volna be, ahol lenyomta a billentyűsorozatot. Ezért tartalmazhat szöveget (ami majd a csatornára/személynek megy), parancsokat vagy felhasználói parancsokat. Futtatáskor az összes \\n karakter, ami az Adat1-ben van, a parancsok elválasztására szolgál, tehát több parancsot is lehet egymás után futtatni. Ha \\-t akar elhelyezni a szövegben, használja így: \\\\"
+msgstr "A \"Parancs futtatása\" művelet úgy futtatja az Adat1-ben lévő adatokat, mintha abba a beviteli mezőbe írta volna be, ahol lenyomta a billentyűsorozatot. Ezért tartalmazhat szöveget (ami majd a csatornára/személynek megy), parancsokat vagy felhasználói parancsokat. Futtatáskor az összes \\n karakter, ami az Adat1-ben van, a parancsok elválasztására szolgál, tehát több parancsot is lehet egymás után futtatni. Ha \\-t akar elhelyezni a szövegben, használja így: \\\\"
 
 #: src/fe-gtk/fkeys.c:161
 msgid "The Change Page command switches between pages in the notebook. Set Data 1 to the page you want to switch to. If Data 2 is set to anything then the switch will be relative to the current position"
-msgstr "Az \"Oldal váltása\" parancs a jegyzettömb oldalai közt vált. Állítsa be az Adat1-et arra az oldalra, amelyre váltani akar. Ha az Adat2 bármire be van állítva, akkor a váltás a jelenlegi pozícióhoz képest megy végbe"
+msgstr "Az \"Oldal váltása\" parancs a noteszlapok közt vált. Állítsa be az Adat1-et arra az oldalra, amelyre váltani akar. Ha az Adat2 bármire be van állítva, akkor a váltás a jelenlegi pozícióhoz képest megy végbe"
 
 #: src/fe-gtk/fkeys.c:163
 msgid "The Insert in Buffer command will insert the contents of Data 1 into the entry where the key sequence was pressed at the current cursor position"
-msgstr "A \"Beszúrás a pufferbe\" parancs az Adat1 tartalmát szúrja be oda, ahol a billentyűkombinációt lenyomta, az aktuális kurzorpozícióba"
+msgstr "A \"Beszúrás a pufferbe\" parancs az Adat1 tartalmát szúrja be az aktuális kurzorpozícióba, ahol a billentyűkombinációt lenyomta"
 
 #: src/fe-gtk/fkeys.c:165
 msgid "The Scroll Page command scrolls the text widget up or down one page or one line. Set Data 1 to either Up, Down, +1 or -1."
@@ -3214,11 +3231,11 @@ msgstr "A \"Puffer beállítása\" parancs a billentyűlenyomáskor bevitt adato
 
 #: src/fe-gtk/fkeys.c:169
 msgid "The Last Command command sets the entry to contain the last command entered - the same as pressing up in a shell"
-msgstr "Az \"Utolsó parancs\" az utoljára bevitt parancsot állítja be - ugyanaz, mint amikor egy shellben megnyomja a felfelé nyilat"
+msgstr "Az \"Utolsó parancs\" az utoljára bevitt parancsot állítja be - ugyanaz, mint amikor egy parancsértelmezőben megnyomja a felfelé nyilat"
 
 #: src/fe-gtk/fkeys.c:171
 msgid "The Next Command command sets the entry to contain the next command entered - the same as pressing down in a shell"
-msgstr "A \"Következő parancs\"  a következő bevitt parancsot jeleníti meg - ugyanaz, mint amikor egy shellben megnyomja a lefelé nyilat"
+msgstr "A \"Következő parancs\"  a következő bevitt parancsot jeleníti meg - ugyanaz, mint amikor egy parancsértelmezőben megnyomja a lefelé nyilat"
 
 #: src/fe-gtk/fkeys.c:173
 msgid "This command changes the text in the entry to finish an incomplete nickname or command. If Data 1 is set then double-tabbing in a string will select the last nick, not the next"
@@ -3230,7 +3247,7 @@ msgstr "Ez a parancs fel- vagy lefelé görgeti a becenevek listáját. Ha az Ad
 
 #: src/fe-gtk/fkeys.c:177
 msgid "This command checks the last word entered in the entry against the replace list and replaces it if it finds a match"
-msgstr "Ez a parancs összehasonlítja az utolsó bevitt szót a csere-lista tartalmával, és lecseréli, ha egyezést talál"
+msgstr "Ez a parancs összehasonlítja az utolsó bevitt szót a cserelista tartalmával és lecseréli, ha egyezést talál"
 
 #: src/fe-gtk/fkeys.c:179
 msgid "This command moves the front tab left by one"
@@ -3258,9 +3275,8 @@ msgstr "Hiba történt a billentyűkombinációk betöltésekor"
 
 #: src/fe-gtk/fkeys.c:450 src/fe-gtk/fkeys.c:451 src/fe-gtk/fkeys.c:452
 #: src/fe-gtk/fkeys.c:453 src/fe-gtk/fkeys.c:743 src/fe-gtk/fkeys.c:749
-#: src/fe-gtk/fkeys.c:754 src/fe-gtk/maingui.c:1108 src/fe-gtk/maingui.c:1124
-#: src/fe-gtk/maingui.c:1401 src/fe-gtk/maingui.c:1502
-#: src/fe-gtk/maingui.c:2959
+#: src/fe-gtk/fkeys.c:754 src/fe-gtk/maingui.c:1375 src/fe-gtk/maingui.c:1478
+#: src/fe-gtk/maingui.c:2938
 msgid "<none>"
 msgstr "<nincs>"
 
@@ -3344,11 +3360,11 @@ msgstr ""
 "A gyorsbillentyű-fájl megsérült, betöltés megszakítva\n"
 "Kérem javítsa a(z) %s /keybindings.conf fájlt\n"
 
-#: src/fe-gtk/gtkutil.c:131
+#: src/fe-gtk/gtkutil.c:117
 msgid "Cannot write to that file."
 msgstr "Nem lehet írni ezt a fájlt."
 
-#: src/fe-gtk/gtkutil.c:133
+#: src/fe-gtk/gtkutil.c:119
 msgid "Cannot read that file."
 msgstr "Nem lehet olvasni ezt a fájlt."
 
@@ -3356,7 +3372,7 @@ msgstr "Nem lehet olvasni ezt a fájlt."
 msgid "That mask already exists."
 msgstr "Ez a maszk már létezik."
 
-#: src/fe-gtk/ignoregui.c:177 src/fe-gtk/maingui.c:1973
+#: src/fe-gtk/ignoregui.c:177 src/fe-gtk/maingui.c:1949
 msgid "Private"
 msgstr "Privát üzenet"
 
@@ -3382,7 +3398,7 @@ msgstr "Mellőzés megszüntetése"
 
 #: src/fe-gtk/ignoregui.c:307
 msgid "Enter mask to ignore:"
-msgstr "Írja be a mellőzés maszkját:"
+msgstr "Írja be a mellőzendő maszkot:"
 
 #: src/fe-gtk/ignoregui.c:354
 msgid "XChat: Ignore list"
@@ -3461,121 +3477,121 @@ msgstr "A csatornalista lekérése eltarthat pár percig."
 msgid "_Always show this dialog after connecting."
 msgstr "_Mindig jelenjen meg ez a párbeszédablak csatlakozás után."
 
-#: src/fe-gtk/maingui.c:466
+#: src/fe-gtk/maingui.c:483
 msgid "Dialog with"
 msgstr "Párbeszéd"
 
-#: src/fe-gtk/maingui.c:744
+#: src/fe-gtk/maingui.c:768
 #, c-format
 msgid "Topic for %s is: %s"
 msgstr "A(z) %s témája: %s"
 
-#: src/fe-gtk/maingui.c:749
+#: src/fe-gtk/maingui.c:773
 msgid "No topic is set"
 msgstr "Nincs beállítva téma"
 
-#: src/fe-gtk/maingui.c:1048
+#: src/fe-gtk/maingui.c:1072
 #, c-format
 msgid "This server still has %d channels or dialogs associated with it. Close them all?"
 msgstr "Ehhez a kiszolgálóhoz még %d csatorna vagy párbeszéd van társítva. Az összeset bezárja?"
 
-#: src/fe-gtk/maingui.c:1178
+#: src/fe-gtk/maingui.c:1151
 msgid "No other tabs open, quit xchat?"
 msgstr "Nincs több fül nyitva, kilép az xchatből?"
 
-#: src/fe-gtk/maingui.c:1353
+#: src/fe-gtk/maingui.c:1326
 msgid "Insert Attribute or Color Code"
 msgstr "Attribútum vagy színkód beszúrása"
 
-#: src/fe-gtk/maingui.c:1355
+#: src/fe-gtk/maingui.c:1328
 msgid "<b>Bold</b>"
 msgstr "<b>Félkövér</b>"
 
-#: src/fe-gtk/maingui.c:1356
+#: src/fe-gtk/maingui.c:1329
 msgid "<u>Underline</u>"
 msgstr "<u>Aláhúzott</u>"
 
-#: src/fe-gtk/maingui.c:1358
+#: src/fe-gtk/maingui.c:1331
 msgid "Normal"
 msgstr "Normál"
 
-#: src/fe-gtk/maingui.c:1360
+#: src/fe-gtk/maingui.c:1333
 msgid "Colors 0-7"
 msgstr "Színek 0-7"
 
-#: src/fe-gtk/maingui.c:1370
+#: src/fe-gtk/maingui.c:1343
 msgid "Colors 8-15"
 msgstr "Színek 8-15"
 
-#: src/fe-gtk/maingui.c:1406
+#: src/fe-gtk/maingui.c:1388
 msgid "Beep on message"
 msgstr "Üzenetkor csipog"
 
-#: src/fe-gtk/maingui.c:1409
+#: src/fe-gtk/maingui.c:1391
+msgid "Blink tray on message"
+msgstr "Tálca villogtatása üzenetkor"
+
+#: src/fe-gtk/maingui.c:1394
 msgid "Show join/part messages"
 msgstr "Mutassa a csatlakozás/kilépés üzeneteket"
 
-#: src/fe-gtk/maingui.c:1411
+#: src/fe-gtk/maingui.c:1396
 msgid "Color paste"
 msgstr "Szín beillesztése"
 
-#: src/fe-gtk/maingui.c:1418
-msgid "Go to"
-msgstr "Ugrás"
-
-#: src/fe-gtk/maingui.c:1431 src/fe-gtk/menu.c:1787
+#: src/fe-gtk/maingui.c:1406 src/fe-gtk/menu.c:1908
 msgid "_Close Tab"
 msgstr "Fül _bezárása"
 
-#: src/fe-gtk/maingui.c:1434 src/fe-gtk/menu.c:1786
+#: src/fe-gtk/maingui.c:1408 src/fe-gtk/menu.c:1907
 msgid "_Detach Tab"
 msgstr "_Fül leválasztása"
 
-#: src/fe-gtk/maingui.c:1673
+#: src/fe-gtk/maingui.c:1649
 msgid "Some file transfers still active, quit xchat?"
 msgstr "Még vannak aktív fájlátvitelek, kilép az xchatből?"
 
-#: src/fe-gtk/maingui.c:1841 src/fe-gtk/maingui.c:1947
+#: src/fe-gtk/maingui.c:1817 src/fe-gtk/maingui.c:1923
 msgid "User limit must be a number!\n"
 msgstr "A felhasználó-limit egy szám legyen!\n"
 
-#: src/fe-gtk/maingui.c:1969
+#: src/fe-gtk/maingui.c:1945
 msgid "Topic Protection"
 msgstr "Témavédelem"
 
-#: src/fe-gtk/maingui.c:1970
+#: src/fe-gtk/maingui.c:1946
 msgid "No outside messages"
 msgstr "Nincs külső üzenet"
 
-#: src/fe-gtk/maingui.c:1971
+#: src/fe-gtk/maingui.c:1947
 msgid "Secret"
 msgstr "Titkos"
 
-#: src/fe-gtk/maingui.c:1972
+#: src/fe-gtk/maingui.c:1948
 msgid "Invite Only"
 msgstr "Csak meghívásra"
 
-#: src/fe-gtk/maingui.c:1974
+#: src/fe-gtk/maingui.c:1950
 msgid "Moderated"
 msgstr "Moderált"
 
-#: src/fe-gtk/maingui.c:1975
+#: src/fe-gtk/maingui.c:1951
 msgid "Ban List"
 msgstr "Kitiltási lista"
 
-#: src/fe-gtk/maingui.c:1977
+#: src/fe-gtk/maingui.c:1953
 msgid "Keyword"
 msgstr "Kulcsszó"
 
-#: src/fe-gtk/maingui.c:1989
+#: src/fe-gtk/maingui.c:1965
 msgid "User Limit"
 msgstr "Felhasználó-limit"
 
-#: src/fe-gtk/maingui.c:2100
+#: src/fe-gtk/maingui.c:2076
 msgid "Show/Hide userlist"
 msgstr "Felhasználólista mutatása/elrejtése"
 
-#: src/fe-gtk/maingui.c:2225
+#: src/fe-gtk/maingui.c:2201
 msgid ""
 "Unable to set transparent background!\n"
 "\n"
@@ -3587,7 +3603,7 @@ msgstr ""
 "Lehet, hogy olyan ablakkezelőt használ, amely\n"
 "ezt jelenleg még nem támogatja.\n"
 
-#: src/fe-gtk/maingui.c:2457
+#: src/fe-gtk/maingui.c:2433
 msgid "Enter new nickname:"
 msgstr "Írja be az új becenevet:"
 
@@ -3595,73 +3611,77 @@ msgstr "Írja be az új becenevet:"
 msgid "Host unknown"
 msgstr "Ismeretlen gépnév"
 
-#: src/fe-gtk/menu.c:520
+#: src/fe-gtk/menu.c:541
 #, c-format
 msgid "<tt><b>%-11s</b></tt> %s"
 msgstr "<tt><b>%-11s</b></tt> %s"
 
-#: src/fe-gtk/menu.c:525 src/fe-gtk/menu.c:529
+#: src/fe-gtk/menu.c:546 src/fe-gtk/menu.c:550
 msgid "Real Name:"
 msgstr "Valódi név:"
 
-#: src/fe-gtk/menu.c:533
+#: src/fe-gtk/menu.c:554
 msgid "User:"
 msgstr "Felhasználó:"
 
-#: src/fe-gtk/menu.c:537
+#: src/fe-gtk/menu.c:558
 msgid "Country:"
 msgstr "Ország:"
 
-#: src/fe-gtk/menu.c:541
+#: src/fe-gtk/menu.c:562
 msgid "Server:"
 msgstr "Kiszolgáló:"
 
-#: src/fe-gtk/menu.c:553
+#: src/fe-gtk/menu.c:574
 msgid "Away Msg:"
 msgstr "Távol üzenet:"
 
-#: src/fe-gtk/menu.c:563
+#: src/fe-gtk/menu.c:584
 #, c-format
 msgid "%u minutes ago"
 msgstr "%u perccel ezelőtt"
 
-#: src/fe-gtk/menu.c:565 src/fe-gtk/menu.c:568
+#: src/fe-gtk/menu.c:586 src/fe-gtk/menu.c:589
 msgid "Last Msg:"
 msgstr "Utolsó üzenet:"
 
-#: src/fe-gtk/menu.c:668
+#: src/fe-gtk/menu.c:690
 msgid "The Menubar is now hidden. You can show it again by pressing F9 or right-clicking in a blank part of the main text area."
 msgstr "A menüsáv most rejtett. Újra megjelenítheti az F9 megnyomásával vagy a fő szövegterület egy üres részén való jobbkattintással."
 
-#: src/fe-gtk/menu.c:755
+#: src/fe-gtk/menu.c:777
 msgid "Open Link in Browser"
 msgstr "Hivatkozás megnyitása böngészőben"
 
-#: src/fe-gtk/menu.c:756
+#: src/fe-gtk/menu.c:778
 msgid "Copy Selected Link"
 msgstr "Kijelölt hivatkozás másolása"
 
-#: src/fe-gtk/menu.c:816
+#: src/fe-gtk/menu.c:835 src/fe-gtk/menu.c:1066
+msgid "Join Channel"
+msgstr "Belépés csatornára"
+
+#: src/fe-gtk/menu.c:839
 msgid "Part Channel"
 msgstr "Kilépés a csatornáról"
 
-#: src/fe-gtk/menu.c:818
+#: src/fe-gtk/menu.c:841
 msgid "Cycle Channel"
 msgstr "Ki- és belépés a csatornára"
 
-#: src/fe-gtk/menu.c:841
+#: src/fe-gtk/menu.c:864
 msgid "XChat: User menu"
 msgstr "XChat: Felhasználói menü"
 
-#: src/fe-gtk/menu.c:850
+#: src/fe-gtk/menu.c:873
 msgid "Edit This Menu..."
 msgstr "Ezen menü szerkesztése..."
 
-#: src/fe-gtk/menu.c:1045
+#: src/fe-gtk/menu.c:1068
 msgid "Retrieve channel list..."
 msgstr "Csatornalista lekérése..."
 
-#: src/fe-gtk/menu.c:1113
+#: src/fe-gtk/menu.c:1136
 msgid ""
 "User Commands - Special codes:\n"
 "\n"
@@ -3701,7 +3721,7 @@ msgstr ""
 "%2 ez lesz: \"john\"\n"
 "&2 ez lesz: \"john hello\"."
 
-#: src/fe-gtk/menu.c:1129
+#: src/fe-gtk/menu.c:1152
 msgid ""
 "Userlist Buttons - Special codes:\n"
 "\n"
@@ -3725,7 +3745,7 @@ msgstr ""
 "%s  =  kijelölt becenév\n"
 "%t  =  idő/dátum\n"
 
-#: src/fe-gtk/menu.c:1139
+#: src/fe-gtk/menu.c:1162
 msgid ""
 "Dialog Buttons - Special codes:\n"
 "\n"
@@ -3749,7 +3769,7 @@ msgstr ""
 "%s  =  kijelölt becenév\n"
 "%t  =  idő/dátum\n"
 
-#: src/fe-gtk/menu.c:1149
+#: src/fe-gtk/menu.c:1172
 msgid ""
 "CTCP Replies - Special codes:\n"
 "\n"
@@ -3777,7 +3797,7 @@ msgstr ""
 "&3  =  3. szótól a sor végéig\n"
 "\n"
 
-#: src/fe-gtk/menu.c:1160
+#: src/fe-gtk/menu.c:1183
 #, c-format
 msgid ""
 "URL Handlers - Special codes:\n"
@@ -3796,267 +3816,263 @@ msgstr ""
 "ha egy shellbe kell küldeni,\n"
 "és nem az XChatnek"
 
-#: src/fe-gtk/menu.c:1169
+#: src/fe-gtk/menu.c:1192
 msgid "XChat: User Defined Commands"
 msgstr "XChat: Felhasználó által megadott parancsok"
 
-#: src/fe-gtk/menu.c:1176
+#: src/fe-gtk/menu.c:1199
 msgid "XChat: Userlist Popup menu"
 msgstr "XChat: Felhasználólista helyi menü"
 
-#: src/fe-gtk/menu.c:1183
+#: src/fe-gtk/menu.c:1206
 msgid "Replace with"
 msgstr "Csere"
 
-#: src/fe-gtk/menu.c:1183
+#: src/fe-gtk/menu.c:1206
 msgid "XChat: Replace"
 msgstr "XChat: Csere"
 
-#: src/fe-gtk/menu.c:1190
+#: src/fe-gtk/menu.c:1213
 msgid "XChat: URL Handlers"
 msgstr "XChat: URL-ek kezelése"
 
-#: src/fe-gtk/menu.c:1209
+#: src/fe-gtk/menu.c:1232
 msgid "XChat: Userlist buttons"
 msgstr "XChat: Felhasználólista gombok"
 
-#: src/fe-gtk/menu.c:1216
+#: src/fe-gtk/menu.c:1239
 msgid "XChat: Dialog buttons"
 msgstr "XChat: Párbeszédgombok"
 
-#: src/fe-gtk/menu.c:1223
+#: src/fe-gtk/menu.c:1246
 msgid "XChat: CTCP Replies"
 msgstr "XChat: CTCP  válaszok"
 
-#: src/fe-gtk/menu.c:1321
+#: src/fe-gtk/menu.c:1344
 msgid "_XChat"
 msgstr "_XChat"
 
-#: src/fe-gtk/menu.c:1322
+#: src/fe-gtk/menu.c:1345
 msgid "Network Li_st..."
 msgstr "_Hálózatlista..."
 
-#: src/fe-gtk/menu.c:1325
+#: src/fe-gtk/menu.c:1348
 msgid "_New"
 msgstr "Ú_j"
 
-#: src/fe-gtk/menu.c:1326
+#: src/fe-gtk/menu.c:1349
 msgid "Server Tab..."
 msgstr "Kiszolgáló fül..."
 
-#: src/fe-gtk/menu.c:1327
+#: src/fe-gtk/menu.c:1350
 msgid "Channel Tab..."
 msgstr "Csatorna fül..."
 
-#: src/fe-gtk/menu.c:1328
+#: src/fe-gtk/menu.c:1351
 msgid "Server Window..."
 msgstr "Kiszolgáló ablak..."
 
-#: src/fe-gtk/menu.c:1329
+#: src/fe-gtk/menu.c:1352
 msgid "Channel Window..."
 msgstr "Csatorna ablak..."
 
-#: src/fe-gtk/menu.c:1334 src/fe-gtk/menu.c:1336
+#: src/fe-gtk/menu.c:1357 src/fe-gtk/menu.c:1359
 msgid "_Load Plugin or Script..."
 msgstr "_Bővítmény vagy parancsfájl betöltése..."
 
-#: src/fe-gtk/menu.c:1344
+#: src/fe-gtk/menu.c:1367
 msgid "_Quit"
 msgstr "_Kilépés"
 
-#: src/fe-gtk/menu.c:1346
+#: src/fe-gtk/menu.c:1369
 msgid "_View"
 msgstr "_Nézet"
 
-#: src/fe-gtk/menu.c:1348
+#: src/fe-gtk/menu.c:1371
 msgid "_Menubar"
 msgstr "_Menüsáv"
 
-#: src/fe-gtk/menu.c:1349
+#: src/fe-gtk/menu.c:1372
 msgid "_Topicbar"
 msgstr "_Témasáv"
 
-#: src/fe-gtk/menu.c:1350
+#: src/fe-gtk/menu.c:1373
 msgid "_Userlist Buttons"
 msgstr "Felhasználólista _gombok"
 
-#: src/fe-gtk/menu.c:1351
+#: src/fe-gtk/menu.c:1374
 msgid "M_ode Buttons"
 msgstr "_Mód gombok"
 
-#: src/fe-gtk/menu.c:1353
+#: src/fe-gtk/menu.c:1376
 msgid "_Layout"
 msgstr "_Elrendezés"
 
-#: src/fe-gtk/menu.c:1355
+#: src/fe-gtk/menu.c:1378
 msgid "_Tabs"
 msgstr "_Fülek"
 
-#: src/fe-gtk/menu.c:1356
+#: src/fe-gtk/menu.c:1379
 msgid "T_ree"
-msgstr "_Fa"
+msgstr "F_a"
 
-#: src/fe-gtk/menu.c:1358
+#: src/fe-gtk/menu.c:1381
 msgid "_Network Meters"
 msgstr "_Hálózatfigyelők"
 
-#: src/fe-gtk/menu.c:1360
+#: src/fe-gtk/menu.c:1383
 msgid "Off"
 msgstr "Ki"
 
-#: src/fe-gtk/menu.c:1361
+#: src/fe-gtk/menu.c:1384
 msgid "Graph"
 msgstr "Grafikon"
 
-#: src/fe-gtk/menu.c:1363
-msgid "Both"
-msgstr "Mindkettő"
-
-#: src/fe-gtk/menu.c:1366
+#: src/fe-gtk/menu.c:1389
 msgid "_Server"
 msgstr "_Kiszolgáló"
 
-#: src/fe-gtk/menu.c:1367
+#: src/fe-gtk/menu.c:1390
 msgid "_Disconnect"
 msgstr "_Szétkapcsolás"
 
-#: src/fe-gtk/menu.c:1368
+#: src/fe-gtk/menu.c:1391
 msgid "_Reconnect"
 msgstr "Ú_jrakapcsolódás"
 
-#: src/fe-gtk/menu.c:1372
+#: src/fe-gtk/menu.c:1395
 msgid "Marked Away"
 msgstr "Nem vagyok itt"
 
-#: src/fe-gtk/menu.c:1374
+#: src/fe-gtk/menu.c:1397
 msgid "_Usermenu"
 msgstr "_Felhasználói menü"
 
-#: src/fe-gtk/menu.c:1376
+#: src/fe-gtk/menu.c:1399
 msgid "S_ettings"
 msgstr "B_eállítások"
 
-#: src/fe-gtk/menu.c:1377
+#: src/fe-gtk/menu.c:1400
 msgid "_Preferences"
 msgstr "_Beállítások"
 
-#: src/fe-gtk/menu.c:1379
+#: src/fe-gtk/menu.c:1402
 msgid "Advanced"
 msgstr "Haladó"
 
-#: src/fe-gtk/menu.c:1380
+#: src/fe-gtk/menu.c:1403
 msgid "Auto Replace..."
-msgstr "Csere..."
+msgstr "Automatikus csere..."
 
-#: src/fe-gtk/menu.c:1381
+#: src/fe-gtk/menu.c:1404
 msgid "CTCP Replies..."
 msgstr "CTCP  válaszok..."
 
-#: src/fe-gtk/menu.c:1382
+#: src/fe-gtk/menu.c:1405
 msgid "Dialog Buttons..."
 msgstr "Párbeszédgombok..."
 
-#: src/fe-gtk/menu.c:1383
+#: src/fe-gtk/menu.c:1406
 msgid "Keyboard Shortcuts..."
 msgstr "Gyorsbillentyűk..."
 
-#: src/fe-gtk/menu.c:1384
+#: src/fe-gtk/menu.c:1407
 msgid "Text Events..."
 msgstr "Szövegesemények..."
 
-#: src/fe-gtk/menu.c:1385
+#: src/fe-gtk/menu.c:1408
 msgid "URL Handlers..."
 msgstr "URL-ek kezelése..."
 
-#: src/fe-gtk/menu.c:1386
+#: src/fe-gtk/menu.c:1409
 msgid "User Commands..."
 msgstr "Saját parancsok..."
 
-#: src/fe-gtk/menu.c:1387
+#: src/fe-gtk/menu.c:1410
 msgid "Userlist Buttons..."
 msgstr "Gombok..."
 
-#: src/fe-gtk/menu.c:1388
+#: src/fe-gtk/menu.c:1411
 msgid "Userlist Popup..."
 msgstr "Felhasználólista helyi menü..."
 
-#: src/fe-gtk/menu.c:1391
+#: src/fe-gtk/menu.c:1414
 msgid "_Window"
 msgstr "Abla_k"
 
-#: src/fe-gtk/menu.c:1392
+#: src/fe-gtk/menu.c:1415
 msgid "Ban List..."
 msgstr "Kitiltáslista..."
 
-#: src/fe-gtk/menu.c:1393
+#: src/fe-gtk/menu.c:1416
 msgid "Channel List..."
 msgstr "Csatornalista..."
 
-#: src/fe-gtk/menu.c:1394
+#: src/fe-gtk/menu.c:1417
 msgid "Character Chart..."
 msgstr "Karaktertábla..."
 
-#: src/fe-gtk/menu.c:1395
+#: src/fe-gtk/menu.c:1418
 msgid "Direct Chat..."
 msgstr "Közvetlen csevegés..."
 
-#: src/fe-gtk/menu.c:1396
+#: src/fe-gtk/menu.c:1419
 msgid "File Transfers..."
 msgstr "Fájlátvitelek..."
 
-#: src/fe-gtk/menu.c:1397
+#: src/fe-gtk/menu.c:1420
 msgid "Ignore List..."
 msgstr "Mellőzési lista..."
 
-#: src/fe-gtk/menu.c:1398
+#: src/fe-gtk/menu.c:1421
 msgid "Notify List..."
 msgstr "Értesítési lista..."
 
-#: src/fe-gtk/menu.c:1399
+#: src/fe-gtk/menu.c:1422
 msgid "Plugins and Scripts..."
 msgstr "Bővítmények és parancsfájlok..."
 
-#: src/fe-gtk/menu.c:1400
+#: src/fe-gtk/menu.c:1423
 msgid "Raw Log..."
 msgstr "Nyers napló..."
 
-#: src/fe-gtk/menu.c:1401
+#: src/fe-gtk/menu.c:1424
 msgid "URL Grabber..."
 msgstr "URL elfogó..."
 
-#: src/fe-gtk/menu.c:1403
+#: src/fe-gtk/menu.c:1426
 msgid "Reset Marker Line"
 msgstr "Jelzővonal visszaállítása"
 
-#: src/fe-gtk/menu.c:1404
+#: src/fe-gtk/menu.c:1427
 msgid "C_lear Text"
 msgstr "Szöveg _törlése"
 
-#: src/fe-gtk/menu.c:1405
+#: src/fe-gtk/menu.c:1428
 msgid "Search Text..."
 msgstr "Szöveg keresése..."
 
-#: src/fe-gtk/menu.c:1406
+#: src/fe-gtk/menu.c:1429
 msgid "Save Text..."
 msgstr "Szöveg mentése..."
 
-#: src/fe-gtk/menu.c:1408 src/fe-gtk/menu.c:1778
+#: src/fe-gtk/menu.c:1431 src/fe-gtk/menu.c:1899
 msgid "_Help"
 msgstr "_Súgó"
 
-#: src/fe-gtk/menu.c:1409
+#: src/fe-gtk/menu.c:1432
 msgid "_Contents"
 msgstr "_Tartalom"
 
-#: src/fe-gtk/menu.c:1410
+#: src/fe-gtk/menu.c:1433
 msgid "_About"
 msgstr "_Névjegy"
 
-#: src/fe-gtk/menu.c:1791
+#: src/fe-gtk/menu.c:1912
 msgid "_Attach Window"
 msgstr "_Ablak csatlakoztatása"
 
-#: src/fe-gtk/menu.c:1792
+#: src/fe-gtk/menu.c:1913
 msgid "_Close Window"
 msgstr "Ablak _bezárása"
 
@@ -4076,6 +4092,11 @@ msgstr "Offline"
 msgid "Never"
 msgstr "Soha"
 
+#: src/fe-gtk/notifygui.c:204 src/fe-gtk/notifygui.c:229
+#, c-format
+msgid "%d minutes ago"
+msgstr "%d perccel ezelőtt"
+
 #: src/fe-gtk/notifygui.c:219
 msgid "Online"
 msgstr "Online dokumentáció"
@@ -4086,11 +4107,11 @@ msgstr "Írja be a hozzáadandó becenevet:"
 
 #: src/fe-gtk/notifygui.c:376
 msgid "Notify on these networks:"
-msgstr "Értesítés ezen hálózatokon:"
+msgstr "Értesítés ezeken a hálózatokon:"
 
 #: src/fe-gtk/notifygui.c:387
 msgid "Comma separated list of networks is accepted."
-msgstr "Hálózatok vesszőkkel elválasztott listája fogadható el."
+msgstr "Hálózatok vesszőkkel elválasztott listája adható meg."
 
 #: src/fe-gtk/notifygui.c:407
 msgid "XChat: Notify List"
@@ -4103,6 +4124,92 @@ msgstr "Eltávolítás"
 #: src/fe-gtk/notifygui.c:428
 msgid "Open Dialog"
 msgstr "Megnyitás párbeszédablak"
+
+#: src/fe-gtk/plugin-tray.c:135
+#, c-format
+msgid "XChat: Connected to %u networks and %u channels"
+msgstr "XChat: Kapcsolódva %u hálózathoz és %u csatornához"
+
+#: src/fe-gtk/plugin-tray.c:330
+#, c-format
+msgid ""
+"You are connected to <b>%u</b> IRC networks.\n"
+"Are you sure you want to quit?"
+msgstr ""
+"<b>%u</b> IRC hálózathoz van kapcsolódva.\n"
+"Biztosan ki akar lépni?"
+
+#: src/fe-gtk/plugin-tray.c:388
+msgid "_Restore"
+msgstr "_Helyreállítás"
+
+#: src/fe-gtk/plugin-tray.c:390
+msgid "_Hide"
+msgstr "_Elrejtés"
+
+#: src/fe-gtk/plugin-tray.c:393
+msgid "_Blink on"
+msgstr "_Villogjon"
+
+#: src/fe-gtk/plugin-tray.c:394
+msgid "Channel Message"
+msgstr "Csatornaüzenet esetén"
+
+#: src/fe-gtk/plugin-tray.c:395
+msgid "Highlighted Message"
+msgstr "Kiemelt üzenet esetén"
+
+#: src/fe-gtk/plugin-tray.c:396
+msgid "Private Message"
+msgstr "Privát üzenet esetén"
+
+#: src/fe-gtk/plugin-tray.c:397
+msgid "File Offer"
+msgstr "Fájlajánlat esetén"
+
+#: src/fe-gtk/plugin-tray.c:400
+msgid "Quit..."
+msgstr "Kilépés..."
+
+#: src/fe-gtk/plugin-tray.c:444
+#, c-format
+msgid "XChat: Highlighed message from: %s (%s)"
+msgstr "XChat: Kiemelt üzenet a következőtől: %s (%s)"
+
+#: src/fe-gtk/plugin-tray.c:447
+#, c-format
+msgid "XChat: %u highlighted messages, latest from: %s (%s)"
+msgstr "XChat: %u kiemelt üzenet, a legutolsó a következőtől: %s (%s)"
+
+#: src/fe-gtk/plugin-tray.c:466
+#, c-format
+msgid "XChat: New public message from: %s (%s)"
+msgstr "XChat: Új nyilvános üzenet a következőtől: %s (%s)"
+
+#: src/fe-gtk/plugin-tray.c:469
+#, c-format
+msgid "XChat: %u new public messages."
+msgstr "XChat: %u új nyilvános üzenet."
+
+#: src/fe-gtk/plugin-tray.c:488
+#, c-format
+msgid "XChat: Private message from: %s (%s)"
+msgstr "XChat: Privát üzenet a következőtől: %s (%s)"
+
+#: src/fe-gtk/plugin-tray.c:491
+#, c-format
+msgid "XChat: %u private messages, latest from: %s (%s)"
+msgstr "XChat: %u privát üzenet, a legutolsó a következőtől: %s (%s)"
+
+#: src/fe-gtk/plugin-tray.c:537
+#, c-format
+msgid "XChat: File offer from: %s (%s)"
+msgstr "XChat: Fájlajánlat a következőtől: %s (%s)"
+
+#: src/fe-gtk/plugin-tray.c:540
+#, c-format
+msgid "XChat: %u file offers, latest from: %s (%s)"
+msgstr "XChat: %u fájlajánlat, a legutolsó a következőtől: %s (%s)"
 
 #: src/fe-gtk/plugingui.c:76 src/fe-gtk/textgui.c:421
 msgid "Description"
@@ -4126,7 +4233,7 @@ msgstr "_Eltávolítás"
 
 #: src/fe-gtk/plugingui.c:236 src/fe-gtk/search.c:144
 msgid "_Close"
-msgstr "Be_zár"
+msgstr "Be_zárás"
 
 #: src/fe-gtk/rawlog.c:81 src/fe-gtk/rawlog.c:130 src/fe-gtk/textgui.c:435
 #: src/fe-gtk/urlgrab.c:205
@@ -4154,10 +4261,6 @@ msgstr "A keresés véget ért, nem található."
 msgid "XChat: Search"
 msgstr "XChat: Keresés"
 
-#: src/fe-gtk/search.c:118
-msgid "Find:"
-msgstr "Keresés:"
-
 #: src/fe-gtk/search.c:127
 msgid "_Match case"
 msgstr "Kis- és _nagybetű"
@@ -4170,150 +4273,154 @@ msgstr "Keresés _visszafelé"
 msgid "_Find"
 msgstr "_Keresés"
 
-#: src/fe-gtk/servlistgui.c:169 src/fe-gtk/servlistgui.c:268
+#: src/fe-gtk/servlistgui.c:170 src/fe-gtk/servlistgui.c:269
 msgid "New Network"
 msgstr "Új hálózat"
 
-#: src/fe-gtk/servlistgui.c:553
+#: src/fe-gtk/servlistgui.c:554
 #, c-format
 msgid "Really remove network \"%s\" and all its servers?"
 msgstr "Valóban törli a(z) \"%s\" hálózatot és összes kiszolgálóját?"
 
-#: src/fe-gtk/servlistgui.c:677
+#: src/fe-gtk/servlistgui.c:678
 msgid "User name and Real name cannot be left blank."
 msgstr "A Felhasználónév és a Valódi név mezőket nem hagyhatja üresen."
 
-#: src/fe-gtk/servlistgui.c:977
+#: src/fe-gtk/servlistgui.c:978
 #, c-format
 msgid "XChat: Edit %s"
 msgstr "XChat: %s szerkesztése"
 
-#: src/fe-gtk/servlistgui.c:996
+#: src/fe-gtk/servlistgui.c:997
 #, c-format
 msgid "Servers for %s"
-msgstr "kiszolgálók ehhez: %s"
+msgstr "Kiszolgálók ehhez: %s"
 
-#: src/fe-gtk/servlistgui.c:1007
+#: src/fe-gtk/servlistgui.c:1008
 msgid "Connect to selected server only"
 msgstr "Csak a kiválasztott kiszolgálókhoz kapcsolódjon"
 
-#: src/fe-gtk/servlistgui.c:1008
+#: src/fe-gtk/servlistgui.c:1009
 msgid "Don't cycle through all the servers when the connection fails."
 msgstr "Ne járja körbe a kiszolgálókat, ha nem sikerül a kapcsolódás."
 
-#: src/fe-gtk/servlistgui.c:1010
+#: src/fe-gtk/servlistgui.c:1011
 msgid "Your Details"
 msgstr "Részletes információk"
 
-#: src/fe-gtk/servlistgui.c:1016
+#: src/fe-gtk/servlistgui.c:1017
 msgid "Use global user information"
 msgstr "Használja a globális felhasználói információkat"
 
-#: src/fe-gtk/servlistgui.c:1019 src/fe-gtk/servlistgui.c:1251
+#: src/fe-gtk/servlistgui.c:1020 src/fe-gtk/servlistgui.c:1252
 msgid "_Nick name:"
 msgstr "Be_cenév:"
 
-#: src/fe-gtk/servlistgui.c:1023 src/fe-gtk/servlistgui.c:1258
+#: src/fe-gtk/servlistgui.c:1024 src/fe-gtk/servlistgui.c:1259
 msgid "Second choice:"
 msgstr "Második lehetőség:"
 
-#: src/fe-gtk/servlistgui.c:1027 src/fe-gtk/servlistgui.c:1272
+#: src/fe-gtk/servlistgui.c:1028 src/fe-gtk/servlistgui.c:1273
 msgid "_User name:"
 msgstr "_Felhasználónév:"
 
-#: src/fe-gtk/servlistgui.c:1031 src/fe-gtk/servlistgui.c:1279
+#: src/fe-gtk/servlistgui.c:1032 src/fe-gtk/servlistgui.c:1280
 msgid "Rea_l name:"
 msgstr "Való_di név:"
 
-#: src/fe-gtk/servlistgui.c:1034
+#: src/fe-gtk/servlistgui.c:1035
 msgid "Connecting"
 msgstr "Kapcsolódás"
 
-#: src/fe-gtk/servlistgui.c:1040
+#: src/fe-gtk/servlistgui.c:1041
 msgid "Auto connect to this network at startup"
 msgstr "Induláskor automatikusan kapcsolódjon ehhez a kiszolgálóhoz"
 
-#: src/fe-gtk/servlistgui.c:1042
+#: src/fe-gtk/servlistgui.c:1043
 msgid "Use a proxy server"
 msgstr "Proxy kiszolgáló használata"
 
-#: src/fe-gtk/servlistgui.c:1044
+#: src/fe-gtk/servlistgui.c:1045
 msgid "Use SSL for all the servers on this network"
-msgstr "Használjon SSL-t ezen hálózat összes kiszolgálójához"
+msgstr "SSL használata a hálózat összes kiszolgálójához"
 
-#: src/fe-gtk/servlistgui.c:1049
+#: src/fe-gtk/servlistgui.c:1050
 msgid "Accept invalid SSL certificate"
 msgstr "Érvénytelen SSL tanúsítvány elfogadása"
 
-#: src/fe-gtk/servlistgui.c:1055
+#: src/fe-gtk/servlistgui.c:1056
 msgid "C_hannels to join:"
-msgstr "Kapcsolódás a következő csatornákhoz:"
+msgstr "Ka_pcsolódás a következő csatornákhoz:"
 
-#: src/fe-gtk/servlistgui.c:1057
+#: src/fe-gtk/servlistgui.c:1058
 msgid "Channels to join, separated by commas, but not spaces!"
 msgstr "Kapcsolódás e csatornákhoz, a felsorolást vesszővel válassza el egymástól, ne szóközzel!"
 
-#: src/fe-gtk/servlistgui.c:1060
+#: src/fe-gtk/servlistgui.c:1061
 msgid "Connect command:"
 msgstr "Kapcsolódási parancs:"
 
-#: src/fe-gtk/servlistgui.c:1062
+#: src/fe-gtk/servlistgui.c:1063
 msgid "Extra command to execute after connecting. If you need more than one, set this to LOAD -e <filename>, where <filename> is a text-file full of commands to execute."
 msgstr "Extra parancsok a kapcsolódás után. Ha többre van szüksége, állítsa be így: LOAD -e <fájlnév>, ahol a <fájlnév> egy szöveges fájl, amely a végrehajtandó parancsokat tartalmazza."
 
-#: src/fe-gtk/servlistgui.c:1065
+#: src/fe-gtk/servlistgui.c:1066
 msgid "Nickserv password:"
 msgstr "Nickserv jelszó:"
 
-#: src/fe-gtk/servlistgui.c:1067
+#: src/fe-gtk/servlistgui.c:1068
 msgid "If your nickname requires a password, enter it here. Not all IRC networks support this."
 msgstr "Ha a beceneve jelszót igényel, adja meg itt. Nem minden IRC hálózat támogatja ezt."
 
-#: src/fe-gtk/servlistgui.c:1071
+#: src/fe-gtk/servlistgui.c:1072
 msgid "Server password:"
 msgstr "Kiszolgáló jelszó:"
 
-#: src/fe-gtk/servlistgui.c:1073
+#: src/fe-gtk/servlistgui.c:1074
 msgid "Password for the server, if in doubt, leave blank."
 msgstr "Jelszó a kiszolgálóhoz, ha nem biztos benne, hagyja üresen."
 
-#: src/fe-gtk/servlistgui.c:1076
+#: src/fe-gtk/servlistgui.c:1077
 msgid "Character set:"
 msgstr "Karakterkészlet:"
 
-#: src/fe-gtk/servlistgui.c:1146
+#: src/fe-gtk/servlistgui.c:1147
 msgid "_Edit"
 msgstr "_Szerkesztés"
 
-#: src/fe-gtk/servlistgui.c:1229
+#: src/fe-gtk/servlistgui.c:1230
 msgid "XChat: Network List"
 msgstr "XChat: Hálózatlista"
 
-#: src/fe-gtk/servlistgui.c:1241
+#: src/fe-gtk/servlistgui.c:1242
 msgid "User Information"
-msgstr "Felhasználói információ"
+msgstr "Felhasználói információk"
 
-#: src/fe-gtk/servlistgui.c:1265
+#: src/fe-gtk/servlistgui.c:1266
 msgid "Third choice:"
 msgstr "Harmadik lehetőség:"
 
-#: src/fe-gtk/servlistgui.c:1325
+#: src/fe-gtk/servlistgui.c:1326
 msgid "Networks"
 msgstr "Hálózatok"
 
-#: src/fe-gtk/servlistgui.c:1366
+#: src/fe-gtk/servlistgui.c:1367
 msgid "Skip network list on startup"
 msgstr "Ne jelenjen meg a hálózatlista indításkor"
 
-#: src/fe-gtk/servlistgui.c:1398
+#: src/fe-gtk/servlistgui.c:1399
 msgid "_Edit..."
 msgstr "_Szerkesztés..."
 
-#: src/fe-gtk/servlistgui.c:1405
+#: src/fe-gtk/servlistgui.c:1406
 msgid "_Sort"
 msgstr "_Rendezés"
 
-#: src/fe-gtk/servlistgui.c:1429
+#: src/fe-gtk/servlistgui.c:1407
+msgid "Sorts the network list in alphabetical order. Use SHIFT-UP and SHIFT-DOWN keys to move a row."
+msgstr "A hálózatlistát ábécérendbe rendezi. Sor mozgatásához használja a Shift+fel és Shift+le billentyűket."
+
+#: src/fe-gtk/servlistgui.c:1432
 msgid "C_onnect"
 msgstr "K_apcsolódás"
 
@@ -4377,7 +4484,7 @@ msgstr "Zöld:"
 msgid "Blue:"
 msgstr "Kék:"
 
-#: src/fe-gtk/setup.c:116 src/fe-gtk/setup.c:336
+#: src/fe-gtk/setup.c:116 src/fe-gtk/setup.c:334
 msgid "Time Stamps"
 msgstr "Időbélyegek"
 
@@ -4389,7 +4496,7 @@ msgstr "Időbélyegek engedélyezése"
 msgid "Time stamp format:"
 msgstr "Időbélyeg formátuma:"
 
-#: src/fe-gtk/setup.c:119 src/fe-gtk/setup.c:339
+#: src/fe-gtk/setup.c:119 src/fe-gtk/setup.c:337
 msgid "See strftime manpage for details."
 msgstr "Lásd az strftime kézikönyvoldalát."
 
@@ -4401,7 +4508,7 @@ msgstr "A-Z"
 msgid "Last-spoke order"
 msgstr "Utolsó hozzászólás rendezése"
 
-#: src/fe-gtk/setup.c:133 src/fe-gtk/setup.c:1515
+#: src/fe-gtk/setup.c:133 src/fe-gtk/setup.c:1513
 msgid "Input box"
 msgstr "Beviteli doboz"
 
@@ -4498,7 +4605,7 @@ msgstr "Parancs végrehajtása:"
 msgid "Windows"
 msgstr "Ablakok"
 
-#: src/fe-gtk/setup.c:198 src/fe-gtk/setup.c:222 src/fe-gtk/setup.c:1517
+#: src/fe-gtk/setup.c:198 src/fe-gtk/setup.c:222 src/fe-gtk/setup.c:1515
 msgid "Tabs"
 msgstr "Fülek"
 
@@ -4532,15 +4639,15 @@ msgstr "Csak a kívánt fülek"
 
 #: src/fe-gtk/setup.c:223
 msgid "Open an extra tab for server messages"
-msgstr "Nyisson egy külön fület a kiszolgáló üzeneteihez"
+msgstr "Nyisson új fület a kiszolgáló üzeneteihez"
 
 #: src/fe-gtk/setup.c:224
 msgid "Open an extra tab for server notices"
-msgstr "Nyisson egy külön fület a kiszolgáló figyelmeztetéseihez"
+msgstr "Nyisson új fület a kiszolgáló figyelmeztetéseihez"
 
 #: src/fe-gtk/setup.c:225
 msgid "Open a new tab when you receive a private message"
-msgstr "Nyisson egy külön fület magánüzenetek fogadásakor"
+msgstr "Nyisson új fület privát üzenetek fogadásakor"
 
 #: src/fe-gtk/setup.c:226
 msgid "Sort tabs in alphabetical order"
@@ -4564,7 +4671,7 @@ msgstr "Fülek címkéjének rövidítése:"
 
 #: src/fe-gtk/setup.c:230
 msgid "letters."
-msgstr "betűk."
+msgstr "betűre."
 
 #: src/fe-gtk/setup.c:232
 msgid "Tabs or Windows"
@@ -4678,416 +4785,424 @@ msgstr "Maximális sebesség az összes fájlhoz"
 msgid "All downloads combined:"
 msgstr "Az összes letöltés együtt:"
 
-#: src/fe-gtk/setup.c:280
-msgid "Default Messages"
-msgstr "Alapértelmezett üzenetek"
-
-#: src/fe-gtk/setup.c:281
-msgid "Quit:"
-msgstr "Kilépés:"
-
-#: src/fe-gtk/setup.c:282
-msgid "Leave channel:"
-msgstr "Kilépés csatornáról:"
-
-#: src/fe-gtk/setup.c:283
-msgid "Away:"
-msgstr "Távol:"
-
-#: src/fe-gtk/setup.c:285
-msgid "Away"
-msgstr "Távol"
-
-#: src/fe-gtk/setup.c:286
-msgid "Announce away messages"
-msgstr "Távol üzenetek bejelentése"
-
-#: src/fe-gtk/setup.c:287
-msgid "Announce your away messages to all channels"
-msgstr "Bejelenti a távollétét az összes csatornán"
-
-#: src/fe-gtk/setup.c:288
-msgid "Show away once"
-msgstr "Távol mutatása egyszer"
-
-#: src/fe-gtk/setup.c:288
-msgid "Show identical away messages only once"
-msgstr "Azonos távol-üzeneteket csak egyszer mutasson"
-
-#: src/fe-gtk/setup.c:289
-msgid "Automatically unmark away"
-msgstr "Automatikusan vonja vissza a távol állapotot"
-
-#: src/fe-gtk/setup.c:289
-msgid "Unmark yourself as away before sending messages"
-msgstr "Távol jelzés visszavonása, mielőtt üzenetet küldene"
-
-#: src/fe-gtk/setup.c:292
-msgid "(Can be a text file relative to ~/.xchat2/)."
-msgstr "(lehet egy szövegfájl a ~/.xchat2/ könyvtárban)."
-
-#: src/fe-gtk/setup.c:294
-msgid "(Can be a text file relative to config dir)."
-msgstr "(lehet egy szövegfájl, a konfigurációs könyvtárban)."
-
-#: src/fe-gtk/setup.c:298
+#: src/fe-gtk/setup.c:280 src/fe-gtk/setup.c:1519
 msgid "Alerts"
 msgstr "Figyelmeztetések"
 
-#: src/fe-gtk/setup.c:300
+#: src/fe-gtk/setup.c:281
+msgid "Enable system tray icon"
+msgstr "Rendszertálcaikon engedélyezése"
+
+#: src/fe-gtk/setup.c:283
 msgid "Flash taskbar on highlighted messages"
 msgstr "Villogjon a tálcán kiemelt üzenetek esetén"
 
-#: src/fe-gtk/setup.c:301
-msgid "Flash taskbar on any private messages"
-msgstr "Villogjon a tálcán magánüzenetek esetén"
+#: src/fe-gtk/setup.c:284
+msgid "Flash taskbar on private messages"
+msgstr "A feladatsor villanjon privát üzenetek esetén"
 
-#: src/fe-gtk/setup.c:303
+#: src/fe-gtk/setup.c:286
 msgid "Beep on highlighted messages"
 msgstr "Csipog kiemelt üzenetek esetén"
 
-#: src/fe-gtk/setup.c:304
+#: src/fe-gtk/setup.c:287
 msgid "Beep on private messages"
 msgstr "Csipog privát üzenetek esetén"
 
-#: src/fe-gtk/setup.c:305
+#: src/fe-gtk/setup.c:288
 msgid "Beep on channel messages"
 msgstr "Csipog csatornaüzenetek esetén"
 
-#: src/fe-gtk/setup.c:306
+#: src/fe-gtk/setup.c:289
 msgid "Extra words to highlight on:"
 msgstr "További szavak, amiket kiemel:"
 
-#: src/fe-gtk/setup.c:307
+#: src/fe-gtk/setup.c:290
 msgid "Nicks not to highlight on:"
 msgstr "Becenevek, amiket ne emeljen ki:"
 
-#: src/fe-gtk/setup.c:308
+#: src/fe-gtk/setup.c:291
 msgid "Separate multiple words with commas."
 msgstr "Több szót vesszőkkel választhat el egymástól."
 
-#: src/fe-gtk/setup.c:315
+#: src/fe-gtk/setup.c:297
+msgid "Default Messages"
+msgstr "Alapértelmezett üzenetek"
+
+#: src/fe-gtk/setup.c:298
+msgid "Quit:"
+msgstr "Kilépés:"
+
+#: src/fe-gtk/setup.c:299
+msgid "Leave channel:"
+msgstr "Kilépés csatornáról:"
+
+#: src/fe-gtk/setup.c:300
+msgid "Away:"
+msgstr "Távol:"
+
+#: src/fe-gtk/setup.c:302
+msgid "Away"
+msgstr "Távol"
+
+#: src/fe-gtk/setup.c:303
+msgid "Announce away messages"
+msgstr "Távol üzenetek bejelentése"
+
+#: src/fe-gtk/setup.c:304
+msgid "Announce your away messages to all channels"
+msgstr "Bejelenti a távollétét az összes csatornán"
+
+#: src/fe-gtk/setup.c:305
+msgid "Show away once"
+msgstr "Távol mutatása egyszer"
+
+#: src/fe-gtk/setup.c:305
+msgid "Show identical away messages only once"
+msgstr "Azonos távol-üzeneteket csak egyszer mutasson"
+
+#: src/fe-gtk/setup.c:306
+msgid "Automatically unmark away"
+msgstr "Automatikusan vonja vissza a távol állapotot"
+
+#: src/fe-gtk/setup.c:306
+msgid "Unmark yourself as away before sending messages"
+msgstr "Távol jelzés visszavonása, mielőtt üzenetet küldene"
+
+#: src/fe-gtk/setup.c:313
 msgid "Advanced Settings"
 msgstr "Haladó beállítások"
 
-#: src/fe-gtk/setup.c:316
+#: src/fe-gtk/setup.c:314
 msgid "Auto reconnect delay:"
 msgstr "A kiszolgálóhoz újracsatlakozás késleltetése:"
 
-#: src/fe-gtk/setup.c:317
+#: src/fe-gtk/setup.c:315
 msgid "Display MODEs in raw form"
 msgstr "A MODE-okat nyers formában mutatja"
 
-#: src/fe-gtk/setup.c:318
+#: src/fe-gtk/setup.c:316
 msgid "Whois on notify"
 msgstr "Értesítéskor Whois"
 
-#: src/fe-gtk/setup.c:318
+#: src/fe-gtk/setup.c:316
 msgid "Sends a /WHOIS when a user comes online in your notify list"
 msgstr "Küld egy /WHOIS-t, ha az értesítési listán szereplő valamelyik felhasználó online lesz"
 
-#: src/fe-gtk/setup.c:319
+#: src/fe-gtk/setup.c:317
 msgid "Hide join and part messages"
 msgstr "Elrejti a belépés és kilépés üzeneteket"
 
-#: src/fe-gtk/setup.c:319
+#: src/fe-gtk/setup.c:317
 msgid "Hide channel join/part messages by default"
 msgstr "Alapértelmezésben elrejti a csatorna belépés/kilépés üzeneteket"
 
-#: src/fe-gtk/setup.c:320
+#: src/fe-gtk/setup.c:318
 msgid "Auto Open DCC Windows"
 msgstr "Közvetlen csevegésablakok automatikus megnyitása"
 
-#: src/fe-gtk/setup.c:321
+#: src/fe-gtk/setup.c:319
 msgid "Send window"
 msgstr "Küldés ablak"
 
-#: src/fe-gtk/setup.c:322
+#: src/fe-gtk/setup.c:320
 msgid "Receive window"
 msgstr "Fogadás ablak"
 
-#: src/fe-gtk/setup.c:323
+#: src/fe-gtk/setup.c:321
 msgid "Chat window"
 msgstr "Csevegésablak"
 
-#: src/fe-gtk/setup.c:331 src/fe-gtk/setup.c:1522
+#: src/fe-gtk/setup.c:329 src/fe-gtk/setup.c:1521
 msgid "Logging"
 msgstr "Naplózás"
 
-#: src/fe-gtk/setup.c:332
+#: src/fe-gtk/setup.c:330
 msgid "Enable logging of conversations"
 msgstr "Csevegések naplózásának engedélyezése"
 
-#: src/fe-gtk/setup.c:333
+#: src/fe-gtk/setup.c:331
 msgid "Log filename:"
 msgstr "Naplófájl neve:"
 
-#: src/fe-gtk/setup.c:334
+#: src/fe-gtk/setup.c:332
 #, c-format
 msgid "%s=Server %c=Channel %n=Network."
 msgstr "%s=kiszolgáló %c=csatorna %n=hálózat."
 
-#: src/fe-gtk/setup.c:337
+#: src/fe-gtk/setup.c:335
 msgid "Insert timestamps in logs"
 msgstr "Időbélyeg beillesztése a naplófájlokba"
 
-#: src/fe-gtk/setup.c:338
+#: src/fe-gtk/setup.c:336
 msgid "Log timestamp format:"
 msgstr "Napló időbélyegének formátuma:"
 
-#: src/fe-gtk/setup.c:346
+#: src/fe-gtk/setup.c:344
 msgid "(Disabled)"
 msgstr "(Letiltva)"
 
-#: src/fe-gtk/setup.c:347
+#: src/fe-gtk/setup.c:345
 msgid "Wingate"
 msgstr "Wingate"
 
-#: src/fe-gtk/setup.c:348
+#: src/fe-gtk/setup.c:346
 msgid "Socks4"
 msgstr "Socks4"
 
-#: src/fe-gtk/setup.c:349
+#: src/fe-gtk/setup.c:347
 msgid "Socks5"
 msgstr "Socks5"
 
-#: src/fe-gtk/setup.c:350
+#: src/fe-gtk/setup.c:348
 msgid "HTTP"
 msgstr "HTTP"
 
-#: src/fe-gtk/setup.c:352
+#: src/fe-gtk/setup.c:350
 msgid "MS Proxy (ISA)"
 msgstr "MS Proxy (ISA)"
 
-#: src/fe-gtk/setup.c:359
+#: src/fe-gtk/setup.c:357
 msgid "All Connections"
 msgstr "Az összes kapcsolat"
 
-#: src/fe-gtk/setup.c:360
+#: src/fe-gtk/setup.c:358
 msgid "IRC Server Only"
 msgstr "Csak IRC kiszolgáló"
 
-#: src/fe-gtk/setup.c:361
+#: src/fe-gtk/setup.c:359
 msgid "DCC Get Only"
 msgstr "Csak DCC letöltés"
 
-#: src/fe-gtk/setup.c:367
+#: src/fe-gtk/setup.c:365
 msgid "Your Address"
 msgstr "A címe"
 
-#: src/fe-gtk/setup.c:368
+#: src/fe-gtk/setup.c:366
 msgid "Bind to:"
 msgstr "Kötés:"
 
-#: src/fe-gtk/setup.c:369
+#: src/fe-gtk/setup.c:367
 msgid "Only useful for computers with multiple addresses."
 msgstr "Csak több címmel rendelkező gépek esetén hasznos."
 
-#: src/fe-gtk/setup.c:371
+#: src/fe-gtk/setup.c:369
 msgid "Proxy Server"
 msgstr "Proxy kiszolgáló"
 
-#: src/fe-gtk/setup.c:372
+#: src/fe-gtk/setup.c:370
 msgid "Hostname:"
 msgstr "Gép neve:"
 
-#: src/fe-gtk/setup.c:373
+#: src/fe-gtk/setup.c:371
 msgid "Port:"
 msgstr "Port:"
 
-#: src/fe-gtk/setup.c:374
+#: src/fe-gtk/setup.c:372
 msgid "Type:"
 msgstr "Típus:"
 
-#: src/fe-gtk/setup.c:375
+#: src/fe-gtk/setup.c:373
 msgid "Use proxy for:"
 msgstr "Proxy használata ehhez:"
 
-#: src/fe-gtk/setup.c:377
+#: src/fe-gtk/setup.c:375
 msgid "Proxy Authentication"
 msgstr "Proxyhitelesítés"
 
-#: src/fe-gtk/setup.c:379
+#: src/fe-gtk/setup.c:377
 msgid "Use Authentication (MS Proxy, HTTP or Socks5 only)"
 msgstr "Hitelesítés használata (csak MS proxy, HTTP vagy Socks5)"
 
-#: src/fe-gtk/setup.c:381
+#: src/fe-gtk/setup.c:379
 msgid "Use Authentication (HTTP or Socks5 only)"
 msgstr "Hitelesítés használata (csak HTTP vagy Socks5)"
 
-#: src/fe-gtk/setup.c:383
+#: src/fe-gtk/setup.c:381
 msgid "Username:"
 msgstr "Felhasználónév:"
 
-#: src/fe-gtk/setup.c:384
+#: src/fe-gtk/setup.c:382
 msgid "Password:"
 msgstr "Jelszó:"
 
-#: src/fe-gtk/setup.c:727
+#: src/fe-gtk/setup.c:725
 msgid "Select an Image File"
 msgstr "Válasszon egy képfájlt"
 
-#: src/fe-gtk/setup.c:751
+#: src/fe-gtk/setup.c:749
 msgid "Select Download Folder"
 msgstr "Válasszon letöltési mappát"
 
-#: src/fe-gtk/setup.c:760
+#: src/fe-gtk/setup.c:758
 msgid "Select font"
 msgstr "Válasszon egy betűtípust"
 
-#: src/fe-gtk/setup.c:831
+#: src/fe-gtk/setup.c:829
 msgid "Browse..."
 msgstr "Tallózás..."
 
-#: src/fe-gtk/setup.c:966
+#: src/fe-gtk/setup.c:964
 msgid "Mark identified users with:"
 msgstr "Azonosított felhasználók jelölése ezzel:"
 
-#: src/fe-gtk/setup.c:968
+#: src/fe-gtk/setup.c:966
 msgid "Mark not-identified users with:"
 msgstr "Azonosítatlan felhasználók jelölése ezzel:"
 
-#: src/fe-gtk/setup.c:1029
+#: src/fe-gtk/setup.c:973
+msgid "Open Data Folder"
+msgstr "Adatmappa megnyitása"
+
+#: src/fe-gtk/setup.c:1027
 msgid "Select color"
 msgstr "Válasszon színt"
 
-#: src/fe-gtk/setup.c:1109
+#: src/fe-gtk/setup.c:1107
 msgid "Text Colors"
 msgstr "Szövegszín"
 
-#: src/fe-gtk/setup.c:1111
+#: src/fe-gtk/setup.c:1109
 msgid "mIRC colors:"
 msgstr "mIRC színek:"
 
-#: src/fe-gtk/setup.c:1119
+#: src/fe-gtk/setup.c:1117
 msgid "Local colors:"
 msgstr "Helyi színek:"
 
-#: src/fe-gtk/setup.c:1127 src/fe-gtk/setup.c:1132
+#: src/fe-gtk/setup.c:1125 src/fe-gtk/setup.c:1130
 msgid "Foreground:"
 msgstr "Előtér:"
 
-#: src/fe-gtk/setup.c:1128 src/fe-gtk/setup.c:1133
+#: src/fe-gtk/setup.c:1126 src/fe-gtk/setup.c:1131
 msgid "Background:"
 msgstr "Háttér:"
 
-#: src/fe-gtk/setup.c:1130
+#: src/fe-gtk/setup.c:1128
 msgid "Marking Text"
 msgstr "Szöveg kiemelése"
 
-#: src/fe-gtk/setup.c:1135
+#: src/fe-gtk/setup.c:1133
 msgid "Interface Colors"
 msgstr "Megjelenés színe"
 
-#: src/fe-gtk/setup.c:1137
+#: src/fe-gtk/setup.c:1135
 msgid "New data:"
 msgstr "Új adatok:"
 
-#: src/fe-gtk/setup.c:1138
+#: src/fe-gtk/setup.c:1136
 msgid "Marker line:"
 msgstr "Jelölő vonal:"
 
-#: src/fe-gtk/setup.c:1139
+#: src/fe-gtk/setup.c:1137
 msgid "New message:"
 msgstr "Új üzenet:"
 
-#: src/fe-gtk/setup.c:1140
+#: src/fe-gtk/setup.c:1138
 msgid "Away user:"
 msgstr "Távollévő felhasználó:"
 
-#: src/fe-gtk/setup.c:1141
+#: src/fe-gtk/setup.c:1139
 msgid "Highlight:"
 msgstr "Kiemelés:"
 
-#: src/fe-gtk/setup.c:1237 src/fe-gtk/textgui.c:386
+#: src/fe-gtk/setup.c:1235 src/fe-gtk/textgui.c:386
 msgid "Event"
 msgstr "Esemény"
 
-#: src/fe-gtk/setup.c:1243
+#: src/fe-gtk/setup.c:1241
 msgid "Sound file"
 msgstr "Hangfájl"
 
-#: src/fe-gtk/setup.c:1278
+#: src/fe-gtk/setup.c:1276
 msgid "Select a sound file"
 msgstr "Válasszon hangfájlt"
 
-#: src/fe-gtk/setup.c:1350
+#: src/fe-gtk/setup.c:1348
 msgid "Sound playing method:"
 msgstr "Hanglejátszás módszere:"
 
-#: src/fe-gtk/setup.c:1358
+#: src/fe-gtk/setup.c:1356
 msgid "External sound playing _program:"
 msgstr "Külső hanglejátszó_program:"
 
-#: src/fe-gtk/setup.c:1376
+#: src/fe-gtk/setup.c:1374
 msgid "_External program"
 msgstr "_Külső program"
 
-#: src/fe-gtk/setup.c:1386
+#: src/fe-gtk/setup.c:1384
 msgid "_Automatic"
 msgstr "_Automatikus"
 
-#: src/fe-gtk/setup.c:1399
+#: src/fe-gtk/setup.c:1397
 msgid "Sound files _directory:"
 msgstr "Hangfájlok _könyvtára:"
 
-#: src/fe-gtk/setup.c:1438
+#: src/fe-gtk/setup.c:1436
 msgid "Sound file:"
 msgstr "Hangfájl:"
 
-#: src/fe-gtk/setup.c:1453
+#: src/fe-gtk/setup.c:1451
 msgid "_Browse..."
 msgstr "_Tallózás..."
 
-#: src/fe-gtk/setup.c:1464
+#: src/fe-gtk/setup.c:1462
 msgid "_Play"
 msgstr "_Lejátszás"
 
-#: src/fe-gtk/setup.c:1513
+#: src/fe-gtk/setup.c:1511
 msgid "Interface"
 msgstr "Felület"
 
-#: src/fe-gtk/setup.c:1514
+#: src/fe-gtk/setup.c:1512
 msgid "Text box"
 msgstr "Szövegdoboz"
 
-#: src/fe-gtk/setup.c:1516
+#: src/fe-gtk/setup.c:1514
 msgid "User list"
 msgstr "Felhasználólista"
 
-#: src/fe-gtk/setup.c:1518
+#: src/fe-gtk/setup.c:1516
 msgid "Colors"
 msgstr "Színek"
 
-#: src/fe-gtk/setup.c:1520
+#: src/fe-gtk/setup.c:1518
 msgid "Chatting"
 msgstr "Csevegés"
 
-#: src/fe-gtk/setup.c:1521
+#: src/fe-gtk/setup.c:1520
 msgid "General"
 msgstr "Általános"
 
-#: src/fe-gtk/setup.c:1523
+#: src/fe-gtk/setup.c:1522
 msgid "Sound"
 msgstr "Hang"
 
-#: src/fe-gtk/setup.c:1527
+#: src/fe-gtk/setup.c:1526
 msgid "Network setup"
 msgstr "Hálózat beállítása"
 
-#: src/fe-gtk/setup.c:1528
+#: src/fe-gtk/setup.c:1527
 msgid "File transfers"
 msgstr "Fájlátvitel"
 
-#: src/fe-gtk/setup.c:1636
+#: src/fe-gtk/setup.c:1635
 msgid "Categories"
 msgstr "Kategóriák"
 
-#: src/fe-gtk/setup.c:1812
+#: src/fe-gtk/setup.c:1816
+msgid ""
+"You cannot place the tree on the top or bottom!\n"
+"Please change to the <b>Tabs</b> layout in the <b>View</b> menu first."
+msgstr ""
+"Nem helyezheti alulra vagy felülre a fát!\n"
+"Először váltson a <b>Nézet</b> menü <b>Fülek</b> elrendezésére."
+
+#: src/fe-gtk/setup.c:1826
 msgid "Some settings were changed that require a restart to take full effect."
 msgstr "Néhány beállítás érvényesítéséhez újraindítás szükséges."
 
-#: src/fe-gtk/setup.c:1820
+#: src/fe-gtk/setup.c:1834
 msgid ""
 "*WARNING*\n"
 "Auto accepting DCC to your home directory\n"
@@ -5099,7 +5214,7 @@ msgstr ""
 "veszélyes és kihasználható lehet. Például:\n"
 "Valaki küldhet Önnek egy .bash_profile-t"
 
-#: src/fe-gtk/setup.c:1853
+#: src/fe-gtk/setup.c:1867
 msgid "XChat: Preferences"
 msgstr "XChat: Beállítások"
 
@@ -5160,21 +5275,3 @@ msgstr "Lista mentése fájlba"
 #, c-format
 msgid "%d ops, %d total"
 msgstr "%d op, %d összesen"
-
-#~ msgid "<i>(no suggestions)</i>"
-#~ msgstr "<i>(nincs javaslat)</i>"
-
-#~ msgid "More..."
-#~ msgstr "Több..."
-
-#~ msgid "Add \"%s\" to Dictionary"
-#~ msgstr "\"%s\" hozzáadása a szótárhoz"
-
-#~ msgid "Ignore All"
-#~ msgstr "Összes mellőzése"
-
-#~ msgid "Spelling Suggestions"
-#~ msgstr "Helyesírási javaslatok"
-
-#~ msgid "enchant error for language: %s"
-#~ msgstr "enchant hiba a következő nyelvhez: %s"
