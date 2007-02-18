@@ -615,7 +615,7 @@ plugin_timeout_cb (xchat_hook *hook)
 	ret = ((xchat_timer_cb *)hook->callback) (hook->userdata);
 
 	/* the callback might have already unhooked it! */
-	if (!g_slist_find (hook_list, hook))
+	if (!g_slist_find (hook_list, hook) || hook->type == HOOK_DELETED)
 		return 0;
 
 	if (ret == 0)
@@ -759,7 +759,7 @@ void *
 xchat_unhook (xchat_plugin *ph, xchat_hook *hook)
 {
 	/* perl.c trips this */
-	if (hook->type == HOOK_DELETED || !g_slist_find (hook_list, hook))
+	if (!g_slist_find (hook_list, hook) || hook->type == HOOK_DELETED)
 		return NULL;
 
 	if (hook->type == HOOK_TIMER && hook->tag != 0)
