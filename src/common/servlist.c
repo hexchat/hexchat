@@ -339,8 +339,7 @@ static const struct defaultserver def[] =
 	{0,			"irc.othernet.org"},
 
 	{"OzNet",	0},
-	{0,			"sydney.oz.org"},
-	{0,			"melbourne.oz.org"},
+	{0,			"irc.oz.org"},
 
 	{"PTlink",	0},
 	{0,			"irc.PTlink.net"},
@@ -428,6 +427,9 @@ static const struct defaultserver def[] =
 
 	{"Sohbet.Net", 0},
 	{0,			"irc.sohbet.net"},
+
+	{"SolidIRC", 0},
+	{0,			"irc.solidirc.com"},
 
 	{"SorceryNet",	0},
 	{0,			"irc.sorcery.net/9000"},

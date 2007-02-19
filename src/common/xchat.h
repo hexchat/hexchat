@@ -262,6 +262,7 @@ struct xchatprefs
 	unsigned int gui_tray;
 	unsigned int gui_tray_blink;
 	unsigned int gui_tray_flags;
+	unsigned int gui_ulist_left;
 	unsigned int throttle;
 	unsigned int topicbar;
 	unsigned int hideuserlist;
@@ -410,6 +411,8 @@ typedef struct server
 #ifdef USE_OPENSSL
 	SSL *ssl;
 	int ssl_do_connect_tag;
+#else
+	void *ssl;
 #endif
 	int childread;
 	int childwrite;

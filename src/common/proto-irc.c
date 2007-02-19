@@ -61,10 +61,10 @@ irc_nickserv (server *serv, char *cmd, char *arg1, char *arg2, char *arg3)
 		tcp_sendf (serv, "PRIVMSG NICKSERV :%s %s%s%s\r\n", cmd, arg1, arg2, arg3);
 		break;
 	case 1:
-		tcp_sendf (serv, "NICKSERV :%s %s%s%s\r\n", cmd, arg1, arg2, arg3);
+		tcp_sendf (serv, "NICKSERV %s %s%s%s\r\n", cmd, arg1, arg2, arg3);
 		break;
 	case 2:
-		tcp_sendf (serv, "NS :%s %s%s%s\r\n", cmd, arg1, arg2, arg3);
+		tcp_sendf (serv, "NS %s %s%s%s\r\n", cmd, arg1, arg2, arg3);
 		break;
 	case 3:
 		tcp_sendf (serv, "PRIVMSG NS :%s %s%s%s\r\n", cmd, arg1, arg2, arg3);

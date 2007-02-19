@@ -1585,34 +1585,32 @@ menu_radio_cb (GtkCheckMenuItem *item, menu_entry *me)
 {
 	me->state = 0;
 	if (item->active)
-	{
 		me->state = 1;
-		if (me->cmd)
-			handle_command (current_sess, me->cmd, FALSE);
-	}
 
 	/* update the state, incase this was changed via right-click. */
 	/* This will update all other windows and menu bars */
 	menu_foreach_gui (me, menu_update_cb);
+
+	if (me->state && me->cmd)
+		handle_command (current_sess, me->cmd, FALSE);
 }
 
 /* toggle state changed via mouse click */
 static void
 menu_toggle_cb (GtkCheckMenuItem *item, menu_entry *me)
 {
+	me->state = 0;
 	if (item->active)
-	{
 		me->state = 1;
-		handle_command (current_sess, me->cmd, FALSE);
-	} else
-	{
-		me->state = 0;
-		handle_command (current_sess, me->ucmd, FALSE);
-	}
 
 	/* update the state, incase this was changed via right-click. */
 	/* This will update all other windows and menu bars */
 	menu_foreach_gui (me, menu_update_cb);
+
+	if (me->state)
+		handle_command (current_sess, me->cmd, FALSE);
+	else
+		handle_command (current_sess, me->ucmd, FALSE);
 }
 
 static GtkWidget *

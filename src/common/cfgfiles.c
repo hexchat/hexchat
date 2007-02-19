@@ -440,6 +440,7 @@ const struct prefs vars[] = {
 	{"gui_ulist_buttons", P_OFFINT (userlistbuttons), TYPE_BOOL},
 	{"gui_ulist_doubleclick", P_OFFSET (doubleclickuser), TYPE_STR},
 	{"gui_ulist_hide", P_OFFINT (hideuserlist), TYPE_BOOL},
+	{"gui_ulist_left", P_OFFINT (gui_ulist_left), TYPE_BOOL},
 	{"gui_ulist_resizable", P_OFFINT (paned_userlist), TYPE_BOOL},
 	{"gui_ulist_show_hosts", P_OFFINT(showhostname_in_userlist), TYPE_BOOL},
 	{"gui_ulist_size", P_OFFINT (paned_pos), TYPE_INT},
