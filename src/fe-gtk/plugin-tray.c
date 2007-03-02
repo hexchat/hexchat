@@ -28,7 +28,7 @@ enum	/* prefs.gui_tray_blink bits */
 	BIT_FILEOFFER = 11
 };
 
-typedef GdkPixbuf TrayIcon;
+typedef GdkPixbuf* TrayIcon;
 #define tray_icon_from_file(f) gdk_pixbuf_new_from_file(f,NULL)
 #define tray_icon_free(i) g_object_unref(i)
 
@@ -43,8 +43,8 @@ static gint flash_tag;
 static TrayStatus tray_status;
 static xchat_plugin *ph;
 
-static TrayIcon *custom_icon1;
-static TrayIcon *custom_icon2;
+static TrayIcon custom_icon1;
+static TrayIcon custom_icon2;
 
 static int tray_priv_count = 0;
 static int tray_pub_count = 0;
@@ -163,7 +163,7 @@ tray_reset_counts (void)
 }
 
 static int
-tray_timeout_cb (TrayIcon *icon)
+tray_timeout_cb (TrayIcon icon)
 {
 	if (custom_icon1)
 	{
@@ -190,7 +190,7 @@ tray_timeout_cb (TrayIcon *icon)
 }
 
 static void
-tray_set_flash (TrayIcon *icon)
+tray_set_flash (TrayIcon icon)
 {
 	const char *st;
 
@@ -379,11 +379,15 @@ tray_menu_cb (GtkWidget *widget, guint button, guint time, gpointer userdata)
 {
 	GtkWidget *menu;
 	GtkWidget *submenu;
-	const char *st = xchat_get_info (ph, "win_status");
+	const char *st;
+
+	/* ph may have an invalid context now */
+	xchat_set_context (ph, xchat_find_context (ph, NULL, NULL));
 
 	menu = gtk_menu_new ();
 	/*gtk_menu_set_screen (GTK_MENU (menu), gtk_widget_get_screen (widget));*/
 
+	st = xchat_get_info (ph, "win_status");
 	if (!strcmp (st, "hidden"))
 		tray_make_item (menu, _("_Restore"), tray_menu_restore_cb, NULL);
 	else

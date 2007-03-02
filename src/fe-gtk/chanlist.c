@@ -377,6 +377,8 @@ fe_add_chan_list (server *serv, char *chan, char *users, char *topic)
 	memcpy (((char *)next_row) + sizeof (chanlistrow), chan, len);
 	next_row->topic = strip_color (topic, -1, STRIP_ALL);
 	next_row->collation_key = g_utf8_collate_key (chan, len-1);
+	if (!(next_row->collation_key))
+		next_row->collation_key = g_strdup (chan);
 	next_row->users = atoi (users);
 
 	/* add this row to the data */
