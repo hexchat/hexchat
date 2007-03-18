@@ -509,8 +509,12 @@ session_free (session *killsess)
 
 	fe_session_callback (killsess);
 
-	if (current_sess == killsess && sess_list)
-		current_sess = sess_list->data;
+	if (current_sess == killsess)
+	{
+		current_sess = NULL;
+		if (sess_list)
+			current_sess = sess_list->data;
+	}
 
 	free (killsess);
 
