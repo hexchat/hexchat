@@ -441,7 +441,7 @@ While holding down CTRL you can single left-click a URL to open it in your prefe
 <br/><br/>
 You can also add more items to the right-click menu in XChat: <b>Settings &gt; Advanced &gt; URL Handlers</b>.
 <br/>For example, you could add an entry like <b>!firefox -a firefox -remote 'openURL(%s,new-tab)'</b>
-<br/>But this kind of messing around shouldn't be necessary, it just works automatically in Gnome, KDE and Windows with 2.6.10+!
+<br/>But this kind of messing around shouldn't be necessary, it just works automatically in Gnome, KDE and Windows with 2.8.0+!
 </p>
 
 <br/><h3><a name="q222">22. Where are the log files saved to?</a></h3>
@@ -471,11 +471,11 @@ Go to <b>Settings</b> &gt; <b>Preferences</b> &gt; <b>Logging</b> and change the
 <tr><td><b>Setting</b></td><td><b>Example filename that would be written</b></td></tr>
 <tr><td>%Y-%m-%d/%n-%c.log&nbsp;</td><td>2006-12-30/FreeNode-#channel.log</td></tr>
 <tr><td>%n/%Y-%m-%d/%c.log</td><td>FreeNode/2006-12-30/#channel.log</td></tr>
-<tr><td>%n-%c.log</td><td>FreeNode/#channel.log (no rotation)</td></tr>
+<tr><td>%n/%c.log</td><td>FreeNode/#channel.log (no rotation)</td></tr>
 </table>
 </blockquote>
 <p>
-%Y, %m and %d represents the current year, month and date respectively. %n is the
+%Y, %m and %d represents the current year, month and day respectively. %n is the
 network name, e.g. "FreeNode" or "UnderNet", and finally, %c is the channel. In these
 examples, a new log filename and folder would be created after midnight.
 <br/><br/>

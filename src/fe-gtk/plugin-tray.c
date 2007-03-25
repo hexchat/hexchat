@@ -97,8 +97,25 @@ fe_tray_set_tooltip (const char *text)
 void
 fe_tray_set_balloon (const char *title, const char *text)
 {
-/*	if (sticon)
-		gtk_status_icon_set_balloon (sticon, title, text);*/
+#ifndef WIN32
+	const char *argv[8];
+	const char *path;
+
+	path = g_find_program_in_path ("notify-send");
+	if (path)
+	{
+		argv[0] = path;
+		argv[1] = "-i";
+		argv[2] = "gtk-dialog-info";
+		argv[3] = "-t";
+		argv[4] = "20000";
+		argv[5] = title;
+		argv[6] = text;
+		argv[7] = NULL;
+		util_execv (argv);
+		g_free ((char *)path);
+	}
+#endif
 }
 
 static void
