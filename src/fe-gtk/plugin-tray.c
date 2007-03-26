@@ -21,6 +21,13 @@ typedef enum	/* current icon status */
 	TS_CUSTOM /* plugin */
 } TrayStatus;
 
+typedef enum
+{
+	WS_FOCUSED,
+	WS_NORMAL,
+	WS_HIDDEN
+} WinStatus;
+
 typedef GdkPixbuf* TrayIcon;
 #define tray_icon_from_file(f) gdk_pixbuf_new_from_file(f,NULL)
 #define tray_icon_free(i) g_object_unref(i)
@@ -48,6 +55,24 @@ static int tray_file_count = 0;
 void tray_apply_setup (void);
 
 
+static WinStatus
+tray_get_window_status (void)
+{
+	const char *st;
+
+	st = xchat_get_info (ph, "win_status");
+
+	if (!st)
+		return WS_NORMAL;
+
+	if (!strcmp (st, "active"))
+		return WS_FOCUSED;
+
+	if (!strcmp (st, "hidden"))
+		return WS_HIDDEN;
+
+	return WS_NORMAL;
+}
 
 static int
 tray_count_channels (void)
@@ -93,6 +118,16 @@ fe_tray_set_balloon (const char *title, const char *text)
 #ifndef WIN32
 	const char *argv[8];
 	const char *path;
+	WinStatus ws;
+
+	/* no balloons if the window is focused */
+	ws = tray_get_window_status ();
+	if (ws == WS_FOCUSED)
+		return;
+
+	/* bit 1 of flags means "no balloons unless hidden/iconified" */
+	if (ws != WS_HIDDEN && (prefs.gui_tray_flags & 2))
+		return;
 
 	path = g_find_program_in_path ("notify-send");
 	if (path)
@@ -216,8 +251,6 @@ tray_timeout_cb (TrayIcon icon)
 static void
 tray_set_flash (TrayIcon icon)
 {
-	const char *st;
-
 	if (!sticon)
 		return;
 
@@ -226,8 +259,7 @@ tray_set_flash (TrayIcon icon)
 		return;
 
 	/* no flashing if window is focused */
-	st = xchat_get_info (ph, "win_status");
-	if (!strcmp (st, "active"))
+	if (tray_get_window_status () == WS_FOCUSED)
 		return;
 
 	tray_stop_flash ();
@@ -399,7 +431,6 @@ tray_menu_cb (GtkWidget *widget, guint button, guint time, gpointer userdata)
 {
 	GtkWidget *menu;
 	GtkWidget *submenu;
-	const char *st;
 
 	/* ph may have an invalid context now */
 	xchat_set_context (ph, xchat_find_context (ph, NULL, NULL));
@@ -407,8 +438,7 @@ tray_menu_cb (GtkWidget *widget, guint button, guint time, gpointer userdata)
 	menu = gtk_menu_new ();
 	/*gtk_menu_set_screen (GTK_MENU (menu), gtk_widget_get_screen (widget));*/
 
-	st = xchat_get_info (ph, "win_status");
-	if (!strcmp (st, "hidden"))
+	if (tray_get_window_status () == WS_HIDDEN)
 		tray_make_item (menu, _("_Restore"), tray_menu_restore_cb, NULL);
 	else
 		tray_make_item (menu, _("_Hide"), tray_menu_restore_cb, NULL);
