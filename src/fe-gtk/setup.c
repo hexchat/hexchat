@@ -82,7 +82,8 @@ enum
 	ST_NUMBER,
 	ST_HSCALE,
 	ST_HEADER,
-	ST_LABEL
+	ST_LABEL,
+	ST_ALERTHEAD
 };
 
 typedef struct
@@ -298,26 +299,22 @@ static const int beeplist[3] =
 
 static const setting alert_settings[] =
 {
-//	{ST_HEADER,	N_("Alerts"),0,0,0},
-//	{ST_TOGGLE,	N_("Enable system tray icon"), P_OFFINTNL(gui_tray), 0, 0, 0},
+	{ST_HEADER,	N_("Alerts"),0,0,0},
 
-	{ST_HEADER,	N_("Show System Tray Balloons on:"),0,0,0},
-	{ST_3OGGLE, NULL, 0, 0, (void *)balloonlist, 0},
+	{ST_ALERTHEAD},
+	{ST_3OGGLE, N_("Show tray balloons on:"), 0, 0, (void *)balloonlist, 0},
+	{ST_3OGGLE, N_("Blink tray icon on:"), 0, 0, (void *)trayblinklist, 0},
+	{ST_3OGGLE, N_("Blink task bar on:"), 0, 0, (void *)taskbarlist, 0},
+	{ST_3OGGLE, N_("Make a beep sound on:"), 0, 0, (void *)beeplist, 0},
 
-	{ST_HEADER,	N_("Blink System Tray Icon on:"),0,0,0},
-	{ST_3OGGLE, NULL, 0, 0, (void *)trayblinklist, 0},
-
-	{ST_HEADER,	N_("Blink Task Bar on:"),0,0,0},
-	{ST_3OGGLE, NULL, 0, 0, (void *)taskbarlist, 0},
-
-	{ST_HEADER,	N_("Make a Beep Sound on:"),0,0,0},
-	{ST_3OGGLE, NULL, 0, 0, (void *)beeplist, 0},
+	{ST_TOGGLE,	N_("Enable system tray icon"), P_OFFINTNL(gui_tray), 0, 0, 0},
 
 	{ST_HEADER,	N_("Highlighted Messages"),0,0,0},
-	{ST_LABEL,	N_("Highlighted messages are ones where your nickname is mentioned and also:"), 0, 0, 0, 1},
+	{ST_LABEL,	N_("Highlighted messages are ones where your nickname is mentioned, but also:"), 0, 0, 0, 1},
 
-	{ST_ENTRY,	N_("Extra words to highlight on:"), P_OFFSETNL(irc_extra_hilight), 0, 0, sizeof prefs.irc_extra_hilight},
-	{ST_ENTRY,	N_("Nicks not to highlight on:"), P_OFFSETNL(irc_no_hilight), 0, 0, sizeof prefs.irc_no_hilight},
+	{ST_ENTRY,	N_("Extra words to highlight:"), P_OFFSETNL(irc_extra_hilight), 0, 0, sizeof prefs.irc_extra_hilight},
+	{ST_ENTRY,	N_("Nick names not to highlight:"), P_OFFSETNL(irc_no_hilight), 0, 0, sizeof prefs.irc_no_hilight},
+	{ST_ENTRY,	N_("Nick names to always highlight:"), P_OFFSETNL(irc_nick_hilight), 0, 0, sizeof prefs.irc_nick_hilight},
 	{ST_LABEL,	N_("Separate multiple words with commas.")},
 	{ST_END, 0, 0, 0, 0, 0}
 };
@@ -428,38 +425,61 @@ setup_3oggle_cb (GtkToggleButton *but, unsigned int *setting)
 	*setting = but->active;
 }
 
+static void
+setup_headlabel (GtkWidget *tab, int row, int col, char *text)
+{
+	GtkWidget *label;
+	char buf[128];
+
+	snprintf (buf, sizeof (buf), "<b><span size=\"smaller\">%s</span></b>", text);
+
+	label = gtk_label_new (NULL);
+	gtk_label_set_markup (GTK_LABEL (label), buf);
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_table_attach (GTK_TABLE (tab), label, col, col + 1, row, row + 1, 0, 0, 4, 0);
+}
+
+static void
+setup_create_alert_header (GtkWidget *tab, int row, const setting *set)
+{
+	setup_headlabel (tab, row, 3, _("Channel Message"));
+	setup_headlabel (tab, row, 4, _("Private Message"));
+	setup_headlabel (tab, row, 5, _("Highlighted Message"));
+}
+
 /* makes 3 toggles side-by-side */
 
 static void
 setup_create_3oggle (GtkWidget *tab, int row, const setting *set)
 {
-	GtkWidget *box, *wid;
+	GtkWidget *label, *wid;
 	int *offsets = (int *)set->list;
 
-	box = gtk_hbox_new (1, 0);
-	gtk_table_attach (GTK_TABLE (tab), box, 2, 5, row, row + 1,
-							GTK_EXPAND | GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
+	label = gtk_label_new (_(set->label));
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_table_attach (GTK_TABLE (tab), label, 2, 3, row, row + 1,
+							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, LABEL_INDENT, 0);
 
-	wid = gtk_check_button_new_with_label (_("Channel Message"));
+	wid = gtk_check_button_new ();
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (wid),
 											setup_get_int3 (&setup_prefs, offsets[0]));
 	g_signal_connect (G_OBJECT (wid), "toggled",
 							G_CALLBACK (setup_3oggle_cb), ((int *)&setup_prefs) + offsets[0]);
-	gtk_box_pack_start (GTK_BOX (box), wid, 0, 0, 0);
+	gtk_table_attach (GTK_TABLE (tab), wid, 3, 4, row, row + 1, 0, 0, 0, 0);
 
-	wid = gtk_check_button_new_with_label (_("Private Message"));
+	wid = gtk_check_button_new ();
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (wid),
 											setup_get_int3 (&setup_prefs, offsets[1]));
 	g_signal_connect (G_OBJECT (wid), "toggled",
 							G_CALLBACK (setup_3oggle_cb), ((int *)&setup_prefs) + offsets[1]);
-	gtk_box_pack_start (GTK_BOX (box), wid, 0, 0, 0);
+	gtk_table_attach (GTK_TABLE (tab), wid, 4, 5, row, row + 1, 0, 0, 0, 0);
 
-	wid = gtk_check_button_new_with_label (_("Highlighted Message"));
+	wid = gtk_check_button_new ();
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (wid),
 											setup_get_int3 (&setup_prefs, offsets[2]));
 	g_signal_connect (G_OBJECT (wid), "toggled",
 							G_CALLBACK (setup_3oggle_cb), ((int *)&setup_prefs) + offsets[2]);
-	gtk_box_pack_start (GTK_BOX (box), wid, 0, 0, 0);
+	gtk_table_attach (GTK_TABLE (tab), wid, 5, 6, row, row + 1, 0, 0, 0, 0);
 }
 
 static void
@@ -1040,6 +1060,8 @@ setup_create_page (const setting *set)
 		case ST_LABEL:
 			setup_create_label (tab, row, &set[i]);
 			break;
+		case ST_ALERTHEAD:
+			setup_create_alert_header (tab, row, &set[i]);
 		}
 
 		/* will this toggle disable the "next" widget? */
