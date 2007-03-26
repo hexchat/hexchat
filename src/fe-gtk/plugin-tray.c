@@ -1,10 +1,11 @@
-/* Copyright (C) 2006 Peter Zelezny. */
+/* Copyright (C) 2006-2007 Peter Zelezny. */
 
 #include <string.h>
 #include "../common/xchat-plugin.h"
 #include "../common/xchat.h"
 #include "../common/xchatc.h"
 #include "../common/server.h"
+#include "../common/fe.h"
 #include "fe-gtk.h"
 #include "pixmaps.h"
 #include "maingui.h"
@@ -19,14 +20,6 @@ typedef enum	/* current icon status */
 	TS_FILEOFFER,
 	TS_CUSTOM /* plugin */
 } TrayStatus;
-
-enum	/* prefs.gui_tray_blink bits */
-{
-	BIT_MESSAGE = 2,
-	BIT_HIGHLIGHT = 5,
-	BIT_PRIVMSG = 8,
-	BIT_FILEOFFER = 11
-};
 
 typedef GdkPixbuf* TrayIcon;
 #define tray_icon_from_file(f) gdk_pixbuf_new_from_file(f,NULL)
@@ -116,6 +109,20 @@ fe_tray_set_balloon (const char *title, const char *text)
 		g_free ((char *)path);
 	}
 #endif
+}
+
+static void
+tray_set_balloonf (const char *text, const char *format, ...)
+{
+	va_list args;
+	char *buf;
+
+	va_start (args, format);
+	buf = g_strdup_vprintf (format, args);
+	va_end (args);
+
+	fe_tray_set_balloon (buf, text);
+	g_free (buf);
 }
 
 static void
@@ -251,7 +258,7 @@ fe_tray_set_flash (const char *filename1, const char *filename2, int tout)
 }
 
 void
-fe_tray_set_icon (int icon)
+fe_tray_set_icon (feicon icon)
 {
 	tray_apply_setup ();
 	if (!sticon)
@@ -261,14 +268,16 @@ fe_tray_set_icon (int icon)
 
 	switch (icon)
 	{
-	case BIT_MESSAGE:
+	case FE_ICON_NORMAL:
+		break;
+	case FE_ICON_MESSAGE:
 		tray_set_flash (ICON_MSG);
 		break;
-	case BIT_HIGHLIGHT:
-	case BIT_PRIVMSG:
+	case FE_ICON_HIGHLIGHT:
+	case FE_ICON_PRIVMSG:
 		tray_set_flash (ICON_HILIGHT);
 		break;
-	case BIT_FILEOFFER:
+	case FE_ICON_FILEOFFER:
 		tray_set_flash (ICON_FILE);
 	}
 }
@@ -463,6 +472,10 @@ tray_hilight_cb (char *word[], void *userdata)
 								tray_hilight_count, word[1], xchat_get_info (ph, "channel"));
 	}
 
+	if (prefs.input_balloon_hilight)
+		tray_set_balloonf (word[2], _("XChat: Highlighed message from: %s (%s)"),
+								 word[1], xchat_get_info (ph, "channel"));
+
 	return XCHAT_EAT_NONE;
 }
 
@@ -483,6 +496,10 @@ tray_message_cb (char *word[], void *userdata)
 		else
 			tray_set_tipf (_("XChat: %u new public messages."), tray_pub_count);
 	}
+
+	if (prefs.input_balloon_chans)
+		tray_set_balloonf (word[2], _("XChat: New public message from: %s (%s)"),
+								 word[1], xchat_get_info (ph, "channel"));
 
 	return XCHAT_EAT_NONE;
 }
@@ -539,13 +556,13 @@ tray_dcc_cb (char *word[], void *userdata)
 	if (tray_status == TS_FILEOFFER)
 		return XCHAT_EAT_NONE;
 
+	network = xchat_get_info (ph, "network");
+	if (!network)
+		network = xchat_get_info (ph, "server");
+
 	if (prefs.input_tray_priv)
 	{
 		tray_set_flash (ICON_FILE);
-
-		network = xchat_get_info (ph, "network");
-		if (!network)
-			network = xchat_get_info (ph, "server");
 
 		tray_file_count++;
 		if (tray_file_count == 1)
@@ -555,6 +572,10 @@ tray_dcc_cb (char *word[], void *userdata)
 			tray_set_tipf (_("XChat: %u file offers, latest from: %s (%s)"),
 								tray_file_count, word[1], network);
 	}
+
+	if (prefs.input_balloon_priv)
+		tray_set_balloonf ("", _("XChat: File offer from: %s (%s)"),
+								word[1], network);
 
 	return XCHAT_EAT_NONE;
 }

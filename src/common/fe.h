@@ -135,7 +135,15 @@ void fe_server_event (server *serv, int type, int arg);
 void fe_tray_set_flash (const char *filename1, const char *filename2, int timeout);
 /* pass NULL filename for default xchat icon */
 void fe_tray_set_file (const char *filename);
-void fe_tray_set_icon (int icon);
+typedef enum
+{
+	FE_ICON_NORMAL = 0,
+	FE_ICON_MESSAGE = 2,
+	FE_ICON_HIGHLIGHT = 5,
+	FE_ICON_PRIVMSG = 8,
+	FE_ICON_FILEOFFER = 11
+} feicon;
+void fe_tray_set_icon (feicon icon);
 void fe_tray_set_tooltip (const char *text);
 void fe_tray_set_balloon (const char *title, const char *text);
 

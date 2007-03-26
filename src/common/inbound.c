@@ -171,7 +171,7 @@ inbound_privmsg (server *serv, char *from, char *ip, char *text, int id)
 			sound_beep (sess);
 
 		if (sess && sess->tray)
-			fe_tray_set_icon (2);
+			fe_tray_set_icon (FE_ICON_MESSAGE);
 
 		if (prefs.input_flash_priv)
 			fe_flash_window (sess);
@@ -359,7 +359,7 @@ inbound_action (session *sess, char *chan, char *from, char *text, int fromme, i
 			sound_beep (sess);
 
 		if (sess->tray)
-			fe_tray_set_icon (2);
+			fe_tray_set_icon (FE_ICON_MESSAGE);
 
 		/* private action, flash? */
 		if (!is_channel (serv, chan) && prefs.input_flash_priv)
@@ -430,7 +430,7 @@ inbound_chanmsg (server *serv, session *sess, char *chan, char *from, char *text
 			sound_beep (sess);
 
 		if (sess->tray)
-			fe_tray_set_icon (2);
+			fe_tray_set_icon (FE_ICON_MESSAGE);
 	}
 
 	if (is_hilight (from, text, sess, serv))
@@ -439,6 +439,12 @@ inbound_chanmsg (server *serv, session *sess, char *chan, char *from, char *text
 		if (prefs.input_beep_hilight)
 			sound_beep (sess);
 	}
+	else
+	{
+		if (sess->type != SESS_DIALOG && prefs.input_flash_chans)
+			fe_flash_window (sess);
+	}
+
 	if (sess->type == SESS_DIALOG)
 		EMIT_SIGNAL (XP_TE_DPRIVMSG, sess, from, text, idtext, NULL, 0);
 	else if (hilight)
