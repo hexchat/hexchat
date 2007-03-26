@@ -6,6 +6,7 @@
 #include "../common/xchatc.h"
 #include "../common/server.h"
 #include "../common/fe.h"
+#include "../common/util.h"
 #include "fe-gtk.h"
 #include "pixmaps.h"
 #include "maingui.h"
@@ -138,10 +139,11 @@ fe_tray_set_balloon (const char *title, const char *text)
 		argv[3] = "-t";
 		argv[4] = "20000";
 		argv[5] = title;
-		argv[6] = text;
+		argv[6] = text = strip_color (text, -1, STRIP_ALL);
 		argv[7] = NULL;
 		util_execv (argv);
 		g_free ((char *)path);
+		free ((char *)text);
 	}
 #endif
 }
