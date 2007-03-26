@@ -167,7 +167,7 @@ inbound_privmsg (server *serv, char *from, char *ip, char *text, int id)
 				sess = serv->server_session;
 		}
 
-		if (prefs.beepmsg || (sess && sess->beep))
+		if (prefs.input_beep_priv || (sess && sess->beep))
 			sound_beep (sess);
 
 		if (sess && sess->tray)
@@ -198,14 +198,14 @@ inbound_privmsg (server *serv, char *from, char *ip, char *text, int id)
 	{
 		sess = serv->front_session;
 
-		if (prefs.beepmsg || (sess && sess->beep))
+		if (prefs.input_beep_priv || (sess && sess->beep))
 			sound_beep (sess);
 
 		EMIT_SIGNAL (XP_TE_PRIVMSG, sess, from, text, idtext, NULL, 0);
 		return;
 	}
 
-	if (prefs.beepmsg || sess->beep)
+	if (prefs.input_beep_priv || sess->beep)
 		sound_beep (sess);
 
 	if (prefs.input_flash_priv)
@@ -313,11 +313,11 @@ inbound_action (session *sess, char *chan, char *from, char *text, int fromme, i
 		if (is_channel (serv, chan))
 		{
 			sess = find_channel (serv, chan);
-			beep = prefs.beepchans;
+			beep = prefs.input_beep_chans;
 		} else
 		{
 			/* it's a private action! */
-			beep = prefs.beepmsg;
+			beep = prefs.input_beep_priv;
 			/* find a dialog tab for it */
 			sess = find_dialog (serv, from);
 			/* if non found, open a new one */
@@ -352,7 +352,7 @@ inbound_action (session *sess, char *chan, char *from, char *text, int fromme, i
 	if (!fromme)
 	{
 		hilight = is_hilight (from, text, sess, serv);
-		if (hilight && prefs.beephilight)
+		if (hilight && prefs.input_beep_hilight)
 			beep = TRUE;
 
 		if (beep || sess->beep)
@@ -426,7 +426,7 @@ inbound_chanmsg (server *serv, session *sess, char *chan, char *from, char *text
 
 	if (sess->type != SESS_DIALOG)
 	{
-		if (prefs.beepchans || sess->beep)
+		if (prefs.input_beep_chans || sess->beep)
 			sound_beep (sess);
 
 		if (sess->tray)
@@ -436,7 +436,7 @@ inbound_chanmsg (server *serv, session *sess, char *chan, char *from, char *text
 	if (is_hilight (from, text, sess, serv))
 	{
 		hilight = TRUE;
-		if (prefs.beephilight)
+		if (prefs.input_beep_hilight)
 			sound_beep (sess);
 	}
 	if (sess->type == SESS_DIALOG)

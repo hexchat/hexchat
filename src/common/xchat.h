@@ -226,11 +226,23 @@ struct xchatprefs
 	unsigned int slist_skip;
 	unsigned int slist_select;
 	unsigned int filterbeep;
-	unsigned int beepmsg;
-	unsigned int beepchans;
-	unsigned int beephilight;
+
+	unsigned int input_balloon_chans;
+	unsigned int input_balloon_hilight;
+	unsigned int input_balloon_priv;
+
+	unsigned int input_beep_chans;
+	unsigned int input_beep_hilight;
+	unsigned int input_beep_priv;
+
+	unsigned int input_flash_chans;
 	unsigned int input_flash_hilight;
 	unsigned int input_flash_priv;
+
+	unsigned int input_tray_chans;
+	unsigned int input_tray_hilight;
+	unsigned int input_tray_priv;
+
 	unsigned int truncchans;
 	unsigned int privmsgtab;
 	unsigned int irc_join_delay;
@@ -260,7 +272,7 @@ struct xchatprefs
 	unsigned int wordwrap;
 	unsigned int gui_input_spell;
 	unsigned int gui_tray;
-	unsigned int gui_tray_blink;
+	unsigned int _gui_tray_blink;
 	unsigned int gui_tray_flags;
 	unsigned int gui_ulist_left;
 	unsigned int throttle;

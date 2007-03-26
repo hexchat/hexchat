@@ -367,21 +367,15 @@ tray_make_item (GtkWidget *menu, char *label, void *callback, void *userdata)
 }
 
 static void
-tray_toggle_cb (GtkCheckMenuItem *item, gpointer userdata)
+tray_toggle_cb (GtkCheckMenuItem *item, unsigned int *setting)
 {
-	int bit = GPOINTER_TO_INT (userdata);
-
-	if (item->active)
-		prefs.gui_tray_blink |= (1 << bit);
-	else
-		prefs.gui_tray_blink &= ~(1 << bit);
+	*setting = item->active;
 }
 
 static void
-blink_item (int bit, GtkWidget *menu, char *label)
+blink_item (unsigned int *setting, GtkWidget *menu, char *label)
 {
-	int set = prefs.gui_tray_blink;
-	menu_toggle_item (label, menu, tray_toggle_cb, GINT_TO_POINTER (bit), set & (1 << bit));
+	menu_toggle_item (label, menu, tray_toggle_cb, setting, *setting);
 }
 
 static void
@@ -412,10 +406,10 @@ tray_menu_cb (GtkWidget *widget, guint button, guint time, gpointer userdata)
 	tray_make_item (menu, NULL, tray_menu_quit_cb, NULL);
 
 	submenu = mg_submenu (menu, _("_Blink on"));
-	blink_item (BIT_MESSAGE, submenu, _("Channel Message"));
-	blink_item (BIT_HIGHLIGHT, submenu, _("Highlighted Message"));
-	blink_item (BIT_PRIVMSG, submenu, _("Private Message"));
-	blink_item (BIT_FILEOFFER, submenu, _("File Offer"));
+	blink_item (&prefs.input_tray_chans, submenu, _("Channel Message"));
+	blink_item (&prefs.input_tray_priv, submenu, _("Private Message"));
+	blink_item (&prefs.input_tray_hilight, submenu, _("Highlighted Message"));
+	/*blink_item (BIT_FILEOFFER, submenu, _("File Offer"));*/
 
 	tray_make_item (menu, NULL, tray_menu_quit_cb, NULL);
 	mg_create_icon_item (_("Quit..."), GTK_STOCK_QUIT, menu, tray_menu_quit_cb, NULL);
@@ -455,7 +449,7 @@ tray_hilight_cb (char *word[], void *userdata)
 	if (tray_status == TS_HIGHLIGHT)
 		return XCHAT_EAT_NONE;
 
-	if (prefs.gui_tray_blink & (1 << BIT_HIGHLIGHT))
+	if (prefs.input_tray_hilight)
 	{
 		tray_set_flash (ICON_HILIGHT);
 
@@ -478,7 +472,7 @@ tray_message_cb (char *word[], void *userdata)
 	if (tray_status == TS_MESSAGE || tray_status == TS_HIGHLIGHT)
 		return XCHAT_EAT_NONE;
 
-	if (prefs.gui_tray_blink & (1 << BIT_MESSAGE))
+	if (prefs.input_tray_chans)
 	{
 		tray_set_flash (ICON_MSG);
 
@@ -519,7 +513,7 @@ tray_priv_cb (char *word[], void *userdata)
 	if (tray_status == TS_HIGHLIGHT)
 		return XCHAT_EAT_NONE;
 
-	if (prefs.gui_tray_blink & (1 << BIT_PRIVMSG))
+	if (prefs.input_tray_priv)
 		tray_priv (word[1]);
 
 	return XCHAT_EAT_NONE;
@@ -531,7 +525,7 @@ tray_invited_cb (char *word[], void *userdata)
 	if (tray_status == TS_HIGHLIGHT)
 		return XCHAT_EAT_NONE;
 
-	if (prefs.gui_tray_blink & (1 << BIT_PRIVMSG))
+	if (prefs.input_tray_priv)
 		tray_priv (word[2]);
 
 	return XCHAT_EAT_NONE;
@@ -545,7 +539,7 @@ tray_dcc_cb (char *word[], void *userdata)
 	if (tray_status == TS_FILEOFFER)
 		return XCHAT_EAT_NONE;
 
-	if (prefs.gui_tray_blink & (1 << BIT_FILEOFFER))
+	if (prefs.input_tray_priv)
 	{
 		tray_set_flash (ICON_FILE);
 

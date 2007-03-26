@@ -349,7 +349,7 @@ function. Then, to compile, type this at your command prompt:<br><br>
 <div class=bbox>
 <font color="#00FF00">MSVC</font>
 <br>&nbsp;cl -O1 -MD -G5 -DWIN32 -c plugin.c<br>
-<br>&nbsp;link /DLL /out:plugin.dll /SUBSYSTEM:WINDOWS plugin.obj /def:plugin.def
+<br>&nbsp;link /DLL /out:plugin.dll /SUBSYSTEM:WINDOWS plugin.obj /def:plugin.def /base:0x00d40000
 <br><br>
 <font color="#00FF00">GCC (MINGW)</font>
 <br>&nbsp;gcc -Wall -Os -DWIN32 -c plugin.c<br>
@@ -441,8 +441,10 @@ From 2.8.0, you can also change menus other than the main one (i.e popup menus).
  TRAY -f &lt;timeout> &lt;file1> [&lt;file2>] Flash tray between two icons. Leave off file2 to use default xchat icon.
  TRAY -f &lt;filename>                  Set tray to a fixed icon.
  TRAY -i &lt;number>                    Flash tray with an internal icon.
+                                     <small>2=Message 5=Highlight 8=Private 11=File</small>
  TRAY -t &lt;text>                      Set the tray tooltip.
- TRAY -b &lt;title> &lt;text>              Set the tray balloon [currently Windows only].
+ TRAY -b &lt;title> &lt;text>              Set the tray balloon.
+                                     <small>Supported on Windows from 2.8.1 and 2.8.2 on Linux (libnotify required on Linux).</small>
 </pre>
 Filenames can be ICO or PNG format. PNG format is support on Linux/BSD and Windows XP (but requires installation of GDI+ on Windows 2000). Set a timeout of -1 to use XChat's default.
 <br><br>

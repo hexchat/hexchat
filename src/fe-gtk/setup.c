@@ -72,6 +72,7 @@ enum
 	ST_END,
 	ST_TOGGLE,
 	ST_TOGGLR,
+	ST_3OGGLE,
 	ST_ENTRY,
 	ST_EFONT,
 	ST_EFILE,
@@ -275,17 +276,46 @@ static const setting filexfer_settings[] =
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
+static const int balloonlist[3] =
+{
+	P_OFFINTNL(input_balloon_chans), P_OFFINTNL(input_balloon_priv), P_OFFINTNL(input_balloon_hilight)
+};
+
+static const int trayblinklist[3] =
+{
+	P_OFFINTNL(input_tray_chans), P_OFFINTNL(input_tray_priv), P_OFFINTNL(input_tray_hilight)
+};
+
+static const int taskbarlist[3] =
+{
+	P_OFFINTNL(input_flash_chans), P_OFFINTNL(input_flash_priv), P_OFFINTNL(input_flash_hilight)
+};
+
+static const int beeplist[3] =
+{
+	P_OFFINTNL(input_beep_chans), P_OFFINTNL(input_beep_priv), P_OFFINTNL(input_beep_hilight)
+};
+
 static const setting alert_settings[] =
 {
-	{ST_HEADER,	N_("Alerts"),0,0,0},
-	{ST_TOGGLE,	N_("Enable system tray icon"), P_OFFINTNL(gui_tray), 0, 0, 0},
-#if defined(WIN32) || defined(USE_XLIB)
-	{ST_TOGGLE,	N_("Flash taskbar on highlighted messages"), P_OFFINTNL(input_flash_hilight), 0, 0, 0},
-	{ST_TOGGLE,	N_("Flash taskbar on private messages"), P_OFFINTNL(input_flash_priv), 0, 0, 0},
-#endif
-	{ST_TOGGLE,	N_("Beep on highlighted messages"), P_OFFINTNL(beephilight), 0, 0, 0},
-	{ST_TOGGLE,	N_("Beep on private messages"), P_OFFINTNL(beepmsg), 0, 0, 0},
-	{ST_TOGGLE,	N_("Beep on channel messages"), P_OFFINTNL(beepchans), 0, 0, 0},
+//	{ST_HEADER,	N_("Alerts"),0,0,0},
+//	{ST_TOGGLE,	N_("Enable system tray icon"), P_OFFINTNL(gui_tray), 0, 0, 0},
+
+	{ST_HEADER,	N_("Show System Tray Balloons on:"),0,0,0},
+	{ST_3OGGLE, NULL, 0, 0, (void *)balloonlist, 0},
+
+	{ST_HEADER,	N_("Blink System Tray Icon on:"),0,0,0},
+	{ST_3OGGLE, NULL, 0, 0, (void *)trayblinklist, 0},
+
+	{ST_HEADER,	N_("Blink Task Bar on:"),0,0,0},
+	{ST_3OGGLE, NULL, 0, 0, (void *)taskbarlist, 0},
+
+	{ST_HEADER,	N_("Make a Beep Sound on:"),0,0,0},
+	{ST_3OGGLE, NULL, 0, 0, (void *)beeplist, 0},
+
+	{ST_HEADER,	N_("Highlighted Messages"),0,0,0},
+	{ST_LABEL,	N_("Highlighted messages are ones where your nickname is mentioned and also:"), 0, 0, 0, 1},
+
 	{ST_ENTRY,	N_("Extra words to highlight on:"), P_OFFSETNL(irc_extra_hilight), 0, 0, sizeof prefs.irc_extra_hilight},
 	{ST_ENTRY,	N_("Nicks not to highlight on:"), P_OFFSETNL(irc_no_hilight), 0, 0, sizeof prefs.irc_no_hilight},
 	{ST_LABEL,	N_("Separate multiple words with commas.")},
@@ -386,10 +416,51 @@ static const setting network_settings[] =
 
 #define setup_get_str(pr,set) (((char *)pr)+set->offset)
 #define setup_get_int(pr,set) *(((int *)pr)+set->offset)
+#define setup_get_int3(pr,off) *(((int *)pr)+off) 
 
 #define setup_set_int(pr,set,num) *((int *)pr+set->offset)=num
 #define setup_set_str(pr,set,str) strcpy(((char *)pr)+set->offset,str)
 
+
+static void
+setup_3oggle_cb (GtkToggleButton *but, unsigned int *setting)
+{
+	*setting = but->active;
+}
+
+/* makes 3 toggles side-by-side */
+
+static void
+setup_create_3oggle (GtkWidget *tab, int row, const setting *set)
+{
+	GtkWidget *box, *wid;
+	int *offsets = (int *)set->list;
+
+	box = gtk_hbox_new (1, 0);
+	gtk_table_attach (GTK_TABLE (tab), box, 2, 5, row, row + 1,
+							GTK_EXPAND | GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
+
+	wid = gtk_check_button_new_with_label (_("Channel Message"));
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (wid),
+											setup_get_int3 (&setup_prefs, offsets[0]));
+	g_signal_connect (G_OBJECT (wid), "toggled",
+							G_CALLBACK (setup_3oggle_cb), ((int *)&setup_prefs) + offsets[0]);
+	gtk_box_pack_start (GTK_BOX (box), wid, 0, 0, 0);
+
+	wid = gtk_check_button_new_with_label (_("Private Message"));
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (wid),
+											setup_get_int3 (&setup_prefs, offsets[1]));
+	g_signal_connect (G_OBJECT (wid), "toggled",
+							G_CALLBACK (setup_3oggle_cb), ((int *)&setup_prefs) + offsets[1]);
+	gtk_box_pack_start (GTK_BOX (box), wid, 0, 0, 0);
+
+	wid = gtk_check_button_new_with_label (_("Highlighted Message"));
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (wid),
+											setup_get_int3 (&setup_prefs, offsets[2]));
+	g_signal_connect (G_OBJECT (wid), "toggled",
+							G_CALLBACK (setup_3oggle_cb), ((int *)&setup_prefs) + offsets[2]);
+	gtk_box_pack_start (GTK_BOX (box), wid, 0, 0, 0);
+}
 
 static void
 setup_toggle_cb (GtkToggleButton *but, const setting *set)
@@ -808,7 +879,7 @@ static void
 setup_create_label (GtkWidget *table, int row, const setting *set)
 {
 	gtk_table_attach (GTK_TABLE (table), setup_create_italic_label (_(set->label)),
-							3, 5, row, row + 1, GTK_FILL,
+							set->extra ? 1 : 3, 5, row, row + 1, GTK_FILL,
 							GTK_SHRINK | GTK_FILL, 0, 0);
 }
 
@@ -948,6 +1019,9 @@ setup_create_page (const setting *set)
 		case ST_TOGGLE:
 			wid = setup_create_toggleL (tab, row, &set[i]);
 			do_disable = set[i].extra;
+			break;
+		case ST_3OGGLE:
+			setup_create_3oggle (tab, row, &set[i]);
 			break;
 		case ST_MENU:
 			setup_create_menu (tab, row, &set[i]);

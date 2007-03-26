@@ -435,7 +435,7 @@ const struct prefs vars[] = {
 	{"gui_throttlemeter", P_OFFINT (throttlemeter), TYPE_INT},
 	{"gui_topicbar", P_OFFINT (topicbar), TYPE_BOOL},
 	{"gui_tray", P_OFFINT (gui_tray), TYPE_BOOL},
-	{"gui_tray_blink", P_OFFINT (gui_tray_blink), TYPE_INT},
+	{"gui_tray_blink", P_OFFINT (_gui_tray_blink), TYPE_INT},	/* obsolete */
 	{"gui_tray_flags", P_OFFINT (gui_tray_flags), TYPE_INT},
 	{"gui_ulist_buttons", P_OFFINT (userlistbuttons), TYPE_BOOL},
 	{"gui_ulist_doubleclick", P_OFFSET (doubleclickuser), TYPE_STR},
@@ -458,15 +458,22 @@ const struct prefs vars[] = {
 #ifdef WIN32
 	{"identd", P_OFFINT (identd), TYPE_BOOL},
 #endif
-	{"input_beep_chans", P_OFFINT (beepchans), TYPE_BOOL},
-	{"input_beep_hilight", P_OFFINT (beephilight), TYPE_BOOL},
-	{"input_beep_msg", P_OFFINT (beepmsg), TYPE_BOOL},
+	{"input_balloon_chans", P_OFFINT (input_balloon_chans), TYPE_BOOL},
+	{"input_balloon_hilight", P_OFFINT (input_balloon_hilight), TYPE_BOOL},
+	{"input_balloon_priv", P_OFFINT (input_balloon_priv), TYPE_BOOL},
+	{"input_beep_chans", P_OFFINT (input_beep_chans), TYPE_BOOL},
+	{"input_beep_hilight", P_OFFINT (input_beep_hilight), TYPE_BOOL},
+	{"input_beep_msg", P_OFFINT (input_beep_priv), TYPE_BOOL},
 	{"input_command_char", P_OFFSET (cmdchar), TYPE_STR},
 	{"input_filter_beep", P_OFFINT (filterbeep), TYPE_BOOL},
+	{"input_flash_chans", P_OFFINT (input_flash_chans), TYPE_BOOL},
 	{"input_flash_hilight", P_OFFINT (input_flash_hilight), TYPE_BOOL},
 	{"input_flash_priv", P_OFFINT (input_flash_priv), TYPE_BOOL},
 	{"input_perc_ascii", P_OFFINT (perc_ascii), TYPE_BOOL},
 	{"input_perc_color", P_OFFINT (perc_color), TYPE_BOOL},
+	{"input_tray_chans", P_OFFINT (input_tray_chans), TYPE_BOOL},
+	{"input_tray_hilight", P_OFFINT (input_tray_hilight), TYPE_BOOL},
+	{"input_tray_priv", P_OFFINT (input_tray_priv), TYPE_BOOL},
 
 	{"irc_auto_rejoin", P_OFFINT (autorejoin), TYPE_BOOL},
 	{"irc_ban_type", P_OFFINT (bantype), TYPE_INT},
@@ -657,10 +664,11 @@ load_config (void)
 	prefs.userhost = 1;
 	prefs.gui_url_mod = 4;	/* ctrl */
 	prefs.gui_tray = 1;
-	prefs.gui_tray_blink = 0xfc920; /* 1111 1100 1001 0010 0000 */
+	prefs._gui_tray_blink = 0xfc920; /* 1111 1100 1001 0010 0000 */
 	prefs.mainwindow_save = 1;
 	prefs.bantype = 2;
 	prefs.input_flash_priv = prefs.input_flash_hilight = 1;
+	prefs.input_tray_priv = prefs.input_tray_hilight = 1;
 	prefs.autodccsend = 2;	/* browse mode */
 #ifdef WIN32
 	prefs.identd = 1;
