@@ -455,8 +455,8 @@ tray_init (void)
 static int
 tray_hilight_cb (char *word[], void *userdata)
 {
-	if (tray_status == TS_HIGHLIGHT)
-		return XCHAT_EAT_NONE;
+	/*if (tray_status == TS_HIGHLIGHT)
+		return XCHAT_EAT_NONE;*/
 
 	if (prefs.input_tray_hilight)
 	{
@@ -482,7 +482,7 @@ tray_hilight_cb (char *word[], void *userdata)
 static int
 tray_message_cb (char *word[], void *userdata)
 {
-	if (tray_status == TS_MESSAGE || tray_status == TS_HIGHLIGHT)
+	if (/*tray_status == TS_MESSAGE ||*/ tray_status == TS_HIGHLIGHT)
 		return XCHAT_EAT_NONE;
 
 	if (prefs.input_tray_chans)
@@ -505,7 +505,7 @@ tray_message_cb (char *word[], void *userdata)
 }
 
 static void
-tray_priv (char *from)
+tray_priv (char *from, char *text)
 {
 	const char *network;
 
@@ -522,16 +522,20 @@ tray_priv (char *from)
 	else
 		tray_set_tipf (_("XChat: %u private messages, latest from: %s (%s)"),
 							tray_priv_count, from, network);
+
+	if (prefs.input_balloon_priv)
+		tray_set_balloonf (text, _("XChat: Private message from: %s (%s)"),
+								 from, network);
 }
 
 static int
 tray_priv_cb (char *word[], void *userdata)
 {
-	if (tray_status == TS_HIGHLIGHT)
-		return XCHAT_EAT_NONE;
+	/*if (tray_status == TS_HIGHLIGHT)
+		return XCHAT_EAT_NONE;*/
 
 	if (prefs.input_tray_priv)
-		tray_priv (word[1]);
+		tray_priv (word[1], word[2]);
 
 	return XCHAT_EAT_NONE;
 }
@@ -539,11 +543,11 @@ tray_priv_cb (char *word[], void *userdata)
 static int
 tray_invited_cb (char *word[], void *userdata)
 {
-	if (tray_status == TS_HIGHLIGHT)
-		return XCHAT_EAT_NONE;
+	/*if (tray_status == TS_HIGHLIGHT)
+		return XCHAT_EAT_NONE;*/
 
 	if (prefs.input_tray_priv)
-		tray_priv (word[2]);
+		tray_priv (word[2], "Invited");
 
 	return XCHAT_EAT_NONE;
 }
@@ -553,8 +557,8 @@ tray_dcc_cb (char *word[], void *userdata)
 {
 	const char *network;
 
-	if (tray_status == TS_FILEOFFER)
-		return XCHAT_EAT_NONE;
+/*	if (tray_status == TS_FILEOFFER)
+		return XCHAT_EAT_NONE;*/
 
 	network = xchat_get_info (ph, "network");
 	if (!network)
