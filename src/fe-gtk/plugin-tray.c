@@ -145,6 +145,16 @@ fe_tray_set_balloon (const char *title, const char *text)
 		g_free ((char *)path);
 		free ((char *)text);
 	}
+	else
+	{
+		/* show this error only once */
+		static unsigned char said_it = FALSE;
+		if (!said_it)
+		{
+			said_it = TRUE;
+			fe_message (_("Cannot find 'notify-send' to open balloon alerts.\nPlease install libnotify."), FE_MSG_ERROR);
+		}
+	}
 #endif
 }
 
