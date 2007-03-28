@@ -430,8 +430,12 @@ setup_headlabel (GtkWidget *tab, int row, int col, char *text)
 {
 	GtkWidget *label;
 	char buf[128];
+	char *sp;
 
 	snprintf (buf, sizeof (buf), "<b><span size=\"smaller\">%s</span></b>", text);
+	sp = strchr (buf + 17, ' ');
+	if (sp)
+		*sp = '\n';
 
 	label = gtk_label_new (NULL);
 	gtk_label_set_markup (GTK_LABEL (label), buf);
