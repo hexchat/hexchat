@@ -677,14 +677,14 @@ ssl_do_connect (server * serv)
 						 cert_info.algorithm, cert_info.algorithm_bits);
 			EMIT_SIGNAL (XP_TE_SERVTEXT, serv->server_session, buf, NULL, NULL,
 							 NULL, 0);
-			if (cert_info.rsa_tmp_bits)
+			/*if (cert_info.rsa_tmp_bits)
 			{
 				snprintf (buf, sizeof (buf),
 							 "  Public key algorithm uses ephemeral key with %d bits",
 							 cert_info.rsa_tmp_bits);
 				EMIT_SIGNAL (XP_TE_SERVTEXT, serv->server_session, buf, NULL, NULL,
 								 NULL, 0);
-			}
+			}*/
 			snprintf (buf, sizeof (buf), "  Sign algorithm %s (%d bits)",
 						 cert_info.sign_algorithm, cert_info.sign_algorithm_bits);
 			EMIT_SIGNAL (XP_TE_SERVTEXT, serv->server_session, buf, NULL, NULL,

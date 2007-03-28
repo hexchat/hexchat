@@ -188,6 +188,7 @@ _SSL_get_cert_info (struct cert_info *cert_info, SSL * ssl)
 	} else
 		fprintf(stderr, "REMOTE SIDE DOESN'T PROVIDES ->peer_rsa_tmp\n");
 */
+	cert_info->rsa_tmp_bits = 0;
 
 	X509_free (peer_cert);
 
