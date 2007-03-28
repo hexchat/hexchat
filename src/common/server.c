@@ -685,8 +685,8 @@ ssl_do_connect (server * serv)
 				EMIT_SIGNAL (XP_TE_SERVTEXT, serv->server_session, buf, NULL, NULL,
 								 NULL, 0);
 			}*/
-			snprintf (buf, sizeof (buf), "  Sign algorithm %s (%d bits)",
-						 cert_info.sign_algorithm, cert_info.sign_algorithm_bits);
+			snprintf (buf, sizeof (buf), "  Sign algorithm %s",
+						 cert_info.sign_algorithm/*, cert_info.sign_algorithm_bits*/);
 			EMIT_SIGNAL (XP_TE_SERVTEXT, serv->server_session, buf, NULL, NULL,
 							 NULL, 0);
 			snprintf (buf, sizeof (buf), "  Valid since %s to %s",

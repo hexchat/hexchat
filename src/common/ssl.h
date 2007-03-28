@@ -19,7 +19,7 @@ struct cert_info {
 
 struct chiper_info {
     char version[16];
-    char chiper[16];
+    char chiper[24];
     int chiper_bits;
 };
 
