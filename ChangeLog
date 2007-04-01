@@ -10,7 +10,7 @@ There are always more changes than listed here, these are just the
 highlights. The full CVS log is available at www.xchat.org/cvslog/
 
 ------------------------------------------------------------------------------
- 2.8.x - DD/MMM/2007
+ 2.8.2 - 01/Apr/2007
 ------------------------------------------------------------------------------
 
  - Updated translations (be, ca, cs, el, hu, sv, uk, zh_CN).
@@ -20,8 +20,10 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Overhauled the Alerts section of the settings and added support for opening
    system-tray balloons (libnotify required).
  - Implemented /TRAY -b command on unix.
- - 
- - 
+ - Nick serv authentication is now sent without the ":" when using the
+   /NICKSERV or /NS method. #1655733.
+ - Added command line argument:
+   --minimize=level         Begin minimized. Level 0=Normal 1=Iconified 2=Tray
  - Plugin API:
   * Added "modes" to xchat_get_info(). Returns the current channel modes, if
     they are known.
