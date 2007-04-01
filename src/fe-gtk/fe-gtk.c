@@ -40,15 +40,18 @@
 #include "../common/text.h"
 #include "../common/cfgfiles.h"
 #include "../common/xchatc.h"
+#include "../common/plugin.h"
 #include "gtkutil.h"
 #include "maingui.h"
 #include "pixmaps.h"
+#include "joind.h"
 #include "xtext.h"
 #include "palette.h"
 #include "menu.h"
 #include "notifygui.h"
 #include "textgui.h"
 #include "fkeys.h"
+#include "plugin-tray.h"
 #include "urlgrab.h"
 
 #ifdef USE_XLIB
@@ -116,6 +119,7 @@ static char *arg_cfgdir = NULL;
 static gint arg_show_autoload = 0;
 static gint arg_show_config = 0;
 static gint arg_show_version = 0;
+static gint arg_minimize = 0;
 
 static const GOptionEntry gopt_entries[] = 
 {
@@ -125,7 +129,10 @@ static const GOptionEntry gopt_entries[] =
  {"plugindir",	'p', 0, G_OPTION_ARG_NONE,	&arg_show_autoload, N_("Show plugin auto-load directory"), NULL},
  {"configdir",	'u', 0, G_OPTION_ARG_NONE,	&arg_show_config, N_("Show user config directory"), NULL},
  {"url",	 0,  0, G_OPTION_ARG_STRING,	&arg_url, N_("Open an irc://server:port/channel URL"), "URL"},
+#ifndef WIN32
  {"existing",	'e', 0, G_OPTION_ARG_NONE,	&arg_existing, N_("Open URL in an existing XChat"), NULL},
+#endif
+ {"minimize",	 0,  0, G_OPTION_ARG_INT,	&arg_minimize, N_("Begin minimized. Level 0=Normal 1=Iconified 2=Tray"), N_("level")},
  {"version",	'v', 0, G_OPTION_ARG_NONE,	&arg_show_version, N_("Show version information"), NULL},
  {NULL}
 };
@@ -338,13 +345,20 @@ log_handler (const gchar   *log_domain,
 
 #endif
 
-int tray_plugin_init (void *, char **, char **, char **, char *);
-int tray_plugin_deinit (void *);
+/* install tray stuff */
 
 static int
 fe_idle (gpointer data)
 {
-	plugin_add (sess_list->data, NULL, NULL, tray_plugin_init, tray_plugin_deinit, NULL, FALSE);
+	session *sess = sess_list->data;
+
+	plugin_add (sess, NULL, NULL, tray_plugin_init, tray_plugin_deinit, NULL, FALSE);
+
+	if (arg_minimize == 1)
+		gtk_window_iconify (GTK_WINDOW (sess->gui->window));
+	else if (arg_minimize == 2)
+		tray_toggle_visibility ();
+
 	return 0;
 }
 
