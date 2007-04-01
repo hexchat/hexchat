@@ -55,6 +55,7 @@
 #include "fe-gtk.h"
 #include "banlist.h"
 #include "gtkutil.h"
+#include "joind.h"
 #include "palette.h"
 #include "maingui.h"
 #include "menu.h"
@@ -62,6 +63,7 @@
 #include "userlistgui.h"
 #include "chanview.h"
 #include "pixmaps.h"
+#include "plugin-tray.h"
 #include "xtext.h"
 
 #ifdef USE_GTKSPELL
