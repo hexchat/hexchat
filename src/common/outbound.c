@@ -2971,13 +2971,8 @@ cmd_settab (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 static int
 cmd_settext (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
-	if (*word_eol[2])
-	{
-		fe_set_inputbox_contents (sess, word_eol[2]);
-		return TRUE;
-	}
-
-	return FALSE;
+	fe_set_inputbox_contents (sess, word_eol[2]);
+	return TRUE;
 }
 
 static int
