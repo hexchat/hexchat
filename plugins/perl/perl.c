@@ -211,6 +211,8 @@ static int
 fd_cb (int fd, int flags, void *userdata)
 {
 	HookData *data = (HookData *) userdata;
+	int retVal = 0;
+	int count = 0;
 
 	dSP;
 	ENTER;
@@ -220,18 +222,44 @@ fd_cb (int fd, int flags, void *userdata)
 	XPUSHs (data->userdata);
 	PUTBACK;
 
-	call_sv (data->callback, G_EVAL);
+	count = call_sv (data->callback, G_EVAL);
 	SPAGAIN;
+
 	if (SvTRUE (ERRSV)) {
 		xchat_printf (ph, "Error in fd callback %s", SvPV_nolen (ERRSV));
 		POPs;							  /* remove undef from the top of the stack */
+		retVal = XCHAT_EAT_ALL;
+	} else {
+		if (count != 1) {
+			xchat_print (ph, "Fd handler should only return 1 value.");
+			retVal = XCHAT_EAT_NONE;
+		} else {
+			retVal = POPi;
+			if (retVal == 0) {
+				/* if 0 is returned, the fd is going to get unhooked */
+				PUSHMARK (SP);
+				XPUSHs (sv_2mortal (newSViv (PTR2IV (data->hook))));
+				PUTBACK;
+
+				call_pv ("Xchat::unhook", G_EVAL);
+				SPAGAIN;
+
+				SvREFCNT_dec (data->callback);
+
+				if (data->userdata) {
+					SvREFCNT_dec (data->userdata);
+				}
+				free (data);
+			}
+		}
+
 	}
 
 	PUTBACK;
 	FREETMPS;
 	LEAVE;
 
-	return XCHAT_EAT_ALL;
+	return retVal;
 }
 
 static int
@@ -882,6 +910,7 @@ XS (XS_Xchat_hook_fd)
 		data->userdata = sv_mortalcopy (userdata);
 		SvREFCNT_inc (data->userdata);
 		hook = xchat_hook_fd (ph, fd, flags, fd_cb, data);
+		data->hook = hook;
 
 		XSRETURN_IV (PTR2IV (hook));
 	}

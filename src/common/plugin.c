@@ -653,7 +653,7 @@ plugin_insert_hook (xchat_hook *new_hook)
 static gboolean
 plugin_fd_cb (GIOChannel *source, GIOCondition condition, xchat_hook *hook)
 {
-	int flags = 0;
+	int flags = 0, ret;
 	typedef int (xchat_fd_cb2) (int fd, int flags, void *user_data, GIOChannel *);
 
 	if (condition & G_IO_IN)
@@ -663,7 +663,19 @@ plugin_fd_cb (GIOChannel *source, GIOCondition condition, xchat_hook *hook)
 	if (condition & G_IO_PRI)
 		flags |= XCHAT_FD_EXCEPTION;
 
-	return ((xchat_fd_cb2 *)hook->callback) (hook->pri, flags, hook->userdata, source);
+	ret = ((xchat_fd_cb2 *)hook->callback) (hook->pri, flags, hook->userdata, source);
+
+	/* the callback might have already unhooked it! */
+	if (!g_slist_find (hook_list, hook) || hook->type == HOOK_DELETED)
+		return 0;
+
+	if (ret == 0)
+	{
+		hook->tag = 0; /* avoid fe_input_remove, returning 0 is enough! */
+		xchat_unhook (hook->pl, hook);
+	}
+
+	return ret;
 }
 
 /* allocate and add a hook to our list. Used for all 4 types */
@@ -765,7 +777,7 @@ xchat_unhook (xchat_plugin *ph, xchat_hook *hook)
 	if (hook->type == HOOK_TIMER && hook->tag != 0)
 		fe_timeout_remove (hook->tag);
 
-	if (hook->type == HOOK_FD)
+	if (hook->type == HOOK_FD && hook->tag != 0)
 		fe_input_remove (hook->tag);
 
 	hook->type = HOOK_DELETED;	/* expunge later */
