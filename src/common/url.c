@@ -197,7 +197,7 @@ url_check_word (char *word, int len)
 	dots = 0;
 	for (i = 0; i < len; i++)
 	{
-		if (word[i] == '.' && i > 1)
+		if (word[i] == '.' && i > 0)
 			dots++;	/* allow 127.0.0.1:80 */
 		else if (!isdigit ((unsigned char) word[i]) && word[i] != ':')
 		{

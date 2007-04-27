@@ -88,12 +88,12 @@ pixmap_load_from_file (char *filename)
 }
 
 #define LOADPIX(vv,pp,ff) \
-	vv = gdk_pixbuf_new_from_file (XCHATSHAREDIR"/"ff, 0); \
+	vv = gdk_pixbuf_new_from_file (XCHATSHAREDIR"/xchat/"ff, 0); \
 	if (!vv) \
 		vv = gdk_pixbuf_new_from_inline (-1, pp, FALSE, 0);
 
 #define LOADPIX_DISKONLY(vv,ff) \
-	vv = gdk_pixbuf_new_from_file (XCHATSHAREDIR"/"ff, 0);
+	vv = gdk_pixbuf_new_from_file (XCHATSHAREDIR"/xchat/"ff, 0);
 
 #define EXT ".png"
 

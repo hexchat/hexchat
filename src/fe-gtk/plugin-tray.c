@@ -1,6 +1,7 @@
 /* Copyright (C) 2006-2007 Peter Zelezny. */
 
 #include <string.h>
+#include <unistd.h>
 #include "../common/xchat-plugin.h"
 #include "../common/xchat.h"
 #include "../common/xchatc.h"
@@ -64,7 +65,7 @@ tray_get_window_status (void)
 	st = xchat_get_info (ph, "win_status");
 
 	if (!st)
-		return WS_NORMAL;
+		return WS_HIDDEN;
 
 	if (!strcmp (st, "active"))
 		return WS_FOCUSED;
@@ -130,12 +131,18 @@ fe_tray_set_balloon (const char *title, const char *text)
 	if (ws != WS_HIDDEN && (prefs.gui_tray_flags & 2))
 		return;
 
+	/* FIXME: this should close the current balloon */
+	if (!text)
+		return;
+
 	path = g_find_program_in_path ("notify-send");
 	if (path)
 	{
 		argv[0] = path;
 		argv[1] = "-i";
 		argv[2] = "gtk-dialog-info";
+		if (access (XCHATSHAREDIR"/pixmaps/xchat.png", R_OK) == 0)
+			argv[2] = XCHATSHAREDIR"/pixmaps/xchat.png";
 		argv[3] = "-t";
 		argv[4] = "20000";
 		argv[5] = title;
