@@ -326,7 +326,7 @@ dnl ** TCL **************************************************************
 dnl *********************************************************************
 
 AC_MSG_CHECKING(for location of tclConfig.sh)
-dirs="$tcl /lib /usr/lib /usr/tcl/lib /usr/local/lib /usr/local/tcl-8.4/lib /usr/local/tcl/lib /opt/lib"
+dirs="$tcl /lib /usr/lib /usr/tcl/lib /usr/lib/tcl8.4 /usr/local/lib /usr/local/tcl-8.4/lib /usr/local/tcl/lib /opt/lib /usr/lib/tcl8.3"
 found=0
 if test "$tcl" != "no"; then
 	tcl=no
@@ -763,7 +763,7 @@ AC_DEFINE_UNQUOTED(PREFIX, "${prefix}")
 XCHATLIBDIR=`eval echo ${libdir}/xchat`
 AC_DEFINE_UNQUOTED(XCHATLIBDIR, "$XCHATLIBDIR")
 
-XCHATSHAREDIR=`eval echo ${datadir}/xchat`
+XCHATSHAREDIR=`eval echo ${datadir}`
 AC_DEFINE_UNQUOTED(XCHATSHAREDIR, "$XCHATSHAREDIR")
 
 dnl for plugins/xxx/Makefile.am

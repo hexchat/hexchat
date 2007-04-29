@@ -68,9 +68,9 @@
 
 #ifdef WIN32
 #undef WITH_THREAD /* Thread support locks up xchat on Win32. */
-#define VERSION "0.6/2.4"	/* Linked to python24.dll */
+#define VERSION "0.7/2.4"	/* Linked to python24.dll */
 #else
-#define VERSION "0.6"
+#define VERSION "0.7"
 #endif
 
 #define NONE 0
@@ -271,6 +271,7 @@ static PyObject *Module_xchat_get_info(PyObject *self, PyObject *args);
 static PyObject *Module_xchat_get_list(PyObject *self, PyObject *args);
 static PyObject *Module_xchat_get_lists(PyObject *self, PyObject *args);
 static PyObject *Module_xchat_nickcmp(PyObject *self, PyObject *args);
+static PyObject *Module_xchat_strip(PyObject *self, PyObject *args);
 
 static void IInterp_Exec(char *command);
 static int IInterp_Cmd(char *word[], char *word_eol[], void *userdata);
@@ -1807,6 +1808,20 @@ Module_xchat_nickcmp(PyObject *self, PyObject *args)
 	return PyInt_FromLong((long) xchat_nickcmp(ph, s1, s2));
 }
 
+static PyObject *
+Module_xchat_strip(PyObject *self, PyObject *args)
+{
+	PyObject *result;
+	char *str, *str2;
+	int len = -1, flags = 1 | 2;
+	if (!PyArg_ParseTuple(args, "s|ii:strip", &str, &len, &flags))
+		return NULL;
+	str2 = xchat_strip(ph, str, len, flags);
+	result = PyString_FromString(str2);
+	xchat_free(ph, str2);
+	return result;
+}
+
 static PyMethodDef Module_xchat_methods[] = {
 	{"command",		Module_xchat_command,
 		METH_VARARGS},
@@ -1839,6 +1854,8 @@ static PyMethodDef Module_xchat_methods[] = {
 	{"get_lists",		Module_xchat_get_lists,
 		METH_NOARGS},
 	{"nickcmp",		Module_xchat_nickcmp,
+		METH_VARARGS},
+	{"strip",		Module_xchat_strip,
 		METH_VARARGS},
 	{NULL, NULL}
 };

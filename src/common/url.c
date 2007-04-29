@@ -138,7 +138,7 @@ url_check_word (char *word, int len)
 		{ D("https://") },
 		{ D("file://") },
 		{ D("rtsp://") },
-		{ D("gopher://") },
+		{ D("ut2004://") },
 	},
 	suffix[] = {
 		{ D(".org") },
