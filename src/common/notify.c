@@ -39,13 +39,37 @@ GSList *notify_list = 0;
 int notify_tag = 0;
 
 
+static char *
+despacify_dup (char *str)
+{
+	char *p, *res = malloc (strlen (str) + 1);
+
+	p = res;
+	while (1)
+	{
+		if (*str != ' ')
+		{
+			*p = *str;
+			if (*p == 0)
+				return res;
+			p++;
+		}
+		str++;
+	}
+}
 
 static int
 notify_netcmp (char *str, void *serv)
 {
-	if (rfc_casecmp (str, server_get_network (serv, TRUE)) == 0)
-		return 0;	/* finish & return FALSE from token_foreach() */
+	char *net = despacify_dup (server_get_network (serv, TRUE));
 
+	if (rfc_casecmp (str, net) == 0)
+	{
+		free (net);
+		return 0;	/* finish & return FALSE from token_foreach() */
+	}
+
+	free (net);
 	return 1;	/* keep going... */
 }
 
@@ -493,25 +517,6 @@ notify_deluser (char *name)
 		list = list->next;
 	}
 	return 0;
-}
-
-static char *
-despacify_dup (char *str)
-{
-	char *p, *res = malloc (strlen (str) + 1);
-
-	p = res;
-	while (1)
-	{
-		if (*str != ' ')
-		{
-			*p = *str;
-			if (*p == 0)
-				return res;
-			p++;
-		}
-		str++;
-	}
 }
 
 void
