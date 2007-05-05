@@ -1726,6 +1726,7 @@ static void
 menu_add_cb (GtkWidget *menu, menu_entry *me)
 {
 	GtkWidget *item;
+	GtkAccelGroup *accel_group;
 
 	if (me->group)	/* have a group name? Must be a radio item */
 		item = menu_add_radio (menu, me);
@@ -1740,9 +1741,12 @@ menu_add_cb (GtkWidget *menu, menu_entry *me)
 	{
 		gtk_widget_set_sensitive (item, me->enable);
 		if (me->key)
-			gtk_widget_add_accelerator (item, "activate",
-											g_object_get_data (G_OBJECT (menu), "accel"),
-											me->key, me->modifier, GTK_ACCEL_VISIBLE);
+		{
+			accel_group = g_object_get_data (G_OBJECT (menu), "accel");
+			if (accel_group)	/* popup menus don't have them */
+				gtk_widget_add_accelerator (item, "activate", accel_group, me->key,
+													 me->modifier, GTK_ACCEL_VISIBLE);
+		}
 	}
 }
 

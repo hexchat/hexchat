@@ -357,7 +357,7 @@ fe_idle (gpointer data)
 	if (arg_minimize == 1)
 		gtk_window_iconify (GTK_WINDOW (sess->gui->window));
 	else if (arg_minimize == 2)
-		tray_toggle_visibility ();
+		tray_toggle_visibility (FALSE);
 
 	return 0;
 }

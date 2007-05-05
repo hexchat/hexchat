@@ -516,11 +516,18 @@ fe_set_title (session *sess)
 }
 
 static gboolean
-mg_windowstate_cb (GtkWidget *wid, GdkEvent *event, gpointer userdata)
+mg_windowstate_cb (GtkWidget *wid, GdkEventWindowState *event, gpointer userdata)
 {
 	prefs.gui_win_state = 0;
-	if (gdk_window_get_state (wid->window) & GDK_WINDOW_STATE_MAXIMIZED)
+	if (event->new_window_state & GDK_WINDOW_STATE_MAXIMIZED)
 		prefs.gui_win_state = 1;
+
+	if ((event->new_window_state & GDK_WINDOW_STATE_ICONIFIED) &&
+		 (prefs.gui_tray_flags & 4))
+	{
+		gtk_window_deiconify (GTK_WINDOW (wid));
+		tray_toggle_visibility (TRUE);
+	}
 
 	return FALSE;
 }
@@ -2775,7 +2782,7 @@ mg_tabwindow_de_cb (GtkWidget *widget, GdkEvent *event, gpointer user_data)
 	GSList *list;
 	session *sess;
 
-	if ((prefs.gui_tray_flags & 1) && tray_toggle_visibility ())
+	if ((prefs.gui_tray_flags & 1) && tray_toggle_visibility (FALSE))
 		return TRUE;
 
 	/* check for remaining toplevel windows */

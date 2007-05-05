@@ -351,7 +351,7 @@ fe_tray_set_file (const char *filename)
 }
 
 gboolean
-tray_toggle_visibility (void)
+tray_toggle_visibility (gboolean force_hide)
 {
 	static int x, y;
 	static GdkScreen *screen;
@@ -365,7 +365,7 @@ tray_toggle_visibility (void)
 	tray_stop_flash ();
 	tray_reset_counts ();
 
-	if (GTK_WIDGET_VISIBLE (win))
+	if (force_hide || GTK_WIDGET_VISIBLE (win))
 	{
 		gtk_window_get_position (win, &x, &y);
 		screen = gtk_window_get_screen (win);
@@ -385,7 +385,7 @@ tray_toggle_visibility (void)
 static void
 tray_menu_restore_cb (GtkWidget *item, gpointer userdata)
 {
-	tray_toggle_visibility ();
+	tray_toggle_visibility (FALSE);
 }
 
 static void
