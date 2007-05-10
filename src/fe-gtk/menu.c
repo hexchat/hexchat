@@ -292,7 +292,10 @@ menu_quick_item (char *cmd, char *label, GtkWidget * menu, int flags,
 			if (flags & XCMENU_MARKUP)
 			{
 				item = gtk_menu_item_new_with_label ("");
-				gtk_label_set_markup_with_mnemonic (GTK_LABEL (GTK_BIN (item)->child), label);
+				if (flags & XCMENU_MNEMONIC)
+					gtk_label_set_markup_with_mnemonic (GTK_LABEL (GTK_BIN (item)->child), label);
+				else
+					gtk_label_set_markup (GTK_LABEL (GTK_BIN (item)->child), label);
 			} else
 			{
 				if (flags & XCMENU_MNEMONIC)
@@ -1689,7 +1692,7 @@ menu_add_item (GtkWidget *menu, menu_entry *me)
 		menu = menu_find_path (menu, path);
 	if (menu)
 	{
-		item = menu_quick_item (me->cmd, me->label, menu, me->markup ? XCMENU_MARKUP : XCMENU_MNEMONIC, 0, me->icon);
+		item = menu_quick_item (me->cmd, me->label, menu, me->markup ? XCMENU_MARKUP|XCMENU_MNEMONIC : XCMENU_MNEMONIC, 0, me->icon);
 		menu_reorder (GTK_MENU (menu), item, me->pos);
 	}
 	return item;
@@ -1709,7 +1712,7 @@ menu_add_sub (GtkWidget *menu, menu_entry *me)
 		pos = me->pos;
 		if (pos < 0)	/* position offset from end/bottom */
 			pos = g_list_length (GTK_MENU_SHELL (menu)->children) + pos;
-		menu_quick_sub (me->label, menu, &item, me->markup ? XCMENU_MARKUP : XCMENU_MNEMONIC, pos);
+		menu_quick_sub (me->label, menu, &item, me->markup ? XCMENU_MARKUP|XCMENU_MNEMONIC : XCMENU_MNEMONIC, pos);
 	}
 	return item;
 }
