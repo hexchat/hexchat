@@ -845,6 +845,7 @@ menu_chanmenu (struct session *sess, GdkEventButton * event, char *chan)
 												 str_copy);
 	}
 
+	menu_add_plugin_items (menu, "\x5$CHAN");
 	menu_popup (menu, event, NULL);
 }
 

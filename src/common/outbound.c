@@ -1182,10 +1182,10 @@ menu_del (char *path, char *label)
 static char
 menu_is_mainmenu_root (char *path, gint16 *offset)
 {
-	static const char *menus[] = {"\x4$TAB","\x5$TRAY","\x4$URL","\x5$NICK"};
+	static const char *menus[] = {"\x4$TAB","\x5$TRAY","\x4$URL","\x5$NICK","\x5$CHAN"};
 	int i;
 
-	for (i = 0; i < 4; i++)
+	for (i = 0; i < 5; i++)
 	{
 		if (!strncmp (path, menus[i] + 1, menus[i][0]))
 		{
