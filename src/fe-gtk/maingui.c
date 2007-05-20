@@ -1419,7 +1419,7 @@ mg_tab_contextmenu_cb (chanview *cv, chan *ch, int tag, gpointer ud, GdkEventBut
 
 	if (sess && tabmenu_list)
 		menu_create (menu, tabmenu_list, sess->channel, FALSE);
-	menu_add_plugin_items (menu, "\x4$TAB");
+	menu_add_plugin_items (menu, "\x4$TAB", sess->channel);
 
 	if (event->window)
 		gtk_menu_set_screen (GTK_MENU (menu), gdk_drawable_get_screen (event->window));
@@ -2154,7 +2154,7 @@ mg_word_clicked (GtkWidget *xtext, char *word, GdkEventButton *even)
 		break;
 	case WORD_NICK:
 		menu_nickmenu (sess, even, (word[0]=='@' || word[0]=='+') ?
-			word+1 : word, FALSE);
+			word+1 : word, 0);
 		break;
 	case WORD_CHANNEL:
 		if (*word == '@' || *word == '+' || *word=='^' || *word=='%' || *word=='*')
@@ -2172,7 +2172,7 @@ mg_word_clicked (GtkWidget *xtext, char *word, GdkEventButton *even)
 		}
 		break;
 	case WORD_DIALOG:
-		menu_nickmenu (sess, even, sess->channel, FALSE);
+		menu_nickmenu (sess, even, sess->channel, 0);
 		break;
 	}
 }
