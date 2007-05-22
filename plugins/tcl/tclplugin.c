@@ -15,7 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
-static char RCSID[] = "$Id: tclplugin.c,v 1.60 2006-02-19 16:04:35 mooooooo Exp $";
+static char RCSID[] = "$Id: tclplugin.c,v 1.61 2007-05-22 00:20:08 mooooooo Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -1450,7 +1450,6 @@ static int tcl_channels(ClientData cd, Tcl_Interp * irp, int argc, const char *a
         }
         xchat_list_free(ph, list);
     }
-
 
     Tcl_AppendResult(irp, ds.string, NULL);
 
