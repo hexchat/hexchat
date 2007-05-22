@@ -2,7 +2,7 @@
                            tclplugin.c  -  Tcl plugin for xchat 1.9.x / 2.x.x
                            -------------------------------------------------s
     begin                : Sat Nov 19 17:31:20 MST 2002
-    copyright            : Copyright 2002-2005 Daniel P. Stasinski
+    copyright            : Copyright 2002-2007 Daniel P. Stasinski
     email                : mooooooo@avenues.org
  ***************************************************************************/
 
@@ -15,7 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
-static char RCSID[] = "$Id: tclplugin.c,v 1.61 2007-05-22 00:20:08 mooooooo Exp $";
+static char RCSID[] = "$Id: tclplugin.c,v 1.62 2007-05-22 02:13:38 mooooooo Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -1618,6 +1618,7 @@ static int tcl_notifylist(ClientData cd, Tcl_Interp * irp, int argc, const char 
         Tcl_DStringAppendElement(&ds, "on");
         Tcl_DStringAppendElement(&ds, "off");
         Tcl_DStringAppendElement(&ds, "seen");
+        Tcl_DStringAppendElement(&ds, "networks");
         Tcl_DStringEndSublist(&ds);
 
         while (xchat_list_next(ph, list)) {
@@ -1627,6 +1628,7 @@ static int tcl_notifylist(ClientData cd, Tcl_Interp * irp, int argc, const char 
             Tcl_DStringAppendElement(&ds, myitoa((long)xchat_list_time(ph, list, "on")));
             Tcl_DStringAppendElement(&ds, myitoa((long)xchat_list_time(ph, list, "off")));
             Tcl_DStringAppendElement(&ds, myitoa((long)xchat_list_time(ph, list, "seen")));
+            Tcl_DStringAppendElement(&ds, (const char *) xchat_list_str(ph, list, "networks"));
             Tcl_DStringEndSublist(&ds);
         }
 

@@ -1,9 +1,10 @@
 /***************************************************************************
-                           printecents.h  -  TCL plugin header file
+                           printevents.h  -  TCL plugin header file
                            -------------------------------------------------
     begin                : Sat Nov  9 17:31:20 MST 2002
-    copyright            : Copyright 2002-2005 Daniel P. Stasinski
+    copyright            : Copyright 2002-2007 Daniel P. Stasinski
     email                : mooooooo@avenues.org
+    generated            : Mon May 21 06:03:00 PM MST 2007
  ***************************************************************************/
 
 /***************************************************************************
@@ -315,3 +316,4 @@ static print_event xc[] = {
 	{ "XC_UCHANMSG", "Your Message", 4, NULL },
 	{ "XC_UCHANGENICK", "Your Nick Changing", 2, NULL }
 };
+
