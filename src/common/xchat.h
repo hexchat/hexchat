@@ -265,6 +265,7 @@ struct xchatprefs
 	unsigned int style_inputbox;
 	unsigned int windows_as_tabs;
 	unsigned int indent_nicks;
+	unsigned int text_replay;
 	unsigned int show_marker;
 	unsigned int show_separator;
 	unsigned int thin_separator;
@@ -320,6 +321,8 @@ typedef struct session
 	char channelkey[64];			  /* XXX correct max length? */
 	int limit;						  /* channel user limit */
 	int logfd;
+	int scrollfd;							/* scrollback filedes */
+	int scrollwritten;					/* number of lines written */
 
 	char lastnick[NICKLEN];			  /* last nick you /msg'ed */
 

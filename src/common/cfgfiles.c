@@ -548,6 +548,7 @@ const struct prefs vars[] = {
 	{"text_indent", P_OFFINT (indent_nicks), TYPE_BOOL},
 	{"text_max_indent", P_OFFINT (max_auto_indent), TYPE_INT},
 	{"text_max_lines", P_OFFINT (max_lines), TYPE_INT},
+	{"text_replay", P_OFFINT (text_replay), TYPE_BOOL},
 	{"text_show_marker", P_OFFINT (show_marker), TYPE_BOOL},
 	{"text_show_sep", P_OFFINT (show_separator), TYPE_BOOL},
 	{"text_stripcolor", P_OFFINT (stripcolor), TYPE_BOOL},

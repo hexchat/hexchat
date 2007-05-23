@@ -594,12 +594,12 @@ fe_progressbar_end (server *serv)
 }
 
 void
-fe_print_text (struct session *sess, char *text)
+fe_print_text (struct session *sess, char *text, time_t stamp)
 {
-	PrintTextRaw (sess->res->buffer, (unsigned char *)text, prefs.indent_nicks);
+	PrintTextRaw (sess->res->buffer, (unsigned char *)text, prefs.indent_nicks, stamp);
 
 	if (!sess->new_data && sess != current_tab &&
-		 sess->gui->is_tab && !sess->nick_said)
+		 sess->gui->is_tab && !sess->nick_said && stamp == 0)
 	{
 		sess->new_data = TRUE;
 		if (sess->msg_said)

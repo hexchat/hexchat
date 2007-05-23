@@ -334,6 +334,7 @@ session_new (server *serv, char *from, int type, int focus)
 
 	sess->server = serv;
 	sess->logfd = -1;
+	sess->scrollfd = -1;
 	sess->type = type;
 	sess->hide_join_part = prefs.confmode;
 
@@ -383,6 +384,8 @@ new_ircwindow (server *serv, char *name, int type, int focus)
 	}
 
 	irc_init (sess);
+	if (prefs.text_replay)
+		scrollback_load (sess);
 	plugin_emit_dummy_print (sess, "Open Context");
 
 	return sess;
@@ -498,6 +501,7 @@ session_free (session *killsess)
 	exec_notify_kill (killsess);
 
 	log_close (killsess);
+	scrollback_close (killsess);
 
 	send_quit_or_part (killsess);
 

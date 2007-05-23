@@ -48,6 +48,250 @@ struct pevt_stage1
 };
 
 
+static void mkdir_p (char *dir);
+
+
+static char *
+scrollback_get_filename (session *sess, char *buf, int max)
+{
+	char *net;
+
+	net = server_get_network (sess->server, FALSE);
+	if (!net)
+		return NULL;
+
+	snprintf (buf, max, "%s/%s/%s/scrollback.txt", get_xdir_fs (), net, sess->channel);
+	mkdir_p (buf);
+
+	return buf;
+}
+
+#if 0
+
+static void
+scrollback_unlock (session *sess)
+{
+	char buf[1024];
+
+	if (scrollback_get_filename (sess, buf, sizeof (buf) - 6) == NULL)
+		return;
+
+	strcat (buf, ".lock");
+	unlink (buf);
+}
+
+static gboolean
+scrollback_lock (session *sess)
+{
+	char buf[1024];
+	int fh;
+
+	if (scrollback_get_filename (sess, buf, sizeof (buf) - 6) == NULL)
+		return FALSE;
+
+	strcat (buf, ".lock");
+
+	if (access (buf, F_OK) == 0)
+		return FALSE;	/* can't get lock */
+
+	fh = open (buf, O_CREAT | O_TRUNC | O_APPEND | O_WRONLY, 0644);
+	if (fh == -1)
+		return FALSE;
+
+	return TRUE;
+}
+
+#endif
+
+void
+scrollback_close (session *sess)
+{
+	if (sess->scrollfd != -1)
+	{
+		close (sess->scrollfd);
+		sess->scrollfd = -1;
+	}
+}
+
+static char *
+file_to_buffer (char *file, int *len)
+{
+	int fh;
+	char *buf;
+	struct stat st;
+
+	fh = open (file, O_RDONLY | OFLAGS);
+	if (fh == -1)
+		return NULL;
+
+	fstat (fh, &st);
+
+	buf = malloc (st.st_size);
+	if (!buf)
+	{
+		close (fh);
+		return NULL;
+	}
+
+	if (read (fh, buf, st.st_size) != st.st_size)
+	{
+		free (buf);
+		close (fh);
+		return NULL;
+	}
+
+	*len = st.st_size;
+	return buf;
+}
+
+/* shrink the file to roughly prefs.max_lines */
+
+static void
+scrollback_shrink (session *sess)
+{
+	char file[1024];
+	char *buf;
+	int fh;
+	int lines;
+	int line;
+	int len;
+	char *p;
+
+	scrollback_close (sess);
+	sess->scrollwritten = 0;
+	lines = 0;
+
+	if (scrollback_get_filename (sess, file, sizeof (file)) == NULL)
+		return;
+
+	buf = file_to_buffer (file, &len);
+	if (!buf)
+		return;
+
+	/* count all lines */
+	p = buf;
+	while (p != buf + len)
+	{
+		if (*p == '\n')
+			lines++;
+		p++;
+	}
+
+	fh = open (file, O_CREAT | O_TRUNC | O_APPEND | O_WRONLY, 0644);
+	if (fh == -1)
+	{
+		free (buf);
+		return;
+	}
+
+	line = 0;
+	p = buf;
+	while (p != buf + len)
+	{
+		if (*p == '\n')
+		{
+			line++;
+			if (line >= lines - prefs.max_lines &&
+				 p + 1 != buf + len)
+			{
+				p++;
+				write (fh, p, len - (p - buf));
+				break;
+			}
+		}
+		p++;
+	}
+
+	close (fh);
+	free (buf);
+}
+
+static void
+scrollback_save (session *sess, char *text)
+{
+	char buf[1024];
+	time_t stamp;
+	int len;
+
+	if (sess->type == SESS_SERVER)
+		return;
+
+	if (sess->scrollfd == -1)
+	{
+		if (scrollback_get_filename (sess, buf, sizeof (buf)) == NULL)
+			return;
+
+		sess->scrollfd = open (buf, O_CREAT | O_APPEND | O_WRONLY, 0644);
+		if (sess->scrollfd == -1)
+			return;
+	}
+
+	stamp = time (0);
+	if (sizeof (stamp) == 4)	/* gcc will optimize one of these out */
+		write (sess->scrollfd, buf, snprintf (buf, sizeof (buf), "T %d ", (int)stamp));
+	else
+		write (sess->scrollfd, buf, snprintf (buf, sizeof (buf), "T %"G_GINT64_FORMAT" ", (gint64)stamp));
+
+	len = strlen (text);
+	write (sess->scrollfd, text, len);
+	if (len && text[len - 1] != '\n')
+		write (sess->scrollfd, "\n", 1);
+
+	sess->scrollwritten++;
+
+	if ((sess->scrollwritten * 2 > prefs.max_lines && prefs.max_lines > 0) ||
+       sess->scrollwritten > 32000)
+		scrollback_shrink (sess);
+}
+
+void
+scrollback_load (session *sess)
+{
+	int fh;
+	char buf[1024];
+	char *text;
+	time_t stamp;
+	int lines;
+
+	if (scrollback_get_filename (sess, buf, sizeof (buf)) == NULL)
+		return;
+
+	fh = open (buf, O_RDONLY | OFLAGS);
+	if (fh == -1)
+		return;
+
+	lines = 0;
+	while (waitline (fh, buf, sizeof buf, FALSE) != -1)
+	{
+		if (buf[0] == 'T')
+		{
+			if (sizeof (time_t) == 4)
+				stamp = strtoul (buf + 2, NULL, 10);
+			else
+				stamp = strtoull (buf + 2, NULL, 10); /* just incase time_t is 64 bits */
+			text = strchr (buf + 3, ' ');
+			if (text)
+			{
+				text = strip_color (text + 1, -1, STRIP_COLOR);
+				fe_print_text (sess, text, stamp);
+				free (text);
+			}
+			lines++;
+		}
+	}
+
+	if (lines)
+	{
+		text = ctime (&stamp);
+		text[24] = 0;	/* get rid of the \n */
+		snprintf (buf, sizeof (buf), "*\tLoaded log from %s", text);
+		fe_print_text (sess, buf, 0);
+		/*EMIT_SIGNAL (XP_TE_GENMSG, sess, "*", buf, NULL, NULL, NULL, 0);*/
+	}
+
+	close (fh);
+}
+
 void
 log_close (session *sess)
 {
@@ -539,7 +783,9 @@ PrintText (session *sess, char *text)
 	}
 
 	log_write (sess, text);
-	fe_print_text (sess, text);
+	if (prefs.text_replay)
+		scrollback_save (sess, text);
+	fe_print_text (sess, text, 0);
 
 	if (conv)
 		g_free (conv);

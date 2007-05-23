@@ -511,7 +511,7 @@ key_print_text (GtkXText *xtext, char *text)
 	unsigned int old = prefs.timestamp;
 	prefs.timestamp = 0;	/* temporarily disable stamps */
 	gtk_xtext_clear (GTK_XTEXT (xtext)->buffer);
-	PrintTextRaw (GTK_XTEXT (xtext)->buffer, text, 0);
+	PrintTextRaw (GTK_XTEXT (xtext)->buffer, text, 0, 0);
 	prefs.timestamp = old;
 }
 

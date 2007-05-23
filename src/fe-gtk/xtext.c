@@ -4931,7 +4931,7 @@ gtk_xtext_render_page_timeout (GtkXText * xtext)
 /* append a textentry to our linked list */
 
 static void
-gtk_xtext_append_entry (xtext_buffer *buf, textentry * ent)
+gtk_xtext_append_entry (xtext_buffer *buf, textentry * ent, time_t stamp)
 {
 	unsigned int mb;
 	int i;
@@ -4945,7 +4945,9 @@ gtk_xtext_append_entry (xtext_buffer *buf, textentry * ent)
 		i++;
 	}
 
-	ent->stamp = time (0);
+	ent->stamp = stamp;
+	if (stamp == 0)
+		ent->stamp = time (0);
 	ent->str_width = gtk_xtext_text_width (buf->xtext, ent->str, ent->str_len, &mb);
 	ent->mb = FALSE;
 	if (mb)
@@ -5021,7 +5023,8 @@ gtk_xtext_append_entry (xtext_buffer *buf, textentry * ent)
 void
 gtk_xtext_append_indent (xtext_buffer *buf,
 								 unsigned char *left_text, int left_len,
-								 unsigned char *right_text, int right_len)
+								 unsigned char *right_text, int right_len,
+								 time_t stamp)
 {
 	textentry *ent;
 	unsigned char *str;
@@ -5079,7 +5082,7 @@ gtk_xtext_append_indent (xtext_buffer *buf,
 		buf->xtext->indent_changed = TRUE;
 	}
 
-	gtk_xtext_append_entry (buf, ent);
+	gtk_xtext_append_entry (buf, ent, stamp);
 }
 
 void
@@ -5105,7 +5108,7 @@ gtk_xtext_append (xtext_buffer *buf, unsigned char *text, int len)
 	ent->indent = 0;
 	ent->left_len = -1;
 
-	gtk_xtext_append_entry (buf, ent);
+	gtk_xtext_append_entry (buf, ent, 0);
 }
 
 gboolean
@@ -5130,7 +5133,7 @@ gtk_xtext_lastlog (xtext_buffer *out, xtext_buffer *search_area,
 			if (search_area->indent)
 				gtk_xtext_append_indent (out, ent->str, ent->left_len,
 												 ent->str + ent->left_len + 1,
-												 ent->str_len - ent->left_len - 1);
+												 ent->str_len - ent->left_len - 1, 0);
 			else
 				gtk_xtext_append (out, ent->str, ent->str_len);
 			/* copy the timestamp over */

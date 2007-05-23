@@ -67,7 +67,7 @@ void fe_text_clear (struct session *sess);
 void fe_close_window (struct session *sess);
 void fe_progressbar_start (struct session *sess);
 void fe_progressbar_end (struct server *serv);
-void fe_print_text (struct session *sess, char *text);
+void fe_print_text (struct session *sess, char *text, time_t stamp);
 void fe_userlist_insert (struct session *sess, struct User *newuser, int row, int sel);
 int fe_userlist_remove (struct session *sess, struct User *user);
 void fe_userlist_rehash (struct session *sess, struct User *user);

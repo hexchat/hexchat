@@ -73,7 +73,7 @@ xtext_get_stamp_str (time_t tim, char **ret)
 }
 
 static void
-PrintTextLine (xtext_buffer *xtbuf, unsigned char *text, int len, int indent)
+PrintTextLine (xtext_buffer *xtbuf, unsigned char *text, int len, int indent, time_t timet)
 {
 	unsigned char *tab, *new_text;
 	int leftlen;
@@ -88,7 +88,10 @@ PrintTextLine (xtext_buffer *xtbuf, unsigned char *text, int len, int indent)
 			int stamp_size;
 			char *stamp;
 
-			stamp_size = get_stamp_str (prefs.stamp_format, time (0), &stamp);
+			if (timet == 0)
+				timet = time (0);
+
+			stamp_size = get_stamp_str (prefs.stamp_format, timet, &stamp);
 			new_text = malloc (len + stamp_size + 1);
 			memcpy (new_text, stamp, stamp_size);
 			g_free (stamp);
@@ -105,13 +108,13 @@ PrintTextLine (xtext_buffer *xtbuf, unsigned char *text, int len, int indent)
 	{
 		leftlen = tab - text;
 		gtk_xtext_append_indent (xtbuf,
-										 text, leftlen, tab + 1, len - (leftlen + 1));
+										 text, leftlen, tab + 1, len - (leftlen + 1), timet);
 	} else
-		gtk_xtext_append_indent (xtbuf, 0, 0, text, len);
+		gtk_xtext_append_indent (xtbuf, 0, 0, text, len, timet);
 }
 
 void
-PrintTextRaw (void *xtbuf, unsigned char *text, int indent)
+PrintTextRaw (void *xtbuf, unsigned char *text, int indent, time_t stamp)
 {
 	char *last_text = text;
 	int len = 0;
@@ -123,10 +126,10 @@ PrintTextRaw (void *xtbuf, unsigned char *text, int indent)
 		switch (*text)
 		{
 		case 0:
-			PrintTextLine (xtbuf, last_text, len, indent);
+			PrintTextLine (xtbuf, last_text, len, indent, stamp);
 			return;
 		case '\n':
-			PrintTextLine (xtbuf, last_text, len, indent);
+			PrintTextLine (xtbuf, last_text, len, indent, stamp);
 			text++;
 			if (*text == 0)
 				return;
@@ -207,7 +210,7 @@ pevent_dialog_update (GtkWidget * wid, GtkWidget * twid)
 	out[len + 1] = 0;
 	check_special_chars (out, TRUE);
 
-	PrintTextRaw (GTK_XTEXT (twid)->buffer, out, 0);
+	PrintTextRaw (GTK_XTEXT (twid)->buffer, out, 0, 0);
 	free (out);
 
 	/* save this when we exit */
@@ -347,7 +350,7 @@ pevent_test_cb (GtkWidget * wid, GtkWidget * twid)
 		out[len + 1] = 0;
 		check_special_chars (out, TRUE);
 
-		PrintTextRaw (GTK_XTEXT (twid)->buffer, out, 0);
+		PrintTextRaw (GTK_XTEXT (twid)->buffer, out, 0, 0);
 		free (out);
 	}
 }
