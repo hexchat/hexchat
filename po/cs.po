@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: xchat 2.8.0\n"
+"Project-Id-Version: xchat 2.8.1\n"
 "Report-Msgid-Bugs-To: www.xchat.org\n"
-"POT-Creation-Date: 2007-01-03 23:06+1100\n"
-"PO-Revision-Date: 2007-02-07 19:16+0100\n"
+"POT-Creation-Date: 2007-03-28 14:09+1000\n"
+"PO-Revision-Date: 2007-05-22 18:32+0200\n"
 "Last-Translator: Martin Šín <martin.sin@zshk.cz>\n"
 "Language-Team: Czech <translation-team-cs@lists.sourceforge.net>\n"
 "MIME-Version: 1.0\n"
@@ -18,15 +18,15 @@ msgstr ""
 msgid "Cannot create ~/.xchat2"
 msgstr "Nemohu vytvořit ~/.xchat2"
 
-#: src/common/cfgfiles.c:695
+#: src/common/cfgfiles.c:704
 msgid "I'm busy"
 msgstr "Pracuji"
 
-#: src/common/cfgfiles.c:696
+#: src/common/cfgfiles.c:705
 msgid "Leaving"
 msgstr "Odcházím"
 
-#: src/common/cfgfiles.c:742
+#: src/common/cfgfiles.c:751
 msgid ""
 "* Running IRC as root is stupid! You should\n"
 "  create a User Account and use that to login.\n"
@@ -58,23 +58,23 @@ msgstr "Připojit"
 msgid "Aborted"
 msgstr "Zrušeno"
 
-#: src/common/dcc.c:1910 src/common/outbound.c:2450
+#: src/common/dcc.c:1886 src/common/outbound.c:2450
 #, c-format
 msgid "Cannot access %s\n"
 msgstr "Nemohu přistoupit k %s\n"
 
-#: src/common/dcc.c:1911 src/common/text.c:918 src/common/text.c:956
+#: src/common/dcc.c:1887 src/common/text.c:918 src/common/text.c:956
 #: src/common/text.c:967 src/common/text.c:974 src/common/text.c:987
 #: src/common/text.c:1004 src/common/text.c:1104 src/common/util.c:352
 msgid "Error"
 msgstr "Chyba"
 
-#: src/common/dcc.c:2399
+#: src/common/dcc.c:2375
 #, c-format
 msgid "%s is offering \"%s\". Do you want to accept?"
 msgstr "%s nabízí \"%s\". Souhlasíte?"
 
-#: src/common/dcc.c:2610
+#: src/common/dcc.c:2586
 msgid "No active DCCs\n"
 msgstr "Žádné aktivní DCC\n"
 
@@ -555,11 +555,11 @@ msgstr "Neznámý příkaz. Zkuste /help\n"
 msgid "No xchat_plugin_init symbol; is this really an xchat plugin?"
 msgstr "Žádný symbol xchat_plugin_init; jedná se určitě o plugin xchatu?"
 
-#: src/common/server.c:627
+#: src/common/server.c:634
 msgid "Are you sure this is a SSL capable server and port?\n"
 msgstr "Jste si jistí, že server podporuje SSL a tento port?\n"
 
-#: src/common/server.c:1018
+#: src/common/server.c:1025
 #, c-format
 msgid ""
 "Cannot resolve hostname %s\n"
@@ -568,16 +568,16 @@ msgstr ""
 "Nemohu přeložit hostitele %s\n"
 "Zkontrolujte vaše nastavení IP!\n"
 
-#: src/common/server.c:1023
+#: src/common/server.c:1030
 msgid "Proxy traversal failed.\n"
 msgstr "Překlad proxy selhal.\n"
 
-#: src/common/servlist.c:642
+#: src/common/servlist.c:643
 #, c-format
 msgid "Cycling to next server in %s...\n"
 msgstr "Zkouším další server v %s...\n"
 
-#: src/common/servlist.c:1073
+#: src/common/servlist.c:1074
 #, c-format
 msgid "Warning: \"%s\" character set is unknown. No conversion will be applied for network %s."
 msgstr "Čekám: symbol \"%s\" je neznámý. Pro síť %s nebude použita žádná konverze."
@@ -1132,13 +1132,13 @@ msgstr "Nová přezdívka"
 msgid "Nick of person who changed the topic"
 msgstr "Přezdívka osoby, která změnila téma"
 
-#: src/common/text.c:661 src/common/text.c:667 src/fe-gtk/chanlist.c:716
-#: src/fe-gtk/chanlist.c:819
+#: src/common/text.c:661 src/common/text.c:667 src/fe-gtk/chanlist.c:718
+#: src/fe-gtk/chanlist.c:821
 msgid "Topic"
 msgstr "Téma:"
 
 #: src/common/text.c:662 src/common/text.c:666 src/common/text.c:1097
-#: src/fe-gtk/chanlist.c:714 src/fe-gtk/ignoregui.c:176
+#: src/fe-gtk/chanlist.c:716 src/fe-gtk/ignoregui.c:176
 msgid "Channel"
 msgstr "Kanál"
 
@@ -1396,7 +1396,7 @@ msgstr "Jméno serveru"
 msgid "Nick of person who invited you"
 msgstr "Přezdívka uživatele, který vás pozval"
 
-#: src/common/text.c:909 src/fe-gtk/chanlist.c:715
+#: src/common/text.c:909 src/fe-gtk/chanlist.c:717
 msgid "Users"
 msgstr "Uživatelé"
 
@@ -1416,7 +1416,7 @@ msgstr "IP"
 msgid "Port"
 msgstr "Port"
 
-#: src/common/text.c:934 src/fe-gtk/notifygui.c:139 src/fe-gtk/setup.c:1525
+#: src/common/text.c:934 src/fe-gtk/notifygui.c:139 src/fe-gtk/setup.c:1647
 msgid "Network"
 msgstr "Síť"
 
@@ -2523,306 +2523,302 @@ msgid "United Kingdom"
 msgstr "Spojené Království"
 
 #: src/common/util.c:1082
-msgid "US Minor Outlying Islands"
-msgstr "US Minor Outlying Islands"
-
-#: src/common/util.c:1083
 msgid "United States of America"
 msgstr "USA"
 
-#: src/common/util.c:1084
+#: src/common/util.c:1083
 msgid "Uruguay"
 msgstr "Uruguay"
 
-#: src/common/util.c:1085
+#: src/common/util.c:1084
 msgid "Uzbekistan"
 msgstr "Uzbekistán"
 
-#: src/common/util.c:1086
+#: src/common/util.c:1085
 msgid "Vatican City State"
 msgstr "Městský stát Vatikán"
 
-#: src/common/util.c:1087
+#: src/common/util.c:1086
 msgid "St. Vincent and the Grenadines"
 msgstr "St. Vincent and the Grenadines"
 
-#: src/common/util.c:1088
+#: src/common/util.c:1087
 msgid "Venezuela"
 msgstr "Venezuela"
 
-#: src/common/util.c:1089
+#: src/common/util.c:1088
 msgid "British Virgin Islands"
 msgstr "British Virgin Islands"
 
-#: src/common/util.c:1090
+#: src/common/util.c:1089
 msgid "US Virgin Islands"
 msgstr "US Virgin Islands"
 
-#: src/common/util.c:1091
+#: src/common/util.c:1090
 msgid "Vietnam"
 msgstr "Vietnam"
 
-#: src/common/util.c:1092
+#: src/common/util.c:1091
 msgid "Vanuatu"
 msgstr "Vanuatu"
 
-#: src/common/util.c:1093
+#: src/common/util.c:1092
 msgid "Wallis and Futuna Islands"
 msgstr "Wallis and Futuna Islands"
 
-#: src/common/util.c:1094
+#: src/common/util.c:1093
 msgid "Samoa"
 msgstr "Samoa"
 
-#: src/common/util.c:1095
+#: src/common/util.c:1094
 msgid "Yemen"
 msgstr "Yemen"
 
-#: src/common/util.c:1096
+#: src/common/util.c:1095
 msgid "Mayotte"
 msgstr "Mayotte"
 
-#: src/common/util.c:1097
+#: src/common/util.c:1096
 msgid "Yugoslavia"
 msgstr "Jugoslávie"
 
-#: src/common/util.c:1098
+#: src/common/util.c:1097
 msgid "South Africa"
 msgstr "Jižní Afrika"
 
-#: src/common/util.c:1099
+#: src/common/util.c:1098
 msgid "Zambia"
 msgstr "Zambie"
 
-#: src/common/util.c:1100
+#: src/common/util.c:1099
 msgid "Zimbabwe"
 msgstr "Zimbabwe"
 
-#: src/common/util.c:1110 src/common/util.c:1120 src/fe-gtk/menu.c:550
+#: src/common/util.c:1109 src/common/util.c:1119 src/fe-gtk/menu.c:550
 #: src/fe-gtk/menu.c:555 src/fe-gtk/menu.c:559 src/fe-gtk/menu.c:563
 #: src/fe-gtk/menu.c:571 src/fe-gtk/menu.c:589
 msgid "Unknown"
 msgstr "Neznámé"
 
-#: src/common/xchat.c:765 src/common/xchat.c:891
+#: src/common/xchat.c:769 src/common/xchat.c:895
 msgid "Open Dialog Window"
 msgstr "Otevřít dialogové okno"
 
-#: src/common/xchat.c:766
+#: src/common/xchat.c:770
 msgid "Send a File"
 msgstr "Poslat soubor"
 
-#: src/common/xchat.c:767
+#: src/common/xchat.c:771
 msgid "User Info (WHOIS)"
 msgstr "Informace o uživateli (WHOIS)"
 
-#: src/common/xchat.c:768
+#: src/common/xchat.c:772
 msgid "Operator Actions"
 msgstr "Akce operátora"
 
-#: src/common/xchat.c:770 src/common/xchat.c:861
+#: src/common/xchat.c:774 src/common/xchat.c:865
 msgid "Give Ops"
 msgstr "Dát práva Op"
 
-#: src/common/xchat.c:771 src/common/xchat.c:862
+#: src/common/xchat.c:775 src/common/xchat.c:866
 msgid "Take Ops"
 msgstr "Vzít práva Op"
 
-#: src/common/xchat.c:772 src/common/xchat.c:865
+#: src/common/xchat.c:776 src/common/xchat.c:869
 msgid "Give Voice"
 msgstr "Dát hlas"
 
-#: src/common/xchat.c:773 src/common/xchat.c:866
+#: src/common/xchat.c:777 src/common/xchat.c:870
 msgid "Take Voice"
 msgstr "Vzít hlas"
 
-#: src/common/xchat.c:775 src/common/xchat.c:870
+#: src/common/xchat.c:779 src/common/xchat.c:874
 msgid "Kick/Ban"
 msgstr "Kick/Ban"
 
-#: src/common/xchat.c:776 src/common/xchat.c:871 src/common/xchat.c:920
+#: src/common/xchat.c:780 src/common/xchat.c:875 src/common/xchat.c:924
 msgid "Kick"
 msgstr "Kick"
 
-#: src/common/xchat.c:777 src/common/xchat.c:778 src/common/xchat.c:779
-#: src/common/xchat.c:780 src/common/xchat.c:781 src/common/xchat.c:872
-#: src/common/xchat.c:873 src/common/xchat.c:874 src/common/xchat.c:875
-#: src/common/xchat.c:876 src/common/xchat.c:919
+#: src/common/xchat.c:781 src/common/xchat.c:782 src/common/xchat.c:783
+#: src/common/xchat.c:784 src/common/xchat.c:785 src/common/xchat.c:876
+#: src/common/xchat.c:877 src/common/xchat.c:878 src/common/xchat.c:879
+#: src/common/xchat.c:880 src/common/xchat.c:923
 msgid "Ban"
 msgstr "Ban"
 
-#: src/common/xchat.c:782 src/common/xchat.c:783 src/common/xchat.c:784
-#: src/common/xchat.c:785 src/common/xchat.c:877 src/common/xchat.c:878
-#: src/common/xchat.c:879 src/common/xchat.c:880
+#: src/common/xchat.c:786 src/common/xchat.c:787 src/common/xchat.c:788
+#: src/common/xchat.c:789 src/common/xchat.c:881 src/common/xchat.c:882
+#: src/common/xchat.c:883 src/common/xchat.c:884
 msgid "KickBan"
 msgstr "KickBan"
 
-#: src/common/xchat.c:848
+#: src/common/xchat.c:852
 msgid "Direct client-to-client"
 msgstr "Přímo klient-klient"
 
-#: src/common/xchat.c:849
+#: src/common/xchat.c:853
 msgid "Send File"
 msgstr "Poslat soubor"
 
-#: src/common/xchat.c:850
+#: src/common/xchat.c:854
 msgid "Offer Chat"
 msgstr "Nabídnout hovor"
 
-#: src/common/xchat.c:851
+#: src/common/xchat.c:855
 msgid "Abort Chat"
 msgstr "Zrušit hovor"
 
-#: src/common/xchat.c:852 src/fe-gtk/plugingui.c:74
+#: src/common/xchat.c:856 src/fe-gtk/plugingui.c:74
 msgid "Version"
 msgstr "Verze"
 
-#: src/common/xchat.c:853
+#: src/common/xchat.c:857
 msgid "Userinfo"
 msgstr "Uživatelinfo"
 
-#: src/common/xchat.c:854
+#: src/common/xchat.c:858
 msgid "Clientinfo"
 msgstr "Klientinfo"
 
-#: src/common/xchat.c:855 src/common/xchat.c:889 src/common/xchat.c:937
+#: src/common/xchat.c:859 src/common/xchat.c:893 src/common/xchat.c:941
 msgid "Ping"
 msgstr "Ping"
 
-#: src/common/xchat.c:856
+#: src/common/xchat.c:860
 msgid "Time"
 msgstr "Čas"
 
-#: src/common/xchat.c:857
+#: src/common/xchat.c:861
 msgid "Finger"
 msgstr "Prst"
 
-#: src/common/xchat.c:858
+#: src/common/xchat.c:862
 msgid "Oper"
 msgstr "Oper"
 
-#: src/common/xchat.c:859
+#: src/common/xchat.c:863
 msgid "Kill this user"
 msgstr "Zabít tohoto uživatele"
 
-#: src/common/xchat.c:860
+#: src/common/xchat.c:864
 msgid "Mode"
 msgstr "Mód"
 
-#: src/common/xchat.c:863
+#: src/common/xchat.c:867
 msgid "Give Half-Ops"
 msgstr "Dát práva Half-Op"
 
-#: src/common/xchat.c:864
+#: src/common/xchat.c:868
 msgid "Take Half-Ops"
 msgstr "Vzít Half-Op"
 
-#: src/common/xchat.c:867
+#: src/common/xchat.c:871
 msgid "Ignore"
 msgstr "Ignorovat"
 
-#: src/common/xchat.c:868
+#: src/common/xchat.c:872
 msgid "Ignore User"
 msgstr "Ignorovat uživatele"
 
-#: src/common/xchat.c:869
+#: src/common/xchat.c:873
 msgid "UnIgnore User"
 msgstr "Zrušit ignoraci uživatele"
 
-#: src/common/xchat.c:881
+#: src/common/xchat.c:885
 msgid "Info"
 msgstr "Informace"
 
-#: src/common/xchat.c:882
+#: src/common/xchat.c:886
 msgid "Who"
 msgstr "Kdo"
 
-#: src/common/xchat.c:883 src/common/xchat.c:933
+#: src/common/xchat.c:887 src/common/xchat.c:937
 msgid "WhoIs"
 msgstr "KdoJe"
 
-#: src/common/xchat.c:884
+#: src/common/xchat.c:888
 msgid "DNS Lookup"
 msgstr "DNS Lookup"
 
-#: src/common/xchat.c:885
+#: src/common/xchat.c:889
 msgid "Trace"
 msgstr "Trasa"
 
-#: src/common/xchat.c:886
+#: src/common/xchat.c:890
 msgid "UserHost"
 msgstr "UserHost"
 
-#: src/common/xchat.c:887
+#: src/common/xchat.c:891
 msgid "External"
 msgstr "Externí"
 
-#: src/common/xchat.c:888
+#: src/common/xchat.c:892
 msgid "Traceroute"
 msgstr "Trasovat cestu"
 
-#: src/common/xchat.c:890
+#: src/common/xchat.c:894
 msgid "Telnet"
 msgstr "Telnet"
 
-#: src/common/xchat.c:902
+#: src/common/xchat.c:906
 msgid "Leave Channel"
 msgstr "Opustit kanál"
 
-#: src/common/xchat.c:903 src/fe-gtk/menu.c:1392
+#: src/common/xchat.c:907 src/fe-gtk/menu.c:1392
 msgid "Join Channel..."
 msgstr "Vstoupit do kanálu..."
 
-#: src/common/xchat.c:904 src/fe-gtk/menu.c:1083
+#: src/common/xchat.c:908 src/fe-gtk/menu.c:1083
 msgid "Enter Channel to Join:"
 msgstr "Zadat kanál pro připojení:"
 
-#: src/common/xchat.c:905
+#: src/common/xchat.c:909
 msgid "Server Links"
 msgstr "Odkazy serveru"
 
-#: src/common/xchat.c:906
+#: src/common/xchat.c:910
 msgid "Ping Server"
 msgstr "Ping serveru"
 
-#: src/common/xchat.c:907
+#: src/common/xchat.c:911
 msgid "Hide Version"
 msgstr "Ukrýt verzi"
 
-#: src/common/xchat.c:917
+#: src/common/xchat.c:921
 msgid "Op"
 msgstr "Op"
 
-#: src/common/xchat.c:918
+#: src/common/xchat.c:922
 msgid "DeOp"
 msgstr "DeOp"
 
-#: src/common/xchat.c:921
+#: src/common/xchat.c:925
 msgid "bye"
 msgstr "hoj"
 
-#: src/common/xchat.c:922
+#: src/common/xchat.c:926
 #, c-format
 msgid "Enter reason to kick %s:"
 msgstr "Zadat důvod vyhození %s:"
 
-#: src/common/xchat.c:923
+#: src/common/xchat.c:927
 msgid "Sendfile"
 msgstr "Poslat soubor"
 
-#: src/common/xchat.c:924
+#: src/common/xchat.c:928
 msgid "Dialog"
 msgstr "Dialog"
 
-#: src/common/xchat.c:934
+#: src/common/xchat.c:938
 msgid "Send"
 msgstr "Poslat"
 
-#: src/common/xchat.c:935
+#: src/common/xchat.c:939
 msgid "Chat"
 msgstr "Chat"
 
-#: src/common/xchat.c:936 src/fe-gtk/banlist.c:341 src/fe-gtk/ignoregui.c:388
+#: src/common/xchat.c:940 src/fe-gtk/banlist.c:341 src/fe-gtk/ignoregui.c:388
 #: src/fe-gtk/urlgrab.c:201
 msgid "Clear"
 msgstr "Smazat"
@@ -2870,7 +2866,7 @@ msgid "Character Chart"
 msgstr "Mapa znaků"
 
 #: src/fe-gtk/banlist.c:113 src/fe-gtk/chanlist.c:299
-#: src/fe-gtk/plugin-tray.c:138
+#: src/fe-gtk/plugin-tray.c:209
 msgid "Not connected."
 msgstr "Nepřipojen"
 
@@ -2921,80 +2917,80 @@ msgstr "Aktualizovat"
 msgid "Displaying %d/%d users on %d/%d channels."
 msgstr "%d/%d uživatelů na %d/%d kanálech."
 
-#: src/fe-gtk/chanlist.c:514 src/fe-gtk/menu.c:1019 src/fe-gtk/urlgrab.c:148
+#: src/fe-gtk/chanlist.c:516 src/fe-gtk/menu.c:1019 src/fe-gtk/urlgrab.c:148
 msgid "Select an output filename"
 msgstr "Vyberte požadovaný název souboru"
 
-#: src/fe-gtk/chanlist.c:593 src/fe-gtk/chanlist.c:749
+#: src/fe-gtk/chanlist.c:595 src/fe-gtk/chanlist.c:751
 msgid "_Join Channel"
 msgstr "_Připojit se ke kanálu"
 
-#: src/fe-gtk/chanlist.c:595
+#: src/fe-gtk/chanlist.c:597
 msgid "_Copy Channel Name"
 msgstr "_Zkopírovat jméno kanálu"
 
-#: src/fe-gtk/chanlist.c:597
+#: src/fe-gtk/chanlist.c:599
 msgid "Copy _Topic Text"
 msgstr "Zkopíruje _téma kanálu"
 
-#: src/fe-gtk/chanlist.c:675
+#: src/fe-gtk/chanlist.c:677
 #, c-format
 msgid "XChat: Channel List (%s)"
 msgstr "XChat: Seznam kanálu (%s)"
 
-#: src/fe-gtk/chanlist.c:731
+#: src/fe-gtk/chanlist.c:733
 msgid "_Search"
 msgstr "_Vyhledávání"
 
-#: src/fe-gtk/chanlist.c:737
+#: src/fe-gtk/chanlist.c:739
 msgid "_Download List"
 msgstr "Seznam _stahování"
 
-#: src/fe-gtk/chanlist.c:743
+#: src/fe-gtk/chanlist.c:745
 msgid "Save _List..."
 msgstr "_Uložit seznam..."
 
-#: src/fe-gtk/chanlist.c:756
+#: src/fe-gtk/chanlist.c:758
 msgid "Show only:"
 msgstr "Pouze zobrazit:"
 
-#: src/fe-gtk/chanlist.c:768
+#: src/fe-gtk/chanlist.c:770
 msgid "channels with"
 msgstr "s kanály"
 
-#: src/fe-gtk/chanlist.c:781
+#: src/fe-gtk/chanlist.c:783
 msgid "to"
 msgstr "do"
 
-#: src/fe-gtk/chanlist.c:793
+#: src/fe-gtk/chanlist.c:795
 msgid "users."
 msgstr "uživatelů."
 
-#: src/fe-gtk/chanlist.c:799
+#: src/fe-gtk/chanlist.c:801
 msgid "Look in:"
 msgstr "Podívat se:"
 
-#: src/fe-gtk/chanlist.c:811
+#: src/fe-gtk/chanlist.c:813
 msgid "Channel name"
 msgstr "Jméno kanálu"
 
-#: src/fe-gtk/chanlist.c:832
+#: src/fe-gtk/chanlist.c:834
 msgid "Search type:"
 msgstr "Typ hledání:"
 
-#: src/fe-gtk/chanlist.c:839
+#: src/fe-gtk/chanlist.c:841
 msgid "Simple Search"
 msgstr "Jednoduché vyhledávání"
 
-#: src/fe-gtk/chanlist.c:840
+#: src/fe-gtk/chanlist.c:842
 msgid "Pattern Match (Wildcards)"
 msgstr "Maska odpovídá (Wildcards)"
 
-#: src/fe-gtk/chanlist.c:842
+#: src/fe-gtk/chanlist.c:844
 msgid "Regular Expression"
 msgstr "Regulární výraz"
 
-#: src/fe-gtk/chanlist.c:853 src/fe-gtk/search.c:118
+#: src/fe-gtk/chanlist.c:855 src/fe-gtk/search.c:118
 msgid "Find:"
 msgstr "Najít:"
 
@@ -3533,11 +3529,11 @@ msgstr "Zobrazit zprávu o příhlášní/odchodu"
 msgid "Color paste"
 msgstr "Vkládání barev"
 
-#: src/fe-gtk/maingui.c:1406 src/fe-gtk/menu.c:1908
+#: src/fe-gtk/maingui.c:1406 src/fe-gtk/menu.c:1906
 msgid "_Close Tab"
 msgstr "_Zavřít záložku"
 
-#: src/fe-gtk/maingui.c:1408 src/fe-gtk/menu.c:1907
+#: src/fe-gtk/maingui.c:1408 src/fe-gtk/menu.c:1905
 msgid "_Detach Tab"
 msgstr "_Odpojit Záložku"
 
@@ -4050,7 +4046,7 @@ msgstr "Hledat text..."
 msgid "Save Text..."
 msgstr "Uložit text..."
 
-#: src/fe-gtk/menu.c:1431 src/fe-gtk/menu.c:1899
+#: src/fe-gtk/menu.c:1431 src/fe-gtk/menu.c:1897
 msgid "_Help"
 msgstr "_Nápověda"
 
@@ -4062,11 +4058,11 @@ msgstr "_Obsah"
 msgid "_About"
 msgstr "_O programu"
 
-#: src/fe-gtk/menu.c:1912
+#: src/fe-gtk/menu.c:1910
 msgid "_Attach Window"
 msgstr "_Připojit okno"
 
-#: src/fe-gtk/menu.c:1913
+#: src/fe-gtk/menu.c:1911
 msgid "_Close Window"
 msgstr "_Zavřít okno"
 
@@ -4082,7 +4078,7 @@ msgstr "Naposledy viděn"
 msgid "Offline"
 msgstr "Offline"
 
-#: src/fe-gtk/notifygui.c:201 src/fe-gtk/setup.c:214
+#: src/fe-gtk/notifygui.c:201 src/fe-gtk/setup.c:216
 msgid "Never"
 msgstr "Nikdy"
 
@@ -4119,12 +4115,20 @@ msgstr "Odstranit"
 msgid "Open Dialog"
 msgstr "Otevřít dialog"
 
-#: src/fe-gtk/plugin-tray.c:135
+#: src/fe-gtk/plugin-tray.c:155
+msgid ""
+"Cannot find 'notify-send' to open balloon alerts.\n"
+"Please install libnotify."
+msgstr ""
+"Nemohu nalézt 'notify-send' pro zobrazení upozornění.\n"
+"Nainstalujte prosím libnotify."
+
+#: src/fe-gtk/plugin-tray.c:206
 #, c-format
 msgid "XChat: Connected to %u networks and %u channels"
 msgstr "XChat: Připojen k %u sítím a %u kanálům"
 
-#: src/fe-gtk/plugin-tray.c:330
+#: src/fe-gtk/plugin-tray.c:400
 #, c-format
 msgid ""
 "You are connected to <b>%u</b> IRC networks.\n"
@@ -4133,74 +4137,70 @@ msgstr ""
 "Jste připojen k <b>%u</b> sítím IRC.\n"
 "Určitě si přejete zkončit?"
 
-#: src/fe-gtk/plugin-tray.c:388
+#: src/fe-gtk/plugin-tray.c:454
 msgid "_Restore"
 msgstr "_Obnovit"
 
-#: src/fe-gtk/plugin-tray.c:390
+#: src/fe-gtk/plugin-tray.c:456
 msgid "_Hide"
 msgstr "_Skrýt"
 
-#: src/fe-gtk/plugin-tray.c:393
+#: src/fe-gtk/plugin-tray.c:459
 msgid "_Blink on"
 msgstr "_Zablikat při"
 
-#: src/fe-gtk/plugin-tray.c:394
+#: src/fe-gtk/plugin-tray.c:460 src/fe-gtk/setup.c:445
 msgid "Channel Message"
 msgstr "Zpráva kanálu"
 
-#: src/fe-gtk/plugin-tray.c:395
-msgid "Highlighted Message"
-msgstr "Zvýrazněná zpráva"
-
-#: src/fe-gtk/plugin-tray.c:396
+#: src/fe-gtk/plugin-tray.c:461 src/fe-gtk/setup.c:446
 msgid "Private Message"
 msgstr "Soukromá zpráva"
 
-#: src/fe-gtk/plugin-tray.c:397
-msgid "File Offer"
-msgstr "Nabídka souboru"
+#: src/fe-gtk/plugin-tray.c:462 src/fe-gtk/setup.c:447
+msgid "Highlighted Message"
+msgstr "Zvýrazněná zpráva"
 
-#: src/fe-gtk/plugin-tray.c:400
+#: src/fe-gtk/plugin-tray.c:466
 msgid "Quit..."
 msgstr "Konec..."
 
-#: src/fe-gtk/plugin-tray.c:444
+#: src/fe-gtk/plugin-tray.c:510 src/fe-gtk/plugin-tray.c:518
 #, c-format
 msgid "XChat: Highlighed message from: %s (%s)"
 msgstr "XChat: Zvýrazněná zpráva od: %s (%s)"
 
-#: src/fe-gtk/plugin-tray.c:447
+#: src/fe-gtk/plugin-tray.c:513
 #, c-format
 msgid "XChat: %u highlighted messages, latest from: %s (%s)"
 msgstr "XChat: %u zvýrazněných zpráv, poslední od: %s (%s)"
 
-#: src/fe-gtk/plugin-tray.c:466
+#: src/fe-gtk/plugin-tray.c:536 src/fe-gtk/plugin-tray.c:543
 #, c-format
 msgid "XChat: New public message from: %s (%s)"
 msgstr "XChat: Nová veřejná zpráva od: %s (%s)"
 
-#: src/fe-gtk/plugin-tray.c:469
+#: src/fe-gtk/plugin-tray.c:539
 #, c-format
 msgid "XChat: %u new public messages."
 msgstr "XChat: %u nových veřejných zpráv."
 
-#: src/fe-gtk/plugin-tray.c:488
+#: src/fe-gtk/plugin-tray.c:562 src/fe-gtk/plugin-tray.c:569
 #, c-format
 msgid "XChat: Private message from: %s (%s)"
 msgstr "XChat: Soukromá zpráva od: %s (%s)"
 
-#: src/fe-gtk/plugin-tray.c:491
+#: src/fe-gtk/plugin-tray.c:565
 #, c-format
 msgid "XChat: %u private messages, latest from: %s (%s)"
 msgstr "XChat: %u soukromých zpráv, poslední od: %s (%s)"
 
-#: src/fe-gtk/plugin-tray.c:537
+#: src/fe-gtk/plugin-tray.c:615 src/fe-gtk/plugin-tray.c:623
 #, c-format
 msgid "XChat: File offer from: %s (%s)"
 msgstr "XChat: Nabídka souboru od: %s (%s)"
 
-#: src/fe-gtk/plugin-tray.c:540
+#: src/fe-gtk/plugin-tray.c:618
 #, c-format
 msgid "XChat: %u file offers, latest from: %s (%s)"
 msgstr "XChat: %u nabídnutých souborů, poslední od: %s (%s)"
@@ -4418,773 +4418,781 @@ msgstr "Seřadí seznam sítí podle abecedy. Pro posun použijte klávesy SHIFT
 msgid "C_onnect"
 msgstr "_Připojení"
 
-#: src/fe-gtk/setup.c:100
+#: src/fe-gtk/setup.c:102
 msgid "Text Box Appearance"
 msgstr "Vzhled textového pole"
 
-#: src/fe-gtk/setup.c:101
+#: src/fe-gtk/setup.c:103
 msgid "Font:"
 msgstr "Písmo:"
 
-#: src/fe-gtk/setup.c:102
+#: src/fe-gtk/setup.c:104
 msgid "Background image:"
 msgstr "Obrázek na pozadí:"
 
-#: src/fe-gtk/setup.c:103
+#: src/fe-gtk/setup.c:105
 msgid "Scrollback lines:"
 msgstr "Posuvníky:"
 
-#: src/fe-gtk/setup.c:104
+#: src/fe-gtk/setup.c:106
 msgid "Colored nick names"
 msgstr "Barevné přezdívky"
 
-#: src/fe-gtk/setup.c:105
+#: src/fe-gtk/setup.c:107
 msgid "Give each person on IRC a different color"
 msgstr "Přiřadí každému člověku na IRC jinou barvu"
 
-#: src/fe-gtk/setup.c:106
+#: src/fe-gtk/setup.c:108
 msgid "Indent nick names"
 msgstr "Odsazovat přezdívky"
 
-#: src/fe-gtk/setup.c:107
+#: src/fe-gtk/setup.c:109
 msgid "Make nick names right-justified"
 msgstr "Zarovnávat přezdívky vpravo"
 
-#: src/fe-gtk/setup.c:108
+#: src/fe-gtk/setup.c:110
 msgid "Transparent background"
 msgstr "Transparentní pozadí"
 
-#: src/fe-gtk/setup.c:109
+#: src/fe-gtk/setup.c:111
 msgid "Show marker line"
 msgstr "Zobrazit dělící čáru"
 
-#: src/fe-gtk/setup.c:110
+#: src/fe-gtk/setup.c:112
 msgid "Insert a red line after the last read text."
 msgstr "Vloží červenou čáru za poslední řádek textu."
 
-#: src/fe-gtk/setup.c:111
+#: src/fe-gtk/setup.c:113
 msgid "Transparency Settings"
 msgstr "Nastavení průhlednosti"
 
-#: src/fe-gtk/setup.c:112
+#: src/fe-gtk/setup.c:114
 msgid "Red:"
 msgstr "Červená:"
 
-#: src/fe-gtk/setup.c:113
+#: src/fe-gtk/setup.c:115
 msgid "Green:"
 msgstr "Zelená:"
 
-#: src/fe-gtk/setup.c:114
+#: src/fe-gtk/setup.c:116
 msgid "Blue:"
 msgstr "Modrá:"
 
-#: src/fe-gtk/setup.c:116 src/fe-gtk/setup.c:334
+#: src/fe-gtk/setup.c:118 src/fe-gtk/setup.c:361
 msgid "Time Stamps"
 msgstr "Časové značky"
 
-#: src/fe-gtk/setup.c:117
+#: src/fe-gtk/setup.c:119
 msgid "Enable time stamps"
 msgstr "Povolit časové značky"
 
-#: src/fe-gtk/setup.c:118
+#: src/fe-gtk/setup.c:120
 msgid "Time stamp format:"
 msgstr "Formát časových značek:"
 
-#: src/fe-gtk/setup.c:119 src/fe-gtk/setup.c:337
+#: src/fe-gtk/setup.c:121 src/fe-gtk/setup.c:364
 msgid "See strftime manpage for details."
 msgstr "Pro další detaily se podívejte na manuálovou stránku strftime."
 
-#: src/fe-gtk/setup.c:126 src/fe-gtk/setup.c:166
+#: src/fe-gtk/setup.c:128 src/fe-gtk/setup.c:168
 msgid "A-Z"
 msgstr "A-Z"
 
-#: src/fe-gtk/setup.c:127
+#: src/fe-gtk/setup.c:129
 msgid "Last-spoke order"
 msgstr "Poslední řečené pořadí"
 
-#: src/fe-gtk/setup.c:133 src/fe-gtk/setup.c:1513
+#: src/fe-gtk/setup.c:135 src/fe-gtk/setup.c:1635
 msgid "Input box"
 msgstr "Vstupní pole"
 
-#: src/fe-gtk/setup.c:134 src/fe-gtk/setup.c:177
+#: src/fe-gtk/setup.c:136 src/fe-gtk/setup.c:179
 msgid "Use the Text box font and colors"
 msgstr "Použít v textu písmo a barvy"
 
-#: src/fe-gtk/setup.c:136
+#: src/fe-gtk/setup.c:138
 msgid "Spell checking"
 msgstr "Kontrola pravopisu"
 
-#: src/fe-gtk/setup.c:139
+#: src/fe-gtk/setup.c:141
 msgid "Nick Completion"
 msgstr "Dokončování přezdívky"
 
-#: src/fe-gtk/setup.c:140
+#: src/fe-gtk/setup.c:142
 msgid "Automatic nick completion (without TAB key)"
 msgstr "Automatické dokončování přezdívky (bez klávesy TAB)"
 
-#: src/fe-gtk/setup.c:142
+#: src/fe-gtk/setup.c:144
 msgid "Nick completion suffix:"
 msgstr "Přípona dokončení přezdívky:"
 
-#: src/fe-gtk/setup.c:143
+#: src/fe-gtk/setup.c:145
 msgid "Nick completion sorted:"
 msgstr "Dokončování přezdívky setříděno:"
 
-#: src/fe-gtk/setup.c:146
+#: src/fe-gtk/setup.c:148
 msgid "Input Box Codes"
 msgstr "Vstupní box s kódy"
 
-#: src/fe-gtk/setup.c:147
+#: src/fe-gtk/setup.c:149
 #, c-format
 msgid "Interpret %nnn as an ASCII value"
 msgstr "Interpretuje %nnn jako hodnoty ASCII"
 
-#: src/fe-gtk/setup.c:148
+#: src/fe-gtk/setup.c:150
 msgid "Interpret %C, %B as Color, Bold etc"
 msgstr "Interpretuje %C, %B jako barvu, tučně atd"
 
-#: src/fe-gtk/setup.c:165
+#: src/fe-gtk/setup.c:167
 msgid "A-Z, Ops first"
 msgstr "A-Z, Op je první"
 
-#: src/fe-gtk/setup.c:167
+#: src/fe-gtk/setup.c:169
 msgid "Z-A, Ops last"
 msgstr "Z-a, Op je poslední"
 
-#: src/fe-gtk/setup.c:168
+#: src/fe-gtk/setup.c:170
 msgid "Z-A"
 msgstr "Z-A"
 
-#: src/fe-gtk/setup.c:169
+#: src/fe-gtk/setup.c:171
 msgid "Unsorted"
 msgstr "Netřídit"
 
-#: src/fe-gtk/setup.c:175
+#: src/fe-gtk/setup.c:177
 msgid "User List"
 msgstr "Seznam uživatelů"
 
-#: src/fe-gtk/setup.c:176
+#: src/fe-gtk/setup.c:178
 msgid "Show hostnames in user list"
 msgstr "Zobrazit hostitelské názvy v seznamu uživatelů"
 
-#: src/fe-gtk/setup.c:178
+#: src/fe-gtk/setup.c:180
 msgid "Resizable user list"
 msgstr "Uživatelský seznam se změnou velikosti"
 
-#: src/fe-gtk/setup.c:179
+#: src/fe-gtk/setup.c:181
 msgid "User list sorted by:"
 msgstr "Seznam uživatelů setříděný podle:"
 
-#: src/fe-gtk/setup.c:181
+#: src/fe-gtk/setup.c:183
 msgid "Away tracking"
 msgstr "Sledování away"
 
-#: src/fe-gtk/setup.c:182
+#: src/fe-gtk/setup.c:184
 msgid "Track the Away status of users and mark them in a different color"
 msgstr "Sleduje stav away (pryč) uživatelů a označuje je jinou barvou"
 
-#: src/fe-gtk/setup.c:183
+#: src/fe-gtk/setup.c:185
 msgid "On channels smaller than:"
 msgstr "Na kanálech menších jak:"
 
-#: src/fe-gtk/setup.c:185
+#: src/fe-gtk/setup.c:187
 msgid "Action Upon Double Click"
 msgstr "Akce při dvojkliku"
 
-#: src/fe-gtk/setup.c:186
+#: src/fe-gtk/setup.c:188
 msgid "Execute command:"
 msgstr "Vykonat příkaz"
 
-#: src/fe-gtk/setup.c:197
+#: src/fe-gtk/setup.c:199
 msgid "Windows"
 msgstr "Okna"
 
-#: src/fe-gtk/setup.c:198 src/fe-gtk/setup.c:222 src/fe-gtk/setup.c:1515
+#: src/fe-gtk/setup.c:200 src/fe-gtk/setup.c:224 src/fe-gtk/setup.c:1637
 msgid "Tabs"
 msgstr "Záložky"
 
-#: src/fe-gtk/setup.c:204
+#: src/fe-gtk/setup.c:206
 msgid "Bottom"
 msgstr "Dole"
 
-#: src/fe-gtk/setup.c:205
+#: src/fe-gtk/setup.c:207
 msgid "Top"
 msgstr "Nahoře"
 
-#: src/fe-gtk/setup.c:206
+#: src/fe-gtk/setup.c:208
 msgid "Left"
 msgstr "Vlevo"
 
-#: src/fe-gtk/setup.c:207
+#: src/fe-gtk/setup.c:209
 msgid "Right"
 msgstr "Vpravo"
 
-#: src/fe-gtk/setup.c:208
+#: src/fe-gtk/setup.c:210
 msgid "Hidden"
 msgstr "Skryté"
 
-#: src/fe-gtk/setup.c:215
+#: src/fe-gtk/setup.c:217
 msgid "Always"
 msgstr "Vždy"
 
-#: src/fe-gtk/setup.c:216
+#: src/fe-gtk/setup.c:218
 msgid "Only requested tabs"
 msgstr "Pouze požadované záložky"
 
-#: src/fe-gtk/setup.c:223
+#: src/fe-gtk/setup.c:225
 msgid "Open an extra tab for server messages"
 msgstr "Otevřít speciální záložku pro zprávy serveru"
 
-#: src/fe-gtk/setup.c:224
+#: src/fe-gtk/setup.c:226
 msgid "Open an extra tab for server notices"
 msgstr "Otevřít speciální záložku pro oznámení serveru"
 
-#: src/fe-gtk/setup.c:225
+#: src/fe-gtk/setup.c:227
 msgid "Open a new tab when you receive a private message"
 msgstr "Otevřít novou záložku jakmile přijde soukromá zpráva"
 
-#: src/fe-gtk/setup.c:226
+#: src/fe-gtk/setup.c:228
 msgid "Sort tabs in alphabetical order"
 msgstr "Třídit záložky v abecedním pořadí"
 
-#: src/fe-gtk/setup.c:227
+#: src/fe-gtk/setup.c:229
 msgid "Small tabs"
 msgstr "Malé záložky"
 
-#: src/fe-gtk/setup.c:228
+#: src/fe-gtk/setup.c:230
 msgid "Focus new tabs:"
 msgstr "Zaměřit se na nové záložky:"
 
-#: src/fe-gtk/setup.c:229
+#: src/fe-gtk/setup.c:231
 msgid "Show tabs at:"
 msgstr "Zobrazit záložky v:"
 
-#: src/fe-gtk/setup.c:230
+#: src/fe-gtk/setup.c:232
 msgid "Shorten tab labels to:"
 msgstr "Zkrácené popisky záložek na:"
 
-#: src/fe-gtk/setup.c:230
+#: src/fe-gtk/setup.c:232
 msgid "letters."
 msgstr "znaky."
 
-#: src/fe-gtk/setup.c:232
+#: src/fe-gtk/setup.c:234
 msgid "Tabs or Windows"
 msgstr "Záložky nebo okna"
 
-#: src/fe-gtk/setup.c:233
+#: src/fe-gtk/setup.c:235
 msgid "Open channels in:"
 msgstr "Otevřít kanály v:"
 
-#: src/fe-gtk/setup.c:234
+#: src/fe-gtk/setup.c:236
 msgid "Open dialogs in:"
 msgstr "Otevřít dialogy v:"
 
-#: src/fe-gtk/setup.c:235
+#: src/fe-gtk/setup.c:237
 msgid "Open utilities in:"
 msgstr "Otevřít utility v:"
 
-#: src/fe-gtk/setup.c:235
+#: src/fe-gtk/setup.c:237
 msgid "Open DCC, Ignore, Notify etc, in tabs or windows?"
 msgstr "Otevřít DCC, ignorace, oznámení, atd. v záložkách nebo oknech?"
 
-#: src/fe-gtk/setup.c:242
+#: src/fe-gtk/setup.c:244
 msgid "No"
 msgstr "Ne"
 
-#: src/fe-gtk/setup.c:243
+#: src/fe-gtk/setup.c:245
 msgid "Yes"
 msgstr "Yes"
 
-#: src/fe-gtk/setup.c:244
+#: src/fe-gtk/setup.c:246
 msgid "Browse for save folder every time"
 msgstr "Projít vždy dialogem uložení"
 
-#: src/fe-gtk/setup.c:250
+#: src/fe-gtk/setup.c:252
 msgid "Files and Directories"
 msgstr "Soubory a adresáře"
 
-#: src/fe-gtk/setup.c:251
+#: src/fe-gtk/setup.c:253
 msgid "Auto accept file offers:"
 msgstr "Automaticky přijmout nabídku souboru:"
 
-#: src/fe-gtk/setup.c:252
+#: src/fe-gtk/setup.c:254
 msgid "Download files to:"
 msgstr "Stáhnout soubory do:"
 
-#: src/fe-gtk/setup.c:253
+#: src/fe-gtk/setup.c:255
 msgid "Move completed files to:"
 msgstr "Přesunout kompletní soubory do:"
 
-#: src/fe-gtk/setup.c:254
+#: src/fe-gtk/setup.c:256
 msgid "Save nick name in filenames"
 msgstr "Uložit přezdívku ve jméně souborů"
 
-#: src/fe-gtk/setup.c:256
+#: src/fe-gtk/setup.c:258
 msgid "Network Settings"
 msgstr "Nastavení sítě"
 
-#: src/fe-gtk/setup.c:257
+#: src/fe-gtk/setup.c:259
 msgid "Get my address from the IRC server"
 msgstr "Vzít moji adresu ze serveru IRC"
 
-#: src/fe-gtk/setup.c:258
+#: src/fe-gtk/setup.c:260
 msgid "Asks the IRC server for your real address. Use this if you have a 192.168.*.* address!"
 msgstr "Zeptat se IRC serveru na skutečnou adresu. Použít tuto pokud máte nějakou 192.168.*.*!"
 
-#: src/fe-gtk/setup.c:259
+#: src/fe-gtk/setup.c:261
 msgid "DCC IP address:"
 msgstr "DCC IP adresa:"
 
-#: src/fe-gtk/setup.c:260
+#: src/fe-gtk/setup.c:262
 msgid "Claim you are at this address when offering files."
 msgstr "V okamžiku nabízení souboru tvrdit, že máte tuto adresu."
 
-#: src/fe-gtk/setup.c:261
+#: src/fe-gtk/setup.c:263
 msgid "First DCC send port:"
 msgstr "První port pro odesílání DCC:"
 
-#: src/fe-gtk/setup.c:262
+#: src/fe-gtk/setup.c:264
 msgid "Last DCC send port:"
 msgstr "Poslední port pro odesílání DCC:"
 
-#: src/fe-gtk/setup.c:263
+#: src/fe-gtk/setup.c:265
 msgid "!Leave ports at zero for full range."
 msgstr "!Nechat porty na nule pro nulové rozmezí."
 
-#: src/fe-gtk/setup.c:265
+#: src/fe-gtk/setup.c:267
 msgid "Maximum File Transfer Speeds (bytes per second)"
 msgstr "Maximální rychlost přenosu souboru (bytů za sekundu)"
 
-#: src/fe-gtk/setup.c:266
+#: src/fe-gtk/setup.c:268
 msgid "One upload:"
 msgstr "Jeden upload:"
 
-#: src/fe-gtk/setup.c:267 src/fe-gtk/setup.c:269
+#: src/fe-gtk/setup.c:269 src/fe-gtk/setup.c:271
 msgid "Maximum speed for one transfer"
 msgstr "Maximální rychlost jednoho přenosu"
 
-#: src/fe-gtk/setup.c:268
+#: src/fe-gtk/setup.c:270
 msgid "One download:"
 msgstr "Jeden download:"
 
-#: src/fe-gtk/setup.c:270
+#: src/fe-gtk/setup.c:272
 msgid "All uploads combined:"
 msgstr "Kombinace všech uploadů:"
 
-#: src/fe-gtk/setup.c:271 src/fe-gtk/setup.c:273
+#: src/fe-gtk/setup.c:273 src/fe-gtk/setup.c:275
 msgid "Maximum speed for all files"
 msgstr "Maximální rychlost pro všechny soubory"
 
-#: src/fe-gtk/setup.c:272
+#: src/fe-gtk/setup.c:274
 msgid "All downloads combined:"
 msgstr "Kombinace všech downloadů:"
 
-#: src/fe-gtk/setup.c:280 src/fe-gtk/setup.c:1519
+#: src/fe-gtk/setup.c:302 src/fe-gtk/setup.c:1641
 msgid "Alerts"
 msgstr "Upozornění"
 
-#: src/fe-gtk/setup.c:281
+#: src/fe-gtk/setup.c:305
+msgid "Show tray balloons on:"
+msgstr "Zobrazit upozornění oznamovací ikony při:"
+
+#: src/fe-gtk/setup.c:306
+msgid "Blink tray icon on:"
+msgstr "Zablikat oznamovací ikonou při:"
+
+#: src/fe-gtk/setup.c:307
+msgid "Blink task bar on:"
+msgstr "Zablikat pruhem úlohy při:"
+
+#: src/fe-gtk/setup.c:308
+msgid "Make a beep sound on:"
+msgstr "Vydat zvuk při:"
+
+#: src/fe-gtk/setup.c:310
 msgid "Enable system tray icon"
 msgstr "Povolit ikonu panelu nástrojů"
 
-#: src/fe-gtk/setup.c:283
-msgid "Flash taskbar on highlighted messages"
-msgstr "Zaměřit se na zvýrazněnou zprávu"
+#: src/fe-gtk/setup.c:312
+msgid "Highlighted Messages"
+msgstr "Zvýrazněné zprávy"
 
-#: src/fe-gtk/setup.c:284
-msgid "Flash taskbar on private messages"
-msgstr "Při soukromé zprávě zablikat v panelu úloh"
+#: src/fe-gtk/setup.c:313
+msgid "Highlighted messages are ones where your nickname is mentioned, but also:"
+msgstr "Zvýrazněné zprávy jsou ty, kde je zmíněna vaše přezdívka a také:"
 
-#: src/fe-gtk/setup.c:286
-msgid "Beep on highlighted messages"
-msgstr "Zvuk při zvýrazněných zprávách"
-
-#: src/fe-gtk/setup.c:287
-msgid "Beep on private messages"
-msgstr "Zvuk při soukromé zprávě"
-
-#: src/fe-gtk/setup.c:288
-msgid "Beep on channel messages"
-msgstr "Zvuk při zprávě kanálu"
-
-#: src/fe-gtk/setup.c:289
-msgid "Extra words to highlight on:"
+#: src/fe-gtk/setup.c:315
+msgid "Extra words to highlight:"
 msgstr "Další slova pro zvýraznění:"
 
-#: src/fe-gtk/setup.c:290
-msgid "Nicks not to highlight on:"
-msgstr "Které přezdívky nezvýrazňovat:"
+#: src/fe-gtk/setup.c:316
+msgid "Nick names not to highlight:"
+msgstr "Přezdívky, které se nebudou zvýrazňovat:"
 
-#: src/fe-gtk/setup.c:291
+#: src/fe-gtk/setup.c:317
+msgid "Nick names to always highlight:"
+msgstr "Přezdívky, které se budou zvýrazňovat:"
+
+#: src/fe-gtk/setup.c:318
 msgid "Separate multiple words with commas."
 msgstr "Více slov oddělte pomocí čárek."
 
-#: src/fe-gtk/setup.c:297
+#: src/fe-gtk/setup.c:324
 msgid "Default Messages"
 msgstr "Výchozí zpráva"
 
-#: src/fe-gtk/setup.c:298
+#: src/fe-gtk/setup.c:325
 msgid "Quit:"
 msgstr "Konec:"
 
-#: src/fe-gtk/setup.c:299
+#: src/fe-gtk/setup.c:326
 msgid "Leave channel:"
 msgstr "Opuštění kanálu:"
 
-#: src/fe-gtk/setup.c:300
+#: src/fe-gtk/setup.c:327
 msgid "Away:"
 msgstr "Pryč"
 
-#: src/fe-gtk/setup.c:302
+#: src/fe-gtk/setup.c:329
 msgid "Away"
 msgstr "Away"
 
-#: src/fe-gtk/setup.c:303
+#: src/fe-gtk/setup.c:330
 msgid "Announce away messages"
 msgstr "Zasílat away (pryč) zprávy"
 
-#: src/fe-gtk/setup.c:304
+#: src/fe-gtk/setup.c:331
 msgid "Announce your away messages to all channels"
 msgstr "Zaslat away zprávu na kanál(y) k nimž jste připojeni"
 
-#: src/fe-gtk/setup.c:305
+#: src/fe-gtk/setup.c:332
 msgid "Show away once"
 msgstr "Zobrazovat away jednou"
 
-#: src/fe-gtk/setup.c:305
+#: src/fe-gtk/setup.c:332
 msgid "Show identical away messages only once"
 msgstr "Zobrazit identické zprávy away pouze jednou"
 
-#: src/fe-gtk/setup.c:306
+#: src/fe-gtk/setup.c:333
 msgid "Automatically unmark away"
 msgstr "Automaticky zrušit stav away"
 
-#: src/fe-gtk/setup.c:306
+#: src/fe-gtk/setup.c:333
 msgid "Unmark yourself as away before sending messages"
 msgstr "Zrušit stav away před odesláním zprávy"
 
-#: src/fe-gtk/setup.c:313
+#: src/fe-gtk/setup.c:340
 msgid "Advanced Settings"
 msgstr "Rozšířená nastavení"
 
-#: src/fe-gtk/setup.c:314
+#: src/fe-gtk/setup.c:341
 msgid "Auto reconnect delay:"
 msgstr "Zpoždění při opakovaném automatickém připojení:"
 
-#: src/fe-gtk/setup.c:315
+#: src/fe-gtk/setup.c:342
 msgid "Display MODEs in raw form"
 msgstr "Zobrazit módy v jejich podobě"
 
-#: src/fe-gtk/setup.c:316
+#: src/fe-gtk/setup.c:343
 msgid "Whois on notify"
 msgstr "Whois při oznámení"
 
-#: src/fe-gtk/setup.c:316
+#: src/fe-gtk/setup.c:343
 msgid "Sends a /WHOIS when a user comes online in your notify list"
 msgstr "Pošle /WHOIS jakmile přijde uživatel, který je na vašem seznamu upozornění"
 
-#: src/fe-gtk/setup.c:317
+#: src/fe-gtk/setup.c:344
 msgid "Hide join and part messages"
 msgstr "Skrývat zprávy o připojení a odchodu"
 
-#: src/fe-gtk/setup.c:317
+#: src/fe-gtk/setup.c:344
 msgid "Hide channel join/part messages by default"
 msgstr "Skryje zprávy kanálu o připojení/odchodu"
 
-#: src/fe-gtk/setup.c:318
+#: src/fe-gtk/setup.c:345
 msgid "Auto Open DCC Windows"
 msgstr "Automaticky otevřít okna DCC"
 
-#: src/fe-gtk/setup.c:319
+#: src/fe-gtk/setup.c:346
 msgid "Send window"
 msgstr "Poslat okno"
 
-#: src/fe-gtk/setup.c:320
+#: src/fe-gtk/setup.c:347
 msgid "Receive window"
 msgstr "Obdržet okno"
 
-#: src/fe-gtk/setup.c:321
+#: src/fe-gtk/setup.c:348
 msgid "Chat window"
 msgstr "Okno hovoru"
 
-#: src/fe-gtk/setup.c:329 src/fe-gtk/setup.c:1521
+#: src/fe-gtk/setup.c:356 src/fe-gtk/setup.c:1643
 msgid "Logging"
 msgstr "Přihlašování"
 
-#: src/fe-gtk/setup.c:330
+#: src/fe-gtk/setup.c:357
 msgid "Enable logging of conversations"
 msgstr "Povolí ukládání hovoru"
 
-#: src/fe-gtk/setup.c:331
+#: src/fe-gtk/setup.c:358
 msgid "Log filename:"
 msgstr "Jméno logu:"
 
-#: src/fe-gtk/setup.c:332
+#: src/fe-gtk/setup.c:359
 #, c-format
 msgid "%s=Server %c=Channel %n=Network."
 msgstr "%s=Server %c=Kanál %n=Síť."
 
-#: src/fe-gtk/setup.c:335
+#: src/fe-gtk/setup.c:362
 msgid "Insert timestamps in logs"
 msgstr "Přidat do logů časové značky"
 
-#: src/fe-gtk/setup.c:336
+#: src/fe-gtk/setup.c:363
 msgid "Log timestamp format:"
 msgstr "Formát časových značek v logu:"
 
-#: src/fe-gtk/setup.c:344
+#: src/fe-gtk/setup.c:371
 msgid "(Disabled)"
 msgstr "(Vypnuto)"
 
-#: src/fe-gtk/setup.c:345
+#: src/fe-gtk/setup.c:372
 msgid "Wingate"
 msgstr "Wingate"
 
-#: src/fe-gtk/setup.c:346
+#: src/fe-gtk/setup.c:373
 msgid "Socks4"
 msgstr "Socks4"
 
-#: src/fe-gtk/setup.c:347
+#: src/fe-gtk/setup.c:374
 msgid "Socks5"
 msgstr "Socks5"
 
-#: src/fe-gtk/setup.c:348
+#: src/fe-gtk/setup.c:375
 msgid "HTTP"
 msgstr "HTTP"
 
-#: src/fe-gtk/setup.c:350
+#: src/fe-gtk/setup.c:377
 msgid "MS Proxy (ISA)"
 msgstr "MS Proxy (ISA)"
 
-#: src/fe-gtk/setup.c:357
+#: src/fe-gtk/setup.c:384
 msgid "All Connections"
 msgstr "Všechna připojení"
 
-#: src/fe-gtk/setup.c:358
+#: src/fe-gtk/setup.c:385
 msgid "IRC Server Only"
 msgstr "Pouze servery IRC"
 
-#: src/fe-gtk/setup.c:359
+#: src/fe-gtk/setup.c:386
 msgid "DCC Get Only"
 msgstr "Pouze Příjem DCC"
 
-#: src/fe-gtk/setup.c:365
+#: src/fe-gtk/setup.c:392
 msgid "Your Address"
 msgstr "Vaše adresa"
 
-#: src/fe-gtk/setup.c:366
+#: src/fe-gtk/setup.c:393
 msgid "Bind to:"
 msgstr "Přiřadit k:"
 
-#: src/fe-gtk/setup.c:367
+#: src/fe-gtk/setup.c:394
 msgid "Only useful for computers with multiple addresses."
 msgstr "Užitečné pouze v případě počítačů s více adresami."
 
-#: src/fe-gtk/setup.c:369
+#: src/fe-gtk/setup.c:396
 msgid "Proxy Server"
 msgstr "Proxy server"
 
-#: src/fe-gtk/setup.c:370
+#: src/fe-gtk/setup.c:397
 msgid "Hostname:"
 msgstr "Jméno počítače:"
 
-#: src/fe-gtk/setup.c:371
+#: src/fe-gtk/setup.c:398
 msgid "Port:"
 msgstr "Port:"
 
-#: src/fe-gtk/setup.c:372
+#: src/fe-gtk/setup.c:399
 msgid "Type:"
 msgstr "Typ:"
 
-#: src/fe-gtk/setup.c:373
+#: src/fe-gtk/setup.c:400
 msgid "Use proxy for:"
 msgstr "Použít proxy"
 
-#: src/fe-gtk/setup.c:375
+#: src/fe-gtk/setup.c:402
 msgid "Proxy Authentication"
 msgstr "Autentikace Proxy"
 
-#: src/fe-gtk/setup.c:377
+#: src/fe-gtk/setup.c:404
 msgid "Use Authentication (MS Proxy, HTTP or Socks5 only)"
 msgstr "Použít autentikaci (MS proxy, HTTP nebo Socks5 pouze)"
 
-#: src/fe-gtk/setup.c:379
+#: src/fe-gtk/setup.c:406
 msgid "Use Authentication (HTTP or Socks5 only)"
 msgstr "Použít autentikaci (HTTP nebo Socks5 pouze)"
 
-#: src/fe-gtk/setup.c:381
+#: src/fe-gtk/setup.c:408
 msgid "Username:"
 msgstr "Uživatelské jméno:"
 
-#: src/fe-gtk/setup.c:382
+#: src/fe-gtk/setup.c:409
 msgid "Password:"
 msgstr "Heslo:"
 
-#: src/fe-gtk/setup.c:725
+#: src/fe-gtk/setup.c:816
 msgid "Select an Image File"
 msgstr "Zvolit soubor s obrázkem"
 
-#: src/fe-gtk/setup.c:749
+#: src/fe-gtk/setup.c:840
 msgid "Select Download Folder"
 msgstr "Zvolit adresář pro stažení"
 
-#: src/fe-gtk/setup.c:758
+#: src/fe-gtk/setup.c:849
 msgid "Select font"
 msgstr "Výběr písma"
 
-#: src/fe-gtk/setup.c:829
+#: src/fe-gtk/setup.c:946
 msgid "Browse..."
 msgstr "Procházet..."
 
-#: src/fe-gtk/setup.c:964
+#: src/fe-gtk/setup.c:1086
 msgid "Mark identified users with:"
 msgstr "Označit idetifikované uživatele s:"
 
-#: src/fe-gtk/setup.c:966
+#: src/fe-gtk/setup.c:1088
 msgid "Mark not-identified users with:"
 msgstr "Označit neidentifikované uživatele s:"
 
-#: src/fe-gtk/setup.c:973
+#: src/fe-gtk/setup.c:1095
 msgid "Open Data Folder"
 msgstr "Otevřít adresář s daty"
 
-#: src/fe-gtk/setup.c:1027
+#: src/fe-gtk/setup.c:1149
 msgid "Select color"
 msgstr "Výběr barvy"
 
-#: src/fe-gtk/setup.c:1107
+#: src/fe-gtk/setup.c:1229
 msgid "Text Colors"
 msgstr "Barvy textu"
 
-#: src/fe-gtk/setup.c:1109
+#: src/fe-gtk/setup.c:1231
 msgid "mIRC colors:"
 msgstr "barvy mIRC"
 
-#: src/fe-gtk/setup.c:1117
+#: src/fe-gtk/setup.c:1239
 msgid "Local colors:"
 msgstr "Místní barvy:"
 
-#: src/fe-gtk/setup.c:1125 src/fe-gtk/setup.c:1130
+#: src/fe-gtk/setup.c:1247 src/fe-gtk/setup.c:1252
 msgid "Foreground:"
 msgstr "Popředí:"
 
-#: src/fe-gtk/setup.c:1126 src/fe-gtk/setup.c:1131
+#: src/fe-gtk/setup.c:1248 src/fe-gtk/setup.c:1253
 msgid "Background:"
 msgstr "Pozadí:"
 
-#: src/fe-gtk/setup.c:1128
+#: src/fe-gtk/setup.c:1250
 msgid "Marking Text"
 msgstr "Text pro označení"
 
-#: src/fe-gtk/setup.c:1133
+#: src/fe-gtk/setup.c:1255
 msgid "Interface Colors"
 msgstr "Barvy rozhraní"
 
-#: src/fe-gtk/setup.c:1135
+#: src/fe-gtk/setup.c:1257
 msgid "New data:"
 msgstr "Nová data:"
 
-#: src/fe-gtk/setup.c:1136
+#: src/fe-gtk/setup.c:1258
 msgid "Marker line:"
 msgstr "Značící čára"
 
-#: src/fe-gtk/setup.c:1137
+#: src/fe-gtk/setup.c:1259
 msgid "New message:"
 msgstr "Nová zpráva:"
 
-#: src/fe-gtk/setup.c:1138
+#: src/fe-gtk/setup.c:1260
 msgid "Away user:"
 msgstr "Uživatel je pryč:"
 
-#: src/fe-gtk/setup.c:1139
+#: src/fe-gtk/setup.c:1261
 msgid "Highlight:"
 msgstr "Zvýraznění:"
 
-#: src/fe-gtk/setup.c:1235 src/fe-gtk/textgui.c:386
+#: src/fe-gtk/setup.c:1357 src/fe-gtk/textgui.c:386
 msgid "Event"
 msgstr "Událost"
 
-#: src/fe-gtk/setup.c:1241
+#: src/fe-gtk/setup.c:1363
 msgid "Sound file"
 msgstr "Soubor se zvukem"
 
-#: src/fe-gtk/setup.c:1276
+#: src/fe-gtk/setup.c:1398
 msgid "Select a sound file"
 msgstr "Zvolit soubor se zvukem"
 
-#: src/fe-gtk/setup.c:1348
+#: src/fe-gtk/setup.c:1470
 msgid "Sound playing method:"
 msgstr "Metoda přehrávání zvuku:"
 
-#: src/fe-gtk/setup.c:1356
+#: src/fe-gtk/setup.c:1478
 msgid "External sound playing _program:"
 msgstr "Externí _program pro přehrávání zvuku:"
 
-#: src/fe-gtk/setup.c:1374
+#: src/fe-gtk/setup.c:1496
 msgid "_External program"
 msgstr "_Externí program"
 
-#: src/fe-gtk/setup.c:1384
+#: src/fe-gtk/setup.c:1506
 msgid "_Automatic"
 msgstr "_Automaticky"
 
-#: src/fe-gtk/setup.c:1397
+#: src/fe-gtk/setup.c:1519
 msgid "Sound files _directory:"
 msgstr "Adresář pro zvuky:"
 
-#: src/fe-gtk/setup.c:1436
+#: src/fe-gtk/setup.c:1558
 msgid "Sound file:"
 msgstr "Zvukový soubor:"
 
-#: src/fe-gtk/setup.c:1451
+#: src/fe-gtk/setup.c:1573
 msgid "_Browse..."
 msgstr "_Procházet..."
 
-#: src/fe-gtk/setup.c:1462
+#: src/fe-gtk/setup.c:1584
 msgid "_Play"
 msgstr "Př_ehrát"
 
-#: src/fe-gtk/setup.c:1511
+#: src/fe-gtk/setup.c:1633
 msgid "Interface"
 msgstr "Uživatelské rozhraní"
 
-#: src/fe-gtk/setup.c:1512
+#: src/fe-gtk/setup.c:1634
 msgid "Text box"
 msgstr "Textové pole"
 
-#: src/fe-gtk/setup.c:1514
+#: src/fe-gtk/setup.c:1636
 msgid "User list"
 msgstr "Seznam uživatelů"
 
-#: src/fe-gtk/setup.c:1516
+#: src/fe-gtk/setup.c:1638
 msgid "Colors"
 msgstr "Barvy"
 
-#: src/fe-gtk/setup.c:1518
+#: src/fe-gtk/setup.c:1640
 msgid "Chatting"
 msgstr "Chatování"
 
-#: src/fe-gtk/setup.c:1520
+#: src/fe-gtk/setup.c:1642
 msgid "General"
 msgstr "Obecné"
 
-#: src/fe-gtk/setup.c:1522
+#: src/fe-gtk/setup.c:1644
 msgid "Sound"
 msgstr "Zvuky"
 
-#: src/fe-gtk/setup.c:1526
+#: src/fe-gtk/setup.c:1648
 msgid "Network setup"
 msgstr "Nastavení sítě"
 
-#: src/fe-gtk/setup.c:1527
+#: src/fe-gtk/setup.c:1649
 msgid "File transfers"
 msgstr "Přenosy souboru"
 
-#: src/fe-gtk/setup.c:1635
+#: src/fe-gtk/setup.c:1757
 msgid "Categories"
 msgstr "Kategorie"
 
-#: src/fe-gtk/setup.c:1816
+#: src/fe-gtk/setup.c:1938
 msgid ""
 "You cannot place the tree on the top or bottom!\n"
 "Please change to the <b>Tabs</b> layout in the <b>View</b> menu first."
@@ -5192,11 +5200,11 @@ msgstr ""
 "Strom není možné umístit nahoru nebo dospod!\n"
 "Změňte prosím nejprve rozložení <b>Záložek</b> v nabídce <b>Zobrazit</b>."
 
-#: src/fe-gtk/setup.c:1826
+#: src/fe-gtk/setup.c:1948
 msgid "Some settings were changed that require a restart to take full effect."
 msgstr "Některá z nastavení, která byla změněna, vyžadují restart aplikace."
 
-#: src/fe-gtk/setup.c:1834
+#: src/fe-gtk/setup.c:1956
 msgid ""
 "*WARNING*\n"
 "Auto accepting DCC to your home directory\n"
@@ -5208,7 +5216,7 @@ msgstr ""
 "může být nebezpečné a zneužitelné. Např.:\n"
 "Někdo vám může poslat soubor .bash_profile"
 
-#: src/fe-gtk/setup.c:1867
+#: src/fe-gtk/setup.c:1989
 msgid "XChat: Preferences"
 msgstr "XChat: Nastavení"
 
@@ -5269,6 +5277,27 @@ msgstr "Uložit seznam do souboru"
 #, c-format
 msgid "%d ops, %d total"
 msgstr "%d op, %d celkem"
+
+#~ msgid "US Minor Outlying Islands"
+#~ msgstr "US Minor Outlying Islands"
+
+#~ msgid "File Offer"
+#~ msgstr "Nabídka souboru"
+
+#~ msgid "Flash taskbar on highlighted messages"
+#~ msgstr "Zaměřit se na zvýrazněnou zprávu"
+
+#~ msgid "Flash taskbar on private messages"
+#~ msgstr "Při soukromé zprávě zablikat v panelu úloh"
+
+#~ msgid "Beep on highlighted messages"
+#~ msgstr "Zvuk při zvýrazněných zprávách"
+
+#~ msgid "Beep on private messages"
+#~ msgstr "Zvuk při soukromé zprávě"
+
+#~ msgid "Beep on channel messages"
+#~ msgstr "Zvuk při zprávě kanálu"
 
 #~ msgid "%s loaded successfully!\n"
 #~ msgstr "%s úspěšně načten!\n"
