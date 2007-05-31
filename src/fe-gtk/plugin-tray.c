@@ -148,7 +148,7 @@ fe_tray_set_balloon (const char *title, const char *text)
 		argv[5] = title;
 		argv[6] = text = strip_color (text, -1, STRIP_ALL);
 		argv[7] = NULL;
-		util_execv (argv);
+		xchat_execv (argv);
 		g_free ((char *)path);
 		free ((char *)text);
 	}
