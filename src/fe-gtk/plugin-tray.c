@@ -5,6 +5,7 @@
 #include "../common/xchat-plugin.h"
 #include "../common/xchat.h"
 #include "../common/xchatc.h"
+#include "../common/inbound.h"
 #include "../common/server.h"
 #include "../common/fe.h"
 #include "../common/util.h"
@@ -360,10 +361,16 @@ tray_toggle_visibility (gboolean force_hide)
 	if (!sticon)
 		return FALSE;
 
+	/* ph may have an invalid context now */
+	xchat_set_context (ph, xchat_find_context (ph, NULL, NULL));
+
 	win = (GtkWindow *)xchat_get_info (ph, "win_ptr");
 
 	tray_stop_flash ();
 	tray_reset_counts ();
+
+	if (!win)
+		return FALSE;
 
 	if (force_hide || GTK_WIDGET_VISIBLE (win))
 	{
@@ -514,7 +521,7 @@ tray_hilight_cb (char *word[], void *userdata)
 		/* FIXME: hides any previous private messages */
 		tray_hilight_count++;
 		if (tray_hilight_count == 1)
-			tray_set_tipf (_("XChat: Highlighed message from: %s (%s)"),
+			tray_set_tipf (_("XChat: Highlighted message from: %s (%s)"),
 								word[1], xchat_get_info (ph, "channel"));
 		else
 			tray_set_tipf (_("XChat: %u highlighted messages, latest from: %s (%s)"),
@@ -522,7 +529,7 @@ tray_hilight_cb (char *word[], void *userdata)
 	}
 
 	if (prefs.input_balloon_hilight)
-		tray_set_balloonf (word[2], _("XChat: Highlighed message from: %s (%s)"),
+		tray_set_balloonf (word[2], _("XChat: Highlighted message from: %s (%s)"),
 								 word[1], xchat_get_info (ph, "channel"));
 
 	return XCHAT_EAT_NONE;
@@ -557,6 +564,9 @@ static void
 tray_priv (char *from, char *text)
 {
 	const char *network;
+
+	if (FromNick (from, prefs.irc_no_hilight))
+		return;
 
 	tray_set_flash (ICON_HILIGHT);
 
