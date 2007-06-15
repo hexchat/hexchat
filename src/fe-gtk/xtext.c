@@ -5130,7 +5130,7 @@ gtk_xtext_lastlog (xtext_buffer *out, xtext_buffer *search_area,
 		{
 			matches++;
 			/* copy the text over */
-			if (search_area->indent)
+			if (search_area->xtext->auto_indent)
 				gtk_xtext_append_indent (out, ent->str, ent->left_len,
 												 ent->str + ent->left_len + 1,
 												 ent->str_len - ent->left_len - 1, 0);
