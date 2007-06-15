@@ -33,5 +33,6 @@ void inbound_action (session *sess, char *chan, char *from, char *text, int from
 void inbound_newnick (server *serv, char *nick, char *newnick, int quiet);
 void do_dns (session *sess, char *nick, char *host);
 void inbound_identified (server *serv);
+int FromNick (char *nick, char *nicks);
 
 #endif

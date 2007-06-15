@@ -258,7 +258,7 @@ SearchNick (char *text, char *nicks)
 	return 0;
 }
 
-static int
+int
 FromNick (char *nick, char *nicks)
 {
 	char S[300];	/* size of irc_no_hilight in xchatprefs */
@@ -874,13 +874,10 @@ inbound_notice (server *serv, char *to, char *nick, char *msg, char *ip, int id)
 			sess = find_session_from_type (stype, serv);
 			if (!sess)
 			{
-				register unsigned int oldh = prefs.hideuserlist;
-				prefs.hideuserlist = 1;
 				if (stype == SESS_NOTICES)
 					sess = new_ircwindow (serv, "(notices)", SESS_NOTICES, 0);
 				else
 					sess = new_ircwindow (serv, "(snotices)", SESS_SNOTICES, 0);
-				prefs.hideuserlist = oldh;
 				fe_set_channel (sess);
 				fe_set_title (sess);
 				fe_set_nonchannel (sess, FALSE);
