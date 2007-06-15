@@ -108,12 +108,16 @@ fe_userlist_numbers (session *sess)
 	{
 		if (sess->total)
 		{
-			sprintf (tbuf, _("%d ops, %d total"), sess->ops, sess->total);
+			snprintf (tbuf, sizeof (tbuf), _("%d ops, %d total"), sess->ops, sess->total);
+			tbuf[sizeof (tbuf) - 1] = 0;
 			gtk_label_set_text (GTK_LABEL (sess->gui->namelistinfo), tbuf);
 		} else
 		{
 			gtk_label_set_text (GTK_LABEL (sess->gui->namelistinfo), NULL);
 		}
+
+		if (sess->type == SESS_CHANNEL && prefs.gui_tweaks & 1)
+			fe_set_title (sess);
 	}
 }
 
@@ -409,10 +413,13 @@ userlist_dnd_drop (GtkTreeView *widget, GdkDragContext *context,
 
 static gboolean
 userlist_dnd_motion (GtkTreeView *widget, GdkDragContext *context, gint x,
-							gint y, guint ttime)
+							gint y, guint ttime, gpointer tree)
 {
 	GtkTreePath *path;
 	GtkTreeSelection *sel;
+
+	if (!tree)
+		return FALSE;
 
 	if (gtk_tree_view_get_path_at_pos (widget, x, y, &path, NULL, NULL, NULL))
 	{
@@ -566,9 +573,14 @@ GtkWidget *
 userlist_create (GtkWidget *box)
 {
 	GtkWidget *sw, *treeview;
-	static const GtkTargetEntry dnd_targets[] =
+	static const GtkTargetEntry dnd_dest_targets[] =
 	{
-		{"text/uri-list", 0, 1}
+		{"text/uri-list", 0, 1},
+		{"XCHAT_CHANVIEW", GTK_TARGET_SAME_APP, 75 }
+	};
+	static const GtkTargetEntry dnd_src_target[] =
+	{
+		{"XCHAT_USERLIST", GTK_TARGET_SAME_APP, 75 }
 	};
 
 	sw = gtk_scrolled_window_new (NULL, NULL);
@@ -590,19 +602,33 @@ userlist_create (GtkWidget *box)
 										  GTK_SELECTION_MULTIPLE);
 
 	/* set up drops */
-	gtk_drag_dest_set (treeview, GTK_DEST_DEFAULT_ALL, dnd_targets, 1,
+/*	gtk_drag_dest_set (treeview, GTK_DEST_DEFAULT_ALL, dnd_dest_targets, 2,
+							 GDK_ACTION_MOVE | GDK_ACTION_COPY | GDK_ACTION_LINK);*/
+	gtk_drag_dest_set (treeview, GTK_DEST_DEFAULT_ALL, dnd_dest_targets + 1, 1,
 							 GDK_ACTION_MOVE | GDK_ACTION_COPY | GDK_ACTION_LINK);
+	gtk_drag_source_set (treeview, GDK_BUTTON1_MASK, dnd_src_target, 1, GDK_ACTION_MOVE);
 
-	g_signal_connect (G_OBJECT (treeview), "drag_motion",
-							G_CALLBACK (userlist_dnd_motion), 0);
+/*	g_signal_connect (G_OBJECT (treeview), "drag_motion",
+							G_CALLBACK (userlist_dnd_motion), treeview);
 	g_signal_connect (G_OBJECT (treeview), "drag_leave",
 							G_CALLBACK (userlist_dnd_leave), 0);
 	g_signal_connect (G_OBJECT (treeview), "drag_data_received",
-							G_CALLBACK (userlist_dnd_drop), 0);
+							G_CALLBACK (userlist_dnd_drop), treeview);*/
 	g_signal_connect (G_OBJECT (treeview), "button_press_event",
 							G_CALLBACK (userlist_click_cb), 0);
 	g_signal_connect (G_OBJECT (treeview), "key_press_event",
 							G_CALLBACK (userlist_key_cb), 0);
+
+#ifndef WIN32
+	g_signal_connect (G_OBJECT (treeview), "drag_begin",
+							G_CALLBACK (mg_drag_begin_cb), NULL);
+	g_signal_connect (G_OBJECT (treeview), "drag_drop",
+							G_CALLBACK (mg_drag_drop_cb), NULL);
+	g_signal_connect (G_OBJECT (treeview), "drag_motion",
+							G_CALLBACK (mg_drag_motion_cb), NULL);
+	g_signal_connect (G_OBJECT (treeview), "drag_end",
+							G_CALLBACK (mg_drag_end_cb), NULL);
+#endif
 
 	userlist_add_columns (GTK_TREE_VIEW (treeview));
 

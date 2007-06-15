@@ -633,6 +633,12 @@ menu_topic_showhide_cb (session *sess)
 }
 
 static void
+menu_userlist_showhide_cb (session *sess)
+{
+	mg_decide_userlist (sess, TRUE);
+}
+
+static void
 menu_ulbuttons_showhide_cb (session *sess)
 {
 	if (prefs.userlistbuttons)
@@ -706,6 +712,14 @@ menu_topicbar_toggle (GtkWidget *wid, gpointer ud)
 	prefs.topicbar = !prefs.topicbar;
 	menu_setting_foreach (menu_topic_showhide_cb, MENU_ID_TOPICBAR,
 								 prefs.topicbar);
+}
+
+static void
+menu_userlist_toggle (GtkWidget *wid, gpointer ud)
+{
+	prefs.hideuserlist = !prefs.hideuserlist;
+	menu_setting_foreach (menu_userlist_showhide_cb, MENU_ID_USERLIST,
+								 !prefs.hideuserlist);
 }
 
 static void
@@ -1377,33 +1391,34 @@ static struct mymenu mymenu[] = {
 
 	{N_("_View"), 0, 0, M_NEWMENU, 0, 0, 1},
 #define MENUBAR_OFFSET (17)
-	{N_("_Menubar"), menu_bar_toggle_cb, 0, M_MENUTOG, MENU_ID_MENUBAR, 0, 1, GDK_F9},
-	{N_("_Topicbar"), menu_topicbar_toggle, 0, M_MENUTOG, MENU_ID_TOPICBAR, 0, 1},
-	{N_("_Userlist Buttons"), menu_ulbuttons_toggle, 0, M_MENUTOG, MENU_ID_ULBUTTONS, 0, 1},
+	{N_("_Menu Bar"), menu_bar_toggle_cb, 0, M_MENUTOG, MENU_ID_MENUBAR, 0, 1, GDK_F9},
+	{N_("_Topic Bar"), menu_topicbar_toggle, 0, M_MENUTOG, MENU_ID_TOPICBAR, 0, 1},
+	{N_("_User List"), menu_userlist_toggle, 0, M_MENUTOG, MENU_ID_USERLIST, 0, 1, GDK_F7},
+	{N_("U_serlist Buttons"), menu_ulbuttons_toggle, 0, M_MENUTOG, MENU_ID_ULBUTTONS, 0, 1},
 	{N_("M_ode Buttons"), menu_cmbuttons_toggle, 0, M_MENUTOG, MENU_ID_MODEBUTTONS, 0, 1},
 	{0, 0, 0, M_SEP, 0, 0, 0},
-	{N_("_Layout"), 0, 0, M_MENUSUB, 0, 0, 1},	/* 22 */
-#define TABS_OFFSET (23)
+	{N_("_Channel Switcher"), 0, 0, M_MENUSUB, 0, 0, 1},	/* 23 */
+#define TABS_OFFSET (24)
 		{N_("_Tabs"), menu_layout_cb, 0, M_MENURADIO, MENU_ID_LAYOUT_TABS, 0, 1},
 		{N_("T_ree"), 0, 0, M_MENURADIO, MENU_ID_LAYOUT_TREE, 0, 1},
 		{0, 0, 0, M_END, 0, 0, 0},
-	{N_("_Network Meters"), 0, 0, M_MENUSUB, 0, 0, 1},	/* 26 */
-#define METRE_OFFSET (27)
+	{N_("_Network Meters"), 0, 0, M_MENUSUB, 0, 0, 1},	/* 27 */
+#define METRE_OFFSET (28)
 		{N_("Off"), menu_metres_off, 0, M_MENURADIO, 0, 0, 1},
 		{N_("Graph"), menu_metres_graph, 0, M_MENURADIO, 0, 0, 1},
 		{N_("Text"), menu_metres_text, 0, M_MENURADIO, 0, 0, 1},
 		{N_("Both"), menu_metres_both, 0, M_MENURADIO, 0, 0, 1},
-		{0, 0, 0, M_END, 0, 0, 0},	/* 31 */
+		{0, 0, 0, M_END, 0, 0, 0},	/* 32 */
 
 	{N_("_Server"), 0, 0, M_NEWMENU, 0, 0, 1},
 	{N_("_Disconnect"), menu_disconnect, GTK_STOCK_DISCONNECT, M_MENUSTOCK, MENU_ID_DISCONNECT, 0, 1},
 	{N_("_Reconnect"), menu_reconnect, GTK_STOCK_CONNECT, M_MENUSTOCK, MENU_ID_RECONNECT, 0, 1},
 	{N_("Join Channel..."), menu_join, GTK_STOCK_JUMP_TO, M_MENUSTOCK, MENU_ID_JOIN, 0, 1},
 	{0, 0, 0, M_SEP, 0, 0, 0},
-#define AWAY_OFFSET (37)
+#define AWAY_OFFSET (38)
 	{N_("Marked Away"), menu_away, 0, M_MENUTOG, MENU_ID_AWAY, 0, 1, GDK_a},
 
-	{N_("_Usermenu"), 0, 0, M_NEWMENU, MENU_ID_USERMENU, 0, 1},	/* 38 */
+	{N_("_Usermenu"), 0, 0, M_NEWMENU, MENU_ID_USERMENU, 0, 1},	/* 39 */
 
 	{N_("S_ettings"), 0, 0, M_NEWMENU, 0, 0, 1},
 	{N_("_Preferences"), menu_settings, GTK_STOCK_PREFERENCES, M_MENUSTOCK, 0, 0, 1},
@@ -1418,7 +1433,7 @@ static struct mymenu mymenu[] = {
 		{N_("User Commands..."), menu_usercommands, 0, M_MENUITEM, 0, 0, 1},
 		{N_("Userlist Buttons..."), menu_ulbuttons, 0, M_MENUITEM, 0, 0, 1},
 		{N_("Userlist Popup..."), menu_ulpopup, 0, M_MENUITEM, 0, 0, 1},
-		{0, 0, 0, M_END, 0, 0, 0},		/* 51 */
+		{0, 0, 0, M_END, 0, 0, 0},		/* 52 */
 
 	{N_("_Window"), 0, 0, M_NEWMENU, 0, 0, 1},
 	{N_("Ban List..."), menu_banlist, 0, M_MENUITEM, 0, 0, 1},
@@ -1429,15 +1444,16 @@ static struct mymenu mymenu[] = {
 	{N_("Ignore List..."), ignore_gui_open, 0, M_MENUITEM, 0, 0, 1},
 	{N_("Notify List..."), notify_opengui, 0, M_MENUITEM, 0, 0, 1},
 	{N_("Plugins and Scripts..."), menu_pluginlist, 0, M_MENUITEM, 0, 0, 1},
-	{N_("Raw Log..."), menu_rawlog, 0, M_MENUITEM, 0, 0, 1},	/* 61 */
+	{N_("Raw Log..."), menu_rawlog, 0, M_MENUITEM, 0, 0, 1},	/* 62 */
 	{N_("URL Grabber..."), url_opengui, 0, M_MENUITEM, 0, 0, 1},
 	{0, 0, 0, M_SEP, 0, 0, 0},
 	{N_("Reset Marker Line"), menu_resetmarker, 0, M_MENUITEM, 0, 0, 1, GDK_m},
 	{N_("C_lear Text"), menu_flushbuffer, GTK_STOCK_CLEAR, M_MENUSTOCK, 0, 0, 1, GDK_l},
+#define SEARCH_OFFSET 67
 	{N_("Search Text..."), menu_search, GTK_STOCK_FIND, M_MENUSTOCK, 0, 0, 1, GDK_f},
 	{N_("Save Text..."), menu_savebuffer, GTK_STOCK_SAVE, M_MENUSTOCK, 0, 0, 1},
 
-	{N_("_Help"), 0, 0, M_NEWMENU, 0, 0, 1},	/* 68 */
+	{N_("_Help"), 0, 0, M_NEWMENU, 0, 0, 1},	/* 69 */
 	{N_("_Contents"), menu_docs, GTK_STOCK_HELP, M_MENUSTOCK, 0, 0, 1, GDK_F1},
 	{N_("_About"), menu_about, GTK_STOCK_ABOUT, M_MENUSTOCK, 0, 0, 1},
 
@@ -1857,8 +1873,9 @@ menu_create_main (void *accel_group, int bar, int away, int toplevel,
 	/* set the initial state of toggles */
 	mymenu[MENUBAR_OFFSET].state = !prefs.hidemenu;
 	mymenu[MENUBAR_OFFSET+1].state = prefs.topicbar;
-	mymenu[MENUBAR_OFFSET+2].state = prefs.userlistbuttons;
-	mymenu[MENUBAR_OFFSET+3].state = prefs.chanmodebuttons;
+	mymenu[MENUBAR_OFFSET+2].state = !prefs.hideuserlist;
+	mymenu[MENUBAR_OFFSET+3].state = prefs.userlistbuttons;
+	mymenu[MENUBAR_OFFSET+4].state = prefs.chanmodebuttons;
 
 	mymenu[AWAY_OFFSET].state = away;
 
@@ -1900,7 +1917,10 @@ menu_create_main (void *accel_group, int bar, int away, int toplevel,
 		if (key_theme)
 		{
 			if (!strcasecmp (key_theme, "Emacs"))
+			{
 				close_mask = GDK_SHIFT_MASK | GDK_CONTROL_MASK;
+				mymenu[SEARCH_OFFSET].key = 0;
+			}
 			g_free (key_theme);
 		}
 	}

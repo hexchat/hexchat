@@ -60,7 +60,7 @@ scrollback_get_filename (session *sess, char *buf, int max)
 	if (!net)
 		return NULL;
 
-	snprintf (buf, max, "%s/%s/%s/scrollback.txt", get_xdir_fs (), net, sess->channel);
+	snprintf (buf, max, "%s/scrollback/%s/%s.txt", get_xdir_fs (), net, sess->channel);
 	mkdir_p (buf);
 
 	return buf;
@@ -284,7 +284,7 @@ scrollback_load (session *sess)
 	{
 		text = ctime (&stamp);
 		text[24] = 0;	/* get rid of the \n */
-		snprintf (buf, sizeof (buf), "*\tLoaded log from %s", text);
+		snprintf (buf, sizeof (buf), "\n*\t%s %s\n\n", _("Loaded log from"), text);
 		fe_print_text (sess, buf, 0);
 		/*EMIT_SIGNAL (XP_TE_GENMSG, sess, "*", buf, NULL, NULL, NULL, 0);*/
 	}

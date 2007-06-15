@@ -430,20 +430,22 @@ const struct prefs vars[] = {
 	{"gui_join_dialog", P_OFFINT (gui_join_dialog), TYPE_BOOL},
 	{"gui_lagometer", P_OFFINT (lagometer), TYPE_INT},
 	{"gui_mode_buttons", P_OFFINT (chanmodebuttons), TYPE_BOOL},
+	{"gui_pane_left_size", P_OFFINT (gui_pane_left_size), TYPE_INT},
+	{"gui_pane_right_size", P_OFFINT (gui_pane_right_size), TYPE_INT},
 	{"gui_slist_select", P_OFFINT (slist_select), TYPE_INT},
 	{"gui_slist_skip", P_OFFINT (slist_skip), TYPE_BOOL},
 	{"gui_throttlemeter", P_OFFINT (throttlemeter), TYPE_INT},
 	{"gui_topicbar", P_OFFINT (topicbar), TYPE_BOOL},
 	{"gui_tray", P_OFFINT (gui_tray), TYPE_BOOL},
-	{"gui_tray_blink", P_OFFINT (_gui_tray_blink), TYPE_INT},	/* obsolete */
 	{"gui_tray_flags", P_OFFINT (gui_tray_flags), TYPE_INT},
+	{"gui_tweaks", P_OFFINT (gui_tweaks), TYPE_INT},
 	{"gui_ulist_buttons", P_OFFINT (userlistbuttons), TYPE_BOOL},
 	{"gui_ulist_doubleclick", P_OFFSET (doubleclickuser), TYPE_STR},
 	{"gui_ulist_hide", P_OFFINT (hideuserlist), TYPE_BOOL},
-	{"gui_ulist_left", P_OFFINT (gui_ulist_left), TYPE_BOOL},
+	{"gui_ulist_left", P_OFFINT (_gui_ulist_left), TYPE_BOOL},	/* obsolete */
+	{"gui_ulist_pos", P_OFFINT (gui_ulist_pos), TYPE_INT},
 	{"gui_ulist_resizable", P_OFFINT (paned_userlist), TYPE_BOOL},
 	{"gui_ulist_show_hosts", P_OFFINT(showhostname_in_userlist), TYPE_BOOL},
-	{"gui_ulist_size", P_OFFINT (paned_pos), TYPE_INT},
 	{"gui_ulist_sort", P_OFFINT (userlist_sort), TYPE_INT},
 	{"gui_ulist_style", P_OFFINT (style_namelistgad), TYPE_BOOL},
 	{"gui_url_mod", P_OFFINT (gui_url_mod), TYPE_INT},
@@ -535,7 +537,8 @@ const struct prefs vars[] = {
 	{"tab_layout", P_OFFINT (tab_layout), TYPE_INT},
 	{"tab_new_to_front", P_OFFINT (newtabstofront), TYPE_INT},
 	{"tab_notices", P_OFFINT (notices_tabs), TYPE_BOOL},
-	{"tab_position", P_OFFINT (tabs_position), TYPE_INT},
+	{"tab_pos", P_OFFINT (tab_pos), TYPE_INT},
+	{"tab_position", P_OFFINT (_tabs_position), TYPE_INT}, /* obsolete */
 	{"tab_server", P_OFFINT (use_server_tab), TYPE_BOOL},
 	{"tab_small", P_OFFINT (tab_small), TYPE_INT},
 	{"tab_sort", P_OFFINT (tab_sort), TYPE_BOOL},
@@ -618,7 +621,7 @@ load_config (void)
 	prefs.show_away_once = 1;
 	prefs.indent_nicks = 1;
 	prefs.thin_separator = 1;
-	/*prefs.tabs_position = 1;*/ /* 0 = bottom */
+	prefs._tabs_position = 2; /* 2 = left */
 	prefs.fastdccsend = 1;
 	prefs.wordwrap = 1;
 	prefs.autosave = 1;
@@ -626,6 +629,7 @@ load_config (void)
 	prefs.gui_input_spell = 1;
 	prefs.autoreconnect = 1;
 	prefs.recon_delay = 10;
+	prefs.text_replay = 1;
 	prefs.tabchannels = 1;
 	prefs.tab_layout = 2;	/* 0=Tabs 1=Reserved 2=Tree */
 	prefs.tab_sort = 1;
@@ -635,7 +639,7 @@ load_config (void)
 	prefs.privmsgtab = 1;
 	/*prefs.style_inputbox = 1;*/
 	prefs.dccpermissions = 0600;
-	prefs.max_lines = 300;
+	prefs.max_lines = 500;
 	prefs.mainwindow_width = 640;
 	prefs.mainwindow_height = 400;
 	prefs.dialog_width = 500;
@@ -665,7 +669,8 @@ load_config (void)
 	prefs.userhost = 1;
 	prefs.gui_url_mod = 4;	/* ctrl */
 	prefs.gui_tray = 1;
-	prefs._gui_tray_blink = 0xfc920; /* 1111 1100 1001 0010 0000 */
+	prefs.gui_pane_left_size = 100;
+	prefs.gui_pane_right_size = 100;
 	prefs.mainwindow_save = 1;
 	prefs.bantype = 2;
 	prefs.input_flash_priv = prefs.input_flash_hilight = 1;
@@ -707,6 +712,7 @@ load_config (void)
 	strcpy (prefs.partreason, prefs.quitreason);
 	strcpy (prefs.font_normal, DEF_FONT);
 	strcpy (prefs.dnsprogram, "host");
+	strcpy (prefs.irc_no_hilight, "NickServ,ChanServ");
 
 	g_free ((char *)username);
 	g_free ((char *)realname);
@@ -765,6 +771,45 @@ load_config (void)
 	sp = strchr (prefs.username, ' ');
 	if (sp)
 		sp[0] = 0;	/* spaces in username would break the login */
+
+	/* try to make sense of old ulist/tree position settings */
+	if (prefs.gui_ulist_pos == 0)
+	{
+		prefs.gui_ulist_pos = 3;	/* top right */
+		if (prefs._gui_ulist_left)
+			prefs.gui_ulist_pos = 2;	/* bottom left */
+
+		switch (prefs._tabs_position)
+		{
+		case 0:
+			prefs.tab_pos = 6; /* bottom */
+			break;
+		case 1:
+			prefs.tab_pos = 5;	/* top */
+			break;
+		case 2:
+			prefs.tab_pos = 1; 	/* left */
+			break;
+		case 3:
+			prefs.tab_pos = 4; 	/* right */
+			break;
+		case 4:
+			prefs.tab_pos = 7;	/* hidden */
+			break;
+		case 5:
+			if (prefs._gui_ulist_left)
+			{
+				prefs.tab_pos = 1; 	/* above ulist left */
+				prefs.gui_ulist_pos = 2;
+			}
+			else
+			{
+				prefs.tab_pos = 3; 	/* above ulist right */
+				prefs.gui_ulist_pos = 4;
+			}
+			break;
+		}
+	}
 }
 
 int
@@ -906,6 +951,7 @@ int
 cmd_set (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	int wild = FALSE;
+	int or = FALSE;
 	int quiet = FALSE;
 	int erase = FALSE;
 	int i = 0, finds = 0, found;
@@ -916,6 +962,12 @@ cmd_set (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	{
 		idx++;
 		erase = TRUE;
+	}
+
+	if (strcasecmp (word[idx], "-or") == 0)
+	{
+		idx++;
+		or = TRUE;
 	}
 
 	if (strcasecmp (word[idx], "-quiet") == 0)
@@ -979,7 +1031,10 @@ cmd_set (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 							*((int *) &prefs + vars[i].offset) = 0;
 					} else
 					{
-						*((int *) &prefs + vars[i].offset) = atoi (val);
+						if (or)
+							*((int *) &prefs + vars[i].offset) |= atoi (val);
+						else
+							*((int *) &prefs + vars[i].offset) = atoi (val);
 					}
 					if (!quiet)
 						PrintTextf (sess, "%s set to: %d\n", var,

@@ -929,7 +929,7 @@ try_browser (const char *browser, const char *arg, const char *url)
 #endif
 
 static void
-fe_open_url_locale (const char *url)
+fe_open_url_inner (const char *url)
 {
 #ifdef WIN32
 	ShellExecute (0, "open", url, NULL, NULL, SW_SHOWNORMAL);
@@ -959,6 +959,21 @@ fe_open_url_locale (const char *url)
 	/* fresh out of ideas... */
 	try_browser ("mozilla", NULL, url);
 #endif
+}
+
+static void
+fe_open_url_locale (const char *url)
+{
+#ifndef WIN32
+	if (strchr (url, ':') == NULL)
+	{
+		url = g_strdup_printf ("http://%s", url);
+		fe_open_url_inner (url);
+		g_free ((char *)url);
+		return;
+	}
+#endif
+	fe_open_url_inner (url);
 }
 
 void

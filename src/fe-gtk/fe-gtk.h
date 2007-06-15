@@ -125,7 +125,7 @@ typedef struct session_gui
 		*note_book,
 		*main_table,
 		*user_tree,	/* GtkTreeView */
-		*user_box,
+		*user_box,	/* userlist box */
 		*button_box_parent,
 		*button_box,	/* userlist buttons' box */
 		*dialogbutton_box,
@@ -136,7 +136,10 @@ typedef struct session_gui
 		*throttlemeter,
 		*throttleinfo,
 		*topic_bar,
-		*pane,
+		*hpane_left,
+		*hpane_right,
+		*vpane_left,
+		*vpane_right,
 		*menu,
 		*bar,				/* connecting progress bar */
 		*nick_box,		/* contains label to the left of input_box */
@@ -148,17 +151,18 @@ typedef struct session_gui
 		*limit_entry,		  /* +l */
 		*key_entry;		  /* +k */
 
-#define MENU_ID_NUM 11
+#define MENU_ID_NUM 12
 	GtkWidget *menu_item[MENU_ID_NUM+1]; /* some items we may change state of */
 
 	void *chanview;	/* chanview.h */
 
 	int bartag;		/*connecting progressbar timeout */
 
-	int pane_pos;	/*last position of the pane*/
+	int pane_left_size;	/*last position of the pane*/
+	int pane_right_size;
 
-	unsigned int is_tab:1;	/* is tab or toplevel? */
-	unsigned int ul_hidden:1;	/* userlist hidden? */
+	guint16 is_tab;	/* is tab or toplevel? */
+	guint16 ul_hidden;	/* userlist hidden? */
 
 } session_gui;
 

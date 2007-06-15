@@ -153,8 +153,14 @@ struct xchatprefs
 
 	int away_timeout;
 	int away_size_max;
-	int paned_pos;
-	int tabs_position;
+
+	int gui_pane_left_size;
+	int gui_pane_right_size;
+
+	int gui_ulist_pos;
+	int tab_pos;
+
+	int _tabs_position;
 	int tab_layout;
 	int max_auto_indent;
 	int dcc_blocksize;
@@ -273,9 +279,9 @@ struct xchatprefs
 	unsigned int wordwrap;
 	unsigned int gui_input_spell;
 	unsigned int gui_tray;
-	unsigned int _gui_tray_blink;
 	unsigned int gui_tray_flags;
-	unsigned int gui_ulist_left;
+	unsigned int gui_tweaks;
+	unsigned int _gui_ulist_left;
 	unsigned int throttle;
 	unsigned int topicbar;
 	unsigned int hideuserlist;

@@ -1,5 +1,5 @@
 /* X-Chat
- * Copyright (C) 2004-2005 Peter Zelezny.
+ * Copyright (C) 2004-2007 Peter Zelezny.
  */
 
 #include <stdio.h>
@@ -172,13 +172,35 @@ static const char *const ulmenutext[] =
 	NULL
 };
 
+static const char *const cspos[] =
+{
+	N_("Top Left"),
+	N_("Bottom Left"),
+	N_("Top Right"),
+	N_("Bottom Right"),
+	N_("Top"),
+	N_("Bottom"),
+	N_("Hidden"),
+	NULL
+};
+
+static const char *const ulpos[] =
+{
+	N_("Top Left"),
+	N_("Bottom Left"),
+	N_("Top Right"),
+	N_("Bottom Right"),
+	NULL
+};
+
 static const setting userlist_settings[] =
 {
 	{ST_HEADER,	N_("User List"),0,0,0},
 	{ST_TOGGLE, N_("Show hostnames in user list"), P_OFFINTNL(showhostname_in_userlist), 0, 0, 0},
 	{ST_TOGGLE, N_("Use the Text box font and colors"), P_OFFINTNL(style_namelistgad),0,0,0},
-	{ST_TOGGLE, N_("Resizable user list"), P_OFFINTNL(paned_userlist),0,0,0},
+/*	{ST_TOGGLE, N_("Resizable user list"), P_OFFINTNL(paned_userlist),0,0,0},*/
 	{ST_MENU,	N_("User list sorted by:"), P_OFFINTNL(userlist_sort), 0, ulmenutext, 0},
+	{ST_MENU,	N_("Show user list at:"), P_OFFINTNL(gui_ulist_pos), 0, ulpos, 1},
 
 	{ST_HEADER,	N_("Away tracking"),0,0,0},
 	{ST_TOGGLE,	N_("Track the Away status of users and mark them in a different color"), P_OFFINTNL(away_track),0,0,2},
@@ -201,16 +223,7 @@ static const char *const tabwin[] =
 	NULL
 };
 
-static const char *const tabpos[] =
-{
-	N_("Bottom"),
-	N_("Top"),
-	N_("Left"),
-	N_("Right"),
-	N_("Hidden"),
-	NULL
-};
-
+#if 0
 static const char *const focusnewtabsmenu[] =
 {
 	N_("Never"),
@@ -218,17 +231,20 @@ static const char *const focusnewtabsmenu[] =
 	N_("Only requested tabs"),
 	NULL
 };
+#endif
 
 static const setting tabs_settings[] =
 {
-	{ST_HEADER,	N_("Tabs"),0,0,0},
+	{ST_HEADER,	N_("Channel Switcher"),0,0,0},
 	{ST_TOGGLE, N_("Open an extra tab for server messages"), P_OFFINTNL(use_server_tab), 0, 0, 0},
 	{ST_TOGGLE, N_("Open an extra tab for server notices"), P_OFFINTNL(notices_tabs), 0, 0, 0},
 	{ST_TOGGLE, N_("Open a new tab when you receive a private message"), P_OFFINTNL(autodialog), 0, 0, 0},
 	{ST_TOGGLE, N_("Sort tabs in alphabetical order"), P_OFFINTNL(tab_sort), 0, 0, 0},
 	{ST_TOGGLE, N_("Small tabs"), P_OFFINTNL(tab_small), 0, 0, 0},
+#if 0
 	{ST_MENU,	N_("Focus new tabs:"), P_OFFINTNL(newtabstofront), 0, focusnewtabsmenu, 0},
-	{ST_MENU,	N_("Show tabs at:"), P_OFFINTNL(tabs_position), 0, tabpos, 0},
+#endif
+	{ST_MENU,	N_("Show channel switcher at:"), P_OFFINTNL(tab_pos), 0, cspos, 1},
 	{ST_NUMBER,	N_("Shorten tab labels to:"), P_OFFINTNL(truncchans), 0, (const char **)N_("letters."), 99},
 
 	{ST_HEADER,	N_("Tabs or Windows"),0,0,0},
@@ -302,7 +318,9 @@ static const setting alert_settings[] =
 	{ST_HEADER,	N_("Alerts"),0,0,0},
 
 	{ST_ALERTHEAD},
+#ifndef WIN32
 	{ST_3OGGLE, N_("Show tray balloons on:"), 0, 0, (void *)balloonlist, 0},
+#endif
 	{ST_3OGGLE, N_("Blink tray icon on:"), 0, 0, (void *)trayblinklist, 0},
 	{ST_3OGGLE, N_("Blink task bar on:"), 0, 0, (void *)taskbarlist, 0},
 	{ST_3OGGLE, N_("Make a beep sound on:"), 0, 0, (void *)beeplist, 0},
@@ -697,7 +715,7 @@ setup_menu_cb (GtkWidget *cbox, const setting *set)
 	int n = gtk_combo_box_get_active (GTK_COMBO_BOX (cbox));
 
 	/* set the prefs.<field> */
-	setup_set_int (&setup_prefs, set, n);
+	setup_set_int (&setup_prefs, set, n + set->extra);
 
 	if (set->list == proxytypes)
 	{
@@ -794,7 +812,7 @@ setup_create_menu (GtkWidget *table, int row, const setting *set)
 		gtk_combo_box_append_text (GTK_COMBO_BOX (cbox), _(text[i]));
 
 	gtk_combo_box_set_active (GTK_COMBO_BOX (cbox),
-									  setup_get_int (&setup_prefs, set));
+									  setup_get_int (&setup_prefs, set) - set->extra);
 	g_signal_connect (G_OBJECT (cbox), "changed",
 							G_CALLBACK (setup_menu_cb), (gpointer)set);
 
@@ -1638,7 +1656,7 @@ static const char *const cata[] =
 		N_("Text box"),
 		N_("Input box"),
 		N_("User list"),
-		N_("Tabs"),
+		N_("Channel switcher"),
 		N_("Colors"),
 		NULL,
 	N_("Chatting"),
@@ -1937,8 +1955,8 @@ setup_apply (struct xchatprefs *pr)
 	if (color_change || (DIFF (away_size_max)) || (DIFF (away_track)))
 		do_ulist = TRUE;
 
-	if (pr->tabs_position < 2 && pr->tabs_position != 4 &&
-		 pr->tab_layout == 2 && pr->tabs_position != prefs.tabs_position)
+	if ((pr->tab_pos == 5 || pr->tab_pos == 6) &&
+		 pr->tab_layout == 2 && pr->tab_pos != prefs.tab_pos)
 		fe_message (_("You cannot place the tree on the top or bottom!\n"
 						"Please change to the <b>Tabs</b> layout in the <b>View</b>"
 						" menu first."),

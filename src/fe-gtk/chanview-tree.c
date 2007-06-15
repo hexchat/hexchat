@@ -7,6 +7,11 @@ typedef struct
 	int idle_tag;
 } treeview;
 
+#include "../common/xchat.h"
+#include "../common/xchatc.h"
+#include "fe-gtk.h"
+#include "maingui.h"
+
 static void 	/* row-activated, when a row is double clicked */
 cv_tree_activated_cb (GtkTreeView *view, GtkTreePath *path,
 							 GtkTreeViewColumn *column, gpointer data)
@@ -68,6 +73,14 @@ cv_tree_init (chanview *cv)
 {
 	GtkWidget *view, *win;
 	GtkCellRenderer *renderer;
+	static const GtkTargetEntry dnd_src_target[] =
+	{
+		{"XCHAT_CHANVIEW", GTK_TARGET_SAME_APP, 75 }
+	};
+	static const GtkTargetEntry dnd_dest_target[] =
+	{
+		{"XCHAT_USERLIST", GTK_TARGET_SAME_APP, 75 }
+	};
 
 	win = gtk_scrolled_window_new (0, 0);
 	/*gtk_container_set_border_width (GTK_CONTAINER (win), 1);*/
@@ -86,7 +99,8 @@ cv_tree_init (chanview *cv)
 	GTK_WIDGET_UNSET_FLAGS (view, GTK_CAN_FOCUS);
 	gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (view), FALSE);
 #if GTK_CHECK_VERSION(2,10,0)
-	gtk_tree_view_set_enable_tree_lines (GTK_TREE_VIEW (view), TRUE);
+	if (!(prefs.gui_tweaks & 8))
+		gtk_tree_view_set_enable_tree_lines (GTK_TREE_VIEW (view), TRUE);
 #endif
 	gtk_container_add (GTK_CONTAINER (win), view);
 
@@ -112,6 +126,22 @@ cv_tree_init (chanview *cv)
 							G_CALLBACK (cv_tree_click_cb), cv);
 	g_signal_connect (G_OBJECT (view), "row-activated",
 							G_CALLBACK (cv_tree_activated_cb), NULL);
+
+	gtk_drag_dest_set (view, GTK_DEST_DEFAULT_ALL, dnd_dest_target, 1,
+							 GDK_ACTION_MOVE | GDK_ACTION_COPY | GDK_ACTION_LINK);
+	gtk_drag_source_set (view, GDK_BUTTON1_MASK, dnd_src_target, 1, GDK_ACTION_COPY);
+
+#ifndef WIN32
+	g_signal_connect (G_OBJECT (view), "drag_begin",
+							G_CALLBACK (mg_drag_begin_cb), NULL);
+	g_signal_connect (G_OBJECT (view), "drag_drop",
+							G_CALLBACK (mg_drag_drop_cb), NULL);
+	g_signal_connect (G_OBJECT (view), "drag_motion",
+							G_CALLBACK (mg_drag_motion_cb), NULL);
+	g_signal_connect (G_OBJECT (view), "drag_end",
+							G_CALLBACK (mg_drag_end_cb), NULL);
+#endif
+
 	((treeview *)cv)->tree = GTK_TREE_VIEW (view);
 	((treeview *)cv)->scrollw = win;
 	((treeview *)cv)->idle_tag = 0;
@@ -154,6 +184,23 @@ cv_tree_focus (chan *ch)
 	GtkTreeView *tree = ((treeview *)ch->cv)->tree;
 	GtkTreeModel *model = gtk_tree_view_get_model (tree);
 	GtkTreePath *path;
+	GtkTreeIter parent;
+
+	/* expand the parent node */
+	if (gtk_tree_model_iter_parent (model, &parent, &ch->iter))
+	{
+		path = gtk_tree_model_get_path (model, &parent);
+		if (path)
+		{
+			/*if (!gtk_tree_view_row_expanded (tree, path))
+			{
+				gtk_tree_path_free (path);
+				return;
+			}*/
+			gtk_tree_view_expand_row (tree, path, FALSE);
+			gtk_tree_path_free (path);
+		}
+	}
 
 	path = gtk_tree_model_get_path (model, &ch->iter);
 	if (path)
@@ -183,7 +230,7 @@ cv_tree_move_focus (chanview *cv, gboolean relative, int num)
 		cv_tree_focus (ch);
 }
 
-static gboolean
+/*static gboolean
 cv_timeout (chanview *cv)
 {
 	int colnum = cv->use_icons ? 1 : 0;
@@ -194,17 +241,17 @@ cv_timeout (chanview *cv)
 
 	((treeview *)cv)->idle_tag = 0;
 	return FALSE;
-}
+}*/
 
 static void
 cv_tree_remove (chan *ch)
 {
-	chanview *cv = ch->cv;
+/*	chanview *cv = ch->cv;
 	int colnum = cv->use_icons ? 1 : 0;
 	GtkTreeViewColumn *col = gtk_tree_view_get_column (GTK_TREE_VIEW (((treeview *)cv)->tree), colnum);
 	gtk_tree_view_column_set_sizing (col, GTK_TREE_VIEW_COLUMN_AUTOSIZE);
 	if (((treeview *)cv)->idle_tag == 0)
-		((treeview *)cv)->idle_tag = g_idle_add ((GSourceFunc)cv_timeout, cv);
+		((treeview *)cv)->idle_tag = g_idle_add ((GSourceFunc)cv_timeout, cv);*/
 }
 
 static void
