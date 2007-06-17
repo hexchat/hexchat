@@ -174,10 +174,10 @@ static const char *const ulmenutext[] =
 
 static const char *const cspos[] =
 {
-	N_("Top Left"),
-	N_("Bottom Left"),
-	N_("Top Right"),
-	N_("Bottom Right"),
+	N_("Left (Upper)"),
+	N_("Left (Lower)"),
+	N_("Right (Upper)"),
+	N_("Right (Lower)"),
 	N_("Top"),
 	N_("Bottom"),
 	N_("Hidden"),
@@ -186,10 +186,10 @@ static const char *const cspos[] =
 
 static const char *const ulpos[] =
 {
-	N_("Top Left"),
-	N_("Bottom Left"),
-	N_("Top Right"),
-	N_("Bottom Right"),
+	N_("Left (Upper)"),
+	N_("Left (Lower)"),
+	N_("Right (Upper)"),
+	N_("Right (Lower)"),
 	NULL
 };
 

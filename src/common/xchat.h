@@ -181,6 +181,7 @@ struct xchatprefs
 	int gui_url_mod;
 	int gui_usermenu;
 	int gui_join_dialog;
+	int gui_quit_dialog;
 	int dialog_left;
 	int dialog_top;
 	int dialog_width;

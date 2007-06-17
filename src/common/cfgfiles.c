@@ -432,6 +432,7 @@ const struct prefs vars[] = {
 	{"gui_mode_buttons", P_OFFINT (chanmodebuttons), TYPE_BOOL},
 	{"gui_pane_left_size", P_OFFINT (gui_pane_left_size), TYPE_INT},
 	{"gui_pane_right_size", P_OFFINT (gui_pane_right_size), TYPE_INT},
+	{"gui_quit_dialog", P_OFFINT (gui_quit_dialog), TYPE_BOOL},
 	{"gui_slist_select", P_OFFINT (slist_select), TYPE_INT},
 	{"gui_slist_skip", P_OFFINT (slist_skip), TYPE_BOOL},
 	{"gui_throttlemeter", P_OFFINT (throttlemeter), TYPE_INT},
@@ -645,6 +646,7 @@ load_config (void)
 	prefs.dialog_width = 500;
 	prefs.dialog_height = 256;
 	prefs.gui_join_dialog = 1;
+	prefs.gui_quit_dialog = 1;
 	prefs.dcctimeout = 180;
 	prefs.dccstalltimeout = 60;
 	prefs.notify_timeout = 15;
@@ -794,7 +796,7 @@ load_config (void)
 			prefs.tab_pos = 4; 	/* right */
 			break;
 		case 4:
-			prefs.tab_pos = 7;	/* hidden */
+			prefs.tab_pos = 1;	/* (hidden)left */
 			break;
 		case 5:
 			if (prefs._gui_ulist_left)

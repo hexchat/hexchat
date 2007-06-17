@@ -1003,6 +1003,12 @@ menu_close (GtkWidget * wid, gpointer none)
 }
 
 static void
+menu_quit (GtkWidget * wid, gpointer none)
+{
+	mg_open_quit_dialog (FALSE);
+}
+
+static void
 menu_search ()
 {
 	search_open (current_sess);
@@ -1387,7 +1393,7 @@ static struct mymenu mymenu[] = {
 #define CLOSE_OFFSET (13)
 	{0, menu_close, GTK_STOCK_CLOSE, M_MENUSTOCK, 0, 0, 1, GDK_w},
 	{0, 0, 0, M_SEP, 0, 0, 0},
-	{N_("_Quit"), mg_safe_quit, GTK_STOCK_QUIT, M_MENUSTOCK, 0, 0, 1, GDK_q},	/* 15 */
+	{N_("_Quit"), menu_quit, GTK_STOCK_QUIT, M_MENUSTOCK, 0, 0, 1, GDK_q},	/* 15 */
 
 	{N_("_View"), 0, 0, M_NEWMENU, 0, 0, 1},
 #define MENUBAR_OFFSET (17)

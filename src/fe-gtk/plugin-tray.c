@@ -396,26 +396,9 @@ tray_menu_restore_cb (GtkWidget *item, gpointer userdata)
 }
 
 static void
-tray_dialog_cb (GtkWidget *dialog, gint arg1, gpointer userdata)
-{
-	gtk_widget_destroy (dialog);
-	if (arg1 == GTK_RESPONSE_OK)
-		gtk_widget_destroy ((GtkWidget *)xchat_get_info (ph, "win_ptr"));
-}
-
-
-static void
 tray_menu_quit_cb (GtkWidget *item, gpointer userdata)
 {
-	GtkWidget *dialog;
-
-	dialog = gtk_message_dialog_new_with_markup (GTK_WINDOW (parent_window), 0,
-					GTK_MESSAGE_QUESTION, GTK_BUTTONS_OK_CANCEL,
-					_("You are connected to <b>%u</b> IRC networks.\nAre you sure you want to quit?"), tray_count_networks ());
-	g_signal_connect (G_OBJECT (dialog), "response",
-							G_CALLBACK (tray_dialog_cb), NULL);
-	gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
-	gtk_widget_show (dialog);
+	mg_open_quit_dialog (FALSE);
 }
 
 static void
@@ -477,7 +460,7 @@ tray_menu_cb (GtkWidget *widget, guint button, guint time, gpointer userdata)
 	/*blink_item (BIT_FILEOFFER, submenu, _("File Offer"));*/
 
 	tray_make_item (menu, NULL, tray_menu_quit_cb, NULL);
-	mg_create_icon_item (_("Quit..."), GTK_STOCK_QUIT, menu, tray_menu_quit_cb, NULL);
+	mg_create_icon_item (_("Quit"), GTK_STOCK_QUIT, menu, tray_menu_quit_cb, NULL);
 
 	menu_add_plugin_items (menu, "\x5$TRAY", NULL);
 

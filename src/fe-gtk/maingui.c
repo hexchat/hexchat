@@ -42,6 +42,8 @@
 #include <gtk/gtkimage.h>
 #include <gtk/gtkmessagedialog.h>
 #include <gtk/gtkcheckmenuitem.h>
+#include <gtk/gtkcheckbutton.h>
+#include <gtk/gtkbbox.h>
 #include <gtk/gtkvscrollbar.h>
 
 #include "../common/xchat.h"
@@ -1236,28 +1238,167 @@ mg_create_icon_item (char *label, char *stock, GtkWidget *menu,
 	gtk_widget_show (item);
 }
 
-static void
-mg_quit_cb (GtkDialog *dialog, gint arg1, gpointer userdata)
+static int
+mg_count_networks (void)
 {
-	gtk_widget_destroy (GTK_WIDGET (dialog));
-	if (arg1 == GTK_RESPONSE_YES)
-		mg_safe_quit ();
+	int cons = 0;
+	GSList *list;
+
+	for (list = serv_list; list; list = list->next)
+	{
+		if (((server *)list->data)->connected)
+			cons++;
+	}
+	return cons;
+}
+
+static int
+mg_count_dccs (void)
+{
+	GSList *list;
+	struct DCC *dcc;
+	int dccs = 0;
+
+	list = dcc_list;
+	while (list)
+	{
+		dcc = list->data;
+		if ((dcc->type == TYPE_SEND || dcc->type == TYPE_RECV) &&
+			 dcc->dccstat == STAT_ACTIVE)
+			dccs++;
+		list = list->next;
+	}
+
+	return dccs;
+}
+
+void
+mg_open_quit_dialog (gboolean minimize_button)
+{
+	static GtkWidget *dialog = NULL;
+	GtkWidget *dialog_vbox1;
+	GtkWidget *table1;
+	GtkWidget *image;
+	GtkWidget *checkbutton1;
+	GtkWidget *label;
+	GtkWidget *dialog_action_area1;
+	GtkWidget *button;
+	char *text, *connecttext;
+	int cons;
+	int dccs;
+
+	if (dialog)
+	{
+		gtk_window_present (GTK_WINDOW (dialog));
+		return;
+	}
+
+	dccs = mg_count_dccs ();
+	cons = mg_count_networks ();
+	if (dccs + cons == 0 || !prefs.gui_quit_dialog)
+	{
+		xchat_exit ();
+		return;
+	}
+
+	dialog = gtk_dialog_new ();
+	gtk_container_set_border_width (GTK_CONTAINER (dialog), 6);
+	gtk_window_set_title (GTK_WINDOW (dialog), _("Quit XChat?"));
+	gtk_window_set_resizable (GTK_WINDOW (dialog), FALSE);
+	gtk_window_set_type_hint (GTK_WINDOW (dialog),
+									  GDK_WINDOW_TYPE_HINT_DIALOG);
+	gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
+
+	dialog_vbox1 = GTK_DIALOG (dialog)->vbox;
+	gtk_widget_show (dialog_vbox1);
+
+	table1 = gtk_table_new (2, 2, FALSE);
+	gtk_widget_show (table1);
+	gtk_box_pack_start (GTK_BOX (dialog_vbox1), table1, TRUE, TRUE, 0);
+	gtk_container_set_border_width (GTK_CONTAINER (table1), 6);
+	gtk_table_set_row_spacings (GTK_TABLE (table1), 12);
+	gtk_table_set_col_spacings (GTK_TABLE (table1), 12);
+
+	image = gtk_image_new_from_stock ("gtk-dialog-warning", GTK_ICON_SIZE_DIALOG);
+	gtk_widget_show (image);
+	gtk_table_attach (GTK_TABLE (table1), image, 0, 1, 0, 1,
+							(GtkAttachOptions) (GTK_FILL),
+							(GtkAttachOptions) (GTK_FILL), 0, 0);
+
+	checkbutton1 = gtk_check_button_new_with_mnemonic (_("Don't ask next time."));
+	gtk_widget_show (checkbutton1);
+	gtk_table_attach (GTK_TABLE (table1), checkbutton1, 0, 2, 1, 2,
+							(GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
+							(GtkAttachOptions) (0), 0, 4);
+
+	connecttext = g_strdup_printf (_("You are connected to %i IRC networks."), cons);
+	text = g_strdup_printf ("<span weight=\"bold\" size=\"larger\">%s</span>\n\n%s\n%s",
+								_("Are you sure you want to quit?"),
+								cons ? connecttext : "",
+								dccs ? _("Some file transfers are still active.") : "");
+	g_free (connecttext);
+	label = gtk_label_new (text);
+	g_free (text);
+	gtk_widget_show (label);
+	gtk_table_attach (GTK_TABLE (table1), label, 1, 2, 0, 1,
+							(GtkAttachOptions) (GTK_EXPAND | GTK_SHRINK | GTK_FILL),
+							(GtkAttachOptions) (GTK_EXPAND | GTK_SHRINK), 0, 0);
+	gtk_label_set_use_markup (GTK_LABEL (label), TRUE);
+	gtk_misc_set_alignment (GTK_MISC (label), 0, 0.5);
+
+	dialog_action_area1 = GTK_DIALOG (dialog)->action_area;
+	gtk_widget_show (dialog_action_area1);
+	gtk_button_box_set_layout (GTK_BUTTON_BOX (dialog_action_area1),
+										GTK_BUTTONBOX_END);
+
+	if (minimize_button)
+	{
+		button = gtk_button_new_with_mnemonic (_("_Minimize to Tray"));
+		gtk_widget_show (button);
+		gtk_dialog_add_action_widget (GTK_DIALOG (dialog), button, 1);
+		GTK_WIDGET_SET_FLAGS (button, GTK_CAN_DEFAULT);
+	}
+
+	button = gtk_button_new_from_stock ("gtk-cancel");
+	gtk_widget_show (button);
+	gtk_dialog_add_action_widget (GTK_DIALOG (dialog), button,
+											GTK_RESPONSE_CANCEL);
+	GTK_WIDGET_SET_FLAGS (button, GTK_CAN_DEFAULT);
+
+	button = gtk_button_new_from_stock ("gtk-quit");
+	gtk_widget_show (button);
+	gtk_dialog_add_action_widget (GTK_DIALOG (dialog), button, 0);
+	GTK_WIDGET_SET_FLAGS (button, GTK_CAN_DEFAULT);
+
+	gtk_widget_show (dialog);
+
+	switch (gtk_dialog_run (GTK_DIALOG (dialog)))
+	{
+	case 0:
+		if (GTK_TOGGLE_BUTTON (checkbutton1)->active)
+			prefs.gui_quit_dialog = 0;
+		xchat_exit ();
+		break;
+	case 1: /* minimize to tray */
+		if (GTK_TOGGLE_BUTTON (checkbutton1)->active)
+		{
+			prefs.gui_tray_flags |= 1;
+			/*prefs.gui_quit_dialog = 0;*/
+		}
+		tray_toggle_visibility (TRUE);
+		break;
+	}
+
+	gtk_widget_destroy (dialog);
+	dialog = NULL;
 }
 
 void
 mg_close_sess (session *sess)
 {
-	GtkWidget *dialog;
-
 	if (sess_list->next == NULL)
 	{
-		dialog = gtk_message_dialog_new (GTK_WINDOW (parent_window), 0,
-										GTK_MESSAGE_WARNING, GTK_BUTTONS_YES_NO,
-										_("No other tabs open, quit xchat?"));
-		g_signal_connect (G_OBJECT (dialog), "response",
-								G_CALLBACK (mg_quit_cb), NULL);
-		gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
-		gtk_widget_show (dialog);
+		mg_open_quit_dialog (FALSE);
 		return;
 	}
 
@@ -1671,54 +1812,6 @@ mg_topic_cb (GtkWidget *entry, gpointer userdata)
 	/* restore focus to the input widget, where the next input will most
 likely be */
 	gtk_widget_grab_focus (sess->gui->input_box);
-}
-
-static void
-mg_dcc_cb (GtkDialog *dialog, gint arg1, gpointer userdata)
-{
-	gtk_widget_destroy (GTK_WIDGET (dialog));
-	if (arg1 == GTK_RESPONSE_YES)
-		xchat_exit ();
-}
-
-static int
-mg_dcc_active (void)
-{
-	GSList *list;
-	struct DCC *dcc;
-
-	list = dcc_list;
-	while (list)
-	{
-		dcc = list->data;
-		if ((dcc->type == TYPE_SEND || dcc->type == TYPE_RECV) &&
-			 dcc->dccstat == STAT_ACTIVE)
-			return 1;
-		list = list->next;
-	}
-
-	return 0;
-}
-
-void
-mg_safe_quit (void)
-{
-	GtkWidget *dialog;
-
-	if (mg_dcc_active ())
-	{
-		dialog = gtk_message_dialog_new (NULL, 0,
-									GTK_MESSAGE_WARNING, GTK_BUTTONS_YES_NO,
-								_("Some file transfers still active, quit xchat?"));
-		g_signal_connect (G_OBJECT (dialog), "response",
-								G_CALLBACK (mg_dcc_cb), NULL);
-		gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
-		gtk_widget_show (dialog);
-	} else
-	{
-/*		printf("no active DCCs, quiting\n");*/
-		xchat_exit ();
-	}
 }
 
 static void
@@ -2548,7 +2641,7 @@ mg_sanitize_positions (int *cv, int *ul)
 
 	/* userlist can't be on TOP or BOTTOM */
 	if (*ul == POS_TOP || *ul == POS_BOTTOM)
-		*ul = POS_TOPLEFT;
+		*ul = POS_TOPRIGHT;
 
 	/* can't have both in the same place */
 	if (*cv == *ul)
@@ -2679,7 +2772,7 @@ mg_change_layout (int type)
 	if (mg_gui)
 	{
 		/* put tabs at the bottom */
-		if (type == 0 && prefs.tab_pos == POS_TOPLEFT)
+		if (type == 0 && prefs.tab_pos != POS_BOTTOM && prefs.tab_pos != POS_TOP)
 			prefs.tab_pos = POS_BOTTOM;
 
 		mg_set_chanview_pos (mg_gui);
@@ -2963,7 +3056,7 @@ mg_tabwindow_de_cb (GtkWidget *widget, GdkEvent *event, gpointer user_data)
 		list = list->next;
 	}
 
-	mg_safe_quit ();
+	mg_open_quit_dialog (TRUE);
 	return TRUE;
 }
 
