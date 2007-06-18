@@ -1304,9 +1304,8 @@ mg_open_quit_dialog (gboolean minimize_button)
 	dialog = gtk_dialog_new ();
 	gtk_container_set_border_width (GTK_CONTAINER (dialog), 6);
 	gtk_window_set_title (GTK_WINDOW (dialog), _("Quit XChat?"));
+	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (parent_window));
 	gtk_window_set_resizable (GTK_WINDOW (dialog), FALSE);
-	gtk_window_set_type_hint (GTK_WINDOW (dialog),
-									  GDK_WINDOW_TYPE_HINT_DIALOG);
 	gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
 
 	dialog_vbox1 = GTK_DIALOG (dialog)->vbox;
@@ -1356,19 +1355,17 @@ mg_open_quit_dialog (gboolean minimize_button)
 		button = gtk_button_new_with_mnemonic (_("_Minimize to Tray"));
 		gtk_widget_show (button);
 		gtk_dialog_add_action_widget (GTK_DIALOG (dialog), button, 1);
-		GTK_WIDGET_SET_FLAGS (button, GTK_CAN_DEFAULT);
 	}
 
 	button = gtk_button_new_from_stock ("gtk-cancel");
 	gtk_widget_show (button);
 	gtk_dialog_add_action_widget (GTK_DIALOG (dialog), button,
 											GTK_RESPONSE_CANCEL);
-	GTK_WIDGET_SET_FLAGS (button, GTK_CAN_DEFAULT);
+	gtk_widget_grab_focus (button);
 
 	button = gtk_button_new_from_stock ("gtk-quit");
 	gtk_widget_show (button);
 	gtk_dialog_add_action_widget (GTK_DIALOG (dialog), button, 0);
-	GTK_WIDGET_SET_FLAGS (button, GTK_CAN_DEFAULT);
 
 	gtk_widget_show (dialog);
 
