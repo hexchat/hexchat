@@ -500,6 +500,8 @@ typedef struct server
 	int dont_use_proxy:1;		/* to proxy or not to proxy */
 	int supports_watch:1;		/* supports the WATCH command */
 	int bad_prefix:1;				/* gave us a bad PREFIX= 005 number */
+	unsigned int have_namesx:1;	/* 005 tokens NAMESX and UHNAMES */
+	unsigned int have_uhnames:1;
 	unsigned int have_whox:1;	/* have undernet's WHOX features */
 	unsigned int have_capab:1;	/* supports CAPAB (005 tells us) */
 	unsigned int have_idmsg:1;	/* freenode's IDENTIFY-MSG */

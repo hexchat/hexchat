@@ -117,8 +117,6 @@ static PangoAttrList *nickseen_list;
 static PangoAttrList *newmsg_list;
 static PangoAttrList *plain_list = NULL;
 
-static void mg_place_userlist_and_chanview (session_gui *gui, GtkWidget *userlist, GtkWidget *chanview);
-
 
 #ifdef USE_GTKSPELL
 
@@ -2650,7 +2648,7 @@ mg_sanitize_positions (int *cv, int *ul)
 }
 
 static void
-mg_place_userlist_and_chanview (session_gui *gui, GtkWidget *userlist, GtkWidget *chanview)
+mg_place_userlist_and_chanview_real (session_gui *gui, GtkWidget *userlist, GtkWidget *chanview)
 {
 	int unref_userlist = FALSE;
 	int unref_chanview = FALSE;
@@ -2669,8 +2667,6 @@ mg_place_userlist_and_chanview (session_gui *gui, GtkWidget *userlist, GtkWidget
 		gtk_container_remove (GTK_CONTAINER (chanview->parent), chanview);
 		unref_chanview = TRUE;
 	}
-
-	mg_sanitize_positions (&prefs.tab_pos, &prefs.gui_ulist_pos);
 
 	if (chanview)
 	{
@@ -2710,18 +2706,18 @@ mg_place_userlist_and_chanview (session_gui *gui, GtkWidget *userlist, GtkWidget
 	{
 		switch (prefs.gui_ulist_pos)
 		{
-		case 1:
+		case POS_TOPLEFT:
 			gtk_paned_pack1 (GTK_PANED (gui->vpane_left), userlist, FALSE, TRUE);
 			break;
-		case 2:
+		case POS_BOTTOMLEFT:
 			gtk_paned_pack2 (GTK_PANED (gui->vpane_left), userlist, FALSE, TRUE);
 			break;
-		case 4:
+		case POS_BOTTOMRIGHT:
 			gtk_paned_pack2 (GTK_PANED (gui->vpane_right), userlist, FALSE, TRUE);
 			break;
 		case POS_HIDDEN:
 			break;
-		default:
+		default:/* POS_TOPRIGHT */
 			gtk_paned_pack1 (GTK_PANED (gui->vpane_right), userlist, FALSE, TRUE);
 		}
 	}
@@ -2735,32 +2731,27 @@ mg_place_userlist_and_chanview (session_gui *gui, GtkWidget *userlist, GtkWidget
 }
 
 static void
-mg_set_chanview_pos (session_gui *gui)
+mg_place_userlist_and_chanview (session_gui *gui)
 {
 	GtkOrientation orientation;
-	GtkWidget *tabs_box;
+	GtkWidget *chanviewbox = NULL;
 	int pos;
 
-	if (!gui)
+	mg_sanitize_positions (&prefs.tab_pos, &prefs.gui_ulist_pos);
+
+	if (gui->chanview)
 	{
-		gui = mg_gui;
-		if (!gui)
-			return;
+		pos = prefs.tab_pos;
+
+		orientation = chanview_get_orientation (gui->chanview);
+		if ((pos == POS_BOTTOM || pos == POS_TOP) && orientation == GTK_ORIENTATION_VERTICAL)
+			chanview_set_orientation (gui->chanview, FALSE);
+		else if ((pos == POS_TOPLEFT || pos == POS_BOTTOMLEFT || pos == POS_TOPRIGHT || pos == POS_BOTTOMRIGHT) && orientation == GTK_ORIENTATION_HORIZONTAL)
+			chanview_set_orientation (gui->chanview, TRUE);
+		chanviewbox = chanview_get_box (gui->chanview);
 	}
 
-	mg_sanitize_positions (&prefs.tab_pos, &prefs.gui_ulist_pos);
-	pos = prefs.tab_pos;
-
-	tabs_box = chanview_get_box (gui->chanview);
-
-	orientation = chanview_get_orientation (gui->chanview);
-	if ((pos == POS_BOTTOM || pos == POS_TOP) && orientation == GTK_ORIENTATION_VERTICAL)
-		chanview_set_orientation (gui->chanview, FALSE);
-	else if ((pos == POS_TOPLEFT || pos == POS_BOTTOMLEFT || pos == POS_TOPRIGHT || pos == POS_BOTTOMRIGHT) && orientation == GTK_ORIENTATION_HORIZONTAL)
-		chanview_set_orientation (gui->chanview, TRUE);
-
-	gtk_widget_show (tabs_box);
-	mg_place_userlist_and_chanview (gui, NULL, tabs_box);
+	mg_place_userlist_and_chanview_real (gui, gui->user_box, chanviewbox);
 }
 
 void
@@ -2772,7 +2763,7 @@ mg_change_layout (int type)
 		if (type == 0 && prefs.tab_pos != POS_BOTTOM && prefs.tab_pos != POS_TOP)
 			prefs.tab_pos = POS_BOTTOM;
 
-		mg_set_chanview_pos (mg_gui);
+		mg_place_userlist_and_chanview (mg_gui);
 		chanview_set_impl (mg_gui->chanview, type);
 	}
 }
@@ -2865,6 +2856,8 @@ mg_switch_tab_cb (chanview *cv, chan *ch, int tag, gpointer ud)
 	{
 		/* userdata for non-irc tabs is actually the GtkBox */
 		mg_show_generic_tab (ud);
+		if (!mg_is_userlist_and_tree_combined ())
+			mg_userlist_showhide (current_sess, FALSE);	/* hide */
 	}
 }
 
@@ -2894,7 +2887,7 @@ mg_create_tabs (session_gui *gui)
 											prefs.style_namelistgad ? input_style : NULL);
 	chanview_set_callbacks (gui->chanview, mg_switch_tab_cb, mg_xbutton_cb,
 									mg_tab_contextmenu_cb, (void *)mg_tabs_compare);
-	mg_place_userlist_and_chanview (gui, NULL, chanview_get_box (gui->chanview));
+	mg_place_userlist_and_chanview (gui);
 }
 
 static gboolean
@@ -3032,7 +3025,7 @@ mg_create_topwindow (session *sess)
 			gtk_widget_hide (sess->gui->topicbutton_box);
 	}
 
-	mg_place_userlist_and_chanview (sess->gui, sess->gui->user_box, NULL);
+	mg_place_userlist_and_chanview (sess->gui);
 
 	gtk_widget_show (win);
 }
@@ -3121,8 +3114,7 @@ mg_create_tabwindow (session *sess)
 	if (prefs.gui_tweaks & 2)
 		gtk_widget_hide (sess->gui->nick_box);
 
-	mg_place_userlist_and_chanview (sess->gui, sess->gui->user_box, NULL);
-	mg_set_chanview_pos (sess->gui);
+	mg_place_userlist_and_chanview (sess->gui);
 
 	gtk_widget_show (win);
 }
@@ -3132,6 +3124,7 @@ mg_apply_setup (void)
 {
 	GSList *list = sess_list;
 	session *sess;
+	int done_main = FALSE;
 
 	mg_create_tab_colors ();
 
@@ -3140,12 +3133,12 @@ mg_apply_setup (void)
 		sess = list->data;
 		gtk_xtext_set_time_stamp (sess->res->buffer, prefs.timestamp);
 		((xtext_buffer *)sess->res->buffer)->needs_recalc = TRUE;
-		mg_place_userlist_and_chanview (sess->gui, sess->gui->user_box, NULL);
+		if (!sess->gui->is_tab || !done_main)
+			mg_place_userlist_and_chanview (sess->gui);
+		if (sess->gui->is_tab)
+			done_main = TRUE;
 		list = list->next;
 	}
-
-	if (mg_gui)
-		mg_set_chanview_pos (mg_gui);
 }
 
 static chan *
@@ -3528,12 +3521,6 @@ fe_session_callback (session *sess)
 
 /* ===== DRAG AND DROP STUFF ===== */
 
-static void
-mg_reposition (session_gui *gui)
-{
-	mg_place_userlist_and_chanview (gui, gui->user_box, chanview_get_box (gui->chanview));
-}
-
 static gboolean
 is_child_of (GtkWidget *widget, GtkWidget *parent)
 {
@@ -3589,7 +3576,7 @@ mg_handle_drop (GtkWidget *widget, int y, int *pos, int *other_pos)
 		}
 	}
 
-	mg_reposition (gui);
+	mg_place_userlist_and_chanview (gui);
 }
 
 /* this begin callback just creates an nice of the source */
