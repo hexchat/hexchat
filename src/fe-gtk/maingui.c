@@ -2675,7 +2675,7 @@ mg_place_userlist_and_chanview (session_gui *gui, GtkWidget *userlist, GtkWidget
 	if (chanview)
 	{
 		gtk_table_set_row_spacing (GTK_TABLE (gui->main_table), 1, 0);
-		gtk_table_set_row_spacing (GTK_TABLE (gui->main_table), 2, 0);
+		gtk_table_set_row_spacing (GTK_TABLE (gui->main_table), 2, 2);
 
 		/* then place them back in their new positions */
 		switch (prefs.tab_pos)
@@ -2700,7 +2700,7 @@ mg_place_userlist_and_chanview (session_gui *gui, GtkWidget *userlist, GtkWidget
 		case POS_HIDDEN:
 			break;
 		default:/* POS_BOTTOM */
-			gtk_table_set_row_spacing (GTK_TABLE (gui->main_table), 2, 1);
+			gtk_table_set_row_spacing (GTK_TABLE (gui->main_table), 2, 3);
 			gtk_table_attach (GTK_TABLE (gui->main_table), chanview,
 									1, 2, 3, 4, GTK_FILL, GTK_FILL, 0, 0);
 		}
@@ -2983,9 +2983,12 @@ mg_create_topwindow (session *sess)
 
 	palette_alloc (win);
 
-	table = gtk_table_new (3, 3, FALSE);
+	table = gtk_table_new (4, 3, FALSE);
 	/* spacing under the menubar */
 	gtk_table_set_row_spacing (GTK_TABLE (table), 0, GUI_SPACING);
+	/* left and right borders */
+	gtk_table_set_col_spacing (GTK_TABLE (table), 0, 1);
+	gtk_table_set_col_spacing (GTK_TABLE (table), 1, 1);
 	gtk_container_add (GTK_CONTAINER (win), table);
 
 	mg_create_irctab (sess, table);
@@ -3085,9 +3088,12 @@ mg_create_tabwindow (session *sess)
 
 	palette_alloc (win);
 
-	sess->gui->main_table = table = gtk_table_new (3, 3, FALSE);
+	sess->gui->main_table = table = gtk_table_new (4, 3, FALSE);
 	/* spacing under the menubar */
 	gtk_table_set_row_spacing (GTK_TABLE (table), 0, GUI_SPACING);
+	/* left and right borders */
+	gtk_table_set_col_spacing (GTK_TABLE (table), 0, 1);
+	gtk_table_set_col_spacing (GTK_TABLE (table), 1, 1);
 	gtk_container_add (GTK_CONTAINER (win), table);
 
 	mg_create_irctab (sess, table);
