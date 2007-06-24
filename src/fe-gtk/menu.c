@@ -807,8 +807,13 @@ menu_urlmenu (GdkEventButton *event, char *url)
 static void
 menu_chan_cycle (GtkWidget * menu, char *chan)
 {
+	char tbuf[256];
+
 	if (current_sess)
-		handle_command (current_sess, "CYCLE", FALSE);
+	{
+		snprintf (tbuf, sizeof tbuf, "CYCLE %s", chan);
+		handle_command (current_sess, tbuf, FALSE);
+	}
 }
 
 static void

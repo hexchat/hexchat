@@ -965,7 +965,7 @@ static void
 fe_open_url_locale (const char *url)
 {
 #ifndef WIN32
-	if (strchr (url, ':') == NULL)
+	if (url[0] != '/' && strchr (url, ':') == NULL)
 	{
 		url = g_strdup_printf ("http://%s", url);
 		fe_open_url_inner (url);

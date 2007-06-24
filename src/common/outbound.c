@@ -768,7 +768,9 @@ static int
 cmd_cycle (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	char *key = sess->channelkey;
-	char *chan = sess->channel;
+	char *chan = word[2];
+	if (!*chan)
+		chan = sess->channel;
 	if (*chan && sess->type == SESS_CHANNEL)
 	{
 		sess->server->p_cycle (sess->server, chan, key);
@@ -3531,7 +3533,7 @@ const struct commands xc_cmds[] = {
 	{"CTCP", cmd_ctcp, 1, 0, 1,
 	 N_("CTCP <nick> <message>, send the CTCP message to nick, common messages are VERSION and USERINFO")},
 	{"CYCLE", cmd_cycle, 1, 1, 1,
-	 N_("CYCLE, parts current channel and immediately rejoins")},
+	 N_("CYCLE [<channel>], parts the current or given channel and immediately rejoins")},
 	{"DCC", cmd_dcc, 0, 0, 1,
 	 N_("\n"
 	 "DCC GET <nick>                      - accept an offered file\n"

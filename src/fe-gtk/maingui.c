@@ -505,7 +505,7 @@ fe_set_title (session *sess)
 		break;
 	case SESS_CHANNEL:
 		/* don't display keys in the titlebar */
-		if (has_key (sess->current_modes))
+		if ((!(prefs.gui_tweaks & 16)) && has_key (sess->current_modes))
 			snprintf (tbuf, sizeof (tbuf),
 						 "XChat: %s @ %s / %s",
 						 sess->server->nick, server_get_network (sess->server, TRUE),
@@ -2237,7 +2237,7 @@ mg_word_check (GtkWidget * xtext, char *word, int len)
 	ret = url_check_word (word, len);	/* common/url.c */
 	if (ret == 0)
 	{
-		if (( (word[0]=='@' || word[0]=='+') && userlist_find (sess, word+1)) || userlist_find (sess, word))
+		if (( (word[0]=='@' || word[0]=='+' || word[0]=='%') && userlist_find (sess, word+1)) || userlist_find (sess, word))
 			return WORD_NICK;
 
 		if (sess->type == SESS_DIALOG)
@@ -2293,7 +2293,7 @@ mg_word_clicked (GtkWidget *xtext, char *word, GdkEventButton *even)
 		menu_urlmenu (even, word);
 		break;
 	case WORD_NICK:
-		menu_nickmenu (sess, even, (word[0]=='@' || word[0]=='+') ?
+		menu_nickmenu (sess, even, (word[0]=='@' || word[0]=='+' || word[0]=='%') ?
 			word+1 : word, FALSE);
 		break;
 	case WORD_CHANNEL:

@@ -460,7 +460,7 @@ tray_menu_cb (GtkWidget *widget, guint button, guint time, gpointer userdata)
 	/*blink_item (BIT_FILEOFFER, submenu, _("File Offer"));*/
 
 	tray_make_item (menu, NULL, tray_menu_quit_cb, NULL);
-	mg_create_icon_item (_("Quit"), GTK_STOCK_QUIT, menu, tray_menu_quit_cb, NULL);
+	mg_create_icon_item (_("_Quit"), GTK_STOCK_QUIT, menu, tray_menu_quit_cb, NULL);
 
 	menu_add_plugin_items (menu, "\x5$TRAY", NULL);
 
