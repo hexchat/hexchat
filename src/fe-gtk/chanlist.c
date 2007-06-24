@@ -294,6 +294,12 @@ chanlist_place_row_in_gui (server *serv, chanlistrow *next_row, gboolean force)
 static void
 chanlist_do_refresh (server *serv)
 {
+	if (serv->gui->chanlist_flash_tag)
+	{
+		g_source_remove (serv->gui->chanlist_flash_tag);
+		serv->gui->chanlist_flash_tag = 0;
+	}
+
 	if (!serv->connected)
 	{
 		fe_message (_("Not connected."), FE_MSG_ERROR);
@@ -321,8 +327,8 @@ chanlist_do_refresh (server *serv)
 		serv->gui->chanlist_minusers_downloaded = 1;
 	}
 
-	gtk_spin_button_set_range ((GtkSpinButton *)serv->gui->chanlist_min_spin,
-										serv->gui->chanlist_minusers_downloaded, 999999);
+/*	gtk_spin_button_set_range ((GtkSpinButton *)serv->gui->chanlist_min_spin,
+										serv->gui->chanlist_minusers_downloaded, 999999);*/
 }
 
 static void
@@ -517,10 +523,35 @@ chanlist_save (GtkWidget * wid, server *serv)
 								serv, NULL, FRF_WRITE);
 }
 
+static gboolean
+chanlist_flash (server *serv)
+{
+	if (serv->gui->chanlist_refresh->state != GTK_STATE_ACTIVE)
+		gtk_widget_set_state (serv->gui->chanlist_refresh, GTK_STATE_ACTIVE);
+	else
+		gtk_widget_set_state (serv->gui->chanlist_refresh, GTK_STATE_PRELIGHT);
+
+	return TRUE;
+}
+
 static void
 chanlist_minusers (GtkSpinButton *wid, server *serv)
 {
 	serv->gui->chanlist_minusers = gtk_spin_button_get_value_as_int (wid);
+
+	if (serv->gui->chanlist_minusers < serv->gui->chanlist_minusers_downloaded)
+	{
+		if (serv->gui->chanlist_flash_tag == 0)
+			serv->gui->chanlist_flash_tag = g_timeout_add (500, (GSourceFunc)chanlist_flash, serv);
+	}
+	else
+	{
+		if (serv->gui->chanlist_flash_tag)
+		{
+			g_source_remove (serv->gui->chanlist_flash_tag);
+			serv->gui->chanlist_flash_tag = 0;
+		}
+	}
 }
 
 static void
@@ -609,6 +640,12 @@ chanlist_destroy_widget (GtkWidget *wid, server *serv)
 	custom_list_clear ((CustomList *)GET_MODEL (serv));
 	chanlist_data_free (serv);
 
+	if (serv->gui->chanlist_flash_tag)
+	{
+		g_source_remove (serv->gui->chanlist_flash_tag);
+		serv->gui->chanlist_flash_tag = 0;
+	}
+
 	if (serv->gui->chanlist_tag)
 	{
 		g_source_remove (serv->gui->chanlist_tag);
@@ -679,6 +716,7 @@ chanlist_opengui (server *serv, int do_refresh)
 
 	serv->gui->chanlist_pending_rows = NULL;
 	serv->gui->chanlist_tag = 0;
+	serv->gui->chanlist_flash_tag = 0;
 	serv->gui->chanlist_data_stored_rows = NULL;
 
 	if (!serv->gui->chanlist_minusers)

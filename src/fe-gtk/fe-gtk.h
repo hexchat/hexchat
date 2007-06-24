@@ -64,6 +64,7 @@ struct server_gui
 	GSList *chanlist_data_stored_rows;	/* stored list so it can be resorted  */
 	GSList *chanlist_pending_rows;
 	gint chanlist_tag;
+	gint chanlist_flash_tag;
 
 	gboolean chanlist_match_wants_channel;	/* match in channel name */
 	gboolean chanlist_match_wants_topic;	/* match in topic */
