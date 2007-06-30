@@ -11,6 +11,7 @@ GtkWidget *create_icon_menu (char *labeltext, void *stock_name, int is_stock);
 void menu_create (GtkWidget *menu, GSList *list, char *target, int check_path);
 void menu_bar_toggle (void);
 void menu_add_plugin_items (GtkWidget *menu, char *root, char *target);
+void menu_change_layout (void);
 
 /* menu items we keep a GtkWidget* for (to change their state) */
 #define MENU_ID_AWAY 1

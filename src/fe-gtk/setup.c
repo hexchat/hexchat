@@ -20,6 +20,7 @@
 #include "maingui.h"
 #include "palette.h"
 #include "pixmaps.h"
+#include "menu.h"
 
 #include <gtk/gtkcolorseldialog.h>
 #include <gtk/gtktable.h>
@@ -233,9 +234,18 @@ static const char *const focusnewtabsmenu[] =
 };
 #endif
 
+static const char *const swtype[] =
+{
+	N_("Tabs"),	/* 0 tabs */
+	"",			/* 1 reserved */
+	N_("Tree"),	/* 2 tree */
+	NULL
+};
+
 static const setting tabs_settings[] =
 {
-	{ST_HEADER,	N_("Channel Switcher"),0,0,0},
+	/*{ST_HEADER,	N_("Channel Switcher"),0,0,0},*/
+	{ST_RADIO,  N_("Switcher type:"),P_OFFINTNL(tab_layout), 0, swtype, 0},
 	{ST_TOGGLE, N_("Open an extra tab for server messages"), P_OFFINTNL(use_server_tab), 0, 0, 0},
 	{ST_TOGGLE, N_("Open an extra tab for server notices"), P_OFFINTNL(notices_tabs), 0, 0, 0},
 	{ST_TOGGLE, N_("Open a new tab when you receive a private message"), P_OFFINTNL(autodialog), 0, 0, 0},
@@ -672,42 +682,9 @@ setup_create_hscale (GtkWidget *table, int row, const setting *set)
 							GTK_EXPAND | GTK_FILL, GTK_FILL, 0, 0);
 }
 
-#if 0
-static int
-setup_create_radio (GtkWidget *table, int row, const setting *set)
-{
-	GtkWidget *wid;
-	int i;
-	const char **text = (const char **)set->list;
-	GSList *group;
-
-	wid = gtk_label_new (_(set->label));
-	gtk_misc_set_alignment (GTK_MISC (wid), 0.0, 0.5);
-	gtk_table_attach (GTK_TABLE (table), wid, 2, 3, row, row + 1,
-							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, LABEL_INDENT, 0);
-
-	i = 0;
-	group = NULL;
-	while (text[i])
-	{
-		wid = gtk_radio_button_new_with_label (group, text[i]);
-		if (set->tooltip)
-			add_tip (wid, _(set->tooltip));
-		group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (wid));
-		gtk_table_attach_defaults (GTK_TABLE (table), wid, 3, 4, row, row + 1);
-		if (i == setup_get_int (&setup_prefs, set))
-			gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (wid), TRUE);
-		i++;
-		row++;
-	}
-
-	return i;
-}
-#endif
 
 static GtkWidget *proxy_user; 	/* username GtkEntry */
 static GtkWidget *proxy_pass; 	/* password GtkEntry */
-
 
 static void
 setup_menu_cb (GtkWidget *cbox, const setting *set)
@@ -723,6 +700,58 @@ setup_menu_cb (GtkWidget *cbox, const setting *set)
 		gtk_widget_set_sensitive (proxy_user, (n == 3 || n == 4 || n == 5));
 		gtk_widget_set_sensitive (proxy_pass, (n == 3 || n == 4 || n == 5));
 	}
+}
+
+static void
+setup_radio_cb (GtkWidget *item, const setting *set)
+{
+	if (GTK_TOGGLE_BUTTON (item)->active)
+	{
+		int n = GPOINTER_TO_INT (g_object_get_data (G_OBJECT (item), "n"));
+		/* set the prefs.<field> */
+		setup_set_int (&setup_prefs, set, n);
+	}
+}
+
+static int
+setup_create_radio (GtkWidget *table, int row, const setting *set)
+{
+	GtkWidget *wid, *hbox;
+	int i;
+	const char **text = (const char **)set->list;
+	GSList *group;
+
+	wid = gtk_label_new (_(set->label));
+	gtk_misc_set_alignment (GTK_MISC (wid), 0.0, 0.5);
+	gtk_table_attach (GTK_TABLE (table), wid, 2, 3, row, row + 1,
+							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, LABEL_INDENT, 0);
+
+	hbox = gtk_hbox_new (0, 0);
+	gtk_table_attach (GTK_TABLE (table), hbox, 3, 4, row, row + 1,
+							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, 0, 0);
+
+	i = 0;
+	group = NULL;
+	while (text[i])
+	{
+		if (text[i][0] != 0)
+		{
+			wid = gtk_radio_button_new_with_mnemonic (group, text[i]);
+			/*if (set->tooltip)
+				add_tip (wid, _(set->tooltip));*/
+			group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (wid));
+			gtk_container_add (GTK_CONTAINER (hbox), wid);
+			if (i == setup_get_int (&setup_prefs, set))
+				gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (wid), TRUE);
+			g_object_set_data (G_OBJECT (wid), "n", GINT_TO_POINTER (i));
+			g_signal_connect (G_OBJECT (wid), "toggled",
+									G_CALLBACK (setup_radio_cb), (gpointer)set);
+		}
+		i++;
+		row++;
+	}
+
+	return i;
 }
 
 /*
@@ -1068,11 +1097,9 @@ setup_create_page (const setting *set)
 		case ST_MENU:
 			setup_create_menu (tab, row, &set[i]);
 			break;
-#if 0
 		case ST_RADIO:
 			row += setup_create_radio (tab, row, &set[i]);
 			break;
-#endif
 		case ST_NUMBER:
 			wid = setup_create_spin (tab, row, &set[i]);
 			break;
@@ -1867,7 +1894,7 @@ unslash (char *dir)
 }
 
 void
-setup_apply_real (int new_pix, int do_ulist)
+setup_apply_real (int new_pix, int do_ulist, int do_layout)
 {
 	GSList *list;
 	session *sess;
@@ -1919,6 +1946,9 @@ setup_apply_real (int new_pix, int do_ulist)
 
 	mg_apply_setup ();
 	tray_apply_setup ();
+
+	if (do_layout)
+		menu_change_layout ();
 }
 
 static void
@@ -1927,6 +1957,7 @@ setup_apply (struct xchatprefs *pr)
 	int new_pix = FALSE;
 	int noapply = FALSE;
 	int do_ulist = FALSE;
+	int do_layout = FALSE;
 
 	if (strcmp (pr->background, prefs.background) != 0)
 		new_pix = TRUE;
@@ -1951,6 +1982,8 @@ setup_apply (struct xchatprefs *pr)
 		noapply = TRUE;
 	if (DIFF (truncchans))
 		noapply = TRUE;
+	if (DIFF (tab_layout))
+		do_layout = TRUE;
 
 	if (color_change || (DIFF (away_size_max)) || (DIFF (away_track)))
 		do_ulist = TRUE;
@@ -1964,7 +1997,7 @@ setup_apply (struct xchatprefs *pr)
 
 	memcpy (&prefs, pr, sizeof (prefs));
 
-	setup_apply_real (new_pix, do_ulist);
+	setup_apply_real (new_pix, do_ulist, do_layout);
 
 	if (noapply)
 		fe_message (_("Some settings were changed that require a"

@@ -1,5 +1,5 @@
 /* X-Chat
- * Copyright (C) 1998 Peter Zelezny.
+ * Copyright (C) 1998-2007 Peter Zelezny.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -1306,22 +1306,30 @@ menu_dcc_chat_win (GtkWidget *wid, gpointer none)
 	fe_dcc_open_chat_win (FALSE);
 }
 
-static void
-menu_layout_cb (GtkWidget *item, gpointer none)
+void
+menu_change_layout (void)
 {
-	if (GTK_CHECK_MENU_ITEM (item)->active)
+	if (prefs.tab_layout == 0)
 	{
-		prefs.tab_layout = 0;
 		menu_setting_foreach (NULL, MENU_ID_LAYOUT_TABS, 1);
 		menu_setting_foreach (NULL, MENU_ID_LAYOUT_TREE, 0);
 		mg_change_layout (0);
 	} else
 	{
-		prefs.tab_layout = 2;
 		menu_setting_foreach (NULL, MENU_ID_LAYOUT_TABS, 0);
 		menu_setting_foreach (NULL, MENU_ID_LAYOUT_TREE, 1);
 		mg_change_layout (2);
 	}
+}
+
+static void
+menu_layout_cb (GtkWidget *item, gpointer none)
+{
+	prefs.tab_layout = 2;
+	if (GTK_CHECK_MENU_ITEM (item)->active)
+		prefs.tab_layout = 0;
+
+	menu_change_layout ();
 }
 
 static void
