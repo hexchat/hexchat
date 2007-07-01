@@ -117,6 +117,10 @@ menu_about (GtkWidget * wid, gpointer sess)
 	(snprintf) (buf, sizeof (buf),
 				"<span size=\"x-large\"><b>XChat "PACKAGE_VERSION"</b></span>\n\n"
 				"%s\n\n"
+#ifdef WIN32
+				/* leave this message to avoid time wasting bug reports! */
+				"This version is unofficial and comes with no support.\n\n"
+#endif
 				"%s\n"
 				"<b>Charset</b>: %s "
 #ifdef WIN32 

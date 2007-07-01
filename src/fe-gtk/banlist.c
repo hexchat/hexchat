@@ -66,18 +66,45 @@ get_store (struct session *sess)
 	return GTK_LIST_STORE (gtk_tree_view_get_model (get_view (sess)));
 }
 
+static gboolean
+supports_exempt (server *serv)
+{
+	char *cm = serv->chanmodes;
+
+	if (serv->have_except)
+		return TRUE;
+
+	if (!cm)
+		return FALSE;
+
+	while (*cm)
+	{
+		if (*cm == ',')
+			break;
+		if (*cm == 'e')
+			return TRUE;
+		cm++;
+	}
+
+	return FALSE;
+}
+
 void
 fe_add_ban_list (struct session *sess, char *mask, char *who, char *when, int is_exempt)
 {
 	GtkListStore *store;
 	GtkTreeIter iter;
+	char buf[512];
+
+	store = get_store (sess);
+	gtk_list_store_append (store, &iter);
 
 	if (is_exempt)
 	{
+		snprintf (buf, sizeof (buf), "(EX) %s", mask);
+		gtk_list_store_set (store, &iter, 0, buf, 1, who, 2, when, -1);
 	} else
 	{
-		store = get_store (sess);
-		gtk_list_store_append (store, &iter);
 		gtk_list_store_set (store, &iter, 0, mask, 1, who, 2, when, -1);
 	}
 }
@@ -109,8 +136,20 @@ banlist_do_refresh (struct session *sess)
 		gtk_list_store_clear (store);
 
 		handle_command (sess, "ban", FALSE);
+#ifdef WIN32
+		if (0)
+#else
+		if (supports_exempt (sess->server))
+		{
+#endif
+			snprintf (tbuf, sizeof (tbuf), "quote mode %s +e", sess->channel);
+			handle_command (sess, tbuf, FALSE);
+		}
+
 	} else
+	{
 		fe_message (_("Not connected."), FE_MSG_ERROR);
+	}
 }
 
 static void
@@ -125,14 +164,14 @@ banlist_refresh (GtkWidget * wid, struct session *sess)
 	banlist_do_refresh (sess);
 }
 
-static void
-banlist_unban (gpointer none, struct session *sess)
+static int
+banlist_unban_inner (gpointer none, struct session *sess, int do_exempts)
 {
 	GtkTreeModel *model;
 	GtkTreeSelection *sel;
 	GtkTreeIter iter;
 	char tbuf[2048];
-	char **masks;
+	char **masks, *tmp, *space;
 	int num_sel, i;
 
 	/* grab the list of selected items */
@@ -150,13 +189,10 @@ banlist_unban (gpointer none, struct session *sess)
 	}
 
 	if (num_sel < 1)
-	{
-		fe_message (_("You must select some bans."), FE_MSG_ERROR);
-		return;
-	}
+		return 0;
 
 	/* create an array of all the masks */
-	masks = malloc (num_sel * sizeof (char *));
+	masks = calloc (1, num_sel * sizeof (char *));
 
 	i = 0;
 	gtk_tree_model_get_iter_first (model, &iter);
@@ -165,18 +201,54 @@ banlist_unban (gpointer none, struct session *sess)
 		if (gtk_tree_selection_iter_is_selected (sel, &iter))
 		{
 			gtk_tree_model_get (model, &iter, MASK_COLUMN, &masks[i], -1);
-			i++;
+			space = strchr (masks[i], ' ');
+
+			if (do_exempts)
+			{
+				if (space)
+				{
+					/* remove the "(EX) " */
+					tmp = masks[i];
+					masks[i] = g_strdup (space + 1);
+					g_free (tmp);
+					i++;
+				}
+			} else
+			{
+				if (!space)
+					i++;
+			}
 		}
 	}
 	while (gtk_tree_model_iter_next (model, &iter));
 
 	/* and send to server */
-	send_channel_modes (sess, tbuf, masks, 0, i, '-', 'b', 0);
+	if (do_exempts)
+		send_channel_modes (sess, tbuf, masks, 0, i, '-', 'e', 0);
+	else
+		send_channel_modes (sess, tbuf, masks, 0, i, '-', 'b', 0);
 
 	/* now free everything, and refresh banlist */	
 	for (i=0; i < num_sel; i++)
 		g_free (masks[i]);
 	free (masks);
+
+	return num_sel;
+}
+
+static void
+banlist_unban (GtkWidget * wid, struct session *sess)
+{
+	int num = 0;
+
+	num += banlist_unban_inner (wid, sess, FALSE);
+	num += banlist_unban_inner (wid, sess, TRUE);
+
+	if (num < 1)
+	{
+		fe_message (_("You must select some bans."), FE_MSG_ERROR);
+		return;
+	}
 
 	banlist_do_refresh (sess);
 }
@@ -334,7 +406,7 @@ banlist_opengui (struct session *sess)
 	gtk_widget_show (bbox);
 
 	gtkutil_button (bbox, GTK_STOCK_REMOVE, 0, banlist_unban, sess,
-	                _("Unban"));
+	                _("Remove"));
 	gtkutil_button (bbox, GTK_STOCK_REMOVE, 0, banlist_crop, sess,
 	                _("Crop"));
 	gtkutil_button (bbox, GTK_STOCK_CLEAR, 0, banlist_clear, sess,

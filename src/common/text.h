@@ -13,6 +13,9 @@ struct text_event
 	char *def;
 };
 
+void scrollback_close (session *sess);
+void scrollback_load (session *sess);
+
 int text_word_check (char *word, int len);
 void PrintText (session *sess, char *text);
 void PrintTextf (session *sess, char *format, ...);

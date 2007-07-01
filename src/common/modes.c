@@ -684,7 +684,9 @@ inbound_005 (server * serv, char *word[])
 			/* now wait for numeric 290 */	
 		} else if (strcmp (word[w], "EXCEPTS") == 0)
 		{
+#ifndef WIN32
 			serv->have_except = TRUE;
+#endif
 		} else if (strncmp (word[w], "ELIST=", 6) == 0)
 		{
 			/* supports LIST >< min/max user counts? */

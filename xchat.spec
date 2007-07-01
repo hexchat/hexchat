@@ -1,13 +1,10 @@
-## RPM spec file designed for Fedora Core 4, 5 or 6 ##
-
-# set this to 0 for FC4
-%define fedora5_or_newer 1
+## RPM spec file designed for Fedora Core 5,6,7 ##
 
 Summary: Graphical IRC (chat) client
 Summary(fr): Client IRC (chat) avec interface graphique
 Summary(de): IRC-Client (Chat) mit grafischer Oberfläche
 Name: xchat
-Version: 2.8.2
+Version: 2.8.4
 Release: 0
 Epoch: 1
 Group: Applications/Internet
@@ -71,7 +68,6 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/*.la
 %find_lang %name
 
 %post
-%if %{fedora5_or_newer}
 # Install schema
 export GCONF_CONFIG_SOURCE=`gconftool-2 --get-default-source`
 SCHEMAS="apps_xchat_url_handler.schemas"
@@ -79,7 +75,6 @@ for S in $SCHEMAS; do
   gconftool-2 --makefile-install-rule /etc/gconf/schemas/$S > /dev/null
 done
 unset GCONF_CONFIG_SOURCE
-%endif
 
 %files -f %{name}.lang
 %defattr(-,root,root)
@@ -87,9 +82,7 @@ unset GCONF_CONFIG_SOURCE
 %{_bindir}/xchat
 %{_datadir}/applications/xchat.desktop
 %{_datadir}/pixmaps/xchat.png
-%if %{fedora5_or_newer}
 %{_sysconfdir}/gconf/schemas/apps_xchat_url_handler.schemas
-%endif
 
 %files perl
 %{_libdir}/xchat/plugins/perl.so
