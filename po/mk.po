@@ -1,4 +1,4 @@
-# translation of xchat-2.8.1.mk.po to Macedonian
+# translation of xchat-2.8.4.mk.po to Macedonian
 # Copyright (C) 2004, 2007 Free Software Foundation, Inc.
 # This file is put in the public domain.
 #
@@ -6,10 +6,10 @@
 # Jovan Naumovski <jovan@lugola.net>, 2007.
 msgid ""
 msgstr ""
-"Project-Id-Version: xchat-2.8.1\n"
+"Project-Id-Version: xchat-2.8.4\n"
 "Report-Msgid-Bugs-To: www.xchat.org\n"
-"POT-Creation-Date: 2007-03-28 14:09+1000\n"
-"PO-Revision-Date: 2007-06-14 03:02+0200\n"
+"POT-Creation-Date: 2007-06-24 13:05+1000\n"
+"PO-Revision-Date: 2007-06-29 16:40+0200\n"
 "Last-Translator: Arangel Angov <ufo@linux.net.mk>\n"
 "Language-Team: Macedonian <ufo@linux.net.mk>\n"
 "MIME-Version: 1.0\n"
@@ -21,15 +21,15 @@ msgstr ""
 msgid "Cannot create ~/.xchat2"
 msgstr "Не можам да создадам ~/.xchat2"
 
-#: src/common/cfgfiles.c:704
+#: src/common/cfgfiles.c:712
 msgid "I'm busy"
 msgstr "Зафатен сум"
 
-#: src/common/cfgfiles.c:705
+#: src/common/cfgfiles.c:713
 msgid "Leaving"
 msgstr "Си одам"
 
-#: src/common/cfgfiles.c:751
+#: src/common/cfgfiles.c:760
 msgid ""
 "* Running IRC as root is stupid! You should\n"
 "  create a User Account and use that to login.\n"
@@ -53,7 +53,7 @@ msgstr "Неуспешно"
 msgid "Done"
 msgstr "Завршив"
 
-#: src/common/dcc.c:71 src/fe-gtk/menu.c:775
+#: src/common/dcc.c:71 src/fe-gtk/menu.c:797
 msgid "Connect"
 msgstr "Врзи се"
 
@@ -61,14 +61,14 @@ msgstr "Врзи се"
 msgid "Aborted"
 msgstr "Откажано"
 
-#: src/common/dcc.c:1886 src/common/outbound.c:2450
+#: src/common/dcc.c:1886 src/common/outbound.c:2452
 #, c-format
 msgid "Cannot access %s\n"
 msgstr "Не можам да пристапам на %s\n"
 
-#: src/common/dcc.c:1887 src/common/text.c:918 src/common/text.c:956
-#: src/common/text.c:967 src/common/text.c:974 src/common/text.c:987
-#: src/common/text.c:1004 src/common/text.c:1104 src/common/util.c:352
+#: src/common/dcc.c:1887 src/common/text.c:1164 src/common/text.c:1202
+#: src/common/text.c:1213 src/common/text.c:1220 src/common/text.c:1233
+#: src/common/text.c:1250 src/common/text.c:1350 src/common/util.c:352
 msgid "Error"
 msgstr "Грешка"
 
@@ -103,12 +103,12 @@ msgstr "Вие сте CTCP поплавени од %s, игнорирам %s\n"
 msgid "You are being MSG flooded from %s, setting gui_auto_open_dialog OFF.\n"
 msgstr "Вие сте MSG поплавени од %s, го поставувам gui_auto_open_dialog OFF.\n"
 
-#: src/common/notify.c:449
+#: src/common/notify.c:473
 #, c-format
 msgid "  %-20s online\n"
 msgstr "  %-20s присутни\n"
 
-#: src/common/notify.c:451
+#: src/common/notify.c:475
 #, c-format
 msgid "  %-20s offline\n"
 msgstr "  %-20s офлајн\n"
@@ -130,68 +130,68 @@ msgstr "Веќе сте означени како отсутни: %s\n"
 msgid "Already marked back.\n"
 msgstr "Веќе сте означени како присутни.\n"
 
-#: src/common/outbound.c:1812
+#: src/common/outbound.c:1814
 msgid "I need /bin/sh to run!\n"
 msgstr "Ми треба /bin/sh за да извршам!\n"
 
-#: src/common/outbound.c:2183
+#: src/common/outbound.c:2185
 msgid "Commands Available:"
 msgstr "Достапни команди:"
 
-#: src/common/outbound.c:2197
+#: src/common/outbound.c:2199
 msgid "User defined commands:"
 msgstr "Команди дефинирани од корисникот:"
 
-#: src/common/outbound.c:2213
+#: src/common/outbound.c:2215
 msgid "Plugin defined commands:"
 msgstr "Команди дефинирани од приклучокот:"
 
-#: src/common/outbound.c:2224
+#: src/common/outbound.c:2226
 msgid "Type /HELP <command> for more information, or /HELP -l"
 msgstr "Напишете /HELP <команда> за повеќе информации, или /HELP -l"
 
-#: src/common/outbound.c:2299
+#: src/common/outbound.c:2301
 #, c-format
 msgid "Unknown arg '%s' ignored."
 msgstr "Непознатиот аргумент „%s“ е игнориран."
 
-#: src/common/outbound.c:3238
+#: src/common/outbound.c:3235
 msgid "No such plugin found.\n"
 msgstr "Не најдов таков додаток.\n"
 
-#: src/common/outbound.c:3243 src/fe-gtk/plugingui.c:186
+#: src/common/outbound.c:3240 src/fe-gtk/plugingui.c:186
 msgid "That plugin is refusing to unload.\n"
 msgstr "Тој додаток одбива да се исклучи. \n"
 
-#: src/common/outbound.c:3512
+#: src/common/outbound.c:3509
 msgid "ADDBUTTON <name> <action>, adds a button under the user-list"
 msgstr "ADDBUTTON <име> <акција>, додава копче под корисничката листа"
 
-#: src/common/outbound.c:3514
+#: src/common/outbound.c:3511
 msgid "ALLCHAN <cmd>, sends a command to all channels you're in"
 msgstr "ALLCHAN <командата>, испраќа команда до сите канали на кои што сте"
 
-#: src/common/outbound.c:3516
+#: src/common/outbound.c:3513
 msgid "ALLCHANL <cmd>, sends a command to all channels you're in"
 msgstr "ALLCHAN <командата>, испраќа команда до сите канали на кои што сте"
 
-#: src/common/outbound.c:3518
+#: src/common/outbound.c:3515
 msgid "ALLSERV <cmd>, sends a command to all servers you're in"
 msgstr "ALLSERV <командата>, испраќа команда на сите сервери на кои што сте"
 
-#: src/common/outbound.c:3519
+#: src/common/outbound.c:3516
 msgid "AWAY [<reason>], sets you away"
 msgstr "AWAY [<причина>], ве обележува како отсутен"
 
-#: src/common/outbound.c:3520
+#: src/common/outbound.c:3517
 msgid "BACK, sets you back (not away)"
 msgstr "BACK, ве обележува како присутен (не отсутен)"
 
-#: src/common/outbound.c:3522
+#: src/common/outbound.c:3519
 msgid "BAN <mask> [<bantype>], bans everyone matching the mask from the current channel. If they are already on the channel this doesn't kick them (needs chanop)"
 msgstr "BAN <маска> [<тип>], ги банира сите кои што одговарат на маската на сегашниот канал. Ако се веќе на каналот ова не ги исфрла (треба оператор)"
 
-#: src/common/outbound.c:3524
+#: src/common/outbound.c:3521
 msgid ""
 "Set per channel options\n"
 "CHANOPT CONFMODE ON|OFF - Toggle conf mode/showing of join and part messages\n"
@@ -205,27 +205,27 @@ msgstr ""
 "CHANOPT BEEP ON|OFF - Приклучи бипкање за порака\n"
 "CHANOPT TRAY ON|OFF - Приклучи светкање на иконата во фиоката"
 
-#: src/common/outbound.c:3531
+#: src/common/outbound.c:3528
 msgid "CLEAR [ALL|HISTORY], Clears the current text window or command history"
 msgstr "CLEAR [ALL|HISTORY], Го чисти прозорецот од текст или историја на команди"
 
-#: src/common/outbound.c:3532
+#: src/common/outbound.c:3529
 msgid "CLOSE, Closes the current window/tab"
 msgstr "CLOSE, Го затвора прозорецот/јазичето"
 
-#: src/common/outbound.c:3535
+#: src/common/outbound.c:3532
 msgid "COUNTRY [-s] <code|wildcard>, finds a country code, eg: au = australia"
 msgstr "COUNTRY [-s] <code|wildcard>, ја наоѓа кратенката на земјата, пр: au = австралија"
 
-#: src/common/outbound.c:3537
+#: src/common/outbound.c:3534
 msgid "CTCP <nick> <message>, send the CTCP message to nick, common messages are VERSION and USERINFO"
 msgstr "CTCP <прекар> <порака>, испрати ја CTCP пораката до прекарот, вообичаени пораки се VERSION и USERINFO"
 
-#: src/common/outbound.c:3539
-msgid "CYCLE, parts current channel and immediately rejoins"
-msgstr "CYCLE, го напушта тековниот канал и се приклучува повторно"
+#: src/common/outbound.c:3536
+msgid "CYCLE [<channel>], parts the current or given channel and immediately rejoins"
+msgstr "CYCLE [<channel>], го напушта тековниот канал и се приклучува повторно"
 
-#: src/common/outbound.c:3541
+#: src/common/outbound.c:3538
 msgid ""
 "\n"
 "DCC GET <nick>                      - accept an offered file\n"
@@ -247,75 +247,75 @@ msgstr ""
 "DCC CLOSE <тип> <прекар> <датотека>         пример:\n"
 "         /dcc close send johnsmith file.tar.gz"
 
-#: src/common/outbound.c:3553
+#: src/common/outbound.c:3550
 msgid "DEHOP <nick>, removes chanhalf-op status from the nick on the current channel (needs chanop)"
 msgstr "DEHOP <прекар>, отстранува операторски статус од прекарот на тековниот канал (потребно е да имате операторски статус)"
 
-#: src/common/outbound.c:3555
+#: src/common/outbound.c:3552
 msgid "DELBUTTON <name>, deletes a button from under the user-list"
 msgstr "DELBUTTON <име>, брише копче под корисничката листа"
 
-#: src/common/outbound.c:3557
+#: src/common/outbound.c:3554
 msgid "DEOP <nick>, removes chanop status from the nick on the current channel (needs chanop)"
 msgstr "DEOP <прекар>, отстранува операторски статус од прекарот на тековниот канал (потребно е да имате операторски статус)"
 
-#: src/common/outbound.c:3559
+#: src/common/outbound.c:3556
 msgid "DEVOICE <nick>, removes voice status from the nick on the current channel (needs chanop)"
 msgstr "DEVOICE <прекар>, отстранува глас од прекарот на тековниот канал (потребно е да имате операторски статус)"
 
-#: src/common/outbound.c:3560
+#: src/common/outbound.c:3557
 msgid "DISCON, Disconnects from server"
 msgstr "DISCON, Ја прекинува врската со серверот"
 
-#: src/common/outbound.c:3561
+#: src/common/outbound.c:3558
 msgid "DNS <nick|host|ip>, Finds a users IP number"
 msgstr "DNS <прекар|host|ip>, Пронаоѓа IP број на корисникот"
 
-#: src/common/outbound.c:3562
+#: src/common/outbound.c:3559
 msgid "ECHO <text>, Prints text locally"
 msgstr "ECHO <text>, Печати текст локално"
 
-#: src/common/outbound.c:3565
+#: src/common/outbound.c:3562
 msgid "EXEC [-o] <command>, runs the command. If -o flag is used then output is sent to current channel, else is printed to current text box"
 msgstr "EXEC [-o] <command>, ја извршува командата. Ако користите -o тогаш испраќате на тековниот канал"
 
-#: src/common/outbound.c:3567
+#: src/common/outbound.c:3564
 msgid "EXECCONT, sends the process SIGCONT"
 msgstr "EXECCONT, го испраќа процесот SIGCONT"
 
-#: src/common/outbound.c:3570
+#: src/common/outbound.c:3567
 msgid "EXECKILL [-9], kills a running exec in the current session. If -9 is given the process is SIGKILL'ed"
 msgstr "EXECKILL [-9], убива извршена програма во тековната сесија. Ако -9 е даден тогаш процесот е SIGKILL'ed"
 
-#: src/common/outbound.c:3572
+#: src/common/outbound.c:3569
 msgid "EXECSTOP, sends the process SIGSTOP"
 msgstr "EXECSTOP, го испраќа процесот SIGSTOP"
 
-#: src/common/outbound.c:3573
+#: src/common/outbound.c:3570
 msgid "EXECWRITE, sends data to the processes stdin"
 msgstr "EXECWRITE, испраќа податоци до stdin процесите"
 
-#: src/common/outbound.c:3577
+#: src/common/outbound.c:3574
 msgid "FLUSHQ, flushes the current server's send queue"
 msgstr "FLUSHQ, го испушта тековното чекање на серверот"
 
-#: src/common/outbound.c:3579
+#: src/common/outbound.c:3576
 msgid "GATE <host> [<port>], proxies through a host, port defaults to 23"
 msgstr "GATE <host> [<port>],proxy-јата преку host, стандардна порта 23"
 
-#: src/common/outbound.c:3583
+#: src/common/outbound.c:3580
 msgid "GHOST <nick> <password>, Kills a ghosted nickname"
 msgstr "GHOST <nick> <password>, Уништува зафатен неупотреблив прекар"
 
-#: src/common/outbound.c:3588
+#: src/common/outbound.c:3585
 msgid "HOP <nick>, gives chanhalf-op status to the nick (needs chanop)"
 msgstr "HOP <прекар> дава chanhalf-op статус на прекарот (потребен е операторски статус)"
 
-#: src/common/outbound.c:3589
+#: src/common/outbound.c:3586
 msgid "ID <password>, identifies yourself to nickserv"
 msgstr "ID <password>, ве идентификува кај nickserv"
 
-#: src/common/outbound.c:3591
+#: src/common/outbound.c:3588
 msgid ""
 "IGNORE <mask> <types..> <options..>\n"
 "    mask - host mask to ignore, eg: *!*@*.aol.com\n"
@@ -329,155 +329,155 @@ msgstr ""
 "            PRIV, CHAN, NOTI, CTCP, DCC, INVI, ALL\n"
 "    опции - NOSAVE, QUIET"
 
-#: src/common/outbound.c:3598
+#: src/common/outbound.c:3595
 msgid "INVITE <nick> [<channel>], invites someone to a channel, by default the current channel (needs chanop)"
 msgstr "INVITE <прекар> [<канал>], кани некого на каналот, стандардно тоа е тековниот канал (потребен е операторски статус)"
 
-#: src/common/outbound.c:3599
+#: src/common/outbound.c:3596
 msgid "JOIN <channel>, joins the channel"
 msgstr "JOIN <channel>, се приклучува на каналот"
 
-#: src/common/outbound.c:3601
+#: src/common/outbound.c:3598
 msgid "KICK <nick>, kicks the nick from the current channel (needs chanop)"
 msgstr "KICK <прекар>, го исфрла прекарот од тековниот канал (потребен е операторски статус)"
 
-#: src/common/outbound.c:3603
+#: src/common/outbound.c:3600
 msgid "KICKBAN <nick>, bans then kicks the nick from the current channel (needs chanop)"
 msgstr "KICKBAN <прекар>, го банира па потоа го исфрла прекарот од тековниот канал (потребен е операторски статус)"
 
-#: src/common/outbound.c:3606
+#: src/common/outbound.c:3603
 msgid "LAGCHECK, forces a new lag check"
 msgstr "LAGCHECK, форсира проверка за лаг"
 
-#: src/common/outbound.c:3608
+#: src/common/outbound.c:3605
 msgid "LASTLOG <string>, searches for a string in the buffer"
 msgstr "LASTLOG <стринг>, бара стринг во баферот"
 
-#: src/common/outbound.c:3610
+#: src/common/outbound.c:3607
 msgid "LOAD [-e] <file>, loads a plugin or script"
 msgstr "LOAD [-e] <датотека>, вчитува додаток или скрипта"
 
-#: src/common/outbound.c:3613
+#: src/common/outbound.c:3610
 msgid "MDEHOP, Mass deop's all chanhalf-ops in the current channel (needs chanop)"
 msgstr "MDEHOP, одзема опер. статус на сите оператори во тековниот канал (потребен е операторски статус)"
 
-#: src/common/outbound.c:3615
+#: src/common/outbound.c:3612
 msgid "MDEOP, Mass deop's all chanops in the current channel (needs chanop)"
 msgstr "MDEOP, одзема опер. статус на сите оператори во тековниот канал (потребен е операторски статус)"
 
-#: src/common/outbound.c:3617
+#: src/common/outbound.c:3614
 msgid "ME <action>, sends the action to the current channel (actions are written in the 3rd person, like /me jumps)"
 msgstr "ME <акција>, ја испраќа акцијата на тековниот канал (акциите се испишани во трето лице, на пр. /me скокна)"
 
-#: src/common/outbound.c:3621
+#: src/common/outbound.c:3618
 msgid "MKICK, Mass kicks everyone except you in the current channel (needs chanop)"
 msgstr "MKICK, ги исфрла сите од каналот (потребен е операторски статус)"
 
-#: src/common/outbound.c:3624
+#: src/common/outbound.c:3621
 msgid "MOP, Mass op's all users in the current channel (needs chanop)"
 msgstr "MOP, дава опер. статус на сите корисници во тековниот канал (потребен е операторски статус)"
 
-#: src/common/outbound.c:3625
+#: src/common/outbound.c:3622
 msgid "MSG <nick> <message>, sends a private message"
 msgstr "MSG <прекар> <порака>, испраќа приватна порака"
 
-#: src/common/outbound.c:3628
+#: src/common/outbound.c:3625
 msgid "NAMES, Lists the nicks on the current channel"
 msgstr "NAMES, ги листа прекарите од тековниот канал"
 
-#: src/common/outbound.c:3630
+#: src/common/outbound.c:3627
 msgid "NCTCP <nick> <message>, Sends a CTCP notice"
 msgstr "NCTCP <прекар> <порака>, испраќа CTCP забелешка"
 
-#: src/common/outbound.c:3631
+#: src/common/outbound.c:3628
 msgid "NEWSERVER [-noconnect] <hostname> [<port>]"
 msgstr "NEWSERVER [-noconnect] <hostname> [<port>]"
 
-#: src/common/outbound.c:3632
+#: src/common/outbound.c:3629
 msgid "NICK <nickname>, sets your nick"
 msgstr "NICK <прекар>, го поставува прекарот"
 
-#: src/common/outbound.c:3635
+#: src/common/outbound.c:3632
 msgid "NOTICE <nick/channel> <message>, sends a notice. Notices are a type of message that should be auto reacted to"
 msgstr "NOTICE <прекар/канал> <порака>, испраќа забелешка. Забелешките се тип на пораки на кои што треба да реагирате"
 
-#: src/common/outbound.c:3637
+#: src/common/outbound.c:3634
 msgid "NOTIFY [-n network1[,network2,...]] [<nick>], displays your notify list or adds someone to it"
 msgstr "NOTIFY [-n network1[,network2,...]] [<nick>], ја покажува вашата листа за известување или додава некој на неа"
 
-#: src/common/outbound.c:3639
+#: src/common/outbound.c:3636
 msgid "OP <nick>, gives chanop status to the nick (needs chanop)"
 msgstr "OP <прекар>, дава опер. статус на прекарот (потребен е операторски статус)"
 
-#: src/common/outbound.c:3641
+#: src/common/outbound.c:3638
 msgid "PART [<channel>] [<reason>], leaves the channel, by default the current one"
 msgstr "PART [<канал>] [<причина>], го напушта тековниот канал"
 
-#: src/common/outbound.c:3643
+#: src/common/outbound.c:3640
 msgid "PING <nick | channel>, CTCP pings nick or channel"
 msgstr "PING <прекар | канал>, CTCP го пингува прекарот или каналот"
 
-#: src/common/outbound.c:3645
+#: src/common/outbound.c:3642
 msgid "QUERY [-nofocus] <nick>, opens up a new privmsg window to someone"
 msgstr "QUERY [-nofocus] <nick>, отвора нов прозорец за приватен разговор со некого"
 
-#: src/common/outbound.c:3647
+#: src/common/outbound.c:3644
 msgid "QUIT [<reason>], disconnects from the current server"
 msgstr "QUIT [<причина>], се одврзува од тековниот сервер"
 
-#: src/common/outbound.c:3649
+#: src/common/outbound.c:3646
 msgid "QUOTE <text>, sends the text in raw form to the server"
 msgstr "QUOTE <текст>, праќа текст до серверот во суров формат"
 
-#: src/common/outbound.c:3652
+#: src/common/outbound.c:3649
 msgid "RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as /RECONNECT to reconnect to the current server or with /RECONNECT ALL to reconnect to all the open servers"
 msgstr "RECONNECT [-ssl] [<host>] [<port>] [<password>], може да се стартува само со /RECONNECT за повторно врзување на истиот сервер или /RECONNECT ALL за врзување на сите отворени сервери"
 
-#: src/common/outbound.c:3655
+#: src/common/outbound.c:3652
 msgid "RECONNECT [<host>] [<port>] [<password>], Can be called just as /RECONNECT to reconnect to the current server or with /RECONNECT ALL to reconnect to all the open servers"
 msgstr "RECONNECT [<host>] [<port>] [<password>], може да се стартува само со /RECONNECT за повторно врзување на истиот сервер или /RECONNECT ALL за врзување на сите отворени сервери"
 
-#: src/common/outbound.c:3657
+#: src/common/outbound.c:3654
 msgid "RECV <text>, send raw data to xchat, as if it was received from the irc server"
 msgstr "RECV <текст>, испраќа податоци до xchat, како да се испратени од irc сервер"
 
-#: src/common/outbound.c:3660
+#: src/common/outbound.c:3657
 msgid "SAY <text>, sends the text to the object in the current window"
 msgstr "SAY <текст>, го испраќа текстот до објектот во тековниот прозорец"
 
-#: src/common/outbound.c:3661
+#: src/common/outbound.c:3658
 msgid "SEND <nick> [<file>]"
 msgstr "SEND <прекар> [<датотека>]"
 
-#: src/common/outbound.c:3664
+#: src/common/outbound.c:3661
 msgid "SERVCHAN [-ssl] <host> <port> <channel>, connects and joins a channel"
 msgstr "SERVCHAN [-ssl] <host> <port> <channel>, се врзува и се приклучува на канал"
 
-#: src/common/outbound.c:3667
+#: src/common/outbound.c:3664
 msgid "SERVCHAN <host> <port> <channel>, connects and joins a channel"
 msgstr "SERVCHAN <host> <port> <channel>, се врзува и се приклучува на канал"
 
-#: src/common/outbound.c:3671
+#: src/common/outbound.c:3668
 msgid "SERVER [-ssl] <host> [<port>] [<password>], connects to a server, the default port is 6667 for normal connections, and 9999 for ssl connections"
 msgstr "SERVER [-ssl] <host> [<port>] [<password>], се врзува на сервер, стандардната порта за нормални врски е 6667, а 9999 е за ssl врски"
 
-#: src/common/outbound.c:3674
+#: src/common/outbound.c:3671
 msgid "SERVER <host> [<port>] [<password>], connects to a server, the default port is 6667"
 msgstr "SERVER <host> [<port>] [<password>], се врзува на сервер, стандардната порта е 6667"
 
-#: src/common/outbound.c:3676
-msgid "SET [-e] [-quiet] <variable> [<value>]"
-msgstr "SET [-e] [-quiet] <променлива> [<вредност>]"
+#: src/common/outbound.c:3673
+msgid "SET [-e] [-or] [-quiet] <variable> [<value>]"
+msgstr "SET [-e] [-or] [-quiet] <променлива> [<вредност>]"
 
-#: src/common/outbound.c:3677
+#: src/common/outbound.c:3674
 msgid "SETCURSOR [-|+]<position>"
 msgstr "SETCURSOR [-|+]<позиција>"
 
-#: src/common/outbound.c:3682
+#: src/common/outbound.c:3679
 msgid "TOPIC [<topic>], sets the topic if one is given, else shows the current topic"
 msgstr "TOPIC [<наслов>], поставува наслов на каналот"
 
-#: src/common/outbound.c:3684
+#: src/common/outbound.c:3681
 msgid ""
 "\n"
 "TRAY -f <timeout> <file1> [<file2>] Blink tray between two icons.\n"
@@ -493,44 +493,44 @@ msgstr ""
 "TRAY -t <text>                      Постави го балончето со совет на фиоката.\n"
 "TRAY -b <title> <text>              Постави го балончето со совет на фиоката."
 
-#: src/common/outbound.c:3691
+#: src/common/outbound.c:3688
 msgid "UNBAN <mask> [<mask>...], unbans the specified masks."
 msgstr "UNBAN <маска> [<маска>...], одбанира дадена маска."
 
-#: src/common/outbound.c:3692
+#: src/common/outbound.c:3689
 msgid "UNIGNORE <mask> [QUIET]"
 msgstr "UNIGNORE <маска> [QUIET]"
 
-#: src/common/outbound.c:3693
+#: src/common/outbound.c:3690
 msgid "UNLOAD <name>, unloads a plugin or script"
 msgstr "UNLOAD <име> исклучува додаток или скрипта"
 
-#: src/common/outbound.c:3694
+#: src/common/outbound.c:3691
 msgid "URL <url>, opens a URL in your browser"
 msgstr "URL <url>, отвора URL во вашиот прелистувач"
 
-#: src/common/outbound.c:3696
+#: src/common/outbound.c:3693
 msgid "USELECT [-a] [-s] <nick1> <nick2> etc, highlights nick(s) in channel userlist"
 msgstr "USELECT [-a] [-s] <nick1> <nick2> итн, означува прекар(и) во листата на присутни на каналот"
 
-#: src/common/outbound.c:3699
+#: src/common/outbound.c:3696
 msgid "VOICE <nick>, gives voice status to someone (needs chanop)"
 msgstr "VOICE <прекар>, дава глас некому (потребен е операторски статус)"
 
-#: src/common/outbound.c:3701
+#: src/common/outbound.c:3698
 msgid "WALLCHAN <message>, writes the message to all channels"
 msgstr "WALLCHAN <порака>, ја пишува пораката на сите канали"
 
-#: src/common/outbound.c:3703
+#: src/common/outbound.c:3700
 msgid "WALLCHOP <message>, sends the message to all chanops on the current channel"
 msgstr "WALLCHOP <порака>, ја испраќа пораката на сите оператори на тековниот канал"
 
-#: src/common/outbound.c:3736
+#: src/common/outbound.c:3733
 #, c-format
 msgid "Usage: %s\n"
 msgstr "Користење: %s\n"
 
-#: src/common/outbound.c:3741
+#: src/common/outbound.c:3738
 msgid ""
 "\n"
 "No help available on that command.\n"
@@ -538,19 +538,19 @@ msgstr ""
 "\n"
 "Не постои помош за таа команда.\n"
 
-#: src/common/outbound.c:3747
+#: src/common/outbound.c:3744
 msgid "No such command.\n"
 msgstr "Не постои таква команда.\n"
 
-#: src/common/outbound.c:4077
+#: src/common/outbound.c:4074
 msgid "Bad arguments for user command.\n"
 msgstr "Лош аргумент за корисничката команда.\n"
 
-#: src/common/outbound.c:4233
+#: src/common/outbound.c:4230
 msgid "Too many recursive usercommands, aborting."
 msgstr "Премногу рекурзивни кориснички команди, прекинувам."
 
-#: src/common/outbound.c:4310
+#: src/common/outbound.c:4307
 msgid "Unknown Command. Try /help\n"
 msgstr "Непозната команда. Пробај /help\n"
 
@@ -1050,17 +1050,21 @@ msgstr "%C22*%O$tГо поканивте%C26 $1%O to%C26 $2%O (%C26$3%O)"
 msgid "%C22*%O$tYou are now known as $2"
 msgstr "%C22*%O$tСега си познат како $2"
 
-#: src/common/text.c:61
+#: src/common/text.c:287
+msgid "Loaded log from"
+msgstr "Вчитав лог од"
+
+#: src/common/text.c:305
 #, c-format
 msgid "**** ENDING LOGGING AT %s\n"
 msgstr "**** ЗАВРШУВАМ СНИМАЊЕ НА %s\n"
 
-#: src/common/text.c:270
+#: src/common/text.c:514
 #, c-format
 msgid "**** BEGIN LOGGING AT %s\n"
 msgstr "**** ЗАПОЧНУВАМ СНИМАЊЕ НА %s\n"
 
-#: src/common/text.c:289
+#: src/common/text.c:533
 #, c-format
 msgid ""
 "* Can't open log file(s) for writing. Check the\n"
@@ -1069,453 +1073,453 @@ msgstr ""
 "* Не можам да ги отворам датотеките со записи за снимање. Провери\n"
 "  ги дозволите на %s/xchatlogs"
 
-#: src/common/text.c:625
+#: src/common/text.c:871
 msgid "Left message"
 msgstr "Лева порака"
 
-#: src/common/text.c:626
+#: src/common/text.c:872
 msgid "Right message"
 msgstr "Десна порака"
 
-#: src/common/text.c:630
+#: src/common/text.c:876
 msgid "The nick of the joining person"
 msgstr "Прекарот на личноста што се приклучува"
 
-#: src/common/text.c:631
+#: src/common/text.c:877
 msgid "The channel being joined"
 msgstr "Каналот на кој што се приклучува"
 
-#: src/common/text.c:632 src/common/text.c:679 src/common/text.c:730
+#: src/common/text.c:878 src/common/text.c:925 src/common/text.c:976
 msgid "The host of the person"
 msgstr "Host на личноста"
 
-#: src/common/text.c:636 src/common/text.c:642 src/common/text.c:649
-#: src/common/text.c:837 src/common/text.c:844 src/common/text.c:849
-#: src/common/text.c:854 src/common/text.c:859 src/common/text.c:865
-#: src/common/text.c:870 src/common/text.c:874 src/common/text.c:880
-#: src/common/text.c:886 src/common/text.c:932 src/common/text.c:943
-#: src/common/text.c:948 src/common/text.c:953 src/common/text.c:962
-#: src/common/text.c:973 src/common/text.c:980 src/common/text.c:986
-#: src/common/text.c:991 src/common/text.c:996 src/common/text.c:1003
-#: src/common/text.c:1009 src/common/text.c:1015 src/common/text.c:1020
-#: src/common/text.c:1025 src/common/text.c:1029 src/common/text.c:1035
-#: src/common/text.c:1043 src/common/text.c:1077 src/common/text.c:1082
+#: src/common/text.c:882 src/common/text.c:888 src/common/text.c:895
+#: src/common/text.c:1083 src/common/text.c:1090 src/common/text.c:1095
+#: src/common/text.c:1100 src/common/text.c:1105 src/common/text.c:1111
+#: src/common/text.c:1116 src/common/text.c:1120 src/common/text.c:1126
+#: src/common/text.c:1132 src/common/text.c:1178 src/common/text.c:1189
+#: src/common/text.c:1194 src/common/text.c:1199 src/common/text.c:1208
+#: src/common/text.c:1219 src/common/text.c:1226 src/common/text.c:1232
+#: src/common/text.c:1237 src/common/text.c:1242 src/common/text.c:1249
+#: src/common/text.c:1255 src/common/text.c:1261 src/common/text.c:1266
+#: src/common/text.c:1271 src/common/text.c:1275 src/common/text.c:1281
+#: src/common/text.c:1289 src/common/text.c:1323 src/common/text.c:1328
 msgid "Nickname"
 msgstr "Прекар"
 
-#: src/common/text.c:637
+#: src/common/text.c:883
 msgid "The action"
 msgstr "Акцијата"
 
-#: src/common/text.c:638 src/common/text.c:644
+#: src/common/text.c:884 src/common/text.c:890
 msgid "Mode char"
 msgstr "Режим за знак"
 
-#: src/common/text.c:643
+#: src/common/text.c:889
 msgid "The text"
 msgstr "Текстот"
 
-#: src/common/text.c:645 src/common/text.c:651
+#: src/common/text.c:891 src/common/text.c:897
 msgid "Identified text"
 msgstr "Идентификуван текст"
 
-#: src/common/text.c:650 src/common/text.c:707 src/common/text.c:713
+#: src/common/text.c:896 src/common/text.c:953 src/common/text.c:959
 msgid "The message"
 msgstr "Пораката"
 
-#: src/common/text.c:655 src/common/text.c:717
+#: src/common/text.c:901 src/common/text.c:963
 msgid "Old nickname"
 msgstr "Стар прекар"
 
-#: src/common/text.c:656 src/common/text.c:718
+#: src/common/text.c:902 src/common/text.c:964
 msgid "New nickname"
 msgstr "Нов прекар"
 
-#: src/common/text.c:660
+#: src/common/text.c:906
 msgid "Nick of person who changed the topic"
 msgstr "Прекар на личноста која го променила насловот"
 
-#: src/common/text.c:661 src/common/text.c:667 src/fe-gtk/chanlist.c:718
-#: src/fe-gtk/chanlist.c:821
+#: src/common/text.c:907 src/common/text.c:913 src/fe-gtk/chanlist.c:756
+#: src/fe-gtk/chanlist.c:859
 msgid "Topic"
 msgstr "Наслов"
 
-#: src/common/text.c:662 src/common/text.c:666 src/common/text.c:1097
-#: src/fe-gtk/chanlist.c:716 src/fe-gtk/ignoregui.c:176
+#: src/common/text.c:908 src/common/text.c:912 src/common/text.c:1343
+#: src/fe-gtk/chanlist.c:754 src/fe-gtk/ignoregui.c:176
 msgid "Channel"
 msgstr "Канал"
 
-#: src/common/text.c:671 src/common/text.c:724
+#: src/common/text.c:917 src/common/text.c:970
 msgid "The nickname of the kicker"
 msgstr "Прекарот на исфрлувачот"
 
-#: src/common/text.c:672 src/common/text.c:722
+#: src/common/text.c:918 src/common/text.c:968
 msgid "The person being kicked"
 msgstr "Личноста што е исфрлена"
 
-#: src/common/text.c:673 src/common/text.c:680 src/common/text.c:684
-#: src/common/text.c:689 src/common/text.c:723 src/common/text.c:731
-#: src/common/text.c:738
+#: src/common/text.c:919 src/common/text.c:926 src/common/text.c:930
+#: src/common/text.c:935 src/common/text.c:969 src/common/text.c:977
+#: src/common/text.c:984
 msgid "The channel"
 msgstr "Каналот"
 
-#: src/common/text.c:674 src/common/text.c:725 src/common/text.c:732
+#: src/common/text.c:920 src/common/text.c:971 src/common/text.c:978
 msgid "The reason"
 msgstr "Причината"
 
-#: src/common/text.c:678 src/common/text.c:729
+#: src/common/text.c:924 src/common/text.c:975
 msgid "The nick of the person leaving"
 msgstr "Прекарот на личноста што си оди"
 
-#: src/common/text.c:685 src/common/text.c:691
+#: src/common/text.c:931 src/common/text.c:937
 msgid "The time"
 msgstr "Времето"
 
-#: src/common/text.c:690
+#: src/common/text.c:936
 msgid "The creator"
 msgstr "Создавачот"
 
-#: src/common/text.c:695 src/fe-gtk/dccgui.c:763 src/fe-gtk/dccgui.c:994
+#: src/common/text.c:941 src/fe-gtk/dccgui.c:763 src/fe-gtk/dccgui.c:994
 msgid "Nick"
 msgstr "Прекар"
 
-#: src/common/text.c:696 src/common/text.c:949
+#: src/common/text.c:942 src/common/text.c:1195
 msgid "Reason"
 msgstr "Причината"
 
-#: src/common/text.c:697 src/common/text.c:839 src/common/text.c:922
+#: src/common/text.c:943 src/common/text.c:1085 src/common/text.c:1168
 msgid "Host"
 msgstr "Host"
 
-#: src/common/text.c:701 src/common/text.c:706 src/common/text.c:711
+#: src/common/text.c:947 src/common/text.c:952 src/common/text.c:957
 msgid "Who it's from"
 msgstr "Од кого е"
 
-#: src/common/text.c:702
+#: src/common/text.c:948
 msgid "The time in x.x format (see below)"
 msgstr "Времето во x.x формат (види подолу)"
 
-#: src/common/text.c:712 src/common/text.c:749
+#: src/common/text.c:958 src/common/text.c:995
 msgid "The Channel it's going to"
 msgstr "Каналот до кој што оди"
 
-#: src/common/text.c:736
+#: src/common/text.c:982
 msgid "The sound"
 msgstr "Звукот"
 
-#: src/common/text.c:737 src/common/text.c:743 src/common/text.c:748
+#: src/common/text.c:983 src/common/text.c:989 src/common/text.c:994
 msgid "The nick of the person"
 msgstr "Прекарот на личноста"
 
-#: src/common/text.c:742 src/common/text.c:747
+#: src/common/text.c:988 src/common/text.c:993
 msgid "The CTCP event"
 msgstr "CTCP настанот"
 
-#: src/common/text.c:753
+#: src/common/text.c:999
 msgid "The nick of the person who set the key"
 msgstr "Прекарот на личноста кој го поставила клучот"
 
-#: src/common/text.c:754
+#: src/common/text.c:1000
 msgid "The key"
 msgstr "Клучот"
 
-#: src/common/text.c:758
+#: src/common/text.c:1004
 msgid "The nick of the person who set the limit"
 msgstr "Името на личноста која што го поставила ограничувањето"
 
-#: src/common/text.c:759
+#: src/common/text.c:1005
 msgid "The limit"
 msgstr "Ограничувањето"
 
-#: src/common/text.c:763
+#: src/common/text.c:1009
 msgid "The nick of the person who did the op'ing"
 msgstr "Името на личноста која дала op"
 
-#: src/common/text.c:764
+#: src/common/text.c:1010
 msgid "The nick of the person who has been op'ed"
 msgstr "Прекарот на личноста која што добила op"
 
-#: src/common/text.c:768
+#: src/common/text.c:1014
 msgid "The nick of the person who has been halfop'ed"
 msgstr "Прекарот на личноста која добила halfop"
 
-#: src/common/text.c:769
+#: src/common/text.c:1015
 msgid "The nick of the person who did the halfop'ing"
 msgstr "Прекарот на личноста која направила halfop"
 
-#: src/common/text.c:773
+#: src/common/text.c:1019
 msgid "The nick of the person who did the voice'ing"
 msgstr "Прекарот на личноста која што дала глас"
 
-#: src/common/text.c:774
+#: src/common/text.c:1020
 msgid "The nick of the person who has been voice'ed"
 msgstr "Прекарот на личноста која што добила глас"
 
-#: src/common/text.c:778
+#: src/common/text.c:1024
 msgid "The nick of the person who did the banning"
 msgstr "Прекарот на личноста која што банирала"
 
-#: src/common/text.c:779 src/common/text.c:806
+#: src/common/text.c:1025 src/common/text.c:1052
 msgid "The ban mask"
 msgstr "Бан маската"
 
-#: src/common/text.c:783
+#: src/common/text.c:1029
 msgid "The nick who removed the key"
 msgstr "Прекарот кој што го отстранил клучот"
 
-#: src/common/text.c:787
+#: src/common/text.c:1033
 msgid "The nick who removed the limit"
 msgstr "Прекарот кој што го отстранил ограничувањето"
 
-#: src/common/text.c:791
+#: src/common/text.c:1037
 msgid "The nick of the person of did the deop'ing"
 msgstr "Прекарот на личноста што одземала op"
 
-#: src/common/text.c:792
+#: src/common/text.c:1038
 msgid "The nick of the person who has been deop'ed"
 msgstr "Прекарот на личноста на која што и е земен op"
 
-#: src/common/text.c:795
+#: src/common/text.c:1041
 msgid "The nick of the person of did the dehalfop'ing"
 msgstr "Прекарот на личноста која одзела halfop"
 
-#: src/common/text.c:796
+#: src/common/text.c:1042
 msgid "The nick of the person who has been dehalfop'ed"
 msgstr "Прекарот на личноста на која и е одземен halfop"
 
-#: src/common/text.c:800
+#: src/common/text.c:1046
 msgid "The nick of the person of did the devoice'ing"
 msgstr "Прекарот на личноста која направила одземање на глас"
 
-#: src/common/text.c:801
+#: src/common/text.c:1047
 msgid "The nick of the person who has been devoice'ed"
 msgstr "Прекарот на личноста на која и е одземен гласот"
 
-#: src/common/text.c:805
+#: src/common/text.c:1051
 msgid "The nick of the person of did the unban'ing"
 msgstr "Прекарот на личноста која што одбанувала"
 
-#: src/common/text.c:810
+#: src/common/text.c:1056
 msgid "The nick of the person who did the exempt"
 msgstr "Прекарот на личноста која направила exempt"
 
-#: src/common/text.c:811 src/common/text.c:816
+#: src/common/text.c:1057 src/common/text.c:1062
 msgid "The exempt mask"
 msgstr "Exempt маска"
 
-#: src/common/text.c:815
+#: src/common/text.c:1061
 msgid "The nick of the person removed the exempt"
 msgstr "Прекарот на личноста која отстранила exempt"
 
-#: src/common/text.c:820
+#: src/common/text.c:1066
 msgid "The nick of the person who did the invite"
 msgstr "Прекарот на личноста која поканила"
 
-#: src/common/text.c:821 src/common/text.c:826
+#: src/common/text.c:1067 src/common/text.c:1072
 msgid "The invite mask"
 msgstr "Маската за покана"
 
-#: src/common/text.c:825
+#: src/common/text.c:1071
 msgid "The nick of the person removed the invite"
 msgstr "Прекарот на личноста која ја отстранила поканата"
 
-#: src/common/text.c:830
+#: src/common/text.c:1076
 msgid "The nick of the person setting the mode"
 msgstr "Прекарот на личноста која што го поставува режимот"
 
-#: src/common/text.c:831
+#: src/common/text.c:1077
 msgid "The mode's sign (+/-)"
 msgstr "Знаците за режим (+/-)"
 
-#: src/common/text.c:832
+#: src/common/text.c:1078
 msgid "The mode letter"
 msgstr "Буквата за режим"
 
-#: src/common/text.c:833
+#: src/common/text.c:1079
 msgid "The channel it's being set on"
 msgstr "Каналот се подесува"
 
-#: src/common/text.c:838
+#: src/common/text.c:1084
 msgid "Username"
 msgstr "Корисничко име"
 
-#: src/common/text.c:840
+#: src/common/text.c:1086
 msgid "Full name"
 msgstr "Целосно име"
 
-#: src/common/text.c:845
+#: src/common/text.c:1091
 msgid "Channel Membership/\"is an IRC operator\""
 msgstr "Членство на каналот/\"е IRC оператор\""
 
-#: src/common/text.c:850
+#: src/common/text.c:1096
 msgid "Server Information"
 msgstr "Информации за серверот"
 
-#: src/common/text.c:855 src/common/text.c:860
+#: src/common/text.c:1101 src/common/text.c:1106
 msgid "Idle time"
 msgstr "Неактивност"
 
-#: src/common/text.c:861
+#: src/common/text.c:1107
 msgid "Signon time"
 msgstr "Време на вклучување"
 
-#: src/common/text.c:866
+#: src/common/text.c:1112
 msgid "Away reason"
 msgstr "Причина за отсуство"
 
-#: src/common/text.c:875 src/common/text.c:881 src/common/text.c:889
-#: src/common/text.c:1069
+#: src/common/text.c:1121 src/common/text.c:1127 src/common/text.c:1135
+#: src/common/text.c:1315
 msgid "Message"
 msgstr "Порака"
 
-#: src/common/text.c:882
+#: src/common/text.c:1128
 msgid "Account"
 msgstr "Сметка"
 
-#: src/common/text.c:887
+#: src/common/text.c:1133
 msgid "Real user@host"
 msgstr "Вистински корисник@host"
 
-#: src/common/text.c:888
+#: src/common/text.c:1134
 msgid "Real IP"
 msgstr "Вистинска IP"
 
-#: src/common/text.c:893 src/common/text.c:902 src/common/text.c:908
-#: src/common/text.c:938 src/common/text.c:1092
+#: src/common/text.c:1139 src/common/text.c:1148 src/common/text.c:1154
+#: src/common/text.c:1184 src/common/text.c:1338
 msgid "Channel Name"
 msgstr "Име на каналот"
 
-#: src/common/text.c:897 src/common/text.c:1055 src/fe-gtk/menu.c:1206
-#: src/fe-gtk/menu.c:1385 src/fe-gtk/textgui.c:387
+#: src/common/text.c:1143 src/common/text.c:1301 src/fe-gtk/menu.c:1240
+#: src/fe-gtk/menu.c:1420 src/fe-gtk/textgui.c:390
 msgid "Text"
 msgstr "Текст"
 
-#: src/common/text.c:898 src/common/text.c:904 src/common/text.c:933
-#: src/common/text.c:1051 src/common/text.c:1093
+#: src/common/text.c:1144 src/common/text.c:1150 src/common/text.c:1179
+#: src/common/text.c:1297 src/common/text.c:1339
 msgid "Server Name"
 msgstr "Име на серверот"
 
-#: src/common/text.c:903
+#: src/common/text.c:1149
 msgid "Nick of person who invited you"
 msgstr "Прекар на личноста која те поканила"
 
-#: src/common/text.c:909 src/fe-gtk/chanlist.c:717
+#: src/common/text.c:1155 src/fe-gtk/chanlist.c:755
 msgid "Users"
 msgstr "Корисници"
 
-#: src/common/text.c:913
+#: src/common/text.c:1159
 msgid "Nickname in use"
 msgstr "Прекарот е употребен"
 
-#: src/common/text.c:914
+#: src/common/text.c:1160
 msgid "Nick being tried"
 msgstr "Се обидувам со прекарот"
 
-#: src/common/text.c:923 src/common/text.c:1059
+#: src/common/text.c:1169 src/common/text.c:1305
 msgid "IP"
 msgstr "IP"
 
-#: src/common/text.c:924 src/common/text.c:955
+#: src/common/text.c:1170 src/common/text.c:1201
 msgid "Port"
 msgstr "Порта"
 
-#: src/common/text.c:934 src/fe-gtk/notifygui.c:139 src/fe-gtk/setup.c:1647
+#: src/common/text.c:1180 src/fe-gtk/notifygui.c:139 src/fe-gtk/setup.c:1669
 msgid "Network"
 msgstr "Мрежа"
 
-#: src/common/text.c:939 src/common/text.c:944
+#: src/common/text.c:1185 src/common/text.c:1190
 msgid "Modes string"
 msgstr "Стринг на режими"
 
-#: src/common/text.c:954 src/common/text.c:992 src/common/text.c:997
-#: src/common/text.c:1038
+#: src/common/text.c:1200 src/common/text.c:1238 src/common/text.c:1243
+#: src/common/text.c:1284
 msgid "IP address"
 msgstr "IP адреса"
 
-#: src/common/text.c:960 src/common/text.c:985
+#: src/common/text.c:1206 src/common/text.c:1231
 msgid "DCC Type"
 msgstr "DCC тип"
 
-#: src/common/text.c:961 src/common/text.c:966 src/common/text.c:971
-#: src/common/text.c:978 src/common/text.c:998 src/common/text.c:1002
-#: src/common/text.c:1008 src/common/text.c:1014 src/common/text.c:1021
-#: src/common/text.c:1030 src/common/text.c:1036
+#: src/common/text.c:1207 src/common/text.c:1212 src/common/text.c:1217
+#: src/common/text.c:1224 src/common/text.c:1244 src/common/text.c:1248
+#: src/common/text.c:1254 src/common/text.c:1260 src/common/text.c:1267
+#: src/common/text.c:1276 src/common/text.c:1282
 msgid "Filename"
 msgstr "Име на датотеката"
 
-#: src/common/text.c:972 src/common/text.c:979
+#: src/common/text.c:1218 src/common/text.c:1225
 msgid "Destination filename"
 msgstr "Дестинација на датотеката"
 
-#: src/common/text.c:981 src/common/text.c:1010
+#: src/common/text.c:1227 src/common/text.c:1256
 msgid "CPS"
 msgstr "CPS"
 
-#: src/common/text.c:1016
+#: src/common/text.c:1262
 msgid "Pathname"
 msgstr "Име на патеката"
 
-#: src/common/text.c:1031 src/fe-gtk/dccgui.c:759
+#: src/common/text.c:1277 src/fe-gtk/dccgui.c:759
 msgid "Position"
 msgstr "Позиција"
 
-#: src/common/text.c:1037 src/fe-gtk/dccgui.c:758
+#: src/common/text.c:1283 src/fe-gtk/dccgui.c:758
 msgid "Size"
 msgstr "Големина"
 
-#: src/common/text.c:1042
+#: src/common/text.c:1288
 msgid "DCC String"
 msgstr "DCC стринг"
 
-#: src/common/text.c:1047
+#: src/common/text.c:1293
 msgid "Number of notify items"
 msgstr "Број на предмети за известување"
 
-#: src/common/text.c:1063
+#: src/common/text.c:1309
 msgid "Old Filename"
 msgstr "Старо име на датотеката"
 
-#: src/common/text.c:1064
+#: src/common/text.c:1310
 msgid "New Filename"
 msgstr "Ново име на датотеката"
 
-#: src/common/text.c:1068
+#: src/common/text.c:1314
 msgid "Receiver"
 msgstr "Примач"
 
-#: src/common/text.c:1073
+#: src/common/text.c:1319
 msgid "Hostmask"
 msgstr "Маска на Host-от"
 
-#: src/common/text.c:1078
+#: src/common/text.c:1324
 msgid "Hostname"
 msgstr "Име на host"
 
-#: src/common/text.c:1083
+#: src/common/text.c:1329
 msgid "The Packet"
 msgstr "Пакетот"
 
-#: src/common/text.c:1087
+#: src/common/text.c:1333
 msgid "Seconds"
 msgstr "Секунди"
 
-#: src/common/text.c:1091
+#: src/common/text.c:1337
 msgid "Nick of person who have been invited"
 msgstr "Прекарот на личноста што е поканета"
 
-#: src/common/text.c:1098
+#: src/common/text.c:1344
 msgid "Banmask"
 msgstr "Бан маска"
 
-#: src/common/text.c:1099
+#: src/common/text.c:1345
 msgid "Who set the ban"
 msgstr "Кој го ставил банот"
 
-#: src/common/text.c:1100
+#: src/common/text.c:1346
 msgid "Ban time"
 msgstr "Време на банот"
 
-#: src/common/text.c:1140
+#: src/common/text.c:1386
 #, c-format
 msgid ""
 "Error parsing event %s.\n"
@@ -1524,7 +1528,7 @@ msgstr ""
 "Грешка при настанот %s.\n"
 "Вчитувам стандардно."
 
-#: src/common/text.c:1833
+#: src/common/text.c:2079
 #, c-format
 msgid ""
 "Cannot read sound file:\n"
@@ -2597,231 +2601,231 @@ msgstr "Замбија"
 msgid "Zimbabwe"
 msgstr "Зимбабве"
 
-#: src/common/util.c:1109 src/common/util.c:1119 src/fe-gtk/menu.c:550
-#: src/fe-gtk/menu.c:555 src/fe-gtk/menu.c:559 src/fe-gtk/menu.c:563
-#: src/fe-gtk/menu.c:571 src/fe-gtk/menu.c:589
+#: src/common/util.c:1109 src/common/util.c:1119 src/fe-gtk/menu.c:553
+#: src/fe-gtk/menu.c:558 src/fe-gtk/menu.c:562 src/fe-gtk/menu.c:566
+#: src/fe-gtk/menu.c:574 src/fe-gtk/menu.c:592
 msgid "Unknown"
 msgstr "Непознато"
 
-#: src/common/xchat.c:769 src/common/xchat.c:895
+#: src/common/xchat.c:767 src/common/xchat.c:893
 msgid "Open Dialog Window"
 msgstr "Отвори нов дијалог прозорец"
 
-#: src/common/xchat.c:770
+#: src/common/xchat.c:768
 msgid "Send a File"
 msgstr "Испрати датотека"
 
-#: src/common/xchat.c:771
+#: src/common/xchat.c:769
 msgid "User Info (WHOIS)"
 msgstr "Кориснички информации (WHOIS)"
 
-#: src/common/xchat.c:772
+#: src/common/xchat.c:770
 msgid "Operator Actions"
 msgstr "Дејства за операторот"
 
-#: src/common/xchat.c:774 src/common/xchat.c:865
+#: src/common/xchat.c:772 src/common/xchat.c:863
 msgid "Give Ops"
 msgstr "Дај op"
 
-#: src/common/xchat.c:775 src/common/xchat.c:866
+#: src/common/xchat.c:773 src/common/xchat.c:864
 msgid "Take Ops"
 msgstr "Одземи op"
 
-#: src/common/xchat.c:776 src/common/xchat.c:869
+#: src/common/xchat.c:774 src/common/xchat.c:867
 msgid "Give Voice"
 msgstr "Дај глас"
 
-#: src/common/xchat.c:777 src/common/xchat.c:870
+#: src/common/xchat.c:775 src/common/xchat.c:868
 msgid "Take Voice"
 msgstr "Одземи глас"
 
-#: src/common/xchat.c:779 src/common/xchat.c:874
+#: src/common/xchat.c:777 src/common/xchat.c:872
 msgid "Kick/Ban"
 msgstr "Исфрли/Банирај"
 
-#: src/common/xchat.c:780 src/common/xchat.c:875 src/common/xchat.c:924
+#: src/common/xchat.c:778 src/common/xchat.c:873 src/common/xchat.c:922
 msgid "Kick"
 msgstr "Исфрли"
 
-#: src/common/xchat.c:781 src/common/xchat.c:782 src/common/xchat.c:783
-#: src/common/xchat.c:784 src/common/xchat.c:785 src/common/xchat.c:876
-#: src/common/xchat.c:877 src/common/xchat.c:878 src/common/xchat.c:879
-#: src/common/xchat.c:880 src/common/xchat.c:923
+#: src/common/xchat.c:779 src/common/xchat.c:780 src/common/xchat.c:781
+#: src/common/xchat.c:782 src/common/xchat.c:783 src/common/xchat.c:874
+#: src/common/xchat.c:875 src/common/xchat.c:876 src/common/xchat.c:877
+#: src/common/xchat.c:878 src/common/xchat.c:921
 msgid "Ban"
 msgstr "Банирај"
 
-#: src/common/xchat.c:786 src/common/xchat.c:787 src/common/xchat.c:788
-#: src/common/xchat.c:789 src/common/xchat.c:881 src/common/xchat.c:882
-#: src/common/xchat.c:883 src/common/xchat.c:884
+#: src/common/xchat.c:784 src/common/xchat.c:785 src/common/xchat.c:786
+#: src/common/xchat.c:787 src/common/xchat.c:879 src/common/xchat.c:880
+#: src/common/xchat.c:881 src/common/xchat.c:882
 msgid "KickBan"
 msgstr "Исфрли и банирај"
 
-#: src/common/xchat.c:852
+#: src/common/xchat.c:850
 msgid "Direct client-to-client"
 msgstr "Директно,клиент до клиент"
 
-#: src/common/xchat.c:853
+#: src/common/xchat.c:851
 msgid "Send File"
 msgstr "Испрати датотека"
 
-#: src/common/xchat.c:854
+#: src/common/xchat.c:852
 msgid "Offer Chat"
 msgstr "Понуди разговор"
 
-#: src/common/xchat.c:855
+#: src/common/xchat.c:853
 msgid "Abort Chat"
 msgstr "Прекини разговор"
 
-#: src/common/xchat.c:856 src/fe-gtk/plugingui.c:74
+#: src/common/xchat.c:854 src/fe-gtk/plugingui.c:74
 msgid "Version"
 msgstr "Верзија"
 
-#: src/common/xchat.c:857
+#: src/common/xchat.c:855
 msgid "Userinfo"
 msgstr "Инфо за корисник"
 
-#: src/common/xchat.c:858
+#: src/common/xchat.c:856
 msgid "Clientinfo"
 msgstr "Инфо за клиент"
 
-#: src/common/xchat.c:859 src/common/xchat.c:893 src/common/xchat.c:941
+#: src/common/xchat.c:857 src/common/xchat.c:891 src/common/xchat.c:939
 msgid "Ping"
 msgstr "Пинг"
 
-#: src/common/xchat.c:860
+#: src/common/xchat.c:858
 msgid "Time"
 msgstr "Време"
 
-#: src/common/xchat.c:861
+#: src/common/xchat.c:859
 msgid "Finger"
 msgstr "Finger"
 
-#: src/common/xchat.c:862
+#: src/common/xchat.c:860
 msgid "Oper"
 msgstr "Oper"
 
-#: src/common/xchat.c:863
+#: src/common/xchat.c:861
 msgid "Kill this user"
 msgstr "Убиј го корисникот"
 
-#: src/common/xchat.c:864
+#: src/common/xchat.c:862
 msgid "Mode"
 msgstr "Режим"
 
-#: src/common/xchat.c:867
+#: src/common/xchat.c:865
 msgid "Give Half-Ops"
 msgstr "Дај полуоператорски статус"
 
-#: src/common/xchat.c:868
+#: src/common/xchat.c:866
 msgid "Take Half-Ops"
 msgstr "Одземи полуоператорски статус"
 
-#: src/common/xchat.c:871
+#: src/common/xchat.c:869
 msgid "Ignore"
 msgstr "Игнорирај"
 
-#: src/common/xchat.c:872
+#: src/common/xchat.c:870
 msgid "Ignore User"
 msgstr "Игнорирај корисник"
 
-#: src/common/xchat.c:873
+#: src/common/xchat.c:871
 msgid "UnIgnore User"
 msgstr "Не игнорирај корисник"
 
-#: src/common/xchat.c:885
+#: src/common/xchat.c:883
 msgid "Info"
 msgstr "Инфо"
 
-#: src/common/xchat.c:886
+#: src/common/xchat.c:884
 msgid "Who"
 msgstr "Кој"
 
-#: src/common/xchat.c:887 src/common/xchat.c:937
+#: src/common/xchat.c:885 src/common/xchat.c:935
 msgid "WhoIs"
 msgstr "КојЕ"
 
-#: src/common/xchat.c:888
+#: src/common/xchat.c:886
 msgid "DNS Lookup"
 msgstr "Побарај DNS"
 
-#: src/common/xchat.c:889
+#: src/common/xchat.c:887
 msgid "Trace"
 msgstr "Следи"
 
-#: src/common/xchat.c:890
+#: src/common/xchat.c:888
 msgid "UserHost"
 msgstr "Host на корисникот"
 
-#: src/common/xchat.c:891
+#: src/common/xchat.c:889
 msgid "External"
 msgstr "Надворешно"
 
-#: src/common/xchat.c:892
+#: src/common/xchat.c:890
 msgid "Traceroute"
 msgstr "Рута на следење"
 
-#: src/common/xchat.c:894
+#: src/common/xchat.c:892
 msgid "Telnet"
 msgstr "Telnet"
 
-#: src/common/xchat.c:906
+#: src/common/xchat.c:904
 msgid "Leave Channel"
 msgstr "Напушти канал"
 
-#: src/common/xchat.c:907 src/fe-gtk/menu.c:1392
+#: src/common/xchat.c:905 src/fe-gtk/menu.c:1427
 msgid "Join Channel..."
 msgstr "Приклучи се на канал..."
 
-#: src/common/xchat.c:908 src/fe-gtk/menu.c:1083
+#: src/common/xchat.c:906 src/fe-gtk/menu.c:1117
 msgid "Enter Channel to Join:"
 msgstr "Внеси канал за да се приклучиш:"
 
-#: src/common/xchat.c:909
+#: src/common/xchat.c:907
 msgid "Server Links"
 msgstr "Врски до серверот"
 
-#: src/common/xchat.c:910
+#: src/common/xchat.c:908
 msgid "Ping Server"
 msgstr "Пингувај го серверот"
 
-#: src/common/xchat.c:911
+#: src/common/xchat.c:909
 msgid "Hide Version"
 msgstr "Сокриј верзија"
 
-#: src/common/xchat.c:921
+#: src/common/xchat.c:919
 msgid "Op"
 msgstr "Оp"
 
-#: src/common/xchat.c:922
+#: src/common/xchat.c:920
 msgid "DeOp"
 msgstr "Земи оp"
 
-#: src/common/xchat.c:925
+#: src/common/xchat.c:923
 msgid "bye"
 msgstr "чао"
 
-#: src/common/xchat.c:926
+#: src/common/xchat.c:924
 #, c-format
 msgid "Enter reason to kick %s:"
 msgstr "Внеси причина за исфрлувањето %s:"
 
-#: src/common/xchat.c:927
+#: src/common/xchat.c:925
 msgid "Sendfile"
 msgstr "Испрати датотека"
 
-#: src/common/xchat.c:928
+#: src/common/xchat.c:926
 msgid "Dialog"
 msgstr "Дијалог"
 
-#: src/common/xchat.c:938
+#: src/common/xchat.c:936
 msgid "Send"
 msgstr "Испрати"
 
-#: src/common/xchat.c:939
+#: src/common/xchat.c:937
 msgid "Chat"
 msgstr "Разговор"
 
-#: src/common/xchat.c:940 src/fe-gtk/banlist.c:341 src/fe-gtk/ignoregui.c:388
+#: src/common/xchat.c:938 src/fe-gtk/banlist.c:341 src/fe-gtk/ignoregui.c:388
 #: src/fe-gtk/urlgrab.c:201
 msgid "Clear"
 msgstr "Исчисти"
@@ -2868,8 +2872,8 @@ msgstr "Мултиплатформски клиент за IRC"
 msgid "Character Chart"
 msgstr "Табела со карактери"
 
-#: src/fe-gtk/banlist.c:113 src/fe-gtk/chanlist.c:299
-#: src/fe-gtk/plugin-tray.c:209
+#: src/fe-gtk/banlist.c:113 src/fe-gtk/chanlist.c:305
+#: src/fe-gtk/plugin-tray.c:217
 msgid "Not connected."
 msgstr "Не сум поврзан."
 
@@ -2920,80 +2924,80 @@ msgstr "Освежи"
 msgid "Displaying %d/%d users on %d/%d channels."
 msgstr "Прикажувам %d/%d корисници на %d/%d канали."
 
-#: src/fe-gtk/chanlist.c:516 src/fe-gtk/menu.c:1019 src/fe-gtk/urlgrab.c:148
+#: src/fe-gtk/chanlist.c:522 src/fe-gtk/menu.c:1053 src/fe-gtk/urlgrab.c:148
 msgid "Select an output filename"
 msgstr "Избери излезно име на датотека"
 
-#: src/fe-gtk/chanlist.c:595 src/fe-gtk/chanlist.c:751
+#: src/fe-gtk/chanlist.c:626 src/fe-gtk/chanlist.c:789
 msgid "_Join Channel"
 msgstr "_Приклучи се на канал"
 
-#: src/fe-gtk/chanlist.c:597
+#: src/fe-gtk/chanlist.c:628
 msgid "_Copy Channel Name"
 msgstr "_Копирај го името на каналот"
 
-#: src/fe-gtk/chanlist.c:599
+#: src/fe-gtk/chanlist.c:630
 msgid "Copy _Topic Text"
 msgstr "Копирај го текстот од _насловот"
 
-#: src/fe-gtk/chanlist.c:677
+#: src/fe-gtk/chanlist.c:714
 #, c-format
 msgid "XChat: Channel List (%s)"
 msgstr "XChat: Листа на канали (%s)"
 
-#: src/fe-gtk/chanlist.c:733
+#: src/fe-gtk/chanlist.c:771
 msgid "_Search"
 msgstr "_Барај"
 
-#: src/fe-gtk/chanlist.c:739
+#: src/fe-gtk/chanlist.c:777
 msgid "_Download List"
 msgstr "_Симни листа"
 
-#: src/fe-gtk/chanlist.c:745
+#: src/fe-gtk/chanlist.c:783
 msgid "Save _List..."
 msgstr "Зачувај ја _листата..."
 
-#: src/fe-gtk/chanlist.c:758
+#: src/fe-gtk/chanlist.c:796
 msgid "Show only:"
 msgstr "Прикажи само:"
 
-#: src/fe-gtk/chanlist.c:770
+#: src/fe-gtk/chanlist.c:808
 msgid "channels with"
 msgstr "канали со"
 
-#: src/fe-gtk/chanlist.c:783
+#: src/fe-gtk/chanlist.c:821
 msgid "to"
 msgstr "до"
 
-#: src/fe-gtk/chanlist.c:795
+#: src/fe-gtk/chanlist.c:833
 msgid "users."
 msgstr "корисници"
 
-#: src/fe-gtk/chanlist.c:801
+#: src/fe-gtk/chanlist.c:839
 msgid "Look in:"
 msgstr "Барај во:"
 
-#: src/fe-gtk/chanlist.c:813
+#: src/fe-gtk/chanlist.c:851
 msgid "Channel name"
 msgstr "Име на каналот"
 
-#: src/fe-gtk/chanlist.c:834
+#: src/fe-gtk/chanlist.c:872
 msgid "Search type:"
 msgstr "Барај тип:"
 
-#: src/fe-gtk/chanlist.c:841
+#: src/fe-gtk/chanlist.c:879
 msgid "Simple Search"
 msgstr "Едноставно пребарување"
 
-#: src/fe-gtk/chanlist.c:842
+#: src/fe-gtk/chanlist.c:880
 msgid "Pattern Match (Wildcards)"
 msgstr "Совпаѓање на шаблони (Wildcards)"
 
-#: src/fe-gtk/chanlist.c:844
+#: src/fe-gtk/chanlist.c:882
 msgid "Regular Expression"
 msgstr "Регуларни изрази"
 
-#: src/fe-gtk/chanlist.c:855 src/fe-gtk/search.c:118
+#: src/fe-gtk/chanlist.c:893 src/fe-gtk/search.c:118
 msgid "Find:"
 msgstr "Најди:"
 
@@ -3041,7 +3045,7 @@ msgstr "Датотека"
 msgid "ETA"
 msgstr "ЕТА"
 
-#: src/fe-gtk/dccgui.c:784 src/fe-gtk/menu.c:1386
+#: src/fe-gtk/dccgui.c:784 src/fe-gtk/menu.c:1421
 msgid "Both"
 msgstr "И двете"
 
@@ -3145,39 +3149,47 @@ msgstr "Подреди"
 msgid "Help"
 msgstr "Помош"
 
-#: src/fe-gtk/fe-gtk.c:122
+#: src/fe-gtk/fe-gtk.c:126
 msgid "Don't auto connect to servers"
 msgstr "Не се поврзувај автоматски на серверот"
 
-#: src/fe-gtk/fe-gtk.c:123
+#: src/fe-gtk/fe-gtk.c:127
 msgid "Use a different config directory"
 msgstr "Користи друг конфигурациски директориум"
 
-#: src/fe-gtk/fe-gtk.c:124
+#: src/fe-gtk/fe-gtk.c:128
 msgid "Don't auto load any plugins"
 msgstr "Не вчитувај додатоци автоматски"
 
-#: src/fe-gtk/fe-gtk.c:125
+#: src/fe-gtk/fe-gtk.c:129
 msgid "Show plugin auto-load directory"
 msgstr "Прикажи директориум за автоматско вчитување на додатоците"
 
-#: src/fe-gtk/fe-gtk.c:126
+#: src/fe-gtk/fe-gtk.c:130
 msgid "Show user config directory"
 msgstr "Покажи го директориумот за конфигурациите на корисникот"
 
-#: src/fe-gtk/fe-gtk.c:127
+#: src/fe-gtk/fe-gtk.c:131
 msgid "Open an irc://server:port/channel URL"
 msgstr "Отвори URL како irc://server:port/channel"
 
-#: src/fe-gtk/fe-gtk.c:128
+#: src/fe-gtk/fe-gtk.c:133
 msgid "Open URL in an existing XChat"
 msgstr "Отвори URL во постоечки XChat"
 
-#: src/fe-gtk/fe-gtk.c:129
+#: src/fe-gtk/fe-gtk.c:135
+msgid "Begin minimized. Level 0=Normal 1=Iconified 2=Tray"
+msgstr "Започни минимизирано. Ниво 0=нормално 1=иконизирано 2=место за известување"
+
+#: src/fe-gtk/fe-gtk.c:135
+msgid "level"
+msgstr "ниво"
+
+#: src/fe-gtk/fe-gtk.c:136
 msgid "Show version information"
 msgstr "Покажи информации за верзијата"
 
-#: src/fe-gtk/fe-gtk.c:249
+#: src/fe-gtk/fe-gtk.c:256
 #, c-format
 msgid ""
 "Failed to open font:\n"
@@ -3188,16 +3200,16 @@ msgstr ""
 "\n"
 "%s"
 
-#: src/fe-gtk/fe-gtk.c:621
+#: src/fe-gtk/fe-gtk.c:635
 msgid "Search buffer is empty.\n"
 msgstr "Баферот за пребарување е празен.\n"
 
-#: src/fe-gtk/fe-gtk.c:717
+#: src/fe-gtk/fe-gtk.c:731
 #, c-format
 msgid "%d bytes"
 msgstr "%d бајти"
 
-#: src/fe-gtk/fe-gtk.c:718
+#: src/fe-gtk/fe-gtk.c:732
 #, c-format
 msgid "Network send queue: %d bytes"
 msgstr "Редица за испраќање на мрежата: %d бајти"
@@ -3268,8 +3280,8 @@ msgstr "Се појави грешка при вчитувањето на кон
 
 #: src/fe-gtk/fkeys.c:450 src/fe-gtk/fkeys.c:451 src/fe-gtk/fkeys.c:452
 #: src/fe-gtk/fkeys.c:453 src/fe-gtk/fkeys.c:743 src/fe-gtk/fkeys.c:749
-#: src/fe-gtk/fkeys.c:754 src/fe-gtk/maingui.c:1375 src/fe-gtk/maingui.c:1478
-#: src/fe-gtk/maingui.c:2938
+#: src/fe-gtk/fkeys.c:754 src/fe-gtk/maingui.c:1616 src/fe-gtk/maingui.c:1719
+#: src/fe-gtk/maingui.c:3201
 msgid "<none>"
 msgstr "<none>"
 
@@ -3365,7 +3377,7 @@ msgstr "Не можам да ја прочитам датотеката"
 msgid "That mask already exists."
 msgstr "Таа маска веќе постои"
 
-#: src/fe-gtk/ignoregui.c:177 src/fe-gtk/maingui.c:1949
+#: src/fe-gtk/ignoregui.c:177 src/fe-gtk/maingui.c:2100
 msgid "Private"
 msgstr "Приватно"
 
@@ -3470,121 +3482,138 @@ msgstr "Земањето на листата со канали може да п�
 msgid "_Always show this dialog after connecting."
 msgstr "_Секогаш прикажувај го овој дијалог прозорец после поврзување."
 
-#: src/fe-gtk/maingui.c:483
+#: src/fe-gtk/maingui.c:500
 msgid "Dialog with"
 msgstr "Дијалог со"
 
-#: src/fe-gtk/maingui.c:768
+#: src/fe-gtk/maingui.c:787
 #, c-format
 msgid "Topic for %s is: %s"
 msgstr "Насловот на %s е: %s"
 
-#: src/fe-gtk/maingui.c:773
+#: src/fe-gtk/maingui.c:792
 msgid "No topic is set"
 msgstr "Нема поставено наслов"
 
-#: src/fe-gtk/maingui.c:1072
+#: src/fe-gtk/maingui.c:1177
 #, c-format
 msgid "This server still has %d channels or dialogs associated with it. Close them all?"
 msgstr "Овој сервер има %d канали и дијалози поврзани со него. Да ги затворам сите?"
 
-#: src/fe-gtk/maingui.c:1151
-msgid "No other tabs open, quit xchat?"
-msgstr "Нема други отворени јазичиња. Сакате да излезете од xchat?"
+#: src/fe-gtk/maingui.c:1304
+msgid "Quit XChat?"
+msgstr "Да го исклучам XChat?"
 
-#: src/fe-gtk/maingui.c:1326
+#: src/fe-gtk/maingui.c:1325
+msgid "Don't ask next time."
+msgstr "Не прашувај наредниот пат."
+
+#: src/fe-gtk/maingui.c:1331
+#, c-format
+msgid "You are connected to %i IRC networks."
+msgstr "Вие сте поврзани на %i IRC мрежи."
+
+#: src/fe-gtk/maingui.c:1333
+msgid "Are you sure you want to quit?"
+msgstr "Дали сигурно сакате да напуштите?"
+
+#: src/fe-gtk/maingui.c:1335
+msgid "Some file transfers are still active."
+msgstr "Некои податоци сеуште се пренесуваат."
+
+#: src/fe-gtk/maingui.c:1353
+msgid "_Minimize to Tray"
+msgstr "_Минимизирај се во местото за известување"
+
+#: src/fe-gtk/maingui.c:1567
 msgid "Insert Attribute or Color Code"
 msgstr "Внеси атрибут или код за боја"
 
-#: src/fe-gtk/maingui.c:1328
+#: src/fe-gtk/maingui.c:1569
 msgid "<b>Bold</b>"
 msgstr "<b>Задебелено</b>"
 
-#: src/fe-gtk/maingui.c:1329
+#: src/fe-gtk/maingui.c:1570
 msgid "<u>Underline</u>"
 msgstr "<u>Потцртано</u>"
 
-#: src/fe-gtk/maingui.c:1331
+#: src/fe-gtk/maingui.c:1572
 msgid "Normal"
 msgstr "Нормално"
 
-#: src/fe-gtk/maingui.c:1333
+#: src/fe-gtk/maingui.c:1574
 msgid "Colors 0-7"
 msgstr "Бои 0-7"
 
-#: src/fe-gtk/maingui.c:1343
+#: src/fe-gtk/maingui.c:1584
 msgid "Colors 8-15"
 msgstr "Бои 8-15"
 
-#: src/fe-gtk/maingui.c:1388
+#: src/fe-gtk/maingui.c:1629
 msgid "Beep on message"
 msgstr "Свирни на порака"
 
-#: src/fe-gtk/maingui.c:1391
+#: src/fe-gtk/maingui.c:1632
 msgid "Blink tray on message"
 msgstr "Трепни на порака"
 
-#: src/fe-gtk/maingui.c:1394
+#: src/fe-gtk/maingui.c:1635
 msgid "Show join/part messages"
 msgstr "Покажувај ги пораките за приклучувањето и исклучување"
 
-#: src/fe-gtk/maingui.c:1396
+#: src/fe-gtk/maingui.c:1637
 msgid "Color paste"
 msgstr "Вметни боја"
 
-#: src/fe-gtk/maingui.c:1406 src/fe-gtk/menu.c:1906
+#: src/fe-gtk/maingui.c:1647 src/fe-gtk/menu.c:1950
 msgid "_Close Tab"
 msgstr "_Затвори јазиче"
 
-#: src/fe-gtk/maingui.c:1408 src/fe-gtk/menu.c:1905
+#: src/fe-gtk/maingui.c:1649 src/fe-gtk/menu.c:1949
 msgid "_Detach Tab"
 msgstr "_Откачи јазиче"
 
-#: src/fe-gtk/maingui.c:1649
-msgid "Some file transfers still active, quit xchat?"
-msgstr "Некои податоци сеуште се пренесуваат. Сакаш да излезеш од xchat?"
-
-#: src/fe-gtk/maingui.c:1817 src/fe-gtk/maingui.c:1923
+#: src/fe-gtk/maingui.c:1968 src/fe-gtk/maingui.c:2074
 msgid "User limit must be a number!\n"
 msgstr "Корисничкото ограничување мора да биде број!\n"
 
-#: src/fe-gtk/maingui.c:1945
+#: src/fe-gtk/maingui.c:2096
 msgid "Topic Protection"
 msgstr "Заштита на наслов"
 
-#: src/fe-gtk/maingui.c:1946
+#: src/fe-gtk/maingui.c:2097
 msgid "No outside messages"
 msgstr "Без надворешни пораки"
 
-#: src/fe-gtk/maingui.c:1947
+#: src/fe-gtk/maingui.c:2098
 msgid "Secret"
 msgstr "Тајна"
 
-#: src/fe-gtk/maingui.c:1948
+#: src/fe-gtk/maingui.c:2099
 msgid "Invite Only"
 msgstr "Само со покани"
 
-#: src/fe-gtk/maingui.c:1950
+#: src/fe-gtk/maingui.c:2101
 msgid "Moderated"
 msgstr "Модерирано"
 
-#: src/fe-gtk/maingui.c:1951
+#: src/fe-gtk/maingui.c:2102
 msgid "Ban List"
 msgstr "Бан листа"
 
-#: src/fe-gtk/maingui.c:1953
+#: src/fe-gtk/maingui.c:2104
 msgid "Keyword"
 msgstr "Збор"
 
-#: src/fe-gtk/maingui.c:1965
+#: src/fe-gtk/maingui.c:2116
 msgid "User Limit"
 msgstr "Корисничко ограничување"
 
-#: src/fe-gtk/maingui.c:2076
+#: src/fe-gtk/maingui.c:2225
 msgid "Show/Hide userlist"
 msgstr "Покажи/скриј корисничка листа"
 
-#: src/fe-gtk/maingui.c:2201
+#: src/fe-gtk/maingui.c:2350
 msgid ""
 "Unable to set transparent background!\n"
 "\n"
@@ -3594,7 +3623,7 @@ msgstr ""
 "Неможам да поставам транспарентна позадина!\n"
 "\n"
 
-#: src/fe-gtk/maingui.c:2433
+#: src/fe-gtk/maingui.c:2621
 msgid "Enter new nickname:"
 msgstr "Внеси нов прекар"
 
@@ -3602,77 +3631,77 @@ msgstr "Внеси нов прекар"
 msgid "Host unknown"
 msgstr "Непознат host"
 
-#: src/fe-gtk/menu.c:541
+#: src/fe-gtk/menu.c:544
 #, c-format
 msgid "<tt><b>%-11s</b></tt> %s"
 msgstr "<tt><b>%-11s</b></tt> %s"
 
-#: src/fe-gtk/menu.c:546 src/fe-gtk/menu.c:550
+#: src/fe-gtk/menu.c:549 src/fe-gtk/menu.c:553
 msgid "Real Name:"
 msgstr "Вистинско име:"
 
-#: src/fe-gtk/menu.c:554
+#: src/fe-gtk/menu.c:557
 msgid "User:"
 msgstr "Корисник:"
 
-#: src/fe-gtk/menu.c:558
+#: src/fe-gtk/menu.c:561
 msgid "Country:"
 msgstr "Земја:"
 
-#: src/fe-gtk/menu.c:562
+#: src/fe-gtk/menu.c:565
 msgid "Server:"
 msgstr "Сервер:"
 
-#: src/fe-gtk/menu.c:574
+#: src/fe-gtk/menu.c:577
 msgid "Away Msg:"
 msgstr "Порака за отсуство:"
 
-#: src/fe-gtk/menu.c:584
+#: src/fe-gtk/menu.c:587
 #, c-format
 msgid "%u minutes ago"
 msgstr "пред %u минути"
 
-#: src/fe-gtk/menu.c:586 src/fe-gtk/menu.c:589
+#: src/fe-gtk/menu.c:589 src/fe-gtk/menu.c:592
 msgid "Last Msg:"
 msgstr "Последна порака:"
 
-#: src/fe-gtk/menu.c:690
+#: src/fe-gtk/menu.c:704
 msgid "The Menubar is now hidden. You can show it again by pressing F9 or right-clicking in a blank part of the main text area."
 msgstr "Мени лентата сега е скриена. Можете да ја прикажете повторно со притискање на F9 во празен дел од површината на главниот текст."
 
-#: src/fe-gtk/menu.c:777
+#: src/fe-gtk/menu.c:799
 msgid "Open Link in Browser"
 msgstr "Отвори ја врската во прелистувач"
 
-#: src/fe-gtk/menu.c:778
+#: src/fe-gtk/menu.c:800
 msgid "Copy Selected Link"
 msgstr "Копирај ја избраната врска"
 
-#: src/fe-gtk/menu.c:835 src/fe-gtk/menu.c:1066
+#: src/fe-gtk/menu.c:862 src/fe-gtk/menu.c:1100
 msgid "Join Channel"
 msgstr "Приклучи се на канал"
 
-#: src/fe-gtk/menu.c:839
+#: src/fe-gtk/menu.c:866
 msgid "Part Channel"
 msgstr "Напушти канал"
 
-#: src/fe-gtk/menu.c:841
+#: src/fe-gtk/menu.c:868
 msgid "Cycle Channel"
 msgstr "Промени канал"
 
-#: src/fe-gtk/menu.c:864
+#: src/fe-gtk/menu.c:892
 msgid "XChat: User menu"
 msgstr "XChat: Корисничко мени"
 
-#: src/fe-gtk/menu.c:873
+#: src/fe-gtk/menu.c:901
 msgid "Edit This Menu..."
 msgstr "Уреди го ова мени..."
 
-#: src/fe-gtk/menu.c:1068
+#: src/fe-gtk/menu.c:1102
 msgid "Retrieve channel list..."
 msgstr "Земи листа на канали..."
 
-#: src/fe-gtk/menu.c:1136
+#: src/fe-gtk/menu.c:1170
 msgid ""
 "User Commands - Special codes:\n"
 "\n"
@@ -3712,7 +3741,7 @@ msgstr ""
 "%2 треба да биде \"перо\"\n"
 "&2 треба да биде \"перо здраво\"."
 
-#: src/fe-gtk/menu.c:1152
+#: src/fe-gtk/menu.c:1186
 msgid ""
 "Userlist Buttons - Special codes:\n"
 "\n"
@@ -3736,7 +3765,7 @@ msgstr ""
 "%s  =  избран прекар\n"
 "%t  =  време/дата\n"
 
-#: src/fe-gtk/menu.c:1162
+#: src/fe-gtk/menu.c:1196
 msgid ""
 "Dialog Buttons - Special codes:\n"
 "\n"
@@ -3760,7 +3789,7 @@ msgstr ""
 "%s  =  избран прекар\n"
 "%t  =  време/дата\n"
 
-#: src/fe-gtk/menu.c:1172
+#: src/fe-gtk/menu.c:1206
 msgid ""
 "CTCP Replies - Special codes:\n"
 "\n"
@@ -3788,7 +3817,7 @@ msgstr ""
 "&3  =  збор 3 на крај на линијата\n"
 "\n"
 
-#: src/fe-gtk/menu.c:1183
+#: src/fe-gtk/menu.c:1217
 #, c-format
 msgid ""
 "URL Handlers - Special codes:\n"
@@ -3807,263 +3836,267 @@ msgstr ""
 "означува дека треба да се испрати во\n"
 "школката наместо во XChat"
 
-#: src/fe-gtk/menu.c:1192
+#: src/fe-gtk/menu.c:1226
 msgid "XChat: User Defined Commands"
 msgstr "XChat: Команди дефинирани од корисникот"
 
-#: src/fe-gtk/menu.c:1199
+#: src/fe-gtk/menu.c:1233
 msgid "XChat: Userlist Popup menu"
 msgstr "XChat: Скокачко мени на корисничката листа"
 
-#: src/fe-gtk/menu.c:1206
+#: src/fe-gtk/menu.c:1240
 msgid "Replace with"
 msgstr "Замени со"
 
-#: src/fe-gtk/menu.c:1206
+#: src/fe-gtk/menu.c:1240
 msgid "XChat: Replace"
 msgstr "XChat: Замени"
 
-#: src/fe-gtk/menu.c:1213
+#: src/fe-gtk/menu.c:1247
 msgid "XChat: URL Handlers"
 msgstr "XChat: URL справувачи"
 
-#: src/fe-gtk/menu.c:1232
+#: src/fe-gtk/menu.c:1266
 msgid "XChat: Userlist buttons"
 msgstr "XChat: Копчиња за корисничката листа"
 
-#: src/fe-gtk/menu.c:1239
+#: src/fe-gtk/menu.c:1273
 msgid "XChat: Dialog buttons"
 msgstr "XChat: Копчиња за дијалог"
 
-#: src/fe-gtk/menu.c:1246
+#: src/fe-gtk/menu.c:1280
 msgid "XChat: CTCP Replies"
 msgstr "XChat: CTCP реплики"
 
-#: src/fe-gtk/menu.c:1344
+#: src/fe-gtk/menu.c:1378
 msgid "_XChat"
 msgstr "_XChat"
 
-#: src/fe-gtk/menu.c:1345
+#: src/fe-gtk/menu.c:1379
 msgid "Network Li_st..."
 msgstr "Ли_ста на мрежата..."
 
-#: src/fe-gtk/menu.c:1348
+#: src/fe-gtk/menu.c:1382
 msgid "_New"
 msgstr "_Нов"
 
-#: src/fe-gtk/menu.c:1349
+#: src/fe-gtk/menu.c:1383
 msgid "Server Tab..."
 msgstr "Серверско јазиче..."
 
-#: src/fe-gtk/menu.c:1350
+#: src/fe-gtk/menu.c:1384
 msgid "Channel Tab..."
 msgstr "Јазиче на канал..."
 
-#: src/fe-gtk/menu.c:1351
+#: src/fe-gtk/menu.c:1385
 msgid "Server Window..."
 msgstr "Прозорец на серверот..."
 
-#: src/fe-gtk/menu.c:1352
+#: src/fe-gtk/menu.c:1386
 msgid "Channel Window..."
 msgstr "Прозорец на каналот..."
 
-#: src/fe-gtk/menu.c:1357 src/fe-gtk/menu.c:1359
+#: src/fe-gtk/menu.c:1391 src/fe-gtk/menu.c:1393
 msgid "_Load Plugin or Script..."
 msgstr "_Вчитај додаток или скрипта..."
 
-#: src/fe-gtk/menu.c:1367
+#: src/fe-gtk/menu.c:1401 src/fe-gtk/plugin-tray.c:463
 msgid "_Quit"
 msgstr "_Излез"
 
-#: src/fe-gtk/menu.c:1369
+#: src/fe-gtk/menu.c:1403
 msgid "_View"
 msgstr "_Поглед"
 
-#: src/fe-gtk/menu.c:1371
-msgid "_Menubar"
+#: src/fe-gtk/menu.c:1405
+msgid "_Menu Bar"
 msgstr "_Мени лента"
 
-#: src/fe-gtk/menu.c:1372
-msgid "_Topicbar"
+#: src/fe-gtk/menu.c:1406
+msgid "_Topic Bar"
 msgstr "_Насловна лента"
 
-#: src/fe-gtk/menu.c:1373
-msgid "_Userlist Buttons"
-msgstr "_Копчиња за корисничката листа"
+#: src/fe-gtk/menu.c:1407
+msgid "_User List"
+msgstr "_Корисничка листа"
 
-#: src/fe-gtk/menu.c:1374
+#: src/fe-gtk/menu.c:1408
+msgid "U_serlist Buttons"
+msgstr "К_опчиња за корисничката листа"
+
+#: src/fe-gtk/menu.c:1409
 msgid "M_ode Buttons"
 msgstr "Копчиња за р_ежим"
 
-#: src/fe-gtk/menu.c:1376
-msgid "_Layout"
-msgstr "_Распоред"
+#: src/fe-gtk/menu.c:1411
+msgid "_Channel Switcher"
+msgstr "Менувач на _канали"
 
-#: src/fe-gtk/menu.c:1378
+#: src/fe-gtk/menu.c:1413
 msgid "_Tabs"
 msgstr "_Јазичиња"
 
-#: src/fe-gtk/menu.c:1379
+#: src/fe-gtk/menu.c:1414
 msgid "T_ree"
 msgstr "Д_рво"
 
-#: src/fe-gtk/menu.c:1381
+#: src/fe-gtk/menu.c:1416
 msgid "_Network Meters"
 msgstr "Мерења на _мрежата"
 
-#: src/fe-gtk/menu.c:1383
+#: src/fe-gtk/menu.c:1418
 msgid "Off"
 msgstr "Исклучено"
 
-#: src/fe-gtk/menu.c:1384
+#: src/fe-gtk/menu.c:1419
 msgid "Graph"
 msgstr "Графа"
 
-#: src/fe-gtk/menu.c:1389
+#: src/fe-gtk/menu.c:1424
 msgid "_Server"
 msgstr "_Сервер"
 
-#: src/fe-gtk/menu.c:1390
+#: src/fe-gtk/menu.c:1425
 msgid "_Disconnect"
 msgstr "_Исклучи се"
 
-#: src/fe-gtk/menu.c:1391
+#: src/fe-gtk/menu.c:1426
 msgid "_Reconnect"
 msgstr "_Поврзи се пак"
 
-#: src/fe-gtk/menu.c:1395
+#: src/fe-gtk/menu.c:1430
 msgid "Marked Away"
 msgstr "Означи отсуство"
 
-#: src/fe-gtk/menu.c:1397
+#: src/fe-gtk/menu.c:1432
 msgid "_Usermenu"
 msgstr "_Корисничко мени"
 
-#: src/fe-gtk/menu.c:1399
+#: src/fe-gtk/menu.c:1434
 msgid "S_ettings"
 msgstr "П_оставувања"
 
-#: src/fe-gtk/menu.c:1400
+#: src/fe-gtk/menu.c:1435
 msgid "_Preferences"
 msgstr "_Преференции"
 
-#: src/fe-gtk/menu.c:1402
+#: src/fe-gtk/menu.c:1437
 msgid "Advanced"
 msgstr "Напредно"
 
-#: src/fe-gtk/menu.c:1403
+#: src/fe-gtk/menu.c:1438
 msgid "Auto Replace..."
 msgstr "Автоматско заменување..."
 
-#: src/fe-gtk/menu.c:1404
+#: src/fe-gtk/menu.c:1439
 msgid "CTCP Replies..."
 msgstr "CTCP реплики..."
 
-#: src/fe-gtk/menu.c:1405
+#: src/fe-gtk/menu.c:1440
 msgid "Dialog Buttons..."
 msgstr "Копчиња за дијалог..."
 
-#: src/fe-gtk/menu.c:1406
+#: src/fe-gtk/menu.c:1441
 msgid "Keyboard Shortcuts..."
 msgstr "Кратенки за тастатра..."
 
-#: src/fe-gtk/menu.c:1407
+#: src/fe-gtk/menu.c:1442
 msgid "Text Events..."
 msgstr "Текстуални настани..."
 
-#: src/fe-gtk/menu.c:1408
+#: src/fe-gtk/menu.c:1443
 msgid "URL Handlers..."
 msgstr "URL."
 
-#: src/fe-gtk/menu.c:1409
+#: src/fe-gtk/menu.c:1444
 msgid "User Commands..."
 msgstr "Кориснички команди..."
 
-#: src/fe-gtk/menu.c:1410
+#: src/fe-gtk/menu.c:1445
 msgid "Userlist Buttons..."
 msgstr "Копчиња за корисничката листа..."
 
-#: src/fe-gtk/menu.c:1411
+#: src/fe-gtk/menu.c:1446
 msgid "Userlist Popup..."
 msgstr "Скокачка корисничка листа..."
 
-#: src/fe-gtk/menu.c:1414
+#: src/fe-gtk/menu.c:1449
 msgid "_Window"
 msgstr "_Прозорец"
 
-#: src/fe-gtk/menu.c:1415
+#: src/fe-gtk/menu.c:1450
 msgid "Ban List..."
 msgstr "Бан листа..."
 
-#: src/fe-gtk/menu.c:1416
+#: src/fe-gtk/menu.c:1451
 msgid "Channel List..."
 msgstr "Листа на канали..."
 
-#: src/fe-gtk/menu.c:1417
+#: src/fe-gtk/menu.c:1452
 msgid "Character Chart..."
 msgstr "Табела со карактери..."
 
-#: src/fe-gtk/menu.c:1418
+#: src/fe-gtk/menu.c:1453
 msgid "Direct Chat..."
 msgstr "Директен разговор..."
 
-#: src/fe-gtk/menu.c:1419
+#: src/fe-gtk/menu.c:1454
 msgid "File Transfers..."
 msgstr "Пренос на датотеки..."
 
-#: src/fe-gtk/menu.c:1420
+#: src/fe-gtk/menu.c:1455
 msgid "Ignore List..."
 msgstr "Листа на игнорирани..."
 
-#: src/fe-gtk/menu.c:1421
+#: src/fe-gtk/menu.c:1456
 msgid "Notify List..."
 msgstr "Листа за известувања"
 
-#: src/fe-gtk/menu.c:1422
+#: src/fe-gtk/menu.c:1457
 msgid "Plugins and Scripts..."
 msgstr "Додатоци и скрипти..."
 
-#: src/fe-gtk/menu.c:1423
+#: src/fe-gtk/menu.c:1458
 msgid "Raw Log..."
 msgstr "Лог..."
 
-#: src/fe-gtk/menu.c:1424
+#: src/fe-gtk/menu.c:1459
 msgid "URL Grabber..."
 msgstr "Фаќач на URL..."
 
-#: src/fe-gtk/menu.c:1426
+#: src/fe-gtk/menu.c:1461
 msgid "Reset Marker Line"
 msgstr "Ресетирај ја линијата за означување"
 
-#: src/fe-gtk/menu.c:1427
+#: src/fe-gtk/menu.c:1462
 msgid "C_lear Text"
 msgstr "И_счисти текст"
 
-#: src/fe-gtk/menu.c:1428
+#: src/fe-gtk/menu.c:1464
 msgid "Search Text..."
 msgstr "Барај во текстот..."
 
-#: src/fe-gtk/menu.c:1429
+#: src/fe-gtk/menu.c:1465
 msgid "Save Text..."
 msgstr "Зачувај текст..."
 
-#: src/fe-gtk/menu.c:1431 src/fe-gtk/menu.c:1897
+#: src/fe-gtk/menu.c:1467 src/fe-gtk/menu.c:1941
 msgid "_Help"
 msgstr "_Помош"
 
-#: src/fe-gtk/menu.c:1432
+#: src/fe-gtk/menu.c:1468
 msgid "_Contents"
 msgstr "_Содржина"
 
-#: src/fe-gtk/menu.c:1433
+#: src/fe-gtk/menu.c:1469
 msgid "_About"
 msgstr "_За"
 
-#: src/fe-gtk/menu.c:1910
+#: src/fe-gtk/menu.c:1954
 msgid "_Attach Window"
 msgstr "_Прикачи прозорец"
 
-#: src/fe-gtk/menu.c:1911
+#: src/fe-gtk/menu.c:1955
 msgid "_Close Window"
 msgstr "_Затвори го прозорецот"
 
@@ -4079,7 +4112,7 @@ msgstr "Последен пат виден"
 msgid "Offline"
 msgstr "Offline"
 
-#: src/fe-gtk/notifygui.c:201 src/fe-gtk/setup.c:216
+#: src/fe-gtk/notifygui.c:201 src/fe-gtk/setup.c:229
 msgid "Never"
 msgstr "Никогаш"
 
@@ -4116,7 +4149,7 @@ msgstr "Отстрани"
 msgid "Open Dialog"
 msgstr "Отвори дијалог"
 
-#: src/fe-gtk/plugin-tray.c:155
+#: src/fe-gtk/plugin-tray.c:163
 msgid ""
 "Cannot find 'notify-send' to open balloon alerts.\n"
 "Please install libnotify."
@@ -4124,64 +4157,51 @@ msgstr ""
 "Не можам да најдам „notify-send“ за да отворам известувања во балончиња.\n"
 "Ве молам, инсталирајте linotify."
 
-#: src/fe-gtk/plugin-tray.c:206
+#: src/fe-gtk/plugin-tray.c:214
 #, c-format
 msgid "XChat: Connected to %u networks and %u channels"
 msgstr "XChat: Поврзан сум со %u мрежи и %u канали"
 
-#: src/fe-gtk/plugin-tray.c:400
-#, c-format
-msgid ""
-"You are connected to <b>%u</b> IRC networks.\n"
-"Are you sure you want to quit?"
-msgstr ""
-"Вие сте поврзани на <b>%u</b> IRC мрежи.\n"
-"Дали сте сигурни дека сакате да излезете?"
-
-#: src/fe-gtk/plugin-tray.c:454
+#: src/fe-gtk/plugin-tray.c:451
 msgid "_Restore"
 msgstr "_Врати"
 
-#: src/fe-gtk/plugin-tray.c:456
+#: src/fe-gtk/plugin-tray.c:453
 msgid "_Hide"
 msgstr "_Скриј"
 
-#: src/fe-gtk/plugin-tray.c:459
+#: src/fe-gtk/plugin-tray.c:456
 msgid "_Blink on"
 msgstr "_Трепни на"
 
-#: src/fe-gtk/plugin-tray.c:460 src/fe-gtk/setup.c:445
+#: src/fe-gtk/plugin-tray.c:457 src/fe-gtk/setup.c:467
 msgid "Channel Message"
 msgstr "Порака на каналот"
 
-#: src/fe-gtk/plugin-tray.c:461 src/fe-gtk/setup.c:446
+#: src/fe-gtk/plugin-tray.c:458 src/fe-gtk/setup.c:468
 msgid "Private Message"
 msgstr "Приватна порака"
 
-#: src/fe-gtk/plugin-tray.c:462 src/fe-gtk/setup.c:447
+#: src/fe-gtk/plugin-tray.c:459 src/fe-gtk/setup.c:469
 msgid "Highlighted Message"
 msgstr "Осветлена порака"
 
-#: src/fe-gtk/plugin-tray.c:466
-msgid "Quit..."
-msgstr "Излез..."
-
-#: src/fe-gtk/plugin-tray.c:510 src/fe-gtk/plugin-tray.c:518
+#: src/fe-gtk/plugin-tray.c:507 src/fe-gtk/plugin-tray.c:515
 #, c-format
-msgid "XChat: Highlighed message from: %s (%s)"
-msgstr "XChat: Осветлена порака од %s (%s)"
+msgid "XChat: Highlighted message from: %s (%s)"
+msgstr "XChat: Осветлена порака од: %s (%s)"
 
-#: src/fe-gtk/plugin-tray.c:513
+#: src/fe-gtk/plugin-tray.c:510
 #, c-format
 msgid "XChat: %u highlighted messages, latest from: %s (%s)"
 msgstr "XChat: %u осветлени пораки, најновата од: %s (%s)"
 
-#: src/fe-gtk/plugin-tray.c:536 src/fe-gtk/plugin-tray.c:543
+#: src/fe-gtk/plugin-tray.c:533 src/fe-gtk/plugin-tray.c:540
 #, c-format
 msgid "XChat: New public message from: %s (%s)"
 msgstr "XChat: Нова јавна порака од: %s (%s)"
 
-#: src/fe-gtk/plugin-tray.c:539
+#: src/fe-gtk/plugin-tray.c:536
 #, c-format
 msgid "XChat: %u new public messages."
 msgstr "XChat: %u нови јавни пораки."
@@ -4206,7 +4226,7 @@ msgstr "XChat: Понуда за датотека од: %s (%s)"
 msgid "XChat: %u file offers, latest from: %s (%s)"
 msgstr "XChat: %u понуди за датотеки, најновата од: %s (%s)"
 
-#: src/fe-gtk/plugingui.c:76 src/fe-gtk/textgui.c:421
+#: src/fe-gtk/plugingui.c:76 src/fe-gtk/textgui.c:424
 msgid "Description"
 msgstr "Опис"
 
@@ -4230,7 +4250,7 @@ msgstr "_Извади"
 msgid "_Close"
 msgstr "_Затвори"
 
-#: src/fe-gtk/rawlog.c:81 src/fe-gtk/rawlog.c:130 src/fe-gtk/textgui.c:435
+#: src/fe-gtk/rawlog.c:81 src/fe-gtk/rawlog.c:130 src/fe-gtk/textgui.c:438
 #: src/fe-gtk/urlgrab.c:205
 msgid "Save As..."
 msgstr "Сними како..."
@@ -4479,7 +4499,7 @@ msgstr "Зелена:"
 msgid "Blue:"
 msgstr "Сина:"
 
-#: src/fe-gtk/setup.c:118 src/fe-gtk/setup.c:361
+#: src/fe-gtk/setup.c:118 src/fe-gtk/setup.c:379
 msgid "Time Stamps"
 msgstr "Ознаки за времето"
 
@@ -4491,7 +4511,7 @@ msgstr "Овозможи ознаки за времето"
 msgid "Time stamp format:"
 msgstr "Временски формат:"
 
-#: src/fe-gtk/setup.c:121 src/fe-gtk/setup.c:364
+#: src/fe-gtk/setup.c:121 src/fe-gtk/setup.c:382
 msgid "See strftime manpage for details."
 msgstr "Погледни ги strftime man страниците за повеќе детали."
 
@@ -4503,11 +4523,11 @@ msgstr "A-Ш"
 msgid "Last-spoke order"
 msgstr "Ред по последно зборување"
 
-#: src/fe-gtk/setup.c:135 src/fe-gtk/setup.c:1635
+#: src/fe-gtk/setup.c:135 src/fe-gtk/setup.c:1657
 msgid "Input box"
 msgstr "Поле за внесување"
 
-#: src/fe-gtk/setup.c:136 src/fe-gtk/setup.c:179
+#: src/fe-gtk/setup.c:136 src/fe-gtk/setup.c:200
 msgid "Use the Text box font and colors"
 msgstr "Користи ги фонтовите и боите од кутијата за текст"
 
@@ -4560,640 +4580,656 @@ msgstr "Ш-A"
 msgid "Unsorted"
 msgstr "Неподредени"
 
-#: src/fe-gtk/setup.c:177
-msgid "User List"
-msgstr "Корисничка листа"
+#: src/fe-gtk/setup.c:177 src/fe-gtk/setup.c:189
+msgid "Left (Upper)"
+msgstr "Лево (горе)"
 
-#: src/fe-gtk/setup.c:178
-msgid "Show hostnames in user list"
-msgstr "Покажи ги имињата на хостовите во корисничката листа"
+#: src/fe-gtk/setup.c:178 src/fe-gtk/setup.c:190
+msgid "Left (Lower)"
+msgstr "Лево (долу)"
 
-#: src/fe-gtk/setup.c:180
-msgid "Resizable user list"
-msgstr "Корисничка листа со променлива големина"
+#: src/fe-gtk/setup.c:179 src/fe-gtk/setup.c:191
+msgid "Right (Upper)"
+msgstr "Десно (горе)"
+
+#: src/fe-gtk/setup.c:180 src/fe-gtk/setup.c:192
+msgid "Right (Lower)"
+msgstr "Десно (долу)"
 
 #: src/fe-gtk/setup.c:181
-msgid "User list sorted by:"
-msgstr "Корисничката листа подредена по:"
-
-#: src/fe-gtk/setup.c:183
-msgid "Away tracking"
-msgstr "Следење на отсуство"
-
-#: src/fe-gtk/setup.c:184
-msgid "Track the Away status of users and mark them in a different color"
-msgstr "Следи го статусот за отсуство на сите корисници и означи ги нив со различна боја"
-
-#: src/fe-gtk/setup.c:185
-msgid "On channels smaller than:"
-msgstr "На канали помали од:"
-
-#: src/fe-gtk/setup.c:187
-msgid "Action Upon Double Click"
-msgstr "Дејство после двојното кликнување"
-
-#: src/fe-gtk/setup.c:188
-msgid "Execute command:"
-msgstr "Изврши команда:"
-
-#: src/fe-gtk/setup.c:199
-msgid "Windows"
-msgstr "Прозорци"
-
-#: src/fe-gtk/setup.c:200 src/fe-gtk/setup.c:224 src/fe-gtk/setup.c:1637
-msgid "Tabs"
-msgstr "Јазичиња"
-
-#: src/fe-gtk/setup.c:206
-msgid "Bottom"
-msgstr "Дно"
-
-#: src/fe-gtk/setup.c:207
 msgid "Top"
 msgstr "Врв"
 
-#: src/fe-gtk/setup.c:208
-msgid "Left"
-msgstr "Лево"
+#: src/fe-gtk/setup.c:182
+msgid "Bottom"
+msgstr "Дно"
 
-#: src/fe-gtk/setup.c:209
-msgid "Right"
-msgstr "Десно"
-
-#: src/fe-gtk/setup.c:210
+#: src/fe-gtk/setup.c:183
 msgid "Hidden"
 msgstr "Скриен"
 
-#: src/fe-gtk/setup.c:217
+#: src/fe-gtk/setup.c:198
+msgid "User List"
+msgstr "Корисничка листа"
+
+#: src/fe-gtk/setup.c:199
+msgid "Show hostnames in user list"
+msgstr "Покажи ги имињата на хостовите во корисничката листа"
+
+#: src/fe-gtk/setup.c:202
+msgid "User list sorted by:"
+msgstr "Корисничката листа подредена по:"
+
+#: src/fe-gtk/setup.c:203
+msgid "Show user list at:"
+msgstr "Покажи корисничка листа за:"
+
+#: src/fe-gtk/setup.c:205
+msgid "Away tracking"
+msgstr "Следење на отсуство"
+
+#: src/fe-gtk/setup.c:206
+msgid "Track the Away status of users and mark them in a different color"
+msgstr "Следи го статусот за отсуство на сите корисници и означи ги нив со различна боја"
+
+#: src/fe-gtk/setup.c:207
+msgid "On channels smaller than:"
+msgstr "На канали помали од:"
+
+#: src/fe-gtk/setup.c:209
+msgid "Action Upon Double Click"
+msgstr "Дејство после двојното кликнување"
+
+#: src/fe-gtk/setup.c:210
+msgid "Execute command:"
+msgstr "Изврши команда:"
+
+#: src/fe-gtk/setup.c:221
+msgid "Windows"
+msgstr "Прозорци"
+
+#: src/fe-gtk/setup.c:222
+msgid "Tabs"
+msgstr "Јазичиња"
+
+#: src/fe-gtk/setup.c:230
 msgid "Always"
 msgstr "Секогаш"
 
-#: src/fe-gtk/setup.c:218
+#: src/fe-gtk/setup.c:231
 msgid "Only requested tabs"
 msgstr "Само бараните јазичиња"
 
-#: src/fe-gtk/setup.c:225
+#: src/fe-gtk/setup.c:238
+msgid "Channel Switcher"
+msgstr "Менувач на канали"
+
+#: src/fe-gtk/setup.c:239
 msgid "Open an extra tab for server messages"
 msgstr "Отвори додатно јазиче за серверските пораки"
 
-#: src/fe-gtk/setup.c:226
+#: src/fe-gtk/setup.c:240
 msgid "Open an extra tab for server notices"
 msgstr "Отвори додатно јазиче за серверските забелешки"
 
-#: src/fe-gtk/setup.c:227
+#: src/fe-gtk/setup.c:241
 msgid "Open a new tab when you receive a private message"
 msgstr "Отвори ново јазиче кога примам приватна порака"
 
-#: src/fe-gtk/setup.c:228
+#: src/fe-gtk/setup.c:242
 msgid "Sort tabs in alphabetical order"
 msgstr "Подреди ги јазичињата по азбучен редослед"
 
-#: src/fe-gtk/setup.c:229
+#: src/fe-gtk/setup.c:243
 msgid "Small tabs"
 msgstr "Мали јазичиња"
 
-#: src/fe-gtk/setup.c:230
+#: src/fe-gtk/setup.c:245
 msgid "Focus new tabs:"
 msgstr "Фокус на новите јазичиња:"
 
-#: src/fe-gtk/setup.c:231
-msgid "Show tabs at:"
-msgstr "Покажи ги јазичињата на:"
+#: src/fe-gtk/setup.c:247
+msgid "Show channel switcher at:"
+msgstr "Покажи менувач на канали за:"
 
-#: src/fe-gtk/setup.c:232
+#: src/fe-gtk/setup.c:248
 msgid "Shorten tab labels to:"
 msgstr "Скрати ги ознаките на јазичето на:"
 
-#: src/fe-gtk/setup.c:232
+#: src/fe-gtk/setup.c:248
 msgid "letters."
 msgstr "букви."
 
-#: src/fe-gtk/setup.c:234
+#: src/fe-gtk/setup.c:250
 msgid "Tabs or Windows"
 msgstr "Јазичиња или прозорци"
 
-#: src/fe-gtk/setup.c:235
+#: src/fe-gtk/setup.c:251
 msgid "Open channels in:"
 msgstr "Отворај ги канали во:"
 
-#: src/fe-gtk/setup.c:236
+#: src/fe-gtk/setup.c:252
 msgid "Open dialogs in:"
 msgstr "Отворај ги дијалозите во:"
 
-#: src/fe-gtk/setup.c:237
+#: src/fe-gtk/setup.c:253
 msgid "Open utilities in:"
 msgstr "Отворај ги алатките во:"
 
-#: src/fe-gtk/setup.c:237
+#: src/fe-gtk/setup.c:253
 msgid "Open DCC, Ignore, Notify etc, in tabs or windows?"
 msgstr "Да отворам DCC, игнорирани, известувања итн, во јазичиња или прозорци?"
 
-#: src/fe-gtk/setup.c:244
+#: src/fe-gtk/setup.c:260
 msgid "No"
 msgstr "Не"
 
-#: src/fe-gtk/setup.c:245
+#: src/fe-gtk/setup.c:261
 msgid "Yes"
 msgstr "Да"
 
-#: src/fe-gtk/setup.c:246
+#: src/fe-gtk/setup.c:262
 msgid "Browse for save folder every time"
 msgstr "Прелистувај за папка за зачувување секој пат"
 
-#: src/fe-gtk/setup.c:252
+#: src/fe-gtk/setup.c:268
 msgid "Files and Directories"
 msgstr "Датотеки и директориуми"
 
-#: src/fe-gtk/setup.c:253
+#: src/fe-gtk/setup.c:269
 msgid "Auto accept file offers:"
 msgstr "Автоматско прифаќање на датотеки:"
 
-#: src/fe-gtk/setup.c:254
+#: src/fe-gtk/setup.c:270
 msgid "Download files to:"
 msgstr "Преземај датотеки во:"
 
-#: src/fe-gtk/setup.c:255
+#: src/fe-gtk/setup.c:271
 msgid "Move completed files to:"
 msgstr "Поместувај ги завршените датотеки во:"
 
-#: src/fe-gtk/setup.c:256
+#: src/fe-gtk/setup.c:272
 msgid "Save nick name in filenames"
 msgstr "Зачувај го прекарот во имиња на датотеки"
 
-#: src/fe-gtk/setup.c:258
+#: src/fe-gtk/setup.c:274
 msgid "Network Settings"
 msgstr "Поставувања за мрежата"
 
-#: src/fe-gtk/setup.c:259
+#: src/fe-gtk/setup.c:275
 msgid "Get my address from the IRC server"
 msgstr "Земи ја мојата адреса од IRC серверот"
 
-#: src/fe-gtk/setup.c:260
+#: src/fe-gtk/setup.c:276
 msgid "Asks the IRC server for your real address. Use this if you have a 192.168.*.* address!"
 msgstr "Го прашува IRC серверот за вашата вистинска адреса. Користете го ова ако имате 192.168.*.* адреса!"
 
-#: src/fe-gtk/setup.c:261
+#: src/fe-gtk/setup.c:277
 msgid "DCC IP address:"
 msgstr "DCC IP адреса:"
 
-#: src/fe-gtk/setup.c:262
+#: src/fe-gtk/setup.c:278
 msgid "Claim you are at this address when offering files."
 msgstr "Тврди дека си на оваа адреса кога нудиш датотеки."
 
-#: src/fe-gtk/setup.c:263
+#: src/fe-gtk/setup.c:279
 msgid "First DCC send port:"
 msgstr "Прва DCC порта за испраќање:"
 
-#: src/fe-gtk/setup.c:264
+#: src/fe-gtk/setup.c:280
 msgid "Last DCC send port:"
 msgstr "Последна DCC порта за испраќање:"
 
-#: src/fe-gtk/setup.c:265
+#: src/fe-gtk/setup.c:281
 msgid "!Leave ports at zero for full range."
 msgstr "!Оставете ги портите на нула за целосен опсег."
 
-#: src/fe-gtk/setup.c:267
+#: src/fe-gtk/setup.c:283
 msgid "Maximum File Transfer Speeds (bytes per second)"
 msgstr "Максимални брзини на пренос на датотеки (битови во секунда)"
 
-#: src/fe-gtk/setup.c:268
+#: src/fe-gtk/setup.c:284
 msgid "One upload:"
 msgstr "Едно качување:"
 
-#: src/fe-gtk/setup.c:269 src/fe-gtk/setup.c:271
+#: src/fe-gtk/setup.c:285 src/fe-gtk/setup.c:287
 msgid "Maximum speed for one transfer"
 msgstr "Макс. брзина за еден трансфер"
 
-#: src/fe-gtk/setup.c:270
+#: src/fe-gtk/setup.c:286
 msgid "One download:"
 msgstr "Едно преземање:"
 
-#: src/fe-gtk/setup.c:272
+#: src/fe-gtk/setup.c:288
 msgid "All uploads combined:"
 msgstr "Сите качувања заедно:"
 
-#: src/fe-gtk/setup.c:273 src/fe-gtk/setup.c:275
+#: src/fe-gtk/setup.c:289 src/fe-gtk/setup.c:291
 msgid "Maximum speed for all files"
 msgstr "Макс. брзина за целиот сообраќај"
 
-#: src/fe-gtk/setup.c:274
+#: src/fe-gtk/setup.c:290
 msgid "All downloads combined:"
 msgstr "Сите преземања заедно:"
 
-#: src/fe-gtk/setup.c:302 src/fe-gtk/setup.c:1641
+#: src/fe-gtk/setup.c:318 src/fe-gtk/setup.c:1663
 msgid "Alerts"
 msgstr "Известувања"
 
-#: src/fe-gtk/setup.c:305
+#: src/fe-gtk/setup.c:322
 msgid "Show tray balloons on:"
 msgstr "Прикажи балончиња во местото за известување на:"
 
-#: src/fe-gtk/setup.c:306
+#: src/fe-gtk/setup.c:324
 msgid "Blink tray icon on:"
 msgstr "Трепкај ја иконата при:"
 
-#: src/fe-gtk/setup.c:307
+#: src/fe-gtk/setup.c:325
 msgid "Blink task bar on:"
 msgstr "Трепкај на лентата со задачи на:"
 
-#: src/fe-gtk/setup.c:308
+#: src/fe-gtk/setup.c:326
 msgid "Make a beep sound on:"
 msgstr "Бипкај на:"
 
-#: src/fe-gtk/setup.c:310
+#: src/fe-gtk/setup.c:328
 msgid "Enable system tray icon"
 msgstr "Овозможи икона во местото за известување"
 
-#: src/fe-gtk/setup.c:312
+#: src/fe-gtk/setup.c:330
 msgid "Highlighted Messages"
 msgstr "Осветлени пораки"
 
-#: src/fe-gtk/setup.c:313
+#: src/fe-gtk/setup.c:331
 msgid "Highlighted messages are ones where your nickname is mentioned, but also:"
 msgstr "Осветлените пораки се оние каде вашето име е спомнато, но исто така:"
 
-#: src/fe-gtk/setup.c:315
+#: src/fe-gtk/setup.c:333
 msgid "Extra words to highlight:"
 msgstr "Додатни зборови за осветлување:"
 
-#: src/fe-gtk/setup.c:316
+#: src/fe-gtk/setup.c:334
 msgid "Nick names not to highlight:"
 msgstr "Прекари кои нема да се осветлуваат:"
 
-#: src/fe-gtk/setup.c:317
+#: src/fe-gtk/setup.c:335
 msgid "Nick names to always highlight:"
 msgstr "Прекарите кои секогаш ќе се осветлуваат:"
 
-#: src/fe-gtk/setup.c:318
+#: src/fe-gtk/setup.c:336
 msgid "Separate multiple words with commas."
 msgstr "Раздели повеќе зборови со запирки."
 
-#: src/fe-gtk/setup.c:324
+#: src/fe-gtk/setup.c:342
 msgid "Default Messages"
 msgstr "Стандардни пораки"
 
-#: src/fe-gtk/setup.c:325
+#: src/fe-gtk/setup.c:343
 msgid "Quit:"
 msgstr "Излез:"
 
-#: src/fe-gtk/setup.c:326
+#: src/fe-gtk/setup.c:344
 msgid "Leave channel:"
 msgstr "Напушти канал:"
 
-#: src/fe-gtk/setup.c:327
+#: src/fe-gtk/setup.c:345
 msgid "Away:"
 msgstr "Отсутен:"
 
-#: src/fe-gtk/setup.c:329
+#: src/fe-gtk/setup.c:347
 msgid "Away"
 msgstr "Отсуство"
 
-#: src/fe-gtk/setup.c:330
+#: src/fe-gtk/setup.c:348
 msgid "Announce away messages"
 msgstr "Објавувај ги пораките за отсуство"
 
-#: src/fe-gtk/setup.c:331
+#: src/fe-gtk/setup.c:349
 msgid "Announce your away messages to all channels"
 msgstr "Објавувај ги пораките за отсуство на сите канали"
 
-#: src/fe-gtk/setup.c:332
+#: src/fe-gtk/setup.c:350
 msgid "Show away once"
 msgstr "Покажи отсуство еднаш"
 
-#: src/fe-gtk/setup.c:332
+#: src/fe-gtk/setup.c:350
 msgid "Show identical away messages only once"
 msgstr "Покажувај идентични пораки за отсуство само по еднаш"
 
-#: src/fe-gtk/setup.c:333
+#: src/fe-gtk/setup.c:351
 msgid "Automatically unmark away"
 msgstr "Автоматски одбележи отсуство"
 
-#: src/fe-gtk/setup.c:333
+#: src/fe-gtk/setup.c:351
 msgid "Unmark yourself as away before sending messages"
 msgstr "Одбележи се себеси како отсутен пред да праќаш пораки"
 
-#: src/fe-gtk/setup.c:340
+#: src/fe-gtk/setup.c:358
 msgid "Advanced Settings"
 msgstr "Напредни поставувања"
 
-#: src/fe-gtk/setup.c:341
+#: src/fe-gtk/setup.c:359
 msgid "Auto reconnect delay:"
 msgstr "Доцнење на автоматското поврзување:"
 
-#: src/fe-gtk/setup.c:342
+#: src/fe-gtk/setup.c:360
 msgid "Display MODEs in raw form"
 msgstr "Режим за прикажување во сурова форма"
 
-#: src/fe-gtk/setup.c:343
+#: src/fe-gtk/setup.c:361
 msgid "Whois on notify"
 msgstr "Whois при известување"
 
-#: src/fe-gtk/setup.c:343
+#: src/fe-gtk/setup.c:361
 msgid "Sends a /WHOIS when a user comes online in your notify list"
 msgstr "Испраќа /WHOIS кога доаѓа корисник што ти е во листата за известување"
 
-#: src/fe-gtk/setup.c:344
+#: src/fe-gtk/setup.c:362
 msgid "Hide join and part messages"
 msgstr "Сокриј ги пораките за приклучување и напуштање"
 
-#: src/fe-gtk/setup.c:344
+#: src/fe-gtk/setup.c:362
 msgid "Hide channel join/part messages by default"
 msgstr "Стандардно криј ги пораките за приклучување/напуштање на канал"
 
-#: src/fe-gtk/setup.c:345
+#: src/fe-gtk/setup.c:363
 msgid "Auto Open DCC Windows"
 msgstr "Автоматско отворање на DCC прозорците"
 
-#: src/fe-gtk/setup.c:346
+#: src/fe-gtk/setup.c:364
 msgid "Send window"
 msgstr "Прозорец за испраќање"
 
-#: src/fe-gtk/setup.c:347
+#: src/fe-gtk/setup.c:365
 msgid "Receive window"
 msgstr "Прозорец за примање"
 
-#: src/fe-gtk/setup.c:348
+#: src/fe-gtk/setup.c:366
 msgid "Chat window"
 msgstr "Прозорец на разговорот"
 
-#: src/fe-gtk/setup.c:356 src/fe-gtk/setup.c:1643
+#: src/fe-gtk/setup.c:374 src/fe-gtk/setup.c:1665
 msgid "Logging"
 msgstr "Снимање"
 
-#: src/fe-gtk/setup.c:357
+#: src/fe-gtk/setup.c:375
 msgid "Enable logging of conversations"
 msgstr "Овозможи снимање на разговори"
 
-#: src/fe-gtk/setup.c:358
+#: src/fe-gtk/setup.c:376
 msgid "Log filename:"
 msgstr "Име на датотеката со лог:"
 
-#: src/fe-gtk/setup.c:359
+#: src/fe-gtk/setup.c:377
 #, c-format
 msgid "%s=Server %c=Channel %n=Network."
 msgstr "%s=Сервер %c=Канал %n=Мрежа."
 
-#: src/fe-gtk/setup.c:362
+#: src/fe-gtk/setup.c:380
 msgid "Insert timestamps in logs"
 msgstr "Внесувај временски формат во записите"
 
-#: src/fe-gtk/setup.c:363
+#: src/fe-gtk/setup.c:381
 msgid "Log timestamp format:"
 msgstr "Временски формат за запис:"
 
-#: src/fe-gtk/setup.c:371
+#: src/fe-gtk/setup.c:389
 msgid "(Disabled)"
 msgstr "(Оневозможено)"
 
-#: src/fe-gtk/setup.c:372
+#: src/fe-gtk/setup.c:390
 msgid "Wingate"
 msgstr "Wingate"
 
-#: src/fe-gtk/setup.c:373
+#: src/fe-gtk/setup.c:391
 msgid "Socks4"
 msgstr "Socks4"
 
-#: src/fe-gtk/setup.c:374
+#: src/fe-gtk/setup.c:392
 msgid "Socks5"
 msgstr "Socks5"
 
-#: src/fe-gtk/setup.c:375
+#: src/fe-gtk/setup.c:393
 msgid "HTTP"
 msgstr "HTTP"
 
-#: src/fe-gtk/setup.c:377
+#: src/fe-gtk/setup.c:395
 msgid "MS Proxy (ISA)"
 msgstr "MS Proxy (ISA)"
 
-#: src/fe-gtk/setup.c:384
+#: src/fe-gtk/setup.c:402
 msgid "All Connections"
 msgstr "Сите врски"
 
-#: src/fe-gtk/setup.c:385
+#: src/fe-gtk/setup.c:403
 msgid "IRC Server Only"
 msgstr "Само IRC сервери"
 
-#: src/fe-gtk/setup.c:386
+#: src/fe-gtk/setup.c:404
 msgid "DCC Get Only"
 msgstr "DCC Get Only"
 
-#: src/fe-gtk/setup.c:392
+#: src/fe-gtk/setup.c:410
 msgid "Your Address"
 msgstr "Вашата адреса"
 
-#: src/fe-gtk/setup.c:393
+#: src/fe-gtk/setup.c:411
 msgid "Bind to:"
 msgstr "Поврзи се со:"
 
-#: src/fe-gtk/setup.c:394
+#: src/fe-gtk/setup.c:412
 msgid "Only useful for computers with multiple addresses."
 msgstr "Корисно само за компјутери со повеќе адреси."
 
-#: src/fe-gtk/setup.c:396
+#: src/fe-gtk/setup.c:414
 msgid "Proxy Server"
 msgstr "Прокси сервер"
 
-#: src/fe-gtk/setup.c:397
+#: src/fe-gtk/setup.c:415
 msgid "Hostname:"
 msgstr "Име на host:"
 
-#: src/fe-gtk/setup.c:398
+#: src/fe-gtk/setup.c:416
 msgid "Port:"
 msgstr "Порта:"
 
-#: src/fe-gtk/setup.c:399
+#: src/fe-gtk/setup.c:417
 msgid "Type:"
 msgstr "Тип:"
 
-#: src/fe-gtk/setup.c:400
+#: src/fe-gtk/setup.c:418
 msgid "Use proxy for:"
 msgstr "Користи прокси за:"
 
-#: src/fe-gtk/setup.c:402
+#: src/fe-gtk/setup.c:420
 msgid "Proxy Authentication"
 msgstr "Автентикација на прокси"
 
-#: src/fe-gtk/setup.c:404
+#: src/fe-gtk/setup.c:422
 msgid "Use Authentication (MS Proxy, HTTP or Socks5 only)"
 msgstr "Користи автентикација (MS Proxy, HTTP или само Socks5)"
 
-#: src/fe-gtk/setup.c:406
+#: src/fe-gtk/setup.c:424
 msgid "Use Authentication (HTTP or Socks5 only)"
 msgstr "Користи автентикација (HTTP или само Socks5)"
 
-#: src/fe-gtk/setup.c:408
+#: src/fe-gtk/setup.c:426
 msgid "Username:"
 msgstr "Корисничко име:"
 
-#: src/fe-gtk/setup.c:409
+#: src/fe-gtk/setup.c:427
 msgid "Password:"
 msgstr "Лозинка:"
 
-#: src/fe-gtk/setup.c:816
+#: src/fe-gtk/setup.c:838
 msgid "Select an Image File"
 msgstr "Избери слика датотека"
 
-#: src/fe-gtk/setup.c:840
+#: src/fe-gtk/setup.c:862
 msgid "Select Download Folder"
 msgstr "Одберете папка за преземања"
 
-#: src/fe-gtk/setup.c:849
+#: src/fe-gtk/setup.c:871
 msgid "Select font"
 msgstr "Избери фонт"
 
-#: src/fe-gtk/setup.c:946
+#: src/fe-gtk/setup.c:968
 msgid "Browse..."
 msgstr "Прелистувај..."
 
-#: src/fe-gtk/setup.c:1086
+#: src/fe-gtk/setup.c:1108
 msgid "Mark identified users with:"
 msgstr "Означи ги идентифицираните корисници со:"
 
-#: src/fe-gtk/setup.c:1088
+#: src/fe-gtk/setup.c:1110
 msgid "Mark not-identified users with:"
 msgstr "Означи ги неидентифицираните корисници со:"
 
-#: src/fe-gtk/setup.c:1095
+#: src/fe-gtk/setup.c:1117
 msgid "Open Data Folder"
 msgstr "Отвори папка со податоци"
 
-#: src/fe-gtk/setup.c:1149
+#: src/fe-gtk/setup.c:1171
 msgid "Select color"
 msgstr "Избери боја"
 
-#: src/fe-gtk/setup.c:1229
+#: src/fe-gtk/setup.c:1251
 msgid "Text Colors"
 msgstr "Бои на текст"
 
-#: src/fe-gtk/setup.c:1231
+#: src/fe-gtk/setup.c:1253
 msgid "mIRC colors:"
 msgstr "mIRC боја:"
 
-#: src/fe-gtk/setup.c:1239
+#: src/fe-gtk/setup.c:1261
 msgid "Local colors:"
 msgstr "Локални бои:"
 
-#: src/fe-gtk/setup.c:1247 src/fe-gtk/setup.c:1252
+#: src/fe-gtk/setup.c:1269 src/fe-gtk/setup.c:1274
 msgid "Foreground:"
 msgstr "Напред:"
 
-#: src/fe-gtk/setup.c:1248 src/fe-gtk/setup.c:1253
+#: src/fe-gtk/setup.c:1270 src/fe-gtk/setup.c:1275
 msgid "Background:"
 msgstr "Позадина:"
 
-#: src/fe-gtk/setup.c:1250
+#: src/fe-gtk/setup.c:1272
 msgid "Marking Text"
 msgstr "Означување на текст"
 
-#: src/fe-gtk/setup.c:1255
+#: src/fe-gtk/setup.c:1277
 msgid "Interface Colors"
 msgstr "Бои на интерфејсот"
 
-#: src/fe-gtk/setup.c:1257
+#: src/fe-gtk/setup.c:1279
 msgid "New data:"
 msgstr "Нови податоци:"
 
-#: src/fe-gtk/setup.c:1258
+#: src/fe-gtk/setup.c:1280
 msgid "Marker line:"
 msgstr "Линија за означување:"
 
-#: src/fe-gtk/setup.c:1259
+#: src/fe-gtk/setup.c:1281
 msgid "New message:"
 msgstr "Нова порака:"
 
-#: src/fe-gtk/setup.c:1260
+#: src/fe-gtk/setup.c:1282
 msgid "Away user:"
 msgstr "Отсутен корисник:"
 
-#: src/fe-gtk/setup.c:1261
+#: src/fe-gtk/setup.c:1283
 msgid "Highlight:"
 msgstr "Подвлечени:"
 
-#: src/fe-gtk/setup.c:1357 src/fe-gtk/textgui.c:386
+#: src/fe-gtk/setup.c:1379 src/fe-gtk/textgui.c:389
 msgid "Event"
 msgstr "Настан"
 
-#: src/fe-gtk/setup.c:1363
+#: src/fe-gtk/setup.c:1385
 msgid "Sound file"
 msgstr "Звучна датотека"
 
-#: src/fe-gtk/setup.c:1398
+#: src/fe-gtk/setup.c:1420
 msgid "Select a sound file"
 msgstr "Одберете датотека со звук"
 
-#: src/fe-gtk/setup.c:1470
+#: src/fe-gtk/setup.c:1492
 msgid "Sound playing method:"
 msgstr "Метод на пуштање на звуци:"
 
-#: src/fe-gtk/setup.c:1478
+#: src/fe-gtk/setup.c:1500
 msgid "External sound playing _program:"
 msgstr "Надворешна _програма за пуштање на звуци:"
 
-#: src/fe-gtk/setup.c:1496
+#: src/fe-gtk/setup.c:1518
 msgid "_External program"
 msgstr "_Надворешна програма"
 
-#: src/fe-gtk/setup.c:1506
+#: src/fe-gtk/setup.c:1528
 msgid "_Automatic"
 msgstr "_Автоматски"
 
-#: src/fe-gtk/setup.c:1519
+#: src/fe-gtk/setup.c:1541
 msgid "Sound files _directory:"
 msgstr "_Директориум со звучни датотеки:"
 
-#: src/fe-gtk/setup.c:1558
+#: src/fe-gtk/setup.c:1580
 msgid "Sound file:"
 msgstr "Звучна датотека:"
 
-#: src/fe-gtk/setup.c:1573
+#: src/fe-gtk/setup.c:1595
 msgid "_Browse..."
 msgstr "_Прелистај..."
 
-#: src/fe-gtk/setup.c:1584
+#: src/fe-gtk/setup.c:1606
 msgid "_Play"
 msgstr "_Пушти"
 
-#: src/fe-gtk/setup.c:1633
+#: src/fe-gtk/setup.c:1655
 msgid "Interface"
 msgstr "Интерфејс"
 
-#: src/fe-gtk/setup.c:1634
+#: src/fe-gtk/setup.c:1656
 msgid "Text box"
 msgstr "Текст поле"
 
-#: src/fe-gtk/setup.c:1636
+#: src/fe-gtk/setup.c:1658
 msgid "User list"
 msgstr "Корисничка листа"
 
-#: src/fe-gtk/setup.c:1638
+#: src/fe-gtk/setup.c:1659
+msgid "Channel switcher"
+msgstr "Менувач на канали"
+
+#: src/fe-gtk/setup.c:1660
 msgid "Colors"
 msgstr "Бои"
 
-#: src/fe-gtk/setup.c:1640
+#: src/fe-gtk/setup.c:1662
 msgid "Chatting"
 msgstr "Разговор"
 
-#: src/fe-gtk/setup.c:1642
+#: src/fe-gtk/setup.c:1664
 msgid "General"
 msgstr "Општо"
 
-#: src/fe-gtk/setup.c:1644
+#: src/fe-gtk/setup.c:1666
 msgid "Sound"
 msgstr "Звук"
 
-#: src/fe-gtk/setup.c:1648
+#: src/fe-gtk/setup.c:1670
 msgid "Network setup"
 msgstr "Подесувања на мрежата"
 
-#: src/fe-gtk/setup.c:1649
+#: src/fe-gtk/setup.c:1671
 msgid "File transfers"
 msgstr "Трансфер на датотеки"
 
-#: src/fe-gtk/setup.c:1757
+#: src/fe-gtk/setup.c:1779
 msgid "Categories"
 msgstr "Категории"
 
-#: src/fe-gtk/setup.c:1938
+#: src/fe-gtk/setup.c:1960
 msgid ""
 "You cannot place the tree on the top or bottom!\n"
 "Please change to the <b>Tabs</b> layout in the <b>View</b> menu first."
@@ -5201,11 +5237,11 @@ msgstr ""
 "Не можете да го поставите дрвото на дното или најгоре!\n"
 "Ве молам, прво направете промена во распоредот на  <b>Јазичињата</b> во менито <b>Поглед</b>."
 
-#: src/fe-gtk/setup.c:1948
+#: src/fe-gtk/setup.c:1970
 msgid "Some settings were changed that require a restart to take full effect."
 msgstr "Поради направените промени мораш да го рестартираш xchat."
 
-#: src/fe-gtk/setup.c:1956
+#: src/fe-gtk/setup.c:1978
 msgid ""
 "*WARNING*\n"
 "Auto accepting DCC to your home directory\n"
@@ -5217,36 +5253,36 @@ msgstr ""
 "може да биде опасно. Пр:\n"
 "Некој може да ти испрати „.bash_profile“"
 
-#: src/fe-gtk/setup.c:1989
+#: src/fe-gtk/setup.c:2011
 msgid "XChat: Preferences"
 msgstr "XChat: Преференци"
 
-#: src/fe-gtk/textgui.c:177
+#: src/fe-gtk/textgui.c:180
 msgid "There was an error parsing the string"
 msgstr "Грешка"
 
-#: src/fe-gtk/textgui.c:185
+#: src/fe-gtk/textgui.c:188
 #, c-format
 msgid "This signal is only passed %d args, $%d is invalid"
 msgstr "Овој сигнал помина само %d аргументи, $%d е невалиден"
 
-#: src/fe-gtk/textgui.c:301 src/fe-gtk/textgui.c:324
+#: src/fe-gtk/textgui.c:304 src/fe-gtk/textgui.c:327
 msgid "Print Texts File"
 msgstr "Печати текстуална датотека"
 
-#: src/fe-gtk/textgui.c:369
+#: src/fe-gtk/textgui.c:372
 msgid "Edit Events"
 msgstr "Уреди настани"
 
-#: src/fe-gtk/textgui.c:420
+#: src/fe-gtk/textgui.c:423
 msgid "$ Number"
 msgstr "$ Број"
 
-#: src/fe-gtk/textgui.c:437
+#: src/fe-gtk/textgui.c:440
 msgid "Load From..."
 msgstr "Вчитај од..."
 
-#: src/fe-gtk/textgui.c:438
+#: src/fe-gtk/textgui.c:441
 msgid "Test All"
 msgstr "Тестирај се"
 
