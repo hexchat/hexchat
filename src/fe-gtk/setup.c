@@ -736,7 +736,7 @@ setup_create_radio (GtkWidget *table, int row, const setting *set)
 	{
 		if (text[i][0] != 0)
 		{
-			wid = gtk_radio_button_new_with_mnemonic (group, text[i]);
+			wid = gtk_radio_button_new_with_mnemonic (group, _(text[i]));
 			/*if (set->tooltip)
 				add_tip (wid, _(set->tooltip));*/
 			group = gtk_radio_button_get_group (GTK_RADIO_BUTTON (wid));
