@@ -716,8 +716,8 @@ fe_set_throttle (server *serv)
 	GSList *list = sess_list;
 	struct session *sess;
 	float per;
-	char tbuf[64];
-	char tip[64];
+	char tbuf[96];
+	char tip[160];
 
 	per = (float) serv->sendq_len / 1024.0;
 	if (per > 1.0)
