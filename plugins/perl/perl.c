@@ -1407,6 +1407,8 @@ xchat_plugin_init (xchat_plugin * plugin_handle, char **plugin_name,
 							  0);
 	xchat_hook_command (ph, "reload", XCHAT_PRI_NORM, perl_command_reload, 0,
 							  0);
+	xchat_hook_command (ph, "pl_reload", XCHAT_PRI_NORM, perl_command_reload, 0,
+							  0);
 	xchat_hook_command (ph, "unloadall", XCHAT_PRI_NORM,
 							  perl_command_unloadall, 0, 0);
 	xchat_hook_command (ph, "reloadall", XCHAT_PRI_NORM,
