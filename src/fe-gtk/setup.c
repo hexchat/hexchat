@@ -382,7 +382,8 @@ static const setting advanced_settings[] =
 static const setting logging_settings[] =
 {
 	{ST_HEADER,	N_("Logging"),0,0,0},
-	{ST_TOGGLE,	N_("Enable logging of conversations"), P_OFFINTNL(logging), 0, 0, 2},
+	{ST_TOGGLE,	N_("Display scrollback from previous session"), P_OFFINTNL(text_replay), 0, 0, 0},
+	{ST_TOGGLE,	N_("Enable logging of conversations to disk"), P_OFFINTNL(logging), 0, 0, 2},
 	{ST_ENTRY,	N_("Log filename:"), P_OFFSETNL(logmask), 0, 0, sizeof prefs.logmask},
 	{ST_LABEL,	N_("%s=Server %c=Channel %n=Network.")},
 

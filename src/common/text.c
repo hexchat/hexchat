@@ -285,6 +285,8 @@ scrollback_load (session *sess)
 		}
 	}
 
+	sess->scrollwritten = lines;
+
 	if (lines)
 	{
 		text = ctime (&stamp);
