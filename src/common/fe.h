@@ -113,7 +113,18 @@ void fe_get_int (char *prompt, int def, void *callback, void *ud);
 void fe_get_file (const char *title, char *initial,
 				 void (*callback) (void *userdata, char *file), void *userdata,
 				 int flags);
-void fe_ctrl_gui (session *sess, int action, int arg);
+typedef enum {
+	FE_GUI_HIDE,
+	FE_GUI_SHOW,
+	FE_GUI_FOCUS,
+	FE_GUI_FLASH,
+	FE_GUI_COLOR,
+	FE_GUI_ICONIFY,
+	FE_GUI_MENU,
+	FE_GUI_ATTACH,
+	FE_GUI_APPLY,
+} fe_gui_action;
+void fe_ctrl_gui (session *sess, fe_gui_action action, int arg);
 int fe_gui_info (session *sess, int info_type);
 void *fe_gui_info_ptr (session *sess, int info_type);
 void fe_confirm (const char *message, void (*yesproc)(void *), void (*noproc)(void *), void *ud);
