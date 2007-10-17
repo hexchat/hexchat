@@ -866,18 +866,12 @@ servlist_load_defaults (void)
 		if (def[i].network)
 		{
 			net = servlist_net_add (def[i].network, def[i].host, FALSE);
-#ifdef WIN32
-			/* Windows gets UTF-8 for new users. Unix gets "System Default",
-				which is often UTF-8 anyway! */
-			net->encoding = strdup ("UTF-8");
-#endif
+			net->encoding = strdup ("IRC (Latin/Unicode Hybrid)");
 			if (def[i].channel)
 				net->autojoin = strdup (def[i].channel);
 			if (def[i].charset)
 			{
-#ifdef WIN32
 				free (net->encoding);
-#endif
 				net->encoding = strdup (def[i].charset);
 			}
 			if (g_str_hash (def[i].network) == 0x8e1b96f7)

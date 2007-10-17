@@ -757,31 +757,31 @@ fe_set_throttle (server *serv)
 }
 
 void
-fe_ctrl_gui (session *sess, int action, int arg)
+fe_ctrl_gui (session *sess, fe_gui_action action, int arg)
 {
 	switch (action)
 	{
-	case 0:
+	case FE_GUI_HIDE:
 		gtk_widget_hide (sess->gui->window); break;
-	case 1:
+	case FE_GUI_SHOW:
 		gtk_widget_show (sess->gui->window);
 		gtk_window_present (GTK_WINDOW (sess->gui->window));
 		break;
-	case 2:
+	case FE_GUI_FOCUS:
 		mg_bring_tofront_sess (sess); break;
-	case 3:
+	case FE_GUI_FLASH:
 		fe_flash_window (sess); break;
-	case 4:
+	case FE_GUI_COLOR:
 		fe_set_tab_color (sess, arg); break;
-	case 5:
+	case FE_GUI_ICONIFY:
 		gtk_window_iconify (GTK_WINDOW (sess->gui->window)); break;
-	case 6:
+	case FE_GUI_MENU:
 		menu_bar_toggle ();	/* toggle menubar on/off */
 		break;
-	case 7:
+	case FE_GUI_ATTACH:
 		mg_detach (sess, arg);	/* arg: 0=toggle 1=detach 2=attach */
 		break;
-	case 8:
+	case FE_GUI_APPLY:
 		setup_apply_real (TRUE, TRUE);
 	}
 }
