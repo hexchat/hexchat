@@ -121,6 +121,7 @@ fe_tray_set_balloon (const char *title, const char *text)
 #ifndef WIN32
 	const char *argv[8];
 	const char *path;
+	char *escaped_text;
 	WinStatus ws;
 
 	/* no balloons if the window is focused */
@@ -147,10 +148,13 @@ fe_tray_set_balloon (const char *title, const char *text)
 		argv[3] = "-t";
 		argv[4] = "20000";
 		argv[5] = title;
-		argv[6] = text = strip_color (text, -1, STRIP_ALL);
+		text = strip_color (text, -1, STRIP_ALL);
+		escaped_text = g_markup_escape_text (text, -1);
+		argv[6] = escaped_text;
 		argv[7] = NULL;
 		xchat_execv (argv);
 		g_free ((char *)path);
+		g_free (escaped_text);
 		free ((char *)text);
 	}
 	else
