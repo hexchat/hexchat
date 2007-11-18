@@ -15,7 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
-static char RCSID[] = "$Id: tclplugin.c,v 1.62 2007-05-22 02:13:38 mooooooo Exp $";
+static char RCSID[] = "$Id: tclplugin.c,v 1.63 2007-11-18 00:04:33 zed Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -1998,7 +1998,7 @@ static int Command_Source(char *word[], char *word_eol[], void *userdata)
 
 }
 
-static int Command_Reload(char *word[], char *word_eol[], void *userdata)
+static int Command_Reloadall(char *word[], char *word_eol[], void *userdata)
 {
     Tcl_Plugin_DeInit();
     Tcl_Plugin_Init();
@@ -2177,7 +2177,7 @@ int xchat_plugin_init(xchat_plugin * plugin_handle, char **plugin_name, char **p
     raw_line_hook = xchat_hook_server(ph, "RAW LINE", XCHAT_PRI_NORM, Server_raw_line, NULL);
     Command_TCL_hook = xchat_hook_command(ph, "tcl", XCHAT_PRI_NORM, Command_TCL, 0, 0);
     Command_Source_hook = xchat_hook_command(ph, "source", XCHAT_PRI_NORM, Command_Source, 0, 0);
-    Command_Reload_hook = xchat_hook_command(ph, "reload", XCHAT_PRI_NORM, Command_Reload, 0, 0);
+    Command_Reload_hook = xchat_hook_command(ph, "reloadall", XCHAT_PRI_NORM, Command_Reloadall, 0, 0);
     Command_Load_hook = xchat_hook_command(ph, "LOAD", XCHAT_PRI_NORM, Command_Source, 0, 0);
     Event_Handler_hook = xchat_hook_timer(ph, 100, TCL_Event_Handler, 0);
     Null_Command_hook = xchat_hook_command(ph, "", XCHAT_PRI_NORM, Null_Command_Alias, "", 0);
