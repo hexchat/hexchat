@@ -106,7 +106,7 @@ fe_new_window (struct session *sess, int focus)
 				" \017This binary compiled \00310"__DATE__"\017\n",
 				get_cpu_str(),
 				glib_major_version, glib_minor_version, glib_micro_version);
-	fe_print_text (sess, buf);
+	fe_print_text (sess, buf, 0);
 
 	fe_print_text (sess, "\n\nCompiled in Features\0032:\017 "
 #ifdef USE_PLUGIN
@@ -121,7 +121,7 @@ fe_new_window (struct session *sess, int focus)
 #ifdef USE_IPV6
 	"IPv6"
 #endif
-	"\n\n");
+	"\n\n", 0);
 	fflush (stdout);
 	fflush (stdin);
 }
@@ -146,7 +146,7 @@ timecat (char *buf)
 static const short colconv[] = { 0, 7, 4, 2, 1, 3, 5, 11, 13, 12, 6, 16, 14, 15, 10, 7 };
 
 void
-fe_print_text (struct session *sess, char *text)
+fe_print_text (struct session *sess, char *text, time_t stamp)
 {
 	int dotime = FALSE;
 	char num[8];
@@ -795,7 +795,7 @@ fe_idle_add (void *func, void *data)
 {
 }
 void
-fe_ctrl_gui (session *sess, int action, int arg)
+fe_ctrl_gui (session *sess, fe_gui_action action, int arg)
 {
 }
 int
