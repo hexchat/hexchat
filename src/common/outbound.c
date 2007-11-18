@@ -3634,7 +3634,7 @@ const struct commands xc_cmds[] = {
 	 N_("NOTIFY [-n network1[,network2,...]] [<nick>], displays your notify list or adds someone to it")},
 	{"OP", cmd_op, 1, 1, 1,
 	 N_("OP <nick>, gives chanop status to the nick (needs chanop)")},
-	{"PART", cmd_part, 1, 1, 1,
+	{"PART", cmd_part, 1, 1, 0,
 	 N_("PART [<channel>] [<reason>], leaves the channel, by default the current one")},
 	{"PING", cmd_ping, 1, 0, 1,
 	 N_("PING <nick | channel>, CTCP pings nick or channel")},

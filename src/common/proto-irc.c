@@ -119,8 +119,16 @@ irc_set_back (server *serv)
 static void
 irc_set_away (server *serv, char *reason)
 {
-	if (!reason[0])
+	if (reason)
+	{
+		if (!reason[0])
+			reason = " ";
+	}
+	else
+	{
 		reason = " ";
+	}
+
 	tcp_sendf (serv, "AWAY :%s\r\n", reason);
 }
 
