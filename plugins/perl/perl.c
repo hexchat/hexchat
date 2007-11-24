@@ -1320,8 +1320,7 @@ static int
 perl_command_reloadall (char *word[], char *word_eol[], void *userdata)
 {
 	if (my_perl != NULL) {
-		execute_perl (sv_2mortal (newSVpv ("Xchat::Embed::unload_all", 0)), "");
-		perl_auto_load ();
+		execute_perl (sv_2mortal (newSVpv ("Xchat::Embed::reload_all", 0)), "");
 
 		return XCHAT_EAT_XCHAT;
 	}

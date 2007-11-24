@@ -7,15 +7,22 @@ BEGIN {
 		my $message = shift @_;
 		my ($package) = caller;
 		my $pkg_info = Xchat::Embed::pkg_info( $package );
-	
-		if( $pkg_info ) {
-			if( $message =~ /\(eval 1\)/ ) {
-				$message =~ s/\(eval 1\)/(PERL PLUGIN CODE)/;
-			} else {
-				$message =~ s/\(eval \d+\)/$pkg_info->{filename}/;
+
+		# redirect Gtk/Glib errors and warnings back to STDERR
+		if( $message =~ /^(?:Gtk|GLib|Gdk)(?:-\w+)?-(?:ERROR|CRITICAL|WARNING|MESSAGE|INFO|DEBUG)/i ) {
+			print STDERR $message;
+		} else {
+
+			if( $pkg_info ) {
+				if( $message =~ /\(eval 1\)/ ) {
+					$message =~ s/\(eval 1\)/(PERL PLUGIN CODE)/;
+				} else {
+					$message =~ s/\(eval \d+\)/$pkg_info->{filename}/;
+				}
 			}
+
+			Xchat::print( $message );
 		}
-		Xchat::print( $message );
 	};
 }
 use File::Spec();
@@ -516,6 +523,14 @@ sub unload {
 	}
 }
 
+sub unload_all {
+	for my $package ( keys %scripts ) {
+		unload( $scripts{$package}->{filename} );
+	}
+	
+	return Xchat::EAT_ALL;
+}
+
 sub reload {
 	my $file = shift @_;
 	my $package = file2pkg( $file );
@@ -531,12 +546,11 @@ sub reload {
 	return Xchat::EAT_ALL;
 }
 
-sub unload_all {
-	for my $package ( keys %scripts ) {
-		unload( $scripts{$package}->{filename} );
+sub reload_all {
+	my @scripts = map { $_->{filename} } values %scripts;
+	for my $script ( @scripts ) {
+		reload( $script );
 	}
-	
-	return Xchat::EAT_ALL;
 }
 #sub auto_load {
 #	my $dir = Xchat::get_info( "xchatdirfs" ) || Xchat::get_info( "xchatdir" );
