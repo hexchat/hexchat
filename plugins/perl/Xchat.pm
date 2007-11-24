@@ -25,8 +25,9 @@ BEGIN {
 		}
 	};
 }
-use File::Spec();
-use File::Basename();
+use File::Spec ();
+use File::Basename ();
+use File::Glob ();
 use Symbol();
 
 {
@@ -547,9 +548,16 @@ sub reload {
 }
 
 sub reload_all {
+	my $dir = Xchat::get_info( "xchatdirfs" ) || Xchat::get_info( "xchatdir" );
+	my $auto_load_glob = File::Spec->catfile( $dir, "*.pl" );
 	my @scripts = map { $_->{filename} } values %scripts;
+	push @scripts, File::Glob::bsd_glob( $auto_load_glob );
+
+	my %loaded;
 	for my $script ( @scripts ) {
+		next if $loaded{ $script };
 		reload( $script );
+		$loaded{ $script }++;
 	}
 }
 #sub auto_load {
