@@ -67,6 +67,7 @@ static int last_selected_row = 0; /* sound row */
 static gboolean color_change;
 static struct xchatprefs setup_prefs;
 static GtkWidget *cancel_button;
+static GtkWidget *font_dialog = NULL;
 
 enum
 {
@@ -869,21 +870,32 @@ setup_browsefile_cb (GtkWidget *button, GtkWidget *entry)
 }
 
 static void
+setup_fontsel_destroy (GtkWidget *button, GtkFontSelectionDialog *dialog)
+{
+	font_dialog = NULL;
+}
+
+static void
 setup_fontsel_cb (GtkWidget *button, GtkFontSelectionDialog *dialog)
 {
 	GtkWidget *entry;
+	char *font_name;
 
 	entry = g_object_get_data (G_OBJECT (button), "e");
+	font_name = gtk_font_selection_dialog_get_font_name (dialog);
 
-	gtk_entry_set_text (GTK_ENTRY (entry),
-							  gtk_font_selection_dialog_get_font_name (dialog));
+	gtk_entry_set_text (GTK_ENTRY (entry), font_name);
+
+	g_free (font_name);
 	gtk_widget_destroy (GTK_WIDGET (dialog));
+	font_dialog = NULL;
 }
 
 static void
 setup_fontsel_cancel (GtkWidget *button, GtkFontSelectionDialog *dialog)
 {
 	gtk_widget_destroy (GTK_WIDGET (dialog));
+	font_dialog = NULL;
 }
 
 static void
@@ -899,6 +911,7 @@ setup_browsefont_cb (GtkWidget *button, GtkWidget *entry)
 	GtkFontSelectionDialog *dialog;
 
 	dialog = (GtkFontSelectionDialog *) gtk_font_selection_dialog_new (_("Select font"));
+	font_dialog = (GtkWidget *)dialog;	/* global var */
 
 	sel = (GtkFontSelection *) dialog->fontsel;
 
@@ -907,6 +920,8 @@ setup_browsefont_cb (GtkWidget *button, GtkWidget *entry)
 
 	g_object_set_data (G_OBJECT (dialog->ok_button), "e", entry);
 
+	g_signal_connect (G_OBJECT (dialog), "destroy",
+							G_CALLBACK (setup_fontsel_destroy), dialog);
 	g_signal_connect (G_OBJECT (dialog->ok_button), "clicked",
 							G_CALLBACK (setup_fontsel_cb), dialog);
 	g_signal_connect (G_OBJECT (dialog->cancel_button), "clicked",
@@ -2092,6 +2107,12 @@ static void
 setup_close_cb (GtkWidget *win, GtkWidget **swin)
 {
 	*swin = NULL;
+
+	if (font_dialog)
+	{
+		gtk_widget_destroy (font_dialog);
+		font_dialog = NULL;
+	}
 }
 
 void
