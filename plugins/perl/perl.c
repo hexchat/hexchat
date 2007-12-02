@@ -1271,14 +1271,29 @@ perl_load_file (char *filename)
 				/* http://forum.xchat.org/viewtopic.php?t=3277 */
 				thread_mbox ("Cannot use this " PERL_DLL "\n\n"
 								 "32-bit ActivePerl is required.");
-			else
-				thread_mbox ("Cannot open " PERL_DLL "\n\n"
-								 "You must have ActivePerl installed in order to\n"
-								 "run perl scripts.\n\n"
-								 "http://www.activestate.com/ActivePerl/\n\n"
-								 "Make sure perl's bin directory is in your PATH.");
+			else {
+				/* a lot of people install this old version */
+				lib = LoadLibraryA ("perl56.dll");
+				if (lib) {
+					FreeLibrary (lib);
+					lib = NULL;
+					thread_mbox ("Cannot open " PERL_DLL "\n\n"
+									 "You must have ActivePerl 5.8 installed in order to\n"
+									 "run perl scripts.\n\n"
+									 "I have found Perl 5.6, but that is too old.");
+				} else {
+					thread_mbox ("Cannot open " PERL_DLL "\n\n"
+									 "You must have ActivePerl 5.8 installed in order to\n"
+									 "run perl scripts.\n\n"
+									 "http://www.activestate.com/ActivePerl/\n\n"
+									 "Make sure perl's bin directory is in your PATH.");
+				}
+			}
+			/* failure */
 			return FALSE;
 		}
+
+		/* success */
 		FreeLibrary (lib);
 	}
 #endif
