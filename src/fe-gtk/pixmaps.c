@@ -101,7 +101,9 @@ void
 pixmaps_init (void)
 {
 	pix_book = gdk_pixbuf_new_from_inline (-1, bookpng, FALSE, 0);
-	pix_xchat = gdk_pixbuf_new_from_inline (-1, xchatpng, FALSE, 0);
+
+	/* used in About window, tray icon and WindowManager icon. */
+	LOADPIX (pix_xchat, xchatpng, "xchat"EXT);
 
 	/* userlist icons, with inlined defaults */
 	LOADPIX (pix_hop, hoppng, "hop"EXT);
