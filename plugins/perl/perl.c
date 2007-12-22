@@ -111,7 +111,8 @@ typedef struct
 {
 	SV *callback;
 	SV *userdata;
-	xchat_hook *hook;				  /* required for timers */
+	xchat_hook *hook;   /* required for timers */
+	xchat_context *ctx; /* allow timers to remember their context */
 	unsigned int depth;
 } HookData;
 
@@ -277,6 +278,9 @@ timer_cb (void *userdata)
 	XPUSHs (data->userdata);
 	PUTBACK;
 
+	if (data->ctx) {
+		xchat_set_context (ph, data->ctx);
+	}
 	count = call_sv (data->callback, G_EVAL);
 	SPAGAIN;
 
@@ -857,6 +861,7 @@ XS (XS_Xchat_hook_timer)
 		SvREFCNT_inc (data->callback);
 		data->userdata = sv_mortalcopy (userdata);
 		SvREFCNT_inc (data->userdata);
+		data->ctx = xchat_get_context (ph);
 		hook = xchat_hook_timer (ph, timeout, timer_cb, data);
 		data->hook = hook;
 
