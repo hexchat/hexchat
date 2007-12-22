@@ -420,6 +420,12 @@ just ADD an item with exactly the same name and command and specify the -tX -eX 
 </pre>
 However, internal names and layouts of XChat's menu may change in the future, so use at own risk.
 <br><br>
+Here is an example of Radio items:
+<pre>	MENU ADD "Language"
+	MENU -r1,"English" ADD "Language/English" cmd1
+	MENU -r0,"English" ADD "Language/Spanish" cmd2
+	MENU -r0,"English" ADD "Language/German" cmd3</pre>
+<br>
 From 2.8.0, you can also change menus other than the main one (i.e popup menus). Currently they are:
 <blockquote>
 <table border=1 cellpadding=4 rules=all>
@@ -448,7 +454,7 @@ From 2.8.0, you can also change menus other than the main one (i.e popup menus).
  TRAY -b &lt;title> &lt;text>              Set the tray balloon.
                                      <small>Supported on Windows from 2.8.1 and 2.8.2 on Linux (libnotify required on Linux).</small>
 </pre>
-Filenames can be ICO or PNG format. PNG format is support on Linux/BSD and Windows XP (but requires installation of GDI+ on Windows 2000). Set a timeout of -1 to use XChat's default.
+Filenames can be ICO or PNG format. PNG format is supported on Linux/BSD and Windows XP (but requires installation of GDI+ on Windows 2000). Set a timeout of -1 to use XChat's default.
 <br><br>
 
 <h3><a name=unicode>Handling UTF-8/Unicode strings</a></h3>
