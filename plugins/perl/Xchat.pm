@@ -240,6 +240,44 @@ sub unhook {
 	return ();
 }
 
+sub do_for_each {
+	my ($cb, $channels, $servers) = @_;
+
+	# if neither is provided then we execute the callback in the current
+	# context
+	unless( $channels or $servers ) {
+		$cb->();
+		return 1;
+	}
+
+	$channels = [ $channels ] unless ref( $channels ) eq 'ARRAY';
+
+	# if no server is specified then we execute the callback in
+	# each of the channels on the current context's server
+	if( $servers ) {
+		$servers = [ $servers ] unless ref( $servers ) eq 'ARRAY';
+	} else {
+		$servers = [ Xchat::get_info( "server" ) ];
+	}
+
+	my $num_done;
+	my $old_ctx = Xchat::get_context();
+	for my $server ( @$servers ) {
+		for my $channel ( @$channels ) {
+			my $old_ctx = Xchat::get_context();
+			my $ctx = Xchat::find_context( $channel, $server );
+			
+			if( $ctx ) {
+				Xchat::set_context( $ctx );
+				$cb->();
+				$num_done++
+			}
+		}
+	}
+	Xchat::set_context( $old_ctx );
+	return $num_done;
+}
+
 sub print {
 	my $text = shift @_;
 	return "" unless defined $text;
@@ -251,24 +289,10 @@ sub print {
 		}
 	}
 	
-	if ( @_ >= 1 ) {
-		my $channel = shift @_;
-		my $server = shift @_;
-		my $old_ctx = Xchat::get_context();
-		my $ctx = Xchat::find_context( $channel, $server );
-		
-		if ( $ctx ) {
-			Xchat::set_context( $ctx );
-			Xchat::Internal::print( $text );
-			Xchat::set_context( $old_ctx );
-			return 1;
-		} else {
-			return "";
-		}
-	} else {
-		Xchat::Internal::print( $text );
-		return 1;
-	}
+	return do_for_each(
+		sub { Xchat::Internal::print( $text ); },
+		@_
+	);
 }
 
 sub printf {
@@ -292,22 +316,10 @@ sub command {
 		@commands = ($command);
 	}
 	
-	if( @_ >= 1 ) {
-		my ($channel, $server) = @_;
-		my $old_ctx = Xchat::get_context();
-		my $ctx = Xchat::find_context( $channel, $server );
-		if( $ctx ) {
-			Xchat::set_context( $ctx );
-			Xchat::Internal::command( $_ ) foreach @commands;
-			Xchat::set_context( $old_ctx );
-			return 1;
-		} else {
-			return "";
-		}
-	} else {
-		Xchat::Internal::command( $_ ) foreach @commands;
-		return 1;
-	}
+	return do_for_each(
+		sub { Xchat::Internal::command( $_ ) foreach @commands },
+		@_
+	);
 }
 
 sub commandf {
