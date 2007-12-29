@@ -2894,8 +2894,15 @@ mg_tabs_compare (session *a, session *b)
 static void
 mg_create_tabs (session_gui *gui)
 {
+	gboolean use_icons = FALSE;
+
+	/* if any one of these PNGs exist, the chanview will create
+	 * the extra column for icons. */
+	if (pix_channel || pix_dialog || pix_server || pix_util)
+		use_icons = TRUE;
+
 	gui->chanview = chanview_new (prefs.tab_layout, prefs.truncchans,
-											prefs.tab_sort, prefs.tab_icons,
+											prefs.tab_sort, use_icons,
 											prefs.style_namelistgad ? input_style : NULL);
 	chanview_set_callbacks (gui->chanview, mg_switch_tab_cb, mg_xbutton_cb,
 									mg_tab_contextmenu_cb, (void *)mg_tabs_compare);
@@ -3591,11 +3598,39 @@ mg_handle_drop (GtkWidget *widget, int y, int *pos, int *other_pos)
 	mg_place_userlist_and_chanview (gui);
 }
 
+static gboolean
+mg_is_gui_target (GdkDragContext *context)
+{
+	char *target_name;
+
+	if (!context || !context->targets || !context->targets->data)
+		return FALSE;
+
+	target_name = gdk_atom_name (context->targets->data);
+	if (target_name)
+	{
+		/* if it's not XCHAT_CHANVIEW or XCHAT_USERLIST */
+		/* we should ignore it. */
+		if (target_name[0] != 'X')
+		{
+			g_free (target_name);
+			return FALSE;
+		}
+		g_free (target_name);
+	}
+
+	return TRUE;
+}
+
 /* this begin callback just creates an nice of the source */
 
 gboolean
 mg_drag_begin_cb (GtkWidget *widget, GdkDragContext *context, gpointer userdata)
 {
+	/* ignore file drops */
+	if (!mg_is_gui_target (context))
+		return FALSE;
+
 #ifndef WIN32	/* leaks GDI pool memory - don't use on win32 */
 	int width, height;
 	GdkColormap *cmap;
@@ -3618,6 +3653,10 @@ mg_drag_begin_cb (GtkWidget *widget, GdkDragContext *context, gpointer userdata)
 void
 mg_drag_end_cb (GtkWidget *widget, GdkDragContext *context, gpointer userdata)
 {
+	/* ignore file drops */
+	if (!mg_is_gui_target (context))
+		return;
+
 #ifndef WIN32
 	g_object_unref (g_object_get_data (G_OBJECT (widget), "ico"));
 #endif
@@ -3628,6 +3667,10 @@ mg_drag_end_cb (GtkWidget *widget, GdkDragContext *context, gpointer userdata)
 gboolean
 mg_drag_drop_cb (GtkWidget *widget, GdkDragContext *context, int x, int y, guint time, gpointer user_data)
 {
+	/* ignore file drops */
+	if (!mg_is_gui_target (context))
+		return FALSE;
+
 	switch (context->action)
 	{
 	case GDK_ACTION_MOVE:
@@ -3657,6 +3700,10 @@ mg_drag_motion_cb (GtkWidget *widget, GdkDragContext *context, int x, int y, gui
 	int ox, oy;
 	GtkPaned *paned;
 	GdkDrawable *draw;
+
+	/* ignore file drops */
+	if (!mg_is_gui_target (context))
+		return FALSE;
 
 	if (scbar)	/* scrollbar */
 	{

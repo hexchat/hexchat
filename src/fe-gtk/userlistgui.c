@@ -428,7 +428,7 @@ userlist_dnd_motion (GtkTreeView *widget, GdkDragContext *context, gint x,
 		gtk_tree_selection_select_path (sel, path);
 	}
 
-	return TRUE;
+	return FALSE;
 }
 
 static gboolean
@@ -602,24 +602,25 @@ userlist_create (GtkWidget *box)
 										  GTK_SELECTION_MULTIPLE);
 
 	/* set up drops */
-/*	gtk_drag_dest_set (treeview, GTK_DEST_DEFAULT_ALL, dnd_dest_targets, 2,
-							 GDK_ACTION_MOVE | GDK_ACTION_COPY | GDK_ACTION_LINK);*/
-	gtk_drag_dest_set (treeview, GTK_DEST_DEFAULT_ALL, dnd_dest_targets + 1, 1,
+	gtk_drag_dest_set (treeview, GTK_DEST_DEFAULT_ALL, dnd_dest_targets, 2,
 							 GDK_ACTION_MOVE | GDK_ACTION_COPY | GDK_ACTION_LINK);
 	gtk_drag_source_set (treeview, GDK_BUTTON1_MASK, dnd_src_target, 1, GDK_ACTION_MOVE);
 
-/*	g_signal_connect (G_OBJECT (treeview), "drag_motion",
+	/* file DND (for DCC) */
+	g_signal_connect (G_OBJECT (treeview), "drag_motion",
 							G_CALLBACK (userlist_dnd_motion), treeview);
 	g_signal_connect (G_OBJECT (treeview), "drag_leave",
 							G_CALLBACK (userlist_dnd_leave), 0);
 	g_signal_connect (G_OBJECT (treeview), "drag_data_received",
-							G_CALLBACK (userlist_dnd_drop), treeview);*/
+							G_CALLBACK (userlist_dnd_drop), treeview);
+
 	g_signal_connect (G_OBJECT (treeview), "button_press_event",
 							G_CALLBACK (userlist_click_cb), 0);
 	g_signal_connect (G_OBJECT (treeview), "key_press_event",
 							G_CALLBACK (userlist_key_cb), 0);
 
-#ifndef WIN32
+	/* tree/chanview DND */
+#ifndef WIN32	/* leaks GDI pool memory, don't enable */
 	g_signal_connect (G_OBJECT (treeview), "drag_begin",
 							G_CALLBACK (mg_drag_begin_cb), NULL);
 	g_signal_connect (G_OBJECT (treeview), "drag_drop",
