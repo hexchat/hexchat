@@ -355,6 +355,10 @@ chanlist_build_gui_list (server *serv)
 
 	custom_list_clear ((CustomList *)GET_MODEL (serv));
 
+	/* discard pending rows FIXME: free the structs? */
+	g_slist_free (serv->gui->chanlist_pending_rows);
+	serv->gui->chanlist_pending_rows = NULL;
+
 	/* Reset the counters */
 	chanlist_reset_counters (serv);
 
