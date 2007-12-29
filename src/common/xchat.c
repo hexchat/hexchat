@@ -297,6 +297,8 @@ irc_init (session *sess)
 
 	done_init = TRUE;
 
+	plugin_add (sess, NULL, NULL, timer_plugin_init, NULL, NULL, FALSE);
+
 #ifdef USE_PLUGIN
 	if (!arg_skip_plugins)
 		plugin_auto_load (sess);	/* autoload ~/.xchat *.so */
@@ -305,8 +307,6 @@ irc_init (session *sess)
 #ifdef USE_DBUS
 	plugin_add (sess, NULL, NULL, dbus_plugin_init, NULL, NULL, FALSE);
 #endif
-
-	plugin_add (sess, NULL, NULL, timer_plugin_init, NULL, NULL, FALSE);
 
 	if (prefs.notify_timeout)
 		notify_tag = fe_timeout_add (prefs.notify_timeout * 1000,
