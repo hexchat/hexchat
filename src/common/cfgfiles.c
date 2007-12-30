@@ -1063,7 +1063,12 @@ xchat_open_file (char *file, int flags, int mode, int xof_flags)
 	char buf[1024];
 
 	if (xof_flags & XOF_FULLPATH)
-		return open (file, flags | OFLAGS);
+	{
+		if (xof_flags & XOF_DOMODE)
+			return open (file, flags | OFLAGS, mode);
+		else
+			return open (file, flags | OFLAGS);
+	}
 
 	snprintf (buf, sizeof (buf), "%s/%s", get_xdir_fs (), file);
 	if (xof_flags & XOF_DOMODE)
