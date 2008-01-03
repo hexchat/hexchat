@@ -12,14 +12,16 @@ There are always more changes than listed here, these are just the
 highlights. The full CVS log is available at www.xchat.org/cvslog/
 
 ------------------------------------------------------------------------------
- 2.8.6 - dd/mmm/2007
+ 2.8.6 - dd/mmm/2008
 ------------------------------------------------------------------------------
 
- - Updated translations (de, fi, fr, hu, nb, zh_CN).
- - xc284-scrollbmkdir.diff
+ - Updated translations (de, fi, fr, hu, nb, th, zh_CN).
+ - Fixed creation of ~/.xchat2/scrollback/ paths (xc284-scrollbmkdir.diff).
  - Fixed a leak of file descriptors related to the scrollback feature
-   (resource leak).
- - xc284-improvescrollback.diff
+   (resource leak) (xc284-fix-scrollbfdleak.diff).
+ - Stopped scrollback files growing too large by fixing the file-shrink code.
+ - Put a "Display scrollback from previous session" into the Setup GUI
+   (logging section) so people can turn this off without typing commands.
  - Made /away work even when the reason setting is empty.
  - Using /part on a channel that contains a quotation mark now works [1800855].
  - Changed the default encoding to "IRC" (CP1252/Unicode Hybrid) for both Unix
@@ -27,6 +29,15 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Fixed a possible Channel List crash if you searched many times while the
    download was still going.
  - Fixed alert balloons failing if the text contained "<" characters [1827629].
+ - The Drag&Drop files to userlist feature has been enabled again.
+ - Removed the /set tab_icons setting and made it automatic.
+ - Fixed a bug in creating files (save channel list, rawlog etc) that would set
+   the wrong permissions.
+ - Added command line argument --command=COMMAND which can be used in
+   conjuction with --existing (E.K.L.). This sends any xchat command to an
+   existing (running) client.
+ - 
+ - 
  - 
  - 
  - Perl (Lian Wan Situ)
