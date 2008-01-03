@@ -51,6 +51,7 @@ xchat_remote (void)
 	DBusGProxy *remote_object = NULL;
 	gboolean xchat_running;
 	GError *error = NULL;
+	char *command = NULL;
 
 	/* GnomeVFS >=2.15 uses D-Bus and threads, so threads should be
 	 * initialised before opening for the first time a D-Bus connection */
@@ -60,7 +61,7 @@ xchat_remote (void)
 	dbus_g_thread_init ();
 
 	/* if there is nothing to do, return now. */
-	if (!arg_existing || !arg_url) {
+	if (!arg_existing || !(arg_url || arg_command)) {
 		return;
 	}
 
@@ -98,7 +99,12 @@ xchat_remote (void)
 						   DBUS_REMOTE_INTERFACE);
 
 	if (arg_url) {
-		char *command = g_strdup_printf ("url %s", arg_url);
+		command = g_strdup_printf ("url %s", arg_url);
+	} else if (arg_command) {
+		command = g_strdup (arg_command);
+	}
+
+	if (command) {
 		if (!dbus_g_proxy_call (remote_object, "Command",
 					&error,
 					G_TYPE_STRING, command,

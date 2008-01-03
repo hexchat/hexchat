@@ -76,6 +76,7 @@ int xchat_is_quitting = FALSE;
 int arg_dont_autoconnect = FALSE;
 int arg_skip_plugins = FALSE;
 char *arg_url = NULL;
+char *arg_command = NULL;
 gint arg_existing = FALSE;
 
 #ifdef USE_DBUS
@@ -321,6 +322,11 @@ irc_init (session *sess)
 		snprintf (buf, sizeof (buf), "server %s", arg_url);
 		handle_command (sess, buf, FALSE);
 		g_free (arg_url);	/* from GOption */
+	}
+
+	if (arg_command != NULL)
+	{
+		g_free (arg_command);
 	}
 }
 
