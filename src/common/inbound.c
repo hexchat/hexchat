@@ -217,84 +217,82 @@ inbound_privmsg (server *serv, char *from, char *ip, char *text, int id)
 		EMIT_SIGNAL (XP_TE_PRIVMSG, sess, from, text, idtext, NULL, 0);
 }
 
-static int
-SearchNick (char *text, char *nicks)
+/* used for Alerts section. Masks can be separated by commas and spaces. */
+
+gboolean
+alert_match_word (char *word, char *masks)
 {
-	char S[300];	/* size of irc_extra_hilight in xchatprefs */
-	char *n;
-	char *p;
-	char *t;
-	int ns;
+	char *p = masks;
+	char endchar;
+	int res;
 
-	if (nicks == NULL)
-		return 0;
-
-	text = strip_color (text, -1, STRIP_ALL);
-
-	safe_strcpy (S, nicks, sizeof (S));
-	n = strtok (S, ",");
-	while (n != NULL)
+	while (1)
 	{
-		t = text;
-		ns = strlen (n);
-		while ((p = nocasestrstr (t, n)))
+		if (*p == 0 || *p == ' ' || *p == ',')
 		{
-			char *prev_char = (p == text) ? NULL : g_utf8_prev_char (p);
-			char *next_char = p + ns;
-			if ((!prev_char ||
-			     !g_unichar_isalnum (g_utf8_get_char(prev_char))) &&
-			    !g_unichar_isalnum (g_utf8_get_char(next_char)))
-			{
-				free (text);
-				return 1;
-			}
+			endchar = *p;
+			*p = 0;
+			res = match (masks, word);
+			*p = endchar;
 
-			t = p + 1;
+			if (res)
+				return TRUE;	/* yes, matched! */
+
+			masks = p + 1;
+			if (*p == 0)
+				return FALSE;
 		}
-
-		n = strtok (NULL, ",");
+		p++;
 	}
-	free (text);
-	return 0;
 }
 
-int
-FromNick (char *nick, char *nicks)
+gboolean
+alert_match_text (char *text, char *masks)
 {
-	char S[300];	/* size of irc_no_hilight in xchatprefs */
-	char *n;
-	char *t;
+	char *p = text;
+	char endchar;
+	int res;
 
-	if (nicks == NULL || nicks[0] == 0)
-		return 0;
-
-	safe_strcpy (S, nicks, sizeof (S));
-	n = strtok (S, ",");
-	while (n != NULL)
+	while (1)
 	{
-		t = nick;
-		if (nocasestrstr(t, n))
-			return 1;
-		n = strtok (NULL, ",");
+		if (*p == 0 || *p == ' ' || *p == ',')
+		{
+			endchar = *p;
+			*p = 0;
+			res = alert_match_word (text, masks);
+			*p = endchar;
+
+			if (res)
+				return TRUE;	/* yes, matched! */
+
+			text = p + 1;
+			if (*p == 0)
+				return FALSE;
+		}
+		p++;
 	}
-	return 0;
 }
 
 static int
 is_hilight (char *from, char *text, session *sess, server *serv)
 {
-	if (FromNick(from, prefs.irc_no_hilight))
+	if (alert_match_word (from, prefs.irc_no_hilight))
 		return 0;
 
-	if (SearchNick (text, serv->nick) ||
-		 SearchNick (text, prefs.irc_extra_hilight) ||
-		 FromNick (from, prefs.irc_nick_hilight))
+	text = strip_color (text, -1, STRIP_ALL);
+
+	if (alert_match_text (text, serv->nick) ||
+		 alert_match_text (text, prefs.irc_extra_hilight) ||
+		 alert_match_word (from, prefs.irc_nick_hilight))
 	{
+		free (text);
 		if (sess != current_tab)
 			sess->nick_said = TRUE;
 		fe_set_hilight (sess);
 		return 1;
 	}
+
+	free (text);
 	return 0;
 }
 

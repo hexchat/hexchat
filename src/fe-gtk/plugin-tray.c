@@ -552,7 +552,7 @@ tray_priv (char *from, char *text)
 {
 	const char *network;
 
-	if (FromNick (from, prefs.irc_no_hilight))
+	if (alert_match_word (from, prefs.irc_no_hilight))
 		return;
 
 	tray_set_flash (ICON_HILIGHT);
