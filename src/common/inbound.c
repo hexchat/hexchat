@@ -226,6 +226,9 @@ alert_match_word (char *word, char *masks)
 	char endchar;
 	int res;
 
+	if (masks[0] == 0)
+		return FALSE;
+
 	while (1)
 	{
 		if (*p == 0 || *p == ' ' || *p == ',')
@@ -252,6 +255,9 @@ alert_match_text (char *text, char *masks)
 	char *p = text;
 	char endchar;
 	int res;
+
+	if (masks[0] == 0)
+		return FALSE;
 
 	while (1)
 	{
