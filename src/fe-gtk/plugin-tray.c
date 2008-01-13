@@ -15,6 +15,8 @@
 #include "menu.h"
 #include <gtk/gtk.h>
 
+#define LIBNOTIFY
+
 typedef enum	/* current icon status */
 {
 	TS_NONE,
@@ -115,6 +117,82 @@ fe_tray_set_tooltip (const char *text)
 		gtk_status_icon_set_tooltip (sticon, text);
 }
 
+#ifdef LIBNOTIFY
+
+/* dynamic access to libnotify.so */
+
+static void *nn_mod = NULL;
+/* prototypes */
+static gboolean (*nn_init) (char *);
+static void (*nn_uninit) (void);
+static void *(*nn_new_with_status_icon) (const gchar *summary, const gchar *message, const gchar *icon, GtkStatusIcon *status_icon);
+static void *(*nn_new) (const gchar *summary, const gchar *message, const gchar *icon, GtkWidget *attach);
+static gboolean (*nn_show) (void *noti, GError **error);
+static void (*nn_set_timeout) (void *noti, gint timeout);
+
+static void
+libnotify_cleanup (void)
+{
+	if (nn_mod)
+	{
+		nn_uninit ();
+		g_module_close (nn_mod);
+		nn_mod = NULL;
+	}
+}
+
+static gboolean
+libnotify_notify_new (const char *title, const char *text, GtkStatusIcon *icon)
+{
+	void *noti;
+	char *escaped_text;
+
+	if (!nn_mod)
+	{
+		nn_mod = g_module_open ("libnotify", G_MODULE_BIND_LAZY);
+		if (!nn_mod)
+		{
+			nn_mod = g_module_open ("libnotify.so.1", G_MODULE_BIND_LAZY);
+			if (!nn_mod)
+				return FALSE;
+		}
+
+		if (!g_module_symbol (nn_mod, "notify_init", (gpointer)&nn_init))
+			goto bad;
+		if (!g_module_symbol (nn_mod, "notify_uninit", (gpointer)&nn_uninit))
+			goto bad;
+		if (!g_module_symbol (nn_mod, "notify_notification_new_with_status_icon", (gpointer)&nn_new_with_status_icon))
+			goto bad;
+		if (!g_module_symbol (nn_mod, "notify_notification_new", (gpointer)&nn_new))
+			goto bad;
+		if (!g_module_symbol (nn_mod, "notify_notification_show", (gpointer)&nn_show))
+			goto bad;
+		if (!g_module_symbol (nn_mod, "notify_notification_set_timeout", (gpointer)&nn_set_timeout))
+			goto bad;
+		if (!nn_init (PACKAGE_NAME))
+			goto bad;
+	}
+
+	text = strip_color (text, -1, STRIP_ALL);
+	escaped_text = g_markup_escape_text (text, -1);
+	noti = nn_new (title, escaped_text, XCHATSHAREDIR"/pixmaps/xchat.png", NULL);
+	g_free (escaped_text);
+	free ((char *)text);
+
+	nn_set_timeout (noti, 20000);
+	nn_show (noti, NULL);
+	g_object_unref (G_OBJECT (noti));
+
+	return TRUE;
+
+bad:
+	g_module_close (nn_mod);
+	nn_mod = NULL;
+	return FALSE;
+}
+
+#endif
+
 void
 fe_tray_set_balloon (const char *title, const char *text)
 {
@@ -137,6 +215,16 @@ fe_tray_set_balloon (const char *title, const char *text)
 	if (!text)
 		return;
 
+#ifdef LIBNOTIFY
+	/* try it via libnotify.so */
+	if (sticon)
+	{
+		if (libnotify_notify_new (title, text, sticon))
+			return;	/* success */
+	}
+#endif
+
+	/* try it the crude way */
 	path = g_find_program_in_path ("notify-send");
 	if (path)
 	{
@@ -405,7 +493,50 @@ tray_menu_quit_cb (GtkWidget *item, gpointer userdata)
 	mg_open_quit_dialog (FALSE);
 }
 
+/* returns 0-mixed 1-away 2-back */
+
+static int
+tray_find_away_status (void)
+{
+	GSList *list;
+	server *serv;
+	int away = 0;
+	int back = 0;
+
+	for (list = serv_list; list; list = list->next)
+	{
+		serv = list->data;
+
+		if (serv->is_away || serv->reconnect_away)
+			away++;
+		else
+			back++;
+	}
+
+	if (away && back)
+		return 0;
+
+	if (away)
+		return 1;
+
+	return 2;
+}
+
 static void
+tray_foreach_server (GtkWidget *item, char *cmd)
+{
+	GSList *list;
+	server *serv;
+
+	for (list = serv_list; list; list = list->next)
+	{
+		serv = list->data;
+		if (serv->connected)
+			handle_command (serv->server_session, cmd, FALSE);
+	}
+}
+
+static GtkWidget *
 tray_make_item (GtkWidget *menu, char *label, void *callback, void *userdata)
 {
 	GtkWidget *item;
@@ -418,6 +549,8 @@ tray_make_item (GtkWidget *menu, char *label, void *callback, void *userdata)
 	g_signal_connect (G_OBJECT (item), "activate",
 							G_CALLBACK (callback), userdata);
 	gtk_widget_show (item);
+
+	return item;
 }
 
 static void
@@ -444,6 +577,8 @@ tray_menu_cb (GtkWidget *widget, guint button, guint time, gpointer userdata)
 {
 	GtkWidget *menu;
 	GtkWidget *submenu;
+	GtkWidget *item;
+	int away_status;
 
 	/* ph may have an invalid context now */
 	xchat_set_context (ph, xchat_find_context (ph, NULL, NULL));
@@ -462,6 +597,15 @@ tray_menu_cb (GtkWidget *widget, guint button, guint time, gpointer userdata)
 	blink_item (&prefs.input_tray_priv, submenu, _("Private Message"));
 	blink_item (&prefs.input_tray_hilight, submenu, _("Highlighted Message"));
 	/*blink_item (BIT_FILEOFFER, submenu, _("File Offer"));*/
+
+	submenu = mg_submenu (menu, _("_Your status"));
+	away_status = tray_find_away_status ();
+	item = tray_make_item (submenu, _("Set _away"), tray_foreach_server, "away");
+	if (away_status == 1)
+		gtk_widget_set_sensitive (item, FALSE);
+	item = tray_make_item (submenu, _("Set _back"), tray_foreach_server, "back");
+	if (away_status == 2)
+		gtk_widget_set_sensitive (item, FALSE);
 
 	tray_make_item (menu, NULL, tray_menu_quit_cb, NULL);
 	mg_create_icon_item (_("_Quit"), GTK_STOCK_QUIT, menu, tray_menu_quit_cb, NULL);
@@ -703,6 +847,8 @@ tray_plugin_deinit (xchat_plugin *plugin_handle)
 {
 #ifdef WIN32
 	tray_cleanup ();
+#elif defined(LIBNOTIFY)
+	libnotify_cleanup ();
 #endif
 	return 1;
 }

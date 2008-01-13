@@ -26,6 +26,7 @@ void mg_update_meters (session_gui *);
 void mg_inputbox_cb (GtkWidget *igad, session_gui *gui);
 void mg_create_icon_item (char *label, char *stock, GtkWidget *menu, void *callback, void *userdata);
 GtkWidget *mg_submenu (GtkWidget *menu, char *text);
+void mg_addfavoritemenu (server *serv, GtkWidget *menu, char *channel, session *sess);
 /* DND */
 gboolean mg_drag_begin_cb (GtkWidget *widget, GdkDragContext *context, gpointer userdata);
 void mg_drag_end_cb (GtkWidget *widget, GdkDragContext *context, gpointer userdata);

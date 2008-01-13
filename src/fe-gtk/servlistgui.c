@@ -1,5 +1,5 @@
 /* X-Chat
- * Copyright (C) 2004 Peter Zelezny.
+ * Copyright (C) 2004-2008 Peter Zelezny.
  */
 
 #include <stdlib.h>
@@ -668,6 +668,150 @@ servlist_savegui (void)
 }
 
 static void
+servlist_autojoinedit_cb (GtkWidget *button, ircnet *net)
+{
+	GtkWidget *win;
+	GtkWidget *scrolledwindow;
+	GtkTreeModel *model;
+	GtkListStore *store;
+	GtkCellRenderer *renderer;
+	GtkWidget *tree;
+	GtkWidget *table;
+	GtkWidget *label;
+	GtkWidget *bbox;
+	GtkWidget *wid;
+
+	GtkWidget *vbuttonbox1;
+	GtkWidget *buttonadd;
+	GtkWidget *buttonremove;
+	GtkWidget *buttonedit;
+
+	char buf[128];
+	GSList *channels, *keys;
+	GSList *clist, *klist;
+	GtkTreeIter iter;
+
+	win = gtk_window_new (GTK_WINDOW_TOPLEVEL);
+	gtk_container_set_border_width (GTK_CONTAINER (win), 4);
+	snprintf (buf, sizeof (buf), _("XChat: Favorite Channels (Auto-Join List)"));//, net->name);
+	gtk_window_set_title (GTK_WINDOW (win), buf);
+	gtk_window_set_default_size (GTK_WINDOW (win), 354, 256);
+	gtk_window_set_position (GTK_WINDOW (win), GTK_WIN_POS_MOUSE);
+	gtk_window_set_transient_for (GTK_WINDOW (win), GTK_WINDOW (edit_win));
+	gtk_window_set_modal (GTK_WINDOW (win), TRUE);
+	gtk_window_set_type_hint (GTK_WINDOW (win), GDK_WINDOW_TYPE_HINT_DIALOG);
+	gtk_window_set_role (GTK_WINDOW (win), "editserv");
+
+	table = gtk_table_new (1, 1, FALSE);
+	gtk_container_add (GTK_CONTAINER (win), table);
+	gtk_widget_show (table);
+
+	snprintf (buf, sizeof (buf), _("These channels will be joined\nwhenever you connect to %s"), net->name);
+	label = gtk_label_new (buf);
+	gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_CENTER);
+	gtk_table_attach (GTK_TABLE (table), label, 0, 2, 0, 1, GTK_FILL|GTK_EXPAND, GTK_FILL, 3, 3);
+	gtk_widget_show (label);
+
+	bbox = gtk_hbutton_box_new ();
+	gtk_button_box_set_layout (GTK_BUTTON_BOX (bbox), GTK_BUTTONBOX_END);
+	gtk_box_set_spacing (GTK_BOX (bbox), 4);
+	gtk_table_attach (GTK_TABLE (table), bbox, 0, 1, 2, 3, GTK_FILL|GTK_EXPAND, GTK_FILL, 0, 4);
+	gtk_widget_show (bbox);
+
+	wid = gtk_button_new_from_stock (GTK_STOCK_CANCEL);
+	gtk_container_add (GTK_CONTAINER (bbox), wid);
+	gtk_widget_show (wid);
+
+	wid = gtk_button_new_from_stock (GTK_STOCK_OK);
+	gtk_container_add (GTK_CONTAINER (bbox), wid);
+	gtk_widget_show (wid);
+
+	/* ===== */
+	vbuttonbox1 = gtk_vbutton_box_new ();
+	gtk_box_set_spacing (GTK_BOX (vbuttonbox1), 3);
+	gtk_button_box_set_layout (GTK_BUTTON_BOX (vbuttonbox1), GTK_BUTTONBOX_START);
+	gtk_widget_show (vbuttonbox1);
+	gtk_table_attach (GTK_TABLE (table), vbuttonbox1, 1, 2, 1, 2, GTK_FILL, GTK_FILL, 3, 0);
+
+	buttonadd = gtk_button_new_from_stock ("gtk-add");
+	gtk_widget_show (buttonadd);
+	gtk_container_add (GTK_CONTAINER (vbuttonbox1), buttonadd);
+	GTK_WIDGET_SET_FLAGS (buttonadd, GTK_CAN_DEFAULT);
+
+	buttonremove = gtk_button_new_from_stock ("gtk-remove");
+	gtk_widget_show (buttonremove);
+	gtk_container_add (GTK_CONTAINER (vbuttonbox1), buttonremove);
+	GTK_WIDGET_SET_FLAGS (buttonremove, GTK_CAN_DEFAULT);
+
+	buttonedit = gtk_button_new_with_mnemonic (_("_Edit"));
+	gtk_widget_show (buttonedit);
+	gtk_container_add (GTK_CONTAINER (vbuttonbox1), buttonedit);
+	GTK_WIDGET_SET_FLAGS (buttonedit, GTK_CAN_DEFAULT);
+	/* ===== */
+
+	scrolledwindow = gtk_scrolled_window_new (NULL, NULL);
+	gtk_table_attach (GTK_TABLE (table), scrolledwindow, 0, 1, 1, 2, GTK_FILL|GTK_EXPAND, GTK_FILL|GTK_EXPAND, 0, 0);
+	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (scrolledwindow),
+											  GTK_POLICY_NEVER, GTK_POLICY_AUTOMATIC);
+	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolledwindow),
+													 GTK_SHADOW_IN);
+	gtk_widget_show (scrolledwindow);
+
+	store = gtk_list_store_new (3, G_TYPE_STRING, G_TYPE_STRING, G_TYPE_BOOLEAN);
+	model = GTK_TREE_MODEL (store);
+
+	tree = gtk_tree_view_new_with_model (model);
+	g_object_unref (model);
+	gtk_container_add (GTK_CONTAINER (scrolledwindow), tree);
+	gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (tree), TRUE);
+	gtk_widget_show (tree);
+
+	renderer = gtk_cell_renderer_text_new ();
+/*	g_signal_connect (G_OBJECT (renderer), "edited",
+							G_CALLBACK (servlist_editserver_cb), model);*/
+	gtk_tree_view_insert_column_with_attributes (
+								GTK_TREE_VIEW (tree), -1,
+						 		_("Channel"), renderer,
+						 		"text", 0,
+								"editable", 2,
+								NULL);
+
+	renderer = gtk_cell_renderer_text_new ();
+/*	g_signal_connect (G_OBJECT (renderer), "edited",
+							G_CALLBACK (servlist_editserver_cb), model);*/
+	gtk_tree_view_insert_column_with_attributes (
+								GTK_TREE_VIEW (tree), -1,
+						 		_("Key (Password)"), renderer,
+						 		"text", 1,
+								"editable", 2,
+								NULL);
+
+	gtk_tree_view_column_set_expand (gtk_tree_view_get_column (GTK_TREE_VIEW (tree), 0), TRUE);
+	gtk_tree_view_column_set_expand (gtk_tree_view_get_column (GTK_TREE_VIEW (tree), 1), TRUE);
+
+	if (net->autojoin)
+	{
+		joinlist_split (net->autojoin, &channels, &keys);
+
+		clist = channels;
+		klist = keys;
+
+		while (clist)
+		{
+			gtk_list_store_append (store, &iter);
+			gtk_list_store_set (store, &iter, 0, clist->data, 1, klist->data, -1);
+
+			klist = klist->next;
+			clist = clist->next;
+		}
+
+		joinlist_free (channels, keys);
+	}
+
+	gtk_widget_show (win);
+}
+
+static void
 servlist_connect_cb (GtkWidget *button, gpointer userdata)
 {
 	if (!selected_net)
@@ -732,9 +876,9 @@ servlist_check_cb (GtkWidget *but, gpointer num_p)
 	if (!selected_net)
 		return;
 
-	if ((1 << num) == FLAG_CYCLE)
+	if ((1 << num) == FLAG_CYCLE || (1 << num) == FLAG_USE_PROXY)
 	{
-		/* this ones reverse, so it's compat with 2.0.x */
+		/* these ones are reversed, so it's compat with 2.0.x */
 		if (GTK_TOGGLE_BUTTON (but)->active)
 			selected_net->flags &= ~(1 << num);
 		else
@@ -813,9 +957,29 @@ servlist_create_entry (GtkWidget *table, char *labeltext, int row,
 	add_tip (entry, tip);
 	gtk_widget_show (entry);
 	gtk_entry_set_text (GTK_ENTRY (entry), def ? def : "");
-	gtk_table_attach (GTK_TABLE (table), entry, 2, 3, row, row+1,
-							GTK_FILL|GTK_EXPAND, 0, 0, 0);
 	gtk_label_set_mnemonic_widget (GTK_LABEL (label), entry);
+
+	if (row == 15)	/* for "Channels to Join:" */
+	{
+		GtkWidget *button, *box;
+
+		box = gtk_hbox_new (0, 0);
+		button = gtk_button_new_with_label ("...");
+		g_signal_connect (G_OBJECT (button), "clicked",
+								G_CALLBACK (servlist_autojoinedit_cb), selected_net);
+
+		gtk_box_pack_start (GTK_BOX (box), entry, TRUE, TRUE, 0);
+		gtk_box_pack_end (GTK_BOX (box), button, 0, 0, 0);
+		gtk_widget_show_all (box);
+
+		gtk_table_attach (GTK_TABLE (table), box, 2, 3, row, row+1,
+								GTK_FILL|GTK_EXPAND, 0, 0, 0);
+	}
+	else
+	{
+		gtk_table_attach (GTK_TABLE (table), entry, 2, 3, row, row+1,
+								GTK_FILL|GTK_EXPAND, 0, 0, 0);
+	}
 
 	return entry;
 }
@@ -841,6 +1005,25 @@ servlist_close_cb (GtkWidget *button, gpointer userdata)
 
 	if (sess_list == NULL)
 		xchat_exit ();
+}
+
+/* convert "host:port" format to "host/port" */
+
+static char *
+servlist_sanitize_hostname (char *host)
+{
+	char *ret, *c, *e;
+
+	ret = strdup (host);
+
+	c = strchr  (ret, ':');
+	e = strrchr (ret, ':');
+
+	/* if only one colon exists it's probably not IPv6 */
+	if (c && c == e)
+		*c = '/';
+
+	return ret;
 }
 
 static void
@@ -879,7 +1062,7 @@ servlist_editserver_cb (GtkCellRendererText *cell, gchar *arg1, gchar *arg2,
 		}
 
 		servname = serv->hostname;
-		serv->hostname = strdup (arg2);
+		serv->hostname = servlist_sanitize_hostname (arg2);
 		gtk_list_store_set (GTK_LIST_STORE (model), &iter, 0, serv->hostname, -1);
 		free (servname);
 	}
@@ -1039,8 +1222,8 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 
 	servlist_create_check (3, net->flags & FLAG_AUTO_CONNECT, table3,
 								  11, 1, _("Auto connect to this network at startup"));
-	servlist_create_check (4, net->flags & FLAG_USE_PROXY, table3,
-								  12, 1, _("Use a proxy server"));
+	servlist_create_check (4, !(net->flags & FLAG_USE_PROXY), table3,
+								  12, 1, _("Bypass proxy server"));
 	check = servlist_create_check (2, net->flags & FLAG_USE_SSL, table3,
 								  13, 1, _("Use SSL for all the servers on this network"));
 #ifndef USE_OPENSSL

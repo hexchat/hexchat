@@ -869,6 +869,8 @@ menu_chanmenu (struct session *sess, GdkEventButton * event, char *chan)
 												 str_copy);
 	}
 
+	mg_addfavoritemenu (sess->server, menu, str_copy, NULL);
+
 	menu_add_plugin_items (menu, "\x5$CHAN", str_copy);
 	menu_popup (menu, event, NULL);
 }
@@ -1474,6 +1476,9 @@ static struct mymenu mymenu[] = {
 
 	{N_("_Help"), 0, 0, M_NEWMENU, 0, 0, 1},	/* 69 */
 	{N_("_Contents"), menu_docs, GTK_STOCK_HELP, M_MENUSTOCK, 0, 0, 1, GDK_F1},
+#if 0
+	{N_("Check for updates"), menu_update, 0, M_MENUITEM, 0, 1},
+#endif
 	{N_("_About"), menu_about, GTK_STOCK_ABOUT, M_MENUSTOCK, 0, 0, 1},
 
 	{0, 0, 0, M_END, 0, 0, 0},

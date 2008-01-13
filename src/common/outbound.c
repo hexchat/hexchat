@@ -374,6 +374,9 @@ cmd_away (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			sess->server->last_away_reason = reason;
 	}
 
+	if (!sess->server->connected)
+		sess->server->reconnect_away = 1;
+
 	return TRUE;
 }
 

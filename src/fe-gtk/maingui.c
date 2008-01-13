@@ -1592,10 +1592,28 @@ mg_create_color_menu (GtkWidget *menu, session *sess)
 	}
 }
 
+static void
+mg_fav (GtkWidget *item, gpointer userdata)
+{
+
+}
+
+void
+mg_addfavoritemenu (server *serv, GtkWidget *menu, char *channel, session *sess)
+{
+	if (serv->network)
+	{
+		if (joinlist_is_in_list (serv, channel))
+			mg_create_icon_item (_("_Remove from Favorites"), GTK_STOCK_REMOVE, menu, mg_fav, NULL);
+		else
+			mg_create_icon_item (_("_Add to Favorites"), GTK_STOCK_ADD, menu, mg_fav, NULL);
+	}
+}
+
 static gboolean
 mg_tab_contextmenu_cb (chanview *cv, chan *ch, int tag, gpointer ud, GdkEventButton *event)
 {
-	GtkWidget *menu, *item;
+	GtkWidget *menu, *submenu, *item;
 	session *sess = ud;
 	char buf[256];
 
@@ -1616,33 +1634,40 @@ mg_tab_contextmenu_cb (chanview *cv, chan *ch, int tag, gpointer ud, GdkEventBut
 		char *name = g_markup_escape_text (sess->channel[0] ? sess->channel : _("<none>"), -1);
 		snprintf (buf, sizeof (buf), "<span foreground=\"#3344cc\"><b>%s</b></span>", name);
 		g_free (name);
+
 		item = gtk_menu_item_new_with_label ("");
 		gtk_label_set_markup (GTK_LABEL (GTK_BIN (item)->child), buf);
 		gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
 		gtk_widget_show (item);
+
+		submenu = gtk_menu_new ();
+		gtk_menu_item_set_submenu (GTK_MENU_ITEM (item), submenu);
+		gtk_widget_show (submenu);
 
 		/* separator */
 		item = gtk_menu_item_new ();
 		gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
 		gtk_widget_show (item);
 
-		menu_toggle_item (_("Beep on message"), menu, mg_beepmsg_cb, sess,
+		menu_toggle_item (_("Beep on message"), submenu, mg_beepmsg_cb, sess,
 								sess->beep);
 		if (prefs.gui_tray)
-			menu_toggle_item (_("Blink tray on message"), menu, mg_traymsg_cb, sess,
+			menu_toggle_item (_("Blink tray on message"), submenu, mg_traymsg_cb, sess,
 									sess->tray);
 		if (sess->type == SESS_CHANNEL)
-			menu_toggle_item (_("Show join/part messages"), menu, mg_hidejp_cb,
+			menu_toggle_item (_("Show join/part messages"), submenu, mg_hidejp_cb,
 									sess, !sess->hide_join_part);
-		menu_toggle_item (_("Color paste"), menu, mg_colorpaste_cb, sess,
+		menu_toggle_item (_("Color paste"), submenu, mg_colorpaste_cb, sess,
 								sess->color_paste);
 
+		if (sess->type == SESS_CHANNEL)
+			mg_addfavoritemenu (sess->server, menu, sess->channel, sess);
 	}
 
 	/* separator */
-	item = gtk_menu_item_new ();
+/*	item = gtk_menu_item_new ();
 	gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
-	gtk_widget_show (item);
+	gtk_widget_show (item);*/
 
 	mg_create_icon_item (_("_Close Tab"), GTK_STOCK_CLOSE, menu,
 								mg_destroy_tab_cb, ch);
@@ -3627,14 +3652,14 @@ mg_is_gui_target (GdkDragContext *context)
 gboolean
 mg_drag_begin_cb (GtkWidget *widget, GdkDragContext *context, gpointer userdata)
 {
-	/* ignore file drops */
-	if (!mg_is_gui_target (context))
-		return FALSE;
-
 #ifndef WIN32	/* leaks GDI pool memory - don't use on win32 */
 	int width, height;
 	GdkColormap *cmap;
 	GdkPixbuf *pix, *pix2;
+
+	/* ignore file drops */
+	if (!mg_is_gui_target (context))
+		return FALSE;
 
 	cmap = gtk_widget_get_colormap (widget);
 	gdk_drawable_get_size (widget->window, &width, &height);

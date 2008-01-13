@@ -598,6 +598,41 @@ servlist_have_auto (void)
 	GSList *list = network_list;
 	ircnet *net;
 
+{
+	GSList *a, *b;
+
+	joinlist_split ("", &a, &b);
+	joinlist_free (a, b);
+
+	joinlist_split ("#linux", &a, &b);
+	joinlist_free (a, b);
+
+	joinlist_split ("#linux,#abc", &a, &b);
+	joinlist_free (a, b);
+
+	joinlist_split ("#linux,#abc,#three", &a, &b);
+	joinlist_free (a, b);
+
+	joinlist_split ("#linux key1", &a, &b);
+	joinlist_free (a, b);
+
+	joinlist_split ("#linux,#abc key1,key2", &a, &b);
+	joinlist_free (a, b);
+
+	joinlist_split ("#linux,#abc,#three key1,key2,key3", &a, &b);
+	joinlist_free (a, b);
+
+	joinlist_split ("#linux,#abc,#three ,,key3", &a, &b);
+	joinlist_free (a, b);
+
+	joinlist_split ("#linux,#abc,#three ,key2", &a, &b);
+	joinlist_free (a, b);
+
+	joinlist_split ("#linux,#abc,#three key1", &a, &b);
+	printf("%s\n", joinlist_merge (a, b));
+	joinlist_free (a, b);
+}
+
 	while (list)
 	{
 		net = list->data;
@@ -1096,3 +1131,148 @@ servlist_save (void)
 	fclose (fp);
 	return TRUE;
 }
+
+static void
+joinlist_free1 (GSList *list)
+{
+	GSList *head = list;
+
+	for (; list; list = list->next)
+		g_free (list->data);
+	g_slist_free (head);
+}
+
+void
+joinlist_free (GSList *channels, GSList *keys)
+{
+	joinlist_free1 (channels);
+	joinlist_free1 (keys);
+}
+
+gboolean
+joinlist_is_in_list (server *serv, char *channel)
+{
+	GSList *channels, *keys;
+	GSList *list;
+
+	if (!serv->network || !((ircnet *)serv->network)->autojoin)
+		return FALSE;
+
+	joinlist_split (((ircnet *)serv->network)->autojoin, &channels, &keys);
+
+	for (list = channels; list; list = list->next)
+	{
+		if (serv->p_cmp (list->data, channel) == 0)
+			return TRUE;
+	}
+
+	joinlist_free (channels, keys);
+
+	return FALSE;
+}
+
+gchar *
+joinlist_merge (GSList *channels, GSList *keys)
+{
+	GString *out = g_string_new (NULL);
+
+	for (; channels; channels = channels->next)
+	{
+		g_string_append (out, channels->data);
+
+		if (channels->next)
+			g_string_append_c (out, ',');
+	}
+
+	g_string_append_c (out, ' ');
+
+	for (; keys; keys = keys->next)
+	{
+		if (keys->data)
+			g_string_append (out, keys->data);
+
+		if (keys->next)
+			g_string_append_c (out, ',');
+	}
+
+	return g_string_free (out, FALSE);
+}
+
+void
+joinlist_split (char *autojoin, GSList **channels, GSList **keys)
+{
+	char *parta, *partb;
+	char *chan, *key;
+	int len;
+
+	*channels = NULL;
+	*keys = NULL;
+
+	/* after the first space, the keys begin */
+	parta = autojoin;
+	partb = strchr (autojoin, ' ');
+	if (partb)
+		partb++;
+
+	while (1)
+	{
+		chan = parta;
+		key = partb;
+
+		if (1)
+		{
+			while (parta[0] != 0 && parta[0] != ',' && parta[0] != ' ')
+			{
+				parta++;
+			}
+		}
+
+		if (partb)
+		{
+			while (partb[0] != 0 && partb[0] != ',' && partb[0] != ' ')
+			{
+				partb++;
+			}
+		}
+
+		len = parta - chan;
+		if (len < 1)
+			break;
+		*channels = g_slist_append (*channels, g_strndup (chan, len));
+
+		len = partb - key;
+		*keys = g_slist_append (*keys, len ? g_strndup (key, len) : NULL);
+
+		if (parta[0] == ' ' || parta[0] == 0)
+			break;
+		parta++;
+
+		if (partb)
+		{
+			if (partb[0] == 0 || partb[0] == ' ')
+				partb = NULL;	/* no more keys, but maybe more channels? */
+			else
+				partb++;
+		}
+	}
+
+#if 1
+	GSList *lista, *listb;
+	int i;
+
+	printf("-----\n");
+	i = 0;
+	lista = *channels;
+	listb = *keys;
+	while (lista)
+	{
+		printf("%d. |%s| |%s|\n", i, lista->data, listb->data);
+		i++;
+		lista = lista->next;
+		listb = listb->next;
+	}
+	printf("-----\n\n");
+#endif
+}
+
+

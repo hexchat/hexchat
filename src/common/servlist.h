@@ -53,4 +53,9 @@ void servlist_server_remove (ircnet *net, ircserver *serv);
 ircserver *servlist_server_add (ircnet *net, char *name);
 ircserver *servlist_server_find (ircnet *net, char *name, int *pos);
 
+void joinlist_split (char *autojoin, GSList **channels, GSList **keys);
+gboolean joinlist_is_in_list (server *serv, char *channel);
+void joinlist_free (GSList *channels, GSList *keys);
+gchar *joinlist_merge (GSList *channels, GSList *keys);
+
 #endif

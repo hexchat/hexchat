@@ -138,6 +138,7 @@ notify_treeview_new (GtkWidget *box)
 	                             STATUS_COLUMN, _("Status"),
 	                             SERVER_COLUMN, _("Network"),
 	                             SEEN_COLUMN, _("Last Seen"), -1);
+	gtk_tree_view_column_set_expand (gtk_tree_view_get_column (GTK_TREE_VIEW (view), 0), TRUE);
 
 	for (col_id=0; (col = gtk_tree_view_get_column (GTK_TREE_VIEW (view), col_id));
 	     col_id++)

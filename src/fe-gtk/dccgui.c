@@ -988,13 +988,15 @@ fe_dcc_open_chat_win (int passive)
 										 G_TYPE_STRING, G_TYPE_STRING, G_TYPE_STRING,
 										 G_TYPE_POINTER, GDK_TYPE_COLOR);
 	view = gtkutil_treeview_new (vbox, GTK_TREE_MODEL (store), NULL, -1);
-	gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (view), TRUE);
 
 	dcc_add_column (view, CCOL_STATUS, CCOL_COLOR, _("Status"), FALSE);
 	dcc_add_column (view, CCOL_NICK,   CCOL_COLOR, _("Nick"), FALSE);
 	dcc_add_column (view, CCOL_RECV,   CCOL_COLOR, _("Recv"), TRUE);
 	dcc_add_column (view, CCOL_SENT,   CCOL_COLOR, _("Sent"), TRUE);
 	dcc_add_column (view, CCOL_START,  CCOL_COLOR, _("Start Time"), FALSE);
+
+	gtk_tree_view_column_set_expand (gtk_tree_view_get_column (GTK_TREE_VIEW (view), 1), TRUE);
+	gtk_tree_view_set_rules_hint (GTK_TREE_VIEW (view), TRUE);
 
 	dcccwin.list = view;
 	dcccwin.store = store;
