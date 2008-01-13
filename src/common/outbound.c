@@ -2436,11 +2436,38 @@ cmd_list (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	return TRUE;
 }
 
+gboolean
+load_perform_file (session *sess, char *file)
+{
+	char tbuf[1024 + 4];
+	char *nl;
+	FILE *fp;
+
+	fp = xchat_fopen_file (file, "r", XOF_FULLPATH);
+	if (!fp)
+		return FALSE;
+
+	tbuf[1024] = 0;
+	while (fgets (tbuf, 1024, fp))
+	{
+		nl = strchr (tbuf, '\n');
+		if (nl == tbuf) /* skip empty commands */
+			continue;
+		if (nl)
+			*nl = 0;
+		if (tbuf[0] == prefs.cmdchar[0])
+			handle_command (sess, tbuf + 1, TRUE);
+		else
+			handle_command (sess, tbuf, TRUE);
+	}
+	fclose (fp);
+	return TRUE;
+}
+
 static int
 cmd_load (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
-	FILE *fp;
-	char *error, *arg, *nl, *file;
+	char *error, *arg, *file;
 	int len;
 
 	if (!word[2][0])
@@ -2449,30 +2476,12 @@ cmd_load (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	if (strcmp (word[2], "-e") == 0)
 	{
 		file = expand_homedir (word[3]);
-		fp = xchat_fopen_file (file, "r", XOF_FULLPATH);
-		if (!fp)
+		if (!load_perform_file (sess, file))
 		{
 			PrintTextf (sess, _("Cannot access %s\n"), file);
 			PrintText (sess, errorstring (errno));
-			free (file);
-			return TRUE;
 		}
 		free (file);
-
-		tbuf[1024] = 0;
-		while (fgets (tbuf, 1024, fp))
-		{
-			nl = strchr (tbuf, '\n');
-			if (nl == tbuf) /* skip empty commands */
-				continue;
-			if (nl)
-				*nl = 0;
-			if (tbuf[0] == prefs.cmdchar[0])
-				handle_command (sess, tbuf + 1, TRUE);
-			else
-				handle_command (sess, tbuf, TRUE);
-		}
-		fclose (fp);
 		return TRUE;
 	}
 
