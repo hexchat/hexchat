@@ -36,6 +36,26 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Added command line argument --command=COMMAND which can be used in
    conjuction with --existing (E.K.L.). This sends any xchat command to an
    existing (running) client.
+ - The Alerts settings now accept wildcards, instead of partitial string match
+   [1807563].
+ - Changing away status during reconnect/disconnect will now remember it.
+ - You can now change your Away/Back status (all networks) in tray menu. 
+ - Favorite Channels / Auto-Join-List management:
+   * Network List window now has a "..." button to edit the auto-join-list in
+     a more friendly way.
+   * Channel and Tab context menus now have a Add/Remove function.
+   * 
+   * 
+   * Previous limit of 300 bytes has been overcome. Now up to 2 KB worth
+     of channels/keys can be joined and it will be automatically split into
+     muliple lines, if necessary.
+   * 
+ - 'hostname:port' syntax is now accepted, if it's not an ipv6 address.
+ - The Userlist menu now has icons.
+ - ~/.xchat2/startup.txt is now loaded on launch (like /LOAD -e).
+ - The lag-o-meter now has a full scale of 1.0 seconds.
+ - libnotify is now opened directly instead of using 'notify-send' to open
+   tray/balloon alerts.
  - 
  - 
  - 
