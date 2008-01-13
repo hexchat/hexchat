@@ -672,7 +672,7 @@ fe_set_lag (server *serv, int lag)
 		lag = (nowtim - serv->lag_sent) / 100000;
 	}
 
-	per = (double)((double)lag / (double)40);
+	per = (double)((double)lag / (double)10);
 	if (per > 1.0)
 		per = 1.0;
 
