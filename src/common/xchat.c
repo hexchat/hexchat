@@ -743,9 +743,9 @@ xchat_init (void)
 	ignore_load ();
 
 	snprintf (buf, sizeof (buf),
-		"NAME %s\n"						"CMD query %%s\n\n"\
-		"NAME %s\n"						"CMD send %%s\n\n"\
-		"NAME %s\n"						"CMD whois %%s %%s\n\n"\
+		"NAME %s%s\n"						"CMD query %%s\n\n"\
+		"NAME %s%s\n"						"CMD send %%s\n\n"\
+		"NAME %s%s\n"						"CMD whois %%s %%s\n\n"\
 
 		"NAME SUB\n"					"CMD %s\n\n"\
 			"NAME %s\n"					"CMD op %%a\n\n"\
@@ -770,10 +770,10 @@ xchat_init (void)
 			"NAME ENDSUB\n"			"CMD \n\n"\
 		"NAME ENDSUB\n"				"CMD \n\n",
 
-		_("Open Dialog Window"),
-		_("Send a File"),
-		_("User Info (WHOIS)"),
-		_("Operator Actions"),
+		_("_Open Dialog Window"), "~gtk-chat~",
+		_("_Send a File"), "~gtk-floppy~",
+		_("_User Info (WhoIs)"), "~gtk-info~",
+		_("O_perator Actions"),
 
 		_("Give Ops"),
 		_("Take Ops"),

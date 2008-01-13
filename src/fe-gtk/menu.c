@@ -266,6 +266,7 @@ menu_quick_item (char *cmd, char *label, GtkWidget * menu, int flags,
 					  gpointer userdata, char *icon)
 {
 	GtkWidget *img, *item;
+	char *path;
 
 	if (!label)
 		item = gtk_menu_item_new ();
@@ -277,15 +278,22 @@ menu_quick_item (char *cmd, char *label, GtkWidget * menu, int flags,
 				item = gtk_image_menu_item_new_with_markup (label);
 			else*/
 				item = gtk_image_menu_item_new_with_mnemonic (label);
-			img = gtk_image_new_from_file (icon);
-			if (img)
-				gtk_image_menu_item_set_image ((GtkImageMenuItem *)item, img);
+			img = NULL;
+			if (access (icon, R_OK) == 0)	/* try fullpath */
+				img = gtk_image_new_from_file (icon);
 			else
 			{
-				img = gtk_image_new_from_stock (icon, GTK_ICON_SIZE_MENU);
-				if (img)
-					gtk_image_menu_item_set_image ((GtkImageMenuItem *)item, img);
+				/* try relative to ~/.xchat2 */
+				path = g_strdup_printf ("%s/%s", get_xdir_fs (), icon);
+				if (access (path, R_OK) == 0)
+					img = gtk_image_new_from_file (path);
+				else
+					img = gtk_image_new_from_stock (icon, GTK_ICON_SIZE_MENU);
+				g_free (path);
 			}
+
+			if (img)
+				gtk_image_menu_item_set_image ((GtkImageMenuItem *)item, img);
 		}
 		else
 		{
@@ -421,6 +429,46 @@ is_in_path (char *cmd)
 	return 0;
 }
 
+/* syntax: "LABEL~ICON~STUFF~ADDED~LATER~" */
+
+static void
+menu_extract_icon (char *name, char **label, char **icon)
+{
+	char *p = name;
+	char *start = NULL;
+	char *end = NULL;
+
+	while (*p)
+	{
+		if (*p == '~')
+		{
+			/* escape \~ */
+			if (p == name || p[-1] != '\\')
+			{
+				if (!start)
+					start = p + 1;
+				else if (!end)
+					end = p + 1;
+			}
+		}
+		p++;
+	}
+
+	if (!end)
+		end = p;
+
+	if (start && start != end)
+	{
+		*label = g_strndup (name, (start - name) - 1);
+		*icon = g_strndup (start, (end - start) - 1);
+	}
+	else
+	{
+		*label = g_strdup (name);
+		*icon = NULL;
+	}
+}
+
 /* append items to "menu" using the (struct popup*) list provided */
 
 void
@@ -463,15 +511,22 @@ menu_create (GtkWidget *menu, GSList *list, char *target, int check_path)
 
 		} else
 		{
+			char *icon, *label;
+
+			menu_extract_icon (pop->name, &label, &icon);
+
 			if (!check_path || pop->cmd[0] != '!')
 			{
-				menu_quick_item (pop->cmd, pop->name, tempmenu, 0, target, 0);
+				menu_quick_item (pop->cmd, label, tempmenu, 0, target, icon);
 			/* check if the program is in path, if not, leave it out! */
 			} else if (is_in_path (pop->cmd))
 			{
 				childcount++;
-				menu_quick_item (pop->cmd, pop->name, tempmenu, 0, target, 0);
+				menu_quick_item (pop->cmd, label, tempmenu, 0, target, icon);
 			}
+
+			g_free (label);
+			g_free (icon);
 		}
 
 		list = list->next;
@@ -1434,12 +1489,13 @@ static struct mymenu mymenu[] = {
 	{N_("_Server"), 0, 0, M_NEWMENU, 0, 0, 1},
 	{N_("_Disconnect"), menu_disconnect, GTK_STOCK_DISCONNECT, M_MENUSTOCK, MENU_ID_DISCONNECT, 0, 1},
 	{N_("_Reconnect"), menu_reconnect, GTK_STOCK_CONNECT, M_MENUSTOCK, MENU_ID_RECONNECT, 0, 1},
-	{N_("Join Channel..."), menu_join, GTK_STOCK_JUMP_TO, M_MENUSTOCK, MENU_ID_JOIN, 0, 1},
+	{N_("Join a Channel..."), menu_join, GTK_STOCK_JUMP_TO, M_MENUSTOCK, MENU_ID_JOIN, 0, 1},
+	{N_("List of Channels..."), menu_chanlist, GTK_STOCK_INDEX, M_MENUITEM, 0, 0, 1},
 	{0, 0, 0, M_SEP, 0, 0, 0},
-#define AWAY_OFFSET (38)
+#define AWAY_OFFSET (39)
 	{N_("Marked Away"), menu_away, 0, M_MENUTOG, MENU_ID_AWAY, 0, 1, GDK_a},
 
-	{N_("_Usermenu"), 0, 0, M_NEWMENU, MENU_ID_USERMENU, 0, 1},	/* 39 */
+	{N_("_Usermenu"), 0, 0, M_NEWMENU, MENU_ID_USERMENU, 0, 1},	/* 40 */
 
 	{N_("S_ettings"), 0, 0, M_NEWMENU, 0, 0, 1},
 	{N_("_Preferences"), menu_settings, GTK_STOCK_PREFERENCES, M_MENUSTOCK, 0, 0, 1},
@@ -1454,16 +1510,15 @@ static struct mymenu mymenu[] = {
 		{N_("User Commands..."), menu_usercommands, 0, M_MENUITEM, 0, 0, 1},
 		{N_("Userlist Buttons..."), menu_ulbuttons, 0, M_MENUITEM, 0, 0, 1},
 		{N_("Userlist Popup..."), menu_ulpopup, 0, M_MENUITEM, 0, 0, 1},
-		{0, 0, 0, M_END, 0, 0, 0},		/* 52 */
+		{0, 0, 0, M_END, 0, 0, 0},		/* 53 */
 
 	{N_("_Window"), 0, 0, M_NEWMENU, 0, 0, 1},
 	{N_("Ban List..."), menu_banlist, 0, M_MENUITEM, 0, 0, 1},
-	{N_("Channel List..."), menu_chanlist, 0, M_MENUITEM, 0, 0, 1},
 	{N_("Character Chart..."), ascii_open, 0, M_MENUITEM, 0, 0, 1},
 	{N_("Direct Chat..."), menu_dcc_chat_win, 0, M_MENUITEM, 0, 0, 1},
 	{N_("File Transfers..."), menu_dcc_win, 0, M_MENUITEM, 0, 0, 1},
+	{N_("Friends List..."), notify_opengui, 0, M_MENUITEM, 0, 0, 1},
 	{N_("Ignore List..."), ignore_gui_open, 0, M_MENUITEM, 0, 0, 1},
-	{N_("Notify List..."), notify_opengui, 0, M_MENUITEM, 0, 0, 1},
 	{N_("Plugins and Scripts..."), menu_pluginlist, 0, M_MENUITEM, 0, 0, 1},
 	{N_("Raw Log..."), menu_rawlog, 0, M_MENUITEM, 0, 0, 1},	/* 62 */
 	{N_("URL Grabber..."), url_opengui, 0, M_MENUITEM, 0, 0, 1},

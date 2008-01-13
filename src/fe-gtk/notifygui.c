@@ -134,7 +134,7 @@ notify_treeview_new (GtkWidget *box)
 
 	view = gtkutil_treeview_new (box, GTK_TREE_MODEL (store),
 	                             notify_treecell_property_mapper,
-	                             USER_COLUMN, _("User"),
+	                             USER_COLUMN, _("Name"),
 	                             STATUS_COLUMN, _("Status"),
 	                             SERVER_COLUMN, _("Network"),
 	                             SEEN_COLUMN, _("Last Seen"), -1);
@@ -405,7 +405,7 @@ notify_opengui (void)
 	}
 
 	notify_window =
-		mg_create_generic_tab ("Notify", _("XChat: Notify List"), FALSE, TRUE,
+		mg_create_generic_tab ("Notify", _("XChat: Friends List"), FALSE, TRUE,
 		                       notify_closegui, NULL, 400, 250, &vbox, 0);
 
 	view = notify_treeview_new (vbox);
