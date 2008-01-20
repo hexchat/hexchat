@@ -2,7 +2,7 @@ use strict;
 use warnings;
 
 Xchat::register(
-	"Tab Completion", "1.0104", "Alternative tab completion behavior"
+	"Tab Completion", "1.0200", "Alternative tab completion behavior"
 );
 Xchat::hook_print( "Key Press", \&complete );
 Xchat::hook_print( "Close Context", \&close_context );
@@ -58,7 +58,7 @@ sub complete {
 	# trim spaces from the end of $left to avoid grabbing the wrong word
 	# this is mainly needed for completion at the very beginning where a space
 	# is added after the completion
-	$left =~ s/(\s+)$//;
+	$left =~ s/\s+$//;
 
 	# always add one to the index because
 	# 1) if a space is found we want the position after it
@@ -66,8 +66,17 @@ sub complete {
 	my $word_start = rindex( $left, " " ) + 1;
 	my $word = substr( $left, $word_start );
 	$left = substr( $left, 0, -length $word );
-	my $command_char = Xchat::get_prefs( "input_command_char" );
 
+	if( $cursor_pos == length $input && $input =~ /\W$/
+		&& $cursor_pos != $completions->{pos} ) {
+		$word_start = $cursor_pos;
+		$left = $input;
+		$length = length $length;
+		$right = "";
+		$word = "";
+	}
+
+	my $command_char = Xchat::get_prefs( "input_command_char" );
 	# ignore channels and commands
 	if( $word !~ m{^[${command_char}&#]} ) {
 		# this is going to be the "completed" word
@@ -88,6 +97,7 @@ sub complete {
 			# fix $word so { equals [, ] equals }, \ equals |
 			# and escape regex metacharacters
 			$word =~ s/($escapes)/$escape_map{$1}/g;
+
 			$completions->{nicks} = [
 				map { $_->{nick} }
 					sort {
@@ -98,10 +108,10 @@ sub complete {
 						} else {
 							return $b->{lasttalk} <=> $a->{lasttalk};
 						}
-					}
-						grep { $_->{nick} =~ /^$word/i } Xchat::get_list( "users" )
+					} grep { $_->{nick} =~ /^$word/i } Xchat::get_list( "users" )
 			];
 			$completions->{index} = 0;
+
 			$completed = $completions->{nicks}[ $completions->{index} ];
 		}
 		
@@ -124,8 +134,6 @@ sub complete {
 		}
 		
 		if( $completed ) {
-			# move the cursor back to the front
-			Xchat::command( "setcursor -$cursor_pos" );
 			
 			if( $word_start == 0 && !$partial ) {
 				# at the start of the line append completion suffix
@@ -136,18 +144,23 @@ sub complete {
 				$completions->{pos} = length( "$left$completed" );
 			}
 			
-			Xchat::command( "setcursor +$completions->{pos}" );
+			Xchat::command( "setcursor $completions->{pos}" );
+		}
 # debugging stuff
 #       local $, = " ";
-#       Xchat::print [ qq{[input:$input]},
-#                      qq{[cursor:$cursor_pos]},
-#                      qq{[start:$word_start]},
-#                      qq{[length:$length]},
-#                      qq{[left:$left]},
-#                      qq{[word:$word]}, qq{[right:$right]},
-#                      qq{[completed:$completed]},
-#                    ];
-		}
+#		 my $input_length = length $input;
+#		Xchat::print [
+#			qq{[input:$input]},
+#			qq{[input_length:$input_length]},				
+#			qq{[cursor:$cursor_pos]},
+#			qq{[start:$word_start]},
+#			qq{[length:$length]},
+#			qq{[left:$left]},
+#			qq{[word:$word]}, qq{[right:$right]},
+#			qq{[completed:$completed]},
+#			qq{[pos:$completions->{pos}]},
+#		];
+
 		return Xchat::EAT_ALL;
 	} else {
 		return Xchat::EAT_NONE;
