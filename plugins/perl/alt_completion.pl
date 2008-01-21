@@ -67,18 +67,18 @@ sub complete {
 	my $word = substr( $left, $word_start );
 	$left = substr( $left, 0, -length $word );
 
-	if( $cursor_pos == length $input && $input =~ /\W$/
-		&& $cursor_pos != $completions->{pos} ) {
-		$word_start = $cursor_pos;
-		$left = $input;
-		$length = length $length;
-		$right = "";
-		$word = "";
-	}
-
 	my $command_char = Xchat::get_prefs( "input_command_char" );
 	# ignore channels and commands
 	if( $word !~ m{^[${command_char}&#]} ) {
+		if( $cursor_pos == length $input && $input =~ /\W$/
+			&& $cursor_pos != $completions->{pos} ) {
+			$word_start = $cursor_pos;
+			$left = $input;
+			$length = length $length;
+			$right = "";
+			$word = "";
+		}
+
 		# this is going to be the "completed" word
 		my $completed;
 		# used to indicate parital completions so a : isn't added
