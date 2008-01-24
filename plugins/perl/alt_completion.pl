@@ -9,10 +9,10 @@ Xchat::hook_print( "Close Context", \&close_context );
 
 my %completions;
 my %escape_map = (
-	'[' => qr![\\\[{]!,
-	'{' => qr![\\\[{]!,
-	'}' => qr![\\\]}]!,
-	']' => qr![\\\]}]!,
+	'[' => qr![\[{]!,
+	'{' => qr![\[{]!,
+	'}' => qr![\]}]!,
+	']' => qr![\]}]!,
 	'\\' => qr![\\\|]!,
 	'|' => qr![\\\|]!,
 	'.' => qr!\.!,
@@ -70,7 +70,7 @@ sub complete {
 	my $command_char = Xchat::get_prefs( "input_command_char" );
 	# ignore channels and commands
 	if( $word !~ m{^[${command_char}&#]} ) {
-		if( $cursor_pos == length $input && $input =~ /\W$/
+		if( $cursor_pos == length $input && $input =~ /(?<!\w|$escapes)$/
 			&& $cursor_pos != $completions->{pos} ) {
 			$word_start = $cursor_pos;
 			$left = $input;
