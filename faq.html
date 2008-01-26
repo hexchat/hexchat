@@ -1,6 +1,4 @@
-<!DOCTYPE html
-PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"DTD/xhtml1-transitional.dtd">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head>
 <title>XCHAT FAQ</title>
 <style type="text/css">
@@ -27,77 +25,77 @@ p { margin: 3% }
 <h2>1. Section One: Compiling and Installing.</h2>
 <p>
 <a href="#q11">1. I get this error: /bin/sh: no: command not found</a>
-<br/><br/>
+<br><br>
 <a href="#q12">2. How do I compile X-Chat on my Sun OS system?</a>
-<br/><br/>
+<br><br>
 </p>
 
 <h2>2. Section Two: Using X-Chat.</h2>
 <p>
 <a href="#q21">1. How do I enable identd in X-Chat? (How do I get rid of the ~ in front of my username?)</a>
-<br/><br/>
+<br><br>
 <a href="#q22">2. How do I auto join more than one channel with keys?</a>
-<br/><br/>
+<br><br>
 <a href="#q23">3. How do I autoconnect and join a channel when X-Chat loads?</a>
-<br/><br/>
+<br><br>
 <a href="#q24">4. How do I cut and paste in X-Chat?</a>
-<br/><br/>
+<br><br>
 <a href="#q25">5. How do I connect through a proxy?</a>
-<br/><br/>
+<br><br>
 <a href="#q26">6. How do I show @ and + in front of nicknames that are Op and Voice when they talk?</a>
-<br/><br/>
+<br><br>
 <a href="#q27">7. How do I change the Op and Voice userlist icons and Tree View icons?</a>
-<br/><br/>
+<br><br>
 <a href="#q28">8. How do I set different ban types?</a>
-<br/><br/>
+<br><br>
 <a href="#q29">9. Why can't I see accented-letters/umlauts/upper-ascii-chars in X-Chat?</a>
-<br/><br/>
+<br><br>
 <a href="#q210">10. Why does the timestamp overlap some nicknames?</a>
-<br/><br/>
+<br><br>
 <a href="#q211">11. How do I turn on Conference mode where I will not see join or part messages?</a>
-<br/><br/>
+<br><br>
 <a href="#q212">12. How can I run the /dccserver command?</a>
-<br/><br/>
+<br><br>
 <a href="#q213">13. Why doesn't DCC send work behind a router (IPNat/ADSL)?</a>
-<br/><br/>
+<br><br>
 <a href="#q214">14. How do I execute multiple commands in one line?</a>
-<br/><br/>
+<br><br>
 <a href="#q215">15. How do I enable Emacs key bindings in XChat?</a>
-<br/><br/>
+<br><br>
 <a href="#q216">16. I get this error: "Unknown file type abc.yz. Maybe you need to install the Perl or Python plugin?"</a>
-<br/><br/>
+<br><br>
 <a href="#q217">17. How do I play sound files on certain events?</a>
-<br/><br/>
+<br><br>
 <a href="#q218">18. How do I auto-load scripts at startup?</a>
-<br/><br/>
+<br><br>
 <a href="#q219">19. How do I minimize X-Chat to the System Tray (Notification Area)?</a>
-<br/><br/>
+<br><br>
 <a href="#q220">20. Can I select and copy text with the time stamps?</a>
-<br/><br/>
+<br><br>
 <a href="#q221">21. What's the deal with opening URLs in XChat on Linux/Unix?</a>
-<br/><br/>
+<br><br>
 <a href="#q222">22. Where are the log files saved to?</a>
-<br/><br/>
+<br><br>
 <a href="#q223">23. How do I rotate log files every so often?</a>
-<br/><br/>
+<br><br>
 <a href="#q224">24. How do I enable graphical smilies (emoticons)?</a>
-<br/><br/>
+<br><br>
 </p>
 
 <h2>3. Section Three: Contributions, Development and Bugs.</h2>
 <p>
 <a href="#q31">1. Why does X-Chat leak so much memory?</a>
-<br/><br/>
+<br><br>
 <a href="#q32">2. My copy of X-Chat crashes, what can I do?</a>
-<br/><br/>
+<br><br>
 <a href="#q33">3. Can I write a new language translation for X-Chat?</a>
 </p>
 
-<br/><br/>
+<br><br>
 
 <h2>1. Section One: Compiling and Installing.</h2>
 
-<br/><h3><a name="q11">1. I get this error: /bin/sh: no: command not found</a></h3>
+<br><h3><a name="q11">1. I get this error: /bin/sh: no: command not found</a></h3>
 <p>
 If you get an error something like:
 </p>
@@ -122,17 +120,17 @@ It means you don't have GNU gettext installed. There are two solutions:
 language support and all menus and GUI will be in English only.</li>
 </ul>
 
-<br/><h3><a name="q12">2. How do I compile X-Chat on my Sun OS system?</a></h3>
+<br><h3><a name="q12">2. How do I compile X-Chat on my Sun OS system?</a></h3>
 <p>
    X-Chat uses GNU gettext which in turn requires gmake, either install that
    and or use ./configure --disable-nls with Sun's own make.
 </p>
 
-<br/><h2>2. Section Two: Using X-Chat.</h2>
+<br><h2>2. Section Two: Using X-Chat.</h2>
 
-<br/><h3><a name="q21">1. How do I enable identd in X-Chat?</a></h3>
+<br><h3><a name="q21">1. How do I enable identd in X-Chat?</a></h3>
 <p>
-<u>UNIX:</u><br/>
+<u>UNIX:</u><br>
     Identd isn't actually apart of X-Chat. You will need to download and install 
     your own ident server. Most distributions, including Fedora, come with an 
     ident server program called oidentd. Make sure it is enabled in
@@ -140,12 +138,12 @@ language support and all menus and GUI will be in English only.</li>
 
     As an alternative, you can try this experimental identd server: <a href="http://xchat.org/auth/">xchat_auth</a>
 
-<br/><br/><u>WINDOWS:</u><br/>
+<br><br><u>WINDOWS:</u><br>
     The win32 version of X-Chat comes with a built-in identd server. It is
     enabled by default, but can be disabled with <i>/set identd 0</i>.
 </p>
 
-<br/><h3><a name="q22">2. How do I auto join more than one channel with keys?</a></h3>
+<br><h3><a name="q22">2. How do I auto join more than one channel with keys?</a></h3>
 <p>
    In the Server list's channel column enter multiple channels and separate 
    them by commas, eg:  "#linux,#warez,#chat". Do not put spaces between the
@@ -157,27 +155,27 @@ language support and all menus and GUI will be in English only.</li>
    a key of "secret", you would enter: "#linux,#abc,#talk secret".
 </p>
 
-<br/><h3><a name="q23">3. How do I autoconnect and join a channel when X-Chat loads?</a></h3>
+<br><h3><a name="q23">3. How do I autoconnect and join a channel when X-Chat loads?</a></h3>
 <p>
 In the Server list, select the Network you want to auto-connect to, click Edit
 and turn ON the "Auto connect to this network at startup" checkbox.
 </p>
 
-<br/><h3><a name="q24">4. How do I cut and paste in X-Chat?</a></h3>
+<br><h3><a name="q24">4. How do I cut and paste in X-Chat?</a></h3>
 <p>
 It's exactly the same as any other X application. You simply mark the text
 you want, and then press middle mouse button to paste (if you only have a
 2 button mouse, press left and right buttons at once).
 </p>
 
-<br/><h3><a name="q25">5. How do I connect through a proxy?</a></h3>
+<br><h3><a name="q25">5. How do I connect through a proxy?</a></h3>
 <p>
 Go to the menus, Settings -> Preferences -> Network Setup and fill in the requested
 information there. Authentication (using a username and password) is
 only supported for HTTP and Socks5.
 </p>
 
-<br/><h3><a name="q26">6. How do I show @ and + in front of nicknames that are Op and Voice when they talk?</a></h3>
+<br><h3><a name="q26">6. How do I show @ and + in front of nicknames that are Op and Voice when they talk?</a></h3>
 <p>
 To display @ and + characters next to nicknames as they talk, do the following:
 </p>
@@ -187,37 +185,53 @@ In the menus, open up Settings -> Advanced -> Text Events. Find the
 print the user's mode-character (e.g. @ or +). For example, you might want
 to change the default:
 
-<br/><br/>%C18%H&lt;%H$4$1%H>%H%O$t$2<br/><br/>To:
-<br/><br/>%C18%H&lt;%H$4<b>$3</b>$1%H>%H%O$t$2
-<br/><br/>Don't forget to press Enter, so the changes take effect in the
+<br><br>%C18%H&lt;%H$4$1%H>%H%O$t$2<br><br>To:
+<br><br>%C18%H&lt;%H$4<b>$3</b>$1%H>%H%O$t$2
+<br><br>Don't forget to press Enter, so the changes take effect in the
 list at the top of the window.
 </p>
 
-<br/><h3><a name="q27">7. How do I change the Op and Voice userlist icons and Tree View icons?</a></h3>
+<br><h3><a name="q27">7. How do I change the Op and Voice userlist icons and Tree View icons?</a></h3>
 <p>
 <u>Unix/Linux</u>
-<br/>The default icons are hard coded (compiled) in. You can override them by creating
+<br>The default icons are hard coded (compiled) in. You can override them by creating
 some PNG files in ${PREFIX}/share/xchat. ${PREFIX} is usually /usr, so that
 would translate to /usr/share/xchat. If you compiled from source tarball without
 specifying a prefix, it will be /usr/local instead.
-<br/><br/><b>Userlist icons</b>: Call the files op.png, hop.png, voice.png, red.png and purple.png. Red and Purple are used for Channel Owner and Founder. They will be loaded at the next startup.
-<br/><br/><b>Tree View icons</b>: Call the files channel.png, dialog.png, server.png and util.png. Type <b>/set tab_icons 1</b> to enable them and then restart XChat.
-<br/><br/>
-<u>XChat 2.6.0+ on Windows</u>
-<br/>On Windows the images will need to be ICO files:<br/>
-C:\Program Files\XChat\Icons\op.ico<br/>
-C:\Program Files\XChat\Icons\hop.ico<br/>
-C:\Program Files\XChat\Icons\voice.ico<br/>
-C:\Program Files\XChat\Icons\red.ico<br/>
-C:\Program Files\XChat\Icons\purple.ico
-<small><br/><br/></small>
-C:\Program Files\XChat\Icons\server.ico<br/>
-C:\Program Files\XChat\Icons\channel.ico<br/>
-C:\Program Files\XChat\Icons\dialog.ico<br/>
-C:\Program Files\XChat\Icons\util.ico<br/>
+<br>
+<br>
+<u>Windows</u>
+<br>Your own custom icons can be plaed in C:\Program Files\Icons. Image format
+may be PNG or ICO. PNG support on Windows 2000 may require installing GDI+, but it's
+standard on XP or newer.
 </p>
 
-<br/><h3><a name="q28">8. How do I set different ban types?</a></h3>
+<blockquote>
+<table border="1" cellpadding="3" rules="all">
+<tr bgcolor="#dddddd"><td>Name</td><td>Description</td></tr>
+<tr><td>op.png</td><td>Userlist: Op</td></tr>
+<tr><td>hop.png</td><td>Userlist: Half-Op</td></tr>
+<tr><td>voice.png</td><td>Userlist: Voice</td></tr>
+<tr><td>red.png</td><td>Userlist: Owner</td></tr>
+<tr><td>purple.png</td><td>Userlist: Founder</td></tr>
+<tr><td></td><td></td></tr>
+<tr><td>server.png</td><td>Tree: Server</td></tr>
+<tr><td>channel.png</td><td>Tree: Channel</td></tr>
+<tr><td>dialog.png</td><td>Tree: Dialog/Query</td></tr>
+<tr><td>util.png</td><td>Tree: Utility (Channel List, DCC etc)</td></tr>
+<tr><td></td><td></td></tr>
+<tr><td>message.png</td><td>Tray: Message</td></tr>
+<tr><td>highlight.png</td><td>Tray: Highlighted Message</td></tr>
+<tr><td>fileoffer.png</td><td>Tray: DCC</td></tr>
+<tr><td></td><td></td></tr>
+<tr><td>xchat.png</td><td>Main XChat icon</td></tr>
+</table>
+</blockquote>
+
+<br><b>Tree View icons</b>: Type <b>/set tab_icons 1</b> to enable them and then restart XChat.
+<br>
+
+<br><h3><a name="q28">8. How do I set different ban types?</a></h3>
 <p>
    Three ways:
 </p>
@@ -248,13 +262,13 @@ C:\Program Files\XChat\Icons\util.ico<br/>
 </li>
 </ul>
 
-<br/><h3><a name="q29">9. Why can't I see accented-letters/umlauts/upper-ascii-chars in X-Chat?</a></h3>
+<br><h3><a name="q29">9. Why can't I see accented-letters/umlauts/upper-ascii-chars in X-Chat?</a></h3>
 <p>
-Refer to <a href="http://xchat.org/encoding/">http://xchat.org/encoding/</a>.<br/>
+Refer to <a href="http://xchat.org/encoding/">http://xchat.org/encoding/</a>.<br>
 Note: Log files are always written in UTF-8/Unicode.
 </p>
 
-<br/><h3><a name="q210">10. Why does the timestamp overlap some nicknames?</a></h3>
+<br><h3><a name="q210">10. Why does the timestamp overlap some nicknames?</a></h3>
 <p>
 Some networks allow very long nicknames (up to 32 letters). It can be annoying to have
 the separator bar move too far to the right, just for one long nick. Therefore, it has
@@ -270,7 +284,7 @@ Once you adjust this setting high enough, overlapping timestamps and nicknames s
 not occur. The adjustment will not take effect immediately, a restart may be needed.
 </p>
 
-<br/><h3><a name="q211">11. How do I turn on Conference mode where I will not see join or part messages?</a></h3>
+<br><h3><a name="q211">11. How do I turn on Conference mode where I will not see join or part messages?</a></h3>
 <p>
 Right-click on the tab you want to change. In the submenu of the channel
 name, there's a toggle-item "Show join/part messages", simply turn this off.
@@ -278,18 +292,18 @@ name, there's a toggle-item "Show join/part messages", simply turn this off.
 <blockquote><pre>/set irc_conf_mode 1</pre></blockquote>
 <p>Then all channels you join after setting this will start with "Show join/part messages" turned off.</p>
 
-<br/><h3><a name="q212">12. How can I run the /dccserver command?</a></h3>
+<br><h3><a name="q212">12. How can I run the /dccserver command?</a></h3>
 <p>
 In short you can not do this (easily). This is a mIRC only proprietary feature
 that is quite nonstandard. There is no code for doing this, mainly because
 /dccserver runs on port 59 which in turn would require running X-Chat as
 root. Why do you need this anyway? Just use normal DCC.
-<br/><br/>
+<br><br>
 Unofficial unix <a href="http://dfx.at/xchat/">patches are available here</a>.
-<br/><br/><u><b>Update</b></u>: DCC Server feature has been added in the official Windows release 2.4.1b.
+<br><br><u><b>Update</b></u>: DCC Server feature has been added in the official Windows release 2.4.1b.
 </p>
 
-<br/><h3><a name="q213">13. Why doesn't DCC send work behind a router (IPNat/ADSL)?</a></h3>
+<br><h3><a name="q213">13. Why doesn't DCC send work behind a router (IPNat/ADSL)?</a></h3>
 <p>
    If you are behind a IP-NAT or ADSL router, you will most likely have
    an address like 192.168.0.1. This address is not usable on the Internet, and
@@ -313,7 +327,7 @@ Unofficial unix <a href="http://dfx.at/xchat/">patches are available here</a>.
 	your PC's address. You'll have to consult your router/modem's manual on how to do this.
 </p>
 
-<br/><h3><a name="q214">14. How do I execute multiple commands in one line?</a></h3>
+<br><h3><a name="q214">14. How do I execute multiple commands in one line?</a></h3>
 <p>
    There are three ways to do this:
 </p>
@@ -327,7 +341,7 @@ the UserCommand. It will be executed in the same order as it's written
 in the UserCommands GUI.</li>
 </ul>
 
-<br/><h3><a name="q215">15. How do I enable Emacs key bindings in XChat?</a></h3>
+<br><h3><a name="q215">15. How do I enable Emacs key bindings in XChat?</a></h3>
 <p>
 The standard Emacs key bindings, such as CTRL-w, CTRL-u etc, are supported by
 GTK+ 2.0, but normally disabled. If you run Gnome 2, you can re-enable them in
@@ -344,7 +358,7 @@ scope of this document. You might find some hints here:
 <a href="http://www.gtk.org/gtk-2.4.0-notes.html">GTK+ 2.4.0 release notes</a>.
 </p>
 
-<br/><h3><a name="q216">16. I get this error: "Unknown file type abc.yz. Maybe you need to install the Perl or Python plugin?"</a></h3>
+<br><h3><a name="q216">16. I get this error: "Unknown file type abc.yz. Maybe you need to install the Perl or Python plugin?"</a></h3>
 <p>
 If you get this error when trying to load a Perl or Python script, it means
 the plugin for running those scripts isn't loaded.
@@ -359,60 +373,60 @@ the plugin for running those scripts isn't loaded.
 <li>If you downloaded a binary package, maybe the packager decided to exclude the Perl or Python plugins.</li>
 </ul>
 
-<br/><h3><a name="q217">17. How do I play sound files on certain events?</a></h3>
+<br><h3><a name="q217">17. How do I play sound files on certain events?</a></h3>
 <p>
 In the menus, go to: Settings > Preferences > Sound.
 Select the event you want to make a sound on, then type in a
 sound filename (or use the Browse button).
 </p>
 
-<br/><h3><a name="q218">18. How do I auto-load scripts at startup?</a></h3>
+<br><h3><a name="q218">18. How do I auto-load scripts at startup?</a></h3>
 <p>
 You just have to place the scripts into XChat's data directory. XChat
 will auto-load scripts if they have the right extension .e.g If a filename
 ends in .pl, it will be loaded as a Perl script.
 This data directory is different on each platform:
-<br/><br/>
+<br><br>
 <u>Windows</u>
-<br/><br/>
+<br><br>
 It depends on your version of Windows and where it stores the
 <i><b>Application Data</b></i> folder. On Windows XP it is usually:
-<br/><br/>
+<br><br>
 C:\Documents and Settings\<i><b>username</b></i>\Application Data\X-Chat 2\
-<br/><b>or simply:</b>
-<br/>
+<br><b>or simply:</b>
+<br>
 C:\Program Files\XChat\Plugins\
-<br/><br/><br/>
+<br><br><br>
 <u>UNIX</u>
-<br/><br/>
+<br><br>
 ~/.xchat2/
 Where "~" represents your home directory i.e.: $HOME/.xchat2/
 </p>
 
-<br/><h3><a name="q219">19. How do I minimize X-Chat to the System Tray (Notification Area)?</a></h3>
+<br><h3><a name="q219">19. How do I minimize X-Chat to the System Tray (Notification Area)?</a></h3>
 <p>
 There are two plugins available that allow this:
-<br/>Unix: <a href="http://www.blight.tk/">SysTray Plugin</a>
-<br/>Windows: <a href="http://www.sinisterdevelopments.com/">xTray</a>
+<br>Unix: <a href="http://www.blight.tk/">SysTray Plugin</a>
+<br>Windows: <a href="http://www.sinisterdevelopments.com/">xTray</a>
 </p>
 <p>
 Note that XChat 2.8.0+ has its own tray feature, but you can disable it
 in <b>Settings &gt; Preferences &gt; Alerts</b> and still run these plugins, if you prefer.
 </p>
 
-<br/><h3><a name="q220">20. Can I select and copy text with the time stamps?</a></h3>
+<br><h3><a name="q220">20. Can I select and copy text with the time stamps?</a></h3>
 <p>
 Yes, but this requires at least XChat 2.6.3. Simply hold down SHIFT while marking
 the text and the time stamps will be included.
 </p>
 
-<br/><h3><a name="q221">21. What's the deal with opening URLs in XChat on Unix/Linux?</a></h3>
+<br><h3><a name="q221">21. What's the deal with opening URLs in XChat on Unix/Linux?</a></h3>
 <p>
 Right-clicking on a URL and selecting <i>Open Link in Browser</i> will open the link
 in your "preferred browser". In Gnome, your preferred browser can be changed in System > Preferences > More Preferences > Preferred Applications.
-<br/><br/>
+<br><br>
 <b><u>Notes for 2.8.0 or newer:</u></b>
-<br/><br/>
+<br><br>
 Everything should just work automatically without any changes from you. Here's how the current
 logic works:
 </p>
@@ -426,43 +440,43 @@ logic works:
 
 <p>
 <b><u>Notes for 2.6.8 or older:</u></b>
-<br/><br/>
+<br><br>
 If you're not using Gnome, e.g KDE or some other desktop environment, you're fresh out of luck!
-<br/><u>Note for Debian and Ubuntu</u>: Integration with Gnome is broken on this distro! Please set
+<br><u>Note for Debian and Ubuntu</u>: Integration with Gnome is broken on this distro! Please set
 <i>sensible-browser</i> instead. We have no control over what the Debian packagers do, so complain
 to them for this screw up. Example:
 <i>sudo update-alternatives --set x-www-browser /usr/bin/firefox</i>
 
-<br/><br/>
+<br><br>
 <b><u>More details</u></b>
-<br/><br/>
+<br><br>
 While holding down CTRL you can single left-click a URL to open it in your preferred browser. If you really want to change this to plain left-click you can type: <b>/set gui_url_mod 0</b>, provided you have XChat 2.6.6 or newer.
-<br/><br/>
+<br><br>
 You can also add more items to the right-click menu in XChat: <b>Settings &gt; Advanced &gt; URL Handlers</b>.
-<br/>For example, you could add an entry like <b>!firefox -a firefox -remote 'openURL(%s,new-tab)'</b>
-<br/>But this kind of messing around shouldn't be necessary, it just works automatically in Gnome, KDE and Windows with 2.8.0+!
+<br>For example, you could add an entry like <b>!firefox -a firefox -remote 'openURL(%s,new-tab)'</b>
+<br>But this kind of messing around shouldn't be necessary, it just works automatically in Gnome, KDE and Windows with 2.8.0+!
 </p>
 
-<br/><h3><a name="q222">22. Where are the log files saved to?</a></h3>
+<br><h3><a name="q222">22. Where are the log files saved to?</a></h3>
 <p>
 <u>UNIX</u>
-<br/>
-<br/>~/.xchat2/xchatlogs/
-<br/>where ~ represents your home directory.
-<br/>
-<br/>
-<br/><u>Windows</u>
-<br/>
-<br/><b>Windows 98/ME</b>: C:\Windows\Application Data\X-Chat 2\xchatlogs
-<br/><b>Windows XP/2000</b>: C:\Documents and Settings\<i><b>username</b></i>\Application Data\X-Chat 2\xchatlogs
+<br>
+<br>~/.xchat2/xchatlogs/
+<br>where ~ represents your home directory.
+<br>
+<br>
+<br><u>Windows</u>
+<br>
+<br><b>Windows 98/ME</b>: C:\Windows\Application Data\X-Chat 2\xchatlogs
+<br><b>Windows XP/2000</b>: C:\Documents and Settings\<i><b>username</b></i>\Application Data\X-Chat 2\xchatlogs
 </p>
 
-<br/><h3><a name="q223">23. How do I rotate log files every so often?</a></h3>
+<br><h3><a name="q223">23. How do I rotate log files every so often?</a></h3>
 <p>
 Requires: 2.6.1+
-<br/><br/>
+<br><br>
 By default settings, no rotation occurs, your log files will just keep getting larger.
-<br/><br/>
+<br><br>
 Go to <b>Settings</b> &gt; <b>Preferences</b> &gt; <b>Logging</b> and change the log filename to any one of these:
 </p>
 <blockquote>
@@ -477,11 +491,11 @@ Go to <b>Settings</b> &gt; <b>Preferences</b> &gt; <b>Logging</b> and change the
 %Y, %m and %d represents the current year, month and day respectively. %n is the
 network name, e.g. "FreeNode" or "UnderNet", and finally, %c is the channel. In these
 examples, a new log filename and folder would be created after midnight.
-<br/><br/>
+<br><br>
 You can find more possibilities at <a href="http://xchat.org/docs/log/">http://xchat.org/docs/log/</a>.
 </p>
 
-<br/><h3><a name="q224">24. How do I enable graphical smilies (emoticons)?</a></h3>
+<br><h3><a name="q224">24. How do I enable graphical smilies (emoticons)?</a></h3>
 <p>
 This feature is only available in the official Windows XChat release. You have to
 TICK this feature during installation. If you didn't do this, you can simply run
@@ -489,20 +503,20 @@ the installer again, and TICK the "<b>Eye Candy Theme</b>" when given the option
 </p><p>
 If you want to use the graphical theme, but disable it just for smilies (i.e leave
 it ON for things like Join/Part, Modes etc only), type this command and restart:
-<br/><br/>
+<br><br>
 <b>/set text_emoticons off</b>
 </p>
 
-<br/><h2>3. Section Three: Contributions, Development and Bugs.</h2>
+<br><h2>3. Section Three: Contributions, Development and Bugs.</h2>
 
-<br/><h3><a name="q31">1. Why does X-Chat leak so much memory?</a></h3>
+<br><h3><a name="q31">1. Why does X-Chat leak so much memory?</a></h3>
 <p>
 The simple answer is, it doesn't! There are some GTK+ pixmap based themes around that
 leak a lot of memory. Please try using a different theme and see if that resolves the
 problem. X-Chat itself only allocates about 40kb of memory through malloc()!
 </p>
 
-<br/><h3><a name="q32">2. My copy of X-Chat crashes, what can I do?</a></h3>
+<br><h3><a name="q32">2. My copy of X-Chat crashes, what can I do?</a></h3>
 <p>
 Firstly, make sure it's the latest stable version of X-Chat. Stable versions have
 an EVEN middle number, e.g.: 2.8.0 or 2.8.1. Often late fixes are placed in this
@@ -512,7 +526,7 @@ directory: <a href="http://xchat.org/files/source/2.8/patches/">2.8.x patches</a
    will help us find a fix quickly, and it's easy to do! See <a href="http://xchat.org/gdb/">here</a>.
 </p>
 
-<br/><h3><a name="q33">3. Can I write a new language translation for X-Chat?</a></h3>
+<br><h3><a name="q33">3. Can I write a new language translation for X-Chat?</a></h3>
 <p>
 You sure can, but I don't accept translations directly. They must be done through the
 <a href="http://www.iro.umontreal.ca/contrib/po/HTML/index.html">Translation Project</a>.
