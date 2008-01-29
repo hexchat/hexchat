@@ -598,41 +598,6 @@ servlist_have_auto (void)
 	GSList *list = network_list;
 	ircnet *net;
 
-{
-	GSList *a, *b;
-
-	joinlist_split ("", &a, &b);
-	joinlist_free (a, b);
-
-	joinlist_split ("#linux", &a, &b);
-	joinlist_free (a, b);
-
-	joinlist_split ("#linux,#abc", &a, &b);
-	joinlist_free (a, b);
-
-	joinlist_split ("#linux,#abc,#three", &a, &b);
-	joinlist_free (a, b);
-
-	joinlist_split ("#linux key1", &a, &b);
-	joinlist_free (a, b);
-
-	joinlist_split ("#linux,#abc key1,key2", &a, &b);
-	joinlist_free (a, b);
-
-	joinlist_split ("#linux,#abc,#three key1,key2,key3", &a, &b);
-	joinlist_free (a, b);
-
-	joinlist_split ("#linux,#abc,#three ,,key3", &a, &b);
-	joinlist_free (a, b);
-
-	joinlist_split ("#linux,#abc,#three ,key2", &a, &b);
-	joinlist_free (a, b);
-
-	joinlist_split ("#linux,#abc,#three key1", &a, &b);
-	printf("%s\n", joinlist_merge (a, b));
-	joinlist_free (a, b);
-}
-
 	while (list)
 	{
 		net = list->data;
@@ -926,7 +891,7 @@ static int
 servlist_load (void)
 {
 	FILE *fp;
-	char buf[258];
+	char buf[2048];
 	int len;
 	char *tmp;
 	ircnet *net = NULL;
@@ -1175,6 +1140,8 @@ gchar *
 joinlist_merge (GSList *channels, GSList *keys)
 {
 	GString *out = g_string_new (NULL);
+	GSList *list;
+	int i, j;
 
 	for (; channels; channels = channels->next)
 	{
@@ -1184,15 +1151,28 @@ joinlist_merge (GSList *channels, GSList *keys)
 			g_string_append_c (out, ',');
 	}
 
-	g_string_append_c (out, ' ');
+	/* count number of REAL keys */
+	for (i = 0, list = keys; list; list = list->next)
+		if (list->data)
+			i++;
 
-	for (; keys; keys = keys->next)
+	if (i > 0)
 	{
-		if (keys->data)
-			g_string_append (out, keys->data);
+		g_string_append_c (out, ' ');
 
-		if (keys->next)
-			g_string_append_c (out, ',');
+		for (j = 0; keys; keys = keys->next)
+		{
+			if (keys->data)
+			{
+				g_string_append (out, keys->data);
+				j++;
+				if (j == i)
+					break;
+			}
+
+			if (keys->next)
+				g_string_append_c (out, ',');
+		}
 	}
 
 	return g_string_free (out, FALSE);
@@ -1256,7 +1236,7 @@ joinlist_split (char *autojoin, GSList **channels, GSList **keys)
 		}
 	}
 
-#if 1
+#if 0
 	GSList *lista, *listb;
 	int i;
 
