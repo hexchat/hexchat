@@ -1227,7 +1227,7 @@ xchat_list_fields (xchat_plugin *ph, const char *name)
 	};
 	static const char * const users_fields[] =
 	{
-		"iaway", "shost", "tlasttalk", "snick", "sprefix", "iselected", NULL
+		"iaway", "shost", "tlasttalk", "snick", "sprefix", "srealname", "iselected", NULL
 	};
 	static const char * const list_of_lists[] =
 	{
@@ -1362,6 +1362,8 @@ xchat_list_str (xchat_plugin *ph, xchat_list *xlist, const char *name)
 			return ((struct User *)data)->hostname;
 		case 0xc594b292: /* prefix */
 			return ((struct User *)data)->prefix;
+		case 0xccc6d529: /* realname */
+			return ((struct User *)data)->realname;
 		}
 		break;
 	}

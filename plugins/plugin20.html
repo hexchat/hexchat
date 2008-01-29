@@ -38,7 +38,7 @@ margin-right: 32px;
 <h1>XChat 2.0 Plugin Interface</h1>
 
 <small>
-<font size="-12">plugin20.html revision 2.82</font>
+<font size="-12">plugin20.html revision 2.86</font>
 <br>Latest version of this document is available at: <a href="http://xchat.org/docs/plugin20.html">http://xchat.org/docs/plugin20.html</a></small>
 
 <h2>1. Documentation:</h2>
@@ -296,6 +296,7 @@ server.</small>
 <tr><td>nick</td><td>Nick name</td><td>string</td></tr>
 <tr><td>host</td><td>Host name in the form: user@host (or NULL if not known).</td><td>string</td></tr>
 <tr><td>prefix</td><td>Prefix character, .e.g: @ or +. Points to a single char.</td><td>string</td></tr>
+<tr><td>realname</td><td>Real name or NULL<br><small>(Added in version 2.8.6)</small></td><td>string</td></tr>
 <tr><td>selected</td><td>Selected status in the user list, only works for retrieving the user list of the focused tab<br><small>(Added in version 2.6.1. Older versions will return -1)</small></td><td>int</td></tr>
 </table>
 </blockquote>
