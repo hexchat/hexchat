@@ -174,7 +174,6 @@ process_data_init (char *buf, char *cmd, char *word[],
 		switch (*cmd)
 		{
 		case 0:
-		 jump:
 			buf[j] = 0;
 			for (j = wordcount; j < PDIWORDS; j++)
 			{
@@ -207,12 +206,12 @@ process_data_init (char *buf, char *cmd, char *word[],
 					buf[j] = 0;
 					j++;
 
-					word[wordcount] = &buf[j];
-					word_eol[wordcount] = cmd + 1;
-					wordcount++;
-
-					if (wordcount == PDIWORDS - 1)
-						goto jump;
+					if (wordcount < PDIWORDS)
+					{
+						word[wordcount] = &buf[j];
+						word_eol[wordcount] = cmd + 1;
+						wordcount++;
+					}
 
 					space = TRUE;
 				}
