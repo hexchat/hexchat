@@ -104,7 +104,10 @@ struct textentry
 	gint16 lines_taken;
 #define RECORD_WRAPS 4
 	guint16 wrap_offset[RECORD_WRAPS];
-	unsigned int mb:1;	/* is multibyte? */
+	guchar mb;		/* boolean: is multibyte? */
+	guchar tag;
+	guchar pad1;
+	guchar pad2;	/* 32-bit align : 44 bytes total */
 };
 
 enum
@@ -2150,8 +2153,15 @@ gtk_xtext_button_release (GtkWidget * widget, GdkEventButton * event)
 
 		gtk_grab_remove (widget);
 		/*gdk_pointer_ungrab (0);*/
+
+		/* got a new selection? */
 		if (xtext->buffer->last_ent_start)
+		{
+			xtext->color_paste = FALSE;
+			if (event->state & GDK_CONTROL_MASK)
+				xtext->color_paste = TRUE;
 			gtk_xtext_set_clip_owner (GTK_WIDGET (xtext), event);
+		}
 
 		if (xtext->select_start_x == event->x &&
 			 xtext->select_start_y == event->y &&

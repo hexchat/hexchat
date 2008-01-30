@@ -214,10 +214,10 @@ struct _GtkXText
 	unsigned int avoid_trans:1;
 	unsigned int indent_changed:1;
 	unsigned int shm:1;
+	unsigned int color_paste:1; /* CTRL was pressed when selection finished */
 
 	/* settings/prefs */
 	unsigned int auto_indent:1;
-	unsigned int color_paste:1;
 	unsigned int thinline:1;
 	unsigned int transparent:1;
 	unsigned int shaded:1;
