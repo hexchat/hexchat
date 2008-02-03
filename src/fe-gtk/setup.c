@@ -251,7 +251,7 @@ static const setting tabs_settings[] =
 	{ST_TOGGLE, N_("Open an extra tab for server notices"), P_OFFINTNL(notices_tabs), 0, 0, 0},
 	{ST_TOGGLE, N_("Open a new tab when you receive a private message"), P_OFFINTNL(autodialog), 0, 0, 0},
 	{ST_TOGGLE, N_("Sort tabs in alphabetical order"), P_OFFINTNL(tab_sort), 0, 0, 0},
-	{ST_TOGGLE, N_("Small tabs"), P_OFFINTNL(tab_small), 0, 0, 0},
+	{ST_TOGGLE, N_("Smaller text"), P_OFFINTNL(tab_small), 0, 0, 0},
 #if 0
 	{ST_MENU,	N_("Focus new tabs:"), P_OFFINTNL(newtabstofront), 0, focusnewtabsmenu, 0},
 #endif
@@ -344,7 +344,7 @@ static const setting alert_settings[] =
 	{ST_ENTRY,	N_("Extra words to highlight:"), P_OFFSETNL(irc_extra_hilight), 0, 0, sizeof prefs.irc_extra_hilight},
 	{ST_ENTRY,	N_("Nick names not to highlight:"), P_OFFSETNL(irc_no_hilight), 0, 0, sizeof prefs.irc_no_hilight},
 	{ST_ENTRY,	N_("Nick names to always highlight:"), P_OFFSETNL(irc_nick_hilight), 0, 0, sizeof prefs.irc_nick_hilight},
-	{ST_LABEL,	N_("Separate multiple words with commas.")},
+	{ST_LABEL,	N_("Separate multiple words with commas.\nWildcards are accepted.")},
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
@@ -593,6 +593,7 @@ setup_create_italic_label (char *text)
 	label = gtk_label_new (NULL);
 	snprintf (buf, sizeof (buf), "<i><span size=\"smaller\">%s</span></i>", text);
 	gtk_label_set_markup (GTK_LABEL (label), buf);
+	gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_CENTER);
 
 	return label;
 }
