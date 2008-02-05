@@ -74,12 +74,12 @@ clear_channel (session *sess)
 }
 
 void
-set_topic (session *sess, char *topic)
+set_topic (session *sess, char *topic, char *stripped_topic)
 {
 	if (sess->topic)
 		free (sess->topic);
-	sess->topic = strdup (topic);
-	fe_set_topic (sess, topic);
+	sess->topic = strdup (stripped_topic);
+	fe_set_topic (sess, topic, stripped_topic);
 }
 
 static session *
@@ -167,13 +167,13 @@ inbound_privmsg (server *serv, char *from, char *ip, char *text, int id)
 				sess = serv->server_session;
 		}
 
-		if (prefs.input_beep_priv || (sess && sess->beep))
+		if (prefs.input_beep_priv || (sess && sess->alert_beep == SET_ON))
 			sound_beep (sess);
 
-		if (sess && sess->tray)
+		if (sess && sess->alert_tray == SET_ON)
 			fe_tray_set_icon (FE_ICON_MESSAGE);
 
-		if (prefs.input_flash_priv)
+		if (prefs.input_flash_priv || (sess && sess->alert_taskbar == SET_ON))
 			fe_flash_window (sess);
 
 		if (ip && ip[0])
@@ -185,7 +185,7 @@ inbound_privmsg (server *serv, char *from, char *ip, char *text, int id)
 				snprintf (tbuf, sizeof (tbuf), "[%s has address %s]\n", from, ip);
 				write (sess->logfd, tbuf, strlen (tbuf));
 			}
-			set_topic (sess, ip);
+			set_topic (sess, ip, ip);
 		}
 		inbound_chanmsg (serv, NULL, NULL, from, text, FALSE, id);
 		return;
@@ -198,17 +198,17 @@ inbound_privmsg (server *serv, char *from, char *ip, char *text, int id)
 	{
 		sess = serv->front_session;
 
-		if (prefs.input_beep_priv || (sess && sess->beep))
+		if (prefs.input_beep_priv || (sess && sess->alert_beep == SET_ON))
 			sound_beep (sess);
 
 		EMIT_SIGNAL (XP_TE_PRIVMSG, sess, from, text, idtext, NULL, 0);
 		return;
 	}
 
-	if (prefs.input_beep_priv || sess->beep)
+	if (prefs.input_beep_priv || sess->alert_beep == SET_ON)
 		sound_beep (sess);
 
-	if (prefs.input_flash_priv)
+	if (prefs.input_flash_priv || sess->alert_taskbar == SET_ON)
 		fe_flash_window (sess);
 
 	if (sess->type == SESS_DIALOG)
@@ -291,14 +291,14 @@ is_hilight (char *from, char *text, session *sess, server *serv)
 		 alert_match_text (text, prefs.irc_extra_hilight) ||
 		 alert_match_word (from, prefs.irc_nick_hilight))
 	{
-		free (text);
+		g_free (text);
 		if (sess != current_tab)
 			sess->nick_said = TRUE;
 		fe_set_hilight (sess);
 		return 1;
 	}
 
-	free (text);
+	g_free (text);
 	return 0;
 }
 
@@ -359,14 +359,14 @@ inbound_action (session *sess, char *chan, char *from, char *text, int fromme, i
 		if (hilight && prefs.input_beep_hilight)
 			beep = TRUE;
 
-		if (beep || sess->beep)
+		if (beep || sess->alert_beep == SET_ON)
 			sound_beep (sess);
 
-		if (sess->tray)
+		if (sess->alert_tray == SET_ON)
 			fe_tray_set_icon (FE_ICON_MESSAGE);
 
 		/* private action, flash? */
-		if (!is_channel (serv, chan) && prefs.input_flash_priv)
+		if ((!is_channel (serv, chan) && prefs.input_flash_priv) || sess->alert_taskbar == SET_ON)
 			fe_flash_window (sess);
 
 		if (hilight)
@@ -430,10 +430,10 @@ inbound_chanmsg (server *serv, session *sess, char *chan, char *from, char *text
 
 	if (sess->type != SESS_DIALOG)
 	{
-		if (prefs.input_beep_chans || sess->beep)
+		if (prefs.input_beep_chans || sess->alert_beep == SET_ON)
 			sound_beep (sess);
 
-		if (sess->tray)
+		if (sess->alert_tray == SET_ON)
 			fe_tray_set_icon (FE_ICON_MESSAGE);
 	}
 
@@ -445,7 +445,7 @@ inbound_chanmsg (server *serv, session *sess, char *chan, char *from, char *text
 	}
 	else
 	{
-		if (sess->type != SESS_DIALOG && prefs.input_flash_chans)
+		if (sess->type != SESS_DIALOG && prefs.input_flash_chans || sess->alert_taskbar == SET_ON)
 			fe_flash_window (sess);
 	}
 
@@ -672,13 +672,13 @@ void
 inbound_topic (server *serv, char *chan, char *topic_text)
 {
 	session *sess = find_channel (serv, chan);
-	char *new_topic;
+	char *stripped_topic;
 
 	if (sess)
 	{
-		new_topic = strip_color (topic_text, -1, STRIP_ALL);
-		set_topic (sess, new_topic);
-		free (new_topic);
+		stripped_topic = strip_color (topic_text, -1, STRIP_ALL);
+		set_topic (sess, topic_text, stripped_topic);
+		g_free (stripped_topic);
 	} else
 		sess = serv->server_session;
 
@@ -689,14 +689,14 @@ void
 inbound_topicnew (server *serv, char *nick, char *chan, char *topic)
 {
 	session *sess;
-	char *new_topic;
+	char *stripped_topic;
 
 	sess = find_channel (serv, chan);
 	if (sess)
 	{
-		new_topic = strip_color (topic, -1, STRIP_ALL);
-		set_topic (sess, new_topic);
-		free (new_topic);
+		stripped_topic = strip_color (topic, -1, STRIP_ALL);
+		set_topic (sess, topic, stripped_topic);
+		g_free (stripped_topic);
 		EMIT_SIGNAL (XP_TE_NEWTOPIC, sess, nick, topic, chan, NULL, 0);
 	}
 }
@@ -707,7 +707,7 @@ inbound_join (server *serv, char *chan, char *user, char *ip)
 	session *sess = find_channel (serv, chan);
 	if (sess)
 	{
-		if (!sess->hide_join_part)
+		if (sess->text_hidejoinpart == SET_OFF)
 			EMIT_SIGNAL (XP_TE_JOIN, sess, user, chan, ip, NULL, 0);
 		userlist_add (sess, user, ip);
 	}
@@ -730,7 +730,7 @@ inbound_part (server *serv, char *chan, char *user, char *ip, char *reason)
 	session *sess = find_channel (serv, chan);
 	if (sess)
 	{
-		if (!sess->hide_join_part)
+		if (sess->text_hidejoinpart == SET_OFF)
 		{
 			if (*reason)
 				EMIT_SIGNAL (XP_TE_PARTREASON, sess, user, ip, chan, reason, 0);
@@ -770,7 +770,7 @@ inbound_quit (server *serv, char *nick, char *ip, char *reason)
  				was_on_front_session = TRUE;
 			if (userlist_remove (sess, nick))
 			{
-				if (!sess->hide_join_part)
+				if (sess->text_hidejoinpart == SET_OFF)
 					EMIT_SIGNAL (XP_TE_QUIT, sess, nick, reason, ip, NULL, 0);
 			} else if (sess->type == SESS_DIALOG && !serv->p_cmp (sess->channel, nick))
 			{

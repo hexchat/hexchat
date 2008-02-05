@@ -346,7 +346,9 @@ session_new (server *serv, char *from, int type, int focus)
 	sess->logfd = -1;
 	sess->scrollfd = -1;
 	sess->type = type;
-	sess->hide_join_part = prefs.confmode;
+	sess->text_hidejoinpart = prefs.confmode;
+	sess->text_logging = SET_DEFAULT;
+	sess->text_scrollback = SET_DEFAULT;
 
 	if (from != NULL)
 		safe_strcpy (sess->channel, from, CHANLEN);
@@ -554,9 +556,6 @@ free_sessions (void)
 }
 
 
-
-#define XTERM "gnome-terminal -x "
-
 static char defaultconf_ctcp[] =
 	"NAME TIME\n"				"CMD nctcp %s TIME %t\n\n"\
 	"NAME PING\n"				"CMD nctcp %s PING %d\n\n";
@@ -595,63 +594,8 @@ static char defaultconf_commands[] =
 	"NAME WALLOPS\n"		"CMD quote WALLOPS :&2\n\n"\
 	"NAME WII\n"			"CMD quote WHOIS %2 %2\n\n";
 
-#if 1
 static char defaultconf_urlhandlers[] =
 		"NAME Open Link in Opera\n"		"CMD !opera -remote 'openURL(%s)'\n\n";
-#else
-#ifdef WIN32
-static char defaultconf_urlhandlers[] =
-	"NAME Connect as IRC server\n"		"CMD url %s\n\n";
-#else
-static char defaultconf_urlhandlers[] =
-	"NAME SUB\n"								"CMD Epiphany...\n\n"\
-		"NAME Open\n"							"CMD !epiphany '%s'\n\n"\
-		"NAME Open in new tab\n"			"CMD !epiphany -n '%s'\n\n"\
-		"NAME Open in new window\n"		"CMD !epiphany -w '%s'\n\n"\
-	"NAME ENDSUB\n"							"CMD \n\n"\
-	"NAME SUB\n"								"CMD Netscape...\n\n"\
-		"NAME Open in existing\n"			"CMD !netscape -remote 'openURL(%s)'\n\n"\
-		"NAME Open in new window\n"		"CMD !netscape -remote 'openURL(%s,new-window)'\n\n"\
-		"NAME Run new Netscape\n"			"CMD !netscape %s\n\n"\
-	"NAME ENDSUB\n"							"CMD \n\n"\
-	"NAME SUB\n"								"CMD Mozilla...\n\n"\
-		"NAME Open in existing\n"			"CMD !mozilla -remote 'openURL(%s)'\n\n"\
-		"NAME Open in new window\n"		"CMD !mozilla -remote 'openURL(%s,new-window)'\n\n"\
-		"NAME Open in new tab\n"			"CMD !mozilla -remote 'openURL(%s,new-tab)'\n\n"\
-		"NAME Run new Mozilla\n"			"CMD !mozilla %s\n\n"\
-	"NAME ENDSUB\n"							"CMD \n\n"\
-	"NAME SUB\n"								"CMD Mozilla FireFox...\n\n"\
-		"NAME Open in existing\n"			"CMD !firefox -a firefox -remote 'openURL(%s)'\n\n"\
-		"NAME Open in new window\n"		"CMD !firefox -a firefox -remote 'openURL(%s,new-window)'\n\n"\
-		"NAME Open in new tab\n"			"CMD !firefox -a firefox -remote 'openURL(%s,new-tab)'\n\n"\
-		"NAME Run new Mozilla FireFox\n"	"CMD !firefox %s\n\n"\
-	"NAME ENDSUB\n"							"CMD \n\n"\
-	"NAME SUB\n"								"CMD Galeon...\n\n"\
-		"NAME Open in existing\n"			"CMD !galeon -x '%s'\n\n"\
-		"NAME Open in new window\n"		"CMD !galeon -w '%s'\n\n"\
-		"NAME Open in new tab\n"			"CMD !galeon -n '%s'\n\n"\
-		"NAME Run new Galeon\n"				"CMD !galeon '%s'\n\n"\
-	"NAME ENDSUB\n"							"CMD \n\n"\
-	"NAME SUB\n"								"CMD Opera...\n\n"\
-		"NAME Open in existing\n"			"CMD !opera -remote 'openURL(%s)'\n\n"\
-		"NAME Open in new window\n"		"CMD !opera -remote 'openURL(%s,new-window)'\n\n"\
-		"NAME Open in new tab\n"			"CMD !opera -remote 'openURL(%s,new-page)'\n\n"\
-		"NAME Run new Opera\n"				"CMD !opera %s\n\n"\
-	"NAME ENDSUB\n"							"CMD \n\n"\
-	"NAME SUB\n"								"CMD Send URL to...\n\n"\
-		"NAME Gnome URL Handler\n"			"CMD !gnome-open %s\n\n"\
-		"NAME Lynx\n"							"CMD !"XTERM"lynx %s\n\n"\
-		"NAME Links\n"							"CMD !"XTERM"links %s\n\n"\
-		"NAME w3m\n"							"CMD !"XTERM"w3m %s\n\n"\
-		"NAME lFTP\n" 							"CMD !"XTERM"lftp %s\n\n"\
-		"NAME gFTP\n"							"CMD !gftp %s\n\n"\
-		"NAME Konqueror\n"					"CMD !konqueror %s\n\n"\
-		"NAME Telnet\n"						"CMD !"XTERM"telnet %s\n\n"\
-		"NAME Ping\n"							"CMD !"XTERM"ping -c 4 %s\n\n"\
-	"NAME ENDSUB\n"							"CMD \n\n"\
-	"NAME Connect as IRC server\n"		"CMD url %s\n\n";
-#endif
-#endif
 
 #ifdef USE_SIGACTION
 /* Close and open log files on SIGUSR1. Usefull for log rotating */
@@ -747,9 +691,10 @@ xchat_init (void)
 	ignore_load ();
 
 	snprintf (buf, sizeof (buf),
-		"NAME %s%s\n"						"CMD query %%s\n\n"\
-		"NAME %s%s\n"						"CMD send %%s\n\n"\
-		"NAME %s%s\n"						"CMD whois %%s %%s\n\n"\
+		"NAME %s~%s~\n"				"CMD query %%s\n\n"\
+		"NAME %s~%s~\n"				"CMD send %%s\n\n"\
+		"NAME %s~%s~\n"				"CMD whois %%s %%s\n\n"\
+		"NAME %s~%s~\n"				"CMD notify -n ASK %%s\n\n"\
 
 		"NAME SUB\n"					"CMD %s\n\n"\
 			"NAME %s\n"					"CMD op %%a\n\n"\
@@ -774,9 +719,10 @@ xchat_init (void)
 			"NAME ENDSUB\n"			"CMD \n\n"\
 		"NAME ENDSUB\n"				"CMD \n\n",
 
-		_("_Open Dialog Window"), "~gtk-chat~",
-		_("_Send a File"), "~gtk-floppy~",
-		_("_User Info (WhoIs)"), "~gtk-info~",
+		_("_Open Dialog Window"), "xchat-dialog",
+		_("_Send a File"), "gtk-floppy",
+		_("_User Info (WhoIs)"), "gtk-info",
+		_("_Add to Friends List"), "gtk-add",
 		_("O_perator Actions"),
 
 		_("Give Ops"),
@@ -796,113 +742,6 @@ xchat_init (void)
 		_("KickBan"),
 		_("KickBan"));
 
-#if 0
-	snprintf (buf, sizeof (buf),
-	"NAME SUB\n"				"CMD %s\n\n"\
-		"NAME %s\n"				"CMD dcc send %%s\n\n"\
-		"NAME %s\n"				"CMD dcc chat %%s\n\n"\
-		"NAME %s\n"				"CMD dcc close chat %%s\n\n"\
-	"NAME ENDSUB\n"			"CMD \n\n"\
-	"NAME SUB\n"				"CMD CTCP\n\n"\
-		"NAME %s\n"				"CMD ctcp %%s VERSION\n\n"\
-		"NAME %s\n"				"CMD ctcp %%s USERINFO\n\n"\
-		"NAME %s\n"				"CMD ctcp %%s CLIENTINFO\n\n"\
-		"NAME %s\n"				"CMD ping %%s\n\n"\
-		"NAME %s\n"				"CMD ctcp %%s TIME\n\n"\
-		"NAME %s\n"				"CMD ctcp %%s FINGER\n\n"\
-		"NAME XDCC List\n"	"CMD ctcp %%s XDCC LIST\n\n"\
-		"NAME CDCC List\n"	"CMD ctcp %%s CDCC LIST\n\n"\
-	"NAME ENDSUB\n"			"CMD \n\n"\
-	"NAME SUB\n"				"CMD %s\n\n"\
-		"NAME %s\n"				"CMD quote KILL %%s :die!\n\n"\
-	"NAME ENDSUB\n"			"CMD \n\n"\
-	"NAME SUB\n"				"CMD %s\n\n"\
-		"NAME %s\n"				"CMD op %%a\n\n"\
-		"NAME %s\n"				"CMD deop %%a\n\n"\
-		"NAME SEP\n"			"CMD \n\n"\
-		"NAME %s\n"				"CMD hop %%a\n\n"\
-		"NAME %s\n"				"CMD dehop %%a\n\n"\
-		"NAME SEP\n"			"CMD \n\n"\
-		"NAME %s\n"				"CMD voice %%a\n\n"\
-		"NAME %s\n"				"CMD devoice %%a\n"\
-	"NAME ENDSUB\n"			"CMD \n\n"\
-	"NAME SUB\n"				"CMD %s\n\n"\
-		"NAME %s\n"				"CMD ignore %%s!*@* ALL\n\n"\
-		"NAME %s\n"				"CMD unignore %%s!*@*\n\n"\
-	"NAME ENDSUB\n"			"CMD \n\n"\
-	"NAME SUB\n"				"CMD %s\n\n"\
-		"NAME %s\n"				"CMD kick %%s\n\n"\
-		"NAME %s\n"				"CMD ban %%s\n\n"\
-		"NAME SEP\n"			"CMD \n\n"\
-		"NAME %s *!*@*.host\n""CMD ban %%s 0\n\n"\
-		"NAME %s *!*@domain\n""CMD ban %%s 1\n\n"\
-		"NAME %s *!*user@*.host\n""CMD ban %%s 2\n\n"\
-		"NAME %s *!*user@domain\n""CMD ban %%s 3\n\n"\
-		"NAME SEP\n"			"CMD \n\n"\
-		"NAME %s *!*@*.host\n""CMD kickban %%s 0\n\n"\
-		"NAME %s *!*@domain\n""CMD kickban %%s 1\n\n"\
-		"NAME %s *!*user@*.host\n""CMD kickban %%s 2\n\n"\
-		"NAME %s *!*user@domain\n""CMD kickban %%s 3\n\n"\
-	"NAME ENDSUB\n"			"CMD \n\n"\
-	"NAME SUB\n"				"CMD %s\n\n"\
-		"NAME %s\n"				"CMD quote WHO %%s\n\n"\
-		"NAME %s\n"				"CMD quote WHOIS %%s %%s\n\n"\
-		"NAME %s\n"				"CMD dns %%s\n\n"\
-		"NAME %s\n"				"CMD quote TRACE %%s\n\n"\
-		"NAME %s\n"				"CMD quote USERHOST %%s\n\n"\
-	"NAME ENDSUB\n"			"CMD \n\n"\
-	"NAME SUB\n"				"CMD %s\n\n"\
-		"NAME %s\n"				"CMD !"XTERM"/usr/sbin/traceroute %%h\n\n"\
-		"NAME %s\n"				"CMD !"XTERM"ping -c 4 %%h\n\n"\
-		"NAME %s\n"				"CMD !"XTERM"telnet %%h\n\n"\
-	"NAME ENDSUB\n"			"CMD \n\n"\
-	"NAME %s\n"					"CMD query %%s\n\n",
-		_("Direct client-to-client"),
-		_("Send File"),
-		_("Offer Chat"),
-		_("Abort Chat"),
-		_("Version"),
-		_("Userinfo"),
-		_("Clientinfo"),
-		_("Ping"),
-		_("Time"),
-		_("Finger"),
-		_("Oper"),
-		_("Kill this user"),
-		_("Mode"),
-		_("Give Ops"),
-		_("Take Ops"),
-		_("Give Half-Ops"),
-		_("Take Half-Ops"),
-		_("Give Voice"),
-		_("Take Voice"),
-		_("Ignore"),
-		_("Ignore User"),
-		_("UnIgnore User"),
-		_("Kick/Ban"),
-		_("Kick"),
-		_("Ban"),
-		_("Ban"),
-		_("Ban"),
-		_("Ban"),
-		_("Ban"),
-		_("KickBan"),
-		_("KickBan"),
-		_("KickBan"),
-		_("KickBan"),
-		_("Info"),
-		_("Who"),
-		_("WhoIs"),
-		_("DNS Lookup"),
-		_("Trace"),
-		_("UserHost"),
-		_("External"),
-		_("Traceroute"),
-		_("Ping"),
-		_("Telnet"),
-		_("Open Dialog Window")
-		);
-#endif
 	list_loadconf ("popup.conf", &popup_list, buf);
 
 	snprintf (buf, sizeof (buf),

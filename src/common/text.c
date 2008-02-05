@@ -280,7 +280,7 @@ scrollback_load (session *sess)
 			{
 				text = strip_color (text + 1, -1, STRIP_COLOR);
 				fe_print_text (sess, text, stamp);
-				free (text);
+				g_free (text);
 			}
 			lines++;
 		}
@@ -618,7 +618,7 @@ log_write (session *sess, char *text)
 		/* lots of scripts/plugins print without a \n at the end */
 		if (temp[len - 1] != '\n')
 			write (sess->logfd, "\n", 1);	/* emulate what xtext would display */
-		free (temp);
+		g_free (temp);
 	}
 }
 

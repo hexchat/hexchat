@@ -573,45 +573,118 @@ cmd_unban (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	}
 }
 
+/* per-channel/dialog settings :: /CHANOPT */
+
+typedef struct
+{
+	char *name;
+	int offset;
+} channel_options;
+
+#define S_F(xx) STRUCT_OFFSET_STR(struct session,xx)
+
+channel_options chanopt[] =
+{
+	{"alert_beep", S_F(alert_beep)},
+	{"alert_taskbar", S_F(alert_taskbar)},
+	{"alert_tray", S_F(alert_tray)},
+
+	{"text_hidejoinpart", S_F(text_hidejoinpart)},
+	{"text_logging", S_F(text_logging)},
+	{"text_scrollback", S_F(text_scrollback)},
+};
+
+#undef SESS_FIELD
+
+/*int
+xchat_save_per_channel_settings (session *sess, int fh)
+{
+	char buf[256];
+	int i = 0, written = 0;
+	guint8 val;
+
+	while (i < sizeof (chanopt) / sizeof (channel_options))
+	{
+		val = G_STRUCT_MEMBER (guint8, sess, chanopt[i].offset);
+
+		if (val != SET_DEFAULT)
+		{
+			snprintf (buf, sizeof (buf), "%s = %d\n", chanopt[i].name, val);
+			written += write (fh, buf, strlen (buf));
+		}
+
+		i++;
+	}
+
+	return written;
+}*/
+
+static char *
+chanopt_value (guint8 val)
+{
+	switch (val)
+	{
+	case SET_OFF:
+		return "OFF";
+	case SET_ON:
+		return "ON";
+	default:
+		return "{unset}";
+	}
+}
+
 static int
 cmd_chanopt (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
-	int state;
-	if (!strcasecmp (word[3], "ON"))
-	{
-		state = TRUE;
-	} else if (!strcasecmp (word[3], "OFF"))
-	{
-		state = FALSE;
-	} else
-	{
-		if (!strcasecmp (word[2], "CONFMODE"))
-			state = sess->hide_join_part;
-		else if (!strcasecmp (word[2], "COLORPASTE"))
-			state = sess->color_paste;
-		else if (!strcasecmp (word[2], "BEEP"))
-			state = sess->beep;
-		else if (!strcasecmp (word[2], "TRAY"))
-			state = sess->tray;
-		else
-			return FALSE;
+	int dots, i = 0, j, p = 0;
+	guint8 val;
+	int offset = 2;
+	char *find;
+	char *newval;
+	gboolean quiet = FALSE;
 
-		PrintTextf (sess, "%s is %s\n", word[2], state ? "ON" : "OFF");
-		return TRUE;
+	if (!strcmp (word[2], "-quiet"))
+	{
+		quiet = TRUE;
+		offset++;
 	}
 
-	if (!strcasecmp (word[2], "CONFMODE"))
+	find = word[offset];
+	newval = word[offset+1];
+
+	if (!quiet)
+		PrintTextf (sess, "\002Network\002: %s \002Channel\002: %s\n",
+						sess->server->network ? server_get_network (sess->server, TRUE) : _("<none>"),
+						sess->channel[0] ? sess->channel : _("<none>"));
+
+	while (i < sizeof (chanopt) / sizeof (channel_options))
 	{
-		sess->hide_join_part = state;
-	} else if (!strcasecmp (word[2], "COLORPASTE"))
-	{
-		fe_set_color_paste (sess, state);
-	} else if (!strcasecmp (word[2], "BEEP"))
-	{
-		sess->beep = state;
-	} else if (!strcasecmp (word[2], "TRAY"))
-	{
-		sess->tray = state;
+		if (find[0] == 0 || match (find, chanopt[i].name))
+		{
+			if (newval[0])	/* set new value */
+			{
+				*(guint8 *)G_STRUCT_MEMBER_P(sess, chanopt[i].offset) = atoi (newval);
+			}
+
+			if (!quiet)	/* print value */
+			{
+				strcpy (tbuf, chanopt[i].name);
+				p = strlen (tbuf);
+
+				tbuf[p++] = 3;
+				tbuf[p++] = '2';
+
+				dots = 20 - strlen (chanopt[i].name);
+
+				for (j = 0; j < dots; j++)
+					tbuf[p++] = '.';
+				tbuf[p++] = 0;
+
+				val = G_STRUCT_MEMBER (guint8, sess, chanopt[i].offset);
+				PrintTextf (sess, "%s\0033:\017 %s", tbuf, chanopt_value (val));
+			}
+		}
+		i++;
 	}
 
 	return TRUE;
@@ -3528,13 +3601,7 @@ const struct commands xc_cmds[] = {
 	{"BACK", cmd_back, 1, 0, 1, N_("BACK, sets you back (not away)")},
 	{"BAN", cmd_ban, 1, 1, 1,
 	 N_("BAN <mask> [<bantype>], bans everyone matching the mask from the current channel. If they are already on the channel this doesn't kick them (needs chanop)")},
-	{"CHANOPT", cmd_chanopt, 0, 0, 1,
-	 N_("Set per channel options\n"
-	 "CHANOPT CONFMODE ON|OFF - Toggle conf mode/showing of join and part messages\n"
-	 "CHANOPT COLORPASTE ON|OFF - Toggle color paste\n"
-	 "CHANOPT BEEP ON|OFF - Toggle beep on message\n"
-	 "CHANOPT TRAY ON|OFF - Toggle tray blink on message"
-	)},
+	{"CHANOPT", cmd_chanopt, 0, 0, 1, N_("CHANOPT [-quiet] <variable> [<value>]")},
 	{"CHARSET", cmd_charset, 0, 0, 1, 0},
 	{"CLEAR", cmd_clear, 0, 0, 1, N_("CLEAR [ALL|HISTORY], Clears the current text window or command history")},
 	{"CLOSE", cmd_close, 0, 0, 1, N_("CLOSE, Closes the current window/tab")},
@@ -4152,7 +4219,7 @@ handle_say (session *sess, char *text, int check_spch)
 		{
 			inbound_chanmsg (sess->server, NULL, sess->channel,
 								  sess->server->nick, text, TRUE, FALSE);
-			set_topic (sess, net_ip (dcc->addr));
+			set_topic (sess, net_ip (dcc->addr), net_ip (dcc->addr));
 			goto xit;
 		}
 	}

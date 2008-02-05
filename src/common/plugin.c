@@ -1425,13 +1425,15 @@ xchat_list_int (xchat_plugin *ph, xchat_list *xlist, const char *name)
 		case 0xd1b:	/* id */
 			return ((struct session *)data)->server->id;
 		case 0x5cfee87:	/* flags */
-			tmp = ((struct session *)data)->tray;            /* bit 9 */
+			tmp = ((struct session *)data)->alert_taskbar;   /* bit 10 */
 			tmp <<= 1;
-			tmp |= ((struct session *)data)->beep;               /* 8 */
+			tmp |= ((struct session *)data)->alert_tray;         /* 9 */
 			tmp <<= 1;
-			tmp |= ((struct session *)data)->color_paste;        /* 7 */
+			tmp |= ((struct session *)data)->alert_beep;         /* 8 */
 			tmp <<= 1;
-			tmp |= ((struct session *)data)->hide_join_part;     /* 6 */
+			/*tmp |= ((struct session *)data)->color_paste;*/    /* 7 */
+			tmp <<= 1;
+			tmp |= ((struct session *)data)->text_hidejoinpart;   /* 6 */
 			tmp <<= 1;
 			tmp |= ((struct session *)data)->server->have_idmsg; /* 5 */
 			tmp <<= 1;
@@ -1556,5 +1558,5 @@ xchat_strip (xchat_plugin *ph, const char *str, int len, int flags)
 void
 xchat_free (xchat_plugin *ph, void *ptr)
 {
-	free (ptr);
+	g_free (ptr);
 }

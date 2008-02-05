@@ -36,8 +36,9 @@ int util_execv (char * const argv[]);
 #define STRIP_COLOR 1
 #define STRIP_ATTRIB 2
 #define STRIP_HIDDEN 4
+#define STRIP_ESCMARKUP 8
 #define STRIP_ALL 7
-char *strip_color (char *text, int len, int flags);
+gchar *strip_color (char *text, int len, int flags);
 int strip_color2 (char *src, int len, char *dst, int flags);
 int strip_hidden_attribute (char *src, char *dst);
 char *errorstring (int err);

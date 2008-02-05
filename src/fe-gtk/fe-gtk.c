@@ -130,7 +130,7 @@ static const GOptionEntry gopt_entries[] =
  {"configdir",	'u', 0, G_OPTION_ARG_NONE,	&arg_show_config, N_("Show user config directory"), NULL},
  {"url",	 0,  0, G_OPTION_ARG_STRING,	&arg_url, N_("Open an irc://server:port/channel URL"), "URL"},
 #ifndef WIN32	/* uses DBUS */
- {"command",	'c', 0, G_OPTION_ARG_STRING,	&arg_command, N_("Execute command"), "COMMAND"},
+ {"command",	'c', 0, G_OPTION_ARG_STRING,	&arg_command, N_("Execute command:"), "COMMAND"},
  {"existing",	'e', 0, G_OPTION_ARG_NONE,	&arg_existing, N_("Open URL or execute command in an existing XChat"), NULL},
 #endif
  {"minimize",	 0,  0, G_OPTION_ARG_INT,	&arg_minimize, N_("Begin minimized. Level 0=Normal 1=Iconified 2=Tray"), N_("level")},
@@ -464,17 +464,17 @@ fe_input_add (int sok, int flags, void *func, void *data)
 }
 
 void
-fe_set_topic (session *sess, char *topic)
+fe_set_topic (session *sess, char *topic, char *stripped_topic)
 {
 	if (!sess->gui->is_tab || sess == current_tab)
 	{
-		gtk_entry_set_text (GTK_ENTRY (sess->gui->topic_entry), topic);
+		gtk_entry_set_text (GTK_ENTRY (sess->gui->topic_entry), stripped_topic);
 		mg_set_topic_tip (sess);
 	} else
 	{
 		if (sess->res->topic_text)
 			free (sess->res->topic_text);
-		sess->res->topic_text = strdup (topic);
+		sess->res->topic_text = strdup (stripped_topic);
 	}
 }
 

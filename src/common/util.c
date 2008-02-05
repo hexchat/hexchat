@@ -39,6 +39,7 @@
 #include <errno.h>
 #include "xchat.h"
 #include "xchatc.h"
+#include <glib/gmarkup.h>
 #include <ctype.h>
 #include "util.h"
 #include "../../config.h"
@@ -420,7 +421,7 @@ expand_homedir (char *file)
 	return strdup (file);
 }
 
-char *
+gchar *
 strip_color (char *text, int len, int flags)
 {
 	char *new_str;
@@ -428,8 +429,16 @@ strip_color (char *text, int len, int flags)
 	if (len == -1)
 		len = strlen (text);
 
-	new_str = malloc (len + 2);
+	new_str = g_malloc (len + 2);
 	strip_color2 (text, len, new_str, flags);
+
+	if (flags & STRIP_ESCMARKUP)
+	{
+		char *esc = g_markup_escape_text (new_str, -1);
+		g_free (new_str);
+		return esc;
+	}
+
 	return new_str;
 }
 

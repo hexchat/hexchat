@@ -51,6 +51,8 @@
 #include "../common/ignore.h"
 #include "../common/fe.h"
 #include "../common/server.h"
+#include "../common/servlist.h"
+#include "../common/notify.h"
 #include "../common/util.h"
 #include "xtext.h"
 #include "about.h"
@@ -251,7 +253,7 @@ menu_toggle_item (char *label, GtkWidget *menu, void *callback, void *userdata,
 {
 	GtkWidget *item;
 
-	item = gtk_check_menu_item_new_with_label (label);
+	item = gtk_check_menu_item_new_with_mnemonic (label);
 	gtk_check_menu_item_set_active ((GtkCheckMenuItem*)item, state);
 	gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
 	g_signal_connect (G_OBJECT (item), "activate",
@@ -261,7 +263,7 @@ menu_toggle_item (char *label, GtkWidget *menu, void *callback, void *userdata,
 	return item;
 }
 
-static GtkWidget *
+GtkWidget *
 menu_quick_item (char *cmd, char *label, GtkWidget * menu, int flags,
 					  gpointer userdata, char *icon)
 {
@@ -338,7 +340,7 @@ menu_quick_item_with_callback (void *callback, char *label, GtkWidget * menu,
 	gtk_widget_show (item);
 }
 
-static GtkWidget *
+GtkWidget *
 menu_quick_sub (char *name, GtkWidget *menu, GtkWidget **sub_item_ret, int flags, int pos)
 {
 	GtkWidget *sub_menu;
@@ -486,7 +488,7 @@ menu_create (GtkWidget *menu, GSList *list, char *target, int check_path)
 		if (!strncasecmp (pop->name, "SUB", 3))
 		{
 			childcount = 0;
-			tempmenu = menu_quick_sub (pop->cmd, tempmenu, &subitem, XCMENU_DOLIST, -1);
+			tempmenu = menu_quick_sub (pop->cmd, tempmenu, &subitem, XCMENU_DOLIST|XCMENU_MNEMONIC, -1);
 
 		} else if (!strncasecmp (pop->name, "TOGGLE", 6))
 		{
@@ -628,7 +630,7 @@ menu_nickmenu (session *sess, GdkEventButton *event, char *nick, int num_sel)
 				{
 					char *msg = strip_color (away->message ? away->message : _("Unknown"), -1, STRIP_ALL);
 					real = g_markup_escape_text (msg, -1);
-					free (msg);
+					g_free (msg);
 					snprintf (buf, sizeof (buf), fmt, _("Away Msg:"), real);
 					g_free (real);
 					menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0, 0);
@@ -924,10 +926,39 @@ menu_chanmenu (struct session *sess, GdkEventButton * event, char *chan)
 												 str_copy);
 	}
 
-	mg_addfavoritemenu (sess->server, menu, str_copy, NULL);
+	menu_addfavoritemenu (sess->server, menu, str_copy);
 
 	menu_add_plugin_items (menu, "\x5$CHAN", str_copy);
 	menu_popup (menu, event, NULL);
+}
+
+static void
+menu_delfav_cb (GtkWidget *item, server *serv)
+{
+}
+
+static void
+menu_addfav_cb (GtkWidget *item, server *serv)
+{
+}
+
+void
+menu_addfavoritemenu (server *serv, GtkWidget *menu, char *channel)
+{
+	if (!serv->network)
+		return;
+
+	if (channel != str_copy)
+	{
+		if (str_copy)
+			free (str_copy);
+		str_copy = strdup (channel);
+	}
+
+	if (joinlist_is_in_list (serv, channel))
+		mg_create_icon_item (_("_Remove from Favorites"), GTK_STOCK_REMOVE, menu, menu_delfav_cb, serv);
+	else
+		mg_create_icon_item (_("_Add to Favorites"), GTK_STOCK_ADD, menu, menu_addfav_cb, serv);
 }
 
 static void
@@ -2014,13 +2045,13 @@ menu_create_main (void *accel_group, int bar, int away, int toplevel,
 
 	if (!toplevel)
 	{
-		mymenu[DETACH_OFFSET].text = N_("_Detach Tab");
-		mymenu[CLOSE_OFFSET].text = N_("_Close Tab");
+		mymenu[DETACH_OFFSET].text = N_("_Detach");
+		mymenu[CLOSE_OFFSET].text = N_("_Close");
 	}
 	else
 	{
-		mymenu[DETACH_OFFSET].text = N_("_Attach Window");
-		mymenu[CLOSE_OFFSET].text = N_("_Close Window");
+		mymenu[DETACH_OFFSET].text = N_("_Attach");
+		mymenu[CLOSE_OFFSET].text = N_("_Close");
 	}
 
 	while (1)

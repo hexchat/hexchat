@@ -762,6 +762,9 @@ fe_dcc_open_recv_win (int passive)
 	dcc_add_column (view, COL_ETA,    COL_COLOR, _("ETA"), FALSE);
 	dcc_add_column (view, COL_NICK,   COL_COLOR, _("Nick"), FALSE);
 
+	gtk_tree_view_column_set_expand (gtk_tree_view_get_column (GTK_TREE_VIEW (view), COL_FILE), TRUE);
+	gtk_tree_view_column_set_expand (gtk_tree_view_get_column (GTK_TREE_VIEW (view), COL_NICK), TRUE);
+
 	dccfwin.list = view;
 	dccfwin.store = store;
 	dccfwin.sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (view));

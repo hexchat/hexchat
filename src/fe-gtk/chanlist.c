@@ -159,7 +159,7 @@ chanlist_data_free (server *serv)
 			  rows = rows->next)
 		{
 			data = rows->data;
-			free (data->topic);
+			g_free (data->topic);
 			g_free (data->collation_key);
 			free (data);
 		}

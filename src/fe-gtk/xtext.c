@@ -4744,7 +4744,10 @@ gtk_xtext_remove_top (xtext_buffer *buffer)
 		buffer->pagetop_ent = NULL;
 
 	if (ent == buffer->last_ent_start)
+	{
 		buffer->last_ent_start = ent->next;
+		buffer->last_offset_start = 0;
+	}
 
 	if (ent == buffer->last_ent_end)
 	{

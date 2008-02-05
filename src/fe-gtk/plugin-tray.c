@@ -145,7 +145,6 @@ static gboolean
 libnotify_notify_new (const char *title, const char *text, GtkStatusIcon *icon)
 {
 	void *noti;
-	char *escaped_text;
 
 	if (!nn_mod)
 	{
@@ -173,11 +172,11 @@ libnotify_notify_new (const char *title, const char *text, GtkStatusIcon *icon)
 			goto bad;
 	}
 
-	text = strip_color (text, -1, STRIP_ALL);
-	escaped_text = g_markup_escape_text (text, -1);
-	noti = nn_new (title, escaped_text, XCHATSHAREDIR"/pixmaps/xchat.png", NULL);
-	g_free (escaped_text);
-	free ((char *)text);
+	text = strip_color (text, -1, STRIP_ALL|STRIP_ESCMARKUP);
+	title = strip_color (title, -1, STRIP_ALL);
+	noti = nn_new (title, text, XCHATSHAREDIR"/pixmaps/xchat.png", NULL);
+	g_free ((char *)title);
+	g_free ((char *)text);
 
 	nn_set_timeout (noti, 20000);
 	nn_show (noti, NULL);
@@ -199,7 +198,6 @@ fe_tray_set_balloon (const char *title, const char *text)
 #ifndef WIN32
 	const char *argv[8];
 	const char *path;
-	char *escaped_text;
 	WinStatus ws;
 
 	/* no balloons if the window is focused */
@@ -217,11 +215,8 @@ fe_tray_set_balloon (const char *title, const char *text)
 
 #ifdef LIBNOTIFY
 	/* try it via libnotify.so */
-	if (sticon)
-	{
-		if (libnotify_notify_new (title, text, sticon))
-			return;	/* success */
-	}
+	if (libnotify_notify_new (title, text, sticon))
+		return;	/* success */
 #endif
 
 	/* try it the crude way */
@@ -236,14 +231,12 @@ fe_tray_set_balloon (const char *title, const char *text)
 		argv[3] = "-t";
 		argv[4] = "20000";
 		argv[5] = title;
-		text = strip_color (text, -1, STRIP_ALL);
-		escaped_text = g_markup_escape_text (text, -1);
-		argv[6] = escaped_text;
+		text = strip_color (text, -1, STRIP_ALL|STRIP_ESCMARKUP);
+		argv[6] = text;
 		argv[7] = NULL;
 		xchat_execv (argv);
 		g_free ((char *)path);
-		g_free (escaped_text);
-		free ((char *)text);
+		g_free ((char *)text);
 	}
 	else
 	{

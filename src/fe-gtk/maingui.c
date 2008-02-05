@@ -376,8 +376,14 @@ mg_set_access_icon (session_gui *gui, GdkPixbuf *pix, gboolean away)
 {
 	if (gui->op_xpm)
 	{
+		if (pix == gtk_image_get_pixbuf (GTK_IMAGE (gui->op_xpm))) /* no change? */
+		{
+			mg_set_myself_away (gui, away);
+			return;
+		}
+
 		gtk_widget_destroy (gui->op_xpm);
-		gui->op_xpm = 0;
+		gui->op_xpm = NULL;
 	}
 
 	if (pix)
@@ -977,7 +983,6 @@ mg_populate (session *sess)
 		render = FALSE;
 
 	gtk_xtext_buffer_show (GTK_XTEXT (gui->xtext), res->buffer, render);
-	GTK_XTEXT (gui->xtext)->color_paste = sess->color_paste;
 
 	if (gui->is_tab)
 		gtk_widget_set_sensitive (gui->menu, TRUE);
@@ -1181,39 +1186,6 @@ mg_tab_close (session *sess)
 		gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
 		gtk_widget_show (dialog);
 	}
-}
-
-static void
-mg_colorpaste_cb (GtkCheckMenuItem *item, session *sess)
-{
-	sess->color_paste = FALSE;
-	if (item->active)
-		sess->color_paste = TRUE;
-	GTK_XTEXT (sess->gui->xtext)->color_paste = sess->color_paste;
-}
-
-static void
-mg_traymsg_cb (GtkCheckMenuItem *item, session *sess)
-{
-	sess->tray = FALSE;
-	if (item->active)
-		sess->tray = TRUE;
-}
-
-static void
-mg_beepmsg_cb (GtkCheckMenuItem *item, session *sess)
-{
-	sess->beep = FALSE;
-	if (item->active)
-		sess->beep = TRUE;
-}
-
-static void
-mg_hidejp_cb (GtkCheckMenuItem *item, session *sess)
-{
-	sess->hide_join_part = TRUE;
-	if (item->active)
-		sess->hide_join_part = FALSE;
 }
 
 static void
@@ -1593,43 +1565,22 @@ mg_create_color_menu (GtkWidget *menu, session *sess)
 }
 
 static void
-mg_fav (GtkWidget *item, gpointer userdata)
+mg_set_guint8 (GtkCheckMenuItem *item, guint8 *setting)
 {
-
+	*setting = FALSE;
+	if (item->active)
+		*setting = TRUE;
 }
 
-void
-mg_addfavoritemenu (server *serv, GtkWidget *menu, char *channel, session *sess)
-{
-	if (serv->network)
-	{
-		if (joinlist_is_in_list (serv, channel))
-			mg_create_icon_item (_("_Remove from Favorites"), GTK_STOCK_REMOVE, menu, mg_fav, NULL);
-		else
-			mg_create_icon_item (_("_Add to Favorites"), GTK_STOCK_ADD, menu, mg_fav, NULL);
-	}
-}
-
-static gboolean
-mg_tab_contextmenu_cb (chanview *cv, chan *ch, int tag, gpointer ud, GdkEventButton *event)
+static void
+mg_create_tabmenu (session *sess, GdkEventButton *event, chan *ch)
 {
 	GtkWidget *menu, *submenu, *item;
-	session *sess = ud;
 	char buf[256];
-
-	/* shift-click to close a tab */
-	if ((event->state & GDK_SHIFT_MASK) && event->type == GDK_BUTTON_PRESS)
-	{
-		mg_xbutton_cb (cv, ch, tag, ud);
-		return FALSE;
-	}
-
-	if (event->button != 3)
-		return FALSE;
 
 	menu = gtk_menu_new ();
 
-	if (tag == TAG_IRC)
+	if (sess)
 	{
 		char *name = g_markup_escape_text (sess->channel[0] ? sess->channel : _("<none>"), -1);
 		snprintf (buf, sizeof (buf), "<span foreground=\"#3344cc\"><b>%s</b></span>", name);
@@ -1640,40 +1591,39 @@ mg_tab_contextmenu_cb (chanview *cv, chan *ch, int tag, gpointer ud, GdkEventBut
 		gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
 		gtk_widget_show (item);
 
-		submenu = gtk_menu_new ();
-		gtk_menu_item_set_submenu (GTK_MENU_ITEM (item), submenu);
-		gtk_widget_show (submenu);
+		/* separator */
+		menu_quick_item (0, 0, menu, XCMENU_SHADED, 0, 0);
+
+		submenu = menu_quick_sub (_("_Alerts"), menu, NULL, XCMENU_MNEMONIC, -1);
+
+		menu_toggle_item (_("Beep on _Message"), submenu, mg_set_guint8, &sess->alert_beep, sess->alert_beep);
+		if (prefs.gui_tray)
+			menu_toggle_item (_("Blink Tray _Icon"), submenu, mg_set_guint8, &sess->alert_tray, sess->alert_tray);
+		menu_toggle_item (_("Blink Task _Bar"), submenu, mg_set_guint8, &sess->alert_taskbar, sess->alert_taskbar);
+
+		if (sess->type == SESS_CHANNEL)
+		{
+		submenu = menu_quick_sub (_("_Settings"), menu, NULL, XCMENU_MNEMONIC, -1);
+#if 0
+		menu_toggle_item (_("_Log to Disk"), submenu, mg_hidejp_cb, sess, sess->text_hidejoinpart);
+		menu_toggle_item (_("_Reload Scrollback"), submenu, mg_hidejp_cb, sess, sess->text_hidejoinpart);
+		if (sess->type == SESS_CHANNEL)
+#endif
+			menu_toggle_item (_("_Hide Join/Part Messages"), submenu, mg_set_guint8,
+									&sess->text_hidejoinpart, sess->text_hidejoinpart);
+		}
 
 		/* separator */
-		item = gtk_menu_item_new ();
-		gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
-		gtk_widget_show (item);
-
-		menu_toggle_item (_("Beep on message"), submenu, mg_beepmsg_cb, sess,
-								sess->beep);
-		if (prefs.gui_tray)
-			menu_toggle_item (_("Blink tray on message"), submenu, mg_traymsg_cb, sess,
-									sess->tray);
-		if (sess->type == SESS_CHANNEL)
-			menu_toggle_item (_("Show join/part messages"), submenu, mg_hidejp_cb,
-									sess, !sess->hide_join_part);
-		menu_toggle_item (_("Color paste"), submenu, mg_colorpaste_cb, sess,
-								sess->color_paste);
+		menu_quick_item (0, 0, menu, XCMENU_SHADED, 0, 0);
 
 		if (sess->type == SESS_CHANNEL)
-			mg_addfavoritemenu (sess->server, menu, sess->channel, sess);
+			menu_addfavoritemenu (sess->server, menu, sess->channel);
 	}
 
-	/* separator */
-/*	item = gtk_menu_item_new ();
-	gtk_menu_shell_append (GTK_MENU_SHELL (menu), item);
-	gtk_widget_show (item);*/
-
-	mg_create_icon_item (_("_Close Tab"), GTK_STOCK_CLOSE, menu,
-								mg_destroy_tab_cb, ch);
-	mg_create_icon_item (_("_Detach Tab"), GTK_STOCK_REDO, menu,
+	mg_create_icon_item (_("_Detach"), GTK_STOCK_REDO, menu,
 								mg_detach_tab_cb, ch);
-
+	mg_create_icon_item (_("_Close"), GTK_STOCK_CLOSE, menu,
+								mg_destroy_tab_cb, ch);
 	if (sess && tabmenu_list)
 		menu_create (menu, tabmenu_list, sess->channel, FALSE);
 	menu_add_plugin_items (menu, "\x4$TAB", sess->channel);
@@ -1686,6 +1636,26 @@ mg_tab_contextmenu_cb (chanview *cv, chan *ch, int tag, gpointer ud, GdkEventBut
 	g_signal_connect (G_OBJECT (menu), "selection-done",
 							G_CALLBACK (mg_menu_destroy), NULL);
 	gtk_menu_popup (GTK_MENU (menu), NULL, NULL, NULL, NULL, 0, event->time);
+}
+
+static gboolean
+mg_tab_contextmenu_cb (chanview *cv, chan *ch, int tag, gpointer ud, GdkEventButton *event)
+{
+	/* shift-click to close a tab */
+	if ((event->state & GDK_SHIFT_MASK) && event->type == GDK_BUTTON_PRESS)
+	{
+		mg_xbutton_cb (cv, ch, tag, ud);
+		return FALSE;
+	}
+
+	if (event->button != 3)
+		return FALSE;
+
+	if (tag == TAG_IRC)
+		mg_create_tabmenu (ud, event, ch);
+	else
+		mg_create_tabmenu (NULL, event, ch);
+
 	return TRUE;
 }
 
@@ -3360,13 +3330,6 @@ fe_set_away (server *serv)
 }
 
 void
-fe_set_color_paste (session *sess, int status)
-{
-	sess->color_paste = status;
-	if (!sess->gui->is_tab || sess == current_tab)
-		GTK_XTEXT (sess->gui->xtext)->color_paste = status;
-}
-void
 fe_set_channel (session *sess)
 {
 	if (sess->res->tab != NULL)
@@ -3403,7 +3366,7 @@ mg_changui_new (session *sess, restore_gui *res, int tab, int focus)
 		mg_create_topwindow (sess);
 		fe_set_title (sess);
 		if (user && user->hostname)
-			set_topic (sess, user->hostname);
+			set_topic (sess, user->hostname, user->hostname);
 		return;
 	}
 
@@ -3424,7 +3387,7 @@ mg_changui_new (session *sess, restore_gui *res, int tab, int focus)
 	}
 
 	if (user && user->hostname)
-		set_topic (sess, user->hostname);
+		set_topic (sess, user->hostname, user->hostname);
 
 	mg_add_chan (sess);
 

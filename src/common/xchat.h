@@ -315,6 +315,11 @@ struct xchatprefs
 #define SESS_NOTICES	4
 #define SESS_SNOTICES	5
 
+/* Per-Channel Settings */
+#define SET_OFF 0
+#define SET_ON 1
+#define SET_DEFAULT 2 /* use global setting */
+
 typedef struct session
 {
 	struct server *server;
@@ -351,21 +356,28 @@ typedef struct session
 	struct session_gui *gui;		/* initialized by fe_new_window */
 	struct restore_gui *res;
 
-	int userlisthidden;
-	int type;
+	int type;					/* SESS_* */
+
+	/* Per-Channel Alerts */
+	/* use a byte, because we need a pointer to each element */
+	guint8 alert_beep;
+	guint8 alert_taskbar;
+	guint8 alert_tray;
+
+	/* Per-Channel Settings */
+	guint8 text_hidejoinpart;
+	guint8 text_logging;
+	guint8 text_scrollback;
+
 	int new_data:1;			/* new data avail? (purple tab) */
 	int nick_said:1;		/* your nick mentioned? (blue tab) */
 	int msg_said:1;			/* new msg available? (red tab) */
+
 	int ignore_date:1;
 	int ignore_mode:1;
 	int ignore_names:1;
 	int end_of_names:1;
 	int doing_who:1;		/* /who sent on this channel */
-	/* these are in the bottom-right menu */
-	unsigned int hide_join_part:1;	/* hide join & part messages? */
-	unsigned int beep:1;				/* beep enabled? */
-	unsigned int tray:1;				/* tray flash for this chan? */
-	unsigned int color_paste:1;
 	int done_away_check:1;	/* done checking for away status changes */
 	unsigned int lastlog_regexp:1;	/* this is a lastlog and using regexp */
 } session;
@@ -483,34 +495,36 @@ typedef struct server
 	time_t away_time;					/* when we were marked away */
 
 	char *encoding;					/* NULL for system */
+	char *autojoin;			/* list of channels & keys to join */
 
-	int motd_skipped:1;
+	unsigned int motd_skipped:1;
 	unsigned int connected:1;
 	unsigned int connecting:1;
-	int no_login:1;
-	int skip_next_userhost:1;			/* used for "get my ip from server" */
-	int inside_whois:1;
-	int doing_dns:1;				/* /dns has been done */
-	unsigned int end_of_motd:1;	/* end of motd reached (logged in) */
-	int sent_quit:1;				/* sent a QUIT already? */
-	int use_listargs:1;			/* undernet and dalnet need /list >0,<10000 */
+	unsigned int no_login:1;
+	unsigned int skip_next_userhost:1;/* used for "get my ip from server" */
+	unsigned int skip_next_whois:1;	/* hide whois output */
+	unsigned int inside_whois:1;
+	unsigned int doing_dns:1;			/* /dns has been done */
+	unsigned int end_of_motd:1;		/* end of motd reached (logged in) */
+	unsigned int sent_quit:1;			/* sent a QUIT already? */
+	unsigned int use_listargs:1;		/* undernet and dalnet need /list >0,<10000 */
 	unsigned int is_away:1;
-	int reconnect_away:1;		/* whether to reconnect in is_away state */
-	int dont_use_proxy:1;		/* to proxy or not to proxy */
-	int supports_watch:1;		/* supports the WATCH command */
-	int bad_prefix:1;				/* gave us a bad PREFIX= 005 number */
-	unsigned int have_namesx:1;	/* 005 tokens NAMESX and UHNAMES */
+	unsigned int reconnect_away:1;	/* whether to reconnect in is_away state */
+	unsigned int dont_use_proxy:1;	/* to proxy or not to proxy */
+	unsigned int supports_watch:1;	/* supports the WATCH command */
+	unsigned int bad_prefix:1;			/* gave us a bad PREFIX= 005 number */
+	unsigned int have_namesx:1;		/* 005 tokens NAMESX and UHNAMES */
 	unsigned int have_uhnames:1;
-	unsigned int have_whox:1;	/* have undernet's WHOX features */
-	unsigned int have_capab:1;	/* supports CAPAB (005 tells us) */
-	unsigned int have_idmsg:1;	/* freenode's IDENTIFY-MSG */
+	unsigned int have_whox:1;		/* have undernet's WHOX features */
+	unsigned int have_capab:1;		/* supports CAPAB (005 tells us) */
+	unsigned int have_idmsg:1;		/* freenode's IDENTIFY-MSG */
 	unsigned int have_except:1;	/* ban exemptions +e */
 	unsigned int using_cp1255:1;	/* encoding is CP1255/WINDOWS-1255? */
 	unsigned int using_irc:1;		/* encoding is "IRC" (CP1252/UTF-8 hybrid)? */
-	int use_who:1;				/* whether to use WHO command to get dcc_ip */
+	unsigned int use_who:1;			/* whether to use WHO command to get dcc_ip */
 #ifdef USE_OPENSSL
-	int use_ssl:1;					  /* is server SSL capable? */
-	int accept_invalid_cert:1;	  /* ignore result of server's cert. verify */
+	unsigned int use_ssl:1;				  /* is server SSL capable? */
+	unsigned int accept_invalid_cert:1;/* ignore result of server's cert. verify */
 #endif
 } server;
 
