@@ -578,6 +578,7 @@ cmd_unban (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 typedef struct
 {
 	char *name;
+	char *alias;	/* old names from 2.8.4 */
 	int offset;
 } channel_options;
 
@@ -585,39 +586,16 @@ typedef struct
 
 channel_options chanopt[] =
 {
-	{"alert_beep", S_F(alert_beep)},
-	{"alert_taskbar", S_F(alert_taskbar)},
-	{"alert_tray", S_F(alert_tray)},
+	{"alert_beep", "BEEP", S_F(alert_beep)},
+	{"alert_taskbar", NULL, S_F(alert_taskbar)},
+	{"alert_tray", "TRAY", S_F(alert_tray)},
 
-	{"text_hidejoinpart", S_F(text_hidejoinpart)},
-	{"text_logging", S_F(text_logging)},
-	{"text_scrollback", S_F(text_scrollback)},
+	{"text_hidejoinpart", "CONFMODE", S_F(text_hidejoinpart)},
+	{"text_logging", NULL, S_F(text_logging)},
+	{"text_scrollback", NULL, S_F(text_scrollback)},
 };
 
 #undef SESS_FIELD
-
-/*int
-xchat_save_per_channel_settings (session *sess, int fh)
-{
-	char buf[256];
-	int i = 0, written = 0;
-	guint8 val;
-
-	while (i < sizeof (chanopt) / sizeof (channel_options))
-	{
-		val = G_STRUCT_MEMBER (guint8, sess, chanopt[i].offset);
-
-		if (val != SET_DEFAULT)
-		{
-			snprintf (buf, sizeof (buf), "%s = %d\n", chanopt[i].name, val);
-			written += write (fh, buf, strlen (buf));
-		}
-
-		i++;
-	}
-
-	return written;
-}*/
 
 static char *
 chanopt_value (guint8 val)
@@ -640,8 +618,8 @@ cmd_chanopt (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	guint8 val;
 	int offset = 2;
 	char *find;
-	char *newval;
 	gboolean quiet = FALSE;
+	int newval = -1;
 
 	if (!strcmp (word[2], "-quiet"))
 	{
@@ -649,8 +627,19 @@ cmd_chanopt (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		offset++;
 	}
 
-	find = word[offset];
-	newval = word[offset+1];
+	find = word[offset++];
+
+	if (word[offset][0])
+	{
+		if (!strcasecmp (word[offset], "ON"))
+			newval = 1;
+		else if (!strcasecmp (word[offset], "OFF"))
+			newval = 0;
+		else if (word[offset][0] == 'u')
+			newval = SET_DEFAULT;
+		else
+			newval = atoi (word[offset]);
+	}
 
 	if (!quiet)
 		PrintTextf (sess, "\002Network\002: %s \002Channel\002: %s\n",
@@ -659,11 +648,11 @@ cmd_chanopt (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 
 	while (i < sizeof (chanopt) / sizeof (channel_options))
 	{
-		if (find[0] == 0 || match (find, chanopt[i].name))
+		if (find[0] == 0 || match (find, chanopt[i].name) || (chanopt[i].alias && match (find, chanopt[i].alias)))
 		{
-			if (newval[0])	/* set new value */
+			if (newval != -1)	/* set new value */
 			{
-				*(guint8 *)G_STRUCT_MEMBER_P(sess, chanopt[i].offset) = atoi (newval);
+				*(guint8 *)G_STRUCT_MEMBER_P(sess, chanopt[i].offset) = newval;
 			}
 
 			if (!quiet)	/* print value */
