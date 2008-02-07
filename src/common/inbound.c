@@ -231,6 +231,7 @@ alert_match_word (char *word, char *masks)
 
 	while (1)
 	{
+		/* if it's a 0, space or comma, the word has ended. */
 		if (*p == 0 || *p == ' ' || *p == ',')
 		{
 			endchar = *p;
@@ -252,8 +253,8 @@ alert_match_word (char *word, char *masks)
 gboolean
 alert_match_text (char *text, char *masks)
 {
-	char *p = text;
-	char endchar;
+	unsigned char *p = text;
+	unsigned char endchar;
 	int res;
 
 	if (masks[0] == 0)
@@ -261,7 +262,10 @@ alert_match_text (char *text, char *masks)
 
 	while (1)
 	{
-		if (*p == 0 || *p == ' ' || *p == ',')
+		/* if it's a 0, space or comma, the word has ended. */
+		if (*p == 0 || *p == ' ' || *p == ',' ||
+			/* if it's anything BUT a letter, the word has ended. */
+			 (!g_unichar_isalpha (g_utf8_get_char (p))))
 		{
 			endchar = *p;
 			*p = 0;
@@ -271,11 +275,12 @@ alert_match_text (char *text, char *masks)
 			if (res)
 				return TRUE;	/* yes, matched! */
 
-			text = p + 1;
+			text = p + g_utf8_skip [p[0]];
 			if (*p == 0)
 				return FALSE;
 		}
-		p++;
+
+		p += g_utf8_skip [p[0]];
 	}
 }
 
@@ -445,7 +450,7 @@ inbound_chanmsg (server *serv, session *sess, char *chan, char *from, char *text
 	}
 	else
 	{
-		if (sess->type != SESS_DIALOG && prefs.input_flash_chans || sess->alert_taskbar == SET_ON)
+		if (sess->type != SESS_DIALOG && (prefs.input_flash_chans || sess->alert_taskbar == SET_ON))
 			fe_flash_window (sess);
 	}
 
