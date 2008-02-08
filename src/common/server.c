@@ -1970,6 +1970,8 @@ server_free (server *serv)
 		free (serv->last_away_reason);
 	if (serv->encoding)
 		free (serv->encoding);
+	if (serv->autojoin)
+		free (serv->autojoin);
 
 	fe_server_callback (serv);
 

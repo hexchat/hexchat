@@ -410,6 +410,7 @@ typedef struct server
 	void (*p_ns_identify)(struct server *, char *pass);
 	void (*p_ns_ghost)(struct server *, char *usname, char *pass);
 	void (*p_join)(struct server *, char *channel, char *key);
+	void (*p_join_list)(struct server *, GSList *channels, GSList *keys);
 	void (*p_login)(struct server *, char *user, char *realname);
 	void (*p_join_info)(struct server *, char *channel);
 	void (*p_mode)(struct server *, char *target, char *mode);

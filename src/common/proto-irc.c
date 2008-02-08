@@ -93,6 +93,105 @@ irc_join (server *serv, char *channel, char *key)
 }
 
 static void
+irc_join_list_flush (server *serv, GString *c, GString *k)
+{
+	char *chanstr, *keystr;
+
+	chanstr = g_string_free (c, FALSE);
+	keystr = g_string_free (k, FALSE);
+	if (chanstr[0])
+	{
+		if (keystr[0])
+			tcp_sendf (serv, "JOIN %s %s\r\n", chanstr, keystr);
+		else
+			tcp_sendf (serv, "JOIN %s\r\n", chanstr);
+	}
+	g_free (chanstr);
+	g_free (keystr);
+}
+
+/* join a whole list of channels & keys, split to multiple lines
+ * to get around 512 limit */
+
+static void
+irc_join_list (server *serv, GSList *channels, GSList *keys)
+{
+	GSList *clist;
+	GSList *klist;
+	GString *c = g_string_new (NULL);
+	GString *k = g_string_new (NULL);
+	int len;
+	int add;
+	int i, j;
+
+	i = j = 0;
+	len = 9; /* "JOIN<space><space>\r\n" */
+	clist = channels;
+	klist = keys;
+
+	while (clist)
+	{
+		/* measure how many bytes this channel would add... */
+		if (1)
+		{
+			add = strlen (clist->data);
+			if (i != 0)
+				add++;	/* comma */
+		}
+
+		if (klist->data)
+		{
+			add += strlen (klist->data);
+			if (j != 0)
+				add++;	/* comma */
+		}
+
+		/* too big? dump buffer and start a fresh one */
+		if (len + add > 512)
+		{
+			irc_join_list_flush (serv, c, k);
+
+			c = g_string_new (NULL);
+			k = g_string_new (NULL);
+			i = j = 0;
+			len = 9;
+		}
+
+		/* now actually add it to our GStrings */
+		if (1)
+		{
+			add = strlen (clist->data);
+			if (i != 0)
+			{
+				add++;
+				g_string_append_c (c, ',');
+			}
+			g_string_append (c, clist->data);
+			i++;
+		}
+
+		if (klist->data)
+		{
+			add += strlen (klist->data);
+			if (j != 0)
+			{
+				add++;
+				g_string_append_c (k, ',');
+			}
+			g_string_append (k, klist->data);
+			j++;
+		}
+
+		len += add;
+
+		klist = klist->next;
+		clist = clist->next;
+	}
+
+	irc_join_list_flush (serv, c, k);
+}
+
+static void
 irc_part (server *serv, char *channel, char *reason)
 {
 	if (reason[0])
@@ -433,20 +532,31 @@ process_numeric (session * sess, int n,
 		goto def;
 
 	case 312:
-		EMIT_SIGNAL (XP_TE_WHOIS3, whois_sess, word[4], word_eol[5], NULL, NULL, 0);
+		if (!serv->skip_next_whois)
+			EMIT_SIGNAL (XP_TE_WHOIS3, whois_sess, word[4], word_eol[5], NULL, NULL, 0);
+		else
+			inbound_user_info (sess, NULL, NULL, NULL, word[5], word[4], NULL, 0xff);
 		break;
 
-	case 311:
+	case 311:	/* WHOIS 1st line */
 		serv->inside_whois = 1;
-		/* FALL THROUGH */
+		inbound_user_info_start (sess, word[4]);
+		if (!serv->skip_next_whois)
+			EMIT_SIGNAL (XP_TE_WHOIS1, whois_sess, word[4], word[5],
+							 word[6], word_eol[8] + 1, 0);
+		else
+			inbound_user_info (sess, NULL, word[5], word[6], NULL, word[4],
+									 word_eol[8][0] == ':' ? word_eol[8] + 1 : word_eol[8], 0xff);
+		break;
 
-	case 314:
+	case 314:	/* WHOWAS */
 		inbound_user_info_start (sess, word[4]);
 		EMIT_SIGNAL (XP_TE_WHOIS1, whois_sess, word[4], word[5],
 						 word[6], word_eol[8] + 1, 0);
 		break;
 
 	case 317:
+		if (!serv->skip_next_whois)
 		{
 			time_t timestamp = (time_t) atol (word[6]);
 			long idle = atol (word[5]);
@@ -469,22 +579,26 @@ process_numeric (session * sess, int n,
 		}
 		break;
 
-	case 318:
+	case 318:	/* END OF WHOIS */
+		if (!serv->skip_next_whois)
+			EMIT_SIGNAL (XP_TE_WHOIS6, whois_sess, word[4], NULL,
+							 NULL, NULL, 0);
+		serv->skip_next_whois = 0;
 		serv->inside_whois = 0;
-		EMIT_SIGNAL (XP_TE_WHOIS6, whois_sess, word[4], NULL,
-						 NULL, NULL, 0);
 		break;
 
 	case 313:
 	case 319:
-		EMIT_SIGNAL (XP_TE_WHOIS2, whois_sess, word[4],
-						 word_eol[5] + 1, NULL, NULL, 0);
+		if (!serv->skip_next_whois)
+			EMIT_SIGNAL (XP_TE_WHOIS2, whois_sess, word[4],
+							 word_eol[5] + 1, NULL, NULL, 0);
 		break;
 
 	case 307:	/* dalnet version */
 	case 320:	/* :is an identified user */
-		EMIT_SIGNAL (XP_TE_WHOIS_ID, whois_sess, word[4],
-						 word_eol[5] + 1, NULL, NULL, 0);
+		if (!serv->skip_next_whois)
+			EMIT_SIGNAL (XP_TE_WHOIS_ID, whois_sess, word[4],
+							 word_eol[5] + 1, NULL, NULL, 0);
 		break;
 
 	case 321:
@@ -738,9 +852,10 @@ process_numeric (session * sess, int n,
 		if (serv->inside_whois && word[4][0])
 		{
 			/* some unknown WHOIS reply, ircd coders make them up weekly */
-			EMIT_SIGNAL (XP_TE_WHOIS_SPECIAL, whois_sess, word[4],
-							(word_eol[5][0] == ':') ? word_eol[5] + 1 : word_eol[5],
-							 word[2], NULL, 0);
+			if (!serv->skip_next_whois)
+				EMIT_SIGNAL (XP_TE_WHOIS_SPECIAL, whois_sess, word[4],
+								(word_eol[5][0] == ':') ? word_eol[5] + 1 : word_eol[5],
+								 word[2], NULL, 0);
 			return;
 		}
 
@@ -1089,6 +1204,7 @@ proto_fill_her_up (server *serv)
 	serv->p_ns_identify = irc_ns_identify;
 	serv->p_ns_ghost = irc_ns_ghost;
 	serv->p_join = irc_join;
+	serv->p_join_list = irc_join_list;
 	serv->p_login = irc_login;
 	serv->p_join_info = irc_join_info;
 	serv->p_mode = irc_mode;
