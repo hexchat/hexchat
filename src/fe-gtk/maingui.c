@@ -1567,15 +1567,59 @@ mg_create_color_menu (GtkWidget *menu, session *sess)
 static void
 mg_set_guint8 (GtkCheckMenuItem *item, guint8 *setting)
 {
-	*setting = FALSE;
+	session *sess = current_sess;
+	guint8 logging = sess->text_logging;
+
+	*setting = SET_OFF;
 	if (item->active)
-		*setting = TRUE;
+		*setting = SET_ON;
+
+	/* has the logging setting changed? */
+	if (logging != sess->text_logging)
+		log_open_or_close (sess);
+}
+
+static void
+mg_perchan_menu_item (char *label, GtkWidget *menu, guint8 *setting, guint global)
+{
+	guint8 initial_value = *setting;
+
+	/* if it's using global value, use that as initial state */
+	if (initial_value == SET_DEFAULT)
+		initial_value = global;
+
+	menu_toggle_item (label, menu, mg_set_guint8, setting, initial_value);
+}
+
+static void
+mg_create_perchannelmenu (session *sess, GtkWidget *menu)
+{
+	GtkWidget *submenu;
+
+	submenu = menu_quick_sub (_("_Settings"), menu, NULL, XCMENU_MNEMONIC, -1);
+
+	mg_perchan_menu_item (_("_Log to Disk"), submenu, &sess->text_logging, prefs.logging);
+	mg_perchan_menu_item (_("_Reload Scrollback"), submenu, &sess->text_scrollback, prefs.text_replay);
+	if (sess->type == SESS_CHANNEL)
+		mg_perchan_menu_item (_("_Hide Join/Part Messages"), submenu, &sess->text_hidejoinpart, prefs.confmode);
+}
+
+static void
+mg_create_alertmenu (session *sess, GtkWidget *menu)
+{
+	GtkWidget *submenu;
+
+	submenu = menu_quick_sub (_("_Extra Alerts"), menu, NULL, XCMENU_MNEMONIC, -1);
+
+	mg_perchan_menu_item (_("Beep on _Message"), submenu, &sess->alert_beep, prefs.input_beep_chans);
+	mg_perchan_menu_item (_("Blink Tray _Icon"), submenu, &sess->alert_tray, prefs.input_tray_chans);
+	mg_perchan_menu_item (_("Blink Task _Bar"), submenu, &sess->alert_taskbar, prefs.input_flash_chans);
 }
 
 static void
 mg_create_tabmenu (session *sess, GdkEventButton *event, chan *ch)
 {
-	GtkWidget *menu, *submenu, *item;
+	GtkWidget *menu, *item;
 	char buf[256];
 
 	menu = gtk_menu_new ();
@@ -1594,24 +1638,11 @@ mg_create_tabmenu (session *sess, GdkEventButton *event, chan *ch)
 		/* separator */
 		menu_quick_item (0, 0, menu, XCMENU_SHADED, 0, 0);
 
-		submenu = menu_quick_sub (_("_Alerts"), menu, NULL, XCMENU_MNEMONIC, -1);
+		/* per-channel alerts */
+		mg_create_alertmenu (sess, menu);
 
-		menu_toggle_item (_("Beep on _Message"), submenu, mg_set_guint8, &sess->alert_beep, sess->alert_beep);
-		if (prefs.gui_tray)
-			menu_toggle_item (_("Blink Tray _Icon"), submenu, mg_set_guint8, &sess->alert_tray, sess->alert_tray);
-		menu_toggle_item (_("Blink Task _Bar"), submenu, mg_set_guint8, &sess->alert_taskbar, sess->alert_taskbar);
-
-		if (sess->type == SESS_CHANNEL)
-		{
-		submenu = menu_quick_sub (_("_Settings"), menu, NULL, XCMENU_MNEMONIC, -1);
-#if 0
-		menu_toggle_item (_("_Log to Disk"), submenu, mg_hidejp_cb, sess, sess->text_hidejoinpart);
-		menu_toggle_item (_("_Reload Scrollback"), submenu, mg_hidejp_cb, sess, sess->text_hidejoinpart);
-		if (sess->type == SESS_CHANNEL)
-#endif
-			menu_toggle_item (_("_Hide Join/Part Messages"), submenu, mg_set_guint8,
-									&sess->text_hidejoinpart, sess->text_hidejoinpart);
-		}
+		/* per-channel settings */
+		mg_create_perchannelmenu (sess, menu);
 
 		/* separator */
 		menu_quick_item (0, 0, menu, XCMENU_SHADED, 0, 0);

@@ -1950,10 +1950,7 @@ setup_apply_real (int new_pix, int do_ulist, int do_layout)
 			setup_apply_to_sess (sess->gui);
 		}
 
-		if (prefs.logging)
-			log_open (sess);
-		else
-			log_close (sess);
+		log_open_or_close (sess);
 
 		if (do_ulist)
 			userlist_rehash (sess);
