@@ -259,6 +259,17 @@ scrollback_load (session *sess)
 	time_t stamp;
 	int lines;
 
+	if (sess->text_scrollback == SET_DEFAULT)
+	{
+		if (!prefs.text_replay)
+			return;
+	}
+	else
+	{
+		if (sess->text_scrollback != SET_ON)
+			return;
+	}
+
 	if (scrollback_get_filename (sess, buf, sizeof (buf)) == NULL)
 		return;
 
@@ -525,7 +536,7 @@ log_open_file (char *servname, char *channame, char *netname)
 	return fd;
 }
 
-void
+static void
 log_open (session *sess)
 {
 	static gboolean log_error = FALSE;
@@ -543,6 +554,25 @@ log_open (session *sess)
 		fe_message (message, FE_MSG_WAIT | FE_MSG_ERROR);
 
 		log_error = TRUE;
+	}
+}
+
+void
+log_open_or_close (session *sess)
+{
+	if (sess->text_logging == SET_DEFAULT)
+	{
+		if (prefs.logging)
+			log_open (sess);
+		else
+			log_close (sess);
+	}
+	else
+	{
+		if (sess->text_logging)
+			log_open (sess);
+		else
+			log_close (sess);
 	}
 }
 

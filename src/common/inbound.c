@@ -147,6 +147,29 @@ inbound_make_idtext (server *serv, char *idtext, int max, int id)
 	}
 }
 
+/* is a per-channel setting set? Or is it UNSET and
+ * the global version is set? */
+
+static gboolean
+is_set (unsigned int global, guint8 per_chan_setting)
+{
+	if (per_chan_setting == SET_DEFAULT)
+		return global;
+
+	return per_chan_setting;
+}
+
+/* additive version */
+
+static gboolean
+is_set_a (unsigned int global, guint8 per_chan_setting)
+{
+	if (per_chan_setting == SET_DEFAULT)
+		return global;
+
+	return per_chan_setting || global;
+}
+
 void
 inbound_privmsg (server *serv, char *from, char *ip, char *text, int id)
 {
@@ -165,15 +188,17 @@ inbound_privmsg (server *serv, char *from, char *ip, char *text, int id)
 				sess = inbound_open_dialog (serv, from);
 			else
 				sess = serv->server_session;
+			if (!sess)
+				return; /* ?? */
 		}
 
-		if (prefs.input_beep_priv || (sess && sess->alert_beep == SET_ON))
+		if (is_set_a (prefs.input_beep_priv, sess->alert_beep))
 			sound_beep (sess);
 
 		if (sess && sess->alert_tray == SET_ON)
 			fe_tray_set_icon (FE_ICON_MESSAGE);
 
-		if (prefs.input_flash_priv || (sess && sess->alert_taskbar == SET_ON))
+		if (is_set_a (prefs.input_flash_priv, sess->alert_taskbar))
 			fe_flash_window (sess);
 
 		if (ip && ip[0])
@@ -198,17 +223,17 @@ inbound_privmsg (server *serv, char *from, char *ip, char *text, int id)
 	{
 		sess = serv->front_session;
 
-		if (prefs.input_beep_priv || (sess && sess->alert_beep == SET_ON))
+		if (prefs.input_beep_priv)
 			sound_beep (sess);
 
 		EMIT_SIGNAL (XP_TE_PRIVMSG, sess, from, text, idtext, NULL, 0);
 		return;
 	}
 
-	if (prefs.input_beep_priv || sess->alert_beep == SET_ON)
+	if (is_set_a (prefs.input_beep_priv, sess->alert_beep))
 		sound_beep (sess);
 
-	if (prefs.input_flash_priv || sess->alert_taskbar == SET_ON)
+	if (is_set_a (prefs.input_flash_priv, sess->alert_taskbar))
 		fe_flash_window (sess);
 
 	if (sess->type == SESS_DIALOG)
@@ -364,15 +389,18 @@ inbound_action (session *sess, char *chan, char *from, char *text, int fromme, i
 		if (hilight && prefs.input_beep_hilight)
 			beep = TRUE;
 
-		if (beep || sess->alert_beep == SET_ON)
+		if (is_set_a (beep, sess->alert_beep))
 			sound_beep (sess);
 
 		if (sess->alert_tray == SET_ON)
 			fe_tray_set_icon (FE_ICON_MESSAGE);
 
 		/* private action, flash? */
-		if ((!is_channel (serv, chan) && prefs.input_flash_priv) || sess->alert_taskbar == SET_ON)
-			fe_flash_window (sess);
+		if (!is_channel (serv, chan))
+		{
+			if (is_set_a (prefs.input_flash_priv, sess->alert_taskbar))
+				fe_flash_window (sess);
+		}
 
 		if (hilight)
 		{
@@ -435,7 +463,7 @@ inbound_chanmsg (server *serv, session *sess, char *chan, char *from, char *text
 
 	if (sess->type != SESS_DIALOG)
 	{
-		if (prefs.input_beep_chans || sess->alert_beep == SET_ON)
+		if (is_set_a (prefs.input_beep_chans, sess->alert_beep))
 			sound_beep (sess);
 
 		if (sess->alert_tray == SET_ON)
@@ -450,8 +478,11 @@ inbound_chanmsg (server *serv, session *sess, char *chan, char *from, char *text
 	}
 	else
 	{
-		if (sess->type != SESS_DIALOG && (prefs.input_flash_chans || sess->alert_taskbar == SET_ON))
-			fe_flash_window (sess);
+		if (sess->type != SESS_DIALOG)
+		{
+			if (is_set_a (prefs.input_flash_chans, sess->alert_taskbar))
+				fe_flash_window (sess);
+		}
 	}
 
 	if (sess->type == SESS_DIALOG)
@@ -574,8 +605,7 @@ inbound_ujoin (server *serv, char *chan, char *nick, char *ip)
 	fe_set_nonchannel (sess, TRUE);
 	userlist_clear (sess);
 
-	if (prefs.logging)
-		log_open (sess);
+	log_open_or_close (sess);
 
 	sess->waitchannel[0] = 0;
 	sess->ignore_date = TRUE;
@@ -712,7 +742,7 @@ inbound_join (server *serv, char *chan, char *user, char *ip)
 	session *sess = find_channel (serv, chan);
 	if (sess)
 	{
-		if (sess->text_hidejoinpart == SET_OFF)
+		if (!is_set (prefs.confmode, sess->text_hidejoinpart))
 			EMIT_SIGNAL (XP_TE_JOIN, sess, user, chan, ip, NULL, 0);
 		userlist_add (sess, user, ip);
 	}
@@ -735,7 +765,7 @@ inbound_part (server *serv, char *chan, char *user, char *ip, char *reason)
 	session *sess = find_channel (serv, chan);
 	if (sess)
 	{
-		if (sess->text_hidejoinpart == SET_OFF)
+		if (!is_set (prefs.confmode, sess->text_hidejoinpart))
 		{
 			if (*reason)
 				EMIT_SIGNAL (XP_TE_PARTREASON, sess, user, ip, chan, reason, 0);
@@ -775,7 +805,7 @@ inbound_quit (server *serv, char *nick, char *ip, char *reason)
  				was_on_front_session = TRUE;
 			if (userlist_remove (sess, nick))
 			{
-				if (sess->text_hidejoinpart == SET_OFF)
+				if (is_set (prefs.confmode, sess->text_hidejoinpart))
 					EMIT_SIGNAL (XP_TE_QUIT, sess, nick, reason, ip, NULL, 0);
 			} else if (sess->type == SESS_DIALOG && !serv->p_cmp (sess->channel, nick))
 			{
@@ -891,8 +921,7 @@ inbound_notice (server *serv, char *to, char *nick, char *msg, char *ip, int id)
 				fe_set_title (sess);
 				fe_set_nonchannel (sess, FALSE);
 				userlist_clear (sess);
-				if (prefs.logging)
-					log_open (sess);
+				log_open_or_close (sess);
 			}
 			/* Avoid redundancy with some Undernet notices */
 			if (!strncmp (msg, "*** Notice -- ", 14))
@@ -974,7 +1003,9 @@ inbound_away (server *serv, char *nick, char *msg)
 			sess = serv->server_session;
 	}
 
-	EMIT_SIGNAL (XP_TE_WHOIS5, sess, nick, msg, NULL, NULL, 0);
+	/* possibly hide the output */
+	if (!serv->inside_whois || !serv->skip_next_whois)
+		EMIT_SIGNAL (XP_TE_WHOIS5, sess, nick, msg, NULL, NULL, 0);
 
 	list = sess_list;
 	while (list)
@@ -1018,17 +1049,31 @@ inbound_nameslist_end (server *serv, char *chan)
 }
 
 static gboolean
-check_willjoin_channels (server *serv)
+check_autojoin_channels (server *serv)
 {
 	char *po;
 	session *sess;
 	GSList *list = sess_list;
 	int i = 0;
+	GSList *channels, *keys;
 
 	/* shouldnt really happen, the io tag is destroyed in server.c */
 	if (!is_server (serv))
 		return FALSE;
 
+	/* send auto join list */
+	if (serv->autojoin)
+	{
+		joinlist_split (serv->autojoin, &channels, &keys);
+		serv->p_join_list (serv, channels, keys);
+		joinlist_free (channels, keys);
+
+		free (serv->autojoin);
+		serv->autojoin = NULL;
+	}
+
+	/* this is really only for re-connects when you
+    * join channels not in the auto-join list. */
 	while (list)
 	{
 		sess = list->data;
@@ -1126,8 +1171,8 @@ inbound_login_start (session *sess, char *nick, char *servname)
 {
 	inbound_newnick (sess->server, sess->server->nick, nick, TRUE);
 	server_set_name (sess->server, servname);
-	if (sess->type == SESS_SERVER && prefs.logging)
-		log_open (sess);
+	if (sess->type == SESS_SERVER)
+		log_open_or_close (sess);
 	/* reset our away status */
 	if (sess->server->reconnect_away)
 	{
@@ -1194,47 +1239,50 @@ inbound_user_info_start (session *sess, char *nick)
 	inbound_set_all_away_status (sess->server, nick, 0);
 }
 
-int
+/* reporting new information found about this user. chan may be NULL.
+ * away may be 0xff to indicate UNKNOWN. */
+
+void
 inbound_user_info (session *sess, char *chan, char *user, char *host,
 						 char *servname, char *nick, char *realname,
 						 unsigned int away)
 {
 	server *serv = sess->server;
 	session *who_sess;
-	char *uhost;
+	GSList *list;
+	char *uhost = NULL;
 
-	who_sess = find_channel (serv, chan);
-	if (who_sess)
+	if (user && host)
 	{
-		if (user && host)
+		uhost = g_malloc (strlen (user) + strlen (host) + 2);
+		sprintf (uhost, "%s@%s", user, host);
+	}
+
+	if (chan)
+	{
+		who_sess = find_channel (serv, chan);
+		if (who_sess)
+			userlist_add_hostname (who_sess, nick, uhost, realname, servname, away);
+		else
 		{
-			uhost = malloc (strlen (user) + strlen (host) + 2);
-			sprintf (uhost, "%s@%s", user, host);
-			if (!userlist_add_hostname (who_sess, nick, uhost, realname, servname, away))
-			{
-				if (!who_sess->doing_who)
-				{
-					free (uhost);
-					return 0;
-				}
-			}
-			free (uhost);
-		} else
+			if (serv->doing_dns && nick && host)
+				do_dns (sess, nick, host);
+		}
+	}
+	else
+	{
+		/* came from WHOIS, not channel specific */
+		for (list = sess_list; list; list = list->next)
 		{
-			if (!userlist_add_hostname (who_sess, nick, NULL, realname, servname, away))
+			sess = list->data;
+			if (sess->type == SESS_CHANNEL && sess->server == serv)
 			{
-				if (!who_sess->doing_who)
-					return 0;
+				userlist_add_hostname (sess, nick, uhost, realname, servname, away);
 			}
 		}
-	} else
-	{
-		if (!serv->doing_dns)
-			return 0;
-		if (nick && host)
-			do_dns (sess, nick, host);
 	}
-	return 1;
+
+	g_free (uhost);
 }
 
 int
@@ -1308,9 +1356,9 @@ inbound_login_end (session *sess, char *text)
 		if (serv->network && ((ircnet *)serv->network)->nickserv &&
 			 prefs.irc_join_delay)
 			serv->joindelay_tag = fe_timeout_add (prefs.irc_join_delay * 1000,
-															  check_willjoin_channels, serv);
+															  check_autojoin_channels, serv);
 		else
-			check_willjoin_channels (serv);
+			check_autojoin_channels (serv);
 		if (serv->supports_watch)
 			notify_send_watches (serv);
 		serv->end_of_motd = TRUE;
@@ -1334,6 +1382,6 @@ inbound_identified (server *serv)	/* 'MODE +e MYSELF' on freenode */
 		/* stop waiting, just auto JOIN now */
 		fe_timeout_remove (serv->joindelay_tag);
 		serv->joindelay_tag = 0;
-		check_willjoin_channels (serv);
+		check_autojoin_channels (serv);
 	}
 }

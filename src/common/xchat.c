@@ -346,7 +346,12 @@ session_new (server *serv, char *from, int type, int focus)
 	sess->logfd = -1;
 	sess->scrollfd = -1;
 	sess->type = type;
-	sess->text_hidejoinpart = prefs.confmode;
+
+	sess->alert_beep = SET_DEFAULT;
+	sess->alert_taskbar = SET_DEFAULT;
+	sess->alert_tray = SET_DEFAULT;
+
+	sess->text_hidejoinpart = SET_DEFAULT;
 	sess->text_logging = SET_DEFAULT;
 	sess->text_scrollback = SET_DEFAULT;
 
@@ -378,8 +383,7 @@ new_ircwindow (server *serv, char *name, int type, int focus)
 		break;
 	case SESS_DIALOG:
 		sess = session_new (serv, name, type, focus);
-		if (prefs.logging)
-			log_open (sess);
+		log_open_or_close (sess);
 		break;
 	default:
 /*	case SESS_CHANNEL:
@@ -390,8 +394,7 @@ new_ircwindow (server *serv, char *name, int type, int focus)
 	}
 
 	irc_init (sess);
-	if (prefs.text_replay)
-		scrollback_load (sess);
+	scrollback_load (sess);
 	plugin_emit_dummy_print (sess, "Open Context");
 
 	return sess;
@@ -606,14 +609,11 @@ sigusr1_handler (int signal, siginfo_t *si, void *un)
 	GSList *list = sess_list;
 	session *sess;
 
-	if (prefs.logging)
+	while (list)
 	{
-		while (list)
-		{
-			sess = list->data;
-			log_open (sess);
-			list = list->next;
-		}
+		sess = list->data;
+		log_open_or_close (sess);
+		list = list->next;
 	}
 }
 

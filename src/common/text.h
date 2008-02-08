@@ -20,7 +20,7 @@ int text_word_check (char *word, int len);
 void PrintText (session *sess, char *text);
 void PrintTextf (session *sess, char *format, ...);
 void log_close (session *sess);
-void log_open (session *sess);
+void log_open_or_close (session *sess);
 void load_text_events (void);
 void pevent_save (char *fn);
 int pevt_build_string (const char *input, char **output, int *max_arg);
