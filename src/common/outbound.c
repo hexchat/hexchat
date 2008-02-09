@@ -3894,7 +3894,8 @@ auto_insert (char *dest, int destlen, unsigned char *src, char *word[],
 					if ((dest - orig) + 2 >= destlen)
 						return 2;
 					dest[0] = '%';
-					dest[1] = 0;
+					dest++;
+					dest[0] = 0;
 					break;
 				case 'a':
 					utf = a; break;
