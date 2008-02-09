@@ -55,6 +55,7 @@ irc_login (server *serv, char *user, char *realname)
 static void
 irc_nickserv (server *serv, char *cmd, char *arg1, char *arg2, char *arg3)
 {
+	/* are all ircd authors idiots? */
 	switch (serv->nickservtype)
 	{
 	case 0:
@@ -68,6 +69,10 @@ irc_nickserv (server *serv, char *cmd, char *arg1, char *arg2, char *arg3)
 		break;
 	case 3:
 		tcp_sendf (serv, "PRIVMSG NS :%s %s%s%s\r\n", cmd, arg1, arg2, arg3);
+		break;
+	case 4:
+		/* why couldn't QuakeNet implement one of the existing ones? */
+		tcp_sendf (serv, "AUTH %s%s%s\r\n", cmd, arg1, arg2, arg3);
 	}
 }
 
@@ -80,7 +85,8 @@ irc_ns_identify (server *serv, char *pass)
 static void
 irc_ns_ghost (server *serv, char *usname, char *pass)
 {
-	irc_nickserv (serv, "GHOST", usname, " ", pass);
+	if (serv->nickservtype != 4)
+		irc_nickserv (serv, "GHOST", usname, " ", pass);
 }
 
 static void
