@@ -805,7 +805,7 @@ inbound_quit (server *serv, char *nick, char *ip, char *reason)
  				was_on_front_session = TRUE;
 			if (userlist_remove (sess, nick))
 			{
-				if (is_set (prefs.confmode, sess->text_hidejoinpart))
+				if (!is_set (prefs.confmode, sess->text_hidejoinpart))
 					EMIT_SIGNAL (XP_TE_QUIT, sess, nick, reason, ip, NULL, 0);
 			} else if (sess->type == SESS_DIALOG && !serv->p_cmp (sess->channel, nick))
 			{
