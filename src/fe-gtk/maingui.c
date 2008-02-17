@@ -1352,6 +1352,12 @@ mg_open_quit_dialog (gboolean minimize_button)
 			prefs.gui_tray_flags |= 1;
 			/*prefs.gui_quit_dialog = 0;*/
 		}
+		/* force tray icon ON, if not already */
+		if (!prefs.gui_tray)
+		{
+			prefs.gui_tray = 1;
+			tray_apply_setup ();
+		}
 		tray_toggle_visibility (TRUE);
 		break;
 	}
