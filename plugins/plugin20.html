@@ -229,7 +229,22 @@ needed for a long time after calling xchat_list_str. The types of lists and fiel
 <tr><td>channel</td><td>Channel or query name</td><td>string</td></tr>
 <tr><td>chantypes</td><td>Channel types e.g. "#!&amp;"<br><small>(Added in version 2.0.9. Older versions will return NULL)</small></td><td>string</td>
 <tr><td>context</td><td>(xchat_context *) pointer. Can be used with xchat_set_context</td><td>string</td></tr>
-<tr><td>flags</td><td>Server/Channel Bits:<br>0=Connected 1=Connecting 2=Away 3=EndOfMotd (Login complete) 4=Has WHOX 5=Has IDMSG (FreeNode)<br>6=Hide Join/Parts 7=Color Paste 8=Beep on Message 9=Blink Tray on Message<br><small>(Bits 0-5 added in 2.0.9. Bits 6-8 added in 2.6.6. Bit 9 added in 2.8.0)</small></td><td>int</td></tr>
+<tr><td>flags</td><td>Server/Channel Bits:<br>
+<table>
+<tr><td>Bit #</td><td>Value</td><td>Description</td></tr>
+<tr><td>0</td><td>1</td><td>Connected</td></tr>
+<tr><td>1</td><td>2</td><td>Connecting in Progress</td></tr>
+<tr><td>2</td><td>4</td><td>You are away</td></tr>
+<tr><td>3</td><td>8</td><td>End of MOTD (Login complete)</td></tr>
+<tr><td>4</td><td>16</td><td>Has WHOX (ircu)</td></tr>
+<tr><td>5</td><td>32</td><td>Has IDMSG (FreeNode)</td></tr>
+<tr><td>6</td><td>64</td><td>Hide Join/Part Messages</td></tr>
+<tr><td>7</td><td>128</td><td>unused (was Color Paste in old versions)</td></tr>
+<tr><td>8</td><td>256</td><td>Beep on Message</td></tr>
+<tr><td>9</td><td>512</td><td>Blink Tray</td></tr>
+<tr><td>10</td><td>1024</td><td>Blink Task Bar</td></tr>
+</table>
+<br><small>(Bits 0-5 added in 2.0.9. Bits 6-8 added in 2.6.6. Bit 9 added in 2.8.0. Bit 10 in 2.8.6)</small></td><td>int</td></tr>
 <tr><td>id</td><td>Unique server ID<br><small>(Added in version 2.0.8. Older versions will return -1)</small></td><td>int</td></tr>
 <tr><td>lag</td><td>Lag in milliseconds<br><small>(Added in version 2.6.8. Older versions will return -1)</small></td><td>int</td>
 <tr><td>maxmodes</td><td>Maximum modes per line<br><small>(Added in version 2.0.9. Older versions will return -1)</small></td><td>int</td>
