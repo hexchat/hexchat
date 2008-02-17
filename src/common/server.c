@@ -1675,7 +1675,7 @@ server_connect (server *serv, char *hostname, int port, int no_login)
 		{
 			/* if that doesn't exist, try ~/.xchat2/client.pem */
 			snprintf (cert_file, sizeof (cert_file), "%s/%s.pem",
-						 get_xdir_fs (), "client.pem");
+						 get_xdir_fs (), "client");
 			if (SSL_CTX_use_certificate_file (ctx, cert_file, SSL_FILETYPE_PEM) == 1)
 				SSL_CTX_use_PrivateKey_file (ctx, cert_file, SSL_FILETYPE_PEM);
 		}
