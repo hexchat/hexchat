@@ -338,8 +338,8 @@ notifygui_add_enter (GtkWidget *entry, GtkWidget *dialog)
 	gtk_dialog_response (GTK_DIALOG (dialog), GTK_RESPONSE_ACCEPT);
 }
 
-static void
-notify_add_clicked (GtkWidget * igad)
+void
+fe_notify_ask (char *nick, char *networks)
 {
 	GtkWidget *dialog;
 	GtkWidget *entry;
@@ -367,6 +367,7 @@ notify_add_clicked (GtkWidget * igad)
 	gtk_table_attach_defaults (GTK_TABLE (table), label, 0, 1, 0, 1);
 
 	entry = gtk_entry_new ();
+	gtk_entry_set_text (GTK_ENTRY (entry), nick);
 	g_signal_connect (G_OBJECT (entry), "activate",
 						 	G_CALLBACK (notifygui_add_enter), dialog);
 	gtk_table_attach_defaults (GTK_TABLE (table), entry, 1, 2, 0, 1);
@@ -381,7 +382,7 @@ notify_add_clicked (GtkWidget * igad)
 	g_object_set_data (G_OBJECT (entry), "net", wid);
 	g_signal_connect (G_OBJECT (wid), "activate",
 						 	G_CALLBACK (notifygui_add_enter), dialog);
-	gtk_entry_set_text (GTK_ENTRY (wid), "ALL");
+	gtk_entry_set_text (GTK_ENTRY (wid), networks ? networks : "ALL");
 	gtk_table_attach_defaults (GTK_TABLE (table), wid, 1, 2, 2, 3);
 
 	label = gtk_label_new (NULL);
@@ -390,6 +391,12 @@ notify_add_clicked (GtkWidget * igad)
 	gtk_table_attach_defaults (GTK_TABLE (table), label, 1, 2, 3, 4);
 
 	gtk_widget_show_all (dialog);
+}
+
+static void
+notify_add_clicked (GtkWidget * igad)
+{
+	fe_notify_ask ("", NULL);
 }
 
 void
