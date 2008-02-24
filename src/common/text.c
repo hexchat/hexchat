@@ -1951,9 +1951,11 @@ text_emit (int index, session *sess, char *a, char *b, char *c, char *d)
 	case XP_TE_PART:
 	case XP_TE_PARTREASON:
 	case XP_TE_QUIT:
-		/* implement ConfMode / Hide Join and Part Messages */
-		if (chanopt_is_set (prefs.confmode, sess->text_hidejoinpart))
-			return;
+		/* plugin may have closed this context */
+		if (is_session (sess))
+			/* implement ConfMode / Hide Join and Part Messages */
+			if (chanopt_is_set (prefs.confmode, sess->text_hidejoinpart))
+				return;
 	}
 
 	sound_play_event (index);
