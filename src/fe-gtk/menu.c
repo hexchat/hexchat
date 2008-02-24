@@ -1116,7 +1116,7 @@ menu_resetmarker (GtkWidget * wid, gpointer none)
 static void
 menu_flushbuffer (GtkWidget * wid, gpointer none)
 {
-	fe_text_clear (current_sess);
+	fe_text_clear (current_sess, 0);
 }
 
 static void
