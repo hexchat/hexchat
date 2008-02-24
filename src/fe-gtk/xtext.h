@@ -243,7 +243,7 @@ void gtk_xtext_append_indent (xtext_buffer *buf,
 int gtk_xtext_set_font (GtkXText *xtext, char *name);
 void gtk_xtext_set_background (GtkXText * xtext, GdkPixmap * pixmap, gboolean trans);
 void gtk_xtext_set_palette (GtkXText * xtext, GdkColor palette[]);
-void gtk_xtext_clear (xtext_buffer *buf);
+void gtk_xtext_clear (xtext_buffer *buf, int lines);
 void gtk_xtext_save (GtkXText * xtext, int fh);
 void gtk_xtext_refresh (GtkXText * xtext, int do_trans);
 int gtk_xtext_lastlog (xtext_buffer *out, xtext_buffer *search_area, int (*cmp_func) (char *, void *userdata), void *userdata);

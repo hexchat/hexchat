@@ -71,7 +71,7 @@ rawlog_save (server *serv, char *file)
 static int
 rawlog_clearbutton (GtkWidget * wid, server *serv)
 {
-	gtk_xtext_clear (GTK_XTEXT (serv->gui->rawlog_textlist)->buffer);
+	gtk_xtext_clear (GTK_XTEXT (serv->gui->rawlog_textlist)->buffer, 0);
 	return FALSE;
 }
 

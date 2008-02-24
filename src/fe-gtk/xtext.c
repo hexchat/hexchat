@@ -4717,29 +4717,9 @@ gtk_xtext_refresh (GtkXText * xtext, int do_trans)
 	}
 }
 
-/* remove the topline from the list */
-
 static void
-gtk_xtext_remove_top (xtext_buffer *buffer)
+gtk_xtext_kill_ent (xtext_buffer *buffer, textentry *ent)
 {
-	textentry *ent;
-
-	ent = buffer->text_first;
-	if (!ent)
-		return;
-	buffer->num_lines -= ent->lines_taken;
-	buffer->pagetop_line -= ent->lines_taken;
-	buffer->last_pixel_pos -= (ent->lines_taken * buffer->xtext->fontsize);
-	buffer->text_first = ent->next;
-	buffer->text_first->prev = NULL;
-
-	buffer->old_value -= ent->lines_taken;
-	if (buffer->xtext->buffer == buffer)	/* is it the current buffer? */
-	{
-		buffer->xtext->adj->value -= ent->lines_taken;
-		buffer->xtext->select_start_adj -= ent->lines_taken;
-	}
-
 	if (ent == buffer->pagetop_ent)
 		buffer->pagetop_ent = NULL;
 
@@ -4760,26 +4740,101 @@ gtk_xtext_remove_top (xtext_buffer *buffer)
 	free (ent);
 }
 
+/* remove the topline from the list */
+
+static void
+gtk_xtext_remove_top (xtext_buffer *buffer)
+{
+	textentry *ent;
+
+	ent = buffer->text_first;
+	if (!ent)
+		return;
+	buffer->num_lines -= ent->lines_taken;
+	buffer->pagetop_line -= ent->lines_taken;
+	buffer->last_pixel_pos -= (ent->lines_taken * buffer->xtext->fontsize);
+	buffer->text_first = ent->next;
+	if (buffer->text_first)
+		buffer->text_first->prev = NULL;
+	else
+		buffer->text_last = NULL;
+
+	buffer->old_value -= ent->lines_taken;
+	if (buffer->xtext->buffer == buffer)	/* is it the current buffer? */
+	{
+		buffer->xtext->adj->value -= ent->lines_taken;
+		buffer->xtext->select_start_adj -= ent->lines_taken;
+	}
+
+	gtk_xtext_kill_ent (buffer, ent);
+}
+
+static void
+gtk_xtext_remove_bottom (xtext_buffer *buffer)
+{
+	textentry *ent;
+
+	ent = buffer->text_last;
+	if (!ent)
+		return;
+	buffer->num_lines -= ent->lines_taken;
+	buffer->text_last = ent->prev;
+	if (buffer->text_last)
+		buffer->text_last->next = NULL;
+	else
+		buffer->text_first = NULL;
+
+	gtk_xtext_kill_ent (buffer, ent);
+}
+
+/* If lines=0 => clear all */
+
 void
-gtk_xtext_clear (xtext_buffer *buf)
+gtk_xtext_clear (xtext_buffer *buf, int lines)
 {
 	textentry *next;
 
-	if (buf->xtext->auto_indent)
-		buf->indent = MARGIN;
-	buf->scrollbar_down = TRUE;
-	buf->last_ent_start = NULL;
-	buf->last_ent_end = NULL;
-	buf->marker_pos = NULL;
-	dontscroll (buf);
-
-	while (buf->text_first)
+	if (lines != 0)
 	{
-		next = buf->text_first->next;
-		free (buf->text_first);
-		buf->text_first = next;
+		if (lines < 0)
+		{
+			/* delete lines from bottom */
+			lines *= -1;
+			while (lines)
+			{
+				gtk_xtext_remove_bottom (buf);
+				lines--;
+			}
+		}
+		else
+		{
+			/* delete lines from top */
+			while (lines)
+			{
+				gtk_xtext_remove_top (buf);
+				lines--;
+			}
+		}
 	}
-	buf->text_last = NULL;
+	else
+	{
+		/* delete all */
+		if (buf->xtext->auto_indent)
+			buf->indent = MARGIN;
+		buf->scrollbar_down = TRUE;
+		buf->last_ent_start = NULL;
+		buf->last_ent_end = NULL;
+		buf->marker_pos = NULL;
+		dontscroll (buf);
+
+		while (buf->text_first)
+		{
+			next = buf->text_first->next;
+			free (buf->text_first);
+			buf->text_first = next;
+		}
+		buf->text_last = NULL;
+	}
 
 	if (buf->xtext->buffer == buf)
 	{

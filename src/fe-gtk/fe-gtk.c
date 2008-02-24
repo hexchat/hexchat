@@ -549,9 +549,9 @@ fe_notify_update (char *name)
 }
 
 void
-fe_text_clear (struct session *sess)
+fe_text_clear (struct session *sess, int lines)
 {
-	gtk_xtext_clear (sess->res->buffer);
+	gtk_xtext_clear (sess->res->buffer, lines);
 }
 
 void

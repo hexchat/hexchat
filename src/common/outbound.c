@@ -616,12 +616,7 @@ cmd_clear (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	GSList *list = sess_list;
 	char *reason = word_eol[2];
-
-	if (reason[0] == 0)
-	{
-		fe_text_clear (sess);
-		return TRUE;
-	}
+	int lines;
 
 	if (strcasecmp (reason, "HISTORY") == 0)
 	{
@@ -635,13 +630,17 @@ cmd_clear (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		{
 			sess = list->data;
 			if (!sess->nick_said)
-				fe_text_clear (list->data);
+				fe_text_clear (list->data, 0);
 			list = list->next;
 		}
 		return TRUE;
 	}
 
-	return FALSE;
+	if (reason[0] != '-' && !isdigit (reason[0]))
+		return FALSE;
+
+	fe_text_clear (sess, atoi (reason));
+	return TRUE;
 }
 
 static int
@@ -2371,7 +2370,7 @@ lastlog (session *sess, char *search, gboolean regexp)
 	lastlog_sess->lastlog_sess = sess;
 	lastlog_sess->lastlog_regexp = regexp;	/* remember the search type */
 
-	fe_text_clear (lastlog_sess);
+	fe_text_clear (lastlog_sess, 0);
 	fe_lastlog (sess, lastlog_sess, search, regexp);
 }
 

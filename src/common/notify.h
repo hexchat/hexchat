@@ -33,6 +33,7 @@ void notify_cleanup (void);
 void notify_load (void);
 void notify_save (void);
 void notify_showlist (session *sess);
+gboolean notify_is_in_list (server *serv, char *name);
 int notify_isnotify (session *sess, char *name);
 struct notify_per_server *notify_find_server_entry (struct notify *notify, struct server *serv);
 
