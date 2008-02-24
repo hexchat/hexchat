@@ -40,6 +40,7 @@
 #include "servlist.h"
 #include "text.h"
 #include "ctcp.h"
+#include "chanopt.h"
 #include "plugin.h"
 #include "xchatc.h"
 
@@ -147,29 +148,6 @@ inbound_make_idtext (server *serv, char *idtext, int max, int id)
 	}
 }
 
-/* is a per-channel setting set? Or is it UNSET and
- * the global version is set? */
-
-static gboolean
-is_set (unsigned int global, guint8 per_chan_setting)
-{
-	if (per_chan_setting == SET_DEFAULT)
-		return global;
-
-	return per_chan_setting;
-}
-
-/* additive version */
-
-static gboolean
-is_set_a (unsigned int global, guint8 per_chan_setting)
-{
-	if (per_chan_setting == SET_DEFAULT)
-		return global;
-
-	return per_chan_setting || global;
-}
-
 void
 inbound_privmsg (server *serv, char *from, char *ip, char *text, int id)
 {
@@ -192,13 +170,13 @@ inbound_privmsg (server *serv, char *from, char *ip, char *text, int id)
 				return; /* ?? */
 		}
 
-		if (is_set_a (prefs.input_beep_priv, sess->alert_beep))
+		if (chanopt_is_set_a (prefs.input_beep_priv, sess->alert_beep))
 			sound_beep (sess);
 
 		if (sess && sess->alert_tray == SET_ON)
 			fe_tray_set_icon (FE_ICON_MESSAGE);
 
-		if (is_set_a (prefs.input_flash_priv, sess->alert_taskbar))
+		if (chanopt_is_set_a (prefs.input_flash_priv, sess->alert_taskbar))
 			fe_flash_window (sess);
 
 		if (ip && ip[0])
@@ -230,10 +208,10 @@ inbound_privmsg (server *serv, char *from, char *ip, char *text, int id)
 		return;
 	}
 
-	if (is_set_a (prefs.input_beep_priv, sess->alert_beep))
+	if (chanopt_is_set_a (prefs.input_beep_priv, sess->alert_beep))
 		sound_beep (sess);
 
-	if (is_set_a (prefs.input_flash_priv, sess->alert_taskbar))
+	if (chanopt_is_set_a (prefs.input_flash_priv, sess->alert_taskbar))
 		fe_flash_window (sess);
 
 	if (sess->type == SESS_DIALOG)
@@ -389,7 +367,7 @@ inbound_action (session *sess, char *chan, char *from, char *text, int fromme, i
 		if (hilight && prefs.input_beep_hilight)
 			beep = TRUE;
 
-		if (is_set_a (beep, sess->alert_beep))
+		if (chanopt_is_set_a (beep, sess->alert_beep))
 			sound_beep (sess);
 
 		if (sess->alert_tray == SET_ON)
@@ -398,7 +376,7 @@ inbound_action (session *sess, char *chan, char *from, char *text, int fromme, i
 		/* private action, flash? */
 		if (!is_channel (serv, chan))
 		{
-			if (is_set_a (prefs.input_flash_priv, sess->alert_taskbar))
+			if (chanopt_is_set_a (prefs.input_flash_priv, sess->alert_taskbar))
 				fe_flash_window (sess);
 		}
 
@@ -463,7 +441,7 @@ inbound_chanmsg (server *serv, session *sess, char *chan, char *from, char *text
 
 	if (sess->type != SESS_DIALOG)
 	{
-		if (is_set_a (prefs.input_beep_chans, sess->alert_beep))
+		if (chanopt_is_set_a (prefs.input_beep_chans, sess->alert_beep))
 			sound_beep (sess);
 
 		if (sess->alert_tray == SET_ON)
@@ -480,7 +458,7 @@ inbound_chanmsg (server *serv, session *sess, char *chan, char *from, char *text
 	{
 		if (sess->type != SESS_DIALOG)
 		{
-			if (is_set_a (prefs.input_flash_chans, sess->alert_taskbar))
+			if (chanopt_is_set_a (prefs.input_flash_chans, sess->alert_taskbar))
 				fe_flash_window (sess);
 		}
 	}
@@ -742,8 +720,7 @@ inbound_join (server *serv, char *chan, char *user, char *ip)
 	session *sess = find_channel (serv, chan);
 	if (sess)
 	{
-		if (!is_set (prefs.confmode, sess->text_hidejoinpart))
-			EMIT_SIGNAL (XP_TE_JOIN, sess, user, chan, ip, NULL, 0);
+		EMIT_SIGNAL (XP_TE_JOIN, sess, user, chan, ip, NULL, 0);
 		userlist_add (sess, user, ip);
 	}
 }
@@ -765,13 +742,10 @@ inbound_part (server *serv, char *chan, char *user, char *ip, char *reason)
 	session *sess = find_channel (serv, chan);
 	if (sess)
 	{
-		if (!is_set (prefs.confmode, sess->text_hidejoinpart))
-		{
-			if (*reason)
-				EMIT_SIGNAL (XP_TE_PARTREASON, sess, user, ip, chan, reason, 0);
-			else
-				EMIT_SIGNAL (XP_TE_PART, sess, user, ip, chan, NULL, 0);
-		}
+		if (*reason)
+			EMIT_SIGNAL (XP_TE_PARTREASON, sess, user, ip, chan, reason, 0);
+		else
+			EMIT_SIGNAL (XP_TE_PART, sess, user, ip, chan, NULL, 0);
 		userlist_remove (sess, user);
 	}
 }
@@ -805,8 +779,7 @@ inbound_quit (server *serv, char *nick, char *ip, char *reason)
  				was_on_front_session = TRUE;
 			if (userlist_remove (sess, nick))
 			{
-				if (!is_set (prefs.confmode, sess->text_hidejoinpart))
-					EMIT_SIGNAL (XP_TE_QUIT, sess, nick, reason, ip, NULL, 0);
+				EMIT_SIGNAL (XP_TE_QUIT, sess, nick, reason, ip, NULL, 0);
 			} else if (sess->type == SESS_DIALOG && !serv->p_cmp (sess->channel, nick))
 			{
 				EMIT_SIGNAL (XP_TE_QUIT, sess, nick, reason, ip, NULL, 0);

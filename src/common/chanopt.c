@@ -129,6 +129,29 @@ chanopt_command (session *sess, char *tbuf, char *word[], char *word_eol[])
 	return TRUE;
 }
 
+/* is a per-channel setting set? Or is it UNSET and
+ * the global version is set? */
+
+gboolean
+chanopt_is_set (unsigned int global, guint8 per_chan_setting)
+{
+	if (per_chan_setting == SET_DEFAULT)
+		return global;
+
+	return per_chan_setting;
+}
+
+/* additive version */
+
+gboolean
+chanopt_is_set_a (unsigned int global, guint8 per_chan_setting)
+{
+	if (per_chan_setting == SET_DEFAULT)
+		return global;
+
+	return per_chan_setting || global;
+}
+
 /* === below is LOADING/SAVING stuff only === */
 
 typedef struct
@@ -251,8 +274,8 @@ chanopt_load_all (void)
 
 		}
 		close (fh);
+		g_free (network);
 	}
-	g_free (network);
 }
 
 void

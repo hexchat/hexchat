@@ -29,6 +29,7 @@
 #include "xchat.h"
 #include <glib/ghash.h>
 #include "cfgfiles.h"
+#include "chanopt.h"
 #include "plugin.h"
 #include "fe.h"
 #include "server.h"
@@ -1943,6 +1944,17 @@ text_emit (int index, session *sess, char *a, char *b, char *c, char *d)
 
 	if (plugin_emit_print (sess, word))
 		return;
+
+	switch (index)
+	{
+	case XP_TE_JOIN:
+	case XP_TE_PART:
+	case XP_TE_PARTREASON:
+	case XP_TE_QUIT:
+		/* implement ConfMode / Hide Join and Part Messages */
+		if (chanopt_is_set (prefs.confmode, sess->text_hidejoinpart))
+			return;
+	}
 
 	sound_play_event (index);
 
