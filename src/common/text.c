@@ -1945,24 +1945,58 @@ text_emit (int index, session *sess, char *a, char *b, char *c, char *d)
 	if (plugin_emit_print (sess, word))
 		return;
 
+	/* If a plugin's callback executes "/close", 'sess' may be invalid */
+	if (!is_session (sess))
+		return;
+
 	switch (index)
 	{
 	case XP_TE_JOIN:
 	case XP_TE_PART:
 	case XP_TE_PARTREASON:
 	case XP_TE_QUIT:
-		/* plugin may have closed this context */
-		if (is_session (sess))
-			/* implement ConfMode / Hide Join and Part Messages */
-			if (chanopt_is_set (prefs.confmode, sess->text_hidejoinpart))
-				return;
+		/* implement ConfMode / Hide Join and Part Messages */
+		if (chanopt_is_set (prefs.confmode, sess->text_hidejoinpart))
+			return;
+		break;
+
+	/* ===Private message=== */
+	case XP_TE_PRIVMSG:
+	case XP_TE_DPRIVMSG:
+		if (chanopt_is_set_a (prefs.input_beep_priv, sess->alert_beep))
+			sound_beep (sess);
+		if (chanopt_is_set_a (prefs.input_flash_priv, sess->alert_taskbar))
+			fe_flash_window (sess);
+		/* why is this one different? because of plugin-tray.c's hooks! ugly */
+		if (sess->alert_tray == SET_ON)
+			fe_tray_set_icon (FE_ICON_MESSAGE);
+		break;
+
+	/* ===Highlighted message=== */
+	case XP_TE_HCHANACTION:
+	case XP_TE_HCHANMSG:
+		if (chanopt_is_set_a (prefs.input_beep_hilight, sess->alert_beep))
+			sound_beep (sess);
+		if (chanopt_is_set_a (prefs.input_flash_hilight, sess->alert_taskbar))
+			fe_flash_window (sess);
+		if (sess->alert_tray == SET_ON)
+			fe_tray_set_icon (FE_ICON_MESSAGE);
+		break;
+
+	/* ===Channel message=== */
+	case XP_TE_CHANACTION:
+	case XP_TE_CHANMSG:
+		if (chanopt_is_set_a (prefs.input_beep_chans, sess->alert_beep))
+			sound_beep (sess);
+		if (chanopt_is_set_a (prefs.input_flash_chans, sess->alert_taskbar))
+			fe_flash_window (sess);
+		if (sess->alert_tray == SET_ON)
+			fe_tray_set_icon (FE_ICON_MESSAGE);
+		break;
 	}
 
 	sound_play_event (index);
-
-	/* If a plugin's callback executes "/close", 'sess' may be invalid */
-	if (is_session (sess))
-		display_event (sess, index, word, stripcolor_args);
+	display_event (sess, index, word, stripcolor_args);
 }
 
 char *

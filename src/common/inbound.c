@@ -40,7 +40,6 @@
 #include "servlist.h"
 #include "text.h"
 #include "ctcp.h"
-#include "chanopt.h"
 #include "plugin.h"
 #include "xchatc.h"
 
@@ -170,15 +169,6 @@ inbound_privmsg (server *serv, char *from, char *ip, char *text, int id)
 				return; /* ?? */
 		}
 
-		if (chanopt_is_set_a (prefs.input_beep_priv, sess->alert_beep))
-			sound_beep (sess);
-
-		if (sess && sess->alert_tray == SET_ON)
-			fe_tray_set_icon (FE_ICON_MESSAGE);
-
-		if (chanopt_is_set_a (prefs.input_flash_priv, sess->alert_taskbar))
-			fe_flash_window (sess);
-
 		if (ip && ip[0])
 		{
 			if (prefs.logging && sess->logfd != -1 &&
@@ -200,19 +190,9 @@ inbound_privmsg (server *serv, char *from, char *ip, char *text, int id)
 	if (!sess)
 	{
 		sess = serv->front_session;
-
-		if (prefs.input_beep_priv)
-			sound_beep (sess);
-
 		EMIT_SIGNAL (XP_TE_PRIVMSG, sess, from, text, idtext, NULL, 0);
 		return;
 	}
-
-	if (chanopt_is_set_a (prefs.input_beep_priv, sess->alert_beep))
-		sound_beep (sess);
-
-	if (chanopt_is_set_a (prefs.input_flash_priv, sess->alert_taskbar))
-		fe_flash_window (sess);
 
 	if (sess->type == SESS_DIALOG)
 		EMIT_SIGNAL (XP_TE_DPRIVMSG, sess, from, text, idtext, NULL, 0);
@@ -317,7 +297,6 @@ inbound_action (session *sess, char *chan, char *from, char *text, int fromme, i
 	server *serv = sess->server;
 	int beep = FALSE;
 	struct User *user;
-	int hilight = FALSE;
 	char nickchar[2] = "\000";
 
 	if (!fromme)
@@ -363,24 +342,7 @@ inbound_action (session *sess, char *chan, char *from, char *text, int fromme, i
 
 	if (!fromme)
 	{
-		hilight = is_hilight (from, text, sess, serv);
-		if (hilight && prefs.input_beep_hilight)
-			beep = TRUE;
-
-		if (chanopt_is_set_a (beep, sess->alert_beep))
-			sound_beep (sess);
-
-		if (sess->alert_tray == SET_ON)
-			fe_tray_set_icon (FE_ICON_MESSAGE);
-
-		/* private action, flash? */
-		if (!is_channel (serv, chan))
-		{
-			if (chanopt_is_set_a (prefs.input_flash_priv, sess->alert_taskbar))
-				fe_flash_window (sess);
-		}
-
-		if (hilight)
+		if (is_hilight (from, text, sess, serv))
 		{
 			EMIT_SIGNAL (XP_TE_HCHANACTION, sess, from, text, nickchar, NULL, 0);
 			return;
@@ -439,29 +401,8 @@ inbound_chanmsg (server *serv, session *sess, char *chan, char *from, char *text
 
 	inbound_make_idtext (serv, idtext, sizeof (idtext), id);
 
-	if (sess->type != SESS_DIALOG)
-	{
-		if (chanopt_is_set_a (prefs.input_beep_chans, sess->alert_beep))
-			sound_beep (sess);
-
-		if (sess->alert_tray == SET_ON)
-			fe_tray_set_icon (FE_ICON_MESSAGE);
-	}
-
 	if (is_hilight (from, text, sess, serv))
-	{
 		hilight = TRUE;
-		if (prefs.input_beep_hilight)
-			sound_beep (sess);
-	}
-	else
-	{
-		if (sess->type != SESS_DIALOG)
-		{
-			if (chanopt_is_set_a (prefs.input_flash_chans, sess->alert_taskbar))
-				fe_flash_window (sess);
-		}
-	}
 
 	if (sess->type == SESS_DIALOG)
 		EMIT_SIGNAL (XP_TE_DPRIVMSG, sess, from, text, idtext, NULL, 0);
