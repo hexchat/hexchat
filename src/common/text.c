@@ -1963,6 +1963,7 @@ text_emit (int index, session *sess, char *a, char *b, char *c, char *d)
 	/* ===Private message=== */
 	case XP_TE_PRIVMSG:
 	case XP_TE_DPRIVMSG:
+priv:
 		if (chanopt_is_set_a (prefs.input_beep_priv, sess->alert_beep))
 			sound_beep (sess);
 		if (chanopt_is_set_a (prefs.input_flash_priv, sess->alert_taskbar))
@@ -1986,6 +1987,8 @@ text_emit (int index, session *sess, char *a, char *b, char *c, char *d)
 	/* ===Channel message=== */
 	case XP_TE_CHANACTION:
 	case XP_TE_CHANMSG:
+		if (sess->type == SESS_DIALOG)	/* there's no PRIVACTION! */
+			goto priv;
 		if (chanopt_is_set_a (prefs.input_beep_chans, sess->alert_beep))
 			sound_beep (sess);
 		if (chanopt_is_set_a (prefs.input_flash_chans, sess->alert_taskbar))

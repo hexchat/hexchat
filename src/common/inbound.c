@@ -295,7 +295,6 @@ inbound_action (session *sess, char *chan, char *from, char *text, int fromme, i
 {
 	session *def = sess;
 	server *serv = sess->server;
-	int beep = FALSE;
 	struct User *user;
 	char nickchar[2] = "\000";
 
@@ -304,11 +303,9 @@ inbound_action (session *sess, char *chan, char *from, char *text, int fromme, i
 		if (is_channel (serv, chan))
 		{
 			sess = find_channel (serv, chan);
-			beep = prefs.input_beep_chans;
 		} else
 		{
 			/* it's a private action! */
-			beep = prefs.input_beep_priv;
 			/* find a dialog tab for it */
 			sess = find_dialog (serv, from);
 			/* if non found, open a new one */
