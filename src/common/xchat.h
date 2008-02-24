@@ -322,6 +322,17 @@ struct xchatprefs
 
 typedef struct session
 {
+	/* Per-Channel Alerts */
+	/* use a byte, because we need a pointer to each element */
+	guint8 alert_beep;
+	guint8 alert_taskbar;
+	guint8 alert_tray;
+
+	/* Per-Channel Settings */
+	guint8 text_hidejoinpart;
+	guint8 text_logging;
+	guint8 text_scrollback;
+
 	struct server *server;
 	void *usertree_alpha;			/* pure alphabetical tree */
 	void *usertree;					/* ordered with Ops first */
@@ -357,17 +368,6 @@ typedef struct session
 	struct restore_gui *res;
 
 	int type;					/* SESS_* */
-
-	/* Per-Channel Alerts */
-	/* use a byte, because we need a pointer to each element */
-	guint8 alert_beep;
-	guint8 alert_taskbar;
-	guint8 alert_tray;
-
-	/* Per-Channel Settings */
-	guint8 text_hidejoinpart;
-	guint8 text_logging;
-	guint8 text_scrollback;
 
 	int new_data:1;			/* new data avail? (purple tab) */
 	int nick_said:1;		/* your nick mentioned? (blue tab) */

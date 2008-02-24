@@ -36,6 +36,7 @@
 #include "fe.h"
 #include "util.h"
 #include "cfgfiles.h"
+#include "chanopt.h"
 #include "ignore.h"
 #include "xchat-plugin.h"
 #include "plugin.h"
@@ -395,6 +396,7 @@ new_ircwindow (server *serv, char *name, int type, int focus)
 
 	irc_init (sess);
 	scrollback_load (sess);
+	chanopt_load (sess);
 	plugin_emit_dummy_print (sess, "Open Context");
 
 	return sess;
@@ -511,6 +513,7 @@ session_free (session *killsess)
 
 	log_close (killsess);
 	scrollback_close (killsess);
+	chanopt_save (killsess);
 
 	send_quit_or_part (killsess);
 
@@ -841,6 +844,7 @@ xchat_exit (void)
 	notify_save ();
 	ignore_save ();
 	free_sessions ();
+	chanopt_save_all ();
 	fe_exit ();
 }
 

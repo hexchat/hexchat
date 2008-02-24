@@ -573,110 +573,11 @@ cmd_unban (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	}
 }
 
-/* per-channel/dialog settings :: /CHANOPT */
-
-typedef struct
-{
-	char *name;
-	char *alias;	/* old names from 2.8.4 */
-	int offset;
-} channel_options;
-
-#define S_F(xx) STRUCT_OFFSET_STR(struct session,xx)
-
-channel_options chanopt[] =
-{
-	{"alert_beep", "BEEP", S_F(alert_beep)},
-	{"alert_taskbar", NULL, S_F(alert_taskbar)},
-	{"alert_tray", "TRAY", S_F(alert_tray)},
-
-	{"text_hidejoinpart", "CONFMODE", S_F(text_hidejoinpart)},
-	{"text_logging", NULL, S_F(text_logging)},
-	{"text_scrollback", NULL, S_F(text_scrollback)},
-};
-
-#undef SESS_FIELD
-
-static char *
-chanopt_value (guint8 val)
-{
-	switch (val)
-	{
-	case SET_OFF:
-		return "OFF";
-	case SET_ON:
-		return "ON";
-	default:
-		return "{unset}";
-	}
-}
-
 static int
 cmd_chanopt (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
-	int dots, i = 0, j, p = 0;
-	guint8 val;
-	int offset = 2;
-	char *find;
-	gboolean quiet = FALSE;
-	int newval = -1;
-
-	if (!strcmp (word[2], "-quiet"))
-	{
-		quiet = TRUE;
-		offset++;
-	}
-
-	find = word[offset++];
-
-	if (word[offset][0])
-	{
-		if (!strcasecmp (word[offset], "ON"))
-			newval = 1;
-		else if (!strcasecmp (word[offset], "OFF"))
-			newval = 0;
-		else if (word[offset][0] == 'u')
-			newval = SET_DEFAULT;
-		else
-			newval = atoi (word[offset]);
-	}
-
-	if (!quiet)
-		PrintTextf (sess, "\002Network\002: %s \002Channel\002: %s\n",
-						sess->server->network ? server_get_network (sess->server, TRUE) : _("<none>"),
-						sess->channel[0] ? sess->channel : _("<none>"));
-
-	while (i < sizeof (chanopt) / sizeof (channel_options))
-	{
-		if (find[0] == 0 || match (find, chanopt[i].name) || (chanopt[i].alias && match (find, chanopt[i].alias)))
-		{
-			if (newval != -1)	/* set new value */
-			{
-				*(guint8 *)G_STRUCT_MEMBER_P(sess, chanopt[i].offset) = newval;
-			}
-
-			if (!quiet)	/* print value */
-			{
-				strcpy (tbuf, chanopt[i].name);
-				p = strlen (tbuf);
-
-				tbuf[p++] = 3;
-				tbuf[p++] = '2';
-
-				dots = 20 - strlen (chanopt[i].name);
-
-				for (j = 0; j < dots; j++)
-					tbuf[p++] = '.';
-				tbuf[p++] = 0;
-
-				val = G_STRUCT_MEMBER (guint8, sess, chanopt[i].offset);
-				PrintTextf (sess, "%s\0033:\017 %s", tbuf, chanopt_value (val));
-			}
-		}
-		i++;
-	}
-
-	return TRUE;
+	/* chanopt.c */
+	return chanopt_command (sess, tbuf, word, word_eol);
 }
 
 static int
@@ -2805,8 +2706,14 @@ cmd_notify (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 				EMIT_SIGNAL (XP_TE_DELNOTIFY, sess, word[i], NULL, NULL, NULL, 0);
 				return TRUE;
 			}
-			notify_adduser (word[i], net);
-			EMIT_SIGNAL (XP_TE_ADDNOTIFY, sess, word[i], NULL, NULL, NULL, 0);
+
+			if (strcmp (net, "ASK") == 0)
+				fe_notify_ask (word[i], NULL);
+			else
+			{
+				notify_adduser (word[i], net);
+				EMIT_SIGNAL (XP_TE_ADDNOTIFY, sess, word[i], NULL, NULL, NULL, 0);
+			}
 		}
 	} else
 		notify_showlist (sess);
@@ -3894,8 +3801,8 @@ auto_insert (char *dest, int destlen, unsigned char *src, char *word[],
 					if ((dest - orig) + 2 >= destlen)
 						return 2;
 					dest[0] = '%';
+					dest[1] = 0;
 					dest++;
-					dest[0] = 0;
 					break;
 				case 'a':
 					utf = a; break;

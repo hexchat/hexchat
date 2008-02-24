@@ -6,6 +6,7 @@ INCLUDES = $(COMMON_CFLAGS)
 
 EXTRA_DIST = makefile.msc \
 	cfgfiles.h \
+	chanopt.h \
 	ctcp.h \
 	dcc.h \
 	fe.h \
@@ -50,7 +51,7 @@ libxchatcommon_a_LIBADD =				\
 endif
 SUBDIRS = $(dbusdir) .
 
-libxchatcommon_a_SOURCES = cfgfiles.c ctcp.c dcc.c history.c ignore.c \
+libxchatcommon_a_SOURCES = cfgfiles.c chanopt.c ctcp.c dcc.c history.c ignore.c \
 	inbound.c modes.c msproxy.c network.c notify.c outbound.c \
 	plugin.c plugin-timer.c proto-irc.c server.c servlist.c $(ssl_c) \
 	text.c tree.c url.c userlist.c util.c xchat.c
