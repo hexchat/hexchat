@@ -30,34 +30,46 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
    download was still going.
  - Fixed alert balloons failing if the text contained "<" characters [1827629].
  - The Drag&Drop files to userlist feature has been enabled again.
- - Removed the /set tab_icons setting and made it automatic.
+ - Removed the /set tab_icons setting and made it automatic (see FAQ for more
+   info about icons).
  - Fixed a bug in creating files (save channel list, rawlog etc) that would set
    the wrong permissions.
  - Added command line argument --command=COMMAND which can be used in
    conjuction with --existing (E.K.L.). This sends any xchat command to an
    existing (running) client.
+ - A private SSL key/certificate can now be loaded from ~/.xchat2/client.pem.
  - The Alerts settings now accept wildcards, instead of partitial string match
    [1807563].
  - Changing away status during reconnect/disconnect will now remember it.
- - You can now change your Away/Back status (all networks) in tray menu. 
+ - You can now change your Away/Back status (all networks) in the tray menu. 
  - Favorite Channels / Auto-Join-List management:
    * Network List window now has a "..." button to edit the auto-join-list in
      a more friendly way.
-   * Channel and Tab context menus now have a Add/Remove function.
-   * 
-   * 
-   * Previous limit of 300 bytes has been overcome. Now up to 2 KB worth
-     of channels/keys can be joined and it will be automatically split into
-     muliple lines, if necessary.
-   * 
- - 'hostname:port' syntax is now accepted, if it's not an ipv6 address.
- - The Userlist menu now has icons.
- - ~/.xchat2/startup.txt is now loaded on launch (like /LOAD -e).
+   * Channel(text area), Tree/Tab and Channel-List right-click menus now have a
+     "Add to Favorites" function.
+   * Previous limit of 300 bytes has been overcome. Now up to 2 KB worth of
+     channels/keys can be joined and it will be automatically split into
+     multiple lines, if necessary.
+   * Per-Channel settings now save to disk, including Logging and Scrollback
+     settings.
+   * /ChanOpt has been re-worked to be more like /Set.
+ - 'hostname:port' syntax is now accepted, if it's not an IPv6 address.
+ - The Userlist right-click menu now has icons and an option to add to friends
+   list. If you've edited this menu before you'll still get the old one. To get
+   the new one delete ~/.xchat2/popup.conf while XChat isn't running.
+ - ~/.xchat2/startup.txt is now loaded on launch (like /LOAD -e). Put any
+   commands you want executed at startup here.
  - The lag-o-meter now has a full scale of 1.0 seconds.
  - libnotify is now opened directly instead of using 'notify-send' to open
    tray/balloon alerts.
- - 
- - 
+ - Added support for QuakeNet's /AUTH for nick password, when numeric 005
+   NETWORK=QuakeNet is detected.
+ - You can now copy with IRC attributes and mIRC colors if CTRL key is down
+   when a selection is finished (on mouse release). This replaces the old
+   "Color paste" feature.
+ - Added a 'compact' flag to gui_tweaks. This'll make the userlist and tree
+   spacing smaller. E.g. type /set -or gui_tweaks 32 and restart to turn it on.
+ - The /CLEAR command takes a number as paramater (how many lines to clear).
  - 
  - 
  - Perl (Lian Wan Situ)
@@ -72,6 +84,10 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
     were created in
   * Modified Xchat::print and Xchat::command to accept array references in
     addition to strings for the channel and server parameters
+ - Plugin API:
+  * xchat_emit_print() will now trigger Sound, Blink, Icon etc type events,
+    depending on user's settings. 
+  * Fixed a bug where not all 32 elements were available in word[]/word_eol[].
 
 
 ------------------------------------------------------------------------------
