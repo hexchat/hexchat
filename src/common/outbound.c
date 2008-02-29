@@ -4188,8 +4188,8 @@ handle_command (session *sess, char *cmd, int check_spch)
 	struct popup *pop;
 	int user_cmd = FALSE;
 	GSList *list;
-	char *word[PDIWORDS];
-	char *word_eol[PDIWORDS];
+	char *word[PDIWORDS+1];
+	char *word_eol[PDIWORDS+1];
 	static int command_level = 0;
 	struct commands *int_cmd;
 	char pdibuf_static[1024];
@@ -4220,6 +4220,12 @@ handle_command (session *sess, char *cmd, int check_spch)
 
 	/* split the text into words and word_eol */
 	process_data_init (pdibuf, cmd, word, word_eol, TRUE, TRUE);
+
+	/* ensure an empty string at index 32 for cmd_deop etc */
+	/* (internal use only, plugins can still only read 1-31). */
+	word[PDIWORDS] = "\000\000";
+	word_eol[PDIWORDS] = "\000\000";
+
 	int_cmd = find_internal_command (word[1]);
 	/* redo it without quotes processing, for some commands like /JOIN */
 	if (int_cmd && !int_cmd->handle_quotes)
