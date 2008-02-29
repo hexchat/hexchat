@@ -179,7 +179,8 @@ lag_check (void)
 				sprintf (tbuf, "%d", lag);
 				EMIT_SIGNAL (XP_TE_PINGTIMEOUT, serv->server_session, tbuf, NULL,
 								 NULL, NULL, 0);
-				serv->auto_reconnect (serv, FALSE, -1);
+				if (prefs.autoreconnect)
+					serv->auto_reconnect (serv, FALSE, -1);
 			} else
 			{
 				snprintf (tbuf, sizeof (tbuf), "LAG%lu", tim);
