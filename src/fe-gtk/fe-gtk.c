@@ -661,7 +661,7 @@ fe_set_lag (server *serv, int lag)
 	session *sess;
 	gdouble per;
 	char lagtext[64];
-	char lagtip[64];
+	char lagtip[128];
 	unsigned long nowtim;
 
 	if (lag == -1)
