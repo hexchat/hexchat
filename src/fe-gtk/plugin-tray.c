@@ -591,12 +591,12 @@ tray_menu_cb (GtkWidget *widget, guint button, guint time, gpointer userdata)
 	blink_item (&prefs.input_tray_hilight, submenu, _("Highlighted Message"));
 	/*blink_item (BIT_FILEOFFER, submenu, _("File Offer"));*/
 
-	submenu = mg_submenu (menu, _("_Your status"));
+	submenu = mg_submenu (menu, _("_Change status"));
 	away_status = tray_find_away_status ();
-	item = tray_make_item (submenu, _("Set _away"), tray_foreach_server, "away");
+	item = tray_make_item (submenu, _("_Away"), tray_foreach_server, "away");
 	if (away_status == 1)
 		gtk_widget_set_sensitive (item, FALSE);
-	item = tray_make_item (submenu, _("Set _back"), tray_foreach_server, "back");
+	item = tray_make_item (submenu, _("_Back"), tray_foreach_server, "back");
 	if (away_status == 2)
 		gtk_widget_set_sensitive (item, FALSE);
 
