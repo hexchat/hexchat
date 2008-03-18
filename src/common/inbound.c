@@ -245,6 +245,15 @@ alert_match_text (char *text, char *masks)
 
 	while (1)
 	{
+		/* if it's RFC1459 <special>, it can be inside a word */
+		switch (*p)
+		{
+		case '-': case '[': case ']': case '\\':
+		case '`': case '^': case '{': case '}':
+			p++;
+			continue;
+		}
+
 		/* if it's a 0, space or comma, the word has ended. */
 		if (*p == 0 || *p == ' ' || *p == ',' ||
 			/* if it's anything BUT a letter, the word has ended. */
