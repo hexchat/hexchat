@@ -223,6 +223,17 @@ scrollback_save (session *sess, char *text)
 	if (sess->type == SESS_SERVER)
 		return;
 
+	if (sess->text_scrollback == SET_DEFAULT)
+	{
+		if (!prefs.text_replay)
+			return;
+	}
+	else
+	{
+		if (sess->text_scrollback != SET_ON)
+			return;
+	}
+
 	if (sess->scrollfd == -1)
 	{
 		if (scrollback_get_filename (sess, buf, sizeof (buf)) == NULL)
@@ -822,8 +833,7 @@ PrintText (session *sess, char *text)
 	}
 
 	log_write (sess, text);
-	if (prefs.text_replay)
-		scrollback_save (sess, text);
+	scrollback_save (sess, text);
 	fe_print_text (sess, text, 0);
 
 	if (conv)
