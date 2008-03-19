@@ -245,11 +245,18 @@ alert_match_text (char *text, char *masks)
 
 	while (1)
 	{
+		if (*p >= '0' && *p <= '9')
+		{
+			p++;
+			continue;
+		}
+
 		/* if it's RFC1459 <special>, it can be inside a word */
 		switch (*p)
 		{
 		case '-': case '[': case ']': case '\\':
 		case '`': case '^': case '{': case '}':
+		case '_': case '|':
 			p++;
 			continue;
 		}
