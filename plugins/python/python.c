@@ -68,9 +68,9 @@
 
 #ifdef WIN32
 #undef WITH_THREAD /* Thread support locks up xchat on Win32. */
-#define VERSION "0.7/2.4"	/* Linked to python24.dll */
+#define VERSION "0.8/2.4"	/* Linked to python24.dll */
 #else
-#define VERSION "0.7"
+#define VERSION "0.8"
 #endif
 
 #define NONE 0
@@ -351,22 +351,16 @@ Util_BuildList(char *word[])
 }
 
 static void
-Util_Autoload()
+Util_Autoload_from (const char *dir_name)
 {
 #ifndef PATH_MAX
 #define PATH_MAX 1024	/* Hurd doesn't define it */
 #endif
 	char oldcwd[PATH_MAX];
-	const char *dir_name;
 	struct dirent *ent;
 	DIR *dir;
 	if (getcwd(oldcwd, PATH_MAX) == NULL)
 		return;
-	/* we need local filesystem encoding for chdir, opendir etc */
-	dir_name = xchat_get_info(ph, "xchatdirfs");
-	/* fallback for pre-2.0.9 xchat */
-	if (!dir_name)
-		dir_name = xchat_get_info(ph, "xchatdir");
 	if (chdir(dir_name) != 0)
 		return;
 	dir = opendir(".");
@@ -379,6 +373,19 @@ Util_Autoload()
 	}
 	closedir(dir);
 	chdir(oldcwd);
+}
+
+static void
+Util_Autoload()
+{
+	/* we need local filesystem encoding for chdir, opendir etc */
+
+	/* auto-load from ~/.xchat2/ or %APPDATA%\X-Chat 2\ */
+	Util_Autoload_from(xchat_get_info(ph, "xchatdirfs"));
+
+#ifdef WIN32	/* also auto-load C:\Program Files\XChat\Plugins\*.py */
+	Util_Autoload_from(XCHATLIBDIR"/plugins");
+#endif
 }
 
 static char *
