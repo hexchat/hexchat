@@ -616,7 +616,6 @@ cmd_clear (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	GSList *list = sess_list;
 	char *reason = word_eol[2];
-	int lines;
 
 	if (strcasecmp (reason, "HISTORY") == 0)
 	{
@@ -636,7 +635,7 @@ cmd_clear (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		return TRUE;
 	}
 
-	if (reason[0] != '-' && !isdigit (reason[0]))
+	if (reason[0] != '-' && !isdigit (reason[0]) && reason[0] != 0)
 		return FALSE;
 
 	fe_text_clear (sess, atoi (reason));
@@ -2210,6 +2209,7 @@ cmd_ignore (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	int i;
 	int type = 0;
 	int quiet = 0;
+	char *mask;
 
 	if (!*word[2])
 	{
@@ -2226,17 +2226,26 @@ cmd_ignore (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		{
 			if (type == 0)
 				return FALSE;
-			i = ignore_add (word[2], type);
+
+			mask = word[2];
+			if (strchr (mask, '?') == NULL &&
+			    strchr (mask, '*') == NULL &&
+			    userlist_find (sess, mask))
+			{
+				mask = tbuf;
+				snprintf (tbuf, TBUFSIZE, "%s!*@*", word[2]);
+			}
+
+			i = ignore_add (mask, type);
 			if (quiet)
 				return TRUE;
 			switch (i)
 			{
 			case 1:
-				EMIT_SIGNAL (XP_TE_IGNOREADD, sess, word[2], NULL, NULL, NULL, 0);
+				EMIT_SIGNAL (XP_TE_IGNOREADD, sess, mask, NULL, NULL, NULL, 0);
 				break;
 			case 2:	/* old ignore changed */
-				EMIT_SIGNAL (XP_TE_IGNORECHANGE, sess, word[2], NULL, NULL,
-								 NULL, 0);
+				EMIT_SIGNAL (XP_TE_IGNORECHANGE, sess, mask, NULL, NULL, NULL, 0);
 			}
 			return TRUE;
 		}
@@ -2706,7 +2715,7 @@ cmd_notify (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 				return TRUE;
 			}
 
-			if (strcmp (net, "ASK") == 0)
+			if (net && strcmp (net, "ASK") == 0)
 				fe_notify_ask (word[i], NULL);
 			else
 			{
@@ -4058,8 +4067,8 @@ static void
 handle_say (session *sess, char *text, int check_spch)
 {
 	struct DCC *dcc;
-	char *word[PDIWORDS];
-	char *word_eol[PDIWORDS];
+	char *word[PDIWORDS+1];
+	char *word_eol[PDIWORDS+1];
 	char pdibuf_static[1024];
 	char newcmd_static[1024];
 	char *pdibuf = pdibuf_static;
@@ -4082,6 +4091,10 @@ handle_say (session *sess, char *text, int check_spch)
 
 	if (check_spch && prefs.perc_color)
 		check_special_chars (text, prefs.perc_ascii);
+
+	/* Python relies on this */
+	word[PDIWORDS] = NULL;
+	word_eol[PDIWORDS] = NULL;
 
 	/* split the text into words and word_eol */
 	process_data_init (pdibuf, text, word, word_eol, TRUE, FALSE);

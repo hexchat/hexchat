@@ -488,7 +488,10 @@ process_numeric (session * sess, int n,
 
 	case 263:	/*Server load is temporarily too heavy */
 		if (fe_is_chanwindow (sess->server))
+		{
 			fe_chan_list_end (sess->server);
+			fe_message (word_eol[5] + 1, FE_MSG_ERROR);
+		}
 		goto def;
 
 	case 290:	/* CAPAB reply */
@@ -1130,8 +1133,8 @@ irc_inline (server *serv, char *buf, int len)
 {
 	session *sess, *tmp;
 	char *type, *text;
-	char *word[PDIWORDS];
-	char *word_eol[PDIWORDS];
+	char *word[PDIWORDS+1];
+	char *word_eol[PDIWORDS+1];
 	char pdibuf_static[522]; /* 1 line can potentially be 512*6 in utf8 */
 	char *pdibuf = pdibuf_static;
 
@@ -1140,6 +1143,10 @@ irc_inline (server *serv, char *buf, int len)
 		pdibuf = malloc (len + 1);
 
 	sess = serv->front_session;
+
+	/* Python relies on this */
+	word[PDIWORDS] = NULL;
+	word_eol[PDIWORDS] = NULL;
 
 	if (buf[0] == ':')
 	{
