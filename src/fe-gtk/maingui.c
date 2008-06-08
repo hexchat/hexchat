@@ -502,23 +502,23 @@ fe_set_title (session *sess)
 	switch (type)
 	{
 	case SESS_DIALOG:
-		snprintf (tbuf, sizeof (tbuf), "XChat: %s %s @ %s",
+		snprintf (tbuf, sizeof (tbuf), DISPLAY_NAME": %s %s @ %s",
 					 _("Dialog with"), sess->channel, server_get_network (sess->server, TRUE));
 		break;
 	case SESS_SERVER:
-		snprintf (tbuf, sizeof (tbuf), "XChat: %s @ %s",
+		snprintf (tbuf, sizeof (tbuf), DISPLAY_NAME": %s @ %s",
 					 sess->server->nick, server_get_network (sess->server, TRUE));
 		break;
 	case SESS_CHANNEL:
 		/* don't display keys in the titlebar */
 		if ((!(prefs.gui_tweaks & 16)) && has_key (sess->current_modes))
 			snprintf (tbuf, sizeof (tbuf),
-						 "XChat: %s @ %s / %s",
+						 DISPLAY_NAME": %s @ %s / %s",
 						 sess->server->nick, server_get_network (sess->server, TRUE),
 						 sess->channel);
 		else
 			snprintf (tbuf, sizeof (tbuf),
-						 "XChat: %s @ %s / %s (%s)",
+						 DISPLAY_NAME": %s @ %s / %s (%s)",
 						 sess->server->nick, server_get_network (sess->server, TRUE),
 						 sess->channel, sess->current_modes ? sess->current_modes : "");
 		if (prefs.gui_tweaks & 1)
@@ -526,12 +526,12 @@ fe_set_title (session *sess)
 		break;
 	case SESS_NOTICES:
 	case SESS_SNOTICES:
-		snprintf (tbuf, sizeof (tbuf), "XChat: %s @ %s (notices)",
+		snprintf (tbuf, sizeof (tbuf), DISPLAY_NAME": %s @ %s (notices)",
 					 sess->server->nick, server_get_network (sess->server, TRUE));
 		break;
 	default:
 	def:
-		gtk_window_set_title (GTK_WINDOW (sess->gui->window), "XChat");
+		gtk_window_set_title (GTK_WINDOW (sess->gui->window), DISPLAY_NAME);
 		return;
 	}
 

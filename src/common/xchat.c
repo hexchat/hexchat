@@ -846,6 +846,7 @@ xchat_exit (void)
 	ignore_save ();
 	free_sessions ();
 	chanopt_save_all ();
+	servlist_cleanup ();
 	fe_exit ();
 }
 

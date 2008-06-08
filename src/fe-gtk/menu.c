@@ -515,6 +515,17 @@ menu_create (GtkWidget *menu, GSList *list, char *target, int check_path)
 		{
 			char *icon, *label;
 
+			/* default command in xchat.c */
+			if (pop->cmd[0] == 'n' && !strcmp (pop->cmd, "notify -n ASK %s"))
+			{
+				/* don't create this item if already in notify list */
+				if (notify_is_in_list (current_sess->server, target))
+				{
+					list = list->next;
+					continue;
+				}
+			}
+
 			menu_extract_icon (pop->name, &label, &icon);
 
 			if (!check_path || pop->cmd[0] != '!')
@@ -539,6 +550,9 @@ menu_create (GtkWidget *menu, GSList *list, char *target, int check_path)
 		submenu_list = g_slist_remove (submenu_list, submenu_list->data);
 }
 
+static char *str_copy = NULL;		/* for all pop-up menus */
+static GtkWidget *nick_submenu = NULL;	/* user info submenu */
+
 static void
 menu_destroy (GtkWidget *menu, gpointer objtounref)
 {
@@ -546,6 +560,7 @@ menu_destroy (GtkWidget *menu, gpointer objtounref)
 	g_object_unref (menu);
 	if (objtounref)
 		g_object_unref (G_OBJECT (objtounref));
+	nick_submenu = NULL;
 }
 
 static void
@@ -565,15 +580,122 @@ menu_popup (GtkWidget *menu, GdkEventButton *event, gpointer objtounref)
 						 0, event ? event->time : 0);
 }
 
-static char *str_copy = 0;		/* for all pop-up menus */
+static void
+menu_nickinfo_cb (GtkWidget *menu, session *sess)
+{
+	char buf[512];
+
+	if (!is_session (sess))
+		return;
+
+	/* issue a /WHOIS */
+	snprintf (buf, sizeof (buf), "WHOIS %s %s", str_copy, str_copy);
+	handle_command (sess, buf, FALSE);
+	/* and hide the output */
+	sess->server->skip_next_whois = 1;
+}
+
+/* returns boolean: Some data is missing */
+
+static gboolean
+menu_create_nickinfo_menu (struct User *user, GtkWidget *submenu)
+{
+	char buf[512];
+	char unknown[96];
+	char *real, *fmt;
+	struct away_msg *away;
+	gboolean missing = FALSE;
+
+	/* let the translators tweak this if need be */
+	fmt = _("<tt><b>%-11s</b></tt> %s");
+	snprintf (unknown, sizeof (unknown), "<i>%s</i>", _("Unknown"));
+
+	if (user->realname)
+	{
+		real = strip_color (user->realname, -1, STRIP_ALL|STRIP_ESCMARKUP);
+		snprintf (buf, sizeof (buf), fmt, _("Real Name:"), real);
+		g_free (real);
+	} else
+	{
+		snprintf (buf, sizeof (buf), fmt, _("Real Name:"), unknown);
+	}
+	menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0, 0);
+
+	snprintf (buf, sizeof (buf), fmt, _("User:"),
+				 user->hostname ? user->hostname : unknown);
+	menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0, 0);
+
+	snprintf (buf, sizeof (buf), fmt, _("Country:"),
+				 user->hostname ? country(user->hostname) : unknown);
+	menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0, 0);
+
+	snprintf (buf, sizeof (buf), fmt, _("Server:"),
+				 user->servername ? user->servername : unknown);
+	menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0, 0);
+
+	if (user->lasttalk)
+	{
+		char min[96];
+
+		snprintf (min, sizeof (min), _("%u minutes ago"),
+					(unsigned int) ((time (0) - user->lasttalk) / 60));
+		snprintf (buf, sizeof (buf), fmt, _("Last Msg:"), min);
+	} else
+	{
+		snprintf (buf, sizeof (buf), fmt, _("Last Msg:"), unknown);
+	}
+	menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0, 0);
+
+	if (user->away)
+	{
+		away = server_away_find_message (current_sess->server, user->nick);
+		if (away)
+		{
+			char *msg = strip_color (away->message ? away->message : unknown, -1, STRIP_ALL|STRIP_ESCMARKUP);
+			snprintf (buf, sizeof (buf), fmt, _("Away Msg:"), msg);
+			g_free (msg);
+			menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0, 0);
+		}
+		else
+			missing = TRUE;
+	}
+
+	return missing;
+}
+
+void
+fe_userlist_update (session *sess, struct User *user)
+{
+	GList *items, *next;
+
+	if (!nick_submenu || !str_copy)
+		return;
+
+	/* not the same nick as the menu? */
+	if (sess->server->p_cmp (user->nick, str_copy))
+		return;
+
+	/* get rid of the "show" signal */
+	g_signal_handlers_disconnect_by_func (nick_submenu, menu_nickinfo_cb, sess);
+
+	/* destroy all the old items */
+	items = ((GtkMenuShell *) nick_submenu)->children;
+	while (items)
+	{
+		next = items->next;
+		gtk_widget_destroy (items->data);
+		items = next;
+	}
+
+	/* and re-create them with new info */
+	menu_create_nickinfo_menu (user, nick_submenu);
+}
 
 void
 menu_nickmenu (session *sess, GdkEventButton *event, char *nick, int num_sel)
 {
 	char buf[512];
-	char *real, *fmt;
 	struct User *user;
-	struct away_msg *away;
 	GtkWidget *submenu, *menu = gtk_menu_new ();
 
 	if (str_copy)
@@ -585,7 +707,7 @@ menu_nickmenu (session *sess, GdkEventButton *event, char *nick, int num_sel)
 	/* more than 1 nick selected? */
 	if (num_sel > 1)
 	{
-		snprintf (buf, sizeof (buf), "%d nicks selected.", num_sel);
+		snprintf (buf, sizeof (buf), _("%d nicks selected."), num_sel);
 		menu_quick_item (0, buf, menu, 0, 0, 0);
 		menu_quick_item (0, 0, menu, XCMENU_SHADED, 0, 0);
 	} else
@@ -595,61 +717,13 @@ menu_nickmenu (session *sess, GdkEventButton *event, char *nick, int num_sel)
 			user = userlist_find_global (current_sess->server, nick);
 		if (user)
 		{
-			submenu = menu_quick_sub (nick, menu, NULL, XCMENU_DOLIST, -1);
+			nick_submenu = submenu = menu_quick_sub (nick, menu, NULL, XCMENU_DOLIST, -1);
 
-			/* let the translators tweak this if need be */
-			fmt = _("<tt><b>%-11s</b></tt> %s");
-
-			if (user->realname)
+			if (menu_create_nickinfo_menu (user, submenu) ||
+				 !user->hostname || !user->realname || !user->servername)
 			{
-				real = g_markup_escape_text (user->realname, -1);
-				snprintf (buf, sizeof (buf), fmt, _("Real Name:"), real);
-				g_free (real);
-			} else
-			{
-				snprintf (buf, sizeof (buf), fmt, _("Real Name:"), _("Unknown"));
+				g_signal_connect (G_OBJECT (submenu), "show", G_CALLBACK (menu_nickinfo_cb), sess);
 			}
-			menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0, 0);
-
-			snprintf (buf, sizeof (buf), fmt, _("User:"),
-						user->hostname ? user->hostname : _("Unknown"));
-			menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0, 0);
-
-			snprintf (buf, sizeof (buf), fmt, _("Country:"),
-						user->hostname ? country(user->hostname) : _("Unknown"));
-			menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0, 0);
-
-			snprintf (buf, sizeof (buf), fmt, _("Server:"),
-						user->servername ? user->servername : _("Unknown"));
-			menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0, 0);
-
-			if (user->away)
-			{
-				away = server_away_find_message (current_sess->server, nick);
-				if (away)
-				{
-					char *msg = strip_color (away->message ? away->message : _("Unknown"), -1, STRIP_ALL);
-					real = g_markup_escape_text (msg, -1);
-					g_free (msg);
-					snprintf (buf, sizeof (buf), fmt, _("Away Msg:"), real);
-					g_free (real);
-					menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0, 0);
-				}
-			}
-
-			if (user->lasttalk)
-			{
-				char min[96];
-
-				snprintf (min, sizeof (min), _("%u minutes ago"),
-							(unsigned int) ((time (0) - user->lasttalk) / 60));
-				snprintf (buf, sizeof (buf), fmt, _("Last Msg:"), min);
-			} else
-			{
-				snprintf (buf, sizeof (buf), fmt, _("Last Msg:"), _("Unknown"));
-			}
-
-			menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0, 0);
 
 			menu_quick_endsub ();
 			menu_quick_item (0, 0, menu, XCMENU_SHADED, 0, 0);
@@ -935,11 +1009,13 @@ menu_chanmenu (struct session *sess, GdkEventButton * event, char *chan)
 static void
 menu_delfav_cb (GtkWidget *item, server *serv)
 {
+	servlist_autojoinedit (serv->network, str_copy, FALSE);
 }
 
 static void
 menu_addfav_cb (GtkWidget *item, server *serv)
 {
+	servlist_autojoinedit (serv->network, str_copy, TRUE);
 }
 
 void

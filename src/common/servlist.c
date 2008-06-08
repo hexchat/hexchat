@@ -793,6 +793,34 @@ servlist_server_remove_all (ircnet *net)
 	}
 }
 
+static void
+free_and_clear (char *str)
+{
+	if (str)
+	{
+		char *orig = str;
+		while (*str)
+			*str++ = 0;
+		free (orig);
+	}
+}
+
+/* executed on exit: Clear any password strings */
+
+void
+servlist_cleanup (void)
+{
+	GSList *list;
+	ircnet *net;
+
+	for (list = network_list; list; list = list->next)
+	{
+		net = list->data;
+		free_and_clear (net->pass);
+		free_and_clear (net->nickserv);
+	}
+}
+
 void
 servlist_net_remove (ircnet *net)
 {
@@ -810,14 +838,12 @@ servlist_net_remove (ircnet *net)
 		free (net->user);
 	if (net->real)
 		free (net->real);
-	if (net->pass)
-		free (net->pass);
+	free_and_clear (net->pass);
 	if (net->autojoin)
 		free (net->autojoin);
 	if (net->command)
 		free (net->command);
-	if (net->nickserv)
-		free (net->nickserv);
+	free_and_clear (net->nickserv);
 	if (net->comment)
 		free (net->comment);
 	if (net->encoding)

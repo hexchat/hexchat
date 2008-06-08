@@ -545,6 +545,23 @@ notify_adduser (char *name, char *networks)
 	}
 }
 
+gboolean
+notify_is_in_list (server *serv, char *name)
+{
+	struct notify *notify;
+	GSList *list = notify_list;
+
+	while (list)
+	{
+		notify = (struct notify *) list->data;
+		if (!serv->p_cmp (notify->name, name))
+			return TRUE;
+		list = list->next;
+	}
+
+	return FALSE;
+}
+
 int
 notify_isnotify (struct session *sess, char *name)
 {

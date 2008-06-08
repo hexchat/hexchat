@@ -99,7 +99,7 @@ menu_about (GtkWidget * wid, gpointer sess)
 	about = gtk_dialog_new ();
 	gtk_window_set_position (GTK_WINDOW (about), GTK_WIN_POS_CENTER);
 	gtk_window_set_resizable (GTK_WINDOW (about), FALSE);
-	gtk_window_set_title (GTK_WINDOW (about), _("About XChat"));
+	gtk_window_set_title (GTK_WINDOW (about), _("About "DISPLAY_NAME));
 	if (parent_window)
 		gtk_window_set_transient_for (GTK_WINDOW (about), parent_window);
 	g_signal_connect (G_OBJECT (about), "destroy",
@@ -115,7 +115,7 @@ menu_about (GtkWidget * wid, gpointer sess)
 	gtk_container_add (GTK_CONTAINER (vbox), label);
 	g_get_charset (&locale);
 	(snprintf) (buf, sizeof (buf),
-				"<span size=\"x-large\"><b>XChat "PACKAGE_VERSION"</b></span>\n\n"
+				"<span size=\"x-large\"><b>"DISPLAY_NAME" "PACKAGE_VERSION"</b></span>\n\n"
 				"%s\n\n"
 #ifdef WIN32
 				/* leave this message to avoid time wasting bug reports! */
@@ -129,7 +129,7 @@ menu_about (GtkWidget * wid, gpointer sess)
 				"<b>Renderer</b>: %s\n"
 #endif
 				"<b>Compiled</b>: "__DATE__"\n\n"
-				"<small>\302\251 1998-2007 Peter \305\275elezn\303\275 &lt;zed@xchat.org></small>",
+				"<small>\302\251 1998-2008 Peter \305\275elezn\303\275 &lt;zed@xchat.org></small>",
 					_("A multiplatform IRC Client"),
 					get_cpu_str(),
 					locale,

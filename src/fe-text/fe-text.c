@@ -572,7 +572,7 @@ fe_add_rawlog (struct server *serv, char *text, int len, int outbound)
 {
 }
 void
-fe_set_topic (struct session *sess, char *topic)
+fe_set_topic (struct session *sess, char *topic, char *stripped_topic)
 {
 }
 void
@@ -631,7 +631,11 @@ fe_notify_update (char *name)
 {
 }
 void
-fe_text_clear (struct session *sess)
+fe_notify_ask (char *name, char *networks)
+{
+}
+void
+fe_text_clear (struct session *sess, int lines)
 {
 }
 void
@@ -772,10 +776,6 @@ fe_set_throttle (server * serv)
 }
 void
 fe_set_away (server *serv)
-{
-}
-void
-fe_set_color_paste (session *sess, int status)
 {
 }
 void

@@ -107,6 +107,8 @@ userlist_set_away (struct session *sess, char *nick, unsigned int away)
 			user->away = away;
 			/* rehash GUI */
 			fe_userlist_rehash (sess, user);
+			if (away)
+				fe_userlist_update (sess, user);
 		}
 	}
 }
@@ -127,12 +129,18 @@ userlist_add_hostname (struct session *sess, char *nick, char *hostname,
 		if (!user->servername && servername)
 			user->servername = strdup (servername);
 
-		if (prefs.showhostname_in_userlist || user->away != away)
+		if (away != 0xff)
 		{
+			if (prefs.showhostname_in_userlist || user->away != away)
+			{
+				user->away = away;
+				fe_userlist_rehash (sess, user);
+			}
 			user->away = away;
-			fe_userlist_rehash (sess, user);
 		}
-		user->away = away;
+
+		fe_userlist_update (sess, user);
+
 		return 1;
 	}
 	return 0;
