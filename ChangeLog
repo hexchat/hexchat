@@ -12,10 +12,10 @@ There are always more changes than listed here, these are just the
 highlights. The full CVS log is available at www.xchat.org/cvslog/
 
 ------------------------------------------------------------------------------
- 2.8.6 - dd/mmm/2008
+ 2.8.6 - 11/Jun/2008
 ------------------------------------------------------------------------------
 
- - Updated translations (de, fi, fr, hu, nb, th, zh_CN).
+ - Updated translations (de, fi, fr, hu, lt, nb, th, zh_CN).
  - Fixed creation of ~/.xchat2/scrollback/ paths (xc284-scrollbmkdir.diff).
  - Fixed a leak of file descriptors related to the scrollback feature
    (resource leak) (xc284-fix-scrollbfdleak.diff).
@@ -70,8 +70,9 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - Added a 'compact' flag to gui_tweaks. This'll make the userlist and tree
    spacing smaller. E.g. type /set -or gui_tweaks 32 and restart to turn it on.
  - The /CLEAR command takes a number as paramater (how many lines to clear).
- - 
- - 
+ - When there's missing information in the Userlist right-click menu, it'll
+   issue a silent /WHOIS and fill it in. This includes retrieving a person's
+   away-reason.
  - Perl (Lian Wan Situ)
   * /reloadall will now reload all the scripts that are currently load instead
     of simply reruning the autoload routine

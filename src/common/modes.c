@@ -547,7 +547,7 @@ handle_mode (server * serv, char *word[], char *word_eol[],
 	/* count the number of arguments (e.g. after the -o+v) */
 	num_args = 0;
 	i = 1;
-	while (i < PDIWORDS)
+	while ((i + offset + 1) < PDIWORDS)
 	{
 		i++;
 		if (!(*word[i + offset]))

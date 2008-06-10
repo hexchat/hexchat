@@ -499,7 +499,8 @@ servlist_edit_update (ircnet *net)
 static void
 servlist_edit_close_cb (GtkWidget *button, gpointer userdata)
 {
-	servlist_edit_update (selected_net);
+	if (selected_net)
+		servlist_edit_update (selected_net);
 
 	gtk_widget_destroy (edit_win);
 	edit_win = NULL;
@@ -547,6 +548,8 @@ servlist_deletenet_cb (GtkWidget *item, ircnet *net)
 		return;
 
 	net = selected_net;
+	if (!net)
+		return;
 	dialog = gtk_message_dialog_new (GTK_WINDOW (serverlist_win),
 												GTK_DIALOG_DESTROY_WITH_PARENT |
 												GTK_DIALOG_MODAL,
@@ -687,15 +690,21 @@ static void
 servlist_editchannel_cb (GtkCellRendererText *cell, gchar *name, gchar *newval, GtkTreeModel *model)
 {
 	GtkTreeIter iter;
+	static int loop_guard = FALSE;
+
+	if (loop_guard)
+		return;
 
 	if (!servlist_get_iter_from_name (model, name, &iter))
 		return;
 
+	loop_guard = TRUE;
 	/* delete empty item */
 	if (newval[0] == 0)
 		gtk_list_store_remove (GTK_LIST_STORE (model), &iter);
 	else
 		gtk_list_store_set (GTK_LIST_STORE (model), &iter, 0, newval, -1);
+	loop_guard = FALSE;
 }
 
 static void
@@ -1023,11 +1032,22 @@ servlist_celledit_cb (GtkCellRendererText *cell, gchar *arg1, gchar *arg2,
 {
 	GtkTreeModel *model = (GtkTreeModel *)user_data;
 	GtkTreeIter iter;
-	GtkTreePath *path = gtk_tree_path_new_from_string (arg1);
+	GtkTreePath *path;
 	char *netname;
 	ircnet *net;
 
-	gtk_tree_model_get_iter (model, &iter, path);
+	if (!arg1 || !arg2)
+		return;
+
+	path = gtk_tree_path_new_from_string (arg1);
+	if (!path)
+		return;
+
+	if (!gtk_tree_model_get_iter (model, &iter, path))
+	{
+		gtk_tree_path_free (path);
+		return;
+	}
 	gtk_tree_model_get (model, &iter, 0, &netname, -1);
 
 	net = servlist_net_find (netname, NULL, strcmp);
