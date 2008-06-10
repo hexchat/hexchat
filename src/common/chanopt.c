@@ -215,8 +215,6 @@ chanopt_add_opt (chanopt_in_memory *co, char *var, int new_value)
 {
 	int i;
 
-printf("loading %s %s :: |%s| = %d\n", co->network, co->channel, var, new_value);
-
 	i = 0;
 	while (i < sizeof (chanopt) / sizeof (channel_options))
 	{
@@ -239,8 +237,6 @@ chanopt_load_all (void)
 	char *eq;
 	char *network = NULL;
 	chanopt_in_memory *current = NULL;
-
-	printf("LOAD ALL\n");
 
 	/* 1. load the old file into our GSList */
 	fh = xchat_open_file ("chanopt.conf", O_RDONLY, 0, 0);
@@ -330,7 +326,6 @@ chanopt_save (session *sess)
 		return;
 
 	/* 2. reconcile sess with what we loaded from disk */
-	printf("SAVE CHANNEL TO MEMORY :: %s\n", sess->channel);
 
 	co = chanopt_find (network, sess->channel, TRUE);
 
@@ -386,22 +381,16 @@ chanopt_save_all (void)
 	chanopt_in_memory *co;
 	guint8 val;
 
-	printf("SAVE TO DISK %p %d\n", chanopt_list, chanopt_changed);
-
 	if (!chanopt_list || !chanopt_changed)
 	{
-		printf("NOTHING TO SAVE\n");
 		return;
 	}
 
 	fh = xchat_open_file ("chanopt.conf", O_TRUNC | O_WRONLY | O_CREAT, 0600, XOF_DOMODE);
 	if (fh == -1)
 	{
-		printf("ERROR: %s\n", errorstring (errno));
 		return;
 	}
-
-	printf("WRITING TO DISK\n");
 
 	for (num_saved = 0, list = chanopt_list; list; list = list->next)
 	{
@@ -417,7 +406,6 @@ chanopt_save_all (void)
 				if (num_saved != 0)
 					write (fh, "\n", 1);
 
-				printf("WRITING TO DISK :: %s :: %s\n", co->network, co->channel);
 				chanopt_save_one_channel (co, fh);
 				num_saved++;
 				goto cont;
