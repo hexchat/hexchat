@@ -1,9 +1,9 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([XChat],[2.8.4],[http://www.xchat.org/],[xchat])
+AC_INIT([XChat],[2.8.6],[http://www.xchat.org/],[xchat])
 
 AC_PREREQ([2.59])
-AC_COPYRIGHT([Copyright (C) 1998-2007 Peter Zelezny])
+AC_COPYRIGHT([Copyright (C) 1998-2008 Peter Zelezny])
 
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_SRCDIR([configure.in])
@@ -25,7 +25,7 @@ GETTEXT_PACKAGE=xchat
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE",[Gettext package name])
 
-ALL_LINGUAS="be ca cs de el es fi fr gl hu it ja ko lt mk nl pa pt ru sq sr sv uk vi zh_CN zh_TW"
+ALL_LINGUAS="be ca cs de el es fi fr gl hu it ja ko lt mk nl pa pt ru sq sr sv th uk vi zh_CN zh_TW"
 AM_GNU_GETTEXT
 
 dnl displaced from acconfig.h

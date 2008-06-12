@@ -1,10 +1,10 @@
-## RPM spec file designed for Fedora Core 5,6,7 ##
+## RPM spec file designed for Fedora Core 8,9 ##
 
 Summary: Graphical IRC (chat) client
 Summary(fr): Client IRC (chat) avec interface graphique
 Summary(de): IRC-Client (Chat) mit grafischer Oberfläche
 Name: xchat
-Version: 2.8.4
+Version: 2.8.6
 Release: 0
 Epoch: 1
 Group: Applications/Internet
