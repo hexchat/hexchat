@@ -509,6 +509,8 @@ servlist_connect (session *sess, ircnet *net, gboolean join)
 	list = g_slist_nth (net->servlist, net->selected);
 	if (!list)
 		list = net->servlist;
+	if (!list)
+		return;
 	ircserv = list->data;
 
 	/* incase a protocol switch is added to the servlist gui */

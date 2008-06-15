@@ -216,7 +216,7 @@ scrollback_shrink (session *sess)
 static void
 scrollback_save (session *sess, char *text)
 {
-	char buf[1024];
+	char buf[512 * 4];
 	time_t stamp;
 	int len;
 
@@ -266,7 +266,7 @@ void
 scrollback_load (session *sess)
 {
 	int fh;
-	char buf[1024];
+	char buf[512 * 4];
 	char *text;
 	time_t stamp;
 	int lines;

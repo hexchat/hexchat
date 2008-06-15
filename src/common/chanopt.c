@@ -32,7 +32,7 @@ typedef struct
 
 #define S_F(xx) STRUCT_OFFSET_STR(struct session,xx)
 
-channel_options chanopt[] =
+static const channel_options chanopt[] =
 {
 	{"alert_beep", "BEEP", S_F(alert_beep)},
 	{"alert_taskbar", NULL, S_F(alert_taskbar)},

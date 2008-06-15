@@ -886,7 +886,6 @@ static void
 set_showval (session *sess, const struct prefs *var, char *tbuf)
 {
 	int len, dots, j;
-	static const char *offon[] = { "OFF", "ON" };
 
 	len = strlen (var->name);
 	memcpy (tbuf, var->name, len);
@@ -909,8 +908,10 @@ set_showval (session *sess, const struct prefs *var, char *tbuf)
 					*((int *) &prefs + var->offset));
 		break;
 	case TYPE_BOOL:
-		sprintf (tbuf + len, "\0033:\017 %s\n", offon[
-					*((int *) &prefs + var->offset)]);
+		if (*((int *) &prefs + var->offset))
+			sprintf (tbuf + len, "\0033:\017 %s\n", "ON");
+		else
+			sprintf (tbuf + len, "\0033:\017 %s\n", "OFF");
 		break;
 	}
 	PrintText (sess, tbuf);
