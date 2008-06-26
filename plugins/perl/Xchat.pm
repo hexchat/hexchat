@@ -28,6 +28,7 @@ BEGIN {
 use File::Spec ();
 use File::Basename ();
 use File::Glob ();
+use List::Util ();
 use Symbol();
 
 {
@@ -181,7 +182,7 @@ sub hook_timer {
 	}
 	
 	my $pkg_info = Xchat::Embed::pkg_info( $package );
-	my $hook = Xchat::Internal::hook_timer( $timeout, $callback, $data );
+	my $hook = Xchat::Internal::hook_timer( $timeout, $callback, $data, $package );
 	push @{$pkg_info->{hooks}}, $hook if defined $hook;
 	return $hook;
 }

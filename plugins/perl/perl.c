@@ -113,6 +113,9 @@ typedef struct
 	SV *userdata;
 	xchat_hook *hook;   /* required for timers */
 	xchat_context *ctx; /* allow timers to remember their context */
+	SV *package;      /* need to track the package name when removing hooks
+	                       by returning REMOVE
+							   */
 	unsigned int depth;
 } HookData;
 
@@ -298,17 +301,11 @@ timer_cb (void *userdata)
 				/* if 0 is return the timer is going to get unhooked */
 				PUSHMARK (SP);
 				XPUSHs (sv_2mortal (newSViv (PTR2IV (data->hook))));
+				XPUSHs (sv_mortalcopy (data->package));
 				PUTBACK;
 
 				call_pv ("Xchat::unhook", G_EVAL);
 				SPAGAIN;
-
-				SvREFCNT_dec (data->callback);
-
-				if (data->userdata) {
-					SvREFCNT_dec (data->userdata);
-				}
-				free (data);
 			}
 		}
 
@@ -739,6 +736,7 @@ XS (XS_Xchat_hook_server)
 		data->userdata = sv_mortalcopy (userdata);
 		SvREFCNT_inc (data->userdata);
 		data->depth = 0;
+		data->package = NULL;
 		hook = xchat_hook_server (ph, name, pri, server_cb, data);
 
 		XSRETURN_IV (PTR2IV (hook));
@@ -786,6 +784,7 @@ XS (XS_Xchat_hook_command)
 		data->userdata = sv_mortalcopy (userdata);
 		SvREFCNT_inc (data->userdata);
 		data->depth = 0;
+		data->package = NULL;
 		hook = xchat_hook_command (ph, name, pri, command_cb, help_text, data);
 
 		XSRETURN_IV (PTR2IV (hook));
@@ -825,6 +824,7 @@ XS (XS_Xchat_hook_print)
 		data->userdata = sv_mortalcopy (userdata);
 		SvREFCNT_inc (data->userdata);
 		data->depth = 0;
+		data->package = NULL;
 		hook = xchat_hook_print (ph, name, pri, print_cb, data);
 
 		XSRETURN_IV (PTR2IV (hook));
@@ -839,18 +839,20 @@ XS (XS_Xchat_hook_timer)
 	SV *callback;
 	SV *userdata;
 	xchat_hook *hook;
+	SV *package;
 	HookData *data;
 
 	dXSARGS;
 
-	if (items != 3) {
+	if (items != 4) {
 		xchat_print (ph,
-						 "Usage: Xchat::Internal::hook_timer(timeout, callback, userdata)");
+						 "Usage: Xchat::Internal::hook_timer(timeout, callback, userdata, package)");
 	} else {
 		timeout = (int) SvIV (ST (0));
 		callback = ST (1);
 		data = NULL;
 		userdata = ST (2);
+		package = ST (3);
 
 		data = malloc (sizeof (HookData));
 		if (data == NULL) {
@@ -862,6 +864,8 @@ XS (XS_Xchat_hook_timer)
 		data->userdata = sv_mortalcopy (userdata);
 		SvREFCNT_inc (data->userdata);
 		data->ctx = xchat_get_context (ph);
+		data->package = sv_mortalcopy (package);
+		SvREFCNT_inc (data->package);
 		hook = xchat_hook_timer (ph, timeout, timer_cb, data);
 		data->hook = hook;
 
@@ -914,6 +918,7 @@ XS (XS_Xchat_hook_fd)
 		SvREFCNT_inc (data->callback);
 		data->userdata = sv_mortalcopy (userdata);
 		SvREFCNT_inc (data->userdata);
+		data->package = NULL;
 		hook = xchat_hook_fd (ph, fd, flags, fd_cb, data);
 		data->hook = hook;
 
@@ -935,14 +940,18 @@ XS (XS_Xchat_unhook)
 		userdata = (HookData *) xchat_unhook (ph, hook);
 
 		if (userdata != NULL) {
-			if (userdata->callback) {
+			if (userdata->callback != NULL) {
 				SvREFCNT_dec (userdata->callback);
 			}
 
-			if (userdata->userdata) {
+			if (userdata->userdata != NULL) {
 				XPUSHs (sv_mortalcopy (userdata->userdata));
 				SvREFCNT_dec (userdata->userdata);
 				retCount = 1;
+			}
+
+			if (userdata->package != NULL) {
+				SvREFCNT_dec (userdata->package);
 			}
 			free (userdata);
 		}

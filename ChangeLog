@@ -12,6 +12,15 @@ There are always more changes than listed here, these are just the
 highlights. The full CVS log is available at www.xchat.org/cvslog/
 
 ------------------------------------------------------------------------------
+ 2.8.8 - dd/mm/yyyy
+------------------------------------------------------------------------------
+
+ - Perl (Lian Wan Situ)
+  * Fixed a bug that resulted in timer hooks being leaked because
+    "return REMOVE" from a timer callback was not unhooking like it was
+    supposed to
+
+------------------------------------------------------------------------------
  2.8.6 - 11/Jun/2008
 ------------------------------------------------------------------------------
 
