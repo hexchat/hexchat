@@ -244,21 +244,25 @@ sub unhook {
 sub do_for_each {
 	my ($cb, $channels, $servers) = @_;
 
-	# if neither is provided then we execute the callback in the current
-	# context
-	unless( $channels or $servers ) {
+	# not specifying any channels or servers is not the same as specifying
+	# undef for both
+	# - not specifying either results in calling the callback inthe current ctx
+	# - specifying undef for for both results in calling the callback in the
+	#   front/currently selected tab
+	if( @_ == 3 && !($channels || $servers) ) { 
+		$channels = [ undef ];
+		$servers = [ undef ];
+	} elsif( !($channels || $servers) ) {
 		$cb->();
 		return 1;
 	}
 
 	$channels = [ $channels ] unless ref( $channels ) eq 'ARRAY';
 
-	# if no server is specified then we execute the callback in
-	# each of the channels on the current context's server
 	if( $servers ) {
 		$servers = [ $servers ] unless ref( $servers ) eq 'ARRAY';
 	} else {
-		$servers = [ Xchat::get_info( "server" ) ];
+		$servers = [ undef ];
 	}
 
 	my $num_done;

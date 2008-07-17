@@ -19,6 +19,8 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
   * Fixed a bug that resulted in timer hooks being leaked because
     "return REMOVE" from a timer callback was not unhooking like it was
     supposed to
+  * Reverted the unintentional change to how the server argument of print()
+    and command() is interepreted when it is undef
 
 ------------------------------------------------------------------------------
  2.8.6 - 11/Jun/2008
