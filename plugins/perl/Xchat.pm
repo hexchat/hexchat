@@ -45,7 +45,7 @@ our %EXPORT_TAGS = (
 		qw(KEEP REMOVE), # timers
 	],
 	hooks => [
-		qw(hook_server hook_command hook_print hook_timer unhook),
+		qw(hook_server hook_command hook_print hook_timer hook_fd unhook),
 	],
 	util => [
 		qw(register nickcmp strip_code), # misc
