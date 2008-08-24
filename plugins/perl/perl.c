@@ -1109,7 +1109,6 @@ XS (XS_Xchat_get_list)
 		while (xchat_list_next (ph, list)) {
 			i = 0;
 			hash = newHV ();
-			sv_2mortal ((SV *) hash);
 			while (fields[i] != NULL) {
 				switch (fields[i][0]) {
 				case 's':
@@ -1141,8 +1140,8 @@ XS (XS_Xchat_get_list)
 				}
 				i++;
 			}
-
-			XPUSHs (newRV_noinc ((SV *) hash));
+			
+			XPUSHs (sv_2mortal (newRV_noinc ((SV *) hash)));
 
 		}
 		xchat_list_free (ph, list);
