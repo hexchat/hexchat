@@ -317,7 +317,8 @@ Settings-&gt;Advanced-&gt;Text Events, these additional events can be used.</p>
 			the modifier value is in $_[0][1]<br />
 			both are integers<br />
 			<br />
-			if the key is a printable character such as abcde... then that letter can be found in $_[0][2]
+			if the key is a printable character such as abcde... then that letter can be found in $_[0][2]<br />
+			the length of $_[0][2], may be 0 for unprintable keys
 		</td>
 </table><p>
 </p>
@@ -450,7 +451,10 @@ a context cannot be found.</p>
 	</tr>	<tr>
 		<td>charset</td>	<td>character-set used in the current context</td>
 	</tr>
-	
+	<tr>
+		<td>event_text &lt;name&gt;</td>
+		<td>text event format string for <em>name</em>. This is whatever the user has under the Text column of Settings-&gt;Advanced-&gt;Text Events.</td>
+	</tr>
 	<tr>
 		<td>host</td>	<td>real hostname of the current server</td>
 	</tr>	<tr>
@@ -550,7 +554,12 @@ if there is no such list.</p>
 		<td>Key</td>	<td>Description</td>
 	</tr>	<tr>
 		<td>channel</td>	<td>tab name</td>
-	</tr>	<tr>
+	</tr>
+	<tr>
+		<td>chantypes</td>
+		<td>channel types supported by the server, typically "#&amp;"</td>
+	</tr>
+	<tr>
 		<td>context</td>	<td>can be used with set_context</td>
 	</tr>	<tr>
 		<td>flags</td>	<td>Server Bits:<br />
@@ -567,7 +576,10 @@ if there is no such list.</p>
 	<tr>
 		<td>maxmodes</td>	<td>Maximum modes per line</td>
 	</tr>
-				
+	<tr>
+		<td>lag</td>
+		<td>lag in milliseconds</td>
+	</tr>
 	<tr>
 		<td>network</td>	<td>network name to which this channel belongs</td>
 	</tr>	<tr>
@@ -577,7 +589,10 @@ if there is no such list.</p>
 	<tr>
 		<td>nickmodes</td>	<td>Nickname mode chars e.g. "vo"</td>
 	</tr>
-	
+	<tr>
+		<td>queue</td>
+		<td>number of bytes in the send queue</td>
+	</tr>
 	<tr>
 		<td>server</td>	<td>server name to which this channel belongs</td>
 	</tr>	<tr>
@@ -649,7 +664,12 @@ if there is no such list.</p>
 <table border="1">
 	<tr style="background-color: #dddddd">
 		<td>Key</td>	<td>Value</td>
-	</tr>	<tr>
+	</tr>
+	<tr>
+		<td>networks</td>
+		<td>comma separated list of networks where you will be notfified about this user's online/offline status or undef if you will be notificed on every network you are connected to</td>
+	</tr>
+	<tr>
 		<td>nick</td>	<td>nickname</td>
 	</tr>	<tr>
 		<td>flags</td>	<td>0 = is online</td>
@@ -667,7 +687,12 @@ detail</p><p>"users"		-	list of users in the current channel</p>
 		<td>Key</td>	<td>Value</td>
 	</tr>	<tr>
 		<td>away</td>	<td>away status(boolean)</td>
-	</tr>	<tr>
+	</tr>
+	<tr>
+		<td>lasttalk</td>
+		<td>last time a user was seen talking, this is the an epoch time(number of seconds since a certain date, that date depends on the OS)</td>
+	</tr>
+	<tr>
 		<td>nick</td>	<td>nick name</td>
 	</tr>	<tr>
 		<td>host</td>
@@ -675,6 +700,13 @@ detail</p><p>"users"		-	list of users in the current channel</p>
 	</tr>	<tr>
 		<td>prefix</td>	<td>prefix character, .e.g: @ or +</td>
 	</tr>
+	<tr>
+		<td>realname</td>
+		<td>Real name or undef</td>
+	</tr>
+	<tr>
+		<td>selected</td>
+		<td>selected status in the user list, only works when retrieving the user list of the focused tab. You can use the /USELECT command to select the nicks</td>
 </table><p>
 </p>
 <h3><a name="xchat__user_info____nick___"><code>Xchat::user_info( [$nick] )</code></a></h3>
