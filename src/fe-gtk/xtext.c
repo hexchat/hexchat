@@ -1350,6 +1350,24 @@ gtk_xtext_draw_marker (GtkXText * xtext, textentry * ent, int y)
 	}
 }
 
+#ifdef USE_SHM
+static int
+have_shm_pixmaps(Display *dpy)
+{
+	int major, minor;
+	static int checked = 0;
+	static int have = FALSE;
+
+	if (!checked)
+	{
+		XShmQueryVersion (dpy, &major, &minor, &have);
+		checked = 1;
+	}
+
+	return have;
+}
+#endif
+
 static void
 gtk_xtext_paint (GtkWidget *widget, GdkRectangle *area)
 {
@@ -1366,8 +1384,12 @@ gtk_xtext_paint (GtkWidget *widget, GdkRectangle *area)
 		{
 			xtext->last_win_x = x;
 			xtext->last_win_y = y;
-#if !defined(USE_SHM) && !defined(WIN32)
+#ifndef WIN32
+#ifdef USE_SHM
+			if (xtext->shaded && !have_shm_pixmaps(GDK_WINDOW_XDISPLAY (xtext->draw_buf)))
+#else
 			if (xtext->shaded)
+#endif
 			{
 				xtext->recycle = TRUE;
 				gtk_xtext_load_trans (xtext);
@@ -2494,10 +2516,10 @@ gtk_xtext_class_init (GtkXTextClass * class)
 	xtext_class->word_click = NULL;
 }
 
-GtkType
+GType
 gtk_xtext_get_type (void)
 {
-	static GtkType xtext_type = 0;
+	static GType xtext_type = 0;
 
 	if (!xtext_type)
 	{
@@ -3559,6 +3581,11 @@ shade_pixmap (GtkXText * xtext, Pixmap p, int x, int y, int w, int h)
 	GC tgc;
 	Display *xdisplay = GDK_WINDOW_XDISPLAY (xtext->draw_buf);
 
+#ifdef USE_SHM
+	int shm_pixmaps;
+	shm_pixmaps = have_shm_pixmaps(xdisplay);
+#endif
+
 	XGetGeometry (xdisplay, p, &root, &dummy, &dummy, &width, &height,
 					  &dummy, &depth);
 
@@ -3576,18 +3603,20 @@ shade_pixmap (GtkXText * xtext, Pixmap p, int x, int y, int w, int h)
 		XFreeGC (xdisplay, tgc);
 
 #ifdef USE_SHM
-		ximg = get_image (xtext, xdisplay, &xtext->shminfo, 0, 0, w, h, depth, tmp);
-#else
-		ximg = XGetImage (xdisplay, tmp, 0, 0, w, h, -1, ZPixmap);
+		if (shm_pixmaps)
+			ximg = get_image (xtext, xdisplay, &xtext->shminfo, 0, 0, w, h, depth, tmp);
+		else
 #endif
+			ximg = XGetImage (xdisplay, tmp, 0, 0, w, h, -1, ZPixmap);
 		XFreePixmap (xdisplay, tmp);
 	} else
 	{
 #ifdef USE_SHM
-		ximg = get_image (xtext, xdisplay, &xtext->shminfo, x, y, w, h, depth, p);
-#else
-		ximg = XGetImage (xdisplay, p, x, y, w, h, -1, ZPixmap);
+		if (shm_pixmaps)
+			ximg = get_image (xtext, xdisplay, &xtext->shminfo, x, y, w, h, depth, p);
+		else
 #endif
+			ximg = XGetImage (xdisplay, p, x, y, w, h, -1, ZPixmap);
 	}
 
 	if (!ximg)
@@ -3612,7 +3641,7 @@ shade_pixmap (GtkXText * xtext, Pixmap p, int x, int y, int w, int h)
 	else
 	{
 #ifdef USE_SHM
-		if (xtext->shm)
+		if (xtext->shm && shm_pixmaps)
 		{
 #if (GTK_MAJOR_VERSION == 2) && (GTK_MINOR_VERSION == 0)
 			shaded_pix = gdk_pixmap_foreign_new (
@@ -3630,7 +3659,7 @@ shade_pixmap (GtkXText * xtext, Pixmap p, int x, int y, int w, int h)
 	}
 
 #ifdef USE_SHM
-	if (!xtext->shm)
+	if (!xtext->shm || !shm_pixmaps)
 #endif
 		XPutImage (xdisplay, GDK_WINDOW_XWINDOW (shaded_pix),
 					  GDK_GC_XGC (xtext->fgc), ximg, 0, 0, 0, 0, w, h);
@@ -3650,7 +3679,7 @@ gtk_xtext_free_trans (GtkXText * xtext)
 	if (xtext->pixmap)
 	{
 #ifdef USE_SHM
-		if (xtext->shm)
+		if (xtext->shm && have_shm_pixmaps(GDK_WINDOW_XDISPLAY (xtext->draw_buf)))
 		{
 			XFreePixmap (GDK_WINDOW_XDISPLAY (xtext->pixmap),
 							 GDK_WINDOW_XWINDOW (xtext->pixmap));
