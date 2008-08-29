@@ -4949,7 +4949,8 @@ gtk_xtext_search (GtkXText * xtext, const gchar *text, textentry *start, gboolea
 			}
 			while (line > xtext->adj->upper - xtext->adj->page_size)
 				line--;
-
+			if (backward)
+				line -= xtext->adj->page_size - ent->lines_taken;
 			xtext->adj->value = line;
 			xtext->buffer->scrollbar_down = FALSE;
 			gtk_adjustment_changed (xtext->adj);
