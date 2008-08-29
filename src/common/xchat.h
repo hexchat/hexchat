@@ -236,6 +236,7 @@ struct xchatprefs
 	unsigned int input_balloon_chans;
 	unsigned int input_balloon_hilight;
 	unsigned int input_balloon_priv;
+	unsigned int input_balloon_time;
 
 	unsigned int input_beep_chans;
 	unsigned int input_beep_hilight;

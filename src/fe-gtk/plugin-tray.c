@@ -178,7 +178,7 @@ libnotify_notify_new (const char *title, const char *text, GtkStatusIcon *icon)
 	g_free ((char *)title);
 	g_free ((char *)text);
 
-	nn_set_timeout (noti, 20000);
+	nn_set_timeout (noti, prefs.input_balloon_time*1000);
 	nn_show (noti, NULL);
 	g_object_unref (G_OBJECT (noti));
 
@@ -198,6 +198,7 @@ fe_tray_set_balloon (const char *title, const char *text)
 #ifndef WIN32
 	const char *argv[8];
 	const char *path;
+	char time[16];
 	WinStatus ws;
 
 	/* no balloons if the window is focused */
@@ -223,13 +224,14 @@ fe_tray_set_balloon (const char *title, const char *text)
 	path = g_find_program_in_path ("notify-send");
 	if (path)
 	{
+		sprintf(time, "%d000",prefs.input_balloon_time);
 		argv[0] = path;
 		argv[1] = "-i";
 		argv[2] = "gtk-dialog-info";
 		if (access (XCHATSHAREDIR"/pixmaps/xchat.png", R_OK) == 0)
 			argv[2] = XCHATSHAREDIR"/pixmaps/xchat.png";
 		argv[3] = "-t";
-		argv[4] = "20000";
+		argv[4] = time;
 		argv[5] = title;
 		text = strip_color (text, -1, STRIP_ALL|STRIP_ESCMARKUP);
 		argv[6] = text;

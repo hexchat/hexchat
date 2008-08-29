@@ -464,6 +464,7 @@ const struct prefs vars[] = {
 	{"input_balloon_chans", P_OFFINT (input_balloon_chans), TYPE_BOOL},
 	{"input_balloon_hilight", P_OFFINT (input_balloon_hilight), TYPE_BOOL},
 	{"input_balloon_priv", P_OFFINT (input_balloon_priv), TYPE_BOOL},
+	{"input_balloon_time", P_OFFINT (input_balloon_time), TYPE_INT},
 	{"input_beep_chans", P_OFFINT (input_beep_chans), TYPE_BOOL},
 	{"input_beep_hilight", P_OFFINT (input_beep_hilight), TYPE_BOOL},
 	{"input_beep_msg", P_OFFINT (input_beep_priv), TYPE_BOOL},
@@ -674,6 +675,7 @@ load_config (void)
 	prefs.gui_pane_right_size = 100;
 	prefs.mainwindow_save = 1;
 	prefs.bantype = 2;
+	prefs.input_balloon_time = 20;
 	prefs.input_flash_priv = prefs.input_flash_hilight = 1;
 	prefs.input_tray_priv = prefs.input_tray_hilight = 1;
 	prefs.autodccsend = 2;	/* browse mode */
