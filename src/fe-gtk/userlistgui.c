@@ -54,6 +54,16 @@
 #endif
 
 
+enum
+{
+	COL_PIX=0,		// GdkPixbuf *
+	COL_NICK=1,		// char *
+	COL_HOST=2,		// char *
+	COL_USER=3,		// struct User *
+	COL_GDKCOLOR=4	// GdkColor *
+};
+
+
 GdkPixbuf *
 get_user_icon (server *serv, struct User *user)
 {
@@ -147,7 +157,7 @@ userlist_select (session *sess, char *name)
 	{
 		do
 		{
-			gtk_tree_model_get (model, &iter, 3, &row_user, -1);
+			gtk_tree_model_get (model, &iter, COL_USER, &row_user, -1);
 			if (sess->server->p_cmp (row_user->nick, name) == 0)
 			{
 				if (gtk_tree_selection_iter_is_selected (selection, &iter))
@@ -171,6 +181,7 @@ userlist_selection_list (GtkWidget *widget, int *num_ret)
 	GtkTreeView *treeview = (GtkTreeView *) widget;
 	GtkTreeSelection *selection = gtk_tree_view_get_selection (treeview);
 	GtkTreeModel *model = gtk_tree_view_get_model (treeview);
+	struct User *user;
 	int i, num_sel;
 	char **nicks;
 
@@ -198,7 +209,8 @@ userlist_selection_list (GtkWidget *widget, int *num_ret)
 	{
 		if (gtk_tree_selection_iter_is_selected (selection, &iter))
 		{
-			gtk_tree_model_get (model, &iter, 1, &nicks[i], -1);
+			gtk_tree_model_get (model, &iter, COL_USER, &user, -1);
+			nicks[i] = g_strdup (user->nick);
 			i++;
 			nicks[i] = NULL;
 		}
@@ -225,7 +237,7 @@ fe_userlist_set_selected (struct session *sess)
 	{
 		do
 		{
-			gtk_tree_model_get (GTK_TREE_MODEL (store), &iter, 3, &user, -1);
+			gtk_tree_model_get (GTK_TREE_MODEL (store), &iter, COL_USER, &user, -1);
 
 			if (gtk_tree_selection_iter_is_selected (selection, &iter))
 				user->selected = 1;
@@ -248,7 +260,7 @@ find_row (GtkTreeView *treeview, GtkTreeModel *model, struct User *user,
 	{
 		do
 		{
-			gtk_tree_model_get (model, &iter, 3, &row_user, -1);
+			gtk_tree_model_get (model, &iter, COL_USER, &row_user, -1);
 			if (row_user == user)
 			{
 				if (gtk_tree_view_get_model (treeview) == model)
@@ -325,8 +337,8 @@ fe_userlist_rehash (session *sess, struct User *user)
 		do_away = FALSE;
 
 	gtk_list_store_set (GTK_LIST_STORE (sess->res->user_model), iter,
-							  2, user->hostname,
-							  4, (do_away)
+							  COL_HOST, user->hostname,
+							  COL_GDKCOLOR, (do_away)
 									?	(user->away ? &colors[COL_AWAY] : NULL)
 									:	(NULL),
 							  -1);
@@ -339,19 +351,32 @@ fe_userlist_insert (session *sess, struct User *newuser, int row, int sel)
 	GdkPixbuf *pix = get_user_icon (sess->server, newuser);
 	GtkTreeIter iter;
 	int do_away = TRUE;
+	char *nick;
 
 	if (prefs.away_size_max < 1 || !prefs.away_track)
 		do_away = FALSE;
 
+	nick = newuser->nick;
+	if (prefs.gui_tweaks & 64)
+	{
+		nick = malloc (strlen (newuser->nick) + 2);
+		nick[0] = newuser->prefix[0];
+		strcpy (nick + 1, newuser->nick);
+		pix = NULL;
+	}
+
 	gtk_list_store_insert_with_values (GTK_LIST_STORE (model), &iter, row,
-									0, pix,
-									1, newuser->nick,
-									2, newuser->hostname,
-									3, newuser,
-									4, (do_away)
+									COL_PIX, pix,
+									COL_NICK, nick,
+									COL_HOST, newuser->hostname,
+									COL_USER, newuser,
+									COL_GDKCOLOR, (do_away)
 										?	(newuser->away ? &colors[COL_AWAY] : NULL)
 										:	(NULL),
 								  -1);
+
+	if (prefs.gui_tweaks & 64)
+		free (nick);
 
 	/* is it me? */
 	if (newuser->me && sess->gui->nick_box)
@@ -406,7 +431,7 @@ userlist_dnd_drop (GtkTreeView *widget, GdkDragContext *context,
 	model = gtk_tree_view_get_model (widget);
 	if (!gtk_tree_model_get_iter (model, &iter, path))
 		return;
-	gtk_tree_model_get (model, &iter, 3, &user, -1);
+	gtk_tree_model_get (model, &iter, COL_USER, &user, -1);
 
 	mg_dnd_drop_file (current_sess, user->nick, selection_data->data);
 }
@@ -672,7 +697,7 @@ fe_uselect (session *sess, char *word[], int do_clear, int scroll_to)
 		{
 			if (*word[0])
 			{
-				gtk_tree_model_get (model, &iter, 3, &row_user, -1);
+				gtk_tree_model_get (model, &iter, COL_USER, &row_user, -1);
 				thisname = 0;
 				while ( *(name = word[thisname++]) )
 				{
