@@ -64,9 +64,21 @@ sub register {
 	my $pkg_info = Xchat::Embed::pkg_info( $package );
 	my $filename = $pkg_info->{filename};
 	my ($name, $version, $description, $callback) = @_;
+	
+	if( defined $pkg_info->{gui_entry} ) {
+		Xchat::print( "Xchat::register called more than once in "
+			. $pkg_info->{filename} );
+		return ();
+	}
+	
 	$description = "" unless defined $description;
 	$pkg_info->{shutdown} = $callback;
-	
+	unless( $name && $name =~ /[[:print:]\w]/ ) {
+		$name = "Not supplied";
+	}
+	unless( $version && $version =~ /\d+(?:\.\d+)?/ ) {
+		$version = "NaN";
+	}
 	$pkg_info->{gui_entry} =
 		Xchat::Internal::register( $name, $version, $description, $filename );
 	# keep with old behavior
