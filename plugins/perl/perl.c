@@ -130,7 +130,6 @@ execute_perl (SV * function, char *args)
 {
 
 	int count, ret_value = 1;
-	SV *sv;
 
 	dSP;
 	ENTER;
@@ -143,9 +142,9 @@ execute_perl (SV * function, char *args)
 	count = call_sv (function, G_EVAL | G_SCALAR);
 	SPAGAIN;
 
-	sv = GvSV (gv_fetchpv ("@", TRUE, SVt_PV));
-	if (SvTRUE (sv)) {
-		/* xchat_printf(ph, "Perl error: %s\n", SvPV(sv, count)); */
+	if (SvTRUE (ERRSV)) {
+		/*STRLEN n_a;
+		xchat_printf(ph, "Perl error: %s\n", SvPV(ERRSV, count)); */
 		POPs;							  /* remove undef from the top of the stack */
 	} else if (count != 1) {
 		xchat_printf (ph, "Perl error: expected 1 value from %s, "
@@ -1230,7 +1229,9 @@ perl_init (void)
 	   the load_file sub. Moreover, deplaced the initialisation to
 	   the xs_init function. (TheHobbit) */
 	int warn;
+	int arg_count;
 	char *perl_args[] = { "", "-e", "0", "-w" };
+	char *env[] = { "" };
 	static const char perl_definitions[] = {
 		/* Redefine the $SIG{__WARN__} handler to have XChat
 		   printing warnings in the main window. (TheHobbit) */
@@ -1251,16 +1252,16 @@ perl_init (void)
 
 #endif
 
-	my_perl = perl_alloc ();
-	PL_perl_destruct_level = 1;
-	perl_construct (my_perl);
-
 	warn = 0;
 	xchat_get_prefs (ph, "perl_warnings", NULL, &warn);
-	if (warn)
-		perl_parse (my_perl, xs_init, 4, perl_args, NULL);
-	else
-		perl_parse (my_perl, xs_init, 3, perl_args, NULL);
+	arg_count = warn ? 4 : 3;
+
+	PERL_SYS_INIT3 (&arg_count, (char ***)&perl_args, (char ***)&env);
+	my_perl = perl_alloc ();
+	perl_construct (my_perl);
+	PL_exit_flags |= PERL_EXIT_DESTRUCT_END;
+	perl_parse (my_perl, xs_init, arg_count, perl_args, (char **)NULL);
+
 	/*
 	   Now initialising the perl interpreter by loading the
 	   perl_definition array.
@@ -1326,8 +1327,10 @@ perl_end (void)
 
 	if (my_perl != NULL) {
 		execute_perl (sv_2mortal (newSVpv ("Xchat::Embed::unload_all", 0)), "");
+		PL_perl_destruct_level = 1;
 		perl_destruct (my_perl);
 		perl_free (my_perl);
+		PERL_SYS_TERM();
 		my_perl = NULL;
 	}
 
