@@ -489,7 +489,9 @@ sub load {
 
 		{
 			no strict; no warnings;
-			eval "package $package; $source;";
+			$source =~ s/^/{package $package;/;
+			$source =~ s/$/}/;
+			eval $source;
 
 			unless( exists $scripts{$package}{gui_entry} ) {
 				$scripts{$package}{gui_entry} =
