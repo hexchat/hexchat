@@ -463,7 +463,11 @@ a context cannot be found.</p>
 	</tr> <tr>
 		<td>inputbox</td>	<td>contents of the inputbox</td>
 	</tr>
-	
+
+	<tr>
+		<td>modes</td> <td>channel modes, if known or undef</td>
+	</tr>
+
 	<tr>
 		<td>libdirfs</td>
 		<td>the system wide directory where xchat will look for plugins.
@@ -496,11 +500,18 @@ a context cannot be found.</p>
 	</tr>
 	
 	<tr>
-		<td>xchatdir</td>	<td>xchat config directory<br />
+		<td>win_ptr</td> <td>native window pointer, GtkWindow * on Unix, HWND on Win32.<br />
+		On Unix if you have the Glib module installed you can use my $window = Glib::Object->new_from_pointer( Xchat::get_info( "win_ptr" ) ); to get a Gtk2::Window object.</td>
+	</tr>
+	<tr>
+		<td>xchatdir</td>	<td>xchat config directory encoded in UTF-8<br />
 								examples:<br />
 								/home/user/.xchat2<br />
 								C:\Documents and Settings\user\Application Data\X-Chat 2
 								</td>
+	</tr>
+	<tr>
+		<td>xchatdirfs</td> <td>xchat config directory encoded in the local file system encoding</td>
 	</tr>
 </table><p>This function is used to retrieve certain information about the current
 context.</p><p>

@@ -389,9 +389,9 @@ sub context_info {
 	my $ctx = shift @_ || Xchat::get_context;
 	my $old_ctx = Xchat::get_context;
 	my @fields = (
-		qw(away channel charset host id inputbox libdirfs network),
-		qw(nick nickserv server topic version win_status xchatdir xchatdirfs),
-		qw(state_cursor),
+		qw(away channel charset host id inputbox libdirfs modes network),
+		qw(nick nickserv server topic version win_ptr win_status),
+		qw(xchatdir xchatdirfs state_cursor),
 	);
 
 	if( Xchat::set_context( $ctx ) ) {
@@ -496,7 +496,7 @@ sub load {
 			unless( exists $scripts{$package}{gui_entry} ) {
 				$scripts{$package}{gui_entry} =
 					Xchat::Internal::register(
-						"???", "???", "This script did not call register()", $file
+						"", "unknown", "", $file
 					);
 			}
 		}
