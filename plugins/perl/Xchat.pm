@@ -490,7 +490,15 @@ sub load {
 		{
 			no strict; no warnings;
 			$source =~ s/^/{package $package;/;
-			$source =~ s/$/}/;
+
+			# make sure we add the closing } even if the last line is a comment
+			if( $source =~ /^#.*\Z/m ) {
+				$source =~ s/^(?=#.*\Z)/}/m;
+			} else {
+				$source =~ s/\Z/}/;
+			}
+
+			Xchat::print( $source );
 			eval $source;
 
 			unless( exists $scripts{$package}{gui_entry} ) {
