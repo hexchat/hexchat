@@ -498,7 +498,6 @@ sub load {
 				$source =~ s/\Z/}/;
 			}
 
-			Xchat::print( $source );
 			eval $source;
 
 			unless( exists $scripts{$package}{gui_entry} ) {
