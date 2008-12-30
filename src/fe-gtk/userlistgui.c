@@ -361,7 +361,10 @@ fe_userlist_insert (session *sess, struct User *newuser, int row, int sel)
 	{
 		nick = malloc (strlen (newuser->nick) + 2);
 		nick[0] = newuser->prefix[0];
-		strcpy (nick + 1, newuser->nick);
+		if (!nick[0] || nick[0] == ' ')
+			strcpy (nick, newuser->nick);
+		else
+			strcpy (nick + 1, newuser->nick);
 		pix = NULL;
 	}
 
