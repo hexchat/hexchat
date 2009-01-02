@@ -82,8 +82,8 @@ perl_auto_load_from_path (const char *path)
 	}
 }
 
-static void
-perl_auto_load (void)
+static int
+perl_auto_load (void *unused)
 {
 	const char *xdir;
 
@@ -99,7 +99,7 @@ perl_auto_load (void)
 	/* autoload from  C:\program files\xchat\plugins\ */
 	perl_auto_load_from_path (XCHATLIBDIR"/plugins");
 #endif
-	
+	return 0;
 }
 
 #include <EXTERN.h>
@@ -1445,7 +1445,7 @@ xchat_plugin_init (xchat_plugin * plugin_handle, char **plugin_name,
 							  perl_command_reloadall, 0, 0);
 
 	/*perl_init (); */
-	perl_auto_load ();
+	xchat_hook_timer (ph, 0, perl_auto_load, NULL );
 
 	xchat_print (ph, "Perl interface loaded\n");
 
