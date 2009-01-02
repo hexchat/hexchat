@@ -956,6 +956,7 @@ cmd_set (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	int wild = FALSE;
 	int or = FALSE;
+	int off = FALSE;
 	int quiet = FALSE;
 	int erase = FALSE;
 	int i = 0, finds = 0, found;
@@ -968,7 +969,15 @@ cmd_set (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		erase = TRUE;
 	}
 
-	if (strcasecmp (word[idx], "-or") == 0)
+	/* turn a bit OFF */
+	if (strcasecmp (word[idx], "-off") == 0)
+	{
+		idx++;
+		off = TRUE;
+	}
+
+	/* turn a bit ON */
+	if (strcasecmp (word[idx], "-or") == 0 || strcasecmp (word[idx], "-on") == 0)
 	{
 		idx++;
 		or = TRUE;
@@ -1037,6 +1046,8 @@ cmd_set (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 					{
 						if (or)
 							*((int *) &prefs + vars[i].offset) |= atoi (val);
+						else if (off)
+							*((int *) &prefs + vars[i].offset) &= ~(atoi (val));
 						else
 							*((int *) &prefs + vars[i].offset) = atoi (val);
 					}
