@@ -1014,10 +1014,37 @@ servlist_connect_cb (GtkWidget *button, gpointer userdata)
 		return;
 	}
 
-	if (!is_session (servlist_sess))
-		servlist_sess = NULL;
-	else if (servlist_sess->server->connected)
-		servlist_sess = NULL;
+ 	if (!is_session (servlist_sess))
+		servlist_sess = NULL;	/* open a new one */
+
+	{
+		GSList *list;
+		session *sess;
+		session *chosen = servlist_sess;
+
+		servlist_sess = NULL;	/* open a new one */
+
+		for (list = sess_list; list; list = list->next)
+		{
+			sess = list->data;
+			if (sess->server->network == selected_net)
+			{
+				servlist_sess = sess;
+				if (sess->server->connected)
+					servlist_sess = NULL;	/* open a new one */
+				break;
+			}
+		}
+
+		/* use the chosen one, if it's empty */
+		if (!servlist_sess &&
+			  chosen &&
+			 !chosen->server->connected &&
+			  chosen->server->server_session->channel[0] == 0)
+		{
+			servlist_sess = chosen;
+		}
+	}
 
 	servlist_connect (servlist_sess, selected_net, TRUE);
 
