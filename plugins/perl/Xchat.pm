@@ -510,6 +510,7 @@ sub load {
 		
 		if( $@ ) {
 			# something went wrong
+			$@ =~ s/\(eval \d+\)/$file/g;
 			Xchat::print( "Error loading '$file':\n$@\n" );
 			# make sure the script list doesn't contain false information
 			unload( $scripts{$package}{filename} );
