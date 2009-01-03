@@ -498,6 +498,18 @@ sub load {
 				$source =~ s/\Z/}/;
 			}
 
+			# loading POE?
+			if( $source =~ /^\s*use\s+POE\b/m && !$Xchat::Embed::POE_Kernel_running ) {
+
+				eval { require POE::Kernel; };
+
+				unless( $@ ) {
+					POE::Kernel->run;
+					$Xchat::Embed::POE_Kernel_running = 1;
+					no warnings 'redefine';
+					*POE::Kernel::run = sub {};
+				}
+			}
 			eval $source;
 
 			unless( exists $scripts{$package}{gui_entry} ) {

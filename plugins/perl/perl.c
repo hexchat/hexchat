@@ -145,7 +145,7 @@ execute_perl (SV * function, char *args)
 	if (SvTRUE (ERRSV)) {
 		/*STRLEN n_a;
 		xchat_printf(ph, "Perl error: %s\n", SvPV(ERRSV, count)); */
-		POPs;							  /* remove undef from the top of the stack */
+		if (!SvOK (POPs)) {}		/* remove undef from the top of the stack */
 	} else if (count != 1) {
 		xchat_printf (ph, "Perl error: expected 1 value from %s, "
 						  "got: %d\n", function, count);
@@ -189,6 +189,48 @@ get_filename (char *word[], char *word_eol[])
 	return NULL;
 }
 
+static SV *
+list_item_to_sv ( xchat_list *list, const char *const *fields )
+{
+	HV *hash = newHV();
+	SV *field_value;
+	const char *field;
+	int field_index = 0;
+	const char *field_name;
+	int name_len;
+
+	while (fields[field_index] != NULL) {
+		field_name = fields[field_index] + 1;
+		name_len = strlen (field_name);
+
+		switch (fields[field_index][0]) {
+		case 's':
+			field = xchat_list_str (ph, list, field_name);
+			if (field != NULL) {
+				field_value = newSVpvn (field, strlen (field));
+			} else {
+				field_value = &PL_sv_undef;
+			}
+			break;
+		case 'p':
+			field_value = newSViv (PTR2IV (xchat_list_str (ph, list,
+																	 field_name)));
+			break;
+		case 'i':
+			field_value = newSVuv (xchat_list_int (ph, list, field_name));
+			break;
+		case 't':
+			field_value = newSVnv (xchat_list_time (ph, list, field_name));
+			break;
+		default:
+			field_value = &PL_sv_undef;
+		}
+		hv_store (hash, field_name, name_len, field_value, 0);
+		field_index++;
+	}
+	return sv_2mortal (newRV_noinc ((SV *) hash));
+}
+
 static AV *
 array2av (char *array[])
 {
@@ -230,7 +272,7 @@ fd_cb (int fd, int flags, void *userdata)
 
 	if (SvTRUE (ERRSV)) {
 		xchat_printf (ph, "Error in fd callback %s", SvPV_nolen (ERRSV));
-		POPs;							  /* remove undef from the top of the stack */
+		if (!SvOK (POPs)) {}		  /* remove undef from the top of the stack */
 		retVal = XCHAT_EAT_ALL;
 	} else {
 		if (count != 1) {
@@ -288,7 +330,7 @@ timer_cb (void *userdata)
 
 	if (SvTRUE (ERRSV)) {
 		xchat_printf (ph, "Error in timer callback %s", SvPV_nolen (ERRSV));
-		POPs;							  /* remove undef from the top of the stack */
+		if (!SvOK (POPs)) {}		  /* remove undef from the top of the stack */
 		retVal = XCHAT_EAT_ALL;
 	} else {
 		if (count != 1) {
@@ -345,7 +387,7 @@ server_cb (char *word[], char *word_eol[], void *userdata)
 	SPAGAIN;
 	if (SvTRUE (ERRSV)) {
 		xchat_printf (ph, "Error in server callback %s", SvPV_nolen (ERRSV));
-		POPs;							  /* remove undef from the top of the stack */
+		if (!SvOK (POPs)) {}		  /* remove undef from the top of the stack */
 		retVal = XCHAT_EAT_NONE;
 	} else {
 		if (count != 1) {
@@ -392,7 +434,7 @@ command_cb (char *word[], char *word_eol[], void *userdata)
 	SPAGAIN;
 	if (SvTRUE (ERRSV)) {
 		xchat_printf (ph, "Error in command callback %s", SvPV_nolen (ERRSV));
-		POPs;							  /* remove undef from the top of the stack */
+		if (!SvOK (POPs)) {}		  /* remove undef from the top of the stack */
 		retVal = XCHAT_EAT_NONE;
 	} else {
 		if (count != 1) {
@@ -466,7 +508,7 @@ print_cb (char *word[], void *userdata)
 	SPAGAIN;
 	if (SvTRUE (ERRSV)) {
 		xchat_printf (ph, "Error in print callback %s", SvPV_nolen (ERRSV));
-		POPs;							  /* remove undef from the top of the stack */
+		if (!SvOK (POPs)) {}		  /* remove undef from the top of the stack */
 		retVal = XCHAT_EAT_NONE;
 	} else {
 		if (count != 1) {
@@ -624,44 +666,14 @@ XS (XS_Xchat_get_info)
 static
 XS (XS_Xchat_context_info)
 {
-	HV *hash;
 	const char *const *fields;
-	const char *field;
-	int i = 0;
 	dXSARGS;
 
-	fields = xchat_list_fields (ph, "channels" );
-	hash = newHV ();
-	sv_2mortal ((SV *) hash);
-	while (fields[i] != NULL) {
-		switch (fields[i][0]) {
-			case 's':
-				field = xchat_list_str (ph, NULL, fields[i] + 1);
-				if (field != NULL) {
-					hv_store (hash, fields[i] + 1, strlen (fields[i] + 1),
-						newSVpvn (field, strlen (field)), 0);
-				} else {
-					hv_store (hash, fields[i] + 1, strlen (fields[i] + 1),
-						&PL_sv_undef, 0);
-				}
-				break;
-			case 'p':
-				hv_store (hash, fields[i] + 1, strlen (fields[i] + 1),
-					newSViv (PTR2IV (xchat_list_str (ph, NULL, fields[i] + 1))), 0);
-				break;
-			case 'i':
-				hv_store (hash, fields[i] + 1, strlen (fields[i] + 1),
-					newSVuv (xchat_list_int (ph, NULL, fields[i] + 1)), 0);
-				break;
-			case 't':
-				hv_store (hash, fields[i] + 1, strlen (fields[i] + 1),
-					newSVnv (xchat_list_time (ph, NULL, fields[i] + 1)), 0);
-				break;
-		}
-			i++;
+	if (items > 0 ) {
+		xchat_print (ph, "Usage: Xchat::Internal::context_info()");
 	}
-
-	XPUSHs (newRV_noinc ((SV *) hash));
+	fields = xchat_list_fields (ph, "channels" );
+	XPUSHs (list_item_to_sv (NULL, fields));
 	XSRETURN (1);
 }
 
@@ -1072,13 +1084,9 @@ static
 XS (XS_Xchat_get_list)
 {
 	SV *name;
-	HV *hash;
 	xchat_list *list;
 	const char *const *fields;
-	const char *field;
-	int i = 0;						  /* field index */
 	int count = 0;					  /* return value for scalar context */
-	U32 context;
 	dXSARGS;
 
 	if (items != 1) {
@@ -1094,9 +1102,7 @@ XS (XS_Xchat_get_list)
 			XSRETURN_EMPTY;
 		}
 
-		context = GIMME_V;
-
-		if (context == G_SCALAR) {
+		if (GIMME_V == G_SCALAR) {
 			while (xchat_list_next (ph, list)) {
 				count++;
 			}
@@ -1106,42 +1112,7 @@ XS (XS_Xchat_get_list)
 
 		fields = xchat_list_fields (ph, SvPV_nolen (name));
 		while (xchat_list_next (ph, list)) {
-			i = 0;
-			hash = newHV ();
-			while (fields[i] != NULL) {
-				switch (fields[i][0]) {
-				case 's':
-					field = xchat_list_str (ph, list, fields[i] + 1);
-					if (field != NULL) {
-						hv_store (hash, fields[i] + 1, strlen (fields[i] + 1),
-									 newSVpvn (field, strlen (field)), 0);
-					} else {
-						hv_store (hash, fields[i] + 1, strlen (fields[i] + 1),
-									 &PL_sv_undef, 0);
-					}
-					break;
-				case 'p':
-					hv_store (hash, fields[i] + 1, strlen (fields[i] + 1),
-								 newSViv (PTR2IV (xchat_list_str (ph, list,
-																			 fields[i] + 1)
-											 )), 0);
-					break;
-				case 'i':
-					hv_store (hash, fields[i] + 1, strlen (fields[i] + 1),
-								 newSVuv (xchat_list_int (ph, list, fields[i] + 1)),
-								 0);
-					break;
-				case 't':
-					hv_store (hash, fields[i] + 1, strlen (fields[i] + 1),
-								 newSVnv (xchat_list_time (ph, list, fields[i] + 1)),
-								 0);
-					break;
-				}
-				i++;
-			}
-			
-			XPUSHs (sv_2mortal (newRV_noinc ((SV *) hash)));
-
+			XPUSHs (list_item_to_sv (list, fields));
 		}
 		xchat_list_free (ph, list);
 
