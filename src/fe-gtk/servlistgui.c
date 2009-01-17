@@ -797,7 +797,7 @@ servlist_autojoineditok_cb (GtkWidget *button, GtkWidget *tree)
 	autojoin = joinlist_merge (channels, keys);
 	if (autojoin)
 	{
-		if (selected_net)
+		if (edit_win && selected_net)
 			gtk_entry_set_text (GTK_ENTRY (edit_entry_join), autojoin);
 		else
 		{
@@ -838,7 +838,7 @@ servlist_autojoinedit (ircnet *net, char *channel, gboolean add)
 	GSList *clist, *klist;
 	GtkTreeIter iter;
 
-	if (selected_net)
+	if (edit_win && selected_net)
 		/* update net->autojoin */
 		servlist_edit_update (selected_net);
 
@@ -847,7 +847,8 @@ servlist_autojoinedit (ircnet *net, char *channel, gboolean add)
 	gtk_window_set_title (GTK_WINDOW (win), _("XChat: Favorite Channels (Auto-Join List)"));
 	gtk_window_set_default_size (GTK_WINDOW (win), 354, 256);
 	gtk_window_set_position (GTK_WINDOW (win), GTK_WIN_POS_MOUSE);
-	gtk_window_set_transient_for (GTK_WINDOW (win), GTK_WINDOW (edit_win));
+	if (edit_win)
+		gtk_window_set_transient_for (GTK_WINDOW (win), GTK_WINDOW (edit_win));
 	gtk_window_set_modal (GTK_WINDOW (win), TRUE);
 	gtk_window_set_type_hint (GTK_WINDOW (win), GDK_WINDOW_TYPE_HINT_DIALOG);
 	gtk_window_set_role (GTK_WINDOW (win), "editserv");

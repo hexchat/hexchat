@@ -302,6 +302,9 @@ static const struct defaultserver def[] =
 	{"MindForge",	0},
 	{0,			"irc.mindforge.org"},
 
+	{"MintIRC",	0},
+	{0,			"irc.mintirc.net"},
+
 	{"MIXXnet",		0},
 	{0,			"irc.mixxnet.net"},
 
