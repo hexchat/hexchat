@@ -758,15 +758,18 @@ If <code>$nick</code> is found a hash reference containing the same keys as thos
 <p>This function will return the information normally retrieved with <a href="#xchat__get_info___id__">get_info</a>, except this is for the context that is passed in. The information will be returned in the form of a hash. The keys of the hash are the $id you would normally supply to <a href="#xchat__get_info___id__">get_info</a>. It also includes all the keys are valid <code>Xchat::get_list( "channels" )</code></p>
 <p>Example:
 <code>
+<pre>
 use strict;
 use warnings;
 use Xchat qw(:all); # imports all the functions documented on this page
+
 register( "User Count", "0.1", "Print out the number of users on the current channel" );
 hook_command( "UCOUNT", \&amp;display_count );
 sub display_count {
 	prnt "There are " . context_info()->{users} . " users in this channel.";
 	return EAT_XCHAT;
 }
+</pre>
 </code>
 </p>
 <p>
