@@ -475,12 +475,7 @@ static const struct defaultserver def[] =
 	{0,			"irc.fr.worldnet.net"},
 
 	{"Xentonix.net",	0},
-	{0,			"irc.ffm.de.eu.xentonix.net"},
-/*	{0,			"irc.brs.de.eu.xentonix.net"},
-	{0,			"irc.stg.ch.eu.xentonix.net"},
-	{0,			"irc.hou.tx.us.xentonix.net"},*/
-	{0,			"irc.kar.de.eu.xentonix.net"},
-	{0,			"irc.vie.at.eu.xentonix.net"},
+	{0,			"irc.xentonix.net"},
 
 	{"XWorld",	0},
 	{0,			"Buffalo.NY.US.XWorld.org"},
