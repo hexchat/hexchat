@@ -30,6 +30,7 @@ use File::Basename ();
 use File::Glob ();
 use List::Util ();
 use Symbol();
+use Time::HiRes ();
 
 {
 package Xchat;
@@ -486,7 +487,7 @@ sub load {
 		# this must come before the eval or the filename will not be found in
 		# Xchat::register
 		$scripts{$package}{filename} = $file;
-
+		$scripts{$package}{loaded_at} = Time::HiRes::time();
 		{
 			no strict; no warnings;
 			$source =~ s/^/{package $package;/;
@@ -601,14 +602,18 @@ sub reload {
 sub reload_all {
 	my $dir = Xchat::get_info( "xchatdirfs" ) || Xchat::get_info( "xchatdir" );
 	my $auto_load_glob = File::Spec->catfile( $dir, "*.pl" );
-	my @scripts = map { $_->{filename} } values %scripts;
+	my @scripts = map { $_->{filename} }
+		sort { $a->{loaded_at} <=> $b->{loaded_at} } values %scripts;
 	push @scripts, File::Glob::bsd_glob( $auto_load_glob );
 
-	my %loaded;
+	my %seen;
+	@scripts = grep { !$seen{ $_ }++ } @scripts;
+
+	unload_all();
 	for my $script ( @scripts ) {
-		next if $loaded{ $script };
-		reload( $script );
-		$loaded{ $script }++;
+		if( !pkg_info( file2pkg( $script ) ) ) {
+			load( $script );
+		}
 	}
 }
 #sub auto_load {
