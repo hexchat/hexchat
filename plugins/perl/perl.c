@@ -1325,6 +1325,8 @@ perl_command_reloadall (char *word[], char *word_eol[], void *userdata)
 		execute_perl (sv_2mortal (newSVpv ("Xchat::Embed::reload_all", 0)), "");
 
 		return XCHAT_EAT_XCHAT;
+	} else {
+		perl_auto_load( NULL );
 	}
 	return XCHAT_EAT_XCHAT;
 }
