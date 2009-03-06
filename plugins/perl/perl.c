@@ -627,6 +627,58 @@ XS (XS_Xchat_emit_print)
 		XSRETURN_IV (RETVAL);
 	}
 }
+
+static
+XS (XS_Xchat_send_modes)
+{
+	AV *p_targets = NULL;
+	int modes_per_line = 0;
+	char sign;
+	char mode;
+	int i = 0;
+	const char **targets;
+	int target_count = 0;
+	SV **elem;
+
+	dXSARGS;
+	if (items < 3 || items > 4) {
+		xchat_print (ph,
+			"Usage: Xchat::send_modes( targets, sign, mode, modes_per_line)"
+		);
+	} else {
+		if (SvROK (ST (0))) {
+			p_targets = (AV*) SvRV (ST (0));
+			target_count = av_len (p_targets) + 1;
+			targets = malloc (target_count * sizeof (char *));
+			for (i = 0; i < target_count; i++ ) {
+				elem = av_fetch (p_targets, i, 0);
+
+				if (elem != NULL) {
+					targets[i] = SvPV_nolen (*elem);
+				} else {
+					targets[i] = "";
+				}
+			}
+		} else{
+			targets = malloc (sizeof (char *));
+			targets[0] = SvPV_nolen (ST (0));
+			target_count = 1;
+		}
+		
+		if (target_count == 0) {
+			XSRETURN_EMPTY;
+		}
+
+		sign = (SvPV_nolen (ST (1)))[0];
+		mode = (SvPV_nolen (ST (2)))[0];
+
+		if (items == 4 ) {
+			modes_per_line = (int) SvIV (ST (3)); 
+		}
+
+		xchat_send_modes (ph, targets, target_count, modes_per_line, sign, mode);
+	}
+}
 static
 XS (XS_Xchat_get_info)
 {
@@ -1163,6 +1215,7 @@ xs_init (pTHX)
 	newXS ("Xchat::get_context", XS_Xchat_get_context, __FILE__);
 	newXS ("Xchat::get_prefs", XS_Xchat_get_prefs, __FILE__);
 	newXS ("Xchat::emit_print", XS_Xchat_emit_print, __FILE__);
+	newXS ("Xchat::send_modes", XS_Xchat_send_modes, __FILE__);
 	newXS ("Xchat::nickcmp", XS_Xchat_nickcmp, __FILE__);
 	newXS ("Xchat::get_list", XS_Xchat_get_list, __FILE__);
 

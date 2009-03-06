@@ -49,7 +49,7 @@ our %EXPORT_TAGS = (
 		qw(hook_server hook_command hook_print hook_timer hook_fd unhook),
 	],
 	util => [
-		qw(register nickcmp strip_code), # misc
+		qw(register nickcmp strip_code send_modes), # misc
 		qw(print prnt printf prntf command commandf emit_print), # output
 		qw(find_context get_context set_context), # context
 		qw(get_info get_prefs get_list context_info user_info), # input
