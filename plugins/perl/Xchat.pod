@@ -332,8 +332,7 @@ Settings->Advanced->Text Events, these additional events can be used.
 =over 3
 
 =item *
-C<$hook> 	-	the hook that was previously returned by one of
-					the C<Xchat::hook_*>	functions
+C<$hook> 	-	the hook that was previously returned by one of the C<Xchat::hook_*>	functions
 
 =back
 
@@ -375,7 +374,7 @@ specified then it will return true if a context is found and
 false otherwise. The text will not be printed if the context
 is not found.  The meaning of setting C<$channel> or C<$server> to
 undef is the same as
-L<find_context|"xchat::find_context(_[$channel,_[$server]]_)">.
+L<find_context|"xchat::find_context(_[$channel,__[$server]]_)">.
 
 
 =head3 C<Xchat::printf( $format, LIST )>
@@ -404,8 +403,7 @@ C<\@commands>	-	array reference containing a list of commands to execute
 C<$channel>	-	channel or tab with the given name where C<$command> will be executed
 
 =item *
-C<$server>	-	specifies that the command will be executed in a channel or tab
-					that is associated with C<$server>
+C<$server>	-	specifies that the command will be executed in a channel or tab that is associated with C<$server>
 
 =back
 
@@ -468,7 +466,7 @@ Returns the current context.
 =over 3
 
 =item *
-C<$context>	-	context value as returned from get_context,find_context or one
+C<$context>	-	context value as returned from L<get_context|"xchat::get_context()_">,L<find_context|"xchat::find_context(_[$channel,__server]]_)"> or one
 					of the fields in the list of hashrefs returned by list_get
 
 =item *
@@ -501,7 +499,7 @@ C<$id>	-	one of the following case sensitive values
 	</tr>
 
 	<tr>
-		<td>away</td>	<td>away reason or undef</td>
+		<td>away</td>	<td>away reason or undef if you are not away</td>
 	</tr>
 
 	<tr>
@@ -511,21 +509,36 @@ C<$id>	-	one of the following case sensitive values
 	<tr>
 		<td>charset</td>	<td>character-set used in the current context</td>
 	</tr>
-	
+
+	<tr>
+		<td>event_text <Event Name></td>	<td>text event format string for <Event name><br />
+		Example:
+		<pre>
+        my $channel_msg_format = Xchat::get_info( "event_text Channel Message" );
+		</pre>
+	</tr>
 	<tr>
 		<td>host</td>	<td>real hostname of the current server</td>
 	</tr>
 
 	<tr>
+		<td>id</td>	<td>connection id</td>
+	</tr>
+
+	<tr>
 		<td>inputbox</td>	<td>contents of the inputbox</td>
 	</tr>
-	
+
 	<tr>
 		<td>libdirfs</td>
 		<td>the system wide directory where xchat will look for plugins.
 		this string is in the same encoding as the local file system</td>
 	</tr>
 	
+	<tr>
+		<td>modes</td>	<td>the current channels modes or undef if not known</td>
+	</tr>
+
 	<tr>
 		<td>network</td>	<td>current network name or undef</td>
 	</tr>
@@ -545,6 +558,11 @@ C<$id>	-	one of the following case sensitive values
 	</tr>
 
 	<tr>
+		<td>state_cursor</td>
+		<td>current inputbox cursor position in characters</td>
+	</tr>
+
+	<tr>
 		<td>topic</td>	<td>current channel topic</td>
 	</tr>
 
@@ -559,7 +577,14 @@ C<$id>	-	one of the following case sensitive values
 	</tr>
 	
 	<tr>
-		<td>xchatdir</td>	<td>xchat config directory<br />
+     <td>win_ptr</td> <td>native window pointer, GtkWindow * on Unix, HWND on Win32.<br />
+     On Unix if you have the Glib module installed you can use my $window = Glib::Object->new_from_pointer( Xchat::get_info( "win_ptr" ) ); to get a Gtk2::Window object.<br />
+	  Additionally when you have detached tabs, each of the windows will return a different win_ptr for the different Gtk2::Window objects.<br />
+	  See <a href="http://xchat.cvs.sourceforge.net/viewvc/xchat/xchat2/plugins/perl/char_count.pl?view=markup">char_count.pl</a> for a longer example of a script that uses this to show how many characters you currently have in your input box.
+	  </td>
+	</tr>
+	<tr>
+		<td>xchatdir</td>	<td>xchat config directory encoded in UTF-8<br />
 								examples:<br />
 								/home/user/.xchat2<br />
 								C:\Documents and Settings\user\Application Data\X-Chat 2
@@ -567,8 +592,7 @@ C<$id>	-	one of the following case sensitive values
 	</tr>
 
 	<tr>
-		<td>state_cursor</td>
-		<td>current inputbox cursor position in characters</td>
+		<td>xchatdirfs</td>	<td>same as xchatdir except encoded in the locale file system encoding</td>
 	</tr>
 </table>
 
@@ -599,8 +623,7 @@ Returns C<undef> if there is no setting called called C<$name>.
 C<$event>	-	name from the Event column in Settings->Advanced->Text Events
 
 =item *
-LIST		-	this depends on the Description column on the bottom of
-				Settings->Advanced->Text Events
+LIST		-	this depends on the Description column on the bottom of Settings->Advanced->Text Events
 
 =back
 
@@ -608,6 +631,55 @@ This functions is used to generate one of the events listed under
 Settings->Advanced->Text Events
 
 Returns true on success, false on failure
+
+=head3 C<Xchat::send_modes( $target | \@targets, $sign, $mode, [ $modes_per_line ] )>
+
+=over 3
+
+=item *
+C<$target>	-	a single nick to set the mode on
+
+=item *
+C<\@targets>	-	an array reference of the nicks to set the mode on
+=item *
+C<$sign>	- the mode sign, either '+' or '-'
+
+=item *
+C<$mode> - the mode character such as 'o' and 'v', this can only be one character long
+
+=item *
+C<$modes_per_line>	-	an optional argument maximum number of modes to send per at once, pass 0 use the current server's maximum (default)
+
+=back
+
+Send multiple mode changes for the current channel. It may send multiple MODE lines if the request doesn't fit on one.
+
+Example:
+
+=begin html
+
+<code>
+<pre>
+use strict;
+use warning;
+use Xchat qw(:all);
+
+hook_command( "MODES", sub {
+   my (undef, $who, $sign, $mode) = @{$_[0]};
+
+   my @targets = split /,/, $who;
+   if( @targets &gt; 1 ) {
+      send_modes( \@targets, $sign, $mode, 1 );
+   } else {
+      send_modes( $who, $sign, $mode );
+   }
+
+   return EAT_XCHAT;
+});
+</pre>
+</code>
+
+=end html
 
 =head3 C<Xchat::nickcmp( $nick1, $nick2 )>
 
@@ -657,6 +729,11 @@ if there is no such list.
 	</tr>
 
 	<tr>
+		<td>chantypes</td>
+		<td><channel types supported by the server, typically "#&amp;"</td>
+	</tr>
+
+	<tr>
 		<td>context</td>	<td>can be used with set_context</td>
 	</tr>
 
@@ -667,6 +744,24 @@ if there is no such list.
 							2 - Away<br />
 							3 - EndOfMotd(Login complete)<br />
 							4 - Has WHOX<br />
+							5 - Has IDMSG (FreeNode)<br />
+                    <br />
+                    <p>The following correspond to the /chanopt command</p>
+                    6  - Hide Join/Part Message (text_hidejoinpart)<br />
+                    7  - unused (was for color paste)<br />
+                    8  - Beep on message (alert_beep)<br />
+                    9  - Blink Tray (alert_tray)<br />
+                    10 - Blink Task Bar (alert_taskbar)<br />
+<p>Example of checking if the current context has Hide Join/Part messages set:<br />
+<code>
+<pre>
+if( Xchat::context_info-&gt;{flags} & (1 &lt;&lt; 6) ) {
+  Xchat::print( "Hide Join/Part messages is enabled" );
+}
+</pre>
+</code>
+</p>
+
 							</td>
 	</tr>
 
@@ -677,7 +772,12 @@ if there is no such list.
 	<tr>
 		<td>maxmodes</td>	<td>Maximum modes per line</td>
 	</tr>
-				
+
+	<tr>
+		<td>lag</td>
+		<td>lag in milliseconds</td>
+	</tr>
+
 	<tr>
 		<td>network</td>	<td>network name to which this channel belongs</td>
 	</tr>
@@ -688,6 +788,11 @@ if there is no such list.
 	
 	<tr>
 		<td>nickmodes</td>	<td>Nickname mode chars e.g. "vo"</td>
+	</tr>
+
+	<tr>
+		<td>queue</td>
+		<td>number of bytes in the send queue</td>
 	</tr>
 	
 	<tr>
@@ -808,6 +913,11 @@ if there is no such list.
 	</tr>
 
 	<tr>
+		<td>networks</td>
+		<td>comma separated list of networks where you will be notfified about this user's online/offline status or undef if you will be notificed on every network you are connected to</td>
+	</tr>
+
+	<tr>
 		<td>nick</td>	<td>nickname</td>
 	</tr>
 
@@ -844,6 +954,11 @@ detail</p>
 	</tr>
 
 	<tr>
+		<td>lasttalk</td>
+		<td>last time a user was seen talking, this is the an epoch time(number of seconds since a certain date, that date depends on the OS)</td>
+	</tr>
+
+	<tr>
 		<td>nick</td>	<td>nick name</td>
 	</tr>
 
@@ -854,6 +969,16 @@ detail</p>
 
 	<tr>
 		<td>prefix</td>	<td>prefix character, .e.g: @ or +</td>
+	</tr>
+
+	<tr>
+		<td>realname</td>
+		 <td>Real name or undef</td>
+	</tr>
+
+	<tr>
+		<td>selected</td>
+		<td>selected status in the user list, only works when retrieving the user list of the focused tab. You can use the /USELECT command to select the nicks</td>
 	</tr>
 </table>
 
@@ -886,6 +1011,27 @@ C<$context>	-	context returned from L<get_context|"xchat::get_context()">, L<fin
 
 This function will return the information normally retrieved with L<get_info|"xchat::get_info(_$id_)">, except this is for the context that is passed in. The information will be returned in the form of a hash. The keys of the hash are the $id you would normally supply to L<get_info|"xchat::get_info(_$id_)">.
 
+=begin html
+
+<p>Example:
+<code>
+<pre>
+use strict;
+use warnings;
+use Xchat qw(:all); # imports all the functions documented on this page
+register( "User Count", "0.1", "Print out the number of users on the current channel" );
+hook_command( "UCOUNT", \&amp;display_count );
+sub display_count {
+  prnt "There are " . context_info()->{users} . " users in this channel.";
+  return EAT_XCHAT;
+}
+</pre>
+</code>
+</p>
+
+
+=end html
+
 =head3 C<Xchat::strip_code( $string )>
 
 =over 3
@@ -899,6 +1045,6 @@ This function will remove bold, color, beep, reset, reverse and underline codes 
 
 =head2 Contact Information
 
-Contact Lian Wan Situ at <atmcmnky@yahoo.com> for questions, comments and
+Contact Lian Wan Situ at <atmcmnky [at] yahoo.com> for questions, comments and
 corrections about this page or the Perl plugin itself.  You can also find me
 in #xchat on FreeNode under the nick Khisanth.
