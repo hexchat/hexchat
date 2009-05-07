@@ -452,8 +452,13 @@ a context cannot be found.</p>
 		<td>channel</td>	<td>current channel name</td>
 	</tr>	<tr>
 		<td>charset</td>	<td>character-set used in the current context</td>
+	</tr>	<tr>
+		<td>event_text <Event Name></td>	<td>text event format string for <Event name><br />
+		Example:
+		<pre>
+        my $channel_msg_format = Xchat::get_info( "event_text Channel Message" );
+		</pre>
 	</tr>
-	
 	<tr>
 		<td>host</td>	<td>real hostname of the current server</td>
 	</tr>	<tr>
@@ -467,6 +472,8 @@ a context cannot be found.</p>
 	</tr>
 	
 	<tr>
+		<td>modes</td>	<td>the current channels modes or undef if not known</td>
+	</tr>	<tr>
 		<td>network</td>	<td>current network name or undef</td>
 	</tr>	<tr>
 		<td>nick</td>	<td>current nick</td>
@@ -502,6 +509,8 @@ a context cannot be found.</p>
 								/home/user/.xchat2<br />
 								C:\Documents and Settings\user\Application Data\X-Chat 2
 								</td>
+	</tr>	<tr>
+		<td>xchatdirfs</td>	<td>same as xchatdir except encoded in the locale file system encoding</td>
 	</tr>
 </table><p>This function is used to retrieve certain information about the current
 context.</p><p>
