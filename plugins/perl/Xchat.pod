@@ -96,7 +96,7 @@ This is the first thing to call in every script.
 These functions can be to intercept various events.
 hook_server can be used to intercept any incoming message from the IRC server.
 hook_command can be used to intercept any command, if the command doesn't currently exist then a new one is created.
-hook_print can be used to intercept any of the events listed in Setttings->Advanced->Text Events
+hook_print can be used to intercept any of the events listed in Setttings-E<gt>Advanced-E<gt>Text Events
 hook_timer can be used to create a new timer
 
 
@@ -109,7 +109,7 @@ C<$message> 		-	server message to hook such as PRIVMSG
 C<$command> 		-	command to intercept, without the leading /
 
 =item *
-C<$event> 		-	one of the events listed in Settings->Advanced->Text Events
+C<$event> 		-	one of the events listed in Settings-E<gt>Advanced-E<gt>Text Events
 
 =item *
 C<$timeout> 		-	timeout in milliseconds
@@ -281,7 +281,7 @@ For command hooks if C<$command> is "" then C<$cb> will be called for
 messages entered by the user that is not a command.
 
 For print hooks besides those events listed in 
-Settings->Advanced->Text Events, these additional events can be used.
+Settings-E<gt>Advanced-E<gt>Text Events, these additional events can be used.
 
 =begin html
 
@@ -374,7 +374,7 @@ specified then it will return true if a context is found and
 false otherwise. The text will not be printed if the context
 is not found.  The meaning of setting C<$channel> or C<$server> to
 undef is the same as
-L<find_context|"xchat::find_context(_[$channel,__[$server]]_)">.
+L<find_context|xchat_find_context>.
 
 
 =head3 C<Xchat::printf( $format, LIST )>
@@ -457,7 +457,11 @@ Return the context found for one of the above situations or undef if such
 a context cannot be found.
 
 
-=head3 C<Xchat::get_context()> 
+=head3 C<Xchat::get_context( [ ] )> 
+
+=over 3
+
+=back
 
 Returns the current context.
 
@@ -466,7 +470,7 @@ Returns the current context.
 =over 3
 
 =item *
-C<$context>	-	context value as returned from L<get_context|"xchat::get_context()_">,L<find_context|"xchat::find_context(_[$channel,__server]]_)"> or one
+C<$context>	-	context value as returned from L<get_context|xchat_get_context>,L<find_context|xchat_find_context> or one
 					of the fields in the list of hashrefs returned by list_get
 
 =item *
@@ -477,7 +481,7 @@ C<$server>	-	name of a server you want to switch context to
 
 =back
 
-See L<find_context|"xchat::find_context(_[$channel,_[$server]]_)"> for more details on C<$channel> and C<$server>.
+See L<find_context|xchat_find_context> for more details on C<$channel> and C<$server>.
 
 Returns true on success, false on failure
 
@@ -511,11 +515,12 @@ C<$id>	-	one of the following case sensitive values
 	</tr>
 
 	<tr>
-		<td>event_text <Event Name></td>	<td>text event format string for <Event name><br />
+		<td>event_text &lt;Event Name&gt;</td>	<td>text event format string for &lt;Event name&gt;<br />
 		Example:
 		<pre>
         my $channel_msg_format = Xchat::get_info( "event_text Channel Message" );
 		</pre>
+		</td>
 	</tr>
 	<tr>
 		<td>host</td>	<td>real hostname of the current server</td>
@@ -620,15 +625,15 @@ Returns C<undef> if there is no setting called called C<$name>.
 =over 3
 
 =item *
-C<$event>	-	name from the Event column in Settings->Advanced->Text Events
+C<$event>	-	name from the Event column in Settings-E<gt>Advanced-E<gt>Text Events
 
 =item *
-LIST		-	this depends on the Description column on the bottom of Settings->Advanced->Text Events
+LIST		-	this depends on the Description column on the bottom of Settings-E<gt>Advanced-E<gt>Text Events
 
 =back
 
 This functions is used to generate one of the events listed under
-Settings->Advanced->Text Events
+Settings-E<gt>Advanced-E<gt>Text Events
 
 Returns true on success, false on failure
 
@@ -641,6 +646,7 @@ C<$target>	-	a single nick to set the mode on
 
 =item *
 C<\@targets>	-	an array reference of the nicks to set the mode on
+
 =item *
 C<$sign>	- the mode sign, either '+' or '-'
 
@@ -658,8 +664,7 @@ Example:
 
 =begin html
 
-<code>
-<pre>
+<p><code>
 use strict;
 use warning;
 use Xchat qw(:all);
@@ -676,8 +681,7 @@ hook_command( "MODES", sub {
 
    return EAT_XCHAT;
 });
-</pre>
-</code>
+</code></p>
 
 =end html
 
@@ -730,7 +734,7 @@ if there is no such list.
 
 	<tr>
 		<td>chantypes</td>
-		<td><channel types supported by the server, typically "#&amp;"</td>
+		<td>channel types supported by the server, typically "#&amp;"</td>
 	</tr>
 
 	<tr>
@@ -754,11 +758,9 @@ if there is no such list.
                     10 - Blink Task Bar (alert_taskbar)<br />
 <p>Example of checking if the current context has Hide Join/Part messages set:<br />
 <code>
-<pre>
-if( Xchat::context_info-&gt;{flags} & (1 &lt;&lt; 6) ) {
+if( Xchat::context_info-&gt;{flags} &amp; (1 &lt;&lt; 6) ) {
   Xchat::print( "Hide Join/Part messages is enabled" );
 }
-</pre>
 </code>
 </p>
 
@@ -996,26 +998,25 @@ C<$nick>	-	the nick to look for, if this is not given your own nick will be
 
 This function is mainly intended to be used as a shortcut for when you need
 to retrieve some information about only one user in a channel. Otherwise it
-is to use L<get_list|"xchat::get_list(_$name_)">.
+is to use L<get_list|xchat_get_list>.
 If C<$nick> is found a hash reference containing the same keys as those in the
-"users" list of L<get_list|"xchat::get_list(_$name_)"> is returned otherwise undef is returned.
+"users" list of L<get_list|xchat_get_list> is returned otherwise undef is returned.
 
 =head3 C<Xchat::context_info( [$context] )>
 
 =over 3
 
 =item *
-C<$context>	-	context returned from L<get_context|"xchat::get_context()">, L<find_context|"xchat::find_context(_[$channel,_[$server]]_)"> and L<get_list|"xchat::get_list(_$name_)">, this is the context that you want infomation about. If this is omitted, it will default to current context.
+C<$context>	-	context returned from L<get_context|xchat_get_context>, L<find_context|xchat_find_context> and L<get_list|xchat_get_list>, this is the context that you want infomation about. If this is omitted, it will default to current context.
 
 =back
 
-This function will return the information normally retrieved with L<get_info|"xchat::get_info(_$id_)">, except this is for the context that is passed in. The information will be returned in the form of a hash. The keys of the hash are the $id you would normally supply to L<get_info|"xchat::get_info(_$id_)">.
+This function will return the information normally retrieved with L<get_info|xchat_get_info>, except this is for the context that is passed in. The information will be returned in the form of a hash. The keys of the hash are the C<$id> you would normally supply to L<get_info|xchat_get_info>.
 
 =begin html
 
 <p>Example:
 <code>
-<pre>
 use strict;
 use warnings;
 use Xchat qw(:all); # imports all the functions documented on this page
@@ -1025,7 +1026,6 @@ sub display_count {
   prnt "There are " . context_info()->{users} . " users in this channel.";
   return EAT_XCHAT;
 }
-</pre>
 </code>
 </p>
 
@@ -1045,6 +1045,6 @@ This function will remove bold, color, beep, reset, reverse and underline codes 
 
 =head2 Contact Information
 
-Contact Lian Wan Situ at <atmcmnky [at] yahoo.com> for questions, comments and
+Contact Lian Wan Situ at E<lt>atmcmnky [at] yahoo.comE<gt> for questions, comments and
 corrections about this page or the Perl plugin itself.  You can also find me
 in #xchat on FreeNode under the nick Khisanth.
