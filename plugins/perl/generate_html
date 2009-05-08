@@ -1,0 +1,14 @@
+#!/usr/bin/env perl
+use strict;
+use warnings;
+use lib '.';
+use Pod::Html;
+
+pod2html(
+#	"pod2html",
+	"--header",
+	"--infile=Xchat.pod",
+	"--outfile=xchat2-perl.html",
+);
+
+system( qw(tidy -m -i -xml -utf8 -quiet xchat2-perl.html) );
