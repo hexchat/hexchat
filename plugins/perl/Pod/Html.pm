@@ -489,6 +489,39 @@ END_OF_BLOCK
 	.branch {
 		list-style: none;
 	}
+
+	li code {
+		padding-right: 0.5em;
+	}
+
+	p.example {
+		background-color: #dddddd;
+		width: 45em;
+		padding: 0.5em;
+		white-space: pre;
+	}
+
+	.alert { color: #0000ff; }
+	.basen { color: #007f00; }
+	.bstring { color: #c9a7ff; }
+	.char { color: #ff00ff; }
+	.comment { color: #7f7f7f; }
+	.datatype { color: #0000ff; }
+	.decval { color: #00007f; }
+	.error { color: #ff0000; }
+	.float { color: #00007f; }
+	.function { color: #007f00; }
+	.istring { color: #ff0000; }
+	.keyword { font-weight: bold; }
+	.normal { }
+	.operator { color: #ffa500; }
+	.others { color: #b03060; }
+	.regionmarker { color: #96b9ff; }
+	.reserved { color: #9b30ff; }
+	.string { color: #ff0000; }
+	.variable { color: #0000ff; }
+	.warning { color: #0000ff; }
+
 </style>
 </head>
 
@@ -1854,7 +1887,8 @@ sub emit_C($;$$) {
 	# need HTML-safe text
 	my $linktext = html_escape("$text$args");
 
-	if ( defined($url)
+	if ( $text !~ /^[\$@%]/
+		&& defined($url)
 		&& ( !defined($EmittedItem) || $EmittedItem ne $fid ) )
 	{
 		$res = "<a href=\"$url\"><code>$linktext</code></a>";
@@ -2138,7 +2172,7 @@ sub htmlify {
 #
 sub anchorify {
 	my ($anchor) = @_;
-	$anchor =~ s/\([^)]+\)//;
+	$anchor =~ s/\([^)]*\)//;
 	$anchor = htmlify($anchor);
 	$anchor =~ s/\W/_/g;
 	$anchor =~ tr/_/_/s;

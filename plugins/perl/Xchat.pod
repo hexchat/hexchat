@@ -14,7 +14,7 @@ on the bottom of this page.
 
 =over 3
 
-=item	*
+=item *
 C<Xchat::PRI_HIGHEST> 
 
 =item *
@@ -36,16 +36,16 @@ C<Xchat::PRI_LOWEST>
 =over 3
 
 =item *
-C<Xchat::EAT_NONE> 		pass the event along
+C<Xchat::EAT_NONE>     - pass the event along
 
 =item *
-C<Xchat::EAT_XCHAT> 		don't let xchat see this event
+C<Xchat::EAT_XCHAT>    - don't let xchat see this event
 
 =item *
-C<Xchat::EAT_PLUGIN> 	don't let other scripts and plugins see this event
+C<Xchat::EAT_PLUGIN>   - don't let other scripts and plugins see this event
 
 =item *
-C<Xchat::EAT_ALL> 		don't let anything see this event
+C<Xchat::EAT_ALL>      - don't let anything see this event
 
 =back
 
@@ -54,10 +54,10 @@ C<Xchat::EAT_ALL> 		don't let anything see this event
 =over 3
 
 =item *
-C<Xchat::KEEP>				keep the timer going
+C<Xchat::KEEP>         - keep the timer going
 
 =item *
-C<Xchat::REMOVE>			remove the timer
+C<Xchat::REMOVE>       - remove the timer
 
 =back
 
@@ -68,18 +68,18 @@ C<Xchat::REMOVE>			remove the timer
 =over 3
 
 =item *
-C<$name> 				-	The name of this script
+C<$name>             -  The name of this script
 
 =item *
-C<$version> 			-	This script's version
+C<$version>          -  This script's version
 
 =item *
-C<$description> 	-	A description for this script
+C<$description>   -  A description for this script
 
 =item *
-C<$callback> 		-	This is a function that will be called when the is script
-							unloaded. This can be either a reference to a
-							function or an anonymous sub reference.
+C<$callback>      -  This is a function that will be called when the is script
+                     unloaded. This can be either a reference to a
+                     function or an anonymous sub reference.
 
 =back
 
@@ -103,26 +103,26 @@ hook_timer can be used to create a new timer
 =over 3
 
 =item *
-C<$message> 		-	server message to hook such as PRIVMSG
+C<$message>       -  server message to hook such as PRIVMSG
 
 =item *
-C<$command> 		-	command to intercept, without the leading /
+C<$command>       -  command to intercept, without the leading /
 
 =item *
-C<$event> 		-	one of the events listed in Settings-E<gt>Advanced-E<gt>Text Events
+C<$event>      -  one of the events listed in Settings-E<gt>Advanced-E<gt>Text Events
 
 =item *
-C<$timeout> 		-	timeout in milliseconds
+C<$timeout>       -  timeout in milliseconds
 
 =item *
-C<$callback> 	-	callback function, this is called whenever
-						the hooked event is trigged, the following are
-						the conditions that will trigger	the different hooks.
-						This can be either a reference to a
-						function or an anonymous sub reference.
+C<$callback>   -  callback function, this is called whenever
+                  the hooked event is trigged, the following are
+                  the conditions that will trigger the different hooks.
+                  This can be either a reference to a
+                  function or an anonymous sub reference.
 
 =item *
-\%options	-	a hash reference containing addional options for the hooks
+\%options   -  a hash reference containing addional options for the hooks
 
 =back
 
@@ -132,48 +132,48 @@ Valid keys for \%options:
 
 <table border="1">
 
-	<tr>
-	<td>data</td>	<td>Additional data that is to be associated with the<br />
-						hook. For timer hooks this value can be provided either as<br />
-						<code>Xchat::hook_timer( $timeout, $cb,{data=&gt;$data})</code><br />
-						or <code>Xchat::hook_timer( $timeout, $cb, $data )</code>.<br />
-						However, this means that hook_timer cannot be provided<br />
-						with a hash reference containing data as a key.<br />
+   <tr>
+   <td>data</td>  <td>Additional data that is to be associated with the<br />
+                  hook. For timer hooks this value can be provided either as<br />
+                  <code>Xchat::hook_timer( $timeout, $cb,{data=&gt;$data})</code><br />
+                  or <code>Xchat::hook_timer( $timeout, $cb, $data )</code>.<br />
+                  However, this means that hook_timer cannot be provided<br />
+                  with a hash reference containing data as a key.<br />
 
-						example:<br />
-						my $options = { data =&gt; [@arrayOfStuff] };<br />
-						Xchat::hook_timer( $timeout, $cb, $options );<br />
-						<br />
-						In this example, the timer's data will be<br />
-						[@arrayOfStuff] and not { data =&gt; [@arrayOfStuff] }<br />
-						<br />
-						This key is valid for all of the hook functions.<br />
-						<br />
-						Default is undef.<br />
-						</td>
-	</tr>
+                  example:<br />
+                  my $options = { data =&gt; [@arrayOfStuff] };<br />
+                  Xchat::hook_timer( $timeout, $cb, $options );<br />
+                  <br />
+                  In this example, the timer's data will be<br />
+                  [@arrayOfStuff] and not { data =&gt; [@arrayOfStuff] }<br />
+                  <br />
+                  This key is valid for all of the hook functions.<br />
+                  <br />
+                  Default is undef.<br />
+                  </td>
+   </tr>
 
-	<tr>
-		<td>priority</td>	<td>Sets the priority for the hook.<br />
-								It can be set to one of the
-								<code>Xchat::PRI_*</code> constants.<br />
-								<br />
-								This key only applies to server, command
-								and print hooks.<br />
-								<br />
-								Default is <code>Xchat::PRI_NORM</code>.
-								</td>
+   <tr>
+      <td>priority</td> <td>Sets the priority for the hook.<br />
+                        It can be set to one of the
+                        <code>Xchat::PRI_*</code> constants.<br />
+                        <br />
+                        This key only applies to server, command
+                        and print hooks.<br />
+                        <br />
+                        Default is <code>Xchat::PRI_NORM</code>.
+                        </td>
 
-	</tr>
+   </tr>
 
-	<tr>
-		<td>help_text</td>	<td>Text displayed for /help $command.<br />
-									<br />
-									This key only applies to command hooks.<br />
-									<br />
-									Default is "".
-									</td>
-	</tr>
+   <tr>
+      <td>help_text</td>   <td>Text displayed for /help $command.<br />
+                           <br />
+                           This key only applies to command hooks.<br />
+                           <br />
+                           Default is "".
+                           </td>
+   </tr>
 </table>
 
 =end html
@@ -187,33 +187,33 @@ of hook.
 
 <table border="1">
 
-	<tr style="background-color: #dddddd">
-		<td>Hook Type</td>	<td>When the callback will be invoked</td>
-	</tr>
+   <tr style="background-color: #dddddd">
+      <td>Hook Type</td>   <td>When the callback will be invoked</td>
+   </tr>
 
-	<tr>
-		<td>server hooks</td>	<td>a <code>$message</code> message is 
-										received from the server
-										</td>
-	</tr>
+   <tr>
+      <td>server hooks</td>   <td>a <code>$message</code> message is 
+                              received from the server
+                              </td>
+   </tr>
 
-	<tr>
-		<td>command hooks</td>	<td>the <code>$command</code> command is
-										executed, either by the user or from a script
-										</td>
-	</tr>
+   <tr>
+      <td>command hooks</td>  <td>the <code>$command</code> command is
+                              executed, either by the user or from a script
+                              </td>
+   </tr>
 
-	<tr>
-		<td>print hooks</td>	<td>X-Chat is about to print the	message for the
-									<code>$event</code> event
-									</td>
-	</tr>
+   <tr>
+      <td>print hooks</td> <td>X-Chat is about to print the message for the
+                           <code>$event</code> event
+                           </td>
+   </tr>
 
-	<tr>
-		<td>timer hooks</td>	<td>called every <code>$timeout</code> milliseconds
-									(1000 millisecond is 1 second)
-									</td>
-	</tr>
+   <tr>
+      <td>timer hooks</td> <td>called every <code>$timeout</code> milliseconds
+                           (1000 millisecond is 1 second)
+                           </td>
+   </tr>
 </table>
 
 =end html
@@ -232,7 +232,7 @@ other Perl subroutine.
 <p>
 Server and command callbacks<br />
 <br />
-<code>$_[0]</code>	-	array reference containing the IRC message or command and
+<code>$_[0]</code>   -  array reference containing the IRC message or command and
 arguments broken into words<br />
 example:<br />
 /command arg1 arg2 arg3<br />
@@ -241,25 +241,25 @@ example:<br />
 <code>$_[0][2]</code> -  arg2<br />
 <code>$_[0][3]</code> -  arg3<br />
 <br />
-<code>$_[1]</code>	-	array reference containing the Nth word to the last word<br />
+<code>$_[1]</code>   -  array reference containing the Nth word to the last word<br />
 example:<br />
 /command arg1 arg2 arg3<br />
-<code>$_[1][0]</code>	-	command arg1 arg2 arg3<br />
-<code>$_[1][1]</code>	-	arg1 arg2 arg3<br />
-<code>$_[1][2]</code>	-	arg2 arg3<br />
-<code>$_[1][3]</code>	-	arg3<br />
+<code>$_[1][0]</code>   -  command arg1 arg2 arg3<br />
+<code>$_[1][1]</code>   -  arg1 arg2 arg3<br />
+<code>$_[1][2]</code>   -  arg2 arg3<br />
+<code>$_[1][3]</code>   -  arg3<br />
 <br />
-<code>$_[2]</code>	-	the data that was passed to the hook function<br />
+<code>$_[2]</code>   -  the data that was passed to the hook function<br />
 <br />
 Print callbacks<br />
 <br />
-<code>$_[0]</code>	-	array reference containing the values for the
-								text event see Settings-&gt;Advanced-&gt;Text Events<br />
-<code>$_[1]</code>	-	the data that was passed to the hook function<br />
+<code>$_[0]</code>   -  array reference containing the values for the
+                        text event see Settings-&gt;Advanced-&gt;Text Events<br />
+<code>$_[1]</code>   -  the data that was passed to the hook function<br />
 <br />
 Timer callbacks<br />
 <br />
-<code>$_[0]</code>	-	the data that was passed to the hook function<br />
+<code>$_[0]</code>   -  the data that was passed to the hook function<br />
 <br />
 </p>
 
@@ -287,42 +287,42 @@ Settings-E<gt>Advanced-E<gt>Text Events, these additional events can be used.
 
 <table border="1">
 
-	<tr style="background-color: #dddddd">
-		<td>Event</td>	<td>Description</td>
-	</tr>
+   <tr style="background-color: #dddddd">
+      <td>Event</td> <td>Description</td>
+   </tr>
 
-	<tr>
-		<td>"Open Context"</td>	<td>a new context is created</td>
-	</tr>
+   <tr>
+      <td>"Open Context"</td> <td>a new context is created</td>
+   </tr>
 
-	<tr>
-		<td>"Close Context"</td>	<td>a context has been close</td>
-	</tr>
+   <tr>
+      <td>"Close Context"</td>   <td>a context has been close</td>
+   </tr>
 
-	<tr>
-		<td>"Focus Tab"</td>	<td>when a tab is brought to the front</td>
-	</tr>
+   <tr>
+      <td>"Focus Tab"</td> <td>when a tab is brought to the front</td>
+   </tr>
 
-	<tr>
-		<td>"Focus Window"</td>	<td>when a top level window is focused or the
-										main tab window is focused by the window manager
-										</td>
-	</tr>
+   <tr>
+      <td>"Focus Window"</td> <td>when a top level window is focused or the
+                              main tab window is focused by the window manager
+                              </td>
+   </tr>
 
-	<tr>
-		<td>"DCC Chat Text"</td>	<td>when text from a DCC Chat arrives.
-											<code>$_[0]</code> will have these values<br />
-											<br />
-											<code>$_[0][0]</code>	-	Address<br />
-											<code>$_[0][1]</code>	-	Port<br />
-											<code>$_[0][2]</code>	-	Nick<br />
-											<code>$_[0][3]</code>	-	Message<br />
-											</td>
-	</tr>
+   <tr>
+      <td>"DCC Chat Text"</td>   <td>when text from a DCC Chat arrives.
+                                 <code>$_[0]</code> will have these values<br />
+                                 <br />
+                                 <code>$_[0][0]</code>   -  Address<br />
+                                 <code>$_[0][1]</code>   -  Port<br />
+                                 <code>$_[0][2]</code>   -  Nick<br />
+                                 <code>$_[0][3]</code>   -  Message<br />
+                                 </td>
+   </tr>
 
-	<tr>
-		<td>"Key Press"</td>	<td>used for intercepting key presses, the key value is in $_[0][0]</td>
-	</tr>
+   <tr>
+      <td>"Key Press"</td> <td>used for intercepting key presses, the key value is in $_[0][0]</td>
+   </tr>
 </table>
 
 =end html
@@ -332,7 +332,7 @@ Settings-E<gt>Advanced-E<gt>Text Events, these additional events can be used.
 =over 3
 
 =item *
-C<$hook> 	-	the hook that was previously returned by one of the C<Xchat::hook_*>	functions
+C<$hook>    -  the hook that was previously returned by one of the C<Xchat::hook_*> functions
 
 =back
 
@@ -349,19 +349,19 @@ the hook was added
 =over 3
 
 =item *
-C<$text>		-	the text to print
+C<$text>    -  the text to print
 
 =item *
-C<\@lines>	-	array reference containing lines of text to be printed
-					all the elements will be joined together before printing
+C<\@lines>  -  array reference containing lines of text to be printed
+               all the elements will be joined together before printing
 
 =item *
-C<$channel>	-	channel or tab with the given name where C<$text>
-					will be printed
+C<$channel> -  channel or tab with the given name where C<$text>
+               will be printed
 
 =item *
-C<$server>	-	specifies that the text will be printed in a channel or tab
-					that is associated with C<$server>
+C<$server>  -  specifies that the text will be printed in a channel or tab
+               that is associated with C<$server>
 
 =back
 
@@ -382,10 +382,10 @@ L<find_context|xchat_find_context>.
 =over 3
 
 =item *
-C<$format>	-	a format string, see "perldoc -f sprintf" for further detail
+C<$format>  -  a format string, see "perldoc -f sprintf" for further detail
 
 =item *
-LIST		-	list of values for the format fields
+LIST     -  list of values for the format fields
 
 =back
 
@@ -394,16 +394,16 @@ LIST		-	list of values for the format fields
 =over 3
 
 =item *
-C<$command>	-	the command to execute, without the leading /
+C<$command> -  the command to execute, without the leading /
 
 =item *
-C<\@commands>	-	array reference containing a list of commands to execute
+C<\@commands>  -  array reference containing a list of commands to execute
 
 =item *
-C<$channel>	-	channel or tab with the given name where C<$command> will be executed
+C<$channel> -  channel or tab with the given name where C<$command> will be executed
 
 =item *
-C<$server>	-	specifies that the command will be executed in a channel or tab that is associated with C<$server>
+C<$server>  -  specifies that the command will be executed in a channel or tab that is associated with C<$server>
 
 =back
 
@@ -426,7 +426,7 @@ as find_context.
 C<$format> -  a format string, see "perldoc -f sprintf" for further detail
 
 =item *
-LIST		-	list of values for the format fields
+LIST     -  list of values for the format fields
 
 =back
 
@@ -435,10 +435,10 @@ LIST		-	list of values for the format fields
 =over 3
 
 =item *
-C<$channel>	-	name of a channel
+C<$channel> -  name of a channel
 
 =item *
-C<$server>	-	name of a server
+C<$server>  -  name of a server
 
 =back
 
@@ -457,7 +457,7 @@ Return the context found for one of the above situations or undef if such
 a context cannot be found.
 
 
-=head3 C<Xchat::get_context( [ ] )> 
+=head3 C<Xchat::get_context()> 
 
 =over 3
 
@@ -470,14 +470,14 @@ Returns the current context.
 =over 3
 
 =item *
-C<$context>	-	context value as returned from L<get_context|xchat_get_context>,L<find_context|xchat_find_context> or one
-					of the fields in the list of hashrefs returned by list_get
+C<$context> -  context value as returned from L<get_context|xchat_get_context>,L<find_context|xchat_find_context> or one
+               of the fields in the list of hashrefs returned by list_get
 
 =item *
-C<$channel>	-	name of a channel you want to switch context to
+C<$channel> -  name of a channel you want to switch context to
 
 =item *
-C<$server>	-	name of a server you want to switch context to
+C<$server>  -  name of a server you want to switch context to
 
 =back
 
@@ -490,7 +490,7 @@ Returns true on success, false on failure
 =over 3
 
 =item *
-C<$id>	-	one of the following case sensitive values
+C<$id>   -  one of the following case sensitive values
 
 =back
 
@@ -498,107 +498,107 @@ C<$id>	-	one of the following case sensitive values
 
 <table border="1">
 
-	<tr style="background-color: #dddddd">
-		<td>ID</td>				<td>Return value</td>
-	</tr>
+   <tr style="background-color: #dddddd">
+      <td>ID</td>          <td>Return value</td>
+   </tr>
 
-	<tr>
-		<td>away</td>	<td>away reason or undef if you are not away</td>
-	</tr>
+   <tr>
+      <td>away</td>  <td>away reason or undef if you are not away</td>
+   </tr>
 
-	<tr>
-		<td>channel</td>	<td>current channel name</td>
-	</tr>
+   <tr>
+      <td>channel</td>  <td>current channel name</td>
+   </tr>
 
-	<tr>
-		<td>charset</td>	<td>character-set used in the current context</td>
-	</tr>
+   <tr>
+      <td>charset</td>  <td>character-set used in the current context</td>
+   </tr>
 
-	<tr>
-		<td>event_text &lt;Event Name&gt;</td>	<td>text event format string for &lt;Event name&gt;<br />
-		Example:
-		<pre>
-        my $channel_msg_format = Xchat::get_info( "event_text Channel Message" );
-		</pre>
-		</td>
-	</tr>
-	<tr>
-		<td>host</td>	<td>real hostname of the current server</td>
-	</tr>
+   <tr>
+      <td>event_text &lt;Event Name&gt;</td> <td>text event format string for &lt;Event name&gt;<br />
+      Example:
+	<p class="example">
+	  my $channel_msg_format = Xchat::get_info( "event_text Channel Message" );
+	</p>
+	</td>
+</tr>
+<tr>
+	<td>host</td>  <td>real hostname of the current server</td>
+</tr>
 
-	<tr>
-		<td>id</td>	<td>connection id</td>
-	</tr>
+<tr>
+	<td>id</td> <td>connection id</td>
+</tr>
 
-	<tr>
-		<td>inputbox</td>	<td>contents of the inputbox</td>
-	</tr>
+<tr>
+	<td>inputbox</td> <td>contents of the inputbox</td>
+</tr>
 
-	<tr>
-		<td>libdirfs</td>
-		<td>the system wide directory where xchat will look for plugins.
-		this string is in the same encoding as the local file system</td>
-	</tr>
-	
-	<tr>
-		<td>modes</td>	<td>the current channels modes or undef if not known</td>
-	</tr>
+<tr>
+	<td>libdirfs</td>
+	<td>the system wide directory where xchat will look for plugins.
+	this string is in the same encoding as the local file system</td>
+</tr>
 
-	<tr>
-		<td>network</td>	<td>current network name or undef</td>
-	</tr>
+<tr>
+	<td>modes</td> <td>the current channels modes or undef if not known</td>
+</tr>
 
-	<tr>
-		<td>nick</td>	<td>current nick</td>
-	</tr>
+<tr>
+	<td>network</td>  <td>current network name or undef</td>
+</tr>
 
-	<tr>
-		<td>nickserv</td>	<td>nickserv password for this network or undef</td>
-	</tr>
+<tr>
+	<td>nick</td>  <td>current nick</td>
+</tr>
 
-	<tr>
-		<td>server</td>	<td>current server name <br />
-								(what the server claims to be) undef if not connected
-								</td>
-	</tr>
+<tr>
+	<td>nickserv</td> <td>nickserv password for this network or undef</td>
+</tr>
 
-	<tr>
-		<td>state_cursor</td>
-		<td>current inputbox cursor position in characters</td>
-	</tr>
+<tr>
+	<td>server</td>   <td>current server name <br />
+							(what the server claims to be) undef if not connected
+							</td>
+</tr>
 
-	<tr>
-		<td>topic</td>	<td>current channel topic</td>
-	</tr>
+<tr>
+	<td>state_cursor</td>
+	<td>current inputbox cursor position in characters</td>
+</tr>
 
-	<tr>
-		<td>version</td>	<td>xchat version number</td>
-	</tr>
+<tr>
+	<td>topic</td> <td>current channel topic</td>
+</tr>
 
-	<tr>
-		<td>win_status</td>
-		<td>status of the xchat window, possible values are "active", "hidden"
-		and "normal"</td>
-	</tr>
-	
-	<tr>
-     <td>win_ptr</td> <td>native window pointer, GtkWindow * on Unix, HWND on Win32.<br />
-     On Unix if you have the Glib module installed you can use my $window = Glib::Object->new_from_pointer( Xchat::get_info( "win_ptr" ) ); to get a Gtk2::Window object.<br />
-	  Additionally when you have detached tabs, each of the windows will return a different win_ptr for the different Gtk2::Window objects.<br />
-	  See <a href="http://xchat.cvs.sourceforge.net/viewvc/xchat/xchat2/plugins/perl/char_count.pl?view=markup">char_count.pl</a> for a longer example of a script that uses this to show how many characters you currently have in your input box.
-	  </td>
-	</tr>
-	<tr>
-		<td>xchatdir</td>	<td>xchat config directory encoded in UTF-8<br />
-								examples:<br />
-								/home/user/.xchat2<br />
-								C:\Documents and Settings\user\Application Data\X-Chat 2
-								</td>
-	</tr>
+<tr>
+	<td>version</td>  <td>xchat version number</td>
+</tr>
 
-	<tr>
-		<td>xchatdirfs</td>	<td>same as xchatdir except encoded in the locale file system encoding</td>
-	</tr>
+<tr>
+	<td>win_status</td>
+	<td>status of the xchat window, possible values are "active", "hidden"
+	and "normal"</td>
+</tr>
+
+<tr>
+  <td>win_ptr</td> <td>native window pointer, GtkWindow * on Unix, HWND on Win32.<br />
+  On Unix if you have the Glib module installed you can use my $window = Glib::Object->new_from_pointer( Xchat::get_info( "win_ptr" ) ); to get a Gtk2::Window object.<br />
+  Additionally when you have detached tabs, each of the windows will return a different win_ptr for the different Gtk2::Window objects.<br />
+  See <a href="http://xchat.cvs.sourceforge.net/viewvc/xchat/xchat2/plugins/perl/char_count.pl?view=markup">char_count.pl</a> for a longer example of a script that uses this to show how many characters you currently have in your input box.
+  </td>
+</tr>
+<tr>
+	<td>xchatdir</td> <td>xchat config directory encoded in UTF-8<br />
+							examples:<br />
+							/home/user/.xchat2<br />
+							C:\Documents and Settings\user\Application Data\X-Chat 2
+							</td>
+</tr>
+
+<tr>
+	<td>xchatdirfs</td>  <td>same as xchatdir except encoded in the locale file system encoding</td>
+</tr>
 </table>
 
 <p>This function is used to retrieve certain information about the current
@@ -611,7 +611,7 @@ context.</p>
 =over 3
 
 =item *
-C<$name>	-	name of a X-Chat setting (available through the /set command)
+C<$name> -  name of a X-Chat setting (available through the /set command)
 
 =back
 
@@ -625,10 +625,10 @@ Returns C<undef> if there is no setting called called C<$name>.
 =over 3
 
 =item *
-C<$event>	-	name from the Event column in Settings-E<gt>Advanced-E<gt>Text Events
+C<$event>   -  name from the Event column in Settings-E<gt>Advanced-E<gt>Text Events
 
 =item *
-LIST		-	this depends on the Description column on the bottom of Settings-E<gt>Advanced-E<gt>Text Events
+LIST     -  this depends on the Description column on the bottom of Settings-E<gt>Advanced-E<gt>Text Events
 
 =back
 
@@ -642,19 +642,19 @@ Returns true on success, false on failure
 =over 3
 
 =item *
-C<$target>	-	a single nick to set the mode on
+C<$target>  -  a single nick to set the mode on
 
 =item *
-C<\@targets>	-	an array reference of the nicks to set the mode on
+C<\@targets>   -  an array reference of the nicks to set the mode on
 
 =item *
-C<$sign>	- the mode sign, either '+' or '-'
+C<$sign> - the mode sign, either '+' or '-'
 
 =item *
 C<$mode> - the mode character such as 'o' and 'v', this can only be one character long
 
 =item *
-C<$modes_per_line>	-	an optional argument maximum number of modes to send per at once, pass 0 use the current server's maximum (default)
+C<$modes_per_line>   -  an optional argument maximum number of modes to send per at once, pass 0 use the current server's maximum (default)
 
 =back
 
@@ -663,8 +663,8 @@ Send multiple mode changes for the current channel. It may send multiple MODE li
 Example:
 
 =begin html
-
-<p><code>
+<p class="example">
+<code>
 use strict;
 use warning;
 use Xchat qw(:all);
@@ -673,7 +673,7 @@ hook_command( "MODES", sub {
    my (undef, $who, $sign, $mode) = @{$_[0]};
 
    my @targets = split /,/, $who;
-   if( @targets &gt; 1 ) {
+   if( @targets > 1 ) {
       send_modes( \@targets, $sign, $mode, 1 );
    } else {
       send_modes( $who, $sign, $mode );
@@ -681,7 +681,8 @@ hook_command( "MODES", sub {
 
    return EAT_XCHAT;
 });
-</code></p>
+</code>
+</p>
 
 =end html
 
@@ -690,7 +691,7 @@ hook_command( "MODES", sub {
 =over 3
 
 =item *
-C<$nick1, $nick2>	-	the two nicks or channel names that are to be compared
+C<$nick1, $nick2> -  the two nicks or channel names that are to be compared
 
 =back
 
@@ -709,7 +710,7 @@ C<$nick2>.
 =over 3
 
 =item *
-C<$name> -	name of the list, one of the following:
+C<$name> -  name of the list, one of the following:
 "channels", "dcc", "ignore", "notify", "users"
 
 =back
@@ -720,35 +721,35 @@ if there is no such list.
 
 =begin html
 
-<p>"channels"	-	list of channels, querys and their server</p>
+<p>"channels"  -  list of channels, querys and their server</p>
 
 <table border="1">
 
-	<tr style="background-color: #dddddd">
-		<td>Key</td>	<td>Description</td>
-	</tr>
+   <tr style="background-color: #dddddd">
+      <td>Key</td>   <td>Description</td>
+   </tr>
 
-	<tr>
-		<td>channel</td>	<td>tab name</td>
-	</tr>
+   <tr>
+      <td>channel</td>  <td>tab name</td>
+   </tr>
 
-	<tr>
-		<td>chantypes</td>
-		<td>channel types supported by the server, typically "#&amp;"</td>
-	</tr>
+   <tr>
+      <td>chantypes</td>
+      <td>channel types supported by the server, typically "#&amp;"</td>
+   </tr>
 
-	<tr>
-		<td>context</td>	<td>can be used with set_context</td>
-	</tr>
+   <tr>
+      <td>context</td>  <td>can be used with set_context</td>
+   </tr>
 
-	<tr>
-		<td>flags</td>	<td>Server Bits:<br />
-							0 - Connected<br />
-							1 - Connecting<br />
-							2 - Away<br />
-							3 - EndOfMotd(Login complete)<br />
-							4 - Has WHOX<br />
-							5 - Has IDMSG (FreeNode)<br />
+   <tr>
+      <td>flags</td> <td>Server Bits:<br />
+                     0 - Connected<br />
+                     1 - Connecting<br />
+                     2 - Away<br />
+                     3 - EndOfMotd(Login complete)<br />
+                     4 - Has WHOX<br />
+                     5 - Has IDMSG (FreeNode)<br />
                     <br />
                     <p>The following correspond to the /chanopt command</p>
                     6  - Hide Join/Part Message (text_hidejoinpart)<br />
@@ -756,232 +757,233 @@ if there is no such list.
                     8  - Beep on message (alert_beep)<br />
                     9  - Blink Tray (alert_tray)<br />
                     10 - Blink Task Bar (alert_taskbar)<br />
-<p>Example of checking if the current context has Hide Join/Part messages set:<br />
+<p>Example of checking if the current context has Hide Join/Part messages set:</p>
+<p class="example">
 <code>
-if( Xchat::context_info-&gt;{flags} &amp; (1 &lt;&lt; 6) ) {
+if( Xchat::context_info-&gt;{flags} &amp; (1 &gt;&gt; 6) ) {
   Xchat::print( "Hide Join/Part messages is enabled" );
 }
 </code>
 </p>
 
-							</td>
-	</tr>
+                     </td>
+   </tr>
 
-	<tr>
-		<td>id</td>	<td>Unique server ID	</td>
-	</tr>
-	
-	<tr>
-		<td>maxmodes</td>	<td>Maximum modes per line</td>
-	</tr>
+   <tr>
+      <td>id</td> <td>Unique server ID </td>
+   </tr>
+   
+   <tr>
+      <td>maxmodes</td> <td>Maximum modes per line</td>
+   </tr>
 
-	<tr>
-		<td>lag</td>
-		<td>lag in milliseconds</td>
-	</tr>
+   <tr>
+      <td>lag</td>
+      <td>lag in milliseconds</td>
+   </tr>
 
-	<tr>
-		<td>network</td>	<td>network name to which this channel belongs</td>
-	</tr>
+   <tr>
+      <td>network</td>  <td>network name to which this channel belongs</td>
+   </tr>
 
-	<tr>
-		<td>nickprefixes</td>	<td>Nickname prefixes e.g. "+@"</td>
-	</tr>
-	
-	<tr>
-		<td>nickmodes</td>	<td>Nickname mode chars e.g. "vo"</td>
-	</tr>
+   <tr>
+      <td>nickprefixes</td>   <td>Nickname prefixes e.g. "+@"</td>
+   </tr>
+   
+   <tr>
+      <td>nickmodes</td>   <td>Nickname mode chars e.g. "vo"</td>
+   </tr>
 
-	<tr>
-		<td>queue</td>
-		<td>number of bytes in the send queue</td>
-	</tr>
-	
-	<tr>
-		<td>server</td>	<td>server name to which this channel belongs</td>
-	</tr>
+   <tr>
+      <td>queue</td>
+      <td>number of bytes in the send queue</td>
+   </tr>
+   
+   <tr>
+      <td>server</td>   <td>server name to which this channel belongs</td>
+   </tr>
 
-	<tr>
-		<td>type</td>	<td>the type of this context<br />
-							1 - server<br />
-							2 - channel<br />
-							3 - dialog<br />
-							</td>
-	</tr>
+   <tr>
+      <td>type</td>  <td>the type of this context<br />
+                     1 - server<br />
+                     2 - channel<br />
+                     3 - dialog<br />
+                     </td>
+   </tr>
 
-	<tr>
-		<td>users</td>	<td>Number of users in this channel</td>
-	</tr>
+   <tr>
+      <td>users</td> <td>Number of users in this channel</td>
+   </tr>
 </table>
 
-<p>"dcc"			-	list of DCC file transfers</p>
+<p>"dcc"       -  list of DCC file transfers</p>
 <table border="1">
 
-	<tr style="background-color: #dddddd">
-		<td>Key</td>	<td>Value</td>
-	</tr>
+   <tr style="background-color: #dddddd">
+      <td>Key</td>   <td>Value</td>
+   </tr>
 
-	<tr>
-		<td>address32</td>	<td>address of the remote user(ipv4 address)</td>
-	</tr>
+   <tr>
+      <td>address32</td>   <td>address of the remote user(ipv4 address)</td>
+   </tr>
 
-	<tr>
-		<td>cps</td>	<td>bytes per second(speed)</td>
-	</tr>
+   <tr>
+      <td>cps</td>   <td>bytes per second(speed)</td>
+   </tr>
 
-	<tr>
-		<td>destfile</td>	<td>destination full pathname</td>
-	</tr>
+   <tr>
+      <td>destfile</td> <td>destination full pathname</td>
+   </tr>
 
-	<tr>
-		<td>file</td>	<td>file name</td>
-	</tr>
+   <tr>
+      <td>file</td>  <td>file name</td>
+   </tr>
 
-	<tr>
-		<td>nick</td>
-		<td>nick of the person this DCC connection is connected to</td>
-	</tr>
+   <tr>
+      <td>nick</td>
+      <td>nick of the person this DCC connection is connected to</td>
+   </tr>
 
-	<tr>
-		<td>port</td>	<td>TCP port number</td>
-	</tr>
+   <tr>
+      <td>port</td>  <td>TCP port number</td>
+   </tr>
 
-	<tr>
-		<td>pos</td>	<td>bytes sent/received</td>
-	</tr>
+   <tr>
+      <td>pos</td>   <td>bytes sent/received</td>
+   </tr>
 
-	<tr>
-		<td>resume</td>	<td>point at which this file was resumed<br />
-								(zero if it was not resumed)
-								</td>
-	</tr>
+   <tr>
+      <td>resume</td>   <td>point at which this file was resumed<br />
+                        (zero if it was not resumed)
+                        </td>
+   </tr>
 
-	<tr>
-		<td>size</td>	<td>file size in bytes</td>
-	</tr>
+   <tr>
+      <td>size</td>  <td>file size in bytes</td>
+   </tr>
 
-	<tr>
-		<td>status</td>	<td>DCC Status:<br />
-								0 - queued<br />
-								1 - active<br />
-								2 - failed<br />
-								3 - done<br />
-								4 - connecting<br />
-								5 - aborted
-								</td>
-	</tr>
+   <tr>
+      <td>status</td>   <td>DCC Status:<br />
+                        0 - queued<br />
+                        1 - active<br />
+                        2 - failed<br />
+                        3 - done<br />
+                        4 - connecting<br />
+                        5 - aborted
+                        </td>
+   </tr>
 
-	<tr>
-		<td>type</td>	<td>DCC Type:<br />
-							0 - send<br />
-							1 - receive<br />
-							2 - chatrecv<br />
-							3 - chatsend
-							</td>
-	</tr>
+   <tr>
+      <td>type</td>  <td>DCC Type:<br />
+                     0 - send<br />
+                     1 - receive<br />
+                     2 - chatrecv<br />
+                     3 - chatsend
+                     </td>
+   </tr>
 
 </table>
 
-<p>"ignore"		-	current ignore list</p>
+<p>"ignore"    -  current ignore list</p>
 <table border="1">
 
-	<tr style="background-color: #dddddd">
-		<td>Key</td> <td>Value</td>
-	</tr>
+   <tr style="background-color: #dddddd">
+      <td>Key</td> <td>Value</td>
+   </tr>
 
-	<tr>
-		<td>mask</td>	<td>ignore mask. e.g: *!*@*.aol.com</td>
-	</tr>
+   <tr>
+      <td>mask</td>  <td>ignore mask. e.g: *!*@*.aol.com</td>
+   </tr>
 
-	<tr>
-		<td>flags</td>	<td>Bit field of flags.<br />
-							0 - private<br />
-							1 - notice<br />
-							2 - channel<br />
-							3 - ctcp<br />
-							4 - invite<br />
-							5 - unignore<br />
-							6 - nosave<br />
-							7 - dcc<br />
-							</td>
-	</tr>
+   <tr>
+      <td>flags</td> <td>Bit field of flags.<br />
+                     0 - private<br />
+                     1 - notice<br />
+                     2 - channel<br />
+                     3 - ctcp<br />
+                     4 - invite<br />
+                     5 - unignore<br />
+                     6 - nosave<br />
+                     7 - dcc<br />
+                     </td>
+   </tr>
 
 </table>
 
 <p>"notify" - list of people on notify</p>
 <table border="1">
-	<tr style="background-color: #dddddd">
-		<td>Key</td>	<td>Value</td>
-	</tr>
+   <tr style="background-color: #dddddd">
+      <td>Key</td>   <td>Value</td>
+   </tr>
 
-	<tr>
-		<td>networks</td>
-		<td>comma separated list of networks where you will be notfified about this user's online/offline status or undef if you will be notificed on every network you are connected to</td>
-	</tr>
+   <tr>
+      <td>networks</td>
+      <td>comma separated list of networks where you will be notfified about this user's online/offline status or undef if you will be notificed on every network you are connected to</td>
+   </tr>
 
-	<tr>
-		<td>nick</td>	<td>nickname</td>
-	</tr>
+   <tr>
+      <td>nick</td>  <td>nickname</td>
+   </tr>
 
-	<tr>
-		<td>flags</td>	<td>0 = is online</td>
-	</tr>
+   <tr>
+      <td>flags</td> <td>0 = is online</td>
+   </tr>
 
-	<tr>
-		<td>on</td>	<td>time when user came online</td>
-	</tr>
+   <tr>
+      <td>on</td> <td>time when user came online</td>
+   </tr>
 
-	<tr>
-		<td>off</td>	<td>time when user went offline</td>
-	</tr>
+   <tr>
+      <td>off</td>   <td>time when user went offline</td>
+   </tr>
 
-	<tr>
-		<td>seen</td>	<td>time when user was last verified still online</td>
-	</tr>
+   <tr>
+      <td>seen</td>  <td>time when user was last verified still online</td>
+   </tr>
 </table>
 
 <p>the values indexed by on, off and seen can be passed to localtime
 and gmtime, see perldoc -f localtime and perldoc -f gmtime for more
 detail</p>
 
-<p>"users"		-	list of users in the current channel</p>
+<p>"users"     -  list of users in the current channel</p>
 <table border="1">
 
-	<tr style="background-color: #dddddd">
-		<td>Key</td>	<td>Value</td>
-	</tr>
+   <tr style="background-color: #dddddd">
+      <td>Key</td>   <td>Value</td>
+   </tr>
 
-	<tr>
-		<td>away</td>	<td>away status(boolean)</td>
-	</tr>
+   <tr>
+      <td>away</td>  <td>away status(boolean)</td>
+   </tr>
 
-	<tr>
-		<td>lasttalk</td>
-		<td>last time a user was seen talking, this is the an epoch time(number of seconds since a certain date, that date depends on the OS)</td>
-	</tr>
+   <tr>
+      <td>lasttalk</td>
+      <td>last time a user was seen talking, this is the an epoch time(number of seconds since a certain date, that date depends on the OS)</td>
+   </tr>
 
-	<tr>
-		<td>nick</td>	<td>nick name</td>
-	</tr>
+   <tr>
+      <td>nick</td>  <td>nick name</td>
+   </tr>
 
-	<tr>
-		<td>host</td>
-		<td>host name in the form: user@host or undef if not known</td>
-	</tr>
+   <tr>
+      <td>host</td>
+      <td>host name in the form: user@host or undef if not known</td>
+   </tr>
 
-	<tr>
-		<td>prefix</td>	<td>prefix character, .e.g: @ or +</td>
-	</tr>
+   <tr>
+      <td>prefix</td>   <td>prefix character, .e.g: @ or +</td>
+   </tr>
 
-	<tr>
-		<td>realname</td>
-		 <td>Real name or undef</td>
-	</tr>
+   <tr>
+      <td>realname</td>
+       <td>Real name or undef</td>
+   </tr>
 
-	<tr>
-		<td>selected</td>
-		<td>selected status in the user list, only works when retrieving the user list of the focused tab. You can use the /USELECT command to select the nicks</td>
-	</tr>
+   <tr>
+      <td>selected</td>
+      <td>selected status in the user list, only works when retrieving the user list of the focused tab. You can use the /USELECT command to select the nicks</td>
+   </tr>
 </table>
 
 =end html
@@ -991,8 +993,8 @@ detail</p>
 =over 3
 
 =item *
-C<$nick>	-	the nick to look for, if this is not given your own nick will be
-				used as default
+C<$nick> -  the nick to look for, if this is not given your own nick will be
+            used as default
 
 =back
 
@@ -1007,7 +1009,7 @@ If C<$nick> is found a hash reference containing the same keys as those in the
 =over 3
 
 =item *
-C<$context>	-	context returned from L<get_context|xchat_get_context>, L<find_context|xchat_find_context> and L<get_list|xchat_get_list>, this is the context that you want infomation about. If this is omitted, it will default to current context.
+C<$context> -  context returned from L<get_context|xchat_get_context>, L<find_context|xchat_find_context> and L<get_list|xchat_get_list>, this is the context that you want infomation about. If this is omitted, it will default to current context.
 
 =back
 
@@ -1015,15 +1017,17 @@ This function will return the information normally retrieved with L<get_info|xch
 
 =begin html
 
-<p>Example:
+<p>Example:</p>
+<p class="example">
 <code>
 use strict;
 use warnings;
 use Xchat qw(:all); # imports all the functions documented on this page
-register( "User Count", "0.1", "Print out the number of users on the current channel" );
+register( "User Count", "0.1",
+	 "Print out the number of users on the current channel" );
 hook_command( "UCOUNT", \&amp;display_count );
 sub display_count {
-  prnt "There are " . context_info()->{users} . " users in this channel.";
+  prnt "There are " . context_info()-&gt;{users} . " users in this channel.";
   return EAT_XCHAT;
 }
 </code>
@@ -1037,11 +1041,11 @@ sub display_count {
 =over 3
 
 =item *
-C<$string>	-	string to remove codes from
+C<$string>  -  string to remove codes from
 
 =back
 
-This function will remove bold, color, beep, reset, reverse and underline codes from C<$string>. If it is called in void context $string will be modified otherwise a modified copy of C<$string> is returned.
+This function will remove bold, color, beep, reset, reverse and underline codes from C<$string>. If it is called in void context C<$string> will be modified otherwise a modified copy of C<$string> is returned.
 
 =head2 Contact Information
 
