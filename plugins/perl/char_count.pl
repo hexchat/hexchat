@@ -45,18 +45,22 @@ if( $input_box ) {
 	my $hbox = get_hbox( $input_box );
 	if( $hbox ) {
 		my $label = Gtk2::Label->new();
+		$label->set_alignment( 0.5, ($label->get_alignment)[1] );
 		$hbox->pack_end( $label, 0, 0, 5 );
 		$label->show();
 
 		hook_print( "Key Press",
 			sub {
 				my $ctx_type = context_info->{"type"};
-				if( $ctx_type == 2 || $ctx_type == 3 ) {
-					my $count = length get_info "inputbox";
-					$label->set_text( $count ? $count : "" );
-				} else {
-					$label->set_text( "" );
-				}
+				hook_timer( 0, sub {
+					if( $ctx_type == 2 || $ctx_type == 3 ) {
+						my $count = length get_info "inputbox";
+						$label->set_text( $count ? $count : "" );
+					} else {
+						$label->set_text( "" );
+					}
+					return REMOVE;
+				});
 				return EAT_NONE;
 			}
 		);
