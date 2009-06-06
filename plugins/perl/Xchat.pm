@@ -427,7 +427,7 @@ sub strip_code {
 		$msg =~ s/$pattern//g;
 		return $msg;
 	} else {
-		$_[0] =~ s/$pattern//g;
+		$_[0] =~ s/$pattern//g if defined $_[0];
 	}
 }
 
@@ -505,9 +505,9 @@ sub load {
 				eval { require POE::Kernel; };
 
 				unless( $@ ) {
-					POE::Kernel->run;
+#					POE::Kernel->run;
 					$Xchat::Embed::POE_Kernel_running = 1;
-					no warnings 'redefine';
+#					no warnings 'redefine';
 					*POE::Kernel::run = sub {};
 				}
 			}
