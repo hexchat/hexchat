@@ -1,8 +1,14 @@
 use strict;
 use warnings;
 
+# if the last time you addressed someone was greater than this many minutes
+# ago, ignore it
+# this avoids having people you have talked to a long time ago coming up too
+# early in the completion list
+my $last_use_threshold = 10; # 10 minutes
+
 Xchat::register(
-	"Tab Completion", "1.0300", "Alternative tab completion behavior"
+	"Tab Completion", "1.0301", "Alternative tab completion behavior"
 );
 Xchat::hook_print( "Key Press", \&complete );
 Xchat::hook_print( "Close Context", \&close_context );
@@ -238,9 +244,10 @@ sub matching_nicks {
 	my $word = shift;
 
 	# for use in compare_nicks()
-	our ($my_nick, $selections);
+	our ($my_nick, $selections, $now);
 	local $my_nick = Xchat::get_info( "nick" );
 	local $selections = $selected{ Xchat::get_context() };
+	local $now = time;
 
 	return
 		map { $_->{nick} }
@@ -254,18 +261,31 @@ sub compare_nicks {
 	# more package variables, value set in matching_nicks()
 	our $my_nick;
 	our $selections;
+	our $now;
 
 	# turn off the warnings that get generated from users who have yet to speak
 	# since the script was loaded
 	no warnings "uninitialized";
+	
+	my $a_time
+		= ($now - $selections->{ $a->{nick} }) < ($last_use_threshold * 60) ?
+		$selections->{ $a->{nick} } :
+		$a->{lasttalk};
+	my $b_time
+		= ($now - $selections->{ $b->{nick} }) < ($last_use_threshold * 60) ?
+		$selections->{ $b->{nick} } :
+		$b->{lasttalk};
 
 	# our own nick is always last, then ordered by the people we spoke to most
-	# recently followed by the people who were speaking most recently
+	# recently and the people who were speaking most recently
 	return 
 		$a->{nick} eq $my_nick ? 1 :
 		$b->{nick} eq $my_nick ? -1 :
-		$selections->{ $b->{nick} } <=> $selections->{ $a->{nick} }
-		||	$b->{lasttalk} <=> $a->{lasttalk}
+		$b_time <=> $a_time
+		|| Xchat::nickcmp( $a->{nick}, $b->{nick} );
+
+#		$selections->{ $b->{nick} } <=> $selections->{ $a->{nick} }
+#		||	$b->{lasttalk} <=> $a->{lasttalk}
 
 }
 
@@ -289,7 +309,7 @@ sub track_selected {
 	my $input = $_[1][0];
 	
 	my $suffix = Xchat::get_prefs( "completion_suffix" );
-	for( $input =~ /^(.+)\Q$suffix/, $_[0][0] ) {
+	for( grep defined, $input =~ /^(.+)\Q$suffix/, $_[0][0] ) {
 		if( in_channel( $_ ) ) {
 			$selected{Xchat::get_context()}{$_} = time();
 			last;
