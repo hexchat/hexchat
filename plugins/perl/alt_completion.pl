@@ -173,19 +173,19 @@ sub complete {
 			Xchat::command( "setcursor $completions->{pos}" );
 		}
 # debugging stuff
-		local $, = " ";
-		my $input_length = length $input;
-		Xchat::print [
-			qq{[input:$input]},
-			qq{[input_length:$input_length]},				
-			qq{[cursor:$cursor_pos]},
-			qq{[start:$word_start]},
-			qq{[length:$length]},
-			qq{[left:$left]},
-			qq{[word:$word]}, qq{[right:$right]},
-			qq{[completed:$completed]},
-			qq{[pos:$completions->{pos}]},
-		];
+#		local $, = " ";
+#		my $input_length = length $input;
+#		Xchat::print [
+#			qq{[input:$input]},
+#			qq{[input_length:$input_length]},				
+#			qq{[cursor:$cursor_pos]},
+#			qq{[start:$word_start]},
+#			qq{[length:$length]},
+#			qq{[left:$left]},
+#			qq{[word:$word]}, qq{[right:$right]},
+#			qq{[completed:$completed]},
+#			qq{[pos:$completions->{pos}]},
+#		];
 #		use Data::Dumper;
 #		local $Data::Dumper::Indent = 0;
 #		Xchat::print Dumper $completions->{matches};
