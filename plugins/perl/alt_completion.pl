@@ -8,7 +8,7 @@ use warnings;
 my $last_use_threshold = 10; # 10 minutes
 
 Xchat::register(
-	"Tab Completion", "1.0301", "Alternative tab completion behavior"
+	"Tab Completion", "1.0302", "Alternative tab completion behavior"
 );
 Xchat::hook_print( "Key Press", \&complete );
 Xchat::hook_print( "Close Context", \&close_context );
@@ -39,6 +39,7 @@ my %escape_map = (
 	'?' => qr!\?!,
 	'(' => qr!\(!,
 	')' => qr!\)!,
+	'-' => qr!\-!,
 );
 
 my $escapes = join "", keys %escape_map;
@@ -92,9 +93,11 @@ sub complete {
 	my $command_char = Xchat::get_prefs( "input_command_char" );
 	# ignore commands
 	if( $word !~ m{^[${command_char}]} ) {
-		if( $cursor_pos == length $input && $input =~ /(?<!\w|$escapes)$/
-			&& $cursor_pos != $completions->{pos}
-			&& $word !~ /^[&#]/ ) {
+		if( $cursor_pos == length $input # end of input box
+#			&& $input =~ /(?<!\w|$escapes)$/ # not a valid nick char
+			&& $input =~ /(?<![\x41-\x5A\x61-\x7A\x30-\x39\x5B-\x60\x7B-\x7D-])$/
+			&& $cursor_pos != $completions->{pos} # not continuing a completion
+			&& $word !~ /^[&#]/ ) { # not a channel
 			$word_start = $cursor_pos;
 			$left = $input;
 			$length = length $length;
@@ -170,19 +173,19 @@ sub complete {
 			Xchat::command( "setcursor $completions->{pos}" );
 		}
 # debugging stuff
-#		local $, = " ";
-#		my $input_length = length $input;
-#		Xchat::print [
-#			qq{[input:$input]},
-#			qq{[input_length:$input_length]},				
-#			qq{[cursor:$cursor_pos]},
-#			qq{[start:$word_start]},
-#			qq{[length:$length]},
-#			qq{[left:$left]},
-#			qq{[word:$word]}, qq{[right:$right]},
-#			qq{[completed:$completed]},
-#			qq{[pos:$completions->{pos}]},
-#		];
+		local $, = " ";
+		my $input_length = length $input;
+		Xchat::print [
+			qq{[input:$input]},
+			qq{[input_length:$input_length]},				
+			qq{[cursor:$cursor_pos]},
+			qq{[start:$word_start]},
+			qq{[length:$length]},
+			qq{[left:$left]},
+			qq{[word:$word]}, qq{[right:$right]},
+			qq{[completed:$completed]},
+			qq{[pos:$completions->{pos}]},
+		];
 #		use Data::Dumper;
 #		local $Data::Dumper::Indent = 0;
 #		Xchat::print Dumper $completions->{matches};
