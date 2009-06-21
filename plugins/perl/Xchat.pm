@@ -247,7 +247,9 @@ sub unhook {
 	($package) = caller unless $package;
 	my $pkg_info = Xchat::Embed::pkg_info( $package );
 
-	if( $hook =~ /^\d+$/ && grep { $_ == $hook } @{$pkg_info->{hooks}} ) {
+	if( defined( $hook )
+		&& $hook =~ /^\d+$/
+		&& grep { $_ == $hook } @{$pkg_info->{hooks}} ) {
 		$pkg_info->{hooks} = [grep { $_ != $hook } @{$pkg_info->{hooks}}];
 		return Xchat::Internal::unhook( $hook );
 	}
@@ -499,18 +501,6 @@ sub load {
 				$source =~ s/\Z/}/;
 			}
 
-			# loading POE?
-			if( $source =~ /^\s*use\s+POE\b/m && !$Xchat::Embed::POE_Kernel_running ) {
-
-				eval { require POE::Kernel; };
-
-				unless( $@ ) {
-#					POE::Kernel->run;
-					$Xchat::Embed::POE_Kernel_running = 1;
-#					no warnings 'redefine';
-					*POE::Kernel::run = sub {};
-				}
-			}
 			eval $source;
 
 			unless( exists $scripts{$package}{gui_entry} ) {
