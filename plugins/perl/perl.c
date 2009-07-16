@@ -1210,6 +1210,7 @@ xs_init (pTHX)
 	newXS ("Xchat::Internal::set_context", XS_Xchat_set_context, __FILE__);
 	newXS ("Xchat::Internal::get_info", XS_Xchat_get_info, __FILE__);
 	newXS ("Xchat::Internal::context_info", XS_Xchat_context_info, __FILE__);
+	newXS ("Xchat::Internal::get_list", XS_Xchat_get_list, __FILE__);
 	
 	newXS ("Xchat::find_context", XS_Xchat_find_context, __FILE__);
 	newXS ("Xchat::get_context", XS_Xchat_get_context, __FILE__);
@@ -1217,7 +1218,6 @@ xs_init (pTHX)
 	newXS ("Xchat::emit_print", XS_Xchat_emit_print, __FILE__);
 	newXS ("Xchat::send_modes", XS_Xchat_send_modes, __FILE__);
 	newXS ("Xchat::nickcmp", XS_Xchat_nickcmp, __FILE__);
-	newXS ("Xchat::get_list", XS_Xchat_get_list, __FILE__);
 
 	newXS ("Xchat::Embed::plugingui_remove", XS_Xchat_Embed_plugingui_remove,
 			 __FILE__);

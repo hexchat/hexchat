@@ -414,6 +414,14 @@ sub context_info {
 	}
 }
 
+sub get_list {
+	if( $_[0] eq 'servers' ) {
+		return Xchat::List::Server->get();
+	} else {
+		return Xchat::Internal::get_list( $_[0] );
+	}
+}
+
 sub strip_code {
 	my $pattern = qr[
 		\cB| #Bold
@@ -449,8 +457,9 @@ sub load {
 	if( exists $scripts{$package} ) {
 		my $pkg_info = pkg_info( $package );
 		my $filename = File::Basename::basename( $pkg_info->{filename} );
-		Xchat::print(
-			qq{'$filename' already loaded from '$pkg_info->{filename}'.\n}
+		Xchat::printf(
+			qq{'%s' already loaded from '%s'.\n},
+			$filename, $pkg_info->{filename}
 		);
 		Xchat::print(
 			'If this is a different script then it rename and try '.
@@ -668,3 +677,215 @@ sub fix_callback {
 	return $callback;
 }
 } # end of Xchat::Embed package
+
+{
+package Xchat::List::Server;
+use strict;
+use warnings;
+use Storable qw(dclone);
+my $last_modified;
+my @servers;
+
+sub get {
+	my $server_file = Xchat::get_info( "xchatdirfs" ) . "/servlist_.conf";
+Xchat::print "Checking $server_file";
+	# recreate the list only if the server list file has changed
+	if( -f $server_file && 
+			(!defined $last_modified || $last_modified != -M $server_file ) ) {
+		$last_modified = -M _;
+
+		if( open my $fh, "<", $server_file ) {
+			local $/ = "\n\n";
+			while( my $record = <$fh> ) {
+				chomp $record;
+				push @servers, Xchat::List::Server::Entry::parse( $record );
+			}
+		} else {
+			warn "Unable to open '$server_file': $!";
+		}
+	}
+
+	my $clone = dclone( \@servers );
+	return @$clone;
+}
+} # end of Xchat::List::Server
+
+{
+package Xchat::List::Server::Entry;
+use strict;
+use warnings;
+
+my %key_for = (
+	I => "irc_nick1",
+	i => "irc_nick2",
+	U => "irc_user_name",
+	R => "irc_real_name",
+	P => "server_password",
+	B => "nickserv_password",
+	N => "network_name",
+	C => "connect_command",
+	D => "selected",
+	E => "encoding",
+);
+my $letter_key_re = join "|", keys %key_for;
+
+sub parse {
+	my $data  = shift;
+	my $entry = {
+		irc_nick1       => undef,
+		irc_nick2       => undef,
+		irc_user_name   => undef,
+		irc_real_name   => undef,
+		server_password => undef,
+
+		# the order of the channels need to be maintained
+		# list of { channel => .., key => ... }
+		autojoins         => Xchat::List::Server::AutoJoin->new( '' ),
+		connect_command   => undef,
+		flags             => {},
+		selected          => undef,
+		encoding          => undef,
+		servers           => [],
+		nickserv_password => undef,
+		network_name      => undef,
+	};
+
+	my @fields = split /\n/, $data;
+	chomp @fields;
+
+	for my $field ( @fields ) {
+	SWITCH: for ( $field ) {
+			/^($letter_key_re)=(.*)/ && do {
+				$entry->{ $key_for{ $1 } } = $2;
+				last SWITCH;
+			};
+
+			/^J.(.*)/ && do {
+				$entry->{ autojoins } =
+					Xchat::List::Server::AutoJoin->new( $1 );
+			};
+
+			/^F.(.*)/ && do {
+				$entry->{ flags } = parse_flags( $1 );
+			};
+
+			/^S.(.+)/ && do {
+				push @{$entry->{servers}}, parse_server( $1 );
+			};
+		}
+	}
+
+#	$entry->{ autojoins } = $entry->{ autojoin_channels };
+	return $entry;
+}
+
+sub parse_flags {
+	my $value = shift || 0;
+	my %flags;
+
+	$flags{ "cycle" }         = $value & 1  ? 1 : 0;
+	$flags{ "use_global" }    = $value & 2  ? 1 : 0;
+	$flags{ "use_ssl" }       = $value & 4  ? 1 : 0;
+	$flags{ "auto_connect" }  = $value & 8  ? 1 : 0;
+	$flags{ "use_proxy" }     = $value & 16 ? 1 : 0;
+	$flags{ "allow_invalid" } = $value & 32 ? 1 : 0;
+
+	$flags{ "autoconnect" }   = $flags{ "auto_connect" };
+
+	return \%flags;
+}
+
+sub parse_server {
+	my $data = shift;
+	if( $data ) {
+		my ($host, $port) = split /\//, $data;
+		return { host => $host, port => $port };
+	}
+}
+
+} # end of Xchat::List::Server::Entry
+
+{
+package Xchat::List::Server::AutoJoin;
+use strict;
+use warnings;
+
+use overload
+#	'%{}' => \&as_hash,
+#	'@{}' => \&as_array,
+	'""'   => 'as_string',
+	'0+'   => 'as_bool';
+
+sub new {
+	my $class = shift;
+	my $line = shift;
+
+	my @autojoins;
+
+	if ( $line ) {
+		my ( $channels, $keys ) = split / /, $line, 2;
+		my @channels = split /,/, $channels;
+		my @keys     = split /,/, $keys;
+
+		for my $channel ( @channels ) {
+			my $key = shift @keys;
+			$key = '' unless defined $key;
+
+			push @autojoins, {
+				channel => $channel,
+				key     => $key,
+				};
+		}
+	}
+	return bless \@autojoins, $class;
+}
+
+sub channels {
+	my $self = shift;
+
+	if( wantarray ) {
+		return map { $_->{channel} } @$self;
+	} else {
+		return scalar @$self;
+	}
+}
+
+sub keys {
+	my $self = shift;
+	return map { $_->{key} } @$self  ;
+
+}
+
+sub pairs {
+	my $self = shift;
+
+	my @channels = $self->channels;
+	my @keys = $self->keys;
+
+	my @pairs = map { $_ => shift @keys } @channels;
+}
+
+sub as_hash {
+	my $self = shift;
+	return +{ $self->pairs };
+}
+
+sub as_string {
+	my $self = shift;
+	return join " ",
+		join( ",", $self->channels ),
+		join( ",", $self->keys );
+}
+
+sub as_array {
+	my $self = shift;
+	return [ $self->pairs ];
+}
+
+sub as_bool {
+	my $self = shift;
+	return $self->channels ? 1 : "";
+}
+
+} # end of Xchat::Server::AutoJoin
+
