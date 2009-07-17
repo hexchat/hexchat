@@ -415,7 +415,7 @@ sub context_info {
 }
 
 sub get_list {
-	if( $_[0] eq 'servers' ) {
+	if( $_[0] eq 'networks' ) {
 		return Xchat::List::Server->get();
 	} else {
 		return Xchat::Internal::get_list( $_[0] );
