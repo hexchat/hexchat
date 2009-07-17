@@ -722,7 +722,7 @@ my %key_for = (
 	R => "irc_real_name",
 	P => "server_password",
 	B => "nickserv_password",
-	N => "network_name",
+	N => "network",
 	C => "connect_command",
 	D => "selected",
 	E => "encoding",
@@ -747,7 +747,7 @@ sub parse {
 		encoding          => undef,
 		servers           => [],
 		nickserv_password => undef,
-		network_name      => undef,
+		network           => undef,
 	};
 
 	my @fields = split /\n/, $data;
@@ -786,11 +786,9 @@ sub parse_flags {
 	$flags{ "cycle" }         = $value & 1  ? 1 : 0;
 	$flags{ "use_global" }    = $value & 2  ? 1 : 0;
 	$flags{ "use_ssl" }       = $value & 4  ? 1 : 0;
-	$flags{ "auto_connect" }  = $value & 8  ? 1 : 0;
+	$flags{ "autoconnect" }   = $value & 8  ? 1 : 0;
 	$flags{ "use_proxy" }     = $value & 16 ? 1 : 0;
 	$flags{ "allow_invalid" } = $value & 32 ? 1 : 0;
-
-	$flags{ "autoconnect" }   = $flags{ "auto_connect" };
 
 	return \%flags;
 }
