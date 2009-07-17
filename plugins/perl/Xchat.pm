@@ -797,6 +797,15 @@ sub parse_server {
 	my $data = shift;
 	if( $data ) {
 		my ($host, $port) = split /\//, $data;
+		unless( $port ) {
+			my @parts = split /:/, $host;
+
+			# if more than 2 then we are probably dealing with a IPv6 address
+			# if less than 2 then no port was specified
+			if( @parts == 2 ) {
+				$port = $parts[1];
+			}
+		}
 		return { host => $host, port => $port };
 	}
 }
