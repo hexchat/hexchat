@@ -15,6 +15,18 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  2.8.8 - dd/mm/yyyy
 ------------------------------------------------------------------------------
 
+ - Made balloon time adjustable via /set input_balloon_time (Nicoleau Fabien).
+ - Fixed a crash in the /SET command if a boolean value was loaded from config
+   file that isn't set to 0 or 1.
+ - Added -on and -off parameters to the /SET command. This can be used to set
+   bits, for example gui_tweaks.
+ - Made scrolling backwards for FIND better (Richard Hitt).
+ - Improved the reconnect logic. If a network is already open but disconnected,
+   it'll now get re-used if you use the Network List and connect to that same
+   network.
+
+
+
  - Perl (Lian Wan Situ)
   * Fixed a bug that resulted in timer hooks being leaked because
     "return REMOVE" from a timer callback was not unhooking like it was
