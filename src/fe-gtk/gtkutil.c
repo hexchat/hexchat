@@ -376,6 +376,7 @@ gtkutil_button (GtkWidget *box, char *stock, char *tip, void *callback,
 	{
 		gtk_button_set_label (GTK_BUTTON (wid), labeltext);
 		gtk_button_set_image (GTK_BUTTON (wid), gtk_image_new_from_stock (stock, GTK_ICON_SIZE_MENU));
+		gtk_button_set_use_underline (GTK_BUTTON (wid), TRUE);
 		if (box)
 			gtk_container_add (GTK_CONTAINER (box), wid);
 	}
