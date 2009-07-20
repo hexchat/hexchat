@@ -723,7 +723,6 @@ my %key_for = (
 	P => "server_password",
 	B => "nickserv_password",
 	N => "network",
-	C => "connect_command",
 	D => "selected",
 	E => "encoding",
 );
@@ -741,7 +740,7 @@ sub parse {
 		# the order of the channels need to be maintained
 		# list of { channel => .., key => ... }
 		autojoins         => Xchat::List::Server::AutoJoin->new( '' ),
-		connect_command   => undef,
+		connect_commands   => [],
 		flags             => {},
 		selected          => undef,
 		encoding          => undef,
@@ -771,6 +770,10 @@ sub parse {
 
 			/^S.(.+)/ && do {
 				push @{$entry->{servers}}, parse_server( $1 );
+			};
+
+			/^C.(.+)/ && do {
+				push @{$entry->{connect_commands}}, $1;
 			};
 		}
 	}
