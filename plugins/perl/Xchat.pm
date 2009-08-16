@@ -698,6 +698,7 @@ sub get {
 			local $/ = "\n\n";
 			while( my $record = <$fh> ) {
 				chomp $record;
+				next if $record =~ /^v=/; # skip the version line
 				push @servers, Xchat::List::Server::Entry::parse( $record );
 			}
 		} else {
@@ -889,7 +890,7 @@ sub as_string {
 
 sub as_array {
 	my $self = shift;
-	return [ $self->pairs ];
+	return [ map { \%$_ } @$self ];
 }
 
 sub as_bool {
