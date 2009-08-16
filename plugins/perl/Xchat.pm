@@ -688,7 +688,7 @@ my @servers;
 
 sub get {
 	my $server_file = Xchat::get_info( "xchatdirfs" ) . "/servlist_.conf";
-Xchat::print "Checking $server_file";
+
 	# recreate the list only if the server list file has changed
 	if( -f $server_file && 
 			(!defined $last_modified || $last_modified != -M $server_file ) ) {
