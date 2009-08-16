@@ -810,6 +810,9 @@ servlist_autojoineditok_cb (GtkWidget *button, GtkWidget *tree)
 
 	/* this does g_free too */
 	joinlist_free (channels, keys);
+
+	if (fav_add_net)
+		servlist_save ();
 }
 
 void
