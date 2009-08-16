@@ -810,6 +810,8 @@ sub parse_server {
 				$port = $parts[1];
 			}
 		}
+
+		$port ||= 6667;
 		return { host => $host, port => $port };
 	}
 }
