@@ -501,6 +501,15 @@ END_OF_BLOCK
 		white-space: pre;
 	}
 
+	td > table {
+		margin: 0.5em;
+		border-collapse: collapse;
+	}
+
+	td > table td {
+		border: 1px solid black;
+	}
+
 	.alert { color: #0000ff; }
 	.basen { color: #007f00; }
 	.bstring { color: #c9a7ff; }

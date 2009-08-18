@@ -635,6 +635,9 @@ LIST     -  this depends on the Description column on the bottom of Settings-E<g
 This functions is used to generate one of the events listed under
 Settings-E<gt>Advanced-E<gt>Text Events
 
+Note: when using this function you MUST return Xchat::EAT_ALL otherwise you will end up with duplicate events.
+One is the original and the second is the one you emit.
+
 Returns true on success, false on failure
 
 =head3 C<Xchat::send_modes( $target | \@targets, $sign, $mode, [ $modes_per_line ] )>
@@ -984,6 +987,155 @@ detail</p>
       <td>selected</td>
       <td>selected status in the user list, only works when retrieving the user list of the focused tab. You can use the /USELECT command to select the nicks</td>
    </tr>
+</table>
+
+<p>"networks"	-	list of networks and the associated settings from network list</p>
+<table border="1">
+
+   <tr style="background-color: #dddddd">
+      <td>Key</td>   <td>Value</td>
+   </tr>
+	
+	<tr>
+	<td>autojoins</td> <td>An object with the following methods:<br />
+		<table>
+			<tr>
+				<td>Method</td>
+				<td>Description</td>
+			</tr>
+
+			<tr>
+				<td>channels()</td>
+				<td>returns a list of this networks' autojoin channels in list context, a count of the number autojoin channels in scalar context</td>
+			</tr>
+
+			<tr>
+				<td>keys()</td>
+				<td>returns a list of the keys to go with the channels, the order is the same as the channels, if a channel doesn't  have a key, '' will be returned in it's place</td>
+			</tr>
+
+			<tr>
+				<td>pairs()</td>
+				<td>a combination of channels() and keys(), returns a list of (channels, keys) pairs. This can be assigned to a hash for a mapping from channel to key.</td>
+			</tr>
+
+			<tr>
+				<td>as_hash()</td>
+				<td>return the pairs as a hash reference</td>
+			</tr>
+
+			<tr>
+				<td>as_string()</td>
+				<td>the original string that was used to construct this autojoin object, this can be used with the JOIN command to join all the channels in the autojoin list</td>
+			</tr>
+
+			<tr>
+				<td>as_array()</td>
+				<td>return an array reference of hash references consisting of the keys "channel" and "key"</td>
+			</tr>
+
+			<tr>
+				<td>as_bool()</td>
+				<td>returns true if the network has autojoins and false otherwise</td>
+			</tr>
+		</table>
+	</td>
+	</tr>
+   
+	<tr>
+	<td>connect_commands</td> <td>An array reference containing the connect commands for a network. An empty array if there aren't any</td>
+	</tr>
+
+	<tr>
+	<td>encoding</td> <td>the encoding for the network</td>
+	</tr>
+
+
+	<tr>
+		<td>flags</td>
+		<td>
+			a hash reference corresponding to the checkboxes in the network edit window
+			<table>
+				<tr>
+					<td>allow_invalid</td>
+					<td>true if "Accept invalid SSL certificate" is checked</td>
+				</tr>
+
+				<tr>
+					<td>autoconnect</td>
+					<td>true if "Auto connect to this network at startup" is checked</td>
+				</tr>
+
+				<tr>
+					<td>cycle</td>
+					<td>true if "Connect to selected server only" is <strong>NOT</strong> checked</td>
+				</tr>
+
+				<tr>
+					<td>use_global</td>
+					<td>true if "Use global user information" is checked</td>
+				</tr>
+
+				<tr>
+					<td>use_proxy</td>
+					<td>true if "Bypass proxy server" is <strong>NOT</strong> checked</td>
+				</tr>
+
+				<tr>
+					<td>use_ssl</td>
+					<td>true if "Use SSL for all the servers on this network" is checked</td>
+				</tr>
+			</table>
+		</td>
+	</tr>
+
+
+	<tr>
+		<td>irc_nick1</td>
+		<td>Corresponds with the "Nick name" field in the network edit window</td>
+	</tr>
+
+	<tr>
+		<td>irc_nick2</td>
+		<td>Corresponds with the "Second choice" field in the network edit window</td>
+	</tr>
+
+	<tr>
+		<td>irc_real_name</td>
+		<td>Corresponds with the "Real name" field in the network edit window</td>
+	</tr>
+
+
+	<tr>
+		<td>irc_user_name</td>
+		<td>Corresponds with the "User name" field in the network edit window</td>
+	</tr>
+
+
+	<tr>
+		<td>network</td>
+		<td>Name of the network</td>
+	</tr>
+
+	<tr>
+		<td>nickserv_password</td>
+		<td>Corresponds with the "Nickserv password" field in the network edit window</td>
+	</tr>
+
+	<tr>
+		<td>selected</td>
+		<td>Index into the list of servers in the "servers" key, this is used if the "cycle" flag is false</td>
+	</tr>
+
+	<tr>
+		<td>server_password</td>
+		<td>Corresponds with the "Server password" field in the network edit window</td>
+	</tr>
+
+	<tr>
+		<td>servers</td>
+		<td>An array reference of hash references with a "host" and "port" key. If a port is not specified then 6667 will be used.</td>
+	</tr>
 </table>
 
 =end html
