@@ -8,7 +8,7 @@ use warnings;
 my $last_use_threshold = 10; # 10 minutes
 
 Xchat::register(
-	"Tab Completion", "1.0302", "Alternative tab completion behavior"
+	"Tab Completion", "1.0302_01", "Alternative tab completion behavior"
 );
 Xchat::hook_print( "Key Press", \&complete );
 Xchat::hook_print( "Close Context", \&close_context );
@@ -260,9 +260,17 @@ sub matching_nicks {
 
 }
 
-sub compare_nicks {
-	# more package variables, value set in matching_nicks()
-	our $my_nick;
+sub max {
+	return unless @_;
+	my $max = shift;
+	for(@_) {
+		$max = $_ if $_ > $max;
+	}
+	return $max;
+}
+
+sub compare_times {
+	# package variables set in matching_nicks()
 	our $selections;
 	our $now;
 
@@ -272,19 +280,34 @@ sub compare_nicks {
 	
 	my $a_time
 		= ($now - $selections->{ $a->{nick} }) < ($last_use_threshold * 60) ?
-		$selections->{ $a->{nick} } :
-		$a->{lasttalk};
+		$selections->{ $a->{nick} } : 0;
+
 	my $b_time
 		= ($now - $selections->{ $b->{nick} }) < ($last_use_threshold * 60) ?
-		$selections->{ $b->{nick} } :
-		$b->{lasttalk};
+		$selections->{ $b->{nick} } : 0;
+	
+	if( $a_time && $b_time ) {
+		return $b_time <=> $a_time;
+	} elsif( $a_time && !$b_time ) {
+		return $b->{lasttalk} <=> $a_time;
+	} elsif( !$a_time && $b_time ) {
+		return $b_time <=> $a->{lasttalk};
+	} elsif( !$a_time && !$b_time ) {
+		return $b->{lasttalk} <=> $a->{lasttalk};
+	}
+
+}
+
+sub compare_nicks {
+	# more package variables, value set in matching_nicks()
+	our $my_nick;
 
 	# our own nick is always last, then ordered by the people we spoke to most
 	# recently and the people who were speaking most recently
 	return 
 		$a->{nick} eq $my_nick ? 1 :
 		$b->{nick} eq $my_nick ? -1 :
-		$b_time <=> $a_time
+		compare_times()
 		|| Xchat::nickcmp( $a->{nick}, $b->{nick} );
 
 #		$selections->{ $b->{nick} } <=> $selections->{ $a->{nick} }
