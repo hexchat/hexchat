@@ -38,6 +38,28 @@ use base qw(Exporter);
 use strict;
 use warnings;
 
+sub PRI_HIGHEST ();
+sub PRI_HIGH ();
+sub PRI_NORM ();
+sub PRI_LOW ();
+sub PRI_LOWEST ();
+
+sub EAT_NONE ();
+sub EAT_XCHAT ();
+sub EAT_PLUIN ();
+sub EAT_ALL ();
+
+sub KEEP ();
+sub REMOVE ();
+sub FD_READ ();
+sub FD_WRITE ();
+sub FD_EXCEPTION ();
+sub FD_NOTSOCKET ();
+
+sub get_context;
+sub Xchat::Internal::context_info;
+sub Xchat::Internal::print;
+
 our %EXPORT_TAGS = (
 	constants => [
 		qw(PRI_HIGHEST PRI_HIGH PRI_NORM PRI_LOW PRI_LOWEST), # priorities
@@ -322,8 +344,13 @@ sub printf {
 
 # make Xchat::prnt() and Xchat::prntf() as aliases for Xchat::print() and 
 # Xchat::printf(), mainly useful when these functions are exported
-*Xchat::prnt = *Xchat::print{CODE};
-*Xchat::prntf = *Xchat::printf{CODE};
+sub prnt {
+	goto &Xchat::print;
+}
+
+sub prntf {
+	goto &Xchat::printf;
+}
 
 sub command {
 	my $command = shift;
@@ -501,13 +528,13 @@ sub load {
 		$scripts{$package}{loaded_at} = Time::HiRes::time();
 		{
 			no strict; no warnings;
-			$source =~ s/^/{package $package;/;
+			$source =~ s/^/\x7Bpackage $package;/;
 
 			# make sure we add the closing } even if the last line is a comment
 			if( $source =~ /^#.*\Z/m ) {
-				$source =~ s/^(?=#.*\Z)/}/m;
+				$source =~ s/^(?=#.*\Z)/\x7D/m;
 			} else {
-				$source =~ s/\Z/}/;
+				$source =~ s/\Z/\x7D/;
 			}
 
 			eval $source;
@@ -902,3 +929,4 @@ sub as_bool {
 
 } # end of Xchat::Server::AutoJoin
 
+1;
