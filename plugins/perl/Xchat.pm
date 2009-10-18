@@ -2,29 +2,28 @@ BEGIN {
 	$INC{'Xchat.pm'} = 'DUMMY';
 }
 
-BEGIN {
-	$SIG{__WARN__} = sub {
-		my $message = shift @_;
-		my ($package) = caller;
-		my $pkg_info = Xchat::Embed::pkg_info( $package );
+$SIG{__WARN__} = sub {
+	my $message = shift @_;
+	my ($package) = caller;
+	my $pkg_info = Xchat::Embed::pkg_info( $package );
 
-		# redirect Gtk/Glib errors and warnings back to STDERR
-		if( $message =~ /^(?:Gtk|GLib|Gdk)(?:-\w+)?-(?:ERROR|CRITICAL|WARNING|MESSAGE|INFO|DEBUG)/i ) {
-			print STDERR $message;
-		} else {
+	# redirect Gtk/Glib errors and warnings back to STDERR
+	if( $message =~ /^(?:Gtk|GLib|Gdk)(?:-\w+)?-(?:ERROR|CRITICAL|WARNING|MESSAGE|INFO|DEBUG)/i ) {
+		print STDERR $message;
+	} else {
 
-			if( $pkg_info ) {
-				if( $message =~ /\(eval 1\)/ ) {
-					$message =~ s/\(eval 1\)/(PERL PLUGIN CODE)/;
-				} else {
-					$message =~ s/\(eval \d+\)/$pkg_info->{filename}/;
-				}
+		if( $pkg_info ) {
+			if( $message =~ /\(eval 1\)/ ) {
+				$message =~ s/\(eval 1\)/(PERL PLUGIN CODE)/;
+			} else {
+				$message =~ s/\(eval \d+\)/$pkg_info->{filename}/;
 			}
-
-			Xchat::print( $message );
 		}
-	};
-}
+
+		Xchat::print( $message );
+	}
+};
+
 use File::Spec ();
 use File::Basename ();
 use File::Glob ();
@@ -247,8 +246,7 @@ sub hook_fd {
 	
 	my $cb = sub {
 		my $userdata = shift;
-		no strict 'refs';
-		return &{$userdata->{CB}}(
+		return $userdata->{CB}->(
 			$userdata->{FD}, $userdata->{FLAGS}, $userdata->{DATA},
 		);
 	};
@@ -278,7 +276,7 @@ sub unhook {
 	return ();
 }
 
-sub do_for_each {
+sub _do_for_each {
 	my ($cb, $channels, $servers) = @_;
 
 	# not specifying any channels or servers is not the same as specifying
@@ -331,7 +329,7 @@ sub print {
 		}
 	}
 	
-	return do_for_each(
+	return _do_for_each(
 		sub { Xchat::Internal::print( $text ); },
 		@_
 	);
@@ -363,7 +361,7 @@ sub command {
 		@commands = ($command);
 	}
 	
-	return do_for_each(
+	return _do_for_each(
 		sub { Xchat::Internal::command( $_ ) foreach @commands },
 		@_
 	);
@@ -699,6 +697,9 @@ sub fix_callback {
 		# change the package to the correct one in case it was hardcoded
 		$callback =~ s/^.*:://;
 		$callback = qq[${package}::$callback];
+
+		no strict 'subs';
+		$callback = \&{$callback};
 	}
 	
 	return $callback;
