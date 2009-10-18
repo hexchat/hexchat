@@ -12,3 +12,5 @@ pod2html(
 );
 
 #system( qw(tidy -m -i -xml -utf8 -quiet xchat2-perl.html) );
+unlink( "pod2htmd.tmp" );
+unlink( "pod2htmi.tmp" );
