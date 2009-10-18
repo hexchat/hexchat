@@ -7,6 +7,10 @@ use warnings;
 # early in the completion list
 my $last_use_threshold = 10; # 10 minutes
 
+# added to the front of a completion the same way as a suffix, only if
+# the word is at the beginning of the line
+my $prefix = '';
+
 Xchat::register(
 	"Tab Completion", "1.0302_01", "Alternative tab completion behavior"
 );
@@ -68,7 +72,7 @@ sub complete {
 	
 	my $completions = $completions{$context};
 	$completions->{pos} ||= -1;
-	
+
 	my $suffix = Xchat::get_prefs( "completion_suffix" );
 	$suffix =~ s/^\s+//;
 	
@@ -94,7 +98,7 @@ sub complete {
 	# ignore commands
 	if( $word !~ m{^[${command_char}]} ) {
 		if( $cursor_pos == length $input # end of input box
-#			&& $input =~ /(?<!\w|$escapes)$/ # not a valid nick char
+			# not a valid nick char
 			&& $input =~ /(?<![\x41-\x5A\x61-\x7A\x30-\x39\x5B-\x60\x7B-\x7D-])$/
 			&& $cursor_pos != $completions->{pos} # not continuing a completion
 			&& $word !~ /^[&#]/ ) { # not a channel
@@ -103,6 +107,10 @@ sub complete {
 			$length = length $length;
 			$right = "";
 			$word = "";
+		}
+
+		if( $word_start == 0 && $prefix && $word =~ /^\Q$prefix/ ) {
+			$word =~ s/^\Q$prefix//;
 		}
 
 		my $completed; # this is going to be the "completed" word
@@ -163,8 +171,8 @@ sub complete {
 			
 			if( $word_start == 0 && !$skip_suffix ) {
 				# at the start of the line append completion suffix
-				Xchat::command( "settext $completed$suffix$right");
-				$completions->{pos} = length( "$completed$suffix" );
+				Xchat::command( "settext $prefix$completed$suffix$right");
+				$completions->{pos} = length( "$prefix$completed$suffix" );
 			} else {
 				Xchat::command( "settext $left$completed$right" );
 				$completions->{pos} = length( "$left$completed" );
