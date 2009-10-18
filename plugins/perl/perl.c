@@ -86,14 +86,21 @@ static int
 perl_auto_load (void *unused)
 {
 	const char *xdir;
+	char *sub_dir;
 
 	/* get the dir in local filesystem encoding (what opendir() expects!) */
 	xdir = xchat_get_info (ph, "xchatdirfs");
-	if (!xdir)						  /* xchatdirfs is new for 2.0.9, will fail on older */
+	if (!xdir)			/* xchatdirfs is new for 2.0.9, will fail on older */
 		xdir = xchat_get_info (ph, "xchatdir");
 
 	/* autoload from ~/.xchat2/ or ${APPDATA}\X-Chat 2\ on win32 */
 	perl_auto_load_from_path (xdir);
+
+	sub_dir = malloc (strlen (xdir) + 9);
+	strcpy (sub_dir, xdir);
+	strcat (sub_dir, "/plugins");
+	perl_auto_load_from_path (sub_dir);
+	free (sub_dir);
 
 #ifdef WIN32
 	/* autoload from  C:\program files\xchat\plugins\ */
