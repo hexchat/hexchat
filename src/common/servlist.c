@@ -251,9 +251,10 @@ static const struct defaultserver def[] =
 	{0,			"Sunshine.Ca.US.Infinity-IRC.Org"},
 	{0,			"IRC.Infinity-IRC.Org"},*/
 
-	{"insiderZ.DE",	0},
-	{0,			"irc.insiderz.de/6667"},
-	{0,			"irc.insiderz.de/6666"},
+	{"iZ-smart.net",	0},
+	{0,			"irc.iZ-smart.net/6666"},
+	{0,			"irc.iZ-smart.net/6667"},
+	{0,			"irc.iZ-smart.net/6668"},
 
 	{"IrcLink",	0},
 	{0,			"irc.irclink.net"},
@@ -423,6 +424,9 @@ static const struct defaultserver def[] =
 	{0,			"irc.scene.org"},
 	{0,			"irc.eu.scene.org"},
 	{0,			"irc.us.scene.org"},
+
+	{"SeilEn.de",	0},
+	{0,			"irc.seilen.de"},
 
 	{"SlashNET",	0},
 	{0,			"irc.slashnet.org"},
