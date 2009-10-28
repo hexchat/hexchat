@@ -288,11 +288,11 @@ sub compare_times {
 	
 	my $a_time
 		= ($now - $selections->{ $a->{nick} }) < ($last_use_threshold * 60) ?
-		$selections->{ $a->{nick} } : 0;
+		$selections->{ $a->{nick} } : $a->{lasttalk};
 
 	my $b_time
 		= ($now - $selections->{ $b->{nick} }) < ($last_use_threshold * 60) ?
-		$selections->{ $b->{nick} } : 0;
+		$selections->{ $b->{nick} } : $b->{lasttalk};
 	
 	if( $a_time && $b_time ) {
 		return $b_time <=> $a_time;
