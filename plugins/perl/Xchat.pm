@@ -20,7 +20,11 @@ $SIG{__WARN__} = sub {
 			}
 		}
 
-		Xchat::print( $message );
+		if( defined &Xchat::Internal::print ) {
+			Xchat::print( $message );
+		} else {
+			warn $message;
+		}
 	}
 };
 
