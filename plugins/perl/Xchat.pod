@@ -1197,7 +1197,7 @@ C<$string>  -  string to remove codes from
 
 =back
 
-This function will remove bold, color, beep, reset, reverse and underline codes from C<$string>. If it is called in void context C<$string> will be modified otherwise a modified copy of C<$string> is returned.
+This function will remove bold, color, beep, reset, reverse and underline codes from C<$string>. It will also remove ANSI escape codes which might get used by certain terminal based clients. If it is called in void context C<$string> will be modified otherwise a modified copy of C<$string> is returned.
 
 =head2 Contact Information
 
