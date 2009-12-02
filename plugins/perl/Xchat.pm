@@ -452,7 +452,7 @@ sub get_list {
 }
 
 sub strip_code {
-	my $pattern = qr[
+	my $pattern = qr<
 		\cB| #Bold
 		\cC\d{0,2}(?:,\d{1,2})?| #Color
 		\e\[\d{1,2}(?:;\d{1,2})m| # ANSI escape codes
@@ -460,7 +460,7 @@ sub strip_code {
 		\cO| #Reset
 		\cV| #Reverse
 		\c_  #Underline
-	]x;
+	>x;
 		
 	if( defined wantarray ) {
 		my $msg = shift;
