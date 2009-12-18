@@ -1,5 +1,6 @@
 use strict;
 use warnings;
+use Xchat ();
 
 # if the last time you addressed someone was greater than this many minutes
 # ago, ignore it
@@ -287,12 +288,16 @@ sub compare_times {
 	no warnings "uninitialized";
 	
 	my $a_time
-		= ($now - $selections->{ $a->{nick} }) < ($last_use_threshold * 60) ?
-		$selections->{ $a->{nick} } : $a->{lasttalk};
+		= ($selections->{ $a->{nick} }
+			&& ($now - $selections->{ $a->{nick} }) < ($last_use_threshold * 60) 
+			&& ($selections->{ $a->{nick} } > $a->{lasttalk} )
+			) ? $selections->{ $a->{nick} } : $a->{lasttalk};
 
 	my $b_time
-		= ($now - $selections->{ $b->{nick} }) < ($last_use_threshold * 60) ?
-		$selections->{ $b->{nick} } : $b->{lasttalk};
+		= ($selections->{ $b->{nick} }
+			&& ($now - $selections->{ $b->{nick} }) < ($last_use_threshold * 60)
+			&& ($selections->{ $b->{nick} } > $b->{lasttalk} )
+			) ? $selections->{ $b->{nick} } : $b->{lasttalk};
 	
 	if( $a_time && $b_time ) {
 		return $b_time <=> $a_time;
