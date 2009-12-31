@@ -25,6 +25,7 @@
 #include <sys/types.h>
 #include <fcntl.h>
 #include <sys/stat.h>
+#include <sys/mman.h>
 
 #include "xchat.h"
 #include <glib/ghash.h>
@@ -270,6 +271,9 @@ scrollback_load (session *sess)
 	char *text;
 	time_t stamp;
 	int lines;
+	char *map, *end_map;
+	struct stat statbuf;
+	const char *begin, *eol;
 
 	if (sess->text_scrollback == SET_DEFAULT)
 	{
@@ -289,9 +293,32 @@ scrollback_load (session *sess)
 	if (fh == -1)
 		return;
 
+	if (fstat (fh, &statbuf) < 0)
+		return;
+
+	map = mmap (NULL, statbuf.st_size, PROT_READ, MAP_PRIVATE, fh, 0);
+	if (map == MAP_FAILED)
+		return;
+
+	end_map = map + statbuf.st_size;
+	
 	lines = 0;
-	while (waitline (fh, buf, sizeof buf, FALSE) != -1)
+	begin = map;
+	while (begin < end_map)
 	{
+		int n_bytes;
+
+		eol = memchr (begin, '\n', end_map - begin);
+
+		if (!eol)
+			eol = end_map;
+
+		n_bytes = MIN (eol - begin, sizeof (buf) - 1);
+		
+		strncpy (buf, begin, n_bytes);
+
+		buf[n_bytes] = 0;
+		
 		if (buf[0] == 'T')
 		{
 			if (sizeof (time_t) == 4)
@@ -307,6 +334,8 @@ scrollback_load (session *sess)
 			}
 			lines++;
 		}
+
+		begin = eol + 1;
 	}
 
 	sess->scrollwritten = lines;
@@ -320,6 +349,7 @@ scrollback_load (session *sess)
 		/*EMIT_SIGNAL (XP_TE_GENMSG, sess, "*", buf, NULL, NULL, NULL, 0);*/
 	}
 
+	munmap (map, statbuf.st_size);
 	close (fh);
 }
 
