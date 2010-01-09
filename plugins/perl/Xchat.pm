@@ -387,6 +387,8 @@ sub set_context {
 		} else {
 			$context = Xchat::find_context( $_[0] );
 		}
+	} elsif( @_ == 0 ) {
+		$context = Xchat::find_context();
 	}
 	return $context ? Xchat::Internal::set_context( $context ) : 0;
 }
