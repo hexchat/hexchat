@@ -346,7 +346,8 @@ sub focus_tab {
 # by the completion suffix
 sub track_selected {
 	my $input = $_[1][0];
-	
+	return Xchat::EAT_NONE unless defined $input;
+
 	my $suffix = Xchat::get_prefs( "completion_suffix" );
 	for( grep defined, $input =~ /^(.+)\Q$suffix/, $_[0][0] ) {
 		if( in_channel( $_ ) ) {
