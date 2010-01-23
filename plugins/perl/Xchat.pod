@@ -1152,9 +1152,11 @@ C<$nick> -  the nick to look for, if this is not given your own nick will be
 
 This function is mainly intended to be used as a shortcut for when you need
 to retrieve some information about only one user in a channel. Otherwise it
-is to use L<get_list|xchat_get_list>.
+is better to use L<get_list|xchat_get_list>.
 If C<$nick> is found a hash reference containing the same keys as those in the
 "users" list of L<get_list|xchat_get_list> is returned otherwise undef is returned.
+Since it relies on L<get_list|xchat_get_list> this function can only be used in a
+channel context.
 
 =head3 C<Xchat::context_info( [$context] )>
 
