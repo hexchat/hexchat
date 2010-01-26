@@ -906,9 +906,11 @@ detail</p><p>"users"     -  list of users in the current channel</p>
 </ul>
 <p>This function is mainly intended to be used as a shortcut for when you need
 to retrieve some information about only one user in a channel. Otherwise it
-is to use <a href="#xchat_get_list">get_list</a>.
+is better to use <a href="#xchat_get_list">get_list</a>.
 If <code>$nick</code> is found a hash reference containing the same keys as those in the
-&quot;users&quot; list of <a href="#xchat_get_list">get_list</a> is returned otherwise undef is returned.</p>
+&quot;users&quot; list of <a href="#xchat_get_list">get_list</a> is returned otherwise undef is returned.
+Since it relies on <a href="#xchat_get_list">get_list</a> this function can only be used in a
+channel context.</p>
 <p>
 </p>
 <h3><a name="xchat_context_info" /><code>Xchat::context_info( [$context] )</code></h3>
@@ -938,7 +940,7 @@ sub display_count {
 <li><strong><code>$string</code>  -  string to remove codes from</strong>
 </li>
 </ul>
-<p>This function will remove bold, color, beep, reset, reverse and underline codes from <code>$string</code>. If it is called in void context <code>$string</code> will be modified otherwise a modified copy of <code>$string</code> is returned.</p>
+<p>This function will remove bold, color, beep, reset, reverse and underline codes from <code>$string</code>. It will also remove ANSI escape codes which might get used by certain terminal based clients. If it is called in void context <code>$string</code> will be modified otherwise a modified copy of <code>$string</code> is returned.</p>
 <p>
 </p>
 <h2><a name="contact_information" />Contact Information</h2>
