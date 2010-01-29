@@ -5,20 +5,11 @@ BEGIN {
 $SIG{__WARN__} = sub {
 	my $message = shift @_;
 	my ($package) = caller;
-	my $pkg_info = Xchat::Embed::pkg_info( $package );
-
+	
 	# redirect Gtk/Glib errors and warnings back to STDERR
 	if( $message =~ /^(?:Gtk|GLib|Gdk)(?:-\w+)?-(?:ERROR|CRITICAL|WARNING|MESSAGE|INFO|DEBUG)/i ) {
 		print STDERR $message;
 	} else {
-
-		if( $pkg_info ) {
-			if( $message =~ /\(eval 1\)/ ) {
-				$message =~ s/\(eval 1\)/(PERL PLUGIN CODE)/;
-			} else {
-				$message =~ s/\(eval \d+\)/$pkg_info->{filename}/;
-			}
-		}
 
 		if( defined &Xchat::Internal::print ) {
 			Xchat::print( $message );
@@ -500,9 +491,9 @@ sub load {
 		return 2;
 	}
 	
-	if( open FH, $file ) {
-		my $source = do {local $/; <FH>};
-		close FH;
+	if( open my $source_handle, $file ) {
+		my $source = do {local $/; <$source_handle>};
+		close $source_handle;
 		# we shouldn't care about things after __END__
 		$source =~ s/^__END__.*//ms;
 		
@@ -533,7 +524,7 @@ sub load {
 		$scripts{$package}{loaded_at} = Time::HiRes::time();
 		{
 			no strict; no warnings;
-			$source =~ s/^/\x7Bpackage $package;/;
+			$source =~ s/^/#line 1 "$file"\n\x7Bpackage $package;/;
 
 			# make sure we add the closing } even if the last line is a comment
 			if( $source =~ /^#.*\Z/m ) {

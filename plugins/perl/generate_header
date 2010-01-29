@@ -8,7 +8,7 @@ sub header {
   open my $input, "<", $file or die "Couldn't open '$file':$!";
   my @file = <$input>;
   close $file;
-  return toc(@file);
+  return qq{"#line 1 \\"$file\\"\\n"\n}, toc(@file);
 }
 
 sub toc {
@@ -24,12 +24,13 @@ sub toc {
   return @lines;
 }
 
-my $output = "xchat.pm.h";
+for my $files ( [ "Xchat.pm", "xchat.pm.h" ], [ "IRC.pm", "irc.pm.h" ] ) {
+	my ($input, $output) = @$files;
 
-open my $header, ">", $output or die "Couldn't open '$output': $!";
-#select $header;
-print $header header( "Xchat.pm" );
-print $header "#ifdef OLD_PERL\n";
-print $header header( "IRC.pm" );
-print $header "#endif\n";
-close $header;
+	open my $header, ">", $output or die "Couldn't open '$output': $!";
+
+	print $header qq{#line 1 "$input"\n};
+	print $header header( $input );
+
+	close $header;
+}

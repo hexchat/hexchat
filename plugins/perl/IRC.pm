@@ -1,5 +1,6 @@
-{ package IRC;
-  sub IRC::register {
+{
+package IRC;
+sub IRC::register {
   my ($script_name, $version, $callback) = @_;
   my $package = caller;
   $callback = Xchat::Embed::fix_callback( $package, $callback) if $callback;

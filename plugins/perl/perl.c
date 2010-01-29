@@ -1255,19 +1255,20 @@ xs_init (pTHX)
 static void
 perl_init (void)
 {
-	/*changed the name of the variable from load_file to
-	   perl_definitions since now it does much more than defining
-	   the load_file sub. Moreover, deplaced the initialisation to
-	   the xs_init function. (TheHobbit) */
 	int warn;
 	int arg_count;
 	char *perl_args[] = { "", "-e", "0", "-w" };
 	char *env[] = { "" };
-	static const char perl_definitions[] = {
+	static const char xchat_definitions[] = {
 		/* Redefine the $SIG{__WARN__} handler to have XChat
 		   printing warnings in the main window. (TheHobbit) */
 #include "xchat.pm.h"
 	};
+#ifdef OLD_PERL
+	static const char irc_definitions[] = {
+#include "irc.pm.h"
+	};
+#endif
 #ifdef ENABLE_NLS
 
 	/* Problem is, dynamicaly loaded modules check out the $]
@@ -1298,7 +1299,10 @@ perl_init (void)
 	   perl_definition array.
 	 */
 
-	eval_pv (perl_definitions, TRUE);
+	eval_pv (xchat_definitions, TRUE);
+#ifdef OLD_PERL
+	eval_pv (irc_definitions, TRUE);
+#endif
 
 }
 
