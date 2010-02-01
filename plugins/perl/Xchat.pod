@@ -946,7 +946,7 @@ if( Xchat::context_info-&gt;{flags} &amp; (1 &gt;&gt; 6) ) {
 </table>
 
 <p>the values indexed by on, off and seen can be passed to localtime
-and gmtime, see perldoc -f localtime and perldoc -f gmtime for more
+and gmtime, see perldoc -f <a href="http://perldoc.perl.org/functions/localtime.html">localtime</a> and perldoc -f <a href="http://perldoc.perl.org/functions/gmtime.html">gmtime</a> for more
 detail</p>
 
 <p>"users"     -  list of users in the current channel</p>
@@ -1167,7 +1167,7 @@ C<$context> -  context returned from L<get_context|xchat_get_context>, L<find_co
 
 =back
 
-This function will return the information normally retrieved with L<get_info|xchat_get_info>, except this is for the context that is passed in. The information will be returned in the form of a hash. The keys of the hash are the C<$id> you would normally supply to L<get_info|xchat_get_info>.
+This function will return the information normally retrieved with L<get_info|xchat_get_info>, except this is for the context that is passed in. The information will be returned in the form of a hash. The keys of the hash are the C<$id> you would normally supply to L<get_info|xchat_get_info> as well as all the keys that are valid for the items in the "channels" list from L<get_list|xchat_get_list>. Use of this function is more efficient than calling get_list( "channels" ) and searching through the result.
 
 =begin html
 
