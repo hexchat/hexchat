@@ -6,6 +6,8 @@ use Xchat ();
 # ago, ignore it
 # this avoids having people you have talked to a long time ago coming up too
 # early in the completion list
+# Setting this to 0 will disable the check which is effectively the same as
+# setting it to infinity
 my $last_use_threshold = 10; # 10 minutes
 
 # added to the front of a completion the same way as a suffix, only if
@@ -13,7 +15,7 @@ my $last_use_threshold = 10; # 10 minutes
 my $prefix = '';
 
 Xchat::register(
-	"Tab Completion", "1.0302_01", "Alternative tab completion behavior"
+	"Tab Completion", "1.0303", "Alternative tab completion behavior"
 );
 Xchat::hook_print( "Key Press", \&complete );
 Xchat::hook_print( "Close Context", \&close_context );
@@ -282,29 +284,22 @@ sub compare_times {
 	# package variables set in matching_nicks()
 	our $selections;
 	our $now;
-
-	# turn off the warnings that get generated from users who have yet to speak
-	# since the script was loaded
-	no warnings "uninitialized";
 	
-	my $a_time
-		= ($selections->{ $a->{nick} }
-			&& ($now - $selections->{ $a->{nick} }) < ($last_use_threshold * 60) 
-			&& ($selections->{ $a->{nick} } > $a->{lasttalk} )
-			) ? $selections->{ $a->{nick} } : $a->{lasttalk};
+	for my $nick ( $a->{nick}, $b->{nick} ) {
+		# turn off the warnings that get generated from users who have yet
+		# to speak since the script was loaded
+		no warnings "uninitialized";
 
-	my $b_time
-		= ($selections->{ $b->{nick} }
-			&& ($now - $selections->{ $b->{nick} }) < ($last_use_threshold * 60)
-			&& ($selections->{ $b->{nick} } > $b->{lasttalk} )
-			) ? $selections->{ $b->{nick} } : $b->{lasttalk};
+		if( $last_use_threshold
+			&& (( $now - $selections->{$nick}) > ($last_use_threshold * 60)) ) {
+			delete $selections->{ $nick }
+		}
+	}
+	my $a_time = $selections->{ $a->{nick} } || 0 ;
+	my $b_time = $selections->{ $b->{nick} } || 0 ;
 	
-	if( $a_time && $b_time ) {
+	if( $a_time || $b_time ) {
 		return $b_time <=> $a_time;
-	} elsif( $a_time && !$b_time ) {
-		return $b->{lasttalk} <=> $a_time;
-	} elsif( !$a_time && $b_time ) {
-		return $b_time <=> $a->{lasttalk};
 	} elsif( !$a_time && !$b_time ) {
 		return $b->{lasttalk} <=> $a->{lasttalk};
 	}
