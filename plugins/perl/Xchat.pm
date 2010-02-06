@@ -524,7 +524,8 @@ sub load {
 		$scripts{$package}{loaded_at} = Time::HiRes::time();
 		{
 			no strict; no warnings;
-			$source =~ s/^/#line 1 "$file"\n\x7Bpackage $package;/;
+			my $full_path = File::Spec->rel2abs( $file );
+			$source =~ s/^/#line 1 "$full_path"\n\x7Bpackage $package;/;
 
 			# make sure we add the closing } even if the last line is a comment
 			if( $source =~ /^#.*\Z/m ) {
