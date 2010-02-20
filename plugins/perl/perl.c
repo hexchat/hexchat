@@ -86,7 +86,9 @@ static int
 perl_auto_load (void *unused)
 {
 	const char *xdir;
+	char *slash = NULL;
 	char *sub_dir;
+	int copied = 0;
 
 	/* get the dir in local filesystem encoding (what opendir() expects!) */
 	xdir = xchat_get_info (ph, "xchatdirfs");
@@ -104,7 +106,15 @@ perl_auto_load (void *unused)
 
 #ifdef WIN32
 	/* autoload from  C:\program files\xchat\plugins\ */
-	perl_auto_load_from_path (XCHATLIBDIR"/plugins");
+	sub_dir = malloc (1025 + 9);
+	copied = GetModuleFileName( 0, sub_dir, 1024 );
+	sub_dir[copied] = '\0';
+	slash = strrchr( sub_dir, '\\' );
+	if( slash != NULL ) {
+		*slash = '\0';
+	}
+	perl_auto_load_from_path ( strncat (sub_dir, "\\plugins", 9));
+	free (sub_dir);
 #endif
 	return 0;
 }
