@@ -623,19 +623,22 @@ sub reload {
 }
 
 sub reload_all {
-	my $dir = Xchat::get_info( "xchatdirfs" ) || Xchat::get_info( "xchatdir" );
-	my $auto_load_glob = File::Spec->catfile( $dir, "*.pl" );
-	my @scripts = map { $_->{filename} }
-		sort { $a->{loaded_at} <=> $b->{loaded_at} } values %scripts;
-	push @scripts, File::Glob::bsd_glob( $auto_load_glob );
+	my @dirs = Xchat::get_info( "xchatdirfs" ) || Xchat::get_info( "xchatdir" );
+	push @dirs, File::Spec->catdir( $dirs[0], "plugins" );
+	for my $dir ( @dirs ) {
+		my $auto_load_glob = File::Spec->catfile( $dir, "*.pl" );
+		my @scripts = map { $_->{filename} }
+			sort { $a->{loaded_at} <=> $b->{loaded_at} } values %scripts;
+		push @scripts, File::Glob::bsd_glob( $auto_load_glob );
 
-	my %seen;
-	@scripts = grep { !$seen{ $_ }++ } @scripts;
+		my %seen;
+		@scripts = grep { !$seen{ $_ }++ } @scripts;
 
-	unload_all();
-	for my $script ( @scripts ) {
-		if( !pkg_info( file2pkg( $script ) ) ) {
-			load( $script );
+		unload_all();
+		for my $script ( @scripts ) {
+			if( !pkg_info( file2pkg( $script ) ) ) {
+				load( $script );
+			}
 		}
 	}
 }
