@@ -1766,7 +1766,8 @@ Module_xchat_get_list(PyObject *self, PyObject *args)
 			}
 			if (attr == NULL)
 				goto error;
-			PyObject_SetAttrString(o, (char*)fld, attr);
+			PyObject_SetAttrString(o, (char*)fld, attr); /* add reference on attr in o */
+			Py_DECREF(attr); /* make o own attr */
 		}
 	}
 	xchat_list_free(ph, list);
