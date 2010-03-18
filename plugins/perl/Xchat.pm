@@ -682,14 +682,36 @@ sub pkg_info {
 	return $scripts{$package};
 }
 
+sub find_external_pkg {
+	my $level = 1;
+
+	while( my @frame = caller( $level ) ) {
+		return @frame if $frame[0] !~ /^Xchat/;
+		$level++;
+	}
+
+}
+
 sub find_pkg {
 	my $level = 1;
-	my $package = (caller( $level ))[0];
-	while( $package !~ /^Xchat::Script::/ ) {
+
+	while( my ($package, $file, $line) = caller( $level ) ) {
+		return $package if $package =~ /^Xchat::Script::/;
 		$level++;
-		$package = (caller( $level ))[0];
 	}
-	return $package;
+
+	my @frame = find_external_pkg();
+	my $location;
+
+	if( $frame[0] or $frame[1] ) {
+		$location = $frame[1] ? $frame[1] : "package $frame[0]";
+		$location .= " line $frame[2]";
+	} else {
+		$location = "unknown location";
+	}
+
+	die "Unable to determine which script this hook belongs to. at $location\n";
+
 }
 
 sub fix_callback {
