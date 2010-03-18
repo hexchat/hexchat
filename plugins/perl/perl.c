@@ -86,9 +86,11 @@ static int
 perl_auto_load (void *unused)
 {
 	const char *xdir;
-	char *slash = NULL;
 	char *sub_dir;
+#ifdef WIN32
 	int copied = 0;
+	char *slash = NULL;
+#endif
 
 	/* get the dir in local filesystem encoding (what opendir() expects!) */
 	xdir = xchat_get_info (ph, "xchatdirfs");
@@ -452,7 +454,7 @@ command_cb (char *word[], char *word_eol[], void *userdata)
 	if (SvTRUE (ERRSV)) {
 		xchat_printf (ph, "Error in command callback %s", SvPV_nolen (ERRSV));
 		if (!SvOK (POPs)) {}		  /* remove undef from the top of the stack */
-		retVal = XCHAT_EAT_NONE;
+		retVal = XCHAT_EAT_XCHAT;
 	} else {
 		if (count != 1) {
 			xchat_print (ph, "Command handler should only return 1 value.");
