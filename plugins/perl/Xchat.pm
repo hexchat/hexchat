@@ -7,7 +7,8 @@ $SIG{__WARN__} = sub {
 	my ($package) = caller;
 	
 	# redirect Gtk/Glib errors and warnings back to STDERR
-	if( $message =~ /^(?:Gtk|GLib|Gdk)(?:-\w+)?-(?:ERROR|CRITICAL|WARNING|MESSAGE|INFO|DEBUG)/i ) {
+	my $message_levels =	qr/ERROR|CRITICAL|WARNING|MESSAGE|INFO|DEBUG/;
+	if( $message =~ /^(?:Gtk|GLib|Gdk)(?:-\w+)?-$message_levels/i ) {
 		print STDERR $message;
 	} else {
 
@@ -299,11 +300,7 @@ sub _do_for_each {
 	my $old_ctx = Xchat::get_context();
 	for my $server ( @$servers ) {
 		for my $channel ( @$channels ) {
-			my $old_ctx = Xchat::get_context();
-			my $ctx = Xchat::find_context( $channel, $server );
-			
-			if( $ctx ) {
-				Xchat::set_context( $ctx );
+			if( Xchat::set_context( $channel, $server ) ) {
 				$cb->();
 				$num_done++
 			}
