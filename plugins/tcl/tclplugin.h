@@ -2,8 +2,8 @@
                            tclplugin.h  -  TCL plugin header file
                            -------------------------------------------------
     begin                : Sat Nov  9 17:31:20 MST 2002
-    copyright            : Copyright 2002-2005 Daniel P. Stasinski
-    email                : mooooooo@avenues.org
+    copyright            : Copyright 2002-2010 Daniel P. Stasinski
+    email                : daniel@avenues.org
  ***************************************************************************/
 
 /***************************************************************************
@@ -44,9 +44,11 @@ typedef struct {
 typedef struct {
     int result;
     int defresult;
+    char **word;
+    char **word_eol;
 } t_complete;
 
-#define MAX_TIMERS 256
+#define MAX_TIMERS 512
 #define MAX_COMPLETES 128
 
 static char *StrDup(const char *string, int *length);
@@ -80,6 +82,8 @@ static int tcl_me(ClientData cd, Tcl_Interp * irp, int argc, const char *argv[])
 static int tcl_xchat_nickcmp(ClientData cd, Tcl_Interp * irp, int argc, const char *argv[]);
 static int tcl_strip(ClientData cd, Tcl_Interp * irp, int argc, const char *argv[]);
 static int tcl_topic(ClientData cd, Tcl_Interp * irp, int argc, const char *argv[]);
+static int tcl_word(ClientData cd, Tcl_Interp * irp, int argc, const char *argv[]);
+static int tcl_word_eol(ClientData cd, Tcl_Interp * irp, int argc, const char *argv[]);
 static int tcl_notifylist(ClientData cd, Tcl_Interp * irp, int argc, const char *argv[]);
 static int Command_Alias(char *word[], char *word_eol[], void *userdata);
 static int Null_Command_Alias(char *word[], char *word_eol[], void *userdata);

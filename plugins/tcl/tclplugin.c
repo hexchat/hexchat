@@ -2,8 +2,8 @@
                            tclplugin.c  -  Tcl plugin for xchat 1.9.x / 2.x.x
                            -------------------------------------------------s
     begin                : Sat Nov 19 17:31:20 MST 2002
-    copyright            : Copyright 2002-2007 Daniel P. Stasinski
-    email                : mooooooo@avenues.org
+    copyright            : Copyright 2002-2010 Daniel P. Stasinski
+    email                : daniel@avenues.org
  ***************************************************************************/
 
 /***************************************************************************
@@ -15,7 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
-static char RCSID[] = "$Id: tclplugin.c,v 1.63 2007-11-18 00:04:33 zed Exp $";
+static char RCSID[] = "$Id: tclplugin.c,v 1.64 2010/03/10 04:24:16 mooooooo Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -129,6 +129,11 @@ static char inlinetcl[] = {
 "proc ::reset { } { return \"\\017\" }\n"
 
 "proc ::__xctcl_errorInfo { } {\n"
+"      set text [split $::errorInfo \\n]\n"
+"      puts [string trim [join [lrange $text 0 [expr {[llength $text] - 4}]] \\n]]\n"
+"}\n"
+
+"proc ::bgerror { message } {\n"
 "      set text [split $::errorInfo \\n]\n"
 "      puts [string trim [join [lrange $text 0 [expr {[llength $text] - 4}]] \\n]]\n"
 "}\n"
@@ -442,6 +447,8 @@ static int Server_raw_line(char *word[], char *word_eol[], void *userdata)
     complete_level++;
     complete[complete_level].defresult = XCHAT_EAT_NONE;     /* XCHAT_EAT_PLUGIN; */
     complete[complete_level].result = XCHAT_EAT_NONE;
+    complete[complete_level].word = word;
+	complete[complete_level].word_eol = word_eol;
 
     if (word[1][0] == ':') {
         src = word[1];
@@ -569,6 +576,8 @@ static int Print_Hook(char *word[], void *userdata)
     complete_level++;
     complete[complete_level].defresult = XCHAT_EAT_NONE;     /* XCHAT_EAT_PLUGIN; */
     complete[complete_level].result = XCHAT_EAT_NONE;
+    complete[complete_level].word = word;
+	complete[complete_level].word_eol = word;
 
     if ((entry = Tcl_FindHashEntry(&cmdTablePtr, xc[(int) userdata].event)) != NULL) {
 
@@ -1860,6 +1869,40 @@ static int tcl_xchat_nickcmp(ClientData cd, Tcl_Interp * irp, int argc, const ch
     return TCL_OK;
 }
 
+static int tcl_word(ClientData cd, Tcl_Interp * irp, int argc, const char *argv[])
+{
+    int index;
+
+    BADARGS(2, 2, " index");
+
+    if (Tcl_GetInt(irp, argv[1], &index) != TCL_OK)
+        return TCL_ERROR;
+
+    if (!index || (index > 31))
+        Tcl_AppendResult(interp, "", NULL);
+    else
+        Tcl_AppendResult(interp, complete[complete_level].word[index], NULL);
+
+    return TCL_OK;
+}
+
+static int tcl_word_eol(ClientData cd, Tcl_Interp * irp, int argc, const char *argv[])
+{
+    int index;
+
+    BADARGS(2, 2, " index");
+
+    if (Tcl_GetInt(irp, argv[1], &index) != TCL_OK)
+        return TCL_ERROR;
+
+    if (!index || (index > 31))
+        Tcl_AppendResult(interp, "", NULL);
+    else
+        Tcl_AppendResult(interp, complete[complete_level].word_eol[index], NULL);
+
+    return TCL_OK;
+}
+
 static int Command_Alias(char *word[], char *word_eol[], void *userdata)
 {
     alias *aliasPtr;
@@ -1874,6 +1917,8 @@ static int Command_Alias(char *word[], char *word_eol[], void *userdata)
     complete_level++;
     complete[complete_level].defresult = XCHAT_EAT_ALL;
     complete[complete_level].result = XCHAT_EAT_NONE;
+    complete[complete_level].word = word;
+	complete[complete_level].word_eol = word_eol;
 
     string = StrDup(word[1], &dummy);
 
@@ -1914,6 +1959,8 @@ static int Null_Command_Alias(char *word[], char *word_eol[], void *userdata)
     complete_level++;
     complete[complete_level].defresult = XCHAT_EAT_ALL;
     complete[complete_level].result = XCHAT_EAT_NONE;
+    complete[complete_level].word = word;
+	complete[complete_level].word_eol = word_eol;
 
     recurse++;
 
@@ -1946,11 +1993,19 @@ static int Null_Command_Alias(char *word[], char *word_eol[], void *userdata)
 static int Command_TCL(char *word[], char *word_eol[], void *userdata)
 {
     const char *errorInfo;
+
+    complete_level++;
+    complete[complete_level].word = word;
+    complete[complete_level].word_eol = word_eol;
+
     if (Tcl_Eval(interp, word_eol[2]) == TCL_ERROR) {
         errorInfo = Tcl_GetVar(interp, "errorInfo", TCL_GLOBAL_ONLY);
         xchat_printf(ph, "\0039Tcl plugin\003\tERROR: %s ", errorInfo);
     } else
         xchat_printf(ph, "\0039Tcl plugin\003\tRESULT: %s ", Tcl_GetStringResult(interp));
+
+    complete_level--;
+
     return XCHAT_EAT_ALL;
 }
 
@@ -1964,6 +2019,10 @@ static int Command_Source(char *word[], char *word_eol[], void *userdata)
 
     if (!strlen(word_eol[2]))
         return XCHAT_EAT_NONE;
+
+    complete_level++;
+    complete[complete_level].word = word;
+    complete[complete_level].word_eol = word_eol;
 
     len = strlen(word[2]);
 
@@ -1991,10 +2050,14 @@ static int Command_Source(char *word[], char *word_eol[], void *userdata)
 
         Tcl_DStringFree(&ds);
 
+        complete_level--;
+
         return XCHAT_EAT_XCHAT;
 
-    } else
+    } else {
+        complete_level--;
         return XCHAT_EAT_NONE;
+    }
 
 }
 
@@ -2002,7 +2065,9 @@ static int Command_Reloadall(char *word[], char *word_eol[], void *userdata)
 {
     Tcl_Plugin_DeInit();
     Tcl_Plugin_Init();
+
     xchat_print(ph, "\0039Tcl plugin\003\tRehashed\n");
+
     return XCHAT_EAT_ALL;
 }
 
@@ -2056,6 +2121,8 @@ static void Tcl_Plugin_Init()
     Tcl_CreateCommand(interp, "timers", tcl_timers, NULL, NULL);
     Tcl_CreateCommand(interp, "topic", tcl_topic, NULL, NULL);
     Tcl_CreateCommand(interp, "users", tcl_users, NULL, NULL);
+    Tcl_CreateCommand(interp, "word", tcl_word, NULL, NULL);
+    Tcl_CreateCommand(interp, "word_eol", tcl_word_eol, NULL, NULL);
 
     Tcl_InitHashTable(&cmdTablePtr, TCL_STRING_KEYS);
     Tcl_InitHashTable(&aliasTablePtr, TCL_STRING_KEYS);
