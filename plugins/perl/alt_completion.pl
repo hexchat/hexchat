@@ -1,6 +1,8 @@
 use strict;
 use warnings;
 use Xchat ();
+use File::Spec ();
+use File::Basename qw(fileparse);
 
 # if the last time you addressed someone was greater than this many minutes
 # ago, ignore it
@@ -14,8 +16,11 @@ my $last_use_threshold = 10; # 10 minutes
 # the word is at the beginning of the line
 my $prefix = '';
 
+my $path_completion = 1;
+my $base_path = '';
+
 Xchat::register(
-	"Tab Completion", "1.0303", "Alternative tab completion behavior"
+	"Tab Completion", "1.0303_01", "Alternative tab completion behavior"
 );
 Xchat::hook_print( "Key Press", \&complete );
 Xchat::hook_print( "Close Context", \&close_context );
@@ -63,7 +68,7 @@ sub complete {
 	return Xchat::EAT_NONE if $_[0][0] == 0xFF09 && $_[0][1] & (CTRL|ALT|SHIFT);
 	
 	# we also don't care about other kinds of tabs besides channel tabs
-	return Xchat::EAT_NONE unless Xchat::context_info()->{type} == 2;
+#	return Xchat::EAT_NONE unless Xchat::context_info()->{type} == 2;
 	
 	# In case some other script decides to be stupid and alter the base index
 	local $[ = 0;
@@ -99,12 +104,14 @@ sub complete {
 
 	my $command_char = Xchat::get_prefs( "input_command_char" );
 	# ignore commands
-	if( $word !~ m{^[${command_char}]} ) {
+	if( ($word !~ m{^[${command_char}]})
+		or ( $word =~ m{^[${command_char}]} and $word_start != 0 ) ) {
+
 		if( $cursor_pos == length $input # end of input box
 			# not a valid nick char
 			&& $input =~ /(?<![\x41-\x5A\x61-\x7A\x30-\x39\x5B-\x60\x7B-\x7D-])$/
 			&& $cursor_pos != $completions->{pos} # not continuing a completion
-			&& $word !~ /^[&#]/ ) { # not a channel
+			&& $word !~ m{^(?:[&#/~]|[[:alpha:]]:\\)} ) { # not a channel
 			$word_start = $cursor_pos;
 			$left = $input;
 			$length = length $length;
@@ -139,8 +146,14 @@ sub complete {
 		} else {
 
 			if( $word =~ /^[&#]/ ) {
+			# channel name completion
 				$completions->{matches} = [ matching_channels( $word ) ];
+			} elsif( $word =~ m{^(?:~|/|[[:alpha:]]:\\)} ) {
+			# file name completion
+				$completions->{matches} = [ matching_files( $word ) ];
+				$skip_suffix = 1;
 			} else {
+			# nick completion
 				# fix $word so { equals [, ] equals }, \ equals |
 				# and escape regex metacharacters
 				$word =~ s/($escapes)/$escape_map{$1}/g;
@@ -183,23 +196,26 @@ sub complete {
 			
 			Xchat::command( "setcursor $completions->{pos}" );
 		}
+
+=begin
 # debugging stuff
-#		local $, = " ";
-#		my $input_length = length $input;
-#		Xchat::print [
-#			qq{[input:$input]},
-#			qq{[input_length:$input_length]},				
-#			qq{[cursor:$cursor_pos]},
-#			qq{[start:$word_start]},
-#			qq{[length:$length]},
-#			qq{[left:$left]},
-#			qq{[word:$word]}, qq{[right:$right]},
-#			qq{[completed:$completed]},
-#			qq{[pos:$completions->{pos}]},
-#		];
-#		use Data::Dumper;
-#		local $Data::Dumper::Indent = 0;
-#		Xchat::print Dumper $completions->{matches};
+		local $, = " ";
+		my $input_length = length $input;
+		Xchat::print [
+			qq{input[$input]},
+			qq{input_length[$input_length]},
+			qq{cursor[$cursor_pos]},
+			qq{start[$word_start]},
+			qq{length[$length]},
+			qq{left[$left]},
+			qq{word[$word]}, qq{[right[$right]},
+			qq{completed[$completed]},
+			qq{pos[$completions->{pos}]},
+		];
+		use Data::Dumper;
+		local $Data::Dumper::Indent = 0;
+		Xchat::print Dumper $completions->{matches};
+=cut
 
 		return Xchat::EAT_ALL;
 	} else {
@@ -323,6 +339,28 @@ sub compare_nicks {
 
 }
 
+sub matching_files {
+	my $word = shift;
+
+	my $path = expand_tilde( $word );
+	my ($file, $dir) = fileparse( $path );
+
+	if( opendir my $dir_handle, $dir ) {
+		my @files;
+
+		if( $file ) {
+			@files = grep { /^\Q$file/ } readdir $dir_handle;
+		} else {
+			@files = readdir $dir_handle;
+		}
+
+		return sort map { File::Spec->catfile( $dir, $_ ) }
+			grep { !/^\.{1,2}$/ } @files;
+	} else {
+		return ();
+	}
+}
+
 # Remove completion related data for tabs that are closed
 sub close_context {
 	my $context = Xchat::get_context;
@@ -405,4 +443,21 @@ sub common_string {
 	
 	
 	return substr( $nick1, 0, $index );
+}
+
+sub expand_tilde {
+	my $file = shift;
+
+	$file =~ s/^~/home_dir()/e;
+	return $file;
+}
+
+sub home_dir {
+	return $base_path if $base_path;
+
+	if ( $^O eq "MSWin32" ) {
+		return $ENV{USERPROFILE};
+	} else {
+		return ((getpwuid($>))[7] ||  $ENV{HOME} || $ENV{LOGDIR});
+	}
 }
