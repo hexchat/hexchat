@@ -696,7 +696,7 @@ XS (XS_Xchat_send_modes)
 		}
 
 		xchat_send_modes (ph, targets, target_count, modes_per_line, sign, mode);
-		free (targets)
+		free (targets);
 	}
 }
 static
