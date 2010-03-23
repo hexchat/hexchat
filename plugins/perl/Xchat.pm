@@ -449,7 +449,7 @@ sub strip_code {
 	my $pattern = qr<
 		\cB| #Bold
 		\cC\d{0,2}(?:,\d{1,2})?| #Color
-		\e\[\d{1,2}(?:;\d{1,2})m| # ANSI escape codes
+		\e\[(?:\d{1,2}(?:;\d{1,2})*)?m| # ANSI color code
 		\cG| #Beep
 		\cO| #Reset
 		\cV| #Reverse
