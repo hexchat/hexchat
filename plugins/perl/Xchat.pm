@@ -26,6 +26,7 @@ use File::Glob ();
 use List::Util ();
 use Symbol();
 use Time::HiRes ();
+use Carp ();
 
 {
 package Xchat;
@@ -434,8 +435,11 @@ sub context_info {
 }
 
 sub get_list {
+	unless( grep { $_[0] eq $_ } qw(channels dcc ignore notify users networks) ) {
+		Carp::carp( "'$_[0]' does not appear to be a valid list name" );
+	}
 	if( $_[0] eq 'networks' ) {
-		return Xchat::List::Server->get();
+		return Xchat::List::Network->get();
 	} else {
 		return Xchat::Internal::get_list( $_[0] );
 	}
@@ -728,7 +732,7 @@ sub fix_callback {
 } # end of Xchat::Embed package
 
 {
-package Xchat::List::Server;
+package Xchat::List::Network;
 use strict;
 use warnings;
 use Storable qw(dclone);
@@ -748,7 +752,7 @@ sub get {
 			while( my $record = <$fh> ) {
 				chomp $record;
 				next if $record =~ /^v=/; # skip the version line
-				push @servers, Xchat::List::Server::Entry::parse( $record );
+				push @servers, Xchat::List::Network::Entry::parse( $record );
 			}
 		} else {
 			warn "Unable to open '$server_file': $!";
@@ -758,10 +762,10 @@ sub get {
 	my $clone = dclone( \@servers );
 	return @$clone;
 }
-} # end of Xchat::List::Server
+} # end of Xchat::List::Network
 
 {
-package Xchat::List::Server::Entry;
+package Xchat::List::Network::Entry;
 use strict;
 use warnings;
 
@@ -789,7 +793,7 @@ sub parse {
 
 		# the order of the channels need to be maintained
 		# list of { channel => .., key => ... }
-		autojoins         => Xchat::List::Server::AutoJoin->new( '' ),
+		autojoins         => Xchat::List::Network::AutoJoin->new( '' ),
 		connect_commands   => [],
 		flags             => {},
 		selected          => undef,
@@ -811,7 +815,7 @@ sub parse {
 
 			/^J.(.*)/ && do {
 				$entry->{ autojoins } =
-					Xchat::List::Server::AutoJoin->new( $1 );
+					Xchat::List::Network::AutoJoin->new( $1 );
 			};
 
 			/^F.(.*)/ && do {
@@ -865,10 +869,10 @@ sub parse_server {
 	}
 }
 
-} # end of Xchat::List::Server::Entry
+} # end of Xchat::List::Network::Entry
 
 {
-package Xchat::List::Server::AutoJoin;
+package Xchat::List::Network::AutoJoin;
 use strict;
 use warnings;
 
@@ -887,7 +891,7 @@ sub new {
 	if ( $line ) {
 		my ( $channels, $keys ) = split / /, $line, 2;
 		my @channels = split /,/, $channels;
-		my @keys     = split /,/, $keys;
+		my @keys     = split /,/, ($keys || '');
 
 		for my $channel ( @channels ) {
 			my $key = shift @keys;
