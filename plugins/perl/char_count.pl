@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 use Xchat qw(:all);
-use Glib;
+use Glib qw(TRUE FALSE);
 use Gtk2 -init;
 
 sub get_inputbox {
@@ -49,32 +49,47 @@ if( $input_box ) {
 		$hbox->pack_end( $label, 0, 0, 5 );
 		$label->show();
 
-		hook_print( "Key Press",
-			sub {
-				my $ctx_type = context_info->{"type"};
-				hook_timer( 0, sub {
-					if( $ctx_type == 2 || $ctx_type == 3 ) {
-						my $count = length get_info "inputbox";
-						$label->set_text( $count ? $count : "" );
-					} else {
-						$label->set_text( "" );
-					}
-					return REMOVE;
-				});
-				return EAT_NONE;
-			}
-		);
+		my $update_label = sub {
+			my $ctx_type = context_info->{"type"};
+			hook_timer( 0, sub {
+				if( $ctx_type == 2 || $ctx_type == 3 ) {
+					my $count = length get_info "inputbox";
+					$label->set_text( $count ? $count : "" );
+				} else {
+					$label->set_text( "" );
+				}
+				return REMOVE;
+			});
+			return EAT_NONE;
+		};
 
+		hook_print( "Key Press", $update_label );
+		hook_print( "Focus Tab", $update_label );
+		hook_print( "Focus Window", $update_label );
 		hook_command( "",
 			sub {
 				$label->set_text( "" );
 				return EAT_NONE;
 			}
 		);
+
+		my @handlers;
+		my $buffer = $input_box->get_buffer;
+		my $handler = sub { $update_label->(); return TRUE };
+
+		if( $buffer->isa( "Gtk2::TextBuffer" ) ) {
+			push @handlers, $buffer->signal_connect( "changed", $handler );
+		} elsif( $buffer->isa( "Gtk2::EntryBuffer" ) ) {
+			push @handlers,
+				$buffer->signal_connect( "deleted-text", $handler );
+				$buffer->signal_connect( "inserted-text", $handler );
+		}
+
 		register( "Character Counter", "1.0.0",
 			"Display the number of characters in the inputbox",
 			sub {
 				$hbox->remove( $label );
+				$buffer->signal_handler_disconnect( $_ ) for @handlers;
 			}
 		);
 	} else {
