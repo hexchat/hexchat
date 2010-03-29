@@ -1,0 +1,1346 @@
+diff -Naur xchat-wdk.orig/build/build-x64.bat xchat-wdk/build/build-x64.bat
+--- xchat-wdk.orig/build/build-x64.bat	1970-01-01 01:00:00 +0100
++++ xchat-wdk/build/build-x64.bat	2010-03-29 20:16:33 +0200
+@@ -0,0 +1,9 @@
++@echo off
++set INCLUDE=c:\WinDDK\7600.16385.1\inc\api;c:\WinDDK\7600.16385.1\inc\crt
++set LIB=c:\WinDDK\7600.16385.1\lib\wnet\amd64;c:\WinDDK\7600.16385.1\lib\Crt\amd64
++set PATH=c:\WinDDK\7600.16385.1\bin\x86\amd64;c:\WinDDK\7600.16385.1\bin\x86;c:\Program Files\Microsoft SDKs\Windows\v6.0A\Bin;c:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin;c:\mozilla-build\build\xchat-dev64\bin
++cd ..\src
++nmake -f makefile.mak clean
++nmake -f makefile.mak
++cd ..\build
++pause
+diff -Naur xchat-wdk.orig/build/build-x86.bat xchat-wdk/build/build-x86.bat
+--- xchat-wdk.orig/build/build-x86.bat	1970-01-01 01:00:00 +0100
++++ xchat-wdk/build/build-x86.bat	2010-03-29 20:16:33 +0200
+@@ -0,0 +1,9 @@
++@echo off
++set INCLUDE=c:\WinDDK\7600.16385.1\inc\api;c:\WinDDK\7600.16385.1\inc\crt
++set LIB=c:\WinDDK\7600.16385.1\lib\wxp\i386;c:\WinDDK\7600.16385.1\lib\Crt\i386
++set PATH=c:\WinDDK\7600.16385.1\bin\x86\x86;c:\WinDDK\7600.16385.1\bin\x86;c:\Program Files\Microsoft SDKs\Windows\v6.0A\Bin;c:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin;c:\mozilla-build\build\xchat-dev32\bin;c:\mozilla-build\mingw\bin
++cd ..\src
++nmake -f makefile.mak clean
++nmake -f makefile.mak
++cd ..\build
++pause
+diff -Naur xchat-wdk.orig/build/etc/gtk-2.0/gtkrc xchat-wdk/build/etc/gtk-2.0/gtkrc
+--- xchat-wdk.orig/build/etc/gtk-2.0/gtkrc	1970-01-01 01:00:00 +0100
++++ xchat-wdk/build/etc/gtk-2.0/gtkrc	2010-03-29 21:26:48 +0200
+@@ -0,0 +1,68 @@
++gtk-font-name = "sans 8"
++
++gtk-icon-sizes = "gtk-menu=13,13:gtk-small-toolbar=16,16:gtk-large-toolbar=24,24:gtk-dnd=32,32"
++gtk-toolbar-icon-size = small-toolbar
++
++# disable images in buttons. i've only seen ugly delphi apps use this feature.
++gtk-button-images = 0
++
++# enable/disable images in menus. most "stock" microsoft apps don't use these, except sparingly.
++# the office apps use them heavily, though.
++gtk-menu-images = 1
++
++# use the win32 button ordering instead of the GNOME HIG one, where applicable
++gtk-alternative-button-order = 1
++
++# use the win32 sort indicators direction, as in Explorer
++gtk-alternative-sort-arrows = 1
++
++# Windows users don't expect the PC Speaker beeping at them when they backspace in an empty textview and stuff like that
++gtk-error-bell = 0
++
++style "msw-default"
++{
++  GtkWidget::interior-focus = 1
++  GtkOptionMenu::indicator-size = { 9, 5 }
++  GtkOptionMenu::indicator-spacing = { 7, 5, 2, 2 }
++  GtkSpinButton::shadow-type = in
++
++  # Owen and I disagree that these should be themable
++  #GtkUIManager::add-tearoffs = 0
++  #GtkComboBox::add-tearoffs = 0
++  
++  GtkComboBox::appears-as-list = 1
++  GtkComboBox::focus-on-click = 0
++  
++  GOComboBox::add_tearoffs = 0
++
++  GtkTreeView::allow-rules = 0
++  GtkTreeView::expander-size = 12
++
++  GtkExpander::expander-size = 12
++
++  GtkScrolledWindow::scrollbar_spacing = 1
++
++  GtkSeparatorMenuItem::horizontal-padding = 2
++
++  engine "wimp" 
++  {
++  }
++}
++class "*" style "msw-default"
++
++binding "ms-windows-tree-view"
++{
++  bind "Right" { "expand-collapse-cursor-row" (1,1,0) }
++  bind "Left" { "expand-collapse-cursor-row" (1,0,0) }
++}
++
++class "GtkTreeView" binding "ms-windows-tree-view"
++
++style "msw-combobox-thickness" = "msw-default"
++{
++  xthickness = 0 
++  ythickness = 0
++}
++
++widget_class "*TreeView*ComboBox*" style "msw-combobox-thickness"
++widget_class "*ComboBox*GtkFrame*" style "msw-combobox-thickness" 
+diff -Naur xchat-wdk.orig/build/release-x64.bat xchat-wdk/build/release-x64.bat
+--- xchat-wdk.orig/build/release-x64.bat	1970-01-01 01:00:00 +0100
++++ xchat-wdk/build/release-x64.bat	2010-03-29 21:17:56 +0200
+@@ -0,0 +1,30 @@
++@echo off
++set GTK_BIN="c:\mozilla-build\build\xchat-dev64\bin"
++set XCHAT_DEST=c:\mozilla-build\build\xchat-wdk-x64
++rmdir /Q /S %XCHAT_DEST%
++mkdir %XCHAT_DEST%
++xcopy ..\src\fe-gtk\xchat.exe %XCHAT_DEST%
++xcopy %GTK_BIN%\libgtk-win32-2.0-0.dll %XCHAT_DEST%
++xcopy %GTK_BIN%\libgdk_pixbuf-2.0-0.dll %XCHAT_DEST%
++xcopy %GTK_BIN%\libgio-2.0-0.dll %XCHAT_DEST%
++xcopy %GTK_BIN%\libglib-2.0-0.dll %XCHAT_DEST%
++xcopy %GTK_BIN%\libgmodule-2.0-0.dll %XCHAT_DEST%
++xcopy %GTK_BIN%\libgobject-2.0-0.dll %XCHAT_DEST%
++xcopy %GTK_BIN%\libpng14-14.dll %XCHAT_DEST%
++xcopy %GTK_BIN%\zlib1.dll %XCHAT_DEST%
++xcopy %GTK_BIN%\libgdk-win32-2.0-0.dll %XCHAT_DEST%
++xcopy %GTK_BIN%\libcairo-2.dll %XCHAT_DEST%
++xcopy %GTK_BIN%\libfontconfig-1.dll %XCHAT_DEST%
++xcopy %GTK_BIN%\libexpat-1.dll %XCHAT_DEST%
++xcopy %GTK_BIN%\libfreetype-6.dll %XCHAT_DEST%
++xcopy %GTK_BIN%\libpango-1.0-0.dll %XCHAT_DEST%
++xcopy %GTK_BIN%\libpangocairo-1.0-0.dll %XCHAT_DEST%
++xcopy %GTK_BIN%\libpangoft2-1.0-0.dll %XCHAT_DEST%
++xcopy %GTK_BIN%\libpangowin32-1.0-0.dll %XCHAT_DEST%
++xcopy %GTK_BIN%\libatk-1.0-0.dll %XCHAT_DEST%
++xcopy %GTK_BIN%\libintl-8.dll %XCHAT_DEST%
++xcopy /S /I %GTK_BIN%\..\lib\gtk-2.0 %XCHAT_DEST%\lib\gtk-2.0
++rmdir /Q /S %XCHAT_DEST%\lib\gtk-2.0\include
++xcopy /S /I etc %XCHAT_DEST%\etc
++xcopy ..\COPYING %XCHAT_DEST%
++pause
+diff -Naur xchat-wdk.orig/build/release-x86.bat xchat-wdk/build/release-x86.bat
+--- xchat-wdk.orig/build/release-x86.bat	1970-01-01 01:00:00 +0100
++++ xchat-wdk/build/release-x86.bat	2010-03-29 21:18:07 +0200
+@@ -0,0 +1,30 @@
++@echo off
++set GTK_BIN="c:\mozilla-build\build\xchat-dev32\bin"
++set XCHAT_DEST=c:\mozilla-build\build\xchat-wdk-x86
++rmdir /Q /S %XCHAT_DEST%
++mkdir %XCHAT_DEST%
++xcopy ..\src\fe-gtk\xchat.exe %XCHAT_DEST%
++xcopy %GTK_BIN%\libgtk-win32-2.0-0.dll %XCHAT_DEST%
++xcopy %GTK_BIN%\libgdk_pixbuf-2.0-0.dll %XCHAT_DEST%
++xcopy %GTK_BIN%\libgio-2.0-0.dll %XCHAT_DEST%
++xcopy %GTK_BIN%\libglib-2.0-0.dll %XCHAT_DEST%
++xcopy %GTK_BIN%\libgmodule-2.0-0.dll %XCHAT_DEST%
++xcopy %GTK_BIN%\libgobject-2.0-0.dll %XCHAT_DEST%
++xcopy %GTK_BIN%\libpng14-14.dll %XCHAT_DEST%
++xcopy %GTK_BIN%\zlib1.dll %XCHAT_DEST%
++xcopy %GTK_BIN%\libgdk-win32-2.0-0.dll %XCHAT_DEST%
++xcopy %GTK_BIN%\libcairo-2.dll %XCHAT_DEST%
++xcopy %GTK_BIN%\libfontconfig-1.dll %XCHAT_DEST%
++xcopy %GTK_BIN%\libexpat-1.dll %XCHAT_DEST%
++xcopy %GTK_BIN%\freetype6.dll %XCHAT_DEST%
++xcopy %GTK_BIN%\libpango-1.0-0.dll %XCHAT_DEST%
++xcopy %GTK_BIN%\libpangocairo-1.0-0.dll %XCHAT_DEST%
++xcopy %GTK_BIN%\libpangoft2-1.0-0.dll %XCHAT_DEST%
++xcopy %GTK_BIN%\libpangowin32-1.0-0.dll %XCHAT_DEST%
++xcopy %GTK_BIN%\libatk-1.0-0.dll %XCHAT_DEST%
++xcopy %GTK_BIN%\intl.dll %XCHAT_DEST%
++xcopy /S /I %GTK_BIN%\..\lib\gtk-2.0 %XCHAT_DEST%\lib\gtk-2.0
++rmdir /Q /S %XCHAT_DEST%\lib\gtk-2.0\include
++xcopy /S /I etc %XCHAT_DEST%\etc
++xcopy ..\COPYING %XCHAT_DEST%
++pause
+diff -Naur xchat-wdk.orig/build/test-x64.bat xchat-wdk/build/test-x64.bat
+--- xchat-wdk.orig/build/test-x64.bat	1970-01-01 01:00:00 +0100
++++ xchat-wdk/build/test-x64.bat	2010-03-29 20:16:33 +0200
+@@ -0,0 +1,3 @@
++@echo off
++set PATH=c:\mozilla-build\build\xchat-dev64\bin
++..\src\fe-gtk\xchat.exe
+diff -Naur xchat-wdk.orig/build/test-x86.bat xchat-wdk/build/test-x86.bat
+--- xchat-wdk.orig/build/test-x86.bat	1970-01-01 01:00:00 +0100
++++ xchat-wdk/build/test-x86.bat	2010-03-29 20:16:33 +0200
+@@ -0,0 +1,3 @@
++@echo off
++set PATH=c:\mozilla-build\build\xchat-dev32\bin
++..\src\fe-gtk\xchat.exe
+diff -Naur xchat-wdk.orig/config.h xchat-wdk/config.h
+--- xchat-wdk.orig/config.h	1970-01-01 01:00:00 +0100
++++ xchat-wdk/config.h	2010-03-29 18:03:29 +0200
+@@ -0,0 +1,14 @@
++#define LOCALEDIR "./locale"
++/*#define ENABLE_NLS*/
++#define USE_GMODULE
++/*#define USE_PLUGIN*/
++#define PACKAGE_NAME "xchat"
++#define PACKAGE_VERSION "r1409"
++#define XCHATLIBDIR "."
++#define XCHATSHAREDIR "."
++#define OLD_PERL
++#ifndef USE_IPV6
++#define socklen_t int
++#endif
++#define GETTEXT_PACKAGE "xchat"
++#define PACKAGE_TARNAME "xchat-2.8.6"
+diff -Naur xchat-wdk.orig/config.h.w32 xchat-wdk/config.h.w32
+--- xchat-wdk.orig/config.h.w32	2008-06-12 10:37:44 +0200
++++ xchat-wdk/config.h.w32	1970-01-01 01:00:00 +0100
+@@ -1,12 +0,0 @@
+-#define LOCALEDIR "./locale"
+-#define ENABLE_NLS
+-#define USE_GMODULE
+-#define USE_PLUGIN
+-#define PACKAGE_NAME "xchat"
+-#define PACKAGE_VERSION "2.8.6Unix"
+-#define XCHATLIBDIR "."
+-#define XCHATSHAREDIR "."
+-#define OLD_PERL
+-#ifndef USE_IPV6
+-#define socklen_t int
+-#endif
+diff -Naur xchat-wdk.orig/plugins/perl/makefile.mak xchat-wdk/plugins/perl/makefile.mak
+--- xchat-wdk.orig/plugins/perl/makefile.mak	1970-01-01 01:00:00 +0100
++++ xchat-wdk/plugins/perl/makefile.mak	2010-03-29 22:21:32 +0200
+@@ -0,0 +1,29 @@
++include "..\..\src\makeinc.mak"
++
++TARGET = $(PERLOUTPUT)
++
++all: $(TARGET)
++
++perl.def:
++	echo EXPORTS > perl.def
++	echo xchat_plugin_init >> perl.def
++	echo xchat_plugin_deinit >> perl.def
++	echo xchat_plugin_get_info >> perl.def
++
++perl.obj: perl.c
++	$(CC) $(CFLAGS) -c perl.c $(GLIB) -I.. -I$(PERLPATH) -DPERL_DLL=\"$(PERLLIB).dll\"
++
++perl.c: xchat.pm.h
++
++xchat.pm.h: Xchat.pm IRC.pm
++	perl.exe generate_header
++
++$(TARGET): perl.obj perl.def
++	$(LINK) /DLL /out:$(TARGET) /SUBSYSTEM:WINDOWS /nologo perl.obj $(PERLLIB).lib /LIBPATH:$(PERLPATH) /DELAYLOAD:$(PERLLIB).dll DELAYIMP.LIB dirent.lib user32.lib shell32.lib advapi32.lib /def:perl.def /OPT:NOWIN98
++
++clean:
++	del $(TARGET)
++	del *.obj
++	del perl.def
++	del *.lib
++	del *.exp
+diff -Naur xchat-wdk.orig/plugins/python/makefile.mak xchat-wdk/plugins/python/makefile.mak
+--- xchat-wdk.orig/plugins/python/makefile.mak	1970-01-01 01:00:00 +0100
++++ xchat-wdk/plugins/python/makefile.mak	2010-03-29 22:21:43 +0200
+@@ -0,0 +1,17 @@
++include "..\..\src\makeinc.mak"
++
++TARGET = $(PYTHONOUTPUT)
++
++all: $(TARGET)
++
++python.def:
++	echo EXPORTS > python.def
++	echo xchat_plugin_init >> python.def
++	echo xchat_plugin_deinit >> python.def
++	echo xchat_plugin_get_info >> python.def
++
++python.obj: python.c
++	$(CC) $(CFLAGS) -Dusleep=_sleep -DPATH_MAX=255 -c python.c $(GLIB) -I.. -I$(PYTHONPATH)\INCLUDE -DPYTHON_DLL=\"$(PYTHONLIB).dll\"
++
++$(TARGET): python.obj python.def
++	$(LINK) /DLL /out:$(TARGET) /SUBSYSTEM:WINDOWS /nologo python.obj $(PYTHONLIB).lib /LIBPATH:$(PYTHONPATH)\LIBS $(PYTHONLIB).lib dirent.lib user32.lib shell32.lib advapi32.lib $(LIBS) /def:python.def /OPT:NOWIN98
+diff -Naur xchat-wdk.orig/plugins/python/python.c xchat-wdk/plugins/python/python.c
+--- xchat-wdk.orig/plugins/python/python.c	2010-03-17 09:07:51 +0100
++++ xchat-wdk/plugins/python/python.c	2010-03-29 12:56:54 +0200
+@@ -53,7 +53,6 @@
+ 
+ #include <glib.h>
+ #include <string.h>
+-#include <unistd.h>
+ #include <stdlib.h>
+ #include <sys/types.h>
+ #include <dirent.h>
+diff -Naur xchat-wdk.orig/plugins/tcl/makefile.mak xchat-wdk/plugins/tcl/makefile.mak
+--- xchat-wdk.orig/plugins/tcl/makefile.mak	1970-01-01 01:00:00 +0100
++++ xchat-wdk/plugins/tcl/makefile.mak	2010-03-29 22:21:50 +0200
+@@ -0,0 +1,22 @@
++include "..\..\src\makeinc.mak"
++
++TARGET = $(TCLOUTPUT)
++
++all: $(TARGET)
++
++tcl.def:
++	echo EXPORTS > tcl.def
++	echo xchat_plugin_init >> tcl.def
++	echo xchat_plugin_deinit >> tcl.def
++	echo xchat_plugin_get_info >> tcl.def
++
++tclplugin.obj: tclplugin.c
++	$(CC) $(CFLAGS) -c tclplugin.c -I$(TCLPATH)\INCLUDE -I../../include -I.. -DTCL_DLL=\"$(TCLLIB).dll\"
++
++$(TARGET): tclplugin.obj tcl.def
++	$(LINK) /DLL /out:$(TARGET) /SUBSYSTEM:WINDOWS /nologo tclplugin.obj /LIBPATH:$(TCLPATH)\LIB $(TCLLIB).lib /DELAYLOAD:$(TCLLIB).dll DELAYIMP.LIB dirent.lib /def:tcl.def /OPT:NOWIN98
++
++clean:
++	del $(TARGET)
++	del *.obj
++	del tcl.def
+diff -Naur xchat-wdk.orig/plugins/tcl/tclplugin.c xchat-wdk/plugins/tcl/tclplugin.c
+--- xchat-wdk.orig/plugins/tcl/tclplugin.c	2010-03-21 01:49:42 +0100
++++ xchat-wdk/plugins/tcl/tclplugin.c	2010-03-29 12:57:17 +0200
+@@ -32,8 +32,6 @@
+ #include <windows.h>
+ #define bzero(mem, sz) memset((mem), 0, (sz))
+ #define bcopy(src, dest, count) memmove((dest), (src), (count))
+-#else
+-#include <unistd.h>
+ #endif
+ 
+ #include "xchat-plugin.h"
+diff -Naur xchat-wdk.orig/src/common/cfgfiles.c xchat-wdk/src/common/cfgfiles.c
+--- xchat-wdk.orig/src/common/cfgfiles.c	2009-01-02 06:56:12 +0100
++++ xchat-wdk/src/common/cfgfiles.c	2010-03-29 12:57:41 +0200
+@@ -17,7 +17,6 @@
+  */
+ 
+ #include <fcntl.h>
+-#include <unistd.h>
+ #include <stdlib.h>
+ #include <string.h>
+ #include <stdio.h>
+diff -Naur xchat-wdk.orig/src/common/chanopt.c xchat-wdk/src/common/chanopt.c
+--- xchat-wdk.orig/src/common/chanopt.c	2008-06-15 06:40:29 +0200
++++ xchat-wdk/src/common/chanopt.c	2010-03-29 12:58:02 +0200
+@@ -3,7 +3,6 @@
+ #include <stdio.h>
+ #include <string.h>
+ #include <stdlib.h>
+-#include <unistd.h>
+ #include <sys/types.h>
+ #include <sys/stat.h>
+ #include <fcntl.h>
+diff -Naur xchat-wdk.orig/src/common/ctcp.c xchat-wdk/src/common/ctcp.c
+--- xchat-wdk.orig/src/common/ctcp.c	2006-10-03 06:11:54 +0200
++++ xchat-wdk/src/common/ctcp.c	2010-03-29 12:57:58 +0200
+@@ -18,7 +18,6 @@
+ 
+ #include <stdio.h>
+ #include <string.h>
+-#include <unistd.h>
+ #include <stdlib.h>
+ 
+ #include "xchat.h"
+diff -Naur xchat-wdk.orig/src/common/dcc.c xchat-wdk/src/common/dcc.c
+--- xchat-wdk.orig/src/common/dcc.c	2007-02-06 05:45:13 +0100
++++ xchat-wdk/src/common/dcc.c	2010-03-29 13:17:58 +0200
+@@ -31,7 +31,6 @@
+ #include <time.h>
+ #include <errno.h>
+ #include <sys/stat.h>
+-#include <unistd.h>
+ #include <fcntl.h>
+ 
+ #define WANTSOCKET
+@@ -1984,7 +1983,7 @@
+ 
+ 	/* now handle case-insensitive Filesystems: HFS+, FAT */
+ #ifdef WIN32
+-#warning no win32 implementation - behaviour may be unreliable
++/* warning no win32 implementation - behaviour may be unreliable */
+ #else
+ 	/* this fstat() shouldn't really fail */
+ 	if ((dcc->fp == -1 ? stat (dcc->destfile_fs, &st_a) : fstat (dcc->fp, &st_a)) == -1)
+diff -Naur xchat-wdk.orig/src/common/dirent.h xchat-wdk/src/common/dirent.h
+--- xchat-wdk.orig/src/common/dirent.h	1970-01-01 01:00:00 +0100
++++ xchat-wdk/src/common/dirent.h	2009-12-15 23:10:54 +0100
+@@ -0,0 +1,230 @@
++/*****************************************************************************
++ * dirent.h - dirent API for Microsoft Visual Studio
++ *
++ * Copyright (C) 2006 Toni Ronkko
++ *
++ * Permission is hereby granted, free of charge, to any person obtaining
++ * a copy of this software and associated documentation files (the
++ * ``Software''), to deal in the Software without restriction, including
++ * without limitation the rights to use, copy, modify, merge, publish,
++ * distribute, sublicense, and/or sell copies of the Software, and to
++ * permit persons to whom the Software is furnished to do so, subject to
++ * the following conditions:
++ *
++ * The above copyright notice and this permission notice shall be included
++ * in all copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED ``AS IS'', WITHOUT WARRANTY OF ANY KIND, EXPRESS
++ * OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
++ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
++ * IN NO EVENT SHALL TONI RONKKO BE LIABLE FOR ANY CLAIM, DAMAGES OR
++ * OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
++ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
++ * OTHER DEALINGS IN THE SOFTWARE.
++ *
++ * Dec 15, 2009, John Cunningham
++ * Added rewinddir member function
++ *
++ * Jan 18, 2008, Toni Ronkko
++ * Using FindFirstFileA and WIN32_FIND_DATAA to avoid converting string
++ * between multi-byte and unicode representations.  This makes the
++ * code simpler and also allows the code to be compiled under MingW.  Thanks
++ * to Azriel Fasten for the suggestion.
++ *
++ * Mar 4, 2007, Toni Ronkko
++ * Bug fix: due to the strncpy_s() function this file only compiled in
++ * Visual Studio 2005.  Using the new string functions only when the
++ * compiler version allows.
++ *
++ * Nov  2, 2006, Toni Ronkko
++ * Major update: removed support for Watcom C, MS-DOS and Turbo C to
++ * simplify the file, updated the code to compile cleanly on Visual
++ * Studio 2005 with both unicode and multi-byte character strings,
++ * removed rewinddir() as it had a bug.
++ *
++ * Aug 20, 2006, Toni Ronkko
++ * Removed all remarks about MSVC 1.0, which is antiqued now.  Simplified
++ * comments by removing SGML tags.
++ *
++ * May 14 2002, Toni Ronkko
++ * Embedded the function definitions directly to the header so that no
++ * source modules need to be included in the Visual Studio project.  Removed
++ * all the dependencies to other projects so that this very header can be
++ * used independently.
++ *
++ * May 28 1998, Toni Ronkko
++ * First version.
++ *****************************************************************************/
++#ifndef DIRENT_H
++#define DIRENT_H
++
++#include <windows.h>
++#include <string.h>
++#include <assert.h>
++
++
++typedef struct dirent
++{
++   char d_name[MAX_PATH + 1]; /* current dir entry (multi-byte char string) */
++   WIN32_FIND_DATAA data;     /* file attributes */
++}  dirent;
++
++
++typedef struct DIR
++{
++   dirent current;            /* Current directory entry */
++   int    cached;             /* Indicates un-processed entry in memory */
++   HANDLE search_handle;      /* File search handle */
++   char   patt[MAX_PATH + 3]; /* search pattern (3 = pattern + "\\*\0") */
++} DIR;
++
++
++/* Forward declarations */
++static DIR *opendir (const char *dirname);
++static struct dirent *readdir (DIR *dirp);
++static int closedir (DIR *dirp);
++static void rewinddir(DIR* dirp);
++
++
++/* Use the new safe string functions introduced in Visual Studio 2005 */
++#if defined(_MSC_VER) && _MSC_VER >= 1400
++# define STRNCPY(dest,src,size) strncpy_s((dest),(size),(src),_TRUNCATE)
++#else
++# define STRNCPY(dest,src,size) strncpy((dest),(src),(size))
++#endif
++
++
++/*****************************************************************************
++ * Open directory stream DIRNAME for read and return a pointer to the
++ * internal working area that is used to retrieve individual directory
++ * entries.
++ */
++static DIR *opendir(const char *dirname)
++{
++   DIR *dirp;
++   assert (dirname != NULL);
++   assert (strlen (dirname) < MAX_PATH);
++
++   /* construct new DIR structure */
++   dirp = (DIR*) malloc (sizeof (struct DIR));
++   if (dirp != NULL) {
++      char *p;
++
++      /* take directory name... */
++      STRNCPY (dirp->patt, dirname, sizeof(dirp->patt));
++      dirp->patt[MAX_PATH] = '\0';
++
++      /* ... and append search pattern to it */
++      p = strchr (dirp->patt, '\0');
++      if (dirp->patt < p  &&  *(p-1) != '\\'  &&  *(p-1) != ':') {
++         *p++ = '\\';
++      }
++      *p++ = '*';
++      *p = '\0';
++
++      /* open stream and retrieve first file */
++      dirp->search_handle = FindFirstFileA (dirp->patt, &dirp->current.data);
++      if (dirp->search_handle == INVALID_HANDLE_VALUE) {
++         /* invalid search pattern? */
++         free (dirp);
++         return NULL;
++      }
++
++      /* there is an un-processed directory entry in memory now */
++      dirp->cached = 1;
++   }
++
++   return dirp;
++}
++
++
++/*****************************************************************************
++ * Read a directory entry, and return a pointer to a dirent structure
++ * containing the name of the entry in d_name field.  Individual directory
++ * entries returned by this very function include regular files,
++ * sub-directories, pseudo-directories "." and "..", but also volume labels,
++ * hidden files and system files may be returned.
++ */
++static struct dirent *readdir(DIR *dirp)
++{
++   assert (dirp != NULL);
++
++   if (dirp->search_handle == INVALID_HANDLE_VALUE) {
++      /* directory stream was opened/rewound incorrectly or ended normally */
++      return NULL;
++   }
++
++   /* get next directory entry */
++   if (dirp->cached != 0) {
++      /* a valid directory entry already in memory */
++      dirp->cached = 0;
++   } else {
++      /* read next directory entry from disk */
++      if (FindNextFileA (dirp->search_handle, &dirp->current.data) == FALSE) {
++         /* the very last file has been processed or an error occured */
++         FindClose (dirp->search_handle);
++         dirp->search_handle = INVALID_HANDLE_VALUE;
++         return NULL;
++      }
++   }
++
++   /* copy as a multibyte character string */
++   STRNCPY ( dirp->current.d_name,
++             dirp->current.data.cFileName,
++             sizeof(dirp->current.d_name) );
++   dirp->current.d_name[MAX_PATH] = '\0';
++
++   return &dirp->current;
++}
++
++
++/*****************************************************************************
++ * Close directory stream opened by opendir() function.  Close of the
++ * directory stream invalidates the DIR structure as well as any previously
++ * read directory entry.
++ */
++static int closedir(DIR *dirp)
++{
++   assert (dirp != NULL);
++
++   /* release search handle */
++   if (dirp->search_handle != INVALID_HANDLE_VALUE) {
++      FindClose (dirp->search_handle);
++      dirp->search_handle = INVALID_HANDLE_VALUE;
++   }
++
++   /* release directory handle */
++   free (dirp);
++   return 0;
++}
++
++
++/*****************************************************************************
++ * Resets the position of the directory stream to which dirp refers to the
++ * beginning of the directory. It also causes the directory stream to refer
++ * to the current state of the corresponding directory, as a call to opendir()
++ * would have done. If dirp does not refer to a directory stream, the effect
++ * is undefined.
++ */
++static void rewinddir(DIR* dirp)
++{
++   /* release search handle */
++   if (dirp->search_handle != INVALID_HANDLE_VALUE) {
++      FindClose (dirp->search_handle);
++      dirp->search_handle = INVALID_HANDLE_VALUE;
++   }
++
++   /* open new search handle and retrieve first file */
++   dirp->search_handle = FindFirstFileA (dirp->patt, &dirp->current.data);
++   if (dirp->search_handle == INVALID_HANDLE_VALUE) {
++      /* invalid search pattern? */
++      free (dirp);
++      return;
++   }
++
++   /* there is an un-processed directory entry in memory now */
++   dirp->cached = 1;
++}
++
++
++#endif /*DIRENT_H*/
+diff -Naur xchat-wdk.orig/src/common/identd.c xchat-wdk/src/common/identd.c
+--- xchat-wdk.orig/src/common/identd.c	2004-05-24 15:47:58 +0200
++++ xchat-wdk/src/common/identd.c	2010-03-29 18:04:55 +0200
+@@ -1,6 +1,10 @@
+ /* simple identd server for xchat under win32 */
+ 
+ 
++#include "inet.h"
++#include "xchat.h"
++#include "xchatc.h"
++
+ static int identd_is_running = FALSE;
+ 
+ 
+@@ -75,7 +79,7 @@
+ 	return 0;
+ }
+ 
+-static void
++void
+ identd_start (char *username)
+ {
+ 	DWORD tid;
+diff -Naur xchat-wdk.orig/src/common/identd.h xchat-wdk/src/common/identd.h
+--- xchat-wdk.orig/src/common/identd.h	1970-01-01 01:00:00 +0100
++++ xchat-wdk/src/common/identd.h	2010-03-29 18:05:16 +0200
+@@ -0,0 +1 @@
++void identd_start (char *username);
+diff -Naur xchat-wdk.orig/src/common/ignore.c xchat-wdk/src/common/ignore.c
+--- xchat-wdk.orig/src/common/ignore.c	2006-04-15 09:00:39 +0200
++++ xchat-wdk/src/common/ignore.c	2010-03-29 12:58:18 +0200
+@@ -19,7 +19,6 @@
+ #include <stdlib.h>
+ #include <stdio.h>
+ #include <string.h>
+-#include <unistd.h>
+ #include <sys/types.h>
+ #include <sys/stat.h>
+ #include <fcntl.h>
+diff -Naur xchat-wdk.orig/src/common/inbound.c xchat-wdk/src/common/inbound.c
+--- xchat-wdk.orig/src/common/inbound.c	2008-03-19 05:28:57 +0100
++++ xchat-wdk/src/common/inbound.c	2010-03-29 12:58:16 +0200
+@@ -21,7 +21,6 @@
+ #include <stdlib.h>
+ #include <stdio.h>
+ #include <sys/types.h>
+-#include <unistd.h>
+ #include <time.h>
+ 
+ #define WANTARPA
+diff -Naur xchat-wdk.orig/src/common/inet.h xchat-wdk/src/common/inet.h
+--- xchat-wdk.orig/src/common/inet.h	2005-09-03 12:57:48 +0200
++++ xchat-wdk/src/common/inet.h	2010-03-29 15:36:39 +0200
+@@ -24,9 +24,8 @@
+ #ifdef USE_IPV6
+ #include <winsock2.h>
+ #include <ws2tcpip.h>
+-#include <tpipv6.h>
+ #else
+-#include <winsock.h>
++#include <winsock2.h>
+ #endif
+ 
+ #define set_blocking(sok)	{ \
+diff -Naur xchat-wdk.orig/src/common/makefile.mak xchat-wdk/src/common/makefile.mak
+--- xchat-wdk.orig/src/common/makefile.mak	1970-01-01 01:00:00 +0100
++++ xchat-wdk/src/common/makefile.mak	2010-03-29 13:02:00 +0200
+@@ -0,0 +1,13 @@
++include "..\makeinc.mak"
++
++all: $(COMMON_OBJECTS) xchatcommon.lib
++
++xchatcommon.lib: $(COMMON_OBJECTS)
++	lib -out:xchatcommon.lib $(COMMON_OBJECTS)
++
++.c.obj:
++	$(CC) $(CFLAGS) $(GLIB) /c $<
++
++clean:
++	del *.obj
++	del xchatcommon.lib
+diff -Naur xchat-wdk.orig/src/common/msproxy.c xchat-wdk/src/common/msproxy.c
+--- xchat-wdk.orig/src/common/msproxy.c	2006-04-16 17:32:17 +0200
++++ xchat-wdk/src/common/msproxy.c	2010-03-29 12:58:13 +0200
+@@ -26,7 +26,6 @@
+ #include <stdio.h>
+ #include <string.h>
+ #include <stdlib.h>
+-#include <unistd.h>
+ #include <fcntl.h>
+ 
+ #define WANTSOCKET
+diff -Naur xchat-wdk.orig/src/common/network.c xchat-wdk/src/common/network.c
+--- xchat-wdk.orig/src/common/network.c	2006-04-16 10:11:26 +0200
++++ xchat-wdk/src/common/network.c	2010-03-29 12:58:40 +0200
+@@ -21,7 +21,6 @@
+ #include <stdlib.h>
+ #include <string.h>
+ #include <stdio.h>
+-#include <unistd.h>
+ #include <glib.h>
+ 
+ #include "../../config.h"				  /* grab USE_IPV6 and LOOKUPD defines */
+diff -Naur xchat-wdk.orig/src/common/notify.c xchat-wdk/src/common/notify.c
+--- xchat-wdk.orig/src/common/notify.c	2008-06-08 09:58:58 +0200
++++ xchat-wdk/src/common/notify.c	2010-03-29 12:58:37 +0200
+@@ -22,7 +22,6 @@
+ #include <sys/types.h>
+ #include <sys/stat.h>
+ #include <fcntl.h>
+-#include <unistd.h>
+ #include <time.h>
+ 
+ #include "xchat.h"
+diff -Naur xchat-wdk.orig/src/common/outbound.c xchat-wdk/src/common/outbound.c
+--- xchat-wdk.orig/src/common/outbound.c	2009-01-02 06:56:12 +0100
++++ xchat-wdk/src/common/outbound.c	2010-03-29 12:58:34 +0200
+@@ -32,7 +32,6 @@
+ #include <sys/wait.h>
+ #endif
+ 
+-#include <unistd.h>
+ #include <time.h>
+ #include <signal.h>
+ #include <sys/stat.h>
+diff -Naur xchat-wdk.orig/src/common/proto-irc.c xchat-wdk/src/common/proto-irc.c
+--- xchat-wdk.orig/src/common/proto-irc.c	2008-05-25 07:36:25 +0200
++++ xchat-wdk/src/common/proto-irc.c	2010-03-29 12:58:59 +0200
+@@ -18,7 +18,6 @@
+ 
+ /* IRC RFC1459(+commonly used extensions) protocol implementation */
+ 
+-#include <unistd.h>
+ #include <string.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+diff -Naur xchat-wdk.orig/src/common/server.c xchat-wdk/src/common/server.c
+--- xchat-wdk.orig/src/common/server.c	2008-02-17 09:54:55 +0100
++++ xchat-wdk/src/common/server.c	2010-03-29 17:36:30 +0200
+@@ -26,7 +26,6 @@
+ #include <stdio.h>
+ #include <string.h>
+ #include <stdlib.h>
+-#include <unistd.h>
+ #include <errno.h>
+ #include <fcntl.h>
+ 
+@@ -67,7 +66,7 @@
+ #endif
+ 
+ #ifdef WIN32
+-#include "identd.c"
++#include "identd.h"
+ #endif
+ 
+ #ifdef USE_OPENSSL
+@@ -838,6 +837,7 @@
+ 	fe_set_throttle (serv);
+ }
+ 
++/* this doesn't really work so just disable it and use the failsafe method
+ #ifdef WIN32
+ 
+ static int
+@@ -859,11 +859,11 @@
+ 	}
+ }
+ 
+-#else
++#else*/
+ 
+ #define waitline2(source,buf,size) waitline(serv->childread,buf,size,0)
+ 
+-#endif
++/*#endif*/
+ 
+ /* connect() successed */
+ 
+diff -Naur xchat-wdk.orig/src/common/servlist.c xchat-wdk/src/common/servlist.c
+--- xchat-wdk.orig/src/common/servlist.c	2009-10-25 10:21:58 +0100
++++ xchat-wdk/src/common/servlist.c	2010-03-29 12:58:54 +0200
+@@ -21,7 +21,6 @@
+ #include <string.h>
+ #include <sys/types.h>
+ #include <sys/stat.h>
+-#include <unistd.h>
+ 
+ #include "xchat.h"
+ #include <glib/ghash.h>
+diff -Naur xchat-wdk.orig/src/common/text.c xchat-wdk/src/common/text.c
+--- xchat-wdk.orig/src/common/text.c	2009-12-31 03:19:50 +0100
++++ xchat-wdk/src/common/text.c	2010-03-29 15:02:51 +0200
+@@ -19,13 +19,11 @@
+ #include <stdlib.h>
+ #include <stdio.h>
+ #include <string.h>
+-#include <unistd.h>
+ #include <ctype.h>
+ #include <time.h>
+ #include <sys/types.h>
+ #include <fcntl.h>
+ #include <sys/stat.h>
+-#include <sys/mman.h>
+ 
+ #include "xchat.h"
+ #include <glib/ghash.h>
+@@ -274,6 +272,8 @@
+ 	char *map, *end_map;
+ 	struct stat statbuf;
+ 	const char *begin, *eol;
++	
++	HANDLE hFile, hMapFile;
+ 
+ 	if (sess->text_scrollback == SET_DEFAULT)
+ 	{
+@@ -296,9 +296,32 @@
+ 	if (fstat (fh, &statbuf) < 0)
+ 		return;
+ 
+-	map = mmap (NULL, statbuf.st_size, PROT_READ, MAP_PRIVATE, fh, 0);
+-	if (map == MAP_FAILED)
++	/* from http://osdir.com/ml/guile-devel-gnu/2009-04/msg00008.html */
++
++	hFile = (HANDLE)_get_osfhandle(fh);
++	if (hFile == INVALID_HANDLE_VALUE)
++	{
++		return;
++	}
++
++	/* Create mapping object */
++	hMapFile = CreateFileMapping(hFile, NULL, PAGE_READONLY, 0, 0, NULL);
++	if (hMapFile == INVALID_HANDLE_VALUE)
++	{
+ 		return;
++	}
++
++	/* Select which portions of the file we need (entire file) */
++	map = (char *)MapViewOfFile(hMapFile, FILE_MAP_ALL_ACCESS, 0, 0, 0);
++
++	if (map == NULL)
++	{
++		CloseHandle(hMapFile);
++		return;
++	}
++	/*map = mmap (NULL, statbuf.st_size, PROT_READ, MAP_PRIVATE, fh, 0);
++	if (map == MAP_FAILED)
++		return;*/
+ 
+ 	end_map = map + statbuf.st_size;
+ 	
+@@ -349,7 +372,9 @@
+ 		/*EMIT_SIGNAL (XP_TE_GENMSG, sess, "*", buf, NULL, NULL, NULL, 0);*/
+ 	}
+ 
+-	munmap (map, statbuf.st_size);
++	/* munmap (map, statbuf.st_size); */
++	CloseHandle(hMapFile);
++	CloseHandle(hFile);
+ 	close (fh);
+ }
+ 
+diff -Naur xchat-wdk.orig/src/common/util.c xchat-wdk/src/common/util.c
+--- xchat-wdk.orig/src/common/util.c	2008-02-07 02:50:37 +0100
++++ xchat-wdk/src/common/util.c	2010-03-29 17:45:48 +0200
+@@ -17,10 +17,10 @@
+  */
+ 
+ #define __APPLE_API_STRICT_CONFORMANCE
++#define _WINSOCK2API_
+ 
+ #define _FILE_OFFSET_BITS 64
+ #include <stdio.h>
+-#include <unistd.h>
+ #include <string.h>
+ #include <stdlib.h>
+ #include <sys/types.h>
+@@ -35,7 +35,7 @@
+ #include <sys/utsname.h>
+ #endif
+ #include <fcntl.h>
+-#include <dirent.h>
++#include "dirent.h"
+ #include <errno.h>
+ #include "xchat.h"
+ #include "xchatc.h"
+@@ -631,22 +631,32 @@
+ 	OSVERSIONINFO osvi;
+ 	SYSTEM_INFO si;
+ 	double mhz;
++	int cpu_arch;
+ 
+ 	osvi.dwOSVersionInfoSize = sizeof (OSVERSIONINFO);
+ 	GetVersionEx (&osvi);
+ 	GetSystemInfo (&si);
+ 
++	if (si.wProcessorArchitecture == 9)
++	{
++		cpu_arch = 64;
++	}
++	else
++	{
++		cpu_arch = 86;
++	}
++
+ 	mhz = get_mhz ();
+ 	if (mhz)
+ 	{
+ 		double cpuspeed = ( mhz > 1000 ) ? mhz / 1000 : mhz;
+ 		const char *cpuspeedstr = ( mhz > 1000 ) ? "GHz" : "MHz";
+-		sprintf (verbuf, "Windows %ld.%ld [i%d86/%.2f%s]",
+-					osvi.dwMajorVersion, osvi.dwMinorVersion, si.wProcessorLevel, 
++		sprintf (verbuf, "Windows %ld.%ld [x%d/%.2f%s]",
++					osvi.dwMajorVersion, osvi.dwMinorVersion, cpu_arch, 
+ 					cpuspeed, cpuspeedstr);
+ 	} else
+-		sprintf (verbuf, "Windows %ld.%ld [i%d86]",
+-			osvi.dwMajorVersion, osvi.dwMinorVersion, si.wProcessorLevel);
++		sprintf (verbuf, "Windows %ld.%ld [x%d]",
++			osvi.dwMajorVersion, osvi.dwMinorVersion, cpu_arch);
+ 
+ 	return verbuf;
+ }
+diff -Naur xchat-wdk.orig/src/common/xchat.c xchat-wdk/src/common/xchat.c
+--- xchat-wdk.orig/src/common/xchat.c	2008-06-08 09:58:58 +0200
++++ xchat-wdk/src/common/xchat.c	2010-03-29 12:59:15 +0200
+@@ -22,7 +22,6 @@
+ #include <time.h>
+ #include <sys/types.h>
+ #include <sys/stat.h>
+-#include <unistd.h>
+ 
+ #define WANTSOCKET
+ #include "inet.h"
+diff -Naur xchat-wdk.orig/src/common/xchat.h xchat-wdk/src/common/xchat.h
+--- xchat-wdk.orig/src/common/xchat.h	2008-08-29 12:59:11 +0200
++++ xchat-wdk/src/common/xchat.h	2010-03-29 16:42:07 +0200
+@@ -17,7 +17,7 @@
+ #endif
+ 
+ #ifndef HAVE_VSNPRINTF
+-#define vsnprintf g_vsnprintf
++#define vsnprintf _vsnprintf
+ #endif
+ 
+ #ifdef USE_DEBUG
+@@ -58,7 +58,7 @@
+ 
+ #ifdef WIN32						/* for win32 */
+ #define OFLAGS O_BINARY
+-#define sleep(t) _sleep(t*1000)
++#define sleep(t) Sleep(t*1000)
+ #include <direct.h>
+ #define	F_OK	0
+ #define	X_OK	1
+diff -Naur xchat-wdk.orig/src/fe-gtk/banlist.c xchat-wdk/src/fe-gtk/banlist.c
+--- xchat-wdk.orig/src/fe-gtk/banlist.c	2008-09-01 11:28:58 +0200
++++ xchat-wdk/src/fe-gtk/banlist.c	2010-03-29 12:59:40 +0200
+@@ -21,7 +21,6 @@
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
+-#include <unistd.h>
+ #include <fcntl.h>
+ #include <time.h>
+ 
+diff -Naur xchat-wdk.orig/src/fe-gtk/chanlist.c xchat-wdk/src/fe-gtk/chanlist.c
+--- xchat-wdk.orig/src/fe-gtk/chanlist.c	2008-02-24 04:46:02 +0100
++++ xchat-wdk/src/fe-gtk/chanlist.c	2010-03-29 12:59:37 +0200
+@@ -19,7 +19,6 @@
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
+-#include <unistd.h>
+ #include <fcntl.h>
+ #include <time.h>
+ 
+diff -Naur xchat-wdk.orig/src/fe-gtk/editlist.c xchat-wdk/src/fe-gtk/editlist.c
+--- xchat-wdk.orig/src/fe-gtk/editlist.c	2006-03-13 09:33:45 +0100
++++ xchat-wdk/src/fe-gtk/editlist.c	2010-03-29 12:59:34 +0200
+@@ -19,7 +19,6 @@
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
+-#include <unistd.h>
+ #include <fcntl.h>
+ #include <sys/types.h>
+ #include <sys/stat.h>
+diff -Naur xchat-wdk.orig/src/fe-gtk/fe-gtk.c xchat-wdk/src/fe-gtk/fe-gtk.c
+--- xchat-wdk.orig/src/fe-gtk/fe-gtk.c	2008-02-29 03:19:00 +0100
++++ xchat-wdk/src/fe-gtk/fe-gtk.c	2010-03-29 14:50:19 +0200
+@@ -21,7 +21,6 @@
+ #include <stdio.h>
+ #include <string.h>
+ #include <stdlib.h>
+-#include <unistd.h>
+ 
+ #include "fe-gtk.h"
+ 
+@@ -34,6 +33,8 @@
+ #include <gtk/gtkmessagedialog.h>
+ #include <gtk/gtkversion.h>
+ 
++#include <gdk/gdkwin32.h>
++
+ #include "../common/xchat.h"
+ #include "../common/fe.h"
+ #include "../common/util.h"
+@@ -41,6 +42,7 @@
+ #include "../common/cfgfiles.h"
+ #include "../common/xchatc.h"
+ #include "../common/plugin.h"
++#include "../common/server.h"
+ #include "gtkutil.h"
+ #include "maingui.h"
+ #include "pixmaps.h"
+diff -Naur xchat-wdk.orig/src/fe-gtk/fe-gtk.h xchat-wdk/src/fe-gtk/fe-gtk.h
+--- xchat-wdk.orig/src/fe-gtk/fe-gtk.h	2008-06-08 09:58:58 +0200
++++ xchat-wdk/src/fe-gtk/fe-gtk.h	2010-03-29 17:52:49 +0200
+@@ -4,7 +4,7 @@
+ /* If you're compiling this for Windows, your release is un-official
+  * and not condoned. Please don't use the XChat name. Call it YChat
+  * or make up your own name! */
+-#define DISPLAY_NAME "YChat"
++#define DISPLAY_NAME "XChat-WDK"
+ #else
+ #define DISPLAY_NAME "XChat"
+ #endif
+diff -Naur xchat-wdk.orig/src/fe-gtk/fkeys.c xchat-wdk/src/fe-gtk/fkeys.c
+--- xchat-wdk.orig/src/fe-gtk/fkeys.c	2008-02-24 06:09:34 +0100
++++ xchat-wdk/src/fe-gtk/fkeys.c	2010-03-29 12:59:56 +0200
+@@ -20,7 +20,6 @@
+ #include <stdlib.h>
+ #include <sys/types.h>
+ #include <sys/stat.h>
+-#include <unistd.h>
+ #include <string.h>
+ #include <fcntl.h>
+ #include <ctype.h>
+diff -Naur xchat-wdk.orig/src/fe-gtk/gtkutil.c xchat-wdk/src/fe-gtk/gtkutil.c
+--- xchat-wdk.orig/src/fe-gtk/gtkutil.c	2009-07-18 14:38:10 +0200
++++ xchat-wdk/src/fe-gtk/gtkutil.c	2010-03-29 12:59:54 +0200
+@@ -22,7 +22,6 @@
+ #include <stdarg.h>
+ #include <sys/types.h>
+ #include <sys/stat.h>
+-#include <unistd.h>
+ #include <fcntl.h>
+ #include "fe-gtk.h"
+ 
+diff -Naur xchat-wdk.orig/src/fe-gtk/joind.c xchat-wdk/src/fe-gtk/joind.c
+--- xchat-wdk.orig/src/fe-gtk/joind.c	2006-12-26 05:56:55 +0100
++++ xchat-wdk/src/fe-gtk/joind.c	2010-03-29 13:00:16 +0200
+@@ -9,7 +9,6 @@
+ 
+ #include <sys/types.h>
+ #include <sys/stat.h>
+-#include <unistd.h>
+ #include <string.h>
+ #include <stdio.h>
+ 
+diff -Naur xchat-wdk.orig/src/fe-gtk/makefile.mak xchat-wdk/src/fe-gtk/makefile.mak
+--- xchat-wdk.orig/src/fe-gtk/makefile.mak	1970-01-01 01:00:00 +0100
++++ xchat-wdk/src/fe-gtk/makefile.mak	2010-03-29 21:14:18 +0200
+@@ -0,0 +1,36 @@
++include "..\makeinc.mak"
++
++LDFLAGS = $(LIBS) /NOLOGO
++#LDFLAGS = $(LIBS) /NOLOGO msvcrt_winxp.obj
++#LDFLAGS = $(LIBS) /NOLOGO msvcrt_win2003.obj
++COMLIB = ..\common\xchatcommon.lib
++PROG = xchat.exe
++
++all: $(PROG)
++
++mmx_cmod.o: mmx_cmod.S
++	gcc -DUNDERSCORE_SYMBOLS -c mmx_cmod.S
++
++.c.obj:
++	$(CC) $(CFLAGS) $(GLIB) $(GTK) /c $<
++
++$(PROG): $(FEGTK_OBJECTS) $(COMLIB) xchat-icon.obj
++	$(LINK) /out:$(PROG) /SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup $(LDFLAGS) $(FEGTK_OBJECTS) $(COMLIB) xchat-icon.obj
++	@dir $(PROG)
++
++xchat.rc:
++	echo XC_ICON ICON "../../xchat.ico" > xchat.rc
++
++xchat.res: xchat.rc ../../xchat.ico
++	rc /r xchat.rc
++
++xchat-icon.obj: xchat.res
++	cvtres /NOLOGO /OUT:xchat-icon.obj xchat.res
++#	cvtres /NOLOGO /MACHINE:X86 /OUT:xchat-icon.obj xchat.res
++#	cvtres /NOLOGO /MACHINE:X64 /OUT:xchat-icon.obj xchat.res
++
++clean:
++	del *.obj
++	del $(PROG)
++	del xchat.rc
++	del xchat.RES
+diff -Naur xchat-wdk.orig/src/fe-gtk/menu.c xchat-wdk/src/fe-gtk/menu.c
+--- xchat-wdk.orig/src/fe-gtk/menu.c	2008-06-10 14:05:00 +0200
++++ xchat-wdk/src/fe-gtk/menu.c	2010-03-29 13:00:13 +0200
+@@ -22,7 +22,6 @@
+ #include <stdlib.h>
+ #include <fcntl.h>
+ #include <string.h>
+-#include <unistd.h>
+ 
+ #ifdef WIN32
+ #include <windows.h>
+diff -Naur xchat-wdk.orig/src/fe-gtk/palette.c xchat-wdk/src/fe-gtk/palette.c
+--- xchat-wdk.orig/src/fe-gtk/palette.c	2006-03-13 09:33:45 +0100
++++ xchat-wdk/src/fe-gtk/palette.c	2010-03-29 13:00:11 +0200
+@@ -20,7 +20,6 @@
+ 
+ #include <stdio.h>
+ #include <stdlib.h>
+-#include <unistd.h>
+ #include <sys/types.h>
+ #include <sys/stat.h>
+ #include <fcntl.h>
+diff -Naur xchat-wdk.orig/src/fe-gtk/plugin-tray.c xchat-wdk/src/fe-gtk/plugin-tray.c
+--- xchat-wdk.orig/src/fe-gtk/plugin-tray.c	2008-08-29 12:59:11 +0200
++++ xchat-wdk/src/fe-gtk/plugin-tray.c	2010-03-29 13:00:32 +0200
+@@ -1,7 +1,6 @@
+ /* Copyright (C) 2006-2007 Peter Zelezny. */
+ 
+ #include <string.h>
+-#include <unistd.h>
+ #include "../common/xchat-plugin.h"
+ #include "../common/xchat.h"
+ #include "../common/xchatc.h"
+diff -Naur xchat-wdk.orig/src/fe-gtk/rawlog.c xchat-wdk/src/fe-gtk/rawlog.c
+--- xchat-wdk.orig/src/fe-gtk/rawlog.c	2008-02-24 06:09:34 +0100
++++ xchat-wdk/src/fe-gtk/rawlog.c	2010-03-29 13:00:30 +0200
+@@ -21,7 +21,6 @@
+ #include <stdio.h>
+ #include <string.h>
+ #include <fcntl.h>
+-#include <unistd.h>
+ #include <stdlib.h>
+ 
+ #include "fe-gtk.h"
+diff -Naur xchat-wdk.orig/src/fe-gtk/sexy-spell-entry.c xchat-wdk/src/fe-gtk/sexy-spell-entry.c
+--- xchat-wdk.orig/src/fe-gtk/sexy-spell-entry.c	2006-07-17 07:51:02 +0200
++++ xchat-wdk/src/fe-gtk/sexy-spell-entry.c	2010-03-29 14:42:33 +0200
+@@ -31,6 +31,20 @@
+ /*#include "gtkspell-iso-codes.h"
+ #include "sexy-marshal.h"*/
+ 
++/* workaround for ssize_t in VS 
++   from krb/include/win-mac.h */
++#ifndef SSIZE_T_DEFINED
++#ifdef ssize_t
++#undef ssize_t
++#endif
++#ifdef _WIN64
++typedef __int64          ssize_t;
++#else
++typedef _W64 int         ssize_t;
++#endif
++#define SSIZE_T_DEFINED
++#endif
++
+ /*
+  * Bunch of poop to make enchant into a runtime dependency rather than a
+  * compile-time dependency.  This makes it so I don't have to hear the
+diff -Naur xchat-wdk.orig/src/fe-gtk/xtext.c xchat-wdk/src/fe-gtk/xtext.c
+--- xchat-wdk.orig/src/fe-gtk/xtext.c	2008-08-29 13:24:17 +0200
++++ xchat-wdk/src/fe-gtk/xtext.c	2010-03-29 13:00:27 +0200
+@@ -42,7 +42,6 @@
+ #include <ctype.h>
+ #include <stdlib.h>
+ #include <time.h>
+-#include <unistd.h>
+ #include <gtk/gtkmain.h>
+ #include <gtk/gtksignal.h>
+ #include <gtk/gtkselection.h>
+diff -Naur xchat-wdk.orig/src/makefile.mak xchat-wdk/src/makefile.mak
+--- xchat-wdk.orig/src/makefile.mak	1970-01-01 01:00:00 +0100
++++ xchat-wdk/src/makefile.mak	2010-03-29 22:22:00 +0200
+@@ -0,0 +1,18 @@
++all:
++	copy ..\plugins\xchat-plugin.h common
++	@cd pixmaps
++	@-$(MAKE) /NOLOGO -f makefile.mak $@
++	@cd ..\common
++	@-$(MAKE) /NOLOGO -f makefile.mak $@
++	@cd ..\fe-gtk
++	@-$(MAKE) /NOLOGO -f makefile.mak $@
++
++clean:
++	del common\*.obj
++	del common\xchatcommon.lib
++	del fe-gtk\*.obj
++	del fe-gtk\mmx_cmod.o
++	del fe-gtk\xchat.exe
++	del fe-gtk\xchat.rc
++	del fe-gtk\xchat.RES
++	del pixmaps\*.h
+diff -Naur xchat-wdk.orig/src/makeinc.mak xchat-wdk/src/makeinc.mak
+--- xchat-wdk.orig/src/makeinc.mak	1970-01-01 01:00:00 +0100
++++ xchat-wdk/src/makeinc.mak	2010-03-29 22:22:06 +0200
+@@ -0,0 +1,115 @@
++### EDIT THESE ################################################
++#OPENSSL = YES
++#IPV6 = YES
++#MMX = YES
++
++#GLIB = -Ic:/mozilla-build/build/xchat-dev32/include/glib-2.0 -Ic:/mozilla-build/build/xchat-dev32/lib/glib-2.0/include
++#GLIB = -Ic:/mozilla-build/build/xchat-dev64/include/glib-2.0 -Ic:/mozilla-build/build/xchat-dev64/lib/glib-2.0/include
++#GLIB = `pkg-config glib-2.0 --msvc-syntax --cflags`
++GLIB = 
++
++#GTK = -Ic:/mozilla-build/build/xchat-dev32/include/gtk-2.0 -Ic:/mozilla-build/build/xchat-dev32/lib/gtk-2.0/include -Ic:/mozilla-build/build/xchat-dev32/include/atk-1.0 -Ic:/mozilla-build/build/xchat-dev32/include/cairo -Ic:/mozilla-build/build/xchat-dev32/include/pango-1.0 -Ic:/mozilla-build/build/xchat-dev32/include/glib-2.0 -Ic:/mozilla-build/build/xchat-dev32/lib/glib-2.0/include -Ic:/mozilla-build/build/xchat-dev32/include/freetype2 -Ic:/mozilla-build/build/xchat-dev32/include -Ic:/mozilla-build/build/xchat-dev32/include/libpng14
++#GTK = -Ic:/mozilla-build/build/xchat-dev64/include/gtk-2.0 -Ic:/mozilla-build/build/xchat-dev64/lib/gtk-2.0/include -Ic:/mozilla-build/build/xchat-dev64/include/atk-1.0 -Ic:/mozilla-build/build/xchat-dev64/include/cairo -Ic:/mozilla-build/build/xchat-dev64/include/pango-1.0 -Ic:/mozilla-build/build/xchat-dev64/include/glib-2.0 -Ic:/mozilla-build/build/xchat-dev64/lib/glib-2.0/include -Ic:/mozilla-build/build/xchat-dev64/include/freetype2 -Ic:/mozilla-build/build/xchat-dev64/include -Ic:/mozilla-build/build/xchat-dev64/include/libpng14
++#GTK = `pkg-config gtk+-2.0 --msvc-syntax --cflags` 
++GTK = 
++
++#LIBS = /libpath:c:/mozilla-build/build/xchat-dev32/lib gtk-win32-2.0.lib gdk-win32-2.0.lib atk-1.0.lib gio-2.0.lib gdk_pixbuf-2.0.lib pangowin32-1.0.lib gdi32.lib pangocairo-1.0.lib pango-1.0.lib cairo.lib gobject-2.0.lib gmodule-2.0.lib glib-2.0.lib intl.lib
++#LIBS = /libpath:c:/mozilla-build/build/xchat-dev64/lib gtk-win32-2.0.lib gdk-win32-2.0.lib atk-1.0.lib gio-2.0.lib gdk_pixbuf-2.0.lib pangowin32-1.0.lib gdi32.lib pangocairo-1.0.lib pango-1.0.lib cairo.lib gobject-2.0.lib gmodule-2.0.lib glib-2.0.lib intl.lib
++#LIBS = `pkg-config gtk+-2.0 --msvc-syntax --libs`
++LIBS = 
++
++# optimize for Pentium and size
++CFLAGS = /Ox
++###############################################################
++
++PERLPATH = C:\PERL\LIB\CORE
++PERLLIB = perl58
++PERLOUTPUT = xcperl.dll
++
++PYTHONPATH = C:\PYTHON24
++PYTHONLIB = python24
++PYTHONOUTPUT = xcpython.dll
++
++TCLPATH = C:\TCL
++TCLLIB = tcl84
++TCLOUTPUT = xctcl.dll
++
++CC = cl
++LINK = link
++CFLAGS = $(CFLAGS) -Dstrcasecmp=stricmp -Dstrncasecmp=strnicmp -Dstrtoull=_strtoui64 /MD /nologo /DWIN32 /DG_DISABLE_CAST_CHECKS
++LIBS = $(LIBS) gdi32.lib shell32.lib user32.lib advapi32.lib imm32.lib ole32.lib winmm.lib
++
++!IFDEF IPV6
++CFLAGS = $(CFLAGS) -DUSE_IPV6
++LIBS = $(LIBS) ws2_32.lib
++!ELSE
++LIBS = $(LIBS) wsock32.lib
++!ENDIF
++
++!IFDEF OPENSSL
++CFLAGS = $(CFLAGS) /DUSE_OPENSSL
++LIBS = $(LIBS) libeay32.lib libssl32.lib
++SSLOBJ = ssl.obj
++!ENDIF
++
++COMMON_OBJECTS = \
++cfgfiles.obj \
++chanopt.obj \
++ctcp.obj \
++dcc.obj \
++history.obj \
++identd.obj \
++ignore.obj \
++inbound.obj \
++modes.obj \
++network.obj \
++notify.obj \
++outbound.obj \
++plugin.obj \
++plugin-timer.obj \
++proto-irc.obj \
++server.obj \
++servlist.obj \
++$(SSLOBJ) \
++text.obj \
++tree.obj \
++url.obj \
++userlist.obj \
++util.obj \
++xchat.obj
++
++FEGTK_OBJECTS = \
++about.obj \
++ascii.obj \
++banlist.obj \
++chanlist.obj \
++chanview.obj \
++custom-list.obj \
++dccgui.obj \
++editlist.obj \
++fe-gtk.obj \
++fkeys.obj \
++gtkutil.obj \
++ignoregui.obj \
++joind.obj \
++maingui.obj \
++menu.obj \
++notifygui.obj \
++palette.obj \
++pixmaps.obj \
++plugingui.obj \
++plugin-tray.obj \
++rawlog.obj \
++search.obj \
++servlistgui.obj \
++setup.obj \
++sexy-spell-entry.obj \
++textgui.obj \
++urlgrab.obj \
++userlistgui.obj \
++xtext.obj
++
++!IFDEF MMX
++FEGTK_OBJECTS = $(FEGTK_OBJECTS) mmx_cmod.o
++CFLAGS = $(CFLAGS) -DUSE_MMX
++!ENDIF
+diff -Naur xchat-wdk.orig/src/pixmaps/makefile.mak xchat-wdk/src/pixmaps/makefile.mak
+--- xchat-wdk.orig/src/pixmaps/makefile.mak	1970-01-01 01:00:00 +0100
++++ xchat-wdk/src/pixmaps/makefile.mak	2010-03-29 13:15:26 +0200
+@@ -0,0 +1,18 @@
++CONV = gdk-pixbuf-csource
++
++LIST =	bookpng book.png \
++			hoppng hop.png \
++			oppng op.png \
++			purplepng purple.png \
++			redpng red.png \
++			trayfilepng fileoffer.png \
++			trayhilightpng highlight.png \
++			traymsgpng message.png \
++			voicepng voice.png \
++			xchatpng ..\..\xchat.png
++
++all: 
++	$(CONV) --build-list $(LIST) > inline_pngs.h
++
++clean:
++	del *.h
