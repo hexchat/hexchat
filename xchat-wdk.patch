@@ -1,10 +1,10 @@
-diff -Naur xchat-wdk.orig/build/build-x64.bat xchat-wdk/build/build-x64.bat
+diff -ruN --strip-trailing-cr xchat-wdk.orig/build/build-x64.bat xchat-wdk/build/build-x64.bat
 --- xchat-wdk.orig/build/build-x64.bat	1970-01-01 01:00:00 +0100
-+++ xchat-wdk/build/build-x64.bat	2010-03-30 05:39:29 +0200
-@@ -0,0 +1,20 @@
++++ xchat-wdk/build/build-x64.bat	2010-03-30 12:22:22 +0200
+@@ -0,0 +1,24 @@
 +@echo off
-+set INCLUDE=c:\WinDDK\7600.16385.1\inc\api;c:\WinDDK\7600.16385.1\inc\crt;c:\mozilla-build\build\xchat-dev64\include;c:\mozilla-build\build\openssl-0.9.8n-wdk-xchat-x64\include
-+set LIB=c:\WinDDK\7600.16385.1\lib\wnet\amd64;c:\WinDDK\7600.16385.1\lib\Crt\amd64;c:\mozilla-build\build\openssl-0.9.8n-wdk-xchat-x64\lib
++set INCLUDE=c:\WinDDK\7600.16385.1\inc\api;c:\WinDDK\7600.16385.1\inc\crt;c:\WinDDK\7600.16385.1\inc\api\crt\stl70;c:\mozilla-build\build\xchat-dev64\include;c:\mozilla-build\build\openssl-1.0.0-wdk-x64\include
++set LIB=c:\WinDDK\7600.16385.1\lib\wnet\amd64;c:\WinDDK\7600.16385.1\lib\Crt\amd64;c:\mozilla-build\build\openssl-1.0.0-wdk-x64\lib
 +set PATH=c:\WinDDK\7600.16385.1\bin\x86\amd64;c:\WinDDK\7600.16385.1\bin\x86;c:\Program Files\Microsoft SDKs\Windows\v6.0A\Bin;c:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin;c:\mozilla-build\build\xchat-dev64\bin;c:\mozilla-build\perl-5.10-x64\bin
 +cd ..\src
 +nmake -f makefile.mak clean
@@ -18,17 +18,21 @@ diff -Naur xchat-wdk.orig/build/build-x64.bat xchat-wdk/build/build-x64.bat
 +::cd ..\tcl
 +::nmake -f makefile.mak clean
 +::nmake -f makefile.mak
++cd ..\xtray
++nmake -f makefile.mak clean
++nmake -f makefile.mak
 +cd ..\..\build
 +set PATH=%PATH%;c:\mozilla-build\build\xchat-dev32\bin
 +call compile-po-files.bat
++cd ..\build
 +pause
-diff -Naur xchat-wdk.orig/build/build-x86.bat xchat-wdk/build/build-x86.bat
+diff -ruN --strip-trailing-cr xchat-wdk.orig/build/build-x86.bat xchat-wdk/build/build-x86.bat
 --- xchat-wdk.orig/build/build-x86.bat	1970-01-01 01:00:00 +0100
-+++ xchat-wdk/build/build-x86.bat	2010-03-30 03:29:13 +0200
-@@ -0,0 +1,19 @@
++++ xchat-wdk/build/build-x86.bat	2010-03-30 12:22:25 +0200
+@@ -0,0 +1,23 @@
 +@echo off
-+set INCLUDE=c:\WinDDK\7600.16385.1\inc\api;c:\WinDDK\7600.16385.1\inc\crt;c:\mozilla-build\build\xchat-dev32\include;c:\mozilla-build\build\openssl-0.9.8n-wdk-xchat-x86\include
-+set LIB=c:\WinDDK\7600.16385.1\lib\wxp\i386;c:\WinDDK\7600.16385.1\lib\Crt\i386;c:\mozilla-build\build\openssl-0.9.8n-wdk-xchat-x86\lib
++set INCLUDE=c:\WinDDK\7600.16385.1\inc\api;c:\WinDDK\7600.16385.1\inc\crt;c:\WinDDK\7600.16385.1\inc\api\crt\stl70;c:\mozilla-build\build\xchat-dev32\include;c:\mozilla-build\build\openssl-1.0.0-wdk-x86\include
++set LIB=c:\WinDDK\7600.16385.1\lib\wxp\i386;c:\WinDDK\7600.16385.1\lib\Crt\i386;c:\mozilla-build\build\openssl-1.0.0-wdk-x86\lib
 +set PATH=c:\WinDDK\7600.16385.1\bin\x86\x86;c:\WinDDK\7600.16385.1\bin\x86;c:\Program Files\Microsoft SDKs\Windows\v6.0A\Bin;c:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin;c:\mozilla-build\build\xchat-dev32\bin;c:\mozilla-build\mingw\bin;c:\mozilla-build\perl-5.10-x86\bin
 +cd ..\src
 +nmake -f makefile.mak clean
@@ -42,10 +46,14 @@ diff -Naur xchat-wdk.orig/build/build-x86.bat xchat-wdk/build/build-x86.bat
 +cd ..\tcl
 +nmake -f makefile.mak clean
 +nmake -f makefile.mak
++cd ..\xtray
++nmake -f makefile.mak clean
++nmake -f makefile.mak
 +cd ..\..\build
 +call compile-po-files.bat
++cd ..\build
 +pause
-diff -Naur xchat-wdk.orig/build/compile-po-files.bat xchat-wdk/build/compile-po-files.bat
+diff -ruN --strip-trailing-cr xchat-wdk.orig/build/compile-po-files.bat xchat-wdk/build/compile-po-files.bat
 --- xchat-wdk.orig/build/compile-po-files.bat	1970-01-01 01:00:00 +0100
 +++ xchat-wdk/build/compile-po-files.bat	2010-03-30 05:01:54 +0200
 @@ -0,0 +1,87 @@
@@ -136,7 +144,7 @@ diff -Naur xchat-wdk.orig/build/compile-po-files.bat xchat-wdk/build/compile-po-
 +
 +mkdir locale\zh_TW\LC_MESSAGES
 +msgfmt -cvo locale\zh_TW\LC_MESSAGES\xchat.mo zh_TW.po
-diff -Naur xchat-wdk.orig/build/etc/gtk-2.0/gtkrc xchat-wdk/build/etc/gtk-2.0/gtkrc
+diff -ruN --strip-trailing-cr xchat-wdk.orig/build/etc/gtk-2.0/gtkrc xchat-wdk/build/etc/gtk-2.0/gtkrc
 --- xchat-wdk.orig/build/etc/gtk-2.0/gtkrc	1970-01-01 01:00:00 +0100
 +++ xchat-wdk/build/etc/gtk-2.0/gtkrc	2010-03-29 21:26:48 +0200
 @@ -0,0 +1,68 @@
@@ -208,10 +216,10 @@ diff -Naur xchat-wdk.orig/build/etc/gtk-2.0/gtkrc xchat-wdk/build/etc/gtk-2.0/gt
 +
 +widget_class "*TreeView*ComboBox*" style "msw-combobox-thickness"
 +widget_class "*ComboBox*GtkFrame*" style "msw-combobox-thickness" 
-diff -Naur xchat-wdk.orig/build/release-x64.bat xchat-wdk/build/release-x64.bat
+diff -ruN --strip-trailing-cr xchat-wdk.orig/build/release-x64.bat xchat-wdk/build/release-x64.bat
 --- xchat-wdk.orig/build/release-x64.bat	1970-01-01 01:00:00 +0100
-+++ xchat-wdk/build/release-x64.bat	2010-03-30 03:29:41 +0200
-@@ -0,0 +1,37 @@
++++ xchat-wdk/build/release-x64.bat	2010-03-30 12:13:32 +0200
+@@ -0,0 +1,38 @@
 +@echo off
 +set GTK_BIN=c:\mozilla-build\build\xchat-dev64\bin
 +set SSL_BIN=c:\mozilla-build\build\openssl-0.9.8n-wdk-xchat-x64\bin
@@ -247,12 +255,13 @@ diff -Naur xchat-wdk.orig/build/release-x64.bat xchat-wdk/build/release-x64.bat
 +xcopy /S /I ..\plugins\perl\xcperl.dll %XCHAT_DEST%\plugins\
 +::xcopy /S /I ..\plugins\python\xcpython.dll %XCHAT_DEST%\plugins\
 +::xcopy /S /I ..\plugins\tcl\xctcl.dll %XCHAT_DEST%\plugins\
++xcopy /S /I ..\plugins\xtray\xtray.dll %XCHAT_DEST%\plugins\
 +xcopy /S /I ..\po\locale %XCHAT_DEST%\locale
 +pause
-diff -Naur xchat-wdk.orig/build/release-x86.bat xchat-wdk/build/release-x86.bat
+diff -ruN --strip-trailing-cr xchat-wdk.orig/build/release-x86.bat xchat-wdk/build/release-x86.bat
 --- xchat-wdk.orig/build/release-x86.bat	1970-01-01 01:00:00 +0100
-+++ xchat-wdk/build/release-x86.bat	2010-03-30 03:29:45 +0200
-@@ -0,0 +1,37 @@
++++ xchat-wdk/build/release-x86.bat	2010-03-30 12:13:37 +0200
+@@ -0,0 +1,38 @@
 +@echo off
 +set GTK_BIN=c:\mozilla-build\build\xchat-dev32\bin
 +set SSL_BIN=c:\mozilla-build\build\openssl-0.9.8n-wdk-xchat-x86\bin
@@ -288,23 +297,24 @@ diff -Naur xchat-wdk.orig/build/release-x86.bat xchat-wdk/build/release-x86.bat
 +xcopy /S /I ..\plugins\perl\xcperl.dll %XCHAT_DEST%\plugins\
 +::xcopy /S /I ..\plugins\python\xcpython.dll %XCHAT_DEST%\plugins\
 +xcopy /S /I ..\plugins\tcl\xctcl.dll %XCHAT_DEST%\plugins\
++xcopy /S /I ..\plugins\xtray\xtray.dll %XCHAT_DEST%\plugins\
 +xcopy /S /I ..\po\locale %XCHAT_DEST%\locale
 +pause
-diff -Naur xchat-wdk.orig/build/test-x64.bat xchat-wdk/build/test-x64.bat
+diff -ruN --strip-trailing-cr xchat-wdk.orig/build/test-x64.bat xchat-wdk/build/test-x64.bat
 --- xchat-wdk.orig/build/test-x64.bat	1970-01-01 01:00:00 +0100
 +++ xchat-wdk/build/test-x64.bat	2010-03-30 02:24:01 +0200
 @@ -0,0 +1,3 @@
 +@echo off
 +set PATH=c:\mozilla-build\build\xchat-dev64\bin;c:\mozilla-build\perl-5.10-x64\bin;c:\mozilla-build\python-2.6-x64
 +..\src\fe-gtk\xchat.exe
-diff -Naur xchat-wdk.orig/build/test-x86.bat xchat-wdk/build/test-x86.bat
+diff -ruN --strip-trailing-cr xchat-wdk.orig/build/test-x86.bat xchat-wdk/build/test-x86.bat
 --- xchat-wdk.orig/build/test-x86.bat	1970-01-01 01:00:00 +0100
 +++ xchat-wdk/build/test-x86.bat	2010-03-30 02:24:19 +0200
 @@ -0,0 +1,3 @@
 +@echo off
 +set PATH=c:\mozilla-build\build\xchat-dev32\bin;c:\mozilla-build\perl-5.10-x86\bin;c:\mozilla-build\python-2.6-x86
 +..\src\fe-gtk\xchat.exe
-diff -Naur xchat-wdk.orig/config.h xchat-wdk/config.h
+diff -ruN --strip-trailing-cr xchat-wdk.orig/config.h xchat-wdk/config.h
 --- xchat-wdk.orig/config.h	1970-01-01 01:00:00 +0100
 +++ xchat-wdk/config.h	2010-03-30 03:18:35 +0200
 @@ -0,0 +1,14 @@
@@ -322,7 +332,7 @@ diff -Naur xchat-wdk.orig/config.h xchat-wdk/config.h
 +#endif
 +#define GETTEXT_PACKAGE "xchat"
 +#define PACKAGE_TARNAME "xchat-2.8.6"
-diff -Naur xchat-wdk.orig/config.h.w32 xchat-wdk/config.h.w32
+diff -ruN --strip-trailing-cr xchat-wdk.orig/config.h.w32 xchat-wdk/config.h.w32
 --- xchat-wdk.orig/config.h.w32	2008-06-12 10:37:44 +0200
 +++ xchat-wdk/config.h.w32	1970-01-01 01:00:00 +0100
 @@ -1,12 +0,0 @@
@@ -338,7 +348,7 @@ diff -Naur xchat-wdk.orig/config.h.w32 xchat-wdk/config.h.w32
 -#ifndef USE_IPV6
 -#define socklen_t int
 -#endif
-diff -Naur xchat-wdk.orig/plugins/perl/makefile.mak xchat-wdk/plugins/perl/makefile.mak
+diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/perl/makefile.mak xchat-wdk/plugins/perl/makefile.mak
 --- xchat-wdk.orig/plugins/perl/makefile.mak	1970-01-01 01:00:00 +0100
 +++ xchat-wdk/plugins/perl/makefile.mak	2010-03-30 07:45:47 +0200
 @@ -0,0 +1,29 @@
@@ -371,7 +381,7 @@ diff -Naur xchat-wdk.orig/plugins/perl/makefile.mak xchat-wdk/plugins/perl/makef
 +	del perl.def
 +	del *.lib
 +	del *.exp
-diff -Naur xchat-wdk.orig/plugins/perl/perl.c xchat-wdk/plugins/perl/perl.c
+diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/perl/perl.c xchat-wdk/plugins/perl/perl.c
 --- xchat-wdk.orig/plugins/perl/perl.c	2010-03-23 01:06:59 +0100
 +++ xchat-wdk/plugins/perl/perl.c	2010-03-30 01:17:15 +0200
 @@ -16,13 +16,14 @@
@@ -390,7 +400,7 @@ diff -Naur xchat-wdk.orig/plugins/perl/perl.c xchat-wdk/plugins/perl/perl.c
  #ifdef ENABLE_NLS
  #include <locale.h>
  #endif
-diff -Naur xchat-wdk.orig/plugins/python/makefile.mak xchat-wdk/plugins/python/makefile.mak
+diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/python/makefile.mak xchat-wdk/plugins/python/makefile.mak
 --- xchat-wdk.orig/plugins/python/makefile.mak	1970-01-01 01:00:00 +0100
 +++ xchat-wdk/plugins/python/makefile.mak	2010-03-30 07:46:04 +0200
 @@ -0,0 +1,24 @@
@@ -418,7 +428,7 @@ diff -Naur xchat-wdk.orig/plugins/python/makefile.mak xchat-wdk/plugins/python/m
 +	del python.def
 +	del *.lib
 +	del *.exp
-diff -Naur xchat-wdk.orig/plugins/python/python.c xchat-wdk/plugins/python/python.c
+diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/python/python.c xchat-wdk/plugins/python/python.c
 --- xchat-wdk.orig/plugins/python/python.c	2010-03-17 09:07:51 +0100
 +++ xchat-wdk/plugins/python/python.c	2010-03-30 02:59:44 +0200
 @@ -51,12 +51,13 @@
@@ -446,7 +456,7 @@ diff -Naur xchat-wdk.orig/plugins/python/python.c xchat-wdk/plugins/python/pytho
  #else
  #define VERSION "0.8"
  #endif
-diff -Naur xchat-wdk.orig/plugins/tcl/makefile.mak xchat-wdk/plugins/tcl/makefile.mak
+diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/tcl/makefile.mak xchat-wdk/plugins/tcl/makefile.mak
 --- xchat-wdk.orig/plugins/tcl/makefile.mak	1970-01-01 01:00:00 +0100
 +++ xchat-wdk/plugins/tcl/makefile.mak	2010-03-30 07:46:20 +0200
 @@ -0,0 +1,22 @@
@@ -472,7 +482,7 @@ diff -Naur xchat-wdk.orig/plugins/tcl/makefile.mak xchat-wdk/plugins/tcl/makefil
 +	del $(TARGET)
 +	del *.obj
 +	del tcl.def
-diff -Naur xchat-wdk.orig/plugins/tcl/tclplugin.c xchat-wdk/plugins/tcl/tclplugin.c
+diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/tcl/tclplugin.c xchat-wdk/plugins/tcl/tclplugin.c
 --- xchat-wdk.orig/plugins/tcl/tclplugin.c	2010-03-21 01:49:42 +0100
 +++ xchat-wdk/plugins/tcl/tclplugin.c	2010-03-29 12:57:17 +0200
 @@ -32,8 +32,6 @@
@@ -484,7 +494,3225 @@ diff -Naur xchat-wdk.orig/plugins/tcl/tclplugin.c xchat-wdk/plugins/tcl/tclplugi
  #endif
  
  #include "xchat-plugin.h"
-diff -Naur xchat-wdk.orig/src/common/cfgfiles.c xchat-wdk/src/common/cfgfiles.c
+diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/xtray/callbacks.cpp xchat-wdk/plugins/xtray/callbacks.cpp
+--- xchat-wdk.orig/plugins/xtray/callbacks.cpp	1970-01-01 01:00:00 +0100
++++ xchat-wdk/plugins/xtray/callbacks.cpp	2005-11-06 13:24:08 +0100
+@@ -0,0 +1,729 @@
++/* X-Tray
++ * Copyright (C) 2005 Michael Hotaling <Mike.Hotaling@SinisterDevelopments.com>
++ *
++ * X-Tray is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ * 
++ * X-Tray is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ * 
++ * You should have received a copy of the GNU General Public License
++ * along with X-Tray; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ */
++
++#define _WIN32_IE 0x0601
++
++#include <windows.h>
++#include <stdio.h>
++#include <commctrl.h>
++#include <tchar.h>
++#include "utility.h"
++#include "plugin.h"
++#include "xtray.h"
++#include "xchat.h"
++#include "callbacks.h"
++#include "resource.h"
++#include "sdTray.h"
++#include "sdAlerts.h"
++
++HWND	g_hPrefTabEvents;
++HWND	g_hPrefTabSettings;
++HWND	g_hPrefTabAlerts;
++HWND	g_hPrefTabAbout;
++bool	g_bCanQuit;
++int		g_iIsActive = 1;
++
++
++BOOL CALLBACK EnumWindowsProc(HWND hWnd, LPARAM lParam)
++{
++	TCHAR szTitle[10];
++	GetWindowText(hWnd, szTitle, 9);
++
++	if(_tcsstr(szTitle, _T("X-Chat [")))
++	{
++		g_hXchatWnd = hWnd;
++		return false;
++	}
++	
++	return true;
++}
++
++/***********************************************************************************************/
++/******* our xchat event call back, get the name and info for each event and save it ***********/
++/******* for our alerts later														***********/
++/***********************************************************************************************/
++int event_cb(char *word[], void *userdata)
++{
++	int iEvent = (int)userdata;
++
++	if(iEvent > 10)
++		return XCHAT_EAT_NONE;
++
++	/***************************************************************************************/
++	/***** if the window is minimized or if we're allowed to show alerts when its not	 **/
++	/***** and if the option to show the specified alert is true and if we're even		**/
++	/***** allowed to show alerts at all then we show them (a bit confusing but it works) **/
++	/***************************************************************************************/
++	if(((g_iIsActive == 0) || !(g_dwPrefs & (1<<PREF_OSBWM))) && (g_dwPrefs & (1<<PREF_AMAE)) && (g_dwPrefs & (1<<iEvent)))
++	{	
++		/*********************************/
++		/*********** Our Buffers *********/
++		/*********************************/
++		char			szInfo[512];
++		char			szName[64];
++		DWORD			dwInfoFlags;
++		int iTime		= g_iTime*1000;
++		char *szTemp	= NULL;
++
++		if(g_dwPrefs & (1<<PREF_KAOI))
++		{
++			iTime = 0;
++		}
++
++		switch(iEvent)
++		{
++		case CHAN_HILIGHT:
++			_snprintf(szInfo, 512, "%s:\r\n%s", word[1], word[2]);
++			_snprintf(szName, 64, "Hilight");
++			dwInfoFlags = NIIF_INFO;
++			break;
++		case CHAN_TOPIC_CHANGE:
++			_snprintf(szInfo, 512, "%s has changed the topic to %s", word[1], word[2]);
++			_snprintf(szName, 64, "Topic Change: %s", word[3]);
++			dwInfoFlags = NIIF_INFO;
++			break;
++		case CHAN_INVITE:
++			_snprintf(szInfo, 512, "%s has invited you into %s", word[1], word[2]);
++			_snprintf(szName, 64, "Invite");
++			dwInfoFlags = NIIF_INFO;
++			break;
++		case CHAN_KICKED:
++			_snprintf(szInfo, 512, "Kicked from %s by %s:\r\n%s", word[2], word[3], word[4]);
++			_snprintf(szName, 64, "Kick");
++			dwInfoFlags = NIIF_WARNING;
++			break;
++		case CHAN_BANNED:
++			_snprintf(szInfo, 512, "Cannot join #%s You are banned.", word[1]);
++			_snprintf(szName, 64, "Banned");
++			dwInfoFlags = NIIF_WARNING;
++			break;
++		case CTCP_GENERIC:
++			_snprintf(szInfo, 512, "%s:\r\nCTCP %s", word[2], word[1]);
++			_snprintf(szName, 64, "CTCP");
++			dwInfoFlags = NIIF_INFO;
++			break;
++		case PMSG_RECEIVE:
++			_snprintf(szInfo, 512, "%s:\r\n%s", word[1], word[2]);
++			_snprintf(szName, 64, "Private Message");
++			dwInfoFlags = NIIF_INFO;
++			break;
++		case SERV_DISCONNECT:
++			_snprintf(szInfo, 512, "Disconnected\r\nError: %s", word[1]);
++			_snprintf(szName, 64, "Disconnect");
++			dwInfoFlags = NIIF_ERROR;
++			break;
++		case SERV_KILLED:
++			_snprintf(szInfo, 512, "Killed(%s(%s))", word[1], word[2]);
++			_snprintf(szName, 64, "Server Admin has killed you");
++			dwInfoFlags = NIIF_ERROR;
++			break;
++		case SERV_NOTICE:
++			_snprintf(szInfo, 512, "Notice:\r\n%s: %s", word[1], word[2]);
++			_snprintf(szName, 64, "Notice");
++			dwInfoFlags = NIIF_INFO;
++			break;
++		case 11:
++			_snprintf(szInfo, 512, ":\r\n%s: %s", word[1], word[2]);
++			_snprintf(szName, 64, "Notice");
++			dwInfoFlags = NIIF_INFO;
++			break;
++		}
++
++		/**************************************************************************************/
++		/***** Use windows instead of balloons, and if its a window should we keep it open ****/
++		/***** indefinately?															   ****/
++		/**************************************************************************************/
++		szTemp = xchat_strip_color(szInfo);
++
++		if(g_dwPrefs & (1<<PREF_UWIOB))
++		{
++			sdSystemAlert((HINSTANCE)g_hInstance, IDD_ALERT, szTemp, szName, iTime);
++		}
++		else
++		{
++			ShowBalloon(g_hXchatWnd, 1, szTemp, szName, iTime, dwInfoFlags);
++		}
++
++		free(szTemp);
++	}
++
++	if(g_dwPrefs & (1<<PREF_BLINK))
++	{
++		BlinkIcon(g_hXchatWnd, 1, g_hIcons[0], g_hIcons[(iEvent+1)], 700, 5);
++		
++	}
++
++	/***********************************/
++	/***** pass the events to xchat ****/
++	/***********************************/
++	return XCHAT_EAT_NONE;
++}
++
++int command_cb(char *word[], char *word_eol[], void *userdata)
++{
++	char szInfo[512];
++	char *szTemp	= NULL;
++	int iTime		= g_iTime*1000;
++
++	_snprintf(szInfo, 512, word_eol[2]);
++	szTemp = xchat_strip_color(szInfo);
++
++	if(g_dwPrefs & (1<<PREF_KAOI))
++	{
++		iTime = 0;
++	}
++
++	if(((g_iIsActive == 0) || !(g_dwPrefs & (1<<PREF_OSBWM))) && (g_dwPrefs & (1<<PREF_AMAE)))
++	{
++		if(g_dwPrefs & (1<<PREF_UWIOB))
++		{
++			sdSystemAlert((HINSTANCE)g_hInstance, IDD_ALERT, szTemp, "Alert", iTime);
++		}
++		else
++		{
++			ShowBalloon(g_hXchatWnd, 1, szTemp, "Alert", iTime, NIIF_INFO);
++		}
++	}
++
++	free(szTemp);
++
++	return XCHAT_EAT_ALL;
++}
++
++LRESULT CALLBACK WindowProc(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
++{
++	switch(msg)
++	{
++	case WM_CLOSE:
++		{
++			if((g_dwPrefs & (1<<PREF_MIOC)) && (g_bCanQuit == false))
++			{
++				/*******************************************/
++				/**** to autoaway or not to autoaway...  ***/
++				/*******************************************/
++				if(g_dwPrefs & (1<<PREF_AOM))
++				{
++					xchat_globally_away(g_szAway);
++				}
++
++				/**************************************************/
++				/**** Win32 API call to hide the window and	     **/
++				/**** save the fact that its minimized for later **/
++				/**************************************************/
++				g_iIsActive = 0;
++				ShowWindow(hWnd, SW_HIDE);
++
++				return 0;
++			}
++			else
++			{
++				if(g_hPrefDlg != NULL)
++				{
++					DestroyWindow(g_hPrefDlg);
++				}
++
++				StopBlink(hWnd, 1, g_hIcons[0]);
++				
++				if(sdAlertNum())
++				{
++					sdCloseAlerts();
++					HoldClose();
++					return 0;
++				}
++			}
++		}
++		break;
++	case WM_SIZE:
++		{
++			/******************************************/
++			/***** User wants to minimize xChat, ******/
++			/***** are we allowed to go to tray? ******/
++			/******************************************/
++			if((g_dwPrefs & (1<<PREF_TOT)) && (wparam == SIZE_MINIMIZED))
++			{
++				/*******************************************/
++				/**** to autoaway or not to autoaway...  ***/
++				/*******************************************/
++				if(g_dwPrefs & (1<<PREF_AOM))
++				{
++					xchat_globally_away(g_szAway);
++				}
++
++				/**************************************************/
++				/**** Win32 API call to hide the window and	     **/
++				/**** save the fact that its minimized for later **/
++				/**************************************************/
++				g_iIsActive = 0;
++				ShowWindow(hWnd, SW_HIDE);
++			}
++		}
++		break;
++	/**********************************/
++	/*** user clicked the tray icon ***/
++	/**********************************/
++	case WM_TRAYMSG:
++		{
++			switch(lparam)
++			{
++			case WM_LBUTTONDOWN:
++				{
++					if(!g_iIsActive)
++					{
++						/*********************************************************/
++						/*** 0: its hiden, restore it and show it, if autoaway ***/
++						/*** is on, set us as back							 ***/
++						/*********************************************************/
++						SendMessage(hWnd, WM_SYSCOMMAND, SC_RESTORE, 0);
++						SetForegroundWindow(hWnd);
++						g_iIsActive = 1;
++
++						if(g_dwPrefs & (1<<PREF_AOM))
++						{
++							xchat_globally_back();
++						}
++					}
++					else
++					{
++						SendMessage(hWnd, WM_SYSCOMMAND, SC_MINIMIZE, 0);
++					}
++				}
++				break;
++			case WM_RBUTTONDOWN:
++				{
++					/******************************************/
++					/*** user wants to see the menu find out **/
++					/*** where the mouse is and show it	  **/
++					/******************************************/
++					POINT pt;
++					int iRet;
++
++					GetCursorPos(&pt);
++					SetForegroundWindow(hWnd);
++
++					ModifyMenu(g_hTrayMenu, 2, (MF_POPUP | MF_BYPOSITION), (UINT)setServerMenu(), _T("Away"));
++
++					Sleep(175);
++
++					iRet = TrackPopupMenuEx(g_hTrayMenu, (TPM_RETURNCMD | TPM_LEFTALIGN), pt.x, pt.y, hWnd, NULL);
++
++					/***********************************/
++					/*** nRet is the users selection, **/
++					/*** process it				   **/
++					/***********************************/
++					sdTrayProc(hWnd, iRet);
++				}
++				break;
++			}
++		}
++		break;
++	default:
++		{
++			/*****************************************************/
++			/*** the taskbar has been restarted, re-add our icon */
++			/*****************************************************/
++			if(msg == RegisterWindowMessage(_T("TaskbarCreated")))
++			{
++				char szVersion[64];
++				_snprintf(szVersion, 64, "X-Chat [%s]", xchat_get_info(ph, "version"));
++				AddIcon(g_hXchatWnd, 1, g_hIcons[0], szVersion, (NIF_ICON | NIF_MESSAGE | NIF_TIP), WM_TRAYMSG);
++			}
++		}
++		break;
++	}
++
++	return CallWindowProc(g_hOldProc, hWnd, msg, wparam, lparam);
++}
++
++/****************************************************/
++/*** process messages from the tray menu ************/
++/****************************************************/
++LRESULT CALLBACK sdTrayProc(HWND hWnd, int msg)
++{
++	switch(msg)
++	{
++	case ACT_EXIT:
++		{
++			g_bCanQuit = true;
++			PostMessage(hWnd, WM_CLOSE, 0, 0);
++		}
++		break;
++	case ACT_RESTORE:
++		{
++			/***********************************************/
++			/** user wants us to restore the xchat window **/
++			/** and of autoaway is on, set as back		**/
++			/***********************************************/
++			SendMessage(g_hXchatWnd, WM_SYSCOMMAND, SC_RESTORE, 0);
++			SetForegroundWindow(hWnd);
++			
++			if((!g_iIsActive) && (g_dwPrefs & (1<<PREF_AOM)))
++			{
++				xchat_globally_back();
++				g_iIsActive = 1;
++			}
++		}
++		break;
++	case ACT_SETTINGS:
++		{
++			ShowWindow(g_hPrefDlg, SW_SHOW);
++		}
++		break;
++	case ACT_AWAY:
++		{
++			xchat_globally_away(g_szAway);
++		}
++		break;
++	case ACT_BACK:
++		{
++			xchat_globally_back();
++		}
++		break;
++	default:
++		{
++			if(msg > 0)
++			{
++				xchat_set_context(ph, xchat_find_server(msg-1));
++
++				if(!xchat_get_info(ph, "away"))
++				{
++					xchat_away(g_szAway);
++				}
++				else
++				{
++					xchat_back();
++				}
++			}
++		}
++		break;
++	}
++
++	return 1;
++}
++
++int CALLBACK PrefProc(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
++{
++	switch(msg)
++	{
++	case WM_INITDIALOG:
++		{
++			TCITEM tci1;
++			TCITEM tci2;
++			TCITEM tci3;
++			TCITEM tci4;
++
++			tci1.mask		= TCIF_TEXT;
++			tci1.pszText	= _T("Settings");
++			tci1.cchTextMax	= strlen("Settings");
++			SendDlgItemMessage(hWnd, IDC_TAB_CONTROL, TCM_INSERTITEM, 0, (LPARAM)&tci1);
++
++			tci2.mask		= TCIF_TEXT;
++			tci2.pszText	= _T("Alerts");
++			tci2.cchTextMax	= strlen("Alerts");
++			SendDlgItemMessage(hWnd, IDC_TAB_CONTROL, TCM_INSERTITEM, 1, (LPARAM)&tci2);
++
++			tci3.mask		= TCIF_TEXT;
++			tci3.pszText	= _T("Events");
++			tci3.cchTextMax	= strlen("Events");
++			SendDlgItemMessage(hWnd, IDC_TAB_CONTROL, TCM_INSERTITEM, 2, (LPARAM)&tci3);
++
++			tci4.mask		= TCIF_TEXT;
++			tci4.pszText	= _T("About");
++			tci4.cchTextMax	= strlen("About");
++			SendDlgItemMessage(hWnd, IDC_TAB_CONTROL, TCM_INSERTITEM, 3, (LPARAM)&tci4);
++
++
++			/***********************************************************************************/
++			/***********************************************************************************/
++			/***********************************************************************************/
++
++			g_hPrefTabSettings	= CreateDialog((HINSTANCE)g_hInstance,
++									MAKEINTRESOURCE(IDD_SETTINGS),
++									hWnd,		
++									(DLGPROC)SettingsProc);
++			SetDialog(g_hPrefTabSettings,	IDD_SETTINGS);
++
++			g_hPrefTabAlerts	= CreateDialog((HINSTANCE)g_hInstance,
++									MAKEINTRESOURCE(IDD_ALERTS),
++									hWnd,
++									(DLGPROC)AlertsProc);
++			SetDialog(g_hPrefTabAlerts,		IDD_ALERTS);
++
++			g_hPrefTabEvents	= CreateDialog((HINSTANCE)g_hInstance,
++									MAKEINTRESOURCE(IDD_EVENTS),
++									hWnd,		
++									(DLGPROC)EventsProc);
++			SetDialog(g_hPrefTabEvents,		IDD_EVENTS);
++
++			g_hPrefTabAbout		= CreateDialog((HINSTANCE)g_hInstance,
++									MAKEINTRESOURCE(IDD_ABOUT),
++									hWnd,
++									(DLGPROC)AboutProc);
++		}
++		break;
++	case WM_SHOWWINDOW:
++		{
++			if(wparam)
++			{
++				SendDlgItemMessage(hWnd, IDC_TAB_CONTROL, TCM_SETCURSEL, 0, 0);
++				ShowWindow(g_hPrefTabSettings,	SW_SHOW);
++				ShowWindow(g_hPrefTabAlerts,	SW_HIDE);
++				ShowWindow(g_hPrefTabEvents,	SW_HIDE);
++				ShowWindow(g_hPrefTabAbout,		SW_HIDE);
++			}
++		}
++		break;
++	case WM_NOTIFY:
++		{
++			NMHDR *pData = (NMHDR *)lparam;
++
++			switch(pData->code)
++			{
++			case TCN_SELCHANGE:
++				{
++					switch(SendDlgItemMessage(hWnd, IDC_TAB_CONTROL, TCM_GETCURSEL, 0, 0))
++					{
++					case 0:
++						{
++							ShowWindow(g_hPrefTabSettings,	SW_SHOW);
++							ShowWindow(g_hPrefTabAlerts,	SW_HIDE);
++							ShowWindow(g_hPrefTabEvents,	SW_HIDE);
++							ShowWindow(g_hPrefTabAbout,		SW_HIDE);
++						}
++						break;
++					case 1:
++						{
++							ShowWindow(g_hPrefTabSettings,	SW_HIDE);
++							ShowWindow(g_hPrefTabAlerts,	SW_SHOW);
++							ShowWindow(g_hPrefTabEvents,	SW_HIDE);
++							ShowWindow(g_hPrefTabAbout,		SW_HIDE);
++						}
++						break;
++					case 2:
++						{
++							ShowWindow(g_hPrefTabSettings,	SW_HIDE);
++							ShowWindow(g_hPrefTabAlerts,	SW_HIDE);
++							ShowWindow(g_hPrefTabEvents,	SW_SHOW);
++							ShowWindow(g_hPrefTabAbout,		SW_HIDE);
++						}
++						break;
++					case 3:
++						{
++							ShowWindow(g_hPrefTabSettings,	SW_HIDE);
++							ShowWindow(g_hPrefTabAlerts,	SW_HIDE);
++							ShowWindow(g_hPrefTabEvents,	SW_HIDE);
++							ShowWindow(g_hPrefTabAbout,		SW_SHOW);
++						}
++						break;
++					}
++				}
++				break;
++			}
++		}
++		break;
++	case WM_CLOSE:
++		{
++			ShowWindow(g_hPrefTabEvents,	SW_HIDE);
++			ShowWindow(g_hPrefTabSettings,	SW_HIDE);
++			ShowWindow(g_hPrefTabAlerts,	SW_HIDE);
++			ShowWindow(g_hPrefTabAbout,		SW_HIDE);
++			ShowWindow(hWnd,				SW_HIDE);
++			return TRUE;
++		}
++		break;
++	case WM_COMMAND:
++		{
++			switch(wparam)
++			{
++			case IDC_PREF_OK:
++				{
++					CheckPrefs(g_hPrefTabEvents,	IDD_EVENTS);
++					CheckPrefs(g_hPrefTabSettings,	IDD_SETTINGS);
++					CheckPrefs(g_hPrefTabAlerts,	IDD_ALERTS);
++
++					SavePrefs(0);
++
++					ShowWindow(g_hPrefTabEvents,	SW_HIDE);
++					ShowWindow(g_hPrefTabSettings,	SW_HIDE);
++					ShowWindow(g_hPrefTabAlerts,	SW_HIDE);
++					ShowWindow(g_hPrefTabAbout,		SW_HIDE);
++					ShowWindow(hWnd,				SW_HIDE);
++					return TRUE;
++				}
++				break;
++			case IDC_PREF_CANCEL:
++				{
++					ShowWindow(g_hPrefTabEvents,	SW_HIDE);
++					ShowWindow(g_hPrefTabSettings,	SW_HIDE);
++					ShowWindow(g_hPrefTabAlerts,	SW_HIDE);
++					ShowWindow(g_hPrefTabAbout,		SW_HIDE);
++					ShowWindow(hWnd,				SW_HIDE);
++					return TRUE;
++				}
++				break;
++			case IDC_PREF_APPLY:
++				{
++					CheckPrefs(g_hPrefTabEvents,	IDD_EVENTS);
++					CheckPrefs(g_hPrefTabSettings,	IDD_SETTINGS);
++					CheckPrefs(g_hPrefTabAlerts,	IDD_ALERTS);
++
++					SavePrefs(0);
++					return FALSE;
++				}
++				break;
++			}
++		}
++		break;
++	case WM_DESTROY:
++		{
++			SendMessage(g_hPrefTabEvents,	WM_CLOSE, 0, 0);
++			SendMessage(g_hPrefTabSettings,	WM_CLOSE, 0, 0);
++			SendMessage(g_hPrefTabAbout,	WM_CLOSE, 0, 0);
++			SendMessage(g_hPrefTabAlerts,	WM_CLOSE, 0, 0);
++		}
++		break;
++	}
++
++	return FALSE;
++}
++
++/****************************************************/
++/****************************************************/
++/****************************************************/
++LRESULT CALLBACK AlertsProc(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
++{
++	switch(msg)
++	{
++	case WM_CLOSE:
++		{
++			DestroyWindow(hWnd);
++			return TRUE;
++			break;
++		}
++		break;
++	case WM_COMMAND:
++		{
++			switch(LOWORD(wparam))
++			{
++			case PREF_AMAE:
++				{
++					SetToggle(hWnd, PREF_OSBWM,			PREF_AMAE, TRUE);
++					SetToggle(hWnd, PREF_UWIOB,			PREF_AMAE, TRUE);
++					SetToggle(hWnd, PREF_KAOI,			PREF_AMAE, TRUE);
++					
++					if(IsDlgButtonChecked(hWnd, PREF_AMAE))
++					{
++						SetToggle(hWnd, IDC_ALERT_HOTKEY,		PREF_UWIOB, TRUE);
++						SetToggle(hWnd, IDC_ALERT_HOTKEY_TEXT,	PREF_UWIOB, TRUE);
++						SetToggle(hWnd, IDC_ALERT_TIME,			PREF_KAOI, FALSE);
++						SetToggle(hWnd, IDC_ALERT_TIME_TEXT,	PREF_KAOI, FALSE);
++					}
++					else
++					{
++						SetToggle(hWnd, IDC_ALERT_HOTKEY,		PREF_AMAE, TRUE);
++						SetToggle(hWnd, IDC_ALERT_HOTKEY_TEXT,	PREF_AMAE, TRUE);
++						SetToggle(hWnd, IDC_ALERT_TIME,			PREF_AMAE, TRUE);
++						SetToggle(hWnd, IDC_ALERT_TIME_TEXT,	PREF_AMAE, TRUE);
++					}
++				}
++				break;
++			case PREF_UWIOB:
++				{
++					SetToggle(hWnd, IDC_ALERT_HOTKEY,		PREF_UWIOB, TRUE);
++					SetToggle(hWnd, IDC_ALERT_HOTKEY_TEXT,	PREF_UWIOB, TRUE);
++				}
++				break;
++			case PREF_KAOI:
++				{
++					SetToggle(hWnd, IDC_ALERT_TIME,			PREF_KAOI, FALSE);
++					SetToggle(hWnd, IDC_ALERT_TIME_TEXT,	PREF_KAOI, FALSE);
++				}
++				break;
++			}
++			break;
++		}
++	}
++
++	return FALSE;
++}
++
++/****************************************************/
++/****************************************************/
++/****************************************************/
++LRESULT CALLBACK AboutProc(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
++{
++	if(msg == WM_CLOSE)
++	{
++		DestroyWindow(hWnd);
++		return true;
++	}
++
++	return FALSE;
++}
++
++/*****************************************************/
++/** Process the events for our event dialog **********/
++/*****************************************************/
++LRESULT CALLBACK EventsProc(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
++{
++	if(msg == WM_CLOSE)
++	{
++		DestroyWindow(hWnd);
++		return true;
++	}
++
++	return FALSE;
++}
++
++/*****************************************************/
++/** Process the events for our settings dialog this **/
++/** is alot more complicated because options are	**/
++/** enabled/disabled based on the state of others   **/
++/*****************************************************/
++LRESULT CALLBACK SettingsProc(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
++{
++	if(msg == WM_CLOSE)
++	{
++		DestroyWindow(hWnd);
++		return true;
++	}
++
++	return FALSE;
++}
++
++/*****************************************************/
++/** this is the hotkey message  processing function **/
++/** this window is always open and ready to be told **/
++/** if someone has hit the hotkey, if they did, we  **/
++/** need to close out all of the tray alerts, for   **/
++/** this I wrote sdCloseAlerts, more info there	 **/
++/*****************************************************/
++LRESULT CALLBACK HotKeyProc(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
++{
++	if(msg == WM_CLOSE)
++	{
++		DestroyWindow(hWnd);
++		return true;
++	}
++	else if(msg == WM_HOTKEY)
++	{
++		sdCloseAlerts();
++	}
++
++	return FALSE;
++}
++
+diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/xtray/callbacks.h xchat-wdk/plugins/xtray/callbacks.h
+--- xchat-wdk.orig/plugins/xtray/callbacks.h	1970-01-01 01:00:00 +0100
++++ xchat-wdk/plugins/xtray/callbacks.h	2005-10-25 15:08:30 +0200
+@@ -0,0 +1,37 @@
++/* X-Tray
++ * Copyright (C) 2005 Michael Hotaling <Mike.Hotaling@SinisterDevelopments.com>
++ *
++ * X-Tray is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ * 
++ * X-Tray is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ * 
++ * You should have received a copy of the GNU General Public License
++ * along with X-Tray; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ */
++
++#ifndef _H_CALLBACKS_H
++#define _H_CALLBACKS_H
++
++int					event_cb		(char *word[], void *userdata);
++int					command_cb		(char *word[], char *word_eol[], void *userdata);
++
++LRESULT CALLBACK	WindowProc		(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
++BOOL	CALLBACK	EnumWindowsProc	(HWND hWnd, LPARAM lParam);
++LRESULT CALLBACK	sdTrayProc		(HWND hwnd, int msg);
++
++LRESULT CALLBACK	AlertProc		(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
++LRESULT CALLBACK	HotKeyProc		(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
++LRESULT CALLBACK	EventsProc		(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
++LRESULT CALLBACK	AboutProc		(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
++LRESULT CALLBACK	AlertsProc		(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
++LRESULT CALLBACK	SettingsProc	(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
++int		CALLBACK	PrefProc		(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam);
++
++#endif
+\ No newline at end of file
+diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/xtray/makefile.mak xchat-wdk/plugins/xtray/makefile.mak
+--- xchat-wdk.orig/plugins/xtray/makefile.mak	1970-01-01 01:00:00 +0100
++++ xchat-wdk/plugins/xtray/makefile.mak	2010-03-30 12:32:58 +0200
+@@ -0,0 +1,37 @@
++include "..\..\src\makeinc.mak"
++
++TARGET = xtray.dll
++
++TRAY_OBJECTS = \
++callbacks.obj \
++sdAlerts.obj \
++sdTray.obj \
++utility.obj \
++xchat.obj \
++xtray.obj
++
++CPPFLAGS = $(CPPFLAGS) /c /MD /nologo /DWIN32 /D_STL70_ /D_STATIC_CPPLIB /EHsc
++
++all: $(TRAY_OBJECTS) $(TARGET)
++
++xtray.def:
++	echo EXPORTS > xtray.def
++	echo xchat_plugin_init >> xtray.def
++	echo xchat_plugin_deinit >> xtray.def
++
++.cpp.obj:
++	$(CC) $(CPPFLAGS) /c $<
++
++res:
++	rc resource.rc
++	
++$(TARGET): $(TRAY_OBJECTS) xtray.def res
++	$(LINK) /DLL /out:$(TARGET) $(LDFLAGS) $(TRAY_OBJECTS) ntstc_msvcrt.lib $(LIBS) /def:xtray.def resource.res
++
++clean:
++	del $(TARGET)
++	del *.obj
++	del xtray.def
++	del resource.res
++	del *.lib
++	del *.exp
+diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/xtray/plugin.h xchat-wdk/plugins/xtray/plugin.h
+--- xchat-wdk.orig/plugins/xtray/plugin.h	1970-01-01 01:00:00 +0100
++++ xchat-wdk/plugins/xtray/plugin.h	2005-03-22 17:20:36 +0100
+@@ -0,0 +1,335 @@
++/* You can distribute this header with your plugins for easy compilation */
++#ifndef XCHAT_PLUGIN_H
++#define XCHAT_PLUGIN_H
++
++#include <time.h>
++
++#define XCHAT_IFACE_MAJOR	1
++#define XCHAT_IFACE_MINOR	9
++#define XCHAT_IFACE_MICRO	11
++#define XCHAT_IFACE_VERSION	((XCHAT_IFACE_MAJOR * 10000) + \
++				 (XCHAT_IFACE_MINOR * 100) + \
++				 (XCHAT_IFACE_MICRO))
++
++#define XCHAT_PRI_HIGHEST	127
++#define XCHAT_PRI_HIGH		64
++#define XCHAT_PRI_NORM		0
++#define XCHAT_PRI_LOW		(-64)
++#define XCHAT_PRI_LOWEST	(-128)
++
++#define XCHAT_FD_READ		1
++#define XCHAT_FD_WRITE		2
++#define XCHAT_FD_EXCEPTION	4
++#define XCHAT_FD_NOTSOCKET	8
++
++#define XCHAT_EAT_NONE		0	/* pass it on through! */
++#define XCHAT_EAT_XCHAT		1	/* don't let xchat see this event */
++#define XCHAT_EAT_PLUGIN	2	/* don't let other plugins see this event */
++#define XCHAT_EAT_ALL		(XCHAT_EAT_XCHAT|XCHAT_EAT_PLUGIN)	/* don't let anything see this event */
++
++#ifdef __cplusplus
++extern "C" {
++#endif
++
++typedef struct _xchat_plugin xchat_plugin;
++typedef struct _xchat_list xchat_list;
++typedef struct _xchat_hook xchat_hook;
++#ifndef PLUGIN_C
++typedef struct _xchat_context xchat_context;
++#endif
++
++#ifndef PLUGIN_C
++struct _xchat_plugin
++{
++	/* these are only used on win32 */
++	xchat_hook *(*xchat_hook_command) (xchat_plugin *ph,
++		    const char *name,
++		    int pri,
++		    int (*callback) (char *word[], char *word_eol[], void *user_data),
++		    const char *help_text,
++		    void *userdata);
++	xchat_hook *(*xchat_hook_server) (xchat_plugin *ph,
++		   const char *name,
++		   int pri,
++		   int (*callback) (char *word[], char *word_eol[], void *user_data),
++		   void *userdata);
++	xchat_hook *(*xchat_hook_print) (xchat_plugin *ph,
++		  const char *name,
++		  int pri,
++		  int (*callback) (char *word[], void *user_data),
++		  void *userdata);
++	xchat_hook *(*xchat_hook_timer) (xchat_plugin *ph,
++		  int timeout,
++		  int (*callback) (void *user_data),
++		  void *userdata);
++	xchat_hook *(*xchat_hook_fd) (xchat_plugin *ph,
++		   int fd,
++		   int flags,
++		   int (*callback) (int fd, int flags, void *user_data),
++		   void *userdata);
++	void *(*xchat_unhook) (xchat_plugin *ph,
++	      xchat_hook *hook);
++	void (*xchat_print) (xchat_plugin *ph,
++	     const char *text);
++	void (*xchat_printf) (xchat_plugin *ph,
++	      const char *format, ...);
++	void (*xchat_command) (xchat_plugin *ph,
++	       const char *command);
++	void (*xchat_commandf) (xchat_plugin *ph,
++		const char *format, ...);
++	int (*xchat_nickcmp) (xchat_plugin *ph,
++	       const char *s1,
++	       const char *s2);
++	int (*xchat_set_context) (xchat_plugin *ph,
++		   xchat_context *ctx);
++	xchat_context *(*xchat_find_context) (xchat_plugin *ph,
++		    const char *servname,
++		    const char *channel);
++	xchat_context *(*xchat_get_context) (xchat_plugin *ph);
++	const char *(*xchat_get_info) (xchat_plugin *ph,
++		const char *id);
++	int (*xchat_get_prefs) (xchat_plugin *ph,
++		 const char *name,
++		 const char **string,
++		 int *integer);
++	xchat_list * (*xchat_list_get) (xchat_plugin *ph,
++		const char *name);
++	void (*xchat_list_free) (xchat_plugin *ph,
++		 xchat_list *xlist);
++	const char * const * (*xchat_list_fields) (xchat_plugin *ph,
++		   const char *name);
++	int (*xchat_list_next) (xchat_plugin *ph,
++		 xchat_list *xlist);
++	const char * (*xchat_list_str) (xchat_plugin *ph,
++		xchat_list *xlist,
++		const char *name);
++	int (*xchat_list_int) (xchat_plugin *ph,
++		xchat_list *xlist,
++		const char *name);
++	void * (*xchat_plugingui_add) (xchat_plugin *ph,
++		     const char *filename,
++		     const char *name,
++		     const char *desc,
++		     const char *version,
++		     char *reserved);
++	void (*xchat_plugingui_remove) (xchat_plugin *ph,
++			void *handle);
++	int (*xchat_emit_print) (xchat_plugin *ph,
++			const char *event_name, ...);
++	int (*xchat_read_fd) (xchat_plugin *ph,
++			void *src,
++			char *buf,
++			int *len);
++	time_t (*xchat_list_time) (xchat_plugin *ph,
++		xchat_list *xlist,
++		const char *name);
++	char *(*xchat_gettext) (xchat_plugin *ph,
++		const char *msgid);
++	void (*xchat_send_modes) (xchat_plugin *ph,
++		  const char **targets,
++		  int ntargets,
++		  int modes_per_line,
++		  char sign,
++		  char mode);
++	char *(*xchat_strip) (xchat_plugin *ph,
++	     const char *str,
++	     int len,
++	     int flags);
++	void (*xchat_free) (xchat_plugin *ph,
++	    void *ptr);
++};
++#endif
++
++
++
++xchat_hook *
++xchat_hook_command (xchat_plugin *ph,
++		    const char *name,
++		    int pri,
++		    int (*callback) (char *word[], char *word_eol[], void *user_data),
++		    const char *help_text,
++		    void *userdata);
++
++xchat_hook *
++xchat_hook_server (xchat_plugin *ph,
++		   const char *name,
++		   int pri,
++		   int (*callback) (char *word[], char *word_eol[], void *user_data),
++		   void *userdata);
++
++xchat_hook *
++xchat_hook_print (xchat_plugin *ph,
++		  const char *name,
++		  int pri,
++		  int (*callback) (char *word[], void *user_data),
++		  void *userdata);
++
++xchat_hook *
++xchat_hook_timer (xchat_plugin *ph,
++		  int timeout,
++		  int (*callback) (void *user_data),
++		  void *userdata);
++
++xchat_hook *
++xchat_hook_fd (xchat_plugin *ph,
++		int fd,
++		int flags,
++		int (*callback) (int fd, int flags, void *user_data),
++		void *userdata);
++
++void *
++xchat_unhook (xchat_plugin *ph,
++	      xchat_hook *hook);
++
++void
++xchat_print (xchat_plugin *ph,
++	     const char *text);
++
++void
++xchat_printf (xchat_plugin *ph,
++	      const char *format, ...);
++
++void
++xchat_command (xchat_plugin *ph,
++	       const char *command);
++
++void
++xchat_commandf (xchat_plugin *ph,
++		const char *format, ...);
++
++int
++xchat_nickcmp (xchat_plugin *ph,
++	       const char *s1,
++	       const char *s2);
++
++int
++xchat_set_context (xchat_plugin *ph,
++		   xchat_context *ctx);
++
++xchat_context *
++xchat_find_context (xchat_plugin *ph,
++		    const char *servname,
++		    const char *channel);
++
++xchat_context *
++xchat_get_context (xchat_plugin *ph);
++
++const char *
++xchat_get_info (xchat_plugin *ph,
++		const char *id);
++
++int
++xchat_get_prefs (xchat_plugin *ph,
++		 const char *name,
++		 const char **string,
++		 int *integer);
++
++xchat_list *
++xchat_list_get (xchat_plugin *ph,
++		const char *name);
++
++void
++xchat_list_free (xchat_plugin *ph,
++		 xchat_list *xlist);
++
++const char * const *
++xchat_list_fields (xchat_plugin *ph,
++		   const char *name);
++
++int
++xchat_list_next (xchat_plugin *ph,
++		 xchat_list *xlist);
++
++const char *
++xchat_list_str (xchat_plugin *ph,
++		xchat_list *xlist,
++		const char *name);
++
++int
++xchat_list_int (xchat_plugin *ph,
++		xchat_list *xlist,
++		const char *name);
++
++time_t
++xchat_list_time (xchat_plugin *ph,
++		 xchat_list *xlist,
++		 const char *name);
++
++void *
++xchat_plugingui_add (xchat_plugin *ph,
++		     const char *filename,
++		     const char *name,
++		     const char *desc,
++		     const char *version,
++		     char *reserved);
++
++void
++xchat_plugingui_remove (xchat_plugin *ph,
++			void *handle);
++
++int 
++xchat_emit_print (xchat_plugin *ph,
++		  const char *event_name, ...);
++
++char *
++xchat_gettext (xchat_plugin *ph,
++	       const char *msgid);
++
++void
++xchat_send_modes (xchat_plugin *ph,
++		  const char **targets,
++		  int ntargets,
++		  int modes_per_line,
++		  char sign,
++		  char mode);
++
++char *
++xchat_strip (xchat_plugin *ph,
++	     const char *str,
++	     int len,
++	     int flags);
++
++void
++xchat_free (xchat_plugin *ph,
++	    void *ptr);
++
++#if !defined(PLUGIN_C) && defined(WIN32)
++#ifndef XCHAT_PLUGIN_HANDLE
++#define XCHAT_PLUGIN_HANDLE (ph)
++#endif
++#define xchat_hook_command ((XCHAT_PLUGIN_HANDLE)->xchat_hook_command)
++#define xchat_hook_server ((XCHAT_PLUGIN_HANDLE)->xchat_hook_server)
++#define xchat_hook_print ((XCHAT_PLUGIN_HANDLE)->xchat_hook_print)
++#define xchat_hook_timer ((XCHAT_PLUGIN_HANDLE)->xchat_hook_timer)
++#define xchat_hook_fd ((XCHAT_PLUGIN_HANDLE)->xchat_hook_fd)
++#define xchat_unhook ((XCHAT_PLUGIN_HANDLE)->xchat_unhook)
++#define xchat_print ((XCHAT_PLUGIN_HANDLE)->xchat_print)
++#define xchat_printf ((XCHAT_PLUGIN_HANDLE)->xchat_printf)
++#define xchat_command ((XCHAT_PLUGIN_HANDLE)->xchat_command)
++#define xchat_commandf ((XCHAT_PLUGIN_HANDLE)->xchat_commandf)
++#define xchat_nickcmp ((XCHAT_PLUGIN_HANDLE)->xchat_nickcmp)
++#define xchat_set_context ((XCHAT_PLUGIN_HANDLE)->xchat_set_context)
++#define xchat_find_context ((XCHAT_PLUGIN_HANDLE)->xchat_find_context)
++#define xchat_get_context ((XCHAT_PLUGIN_HANDLE)->xchat_get_context)
++#define xchat_get_info ((XCHAT_PLUGIN_HANDLE)->xchat_get_info)
++#define xchat_get_prefs ((XCHAT_PLUGIN_HANDLE)->xchat_get_prefs)
++#define xchat_list_get ((XCHAT_PLUGIN_HANDLE)->xchat_list_get)
++#define xchat_list_free ((XCHAT_PLUGIN_HANDLE)->xchat_list_free)
++#define xchat_list_fields ((XCHAT_PLUGIN_HANDLE)->xchat_list_fields)
++#define xchat_list_str ((XCHAT_PLUGIN_HANDLE)->xchat_list_str)
++#define xchat_list_int ((XCHAT_PLUGIN_HANDLE)->xchat_list_int)
++#define xchat_list_time ((XCHAT_PLUGIN_HANDLE)->xchat_list_time)
++#define xchat_list_next ((XCHAT_PLUGIN_HANDLE)->xchat_list_next)
++#define xchat_plugingui_add ((XCHAT_PLUGIN_HANDLE)->xchat_plugingui_add)
++#define xchat_plugingui_remove ((XCHAT_PLUGIN_HANDLE)->xchat_plugingui_remove)
++#define xchat_emit_print ((XCHAT_PLUGIN_HANDLE)->xchat_emit_print)
++#define xchat_gettext ((XCHAT_PLUGIN_HANDLE)->xchat_gettext)
++#define xchat_send_modes ((XCHAT_PLUGIN_HANDLE)->xchat_send_modes)
++#define xchat_strip ((XCHAT_PLUGIN_HANDLE)->xchat_strip)
++#define xchat_free ((XCHAT_PLUGIN_HANDLE)->xchat_free)
++#endif
++
++#ifdef __cplusplus
++}
++#endif
++#endif
+diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/xtray/resource.h xchat-wdk/plugins/xtray/resource.h
+--- xchat-wdk.orig/plugins/xtray/resource.h	1970-01-01 01:00:00 +0100
++++ xchat-wdk/plugins/xtray/resource.h	2005-03-22 18:54:44 +0100
+@@ -0,0 +1,47 @@
++//{{NO_DEPENDENCIES}}
++// Microsoft Visual C++ generated include file.
++// Used by resource.rc
++//
++#define IDD_ALERTS                      104
++#define IDD_EVENTS                      105
++#define IDD_SETTINGS                    106
++#define IDD_ALERT                       107
++#define IDD_PREF                        108
++#define IDD_ABOUT                       109
++#define IDR_TRAY_MENU                   110
++#define ICO_XCHAT                       111
++#define ICO_BANNED                      112
++#define ICO_CHANMSG                     113
++#define ICO_DISCONNECTED                114
++#define ICO_HIGHLIGHT                   115
++#define ICO_KICKED                      116
++#define ICO_PMSG                        117
++#define ICO_SNOTICE                     118
++#define IDB_SD_LOGO                     119
++#define IDC_PREF_OK                     1014
++#define IDC_PREF_CANCEL                 1015
++#define IDC_PREF_APPLY                  1016
++#define IDC_AWAY_MSG                    1017
++#define IDC_ALERT_TIME                  1018
++#define IDC_TAB_CONTROL                 1019
++#define IDC_ALERT_HOTKEY                1020
++#define IDC_ALERT_MSG                   1021
++#define IDC_ALERT_HOTKEY_TEXT           1022
++#define IDC_ALERT_TIME_TEXT             1023
++#define ACT_EXIT                        40001
++#define ACT_SETTINGS                    40002
++#define ACT_AWAY                        40003
++#define ACT_BACK                        40004
++#define ACT_RESTORE                     40005
++#define IDC_STATIC                      -1
++
++// Next default values for new objects
++// 
++#ifdef APSTUDIO_INVOKED
++#ifndef APSTUDIO_READONLY_SYMBOLS
++#define _APS_NEXT_RESOURCE_VALUE        120
++#define _APS_NEXT_COMMAND_VALUE         40006
++#define _APS_NEXT_CONTROL_VALUE         1024
++#define _APS_NEXT_SYMED_VALUE           101
++#endif
++#endif
+diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/xtray/resource.rc xchat-wdk/plugins/xtray/resource.rc
+--- xchat-wdk.orig/plugins/xtray/resource.rc	1970-01-01 01:00:00 +0100
++++ xchat-wdk/plugins/xtray/resource.rc	2010-03-30 11:32:11 +0200
+@@ -0,0 +1,318 @@
++// Microsoft Visual C++ generated resource script.
++//
++#include "resource.h"
++
++#define APSTUDIO_READONLY_SYMBOLS
++/////////////////////////////////////////////////////////////////////////////
++//
++// Generated from the TEXTINCLUDE 2 resource.
++//
++#define APSTUDIO_HIDDEN_SYMBOLS
++#include "windows.h"
++#undef APSTUDIO_HIDDEN_SYMBOLS
++
++/////////////////////////////////////////////////////////////////////////////
++#undef APSTUDIO_READONLY_SYMBOLS
++
++/////////////////////////////////////////////////////////////////////////////
++// English (U.S.) resources
++
++#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
++#ifdef _WIN32
++LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
++#pragma code_page(1252)
++#endif //_WIN32
++
++/////////////////////////////////////////////////////////////////////////////
++//
++// Dialog
++//
++
++IDD_EVENTS DIALOGEX 8, 20, 216, 143
++STYLE DS_SETFONT | DS_SETFOREGROUND | WS_CHILD
++FONT 8, "Tahoma", 0, 0, 0x0
++BEGIN
++    GROUPBOX        "X-Chat Events",IDC_STATIC,5,5,205,77
++    CONTROL         "Server Notice",9,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
++                    145,32,55,10
++    CONTROL         "Topic Change",3,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
++                    145,18,55,10
++    CONTROL         "Banned",4,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,18,
++                    49,10
++    CONTROL         "Kicked",5,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,32,
++                    49,10
++    CONTROL         "Killed",8,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,46,
++                    49,10
++    CONTROL         "Disconnect",10,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,
++                    60,49,10
++    CONTROL         "Private Message",7,"Button",BS_AUTOCHECKBOX | 
++                    WS_TABSTOP,70,18,69,10
++    CONTROL         "CTCP",6,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,70,32,69,
++                    10
++    CONTROL         "Invite",2,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,70,46,
++                    69,10
++    CONTROL         "Highlight",1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,70,
++                    60,69,10
++END
++
++IDD_SETTINGS DIALOGEX 8, 20, 216, 143
++STYLE DS_SETFONT | WS_CHILD
++FONT 8, "Tahoma", 0, 0, 0x0
++BEGIN
++    GROUPBOX        "Options",IDC_STATIC,5,5,205,135
++    CONTROL         "Auto away on minimize",11,"Button",BS_AUTOCHECKBOX | 
++                    WS_TABSTOP,16,60,100,10
++    CONTROL         "Minimize X-Chat to the system tray",12,"Button",
++                    BS_AUTOCHECKBOX | WS_TABSTOP,16,18,133,10
++    CONTROL         "Minimize to the tray instead of closing",17,"Button",
++                    BS_AUTOCHECKBOX | WS_TABSTOP,16,32,174,9
++    EDITTEXT        IDC_AWAY_MSG,33,86,169,50,ES_AUTOHSCROLL
++    LTEXT           "Away Msg:",IDC_STATIC,27,72,35,8
++    CONTROL         "Remove X-Chat from the taskbar ( Only show in tray )",
++                    20,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,46,191,9
++END
++
++IDD_ALERT DIALOGEX 0, 0, 151, 28
++STYLE DS_LOCALEDIT | DS_SETFONT | DS_NOIDLEMSG | DS_CENTER | WS_CAPTION | 
++    WS_SYSMENU
++EXSTYLE WS_EX_NOPARENTNOTIFY | WS_EX_ACCEPTFILES | WS_EX_TOOLWINDOW
++CAPTION "Event Name"
++FONT 8, "Tahoma", 0, 0, 0x1
++BEGIN
++    LTEXT           "Event Text",IDC_ALERT_MSG,3,0,147,27
++END
++
++IDD_PREF DIALOGEX 0, 0, 233, 190
++STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | 
++    WS_SYSMENU
++CAPTION "X-Tray Preferences"
++FONT 8, "Tahoma", 0, 0, 0x0
++BEGIN
++    DEFPUSHBUTTON   "Ok",IDC_PREF_OK,57,173,50,14
++    PUSHBUTTON      "Cancel",IDC_PREF_CANCEL,115,173,50,14
++    PUSHBUTTON      "Apply",IDC_PREF_APPLY,175,173,50,14
++    CONTROL         "Tab1",IDC_TAB_CONTROL,"SysTabControl32",0x0,7,7,218,159
++END
++
++IDD_ABOUT DIALOGEX 8, 20, 216, 143
++STYLE DS_SETFONT | WS_CHILD
++FONT 8, "Tahoma", 0, 0, 0x0
++BEGIN
++    CONTROL         119,IDC_STATIC,"Static",SS_BITMAP | SS_SUNKEN | 
++                    WS_BORDER,3,6,88,81
++    CTEXT           "X-Tray\r\nBy: Michael Hotaling\r\n www.SinisterDevelopments.com",
++                    IDC_STATIC,95,33,118,30
++    LTEXT           "Folken\r\nBasket\r\nDonatzsky\r\nDaemon404",IDC_STATIC,
++                    15,103,64,33
++    GROUPBOX        "Special Thanks To:",IDC_STATIC,3,91,89,50
++    GROUPBOX        "Version Information:",IDC_STATIC,101,92,109,49
++    LTEXT           "1.2.3 PR",IDC_STATIC,170,105,33,8,0,WS_EX_RIGHT
++    LTEXT           "Compiled On: ",IDC_STATIC,110,116,46,8
++    LTEXT           "11/06/05",IDC_STATIC,174,117,30,8
++    LTEXT           "Version Number:",IDC_STATIC,110,105,54,8
++END
++
++IDD_ALERTS DIALOGEX 8, 20, 216, 143
++STYLE DS_SETFONT | WS_CHILD
++FONT 8, "Tahoma", 0, 0, 0x0
++BEGIN
++    GROUPBOX        "Alerts",IDC_STATIC,5,5,205,117
++    CONTROL         "Only show alerts while minimized",14,"Button",
++                    BS_AUTOCHECKBOX | WS_TABSTOP,27,46,117,10
++    CONTROL         "Use tray alerts to notify me about events",13,"Button",
++                    BS_AUTOCHECKBOX | WS_TABSTOP,16,32,152,10
++    CONTROL         "Use window instead of balloons",15,"Button",
++                    BS_AUTOCHECKBOX | WS_TABSTOP,27,60,141,11
++    EDITTEXT        IDC_ALERT_TIME,137,101,61,12,ES_AUTOHSCROLL | ES_NUMBER,
++                    WS_EX_RIGHT
++    LTEXT           "Show alert for x seconds:",IDC_ALERT_TIME_TEXT,40,103,
++                    83,9
++    CONTROL         "Alert Hotkey",IDC_ALERT_HOTKEY,"msctls_hotkey32",
++                    WS_BORDER | WS_TABSTOP,137,74,61,13
++    LTEXT           "Close all alerts hotkey:",IDC_ALERT_HOTKEY_TEXT,39,75,
++                    76,10
++    CONTROL         "Leave alerts open indefinately",16,"Button",
++                    BS_AUTOCHECKBOX | WS_TABSTOP,27,88,115,11
++    CONTROL         "Blink Icon to alert me about events",18,"Button",
++                    BS_AUTOCHECKBOX | WS_TABSTOP,16,18,127,10
++END
++
++
++/////////////////////////////////////////////////////////////////////////////
++//
++// DESIGNINFO
++//
++
++#ifdef APSTUDIO_INVOKED
++GUIDELINES DESIGNINFO 
++BEGIN
++    IDD_EVENTS, DIALOG
++    BEGIN
++        BOTTOMMARGIN, 56
++    END
++
++    IDD_SETTINGS, DIALOG
++    BEGIN
++        BOTTOMMARGIN, 66
++    END
++
++    IDD_ALERT, DIALOG
++    BEGIN
++        RIGHTMARGIN, 150
++        BOTTOMMARGIN, 26
++    END
++
++    IDD_PREF, DIALOG
++    BEGIN
++        LEFTMARGIN, 7
++        RIGHTMARGIN, 232
++        TOPMARGIN, 7
++        BOTTOMMARGIN, 176
++    END
++
++    IDD_ABOUT, DIALOG
++    BEGIN
++        LEFTMARGIN, 7
++        RIGHTMARGIN, 209
++        TOPMARGIN, 7
++        BOTTOMMARGIN, 136
++    END
++
++    IDD_ALERTS, DIALOG
++    BEGIN
++        LEFTMARGIN, 7
++        RIGHTMARGIN, 208
++        TOPMARGIN, 7
++        BOTTOMMARGIN, 136
++    END
++END
++#endif    // APSTUDIO_INVOKED
++
++
++#ifdef APSTUDIO_INVOKED
++/////////////////////////////////////////////////////////////////////////////
++//
++// TEXTINCLUDE
++//
++
++1 TEXTINCLUDE 
++BEGIN
++    "resource.h\0"
++END
++
++2 TEXTINCLUDE 
++BEGIN
++    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
++    "#include ""windows.h""\r\n"
++    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
++    "\0"
++END
++
++3 TEXTINCLUDE 
++BEGIN
++    "xtray.h\0"
++END
++
++4 TEXTINCLUDE 
++BEGIN
++    "\r\n"
++    "\0"
++END
++
++#endif    // APSTUDIO_INVOKED
++
++
++/////////////////////////////////////////////////////////////////////////////
++//
++// Version
++//
++
++VS_VERSION_INFO VERSIONINFO
++ FILEVERSION 1,2,3,0
++ PRODUCTVERSION 1,2,3,0
++ FILEFLAGSMASK 0x3fL
++#ifdef _DEBUG
++ FILEFLAGS 0x1L
++#else
++ FILEFLAGS 0x0L
++#endif
++ FILEOS 0x40004L
++ FILETYPE 0x2L
++ FILESUBTYPE 0x0L
++BEGIN
++    BLOCK "StringFileInfo"
++    BEGIN
++        BLOCK "040904b0"
++        BEGIN
++            VALUE "CompanyName", "SinisterDevelopments"
++            VALUE "FileDescription", "X-Tray"
++            VALUE "FileVersion", "1, 2, 3, 0"
++            VALUE "InternalName", "X-Tray"
++            VALUE "LegalCopyright", "Copyright © 2005"
++            VALUE "OriginalFilename", "X-Tray.dll"
++            VALUE "ProductName", "X-Tray - X-Chat Win32 System Tray Plugin"
++            VALUE "ProductVersion", "1, 2, 3, 0"
++        END
++    END
++    BLOCK "VarFileInfo"
++    BEGIN
++        VALUE "Translation", 0x409, 1200
++    END
++END
++
++
++/////////////////////////////////////////////////////////////////////////////
++//
++// Menu
++//
++
++IDR_TRAY_MENU MENU 
++BEGIN
++    POPUP "TRAY"
++    BEGIN
++        MENUITEM "Restore",                     ACT_RESTORE
++        MENUITEM SEPARATOR
++        MENUITEM "Away",                        65535
++        MENUITEM "Settings",                    ACT_SETTINGS
++        MENUITEM SEPARATOR
++        MENUITEM "Exit",                        ACT_EXIT
++    END
++END
++
++
++/////////////////////////////////////////////////////////////////////////////
++//
++// Icon
++//
++
++// Icon with lowest ID value placed first to ensure application icon
++// remains consistent on all systems.
++ICO_XCHAT               ICON                    "icons\\xchat.ico"
++ICO_BANNED              ICON                    "icons\\banned.ico"
++ICO_CHANMSG             ICON                    "icons\\chan_msg.ico"
++ICO_HIGHLIGHT           ICON                    "icons\\highlight.ico"
++ICO_KICKED              ICON                    "icons\\kicked.ico"
++ICO_PMSG                ICON                    "icons\\priv_msg-1-2-2.ico"
++ICO_SNOTICE             ICON                    "icons\\server_notice.ico"
++ICO_DISCONNECTED        ICON                    "icons\\disconnected.ico"
++
++/////////////////////////////////////////////////////////////////////////////
++//
++// Bitmap
++//
++
++IDB_SD_LOGO             BITMAP                  "bitmaps\\sd.bmp"
++#endif    // English (U.S.) resources
++/////////////////////////////////////////////////////////////////////////////
++
++
++
++#ifndef APSTUDIO_INVOKED
++/////////////////////////////////////////////////////////////////////////////
++//
++// Generated from the TEXTINCLUDE 3 resource.
++//
++xtray.h
++/////////////////////////////////////////////////////////////////////////////
++#endif    // not APSTUDIO_INVOKED
++
+diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/xtray/sdAlerts.cpp xchat-wdk/plugins/xtray/sdAlerts.cpp
+--- xchat-wdk.orig/plugins/xtray/sdAlerts.cpp	1970-01-01 01:00:00 +0100
++++ xchat-wdk/plugins/xtray/sdAlerts.cpp	2005-07-16 20:57:08 +0200
+@@ -0,0 +1,109 @@
++/* X-Tray
++ * Copyright (C) 2005 Michael Hotaling <Mike.Hotaling@SinisterDevelopments.com>
++ *
++ * X-Tray is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ * 
++ * X-Tray is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ * 
++ * You should have received a copy of the GNU General Public License
++ * along with X-Tray; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ */
++
++#include <windows.h>
++#include <winuser.h>
++#include <stdio.h>
++#include "utility.h"
++#include "resource.h"
++#include "sdAlerts.h"
++
++int g_iAlerts = 0;
++
++void sdSystemAlert(HINSTANCE hModule, UINT uiDialog, char *szMsg, char *szName, unsigned int iTime)
++{
++	TCHAR wszMsg[256];
++	TCHAR wszName[64];
++
++	HWND hDialog;
++	RECT rcWorkArea, rcDlg;
++	int ixPos, iyPos;
++	int iNumPerCol;
++	
++	hDialog = CreateDialog(hModule, MAKEINTRESOURCE(uiDialog), NULL, (DLGPROC)sdAlertProc);
++
++	SystemParametersInfo(SPI_GETWORKAREA, 0, &rcWorkArea, 0);
++	GetWindowRect(hDialog, &rcDlg);
++
++	iNumPerCol = ((rcWorkArea.bottom - rcWorkArea.top) / (rcDlg.bottom - rcDlg.top));
++	ixPos = rcWorkArea.right - (rcDlg.right - rcDlg.left) + 1;
++	iyPos = rcWorkArea.bottom - (rcDlg.bottom - rcDlg.top);
++
++	if((g_iAlerts >= iNumPerCol) && (iNumPerCol > 0))
++	{
++		ixPos -= ((g_iAlerts / iNumPerCol) * (rcDlg.right - rcDlg.left));
++		iyPos -= ((g_iAlerts - (iNumPerCol * (g_iAlerts / iNumPerCol))) * (rcDlg.bottom - rcDlg.top));
++	}
++	else
++	{
++		iyPos -= (g_iAlerts * (rcDlg.bottom - rcDlg.top));
++	}
++	SetWindowPos(hDialog, HWND_TOPMOST, ixPos, iyPos, 0, 0, SWP_NOSIZE | SWP_NOACTIVATE);
++	
++	ConvertString(szName, wszName, 64);
++	ConvertString(szMsg, wszMsg, 256);
++
++	SetWindowText(hDialog, wszName);
++	SetDlgItemText(hDialog, IDC_ALERT_MSG, wszMsg);
++	ShowWindow(hDialog, SW_SHOWNA);
++
++	if(iTime > 0)
++	{
++		SetTimer(hDialog, 1, iTime, NULL);
++	}
++
++	g_iAlerts++;
++}
++
++void sdCloseAlerts()
++{
++	PostMessage(HWND_BROADCAST, RegisterWindowMessage(TEXT("xTray:CloseAllAlertWindows")), 0, 0);
++}
++
++LRESULT CALLBACK sdAlertProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
++{
++	switch(msg)
++	{
++	case WM_CLOSE:
++		if(g_iAlerts > 0){ g_iAlerts--; }
++		DestroyWindow(hwnd);
++		return TRUE;
++		break;
++	case WM_TIMER:
++		if(g_iAlerts > 0){ g_iAlerts--; }
++		AnimateWindow(hwnd, 600, AW_SLIDE | AW_HIDE | AW_VER_POSITIVE);
++		DestroyWindow(hwnd);
++		return TRUE;
++		break;
++	default:
++		if(msg == RegisterWindowMessage(TEXT("xTray:CloseAllAlertWindows")))
++		{
++			if(g_iAlerts > 0){ g_iAlerts--; }
++			DestroyWindow(hwnd);
++			return TRUE;
++		}
++		break;
++	}
++
++	return FALSE;
++}
++
++int sdAlertNum()
++{
++	return g_iAlerts;
++}
+\ No newline at end of file
+diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/xtray/sdAlerts.h xchat-wdk/plugins/xtray/sdAlerts.h
+--- xchat-wdk.orig/plugins/xtray/sdAlerts.h	1970-01-01 01:00:00 +0100
++++ xchat-wdk/plugins/xtray/sdAlerts.h	2005-05-28 18:38:16 +0200
+@@ -0,0 +1,26 @@
++/* X-Tray
++ * Copyright (C) 2005 Michael Hotaling <Mike.Hotaling@SinisterDevelopments.com>
++ *
++ * X-Tray is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ * 
++ * X-Tray is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ * 
++ * You should have received a copy of the GNU General Public License
++ * along with X-Tray; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ */
++
++#ifndef _H_SDALERTS_H
++#define _H_SDALERTS_H
++
++void				sdSystemAlert	(HINSTANCE, UINT, char *, char *, UINT);
++LRESULT CALLBACK	sdAlertProc		(HWND, UINT, WPARAM, LPARAM);
++int					sdAlertNum		();
++void				sdCloseAlerts	();
++#endif
+\ No newline at end of file
+diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/xtray/sdTray.cpp xchat-wdk/plugins/xtray/sdTray.cpp
+--- xchat-wdk.orig/plugins/xtray/sdTray.cpp	1970-01-01 01:00:00 +0100
++++ xchat-wdk/plugins/xtray/sdTray.cpp	2005-07-16 20:58:58 +0200
+@@ -0,0 +1,207 @@
++/* X-Tray
++ * Copyright (C) 2005 Michael Hotaling <Mike.Hotaling@SinisterDevelopments.com>
++ *
++ * X-Tray is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ * 
++ * X-Tray is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ * 
++ * You should have received a copy of the GNU General Public License
++ * along with X-Tray; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ */
++#define _WIN32_IE 0x601
++#include <windows.h>
++#include <stdio.h>
++#include <tchar.h>
++#include "sdTray.h"
++#include "utility.h"
++
++HANDLE hThread;
++iBlink *tData	= NULL;
++
++int AddIcon(HWND hwnd, UINT id, HICON hicon, char *szTip, unsigned short flags, unsigned int cbMsg)
++{
++	NOTIFYICONDATA nidata;
++
++	nidata.cbSize			= NOTIFYICONDATA_V2_SIZE;
++	nidata.hIcon			= hicon;
++	nidata.hWnd				= hwnd;
++	nidata.uCallbackMessage = cbMsg;
++	nidata.uFlags			= flags;
++	nidata.uID				= id;
++
++	if(szTip != NULL)
++	{
++		TCHAR *szTemp = new TCHAR[64];
++
++		ConvertString(szTip, szTemp, 64);
++		_tcsncpy(nidata.szTip, szTemp, 64);
++
++		delete[] szTemp;
++	}
++
++	return Shell_NotifyIcon(NIM_ADD, &nidata);
++}
++
++int RemoveIcon(HWND hwnd, UINT id)
++{
++	if(hThread != NULL)
++	{
++		TerminateThread(hThread, 0);
++		hThread = NULL;
++
++		delete tData;
++	}
++
++	NOTIFYICONDATA nidata;
++
++	nidata.cbSize = NOTIFYICONDATA_V2_SIZE;
++	nidata.hWnd   = hwnd;
++	nidata.uID    = id;
++
++	return Shell_NotifyIcon(NIM_DELETE, &nidata);
++}
++
++int SetIcon(HWND hwnd, UINT id, HICON hicon)
++{
++	NOTIFYICONDATA nidata;
++
++	nidata.cbSize = NOTIFYICONDATA_V2_SIZE;
++	nidata.hWnd   = hwnd;
++	nidata.uID    = id;
++	nidata.hIcon  = hicon;
++	nidata.uFlags = NIF_ICON;
++
++	return Shell_NotifyIcon(NIM_MODIFY, &nidata);
++}
++
++int SetTooltip(HWND hwnd, UINT id, char *szTip)
++{
++	NOTIFYICONDATA nidata;
++
++	nidata.cbSize = NOTIFYICONDATA_V2_SIZE;
++	nidata.hWnd   = hwnd;
++	nidata.uID    = id;
++	nidata.uFlags = NIF_TIP;
++
++	if(szTip != NULL)
++	{
++		TCHAR *szTemp = new TCHAR[64];
++		ConvertString(szTip, szTemp, 64);
++		_tcsncpy(nidata.szTip, szTemp, 64);
++		delete[] szTemp;
++	}
++
++	return Shell_NotifyIcon(NIM_MODIFY, &nidata);
++}
++
++int ShowBalloon(HWND hwnd, UINT id, char *szInfo, char *szTitle, UINT time, UINT infoFlags)
++{
++	NOTIFYICONDATA nidata;
++
++	nidata.cbSize	= NOTIFYICONDATA_V2_SIZE;
++	nidata.hWnd		= hwnd;
++	nidata.uID		= id;
++	nidata.uFlags	= NIF_INFO;
++	nidata.dwInfoFlags = infoFlags;
++
++	if(time > 0)
++		nidata.uTimeout = time;
++	else
++		nidata.uTimeout = 500000;
++
++	if(szInfo != NULL)
++	{
++		TCHAR *szTemp = new TCHAR[255];
++
++		ConvertString(szInfo, szTemp, 251);
++		szTemp[250] = 0;
++		
++		if(strlen(szInfo) > 255)
++		{
++			_sntprintf(szTemp, 255, _T("%s..."), szTemp);
++		}
++		_tcsncpy(nidata.szInfo, szTemp, 255);
++
++		delete[] szTemp;
++	}
++	if(szTitle != NULL)
++	{
++		TCHAR *wszTitle = new TCHAR[64];
++		ConvertString(szTitle, wszTitle, 64);
++		_tcsncpy(nidata.szInfoTitle, wszTitle, 64);
++		delete[] wszTitle;
++	}
++
++	return Shell_NotifyIcon(NIM_MODIFY, &nidata);
++}
++
++
++DWORD WINAPI BlinkThread(LPVOID lpParam)
++{
++	NOTIFYICONDATA nidata;
++
++	nidata.cbSize = NOTIFYICONDATA_V2_SIZE;
++	nidata.hWnd   = tData->hwnd;
++	nidata.uID    = tData->id;
++	nidata.uFlags = NIF_ICON;
++
++	for(UINT i = 0; i < tData->num; i++)
++	{
++		nidata.hIcon = tData->hBlink;
++		Shell_NotifyIcon(NIM_MODIFY, &nidata);
++
++		Sleep(tData->time);
++
++		nidata.hIcon = tData->hBase;
++		Shell_NotifyIcon(NIM_MODIFY, &nidata);
++
++		Sleep(tData->time);
++	}
++
++	delete tData;
++	hThread = NULL;
++
++	return 0;
++}
++
++int BlinkIcon(HWND hwnd, UINT id, HICON hBase, HICON hBlink, UINT time, UINT num)
++{
++	if(hThread != NULL)
++	{
++		StopBlink(hwnd, id, hBase);
++	}
++
++	DWORD dwThreadID;
++	tData = new iBlink;
++
++	tData->hwnd		= hwnd;
++	tData->id		= id;
++	tData->hBase	= hBase;
++	tData->hBlink	= hBlink;
++	tData->time		= time;
++	tData->num		= num;
++
++	hThread = CreateThread(NULL, 0, BlinkThread, tData, 0, &dwThreadID);
++
++	return 0;
++}
++
++void StopBlink(HWND hwnd, UINT id, HICON hBase)
++{
++	if(hThread != NULL)
++	{
++		TerminateThread(hThread, 0);
++		hThread = NULL;
++
++		delete tData;
++	}
++
++	SetIcon(hwnd, id, hBase);
++}
+\ No newline at end of file
+diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/xtray/sdTray.h xchat-wdk/plugins/xtray/sdTray.h
+--- xchat-wdk.orig/plugins/xtray/sdTray.h	1970-01-01 01:00:00 +0100
++++ xchat-wdk/plugins/xtray/sdTray.h	2005-05-28 19:37:18 +0200
+@@ -0,0 +1,39 @@
++/* X-Tray
++ * Copyright (C) 2005 Michael Hotaling <Mike.Hotaling@SinisterDevelopments.com>
++ *
++ * X-Tray is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ * 
++ * X-Tray is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ * 
++ * You should have received a copy of the GNU General Public License
++ * along with X-Tray; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ */
++
++#ifndef _H_SDTRAY_H
++#define _H_SDTRAY_H
++
++int				AddIcon		(HWND, UINT, HICON, char *, unsigned short, UINT);
++int				ShowBalloon	(HWND, UINT, char *, char *, UINT, UINT);
++int				BlinkIcon	(HWND, UINT, HICON, HICON, UINT, UINT);
++int				SetTooltip	(HWND, UINT, char *);
++int				SetIcon		(HWND, UINT, HICON);
++void			StopBlink	(HWND, UINT, HICON);
++int				RemoveIcon	(HWND, UINT);
++
++typedef struct IBLINK
++{
++	HICON hBase;
++	HICON hBlink;
++	HWND hwnd;
++	UINT id;
++	UINT time;
++	UINT num;
++}iBlink;
++#endif
+\ No newline at end of file
+diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/xtray/utility.cpp xchat-wdk/plugins/xtray/utility.cpp
+--- xchat-wdk.orig/plugins/xtray/utility.cpp	1970-01-01 01:00:00 +0100
++++ xchat-wdk/plugins/xtray/utility.cpp	2010-03-30 12:39:21 +0200
+@@ -0,0 +1,568 @@
++/* X-Tray
++ * Copyright (C) 2005 Michael Hotaling <Mike.Hotaling@SinisterDevelopments.com>
++ *
++ * X-Tray is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ * 
++ * X-Tray is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ * 
++ * You should have received a copy of the GNU General Public License
++ * along with X-Tray; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ */
++
++#include <windows.h>
++#include <stdio.h>
++#include <commctrl.h>
++#include <tchar.h>
++#include "utility.h"
++#include "plugin.h"
++#include "xtray.h"
++#include "callbacks.h"
++#include "resource.h"
++
++TCHAR BACKUP_INI_FILE[] = _T(".\\plugins\\config\\xTray.ini");
++struct HOTKEY g_hHotKey;
++
++void SavePrefs(int iDlg)
++{
++	/**************************************************************************************************/
++	/********** allocate space for our string, and then set it to the currently logged on user ********/
++	/**************************************************************************************************/
++	DWORD dBuff = 257;
++	TCHAR szUser[257];
++
++	GetUserName(szUser, &dBuff);
++
++	/**************************************************************************************************/
++	/*********************** Test if the file exists, If it doesn't, Create It ************************/
++	/**************************************************************************************************/
++	TCHAR XTRAY_INI_FILE[1024];
++	
++#ifdef UNICODE
++	char temp[1024];
++    TCHAR TEMP_INI_FILE[1024];
++	
++	_snprintf(temp, 1024, "%s\\xtray.ini", xchat_get_info(ph, "xchatdir"));
++	ConvertString(temp, TEMP_INI_FILE, 1024);
++
++	// ok this one is really ugly
++	// it checks to see if the file exists in two locations
++	// X-Chat default config dir, if that fails it trys xchat\plugins\config
++	// if neither one exists it tries to create it in
++	// X-Chat default config dir, if that fails it trys xchat\plugins\config
++	// In either case it writes \xFF\xFE to the file ( on creation )
++	// so that we can save unicode away messages WritePrivateProfile doesn't 
++	// do this for us, though I think it really should
++
++	if(FileExists(TEMP_INI_FILE))
++	{
++		_tcscpy(XTRAY_INI_FILE, TEMP_INI_FILE);
++	}
++	else
++	{
++		if(FileExists(BACKUP_INI_FILE))
++		{
++			_tcscpy(XTRAY_INI_FILE, BACKUP_INI_FILE);
++		}
++		else
++		{
++			HANDLE xTemp;
++			DWORD dwBytesTemp;
++
++			if(xTemp = CreateFile(TEMP_INI_FILE, GENERIC_WRITE, FILE_SHARE_READ, NULL, CREATE_NEW, FILE_ATTRIBUTE_NORMAL, NULL))
++			{
++				if(GetLastError() != ERROR_ALREADY_EXISTS)
++				{
++					WriteFile(xTemp, _T("\xFF\xFE"), 4, &dwBytesTemp, NULL);
++				}
++				CloseHandle(xTemp);
++			}
++
++			if(FileExists(TEMP_INI_FILE))
++			{
++				_tcscpy(XTRAY_INI_FILE, TEMP_INI_FILE);
++			}
++			else
++			{
++				HANDLE xBackup;
++				DWORD dwBytesBackup;
++
++				if(xBackup = CreateFile(TEMP_INI_FILE, GENERIC_WRITE, FILE_SHARE_READ, NULL, CREATE_NEW, FILE_ATTRIBUTE_NORMAL, NULL))
++				{
++					if(GetLastError() != ERROR_ALREADY_EXISTS)
++					{
++						WriteFile(xBackup, _T("\xFF\xFE"), 4, &dwBytesBackup, NULL);
++					}
++
++					CloseHandle(xBackup);
++				}
++
++				if(FileExists(BACKUP_INI_FILE))
++				{
++					_tcscpy(XTRAY_INI_FILE, BACKUP_INI_FILE);
++				}
++			}
++		}
++	}
++
++#else
++	_tcscpy(XTRAY_INI_FILE, BACKUP_INI_FILE);
++#endif
++
++	WritePrivateProfileInt(szUser, _T("SETTINGS"),		g_dwPrefs,		XTRAY_INI_FILE);
++	WritePrivateProfileInt(szUser, _T("AOT"),			g_iTime,		XTRAY_INI_FILE);
++	WritePrivateProfileInt(szUser, _T("KEY"),			g_hHotKey.key,	XTRAY_INI_FILE);
++	WritePrivateProfileInt(szUser, _T("MOD"),			g_hHotKey.mod,	XTRAY_INI_FILE);
++	WritePrivateProfileString(szUser, _T("AWAY"),		g_szAway,		XTRAY_INI_FILE);
++}
++
++void LoadPrefs()
++{
++	/**************************************************************************************************/
++	/*********************** Our Settings Section *****************************************************/
++	/**************************************************************************************************/
++	DWORD dBuff = 257;
++	TCHAR szUser[257];
++
++	GetUserName(szUser, &dBuff);
++
++	/**************************************************************************************************/
++	/*********************** Test if the file exists, If it doesn't, Create It ************************/
++	/**************************************************************************************************/
++	TCHAR XTRAY_INI_FILE[1024];
++
++#ifdef UNICODE
++	char temp[1024];
++	TCHAR TEMP_INI_FILE[1024];
++
++	_snprintf(temp, 1024, "%s\\xtray.ini", xchat_get_info(ph, "xchatdir"));
++	ConvertString(temp, TEMP_INI_FILE, 1024);
++
++	if(FileExists(TEMP_INI_FILE))
++	{
++		_tcscpy(XTRAY_INI_FILE, TEMP_INI_FILE);
++	}
++	else
++	{
++		if(FileExists(BACKUP_INI_FILE))
++		{
++			_tcscpy(XTRAY_INI_FILE, BACKUP_INI_FILE);
++		}
++		else
++		{
++			HANDLE xTemp;
++			DWORD dwBytesTemp;
++
++			if(xTemp = CreateFile(TEMP_INI_FILE, GENERIC_WRITE, FILE_SHARE_READ, NULL, CREATE_NEW, FILE_ATTRIBUTE_NORMAL, NULL))
++			{
++				if(GetLastError() != ERROR_ALREADY_EXISTS)
++				{
++					WriteFile(xTemp, _T("\xFF\xFE"), 4, &dwBytesTemp, NULL);
++				}
++
++				CloseHandle(xTemp);
++			}
++
++			if(FileExists(TEMP_INI_FILE))
++			{
++				_tcscpy(XTRAY_INI_FILE, TEMP_INI_FILE);
++			}
++			else
++			{
++				HANDLE xBackup;
++				DWORD dwBytesBackup;
++
++				if(xBackup = CreateFile(TEMP_INI_FILE, GENERIC_WRITE, FILE_SHARE_READ, NULL, CREATE_NEW, FILE_ATTRIBUTE_NORMAL, NULL))
++				{
++					if(GetLastError() != ERROR_ALREADY_EXISTS)
++					{
++						WriteFile(xBackup, _T("\xFF\xFE"), 4, &dwBytesBackup, NULL);
++					}
++
++					CloseHandle(xBackup);
++				}
++
++				if(FileExists(BACKUP_INI_FILE))
++				{
++					_tcscpy(XTRAY_INI_FILE, BACKUP_INI_FILE);
++				}
++			}
++		}
++	}
++
++#else
++	_tcscpy(XTRAY_INI_FILE, BACKUP_INI_FILE);
++#endif
++
++	/**************************************************************************************************/
++	/*************************** Get the value for each of our preferances ****************************/
++	/**************************************************************************************************/
++	g_dwPrefs = GetPrivateProfileInt(szUser, _T("SETTINGS"),	0,  XTRAY_INI_FILE);
++
++	// backwards compatability
++	// also allows us to set defaults if its a new installation
++	if(g_dwPrefs == 0)
++	{
++		g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("HILIGHT"),		1,  XTRAY_INI_FILE)<<1);
++		g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("INVITE"),		1,  XTRAY_INI_FILE)<<2);
++		g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("TOPIC"),		1,  XTRAY_INI_FILE)<<3);
++		g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("BANNED"),		1,  XTRAY_INI_FILE)<<4);
++		g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("KICKED"),		1,  XTRAY_INI_FILE)<<5);
++		g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("CTCP"),		1,  XTRAY_INI_FILE)<<6);
++		g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("PMSG"),		1,  XTRAY_INI_FILE)<<7);
++		g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("KILLED"),		1,  XTRAY_INI_FILE)<<8);
++		g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("NOTICE"),		1,  XTRAY_INI_FILE)<<9);
++		g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("DISCONNECT"),	1,  XTRAY_INI_FILE)<<10);
++
++		g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("AOM"),			0,  XTRAY_INI_FILE)<<11);
++		g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("TOT"),			1,  XTRAY_INI_FILE)<<12);
++		g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("AMAE"),		1,  XTRAY_INI_FILE)<<13);
++		g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("OSBWM"),		0,  XTRAY_INI_FILE)<<14);
++		g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("UWIOB"),		0,  XTRAY_INI_FILE)<<15);
++		g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("KAOI"),		0,  XTRAY_INI_FILE)<<16);
++		g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("MIOC"),		0,  XTRAY_INI_FILE)<<17);
++	}
++	
++	g_hHotKey.key	= GetPrivateProfileInt(szUser, _T("KEY"),	84, XTRAY_INI_FILE);
++	g_hHotKey.mod	= GetPrivateProfileInt(szUser, _T("MOD"),	(MOD_CONTROL | MOD_SHIFT),  XTRAY_INI_FILE);
++	g_iTime			= GetPrivateProfileInt(szUser, _T("AOT"),	5,  XTRAY_INI_FILE);
++
++	GetPrivateProfileString(szUser, _T("AWAY"), _T(""),	g_szAway, 1024, XTRAY_INI_FILE);
++	
++	/**************************************************************************************************/
++	/******************************** Register our hotkey with windows ********************************/
++	/**************************************************************************************************/
++	if(g_dwPrefs & (1<<PREF_UWIOB))
++	{
++		RegisterHotKey(g_hHotkeyWnd, 1, g_hHotKey.mod, g_hHotKey.key);
++	}
++}
++
++void CheckPrefs(HWND hwnd, int iDlg)
++{
++	/**************************************************************************************************/
++	/**************** save the preferances based on the checkmarks/options ****************************/
++	/**************************************************************************************************/
++	switch(iDlg)
++	{
++	case IDD_EVENTS:
++		{
++			SetOption(hwnd, CHAN_HILIGHT,		CHAN_HILIGHT);
++			SetOption(hwnd, CHAN_INVITE,		CHAN_INVITE);
++			SetOption(hwnd, CHAN_TOPIC_CHANGE,	CHAN_TOPIC_CHANGE);
++			SetOption(hwnd, CHAN_BANNED,		CHAN_BANNED);
++			SetOption(hwnd, CHAN_KICKED,		CHAN_KICKED);
++			SetOption(hwnd, CTCP_GENERIC,		CTCP_GENERIC);
++			SetOption(hwnd, PMSG_RECEIVE,		PMSG_RECEIVE);
++			SetOption(hwnd, SERV_KILLED,		SERV_KILLED);
++			SetOption(hwnd, SERV_NOTICE,		SERV_NOTICE);
++			SetOption(hwnd, SERV_DISCONNECT,	SERV_DISCONNECT);
++		}
++		break;
++	case IDD_ALERTS:
++		{
++			SetOption(hwnd, PREF_AMAE,	PREF_AMAE);
++			SetOption(hwnd, PREF_OSBWM,	PREF_OSBWM);
++			SetOption(hwnd, PREF_UWIOB,	PREF_UWIOB);
++			SetOption(hwnd, PREF_KAOI,	PREF_KAOI);
++			SetOption(hwnd, PREF_BLINK,	PREF_BLINK);
++
++			/**************************************************************************/
++			/**************************************************************************/
++			/**************************************************************************/
++			TCHAR tTime[512];
++
++			GetWindowText(GetDlgItem(hwnd, IDC_ALERT_TIME), tTime, 511);
++			
++			g_iTime = _tstoi(tTime);
++			
++			/**************************************************************************/
++			/**************** Get our Hotkey and save it                     **********/
++			/**************** then remove the old hotkey and add the new one **********/
++			/**************************************************************************/
++			DWORD hHotkey;
++			hHotkey = SendDlgItemMessage(hwnd, IDC_ALERT_HOTKEY, HKM_GETHOTKEY, 0, 0);
++			
++			g_hHotKey.key = LOBYTE(hHotkey);
++			g_hHotKey.mod = HIBYTE(hHotkey);
++			
++			if(IsDlgButtonChecked(hwnd, PREF_UWIOB) == BST_CHECKED)
++			{
++				UnregisterHotKey(g_hHotkeyWnd, 1);
++				RegisterHotKey(g_hHotkeyWnd, 1, g_hHotKey.mod, g_hHotKey.key);
++			}
++			else
++			{
++				UnregisterHotKey(g_hHotkeyWnd, 1);
++			}
++
++			/*************************************************************************/
++			/*********** Get and save the away msg and alert time ********************/
++			/*************************************************************************/
++		}
++		break;
++	case IDD_SETTINGS:
++		{
++			SetOption(hwnd, PREF_AOM, PREF_AOM);
++			SetOption(hwnd, PREF_TOT, PREF_TOT);
++			SetOption(hwnd, PREF_MIOC, PREF_MIOC);
++			SetOption(hwnd, PREF_DNSIT, PREF_DNSIT);
++
++			GetDlgItemText(hwnd, IDC_AWAY_MSG, g_szAway, 511);
++
++			if(g_dwPrefs & (1<<PREF_DNSIT))
++			{
++				DWORD dwStyle;
++				dwStyle = GetWindowLong(g_hXchatWnd, GWL_STYLE);
++				dwStyle |= (1<<WS_CHILD);
++				SetWindowLong(g_hXchatWnd, GWL_STYLE, dwStyle);
++#ifdef _WIN64
++				SetWindowLong(g_hXchatWnd, GWLP_HWNDPARENT, (long)g_hHotkeyWnd);
++#else
++				SetWindowLong(g_hXchatWnd, GWL_HWNDPARENT, (long)g_hHotkeyWnd);
++#endif
++			}
++			else
++			{
++				DWORD dwStyle;
++				dwStyle = GetWindowLong(g_hXchatWnd, GWL_STYLE);
++				dwStyle &= ~(1<<WS_CHILD);
++				SetWindowLong(g_hXchatWnd, GWL_STYLE, dwStyle);
++#ifdef _WIN64
++				SetWindowLong(g_hXchatWnd, GWLP_HWNDPARENT, NULL);
++#else
++				SetWindowLong(g_hXchatWnd, GWL_HWNDPARENT, NULL);
++#endif
++			}
++		}
++		break;
++	} 
++}
++
++void SetDialog(HWND hwnd, int iDlg)
++{
++	switch(iDlg)
++	{
++	case IDD_EVENTS:
++		{
++			SetCheck(hwnd, CHAN_HILIGHT,		CHAN_HILIGHT);
++			SetCheck(hwnd, CHAN_INVITE,			CHAN_INVITE);
++			SetCheck(hwnd, CHAN_TOPIC_CHANGE,	CHAN_TOPIC_CHANGE);
++			SetCheck(hwnd, CHAN_BANNED,			CHAN_BANNED);
++			SetCheck(hwnd, CHAN_KICKED,			CHAN_KICKED);
++			SetCheck(hwnd, CTCP_GENERIC,		CTCP_GENERIC);
++			SetCheck(hwnd, PMSG_RECEIVE,		PMSG_RECEIVE);
++			SetCheck(hwnd, SERV_KILLED,			SERV_KILLED);
++			SetCheck(hwnd, SERV_NOTICE,			SERV_NOTICE);
++			SetCheck(hwnd, SERV_DISCONNECT,		SERV_DISCONNECT);
++		}
++		break;
++	case IDD_SETTINGS:
++		{
++			SetCheck(hwnd, PREF_TOT,	PREF_TOT);
++			SetCheck(hwnd, PREF_MIOC,	PREF_MIOC);
++			SetCheck(hwnd, PREF_AOM,	PREF_AOM);
++			SetCheck(hwnd, PREF_DNSIT,	PREF_DNSIT);
++
++			SetDlgItemText(hwnd, IDC_AWAY_MSG, g_szAway);
++		}
++		break;
++	case IDD_ALERTS:
++		{
++			
++			SetCheck(hwnd, PREF_BLINK,	PREF_BLINK);
++			SetCheck(hwnd, PREF_OSBWM,	PREF_OSBWM);
++			SetCheck(hwnd, PREF_UWIOB,	PREF_UWIOB);
++			SetCheck(hwnd, PREF_KAOI,	PREF_KAOI);
++
++			/**********************************************************/
++			/**********************************************************/
++			/**********************************************************/
++			if(SetCheck(hwnd, PREF_AMAE, PREF_AMAE) == false)
++			{
++				SetToggle(hwnd, PREF_OSBWM,				PREF_AMAE, TRUE);
++				SetToggle(hwnd, PREF_UWIOB,				PREF_AMAE, TRUE);
++				SetToggle(hwnd, PREF_KAOI,				PREF_AMAE, TRUE);
++				SetToggle(hwnd, IDC_ALERT_TIME,			PREF_AMAE, TRUE);
++				SetToggle(hwnd, IDC_ALERT_TIME_TEXT,	PREF_AMAE, TRUE);
++				SetToggle(hwnd, IDC_ALERT_HOTKEY,		PREF_AMAE, TRUE);
++				SetToggle(hwnd, IDC_ALERT_HOTKEY_TEXT,	PREF_AMAE, TRUE);
++			}
++			else
++			{
++
++				SetToggle(hwnd, IDC_ALERT_HOTKEY,		PREF_UWIOB, TRUE);
++				SetToggle(hwnd, IDC_ALERT_HOTKEY_TEXT,	PREF_UWIOB, TRUE);
++				SetToggle(hwnd, IDC_ALERT_TIME,			PREF_KAOI, FALSE);
++				SetToggle(hwnd, IDC_ALERT_TIME_TEXT,	PREF_KAOI, FALSE);
++			}
++
++			/**********************************************************/
++			/**********************************************************/
++			/**********************************************************/
++			TCHAR tTime[255];
++			SendDlgItemMessage(hwnd, IDC_ALERT_TIME,	WM_SETTEXT, 0, (LPARAM)_itot(g_iTime, tTime, 10));
++			SendDlgItemMessage(hwnd, IDC_ALERT_HOTKEY,	HKM_SETHOTKEY, MAKEWORD(g_hHotKey.key, g_hHotKey.mod), 0);
++		}
++		break;
++	}
++}
++
++int SetCheck(HWND hDialog, unsigned int uiCheckBox, unsigned int uiPref)
++{
++	if((g_dwPrefs & (1<<uiPref)))
++	{
++		CheckDlgButton(hDialog, uiCheckBox, BST_CHECKED);
++		return 1;
++	}
++	else
++	{
++		CheckDlgButton(hDialog, uiCheckBox, BST_UNCHECKED);
++		return 0;
++	}
++
++	return 0;
++}
++
++int SetToggle(HWND hDialog, unsigned int uiCheckBox, unsigned int uiTestbox, bool offeqoff)
++{
++	/**************************************************************************************************/
++	/*********************** if(true) then if option is off turn toggle off ***************************/
++	/*********************** if(false) then if option is off turn toggle on ***************************/
++	/**************************************************************************************************/
++	if(offeqoff)
++	{
++		if(IsDlgButtonChecked(hDialog, uiTestbox) == BST_CHECKED)
++		{
++			EnableWindow(GetDlgItem(hDialog, uiCheckBox), TRUE);
++			return 1;
++		}
++		else
++		{
++			EnableWindow(GetDlgItem(hDialog, uiCheckBox), FALSE);
++			return 0;
++		}
++	}
++	else
++	{
++		if(IsDlgButtonChecked(hDialog, uiTestbox) == BST_CHECKED)
++		{
++			EnableWindow(GetDlgItem(hDialog, uiCheckBox), FALSE);
++			return 1;
++		}
++		else
++		{
++			EnableWindow(GetDlgItem(hDialog, uiCheckBox), TRUE);
++			return 0;
++		}
++	}
++
++	return 0;
++}
++
++int SetOption(HWND hDialog, unsigned int uiCheckBox, unsigned int uiPref)
++{
++	if(IsDlgButtonChecked(hDialog, uiCheckBox) == BST_CHECKED)
++	{
++		g_dwPrefs |= (1<<uiPref);
++	}
++	else
++	{
++		g_dwPrefs &= ~(1<<uiPref);
++	}
++
++	return (g_dwPrefs & (1<<uiPref));
++}
++
++int WritePrivateProfileIntA(char *szSection, char *szItem, int iData, char *szPath)
++{
++	char szData[33];
++	itoa(iData, szData, 10);
++	return WritePrivateProfileStringA(szSection, szItem, szData, szPath);
++}
++
++int WritePrivateProfileIntW(wchar_t *wszSection, wchar_t *wszItem, int iData, wchar_t *wszPath)
++{
++	wchar_t wszData[33];
++	_itow(iData, wszData, 10);
++	return WritePrivateProfileStringW(wszSection, wszItem, wszData, wszPath);
++}
++
++// For cleanup ( Closing windows and the such )
++void HoldClose()
++{
++	HANDLE hcThread;
++	DWORD dwThreadID;
++	hcThread = CreateThread(NULL, 0, HoldCloseThread, 0, 0, &dwThreadID);
++}
++
++DWORD WINAPI HoldCloseThread(LPVOID lpParam)
++{
++	Sleep(1000);
++	PostMessage(g_hXchatWnd, WM_CLOSE, 0, 0);
++	return 0;
++}
++
++bool FileExists(TCHAR *file)
++{
++	HANDLE hTemp = CreateFile(file, GENERIC_READ, FILE_SHARE_READ, NULL, OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL);
++	int nRet = GetLastError();
++	CloseHandle(hTemp);
++
++	if(nRet == 0)
++	{
++		return true;
++	}
++	else
++	{
++		return false;
++	}
++
++	return false;
++}
++
++void ConvertString(const char *in, wchar_t *out, int size)
++{
++	MultiByteToWideChar(CP_UTF8, 0, in,  -1, out, size);
++}
++
++void ConvertString(const wchar_t *in, char *out, int size)
++{
++	WideCharToMultiByte(CP_UTF8, 0, in, (size - 1), out, size, NULL, NULL);
++}
++
++void ConvertString(const char *in, char *out, int size)
++{
++	strncpy(out, in, size);
++}
++
++void ErrorDebug(LPTSTR lpszFunction)
++{ 
++    TCHAR szBuf[80]; 
++    LPVOID lpMsgBuf;
++    DWORD dw = GetLastError(); 
++
++    FormatMessage(
++        FORMAT_MESSAGE_ALLOCATE_BUFFER | 
++        FORMAT_MESSAGE_FROM_SYSTEM,
++        NULL,
++        dw,
++        MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
++        (LPTSTR) &lpMsgBuf,
++        0, NULL );
++
++    _stprintf(szBuf, 
++        _T("%s failed with error %d: %s"), 
++        lpszFunction, dw, lpMsgBuf); 
++ 
++    MessageBox(NULL, szBuf, _T("Error"), MB_OK); 
++
++    LocalFree(lpMsgBuf);
++}
++
+diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/xtray/utility.h xchat-wdk/plugins/xtray/utility.h
+--- xchat-wdk.orig/plugins/xtray/utility.h	1970-01-01 01:00:00 +0100
++++ xchat-wdk/plugins/xtray/utility.h	2005-05-28 19:44:36 +0200
+@@ -0,0 +1,52 @@
++/* X-Tray
++ * Copyright (C) 2005 Michael Hotaling <Mike.Hotaling@SinisterDevelopments.com>
++ *
++ * X-Tray is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ * 
++ * X-Tray is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ * 
++ * You should have received a copy of the GNU General Public License
++ * along with X-Tray; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ */
++
++#ifndef _H_UTILITY_H
++#define _H_UTILITY_H
++
++int						SetOption		(HWND, unsigned int, unsigned int);
++int						SetCheck		(HWND, unsigned int, unsigned int);
++int						SetToggle		(HWND, unsigned int, unsigned int, bool);
++void					ErrorDebug		(LPTSTR lpszFunction);
++void					SetDialog		(HWND, int);
++void					CheckPrefs		(HWND, int);
++bool					FileExists		(TCHAR *);
++DWORD WINAPI			HoldCloseThread	(LPVOID);
++void					SavePrefs		(int);
++void					LoadPrefs		();
++void					HoldClose		();
++
++void ConvertString(const char *in,		wchar_t *out,	int size);
++void ConvertString(const wchar_t *in,	char *out,		int size);
++void ConvertString(const char *in,		char *out,		int size);
++
++int WritePrivateProfileIntA(char *, char *, int, char *);
++int WritePrivateProfileIntW(wchar_t *, wchar_t *, int, wchar_t *);
++
++#ifdef UNICODE
++#define WritePrivateProfileInt WritePrivateProfileIntW
++#else
++#define WritePrivateProfileInt WritePrivateProfileIntA
++#endif
++
++struct HOTKEY
++{
++	WORD key;
++	WORD mod;
++};
++#endif
+\ No newline at end of file
+diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/xtray/xchat.cpp xchat-wdk/plugins/xtray/xchat.cpp
+--- xchat-wdk.orig/plugins/xtray/xchat.cpp	1970-01-01 01:00:00 +0100
++++ xchat-wdk/plugins/xtray/xchat.cpp	2005-10-24 19:35:18 +0200
+@@ -0,0 +1,319 @@
++/* X-Tray
++ * Copyright (C) 1998, 2005 Peter Zelezny, Michael Hotaling <Mike.Hotaling@SinisterDevelopments.com>
++ *
++ * X-Tray is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ * 
++ * X-Tray is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ * 
++ * You should have received a copy of the GNU General Public License
++ * along with X-Tray; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ */
++
++#include <windows.h>
++#include <vector>
++#include <algorithm>
++#include <stdio.h>
++#include <tchar.h>
++#include "plugin.h"
++#include "xtray.h"
++#include "resource.h"
++#include "xchat.h"
++#include "utility.h"
++
++// from util.c of xchat source code ( slightly modified to fit X-Tray Syntax )
++char *xchat_strip_color (char *text)
++{
++	int nc	= 0;
++	int i	= 0;
++	int col	= 0;
++	int len	= strlen(text);
++	char *new_str = (char *)malloc(len + 2);
++
++	while (len > 0)
++	{
++		if ((col && isdigit(*text) && (nc < 2)) || (col && isdigit(*(text+1)) && (nc < 3) && (*text == ',')))
++		{
++			nc++;
++
++			if(*text == ',')
++			{
++				nc = 0;
++			}
++		}
++		else
++		{
++			col = 0;
++
++			switch (*text)
++			{
++			case '\003':			  /*ATTR_COLOR: */
++				{
++					col = 1;
++					nc = 0;
++				}
++				break;
++			case '\007':			  /*ATTR_BEEP: */
++			case '\017':			  /*ATTR_RESET: */
++			case '\026':			  /*ATTR_REVERSE: */
++			case '\002':			  /*ATTR_BOLD: */
++			case '\037':			  /*ATTR_UNDERLINE: */
++				break;
++			default:
++				{
++					new_str[i] = *text;
++					i++;
++				}
++				break;
++			}
++		}
++
++		text++;
++		len--;
++	}
++
++	new_str[i] = 0;
++
++	return new_str;
++}
++
++void check_special_chars (char *cmd)
++{
++	int occur	= 0;
++	int len		= strlen (cmd);
++	int i = 0, j = 0;
++	char *buf;
++
++	if (!len)
++		return;
++
++	buf = (char *)malloc (len + 1);
++
++	if (buf)
++	{
++		while (cmd[j])
++		{
++			switch (cmd[j])
++			{
++			case '%':
++				{
++					occur++;
++
++					switch (cmd[j + 1])
++					{
++					case 'R':
++						buf[i] = '\026';
++						break;
++					case 'U':
++						buf[i] = '\037';
++						break;
++					case 'B':
++						buf[i] = '\002';
++						break;
++					case 'C':
++						buf[i] = '\003';
++						break;
++					case 'O':
++						buf[i] = '\017';
++						break;
++					case '%':
++						buf[i] = '%';
++						break;
++					default:
++						buf[i] = '%';
++						j--;
++						break;
++					}
++
++					j++;
++				}
++				break;
++			default:
++				{
++					buf[i] = cmd[j];
++				}
++				break;
++			}
++
++			j++;
++			i++;
++		}
++
++		buf[i] = 0;
++
++		if (occur)
++			strcpy (cmd, buf);
++
++		free (buf);
++	}
++}
++
++void xchat_globally_away(TCHAR *tszAway)
++{
++	char szTemp[512];
++	char szAway[512];
++
++	ConvertString(tszAway, szAway, 512);
++	_snprintf(szTemp, 512, "ALLSERV AWAY %s\0", szAway);
++	check_special_chars(szTemp);
++	xchat_exec(szTemp);
++}
++
++void xchat_away(TCHAR *tszAway)
++{
++	char szTemp[512];
++	char szAway[512];
++
++	ConvertString(tszAway, szAway, 512);
++	_snprintf(szTemp, 512, szAway);
++	check_special_chars(szTemp);
++	xchat_commandf(ph, "AWAY %s\0", szTemp);
++}
++
++void xchat_globally_back()
++{
++	std::vector<int> xs;
++	std::vector<int>::iterator xsi;
++	xchat_list *xl = xchat_list_get(ph, "channels");
++
++	if(xl)
++	{
++		while(xchat_list_next(ph, xl))
++		{
++			xsi = std::find(xs.begin(), xs.end(), xchat_list_int(ph, xl, "id"));
++
++			if((xsi == xs.end()) &&
++				((strlen(xchat_list_str(ph, xl, "server")) > 0) || 
++				(strlen(xchat_list_str(ph, xl, "channel")) > 0)))
++			{
++				xs.push_back(xchat_list_int(ph, xl, "id"));
++				xchat_set_context(ph, (xchat_context *)xchat_list_str(ph, xl, "context"));
++				xchat_back();
++			}
++		}
++
++		xchat_list_free(ph, xl);
++	}
++}
++
++
++
++void xchat_back()
++{
++	if(xchat_get_info(ph, "away"))
++	{
++		xchat_command(ph, "BACK");
++	}
++}
++
++HMENU setServerMenu()
++{
++	HMENU sTemp = CreateMenu();
++	TCHAR wszServer[128];
++	TCHAR wszNick[128];
++	TCHAR wszMenuEntry[256];
++
++	std::vector<int> xs;
++	std::vector<int>::iterator xsi;
++	xchat_list *xl = xchat_list_get(ph, "channels");
++
++	AppendMenu(sTemp, MF_STRING, ACT_AWAY, _T("Set Globally Away"));
++	AppendMenu(sTemp, MF_STRING, ACT_BACK, _T("Set Globally Back"));
++	AppendMenu(sTemp, MF_SEPARATOR, 0, NULL);
++
++	if(xl)
++	{
++		while(xchat_list_next(ph, xl))
++		{
++			xsi = std::find(xs.begin(), xs.end(), xchat_list_int(ph, xl, "id"));
++
++			if( (xsi == xs.end()) &&
++				((strlen(xchat_list_str(ph, xl, "server")) > 0) || 
++				(strlen(xchat_list_str(ph, xl, "channel")) > 0)))
++			{
++				xchat_set_context(ph, (xchat_context *)xchat_list_str(ph, xl, "context"));
++				xs.push_back(xchat_list_int(ph, xl, "id"));
++
++				char *network	= _strdup(xchat_list_str(ph, xl, "network"));
++				char *server	= _strdup(xchat_list_str(ph, xl, "server"));
++				char *nick		= _strdup(xchat_get_info(ph, "nick"));
++
++				if(network != NULL)
++				{
++					ConvertString(network, wszServer, 128);
++				}
++				else
++				{
++					ConvertString(server, wszServer, 128);
++				}
++
++				if(server != NULL)
++				{
++					ConvertString(nick, wszNick, 128);
++					_sntprintf(wszMenuEntry, 256, _T("%s @ %s\0"), wszNick, wszServer);
++
++					if(!xchat_get_info(ph, "away"))
++					{
++						AppendMenu(sTemp, MF_STRING, (xchat_list_int(ph, xl, "id") + 1), wszMenuEntry);
++					}
++					else
++					{
++						AppendMenu(sTemp, (MF_CHECKED | MF_STRING), (xchat_list_int(ph, xl, "id") + 1), wszMenuEntry);							
++					}
++				}
++
++				free(network);
++				free(server);
++				free(nick);
++			}
++		}
++
++		xchat_list_free(ph, xl);
++	}
++
++	return sTemp;
++}
++
++struct _xchat_context *xchat_find_server(int find_id)
++{
++	xchat_context *xc;
++	xchat_list *xl = xchat_list_get(ph, "channels");
++	int id;
++
++	if(!xl)
++		return NULL;
++
++	while(xchat_list_next(ph, xl))
++	{
++		id = xchat_list_int(ph, xl, "id");
++		
++		if(id == -1)
++		{
++			return NULL;
++		}
++		else if(id == find_id)
++		{
++			xc = (xchat_context *)xchat_list_str(ph, xl, "context");
++			
++			xchat_list_free(ph, xl);
++
++			return xc;
++		}
++	}
++
++	xchat_list_free(ph, xl);
++
++	return NULL;
++}
++
++void xchat_exec(char *command)
++{
++	xchat_set_context(ph, xchat_find_context(ph, NULL, NULL));
++	xchat_command(ph, command);
++}
+\ No newline at end of file
+diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/xtray/xchat.h xchat-wdk/plugins/xtray/xchat.h
+--- xchat-wdk.orig/plugins/xtray/xchat.h	1970-01-01 01:00:00 +0100
++++ xchat-wdk/plugins/xtray/xchat.h	2005-10-24 19:36:42 +0200
+@@ -0,0 +1,32 @@
++/* X-Tray
++ * Copyright (C) 2005 Michael Hotaling <Mike.Hotaling@SinisterDevelopments.com>
++ *
++ * X-Tray is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ * 
++ * X-Tray is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ * 
++ * You should have received a copy of the GNU General Public License
++ * along with X-Tray; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ */
++
++#ifndef _H_XCHAT_H
++#define _H_XCHAT_H
++
++void					xchat_exec			(char *);
++char					*xchat_strip_color	(char *);
++void					xchat_parse			(char *);
++struct _xchat_context	*xchat_find_server	(int);
++void					xchat_globally_away	(TCHAR *);
++void					xchat_away			(TCHAR *);
++void					xchat_globally_back	();
++void					xchat_back			();
++HMENU					setServerMenu		();
++
++#endif
+\ No newline at end of file
+diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/xtray/xtray.cpp xchat-wdk/plugins/xtray/xtray.cpp
+--- xchat-wdk.orig/plugins/xtray/xtray.cpp	1970-01-01 01:00:00 +0100
++++ xchat-wdk/plugins/xtray/xtray.cpp	2010-03-30 12:41:58 +0200
+@@ -0,0 +1,226 @@
++/* X-Tray
++ * Copyright (C) 2005 Michael Hotaling <Mike.Hotaling@SinisterDevelopments.com>
++ *
++ * X-Tray is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ * 
++ * X-Tray is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ * 
++ * You should have received a copy of the GNU General Public License
++ * along with X-Tray; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ */
++
++#define _WIN32_IE 0x0601
++
++#include <windows.h>
++#include <list>
++#include <string>
++#include <shobjidl.h>
++#include "resource.h"
++#include "callbacks.h"
++#include "plugin.h"
++#include "utility.h"
++#include "xtray.h"
++#include "sdTray.h"
++#include "sdAlerts.h"
++#include "plugin.h"
++
++/*****************************************************/
++/**** Don't want to pollute the namespace do we? *****/
++/*****************************************************/
++std::list<xchat_hook *> g_vHooks;
++
++/*****************************************************/
++/************ Global Identifiers *********************/
++/*****************************************************/
++WNDPROC g_hOldProc;
++xchat_plugin *ph;
++
++/*****************************************************/
++/***************** Resources *************************/
++/*****************************************************/
++HWND	g_hXchatWnd;
++HWND	g_hHotkeyWnd;
++HWND	g_hPrefDlg;
++HMENU	g_hTrayMenu;
++HICON	g_hIcons[11];
++HANDLE	g_hInstance;
++/*****************************************************/
++/***************** Preferences ***********************/
++/*****************************************************/
++unsigned int g_dwPrefs;
++TCHAR	g_szAway[512];
++int		g_iTime;
++
++
++BOOL WINAPI DllMain(HANDLE hModule, DWORD fdwReason, LPVOID lpVoid)
++{
++	if((fdwReason == DLL_PROCESS_ATTACH) || (fdwReason == DLL_THREAD_ATTACH))
++	{
++		g_hInstance = hModule;
++	}
++
++	return TRUE;
++}
++
++int xchat_plugin_init(xchat_plugin *plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg)
++{
++	ph = plugin_handle;
++
++	*plugin_name	= "X-Tray";
++	*plugin_desc	= "Minimize X-Chat to the windows systemtray";
++	*plugin_version = "1.2.3 PR";
++
++	/***************************************************************************************************************************/
++	/************************* Load our preferances from xTray.ini *************************************************************/
++	/***************************************************************************************************************************/
++	LoadPrefs();
++
++	/***************************************************************************************************************************/
++	/************************* Finds the xChat window and saves it for later use ***********************************************/
++	/***************************************************************************************************************************/
++	g_hXchatWnd = (HWND)xchat_get_info(ph, "win_ptr");
++
++	if(g_hXchatWnd == NULL)
++	{
++		EnumThreadWindows(GetCurrentThreadId(), EnumWindowsProc, 0);
++	}
++
++	g_hOldProc	= (WNDPROC)GetWindowLongPtr(g_hXchatWnd, GWLP_WNDPROC);
++	SetWindowLong(g_hXchatWnd, GWLP_WNDPROC, (long)WindowProc);
++
++	/***************************************************************************************************************************/	
++	/************************* Grab the xChat Icon, Load our menu, create the window to receive the hotkey messages  ***********/
++	/************************* and register the windows message so we know if explorer crashes                       ***********/
++	/***************************************************************************************************************************/
++	g_hTrayMenu		= GetSubMenu(LoadMenu((HINSTANCE)g_hInstance, MAKEINTRESOURCE(IDR_TRAY_MENU)), 0);
++	g_hHotkeyWnd	= CreateDialog((HINSTANCE)g_hInstance, MAKEINTRESOURCE(IDD_ALERT), NULL,		(DLGPROC)HotKeyProc);
++	g_hPrefDlg		= CreateDialog((HINSTANCE)g_hInstance, MAKEINTRESOURCE(IDD_PREF),  g_hXchatWnd, (DLGPROC)PrefProc);
++
++	g_hIcons[0]	= (HICON)LoadImage((HINSTANCE)g_hInstance, MAKEINTRESOURCE(ICO_XCHAT),			IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
++	g_hIcons[1]	= (HICON)LoadImage((HINSTANCE)g_hInstance, MAKEINTRESOURCE(ICO_CHANMSG),		IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
++	g_hIcons[2]	= (HICON)LoadImage((HINSTANCE)g_hInstance, MAKEINTRESOURCE(ICO_HIGHLIGHT),		IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
++	g_hIcons[5]	= (HICON)LoadImage((HINSTANCE)g_hInstance, MAKEINTRESOURCE(ICO_BANNED),			IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
++	g_hIcons[6]	= (HICON)LoadImage((HINSTANCE)g_hInstance, MAKEINTRESOURCE(ICO_KICKED),			IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
++	g_hIcons[8]	= (HICON)LoadImage((HINSTANCE)g_hInstance, MAKEINTRESOURCE(ICO_PMSG),			IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
++	g_hIcons[10]= (HICON)LoadImage((HINSTANCE)g_hInstance, MAKEINTRESOURCE(ICO_SNOTICE),		IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
++	g_hIcons[11]= (HICON)LoadImage((HINSTANCE)g_hInstance, MAKEINTRESOURCE(ICO_DISCONNECTED),	IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
++
++	/***************************************************************************************************************************/
++	/************************* Add our icon to the tray ************************************************************************/
++	/***************************************************************************************************************************/
++	char szVersion[64];
++	_snprintf(szVersion, 64, "X-Chat [%s]", xchat_get_info(ph, "version"));
++	AddIcon(g_hXchatWnd, 1, g_hIcons[0], szVersion, (NIF_ICON | NIF_MESSAGE | NIF_TIP), WM_TRAYMSG);
++
++	/***************************************************************************************************************************/
++	/***************************************************************************************************************************/
++	/***************************************************************************************************************************/
++	if(g_dwPrefs & (1<<PREF_DNSIT))
++	{
++		DWORD dwStyle;
++		dwStyle = GetWindowLong(g_hXchatWnd, GWL_STYLE);
++		dwStyle |= (1<<WS_CHILD);
++		SetWindowLong(g_hXchatWnd, GWL_STYLE, dwStyle);
++#ifdef _WIN64
++		SetWindowLong(g_hXchatWnd, GWLP_HWNDPARENT, (long)g_hHotkeyWnd);
++#else
++		SetWindowLong(g_hXchatWnd, GWL_HWNDPARENT, (long)g_hHotkeyWnd);
++#endif
++	}
++
++	/***************************************************************************************************************************/
++	/************************* Set our hooks and save them for later so we can unhook them *************************************/
++	/***************************************************************************************************************************/
++	g_vHooks.push_back(xchat_hook_print(ph, "Channel Msg Hilight",			XCHAT_PRI_NORM, event_cb,	(void *)CHAN_HILIGHT));
++	g_vHooks.push_back(xchat_hook_print(ph, "Topic Change",					XCHAT_PRI_NORM, event_cb,	(void *)CHAN_TOPIC_CHANGE));
++	g_vHooks.push_back(xchat_hook_print(ph, "Channel Action Hilight",		XCHAT_PRI_NORM, event_cb,	(void *)CHAN_HILIGHT));
++	g_vHooks.push_back(xchat_hook_print(ph, "Channel INVITE",				XCHAT_PRI_NORM, event_cb,	(void *)CHAN_INVITE));
++	g_vHooks.push_back(xchat_hook_print(ph, "You Kicked",					XCHAT_PRI_NORM, event_cb,	(void *)CHAN_KICKED));
++	g_vHooks.push_back(xchat_hook_print(ph, "Banned",						XCHAT_PRI_NORM, event_cb,	(void *)CHAN_BANNED));
++	g_vHooks.push_back(xchat_hook_print(ph, "CTCP Generic",					XCHAT_PRI_NORM, event_cb,	(void *)CTCP_GENERIC));
++	g_vHooks.push_back(xchat_hook_print(ph, "Private Message",				XCHAT_PRI_NORM, event_cb,	(void *)PMSG_RECEIVE));
++	g_vHooks.push_back(xchat_hook_print(ph, "Private Message to Dialog",	XCHAT_PRI_NORM, event_cb,	(void *)PMSG_RECEIVE));
++	g_vHooks.push_back(xchat_hook_print(ph, "Disconnected",					XCHAT_PRI_NORM, event_cb,	(void *)SERV_DISCONNECT));
++	g_vHooks.push_back(xchat_hook_print(ph, "Killed",						XCHAT_PRI_NORM, event_cb,	(void *)SERV_KILLED));
++	g_vHooks.push_back(xchat_hook_print(ph, "Notice",						XCHAT_PRI_NORM, event_cb,	(void *)SERV_NOTICE));
++	g_vHooks.push_back(xchat_hook_command(ph, "tray_alert",					XCHAT_PRI_NORM, command_cb,	"Create an Alert", NULL));
++
++	return 1;
++}
++
++int xchat_plugin_deinit(xchat_plugin *plugin_handle)
++{
++	/******************************************/
++	/****** Remove the Icon from the tray *****/
++	/******************************************/
++	StopBlink(g_hXchatWnd, 1, g_hIcons[0]);
++	RemoveIcon(g_hXchatWnd, 1);
++	
++	/*******************************************/
++	/*******************************************/
++	/*******************************************/
++	if(g_dwPrefs & (1<<PREF_DNSIT))
++	{
++		DWORD dwStyle;
++		dwStyle = GetWindowLong(g_hXchatWnd, GWL_STYLE);
++		dwStyle &= ~(1<<WS_CHILD);
++		SetWindowLong(g_hXchatWnd, GWL_STYLE, dwStyle);
++#ifdef _WIN64
++		SetWindowLong(g_hXchatWnd, GWLP_HWNDPARENT, NULL);
++#else
++		SetWindowLong(g_hXchatWnd, GWL_HWNDPARENT, NULL);
++#endif
++	}
++
++	/******************************************/
++	/****** Unload our resources **************/
++	/******************************************/
++	DestroyMenu(g_hTrayMenu);
++
++	for(int i = 0; i <= 11; i++)
++	{
++		DestroyIcon(g_hIcons[i]);
++	}
++
++	/******************************************/
++	/****** Remove our window hook ************/
++	/******************************************/
++	SetWindowLong(g_hXchatWnd, GWLP_WNDPROC, (long)g_hOldProc);
++
++	/******************************************/
++	/****** Remove our hotkey, and destroy ****/
++	/****** the window that receives its   ****/
++	/****** messages                       ****/
++	/******************************************/
++	UnregisterHotKey(g_hHotkeyWnd, 1);
++	DestroyWindow(g_hHotkeyWnd);
++	DestroyWindow(g_hPrefDlg);
++
++	/******************************************/
++	/************* Clean up Isle 7 ************/
++	/******************************************/
++	if(sdAlertNum())
++	{
++		sdCloseAlerts();
++	}
++	/******************************************/
++	/****** remove our xchat_hook_*s **********/
++	/******************************************/
++	while(!g_vHooks.empty())
++	{
++		if(g_vHooks.back() != NULL)
++		{
++			xchat_unhook(ph, g_vHooks.back());
++		}
++		g_vHooks.pop_back();
++	}
++
++	return 1;
++}
+diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/xtray/xtray.h xchat-wdk/plugins/xtray/xtray.h
+--- xchat-wdk.orig/plugins/xtray/xtray.h	1970-01-01 01:00:00 +0100
++++ xchat-wdk/plugins/xtray/xtray.h	2005-05-28 19:49:34 +0200
+@@ -0,0 +1,65 @@
++/* X-Tray
++ * Copyright (C) 2005 Michael Hotaling <Mike.Hotaling@SinisterDevelopments.com>
++ *
++ * X-Tray is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ * 
++ * X-Tray is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ * 
++ * You should have received a copy of the GNU General Public License
++ * along with X-Tray; if not, write to the Free Software
++ * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
++ */
++
++#ifndef _XTRAY_H
++#define _XTRAY_H
++
++/******************** Globals *************************/
++extern HWND				g_hXchatWnd;
++extern HWND				g_hHotkeyWnd;
++extern HWND				g_hPrefDlg;
++extern HMENU			g_hTrayMenu;
++extern HICON			g_hIcons[11];
++extern HANDLE			g_hInstance;
++extern unsigned int		g_dwPrefs;
++extern TCHAR			g_szAway[512];
++extern int				g_iTime;
++extern WNDPROC			g_hOldProc;
++extern struct _xchat_plugin *ph;
++/******************************************************/
++
++/******************** Messages ************************/
++#define WM_TRAYMSG WM_APP
++/******************************************************/
++
++/********************* Events *************************/
++#define CHAN_HILIGHT			1
++#define CHAN_INVITE				2
++#define CHAN_TOPIC_CHANGE		3
++#define CHAN_BANNED				4
++#define CHAN_KICKED				5
++
++#define CTCP_GENERIC			6
++#define PMSG_RECEIVE			7
++
++#define SERV_KILLED				8
++#define SERV_NOTICE				9
++#define SERV_DISCONNECT			10
++
++#define PREF_AOM				11 // away on minimize
++#define PREF_TOT				12 // Tray on Taskbar
++#define PREF_AMAE				13 // alert me about events
++#define PREF_OSBWM				14 // Only Show Balloon When Minimized
++#define PREF_UWIOB				15 // Use Window Instead of Balloon
++#define PREF_KAOI				16 // Keep alerts open indefinately
++#define PREF_MIOC				17 // Minimize instead of close
++#define PREF_BLINK				18 // blink icon
++#define PREF_CICO				19 // change icon - not implemented
++#define PREF_DNSIT				20 // Do not show in taskbar
++/******************************************************/
++#endif
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/cfgfiles.c xchat-wdk/src/common/cfgfiles.c
 --- xchat-wdk.orig/src/common/cfgfiles.c	2009-01-02 06:56:12 +0100
 +++ xchat-wdk/src/common/cfgfiles.c	2010-03-29 12:57:41 +0200
 @@ -17,7 +17,6 @@
@@ -495,7 +3723,7 @@ diff -Naur xchat-wdk.orig/src/common/cfgfiles.c xchat-wdk/src/common/cfgfiles.c
  #include <stdlib.h>
  #include <string.h>
  #include <stdio.h>
-diff -Naur xchat-wdk.orig/src/common/chanopt.c xchat-wdk/src/common/chanopt.c
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/chanopt.c xchat-wdk/src/common/chanopt.c
 --- xchat-wdk.orig/src/common/chanopt.c	2008-06-15 06:40:29 +0200
 +++ xchat-wdk/src/common/chanopt.c	2010-03-29 12:58:02 +0200
 @@ -3,7 +3,6 @@
@@ -506,7 +3734,7 @@ diff -Naur xchat-wdk.orig/src/common/chanopt.c xchat-wdk/src/common/chanopt.c
  #include <sys/types.h>
  #include <sys/stat.h>
  #include <fcntl.h>
-diff -Naur xchat-wdk.orig/src/common/ctcp.c xchat-wdk/src/common/ctcp.c
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/ctcp.c xchat-wdk/src/common/ctcp.c
 --- xchat-wdk.orig/src/common/ctcp.c	2006-10-03 06:11:54 +0200
 +++ xchat-wdk/src/common/ctcp.c	2010-03-29 12:57:58 +0200
 @@ -18,7 +18,6 @@
@@ -517,7 +3745,7 @@ diff -Naur xchat-wdk.orig/src/common/ctcp.c xchat-wdk/src/common/ctcp.c
  #include <stdlib.h>
  
  #include "xchat.h"
-diff -Naur xchat-wdk.orig/src/common/dcc.c xchat-wdk/src/common/dcc.c
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/dcc.c xchat-wdk/src/common/dcc.c
 --- xchat-wdk.orig/src/common/dcc.c	2007-02-06 05:45:13 +0100
 +++ xchat-wdk/src/common/dcc.c	2010-03-29 13:17:58 +0200
 @@ -31,7 +31,6 @@
@@ -537,7 +3765,7 @@ diff -Naur xchat-wdk.orig/src/common/dcc.c xchat-wdk/src/common/dcc.c
  #else
  	/* this fstat() shouldn't really fail */
  	if ((dcc->fp == -1 ? stat (dcc->destfile_fs, &st_a) : fstat (dcc->fp, &st_a)) == -1)
-diff -Naur xchat-wdk.orig/src/common/dirent.h xchat-wdk/src/common/dirent.h
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/dirent.h xchat-wdk/src/common/dirent.h
 --- xchat-wdk.orig/src/common/dirent.h	1970-01-01 01:00:00 +0100
 +++ xchat-wdk/src/common/dirent.h	2009-12-15 23:10:54 +0100
 @@ -0,0 +1,230 @@
@@ -771,7 +3999,7 @@ diff -Naur xchat-wdk.orig/src/common/dirent.h xchat-wdk/src/common/dirent.h
 +
 +
 +#endif /*DIRENT_H*/
-diff -Naur xchat-wdk.orig/src/common/identd.c xchat-wdk/src/common/identd.c
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/identd.c xchat-wdk/src/common/identd.c
 --- xchat-wdk.orig/src/common/identd.c	2004-05-24 15:47:58 +0200
 +++ xchat-wdk/src/common/identd.c	2010-03-29 18:04:55 +0200
 @@ -1,6 +1,10 @@
@@ -794,12 +4022,12 @@ diff -Naur xchat-wdk.orig/src/common/identd.c xchat-wdk/src/common/identd.c
  identd_start (char *username)
  {
  	DWORD tid;
-diff -Naur xchat-wdk.orig/src/common/identd.h xchat-wdk/src/common/identd.h
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/identd.h xchat-wdk/src/common/identd.h
 --- xchat-wdk.orig/src/common/identd.h	1970-01-01 01:00:00 +0100
 +++ xchat-wdk/src/common/identd.h	2010-03-29 18:05:16 +0200
 @@ -0,0 +1 @@
 +void identd_start (char *username);
-diff -Naur xchat-wdk.orig/src/common/ignore.c xchat-wdk/src/common/ignore.c
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/ignore.c xchat-wdk/src/common/ignore.c
 --- xchat-wdk.orig/src/common/ignore.c	2006-04-15 09:00:39 +0200
 +++ xchat-wdk/src/common/ignore.c	2010-03-29 12:58:18 +0200
 @@ -19,7 +19,6 @@
@@ -810,7 +4038,7 @@ diff -Naur xchat-wdk.orig/src/common/ignore.c xchat-wdk/src/common/ignore.c
  #include <sys/types.h>
  #include <sys/stat.h>
  #include <fcntl.h>
-diff -Naur xchat-wdk.orig/src/common/inbound.c xchat-wdk/src/common/inbound.c
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/inbound.c xchat-wdk/src/common/inbound.c
 --- xchat-wdk.orig/src/common/inbound.c	2008-03-19 05:28:57 +0100
 +++ xchat-wdk/src/common/inbound.c	2010-03-29 12:58:16 +0200
 @@ -21,7 +21,6 @@
@@ -821,7 +4049,7 @@ diff -Naur xchat-wdk.orig/src/common/inbound.c xchat-wdk/src/common/inbound.c
  #include <time.h>
  
  #define WANTARPA
-diff -Naur xchat-wdk.orig/src/common/inet.h xchat-wdk/src/common/inet.h
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/inet.h xchat-wdk/src/common/inet.h
 --- xchat-wdk.orig/src/common/inet.h	2005-09-03 12:57:48 +0200
 +++ xchat-wdk/src/common/inet.h	2010-03-29 15:36:39 +0200
 @@ -24,9 +24,8 @@
@@ -835,7 +4063,7 @@ diff -Naur xchat-wdk.orig/src/common/inet.h xchat-wdk/src/common/inet.h
  #endif
  
  #define set_blocking(sok)	{ \
-diff -Naur xchat-wdk.orig/src/common/makefile.mak xchat-wdk/src/common/makefile.mak
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/makefile.mak xchat-wdk/src/common/makefile.mak
 --- xchat-wdk.orig/src/common/makefile.mak	1970-01-01 01:00:00 +0100
 +++ xchat-wdk/src/common/makefile.mak	2010-03-29 13:02:00 +0200
 @@ -0,0 +1,13 @@
@@ -852,7 +4080,7 @@ diff -Naur xchat-wdk.orig/src/common/makefile.mak xchat-wdk/src/common/makefile.
 +clean:
 +	del *.obj
 +	del xchatcommon.lib
-diff -Naur xchat-wdk.orig/src/common/msproxy.c xchat-wdk/src/common/msproxy.c
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/msproxy.c xchat-wdk/src/common/msproxy.c
 --- xchat-wdk.orig/src/common/msproxy.c	2006-04-16 17:32:17 +0200
 +++ xchat-wdk/src/common/msproxy.c	2010-03-29 12:58:13 +0200
 @@ -26,7 +26,6 @@
@@ -863,7 +4091,7 @@ diff -Naur xchat-wdk.orig/src/common/msproxy.c xchat-wdk/src/common/msproxy.c
  #include <fcntl.h>
  
  #define WANTSOCKET
-diff -Naur xchat-wdk.orig/src/common/network.c xchat-wdk/src/common/network.c
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/network.c xchat-wdk/src/common/network.c
 --- xchat-wdk.orig/src/common/network.c	2006-04-16 10:11:26 +0200
 +++ xchat-wdk/src/common/network.c	2010-03-29 12:58:40 +0200
 @@ -21,7 +21,6 @@
@@ -874,7 +4102,7 @@ diff -Naur xchat-wdk.orig/src/common/network.c xchat-wdk/src/common/network.c
  #include <glib.h>
  
  #include "../../config.h"				  /* grab USE_IPV6 and LOOKUPD defines */
-diff -Naur xchat-wdk.orig/src/common/notify.c xchat-wdk/src/common/notify.c
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/notify.c xchat-wdk/src/common/notify.c
 --- xchat-wdk.orig/src/common/notify.c	2008-06-08 09:58:58 +0200
 +++ xchat-wdk/src/common/notify.c	2010-03-29 12:58:37 +0200
 @@ -22,7 +22,6 @@
@@ -885,7 +4113,7 @@ diff -Naur xchat-wdk.orig/src/common/notify.c xchat-wdk/src/common/notify.c
  #include <time.h>
  
  #include "xchat.h"
-diff -Naur xchat-wdk.orig/src/common/outbound.c xchat-wdk/src/common/outbound.c
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/outbound.c xchat-wdk/src/common/outbound.c
 --- xchat-wdk.orig/src/common/outbound.c	2009-01-02 06:56:12 +0100
 +++ xchat-wdk/src/common/outbound.c	2010-03-29 12:58:34 +0200
 @@ -32,7 +32,6 @@
@@ -896,7 +4124,7 @@ diff -Naur xchat-wdk.orig/src/common/outbound.c xchat-wdk/src/common/outbound.c
  #include <time.h>
  #include <signal.h>
  #include <sys/stat.h>
-diff -Naur xchat-wdk.orig/src/common/proto-irc.c xchat-wdk/src/common/proto-irc.c
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/proto-irc.c xchat-wdk/src/common/proto-irc.c
 --- xchat-wdk.orig/src/common/proto-irc.c	2008-05-25 07:36:25 +0200
 +++ xchat-wdk/src/common/proto-irc.c	2010-03-29 12:58:59 +0200
 @@ -18,7 +18,6 @@
@@ -907,7 +4135,7 @@ diff -Naur xchat-wdk.orig/src/common/proto-irc.c xchat-wdk/src/common/proto-irc.
  #include <string.h>
  #include <stdio.h>
  #include <stdlib.h>
-diff -Naur xchat-wdk.orig/src/common/server.c xchat-wdk/src/common/server.c
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/server.c xchat-wdk/src/common/server.c
 --- xchat-wdk.orig/src/common/server.c	2008-02-17 09:54:55 +0100
 +++ xchat-wdk/src/common/server.c	2010-03-29 17:36:30 +0200
 @@ -26,7 +26,6 @@
@@ -949,7 +4177,7 @@ diff -Naur xchat-wdk.orig/src/common/server.c xchat-wdk/src/common/server.c
  
  /* connect() successed */
  
-diff -Naur xchat-wdk.orig/src/common/servlist.c xchat-wdk/src/common/servlist.c
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/servlist.c xchat-wdk/src/common/servlist.c
 --- xchat-wdk.orig/src/common/servlist.c	2009-10-25 10:21:58 +0100
 +++ xchat-wdk/src/common/servlist.c	2010-03-29 12:58:54 +0200
 @@ -21,7 +21,6 @@
@@ -960,7 +4188,7 @@ diff -Naur xchat-wdk.orig/src/common/servlist.c xchat-wdk/src/common/servlist.c
  
  #include "xchat.h"
  #include <glib/ghash.h>
-diff -Naur xchat-wdk.orig/src/common/ssl.c xchat-wdk/src/common/ssl.c
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/ssl.c xchat-wdk/src/common/ssl.c
 --- xchat-wdk.orig/src/common/ssl.c	2007-03-28 10:35:06 +0200
 +++ xchat-wdk/src/common/ssl.c	2010-03-30 00:55:39 +0200
 @@ -17,6 +17,9 @@
@@ -973,7 +4201,7 @@ diff -Naur xchat-wdk.orig/src/common/ssl.c xchat-wdk/src/common/ssl.c
  #include <openssl/ssl.h>		  /* SSL_() */
  #include <openssl/err.h>		  /* ERR_() */
  #include <time.h>					  /* asctime() */
-diff -Naur xchat-wdk.orig/src/common/text.c xchat-wdk/src/common/text.c
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/text.c xchat-wdk/src/common/text.c
 --- xchat-wdk.orig/src/common/text.c	2009-12-31 03:19:50 +0100
 +++ xchat-wdk/src/common/text.c	2010-03-29 15:02:51 +0200
 @@ -19,13 +19,11 @@
@@ -1045,7 +4273,7 @@ diff -Naur xchat-wdk.orig/src/common/text.c xchat-wdk/src/common/text.c
  	close (fh);
  }
  
-diff -Naur xchat-wdk.orig/src/common/util.c xchat-wdk/src/common/util.c
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/util.c xchat-wdk/src/common/util.c
 --- xchat-wdk.orig/src/common/util.c	2008-02-07 02:50:37 +0100
 +++ xchat-wdk/src/common/util.c	2010-03-30 03:24:31 +0200
 @@ -17,10 +17,11 @@
@@ -1119,7 +4347,7 @@ diff -Naur xchat-wdk.orig/src/common/util.c xchat-wdk/src/common/util.c
  
  	return verbuf;
  }
-diff -Naur xchat-wdk.orig/src/common/xchat.c xchat-wdk/src/common/xchat.c
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/xchat.c xchat-wdk/src/common/xchat.c
 --- xchat-wdk.orig/src/common/xchat.c	2008-06-08 09:58:58 +0200
 +++ xchat-wdk/src/common/xchat.c	2010-03-29 12:59:15 +0200
 @@ -22,7 +22,6 @@
@@ -1130,7 +4358,7 @@ diff -Naur xchat-wdk.orig/src/common/xchat.c xchat-wdk/src/common/xchat.c
  
  #define WANTSOCKET
  #include "inet.h"
-diff -Naur xchat-wdk.orig/src/common/xchat.h xchat-wdk/src/common/xchat.h
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/xchat.h xchat-wdk/src/common/xchat.h
 --- xchat-wdk.orig/src/common/xchat.h	2008-08-29 12:59:11 +0200
 +++ xchat-wdk/src/common/xchat.h	2010-03-30 03:24:19 +0200
 @@ -12,12 +12,14 @@
@@ -1158,7 +4386,7 @@ diff -Naur xchat-wdk.orig/src/common/xchat.h xchat-wdk/src/common/xchat.h
  #include <direct.h>
  #define	F_OK	0
  #define	X_OK	1
-diff -Naur xchat-wdk.orig/src/fe-gtk/banlist.c xchat-wdk/src/fe-gtk/banlist.c
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/banlist.c xchat-wdk/src/fe-gtk/banlist.c
 --- xchat-wdk.orig/src/fe-gtk/banlist.c	2008-09-01 11:28:58 +0200
 +++ xchat-wdk/src/fe-gtk/banlist.c	2010-03-29 12:59:40 +0200
 @@ -21,7 +21,6 @@
@@ -1169,7 +4397,7 @@ diff -Naur xchat-wdk.orig/src/fe-gtk/banlist.c xchat-wdk/src/fe-gtk/banlist.c
  #include <fcntl.h>
  #include <time.h>
  
-diff -Naur xchat-wdk.orig/src/fe-gtk/chanlist.c xchat-wdk/src/fe-gtk/chanlist.c
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/chanlist.c xchat-wdk/src/fe-gtk/chanlist.c
 --- xchat-wdk.orig/src/fe-gtk/chanlist.c	2008-02-24 04:46:02 +0100
 +++ xchat-wdk/src/fe-gtk/chanlist.c	2010-03-29 12:59:37 +0200
 @@ -19,7 +19,6 @@
@@ -1180,7 +4408,7 @@ diff -Naur xchat-wdk.orig/src/fe-gtk/chanlist.c xchat-wdk/src/fe-gtk/chanlist.c
  #include <fcntl.h>
  #include <time.h>
  
-diff -Naur xchat-wdk.orig/src/fe-gtk/editlist.c xchat-wdk/src/fe-gtk/editlist.c
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/editlist.c xchat-wdk/src/fe-gtk/editlist.c
 --- xchat-wdk.orig/src/fe-gtk/editlist.c	2006-03-13 09:33:45 +0100
 +++ xchat-wdk/src/fe-gtk/editlist.c	2010-03-29 12:59:34 +0200
 @@ -19,7 +19,6 @@
@@ -1191,7 +4419,7 @@ diff -Naur xchat-wdk.orig/src/fe-gtk/editlist.c xchat-wdk/src/fe-gtk/editlist.c
  #include <fcntl.h>
  #include <sys/types.h>
  #include <sys/stat.h>
-diff -Naur xchat-wdk.orig/src/fe-gtk/fe-gtk.c xchat-wdk/src/fe-gtk/fe-gtk.c
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/fe-gtk.c xchat-wdk/src/fe-gtk/fe-gtk.c
 --- xchat-wdk.orig/src/fe-gtk/fe-gtk.c	2008-02-29 03:19:00 +0100
 +++ xchat-wdk/src/fe-gtk/fe-gtk.c	2010-03-30 04:22:55 +0200
 @@ -21,7 +21,6 @@
@@ -1236,7 +4464,7 @@ diff -Naur xchat-wdk.orig/src/fe-gtk/fe-gtk.c xchat-wdk/src/fe-gtk/fe-gtk.c
  
  	return 0;
  }
-diff -Naur xchat-wdk.orig/src/fe-gtk/fe-gtk.h xchat-wdk/src/fe-gtk/fe-gtk.h
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/fe-gtk.h xchat-wdk/src/fe-gtk/fe-gtk.h
 --- xchat-wdk.orig/src/fe-gtk/fe-gtk.h	2008-06-08 09:58:58 +0200
 +++ xchat-wdk/src/fe-gtk/fe-gtk.h	2010-03-29 17:52:49 +0200
 @@ -4,7 +4,7 @@
@@ -1248,7 +4476,7 @@ diff -Naur xchat-wdk.orig/src/fe-gtk/fe-gtk.h xchat-wdk/src/fe-gtk/fe-gtk.h
  #else
  #define DISPLAY_NAME "XChat"
  #endif
-diff -Naur xchat-wdk.orig/src/fe-gtk/fkeys.c xchat-wdk/src/fe-gtk/fkeys.c
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/fkeys.c xchat-wdk/src/fe-gtk/fkeys.c
 --- xchat-wdk.orig/src/fe-gtk/fkeys.c	2008-02-24 06:09:34 +0100
 +++ xchat-wdk/src/fe-gtk/fkeys.c	2010-03-29 12:59:56 +0200
 @@ -20,7 +20,6 @@
@@ -1259,7 +4487,7 @@ diff -Naur xchat-wdk.orig/src/fe-gtk/fkeys.c xchat-wdk/src/fe-gtk/fkeys.c
  #include <string.h>
  #include <fcntl.h>
  #include <ctype.h>
-diff -Naur xchat-wdk.orig/src/fe-gtk/gtkutil.c xchat-wdk/src/fe-gtk/gtkutil.c
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/gtkutil.c xchat-wdk/src/fe-gtk/gtkutil.c
 --- xchat-wdk.orig/src/fe-gtk/gtkutil.c	2009-07-18 14:38:10 +0200
 +++ xchat-wdk/src/fe-gtk/gtkutil.c	2010-03-29 12:59:54 +0200
 @@ -22,7 +22,6 @@
@@ -1270,7 +4498,7 @@ diff -Naur xchat-wdk.orig/src/fe-gtk/gtkutil.c xchat-wdk/src/fe-gtk/gtkutil.c
  #include <fcntl.h>
  #include "fe-gtk.h"
  
-diff -Naur xchat-wdk.orig/src/fe-gtk/joind.c xchat-wdk/src/fe-gtk/joind.c
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/joind.c xchat-wdk/src/fe-gtk/joind.c
 --- xchat-wdk.orig/src/fe-gtk/joind.c	2006-12-26 05:56:55 +0100
 +++ xchat-wdk/src/fe-gtk/joind.c	2010-03-29 13:00:16 +0200
 @@ -9,7 +9,6 @@
@@ -1281,7 +4509,25 @@ diff -Naur xchat-wdk.orig/src/fe-gtk/joind.c xchat-wdk/src/fe-gtk/joind.c
  #include <string.h>
  #include <stdio.h>
  
-diff -Naur xchat-wdk.orig/src/fe-gtk/makefile.mak xchat-wdk/src/fe-gtk/makefile.mak
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/maingui.c xchat-wdk/src/fe-gtk/maingui.c
+--- xchat-wdk.orig/src/fe-gtk/maingui.c	2008-06-08 09:58:58 +0200
++++ xchat-wdk/src/fe-gtk/maingui.c	2010-03-30 12:57:53 +0200
+@@ -1320,12 +1320,12 @@
+ 	gtk_button_box_set_layout (GTK_BUTTON_BOX (dialog_action_area1),
+ 										GTK_BUTTONBOX_END);
+ 
+-	if (minimize_button)
++	/*if (minimize_button)
+ 	{
+ 		button = gtk_button_new_with_mnemonic (_("_Minimize to Tray"));
+ 		gtk_widget_show (button);
+ 		gtk_dialog_add_action_widget (GTK_DIALOG (dialog), button, 1);
+-	}
++	}*/
+ 
+ 	button = gtk_button_new_from_stock ("gtk-cancel");
+ 	gtk_widget_show (button);
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/makefile.mak xchat-wdk/src/fe-gtk/makefile.mak
 --- xchat-wdk.orig/src/fe-gtk/makefile.mak	1970-01-01 01:00:00 +0100
 +++ xchat-wdk/src/fe-gtk/makefile.mak	2010-03-30 07:45:37 +0200
 @@ -0,0 +1,37 @@
@@ -1322,7 +4568,7 @@ diff -Naur xchat-wdk.orig/src/fe-gtk/makefile.mak xchat-wdk/src/fe-gtk/makefile.
 +	del $(PROG)
 +	del xchat.rc
 +	del xchat.RES
-diff -Naur xchat-wdk.orig/src/fe-gtk/menu.c xchat-wdk/src/fe-gtk/menu.c
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/menu.c xchat-wdk/src/fe-gtk/menu.c
 --- xchat-wdk.orig/src/fe-gtk/menu.c	2008-06-10 14:05:00 +0200
 +++ xchat-wdk/src/fe-gtk/menu.c	2010-03-29 13:00:13 +0200
 @@ -22,7 +22,6 @@
@@ -1333,7 +4579,7 @@ diff -Naur xchat-wdk.orig/src/fe-gtk/menu.c xchat-wdk/src/fe-gtk/menu.c
  
  #ifdef WIN32
  #include <windows.h>
-diff -Naur xchat-wdk.orig/src/fe-gtk/palette.c xchat-wdk/src/fe-gtk/palette.c
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/palette.c xchat-wdk/src/fe-gtk/palette.c
 --- xchat-wdk.orig/src/fe-gtk/palette.c	2006-03-13 09:33:45 +0100
 +++ xchat-wdk/src/fe-gtk/palette.c	2010-03-29 13:00:11 +0200
 @@ -20,7 +20,6 @@
@@ -1344,7 +4590,7 @@ diff -Naur xchat-wdk.orig/src/fe-gtk/palette.c xchat-wdk/src/fe-gtk/palette.c
  #include <sys/types.h>
  #include <sys/stat.h>
  #include <fcntl.h>
-diff -Naur xchat-wdk.orig/src/fe-gtk/plugin-tray.c xchat-wdk/src/fe-gtk/plugin-tray.c
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/plugin-tray.c xchat-wdk/src/fe-gtk/plugin-tray.c
 --- xchat-wdk.orig/src/fe-gtk/plugin-tray.c	2008-08-29 12:59:11 +0200
 +++ xchat-wdk/src/fe-gtk/plugin-tray.c	2010-03-29 13:00:32 +0200
 @@ -1,7 +1,6 @@
@@ -1355,7 +4601,7 @@ diff -Naur xchat-wdk.orig/src/fe-gtk/plugin-tray.c xchat-wdk/src/fe-gtk/plugin-t
  #include "../common/xchat-plugin.h"
  #include "../common/xchat.h"
  #include "../common/xchatc.h"
-diff -Naur xchat-wdk.orig/src/fe-gtk/rawlog.c xchat-wdk/src/fe-gtk/rawlog.c
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/rawlog.c xchat-wdk/src/fe-gtk/rawlog.c
 --- xchat-wdk.orig/src/fe-gtk/rawlog.c	2008-02-24 06:09:34 +0100
 +++ xchat-wdk/src/fe-gtk/rawlog.c	2010-03-29 13:00:30 +0200
 @@ -21,7 +21,6 @@
@@ -1366,7 +4612,7 @@ diff -Naur xchat-wdk.orig/src/fe-gtk/rawlog.c xchat-wdk/src/fe-gtk/rawlog.c
  #include <stdlib.h>
  
  #include "fe-gtk.h"
-diff -Naur xchat-wdk.orig/src/fe-gtk/sexy-spell-entry.c xchat-wdk/src/fe-gtk/sexy-spell-entry.c
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/sexy-spell-entry.c xchat-wdk/src/fe-gtk/sexy-spell-entry.c
 --- xchat-wdk.orig/src/fe-gtk/sexy-spell-entry.c	2006-07-17 07:51:02 +0200
 +++ xchat-wdk/src/fe-gtk/sexy-spell-entry.c	2010-03-29 14:42:33 +0200
 @@ -31,6 +31,20 @@
@@ -1390,7 +4636,7 @@ diff -Naur xchat-wdk.orig/src/fe-gtk/sexy-spell-entry.c xchat-wdk/src/fe-gtk/sex
  /*
   * Bunch of poop to make enchant into a runtime dependency rather than a
   * compile-time dependency.  This makes it so I don't have to hear the
-diff -Naur xchat-wdk.orig/src/fe-gtk/xtext.c xchat-wdk/src/fe-gtk/xtext.c
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/xtext.c xchat-wdk/src/fe-gtk/xtext.c
 --- xchat-wdk.orig/src/fe-gtk/xtext.c	2008-08-29 13:24:17 +0200
 +++ xchat-wdk/src/fe-gtk/xtext.c	2010-03-29 13:00:27 +0200
 @@ -42,7 +42,6 @@
@@ -1401,7 +4647,7 @@ diff -Naur xchat-wdk.orig/src/fe-gtk/xtext.c xchat-wdk/src/fe-gtk/xtext.c
  #include <gtk/gtkmain.h>
  #include <gtk/gtksignal.h>
  #include <gtk/gtkselection.h>
-diff -Naur xchat-wdk.orig/src/makefile.mak xchat-wdk/src/makefile.mak
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/makefile.mak xchat-wdk/src/makefile.mak
 --- xchat-wdk.orig/src/makefile.mak	1970-01-01 01:00:00 +0100
 +++ xchat-wdk/src/makefile.mak	2010-03-29 22:22:00 +0200
 @@ -0,0 +1,18 @@
@@ -1423,13 +4669,15 @@ diff -Naur xchat-wdk.orig/src/makefile.mak xchat-wdk/src/makefile.mak
 +	del fe-gtk\xchat.rc
 +	del fe-gtk\xchat.RES
 +	del pixmaps\*.h
-diff -Naur xchat-wdk.orig/src/makeinc.mak xchat-wdk/src/makeinc.mak
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/makeinc.mak xchat-wdk/src/makeinc.mak
 --- xchat-wdk.orig/src/makeinc.mak	1970-01-01 01:00:00 +0100
-+++ xchat-wdk/src/makeinc.mak	2010-03-30 07:45:32 +0200
-@@ -0,0 +1,125 @@
++++ xchat-wdk/src/makeinc.mak	2010-03-30 12:40:15 +0200
+@@ -0,0 +1,126 @@
 +#uncomment this to have an x64 build
 +#x64 = YES
 +
++CFLAGS = 
++CPPFLAGS = 
 +!ifdef x64
 +#############################################################
 +#x64 config
@@ -1438,6 +4686,7 @@ diff -Naur xchat-wdk.orig/src/makeinc.mak xchat-wdk/src/makeinc.mak
 +LIBS = /libpath:c:/mozilla-build/build/xchat-dev64/lib gtk-win32-2.0.lib gdk-win32-2.0.lib atk-1.0.lib gio-2.0.lib gdk_pixbuf-2.0.lib pangowin32-1.0.lib gdi32.lib pangocairo-1.0.lib pango-1.0.lib cairo.lib gobject-2.0.lib gmodule-2.0.lib glib-2.0.lib intl.lib
 +
 +LDFLAGS = /SUBSYSTEM:WINDOWS /NOLOGO msvcrt_win2003.obj
++CPPFLAGS = $(CPPFLAGS) /D_WIN64
 +
 +PERLPATH = c:\mozilla-build\perl-5.10-x64\lib\CORE
 +PYTHONPATH = c:\mozilla-build\python-2.6-x64
@@ -1471,11 +4720,9 @@ diff -Naur xchat-wdk.orig/src/makeinc.mak xchat-wdk/src/makeinc.mak
 +#OPENSSL = YES
 +IPV6 = YES
 +
-+CFLAGS = /Ox
-+
 +CC = cl
 +LINK = link
-+CFLAGS = $(CFLAGS) -Dstrcasecmp=stricmp -Dstrncasecmp=strnicmp -Dstrtoull=_strtoui64 /MD /nologo /DWIN32 /DG_DISABLE_CAST_CHECKS
++CFLAGS = $(CFLAGS) /Ox -Dstrcasecmp=stricmp -Dstrncasecmp=strnicmp -Dstrtoull=_strtoui64 /MD /nologo /DWIN32 /DG_DISABLE_CAST_CHECKS
 +LIBS = $(LIBS) gdi32.lib shell32.lib user32.lib advapi32.lib imm32.lib ole32.lib winmm.lib
 +
 +!ifdef IPV6
@@ -1552,7 +4799,7 @@ diff -Naur xchat-wdk.orig/src/makeinc.mak xchat-wdk/src/makeinc.mak
 +FEGTK_OBJECTS = $(FEGTK_OBJECTS) mmx_cmod.o
 +CFLAGS = $(CFLAGS) -DUSE_MMX
 +!endif
-diff -Naur xchat-wdk.orig/src/pixmaps/makefile.mak xchat-wdk/src/pixmaps/makefile.mak
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/pixmaps/makefile.mak xchat-wdk/src/pixmaps/makefile.mak
 --- xchat-wdk.orig/src/pixmaps/makefile.mak	1970-01-01 01:00:00 +0100
 +++ xchat-wdk/src/pixmaps/makefile.mak	2010-03-29 13:15:26 +0200
 @@ -0,0 +1,18 @@
