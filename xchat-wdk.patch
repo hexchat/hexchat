@@ -340,7 +340,7 @@ diff -Naur xchat-wdk.orig/config.h.w32 xchat-wdk/config.h.w32
 -#endif
 diff -Naur xchat-wdk.orig/plugins/perl/makefile.mak xchat-wdk/plugins/perl/makefile.mak
 --- xchat-wdk.orig/plugins/perl/makefile.mak	1970-01-01 01:00:00 +0100
-+++ xchat-wdk/plugins/perl/makefile.mak	2010-03-30 05:15:18 +0200
++++ xchat-wdk/plugins/perl/makefile.mak	2010-03-30 07:45:47 +0200
 @@ -0,0 +1,29 @@
 +include "..\..\src\makeinc.mak"
 +
@@ -363,7 +363,7 @@ diff -Naur xchat-wdk.orig/plugins/perl/makefile.mak xchat-wdk/plugins/perl/makef
 +	perl.exe generate_header
 +
 +$(TARGET): perl.obj perl.def
-+	$(LINK) /DLL /out:$(TARGET) /SUBSYSTEM:WINDOWS /nologo perl.obj $(LDFLAGS) $(PERLLIB).lib /LIBPATH:$(PERLPATH) /DELAYLOAD:$(PERLLIB).dll DELAYIMP.LIB user32.lib shell32.lib advapi32.lib /def:perl.def
++	$(LINK) /DLL /out:$(TARGET) perl.obj $(LDFLAGS) $(PERLLIB).lib /LIBPATH:$(PERLPATH) /DELAYLOAD:$(PERLLIB).dll DELAYIMP.LIB user32.lib shell32.lib advapi32.lib /def:perl.def
 +
 +clean:
 +	del $(TARGET)
@@ -392,7 +392,7 @@ diff -Naur xchat-wdk.orig/plugins/perl/perl.c xchat-wdk/plugins/perl/perl.c
  #endif
 diff -Naur xchat-wdk.orig/plugins/python/makefile.mak xchat-wdk/plugins/python/makefile.mak
 --- xchat-wdk.orig/plugins/python/makefile.mak	1970-01-01 01:00:00 +0100
-+++ xchat-wdk/plugins/python/makefile.mak	2010-03-30 05:15:39 +0200
++++ xchat-wdk/plugins/python/makefile.mak	2010-03-30 07:46:04 +0200
 @@ -0,0 +1,24 @@
 +include "..\..\src\makeinc.mak"
 +
@@ -410,7 +410,7 @@ diff -Naur xchat-wdk.orig/plugins/python/makefile.mak xchat-wdk/plugins/python/m
 +	$(CC) $(CFLAGS) -Dusleep=_sleep -DPATH_MAX=255 -c python.c $(GLIB) -I.. -I$(PYTHONPATH)\INCLUDE -DPYTHON_DLL=\"$(PYTHONLIB).dll\"
 +
 +$(TARGET): python.obj python.def
-+	$(LINK) /DLL /out:$(TARGET) /SUBSYSTEM:WINDOWS /nologo $(LDFLAGS) python.obj $(PYTHONLIB).lib /LIBPATH:$(PYTHONPATH)\LIBS $(PYTHONLIB).lib user32.lib shell32.lib advapi32.lib $(LIBS) /def:python.def
++	$(LINK) /DLL /out:$(TARGET) $(LDFLAGS) python.obj $(PYTHONLIB).lib /LIBPATH:$(PYTHONPATH)\LIBS $(PYTHONLIB).lib user32.lib shell32.lib advapi32.lib $(LIBS) /def:python.def
 +
 +clean:
 +	del $(TARGET)
@@ -448,7 +448,7 @@ diff -Naur xchat-wdk.orig/plugins/python/python.c xchat-wdk/plugins/python/pytho
  #endif
 diff -Naur xchat-wdk.orig/plugins/tcl/makefile.mak xchat-wdk/plugins/tcl/makefile.mak
 --- xchat-wdk.orig/plugins/tcl/makefile.mak	1970-01-01 01:00:00 +0100
-+++ xchat-wdk/plugins/tcl/makefile.mak	2010-03-30 05:15:52 +0200
++++ xchat-wdk/plugins/tcl/makefile.mak	2010-03-30 07:46:20 +0200
 @@ -0,0 +1,22 @@
 +include "..\..\src\makeinc.mak"
 +
@@ -466,7 +466,7 @@ diff -Naur xchat-wdk.orig/plugins/tcl/makefile.mak xchat-wdk/plugins/tcl/makefil
 +	$(CC) $(CFLAGS) -c tclplugin.c -I$(TCLPATH)\INCLUDE -I../../include -I.. -DTCL_DLL=\"$(TCLLIB).dll\"
 +
 +$(TARGET): tclplugin.obj tcl.def
-+	$(LINK) /DLL /out:$(TARGET) /SUBSYSTEM:WINDOWS /nologo $(LDFLAGS) tclplugin.obj /LIBPATH:$(TCLPATH)\LIB $(TCLLIB).lib /DELAYLOAD:$(TCLLIB).dll DELAYIMP.LIB /def:tcl.def
++	$(LINK) /DLL /out:$(TARGET) $(LDFLAGS) tclplugin.obj /LIBPATH:$(TCLPATH)\LIB $(TCLLIB).lib /DELAYLOAD:$(TCLLIB).dll DELAYIMP.LIB /def:tcl.def
 +
 +clean:
 +	del $(TARGET)
@@ -1283,7 +1283,7 @@ diff -Naur xchat-wdk.orig/src/fe-gtk/joind.c xchat-wdk/src/fe-gtk/joind.c
  
 diff -Naur xchat-wdk.orig/src/fe-gtk/makefile.mak xchat-wdk/src/fe-gtk/makefile.mak
 --- xchat-wdk.orig/src/fe-gtk/makefile.mak	1970-01-01 01:00:00 +0100
-+++ xchat-wdk/src/fe-gtk/makefile.mak	2010-03-30 05:32:43 +0200
++++ xchat-wdk/src/fe-gtk/makefile.mak	2010-03-30 07:45:37 +0200
 @@ -0,0 +1,37 @@
 +include "..\makeinc.mak"
 +
@@ -1305,7 +1305,7 @@ diff -Naur xchat-wdk.orig/src/fe-gtk/makefile.mak xchat-wdk/src/fe-gtk/makefile.
 +	$(CC) $(CFLAGS) $(GLIB) $(GTK) /c $<
 +
 +$(PROG): $(FEGTK_OBJECTS) $(COMLIB) xchat-icon.obj
-+	$(LINK) /out:$(PROG) /SUBSYSTEM:WINDOWS /ENTRY:mainCRTStartup $(LDFLAGS) $(FEGTK_OBJECTS) $(COMLIB) xchat-icon.obj
++	$(LINK) /out:$(PROG) /ENTRY:mainCRTStartup $(LDFLAGS) $(LIBS) $(FEGTK_OBJECTS) $(COMLIB) xchat-icon.obj
 +	@dir $(PROG)
 +
 +xchat.rc:
@@ -1425,7 +1425,7 @@ diff -Naur xchat-wdk.orig/src/makefile.mak xchat-wdk/src/makefile.mak
 +	del pixmaps\*.h
 diff -Naur xchat-wdk.orig/src/makeinc.mak xchat-wdk/src/makeinc.mak
 --- xchat-wdk.orig/src/makeinc.mak	1970-01-01 01:00:00 +0100
-+++ xchat-wdk/src/makeinc.mak	2010-03-30 05:40:26 +0200
++++ xchat-wdk/src/makeinc.mak	2010-03-30 07:45:32 +0200
 @@ -0,0 +1,125 @@
 +#uncomment this to have an x64 build
 +#x64 = YES
@@ -1437,7 +1437,7 @@ diff -Naur xchat-wdk.orig/src/makeinc.mak xchat-wdk/src/makeinc.mak
 +GTK = -Ic:/mozilla-build/build/xchat-dev64/include/gtk-2.0 -Ic:/mozilla-build/build/xchat-dev64/lib/gtk-2.0/include -Ic:/mozilla-build/build/xchat-dev64/include/atk-1.0 -Ic:/mozilla-build/build/xchat-dev64/include/cairo -Ic:/mozilla-build/build/xchat-dev64/include/pango-1.0 -Ic:/mozilla-build/build/xchat-dev64/include/glib-2.0 -Ic:/mozilla-build/build/xchat-dev64/lib/glib-2.0/include -Ic:/mozilla-build/build/xchat-dev64/include/freetype2 -Ic:/mozilla-build/build/xchat-dev64/include -Ic:/mozilla-build/build/xchat-dev64/include/libpng14
 +LIBS = /libpath:c:/mozilla-build/build/xchat-dev64/lib gtk-win32-2.0.lib gdk-win32-2.0.lib atk-1.0.lib gio-2.0.lib gdk_pixbuf-2.0.lib pangowin32-1.0.lib gdi32.lib pangocairo-1.0.lib pango-1.0.lib cairo.lib gobject-2.0.lib gmodule-2.0.lib glib-2.0.lib intl.lib
 +
-+LDFLAGS = $(LIBS) /NOLOGO msvcrt_win2003.obj
++LDFLAGS = /SUBSYSTEM:WINDOWS /NOLOGO msvcrt_win2003.obj
 +
 +PERLPATH = c:\mozilla-build\perl-5.10-x64\lib\CORE
 +PYTHONPATH = c:\mozilla-build\python-2.6-x64
@@ -1449,7 +1449,7 @@ diff -Naur xchat-wdk.orig/src/makeinc.mak xchat-wdk/src/makeinc.mak
 +GTK = -Ic:/mozilla-build/build/xchat-dev32/include/gtk-2.0 -Ic:/mozilla-build/build/xchat-dev32/lib/gtk-2.0/include -Ic:/mozilla-build/build/xchat-dev32/include/atk-1.0 -Ic:/mozilla-build/build/xchat-dev32/include/cairo -Ic:/mozilla-build/build/xchat-dev32/include/pango-1.0 -Ic:/mozilla-build/build/xchat-dev32/include/glib-2.0 -Ic:/mozilla-build/build/xchat-dev32/lib/glib-2.0/include -Ic:/mozilla-build/build/xchat-dev32/include/freetype2 -Ic:/mozilla-build/build/xchat-dev32/include -Ic:/mozilla-build/build/xchat-dev32/include/libpng14
 +LIBS = /libpath:c:/mozilla-build/build/xchat-dev32/lib gtk-win32-2.0.lib gdk-win32-2.0.lib atk-1.0.lib gio-2.0.lib gdk_pixbuf-2.0.lib pangowin32-1.0.lib gdi32.lib pangocairo-1.0.lib pango-1.0.lib cairo.lib gobject-2.0.lib gmodule-2.0.lib glib-2.0.lib intl.lib
 +
-+LDFLAGS = $(LIBS) /NOLOGO msvcrt_winxp.obj
++LDFLAGS = /SUBSYSTEM:WINDOWS /NOLOGO msvcrt_winxp.obj
 +
 +PERLPATH = c:\mozilla-build\perl-5.10-x86\lib\CORE
 +PYTHONPATH = c:\mozilla-build\python-2.6-x86
