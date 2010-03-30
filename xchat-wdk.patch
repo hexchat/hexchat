@@ -1,29 +1,141 @@
 diff -Naur xchat-wdk.orig/build/build-x64.bat xchat-wdk/build/build-x64.bat
 --- xchat-wdk.orig/build/build-x64.bat	1970-01-01 01:00:00 +0100
-+++ xchat-wdk/build/build-x64.bat	2010-03-29 20:16:33 +0200
-@@ -0,0 +1,9 @@
++++ xchat-wdk/build/build-x64.bat	2010-03-30 04:31:01 +0200
+@@ -0,0 +1,20 @@
 +@echo off
-+set INCLUDE=c:\WinDDK\7600.16385.1\inc\api;c:\WinDDK\7600.16385.1\inc\crt
-+set LIB=c:\WinDDK\7600.16385.1\lib\wnet\amd64;c:\WinDDK\7600.16385.1\lib\Crt\amd64
-+set PATH=c:\WinDDK\7600.16385.1\bin\x86\amd64;c:\WinDDK\7600.16385.1\bin\x86;c:\Program Files\Microsoft SDKs\Windows\v6.0A\Bin;c:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin;c:\mozilla-build\build\xchat-dev64\bin
++set INCLUDE=c:\WinDDK\7600.16385.1\inc\api;c:\WinDDK\7600.16385.1\inc\crt;c:\mozilla-build\build\xchat-dev64\include;c:\mozilla-build\build\openssl-0.9.8n-wdk-xchat-x64\include
++set LIB=c:\WinDDK\7600.16385.1\lib\wnet\amd64;c:\WinDDK\7600.16385.1\lib\Crt\amd64;c:\mozilla-build\build\openssl-0.9.8n-wdk-xchat-x64\lib
++set PATH=c:\WinDDK\7600.16385.1\bin\x86\amd64;c:\WinDDK\7600.16385.1\bin\x86;c:\Program Files\Microsoft SDKs\Windows\v6.0A\Bin;c:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin;c:\mozilla-build\build\xchat-dev64\bin;c:\mozilla-build\perl-5.10-x64\bin
 +cd ..\src
 +nmake -f makefile.mak clean
 +nmake -f makefile.mak
-+cd ..\build
++cd ..\plugins\perl
++nmake -f makefile.mak clean
++nmake -f makefile.mak
++::cd ..\python
++::nmake -f makefile.mak clean
++::nmake -f makefile.mak
++::cd ..\tcl
++::nmake -f makefile.mak clean
++::nmake -f makefile.mak
++cd ..\..\build
++set PATH=%PATH%;c:\mozilla-build\build\xchat-dev32\bin
++call compile-po-files.bat
 +pause
 diff -Naur xchat-wdk.orig/build/build-x86.bat xchat-wdk/build/build-x86.bat
 --- xchat-wdk.orig/build/build-x86.bat	1970-01-01 01:00:00 +0100
-+++ xchat-wdk/build/build-x86.bat	2010-03-29 20:16:33 +0200
-@@ -0,0 +1,9 @@
++++ xchat-wdk/build/build-x86.bat	2010-03-30 03:29:13 +0200
+@@ -0,0 +1,19 @@
 +@echo off
-+set INCLUDE=c:\WinDDK\7600.16385.1\inc\api;c:\WinDDK\7600.16385.1\inc\crt
-+set LIB=c:\WinDDK\7600.16385.1\lib\wxp\i386;c:\WinDDK\7600.16385.1\lib\Crt\i386
-+set PATH=c:\WinDDK\7600.16385.1\bin\x86\x86;c:\WinDDK\7600.16385.1\bin\x86;c:\Program Files\Microsoft SDKs\Windows\v6.0A\Bin;c:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin;c:\mozilla-build\build\xchat-dev32\bin;c:\mozilla-build\mingw\bin
++set INCLUDE=c:\WinDDK\7600.16385.1\inc\api;c:\WinDDK\7600.16385.1\inc\crt;c:\mozilla-build\build\xchat-dev32\include;c:\mozilla-build\build\openssl-0.9.8n-wdk-xchat-x86\include
++set LIB=c:\WinDDK\7600.16385.1\lib\wxp\i386;c:\WinDDK\7600.16385.1\lib\Crt\i386;c:\mozilla-build\build\openssl-0.9.8n-wdk-xchat-x86\lib
++set PATH=c:\WinDDK\7600.16385.1\bin\x86\x86;c:\WinDDK\7600.16385.1\bin\x86;c:\Program Files\Microsoft SDKs\Windows\v6.0A\Bin;c:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin;c:\mozilla-build\build\xchat-dev32\bin;c:\mozilla-build\mingw\bin;c:\mozilla-build\perl-5.10-x86\bin
 +cd ..\src
 +nmake -f makefile.mak clean
 +nmake -f makefile.mak
-+cd ..\build
++cd ..\plugins\perl
++nmake -f makefile.mak clean
++nmake -f makefile.mak
++::cd ..\python
++::nmake -f makefile.mak clean
++::nmake -f makefile.mak
++cd ..\tcl
++nmake -f makefile.mak clean
++nmake -f makefile.mak
++cd ..\..\build
++call compile-po-files.bat
 +pause
+diff -Naur xchat-wdk.orig/build/compile-po-files.bat xchat-wdk/build/compile-po-files.bat
+--- xchat-wdk.orig/build/compile-po-files.bat	1970-01-01 01:00:00 +0100
++++ xchat-wdk/build/compile-po-files.bat	2010-03-30 05:01:54 +0200
+@@ -0,0 +1,87 @@
++@echo off
++
++echo.Compiling translations . . .
++cd ..\po
++rmdir /Q /S locale
++mkdir locale
++
++mkdir locale\be\LC_MESSAGES
++msgfmt -cvo locale\be\LC_MESSAGES\xchat.mo be.po
++
++mkdir locale\ca\LC_MESSAGES
++msgfmt -cvo locale\ca\LC_MESSAGES\xchat.mo ca.po
++
++mkdir locale\cs\LC_MESSAGES
++msgfmt -cvo locale\cs\LC_MESSAGES\xchat.mo cs.po
++
++mkdir locale\de\LC_MESSAGES
++msgfmt -cvo locale\de\LC_MESSAGES\xchat.mo de.po
++
++mkdir locale\el\LC_MESSAGES
++msgfmt -cvo locale\el\LC_MESSAGES\xchat.mo el.po
++
++mkdir locale\es\LC_MESSAGES
++msgfmt -cvo locale\es\LC_MESSAGES\xchat.mo es.po
++
++mkdir locale\fi\LC_MESSAGES
++msgfmt -cvo locale\fi\LC_MESSAGES\xchat.mo fi.po
++
++mkdir locale\fr\LC_MESSAGES
++msgfmt -cvo locale\fr\LC_MESSAGES\xchat.mo fr.po
++
++mkdir locale\gl\LC_MESSAGES
++msgfmt -cvo locale\gl\LC_MESSAGES\xchat.mo gl.po
++
++mkdir locale\hu\LC_MESSAGES
++msgfmt -cvo locale\hu\LC_MESSAGES\xchat.mo hu.po
++
++mkdir locale\it\LC_MESSAGES
++msgfmt -cvo locale\it\LC_MESSAGES\xchat.mo it.po
++
++mkdir locale\ja\LC_MESSAGES
++msgfmt -cvo locale\ja\LC_MESSAGES\xchat.mo ja.po
++
++mkdir locale\ko\LC_MESSAGES
++msgfmt -cvo locale\ko\LC_MESSAGES\xchat.mo ko.po
++
++mkdir locale\lt\LC_MESSAGES
++msgfmt -cvo locale\lt\LC_MESSAGES\xchat.mo lt.po
++
++mkdir locale\mk\LC_MESSAGES
++msgfmt -cvo locale\mk\LC_MESSAGES\xchat.mo mk.po
++
++mkdir locale\nl\LC_MESSAGES
++msgfmt -cvo locale\nl\LC_MESSAGES\xchat.mo nl.po
++
++mkdir locale\pa\LC_MESSAGES
++msgfmt -cvo locale\pa\LC_MESSAGES\xchat.mo pa.po
++
++mkdir locale\pt\LC_MESSAGES
++msgfmt -cvo locale\pt\LC_MESSAGES\xchat.mo pt.po
++
++mkdir locale\ru\LC_MESSAGES
++msgfmt -cvo locale\ru\LC_MESSAGES\xchat.mo ru.po
++
++mkdir locale\sq\LC_MESSAGES
++msgfmt -cvo locale\sq\LC_MESSAGES\xchat.mo sq.po
++
++mkdir locale\sr\LC_MESSAGES
++msgfmt -cvo locale\sr\LC_MESSAGES\xchat.mo sr.po
++
++mkdir locale\sv\LC_MESSAGES
++msgfmt -cvo locale\sv\LC_MESSAGES\xchat.mo sv.po
++
++mkdir locale\th\LC_MESSAGES
++msgfmt -cvo locale\th\LC_MESSAGES\xchat.mo th.po
++
++mkdir locale\uk\LC_MESSAGES
++msgfmt -cvo locale\uk\LC_MESSAGES\xchat.mo uk.po
++
++mkdir locale\vi\LC_MESSAGES
++msgfmt -cvo locale\vi\LC_MESSAGES\xchat.mo vi.po
++
++mkdir locale\zh_CN\LC_MESSAGES
++msgfmt -cvo locale\zh_CN\LC_MESSAGES\xchat.mo zh_CN.po
++
++mkdir locale\zh_TW\LC_MESSAGES
++msgfmt -cvo locale\zh_TW\LC_MESSAGES\xchat.mo zh_TW.po
 diff -Naur xchat-wdk.orig/build/etc/gtk-2.0/gtkrc xchat-wdk/build/etc/gtk-2.0/gtkrc
 --- xchat-wdk.orig/build/etc/gtk-2.0/gtkrc	1970-01-01 01:00:00 +0100
 +++ xchat-wdk/build/etc/gtk-2.0/gtkrc	2010-03-29 21:26:48 +0200
@@ -98,10 +210,11 @@ diff -Naur xchat-wdk.orig/build/etc/gtk-2.0/gtkrc xchat-wdk/build/etc/gtk-2.0/gt
 +widget_class "*ComboBox*GtkFrame*" style "msw-combobox-thickness" 
 diff -Naur xchat-wdk.orig/build/release-x64.bat xchat-wdk/build/release-x64.bat
 --- xchat-wdk.orig/build/release-x64.bat	1970-01-01 01:00:00 +0100
-+++ xchat-wdk/build/release-x64.bat	2010-03-29 21:17:56 +0200
-@@ -0,0 +1,30 @@
++++ xchat-wdk/build/release-x64.bat	2010-03-30 03:29:41 +0200
+@@ -0,0 +1,37 @@
 +@echo off
-+set GTK_BIN="c:\mozilla-build\build\xchat-dev64\bin"
++set GTK_BIN=c:\mozilla-build\build\xchat-dev64\bin
++set SSL_BIN=c:\mozilla-build\build\openssl-0.9.8n-wdk-xchat-x64\bin
 +set XCHAT_DEST=c:\mozilla-build\build\xchat-wdk-x64
 +rmdir /Q /S %XCHAT_DEST%
 +mkdir %XCHAT_DEST%
@@ -129,13 +242,20 @@ diff -Naur xchat-wdk.orig/build/release-x64.bat xchat-wdk/build/release-x64.bat
 +rmdir /Q /S %XCHAT_DEST%\lib\gtk-2.0\include
 +xcopy /S /I etc %XCHAT_DEST%\etc
 +xcopy ..\COPYING %XCHAT_DEST%
++::xcopy %SSL_BIN%\libeay32.dll %XCHAT_DEST%
++::xcopy %SSL_BIN%\ssleay32.dll %XCHAT_DEST%
++xcopy /S /I ..\plugins\perl\xcperl.dll %XCHAT_DEST%\plugins\
++::xcopy /S /I ..\plugins\python\xcpython.dll %XCHAT_DEST%\plugins\
++::xcopy /S /I ..\plugins\tcl\xctcl.dll %XCHAT_DEST%\plugins\
++xcopy /S /I ..\po\locale %XCHAT_DEST%\locale
 +pause
 diff -Naur xchat-wdk.orig/build/release-x86.bat xchat-wdk/build/release-x86.bat
 --- xchat-wdk.orig/build/release-x86.bat	1970-01-01 01:00:00 +0100
-+++ xchat-wdk/build/release-x86.bat	2010-03-29 21:18:07 +0200
-@@ -0,0 +1,30 @@
++++ xchat-wdk/build/release-x86.bat	2010-03-30 03:29:45 +0200
+@@ -0,0 +1,37 @@
 +@echo off
-+set GTK_BIN="c:\mozilla-build\build\xchat-dev32\bin"
++set GTK_BIN=c:\mozilla-build\build\xchat-dev32\bin
++set SSL_BIN=c:\mozilla-build\build\openssl-0.9.8n-wdk-xchat-x86\bin
 +set XCHAT_DEST=c:\mozilla-build\build\xchat-wdk-x86
 +rmdir /Q /S %XCHAT_DEST%
 +mkdir %XCHAT_DEST%
@@ -163,29 +283,35 @@ diff -Naur xchat-wdk.orig/build/release-x86.bat xchat-wdk/build/release-x86.bat
 +rmdir /Q /S %XCHAT_DEST%\lib\gtk-2.0\include
 +xcopy /S /I etc %XCHAT_DEST%\etc
 +xcopy ..\COPYING %XCHAT_DEST%
++::xcopy %SSL_BIN%\libeay32.dll %XCHAT_DEST%
++::xcopy %SSL_BIN%\ssleay32.dll %XCHAT_DEST%
++xcopy /S /I ..\plugins\perl\xcperl.dll %XCHAT_DEST%\plugins\
++::xcopy /S /I ..\plugins\python\xcpython.dll %XCHAT_DEST%\plugins\
++xcopy /S /I ..\plugins\tcl\xctcl.dll %XCHAT_DEST%\plugins\
++xcopy /S /I ..\po\locale %XCHAT_DEST%\locale
 +pause
 diff -Naur xchat-wdk.orig/build/test-x64.bat xchat-wdk/build/test-x64.bat
 --- xchat-wdk.orig/build/test-x64.bat	1970-01-01 01:00:00 +0100
-+++ xchat-wdk/build/test-x64.bat	2010-03-29 20:16:33 +0200
++++ xchat-wdk/build/test-x64.bat	2010-03-30 02:24:01 +0200
 @@ -0,0 +1,3 @@
 +@echo off
-+set PATH=c:\mozilla-build\build\xchat-dev64\bin
++set PATH=c:\mozilla-build\build\xchat-dev64\bin;c:\mozilla-build\perl-5.10-x64\bin;c:\mozilla-build\python-2.6-x64
 +..\src\fe-gtk\xchat.exe
 diff -Naur xchat-wdk.orig/build/test-x86.bat xchat-wdk/build/test-x86.bat
 --- xchat-wdk.orig/build/test-x86.bat	1970-01-01 01:00:00 +0100
-+++ xchat-wdk/build/test-x86.bat	2010-03-29 20:16:33 +0200
++++ xchat-wdk/build/test-x86.bat	2010-03-30 02:24:19 +0200
 @@ -0,0 +1,3 @@
 +@echo off
-+set PATH=c:\mozilla-build\build\xchat-dev32\bin
++set PATH=c:\mozilla-build\build\xchat-dev32\bin;c:\mozilla-build\perl-5.10-x86\bin;c:\mozilla-build\python-2.6-x86
 +..\src\fe-gtk\xchat.exe
 diff -Naur xchat-wdk.orig/config.h xchat-wdk/config.h
 --- xchat-wdk.orig/config.h	1970-01-01 01:00:00 +0100
-+++ xchat-wdk/config.h	2010-03-29 18:03:29 +0200
++++ xchat-wdk/config.h	2010-03-30 03:18:35 +0200
 @@ -0,0 +1,14 @@
 +#define LOCALEDIR "./locale"
-+/*#define ENABLE_NLS*/
++#define ENABLE_NLS
 +#define USE_GMODULE
-+/*#define USE_PLUGIN*/
++#define USE_PLUGIN
 +#define PACKAGE_NAME "xchat"
 +#define PACKAGE_VERSION "r1409"
 +#define XCHATLIBDIR "."
@@ -214,7 +340,7 @@ diff -Naur xchat-wdk.orig/config.h.w32 xchat-wdk/config.h.w32
 -#endif
 diff -Naur xchat-wdk.orig/plugins/perl/makefile.mak xchat-wdk/plugins/perl/makefile.mak
 --- xchat-wdk.orig/plugins/perl/makefile.mak	1970-01-01 01:00:00 +0100
-+++ xchat-wdk/plugins/perl/makefile.mak	2010-03-29 22:21:32 +0200
++++ xchat-wdk/plugins/perl/makefile.mak	2010-03-30 01:18:49 +0200
 @@ -0,0 +1,29 @@
 +include "..\..\src\makeinc.mak"
 +
@@ -237,7 +363,7 @@ diff -Naur xchat-wdk.orig/plugins/perl/makefile.mak xchat-wdk/plugins/perl/makef
 +	perl.exe generate_header
 +
 +$(TARGET): perl.obj perl.def
-+	$(LINK) /DLL /out:$(TARGET) /SUBSYSTEM:WINDOWS /nologo perl.obj $(PERLLIB).lib /LIBPATH:$(PERLPATH) /DELAYLOAD:$(PERLLIB).dll DELAYIMP.LIB dirent.lib user32.lib shell32.lib advapi32.lib /def:perl.def /OPT:NOWIN98
++	$(LINK) /DLL /out:$(TARGET) /SUBSYSTEM:WINDOWS /nologo perl.obj $(PERLLIB).lib /LIBPATH:$(PERLPATH) /DELAYLOAD:$(PERLLIB).dll DELAYIMP.LIB user32.lib shell32.lib advapi32.lib /def:perl.def
 +
 +clean:
 +	del $(TARGET)
@@ -245,10 +371,29 @@ diff -Naur xchat-wdk.orig/plugins/perl/makefile.mak xchat-wdk/plugins/perl/makef
 +	del perl.def
 +	del *.lib
 +	del *.exp
+diff -Naur xchat-wdk.orig/plugins/perl/perl.c xchat-wdk/plugins/perl/perl.c
+--- xchat-wdk.orig/plugins/perl/perl.c	2010-03-23 01:06:59 +0100
++++ xchat-wdk/plugins/perl/perl.c	2010-03-30 01:17:15 +0200
+@@ -16,13 +16,14 @@
+  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
+  */
+ 
++#define  _INC_DIRENT
+ #include <stdlib.h>
+ #include <stdio.h>
+ #include <string.h>
+ #include <sys/types.h>
+ #include <sys/stat.h>
+ #include <fcntl.h>
+-#include <dirent.h>
++#include "../../src/common/dirent.h"
+ #ifdef ENABLE_NLS
+ #include <locale.h>
+ #endif
 diff -Naur xchat-wdk.orig/plugins/python/makefile.mak xchat-wdk/plugins/python/makefile.mak
 --- xchat-wdk.orig/plugins/python/makefile.mak	1970-01-01 01:00:00 +0100
-+++ xchat-wdk/plugins/python/makefile.mak	2010-03-29 22:21:43 +0200
-@@ -0,0 +1,17 @@
++++ xchat-wdk/plugins/python/makefile.mak	2010-03-30 02:48:35 +0200
+@@ -0,0 +1,24 @@
 +include "..\..\src\makeinc.mak"
 +
 +TARGET = $(PYTHONOUTPUT)
@@ -265,21 +410,45 @@ diff -Naur xchat-wdk.orig/plugins/python/makefile.mak xchat-wdk/plugins/python/m
 +	$(CC) $(CFLAGS) -Dusleep=_sleep -DPATH_MAX=255 -c python.c $(GLIB) -I.. -I$(PYTHONPATH)\INCLUDE -DPYTHON_DLL=\"$(PYTHONLIB).dll\"
 +
 +$(TARGET): python.obj python.def
-+	$(LINK) /DLL /out:$(TARGET) /SUBSYSTEM:WINDOWS /nologo python.obj $(PYTHONLIB).lib /LIBPATH:$(PYTHONPATH)\LIBS $(PYTHONLIB).lib dirent.lib user32.lib shell32.lib advapi32.lib $(LIBS) /def:python.def /OPT:NOWIN98
++	$(LINK) /DLL /out:$(TARGET) /SUBSYSTEM:WINDOWS /nologo python.obj $(PYTHONLIB).lib /LIBPATH:$(PYTHONPATH)\LIBS $(PYTHONLIB).lib user32.lib shell32.lib advapi32.lib $(LIBS) /def:python.def
++
++clean:
++	del $(TARGET)
++	del *.obj
++	del python.def
++	del *.lib
++	del *.exp
 diff -Naur xchat-wdk.orig/plugins/python/python.c xchat-wdk/plugins/python/python.c
 --- xchat-wdk.orig/plugins/python/python.c	2010-03-17 09:07:51 +0100
-+++ xchat-wdk/plugins/python/python.c	2010-03-29 12:56:54 +0200
-@@ -53,7 +53,6 @@
++++ xchat-wdk/plugins/python/python.c	2010-03-30 02:59:44 +0200
+@@ -51,12 +51,13 @@
+  *
+  */
  
++#define  _INC_DIRENT
  #include <glib.h>
  #include <string.h>
 -#include <unistd.h>
  #include <stdlib.h>
  #include <sys/types.h>
- #include <dirent.h>
+-#include <dirent.h>
++#include "../../src/common/dirent.h"
++#include "../../config.h"
+ 
+ #include "xchat-plugin.h"
+ #include "Python.h"
+@@ -68,7 +69,7 @@
+ 
+ #ifdef WIN32
+ #undef WITH_THREAD /* Thread support locks up xchat on Win32. */
+-#define VERSION "0.8/2.4"	/* Linked to python24.dll */
++#define VERSION "0.8/2.6"	/* Linked to python24.dll */
+ #else
+ #define VERSION "0.8"
+ #endif
 diff -Naur xchat-wdk.orig/plugins/tcl/makefile.mak xchat-wdk/plugins/tcl/makefile.mak
 --- xchat-wdk.orig/plugins/tcl/makefile.mak	1970-01-01 01:00:00 +0100
-+++ xchat-wdk/plugins/tcl/makefile.mak	2010-03-29 22:21:50 +0200
++++ xchat-wdk/plugins/tcl/makefile.mak	2010-03-30 03:10:33 +0200
 @@ -0,0 +1,22 @@
 +include "..\..\src\makeinc.mak"
 +
@@ -297,7 +466,7 @@ diff -Naur xchat-wdk.orig/plugins/tcl/makefile.mak xchat-wdk/plugins/tcl/makefil
 +	$(CC) $(CFLAGS) -c tclplugin.c -I$(TCLPATH)\INCLUDE -I../../include -I.. -DTCL_DLL=\"$(TCLLIB).dll\"
 +
 +$(TARGET): tclplugin.obj tcl.def
-+	$(LINK) /DLL /out:$(TARGET) /SUBSYSTEM:WINDOWS /nologo tclplugin.obj /LIBPATH:$(TCLPATH)\LIB $(TCLLIB).lib /DELAYLOAD:$(TCLLIB).dll DELAYIMP.LIB dirent.lib /def:tcl.def /OPT:NOWIN98
++	$(LINK) /DLL /out:$(TARGET) /SUBSYSTEM:WINDOWS /nologo tclplugin.obj /LIBPATH:$(TCLPATH)\LIB $(TCLLIB).lib /DELAYLOAD:$(TCLLIB).dll DELAYIMP.LIB /def:tcl.def
 +
 +clean:
 +	del $(TARGET)
@@ -791,6 +960,19 @@ diff -Naur xchat-wdk.orig/src/common/servlist.c xchat-wdk/src/common/servlist.c
  
  #include "xchat.h"
  #include <glib/ghash.h>
+diff -Naur xchat-wdk.orig/src/common/ssl.c xchat-wdk/src/common/ssl.c
+--- xchat-wdk.orig/src/common/ssl.c	2007-03-28 10:35:06 +0200
++++ xchat-wdk/src/common/ssl.c	2010-03-30 00:55:39 +0200
+@@ -17,6 +17,9 @@
+  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
+  */
+ 
++#define _WS2DEF_
++#define _WINSOCK2API_
++#define _WS2TCPIP_H_
+ #include <openssl/ssl.h>		  /* SSL_() */
+ #include <openssl/err.h>		  /* ERR_() */
+ #include <time.h>					  /* asctime() */
 diff -Naur xchat-wdk.orig/src/common/text.c xchat-wdk/src/common/text.c
 --- xchat-wdk.orig/src/common/text.c	2009-12-31 03:19:50 +0100
 +++ xchat-wdk/src/common/text.c	2010-03-29 15:02:51 +0200
@@ -865,12 +1047,13 @@ diff -Naur xchat-wdk.orig/src/common/text.c xchat-wdk/src/common/text.c
  
 diff -Naur xchat-wdk.orig/src/common/util.c xchat-wdk/src/common/util.c
 --- xchat-wdk.orig/src/common/util.c	2008-02-07 02:50:37 +0100
-+++ xchat-wdk/src/common/util.c	2010-03-29 17:45:48 +0200
-@@ -17,10 +17,10 @@
++++ xchat-wdk/src/common/util.c	2010-03-30 03:24:31 +0200
+@@ -17,10 +17,11 @@
   */
  
  #define __APPLE_API_STRICT_CONFORMANCE
 +#define _WINSOCK2API_
++#define _WS2TCPIP_H_
  
  #define _FILE_OFFSET_BITS 64
  #include <stdio.h>
@@ -878,7 +1061,7 @@ diff -Naur xchat-wdk.orig/src/common/util.c xchat-wdk/src/common/util.c
  #include <string.h>
  #include <stdlib.h>
  #include <sys/types.h>
-@@ -35,7 +35,7 @@
+@@ -35,7 +36,7 @@
  #include <sys/utsname.h>
  #endif
  #include <fcntl.h>
@@ -887,7 +1070,19 @@ diff -Naur xchat-wdk.orig/src/common/util.c xchat-wdk/src/common/util.c
  #include <errno.h>
  #include "xchat.h"
  #include "xchatc.h"
-@@ -631,22 +631,32 @@
+@@ -54,9 +55,11 @@
+ #include <socks.h>
+ #endif
+ 
++#ifndef ENABLE_NLS
+ #ifndef HAVE_SNPRINTF
+ #define snprintf g_snprintf
+ #endif
++#endif
+ 
+ #ifdef USE_DEBUG
+ 
+@@ -631,22 +634,32 @@
  	OSVERSIONINFO osvi;
  	SYSTEM_INFO si;
  	double mhz;
@@ -937,17 +1132,24 @@ diff -Naur xchat-wdk.orig/src/common/xchat.c xchat-wdk/src/common/xchat.c
  #include "inet.h"
 diff -Naur xchat-wdk.orig/src/common/xchat.h xchat-wdk/src/common/xchat.h
 --- xchat-wdk.orig/src/common/xchat.h	2008-08-29 12:59:11 +0200
-+++ xchat-wdk/src/common/xchat.h	2010-03-29 16:42:07 +0200
-@@ -17,7 +17,7 @@
++++ xchat-wdk/src/common/xchat.h	2010-03-30 03:24:19 +0200
+@@ -12,12 +12,14 @@
+ 
+ #include "history.h"
+ 
++#ifndef ENABLE_NLS
+ #ifndef HAVE_SNPRINTF
+ #define snprintf g_snprintf
  #endif
  
  #ifndef HAVE_VSNPRINTF
 -#define vsnprintf g_vsnprintf
 +#define vsnprintf _vsnprintf
++#endif
  #endif
  
  #ifdef USE_DEBUG
-@@ -58,7 +58,7 @@
+@@ -58,7 +60,7 @@
  
  #ifdef WIN32						/* for win32 */
  #define OFLAGS O_BINARY
@@ -991,7 +1193,7 @@ diff -Naur xchat-wdk.orig/src/fe-gtk/editlist.c xchat-wdk/src/fe-gtk/editlist.c
  #include <sys/stat.h>
 diff -Naur xchat-wdk.orig/src/fe-gtk/fe-gtk.c xchat-wdk/src/fe-gtk/fe-gtk.c
 --- xchat-wdk.orig/src/fe-gtk/fe-gtk.c	2008-02-29 03:19:00 +0100
-+++ xchat-wdk/src/fe-gtk/fe-gtk.c	2010-03-29 14:50:19 +0200
++++ xchat-wdk/src/fe-gtk/fe-gtk.c	2010-03-30 04:22:55 +0200
 @@ -21,7 +21,6 @@
  #include <stdio.h>
  #include <string.h>
@@ -1017,6 +1219,23 @@ diff -Naur xchat-wdk.orig/src/fe-gtk/fe-gtk.c xchat-wdk/src/fe-gtk/fe-gtk.c
  #include "gtkutil.h"
  #include "maingui.h"
  #include "pixmaps.h"
+@@ -351,6 +353,7 @@
+ static int
+ fe_idle (gpointer data)
+ {
++	/* disable tray icon
+ 	session *sess = sess_list->data;
+ 
+ 	plugin_add (sess, NULL, NULL, tray_plugin_init, tray_plugin_deinit, NULL, FALSE);
+@@ -358,7 +361,7 @@
+ 	if (arg_minimize == 1)
+ 		gtk_window_iconify (GTK_WINDOW (sess->gui->window));
+ 	else if (arg_minimize == 2)
+-		tray_toggle_visibility (FALSE);
++		tray_toggle_visibility (FALSE);*/
+ 
+ 	return 0;
+ }
 diff -Naur xchat-wdk.orig/src/fe-gtk/fe-gtk.h xchat-wdk/src/fe-gtk/fe-gtk.h
 --- xchat-wdk.orig/src/fe-gtk/fe-gtk.h	2008-06-08 09:58:58 +0200
 +++ xchat-wdk/src/fe-gtk/fe-gtk.h	2010-03-29 17:52:49 +0200
@@ -1064,12 +1283,11 @@ diff -Naur xchat-wdk.orig/src/fe-gtk/joind.c xchat-wdk/src/fe-gtk/joind.c
  
 diff -Naur xchat-wdk.orig/src/fe-gtk/makefile.mak xchat-wdk/src/fe-gtk/makefile.mak
 --- xchat-wdk.orig/src/fe-gtk/makefile.mak	1970-01-01 01:00:00 +0100
-+++ xchat-wdk/src/fe-gtk/makefile.mak	2010-03-29 21:14:18 +0200
-@@ -0,0 +1,36 @@
++++ xchat-wdk/src/fe-gtk/makefile.mak	2010-03-30 01:43:55 +0200
+@@ -0,0 +1,34 @@
 +include "..\makeinc.mak"
 +
-+LDFLAGS = $(LIBS) /NOLOGO
-+#LDFLAGS = $(LIBS) /NOLOGO msvcrt_winxp.obj
++LDFLAGS = $(LIBS) /NOLOGO msvcrt_winxp.obj
 +#LDFLAGS = $(LIBS) /NOLOGO msvcrt_win2003.obj
 +COMLIB = ..\common\xchatcommon.lib
 +PROG = xchat.exe
@@ -1093,8 +1311,7 @@ diff -Naur xchat-wdk.orig/src/fe-gtk/makefile.mak xchat-wdk/src/fe-gtk/makefile.
 +	rc /r xchat.rc
 +
 +xchat-icon.obj: xchat.res
-+	cvtres /NOLOGO /OUT:xchat-icon.obj xchat.res
-+#	cvtres /NOLOGO /MACHINE:X86 /OUT:xchat-icon.obj xchat.res
++	cvtres /NOLOGO /MACHINE:X86 /OUT:xchat-icon.obj xchat.res
 +#	cvtres /NOLOGO /MACHINE:X64 /OUT:xchat-icon.obj xchat.res
 +
 +clean:
@@ -1205,42 +1422,42 @@ diff -Naur xchat-wdk.orig/src/makefile.mak xchat-wdk/src/makefile.mak
 +	del pixmaps\*.h
 diff -Naur xchat-wdk.orig/src/makeinc.mak xchat-wdk/src/makeinc.mak
 --- xchat-wdk.orig/src/makeinc.mak	1970-01-01 01:00:00 +0100
-+++ xchat-wdk/src/makeinc.mak	2010-03-29 22:22:06 +0200
++++ xchat-wdk/src/makeinc.mak	2010-03-30 03:17:06 +0200
 @@ -0,0 +1,115 @@
 +### EDIT THESE ################################################
 +#OPENSSL = YES
-+#IPV6 = YES
++IPV6 = YES
 +#MMX = YES
 +
-+#GLIB = -Ic:/mozilla-build/build/xchat-dev32/include/glib-2.0 -Ic:/mozilla-build/build/xchat-dev32/lib/glib-2.0/include
++GLIB = -Ic:/mozilla-build/build/xchat-dev32/include/glib-2.0 -Ic:/mozilla-build/build/xchat-dev32/lib/glib-2.0/include
 +#GLIB = -Ic:/mozilla-build/build/xchat-dev64/include/glib-2.0 -Ic:/mozilla-build/build/xchat-dev64/lib/glib-2.0/include
 +#GLIB = `pkg-config glib-2.0 --msvc-syntax --cflags`
-+GLIB = 
 +
-+#GTK = -Ic:/mozilla-build/build/xchat-dev32/include/gtk-2.0 -Ic:/mozilla-build/build/xchat-dev32/lib/gtk-2.0/include -Ic:/mozilla-build/build/xchat-dev32/include/atk-1.0 -Ic:/mozilla-build/build/xchat-dev32/include/cairo -Ic:/mozilla-build/build/xchat-dev32/include/pango-1.0 -Ic:/mozilla-build/build/xchat-dev32/include/glib-2.0 -Ic:/mozilla-build/build/xchat-dev32/lib/glib-2.0/include -Ic:/mozilla-build/build/xchat-dev32/include/freetype2 -Ic:/mozilla-build/build/xchat-dev32/include -Ic:/mozilla-build/build/xchat-dev32/include/libpng14
++GTK = -Ic:/mozilla-build/build/xchat-dev32/include/gtk-2.0 -Ic:/mozilla-build/build/xchat-dev32/lib/gtk-2.0/include -Ic:/mozilla-build/build/xchat-dev32/include/atk-1.0 -Ic:/mozilla-build/build/xchat-dev32/include/cairo -Ic:/mozilla-build/build/xchat-dev32/include/pango-1.0 -Ic:/mozilla-build/build/xchat-dev32/include/glib-2.0 -Ic:/mozilla-build/build/xchat-dev32/lib/glib-2.0/include -Ic:/mozilla-build/build/xchat-dev32/include/freetype2 -Ic:/mozilla-build/build/xchat-dev32/include -Ic:/mozilla-build/build/xchat-dev32/include/libpng14
 +#GTK = -Ic:/mozilla-build/build/xchat-dev64/include/gtk-2.0 -Ic:/mozilla-build/build/xchat-dev64/lib/gtk-2.0/include -Ic:/mozilla-build/build/xchat-dev64/include/atk-1.0 -Ic:/mozilla-build/build/xchat-dev64/include/cairo -Ic:/mozilla-build/build/xchat-dev64/include/pango-1.0 -Ic:/mozilla-build/build/xchat-dev64/include/glib-2.0 -Ic:/mozilla-build/build/xchat-dev64/lib/glib-2.0/include -Ic:/mozilla-build/build/xchat-dev64/include/freetype2 -Ic:/mozilla-build/build/xchat-dev64/include -Ic:/mozilla-build/build/xchat-dev64/include/libpng14
 +#GTK = `pkg-config gtk+-2.0 --msvc-syntax --cflags` 
-+GTK = 
 +
-+#LIBS = /libpath:c:/mozilla-build/build/xchat-dev32/lib gtk-win32-2.0.lib gdk-win32-2.0.lib atk-1.0.lib gio-2.0.lib gdk_pixbuf-2.0.lib pangowin32-1.0.lib gdi32.lib pangocairo-1.0.lib pango-1.0.lib cairo.lib gobject-2.0.lib gmodule-2.0.lib glib-2.0.lib intl.lib
++LIBS = /libpath:c:/mozilla-build/build/xchat-dev32/lib gtk-win32-2.0.lib gdk-win32-2.0.lib atk-1.0.lib gio-2.0.lib gdk_pixbuf-2.0.lib pangowin32-1.0.lib gdi32.lib pangocairo-1.0.lib pango-1.0.lib cairo.lib gobject-2.0.lib gmodule-2.0.lib glib-2.0.lib intl.lib
 +#LIBS = /libpath:c:/mozilla-build/build/xchat-dev64/lib gtk-win32-2.0.lib gdk-win32-2.0.lib atk-1.0.lib gio-2.0.lib gdk_pixbuf-2.0.lib pangowin32-1.0.lib gdi32.lib pangocairo-1.0.lib pango-1.0.lib cairo.lib gobject-2.0.lib gmodule-2.0.lib glib-2.0.lib intl.lib
 +#LIBS = `pkg-config gtk+-2.0 --msvc-syntax --libs`
-+LIBS = 
 +
 +# optimize for Pentium and size
 +CFLAGS = /Ox
 +###############################################################
 +
-+PERLPATH = C:\PERL\LIB\CORE
-+PERLLIB = perl58
++PERLPATH = c:\mozilla-build\perl-5.10-x86\lib\CORE
++#PERLPATH = c:\mozilla-build\perl-5.10-x64\lib\CORE
++PERLLIB = perl510
 +PERLOUTPUT = xcperl.dll
 +
-+PYTHONPATH = C:\PYTHON24
-+PYTHONLIB = python24
++PYTHONPATH = c:\mozilla-build\python-2.6-x86
++#PYTHONPATH = c:\mozilla-build\python-2.6-x64
++PYTHONLIB = python26
 +PYTHONOUTPUT = xcpython.dll
 +
-+TCLPATH = C:\TCL
-+TCLLIB = tcl84
++TCLPATH = c:\mozilla-build\tcl-8.6-x86
++#TCLPATH = c:\mozilla-build\tcl-8.6-x64
++TCLLIB = tcl86
 +TCLOUTPUT = xctcl.dll
 +
 +CC = cl
@@ -1257,7 +1474,7 @@ diff -Naur xchat-wdk.orig/src/makeinc.mak xchat-wdk/src/makeinc.mak
 +
 +!IFDEF OPENSSL
 +CFLAGS = $(CFLAGS) /DUSE_OPENSSL
-+LIBS = $(LIBS) libeay32.lib libssl32.lib
++LIBS = $(LIBS) libeay32.lib ssleay32.lib
 +SSLOBJ = ssl.obj
 +!ENDIF
 +
