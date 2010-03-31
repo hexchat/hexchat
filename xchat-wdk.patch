@@ -336,14 +336,14 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/build/test-x86.bat xchat-wdk/build/
 +..\src\fe-gtk\xchat.exe
 diff -ruN --strip-trailing-cr xchat-wdk.orig/config.h xchat-wdk/config.h
 --- xchat-wdk.orig/config.h	1970-01-01 01:00:00 +0100
-+++ xchat-wdk/config.h	2010-03-30 03:18:35 +0200
++++ xchat-wdk/config.h	2010-03-31 12:43:15 +0200
 @@ -0,0 +1,14 @@
 +#define LOCALEDIR "./locale"
 +#define ENABLE_NLS
 +#define USE_GMODULE
 +#define USE_PLUGIN
 +#define PACKAGE_NAME "xchat"
-+#define PACKAGE_VERSION "r1409"
++#define PACKAGE_VERSION "r1409-6"
 +#define XCHATLIBDIR "."
 +#define XCHATSHAREDIR "."
 +#define OLD_PERL
@@ -4997,7 +4997,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/chanopt.c xchat-wdk/src/
  #include <fcntl.h>
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/ctcp.c xchat-wdk/src/common/ctcp.c
 --- xchat-wdk.orig/src/common/ctcp.c	2006-10-03 06:11:54 +0200
-+++ xchat-wdk/src/common/ctcp.c	2010-03-29 12:57:58 +0200
++++ xchat-wdk/src/common/ctcp.c	2010-03-31 12:43:27 +0200
 @@ -18,7 +18,6 @@
  
  #include <stdio.h>
@@ -5006,6 +5006,15 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/ctcp.c xchat-wdk/src/com
  #include <stdlib.h>
  
  #include "xchat.h"
+@@ -130,7 +129,7 @@
+ 
+ 	if (!strcasecmp (msg, "VERSION") && !prefs.hidever)
+ 	{
+-		snprintf (outbuf, sizeof (outbuf), "VERSION xchat "PACKAGE_VERSION" %s",
++		snprintf (outbuf, sizeof (outbuf), "VERSION xchat-wdk "PACKAGE_VERSION" %s",
+ 					 get_cpu_str ());
+ 		serv->p_nctcp (serv, nick, outbuf);
+ 	}
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/dcc.c xchat-wdk/src/common/dcc.c
 --- xchat-wdk.orig/src/common/dcc.c	2007-02-06 05:45:13 +0100
 +++ xchat-wdk/src/common/dcc.c	2010-03-29 13:17:58 +0200
