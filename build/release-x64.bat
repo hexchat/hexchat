@@ -1,0 +1,39 @@
+@echo off
+set GTK_BIN=c:\mozilla-build\build\xchat-dev64\bin
+set SSL_BIN=c:\mozilla-build\build\openssl-0.9.8j-wdk-x64\bin
+set XCHAT_DEST=c:\mozilla-build\build\xchat-wdk-x64
+rmdir /Q /S %XCHAT_DEST%
+mkdir %XCHAT_DEST%
+xcopy ..\src\fe-gtk\xchat.exe %XCHAT_DEST%
+xcopy %GTK_BIN%\libgtk-win32-2.0-0.dll %XCHAT_DEST%
+xcopy %GTK_BIN%\libgdk_pixbuf-2.0-0.dll %XCHAT_DEST%
+xcopy %GTK_BIN%\libgio-2.0-0.dll %XCHAT_DEST%
+xcopy %GTK_BIN%\libglib-2.0-0.dll %XCHAT_DEST%
+xcopy %GTK_BIN%\libgmodule-2.0-0.dll %XCHAT_DEST%
+xcopy %GTK_BIN%\libgobject-2.0-0.dll %XCHAT_DEST%
+xcopy %GTK_BIN%\libpng14-14.dll %XCHAT_DEST%
+xcopy %GTK_BIN%\zlib1.dll %XCHAT_DEST%
+xcopy %GTK_BIN%\libgdk-win32-2.0-0.dll %XCHAT_DEST%
+xcopy %GTK_BIN%\libcairo-2.dll %XCHAT_DEST%
+xcopy %GTK_BIN%\libfontconfig-1.dll %XCHAT_DEST%
+xcopy %GTK_BIN%\libexpat-1.dll %XCHAT_DEST%
+xcopy %GTK_BIN%\libfreetype-6.dll %XCHAT_DEST%
+xcopy %GTK_BIN%\libpango-1.0-0.dll %XCHAT_DEST%
+xcopy %GTK_BIN%\libpangocairo-1.0-0.dll %XCHAT_DEST%
+xcopy %GTK_BIN%\libpangoft2-1.0-0.dll %XCHAT_DEST%
+xcopy %GTK_BIN%\libpangowin32-1.0-0.dll %XCHAT_DEST%
+xcopy %GTK_BIN%\libatk-1.0-0.dll %XCHAT_DEST%
+xcopy %GTK_BIN%\libintl-8.dll %XCHAT_DEST%
+xcopy /S /I %GTK_BIN%\..\lib\gtk-2.0 %XCHAT_DEST%\lib\gtk-2.0
+rmdir /Q /S %XCHAT_DEST%\lib\gtk-2.0\include
+xcopy /S /I etc %XCHAT_DEST%\etc
+xcopy ..\COPYING %XCHAT_DEST%
+::xcopy %SSL_BIN%\libeay32.dll %XCHAT_DEST%
+::xcopy %SSL_BIN%\ssleay32.dll %XCHAT_DEST%
+xcopy /S /I ..\plugins\dns\xcdns.dll %XCHAT_DEST%\plugins\
+xcopy /S /I ..\plugins\ewc\xcewc.dll %XCHAT_DEST%\plugins\
+xcopy /S /I ..\plugins\perl\xcperl.dll %XCHAT_DEST%\plugins\
+::xcopy /S /I ..\plugins\python\xcpython.dll %XCHAT_DEST%\plugins\
+::xcopy /S /I ..\plugins\tcl\xctcl.dll %XCHAT_DEST%\plugins\
+xcopy /S /I ..\plugins\xtray\xtray.dll %XCHAT_DEST%\plugins\
+xcopy /S /I ..\po\locale %XCHAT_DEST%\locale

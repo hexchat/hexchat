@@ -1,0 +1,33 @@
+@echo off
+set INCLUDE=c:\WinDDK\7600.16385.1\inc\api;c:\WinDDK\7600.16385.1\inc\crt;c:\WinDDK\7600.16385.1\inc\api\crt\stl70;c:\mozilla-build\build\xchat-dev64\include;c:\mozilla-build\build\openssl-0.9.8j-wdk-x64\include
+set LIB=c:\WinDDK\7600.16385.1\lib\wnet\amd64;c:\WinDDK\7600.16385.1\lib\Crt\amd64;c:\mozilla-build\build\openssl-0.9.8j-wdk-x64\lib
+set OPATH=%PATH%
+set PATH=c:\WinDDK\7600.16385.1\bin\x86\amd64;c:\WinDDK\7600.16385.1\bin\x86;c:\Program Files\Microsoft SDKs\Windows\v6.0A\Bin;c:\Program Files (x86)\Microsoft Visual Studio 9.0\VC\bin;c:\mozilla-build\build\xchat-dev64\bin;c:\mozilla-build\perl-5.10-x64\bin
+cd ..\src
+nmake -f makefile.mak clean
+nmake -f makefile.mak
+cd ..\plugins\dns
+nmake -f makefile.mak clean
+nmake -f makefile.mak
+cd ..\ewc
+nmake -f makefile.mak clean
+nmake -f makefile.mak
+cd ..\perl
+nmake -f makefile.mak clean
+nmake -f makefile.mak
+::cd ..\python
+::nmake -f makefile.mak clean
+::nmake -f makefile.mak
+::cd ..\tcl
+::nmake -f makefile.mak clean
+::nmake -f makefile.mak
+cd ..\xtray
+nmake -f makefile.mak clean
+nmake -f makefile.mak
+cd ..\..\build
+set PATH=%PATH%;c:\mozilla-build\build\xchat-dev32\bin
+call compile-po-files.bat
+cd ..\build
+set PATH=%OPATH%
+call release-x64.bat
+pause
