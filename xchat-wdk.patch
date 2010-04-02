@@ -59,7 +59,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/tcl/tclplugin.c xchat-wdk/p
  #include "xchat-plugin.h"
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/cfgfiles.c xchat-wdk/src/common/cfgfiles.c
 --- xchat-wdk.orig/src/common/cfgfiles.c	2009-01-02 06:56:12 +0100
-+++ xchat-wdk/src/common/cfgfiles.c	2010-03-29 12:57:41 +0200
++++ xchat-wdk/src/common/cfgfiles.c	2010-04-02 08:25:16 +0200
 @@ -17,7 +17,6 @@
   */
  
@@ -68,6 +68,24 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/cfgfiles.c xchat-wdk/src
  #include <stdlib.h>
  #include <string.h>
  #include <stdio.h>
+@@ -670,14 +669,14 @@
+ 	prefs.autoopendccchatwindow = 1;
+ 	prefs.userhost = 1;
+ 	prefs.gui_url_mod = 4;	/* ctrl */
+-	prefs.gui_tray = 1;
++	prefs.gui_tray = 0;
+ 	prefs.gui_pane_left_size = 100;
+ 	prefs.gui_pane_right_size = 100;
+ 	prefs.mainwindow_save = 1;
+ 	prefs.bantype = 2;
+ 	prefs.input_balloon_time = 20;
+-	prefs.input_flash_priv = prefs.input_flash_hilight = 1;
+-	prefs.input_tray_priv = prefs.input_tray_hilight = 1;
++	prefs.input_flash_priv = prefs.input_flash_hilight = prefs.input_flash_chans = 0;
++	prefs.input_tray_priv = prefs.input_tray_hilight = prefs.input_tray_chans = 0;
+ 	prefs.autodccsend = 2;	/* browse mode */
+ #ifdef WIN32
+ 	prefs.identd = 1;
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/chanopt.c xchat-wdk/src/common/chanopt.c
 --- xchat-wdk.orig/src/common/chanopt.c	2008-06-15 06:40:29 +0200
 +++ xchat-wdk/src/common/chanopt.c	2010-03-29 12:58:02 +0200
@@ -677,14 +695,19 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/rawlog.c xchat-wdk/src/f
  #include "fe-gtk.h"
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/setup.c xchat-wdk/src/fe-gtk/setup.c
 --- xchat-wdk.orig/src/fe-gtk/setup.c	2008-02-08 10:04:45 +0100
-+++ xchat-wdk/src/fe-gtk/setup.c	2010-03-31 12:26:58 +0200
-@@ -332,11 +332,11 @@
++++ xchat-wdk/src/fe-gtk/setup.c	2010-04-02 08:34:37 +0200
+@@ -332,11 +332,15 @@
  #ifndef WIN32
  	{ST_3OGGLE, N_("Show tray balloons on:"), 0, 0, (void *)balloonlist, 0},
  #endif
 -	{ST_3OGGLE, N_("Blink tray icon on:"), 0, 0, (void *)trayblinklist, 0},
+-	{ST_3OGGLE, N_("Blink task bar on:"), 0, 0, (void *)taskbarlist, 0},
++	/* we don't use the xchat plugin-tray */
 +	/* {ST_3OGGLE, N_("Blink tray icon on:"), 0, 0, (void *)trayblinklist, 0}, */
- 	{ST_3OGGLE, N_("Blink task bar on:"), 0, 0, (void *)taskbarlist, 0},
++	
++	/* this causes a crash for some reason, disable it */
++	/* {ST_3OGGLE, N_("Blink task bar on:"), 0, 0, (void *)taskbarlist, 0}, */
++	
  	{ST_3OGGLE, N_("Make a beep sound on:"), 0, 0, (void *)beeplist, 0},
  
 -	{ST_TOGGLE,	N_("Enable system tray icon"), P_OFFINTNL(gui_tray), 0, 0, 0},
