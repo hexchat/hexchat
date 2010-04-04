@@ -93,7 +93,7 @@ int xchat_plugin_init(xchat_plugin *plugin_handle, char **plugin_name, char **pl
 	}
 
 	g_hOldProc	= (WNDPROC)GetWindowLongPtr(g_hXchatWnd, GWLP_WNDPROC);
-	SetWindowLong(g_hXchatWnd, GWLP_WNDPROC, (long)WindowProc);
+	SetWindowLongPtr(g_hXchatWnd, GWLP_WNDPROC, (LONG_PTR)WindowProc);
 
 	/***************************************************************************************************************************/	
 	/************************* Grab the xChat Icon, Load our menu, create the window to receive the hotkey messages  ***********/
@@ -127,12 +127,8 @@ int xchat_plugin_init(xchat_plugin *plugin_handle, char **plugin_name, char **pl
 		DWORD dwStyle;
 		dwStyle = GetWindowLong(g_hXchatWnd, GWL_STYLE);
 		dwStyle |= (1<<WS_CHILD);
-		SetWindowLong(g_hXchatWnd, GWL_STYLE, dwStyle);
-#ifdef _WIN64
-		SetWindowLong(g_hXchatWnd, GWLP_HWNDPARENT, (long)g_hHotkeyWnd);
-#else
-		SetWindowLong(g_hXchatWnd, GWL_HWNDPARENT, (long)g_hHotkeyWnd);
-#endif
+		SetWindowLongPtr(g_hXchatWnd, GWL_STYLE, (LONG_PTR)dwStyle);
+		SetWindowLongPtr(g_hXchatWnd, GWL_HWNDPARENT, (LONG_PTR)g_hHotkeyWnd);
 	}
 
 	/***************************************************************************************************************************/
@@ -171,12 +167,8 @@ int xchat_plugin_deinit(xchat_plugin *plugin_handle)
 		DWORD dwStyle;
 		dwStyle = GetWindowLong(g_hXchatWnd, GWL_STYLE);
 		dwStyle &= ~(1<<WS_CHILD);
-		SetWindowLong(g_hXchatWnd, GWL_STYLE, dwStyle);
-#ifdef _WIN64
-		SetWindowLong(g_hXchatWnd, GWLP_HWNDPARENT, NULL);
-#else
-		SetWindowLong(g_hXchatWnd, GWL_HWNDPARENT, NULL);
-#endif
+		SetWindowLongPtr(g_hXchatWnd, GWL_STYLE, (LONG_PTR)dwStyle);
+		SetWindowLongPtr(g_hXchatWnd, GWL_HWNDPARENT, NULL);
 	}
 
 	/******************************************/
@@ -192,7 +184,7 @@ int xchat_plugin_deinit(xchat_plugin *plugin_handle)
 	/******************************************/
 	/****** Remove our window hook ************/
 	/******************************************/
-	SetWindowLong(g_hXchatWnd, GWLP_WNDPROC, (long)g_hOldProc);
+	SetWindowLongPtr(g_hXchatWnd, GWLP_WNDPROC, (LONG_PTR)g_hOldProc);
 
 	/******************************************/
 	/****** Remove our hotkey, and destroy ****/

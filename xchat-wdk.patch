@@ -508,6 +508,18 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/xchat.h xchat-wdk/src/co
  #include <direct.h>
  #define	F_OK	0
  #define	X_OK	1
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/about.c xchat-wdk/src/fe-gtk/about.c
+--- xchat-wdk.orig/src/fe-gtk/about.c	2008-06-08 09:58:58 +0200
++++ xchat-wdk/src/fe-gtk/about.c	2010-04-02 10:27:10 +0200
+@@ -119,7 +119,7 @@
+ 				"%s\n\n"
+ #ifdef WIN32
+ 				/* leave this message to avoid time wasting bug reports! */
+-				"This version is unofficial and comes with no support.\n\n"
++				"This version is unofficial and\ncomes with no support.\n\n"
+ #endif
+ 				"%s\n"
+ 				"<b>Charset</b>: %s "
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/banlist.c xchat-wdk/src/fe-gtk/banlist.c
 --- xchat-wdk.orig/src/fe-gtk/banlist.c	2008-09-01 11:28:58 +0200
 +++ xchat-wdk/src/fe-gtk/banlist.c	2010-03-29 12:59:40 +0200

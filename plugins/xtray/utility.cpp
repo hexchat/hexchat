@@ -321,24 +321,16 @@ void CheckPrefs(HWND hwnd, int iDlg)
 				DWORD dwStyle;
 				dwStyle = GetWindowLong(g_hXchatWnd, GWL_STYLE);
 				dwStyle |= (1<<WS_CHILD);
-				SetWindowLong(g_hXchatWnd, GWL_STYLE, dwStyle);
-#ifdef _WIN64
-				SetWindowLong(g_hXchatWnd, GWLP_HWNDPARENT, (long)g_hHotkeyWnd);
-#else
-				SetWindowLong(g_hXchatWnd, GWL_HWNDPARENT, (long)g_hHotkeyWnd);
-#endif
+				SetWindowLongPtr(g_hXchatWnd, GWL_STYLE, (LONG_PTR)dwStyle);
+				SetWindowLongPtr(g_hXchatWnd, GWL_HWNDPARENT, (LONG_PTR)g_hHotkeyWnd);
 			}
 			else
 			{
 				DWORD dwStyle;
 				dwStyle = GetWindowLong(g_hXchatWnd, GWL_STYLE);
 				dwStyle &= ~(1<<WS_CHILD);
-				SetWindowLong(g_hXchatWnd, GWL_STYLE, dwStyle);
-#ifdef _WIN64
-				SetWindowLong(g_hXchatWnd, GWLP_HWNDPARENT, NULL);
-#else
-				SetWindowLong(g_hXchatWnd, GWL_HWNDPARENT, NULL);
-#endif
+				SetWindowLongPtr(g_hXchatWnd, GWL_STYLE, (LONG_PTR)dwStyle);
+				SetWindowLongPtr(g_hXchatWnd, GWL_HWNDPARENT, NULL);
 			}
 		}
 		break;

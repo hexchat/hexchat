@@ -63,3 +63,12 @@ extern struct _xchat_plugin *ph;
 #define PREF_DNSIT				20 // Do not show in taskbar
 /******************************************************/
 #endif
+
+#ifdef _WIN64
+/* use replacement with the same value, and use SetWindowLongPtr instead
+   of SetWindowLong. more info:
+
+   http://msdn.microsoft.com/en-us/library/ms633591.aspx
+   http://msdn.microsoft.com/en-us/library/ms644898.aspx */
+#define GWL_HWNDPARENT GWLP_HWNDPARENT
+#endif
