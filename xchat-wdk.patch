@@ -325,7 +325,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/ssl.c xchat-wdk/src/comm
  #include <time.h>					  /* asctime() */
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/text.c xchat-wdk/src/common/text.c
 --- xchat-wdk.orig/src/common/text.c	2009-12-31 03:19:50 +0100
-+++ xchat-wdk/src/common/text.c	2010-03-29 15:02:51 +0200
++++ xchat-wdk/src/common/text.c	2010-04-18 17:37:08 +0200
 @@ -19,13 +19,11 @@
  #include <stdlib.h>
  #include <stdio.h>
@@ -371,7 +371,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/text.c xchat-wdk/src/com
 +	}
 +
 +	/* Select which portions of the file we need (entire file) */
-+	map = (char *)MapViewOfFile(hMapFile, FILE_MAP_ALL_ACCESS, 0, 0, 0);
++	map = (char *)MapViewOfFile(hMapFile, FILE_MAP_READ, 0, 0, 0);
 +
 +	if (map == NULL)
 +	{
