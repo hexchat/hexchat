@@ -523,26 +523,24 @@ sub load {
 		# Xchat::register
 		$scripts{$package}{filename} = $file;
 		$scripts{$package}{loaded_at} = Time::HiRes::time();
-		{
-			no strict; no warnings;
-			my $full_path = File::Spec->rel2abs( $file );
-			$source =~ s/^/#line 1 "$full_path"\n\x7Bpackage $package;/;
 
-			# make sure we add the closing } even if the last line is a comment
-			if( $source =~ /^#.*\Z/m ) {
-				$source =~ s/^(?=#.*\Z)/\x7D/m;
-			} else {
-				$source =~ s/\Z/\x7D/;
-			}
+		my $full_path = File::Spec->rel2abs( $file );
+		$source =~ s/^/#line 1 "$full_path"\n\x7Bpackage $package;/;
 
-			_do_eval( $source );
+		# make sure we add the closing } even if the last line is a comment
+		if( $source =~ /^#.*\Z/m ) {
+			$source =~ s/^(?=#.*\Z)/\x7D/m;
+		} else {
+			$source =~ s/\Z/\x7D/;
+		}
 
-			unless( exists $scripts{$package}{gui_entry} ) {
-				$scripts{$package}{gui_entry} =
-					Xchat::Internal::register(
-						"", "unknown", "", $file
-					);
-			}
+		_do_eval( $source );
+
+		unless( exists $scripts{$package}{gui_entry} ) {
+			$scripts{$package}{gui_entry} =
+				Xchat::Internal::register(
+					"", "unknown", "", $file
+				);
 		}
 		
 		if( $@ ) {
@@ -562,6 +560,8 @@ sub load {
 }
 
 sub _do_eval {
+	no strict;
+	no warnings;
 	eval $_[0];
 }
 
