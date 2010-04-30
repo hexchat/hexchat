@@ -111,7 +111,7 @@ sub complete {
 			# not a valid nick char
 			&& $input =~ /(?<![\x41-\x5A\x61-\x7A\x30-\x39\x5B-\x60\x7B-\x7D-])$/
 			&& $cursor_pos != $completions->{pos} # not continuing a completion
-			&& $word !~ m{^(?:[&#/~]|[[:alpha:]]:\\)} ) { # not a channel
+			&& $word !~ m{^(?:[&#/~]|[[:alpha:]]:\\)} ) { # not a channel or path
 			$word_start = $cursor_pos;
 			$left = $input;
 			$length = length $length;
