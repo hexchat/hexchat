@@ -535,7 +535,7 @@ sub load {
 				$source =~ s/\Z/\x7D/;
 			}
 
-			eval $source;
+			_do_eval( $source );
 
 			unless( exists $scripts{$package}{gui_entry} ) {
 				$scripts{$package}{gui_entry} =
@@ -559,6 +559,10 @@ sub load {
 	}
 
 	return 0;
+}
+
+sub _do_eval {
+	eval $_[0];
 }
 
 sub unload {
