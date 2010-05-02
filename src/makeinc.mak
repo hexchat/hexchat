@@ -16,7 +16,7 @@ GLIB = -Ic:/mozilla-build/build/xchat-dev64/include/glib-2.0 -Ic:/mozilla-build/
 GTK = -Ic:/mozilla-build/build/xchat-dev64/include/gtk-2.0 -Ic:/mozilla-build/build/xchat-dev64/lib/gtk-2.0/include -Ic:/mozilla-build/build/xchat-dev64/include/atk-1.0 -Ic:/mozilla-build/build/xchat-dev64/include/cairo -Ic:/mozilla-build/build/xchat-dev64/include/pango-1.0 -Ic:/mozilla-build/build/xchat-dev64/include/glib-2.0 -Ic:/mozilla-build/build/xchat-dev64/lib/glib-2.0/include -Ic:/mozilla-build/build/xchat-dev64/include/freetype2 -Ic:/mozilla-build/build/xchat-dev64/include -Ic:/mozilla-build/build/xchat-dev64/include/libpng14
 LIBS = $(LIBS) /libpath:c:/mozilla-build/build/xchat-dev64/lib gtk-win32-2.0.lib gdk-win32-2.0.lib atk-1.0.lib gio-2.0.lib gdk_pixbuf-2.0.lib pangowin32-1.0.lib gdi32.lib pangocairo-1.0.lib pango-1.0.lib cairo.lib gobject-2.0.lib gmodule-2.0.lib glib-2.0.lib intl.lib
 
-CFLAGS = $(CFLAGS) /favor:AMD64
+CFLAGS = $(CFLAGS) /favor:AMD64 /D_WIN64
 CPPFLAGS = $(CPPFLAGS) /favor:AMD64 /D_WIN64
 LDFLAGS = $(LDFLAGS) msvcrt_win2003.obj
 
