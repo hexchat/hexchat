@@ -712,7 +712,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/maingui.c xchat-wdk/src/
  	gtk_widget_show (button);
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/menu.c xchat-wdk/src/fe-gtk/menu.c
 --- xchat-wdk.orig/src/fe-gtk/menu.c	2008-06-10 14:05:00 +0200
-+++ xchat-wdk/src/fe-gtk/menu.c	2010-05-02 13:54:19 +0200
++++ xchat-wdk/src/fe-gtk/menu.c	2010-05-02 22:48:00 +0200
 @@ -22,7 +22,6 @@
  #include <stdlib.h>
  #include <fcntl.h>
@@ -726,7 +726,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/menu.c xchat-wdk/src/fe-
  {
  	/* GTK2.2 behaviour */
 -	return GTK_WIDGET_IS_SENSITIVE (widget);
-+	return gtk_widget_get_visible (widget);
++	return gtk_widget_is_sensitive (widget);
  }
  
  #endif
