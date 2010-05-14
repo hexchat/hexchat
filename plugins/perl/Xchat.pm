@@ -1,3 +1,4 @@
+# line 1 "Xchat.pm"
 BEGIN {
 	$INC{'Xchat.pm'} = 'DUMMY';
 }
