@@ -49,6 +49,9 @@ static const struct defaultserver def[] =
 	{"2600net",	0},
 	{0,			"irc.2600.net"},
 
+	{"7-indonesia",	0},
+	{0,			"irc.7-indonesia.org"},
+
 	{"AccessIRC",	0},
 	{0,			"irc.accessirc.net"},
 	{0,			"eu.accessirc.net"},
@@ -121,6 +124,9 @@ static const struct defaultserver def[] =
 
 	{"Beirut", 0},
 	{0,			"irc.beirut.com"},
+
+	{"ChattingAway", 0},
+	{0,			"irc.chattingaway.com"},
 
 	{"ChatJunkies",	0, "#xchat"},
 	{0,			"irc.chatjunkies.org"},
@@ -225,6 +231,9 @@ static const struct defaultserver def[] =
 	{0,				"west.us.gamesnet.net"},*/
 	{0,				"irc.ca.gamesnet.net"},
 	{0,				"irc.eu.gamesnet.net"},
+
+	{"GeekShed",	0},
+	{0,			"irc.geekshed.net"},
 
 	{"German-Elite",	0},
 	{0,			"dominion.german-elite.net"},
@@ -461,6 +470,11 @@ static const struct defaultserver def[] =
 
 	{"TNI3",			0},
 	{0,			"irc.tni3.com"},
+
+	{"TURLINet",			0},
+	{0,			"irc.turli.net"},
+	{0,			"irc.servx.ru"},
+	{0,			"irc.gavnos.ru"},
 
 	{"UnderNet",	0},
 	{0,			"us.undernet.org"},
