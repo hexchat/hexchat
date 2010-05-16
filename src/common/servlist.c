@@ -540,8 +540,11 @@ servlist_connect (session *sess, ircnet *net, gboolean join)
 		sess->willjoinchannel[0] = 0;
 
 		if (net->autojoin)
-			safe_strcpy (sess->willjoinchannel, net->autojoin,
-							 sizeof (sess->willjoinchannel));
+		{
+			if (serv->autojoin)
+				free (serv->autojoin);
+			serv->autojoin = strdup (net->autojoin);
+		}
 	}
 
 	serv->password[0] = 0;
@@ -1215,10 +1218,6 @@ joinlist_merge (GSList *channels, GSList *keys)
 				j++;
 				if (j == i)
 					break;
-			}
-			else
-			{
-				g_string_append_c (out, 'x');
 			}
 
 			if (keys->next)

@@ -148,9 +148,14 @@ irc_join_list (server *serv, GSList *channels, GSList *keys)
 		if (klist->data)
 		{
 			add += strlen (klist->data);
-			if (j != 0)
-				add++;	/* comma */
 		}
+		else
+		{
+			add++;	/* 'x' filler */
+		}
+
+		if (j != 0)
+			add++;	/* comma */
 
 		/* too big? dump buffer and start a fresh one */
 		if (len + add > 512)
@@ -185,6 +190,17 @@ irc_join_list (server *serv, GSList *channels, GSList *keys)
 				g_string_append_c (k, ',');
 			}
 			g_string_append (k, klist->data);
+			j++;
+		}
+		else
+		{
+			add++;
+			if (j != 0)
+			{
+				add++;
+				g_string_append_c (k, ',');
+			}
+			g_string_append_c (k, 'x');
 			j++;
 		}
 
