@@ -34,6 +34,7 @@
 #include <gtk/gtkvseparator.h>
 #include <gtk/gtkradiobutton.h>
 #include <gtk/gtktogglebutton.h>
+#include <gdk/gdkkeysyms.h>
 
 #include "../common/xchat.h"
 #include "../common/fe.h"
@@ -86,6 +87,14 @@ static void
 search_entry_cb (GtkWidget * entry, session * sess)
 {
 	search_search (sess, gtk_entry_get_text (GTK_ENTRY (entry)));
+}
+
+static gboolean 
+search_key_cb (GtkWidget * window, GdkEventKey * key, gpointer userdata)
+{
+	if (key->keyval == GDK_Escape)
+		gtk_widget_destroy (window);
+	return FALSE;
 }
 
 static void
@@ -145,6 +154,8 @@ search_open (session * sess)
 	wid = gtkutil_button (hbox, GTK_STOCK_FIND, 0, search_find_cb, sess,
 								_("_Find"));
 	g_object_set_data (G_OBJECT (wid), "e", entry);
+
+	g_signal_connect (G_OBJECT (win), "key-press-event", G_CALLBACK (search_key_cb), win);
 
 	gtk_widget_show (win);
 }
