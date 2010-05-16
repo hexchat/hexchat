@@ -665,8 +665,9 @@ process_numeric (session * sess, int n,
 		break;
 
 	case 330:
-		EMIT_SIGNAL (XP_TE_WHOIS_AUTH, whois_sess, word[4],
-						 word_eol[6] + 1, word[5], NULL, 0);
+		if (!serv->skip_next_whois)
+			EMIT_SIGNAL (XP_TE_WHOIS_AUTH, whois_sess, word[4],
+							 word_eol[6] + 1, word[5], NULL, 0);
 		break;
 
 	case 332:
