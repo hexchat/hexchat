@@ -1216,6 +1216,10 @@ joinlist_merge (GSList *channels, GSList *keys)
 				if (j == i)
 					break;
 			}
+			else
+			{
+				g_string_append_c (out, 'x');
+			}
 
 			if (keys->next)
 				g_string_append_c (out, ',');
