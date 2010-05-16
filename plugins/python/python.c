@@ -240,6 +240,7 @@ static PyObject *Context_command(ContextObject *self, PyObject *args);
 static PyObject *Context_prnt(ContextObject *self, PyObject *args);
 static PyObject *Context_get_info(ContextObject *self, PyObject *args);
 static PyObject *Context_get_list(ContextObject *self, PyObject *args);
+static PyObject *Context_compare(ContextObject *a, ContextObject *b, int op);
 static PyObject *Context_FromContext(xchat_context *context);
 static PyObject *Context_FromServerAndChannel(char *server, char *channel);
 
@@ -874,6 +875,27 @@ Context_get_list(ContextObject *self, PyObject *args)
 	return ret;
 }
 
+/* needed to make context1 == context2 work */
+static PyObject *
+Context_compare(ContextObject *a, ContextObject *b, int op)
+{
+	PyObject *ret;
+	/* check for == */
+	if (op == Py_EQ)
+		ret = (a->context == b->context ? Py_True : Py_False);
+	/* check for != */
+	else if (op == Py_NE)
+		ret = (a->context != b->context ? Py_True : Py_False);
+	/* only makes sense as == and != */
+	else
+	{
+		PyErr_SetString(PyExc_TypeError, "contexts are either equal or not equal");
+		ret = NULL;
+	}
+
+	return ret;
+}
+
 static PyMethodDef Context_methods[] = {
 	{"set", (PyCFunction) Context_set, METH_NOARGS},
 	{"command", (PyCFunction) Context_command, METH_VARARGS},
@@ -909,7 +931,7 @@ statichere PyTypeObject Context_Type = {
         0,                      /*tp_doc*/
         0,                      /*tp_traverse*/
         0,                      /*tp_clear*/
-        0,                      /*tp_richcompare*/
+        (richcmpfunc)Context_compare,    /*tp_richcompare*/
         0,                      /*tp_weaklistoffset*/
         0,                      /*tp_iter*/
         0,                      /*tp_iternext*/
