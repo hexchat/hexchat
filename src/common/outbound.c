@@ -2022,13 +2022,11 @@ cmd_getstr (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 static int
 cmd_ghost (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
-	if (word[3][0])
-	{
-		sess->server->p_ns_ghost (sess->server, word[2], word[3]);
-		return TRUE;
-	}
+	if (!word[2][0])
+		return FALSE;
 
-	return FALSE; 
+	sess->server->p_ns_ghost (sess->server, word[2], word[3]);
+	return TRUE;
 }
 
 static int
@@ -3559,7 +3557,7 @@ const struct commands xc_cmds[] = {
 	{"GETFILE", cmd_getfile, 0, 0, 1, "GETFILE [-folder] [-multi] [-save] <command> <title> [<initial>]"},
 	{"GETINT", cmd_getint, 0, 0, 1, "GETINT <default> <command> <prompt>"},
 	{"GETSTR", cmd_getstr, 0, 0, 1, "GETSTR <default> <command> <prompt>"},
-	{"GHOST", cmd_ghost, 1, 0, 1, N_("GHOST <nick> <password>, Kills a ghosted nickname")},
+	{"GHOST", cmd_ghost, 1, 0, 1, N_("GHOST <nick> [password], Kills a ghosted nickname")},
 	{"GUI", cmd_gui, 0, 0, 1, "GUI [APPLY|ATTACH|DETACH|SHOW|HIDE|FOCUS|FLASH|ICONIFY|COLOR <n>]\n"
 									  "       GUI [MSGBOX <text>|MENU TOGGLE]"},
 	{"HELP", cmd_help, 0, 0, 1, 0},
