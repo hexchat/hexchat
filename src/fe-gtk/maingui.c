@@ -599,7 +599,11 @@ mg_show_generic_tab (GtkWidget *box)
 	int num;
 	GtkWidget *f = NULL;
 
+#if defined(GTK_WIDGET_HAS_FOCUS)
 	if (current_sess && GTK_WIDGET_HAS_FOCUS (current_sess->gui->input_box))
+#else
+	if (current_sess && gtk_widget_has_focus (current_sess->gui->input_box))
+#endif
 		f = current_sess->gui->input_box;
 
 	num = gtk_notebook_page_num (GTK_NOTEBOOK (mg_gui->note_book), box);
@@ -809,8 +813,13 @@ mg_set_topic_tip (session *sess)
 static void
 mg_hide_empty_pane (GtkPaned *pane)
 {
+#if defined(GTK_WIDGET_VISIBLE)
 	if ((pane->child1 == NULL || !GTK_WIDGET_VISIBLE (pane->child1)) &&
 		 (pane->child2 == NULL || !GTK_WIDGET_VISIBLE (pane->child2)))
+#else
+	if ((pane->child1 == NULL || !gtk_widget_get_visible (pane->child1)) &&
+		 (pane->child2 == NULL || !gtk_widget_get_visible (pane->child2)))
+#endif
 	{
 		gtk_widget_hide (GTK_WIDGET (pane));
 		return;

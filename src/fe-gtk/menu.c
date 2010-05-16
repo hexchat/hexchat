@@ -1670,7 +1670,11 @@ static gboolean
 menu_canacaccel (GtkWidget *widget, guint signal_id, gpointer user_data)
 {
 	/* GTK2.2 behaviour */
+#if GTK_CHECK_VERSION(2,20,0)
+	return gtk_widget_is_sensitive (widget);
+#else
 	return GTK_WIDGET_IS_SENSITIVE (widget);
+#endif
 }
 
 #endif

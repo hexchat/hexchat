@@ -459,7 +459,11 @@ tray_toggle_visibility (gboolean force_hide)
 	if (!win)
 		return FALSE;
 
+#if GTK_CHECK_VERSION(2,20,0)
+	if (force_hide || gtk_widget_get_visible (win))
+#else
 	if (force_hide || GTK_WIDGET_VISIBLE (win))
+#endif
 	{
 		gtk_window_get_position (win, &x, &y);
 		screen = gtk_window_get_screen (win);
