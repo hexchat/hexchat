@@ -88,12 +88,16 @@ ctcp_handle (session *sess, char *to, char *nick,
 	session *chansess;
 	server *serv = sess->server;
 	char outbuf[1024];
+	int ctcp_offset = 2;
+
+	if (serv->have_idmsg && (word[4][1] == '+' || word[4][1] == '-') )
+			ctcp_offset = 3;
 
 	/* consider DCC to be different from other CTCPs */
 	if (!strncasecmp (msg, "DCC", 3))
 	{
 		/* but still let CTCP replies override it */
-		if (!ctcp_check (sess, nick, word, word_eol, word[4] + 2))
+		if (!ctcp_check (sess, nick, word, word_eol, word[4] + ctcp_offset))
 		{
 			if (!ignore_check (word[1], IG_DCC))
 				handle_dcc (sess, nick, word, word_eol);
@@ -118,7 +122,7 @@ ctcp_handle (session *sess, char *to, char *nick,
 		}
 
 		/* but still let CTCP replies override it */
-		if (ctcp_check (sess, nick, word, word_eol, word[4] + 2))
+		if (ctcp_check (sess, nick, word, word_eol, word[4] + ctcp_offset))
 			goto generic;
 
 		inbound_action (sess, to, nick, msg + 7, FALSE, id);
@@ -135,7 +139,7 @@ ctcp_handle (session *sess, char *to, char *nick,
 		serv->p_nctcp (serv, nick, outbuf);
 	}
 
-	if (!ctcp_check (sess, nick, word, word_eol, word[4] + 2))
+	if (!ctcp_check (sess, nick, word, word_eol, word[4] + ctcp_offset))
 	{
 		if (!strncasecmp (msg, "SOUND", 5))
 		{
