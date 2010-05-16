@@ -593,6 +593,12 @@ menu_nickinfo_cb (GtkWidget *menu, session *sess)
 	sess->server->skip_next_whois = 1;
 }
 
+static void
+copy_to_clipboard_cb (GtkWidget *item, char *url)
+{
+	gtkutil_copy_to_clipboard (item, NULL, url);
+}
+
 /* returns boolean: Some data is missing */
 
 static gboolean
@@ -603,6 +609,7 @@ menu_create_nickinfo_menu (struct User *user, GtkWidget *submenu)
 	char *real, *fmt;
 	struct away_msg *away;
 	gboolean missing = FALSE;
+	GtkWidget *item;
 
 	/* let the translators tweak this if need be */
 	fmt = _("<tt><b>%-11s</b></tt> %s");
@@ -617,19 +624,31 @@ menu_create_nickinfo_menu (struct User *user, GtkWidget *submenu)
 	{
 		snprintf (buf, sizeof (buf), fmt, _("Real Name:"), unknown);
 	}
-	menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0, 0);
+	item = menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0, 0);
+	g_signal_connect (G_OBJECT (item), "activate",
+							G_CALLBACK (copy_to_clipboard_cb), 
+							user->realname ? user->realname : unknown);
 
 	snprintf (buf, sizeof (buf), fmt, _("User:"),
 				 user->hostname ? user->hostname : unknown);
-	menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0, 0);
+	item = menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0, 0);
+	g_signal_connect (G_OBJECT (item), "activate",
+							G_CALLBACK (copy_to_clipboard_cb), 
+							user->hostname ? user->hostname : unknown);
 
 	snprintf (buf, sizeof (buf), fmt, _("Country:"),
 				 user->hostname ? country(user->hostname) : unknown);
-	menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0, 0);
+	item = menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0, 0);
+	g_signal_connect (G_OBJECT (item), "activate",
+							G_CALLBACK (copy_to_clipboard_cb), 
+							user->hostname ? country(user->hostname) : unknown);
 
 	snprintf (buf, sizeof (buf), fmt, _("Server:"),
 				 user->servername ? user->servername : unknown);
-	menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0, 0);
+	item = menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0, 0);
+	g_signal_connect (G_OBJECT (item), "activate",
+							G_CALLBACK (copy_to_clipboard_cb), 
+							user->servername ? user->servername : unknown);
 
 	if (user->lasttalk)
 	{
@@ -652,7 +671,10 @@ menu_create_nickinfo_menu (struct User *user, GtkWidget *submenu)
 			char *msg = strip_color (away->message ? away->message : unknown, -1, STRIP_ALL|STRIP_ESCMARKUP);
 			snprintf (buf, sizeof (buf), fmt, _("Away Msg:"), msg);
 			g_free (msg);
-			menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0, 0);
+			item = menu_quick_item (0, buf, submenu, XCMENU_MARKUP, 0, 0);
+			g_signal_connect (G_OBJECT (item), "activate",
+									G_CALLBACK (copy_to_clipboard_cb), 
+									away->message ? away->message : unknown);
 		}
 		else
 			missing = TRUE;
@@ -886,12 +908,6 @@ open_url_cb (GtkWidget *item, char *url)
 	/* pass this to /URL so it can handle irc:// */
 	snprintf (buf, sizeof (buf), "URL %s", url);
 	handle_command (current_sess, buf, FALSE);
-}
-
-static void
-copy_to_clipboard_cb (GtkWidget *item, char *url)
-{
-	gtkutil_copy_to_clipboard (item, NULL, url);
 }
 
 void
