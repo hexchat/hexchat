@@ -143,6 +143,10 @@ AC_ARG_ENABLE(spell,
 [  --enable-spell=type     enable spelling type: none static libsexy gtkspell],
 		  spell=$enableval, spell=libsexy)
 
+AC_ARG_ENABLE(ntlm,
+[  --enable-ntlm           enable Microsoft's NTLM auth (libntlm) library support],
+	ntlm=$enableval, ntlm=yes)
+
 dnl *********************************************************************
 dnl ** GLIB *************************************************************
 dnl *********************************************************************
@@ -548,11 +552,13 @@ dnl *********************************************************************
 dnl ** MS PROXY *********************************************************
 dnl *********************************************************************
 
-have_ntlm="no"
-AC_CHECK_LIB(ntlm, ntlm_smb_encrypt, have_ntlm=yes)
-if test "$have_ntlm" = yes; then
-	LIBS="$LIBS -lntlm"
-	AC_DEFINE(USE_MSPROXY)
+if test "x$ntlm" = "xyes" ; then
+	have_ntlm="no"
+	AC_CHECK_LIB(ntlm, ntlm_smb_encrypt, have_ntlm=yes)
+	if test "$have_ntlm" = yes; then
+		LIBS="$LIBS -lntlm"
+		AC_DEFINE(USE_MSPROXY)
+	fi
 fi
 
 dnl *********************************************************************
