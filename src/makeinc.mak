@@ -1,5 +1,6 @@
 #uncomment this to have an x64 build
 #X64 = YES
+#PORTABLE = YES
 #OPENSSL = YES
 IPV6 = YES
 
@@ -48,6 +49,10 @@ PYTHONOUTPUT = xcpython.dll
 
 TCLLIB = tcl86
 TCLOUTPUT = xctcl.dll
+
+!ifdef PORTABLE
+CFLAGS = $(CFLAGS) -DPORTABLE_BUILD
+!endif
 
 !ifdef IPV6
 CFLAGS = $(CFLAGS) -DUSE_IPV6

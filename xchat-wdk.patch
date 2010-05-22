@@ -75,7 +75,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/tcl/tclplugin.c xchat-wdk/p
  #include "xchat-plugin.h"
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/cfgfiles.c xchat-wdk/src/common/cfgfiles.c
 --- xchat-wdk.orig/src/common/cfgfiles.c	2009-01-02 06:56:12 +0100
-+++ xchat-wdk/src/common/cfgfiles.c	2010-05-22 03:42:11 +0200
++++ xchat-wdk/src/common/cfgfiles.c	2010-05-23 01:37:33 +0200
 @@ -17,7 +17,6 @@
   */
  
@@ -84,7 +84,36 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/cfgfiles.c xchat-wdk/src
  #include <stdlib.h>
  #include <string.h>
  #include <stdio.h>
-@@ -676,7 +675,12 @@
+@@ -32,7 +31,11 @@
+ #include "xchatc.h"
+ 
+ #ifdef WIN32
++#ifdef PORTABLE_BUILD
++#define XCHAT_DIR "config"
++#else
+ #define XCHAT_DIR "X-Chat 2"
++#endif
+ #else
+ #define XCHAT_DIR ".xchat2"
+ #endif
+@@ -308,12 +311,16 @@
+ {
+ 	if (!xdir_fs)
+ 	{
++#ifdef PORTABLE_BUILD
++		xdir_fs = XCHAT_DIR;
++#else
+ 		char out[256];
+ 
+ 		if (!get_reg_str ("Software\\Microsoft\\Windows\\CurrentVersion\\"
+ 				"Explorer\\Shell Folders", "AppData", out, sizeof (out)))
+ 			return "./config";
+ 		xdir_fs = g_strdup_printf ("%s\\" XCHAT_DIR, out);
++#endif
+ 	}
+ 	return xdir_fs;
+ }
+@@ -676,7 +683,12 @@
  	prefs.mainwindow_save = 1;
  	prefs.bantype = 2;
  	prefs.input_balloon_time = 20;
@@ -521,8 +550,16 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/xchat.h xchat-wdk/src/co
  #define	X_OK	1
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/about.c xchat-wdk/src/fe-gtk/about.c
 --- xchat-wdk.orig/src/fe-gtk/about.c	2010-05-16 09:43:49 +0200
-+++ xchat-wdk/src/fe-gtk/about.c	2010-05-21 21:42:51 +0200
-@@ -117,7 +117,7 @@
++++ xchat-wdk/src/fe-gtk/about.c	2010-05-23 01:47:48 +0200
+@@ -113,11 +113,15 @@
+ 	gtk_container_add (GTK_CONTAINER (vbox), label);
+ 	g_get_charset (&locale);
+ 	(snprintf) (buf, sizeof (buf),
++#ifdef PORTABLE_BUILD
++				"<span size=\"x-large\"><b>"DISPLAY_NAME" "PACKAGE_VERSION"</b></span>\n<span size=\"x-large\"><b>Portable Version</b></span>\n\n"
++#else
+ 				"<span size=\"x-large\"><b>"DISPLAY_NAME" "PACKAGE_VERSION"</b></span>\n\n"
++#endif
  				"%s\n\n"
  #ifdef WIN32
  				/* leave this message to avoid time wasting bug reports! */
