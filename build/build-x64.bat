@@ -21,9 +21,9 @@ nmake -f makefile.mak
 ::cd ..\tcl
 ::nmake -f makefile.mak clean
 ::nmake -f makefile.mak
-cd ..\xtray
-nmake -f makefile.mak clean
-nmake -f makefile.mak
+::cd ..\xtray
+::nmake -f makefile.mak clean
+::nmake -f makefile.mak
 cd ..\..\build
 set PATH=%PATH%;c:\mozilla-build\build\xchat-dev32\bin
 call compile-po-files.bat

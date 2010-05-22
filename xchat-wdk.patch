@@ -75,7 +75,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/tcl/tclplugin.c xchat-wdk/p
  #include "xchat-plugin.h"
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/cfgfiles.c xchat-wdk/src/common/cfgfiles.c
 --- xchat-wdk.orig/src/common/cfgfiles.c	2009-01-02 06:56:12 +0100
-+++ xchat-wdk/src/common/cfgfiles.c	2010-05-21 21:42:51 +0200
++++ xchat-wdk/src/common/cfgfiles.c	2010-05-22 03:42:11 +0200
 @@ -17,7 +17,6 @@
   */
  
@@ -84,28 +84,19 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/cfgfiles.c xchat-wdk/src
  #include <stdlib.h>
  #include <string.h>
  #include <stdio.h>
-@@ -670,14 +669,19 @@
- 	prefs.autoopendccchatwindow = 1;
- 	prefs.userhost = 1;
- 	prefs.gui_url_mod = 4;	/* ctrl */
--	prefs.gui_tray = 1;
-+	prefs.gui_tray = 0;
- 	prefs.gui_pane_left_size = 100;
- 	prefs.gui_pane_right_size = 100;
+@@ -676,7 +675,12 @@
  	prefs.mainwindow_save = 1;
  	prefs.bantype = 2;
  	prefs.input_balloon_time = 20;
 +	/* taskbar alerts crash xchat-wdk only on x86 */
 +#ifdef _WIN64
  	prefs.input_flash_priv = prefs.input_flash_hilight = 1;
--	prefs.input_tray_priv = prefs.input_tray_hilight = 1;
 +#else
 +	prefs.input_flash_priv = prefs.input_flash_hilight = prefs.input_flash_chans = 0;
 +#endif
-+	prefs.input_tray_priv = prefs.input_tray_hilight = prefs.input_tray_chans = 0;
+ 	prefs.input_tray_priv = prefs.input_tray_hilight = 1;
  	prefs.autodccsend = 2;	/* browse mode */
  #ifdef WIN32
- 	prefs.identd = 1;
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/chanopt.c xchat-wdk/src/common/chanopt.c
 --- xchat-wdk.orig/src/common/chanopt.c	2008-06-15 06:40:29 +0200
 +++ xchat-wdk/src/common/chanopt.c	2010-05-21 21:42:51 +0200
@@ -575,7 +566,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/editlist.c xchat-wdk/src
  #include <sys/stat.h>
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/fe-gtk.c xchat-wdk/src/fe-gtk/fe-gtk.c
 --- xchat-wdk.orig/src/fe-gtk/fe-gtk.c	2010-05-16 05:20:22 +0200
-+++ xchat-wdk/src/fe-gtk/fe-gtk.c	2010-05-21 21:42:51 +0200
++++ xchat-wdk/src/fe-gtk/fe-gtk.c	2010-05-22 03:35:00 +0200
 @@ -19,7 +19,6 @@
  #include <stdio.h>
  #include <string.h>
@@ -601,22 +592,20 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/fe-gtk.c xchat-wdk/src/f
  #include "gtkutil.h"
  #include "maingui.h"
  #include "pixmaps.h"
-@@ -349,6 +351,7 @@
- static int
- fe_idle (gpointer data)
- {
-+	/* disable tray icon
- 	session *sess = sess_list->data;
- 
- 	plugin_add (sess, NULL, NULL, tray_plugin_init, tray_plugin_deinit, NULL, FALSE);
-@@ -356,7 +359,7 @@
- 	if (arg_minimize == 1)
- 		gtk_window_iconify (GTK_WINDOW (sess->gui->window));
- 	else if (arg_minimize == 2)
--		tray_toggle_visibility (FALSE);
-+		tray_toggle_visibility (FALSE);*/
- 
- 	return 0;
+@@ -844,11 +846,11 @@
+ 	switch (info_type)
+ 	{
+ 	case 0:	/* native window pointer (for plugins) */
+-#ifdef WIN32
++/*#ifdef WIN32
+ 		return GDK_WINDOW_HWND (sess->gui->window->window);
+-#else
++#else*/
+ 		return sess->gui->window;
+-#endif
++/*#endif*/
+ 	}
+ 	return NULL;
  }
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/fe-gtk.h xchat-wdk/src/fe-gtk/fe-gtk.h
 --- xchat-wdk.orig/src/fe-gtk/fe-gtk.h	2008-06-08 09:58:58 +0200
@@ -663,24 +652,6 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/joind.c xchat-wdk/src/fe
  #include <string.h>
  #include <stdio.h>
  
-diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/maingui.c xchat-wdk/src/fe-gtk/maingui.c
---- xchat-wdk.orig/src/fe-gtk/maingui.c	2010-05-16 05:20:22 +0200
-+++ xchat-wdk/src/fe-gtk/maingui.c	2010-05-21 21:42:51 +0200
-@@ -1327,12 +1327,12 @@
- 	gtk_button_box_set_layout (GTK_BUTTON_BOX (dialog_action_area1),
- 										GTK_BUTTONBOX_END);
- 
--	if (minimize_button)
-+	/*if (minimize_button)
- 	{
- 		button = gtk_button_new_with_mnemonic (_("_Minimize to Tray"));
- 		gtk_widget_show (button);
- 		gtk_dialog_add_action_widget (GTK_DIALOG (dialog), button, 1);
--	}
-+	}*/
- 
- 	button = gtk_button_new_from_stock ("gtk-cancel");
- 	gtk_widget_show (button);
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/menu.c xchat-wdk/src/fe-gtk/menu.c
 --- xchat-wdk.orig/src/fe-gtk/menu.c	2010-05-16 06:24:24 +0200
 +++ xchat-wdk/src/fe-gtk/menu.c	2010-05-21 21:42:51 +0200
@@ -727,14 +698,11 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/rawlog.c xchat-wdk/src/f
  #include "fe-gtk.h"
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/setup.c xchat-wdk/src/fe-gtk/setup.c
 --- xchat-wdk.orig/src/fe-gtk/setup.c	2008-02-08 10:04:45 +0100
-+++ xchat-wdk/src/fe-gtk/setup.c	2010-05-21 21:42:52 +0200
-@@ -332,11 +332,16 @@
- #ifndef WIN32
++++ xchat-wdk/src/fe-gtk/setup.c	2010-05-22 03:36:17 +0200
+@@ -333,7 +333,11 @@
  	{ST_3OGGLE, N_("Show tray balloons on:"), 0, 0, (void *)balloonlist, 0},
  #endif
--	{ST_3OGGLE, N_("Blink tray icon on:"), 0, 0, (void *)trayblinklist, 0},
-+	/* we don't use the xchat plugin-tray */
-+	/* {ST_3OGGLE, N_("Blink tray icon on:"), 0, 0, (void *)trayblinklist, 0}, */
+ 	{ST_3OGGLE, N_("Blink tray icon on:"), 0, 0, (void *)trayblinklist, 0},
 +
 +	/* taskbar alerts crash xchat-wdk only on x86 */
 +#ifdef _WIN64
@@ -742,11 +710,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/setup.c xchat-wdk/src/fe
 +#endif
  	{ST_3OGGLE, N_("Make a beep sound on:"), 0, 0, (void *)beeplist, 0},
  
--	{ST_TOGGLE,	N_("Enable system tray icon"), P_OFFINTNL(gui_tray), 0, 0, 0},
-+	/* {ST_TOGGLE,	N_("Enable system tray icon"), P_OFFINTNL(gui_tray), 0, 0, 0}, */
- 
- 	{ST_HEADER,	N_("Highlighted Messages"),0,0,0},
- 	{ST_LABEL,	N_("Highlighted messages are ones where your nickname is mentioned, but also:"), 0, 0, 0, 1},
+ 	{ST_TOGGLE,	N_("Enable system tray icon"), P_OFFINTNL(gui_tray), 0, 0, 0},
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/sexy-spell-entry.c xchat-wdk/src/fe-gtk/sexy-spell-entry.c
 --- xchat-wdk.orig/src/fe-gtk/sexy-spell-entry.c	2006-07-17 07:51:02 +0200
 +++ xchat-wdk/src/fe-gtk/sexy-spell-entry.c	2010-05-21 21:42:52 +0200
