@@ -75,7 +75,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/tcl/tclplugin.c xchat-wdk/p
  #include "xchat-plugin.h"
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/cfgfiles.c xchat-wdk/src/common/cfgfiles.c
 --- xchat-wdk.orig/src/common/cfgfiles.c	2009-01-02 06:56:12 +0100
-+++ xchat-wdk/src/common/cfgfiles.c	2010-05-26 04:09:02 +0200
++++ xchat-wdk/src/common/cfgfiles.c	2010-05-26 05:43:48 +0200
 @@ -17,7 +17,6 @@
   */
  
@@ -113,15 +113,17 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/cfgfiles.c xchat-wdk/src
  	}
  	return xdir_fs;
  }
-@@ -676,6 +683,8 @@
+@@ -676,7 +683,10 @@
  	prefs.mainwindow_save = 1;
  	prefs.bantype = 2;
  	prefs.input_balloon_time = 20;
 +	/* taskbar alerts crash xchat-wdk only on x86 */
 +#ifdef _WIN64
  	prefs.input_flash_priv = prefs.input_flash_hilight = 1;
++#endif
  	prefs.input_tray_priv = prefs.input_tray_hilight = 1;
  	prefs.autodccsend = 2;	/* browse mode */
+ #ifdef WIN32
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/chanopt.c xchat-wdk/src/common/chanopt.c
 --- xchat-wdk.orig/src/common/chanopt.c	2008-06-15 06:40:29 +0200
 +++ xchat-wdk/src/common/chanopt.c	2010-05-21 21:42:51 +0200
