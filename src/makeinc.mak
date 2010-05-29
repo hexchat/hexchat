@@ -1,4 +1,3 @@
-#uncomment this to have an x64 build
 #X64 = YES
 #PORTABLE = YES
 #OPENSSL = YES
