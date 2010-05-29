@@ -733,18 +733,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/rawlog.c xchat-wdk/src/f
  #include "fe-gtk.h"
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/setup.c xchat-wdk/src/fe-gtk/setup.c
 --- xchat-wdk.orig/src/fe-gtk/setup.c	2008-02-08 10:04:45 +0100
-+++ xchat-wdk/src/fe-gtk/setup.c	2010-05-26 04:00:03 +0200
-@@ -109,8 +109,8 @@
- 					N_("Give each person on IRC a different color"),0,0},
- 	{ST_TOGGLR, N_("Indent nick names"), P_OFFINTNL(indent_nicks),
- 					N_("Make nick names right-justified"),0,0},
--	{ST_TOGGLE, N_("Transparent background"), P_OFFINTNL(transparent),0,0,0},
--	{ST_TOGGLR, N_("Show marker line"), P_OFFINTNL(show_marker),
-+	/* {ST_TOGGLE, N_("Transparent background"), P_OFFINTNL(transparent),0,0,0}, */
-+	{ST_TOGGLE, N_("Show marker line"), P_OFFINTNL(show_marker),
- 					N_("Insert a red line after the last read text."),0,0},
- 	{ST_HEADER, N_("Transparency Settings"), 0,0,0},
- 	{ST_HSCALE, N_("Red:"), P_OFFINTNL(tint_red),0,0,0},
++++ xchat-wdk/src/fe-gtk/setup.c	2010-05-30 01:22:42 +0200
 @@ -333,7 +333,11 @@
  	{ST_3OGGLE, N_("Show tray balloons on:"), 0, 0, (void *)balloonlist, 0},
  #endif
