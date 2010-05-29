@@ -711,7 +711,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/palette.c xchat-wdk/src/
  #include <fcntl.h>
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/plugin-tray.c xchat-wdk/src/fe-gtk/plugin-tray.c
 --- xchat-wdk.orig/src/fe-gtk/plugin-tray.c	2010-05-16 03:40:42 +0200
-+++ xchat-wdk/src/fe-gtk/plugin-tray.c	2010-05-21 21:42:52 +0200
++++ xchat-wdk/src/fe-gtk/plugin-tray.c	2010-05-30 01:42:26 +0200
 @@ -1,7 +1,6 @@
  /* Copyright (C) 2006-2007 Peter Zelezny. */
  
@@ -720,6 +720,93 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/plugin-tray.c xchat-wdk/
  #include "../common/xchat-plugin.h"
  #include "../common/xchat.h"
  #include "../common/xchatc.h"
+@@ -298,10 +297,10 @@
+ 		nets = tray_count_networks ();
+ 		chans = tray_count_channels ();
+ 		if (nets)
+-			tray_set_tipf (_("XChat: Connected to %u networks and %u channels"),
++			tray_set_tipf (_("XChat-WDK: Connected to %u networks and %u channels"),
+ 								nets, chans);
+ 		else
+-			tray_set_tipf ("XChat: %s", _("Not connected."));
++			tray_set_tipf ("XChat-WDK: %s", _("Not connected."));
+ 	}
+ 
+ 	if (custom_icon1)
+@@ -651,15 +650,15 @@
+ 		/* FIXME: hides any previous private messages */
+ 		tray_hilight_count++;
+ 		if (tray_hilight_count == 1)
+-			tray_set_tipf (_("XChat: Highlighted message from: %s (%s)"),
++			tray_set_tipf (_("XChat-WDK: Highlighted message from: %s (%s)"),
+ 								word[1], xchat_get_info (ph, "channel"));
+ 		else
+-			tray_set_tipf (_("XChat: %u highlighted messages, latest from: %s (%s)"),
++			tray_set_tipf (_("XChat-WDK: %u highlighted messages, latest from: %s (%s)"),
+ 								tray_hilight_count, word[1], xchat_get_info (ph, "channel"));
+ 	}
+ 
+ 	if (prefs.input_balloon_hilight)
+-		tray_set_balloonf (word[2], _("XChat: Highlighted message from: %s (%s)"),
++		tray_set_balloonf (word[2], _("XChat-WDK: Highlighted message from: %s (%s)"),
+ 								 word[1], xchat_get_info (ph, "channel"));
+ 
+ 	return XCHAT_EAT_NONE;
+@@ -677,14 +676,14 @@
+ 
+ 		tray_pub_count++;
+ 		if (tray_pub_count == 1)
+-			tray_set_tipf (_("XChat: New public message from: %s (%s)"),
++			tray_set_tipf (_("XChat-WDK: New public message from: %s (%s)"),
+ 								word[1], xchat_get_info (ph, "channel"));
+ 		else
+-			tray_set_tipf (_("XChat: %u new public messages."), tray_pub_count);
++			tray_set_tipf (_("XChat-WDK: %u new public messages."), tray_pub_count);
+ 	}
+ 
+ 	if (prefs.input_balloon_chans)
+-		tray_set_balloonf (word[2], _("XChat: New public message from: %s (%s)"),
++		tray_set_balloonf (word[2], _("XChat-WDK: New public message from: %s (%s)"),
+ 								 word[1], xchat_get_info (ph, "channel"));
+ 
+ 	return XCHAT_EAT_NONE;
+@@ -706,14 +705,14 @@
+ 
+ 	tray_priv_count++;
+ 	if (tray_priv_count == 1)
+-		tray_set_tipf (_("XChat: Private message from: %s (%s)"),
++		tray_set_tipf (_("XChat-WDK: Private message from: %s (%s)"),
+ 							from, network);
+ 	else
+-		tray_set_tipf (_("XChat: %u private messages, latest from: %s (%s)"),
++		tray_set_tipf (_("XChat-WDK: %u private messages, latest from: %s (%s)"),
+ 							tray_priv_count, from, network);
+ 
+ 	if (prefs.input_balloon_priv)
+-		tray_set_balloonf (text, _("XChat: Private message from: %s (%s)"),
++		tray_set_balloonf (text, _("XChat-WDK: Private message from: %s (%s)"),
+ 								 from, network);
+ }
+ 
+@@ -759,15 +758,15 @@
+ 
+ 		tray_file_count++;
+ 		if (tray_file_count == 1)
+-			tray_set_tipf (_("XChat: File offer from: %s (%s)"),
++			tray_set_tipf (_("XChat-WDK: File offer from: %s (%s)"),
+ 								word[1], network);
+ 		else
+-			tray_set_tipf (_("XChat: %u file offers, latest from: %s (%s)"),
++			tray_set_tipf (_("XChat-WDK: %u file offers, latest from: %s (%s)"),
+ 								tray_file_count, word[1], network);
+ 	}
+ 
+ 	if (prefs.input_balloon_priv)
+-		tray_set_balloonf ("", _("XChat: File offer from: %s (%s)"),
++		tray_set_balloonf ("", _("XChat-WDK: File offer from: %s (%s)"),
+ 								word[1], network);
+ 
+ 	return XCHAT_EAT_NONE;
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/rawlog.c xchat-wdk/src/fe-gtk/rawlog.c
 --- xchat-wdk.orig/src/fe-gtk/rawlog.c	2010-05-16 05:20:22 +0200
 +++ xchat-wdk/src/fe-gtk/rawlog.c	2010-05-21 21:42:52 +0200
