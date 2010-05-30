@@ -3,7 +3,7 @@
 #define USE_GMODULE
 #define USE_PLUGIN
 #define PACKAGE_NAME "xchat"
-#define PACKAGE_VERSION "r1431-6"
+#define PACKAGE_VERSION "r1439"
 #define XCHATLIBDIR "."
 #define XCHATSHAREDIR "."
 #define OLD_PERL
@@ -11,4 +11,4 @@
 #define socklen_t int
 #endif
 #define GETTEXT_PACKAGE "xchat"
-#define PACKAGE_TARNAME "xchat-2.8.6"
+#define PACKAGE_TARNAME "xchat-2.8.8"
