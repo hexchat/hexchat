@@ -1,20 +1,23 @@
 # This file is distributed under the same license as the xchat package.
+# translation of xchat-2.8.6.po to Russian
 # Copyright (C) 2000, 2004, 2005 Free Software Foundation, Inc.
 # Volosenkov Dmitry <_bil_@mail.ru>, 1999.
 # Valek Filippov <frob@df.ru>, 2001.
-# Peter Astakhov <astakhovp@mail.ru>, 2004, 2005, 2008/
+# Peter Astakhov <astakhovp@mail.ru>, 2004.
+# Peter Astakhov <astakhovp@mail.ru>, 2005.
+# Peter Astakhov <astakhovp@mail.ru>, 2008.
+# Alex <davian818@gmail.com>, 2010
 msgid ""
 msgstr ""
-"Project-Id-Version: xchat-2.8.6\n"
+"Project-Id-Version: xchat-2.8.4\n"
 "Report-Msgid-Bugs-To: www.xchat.org\n"
 "POT-Creation-Date: 2008-06-12 18:39+1000\n"
-"PO-Revision-Date: 2009-10-18 13:54+0300\n"
-"Last-Translator: Sergey Tereschenko <serg.partizan@gmail.com>\n"
-"Language-Team: Russian\n"
+"PO-Revision-Date: 2010-05-13 03:41+0700\n"
+"Last-Translator: Алекс <davian818@gmail.com>\n"
+"Language-Team: Russian <gnu@mx.ru>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.10.2\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: src/common/cfgfiles.c:354
@@ -27,7 +30,7 @@ msgstr "Я занят"
 
 #: src/common/cfgfiles.c:712
 msgid "Leaving"
-msgstr "Ушёл"
+msgstr "Ухожу я от вас"
 
 #: src/common/cfgfiles.c:759
 msgid ""
@@ -35,7 +38,7 @@ msgid ""
 "  create a User Account and use that to login.\n"
 msgstr ""
 "* Глупо запускать IRC под пользователем root! Вы должны\n"
-"  создать пользователя и работать под ним.\n"
+"  создать пользовательскую учетную запись и работать под ним.\n"
 
 #: src/common/dcc.c:67
 msgid "Waiting"
@@ -140,11 +143,11 @@ msgstr "Нет соединения. Наберите /server <адрес> [<п�
 #: src/common/outbound.c:338
 #, c-format
 msgid "Already marked away: %s\n"
-msgstr "Уже ушёл: %s\n"
+msgstr "Вы уже отсутствуете: %s\n"
 
 #: src/common/outbound.c:411
 msgid "Already marked back.\n"
-msgstr "Уже вернулся.\n"
+msgstr "Вы уже вернулись.\n"
 
 #: src/common/outbound.c:1777
 msgid "I need /bin/sh to run!\n"
@@ -178,7 +181,7 @@ msgstr "Плагин не найден\n"
 #: src/common/outbound.c:3228
 #: src/fe-gtk/plugingui.c:186
 msgid "That plugin is refusing to unload.\n"
-msgstr "Этот плагин невозможно выгрузить.\n"
+msgstr "Плагин невозможно выгрузить.\n"
 
 #: src/common/outbound.c:3497
 msgid "ADDBUTTON <name> <action>, adds a button under the user-list"
@@ -198,15 +201,15 @@ msgstr "ALLSERV <cmd>, посылает команду на всех серве�
 
 #: src/common/outbound.c:3504
 msgid "AWAY [<reason>], sets you away"
-msgstr "AWAY [<причина>], помечает вас как 'ушёл'"
+msgstr "AWAY [<причина>], устанавливает флаг отсутствия"
 
 #: src/common/outbound.c:3505
 msgid "BACK, sets you back (not away)"
-msgstr "BACK, помечает вас вернувшимся(не ушедшим)"
+msgstr "BACK, сбрасывает флаг остутствия"
 
 #: src/common/outbound.c:3507
 msgid "BAN <mask> [<bantype>], bans everyone matching the mask from the current channel. If they are already on the channel this doesn't kick them (needs chanop)"
-msgstr "BAN <маска> [<тип>], банит всех, кто попадает под маску натекущем канале. Если они есть на канале, то не будут кикнуты. (для этого нужно быть оператором канала)"
+msgstr "BAN <маска> [<тип>], блокирует доступ на текущий канал для каждого, совпадающего с маской. Если они уже на канале, то они не будут скинуты (для этого нужно быть оператором канала)"
 
 #: src/common/outbound.c:3508
 msgid "CHANOPT [-quiet] <variable> [<value>]"
@@ -245,13 +248,13 @@ msgid ""
 "         /dcc close send johnsmith file.tar.gz"
 msgstr ""
 "\n"
-"DCC GET <nick>                      - принять предлеженный файл\n"
-"DCC SEND [-maxcps=#] <nick> [file]  - послать файл кому-то\n"
-"DCC PSEND [-maxcps=#] <nick> [file] - send a file using passive mode\n"
-"DCC LIST                            - show DCC list\n"
-"DCC CHAT <nick>                     - offer DCC CHAT to someone\n"
-"DCC PCHAT <nick>                    - offer DCC CHAT using passive mode\n"
-"DCC CLOSE <type> <nick> <file>         example:\n"
+"DCC GET <имя>                      - принять отправляемый файл\n"
+"DCC SEND [-maxcps=#] <имя> <файл>  - отправить файл получателю\n"
+"DCC PSEND [-maxcps=#] <имя> [файл] - отправить файл в пассивном режиме\n"
+"DCC LIST                           - показать список DCC\n"
+"DCC CHAT <имя>                     - запросить разговор через DCC\n"
+"DCC PCHAT <nick>                   - запросить разговор в пассивном режиме\n"
+"DCC CLOSE <тип> <имя> <файл>         пример:\n"
 "         /dcc close send johnsmith file.tar.gz"
 
 #: src/common/outbound.c:3532
@@ -318,7 +321,7 @@ msgstr "GATE <адрес> [<порт>], прокси через хост, пор
 
 #: src/common/outbound.c:3562
 msgid "GHOST <nick> <password>, Kills a ghosted nickname"
-msgstr "GHOST <nick> <password>, Убивает призрачного пользователя"
+msgstr "GHOST <имя> <пароль>, Убрать фантомное имя пользователя"
 
 #: src/common/outbound.c:3567
 msgid "HOP <nick>, gives chanhalf-op status to the nick (needs chanop)"
@@ -500,11 +503,11 @@ msgid ""
 "TRAY -b <title> <text>              Set the tray balloon."
 msgstr ""
 "\n"
-"TRAY -f <timeout> <file1> [<file2>] Мигать в трее двумя иконками.\n"
-"TRAY -f <filename>                  Установить трей фиксированной иконкой.\n"
-"TRAY -i <number>                    Мигать в трее встроенной иконкой.\n"
-"TRAY -t <text>                      Установить подсказку для трея.\n"
-"TRAY -b <title> <text>              Установить всплывающую подсказку для трея."
+"TRAY -f <интервал> <файл1> [<файл2>] Blink tray between two icons.\n"
+"TRAY -f <имя_файла>                  Set tray to a fixed icon.\n"
+"TRAY -i <число>                      Blink tray with an internal icon.\n"
+"TRAY -t <текст>                      Set the tray tooltip.\n"
+"TRAY -b <заголовок> <текст>          Set the tray balloon."
 
 #: src/common/outbound.c:3670
 msgid "UNBAN <mask> [<mask>...], unbans the specified masks."
@@ -512,7 +515,7 @@ msgstr "UNBAN <маска> [<маска>...], снять запрет для с�
 
 #: src/common/outbound.c:3671
 msgid "UNIGNORE <mask> [QUIET]"
-msgstr "UNIGNORE <маска> [QUIET] - снять игнорирование сообщений с определенной маски"
+msgstr "UNIGNORE <маска> [QUIET]"
 
 #: src/common/outbound.c:3672
 msgid "UNLOAD <name>, unloads a plugin or script"
@@ -524,7 +527,7 @@ msgstr "URL <адрес>, открыть ссылку в браузере"
 
 #: src/common/outbound.c:3675
 msgid "USELECT [-a] [-s] <nick1> <nick2> etc, highlights nick(s) in channel userlist"
-msgstr "USELECT [-a] [-s] <ник1> <ник2> другие, подсветить ники в списке пользователей канала"
+msgstr "USELECT [-a] [-s] <имя1> <имя2> и т.д., выделить имена в списке пользователей"
 
 #: src/common/outbound.c:3678
 msgid "VOICE <nick>, gives voice status to someone (needs chanop)"
@@ -570,7 +573,7 @@ msgstr "Неизвестная команда. Попробуйте /help\n"
 #: src/common/plugin.c:356
 #: src/common/plugin.c:397
 msgid "No xchat_plugin_init symbol; is this really an xchat plugin?"
-msgstr "Нет xchat_plugin_init символов; вы уверены, что это плагин для xchat?"
+msgstr "Нет символа xchat_plugin_init; вы уверены, что это плагин для xchat?"
 
 #: src/common/server.c:634
 msgid "Are you sure this is a SSL capable server and port?\n"
@@ -609,7 +612,7 @@ msgstr "%C22*%O$t$1 список банов:%C19 $4%C20 $2%C21 $3"
 
 #: src/common/textevents.h:12
 msgid "%C22*%O$tCannot join%C26 %B$1 %O(You are banned)."
-msgstr "%C22*%O$tНе получается войти%C26 %B$1 %O(Вы забанены)."
+msgstr "%C22*%O$tНе получается войти на%C26 %B$1 %O(Вы забанены)."
 
 #: src/common/textevents.h:18
 msgid "%C22*%O$t$1 is now known as $2"
@@ -766,7 +769,7 @@ msgstr "%C24,18 Type  В/От    Состояние  Размер    Позиц�
 
 #: src/common/textevents.h:147
 msgid "%C22*%O$tReceived a malformed DCC request from %C26$1%O.%010%C22*%O$tContents of packet: $2"
-msgstr "%C22*%O$tПринят malformed DCC запрос от %C26$1%O.%010%C22*%O$tСодержимое пакета: $2"
+msgstr "%C22*%O$tПринят неверный DCC-запрос от %C26$1%O.%010%C22*%O$tСодержимое пакета: $2"
 
 #: src/common/textevents.h:150
 msgid "%C22*%O$tOffering%C26 $1%O to%C26 $2"
@@ -774,7 +777,7 @@ msgstr "%C22*%O$tПредлагаем%C26 $1%O для%C26 $2"
 
 #: src/common/textevents.h:153
 msgid "%C22*%O$tNo such DCC offer."
-msgstr "%C22*%O$tНет такого DCC предложения."
+msgstr "%C22*%O$tНет такого предложения DCC."
 
 #: src/common/textevents.h:156
 msgid "%C22*%O$tDCC RECV%C26 $2%O to%C26 $1%O aborted."
@@ -822,11 +825,11 @@ msgstr "%C22*%O$tDCC SEND%C26 $1%O для%C26 $2%O провален. $3"
 
 #: src/common/textevents.h:189
 msgid "%C22*%O$t%C26$1 %Ohas offered%C26 $2 %O(%C26$3 %Obytes)"
-msgstr "%C22*%O$t%C26$1 %Oпослал%C26 $2 %O(%C26$3 %Oбайт)"
+msgstr "%C22*%O$t%C26$1 %Oпредложил(а)%C26 $2 %O(%C26$3 %Oбайт)"
 
 #: src/common/textevents.h:192
 msgid "%C22*%O$tDCC $1%C26 $2 %Oto%C26 $3 %Cstalled - aborting."
-msgstr "%C22*%O$tDCC $1%C26 $2 %Oк%C26 $3 %Cповисло - отмена."
+msgstr "%C22*%O$tDCC $1%C26 $2 %Oto%C26 $3 %Cнет данных - прервано."
 
 #: src/common/textevents.h:195
 msgid "%C22*%O$tDCC $1%C26 $2 %Oto%C26 $3 %Otimed out - aborting."
@@ -892,7 +895,7 @@ msgstr "%C21*%O$t%C21$1 выкинул $2 с $3 ($4%O%C21)"
 
 #: src/common/textevents.h:243
 msgid "%C22*%O$tYou have been killed by $1 ($2%O%C22)"
-msgstr "%C22*%O$t$1 выкинул вас с канала ($2%O%C22)"
+msgstr "%C22*%O$t$1 изгнал вас с канала ($2%O%C22)"
 
 #: src/common/textevents.h:252
 msgid "%C22*%O$t%C22MOTD Skipped."
@@ -1039,7 +1042,7 @@ msgstr "%C22*%O$t%C28[%O$1%C28] %C30(%O$2@$3%C30)%O: $4"
 
 #: src/common/textevents.h:384
 msgid "%C22*%O$t%C28[%O$1%C28] %Oreal user@host%C27 $2%O, real IP%C27 $3"
-msgstr "%C22*%O$t%C28[%O$1%C28] %Oreal user@host%C27 $2%O, real IP%C27 $3"
+msgstr "%C22*%O$t%C28[%O$1%C28] %Oнастоящие пользователь@машина%C27 $2%O, настоящий IP%C27 $3"
 
 #: src/common/textevents.h:393
 msgid "%C19*%O$t%C19Now talking on $2"
@@ -1047,7 +1050,7 @@ msgstr "%C19*%O$t%C19Сейчас общаетесь на $2"
 
 #: src/common/textevents.h:396
 msgid "%C23*$tYou have been kicked from $2 by $3 ($4%O%C23)"
-msgstr "%C23*$tВас выбросил $3 с канала $2 ($4%O%C23)"
+msgstr "%C23*$t$3 изгнал вас из канала $2 ($4%O%C23)"
 
 #: src/common/textevents.h:399
 #, c-format
@@ -1056,11 +1059,11 @@ msgstr "%C23*$tВы ушли с канала $3"
 
 #: src/common/textevents.h:402
 msgid "%C23*$tYou have left channel $3 (%O%C23%B%B$4%O%C23)"
-msgstr "%C23*$tВы оставили канал $3 (%O%C23%B%B$4%O%C23)"
+msgstr "%C23*$tВы ушли из канала $3 (%O%C23%B%B$4%O%C23)"
 
 #: src/common/textevents.h:408
 msgid "%C22*%O$tYou've invited%C26 $1%O to%C26 $2%O (%C26$3%O)"
-msgstr "%C22*%O$tВы пригласили%C26 $1%O на%C26 $2%O (%C26$3%O)"
+msgstr "%C22*%O$tВы пришласили%C26 $1%O на канал%C26 $2%O (%C26$3%O)"
 
 #: src/common/textevents.h:414
 msgid "%C22*%O$tYou are now known as $2"
@@ -1103,7 +1106,7 @@ msgstr "Имя зашедшей персоны"
 
 #: src/common/text.c:937
 msgid "The channel being joined"
-msgstr "Канал, к которому подключаетесь"
+msgstr "Вы уже на канале"
 
 #: src/common/text.c:938
 #: src/common/text.c:985
@@ -1163,7 +1166,7 @@ msgstr "Текст"
 #: src/common/text.c:951
 #: src/common/text.c:957
 msgid "Identified text"
-msgstr "Identified text"
+msgstr "Выявленный текст"
 
 #: src/common/text.c:956
 #: src/common/text.c:1013
@@ -1183,7 +1186,7 @@ msgstr "Новый ник"
 
 #: src/common/text.c:966
 msgid "Nick of person who changed the topic"
-msgstr "Ник человека, который сменил топик канала"
+msgstr "Ник человека, который поменял Топик"
 
 #: src/common/text.c:967
 #: src/common/text.c:973
@@ -1209,7 +1212,7 @@ msgstr "Ник выкинувшего"
 #: src/common/text.c:978
 #: src/common/text.c:1028
 msgid "The person being kicked"
-msgstr "Персона, которую выкинули"
+msgstr "Персона выкинута"
 
 #: src/common/text.c:979
 #: src/common/text.c:986
@@ -1271,7 +1274,7 @@ msgstr "Время в формате x.x (см. ниже)"
 #: src/common/text.c:1018
 #: src/common/text.c:1055
 msgid "The Channel it's going to"
-msgstr "Канал, куда он уходит"
+msgstr "Список каналов..."
 
 #: src/common/text.c:1042
 msgid "The sound"
@@ -1347,11 +1350,11 @@ msgstr "Ник удалившего ограничение"
 
 #: src/common/text.c:1097
 msgid "The nick of the person of did the deop'ing"
-msgstr "Ник персоны, который снял оператора"
+msgstr "Ник персоны, который де-опнул"
 
 #: src/common/text.c:1098
 msgid "The nick of the person who has been deop'ed"
-msgstr "Ник персоны, у которой забрали оператора."
+msgstr "Ник персоны, которого де-опили."
 
 #: src/common/text.c:1101
 msgid "The nick of the person of did the dehalfop'ing"
@@ -1375,7 +1378,7 @@ msgstr "Ник персоны, снявшей бан."
 
 #: src/common/text.c:1116
 msgid "The nick of the person who did the exempt"
-msgstr "Ник персоны, установившей исключение"
+msgstr "Ник персоны, вызвавшей исключение"
 
 #: src/common/text.c:1117
 #: src/common/text.c:1122
@@ -1634,7 +1637,7 @@ msgid ""
 "Loading default."
 msgstr ""
 "Ошибка разбора события %s.\n"
-"Загружается по-умолчанию."
+"Загружаем по умолчанию."
 
 #: src/common/text.c:2189
 #, c-format
@@ -2718,23 +2721,23 @@ msgstr "Неизвестно"
 
 #: src/common/xchat.c:726
 msgid "_Open Dialog Window"
-msgstr "_Открыть диалоговое окно"
+msgstr "Начать ра_зговор"
 
 #: src/common/xchat.c:727
 msgid "_Send a File"
-msgstr "_Послать файл"
+msgstr "Отправить _файл"
 
 #: src/common/xchat.c:728
 msgid "_User Info (WhoIs)"
-msgstr "_Информация (WhoIs)"
+msgstr "_Информация (WHOIS)"
 
 #: src/common/xchat.c:729
 msgid "_Add to Friends List"
-msgstr "_Добавить в список друзей"
+msgstr "Добавить в дру_зья"
 
 #: src/common/xchat.c:730
 msgid "O_perator Actions"
-msgstr "_Действия оператора"
+msgstr "Действия опе_ратора"
 
 #: src/common/xchat.c:732
 msgid "Give Ops"
@@ -2804,11 +2807,11 @@ msgstr "Не показывать версию"
 
 #: src/common/xchat.c:772
 msgid "Op"
-msgstr "Op"
+msgstr "Оператор"
 
 #: src/common/xchat.c:773
 msgid "DeOp"
-msgstr "DeOP"
+msgstr "Снять оператора"
 
 #: src/common/xchat.c:776
 msgid "bye"
@@ -2852,7 +2855,7 @@ msgstr "Ping"
 
 #: src/common/dbus/dbus-client.c:72
 msgid "Couldn't connect to session bus"
-msgstr "Не удалось подключиться у шине сессии"
+msgstr "Не удалось подключиться к сеансовой шине"
 
 #: src/common/dbus/dbus-client.c:86
 msgid "Failed to complete NameHasOwner"
@@ -2860,7 +2863,7 @@ msgstr "Не удалось завершить NameHasOwner"
 
 #: src/common/dbus/dbus-client.c:112
 msgid "Failed to complete Command"
-msgstr "Не удалось завершить команду"
+msgstr "Не удалось выполнить команду"
 
 #: src/common/dbus/dbus-plugin.c:30
 msgid "remote access"
@@ -2868,17 +2871,17 @@ msgstr "удаленный доступ"
 
 #: src/common/dbus/dbus-plugin.c:31
 msgid "plugin for remote access using DBUS"
-msgstr "плагин имеет удалённый доступ через DBUS"
+msgstr "модуль для удаленного доступа через DBUS"
 
 #: src/common/dbus/dbus-plugin.c:897
 #, c-format
 msgid "Couldn't connect to session bus: %s\n"
-msgstr "Не удалось подключиться у шине сессии: %s\n"
+msgstr "Не удалось подключиться к сеансовой шине: %s\n"
 
 #: src/common/dbus/dbus-plugin.c:914
 #, c-format
 msgid "Failed to acquire %s: %s\n"
-msgstr "Не удалось захватить %s: %s\n"
+msgstr "Не удалось получить %s: %s\n"
 
 #: src/fe-gtk/about.c:102
 msgid "About "
@@ -2896,7 +2899,7 @@ msgstr "Кодировка"
 #: src/fe-gtk/chanlist.c:305
 #: src/fe-gtk/plugin-tray.c:302
 msgid "Not connected."
-msgstr "Не подключен."
+msgstr "Нет соединения."
 
 #: src/fe-gtk/banlist.c:249
 #: src/fe-gtk/banlist.c:329
@@ -2923,7 +2926,7 @@ msgstr "Дата"
 
 #: src/fe-gtk/banlist.c:389
 msgid "You can only open the Ban List window while in a channel tab."
-msgstr "Вы можете открыть Список банов только на вкладке канала."
+msgstr "Список банов можно отктыть только при открытой вкладке канала."
 
 #: src/fe-gtk/banlist.c:393
 #, c-format
@@ -2961,11 +2964,11 @@ msgstr "Зайти на канал"
 
 #: src/fe-gtk/chanlist.c:633
 msgid "_Copy Channel Name"
-msgstr "_Копировать имя канала"
+msgstr "Копировать имя _канала"
 
 #: src/fe-gtk/chanlist.c:635
 msgid "Copy _Topic Text"
-msgstr "Копировать текст _топика"
+msgstr "Скопировать _тему общения"
 
 #: src/fe-gtk/chanlist.c:724
 #, c-format
@@ -2982,7 +2985,7 @@ msgstr "_Загрузить список"
 
 #: src/fe-gtk/chanlist.c:793
 msgid "Save _List..."
-msgstr "Сохранить список"
+msgstr "Со_хранить список..."
 
 #: src/fe-gtk/chanlist.c:806
 msgid "Show only:"
@@ -2990,7 +2993,7 @@ msgstr "Показывать только:"
 
 #: src/fe-gtk/chanlist.c:818
 msgid "channels with"
-msgstr "каналы с"
+msgstr "Открывать каналы как:"
 
 #: src/fe-gtk/chanlist.c:831
 msgid "to"
@@ -3002,7 +3005,7 @@ msgstr "пользователи."
 
 #: src/fe-gtk/chanlist.c:849
 msgid "Look in:"
-msgstr "Смотреть в:"
+msgstr "Поиск в:"
 
 #: src/fe-gtk/chanlist.c:861
 msgid "Channel name"
@@ -3018,11 +3021,11 @@ msgstr "Простой поиск"
 
 #: src/fe-gtk/chanlist.c:890
 msgid "Pattern Match (Wildcards)"
-msgstr "Совпадения (Шаблоны)"
+msgstr "Использовать шаблоны"
 
 #: src/fe-gtk/chanlist.c:892
 msgid "Regular Expression"
-msgstr "Регулярные выражения"
+msgstr "Регулярное выражение"
 
 #: src/fe-gtk/chanlist.c:903
 #: src/fe-gtk/search.c:118
@@ -3059,7 +3062,7 @@ msgstr "Не могу продолжить одинаковый файл от 2 
 
 #: src/fe-gtk/dccgui.c:740
 msgid "XChat: Uploads and Downloads"
-msgstr "XChat: Передачи и Загрузки"
+msgstr "XChat: Прием и передача файлов"
 
 #: src/fe-gtk/dccgui.c:756
 #: src/fe-gtk/dccgui.c:995
@@ -3083,15 +3086,15 @@ msgstr "Оба"
 
 #: src/fe-gtk/dccgui.c:793
 msgid "Uploads"
-msgstr "Передачи"
+msgstr "Отгрузки"
 
 #: src/fe-gtk/dccgui.c:799
 msgid "Downloads"
-msgstr "Загрузки:"
+msgstr "Загрузки"
 
 #: src/fe-gtk/dccgui.c:804
 msgid "Details"
-msgstr "Детали"
+msgstr "Подробно"
 
 #: src/fe-gtk/dccgui.c:815
 msgid "File:"
@@ -3190,11 +3193,11 @@ msgstr "Помощь"
 
 #: src/fe-gtk/fe-gtk.c:126
 msgid "Don't auto connect to servers"
-msgstr "Не подключаться автоматически к серверам"
+msgstr "Не подключаться к серверам"
 
 #: src/fe-gtk/fe-gtk.c:127
 msgid "Use a different config directory"
-msgstr "Использовать другой каталог настроек"
+msgstr "используется другой конфигурационный каталог"
 
 #: src/fe-gtk/fe-gtk.c:128
 msgid "Don't auto load any plugins"
@@ -3202,15 +3205,15 @@ msgstr "Не загружать автоматически плагины"
 
 #: src/fe-gtk/fe-gtk.c:129
 msgid "Show plugin auto-load directory"
-msgstr "Показать каталог автозагружаемых плагинов"
+msgstr "показать каталог автозагружаемых плагинов"
 
 #: src/fe-gtk/fe-gtk.c:130
 msgid "Show user config directory"
-msgstr "Показать каталог настроек пользователя"
+msgstr "показать каталог пользовательских настроек"
 
 #: src/fe-gtk/fe-gtk.c:131
 msgid "Open an irc://server:port/channel URL"
-msgstr "Открыть адрес irc://server:port/channel"
+msgstr "Открывает URL вида irc://сервер:порт/канал"
 
 #: src/fe-gtk/fe-gtk.c:133
 #: src/fe-gtk/setup.c:212
@@ -3219,11 +3222,11 @@ msgstr "Выполнить команду:"
 
 #: src/fe-gtk/fe-gtk.c:134
 msgid "Open URL or execute command in an existing XChat"
-msgstr "Открыть адрес или выполнить команду в существующем XChat"
+msgstr "Открыть URL или выполнить команду в запущенном XChat"
 
 #: src/fe-gtk/fe-gtk.c:136
 msgid "Begin minimized. Level 0=Normal 1=Iconified 2=Tray"
-msgstr "Сворачиваться. Уровни 0=Номальный 1=Иконка 2=Трей"
+msgstr "Вид окна при запуске. Ур. 0=обычное 1=свернутое 2=значок"
 
 #: src/fe-gtk/fe-gtk.c:136
 msgid "level"
@@ -3256,7 +3259,7 @@ msgstr "%d байт"
 #: src/fe-gtk/fe-gtk.c:733
 #, c-format
 msgid "Network send queue: %d bytes"
-msgstr "Очередь отправки в сеть: %d байт"
+msgstr "Очередь отправки, байт: %d"
 
 #: src/fe-gtk/fkeys.c:159
 msgid ""
@@ -3274,7 +3277,7 @@ msgstr "Команда  Вставить в буфер  вставит сод�
 
 #: src/fe-gtk/fkeys.c:165
 msgid "The Scroll Page command scrolls the text widget up or down one page or one line. Set Data 1 to either Up, Down, +1 or -1."
-msgstr "Команда  Пролистать страницу  пролистывает текст вверх или вниз. Установите Data 1 в +1 или -1 чтобы прокручивать вверх или вниз."
+msgstr "Команда  Пролистать страницу  пролистывает текст вверх или вниз. Возможные значения Данные 1: Up (вверх), Down (вниз), +1 или -1."
 
 #: src/fe-gtk/fkeys.c:167
 msgid "The Set Buffer command sets the entry where the key sequence was entered to the contents of Data 1"
@@ -3302,19 +3305,19 @@ msgstr "Команда проверяет последнее введенное 
 
 #: src/fe-gtk/fkeys.c:179
 msgid "This command moves the front tab left by one"
-msgstr "Эта команда перемещает текущую вкладку влево."
+msgstr "Эта команда перемещает текущую закладку влево."
 
 #: src/fe-gtk/fkeys.c:181
 msgid "This command moves the front tab right by one"
-msgstr "Эта команда перемещает текущую вкладку вправо."
+msgstr "Эта команда перемещает текущую закладку вправо."
 
 #: src/fe-gtk/fkeys.c:183
 msgid "This command moves the current tab family to the left"
-msgstr "Эта команда перемещает текущую группу вкладок влево"
+msgstr "Эта команда перемещает текущую группу закладок влево"
 
 #: src/fe-gtk/fkeys.c:185
 msgid "This command moves the current tab family to the right"
-msgstr "Эта команда перемещает текущую группу вкладок вправо"
+msgstr "Эта команда перемещает текущую группу закладок вправо"
 
 #: src/fe-gtk/fkeys.c:187
 msgid "Push input line into history but doesn't send to server"
@@ -3335,7 +3338,7 @@ msgstr "Ошибка загрузки конфигурации клавиш"
 #: src/fe-gtk/maingui.c:1751
 #: src/fe-gtk/maingui.c:3252
 msgid "<none>"
-msgstr "<none>"
+msgstr "<нет>"
 
 #: src/fe-gtk/fkeys.c:707
 msgid "Mod"
@@ -3404,10 +3407,10 @@ msgid ""
 "\n"
 "Load aborted, Please fix %s/keybindings\n"
 msgstr ""
-"Требуемая строка (начинается на Dx{:|!}), а содержит:\n"
+"Требуется строка с данными (начинается на Dx{:|!}), но вместо нее:\n"
 "%s\n"
 "\n"
-"Загрузка прервана, Поправьте %s/keybindings\n"
+"Загрузка прервана, исправьте %s/keybindings\n"
 
 #: src/fe-gtk/fkeys.c:1147
 #, c-format
@@ -3416,7 +3419,7 @@ msgid ""
 "Please fix %s/keybindings.conf\n"
 msgstr ""
 "Конфигурационный файл настроек клавиш поврежден, загрузка прекращена\n"
-"Поправьте файл %s/keybindings.conf\n"
+"Исправьте файл %s/keybindings.conf\n"
 
 #: src/fe-gtk/gtkutil.c:117
 msgid "Cannot write to that file."
@@ -3434,7 +3437,7 @@ msgstr "Такая маска уже существует."
 #: src/fe-gtk/ignoregui.c:177
 #: src/fe-gtk/maingui.c:2132
 msgid "Private"
-msgstr "Приватный"
+msgstr "Личный"
 
 #: src/fe-gtk/ignoregui.c:178
 msgid "Notice"
@@ -3462,7 +3465,7 @@ msgstr "Введите маску для игнорирования:"
 
 #: src/fe-gtk/ignoregui.c:355
 msgid "XChat: Ignore list"
-msgstr "X-Chat: Список игнорирования"
+msgstr "X-Chat: Черный список"
 
 #: src/fe-gtk/ignoregui.c:362
 msgid "Ignore Stats:"
@@ -3495,7 +3498,7 @@ msgstr "Добавить..."
 
 #: src/fe-gtk/joind.c:83
 msgid "Channel name too short, try again."
-msgstr "Имя канала слишком короткое, попробуйте ещё."
+msgstr "Имя канала недостаточно длинное."
 
 #: src/fe-gtk/joind.c:125
 msgid "XChat: Connection Complete"
@@ -3508,15 +3511,15 @@ msgstr "Соединение с %s завершено."
 
 #: src/fe-gtk/joind.c:159
 msgid "In the Server-List window, no channel (chat room) has been entered to be automatically joined for this network."
-msgstr "В окне Списка серверов не настроены каналы(комнаты разговоров) для автоматического входа в этой сети."
+msgstr "В списке серверов для данной сети не были указаны каналы, в которые следует автоматически войти."
 
 #: src/fe-gtk/joind.c:165
 msgid "What would you like to do next?"
-msgstr "Что бы вы хотели сделать дальше?"
+msgstr "Что вы хотите сделать теперь?"
 
 #: src/fe-gtk/joind.c:170
 msgid "_Nothing, I'll join a channel later."
-msgstr "_Ничего, я подключусь к каналу позже."
+msgstr "_Ничего, я войду на канал позднее."
 
 #: src/fe-gtk/joind.c:179
 msgid "_Join this channel:"
@@ -3524,19 +3527,19 @@ msgstr "Зайти на канал:"
 
 #: src/fe-gtk/joind.c:191
 msgid "If you know the name of the channel you want to join, enter it here."
-msgstr "Если вы знаете имя канала, к которому хотите подключиться, введите его здесь."
+msgstr "Если вы знаете имя канала, на который хотите зайти, укажите его здесь."
 
 #: src/fe-gtk/joind.c:198
 msgid "O_pen the Channel-List window."
-msgstr "Открыть окно списка каналов."
+msgstr "_Открыть список каналов"
 
 #: src/fe-gtk/joind.c:205
 msgid "Retrieving the Channel-List may take a minute or two."
-msgstr "Получение списка каналов может занять минуту или две."
+msgstr "Получение списка каналов займет минуту-две."
 
 #: src/fe-gtk/joind.c:212
 msgid "_Always show this dialog after connecting."
-msgstr "_Всегда показывать этот диалог после подключения."
+msgstr "Пока_зывать этот диалог при соединении."
 
 #: src/fe-gtk/maingui.c:506
 msgid "Dialog with"
@@ -3554,7 +3557,7 @@ msgstr "Тема не установлена"
 #: src/fe-gtk/maingui.c:1182
 #, c-format
 msgid "This server still has %d channels or dialogs associated with it. Close them all?"
-msgstr "Этот сервер всё ещё имеет %d каналов или диалогов. Закрыть их все?"
+msgstr "Для этого сервера открыто %d каналов или разговоров. Закрыть их все?"
 
 #: src/fe-gtk/maingui.c:1276
 msgid "Quit XChat?"
@@ -3567,7 +3570,7 @@ msgstr "Не спрашивать в следующий раз"
 #: src/fe-gtk/maingui.c:1303
 #, c-format
 msgid "You are connected to %i IRC networks."
-msgstr "Вы подключены к сетям IRC(%i)."
+msgstr "Вы подключены к %i IRC-сетям."
 
 #: src/fe-gtk/maingui.c:1305
 msgid "Are you sure you want to quit?"
@@ -3579,11 +3582,11 @@ msgstr "Некоторые передачи файлов еще активны."
 
 #: src/fe-gtk/maingui.c:1325
 msgid "_Minimize to Tray"
-msgstr "_Свернуть в трей"
+msgstr "Свернуть в з_начок"
 
 #: src/fe-gtk/maingui.c:1545
 msgid "Insert Attribute or Color Code"
-msgstr "Вставить атрибут или код цвета"
+msgstr "Вставить аттрибут или код цвета"
 
 #: src/fe-gtk/maingui.c:1547
 msgid "<b>Bold</b>"
@@ -3595,7 +3598,7 @@ msgstr "<u>Подчеркнутый</u>"
 
 #: src/fe-gtk/maingui.c:1550
 msgid "Normal"
-msgstr "Нормальный"
+msgstr "Обычный"
 
 #: src/fe-gtk/maingui.c:1552
 msgid "Colors 0-7"
@@ -3611,11 +3614,11 @@ msgstr "_Настройки"
 
 #: src/fe-gtk/maingui.c:1607
 msgid "_Log to Disk"
-msgstr "Вести _журнал"
+msgstr "Запись _журнала"
 
 #: src/fe-gtk/maingui.c:1608
 msgid "_Reload Scrollback"
-msgstr "_Перечитывать буфер"
+msgstr "За_гружать буфер"
 
 #: src/fe-gtk/maingui.c:1610
 msgid "_Hide Join/Part Messages"
@@ -3623,24 +3626,24 @@ msgstr "_Скрыть сообщения о приходе/уходе"
 
 #: src/fe-gtk/maingui.c:1618
 msgid "_Extra Alerts"
-msgstr "_Дополнительные сигналы"
+msgstr "Опове_щения"
 
 #: src/fe-gtk/maingui.c:1620
 msgid "Beep on _Message"
-msgstr "Звуковой сигнал при сообщении"
+msgstr "_Звуковой сигнал при личном сообщении"
 
 #: src/fe-gtk/maingui.c:1621
 msgid "Blink Tray _Icon"
-msgstr "Мигание _иконки в трее"
+msgstr "_Мигание значка при личном сообщении"
 
 #: src/fe-gtk/maingui.c:1622
 msgid "Blink Task _Bar"
-msgstr "Мигать на _панели"
+msgstr "Мерцание _окна"
 
 #: src/fe-gtk/maingui.c:1660
 #: src/fe-gtk/menu.c:2124
 msgid "_Detach"
-msgstr "_Отделить"
+msgstr "Отсо_единить"
 
 #: src/fe-gtk/maingui.c:1662
 #: src/fe-gtk/menu.c:2125
@@ -3750,11 +3753,11 @@ msgstr "Сообщение об отсутствии:"
 #: src/fe-gtk/menu.c:710
 #, c-format
 msgid "%d nicks selected."
-msgstr "%d ников выбрано."
+msgstr "Выделено имен: %d."
 
 #: src/fe-gtk/menu.c:835
 msgid "The Menubar is now hidden. You can show it again by pressing F9 or right-clicking in a blank part of the main text area."
-msgstr "Меню сейчас скрыто. Вы можете вернуть его нажав F9 или кликнув правой клавишей мыши на пустом месте в области канала."
+msgstr "Строка меню была скрыта. Чтобы увидеть ее снова, нажмите F9 или щелкните правой кнопкой по свободному месту в окне."
 
 #: src/fe-gtk/menu.c:930
 msgid "Open Link in Browser"
@@ -3779,11 +3782,11 @@ msgstr "Каналы по кругу"
 
 #: src/fe-gtk/menu.c:1035
 msgid "_Remove from Favorites"
-msgstr "_Удалить из любимых"
+msgstr "_Удалить из Избранного"
 
 #: src/fe-gtk/menu.c:1037
 msgid "_Add to Favorites"
-msgstr "_Добавить в любимые"
+msgstr "_Добавить в избранное"
 
 #: src/fe-gtk/menu.c:1056
 msgid "XChat: User menu"
@@ -3795,7 +3798,7 @@ msgstr "Редактировать это меню.."
 
 #: src/fe-gtk/menu.c:1266
 msgid "Retrieve channel list..."
-msgstr "Получение списока каналов..."
+msgstr "Получение списка каналов..."
 
 #: src/fe-gtk/menu.c:1334
 msgid ""
@@ -3818,24 +3821,24 @@ msgid ""
 "%2 would be \"john\"\n"
 "&2 would be \"john hello\"."
 msgstr ""
-"Пользовательские команды - Специальные коды:\n"
+"Команды пользователя - Специальные коды:\n"
 "\n"
 "%c  =  текущий канал\n"
-"%e  =  название текущая сети\n"
+"%e  =  имя текущей сети\n"
 "%m  =  информация о компьютере\n"
 "%n  =  ваш ник\n"
-"%t  =  время/дата\n"
-"%v  =  версия xchat\n"
+"%t  =  время и дата\n"
+"%v  =  версия XChat\n"
 "%2  =  слово 2\n"
 "%3  =  слово 3\n"
-"&2  =  2 слова в конце строки\n"
-"&3  =  3 слова в конце строки\n"
+"&2  =  слово 2 до конца строки\n"
+"&3  =  слово 3 до конца строки\n"
 "\n"
-"напр.:\n"
+"например:\n"
 "/cmd john hello\n"
 "\n"
-"%2 будет \"john\"\n"
-"&2 будет \"john hello\"."
+"%2 должно быть \"john\"\n"
+"&2 должно быть \"john hello\"."
 
 #: src/fe-gtk/menu.c:1350
 msgid ""
@@ -3850,16 +3853,16 @@ msgid ""
 "%s  =  selected nick\n"
 "%t  =  time/date\n"
 msgstr ""
-"Кнопки списка пользователей - Специальны коды:\n"
+"Кнопки списка пользователей - Специальные коды:\n"
 "\n"
 "%a  =  все выбранные ники\n"
 "%c  =  текущий канал\n"
-"%e  =  название текущей сети\n"
-"%h  =  название хоста выбранного ника\n"
+"%e  =  имя текущей сети\n"
+"%h  =  адреса выбранных ников\n"
 "%m  =  информация о компьютере\n"
 "%n  =  ваш ник\n"
 "%s  =  выбранный ник\n"
-"%t  =  время/дата\n"
+"%t  =  время и дата\n"
 
 #: src/fe-gtk/menu.c:1360
 msgid ""
@@ -3874,16 +3877,16 @@ msgid ""
 "%s  =  selected nick\n"
 "%t  =  time/date\n"
 msgstr ""
-"Диалоговые кнопки - Специальные коды:\n"
+"Кнопки диалога - Специальные коды:\n"
 "\n"
 "%a  =  все выбранные ники\n"
 "%c  =  текущий канал\n"
-"%e  =  название текущей сети\n"
-"%h  =  название хоста выбранного ника\n"
+"%e  =  имя текущей сети\n"
+"%h  =  имя машин выбранного ника\n"
 "%m  =  информация о компьютере\n"
 "%n  =  ваш ник\n"
 "%s  =  выбранный ник\n"
-"%t  =  время/дата\n"
+"%t  =  время и дата\n"
 
 #: src/fe-gtk/menu.c:1370
 msgid ""
@@ -3900,17 +3903,17 @@ msgid ""
 "&3  =  word 3 to the end of line\n"
 "\n"
 msgstr ""
-"CTCP Ответы - Специальные коды:\n"
+"Ответы CTCP - Специальные коды:\n"
 "\n"
-"%d  =  данные (весь ctcp)\n"
-"%e  =  название текущей сети\n"
-"%m  =  информация о компьютере\n"
-"%s  =  ник отправителя ctcp\n"
+"%d  =  данные (целый ctcp)\n"
+"%e  =  имя текущей сети\n"
+"%m  =  инфо о компьютере\n"
+"%s  =  ник пославшего ctcp\n"
 "%t  =  время/дата\n"
 "%2  =  слово 2\n"
 "%3  =  слово 3\n"
-"&2  =  2 слова до конца строки\n"
-"&3  =  3 слова до конца строки\n"
+"&2  =  слово 2 до конца строки\n"
+"&3  =  слово 3 до конца строки\n"
 "\n"
 
 #: src/fe-gtk/menu.c:1381
@@ -3929,8 +3932,8 @@ msgstr ""
 "%s  =  строка URL\n"
 "\n"
 "Добавление ! перед командой\n"
-"показывает, что это будет отправлено \n"
-"оболочке вместо XChat"
+"показывает, что будет отправлено \n"
+"оболочке вместо X-Chat"
 
 #: src/fe-gtk/menu.c:1390
 msgid "XChat: User Defined Commands"
@@ -3995,7 +3998,7 @@ msgstr "Окно канала..."
 #: src/fe-gtk/menu.c:1563
 #: src/fe-gtk/menu.c:1565
 msgid "_Load Plugin or Script..."
-msgstr "_Загрузить скрипт или плагин..."
+msgstr "_Загрузить модуль или сценарий..."
 
 #: src/fe-gtk/menu.c:1573
 #: src/fe-gtk/plugin-tray.c:604
@@ -4012,35 +4015,35 @@ msgstr "Панел_ь меню"
 
 #: src/fe-gtk/menu.c:1578
 msgid "_Topic Bar"
-msgstr "_Панель темы"
+msgstr "Т_ема"
 
 #: src/fe-gtk/menu.c:1579
 msgid "_User List"
-msgstr "_Список Пользователей"
+msgstr "Список _пользователей"
 
 #: src/fe-gtk/menu.c:1580
 msgid "U_serlist Buttons"
-msgstr "_Кнопки списка пользователей"
+msgstr "Кнопки _списка пользователей"
 
 #: src/fe-gtk/menu.c:1581
 msgid "M_ode Buttons"
-msgstr "Кнопки _Режима Канала"
+msgstr "Кнопки _режима канала"
 
 #: src/fe-gtk/menu.c:1583
 msgid "_Channel Switcher"
-msgstr "_Переключатель каналов"
+msgstr "Список _каналов"
 
 #: src/fe-gtk/menu.c:1585
 msgid "_Tabs"
-msgstr "Вкладки"
+msgstr "Закладки"
 
 #: src/fe-gtk/menu.c:1586
 msgid "T_ree"
-msgstr "Д_ревовидный"
+msgstr "Де_рево"
 
 #: src/fe-gtk/menu.c:1588
 msgid "_Network Meters"
-msgstr "_Счётчики сети"
+msgstr "_Монитор сети"
 
 #: src/fe-gtk/menu.c:1590
 msgid "Off"
@@ -4068,7 +4071,7 @@ msgstr "Зайти на канал..."
 
 #: src/fe-gtk/menu.c:1600
 msgid "List of Channels..."
-msgstr "Список каналов"
+msgstr "Список каналов..."
 
 #: src/fe-gtk/menu.c:1603
 msgid "Marked Away"
@@ -4076,7 +4079,7 @@ msgstr "Пометить как \"Отошел\""
 
 #: src/fe-gtk/menu.c:1605
 msgid "_Usermenu"
-msgstr "_Пользовательское меню"
+msgstr "_Меню пользователя"
 
 #: src/fe-gtk/menu.c:1607
 msgid "S_ettings"
@@ -4193,7 +4196,7 @@ msgstr "Содержание"
 
 #: src/fe-gtk/menu.c:1642
 msgid "Check for updates"
-msgstr "Проверить обновления"
+msgstr "Проверка обновлений"
 
 #: src/fe-gtk/menu.c:1644
 msgid "_About"
@@ -4201,7 +4204,7 @@ msgstr "О программе"
 
 #: src/fe-gtk/menu.c:2129
 msgid "_Attach"
-msgstr "_Присоединить"
+msgstr "Присо_единить"
 
 #: src/fe-gtk/notifygui.c:140
 msgid "Last Seen"
@@ -4232,11 +4235,11 @@ msgstr "Введите ник для добавления:"
 
 #: src/fe-gtk/notifygui.c:378
 msgid "Notify on these networks:"
-msgstr "Оповещать в этих сетях:"
+msgstr "Уведомлять на данных сетях:"
 
 #: src/fe-gtk/notifygui.c:389
 msgid "Comma separated list of networks is accepted."
-msgstr "Принимается список сетей разделённых запятыми."
+msgstr "Укажите разделенный запятыми список сетей."
 
 #: src/fe-gtk/notifygui.c:415
 msgid "XChat: Friends List"
@@ -4244,24 +4247,24 @@ msgstr "X-Chat: Список друзей"
 
 #: src/fe-gtk/notifygui.c:436
 msgid "Open Dialog"
-msgstr "Открыть диалог"
+msgstr "Начать разговор"
 
 #: src/fe-gtk/plugin-tray.c:248
 msgid ""
 "Cannot find 'notify-send' to open balloon alerts.\n"
 "Please install libnotify."
 msgstr ""
-"Не удалось найти 'notify-send' чтобы посылать всплывающие сообщения.\n"
-"Проверьте, все ли компоненты libnotify установлены."
+"Не удалось найти 'notify-send' для всплывающих оповещений.\n"
+"Требуется установить libnotify."
 
 #: src/fe-gtk/plugin-tray.c:299
 #, c-format
 msgid "XChat: Connected to %u networks and %u channels"
-msgstr "XChat: Подключен к %u сетям и %u каналам"
+msgstr "XChat: Подключен; сети: %u, каналы: %u"
 
 #: src/fe-gtk/plugin-tray.c:583
 msgid "_Restore"
-msgstr "_Восстановть"
+msgstr "_Восстановить"
 
 #: src/fe-gtk/plugin-tray.c:585
 msgid "_Hide"
@@ -4269,7 +4272,7 @@ msgstr "Скрыть"
 
 #: src/fe-gtk/plugin-tray.c:588
 msgid "_Blink on"
-msgstr "_Мигать на"
+msgstr "_Мигать при сообщениях"
 
 #: src/fe-gtk/plugin-tray.c:589
 #: src/fe-gtk/setup.c:479
@@ -4288,32 +4291,32 @@ msgstr "Выделенные сообщения"
 
 #: src/fe-gtk/plugin-tray.c:594
 msgid "_Change status"
-msgstr "_Изменить статус"
+msgstr "Состо_яние"
 
 #: src/fe-gtk/plugin-tray.c:596
 msgid "_Away"
-msgstr "_Отошел"
+msgstr "Ото_шел"
 
 #: src/fe-gtk/plugin-tray.c:599
 msgid "_Back"
-msgstr "_Назад"
+msgstr "_Вернулся"
 
 #: src/fe-gtk/plugin-tray.c:648
 #: src/fe-gtk/plugin-tray.c:656
 #, c-format
 msgid "XChat: Highlighted message from: %s (%s)"
-msgstr "XChat: Сообщение от: %s (%s)"
+msgstr "XChat: Выделенное сообщение от %s (%s)"
 
 #: src/fe-gtk/plugin-tray.c:651
 #, c-format
 msgid "XChat: %u highlighted messages, latest from: %s (%s)"
-msgstr "XChat: %u сообщений, последнее от: %s (%s)"
+msgstr "XChat: %u выделенных сообщения, последнее от %s (%s)"
 
 #: src/fe-gtk/plugin-tray.c:674
 #: src/fe-gtk/plugin-tray.c:681
 #, c-format
 msgid "XChat: New public message from: %s (%s)"
-msgstr "XChat: Новое публичное сообщение от: %s (%s)"
+msgstr "XChat: Новое публичное сообщение от %s (%s)"
 
 #: src/fe-gtk/plugin-tray.c:677
 #, c-format
@@ -4324,23 +4327,23 @@ msgstr "XChat: %u новых публичных сообщений."
 #: src/fe-gtk/plugin-tray.c:710
 #, c-format
 msgid "XChat: Private message from: %s (%s)"
-msgstr "XChat: Приватное сообщение от: %s (%s)"
+msgstr "XChat: Личное сообщение от %s (%s)"
 
 #: src/fe-gtk/plugin-tray.c:706
 #, c-format
 msgid "XChat: %u private messages, latest from: %s (%s)"
-msgstr "XChat: %u приватных сообщений, последнее от: %s (%s)"
+msgstr "XChat: %u личных сообщения, последнее от %s (%s)"
 
 #: src/fe-gtk/plugin-tray.c:756
 #: src/fe-gtk/plugin-tray.c:764
 #, c-format
 msgid "XChat: File offer from: %s (%s)"
-msgstr "XChat: Предложение файла от: %s (%s)"
+msgstr "XChat: Предложен файл: %s (%s)"
 
 #: src/fe-gtk/plugin-tray.c:759
 #, c-format
 msgid "XChat: %u file offers, latest from: %s (%s)"
-msgstr "XChat: %u предложений файлов, последнее от: %s (%s)"
+msgstr "XChat: %u предложения файлов, последнее от %s (%s)"
 
 #: src/fe-gtk/plugingui.c:74
 msgid "Version"
@@ -4377,7 +4380,7 @@ msgstr "Сохранить как..."
 #: src/fe-gtk/rawlog.c:97
 #, c-format
 msgid "XChat: Rawlog (%s)"
-msgstr "X-Chat: Журнал (%s)"
+msgstr "X-Chat: Журнал передачи (%s)"
 
 #: src/fe-gtk/rawlog.c:127
 msgid "Clear rawlog"
@@ -4389,7 +4392,7 @@ msgstr "Открытое вами окно поиска больше не сущ
 
 #: src/fe-gtk/search.c:65
 msgid "Search hit end, not found."
-msgstr "Поиск закончен, ничего не найдено."
+msgstr "Просмотр завершен, текст не найден."
 
 #: src/fe-gtk/search.c:109
 msgid "XChat: Search"
@@ -4397,11 +4400,11 @@ msgstr "X-Chat: Поиск"
 
 #: src/fe-gtk/search.c:127
 msgid "_Match case"
-msgstr "_Учитывать регистр"
+msgstr "С учетом _регистра"
 
 #: src/fe-gtk/search.c:133
 msgid "Search _backwards"
-msgstr "Искать в обратном порядке"
+msgstr "В о_братном порядке"
 
 #: src/fe-gtk/search.c:146
 msgid "_Find"
@@ -4423,16 +4426,16 @@ msgstr "#канал"
 
 #: src/fe-gtk/servlistgui.c:847
 msgid "XChat: Favorite Channels (Auto-Join List)"
-msgstr "X-Chat: Любимые каналы (для автоподключения)"
+msgstr "XChat: Избранные каналы (автоматический вход)"
 
 #: src/fe-gtk/servlistgui.c:859
 #, c-format
 msgid "These channels will be joined whenever you connect to %s."
-msgstr "Заходить на эти каналы, когда вы подключаетесь к %s."
+msgstr "Вы автоматически зайдете на эти каналы при подключении к %s."
 
 #: src/fe-gtk/servlistgui.c:902
 msgid "Key (Password)"
-msgstr "Ключ (пароль)"
+msgstr "Ключ (пароль):"
 
 #: src/fe-gtk/servlistgui.c:933
 #: src/fe-gtk/servlistgui.c:1535
@@ -4442,12 +4445,12 @@ msgstr "Редактировать"
 #: src/fe-gtk/servlistgui.c:969
 #, c-format
 msgid "%s has been removed."
-msgstr "%s удалён."
+msgstr "%s был удален."
 
 #: src/fe-gtk/servlistgui.c:989
 #, c-format
 msgid "%s has been added."
-msgstr "%s добавлен."
+msgstr "Добавлен %s."
 
 #: src/fe-gtk/servlistgui.c:1013
 msgid "User name and Real name cannot be left blank."
@@ -4456,7 +4459,7 @@ msgstr "Имя пользователя и реальное имя нельзя 
 #: src/fe-gtk/servlistgui.c:1366
 #, c-format
 msgid "XChat: Edit %s"
-msgstr "X-Chat: Править (%s)"
+msgstr "X-Chat: Редактирование: %s"
 
 #: src/fe-gtk/servlistgui.c:1385
 #, c-format
@@ -4509,7 +4512,7 @@ msgstr "Автоматически соединяться сэтой сетью 
 
 #: src/fe-gtk/servlistgui.c:1431
 msgid "Bypass proxy server"
-msgstr "Обойти прокси сервер"
+msgstr "Обходить прокси-сервер"
 
 #: src/fe-gtk/servlistgui.c:1433
 msgid "Use SSL for all the servers on this network"
@@ -4517,11 +4520,11 @@ msgstr "Использовать SSL для всех серверов в это�
 
 #: src/fe-gtk/servlistgui.c:1438
 msgid "Accept invalid SSL certificate"
-msgstr "Принимать недействительные SSL сертификаты"
+msgstr "Принимать недействительные SSL-сертификаты"
 
 #: src/fe-gtk/servlistgui.c:1444
 msgid "_Favorite channels:"
-msgstr "_Любимые каналы:"
+msgstr "_Избранные каналы:"
 
 #: src/fe-gtk/servlistgui.c:1446
 msgid "Channels to join, separated by commas, but not spaces!"
@@ -4541,7 +4544,7 @@ msgstr "Пароль для Nickserv:"
 
 #: src/fe-gtk/servlistgui.c:1456
 msgid "If your nickname requires a password, enter it here. Not all IRC networks support this."
-msgstr "Если ваш никнейм требует пароль, введите его здесь. Не все IRC-сети поддерживают это."
+msgstr "Если у вас есть пароль, введите его тут. Не все IRC-сети поддерживают этот метод."
 
 #: src/fe-gtk/servlistgui.c:1460
 msgid "Server password:"
@@ -4585,7 +4588,7 @@ msgstr "Сортировать"
 
 #: src/fe-gtk/servlistgui.c:1795
 msgid "Sorts the network list in alphabetical order. Use SHIFT-UP and SHIFT-DOWN keys to move a row."
-msgstr "Сортирует список сетей в алфавитном порядке. Используйте кнопки SHIFT-UP и SHIFT-DOWN чтобы переместить строку."
+msgstr "Сортировка списка сетей по алфавиту. Для перемещения строк используйте SHIFT-стрелка вверх/вниз."
 
 #: src/fe-gtk/servlistgui.c:1820
 msgid "C_onnect"
@@ -4605,7 +4608,7 @@ msgstr "Фоновое изображение:"
 
 #: src/fe-gtk/setup.c:107
 msgid "Scrollback lines:"
-msgstr "Линии прокрутки:"
+msgstr "Строк в буфере:"
 
 #: src/fe-gtk/setup.c:108
 msgid "Colored nick names"
@@ -4613,7 +4616,7 @@ msgstr "Цветные ники"
 
 #: src/fe-gtk/setup.c:109
 msgid "Give each person on IRC a different color"
-msgstr "Дать каждой персоне на IRC свой цвет"
+msgstr "Дать каждому участнику канала свой цвет"
 
 #: src/fe-gtk/setup.c:110
 msgid "Indent nick names"
@@ -4629,7 +4632,7 @@ msgstr "Прозрачный фон"
 
 #: src/fe-gtk/setup.c:113
 msgid "Show marker line"
-msgstr "Показывать линию маркера"
+msgstr "Показывать разделительную черту"
 
 #: src/fe-gtk/setup.c:114
 msgid "Insert a red line after the last read text."
@@ -4654,7 +4657,7 @@ msgstr "Голубой:"
 #: src/fe-gtk/setup.c:120
 #: src/fe-gtk/setup.c:391
 msgid "Time Stamps"
-msgstr "Временные метки"
+msgstr "Метки времени"
 
 #: src/fe-gtk/setup.c:121
 msgid "Enable time stamps"
@@ -4676,7 +4679,7 @@ msgstr "A-Z"
 
 #: src/fe-gtk/setup.c:131
 msgid "Last-spoke order"
-msgstr "Порядок \"кто последний говорил\""
+msgstr "По времени"
 
 #: src/fe-gtk/setup.c:137
 #: src/fe-gtk/setup.c:1701
@@ -4686,11 +4689,11 @@ msgstr "Поле ввода "
 #: src/fe-gtk/setup.c:138
 #: src/fe-gtk/setup.c:202
 msgid "Use the Text box font and colors"
-msgstr "Использовать цвета и шрифт текстового поля"
+msgstr "Использовать цвета и шрифт текстовой надписи"
 
 #: src/fe-gtk/setup.c:140
 msgid "Spell checking"
-msgstr "Проверка правописания"
+msgstr "Проверка орфографии"
 
 #: src/fe-gtk/setup.c:143
 msgid "Nick Completion"
@@ -4706,11 +4709,11 @@ msgstr "Суффикс дополнения ников:"
 
 #: src/fe-gtk/setup.c:147
 msgid "Nick completion sorted:"
-msgstr "Сортировка дополнения ников:"
+msgstr "Сортировать варианты имен:"
 
 #: src/fe-gtk/setup.c:150
 msgid "Input Box Codes"
-msgstr "Input Box Codes"
+msgstr "Укажите символы рамок"
 
 #: src/fe-gtk/setup.c:151
 #, c-format
@@ -4740,22 +4743,22 @@ msgstr "Не сортировать"
 #: src/fe-gtk/setup.c:179
 #: src/fe-gtk/setup.c:191
 msgid "Left (Upper)"
-msgstr "Слева (вверху)"
+msgstr "Слева вверху"
 
 #: src/fe-gtk/setup.c:180
 #: src/fe-gtk/setup.c:192
 msgid "Left (Lower)"
-msgstr "Слева (внизу)"
+msgstr "Слева внизу"
 
 #: src/fe-gtk/setup.c:181
 #: src/fe-gtk/setup.c:193
 msgid "Right (Upper)"
-msgstr "Справа (вверху)"
+msgstr "Справа вверху"
 
 #: src/fe-gtk/setup.c:182
 #: src/fe-gtk/setup.c:194
 msgid "Right (Lower)"
-msgstr "Справа (внизу)"
+msgstr "Справа внизу"
 
 #: src/fe-gtk/setup.c:183
 msgid "Top"
@@ -4783,15 +4786,15 @@ msgstr "Сортировать  спиоса пользователе пой "
 
 #: src/fe-gtk/setup.c:205
 msgid "Show user list at:"
-msgstr "Показывать список пользователей:"
+msgstr "Список пользователей:"
 
 #: src/fe-gtk/setup.c:207
 msgid "Away tracking"
-msgstr "Отслеживание статуса \"отошёл\""
+msgstr "Проверка присутствия"
 
 #: src/fe-gtk/setup.c:208
 msgid "Track the Away status of users and mark them in a different color"
-msgstr "Отслеживать статус \"Отошёл\" и помечать этих людей другим цветом"
+msgstr "Следить за ушедшими пользователями и выделять их цветом"
 
 #: src/fe-gtk/setup.c:209
 msgid "On channels smaller than:"
@@ -4808,7 +4811,7 @@ msgstr "Окна"
 #: src/fe-gtk/setup.c:224
 #: src/fe-gtk/setup.c:240
 msgid "Tabs"
-msgstr "Вкладки"
+msgstr "Закладки"
 
 #: src/fe-gtk/setup.c:232
 msgid "Always"
@@ -4816,15 +4819,15 @@ msgstr "Всегда"
 
 #: src/fe-gtk/setup.c:233
 msgid "Only requested tabs"
-msgstr "Только запрошенные владки"
+msgstr "Только запрошенные закладки"
 
 #: src/fe-gtk/setup.c:242
 msgid "Tree"
-msgstr "Древовидный"
+msgstr "Дерево"
 
 #: src/fe-gtk/setup.c:249
 msgid "Switcher type:"
-msgstr "Тип переключателя:"
+msgstr "Вид списка:"
 
 #: src/fe-gtk/setup.c:250
 msgid "Open an extra tab for server messages"
@@ -4844,15 +4847,15 @@ msgstr "Сортировать вкладки в алфавитном поряд
 
 #: src/fe-gtk/setup.c:254
 msgid "Smaller text"
-msgstr "Меньший текст"
+msgstr "Мелкий шрифт"
 
 #: src/fe-gtk/setup.c:256
 msgid "Focus new tabs:"
-msgstr "Фокусировать новые табы:"
+msgstr "Переходить на новые вкладки:"
 
 #: src/fe-gtk/setup.c:258
 msgid "Show channel switcher at:"
-msgstr "Показывать переключатель каналов:"
+msgstr "Переключатель каналов:"
 
 #: src/fe-gtk/setup.c:259
 msgid "Shorten tab labels to:"
@@ -4860,7 +4863,7 @@ msgstr "Сократить метки вкладок до:"
 
 #: src/fe-gtk/setup.c:259
 msgid "letters."
-msgstr "буквы."
+msgstr "букв."
 
 #: src/fe-gtk/setup.c:261
 msgid "Tabs or Windows"
@@ -4868,19 +4871,19 @@ msgstr "Вкладки или окна"
 
 #: src/fe-gtk/setup.c:262
 msgid "Open channels in:"
-msgstr "Открыть каналы в:"
+msgstr "Открывать каналы как:"
 
 #: src/fe-gtk/setup.c:263
 msgid "Open dialogs in:"
-msgstr "Открыть диалог в:"
+msgstr "Открывать разговоры как:"
 
 #: src/fe-gtk/setup.c:264
 msgid "Open utilities in:"
-msgstr "Открыть утилиты в:"
+msgstr "Открывать утилиты как:"
 
 #: src/fe-gtk/setup.c:264
 msgid "Open DCC, Ignore, Notify etc, in tabs or windows?"
-msgstr "Открывать DCC, Игноры, Уведомления и т.д. во вкладках или окнах?"
+msgstr "Открыть как закладки DCC, Игнорирования, Уведомлений и т.д. или в окне?"
 
 #: src/fe-gtk/setup.c:271
 msgid "No"
@@ -4892,7 +4895,7 @@ msgstr "Да"
 
 #: src/fe-gtk/setup.c:273
 msgid "Browse for save folder every time"
-msgstr "Выбирать каталог для сохранения каждый раз"
+msgstr "Запрашивать каталог сохранения"
 
 #: src/fe-gtk/setup.c:279
 msgid "Files and Directories"
@@ -4983,23 +4986,23 @@ msgstr "Предупреждения"
 
 #: src/fe-gtk/setup.c:333
 msgid "Show tray balloons on:"
-msgstr "Всплывающие сообщения в трее на:"
+msgstr "Показывать уведомления при:"
 
 #: src/fe-gtk/setup.c:335
 msgid "Blink tray icon on:"
-msgstr "Мигать иконкой в трее если:"
+msgstr "Мигание значка при:"
 
 #: src/fe-gtk/setup.c:336
 msgid "Blink task bar on:"
-msgstr "Мигать на панели задач если:"
+msgstr "Мигание окна при:"
 
 #: src/fe-gtk/setup.c:337
 msgid "Make a beep sound on:"
-msgstr "Издавать звуковой сигнал если: "
+msgstr "Звуковой сигнал при:"
 
 #: src/fe-gtk/setup.c:339
 msgid "Enable system tray icon"
-msgstr "Включить иконку в области уведомлений"
+msgstr "Значок в области уведомлений"
 
 #: src/fe-gtk/setup.c:341
 msgid "Highlighted Messages"
@@ -5007,19 +5010,19 @@ msgstr "Выделенные сообщения"
 
 #: src/fe-gtk/setup.c:342
 msgid "Highlighted messages are ones where your nickname is mentioned, but also:"
-msgstr "Подсвеченные сообщения, это те где упомянули ваше имя, а также:"
+msgstr "Выделяются сообщения, в которых упомянуто ваше имя, кроме того:"
 
 #: src/fe-gtk/setup.c:344
 msgid "Extra words to highlight:"
-msgstr "Дополнительные слова для подсветки:"
+msgstr "Выделять следующие слова:"
 
 #: src/fe-gtk/setup.c:345
 msgid "Nick names not to highlight:"
-msgstr "Ники, которые не подсвечивать:"
+msgstr "Не выделять имена:"
 
 #: src/fe-gtk/setup.c:346
 msgid "Nick names to always highlight:"
-msgstr "Всегда подсвечивать имена:"
+msgstr "Всегда выделять имена:"
 
 #: src/fe-gtk/setup.c:347
 msgid ""
@@ -5027,7 +5030,7 @@ msgid ""
 "Wildcards are accepted."
 msgstr ""
 "Разделяйте слова запятыми.\n"
-"Шаблоны допускаются."
+"Можно использовать шаблоны."
 
 #: src/fe-gtk/setup.c:353
 msgid "Default Messages"
@@ -5124,11 +5127,11 @@ msgstr "Протоколирование"
 
 #: src/fe-gtk/setup.c:386
 msgid "Display scrollback from previous session"
-msgstr "Показать последние сообщения с предыдущей беседы"
+msgstr "Загрузить буфер прошлого разговора"
 
 #: src/fe-gtk/setup.c:387
 msgid "Enable logging of conversations to disk"
-msgstr "Включить журналирование разговоров"
+msgstr "Запись журнала разговора"
 
 #: src/fe-gtk/setup.c:388
 msgid "Log filename:"
@@ -5181,7 +5184,7 @@ msgstr "Только IRC серверы"
 
 #: src/fe-gtk/setup.c:416
 msgid "DCC Get Only"
-msgstr "Только для запросов DCC"
+msgstr "Только DCC Get"
 
 #: src/fe-gtk/setup.c:422
 msgid "Your Address"
@@ -5221,7 +5224,7 @@ msgstr "Авторизация прокси"
 
 #: src/fe-gtk/setup.c:434
 msgid "Use Authentication (MS Proxy, HTTP or Socks5 only)"
-msgstr "Использовать аутентификацию (только MS Proxy, HTTP и Socks5)"
+msgstr "Вход на сервер (только для MS Proxy, HTTP или Socks5)"
 
 #: src/fe-gtk/setup.c:436
 msgid "Use Authentication (HTTP or Socks5 only)"
@@ -5261,7 +5264,7 @@ msgstr "Отметить неидентифицированных пользов
 
 #: src/fe-gtk/setup.c:1161
 msgid "Open Data Folder"
-msgstr "Открыть каталог данных"
+msgstr "Открыть каталог с данными"
 
 #: src/fe-gtk/setup.c:1215
 msgid "Select color"
@@ -5376,7 +5379,7 @@ msgstr "Список пользователей"
 
 #: src/fe-gtk/setup.c:1703
 msgid "Channel switcher"
-msgstr "Переключатель каналов"
+msgstr "Список каналов"
 
 #: src/fe-gtk/setup.c:1704
 msgid "Colors"
@@ -5411,8 +5414,8 @@ msgid ""
 "You cannot place the tree on the top or bottom!\n"
 "Please change to the <b>Tabs</b> layout in the <b>View</b> menu first."
 msgstr ""
-"Вы не можете поместить дерево вверху или внизу!\n"
-"Сначала измените просмотр каналов на <b>Вкладки</b> в меню <b>Вид</b>."
+"Дерево нельзя поместить сверху или снизу!\n"
+"Сначала замените его на <b>Вкладки</b> в меню <b>Вид</b>."
 
 #: src/fe-gtk/setup.c:2017
 msgid "Some settings were changed that require a restart to take full effect."
@@ -5441,7 +5444,7 @@ msgstr "Ошибка при разборе строки"
 #: src/fe-gtk/textgui.c:188
 #, c-format
 msgid "This signal is only passed %d args, $%d is invalid"
-msgstr "Этот сигнал принимает только аргумент %d , $%d - неправильный."
+msgstr "Этот сигнал передал только %d аргумента, $%d отсутствует."
 
 #: src/fe-gtk/textgui.c:304
 #: src/fe-gtk/textgui.c:327
