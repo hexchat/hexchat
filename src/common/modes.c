@@ -19,6 +19,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <glib.h>
+#include <glib/gprintf.h>
 
 #include "xchat.h"
 #include "xchatc.h"
@@ -27,6 +29,7 @@
 #include "text.h"
 #include "fe.h"
 #include "util.h"
+#include "inbound.h"
 #ifdef HAVE_STRINGS_H
 #include <strings.h>
 #endif
@@ -39,6 +42,14 @@ typedef struct
 	char *voice;
 	char *devoice;
 } mode_run;
+
+static int is_prefix_char (server * serv, char c);
+static void record_chan_mode (session *sess, char sign, char mode, char *arg);
+static char *mode_cat (char *str, char *addition);
+static void handle_single_mode (mode_run *mr, char sign, char mode, char *nick, char *chan, char *arg, int quiet, int is_324);
+static int mode_has_arg (server *serv, char sign, char mode);
+static void mode_print_grouped (session *sess, char *nick, mode_run *mr);
+static int mode_chanmode_type (server * serv, char mode);
 
 
 /* word[] - list of nicks.
@@ -222,28 +233,134 @@ mode_access (server * serv, char mode, char *prefix)
 	return -1;
 }
 
-static int
-mode_timeout_cb (session *sess)
-{
-	if (is_session (sess))
-	{
-		sess->mode_timeout_tag = 0;
-		sess->server->p_join_info (sess->server, sess->channel);
-		sess->ignore_mode = TRUE;
-		sess->ignore_date = TRUE;
-	}
-	return 0;
-}
-
 static void
-record_chan_mode (session *sess)/*, char sign, char mode, char *arg)*/
+record_chan_mode (session *sess, char sign, char mode, char *arg)
 {
-	/* Should we write a routine to add sign,mode to sess->current_modes?
-		nah! too hard. Lets just issue a MODE #channel and read it back.
-		We need to find out the new modes for the titlebar, but let's not
-		flood ourselves off when someone decides to change 100 modes/min. */
-	if (!sess->mode_timeout_tag)
-		sess->mode_timeout_tag = fe_timeout_add (15000, mode_timeout_cb, sess);
+	/* Somebody needed to acutally update sess->current_modes, needed to
+		play nice with bouncers, and less mode calls. Also keeps modes up
+		to date for scripts */
+	server *serv = sess->server;
+	GString *current = g_string_new(sess->current_modes);
+	gint mode_pos = -1;
+	gchar *current_char = current->str;
+	gint modes_length;
+	gint argument_num = 0;
+	gint argument_offset = 0;
+	gint argument_length = 0;
+	int i = 0;
+	gchar *arguments_start;
+
+	/* find out if the mode currently exists */
+	arguments_start = g_strstr_len(current->str	, -1, " ");
+	if (arguments_start) {
+		modes_length = arguments_start - current->str;
+	}
+	else {
+		modes_length = current->len;
+		/* set this to the end of the modes */
+		arguments_start = current->str + current->len;
+	}
+
+	while (mode_pos == -1 && i < modes_length)
+	{
+		if (*current_char == mode)
+		{
+			mode_pos = i;
+		}
+		else
+		{
+			i++;
+			current_char++;
+		}
+	}
+
+	/* if the mode currently exists and has an arg, need to know where
+	 * (including leading space) */
+	if (mode_pos != -1 && mode_has_arg(serv, '+', mode))
+	{
+		current_char = current->str;
+
+		i = 0;
+		while (i <= mode_pos)
+		{
+			if (mode_has_arg(serv, '+', *current_char))
+				argument_num++;
+			current_char++;
+			i++;
+		}
+
+		/* check through arguments for where to start */
+		current_char = arguments_start;
+		i = 0;
+		while (i < argument_num && *current_char != '\0')
+		{
+			if (*current_char == ' ')
+				i++;
+			if (i != argument_num)
+				current_char++;
+		}
+		argument_offset = current_char - current->str;
+
+		/* how long the existing argument is for this key
+		 * important for malloc and strncpy */
+		if (i == argument_num)
+		{
+			argument_length++;
+			current_char++;
+			while (*current_char != '\0' && *current_char != ' ')
+			{
+				argument_length++;
+				current_char++;
+			}
+		}
+	}
+
+	/* two cases, adding and removing a mode, handled differently */
+	if (sign == '+')
+	{
+		if (mode_pos != -1)
+		{
+			/* if it already exists, only need to do something (change)
+			 * if there should be a param */
+			if (mode_has_arg(serv, sign, mode))
+			{
+				/* leave the old space there */
+				current = g_string_erase(current, argument_offset+1, argument_length-1);
+				current = g_string_insert(current, argument_offset+1, arg);
+
+				free(sess->current_modes);
+				sess->current_modes = g_string_free(current, FALSE);
+			}
+		}
+		/* mode wasn't there before */
+		else
+		{
+			/* insert the new mode character */
+			current = g_string_insert_c(current, modes_length, mode);
+
+			/* add the argument, with space if there is one */
+			if (mode_has_arg(serv, sign, mode))
+			{
+				current = g_string_append_c(current, ' ');
+				current = g_string_append(current, arg);
+			}
+
+			free(sess->current_modes);
+			sess->current_modes = g_string_free(current, FALSE);
+		}
+	}
+	else if (sign == '-' && mode_pos != -1)
+	{
+		/* remove the argument first if it has one*/
+		if (mode_has_arg(serv, '+', mode))
+			current = g_string_erase(current, argument_offset, argument_length);
+
+		/* remove the mode character */
+		current = g_string_erase(current, mode_pos, 1);
+
+		free(sess->current_modes);
+		sess->current_modes = g_string_free(current, FALSE);
+	}
 }
 
 static char *
@@ -296,8 +413,8 @@ handle_single_mode (mode_run *mr, char sign, char mode, char *nick,
 		userlist_update_mode (sess, /*nickname */ arg, mode, sign);
 	} else
 	{
-		if (!is_324 && !sess->ignore_mode)
-			record_chan_mode (sess);/*, sign, mode, arg);*/
+		if (!is_324 && !sess->ignore_mode && mode_chanmode_type(serv, mode) >= 1)
+			record_chan_mode (sess, sign, mode, arg);
 	}
 
 	switch (sign)
@@ -414,39 +531,54 @@ handle_single_mode (mode_run *mr, char sign, char mode, char *nick,
 static int
 mode_has_arg (server * serv, char sign, char mode)
 {
-	char *cm;
 	int type;
 
 	/* if it's a nickmode, it must have an arg */
 	if (strchr (serv->nick_modes, mode))
 		return 1;
 
+	type = mode_chanmode_type (serv, mode);
+	switch (type)
+	{
+	case 0:					  /* type A */
+	case 1:					  /* type B */
+		return 1;
+	case 2:					  /* type C */
+		if (sign == '+')
+			return 1;
+	case 3:					  /* type D */
+		return 0;
+	default:
+		return 0;
+	}
+
+}
+
+/* what type of chanmode is it? -1 for not in chanmode */
+static int
+mode_chanmode_type (server * serv, char mode)
+{
 	/* see what numeric 005 CHANMODES=xxx said */
-	cm = serv->chanmodes;
-	type = 0;
-	while (*cm)
+	char *cm = serv->chanmodes;
+	int type = 0;
+	int found = 0;
+
+	while (*cm && !found)
 	{
 		if (*cm == ',')
 		{
 			type++;
 		} else if (*cm == mode)
 		{
-			switch (type)
-			{
-			case 0:					  /* type A */
-			case 1:					  /* type B */
-				return 1;
-			case 2:					  /* type C */
-				if (sign == '+')
-					return 1;
-			case 3:					  /* type D */
-				return 0;
-			}
+			found = 1;
 		}
 		cm++;
 	}
-
-	return 0;
+	if (found)
+		return type;
+	/* not found? -1 */
+	else
+		return -1;
 }
 
 static void
@@ -537,7 +669,6 @@ handle_mode (server * serv, char *word[], char *word_eol[],
 		if (sess->current_modes)
 			free (sess->current_modes);
 		sess->current_modes = strdup (word_eol[offset+1]);
-		fe_set_title (sess);
 	}
 
 	sign = *modes;
@@ -592,6 +723,10 @@ handle_mode (server * serv, char *word[], char *word_eol[],
 
 		modes++;
 	}
+
+	/* update the title at the end, now that the mode update is internal now */
+	if (!using_front_tab)
+		fe_set_title (sess);
 
 	/* print all the grouped Op/Deops */
 	mode_print_grouped (sess, nick, &mr);

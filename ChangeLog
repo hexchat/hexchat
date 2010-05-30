@@ -33,11 +33,15 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
    isn't visible [treeview-less-jumping.diff] (Brian Evans).
  - Selecting an item in the nickmenu will now copy it to clipboard (Alex
    Kutepow).
- - New icons for notification area (systray): file offer, message and
-   highlight (Brian Evans).
-
-
-
+ - New icons for notification area (systray): file offer, message and highlight
+   (Brian Evans).
+ - Defined a comparison routine for contexts in Python (Brian Evans).
+ - For the auto-join command, added an 'x' filler for empty keys. This works
+   around a bug in ircd-seven.
+ - When a single channel MODE changes, xchat will no longer re-issue a MODE
+   request for the titlebar display, but figure the new modes intelligently
+   (Brian Evans).
+ - 
  - Perl (Lian Wan Situ)
   * Fixed a bug that resulted in timer hooks being leaked because
     "return REMOVE" from a timer callback was not unhooking like it was
@@ -61,6 +65,7 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
   * Make xchat_send_modes available as Xchat::send_modes
   * Add support for getting the network list using Xchat::get_list( "networks" )
   * Xchat::strip_code will now strip off ANSI escape codes as well
+
 
 ------------------------------------------------------------------------------
  2.8.6 - 11/Jun/2008
