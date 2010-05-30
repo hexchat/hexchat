@@ -548,7 +548,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/xchat.h xchat-wdk/src/co
  #define	X_OK	1
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/about.c xchat-wdk/src/fe-gtk/about.c
 --- xchat-wdk.orig/src/fe-gtk/about.c	2010-05-16 09:43:49 +0200
-+++ xchat-wdk/src/fe-gtk/about.c	2010-05-30 11:01:25 +0200
++++ xchat-wdk/src/fe-gtk/about.c	2010-05-30 11:10:09 +0200
 @@ -113,11 +113,15 @@
  	gtk_container_add (GTK_CONTAINER (vbox), label);
  	g_get_charset (&locale);
@@ -566,6 +566,14 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/about.c xchat-wdk/src/fe
  #endif
  				"%s\n"
  				"<b>Charset</b>: %s "
+@@ -127,6 +131,7 @@
+ 				"<b>Renderer</b>: %s\n"
+ #endif
+ 				"<b>Compiled</b>: "__DATE__"\n\n"
++				"<b>XChat Base</b>: 2.8.8\n\n"
+ 				"<small>\302\251 1998-2010 Peter \305\275elezn\303\275 &lt;zed@xchat.org></small>",
+ 					_("A multiplatform IRC Client"),
+ 					get_cpu_str(),
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/banlist.c xchat-wdk/src/fe-gtk/banlist.c
 --- xchat-wdk.orig/src/fe-gtk/banlist.c	2010-05-16 05:20:22 +0200
 +++ xchat-wdk/src/fe-gtk/banlist.c	2010-05-30 11:01:25 +0200
