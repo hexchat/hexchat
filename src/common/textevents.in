@@ -32,13 +32,13 @@ Channel Action
 XP_TE_CHANACTION
 pevt_chanaction_help
 %C18*$t$1%O $2
-n3
+n4
 
 Channel Action Hilight
 XP_TE_HCHANACTION
 pevt_chanaction_help
 %C21*%O$t%C21%B$1%O%C21 $2
-n3
+n4
 
 Channel Ban
 XP_TE_CHANBAN
@@ -592,6 +592,18 @@ pevt_pingtimeout_help
 %C22*%O$tNo ping reply for $1 seconds, disconnecting.
 1
 
+Private Action
+XP_TE_PRIVACTION
+pevt_privmsg_help
+%C18**$t$3$1%O $2 %C18**
+n3
+
+Private Action to Dialog
+XP_TE_DPRIVACTION
+pevt_privmsg_help
+%C18*$t$3$1%O $2
+n3
+
 Private Message
 XP_TE_PRIVMSG
 pevt_privmsg_help
@@ -661,6 +673,12 @@ n2
 Server Text
 XP_TE_SERVTEXT
 pevt_servertext_help
+%C22*%O$t$1
+n3
+
+SSL Message
+XP_TE_SSLMESSAGE
+pevt_sslmessage_help
 %C22*%O$t$1
 n2
 

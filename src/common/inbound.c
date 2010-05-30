@@ -307,12 +307,14 @@ is_hilight (char *from, char *text, session *sess, server *serv)
 }
 
 void
-inbound_action (session *sess, char *chan, char *from, char *text, int fromme, int id)
+inbound_action (session *sess, char *chan, char *from, char *ip, char *text, int fromme, int id)
 {
 	session *def = sess;
 	server *serv = sess->server;
 	struct User *user;
 	char nickchar[2] = "\000";
+	char idtext[64];
+	int privaction = FALSE;
 
 	if (!fromme)
 	{
@@ -322,11 +324,25 @@ inbound_action (session *sess, char *chan, char *from, char *text, int fromme, i
 		} else
 		{
 			/* it's a private action! */
+			privaction = TRUE;
 			/* find a dialog tab for it */
 			sess = find_dialog (serv, from);
 			/* if non found, open a new one */
 			if (!sess && prefs.autodialog)
-				sess = inbound_open_dialog (serv, from);
+			{
+				/* but only if it wouldn't flood */
+				if (flood_check (from, ip, serv, current_sess, 1))
+					sess = inbound_open_dialog (serv, from);
+				else
+					sess = serv->server_session;
+			}
+			if (!sess)
+			{
+				sess = find_session_from_nick (from, serv);
+				/* still not good? */
+				if (!sess)
+					sess = serv->front_session;
+			}
 		}
 	}
 
@@ -353,19 +369,25 @@ inbound_action (session *sess, char *chan, char *from, char *text, int fromme, i
 		user->lasttalk = time (0);
 	}
 
-	if (!fromme)
+	inbound_make_idtext (serv, idtext, sizeof (idtext), id);
+
+	if (!fromme && !privaction)
 	{
 		if (is_hilight (from, text, sess, serv))
 		{
-			EMIT_SIGNAL (XP_TE_HCHANACTION, sess, from, text, nickchar, NULL, 0);
+			EMIT_SIGNAL (XP_TE_HCHANACTION, sess, from, text, nickchar, idtext, 0);
 			return;
 		}
 	}
 
 	if (fromme)
-		EMIT_SIGNAL (XP_TE_UACTION, sess, from, text, nickchar, NULL, 0);
+		EMIT_SIGNAL (XP_TE_UACTION, sess, from, text, nickchar, idtext, 0);
+	else if (!privaction)
+		EMIT_SIGNAL (XP_TE_CHANACTION, sess, from, text, nickchar, idtext, 0);
+	else if (sess->type == SESS_DIALOG)
+		EMIT_SIGNAL (XP_TE_DPRIVACTION, sess, from, text, idtext, NULL, 0);
 	else
-		EMIT_SIGNAL (XP_TE_CHANACTION, sess, from, text, nickchar, NULL, 0);
+		EMIT_SIGNAL (XP_TE_PRIVACTION, sess, from, text, idtext, NULL, 0);
 }
 
 void

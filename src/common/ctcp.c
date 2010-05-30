@@ -81,7 +81,7 @@ ctcp_check (session *sess, char *nick, char *word[], char *word_eol[],
 }
 
 void
-ctcp_handle (session *sess, char *to, char *nick,
+ctcp_handle (session *sess, char *to, char *nick, char *ip,
 				 char *msg, char *word[], char *word_eol[], int id)
 {
 	char *po;
@@ -125,7 +125,7 @@ ctcp_handle (session *sess, char *to, char *nick,
 		if (ctcp_check (sess, nick, word, word_eol, word[4] + ctcp_offset))
 			goto generic;
 
-		inbound_action (sess, to, nick, msg + 7, FALSE, id);
+		inbound_action (sess, to, nick, ip, msg + 7, FALSE, id);
 		return;
 	}
 

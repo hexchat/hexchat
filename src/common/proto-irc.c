@@ -644,7 +644,7 @@ process_numeric (session * sess, int n,
 
 	case 323:
 		if (!fe_is_chanwindow (sess->server))
-			EMIT_SIGNAL (XP_TE_SERVTEXT, serv->server_session, text, word[1], NULL, NULL, 0);
+			EMIT_SIGNAL (XP_TE_SERVTEXT, serv->server_session, text, word[1], word[2], NULL, 0);
 		else
 			fe_chan_list_end (sess->server);
 		break;
@@ -721,7 +721,7 @@ process_numeric (session * sess, int n,
 			/* try to show only user initiated whos */
 			if (!who_sess || !who_sess->doing_who)
 				EMIT_SIGNAL (XP_TE_SERVTEXT, serv->server_session, text, word[1],
-								 NULL, NULL, 0);
+								 word[2], NULL, 0);
 		}
 		break;
 
@@ -744,7 +744,7 @@ process_numeric (session * sess, int n,
 				/* try to show only user initiated whos */
 				if (!who_sess || !who_sess->doing_who)
 					EMIT_SIGNAL (XP_TE_SERVTEXT, serv->server_session, text,
-									 word[1], NULL, NULL, 0);
+									 word[1], word[2], NULL, 0);
 			} else
 				goto def;
 		}
@@ -758,13 +758,13 @@ process_numeric (session * sess, int n,
 			{
 				if (!who_sess->doing_who)
 					EMIT_SIGNAL (XP_TE_SERVTEXT, serv->server_session, text,
-									 word[1], NULL, NULL, 0);
+									 word[1], word[2], NULL, 0);
 				who_sess->doing_who = FALSE;
 			} else
 			{
 				if (!serv->doing_dns)
 					EMIT_SIGNAL (XP_TE_SERVTEXT, serv->server_session, text,
-									 word[1], NULL, NULL, 0);
+									 word[1], word[2], NULL, 0);
 				serv->doing_dns = FALSE;
 			}
 		}
@@ -815,7 +815,7 @@ process_numeric (session * sess, int n,
 
 	case 369:	/* WHOWAS end */
 	case 406:	/* WHOWAS error */
-		EMIT_SIGNAL (XP_TE_SERVTEXT, whois_sess, text, word[1], NULL, NULL, 0);
+		EMIT_SIGNAL (XP_TE_SERVTEXT, whois_sess, text, word[1], word[2], NULL, 0);
 		serv->inside_whois = 0;
 		break;
 
@@ -891,11 +891,11 @@ process_numeric (session * sess, int n,
 			session *realsess = find_channel (serv, word[4]);
 			if (!realsess)
 				realsess = serv->server_session;
-			EMIT_SIGNAL (XP_TE_SERVTEXT, realsess, text, word[1], NULL, NULL, 0);
+			EMIT_SIGNAL (XP_TE_SERVTEXT, realsess, text, word[1], word[2], NULL, 0);
 		} else
 		{
 			EMIT_SIGNAL (XP_TE_SERVTEXT, serv->server_session, text, word[1],
-							 NULL, NULL, 0);
+							 word[2], NULL, 0);
 		}
 	}
 }
@@ -1077,7 +1077,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 						if (strncasecmp (text, "DCC ", 4) == 0)
 							/* redo this with handle_quotes TRUE */
 							process_data_init (word[1], word_eol[1], word, word_eol, TRUE, FALSE);
-						ctcp_handle (sess, to, nick, text, word, word_eol, id);
+						ctcp_handle (sess, to, nick, ip, text, word, word_eol, id);
 					} else
 					{
 						if (is_channel (serv, to))
@@ -1118,7 +1118,7 @@ garbage:
 /* handle named messages that DON'T start with a ':' */
 
 static void
-process_named_servermsg (session *sess, char *buf, char *word_eol[])
+process_named_servermsg (session *sess, char *buf, char *rawname, char *word_eol[])
 {
 	sess = sess->server->server_session;
 
@@ -1140,7 +1140,8 @@ process_named_servermsg (session *sess, char *buf, char *word_eol[])
 		EMIT_SIGNAL (XP_TE_SERVNOTICE, sess, buf, sess->server->servername, NULL, NULL, 0);
 		return;
 	}
-	EMIT_SIGNAL (XP_TE_SERVTEXT, sess, buf, sess->server->servername, NULL, NULL, 0);
+
+	EMIT_SIGNAL (XP_TE_SERVTEXT, sess, buf, sess->server->servername, rawname, NULL, 0);
 }
 
 /* irc_inline() - 1 single line received from serv */
@@ -1198,7 +1199,7 @@ irc_inline (server *serv, char *buf, int len)
 
 	if (buf[0] != ':')
 	{
-		process_named_servermsg (sess, buf, word_eol);
+		process_named_servermsg (sess, buf, word[0], word_eol);
 		goto xit;
 	}
 

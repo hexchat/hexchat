@@ -2505,7 +2505,7 @@ cmd_me (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	if (dcc_write_chat (sess->channel, tbuf))
 	{
 		/* print it to screen */
-		inbound_action (sess, sess->channel, sess->server->nick, act, TRUE, FALSE);
+		inbound_action (sess, sess->channel, sess->server->nick, "", act, TRUE, FALSE);
 	} else
 	{
 		/* DCC CHAT failed, try through server */
@@ -2513,7 +2513,7 @@ cmd_me (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		{
 			sess->server->p_action (sess->server, sess->channel, act);
 			/* print it to screen */
-			inbound_action (sess, sess->channel, sess->server->nick, act, TRUE, FALSE);
+			inbound_action (sess, sess->channel, sess->server->nick, "", act, TRUE, FALSE);
 		} else
 		{
 			notc_msg (sess);

@@ -41,7 +41,10 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
  - When a single channel MODE changes, xchat will no longer re-issue a MODE
    request for the titlebar display, but figure the new modes intelligently
    (Brian Evans).
- - 
+ - Various text event changes (Brian Evans):
+   1. Added "Private Action", "Private Action to Dialog", "SSL Message".
+   2. Added "Identified text" parameter all the 'action' events.
+   3. Added a $3 parameter to "Server Text".
  - Perl (Lian Wan Situ)
   * Fixed a bug that resulted in timer hooks being leaked because
     "return REMOVE" from a timer callback was not unhooking like it was

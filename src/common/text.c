@@ -972,6 +972,7 @@ static char * const pevt_chanaction_help[] = {
 	N_("Nickname"),
 	N_("The action"),
 	N_("Mode char"),
+	N_("Identified text"),
 };
 
 static char * const pevt_chanmsg_help[] = {
@@ -1230,6 +1231,12 @@ static char * const pevt_generic_channel_help[] = {
 };
 
 static char * const pevt_servertext_help[] = {
+	N_("Text"),
+	N_("Server Name"),
+	N_("Raw Numeric or Identifier")
+};
+
+static char * const pevt_sslmessage_help[] = {
 	N_("Text"),
 	N_("Server Name")
 };
@@ -2014,7 +2021,8 @@ text_emit (int index, session *sess, char *a, char *b, char *c, char *d)
 	/* ===Private message=== */
 	case XP_TE_PRIVMSG:
 	case XP_TE_DPRIVMSG:
-priv:
+	case XP_TE_PRIVACTION:
+	case XP_TE_DPRIVACTION:
 		if (chanopt_is_set_a (prefs.input_beep_priv, sess->alert_beep))
 			sound_beep (sess);
 		if (chanopt_is_set_a (prefs.input_flash_priv, sess->alert_taskbar))
@@ -2038,8 +2046,6 @@ priv:
 	/* ===Channel message=== */
 	case XP_TE_CHANACTION:
 	case XP_TE_CHANMSG:
-		if (sess->type == SESS_DIALOG)	/* there's no PRIVACTION! */
-			goto priv;
 		if (chanopt_is_set_a (prefs.input_beep_chans, sess->alert_beep))
 			sound_beep (sess);
 		if (chanopt_is_set_a (prefs.input_flash_chans, sess->alert_taskbar))

@@ -17,10 +17,10 @@ N_("%C22*%O$tCannot join%C26 %B$1 %O(You are banned).")},
 {"Change Nick", pevt_changenick_help, 2, 
 N_("%C22*%O$t$1 is now known as $2")},
 
-{"Channel Action", pevt_chanaction_help, 131, 
+{"Channel Action", pevt_chanaction_help, 132, 
 "%C18*$t$1%O $2"},
 
-{"Channel Action Hilight", pevt_chanaction_help, 131, 
+{"Channel Action Hilight", pevt_chanaction_help, 132, 
 "%C21*%O$t%C21%B$1%O%C21 $2"},
 
 {"Channel Ban", pevt_chanban_help, 2, 
@@ -299,6 +299,12 @@ N_("%C22*%O$tPing reply from $1: $2 second(s)")},
 {"Ping Timeout", pevt_pingtimeout_help, 1, 
 N_("%C22*%O$tNo ping reply for $1 seconds, disconnecting.")},
 
+{"Private Action", pevt_privmsg_help, 131, 
+"%C18**$t$3$1%O $2 %C18**"},
+
+{"Private Action to Dialog", pevt_privmsg_help, 131, 
+"%C18*$t$3$1%O $2"},
+
 {"Private Message", pevt_privmsg_help, 131, 
 "%C28*%C29$3$1%C28*$t%O$2"},
 
@@ -332,7 +338,10 @@ N_("%C22*%O$t%C22Looking up $1")},
 {"Server Notice", pevt_servertext_help, 130, 
 "%C22*%O$t$1"},
 
-{"Server Text", pevt_servertext_help, 130, 
+{"Server Text", pevt_servertext_help, 131, 
+"%C22*%O$t$1"},
+
+{"SSL Message", pevt_sslmessage_help, 130, 
 "%C22*%O$t$1"},
 
 {"Stop Connection", pevt_sconnect_help, 1, 
