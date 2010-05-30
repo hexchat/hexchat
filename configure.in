@@ -234,6 +234,8 @@ if test "$xlib" = yes; then
 	AC_DEFINE(USE_XLIB)
 	if test "$system" = "SunOS"; then
 		LIBS="$LIBS -L/usr/openwin/lib -lX11"
+	else
+		AC_CHECK_LIB(X11, XSetWMHints)
 	fi
 else
 	shm=no
@@ -552,6 +554,7 @@ dnl *********************************************************************
 dnl ** MS PROXY *********************************************************
 dnl *********************************************************************
 
+have_ntlm="no"
 if test "x$ntlm" = "xyes" ; then
 	have_ntlm="no"
 	AC_CHECK_LIB(ntlm, ntlm_smb_encrypt, have_ntlm=yes)
