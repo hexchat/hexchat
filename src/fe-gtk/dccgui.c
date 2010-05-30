@@ -42,6 +42,7 @@
 #include <gtk/gtkcellrenderertext.h>
 #include <gtk/gtkcheckmenuitem.h>
 #include <gtk/gtkradiobutton.h>
+#include <gtk/gtkversion.h>
 
 #include "../common/xchat.h"
 #include "../common/xchatc.h"
