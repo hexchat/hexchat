@@ -2,9 +2,9 @@
 
 #ifdef WIN32
 /* If you're compiling this for Windows, your release is un-official
- * and not condoned. Please don't use the XChat name. Call it YChat
- * or make up your own name! */
-#define DISPLAY_NAME "YChat"
+ * and not condoned. Please don't use the XChat name. Make up your
+ * own name! */
+#define DISPLAY_NAME "XChat-Unofficial"
 #else
 #define DISPLAY_NAME "XChat"
 #endif

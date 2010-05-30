@@ -4,7 +4,7 @@ noinst_LIBRARIES = libxchatcommon.a
 
 INCLUDES = $(COMMON_CFLAGS)
 
-EXTRA_DIST = makefile.msc \
+EXTRA_DIST = \
 	cfgfiles.h \
 	chanopt.h \
 	ctcp.h \

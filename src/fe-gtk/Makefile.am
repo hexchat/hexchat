@@ -6,7 +6,7 @@ INCLUDES = $(GUI_CFLAGS) -DG_DISABLE_CAST_CHECKS -DLOCALEDIR=\"$(localedir)\"
 
 xchat_LDADD = ../common/libxchatcommon.a $(GUI_LIBS)
 
-EXTRA_DIST = makefile.msc \
+EXTRA_DIST = \
 	about.h ascii.h banlist.h chanlist.h chanview.h chanview-tabs.c \
 	chanview-tree.c custom-list.h editlist.h fe-gtk.h fkeys.h gtkutil.h joind.h \
 	maingui.h menu.h mmx_cmod.S mmx_cmod.h notifygui.h palette.h pixmaps.h \

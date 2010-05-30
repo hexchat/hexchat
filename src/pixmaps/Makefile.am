@@ -14,7 +14,7 @@ LIST =	traymsgpng $(srcdir)/message.png \
 PNGS = message.png highlight.png fileoffer.png book.png hop.png op.png purple.png red.png voice.png
 noinst_HEADERS = inline_pngs.h
 CLEANFILES = $(noinst_HEADERS)
-EXTRA_DIST = $(PNGS) makefile.msc
+EXTRA_DIST = $(PNGS)
 
 inline_pngs.h: $(PNGS)
 	@gdkpixbufcsourcepath@ --raw --build-list $(LIST) > $(srcdir)/inline_pngs.h

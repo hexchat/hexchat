@@ -12,7 +12,7 @@ There are always more changes than listed here, these are just the
 highlights. The full CVS log is available at www.xchat.org/cvslog/
 
 ------------------------------------------------------------------------------
- 2.8.8 - dd/mm/yyyy
+ 2.8.8 - 30/May/2010
 ------------------------------------------------------------------------------
 
  - Made balloon time adjustable via /set input_balloon_time (Nicoleau Fabien).
@@ -20,14 +20,14 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
    file that isn't set to 0 or 1.
  - Added -on and -off parameters to the /SET command. This can be used to set
    bits, for example gui_tweaks.
- - Made scrolling backwards for FIND better (Richard Hitt).
+ - Made scrolling backwards for the search window act better (Richard Hitt).
+ - [2045483] Made ESC key close the search window (Richard Rowell).
  - Improved the reconnect logic. If a network is already open but disconnected,
    it'll now get re-used if you use the Network List and connect to that same
    network.
- - Improved scroll-back reloading significantly (Soeren Sandmann Pedersen).
+ - Improved scrollback reloading speed significantly (Soeren Sandmann Pedersen).
  - [2957047] Handle CTCPs when IDmsg is used correctly (Lian Wan Situ).
  - [2987626] Allow /GHOST's password arg to be optional (Ori Avtalion).
- - [2045483] Make ESC key close the search window (Richard Rowell).
  - Added networks: 7-indonesia, ChattingAway, GeekShed, TURLINet.
  - When switching tabs, make the treeview only scroll if the selected item
    isn't visible [treeview-less-jumping.diff] (Brian Evans).
