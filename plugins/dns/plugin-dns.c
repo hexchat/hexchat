@@ -305,7 +305,7 @@ xchat_plugin_deinit (xchat_plugin *plugin_handle)
 		Sleep (1000);
 	}
 	
-	xchat_print(ph, "DNS plugin unloaded successfully!\n");
+	xchat_print(ph, "DNS plugin unloaded\n");
 	return 1;
 }
 
@@ -333,7 +333,7 @@ xchat_plugin_init
 
 	xchat_hook_command(ph, "DNS", XCHAT_PRI_LOW, dns_cmd_cb, HELP, 0);
 
-	xchat_print(ph, "DNS plugin loaded successfully!\n");
+	xchat_print(ph, "DNS plugin loaded\n");
 
 	return 1;       /* return 1 for success */
 }

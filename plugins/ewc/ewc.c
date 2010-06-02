@@ -219,13 +219,13 @@ int xchat_plugin_init(xchat_plugin *plugin_handle,
   xchat_hook_command(ph, "wcmd", XCHAT_PRI_NORM, wcmd_cb,
                     "Usage: wcmd [play|pause|stop|prev|next]", 0);
 
-  xchat_print(ph, "EasyWinampControl plugin loaded successfully!\n");
+  xchat_print(ph, "EasyWinampControl plugin loaded\n");
 
   return 1;       /* return 1 for success */
 }
 
 int xchat_plugin_deinit(void)
 {
-  xchat_print(ph, "EasyWinampControl plugin unloaded successfully!\n");
+  xchat_print(ph, "EasyWinampControl plugin unloaded\n");
   return 1;
 }
