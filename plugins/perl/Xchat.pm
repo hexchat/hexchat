@@ -8,7 +8,7 @@ $SIG{__WARN__} = sub {
 	my ($package) = caller;
 	
 	# redirect Gtk/Glib errors and warnings back to STDERR
-	my $message_levels =	qr/ERROR|CRITICAL|WARNING|MESSAGE|INFO|DEBUG/;
+	my $message_levels =	qr/ERROR|CRITICAL|WARNING|MESSAGE|INFO|DEBUG/i;
 	if( $message =~ /^(?:Gtk|GLib|Gdk)(?:-\w+)?-$message_levels/i ) {
 		print STDERR $message;
 	} else {
