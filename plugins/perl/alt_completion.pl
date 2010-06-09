@@ -243,7 +243,7 @@ sub matching_channels {
 
 			# comparisons will be done based only on the name
 			# matching name, same connection, only channels
-			$chan =~ /^$word/ && $_->{id} == $conn_id ?
+			$chan =~ /^$word/i && $_->{id} == $conn_id ?
 			[ $chan, $_ ] :
 			()
 		} channels();
