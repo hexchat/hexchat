@@ -5,7 +5,7 @@ IPV6 = YES
 
 CC = cl
 LINK = link
-CFLAGS = $(CFLAGS) /Ox /c /MD /nologo /DWIN32 /DG_DISABLE_CAST_CHECKS /Dstrcasecmp=stricmp /Dstrncasecmp=strnicmp /Dstrtoull=_strtoui64
+CFLAGS = $(CFLAGS) /Ox /c /MD /nologo /DWIN32 /DG_DISABLE_CAST_CHECKS /Dstrcasecmp=stricmp /Dstrncasecmp=strnicmp /Dstrtoull=_strtoui64 /DHAVE_STRTOULL
 CPPFLAGS = /c /MD /nologo /DWIN32
 LDFLAGS = /subsystem:windows /nologo
 LIBS = $(LIBS) gdi32.lib shell32.lib user32.lib advapi32.lib imm32.lib ole32.lib winmm.lib
