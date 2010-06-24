@@ -372,7 +372,12 @@ Settings-&gt;Advanced-&gt;Text Events, these additional events can be used.</p>
                                  <code>$_[0][3]</code>   -  Message<br />
                                  </td>
    </tr>   <tr>
-      <td>"Key Press"</td> <td>used for intercepting key presses, the key value is in $_[0][0]</td>
+      <td>"Key Press"</td> <td>used for intercepting key presses<br />
+			$_[0][0] - key value<br />
+			$_[0][1] - state bitfield, 1 - shift, 4 - control, 8 - alt<br />
+			$_[0][2] - string version of the key which might be empty for unprintable keys<br />
+			$_[0][3] - length of the string in $_[0][2]<br />
+		</td>
    </tr>
 </table><p>
 </p>
