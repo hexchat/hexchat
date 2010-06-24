@@ -372,6 +372,7 @@ sub close_context {
 # track visit times
 sub focus_tab {
 	$last_visit{Xchat::get_context()} = time();
+	return Xchat::EAT_NONE;
 }
 
 # keep track of the last time a message was addressed to someone
