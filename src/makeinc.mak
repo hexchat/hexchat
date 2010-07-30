@@ -22,7 +22,7 @@ LDFLAGS = $(LDFLAGS) msvcrt_win2003.obj
 
 PERLPATH = c:\mozilla-build\perl-5.10-x64\lib\CORE
 PYTHONPATH = c:\mozilla-build\python-2.5-x64
-TCLPATH = c:\mozilla-build\tcl-8.6-x64
+TCLPATH = c:\mozilla-build\tcl-8.5-x64
 !else
 #############################################################
 #x86 config
@@ -34,7 +34,7 @@ LDFLAGS = $(LDFLAGS) msvcrt_winxp.obj
 
 PERLPATH = c:\mozilla-build\perl-5.10-x86\lib\CORE
 PYTHONPATH = c:\mozilla-build\python-2.5-x86
-TCLPATH = c:\mozilla-build\tcl-8.6-x86
+TCLPATH = c:\mozilla-build\tcl-8.5-x86
 
 MMX = YES
 !endif

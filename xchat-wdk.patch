@@ -1,6 +1,6 @@
 diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/perl/perl.c xchat-wdk/plugins/perl/perl.c
 --- xchat-wdk.orig/plugins/perl/perl.c	2010-03-23 01:06:59 +0100
-+++ xchat-wdk/plugins/perl/perl.c	2010-07-30 21:45:34 +0200
++++ xchat-wdk/plugins/perl/perl.c	2010-07-30 21:54:00 +0200
 @@ -16,13 +16,14 @@
   * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
   */
@@ -17,7 +17,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/perl/perl.c xchat-wdk/plugi
  #ifdef ENABLE_NLS
  #include <locale.h>
  #endif
-@@ -1340,12 +1341,12 @@
+@@ -1340,14 +1341,14 @@
  					FreeLibrary (lib);
  					lib = NULL;
  					thread_mbox ("Cannot open " PERL_DLL "\n\n"
@@ -31,8 +31,11 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/perl/perl.c xchat-wdk/plugi
 -									 "You must have ActivePerl 5.8 installed in order to\n"
 +									 "You must have ActivePerl 5.10 installed in order to\n"
  									 "run perl scripts.\n\n"
- 									 "http://www.activestate.com/ActivePerl/\n\n"
+-									 "http://www.activestate.com/ActivePerl/\n\n"
++									 "http://www.activestate.com/activeperl/downloads\n\n"
  									 "Make sure perl's bin directory is in your PATH.");
+ 				}
+ 			}
 diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/python/python.c xchat-wdk/plugins/python/python.c
 --- xchat-wdk.orig/plugins/python/python.c	2010-05-16 06:31:54 +0200
 +++ xchat-wdk/plugins/python/python.c	2010-07-30 21:45:34 +0200
@@ -63,7 +66,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/python/python.c xchat-wdk/p
  #endif
 diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/tcl/tclplugin.c xchat-wdk/plugins/tcl/tclplugin.c
 --- xchat-wdk.orig/plugins/tcl/tclplugin.c	2010-03-21 01:49:42 +0100
-+++ xchat-wdk/plugins/tcl/tclplugin.c	2010-07-30 21:45:34 +0200
++++ xchat-wdk/plugins/tcl/tclplugin.c	2010-07-30 21:52:48 +0200
 @@ -32,8 +32,6 @@
  #include <windows.h>
  #define bzero(mem, sz) memset((mem), 0, (sz))
@@ -73,6 +76,15 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/tcl/tclplugin.c xchat-wdk/p
  #endif
  
  #include "xchat-plugin.h"
+@@ -2221,7 +2219,7 @@
+ #ifdef WIN32
+     lib = LoadLibraryA(TCL_DLL);
+     if (!lib) {
+-        xchat_print(ph, "You must have ActiveTCL installed in order to run Tcl scripts.\n" "http://aspn.activestate.com/ASPN/Tcl/\n" "Make sure Tcl's bin directory is in your PATH.\n\n");
++        xchat_print(ph, "You must have ActiveTCL 8.5 installed in order to run Tcl scripts.\n" "http://www.activestate.com/activetcl/downloads\n" "Make sure Tcl's bin directory is in your PATH.\n\n");
+         return 0;
+     }
+     FreeLibrary(lib);
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/cfgfiles.c xchat-wdk/src/common/cfgfiles.c
 --- xchat-wdk.orig/src/common/cfgfiles.c	2009-01-02 06:56:12 +0100
 +++ xchat-wdk/src/common/cfgfiles.c	2010-07-30 21:45:34 +0200
