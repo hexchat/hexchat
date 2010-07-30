@@ -46,7 +46,7 @@ PERLOUTPUT = xcperl.dll
 PYTHONLIB = python25
 PYTHONOUTPUT = xcpython.dll
 
-TCLLIB = tcl86
+TCLLIB = tcl85
 TCLOUTPUT = xctcl.dll
 
 !ifdef PORTABLE
