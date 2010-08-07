@@ -159,7 +159,7 @@ servlist_servers_populate (ircnet *net, GtkWidget *treeview)
 }
 
 static void
-servlist_networks_populate (GtkWidget *treeview, GSList *netlist)
+servlist_networks_populate_ (GtkWidget *treeview, GSList *netlist, gboolean favorites)
 {
 	GtkListStore *store;
 	GtkTreeIter iter;
@@ -179,17 +179,25 @@ servlist_networks_populate (GtkWidget *treeview, GSList *netlist)
 	while (netlist)
 	{
 		net = netlist->data;
-		gtk_list_store_append (store, &iter);
-		gtk_list_store_set (store, &iter, 0, net->name, 1, 1, -1);
-		if (i == prefs.slist_select)
+		if (!favorites || (net->flags & FLAG_FAVORITE))
 		{
-			/* select this network */
-			servlist_select_and_show (GTK_TREE_VIEW (treeview), &iter, store);
-			selected_net = net;
+			gtk_list_store_insert_with_values (store, &iter, 0x7fffffff, 0, net->name, 1, 1, -1);
+			if (i == prefs.slist_select)
+			{
+				/* select this network */
+				servlist_select_and_show (GTK_TREE_VIEW (treeview), &iter, store);
+				selected_net = net;
+			}
 		}
 		i++;
 		netlist = netlist->next;
 	}
+}
+
+static void
+servlist_networks_populate (GtkWidget *treeview, GSList *netlist)
+{
+	servlist_networks_populate_ (treeview, netlist, prefs.slist_fav);
 }
 
 static void
@@ -348,52 +356,9 @@ servlist_move_network (ircnet *net, int delta)
 	}
 }
 
-#if 0
-static gboolean
-servlist_auto_find (GtkWidget *wid, GdkEventKey *evt, gpointer tree)
-{
-	GtkTreeModel *model = gtk_tree_view_get_model (tree);
-	GtkTreeIter iter;
-	unsigned char c;
-	unsigned char *net_name;
-
-	if (evt->keyval > 0x7a || evt->keyval < 0x41)
-		return FALSE;
-
-	c = toupper (evt->keyval);
-
-	/* scroll to a network that starts with the letter pressed */
-	if (gtk_tree_model_get_iter_first (model, &iter))
-	{
-		do
-		{
-			gtk_tree_model_get (model, &iter, 0, &net_name, -1);
-			if (net_name)
-			{
-				if (toupper (net_name[0]) == c)
-				{
-					servlist_select_and_show (tree, &iter, GTK_LIST_STORE (model));
-					g_free (net_name);
-					return TRUE;
-				}
-				g_free (net_name);
-			}
-		}
-		while (gtk_tree_model_iter_next (model, &iter));
-	}
-
-	return FALSE;
-}
-#endif
-
 static gboolean
 servlist_net_keypress_cb (GtkWidget *wid, GdkEventKey *evt, gpointer tree)
 {
-#if 0		/* GTK's auto-find does this better */
-	if (servlist_auto_find (wid, evt, tree))
-		return TRUE;
-#endif
-
 	if (!selected_net)
 		return FALSE;
 
@@ -1349,6 +1314,17 @@ no_servlist (GtkWidget * igad, gpointer serv)
 		prefs.slist_skip = FALSE;
 }
 
+static void
+fav_servlist (GtkWidget * igad, gpointer serv)
+{
+	if (GTK_TOGGLE_BUTTON (igad)->active)
+		prefs.slist_fav = TRUE;
+	else
+		prefs.slist_fav = FALSE;
+
+	servlist_networks_populate (networks_tree, network_list);
+}
+
 static GtkWidget *
 bold_label (char *text)
 {
@@ -1631,6 +1607,8 @@ servlist_open_networks (void)
 	GtkWidget *scrolledwindow3;
 	GtkWidget *treeview_networks;
 	GtkWidget *checkbutton_skip;
+	GtkWidget *checkbutton_fav;
+	GtkWidget *hbox;
 	GtkWidget *vbuttonbox2;
 	GtkWidget *button_add;
 	GtkWidget *button_remove;
@@ -1782,16 +1760,29 @@ servlist_open_networks (void)
 								"editable", 1,
 								NULL);
 
+	hbox = gtk_hbox_new (0, FALSE);
+	gtk_table_attach (GTK_TABLE (table4), hbox, 0, 2, 1, 2,
+							(GtkAttachOptions) (GTK_FILL),
+							(GtkAttachOptions) (0), 0, 0);
+	gtk_widget_show (hbox);
+
 	checkbutton_skip =
 		gtk_check_button_new_with_mnemonic (_("Skip network list on startup"));
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (checkbutton_skip),
 											prefs.slist_skip);
+	gtk_container_add (GTK_CONTAINER (hbox), checkbutton_skip);
 	g_signal_connect (G_OBJECT (checkbutton_skip), "toggled",
 							G_CALLBACK (no_servlist), 0);
 	gtk_widget_show (checkbutton_skip);
-	gtk_table_attach (GTK_TABLE (table4), checkbutton_skip, 0, 2, 1, 2,
-							(GtkAttachOptions) (GTK_FILL),
-							(GtkAttachOptions) (0), 0, 0);
+
+	checkbutton_fav =
+		gtk_check_button_new_with_mnemonic (_("Show favorites only"));
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (checkbutton_fav),
+											prefs.slist_skip);
+	gtk_container_add (GTK_CONTAINER (hbox), checkbutton_fav);
+	g_signal_connect (G_OBJECT (checkbutton_fav), "toggled",
+							G_CALLBACK (fav_servlist), 0);
+	gtk_widget_show (checkbutton_fav);
 
 	vbuttonbox2 = gtk_vbutton_box_new ();
 	gtk_box_set_spacing (GTK_BOX (vbuttonbox2), 3);
