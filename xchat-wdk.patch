@@ -187,29 +187,6 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/dcc.c xchat-wdk/src/comm
  #else
  	/* this fstat() shouldn't really fail */
  	if ((dcc->fp == -1 ? stat (dcc->destfile_fs, &st_a) : fstat (dcc->fp, &st_a)) == -1)
-diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/identd.c xchat-wdk/src/common/identd.c
---- xchat-wdk.orig/src/common/identd.c	2004-05-24 15:47:58 +0200
-+++ xchat-wdk/src/common/identd.c	2010-07-30 21:45:34 +0200
-@@ -1,6 +1,10 @@
- /* simple identd server for xchat under win32 */
- 
- 
-+#include "inet.h"
-+#include "xchat.h"
-+#include "xchatc.h"
-+
- static int identd_is_running = FALSE;
- 
- 
-@@ -75,7 +79,7 @@
- 	return 0;
- }
- 
--static void
-+void
- identd_start (char *username)
- {
- 	DWORD tid;
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/identd.h xchat-wdk/src/common/identd.h
 --- xchat-wdk.orig/src/common/identd.h	1970-01-01 01:00:00 +0100
 +++ xchat-wdk/src/common/identd.h	2010-07-30 21:45:34 +0200
@@ -308,7 +285,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/proto-irc.c xchat-wdk/sr
  #include <stdlib.h>
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/server.c xchat-wdk/src/common/server.c
 --- xchat-wdk.orig/src/common/server.c	2010-05-30 04:28:04 +0200
-+++ xchat-wdk/src/common/server.c	2010-07-30 21:45:34 +0200
++++ xchat-wdk/src/common/server.c	2010-08-10 15:56:29 +0200
 @@ -26,7 +26,6 @@
  #include <stdio.h>
  #include <string.h>
@@ -317,15 +294,6 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/server.c xchat-wdk/src/c
  #include <errno.h>
  #include <fcntl.h>
  
-@@ -67,7 +66,7 @@
- #endif
- 
- #ifdef WIN32
--#include "identd.c"
-+#include "identd.h"
- #endif
- 
- #ifdef USE_OPENSSL
 @@ -838,6 +837,7 @@
  	fe_set_throttle (serv);
  }
