@@ -33,6 +33,9 @@ sub SHIFT() { 1 }
 sub CTRL() { 4 }
 sub ALT() { 8 }
 
+sub TAB() { 0xFF09 }
+sub LEFT_TAB() { 0xFE20 }
+
 my %completions;
 my %last_visit;
 my %selected;
@@ -58,23 +61,21 @@ my $escapes = join "", keys %escape_map;
 $escapes = qr/[\Q$escapes\E]/;
 
 sub complete {
+	my ($key, $modifiers) = @{$_[0]};
 	# if $_[0][0] contains the value of the key pressed
 	# $_[0][1] contains modifiers
 	# the value for tab is 0xFF09
 	# the value for shift-tab(Left Tab) is 0xFE20
 	# we don't care about other keys
 
-	return Xchat::EAT_NONE unless $_[0][0] == 0xFF09 || $_[0][0] == 0xFE20;
-	return Xchat::EAT_NONE if $_[0][0] == 0xFF09 && $_[0][1] & (CTRL|ALT|SHIFT);
-	
-	# we also don't care about other kinds of tabs besides channel tabs
-#	return Xchat::EAT_NONE unless Xchat::context_info()->{type} == 2;
-	
-	# In case some other script decides to be stupid and alter the base index
-	local $[ = 0;
-	
-	# loop backwards for shift+tab
-	my $delta = $_[0][1] & SHIFT ? -1 : 1;
+	# the key must be a tab and left tab
+	return Xchat::EAT_NONE unless $key == TAB || $key == LEFT_TAB;
+
+	# if it is a tab then it must not have any modifiers
+	return Xchat::EAT_NONE if $key == TAB && $modifiers & (CTRL|ALT|SHIFT);
+
+	# loop backwards for shift+tab/left tab
+	my $delta = $modifiers & SHIFT ? -1 : 1;
 	my $context = Xchat::get_context;
 	$completions{$context} ||= {};
 	
