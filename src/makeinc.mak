@@ -72,7 +72,6 @@ chanopt.obj \
 ctcp.obj \
 dcc.obj \
 history.obj \
-identd.obj \
 ignore.obj \
 inbound.obj \
 modes.obj \
