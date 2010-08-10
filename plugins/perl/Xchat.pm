@@ -648,20 +648,6 @@ sub reload_all {
 		}
 	}
 }
-#sub auto_load {
-#	my $dir = Xchat::get_info( "xchatdirfs" ) || Xchat::get_info( "xchatdir" );
-#
-#	if( opendir my $dir_handle, $dir ) {
-#		my @files = readdir $dir_handle;
-# 		
-#		for( @files ) {
-#			my $fullpath = File::Spec->catfile( $dir, $_ );
-#			load( $fullpath ) if $fullpath =~ m/\.pl$/i;
-#		}
-#
-#		closedir $dir_handle;
-#	}
-#}
 
 sub expand_homedir {
 	my $file = shift @_;
