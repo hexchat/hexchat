@@ -6,12 +6,12 @@ set PATH=c:\WinDDK\7600.16385.1\bin\x86\amd64;c:\WinDDK\7600.16385.1\bin\x86;c:\
 cd ..\src
 nmake -f makefile.mak clean
 nmake -f makefile.mak
-cd ..\plugins\dns
+cd ..\plugins\ewc
 nmake -f makefile.mak clean
 nmake -f makefile.mak
-cd ..\ewc
-nmake -f makefile.mak clean
-nmake -f makefile.mak
+::cd ..\dns
+::nmake -f makefile.mak clean
+::nmake -f makefile.mak
 cd ..\perl
 nmake -f makefile.mak clean
 nmake -f makefile.mak
