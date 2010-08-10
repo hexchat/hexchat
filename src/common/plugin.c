@@ -1209,7 +1209,7 @@ xchat_list_fields (xchat_plugin *ph, const char *name)
 	static const char * const dcc_fields[] =
 	{
 		"iaddress32","icps",		"sdestfile","sfile",		"snick",	"iport",
-		"ipos", "iposhigh", "iresume", "isize", "isizehigh", "istatus", "itype", NULL
+		"ipos", "iposhigh", "iresume", "iresumehigh" "isize", "isizehigh", "istatus", "itype", NULL
 	};
 	static const char * const channels_fields[] =
 	{
@@ -1397,11 +1397,13 @@ xchat_list_int (xchat_plugin *ph, xchat_list *xlist, const char *name)
 		case 0x349881: /* port */
 			return ((struct DCC *)data)->port;
 		case 0x1b254: /* pos */
-			return ((struct DCC *)data)->pos;
+			return ((struct DCC *)data)->pos & 0xffffffff;
 		case 0xe8a945f6: /* poshigh */
 			return (((struct DCC *)data)->pos >> 32) & 0xffffffff;
 		case 0xc84dc82d: /* resume */
-			return ((struct DCC *)data)->resumable;
+			return ((struct DCC *)data)->resumable & 0xffffffff;
+		case 0xded4c74f: /* resumehigh */
+			return (((struct DCC *)data)->resumable >> 32) & 0xffffffff;
 		case 0x35e001: /* size */
 			return ((struct DCC *)data)->size & 0xffffffff;
 		case 0x3284d523: /* sizehigh */
