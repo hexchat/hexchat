@@ -160,18 +160,15 @@ execute_perl (SV * function, char *args)
 
 	count = call_sv (function, G_EVAL | G_SCALAR);
 	SPAGAIN;
-
 	if (SvTRUE (ERRSV)) {
-		/*STRLEN n_a;
-		xchat_printf(ph, "Perl error: %s\n", SvPV(ERRSV, count)); */
+		xchat_printf(ph, "Perl error: %s\n", SvPV_nolen (ERRSV));
 		if (!SvOK (POPs)) {}		/* remove undef from the top of the stack */
 	} else if (count != 1) {
 		xchat_printf (ph, "Perl error: expected 1 value from %s, "
-						  "got: %d\n", function, count);
+						  "got: %d\n", SvPV_nolen (function), count);
 	} else {
 		ret_value = POPi;
 	}
-
 	PUTBACK;
 	FREETMPS;
 	LEAVE;
