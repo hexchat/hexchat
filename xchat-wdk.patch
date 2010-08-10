@@ -87,7 +87,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/tcl/tclplugin.c xchat-wdk/p
      FreeLibrary(lib);
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/cfgfiles.c xchat-wdk/src/common/cfgfiles.c
 --- xchat-wdk.orig/src/common/cfgfiles.c	2009-01-02 06:56:12 +0100
-+++ xchat-wdk/src/common/cfgfiles.c	2010-07-30 21:45:34 +0200
++++ xchat-wdk/src/common/cfgfiles.c	2010-08-10 16:26:52 +0200
 @@ -17,7 +17,6 @@
   */
  
@@ -187,11 +187,6 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/dcc.c xchat-wdk/src/comm
  #else
  	/* this fstat() shouldn't really fail */
  	if ((dcc->fp == -1 ? stat (dcc->destfile_fs, &st_a) : fstat (dcc->fp, &st_a)) == -1)
-diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/identd.h xchat-wdk/src/common/identd.h
---- xchat-wdk.orig/src/common/identd.h	1970-01-01 01:00:00 +0100
-+++ xchat-wdk/src/common/identd.h	2010-07-30 21:45:34 +0200
-@@ -0,0 +1 @@
-+void identd_start (char *username);
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/ignore.c xchat-wdk/src/common/ignore.c
 --- xchat-wdk.orig/src/common/ignore.c	2006-04-15 09:00:39 +0200
 +++ xchat-wdk/src/common/ignore.c	2010-07-30 21:45:34 +0200
