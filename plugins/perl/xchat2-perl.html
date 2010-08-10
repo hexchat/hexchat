@@ -680,10 +680,10 @@ if( Xchat::context_info-&gt;{flags} &amp; (1 &gt;&gt; 6) ) {
    </tr>
    
    <tr>
-      <td>maxmodes</td> <td>Maximum modes per line</td>
-   </tr>   <tr>
       <td>lag</td>
       <td>lag in milliseconds</td>
+   </tr>   <tr>
+      <td>maxmodes</td> <td>Maximum modes per line</td>
    </tr>   <tr>
       <td>network</td>  <td>network name to which this channel belongs</td>
    </tr>   <tr>
@@ -731,8 +731,11 @@ if( Xchat::context_info-&gt;{flags} &amp; (1 &gt;&gt; 6) ) {
                         (zero if it was not resumed)
                         </td>
    </tr>   <tr>
-      <td>size</td>  <td>file size in bytes</td>
+      <td>size</td>  <td>file size in bytes low order 32 bits</td>
    </tr>   <tr>
+      <td>sizehigh</td>	<td>file size in bytes high order 32 bits (when the files is > 4GB)</td>
+	</tr>
+	<tr>
       <td>status</td>   <td>DCC Status:<br />
                         0 - queued<br />
                         1 - active<br />
