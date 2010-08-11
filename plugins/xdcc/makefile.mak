@@ -2,7 +2,7 @@ include "..\..\src\makeinc.mak"
 
 xcxdcc.dll: xdcc.obj xdcc.def
 	link $(LDFLAGS) $(LIBS) /dll /out:xcxdcc.dll /def:xdcc.def xdcc.obj
-	dir xcewc.dll
+	dir xcxdcc.dll
 
 xdcc.def:
 	echo EXPORTS > xdcc.def
