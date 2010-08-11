@@ -1,6 +1,6 @@
 @echo off
 set GTK_BIN=c:\mozilla-build\build\xchat-dev32\bin
-set SSL_BIN=c:\mozilla-build\build\openssl-0.9.8j-wdk-x86\bin
+set SSL_BIN=c:\mozilla-build\build\openssl-1.0.0a-wdk-x86\bin
 set XCHAT_DEST=c:\mozilla-build\build\xchat-wdk-x86
 rmdir /Q /S %XCHAT_DEST%
 mkdir %XCHAT_DEST%
@@ -29,8 +29,8 @@ xcopy /S /I %GTK_BIN%\..\lib\gtk-2.0 %XCHAT_DEST%\lib\gtk-2.0
 rmdir /Q /S %XCHAT_DEST%\lib\gtk-2.0\include
 xcopy /S /I etc %XCHAT_DEST%\etc
 xcopy ..\COPYING %XCHAT_DEST%
-::xcopy %SSL_BIN%\libeay32.dll %XCHAT_DEST%
-::xcopy %SSL_BIN%\ssleay32.dll %XCHAT_DEST%
+xcopy %SSL_BIN%\libeay32.dll %XCHAT_DEST%
+xcopy %SSL_BIN%\ssleay32.dll %XCHAT_DEST%
 ::xcopy /S /I ..\plugins\dns\xcdns.dll %XCHAT_DEST%\plugins\
 xcopy /S /I ..\plugins\ewc\xcewc.dll %XCHAT_DEST%\plugins\
 xcopy /S /I ..\plugins\perl\xcperl.dll %XCHAT_DEST%\plugins\
