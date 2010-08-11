@@ -38,6 +38,7 @@ xcopy /S /I ..\plugins\ewc\xcewc.dll %XCHAT_DEST%\plugins\
 xcopy /S /I ..\plugins\perl\xcperl.dll %XCHAT_DEST%\plugins\
 xcopy /S /I ..\plugins\python\xcpython.dll %XCHAT_DEST%\plugins\
 xcopy /S /I ..\plugins\tcl\xctcl.dll %XCHAT_DEST%\plugins\
+xcopy /S /I ..\plugins\xdcc\xcxdcc.dll %XCHAT_DEST%\plugins\
 ::xcopy /S /I ..\plugins\xtray\xtray.dll %XCHAT_DEST%\plugins\
 xcopy /S /I ..\po\locale %XCHAT_DEST%\locale
 xcopy /S /I %GTK_BIN%\..\share\locale %XCHAT_DEST%\share\locale

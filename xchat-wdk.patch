@@ -119,6 +119,22 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/tcl/tclplugin.c xchat-wdk/p
          return 0;
      }
      FreeLibrary(lib);
+diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/xdcc/xdcc.c xchat-wdk/plugins/xdcc/xdcc.c
+--- xchat-wdk.orig/plugins/xdcc/xdcc.c	2002-12-26 04:35:09 +0100
++++ xchat-wdk/plugins/xdcc/xdcc.c	2010-08-11 22:49:06 +0200
+@@ -2,11 +2,11 @@
+ 
+ #include <glib.h>
+ #include <string.h>
+-#include <unistd.h>
+ #include <stdlib.h>
+ #include <stdio.h>
+ 
+ #include "xchat-plugin.h"
++#include "../../src/common/xchat.h"
+ 
+ static xchat_plugin *ph;	/* plugin handle */
+ 
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/cfgfiles.c xchat-wdk/src/common/cfgfiles.c
 --- xchat-wdk.orig/src/common/cfgfiles.c	2010-08-07 09:14:45 +0200
 +++ xchat-wdk/src/common/cfgfiles.c	2010-08-11 02:10:02 +0200
