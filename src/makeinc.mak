@@ -21,7 +21,7 @@ CPPFLAGS = $(CPPFLAGS) /favor:AMD64 /D_WIN64
 LDFLAGS = $(LDFLAGS) msvcrt_win2003.obj
 
 PERLPATH = c:\mozilla-build\perl-5.10-x64\lib\CORE
-PYTHONPATH = c:\mozilla-build\python-2.5-x64
+PYTHONPATH = c:\mozilla-build\python-2.6-x64
 TCLPATH = c:\mozilla-build\tcl-8.5-x64
 !else
 #############################################################
@@ -33,7 +33,7 @@ LIBS = $(LIBS) /libpath:c:/mozilla-build/build/xchat-dev32/lib gtk-win32-2.0.lib
 LDFLAGS = $(LDFLAGS) msvcrt_winxp.obj
 
 PERLPATH = c:\mozilla-build\perl-5.10-x86\lib\CORE
-PYTHONPATH = c:\mozilla-build\python-2.5-x86
+PYTHONPATH = c:\mozilla-build\python-2.6-x86
 TCLPATH = c:\mozilla-build\tcl-8.5-x86
 
 MMX = YES
@@ -43,7 +43,7 @@ MMX = YES
 PERLLIB = perl510
 PERLOUTPUT = xcperl.dll
 
-PYTHONLIB = python25
+PYTHONLIB = python26
 PYTHONOUTPUT = xcpython.dll
 
 TCLLIB = tcl85

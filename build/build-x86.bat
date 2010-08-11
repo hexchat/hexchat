@@ -15,9 +15,9 @@ nmake -f makefile.mak
 cd ..\perl
 nmake -f makefile.mak clean
 nmake -f makefile.mak
-::cd ..\python
-::nmake -f makefile.mak clean
-::nmake -f makefile.mak
+cd ..\python
+nmake -f makefile.mak clean
+nmake -f makefile.mak
 cd ..\tcl
 nmake -f makefile.mak clean
 nmake -f makefile.mak
