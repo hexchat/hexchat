@@ -29,6 +29,8 @@ xcopy /S /I %GTK_BIN%\..\lib\gtk-2.0 %XCHAT_DEST%\lib\gtk-2.0
 rmdir /Q /S %XCHAT_DEST%\lib\gtk-2.0\include
 xcopy /S /I etc %XCHAT_DEST%\etc
 xcopy ..\COPYING %XCHAT_DEST%
+xcopy %SSL_BIN%\..\LICENSE.OPENSSL %XCHAT_DEST%
+xcopy %SSL_BIN%\..\LICENSE.ZLIB %XCHAT_DEST%
 xcopy %SSL_BIN%\libeay32.dll %XCHAT_DEST%
 xcopy %SSL_BIN%\ssleay32.dll %XCHAT_DEST%
 ::xcopy /S /I ..\plugins\dns\xcdns.dll %XCHAT_DEST%\plugins\
