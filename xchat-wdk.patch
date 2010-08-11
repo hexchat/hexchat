@@ -261,7 +261,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/inbound.c xchat-wdk/src/
  #define WANTARPA
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/inet.h xchat-wdk/src/common/inet.h
 --- xchat-wdk.orig/src/common/inet.h	2005-09-03 12:57:48 +0200
-+++ xchat-wdk/src/common/inet.h	2010-08-10 16:29:30 +0200
++++ xchat-wdk/src/common/inet.h	2010-08-12 01:00:09 +0200
 @@ -24,9 +24,8 @@
  #ifdef USE_IPV6
  #include <winsock2.h>
@@ -370,18 +370,21 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/servlist.c xchat-wdk/src
  #include <glib/ghash.h>
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/ssl.c xchat-wdk/src/common/ssl.c
 --- xchat-wdk.orig/src/common/ssl.c	2007-03-28 10:35:06 +0200
-+++ xchat-wdk/src/common/ssl.c	2010-08-10 16:29:30 +0200
-@@ -17,6 +17,10 @@
++++ xchat-wdk/src/common/ssl.c	2010-08-12 00:55:22 +0200
+@@ -17,12 +17,12 @@
   * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
   */
  
-+/*#define _WS2DEF_
-+#define _WINSOCK2API_
-+#define _WS2TCPIP_H_*/
-+#include <winsock2.h>
++#include "inet.h"				  /* make it first to avoid macro redefinitions */
  #include <openssl/ssl.h>		  /* SSL_() */
  #include <openssl/err.h>		  /* ERR_() */
  #include <time.h>					  /* asctime() */
+ #include <string.h>				  /* strncpy() */
+ #include "ssl.h"					  /* struct cert_info */
+-#include "inet.h"
+ #include "../../config.h"		  /* HAVE_SNPRINTF */
+ 
+ #ifndef HAVE_SNPRINTF
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/text.c xchat-wdk/src/common/text.c
 --- xchat-wdk.orig/src/common/text.c	2010-05-30 04:28:04 +0200
 +++ xchat-wdk/src/common/text.c	2010-08-10 16:29:30 +0200
@@ -456,13 +459,15 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/text.c xchat-wdk/src/com
  
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/util.c xchat-wdk/src/common/util.c
 --- xchat-wdk.orig/src/common/util.c	2008-02-07 02:50:37 +0100
-+++ xchat-wdk/src/common/util.c	2010-08-10 16:29:30 +0200
-@@ -17,10 +17,11 @@
++++ xchat-wdk/src/common/util.c	2010-08-12 01:05:46 +0200
+@@ -16,11 +16,13 @@
+  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
   */
  
++#define WANTSOCKET
++#include "inet.h"				/* make it first to avoid macro redefinitions */
++
  #define __APPLE_API_STRICT_CONFORMANCE
-+#define _WINSOCK2API_
-+#define _WS2TCPIP_H_
  
  #define _FILE_OFFSET_BITS 64
  #include <stdio.h>
@@ -470,7 +475,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/util.c xchat-wdk/src/com
  #include <string.h>
  #include <stdlib.h>
  #include <sys/types.h>
-@@ -35,7 +36,7 @@
+@@ -35,7 +37,7 @@
  #include <sys/utsname.h>
  #endif
  #include <fcntl.h>
@@ -479,7 +484,17 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/util.c xchat-wdk/src/com
  #include <errno.h>
  #include "xchat.h"
  #include "xchatc.h"
-@@ -54,9 +55,11 @@
+@@ -44,9 +46,6 @@
+ #include "util.h"
+ #include "../../config.h"
+ 
+-#define WANTSOCKET
+-#include "inet.h"
+-
+ #if defined (USING_FREEBSD) || defined (__APPLE__)
+ #include <sys/sysctl.h>
+ #endif
+@@ -54,9 +53,11 @@
  #include <socks.h>
  #endif
  
@@ -491,7 +506,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/util.c xchat-wdk/src/com
  
  #ifdef USE_DEBUG
  
-@@ -631,22 +634,32 @@
+@@ -631,22 +632,32 @@
  	OSVERSIONINFO osvi;
  	SYSTEM_INFO si;
  	double mhz;
