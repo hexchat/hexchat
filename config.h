@@ -3,7 +3,7 @@
 #define USE_GMODULE
 #define USE_PLUGIN
 #define PACKAGE_NAME "xchat"
-#define PACKAGE_VERSION "r1451-2"
+#define PACKAGE_VERSION "r1451-3"
 #define XCHATLIBDIR "."
 #define XCHATSHAREDIR "."
 #define OLD_PERL
