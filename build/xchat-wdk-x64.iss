@@ -41,9 +41,6 @@ Name: "plugins\tcl"; Description: "Tcl (needs ActiveTcl 8.5)"; Types: full custo
 [Tasks]
 Name: "desktopicon"; Description: "Create a &desktop icon"; GroupDescription: "Additional icons:"; Components: xchat; Flags: unchecked
 
-[Registry]
-;Root: HKCU; Subkey: "Environment"; ValueType: string; ValueName: "XCHAT_WARNING_IGNORE"; ValueData: "true"; Flags: uninsdeletevalue
-
 [Files]
 Source: "COPYING"; DestDir: "{app}"; Components: xchat
 Source: "libfreetype-6.dll"; DestDir: "{app}"; Components: xchat
