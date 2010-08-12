@@ -32,6 +32,7 @@ LIBS = $(LIBS) /libpath:c:/mozilla-build/build/xchat-dev32/lib gtk-win32-2.0.lib
 
 LDFLAGS = $(LDFLAGS) msvcrt_winxp.obj
 
+LUAPATH = c:\mozilla-build\lua-5.1-x86
 PERLPATH = c:\mozilla-build\perl-5.10-x86\lib\CORE
 PYTHONPATH = c:\mozilla-build\python-2.6-x86
 TCLPATH = c:\mozilla-build\tcl-8.5-x86
@@ -39,6 +40,9 @@ TCLPATH = c:\mozilla-build\tcl-8.5-x86
 MMX = YES
 !endif
 #############################################################
+
+LUALIB = lua5.1
+LUAOUTPUT = xclua.dll
 
 PERLLIB = perl510
 PERLOUTPUT = xcperl.dll
