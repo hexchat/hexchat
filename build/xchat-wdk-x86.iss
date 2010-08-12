@@ -21,12 +21,13 @@ ArchitecturesAllowed=x86 x64
 ;ArchitecturesInstallIn64BitMode=x64
 
 [Types]
+Name: "normal"; Description: "Normal Installation"
 Name: "full"; Description: "Full Installation"
 Name: "custom"; Description: "Custom Installation"; Flags: iscustom
 
 [Components]
-Name: "xchat"; Description: "XChat-WDK"; Types: full custom; Flags: fixed
-Name: "translations"; Description: "Translations"; Types: full custom
+Name: "xchat"; Description: "XChat-WDK"; Types: normal full custom; Flags: fixed
+Name: "translations"; Description: "Translations"; Types: normal full custom
 Name: "plugins"; Description: "Language Interfaces"; Types: full custom
 Name: "plugins\lua"; Description: "Lua (needs Lua-WDK 5.14)"; Types: full custom
 Name: "plugins\perl"; Description: "Perl (needs ActivePerl 5.10)"; Types: full custom
