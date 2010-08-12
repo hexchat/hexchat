@@ -1,7 +1,7 @@
 include "..\..\src\makeinc.mak"
 
 xclua.dll: lua.obj lua.def
-	link $(LDFLAGS) $(LIBS) /dll /out:xclua.dll /LIBPATH:$(LUAPATH)\lib $(LUALIB).lib /def:lua.def lua.obj 
+	link $(LDFLAGS) $(LIBS) /dll /out:xclua.dll /LIBPATH:$(LUAPATH) $(LUALIB).lib /def:lua.def lua.obj 
 	dir xclua.dll
 
 lua.def:
@@ -10,7 +10,7 @@ lua.def:
 	echo xchat_plugin_deinit >> lua.def
 
 lua.obj: lua.c makefile.mak
-	cl $(CFLAGS) /Dsnprintf=g_snprintf /I.. /I$(LUAPATH)\include /I.. lua.c
+	cl $(CFLAGS) /Dsnprintf=g_snprintf /I.. /I$(LUAPATH) /I.. lua.c
 
 clean:
 	del *.obj

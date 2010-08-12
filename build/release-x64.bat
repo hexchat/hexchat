@@ -35,6 +35,7 @@ xcopy %SSL_BIN%\libeay32.dll %XCHAT_DEST%
 xcopy %SSL_BIN%\ssleay32.dll %XCHAT_DEST%
 ::xcopy /S /I ..\plugins\dns\xcdns.dll %XCHAT_DEST%\plugins\
 xcopy /S /I ..\plugins\ewc\xcewc.dll %XCHAT_DEST%\plugins\
+::xcopy /S /I ..\plugins\lua\xclua.dll %XCHAT_DEST%\plugins\
 xcopy /S /I ..\plugins\perl\xcperl.dll %XCHAT_DEST%\plugins\
 xcopy /S /I ..\plugins\python\xcpython.dll %XCHAT_DEST%\plugins\
 xcopy /S /I ..\plugins\tcl\xctcl.dll %XCHAT_DEST%\plugins\

@@ -12,6 +12,9 @@ nmake -f makefile.mak
 ::cd ..\dns
 ::nmake -f makefile.mak clean
 ::nmake -f makefile.mak
+::cd ..\lua
+::nmake -f makefile.mak clean
+::nmake -f makefile.mak
 cd ..\perl
 nmake -f makefile.mak clean
 nmake -f makefile.mak

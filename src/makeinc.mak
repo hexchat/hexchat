@@ -20,6 +20,7 @@ CFLAGS = $(CFLAGS) /favor:AMD64 /D_WIN64
 CPPFLAGS = $(CPPFLAGS) /favor:AMD64 /D_WIN64
 LDFLAGS = $(LDFLAGS) msvcrt_win2003.obj
 
+LUAPATH = c:\mozilla-build\lua-5.1-x64
 PERLPATH = c:\mozilla-build\perl-5.10-x64\lib\CORE
 PYTHONPATH = c:\mozilla-build\python-2.6-x64
 TCLPATH = c:\mozilla-build\tcl-8.5-x64
@@ -41,7 +42,7 @@ MMX = YES
 !endif
 #############################################################
 
-LUALIB = lua5.1
+LUALIB = lua51
 LUAOUTPUT = xclua.dll
 
 PERLLIB = perl510
