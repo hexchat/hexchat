@@ -32,7 +32,7 @@ Name: "custom"; Description: "Custom Installation"; Flags: iscustom
 Name: "xchat"; Description: "XChat-WDK"; Types: normal full custom; Flags: fixed
 Name: "translations"; Description: "Translations"; Types: normal full custom
 Name: "plugins"; Description: "Language Interfaces"; Types: full custom
-Name: "plugins\lua"; Description: "Lua (experimental; needs Lua-WDK 5.14)"; Types: full custom
+Name: "plugins\lua"; Description: "Lua (experimental; needs Lua-WDK 5.1.4)"; Types: full custom
 Name: "plugins\perl"; Description: "Perl (needs ActivePerl 5.10)"; Types: full custom
 Name: "plugins\python"; Description: "Python (needs ActivePython 2.6)"; Types: full custom
 Name: "plugins\tcl"; Description: "Tcl (needs ActiveTcl 8.5)"; Types: full custom
