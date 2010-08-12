@@ -8,17 +8,21 @@ AppPublisherURL=http://code.google.com/p/xchat-wdk/
 AppCopyright=Copyright (C) 1998-2010 Peter Zelezny
 AppSupportURL=http://code.google.com/p/xchat-wdk/issues/list
 AppUpdatesURL=http://code.google.com/p/xchat-wdk/downloads/list
+WizardImageFile=c:\mozilla-build\build\xchat.bmp
+SetupIconFile=c:\mozilla-build\build\xchat-wdk\xchat.ico
+LicenseFile=COPYING
+UninstallDisplayIcon={app}\xchat.exe
+UninstallDisplayName=XChat-WDK (x64)
 DefaultDirName={pf}\XChat-WDK
 DefaultGroupName=XChat-WDK
-Compression=lzma/max
 SolidCompression=yes
-SourceDir=..\xchat-wdk-x64
+SourceDir=..\..\xchat-wdk-x64
 OutputDir=.
 OutputBaseFilename=XChat-WDK r1451-5 x64
 FlatComponentsList=no
 ArchitecturesAllowed=x64
-ArchitecturesAllowed=x64
 ArchitecturesInstallIn64BitMode=x64
+;msiexec /quiet /uninstall {06DADCF2-6A1D-482D-94D7-6253300D1328}
 
 [Types]
 Name: "normal"; Description: "Normal Installation"
@@ -29,7 +33,7 @@ Name: "custom"; Description: "Custom Installation"; Flags: iscustom
 Name: "xchat"; Description: "XChat-WDK"; Types: normal full custom; Flags: fixed
 Name: "translations"; Description: "Translations"; Types: normal full custom
 Name: "plugins"; Description: "Language Interfaces"; Types: full custom
-Name: "plugins\lua"; Description: "Lua (needs Lua-WDK 5.14)"; Types: full custom
+Name: "plugins\lua"; Description: "Lua (experimental; needs Lua-WDK 5.14)"; Types: full custom
 Name: "plugins\perl"; Description: "Perl (needs ActivePerl 5.10)"; Types: full custom
 Name: "plugins\python"; Description: "Python (needs ActivePython 2.6)"; Types: full custom
 Name: "plugins\tcl"; Description: "Tcl (needs ActiveTcl 8.5)"; Types: full custom
@@ -42,8 +46,8 @@ Name: "desktopicon"; Description: "Create a &desktop icon"; GroupDescription: "A
 
 [Files]
 Source: "COPYING"; DestDir: "{app}"; Components: xchat
-Source: "freetype6.dll"; DestDir: "{app}"; Components: xchat
-Source: "intl.dll"; DestDir: "{app}"; Components: xchat
+Source: "libfreetype-6.dll"; DestDir: "{app}"; Components: xchat
+Source: "libintl-8.dll"; DestDir: "{app}"; Components: xchat
 Source: "libatk-1.0-0.dll"; DestDir: "{app}"; Components: xchat
 Source: "libcairo-2.dll"; DestDir: "{app}"; Components: xchat
 Source: "libeay32.dll"; DestDir: "{app}"; Components: xchat
