@@ -35,7 +35,7 @@
  */
 #define LXC_NAME "Lua"
 #define LXC_DESC "Lua scripting interface"
-#define LXC_VERSION "0.7 ($Rev: 91 $)"
+#define LXC_VERSION "0.7 (r91)"
 
 #include <stdlib.h>
 #include <stdio.h>
