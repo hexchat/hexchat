@@ -1,8 +1,8 @@
 [Setup]
 AppName=XChat-WDK (x64)
-AppVerName=XChat WDK (x64) r1451-5
-AppVersion=14.51.5
-VersionInfoVersion=14.51.5
+AppVerName=XChat WDK (x64) r1451-6
+AppVersion=14.51.6
+VersionInfoVersion=14.51.6
 AppPublisher=XChat-WDK
 AppPublisherURL=http://code.google.com/p/xchat-wdk/
 AppCopyright=Copyright (C) 1998-2010 Peter Zelezny
@@ -18,11 +18,10 @@ DefaultGroupName=XChat-WDK
 SolidCompression=yes
 SourceDir=..\..\xchat-wdk-x64
 OutputDir=.
-OutputBaseFilename=XChat-WDK r1451-5 x64
+OutputBaseFilename=XChat-WDK r1451-6 x64
 FlatComponentsList=no
 ArchitecturesAllowed=x64
 ArchitecturesInstallIn64BitMode=x64
-;msiexec /quiet /uninstall {06DADCF2-6A1D-482D-94D7-6253300D1328}
 
 [Types]
 Name: "normal"; Description: "Normal Installation"
@@ -33,13 +32,17 @@ Name: "custom"; Description: "Custom Installation"; Flags: iscustom
 Name: "xchat"; Description: "XChat-WDK"; Types: normal full custom; Flags: fixed
 Name: "translations"; Description: "Translations"; Types: normal full custom
 Name: "plugins"; Description: "Language Interfaces"; Types: full custom
-Name: "plugins\lua"; Description: "Lua (experimental; needs Lua-WDK 5.1.4)"; Types: full custom
+Name: "plugins\lua"; Description: "Lua (experimental)"; Types: full custom
+Name: "plugins\lua\luawdk"; Description: "Lua-WDK 5.1.4-2"; Types: full custom
 Name: "plugins\perl"; Description: "Perl (needs ActivePerl 5.10)"; Types: full custom
 Name: "plugins\python"; Description: "Python (needs ActivePython 2.6)"; Types: full custom
 Name: "plugins\tcl"; Description: "Tcl (needs ActiveTcl 8.5)"; Types: full custom
 
 [Tasks]
 Name: "desktopicon"; Description: "Create a &desktop icon"; GroupDescription: "Additional icons:"; Components: xchat; Flags: unchecked
+
+[Registry]
+Root: HKCU; Subkey: "Environment"; ValueType: string; ValueName: "XCHAT_WARNING_IGNORE"; ValueData: "true"; Flags: uninsdeletevalue
 
 [Files]
 Source: "COPYING"; DestDir: "{app}"; Components: xchat
@@ -73,6 +76,7 @@ Source: "plugins\xcewc.dll"; DestDir: "{app}\plugins"; Components: xchat
 Source: "plugins\xcxdcc.dll"; DestDir: "{app}\plugins"; Components: xchat
 
 Source: "plugins\xclua.dll"; DestDir: "{app}\plugins"; Components: plugins\lua
+Source: "lua51.dll"; DestDir: "{app}"; Components: plugins\lua\luawdk
 Source: "plugins\xcperl.dll"; DestDir: "{app}\plugins"; Components: plugins\perl
 Source: "plugins\xcpython.dll"; DestDir: "{app}\plugins"; Components: plugins\python
 Source: "plugins\xctcl.dll"; DestDir: "{app}\plugins"; Components: plugins\tcl
