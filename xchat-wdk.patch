@@ -137,7 +137,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/xdcc/xdcc.c xchat-wdk/plugi
  
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/cfgfiles.c xchat-wdk/src/common/cfgfiles.c
 --- xchat-wdk.orig/src/common/cfgfiles.c	2010-08-07 09:14:45 +0200
-+++ xchat-wdk/src/common/cfgfiles.c	2010-08-11 02:10:02 +0200
++++ xchat-wdk/src/common/cfgfiles.c	2010-08-13 22:38:03 +0200
 @@ -17,7 +17,6 @@
   */
  
@@ -175,7 +175,15 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/cfgfiles.c xchat-wdk/src
  	}
  	return xdir_fs;
  }
-@@ -677,7 +684,10 @@
+@@ -648,6 +655,7 @@
+ 	prefs.dialog_height = 256;
+ 	prefs.gui_join_dialog = 1;
+ 	prefs.gui_quit_dialog = 1;
++	prefs.gui_slist_skip = 1;
+ 	prefs.dcctimeout = 180;
+ 	prefs.dccstalltimeout = 60;
+ 	prefs.notify_timeout = 15;
+@@ -677,7 +685,10 @@
  	prefs.mainwindow_save = 1;
  	prefs.bantype = 2;
  	prefs.input_balloon_time = 20;
