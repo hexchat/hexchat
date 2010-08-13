@@ -21,7 +21,7 @@ CPPFLAGS = $(CPPFLAGS) /favor:AMD64 /D_WIN64
 LDFLAGS = $(LDFLAGS) msvcrt_win2003.obj
 
 LUAPATH = c:\mozilla-build\lua-5.1-x64
-PERLPATH = c:\mozilla-build\perl-5.10-x64\lib\CORE
+PERLPATH = c:\mozilla-build\perl-5.12-x64\lib\CORE
 PYTHONPATH = c:\mozilla-build\python-2.6-x64
 TCLPATH = c:\mozilla-build\tcl-8.5-x64
 !else
@@ -37,7 +37,7 @@ SPELL = -Ic:\mozilla-build\build\gtkspell-x86\include\gtkspell-2.0
 LDFLAGS = $(LDFLAGS) msvcrt_winxp.obj
 
 LUAPATH = c:\mozilla-build\lua-5.1-x86
-PERLPATH = c:\mozilla-build\perl-5.10-x86\lib\CORE
+PERLPATH = c:\mozilla-build\perl-5.12-x86\lib\CORE
 PYTHONPATH = c:\mozilla-build\python-2.6-x86
 TCLPATH = c:\mozilla-build\tcl-8.5-x86
 
@@ -48,7 +48,7 @@ MMX = YES
 LUALIB = lua51
 LUAOUTPUT = xclua.dll
 
-PERLLIB = perl510
+PERLLIB = perl512
 PERLOUTPUT = xcperl.dll
 
 PYTHONLIB = python26
