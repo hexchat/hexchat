@@ -42,22 +42,40 @@ C<Xchat::EAT_NONE>     - pass the event along
 C<Xchat::EAT_XCHAT>    - don't let xchat see this event
 
 =item *
-C<Xchat::EAT_PLUGIN>   - don't let other scripts and plugins see this event
+C<Xchat::EAT_PLUGIN>   - don't let other scripts and plugins see this event but xchat will still see it
 
 =item *
-C<Xchat::EAT_ALL>      - don't let anything see this event
+C<Xchat::EAT_ALL>      - don't let anything else see this event
 
 =back
 
-=head4 Timer specific
+=head4 Timer and fd hooks
 
 =over 3
 
 =item *
-C<Xchat::KEEP>         - keep the timer going
+C<Xchat::KEEP>         - keep the timer going or hook watching the handle
 
 =item *
-C<Xchat::REMOVE>       - remove the timer
+C<Xchat::REMOVE>       - remove the timer or hook watching the handle
+
+=back
+
+=head3 hook_fd flags
+
+=over 3
+
+=item *
+C<Xchat::FD_READ>			- invoke the callback when the handle is ready for reading
+
+=item *
+C<Xchat::FD_WRITE>		- invoke the callback when the handle is ready for writing
+
+=item *
+C<Xchat::FD_EXCEPTION>	- invoke the callback if an exception occurs
+
+=item *
+C<Xchat::FD_NOTSOCKET>	- indicate that the handle being hooked is not a socket
 
 =back
 
@@ -92,6 +110,8 @@ This is the first thing to call in every script.
 =head3 C<Xchat::hook_print( $event,$callback, [\%options] )> 
 
 =head3 C<Xchat::hook_timer( $timeout,$callback, [\%options | $data] )> 
+
+=head3 C<Xchat::hook_fd( $handle, $callback, [ \%options ] )>
 
 These functions can be to intercept various events.
 hook_server can be used to intercept any incoming message from the IRC server.
@@ -174,6 +194,20 @@ Valid keys for \%options:
                            Default is "".
                            </td>
    </tr>
+
+   <tr>
+      <td>flags</td>   <td>Specify the flags for a fd hook.<br />
+                       <br />
+                       See <a href="#hook_fd_flags">hook fd flags</a> section for valid values.<br />
+                       <br />
+                       On Windows if the handle is a pipe you specify<br />
+                       Xchat::FD_NOTSOCKET in addition to any other flags you might be using.<br />
+                       <br />
+                       This key only applies to fd hooks.<br />
+                       Default is Xchat::FD_READ
+                           </td>
+   </tr>
+
 </table>
 
 =end html
@@ -213,6 +247,12 @@ of hook.
       <td>timer hooks</td> <td>called every <code>$timeout</code> milliseconds
                            (1000 millisecond is 1 second)
                            </td>
+   </tr>
+
+   <tr>
+      <td>fd hooks</td> <td>depends on the flags that were passed to hook_fd<br />
+                        See <a href="#hook_fd_flags">hook_fd flags</a> section.
+                        </td>
    </tr>
 </table>
 
@@ -261,6 +301,12 @@ Timer callbacks<br />
 <br />
 <code>$_[0]</code>   -  the data that was passed to the hook function<br />
 <br />
+
+fd callbacks<br />
+<br />
+<code>$_[0]</code>   -  the handle that was passed to hook_fd<br />
+<code>$_[1]</code>   -  flags indicating why the callback was called<br />
+<code>$_[2]</code>   -  the data that was passed to the hook function<br />
 </p>
 
 =end html

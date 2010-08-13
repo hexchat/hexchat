@@ -78,10 +78,11 @@
 			<li><a href="#return_values">Return values</a></li>
 			<li class="branch">
 				<ul>
-				<li><a href="#timer_specific">Timer specific</a></li>
+				<li><a href="#timer_and_fd_hooks">Timer and fd hooks</a></li>
 				</ul>
 			</li>
 
+			<li><a href="#hook_fd_flags">hook_fd flags</a></li>
 			</ul>
 		</li>
 
@@ -93,6 +94,7 @@
 			<li><a href="#xchat_hook_command"><code>Xchat::hook_command( $command, $callback, [\%options] )</code></a></li>
 			<li><a href="#xchat_hook_print"><code>Xchat::hook_print( $event,$callback, [\%options] )</code></a></li>
 			<li><a href="#xchat_hook_timer"><code>Xchat::hook_timer( $timeout,$callback, [\%options | $data] )</code></a></li>
+			<li><a href="#xchat_hook_fd"><code>Xchat::hook_fd( $handle, $callback, [ \%options ] )</code></a></li>
 			<li class="branch">
 				<ul>
 				<li><a href="#when_callbacks_are_invoked">When callbacks are invoked</a></li>
@@ -168,18 +170,31 @@ on the bottom of this page.</p>
 </li>
 <li><strong><code>Xchat::EAT_XCHAT</code>    - don't let xchat see this event</strong>
 </li>
-<li><strong><code>Xchat::EAT_PLUGIN</code>   - don't let other scripts and plugins see this event</strong>
+<li><strong><code>Xchat::EAT_PLUGIN</code>   - don't let other scripts and plugins see this event but xchat will still see it</strong>
 </li>
-<li><strong><code>Xchat::EAT_ALL</code>      - don't let anything see this event</strong>
+<li><strong><code>Xchat::EAT_ALL</code>      - don't let anything else see this event</strong>
 </li>
 </ul>
 <p>
 </p>
-<h4><a name="timer_specific" />Timer specific</h4>
+<h4><a name="timer_and_fd_hooks" />Timer and fd hooks</h4>
 <ul>
-<li><strong><code>Xchat::KEEP</code>         - keep the timer going</strong>
+<li><strong><code>Xchat::KEEP</code>         - keep the timer going or hook watching the handle</strong>
 </li>
-<li><strong><code>Xchat::REMOVE</code>       - remove the timer</strong>
+<li><strong><code>Xchat::REMOVE</code>       - remove the timer or hook watching the handle</strong>
+</li>
+</ul>
+<p>
+</p>
+<h3><a name="hook_fd_flags" />hook_fd flags</h3>
+<ul>
+<li><strong><code>Xchat::FD_READ</code>			- invoke the callback when the handle is ready for reading</strong>
+</li>
+<li><strong><code>Xchat::FD_WRITE</code>		- invoke the callback when the handle is ready for writing</strong>
+</li>
+<li><strong><code>Xchat::FD_EXCEPTION</code>	- invoke the callback if an exception occurs</strong>
+</li>
+<li><strong><code>Xchat::FD_NOTSOCKET</code>	- indicate that the handle being hooked is not a socket</strong>
 </li>
 </ul>
 <p>
@@ -213,6 +228,9 @@ on the bottom of this page.</p>
 <p>
 </p>
 <h3><a name="xchat_hook_timer" /><code>Xchat::hook_timer( $timeout,$callback, [\%options | $data] )</code></h3>
+<p>
+</p>
+<h3><a name="xchat_hook_fd" /><code>Xchat::hook_fd( $handle, $callback, [ \%options ] )</code></h3>
 <p>These functions can be to intercept various events.
 hook_server can be used to intercept any incoming message from the IRC server.
 hook_command can be used to intercept any command, if the command doesn't currently exist then a new one is created.
@@ -271,7 +289,19 @@ hook_timer can be used to create a new timer</p>
                            Default is "".
                            </td>
    </tr>
-</table><p>
+	
+   <tr>
+      <td>flags</td>   <td>Specify the flags for a fd hook.<br />
+                       <br />
+                       See <a href="#hook_fd_flags">hook fd flags</a> section for valid values.<br />
+                       <br />
+                       On Windows if the handle is a pipe you specify<br />
+                       Xchat::FD_NOTSOCKET in addition to any other flags you might be using.<br />
+                       <br />
+                       This key only applies to fd hooks.<br />
+                       Default is Xchat::FD_READ
+                           </td>
+   </tr></table><p>
 </p>
 <h4><a name="when_callbacks_are_invoked" />When callbacks are invoked</h4>
 <p>Each of the hooks will be triggered at different times depending on the type
@@ -294,6 +324,10 @@ of hook.</p>
       <td>timer hooks</td> <td>called every <code>$timeout</code> milliseconds
                            (1000 millisecond is 1 second)
                            </td>
+   </tr>   <tr>
+      <td>fd hooks</td> <td>depends on the flags that were passed to hook_fd<br />
+                        See <a href="#hook_fd_flags">hook_fd flags</a> section.
+                        </td>
    </tr>
 </table><p>The value return from these hook functions can be passed to <code>Xchat::unhook</code> 
 to remove the hook.</p>
@@ -333,7 +367,11 @@ Print callbacks<br />
 Timer callbacks<br />
 <br />
 <code>$_[0]</code>   -  the data that was passed to the hook function<br />
+<br />fd callbacks<br />
 <br />
+<code>$_[0]</code>   -  the handle that was passed to hook_fd<br />
+<code>$_[1]</code>   -  flags indicating why the callback was called<br />
+<code>$_[2]</code>   -  the data that was passed to the hook function<br />
 </p><p>
 </p>
 <h4><a name="callback_return_values" />Callback return values</h4>
