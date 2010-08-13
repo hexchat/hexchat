@@ -31,6 +31,9 @@ GLIB = -Ic:/mozilla-build/build/xchat-dev32/include/glib-2.0 -Ic:/mozilla-build/
 GTK = -Ic:/mozilla-build/build/xchat-dev32/include/gtk-2.0 -Ic:/mozilla-build/build/xchat-dev32/lib/gtk-2.0/include -Ic:/mozilla-build/build/xchat-dev32/include/atk-1.0 -Ic:/mozilla-build/build/xchat-dev32/include/cairo -Ic:/mozilla-build/build/xchat-dev32/include/pango-1.0 -Ic:/mozilla-build/build/xchat-dev32/include/glib-2.0 -Ic:/mozilla-build/build/xchat-dev32/lib/glib-2.0/include -Ic:/mozilla-build/build/xchat-dev32/include/freetype2 -Ic:/mozilla-build/build/xchat-dev32/include -Ic:/mozilla-build/build/xchat-dev32/include/libpng14
 LIBS = $(LIBS) /libpath:c:/mozilla-build/build/xchat-dev32/lib gtk-win32-2.0.lib gdk-win32-2.0.lib atk-1.0.lib gio-2.0.lib gdk_pixbuf-2.0.lib pangowin32-1.0.lib gdi32.lib pangocairo-1.0.lib pango-1.0.lib cairo.lib gobject-2.0.lib gmodule-2.0.lib glib-2.0.lib intl.lib
 
+SPELL = -Ic:\mozilla-build\build\gtkspell-x86\include\gtkspell-2.0
+#LIBS = $(LIBS) /libpath:c:\mozilla-build\build\gtkspell-x86\lib libgtkspell.a
+
 LDFLAGS = $(LDFLAGS) msvcrt_winxp.obj
 
 LUAPATH = c:\mozilla-build\lua-5.1-x86

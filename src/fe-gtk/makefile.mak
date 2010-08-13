@@ -15,7 +15,7 @@ mmx_cmod.o: mmx_cmod.S
 	gcc -DUNDERSCORE_SYMBOLS -c mmx_cmod.S
 
 .c.obj:
-	$(CC) $(CFLAGS) $(GLIB) $(GTK) $<
+	$(CC) $(CFLAGS) $(GLIB) $(GTK) $(SPELL) $<
 
 $(PROG): $(FEGTK_OBJECTS) $(COMLIB) xchat-icon.obj
 	$(LINK) /out:$(PROG) /ENTRY:mainCRTStartup $(LDFLAGS) $(LIBS) $(FEGTK_OBJECTS) $(COMLIB) xchat-icon.obj
