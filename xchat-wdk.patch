@@ -199,7 +199,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/chanopt.c xchat-wdk/src/
  #include <fcntl.h>
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/ctcp.c xchat-wdk/src/common/ctcp.c
 --- xchat-wdk.orig/src/common/ctcp.c	2010-05-30 04:28:04 +0200
-+++ xchat-wdk/src/common/ctcp.c	2010-08-10 16:29:30 +0200
++++ xchat-wdk/src/common/ctcp.c	2010-08-13 18:31:51 +0200
 @@ -18,7 +18,6 @@
  
  #include <stdio.h>
@@ -213,7 +213,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/ctcp.c xchat-wdk/src/com
  	if (!strcasecmp (msg, "VERSION") && !prefs.hidever)
  	{
 -		snprintf (outbuf, sizeof (outbuf), "VERSION xchat "PACKAGE_VERSION" %s",
-+		snprintf (outbuf, sizeof (outbuf), "VERSION xchat-wdk "PACKAGE_VERSION" %s",
++		snprintf (outbuf, sizeof (outbuf), "VERSION xchat-wdk "PACKAGE_VERSION" ("PACKAGE_TARNAME") %s",
  					 get_cpu_str ());
  		serv->p_nctcp (serv, nick, outbuf);
  	}
