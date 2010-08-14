@@ -42,6 +42,6 @@ xcopy /S /I ..\plugins\python\xcpython.dll %XCHAT_DEST%\plugins\
 xcopy /S /I ..\plugins\tcl\xctcl.dll %XCHAT_DEST%\plugins\
 xcopy /S /I ..\plugins\xdcc\xcxdcc.dll %XCHAT_DEST%\plugins\
 ::xcopy /S /I ..\plugins\xtray\xtray.dll %XCHAT_DEST%\plugins\
-xcopy /S /I ..\po\locale %XCHAT_DEST%\locale
-xcopy /S /I %GTK_BIN%\..\share\locale %XCHAT_DEST%\share\locale
 xcopy %LUA_BIN%\lua51.dll %XCHAT_DEST%
+xcopy /S /I /Q ..\po\locale %XCHAT_DEST%\locale
+xcopy /S /I /Q %GTK_BIN%\..\share\locale %XCHAT_DEST%\share\locale
