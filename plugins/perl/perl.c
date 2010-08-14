@@ -712,7 +712,9 @@ XS (XS_Xchat_get_info)
 			XSRETURN_UNDEF;
 		}
 
-		if (!strncmp ("win_ptr", SvPV_nolen (id), 7)) {
+		if (!strncmp ("win_ptr", SvPV_nolen (id), 7)
+			|| !strncmp ("gtkwin_ptr", SvPV_nolen (id), 10))
+		{
 			XSRETURN_IV (PTR2IV (RETVAL));
 		} else {
 			
