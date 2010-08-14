@@ -845,7 +845,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/palette.c xchat-wdk/src/
  #include <fcntl.h>
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/plugin-tray.c xchat-wdk/src/fe-gtk/plugin-tray.c
 --- xchat-wdk.orig/src/fe-gtk/plugin-tray.c	2010-08-14 03:46:21 +0200
-+++ xchat-wdk/src/fe-gtk/plugin-tray.c	2010-08-14 04:31:42 +0200
++++ xchat-wdk/src/fe-gtk/plugin-tray.c	2010-08-14 04:34:48 +0200
 @@ -1,7 +1,6 @@
  /* Copyright (C) 2006-2007 Peter Zelezny. */
  
@@ -867,6 +867,15 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/plugin-tray.c xchat-wdk/
  	}
  
  	if (custom_icon1)
+@@ -451,7 +450,7 @@
+ 	/* ph may have an invalid context now */
+ 	xchat_set_context (ph, xchat_find_context (ph, NULL, NULL));
+ 
+-	win = (GtkWindow *)xchat_get_info (ph, "win_ptr");
++	win = xchat_get_info (ph, "gtkwin_ptr");
+ 
+ 	tray_stop_flash ();
+ 	tray_reset_counts ();
 @@ -651,15 +650,15 @@
  		/* FIXME: hides any previous private messages */
  		tray_hilight_count++;
