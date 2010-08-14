@@ -818,9 +818,9 @@ fe_gui_info (session *sess, int info_type)
 	{
 	case 0:	/* window status */
 #if GTK_CHECK_VERSION(2,20,0)
-		if (!gtk_widget_get_visible (GTK_WINDOW (sess->gui->window)))
+		if (!gtk_widget_get_visible (GTK_WIDGET (sess->gui->window)))
 #else
-		if (!GTK_WIDGET_VISIBLE (GTK_WINDOW (sess->gui->window)))
+		if (!GTK_WIDGET_VISIBLE (GTK_WIDGET (sess->gui->window)))
 #endif
 			return 2;	/* hidden (iconified or systray) */
 #if GTK_CHECK_VERSION(2,4,0)
@@ -849,6 +849,10 @@ fe_gui_info_ptr (session *sess, int info_type)
 #else
 		return sess->gui->window;
 #endif
+		break;
+
+	case 1:	/* GtkWindow * (for plugins) */
+		return sess->gui->window;
 	}
 	return NULL;
 }

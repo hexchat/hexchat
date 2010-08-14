@@ -1062,6 +1062,9 @@ xchat_get_info (xchat_plugin *ph, const char *id)
 	case 0x696cd2f: /* topic */
 		return sess->topic;
 
+	case 0x3419f12d: /* gtkwin_ptr */
+		return fe_gui_info_ptr (sess, 1);
+
 	case 0x506d600b: /* native win_ptr */
 		return fe_gui_info_ptr (sess, 0);
 
