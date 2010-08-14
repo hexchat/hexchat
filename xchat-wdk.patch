@@ -384,7 +384,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/ssl.c xchat-wdk/src/comm
  #ifndef HAVE_SNPRINTF
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/text.c xchat-wdk/src/common/text.c
 --- xchat-wdk.orig/src/common/text.c	2010-05-30 04:28:04 +0200
-+++ xchat-wdk/src/common/text.c	2010-08-14 04:31:42 +0200
++++ xchat-wdk/src/common/text.c	2010-08-14 05:41:41 +0200
 @@ -19,13 +19,11 @@
  #include <stdlib.h>
  #include <stdio.h>
@@ -408,14 +408,11 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/text.c xchat-wdk/src/com
  
  	if (sess->text_scrollback == SET_DEFAULT)
  	{
-@@ -296,9 +296,32 @@
+@@ -296,9 +296,33 @@
  	if (fstat (fh, &statbuf) < 0)
  		return;
  
--	map = mmap (NULL, statbuf.st_size, PROT_READ, MAP_PRIVATE, fh, 0);
--	if (map == MAP_FAILED)
-+	/* from http://osdir.com/ml/guile-devel-gnu/2009-04/msg00008.html */
-+
++#ifdef WIN32
 +	hFile = (HANDLE)_get_osfhandle(fh);
 +	if (hFile == INVALID_HANDLE_VALUE)
 +	{
@@ -426,10 +423,10 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/text.c xchat-wdk/src/com
 +	hMapFile = CreateFileMapping(hFile, NULL, PAGE_READONLY, 0, 0, NULL);
 +	if (hMapFile == INVALID_HANDLE_VALUE)
 +	{
- 		return;
++		return;
 +	}
 +
-+	/* Select which portions of the file we need (entire file) */
++	/* Select which portions of the file we need */
 +	map = (char *)MapViewOfFile(hMapFile, FILE_MAP_READ, 0, 0, 0);
 +
 +	if (map == NULL)
@@ -437,20 +434,25 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/text.c xchat-wdk/src/com
 +		CloseHandle(hMapFile);
 +		return;
 +	}
-+	/*map = mmap (NULL, statbuf.st_size, PROT_READ, MAP_PRIVATE, fh, 0);
-+	if (map == MAP_FAILED)
-+		return;*/
++#else
+ 	map = mmap (NULL, statbuf.st_size, PROT_READ, MAP_PRIVATE, fh, 0);
+ 	if (map == MAP_FAILED)
+ 		return;
++#endif
  
  	end_map = map + statbuf.st_size;
  	
-@@ -349,7 +372,9 @@
+@@ -349,7 +373,13 @@
  		/*EMIT_SIGNAL (XP_TE_GENMSG, sess, "*", buf, NULL, NULL, NULL, 0);*/
  	}
  
--	munmap (map, statbuf.st_size);
-+	/* munmap (map, statbuf.st_size); */
++#ifdef WIN32
 +	CloseHandle(hMapFile);
 +	CloseHandle(hFile);
++#else
+ 	munmap (map, statbuf.st_size);
++#endif
++
  	close (fh);
  }
  
