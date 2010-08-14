@@ -288,9 +288,7 @@ hook_timer can be used to create a new timer</p>
                            <br />
                            Default is "".
                            </td>
-   </tr>
-	
-   <tr>
+   </tr>   <tr>
       <td>flags</td>   <td>Specify the flags for a fd hook.<br />
                        <br />
                        See <a href="#hook_fd_flags">hook fd flags</a> section for valid values.<br />
@@ -765,13 +763,18 @@ if( Xchat::context_info-&gt;{flags} &amp; (1 &gt;&gt; 6) ) {
    </tr>   <tr>
       <td>pos</td>   <td>bytes sent/received</td>
    </tr>   <tr>
+      <td>poshigh</td>   <td>bytes sent/received, high order 32 bits</td>
+   </tr>   <tr>
       <td>resume</td>   <td>point at which this file was resumed<br />
                         (zero if it was not resumed)
                         </td>
    </tr>   <tr>
+      <td>resumehigh</td>   <td>point at which this file was resumed, high order 32 bits<br />
+                        </td>
+   </tr>   <tr>
       <td>size</td>  <td>file size in bytes low order 32 bits</td>
    </tr>   <tr>
-      <td>sizehigh</td>	<td>file size in bytes high order 32 bits (when the files is > 4GB)</td>
+      <td>sizehigh</td>	<td>file size in bytes, high order 32 bits (when the files is > 4GB)</td>
 	</tr>
 	<tr>
       <td>status</td>   <td>DCC Status:<br />

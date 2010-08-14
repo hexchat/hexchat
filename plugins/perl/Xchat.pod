@@ -907,8 +907,17 @@ if( Xchat::context_info-&gt;{flags} &amp; (1 &gt;&gt; 6) ) {
    </tr>
 
    <tr>
+      <td>poshigh</td>   <td>bytes sent/received, high order 32 bits</td>
+   </tr>
+
+   <tr>
       <td>resume</td>   <td>point at which this file was resumed<br />
                         (zero if it was not resumed)
+                        </td>
+   </tr>
+
+   <tr>
+      <td>resumehigh</td>   <td>point at which this file was resumed, high order 32 bits<br />
                         </td>
    </tr>
 
@@ -917,7 +926,7 @@ if( Xchat::context_info-&gt;{flags} &amp; (1 &gt;&gt; 6) ) {
    </tr>
 
    <tr>
-      <td>sizehigh</td>	<td>file size in bytes high order 32 bits (when the files is > 4GB)</td>
+      <td>sizehigh</td>	<td>file size in bytes, high order 32 bits (when the files is > 4GB)</td>
 	</tr>
 	<tr>
       <td>status</td>   <td>DCC Status:<br />
