@@ -33,7 +33,7 @@ Name: "translations"; Description: "Translations"; Types: normal full custom
 Name: "plugins"; Description: "Language Interfaces"; Types: full custom
 Name: "plugins\lua"; Description: "Lua (experimental)"; Types: full custom
 Name: "plugins\lua\luawdk"; Description: "Lua-WDK 5.1.4-2"; Types: full custom
-Name: "plugins\perl"; Description: "Perl (needs ActivePerl 5.10)"; Types: full custom
+Name: "plugins\perl"; Description: "Perl (needs ActivePerl 5.12)"; Types: full custom
 Name: "plugins\python"; Description: "Python (needs ActivePython 2.6)"; Types: full custom
 Name: "plugins\tcl"; Description: "Tcl (needs ActiveTcl 8.5)"; Types: full custom
 
