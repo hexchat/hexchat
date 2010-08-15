@@ -1,8 +1,8 @@
 [Setup]
 AppName=XChat-WDK (x86)
-AppVerName=XChat WDK (x86) r1454
-AppVersion=14.54
-VersionInfoVersion=14.54
+AppVerName=XChat WDK (x86) r1455
+AppVersion=14.55
+VersionInfoVersion=14.55
 AppPublisher=XChat-WDK
 AppPublisherURL=http://code.google.com/p/xchat-wdk/
 AppCopyright=Copyright (C) 1998-2010 Peter Zelezny
@@ -18,7 +18,7 @@ DefaultGroupName=XChat-WDK
 SolidCompression=yes
 SourceDir=..\..\xchat-wdk-x86
 OutputDir=.
-OutputBaseFilename=XChat-WDK r1454 x86
+OutputBaseFilename=XChat-WDK r1455 x86
 FlatComponentsList=no
 ArchitecturesAllowed=x86 x64
 
