@@ -124,7 +124,7 @@ rawlog.obj \
 search.obj \
 servlistgui.obj \
 setup.obj \
-sexy-spell-entry.obj \
+#sexy-spell-entry.obj \
 textgui.obj \
 urlgrab.obj \
 userlistgui.obj \
