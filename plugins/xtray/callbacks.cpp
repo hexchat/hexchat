@@ -44,7 +44,7 @@ BOOL CALLBACK EnumWindowsProc(HWND hWnd, LPARAM lParam)
 	TCHAR szTitle[10];
 	GetWindowText(hWnd, szTitle, 9);
 
-	if(_tcsstr(szTitle, _T("X-Chat [")))
+	if(_tcsstr(szTitle, _T("XChat [")))
 	{
 		g_hXchatWnd = hWnd;
 		return false;
@@ -339,7 +339,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
 			if(msg == RegisterWindowMessage(_T("TaskbarCreated")))
 			{
 				char szVersion[64];
-				_snprintf(szVersion, 64, "X-Chat [%s]", xchat_get_info(ph, "version"));
+				_snprintf(szVersion, 64, "XChat-WDK [%s]", xchat_get_info(ph, "version"));
 				AddIcon(g_hXchatWnd, 1, g_hIcons[0], szVersion, (NIF_ICON | NIF_MESSAGE | NIF_TIP), WM_TRAYMSG);
 			}
 		}

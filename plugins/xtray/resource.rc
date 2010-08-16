@@ -32,7 +32,7 @@ IDD_EVENTS DIALOGEX 8, 20, 216, 143
 STYLE DS_SETFONT | DS_SETFOREGROUND | WS_CHILD
 FONT 8, "Tahoma", 0, 0, 0x0
 BEGIN
-    GROUPBOX        "X-Chat Events",IDC_STATIC,5,5,205,77
+    GROUPBOX        "XChat Events",IDC_STATIC,5,5,205,77
     CONTROL         "Server Notice",9,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
                     145,32,55,10
     CONTROL         "Topic Change",3,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,
@@ -62,13 +62,13 @@ BEGIN
     GROUPBOX        "Options",IDC_STATIC,5,5,205,135
     CONTROL         "Auto away on minimize",11,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,16,60,100,10
-    CONTROL         "Minimize X-Chat to the system tray",12,"Button",
+    CONTROL         "Minimize XChat to the system tray",12,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,16,18,133,10
     CONTROL         "Minimize to the tray instead of closing",17,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,16,32,174,9
     EDITTEXT        IDC_AWAY_MSG,33,86,169,50,ES_AUTOHSCROLL
     LTEXT           "Away Msg:",IDC_STATIC,27,72,35,8
-    CONTROL         "Remove X-Chat from the taskbar ( Only show in tray )",
+    CONTROL         "Remove XChat from the taskbar (only show in tray)",
                     20,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,46,191,9
 END
 
@@ -108,7 +108,7 @@ BEGIN
     GROUPBOX        "Version Information:",IDC_STATIC,101,92,109,49
     LTEXT           "1.2.3 PR",IDC_STATIC,170,105,33,8,0,WS_EX_RIGHT
     LTEXT           "Compiled On: ",IDC_STATIC,110,116,46,8
-    LTEXT           "11/06/05",IDC_STATIC,174,117,30,8
+	LTEXT           "10/08/16",IDC_STATIC,174,117,30,8
     LTEXT           "Version Number:",IDC_STATIC,110,105,54,8
 END
 
@@ -249,8 +249,8 @@ BEGIN
             VALUE "FileVersion", "1, 2, 3, 0"
             VALUE "InternalName", "X-Tray"
             VALUE "LegalCopyright", "Copyright © 2005"
-            VALUE "OriginalFilename", "X-Tray.dll"
-            VALUE "ProductName", "X-Tray - X-Chat Win32 System Tray Plugin"
+            VALUE "OriginalFilename", "xtray.dll"
+            VALUE "ProductName", "X-Tray - XChat Win32 System Tray Plugin"
             VALUE "ProductVersion", "1, 2, 3, 0"
         END
     END

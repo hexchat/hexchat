@@ -74,7 +74,7 @@ int xchat_plugin_init(xchat_plugin *plugin_handle, char **plugin_name, char **pl
 	ph = plugin_handle;
 
 	*plugin_name	= "X-Tray";
-	*plugin_desc	= "Minimize X-Chat to the windows systemtray";
+	*plugin_desc	= "Minimize XChat to the Windows system tray";
 	*plugin_version = "1.2.3 PR";
 
 	/***************************************************************************************************************************/
@@ -116,7 +116,7 @@ int xchat_plugin_init(xchat_plugin *plugin_handle, char **plugin_name, char **pl
 	/************************* Add our icon to the tray ************************************************************************/
 	/***************************************************************************************************************************/
 	char szVersion[64];
-	_snprintf(szVersion, 64, "X-Chat [%s]", xchat_get_info(ph, "version"));
+	_snprintf(szVersion, 64, "XChat-WDK [%s]", xchat_get_info(ph, "version"));
 	AddIcon(g_hXchatWnd, 1, g_hIcons[0], szVersion, (NIF_ICON | NIF_MESSAGE | NIF_TIP), WM_TRAYMSG);
 
 	/***************************************************************************************************************************/
