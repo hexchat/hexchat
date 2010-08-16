@@ -1,7 +1,7 @@
 @echo off
 set GTK_BIN=c:\mozilla-build\build\xchat-dev32\bin
-set SSL_BIN=c:\mozilla-build\build\openssl-1.0.0a-wdk-x86\bin
-set LUA_BIN=c:\mozilla-build\build\lua-5.1.4-2-wdk-x86
+set SSL_BIN=c:\mozilla-build\build\openssl-wdk-1.0.0a-x86\bin
+set LUA_BIN=c:\mozilla-build\build\lua-wdk-5.1.4-2-x86\bin
 set XCHAT_DEST=c:\mozilla-build\build\xchat-wdk-x86
 rmdir /Q /S %XCHAT_DEST%
 mkdir %XCHAT_DEST%
