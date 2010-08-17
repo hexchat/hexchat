@@ -1,8 +1,9 @@
 [Setup]
 AppName=XChat-WDK (x86)
-AppVerName=XChat WDK (x86) r1455
-AppVersion=14.55
-VersionInfoVersion=14.55
+AppVerName=XChat WDK (x86) r1455-2
+AppVersion=14.55.2
+VersionInfoVersion=14.55.2
+OutputBaseFilename=XChat-WDK r1455-2 x86
 AppPublisher=XChat-WDK
 AppPublisherURL=http://code.google.com/p/xchat-wdk/
 AppCopyright=Copyright (C) 1998-2010 Peter Zelezny
@@ -18,8 +19,11 @@ DefaultGroupName=XChat-WDK
 SolidCompression=yes
 SourceDir=..\..\xchat-wdk-x86
 OutputDir=.
-OutputBaseFilename=XChat-WDK r1455 x86
+AllowNoIcons=yes
 FlatComponentsList=no
+PrivilegesRequired=none
+CreateUninstallRegKey=not IsTaskSelected('portablemode')
+Uninstallable=not IsTaskSelected('portablemode')
 ArchitecturesAllowed=x86 x64
 
 [Types]
@@ -28,7 +32,9 @@ Name: "full"; Description: "Full Installation"
 Name: "custom"; Description: "Custom Installation"; Flags: iscustom
 
 [Components]
-Name: "xchat"; Description: "XChat-WDK"; Types: normal full custom; Flags: fixed
+Name: "libs"; Description: "XChat-WDK"; Types: normal full custom; Flags: fixed
+;Name: "xchatstandard"; Description: "XChat Standard"; Types: normal full custom
+;Name: "xchatportable"; Description: "XChat Portable"; Types: full custom
 Name: "translations"; Description: "Translations"; Types: normal full custom
 Name: "plugins"; Description: "Language Interfaces"; Types: full custom
 Name: "plugins\lua"; Description: "Lua (experimental)"; Types: full custom
@@ -38,41 +44,43 @@ Name: "plugins\python"; Description: "Python (needs ActivePython 2.6)"; Types: f
 Name: "plugins\tcl"; Description: "Tcl (needs ActiveTcl 8.5)"; Types: full custom
 
 [Tasks]
-Name: "desktopicon"; Description: "Create a &desktop icon"; GroupDescription: "Additional icons:"; Components: xchat; Flags: unchecked
+Name: portablemode; Description: "Portable Mode (no Registry keys written and no uninstaller created)"; Flags: unchecked
 
-[Registry]
-Root: HKCU; Subkey: "Environment"; ValueType: string; ValueName: "XCHAT_WARNING_IGNORE"; ValueData: "true"; Flags: uninsdeletevalue
+;[Registry]
+;Root: HKCU; Subkey: "Environment"; ValueType: string; ValueName: "XCHAT_WARNING_IGNORE"; ValueData: "true"; Flags: uninsdeletevalue
 
 [Files]
-Source: "COPYING"; DestDir: "{app}"; Components: xchat
-Source: "freetype6.dll"; DestDir: "{app}"; Components: xchat
-Source: "intl.dll"; DestDir: "{app}"; Components: xchat
-Source: "libatk-1.0-0.dll"; DestDir: "{app}"; Components: xchat
-Source: "libcairo-2.dll"; DestDir: "{app}"; Components: xchat
-Source: "libeay32.dll"; DestDir: "{app}"; Components: xchat
-Source: "libexpat-1.dll"; DestDir: "{app}"; Components: xchat
-Source: "libfontconfig-1.dll"; DestDir: "{app}"; Components: xchat
-Source: "libgdk_pixbuf-2.0-0.dll"; DestDir: "{app}"; Components: xchat
-Source: "libgdk-win32-2.0-0.dll"; DestDir: "{app}"; Components: xchat
-Source: "libgio-2.0-0.dll"; DestDir: "{app}"; Components: xchat
-Source: "libglib-2.0-0.dll"; DestDir: "{app}"; Components: xchat
-Source: "libgmodule-2.0-0.dll"; DestDir: "{app}"; Components: xchat
-Source: "libgobject-2.0-0.dll"; DestDir: "{app}"; Components: xchat
-Source: "libgthread-2.0-0.dll"; DestDir: "{app}"; Components: xchat
-Source: "libgtk-win32-2.0-0.dll"; DestDir: "{app}"; Components: xchat
-Source: "libpango-1.0-0.dll"; DestDir: "{app}"; Components: xchat
-Source: "libpangocairo-1.0-0.dll"; DestDir: "{app}"; Components: xchat
-Source: "libpangoft2-1.0-0.dll"; DestDir: "{app}"; Components: xchat
-Source: "libpangowin32-1.0-0.dll"; DestDir: "{app}"; Components: xchat
-Source: "libpng14-14.dll"; DestDir: "{app}"; Components: xchat
-Source: "LICENSE.OPENSSL"; DestDir: "{app}"; Components: xchat
-Source: "LICENSE.ZLIB"; DestDir: "{app}"; Components: xchat
-Source: "ssleay32.dll"; DestDir: "{app}"; Components: xchat
-Source: "xchat.exe"; DestDir: "{app}"; Components: xchat
-Source: "zlib1.dll"; DestDir: "{app}"; Components: xchat
+Source: "COPYING"; DestDir: "{app}"; Components: libs
+Source: "freetype6.dll"; DestDir: "{app}"; Components: libs
+Source: "intl.dll"; DestDir: "{app}"; Components: libs
+Source: "libatk-1.0-0.dll"; DestDir: "{app}"; Components: libs
+Source: "libcairo-2.dll"; DestDir: "{app}"; Components: libs
+Source: "libeay32.dll"; DestDir: "{app}"; Components: libs
+Source: "libexpat-1.dll"; DestDir: "{app}"; Components: libs
+Source: "libfontconfig-1.dll"; DestDir: "{app}"; Components: libs
+Source: "libgdk_pixbuf-2.0-0.dll"; DestDir: "{app}"; Components: libs
+Source: "libgdk-win32-2.0-0.dll"; DestDir: "{app}"; Components: libs
+Source: "libgio-2.0-0.dll"; DestDir: "{app}"; Components: libs
+Source: "libglib-2.0-0.dll"; DestDir: "{app}"; Components: libs
+Source: "libgmodule-2.0-0.dll"; DestDir: "{app}"; Components: libs
+Source: "libgobject-2.0-0.dll"; DestDir: "{app}"; Components: libs
+Source: "libgthread-2.0-0.dll"; DestDir: "{app}"; Components: libs
+Source: "libgtk-win32-2.0-0.dll"; DestDir: "{app}"; Components: libs
+Source: "libpango-1.0-0.dll"; DestDir: "{app}"; Components: libs
+Source: "libpangocairo-1.0-0.dll"; DestDir: "{app}"; Components: libs
+Source: "libpangoft2-1.0-0.dll"; DestDir: "{app}"; Components: libs
+Source: "libpangowin32-1.0-0.dll"; DestDir: "{app}"; Components: libs
+Source: "libpng14-14.dll"; DestDir: "{app}"; Components: libs
+Source: "LICENSE.OPENSSL"; DestDir: "{app}"; Components: libs
+Source: "LICENSE.ZLIB"; DestDir: "{app}"; Components: libs
+Source: "ssleay32.dll"; DestDir: "{app}"; Components: libs
+Source: "zlib1.dll"; DestDir: "{app}"; Components: libs
 
-Source: "plugins\xcewc.dll"; DestDir: "{app}\plugins"; Components: xchat
-Source: "plugins\xcxdcc.dll"; DestDir: "{app}\plugins"; Components: xchat
+Source: "plugins\xcewc.dll"; DestDir: "{app}\plugins"; Components: libs
+Source: "plugins\xcxdcc.dll"; DestDir: "{app}\plugins"; Components: libs
+
+Source: "xchat.exe"; DestDir: "{app}"; Components: libs
+Source: "xchat-portable.exe"; DestDir: "{app}"; Components: libs
 
 Source: "plugins\xclua.dll"; DestDir: "{app}\plugins"; Components: plugins\lua
 Source: "lua51.dll"; DestDir: "{app}"; Components: plugins\lua\luawdk
@@ -80,8 +88,8 @@ Source: "plugins\xcperl.dll"; DestDir: "{app}\plugins"; Components: plugins\perl
 Source: "plugins\xcpython.dll"; DestDir: "{app}\plugins"; Components: plugins\python
 Source: "plugins\xctcl.dll"; DestDir: "{app}\plugins"; Components: plugins\tcl
 
-Source: "etc\*"; DestDir: "{app}\etc"; Flags: createallsubdirs recursesubdirs; Components: xchat
-Source: "lib\*"; DestDir: "{app}\lib"; Flags: createallsubdirs recursesubdirs; Components: xchat
+Source: "etc\*"; DestDir: "{app}\etc"; Flags: createallsubdirs recursesubdirs; Components: libs
+Source: "lib\*"; DestDir: "{app}\lib"; Flags: createallsubdirs recursesubdirs; Components: libs
 
 Source: "locale\*"; DestDir: "{app}\locale"; Flags: createallsubdirs recursesubdirs; Components: translations
 Source: "share\*"; DestDir: "{app}\share"; Flags: createallsubdirs recursesubdirs; Components: translations
@@ -89,7 +97,6 @@ Source: "share\*"; DestDir: "{app}\share"; Flags: createallsubdirs recursesubdir
 [Icons]
 Name: "{group}\XChat-WDK (x86)"; Filename: "{app}\xchat.exe"
 Name: "{group}\Uninstall XChat-WDK (x86)"; Filename: "{uninstallexe}";
-Name: "{userdesktop}\XChat-WDK (x86)"; Filename: "{app}\xchat.exe"; Tasks: desktopicon; Comment: "IRC Client";  WorkingDir: "{app}";
 
 [Messages]
 BeveledLabel= XChat-WDK (x86)
