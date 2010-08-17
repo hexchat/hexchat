@@ -71,6 +71,9 @@ my %escape_map = (
 my $escapes = join "", keys %escape_map;
 $escapes = qr/[\Q$escapes\E]/;
 
+# used to determine if a word is the start of a path
+my $path_pattern = qr{^(?:~|/|[[:alpha:]]:\\)};
+
 sub complete {
 	my ($key, $modifiers) = @{$_[0]};
 	# if $_[0][0] contains the value of the key pressed
@@ -114,6 +117,18 @@ sub complete {
 	my $word = substr( $left, $word_start );
 	$left = substr( $left, 0, -length $word );
 
+	if( $cursor_pos == $completions->{pos} ) {
+		my $previous_word = $completions->{completed};
+		my $new_left = $input;
+		substr( $new_left, $cursor_pos ) = "";
+
+		if( $previous_word and $new_left =~ s/(\Q$previous_word\E)$// ) {
+			$word = $1;
+			$word_start = length( $new_left );
+			$left = $new_left;
+		}
+	}
+
 	my $command_char = Xchat::get_prefs( "input_command_char" );
 	# ignore commands
 	if( ($word !~ m{^[${command_char}]})
@@ -123,12 +138,16 @@ sub complete {
 			# not a valid nick char
 			&& $input =~ /(?<![\x41-\x5A\x61-\x7A\x30-\x39\x5B-\x60\x7B-\x7D-])$/
 			&& $cursor_pos != $completions->{pos} # not continuing a completion
-			&& $word !~ m{^(?:[&#/~]|[[:alpha:]]:\\)} ) { # not a channel or path
-			$word_start = $cursor_pos;
-			$left = $input;
-			$length = length $length;
-			$right = "";
-			$word = "";
+			&& $word !~ m{^(?:[&#/~]|[[:alpha:]]:\\)}  # not a channel or path
+		) {
+			# check for path completion
+			unless( $path_completion and $word =~ $path_pattern ) {
+				$word_start = $cursor_pos;
+				$left = $input;
+				$length = length $length;
+				$right = "";
+				$word = "";
+			}
 		}
 
 		if( $word_start == 0 && $prefix && $word =~ /^\Q$prefix/ ) {
@@ -138,7 +157,7 @@ sub complete {
 		my $completed; # this is going to be the "completed" word
 
 		# for parital completions and channel names so a : isn't added
-		my $skip_suffix = ($word =~ /^[&#]/) ? 1 : 0;
+		#$completions->{skip_suffix} = ($word =~ /^[&#]/) ? 1 : 0;
 		
 		# continuing from a previous completion
 		if(
@@ -154,16 +173,16 @@ sub complete {
 				$completions->{index} %= @{$completions->{matches}};
 			}
 
-			$completed = $completions->{matches}[ $completions->{index} ];
 		} else {
 
 			if( $word =~ /^[&#]/ ) {
 			# channel name completion
 				$completions->{matches} = [ matching_channels( $word ) ];
-			} elsif( $word =~ m{^(?:~|/|[[:alpha:]]:\\)} ) {
+				$completions->{skip_suffix} = 0;
+			} elsif( $path_completion and $word =~ $path_pattern ) {
 			# file name completion
 				$completions->{matches} = [ matching_files( $word ) ];
-				$skip_suffix = 1;
+				$completions->{skip_suffix} = 1;
 			} else {
 			# nick completion
 				# fix $word so { equals [, ] equals }, \ equals |
@@ -171,12 +190,14 @@ sub complete {
 				$word =~ s/($escapes)/$escape_map{$1}/g;
 
 				$completions->{matches} = [ matching_nicks( $word ) ];
+				$completions->{skip_suffix} = 0;
 			}
 			$completions->{index} = 0;
 
-			$completed = $completions->{matches}[ $completions->{index} ];
 		}
-		
+		$completed = $completions->{matches}[ $completions->{index} ];
+		$completions->{completed} = $completed;
+
 		my $completion_amount = Xchat::get_prefs( "completion_amount" );
 		
 		# don't cycle if the number of possible completions is greater than
@@ -187,17 +208,20 @@ sub complete {
 		) {
 			# don't print if we tabbed in the beginning and the list of possible
 			# completions includes all nicks in the channel
-			if( @{$completions->{matches}} < Xchat::get_list("users") ) {
+			my $context_type = Xchat::context_info->{type};
+			if( $context_type != 2 # not a channel
+				or @{$completions->{matches}} < Xchat::get_list("users")
+			) {
 				Xchat::print( join " ", @{$completions->{matches}}, "\n" );
 			}
 			
 			$completed = lcs( $completions->{matches} );
-			$skip_suffix = 1;
+			$completions->{skip_suffix} = 1;
 		}
 		
 		if( $completed ) {
 			
-			if( $word_start == 0 && !$skip_suffix ) {
+			if( $word_start == 0 && !$completions->{skip_suffix} ) {
 				# at the start of the line append completion suffix
 				Xchat::command( "settext $prefix$completed$suffix$right");
 				$completions->{pos} = length( "$prefix$completed$suffix" );
@@ -220,8 +244,8 @@ sub complete {
 			qq{start[$word_start]},
 			qq{length[$length]},
 			qq{left[$left]},
-			qq{word[$word]}, qq{[right[$right]},
-			qq{completed[$completed]},
+			qq{word[$word]}, qq{right[$right]},
+			qq{completed[}. ($completed||""). qq{]},
 			qq{pos[$completions->{pos}]},
 		];
 		use Data::Dumper;
@@ -356,20 +380,25 @@ sub compare_nicks {
 sub matching_files {
 	my $word = shift;
 
-	my $path = expand_tilde( $word );
-	my ($file, $dir) = fileparse( $path );
+	my ($file, $input_dir) = fileparse( $word );
+
+	my $dir = expand_tilde( $input_dir );
 
 	if( opendir my $dir_handle, $dir ) {
 		my @files;
 
 		if( $file ) {
-			@files = grep { /^\Q$file/ } readdir $dir_handle;
+			@files = grep {
+				#Xchat::print( $_ );
+				/^\Q$file/ } readdir $dir_handle;
 		} else {
 			@files = readdir $dir_handle;
 		}
 
-		return sort map { File::Spec->catfile( $dir, $_ ) }
-			grep { !/^\.{1,2}$/ } @files;
+		return map {
+			File::Spec->catfile( $input_dir, $_ );
+		} sort
+		grep { !/^[.]/ } @files;
 	} else {
 		return ();
 	}
