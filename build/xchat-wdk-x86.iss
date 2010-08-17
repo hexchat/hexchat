@@ -46,9 +46,6 @@ Name: "plugins\tcl"; Description: "Tcl (needs ActiveTcl 8.5)"; Types: full custo
 [Tasks]
 Name: portablemode; Description: "Portable Mode (no Registry keys written and no uninstaller created)"; Flags: unchecked
 
-;[Registry]
-;Root: HKCU; Subkey: "Environment"; ValueType: string; ValueName: "XCHAT_WARNING_IGNORE"; ValueData: "true"; Flags: uninsdeletevalue
-
 [Files]
 Source: "COPYING"; DestDir: "{app}"; Components: libs
 Source: "freetype6.dll"; DestDir: "{app}"; Components: libs
