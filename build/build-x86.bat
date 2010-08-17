@@ -6,6 +6,12 @@ set PATH=c:\WinDDK\7600.16385.1\bin\x86\x86;c:\WinDDK\7600.16385.1\bin\x86;c:\Pr
 cd ..\src
 nmake -f makefile.mak clean
 nmake -f makefile.mak
+echo.Enable portable build and press return
+pause
+move fe-gtk\xchat.exe fe-gtk\xchat.exe.orig
+nmake -f makefile.mak clean
+nmake -f makefile.mak
+move fe-gtk\xchat.exe.orig fe-gtk\xchat.exe
 cd ..\plugins\ewc
 nmake -f makefile.mak clean
 nmake -f makefile.mak

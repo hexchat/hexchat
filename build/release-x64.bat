@@ -6,6 +6,7 @@ set XCHAT_DEST=c:\mozilla-build\build\xchat-wdk-x64
 rmdir /Q /S %XCHAT_DEST%
 mkdir %XCHAT_DEST%
 xcopy ..\src\fe-gtk\xchat.exe %XCHAT_DEST%
+xcopy ..\src\fe-gtk\xchat-portable.exe %XCHAT_DEST%
 xcopy %GTK_BIN%\libgtk-win32-2.0-0.dll %XCHAT_DEST%
 xcopy %GTK_BIN%\libgdk_pixbuf-2.0-0.dll %XCHAT_DEST%
 xcopy %GTK_BIN%\libgio-2.0-0.dll %XCHAT_DEST%
