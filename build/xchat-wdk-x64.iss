@@ -1,9 +1,9 @@
 [Setup]
 AppName=XChat-WDK (x64)
-AppVerName=XChat WDK (x64) r1455-2
-AppVersion=14.55.2
-VersionInfoVersion=14.55.2
-OutputBaseFilename=XChat-WDK r1455-2 x64
+AppVerName=XChat WDK (x64) r1457
+AppVersion=14.57
+VersionInfoVersion=14.57
+OutputBaseFilename=XChat-WDK r1457 x64
 AppPublisher=XChat-WDK
 AppPublisherURL=http://code.google.com/p/xchat-wdk/
 AppCopyright=Copyright (C) 1998-2010 Peter Zelezny
