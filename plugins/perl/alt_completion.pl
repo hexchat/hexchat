@@ -16,6 +16,17 @@ my $last_use_threshold = 10; # 10 minutes
 # the word is at the beginning of the line
 my $prefix = '';
 
+# ignore leading non-alphanumeric characters: -[\]^_`{|}
+# Assuming you have the following nicks in a channel:
+# [SomeNick] _SomeNick_ `SomeNick SomeNick SomeOtherNick
+# when $ignore_leading_non_alnum is set to 0
+#     s<tab> will cycle through SomeNick and SomeOtherNick
+# when $ignore_leading_non_alnum is set to 1
+#     s<tab> will cycle through [SomeNick] _SomeNick_ `SomeNick SomeNick
+#     SomeOtherNick
+my $ignore_leading_non_alnum = 0;
+
+# enable path completion
 my $path_completion = 1;
 my $base_path = '';
 
@@ -272,7 +283,7 @@ sub compare_channels {
 }
 
 sub matching_nicks {
-	my $word = shift;
+	my $word_re = shift;
 
 	# for use in compare_nicks()
 	our ($my_nick, $selections, $now);
@@ -280,10 +291,12 @@ sub matching_nicks {
 	local $selections = $selected{ Xchat::get_context() };
 	local $now = time;
 
+	my $pattern = $ignore_leading_non_alnum ?
+		qr/^[\-\[\]^_`{|}\\]*$word_re/i : qr/^$word_re/i;
 	return
 		map { $_->{nick} }
 		sort compare_nicks grep {
-			$_->{nick} =~ /^$word/i
+			$_->{nick} =~ $pattern;
 		} Xchat::get_list( "users" )
 
 }
