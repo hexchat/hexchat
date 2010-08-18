@@ -10,8 +10,5 @@
 #define XCHATLIBDIR "."
 #define XCHATSHAREDIR "."
 #define OLD_PERL
-#ifndef USE_IPV6
-#define socklen_t int
-#endif
 #define GETTEXT_PACKAGE "xchat"
 #define PACKAGE_TARNAME "xchat-2.8.8"

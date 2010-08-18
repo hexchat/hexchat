@@ -1,12 +1,9 @@
-#X64 = YES
-IPV6 = YES
-
 CC = cl
 LINK = link
-CFLAGS = $(CFLAGS) /Ox /c /MD /nologo /DWIN32 /DG_DISABLE_CAST_CHECKS /Dstrcasecmp=stricmp /Dstrncasecmp=strnicmp /Dstrtoull=_strtoui64 /DHAVE_STRTOULL
+CFLAGS = $(CFLAGS) /Ox /c /MD /nologo /DWIN32 /DG_DISABLE_CAST_CHECKS /Dstrcasecmp=stricmp /Dstrncasecmp=strnicmp /Dstrtoull=_strtoui64 /DHAVE_STRTOULL -DUSE_IPV6
 CPPFLAGS = /c /MD /nologo /DWIN32
 LDFLAGS = /subsystem:windows /nologo
-LIBS = $(LIBS) gdi32.lib shell32.lib user32.lib advapi32.lib imm32.lib ole32.lib winmm.lib
+LIBS = $(LIBS) gdi32.lib shell32.lib user32.lib advapi32.lib imm32.lib ole32.lib winmm.lib ws2_32.lib
 
 !ifdef X64
 #############################################################
@@ -63,13 +60,6 @@ PYTHONOUTPUT = xcpython.dll
 
 TCLLIB = tcl85
 TCLOUTPUT = xctcl.dll
-
-!ifdef IPV6
-CFLAGS = $(CFLAGS) -DUSE_IPV6
-LIBS = $(LIBS) ws2_32.lib
-!else
-LIBS = $(LIBS) wsock32.lib
-!endif
 
 COMMON_OBJECTS = \
 cfgfiles.obj \
