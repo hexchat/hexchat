@@ -78,7 +78,7 @@ Source: "plugins\xcewc.dll"; DestDir: "{app}\plugins"; Components: libs
 Source: "plugins\xcxdcc.dll"; DestDir: "{app}\plugins"; Components: libs
 
 Source: "xchat.exe"; DestDir: "{app}"; Components: libs
-Source: "xchat-portable.exe"; DestDir: "{app}"; Components: libs
+Source: "portable-mode"; DestDir: "{app}"; Tasks: portablemode
 
 Source: "plugins\xclua.dll"; DestDir: "{app}\plugins"; Components: plugins\lua
 Source: "lua51.dll"; DestDir: "{app}"; Components: plugins\lua\luawdk

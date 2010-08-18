@@ -45,3 +45,5 @@ xcopy /S /I ..\plugins\xdcc\xcxdcc.dll %XCHAT_DEST%\plugins\
 xcopy %LUA_BIN%\lua51.dll %XCHAT_DEST%
 xcopy /S /I /Q ..\po\locale %XCHAT_DEST%\locale
 xcopy /S /I /Q %GTK_BIN%\..\share\locale %XCHAT_DEST%\share\locale
+echo 2> portable-build
+move portable-build %XCHAT_DEST%
