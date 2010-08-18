@@ -245,6 +245,8 @@ hook_timer can be used to create a new timer</p>
 </li>
 <li><strong><code>$timeout</code>       -  timeout in milliseconds</strong>
 </li>
+<li><strong><code>$handle</code>     - the I/O handle you want to monitor with hook_fd. This must be something that has a fileno. See perldoc -f fileno or <a href="http://perldoc.perl.org/functions/fileno.html">fileno</a></strong>
+</li>
 <li><strong><code>$callback</code>   -  callback function, this is called whenever
                   the hooked event is trigged, the following are
                   the conditions that will trigger the different hooks.

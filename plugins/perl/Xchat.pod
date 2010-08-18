@@ -135,6 +135,9 @@ C<$event>      -  one of the events listed in Settings-E<gt>Advanced-E<gt>Text E
 C<$timeout>       -  timeout in milliseconds
 
 =item *
+C<$handle>     - the I/O handle you want to monitor with hook_fd. This must be something that has a fileno. See perldoc -f fileno or L<fileno|http://perldoc.perl.org/functions/fileno.html>
+
+=item *
 C<$callback>   -  callback function, this is called whenever
                   the hooked event is trigged, the following are
                   the conditions that will trigger the different hooks.
@@ -433,7 +436,7 @@ L<find_context|xchat_find_context>.
 =over 3
 
 =item *
-C<$format>  -  a format string, see "perldoc -f sprintf" for further detail
+C<$format>  -  a format string, see "perldoc -f L<sprintf|http://perldoc.perl.org/functions/sprintf.html>" for further detail
 
 =item *
 LIST     -  list of values for the format fields
@@ -474,7 +477,7 @@ as find_context.
 =over 3
 
 =item *
-C<$format> -  a format string, see "perldoc -f sprintf" for further detail
+C<$format> -  a format string, see "perldoc -f L<sprintf|http://perldoc.perl.org/functions/sprintf.html>" for further detail
 
 =item *
 LIST     -  list of values for the format fields
