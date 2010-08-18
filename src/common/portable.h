@@ -1,0 +1,1 @@
+int portable_mode ();

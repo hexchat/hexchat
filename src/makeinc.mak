@@ -1,5 +1,4 @@
 #X64 = YES
-#PORTABLE = YES
 IPV6 = YES
 
 CC = cl
@@ -65,10 +64,6 @@ PYTHONOUTPUT = xcpython.dll
 TCLLIB = tcl85
 TCLOUTPUT = xctcl.dll
 
-!ifdef PORTABLE
-CFLAGS = $(CFLAGS) -DPORTABLE_BUILD
-!endif
-
 !ifdef IPV6
 CFLAGS = $(CFLAGS) -DUSE_IPV6
 LIBS = $(LIBS) ws2_32.lib
@@ -90,6 +85,7 @@ notify.obj \
 outbound.obj \
 plugin.obj \
 plugin-timer.obj \
+portable.obj \
 proto-irc.obj \
 server.obj \
 servlist.obj \

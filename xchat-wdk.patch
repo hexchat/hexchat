@@ -137,7 +137,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/xdcc/xdcc.c xchat-wdk/plugi
  
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/cfgfiles.c xchat-wdk/src/common/cfgfiles.c
 --- xchat-wdk.orig/src/common/cfgfiles.c	2010-08-07 09:14:45 +0200
-+++ xchat-wdk/src/common/cfgfiles.c	2010-08-17 06:30:32 +0200
++++ xchat-wdk/src/common/cfgfiles.c	2010-08-18 23:18:04 +0200
 @@ -17,7 +17,6 @@
   */
  
@@ -146,36 +146,45 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/cfgfiles.c xchat-wdk/src
  #include <stdlib.h>
  #include <string.h>
  #include <stdio.h>
-@@ -32,7 +31,11 @@
+@@ -30,10 +29,9 @@
+ #include "fe.h"
+ #include "text.h"
  #include "xchatc.h"
++#include "portable.h"
  
- #ifdef WIN32
-+#ifdef PORTABLE_BUILD
-+#define XCHAT_DIR "config"
-+#else
- #define XCHAT_DIR "X-Chat 2"
-+#endif
- #else
+-#ifdef WIN32
+-#define XCHAT_DIR "X-Chat 2"
+-#else
++#ifndef WIN32
  #define XCHAT_DIR ".xchat2"
  #endif
-@@ -308,12 +311,16 @@
+ #define DEF_FONT "Monospace 9"
+@@ -308,12 +306,19 @@
  {
  	if (!xdir_fs)
  	{
-+#ifdef PORTABLE_BUILD
-+		xdir_fs = XCHAT_DIR;
-+#else
- 		char out[256];
+-		char out[256];
++		if (portable_mode ())
++		{
++			xdir_fs = "config";
++		}
++		else
++		{
++			char out[256];
  
- 		if (!get_reg_str ("Software\\Microsoft\\Windows\\CurrentVersion\\"
- 				"Explorer\\Shell Folders", "AppData", out, sizeof (out)))
- 			return "./config";
- 		xdir_fs = g_strdup_printf ("%s\\" XCHAT_DIR, out);
-+#endif
+-		if (!get_reg_str ("Software\\Microsoft\\Windows\\CurrentVersion\\"
+-				"Explorer\\Shell Folders", "AppData", out, sizeof (out)))
+-			return "./config";
+-		xdir_fs = g_strdup_printf ("%s\\" XCHAT_DIR, out);
++			if (!get_reg_str ("Software\\Microsoft\\Windows\\CurrentVersion\\"
++					"Explorer\\Shell Folders", "AppData", out, sizeof (out)))
++				return "./config";
++			xdir_fs = g_strdup_printf ("%s\\" "X-Chat 2", out);
++		}
  	}
  	return xdir_fs;
  }
-@@ -648,6 +655,7 @@
+@@ -648,6 +653,7 @@
  	prefs.dialog_height = 256;
  	prefs.gui_join_dialog = 1;
  	prefs.gui_quit_dialog = 1;
@@ -583,16 +592,16 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/xchat.h xchat-wdk/src/co
  #define	X_OK	1
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/about.c xchat-wdk/src/fe-gtk/about.c
 --- xchat-wdk.orig/src/fe-gtk/about.c	2010-05-16 09:43:49 +0200
-+++ xchat-wdk/src/fe-gtk/about.c	2010-08-17 06:30:32 +0200
-@@ -113,11 +113,15 @@
- 	gtk_container_add (GTK_CONTAINER (vbox), label);
- 	g_get_charset (&locale);
- 	(snprintf) (buf, sizeof (buf),
-+#ifdef PORTABLE_BUILD
-+				"<span size=\"x-large\"><b>"DISPLAY_NAME" "PACKAGE_VERSION"</b></span>\n<span size=\"x-large\"><b>Portable Version</b></span>\n\n"
-+#else
- 				"<span size=\"x-large\"><b>"DISPLAY_NAME" "PACKAGE_VERSION"</b></span>\n\n"
-+#endif
++++ xchat-wdk/src/fe-gtk/about.c	2010-08-18 23:11:24 +0200
+@@ -39,6 +39,7 @@
+ 
+ #include "../common/xchat.h"
+ #include "../common/util.h"
++#include "../common/portable.h"
+ #include "palette.h"
+ #include "pixmaps.h"
+ #include "gtkutil.h"
+@@ -117,7 +118,7 @@
  				"%s\n\n"
  #ifdef WIN32
  				/* leave this message to avoid time wasting bug reports! */
@@ -601,14 +610,29 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/about.c xchat-wdk/src/fe
  #endif
  				"%s\n"
  				"<b>Charset</b>: %s "
-@@ -127,6 +131,7 @@
+@@ -126,7 +127,11 @@
+ #else
  				"<b>Renderer</b>: %s\n"
  #endif
- 				"<b>Compiled</b>: "__DATE__"\n\n"
+-				"<b>Compiled</b>: "__DATE__"\n\n"
++				"<b>Compiled</b>: "__DATE__"\n"
++#ifdef WIN32
++				"<b>Portable Mode</b>: %s\n\n"
 +				"<b>XChat Base</b>: 2.8.8\n\n"
++#endif
  				"<small>\302\251 1998-2010 Peter \305\275elezn\303\275 &lt;zed@xchat.org></small>",
  					_("A multiplatform IRC Client"),
  					get_cpu_str(),
+@@ -134,7 +139,8 @@
+ #ifdef WIN32
+ 					gtk_major_version,
+ 					gtk_minor_version,
+-					gtk_micro_version
++					gtk_micro_version,
++					(portable_mode() ? "Yes" : "No")
+ #else
+ #ifdef USE_XFT
+ 					"Xft"
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/banlist.c xchat-wdk/src/fe-gtk/banlist.c
 --- xchat-wdk.orig/src/fe-gtk/banlist.c	2010-05-16 05:20:22 +0200
 +++ xchat-wdk/src/fe-gtk/banlist.c	2010-08-17 06:30:32 +0200
