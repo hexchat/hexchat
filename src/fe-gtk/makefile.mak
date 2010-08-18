@@ -7,11 +7,7 @@ MACHINE_FLAG = /MACHINE:X86
 !endif
 
 COMLIB = ..\common\xchatcommon.lib
-!ifdef PORTABLE
-PROG = xchat-portable.exe
-!else
 PROG = xchat.exe
-!endif
 
 all: $(PROG)
 
