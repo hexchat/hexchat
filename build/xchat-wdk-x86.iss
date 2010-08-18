@@ -1,9 +1,9 @@
 [Setup]
 AppName=XChat-WDK (x86)
-AppVerName=XChat WDK (x86) r1457
-AppVersion=14.57
-VersionInfoVersion=14.57
-OutputBaseFilename=XChat-WDK r1457 x86
+AppVerName=XChat WDK (x86) r1459
+AppVersion=14.59
+VersionInfoVersion=14.59
+OutputBaseFilename=XChat-WDK r1459 x86
 AppPublisher=XChat-WDK
 AppPublisherURL=http://code.google.com/p/xchat-wdk/
 AppCopyright=Copyright (C) 1998-2010 Peter Zelezny
@@ -16,10 +16,10 @@ UninstallDisplayIcon={app}\xchat.exe
 UninstallDisplayName=XChat-WDK (x86)
 DefaultDirName={pf}\XChat-WDK
 DefaultGroupName=XChat-WDK
+DisableProgramGroupPage=yes
 SolidCompression=yes
 SourceDir=..\..\xchat-wdk-x86
 OutputDir=.
-AllowNoIcons=yes
 FlatComponentsList=no
 PrivilegesRequired=none
 CreateUninstallRegKey=not IsTaskSelected('portablemode')
@@ -33,8 +33,6 @@ Name: "custom"; Description: "Custom Installation"; Flags: iscustom
 
 [Components]
 Name: "libs"; Description: "XChat-WDK"; Types: normal full custom; Flags: fixed
-;Name: "xchatstandard"; Description: "XChat Standard"; Types: normal full custom
-;Name: "xchatportable"; Description: "XChat Portable"; Types: full custom
 Name: "translations"; Description: "Translations"; Types: normal full custom
 Name: "plugins"; Description: "Language Interfaces"; Types: full custom
 Name: "plugins\lua"; Description: "Lua (experimental)"; Types: full custom
@@ -92,8 +90,8 @@ Source: "locale\*"; DestDir: "{app}\locale"; Flags: createallsubdirs recursesubd
 Source: "share\*"; DestDir: "{app}\share"; Flags: createallsubdirs recursesubdirs; Components: translations
 
 [Icons]
-Name: "{group}\XChat-WDK (x86)"; Filename: "{app}\xchat.exe"
-Name: "{group}\Uninstall XChat-WDK (x86)"; Filename: "{uninstallexe}";
+Name: "{group}\XChat-WDK (x86)"; Filename: "{app}\xchat.exe"; Tasks: not portablemode
+Name: "{group}\Uninstall XChat-WDK (x86)"; Filename: "{uninstallexe}"; Tasks: not portablemode
 
 [Messages]
 BeveledLabel= XChat-WDK (x86)
