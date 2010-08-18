@@ -1715,6 +1715,10 @@ sub process_text1($$;$$) {
 			$linktext = $1;
 		}
 
+		if( $par =~ m{^\w+://}s ) {
+			return make_URL_href( $par, $linktext );
+		}
+
 		# make sure sections start with a /
 		$par =~ s{^"}{/"};
 
@@ -2353,10 +2357,11 @@ sub fragment_id {
 # make_URL_href - generate HTML href from URL
 # Special treatment for CGI queries.
 #
-sub make_URL_href($) {
-	my ($url) = @_;
+sub make_URL_href($;$) {
+	my ($url) = shift;
+	my $linktext = shift || $url;
 	if ( $url !~ s{^(http:[-\w/#~:.+=&%@!]+)(\?.*)$}{<a href="$1$2">$1</a>}i ) {
-		$url = "<a href=\"$url\">$url</a>";
+		$url = "<a href=\"$url\">$linktext</a>";
 	}
 	return $url;
 }
