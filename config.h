@@ -6,7 +6,7 @@
 #define USE_GTKSPELL
 #endif*/
 #define PACKAGE_NAME "xchat"
-#define PACKAGE_VERSION "r1457"
+#define PACKAGE_VERSION "r1459"
 #define XCHATLIBDIR "."
 #define XCHATSHAREDIR "."
 #define OLD_PERL
