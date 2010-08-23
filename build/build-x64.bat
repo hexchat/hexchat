@@ -38,4 +38,6 @@ call compile-po-files.bat
 cd ..\build
 set PATH=%OPATH%
 call release-x64.bat
+set PATH=c:\Program Files (x86)\Inno Setup 5
+compil32 /cc xchat-wdk-x64.iss
 pause
