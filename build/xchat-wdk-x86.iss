@@ -42,7 +42,7 @@ Name: "plugins\python"; Description: "Python (needs ActivePython 2.6)"; Types: f
 Name: "plugins\tcl"; Description: "Tcl (needs ActiveTcl 8.5)"; Types: full custom
 
 [Tasks]
-Name: portablemode; Description: "Portable Mode (no Registry keys written and no uninstaller created)"; Flags: unchecked
+Name: portablemode; Description: "Portable Mode (no Registry entries, no Start Menu icons, no uninstaller)"; Flags: unchecked
 
 [Files]
 Source: "COPYING"; DestDir: "{app}"; Components: libs
