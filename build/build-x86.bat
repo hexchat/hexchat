@@ -38,4 +38,5 @@ set PATH=%OPATH%
 call release-x86.bat
 set PATH=c:\Program Files (x86)\Inno Setup 5
 compil32 /cc xchat-wdk-x86.iss
+set PATH=%OPATH%
 pause
