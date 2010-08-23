@@ -1,9 +1,9 @@
 [Setup]
 AppName=XChat-WDK (x64)
-AppVerName=XChat-WDK (x64) r1459
-AppVersion=14.59
-VersionInfoVersion=14.59
-OutputBaseFilename=XChat-WDK r1459 x64
+AppVerName=XChat-WDK (x64) r1459-2
+AppVersion=14.59.2
+VersionInfoVersion=14.59.2
+OutputBaseFilename=XChat-WDK r1459-2 x64
 AppPublisher=XChat-WDK
 AppPublisherURL=http://code.google.com/p/xchat-wdk/
 AppCopyright=Copyright (C) 1998-2010 Peter Zelezny
@@ -19,7 +19,7 @@ DefaultGroupName=XChat-WDK
 DisableProgramGroupPage=yes
 SolidCompression=yes
 SourceDir=..\..\xchat-wdk-x64
-OutputDir=.
+OutputDir=..\xchat-wdk\build
 FlatComponentsList=no
 PrivilegesRequired=none
 CreateUninstallRegKey=not IsTaskSelected('portablemode')
