@@ -1,6 +1,6 @@
 [Setup]
 AppName=XChat-WDK (x86)
-AppVerName=XChat WDK (x86) r1459
+AppVerName=XChat-WDK (x86) r1459
 AppVersion=14.59
 VersionInfoVersion=14.59
 OutputBaseFilename=XChat-WDK r1459 x86
