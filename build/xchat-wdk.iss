@@ -225,11 +225,14 @@ end;
 /////////////////////////////////////////////////////////////////////
 procedure CurStepChanged(CurStep: TSetupStep);
 begin
-  if (CurStep=ssInstall) then
+  if not (IsTaskSelected('portablemode')) then
   begin
-    if (IsUpgrade()) then
+    if (CurStep=ssInstall) then
     begin
-      UnInstallOldVersion();
+      if (IsUpgrade()) then
+      begin
+        UnInstallOldVersion();
+      end;
     end;
   end;
 end;
