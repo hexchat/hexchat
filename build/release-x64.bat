@@ -28,22 +28,12 @@ xcopy %GTK_BIN%\libatk-1.0-0.dll %XCHAT_DEST%
 xcopy %GTK_BIN%\libintl-8.dll %XCHAT_DEST%
 xcopy /S /I %GTK_BIN%\..\lib\gtk-2.0 %XCHAT_DEST%\lib\gtk-2.0
 rmdir /Q /S %XCHAT_DEST%\lib\gtk-2.0\include
-xcopy /S /I etc %XCHAT_DEST%\etc
-xcopy ..\COPYING %XCHAT_DEST%
-xcopy %SSL_BIN%\..\LICENSE.OPENSSL %XCHAT_DEST%
-xcopy %SSL_BIN%\..\LICENSE.ZLIB %XCHAT_DEST%
 xcopy %SSL_BIN%\libeay32.dll %XCHAT_DEST%
 xcopy %SSL_BIN%\ssleay32.dll %XCHAT_DEST%
-::xcopy /S /I ..\plugins\dns\xcdns.dll %XCHAT_DEST%\plugins\
 xcopy /S /I ..\plugins\ewc\xcewc.dll %XCHAT_DEST%\plugins\
 xcopy /S /I ..\plugins\lua\xclua.dll %XCHAT_DEST%\plugins\
 xcopy /S /I ..\plugins\perl\xcperl.dll %XCHAT_DEST%\plugins\
 xcopy /S /I ..\plugins\python\xcpython.dll %XCHAT_DEST%\plugins\
 xcopy /S /I ..\plugins\tcl\xctcl.dll %XCHAT_DEST%\plugins\
 xcopy /S /I ..\plugins\xdcc\xcxdcc.dll %XCHAT_DEST%\plugins\
-::xcopy /S /I ..\plugins\xtray\xtray.dll %XCHAT_DEST%\plugins\
 xcopy %LUA_BIN%\lua51.dll %XCHAT_DEST%
-xcopy /S /I /Q ..\po\locale %XCHAT_DEST%\locale
-xcopy /S /I /Q %GTK_BIN%\..\share\locale %XCHAT_DEST%\share\locale
-echo 2> portable-mode
-move portable-mode %XCHAT_DEST%

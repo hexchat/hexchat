@@ -11,9 +11,6 @@ nmake -f makefile.mak
 cd ..\plugins\ewc
 nmake -f makefile.mak clean
 nmake -f makefile.mak
-::cd ..\dns
-::nmake -f makefile.mak clean
-::nmake -f makefile.mak
 cd ..\lua
 nmake -f makefile.mak clean
 nmake -f makefile.mak
@@ -29,16 +26,6 @@ nmake -f makefile.mak
 cd ..\xdcc
 nmake -f makefile.mak clean
 nmake -f makefile.mak
-::cd ..\xtray
-::nmake -f makefile.mak clean
-::nmake -f makefile.mak
 cd ..\..\build
-set PATH=%PATH%;c:\mozilla-build\build\xchat-dev32\bin
-call compile-po-files.bat
-cd ..\build
 set PATH=%OPATH%
 call release-x64.bat
-set PATH=c:\Program Files (x86)\Inno Setup 5
-compil32 /cc xchat-wdk-x64.iss
-set PATH=%OPATH%
-pause
