@@ -136,14 +136,14 @@ Source: "zlib1.dll.x64"; DestDir: "{app}"; DestName: "zlib1.dll"; Components: li
 
 
 
-;Source: "lib\gtk-2.0\2.10.0\engines\libpixmap.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Components: libs; Tasks: x86
-;Source: "lib\gtk-2.0\2.10.0\engines\libpixmap.dll.x64"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; DestName: "libpixmap.dll"; Components: libs; Tasks: x64
+Source: "lib\gtk-2.0\2.10.0\engines\libpixmap.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Components: libs; Tasks: x86
+Source: "lib\gtk-2.0\2.10.0\engines\libpixmap.dll.x64"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; DestName: "libpixmap.dll"; Components: libs; Tasks: x64
 
 Source: "lib\gtk-2.0\2.10.0\engines\libwimp.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Components: libs; Tasks: x86
 Source: "lib\gtk-2.0\2.10.0\engines\libwimp.dll.x64"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; DestName: "libwimp.dll"; Components: libs; Tasks: x64
 
-;Source: "lib\gtk-2.0\modules\libgail.dll"; DestDir: "{app}\lib\gtk-2.0\modules"; Components: libs; Tasks: x86
-;Source: "lib\gtk-2.0\modules\libgail.dll.x64"; DestDir: "{app}\lib\gtk-2.0\modules"; DestName: "libgail.dll"; Components: libs; Tasks: x64
+Source: "lib\gtk-2.0\modules\libgail.dll"; DestDir: "{app}\lib\gtk-2.0\modules"; Components: libs; Tasks: x86
+Source: "lib\gtk-2.0\modules\libgail.dll.x64"; DestDir: "{app}\lib\gtk-2.0\modules"; DestName: "libgail.dll"; Components: libs; Tasks: x64
 
 
 

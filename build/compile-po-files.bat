@@ -2,7 +2,7 @@
 
 echo.Compiling translations . . .
 cd ..\po
-rmdir /Q /S locale
+rmdir /q /s locale
 mkdir locale
 
 mkdir locale\am\LC_MESSAGES

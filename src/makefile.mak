@@ -1,7 +1,7 @@
 all:
-	cd common
+	@cd common
 	@-$(MAKE) /nologo /s /f makefile.mak $@
-	cd ..\fe-gtk
+	@cd ..\fe-gtk
 	@-$(MAKE) /nologo /s /f makefile.mak $@
 
 clean:

@@ -14,7 +14,7 @@ cd ..
 nmake /nologo /f makefile.mak
 cd ..\plugins
 nmake /nologo /f makefile.mak clean
-nmake /f makefile.mak
+nmake /nologo /f makefile.mak
 cd ..\build
 set PATH=%OPATH%
 call release-x64.bat

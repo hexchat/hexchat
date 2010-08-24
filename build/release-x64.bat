@@ -12,7 +12,6 @@ copy %GTK_BIN%\libgmodule-2.0-0.dll %XCHAT_DEST%\libgmodule-2.0-0.dll.x64
 copy %GTK_BIN%\libgobject-2.0-0.dll %XCHAT_DEST%\libgobject-2.0-0.dll.x64
 copy %GTK_BIN%\libgthread-2.0-0.dll %XCHAT_DEST%\libgthread-2.0-0.dll.x64
 copy %GTK_BIN%\libpng14-14.dll %XCHAT_DEST%\libpng14-14.dll.x64
-::copy %GTK_BIN%\zlib1.dll %XCHAT_DEST%\zlib1.dll.x64
 copy %GTK_BIN%\libgdk-win32-2.0-0.dll %XCHAT_DEST%\libgdk-win32-2.0-0.dll.x64
 copy %GTK_BIN%\libcairo-2.dll %XCHAT_DEST%\libcairo-2.dll.x64
 copy %GTK_BIN%\libfontconfig-1.dll %XCHAT_DEST%\libfontconfig-1.dll.x64
@@ -24,9 +23,9 @@ copy %GTK_BIN%\libpangoft2-1.0-0.dll %XCHAT_DEST%\libpangoft2-1.0-0.dll.x64
 copy %GTK_BIN%\libpangowin32-1.0-0.dll %XCHAT_DEST%\libpangowin32-1.0-0.dll.x64
 copy %GTK_BIN%\libatk-1.0-0.dll %XCHAT_DEST%\libatk-1.0-0.dll.x64
 copy %GTK_BIN%\libintl-8.dll %XCHAT_DEST%\libintl-8.dll.x64
-::copy %GTK_BIN%\..\lib\gtk-2.0\2.10.0\engines\libpixmap.dll %XCHAT_DEST%\lib\gtk-2.0\2.10.0\engines\libpixmap.dll.x64
+copy %GTK_BIN%\..\lib\gtk-2.0\2.10.0\engines\libpixmap.dll %XCHAT_DEST%\lib\gtk-2.0\2.10.0\engines\libpixmap.dll.x64
 copy %GTK_BIN%\..\lib\gtk-2.0\2.10.0\engines\libwimp.dll %XCHAT_DEST%\lib\gtk-2.0\2.10.0\engines\libwimp.dll.x64
-::copy %GTK_BIN%\..\lib\gtk-2.0\modules\libgail.dll %XCHAT_DEST%\lib\gtk-2.0\modules\libgail.dll.x64
+copy %GTK_BIN%\..\lib\gtk-2.0\modules\libgail.dll %XCHAT_DEST%\lib\gtk-2.0\modules\libgail.dll.x64
 copy %SSL_BIN%\libeay32.dll %XCHAT_DEST%\libeay32.dll.x64
 copy %SSL_BIN%\ssleay32.dll %XCHAT_DEST%\ssleay32.dll.x64
 copy %SSL_BIN%\zlib1.dll %XCHAT_DEST%\zlib1.dll.x64

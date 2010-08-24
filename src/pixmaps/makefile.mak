@@ -15,4 +15,4 @@ all:
 	@$(CONV) --build-list $(LIST) > inline_pngs.h
 
 clean:
-	del *.h
+	@del *.h

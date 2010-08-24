@@ -9,5 +9,5 @@ xchatcommon.lib: $(COMMON_OBJECTS)
 	$(CC) $(CFLAGS) $(GLIB) $<
 
 clean:
-	del *.obj
-	del xchatcommon.lib
+	@del *.obj
+	@del xchatcommon.lib
