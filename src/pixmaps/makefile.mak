@@ -12,7 +12,7 @@ LIST =	bookpng book.png \
 			xchatpng ..\..\xchat.png
 
 all: 
-	$(CONV) --build-list $(LIST) > inline_pngs.h
+	@$(CONV) --build-list $(LIST) > inline_pngs.h
 
 clean:
 	del *.h

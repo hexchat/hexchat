@@ -1,8 +1,7 @@
 include "..\..\src\makeinc.mak"
 
-xcxdcc.dll: xdcc.obj xdcc.def
+all: xdcc.obj xdcc.def
 	link $(LDFLAGS) $(LIBS) /dll /out:xcxdcc.dll /def:xdcc.def xdcc.obj
-	dir xcxdcc.dll
 
 xdcc.def:
 	echo EXPORTS > xdcc.def
@@ -10,7 +9,7 @@ xdcc.def:
 	echo xchat_plugin_deinit >> xdcc.def
 
 xdcc.obj: xdcc.c makefile.mak
-	cl $(CFLAGS) $(GLIB) /I.. xdcc.c
+	cl $(CFLAGS) $(GLIB) xdcc.c
 
 clean:
 	del *.obj

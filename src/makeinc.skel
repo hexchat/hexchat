@@ -1,6 +1,7 @@
 CC = cl
 LINK = link
-CFLAGS = $(CFLAGS) /Ox /c /MD /nologo /DWIN32 /DG_DISABLE_CAST_CHECKS /Dstrcasecmp=stricmp /Dstrncasecmp=strnicmp /Dstrtoull=_strtoui64 /DHAVE_STRTOULL -DUSE_IPV6
+CFLAGS = $(CFLAGS) /Ox /c /MD /MP2 /W0 /nologo /DWIN32 /DG_DISABLE_CAST_CHECKS /Dstrcasecmp=stricmp /Dstrncasecmp=strnicmp /Dstrtoull=_strtoui64 /DHAVE_STRTOULL -DUSE_IPV6
+CFLAGS = $(CFLAGS) -Ic:\mozilla-build\build\xchat-wdk\plugins
 CPPFLAGS = /c /MD /nologo /DWIN32
 LDFLAGS = /subsystem:windows /nologo
 LIBS = $(LIBS) gdi32.lib shell32.lib user32.lib advapi32.lib imm32.lib ole32.lib winmm.lib ws2_32.lib
@@ -8,9 +9,9 @@ LIBS = $(LIBS) gdi32.lib shell32.lib user32.lib advapi32.lib imm32.lib ole32.lib
 !ifdef X64
 #############################################################
 #x64 config
-GLIB = -Ic:/mozilla-build/build/xchat-dev64/include/glib-2.0 -Ic:/mozilla-build/build/xchat-dev64/lib/glib-2.0/include
-GTK = -Ic:/mozilla-build/build/xchat-dev64/include/gtk-2.0 -Ic:/mozilla-build/build/xchat-dev64/lib/gtk-2.0/include -Ic:/mozilla-build/build/xchat-dev64/include/atk-1.0 -Ic:/mozilla-build/build/xchat-dev64/include/cairo -Ic:/mozilla-build/build/xchat-dev64/include/pango-1.0 -Ic:/mozilla-build/build/xchat-dev64/include/glib-2.0 -Ic:/mozilla-build/build/xchat-dev64/lib/glib-2.0/include -Ic:/mozilla-build/build/xchat-dev64/include/freetype2 -Ic:/mozilla-build/build/xchat-dev64/include -Ic:/mozilla-build/build/xchat-dev64/include/libpng14
-LIBS = $(LIBS) /libpath:c:/mozilla-build/build/xchat-dev64/lib gtk-win32-2.0.lib gdk-win32-2.0.lib atk-1.0.lib gio-2.0.lib gdk_pixbuf-2.0.lib pangowin32-1.0.lib gdi32.lib pangocairo-1.0.lib pango-1.0.lib cairo.lib gobject-2.0.lib gmodule-2.0.lib glib-2.0.lib intl.lib
+GLIB = -Ic:\mozilla-build\build\xchat-dev64\include\glib-2.0 -Ic:\mozilla-build\build\xchat-dev64\lib\glib-2.0\include
+GTK = -Ic:\mozilla-build\build\xchat-dev64\include\gtk-2.0 -Ic:\mozilla-build\build\xchat-dev64\lib\gtk-2.0\include -Ic:\mozilla-build\build\xchat-dev64\include\atk-1.0 -Ic:\mozilla-build\build\xchat-dev64\include\cairo -Ic:\mozilla-build\build\xchat-dev64\include\pango-1.0 -Ic:\mozilla-build\build\xchat-dev64\include\glib-2.0 -Ic:\mozilla-build\build\xchat-dev64\lib\glib-2.0\include -Ic:\mozilla-build\build\xchat-dev64\include
+LIBS = $(LIBS) /libpath:c:\mozilla-build\build\xchat-dev64\lib gtk-win32-2.0.lib gdk-win32-2.0.lib atk-1.0.lib gio-2.0.lib gdk_pixbuf-2.0.lib pangowin32-1.0.lib pangocairo-1.0.lib pango-1.0.lib cairo.lib gobject-2.0.lib gmodule-2.0.lib glib-2.0.lib intl.lib
 
 OPENSSLPATH = c:\mozilla-build\build\openssl-wdk-1.0.0a-x64
 CFLAGS = $(CFLAGS) /DUSE_OPENSSL /I$(OPENSSLPATH)\include
@@ -27,9 +28,9 @@ TCLPATH = c:\mozilla-build\tcl-8.5-x64
 !else
 #############################################################
 #x86 config
-GLIB = -Ic:/mozilla-build/build/xchat-dev32/include/glib-2.0 -Ic:/mozilla-build/build/xchat-dev32/lib/glib-2.0/include
-GTK = -Ic:/mozilla-build/build/xchat-dev32/include/gtk-2.0 -Ic:/mozilla-build/build/xchat-dev32/lib/gtk-2.0/include -Ic:/mozilla-build/build/xchat-dev32/include/atk-1.0 -Ic:/mozilla-build/build/xchat-dev32/include/cairo -Ic:/mozilla-build/build/xchat-dev32/include/pango-1.0 -Ic:/mozilla-build/build/xchat-dev32/include/glib-2.0 -Ic:/mozilla-build/build/xchat-dev32/lib/glib-2.0/include -Ic:/mozilla-build/build/xchat-dev32/include/freetype2 -Ic:/mozilla-build/build/xchat-dev32/include -Ic:/mozilla-build/build/xchat-dev32/include/libpng14
-LIBS = $(LIBS) /libpath:c:/mozilla-build/build/xchat-dev32/lib gtk-win32-2.0.lib gdk-win32-2.0.lib atk-1.0.lib gio-2.0.lib gdk_pixbuf-2.0.lib pangowin32-1.0.lib gdi32.lib pangocairo-1.0.lib pango-1.0.lib cairo.lib gobject-2.0.lib gmodule-2.0.lib glib-2.0.lib intl.lib
+GLIB = -Ic:\mozilla-build\build\xchat-dev32\include\glib-2.0 -Ic:\mozilla-build\build\xchat-dev32\lib\glib-2.0\include
+GTK = -Ic:\mozilla-build\build\xchat-dev32\include\gtk-2.0 -Ic:\mozilla-build\build\xchat-dev32\lib\gtk-2.0\include -Ic:\mozilla-build\build\xchat-dev32\include\atk-1.0 -Ic:\mozilla-build\build\xchat-dev32\include\cairo -Ic:\mozilla-build\build\xchat-dev32\include\pango-1.0 -Ic:\mozilla-build\build\xchat-dev32\include\glib-2.0 -Ic:\mozilla-build\build\xchat-dev32\lib\glib-2.0\include -Ic:\mozilla-build\build\xchat-dev32\include
+LIBS = $(LIBS) /libpath:c:\mozilla-build\build\xchat-dev32\lib gtk-win32-2.0.lib gdk-win32-2.0.lib atk-1.0.lib gio-2.0.lib gdk_pixbuf-2.0.lib pangowin32-1.0.lib pangocairo-1.0.lib pango-1.0.lib cairo.lib gobject-2.0.lib gmodule-2.0.lib glib-2.0.lib intl.lib
 
 OPENSSLPATH = c:\mozilla-build\build\openssl-wdk-1.0.0a-x86
 CFLAGS = $(CFLAGS) /DUSE_OPENSSL /I$(OPENSSLPATH)\include
