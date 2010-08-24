@@ -27,7 +27,7 @@ copy %GTK_BIN%\libatk-1.0-0.dll %XCHAT_DEST%
 copy %GTK_BIN%\intl.dll %XCHAT_DEST%
 xcopy /q /s /i %GTK_BIN%\..\lib\gtk-2.0\2.10.0\engines\libpixmap.dll %XCHAT_DEST%\lib\gtk-2.0\2.10.0\engines\
 copy %GTK_BIN%\..\lib\gtk-2.0\2.10.0\engines\libwimp.dll %XCHAT_DEST%\lib\gtk-2.0\2.10.0\engines
-copy %GTK_BIN%\..\lib\gtk-2.0\modules\libgail.dll %XCHAT_DEST%\lib\gtk-2.0\modules
+xcopy /q /s /i %GTK_BIN%\..\lib\gtk-2.0\modules\libgail.dll %XCHAT_DEST%\lib\gtk-2.0\modules\
 xcopy /q /s /i etc %XCHAT_DEST%\etc
 copy ..\COPYING %XCHAT_DEST%
 copy %SSL_BIN%\..\LICENSE.OPENSSL %XCHAT_DEST%
