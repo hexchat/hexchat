@@ -32,6 +32,7 @@ xchat-icon.obj: xchat.res
 
 clean:
 	del *.obj
+	del fe-gtk\mmx_cmod.o
 	del $(PROG)
 	del xchat.rc
 	del xchat.RES

@@ -12,9 +12,9 @@ xcopy %GTK_BIN%\libgio-2.0-0.dll %XCHAT_DEST%
 xcopy %GTK_BIN%\libglib-2.0-0.dll %XCHAT_DEST%
 xcopy %GTK_BIN%\libgmodule-2.0-0.dll %XCHAT_DEST%
 xcopy %GTK_BIN%\libgobject-2.0-0.dll %XCHAT_DEST%
-::xcopy %GTK_BIN%\libgthread-2.0-0.dll %XCHAT_DEST%
+xcopy %GTK_BIN%\libgthread-2.0-0.dll %XCHAT_DEST%
 xcopy %GTK_BIN%\libpng14-14.dll %XCHAT_DEST%
-xcopy %GTK_BIN%\zlib1.dll %XCHAT_DEST%
+::xcopy %GTK_BIN%\zlib1.dll %XCHAT_DEST%
 xcopy %GTK_BIN%\libgdk-win32-2.0-0.dll %XCHAT_DEST%
 xcopy %GTK_BIN%\libcairo-2.dll %XCHAT_DEST%
 xcopy %GTK_BIN%\libfontconfig-1.dll %XCHAT_DEST%
@@ -26,14 +26,16 @@ xcopy %GTK_BIN%\libpangoft2-1.0-0.dll %XCHAT_DEST%
 xcopy %GTK_BIN%\libpangowin32-1.0-0.dll %XCHAT_DEST%
 xcopy %GTK_BIN%\libatk-1.0-0.dll %XCHAT_DEST%
 xcopy %GTK_BIN%\intl.dll %XCHAT_DEST%
-xcopy /S /I %GTK_BIN%\..\lib\gtk-2.0 %XCHAT_DEST%\lib\gtk-2.0
-rmdir /Q /S %XCHAT_DEST%\lib\gtk-2.0\include
+::xcopy /S /I %GTK_BIN%\..\lib\gtk-2.0 %XCHAT_DEST%\lib\gtk-2.0
+::rmdir /Q /S %XCHAT_DEST%\lib\gtk-2.0\include
+xcopy /S /I %GTK_BIN%\..\lib\gtk-2.0\2.10.0\engines\libwimp.dll %XCHAT_DEST%\lib\gtk-2.0\2.10.0\engines\
 xcopy /S /I etc %XCHAT_DEST%\etc
 xcopy ..\COPYING %XCHAT_DEST%
 xcopy %SSL_BIN%\..\LICENSE.OPENSSL %XCHAT_DEST%
 xcopy %SSL_BIN%\..\LICENSE.ZLIB %XCHAT_DEST%
 xcopy %SSL_BIN%\libeay32.dll %XCHAT_DEST%
 xcopy %SSL_BIN%\ssleay32.dll %XCHAT_DEST%
+xcopy %SSL_BIN%\zlib1.dll %XCHAT_DEST%
 xcopy /S /I ..\plugins\ewc\xcewc.dll %XCHAT_DEST%\plugins\
 xcopy /S /I ..\plugins\lua\xclua.dll %XCHAT_DEST%\plugins\
 xcopy /S /I ..\plugins\perl\xcperl.dll %XCHAT_DEST%\plugins\

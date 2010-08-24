@@ -1,8 +1,6 @@
 all:
 	copy ..\plugins\xchat-plugin.h common
-	@cd pixmaps
-	@-$(MAKE) -f makefile.mak $@
-	@cd ..\common
+	@cd common
 	@-$(MAKE) -f makefile.mak $@
 	@cd ..\fe-gtk
 	@-$(MAKE) -f makefile.mak $@

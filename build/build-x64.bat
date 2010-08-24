@@ -6,7 +6,11 @@ set INCLUDE=c:\WinDDK\7600.16385.1\inc\api;c:\WinDDK\7600.16385.1\inc\crt;c:\Win
 set LIB=c:\WinDDK\7600.16385.1\lib\wnet\amd64;c:\WinDDK\7600.16385.1\lib\Crt\amd64
 set OPATH=%PATH%
 set PATH=c:\WinDDK\7600.16385.1\bin\x86\amd64;c:\WinDDK\7600.16385.1\bin\x86;c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\amd64;c:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Bin\x64;c:\mozilla-build\build\xchat-dev64\bin;c:\mozilla-build\perl-5.12-x64\bin
+cd common
 nmake -f makefile.mak clean
+cd ..\fe-gtk
+nmake -f makefile.mak clean
+cd ..
 nmake -f makefile.mak
 cd ..\plugins\ewc
 nmake -f makefile.mak clean
