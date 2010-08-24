@@ -10,7 +10,7 @@ copy %GTK_BIN%\libgio-2.0-0.dll %XCHAT_DEST%\libgio-2.0-0.dll.x64
 copy %GTK_BIN%\libglib-2.0-0.dll %XCHAT_DEST%\libglib-2.0-0.dll.x64
 copy %GTK_BIN%\libgmodule-2.0-0.dll %XCHAT_DEST%\libgmodule-2.0-0.dll.x64
 copy %GTK_BIN%\libgobject-2.0-0.dll %XCHAT_DEST%\libgobject-2.0-0.dll.x64
-copy %GTK_BIN%\libgthread-2.0-0.dll %XCHAT_DEST%\libgthread-2.0-0.dll.x64
+::copy %GTK_BIN%\libgthread-2.0-0.dll %XCHAT_DEST%\libgthread-2.0-0.dll.x64
 copy %GTK_BIN%\libpng14-14.dll %XCHAT_DEST%\libpng14-14.dll.x64
 copy %GTK_BIN%\zlib1.dll %XCHAT_DEST%\zlib1.dll.x64
 copy %GTK_BIN%\libgdk-win32-2.0-0.dll %XCHAT_DEST%\libgdk-win32-2.0-0.dll.x64

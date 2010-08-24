@@ -12,7 +12,7 @@ xcopy %GTK_BIN%\libgio-2.0-0.dll %XCHAT_DEST%
 xcopy %GTK_BIN%\libglib-2.0-0.dll %XCHAT_DEST%
 xcopy %GTK_BIN%\libgmodule-2.0-0.dll %XCHAT_DEST%
 xcopy %GTK_BIN%\libgobject-2.0-0.dll %XCHAT_DEST%
-xcopy %GTK_BIN%\libgthread-2.0-0.dll %XCHAT_DEST%
+::xcopy %GTK_BIN%\libgthread-2.0-0.dll %XCHAT_DEST%
 xcopy %GTK_BIN%\libpng14-14.dll %XCHAT_DEST%
 xcopy %GTK_BIN%\zlib1.dll %XCHAT_DEST%
 xcopy %GTK_BIN%\libgdk-win32-2.0-0.dll %XCHAT_DEST%

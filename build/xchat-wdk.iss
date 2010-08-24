@@ -104,8 +104,8 @@ Source: "libgmodule-2.0-0.dll.x64"; DestDir: "{app}"; DestName: "libgmodule-2.0-
 Source: "libgobject-2.0-0.dll"; DestDir: "{app}"; Components: libs; Tasks: x86
 Source: "libgobject-2.0-0.dll.x64"; DestDir: "{app}"; DestName: "libgobject-2.0-0.dll"; Components: libs; Tasks: x64
 
-Source: "libgthread-2.0-0.dll"; DestDir: "{app}"; Components: libs; Tasks: x86
-Source: "libgthread-2.0-0.dll.x64"; DestDir: "{app}"; DestName: "libgthread-2.0-0.dll"; Components: libs; Tasks: x64
+;Source: "libgthread-2.0-0.dll"; DestDir: "{app}"; Components: libs; Tasks: x86
+;Source: "libgthread-2.0-0.dll.x64"; DestDir: "{app}"; DestName: "libgthread-2.0-0.dll"; Components: libs; Tasks: x64
 
 Source: "libgtk-win32-2.0-0.dll"; DestDir: "{app}"; Components: libs; Tasks: x86
 Source: "libgtk-win32-2.0-0.dll.x64"; DestDir: "{app}"; DestName: "libgtk-win32-2.0-0.dll"; Components: libs; Tasks: x64
