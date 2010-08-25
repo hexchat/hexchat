@@ -182,13 +182,52 @@ sub hook_print {
 
 	$callback = Xchat::Embed::fix_callback( $package, $callback );
 	
-	my ($priority, $data) = ( Xchat::PRI_NORM, undef );
+	my ($priority, $run_after, $filter, $data) = ( Xchat::PRI_NORM, 0, 0 undef );
 	_process_hook_options(
 		$options,
-		[qw(priority data)],
-		[\($priority, $data)],
+		[qw(priority run_after_event filter data)],
+		[\($priority, $run_after, $filter, $data)],
 	);
 	
+	if( $run_after and $filter ) {
+		Carp::carp( "Xchat::hook_print's run_after_event and filter options are mutually exclusive, you can only use of them at a time per hook" );
+		return 0;
+	}
+
+	if( $run_after ) {
+		my $cb = $callback;
+		$callback = sub {
+			my @args = @_;
+			hook_timer( 0, sub {
+				$cb->( @args );
+
+				if( ref $run_after eq 'CODE' ) {
+					$run_after->( @args );
+				}
+				return REMOVE;
+			});
+			return EAT_NONE;
+		};
+	}
+
+	if( $filter ) {
+		my $cb = $callback;
+		$callback = sub {
+			my @args = @_;
+			my $arg_count = @args;
+			my @new = $cb->( @args );
+
+			if( @new ) {
+				emit_print( $event, @new[ 0 .. $arg_count - 1 ] );
+			} else {
+				emit_print( $event, @{$args[0]}[ 0 .. $arg_count - 1 ] );
+			}
+
+			return EAT_ALL;
+		};
+
+	}
+
 	my $pkg_info = Xchat::Embed::pkg_info( $package );
 	my $hook = Xchat::Internal::hook_print(
 		$event, $priority, $callback, $data
