@@ -1,6 +1,6 @@
 diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/perl/perl.c xchat-wdk/plugins/perl/perl.c
 --- xchat-wdk.orig/plugins/perl/perl.c	2010-08-15 01:13:48 +0200
-+++ xchat-wdk/plugins/perl/perl.c	2010-08-19 00:03:40 +0200
++++ xchat-wdk/plugins/perl/perl.c	2010-08-25 04:22:07 +0200
 @@ -16,13 +16,14 @@
   * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
   */
@@ -38,7 +38,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/perl/perl.c xchat-wdk/plugi
  			}
 diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/python/python.c xchat-wdk/plugins/python/python.c
 --- xchat-wdk.orig/plugins/python/python.c	2010-05-16 06:31:54 +0200
-+++ xchat-wdk/plugins/python/python.c	2010-08-19 00:03:40 +0200
++++ xchat-wdk/plugins/python/python.c	2010-08-25 04:22:07 +0200
 @@ -53,10 +53,10 @@
  
  #include <glib.h>
@@ -100,7 +100,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/python/python.c xchat-wdk/p
  		if (m == NULL) {
 diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/tcl/tclplugin.c xchat-wdk/plugins/tcl/tclplugin.c
 --- xchat-wdk.orig/plugins/tcl/tclplugin.c	2010-03-21 01:49:42 +0100
-+++ xchat-wdk/plugins/tcl/tclplugin.c	2010-08-19 00:03:40 +0200
++++ xchat-wdk/plugins/tcl/tclplugin.c	2010-08-25 04:22:07 +0200
 @@ -32,8 +32,6 @@
  #include <windows.h>
  #define bzero(mem, sz) memset((mem), 0, (sz))
@@ -121,7 +121,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/tcl/tclplugin.c xchat-wdk/p
      FreeLibrary(lib);
 diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/xdcc/xdcc.c xchat-wdk/plugins/xdcc/xdcc.c
 --- xchat-wdk.orig/plugins/xdcc/xdcc.c	2002-12-26 04:35:09 +0100
-+++ xchat-wdk/plugins/xdcc/xdcc.c	2010-08-19 00:03:40 +0200
++++ xchat-wdk/plugins/xdcc/xdcc.c	2010-08-25 04:22:07 +0200
 @@ -2,11 +2,11 @@
  
  #include <glib.h>
@@ -137,7 +137,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/xdcc/xdcc.c xchat-wdk/plugi
  
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/cfgfiles.c xchat-wdk/src/common/cfgfiles.c
 --- xchat-wdk.orig/src/common/cfgfiles.c	2010-08-07 09:14:45 +0200
-+++ xchat-wdk/src/common/cfgfiles.c	2010-08-19 00:03:40 +0200
++++ xchat-wdk/src/common/cfgfiles.c	2010-08-25 04:22:07 +0200
 @@ -17,7 +17,6 @@
   */
  
@@ -194,7 +194,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/cfgfiles.c xchat-wdk/src
  	prefs.notify_timeout = 15;
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/chanopt.c xchat-wdk/src/common/chanopt.c
 --- xchat-wdk.orig/src/common/chanopt.c	2008-06-15 06:40:29 +0200
-+++ xchat-wdk/src/common/chanopt.c	2010-08-19 00:03:40 +0200
++++ xchat-wdk/src/common/chanopt.c	2010-08-25 04:22:07 +0200
 @@ -3,7 +3,6 @@
  #include <stdio.h>
  #include <string.h>
@@ -205,7 +205,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/chanopt.c xchat-wdk/src/
  #include <fcntl.h>
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/ctcp.c xchat-wdk/src/common/ctcp.c
 --- xchat-wdk.orig/src/common/ctcp.c	2010-05-30 04:28:04 +0200
-+++ xchat-wdk/src/common/ctcp.c	2010-08-19 00:03:40 +0200
++++ xchat-wdk/src/common/ctcp.c	2010-08-25 04:22:07 +0200
 @@ -18,7 +18,6 @@
  
  #include <stdio.h>
@@ -225,7 +225,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/ctcp.c xchat-wdk/src/com
  	}
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/dcc.c xchat-wdk/src/common/dcc.c
 --- xchat-wdk.orig/src/common/dcc.c	2010-05-30 04:28:04 +0200
-+++ xchat-wdk/src/common/dcc.c	2010-08-19 00:03:40 +0200
++++ xchat-wdk/src/common/dcc.c	2010-08-25 04:22:07 +0200
 @@ -31,7 +31,6 @@
  #include <time.h>
  #include <errno.h>
@@ -245,7 +245,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/dcc.c xchat-wdk/src/comm
  	if ((dcc->fp == -1 ? stat (dcc->destfile_fs, &st_a) : fstat (dcc->fp, &st_a)) == -1)
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/ignore.c xchat-wdk/src/common/ignore.c
 --- xchat-wdk.orig/src/common/ignore.c	2006-04-15 09:00:39 +0200
-+++ xchat-wdk/src/common/ignore.c	2010-08-19 00:03:40 +0200
++++ xchat-wdk/src/common/ignore.c	2010-08-25 04:22:07 +0200
 @@ -19,7 +19,6 @@
  #include <stdlib.h>
  #include <stdio.h>
@@ -256,7 +256,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/ignore.c xchat-wdk/src/c
  #include <fcntl.h>
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/inbound.c xchat-wdk/src/common/inbound.c
 --- xchat-wdk.orig/src/common/inbound.c	2010-05-30 04:28:04 +0200
-+++ xchat-wdk/src/common/inbound.c	2010-08-19 00:03:40 +0200
++++ xchat-wdk/src/common/inbound.c	2010-08-25 04:22:07 +0200
 @@ -21,7 +21,6 @@
  #include <stdlib.h>
  #include <stdio.h>
@@ -267,7 +267,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/inbound.c xchat-wdk/src/
  #define WANTARPA
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/inet.h xchat-wdk/src/common/inet.h
 --- xchat-wdk.orig/src/common/inet.h	2005-09-03 12:57:48 +0200
-+++ xchat-wdk/src/common/inet.h	2010-08-19 00:03:40 +0200
++++ xchat-wdk/src/common/inet.h	2010-08-25 04:22:07 +0200
 @@ -24,9 +24,8 @@
  #ifdef USE_IPV6
  #include <winsock2.h>
@@ -281,7 +281,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/inet.h xchat-wdk/src/com
  #define set_blocking(sok)	{ \
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/msproxy.c xchat-wdk/src/common/msproxy.c
 --- xchat-wdk.orig/src/common/msproxy.c	2006-04-16 17:32:17 +0200
-+++ xchat-wdk/src/common/msproxy.c	2010-08-19 00:03:40 +0200
++++ xchat-wdk/src/common/msproxy.c	2010-08-25 04:22:07 +0200
 @@ -26,7 +26,6 @@
  #include <stdio.h>
  #include <string.h>
@@ -292,7 +292,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/msproxy.c xchat-wdk/src/
  #define WANTSOCKET
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/network.c xchat-wdk/src/common/network.c
 --- xchat-wdk.orig/src/common/network.c	2006-04-16 10:11:26 +0200
-+++ xchat-wdk/src/common/network.c	2010-08-19 00:03:40 +0200
++++ xchat-wdk/src/common/network.c	2010-08-25 04:22:07 +0200
 @@ -21,7 +21,6 @@
  #include <stdlib.h>
  #include <string.h>
@@ -303,7 +303,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/network.c xchat-wdk/src/
  #include "../../config.h"				  /* grab USE_IPV6 and LOOKUPD defines */
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/notify.c xchat-wdk/src/common/notify.c
 --- xchat-wdk.orig/src/common/notify.c	2008-06-08 09:58:58 +0200
-+++ xchat-wdk/src/common/notify.c	2010-08-19 00:03:40 +0200
++++ xchat-wdk/src/common/notify.c	2010-08-25 04:22:07 +0200
 @@ -22,7 +22,6 @@
  #include <sys/types.h>
  #include <sys/stat.h>
@@ -314,7 +314,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/notify.c xchat-wdk/src/c
  #include "xchat.h"
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/outbound.c xchat-wdk/src/common/outbound.c
 --- xchat-wdk.orig/src/common/outbound.c	2010-05-30 04:28:04 +0200
-+++ xchat-wdk/src/common/outbound.c	2010-08-19 00:03:40 +0200
++++ xchat-wdk/src/common/outbound.c	2010-08-25 04:22:07 +0200
 @@ -32,7 +32,6 @@
  #include <sys/wait.h>
  #endif
@@ -325,7 +325,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/outbound.c xchat-wdk/src
  #include <sys/stat.h>
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/plugin-timer.c xchat-wdk/src/common/plugin-timer.c
 --- xchat-wdk.orig/src/common/plugin-timer.c	2005-02-02 11:03:51 +0100
-+++ xchat-wdk/src/common/plugin-timer.c	2010-08-24 19:57:22 +0200
++++ xchat-wdk/src/common/plugin-timer.c	2010-08-25 04:22:07 +0200
 @@ -1,7 +1,7 @@
  #include <stdlib.h>
  #include <string.h>
@@ -337,7 +337,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/plugin-timer.c xchat-wdk
  #define strcasecmp stricmp
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/plugin.c xchat-wdk/src/common/plugin.c
 --- xchat-wdk.orig/src/common/plugin.c	2010-08-14 03:46:21 +0200
-+++ xchat-wdk/src/common/plugin.c	2010-08-24 19:57:38 +0200
++++ xchat-wdk/src/common/plugin.c	2010-08-25 04:22:07 +0200
 @@ -34,7 +34,7 @@
  #include "text.h"
  #define PLUGIN_C
@@ -349,7 +349,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/plugin.c xchat-wdk/src/c
  
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/proto-irc.c xchat-wdk/src/common/proto-irc.c
 --- xchat-wdk.orig/src/common/proto-irc.c	2010-05-30 04:28:04 +0200
-+++ xchat-wdk/src/common/proto-irc.c	2010-08-19 00:03:40 +0200
++++ xchat-wdk/src/common/proto-irc.c	2010-08-25 04:22:07 +0200
 @@ -18,7 +18,6 @@
  
  /* IRC RFC1459(+commonly used extensions) protocol implementation */
@@ -360,7 +360,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/proto-irc.c xchat-wdk/sr
  #include <stdlib.h>
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/server.c xchat-wdk/src/common/server.c
 --- xchat-wdk.orig/src/common/server.c	2010-05-30 04:28:04 +0200
-+++ xchat-wdk/src/common/server.c	2010-08-19 00:03:40 +0200
++++ xchat-wdk/src/common/server.c	2010-08-25 04:22:07 +0200
 @@ -26,7 +26,6 @@
  #include <stdio.h>
  #include <string.h>
@@ -389,7 +389,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/server.c xchat-wdk/src/c
  
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/servlist.c xchat-wdk/src/common/servlist.c
 --- xchat-wdk.orig/src/common/servlist.c	2010-05-16 09:43:49 +0200
-+++ xchat-wdk/src/common/servlist.c	2010-08-19 00:03:40 +0200
++++ xchat-wdk/src/common/servlist.c	2010-08-25 04:22:07 +0200
 @@ -21,7 +21,6 @@
  #include <string.h>
  #include <sys/types.h>
@@ -400,7 +400,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/servlist.c xchat-wdk/src
  #include <glib/ghash.h>
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/ssl.c xchat-wdk/src/common/ssl.c
 --- xchat-wdk.orig/src/common/ssl.c	2007-03-28 10:35:06 +0200
-+++ xchat-wdk/src/common/ssl.c	2010-08-19 00:03:40 +0200
++++ xchat-wdk/src/common/ssl.c	2010-08-25 04:22:07 +0200
 @@ -17,12 +17,12 @@
   * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
   */
@@ -417,7 +417,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/ssl.c xchat-wdk/src/comm
  #ifndef HAVE_SNPRINTF
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/text.c xchat-wdk/src/common/text.c
 --- xchat-wdk.orig/src/common/text.c	2010-05-30 04:28:04 +0200
-+++ xchat-wdk/src/common/text.c	2010-08-19 00:03:40 +0200
++++ xchat-wdk/src/common/text.c	2010-08-25 04:22:07 +0200
 @@ -19,13 +19,11 @@
  #include <stdlib.h>
  #include <stdio.h>
@@ -491,7 +491,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/text.c xchat-wdk/src/com
  
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/util.c xchat-wdk/src/common/util.c
 --- xchat-wdk.orig/src/common/util.c	2008-02-07 02:50:37 +0100
-+++ xchat-wdk/src/common/util.c	2010-08-19 00:03:40 +0200
++++ xchat-wdk/src/common/util.c	2010-08-25 04:22:07 +0200
 @@ -16,11 +16,13 @@
   * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
   */
@@ -577,7 +577,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/util.c xchat-wdk/src/com
  }
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/xchat.c xchat-wdk/src/common/xchat.c
 --- xchat-wdk.orig/src/common/xchat.c	2008-06-08 09:58:58 +0200
-+++ xchat-wdk/src/common/xchat.c	2010-08-24 19:57:56 +0200
++++ xchat-wdk/src/common/xchat.c	2010-08-25 04:22:07 +0200
 @@ -22,7 +22,6 @@
  #include <time.h>
  #include <sys/types.h>
@@ -597,7 +597,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/xchat.c xchat-wdk/src/co
  #include "notify.h"
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/xchat.h xchat-wdk/src/common/xchat.h
 --- xchat-wdk.orig/src/common/xchat.h	2010-08-07 09:14:45 +0200
-+++ xchat-wdk/src/common/xchat.h	2010-08-19 00:03:40 +0200
++++ xchat-wdk/src/common/xchat.h	2010-08-25 04:22:07 +0200
 @@ -12,12 +12,14 @@
  
  #include "history.h"
@@ -625,7 +625,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/xchat.h xchat-wdk/src/co
  #define	X_OK	1
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/about.c xchat-wdk/src/fe-gtk/about.c
 --- xchat-wdk.orig/src/fe-gtk/about.c	2010-05-16 09:43:49 +0200
-+++ xchat-wdk/src/fe-gtk/about.c	2010-08-19 00:03:40 +0200
++++ xchat-wdk/src/fe-gtk/about.c	2010-08-25 04:22:07 +0200
 @@ -39,6 +39,7 @@
  
  #include "../common/xchat.h"
@@ -668,7 +668,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/about.c xchat-wdk/src/fe
  					"Xft"
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/banlist.c xchat-wdk/src/fe-gtk/banlist.c
 --- xchat-wdk.orig/src/fe-gtk/banlist.c	2010-05-16 05:20:22 +0200
-+++ xchat-wdk/src/fe-gtk/banlist.c	2010-08-19 00:03:40 +0200
++++ xchat-wdk/src/fe-gtk/banlist.c	2010-08-25 04:22:07 +0200
 @@ -19,7 +19,6 @@
  #include <stdio.h>
  #include <stdlib.h>
@@ -679,7 +679,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/banlist.c xchat-wdk/src/
  
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/chanlist.c xchat-wdk/src/fe-gtk/chanlist.c
 --- xchat-wdk.orig/src/fe-gtk/chanlist.c	2008-02-24 04:46:02 +0100
-+++ xchat-wdk/src/fe-gtk/chanlist.c	2010-08-19 00:03:40 +0200
++++ xchat-wdk/src/fe-gtk/chanlist.c	2010-08-25 04:22:07 +0200
 @@ -19,7 +19,6 @@
  #include <stdio.h>
  #include <stdlib.h>
@@ -690,7 +690,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/chanlist.c xchat-wdk/src
  
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/editlist.c xchat-wdk/src/fe-gtk/editlist.c
 --- xchat-wdk.orig/src/fe-gtk/editlist.c	2006-03-13 09:33:45 +0100
-+++ xchat-wdk/src/fe-gtk/editlist.c	2010-08-19 00:03:40 +0200
++++ xchat-wdk/src/fe-gtk/editlist.c	2010-08-25 04:22:07 +0200
 @@ -19,7 +19,6 @@
  #include <stdio.h>
  #include <stdlib.h>
@@ -701,7 +701,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/editlist.c xchat-wdk/src
  #include <sys/stat.h>
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/fe-gtk.c xchat-wdk/src/fe-gtk/fe-gtk.c
 --- xchat-wdk.orig/src/fe-gtk/fe-gtk.c	2010-08-14 03:46:21 +0200
-+++ xchat-wdk/src/fe-gtk/fe-gtk.c	2010-08-19 00:03:40 +0200
++++ xchat-wdk/src/fe-gtk/fe-gtk.c	2010-08-25 04:22:07 +0200
 @@ -19,7 +19,6 @@
  #include <stdio.h>
  #include <string.h>
@@ -738,7 +738,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/fe-gtk.c xchat-wdk/src/f
  	sess = find_dialog (serv_list->data, "(warnings)");
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/fe-gtk.h xchat-wdk/src/fe-gtk/fe-gtk.h
 --- xchat-wdk.orig/src/fe-gtk/fe-gtk.h	2010-05-30 08:31:29 +0200
-+++ xchat-wdk/src/fe-gtk/fe-gtk.h	2010-08-19 00:03:40 +0200
++++ xchat-wdk/src/fe-gtk/fe-gtk.h	2010-08-25 04:22:07 +0200
 @@ -4,7 +4,7 @@
  /* If you're compiling this for Windows, your release is un-official
   * and not condoned. Please don't use the XChat name. Make up your
@@ -750,7 +750,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/fe-gtk.h xchat-wdk/src/f
  #endif
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/fkeys.c xchat-wdk/src/fe-gtk/fkeys.c
 --- xchat-wdk.orig/src/fe-gtk/fkeys.c	2008-02-24 06:09:34 +0100
-+++ xchat-wdk/src/fe-gtk/fkeys.c	2010-08-19 00:03:40 +0200
++++ xchat-wdk/src/fe-gtk/fkeys.c	2010-08-25 04:22:07 +0200
 @@ -20,7 +20,6 @@
  #include <stdlib.h>
  #include <sys/types.h>
@@ -761,7 +761,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/fkeys.c xchat-wdk/src/fe
  #include <ctype.h>
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/gtkutil.c xchat-wdk/src/fe-gtk/gtkutil.c
 --- xchat-wdk.orig/src/fe-gtk/gtkutil.c	2009-07-18 14:38:10 +0200
-+++ xchat-wdk/src/fe-gtk/gtkutil.c	2010-08-19 00:03:40 +0200
++++ xchat-wdk/src/fe-gtk/gtkutil.c	2010-08-25 04:22:07 +0200
 @@ -22,7 +22,6 @@
  #include <stdarg.h>
  #include <sys/types.h>
@@ -772,7 +772,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/gtkutil.c xchat-wdk/src/
  
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/joind.c xchat-wdk/src/fe-gtk/joind.c
 --- xchat-wdk.orig/src/fe-gtk/joind.c	2006-12-26 05:56:55 +0100
-+++ xchat-wdk/src/fe-gtk/joind.c	2010-08-19 00:03:40 +0200
++++ xchat-wdk/src/fe-gtk/joind.c	2010-08-25 04:22:07 +0200
 @@ -9,7 +9,6 @@
  
  #include <sys/types.h>
@@ -783,7 +783,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/joind.c xchat-wdk/src/fe
  
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/maingui.c xchat-wdk/src/fe-gtk/maingui.c
 --- xchat-wdk.orig/src/fe-gtk/maingui.c	2010-05-16 05:20:22 +0200
-+++ xchat-wdk/src/fe-gtk/maingui.c	2010-08-19 00:03:40 +0200
++++ xchat-wdk/src/fe-gtk/maingui.c	2010-08-25 04:22:07 +0200
 @@ -214,60 +214,10 @@
  	away_list = mg_attr_list_create (&colors[COL_AWAY], FALSE);
  }
@@ -891,7 +891,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/maingui.c xchat-wdk/src/
  }
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/menu.c xchat-wdk/src/fe-gtk/menu.c
 --- xchat-wdk.orig/src/fe-gtk/menu.c	2010-05-16 06:24:24 +0200
-+++ xchat-wdk/src/fe-gtk/menu.c	2010-08-19 00:03:40 +0200
++++ xchat-wdk/src/fe-gtk/menu.c	2010-08-25 04:22:07 +0200
 @@ -20,7 +20,6 @@
  #include <stdlib.h>
  #include <fcntl.h>
@@ -902,7 +902,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/menu.c xchat-wdk/src/fe-
  #include <windows.h>
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/palette.c xchat-wdk/src/fe-gtk/palette.c
 --- xchat-wdk.orig/src/fe-gtk/palette.c	2010-05-16 05:20:22 +0200
-+++ xchat-wdk/src/fe-gtk/palette.c	2010-08-19 00:03:40 +0200
++++ xchat-wdk/src/fe-gtk/palette.c	2010-08-25 04:22:07 +0200
 @@ -18,7 +18,6 @@
  
  #include <stdio.h>
@@ -913,7 +913,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/palette.c xchat-wdk/src/
  #include <fcntl.h>
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/plugin-tray.c xchat-wdk/src/fe-gtk/plugin-tray.c
 --- xchat-wdk.orig/src/fe-gtk/plugin-tray.c	2010-08-14 03:46:21 +0200
-+++ xchat-wdk/src/fe-gtk/plugin-tray.c	2010-08-24 19:58:14 +0200
++++ xchat-wdk/src/fe-gtk/plugin-tray.c	2010-08-25 04:22:07 +0200
 @@ -1,8 +1,7 @@
  /* Copyright (C) 2006-2007 Peter Zelezny. */
  
@@ -1022,7 +1022,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/plugin-tray.c xchat-wdk/
  	return XCHAT_EAT_NONE;
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/plugingui.c xchat-wdk/src/fe-gtk/plugingui.c
 --- xchat-wdk.orig/src/fe-gtk/plugingui.c	2010-05-16 05:20:22 +0200
-+++ xchat-wdk/src/fe-gtk/plugingui.c	2010-08-24 19:58:08 +0200
++++ xchat-wdk/src/fe-gtk/plugingui.c	2010-08-25 04:22:07 +0200
 @@ -35,7 +35,7 @@
  #include "../common/xchat.h"
  #define PLUGIN_C
@@ -1034,7 +1034,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/plugingui.c xchat-wdk/sr
  #include "../common/outbound.h"
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/rawlog.c xchat-wdk/src/fe-gtk/rawlog.c
 --- xchat-wdk.orig/src/fe-gtk/rawlog.c	2010-05-16 05:20:22 +0200
-+++ xchat-wdk/src/fe-gtk/rawlog.c	2010-08-19 00:03:40 +0200
++++ xchat-wdk/src/fe-gtk/rawlog.c	2010-08-25 04:22:07 +0200
 @@ -19,7 +19,6 @@
  #include <stdio.h>
  #include <string.h>
@@ -1045,7 +1045,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/rawlog.c xchat-wdk/src/f
  #include "fe-gtk.h"
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/sexy-spell-entry.c xchat-wdk/src/fe-gtk/sexy-spell-entry.c
 --- xchat-wdk.orig/src/fe-gtk/sexy-spell-entry.c	2006-07-17 07:51:02 +0200
-+++ xchat-wdk/src/fe-gtk/sexy-spell-entry.c	2010-08-19 00:03:40 +0200
++++ xchat-wdk/src/fe-gtk/sexy-spell-entry.c	2010-08-25 04:22:07 +0200
 @@ -31,6 +31,20 @@
  /*#include "gtkspell-iso-codes.h"
  #include "sexy-marshal.h"*/
@@ -1069,7 +1069,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/sexy-spell-entry.c xchat
   * compile-time dependency.  This makes it so I don't have to hear the
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/xtext.c xchat-wdk/src/fe-gtk/xtext.c
 --- xchat-wdk.orig/src/fe-gtk/xtext.c	2008-08-29 13:24:17 +0200
-+++ xchat-wdk/src/fe-gtk/xtext.c	2010-08-19 00:03:40 +0200
++++ xchat-wdk/src/fe-gtk/xtext.c	2010-08-25 04:22:07 +0200
 @@ -42,7 +42,6 @@
  #include <ctype.h>
  #include <stdlib.h>
@@ -1080,7 +1080,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/xtext.c xchat-wdk/src/fe
  #include <gtk/gtkselection.h>
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-text/fe-text.c xchat-wdk/src/fe-text/fe-text.c
 --- xchat-wdk.orig/src/fe-text/fe-text.c	2008-08-29 13:24:17 +0200
-+++ xchat-wdk/src/fe-text/fe-text.c	2010-08-25 04:16:04 +0200
++++ xchat-wdk/src/fe-text/fe-text.c	2010-08-25 04:22:07 +0200
 @@ -22,9 +22,13 @@
  #ifdef HAVE_STRINGS_H
  #include <strings.h>
