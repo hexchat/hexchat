@@ -3,6 +3,8 @@ all:
 	@-$(MAKE) /nologo /s /f makefile.mak $@
 	@cd ..\fe-gtk
 	@-$(MAKE) /nologo /s /f makefile.mak $@
+#	@cd ..\fe-text
+#	@-$(MAKE) /nologo /s /f makefile.mak $@
 
 clean:
 	@del common\*.obj
