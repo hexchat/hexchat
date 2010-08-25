@@ -105,6 +105,26 @@ sub register {
 	return ();
 }
 
+sub _process_hook_options {
+	my ($options, $keys, $store) = @_;
+
+	unless( @$keys == @$store ) {
+		die 'Number of keys must match the size of the store';
+	}
+
+	my @results;
+
+	if( ref( $options ) eq 'HASH' ) {
+		for my $index ( 0 .. @$keys - 1 ) {
+			my $key = $keys->[$index];
+			if( exists( $options->{ $key } ) && defined( $options->{ $key } ) ) {
+				${$store->[$index]} = $options->{ $key };
+			}
+		}
+	}
+
+}
+
 sub hook_server {
 	return undef unless @_ >= 2;
 	my $message = shift;
@@ -115,16 +135,11 @@ sub hook_server {
 	$callback = Xchat::Embed::fix_callback( $package, $callback );
 	
 	my ($priority, $data) = ( Xchat::PRI_NORM, undef );
-	
-	if( ref( $options ) eq 'HASH' ) {
-		if( exists( $options->{priority} ) && defined( $options->{priority} ) ) {
-			$priority = $options->{priority};
-		}
-		
-		if( exists( $options->{data} ) && defined( $options->{data} ) ) {
-			$data = $options->{data};
-		}
-	}
+	_process_hook_options(
+		$options,
+		[qw(priority data)],
+		[\($priority, $data)],
+	);
 	
 	my $pkg_info = Xchat::Embed::pkg_info( $package );
 	my $hook = Xchat::Internal::hook_server(
@@ -144,23 +159,11 @@ sub hook_command {
 	$callback = Xchat::Embed::fix_callback( $package, $callback );
 	
 	my ($priority, $help_text, $data) = ( Xchat::PRI_NORM, undef, undef );
-	
-	if( ref( $options ) eq 'HASH' ) {
-		if( exists( $options->{priority} ) && defined( $options->{priority} ) ) {
-			$priority = $options->{priority};
-		}
-
-		if(
-			exists( $options->{help_text} )
-			&& defined( $options->{help_text} )
-		) {
-			$help_text = $options->{help_text};
-		}
-
-		if ( exists( $options->{data} ) && defined( $options->{data} ) ) {
-			$data = $options->{data};
-		}
-	}
+	_process_hook_options(
+		$options,
+		[qw(priority help_text data)],
+		[\($priority, $help_text, $data)],
+	);
 	
 	my $pkg_info = Xchat::Embed::pkg_info( $package );
 	my $hook = Xchat::Internal::hook_command(
@@ -180,16 +183,11 @@ sub hook_print {
 	$callback = Xchat::Embed::fix_callback( $package, $callback );
 	
 	my ($priority, $data) = ( Xchat::PRI_NORM, undef );
-	
-	if ( ref( $options ) eq 'HASH' ) {
-		if ( exists( $options->{priority} ) && defined( $options->{priority} ) ) {
-			$priority = $options->{priority};
-		}
-
-		if ( exists( $options->{data} ) && defined( $options->{data} ) ) {
-			$data = $options->{data};
-		}
-	}
+	_process_hook_options(
+		$options,
+		[qw(priority data)],
+		[\($priority, $data)],
+	);
 	
 	my $pkg_info = Xchat::Embed::pkg_info( $package );
 	my $hook = Xchat::Internal::hook_print(
@@ -231,16 +229,11 @@ sub hook_fd {
 	$callback = Xchat::Embed::fix_callback( $package, $callback );
 	
 	my ($flags, $data) = (Xchat::FD_READ, undef);
-
-	if( ref( $options ) eq 'HASH' ) {
-		if( exists( $options->{flags} ) && defined( $options->{flags} ) ) {
-			$flags = $options->{flags};
-		}
-		
-		if ( exists( $options->{data} ) && defined( $options->{data} ) ) {
-			$data = $options->{data};
-		}
-	}
+	_process_hook_options(
+		$options,
+		[qw(flags data)],
+		[\($flags, $data)],
+	);
 	
 	my $cb = sub {
 		my $userdata = shift;
@@ -298,7 +291,7 @@ sub _do_for_each {
 		$servers = [ undef ];
 	}
 
-	my $num_done;
+	my $num_done = 0;
 	my $old_ctx = Xchat::get_context();
 	for my $server ( @$servers ) {
 		for my $channel ( @$channels ) {
