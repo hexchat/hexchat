@@ -182,7 +182,7 @@ sub hook_print {
 
 	$callback = Xchat::Embed::fix_callback( $package, $callback );
 	
-	my ($priority, $run_after, $filter, $data) = ( Xchat::PRI_NORM, 0, 0 undef );
+	my ($priority, $run_after, $filter, $data) = ( Xchat::PRI_NORM, 0, 0, undef );
 	_process_hook_options(
 		$options,
 		[qw(priority run_after_event filter data)],
