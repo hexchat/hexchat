@@ -1,14 +1,7 @@
 diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/perl/perl.c xchat-wdk/plugins/perl/perl.c
 --- xchat-wdk.orig/plugins/perl/perl.c	2010-08-26 04:18:04 +0200
-+++ xchat-wdk/plugins/perl/perl.c	2010-08-26 15:57:47 +0200
-@@ -16,18 +16,21 @@
-  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
-  */
- 
-+#define  _INC_DIRENT
- #include <stdlib.h>
- #include <stdio.h>
- #include <string.h>
++++ xchat-wdk/plugins/perl/perl.c	2010-08-26 16:07:52 +0200
+@@ -22,12 +22,15 @@
  #include <sys/types.h>
  #include <sys/stat.h>
  #include <fcntl.h>
@@ -18,6 +11,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/perl/perl.c xchat-wdk/plugi
  #endif
  #ifdef WIN32
  #include <windows.h>
++#define  _INC_DIRENT
 +#include "../../src/common/dirent.h"
 +#else
 +#include <dirent.h>
