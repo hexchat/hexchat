@@ -1,6 +1,6 @@
 diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/perl/perl.c xchat-wdk/plugins/perl/perl.c
 --- xchat-wdk.orig/plugins/perl/perl.c	2010-08-26 04:18:04 +0200
-+++ xchat-wdk/plugins/perl/perl.c	2010-08-26 16:07:52 +0200
++++ xchat-wdk/plugins/perl/perl.c	2010-08-26 16:59:41 +0200
 @@ -22,12 +22,15 @@
  #include <sys/types.h>
  #include <sys/stat.h>
@@ -39,6 +39,24 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/perl/perl.c xchat-wdk/plugi
  									 "Make sure perl's bin directory is in your PATH.");
  				}
  			}
+@@ -1461,7 +1468,7 @@
+ {
+ 	*name = "Perl";
+ 	*desc = "Perl scripting interface";
+-	*version = PACKAGE_VERSION;
++	*version = strcat (PACKAGE_VERSION, "/"PERL_REQUIRED_VERSION);
+ 	if (reserved)
+ 		*reserved = NULL;
+ }
+@@ -1487,7 +1494,7 @@
+ 
+ 	*plugin_name = "Perl";
+ 	*plugin_desc = "Perl scripting interface";
+-	*plugin_version = PACKAGE_VERSION;
++	*plugin_version = strcat (PACKAGE_VERSION, "/"PERL_REQUIRED_VERSION);
+ 
+ 	xchat_hook_command (ph, "load", XCHAT_PRI_NORM, perl_command_load, 0, 0);
+ 	xchat_hook_command (ph, "unload", XCHAT_PRI_NORM, perl_command_unload, 0,
 diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/python/python.c xchat-wdk/plugins/python/python.c
 --- xchat-wdk.orig/plugins/python/python.c	2010-05-16 06:31:54 +0200
 +++ xchat-wdk/plugins/python/python.c	2010-08-26 15:53:53 +0200
