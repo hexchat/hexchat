@@ -358,7 +358,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/plugin-timer.c xchat-wdk
  #define strcasecmp stricmp
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/plugin.c xchat-wdk/src/common/plugin.c
 --- xchat-wdk.orig/src/common/plugin.c	2010-08-14 03:46:21 +0200
-+++ xchat-wdk/src/common/plugin.c	2010-08-26 15:53:53 +0200
++++ xchat-wdk/src/common/plugin.c	2010-08-26 18:55:08 +0200
 @@ -34,7 +34,7 @@
  #include "text.h"
  #define PLUGIN_C
@@ -368,6 +368,15 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/plugin.c xchat-wdk/src/c
  #include "plugin.h"
  
  
+@@ -1212,7 +1212,7 @@
+ 	static const char * const dcc_fields[] =
+ 	{
+ 		"iaddress32","icps",		"sdestfile","sfile",		"snick",	"iport",
+-		"ipos", "iposhigh", "iresume", "iresumehigh" "isize", "isizehigh", "istatus", "itype", NULL
++		"ipos", "iposhigh", "iresume", "iresumehigh", "isize", "isizehigh", "istatus", "itype", NULL
+ 	};
+ 	static const char * const channels_fields[] =
+ 	{
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/proto-irc.c xchat-wdk/src/common/proto-irc.c
 --- xchat-wdk.orig/src/common/proto-irc.c	2010-05-30 04:28:04 +0200
 +++ xchat-wdk/src/common/proto-irc.c	2010-08-26 15:53:53 +0200
