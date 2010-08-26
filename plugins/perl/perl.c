@@ -39,6 +39,14 @@ static xchat_plugin *ph;		  /* plugin handle */
 static int perl_load_file (char *script_name);
 
 #ifdef WIN32
+/* STRINGIFY is from perl's CORE/config.h */
+#ifndef PERL_REQUIRED_VERSION
+	#define PERL_REQUIRED_VERSION STRINGIFY(PERL_REVISION) "." STRINGIFY(PERL_VERSION)
+#endif
+
+#ifndef PERL_DLL
+	#define PERL_DLL "perl" STRINGIFY(PERL_REVISION) STRINGIFY(PERL_VERSION) ".dll"
+#endif
 
 static DWORD
 child (char *str)
@@ -1339,12 +1347,12 @@ perl_load_file (char *filename)
 					FreeLibrary (lib);
 					lib = NULL;
 					thread_mbox ("Cannot open " PERL_DLL "\n\n"
-									 "You must have ActivePerl 5.8 installed in order to\n"
+									 "You must have ActivePerl " PERL_REQUIRED_VERSION " installed in order to\n"
 									 "run perl scripts.\n\n"
 									 "I have found Perl 5.6, but that is too old.");
 				} else {
 					thread_mbox ("Cannot open " PERL_DLL "\n\n"
-									 "You must have ActivePerl 5.8 installed in order to\n"
+									 "You must have ActivePerl " PERL_REQUIRED_VERSION " installed in order to\n"
 									 "run perl scripts.\n\n"
 									 "http://www.activestate.com/ActivePerl/\n\n"
 									 "Make sure perl's bin directory is in your PATH.");
