@@ -14,4 +14,6 @@ clean:
 	@del fe-gtk\xchat.exe
 	@del fe-gtk\xchat.rc
 	@del fe-gtk\xchat.res
+	@del fe-text\*.obj
+	@del fe-text\xchat-text.exe
 	@del pixmaps\*.h
