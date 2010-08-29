@@ -20,14 +20,14 @@ nmake /nologo /f makefile.mak
 cd perl
 set OOPATH=%PATH%
 set PATH=%OOPATH%;c:\mozilla-build\perl-5.8-x64\bin
-nmake /nologo /f makefile-58.mak clean
-nmake /nologo /f makefile-58.mak
+nmake /nologo /s /f makefile-58.mak clean
+nmake /nologo /s /f makefile-58.mak
 set PATH=%OOPATH%;c:\mozilla-build\perl-5.10-x64\bin
-nmake /nologo /f makefile-510.mak clean
-nmake /nologo /f makefile-510.mak
+nmake /nologo /s /f makefile-510.mak clean
+nmake /nologo /s /f makefile-510.mak
 set PATH=%OOPATH%;c:\mozilla-build\perl-5.12-x64\bin
-nmake /nologo /f makefile-512.mak clean
-nmake /nologo /f makefile-512.mak
+nmake /nologo /s /f makefile-512.mak clean
+nmake /nologo /s /f makefile-512.mak
 cd ..\..\build
 set PATH=%OPATH%
 call release-x64.bat
