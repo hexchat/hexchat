@@ -29,6 +29,7 @@ xcopy /q /s /i %GTK_BIN%\..\lib\gtk-2.0\2.10.0\engines\libpixmap.dll %XCHAT_DEST
 copy %GTK_BIN%\..\lib\gtk-2.0\2.10.0\engines\libwimp.dll %XCHAT_DEST%\lib\gtk-2.0\2.10.0\engines
 xcopy /q /s /i %GTK_BIN%\..\lib\gtk-2.0\modules\libgail.dll %XCHAT_DEST%\lib\gtk-2.0\modules\
 xcopy /q /s /i etc %XCHAT_DEST%\etc
+xcopy /q /s /i config %XCHAT_DEST%\config
 copy ..\COPYING %XCHAT_DEST%
 copy %SSL_BIN%\..\LICENSE.OPENSSL %XCHAT_DEST%
 copy %SSL_BIN%\..\LICENSE.ZLIB %XCHAT_DEST%

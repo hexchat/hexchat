@@ -1,9 +1,9 @@
 [Setup]
 AppName=XChat-WDK
-AppVerName=XChat-WDK r1464-2
-AppVersion=14.64.2
-VersionInfoVersion=14.64.2
-OutputBaseFilename=XChat-WDK r1464-2
+AppVerName=XChat-WDK r1464-3
+AppVersion=14.64.3
+VersionInfoVersion=14.64.3
+OutputBaseFilename=XChat-WDK r1464-3
 AppPublisher=XChat-WDK
 AppPublisherURL=http://code.google.com/p/xchat-wdk/
 AppCopyright=Copyright (C) 1998-2010 Peter Zelezny
@@ -22,8 +22,8 @@ SourceDir=..\..\xchat-wdk-uni
 OutputDir=..\xchat-wdk\build
 FlatComponentsList=no
 PrivilegesRequired=none
-CreateUninstallRegKey=not IsTaskSelected('portablemode')
-Uninstallable=not IsTaskSelected('portablemode')
+CreateUninstallRegKey=not IsTaskSelected('portable')
+Uninstallable=not IsTaskSelected('portable')
 ArchitecturesAllowed=x86 x64
 ArchitecturesInstallIn64BitMode=x64
 
@@ -43,9 +43,10 @@ Name: "plugins\python"; Description: "Python (needs ActivePython 2.6)"; Types: f
 Name: "plugins\tcl"; Description: "Tcl (needs ActiveTcl 8.5)"; Types: full custom
 
 [Tasks]
-Name: portablemode; Description: "Yes"; GroupDescription: "Portable Install (no Registry entries, no Start Menu icons, no uninstaller):"; Flags: unchecked
 Name: x86; Description: "x86"; GroupDescription: "XChat-WDK version:"; Flags: exclusive unchecked
 Name: x64; Description: "x64"; GroupDescription: "XChat-WDK version:"; Flags: exclusive; Check: Is64BitInstallMode
+Name: portable; Description: "Portable (no Registry entries, no Start Menu icons, no uninstaller)"; GroupDescription: "XChat-WDK version:"; Flags: unchecked
+Name: portable\blacktheme; Description: "Black Theme"; Flags: unchecked dontinheritcheck
 Name: perl58; Description: "5.8"; GroupDescription: "ActivePerl version:"; Flags: exclusive unchecked; Components: plugins\perl
 Name: perl510; Description: "5.10"; GroupDescription: "ActivePerl version:"; Flags: exclusive unchecked; Components: plugins\perl
 Name: perl512; Description: "5.12"; GroupDescription: "ActivePerl version:"; Flags: exclusive; Components: plugins\perl
@@ -54,7 +55,8 @@ Name: perl512; Description: "5.12"; GroupDescription: "ActivePerl version:"; Fla
 Source: "COPYING"; DestDir: "{app}"; Components: libs
 Source: "LICENSE.OPENSSL"; DestDir: "{app}"; Components: libs
 Source: "LICENSE.ZLIB"; DestDir: "{app}"; Components: libs
-Source: "portable-mode"; DestDir: "{app}"; Tasks: portablemode
+Source: "portable-mode"; DestDir: "{app}"; Tasks: portable
+Source: "config\*"; DestDir: "{app}\config"; Tasks: portable\blacktheme
 Source: "etc\*"; DestDir: "{app}\etc"; Flags: createallsubdirs recursesubdirs; Components: libs
 Source: "locale\*"; DestDir: "{app}\locale"; Flags: createallsubdirs recursesubdirs; Components: translations
 Source: "share\*"; DestDir: "{app}\share"; Flags: createallsubdirs recursesubdirs; Components: translations
@@ -179,8 +181,8 @@ Source: "plugins\xcperl-512.dll"; DestDir: "{app}\plugins"; DestName: "xcperl.dl
 Source: "plugins\xcperl-512.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Components: plugins\perl; Tasks: x64 and perl512
 
 [Icons]
-Name: "{group}\XChat-WDK"; Filename: "{app}\xchat.exe"; Tasks: not portablemode
-Name: "{group}\Uninstall XChat-WDK"; Filename: "{uninstallexe}"; Tasks: not portablemode
+Name: "{group}\XChat-WDK"; Filename: "{app}\xchat.exe"; Tasks: not portable
+Name: "{group}\Uninstall XChat-WDK"; Filename: "{uninstallexe}"; Tasks: not portable
 
 [Messages]
 BeveledLabel= XChat-WDK
@@ -236,7 +238,7 @@ end;
 /////////////////////////////////////////////////////////////////////
 procedure CurStepChanged(CurStep: TSetupStep);
 begin
-  if not (IsTaskSelected('portablemode')) then
+  if not (IsTaskSelected('portable')) then
   begin
     if (CurStep=ssInstall) then
     begin
