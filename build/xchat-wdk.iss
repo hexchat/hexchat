@@ -46,9 +46,9 @@ Name: "plugins\tcl"; Description: "Tcl (needs ActiveTcl 8.5)"; Types: full custo
 Name: portablemode; Description: "Yes"; GroupDescription: "Portable Install (no Registry entries, no Start Menu icons, no uninstaller):"; Flags: unchecked
 Name: x86; Description: "x86"; GroupDescription: "XChat-WDK version:"; Flags: exclusive unchecked
 Name: x64; Description: "x64"; GroupDescription: "XChat-WDK version:"; Flags: exclusive; Check: Is64BitInstallMode
-Name: perl58; Description: "5.8"; GroupDescription: "ActivePerl version:"; Flags: exclusive unchecked
-Name: perl510; Description: "5.10"; GroupDescription: "ActivePerl version:"; Flags: exclusive unchecked
-Name: perl512; Description: "5.12"; GroupDescription: "ActivePerl version:"; Flags: exclusive
+Name: perl58; Description: "5.8"; GroupDescription: "ActivePerl version:"; Flags: exclusive unchecked; Components: plugins\perl
+Name: perl510; Description: "5.10"; GroupDescription: "ActivePerl version:"; Flags: exclusive unchecked; Components: plugins\perl
+Name: perl512; Description: "5.12"; GroupDescription: "ActivePerl version:"; Flags: exclusive; Components: plugins\perl
 
 [Files]
 Source: "COPYING"; DestDir: "{app}"; Components: libs
