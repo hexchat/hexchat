@@ -170,7 +170,7 @@ Source: "plugins\xctcl.dll.x64"; DestDir: "{app}\plugins"; DestName: "xctcl.dll"
 
 
 Source: "plugins\xcperl-58.dll"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Components: plugins\perl; Tasks: x86 and perl58
-Source: "plugins\xcperl-510.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Components: plugins\perl; Tasks: x64 and perl58
+Source: "plugins\xcperl-58.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Components: plugins\perl; Tasks: x64 and perl58
 
 Source: "plugins\xcperl-510.dll"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Components: plugins\perl; Tasks: x86 and perl510
 Source: "plugins\xcperl-510.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Components: plugins\perl; Tasks: x64 and perl510
