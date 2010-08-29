@@ -1,9 +1,9 @@
 [Setup]
 AppName=XChat-WDK
-AppVerName=XChat-WDK r1464
-AppVersion=14.64
-VersionInfoVersion=14.64
-OutputBaseFilename=XChat-WDK r1464
+AppVerName=XChat-WDK r1464-2
+AppVersion=14.64.2
+VersionInfoVersion=14.64.2
+OutputBaseFilename=XChat-WDK r1464-2
 AppPublisher=XChat-WDK
 AppPublisherURL=http://code.google.com/p/xchat-wdk/
 AppCopyright=Copyright (C) 1998-2010 Peter Zelezny
@@ -38,7 +38,7 @@ Name: "translations"; Description: "Translations"; Types: normal full custom
 Name: "plugins"; Description: "Language Interfaces"; Types: full custom
 Name: "plugins\lua"; Description: "Lua (experimental)"; Types: full custom
 Name: "plugins\lua\luawdk"; Description: "Lua-WDK 5.1.4-2"; Types: full custom
-Name: "plugins\perl"; Description: "Perl (needs ActivePerl 5.12)"; Types: full custom
+Name: "plugins\perl"; Description: "Perl (needs ActivePerl)"; Types: full custom
 Name: "plugins\python"; Description: "Python (needs ActivePython 2.6)"; Types: full custom
 Name: "plugins\tcl"; Description: "Tcl (needs ActiveTcl 8.5)"; Types: full custom
 
@@ -46,6 +46,9 @@ Name: "plugins\tcl"; Description: "Tcl (needs ActiveTcl 8.5)"; Types: full custo
 Name: portablemode; Description: "Yes"; GroupDescription: "Portable Install (no Registry entries, no Start Menu icons, no uninstaller):"; Flags: unchecked
 Name: x86; Description: "x86"; GroupDescription: "XChat-WDK version:"; Flags: exclusive unchecked
 Name: x64; Description: "x64"; GroupDescription: "XChat-WDK version:"; Flags: exclusive; Check: Is64BitInstallMode
+Name: perl58; Description: "5.8"; GroupDescription: "ActivePerl version:"; Flags: exclusive unchecked
+Name: perl510; Description: "5.10"; GroupDescription: "ActivePerl version:"; Flags: exclusive unchecked
+Name: perl512; Description: "5.12"; GroupDescription: "ActivePerl version:"; Flags: exclusive
 
 [Files]
 Source: "COPYING"; DestDir: "{app}"; Components: libs
@@ -158,14 +161,22 @@ Source: "plugins\xcxdcc.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcxdcc.dl
 Source: "plugins\xclua.dll"; DestDir: "{app}\plugins"; Components: plugins\lua; Tasks: x86
 Source: "plugins\xclua.dll.x64"; DestDir: "{app}\plugins"; DestName: "xclua.dll"; Components: plugins\lua; Tasks: x64
 
-Source: "plugins\xcperl.dll"; DestDir: "{app}\plugins"; Components: plugins\perl; Tasks: x86
-Source: "plugins\xcperl.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Components: plugins\perl; Tasks: x64
-
 Source: "plugins\xcpython.dll"; DestDir: "{app}\plugins"; Components: plugins\python; Tasks: x86
 Source: "plugins\xcpython.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcpython.dll"; Components: plugins\python; Tasks: x64
 
 Source: "plugins\xctcl.dll"; DestDir: "{app}\plugins"; Components: plugins\tcl; Tasks: x86
 Source: "plugins\xctcl.dll.x64"; DestDir: "{app}\plugins"; DestName: "xctcl.dll"; Components: plugins\tcl; Tasks: x64
+
+
+
+Source: "plugins\xcperl-58.dll"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Components: plugins\perl; Tasks: x86 and perl58
+Source: "plugins\xcperl-510.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Components: plugins\perl; Tasks: x64 and perl58
+
+Source: "plugins\xcperl-510.dll"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Components: plugins\perl; Tasks: x86 and perl510
+Source: "plugins\xcperl-510.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Components: plugins\perl; Tasks: x64 and perl510
+
+Source: "plugins\xcperl-512.dll"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Components: plugins\perl; Tasks: x86 and perl512
+Source: "plugins\xcperl-512.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Components: plugins\perl; Tasks: x64 and perl512
 
 [Icons]
 Name: "{group}\XChat-WDK"; Filename: "{app}\xchat.exe"; Tasks: not portablemode

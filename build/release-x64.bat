@@ -31,7 +31,9 @@ copy %SSL_BIN%\ssleay32.dll %XCHAT_DEST%\ssleay32.dll.x64
 copy %SSL_BIN%\zlib1.dll %XCHAT_DEST%\zlib1.dll.x64
 copy ..\plugins\ewc\xcewc.dll %XCHAT_DEST%\plugins\xcewc.dll.x64
 copy ..\plugins\lua\xclua.dll %XCHAT_DEST%\plugins\xclua.dll.x64
-copy ..\plugins\perl\xcperl.dll %XCHAT_DEST%\plugins\xcperl.dll.x64
+copy ..\plugins\perl\xcperl-58.dll %XCHAT_DEST%\plugins\xcperl-58.dll.x64
+copy ..\plugins\perl\xcperl-510.dll %XCHAT_DEST%\plugins\xcperl-510.dll.x64
+copy ..\plugins\perl\xcperl-512.dll %XCHAT_DEST%\plugins\xcperl-512.dll.x64
 copy ..\plugins\python\xcpython.dll %XCHAT_DEST%\plugins\xcpython.dll.x64
 copy ..\plugins\tcl\xctcl.dll %XCHAT_DEST%\plugins\xctcl.dll.x64
 copy ..\plugins\xdcc\xcxdcc.dll %XCHAT_DEST%\plugins\xcxdcc.dll.x64
