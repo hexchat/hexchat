@@ -158,7 +158,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/xdcc/xdcc.c xchat-wdk/plugi
  
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/cfgfiles.c xchat-wdk/src/common/cfgfiles.c
 --- xchat-wdk.orig/src/common/cfgfiles.c	2010-08-07 09:14:45 +0200
-+++ xchat-wdk/src/common/cfgfiles.c	2010-08-26 15:53:53 +0200
++++ xchat-wdk/src/common/cfgfiles.c	2010-08-30 02:09:02 +0200
 @@ -17,7 +17,6 @@
   */
  
@@ -187,7 +187,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/cfgfiles.c xchat-wdk/src
 -		char out[256];
 +		if (portable_mode ())
 +		{
-+			xdir_fs = "config";
++			xdir_fs = "./config";
 +		}
 +		else
 +		{
