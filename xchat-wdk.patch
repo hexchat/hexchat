@@ -655,7 +655,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/xchat.h xchat-wdk/src/co
  #define	X_OK	1
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/about.c xchat-wdk/src/fe-gtk/about.c
 --- xchat-wdk.orig/src/fe-gtk/about.c	2010-05-16 09:43:49 +0200
-+++ xchat-wdk/src/fe-gtk/about.c	2010-08-30 10:21:07 +0200
++++ xchat-wdk/src/fe-gtk/about.c	2010-08-30 10:30:12 +0200
 @@ -39,6 +39,8 @@
  
  #include "../common/xchat.h"
@@ -674,7 +674,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/about.c xchat-wdk/src/fe
 -				/* leave this message to avoid time wasting bug reports! */
 -				"This version is unofficial and comes with no support.\n\n"
 -#endif
-+				"<b>Latest Version</b>: r%s\n"
++				"<b>Latest Version</b>: %s\n"
 +				"<b>XChat Base</b>: 2.8.8\n\n"
  				"%s\n"
  				"<b>Charset</b>: %s "
