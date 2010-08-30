@@ -9,6 +9,8 @@ all:
 	@-$(MAKE) /nologo /s /f makefile.mak $@
 	@cd ..\xdcc
 	@-$(MAKE) /nologo /s /f makefile.mak $@
+	@cd ..\xtray
+	@-$(MAKE) /nologo /s /f makefile.mak $@
 
 clean:
 	@del ewc\*.def
@@ -36,3 +38,8 @@ clean:
 	@del xdcc\*.exp
 	@del xdcc\*.lib
 	@del xdcc\*.obj
+	@del xtray\*.def
+	@del xtray\*.dll
+	@del xtray\*.exp
+	@del xtray\*.lib
+	@del xtray\*.obj

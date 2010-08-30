@@ -10,7 +10,7 @@ utility.obj \
 xchat.obj \
 xtray.obj
 
-CPPFLAGS = $(CPPFLAGS) /D_STL70_ /D_STATIC_CPPLIB /EHsc
+CPPFLAGS = $(CPPFLAGS) /D_STL70_ /D_STATIC_CPPLIB /EHsc /DUNICODE /D_UNICODE
 
 all: $(TRAY_OBJECTS) $(TARGET)
 
