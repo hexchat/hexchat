@@ -655,7 +655,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/xchat.h xchat-wdk/src/co
  #define	X_OK	1
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/about.c xchat-wdk/src/fe-gtk/about.c
 --- xchat-wdk.orig/src/fe-gtk/about.c	2010-05-16 09:43:49 +0200
-+++ xchat-wdk/src/fe-gtk/about.c	2010-08-30 10:02:36 +0200
++++ xchat-wdk/src/fe-gtk/about.c	2010-08-30 10:21:07 +0200
 @@ -39,6 +39,8 @@
  
  #include "../common/xchat.h"
@@ -665,25 +665,25 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/about.c xchat-wdk/src/fe
  #include "palette.h"
  #include "pixmaps.h"
  #include "gtkutil.h"
-@@ -114,35 +116,41 @@
+@@ -114,35 +116,40 @@
  	g_get_charset (&locale);
  	(snprintf) (buf, sizeof (buf),
  				"<span size=\"x-large\"><b>"DISPLAY_NAME" "PACKAGE_VERSION"</b></span>\n\n"
 -				"%s\n\n"
  #ifdef WIN32
-+				"<b>Latest Version</b>: r%s\n\n"
- 				/* leave this message to avoid time wasting bug reports! */
+-				/* leave this message to avoid time wasting bug reports! */
 -				"This version is unofficial and comes with no support.\n\n"
 -#endif
-+				"This version is unofficial and\ncomes with no support.\n\n"
++				"<b>Latest Version</b>: r%s\n"
++				"<b>XChat Base</b>: 2.8.8\n\n"
  				"%s\n"
  				"<b>Charset</b>: %s "
 -#ifdef WIN32 
  				"<b>GTK+</b>: %i.%i.%i\n"
 +				"<b>Compiled</b>: "__DATE__"\n"
 +				"<b>Portable Mode</b>: %s\n\n"
-+				"<b>XChat Base</b>: 2.8.8\n\n"
-+				"<small>\302\251 1998-2010 Peter \305\275elezn\303\275 &lt;zed@xchat.org></small>",
++				"<small>This version is unofficial and comes with no support.\n"
++				"\302\251 1998-2010 Peter \305\275elezn\303\275 &lt;zed@xchat.org></small>",
 +				check_version(),
 +				get_cpu_str(),
 +				locale,

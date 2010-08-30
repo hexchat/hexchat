@@ -8,7 +8,7 @@ char* check_version ()
 	
 	if (!hINet)
 	{
-		return "error";
+		return "unavailable";
 	}
 
 	hFile = InternetOpenUrl (hINet, "http://xchat-wdk.googlecode.com/hg/version.txt", NULL, 0, 0, 0);
@@ -32,5 +32,5 @@ char* check_version ()
 	
 	InternetCloseHandle (hINet);
 
-	return "error";
+	return "unavailable";
 }
