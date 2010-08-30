@@ -1,9 +1,9 @@
 [Setup]
 AppName=XChat-WDK
-AppVerName=XChat-WDK r1464-3
-AppVersion=14.64.3
-VersionInfoVersion=14.64.3
-OutputBaseFilename=XChat-WDK r1464-3
+AppVerName=XChat-WDK r1464-4
+AppVersion=14.64.4
+VersionInfoVersion=14.64.4
+OutputBaseFilename=XChat-WDK r1464-4
 AppPublisher=XChat-WDK
 AppPublisherURL=http://code.google.com/p/xchat-wdk/
 AppCopyright=Copyright (C) 1998-2010 Peter Zelezny
@@ -22,6 +22,7 @@ SourceDir=..\..\xchat-wdk-uni
 OutputDir=..\xchat-wdk\build
 FlatComponentsList=no
 PrivilegesRequired=none
+ShowComponentSizes=no
 CreateUninstallRegKey=not IsTaskSelected('portable')
 Uninstallable=not IsTaskSelected('portable')
 ArchitecturesAllowed=x86 x64
@@ -35,28 +36,40 @@ Name: "custom"; Description: "Custom Installation"; Flags: iscustom
 [Components]
 Name: "libs"; Description: "XChat-WDK"; Types: normal full custom; Flags: fixed
 Name: "translations"; Description: "Translations"; Types: normal full custom
-Name: "plugins"; Description: "Language Interfaces"; Types: full custom
-Name: "plugins\lua"; Description: "Lua (experimental)"; Types: full custom
-Name: "plugins\lua\luawdk"; Description: "Lua-WDK 5.1.4-2"; Types: full custom
-Name: "plugins\perl"; Description: "Perl (needs ActivePerl)"; Types: full custom
-Name: "plugins\python"; Description: "Python (needs ActivePython 2.6)"; Types: full custom
-Name: "plugins\tcl"; Description: "Tcl (needs ActiveTcl 8.5)"; Types: full custom
+Name: "plugins"; Description: "Plugins"; Types: full custom
+Name: "plugins\ewc"; Description: "EasyWinampControl"; Types: full custom
+Name: "plugins\xdcc"; Description: "XDCC"; Types: full custom
+Name: "langs"; Description: "Language Interfaces"; Types: full custom
+Name: "langs\lua"; Description: "Lua (experimental)"; Types: full custom
+Name: "langs\lua\luawdk"; Description: "Lua-WDK 5.1.4-2"; Types: full custom
+Name: "langs\perl"; Description: "Perl (needs ActivePerl)"; Types: full custom
+Name: "langs\python"; Description: "Python (needs ActivePython 2.6)"; Types: full custom
+Name: "langs\tcl"; Description: "Tcl (needs ActiveTcl 8.5)"; Types: full custom
 
 [Tasks]
 Name: x86; Description: "x86"; GroupDescription: "XChat-WDK version:"; Flags: exclusive unchecked
 Name: x64; Description: "x64"; GroupDescription: "XChat-WDK version:"; Flags: exclusive; Check: Is64BitInstallMode
-Name: portable; Description: "Portable (no Registry entries, no Start Menu icons, no uninstaller)"; GroupDescription: "XChat-WDK version:"; Flags: unchecked
-Name: portable\blacktheme; Description: "Black Theme"; Flags: unchecked dontinheritcheck
-Name: perl58; Description: "5.8"; GroupDescription: "ActivePerl version:"; Flags: exclusive unchecked; Components: plugins\perl
-Name: perl510; Description: "5.10"; GroupDescription: "ActivePerl version:"; Flags: exclusive unchecked; Components: plugins\perl
-Name: perl512; Description: "5.12"; GroupDescription: "ActivePerl version:"; Flags: exclusive; Components: plugins\perl
+
+Name: portable; Description: "Yes"; GroupDescription: "Portable Install (no Registry entries, no Start Menu icons, no uninstaller):"; Flags: unchecked
+
+Name: thdefault; Description: "Default"; GroupDescription: "Theme (only for portable installs)"; Flags: exclusive
+Name: thblack; Description: "Black"; GroupDescription: "Theme (only for portable installs)"; Flags: exclusive unchecked
+Name: thglyphed; Description: "Simply Glyphed Tango Dark"; GroupDescription: "Theme (only for portable installs)"; Flags: exclusive unchecked
+
+Name: noxtray; Description: "Plugin-Tray"; GroupDescription: "Tray Icon"; Flags: exclusive
+Name: xtray; Description: "X-Tray"; GroupDescription: "Tray Icon"; Flags: exclusive unchecked
+
+Name: perl58; Description: "5.8"; GroupDescription: "ActivePerl version:"; Flags: exclusive unchecked; Components: langs\perl
+Name: perl510; Description: "5.10"; GroupDescription: "ActivePerl version:"; Flags: exclusive unchecked; Components: langs\perl
+Name: perl512; Description: "5.12"; GroupDescription: "ActivePerl version:"; Flags: exclusive; Components: langs\perl
 
 [Files]
 Source: "COPYING"; DestDir: "{app}"; Components: libs
 Source: "LICENSE.OPENSSL"; DestDir: "{app}"; Components: libs
 Source: "LICENSE.ZLIB"; DestDir: "{app}"; Components: libs
 Source: "portable-mode"; DestDir: "{app}"; Tasks: portable
-Source: "config\*"; DestDir: "{app}\config"; Tasks: portable\blacktheme
+Source: "themes\glyphed\*"; DestDir: "{app}\config"; Tasks: thglyphed
+Source: "themes\black\*"; DestDir: "{app}\config"; Tasks: thblack
 Source: "etc\*"; DestDir: "{app}\etc"; Flags: createallsubdirs recursesubdirs; Components: libs
 Source: "locale\*"; DestDir: "{app}\locale"; Flags: createallsubdirs recursesubdirs; Components: translations
 Source: "share\*"; DestDir: "{app}\share"; Flags: createallsubdirs recursesubdirs; Components: translations
@@ -152,33 +165,38 @@ Source: "lib\gtk-2.0\modules\libgail.dll.x64"; DestDir: "{app}\lib\gtk-2.0\modul
 
 
 
-Source: "plugins\xcewc.dll"; DestDir: "{app}\plugins"; Components: libs; Tasks: x86
-Source: "plugins\xcewc.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcewc.dll"; Components: libs; Tasks: x64
+Source: "plugins\xcewc.dll"; DestDir: "{app}\plugins"; Components: plugins\ewc; Tasks: x86
+Source: "plugins\xcewc.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcewc.dll"; Components: plugins\ewc; Tasks: x64
 
-Source: "plugins\xcxdcc.dll"; DestDir: "{app}\plugins"; Components: libs; Tasks: x86
-Source: "plugins\xcxdcc.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcxdcc.dll"; Components: libs; Tasks: x64
-
-
-
-Source: "plugins\xclua.dll"; DestDir: "{app}\plugins"; Components: plugins\lua; Tasks: x86
-Source: "plugins\xclua.dll.x64"; DestDir: "{app}\plugins"; DestName: "xclua.dll"; Components: plugins\lua; Tasks: x64
-
-Source: "plugins\xcpython.dll"; DestDir: "{app}\plugins"; Components: plugins\python; Tasks: x86
-Source: "plugins\xcpython.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcpython.dll"; Components: plugins\python; Tasks: x64
-
-Source: "plugins\xctcl.dll"; DestDir: "{app}\plugins"; Components: plugins\tcl; Tasks: x86
-Source: "plugins\xctcl.dll.x64"; DestDir: "{app}\plugins"; DestName: "xctcl.dll"; Components: plugins\tcl; Tasks: x64
+Source: "plugins\xcxdcc.dll"; DestDir: "{app}\plugins"; Components: plugins\xdcc; Tasks: x86
+Source: "plugins\xcxdcc.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcxdcc.dll"; Components: plugins\xdcc; Tasks: x64
 
 
 
-Source: "plugins\xcperl-58.dll"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Components: plugins\perl; Tasks: x86 and perl58
-Source: "plugins\xcperl-58.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Components: plugins\perl; Tasks: x64 and perl58
+Source: "plugins\xclua.dll"; DestDir: "{app}\plugins"; Components: langs\lua; Tasks: x86
+Source: "plugins\xclua.dll.x64"; DestDir: "{app}\plugins"; DestName: "xclua.dll"; Components: langs\lua; Tasks: x64
 
-Source: "plugins\xcperl-510.dll"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Components: plugins\perl; Tasks: x86 and perl510
-Source: "plugins\xcperl-510.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Components: plugins\perl; Tasks: x64 and perl510
+Source: "plugins\xcpython.dll"; DestDir: "{app}\plugins"; Components: langs\python; Tasks: x86
+Source: "plugins\xcpython.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcpython.dll"; Components: langs\python; Tasks: x64
 
-Source: "plugins\xcperl-512.dll"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Components: plugins\perl; Tasks: x86 and perl512
-Source: "plugins\xcperl-512.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Components: plugins\perl; Tasks: x64 and perl512
+Source: "plugins\xctcl.dll"; DestDir: "{app}\plugins"; Components: langs\tcl; Tasks: x86
+Source: "plugins\xctcl.dll.x64"; DestDir: "{app}\plugins"; DestName: "xctcl.dll"; Components: langs\tcl; Tasks: x64
+
+
+
+Source: "plugins\xcperl-58.dll"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Components: langs\perl; Tasks: x86 and perl58
+Source: "plugins\xcperl-58.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Components: langs\perl; Tasks: x64 and perl58
+
+Source: "plugins\xcperl-510.dll"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Components: langs\perl; Tasks: x86 and perl510
+Source: "plugins\xcperl-510.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Components: langs\perl; Tasks: x64 and perl510
+
+Source: "plugins\xcperl-512.dll"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Components: langs\perl; Tasks: x86 and perl512
+Source: "plugins\xcperl-512.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Components: langs\perl; Tasks: x64 and perl512
+
+
+
+Source: "plugins\xtray.dll"; DestDir: "{app}\plugins"; Components: libs; Tasks: x86 and xtray
+Source: "plugins\xtray.dll.x64"; DestDir: "{app}\plugins"; DestName: "xtray.dll"; Components: libs; Tasks: x64 and xtray
 
 [Icons]
 Name: "{group}\XChat-WDK"; Filename: "{app}\xchat.exe"; Tasks: not portable
