@@ -121,10 +121,8 @@ menu_update (GtkWidget * wid, gpointer sess)
 	gtk_container_add (GTK_CONTAINER (vbox), label);
 	g_get_charset (&locale);
 	(snprintf) (buf, sizeof (buf),
-				"<b>Your Version</b>: "PACKAGE_VERSION"\n"
-				"<b>Latest Version</b>: %s%s",
-				check_version ()
-				/*((strcmp (check_version (), PACKAGE_VERSION) != 0) && (strcmp (check_version (), "Unknown") != 0)) ? "\n\nDownload the new version from\n\n<b>http://code.google.com/p/xchat-wdk/</b>" : ""*/
+				"\n%s\n",
+				((strcmp (check_version (), PACKAGE_VERSION) == 0) || (strcmp (check_version (), "Unknown") == 0)) ? "<span size=\"x-large\"><b>You have the latest version!</b></span>" : "<span size=\"x-large\"><b>Download the latest version\nfrom the website!</b></span>"
 				);
 	gtk_label_set_markup (GTK_LABEL (label), buf);
 	gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_CENTER);
