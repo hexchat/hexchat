@@ -1,0 +1,1 @@
+char* check_version ();

@@ -655,47 +655,74 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/xchat.h xchat-wdk/src/co
  #define	X_OK	1
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/about.c xchat-wdk/src/fe-gtk/about.c
 --- xchat-wdk.orig/src/fe-gtk/about.c	2010-05-16 09:43:49 +0200
-+++ xchat-wdk/src/fe-gtk/about.c	2010-08-26 15:53:53 +0200
-@@ -39,6 +39,7 @@
++++ xchat-wdk/src/fe-gtk/about.c	2010-08-30 10:02:36 +0200
+@@ -39,6 +39,8 @@
  
  #include "../common/xchat.h"
  #include "../common/util.h"
 +#include "../common/portable.h"
++#include "check-version.h"
  #include "palette.h"
  #include "pixmaps.h"
  #include "gtkutil.h"
-@@ -117,7 +118,7 @@
- 				"%s\n\n"
+@@ -114,35 +116,41 @@
+ 	g_get_charset (&locale);
+ 	(snprintf) (buf, sizeof (buf),
+ 				"<span size=\"x-large\"><b>"DISPLAY_NAME" "PACKAGE_VERSION"</b></span>\n\n"
+-				"%s\n\n"
  #ifdef WIN32
++				"<b>Latest Version</b>: r%s\n\n"
  				/* leave this message to avoid time wasting bug reports! */
 -				"This version is unofficial and comes with no support.\n\n"
+-#endif
 +				"This version is unofficial and\ncomes with no support.\n\n"
- #endif
  				"%s\n"
  				"<b>Charset</b>: %s "
-@@ -126,7 +127,11 @@
- #else
- 				"<b>Renderer</b>: %s\n"
- #endif
--				"<b>Compiled</b>: "__DATE__"\n\n"
+-#ifdef WIN32 
+ 				"<b>GTK+</b>: %i.%i.%i\n"
 +				"<b>Compiled</b>: "__DATE__"\n"
-+#ifdef WIN32
 +				"<b>Portable Mode</b>: %s\n\n"
 +				"<b>XChat Base</b>: 2.8.8\n\n"
-+#endif
- 				"<small>\302\251 1998-2010 Peter \305\275elezn\303\275 &lt;zed@xchat.org></small>",
- 					_("A multiplatform IRC Client"),
- 					get_cpu_str(),
-@@ -134,7 +139,8 @@
- #ifdef WIN32
- 					gtk_major_version,
- 					gtk_minor_version,
--					gtk_micro_version
-+					gtk_micro_version,
-+					(portable_mode() ? "Yes" : "No")
++				"<small>\302\251 1998-2010 Peter \305\275elezn\303\275 &lt;zed@xchat.org></small>",
++				check_version(),
++				get_cpu_str(),
++				locale,
++				gtk_major_version,
++				gtk_minor_version,
++				gtk_micro_version,
++				(portable_mode() ? "Yes" : "No")
  #else
++				"%s\n\n"
++				"%s\n"
++				"<b>Charset</b>: %s "
+ 				"<b>Renderer</b>: %s\n"
+-#endif
+ 				"<b>Compiled</b>: "__DATE__"\n\n"
+ 				"<small>\302\251 1998-2010 Peter \305\275elezn\303\275 &lt;zed@xchat.org></small>",
+-					_("A multiplatform IRC Client"),
+-					get_cpu_str(),
+-					locale,
+-#ifdef WIN32
+-					gtk_major_version,
+-					gtk_minor_version,
+-					gtk_micro_version
+-#else
++				_("A multiplatform IRC Client"),
++				get_cpu_str(),
++				locale,
  #ifdef USE_XFT
- 					"Xft"
+-					"Xft"
++				"Xft"
+ #else
+-					"Pango"
++				"Pango"
+ #endif
+ #endif
+-					);
++				);
+ 	gtk_label_set_markup (GTK_LABEL (label), buf);
+ 	gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_CENTER);
+ 
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/banlist.c xchat-wdk/src/fe-gtk/banlist.c
 --- xchat-wdk.orig/src/fe-gtk/banlist.c	2010-05-16 05:20:22 +0200
 +++ xchat-wdk/src/fe-gtk/banlist.c	2010-08-26 15:53:53 +0200
