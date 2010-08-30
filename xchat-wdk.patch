@@ -655,17 +655,17 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/xchat.h xchat-wdk/src/co
  #define	X_OK	1
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/about.c xchat-wdk/src/fe-gtk/about.c
 --- xchat-wdk.orig/src/fe-gtk/about.c	2010-05-16 09:43:49 +0200
-+++ xchat-wdk/src/fe-gtk/about.c	2010-08-30 10:30:12 +0200
++++ xchat-wdk/src/fe-gtk/about.c	2010-08-30 12:09:20 +0200
 @@ -39,6 +39,8 @@
  
  #include "../common/xchat.h"
  #include "../common/util.h"
 +#include "../common/portable.h"
-+#include "check-version.h"
++//#include "check-version.h"
  #include "palette.h"
  #include "pixmaps.h"
  #include "gtkutil.h"
-@@ -114,35 +116,40 @@
+@@ -114,35 +116,38 @@
  	g_get_charset (&locale);
  	(snprintf) (buf, sizeof (buf),
  				"<span size=\"x-large\"><b>"DISPLAY_NAME" "PACKAGE_VERSION"</b></span>\n\n"
@@ -674,7 +674,6 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/about.c xchat-wdk/src/fe
 -				/* leave this message to avoid time wasting bug reports! */
 -				"This version is unofficial and comes with no support.\n\n"
 -#endif
-+				"<b>Latest Version</b>: %s\n"
 +				"<b>XChat Base</b>: 2.8.8\n\n"
  				"%s\n"
  				"<b>Charset</b>: %s "
@@ -684,13 +683,12 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/about.c xchat-wdk/src/fe
 +				"<b>Portable Mode</b>: %s\n\n"
 +				"<small>This version is unofficial and comes with no support.\n"
 +				"\302\251 1998-2010 Peter \305\275elezn\303\275 &lt;zed@xchat.org></small>",
-+				check_version(),
-+				get_cpu_str(),
++				get_cpu_str (),
 +				locale,
 +				gtk_major_version,
 +				gtk_minor_version,
 +				gtk_micro_version,
-+				(portable_mode() ? "Yes" : "No")
++				(portable_mode () ? "Yes" : "No")
  #else
 +				"%s\n\n"
 +				"%s\n"
@@ -708,7 +706,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/about.c xchat-wdk/src/fe
 -					gtk_micro_version
 -#else
 +				_("A multiplatform IRC Client"),
-+				get_cpu_str(),
++				get_cpu_str (),
 +				locale,
  #ifdef USE_XFT
 -					"Xft"
@@ -948,7 +946,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/maingui.c xchat-wdk/src/
  }
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/menu.c xchat-wdk/src/fe-gtk/menu.c
 --- xchat-wdk.orig/src/fe-gtk/menu.c	2010-05-16 06:24:24 +0200
-+++ xchat-wdk/src/fe-gtk/menu.c	2010-08-26 15:53:53 +0200
++++ xchat-wdk/src/fe-gtk/menu.c	2010-08-30 11:52:13 +0200
 @@ -20,7 +20,6 @@
  #include <stdlib.h>
  #include <fcntl.h>
@@ -957,6 +955,24 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/menu.c xchat-wdk/src/fe-
  
  #ifdef WIN32
  #include <windows.h>
+@@ -68,6 +67,7 @@
+ #include "plugingui.h"
+ #include "search.h"
+ #include "textgui.h"
++#include "update.h"
+ #include "urlgrab.h"
+ #include "userlistgui.h"
+ #include "menu.h"
+@@ -1652,9 +1652,7 @@
+ 
+ 	{N_("_Help"), 0, 0, M_NEWMENU, 0, 0, 1},	/* 69 */
+ 	{N_("_Contents"), menu_docs, GTK_STOCK_HELP, M_MENUSTOCK, 0, 0, 1, GDK_F1},
+-#if 0
+ 	{N_("Check for updates"), menu_update, 0, M_MENUITEM, 0, 1},
+-#endif
+ 	{N_("_About"), menu_about, GTK_STOCK_ABOUT, M_MENUSTOCK, 0, 0, 1},
+ 
+ 	{0, 0, 0, M_END, 0, 0, 0},
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/palette.c xchat-wdk/src/fe-gtk/palette.c
 --- xchat-wdk.orig/src/fe-gtk/palette.c	2010-05-16 05:20:22 +0200
 +++ xchat-wdk/src/fe-gtk/palette.c	2010-08-26 15:53:53 +0200
