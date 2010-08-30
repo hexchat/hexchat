@@ -943,7 +943,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/palette.c xchat-wdk/src/
  #include <fcntl.h>
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/plugin-tray.c xchat-wdk/src/fe-gtk/plugin-tray.c
 --- xchat-wdk.orig/src/fe-gtk/plugin-tray.c	2010-08-14 03:46:21 +0200
-+++ xchat-wdk/src/fe-gtk/plugin-tray.c	2010-08-30 02:48:50 +0200
++++ xchat-wdk/src/fe-gtk/plugin-tray.c	2010-08-30 04:24:14 +0200
 @@ -1,8 +1,7 @@
  /* Copyright (C) 2006-2007 Peter Zelezny. */
  
@@ -1050,6 +1050,15 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/plugin-tray.c xchat-wdk/
  								word[1], network);
  
  	return XCHAT_EAT_NONE;
+@@ -803,7 +802,7 @@
+ 	}
+ 	else
+ 	{
+-		if (prefs.gui_tray)
++		if (prefs.gui_tray && !((_access( "plugins/xtray.dll", 0 )) != -1))
+ 			tray_init ();
+ 	}
+ }
 @@ -835,7 +834,7 @@
  
  	xchat_hook_print (ph, "Focus Window", -1, tray_focus_cb, NULL);
