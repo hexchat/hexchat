@@ -56,8 +56,8 @@ Name: thdefault; Description: "Default"; GroupDescription: "Theme (only for port
 Name: thblack; Description: "Black"; GroupDescription: "Theme (only for portable installs)"; Flags: exclusive unchecked
 Name: thglyphed; Description: "Simply Glyphed Tango Dark"; GroupDescription: "Theme (only for portable installs)"; Flags: exclusive unchecked
 
-Name: noxtray; Description: "Plugin-Tray"; GroupDescription: "Tray Icon"; Flags: exclusive
-Name: xtray; Description: "X-Tray"; GroupDescription: "Tray Icon"; Flags: exclusive unchecked
+Name: xtray; Description: "X-Tray"; GroupDescription: "Tray Icon"; Flags: exclusive
+Name: noxtray; Description: "Plugin-Tray"; GroupDescription: "Tray Icon"; Flags: exclusive unchecked
 
 Name: perl58; Description: "5.8"; GroupDescription: "ActivePerl version:"; Flags: exclusive unchecked; Components: langs\perl
 Name: perl510; Description: "5.10"; GroupDescription: "ActivePerl version:"; Flags: exclusive unchecked; Components: langs\perl
