@@ -35,12 +35,9 @@
 
 #include "../common/xchat.h"
 #include "../common/util.h"
-#include "../common/portable.h"
-#include "check-version.h"
 #include "palette.h"
 #include "pixmaps.h"
 #include "gtkutil.h"
-#include "update.h"
 
 #include <windows.h>
 #include <wininet.h>

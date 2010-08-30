@@ -655,17 +655,16 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/xchat.h xchat-wdk/src/co
  #define	X_OK	1
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/about.c xchat-wdk/src/fe-gtk/about.c
 --- xchat-wdk.orig/src/fe-gtk/about.c	2010-05-16 09:43:49 +0200
-+++ xchat-wdk/src/fe-gtk/about.c	2010-08-30 12:09:20 +0200
-@@ -39,6 +39,8 @@
++++ xchat-wdk/src/fe-gtk/about.c	2010-08-30 12:43:12 +0200
+@@ -39,6 +39,7 @@
  
  #include "../common/xchat.h"
  #include "../common/util.h"
 +#include "../common/portable.h"
-+//#include "check-version.h"
  #include "palette.h"
  #include "pixmaps.h"
  #include "gtkutil.h"
-@@ -114,35 +116,38 @@
+@@ -114,35 +115,38 @@
  	g_get_charset (&locale);
  	(snprintf) (buf, sizeof (buf),
  				"<span size=\"x-large\"><b>"DISPLAY_NAME" "PACKAGE_VERSION"</b></span>\n\n"
