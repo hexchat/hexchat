@@ -5,6 +5,8 @@ set LUA_BIN=c:\mozilla-build\build\lua-wdk-5.1.4-2-x86\bin
 set XCHAT_DEST=c:\mozilla-build\build\xchat-wdk-uni
 rmdir /q /s %XCHAT_DEST%
 mkdir %XCHAT_DEST%
+echo 2> portable-mode
+move portable-mode %XCHAT_DEST%
 copy ..\src\fe-gtk\xchat.exe %XCHAT_DEST%
 copy %GTK_BIN%\libgtk-win32-2.0-0.dll %XCHAT_DEST%
 copy %GTK_BIN%\libgdk_pixbuf-2.0-0.dll %XCHAT_DEST%
@@ -48,5 +50,3 @@ copy ..\plugins\xtray\xtray.dll %XCHAT_DEST%\plugins
 copy %LUA_BIN%\lua51.dll %XCHAT_DEST%
 xcopy /q /s /i ..\po\locale %XCHAT_DEST%\locale
 xcopy /q /s /i %GTK_BIN%\..\share\locale %XCHAT_DEST%\share\locale
-echo 2> portable-mode
-move portable-mode %XCHAT_DEST%
