@@ -74,11 +74,11 @@ print_version ()
 
 	if (strcmp (version, xchat_get_info (ph, "version")) == 0)
 	{
-		xchat_printf (ph, "You have the latest version installed!");
+		xchat_printf (ph, "You have the latest version of XChat-WDK installed!");
 	}
 	else if (strcmp (version, "Unknown") == 0)
 	{
-		xchat_printf (ph, "Unable to check for updates!");
+		xchat_printf (ph, "Unable to check for XChat-WDK updates!");
 	}
 	else
 	{
