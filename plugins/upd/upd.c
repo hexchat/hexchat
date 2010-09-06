@@ -82,7 +82,7 @@ print_version ()
 	}
 	else
 	{
-		xchat_printf (ph, "An XChat-WDK update is available! You can download it from here: http://xchat-wdk.googlecode.com/files/XChat-WDK%%20%s.exe", version);
+		xchat_printf (ph, "An XChat-WDK update is available! You can download it from here:\nhttp://xchat-wdk.googlecode.com/files/XChat-WDK%%20%s.exe", version);
 	}
 }
 
