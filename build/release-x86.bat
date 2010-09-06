@@ -45,6 +45,7 @@ copy ..\plugins\perl\xcperl-510.dll %XCHAT_DEST%\plugins
 copy ..\plugins\perl\xcperl-512.dll %XCHAT_DEST%\plugins
 copy ..\plugins\python\xcpython.dll %XCHAT_DEST%\plugins
 copy ..\plugins\tcl\xctcl.dll %XCHAT_DEST%\plugins
+copy ..\plugins\tcl\xcupd.dll %XCHAT_DEST%\plugins
 copy ..\plugins\xdcc\xcxdcc.dll %XCHAT_DEST%\plugins
 copy ..\plugins\xtray\xtray.dll %XCHAT_DEST%\plugins
 copy %LUA_BIN%\lua51.dll %XCHAT_DEST%
