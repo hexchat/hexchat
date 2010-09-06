@@ -7,6 +7,8 @@ all:
 	@-$(MAKE) /nologo /s /f makefile.mak $@
 	@cd ..\tcl
 	@-$(MAKE) /nologo /s /f makefile.mak $@
+	@cd ..\upd
+	@-$(MAKE) /nologo /s /f makefile.mak $@
 	@cd ..\xdcc
 	@-$(MAKE) /nologo /s /f makefile.mak $@
 	@cd ..\xtray
@@ -33,6 +35,11 @@ clean:
 	@del tcl\*.exp
 	@del tcl\*.lib
 	@del tcl\*.obj
+	@del upd\*.def
+	@del upd\*.dll
+	@del upd\*.exp
+	@del upd\*.lib
+	@del upd\*.obj
 	@del xdcc\*.def
 	@del xdcc\*.dll
 	@del xdcc\*.exp
