@@ -927,7 +927,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/maingui.c xchat-wdk/src/
  }
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/menu.c xchat-wdk/src/fe-gtk/menu.c
 --- xchat-wdk.orig/src/fe-gtk/menu.c	2010-05-16 06:24:24 +0200
-+++ xchat-wdk/src/fe-gtk/menu.c	2010-08-30 11:52:13 +0200
++++ xchat-wdk/src/fe-gtk/menu.c	2010-09-06 11:41:18 +0200
 @@ -20,7 +20,6 @@
  #include <stdlib.h>
  #include <fcntl.h>
@@ -936,24 +936,6 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/menu.c xchat-wdk/src/fe-
  
  #ifdef WIN32
  #include <windows.h>
-@@ -68,6 +67,7 @@
- #include "plugingui.h"
- #include "search.h"
- #include "textgui.h"
-+#include "update.h"
- #include "urlgrab.h"
- #include "userlistgui.h"
- #include "menu.h"
-@@ -1652,9 +1652,7 @@
- 
- 	{N_("_Help"), 0, 0, M_NEWMENU, 0, 0, 1},	/* 69 */
- 	{N_("_Contents"), menu_docs, GTK_STOCK_HELP, M_MENUSTOCK, 0, 0, 1, GDK_F1},
--#if 0
- 	{N_("Check for updates"), menu_update, 0, M_MENUITEM, 0, 1},
--#endif
- 	{N_("_About"), menu_about, GTK_STOCK_ABOUT, M_MENUSTOCK, 0, 0, 1},
- 
- 	{0, 0, 0, M_END, 0, 0, 0},
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/palette.c xchat-wdk/src/fe-gtk/palette.c
 --- xchat-wdk.orig/src/fe-gtk/palette.c	2010-05-16 05:20:22 +0200
 +++ xchat-wdk/src/fe-gtk/palette.c	2010-08-26 15:53:53 +0200
