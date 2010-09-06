@@ -28,7 +28,6 @@
 #include <wininet.h>
 
 #include "xchat-plugin.h"
-#include "../../config.h"
 
 static xchat_plugin *ph;   /* plugin handle */
 
@@ -73,7 +72,7 @@ print_version ()
 {
 	char *version = check_version ();
 
-	if (strcmp (version, PACKAGE_VERSION) == 0)
+	if (strcmp (version, xchat_get_info (ph, "version")) == 0)
 	{
 		xchat_printf (ph, "You have the latest version installed!");
 	}
