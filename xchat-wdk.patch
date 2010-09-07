@@ -589,7 +589,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/util.c xchat-wdk/src/com
  }
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/xchat.c xchat-wdk/src/common/xchat.c
 --- xchat-wdk.orig/src/common/xchat.c	2008-06-08 09:58:58 +0200
-+++ xchat-wdk/src/common/xchat.c	2010-08-26 15:53:53 +0200
++++ xchat-wdk/src/common/xchat.c	2010-09-07 15:14:16 +0200
 @@ -22,7 +22,6 @@
  #include <time.h>
  #include <sys/types.h>
@@ -607,6 +607,16 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/xchat.c xchat-wdk/src/co
  #include "plugin.h"
  #include "plugin-timer.h"
  #include "notify.h"
+@@ -582,7 +581,8 @@
+ 	"NAME DIALOG\n"		"CMD query %2\n\n"\
+ 	"NAME DMSG\n"			"CMD msg =%2 &3\n\n"\
+ 	"NAME EXIT\n"			"CMD quit\n\n"\
+-	"NAME GREP\n"			"CMD lastlog -r &2\n\n"\
++	"NAME GREP\n"			"CMD lastl	og -r &2\n\n"\
++	"NAME IGNALL\n"			"CMD ignore %2!*@* ALL\n\n"\
+ 	"NAME J\n"				"CMD join &2\n\n"\
+ 	"NAME KILL\n"			"CMD quote KILL %2 :&3\n\n"\
+ 	"NAME LEAVE\n"			"CMD part &2\n\n"\
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/xchat.h xchat-wdk/src/common/xchat.h
 --- xchat-wdk.orig/src/common/xchat.h	2010-08-07 09:14:45 +0200
 +++ xchat-wdk/src/common/xchat.h	2010-08-26 15:53:53 +0200
