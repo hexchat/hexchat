@@ -95,7 +95,7 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 	*plugin_desc = "Plugin for checking for XChat-WDK updates";
 	*plugin_version = "1.0";
 
-	xchat_hook_command (ph, "UPD", XCHAT_PRI_NORM, print_version, 0, 0);
+	xchat_hook_command (ph, "UPDCHK", XCHAT_PRI_NORM, print_version, 0, 0);
 	xchat_print (ph, "XChat-WDK Update Checker plugin loaded\n");
 	print_version ();
 
