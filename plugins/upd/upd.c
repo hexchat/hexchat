@@ -91,12 +91,12 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 {
 	ph = plugin_handle;
 
-	*plugin_name = "XChat-WDK Updater";
+	*plugin_name = "XChat-WDK Update Checker";
 	*plugin_desc = "Plugin for checking for XChat-WDK updates";
 	*plugin_version = "1.0";
 
 	xchat_hook_command (ph, "UPD", XCHAT_PRI_NORM, print_version, 0, 0);
-	xchat_print (ph, "XChat-WDK Updater plugin loaded\n");
+	xchat_print (ph, "XChat-WDK Update Checker plugin loaded\n");
 	print_version ();
 
 	return 1;       /* return 1 for success */
@@ -105,6 +105,6 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 int
 xchat_plugin_deinit (void)
 {
-	xchat_print (ph, "XChat-WDK Updater plugin unloaded\n");
+	xchat_print (ph, "XChat-WDK Update Checker plugin unloaded\n");
 	return 1;
 }

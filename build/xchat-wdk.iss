@@ -39,7 +39,7 @@ Name: "libs"; Description: "XChat-WDK"; Types: normal full custom; Flags: fixed
 Name: "translations"; Description: "Translations"; Types: normal full custom
 Name: "plugins"; Description: "Plugins"; Types: full custom
 Name: "plugins\ewc"; Description: "EasyWinampControl"; Types: full custom
-Name: "plugins\upd"; Description: "XChat-WDK Updater"; Types: normal full custom
+Name: "plugins\upd"; Description: "XChat-WDK Update Checker"; Types: normal full custom
 Name: "plugins\xdcc"; Description: "XDCC"; Types: full custom
 Name: "langs"; Description: "Language Interfaces"; Types: full custom
 Name: "langs\lua"; Description: "Lua (experimental)"; Types: full custom
