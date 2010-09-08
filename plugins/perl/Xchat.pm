@@ -215,15 +215,19 @@ sub hook_print {
 		$callback = sub {
 			my @args = @_;
 			my $arg_count = @args;
-			my @new = $cb->( @args );
+			my @new = $cb->( $event, @args );
 
+			# a filter can either return the new results or it can modify
+			# @_ in place. 
 			if( @new ) {
 				emit_print( $event, @new[ 0 .. $arg_count - 1 ] );
-			} else {
+				return EAT_ALL;
+			} elsif( join( "\0", @_ ) ne join( "\0", @args ) ) {
 				emit_print( $event, @{$args[0]}[ 0 .. $arg_count - 1 ] );
+				return EAT_ALL;
 			}
 
-			return EAT_ALL;
+			return EAT_NONE;
 		};
 
 	}
