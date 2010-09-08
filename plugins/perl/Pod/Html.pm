@@ -494,10 +494,27 @@ END_OF_BLOCK
 		padding-right: 0.5em;
 	}
 
-	p.example {
-		width: 45em;
+	.example {
+		width: 98%;
 		padding: 0.5em;
-		white-space: pre;
+		float: left;
+		font-family: monospace;
+	}
+
+	.example .line_number {
+		float: left;
+		text-align: right;
+		margin-right: 10px;
+		padding-right: 5px;
+		border-right: 1px solid white;
+	}
+
+	.example .content {
+		float: left;
+	}
+
+	.example .content pre {
+		margin: 0;
 	}
 
 	td > table {

@@ -18,7 +18,7 @@ while( my $token = $parser->get_token ) {
 
 	my $class_name = $token->get_attr( "class" );
 
-	if( $token->is_start_tag( "p" )
+	if( $token->is_start_tag( "div" )
 		&& ( $class_name && $class_name =~ qr/\bexample\b/ )
 	) {
 		my $start_tag = $token;
@@ -28,28 +28,40 @@ while( my $token = $parser->get_token ) {
 		
 		EXAMPLE:
 		while( $token = $parser->get_token ) {
-			if( $token->is_end_tag( "p" ) ) {
+			if( $token->is_end_tag( "div" ) ) {
 				$end_tag = $token;
 				last EXAMPLE;
 			}
-			push @content, $token;
+
+			if( $token->is_text ) {
+				push @content, decode_entities( $token->as_is );
+			}
 		}
 
-		@content = map {
-			decode_entities( $_->as_is );
-		} grep {
-			$_->is_text
-			&& $_->as_is =~ /\S/
-		} @content;
-
 		my $code = join "", @content;
+#		say $code;
 		my $vim = Text::VimColor->new(
 			string => $code,
 			filetype => "perl",
+			vim_options => [qw( -RXZ -i NONE -u NONE -N -n)],
 		);
+		my $html = $vim->html;
+		$html =~ s/^\s+//;
+		$html =~ s/\s+$//;
 
 		print $writer $start_tag->as_is;
-		print $writer $vim->html;
+
+		my $lines = $html =~ tr/\n/\n/;
+
+		say $writer "<div class='line_number'>";
+		for my $line ( 0 .. $lines ) {
+			say $writer "<div>",1 + $line,"</div>";
+		}
+		say $writer "</div>";
+
+		print $writer "<div class='content'><pre>";
+		say $writer $html;
+		say $writer "</pre></div>";
 		print $writer $end_tag->as_is;
 	} else {
 		print $writer $token->as_is;

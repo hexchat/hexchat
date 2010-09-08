@@ -571,9 +571,9 @@ C<$id>   -  one of the following case sensitive values
    <tr>
       <td>event_text &lt;Event Name&gt;</td> <td>text event format string for &lt;Event name&gt;<br />
       Example:
-	<p class="example">
-	  my $channel_msg_format = Xchat::get_info( "event_text Channel Message" );
-	</p>
+	<div class="example">
+		my $channel_msg_format = Xchat::get_info( "event_text Channel Message" );
+	</div>
 	</td>
 </tr>
 <tr>
@@ -720,26 +720,27 @@ Send multiple mode changes for the current channel. It may send multiple MODE li
 Example:
 
 =begin html
-<p class="example">
+<<div class="example">
 <code>
 use strict;
 use warning;
 use Xchat qw(:all);
-
+   
 hook_command( "MODES", sub {
    my (undef, $who, $sign, $mode) = @{$_[0]};
-
+   
    my @targets = split /,/, $who;
    if( @targets > 1 ) {
       send_modes( \@targets, $sign, $mode, 1 );
    } else {
       send_modes( $who, $sign, $mode );
    }
-
+   
    return EAT_XCHAT;
 });
+
 </code>
-</p>
+</div>
 
 =end html
 
@@ -815,13 +816,13 @@ if there is no such list.
                     9  - Blink Tray (alert_tray)<br />
                     10 - Blink Task Bar (alert_taskbar)<br />
 <p>Example of checking if the current context has Hide Join/Part messages set:</p>
-<p class="example">
+<div class="example">
 <code>
-if( Xchat::context_info-&gt;{flags} &amp; (1 &gt;&gt; 6) ) {
+if( Xchat::context_info->{flags} &amp; (1 >> 6) ) {
   Xchat::print( "Hide Join/Part messages is enabled" );
 }
 </code>
-</p>
+</div>
 
                      </td>
    </tr>
@@ -1238,21 +1239,21 @@ This function will return the information normally retrieved with L<get_info|xch
 =begin html
 
 <p>Example:</p>
-<p class="example">
-<code>
+<div class="example">
 use strict;
 use warnings;
 use Xchat qw(:all); # imports all the functions documented on this page
+   
 register( "User Count", "0.1",
-	 "Print out the number of users on the current channel" );
-hook_command( "UCOUNT", \&amp;display_count );
+   "Print out the number of users on the current channel" );
+   
+hook_command( "UCOUNT", \&display_count );
+   
 sub display_count {
-  prnt "There are " . context_info()-&gt;{users} . " users in this channel.";
-  return EAT_XCHAT;
+   prnt "There are " . context_info()->{users} . " users in this channel.";
+   return EAT_XCHAT;
 }
-</code>
-</p>
-
+</div>
 
 =end html
 
@@ -1266,6 +1267,54 @@ C<$string>  -  string to remove codes from
 =back
 
 This function will remove bold, color, beep, reset, reverse and underline codes from C<$string>. It will also remove ANSI escape codes which might get used by certain terminal based clients. If it is called in void context C<$string> will be modified otherwise a modified copy of C<$string> is returned.
+
+=head2 Examples
+
+=head3 Asynchronous DNS resolution with hook_fd
+
+=begin html
+
+<div class="example">
+<code>
+use strict;
+use warnings;
+use Xchat qw(:all);
+use Net::DNS;
+   
+hook_command( "BGDNS", sub {
+   my $host = $_[0][1];
+   my $resolver = Net::DNS::Resolver->new;
+   my $sock = $resolver->bgsend( $host );
+   
+   hook_fd( $sock, sub {
+      my $ready_sock = $_[0];
+      my $packet = $resolver->bgread( $ready_sock );
+      
+      if( $packet->authority && (my @answers = $packet->answer ) ) {
+         
+         if( @answers ) {
+            prnt "$host:";
+            my $padding = " " x (length( $host ) + 2);
+            for my $answer ( @answers ) {
+               prnt $padding . $answer->rdatastr . ' ' . $answer->type;
+            }
+         }
+      } else {
+         prnt "Unable to resolve $host";
+      }
+      
+      return REMOVE;
+   },
+   {
+      flags => FD_READ,
+   });
+   
+   return EAT_XCHAT;
+});
+</code>
+</div>
+
+=end html
 
 =head2 Contact Information
 

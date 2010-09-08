@@ -14,11 +14,27 @@
 		padding-right: 0.5em;
 	}
 
-	p.example {
-		background-color: #dddddd;
-		width: 45em;
+	.example {
+		width: 98%;
 		padding: 0.5em;
-		white-space: pre;
+		float: left;
+		font-family: monospace;
+	}
+
+	.example .line_number {
+		float: left;
+		text-align: right;
+		margin-right: 10px;
+		padding-right: 5px;
+		border-right: 1px solid white;
+	}
+
+	.example .content {
+		float: left;
+	}
+
+	.example .content pre {
+		margin: 0;
 	}
 
 	td > table {
@@ -30,26 +46,40 @@
 		border: 1px solid black;
 	}
 
-	.alert { color: #0000ff; }
-	.basen { color: #007f00; }
-	.bstring { color: #c9a7ff; }
-	.char { color: #ff00ff; }
-	.comment { color: #7f7f7f; }
-	.datatype { color: #0000ff; }
-	.decval { color: #00007f; }
-	.error { color: #ff0000; }
-	.float { color: #00007f; }
-	.function { color: #007f00; }
-	.istring { color: #ff0000; }
-	.keyword { font-weight: bold; }
-	.normal { }
-	.operator { color: #ffa500; }
-	.others { color: #b03060; }
-	.regionmarker { color: #96b9ff; }
-	.reserved { color: #9b30ff; }
-	.string { color: #ff0000; }
-	.variable { color: #0000ff; }
-	.warning { color: #0000ff; }
+	.synComment {
+		color: rgb(135,206,235);
+	}
+	.synPreProc {
+		color: rgb(205,92,92);
+	}
+	.synError {
+	}
+	.synConstant {
+		color: #ffa0a0;
+	}
+	.synSpecial {
+		color: rgb(255,222,173);
+	}
+	.synIgnore {
+		color: rgb(102,102,102);
+	}
+	.synNormal {
+		color: rgb(255,255,255);
+		background-color: rgb(51,51,51);
+	}
+	.synType {
+		color: rgb(189,183,107);
+	}
+	.synIdentifier {
+		color: rgb(152,251,152);
+	}
+	.synTodo {
+		color: rgb(255,69,0);
+		background-color: rgb(238,238,0);
+	}
+	.synStatement {
+		color: rgb(240,230,140);
+	}
 
 </style>
 </head>
@@ -121,6 +151,13 @@
 			<li><a href="#xchat_user_info"><code>Xchat::user_info( [$nick] )</code></a></li>
 			<li><a href="#xchat_context_info"><code>Xchat::context_info( [$context] )</code></a></li>
 			<li><a href="#xchat_strip_code"><code>Xchat::strip_code( $string )</code></a></li>
+			</ul>
+		</li>
+
+		<li><a href="#examples">Examples</a></li>
+		<li class="branch">
+			<ul>
+			<li><a href="#asynchronous_dns_resolution_with_hook_fd">Asynchronous DNS resolution with hook_fd</a></li>
 			</ul>
 		</li>
 
@@ -457,7 +494,7 @@ undef is the same as
 </p>
 <h3><a name="xchat_printf" /><code>Xchat::printf( $format, LIST )</code></h3>
 <ul>
-<li><strong><code>$format</code>  -  a format string, see &quot;perldoc -f sprintf&quot; for further detail</strong>
+<li><strong><code>$format</code>  -  a format string, see &quot;perldoc -f <a href="http://perldoc.perl.org/functions/sprintf.html">sprintf</a>&quot; for further detail</strong>
 </li>
 <li><strong>LIST     -  list of values for the format fields</strong>
 </li>
@@ -487,7 +524,7 @@ as find_context.</p>
 </p>
 <h3><a name="xchat_commandf" /><code>Xchat::commandf( $format, LIST )</code></h3>
 <ul>
-<li><strong><code>$format</code> -  a format string, see &quot;perldoc -f sprintf&quot; for further detail</strong>
+<li><strong><code>$format</code> -  a format string, see &quot;perldoc -f <a href="http://perldoc.perl.org/functions/sprintf.html">sprintf</a>&quot; for further detail</strong>
 </li>
 <li><strong>LIST     -  list of values for the format fields</strong>
 </li>
@@ -548,9 +585,12 @@ a context cannot be found.</p>
    </tr>   <tr>
       <td>event_text &lt;Event Name&gt;</td> <td>text event format string for &lt;Event name&gt;<br />
       Example:
-	<p class="example">
-	  my $channel_msg_format = Xchat::get_info( "event_text Channel Message" );
-	</p>
+	<div class="example synNormal"><div class='line_number'>
+<div>1</div>
+</div>
+<div class='content'><pre><span class="synStatement">my</span> <span class="synIdentifier">$channel_msg_format</span> = Xchat::get_info( <span class="synStatement">&quot;</span><span class="synConstant">event_text Channel Message</span><span class="synStatement">&quot;</span> );
+</pre></div>
+</div>
 	</td>
 </tr>
 <tr>
@@ -643,20 +683,38 @@ One is the original and the second is the one you emit.</p>
 </ul>
 <p>Send multiple mode changes for the current channel. It may send multiple MODE lines if the request doesn't fit on one.</p>
 <p>Example:</p>
-<p class="example">
-<code>
-use strict;
-use warning;
-use Xchat qw(:all);hook_command( "MODES", sub {
-   my (undef, $who, $sign, $mode) = @{$_[0]};   my @targets = split /,/, $who;
-   if( @targets > 1 ) {
-      send_modes( \@targets, $sign, $mode, 1 );
-   } else {
-      send_modes( $who, $sign, $mode );
-   }   return EAT_XCHAT;
+<<div class="example synNormal"><div class='line_number'>
+<div>1</div>
+<div>2</div>
+<div>3</div>
+<div>4</div>
+<div>5</div>
+<div>6</div>
+<div>7</div>
+<div>8</div>
+<div>9</div>
+<div>10</div>
+<div>11</div>
+<div>12</div>
+<div>13</div>
+<div>14</div>
+</div>
+<div class='content'><pre><span class="synStatement">use strict</span>;
+<span class="synStatement">use </span>warning;
+<span class="synStatement">use </span>Xchat <span class="synStatement">qw(</span><span class="synConstant">:all</span><span class="synStatement">)</span>;
+
+hook_command( <span class="synStatement">&quot;</span><span class="synConstant">MODES</span><span class="synStatement">&quot;</span>, <span class="synStatement">sub </span>{
+   <span class="synStatement">my</span> (<span class="synStatement">undef</span>, <span class="synIdentifier">$who</span>, <span class="synIdentifier">$sign</span>, <span class="synIdentifier">$mode</span>) = <span class="synIdentifier">@{$_[</span><span class="synConstant">0</span><span class="synIdentifier">]}</span>;
+   <span class="synStatement">my</span> <span class="synIdentifier">@targets</span> = <span class="synStatement">split</span> <span class="synStatement">/</span><span class="synConstant">,</span><span class="synStatement">/</span>, <span class="synIdentifier">$who</span>;
+   <span class="synStatement">if</span>( <span class="synIdentifier">@targets</span> &gt; <span class="synConstant">1</span> ) {
+      send_modes( \<span class="synIdentifier">@targets</span>, <span class="synIdentifier">$sign</span>, <span class="synIdentifier">$mode</span>, <span class="synConstant">1</span> );
+   } <span class="synStatement">else</span> {
+      send_modes( <span class="synIdentifier">$who</span>, <span class="synIdentifier">$sign</span>, <span class="synIdentifier">$mode</span> );
+   }
+   <span class="synStatement">return</span> EAT_XCHAT;
 });
-</code>
-</p><p>
+</pre></div>
+</div><p>
 </p>
 <h3><a name="xchat_nickcmp" /><code>Xchat::nickcmp( $nick1, $nick2 )</code></h3>
 <ul>
@@ -706,13 +764,16 @@ if there is no such list.</p>
                     9  - Blink Tray (alert_tray)<br />
                     10 - Blink Task Bar (alert_taskbar)<br />
 <p>Example of checking if the current context has Hide Join/Part messages set:</p>
-<p class="example">
-<code>
-if( Xchat::context_info-&gt;{flags} &amp; (1 &gt;&gt; 6) ) {
-  Xchat::print( "Hide Join/Part messages is enabled" );
+<div class="example synNormal"><div class='line_number'>
+<div>1</div>
+<div>2</div>
+<div>3</div>
+</div>
+<div class='content'><pre><span class="synStatement">if</span>( Xchat::context_info-&gt;{flags} &amp; (<span class="synConstant">1</span> &gt;&gt; <span class="synConstant">6</span>) ) {
+  Xchat::<span class="synStatement">print</span>( <span class="synStatement">&quot;</span><span class="synConstant">Hide Join/Part messages is enabled</span><span class="synStatement">&quot;</span> );
 }
-</code>
-</p>                     </td>
+</pre></div>
+</div>                     </td>
    </tr>   <tr>
       <td>id</td> <td>Unique server ID </td>
    </tr>
@@ -971,20 +1032,32 @@ channel context.</p>
 </ul>
 <p>This function will return the information normally retrieved with <a href="#xchat_get_info">get_info</a>, except this is for the context that is passed in. The information will be returned in the form of a hash. The keys of the hash are the <code>$id</code> you would normally supply to <a href="#xchat_get_info">get_info</a> as well as all the keys that are valid for the items in the &quot;channels&quot; list from <a href="#xchat_get_list">get_list</a>. Use of this function is more efficient than calling get_list( &quot;channels&quot; ) and searching through the result.</p>
 <p>Example:</p>
-<p class="example">
-<code>
-use strict;
-use warnings;
-use Xchat qw(:all); # imports all the functions documented on this page
-register( "User Count", "0.1",
-	 "Print out the number of users on the current channel" );
-hook_command( "UCOUNT", \&amp;display_count );
-sub display_count {
-  prnt "There are " . context_info()-&gt;{users} . " users in this channel.";
-  return EAT_XCHAT;
+<div class="example synNormal"><div class='line_number'>
+<div>1</div>
+<div>2</div>
+<div>3</div>
+<div>4</div>
+<div>5</div>
+<div>6</div>
+<div>7</div>
+<div>8</div>
+<div>9</div>
+<div>10</div>
+<div>11</div>
+</div>
+<div class='content'><pre><span class="synStatement">use strict</span>;
+<span class="synStatement">use warnings</span>;
+<span class="synStatement">use </span>Xchat <span class="synStatement">qw(</span><span class="synConstant">:all</span><span class="synStatement">)</span>; <span class="synComment"># imports all the functions documented on this page</span>
+
+register( <span class="synStatement">&quot;</span><span class="synConstant">User Count</span><span class="synStatement">&quot;</span>, <span class="synStatement">&quot;</span><span class="synConstant">0.1</span><span class="synStatement">&quot;</span>,
+   <span class="synStatement">&quot;</span><span class="synConstant">Print out the number of users on the current channel</span><span class="synStatement">&quot;</span> );
+hook_command( <span class="synStatement">&quot;</span><span class="synConstant">UCOUNT</span><span class="synStatement">&quot;</span>, \<span class="synIdentifier">&amp;display_count</span> );
+<span class="synStatement">sub </span><span class="synIdentifier">display_count </span>{
+   prnt <span class="synStatement">&quot;</span><span class="synConstant">There are </span><span class="synStatement">&quot;</span> . context_info()-&gt;{users} . <span class="synStatement">&quot;</span><span class="synConstant"> users in this channel.</span><span class="synStatement">&quot;</span>;
+   <span class="synStatement">return</span> EAT_XCHAT;
 }
-</code>
-</p><p>
+</pre></div>
+</div><p>
 </p>
 <h3><a name="xchat_strip_code" /><code>Xchat::strip_code( $string )</code></h3>
 <ul>
@@ -992,6 +1065,87 @@ sub display_count {
 </li>
 </ul>
 <p>This function will remove bold, color, beep, reset, reverse and underline codes from <code>$string</code>. It will also remove ANSI escape codes which might get used by certain terminal based clients. If it is called in void context <code>$string</code> will be modified otherwise a modified copy of <code>$string</code> is returned.</p>
+<p>
+</p>
+<h2><a name="examples" />Examples</h2>
+<p>
+</p>
+<h3><a name="asynchronous_dns_resolution_with_hook_fd" />Asynchronous DNS resolution with hook_fd</h3>
+<div class="example synNormal"><div class='line_number'>
+<div>1</div>
+<div>2</div>
+<div>3</div>
+<div>4</div>
+<div>5</div>
+<div>6</div>
+<div>7</div>
+<div>8</div>
+<div>9</div>
+<div>10</div>
+<div>11</div>
+<div>12</div>
+<div>13</div>
+<div>14</div>
+<div>15</div>
+<div>16</div>
+<div>17</div>
+<div>18</div>
+<div>19</div>
+<div>20</div>
+<div>21</div>
+<div>22</div>
+<div>23</div>
+<div>24</div>
+<div>25</div>
+<div>26</div>
+<div>27</div>
+<div>28</div>
+<div>29</div>
+<div>30</div>
+<div>31</div>
+<div>32</div>
+<div>33</div>
+<div>34</div>
+<div>35</div>
+</div>
+<div class='content'><pre><span class="synStatement">use strict</span>;
+<span class="synStatement">use warnings</span>;
+<span class="synStatement">use </span>Xchat <span class="synStatement">qw(</span><span class="synConstant">:all</span><span class="synStatement">)</span>;
+<span class="synStatement">use </span>Net::DNS;
+   
+hook_command( <span class="synStatement">&quot;</span><span class="synConstant">BGDNS</span><span class="synStatement">&quot;</span>, <span class="synStatement">sub </span>{
+   <span class="synStatement">my</span> <span class="synIdentifier">$host</span> = <span class="synIdentifier">$_[</span><span class="synConstant">0</span><span class="synIdentifier">][</span><span class="synConstant">1</span><span class="synIdentifier">]</span>;
+   <span class="synStatement">my</span> <span class="synIdentifier">$resolver</span> = Net::DNS::Resolver-&gt;new;
+   <span class="synStatement">my</span> <span class="synIdentifier">$sock</span> = <span class="synIdentifier">$resolver-&gt;bgsend</span>( <span class="synIdentifier">$host</span> );
+   
+   hook_fd( <span class="synIdentifier">$sock</span>, <span class="synStatement">sub </span>{
+      <span class="synStatement">my</span> <span class="synIdentifier">$ready_sock</span> = <span class="synIdentifier">$_[</span><span class="synConstant">0</span><span class="synIdentifier">]</span>;
+      <span class="synStatement">my</span> <span class="synIdentifier">$packet</span> = <span class="synIdentifier">$resolver-&gt;bgread</span>( <span class="synIdentifier">$ready_sock</span> );
+      
+      <span class="synStatement">if</span>( <span class="synIdentifier">$packet-&gt;authority</span> &amp;&amp; (<span class="synStatement">my</span> <span class="synIdentifier">@answers</span> = <span class="synIdentifier">$packet-&gt;answer</span> ) ) {
+         
+         <span class="synStatement">if</span>( <span class="synIdentifier">@answers</span> ) {
+            prnt <span class="synStatement">&quot;</span><span class="synIdentifier">$host</span><span class="synConstant">:</span><span class="synStatement">&quot;</span>;
+            <span class="synStatement">my</span> <span class="synIdentifier">$padding</span> = <span class="synStatement">&quot;</span><span class="synConstant"> </span><span class="synStatement">&quot;</span> x (<span class="synStatement">length</span>( <span class="synIdentifier">$host</span> ) + <span class="synConstant">2</span>);
+            <span class="synStatement">for</span> <span class="synStatement">my</span> <span class="synIdentifier">$answer</span> ( <span class="synIdentifier">@answers</span> ) {
+               prnt <span class="synIdentifier">$padding</span> . <span class="synIdentifier">$answer-&gt;rdatastr</span> . <span class="synStatement">'</span><span class="synConstant"> </span><span class="synStatement">'</span> . <span class="synIdentifier">$answer-&gt;type</span>;
+            }
+         }
+      } <span class="synStatement">else</span> {
+         prnt <span class="synStatement">&quot;</span><span class="synConstant">Unable to resolve </span><span class="synIdentifier">$host</span><span class="synStatement">&quot;</span>;
+      }
+      
+      <span class="synStatement">return</span> REMOVE;
+   },
+   {
+      <span class="synConstant">flags</span> =&gt; FD_READ,
+   });
+   
+   <span class="synStatement">return</span> EAT_XCHAT;
+});
+</pre></div>
+</div>
+
 <p>
 </p>
 <h2><a name="contact_information" />Contact Information</h2>
