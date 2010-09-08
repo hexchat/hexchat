@@ -4,6 +4,7 @@ use warnings;
 use lib '.';
 use Pod::Html;
 
+
 pod2html(
 #	"pod2html",
 	"--header",
@@ -14,3 +15,6 @@ pod2html(
 #system( qw(tidy -m -i -xml -utf8 -quiet xchat2-perl.html) );
 unlink( "pod2htmd.tmp" );
 unlink( "pod2htmi.tmp" );
+
+exec( "./syntax_highlight", "xchat2-perl.html" )
+	or die $!;

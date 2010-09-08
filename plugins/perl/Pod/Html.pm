@@ -495,7 +495,6 @@ END_OF_BLOCK
 	}
 
 	p.example {
-		background-color: #dddddd;
 		width: 45em;
 		padding: 0.5em;
 		white-space: pre;
@@ -510,26 +509,40 @@ END_OF_BLOCK
 		border: 1px solid black;
 	}
 
-	.alert { color: #0000ff; }
-	.basen { color: #007f00; }
-	.bstring { color: #c9a7ff; }
-	.char { color: #ff00ff; }
-	.comment { color: #7f7f7f; }
-	.datatype { color: #0000ff; }
-	.decval { color: #00007f; }
-	.error { color: #ff0000; }
-	.float { color: #00007f; }
-	.function { color: #007f00; }
-	.istring { color: #ff0000; }
-	.keyword { font-weight: bold; }
-	.normal { }
-	.operator { color: #ffa500; }
-	.others { color: #b03060; }
-	.regionmarker { color: #96b9ff; }
-	.reserved { color: #9b30ff; }
-	.string { color: #ff0000; }
-	.variable { color: #0000ff; }
-	.warning { color: #0000ff; }
+	.synComment {
+		color: rgb(135,206,235);
+	}
+	.synPreProc {
+		color: rgb(205,92,92);
+	}
+	.synError {
+	}
+	.synConstant {
+		color: #ffa0a0;
+	}
+	.synSpecial {
+		color: rgb(255,222,173);
+	}
+	.synIgnore {
+		color: rgb(102,102,102);
+	}
+	.synNormal {
+		color: rgb(255,255,255);
+		background-color: rgb(51,51,51);
+	}
+	.synType {
+		color: rgb(189,183,107);
+	}
+	.synIdentifier {
+		color: rgb(152,251,152);
+	}
+	.synTodo {
+		color: rgb(255,69,0);
+		background-color: rgb(238,238,0);
+	}
+	.synStatement {
+		color: rgb(240,230,140);
+	}
 
 </style>
 </head>

@@ -1,0 +1,57 @@
+#!/usr/bin/env perl
+use 5.010;
+use strict;
+use warnings;
+use Text::VimColor;
+use HTML::TokeParser::Simple;
+use HTML::Entities qw(decode_entities);
+use Path::Class;
+
+my $html_file = shift;
+my $reader = file( $html_file )->openr;
+unlink $html_file;
+my $writer = file( $html_file )->openw;
+
+my $parser = HTML::TokeParser::Simple->new( $reader );
+
+while( my $token = $parser->get_token ) {
+
+	my $class_name = $token->get_attr( "class" );
+
+	if( $token->is_start_tag( "p" )
+		&& ( $class_name && $class_name =~ qr/\bexample\b/ )
+	) {
+		my $start_tag = $token;
+		$start_tag->set_attr( class => $class_name . " synNormal" );
+		my @content;
+		my $end_tag;
+		
+		EXAMPLE:
+		while( $token = $parser->get_token ) {
+			if( $token->is_end_tag( "p" ) ) {
+				$end_tag = $token;
+				last EXAMPLE;
+			}
+			push @content, $token;
+		}
+
+		@content = map {
+			decode_entities( $_->as_is );
+		} grep {
+			$_->is_text
+			&& $_->as_is =~ /\S/
+		} @content;
+
+		my $code = join "", @content;
+		my $vim = Text::VimColor->new(
+			string => $code,
+			filetype => "perl",
+		);
+
+		print $writer $start_tag->as_is;
+		print $writer $vim->html;
+		print $writer $end_tag->as_is;
+	} else {
+		print $writer $token->as_is;
+	}
+}
