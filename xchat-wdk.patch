@@ -1109,7 +1109,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/rawlog.c xchat-wdk/src/f
  #include "fe-gtk.h"
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/setup.c xchat-wdk/src/fe-gtk/setup.c
 --- xchat-wdk.orig/src/fe-gtk/setup.c	2008-02-08 10:04:45 +0100
-+++ xchat-wdk/src/fe-gtk/setup.c	2010-09-14 21:00:07 +0200
++++ xchat-wdk/src/fe-gtk/setup.c	2010-09-14 21:09:15 +0200
 @@ -363,7 +363,6 @@
  	{ST_END, 0, 0, 0, 0, 0}
  };
@@ -1126,6 +1126,23 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/setup.c xchat-wdk/src/fe
  
  static const setting logging_settings[] =
  {
+@@ -1708,7 +1706,7 @@
+ 		N_("General"),
+ 		N_("Logging"),
+ 		N_("Sound"),
+-/*		N_("Advanced"),*/
++		N_("Advanced"),
+ 		NULL,
+ 	N_("Network"),
+ 		N_("Network setup"),
+@@ -1733,6 +1731,7 @@
+ 	setup_add_page (cata[9], book, setup_create_page (general_settings));
+ 	setup_add_page (cata[10], book, setup_create_page (logging_settings));
+ 	setup_add_page (cata[11], book, setup_create_sound_page ());
++	setup_add_page (cata[12], book, setup_create_page (advanced_settings));
+ 	setup_add_page (cata[14], book, setup_create_page (network_settings));
+ 	setup_add_page (cata[15], book, setup_create_page (filexfer_settings));
+ 
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/sexy-spell-entry.c xchat-wdk/src/fe-gtk/sexy-spell-entry.c
 --- xchat-wdk.orig/src/fe-gtk/sexy-spell-entry.c	2006-07-17 07:51:02 +0200
 +++ xchat-wdk/src/fe-gtk/sexy-spell-entry.c	2010-08-26 15:53:53 +0200
