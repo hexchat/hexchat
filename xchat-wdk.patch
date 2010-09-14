@@ -1107,6 +1107,25 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/rawlog.c xchat-wdk/src/f
  #include <stdlib.h>
  
  #include "fe-gtk.h"
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/setup.c xchat-wdk/src/fe-gtk/setup.c
+--- xchat-wdk.orig/src/fe-gtk/setup.c	2008-02-08 10:04:45 +0100
++++ xchat-wdk/src/fe-gtk/setup.c	2010-09-14 21:00:07 +0200
+@@ -363,7 +363,6 @@
+ 	{ST_END, 0, 0, 0, 0, 0}
+ };
+ 
+-#if 0
+ static const setting advanced_settings[] =
+ {
+ 	{ST_HEADER,	N_("Advanced Settings"),0,0,0},
+@@ -378,7 +377,6 @@
+ 
+ 	{ST_END, 0, 0, 0, 0, 0}
+ };
+-#endif
+ 
+ static const setting logging_settings[] =
+ {
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/sexy-spell-entry.c xchat-wdk/src/fe-gtk/sexy-spell-entry.c
 --- xchat-wdk.orig/src/fe-gtk/sexy-spell-entry.c	2006-07-17 07:51:02 +0200
 +++ xchat-wdk/src/fe-gtk/sexy-spell-entry.c	2010-08-26 15:53:53 +0200
