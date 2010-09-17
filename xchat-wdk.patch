@@ -140,7 +140,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/xdcc/xdcc.c xchat-wdk/plugi
  
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/cfgfiles.c xchat-wdk/src/common/cfgfiles.c
 --- xchat-wdk.orig/src/common/cfgfiles.c	2010-08-07 09:14:45 +0200
-+++ xchat-wdk/src/common/cfgfiles.c	2010-08-30 02:09:02 +0200
++++ xchat-wdk/src/common/cfgfiles.c	2010-09-17 16:36:12 +0200
 @@ -17,7 +17,6 @@
   */
  
@@ -187,7 +187,15 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/cfgfiles.c xchat-wdk/src
  	}
  	return xdir_fs;
  }
-@@ -648,6 +653,7 @@
+@@ -461,6 +466,7 @@
+ 
+ #ifdef WIN32
+ 	{"identd", P_OFFINT (identd), TYPE_BOOL},
++	{"text_emoticons", P_OFFINT (emoticons), TYPE_BOOL},
+ #endif
+ 	{"input_balloon_chans", P_OFFINT (input_balloon_chans), TYPE_BOOL},
+ 	{"input_balloon_hilight", P_OFFINT (input_balloon_hilight), TYPE_BOOL},
+@@ -648,6 +654,7 @@
  	prefs.dialog_height = 256;
  	prefs.gui_join_dialog = 1;
  	prefs.gui_quit_dialog = 1;
@@ -619,7 +627,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/xchat.c xchat-wdk/src/co
  	"NAME LEAVE\n"			"CMD part &2\n\n"\
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/xchat.h xchat-wdk/src/common/xchat.h
 --- xchat-wdk.orig/src/common/xchat.h	2010-08-07 09:14:45 +0200
-+++ xchat-wdk/src/common/xchat.h	2010-08-26 15:53:53 +0200
++++ xchat-wdk/src/common/xchat.h	2010-09-17 16:37:57 +0200
 @@ -12,12 +12,14 @@
  
  #include "history.h"
@@ -645,6 +653,14 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/xchat.h xchat-wdk/src/co
  #include <direct.h>
  #define	F_OK	0
  #define	X_OK	1
+@@ -297,6 +299,7 @@
+ 	unsigned int confmode;
+ 	unsigned int utf8_locale;
+ 	unsigned int identd;
++	unsigned int emoticons;
+ 
+ 	unsigned int ctcp_number_limit;	/*flood */
+ 	unsigned int ctcp_time_limit;	/*seconds of floods */
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/about.c xchat-wdk/src/fe-gtk/about.c
 --- xchat-wdk.orig/src/fe-gtk/about.c	2010-05-16 09:43:49 +0200
 +++ xchat-wdk/src/fe-gtk/about.c	2010-08-30 12:43:12 +0200
@@ -1109,7 +1125,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/rawlog.c xchat-wdk/src/f
  #include "fe-gtk.h"
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/setup.c xchat-wdk/src/fe-gtk/setup.c
 --- xchat-wdk.orig/src/fe-gtk/setup.c	2008-02-08 10:04:45 +0100
-+++ xchat-wdk/src/fe-gtk/setup.c	2010-09-14 21:09:15 +0200
++++ xchat-wdk/src/fe-gtk/setup.c	2010-09-15 18:50:47 +0200
 @@ -363,7 +363,6 @@
  	{ST_END, 0, 0, 0, 0, 0}
  };
