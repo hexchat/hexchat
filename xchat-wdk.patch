@@ -437,7 +437,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/ssl.c xchat-wdk/src/comm
  #ifndef HAVE_SNPRINTF
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/text.c xchat-wdk/src/common/text.c
 --- xchat-wdk.orig/src/common/text.c	2010-05-30 04:28:04 +0200
-+++ xchat-wdk/src/common/text.c	2010-08-26 15:53:53 +0200
++++ xchat-wdk/src/common/text.c	2010-09-19 01:32:44 +0200
 @@ -19,13 +19,11 @@
  #include <stdlib.h>
  #include <stdio.h>
@@ -452,60 +452,64 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/text.c xchat-wdk/src/com
  
  #include "xchat.h"
  #include <glib/ghash.h>
-@@ -274,6 +272,8 @@
- 	char *map, *end_map;
- 	struct stat statbuf;
- 	const char *begin, *eol;
-+	
-+	HANDLE hFile, hMapFile;
+@@ -271,9 +269,6 @@
+ 	char *text;
+ 	time_t stamp;
+ 	int lines;
+-	char *map, *end_map;
+-	struct stat statbuf;
+-	const char *begin, *eol;
  
  	if (sess->text_scrollback == SET_DEFAULT)
  	{
-@@ -296,9 +296,33 @@
- 	if (fstat (fh, &statbuf) < 0)
+@@ -293,32 +288,9 @@
+ 	if (fh == -1)
  		return;
  
-+#ifdef WIN32
-+	hFile = (HANDLE)_get_osfhandle(fh);
-+	if (hFile == INVALID_HANDLE_VALUE)
-+	{
-+		return;
-+	}
-+
-+	/* Create mapping object */
-+	hMapFile = CreateFileMapping(hFile, NULL, PAGE_READONLY, 0, 0, NULL);
-+	if (hMapFile == INVALID_HANDLE_VALUE)
-+	{
-+		return;
-+	}
-+
-+	/* Select which portions of the file we need */
-+	map = (char *)MapViewOfFile(hMapFile, FILE_MAP_READ, 0, 0, 0);
-+
-+	if (map == NULL)
-+	{
-+		CloseHandle(hMapFile);
-+		return;
-+	}
-+#else
- 	map = mmap (NULL, statbuf.st_size, PROT_READ, MAP_PRIVATE, fh, 0);
- 	if (map == MAP_FAILED)
- 		return;
-+#endif
+-	if (fstat (fh, &statbuf) < 0)
+-		return;
+-
+-	map = mmap (NULL, statbuf.st_size, PROT_READ, MAP_PRIVATE, fh, 0);
+-	if (map == MAP_FAILED)
+-		return;
+-
+-	end_map = map + statbuf.st_size;
+-	
+ 	lines = 0;
+-	begin = map;
+-	while (begin < end_map)
++	while (waitline (fh, buf, sizeof buf, FALSE) != -1)
+ 	{
+-		int n_bytes;
+-
+-		eol = memchr (begin, '\n', end_map - begin);
+-
+-		if (!eol)
+-			eol = end_map;
+-
+-		n_bytes = MIN (eol - begin, sizeof (buf) - 1);
+-		
+-		strncpy (buf, begin, n_bytes);
+-
+-		buf[n_bytes] = 0;
+-		
+ 		if (buf[0] == 'T')
+ 		{
+ 			if (sizeof (time_t) == 4)
+@@ -334,8 +306,6 @@
+ 			}
+ 			lines++;
+ 		}
+-
+-		begin = eol + 1;
+ 	}
  
- 	end_map = map + statbuf.st_size;
- 	
-@@ -349,7 +373,13 @@
+ 	sess->scrollwritten = lines;
+@@ -349,7 +319,6 @@
  		/*EMIT_SIGNAL (XP_TE_GENMSG, sess, "*", buf, NULL, NULL, NULL, 0);*/
  	}
  
-+#ifdef WIN32
-+	CloseHandle(hMapFile);
-+	CloseHandle(hFile);
-+#else
- 	munmap (map, statbuf.st_size);
-+#endif
-+
+-	munmap (map, statbuf.st_size);
  	close (fh);
  }
  
