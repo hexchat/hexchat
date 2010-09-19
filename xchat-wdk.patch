@@ -679,7 +679,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/xchat.h xchat-wdk/src/co
  	unsigned int ctcp_time_limit;	/*seconds of floods */
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/about.c xchat-wdk/src/fe-gtk/about.c
 --- xchat-wdk.orig/src/fe-gtk/about.c	2010-05-16 09:43:49 +0200
-+++ xchat-wdk/src/fe-gtk/about.c	2010-09-19 05:27:43 +0200
++++ xchat-wdk/src/fe-gtk/about.c	2010-09-19 15:20:11 +0200
 @@ -39,6 +39,7 @@
  
  #include "../common/xchat.h"
@@ -688,6 +688,15 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/about.c xchat-wdk/src/fe
  #include "palette.h"
  #include "pixmaps.h"
  #include "gtkutil.h"
+@@ -95,7 +96,7 @@
+ 	}
+ 
+ 	about = gtk_dialog_new ();
+-	gtk_window_set_position (GTK_WINDOW (about), GTK_WIN_POS_CENTER);
++	gtk_window_set_position (GTK_WINDOW (about), GTK_WIN_POS_CENTER_ON_PARENT);
+ 	gtk_window_set_resizable (GTK_WINDOW (about), FALSE);
+ 	gtk_window_set_title (GTK_WINDOW (about), _("About "DISPLAY_NAME));
+ 	if (parent_window)
 @@ -114,35 +115,38 @@
  	g_get_charset (&locale);
  	(snprintf) (buf, sizeof (buf),
@@ -861,7 +870,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/joind.c xchat-wdk/src/fe
  
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/maingui.c xchat-wdk/src/fe-gtk/maingui.c
 --- xchat-wdk.orig/src/fe-gtk/maingui.c	2010-05-16 05:20:22 +0200
-+++ xchat-wdk/src/fe-gtk/maingui.c	2010-09-19 05:27:43 +0200
++++ xchat-wdk/src/fe-gtk/maingui.c	2010-09-19 15:32:20 +0200
 @@ -214,60 +214,10 @@
  	away_list = mg_attr_list_create (&colors[COL_AWAY], FALSE);
  }
@@ -943,7 +952,23 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/maingui.c xchat-wdk/src/
  }
  
  /* set a tab plain, red, light-red, or blue */
-@@ -2957,11 +2903,7 @@
+@@ -1190,7 +1136,14 @@
+ 						  "Close them all?"), i);
+ 		g_signal_connect (G_OBJECT (dialog), "response",
+ 								G_CALLBACK (mg_tab_close_cb), sess);
+-		gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
++		if (prefs.tab_layout)
++		{
++			gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
++		}
++		else
++		{
++			gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_CENTER_ON_PARENT);		
++		}
+ 		gtk_widget_show (dialog);
+ 	}
+ }
+@@ -2957,11 +2910,7 @@
  		gtk_xtext_check_marker_visibility (GTK_XTEXT (current_sess->gui->xtext));
  		plugin_emit_dummy_print (current_sess, "Focus Window");
  	}
@@ -955,7 +980,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/maingui.c xchat-wdk/src/
  	return FALSE;
  }
  
-@@ -2972,11 +2914,7 @@
+@@ -2972,11 +2921,7 @@
  	if (!sess->server->server_session)
  		sess->server->server_session = sess;
  	gtk_xtext_check_marker_visibility(GTK_XTEXT (current_sess->gui->xtext));
