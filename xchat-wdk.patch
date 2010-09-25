@@ -1231,7 +1231,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/search.c xchat-wdk/src/f
  }
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/servlistgui.c xchat-wdk/src/fe-gtk/servlistgui.c
 --- xchat-wdk.orig/src/fe-gtk/servlistgui.c	2010-08-07 07:14:45 +0000
-+++ xchat-wdk/src/fe-gtk/servlistgui.c	2010-09-22 17:30:33 +0000
++++ xchat-wdk/src/fe-gtk/servlistgui.c	2010-09-25 00:29:23 +0000
 @@ -486,6 +486,41 @@
  	return FALSE;
  }
@@ -1294,6 +1294,15 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/servlistgui.c xchat-wdk/
  
  	gtk_widget_show (win);
  }
+@@ -1782,7 +1823,7 @@
+ 	gtk_container_add (GTK_CONTAINER (hbox), checkbutton_fav);
+ 	g_signal_connect (G_OBJECT (checkbutton_fav), "toggled",
+ 							G_CALLBACK (fav_servlist), 0);
+-	gtk_widget_show (checkbutton_fav);
++	/* gtk_widget_show (checkbutton_fav); don't show this until it's completed */
+ 
+ 	vbuttonbox2 = gtk_vbutton_box_new ();
+ 	gtk_box_set_spacing (GTK_BOX (vbuttonbox2), 3);
 @@ -1875,6 +1916,8 @@
  							"changed", G_CALLBACK (servlist_network_row_cb), NULL);
  	g_signal_connect (G_OBJECT (networks_tree), "key_press_event",
