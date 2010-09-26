@@ -1,6 +1,6 @@
 diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/perl/perl.c xchat-wdk/plugins/perl/perl.c
---- xchat-wdk.orig/plugins/perl/perl.c	2010-08-26 04:18:04 +0200
-+++ xchat-wdk/plugins/perl/perl.c	2010-09-19 05:27:43 +0200
+--- xchat-wdk.orig/plugins/perl/perl.c	2010-08-26 02:18:04 +0000
++++ xchat-wdk/plugins/perl/perl.c	2010-09-22 15:30:07 +0000
 @@ -22,12 +22,15 @@
  #include <sys/types.h>
  #include <sys/stat.h>
@@ -40,8 +40,8 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/perl/perl.c xchat-wdk/plugi
  				}
  			}
 diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/python/python.c xchat-wdk/plugins/python/python.c
---- xchat-wdk.orig/plugins/python/python.c	2010-05-16 06:31:54 +0200
-+++ xchat-wdk/plugins/python/python.c	2010-09-19 05:27:43 +0200
+--- xchat-wdk.orig/plugins/python/python.c	2010-05-16 04:31:54 +0000
++++ xchat-wdk/plugins/python/python.c	2010-09-22 15:30:07 +0000
 @@ -53,10 +53,10 @@
  
  #include <glib.h>
@@ -102,8 +102,8 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/python/python.c xchat-wdk/p
  					 "__main__");
  		if (m == NULL) {
 diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/tcl/tclplugin.c xchat-wdk/plugins/tcl/tclplugin.c
---- xchat-wdk.orig/plugins/tcl/tclplugin.c	2010-03-21 01:49:42 +0100
-+++ xchat-wdk/plugins/tcl/tclplugin.c	2010-09-19 05:27:43 +0200
+--- xchat-wdk.orig/plugins/tcl/tclplugin.c	2010-03-21 00:49:42 +0000
++++ xchat-wdk/plugins/tcl/tclplugin.c	2010-09-22 15:30:07 +0000
 @@ -32,8 +32,6 @@
  #include <windows.h>
  #define bzero(mem, sz) memset((mem), 0, (sz))
@@ -123,8 +123,8 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/tcl/tclplugin.c xchat-wdk/p
      }
      FreeLibrary(lib);
 diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/xdcc/xdcc.c xchat-wdk/plugins/xdcc/xdcc.c
---- xchat-wdk.orig/plugins/xdcc/xdcc.c	2002-12-26 04:35:09 +0100
-+++ xchat-wdk/plugins/xdcc/xdcc.c	2010-09-19 05:27:43 +0200
+--- xchat-wdk.orig/plugins/xdcc/xdcc.c	2002-12-26 03:35:09 +0000
++++ xchat-wdk/plugins/xdcc/xdcc.c	2010-09-22 15:30:07 +0000
 @@ -2,11 +2,11 @@
  
  #include <glib.h>
@@ -139,8 +139,8 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/xdcc/xdcc.c xchat-wdk/plugi
  static xchat_plugin *ph;	/* plugin handle */
  
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/cfgfiles.c xchat-wdk/src/common/cfgfiles.c
---- xchat-wdk.orig/src/common/cfgfiles.c	2010-08-07 09:14:45 +0200
-+++ xchat-wdk/src/common/cfgfiles.c	2010-09-19 07:01:51 +0200
+--- xchat-wdk.orig/src/common/cfgfiles.c	2010-08-07 07:14:45 +0000
++++ xchat-wdk/src/common/cfgfiles.c	2010-09-22 15:30:07 +0000
 @@ -17,7 +17,6 @@
   */
  
@@ -216,8 +216,8 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/cfgfiles.c xchat-wdk/src
  	prefs.dccstalltimeout = 60;
  	prefs.notify_timeout = 15;
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/chanopt.c xchat-wdk/src/common/chanopt.c
---- xchat-wdk.orig/src/common/chanopt.c	2008-06-15 06:40:29 +0200
-+++ xchat-wdk/src/common/chanopt.c	2010-09-19 05:27:43 +0200
+--- xchat-wdk.orig/src/common/chanopt.c	2008-06-15 04:40:29 +0000
++++ xchat-wdk/src/common/chanopt.c	2010-09-22 15:30:07 +0000
 @@ -3,7 +3,6 @@
  #include <stdio.h>
  #include <string.h>
@@ -227,8 +227,8 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/chanopt.c xchat-wdk/src/
  #include <sys/stat.h>
  #include <fcntl.h>
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/ctcp.c xchat-wdk/src/common/ctcp.c
---- xchat-wdk.orig/src/common/ctcp.c	2010-05-30 04:28:04 +0200
-+++ xchat-wdk/src/common/ctcp.c	2010-09-19 05:27:43 +0200
+--- xchat-wdk.orig/src/common/ctcp.c	2010-05-30 02:28:04 +0000
++++ xchat-wdk/src/common/ctcp.c	2010-09-22 15:30:07 +0000
 @@ -18,7 +18,6 @@
  
  #include <stdio.h>
@@ -247,8 +247,8 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/ctcp.c xchat-wdk/src/com
  		serv->p_nctcp (serv, nick, outbuf);
  	}
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/dcc.c xchat-wdk/src/common/dcc.c
---- xchat-wdk.orig/src/common/dcc.c	2010-05-30 04:28:04 +0200
-+++ xchat-wdk/src/common/dcc.c	2010-09-19 05:27:43 +0200
+--- xchat-wdk.orig/src/common/dcc.c	2010-05-30 02:28:04 +0000
++++ xchat-wdk/src/common/dcc.c	2010-09-22 15:30:07 +0000
 @@ -31,7 +31,6 @@
  #include <time.h>
  #include <errno.h>
@@ -267,8 +267,8 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/dcc.c xchat-wdk/src/comm
  	/* this fstat() shouldn't really fail */
  	if ((dcc->fp == -1 ? stat (dcc->destfile_fs, &st_a) : fstat (dcc->fp, &st_a)) == -1)
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/ignore.c xchat-wdk/src/common/ignore.c
---- xchat-wdk.orig/src/common/ignore.c	2006-04-15 09:00:39 +0200
-+++ xchat-wdk/src/common/ignore.c	2010-09-19 05:27:43 +0200
+--- xchat-wdk.orig/src/common/ignore.c	2006-04-15 07:00:39 +0000
++++ xchat-wdk/src/common/ignore.c	2010-09-22 15:30:07 +0000
 @@ -19,7 +19,6 @@
  #include <stdlib.h>
  #include <stdio.h>
@@ -278,8 +278,8 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/ignore.c xchat-wdk/src/c
  #include <sys/stat.h>
  #include <fcntl.h>
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/inbound.c xchat-wdk/src/common/inbound.c
---- xchat-wdk.orig/src/common/inbound.c	2010-05-30 04:28:04 +0200
-+++ xchat-wdk/src/common/inbound.c	2010-09-19 05:27:43 +0200
+--- xchat-wdk.orig/src/common/inbound.c	2010-05-30 02:28:04 +0000
++++ xchat-wdk/src/common/inbound.c	2010-09-22 15:30:07 +0000
 @@ -21,7 +21,6 @@
  #include <stdlib.h>
  #include <stdio.h>
@@ -289,8 +289,8 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/inbound.c xchat-wdk/src/
  
  #define WANTARPA
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/inet.h xchat-wdk/src/common/inet.h
---- xchat-wdk.orig/src/common/inet.h	2005-09-03 12:57:48 +0200
-+++ xchat-wdk/src/common/inet.h	2010-09-19 05:27:43 +0200
+--- xchat-wdk.orig/src/common/inet.h	2005-09-03 10:57:48 +0000
++++ xchat-wdk/src/common/inet.h	2010-09-22 15:30:07 +0000
 @@ -24,9 +24,8 @@
  #ifdef USE_IPV6
  #include <winsock2.h>
@@ -303,8 +303,8 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/inet.h xchat-wdk/src/com
  
  #define set_blocking(sok)	{ \
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/msproxy.c xchat-wdk/src/common/msproxy.c
---- xchat-wdk.orig/src/common/msproxy.c	2006-04-16 17:32:17 +0200
-+++ xchat-wdk/src/common/msproxy.c	2010-09-19 05:27:43 +0200
+--- xchat-wdk.orig/src/common/msproxy.c	2006-04-16 15:32:17 +0000
++++ xchat-wdk/src/common/msproxy.c	2010-09-22 15:30:07 +0000
 @@ -26,7 +26,6 @@
  #include <stdio.h>
  #include <string.h>
@@ -314,8 +314,8 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/msproxy.c xchat-wdk/src/
  
  #define WANTSOCKET
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/network.c xchat-wdk/src/common/network.c
---- xchat-wdk.orig/src/common/network.c	2006-04-16 10:11:26 +0200
-+++ xchat-wdk/src/common/network.c	2010-09-19 05:27:43 +0200
+--- xchat-wdk.orig/src/common/network.c	2006-04-16 08:11:26 +0000
++++ xchat-wdk/src/common/network.c	2010-09-22 15:30:07 +0000
 @@ -21,7 +21,6 @@
  #include <stdlib.h>
  #include <string.h>
@@ -325,8 +325,8 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/network.c xchat-wdk/src/
  
  #include "../../config.h"				  /* grab USE_IPV6 and LOOKUPD defines */
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/notify.c xchat-wdk/src/common/notify.c
---- xchat-wdk.orig/src/common/notify.c	2008-06-08 09:58:58 +0200
-+++ xchat-wdk/src/common/notify.c	2010-09-19 05:27:43 +0200
+--- xchat-wdk.orig/src/common/notify.c	2008-06-08 07:58:58 +0000
++++ xchat-wdk/src/common/notify.c	2010-09-22 15:30:07 +0000
 @@ -22,7 +22,6 @@
  #include <sys/types.h>
  #include <sys/stat.h>
@@ -336,8 +336,8 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/notify.c xchat-wdk/src/c
  
  #include "xchat.h"
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/outbound.c xchat-wdk/src/common/outbound.c
---- xchat-wdk.orig/src/common/outbound.c	2010-05-30 04:28:04 +0200
-+++ xchat-wdk/src/common/outbound.c	2010-09-19 05:27:43 +0200
+--- xchat-wdk.orig/src/common/outbound.c	2010-05-30 02:28:04 +0000
++++ xchat-wdk/src/common/outbound.c	2010-09-22 15:30:07 +0000
 @@ -32,7 +32,6 @@
  #include <sys/wait.h>
  #endif
@@ -347,8 +347,8 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/outbound.c xchat-wdk/src
  #include <signal.h>
  #include <sys/stat.h>
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/plugin-timer.c xchat-wdk/src/common/plugin-timer.c
---- xchat-wdk.orig/src/common/plugin-timer.c	2005-02-02 11:03:51 +0100
-+++ xchat-wdk/src/common/plugin-timer.c	2010-09-19 05:27:43 +0200
+--- xchat-wdk.orig/src/common/plugin-timer.c	2005-02-02 10:03:51 +0000
++++ xchat-wdk/src/common/plugin-timer.c	2010-09-22 15:30:07 +0000
 @@ -1,7 +1,7 @@
  #include <stdlib.h>
  #include <string.h>
@@ -359,8 +359,8 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/plugin-timer.c xchat-wdk
  #ifdef WIN32
  #define strcasecmp stricmp
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/plugin.c xchat-wdk/src/common/plugin.c
---- xchat-wdk.orig/src/common/plugin.c	2010-08-14 03:46:21 +0200
-+++ xchat-wdk/src/common/plugin.c	2010-09-19 05:27:43 +0200
+--- xchat-wdk.orig/src/common/plugin.c	2010-08-14 01:46:21 +0000
++++ xchat-wdk/src/common/plugin.c	2010-09-22 15:30:07 +0000
 @@ -34,7 +34,7 @@
  #include "text.h"
  #define PLUGIN_C
@@ -380,8 +380,8 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/plugin.c xchat-wdk/src/c
  	static const char * const channels_fields[] =
  	{
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/proto-irc.c xchat-wdk/src/common/proto-irc.c
---- xchat-wdk.orig/src/common/proto-irc.c	2010-05-30 04:28:04 +0200
-+++ xchat-wdk/src/common/proto-irc.c	2010-09-19 05:27:43 +0200
+--- xchat-wdk.orig/src/common/proto-irc.c	2010-05-30 02:28:04 +0000
++++ xchat-wdk/src/common/proto-irc.c	2010-09-22 15:30:07 +0000
 @@ -18,7 +18,6 @@
  
  /* IRC RFC1459(+commonly used extensions) protocol implementation */
@@ -391,8 +391,8 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/proto-irc.c xchat-wdk/sr
  #include <stdio.h>
  #include <stdlib.h>
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/server.c xchat-wdk/src/common/server.c
---- xchat-wdk.orig/src/common/server.c	2010-05-30 04:28:04 +0200
-+++ xchat-wdk/src/common/server.c	2010-09-19 05:27:43 +0200
+--- xchat-wdk.orig/src/common/server.c	2010-05-30 02:28:04 +0000
++++ xchat-wdk/src/common/server.c	2010-09-22 15:30:07 +0000
 @@ -26,7 +26,6 @@
  #include <stdio.h>
  #include <string.h>
@@ -420,8 +420,8 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/server.c xchat-wdk/src/c
  }
  
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/servlist.c xchat-wdk/src/common/servlist.c
---- xchat-wdk.orig/src/common/servlist.c	2010-05-16 09:43:49 +0200
-+++ xchat-wdk/src/common/servlist.c	2010-09-19 05:27:43 +0200
+--- xchat-wdk.orig/src/common/servlist.c	2010-05-16 07:43:49 +0000
++++ xchat-wdk/src/common/servlist.c	2010-09-22 15:30:07 +0000
 @@ -21,7 +21,6 @@
  #include <string.h>
  #include <sys/types.h>
@@ -431,8 +431,8 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/servlist.c xchat-wdk/src
  #include "xchat.h"
  #include <glib/ghash.h>
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/ssl.c xchat-wdk/src/common/ssl.c
---- xchat-wdk.orig/src/common/ssl.c	2007-03-28 10:35:06 +0200
-+++ xchat-wdk/src/common/ssl.c	2010-09-19 05:27:43 +0200
+--- xchat-wdk.orig/src/common/ssl.c	2007-03-28 08:35:06 +0000
++++ xchat-wdk/src/common/ssl.c	2010-09-22 15:30:07 +0000
 @@ -17,12 +17,12 @@
   * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
   */
@@ -448,8 +448,8 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/ssl.c xchat-wdk/src/comm
  
  #ifndef HAVE_SNPRINTF
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/text.c xchat-wdk/src/common/text.c
---- xchat-wdk.orig/src/common/text.c	2010-05-30 04:28:04 +0200
-+++ xchat-wdk/src/common/text.c	2010-09-19 05:27:43 +0200
+--- xchat-wdk.orig/src/common/text.c	2010-05-30 02:28:04 +0000
++++ xchat-wdk/src/common/text.c	2010-09-22 15:30:07 +0000
 @@ -19,13 +19,11 @@
  #include <stdlib.h>
  #include <stdio.h>
@@ -526,8 +526,8 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/text.c xchat-wdk/src/com
  }
  
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/util.c xchat-wdk/src/common/util.c
---- xchat-wdk.orig/src/common/util.c	2008-02-07 02:50:37 +0100
-+++ xchat-wdk/src/common/util.c	2010-09-19 05:27:43 +0200
+--- xchat-wdk.orig/src/common/util.c	2008-02-07 01:50:37 +0000
++++ xchat-wdk/src/common/util.c	2010-09-22 15:30:07 +0000
 @@ -16,11 +16,13 @@
   * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
   */
@@ -612,8 +612,8 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/util.c xchat-wdk/src/com
  	return verbuf;
  }
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/xchat.c xchat-wdk/src/common/xchat.c
---- xchat-wdk.orig/src/common/xchat.c	2008-06-08 09:58:58 +0200
-+++ xchat-wdk/src/common/xchat.c	2010-09-19 05:45:58 +0200
+--- xchat-wdk.orig/src/common/xchat.c	2008-06-08 07:58:58 +0000
++++ xchat-wdk/src/common/xchat.c	2010-09-22 15:30:07 +0000
 @@ -22,7 +22,6 @@
  #include <time.h>
  #include <sys/types.h>
@@ -640,8 +640,8 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/xchat.c xchat-wdk/src/co
  	"NAME KILL\n"			"CMD quote KILL %2 :&3\n\n"\
  	"NAME LEAVE\n"			"CMD part &2\n\n"\
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/xchat.h xchat-wdk/src/common/xchat.h
---- xchat-wdk.orig/src/common/xchat.h	2010-08-07 09:14:45 +0200
-+++ xchat-wdk/src/common/xchat.h	2010-09-19 07:01:27 +0200
+--- xchat-wdk.orig/src/common/xchat.h	2010-08-07 07:14:45 +0000
++++ xchat-wdk/src/common/xchat.h	2010-09-22 15:30:07 +0000
 @@ -12,12 +12,14 @@
  
  #include "history.h"
@@ -678,8 +678,8 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/xchat.h xchat-wdk/src/co
  	unsigned int ctcp_number_limit;	/*flood */
  	unsigned int ctcp_time_limit;	/*seconds of floods */
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/about.c xchat-wdk/src/fe-gtk/about.c
---- xchat-wdk.orig/src/fe-gtk/about.c	2010-05-16 09:43:49 +0200
-+++ xchat-wdk/src/fe-gtk/about.c	2010-09-19 15:20:11 +0200
+--- xchat-wdk.orig/src/fe-gtk/about.c	2010-05-16 07:43:49 +0000
++++ xchat-wdk/src/fe-gtk/about.c	2010-09-22 15:30:07 +0000
 @@ -39,6 +39,7 @@
  
  #include "../common/xchat.h"
@@ -753,9 +753,48 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/about.c xchat-wdk/src/fe
  	gtk_label_set_markup (GTK_LABEL (label), buf);
  	gtk_label_set_justify (GTK_LABEL (label), GTK_JUSTIFY_CENTER);
  
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/ascii.c xchat-wdk/src/fe-gtk/ascii.c
+--- xchat-wdk.orig/src/fe-gtk/ascii.c	2010-05-16 03:20:22 +0000
++++ xchat-wdk/src/fe-gtk/ascii.c	2010-09-25 00:47:24 +0000
+@@ -27,6 +27,7 @@
+ #include <gtk/gtkhbox.h>
+ #include <gtk/gtklabel.h>
+ #include <gtk/gtkbutton.h>
++#include <gdk/gdkkeysyms.h>
+ 
+ #include "../common/xchat.h"
+ #include "../common/xchatc.h"
+@@ -92,6 +93,17 @@
+ 
+ 
+ static gboolean
++ascii_key_cb (GtkWidget * window, GdkEventKey * key, gpointer userdata)
++{
++	if (key->keyval == GDK_Escape)
++	{
++		gtk_widget_destroy (window);
++	}
++
++	return FALSE;
++}
++
++static gboolean
+ ascii_enter (GtkWidget * wid, GdkEventCrossing *event, GtkWidget *label)
+ {
+ 	char buf[64];
+@@ -172,6 +184,9 @@
+ 	gtk_container_add (GTK_CONTAINER (frame), label);
+ 	gtk_widget_show (label);
+ 	gtk_widget_show (frame);
++	
++	g_signal_connect (G_OBJECT (win), "key_press_event",
++							G_CALLBACK (ascii_key_cb), win);
+ 
+ 	gtk_widget_show (win);
+ }
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/banlist.c xchat-wdk/src/fe-gtk/banlist.c
---- xchat-wdk.orig/src/fe-gtk/banlist.c	2010-05-16 05:20:22 +0200
-+++ xchat-wdk/src/fe-gtk/banlist.c	2010-09-19 05:27:43 +0200
+--- xchat-wdk.orig/src/fe-gtk/banlist.c	2010-05-16 03:20:22 +0000
++++ xchat-wdk/src/fe-gtk/banlist.c	2010-09-25 00:40:18 +0000
 @@ -19,7 +19,6 @@
  #include <stdio.h>
  #include <stdlib.h>
@@ -764,9 +803,45 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/banlist.c xchat-wdk/src/
  #include <fcntl.h>
  #include <time.h>
  
+@@ -33,6 +32,7 @@
+ #include <gtk/gtkmessagedialog.h>
+ #include <gtk/gtktreeview.h>
+ #include <gtk/gtktreeselection.h>
++#include <gdk/gdkkeysyms.h>
+ 
+ #include "../common/xchat.h"
+ #include "../common/fe.h"
+@@ -297,6 +297,17 @@
+ 	*(GSList **)data = list;
+ }
+ 
++static gboolean
++banlist_key_cb (GtkWidget * window, GdkEventKey * key, gpointer userdata)
++{
++	if (key->keyval == GDK_Escape)
++	{
++		gtk_widget_destroy (window);
++	}
++
++	return FALSE;
++}
++
+ static void
+ banlist_crop (GtkWidget * wid, struct session *sess)
+ {
+@@ -413,6 +424,9 @@
+ 	sess->res->banlist_butRefresh = gtkutil_button (bbox, GTK_STOCK_REFRESH, 0, banlist_refresh, sess, _("Refresh"));
+ 
+ 	banlist_do_refresh (sess);
++	
++	g_signal_connect (G_OBJECT (sess->res->banlist_window), "key_press_event",
++							G_CALLBACK (banlist_key_cb), sess->res->banlist_window);
+ 
+ 	gtk_widget_show (sess->res->banlist_window);
+ }
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/chanlist.c xchat-wdk/src/fe-gtk/chanlist.c
---- xchat-wdk.orig/src/fe-gtk/chanlist.c	2008-02-24 04:46:02 +0100
-+++ xchat-wdk/src/fe-gtk/chanlist.c	2010-09-19 05:27:43 +0200
+--- xchat-wdk.orig/src/fe-gtk/chanlist.c	2008-02-24 03:46:02 +0000
++++ xchat-wdk/src/fe-gtk/chanlist.c	2010-09-22 18:13:19 +0000
 @@ -19,7 +19,6 @@
  #include <stdio.h>
  #include <stdlib.h>
@@ -775,9 +850,85 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/chanlist.c xchat-wdk/src
  #include <fcntl.h>
  #include <time.h>
  
+@@ -671,6 +670,17 @@
+ #endif
+ }
+ 
++static gboolean
++chanlist_key_cb (GtkWidget * window, GdkEventKey * key, gpointer userdata)
++{
++	if (key->keyval == GDK_Escape)
++	{
++		gtk_widget_destroy (window);
++	}
++
++	return FALSE;
++}
++
+ static void
+ chanlist_closegui (GtkWidget *wid, server *serv)
+ {
+@@ -928,6 +938,8 @@
+ 
+ 	g_signal_connect (G_OBJECT (serv->gui->chanlist_window), "destroy",
+ 							G_CALLBACK (chanlist_destroy_widget), serv);
++	g_signal_connect (G_OBJECT (serv->gui->chanlist_window), "key_press_event",
++							G_CALLBACK (chanlist_key_cb), serv);
+ 
+ 	/* reset the counters. */
+ 	chanlist_reset_counters (serv);
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/dccgui.c xchat-wdk/src/fe-gtk/dccgui.c
+--- xchat-wdk.orig/src/fe-gtk/dccgui.c	2010-05-30 03:56:14 +0000
++++ xchat-wdk/src/fe-gtk/dccgui.c	2010-09-25 01:01:16 +0000
+@@ -43,6 +43,7 @@
+ #include <gtk/gtkcheckmenuitem.h>
+ #include <gtk/gtkradiobutton.h>
+ #include <gtk/gtkversion.h>
++#include <gdk/gdkkeysyms.h>
+ 
+ #include "../common/xchat.h"
+ #include "../common/xchatc.h"
+@@ -729,6 +730,17 @@
+ 	return FALSE;
+ }
+ 
++static gboolean
++dcc_key_cb (GtkWidget * window, GdkEventKey * key, gpointer userdata)
++{
++	if (key->keyval == GDK_Escape)
++	{
++		gtk_widget_destroy (window);
++	}
++
++	return FALSE;
++}
++
+ int
+ fe_dcc_open_recv_win (int passive)
+ {
+@@ -831,6 +843,9 @@
+ 	gtk_widget_set_sensitive (dccfwin.accept_button, FALSE);
+ 	gtk_widget_set_sensitive (dccfwin.resume_button, FALSE);
+ 	gtk_widget_set_sensitive (dccfwin.abort_button, FALSE);
++	
++	g_signal_connect (G_OBJECT (dccfwin.window), "key_press_event",
++							G_CALLBACK (dcc_key_cb), dccfwin.window);
+ 
+ 	dcc_fill_window (3);
+ 	gtk_widget_show_all (dccfwin.window);
+@@ -1025,6 +1040,9 @@
+ 	dcccwin.accept_button = gtkutil_button (bbox, GTK_STOCK_APPLY, 0, accept_chat_clicked, 0, _("Accept"));
+ 	gtk_widget_set_sensitive (dcccwin.accept_button, FALSE);
+ 	gtk_widget_set_sensitive (dcccwin.abort_button, FALSE);
++	
++	g_signal_connect (G_OBJECT (dcccwin.window), "key_press_event",
++							G_CALLBACK (dcc_key_cb), dcccwin.window);
+ 
+ 	dcc_chat_fill_win ();
+ 	gtk_widget_show_all (dcccwin.window);
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/editlist.c xchat-wdk/src/fe-gtk/editlist.c
---- xchat-wdk.orig/src/fe-gtk/editlist.c	2006-03-13 09:33:45 +0100
-+++ xchat-wdk/src/fe-gtk/editlist.c	2010-09-19 05:27:43 +0200
+--- xchat-wdk.orig/src/fe-gtk/editlist.c	2006-03-13 08:33:45 +0000
++++ xchat-wdk/src/fe-gtk/editlist.c	2010-09-22 18:36:22 +0000
 @@ -19,7 +19,6 @@
  #include <stdio.h>
  #include <stdlib.h>
@@ -786,9 +937,46 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/editlist.c xchat-wdk/src
  #include <fcntl.h>
  #include <sys/types.h>
  #include <sys/stat.h>
+@@ -30,6 +29,7 @@
+ #include <gtk/gtkclist.h>
+ #include <gtk/gtkhbox.h>
+ #include <gtk/gtkvseparator.h>
++#include <gdk/gdkkeysyms.h>
+ 
+ #include "../common/xchat.h"
+ #include "../common/cfgfiles.h"
+@@ -294,6 +294,17 @@
+ 	editlist_gui_window = 0;
+ }
+ 
++static gboolean
++editlist_key_cb (GtkWidget * window, GdkEventKey * key, gpointer userdata)
++{
++	if (key->keyval == GDK_Escape)
++	{
++		gtk_widget_destroy (window);
++	}
++
++	return FALSE;
++}
++
+ void
+ editlist_gui_open (char *title1, char *title2, GSList * list, char *title, char *wmclass,
+ 						 char *file, char *help)
+@@ -404,6 +415,10 @@
+ 	gtk_widget_show (hbox);
+ 
+ 	editlist_gui_load (editlist_gui_list);
++	
++	g_signal_connect (G_OBJECT (editlist_gui_window), "key_press_event",
++							G_CALLBACK (editlist_key_cb), editlist_gui_window);
++
+ 
+ 	gtk_widget_show (editlist_gui_window);
+ }
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/fe-gtk.c xchat-wdk/src/fe-gtk/fe-gtk.c
---- xchat-wdk.orig/src/fe-gtk/fe-gtk.c	2010-08-14 03:46:21 +0200
-+++ xchat-wdk/src/fe-gtk/fe-gtk.c	2010-09-19 05:27:43 +0200
+--- xchat-wdk.orig/src/fe-gtk/fe-gtk.c	2010-08-14 01:46:21 +0000
++++ xchat-wdk/src/fe-gtk/fe-gtk.c	2010-09-22 15:30:07 +0000
 @@ -19,7 +19,6 @@
  #include <stdio.h>
  #include <string.h>
@@ -824,8 +1012,8 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/fe-gtk.c xchat-wdk/src/f
  
  	sess = find_dialog (serv_list->data, "(warnings)");
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/fe-gtk.h xchat-wdk/src/fe-gtk/fe-gtk.h
---- xchat-wdk.orig/src/fe-gtk/fe-gtk.h	2010-05-30 08:31:29 +0200
-+++ xchat-wdk/src/fe-gtk/fe-gtk.h	2010-09-19 05:27:43 +0200
+--- xchat-wdk.orig/src/fe-gtk/fe-gtk.h	2010-05-30 06:31:29 +0000
++++ xchat-wdk/src/fe-gtk/fe-gtk.h	2010-09-22 15:30:07 +0000
 @@ -4,7 +4,7 @@
  /* If you're compiling this for Windows, your release is un-official
   * and not condoned. Please don't use the XChat name. Make up your
@@ -836,8 +1024,8 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/fe-gtk.h xchat-wdk/src/f
  #define DISPLAY_NAME "XChat"
  #endif
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/fkeys.c xchat-wdk/src/fe-gtk/fkeys.c
---- xchat-wdk.orig/src/fe-gtk/fkeys.c	2008-02-24 06:09:34 +0100
-+++ xchat-wdk/src/fe-gtk/fkeys.c	2010-09-19 05:27:43 +0200
+--- xchat-wdk.orig/src/fe-gtk/fkeys.c	2008-02-24 05:09:34 +0000
++++ xchat-wdk/src/fe-gtk/fkeys.c	2010-09-22 18:43:54 +0000
 @@ -20,7 +20,6 @@
  #include <stdlib.h>
  #include <sys/types.h>
@@ -846,9 +1034,37 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/fkeys.c xchat-wdk/src/fe
  #include <string.h>
  #include <fcntl.h>
  #include <ctype.h>
+@@ -695,6 +694,17 @@
+ 	}
+ }
+ 
++static gboolean
++key_dialog_key_cb (GtkWidget * window, GdkEventKey * key, gpointer userdata)
++{
++	if (key->keyval == GDK_Escape)
++	{
++		gtk_widget_destroy (window);
++	}
++
++	return FALSE;
++}
++
+ void
+ key_dialog_show ()
+ {
+@@ -830,6 +840,9 @@
+ 
+ 	gtk_widget_show (hbox2);
+ 	key_dialog_text = wid;
++	
++	g_signal_connect (G_OBJECT (key_dialog), "key_press_event",
++							G_CALLBACK (key_dialog_key_cb), key_dialog);
+ 
+ 	gtk_widget_show_all (key_dialog);
+ }
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/gtkutil.c xchat-wdk/src/fe-gtk/gtkutil.c
---- xchat-wdk.orig/src/fe-gtk/gtkutil.c	2009-07-18 14:38:10 +0200
-+++ xchat-wdk/src/fe-gtk/gtkutil.c	2010-09-19 05:27:43 +0200
+--- xchat-wdk.orig/src/fe-gtk/gtkutil.c	2009-07-18 12:38:10 +0000
++++ xchat-wdk/src/fe-gtk/gtkutil.c	2010-09-22 15:30:07 +0000
 @@ -22,7 +22,6 @@
  #include <stdarg.h>
  #include <sys/types.h>
@@ -857,9 +1073,48 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/gtkutil.c xchat-wdk/src/
  #include <fcntl.h>
  #include "fe-gtk.h"
  
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/ignoregui.c xchat-wdk/src/fe-gtk/ignoregui.c
+--- xchat-wdk.orig/src/fe-gtk/ignoregui.c	2010-05-16 03:20:22 +0000
++++ xchat-wdk/src/fe-gtk/ignoregui.c	2010-09-25 01:15:24 +0000
+@@ -38,6 +38,7 @@
+ #include <gtk/gtktreeselection.h>
+ #include <gtk/gtkcellrenderertext.h>
+ #include <gtk/gtkcellrenderertoggle.h>
++#include <gdk/gdkkeysyms.h>
+ 
+ #include "../common/xchat.h"
+ #include "../common/ignore.h"
+@@ -315,6 +316,17 @@
+ 	ignorewin = 0;
+ }
+ 
++static gboolean
++ignore_key_cb (GtkWidget * window, GdkEventKey * key, gpointer userdata)
++{
++	if (key->keyval == GDK_Escape)
++	{
++		gtk_widget_destroy (window);
++	}
++
++	return FALSE;
++}
++
+ static GtkWidget *
+ ignore_stats_entry (GtkWidget * box, char *label, int value)
+ {
+@@ -388,6 +400,9 @@
+ 
+ 	store = GTK_LIST_STORE (gtk_tree_view_get_model (GTK_TREE_VIEW (view)));
+ 
++	g_signal_connect (G_OBJECT (ignorewin), "key_press_event",
++							G_CALLBACK (ignore_key_cb), ignorewin);
++
+ 	while (temp)
+ 	{
+ 		struct ignore *ignore = temp->data;
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/joind.c xchat-wdk/src/fe-gtk/joind.c
---- xchat-wdk.orig/src/fe-gtk/joind.c	2006-12-26 05:56:55 +0100
-+++ xchat-wdk/src/fe-gtk/joind.c	2010-09-19 05:27:43 +0200
+--- xchat-wdk.orig/src/fe-gtk/joind.c	2006-12-26 04:56:55 +0000
++++ xchat-wdk/src/fe-gtk/joind.c	2010-09-22 15:30:07 +0000
 @@ -9,7 +9,6 @@
  
  #include <sys/types.h>
@@ -869,8 +1124,8 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/joind.c xchat-wdk/src/fe
  #include <stdio.h>
  
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/maingui.c xchat-wdk/src/fe-gtk/maingui.c
---- xchat-wdk.orig/src/fe-gtk/maingui.c	2010-05-16 05:20:22 +0200
-+++ xchat-wdk/src/fe-gtk/maingui.c	2010-09-19 15:32:20 +0200
+--- xchat-wdk.orig/src/fe-gtk/maingui.c	2010-05-16 03:20:22 +0000
++++ xchat-wdk/src/fe-gtk/maingui.c	2010-09-22 15:30:07 +0000
 @@ -214,60 +214,10 @@
  	away_list = mg_attr_list_create (&colors[COL_AWAY], FALSE);
  }
@@ -993,8 +1248,8 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/maingui.c xchat-wdk/src/
  	return FALSE;
  }
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/menu.c xchat-wdk/src/fe-gtk/menu.c
---- xchat-wdk.orig/src/fe-gtk/menu.c	2010-05-16 06:24:24 +0200
-+++ xchat-wdk/src/fe-gtk/menu.c	2010-09-19 05:27:43 +0200
+--- xchat-wdk.orig/src/fe-gtk/menu.c	2010-05-16 04:24:24 +0000
++++ xchat-wdk/src/fe-gtk/menu.c	2010-09-22 15:30:07 +0000
 @@ -20,7 +20,6 @@
  #include <stdlib.h>
  #include <fcntl.h>
@@ -1003,9 +1258,48 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/menu.c xchat-wdk/src/fe-
  
  #ifdef WIN32
  #include <windows.h>
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/notifygui.c xchat-wdk/src/fe-gtk/notifygui.c
+--- xchat-wdk.orig/src/fe-gtk/notifygui.c	2010-05-16 03:20:22 +0000
++++ xchat-wdk/src/fe-gtk/notifygui.c	2010-09-25 01:09:43 +0000
+@@ -37,6 +37,7 @@
+ #include <gtk/gtktreeview.h>
+ #include <gtk/gtktreeselection.h>
+ #include <gtk/gtkcellrenderertext.h>
++#include <gdk/gdkkeysyms.h>
+ 
+ #include "../common/xchat.h"
+ #include "../common/notify.h"
+@@ -330,6 +331,17 @@
+ 	gtk_widget_destroy (GTK_WIDGET (dialog));
+ }
+ 
++static gboolean
++notify_key_cb (GtkWidget * window, GdkEventKey * key, gpointer userdata)
++{
++	if (key->keyval == GDK_Escape)
++	{
++		gtk_widget_destroy (window);
++	}
++
++	return FALSE;
++}
++
+ static void
+ notifygui_add_enter (GtkWidget *entry, GtkWidget *dialog)
+ {
+@@ -436,6 +448,9 @@
+ 	gtk_widget_set_sensitive (notify_button_opendialog, FALSE);
+ 	gtk_widget_set_sensitive (notify_button_remove, FALSE);
+ 
++	g_signal_connect (G_OBJECT (notify_window), "key_press_event",
++							G_CALLBACK (notify_key_cb), notify_window);
++
+ 	notify_gui_update ();
+ 
+ 	gtk_widget_show (notify_window);
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/palette.c xchat-wdk/src/fe-gtk/palette.c
---- xchat-wdk.orig/src/fe-gtk/palette.c	2010-05-16 05:20:22 +0200
-+++ xchat-wdk/src/fe-gtk/palette.c	2010-09-19 05:27:43 +0200
+--- xchat-wdk.orig/src/fe-gtk/palette.c	2010-05-16 03:20:22 +0000
++++ xchat-wdk/src/fe-gtk/palette.c	2010-09-22 15:30:07 +0000
 @@ -18,7 +18,6 @@
  
  #include <stdio.h>
@@ -1015,8 +1309,8 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/palette.c xchat-wdk/src/
  #include <sys/stat.h>
  #include <fcntl.h>
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/plugin-tray.c xchat-wdk/src/fe-gtk/plugin-tray.c
---- xchat-wdk.orig/src/fe-gtk/plugin-tray.c	2010-08-14 03:46:21 +0200
-+++ xchat-wdk/src/fe-gtk/plugin-tray.c	2010-09-19 05:27:43 +0200
+--- xchat-wdk.orig/src/fe-gtk/plugin-tray.c	2010-08-14 01:46:21 +0000
++++ xchat-wdk/src/fe-gtk/plugin-tray.c	2010-09-22 15:30:07 +0000
 @@ -1,8 +1,7 @@
  /* Copyright (C) 2006-2007 Peter Zelezny. */
  
@@ -1142,8 +1436,8 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/plugin-tray.c xchat-wdk/
  
  	return 1;       /* return 1 for success */
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/plugingui.c xchat-wdk/src/fe-gtk/plugingui.c
---- xchat-wdk.orig/src/fe-gtk/plugingui.c	2010-05-16 05:20:22 +0200
-+++ xchat-wdk/src/fe-gtk/plugingui.c	2010-09-19 05:27:43 +0200
+--- xchat-wdk.orig/src/fe-gtk/plugingui.c	2010-05-16 03:20:22 +0000
++++ xchat-wdk/src/fe-gtk/plugingui.c	2010-09-22 15:30:07 +0000
 @@ -35,7 +35,7 @@
  #include "../common/xchat.h"
  #define PLUGIN_C
@@ -1154,8 +1448,8 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/plugingui.c xchat-wdk/sr
  #include "../common/util.h"
  #include "../common/outbound.h"
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/rawlog.c xchat-wdk/src/fe-gtk/rawlog.c
---- xchat-wdk.orig/src/fe-gtk/rawlog.c	2010-05-16 05:20:22 +0200
-+++ xchat-wdk/src/fe-gtk/rawlog.c	2010-09-19 05:27:43 +0200
+--- xchat-wdk.orig/src/fe-gtk/rawlog.c	2010-05-16 03:20:22 +0000
++++ xchat-wdk/src/fe-gtk/rawlog.c	2010-09-25 01:19:34 +0000
 @@ -19,7 +19,6 @@
  #include <stdio.h>
  #include <string.h>
@@ -1164,10 +1458,149 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/rawlog.c xchat-wdk/src/f
  #include <stdlib.h>
  
  #include "fe-gtk.h"
+@@ -29,6 +28,7 @@
+ #include <gtk/gtkhbox.h>
+ #include <gtk/gtkvscrollbar.h>
+ #include <gtk/gtkstock.h>
++#include <gdk/gdkkeysyms.h>
+ 
+ #include "../common/xchat.h"
+ #include "../common/xchatc.h"
+@@ -80,6 +80,17 @@
+ 	return FALSE;
+ }
+ 
++static gboolean
++rawlog_key_cb (GtkWidget * window, GdkEventKey * key, gpointer userdata)
++{
++	if (key->keyval == GDK_Escape)
++	{
++		gtk_widget_destroy (window);
++	}
++
++	return FALSE;
++}
++
+ void
+ open_rawlog (struct server *serv)
+ {
+@@ -127,6 +138,9 @@
+ 	gtkutil_button (hbox, GTK_STOCK_SAVE_AS, NULL, rawlog_savebutton,
+ 						 serv, _("Save As..."));
+ 
++	g_signal_connect (G_OBJECT (serv->gui->rawlog_window), "key_press_event",
++							G_CALLBACK (rawlog_key_cb), serv->gui->rawlog_window);
++
+ 	gtk_widget_show (serv->gui->rawlog_window);
+ }
+ 
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/search.c xchat-wdk/src/fe-gtk/search.c
+--- xchat-wdk.orig/src/fe-gtk/search.c	2010-05-16 03:20:22 +0000
++++ xchat-wdk/src/fe-gtk/search.c	2010-09-22 18:22:22 +0000
+@@ -153,7 +153,7 @@
+ 								_("_Find"));
+ 	g_object_set_data (G_OBJECT (wid), "e", entry);
+ 
+-	g_signal_connect (G_OBJECT (win), "key-press-event", G_CALLBACK (search_key_cb), win);
++	g_signal_connect (G_OBJECT (win), "key_press_event", G_CALLBACK (search_key_cb), win);
+ 
+ 	gtk_widget_show (win);
+ }
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/servlistgui.c xchat-wdk/src/fe-gtk/servlistgui.c
+--- xchat-wdk.orig/src/fe-gtk/servlistgui.c	2010-08-07 07:14:45 +0000
++++ xchat-wdk/src/fe-gtk/servlistgui.c	2010-09-25 00:29:23 +0000
+@@ -486,6 +486,41 @@
+ 	return FALSE;
+ }
+ 
++static gboolean 
++servlist_netwin_keypress_cb (GtkWidget * window, GdkEventKey * key, gpointer userdata)
++{
++	if (key->keyval == GDK_Escape)
++	{
++		gtk_widget_destroy (window);
++	}
++
++	serverlist_win = NULL;
++	selected_net = NULL;
++	return FALSE;
++}
++
++static gboolean 
++servlist_servwin_keypress_cb (GtkWidget * window, GdkEventKey * key, gpointer userdata)
++{
++	if (key->keyval == GDK_Escape)
++	{
++		gtk_widget_destroy (window);
++	}
++
++	return FALSE;
++}
++
++static gboolean 
++servlist_autojoinedit_keypress_cb (GtkWidget * window, GdkEventKey * key, gpointer userdata)
++{
++	if (key->keyval == GDK_Escape)
++	{
++		gtk_widget_destroy (window);
++	}
++
++	return FALSE;
++}
++
+ static void
+ servlist_edit_cb (GtkWidget *but, gpointer none)
+ {
+@@ -501,6 +536,9 @@
+ 						 	G_CALLBACK (servlist_editwin_delete_cb), 0);
+ 	g_signal_connect (G_OBJECT (edit_tree), "key_press_event",
+ 							G_CALLBACK (servlist_serv_keypress_cb), 0);
++	g_signal_connect (G_OBJECT (edit_win), "key_press_event",
++							G_CALLBACK (servlist_servwin_keypress_cb), edit_win);
++	
+ 	gtk_widget_show (edit_win);
+ }
+ 
+@@ -961,6 +999,9 @@
+ 	}
+ 
+ 	fav_add_net = net;
++	
++	g_signal_connect (G_OBJECT (win), "key_press_event",
++							G_CALLBACK (servlist_autojoinedit_keypress_cb), win);
+ 
+ 	gtk_widget_show (win);
+ }
+@@ -1782,7 +1823,7 @@
+ 	gtk_container_add (GTK_CONTAINER (hbox), checkbutton_fav);
+ 	g_signal_connect (G_OBJECT (checkbutton_fav), "toggled",
+ 							G_CALLBACK (fav_servlist), 0);
+-	gtk_widget_show (checkbutton_fav);
++	/* gtk_widget_show (checkbutton_fav); don't show this until it's completed */
+ 
+ 	vbuttonbox2 = gtk_vbutton_box_new ();
+ 	gtk_box_set_spacing (GTK_BOX (vbuttonbox2), 3);
+@@ -1875,6 +1916,8 @@
+ 							"changed", G_CALLBACK (servlist_network_row_cb), NULL);
+ 	g_signal_connect (G_OBJECT (networks_tree), "key_press_event",
+ 							G_CALLBACK (servlist_net_keypress_cb), networks_tree);
++	g_signal_connect (G_OBJECT (serverlist_win), "key_press_event", 
++							G_CALLBACK (servlist_netwin_keypress_cb), serverlist_win);
+ 
+ 	gtk_widget_show (serverlist_win);
+ }
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/setup.c xchat-wdk/src/fe-gtk/setup.c
---- xchat-wdk.orig/src/fe-gtk/setup.c	2008-02-08 10:04:45 +0100
-+++ xchat-wdk/src/fe-gtk/setup.c	2010-09-19 05:27:43 +0200
-@@ -363,7 +363,6 @@
+--- xchat-wdk.orig/src/fe-gtk/setup.c	2008-02-08 09:04:45 +0000
++++ xchat-wdk/src/fe-gtk/setup.c	2010-09-22 18:34:13 +0000
+@@ -47,6 +47,7 @@
+ #include <gtk/gtktreeselection.h>
+ #include <gtk/gtkcellrenderertext.h>
+ #include <gtk/gtkhscale.h>
++#include <gdk/gdkkeysyms.h>
+ #ifdef WIN32
+ #include "../common/fe.h"
+ #endif
+@@ -363,7 +364,6 @@
  	{ST_END, 0, 0, 0, 0, 0}
  };
  
@@ -1175,7 +1608,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/setup.c xchat-wdk/src/fe
  static const setting advanced_settings[] =
  {
  	{ST_HEADER,	N_("Advanced Settings"),0,0,0},
-@@ -378,7 +377,6 @@
+@@ -378,7 +378,6 @@
  
  	{ST_END, 0, 0, 0, 0, 0}
  };
@@ -1183,7 +1616,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/setup.c xchat-wdk/src/fe
  
  static const setting logging_settings[] =
  {
-@@ -1708,7 +1706,7 @@
+@@ -1708,7 +1707,7 @@
  		N_("General"),
  		N_("Logging"),
  		N_("Sound"),
@@ -1192,7 +1625,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/setup.c xchat-wdk/src/fe
  		NULL,
  	N_("Network"),
  		N_("Network setup"),
-@@ -1733,6 +1731,7 @@
+@@ -1733,6 +1732,7 @@
  	setup_add_page (cata[9], book, setup_create_page (general_settings));
  	setup_add_page (cata[10], book, setup_create_page (logging_settings));
  	setup_add_page (cata[11], book, setup_create_sound_page ());
@@ -1200,9 +1633,37 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/setup.c xchat-wdk/src/fe
  	setup_add_page (cata[14], book, setup_create_page (network_settings));
  	setup_add_page (cata[15], book, setup_create_page (filexfer_settings));
  
+@@ -2050,6 +2050,17 @@
+ 	palette_save ();
+ }
+ 
++static gboolean
++setup_key_cb (GtkWidget * window, GdkEventKey * key, gpointer userdata)
++{
++	if (key->keyval == GDK_Escape)
++	{
++		gtk_widget_destroy (window);
++	}
++
++	return FALSE;
++}
++
+ static GtkWidget *
+ setup_window_open (void)
+ {
+@@ -2095,6 +2106,9 @@
+ 
+ 	wid = gtk_hseparator_new ();
+ 	gtk_box_pack_end (GTK_BOX (vbox), wid, FALSE, FALSE, 0);
++	
++	g_signal_connect (G_OBJECT (win), "key_press_event",
++							G_CALLBACK (setup_key_cb), win);
+ 
+ 	gtk_widget_show_all (win);
+ 
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/sexy-spell-entry.c xchat-wdk/src/fe-gtk/sexy-spell-entry.c
---- xchat-wdk.orig/src/fe-gtk/sexy-spell-entry.c	2006-07-17 07:51:02 +0200
-+++ xchat-wdk/src/fe-gtk/sexy-spell-entry.c	2010-09-19 05:27:43 +0200
+--- xchat-wdk.orig/src/fe-gtk/sexy-spell-entry.c	2006-07-17 05:51:02 +0000
++++ xchat-wdk/src/fe-gtk/sexy-spell-entry.c	2010-09-22 15:30:07 +0000
 @@ -31,6 +31,20 @@
  /*#include "gtkspell-iso-codes.h"
  #include "sexy-marshal.h"*/
@@ -1224,9 +1685,87 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/sexy-spell-entry.c xchat
  /*
   * Bunch of poop to make enchant into a runtime dependency rather than a
   * compile-time dependency.  This makes it so I don't have to hear the
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/textgui.c xchat-wdk/src/fe-gtk/textgui.c
+--- xchat-wdk.orig/src/fe-gtk/textgui.c	2007-05-23 08:55:58 +0000
++++ xchat-wdk/src/fe-gtk/textgui.c	2010-09-22 18:50:21 +0000
+@@ -35,6 +35,7 @@
+ #include <gtk/gtkvbox.h>
+ #include <gtk/gtkvpaned.h>
+ #include <gtk/gtkvscrollbar.h>
++#include <gdk/gdkkeysyms.h>
+ 
+ #include "../common/xchat.h"
+ #include "../common/xchatc.h"
+@@ -355,6 +356,17 @@
+ 	}
+ }
+ 
++static gboolean
++pevent_key_cb (GtkWidget * window, GdkEventKey * key, gpointer userdata)
++{
++	if (key->keyval == GDK_Escape)
++	{
++		gtk_widget_destroy (window);
++	}
++
++	return FALSE;
++}
++
+ void
+ pevent_dialog_show ()
+ {
+@@ -451,6 +463,9 @@
+ 	gtk_widget_show (wid);
+ 
+ 	gtk_widget_show (hbox);
++	
++	g_signal_connect (G_OBJECT (pevent_dialog), "key_press_event",
++							G_CALLBACK (pevent_key_cb), pevent_dialog);
+ 
+ 	gtk_widget_show (pevent_dialog);
+ }
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/urlgrab.c xchat-wdk/src/fe-gtk/urlgrab.c
+--- xchat-wdk.orig/src/fe-gtk/urlgrab.c	2010-05-16 03:20:22 +0000
++++ xchat-wdk/src/fe-gtk/urlgrab.c	2010-09-25 01:24:24 +0000
+@@ -31,6 +31,7 @@
+ #include <gtk/gtktreeview.h>
+ #include <gtk/gtktreeselection.h>
+ #include <gtk/gtkcellrenderertext.h>
++#include <gdk/gdkkeysyms.h>
+ 
+ #include "../common/xchat.h"
+ #include "../common/cfgfiles.h"
+@@ -171,6 +172,17 @@
+ 	return TRUE;
+ }
+ 
++static gboolean
++url_key_cb (GtkWidget * window, GdkEventKey * key, gpointer userdata)
++{
++	if (key->keyval == GDK_Escape)
++	{
++		gtk_widget_destroy (window);
++	}
++
++	return FALSE;
++}
++
+ void
+ url_opengui ()
+ {
+@@ -202,6 +214,9 @@
+ 	gtkutil_button (hbox, GTK_STOCK_SAVE_AS,
+ 						 _("Save list to a file"), url_button_save, 0, _("Save As..."));
+ 
++	g_signal_connect (G_OBJECT (urlgrabberwindow), "key_press_event",
++							G_CALLBACK (url_key_cb), urlgrabberwindow);
++
+ 	gtk_widget_show (urlgrabberwindow);
+ 
+ 	tree_foreach (url_tree, (tree_traverse_func *)populate_cb, NULL);
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/xtext.c xchat-wdk/src/fe-gtk/xtext.c
---- xchat-wdk.orig/src/fe-gtk/xtext.c	2008-08-29 13:24:17 +0200
-+++ xchat-wdk/src/fe-gtk/xtext.c	2010-09-19 05:27:43 +0200
+--- xchat-wdk.orig/src/fe-gtk/xtext.c	2008-08-29 11:24:17 +0000
++++ xchat-wdk/src/fe-gtk/xtext.c	2010-09-22 15:30:07 +0000
 @@ -42,7 +42,6 @@
  #include <ctype.h>
  #include <stdlib.h>
@@ -1236,8 +1775,8 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/xtext.c xchat-wdk/src/fe
  #include <gtk/gtksignal.h>
  #include <gtk/gtkselection.h>
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-text/fe-text.c xchat-wdk/src/fe-text/fe-text.c
---- xchat-wdk.orig/src/fe-text/fe-text.c	2008-08-29 13:24:17 +0200
-+++ xchat-wdk/src/fe-text/fe-text.c	2010-09-19 05:27:43 +0200
+--- xchat-wdk.orig/src/fe-text/fe-text.c	2008-08-29 11:24:17 +0000
++++ xchat-wdk/src/fe-text/fe-text.c	2010-09-22 15:30:07 +0000
 @@ -22,9 +22,13 @@
  #ifdef HAVE_STRINGS_H
  #include <strings.h>
