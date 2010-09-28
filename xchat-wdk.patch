@@ -1164,6 +1164,18 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/rawlog.c xchat-wdk/src/f
  #include <stdlib.h>
  
  #include "fe-gtk.h"
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/search.c xchat-wdk/src/fe-gtk/search.c
+--- xchat-wdk.orig/src/fe-gtk/search.c	2010-05-16 03:20:22 +0000
++++ xchat-wdk/src/fe-gtk/search.c	2010-09-28 14:39:52 +0000
+@@ -153,7 +153,7 @@
+ 								_("_Find"));
+ 	g_object_set_data (G_OBJECT (wid), "e", entry);
+ 
+-	g_signal_connect (G_OBJECT (win), "key-press-event", G_CALLBACK (search_key_cb), win);
++	g_signal_connect (G_OBJECT (win), "key_press_event", G_CALLBACK (search_key_cb), win);
+ 
+ 	gtk_widget_show (win);
+ }
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/servlistgui.c xchat-wdk/src/fe-gtk/servlistgui.c
 --- xchat-wdk.orig/src/fe-gtk/servlistgui.c	2010-08-07 07:14:45 +0000
 +++ xchat-wdk/src/fe-gtk/servlistgui.c	2010-09-28 14:38:39 +0000
