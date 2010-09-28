@@ -54,10 +54,6 @@ Name: x64; Description: "x64"; GroupDescription: "XChat-WDK version:"; Flags: ex
 
 Name: portable; Description: "Yes"; GroupDescription: "Portable Install (no Registry entries, no Start Menu icons, no uninstaller):"; Flags: unchecked
 
-Name: thdefault; Description: "Default"; GroupDescription: "Theme (only for portable installs)"; Flags: exclusive
-Name: thblack; Description: "Black"; GroupDescription: "Theme (only for portable installs)"; Flags: exclusive unchecked
-Name: thglyphed; Description: "Simply Glyphed Tango Dark"; GroupDescription: "Theme (only for portable installs)"; Flags: exclusive unchecked
-
 Name: xtray; Description: "X-Tray"; GroupDescription: "Tray Icon"; Flags: exclusive
 Name: noxtray; Description: "Plugin-Tray"; GroupDescription: "Tray Icon"; Flags: exclusive unchecked
 
@@ -70,8 +66,6 @@ Source: "COPYING"; DestDir: "{app}"; Components: libs
 Source: "LICENSE.OPENSSL"; DestDir: "{app}"; Components: libs
 Source: "LICENSE.ZLIB"; DestDir: "{app}"; Components: libs
 Source: "portable-mode"; DestDir: "{app}"; Tasks: portable
-Source: "themes\glyphed\*"; DestDir: "{app}\config"; Tasks: thglyphed
-Source: "themes\black\*"; DestDir: "{app}\config"; Tasks: thblack
 Source: "etc\*"; DestDir: "{app}\etc"; Flags: createallsubdirs recursesubdirs; Components: libs
 Source: "locale\*"; DestDir: "{app}\locale"; Flags: createallsubdirs recursesubdirs; Components: translations
 Source: "share\*"; DestDir: "{app}\share"; Flags: createallsubdirs recursesubdirs; Components: translations

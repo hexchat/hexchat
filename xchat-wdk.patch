@@ -187,15 +187,27 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/cfgfiles.c xchat-wdk/src
  	}
  	return xdir_fs;
  }
-@@ -461,6 +466,7 @@
+@@ -536,6 +541,7 @@
  
- #ifdef WIN32
- 	{"identd", P_OFFINT (identd), TYPE_BOOL},
+ 	{"tab_chans", P_OFFINT (tabchannels), TYPE_BOOL},
+ 	{"tab_dialogs", P_OFFINT (privmsgtab), TYPE_BOOL},
++	{"tab_icons", P_OFFINT (tab_icons), TYPE_BOOL},
+ 	{"tab_layout", P_OFFINT (tab_layout), TYPE_INT},
+ 	{"tab_new_to_front", P_OFFINT (newtabstofront), TYPE_INT},
+ 	{"tab_notices", P_OFFINT (notices_tabs), TYPE_BOOL},
+@@ -546,9 +552,11 @@
+ 	{"tab_sort", P_OFFINT (tab_sort), TYPE_BOOL},
+ 	{"tab_trunc", P_OFFINT (truncchans), TYPE_INT},
+ 	{"tab_utils", P_OFFINT (windows_as_tabs), TYPE_BOOL},
++	{"tab_xp", P_OFFINT (tab_xp), TYPE_BOOL},
+ 
+ 	{"text_background", P_OFFSET (background), TYPE_STR},
+ 	{"text_color_nicks", P_OFFINT (colorednicks), TYPE_BOOL},
 +	{"text_emoticons", P_OFFINT (emoticons), TYPE_BOOL},
- #endif
- 	{"input_balloon_chans", P_OFFINT (input_balloon_chans), TYPE_BOOL},
- 	{"input_balloon_hilight", P_OFFINT (input_balloon_hilight), TYPE_BOOL},
-@@ -648,6 +654,7 @@
+ 	{"text_font", P_OFFSET (font_normal), TYPE_STR},
+ 	{"text_indent", P_OFFINT (indent_nicks), TYPE_BOOL},
+ 	{"text_max_indent", P_OFFINT (max_auto_indent), TYPE_INT},
+@@ -648,6 +656,7 @@
  	prefs.dialog_height = 256;
  	prefs.gui_join_dialog = 1;
  	prefs.gui_quit_dialog = 1;
@@ -655,11 +667,13 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/xchat.h xchat-wdk/src/co
  #include <direct.h>
  #define	F_OK	0
  #define	X_OK	1
-@@ -297,6 +299,7 @@
+@@ -297,6 +299,9 @@
  	unsigned int confmode;
  	unsigned int utf8_locale;
  	unsigned int identd;
 +	unsigned int emoticons;
++	unsigned int tab_icons;
++	unsigned int tab_xp;
  
  	unsigned int ctcp_number_limit;	/*flood */
  	unsigned int ctcp_time_limit;	/*seconds of floods */
@@ -674,6 +688,15 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/about.c xchat-wdk/src/fe
  #include "palette.h"
  #include "pixmaps.h"
  #include "gtkutil.h"
+@@ -95,7 +96,7 @@
+ 	}
+ 
+ 	about = gtk_dialog_new ();
+-	gtk_window_set_position (GTK_WINDOW (about), GTK_WIN_POS_CENTER);
++	gtk_window_set_position (GTK_WINDOW (about), GTK_WIN_POS_CENTER_ON_PARENT);
+ 	gtk_window_set_resizable (GTK_WINDOW (about), FALSE);
+ 	gtk_window_set_title (GTK_WINDOW (about), _("About "DISPLAY_NAME));
+ 	if (parent_window)
 @@ -114,35 +115,38 @@
  	g_get_charset (&locale);
  	(snprintf) (buf, sizeof (buf),
@@ -929,7 +952,23 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/maingui.c xchat-wdk/src/
  }
  
  /* set a tab plain, red, light-red, or blue */
-@@ -2957,11 +2903,7 @@
+@@ -1190,7 +1136,14 @@
+ 						  "Close them all?"), i);
+ 		g_signal_connect (G_OBJECT (dialog), "response",
+ 								G_CALLBACK (mg_tab_close_cb), sess);
+-		gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
++		if (prefs.tab_layout)
++		{
++			gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
++		}
++		else
++		{
++			gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_CENTER_ON_PARENT);		
++		}
+ 		gtk_widget_show (dialog);
+ 	}
+ }
+@@ -2957,11 +2910,7 @@
  		gtk_xtext_check_marker_visibility (GTK_XTEXT (current_sess->gui->xtext));
  		plugin_emit_dummy_print (current_sess, "Focus Window");
  	}
@@ -941,7 +980,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/maingui.c xchat-wdk/src/
  	return FALSE;
  }
  
-@@ -2972,11 +2914,7 @@
+@@ -2972,11 +2921,7 @@
  	if (!sess->server->server_session)
  		sess->server->server_session = sess;
  	gtk_xtext_check_marker_visibility(GTK_XTEXT (current_sess->gui->xtext));
@@ -1125,6 +1164,16 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/rawlog.c xchat-wdk/src/f
  #include <stdlib.h>
  
  #include "fe-gtk.h"
++++ xchat-wdk/src/fe-gtk/servlistgui.c	2010-09-25 00:29:23 +0000
+@@ -1782,7 +1823,7 @@
+ 	gtk_container_add (GTK_CONTAINER (hbox), checkbutton_fav);
+ 	g_signal_connect (G_OBJECT (checkbutton_fav), "toggled",
+ 							G_CALLBACK (fav_servlist), 0);
+-	gtk_widget_show (checkbutton_fav);
++	/* gtk_widget_show (checkbutton_fav); don't show this until it's completed */
+ 
+ 	vbuttonbox2 = gtk_vbutton_box_new ();
+ 	gtk_box_set_spacing (GTK_BOX (vbuttonbox2), 3);
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/setup.c xchat-wdk/src/fe-gtk/setup.c
 --- xchat-wdk.orig/src/fe-gtk/setup.c	2008-02-08 10:04:45 +0100
 +++ xchat-wdk/src/fe-gtk/setup.c	2010-09-19 05:27:43 +0200
