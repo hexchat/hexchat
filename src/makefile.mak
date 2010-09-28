@@ -10,7 +10,6 @@ clean:
 	@del common\*.obj
 	@del common\xchatcommon.lib
 	@del fe-gtk\*.obj
-	@del fe-gtk\mmx_cmod.o
 	@del fe-gtk\xchat.exe
 	@del fe-gtk\xchat.rc
 	@del fe-gtk\xchat.res

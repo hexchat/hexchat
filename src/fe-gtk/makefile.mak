@@ -11,9 +11,6 @@ PROG = xchat.exe
 
 all: $(PROG)
 
-mmx_cmod.o: mmx_cmod.S
-	gcc -DUNDERSCORE_SYMBOLS -c mmx_cmod.S
-
 .c.obj:
 	$(CC) $(CFLAGS) -I..\..\plugins $(GLIB) $(GTK) $(SPELL) $<
 
@@ -31,7 +28,6 @@ xchat-icon.obj: xchat.res
 
 clean:
 	@del *.obj
-	@del mmx_cmod.o
 	@del $(PROG)
 	@del xchat.rc
 	@del xchat.res
