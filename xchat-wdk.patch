@@ -870,7 +870,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/joind.c xchat-wdk/src/fe
  
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/maingui.c xchat-wdk/src/fe-gtk/maingui.c
 --- xchat-wdk.orig/src/fe-gtk/maingui.c	2010-05-16 03:20:22 +0000
-+++ xchat-wdk/src/fe-gtk/maingui.c	2010-09-28 14:38:39 +0000
++++ xchat-wdk/src/fe-gtk/maingui.c	2010-09-29 13:49:59 +0000
 @@ -214,60 +214,10 @@
  	away_list = mg_attr_list_create (&colors[COL_AWAY], FALSE);
  }
@@ -968,6 +968,24 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/maingui.c xchat-wdk/src/
  		gtk_widget_show (dialog);
  	}
  }
+@@ -2489,7 +2442,7 @@
+ 	if (prefs.lagometer & 1)
+ 	{
+ 		gui->lagometer = wid = gtk_progress_bar_new ();
+-		gtk_widget_set_size_request (wid, 1, 8);
++		gtk_widget_set_size_request (wid, 1, 10);
+ 
+ 		wid = gtk_event_box_new ();
+ 		gtk_container_add (GTK_CONTAINER (wid), gui->lagometer);
+@@ -2504,7 +2457,7 @@
+ 	if (prefs.throttlemeter & 1)
+ 	{
+ 		gui->throttlemeter = wid = gtk_progress_bar_new ();
+-		gtk_widget_set_size_request (wid, 1, 8);
++		gtk_widget_set_size_request (wid, 1, 10);
+ 
+ 		wid = gtk_event_box_new ();
+ 		gtk_container_add (GTK_CONTAINER (wid), gui->throttlemeter);
 @@ -2957,11 +2910,7 @@
  		gtk_xtext_check_marker_visibility (GTK_XTEXT (current_sess->gui->xtext));
  		plugin_emit_dummy_print (current_sess, "Focus Window");
