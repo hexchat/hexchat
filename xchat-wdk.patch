@@ -1217,8 +1217,8 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/servlistgui.c xchat-wdk/
  	gtk_box_set_spacing (GTK_BOX (vbuttonbox2), 3);
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/setup.c xchat-wdk/src/fe-gtk/setup.c
 --- xchat-wdk.orig/src/fe-gtk/setup.c	2008-02-08 09:04:45 +0000
-+++ xchat-wdk/src/fe-gtk/setup.c	2010-09-29 15:12:56 +0000
-@@ -109,8 +109,8 @@
++++ xchat-wdk/src/fe-gtk/setup.c	2010-09-29 15:31:45 +0000
+@@ -109,13 +109,13 @@
  					N_("Give each person on IRC a different color"),0,0},
  	{ST_TOGGLR, N_("Indent nick names"), P_OFFINTNL(indent_nicks),
  					N_("Make nick names right-justified"),0,0},
@@ -1227,8 +1227,15 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/setup.c xchat-wdk/src/fe
 +	/* {ST_TOGGLE, N_("Transparent background"), P_OFFINTNL(transparent),0,0,0}, */
 +	{ST_TOGGLE, N_("Show marker line"), P_OFFINTNL(show_marker),
  					N_("Insert a red line after the last read text."),0,0},
- 	{ST_HEADER, N_("Transparency Settings"), 0,0,0},
+-	{ST_HEADER, N_("Transparency Settings"), 0,0,0},
++	/* {ST_HEADER, N_("Transparency Settings"), 0,0,0},
  	{ST_HSCALE, N_("Red:"), P_OFFINTNL(tint_red),0,0,0},
+ 	{ST_HSCALE, N_("Green:"), P_OFFINTNL(tint_green),0,0,0},
+-	{ST_HSCALE, N_("Blue:"), P_OFFINTNL(tint_blue),0,0,0},
++	{ST_HSCALE, N_("Blue:"), P_OFFINTNL(tint_blue),0,0,0}, */
+ 
+ 	{ST_HEADER,	N_("Time Stamps"),0,0,0},
+ 	{ST_TOGGLE, N_("Enable time stamps"), P_OFFINTNL(timestamp),0,0,2},
 @@ -363,7 +363,6 @@
  	{ST_END, 0, 0, 0, 0, 0}
  };
