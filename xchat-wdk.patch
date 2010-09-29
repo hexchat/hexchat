@@ -784,6 +784,31 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/chanlist.c xchat-wdk/src
  #include <fcntl.h>
  #include <time.h>
  
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/chanview-tabs.c xchat-wdk/src/fe-gtk/chanview-tabs.c
+--- xchat-wdk.orig/src/fe-gtk/chanview-tabs.c	2005-11-21 05:25:39 +0000
++++ xchat-wdk/src/fe-gtk/chanview-tabs.c	2010-09-29 19:52:34 +0000
+@@ -144,8 +144,8 @@
+ 		for (i = adj->value; ((i > new_value) && (tab_left_is_moving)); i -= 0.1)
+ 		{
+ 			gtk_adjustment_set_value (adj, i);
+-			while (g_main_pending ())
+-				g_main_iteration (TRUE);
++			while (g_main_context_pending (NULL))
++				g_main_context_iteration (NULL, TRUE);
+ 		}
+ 
+ 		gtk_adjustment_set_value (adj, new_value);
+@@ -191,8 +191,8 @@
+ 		for (i = adj->value; ((i < new_value) && (tab_right_is_moving)); i += 0.1)
+ 		{
+ 			gtk_adjustment_set_value (adj, i);
+-			while (g_main_pending ())
+-				g_main_iteration (TRUE);
++			while (g_main_context_pending (NULL))
++				g_main_context_iteration (NULL, TRUE);
+ 		}
+ 
+ 		gtk_adjustment_set_value (adj, new_value);
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/editlist.c xchat-wdk/src/fe-gtk/editlist.c
 --- xchat-wdk.orig/src/fe-gtk/editlist.c	2006-03-13 08:33:45 +0000
 +++ xchat-wdk/src/fe-gtk/editlist.c	2010-09-28 14:38:39 +0000
