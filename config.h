@@ -2,9 +2,9 @@
 #define ENABLE_NLS
 #define USE_GMODULE
 #define USE_PLUGIN
-/*#ifndef _WIN64
-#define USE_GTKSPELL
-#endif*/
+#ifndef _WIN64
+#define USE_LIBSEXY
+#endif
 #define PACKAGE_NAME "xchat"
 #define PACKAGE_VERSION "1468"
 #define XCHATLIBDIR "."

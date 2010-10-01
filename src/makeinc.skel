@@ -40,8 +40,8 @@ OPENSSLPATH = c:\mozilla-build\build\openssl-wdk-1.0.0a-x86
 CFLAGS = $(CFLAGS) /DUSE_OPENSSL /I$(OPENSSLPATH)\include
 LIBS = $(LIBS) /libpath:$(OPENSSLPATH)\lib libeay32.lib ssleay32.lib
 
-#SPELL = -Ic:\mozilla-build\build\gtkspell-x86\include\gtkspell-2.0
-#LIBS = $(LIBS) /libpath:c:\mozilla-build\build\gtkspell-x86\lib libgtkspell.a
+SPELL = -I$(DEV32)\include\enchant
+LIBS = $(LIBS) libenchant.dll.a
 
 LDFLAGS = $(LDFLAGS) msvcrt_winxp.obj
 
@@ -111,7 +111,7 @@ rawlog.obj \
 search.obj \
 servlistgui.obj \
 setup.obj \
-#sexy-spell-entry.obj \
+sexy-spell-entry.obj \
 textgui.obj \
 urlgrab.obj \
 userlistgui.obj \

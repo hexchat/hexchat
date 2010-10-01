@@ -50,3 +50,4 @@ copy ..\plugins\xtray\xtray.dll %XCHAT_DEST%\plugins
 copy %LUA_BIN%\lua51.dll %XCHAT_DEST%
 xcopy /q /s /i ..\po\locale %XCHAT_DEST%\locale
 xcopy /q /s /i %GTK_BIN%\..\share\locale %XCHAT_DEST%\share\locale
+xcopy /q /s /i ..\..\myspell %XCHAT_DEST%\share\myspell

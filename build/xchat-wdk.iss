@@ -37,6 +37,7 @@ Name: "custom"; Description: "Custom Installation"; Flags: iscustom
 [Components]
 Name: "libs"; Description: "XChat-WDK"; Types: normal full custom; Flags: fixed
 Name: "translations"; Description: "Translations"; Types: normal full custom
+Name: "dictionaries"; Description: "Spelling dictionaries"; Types: full custom
 Name: "plugins"; Description: "Plugins"; Types: full custom
 Name: "plugins\ewc"; Description: "EasyWinampControl"; Types: full custom
 Name: "plugins\upd"; Description: "XChat-WDK Update Checker"; Types: normal full custom
@@ -68,7 +69,8 @@ Source: "LICENSE.ZLIB"; DestDir: "{app}"; Components: libs
 Source: "portable-mode"; DestDir: "{app}"; Tasks: portable
 Source: "etc\*"; DestDir: "{app}\etc"; Flags: createallsubdirs recursesubdirs; Components: libs
 Source: "locale\*"; DestDir: "{app}\locale"; Flags: createallsubdirs recursesubdirs; Components: translations
-Source: "share\*"; DestDir: "{app}\share"; Flags: createallsubdirs recursesubdirs; Components: translations
+Source: "share\locale\*"; DestDir: "{app}\share\locale"; Flags: createallsubdirs recursesubdirs; Components: translations
+Source: "share\myspell\*"; DestDir: "{app}\share\myspell"; Flags: createallsubdirs recursesubdirs; Components: dictionaries
 
 
 
