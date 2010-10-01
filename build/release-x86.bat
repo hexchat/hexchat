@@ -38,6 +38,7 @@ copy %SSL_BIN%\libeay32.dll %XCHAT_DEST%
 copy %SSL_BIN%\ssleay32.dll %XCHAT_DEST%
 copy %SSL_BIN%\zlib1.dll %XCHAT_DEST%
 copy %GTK_BIN%\libenchant.dll %XCHAT_DEST%
+xcopy /q /s /i %GTK_BIN%\..\lib\enchant\libenchant_myspell.dll %XCHAT_DEST%\lib\enchant\
 xcopy /q /s /i ..\plugins\ewc\xcewc.dll %XCHAT_DEST%\plugins\
 copy ..\plugins\lua\xclua.dll %XCHAT_DEST%\plugins
 copy ..\plugins\perl\xcperl-58.dll %XCHAT_DEST%\plugins

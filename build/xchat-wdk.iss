@@ -150,6 +150,12 @@ Source: "ssleay32.dll.x64"; DestDir: "{app}"; DestName: "ssleay32.dll"; Componen
 Source: "zlib1.dll"; DestDir: "{app}"; Components: libs; Tasks: x86
 Source: "zlib1.dll.x64"; DestDir: "{app}"; DestName: "zlib1.dll"; Components: libs; Tasks: x64
 
+Source: "libenchant.dll"; DestDir: "{app}"; Components: libs; Tasks: x86
+Source: "libenchant.dll.x64"; DestDir: "{app}"; DestName: "libenchant.dll"; Components: libs; Tasks: x64
+
+Source: "lib\enchant\libenchant_myspell.dll"; DestDir: "{app}\lib\enchant"; Components: libs; Tasks: x86
+Source: "lib\enchant\libenchant_myspell.dll.x64"; DestDir: "{app}\lib\enchant"; DestName: "libenchant_myspell.dll"; Components: libs; Tasks: x64
+
 
 
 Source: "lib\gtk-2.0\2.10.0\engines\libpixmap.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Components: libs; Tasks: x86
