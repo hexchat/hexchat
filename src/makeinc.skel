@@ -40,9 +40,6 @@ OPENSSLPATH = c:\mozilla-build\build\openssl-wdk-1.0.0a-x86
 CFLAGS = $(CFLAGS) /DUSE_OPENSSL /I$(OPENSSLPATH)\include
 LIBS = $(LIBS) /libpath:$(OPENSSLPATH)\lib libeay32.lib ssleay32.lib
 
-SPELL = -I$(DEV32)\include\enchant
-LIBS = $(LIBS) libenchant.dll.a
-
 LDFLAGS = $(LDFLAGS) msvcrt_winxp.obj
 
 LUAPATH = c:\mozilla-build\build\lua-wdk-5.1.4-2-x86

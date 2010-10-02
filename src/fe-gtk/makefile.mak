@@ -12,7 +12,7 @@ PROG = xchat.exe
 all: $(PROG)
 
 .c.obj:
-	$(CC) $(CFLAGS) -I..\..\plugins $(GLIB) $(GTK) $(SPELL) $<
+	$(CC) $(CFLAGS) -I..\..\plugins $(GLIB) $(GTK) $<
 
 $(PROG): $(FEGTK_OBJECTS) $(COMLIB) xchat-icon.obj
 	$(LINK) /out:$(PROG) /entry:mainCRTStartup $(LDFLAGS) $(LIBS) $(FEGTK_OBJECTS) $(COMLIB) xchat-icon.obj
