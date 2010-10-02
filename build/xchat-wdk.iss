@@ -150,11 +150,14 @@ Source: "ssleay32.dll.x64"; DestDir: "{app}"; DestName: "ssleay32.dll"; Componen
 Source: "zlib1.dll"; DestDir: "{app}"; Components: libs; Tasks: x86
 Source: "zlib1.dll.x64"; DestDir: "{app}"; DestName: "zlib1.dll"; Components: libs; Tasks: x64
 
-Source: "libenchant.dll"; DestDir: "{app}"; Components: libs; Tasks: x86
-Source: "libenchant.dll.x64"; DestDir: "{app}"; DestName: "libenchant.dll"; Components: libs; Tasks: x64
+Source: "libenchant-1.dll"; DestDir: "{app}"; Components: libs; Tasks: x86
+Source: "libenchant-1.dll.x64"; DestDir: "{app}"; DestName: "libenchant-1.dll"; Components: libs; Tasks: x64
 
 Source: "lib\enchant\libenchant_myspell.dll"; DestDir: "{app}\lib\enchant"; Components: libs; Tasks: x86
 Source: "lib\enchant\libenchant_myspell.dll.x64"; DestDir: "{app}\lib\enchant"; DestName: "libenchant_myspell.dll"; Components: libs; Tasks: x64
+
+Source: "libgcc_s_sjlj-1.dll"; DestDir: "{app}"; Components: libs; Tasks: x86
+Source: "libgcc_s_sjlj-1.dll.x64"; DestDir: "{app}"; DestName: "libgcc_s_sjlj-1.dll"; Components: libs; Tasks: x64
 
 
 
