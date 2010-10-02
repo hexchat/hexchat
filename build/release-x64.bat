@@ -3,7 +3,7 @@ set GTK_BIN=c:\mozilla-build\build\xchat-dev64\bin
 set SSL_BIN=c:\mozilla-build\build\openssl-wdk-1.0.0a-x64\bin
 set LUA_BIN=c:\mozilla-build\build\lua-wdk-5.1.4-2-x64\bin
 set MINGW_BIN=c:\mozilla-build\mingw64\bin
-set ENCHANT_BIN=c:\mozilla-build\enchant-1-5.0-x86\bin
+set ENCHANT_BIN=c:\mozilla-build\build\enchant-1-5.0-x86\bin
 set XCHAT_DEST=c:\mozilla-build\build\xchat-wdk-uni
 copy ..\src\fe-gtk\xchat.exe %XCHAT_DEST%\xchat.exe.x64
 copy %GTK_BIN%\libgtk-win32-2.0-0.dll %XCHAT_DEST%\libgtk-win32-2.0-0.dll.x64
