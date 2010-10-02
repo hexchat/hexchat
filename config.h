@@ -4,7 +4,7 @@
 #define USE_PLUGIN
 #define USE_LIBSEXY
 #define PACKAGE_NAME "xchat"
-#define PACKAGE_VERSION "1468"
+#define PACKAGE_VERSION "1468-2"
 #define XCHATLIBDIR "."
 #define XCHATSHAREDIR "."
 #define OLD_PERL
