@@ -3,7 +3,7 @@ set GTK_BIN=c:\mozilla-build\build\xchat-dev32\bin
 set SSL_BIN=c:\mozilla-build\build\openssl-wdk-1.0.0a-x86\bin
 set LUA_BIN=c:\mozilla-build\build\lua-wdk-5.1.4-2-x86\bin
 set MINGW_BIN=c:\mozilla-build\mingw32\bin
-set ENCHANT_BIN=c:\mozilla-build\build\enchant-1-5.0-x86\bin
+set ENCHANT_BIN=c:\mozilla-build\build\enchant-1.5.0-x86\bin
 set XCHAT_DEST=c:\mozilla-build\build\xchat-wdk-uni
 rmdir /q /s %XCHAT_DEST%
 mkdir %XCHAT_DEST%
