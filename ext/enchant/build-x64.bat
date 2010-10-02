@@ -5,3 +5,4 @@ pause
 make
 pause
 make install
+pause
