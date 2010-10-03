@@ -818,7 +818,7 @@ if there is no such list.
 <p>Example of checking if the current context has Hide Join/Part messages set:</p>
 <div class="example">
 <code>
-if( Xchat::context_info->{flags} &amp; (1 >> 6) ) {
+if( Xchat::context_info->{flags} &amp; (1 << 6) ) {
   Xchat::print( "Hide Join/Part messages is enabled" );
 }
 </code>

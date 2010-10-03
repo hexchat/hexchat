@@ -769,7 +769,7 @@ if there is no such list.</p>
 <div>2</div>
 <div>3</div>
 </div>
-<div class='content'><pre><span class="synStatement">if</span>( Xchat::context_info-&gt;{flags} &amp; (<span class="synConstant">1</span> &gt;&gt; <span class="synConstant">6</span>) ) {
+<div class='content'><pre><span class="synStatement">if</span>( Xchat::context_info-&gt;{flags} &amp; (<span class="synConstant">1</span> &lt;&lt; <span class="synConstant">6</span>) ) {
   Xchat::<span class="synStatement">print</span>( <span class="synStatement">&quot;</span><span class="synConstant">Hide Join/Part messages is enabled</span><span class="synStatement">&quot;</span> );
 }
 </pre></div>
