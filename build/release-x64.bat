@@ -30,7 +30,7 @@ copy %GTK_BIN%\..\lib\gtk-2.0\modules\libgail.dll %XCHAT_DEST%\lib\gtk-2.0\modul
 copy %SSL_BIN%\libeay32.dll %XCHAT_DEST%\libeay32.dll.x64
 copy %SSL_BIN%\ssleay32.dll %XCHAT_DEST%\ssleay32.dll.x64
 copy %SSL_BIN%\zlib1.dll %XCHAT_DEST%\zlib1.dll.x64
-copy %ENCHANT_BIN%\libenchant.dll %XCHAT_DEST%\libenchant-1.dll.x64
+copy %ENCHANT_BIN%\libenchant.dll %XCHAT_DEST%\libenchant.dll.x64
 copy %ENCHANT_BIN%\..\lib\enchant\libenchant_myspell.dll %XCHAT_DEST%\lib\enchant\libenchant_myspell.dll.x64
 copy ..\plugins\ewc\xcewc.dll %XCHAT_DEST%\plugins\xcewc.dll.x64
 copy ..\plugins\lua\xclua.dll %XCHAT_DEST%\plugins\xclua.dll.x64
