@@ -2,8 +2,7 @@
 set GTK_BIN=c:\mozilla-build\build\xchat-dev32\bin
 set SSL_BIN=c:\mozilla-build\build\openssl-wdk-1.0.0a-x86\bin
 set LUA_BIN=c:\mozilla-build\build\lua-wdk-5.1.4-2-x86\bin
-set MINGW_BIN=c:\mozilla-build\mingw32\bin
-set ENCHANT_BIN=c:\mozilla-build\build\enchant-1.5.0-x86\bin
+set ENCHANT_BIN=c:\mozilla-build\build\enchant-wdk-1.6.0-x86\bin
 set XCHAT_DEST=c:\mozilla-build\build\xchat-wdk-uni
 rmdir /q /s %XCHAT_DEST%
 mkdir %XCHAT_DEST%
@@ -29,7 +28,6 @@ copy %GTK_BIN%\libpangoft2-1.0-0.dll %XCHAT_DEST%
 copy %GTK_BIN%\libpangowin32-1.0-0.dll %XCHAT_DEST%
 copy %GTK_BIN%\libatk-1.0-0.dll %XCHAT_DEST%
 copy %GTK_BIN%\intl.dll %XCHAT_DEST%
-copy %MINGW_BIN%\libgcc_s_sjlj-1.dll %XCHAT_DEST%
 xcopy /q /s /i %GTK_BIN%\..\lib\gtk-2.0\2.10.0\engines\libpixmap.dll %XCHAT_DEST%\lib\gtk-2.0\2.10.0\engines\
 copy %GTK_BIN%\..\lib\gtk-2.0\2.10.0\engines\libwimp.dll %XCHAT_DEST%\lib\gtk-2.0\2.10.0\engines
 xcopy /q /s /i %GTK_BIN%\..\lib\gtk-2.0\modules\libgail.dll %XCHAT_DEST%\lib\gtk-2.0\modules\
@@ -40,7 +38,7 @@ copy %SSL_BIN%\..\LICENSE.ZLIB %XCHAT_DEST%
 copy %SSL_BIN%\libeay32.dll %XCHAT_DEST%
 copy %SSL_BIN%\ssleay32.dll %XCHAT_DEST%
 copy %SSL_BIN%\zlib1.dll %XCHAT_DEST%
-copy %ENCHANT_BIN%\libenchant-1.dll %XCHAT_DEST%
+copy %ENCHANT_BIN%\libenchant.dll %XCHAT_DEST%
 xcopy /q /s /i %ENCHANT_BIN%\..\lib\enchant\libenchant_myspell.dll %XCHAT_DEST%\lib\enchant\
 xcopy /q /s /i ..\plugins\ewc\xcewc.dll %XCHAT_DEST%\plugins\
 copy ..\plugins\lua\xclua.dll %XCHAT_DEST%\plugins
