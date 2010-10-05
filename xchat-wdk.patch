@@ -257,7 +257,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/ctcp.c xchat-wdk/src/com
  	}
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/dcc.c xchat-wdk/src/common/dcc.c
 --- xchat-wdk.orig/src/common/dcc.c	2010-05-30 04:28:04 +0200
-+++ xchat-wdk/src/common/dcc.c	2010-10-05 03:55:27 +0200
++++ xchat-wdk/src/common/dcc.c	2010-10-05 05:50:51 +0200
 @@ -31,7 +31,6 @@
  #include <time.h>
  #include <errno.h>
@@ -266,15 +266,17 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/dcc.c xchat-wdk/src/comm
  #include <fcntl.h>
  
  #define WANTSOCKET
-@@ -1984,7 +1983,7 @@
+@@ -1983,9 +1982,7 @@
+ 		return TRUE;
  
  	/* now handle case-insensitive Filesystems: HFS+, FAT */
- #ifdef WIN32
+-#ifdef WIN32
 -#warning no win32 implementation - behaviour may be unreliable
-+/* warning no win32 implementation - behaviour may be unreliable */
- #else
+-#else
++#ifndef WIN32
  	/* this fstat() shouldn't really fail */
  	if ((dcc->fp == -1 ? stat (dcc->destfile_fs, &st_a) : fstat (dcc->fp, &st_a)) == -1)
+ 		return FALSE;
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/ignore.c xchat-wdk/src/common/ignore.c
 --- xchat-wdk.orig/src/common/ignore.c	2006-04-15 09:00:39 +0200
 +++ xchat-wdk/src/common/ignore.c	2010-10-05 03:55:27 +0200
@@ -401,7 +403,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/proto-irc.c xchat-wdk/sr
  #include <stdlib.h>
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/server.c xchat-wdk/src/common/server.c
 --- xchat-wdk.orig/src/common/server.c	2010-05-30 04:28:04 +0200
-+++ xchat-wdk/src/common/server.c	2010-10-05 03:55:27 +0200
++++ xchat-wdk/src/common/server.c	2010-10-05 05:51:52 +0200
 @@ -26,7 +26,6 @@
  #include <stdio.h>
  #include <string.h>
@@ -410,16 +412,20 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/server.c xchat-wdk/src/c
  #include <errno.h>
  #include <fcntl.h>
  
-@@ -1390,7 +1389,7 @@
+@@ -1388,12 +1387,7 @@
+ static int
+ http_read_line (int print_fd, int sok, char *buf, int len)
  {
- #ifdef WIN32
- 	/* make sure waitline() uses recv() or it'll fail on win32 */
+-#ifdef WIN32
+-	/* make sure waitline() uses recv() or it'll fail on win32 */
 -	len = waitline (sok, buf, len, FALSE);
-+	len = waitline (sok, buf, len, TRUE);
- #else
+-#else
  	len = waitline (sok, buf, len, TRUE);
- #endif
-@@ -1738,7 +1737,7 @@
+-#endif
+ 	if (len >= 1)
+ 	{
+ 		/* print the message out (send it to the parent process) */
+@@ -1738,7 +1732,7 @@
  	}
  #endif
  	serv->childpid = pid;
