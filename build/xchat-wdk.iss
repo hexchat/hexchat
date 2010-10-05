@@ -67,6 +67,10 @@ Name: perl512; Description: "5.12"; GroupDescription: "Perl version:"; Flags: ex
 Source: "COPYING"; DestDir: "{app}"; Components: libs
 Source: "LICENSE.OPENSSL"; DestDir: "{app}"; Components: libs
 Source: "LICENSE.ZLIB"; DestDir: "{app}"; Components: libs
+Source: "LICENSE.GTK"; DestDir: "{app}"; Components: libs
+Source: "LICENSE.CAIRO"; DestDir: "{app}"; Components: libs
+Source: "LICENSE.LUA"; DestDir: "{app}"; Components: libs
+Source: "LICENSE.ENCHANT"; DestDir: "{app}"; Components: libs
 Source: "portable-mode"; DestDir: "{app}"; Tasks: portable
 Source: "etc\*"; DestDir: "{app}\etc"; Flags: createallsubdirs recursesubdirs; Components: libs
 Source: "locale\*"; DestDir: "{app}\locale"; Flags: createallsubdirs recursesubdirs; Components: translations
