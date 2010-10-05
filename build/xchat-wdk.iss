@@ -153,14 +153,11 @@ Source: "zlib1.dll.x64"; DestDir: "{app}"; DestName: "zlib1.dll"; Components: li
 
 
 
-Source: "libenchant-1.dll"; DestDir: "{app}"; Components: spelling; Tasks: x86
-Source: "libenchant-1.dll.x64"; DestDir: "{app}"; DestName: "libenchant-1.dll"; Components: spelling; Tasks: x64
+Source: "libenchant.dll"; DestDir: "{app}"; Components: spelling; Tasks: x86
+Source: "libenchant.dll.x64"; DestDir: "{app}"; DestName: "libenchant.dll"; Components: spelling; Tasks: x64
 
 Source: "lib\enchant\libenchant_myspell.dll"; DestDir: "{app}\lib\enchant"; Components: spelling; Tasks: x86
 Source: "lib\enchant\libenchant_myspell.dll.x64"; DestDir: "{app}\lib\enchant"; DestName: "libenchant_myspell.dll"; Components: spelling; Tasks: x64
-
-Source: "libgcc_s_sjlj-1.dll"; DestDir: "{app}"; Components: spelling; Tasks: x86
-Source: "libgcc_s_sjlj-1.dll.x64"; DestDir: "{app}"; DestName: "libgcc_s_sjlj-1.dll"; Components: spelling; Tasks: x64
 
 
 
