@@ -18,4 +18,3 @@ copy %RELEASE_DIR%\libenchant_myspell.exp %ENCHANT_DEST%\lib\enchant\
 copy %RELEASE_DIR%\libenchant_myspell.lib %ENCHANT_DEST%\lib\enchant\
 copy %RELEASE_DIR%\libenchant.exp %ENCHANT_DEST%\lib
 copy %RELEASE_DIR%\libenchant.lib %ENCHANT_DEST%\lib
-pause
