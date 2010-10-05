@@ -1590,7 +1590,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/setup.c xchat-wdk/src/fe
  
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/sexy-spell-entry.c xchat-wdk/src/fe-gtk/sexy-spell-entry.c
 --- xchat-wdk.orig/src/fe-gtk/sexy-spell-entry.c	2006-07-17 05:51:02 +0000
-+++ xchat-wdk/src/fe-gtk/sexy-spell-entry.c	2010-10-05 22:09:18 +0000
++++ xchat-wdk/src/fe-gtk/sexy-spell-entry.c	2010-10-05 22:10:24 +0000
 @@ -31,6 +31,20 @@
  /*#include "gtkspell-iso-codes.h"
  #include "sexy-marshal.h"*/
@@ -1617,7 +1617,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/sexy-spell-entry.c xchat
  	gpointer funcptr;
  
 -	enchant = g_module_open("libenchant", 0);
-+	enchant = g_module_open("libenchant-1.dll", 0);
++	enchant = g_module_open("libenchant.dll", 0);
  	if (enchant == NULL)
  	{
 -		enchant = g_module_open("libenchant.so.1", 0);
