@@ -1,5 +1,3 @@
-#include <sys/types.h>
-
 #ifndef SSIZE_T_DEFINED
 #ifdef ssize_t
 #undef ssize_t
@@ -11,5 +9,3 @@ typedef _W64 int         ssize_t;
 #endif
 #define SSIZE_T_DEFINED
 #endif
-
-#define ENCHANT_VERSION_STRING "1.6.0"

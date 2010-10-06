@@ -1590,29 +1590,17 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/setup.c xchat-wdk/src/fe
  
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/sexy-spell-entry.c xchat-wdk/src/fe-gtk/sexy-spell-entry.c
 --- xchat-wdk.orig/src/fe-gtk/sexy-spell-entry.c	2006-07-17 05:51:02 +0000
-+++ xchat-wdk/src/fe-gtk/sexy-spell-entry.c	2010-10-05 22:10:24 +0000
-@@ -31,6 +31,20 @@
++++ xchat-wdk/src/fe-gtk/sexy-spell-entry.c	2010-10-06 12:23:23 +0000
+@@ -31,6 +31,8 @@
  /*#include "gtkspell-iso-codes.h"
  #include "sexy-marshal.h"*/
  
-+/* workaround for ssize_t in VS 
-+   from krb/include/win-mac.h */
-+#ifndef SSIZE_T_DEFINED
-+#ifdef ssize_t
-+#undef ssize_t
-+#endif
-+#ifdef _WIN64
-+typedef __int64          ssize_t;
-+#else
-+typedef _W64 int         ssize_t;
-+#endif
-+#define SSIZE_T_DEFINED
-+#endif
++#include "typedef.h"
 +
  /*
   * Bunch of poop to make enchant into a runtime dependency rather than a
   * compile-time dependency.  This makes it so I don't have to hear the
-@@ -134,12 +148,10 @@
+@@ -134,12 +136,10 @@
  	GModule *enchant;
  	gpointer funcptr;
  
