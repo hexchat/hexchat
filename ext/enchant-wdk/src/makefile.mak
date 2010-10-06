@@ -153,6 +153,7 @@ INCLUDES = \
 !ifdef X64
 LINKOBJ = msvcrt_win2003.obj
 MACHINE_FLAG = X64
+CFLAGS = $(CFLAGS) /favor:AMD64 /D_WIN64
 !else
 MACHINE_FLAG = X86
 LINKOBJ = msvcrt_winxp.obj
