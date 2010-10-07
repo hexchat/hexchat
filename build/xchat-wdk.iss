@@ -64,6 +64,7 @@ Name: perl510; Description: "5.10"; GroupDescription: "Perl version:"; Flags: ex
 Name: perl512; Description: "5.12"; GroupDescription: "Perl version:"; Flags: exclusive; Components: langs\perl
 
 [Files]
+Source: "cert.pem"; DestDir: "{app}"; Components: libs
 Source: "COPYING"; DestDir: "{app}"; Components: libs
 Source: "LICENSE.OPENSSL"; DestDir: "{app}"; Components: libs
 Source: "LICENSE.ZLIB"; DestDir: "{app}"; Components: libs

@@ -42,6 +42,7 @@ copy %ENCHANT_BIN%\..\COPYING %XCHAT_DEST%\LICENSE.ENCHANT
 copy %SSL_BIN%\libeay32.dll %XCHAT_DEST%
 copy %SSL_BIN%\ssleay32.dll %XCHAT_DEST%
 copy %SSL_BIN%\zlib1.dll %XCHAT_DEST%
+copy %SSL_BIN%\cert.pem %XCHAT_DEST%
 copy %ENCHANT_BIN%\libenchant.dll %XCHAT_DEST%
 xcopy /q /s /i %ENCHANT_BIN%\..\lib\enchant\libenchant_myspell.dll %XCHAT_DEST%\lib\enchant\
 xcopy /q /s /i ..\plugins\ewc\xcewc.dll %XCHAT_DEST%\plugins\
