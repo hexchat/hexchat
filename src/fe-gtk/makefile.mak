@@ -21,7 +21,7 @@ xchat.rc:
 	echo XC_ICON ICON "../../xchat.ico" > xchat.rc
 
 xchat.res: xchat.rc ../../xchat.ico
-	rc /r xchat.rc
+	rc /nologo /r xchat.rc
 
 xchat-icon.obj: xchat.res
 	cvtres /nologo $(MACHINE_FLAG) /OUT:xchat-icon.obj xchat.res
