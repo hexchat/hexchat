@@ -37,15 +37,14 @@ Name: "custom"; Description: "Custom Installation"; Flags: iscustom
 [Components]
 Name: "libs"; Description: "XChat-WDK"; Types: normal full custom; Flags: fixed
 Name: "translations"; Description: "Translations"; Types: normal full custom
-Name: "spelling"; Description: "Spelling Library"; Types: full custom
-Name: "spelling\dict"; Description: "Dictionaries"; Types: full custom
+Name: "spelling"; Description: "Spelling Dictionaries"; Types: full custom
 Name: "plugins"; Description: "Plugins"; Types: full custom
 Name: "plugins\ewc"; Description: "EasyWinampControl"; Types: full custom
 Name: "plugins\upd"; Description: "Update Checker"; Types: normal full custom
 Name: "plugins\xdcc"; Description: "XDCC"; Types: full custom
 Name: "langs"; Description: "Language Interfaces"; Types: full custom
 Name: "langs\lua"; Description: "Lua"; Types: full custom
-Name: "langs\lua\luawdk"; Description: "Lua-WDK 5.1.4-2"; Types: full custom
+Name: "langs\lua\luawdk"; Description: "Lua-WDK"; Types: full custom
 Name: "langs\perl"; Description: "Perl"; Types: full custom
 Name: "langs\python"; Description: "Python"; Types: full custom
 Name: "langs\tcl"; Description: "Tcl"; Types: full custom
@@ -76,7 +75,7 @@ Source: "portable-mode"; DestDir: "{app}"; Tasks: portable
 Source: "etc\*"; DestDir: "{app}\etc"; Flags: createallsubdirs recursesubdirs; Components: libs
 Source: "locale\*"; DestDir: "{app}\locale"; Flags: createallsubdirs recursesubdirs; Components: translations
 Source: "share\locale\*"; DestDir: "{app}\share\locale"; Flags: createallsubdirs recursesubdirs; Components: translations
-Source: "share\myspell\*"; DestDir: "{app}\share\myspell"; Flags: createallsubdirs recursesubdirs; Components: spelling\dict
+Source: "share\myspell\*"; DestDir: "{app}\share\myspell"; Flags: createallsubdirs recursesubdirs; Components: spelling
 
 
 
@@ -156,13 +155,11 @@ Source: "ssleay32.dll.x64"; DestDir: "{app}"; DestName: "ssleay32.dll"; Componen
 Source: "zlib1.dll"; DestDir: "{app}"; Components: libs; Tasks: x86
 Source: "zlib1.dll.x64"; DestDir: "{app}"; DestName: "zlib1.dll"; Components: libs; Tasks: x64
 
+Source: "libenchant.dll"; DestDir: "{app}"; Components: libs; Tasks: x86
+Source: "libenchant.dll.x64"; DestDir: "{app}"; DestName: "libenchant.dll"; Components: libs; Tasks: x64
 
-
-Source: "libenchant.dll"; DestDir: "{app}"; Components: spelling; Tasks: x86
-Source: "libenchant.dll.x64"; DestDir: "{app}"; DestName: "libenchant.dll"; Components: spelling; Tasks: x64
-
-Source: "lib\enchant\libenchant_myspell.dll"; DestDir: "{app}\lib\enchant"; Components: spelling; Tasks: x86
-Source: "lib\enchant\libenchant_myspell.dll.x64"; DestDir: "{app}\lib\enchant"; DestName: "libenchant_myspell.dll"; Components: spelling; Tasks: x64
+Source: "lib\enchant\libenchant_myspell.dll"; DestDir: "{app}\lib\enchant"; Components: libs; Tasks: x86
+Source: "lib\enchant\libenchant_myspell.dll.x64"; DestDir: "{app}\lib\enchant"; DestName: "libenchant_myspell.dll"; Components: libs; Tasks: x64
 
 
 
