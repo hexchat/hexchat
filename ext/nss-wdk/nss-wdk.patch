@@ -1,6 +1,6 @@
-diff -ruN --strip-trailing-cr nss-3.12.7.orig/mozilla/dbm/include/mcom_db.h nss-3.12.7/mozilla/dbm/include/mcom_db.h
---- nss-3.12.7.orig/mozilla/dbm/include/mcom_db.h	2009-06-05 01:18:50 +0200
-+++ nss-3.12.7/mozilla/dbm/include/mcom_db.h	2010-08-16 18:47:14 +0200
+diff -ruN --strip-trailing-cr nss-3.12.8.orig/mozilla/dbm/include/mcom_db.h nss-3.12.8/mozilla/dbm/include/mcom_db.h
+--- nss-3.12.8.orig/mozilla/dbm/include/mcom_db.h	2009-06-05 01:18:50 +0200
++++ nss-3.12.8/mozilla/dbm/include/mcom_db.h	2010-10-08 02:00:13 +0200
 @@ -40,6 +40,15 @@
  #define off_t long
  #endif
@@ -17,9 +17,9 @@ diff -ruN --strip-trailing-cr nss-3.12.7.orig/mozilla/dbm/include/mcom_db.h nss-
  #ifndef macintosh
  #include <sys/types.h>
  #endif
-diff -ruN --strip-trailing-cr nss-3.12.7.orig/mozilla/dbm/src/mktemp.c nss-3.12.7/mozilla/dbm/src/mktemp.c
---- nss-3.12.7.orig/mozilla/dbm/src/mktemp.c	2009-06-05 01:19:30 +0200
-+++ nss-3.12.7/mozilla/dbm/src/mktemp.c	2010-08-16 18:47:14 +0200
+diff -ruN --strip-trailing-cr nss-3.12.8.orig/mozilla/dbm/src/mktemp.c nss-3.12.8/mozilla/dbm/src/mktemp.c
+--- nss-3.12.8.orig/mozilla/dbm/src/mktemp.c	2009-06-05 01:19:31 +0200
++++ nss-3.12.8/mozilla/dbm/src/mktemp.c	2010-10-08 02:00:13 +0200
 @@ -45,13 +45,13 @@
  #include <ctype.h>
  #include "mcom_db.h"
@@ -38,9 +38,9 @@ diff -ruN --strip-trailing-cr nss-3.12.7.orig/mozilla/dbm/src/mktemp.c nss-3.12.
  #endif
  
  static int _gettemp(char *path, register int *doopen, int extraFlags);
-diff -ruN --strip-trailing-cr nss-3.12.7.orig/mozilla/nsprpub/config/config.mk nss-3.12.7/mozilla/nsprpub/config/config.mk
---- nss-3.12.7.orig/mozilla/nsprpub/config/config.mk	2010-07-09 04:10:32 +0200
-+++ nss-3.12.7/mozilla/nsprpub/config/config.mk	2010-08-16 18:47:14 +0200
+diff -ruN --strip-trailing-cr nss-3.12.8.orig/mozilla/nsprpub/config/config.mk nss-3.12.8/mozilla/nsprpub/config/config.mk
+--- nss-3.12.8.orig/mozilla/nsprpub/config/config.mk	2010-07-09 04:10:33 +0200
++++ nss-3.12.8/mozilla/nsprpub/config/config.mk	2010-10-08 02:00:13 +0200
 @@ -154,6 +154,15 @@
  DEFINES += -DMOZ_UNICODE
  endif
@@ -57,9 +57,9 @@ diff -ruN --strip-trailing-cr nss-3.12.7.orig/mozilla/nsprpub/config/config.mk n
  ####################################################################
  #
  # Configuration for the release process
-diff -ruN --strip-trailing-cr nss-3.12.7.orig/mozilla/nsprpub/pr/src/Makefile.in nss-3.12.7/mozilla/nsprpub/pr/src/Makefile.in
---- nss-3.12.7.orig/mozilla/nsprpub/pr/src/Makefile.in	2009-12-19 09:06:06 +0100
-+++ nss-3.12.7/mozilla/nsprpub/pr/src/Makefile.in	2010-08-16 18:47:14 +0200
+diff -ruN --strip-trailing-cr nss-3.12.8.orig/mozilla/nsprpub/pr/src/Makefile.in nss-3.12.8/mozilla/nsprpub/pr/src/Makefile.in
+--- nss-3.12.8.orig/mozilla/nsprpub/pr/src/Makefile.in	2009-12-19 09:06:07 +0100
++++ nss-3.12.8/mozilla/nsprpub/pr/src/Makefile.in	2010-10-08 02:00:13 +0200
 @@ -197,9 +197,17 @@
  ifdef NS_USE_GCC
  OS_LIBS		= -ladvapi32 -lwsock32 -lwinmm
@@ -78,9 +78,9 @@ diff -ruN --strip-trailing-cr nss-3.12.7.orig/mozilla/nsprpub/pr/src/Makefile.in
  
  ifeq ($(OS_ARCH),WINCE)
  OS_LIBS		= ws2.lib
-diff -ruN --strip-trailing-cr nss-3.12.7.orig/mozilla/nsprpub/pr/src/md/windows/ntmisc.c nss-3.12.7/mozilla/nsprpub/pr/src/md/windows/ntmisc.c
---- nss-3.12.7.orig/mozilla/nsprpub/pr/src/md/windows/ntmisc.c	2009-08-27 01:27:44 +0200
-+++ nss-3.12.7/mozilla/nsprpub/pr/src/md/windows/ntmisc.c	2010-08-16 18:47:14 +0200
+diff -ruN --strip-trailing-cr nss-3.12.8.orig/mozilla/nsprpub/pr/src/md/windows/ntmisc.c nss-3.12.8/mozilla/nsprpub/pr/src/md/windows/ntmisc.c
+--- nss-3.12.8.orig/mozilla/nsprpub/pr/src/md/windows/ntmisc.c	2009-08-27 01:27:45 +0200
++++ nss-3.12.8/mozilla/nsprpub/pr/src/md/windows/ntmisc.c	2010-10-08 02:00:13 +0200
 @@ -624,7 +624,11 @@
       */
      hasFdInheritBuffer = (attr && attr->fdInheritBuffer);
@@ -93,10 +93,10 @@ diff -ruN --strip-trailing-cr nss-3.12.7.orig/mozilla/nsprpub/pr/src/md/windows/
      }
  
      if (envp != NULL) {
-diff -ruN --strip-trailing-cr nss-3.12.7.orig/mozilla/security/coreconf/WIN32.mk nss-3.12.7/mozilla/security/coreconf/WIN32.mk
---- nss-3.12.7.orig/mozilla/security/coreconf/WIN32.mk	2010-06-24 01:28:52 +0200
-+++ nss-3.12.7/mozilla/security/coreconf/WIN32.mk	2010-08-16 18:47:14 +0200
-@@ -118,6 +118,14 @@
+diff -ruN --strip-trailing-cr nss-3.12.8.orig/mozilla/security/coreconf/WIN32.mk nss-3.12.8/mozilla/security/coreconf/WIN32.mk
+--- nss-3.12.8.orig/mozilla/security/coreconf/WIN32.mk	2010-08-18 03:28:05 +0200
++++ nss-3.12.8/mozilla/security/coreconf/WIN32.mk	2010-10-08 02:00:13 +0200
+@@ -145,6 +145,14 @@
  else # !NS_USE_GCC
      OS_CFLAGS += -W3 -nologo -D_CRT_SECURE_NO_WARNINGS
      OS_DLLFLAGS += -nologo -DLL -SUBSYSTEM:WINDOWS
@@ -111,9 +111,9 @@ diff -ruN --strip-trailing-cr nss-3.12.7.orig/mozilla/security/coreconf/WIN32.mk
      ifeq ($(_MSC_VER),$(_MSC_VER_6))
      ifndef MOZ_DEBUG_SYMBOLS
  	OS_DLLFLAGS += -PDB:NONE
-diff -ruN --strip-trailing-cr nss-3.12.7.orig/mozilla/security/coreconf/arch.mk nss-3.12.7/mozilla/security/coreconf/arch.mk
---- nss-3.12.7.orig/mozilla/security/coreconf/arch.mk	2009-06-05 04:14:48 +0200
-+++ nss-3.12.7/mozilla/security/coreconf/arch.mk	2010-08-16 18:47:14 +0200
+diff -ruN --strip-trailing-cr nss-3.12.8.orig/mozilla/security/coreconf/arch.mk nss-3.12.8/mozilla/security/coreconf/arch.mk
+--- nss-3.12.8.orig/mozilla/security/coreconf/arch.mk	2009-06-05 04:14:49 +0200
++++ nss-3.12.8/mozilla/security/coreconf/arch.mk	2010-10-08 02:00:13 +0200
 @@ -268,7 +268,15 @@
  # the uname.exe in the MSYS toolkit.
  #
@@ -131,9 +131,9 @@ diff -ruN --strip-trailing-cr nss-3.12.7.orig/mozilla/security/coreconf/arch.mk 
      OS_ARCH = WINNT
      USE_MSYS = 1
      ifndef CPU_ARCH
-diff -ruN --strip-trailing-cr nss-3.12.7.orig/mozilla/security/nss/cmd/platlibs.mk nss-3.12.7/mozilla/security/nss/cmd/platlibs.mk
---- nss-3.12.7.orig/mozilla/security/nss/cmd/platlibs.mk	2010-06-12 02:58:32 +0200
-+++ nss-3.12.7/mozilla/security/nss/cmd/platlibs.mk	2010-08-16 18:47:14 +0200
+diff -ruN --strip-trailing-cr nss-3.12.8.orig/mozilla/security/nss/cmd/platlibs.mk nss-3.12.8/mozilla/security/nss/cmd/platlibs.mk
+--- nss-3.12.8.orig/mozilla/security/nss/cmd/platlibs.mk	2010-06-12 02:58:33 +0200
++++ nss-3.12.8/mozilla/security/nss/cmd/platlibs.mk	2010-10-08 02:00:13 +0200
 @@ -249,3 +249,11 @@
  endif
  
@@ -146,9 +146,9 @@ diff -ruN --strip-trailing-cr nss-3.12.7.orig/mozilla/security/nss/cmd/platlibs.
 +OS_LIBS += msvcrt_winxp.obj
 +endif
 +endif
-diff -ruN --strip-trailing-cr nss-3.12.7.orig/mozilla/security/nss/cmd/selfserv/selfserv.c nss-3.12.7/mozilla/security/nss/cmd/selfserv/selfserv.c
---- nss-3.12.7.orig/mozilla/security/nss/cmd/selfserv/selfserv.c	2010-04-03 20:27:26 +0200
-+++ nss-3.12.7/mozilla/security/nss/cmd/selfserv/selfserv.c	2010-08-16 18:47:14 +0200
+diff -ruN --strip-trailing-cr nss-3.12.8.orig/mozilla/security/nss/cmd/selfserv/selfserv.c nss-3.12.8/mozilla/security/nss/cmd/selfserv/selfserv.c
+--- nss-3.12.8.orig/mozilla/security/nss/cmd/selfserv/selfserv.c	2010-04-03 20:27:27 +0200
++++ nss-3.12.8/mozilla/security/nss/cmd/selfserv/selfserv.c	2010-10-08 02:00:13 +0200
 @@ -51,8 +51,13 @@
  #endif
  
@@ -163,9 +163,9 @@ diff -ruN --strip-trailing-cr nss-3.12.7.orig/mozilla/security/nss/cmd/selfserv/
  
  #include <signal.h>
  #include <stdlib.h>
-diff -ruN --strip-trailing-cr nss-3.12.7.orig/mozilla/security/nss/lib/freebl/mpi/mpcpucache.c nss-3.12.7/mozilla/security/nss/lib/freebl/mpi/mpcpucache.c
---- nss-3.12.7.orig/mozilla/security/nss/lib/freebl/mpi/mpcpucache.c	2009-03-10 21:18:06 +0100
-+++ nss-3.12.7/mozilla/security/nss/lib/freebl/mpi/mpcpucache.c	2010-08-16 18:47:14 +0200
+diff -ruN --strip-trailing-cr nss-3.12.8.orig/mozilla/security/nss/lib/freebl/mpi/mpcpucache.c nss-3.12.8/mozilla/security/nss/lib/freebl/mpi/mpcpucache.c
+--- nss-3.12.8.orig/mozilla/security/nss/lib/freebl/mpi/mpcpucache.c	2009-03-10 21:18:07 +0100
++++ nss-3.12.8/mozilla/security/nss/lib/freebl/mpi/mpcpucache.c	2010-10-08 02:00:13 +0200
 @@ -80,7 +80,11 @@
  
  #elif defined(_MSC_VER)
@@ -178,9 +178,9 @@ diff -ruN --strip-trailing-cr nss-3.12.7.orig/mozilla/security/nss/lib/freebl/mp
  
  void freebl_cpuid(unsigned long op, unsigned long *eax, 
             unsigned long *ebx, unsigned long *ecx, 
-diff -ruN --strip-trailing-cr nss-3.12.7.orig/mozilla/security/nss/lib/freebl/win_rand.c nss-3.12.7/mozilla/security/nss/lib/freebl/win_rand.c
---- nss-3.12.7.orig/mozilla/security/nss/lib/freebl/win_rand.c	2009-07-15 05:34:04 +0200
-+++ nss-3.12.7/mozilla/security/nss/lib/freebl/win_rand.c	2010-08-16 18:47:14 +0200
+diff -ruN --strip-trailing-cr nss-3.12.8.orig/mozilla/security/nss/lib/freebl/win_rand.c nss-3.12.8/mozilla/security/nss/lib/freebl/win_rand.c
+--- nss-3.12.8.orig/mozilla/security/nss/lib/freebl/win_rand.c	2009-07-15 05:34:04 +0200
++++ nss-3.12.8/mozilla/security/nss/lib/freebl/win_rand.c	2010-10-08 02:00:13 +0200
 @@ -50,6 +50,13 @@
  #include <sys/types.h>
  #include <sys/stat.h>
@@ -195,9 +195,9 @@ diff -ruN --strip-trailing-cr nss-3.12.7.orig/mozilla/security/nss/lib/freebl/wi
  #include <stdio.h>
  #include "prio.h"
  #include "prerror.h"
-diff -ruN --strip-trailing-cr nss-3.12.7.orig/mozilla/security/nss/lib/softoken/legacydb/config.mk nss-3.12.7/mozilla/security/nss/lib/softoken/legacydb/config.mk
---- nss-3.12.7.orig/mozilla/security/nss/lib/softoken/legacydb/config.mk	2009-06-11 02:55:48 +0200
-+++ nss-3.12.7/mozilla/security/nss/lib/softoken/legacydb/config.mk	2010-08-16 18:47:14 +0200
+diff -ruN --strip-trailing-cr nss-3.12.8.orig/mozilla/security/nss/lib/softoken/legacydb/config.mk nss-3.12.8/mozilla/security/nss/lib/softoken/legacydb/config.mk
+--- nss-3.12.8.orig/mozilla/security/nss/lib/softoken/legacydb/config.mk	2009-06-11 02:55:49 +0200
++++ nss-3.12.8/mozilla/security/nss/lib/softoken/legacydb/config.mk	2010-10-08 02:00:13 +0200
 @@ -96,3 +96,11 @@
  ifeq ($(OS_TARGET),WINCE)
  DEFINES += -DDBM_USING_NSPR
@@ -210,9 +210,9 @@ diff -ruN --strip-trailing-cr nss-3.12.7.orig/mozilla/security/nss/lib/softoken/
 +OS_LIBS += msvcrt_winxp.obj
 +endif
 +endif
-diff -ruN --strip-trailing-cr nss-3.12.7.orig/mozilla/security/nss/lib/sqlite/sqlite3.c nss-3.12.7/mozilla/security/nss/lib/sqlite/sqlite3.c
---- nss-3.12.7.orig/mozilla/security/nss/lib/sqlite/sqlite3.c	2010-01-08 05:42:38 +0100
-+++ nss-3.12.7/mozilla/security/nss/lib/sqlite/sqlite3.c	2010-08-16 18:47:14 +0200
+diff -ruN --strip-trailing-cr nss-3.12.8.orig/mozilla/security/nss/lib/sqlite/sqlite3.c nss-3.12.8/mozilla/security/nss/lib/sqlite/sqlite3.c
+--- nss-3.12.8.orig/mozilla/security/nss/lib/sqlite/sqlite3.c	2010-01-08 05:42:38 +0100
++++ nss-3.12.8/mozilla/security/nss/lib/sqlite/sqlite3.c	2010-10-08 02:00:13 +0200
 @@ -10980,7 +10980,8 @@
  ** localtime_s().
  */
@@ -223,10 +223,10 @@ diff -ruN --strip-trailing-cr nss-3.12.7.orig/mozilla/security/nss/lib/sqlite/sq
  #define HAVE_LOCALTIME_S 1
  #endif
  
-diff -ruN --strip-trailing-cr nss-3.12.7.orig/mozilla/security/nss/lib/ssl/sslimpl.h nss-3.12.7/mozilla/security/nss/lib/ssl/sslimpl.h
---- nss-3.12.7.orig/mozilla/security/nss/lib/ssl/sslimpl.h	2010-02-10 00:33:50 +0100
-+++ nss-3.12.7/mozilla/security/nss/lib/ssl/sslimpl.h	2010-08-16 18:47:14 +0200
-@@ -1621,8 +1621,13 @@
+diff -ruN --strip-trailing-cr nss-3.12.8.orig/mozilla/security/nss/lib/ssl/sslimpl.h nss-3.12.8/mozilla/security/nss/lib/ssl/sslimpl.h
+--- nss-3.12.8.orig/mozilla/security/nss/lib/ssl/sslimpl.h	2010-07-31 06:33:52 +0200
++++ nss-3.12.8/mozilla/security/nss/lib/ssl/sslimpl.h	2010-10-08 02:00:13 +0200
+@@ -1624,8 +1624,13 @@
  #elif defined(_WIN32_WCE)
  #define SSL_GETPID GetCurrentProcessId
  #elif defined(WIN32)
@@ -240,9 +240,9 @@ diff -ruN --strip-trailing-cr nss-3.12.7.orig/mozilla/security/nss/lib/ssl/sslim
  #else
  #define SSL_GETPID() 0
  #endif
-diff -ruN --strip-trailing-cr nss-3.12.7.orig/mozilla/security/nss/lib/zlib/config.mk nss-3.12.7/mozilla/security/nss/lib/zlib/config.mk
---- nss-3.12.7.orig/mozilla/security/nss/lib/zlib/config.mk	2009-11-07 01:13:10 +0100
-+++ nss-3.12.7/mozilla/security/nss/lib/zlib/config.mk	2010-08-16 18:47:14 +0200
+diff -ruN --strip-trailing-cr nss-3.12.8.orig/mozilla/security/nss/lib/zlib/config.mk nss-3.12.8/mozilla/security/nss/lib/zlib/config.mk
+--- nss-3.12.8.orig/mozilla/security/nss/lib/zlib/config.mk	2009-11-07 01:13:10 +0100
++++ nss-3.12.8/mozilla/security/nss/lib/zlib/config.mk	2010-10-08 02:00:13 +0200
 @@ -46,3 +46,11 @@
  PROGRAM        =
  
@@ -255,9 +255,9 @@ diff -ruN --strip-trailing-cr nss-3.12.7.orig/mozilla/security/nss/lib/zlib/conf
 +OS_LIBS += msvcrt_winxp.obj
 +endif
 +endif
-diff -ruN --strip-trailing-cr nss-3.12.7.orig/mozilla/security/nss/lib/zlib/gzio.c nss-3.12.7/mozilla/security/nss/lib/zlib/gzio.c
---- nss-3.12.7.orig/mozilla/security/nss/lib/zlib/gzio.c	2009-11-07 01:13:10 +0100
-+++ nss-3.12.7/mozilla/security/nss/lib/zlib/gzio.c	2010-08-16 18:47:14 +0200
+diff -ruN --strip-trailing-cr nss-3.12.8.orig/mozilla/security/nss/lib/zlib/gzio.c nss-3.12.8/mozilla/security/nss/lib/zlib/gzio.c
+--- nss-3.12.8.orig/mozilla/security/nss/lib/zlib/gzio.c	2009-11-07 01:13:10 +0100
++++ nss-3.12.8/mozilla/security/nss/lib/zlib/gzio.c	2010-10-08 02:00:13 +0200
 @@ -11,6 +11,12 @@
  
  #include "zutil.h"
