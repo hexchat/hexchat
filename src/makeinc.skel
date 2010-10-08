@@ -5,7 +5,7 @@ CFLAGS = $(CFLAGS) /DWIN32 /DG_DISABLE_CAST_CHECKS /DG_DISABLE_DEPRECATED /DGDK_
 CFLAGS = $(CFLAGS) -Ic:\mozilla-build\build\xchat-wdk\plugins
 CPPFLAGS = /c /MD /W0 /nologo /DWIN32
 LDFLAGS = /subsystem:windows /nologo
-LIBS = $(LIBS) gdi32.lib shell32.lib user32.lib advapi32.lib imm32.lib ole32.lib winmm.lib ws2_32.lib wininet.lib comdlg32.lib
+LIBS = $(LIBS) gdi32.lib shell32.lib user32.lib advapi32.lib imm32.lib ole32.lib winmm.lib ws2_32.lib wininet.lib
 
 !ifdef X64
 #############################################################
@@ -77,7 +77,6 @@ server.obj \
 servlist.obj \
 ssl.obj \
 text.obj \
-thread.obj \
 tree.obj \
 url.obj \
 userlist.obj \
