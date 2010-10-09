@@ -36,18 +36,18 @@ Name: "custom"; Description: "Custom Installation"; Flags: iscustom
 
 [Components]
 Name: "libs"; Description: "XChat-WDK"; Types: normal full custom; Flags: fixed
-Name: "translations"; Description: "Translations"; Types: normal full custom
-Name: "spelling"; Description: "Spelling Dictionaries"; Types: full custom
-Name: "plugins"; Description: "Plugins"; Types: full custom
-Name: "plugins\ewc"; Description: "EasyWinampControl"; Types: full custom
-Name: "plugins\upd"; Description: "Update Checker"; Types: normal full custom
-Name: "plugins\xdcc"; Description: "XDCC"; Types: full custom
-Name: "langs"; Description: "Language Interfaces"; Types: full custom
-Name: "langs\lua"; Description: "Lua"; Types: full custom
-Name: "langs\lua\luawdk"; Description: "Lua-WDK"; Types: full custom
-Name: "langs\perl"; Description: "Perl"; Types: full custom
-Name: "langs\python"; Description: "Python"; Types: full custom
-Name: "langs\tcl"; Description: "Tcl"; Types: full custom
+Name: "translations"; Description: "Translations"; Types: normal full custom; Flags: disablenouninstallwarning
+Name: "spelling"; Description: "Spelling Dictionaries"; Types: full custom; Flags: disablenouninstallwarning
+Name: "plugins"; Description: "Plugins"; Types: full custom; Flags: disablenouninstallwarning
+Name: "plugins\ewc"; Description: "EasyWinampControl"; Types: full custom; Flags: disablenouninstallwarning
+Name: "plugins\upd"; Description: "Update Checker"; Types: normal full custom; Flags: disablenouninstallwarning
+Name: "plugins\xdcc"; Description: "XDCC"; Types: full custom; Flags: disablenouninstallwarning
+Name: "langs"; Description: "Language Interfaces"; Types: full custom; Flags: disablenouninstallwarning
+Name: "langs\lua"; Description: "Lua"; Types: full custom; Flags: disablenouninstallwarning
+Name: "langs\lua\luawdk"; Description: "Lua-WDK"; Types: full custom; Flags: disablenouninstallwarning
+Name: "langs\perl"; Description: "Perl"; Types: full custom; Flags: disablenouninstallwarning
+Name: "langs\python"; Description: "Python"; Types: full custom; Flags: disablenouninstallwarning
+Name: "langs\tcl"; Description: "Tcl"; Types: full custom; Flags: disablenouninstallwarning
 
 [Tasks]
 Name: x86; Description: "x86"; GroupDescription: "XChat-WDK version:"; Flags: exclusive unchecked
