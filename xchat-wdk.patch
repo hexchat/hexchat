@@ -140,7 +140,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/xdcc/xdcc.c xchat-wdk/plugi
  
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/cfgfiles.c xchat-wdk/src/common/cfgfiles.c
 --- xchat-wdk.orig/src/common/cfgfiles.c	2010-08-07 09:14:45 +0200
-+++ xchat-wdk/src/common/cfgfiles.c	2010-10-09 04:47:38 +0200
++++ xchat-wdk/src/common/cfgfiles.c	2010-10-09 04:48:33 +0200
 @@ -17,7 +17,6 @@
   */
  
@@ -187,6 +187,15 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/cfgfiles.c xchat-wdk/src
  	}
  	return xdir_fs;
  }
+@@ -393,7 +398,7 @@
+ 	{"dcc_blocksize", P_OFFINT (dcc_blocksize), TYPE_INT},
+ 	{"dcc_completed_dir", P_OFFSET (dcc_completed_dir), TYPE_STR},
+ 	{"dcc_dir", P_OFFSET (dccdir), TYPE_STR},
+-	{"dcc_fast_send", P_OFFINT (fastdccsend), TYPE_BOOL},
++	/* {"dcc_fast_send", P_OFFINT (fastdccsend), TYPE_BOOL}, */
+ 	{"dcc_global_max_get_cps", P_OFFINT (dcc_global_max_get_cps), TYPE_INT},
+ 	{"dcc_global_max_send_cps", P_OFFINT (dcc_global_max_send_cps), TYPE_INT},
+ 	{"dcc_ip", P_OFFSET (dcc_ip_str), TYPE_STR},
 @@ -536,6 +541,7 @@
  
  	{"tab_chans", P_OFFINT (tabchannels), TYPE_BOOL},
@@ -216,6 +225,15 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/cfgfiles.c xchat-wdk/src
  	{"text_wordwrap", P_OFFINT (wordwrap), TYPE_BOOL},
  
  	{0, 0, 0},
+@@ -624,7 +632,7 @@
+ 	prefs.indent_nicks = 1;
+ 	prefs.thin_separator = 1;
+ 	prefs._tabs_position = 2; /* 2 = left */
+-	prefs.fastdccsend = 1;
++	/* prefs.fastdccsend = 1; */
+ 	prefs.wordwrap = 1;
+ 	prefs.autosave = 1;
+ 	prefs.autodialog = 1;
 @@ -648,6 +656,7 @@
  	prefs.dialog_height = 256;
  	prefs.gui_join_dialog = 1;
