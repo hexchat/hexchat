@@ -1,7 +1,7 @@
 all:
 #	@cd ewc
 #	@-$(MAKE) /nologo /s /f makefile.mak $@
-	@cd ..\lua
+	@cd lua
 	@-$(MAKE) /nologo /s /f makefile.mak $@
 	@cd ..\python
 	@-$(MAKE) /nologo /s /f makefile.mak $@
