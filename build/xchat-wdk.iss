@@ -62,6 +62,14 @@ Name: perl58; Description: "5.8"; GroupDescription: "Perl version:"; Flags: excl
 Name: perl510; Description: "5.10"; GroupDescription: "Perl version:"; Flags: exclusive unchecked; Components: langs\perl
 Name: perl512; Description: "5.12"; GroupDescription: "Perl version:"; Flags: exclusive; Components: langs\perl
 
+[Registry]
+Root: HKCR; Subkey: "irc"; ValueType: none; ValueName: ""; ValueData: ""; Flags: deletekey uninsdeletekey; Tasks: not portable
+Root: HKCR; Subkey: "irc"; ValueType: string; ValueName: ""; ValueData: "URL:IRC Protocol"; Flags: uninsdeletevalue; Tasks: not portable
+Root: HKCR; Subkey: "irc"; ValueType: string; ValueName: "URL Protocol"; ValueData: ""; Flags: uninsdeletevalue; Tasks: not portable
+Root: HKCR; Subkey: "irc\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\xchat.exe,0"; Flags: uninsdeletevalue; Tasks: not portable
+Root: HKCR; Subkey: "irc\shell"; ValueType: string; ValueName: ""; ValueData: "open"; Flags: uninsdeletevalue; Tasks: not portable
+Root: HKCR; Subkey: "irc\shell\open\command"; ValueType: string; ValueName: ""; ValueData: "{app}\xchat.exe --url=""%1"""; Flags: uninsdeletevalue; Tasks: not portable
+
 [Files]
 Source: "cert.pem"; DestDir: "{app}"; Components: libs
 Source: "COPYING"; DestDir: "{app}"; Components: libs
