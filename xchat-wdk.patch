@@ -568,7 +568,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/text.c xchat-wdk/src/com
  
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/util.c xchat-wdk/src/common/util.c
 --- xchat-wdk.orig/src/common/util.c	2008-02-07 02:50:37 +0100
-+++ xchat-wdk/src/common/util.c	2010-10-09 10:48:59 +0200
++++ xchat-wdk/src/common/util.c	2010-10-09 11:07:53 +0200
 @@ -16,11 +16,13 @@
   * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
   */
@@ -615,22 +615,21 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/util.c xchat-wdk/src/com
  
  #ifdef USE_DEBUG
  
-@@ -628,26 +629,91 @@
+@@ -628,26 +629,79 @@
  get_cpu_str (void)
  {
  	static char verbuf[64];
 -	OSVERSIONINFO osvi;
-+	static char winver[28];
+-	SYSTEM_INFO si;
++	static char winver[20];
 +	OSVERSIONINFOEX osvi;
- 	SYSTEM_INFO si;
  	double mhz;
-+	int cpu_arch;
  
 -	osvi.dwOSVersionInfoSize = sizeof (OSVERSIONINFO);
 +	osvi.dwOSVersionInfoSize = sizeof (OSVERSIONINFOEX);
  	GetVersionEx (&osvi);
- 	GetSystemInfo (&si);
- 
+-	GetSystemInfo (&si);
++
 +	switch (osvi.dwMajorVersion)
 +	{
 +		case 5:
@@ -684,16 +683,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/util.c xchat-wdk/src/com
 +			}
 +			break;
 +	}
-+
-+	if (si.wProcessorArchitecture == 9)
-+	{
-+		cpu_arch = 64;
-+	}
-+	else
-+	{
-+		cpu_arch = 86;
-+	}
-+
+ 
  	mhz = get_mhz ();
  	if (mhz)
  	{
@@ -706,11 +696,11 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/util.c xchat-wdk/src/com
 -		sprintf (verbuf, "Windows %ld.%ld [i%d86]",
 -			osvi.dwMajorVersion, osvi.dwMinorVersion, si.wProcessorLevel);
 -
-+		sprintf (verbuf, "Windows %s [x%d/%.2f%s]",	winver, cpu_arch, cpuspeed, cpuspeedstr);
++		sprintf (verbuf, "Windows %s [%.2f%s]",	winver, cpuspeed, cpuspeedstr);
 +	}
 +	else
 +	{
-+		sprintf (verbuf, "Windows %s [x%d]", winver, cpu_arch);
++		sprintf (verbuf, "Windows %s", winver);
 +	}
 +	
  	return verbuf;
@@ -784,7 +774,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/xchat.h xchat-wdk/src/co
  	unsigned int ctcp_time_limit;	/*seconds of floods */
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/about.c xchat-wdk/src/fe-gtk/about.c
 --- xchat-wdk.orig/src/fe-gtk/about.c	2010-05-16 09:43:49 +0200
-+++ xchat-wdk/src/fe-gtk/about.c	2010-10-08 04:16:18 +0200
++++ xchat-wdk/src/fe-gtk/about.c	2010-10-09 11:11:53 +0200
 @@ -39,6 +39,7 @@
  
  #include "../common/xchat.h"
@@ -793,7 +783,27 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/about.c xchat-wdk/src/fe
  #include "palette.h"
  #include "pixmaps.h"
  #include "gtkutil.h"
-@@ -95,7 +96,7 @@
+@@ -87,6 +88,19 @@
+ 	char buf[512];
+ 	const char *locale = NULL;
+ 	extern GtkWindow *parent_window;      /* maingui.c */
++	SYSTEM_INFO si;
++	unsigned short int cpu_arch;
++
++	GetSystemInfo (&si);
++
++	if (si.wProcessorArchitecture == 9)
++	{
++		cpu_arch = 64;
++	}
++	else
++	{
++		cpu_arch = 86;
++	}
+ 
+ 	if (about)
+ 	{
+@@ -95,7 +109,7 @@
  	}
  
  	about = gtk_dialog_new ();
@@ -802,7 +812,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/about.c xchat-wdk/src/fe
  	gtk_window_set_resizable (GTK_WINDOW (about), FALSE);
  	gtk_window_set_title (GTK_WINDOW (about), _("About "DISPLAY_NAME));
  	if (parent_window)
-@@ -114,35 +115,38 @@
+@@ -114,35 +128,40 @@
  	g_get_charset (&locale);
  	(snprintf) (buf, sizeof (buf),
  				"<span size=\"x-large\"><b>"DISPLAY_NAME" "PACKAGE_VERSION"</b></span>\n\n"
@@ -811,13 +821,15 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/about.c xchat-wdk/src/fe
 -				/* leave this message to avoid time wasting bug reports! */
 -				"This version is unofficial and comes with no support.\n\n"
 -#endif
+-				"%s\n"
 +				"<b>XChat Base</b>: 2.8.8\n\n"
- 				"%s\n"
++				"<b>OS</b>: %s\n"
  				"<b>Charset</b>: %s "
 -#ifdef WIN32 
  				"<b>GTK+</b>: %i.%i.%i\n"
 +				"<b>Compiled</b>: "__DATE__"\n"
-+				"<b>Portable Mode</b>: %s\n\n"
++				"<b>Portable Mode</b>: %s\n"
++				"<b>Build Type</b>: x%d\n\n"
 +				"<small>This version is unofficial and comes with no support.\n"
 +				"\302\251 1998-2010 Peter \305\275elezn\303\275 &lt;zed@xchat.org></small>",
 +				get_cpu_str (),
@@ -825,7 +837,8 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/about.c xchat-wdk/src/fe
 +				gtk_major_version,
 +				gtk_minor_version,
 +				gtk_micro_version,
-+				(portable_mode () ? "Yes" : "No")
++				(portable_mode () ? "Yes" : "No"),
++				cpu_arch
  #else
 +				"%s\n\n"
 +				"%s\n"
