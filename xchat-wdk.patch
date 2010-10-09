@@ -1307,7 +1307,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/joind.c xchat-wdk/src/fe
  
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/maingui.c xchat-wdk/src/fe-gtk/maingui.c
 --- xchat-wdk.orig/src/fe-gtk/maingui.c	2010-05-16 05:20:22 +0200
-+++ xchat-wdk/src/fe-gtk/maingui.c	2010-10-09 12:53:27 +0200
++++ xchat-wdk/src/fe-gtk/maingui.c	2010-10-09 19:06:21 +0200
 @@ -214,60 +214,10 @@
  	away_list = mg_attr_list_create (&colors[COL_AWAY], FALSE);
  }
@@ -1405,6 +1405,21 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/maingui.c xchat-wdk/src/
  		gtk_widget_show (dialog);
  	}
  }
+@@ -1327,12 +1280,12 @@
+ 	gtk_button_box_set_layout (GTK_BUTTON_BOX (dialog_action_area1),
+ 										GTK_BUTTONBOX_END);
+ 
+-	if (minimize_button)
++	/* if (minimize_button)
+ 	{
+ 		button = gtk_button_new_with_mnemonic (_("_Minimize to Tray"));
+ 		gtk_widget_show (button);
+ 		gtk_dialog_add_action_widget (GTK_DIALOG (dialog), button, 1);
+-	}
++	} */
+ 
+ 	button = gtk_button_new_from_stock ("gtk-cancel");
+ 	gtk_widget_show (button);
 @@ -2489,7 +2442,7 @@
  	if (prefs.lagometer & 1)
  	{
@@ -1656,7 +1671,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/servlistgui.c xchat-wdk/
  	gtk_box_set_spacing (GTK_BOX (vbuttonbox2), 3);
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/setup.c xchat-wdk/src/fe-gtk/setup.c
 --- xchat-wdk.orig/src/fe-gtk/setup.c	2008-02-08 10:04:45 +0100
-+++ xchat-wdk/src/fe-gtk/setup.c	2010-10-09 12:53:27 +0200
++++ xchat-wdk/src/fe-gtk/setup.c	2010-10-09 19:02:18 +0200
 @@ -109,13 +109,13 @@
  					N_("Give each person on IRC a different color"),0,0},
  	{ST_TOGGLR, N_("Indent nick names"), P_OFFINTNL(indent_nicks),
@@ -1675,6 +1690,20 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/setup.c xchat-wdk/src/fe
  
  	{ST_HEADER,	N_("Time Stamps"),0,0,0},
  	{ST_TOGGLE, N_("Enable time stamps"), P_OFFINTNL(timestamp),0,0,2},
+@@ -332,11 +332,11 @@
+ #ifndef WIN32
+ 	{ST_3OGGLE, N_("Show tray balloons on:"), 0, 0, (void *)balloonlist, 0},
+ #endif
+-	{ST_3OGGLE, N_("Blink tray icon on:"), 0, 0, (void *)trayblinklist, 0},
++	/* {ST_3OGGLE, N_("Blink tray icon on:"), 0, 0, (void *)trayblinklist, 0}, */
+ 	{ST_3OGGLE, N_("Blink task bar on:"), 0, 0, (void *)taskbarlist, 0},
+ 	{ST_3OGGLE, N_("Make a beep sound on:"), 0, 0, (void *)beeplist, 0},
+ 
+-	{ST_TOGGLE,	N_("Enable system tray icon"), P_OFFINTNL(gui_tray), 0, 0, 0},
++	/* {ST_TOGGLE,	N_("Enable system tray icon"), P_OFFINTNL(gui_tray), 0, 0, 0}, */
+ 
+ 	{ST_HEADER,	N_("Highlighted Messages"),0,0,0},
+ 	{ST_LABEL,	N_("Highlighted messages are ones where your nickname is mentioned, but also:"), 0, 0, 0, 1},
 @@ -363,7 +363,6 @@
  	{ST_END, 0, 0, 0, 0, 0}
  };
