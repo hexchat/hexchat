@@ -53,13 +53,13 @@ Name: "langs\tcl"; Description: "Tcl"; Types: full custom; Flags: disablenounins
 Name: x86; Description: "x86"; GroupDescription: "XChat-WDK version:"; Flags: exclusive unchecked
 Name: x64; Description: "x64"; GroupDescription: "XChat-WDK version:"; Flags: exclusive; Check: Is64BitInstallMode
 
-Name: portable; Description: "Yes"; GroupDescription: "Portable Install (no Registry entries, no Start Menu icons, no uninstaller):"; Flags: unchecked
-
 ;Name: xtray; Description: "X-Tray"; GroupDescription: "Tray Icon"; Flags: exclusive
 ;Name: noxtray; Description: "Plugin-Tray"; GroupDescription: "Tray Icon"; Flags: exclusive unchecked
 
 Name: perl510; Description: "5.10"; GroupDescription: "Perl version:"; Flags: exclusive unchecked; Components: langs\perl
 Name: perl512; Description: "5.12"; GroupDescription: "Perl version:"; Flags: exclusive; Components: langs\perl
+
+Name: portable; Description: "Yes"; GroupDescription: "Portable Install (no Registry entries, no Start Menu icons, no uninstaller):"; Flags: unchecked
 
 [Registry]
 Root: HKCR; Subkey: "irc"; ValueType: none; ValueName: ""; ValueData: ""; Flags: deletekey uninsdeletekey; Tasks: not portable
