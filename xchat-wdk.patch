@@ -275,7 +275,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/ctcp.c xchat-wdk/src/com
  	}
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/dcc.c xchat-wdk/src/common/dcc.c
 --- xchat-wdk.orig/src/common/dcc.c	2010-05-30 04:28:04 +0200
-+++ xchat-wdk/src/common/dcc.c	2010-10-08 04:16:18 +0200
++++ xchat-wdk/src/common/dcc.c	2010-10-09 05:17:54 +0200
 @@ -31,7 +31,6 @@
  #include <time.h>
  #include <errno.h>
@@ -284,7 +284,15 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/dcc.c xchat-wdk/src/comm
  #include <fcntl.h>
  
  #define WANTSOCKET
-@@ -1983,9 +1982,7 @@
+@@ -57,6 +56,7 @@
+ 
+ #ifdef USE_DCC64
+ #define BIG_STR_TO_INT(x) strtoull(x,NULL,10)
++#define stat _stat64
+ #else
+ #define BIG_STR_TO_INT(x) strtoul(x,NULL,10)
+ #endif
+@@ -1983,9 +1983,7 @@
  		return TRUE;
  
  	/* now handle case-insensitive Filesystems: HFS+, FAT */
