@@ -1,6 +1,6 @@
 all:
-	@cd ewc
-	@-$(MAKE) /nologo /s /f makefile.mak $@
+#	@cd ewc
+#	@-$(MAKE) /nologo /s /f makefile.mak $@
 	@cd ..\lua
 	@-$(MAKE) /nologo /s /f makefile.mak $@
 	@cd ..\python
@@ -13,13 +13,15 @@ all:
 	@-$(MAKE) /nologo /s /f makefile.mak $@
 	@cd ..\xtray
 	@-$(MAKE) /nologo /s /f makefile.mak $@
+	@cd ..\winamp
+	@-$(MAKE) /nologo /s /f makefile.mak $@	
 
 clean:
-	@del ewc\*.def
-	@del ewc\*.dll
-	@del ewc\*.exp
-	@del ewc\*.lib
-	@del ewc\*.obj
+#	@del ewc\*.def
+#	@del ewc\*.dll
+#	@del ewc\*.exp
+#	@del ewc\*.lib
+#	@del ewc\*.obj
 	@del lua\*.def
 	@del lua\*.dll
 	@del lua\*.exp
@@ -50,3 +52,8 @@ clean:
 	@del xtray\*.exp
 	@del xtray\*.lib
 	@del xtray\*.obj
+	@del winamp\*.def
+	@del winamp\*.dll
+	@del winamp\*.exp
+	@del winamp\*.lib
+	@del winamp\*.obj	

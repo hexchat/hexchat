@@ -41,4 +41,5 @@ copy ..\plugins\tcl\xctcl.dll %XCHAT_DEST%\plugins\xctcl.dll.x64
 copy ..\plugins\upd\xcupd.dll %XCHAT_DEST%\plugins\xcupd.dll.x64
 copy ..\plugins\xdcc\xcxdcc.dll %XCHAT_DEST%\plugins\xcxdcc.dll.x64
 copy ..\plugins\xtray\xtray.dll %XCHAT_DEST%\plugins\xtray.dll.x64
+copy ..\plugins\winamp\xcwinamp.dll %XCHAT_DEST%\plugins\xcwinamp.dll.x64
 copy %LUA_BIN%\lua51.dll %XCHAT_DEST%\lua51.dll.x64

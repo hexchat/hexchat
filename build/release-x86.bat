@@ -45,7 +45,7 @@ copy %SSL_BIN%\zlib1.dll %XCHAT_DEST%
 copy %SSL_BIN%\cert.pem %XCHAT_DEST%
 copy %ENCHANT_BIN%\libenchant.dll %XCHAT_DEST%
 xcopy /q /s /i %ENCHANT_BIN%\..\lib\enchant\libenchant_myspell.dll %XCHAT_DEST%\lib\enchant\
-xcopy /q /s /i ..\plugins\ewc\xcewc.dll %XCHAT_DEST%\plugins\
+::xcopy /q /s /i ..\plugins\ewc\xcewc.dll %XCHAT_DEST%\plugins\
 copy ..\plugins\lua\xclua.dll %XCHAT_DEST%\plugins
 copy ..\plugins\perl\xcperl-510.dll %XCHAT_DEST%\plugins
 copy ..\plugins\perl\xcperl-512.dll %XCHAT_DEST%\plugins
@@ -54,6 +54,7 @@ copy ..\plugins\tcl\xctcl.dll %XCHAT_DEST%\plugins
 copy ..\plugins\upd\xcupd.dll %XCHAT_DEST%\plugins
 copy ..\plugins\xdcc\xcxdcc.dll %XCHAT_DEST%\plugins
 copy ..\plugins\xtray\xtray.dll %XCHAT_DEST%\plugins
+copy ..\plugins\winamp\xcwinamp.dll %XCHAT_DEST%\plugins
 copy %LUA_BIN%\lua51.dll %XCHAT_DEST%
 xcopy /q /s /i ..\po\locale %XCHAT_DEST%\locale
 xcopy /q /s /i %GTK_BIN%\..\share\locale %XCHAT_DEST%\share\locale
