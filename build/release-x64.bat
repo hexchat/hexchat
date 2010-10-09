@@ -34,7 +34,6 @@ copy %ENCHANT_BIN%\libenchant.dll %XCHAT_DEST%\libenchant.dll.x64
 copy %ENCHANT_BIN%\..\lib\enchant\libenchant_myspell.dll %XCHAT_DEST%\lib\enchant\libenchant_myspell.dll.x64
 copy ..\plugins\ewc\xcewc.dll %XCHAT_DEST%\plugins\xcewc.dll.x64
 copy ..\plugins\lua\xclua.dll %XCHAT_DEST%\plugins\xclua.dll.x64
-copy ..\plugins\perl\xcperl-58.dll %XCHAT_DEST%\plugins\xcperl-58.dll.x64
 copy ..\plugins\perl\xcperl-510.dll %XCHAT_DEST%\plugins\xcperl-510.dll.x64
 copy ..\plugins\perl\xcperl-512.dll %XCHAT_DEST%\plugins\xcperl-512.dll.x64
 copy ..\plugins\python\xcpython.dll %XCHAT_DEST%\plugins\xcpython.dll.x64

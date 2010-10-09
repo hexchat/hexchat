@@ -58,7 +58,6 @@ Name: portable; Description: "Yes"; GroupDescription: "Portable Install (no Regi
 ;Name: xtray; Description: "X-Tray"; GroupDescription: "Tray Icon"; Flags: exclusive
 ;Name: noxtray; Description: "Plugin-Tray"; GroupDescription: "Tray Icon"; Flags: exclusive unchecked
 
-Name: perl58; Description: "5.8"; GroupDescription: "Perl version:"; Flags: exclusive unchecked; Components: langs\perl
 Name: perl510; Description: "5.10"; GroupDescription: "Perl version:"; Flags: exclusive unchecked; Components: langs\perl
 Name: perl512; Description: "5.12"; GroupDescription: "Perl version:"; Flags: exclusive; Components: langs\perl
 
@@ -206,9 +205,6 @@ Source: "plugins\xctcl.dll"; DestDir: "{app}\plugins"; Components: langs\tcl; Ta
 Source: "plugins\xctcl.dll.x64"; DestDir: "{app}\plugins"; DestName: "xctcl.dll"; Components: langs\tcl; Tasks: x64
 
 
-
-Source: "plugins\xcperl-58.dll"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Components: langs\perl; Tasks: x86 and perl58
-Source: "plugins\xcperl-58.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Components: langs\perl; Tasks: x64 and perl58
 
 Source: "plugins\xcperl-510.dll"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Components: langs\perl; Tasks: x86 and perl510
 Source: "plugins\xcperl-510.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Components: langs\perl; Tasks: x64 and perl510

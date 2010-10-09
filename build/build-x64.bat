@@ -19,9 +19,6 @@ nmake /nologo /f makefile.mak clean
 nmake /nologo /f makefile.mak
 cd perl
 set OOPATH=%PATH%
-set PATH=%OOPATH%;c:\mozilla-build\perl-5.8-x64\bin
-nmake /nologo /s /f makefile-58.mak clean
-nmake /nologo /s /f makefile-58.mak
 set PATH=%OOPATH%;c:\mozilla-build\perl-5.10-x64\bin
 nmake /nologo /s /f makefile-510.mak clean
 nmake /nologo /s /f makefile-510.mak
