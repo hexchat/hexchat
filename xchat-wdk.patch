@@ -931,7 +931,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/editlist.c xchat-wdk/src
  #include <sys/stat.h>
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/fe-gtk.c xchat-wdk/src/fe-gtk/fe-gtk.c
 --- xchat-wdk.orig/src/fe-gtk/fe-gtk.c	2010-08-14 03:46:21 +0200
-+++ xchat-wdk/src/fe-gtk/fe-gtk.c	2010-10-09 12:53:27 +0200
++++ xchat-wdk/src/fe-gtk/fe-gtk.c	2010-10-09 14:32:05 +0200
 @@ -19,7 +19,6 @@
  #include <stdio.h>
  #include <string.h>
@@ -991,7 +991,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/fkeys.c xchat-wdk/src/fe
  #include <ctype.h>
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/gtkutil.c xchat-wdk/src/fe-gtk/gtkutil.c
 --- xchat-wdk.orig/src/fe-gtk/gtkutil.c	2009-07-18 14:38:10 +0200
-+++ xchat-wdk/src/fe-gtk/gtkutil.c	2010-10-09 12:53:27 +0200
++++ xchat-wdk/src/fe-gtk/gtkutil.c	2010-10-09 15:20:02 +0200
 @@ -22,7 +22,6 @@
  #include <stdarg.h>
  #include <sys/types.h>
@@ -1025,7 +1025,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/gtkutil.c xchat-wdk/src/
  };
  
  static char last_dir[256] = "";
-@@ -164,6 +174,196 @@
+@@ -164,6 +174,205 @@
  	}
  }
  
@@ -1055,12 +1055,20 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/gtkutil.c xchat-wdk/src/
 +win32_savefile (char *file_buf, int file_buf_len, char *title_text, char *filter,
 +               int multiple)
 +{
++	/* we need the filter to get the default filename. it is from fe-gtk.c (fe_confirm);
++	 * but that filter is actually the whole filename, so apply an empty filter and all good.
++	 * in win32_thread2 we copy the filter ( = the filename) after the last dir into our
++	 * LPTSTR file buffer to make it actually work. the docs for this amazingly retard api:
++	 *
++	 * http://msdn.microsoft.com/en-us/library/ms646839%28VS.85%29.aspx
++	 */
++
 +    OPENFILENAME o;
 +
 +    memset (&o, 0, sizeof (o));
 +
 +    o.lStructSize = sizeof (o);
-+    o.lpstrFilter = filter;
++    o.lpstrFilter = "All files\0*.*\0\0";
 +    o.lpstrFile = file_buf;
 +    o.nMaxFile = file_buf_len;
 +    o.lpstrTitle = title_text;
@@ -1118,44 +1126,45 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/gtkutil.c xchat-wdk/src/
 +static void *
 +win32_thread2 (struct file_req *freq)
 +{
-+    char buf[1024 + 32];
-+    char file[1024];
++	char buf[1024 + 32];
++	char file[1024];
 +
-+    memset (file, 0, sizeof (file));
-+    safe_strcpy (file, last_dir, sizeof (file));
++	memset (file, 0, sizeof (file));
++	safe_strcpy (file, last_dir, sizeof (file));
++	safe_strcpy (file, freq->filter, sizeof (file));
 +
-+    if (win32_savefile (file, sizeof (file), freq->title, freq->filter, freq->multiple))
-+    {
-+        if (freq->multiple)
-+        {
-+            char *f = file;
++	if (win32_savefile (file, sizeof (file), freq->title, NULL, freq->multiple))
++	{
++		if (freq->multiple)
++		{
++			char *f = file;
 +
-+            if (f[strlen (f) + 1] == 0)    /* only selected one file */
-+            {
-+                snprintf (buf, sizeof (buf), "1\n%s\n", file);
-+                write (freq->th->pipe_fd[1], buf, strlen (buf));
-+            } else
-+            {
-+                f += strlen (f) + 1; /* skip first, it's only the dir */
-+                while (f[0])
-+                {
-+                    snprintf (buf, sizeof (buf), "1\n%s\\%s\n", /*dir!*/file, f);
-+                    write (freq->th->pipe_fd[1], buf, strlen (buf));
-+                    f += strlen (f) + 1;
-+                }
-+            }
++			if (f[strlen (f) + 1] == 0)    /* only selected one file */
++			{
++				snprintf (buf, sizeof (buf), "1\n%s\n", file);
++				write (freq->th->pipe_fd[1], buf, strlen (buf));
++			} else
++			{
++				f += strlen (f) + 1; /* skip first, it's only the dir */
++				while (f[0])
++				{
++					snprintf (buf, sizeof (buf), "1\n%s\\%s\n", /*dir!*/file, f);
++					write (freq->th->pipe_fd[1], buf, strlen (buf));
++					f += strlen (f) + 1;
++				}
++			}
 +
-+        } else
-+        {
-+            snprintf (buf, sizeof (buf), "1\n%s\n", file);
-+            write (freq->th->pipe_fd[1], buf, strlen (buf));
-+        }
-+    }
++		} else
++		{
++			snprintf (buf, sizeof (buf), "1\n%s\n", file);
++			write (freq->th->pipe_fd[1], buf, strlen (buf));
++		}
++	}
 +
-+    write (freq->th->pipe_fd[1], "0\n", 2);
-+    Sleep (2000);
++	write (freq->th->pipe_fd[1], "0\n", 2);
++	Sleep (2000);
 +
-+    return NULL;
++	return NULL;
 +}
 +   
 +static int
@@ -1222,7 +1231,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/gtkutil.c xchat-wdk/src/
  void
  gtkutil_file_req (const char *title, void *callback, void *userdata, char *filter,
  						int flags)
-@@ -172,6 +372,54 @@
+@@ -172,6 +381,58 @@
  	GtkWidget *dialog;
  	extern char *get_xdir_fs (void);
  
@@ -1237,14 +1246,15 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/gtkutil.c xchat-wdk/src/
 +		freq->userdata = userdata;
 +		freq->title = g_locale_from_utf8 (title, -1, 0, 0, 0);
 +		if (!filter)
-+			freq->filter = "All files\000*.*\000"
-+								"EXE files\000*.EXE\000"
-+								"MP3 files\000*.MP3\000"
-+								"MPEG files\000*.MPG;*.MPEG\000"
-+								"RAR files\000*.RAR\000"
-+								"ZIP files\000*.ZIP\000";
++		{
++			freq->filter =	"All files\0*.*\0"
++							"Executables\0*.exe\0"
++							"ZIP files\0*.zip\0\0";
++		}
 +		else
++		{
 +			freq->filter = filter;
++		}
 +
 +		thread_start (freq->th, win32_thread, freq);
 +		fe_input_add (freq->th->pipe_fd[0], FIA_FD|FIA_READ, win32_read_thread, freq);
@@ -1262,10 +1272,13 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/gtkutil.c xchat-wdk/src/
 +		freq->userdata = userdata;
 +		freq->title = g_locale_from_utf8 (title, -1, 0, 0, 0);
 +		if (!filter)
-+		freq->filter = "Text files\000*.TXT\000"
-+						"All files\000*.*\000";
++		{
++			freq->filter = "All files\0*.*\0\0";
++		}
 +		else
-+		freq->filter = filter;
++		{
++			freq->filter = filter;
++		}
 +
 +		thread_start (freq->th, win32_thread2, freq);
 +		fe_input_add (freq->th->pipe_fd[0], FIA_FD|FIA_READ, win32_read_thread, freq);
@@ -1581,7 +1594,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/plugin-tray.c xchat-wdk/
  	return 1;       /* return 1 for success */
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/plugingui.c xchat-wdk/src/fe-gtk/plugingui.c
 --- xchat-wdk.orig/src/fe-gtk/plugingui.c	2010-05-16 05:20:22 +0200
-+++ xchat-wdk/src/fe-gtk/plugingui.c	2010-10-09 12:53:27 +0200
++++ xchat-wdk/src/fe-gtk/plugingui.c	2010-10-09 15:11:47 +0200
 @@ -35,7 +35,7 @@
  #include "../common/xchat.h"
  #define PLUGIN_C
@@ -1597,8 +1610,8 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/plugingui.c xchat-wdk/sr
  	gtkutil_file_req (_("Select a Plugin or Script to load"), plugingui_load_cb,
 -							current_sess, NULL, FRF_ADDFOLDER);
 +							current_sess,
-+							"Plugins and Scripts\000"	"*.dll;*.pl;*.tcl;*.py;*.lua\000"
-+							"All files\000"				"*.*\000", 0);
++							"Plugins and Scripts\0*.dll;*.lua;*.pl;*.py;*.tcl\0"
++							"All files\0*.*\0\0", 0);
  }
  
  static void
