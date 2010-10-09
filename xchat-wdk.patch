@@ -568,7 +568,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/text.c xchat-wdk/src/com
  
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/util.c xchat-wdk/src/common/util.c
 --- xchat-wdk.orig/src/common/util.c	2008-02-07 02:50:37 +0100
-+++ xchat-wdk/src/common/util.c	2010-10-08 04:16:18 +0200
++++ xchat-wdk/src/common/util.c	2010-10-09 10:48:59 +0200
 @@ -16,11 +16,13 @@
   * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
   */
@@ -615,16 +615,76 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/util.c xchat-wdk/src/com
  
  #ifdef USE_DEBUG
  
-@@ -631,22 +632,32 @@
- 	OSVERSIONINFO osvi;
+@@ -628,26 +629,91 @@
+ get_cpu_str (void)
+ {
+ 	static char verbuf[64];
+-	OSVERSIONINFO osvi;
++	static char winver[28];
++	OSVERSIONINFOEX osvi;
  	SYSTEM_INFO si;
  	double mhz;
 +	int cpu_arch;
  
- 	osvi.dwOSVersionInfoSize = sizeof (OSVERSIONINFO);
+-	osvi.dwOSVersionInfoSize = sizeof (OSVERSIONINFO);
++	osvi.dwOSVersionInfoSize = sizeof (OSVERSIONINFOEX);
  	GetVersionEx (&osvi);
  	GetSystemInfo (&si);
  
++	switch (osvi.dwMajorVersion)
++	{
++		case 5:
++			switch (osvi.dwMinorVersion)
++			{
++				case 1:
++					strcpy (winver, "XP");
++					break;
++				case 2:
++					if (osvi.wProductType == VER_NT_WORKSTATION)
++					{
++						strcpy (winver, "XP x64 Edition");
++					}
++					else
++					{
++						if (GetSystemMetrics(SM_SERVERR2) == 0)
++						{
++							strcpy (winver, "Server 2003");
++						}
++						else
++						{
++							strcpy (winver, "Server 2003 R2");
++						}
++					}
++					break;
++			}
++			break;
++		case 6:
++			switch (osvi.dwMinorVersion)
++			{
++				case 0:
++					if (osvi.wProductType == VER_NT_WORKSTATION)
++					{
++						strcpy (winver, "Vista");
++					}
++					else
++					{
++						strcpy (winver, "Server 2008");
++					}
++					break;
++				case 1:
++					if (osvi.wProductType == VER_NT_WORKSTATION)
++					{
++						strcpy (winver, "7");
++					}
++					else
++					{
++						strcpy (winver, "Server 2008 R2");
++					}
++					break;
++			}
++			break;
++	}
++
 +	if (si.wProcessorArchitecture == 9)
 +	{
 +		cpu_arch = 64;
@@ -641,17 +701,21 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/util.c xchat-wdk/src/com
  		const char *cpuspeedstr = ( mhz > 1000 ) ? "GHz" : "MHz";
 -		sprintf (verbuf, "Windows %ld.%ld [i%d86/%.2f%s]",
 -					osvi.dwMajorVersion, osvi.dwMinorVersion, si.wProcessorLevel, 
-+		sprintf (verbuf, "Windows %ld.%ld [x%d/%.2f%s]",
-+					osvi.dwMajorVersion, osvi.dwMinorVersion, cpu_arch, 
- 					cpuspeed, cpuspeedstr);
- 	} else
+-					cpuspeed, cpuspeedstr);
+-	} else
 -		sprintf (verbuf, "Windows %ld.%ld [i%d86]",
 -			osvi.dwMajorVersion, osvi.dwMinorVersion, si.wProcessorLevel);
-+		sprintf (verbuf, "Windows %ld.%ld [x%d]",
-+			osvi.dwMajorVersion, osvi.dwMinorVersion, cpu_arch);
- 
+-
++		sprintf (verbuf, "Windows %s [x%d/%.2f%s]",	winver, cpu_arch, cpuspeed, cpuspeedstr);
++	}
++	else
++	{
++		sprintf (verbuf, "Windows %s [x%d]", winver, cpu_arch);
++	}
++	
  	return verbuf;
  }
+ 
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/xchat.c xchat-wdk/src/common/xchat.c
 --- xchat-wdk.orig/src/common/xchat.c	2008-06-08 09:58:58 +0200
 +++ xchat-wdk/src/common/xchat.c	2010-10-08 04:16:18 +0200
