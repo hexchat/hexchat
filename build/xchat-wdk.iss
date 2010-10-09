@@ -70,6 +70,9 @@ Root: HKCR; Subkey: "irc\DefaultIcon"; ValueType: string; ValueName: ""; ValueDa
 Root: HKCR; Subkey: "irc\shell"; ValueType: string; ValueName: ""; ValueData: "open"; Flags: uninsdeletevalue; Tasks: not portable
 Root: HKCR; Subkey: "irc\shell\open\command"; ValueType: string; ValueName: ""; ValueData: "{app}\xchat.exe --url=""%1"""; Flags: uninsdeletevalue; Tasks: not portable
 
+[Run]
+Filename: "{app}\xchat.exe"; Description: "Run XChat-WDK after closing the Wizard"; Flags: nowait postinstall skipifsilent
+
 [Files]
 Source: "cert.pem"; DestDir: "{app}"; Components: libs
 Source: "COPYING"; DestDir: "{app}"; Components: libs
