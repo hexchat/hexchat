@@ -146,7 +146,7 @@ HWND hwndWinamp = FindWindow("Winamp v1.x",NULL);
 				else xchat_print(ph, "Winamp: Nothing being played.");
 			}
 		    else
-                xchat_printf(ph, "Usage: /wa [PAUSE|PLAY|STOP|NEXT|PREV|START]\n");
+                xchat_printf(ph, "Usage: /WINAMP [PAUSE|PLAY|STOP|NEXT|PREV|START]\n");
          }
 
 	}
@@ -170,7 +170,7 @@ int xchat_plugin_init(xchat_plugin *plugin_handle,
    *plugin_desc = "Winamp plugin for XChat";
    *plugin_version = "0.4";
 
-   xchat_hook_command(ph, "WA", XCHAT_PRI_NORM, winamp, "Usage: /WA [PAUSE|PLAY|STOP|NEXT|PREV|START] - control Winamp or show what's currently playing", 0);
+   xchat_hook_command(ph, "WINAMP", XCHAT_PRI_NORM, winamp, "Usage: /WINAMP [PAUSE|PLAY|STOP|NEXT|PREV|START] - control Winamp or show what's currently playing", 0);
 
    xchat_print(ph, "Winamp plugin loaded\n");
 
