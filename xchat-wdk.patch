@@ -991,7 +991,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/fkeys.c xchat-wdk/src/fe
  #include <ctype.h>
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/gtkutil.c xchat-wdk/src/fe-gtk/gtkutil.c
 --- xchat-wdk.orig/src/fe-gtk/gtkutil.c	2009-07-18 14:38:10 +0200
-+++ xchat-wdk/src/fe-gtk/gtkutil.c	2010-10-09 15:20:02 +0200
++++ xchat-wdk/src/fe-gtk/gtkutil.c	2010-10-09 15:28:09 +0200
 @@ -22,7 +22,6 @@
  #include <stdarg.h>
  #include <sys/types.h>
@@ -1017,15 +1017,15 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/gtkutil.c xchat-wdk/src/
  	int flags;		/* FRF_* flags */
 +
 +#ifdef WIN32
-+ 	int multiple;
-+ 	thread *th;
-+ 	char *title;	/* native locale */
-+ 	char *filter;
++	int multiple;
++	thread *th;
++	char *title;	/* native locale */
++	char *filter;
 +#endif
  };
  
  static char last_dir[256] = "";
-@@ -164,6 +174,205 @@
+@@ -164,6 +174,209 @@
  	}
  }
  
@@ -1044,9 +1044,11 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/gtkutil.c xchat-wdk/src/
 +	o.nMaxFile = file_buf_len;
 +	o.lpstrTitle = title_text;
 +	o.Flags = 0x02000000 | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY |
-+				 OFN_NOCHANGEDIR | OFN_EXPLORER | OFN_LONGNAMES | OFN_NONETWORKBUTTON;
++				OFN_NOCHANGEDIR | OFN_EXPLORER | OFN_LONGNAMES | OFN_NONETWORKBUTTON;
 +	if (multiple)
++	{
 +		o.Flags |= OFN_ALLOWMULTISELECT;
++	}
 +
 +	return GetOpenFileName (&o);
 +}
@@ -1063,21 +1065,23 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/gtkutil.c xchat-wdk/src/
 +	 * http://msdn.microsoft.com/en-us/library/ms646839%28VS.85%29.aspx
 +	 */
 +
-+    OPENFILENAME o;
++	OPENFILENAME o;
 +
-+    memset (&o, 0, sizeof (o));
++	memset (&o, 0, sizeof (o));
 +
-+    o.lStructSize = sizeof (o);
-+    o.lpstrFilter = "All files\0*.*\0\0";
-+    o.lpstrFile = file_buf;
-+    o.nMaxFile = file_buf_len;
-+    o.lpstrTitle = title_text;
-+    o.Flags = 0x02000000 | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY |
-+                 OFN_NOCHANGEDIR | OFN_EXPLORER | OFN_LONGNAMES | OFN_NONETWORKBUTTON;
-+    if (multiple)
-+        o.Flags |= OFN_ALLOWMULTISELECT;
++	o.lStructSize = sizeof (o);
++	o.lpstrFilter = "All files\0*.*\0\0";
++	o.lpstrFile = file_buf;
++	o.nMaxFile = file_buf_len;
++	o.lpstrTitle = title_text;
++	o.Flags = 0x02000000 | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY |
++				OFN_NOCHANGEDIR | OFN_EXPLORER | OFN_LONGNAMES | OFN_NONETWORKBUTTON;
++	if (multiple)
++	{
++		o.Flags |= OFN_ALLOWMULTISELECT;
++	}
 +
-+    return GetSaveFileName (&o);
++	return GetSaveFileName (&o);
 +}
 +
 +static void *
@@ -1231,7 +1235,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/gtkutil.c xchat-wdk/src/
  void
  gtkutil_file_req (const char *title, void *callback, void *userdata, char *filter,
  						int flags)
-@@ -172,6 +381,58 @@
+@@ -172,6 +385,58 @@
  	GtkWidget *dialog;
  	extern char *get_xdir_fs (void);
  
