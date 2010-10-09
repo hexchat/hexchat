@@ -11,7 +11,6 @@ clean:
 	@del common\xchatcommon.lib
 	@del fe-gtk\*.obj
 	@del fe-gtk\xchat.exe
-	@del fe-gtk\xchat.rc
 	@del fe-gtk\xchat.res
 #	@del fe-text\*.obj
 #	@del fe-text\xchat-text.exe
