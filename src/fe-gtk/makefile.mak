@@ -17,9 +17,6 @@ all: $(PROG)
 $(PROG): $(FEGTK_OBJECTS) $(COMLIB) xchat-icon.obj
 	$(LINK) /out:$(PROG) /entry:mainCRTStartup $(LDFLAGS) $(LIBS) $(FEGTK_OBJECTS) $(COMLIB) xchat-icon.obj
 
-xchat.rc:
-	echo XC_ICON ICON "../../xchat.ico" > xchat.rc
-
 xchat.res: xchat.rc ../../xchat.ico
 	rc /nologo /r xchat.rc
 
@@ -29,5 +26,4 @@ xchat-icon.obj: xchat.res
 clean:
 	@del *.obj
 	@del $(PROG)
-	@del xchat.rc
 	@del xchat.res
