@@ -191,8 +191,8 @@ Source: "lib\gtk-2.0\modules\libgail.dll.x64"; DestDir: "{app}\lib\gtk-2.0\modul
 Source: "plugins\xcupd.dll"; DestDir: "{app}\plugins"; Components: plugins\upd; Tasks: x86
 Source: "plugins\xcupd.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcupd.dll"; Components: plugins\upd; Tasks: x64
 
-Source: "plugins\xcwinamp.dll"; DestDir: "{app}\plugins"; Components: plugins\ewc; Tasks: x86
-Source: "plugins\xcwinamp.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcwinamp.dll"; Components: plugins\ewc; Tasks: x64
+Source: "plugins\xcwinamp.dll"; DestDir: "{app}\plugins"; Components: plugins\winamp; Tasks: x86
+Source: "plugins\xcwinamp.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcwinamp.dll"; Components: plugins\winamp; Tasks: x64
 
 Source: "plugins\xcxdcc.dll"; DestDir: "{app}\plugins"; Components: plugins\xdcc; Tasks: x86
 Source: "plugins\xcxdcc.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcxdcc.dll"; Components: plugins\xdcc; Tasks: x64
