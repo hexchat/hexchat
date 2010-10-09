@@ -23,7 +23,7 @@ xtray.def:
 	$(CC) $(CPPFLAGS) /c $<
 
 res:
-	rc resource.rc
+	rc /nologo resource.rc
 	
 $(TARGET): $(TRAY_OBJECTS) xtray.def res
 	$(LINK) /DLL /out:$(TARGET) $(LDFLAGS) $(TRAY_OBJECTS) ntstc_msvcrt.lib $(LIBS) /def:xtray.def resource.res

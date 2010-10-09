@@ -35,7 +35,7 @@ char*
 check_version ()
 {
 	HINTERNET hINet, hFile;
-	hINet = InternetOpen ("XChat-WDK Update Checker", INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, 0);
+	hINet = InternetOpen ("Update Checker", INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, 0);
 	
 	if (!hINet)
 	{
@@ -91,12 +91,12 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 {
 	ph = plugin_handle;
 
-	*plugin_name = "XChat-WDK Update Checker";
+	*plugin_name = "Update Checker";
 	*plugin_desc = "Plugin for checking for XChat-WDK updates";
 	*plugin_version = "1.0";
 
 	xchat_hook_command (ph, "UPDCHK", XCHAT_PRI_NORM, print_version, 0, 0);
-	xchat_print (ph, "XChat-WDK Update Checker plugin loaded\n");
+	xchat_print (ph, "Update Checker plugin loaded\n");
 	print_version ();
 
 	return 1;       /* return 1 for success */
@@ -105,6 +105,6 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 int
 xchat_plugin_deinit (void)
 {
-	xchat_print (ph, "XChat-WDK Update Checker plugin unloaded\n");
+	xchat_print (ph, "Update Checker plugin unloaded\n");
 	return 1;
 }

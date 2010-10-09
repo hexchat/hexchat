@@ -1,9 +1,9 @@
 [Setup]
 AppName=XChat-WDK
-AppVerName=XChat-WDK 1468-2
-AppVersion=14.68.2
-VersionInfoVersion=14.68.2
-OutputBaseFilename=XChat-WDK 1468-2
+AppVerName=XChat-WDK 1469
+AppVersion=14.69
+VersionInfoVersion=14.69
+OutputBaseFilename=XChat-WDK 1469
 AppPublisher=XChat-WDK
 AppPublisherURL=http://code.google.com/p/xchat-wdk/
 AppCopyright=Copyright (C) 1998-2010 Peter Zelezny
@@ -36,19 +36,18 @@ Name: "custom"; Description: "Custom Installation"; Flags: iscustom
 
 [Components]
 Name: "libs"; Description: "XChat-WDK"; Types: normal full custom; Flags: fixed
-Name: "translations"; Description: "Translations"; Types: normal full custom
-Name: "spelling"; Description: "Spelling Library"; Types: full custom
-Name: "spelling\dict"; Description: "Dictionaries"; Types: full custom
-Name: "plugins"; Description: "Plugins"; Types: full custom
-Name: "plugins\ewc"; Description: "EasyWinampControl"; Types: full custom
-Name: "plugins\upd"; Description: "XChat-WDK Update Checker"; Types: normal full custom
-Name: "plugins\xdcc"; Description: "XDCC"; Types: full custom
-Name: "langs"; Description: "Language Interfaces"; Types: full custom
-Name: "langs\lua"; Description: "Lua"; Types: full custom
-Name: "langs\lua\luawdk"; Description: "Lua-WDK 5.1.4-2"; Types: full custom
-Name: "langs\perl"; Description: "Perl"; Types: full custom
-Name: "langs\python"; Description: "Python"; Types: full custom
-Name: "langs\tcl"; Description: "Tcl"; Types: full custom
+Name: "translations"; Description: "Translations"; Types: normal full custom; Flags: disablenouninstallwarning
+Name: "spelling"; Description: "Spelling Dictionaries"; Types: full custom; Flags: disablenouninstallwarning
+Name: "plugins"; Description: "Plugins"; Types: full custom; Flags: disablenouninstallwarning
+Name: "plugins\ewc"; Description: "EasyWinampControl"; Types: full custom; Flags: disablenouninstallwarning
+Name: "plugins\upd"; Description: "Update Checker"; Types: normal full custom; Flags: disablenouninstallwarning
+Name: "plugins\xdcc"; Description: "XDCC"; Types: full custom; Flags: disablenouninstallwarning
+Name: "langs"; Description: "Language Interfaces"; Types: full custom; Flags: disablenouninstallwarning
+Name: "langs\lua"; Description: "Lua"; Types: full custom; Flags: disablenouninstallwarning
+Name: "langs\lua\luawdk"; Description: "Lua-WDK"; Types: full custom; Flags: disablenouninstallwarning
+Name: "langs\perl"; Description: "Perl"; Types: full custom; Flags: disablenouninstallwarning
+Name: "langs\python"; Description: "Python"; Types: full custom; Flags: disablenouninstallwarning
+Name: "langs\tcl"; Description: "Tcl"; Types: full custom; Flags: disablenouninstallwarning
 
 [Tasks]
 Name: x86; Description: "x86"; GroupDescription: "XChat-WDK version:"; Flags: exclusive unchecked
@@ -63,15 +62,31 @@ Name: perl58; Description: "5.8"; GroupDescription: "Perl version:"; Flags: excl
 Name: perl510; Description: "5.10"; GroupDescription: "Perl version:"; Flags: exclusive unchecked; Components: langs\perl
 Name: perl512; Description: "5.12"; GroupDescription: "Perl version:"; Flags: exclusive; Components: langs\perl
 
+[Registry]
+Root: HKCR; Subkey: "irc"; ValueType: none; ValueName: ""; ValueData: ""; Flags: deletekey uninsdeletekey; Tasks: not portable
+Root: HKCR; Subkey: "irc"; ValueType: string; ValueName: ""; ValueData: "URL:IRC Protocol"; Flags: uninsdeletevalue; Tasks: not portable
+Root: HKCR; Subkey: "irc"; ValueType: string; ValueName: "URL Protocol"; ValueData: ""; Flags: uninsdeletevalue; Tasks: not portable
+Root: HKCR; Subkey: "irc\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\xchat.exe,0"; Flags: uninsdeletevalue; Tasks: not portable
+Root: HKCR; Subkey: "irc\shell"; ValueType: string; ValueName: ""; ValueData: "open"; Flags: uninsdeletevalue; Tasks: not portable
+Root: HKCR; Subkey: "irc\shell\open\command"; ValueType: string; ValueName: ""; ValueData: "{app}\xchat.exe --url=""%1"""; Flags: uninsdeletevalue; Tasks: not portable
+
+[Run]
+Filename: "{app}\xchat.exe"; Description: "Run XChat-WDK after closing the Wizard"; Flags: nowait postinstall skipifsilent
+
 [Files]
+Source: "cert.pem"; DestDir: "{app}"; Components: libs
 Source: "COPYING"; DestDir: "{app}"; Components: libs
 Source: "LICENSE.OPENSSL"; DestDir: "{app}"; Components: libs
 Source: "LICENSE.ZLIB"; DestDir: "{app}"; Components: libs
+Source: "LICENSE.GTK"; DestDir: "{app}"; Components: libs
+Source: "LICENSE.CAIRO"; DestDir: "{app}"; Components: libs
+Source: "LICENSE.LUA"; DestDir: "{app}"; Components: libs
+Source: "LICENSE.ENCHANT"; DestDir: "{app}"; Components: libs
 Source: "portable-mode"; DestDir: "{app}"; Tasks: portable
 Source: "etc\*"; DestDir: "{app}\etc"; Flags: createallsubdirs recursesubdirs; Components: libs
 Source: "locale\*"; DestDir: "{app}\locale"; Flags: createallsubdirs recursesubdirs; Components: translations
 Source: "share\locale\*"; DestDir: "{app}\share\locale"; Flags: createallsubdirs recursesubdirs; Components: translations
-Source: "share\myspell\*"; DestDir: "{app}\share\myspell"; Flags: createallsubdirs recursesubdirs; Components: spelling\dict
+Source: "share\myspell\*"; DestDir: "{app}\share\myspell"; Flags: createallsubdirs recursesubdirs; Components: spelling
 
 
 
@@ -151,16 +166,11 @@ Source: "ssleay32.dll.x64"; DestDir: "{app}"; DestName: "ssleay32.dll"; Componen
 Source: "zlib1.dll"; DestDir: "{app}"; Components: libs; Tasks: x86
 Source: "zlib1.dll.x64"; DestDir: "{app}"; DestName: "zlib1.dll"; Components: libs; Tasks: x64
 
+Source: "libenchant.dll"; DestDir: "{app}"; Components: libs; Tasks: x86
+Source: "libenchant.dll.x64"; DestDir: "{app}"; DestName: "libenchant.dll"; Components: libs; Tasks: x64
 
-
-Source: "libenchant-1.dll"; DestDir: "{app}"; Components: spelling; Tasks: x86
-Source: "libenchant-1.dll.x64"; DestDir: "{app}"; DestName: "libenchant-1.dll"; Components: spelling; Tasks: x64
-
-Source: "lib\enchant\libenchant_myspell.dll"; DestDir: "{app}\lib\enchant"; Components: spelling; Tasks: x86
-Source: "lib\enchant\libenchant_myspell.dll.x64"; DestDir: "{app}\lib\enchant"; DestName: "libenchant_myspell.dll"; Components: spelling; Tasks: x64
-
-Source: "libgcc_s_sjlj-1.dll"; DestDir: "{app}"; Components: spelling; Tasks: x86
-Source: "libgcc_s_sjlj-1.dll.x64"; DestDir: "{app}"; DestName: "libgcc_s_sjlj-1.dll"; Components: spelling; Tasks: x64
+Source: "lib\enchant\libenchant_myspell.dll"; DestDir: "{app}\lib\enchant"; Components: libs; Tasks: x86
+Source: "lib\enchant\libenchant_myspell.dll.x64"; DestDir: "{app}\lib\enchant"; DestName: "libenchant_myspell.dll"; Components: libs; Tasks: x64
 
 
 
