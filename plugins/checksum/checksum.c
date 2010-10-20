@@ -108,7 +108,7 @@ dccrecv_cb(char *word[], void *userdata)
 	unsigned char sum[65];
 	sha256_file (word[2], sum);
 	xchat_printf (ph, "DCC RECV %s from %s complete [%s cps]", word[1], word[3], word[4]);
-	xchat_printf (ph, "SHA256 checksum for %s: %s\n", word[1], sum);
+	xchat_printf (ph, "SHA256 checksum for %s:\n%s", word[1], sum);
 	return XCHAT_EAT_XCHAT;
 }
 
@@ -118,7 +118,7 @@ dccoffer_cb(char *word[], void *userdata)
 	unsigned char sum[65];
 	sha256_file (word[3], sum);
 	xchat_printf (ph, "Offering %s to %s", word[1], word[2]);
-	xchat_printf (ph, "SHA256 checksum for %s: %s\n", word[1], sum);
+	xchat_printf (ph, "SHA256 checksum for %s:\n%s", word[1], sum);
 	return XCHAT_EAT_XCHAT;
 }
 
