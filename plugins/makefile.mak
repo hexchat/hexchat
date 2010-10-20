@@ -1,7 +1,9 @@
 all:
 #	@cd ewc
 #	@-$(MAKE) /nologo /s /f makefile.mak $@
-	@cd lua
+	@cd checksum
+	@-$(MAKE) /nologo /s /f makefile.mak $@
+	@cd ..\lua
 	@-$(MAKE) /nologo /s /f makefile.mak $@
 	@cd ..\python
 	@-$(MAKE) /nologo /s /f makefile.mak $@
@@ -22,6 +24,11 @@ clean:
 #	@del ewc\*.exp
 #	@del ewc\*.lib
 #	@del ewc\*.obj
+	@del checksum\*.def
+	@del checksum\*.dll
+	@del checksum\*.exp
+	@del checksum\*.lib
+	@del checksum\*.obj
 	@del lua\*.def
 	@del lua\*.dll
 	@del lua\*.exp
