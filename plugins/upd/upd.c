@@ -74,15 +74,15 @@ print_version ()
 
 	if (strcmp (version, xchat_get_info (ph, "version")) == 0)
 	{
-		xchat_printf (ph, "You have the latest version of XChat-WDK installed!");
+		xchat_printf (ph, "You have the latest version of XChat-WDK installed!\n");
 	}
 	else if (strcmp (version, "Unknown") == 0)
 	{
-		xchat_printf (ph, "Unable to check for XChat-WDK updates!");
+		xchat_printf (ph, "Unable to check for XChat-WDK updates!\n");
 	}
 	else
 	{
-		xchat_printf (ph, "An XChat-WDK update is available! You can download it from here:\nhttp://xchat-wdk.googlecode.com/files/XChat-WDK%%20%s.exe", version);
+		xchat_printf (ph, "An XChat-WDK update is available! You can download it from here:\nhttp://xchat-wdk.googlecode.com/files/XChat-WDK%%20%s.exe\n", version);
 	}
 }
 
