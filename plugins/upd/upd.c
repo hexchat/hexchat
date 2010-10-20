@@ -93,9 +93,11 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 
 	*plugin_name = "Update Checker";
 	*plugin_desc = "Plugin for checking for XChat-WDK updates";
-	*plugin_version = "1.0";
+	*plugin_version = "1.1";
 
 	xchat_hook_command (ph, "UPDCHK", XCHAT_PRI_NORM, print_version, 0, 0);
+	xchat_command (ph, "MENU ADD \"Help/Check for updates\" \"UPDCHK\"");
+
 	xchat_print (ph, "Update Checker plugin loaded\n");
 	print_version ();
 
@@ -105,6 +107,7 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 int
 xchat_plugin_deinit (void)
 {
+	xchat_command(ph, "MENU DEL \"Help/Check for updates\"");
 	xchat_print (ph, "Update Checker plugin unloaded\n");
 	return 1;
 }
