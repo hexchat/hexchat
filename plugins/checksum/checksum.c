@@ -92,14 +92,14 @@ sha256_file (char *path, char outputBuffer[65])
 	while ((bytesRead = fread (buffer, 1, BUFSIZE, file)))
 	{
 		SHA256_Update (&sha256, buffer, bytesRead);
-    }
+	}
 
-    SHA256_Final (hash, &sha256);
-    sha256_hash_string (hash, outputBuffer);
+	SHA256_Final (hash, &sha256);
+	sha256_hash_string (hash, outputBuffer);
 
 	fclose (file);
-    free (buffer);
-    return 0;
+	free (buffer);
+	return 0;
 }
 
 int
