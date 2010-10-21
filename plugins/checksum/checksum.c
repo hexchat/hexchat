@@ -27,6 +27,7 @@
  */
 
 #include <stdio.h>
+#include <string.h>
 #include <malloc.h>
 #include <errno.h>
 #include <openssl/sha.h>
@@ -105,7 +106,7 @@ sha256_file (char *path, char outputBuffer[65])
 int
 dccrecv_cb(char *word[], void *userdata)
 {
-	unsigned char sum[65];
+	char sum[65];
 
 	sha256_file (word[2], sum);
 	/* try to print the checksum in the privmsg tab of the sender */
@@ -118,7 +119,7 @@ dccrecv_cb(char *word[], void *userdata)
 int
 dccoffer_cb(char *word[], void *userdata)
 {
-	unsigned char sum[65];
+	char sum[65];
 
 	sha256_file (word[3], sum);
 	xchat_commandf (ph, "raw PRIVMSG %s :SHA-256 checksum for %s (remote): %s", word[2], word[1], sum);
