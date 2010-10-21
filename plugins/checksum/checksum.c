@@ -41,7 +41,7 @@ static xchat_plugin *ph;   /* plugin handle */
 void
 sha256_hash_string (unsigned char hash[SHA256_DIGEST_LENGTH], char outputBuffer[65])
 {
-	int i = 0;
+	int i;
 	for (i = 0; i < SHA256_DIGEST_LENGTH; i++)
 	{
 		sprintf(outputBuffer + (i * 2), "%02x", hash[i]);
@@ -140,7 +140,6 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 	xchat_hook_print (ph, "DCC Offer", XCHAT_PRI_NORM, dccoffer_cb, NULL);
 
 	xchat_print (ph, "Checksum plugin loaded\n");
-
 	return 1;
 }
 
