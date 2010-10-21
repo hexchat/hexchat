@@ -46,7 +46,8 @@ song_strcpy (char *dest, char *src)
 	return dest - 1;
 }
 
-static int winamp(char *word[], char *word_eol[], void *userdata)
+static int
+winamp(char *word[], char *word_eol[], void *userdata)
 {
 
 char current_play[2048], *p;
@@ -157,7 +158,8 @@ HWND hwndWinamp = FindWindow("Winamp v1.x",NULL);
 	return XCHAT_EAT_ALL;
 }
 
-int xchat_plugin_init(xchat_plugin *plugin_handle,
+int
+xchat_plugin_init(xchat_plugin *plugin_handle,
                       char **plugin_name,
                       char **plugin_desc,
                       char **plugin_version,
@@ -178,7 +180,8 @@ int xchat_plugin_init(xchat_plugin *plugin_handle,
 	return 1;       /* return 1 for success */
 }
 
-int xchat_plugin_deinit(void)
+int
+xchat_plugin_deinit(void)
 {
 	xchat_command (ph, "MENU DEL \"Window/Display current song\"");
 	xchat_print (ph, "Winamp plugin unloaded\n");
