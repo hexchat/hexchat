@@ -163,22 +163,24 @@ int xchat_plugin_init(xchat_plugin *plugin_handle,
                       char **plugin_version,
                       char *arg)
 {
-   /* we need to save this for use with any xchat_* functions */
-   ph = plugin_handle;
+	/* we need to save this for use with any xchat_* functions */
+	ph = plugin_handle;
 
-   *plugin_name = "Winamp";
-   *plugin_desc = "Winamp plugin for XChat";
-   *plugin_version = "0.4";
+	*plugin_name = "Winamp";
+	*plugin_desc = "Winamp plugin for XChat";
+	*plugin_version = "0.4";
 
-   xchat_hook_command(ph, "WINAMP", XCHAT_PRI_NORM, winamp, "Usage: /WINAMP [PAUSE|PLAY|STOP|NEXT|PREV|START] - control Winamp or show what's currently playing", 0);
+	xchat_hook_command(ph, "WINAMP", XCHAT_PRI_NORM, winamp, "Usage: /WINAMP [PAUSE|PLAY|STOP|NEXT|PREV|START] - control Winamp or show what's currently playing", 0);
+   	xchat_command (ph, "MENU -ietc\music.png ADD \"Window/Display current song\" \"WINAMP\"");
 
-   xchat_print(ph, "Winamp plugin loaded\n");
+	xchat_print(ph, "Winamp plugin loaded\n");
 
-   return 1;       /* return 1 for success */
+	return 1;       /* return 1 for success */
 }
 
 int xchat_plugin_deinit(void)
 {
+	xchat_command(ph, "MENU DEL \"Window/Display current song\"");
 	xchat_print(ph, "Winamp plugin unloaded\n");
 	return 1;
 }
