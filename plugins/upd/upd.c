@@ -96,7 +96,7 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 	*plugin_version = "1.1";
 
 	xchat_hook_command (ph, "UPDCHK", XCHAT_PRI_NORM, print_version, 0, 0);
-	xchat_command (ph, "MENU ADD \"Help/Check for updates\" \"UPDCHK\"");
+	xchat_command (ph, "MENU -ietc\download.png ADD \"Help/Check for updates\" \"UPDCHK\"");
 
 	xchat_print (ph, "Update Checker plugin loaded\n");
 	print_version ();
