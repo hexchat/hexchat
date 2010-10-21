@@ -107,7 +107,7 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 int
 xchat_plugin_deinit (void)
 {
-	xchat_command(ph, "MENU DEL \"Help/Check for updates\"");
+	xchat_command (ph, "MENU DEL \"Help/Check for updates\"");
 	xchat_print (ph, "Update Checker plugin unloaded\n");
 	return 1;
 }

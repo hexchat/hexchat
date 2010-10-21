@@ -135,8 +135,8 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 	*plugin_desc = "Calculate checksum for DCC file transfers";
 	*plugin_version = "1.1";
 	
-	xchat_hook_print(ph, "DCC RECV Complete", XCHAT_PRI_NORM, dccrecv_cb, NULL);
-	xchat_hook_print(ph, "DCC Offer", XCHAT_PRI_NORM, dccoffer_cb, NULL);
+	xchat_hook_print (ph, "DCC RECV Complete", XCHAT_PRI_NORM, dccrecv_cb, NULL);
+	xchat_hook_print (ph, "DCC Offer", XCHAT_PRI_NORM, dccoffer_cb, NULL);
 
 	xchat_print (ph, "Checksum plugin loaded\n");
 
