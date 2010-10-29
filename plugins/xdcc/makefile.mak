@@ -9,7 +9,7 @@ xdcc.def:
 	echo xchat_plugin_deinit >> xdcc.def
 
 xdcc.obj: xdcc.c makefile.mak
-	cl $(CFLAGS) $(GLIB) xdcc.c
+	cl $(CFLAGS) $(GLIB) /I.. xdcc.c
 
 clean:
 	del *.obj

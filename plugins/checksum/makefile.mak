@@ -9,7 +9,7 @@ checksum.def:
 	echo xchat_plugin_deinit >> checksum.def
 
 checksum.obj: checksum.c makefile.mak
-	cl $(CFLAGS) checksum.c
+	cl $(CFLAGS) /I.. checksum.c
 
 clean:
 	del *.obj

@@ -11,7 +11,7 @@ tcl.def:
 	echo xchat_plugin_get_info >> tcl.def
 
 tclplugin.obj: tclplugin.c
-	$(CC) $(CFLAGS) tclplugin.c /I$(TCLPATH)\include /DTCL_DLL=\"$(TCLLIB).dll\"
+	$(CC) $(CFLAGS) /I.. tclplugin.c /I$(TCLPATH)\include /DTCL_DLL=\"$(TCLLIB).dll\"
 
 $(TARGET): tclplugin.obj tcl.def
 	$(LINK) /dll /out:$(TARGET) $(LDFLAGS) tclplugin.obj /libpath:$(TCLPATH)\lib $(TCLLIB).lib /delayload:$(TCLLIB).dll delayimp.lib /def:tcl.def

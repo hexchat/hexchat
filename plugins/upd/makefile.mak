@@ -9,7 +9,7 @@ upd.def:
 	echo xchat_plugin_deinit >> upd.def
 
 upd.obj: upd.c makefile.mak
-	cl $(CFLAGS) $(GLIB) upd.c
+	cl $(CFLAGS) $(GLIB) /I.. upd.c
 
 clean:
 	del *.obj

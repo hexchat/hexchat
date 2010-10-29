@@ -18,7 +18,7 @@ perl.def:
 	echo xchat_plugin_get_info >> perl.def
 
 perl.obj: perl.c
-	$(CC) $(CFLAGS) perl.c $(GLIB) -I$(PERLPATH) -DPERL_DLL=\"$(PERLLIB).dll\"
+	$(CC) $(CFLAGS) perl.c $(GLIB) /I$(PERLPATH) /I.. /DPERL_DLL=\"$(PERLLIB).dll\"
 
 perl.c: xchat.pm.h
 

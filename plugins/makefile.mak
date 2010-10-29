@@ -1,6 +1,4 @@
 all:
-#	@cd ewc
-#	@-$(MAKE) /nologo /s /f makefile.mak $@
 	@cd checksum
 	@-$(MAKE) /nologo /s /f makefile.mak $@
 	@cd ..\lua
@@ -19,11 +17,6 @@ all:
 	@-$(MAKE) /nologo /s /f makefile.mak $@	
 
 clean:
-#	@del ewc\*.def
-#	@del ewc\*.dll
-#	@del ewc\*.exp
-#	@del ewc\*.lib
-#	@del ewc\*.obj
 	@del checksum\*.def
 	@del checksum\*.dll
 	@del checksum\*.exp

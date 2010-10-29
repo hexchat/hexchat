@@ -1,11 +1,15 @@
 @echo off
+set PERL_510=c:\mozilla-build\perl-5.10-x64
+set PERL_512=c:\mozilla-build\perl-5.12-x64
+set DEV_64=c:\mozilla-build\build\xchat-wdk\dep-x64
 cd ..\src
 echo X64 = YES > makeinc.mak
+echo DEV64 = %DEV_64% >> makeinc.mak
 type makeinc.skel >> makeinc.mak
-set INCLUDE=c:\WinDDK\7600.16385.1\inc\api;c:\WinDDK\7600.16385.1\inc\crt;c:\WinDDK\7600.16385.1\inc\api\crt\stl70
-set LIB=c:\WinDDK\7600.16385.1\lib\wnet\amd64;c:\WinDDK\7600.16385.1\lib\Crt\amd64
+set INCLUDE=%WDK_ROOT%\inc\api;%WDK_ROOT%\inc\crt;%WDK_ROOT%\inc\api\crt\stl70
+set LIB=%WDK_ROOT%\lib\wnet\amd64;%WDK_ROOT%\lib\Crt\amd64
 set OPATH=%PATH%
-set PATH=c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\amd64;c:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Bin\x64;c:\mozilla-build\build\xchat-dev64\bin
+set PATH=%PROGRAMFILES(X86)%\Microsoft Visual Studio 10.0\VC\bin\amd64;%PROGRAMFILES(X86)%\Microsoft SDKs\Windows\v7.0A\Bin\x64;%DEV_64%\bin
 cd common
 nmake /nologo /f makefile.mak clean
 cd ..\fe-gtk
@@ -19,10 +23,10 @@ nmake /nologo /f makefile.mak clean
 nmake /nologo /f makefile.mak
 cd perl
 set OOPATH=%PATH%
-set PATH=%OOPATH%;c:\mozilla-build\perl-5.10-x64\bin
+set PATH=%OOPATH%;%PERL_510%\bin
 nmake /nologo /s /f makefile-510.mak clean
 nmake /nologo /s /f makefile-510.mak
-set PATH=%OOPATH%;c:\mozilla-build\perl-5.12-x64\bin
+set PATH=%OOPATH%;%PERL_512%\bin
 nmake /nologo /s /f makefile-512.mak clean
 nmake /nologo /s /f makefile-512.mak
 cd ..\..\build

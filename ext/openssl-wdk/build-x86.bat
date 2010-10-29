@@ -1,8 +1,11 @@
 @echo off
+set WDK_ROOT=c:\WinDDK\7600.16385.1
+set PERL_PATH=c:\mozilla-build\perl-5.12-x86\bin
+set NASM_PATH=c:\mozilla-build\nasm
 set OPENSSL_DEST=..\openssl-wdk-1.0.0a-x86
-set INCLUDE=c:\WinDDK\7600.16385.1\inc\api;c:\WinDDK\7600.16385.1\inc\crt;c:\WinDDK\7600.16385.1\inc\ddk;c:\mozilla-build\build\openssl-1.0.0a\ms;c:\mozilla-build\build\zlib-x86\include
-set LIB=c:\WinDDK\7600.16385.1\lib\wxp\i386;c:\WinDDK\7600.16385.1\lib\Crt\i386;c:\mozilla-build\build\zlib-x86\lib
-set PATH=c:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin;c:\Program Files (x86)\Microsoft Visual Studio 10.0\Common7\IDE;c:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\Bin;c:\mozilla-build\perl-5.12-x86\bin;c:\Windows\System32;c:\mozilla-build\nasm;c:\mozilla-build\build\zlib-x86\bin
+set INCLUDE=%WDK_ROOT%\inc\api;%WDK_ROOT%\inc\crt;%WDK_ROOT%\inc\ddk;ms;zlib-x86\include
+set LIB=%WDK_ROOT%\lib\wxp\i386;%WDK_ROOT%\lib\Crt\i386;zlib-x86\lib
+set PATH=%PROGRAMFILES(X86)%\Microsoft Visual Studio 10.0\VC\bin;%PROGRAMFILES(X86)%\Microsoft Visual Studio 10.0\Common7\IDE;%PROGRAMFILES(X86)%\Microsoft SDKs\Windows\v7.0A\Bin;%PERL_PATH%;%NASM_PATH%;%SystemRoot%\System32;..\zlib-x86\bin
 perl Configure VC-WIN32 enable-camellia zlib-dynamic --openssldir=./
 call ms\do_nasm
 @echo off
@@ -22,7 +25,7 @@ move lib %OPENSSL_DEST%
 mkdir %OPENSSL_DEST%\share
 move openssl.cnf %OPENSSL_DEST%\share\openssl.cnf.example
 move include-orig include
-copy c:\mozilla-build\build\zlib-x86\bin\zlib1.dll %OPENSSL_DEST%\bin
+copy zlib-x86\bin\zlib1.dll %OPENSSL_DEST%\bin
 move cert.pem %OPENSSL_DEST%\bin
 echo.Finished!
 pause

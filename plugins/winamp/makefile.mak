@@ -9,7 +9,7 @@ winamp.def:
 	echo xchat_plugin_deinit >> winamp.def
 
 winamp.obj: winamp.c makefile.mak
-	cl $(CFLAGS) winamp.c
+	cl $(CFLAGS) /I.. winamp.c
 
 clean:
 	del *.obj
