@@ -27,6 +27,5 @@ nmake /nologo /s /f makefile-512.mak clean
 nmake /nologo /s /f makefile-512.mak
 cd ..\..\build
 call compile-po-files.bat
-cd ..\build
 set PATH=%OPATH%
 call release-x86.bat
