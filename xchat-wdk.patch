@@ -385,25 +385,25 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/outbound.c xchat-wdk/src
  #include <sys/stat.h>
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/plugin-timer.c xchat-wdk/src/common/plugin-timer.c
 --- xchat-wdk.orig/src/common/plugin-timer.c	2005-02-02 11:03:51 +0100
-+++ xchat-wdk/src/common/plugin-timer.c	2010-10-09 12:53:27 +0200
++++ xchat-wdk/src/common/plugin-timer.c	2010-10-29 19:33:21 +0200
 @@ -1,7 +1,7 @@
  #include <stdlib.h>
  #include <string.h>
  #include <glib.h>
 -#include "xchat-plugin.h"
-+#include <xchat-plugin.h>
++#include "../../plugins/xchat-plugin.h"
  
  #ifdef WIN32
  #define strcasecmp stricmp
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/plugin.c xchat-wdk/src/common/plugin.c
 --- xchat-wdk.orig/src/common/plugin.c	2010-08-14 03:46:21 +0200
-+++ xchat-wdk/src/common/plugin.c	2010-10-09 12:53:27 +0200
++++ xchat-wdk/src/common/plugin.c	2010-10-29 19:32:39 +0200
 @@ -34,7 +34,7 @@
  #include "text.h"
  #define PLUGIN_C
  typedef struct session xchat_context;
 -#include "xchat-plugin.h"
-+#include <xchat-plugin.h>
++#include "../../plugins/xchat-plugin.h"
  #include "plugin.h"
  
  
@@ -708,7 +708,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/util.c xchat-wdk/src/com
  
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/xchat.c xchat-wdk/src/common/xchat.c
 --- xchat-wdk.orig/src/common/xchat.c	2008-06-08 09:58:58 +0200
-+++ xchat-wdk/src/common/xchat.c	2010-10-09 12:53:27 +0200
++++ xchat-wdk/src/common/xchat.c	2010-10-29 19:33:53 +0200
 @@ -22,7 +22,6 @@
  #include <time.h>
  #include <sys/types.h>
@@ -722,7 +722,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/xchat.c xchat-wdk/src/co
  #include "chanopt.h"
  #include "ignore.h"
 -#include "xchat-plugin.h"
-+#include <xchat-plugin.h>
++#include "../../plugins/xchat-plugin.h"
  #include "plugin.h"
  #include "plugin-timer.h"
  #include "notify.h"
@@ -1309,7 +1309,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/joind.c xchat-wdk/src/fe
  
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/maingui.c xchat-wdk/src/fe-gtk/maingui.c
 --- xchat-wdk.orig/src/fe-gtk/maingui.c	2010-05-16 05:20:22 +0200
-+++ xchat-wdk/src/fe-gtk/maingui.c	2010-10-09 19:06:21 +0200
++++ xchat-wdk/src/fe-gtk/maingui.c	2010-11-08 11:14:47 +0100
 @@ -214,60 +214,10 @@
  	away_list = mg_attr_list_create (&colors[COL_AWAY], FALSE);
  }
@@ -1407,21 +1407,6 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/maingui.c xchat-wdk/src/
  		gtk_widget_show (dialog);
  	}
  }
-@@ -1327,12 +1280,12 @@
- 	gtk_button_box_set_layout (GTK_BUTTON_BOX (dialog_action_area1),
- 										GTK_BUTTONBOX_END);
- 
--	if (minimize_button)
-+	/* if (minimize_button)
- 	{
- 		button = gtk_button_new_with_mnemonic (_("_Minimize to Tray"));
- 		gtk_widget_show (button);
- 		gtk_dialog_add_action_widget (GTK_DIALOG (dialog), button, 1);
--	}
-+	} */
- 
- 	button = gtk_button_new_from_stock ("gtk-cancel");
- 	gtk_widget_show (button);
 @@ -2489,7 +2442,7 @@
  	if (prefs.lagometer & 1)
  	{
@@ -1488,14 +1473,14 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/palette.c xchat-wdk/src/
  #include <fcntl.h>
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/plugin-tray.c xchat-wdk/src/fe-gtk/plugin-tray.c
 --- xchat-wdk.orig/src/fe-gtk/plugin-tray.c	2010-08-14 03:46:21 +0200
-+++ xchat-wdk/src/fe-gtk/plugin-tray.c	2010-10-09 12:53:27 +0200
++++ xchat-wdk/src/fe-gtk/plugin-tray.c	2010-11-08 11:01:30 +0100
 @@ -1,8 +1,7 @@
  /* Copyright (C) 2006-2007 Peter Zelezny. */
  
  #include <string.h>
 -#include <unistd.h>
 -#include "../common/xchat-plugin.h"
-+#include <xchat-plugin.h>
++#include "../../plugins/xchat-plugin.h"
  #include "../common/xchat.h"
  #include "../common/xchatc.h"
  #include "../common/inbound.h"
@@ -1595,33 +1580,15 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/plugin-tray.c xchat-wdk/
  								word[1], network);
  
  	return XCHAT_EAT_NONE;
-@@ -803,7 +802,7 @@
- 	}
- 	else
- 	{
--		if (prefs.gui_tray)
-+		if (prefs.gui_tray && !((_access( "plugins/xtray.dll", 0 )) != -1))
- 			tray_init ();
- 	}
- }
-@@ -835,7 +834,7 @@
- 
- 	xchat_hook_print (ph, "Focus Window", -1, tray_focus_cb, NULL);
- 
--	if (prefs.gui_tray)
-+	if (prefs.gui_tray && !((_access( "plugins/xtray.dll", 0 )) != -1))
- 		tray_init ();
- 
- 	return 1;       /* return 1 for success */
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/plugingui.c xchat-wdk/src/fe-gtk/plugingui.c
 --- xchat-wdk.orig/src/fe-gtk/plugingui.c	2010-05-16 05:20:22 +0200
-+++ xchat-wdk/src/fe-gtk/plugingui.c	2010-10-09 15:11:47 +0200
++++ xchat-wdk/src/fe-gtk/plugingui.c	2010-10-29 19:34:09 +0200
 @@ -35,7 +35,7 @@
  #include "../common/xchat.h"
  #define PLUGIN_C
  typedef struct session xchat_context;
 -#include "../common/xchat-plugin.h"
-+#include <xchat-plugin.h>
++#include "../../plugins/xchat-plugin.h"
  #include "../common/plugin.h"
  #include "../common/util.h"
  #include "../common/outbound.h"
@@ -1673,7 +1640,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/servlistgui.c xchat-wdk/
  	gtk_box_set_spacing (GTK_BOX (vbuttonbox2), 3);
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/setup.c xchat-wdk/src/fe-gtk/setup.c
 --- xchat-wdk.orig/src/fe-gtk/setup.c	2008-02-08 10:04:45 +0100
-+++ xchat-wdk/src/fe-gtk/setup.c	2010-10-09 19:02:18 +0200
++++ xchat-wdk/src/fe-gtk/setup.c	2010-11-08 11:03:31 +0100
 @@ -109,13 +109,13 @@
  					N_("Give each person on IRC a different color"),0,0},
  	{ST_TOGGLR, N_("Indent nick names"), P_OFFINTNL(indent_nicks),
@@ -1692,20 +1659,6 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/setup.c xchat-wdk/src/fe
  
  	{ST_HEADER,	N_("Time Stamps"),0,0,0},
  	{ST_TOGGLE, N_("Enable time stamps"), P_OFFINTNL(timestamp),0,0,2},
-@@ -332,11 +332,11 @@
- #ifndef WIN32
- 	{ST_3OGGLE, N_("Show tray balloons on:"), 0, 0, (void *)balloonlist, 0},
- #endif
--	{ST_3OGGLE, N_("Blink tray icon on:"), 0, 0, (void *)trayblinklist, 0},
-+	/* {ST_3OGGLE, N_("Blink tray icon on:"), 0, 0, (void *)trayblinklist, 0}, */
- 	{ST_3OGGLE, N_("Blink task bar on:"), 0, 0, (void *)taskbarlist, 0},
- 	{ST_3OGGLE, N_("Make a beep sound on:"), 0, 0, (void *)beeplist, 0},
- 
--	{ST_TOGGLE,	N_("Enable system tray icon"), P_OFFINTNL(gui_tray), 0, 0, 0},
-+	/* {ST_TOGGLE,	N_("Enable system tray icon"), P_OFFINTNL(gui_tray), 0, 0, 0}, */
- 
- 	{ST_HEADER,	N_("Highlighted Messages"),0,0,0},
- 	{ST_LABEL,	N_("Highlighted messages are ones where your nickname is mentioned, but also:"), 0, 0, 0, 1},
 @@ -363,7 +363,6 @@
  	{ST_END, 0, 0, 0, 0, 0}
  };

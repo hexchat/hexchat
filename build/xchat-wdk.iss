@@ -222,9 +222,9 @@ Source: "plugins\xcperl-512.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcper
 
 
 
-Source: "plugins\xtray.dll"; DestDir: "{app}\plugins"; Components: libs; Tasks: x86
+;Source: "plugins\xtray.dll"; DestDir: "{app}\plugins"; Components: libs; Tasks: x86
 ; and xtray
-Source: "plugins\xtray.dll.x64"; DestDir: "{app}\plugins"; DestName: "xtray.dll"; Components: libs; Tasks: x64
+;Source: "plugins\xtray.dll.x64"; DestDir: "{app}\plugins"; DestName: "xtray.dll"; Components: libs; Tasks: x64
 ; and xtray
 
 [Icons]
