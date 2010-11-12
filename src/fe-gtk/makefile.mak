@@ -1,5 +1,36 @@
 include "..\makeinc.mak"
 
+FEGTK_OBJECTS = \
+about.obj \
+ascii.obj \
+banlist.obj \
+chanlist.obj \
+chanview.obj \
+custom-list.obj \
+dccgui.obj \
+editlist.obj \
+fe-gtk.obj \
+fkeys.obj \
+gtkutil.obj \
+ignoregui.obj \
+joind.obj \
+maingui.obj \
+menu.obj \
+notifygui.obj \
+palette.obj \
+pixmaps.obj \
+plugingui.obj \
+plugin-tray.obj \
+rawlog.obj \
+search.obj \
+servlistgui.obj \
+setup.obj \
+sexy-spell-entry.obj \
+textgui.obj \
+urlgrab.obj \
+userlistgui.obj \
+xtext.obj
+
 !ifdef X64
 MACHINE_FLAG = /MACHINE:X64
 !else
