@@ -602,7 +602,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/text.c xchat-wdk/src/com
  
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/util.c xchat-wdk/src/common/util.c
 --- xchat-wdk.orig/src/common/util.c	2008-02-07 02:50:37 +0100
-+++ xchat-wdk/src/common/util.c	2010-11-12 07:12:28 +0100
++++ xchat-wdk/src/common/util.c	2010-11-12 08:05:40 +0100
 @@ -16,11 +16,13 @@
   * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
   */
@@ -654,7 +654,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/util.c xchat-wdk/src/com
  }
  
 +#ifdef WIN32
-+/* waitline2 using win32 file descriptor and glib instead of _read */
++/* waitline2 using win32 file descriptor and glib instead of _read. win32 can't _read() sok! */
 +int
 +waitline2 (GIOChannel *source, char *buf, int bufsize)
 +{
