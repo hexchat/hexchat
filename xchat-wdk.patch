@@ -429,7 +429,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/proto-irc.c xchat-wdk/sr
  #include <stdlib.h>
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/server.c xchat-wdk/src/common/server.c
 --- xchat-wdk.orig/src/common/server.c	2010-05-30 04:28:04 +0200
-+++ xchat-wdk/src/common/server.c	2010-10-09 12:53:27 +0200
++++ xchat-wdk/src/common/server.c	2010-11-12 07:13:21 +0100
 @@ -26,7 +26,6 @@
  #include <stdio.h>
  #include <string.h>
@@ -438,7 +438,41 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/server.c xchat-wdk/src/c
  #include <errno.h>
  #include <fcntl.h>
  
-@@ -1388,12 +1387,7 @@
+@@ -838,33 +837,6 @@
+ 	fe_set_throttle (serv);
+ }
+ 
+-#ifdef WIN32
+-
+-static int
+-waitline2 (GIOChannel *source, char *buf, int bufsize)
+-{
+-	int i = 0;
+-	int len;
+-
+-	while (1)
+-	{
+-		if (g_io_channel_read (source, &buf[i], 1, &len) != G_IO_ERROR_NONE)
+-			return -1;
+-		if (buf[i] == '\n' || bufsize == i + 1)
+-		{
+-			buf[i] = 0;
+-			return i;
+-		}
+-		i++;
+-	}
+-}
+-
+-#else
+-
+-#define waitline2(source,buf,size) waitline(serv->childread,buf,size,0)
+-
+-#endif
+-
+ /* connect() successed */
+ 
+ static void
+@@ -1388,12 +1360,7 @@
  static int
  http_read_line (int print_fd, int sok, char *buf, int len)
  {
@@ -451,7 +485,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/server.c xchat-wdk/src/c
  	if (len >= 1)
  	{
  		/* print the message out (send it to the parent process) */
-@@ -1738,7 +1732,7 @@
+@@ -1738,7 +1705,7 @@
  	}
  #endif
  	serv->childpid = pid;
@@ -568,7 +602,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/text.c xchat-wdk/src/com
  
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/util.c xchat-wdk/src/common/util.c
 --- xchat-wdk.orig/src/common/util.c	2008-02-07 02:50:37 +0100
-+++ xchat-wdk/src/common/util.c	2010-10-09 12:53:27 +0200
++++ xchat-wdk/src/common/util.c	2010-11-12 07:12:28 +0100
 @@ -16,11 +16,13 @@
   * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
   */
@@ -615,7 +649,36 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/util.c xchat-wdk/src/com
  
  #ifdef USE_DEBUG
  
-@@ -628,26 +629,79 @@
+@@ -383,6 +384,28 @@
+ 	}
+ }
+ 
++#ifdef WIN32
++/* waitline2 using win32 file descriptor and glib instead of _read */
++int
++waitline2 (GIOChannel *source, char *buf, int bufsize)
++{
++	int i = 0;
++	int len;
++
++	while (1)
++	{
++		if (g_io_channel_read (source, &buf[i], 1, &len) != G_IO_ERROR_NONE)
++			return -1;
++		if (buf[i] == '\n' || bufsize == i + 1)
++		{
++			buf[i] = 0;
++			return i;
++		}
++		i++;
++	}
++}
++#endif
++
+ /* checks for "~" in a file and expands */
+ 
+ char *
+@@ -628,26 +651,79 @@
  get_cpu_str (void)
  {
  	static char verbuf[64];
@@ -706,6 +769,21 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/util.c xchat-wdk/src/com
  	return verbuf;
  }
  
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/util.h xchat-wdk/src/common/util.h
+--- xchat-wdk.orig/src/common/util.h	2008-02-07 02:50:37 +0100
++++ xchat-wdk/src/common/util.h	2010-11-12 07:13:10 +0100
+@@ -43,6 +43,11 @@
+ int strip_hidden_attribute (char *src, char *dst);
+ char *errorstring (int err);
+ int waitline (int sok, char *buf, int bufsize, int);
++#ifdef WIN32
++int waitline2 (GIOChannel *source, char *buf, int bufsize);
++#else
++#define waitline2(source,buf,size) waitline(serv->childread,buf,size,0)
++#endif
+ unsigned long make_ping_time (void);
+ void move_file_utf8 (char *src_dir, char *dst_dir, char *fname, int dccpermissions);
+ int mkdir_utf8 (char *dir);
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/xchat.c xchat-wdk/src/common/xchat.c
 --- xchat-wdk.orig/src/common/xchat.c	2008-06-08 09:58:58 +0200
 +++ xchat-wdk/src/common/xchat.c	2010-10-29 19:33:53 +0200
@@ -993,7 +1071,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/fkeys.c xchat-wdk/src/fe
  #include <ctype.h>
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/gtkutil.c xchat-wdk/src/fe-gtk/gtkutil.c
 --- xchat-wdk.orig/src/fe-gtk/gtkutil.c	2009-07-18 14:38:10 +0200
-+++ xchat-wdk/src/fe-gtk/gtkutil.c	2010-10-09 15:28:09 +0200
++++ xchat-wdk/src/fe-gtk/gtkutil.c	2010-11-12 07:08:34 +0100
 @@ -22,7 +22,6 @@
  #include <stdarg.h>
  #include <sys/types.h>
@@ -1027,7 +1105,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/gtkutil.c xchat-wdk/src/
  };
  
  static char last_dir[256] = "";
-@@ -164,6 +174,209 @@
+@@ -164,6 +174,190 @@
  	}
  }
  
@@ -1172,25 +1250,6 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/gtkutil.c xchat-wdk/src/
 +
 +	return NULL;
 +}
-+   
-+static int
-+waitline2 (GIOChannel *source, char *buf, int bufsize)
-+{
-+	int i = 0;
-+	int len;
-+
-+	while (1)
-+	{
-+		if (g_io_channel_read (source, &buf[i], 1, &len) != G_IO_ERROR_NONE)
-+			return -1;
-+		if (buf[i] == '\n' || bufsize == i + 1)
-+		{
-+			buf[i] = 0;
-+			return i;
-+		}
-+		i++;
-+	}
-+}
 +
 +static gboolean
 +win32_close_pipe (int fd)
@@ -1237,7 +1296,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/gtkutil.c xchat-wdk/src/
  void
  gtkutil_file_req (const char *title, void *callback, void *userdata, char *filter,
  						int flags)
-@@ -172,6 +385,58 @@
+@@ -172,6 +366,58 @@
  	GtkWidget *dialog;
  	extern char *get_xdir_fs (void);
  
