@@ -6,7 +6,7 @@ echo WizardImageFile=%cd%\bitmaps\wizardimage.bmp >> xchat-wdk.iss
 echo WizardSmallImageFile=%cd%\bitmaps\wizardsmallimage.bmp >> xchat-wdk.iss
 cd ..
 echo SetupIconFile=%cd%\xchat.ico >> build\xchat-wdk.iss
-type build\xchat-wdk.skel.iss >> xchat-wdk.iss
+type build\xchat-wdk.skel.iss >> build\xchat-wdk.iss
 set DEV_32=%cd%\dep-x86
 cd src
 echo DEV32 = %DEV_32% > makeinc.mak
