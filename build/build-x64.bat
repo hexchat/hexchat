@@ -1,11 +1,12 @@
 @echo off
 set PERL_510=c:\mozilla-build\perl-5.10-x64
 set PERL_512=c:\mozilla-build\perl-5.12-x64
-set DEV_64=c:\mozilla-build\build\xchat-wdk\dep-x64
-cd ..\src
+cd ..
+set DEV_64=%cd%\dep-x64
+cd src
 echo X64 = YES > makeinc.mak
 echo DEV64 = %DEV_64% >> makeinc.mak
-type makeinc.skel >> makeinc.mak
+type makeinc.skel.mak >> makeinc.mak
 set INCLUDE=%WDK_ROOT%\inc\api;%WDK_ROOT%\inc\crt;%WDK_ROOT%\inc\api\crt\stl70
 set LIB=%WDK_ROOT%\lib\wnet\amd64;%WDK_ROOT%\lib\Crt\amd64
 set OPATH=%PATH%

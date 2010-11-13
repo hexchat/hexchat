@@ -1,10 +1,16 @@
 @echo off
 set PERL_510=c:\mozilla-build\perl-5.10-x86
 set PERL_512=c:\mozilla-build\perl-5.12-x86
-set DEV_32=c:\mozilla-build\build\xchat-wdk\dep-x86
-cd ..\src
+echo [Setup] > xchat-wdk.iss
+echo WizardImageFile=%cd%\bitmaps\wizardimage.bmp >> xchat-wdk.iss
+echo WizardSmallImageFile=%cd%\bitmaps\wizardsmallimage.bmp >> xchat-wdk.iss
+cd ..
+echo SetupIconFile=%cd%\xchat.ico >> build\xchat-wdk.iss
+type build\xchat-wdk.skel.iss >> xchat-wdk.iss
+set DEV_32=%cd%\dep-x86
+cd src
 echo DEV32 = %DEV_32% > makeinc.mak
-type makeinc.skel >> makeinc.mak
+type makeinc.skel.mak >> makeinc.mak
 set INCLUDE=%WDK_ROOT%\inc\api;%WDK_ROOT%\inc\crt;%WDK_ROOT%\inc\api\crt\stl70
 set LIB=%WDK_ROOT%\lib\wxp\i386;%WDK_ROOT%\lib\Crt\i386
 set OPATH=%PATH%
