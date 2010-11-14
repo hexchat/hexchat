@@ -44,7 +44,7 @@ sha256_hash_string (unsigned char hash[SHA256_DIGEST_LENGTH], char outputBuffer[
 	int i;
 	for (i = 0; i < SHA256_DIGEST_LENGTH; i++)
 	{
-		sprintf(outputBuffer + (i * 2), "%02x", hash[i]);
+		sprintf (outputBuffer + (i * 2), "%02x", hash[i]);
 	}
 	outputBuffer[64] = 0;
 }
@@ -104,7 +104,7 @@ sha256_file (char *path, char outputBuffer[65])
 }
 
 int
-dccrecv_cb(char *word[], void *userdata)
+dccrecv_cb (char *word[], void *userdata)
 {
 	char sum[65];
 
@@ -117,7 +117,7 @@ dccrecv_cb(char *word[], void *userdata)
 }
 
 int
-dccoffer_cb(char *word[], void *userdata)
+dccoffer_cb (char *word[], void *userdata)
 {
 	char sum[65];
 

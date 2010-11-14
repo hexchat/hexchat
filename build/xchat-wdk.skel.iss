@@ -28,10 +28,11 @@ ArchitecturesInstallIn64BitMode=x64
 [Types]
 Name: "normal"; Description: "Normal Installation"
 Name: "full"; Description: "Full Installation"
+Name: "minimal"; Description: "Minimal Installation"
 Name: "custom"; Description: "Custom Installation"; Flags: iscustom
 
 [Components]
-Name: "libs"; Description: "XChat-WDK"; Types: normal full custom; Flags: fixed
+Name: "libs"; Description: "XChat-WDK"; Types: normal full minimal custom; Flags: fixed
 Name: "translations"; Description: "Translations"; Types: normal full custom; Flags: disablenouninstallwarning
 Name: "spelling"; Description: "Spelling Dictionaries"; Types: full custom; Flags: disablenouninstallwarning
 Name: "plugins"; Description: "Plugins"; Types: full custom; Flags: disablenouninstallwarning
