@@ -3,7 +3,7 @@ set WDK_ROOT=c:\WinDDK\7600.16385.1
 cd ..
 set DEV_32=%cd%\dep-x86
 cd src
-echo DEV32 = %DEV_32% > makeinc.mak
+echo DEV = %DEV_32% > makeinc.mak
 type makeinc.skel.mak >> makeinc.mak
 set INCLUDE=%WDK_ROOT%\inc\api;%WDK_ROOT%\inc\crt;%WDK_ROOT%\inc\api\crt\stl70
 set LIB=%WDK_ROOT%\lib\wxp\i386;%WDK_ROOT%\lib\Crt\i386

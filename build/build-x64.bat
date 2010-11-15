@@ -5,7 +5,7 @@ cd ..
 set DEV_64=%cd%\dep-x64
 cd src
 echo X64 = YES > makeinc.mak
-echo DEV64 = %DEV_64% >> makeinc.mak
+echo DEV = %DEV_64% >> makeinc.mak
 type makeinc.skel.mak >> makeinc.mak
 set INCLUDE=%WDK_ROOT%\inc\api;%WDK_ROOT%\inc\crt;%WDK_ROOT%\inc\api\crt\stl70
 set LIB=%WDK_ROOT%\lib\wnet\amd64;%WDK_ROOT%\lib\Crt\amd64
