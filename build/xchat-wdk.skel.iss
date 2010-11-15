@@ -235,14 +235,14 @@ BeveledLabel= XChat-WDK
 /////////////////////////////////////////////////////////////////////
 function GetUninstallString(): String;
 var
-  sUnInstPath: String;
-  sUnInstallString: String;
+	sUnInstPath: String;
+	sUnInstallString: String;
 begin
-  sUnInstPath := ExpandConstant('Software\Microsoft\Windows\CurrentVersion\Uninstall\XChat-WDK_is1');
-  sUnInstallString := '';
-  if not RegQueryStringValue(HKLM, sUnInstPath, 'UninstallString', sUnInstallString) then
-    RegQueryStringValue(HKCU, sUnInstPath, 'UninstallString', sUnInstallString);
-  Result := sUnInstallString;
+	sUnInstPath := ExpandConstant('Software\Microsoft\Windows\CurrentVersion\Uninstall\XChat-WDK_is1');
+	sUnInstallString := '';
+	if not RegQueryStringValue(HKLM, sUnInstPath, 'UninstallString', sUnInstallString) then
+		RegQueryStringValue(HKCU, sUnInstPath, 'UninstallString', sUnInstallString);
+	Result := sUnInstallString;
 end;
 
 
