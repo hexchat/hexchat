@@ -249,47 +249,47 @@ end;
 /////////////////////////////////////////////////////////////////////
 function IsUpgrade(): Boolean;
 begin
-  Result := (GetUninstallString() <> '');
+	Result := (GetUninstallString() <> '');
 end;
 
 
 /////////////////////////////////////////////////////////////////////
 function UnInstallOldVersion(): Integer;
 var
-  sUnInstallString: String;
-  iResultCode: Integer;
+	sUnInstallString: String;
+	iResultCode: Integer;
 begin
 // Return Values:
 // 1 - uninstall string is empty
 // 2 - error executing the UnInstallString
 // 3 - successfully executed the UnInstallString
 
-  // default return value
-  Result := 0;
+	// default return value
+	Result := 0;
 
-  // get the uninstall string of the old app
-  sUnInstallString := GetUninstallString();
-  if sUnInstallString <> '' then begin
-    sUnInstallString := RemoveQuotes(sUnInstallString);
-    if Exec(sUnInstallString, '/SILENT /NORESTART /SUPPRESSMSGBOXES','', SW_HIDE, ewWaitUntilTerminated, iResultCode) then
-      Result := 3
-    else
-      Result := 2;
-  end else
-    Result := 1;
+	// get the uninstall string of the old app
+	sUnInstallString := GetUninstallString();
+	if sUnInstallString <> '' then begin
+		sUnInstallString := RemoveQuotes(sUnInstallString);
+		if Exec(sUnInstallString, '/SILENT /NORESTART /SUPPRESSMSGBOXES','', SW_HIDE, ewWaitUntilTerminated, iResultCode) then
+			Result := 3
+		else
+			Result := 2;
+	end else
+		Result := 1;
 end;
 
 /////////////////////////////////////////////////////////////////////
 procedure CurStepChanged(CurStep: TSetupStep);
 begin
-  if not (IsTaskSelected('portable')) then
-  begin
-    if (CurStep=ssInstall) then
-    begin
-      if (IsUpgrade()) then
-      begin
-        UnInstallOldVersion();
-      end;
-    end;
-  end;
+	if not (IsTaskSelected('portable')) then
+	begin
+		if (CurStep=ssInstall) then
+		begin
+			if (IsUpgrade()) then
+			begin
+				UnInstallOldVersion();
+			end;
+		end;
+	end;
 end;
