@@ -359,7 +359,10 @@ of hook.</p>
                            </td>
    </tr>   <tr>
       <td>timer hooks</td> <td>called every <code>$timeout</code> milliseconds
-                           (1000 millisecond is 1 second)
+                           (1000 millisecond is 1 second)<br />
+                           the callback will be executed in the same context where
+                           the hook_timer was called, if the context no longer exists
+                           then it will execute in a random context
                            </td>
    </tr>   <tr>
       <td>fd hooks</td> <td>depends on the flags that were passed to hook_fd<br />
