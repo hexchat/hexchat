@@ -1,4 +1,4 @@
-#include  <io.h>
+#include <io.h>
 
 int
 portable_mode ()
