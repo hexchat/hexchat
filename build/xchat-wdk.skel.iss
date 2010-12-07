@@ -281,25 +281,15 @@ end;
 
 /////////////////////////////////////////////////////////////////////
 procedure CurStepChanged(CurStep: TSetupStep);
-var
-	sAppPath: String;
-	sTempPath: String;
 begin
-	if not (IsTaskSelected('portable')) and (IsUpgrade()) then
+	if not (IsTaskSelected('portable')) then
 	begin
 		if (CurStep=ssInstall) then
 		begin
-			sAppPath := ExtractFilePath(Application.ExeName);
-			sTempPath := GetTempDir();
-
-			DelTree(sTempPath + 'gtk-2.0', True, True, True)
-			RenameFile(sAppPath + 'etc\gtk-2.0', sTempPath + 'gtk-2.0');
-			UnInstallOldVersion();
-		end;
-		if (CurStep=ssPostInstall) then
-		begin
-			DelTree(sAppPath + 'etc\gtk-2.0', True, True, True)
-			RenameFile(sTempPath + 'gtk-2.0', sAppPath + 'etc\gtk-2.0');
+			if (IsUpgrade()) then
+			begin
+				UnInstallOldVersion();
+			end;
 		end;
 	end;
 end;
