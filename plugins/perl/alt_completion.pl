@@ -31,7 +31,7 @@ my $path_completion = 1;
 my $base_path = '';
 
 Xchat::register(
-	"Tab Completion", "1.0400", "Alternative tab completion behavior"
+	"Tab Completion", "1.0401", "Alternative tab completion behavior"
 );
 Xchat::hook_print( "Key Press", \&complete );
 Xchat::hook_print( "Close Context", \&close_context );
@@ -398,7 +398,7 @@ sub matching_files {
 		return map {
 			File::Spec->catfile( $input_dir, $_ );
 		} sort
-		grep { !/^[.]/ } @files;
+		grep { !/^[.]{1,2}$/ } @files;
 	} else {
 		return ();
 	}
