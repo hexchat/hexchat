@@ -149,6 +149,8 @@ static char *gtk_xtext_conv_color (unsigned char *text, int len, int *newlen);
 static unsigned char *
 gtk_xtext_strip_color (unsigned char *text, int len, unsigned char *outbuf,
 							  int *newlen, int *mb_ret, int strip_hidden);
+static gboolean gtk_xtext_check_ent_visibility (GtkXText * xtext, textentry *find_ent, int add);
+static int gtk_xtext_render_page_timeout (GtkXText * xtext);
 
 /* some utility functions first */
 
@@ -4746,9 +4748,16 @@ gtk_xtext_refresh (GtkXText * xtext, int do_trans)
 	}
 }
 
-static void
+static int
 gtk_xtext_kill_ent (xtext_buffer *buffer, textentry *ent)
 {
+	int visible;
+
+	/* Set visible to TRUE if this is the current buffer */
+	/* and this ent shows up on the screen now */
+	visible = buffer->xtext->buffer == buffer &&
+				 gtk_xtext_check_ent_visibility (buffer->xtext, ent, 0);
+
 	if (ent == buffer->pagetop_ent)
 		buffer->pagetop_ent = NULL;
 
@@ -4767,6 +4776,7 @@ gtk_xtext_kill_ent (xtext_buffer *buffer, textentry *ent)
 	if (buffer->marker_pos == ent) buffer->marker_pos = NULL;
 
 	free (ent);
+	return visible;
 }
 
 /* remove the topline from the list */
@@ -4795,7 +4805,23 @@ gtk_xtext_remove_top (xtext_buffer *buffer)
 		buffer->xtext->select_start_adj -= ent->lines_taken;
 	}
 
-	gtk_xtext_kill_ent (buffer, ent);
+	if (gtk_xtext_kill_ent (buffer, ent))
+	{
+		if (!buffer->xtext->add_io_tag)
+		{
+			/* remove scrolling events */
+			if (buffer->xtext->io_tag)
+			{
+				g_source_remove (buffer->xtext->io_tag);
+				buffer->xtext->io_tag = 0;
+			}
+			buffer->xtext->force_render = TRUE;
+			buffer->xtext->add_io_tag = g_timeout_add (REFRESH_TIMEOUT * 2,
+														(GSourceFunc)
+														gtk_xtext_render_page_timeout,
+														buffer->xtext);
+		}
+	}
 }
 
 static void
@@ -5016,9 +5042,9 @@ gtk_xtext_render_page_timeout (GtkXText * xtext)
 	} else
 	{
 		gtk_xtext_adjustment_set (xtext->buffer, TRUE);
-		if (xtext->indent_changed)
+		if (xtext->force_render)
 		{
-			xtext->indent_changed = FALSE;
+			xtext->force_render = FALSE;
 			gtk_xtext_render_page (xtext);
 		}
 	}
@@ -5177,7 +5203,7 @@ gtk_xtext_append_indent (xtext_buffer *buf,
 		gtk_xtext_recalc_widths (buf, FALSE);
 
 		ent->indent = (buf->indent - left_width) - buf->xtext->space_width;
-		buf->xtext->indent_changed = TRUE;
+		buf->xtext->force_render = TRUE;
 	}
 
 	gtk_xtext_append_entry (buf, ent, stamp);

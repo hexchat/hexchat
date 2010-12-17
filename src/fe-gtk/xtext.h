@@ -212,7 +212,7 @@ struct _GtkXText
 	unsigned int un_hilight:1;
 	unsigned int recycle:1;
 	unsigned int avoid_trans:1;
-	unsigned int indent_changed:1;
+	unsigned int force_render:1;
 	unsigned int shm:1;
 	unsigned int color_paste:1; /* CTRL was pressed when selection finished */
 
