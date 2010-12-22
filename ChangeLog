@@ -12,6 +12,19 @@ There are always more changes than listed here, these are just the
 highlights. The full CVS log is available at www.xchat.org/cvslog/
 
 ------------------------------------------------------------------------------
+ 2.8.10 - dd/mm/yyyy
+------------------------------------------------------------------------------
+ - Perl (Lian Wan Situ)
+  * Added two new options to hook_print, run_after_event and filter. See
+    documentation for details.
+  * When building on Windows, generate the name of the DLL for the Perl
+    library based on information from the header files instead of hardcoding
+	 the value.
+  * Fixed a bug in the reinit handling code. The bug prevented the plugin from
+    cleaning up properly. Which includes unloading scripts and removing
+	 their GUI entries.
+
+------------------------------------------------------------------------------
  2.8.8 - 30/May/2010
 ------------------------------------------------------------------------------
 

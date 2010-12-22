@@ -1470,19 +1470,17 @@ xchat_plugin_get_info (char **name, char **desc, char **version,
 /* Reinit safeguard */
 
 static int initialized = 0;
-static int reinit_tried = 0;
 
 int
 xchat_plugin_init (xchat_plugin * plugin_handle, char **plugin_name,
 						 char **plugin_desc, char **plugin_version, char *arg)
 {
-	ph = plugin_handle;
-
 	if (initialized != 0) {
-		xchat_print (ph, "Perl interface already loaded\n");
-		reinit_tried++;
+		xchat_print (plugin_handle, "Perl interface already loaded\n");
 		return 0;
 	}
+
+	ph = plugin_handle;
 	initialized = 1;
 
 	*plugin_name = "Perl";
@@ -1512,13 +1510,9 @@ xchat_plugin_init (xchat_plugin * plugin_handle, char **plugin_name,
 int
 xchat_plugin_deinit (xchat_plugin * plugin_handle)
 {
-	if (reinit_tried) {
-		reinit_tried--;
-		return 1;
-	}
-
 	perl_end ();
 
+	initialized = 0;
 	xchat_print (plugin_handle, "Perl interface unloaded\n");
 
 	return 1;
