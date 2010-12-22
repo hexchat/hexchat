@@ -191,7 +191,7 @@ sub hook_print {
 	
 	if( $run_after and $filter ) {
 		Carp::carp( "Xchat::hook_print's run_after_event and filter options are mutually exclusive, you can only use of them at a time per hook" );
-		return 0;
+		return;
 	}
 
 	if( $run_after ) {
