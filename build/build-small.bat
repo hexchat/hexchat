@@ -64,3 +64,4 @@ copy ..\plugins\xdcc\xcxdcc.dll %XCHAT_DEST%\plugins
 copy ..\plugins\xtray\xtray.dll %XCHAT_DEST%\plugins
 copy ..\plugins\winamp\xcwinamp.dll %XCHAT_DEST%\plugins
 copy %DEPS_ROOT%\bin\lua51.dll %XCHAT_DEST%
+pause
