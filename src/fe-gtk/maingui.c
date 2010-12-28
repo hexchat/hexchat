@@ -1190,7 +1190,14 @@ mg_tab_close (session *sess)
 						  "Close them all?"), i);
 		g_signal_connect (G_OBJECT (dialog), "response",
 								G_CALLBACK (mg_tab_close_cb), sess);
-		gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
+		if (prefs.tab_layout)
+		{
+			gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_MOUSE);
+		}
+		else
+		{
+			gtk_window_set_position (GTK_WINDOW (dialog), GTK_WIN_POS_CENTER_ON_PARENT);		
+		}
 		gtk_widget_show (dialog);
 	}
 }
