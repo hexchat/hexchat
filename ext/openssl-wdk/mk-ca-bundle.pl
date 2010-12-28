@@ -39,6 +39,8 @@ use MIME::Base64;
 use strict;
 use vars qw($opt_b $opt_h $opt_i $opt_l $opt_n $opt_q $opt_t $opt_u $opt_v);  
 
+# more up-to-date revisions can always be found at http://hg.mozilla.org/mozilla-central/
+# in the security/nss/lib/ckfw/builtins folder
 my $url = 'http://mxr.mozilla.org/seamonkey/source/security/nss/lib/ckfw/builtins/certdata.txt?raw=1';
 # If the OpenSSL commandline is not in search path you can configure it here!
 my $openssl = 'openssl';
