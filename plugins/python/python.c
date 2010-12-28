@@ -1161,6 +1161,23 @@ Plugin_New(char *filename, PyMethodDef *xchat_methods, PyObject *xcoobj)
 	PyObject_SetAttrString(m, "__version__", o);
 
 	if (filename) {
+#ifdef WIN32
+		PyObject* PyFileObject = PyFile_FromString(filename, "r");
+		if (PyFileObject == NULL) {
+			xchat_printf(ph, "Can't open file %s: %s\n",
+				     filename, strerror(errno));
+			goto error;
+		}
+
+		if (PyRun_SimpleFile(PyFile_AsFile(PyFileObject), filename) != 0) {
+			xchat_printf(ph, "Error loading module %s\n",
+				     filename);
+			goto error;
+		}
+
+		plugin->filename = filename;
+		filename = NULL;
+#else
 		FILE *fp;
 
 		plugin->filename = filename;
@@ -1184,7 +1201,7 @@ Plugin_New(char *filename, PyMethodDef *xchat_methods, PyObject *xcoobj)
 			goto error;
 		}
 		fclose(fp);
-
+#endif
 		m = PyDict_GetItemString(PyImport_GetModuleDict(),
 					 "__main__");
 		if (m == NULL) {
