@@ -41,7 +41,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/perl/perl.c xchat-wdk/plugi
  			}
 diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/python/python.c xchat-wdk/plugins/python/python.c
 --- xchat-wdk.orig/plugins/python/python.c	2010-05-16 06:31:54 +0200
-+++ xchat-wdk/plugins/python/python.c	2010-12-28 02:18:45 +0100
++++ xchat-wdk/plugins/python/python.c	2010-12-28 02:21:18 +0100
 @@ -53,10 +53,10 @@
  
  #include <glib.h>
@@ -60,7 +60,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/python/python.c xchat-wdk/p
  #ifdef WIN32
  #undef WITH_THREAD /* Thread support locks up xchat on Win32. */
 -#define VERSION "0.8/2.4"	/* Linked to python24.dll */
-+#define VERSION "0.8/2.6"	/* Linked to python26.dll */
++#define VERSION "0.8/2.7"	/* Linked to python27.dll */
  #else
  #define VERSION "0.8"
  #endif

@@ -19,7 +19,7 @@ PERL510OUTPUT = xcperl-510.dll
 PERL512LIB = perl512
 PERL512OUTPUT = xcperl-512.dll
 
-PYTHONLIB = python26
+PYTHONLIB = python27
 PYTHONOUTPUT = xcpython.dll
 
 TCLLIB = tcl85
