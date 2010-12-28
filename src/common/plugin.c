@@ -1212,7 +1212,7 @@ xchat_list_fields (xchat_plugin *ph, const char *name)
 	static const char * const dcc_fields[] =
 	{
 		"iaddress32","icps",		"sdestfile","sfile",		"snick",	"iport",
-		"ipos", "iposhigh", "iresume", "iresumehigh" "isize", "isizehigh", "istatus", "itype", NULL
+		"ipos", "iposhigh", "iresume", "iresumehigh", "isize", "isizehigh", "istatus", "itype", NULL
 	};
 	static const char * const channels_fields[] =
 	{
