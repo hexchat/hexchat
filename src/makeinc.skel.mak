@@ -32,13 +32,13 @@ LDFLAGS = $(LDFLAGS) msvcrt_win2003.obj
 
 PERL510PATH = c:\mozilla-build\perl-5.10-x64\lib\CORE
 PERL512PATH = c:\mozilla-build\perl-5.12-x64\lib\CORE
-PYTHONPATH = c:\mozilla-build\python-2.6-x64
+PYTHONPATH = c:\mozilla-build\python-2.7-x64
 TCLPATH = c:\mozilla-build\tcl-8.5-x64
 !else
 LDFLAGS = $(LDFLAGS) msvcrt_winxp.obj
 
 PERL510PATH = c:\mozilla-build\perl-5.10-x86\lib\CORE
 PERL512PATH = c:\mozilla-build\perl-5.12-x86\lib\CORE
-PYTHONPATH = c:\mozilla-build\python-2.6-x86
+PYTHONPATH = c:\mozilla-build\python-2.7-x86
 TCLPATH = c:\mozilla-build\tcl-8.5-x86
 !endif
