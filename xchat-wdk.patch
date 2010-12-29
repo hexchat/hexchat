@@ -806,7 +806,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/xchat.h xchat-wdk/src/co
  	unsigned int ctcp_time_limit;	/*seconds of floods */
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/about.c xchat-wdk/src/fe-gtk/about.c
 --- xchat-wdk.orig/src/fe-gtk/about.c	2010-05-16 09:43:49 +0200
-+++ xchat-wdk/src/fe-gtk/about.c	2010-12-29 17:23:49 +0100
++++ xchat-wdk/src/fe-gtk/about.c	2010-12-29 17:28:03 +0100
 @@ -39,6 +39,7 @@
  
  #include "../common/xchat.h"
@@ -844,13 +844,11 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/about.c xchat-wdk/src/fe
  	gtk_window_set_resizable (GTK_WINDOW (about), FALSE);
  	gtk_window_set_title (GTK_WINDOW (about), _("About "DISPLAY_NAME));
  	if (parent_window)
-@@ -113,36 +127,43 @@
- 	gtk_container_add (GTK_CONTAINER (vbox), label);
+@@ -114,35 +128,42 @@
  	g_get_charset (&locale);
  	(snprintf) (buf, sizeof (buf),
--				"<span size=\"x-large\"><b>"DISPLAY_NAME" "PACKAGE_VERSION"</b></span>\n\n"
+ 				"<span size=\"x-large\"><b>"DISPLAY_NAME" "PACKAGE_VERSION"</b></span>\n\n"
 -				"%s\n\n"
-+				"<span size=\"x-large\"><b>"DISPLAY_NAME" "PACKAGE_VERSION"</b>\nHappy Holidays Edition</span>\n\n"
  #ifdef WIN32
 -				/* leave this message to avoid time wasting bug reports! */
 -				"This version is unofficial and comes with no support.\n\n"
