@@ -9,8 +9,8 @@ all:
 	@-$(MAKE) /nologo /s /f makefile.mak $@
 	@cd ..\upd
 	@-$(MAKE) /nologo /s /f makefile.mak $@
-	@cd ..\xdcc
-	@-$(MAKE) /nologo /s /f makefile.mak $@
+#	@cd ..\xdcc
+#	@-$(MAKE) /nologo /s /f makefile.mak $@
 #	@cd ..\xtray
 #	@-$(MAKE) /nologo /s /f makefile.mak $@
 	@cd ..\winamp
