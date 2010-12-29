@@ -42,11 +42,11 @@ clean:
 	@del upd\*.exp
 	@del upd\*.lib
 	@del upd\*.obj
-	@del xdcc\*.def
-	@del xdcc\*.dll
-	@del xdcc\*.exp
-	@del xdcc\*.lib
-	@del xdcc\*.obj
+#	@del xdcc\*.def
+#	@del xdcc\*.dll
+#	@del xdcc\*.exp
+#	@del xdcc\*.lib
+#	@del xdcc\*.obj
 #	@del xtray\*.def
 #	@del xtray\*.dll
 #	@del xtray\*.exp

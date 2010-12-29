@@ -40,7 +40,7 @@ Name: "plugins"; Description: "Plugins"; Types: full custom; Flags: disablenouni
 Name: "plugins\checksum"; Description: "Checksum"; Types: full custom; Flags: disablenouninstallwarning
 Name: "plugins\upd"; Description: "Update Checker"; Types: normal full custom; Flags: disablenouninstallwarning
 Name: "plugins\winamp"; Description: "Winamp"; Types: full custom; Flags: disablenouninstallwarning
-Name: "plugins\xdcc"; Description: "XDCC"; Types: full custom; Flags: disablenouninstallwarning
+;Name: "plugins\xdcc"; Description: "XDCC"; Types: full custom; Flags: disablenouninstallwarning
 Name: "langs"; Description: "Language Interfaces"; Types: full custom; Flags: disablenouninstallwarning
 Name: "langs\lua"; Description: "Lua"; Types: full custom; Flags: disablenouninstallwarning
 Name: "langs\lua\luawdk"; Description: "Lua-WDK"; Types: full custom; Flags: disablenouninstallwarning
@@ -195,8 +195,8 @@ Source: "plugins\xcupd.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcupd.dll"
 Source: "plugins\xcwinamp.dll"; DestDir: "{app}\plugins"; Components: plugins\winamp; Tasks: x86
 Source: "plugins\xcwinamp.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcwinamp.dll"; Components: plugins\winamp; Tasks: x64
 
-Source: "plugins\xcxdcc.dll"; DestDir: "{app}\plugins"; Components: plugins\xdcc; Tasks: x86
-Source: "plugins\xcxdcc.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcxdcc.dll"; Components: plugins\xdcc; Tasks: x64
+;Source: "plugins\xcxdcc.dll"; DestDir: "{app}\plugins"; Components: plugins\xdcc; Tasks: x86
+;Source: "plugins\xcxdcc.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcxdcc.dll"; Components: plugins\xdcc; Tasks: x64
 
 
 
