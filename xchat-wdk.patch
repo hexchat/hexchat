@@ -965,7 +965,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/editlist.c xchat-wdk/src
  #include <sys/stat.h>
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/fe-gtk.c xchat-wdk/src/fe-gtk/fe-gtk.c
 --- xchat-wdk.orig/src/fe-gtk/fe-gtk.c	2010-08-14 03:46:21 +0200
-+++ xchat-wdk/src/fe-gtk/fe-gtk.c	2010-12-28 14:57:33 +0100
++++ xchat-wdk/src/fe-gtk/fe-gtk.c	2010-12-31 05:04:57 +0100
 @@ -19,7 +19,6 @@
  #include <stdio.h>
  #include <string.h>
@@ -991,7 +991,82 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/fe-gtk.c xchat-wdk/src/f
  #include "gtkutil.h"
  #include "maingui.h"
  #include "pixmaps.h"
-@@ -330,7 +332,7 @@
+@@ -141,6 +143,9 @@
+ {
+ 	GError *error = NULL;
+ 	GOptionContext *context;
++#ifdef WIN32
++	char buffer[512];
++#endif
+ 
+ #ifdef ENABLE_NLS
+ 	bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
+@@ -156,7 +161,16 @@
+ 	if (error)
+ 	{
+ 		if (error->message)
++		{
++#ifdef WIN32
++			if (snprintf (buffer, 512, "%s\n", error->message))
++			{
++				MessageBox (NULL, buffer, "Error", MB_OK);
++			}
++#else
+ 			printf ("%s\n", error->message);
++#endif
++		}
+ 		return 1;
+ 	}
+ 
+@@ -164,7 +178,14 @@
+ 
+ 	if (arg_show_version)
+ 	{
++#ifdef WIN32
++		if (snprintf (buffer, 512, PACKAGE_TARNAME" "PACKAGE_VERSION"\n"))
++		{
++			MessageBox (NULL, buffer, "Version Information", MB_OK);
++		}
++#else
+ 		printf (PACKAGE_TARNAME" "PACKAGE_VERSION"\n");
++#endif
+ 		return 0;
+ 	}
+ 
+@@ -177,7 +198,16 @@
+ 		if (sl)
+ 		{
+ 			*sl = 0;
+-			printf ("%s\\plugins\n", exe);
++			if (snprintf (buffer, 512, "%s\\plugins\n", exe))
++			{
++				MessageBox (NULL, buffer, "Plugin Auto-load Directory", MB_OK);
++			}
++		} else
++		{
++			if (snprintf (buffer, 512, ".\\plugins\n"))
++			{
++				MessageBox (NULL, buffer, "Plugin Auto-load Directory", MB_OK);
++			}
+ 		}
+ #else
+ 		printf ("%s\n", XCHATLIBDIR"/plugins");
+@@ -187,7 +217,14 @@
+ 
+ 	if (arg_show_config)
+ 	{
++#ifdef WIN32
++		if (snprintf (buffer, 512, "%s\n", get_xdir_fs ()))
++		{
++			MessageBox (NULL, buffer, "User Config Directory", MB_OK);
++		}
++#else
+ 		printf ("%s\n", get_xdir_fs ());
++#endif
+ 		return 0;
+ 	}
+ 
+@@ -330,7 +367,7 @@
  {
  	session *sess;
  
