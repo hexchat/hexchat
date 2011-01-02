@@ -122,7 +122,7 @@ dccoffer_cb (char *word[], void *userdata)
 	char sum[65];
 
 	sha256_file (word[3], sum);
-	xchat_commandf (ph, "raw PRIVMSG %s :SHA-256 checksum for %s (remote): %s", word[2], word[1], sum);
+	xchat_commandf (ph, "quote PRIVMSG %s :SHA-256 checksum for %s (remote): %s", word[2], word[1], sum);
 
 	return XCHAT_EAT_NONE;
 }
@@ -134,7 +134,7 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 
 	*plugin_name = "Checksum";
 	*plugin_desc = "Calculate checksum for DCC file transfers";
-	*plugin_version = "1.1";
+	*plugin_version = "1.2";
 	
 	xchat_hook_print (ph, "DCC RECV Complete", XCHAT_PRI_NORM, dccrecv_cb, NULL);
 	xchat_hook_print (ph, "DCC Offer", XCHAT_PRI_NORM, dccoffer_cb, NULL);
