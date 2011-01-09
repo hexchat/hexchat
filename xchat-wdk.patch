@@ -103,7 +103,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/plugins/xdcc/xdcc.c xchat-wdk/plugi
  
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/cfgfiles.c xchat-wdk/src/common/cfgfiles.c
 --- xchat-wdk.orig/src/common/cfgfiles.c	2010-08-07 09:14:45 +0200
-+++ xchat-wdk/src/common/cfgfiles.c	2010-12-28 14:57:32 +0100
++++ xchat-wdk/src/common/cfgfiles.c	2011-01-09 22:15:18 +0100
 @@ -17,7 +17,6 @@
   */
  
@@ -167,19 +167,22 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/cfgfiles.c xchat-wdk/src
  	{"tab_layout", P_OFFINT (tab_layout), TYPE_INT},
  	{"tab_new_to_front", P_OFFINT (newtabstofront), TYPE_INT},
  	{"tab_notices", P_OFFINT (notices_tabs), TYPE_BOOL},
-@@ -546,9 +552,11 @@
+@@ -546,9 +552,14 @@
  	{"tab_sort", P_OFFINT (tab_sort), TYPE_BOOL},
  	{"tab_trunc", P_OFFINT (truncchans), TYPE_INT},
  	{"tab_utils", P_OFFINT (windows_as_tabs), TYPE_BOOL},
 +	{"tab_xp", P_OFFINT (tab_xp), TYPE_BOOL},
  
++	{"text_auto_copy_text", P_OFFINT (autocopy_text), TYPE_BOOL},
++	{"text_auto_copy_stamp", P_OFFINT (autocopy_stamp), TYPE_BOOL},
++	{"text_auto_copy_color", P_OFFINT (autocopy_color), TYPE_BOOL},
  	{"text_background", P_OFFSET (background), TYPE_STR},
  	{"text_color_nicks", P_OFFINT (colorednicks), TYPE_BOOL},
 +	{"text_emoticons", P_OFFINT (emoticons), TYPE_BOOL},
  	{"text_font", P_OFFSET (font_normal), TYPE_STR},
  	{"text_indent", P_OFFINT (indent_nicks), TYPE_BOOL},
  	{"text_max_indent", P_OFFINT (max_auto_indent), TYPE_INT},
-@@ -561,7 +569,7 @@
+@@ -561,7 +572,7 @@
  	{"text_tint_blue", P_OFFINT (tint_blue), TYPE_INT},
  	{"text_tint_green", P_OFFINT (tint_green), TYPE_INT},
  	{"text_tint_red", P_OFFINT (tint_red), TYPE_INT},
@@ -188,7 +191,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/cfgfiles.c xchat-wdk/src
  	{"text_wordwrap", P_OFFINT (wordwrap), TYPE_BOOL},
  
  	{0, 0, 0},
-@@ -624,7 +632,7 @@
+@@ -624,13 +635,14 @@
  	prefs.indent_nicks = 1;
  	prefs.thin_separator = 1;
  	prefs._tabs_position = 2; /* 2 = left */
@@ -197,7 +200,14 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/cfgfiles.c xchat-wdk/src
  	prefs.wordwrap = 1;
  	prefs.autosave = 1;
  	prefs.autodialog = 1;
-@@ -648,6 +656,7 @@
+ 	prefs.gui_input_spell = 1;
+ 	prefs.autoreconnect = 1;
+ 	prefs.recon_delay = 10;
++	prefs.autocopy_text = 1;
+ 	prefs.text_replay = 1;
+ 	prefs.tabchannels = 1;
+ 	prefs.tab_layout = 2;	/* 0=Tabs 1=Reserved 2=Tree */
+@@ -648,6 +660,7 @@
  	prefs.dialog_height = 256;
  	prefs.gui_join_dialog = 1;
  	prefs.gui_quit_dialog = 1;
@@ -768,7 +778,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/xchat.c xchat-wdk/src/co
  	"NAME LEAVE\n"			"CMD part &2\n\n"\
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/xchat.h xchat-wdk/src/common/xchat.h
 --- xchat-wdk.orig/src/common/xchat.h	2010-08-07 09:14:45 +0200
-+++ xchat-wdk/src/common/xchat.h	2010-12-28 14:57:33 +0100
++++ xchat-wdk/src/common/xchat.h	2011-01-09 22:15:02 +0100
 @@ -12,12 +12,14 @@
  
  #include "history.h"
@@ -794,7 +804,17 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/xchat.h xchat-wdk/src/co
  #include <direct.h>
  #define	F_OK	0
  #define	X_OK	1
-@@ -297,6 +299,9 @@
+@@ -209,6 +211,9 @@
+ 	unsigned int wallops;
+ 	unsigned int skipmotd;
+ 	unsigned int autorejoin;
++	unsigned int autocopy_text;
++	unsigned int autocopy_stamp;
++	unsigned int autocopy_color;
+ 	unsigned int colorednicks;
+ 	unsigned int chanmodebuttons;
+ 	unsigned int userlistbuttons;
+@@ -297,6 +302,9 @@
  	unsigned int confmode;
  	unsigned int utf8_locale;
  	unsigned int identd;
@@ -1831,7 +1851,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/sexy-spell-entry.c xchat
  	have_enchant = TRUE;
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/xtext.c xchat-wdk/src/fe-gtk/xtext.c
 --- xchat-wdk.orig/src/fe-gtk/xtext.c	2010-12-17 08:58:17 +0100
-+++ xchat-wdk/src/fe-gtk/xtext.c	2010-12-28 14:57:33 +0100
++++ xchat-wdk/src/fe-gtk/xtext.c	2011-01-09 22:32:20 +0100
 @@ -42,7 +42,6 @@
  #include <ctype.h>
  #include <stdlib.h>
@@ -1840,7 +1860,64 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/xtext.c xchat-wdk/src/fe
  #include <gtk/gtkmain.h>
  #include <gtk/gtksignal.h>
  #include <gtk/gtkselection.h>
-@@ -3836,7 +3835,7 @@
+@@ -67,6 +66,8 @@
+ #endif
+ 
+ #include "xtext.h"
++#include "../common/xchat.h"
++#include "../common/xchatc.h"
+ 
+ #define charlen(str) g_utf8_skip[*(guchar *)(str)]
+ 
+@@ -1941,7 +1942,7 @@
+ {
+ 	gboolean redraw = FALSE;
+ 
+-	if ((mask & GDK_SHIFT_MASK))
++	if ((mask & GDK_SHIFT_MASK) || (prefs.autocopy_stamp))
+ 	{
+ 		if (!xtext->mark_stamp)
+ 		{
+@@ -2182,9 +2183,12 @@
+ 		if (xtext->buffer->last_ent_start)
+ 		{
+ 			xtext->color_paste = FALSE;
+-			if (event->state & GDK_CONTROL_MASK)
++			if (event->state & GDK_CONTROL_MASK || prefs.autocopy_color)
+ 				xtext->color_paste = TRUE;
+-			gtk_xtext_set_clip_owner (GTK_WIDGET (xtext), event);
++			if (prefs.autocopy_text || event->state & GDK_MOD1_MASK) /* according to GTK+ docs "normally" it should be Alt */
++			{
++				gtk_xtext_set_clip_owner (GTK_WIDGET (xtext), event);
++			}
+ 		}
+ 
+ 		if (xtext->select_start_x == event->x &&
+@@ -2249,7 +2253,10 @@
+ 			ent->mark_end = offset + len;
+ 			gtk_xtext_selection_render (xtext, ent, offset, ent, offset + len);
+ 			xtext->word_or_line_select = TRUE;
+-			gtk_xtext_set_clip_owner (GTK_WIDGET (xtext), event);
++			if (prefs.autocopy_text || event->state & GDK_MOD1_MASK)
++			{
++				gtk_xtext_set_clip_owner (GTK_WIDGET (xtext), event);
++			}
+ 		}
+ 
+ 		return FALSE;
+@@ -2265,7 +2272,10 @@
+ 			ent->mark_end = ent->str_len;
+ 			gtk_xtext_selection_render (xtext, ent, 0, ent, ent->str_len);
+ 			xtext->word_or_line_select = TRUE;
+-			gtk_xtext_set_clip_owner (GTK_WIDGET (xtext), event);
++			if (prefs.autocopy_text || event->state & GDK_MOD1_MASK)
++			{
++				gtk_xtext_set_clip_owner (GTK_WIDGET (xtext), event);
++			}
+ 		}
+ 
+ 		return FALSE;
+@@ -3836,7 +3846,7 @@
  	PaintDesktop (hdc);
  	ReleaseDC (hwnd, hdc);
  
