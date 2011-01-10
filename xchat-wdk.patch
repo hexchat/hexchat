@@ -2031,7 +2031,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/xtext.h xchat-wdk/src/fe
  #endif
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-text/fe-text.c xchat-wdk/src/fe-text/fe-text.c
 --- xchat-wdk.orig/src/fe-text/fe-text.c	2008-08-29 13:24:17 +0200
-+++ xchat-wdk/src/fe-text/fe-text.c	2011-01-10 08:55:20 +0100
++++ xchat-wdk/src/fe-text/fe-text.c	2011-01-10 10:00:24 +0100
 @@ -22,60 +22,51 @@
  #ifdef HAVE_STRINGS_H
  #include <strings.h>
@@ -2131,6 +2131,15 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-text/fe-text.c xchat-wdk/src
  		current_tab = sess;
  
  	if (done_intro)
+@@ -101,7 +93,7 @@
+ 
+ 	snprintf (buf, sizeof (buf),
+ 				"\n"
+-				" \017xchat \00310"PACKAGE_VERSION"\n"
++				" \017XChat-Text \00310"PACKAGE_VERSION"\n"
+ 				" \017Running on \00310%s \017glib \00310%d.%d.%d\n"
+ 				" \017This binary compiled \00310"__DATE__"\017\n",
+ 				get_cpu_str(),
 @@ -133,15 +125,21 @@
  }
  
