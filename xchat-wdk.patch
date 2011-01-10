@@ -1581,7 +1581,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/maingui.c xchat-wdk/src/
  }
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/menu.c xchat-wdk/src/fe-gtk/menu.c
 --- xchat-wdk.orig/src/fe-gtk/menu.c	2010-05-16 06:24:24 +0200
-+++ xchat-wdk/src/fe-gtk/menu.c	2010-12-28 14:57:33 +0100
++++ xchat-wdk/src/fe-gtk/menu.c	2011-01-10 06:56:59 +0100
 @@ -20,7 +20,6 @@
  #include <stdlib.h>
  #include <fcntl.h>
@@ -1590,6 +1590,38 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/menu.c xchat-wdk/src/fe-
  
  #ifdef WIN32
  #include <windows.h>
+@@ -1204,6 +1203,12 @@
+ }
+ 
+ static void
++menu_copy_selection (GtkWidget * wid, gpointer none)
++{
++	gtk_xtext_copy_selection (GTK_XTEXT (current_sess->gui->xtext));
++}
++
++static void
+ menu_flushbuffer (GtkWidget * wid, gpointer none)
+ {
+ 	fe_text_clear (current_sess, 0);
+@@ -1645,6 +1650,7 @@
+ 	{N_("URL Grabber..."), url_opengui, 0, M_MENUITEM, 0, 0, 1},
+ 	{0, 0, 0, M_SEP, 0, 0, 0},
+ 	{N_("Reset Marker Line"), menu_resetmarker, 0, M_MENUITEM, 0, 0, 1, GDK_m},
++	{N_("_Copy Selection"), menu_copy_selection, 0, M_MENUITEM, 0, 0, 1, GDK_C},
+ 	{N_("C_lear Text"), menu_flushbuffer, GTK_STOCK_CLEAR, M_MENUSTOCK, 0, 0, 1, GDK_l},
+ #define SEARCH_OFFSET 67
+ 	{N_("Search Text..."), menu_search, GTK_STOCK_FIND, M_MENUSTOCK, 0, 0, 1, GDK_f},
+@@ -2188,7 +2194,9 @@
+ 										mymenu[i].key,
+ 										mymenu[i].key == GDK_F1 ? 0 :
+ 										mymenu[i].key == GDK_w ? close_mask :
+-										GDK_CONTROL_MASK,
++										(g_ascii_isupper (mymenu[i].key)) ?
++											GDK_SHIFT_MASK | GDK_CONTROL_MASK :
++											GDK_CONTROL_MASK,
+ 										GTK_ACCEL_VISIBLE);
+ 			if (mymenu[i].callback)
+ 				g_signal_connect (G_OBJECT (item), "activate",
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/palette.c xchat-wdk/src/fe-gtk/palette.c
 --- xchat-wdk.orig/src/fe-gtk/palette.c	2010-05-16 05:20:22 +0200
 +++ xchat-wdk/src/fe-gtk/palette.c	2010-12-28 14:57:33 +0100
@@ -1770,8 +1802,8 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/servlistgui.c xchat-wdk/
  	gtk_box_set_spacing (GTK_BOX (vbuttonbox2), 3);
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/setup.c xchat-wdk/src/fe-gtk/setup.c
 --- xchat-wdk.orig/src/fe-gtk/setup.c	2008-02-08 10:04:45 +0100
-+++ xchat-wdk/src/fe-gtk/setup.c	2010-12-28 14:57:33 +0100
-@@ -109,13 +109,13 @@
++++ xchat-wdk/src/fe-gtk/setup.c	2011-01-10 06:58:17 +0100
+@@ -109,19 +109,32 @@
  					N_("Give each person on IRC a different color"),0,0},
  	{ST_TOGGLR, N_("Indent nick names"), P_OFFINTNL(indent_nicks),
  					N_("Make nick names right-justified"),0,0},
@@ -1789,7 +1821,26 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/setup.c xchat-wdk/src/fe
  
  	{ST_HEADER,	N_("Time Stamps"),0,0,0},
  	{ST_TOGGLE, N_("Enable time stamps"), P_OFFINTNL(timestamp),0,0,2},
-@@ -363,7 +363,6 @@
+ 	{ST_ENTRY,  N_("Time stamp format:"), P_OFFSETNL(stamp_format),
+ 					N_("See strftime manpage for details."),0,sizeof prefs.stamp_format},
+ 
++	{ST_HEADER,	N_("Auto-Copy Behavior"),0,0,0},
++	{ST_TOGGLE, N_("Automatically copy selected text"), P_OFFINTNL(autocopy_text),
++					N_("Copy selected text to clipboard when left mouse button is released. "
++						"Otherwise, CONTROL-SHIFT-C will copy the "
++						"selected text to the clipboard."), 0, 0},
++	{ST_TOGGLE, N_("Automatically include time stamps"), P_OFFINTNL(autocopy_stamp),
++					N_("Automatically include time stamps in copied lines of text. Otherwise, "
++						"include time stamps if the SHIFT key is held down while selecting."), 0, 0},
++	{ST_TOGGLE, N_("Automatically include color information"), P_OFFINTNL(autocopy_color),
++					N_("Automatically include color information in copied lines of text.  "
++						"Otherwise, include color information if the CONTROL key is held down "
++						"while selecting."), 0, 0},
++
+ 	{ST_END, 0, 0, 0, 0, 0}
+ };
+ 
+@@ -363,7 +376,6 @@
  	{ST_END, 0, 0, 0, 0, 0}
  };
  
@@ -1797,7 +1848,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/setup.c xchat-wdk/src/fe
  static const setting advanced_settings[] =
  {
  	{ST_HEADER,	N_("Advanced Settings"),0,0,0},
-@@ -378,7 +377,6 @@
+@@ -378,7 +390,6 @@
  
  	{ST_END, 0, 0, 0, 0, 0}
  };
@@ -1805,7 +1856,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/setup.c xchat-wdk/src/fe
  
  static const setting logging_settings[] =
  {
-@@ -1708,7 +1706,7 @@
+@@ -1708,7 +1719,7 @@
  		N_("General"),
  		N_("Logging"),
  		N_("Sound"),
@@ -1814,7 +1865,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/setup.c xchat-wdk/src/fe
  		NULL,
  	N_("Network"),
  		N_("Network setup"),
-@@ -1733,6 +1731,7 @@
+@@ -1733,6 +1744,7 @@
  	setup_add_page (cata[9], book, setup_create_page (general_settings));
  	setup_add_page (cata[10], book, setup_create_page (logging_settings));
  	setup_add_page (cata[11], book, setup_create_sound_page ());
@@ -1851,7 +1902,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/sexy-spell-entry.c xchat
  	have_enchant = TRUE;
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/xtext.c xchat-wdk/src/fe-gtk/xtext.c
 --- xchat-wdk.orig/src/fe-gtk/xtext.c	2010-12-17 08:58:17 +0100
-+++ xchat-wdk/src/fe-gtk/xtext.c	2011-01-09 22:32:20 +0100
++++ xchat-wdk/src/fe-gtk/xtext.c	2011-01-10 07:00:18 +0100
 @@ -42,7 +42,6 @@
  #include <ctype.h>
  #include <stdlib.h>
@@ -1874,11 +1925,29 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/xtext.c xchat-wdk/src/fe
  	gboolean redraw = FALSE;
  
 -	if ((mask & GDK_SHIFT_MASK))
-+	if ((mask & GDK_SHIFT_MASK) || (prefs.autocopy_stamp))
++	if (mask & GDK_SHIFT_MASK || prefs.autocopy_stamp)
  	{
  		if (!xtext->mark_stamp)
  		{
-@@ -2182,9 +2183,12 @@
+@@ -2106,7 +2107,16 @@
+ 		free (str);
+ 	}
+ 
+-	gtk_selection_owner_set (xtext, GDK_SELECTION_PRIMARY, event->time);
++	if (event)
++	{
++		gtk_selection_owner_set (xtext, GDK_SELECTION_PRIMARY, event->time);
++	}
++}
++
++void
++gtk_xtext_copy_selection (GtkXText *xtext)
++{
++	gtk_xtext_set_clip_owner (xtext, NULL);
+ }
+ 
+ static void
+@@ -2182,9 +2192,12 @@
  		if (xtext->buffer->last_ent_start)
  		{
  			xtext->color_paste = FALSE;
@@ -1886,38 +1955,38 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/xtext.c xchat-wdk/src/fe
 +			if (event->state & GDK_CONTROL_MASK || prefs.autocopy_color)
  				xtext->color_paste = TRUE;
 -			gtk_xtext_set_clip_owner (GTK_WIDGET (xtext), event);
-+			if (prefs.autocopy_text || event->state & GDK_MOD1_MASK) /* according to GTK+ docs "normally" it should be Alt */
++			if (prefs.autocopy_text)
 +			{
 +				gtk_xtext_set_clip_owner (GTK_WIDGET (xtext), event);
 +			}
  		}
  
  		if (xtext->select_start_x == event->x &&
-@@ -2249,7 +2253,10 @@
+@@ -2249,7 +2262,10 @@
  			ent->mark_end = offset + len;
  			gtk_xtext_selection_render (xtext, ent, offset, ent, offset + len);
  			xtext->word_or_line_select = TRUE;
 -			gtk_xtext_set_clip_owner (GTK_WIDGET (xtext), event);
-+			if (prefs.autocopy_text || event->state & GDK_MOD1_MASK)
++			if (prefs.autocopy_text)
 +			{
 +				gtk_xtext_set_clip_owner (GTK_WIDGET (xtext), event);
 +			}
  		}
  
  		return FALSE;
-@@ -2265,7 +2272,10 @@
+@@ -2265,7 +2281,10 @@
  			ent->mark_end = ent->str_len;
  			gtk_xtext_selection_render (xtext, ent, 0, ent, ent->str_len);
  			xtext->word_or_line_select = TRUE;
 -			gtk_xtext_set_clip_owner (GTK_WIDGET (xtext), event);
-+			if (prefs.autocopy_text || event->state & GDK_MOD1_MASK)
++			if (prefs.autocopy_text)
 +			{
 +				gtk_xtext_set_clip_owner (GTK_WIDGET (xtext), event);
 +			}
  		}
  
  		return FALSE;
-@@ -3836,7 +3846,7 @@
+@@ -3836,7 +3855,7 @@
  	PaintDesktop (hdc);
  	ReleaseDC (hwnd, hdc);
  
@@ -1926,6 +1995,17 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/xtext.c xchat-wdk/src/fe
  	img = gdk_image_get (GTK_WIDGET (xtext)->window, 0, 0, width+128, height);
  	xtext->pixmap = win32_tint (xtext, img, img->width, img->height);
  
+diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/xtext.h xchat-wdk/src/fe-gtk/xtext.h
+--- xchat-wdk.orig/src/fe-gtk/xtext.h	2010-12-17 08:58:17 +0100
++++ xchat-wdk/src/fe-gtk/xtext.h	2011-01-10 07:00:31 +0100
+@@ -270,6 +270,7 @@
+ xtext_buffer *gtk_xtext_buffer_new (GtkXText *xtext);
+ void gtk_xtext_buffer_free (xtext_buffer *buf);
+ void gtk_xtext_buffer_show (GtkXText *xtext, xtext_buffer *buf, int render);
++void gtk_xtext_copy_selection (GtkXText *xtext);
+ GType gtk_xtext_get_type (void);
+ 
+ #endif
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-text/fe-text.c xchat-wdk/src/fe-text/fe-text.c
 --- xchat-wdk.orig/src/fe-text/fe-text.c	2008-08-29 13:24:17 +0200
 +++ xchat-wdk/src/fe-text/fe-text.c	2010-12-28 14:57:33 +0100
