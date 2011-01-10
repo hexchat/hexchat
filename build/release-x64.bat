@@ -2,6 +2,7 @@
 set DEPS_ROOT=..\dep-x64
 set XCHAT_DEST=..\tmp
 copy ..\src\fe-gtk\xchat.exe %XCHAT_DEST%\xchat.exe.x64
+copy ..\src\fe-text\xchat-text.exe %XCHAT_DEST%\xchat-text.exe.x64
 copy %DEPS_ROOT%\bin\libgtk-win32-2.0-0.dll %XCHAT_DEST%\libgtk-win32-2.0-0.dll.x64
 copy %DEPS_ROOT%\bin\libgdk_pixbuf-2.0-0.dll %XCHAT_DEST%\libgdk_pixbuf-2.0-0.dll.x64
 copy %DEPS_ROOT%\bin\libgio-2.0-0.dll %XCHAT_DEST%\libgio-2.0-0.dll.x64

@@ -6,6 +6,7 @@ mkdir %XCHAT_DEST%
 echo 2> portable-mode
 move portable-mode %XCHAT_DEST%
 copy ..\src\fe-gtk\xchat.exe %XCHAT_DEST%
+copy ..\src\fe-text\xchat-text.exe %XCHAT_DEST%
 copy %DEPS_ROOT%\bin\libgtk-win32-2.0-0.dll %XCHAT_DEST%
 copy %DEPS_ROOT%\bin\libgdk_pixbuf-2.0-0.dll %XCHAT_DEST%
 copy %DEPS_ROOT%\bin\libgio-2.0-0.dll %XCHAT_DEST%

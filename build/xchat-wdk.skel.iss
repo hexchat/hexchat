@@ -33,6 +33,7 @@ Name: "custom"; Description: "Custom Installation"; Flags: iscustom
 
 [Components]
 Name: "libs"; Description: "XChat-WDK"; Types: normal full minimal custom; Flags: fixed
+Name: "xctext"; Description: "XChat-Text"; Types: full custom; Flags: disablenouninstallwarning
 Name: "translations"; Description: "Translations"; Types: normal full custom; Flags: disablenouninstallwarning
 Name: "spelling"; Description: "Spelling Dictionaries"; Types: full custom; Flags: disablenouninstallwarning
 Name: "plugins"; Description: "Plugins"; Types: full custom; Flags: disablenouninstallwarning
@@ -183,6 +184,11 @@ Source: "lib\gtk-2.0\modules\libgail.dll.x64"; DestDir: "{app}\lib\gtk-2.0\modul
 
 
 
+Source: "xchat-text.exe"; DestDir: "{app}"; Components: xctext; Tasks: x86
+Source: "xchat-text.exe.x64"; DestDir: "{app}"; DestName: "xchat-text.exe"; Components: xctext; Tasks: x64
+
+
+
 ;Source: "plugins\xcewc.dll"; DestDir: "{app}\plugins"; Components: plugins\ewc; Tasks: x86
 ;Source: "plugins\xcewc.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcewc.dll"; Components: plugins\ewc; Tasks: x64
 
@@ -226,6 +232,7 @@ Source: "plugins\xcperl-512.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcper
 
 [Icons]
 Name: "{group}\XChat-WDK"; Filename: "{app}\xchat.exe"; Tasks: not portable
+Name: "{group}\XChat-Text"; Filename: "{app}\xchat-text.exe"; Tasks: not portable
 Name: "{group}\Uninstall XChat-WDK"; Filename: "{uninstallexe}"; Tasks: not portable
 
 [Messages]

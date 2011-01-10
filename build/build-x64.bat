@@ -15,6 +15,8 @@ cd common
 nmake /nologo /f makefile.mak clean
 cd ..\fe-gtk
 nmake /nologo /f makefile.mak clean
+cd ..\fe-text
+nmake /nologo /f makefile.mak clean
 cd ..
 nmake /nologo /f makefile.mak
 cd ..\plugins
