@@ -16,5 +16,5 @@ fe-text.obj: fe-text.c makefile.mak
 	cl $(CFLAGS) $(GLIB) fe-text.c
 
 clean:
-	del *.obj
-	del $(PROG)
+	@del *.obj
+	@del $(PROG)
