@@ -32,7 +32,7 @@ all: $(COMMON_OBJECTS) xchatcommon.lib
 xchatcommon.lib: $(COMMON_OBJECTS)
 	lib /nologo /out:xchatcommon.lib $(COMMON_OBJECTS)
 
-.c.obj:
+.c.obj::
 	$(CC) $(CFLAGS) $(GLIB) $<
 
 clean:
