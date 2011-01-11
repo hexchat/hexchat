@@ -232,7 +232,7 @@ Source: "plugins\xcperl-512.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcper
 
 [Icons]
 Name: "{group}\XChat-WDK"; Filename: "{app}\xchat.exe"; Tasks: not portable
-Name: "{group}\XChat-Text"; Filename: "{app}\xchat-text.exe"; Tasks: not portable
+Name: "{group}\XChat-Text"; Filename: "{app}\xchat-text.exe"; Components: xctext; Tasks: not portable
 Name: "{group}\Uninstall XChat-WDK"; Filename: "{uninstallexe}"; Tasks: not portable
 
 [Messages]
