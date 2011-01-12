@@ -1,5 +1,5 @@
 /* XChat-WDK
- * Copyright (c) 2010 Berke Viktor.
+ * Copyright (c) 2010-2011 Berke Viktor.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -91,7 +91,7 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 
 	*plugin_name = "Update Checker";
 	*plugin_desc = "Plugin for checking for XChat-WDK updates";
-	*plugin_version = "1.1";
+	*plugin_version = "1.2";
 
 	xchat_hook_command (ph, "UPDCHK", XCHAT_PRI_NORM, print_version, 0, 0);
 	xchat_command (ph, "MENU -ietc\\download.png ADD \"Help/Check for Updates\" \"UPDCHK\"");

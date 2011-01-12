@@ -1,5 +1,5 @@
 /* XChat-WDK
- * Copyright (c) 2010 Berke Viktor.
+ * Copyright (c) 2010-2011 Berke Viktor.
  *
  * Use of OpenSSL SHA256 interface: http://adamlamers.com/?p=5
  *
@@ -120,7 +120,7 @@ init ()
 	/* check whether the config file exists, if it doesn't, try to create it */
 	FILE * file_in;
 	FILE * file_out;
-	char buffer[512];
+	char buffer[1024];
 
 	config_fail = 0;
 	snprintf (buffer, sizeof (buffer), "%s/checksum.conf", xchat_get_info (ph, "xchatdirfs"));
@@ -144,7 +144,7 @@ static unsigned long long
 get_max_hash_size ()
 {
 	FILE * file_in;
-	char buffer[512];
+	char buffer[1024];
 	unsigned long long max_hash_size;
 
 	if (config_fail)
@@ -193,7 +193,7 @@ increase_max_hash_size ()
 {
 	unsigned long long size;
 	FILE * file_out;
-	char buffer[512];
+	char buffer[1024];
 
 	if (config_fail)
 	{
@@ -220,7 +220,7 @@ decrease_max_hash_size ()
 {
 	unsigned long long size;
 	FILE * file_out;
-	char buffer[512];
+	char buffer[1024];
 
 	if (config_fail)
 	{
