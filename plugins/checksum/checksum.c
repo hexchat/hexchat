@@ -68,7 +68,7 @@ sha256 (char *string, char outputBuffer[65])
 	SHA256_CTX sha256;
 
 	SHA256_Init (&sha256);
-	SHA256_Update (&sha256, string, strlen(string));
+	SHA256_Update (&sha256, string, strlen (string));
 	SHA256_Final (hash, &sha256);
 
 	for (i = 0; i < SHA256_DIGEST_LENGTH; i++)
@@ -301,13 +301,13 @@ dccoffer_cb (char *word[], void *userdata)
 static void
 checksum (char *userdata[])
 {
-	if (!stricmp("GET", userdata[2]))
+	if (!stricmp ("GET", userdata[2]))
 	{
 		print_size ();
-	} else if (!stricmp("INC", userdata[2]))
+	} else if (!stricmp ("INC", userdata[2]))
 	{
 		increase_max_hash_size ();
-	} else if (!stricmp("DEC", userdata[2]))
+	} else if (!stricmp ("DEC", userdata[2]))
 	{
 		decrease_max_hash_size ();
 	} else
