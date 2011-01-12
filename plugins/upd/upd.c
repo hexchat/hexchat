@@ -31,7 +31,7 @@
 
 static xchat_plugin *ph;   /* plugin handle */
 
-char*
+static char*
 check_version ()
 {
 	HINTERNET hINet, hFile;
@@ -57,15 +57,17 @@ check_version ()
 			buffer[dwRead] = 0;
 		}
 		
-		InternetCloseHandle (hFile);
 		return buffer;
+
+		InternetCloseHandle (hFile);
 	}
 	
 	InternetCloseHandle (hINet);
+
 	return "Unknown";
 }
 
-void
+static void
 print_version ()
 {
 	char *version = check_version ();

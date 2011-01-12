@@ -161,7 +161,7 @@ get_max_hash_size ()
 	}
 }
 
-void
+static void
 print_size ()
 {
 	xchat_printf (ph, "File size limit for checksums (in bytes): %llu", get_max_hash_size ());
