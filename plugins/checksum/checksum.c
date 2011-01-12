@@ -299,15 +299,15 @@ dccoffer_cb (char *word[], void *userdata)
 }
 
 static void
-checksum (char *userdata[])
+checksum (char *word[], void *userdata)
 {
-	if (!stricmp ("GET", userdata[2]))
+	if (!stricmp ("GET", word[2]))
 	{
 		print_size ();
-	} else if (!stricmp ("INC", userdata[2]))
+	} else if (!stricmp ("INC", word[2]))
 	{
 		increase_max_hash_size ();
-	} else if (!stricmp ("DEC", userdata[2]))
+	} else if (!stricmp ("DEC", word[2]))
 	{
 		decrease_max_hash_size ();
 	} else
