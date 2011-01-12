@@ -288,7 +288,7 @@ dccoffer_cb (char *word[], void *userdata)
 		} else
 		{
 			xchat_set_context (ph, xchat_find_context (ph, NULL, word[3]));
-			xchat_printf (ph, "SHA-256 checksum for %s (local):  (size limit reached, no checksum calculated, you can increase it with /CHECKSUM INC)\n", word[1]);
+			xchat_printf (ph, "quote PRIVMSG %s :SHA-256 checksum for %s (remote): (size limit reached, no checksum calculated)", word[2], word[1]);
 		}
 	} else
 	{
