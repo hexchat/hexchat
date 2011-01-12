@@ -164,7 +164,7 @@ get_max_hash_size ()
 static void
 print_size ()
 {
-	xchat_printf (ph, "File size limit for checksums (in bytes): %llu", get_max_hash_size ());
+	xchat_printf (ph, "File size limit for checksums (in bytes): %llu\n", get_max_hash_size ());
 }
 
 static void
@@ -176,7 +176,7 @@ increase_max_hash_size ()
 
 	if (config_fail)
 	{
-		xchat_printf (ph, "Config file is unavailable, defaulting to 4 GB");
+		xchat_printf (ph, "Config file is unavailable, defaulting to 4 GB\n");
 	} else
 	{
 		size = get_max_hash_size ();
@@ -189,7 +189,7 @@ increase_max_hash_size ()
 		file_out = fopen (buffer, "w");
 		fprintf (file_out, "%llu\n", size);
 		fclose (file_out);
-		xchat_printf (ph, "New file size limit for checksums (in bytes): %llu", size);
+		xchat_printf (ph, "New file size limit for checksums (in bytes): %llu\n", size);
 	}
 }
 
@@ -202,7 +202,7 @@ decrease_max_hash_size ()
 
 	if (config_fail)
 	{
-		xchat_printf (ph, "Config file is unavailable, defaulting to 4 GB");
+		xchat_printf (ph, "Config file is unavailable, defaulting to 4 GB\n");
 	} else
 	{
 		size = get_max_hash_size ();
@@ -215,7 +215,7 @@ decrease_max_hash_size ()
 		file_out = fopen (buffer, "w");
 		fprintf (file_out, "%llu\n", size);
 		fclose (file_out);
-		xchat_printf (ph, "New file size limit for checksums (in bytes): %llu", size);
+		xchat_printf (ph, "New file size limit for checksums (in bytes): %llu\n", size);
 	}
 }
 
@@ -238,11 +238,11 @@ dccrecv_cb (char *word[], void *userdata)
 		} else
 		{
 			xchat_set_context (ph, xchat_find_context (ph, NULL, word[3]));
-			xchat_printf (ph, "SHA-256 checksum for %s (local):  (size limit reached, no checksum calculated, you can increase it with /CHECKSUM_INC)\n", word[1]);
+			xchat_printf (ph, "SHA-256 checksum for %s (local):  (size limit reached, no checksum calculated, you can increase it with /CHECKSUM INC)\n", word[1]);
 		}
 	} else
 	{
-		xchat_printf (ph, "File access error");
+		xchat_printf (ph, "File access error\n");
 	}
 
 	return XCHAT_EAT_NONE;
@@ -265,11 +265,11 @@ dccoffer_cb (char *word[], void *userdata)
 		} else
 		{
 			xchat_set_context (ph, xchat_find_context (ph, NULL, word[3]));
-			xchat_printf (ph, "SHA-256 checksum for %s (local):  (size limit reached, no checksum calculated, you can increase it with /CHECKSUM_INC)\n", word[1]);
+			xchat_printf (ph, "SHA-256 checksum for %s (local):  (size limit reached, no checksum calculated, you can increase it with /CHECKSUM INC)\n", word[1]);
 		}
 	} else
 	{
-		xchat_printf (ph, "File access error");
+		xchat_printf (ph, "File access error\n");
 	}
 
 	return XCHAT_EAT_NONE;
@@ -289,7 +289,7 @@ checksum (char *userdata[])
 		decrease_max_hash_size ();
 	} else
 	{
-		xchat_printf (ph, "Usage: /CHECKSUM GET|INC|DEC");
+		xchat_printf (ph, "Usage: /CHECKSUM GET|INC|DEC\n");
 	}
 }
 
