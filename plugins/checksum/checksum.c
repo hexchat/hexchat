@@ -122,6 +122,7 @@ init ()
 	FILE * file_out;
 	char buffer[512];
 
+	config_fail = 0;
 	snprintf (buffer, sizeof (buffer), "%s/checksum.conf", xchat_get_info (ph, "xchatdirfs"));
 
 	if ((file_in = fopen (buffer, "r")) == NULL)
@@ -131,7 +132,6 @@ init ()
 			config_fail = 1;
 		} else
 		{
-			config_fail = 0;
 			fprintf (file_out, "%llu\n", (unsigned long long) DEFAULT_MAX_HASH_SIZE);
 		}
 	}
