@@ -37,7 +37,7 @@
 #include "xchat-plugin.h"
 
 #define BUFSIZE 32768
-#define DEFAULT_MAX_HASH_SIZE 536870912						/* default size is 512 MB */
+#define DEFAULT_MAX_HASH_SIZE 268435456						/* default size is 256 MB */
 
 #ifndef snprintf
 #define snprintf _snprintf
