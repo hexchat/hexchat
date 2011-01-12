@@ -197,7 +197,8 @@ increase_max_hash_size ()
 
 	if (config_fail)
 	{
-		xchat_printf (ph, "Config file is unavailable, defaulting to 4 GB\n");
+		xchat_printf (ph, "Config file is unavailable, falling back to the default value\n");
+		print_size ();
 	} else
 	{
 		size = get_max_hash_size ();
@@ -223,7 +224,8 @@ decrease_max_hash_size ()
 
 	if (config_fail)
 	{
-		xchat_printf (ph, "Config file is unavailable, defaulting to 4 GB\n");
+		xchat_printf (ph, "Config file is unavailable, falling back to the default value\n");
+		print_size ();
 	} else
 	{
 		size = get_max_hash_size ();
