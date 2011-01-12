@@ -220,7 +220,7 @@ decrease_max_hash_size ()
 {
 	unsigned long long size;
 	FILE * file_out;
-	char buffer[1024];
+	char buffer[512];
 
 	if (config_fail)
 	{
