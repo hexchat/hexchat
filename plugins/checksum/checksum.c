@@ -278,7 +278,7 @@ dccoffer_cb (char *word[], void *userdata)
 	struct stat64 buffer;									/* buffer for storing file info */
 	char sum[65];											/* buffer for checksum */
 
-	result = stat64 (word[2], &buffer);
+	result = stat64 (word[3], &buffer);
 	if (result == 0)										/* stat returns 0 on success */
 	{
 		if (buffer.st_size <= get_max_hash_size ())
