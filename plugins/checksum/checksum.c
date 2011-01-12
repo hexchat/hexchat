@@ -120,7 +120,7 @@ init ()
 	/* check whether the config file exists, if it doesn't, try to create it */
 	FILE * file_in;
 	FILE * file_out;
-	char buffer[1024];
+	char buffer[512];
 
 	snprintf (buffer, sizeof (buffer), "%s/checksum.conf", xchat_get_info (ph, "xchatdirfs"));
 
@@ -144,7 +144,7 @@ static unsigned long long
 get_max_hash_size ()
 {
 	FILE * file_in;
-	char buffer[1024];
+	char buffer[512];
 	unsigned long long max_hash_size;
 
 	if (config_fail)
