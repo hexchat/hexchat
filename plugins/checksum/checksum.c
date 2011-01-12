@@ -37,7 +37,7 @@
 #include "xchat-plugin.h"
 
 #define BUFSIZE 32768
-#define DEFAULT_MAX_HASH_SIZE 4294967296					/* default size is 4 GB */
+#define DEFAULT_MAX_HASH_SIZE 536870912						/* default size is 4 GB */
 
 #ifndef snprintf
 #define snprintf _snprintf
@@ -132,7 +132,7 @@ init ()
 		} else
 		{
 			config_fail = 0;
-			fprintf (file_out, "%llu\n", DEFAULT_MAX_HASH_SIZE);
+			fprintf (file_out, "%llu\n", (unsigned long long) DEFAULT_MAX_HASH_SIZE);
 		}
 	}
 
@@ -149,7 +149,7 @@ get_max_hash_size ()
 
 	if (config_fail)
 	{
-		return DEFAULT_MAX_HASH_SIZE;
+		return (unsigned long long) DEFAULT_MAX_HASH_SIZE;
 	} else
 	{
 		snprintf (buffer, sizeof (buffer), "%s/checksum.conf", xchat_get_info (ph, "xchatdirfs"));
@@ -164,7 +164,29 @@ get_max_hash_size ()
 static void
 print_size ()
 {
-	xchat_printf (ph, "File size limit for checksums (in bytes): %llu\n", get_max_hash_size ());
+	unsigned long long size;
+	char suffix[3];
+	
+	size = get_max_hash_size ();
+	
+	if (size >= 1073741824)
+	{
+		size /= 1073741824;
+		snprintf (suffix, sizeof (suffix), "GB");
+	} else if (size >= 1048576)
+	{
+		size /= 1048576;
+		snprintf (suffix, sizeof (suffix), "MB");
+	} else if (size >= 1024)
+	{
+		size /= 1024;
+		snprintf (suffix, sizeof (suffix), "kB");
+	} else
+	{
+		snprintf (suffix, sizeof (suffix), "B");
+	}
+	xchat_printf (ph, "File size limit for checksums: %llu %s\n", size, suffix);
+	//xchat_printf (ph, "File size limit for checksums: %s", g_format_size_for_display (get_max_hash_size ()));
 }
 
 static void
@@ -189,7 +211,7 @@ increase_max_hash_size ()
 		file_out = fopen (buffer, "w");
 		fprintf (file_out, "%llu\n", size);
 		fclose (file_out);
-		xchat_printf (ph, "New file size limit for checksums (in bytes): %llu\n", size);
+		print_size ();
 	}
 }
 
@@ -215,7 +237,7 @@ decrease_max_hash_size ()
 		file_out = fopen (buffer, "w");
 		fprintf (file_out, "%llu\n", size);
 		fclose (file_out);
-		xchat_printf (ph, "New file size limit for checksums (in bytes): %llu\n", size);
+		print_size ();
 	}
 }
 
@@ -290,6 +312,9 @@ checksum (char *userdata[])
 	} else
 	{
 		xchat_printf (ph, "Usage: /CHECKSUM GET|INC|DEC\n");
+		xchat_printf (ph, "  GET - print the maximum file size to be hashed\n");
+		xchat_printf (ph, "  INC - double the maximum file size to be hashed\n");
+		xchat_printf (ph, "  DEC - halve the maximum file size to be hashed\n");
 	}
 }
 
