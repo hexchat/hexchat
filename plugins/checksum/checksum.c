@@ -37,7 +37,7 @@
 #include "xchat-plugin.h"
 
 #define BUFSIZE 32768
-#define DEFAULT_MAX_HASH_SIZE 536870912						/* default size is 4 GB */
+#define DEFAULT_MAX_HASH_SIZE 536870912						/* default size is 512 MB */
 
 #ifndef snprintf
 #define snprintf _snprintf
@@ -186,7 +186,6 @@ print_size ()
 		snprintf (suffix, sizeof (suffix), "B");
 	}
 	xchat_printf (ph, "File size limit for checksums: %llu %s\n", size, suffix);
-	//xchat_printf (ph, "File size limit for checksums: %s", g_format_size_for_display (get_max_hash_size ()));
 }
 
 static void
