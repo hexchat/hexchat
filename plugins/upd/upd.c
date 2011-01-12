@@ -56,14 +56,12 @@ check_version ()
 			}
 			buffer[dwRead] = 0;
 		}
-		
-		return buffer;
 
 		InternetCloseHandle (hFile);
+		return buffer;
 	}
 	
 	InternetCloseHandle (hINet);
-
 	return "Unknown";
 }
 
