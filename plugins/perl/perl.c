@@ -1220,7 +1220,7 @@ static void
 xs_init (pTHX)
 {
 	HV *stash;
-
+	SV *version;
 	/* This one allows dynamic loading of perl modules in perl
 	   scripts by the 'use perlmod;' construction */
 	newXS ("DynaLoader::boot_DynaLoader", boot_DynaLoader, __FILE__);
@@ -1270,6 +1270,9 @@ xs_init (pTHX)
 	newCONSTSUB (stash, "FD_NOTSOCKET", newSViv (XCHAT_FD_NOTSOCKET));
 	newCONSTSUB (stash, "KEEP", newSViv (1));
 	newCONSTSUB (stash, "REMOVE", newSViv (0));
+
+	version = get_sv( "Xchat::VERSION", 1 );
+	sv_setpv( version, PACKAGE_VERSION );
 }
 
 static void
