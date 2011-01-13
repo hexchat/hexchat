@@ -38,6 +38,7 @@
 
 #define BUFSIZE 32768
 #define DEFAULT_MAX_HASH_SIZE 268435456						/* default size is 256 MB */
+#define FILE_BUF_SIZE 512
 
 #ifndef snprintf
 #define snprintf _snprintf
@@ -120,7 +121,7 @@ init ()
 	/* check whether the config file exists, if it doesn't, try to create it */
 	FILE * file_in;
 	FILE * file_out;
-	char buffer[1024];
+	char buffer[FILE_BUF_SIZE];
 
 	config_fail = 0;
 	snprintf (buffer, sizeof (buffer), "%s/checksum.conf", xchat_get_info (ph, "xchatdirfs"));
@@ -133,18 +134,22 @@ init ()
 		} else
 		{
 			fprintf (file_out, "%llu\n", (unsigned long long) DEFAULT_MAX_HASH_SIZE);
+			fclose (file_out);
 		}
+	} else
+	{
+		fclose (file_in);
 	}
 
-	fclose (file_in);
-	fclose (file_out);
+	/* nasty easter egg: if FILE_BUF_SIZE is set to 1024 and you build for x86, you can do fclose ()
+	   at the end of init (), which is plain wrong as it will only work if fopen () != 0. */
 }
 
 static unsigned long long
 get_max_hash_size ()
 {
 	FILE * file_in;
-	char buffer[1024];
+	char buffer[FILE_BUF_SIZE];
 	unsigned long long max_hash_size;
 
 	if (config_fail)
@@ -193,7 +198,7 @@ increase_max_hash_size ()
 {
 	unsigned long long size;
 	FILE * file_out;
-	char buffer[1024];
+	char buffer[FILE_BUF_SIZE];
 
 	if (config_fail)
 	{
@@ -220,7 +225,7 @@ decrease_max_hash_size ()
 {
 	unsigned long long size;
 	FILE * file_out;
-	char buffer[1024];
+	char buffer[FILE_BUF_SIZE];
 
 	if (config_fail)
 	{
