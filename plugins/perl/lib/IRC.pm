@@ -1,4 +1,4 @@
-{
+
 package IRC;
 sub IRC::register {
   my ($script_name, $version, $callback) = @_;
@@ -253,4 +253,5 @@ sub IRC::sub_user_list {}
 sub IRC::clear_user_list {}
 sub IRC::notify_list {}
 sub IRC::perl_script_list {}
-}
+
+1
