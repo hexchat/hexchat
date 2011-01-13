@@ -5,6 +5,7 @@
 #define USE_LIBSEXY
 #define PACKAGE_NAME "xchat"
 #define PACKAGE_VERSION "1479-2"
+#define XCHAT_RELEASE "2.8.8"
 #define XCHATLIBDIR "."
 #define XCHATSHAREDIR "."
 #define OLD_PERL
