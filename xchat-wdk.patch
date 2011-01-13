@@ -370,7 +370,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/plugin-timer.c xchat-wdk
  #define strcasecmp stricmp
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/plugin.c xchat-wdk/src/common/plugin.c
 --- xchat-wdk.orig/src/common/plugin.c	2010-12-28 03:56:42 +0100
-+++ xchat-wdk/src/common/plugin.c	2011-01-13 02:38:00 +0100
++++ xchat-wdk/src/common/plugin.c	2011-01-13 03:05:29 +0100
 @@ -34,7 +34,7 @@
  #include "text.h"
  #define PLUGIN_C
@@ -380,7 +380,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/plugin.c xchat-wdk/src/c
  #include "plugin.h"
  
  
-@@ -996,7 +996,7 @@
+@@ -996,13 +996,16 @@
  		return XCHATLIBDIR;
  
  	case 0x14f51cd8: /* version */
@@ -389,6 +389,15 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/plugin.c xchat-wdk/src/c
  
  	case 0xdd9b1abd:	/* xchatdir */
  		return get_xdir_utf8 ();
+ 
+ 	case 0xe33f6c4a:	/* xchatdirfs */
+ 		return get_xdir_fs ();
++
++	case 0x3d1e70d7:	/* wdk_version */
++		return PACKAGE_VERSION;
+ 	}
+ 
+ 	sess = ph->context;
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/proto-irc.c xchat-wdk/src/common/proto-irc.c
 --- xchat-wdk.orig/src/common/proto-irc.c	2010-05-30 04:28:04 +0200
 +++ xchat-wdk/src/common/proto-irc.c	2010-12-28 14:57:33 +0100
