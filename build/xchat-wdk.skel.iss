@@ -42,6 +42,7 @@ Name: "plugins\checksum"; Description: "Checksum"; Types: full custom; Flags: di
 Name: "plugins\upd"; Description: "Update Checker"; Types: normal full custom; Flags: disablenouninstallwarning
 Name: "plugins\winamp"; Description: "Winamp"; Types: full custom; Flags: disablenouninstallwarning
 ;Name: "plugins\xdcc"; Description: "XDCC"; Types: full custom; Flags: disablenouninstallwarning
+Name: "plugins\xtray"; Description: "X-Tray"; Types: full custom; Flags: disablenouninstallwarning
 Name: "langs"; Description: "Language Interfaces"; Types: full custom; Flags: disablenouninstallwarning
 Name: "langs\lua"; Description: "Lua"; Types: full custom; Flags: disablenouninstallwarning
 Name: "langs\lua\luawdk"; Description: "Lua-WDK"; Types: full custom; Flags: disablenouninstallwarning
@@ -53,13 +54,10 @@ Name: "langs\tcl"; Description: "Tcl"; Types: full custom; Flags: disablenounins
 Name: x86; Description: "x86"; GroupDescription: "XChat-WDK version:"; Flags: exclusive unchecked
 Name: x64; Description: "x64"; GroupDescription: "XChat-WDK version:"; Flags: exclusive; Check: Is64BitInstallMode
 
-Name: portable; Description: "Yes"; GroupDescription: "Portable Install (no Registry entries, no Start Menu icons, no uninstaller):"; Flags: unchecked
-
-Name: noxtray; Description: "Plugin-Tray"; GroupDescription: "Tray Icon:"; Flags: exclusive
-Name: xtray; Description: "X-Tray"; GroupDescription: "Tray Icon:"; Flags: exclusive unchecked
-
 Name: perl510; Description: "5.10"; GroupDescription: "Perl version:"; Flags: exclusive unchecked; Components: langs\perl
 Name: perl512; Description: "5.12"; GroupDescription: "Perl version:"; Flags: exclusive; Components: langs\perl
+
+Name: portable; Description: "Yes"; GroupDescription: "Portable Install (no Registry entries, no Start Menu icons, no uninstaller):"; Flags: unchecked
 
 [Registry]
 Root: HKCR; Subkey: "irc"; ValueType: none; ValueName: ""; ValueData: ""; Flags: deletekey uninsdeletekey; Tasks: not portable
@@ -204,6 +202,9 @@ Source: "plugins\xcwinamp.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcwinam
 ;Source: "plugins\xcxdcc.dll"; DestDir: "{app}\plugins"; Components: plugins\xdcc; Tasks: x86
 ;Source: "plugins\xcxdcc.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcxdcc.dll"; Components: plugins\xdcc; Tasks: x64
 
+Source: "plugins\xtray.dll"; DestDir: "{app}\plugins"; Components: plugins\xtray; Tasks: x86
+Source: "plugins\xtray.dll.x64"; DestDir: "{app}\plugins"; DestName: "xtray.dll"; Components: plugins\xtray; Tasks: x64
+
 
 
 Source: "plugins\xclua.dll"; DestDir: "{app}\plugins"; Components: langs\lua; Tasks: x86
@@ -222,11 +223,6 @@ Source: "plugins\xcperl-510.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcper
 
 Source: "plugins\xcperl-512.dll"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Components: langs\perl; Tasks: x86 and perl512
 Source: "plugins\xcperl-512.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Components: langs\perl; Tasks: x64 and perl512
-
-
-
-Source: "plugins\xtray.dll"; DestDir: "{app}\plugins"; Components: libs; Tasks: x86 and xtray
-Source: "plugins\xtray.dll.x64"; DestDir: "{app}\plugins"; DestName: "xtray.dll"; Components: libs; Tasks: x64 and xtray
 
 [Icons]
 Name: "{group}\XChat-WDK"; Filename: "{app}\xchat.exe"; Tasks: not portable
