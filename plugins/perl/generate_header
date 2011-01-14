@@ -8,7 +8,7 @@ sub header {
   open my $input, "<", $file or die "Couldn't open '$file':$!";
   my @file = <$input>;
   close $file;
-  return qq{"#line 1 \\"$file\\"\\n"\n}, toc(@file);
+  return toc(@file);
 }
 
 sub toc {
@@ -24,13 +24,27 @@ sub toc {
   return @lines;
 }
 
-for my $files ( [ "Xchat.pm", "xchat.pm.h" ], [ "IRC.pm", "irc.pm.h" ] ) {
-	my ($input, $output) = @$files;
+for my $files (
+	[ "xchat.pm.h",         # output file
+		"lib/Xchat.pm",      # input files
+		"lib/Xchat/Embed.pm",
+		"lib/Xchat/List/Network.pm",
+		"lib/Xchat/List/Network/Entry.pm",
+		"lib/Xchat/List/Network/AutoJoin.pm",
+	],
+	[ "irc.pm.h",   # output file
+		"lib/IRC.pm" # input file
+	]
+) {
+	my ($output,@inputs) = @$files;
 
 	open my $header, ">", $output or die "Couldn't open '$output': $!";
 
-	print $header qq{#line 1 "$input"\n};
-	print $header header( $input );
-
+	for my $input ( @inputs ) {
+		print $header qq["{\\n"\n];
+		print $header qq{"#line 1 \\"$input\\"\\n"\n};
+		print $header header( $input );
+		print $header qq["}\\n"\n];
+	}
 	close $header;
 }

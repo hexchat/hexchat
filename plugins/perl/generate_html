@@ -1,14 +1,21 @@
 #!/usr/bin/env perl
 use strict;
 use warnings;
-use lib '.';
+use File::Basename qw(dirname);
+
+sub __DIR__ {
+	return dirname +(caller 0)[1];
+}
+
+# this must go before use Pod::Html to use our private copy
+use lib __DIR__ . '/lib';
 use Pod::Html;
 
-
+chdir( __DIR__ ) or die $!;
 pod2html(
 #	"pod2html",
 	"--header",
-	"--infile=Xchat.pod",
+	"--infile=lib/Xchat.pod",
 	"--outfile=xchat2-perl.html",
 );
 

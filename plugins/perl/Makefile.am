@@ -1,5 +1,8 @@
 
-EXTRA_DIST=alt_completion.pl xchat2-perldocs.html xchat2-perl.html generate_header Xchat.pm IRC.pm Pod/
+EXTRA_DIST=alt_completion.pl xchat2-perldocs.html xchat2-perl.html \
+	generate_header lib/Xchat.pm lib/Xchat/Embed.pm \
+	lib/Xchat/List/Network.pm lib/Xchat/List/Network/Entry.pm \
+	lib/Xchat/List/Network/AutoJoin.pm lib/IRC.pm Pod/
 
 libdir = $(xchatlibdir)/plugins
 
@@ -11,5 +14,7 @@ BUILT_SOURCES = xchat.pm.h irc.pm.h
 #CFLAGS = @CFLAGS@ -Wno-unused
 INCLUDES = $(PERL_CFLAGS) $(COMMON_CFLAGS) -I$(srcdir)/..
 CLEANFILES = xchat.pm.h irc.pm.h
-xchat.pm.h irc.pm.h: Xchat.pm IRC.pm
+xchat.pm.h irc.pm.h: lib/Xchat.pm lib/Xchat/Embed.pm \
+	lib/Xchat/List/Network.pm lib/Xchat/List/Network/Entry.pm \
+	lib/Xchat/List/Network/AutoJoin.pm lib/IRC.pm
 	perl generate_header
