@@ -211,17 +211,20 @@ sub hook_print {
 	if( $filter ) {
 		my $cb = $callback;
 		$callback = sub {
-			my @args = @_;
-			my $arg_count = @args;
-			my @new = $cb->( $event, @args );
+			my @args = @{$_[0]};
+			my $last_arg = @args - 1;
+
+			my @new = $cb->( \@args, $_[1], $event );
 
 			# a filter can either return the new results or it can modify
 			# @_ in place. 
 			if( @new ) {
-				emit_print( $event, @new[ 0 .. $arg_count - 1 ] );
+				emit_print( $event, @new[ 0 .. $last_arg ] );
 				return EAT_ALL;
-			} elsif( join( "\0", @_ ) ne join( "\0", @args ) ) {
-				emit_print( $event, @{$args[0]}[ 0 .. $arg_count - 1 ] );
+			} elsif(
+				join( "\0", @{$_[0]} ) ne join( "\0", @args[ 0 .. $last_arg ] )
+			) {
+				emit_print( $event, @args[ 0 .. $last_arg ] );
 				return EAT_ALL;
 			}
 
