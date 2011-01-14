@@ -53,8 +53,8 @@ Name: "langs\tcl"; Description: "Tcl"; Types: full custom; Flags: disablenounins
 Name: x86; Description: "x86"; GroupDescription: "XChat-WDK version:"; Flags: exclusive unchecked
 Name: x64; Description: "x64"; GroupDescription: "XChat-WDK version:"; Flags: exclusive; Check: Is64BitInstallMode
 
-;Name: xtray; Description: "X-Tray"; GroupDescription: "Tray Icon"; Flags: exclusive
-;Name: noxtray; Description: "Plugin-Tray"; GroupDescription: "Tray Icon"; Flags: exclusive unchecked
+Name: noxtray; Description: "Plugin-Tray"; GroupDescription: "Tray Icon"; Flags: exclusive
+Name: xtray; Description: "X-Tray"; GroupDescription: "Tray Icon"; Flags: exclusive unchecked
 
 Name: perl510; Description: "5.10"; GroupDescription: "Perl version:"; Flags: exclusive unchecked; Components: langs\perl
 Name: perl512; Description: "5.12"; GroupDescription: "Perl version:"; Flags: exclusive; Components: langs\perl
@@ -225,10 +225,8 @@ Source: "plugins\xcperl-512.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcper
 
 
 
-;Source: "plugins\xtray.dll"; DestDir: "{app}\plugins"; Components: libs; Tasks: x86
-; and xtray
-;Source: "plugins\xtray.dll.x64"; DestDir: "{app}\plugins"; DestName: "xtray.dll"; Components: libs; Tasks: x64
-; and xtray
+Source: "plugins\xtray.dll"; DestDir: "{app}\plugins"; Components: libs; Tasks: x86 and xtray
+Source: "plugins\xtray.dll.x64"; DestDir: "{app}\plugins"; DestName: "xtray.dll"; Components: libs; Tasks: x64 and xtray
 
 [Icons]
 Name: "{group}\XChat-WDK"; Filename: "{app}\xchat.exe"; Tasks: not portable

@@ -51,7 +51,7 @@ copy ..\plugins\python\xcpython.dll %XCHAT_DEST%\plugins
 copy ..\plugins\tcl\xctcl.dll %XCHAT_DEST%\plugins
 copy ..\plugins\upd\xcupd.dll %XCHAT_DEST%\plugins
 ::copy ..\plugins\xdcc\xcxdcc.dll %XCHAT_DEST%\plugins
-::copy ..\plugins\xtray\xtray.dll %XCHAT_DEST%\plugins
+copy ..\plugins\xtray\xtray.dll %XCHAT_DEST%\plugins
 copy ..\plugins\winamp\xcwinamp.dll %XCHAT_DEST%\plugins
 copy %DEPS_ROOT%\bin\lua51.dll %XCHAT_DEST%
 xcopy /q /s /i ..\po\locale %XCHAT_DEST%\locale
