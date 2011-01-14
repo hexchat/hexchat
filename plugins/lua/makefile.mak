@@ -1,7 +1,9 @@
 include "..\..\src\makeinc.mak"
 
+DIRENTLIB = ..\..\src\common\dirent.lib
+
 all: lua.obj lua.def
-	link $(LDFLAGS) $(LIBS) /dll /out:xclua.dll $(LUALIB).lib /def:lua.def lua.obj 
+	link $(LDFLAGS) $(LIBS) /dll /out:xclua.dll $(LUALIB).lib $(DIRENTLIB) /def:lua.def lua.obj 
 
 lua.def:
 	echo EXPORTS > lua.def
