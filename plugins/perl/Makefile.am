@@ -1,8 +1,6 @@
 
 EXTRA_DIST=alt_completion.pl xchat2-perldocs.html xchat2-perl.html \
-	generate_header lib/Xchat.pm lib/Xchat/Embed.pm \
-	lib/Xchat/List/Network.pm lib/Xchat/List/Network/Entry.pm \
-	lib/Xchat/List/Network/AutoJoin.pm lib/IRC.pm Pod/
+	generate_header lib
 
 libdir = $(xchatlibdir)/plugins
 
