@@ -16,7 +16,7 @@ perl.obj: perl.c
 
 perl.c: xchat.pm.h
 
-xchat.pm.h: Xchat.pm IRC.pm
+xchat.pm.h: lib/Xchat.pm lib/IRC.pm
 	perl.exe generate_header
 
 $(TARGET): perl.obj perl.def
