@@ -173,7 +173,7 @@ xchat_plugin_init(xchat_plugin *plugin_handle,
 	*plugin_version = "0.5";
 
 	xchat_hook_command (ph, "WINAMP", XCHAT_PRI_NORM, winamp, "Usage: /WINAMP [PAUSE|PLAY|STOP|NEXT|PREV|START] - control Winamp or show what's currently playing", 0);
-   	xchat_command (ph, "MENU -ietc\\music.png ADD \"Window/Display Current Song\" \"WINAMP\"");
+   	xchat_command (ph, "MENU -ietc\\music.png ADD \"Window/Display Current Song (Winamp)\" \"WINAMP\"");
 
 	xchat_print (ph, "Winamp plugin loaded\n");
 
@@ -183,7 +183,7 @@ xchat_plugin_init(xchat_plugin *plugin_handle,
 int
 xchat_plugin_deinit(void)
 {
-	xchat_command (ph, "MENU DEL \"Window/Display current song\"");
+	xchat_command (ph, "MENU DEL \"Window/Display Current Song (Winamp)\"");
 	xchat_print (ph, "Winamp plugin unloaded\n");
 	return 1;
 }
