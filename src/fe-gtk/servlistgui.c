@@ -181,7 +181,10 @@ servlist_networks_populate_ (GtkWidget *treeview, GSList *netlist, gboolean favo
 		net = netlist->data;
 		if (!favorites || (net->flags & FLAG_FAVORITE))
 		{
-			gtk_list_store_insert_with_values (store, &iter, 0x7fffffff, 0, net->name, 1, 1, -1);
+			if (favorites)
+				gtk_list_store_insert_with_values (store, &iter, 0x7fffffff, 0, net->name, 1, 1, 2, 400, -1);
+			else
+				gtk_list_store_insert_with_values (store, &iter, 0x7fffffff, 0, net->name, 1, 1, 2, (net->flags & FLAG_FAVORITE) ? 800 : 400, -1);
 			if (i == prefs.slist_select)
 			{
 				/* select this network */
@@ -433,6 +436,32 @@ servlist_has_selection (GtkTreeView *tree)
 	/* make sure something is selected */
 	sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (tree));
 	return gtk_tree_selection_get_selected (sel, &model, &iter);
+}
+
+static void
+servlist_favor (GtkWidget *button, gpointer none)
+{
+	GtkTreeSelection *sel;
+	GtkTreeModel *model;
+	GtkTreeIter iter;
+
+	if (!selected_net)
+		return;
+
+	sel = gtk_tree_view_get_selection (GTK_TREE_VIEW (networks_tree));
+	if (gtk_tree_selection_get_selected (sel, &model, &iter))
+	{
+		if (selected_net->flags & FLAG_FAVORITE)
+		{
+			gtk_list_store_set (GTK_LIST_STORE (model), &iter, 2, 400, -1);
+			selected_net->flags &= ~FLAG_FAVORITE;
+		}
+		else
+		{
+			gtk_list_store_set (GTK_LIST_STORE (model), &iter, 2, 800, -1);
+			selected_net->flags |= FLAG_FAVORITE;
+		}
+	}
 }
 
 static void
@@ -1740,7 +1769,7 @@ servlist_open_networks (void)
 	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (scrolledwindow3),
 													 GTK_SHADOW_IN);
 
-	store = gtk_list_store_new (2, G_TYPE_STRING, G_TYPE_BOOLEAN);
+	store = gtk_list_store_new (3, G_TYPE_STRING, G_TYPE_BOOLEAN, G_TYPE_INT);
 	model = GTK_TREE_MODEL (store);
 
 	networks_tree = treeview_networks = gtk_tree_view_new_with_model (model);
@@ -1758,6 +1787,7 @@ servlist_open_networks (void)
 						 		0, renderer,
 						 		"text", 0,
 								"editable", 1,
+								"weight", 2,
 								NULL);
 
 	hbox = gtk_hbox_new (0, FALSE);
@@ -1778,7 +1808,7 @@ servlist_open_networks (void)
 	checkbutton_fav =
 		gtk_check_button_new_with_mnemonic (_("Show favorites only"));
 	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (checkbutton_fav),
-											prefs.slist_skip);
+											prefs.slist_fav);
 	gtk_container_add (GTK_CONTAINER (hbox), checkbutton_fav);
 	g_signal_connect (G_OBJECT (checkbutton_fav), "toggled",
 							G_CALLBACK (fav_servlist), 0);
@@ -1818,6 +1848,14 @@ servlist_open_networks (void)
 				"Use SHIFT-UP and SHIFT-DOWN keys to move a row."));
 	g_signal_connect (G_OBJECT (button_sort), "clicked",
 							G_CALLBACK (servlist_sort), 0);
+	gtk_widget_show (button_sort);
+	gtk_container_add (GTK_CONTAINER (vbuttonbox2), button_sort);
+	GTK_WIDGET_SET_FLAGS (button_sort, GTK_CAN_DEFAULT);
+
+	button_sort = gtk_button_new_with_mnemonic (_("_Favor"));
+	add_tip (button_sort, _("Mark or unmark this network as a favorite."));
+	g_signal_connect (G_OBJECT (button_sort), "clicked",
+							G_CALLBACK (servlist_favor), 0);
 	gtk_widget_show (button_sort);
 	gtk_container_add (GTK_CONTAINER (vbuttonbox2), button_sort);
 	GTK_WIDGET_SET_FLAGS (button_sort, GTK_CAN_DEFAULT);
