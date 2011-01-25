@@ -3,6 +3,8 @@ all:
 	@-$(MAKE) /nologo /s /f makefile.mak $@
 	@cd ..\lua
 	@-$(MAKE) /nologo /s /f makefile.mak $@
+	@cd ..\mpcinfo
+	@-$(MAKE) /nologo /s /f makefile.mak $@
 	@cd ..\python
 	@-$(MAKE) /nologo /s /f makefile.mak $@
 	@cd ..\tcl
@@ -27,6 +29,11 @@ clean:
 	@del lua\*.exp
 	@del lua\*.lib
 	@del lua\*.obj
+	@del mpcinfo\*.def
+	@del mpcinfo\*.dll
+	@del mpcinfo\*.exp
+	@del mpcinfo\*.lib
+	@del mpcinfo\*.obj
 	@del python\*.def
 	@del python\*.dll
 	@del python\*.exp

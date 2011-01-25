@@ -45,6 +45,7 @@ copy %DEPS_ROOT%\bin\libenchant.dll %XCHAT_DEST%
 xcopy /q /s /i %DEPS_ROOT%\lib\enchant\libenchant_myspell.dll %XCHAT_DEST%\lib\enchant\
 xcopy /q /s /i ..\plugins\checksum\xcchecksum.dll %XCHAT_DEST%\plugins\
 copy ..\plugins\lua\xclua.dll %XCHAT_DEST%\plugins
+copy ..\plugins\mpcinfo\xcmpcinfo.dll %XCHAT_DEST%\plugins
 copy ..\plugins\perl\xcperl-510.dll %XCHAT_DEST%\plugins
 copy ..\plugins\perl\xcperl-512.dll %XCHAT_DEST%\plugins
 copy ..\plugins\python\xcpython.dll %XCHAT_DEST%\plugins
