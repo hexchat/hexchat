@@ -439,6 +439,7 @@ typedef struct server
 	int sok;					/* is equal to sok4 or sok6 (the one we are using) */
 	int sok4;					/* tcp4 socket */
 	int sok6;					/* tcp6 socket */
+	int proxy_type;
 	int proxy_sok;				/* Additional information for MS Proxy beast */
 	int proxy_sok4;
 	int proxy_sok6;

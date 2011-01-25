@@ -70,6 +70,10 @@
 #include "identd.c"
 #endif
 
+#ifdef USE_LIBPROXY
+#include <proxy.h>
+#endif
+
 #ifdef USE_OPENSSL
 extern SSL_CTX *ctx;				  /* xchat.c */
 /* local variables */
@@ -84,6 +88,9 @@ static void server_disconnect (session * sess, int sendquit, int err);
 static int server_cleanup (server * serv);
 static void server_connect (server *serv, char *hostname, int port, int no_login);
 
+#ifdef USE_LIBPROXY
+extern pxProxyFactory *libproxy_factory;
+#endif
 
 /* actually send to the socket. This might do a character translation or
    send via SSL. server/dcc both use this function. */
@@ -1450,9 +1457,9 @@ traverse_http (int print_fd, int sok, char *serverAddr, int port)
 }
 
 static int
-traverse_proxy (int print_fd, int sok, char *ip, int port, struct msproxy_state_t *state, netstore *ns_proxy, int csok4, int csok6, int *csok, char bound)
+traverse_proxy (int proxy_type, int print_fd, int sok, char *ip, int port, struct msproxy_state_t *state, netstore *ns_proxy, int csok4, int csok6, int *csok, char bound)
 {
-	switch (prefs.proxy_type)
+	switch (proxy_type)
 	{
 	case 1:
 		return traverse_wingate (print_fd, sok, ip, port);
@@ -1490,6 +1497,9 @@ server_child (server * serv)
 	int connect_port;
 	char buf[512];
 	char bound = 0;
+	int proxy_type = 0;
+	char *proxy_host = NULL;
+	int proxy_port;
 
 	ns_server = net_store_new ();
 
@@ -1511,25 +1521,72 @@ server_child (server * serv)
 		net_store_destroy (ns_local);
 	}
 
-	/* first resolve where we want to connect to */
-	if (!serv->dont_use_proxy && /* blocked in serverlist? */
-		prefs.proxy_host[0] &&
-		prefs.proxy_type > 0 &&
-		prefs.proxy_use != 2)	/* proxy is NOT dcc-only */
+	if (!serv->dont_use_proxy) /* blocked in serverlist? */
 	{
-		snprintf (buf, sizeof (buf), "9\n%s\n", prefs.proxy_host);
+		if (FALSE)
+			;
+#ifdef USE_LIBPROXY
+		else if (prefs.proxy_type == 5)
+		{
+			char **proxy_list;
+			char *url, *proxy;
+
+			url = g_strdup_printf ("irc://%s:%d", hostname, port);
+			proxy_list = px_proxy_factory_get_proxies (libproxy_factory, url);
+
+			if (proxy_list) {
+				/* can use only one */
+				proxy = proxy_list[0];
+				if (!strncmp (proxy, "direct", 6))
+					proxy_type = 0;
+				else if (!strncmp (proxy, "http", 4))
+					proxy_type = 4;
+				else if (!strncmp (proxy, "socks5", 6))
+					proxy_type = 3;
+				else if (!strncmp (proxy, "socks", 5))
+					proxy_type = 2;
+			}
+
+			if (proxy_type) {
+				char *c;
+				c = strchr (proxy, ':') + 3;
+				proxy_host = strdup (c);
+				c = strchr (proxy_host, ':');
+				*c = '\0';
+				proxy_port = atoi (c + 1);
+			}
+
+			g_strfreev (proxy_list);
+			g_free (url);
+#endif
+		} else if (prefs.proxy_host[0] &&
+			   prefs.proxy_type > 0 &&
+			   prefs.proxy_use != 2) /* proxy is NOT dcc-only */
+		{
+			proxy_type = prefs.proxy_type;
+			proxy_host = strdup (prefs.proxy_host);
+			proxy_port = prefs.proxy_port;
+		}
+	}
+
+	serv->proxy_type = proxy_type;
+
+	/* first resolve where we want to connect to */
+	if (proxy_type > 0)
+	{
+		snprintf (buf, sizeof (buf), "9\n%s\n", proxy_host);
 		write (serv->childwrite, buf, strlen (buf));
-		ip = net_resolve (ns_server, prefs.proxy_host, prefs.proxy_port,
-								&real_hostname);
+		ip = net_resolve (ns_server, proxy_host, proxy_port, &real_hostname);
+		free (proxy_host);
 		if (!ip)
 		{
 			write (serv->childwrite, "1\n", 2);
 			goto xit;
 		}
-		connect_port = prefs.proxy_port;
+		connect_port = proxy_port;
 
 		/* if using socks4 or MS Proxy, attempt to resolve ip for irc server */
-		if ((prefs.proxy_type == 2) || (prefs.proxy_type == 5))
+		if ((proxy_type == 2) || (proxy_type == 5))
 		{
 			ns_proxy = net_store_new ();
 			proxy_ip = net_resolve (ns_proxy, hostname, port, &real_hostname);
@@ -1555,7 +1612,7 @@ server_child (server * serv)
 				 real_hostname, ip, connect_port);
 	write (serv->childwrite, buf, strlen (buf));
 
-	if (!serv->dont_use_proxy && (prefs.proxy_type == 5))
+	if (!serv->dont_use_proxy && (proxy_type == 5))
 		error = net_connect (ns_server, serv->proxy_sok4, serv->proxy_sok6, &psok);
 	else
 	{
@@ -1572,11 +1629,11 @@ server_child (server * serv)
 		/* connect succeeded */
 		if (proxy_ip)
 		{
-			switch (traverse_proxy (serv->childwrite, psok, proxy_ip, port, &serv->msp_state, ns_proxy, serv->sok4, serv->sok6, &sok, bound))
+			switch (traverse_proxy (proxy_type, serv->childwrite, psok, proxy_ip, port, &serv->msp_state, ns_proxy, serv->sok4, serv->sok6, &sok, bound))
 			{
 			case 0:	/* success */
 #ifdef USE_MSPROXY
-				if (!serv->dont_use_proxy && (prefs.proxy_type == 5))
+				if (!serv->dont_use_proxy && (proxy_type == 5))
 					snprintf (buf, sizeof (buf), "4\n%d %d %d %d %d\n", sok, psok, serv->msp_state.clientid, serv->msp_state.serverid,
 						serv->msp_state.seq_sent);
 				else
@@ -1708,7 +1765,7 @@ server_connect (server *serv, char *hostname, int port, int no_login)
 	net_sockets (&serv->sok4, &serv->sok6);
 #ifdef USE_MSPROXY
 	/* In case of MS Proxy we have a separate UDP control connection */
-	if (!serv->dont_use_proxy && (prefs.proxy_type == 5))
+	if (!serv->dont_use_proxy && (serv->proxy_type == 5))
 		udp_sockets (&serv->proxy_sok4, &serv->proxy_sok6);
 	else
 #endif

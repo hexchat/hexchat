@@ -58,6 +58,10 @@
 #include "msproxy.h"
 #endif
 
+#ifdef USE_LIBPROXY
+#include <proxy.h>
+#endif
+
 GSList *popup_list = 0;
 GSList *button_list = 0;
 GSList *dlgbutton_list = 0;
@@ -93,6 +97,9 @@ struct xchatprefs prefs;
 SSL_CTX *ctx = NULL;
 #endif
 
+#ifdef USE_LIBPROXY
+pxProxyFactory *libproxy_factory;
+#endif
 
 int
 is_session (session * sess)
@@ -913,11 +920,19 @@ main (int argc, char *argv[])
 
 	load_config ();
 
+#ifdef USE_LIBPROXY
+	libproxy_factory = px_proxy_factory_new();
+#endif
+
 	fe_init ();
 
 	xchat_init ();
 
 	fe_main ();
+
+#ifdef USE_LIBPROXY
+	px_proxy_factory_free(libproxy_factory);
+#endif
 
 #ifdef USE_OPENSSL
 	if (ctx)

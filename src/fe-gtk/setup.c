@@ -406,6 +406,9 @@ static const char *const proxytypes[] =
 #ifdef USE_MSPROXY
 	N_("MS Proxy (ISA)"),
 #endif
+#ifdef USE_LIBPROXY
+	N_("Auto"),
+#endif
 	NULL
 };
 

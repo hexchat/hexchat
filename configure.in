@@ -431,6 +431,13 @@ if test "$retry" = "yes"; then
 fi
 
 dnl *********************************************************************
+dnl ** LIBPROXY *********************************************************
+dnl *********************************************************************
+
+PKG_CHECK_MODULES([LIBPROXY], [libproxy-1.0], [libproxy=1], [libproxy=0])
+AC_DEFINE_UNQUOTED([USE_LIBPROXY], [$libproxy], [Use libproxy])
+
+dnl *********************************************************************
 dnl ** PLUGIN ***********************************************************
 dnl *********************************************************************
 
@@ -475,7 +482,7 @@ if test "x$dbus" = "xyes" ; then
 	if test "x$DBUS_BINDING_TOOL" = "xno" || test "x$GLIB_GENMARSHAL" = "xno" || test "x$dbus" = "xno" ; then
 		dbus="no"
 	else
-		COMMON_LIBS="$COMMON_LIBS $DBUS_LIBS"
+		COMMON_LIBS="$COMMON_LIBS $DBUS_LIBS $LIBPROXY_LIBS"
 		COMMON_CFLAGS="$COMMON_CFLAGS $DBUS_CFLAGS"
 		AC_DEFINE(USE_DBUS)
 		AS_AC_EXPAND(DATADIR, $datadir)
