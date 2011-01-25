@@ -1882,18 +1882,6 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/search.c xchat-wdk/src/f
  
  	gtk_widget_show (win);
  }
-diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/servlistgui.c xchat-wdk/src/fe-gtk/servlistgui.c
---- xchat-wdk.orig/src/fe-gtk/servlistgui.c	2011-01-25 11:28:02 +0100
-+++ xchat-wdk/src/fe-gtk/servlistgui.c	2011-01-25 23:56:29 +0100
-@@ -1812,7 +1812,7 @@
- 	gtk_container_add (GTK_CONTAINER (hbox), checkbutton_fav);
- 	g_signal_connect (G_OBJECT (checkbutton_fav), "toggled",
- 							G_CALLBACK (fav_servlist), 0);
--	gtk_widget_show (checkbutton_fav);
-+	/* gtk_widget_show (checkbutton_fav); don't show this until it's completed */
- 
- 	vbuttonbox2 = gtk_vbutton_box_new ();
- 	gtk_box_set_spacing (GTK_BOX (vbuttonbox2), 3);
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/fe-gtk/setup.c xchat-wdk/src/fe-gtk/setup.c
 --- xchat-wdk.orig/src/fe-gtk/setup.c	2011-01-25 11:46:54 +0100
 +++ xchat-wdk/src/fe-gtk/setup.c	2011-01-25 23:56:29 +0100
