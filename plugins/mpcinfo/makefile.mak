@@ -6,7 +6,7 @@ all: mpcinfo.obj mpcinfo.def
 mpcinfo.def:
 	echo EXPORTS > mpcinfo.def
 	echo xchat_plugin_init >> mpcinfo.def
-#	echo xchat_plugin_deinit >> mpcinfo.def
+	echo xchat_plugin_deinit >> mpcinfo.def
 
 mpcinfo.obj: mpcinfo.c makefile.mak
 	cl $(CFLAGS) $(GLIB) /I.. mpcinfo.c

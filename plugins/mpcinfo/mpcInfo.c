@@ -123,18 +123,25 @@ static int mpc_tell(char *word[], char *word_eol[], void *userdata){
 }
 
 int xchat_plugin_init(xchat_plugin *plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg){
-   ph = plugin_handle;
-   *plugin_name = "mpcInfo";
-   *plugin_desc = "Information-Script for Media Player Classic"; 
-   *plugin_version=VERSION;
+	ph = plugin_handle;
+	*plugin_name = "mpcInfo";
+	*plugin_desc = "Information-Script for Media Player Classic"; 
+	*plugin_version=VERSION;
 
-   xchat_hook_command(ph, "tell", XCHAT_PRI_NORM, mpc_tell,"no help text", 0);
-   xchat_hook_command(ph, "mpc_themes", XCHAT_PRI_NORM, print_themes,"no help text", 0);
-   xchat_hook_command(ph, "mpc_reloadthemes", XCHAT_PRI_NORM, mpc_themeReload,"no help text", 0);
-   
-   xchat_print(ph,"\n-----------------------------\n");
-   themeInit();loadThemes();
-   xchat_printf(ph, "%s %s loaded successfully!\n",*plugin_name, VERSION);
-   xchat_print(ph,"-----------------------------\n");
-   return 1;
+	xchat_hook_command(ph, "tell", XCHAT_PRI_NORM, mpc_tell,"no help text", 0);
+	xchat_hook_command(ph, "mpc_themes", XCHAT_PRI_NORM, print_themes,"no help text", 0);
+	xchat_hook_command(ph, "mpc_reloadthemes", XCHAT_PRI_NORM, mpc_themeReload,"no help text", 0);
+
+	themeInit();
+	loadThemes();
+	xchat_printf(ph, "%s %s plugin loaded\n",*plugin_name, VERSION);
+
+	return 1;
+}
+
+int
+xchat_plugin_deinit (void)
+{
+	xchat_print (ph, "mpcInfo plugin unloaded\n");
+	return 1;
 }
