@@ -411,7 +411,7 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/proto-irc.c xchat-wdk/sr
  #include <stdlib.h>
 diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/server.c xchat-wdk/src/common/server.c
 --- xchat-wdk.orig/src/common/server.c	2011-01-25 11:46:54 +0100
-+++ xchat-wdk/src/common/server.c	2011-01-25 23:56:28 +0100
++++ xchat-wdk/src/common/server.c	2011-01-26 00:04:22 +0100
 @@ -26,7 +26,6 @@
  #include <stdio.h>
  #include <string.h>
@@ -467,7 +467,19 @@ diff -ruN --strip-trailing-cr xchat-wdk.orig/src/common/server.c xchat-wdk/src/c
  	if (len >= 1)
  	{
  		/* print the message out (send it to the parent process) */
-@@ -1795,7 +1762,7 @@
+@@ -1524,9 +1491,10 @@
+ 	if (!serv->dont_use_proxy) /* blocked in serverlist? */
+ 	{
+ 		if (FALSE)
++		{
+ 			;
+ #ifdef USE_LIBPROXY
+-		else if (prefs.proxy_type == 5)
++		} else if (prefs.proxy_type == 5)
+ 		{
+ 			char **proxy_list;
+ 			char *url, *proxy;
+@@ -1795,7 +1763,7 @@
  	}
  #endif
  	serv->childpid = pid;
