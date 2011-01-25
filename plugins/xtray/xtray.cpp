@@ -75,7 +75,7 @@ int xchat_plugin_init(xchat_plugin *plugin_handle, char **plugin_name, char **pl
 
 	*plugin_name	= "X-Tray";
 	*plugin_desc	= "Minimize XChat to the Windows system tray";
-	*plugin_version = "1.2.3 PR";
+	*plugin_version = "1.2.4";
 
 	/***************************************************************************************************************************/
 	/************************* Load our preferances from xTray.ini *************************************************************/
@@ -135,6 +135,7 @@ int xchat_plugin_init(xchat_plugin *plugin_handle, char **plugin_name, char **pl
 	/************************* Set our hooks and save them for later so we can unhook them *************************************/
 	/***************************************************************************************************************************/
 	g_vHooks.push_back(xchat_hook_print(ph, "Channel Msg Hilight",			XCHAT_PRI_NORM, event_cb,	(void *)CHAN_HILIGHT));
+	g_vHooks.push_back(xchat_hook_print(ph, "Channel Message",				XCHAT_PRI_NORM, event_cb,	(void *)CHAN_MESSAGE));
 	g_vHooks.push_back(xchat_hook_print(ph, "Topic Change",					XCHAT_PRI_NORM, event_cb,	(void *)CHAN_TOPIC_CHANGE));
 	g_vHooks.push_back(xchat_hook_print(ph, "Channel Action Hilight",		XCHAT_PRI_NORM, event_cb,	(void *)CHAN_HILIGHT));
 	g_vHooks.push_back(xchat_hook_print(ph, "Channel INVITE",				XCHAT_PRI_NORM, event_cb,	(void *)CHAN_INVITE));

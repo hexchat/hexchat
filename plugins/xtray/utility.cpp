@@ -207,17 +207,18 @@ void LoadPrefs()
 
 	// backwards compatability
 	// also allows us to set defaults if its a new installation
+	// disable topic change, channel message and server notice by default
 	if(g_dwPrefs == 0)
 	{
 		g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("HILIGHT"),		1,  XTRAY_INI_FILE)<<1);
 		g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("INVITE"),		1,  XTRAY_INI_FILE)<<2);
-		g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("TOPIC"),		1,  XTRAY_INI_FILE)<<3);
+		/* g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("TOPIC"),		1,  XTRAY_INI_FILE)<<3); */
 		g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("BANNED"),		1,  XTRAY_INI_FILE)<<4);
 		g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("KICKED"),		1,  XTRAY_INI_FILE)<<5);
 		g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("CTCP"),		1,  XTRAY_INI_FILE)<<6);
 		g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("PMSG"),		1,  XTRAY_INI_FILE)<<7);
 		g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("KILLED"),		1,  XTRAY_INI_FILE)<<8);
-		g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("NOTICE"),		1,  XTRAY_INI_FILE)<<9);
+		/* g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("NOTICE"),		1,  XTRAY_INI_FILE)<<9); */
 		g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("DISCONNECT"),	1,  XTRAY_INI_FILE)<<10);
 
 		g_dwPrefs	|= (GetPrivateProfileInt(szUser, _T("AOM"),			0,  XTRAY_INI_FILE)<<11);
@@ -263,6 +264,7 @@ void CheckPrefs(HWND hwnd, int iDlg)
 			SetOption(hwnd, SERV_KILLED,		SERV_KILLED);
 			SetOption(hwnd, SERV_NOTICE,		SERV_NOTICE);
 			SetOption(hwnd, SERV_DISCONNECT,	SERV_DISCONNECT);
+			SetOption(hwnd, CHAN_MESSAGE,		CHAN_MESSAGE);
 		}
 		break;
 	case IDD_ALERTS:
@@ -353,6 +355,7 @@ void SetDialog(HWND hwnd, int iDlg)
 			SetCheck(hwnd, SERV_KILLED,			SERV_KILLED);
 			SetCheck(hwnd, SERV_NOTICE,			SERV_NOTICE);
 			SetCheck(hwnd, SERV_DISCONNECT,		SERV_DISCONNECT);
+			SetCheck(hwnd, CHAN_MESSAGE,		CHAN_MESSAGE);
 		}
 		break;
 	case IDD_SETTINGS:

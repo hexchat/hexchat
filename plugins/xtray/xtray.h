@@ -51,6 +51,9 @@ extern struct _xchat_plugin *ph;
 #define SERV_NOTICE				9
 #define SERV_DISCONNECT			10
 
+/* new events */
+#define CHAN_MESSAGE			21
+
 #define PREF_AOM				11 // away on minimize
 #define PREF_TOT				12 // Tray on Taskbar
 #define PREF_AMAE				13 // alert me about events

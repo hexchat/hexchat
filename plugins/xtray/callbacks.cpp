@@ -61,7 +61,7 @@ int event_cb(char *word[], void *userdata)
 {
 	int iEvent = (int)userdata;
 
-	if(iEvent > 10)
+	if(iEvent > 10 && iEvent != 21)
 		return XCHAT_EAT_NONE;
 
 	/***************************************************************************************/
@@ -90,6 +90,11 @@ int event_cb(char *word[], void *userdata)
 		case CHAN_HILIGHT:
 			_snprintf(szInfo, 512, "%s:\r\n%s", word[1], word[2]);
 			_snprintf(szName, 64, "Hilight");
+			dwInfoFlags = NIIF_INFO;
+			break;
+		case CHAN_MESSAGE:
+			_snprintf(szInfo, 512, "%s:\r\n%s", word[1], word[2]);
+			_snprintf(szName, 64, "Channel Message");
 			dwInfoFlags = NIIF_INFO;
 			break;
 		case CHAN_TOPIC_CHANGE:
