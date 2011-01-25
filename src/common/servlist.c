@@ -353,6 +353,9 @@ static const struct defaultserver def[] =
 	{"OzNet",	0},
 	{0,			"irc.oz.org"},
 
+	{"PIRC.PL",	0},
+	{0,			"irc.pirc.pl"},
+
 	{"PTlink",	0},
 	{0,			"irc.PTlink.net"},
 	{0,			"aaia.PTlink.net"},
