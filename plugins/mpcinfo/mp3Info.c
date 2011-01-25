@@ -133,12 +133,12 @@ static char *substring(char *text, int first, int length){return subString(text,
 
 static char *tagExtract(char *tag, int tagLen, char* info){
 //if (DEBUG==1) putlog("extracting tag");
-	int pos=inStr(tag,tagLen,info);
+	int pos, len, i;
+	pos=inStr(tag,tagLen,info);
 //xchat_printf(ph,"pos=%i",pos);
 	if (pos==-1) return "";//NULL;
 	//printf("position of %s = %i\n",info,pos);
-	int len=0;
-	int i;
+	len=0;
 	//for (i=pos;i<pos+10;i++)printf("tag[%i]=%i \n",i,tag[i]);
 	for (i=0;i<4;i++) {
 		len+=tag[pos+strlen(info)+i]*iPow(255,3-i);
@@ -153,20 +153,25 @@ static char *tagExtract(char *tag, int tagLen, char* info){
 
 struct tagInfo readID3V1(char *file){
 //if (DEBUG==1) putlog("reading ID3V1");
-	FILE *f=fopen(file,"rb");
-	struct tagInfo ret; ret.artist=NULL;
-	char *tag =(char*) malloc(sizeof(char)*129);
+	FILE *f;
+	struct tagInfo ret;
+	int res, i, c, val;
+	char *tag;
+	char *id;
+	char *tmp;
+	tag = (char*) malloc(sizeof(char)*129);
+	ret.artist=NULL;
+	f=fopen(file,"rb");
 	if (f==NULL){
        xchat_print(ph,"file not found while trying to read id3v1");
        //if (DEBUG==1) putlog("file not found while trying to read id3v1");
        return ret;
     }
 	//int offset=getSize(file)-128;
-	int res=fseek(f,-128,SEEK_END);
+	res=fseek(f,-128,SEEK_END);
 	if (res!=0) {printf("seek failed\n");fclose(f);return ret;}
 	//long int pos=ftell(f);
 	//printf("position= %li\n",pos);
-	int i;int c;
 	for (i=0;i<128;i++) {
 		c=fgetc(f);
 		if (c==EOF) {xchat_printf(ph,"read ID3V1 failed\n");fclose(f);return ret;}
@@ -174,17 +179,17 @@ struct tagInfo readID3V1(char *file){
 	}
 	fclose(f);
 	//printf("tag readed: \n");
-	char *id=substring(tag,0,3);
+	id=substring(tag,0,3);
 	//printf("header: %s\n",id);
 	if (strcmp(id,"TAG")!=0){xchat_printf(ph,"no id3 v1 found\n");return ret;}
 	ret.title=subString(tag,3,30,1);
 	ret.artist=subString(tag,33,30,1);
 	ret.album=subString(tag,63,30,1);
 	ret.comment=subString(tag,97,30,1);
-	char *tmp=substring(tag,127,1);
+	tmp=substring(tag,127,1);
 	//ret.genre=substring(tag,127,1);
 	
-	int val=(int)tmp[0];
+	val=(int)tmp[0];
 	if (val<0)val+=256;
 	//xchat_printf(ph, "tmp[0]=%i (%i)",val,tmp[0]);
 	if ((val<148)&&(val>=0)) 
@@ -220,17 +225,21 @@ char *extractID3Genre(char *tag){
 
 struct tagInfo readID3V2(char *file){
 //if (DEBUG==1) putlog("reading id3v2");
-	FILE *f=fopen(file,"rb");
-//xchat_printf(ph,"file :%s",file);
+	FILE *f;
+	int i, c, len;
+	char header[10];
+	char *tag;
 	struct tagInfo ret;
-	if (f==NULL){
+
+	f = fopen(file,"rb");
+	//xchat_printf(ph,"file :%s",file);
+	if (f==NULL)
+	{
        xchat_print(ph,"file not found whilt trying to read ID3V2");
        //if (DEBUG==1)putlog("file not found while trying to read ID3V2");
        return ret;
     }
-	int i;
-	char header[10];
-	int c;
+
 	ret.artist=NULL;
 	for (i=0;i<10;i++){
         c=fgetc(f);
@@ -242,11 +251,11 @@ struct tagInfo readID3V2(char *file){
     }
 	if (strstr(header,"ID3")==header){
 		//xchat_printf(ph,"found id3v2\n");
-		int len=0;
+		len=0;
 		for (i=6;i<10;i++) len+=(int)header[i]*iPow(256,9-i);
 		
 		//char *tag=(char*)malloc(sizeof(char)*len);
-		char *tag=(char*) calloc(len,sizeof(char)); //malloc(sizeof(char)*len);
+		tag=(char*) calloc(len,sizeof(char)); //malloc(sizeof(char)*len);
 		for (i=0;i<len;i++){c=fgetc(f);tag[i]=(char)c;}
 //xchat_printf(ph,"tag length: %i\n",len);
 //xchat_printf(ph,"tag: %s\n",tag);
@@ -273,13 +282,18 @@ struct tagInfo readID3V2(char *file){
 
 struct tagInfo readHeader(char *file){
 //if (DEBUG==1) putlog("reading header");
-	FILE *f=fopen(file,"rb");
+	FILE *f;
 	//int buffer[5120];
+	int versionB, layerB, bitrateB, freqB, modeB;
 	int header[4];
 	int count=0;
 	int cc=0;
-	struct tagInfo info; info.artist=NULL;
-	if (f==NULL){
+	struct tagInfo info;
+	info.artist=NULL;
+
+	f = fopen(file,"rb");
+	if (f==NULL)
+	{
        xchat_print(ph,"file not found while trying to read mp3 header");
        //if (DEBUG==1) putlog("file not found while trying to read mp3 header");
        return info;
@@ -310,11 +324,11 @@ struct tagInfo readHeader(char *file){
 			header[count]=fgetc(f);
 			//printf("header[%i]=%i\n",count,header[count]);
 		}
-		int versionB=(header[1]&8)>>3;
-		int layerB=(header[1]&6)>>1;
-		int bitrateB=(header[2]&240)>>4; //4
-		int freqB=(header[2]&12)>>2;//2
-		int modeB=(header[3]&192)>>6;//6
+		versionB=(header[1]&8)>>3;
+		layerB=(header[1]&6)>>1;
+		bitrateB=(header[2]&240)>>4; //4
+		freqB=(header[2]&12)>>2;//2
+		modeB=(header[3]&192)>>6;//6
 		//printf("Mpeg: %i\nLayer: %i\nBitrate: %i\nFreq: %i\nMode: %i\n",versionB, layerB, bitrateB, freqB, modeB);
 		//int Bitrate=RATES[versionB][layerB-1][bitrateB];
 		//int Freq=FREQS[versionB][freqB];

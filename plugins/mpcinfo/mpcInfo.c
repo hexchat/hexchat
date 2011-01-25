@@ -43,12 +43,14 @@ static int mpc_themeReload(char *word[], char *word_eol[], void *userdata){
 }
 
 static int mpc_tell(char *word[], char *word_eol[], void *userdata){
-       HWND hwnd = FindWindow("MediaPlayerClassicW",NULL);
+       char *tTitle, *zero, *oggLine, *line;
+	   struct tagInfo info;
+	   HWND hwnd = FindWindow("MediaPlayerClassicW",NULL);
        if (hwnd==0) {xchat_command(ph, randomLine(notRunTheme));return XCHAT_EAT_ALL;}
        
-       char *tTitle=(char*)malloc(sizeof(char)*1024);
+       tTitle=(char*)malloc(sizeof(char)*1024);
        GetWindowText(hwnd, tTitle, 1024);
-       char *zero=strstr(tTitle," - Media Player Classic");
+       zero=strstr(tTitle," - Media Player Classic");
        if (zero!=NULL) zero[0]=0;
        else xchat_print(ph,"pattern not found");
        
@@ -56,7 +58,7 @@ static int mpc_tell(char *word[], char *word_eol[], void *userdata){
           //xchat_print(ph,"seams to be full path");
           if (endsWith(tTitle,".mp3")==1){
              //xchat_print(ph,"seams to be a mp3 file");
-             struct tagInfo info = readHeader(tTitle);
+             info = readHeader(tTitle);
              
              if ((info.artist!=NULL)&&(strcmp(info.artist,"")!=0)){
                 char *mode=MODES[info.mode];
@@ -86,11 +88,11 @@ static int mpc_tell(char *word[], char *word_eol[], void *userdata){
           }
           if (endsWith(tTitle,".ogg")==1){
              xchat_printf(ph,"Ogg detected\n");
-             struct tagInfo info = getOggHeader(tTitle);
+             info = getOggHeader(tTitle);
              if (info.artist!=NULL){
                 char *cbr;
                 if (info.cbr==1) cbr="CBR"; else cbr="VBR";
-                char *oggLine=randomLine(oggTheme);
+                oggLine=randomLine(oggTheme);
                 //if (cue==1) oggLine=cueLine;
                 //xchat_printf(ph,"ogg-line: %s\n",oggLine);
                 oggLine=replace(oggLine,"%art",info.artist);
@@ -114,7 +116,7 @@ static int mpc_tell(char *word[], char *word_eol[], void *userdata){
              }
           }
        }
-       char *line=randomLine(titleTheme);
+       line=randomLine(titleTheme);
        line=replace(line,"%title", tTitle);
        xchat_command(ph,line); 
        return XCHAT_EAT_ALL;

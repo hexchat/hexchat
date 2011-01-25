@@ -28,9 +28,9 @@ static int getOggInt(char *buff, int beg, int bytes){
 static char *upperStr(char *text){
 //if (DEBUG==1) putlog("converting text to uc");
     //printf("upperStr(%s)\n",text);
+	int i;
 	char *ret=(char*) malloc(sizeof(char)*(strlen(text)+1));
 	ret[strlen(text)]=0;
-	int i;
 	for (i=0;i<strlen(text);i++) ret[i]=toupper(text[i]);
 	//printf("Result: %s\n",ret);
 	return ret;
@@ -38,42 +38,52 @@ static char *upperStr(char *text){
 
 struct tagInfo getOggHeader(char *file){
 //if (DEBUG==1) putlog("reading ogg header");
-	FILE *f=fopen(file,"rb");
-	struct tagInfo info; info.artist=NULL;
+	char header[4096];
+	int i, c;
+	int h1pos, h3pos, maxBr, nomBr, minBr, pos, count, tagLen;
+	char *sub;
+	char *name;
+	char *val;
+	char *HEADLOC1, *HEADLOC3, *HEADLOC5;
+	FILE *f;
+	struct tagInfo info;
+
+	info.artist=NULL;
+	f = fopen(file,"rb");
 	if (f==NULL){
        xchat_print(ph,"file not found while trying to read ogg header");
        //if (DEBUG==1) putlog("file not found while trying to read ogg header");
        return info;
     }
-	char header[4096];
-	int i;int c;
+
 	for (i=0;i<4095;i++) {c=fgetc(f);header[i]=(char)c;}
 	fclose(f);
-	char HEADLOC1[]="_vorbis";HEADLOC1[0]=1;
-	char HEADLOC3[]="_vorbis";HEADLOC3[0]=3;
-	char HEADLOC5[]="_vorbis";HEADLOC5[0]=5;
-	int h1pos=inStr(header,4096,HEADLOC1);
-	int h3pos=inStr(header,4096,HEADLOC3);
+	HEADLOC1="_vorbis";
+	HEADLOC1[0]=1;
+	HEADLOC3="_vorbis";
+	HEADLOC3[0]=3;
+	HEADLOC5="_vorbis";
+	HEADLOC5[0]=5;
+	h1pos=inStr(header,4096,HEADLOC1);
+	h3pos=inStr(header,4096,HEADLOC3);
 	//int h5pos=inStr(header,4096,HEADLOC5); //not needed
 	
 	//printf("loc1: %i\n",h1pos);printf("loc3: %i\n",h3pos);printf("loc5: %i\n",h5pos);
-	int maxBr=getOggInt(header,h1pos+7+9,4);
-	int nomBr=getOggInt(header,h1pos+7+13,4);
-	int minBr=getOggInt(header,h1pos+7+17,4);
+	maxBr=getOggInt(header,h1pos+7+9,4);
+	nomBr=getOggInt(header,h1pos+7+13,4);
+	minBr=getOggInt(header,h1pos+7+17,4);
 	info.freq=getOggInt(header,h1pos+7+5,4);
 	info.mode=header[h1pos+7+4];
 	info.bitrate=nomBr;
 	if (((maxBr==nomBr)&&(nomBr=minBr))||((minBr==0)&&(maxBr==0))||((minBr=-1)&&(maxBr=-1)) )info.cbr=1;else info.cbr=0;
 	printf("bitrates: %i|%i|%i\n",maxBr,nomBr,minBr);
 	printf("freq: %i\n",info.freq);
-	int pos=h3pos+7;
+	pos=h3pos+7;
 	pos+=getOggInt(header,pos,4)+4;
-	int count=getOggInt(header,pos,4);
+	count=getOggInt(header,pos,4);
 	//printf("tags: %i\n",count);
 	pos+=4;
-	int tagLen;
-	char *sub;
-	char *name;char *val;
+
 	info.artist=NULL;info.title=NULL;info.album=NULL;info.comment=NULL;info.genre=NULL;
 	for (i=0;i<count;i++){
 		tagLen=getOggInt(header,pos,4);

@@ -51,7 +51,7 @@ void printThemes(){
 
 void cbFix(char *line){
      //if (DEBUG==1) putlog("cbfix");
-     int i;
+     int i, j;
      for (i=0;i<strlen(line);i++){
          if (line[i]=='%'){
             if ((line[i+1]=='C')||(line[i+1]=='B')||(line[i+1]=='U')||(line[i+1]=='O')||(line[i+1]=='R')){
@@ -60,7 +60,7 @@ void cbFix(char *line){
                if(line[i+1]=='U') line[i]=37;
                if(line[i+1]=='O') line[i]=17;
                if(line[i+1]=='R') line[i]=26;
-               int j;
+
                for (j=i+1;j<strlen(line)-1;j++) line[j]=line[j+1];
                line[strlen(line)-1]=0;
             }
@@ -83,39 +83,48 @@ struct theme themeAdd(struct theme data, char *info){
 }
 
 void loadThemes(){
-     xchat_print(ph,"loading themes\n");
-     char *hDir=(char*)calloc(1024,sizeof(char));
-     strcpy(hDir,xchat_get_info(ph,"xchatdirfs"));
-     char *hFile=str3cat(hDir,"\\","mpcInfo.theme.txt");
-     FILE *f=fopen(hFile,"r");
-     if(f==NULL){
-        xchat_print(ph,"no theme in homedir, checking global theme");
-        f=fopen("mpcInfo.theme.txt","r");
-     }
-     //xchat_printf(ph,"file_desc: %p\n",f);
-     if (f==NULL) xchat_print(ph, "no theme found, using hardcoded\n");
-     else {
-          char *line;
-          if (f>0) line=" ";else line="\0";
-          char *val;
-          while (line[0]!=0){
-                 line=readLine(f);
-                 val=split(line,'=');
-                 printf("line: %s\n",line);
-                 printf("val: %s\n",val);
-                 if (strcmp(toUpper(line),"OFF_LINE")==0) notRunTheme=themeAdd(notRunTheme,val);
-                 if (strcmp(toUpper(line),"TITLE_LINE")==0) titleTheme=themeAdd(titleTheme,val);
-                 if (strcmp(toUpper(line),"MP3_LINE")==0) mp3Theme=themeAdd(mp3Theme,val);
-                 if (strcmp(toUpper(line),"OGG_LINE")==0) mp3Theme=themeAdd(oggTheme,val);
-          }
-          fclose(f);
-          xchat_print(ph, "theme loaded successfull\n");
-     }
-     if (notRunTheme.size==0) notRunTheme=themeAdd(notRunTheme,"say Media Player Classic not running");
-     if (titleTheme.size==0) titleTheme=themeAdd(titleTheme,"say Playing %title in Media Player Classic");
-     if (mp3Theme.size==0) mp3Theme=themeAdd(mp3Theme,"me listens to %art with %tit from %alb [%gen|%br kbps|%frq kHz|%mode] in Media Player Classic ");
-     if (oggTheme.size==0) oggTheme=themeAdd(oggTheme,"me listens to %art with %tit from %alb [%gen|%br kbps|%frq kHz|%chan channels] in Media Player Classic ");
-     //mp3Theme=themeAdd(mp3Theme,"me listens to %art with %tit from %alb [%time|%length|%perc%|%br kbps|%frq kHz|%mode] in Media Player Classic ");
+    char *hDir, *hFile, *line, *val;
+	FILE *f;
+	xchat_print(ph,"loading themes\n");
+    hDir=(char*)calloc(1024,sizeof(char));
+    strcpy(hDir,xchat_get_info(ph,"xchatdirfs"));
+    hFile=str3cat(hDir,"\\","mpcInfo.theme.txt");
+    f = fopen(hFile,"r");
+    if(f==NULL)
+	{
+		xchat_print(ph,"no theme in homedir, checking global theme");
+		f=fopen("mpcInfo.theme.txt","r");
+    }
+	//xchat_printf(ph,"file_desc: %p\n",f);
+	if (f==NULL) xchat_print(ph, "no theme found, using hardcoded\n");
+	else {
+		if (f > 0)
+		{
+			line=" ";
+		} else
+		{
+			line="\0";
+		}
+
+		while (line[0]!=0)
+		{
+			line=readLine(f);
+			val=split(line,'=');
+			printf("line: %s\n",line);
+			printf("val: %s\n",val);
+			if (strcmp(toUpper(line),"OFF_LINE")==0) notRunTheme=themeAdd(notRunTheme,val);
+			if (strcmp(toUpper(line),"TITLE_LINE")==0) titleTheme=themeAdd(titleTheme,val);
+			if (strcmp(toUpper(line),"MP3_LINE")==0) mp3Theme=themeAdd(mp3Theme,val);
+			if (strcmp(toUpper(line),"OGG_LINE")==0) mp3Theme=themeAdd(oggTheme,val);
+		}
+		fclose(f);
+		xchat_print(ph, "theme loaded successfull\n");
+	}
+	if (notRunTheme.size==0) notRunTheme=themeAdd(notRunTheme,"say Media Player Classic not running");
+	if (titleTheme.size==0) titleTheme=themeAdd(titleTheme,"say Playing %title in Media Player Classic");
+	if (mp3Theme.size==0) mp3Theme=themeAdd(mp3Theme,"me listens to %art with %tit from %alb [%gen|%br kbps|%frq kHz|%mode] in Media Player Classic ");
+	if (oggTheme.size==0) oggTheme=themeAdd(oggTheme,"me listens to %art with %tit from %alb [%gen|%br kbps|%frq kHz|%chan channels] in Media Player Classic ");
+	//mp3Theme=themeAdd(mp3Theme,"me listens to %art with %tit from %alb [%time|%length|%perc%|%br kbps|%frq kHz|%mode] in Media Player Classic ");
 }
 
 int rnd(int max){

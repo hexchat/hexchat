@@ -14,17 +14,18 @@
  *  Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
  */
 
+/*
 typedef int (*MYPROC)(HWND,HWND,char*,char*,BOOL,BOOL); 
 
 int dllProc(char *name, char *data){
     HINSTANCE hinstLib; 
     hinstLib = LoadLibrary("mpcinfo");
-    MYPROC proc;
+    //MYPROC proc;
     int res;
     if (hinstLib != NULL){
-       proc = (MYPROC) GetProcAddress(hinstLib, name);
-       if (proc!=NULL){
-          res=(proc)(NULL,NULL,data,NULL,TRUE,TRUE);
+       //proc = ;
+       if ((MYPROC) GetProcAddress(hinstLib, name)!=NULL){
+          res=(MYPROC)(NULL,NULL,data,NULL,TRUE,TRUE);
        }
        else{fprintf(stderr,"can't get proc: %s\n",name);res=-2;}
     }
@@ -32,6 +33,25 @@ int dllProc(char *name, char *data){
     FreeLibrary(hinstLib);
     return res;
 }
+*/
+
+/*
+int dllProc(char *name, char *data)
+{
+	static HMODULE lib = NULL;
+	if (!lib)
+	{
+		lib = LoadLibraryA ("mpcinfo");
+		if (!lib)
+		{
+			return FALSE;
+		}
+		FreeLibrary (lib);
+	}
+
+	return TRUE;
+}
+*/
 
 char *split(char *text, char seperator){
      //if (DEBUG==1) putlog("splitting");
@@ -66,7 +86,8 @@ int inStr(char *s1, int sl1, char *s2){
 static char *subString(char *text, int first, int length, int spcKill){
 //if (DEBUG==1) putlog("creating substring");
 	char *ret=(char*) calloc (length+1,sizeof(char)); //malloc(sizeof(char)*(length+1));
-	ret[length]=0;int i;
+	int i;
+	ret[length]=0;
 	for (i=0;i<length;i++){
 		ret[i]=text[i+first];
 		//if (ret[i]==0) ret[i]='0';
