@@ -1,6 +1,6 @@
-diff -ruN --strip-trailing-cr openssl-1.0.0c.orig/Configure openssl-1.0.0c/Configure
---- openssl-1.0.0c.orig/Configure	2010-11-30 23:19:26 +0100
-+++ openssl-1.0.0c/Configure	2010-12-26 21:57:02 +0100
+diff -ruN --strip-trailing-cr openssl-1.0.0d.orig/Configure openssl-1.0.0d/Configure
+--- openssl-1.0.0d.orig/Configure	2010-11-30 23:19:26 +0100
++++ openssl-1.0.0d/Configure	2011-02-10 23:57:56 +0100
 @@ -491,12 +491,12 @@
  #
  # Win64 targets, WIN64I denotes IA-64 and WIN64A - AMD64
@@ -16,9 +16,9 @@ diff -ruN --strip-trailing-cr openssl-1.0.0c.orig/Configure openssl-1.0.0c/Confi
  # Unified CE target
  "debug-VC-WIN32","cl:-W3 -WX -Gs0 -GF -Gy -Zi -nologo -DOPENSSL_SYSNAME_WIN32 -DWIN32_LEAN_AND_MEAN -DL_ENDIAN -D_CRT_SECURE_NO_DEPRECATE:::WIN32::BN_LLONG RC4_INDEX EXPORT_VAR_AS_FN ${x86_gcc_opts}:${x86_asm}:win32n:win32",
  "VC-CE","cl::::WINCE::BN_LLONG RC4_INDEX EXPORT_VAR_AS_FN ${x86_gcc_opts}:${no_asm}:win32",
-diff -ruN --strip-trailing-cr openssl-1.0.0c.orig/engines/e_aep.c openssl-1.0.0c/engines/e_aep.c
---- openssl-1.0.0c.orig/engines/e_aep.c	2010-11-18 23:59:42 +0100
-+++ openssl-1.0.0c/engines/e_aep.c	2010-12-26 21:56:41 +0100
+diff -ruN --strip-trailing-cr openssl-1.0.0d.orig/engines/e_aep.c openssl-1.0.0d/engines/e_aep.c
+--- openssl-1.0.0d.orig/engines/e_aep.c	2010-11-18 23:59:42 +0100
++++ openssl-1.0.0d/engines/e_aep.c	2011-02-10 23:57:56 +0100
 @@ -61,7 +61,12 @@
  #include <sys/types.h>
  #include <unistd.h>
@@ -32,9 +32,9 @@ diff -ruN --strip-trailing-cr openssl-1.0.0c.orig/engines/e_aep.c openssl-1.0.0c
  typedef int pid_t;
  #endif
  
-diff -ruN --strip-trailing-cr openssl-1.0.0c.orig/util/pl/VC-32.pl openssl-1.0.0c/util/pl/VC-32.pl
---- openssl-1.0.0c.orig/util/pl/VC-32.pl	2010-09-13 19:28:34 +0200
-+++ openssl-1.0.0c/util/pl/VC-32.pl	2010-12-26 21:56:41 +0100
+diff -ruN --strip-trailing-cr openssl-1.0.0d.orig/util/pl/VC-32.pl openssl-1.0.0d/util/pl/VC-32.pl
+--- openssl-1.0.0d.orig/util/pl/VC-32.pl	2010-09-13 19:28:34 +0200
++++ openssl-1.0.0d/util/pl/VC-32.pl	2011-02-10 23:57:56 +0100
 @@ -37,7 +37,7 @@
      $lib_cflag='/Zl' if (!$shlib);	# remove /DEFAULTLIBs from static lib
      $opt_cflags=$f.' /Ox';
