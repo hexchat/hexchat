@@ -237,6 +237,7 @@ Name: "{group}\Uninstall XChat-WDK"; Filename: "{uninstallexe}"; Tasks: not port
 BeveledLabel= XChat-WDK
 
 [Code]
+; these are required for x86->x64 or reverse upgrades
 /////////////////////////////////////////////////////////////////////
 function GetUninstallString(): String;
 var
