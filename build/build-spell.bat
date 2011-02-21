@@ -4,6 +4,7 @@ set XCHAT_DEST=..\tmp-spell
 rmdir /q /s %XCHAT_DEST%
 mkdir %XCHAT_DEST%
 xcopy /q /s /i %DEPS_ROOT%\myspell %XCHAT_DEST%\share\myspell
+copy ..\COPYING %XCHAT_DEST%
 echo [Setup] > xchat-wdk-spell.iss
 echo WizardImageFile=%cd%\bitmaps\wizardimage.bmp >> xchat-wdk-spell.iss
 echo WizardSmallImageFile=%cd%\bitmaps\wizardsmallimage.bmp >> xchat-wdk-spell.iss

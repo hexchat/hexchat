@@ -32,5 +32,8 @@ Name: portable; Description: "Yes"; GroupDescription: "Portable Install (no Regi
 [Files]
 Source: "share\myspell\*"; DestDir: "{app}\share\myspell"; Flags: createallsubdirs recursesubdirs
 
+[Icons]
+Name: "{group}\Uninstall Spelling Dictionaries"; Filename: "{uninstallexe}"; Tasks: not portable
+
 [Messages]
 BeveledLabel= XChat-WDK
