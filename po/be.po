@@ -1,0 +1,5278 @@
+# translation of xchat-2.8.1.po to Belarusian
+# This file is put in the public domain.
+# Pavel Piatruk <berserker@neolocation.com>, 2006, 2007.
+msgid ""
+msgstr ""
+"Project-Id-Version: xchat 2.8.1\n"
+"Report-Msgid-Bugs-To: www.xchat.org\n"
+"POT-Creation-Date: 2007-03-28 14:09+1000\n"
+"PO-Revision-Date: 2007-05-23 12:27+0300\n"
+"Last-Translator: Pavel Piatruk <berserker@neolocation.com>\n"
+"Language-Team: Belarusian <i18n@mova.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: KBabel 1.10.2\n"
+
+#: src/common/cfgfiles.c:354
+msgid "Cannot create ~/.xchat2"
+msgstr "Не магу стварыць ~/.xchat2"
+
+#: src/common/cfgfiles.c:704
+msgid "I'm busy"
+msgstr "Я заняты"
+
+#: src/common/cfgfiles.c:705
+msgid "Leaving"
+msgstr "Выходжу"
+
+#: src/common/cfgfiles.c:751
+msgid ""
+"* Running IRC as root is stupid! You should\n"
+"  create a User Account and use that to login.\n"
+msgstr ""
+"* Выконваць IRC з-пад root'a - глупства.\n"
+"  Вы павінны стварыць карыстальніцкі\n"
+"  рахунак у сістэме і ўжываць яго\n"
+
+#: src/common/dcc.c:67
+msgid "Waiting"
+msgstr "Чаканне"
+
+#: src/common/dcc.c:68
+msgid "Active"
+msgstr "Актыўны"
+
+#: src/common/dcc.c:69
+msgid "Failed"
+msgstr "Памылка"
+
+#: src/common/dcc.c:70
+msgid "Done"
+msgstr "Выканана"
+
+#: src/common/dcc.c:71 src/fe-gtk/menu.c:775
+msgid "Connect"
+msgstr "Злучэнне"
+
+#: src/common/dcc.c:72
+msgid "Aborted"
+msgstr "Перарвана"
+
+#: src/common/dcc.c:1886 src/common/outbound.c:2450
+#, c-format
+msgid "Cannot access %s\n"
+msgstr "Няма доступу да %s\n"
+
+#: src/common/dcc.c:1887 src/common/text.c:918 src/common/text.c:956
+#: src/common/text.c:967 src/common/text.c:974 src/common/text.c:987
+#: src/common/text.c:1004 src/common/text.c:1104 src/common/util.c:352
+msgid "Error"
+msgstr "Памылка"
+
+#: src/common/dcc.c:2375
+#, c-format
+msgid "%s is offering \"%s\". Do you want to accept?"
+msgstr "%s прапануе \"%s\". Вы згодны?"
+
+#: src/common/dcc.c:2586
+msgid "No active DCCs\n"
+msgstr "Няма актыўных каналаў данніх (DCC)\n"
+
+#: src/common/ignore.c:120 src/common/ignore.c:124 src/common/ignore.c:128
+#: src/common/ignore.c:132 src/common/ignore.c:136 src/common/ignore.c:140
+#: src/common/ignore.c:144
+msgid "YES  "
+msgstr "Так  "
+
+#: src/common/ignore.c:122 src/common/ignore.c:126 src/common/ignore.c:130
+#: src/common/ignore.c:134 src/common/ignore.c:138 src/common/ignore.c:142
+#: src/common/ignore.c:146
+msgid "NO   "
+msgstr "Не  "
+
+#: src/common/ignore.c:377
+#, c-format
+msgid "You are being CTCP flooded from %s, ignoring %s\n"
+msgstr "Вас затапліваюць CTCP запытамі з %s, %s ігнаруецца\n"
+
+#: src/common/ignore.c:402
+#, c-format
+msgid "You are being MSG flooded from %s, setting gui_auto_open_dialog OFF.\n"
+msgstr "Вас затапліваюць паведамленнямі з %s, аўтадыялог адключаны\n"
+
+#: src/common/notify.c:449
+#, c-format
+msgid "  %-20s online\n"
+msgstr "  %-20s у сеціве\n"
+
+#: src/common/notify.c:451
+#, c-format
+msgid "  %-20s offline\n"
+msgstr "  %-20s адключаны\n"
+
+#: src/common/outbound.c:72
+msgid "No channel joined. Try /join #<channel>\n"
+msgstr "Не зайшлі на канал. Паспрабуйце /join #<channel>\n"
+
+#: src/common/outbound.c:78
+msgid "Not connected. Try /server <host> [<port>]\n"
+msgstr "Няма злучэння. Паспрабуйце /server <вузел> [<порт>]\n"
+
+#: src/common/outbound.c:339
+#, c-format
+msgid "Already marked away: %s\n"
+msgstr "Ужо пазначаны адышэдшым: %s\n"
+
+#: src/common/outbound.c:409
+msgid "Already marked back.\n"
+msgstr "Ужо пазначаны вярнуўшымся.\n"
+
+#: src/common/outbound.c:1812
+msgid "I need /bin/sh to run!\n"
+msgstr "Для запуску патрэбна праграма /bin/sh !\n"
+
+#: src/common/outbound.c:2183
+msgid "Commands Available:"
+msgstr "Даступныя каманды:"
+
+#: src/common/outbound.c:2197
+msgid "User defined commands:"
+msgstr "Вызначаныя карыстальнікам каманды:"
+
+#: src/common/outbound.c:2213
+msgid "Plugin defined commands:"
+msgstr "Вызначаныя плагінам каманды:"
+
+#: src/common/outbound.c:2224
+msgid "Type /HELP <command> for more information, or /HELP -l"
+msgstr "Набярыце /HELP <каманда> для даведкі ці /HELP -l"
+
+#: src/common/outbound.c:2299
+#, c-format
+msgid "Unknown arg '%s' ignored."
+msgstr "Невядомы аргумент '%s' праігнараваны."
+
+#: src/common/outbound.c:3238
+msgid "No such plugin found.\n"
+msgstr "Плагін не знойдзены.\n"
+
+#: src/common/outbound.c:3243 src/fe-gtk/plugingui.c:186
+msgid "That plugin is refusing to unload.\n"
+msgstr "Гэты плагін немагчыма выгрузіць.\n"
+
+#: src/common/outbound.c:3512
+msgid "ADDBUTTON <name> <action>, adds a button under the user-list"
+msgstr "ADDBUTTON <імя> <дзеянне>, дадае кнопку пад спісам карыстальнікаў"
+
+#: src/common/outbound.c:3514
+msgid "ALLCHAN <cmd>, sends a command to all channels you're in"
+msgstr "ALLCHAN <каманда>, дасылае каманду на ўсе каналы, куды вы зайшлі"
+
+#: src/common/outbound.c:3516
+msgid "ALLCHANL <cmd>, sends a command to all channels you're in"
+msgstr "ALLCHANL <каманда>, дасылае каманду на ўсе каналы, куды вы зайшлі"
+
+#: src/common/outbound.c:3518
+msgid "ALLSERV <cmd>, sends a command to all servers you're in"
+msgstr "ALLSERV <каманда>, дасылае каманду на ўсе серверы, з якімі вы злучаны"
+
+#: src/common/outbound.c:3519
+msgid "AWAY [<reason>], sets you away"
+msgstr "AWAY [<прычына>], усталяваць статус \"адыйшоў\""
+
+#: src/common/outbound.c:3520
+msgid "BACK, sets you back (not away)"
+msgstr "BACK, пазначае вас вярнуўшымся (не адышэдшым)"
+
+#: src/common/outbound.c:3522
+msgid "BAN <mask> [<bantype>], bans everyone matching the mask from the current channel. If they are already on the channel this doesn't kick them (needs chanop)"
+msgstr "BAN <маска> [<тыпзабароны>], забараняе доступ да канала кожнаму, хто адпавядае маске. Калі гэткія карыстальнікі ўжо на канале, яны не будуць выпхнутыя. (Трэба правы аператара)"
+
+#: src/common/outbound.c:3524
+msgid ""
+"Set per channel options\n"
+"CHANOPT CONFMODE ON|OFF - Toggle conf mode/showing of join and part messages\n"
+"CHANOPT COLORPASTE ON|OFF - Toggle color paste\n"
+"CHANOPT BEEP ON|OFF - Toggle beep on message\n"
+"CHANOPT TRAY ON|OFF - Toggle tray blink on message"
+msgstr ""
+"Наладкі адносна канала\n"
+"CHANOPT CONFMODE ON|OFF - Пераключыцца паміж рэжымам канферэнцыі і паказам уваходных і выходзячых паведамленняў\n"
+"CHANOPT COLORPASTE ON|OFF - Пераключыць устаўку колераў\n"
+"CHANOPT BEEP ON|OFF - Пераключыць пішчанне пры паведамленнях \n"
+"CHANOPT TRAY ON|OFF - Пераключыць мірганне ў сподку пры паведамленнях"
+
+#: src/common/outbound.c:3531
+msgid "CLEAR [ALL|HISTORY], Clears the current text window or command history"
+msgstr "CLEAR, Ачышчае бягучае тэкставае акно або гісторыю каманд"
+
+#: src/common/outbound.c:3532
+msgid "CLOSE, Closes the current window/tab"
+msgstr "CLOSE, Закрывае бягучае акно ці ўкладку"
+
+#: src/common/outbound.c:3535
+msgid "COUNTRY [-s] <code|wildcard>, finds a country code, eg: au = australia"
+msgstr "COUNTRY [-s] <код|маска>, шукае код краіны, напрыклад: au = australia"
+
+#: src/common/outbound.c:3537
+msgid "CTCP <nick> <message>, send the CTCP message to nick, common messages are VERSION and USERINFO"
+msgstr "CTCP <мянушка> <паведамленне>, дасылае мянушцы CTCP-паведамленне, напрыклад, VERSION ці USERINFO"
+
+#: src/common/outbound.c:3539
+msgid "CYCLE, parts current channel and immediately rejoins"
+msgstr "CYCLE, выйсці з бягучага канала і адразу зайсці зноў"
+
+#: src/common/outbound.c:3541
+msgid ""
+"\n"
+"DCC GET <nick>                      - accept an offered file\n"
+"DCC SEND [-maxcps=#] <nick> [file]  - send a file to someone\n"
+"DCC PSEND [-maxcps=#] <nick> [file] - send a file using passive mode\n"
+"DCC LIST                            - show DCC list\n"
+"DCC CHAT <nick>                     - offer DCC CHAT to someone\n"
+"DCC PCHAT <nick>                    - offer DCC CHAT using passive mode\n"
+"DCC CLOSE <type> <nick> <file>         example:\n"
+"         /dcc close send johnsmith file.tar.gz"
+msgstr ""
+"\n"
+"DCC GET <мянушка>                      - дазволіць прапанаваны файл\n"
+"DCC SEND [-maxcps=#] <мянушка> [файл]  - даслаць файл камусьці\n"
+"DCC PSEND [-maxcps=#] <мянушка> [файл] - даслаць файл у пасіўным рэжыме\n"
+"DCC LIST                               - паказаць спіс DCC\n"
+"DCC CHAT <мянушка>                     - прапанаваць DCC CHAT камусьці\n"
+"DCC PCHAT <мянушка>                    - прапанаваць DCC CHAT у пасіўным рэжыме\n"
+"DCC CLOSE <тып> <мянушка> <файл>        напрыклад:\n"
+"         /dcc close send johnsmith file.tar.gz"
+
+#: src/common/outbound.c:3553
+msgid "DEHOP <nick>, removes chanhalf-op status from the nick on the current channel (needs chanop)"
+msgstr "DEHOP <мянушка>, выдаляе статус паўаператара ў мянушкі на бягучым канале (патрэбен статус аператара)"
+
+#: src/common/outbound.c:3555
+msgid "DELBUTTON <name>, deletes a button from under the user-list"
+msgstr "DELBUTTON <імя>, выдаляе кнопку пад спісам карыстальнікаў"
+
+#: src/common/outbound.c:3557
+msgid "DEOP <nick>, removes chanop status from the nick on the current channel (needs chanop)"
+msgstr "DEOP <мянушка>, выдаляе статус аператара ў мянушкі на бягучым канале (патрэбен статус аператара)"
+
+#: src/common/outbound.c:3559
+msgid "DEVOICE <nick>, removes voice status from the nick on the current channel (needs chanop)"
+msgstr "DEVOICE <мянушка>, выдаляе права голасу ў мянушкі на бягучым канале (патрэбен статус аператара)"
+
+#: src/common/outbound.c:3560
+msgid "DISCON, Disconnects from server"
+msgstr "DISCON, Адлучыцца ад сервера"
+
+#: src/common/outbound.c:3561
+msgid "DNS <nick|host|ip>, Finds a users IP number"
+msgstr "DNS <мянушка|вузел|ip>, Знайсці IP-адрас карыстальніка"
+
+#: src/common/outbound.c:3562
+msgid "ECHO <text>, Prints text locally"
+msgstr "ECHO <тэкст>, Выводзіць тэкст на лакальнай машыне"
+
+#: src/common/outbound.c:3565
+msgid "EXEC [-o] <command>, runs the command. If -o flag is used then output is sent to current channel, else is printed to current text box"
+msgstr "EXEC [-o] <каманда>, запускае каманду. Калі ўжыты параметр -o, вывад будзе дасланы ў бягучы канал, інакш у бягучае тэкставае акно"
+
+#: src/common/outbound.c:3567
+msgid "EXECCONT, sends the process SIGCONT"
+msgstr "EXECCONT, дасылае працэсу сігнал SIGCONT"
+
+#: src/common/outbound.c:3570
+msgid "EXECKILL [-9], kills a running exec in the current session. If -9 is given the process is SIGKILL'ed"
+msgstr "EXECKILL [-9], забівае выконваючуюся каманду ў бягучай сесіі. Калі адзначаны флаг -9, працэсу дасылается сігнал SIGKILL"
+
+#: src/common/outbound.c:3572
+msgid "EXECSTOP, sends the process SIGSTOP"
+msgstr "EXECSTOP, дасылае працэсу сігнал SIGSTOP"
+
+#: src/common/outbound.c:3573
+msgid "EXECWRITE, sends data to the processes stdin"
+msgstr "EXECWRITE, дасылае данні на стандартны ўваход працэса (stdin)"
+
+#: src/common/outbound.c:3577
+msgid "FLUSHQ, flushes the current server's send queue"
+msgstr "FLUSHQ, скінуць чаргу дасылкі на бягучы сервер"
+
+#: src/common/outbound.c:3579
+msgid "GATE <host> [<port>], proxies through a host, port defaults to 23"
+msgstr "GATE <вузел> [<порт>], далучыцца праз вузел, прадвызначаны порт 23"
+
+#: src/common/outbound.c:3583
+msgid "GHOST <nick> <password>, Kills a ghosted nickname"
+msgstr "GHOST <мянушка> <пароль>, Выпхнуць з канала карыстальніка-здань"
+
+#: src/common/outbound.c:3588
+msgid "HOP <nick>, gives chanhalf-op status to the nick (needs chanop)"
+msgstr "HOP <мянушка>, даць правы паў-аператара карыстальніку (патрэбна мець правы аператара)"
+
+#: src/common/outbound.c:3589
+msgid "ID <password>, identifies yourself to nickserv"
+msgstr "ID <пароль>, ідэнтыфікаваць сябе nickserv"
+
+#: src/common/outbound.c:3591
+msgid ""
+"IGNORE <mask> <types..> <options..>\n"
+"    mask - host mask to ignore, eg: *!*@*.aol.com\n"
+"    types - types of data to ignore, one or all of:\n"
+"            PRIV, CHAN, NOTI, CTCP, DCC, INVI, ALL\n"
+"    options - NOSAVE, QUIET"
+msgstr ""
+"IGNORE <маска> <тыпы..> <уласцівасці..>\n"
+"    маска - маска для ігнаравання, напрыклад: *!*@*.aol.com\n"
+"    тыпы - тыпы дадзеных для ігнаравання:\n"
+"            PRIV, CHAN, NOTI, CTCP, DCC, INVI, ALL\n"
+"    уласцівасці - NOSAVE, QUIET"
+
+#: src/common/outbound.c:3598
+msgid "INVITE <nick> [<channel>], invites someone to a channel, by default the current channel (needs chanop)"
+msgstr "INVITE <мянушка> [<канал>], запрасіць кагосьці на канал, калі назва канала не пазначана - на бягучы канал (патрэбен статус аператара)"
+
+#: src/common/outbound.c:3599
+msgid "JOIN <channel>, joins the channel"
+msgstr "JOIN <канал>, увайсці на канал"
+
+#: src/common/outbound.c:3601
+msgid "KICK <nick>, kicks the nick from the current channel (needs chanop)"
+msgstr "KICK <мянушка>, выпхнуць карыстальніка з бягучага канала (патрэбен статус аператара)"
+
+#: src/common/outbound.c:3603
+msgid "KICKBAN <nick>, bans then kicks the nick from the current channel (needs chanop)"
+msgstr "KICKBAN <мянушка>, забараняе, а потым выпіхвае карыстальніка з бягучага канала (патрэбен статус аператара)"
+
+#: src/common/outbound.c:3606
+msgid "LAGCHECK, forces a new lag check"
+msgstr "LAGCHECK, выканаць праверку сігнала"
+
+#: src/common/outbound.c:3608
+msgid "LASTLOG <string>, searches for a string in the buffer"
+msgstr "LASTLOG <радок>, знайсці радок у буферы"
+
+#: src/common/outbound.c:3610
+msgid "LOAD [-e] <file>, loads a plugin or script"
+msgstr "LOAD [-e] <файл>, загрузіць плагін ці скрыпт"
+
+#: src/common/outbound.c:3613
+msgid "MDEHOP, Mass deop's all chanhalf-ops in the current channel (needs chanop)"
+msgstr "MDEHOP, Адабраць паў-аператара ва ўсіх карыстальнікаў бягучага канала (патрэбен статус аператара)"
+
+#: src/common/outbound.c:3615
+msgid "MDEOP, Mass deop's all chanops in the current channel (needs chanop)"
+msgstr "MDEOP, Адабраць аператара ва ўсіх карыстальнікаў бягучага канала (патрабуе статус аператара)"
+
+#: src/common/outbound.c:3617
+msgid "ME <action>, sends the action to the current channel (actions are written in the 3rd person, like /me jumps)"
+msgstr "ME <дзеянне>, дасылае дзеянне на бягучы канал (дзеянні пішуцца ад трэцяй асобы, напрыклад, /me скача)"
+
+#: src/common/outbound.c:3621
+msgid "MKICK, Mass kicks everyone except you in the current channel (needs chanop)"
+msgstr "MKICK, Выпхнуць усіх карыстальнікаў з бягучага канала, акрамя вас (патрэбен статус аператара)"
+
+#: src/common/outbound.c:3624
+msgid "MOP, Mass op's all users in the current channel (needs chanop)"
+msgstr "MOP, Надаць усім карыстальнікам бягучага канала статус аператара (патрэбен статус аператара)"
+
+#: src/common/outbound.c:3625
+msgid "MSG <nick> <message>, sends a private message"
+msgstr "MSG <мянушка> <паведамленне>, дасылае асабістае паведамленне"
+
+#: src/common/outbound.c:3628
+msgid "NAMES, Lists the nicks on the current channel"
+msgstr "NAMES, Пералічыць мянушкі карыстальнікаў на бягучым канале"
+
+#: src/common/outbound.c:3630
+msgid "NCTCP <nick> <message>, Sends a CTCP notice"
+msgstr "NCTCP <мянушка> <паведамленне>, Дасылае CTCP-абвяшчэнне"
+
+#: src/common/outbound.c:3631
+msgid "NEWSERVER [-noconnect] <hostname> [<port>]"
+msgstr "NEWSERVER [-noconnect] <hostname> [<port>]"
+
+#: src/common/outbound.c:3632
+msgid "NICK <nickname>, sets your nick"
+msgstr "NICK <мянушка>, змяняе вашую мянушку"
+
+#: src/common/outbound.c:3635
+msgid "NOTICE <nick/channel> <message>, sends a notice. Notices are a type of message that should be auto reacted to"
+msgstr "NOTICE <мянушка/канал> <паведамленне>, дасылае абвяшчэнне. Абвяшчэнні гэта тып паведамленняў, на якія трэба аўтаматычна рэагаваць"
+
+#: src/common/outbound.c:3637
+msgid "NOTIFY [-n network1[,network2,...]] [<nick>], displays your notify list or adds someone to it"
+msgstr "NOTIFY [-n сеціва1[,сеціва2]] [<мянушка>], пералічвае ваш спіс абвяшчэнняў ці дадае некага ў яго"
+
+#: src/common/outbound.c:3639
+msgid "OP <nick>, gives chanop status to the nick (needs chanop)"
+msgstr "OP <nick>, дае мянушцы статус аператара канала (патрэбен статус аператара)"
+
+#: src/common/outbound.c:3641
+msgid "PART [<channel>] [<reason>], leaves the channel, by default the current one"
+msgstr "PART [<канал>] [<прычына>], выйсці з канала, калі канал не вызначаны, то з бягучага"
+
+#: src/common/outbound.c:3643
+msgid "PING <nick | channel>, CTCP pings nick or channel"
+msgstr "PING <мянушка | канал>, CTCP пінг мянушкі ці канала"
+
+#: src/common/outbound.c:3645
+msgid "QUERY [-nofocus] <nick>, opens up a new privmsg window to someone"
+msgstr "QUERY [-nofocus] <мянушка>, адкрывае дыялог для асабістай размовы"
+
+#: src/common/outbound.c:3647
+msgid "QUIT [<reason>], disconnects from the current server"
+msgstr "QUIT [<прычына>], адлучыцца ад бягучага сервера"
+
+#: src/common/outbound.c:3649
+msgid "QUOTE <text>, sends the text in raw form to the server"
+msgstr "QUOTE <тэкст>, даслаць тэкст у неапрацованай форме да сервера"
+
+#: src/common/outbound.c:3652
+msgid "RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as /RECONNECT to reconnect to the current server or with /RECONNECT ALL to reconnect to all the open servers"
+msgstr "RECONNECT [-ssl] [<вузел>] [<порт>] [<пароль>], Можа быць выклікана як /RECONNECT для перадалучэння да бягучага сервера ці /RECONNECT ALL для перадалучэння да ўсіх адкрытых сервераў"
+
+#: src/common/outbound.c:3655
+msgid "RECONNECT [<host>] [<port>] [<password>], Can be called just as /RECONNECT to reconnect to the current server or with /RECONNECT ALL to reconnect to all the open servers"
+msgstr "RECONNECT [-ssl] [<вузел>] [<порт>] [<пароль>], Можа быць выклікана як /RECONNECT для перадалучэння да бягучага сервера ці /RECONNECT ALL для перадалучэння да ўсіх адкрытых сервераў"
+
+#: src/common/outbound.c:3657
+msgid "RECV <text>, send raw data to xchat, as if it was received from the irc server"
+msgstr "RECV <>, дасылае неапрацованыя дадзеныя xchat, як яны былі атрыманы з IRC-сервера"
+
+#: src/common/outbound.c:3660
+msgid "SAY <text>, sends the text to the object in the current window"
+msgstr "SAY <тэкст>, дасылае тэкст аб'екту ў бягучым акне"
+
+#: src/common/outbound.c:3661
+msgid "SEND <nick> [<file>]"
+msgstr "SEND <nick> [<file>]"
+
+#: src/common/outbound.c:3664
+msgid "SERVCHAN [-ssl] <host> <port> <channel>, connects and joins a channel"
+msgstr "SERVCHAN [-ssl] <вузел> <порт> <канал>, злучыцца і ўвайсці на канал"
+
+#: src/common/outbound.c:3667
+msgid "SERVCHAN <host> <port> <channel>, connects and joins a channel"
+msgstr "SERVCHAN <вузел> <порт> <канал>, злучыцца і ўвайсці на канал"
+
+#: src/common/outbound.c:3671
+msgid "SERVER [-ssl] <host> [<port>] [<password>], connects to a server, the default port is 6667 for normal connections, and 9999 for ssl connections"
+msgstr "SERVER [-ssl] <вузел> [<порт>] [<пароль>], злучыцца з серверам, прадвызначаны порт 6667, для звычайнай сувязі і 9999 для ssl-злучэнняў"
+
+#: src/common/outbound.c:3674
+msgid "SERVER <host> [<port>] [<password>], connects to a server, the default port is 6667"
+msgstr "SERVER <вузел> [<порт>] [<пароль>], злучыцца з серверам, прадвызначаны порт 6667"
+
+#: src/common/outbound.c:3676
+msgid "SET [-e] [-quiet] <variable> [<value>]"
+msgstr "SET [-e] [-quiet] <пераменная> [<значэнне>]"
+
+#: src/common/outbound.c:3677
+msgid "SETCURSOR [-|+]<position>"
+msgstr "SETCURSOR [-|+]<пазіцыя>"
+
+#: src/common/outbound.c:3682
+msgid "TOPIC [<topic>], sets the topic if one is given, else shows the current topic"
+msgstr "TOPIC [<тэма>], усталяваць тэму, калі яна вызначана, інакш вывесці бягучую тэму"
+
+#: src/common/outbound.c:3684
+msgid ""
+"\n"
+"TRAY -f <timeout> <file1> [<file2>] Blink tray between two icons.\n"
+"TRAY -f <filename>                  Set tray to a fixed icon.\n"
+"TRAY -i <number>                    Blink tray with an internal icon.\n"
+"TRAY -t <text>                      Set the tray tooltip.\n"
+"TRAY -b <title> <text>              Set the tray balloon."
+msgstr ""
+"\n"
+"TRAY -f <timeout> <file1> [<file2>] Мірганне ў сподку між двума значкамі.\n"
+"TRAY -f <filename>                  Замацаваць значку ў сподкавым элеменце.\n"
+"TRAY -i <number>                    Мірганне ў сподку ўнутранай значкай.\n"
+"TRAY -t <text>                      Усталяваць тэкст сподкавага элемента.\n"
+"TRAY -b <title> <text>              Усталяваць выплыўны тэкст сподкавага элемента."
+
+#: src/common/outbound.c:3691
+msgid "UNBAN <mask> [<mask>...], unbans the specified masks."
+msgstr "UNBAN <маска> [<маска>...], зняць забарону з вызначаных масак."
+
+#: src/common/outbound.c:3692
+msgid "UNIGNORE <mask> [QUIET]"
+msgstr "UNIGNORE <mask> [QUIET]"
+
+#: src/common/outbound.c:3693
+msgid "UNLOAD <name>, unloads a plugin or script"
+msgstr "UNLOAD <імя>, выгрузіць плагін ці скрыпт"
+
+#: src/common/outbound.c:3694
+msgid "URL <url>, opens a URL in your browser"
+msgstr "URL <url>, адкрыць URL у вашым браўзеры"
+
+#: src/common/outbound.c:3696
+msgid "USELECT [-a] [-s] <nick1> <nick2> etc, highlights nick(s) in channel userlist"
+msgstr "USELECT [-a] [-s] <мянушка1> <мянушка2> і г.д., падсвечваць вызначаную(ыя) мянушку(і) ў спісе карыстальнікаў"
+
+#: src/common/outbound.c:3699
+msgid "VOICE <nick>, gives voice status to someone (needs chanop)"
+msgstr "VOICE <мянушка>, даць голас камусьці (патрэбен статус аператара канала)"
+
+#: src/common/outbound.c:3701
+msgid "WALLCHAN <message>, writes the message to all channels"
+msgstr "WALLCHAN <паведамленне>, напісаць паведамленне ва ўсіх каналах"
+
+#: src/common/outbound.c:3703
+msgid "WALLCHOP <message>, sends the message to all chanops on the current channel"
+msgstr "WALLCHOP <паведамленне>, даслаць паведамленне ўсім аператарам бягучага канала"
+
+#: src/common/outbound.c:3736
+#, c-format
+msgid "Usage: %s\n"
+msgstr "Карыстанне: %s\n"
+
+#: src/common/outbound.c:3741
+msgid ""
+"\n"
+"No help available on that command.\n"
+msgstr ""
+"\n"
+"Ніякай даведкі не існуе для гэтай каманды.\n"
+
+#: src/common/outbound.c:3747
+msgid "No such command.\n"
+msgstr "Няма гэткай каманды.\n"
+
+#: src/common/outbound.c:4077
+msgid "Bad arguments for user command.\n"
+msgstr "Дрэнныя аргументы карыстальніцкай каманды.\n"
+
+#: src/common/outbound.c:4233
+msgid "Too many recursive usercommands, aborting."
+msgstr "Зашмат рэкурсіўных падкаманд, перарываюся."
+
+#: src/common/outbound.c:4310
+msgid "Unknown Command. Try /help\n"
+msgstr "Невядомая каманда. Паспрабуйце /help\n"
+
+#: src/common/plugin.c:356 src/common/plugin.c:397
+msgid "No xchat_plugin_init symbol; is this really an xchat plugin?"
+msgstr "Няма сімвала xchat_plugin_init; ці гэта сапраўды плагін Xchat?"
+
+#: src/common/server.c:634
+msgid "Are you sure this is a SSL capable server and port?\n"
+msgstr "Ці вы ўпэўнены, што гэта сумяшчальны з SSL сервер і порт?\n"
+
+#: src/common/server.c:1025
+#, c-format
+msgid ""
+"Cannot resolve hostname %s\n"
+"Check your IP Settings!\n"
+msgstr ""
+"Немагчыма знайсці імя %s\n"
+"Праверце вашыя наладкі IP!\n"
+
+#: src/common/server.c:1030
+msgid "Proxy traversal failed.\n"
+msgstr "Не атрымліваецца злучыцца з проксі.\n"
+
+#: src/common/servlist.c:643
+#, c-format
+msgid "Cycling to next server in %s...\n"
+msgstr "Спрабую іншы сервер %s...\n"
+
+#: src/common/servlist.c:1074
+#, c-format
+msgid "Warning: \"%s\" character set is unknown. No conversion will be applied for network %s."
+msgstr "Увага: \"%s\" знаказбор невядомы. Ніякага пераўтварэння знакаў для сеціва %s не будзе."
+
+#: src/common/textevents.h:6
+msgid "%C22*%O$t$1 added to notify list."
+msgstr "%C22*%O$t$1 дададзены ў спіс абвяшчэнняў."
+
+#: src/common/textevents.h:9
+msgid "%C22*%O$t$1 Banlist:%C19 $4%C20 $2%C21 $3"
+msgstr "%C22*%O$t$1 Спіс забароненых:%C19 $4%C20 $2%C21 $3"
+
+#: src/common/textevents.h:12
+msgid "%C22*%O$tCannot join%C26 %B$1 %O(You are banned)."
+msgstr "%C22*%O$tНемагчыма ўвайсці на%C26 %B$1 %O(Вы пад забаронаю)."
+
+#: src/common/textevents.h:18
+msgid "%C22*%O$t$1 is now known as $2"
+msgstr "%C22*%O$t$1 вядомы як $2"
+
+#: src/common/textevents.h:27
+msgid "%C22*%O$t$1 sets ban on $2"
+msgstr "%C22*%O$t$1 выставіў забарону на $2"
+
+#: src/common/textevents.h:30
+msgid "%C22*%O$tChannel $1 created on $2"
+msgstr "%C22*%O$tКанал $1 створаны на $2"
+
+#: src/common/textevents.h:33
+msgid "%C22*%O$t%C26$1%O removes channel half-operator status from%C26 $2"
+msgstr "%C22*%O$t%C26$1%O адабраў статус паў-аператара канала ў%C26 $2"
+
+#: src/common/textevents.h:36
+msgid "%C22*%O$t%C26$1%O removes channel operator status from%C26 $2"
+msgstr "%C22*%O$t%C26$1%O адабраў статус аператара канала ў%C26 $2"
+
+#: src/common/textevents.h:39
+msgid "%C22*%O$t%C26$1%O removes voice from%C26 $2"
+msgstr "%C22*%O$t%C26$1%O адабраў голас у%C26 $2"
+
+#: src/common/textevents.h:42
+msgid "%C22*%O$t$1 sets exempt on $2"
+msgstr "%C22*%O$t$1 усталяваў выключэнне на $2"
+
+#: src/common/textevents.h:45
+msgid "%C22*%O$t%C26$1%O gives channel half-operator status to%C26 $2"
+msgstr "%C22*%O$t%C26$1%O даў статус паў-аператара канала%C26 $2"
+
+#: src/common/textevents.h:48
+msgid "%C22*%O$t$1 sets invite on $2"
+msgstr "%C22*%O$t$1 усталяваў запрашэнне на $2"
+
+#: src/common/textevents.h:51
+msgid "%UChannel          Users   Topic"
+msgstr "%UКанал            Карыст.  Тэма"
+
+#: src/common/textevents.h:57
+msgid "%C22*%O$t$1 sets mode $2$3 $4"
+msgstr "%C22*%O$t$1 усталяваў рэжым $2$3 $4"
+
+#: src/common/textevents.h:60
+msgid "%C22*%O$t%C22Channel $1 modes: $2"
+msgstr "%C22*%O$t%C22Рэжымы канала $1: $2"
+
+#: src/common/textevents.h:69
+msgid "%C22*%O$t%C26$1%O gives channel operator status to%C26 $2"
+msgstr "%C22*%O$t%C26$1%O даў статус аператара канала %C26 $2"
+
+#: src/common/textevents.h:72
+msgid "%C22*%O$t$1 removes exempt on $2"
+msgstr "%C22*%O$t$1 выдаліў выключэнне на $2"
+
+#: src/common/textevents.h:75
+msgid "%C22*%O$t$1 removes invite on $2"
+msgstr "%C22*%O$t$1 выдаліў запрашэнне на $2"
+
+#: src/common/textevents.h:78
+msgid "%C22*%O$t$1 removes channel keyword"
+msgstr "%C22*%O$t$1 выдаліў ключавое слова канала"
+
+#: src/common/textevents.h:81
+msgid "%C22*%O$t$1 removes user limit"
+msgstr "%C22*%O$t$1 выдаліў абмежаванне карыстальніка"
+
+#: src/common/textevents.h:84
+msgid "%C22*%O$t$1 sets channel keyword to $2"
+msgstr "%C22*%O$t$1 усталяваў ключавое слова канала: $2"
+
+#: src/common/textevents.h:87
+msgid "%C22*%O$t$1 sets channel limit to $2"
+msgstr "%C22*%O$t$1 усталяваў абмежаванне канала ў $2"
+
+#: src/common/textevents.h:90
+msgid "%C22*%O$t$1 removes ban on $2"
+msgstr "%C22*%O$t$1 выдаліў забарону на $2"
+
+#: src/common/textevents.h:93
+msgid "%C22*%O$t%C26$1%O gives voice to%C26 $2"
+msgstr "%C22*%O$t%C26$1%O даў голас%C26 $2"
+
+#: src/common/textevents.h:96
+msgid "%C22*%O$t%C22Connected. Now logging in..."
+msgstr "%C22*%O$t%C22Злучана. Уваход..."
+
+#: src/common/textevents.h:99
+msgid "%C22*%O$t%C22Connecting to $1 ($2) port $3%O..."
+msgstr "%C22*%O$t%C22Злучэнне з $1 ($2), порт $3%O..."
+
+#: src/common/textevents.h:102
+msgid "%C21*%O$t%C21Connection failed. Error: $1"
+msgstr "Злучэнне не атрымалася. Памылка: $1"
+
+#: src/common/textevents.h:105
+msgid "%C22*%O$tReceived a CTCP $1 from $2"
+msgstr "%C22*%O$tАтрымана CTCP $1 ад $2"
+
+#: src/common/textevents.h:108
+msgid "%C22*%O$tReceived a CTCP $1 from $2 (to $3)"
+msgstr "%C22*%O$tАтрымана CTCP $1 ад $2 (да $3)"
+
+#: src/common/textevents.h:111
+msgid "%C19>%O$1%C19<%O$tCTCP $2"
+msgstr "%C19>%O$1%C19<%O$tCTCP $2"
+
+#: src/common/textevents.h:114
+msgid "%C22*%O$tReceived a CTCP Sound $1 from $2"
+msgstr "%C22*%O$tАтрыманы CTCP-гук $1 ад $2"
+
+#: src/common/textevents.h:117
+msgid "%C22*%O$tReceived a CTCP Sound $1 from $2 (to $3)"
+msgstr "%C22*%O$tАтрыманы CTCP-гук $1 ад $2 (да $3)"
+
+#: src/common/textevents.h:120
+msgid "%C22*%O$tDCC CHAT to %C26$1%O aborted."
+msgstr "%C22*%O$tDCC CHAT з %C26$1%O перарвана."
+
+#: src/common/textevents.h:123
+msgid "%C22*%O$tDCC CHAT connection established to %C26$1 %C30[%O$2%C30]"
+msgstr "%C22*%O$tDCC CHAT злучэнне ўсталявана з %C26$1 %C30[%O$2%C30]"
+
+#: src/common/textevents.h:126
+msgid "%C22*%O$tDCC CHAT to %C26$1%O lost ($4)."
+msgstr "%C22*%O$tDCC CHAT з %C26$1%O страчана ($4)."
+
+#: src/common/textevents.h:129
+msgid "%C22*%O$tReceived a DCC CHAT offer from $1"
+msgstr "%C22*%O$tАтрымана прапанова DCC CHAT ад $1"
+
+#: src/common/textevents.h:132
+msgid "%C22*%O$tOffering DCC CHAT to $1"
+msgstr "%C22*%O$tПрапануецца DCC CHAT $1"
+
+#: src/common/textevents.h:135
+msgid "%C22*%O$tAlready offering CHAT to $1"
+msgstr "%C22*%O$tУжо прапануецца CHAT to $1"
+
+#: src/common/textevents.h:138
+msgid "%C22*%O$tDCC $1 connect attempt to%C26 $2%O failed (err=$3)."
+msgstr "%C22*%O$tDCC $1 спроба злучэння з%C26 $2%O не ўдалася (err=$3)."
+
+#: src/common/textevents.h:141
+msgid "%C22*%O$tReceived '$1%O' from $2"
+msgstr "%C22*%O$tАтрымана '$1%O' ад $2"
+
+#: src/common/textevents.h:144
+#, c-format
+msgid "%C24,18 Type  To/From    Status  Size    Pos     File         "
+msgstr "%C24,18 Тып   Да/Ад      Статус  Памер   Паз     Файл         "
+
+#: src/common/textevents.h:147
+msgid "%C22*%O$tReceived a malformed DCC request from %C26$1%O.%010%C22*%O$tContents of packet: $2"
+msgstr "%C22*%O$tАтрыманы няправільны DCC запыт ад %C26$1%O.%010%C22*%O$tЗмест пакета: $2"
+
+#: src/common/textevents.h:150
+msgid "%C22*%O$tOffering%C26 $1%O to%C26 $2"
+msgstr "%C22*%O$tПрапанова%C26 $1%O да%C26 $2"
+
+#: src/common/textevents.h:153
+msgid "%C22*%O$tNo such DCC offer."
+msgstr "%C22*%O$tНяма гэткай прапановы DCC."
+
+#: src/common/textevents.h:156
+msgid "%C22*%O$tDCC RECV%C26 $2%O to%C26 $1%O aborted."
+msgstr "%C22*%O$tDCC RECV%C26 $2%O да%C26 $1%O перарвана."
+
+#: src/common/textevents.h:159
+msgid "%C22*%O$tDCC RECV%C26 $1%O from%C26 $3%O complete %C30[%C26$4%O cps%C30]%O."
+msgstr "%C22*%O$tDCC RECV%C26 $1%O ад%C26 $3%O завершана %C30[%C26$4%O cps%C30]%O."
+
+#: src/common/textevents.h:162
+msgid "%C22*%O$tDCC RECV connection established to%C26 $1 %C30[%O$2%C30]"
+msgstr "%C22*%O$tDCC RECV злучэнне ўсталявана з%C26 $1 %C30[%O$2%C30]"
+
+#: src/common/textevents.h:165
+msgid "%C22*%O$tDCC RECV%C26 $1%O from%C26 $3%O failed ($4)."
+msgstr "%C22*%O$tDCC RECV%C26 $1%O з%C26 $3%O не атрымалася ($4)."
+
+#: src/common/textevents.h:168
+msgid "%C22*%O$tDCC RECV: Cannot open $1 for writing ($2)."
+msgstr "%C22*%O$tDCC RECV: Немагчыма адкрыць $1 для запісу ($2)."
+
+#: src/common/textevents.h:171
+msgid "%C22*%O$tThe file%C26 $1%C already exists, saving it as%C26 $2%O instead."
+msgstr "%C22*%O$tФайл%C26 $1%C ужо існуе, захоўваю як %C26 $2%O."
+
+#: src/common/textevents.h:174
+msgid "%C22*%O$t%C26$1 %Ohas requested to resume%C26 $2 %Cfrom%C26 $3%C."
+msgstr "%C22*%O$t%C26$1 %Oзапытаў працяг%C26 $2 %Cз%C26 $3%C."
+
+#: src/common/textevents.h:177
+msgid "%C22*%O$tDCC SEND%C26 $2%O to%C26 $1%O aborted."
+msgstr "%C22*%O$tDCC SEND%C26 $2%O да%C26 $1%O перарвана."
+
+#: src/common/textevents.h:180
+msgid "%C22*%O$tDCC SEND%C26 $1%O to%C26 $2%O complete %C30[%C26$3%O cps%C30]%O."
+msgstr "%C22*%O$tDCC SEND%C26 $1%O з%C26 $2%O завершана %C30[%C26$3%O cps%C30]%O."
+
+#: src/common/textevents.h:183
+msgid "%C22*%O$tDCC SEND connection established to%C26 $1 %C30[%O$2%C30]"
+msgstr "%C22*%O$tDCC SEND злучэнне ўсталявана з %C26 $1 %C30[%O$2%C30]"
+
+#: src/common/textevents.h:186
+msgid "%C22*%O$tDCC SEND%C26 $1%O to%C26 $2%O failed. $3"
+msgstr "%C22*%O$tDCC SEND%C26 $1%O да%C26 $2%O не атрымалася. $3"
+
+#: src/common/textevents.h:189
+msgid "%C22*%O$t%C26$1 %Ohas offered%C26 $2 %O(%C26$3 %Obytes)"
+msgstr "%C22*%O$t%C26$1 %Oпрапанаваў%C26 $2 %O(%C26$3 %Oбайтаў)"
+
+#: src/common/textevents.h:192
+msgid "%C22*%O$tDCC $1%C26 $2 %Oto%C26 $3 %Cstalled - aborting."
+msgstr "%C22*%O$tDCC $1%C26 $2 %Oда%C26 $3 %C перарвана: страчана хуткасць."
+
+#: src/common/textevents.h:195
+msgid "%C22*%O$tDCC $1%C26 $2 %Oto%C26 $3 %Otimed out - aborting."
+msgstr "%C22*%O$tDCC $1%C26 $2 %Oда%C26 $3 %O перарвана: выйшаў час."
+
+#: src/common/textevents.h:198
+msgid "%C22*%O$t$1 deleted from notify list."
+msgstr "%C22*%O$t$1 выдалены са спіса абвяшчэнняў"
+
+#: src/common/textevents.h:201
+msgid "%C22*%O$tDisconnected ($1)."
+msgstr "%C22*%O$tЗлучэнне страчана ($1)."
+
+#: src/common/textevents.h:204
+msgid "%C22*%O$tFound your IP: [$1]"
+msgstr "%C22*%O$tЗнойдзены ваш IP: [$1]"
+
+#: src/common/textevents.h:210
+msgid "%O%C26$1%O added to ignore list."
+msgstr "%O%C26$1%O дададзены ў спіс ігнараванняў."
+
+#: src/common/textevents.h:213
+msgid "Ignore on %C26$1%O changed."
+msgstr "Ігнараванне %C26$1%O зменена."
+
+#: src/common/textevents.h:216
+#, c-format
+msgid "%C24,18                                                              "
+msgstr "%C24,18                                                              "
+
+#: src/common/textevents.h:219
+#, c-format
+msgid "%C24,18 Hostmask                  PRIV NOTI CHAN CTCP DCC  INVI UNIG "
+msgstr "%C24,18 Маска вузла               PRIV NOTI CHAN CTCP DCC  INVI UNIG "
+
+#: src/common/textevents.h:222
+msgid "%O%C26$1%O removed from ignore list."
+msgstr "%O%C26$1%O выдалены са спісу ігнараванняў."
+
+#: src/common/textevents.h:225
+msgid "  Ignore list is empty."
+msgstr "  Спіс ігнараванняў пусты."
+
+#: src/common/textevents.h:228
+msgid "%C22*%O$tCannot join%C26 %B$1 %O(Channel is invite only)."
+msgstr "%C22*%O$tНемагчыма ўвайсці на%C26 %B$1 %O(Уваход толькі па запрашэннях)."
+
+#: src/common/textevents.h:231
+msgid "%C22*%O$tYou have been invited to%C26 $1%O by%C26 $2%C (%C26$3%C)"
+msgstr "%C22*%O$tВы былі запрошаны на%C26 $1%O by%C26 $2%C (%C26$3%C)"
+
+#: src/common/textevents.h:234
+msgid "%C19*%O$t%C19%B$1 %B($3) has joined $2"
+msgstr "%C19*%O$t%C19%B$1 %B($3) увайшоў на $2"
+
+#: src/common/textevents.h:237
+msgid "%C22*%O$tCannot join%C26 %B$1 %O(Requires keyword)."
+msgstr "%C22*%O$tНемагчыма увайсці на%C26 %B$1 %O(Патрэбна ключавое слова)."
+
+#: src/common/textevents.h:240
+msgid "%C21*%O$t%C21$1 has kicked $2 from $3 ($4%O%C21)"
+msgstr "%C21*%O$t%C21$1 выпхнуў $2 з $3 ($4%O%C21)"
+
+#: src/common/textevents.h:243
+msgid "%C22*%O$tYou have been killed by $1 ($2%O%C22)"
+msgstr "%C22*%O$t $1 выпхнуў вас ($2%O%C22)"
+
+#: src/common/textevents.h:252
+msgid "%C22*%O$t%C22MOTD Skipped."
+msgstr "%C22*%O$t%C22\"Паведамленне дня\" прапушчана."
+
+#: src/common/textevents.h:255
+msgid "%C22*%O$t$1 already in use. Retrying with $2..."
+msgstr "%C22*%O$t$1 ужо выкарыстоўваецца. Спрабую $2..."
+
+#: src/common/textevents.h:258
+msgid "%C22*%O$tNickname already in use. Use /NICK to try another."
+msgstr "%C22*%O$tМянушка ўжо кімсьці выкарыстоўваецца. Паспрабуйце каманду /NICK для выбару іншай."
+
+#: src/common/textevents.h:261
+msgid "%C22*%O$tNo such DCC."
+msgstr "%C22*%O$tНяма гэткага DCC."
+
+#: src/common/textevents.h:264
+msgid "%C22*%O$tNo process is currently running"
+msgstr "%C22*%O$tЗараз няма працуючых працэсаў"
+
+#: src/common/textevents.h:273
+msgid "$tNotify list is empty."
+msgstr "$tСпіс абвяшчэнняў пусты."
+
+#: src/common/textevents.h:276
+msgid "%C24,18 %B  Notify List                           "
+msgstr "%C24,18 %B  Спіс абвяшчэнняў                       "
+
+#: src/common/textevents.h:279
+msgid "%C22*%O$t$1 users in notify list."
+msgstr "%C22*%O$t$1 карыстальнікаў у спісе абвяшчэнняў."
+
+#: src/common/textevents.h:282
+msgid "%C22*%O$tNotify: $1 is offline ($3)."
+msgstr "%C22*%O$tАбвяшчэнне: $1 адключыўся ($3)."
+
+#: src/common/textevents.h:285
+msgid "%C22*%O$tNotify: $1 is online ($3)."
+msgstr "%C22*%O$tАбвяшчэнне: $1 падключыўся ($3)."
+
+#: src/common/textevents.h:291
+msgid "%C23*%O$t%C23$1 (%O%C23$2) has left $3"
+msgstr "%C23*%O$t%C23$1 (%O%C23$2) выйшаў з $3"
+
+#: src/common/textevents.h:294
+msgid "%C23*%O$t%C23$1 (%O%C23$2) has left $3 (%O%C23%B%B$4%O%C23)"
+msgstr "%C23*%O$t%C23$1 (%O%C23$2) выйшаў з $3 (%O%C23%B%B$4%O%C23)"
+
+#: src/common/textevents.h:297
+msgid "%C22*%O$tPing reply from $1: $2 second(s)"
+msgstr "%C22*%O$tАдказ на пінг ад $1: $2 сек"
+
+#: src/common/textevents.h:300
+msgid "%C22*%O$tNo ping reply for $1 seconds, disconnecting."
+msgstr "%C22*%O$tНе атрымана адказаў на пінг на працягу $1 сек, разлучаемся."
+
+#: src/common/textevents.h:309
+msgid "%C22*%O$tA process is already running"
+msgstr "%C22*%O$tПрацэс ужо запушчаны"
+
+#: src/common/textevents.h:312
+msgid "%C23*%O$t%C23$1 has quit (%O%C23%B%B$2%O%C23)"
+msgstr "%C23*%O$t%C23$1 зыйшоў (%O%C23%B%B$2%O%C23)"
+
+#: src/common/textevents.h:315
+msgid "%C22*%O$t$1 sets modes%B %C30[%O$2%B%C30]"
+msgstr "%C22*%O$t$1 усталяваў рэжым%B %C30[%O$2%B%C30]"
+
+#: src/common/textevents.h:318
+msgid "%C28-%C29$1/Wallops%C28-%O$t$2"
+msgstr "%C28-%C29$1/Wallops%C28-%O$t$2"
+
+#: src/common/textevents.h:321
+msgid "%C22*%O$tLooking up IP number for%C26 $1%O..."
+msgstr "%C22*%O$tШукаецца нумар IP %C26 $1%O..."
+
+#: src/common/textevents.h:324
+msgid "%C22*%O$t%C22Connected."
+msgstr "%C22*%O$t%C22Злучана."
+
+#: src/common/textevents.h:330
+msgid "%C22*%O$t%C22Looking up $1"
+msgstr "%C22*%O$t%C22Шукаецца $1"
+
+#: src/common/textevents.h:339
+msgid "%C22*%O$tStopped previous connection attempt (pid=$1)"
+msgstr "%C22*%O$tСпынена папярэдняя спроба злучэння (pid=$1)"
+
+#: src/common/textevents.h:342
+msgid "%C29*%O$t%C29Topic for $1%C %C29is: $2"
+msgstr "%C29*%O$t%C29Тэма для $1%C %C29: $2"
+
+#: src/common/textevents.h:345
+msgid "%C22*%O$t$1 has changed the topic to: $2"
+msgstr "%C22*%O$t$1 змяніў тэму на: $2"
+
+#: src/common/textevents.h:348
+msgid "%C29*%O$t%C29Topic for $1%C %C29set by $2%C %C29at $3"
+msgstr "%C29*%O$t%C29Тэма для $1%C %C29усталявана $2%C %C29у $3"
+
+#: src/common/textevents.h:351
+msgid "%C22*%O$tUnknown host. Maybe you misspelled it?"
+msgstr "%C22*%O$tНевядомы хост. Магчыма, вы памыліліся?"
+
+#: src/common/textevents.h:354
+msgid "%C22*%O$tCannot join%C26 %B$1 %O(User limit reached)."
+msgstr "%C22*%O$tНемагчыма ўвасці на %C26 %B$1 %O(Дасягнута карыстальніцкае абмежаванне)."
+
+#: src/common/textevents.h:357
+msgid "%C22*%O$t%C26Users on $1:%C $2"
+msgstr "%C22*%O$t%C26Карыстальнікі на $1:%C $2"
+
+#: src/common/textevents.h:360
+msgid "%C22*%O$t%C28[%O$1%C28] %O$2%C27 $3"
+msgstr "%C22*%O$t%C28[%O$1%C28] %O$2%C27 $3"
+
+#: src/common/textevents.h:363
+msgid "%C22*%O$t%C28[%O$1%C28] %Cis away %C30(%O$2%O%C30)"
+msgstr "%C22*%O$t%C28[%O$1%C28] %Cадыйшоў %C30(%O$2%O%C30)"
+
+#: src/common/textevents.h:366 src/common/textevents.h:372
+#: src/common/textevents.h:387 src/common/textevents.h:390
+msgid "%C22*%O$t%C28[%O$1%C28]%O $2"
+msgstr "%C22*%O$t%C28[%O$1%C28]%O $2"
+
+#: src/common/textevents.h:369
+msgid "%C22*%O$t%C28[%O$1%C28] %OEnd of WHOIS list."
+msgstr "%C22*%O$t%C28[%O$1%C28] %OКанец спіса WHOIS."
+
+#: src/common/textevents.h:375
+msgid "%C22*%O$t%C28[%O$1%C28]%O idle%C26 $2"
+msgstr "%C22*%O$t%C28[%O$1%C28]%O без дзеянняў%C26 $2"
+
+#: src/common/textevents.h:378
+msgid "%C22*%O$t%C28[%O$1%C28]%O idle%C26 $2%O, signon:%C26 $3"
+msgstr "%C22*%O$t%C28[%O$1%C28]%O бяздзейны%C26 $2%O, увайшоў:%C26 $3"
+
+#: src/common/textevents.h:381
+msgid "%C22*%O$t%C28[%O$1%C28] %C30(%O$2@$3%C30)%O: $4"
+msgstr "%C22*%O$t%C28[%O$1%C28] %C30(%O$2@$3%C30)%O: $4"
+
+#: src/common/textevents.h:384
+msgid "%C22*%O$t%C28[%O$1%C28] %Oreal user@host%C27 $2%O, real IP%C27 $3"
+msgstr "%C22*%O$t%C28[%O$1%C28] %Oсапраўдны user@host%C27 $2%O, сапраўдны IP%C27 $3"
+
+#: src/common/textevents.h:393
+msgid "%C19*%O$t%C19Now talking on $2"
+msgstr "%C19*%O$t%C19Размаўляем на $2"
+
+#: src/common/textevents.h:396
+msgid "%C23*$tYou have been kicked from $2 by $3 ($4%O%C23)"
+msgstr "%C23*$t$3 выпхнуў вас з $2 ($4%O%C23)"
+
+#: src/common/textevents.h:399
+#, c-format
+msgid "%C23*$tYou have left channel $3"
+msgstr "%C23*$tВы выйшлі з канала $3"
+
+#: src/common/textevents.h:402
+msgid "%C23*$tYou have left channel $3 (%O%C23%B%B$4%O%C23)"
+msgstr "%C23*$tВы выйшлі з канала $3 (%O%C23%B%B$4%O%C23)"
+
+#: src/common/textevents.h:408
+msgid "%C22*%O$tYou've invited%C26 $1%O to%C26 $2%O (%C26$3%O)"
+msgstr "%C22*%O$tВы запрошаны %C26 $1%O на %C26 $2%O (%C26$3%O)"
+
+#: src/common/textevents.h:414
+msgid "%C22*%O$tYou are now known as $2"
+msgstr "%C22*%O$tЦяпер вы вядомы як $2"
+
+#: src/common/text.c:61
+#, c-format
+msgid "**** ENDING LOGGING AT %s\n"
+msgstr "**** КАНЕЦ УВАХОДУ НА %s\n"
+
+#: src/common/text.c:270
+#, c-format
+msgid "**** BEGIN LOGGING AT %s\n"
+msgstr "**** ПАЧАТАК УВАХОДУ НА %s\n"
+
+#: src/common/text.c:289
+#, c-format
+msgid ""
+"* Can't open log file(s) for writing. Check the\n"
+"  permissions on %s/xchatlogs"
+msgstr ""
+"* Немагчыма адкрыць лог-файл(ы) для запісу. Праверце\n"
+"  правы на %s/xchatlogs"
+
+#: src/common/text.c:625
+msgid "Left message"
+msgstr "Левае паведамленне"
+
+#: src/common/text.c:626
+msgid "Right message"
+msgstr "Правае паведамленне"
+
+#: src/common/text.c:630
+msgid "The nick of the joining person"
+msgstr "Мянушка ўваходзячай асобы"
+
+#: src/common/text.c:631
+msgid "The channel being joined"
+msgstr "Канал для ўваходу"
+
+#: src/common/text.c:632 src/common/text.c:679 src/common/text.c:730
+msgid "The host of the person"
+msgstr "Хост гэтай асобы"
+
+#: src/common/text.c:636 src/common/text.c:642 src/common/text.c:649
+#: src/common/text.c:837 src/common/text.c:844 src/common/text.c:849
+#: src/common/text.c:854 src/common/text.c:859 src/common/text.c:865
+#: src/common/text.c:870 src/common/text.c:874 src/common/text.c:880
+#: src/common/text.c:886 src/common/text.c:932 src/common/text.c:943
+#: src/common/text.c:948 src/common/text.c:953 src/common/text.c:962
+#: src/common/text.c:973 src/common/text.c:980 src/common/text.c:986
+#: src/common/text.c:991 src/common/text.c:996 src/common/text.c:1003
+#: src/common/text.c:1009 src/common/text.c:1015 src/common/text.c:1020
+#: src/common/text.c:1025 src/common/text.c:1029 src/common/text.c:1035
+#: src/common/text.c:1043 src/common/text.c:1077 src/common/text.c:1082
+msgid "Nickname"
+msgstr "Мянушка"
+
+#: src/common/text.c:637
+msgid "The action"
+msgstr "Дзеянне"
+
+#: src/common/text.c:638 src/common/text.c:644
+msgid "Mode char"
+msgstr "Знак рэжыму"
+
+#: src/common/text.c:643
+msgid "The text"
+msgstr "Тэкст"
+
+#: src/common/text.c:645 src/common/text.c:651
+msgid "Identified text"
+msgstr "Вылучаны тэкст"
+
+#: src/common/text.c:650 src/common/text.c:707 src/common/text.c:713
+msgid "The message"
+msgstr "Паведамленне"
+
+#: src/common/text.c:655 src/common/text.c:717
+msgid "Old nickname"
+msgstr "Старая мянушка"
+
+#: src/common/text.c:656 src/common/text.c:718
+msgid "New nickname"
+msgstr "Новая мянушка"
+
+#: src/common/text.c:660
+msgid "Nick of person who changed the topic"
+msgstr "Мянушка асобы, якая змяніла тэму"
+
+#: src/common/text.c:661 src/common/text.c:667 src/fe-gtk/chanlist.c:718
+#: src/fe-gtk/chanlist.c:821
+msgid "Topic"
+msgstr "Тэма"
+
+#: src/common/text.c:662 src/common/text.c:666 src/common/text.c:1097
+#: src/fe-gtk/chanlist.c:716 src/fe-gtk/ignoregui.c:176
+msgid "Channel"
+msgstr "Канал"
+
+#: src/common/text.c:671 src/common/text.c:724
+msgid "The nickname of the kicker"
+msgstr "Мянушка асобы, якая выпхнула вас"
+
+#: src/common/text.c:672 src/common/text.c:722
+msgid "The person being kicked"
+msgstr "Асоба, якую выпхнулі"
+
+#: src/common/text.c:673 src/common/text.c:680 src/common/text.c:684
+#: src/common/text.c:689 src/common/text.c:723 src/common/text.c:731
+#: src/common/text.c:738
+msgid "The channel"
+msgstr "Канал"
+
+#: src/common/text.c:674 src/common/text.c:725 src/common/text.c:732
+msgid "The reason"
+msgstr "Прычына"
+
+#: src/common/text.c:678 src/common/text.c:729
+msgid "The nick of the person leaving"
+msgstr "Мянушка асобы, што выходзіць"
+
+#: src/common/text.c:685 src/common/text.c:691
+msgid "The time"
+msgstr "Час"
+
+#: src/common/text.c:690
+msgid "The creator"
+msgstr "Стваральнік"
+
+#: src/common/text.c:695 src/fe-gtk/dccgui.c:763 src/fe-gtk/dccgui.c:994
+msgid "Nick"
+msgstr "Мянушка"
+
+#: src/common/text.c:696 src/common/text.c:949
+msgid "Reason"
+msgstr "Прычына"
+
+#: src/common/text.c:697 src/common/text.c:839 src/common/text.c:922
+msgid "Host"
+msgstr "Хост"
+
+#: src/common/text.c:701 src/common/text.c:706 src/common/text.c:711
+msgid "Who it's from"
+msgstr "Адкуль"
+
+#: src/common/text.c:702
+msgid "The time in x.x format (see below)"
+msgstr "Час у фармаце x.x (глядзі ніжэй)"
+
+#: src/common/text.c:712 src/common/text.c:749
+msgid "The Channel it's going to"
+msgstr "Спіс каналаў"
+
+#: src/common/text.c:736
+msgid "The sound"
+msgstr "Гук"
+
+#: src/common/text.c:737 src/common/text.c:743 src/common/text.c:748
+msgid "The nick of the person"
+msgstr "Мянушка гэтай асобы"
+
+#: src/common/text.c:742 src/common/text.c:747
+msgid "The CTCP event"
+msgstr "CTCP падзея"
+
+#: src/common/text.c:753
+msgid "The nick of the person who set the key"
+msgstr "Мянушка асобы, якая ўсталявала ключ"
+
+#: src/common/text.c:754
+msgid "The key"
+msgstr "Ключ"
+
+#: src/common/text.c:758
+msgid "The nick of the person who set the limit"
+msgstr "Мянушка асобы, якая ўсталявала абмежаванне"
+
+#: src/common/text.c:759
+msgid "The limit"
+msgstr "Абмежаванне"
+
+#: src/common/text.c:763
+msgid "The nick of the person who did the op'ing"
+msgstr "Мянушка асобы, якая дала статус аператара"
+
+#: src/common/text.c:764
+msgid "The nick of the person who has been op'ed"
+msgstr "Мянушка асобы, якая атрымала статус аператара"
+
+#: src/common/text.c:768
+msgid "The nick of the person who has been halfop'ed"
+msgstr "Мянушка асобы, якая атрымала статус паў-аператара"
+
+#: src/common/text.c:769
+msgid "The nick of the person who did the halfop'ing"
+msgstr "Мянушка асобы, якая дала статус паў-аператара"
+
+#: src/common/text.c:773
+msgid "The nick of the person who did the voice'ing"
+msgstr "Мянушка асобы, якая дала голас"
+
+#: src/common/text.c:774
+msgid "The nick of the person who has been voice'ed"
+msgstr "Мянушка асобы, якая атрымала голас"
+
+#: src/common/text.c:778
+msgid "The nick of the person who did the banning"
+msgstr "Мянушка асобы, якая ўсталявала забарону"
+
+#: src/common/text.c:779 src/common/text.c:806
+msgid "The ban mask"
+msgstr "Маска забароны"
+
+#: src/common/text.c:783
+msgid "The nick who removed the key"
+msgstr "Мянушка, якая выдаліла ключ"
+
+#: src/common/text.c:787
+msgid "The nick who removed the limit"
+msgstr "Мянушка, якая выдаліла абмежаванне"
+
+#: src/common/text.c:791
+msgid "The nick of the person of did the deop'ing"
+msgstr "Мянушка асобы, якая адабрала статус аператара"
+
+#: src/common/text.c:792
+msgid "The nick of the person who has been deop'ed"
+msgstr "Мянушка асобы, у якой быў адабраны статус аператара"
+
+#: src/common/text.c:795
+msgid "The nick of the person of did the dehalfop'ing"
+msgstr "Мянушка асобы, якая адабрала статус паў-аператара"
+
+#: src/common/text.c:796
+msgid "The nick of the person who has been dehalfop'ed"
+msgstr "Мянушка асобы, у якой быў адабраны статус паў-аператара"
+
+#: src/common/text.c:800
+msgid "The nick of the person of did the devoice'ing"
+msgstr "Мянушка асобы, якая адабрала голас"
+
+#: src/common/text.c:801
+msgid "The nick of the person who has been devoice'ed"
+msgstr "Мянушка асобы, у якой быў адабраны голас"
+
+#: src/common/text.c:805
+msgid "The nick of the person of did the unban'ing"
+msgstr "Мянушка асобы, якая зняла забарону"
+
+#: src/common/text.c:810
+msgid "The nick of the person who did the exempt"
+msgstr "Мянушка асобы, якая ўсталявала выключэнне"
+
+#: src/common/text.c:811 src/common/text.c:816
+msgid "The exempt mask"
+msgstr "Маска выключэння"
+
+#: src/common/text.c:815
+msgid "The nick of the person removed the exempt"
+msgstr "Мянушка асобы, якая выдаліла выключэнне"
+
+#: src/common/text.c:820
+msgid "The nick of the person who did the invite"
+msgstr "Мянушка асобы, якая зрабіла запрашэнне"
+
+#: src/common/text.c:821 src/common/text.c:826
+msgid "The invite mask"
+msgstr "Маска запрашэння"
+
+#: src/common/text.c:825
+msgid "The nick of the person removed the invite"
+msgstr "Мянушка асобы, якая выдаліла запрашэнне"
+
+#: src/common/text.c:830
+msgid "The nick of the person setting the mode"
+msgstr "Мянушка асобы, якая ўсталявала рэжым"
+
+#: src/common/text.c:831
+msgid "The mode's sign (+/-)"
+msgstr "Знак рэжыму (+/-)"
+
+#: src/common/text.c:832
+msgid "The mode letter"
+msgstr "Сімвал рэжыму"
+
+#: src/common/text.c:833
+msgid "The channel it's being set on"
+msgstr "Канал для ўжыцця"
+
+#: src/common/text.c:838
+msgid "Username"
+msgstr "Імя карыстальніка"
+
+#: src/common/text.c:840
+msgid "Full name"
+msgstr "Поўнае імя"
+
+#: src/common/text.c:845
+msgid "Channel Membership/\"is an IRC operator\""
+msgstr "Член канала /\"аператар IRC\""
+
+#: src/common/text.c:850
+msgid "Server Information"
+msgstr "Інфармацыя аб серверы"
+
+#: src/common/text.c:855 src/common/text.c:860
+msgid "Idle time"
+msgstr "Час бяздзеяння"
+
+#: src/common/text.c:861
+msgid "Signon time"
+msgstr "Час з уваходу"
+
+#: src/common/text.c:866
+msgid "Away reason"
+msgstr "Прычына адыходу"
+
+#: src/common/text.c:875 src/common/text.c:881 src/common/text.c:889
+#: src/common/text.c:1069
+msgid "Message"
+msgstr "Паведамленне"
+
+#: src/common/text.c:882
+msgid "Account"
+msgstr "Рахунак"
+
+#: src/common/text.c:887
+msgid "Real user@host"
+msgstr "Сапраўдны user@host"
+
+#: src/common/text.c:888
+msgid "Real IP"
+msgstr "Сапраўдны IP"
+
+#: src/common/text.c:893 src/common/text.c:902 src/common/text.c:908
+#: src/common/text.c:938 src/common/text.c:1092
+msgid "Channel Name"
+msgstr "Назва канала"
+
+#: src/common/text.c:897 src/common/text.c:1055 src/fe-gtk/menu.c:1206
+#: src/fe-gtk/menu.c:1385 src/fe-gtk/textgui.c:387
+msgid "Text"
+msgstr "Тэкст"
+
+#: src/common/text.c:898 src/common/text.c:904 src/common/text.c:933
+#: src/common/text.c:1051 src/common/text.c:1093
+msgid "Server Name"
+msgstr "Назва сервера"
+
+#: src/common/text.c:903
+msgid "Nick of person who invited you"
+msgstr "Мянушка асобы, якая запрасіла вас"
+
+#: src/common/text.c:909 src/fe-gtk/chanlist.c:717
+msgid "Users"
+msgstr "Карыстальнікі"
+
+#: src/common/text.c:913
+msgid "Nickname in use"
+msgstr "Мянушка выкарыстоўваецца"
+
+#: src/common/text.c:914
+msgid "Nick being tried"
+msgstr "Спрабуемая мянушка"
+
+#: src/common/text.c:923 src/common/text.c:1059
+msgid "IP"
+msgstr "IP"
+
+#: src/common/text.c:924 src/common/text.c:955
+msgid "Port"
+msgstr "Порт"
+
+#: src/common/text.c:934 src/fe-gtk/notifygui.c:139 src/fe-gtk/setup.c:1647
+msgid "Network"
+msgstr "Сеціва"
+
+#: src/common/text.c:939 src/common/text.c:944
+msgid "Modes string"
+msgstr "Радок рэжымаў"
+
+#: src/common/text.c:954 src/common/text.c:992 src/common/text.c:997
+#: src/common/text.c:1038
+msgid "IP address"
+msgstr "IP адрас"
+
+#: src/common/text.c:960 src/common/text.c:985
+msgid "DCC Type"
+msgstr "Тып DCC"
+
+#: src/common/text.c:961 src/common/text.c:966 src/common/text.c:971
+#: src/common/text.c:978 src/common/text.c:998 src/common/text.c:1002
+#: src/common/text.c:1008 src/common/text.c:1014 src/common/text.c:1021
+#: src/common/text.c:1030 src/common/text.c:1036
+msgid "Filename"
+msgstr "Імя файла"
+
+#: src/common/text.c:972 src/common/text.c:979
+msgid "Destination filename"
+msgstr "Назва файла ў атрымальніка"
+
+#: src/common/text.c:981 src/common/text.c:1010
+msgid "CPS"
+msgstr "CPS(знакаў у секунду)"
+
+#: src/common/text.c:1016
+msgid "Pathname"
+msgstr "Шлях"
+
+#: src/common/text.c:1031 src/fe-gtk/dccgui.c:759
+msgid "Position"
+msgstr "Пазіцыя"
+
+#: src/common/text.c:1037 src/fe-gtk/dccgui.c:758
+msgid "Size"
+msgstr "Памер"
+
+#: src/common/text.c:1042
+msgid "DCC String"
+msgstr "Радок DCC"
+
+#: src/common/text.c:1047
+msgid "Number of notify items"
+msgstr "Колькасць абвяшчэнняў"
+
+#: src/common/text.c:1063
+msgid "Old Filename"
+msgstr "Старое імя файла"
+
+#: src/common/text.c:1064
+msgid "New Filename"
+msgstr "Новае імя файла"
+
+#: src/common/text.c:1068
+msgid "Receiver"
+msgstr "Атрымальнік"
+
+#: src/common/text.c:1073
+msgid "Hostmask"
+msgstr "Маска камп'ютэра"
+
+#: src/common/text.c:1078
+msgid "Hostname"
+msgstr "Назва камп'ютэра"
+
+#: src/common/text.c:1083
+msgid "The Packet"
+msgstr "Пакет"
+
+#: src/common/text.c:1087
+msgid "Seconds"
+msgstr "Секунды"
+
+#: src/common/text.c:1091
+msgid "Nick of person who have been invited"
+msgstr "Мянушка запрошанай асобы"
+
+#: src/common/text.c:1098
+msgid "Banmask"
+msgstr "Маска забароны"
+
+#: src/common/text.c:1099
+msgid "Who set the ban"
+msgstr "Хто ўсталяваў забарону"
+
+#: src/common/text.c:1100
+msgid "Ban time"
+msgstr "Час забароны"
+
+#: src/common/text.c:1140
+#, c-format
+msgid ""
+"Error parsing event %s.\n"
+"Loading default."
+msgstr ""
+"Памылка апрацоўкі падзеі %s.\n"
+"Ужываем стандартныя паводзіны."
+
+#: src/common/text.c:1833
+#, c-format
+msgid ""
+"Cannot read sound file:\n"
+"%s"
+msgstr ""
+"Немагчыма прачытаць гукавы файл:\n"
+"%s"
+
+#: src/common/util.c:296
+msgid "Remote host closed socket"
+msgstr "Аддалены вузел закрыў сокет"
+
+#: src/common/util.c:301
+msgid "Connection refused"
+msgstr "У злучэнні адмоўлена"
+
+#: src/common/util.c:304
+msgid "No route to host"
+msgstr "Няма шляху да вузла"
+
+#: src/common/util.c:306
+msgid "Connection timed out"
+msgstr "Час злучэння выйшаў"
+
+#: src/common/util.c:308
+msgid "Cannot assign that address"
+msgstr "Немагчыма ўжыць гэта адрас"
+
+#: src/common/util.c:310
+msgid "Connection reset by peer"
+msgstr "Злучэнне пераўсталяваны тым бокам"
+
+#: src/common/util.c:839
+msgid "Ascension Island"
+msgstr "Узнясення астравы"
+
+#: src/common/util.c:840
+msgid "Andorra"
+msgstr "Андора"
+
+#: src/common/util.c:841
+msgid "United Arab Emirates"
+msgstr "Злучаныя Арабскія Эміраты"
+
+#: src/common/util.c:842
+msgid "Afghanistan"
+msgstr "Аўганістан"
+
+#: src/common/util.c:843
+msgid "Antigua and Barbuda"
+msgstr "Антыгуа і Барбуда"
+
+#: src/common/util.c:844
+msgid "Anguilla"
+msgstr "Ангілья"
+
+#: src/common/util.c:845
+msgid "Albania"
+msgstr "Албанія"
+
+#: src/common/util.c:846
+msgid "Armenia"
+msgstr "Арменія"
+
+#: src/common/util.c:847
+msgid "Netherlands Antilles"
+msgstr "Нідэрландскія Антылы"
+
+#: src/common/util.c:848
+msgid "Angola"
+msgstr "Ангола"
+
+#: src/common/util.c:849
+msgid "Antarctica"
+msgstr "Антарктыка"
+
+#: src/common/util.c:850
+msgid "Argentina"
+msgstr "Аргентына"
+
+#: src/common/util.c:851
+msgid "Reverse DNS"
+msgstr "Адваротны DNS"
+
+#: src/common/util.c:852
+msgid "American Samoa"
+msgstr "Амерыканскае Самоа"
+
+#: src/common/util.c:853
+msgid "Austria"
+msgstr "Аўстрыя"
+
+#: src/common/util.c:854
+msgid "Nato Fiel"
+msgstr "НАТО Фэйл"
+
+#: src/common/util.c:855
+msgid "Australia"
+msgstr "Аўстралія"
+
+#: src/common/util.c:856
+msgid "Aruba"
+msgstr "Аруба"
+
+#: src/common/util.c:857
+msgid "Aland Islands"
+msgstr "Аланавы астравы"
+
+#: src/common/util.c:858
+msgid "Azerbaijan"
+msgstr "Азербайджан"
+
+#: src/common/util.c:859
+msgid "Bosnia and Herzegovina"
+msgstr "Боснія і Герцагавіна"
+
+#: src/common/util.c:860
+msgid "Barbados"
+msgstr "Барбадос"
+
+#: src/common/util.c:861
+msgid "Bangladesh"
+msgstr "Бангладэш"
+
+#: src/common/util.c:862
+msgid "Belgium"
+msgstr "Бельгія"
+
+#: src/common/util.c:863
+msgid "Burkina Faso"
+msgstr "Буркіна Фасо"
+
+#: src/common/util.c:864
+msgid "Bulgaria"
+msgstr "Баўгарыя"
+
+#: src/common/util.c:865
+msgid "Bahrain"
+msgstr "Бахрэйн"
+
+#: src/common/util.c:866
+msgid "Burundi"
+msgstr "Бурундзі"
+
+#: src/common/util.c:867
+msgid "Businesses"
+msgstr "Бізнесовыя"
+
+#: src/common/util.c:868
+msgid "Benin"
+msgstr "Бенін"
+
+#: src/common/util.c:869
+msgid "Bermuda"
+msgstr "Бэрмуды"
+
+#: src/common/util.c:870
+msgid "Brunei Darussalam"
+msgstr "Брунэй"
+
+#: src/common/util.c:871
+msgid "Bolivia"
+msgstr "Балівія"
+
+#: src/common/util.c:872
+msgid "Brazil"
+msgstr "Бразілія"
+
+#: src/common/util.c:873
+msgid "Bahamas"
+msgstr "Багамы"
+
+#: src/common/util.c:874
+msgid "Bhutan"
+msgstr "Бутан"
+
+#: src/common/util.c:875
+msgid "Bouvet Island"
+msgstr "Востраў Бувет"
+
+#: src/common/util.c:876
+msgid "Botswana"
+msgstr "Батсвана"
+
+#: src/common/util.c:877
+msgid "Belarus"
+msgstr "Беларусь"
+
+#: src/common/util.c:878
+msgid "Belize"
+msgstr "Белізе"
+
+#: src/common/util.c:879
+msgid "Canada"
+msgstr "Канада"
+
+#: src/common/util.c:880
+msgid "Cocos Islands"
+msgstr "Какос астравы"
+
+#: src/common/util.c:881
+msgid "Democratic Republic of Congo"
+msgstr "Дэмакратычная Рэспубліка Конга"
+
+#: src/common/util.c:882
+msgid "Central African Republic"
+msgstr "Цэнтральна-Афрыканская Рэспубліка"
+
+#: src/common/util.c:883
+msgid "Congo"
+msgstr "Конга"
+
+#: src/common/util.c:884
+msgid "Switzerland"
+msgstr "Швейцарыя"
+
+#: src/common/util.c:885
+msgid "Cote d'Ivoire"
+msgstr "Кот д'Івуар"
+
+#: src/common/util.c:886
+msgid "Cook Islands"
+msgstr "Астравы Кука"
+
+#: src/common/util.c:887
+msgid "Chile"
+msgstr "Чылі"
+
+#: src/common/util.c:888
+msgid "Cameroon"
+msgstr "Камерун"
+
+#: src/common/util.c:889
+msgid "China"
+msgstr "Кітай"
+
+#: src/common/util.c:890
+msgid "Colombia"
+msgstr "Калумбія"
+
+#: src/common/util.c:891
+msgid "Internic Commercial"
+msgstr "Камерцыйныя Адрасы"
+
+#: src/common/util.c:892
+msgid "Costa Rica"
+msgstr "Коста Рыка"
+
+#: src/common/util.c:893
+msgid "Serbia and Montenegro"
+msgstr "Сербія і Чарнагорыя"
+
+#: src/common/util.c:894
+msgid "Cuba"
+msgstr "Куба"
+
+#: src/common/util.c:895
+msgid "Cape Verde"
+msgstr "Кабо Вердэ"
+
+#: src/common/util.c:896
+msgid "Christmas Island"
+msgstr "Востраў Каляд"
+
+#: src/common/util.c:897
+msgid "Cyprus"
+msgstr "Кіпр"
+
+#: src/common/util.c:898
+msgid "Czech Republic"
+msgstr "Чэхія"
+
+#: src/common/util.c:899
+msgid "Germany"
+msgstr "Нямеччына"
+
+#: src/common/util.c:900
+msgid "Djibouti"
+msgstr "Джыбуці"
+
+#: src/common/util.c:901
+msgid "Denmark"
+msgstr "Данія"
+
+#: src/common/util.c:902
+msgid "Dominica"
+msgstr "Дамініка"
+
+#: src/common/util.c:903
+msgid "Dominican Republic"
+msgstr "Дамініканская Рэспубліка"
+
+#: src/common/util.c:904
+msgid "Algeria"
+msgstr "Алжыр"
+
+#: src/common/util.c:905
+msgid "Ecuador"
+msgstr "Эквадор"
+
+#: src/common/util.c:906
+msgid "Educational Institution"
+msgstr "Адукацыйныя"
+
+#: src/common/util.c:907
+msgid "Estonia"
+msgstr "Эстонія"
+
+#: src/common/util.c:908
+msgid "Egypt"
+msgstr "Егіпет"
+
+#: src/common/util.c:909
+msgid "Western Sahara"
+msgstr "Заходняя Сахара"
+
+#: src/common/util.c:910
+msgid "Eritrea"
+msgstr "Эрытрэя"
+
+#: src/common/util.c:911
+msgid "Spain"
+msgstr "Гішпанія"
+
+#: src/common/util.c:912
+msgid "Ethiopia"
+msgstr "Эфіёпія"
+
+#: src/common/util.c:913
+msgid "European Union"
+msgstr "Еўразвяз"
+
+#: src/common/util.c:914
+msgid "Finland"
+msgstr "Фінляндыя"
+
+#: src/common/util.c:915
+msgid "Fiji"
+msgstr "Фіджы"
+
+#: src/common/util.c:916
+msgid "Falkland Islands"
+msgstr "Фалклендскія астравы (Мальвіны)"
+
+#: src/common/util.c:917
+msgid "Micronesia"
+msgstr "Федэрацыя Мiкранэзіі"
+
+#: src/common/util.c:918
+msgid "Faroe Islands"
+msgstr "Астравы Фароэ"
+
+#: src/common/util.c:919
+msgid "France"
+msgstr "Францыя"
+
+#: src/common/util.c:920
+msgid "Gabon"
+msgstr "Габон"
+
+#: src/common/util.c:921
+msgid "Great Britain"
+msgstr "Вялікая Брытанія"
+
+#: src/common/util.c:922
+msgid "Grenada"
+msgstr "Грэнада"
+
+#: src/common/util.c:923
+msgid "Georgia"
+msgstr "Грузія"
+
+#: src/common/util.c:924
+msgid "French Guiana"
+msgstr "Французская Грэнада"
+
+#: src/common/util.c:925
+msgid "British Channel Isles"
+msgstr "Брытанскія астравы Канала"
+
+#: src/common/util.c:926
+msgid "Ghana"
+msgstr "Гана"
+
+#: src/common/util.c:927
+msgid "Gibraltar"
+msgstr "Гібралтар"
+
+#: src/common/util.c:928
+msgid "Greenland"
+msgstr "Грынланд"
+
+#: src/common/util.c:929
+msgid "Gambia"
+msgstr "Гамбія"
+
+#: src/common/util.c:930
+msgid "Guinea"
+msgstr "Гвінея"
+
+#: src/common/util.c:931
+msgid "Government"
+msgstr "Урад"
+
+#: src/common/util.c:932
+msgid "Guadeloupe"
+msgstr "Гвадэлупа"
+
+#: src/common/util.c:933
+msgid "Equatorial Guinea"
+msgstr "Экватарыяльная Гвінэя"
+
+#: src/common/util.c:934
+msgid "Greece"
+msgstr "Грэцыя"
+
+#: src/common/util.c:935
+msgid "S. Georgia and S. Sandwich Isles"
+msgstr "Св.Георгія і Св.Сэндвіча астравы"
+
+#: src/common/util.c:936
+msgid "Guatemala"
+msgstr "Гватэмала"
+
+#: src/common/util.c:937
+msgid "Guam"
+msgstr "Гуам"
+
+#: src/common/util.c:938
+msgid "Guinea-Bissau"
+msgstr "Гвінея-Бісаў"
+
+#: src/common/util.c:939
+msgid "Guyana"
+msgstr "Гвіяна"
+
+#: src/common/util.c:940
+msgid "Hong Kong"
+msgstr "Гонг-Конг"
+
+#: src/common/util.c:941
+msgid "Heard and McDonald Islands"
+msgstr "Астравы Гэарда і МакДональда "
+
+#: src/common/util.c:942
+msgid "Honduras"
+msgstr "Гандурас"
+
+#: src/common/util.c:943
+msgid "Croatia"
+msgstr "Харватыя"
+
+#: src/common/util.c:944
+msgid "Haiti"
+msgstr "Гаіці"
+
+#: src/common/util.c:945
+msgid "Hungary"
+msgstr "Вугоршчына"
+
+#: src/common/util.c:946
+msgid "Indonesia"
+msgstr "Інданэзія"
+
+#: src/common/util.c:947
+msgid "Ireland"
+msgstr "Ірландыя"
+
+#: src/common/util.c:948
+msgid "Israel"
+msgstr "Ізраіль"
+
+#: src/common/util.c:949
+msgid "Isle of Man"
+msgstr "Востраў Мэн"
+
+#: src/common/util.c:950
+msgid "India"
+msgstr "Індыя"
+
+#: src/common/util.c:951
+msgid "Informational"
+msgstr "Інфармацыйныя"
+
+#: src/common/util.c:952
+msgid "International"
+msgstr "Міжнародныя"
+
+#: src/common/util.c:953
+msgid "British Indian Ocean Territory"
+msgstr "Брытанская тэрыторыя Індыйскага акіяна"
+
+#: src/common/util.c:954
+msgid "Iraq"
+msgstr "Ірак"
+
+#: src/common/util.c:955
+msgid "Iran"
+msgstr "Іран"
+
+#: src/common/util.c:956
+msgid "Iceland"
+msgstr "Ісландыя"
+
+#: src/common/util.c:957
+msgid "Italy"
+msgstr "Італія"
+
+#: src/common/util.c:958
+msgid "Jersey"
+msgstr "Джэрсі"
+
+#: src/common/util.c:959
+msgid "Jamaica"
+msgstr "Ямайка"
+
+#: src/common/util.c:960
+msgid "Jordan"
+msgstr "Ярданія"
+
+#: src/common/util.c:961
+msgid "Japan"
+msgstr "Японія"
+
+#: src/common/util.c:962
+msgid "Kenya"
+msgstr "Кенія"
+
+#: src/common/util.c:963
+msgid "Kyrgyzstan"
+msgstr "Кыргызстан"
+
+#: src/common/util.c:964
+msgid "Cambodia"
+msgstr "Камбоджа"
+
+#: src/common/util.c:965
+msgid "Kiribati"
+msgstr "Кiрыбацi"
+
+#: src/common/util.c:966
+msgid "Comoros"
+msgstr "Каморы"
+
+#: src/common/util.c:967
+msgid "St. Kitts and Nevis"
+msgstr "Сэнт-Кітс і Нэвіс"
+
+#: src/common/util.c:968
+msgid "North Korea"
+msgstr "Паўночная Карэя"
+
+#: src/common/util.c:969
+msgid "South Korea"
+msgstr "Паўднёвая Карэя"
+
+#: src/common/util.c:970
+msgid "Kuwait"
+msgstr "Кувэйт"
+
+#: src/common/util.c:971
+msgid "Cayman Islands"
+msgstr "Кайманавы астравы"
+
+#: src/common/util.c:972
+msgid "Kazakhstan"
+msgstr "Казахстан"
+
+#: src/common/util.c:973
+msgid "Laos"
+msgstr "Лаос"
+
+#: src/common/util.c:974
+msgid "Lebanon"
+msgstr "Ліван"
+
+#: src/common/util.c:975
+msgid "Saint Lucia"
+msgstr "Сэнт-Люсія"
+
+#: src/common/util.c:976
+msgid "Liechtenstein"
+msgstr "Ліхтэнштэйн"
+
+#: src/common/util.c:977
+msgid "Sri Lanka"
+msgstr "Шры-Ланка"
+
+#: src/common/util.c:978
+msgid "Liberia"
+msgstr "Лібэрыя"
+
+#: src/common/util.c:979
+msgid "Lesotho"
+msgstr "Лесота"
+
+#: src/common/util.c:980
+msgid "Lithuania"
+msgstr "Літва"
+
+#: src/common/util.c:981
+msgid "Luxembourg"
+msgstr "Люксэмбург"
+
+#: src/common/util.c:982
+msgid "Latvia"
+msgstr "Латвія"
+
+#: src/common/util.c:983
+msgid "Libya"
+msgstr "Лівія"
+
+#: src/common/util.c:984
+msgid "Morocco"
+msgstr "Марока"
+
+#: src/common/util.c:985
+msgid "Monaco"
+msgstr "Манака"
+
+#: src/common/util.c:986
+msgid "Moldova"
+msgstr "Малдова"
+
+#: src/common/util.c:987
+msgid "United States Medical"
+msgstr "Злучаныя Штаты, медыцына"
+
+#: src/common/util.c:988
+msgid "Madagascar"
+msgstr "Мадагаскар"
+
+#: src/common/util.c:989
+msgid "Marshall Islands"
+msgstr "Маршалавы астравы"
+
+#: src/common/util.c:990
+msgid "Military"
+msgstr "Вайсковыя"
+
+#: src/common/util.c:991
+msgid "Macedonia"
+msgstr "Македонія"
+
+#: src/common/util.c:992
+msgid "Mali"
+msgstr "Малі"
+
+#: src/common/util.c:993
+msgid "Myanmar"
+msgstr "М'янма"
+
+#: src/common/util.c:994
+msgid "Mongolia"
+msgstr "Манголія"
+
+#: src/common/util.c:995
+msgid "Macau"
+msgstr "Макау"
+
+#: src/common/util.c:996
+msgid "Northern Mariana Islands"
+msgstr "Паўночныя Марыянскія астравы"
+
+#: src/common/util.c:997
+msgid "Martinique"
+msgstr "Мартыніка"
+
+#: src/common/util.c:998
+msgid "Mauritania"
+msgstr "Маўрытанія"
+
+#: src/common/util.c:999
+msgid "Montserrat"
+msgstr "Мантсэрат"
+
+#: src/common/util.c:1000
+msgid "Malta"
+msgstr "Мальта"
+
+#: src/common/util.c:1001
+msgid "Mauritius"
+msgstr "Маўрыцы"
+
+#: src/common/util.c:1002
+msgid "Maldives"
+msgstr "Мальдывы"
+
+#: src/common/util.c:1003
+msgid "Malawi"
+msgstr "Малаві"
+
+#: src/common/util.c:1004
+msgid "Mexico"
+msgstr "Мэксыка"
+
+#: src/common/util.c:1005
+msgid "Malaysia"
+msgstr "Малайзыя"
+
+#: src/common/util.c:1006
+msgid "Mozambique"
+msgstr "Мазамбік"
+
+#: src/common/util.c:1007
+msgid "Namibia"
+msgstr "Намібія"
+
+#: src/common/util.c:1008
+msgid "New Caledonia"
+msgstr "Новая Каледонія"
+
+#: src/common/util.c:1009
+msgid "Niger"
+msgstr "Нігер"
+
+#: src/common/util.c:1010
+msgid "Internic Network"
+msgstr "Унутраныя сецівы"
+
+#: src/common/util.c:1011
+msgid "Norfolk Island"
+msgstr "Норфалк"
+
+#: src/common/util.c:1012
+msgid "Nigeria"
+msgstr "Нігерыя"
+
+#: src/common/util.c:1013
+msgid "Nicaragua"
+msgstr "Нікарагуа"
+
+#: src/common/util.c:1014
+msgid "Netherlands"
+msgstr "Галяндыя"
+
+#: src/common/util.c:1015
+msgid "Norway"
+msgstr "Нарвэгія"
+
+#: src/common/util.c:1016
+msgid "Nepal"
+msgstr "Нэпал"
+
+#: src/common/util.c:1017
+msgid "Nauru"
+msgstr "Науру"
+
+#: src/common/util.c:1018
+msgid "Niue"
+msgstr "Ніўэ"
+
+#: src/common/util.c:1019
+msgid "New Zealand"
+msgstr "Новая Зеландыя"
+
+#: src/common/util.c:1020
+msgid "Oman"
+msgstr "Аман"
+
+#: src/common/util.c:1021
+msgid "Internic Non-Profit Organization"
+msgstr "Унутраныя некамерцыйныя арганізацыі"
+
+#: src/common/util.c:1022
+msgid "Panama"
+msgstr "Панама"
+
+#: src/common/util.c:1023
+msgid "Peru"
+msgstr "Пэру"
+
+#: src/common/util.c:1024
+msgid "French Polynesia"
+msgstr "Французская Палінэзія"
+
+#: src/common/util.c:1025
+msgid "Papua New Guinea"
+msgstr "Папуа Новая Гвінея"
+
+#: src/common/util.c:1026
+msgid "Philippines"
+msgstr "Філіпіны"
+
+#: src/common/util.c:1027
+msgid "Pakistan"
+msgstr "Пакістан"
+
+#: src/common/util.c:1028
+msgid "Poland"
+msgstr "Польшча"
+
+#: src/common/util.c:1029
+msgid "St. Pierre and Miquelon"
+msgstr "Сэн-П'ер і Мікелон"
+
+#: src/common/util.c:1030
+msgid "Pitcairn"
+msgstr "Піткэрн"
+
+#: src/common/util.c:1031
+msgid "Puerto Rico"
+msgstr "Пуэрта Рыка"
+
+#: src/common/util.c:1032
+msgid "Palestinian Territory"
+msgstr "Палестынская тэрыторыя"
+
+#: src/common/util.c:1033
+msgid "Portugal"
+msgstr "Партугалія"
+
+#: src/common/util.c:1034
+msgid "Palau"
+msgstr "Палаў"
+
+#: src/common/util.c:1035
+msgid "Paraguay"
+msgstr "Парагвай"
+
+#: src/common/util.c:1036
+msgid "Qatar"
+msgstr "Катар"
+
+#: src/common/util.c:1037
+msgid "Reunion"
+msgstr "Рэюньён"
+
+#: src/common/util.c:1038
+msgid "Romania"
+msgstr "Румынія"
+
+#: src/common/util.c:1039
+msgid "Old School ARPAnet"
+msgstr "Старое сеціва ARPAnet"
+
+#: src/common/util.c:1040
+msgid "Russian Federation"
+msgstr "Расія"
+
+#: src/common/util.c:1041
+msgid "Rwanda"
+msgstr "Руанда"
+
+#: src/common/util.c:1042
+msgid "Saudi Arabia"
+msgstr "Саўдаўская Арабія"
+
+#: src/common/util.c:1043
+msgid "Solomon Islands"
+msgstr "Саламонавы астравы"
+
+#: src/common/util.c:1044
+msgid "Seychelles"
+msgstr "Сэйшэлы"
+
+#: src/common/util.c:1045
+msgid "Sudan"
+msgstr "Судан"
+
+#: src/common/util.c:1046
+msgid "Sweden"
+msgstr "Швецыя"
+
+#: src/common/util.c:1047
+msgid "Singapore"
+msgstr "Сінгапур"
+
+#: src/common/util.c:1048
+msgid "St. Helena"
+msgstr "Востраў Сьвятой Алены"
+
+#: src/common/util.c:1049
+msgid "Slovenia"
+msgstr "Славенія"
+
+#: src/common/util.c:1050
+msgid "Svalbard and Jan Mayen Islands"
+msgstr "Астравы Свальбард і Яна Майхема"
+
+#: src/common/util.c:1051
+msgid "Slovak Republic"
+msgstr "Славакія"
+
+#: src/common/util.c:1052
+msgid "Sierra Leone"
+msgstr "Сьера-Леонэ"
+
+#: src/common/util.c:1053
+msgid "San Marino"
+msgstr "Сан-Марына"
+
+#: src/common/util.c:1054
+msgid "Senegal"
+msgstr "Сенегал"
+
+#: src/common/util.c:1055
+msgid "Somalia"
+msgstr "Самалі"
+
+#: src/common/util.c:1056
+msgid "Suriname"
+msgstr "Сурынам"
+
+#: src/common/util.c:1057
+msgid "Sao Tome and Principe"
+msgstr "Сан-Тамэ і Прынсіпі"
+
+#: src/common/util.c:1058
+msgid "Former USSR"
+msgstr "Былы СССР"
+
+#: src/common/util.c:1059
+msgid "El Salvador"
+msgstr "Сальвадор"
+
+#: src/common/util.c:1060
+msgid "Syria"
+msgstr "Сырыя"
+
+#: src/common/util.c:1061
+msgid "Swaziland"
+msgstr "Свазылэнд"
+
+#: src/common/util.c:1062
+msgid "Turks and Caicos Islands"
+msgstr "Астравы Тэркс і Кайкас"
+
+#: src/common/util.c:1063
+msgid "Chad"
+msgstr "Чад"
+
+#: src/common/util.c:1064
+msgid "French Southern Territories"
+msgstr "Французскія паўднёвыя тэрыторыі"
+
+#: src/common/util.c:1065
+msgid "Togo"
+msgstr "Тога"
+
+#: src/common/util.c:1066
+msgid "Thailand"
+msgstr "Тайланд"
+
+#: src/common/util.c:1067
+msgid "Tajikistan"
+msgstr "Таджыкістан"
+
+#: src/common/util.c:1068
+msgid "Tokelau"
+msgstr "Такелаў"
+
+#: src/common/util.c:1069 src/common/util.c:1073
+msgid "East Timor"
+msgstr "Усходні Тымор"
+
+#: src/common/util.c:1070
+msgid "Turkmenistan"
+msgstr "Туркменістан"
+
+#: src/common/util.c:1071
+msgid "Tunisia"
+msgstr "Туніс"
+
+#: src/common/util.c:1072
+msgid "Tonga"
+msgstr "Тонга"
+
+#: src/common/util.c:1074
+msgid "Turkey"
+msgstr "Турцыя"
+
+#: src/common/util.c:1075
+msgid "Trinidad and Tobago"
+msgstr "Трынідад і Табага"
+
+#: src/common/util.c:1076
+msgid "Tuvalu"
+msgstr "Тувалу"
+
+#: src/common/util.c:1077
+msgid "Taiwan"
+msgstr "Тайвань"
+
+#: src/common/util.c:1078
+msgid "Tanzania"
+msgstr "Злучаная Рэспубліка Танзанія"
+
+#: src/common/util.c:1079
+msgid "Ukraine"
+msgstr "Украіна"
+
+#: src/common/util.c:1080
+msgid "Uganda"
+msgstr "Уганда"
+
+#: src/common/util.c:1081
+msgid "United Kingdom"
+msgstr "Аб'яднанае Каралеўства"
+
+#: src/common/util.c:1082
+msgid "United States of America"
+msgstr "Злучаныя Штаты Амерыкі"
+
+#: src/common/util.c:1083
+msgid "Uruguay"
+msgstr "Уругвай"
+
+#: src/common/util.c:1084
+msgid "Uzbekistan"
+msgstr "Узбекістан"
+
+#: src/common/util.c:1085
+msgid "Vatican City State"
+msgstr "Ватыкан"
+
+#: src/common/util.c:1086
+msgid "St. Vincent and the Grenadines"
+msgstr "Св.Вінсент і Грэнадзіны"
+
+#: src/common/util.c:1087
+msgid "Venezuela"
+msgstr "Венесуэла"
+
+#: src/common/util.c:1088
+msgid "British Virgin Islands"
+msgstr "Брытанскія астравы Вірджын"
+
+#: src/common/util.c:1089
+msgid "US Virgin Islands"
+msgstr "ЗША астравы Вірджын"
+
+#: src/common/util.c:1090
+msgid "Vietnam"
+msgstr "В'етнам"
+
+#: src/common/util.c:1091
+msgid "Vanuatu"
+msgstr "Вануату"
+
+#: src/common/util.c:1092
+msgid "Wallis and Futuna Islands"
+msgstr "Воліс і Футуна астравы"
+
+#: src/common/util.c:1093
+msgid "Samoa"
+msgstr "Самоа"
+
+#: src/common/util.c:1094
+msgid "Yemen"
+msgstr "Йемен"
+
+#: src/common/util.c:1095
+msgid "Mayotte"
+msgstr "Маёт"
+
+#: src/common/util.c:1096
+msgid "Yugoslavia"
+msgstr "Югаславія"
+
+#: src/common/util.c:1097
+msgid "South Africa"
+msgstr "Паўдневая Афрыка"
+
+#: src/common/util.c:1098
+msgid "Zambia"
+msgstr "Забмія"
+
+#: src/common/util.c:1099
+msgid "Zimbabwe"
+msgstr "Зімбабвэ"
+
+#: src/common/util.c:1109 src/common/util.c:1119 src/fe-gtk/menu.c:550
+#: src/fe-gtk/menu.c:555 src/fe-gtk/menu.c:559 src/fe-gtk/menu.c:563
+#: src/fe-gtk/menu.c:571 src/fe-gtk/menu.c:589
+msgid "Unknown"
+msgstr "Невядома"
+
+#: src/common/xchat.c:769 src/common/xchat.c:895
+msgid "Open Dialog Window"
+msgstr "Пачаць дыялог"
+
+#: src/common/xchat.c:770
+msgid "Send a File"
+msgstr "Даслаць файл"
+
+#: src/common/xchat.c:771
+msgid "User Info (WHOIS)"
+msgstr "Звесткі (WHOIS)"
+
+#: src/common/xchat.c:772
+msgid "Operator Actions"
+msgstr "Дзеянні аператара"
+
+#: src/common/xchat.c:774 src/common/xchat.c:865
+msgid "Give Ops"
+msgstr "Даць аператара"
+
+#: src/common/xchat.c:775 src/common/xchat.c:866
+msgid "Take Ops"
+msgstr "Забраць аператара"
+
+#: src/common/xchat.c:776 src/common/xchat.c:869
+msgid "Give Voice"
+msgstr "Даць голас"
+
+#: src/common/xchat.c:777 src/common/xchat.c:870
+msgid "Take Voice"
+msgstr "Забраць голас"
+
+#: src/common/xchat.c:779 src/common/xchat.c:874
+msgid "Kick/Ban"
+msgstr "Выпхнуць/забараніць"
+
+#: src/common/xchat.c:780 src/common/xchat.c:875 src/common/xchat.c:924
+msgid "Kick"
+msgstr "Выпхнуць"
+
+#: src/common/xchat.c:781 src/common/xchat.c:782 src/common/xchat.c:783
+#: src/common/xchat.c:784 src/common/xchat.c:785 src/common/xchat.c:876
+#: src/common/xchat.c:877 src/common/xchat.c:878 src/common/xchat.c:879
+#: src/common/xchat.c:880 src/common/xchat.c:923
+msgid "Ban"
+msgstr "Забараніць"
+
+#: src/common/xchat.c:786 src/common/xchat.c:787 src/common/xchat.c:788
+#: src/common/xchat.c:789 src/common/xchat.c:881 src/common/xchat.c:882
+#: src/common/xchat.c:883 src/common/xchat.c:884
+msgid "KickBan"
+msgstr "Выпхнуць і забараніць"
+
+#: src/common/xchat.c:852
+msgid "Direct client-to-client"
+msgstr "Прамое дачыненне (DCC)"
+
+#: src/common/xchat.c:853
+msgid "Send File"
+msgstr "Даслаць файл"
+
+#: src/common/xchat.c:854
+msgid "Offer Chat"
+msgstr "Прапанаваць размову"
+
+#: src/common/xchat.c:855
+msgid "Abort Chat"
+msgstr "Перарваць размову"
+
+#: src/common/xchat.c:856 src/fe-gtk/plugingui.c:74
+msgid "Version"
+msgstr "Версія"
+
+#: src/common/xchat.c:857
+msgid "Userinfo"
+msgstr "Звесткі аб карыстальніку"
+
+#: src/common/xchat.c:858
+msgid "Clientinfo"
+msgstr "Звесткі аб кліенце"
+
+#: src/common/xchat.c:859 src/common/xchat.c:893 src/common/xchat.c:941
+msgid "Ping"
+msgstr "Ping"
+
+#: src/common/xchat.c:860
+msgid "Time"
+msgstr "Час"
+
+#: src/common/xchat.c:861
+msgid "Finger"
+msgstr "Водціск"
+
+#: src/common/xchat.c:862
+msgid "Oper"
+msgstr "Аперацыя"
+
+#: src/common/xchat.c:863
+msgid "Kill this user"
+msgstr "Выпхнуць карыстальніка"
+
+#: src/common/xchat.c:864
+msgid "Mode"
+msgstr "Рэжым"
+
+#: src/common/xchat.c:867
+msgid "Give Half-Ops"
+msgstr "Даць паў-аператара"
+
+#: src/common/xchat.c:868
+msgid "Take Half-Ops"
+msgstr "Забраць паў-аператара"
+
+#: src/common/xchat.c:871
+msgid "Ignore"
+msgstr "Ігнараванне"
+
+#: src/common/xchat.c:872
+msgid "Ignore User"
+msgstr "Ігнараваць карыстальніка"
+
+#: src/common/xchat.c:873
+msgid "UnIgnore User"
+msgstr "Не ігнараваць карыстальніка"
+
+#: src/common/xchat.c:885
+msgid "Info"
+msgstr "Інфа"
+
+#: src/common/xchat.c:886
+msgid "Who"
+msgstr "Хто"
+
+#: src/common/xchat.c:887 src/common/xchat.c:937
+msgid "WhoIs"
+msgstr "Хто ёсць"
+
+#: src/common/xchat.c:888
+msgid "DNS Lookup"
+msgstr "Прагляд DNS"
+
+#: src/common/xchat.c:889
+msgid "Trace"
+msgstr "Trace"
+
+#: src/common/xchat.c:890
+msgid "UserHost"
+msgstr "Камп'ютэр карыстальніка"
+
+#: src/common/xchat.c:891
+msgid "External"
+msgstr "Вонкавы"
+
+#: src/common/xchat.c:892
+msgid "Traceroute"
+msgstr "Traceroute"
+
+#: src/common/xchat.c:894
+msgid "Telnet"
+msgstr "Telnet"
+
+#: src/common/xchat.c:906
+msgid "Leave Channel"
+msgstr "Выйсці з канала"
+
+#: src/common/xchat.c:907 src/fe-gtk/menu.c:1392
+msgid "Join Channel..."
+msgstr "Увайсці на канал..."
+
+#: src/common/xchat.c:908 src/fe-gtk/menu.c:1083
+msgid "Enter Channel to Join:"
+msgstr "Вызначце канал для ўваходу:"
+
+#: src/common/xchat.c:909
+msgid "Server Links"
+msgstr "Спасылкі сервера"
+
+#: src/common/xchat.c:910
+msgid "Ping Server"
+msgstr "Пінгаваць сервер"
+
+#: src/common/xchat.c:911
+msgid "Hide Version"
+msgstr "Схаваць версію"
+
+#: src/common/xchat.c:921
+msgid "Op"
+msgstr "Аператар"
+
+#: src/common/xchat.c:922
+msgid "DeOp"
+msgstr "Адабраць аператара"
+
+#: src/common/xchat.c:925
+msgid "bye"
+msgstr "пакуль"
+
+#: src/common/xchat.c:926
+#, c-format
+msgid "Enter reason to kick %s:"
+msgstr "Увядзіце прычыну выпіхвання %s:"
+
+#: src/common/xchat.c:927
+msgid "Sendfile"
+msgstr "Даслаць файл"
+
+#: src/common/xchat.c:928
+msgid "Dialog"
+msgstr "Дыялог"
+
+#: src/common/xchat.c:938
+msgid "Send"
+msgstr "Даслаць"
+
+#: src/common/xchat.c:939
+msgid "Chat"
+msgstr "Размова"
+
+#: src/common/xchat.c:940 src/fe-gtk/banlist.c:341 src/fe-gtk/ignoregui.c:388
+#: src/fe-gtk/urlgrab.c:201
+msgid "Clear"
+msgstr "Ачысціць"
+
+#: src/common/dbus/dbus-client.c:71
+msgid "Couldn't connect to session bus"
+msgstr "Немагчыма злучыцца з шынай сесій (session bus)"
+
+#: src/common/dbus/dbus-client.c:85
+msgid "Failed to complete NameHasOwner"
+msgstr "Немагчыма скончыць NameHasOwner"
+
+#: src/common/dbus/dbus-client.c:106
+msgid "Failed to complete Command"
+msgstr "Немагчыма скончыць Command"
+
+#: src/common/dbus/dbus-plugin.c:30
+msgid "remote access"
+msgstr "аддалены доступ"
+
+#: src/common/dbus/dbus-plugin.c:31
+msgid "plugin for remote access using DBUS"
+msgstr "Плагін для аддаленага доступу (выкарыстоўвае DBUS)"
+
+#: src/common/dbus/dbus-plugin.c:897
+#, c-format
+msgid "Couldn't connect to session bus: %s\n"
+msgstr "Немагчыма злучыцца з шынай сесій : %s\n"
+
+#: src/common/dbus/dbus-plugin.c:914
+#, c-format
+msgid "Failed to acquire %s: %s\n"
+msgstr "Немагчыма дасягнуць %s : %s\n"
+
+#: src/fe-gtk/about.c:102
+msgid "About XChat"
+msgstr "Аб праграме"
+
+#: src/fe-gtk/about.c:129
+msgid "A multiplatform IRC Client"
+msgstr "Шматплатформенны кліент IRC"
+
+#: src/fe-gtk/ascii.c:135
+msgid "Character Chart"
+msgstr "Палітра літар"
+
+#: src/fe-gtk/banlist.c:113 src/fe-gtk/chanlist.c:299
+#: src/fe-gtk/plugin-tray.c:209
+msgid "Not connected."
+msgstr "Не злучана."
+
+#: src/fe-gtk/banlist.c:154 src/fe-gtk/banlist.c:257
+msgid "You must select some bans."
+msgstr "Трэба выбраць некалькі забаронаў."
+
+#: src/fe-gtk/banlist.c:206
+#, c-format
+msgid "Are you sure you want to remove all bans in %s?"
+msgstr "Ці вы ўпэўнены, што хочаце выдаліць усе забароны у %s?"
+
+#: src/fe-gtk/banlist.c:272 src/fe-gtk/ignoregui.c:175
+msgid "Mask"
+msgstr "Маска"
+
+#: src/fe-gtk/banlist.c:273
+msgid "From"
+msgstr "Адкуль"
+
+#: src/fe-gtk/banlist.c:274
+msgid "Date"
+msgstr "Дата"
+
+#: src/fe-gtk/banlist.c:317
+msgid "You can only open the Ban List window while in a channel tab."
+msgstr "Вы можаце адкрыць акно са спісам забаронаў толькі пры адкрытай укладцы канала."
+
+#: src/fe-gtk/banlist.c:321
+#, c-format
+msgid "XChat: Ban List (%s)"
+msgstr "XChat: спіс забаронаў (%s)"
+
+#: src/fe-gtk/banlist.c:337
+msgid "Unban"
+msgstr "Дазволіць"
+
+#: src/fe-gtk/banlist.c:339
+msgid "Crop"
+msgstr "Сціснуць"
+
+#: src/fe-gtk/banlist.c:343
+msgid "Refresh"
+msgstr "Аднавіць"
+
+#: src/fe-gtk/chanlist.c:111
+#, c-format
+msgid "Displaying %d/%d users on %d/%d channels."
+msgstr "Паказ %d/%d карыстальнікаў на %d/%d каналах."
+
+#: src/fe-gtk/chanlist.c:516 src/fe-gtk/menu.c:1019 src/fe-gtk/urlgrab.c:148
+msgid "Select an output filename"
+msgstr "Абярыце імя файла для вываду"
+
+#: src/fe-gtk/chanlist.c:595 src/fe-gtk/chanlist.c:751
+msgid "_Join Channel"
+msgstr "У_вайсці на канал"
+
+#: src/fe-gtk/chanlist.c:597
+msgid "_Copy Channel Name"
+msgstr "_Капіяваць назву канала"
+
+#: src/fe-gtk/chanlist.c:599
+msgid "Copy _Topic Text"
+msgstr "Капіяваць тэкст _тэмы"
+
+#: src/fe-gtk/chanlist.c:677
+#, c-format
+msgid "XChat: Channel List (%s)"
+msgstr "XChat: Спіс каналаў (%s)"
+
+#: src/fe-gtk/chanlist.c:733
+msgid "_Search"
+msgstr "_Пошук"
+
+#: src/fe-gtk/chanlist.c:739
+msgid "_Download List"
+msgstr "Спіс спа_мповак"
+
+#: src/fe-gtk/chanlist.c:745
+msgid "Save _List..."
+msgstr "Захаваць _спіс як..."
+
+#: src/fe-gtk/chanlist.c:758
+msgid "Show only:"
+msgstr "Паказаць толькі:"
+
+#: src/fe-gtk/chanlist.c:770
+msgid "channels with"
+msgstr "каналы з ад"
+
+#: src/fe-gtk/chanlist.c:783
+msgid "to"
+msgstr "да"
+
+#: src/fe-gtk/chanlist.c:795
+msgid "users."
+msgstr "карыстальнікамі"
+
+#: src/fe-gtk/chanlist.c:801
+msgid "Look in:"
+msgstr "Глядзець у"
+
+#: src/fe-gtk/chanlist.c:813
+msgid "Channel name"
+msgstr "Назва канала"
+
+#: src/fe-gtk/chanlist.c:834
+msgid "Search type:"
+msgstr "Тып пошуку:"
+
+#: src/fe-gtk/chanlist.c:841
+msgid "Simple Search"
+msgstr "Просты пошук"
+
+#: src/fe-gtk/chanlist.c:842
+msgid "Pattern Match (Wildcards)"
+msgstr "Узор адпавядае (Wildcards)"
+
+#: src/fe-gtk/chanlist.c:844
+msgid "Regular Expression"
+msgstr "Рэгулярны выраз"
+
+#: src/fe-gtk/chanlist.c:855 src/fe-gtk/search.c:118
+msgid "Find:"
+msgstr "Знайсці:"
+
+#: src/fe-gtk/dccgui.c:166
+#, c-format
+msgid "Send file to %s"
+msgstr "Даслаць файл %s"
+
+#: src/fe-gtk/dccgui.c:496
+msgid "That file is not resumable."
+msgstr "Працяг гэтага файла немагчымы."
+
+#: src/fe-gtk/dccgui.c:500
+#, c-format
+msgid ""
+"Cannot access file: %s\n"
+"%s.\n"
+"Resuming not possible."
+msgstr ""
+"Немагчыма атрымаць доступ да файла: %s\n"
+"%s.\n"
+"Працяг немагчымы."
+
+#: src/fe-gtk/dccgui.c:507
+msgid "File in download directory is larger than file offered. Resuming not possible."
+msgstr "Файл у тэчцы спампоўванняў большы за прапанаваны файл. Працяг немагчымы."
+
+#: src/fe-gtk/dccgui.c:511
+msgid "Cannot resume the same file from two people."
+msgstr "Немагчыма працягнуць той жа самы файл з двух чалавек."
+
+#: src/fe-gtk/dccgui.c:740
+msgid "XChat: Uploads and Downloads"
+msgstr "XChat: запампоўкі і спампоўкі"
+
+#: src/fe-gtk/dccgui.c:756 src/fe-gtk/dccgui.c:993 src/fe-gtk/notifygui.c:138
+msgid "Status"
+msgstr "Статус"
+
+#: src/fe-gtk/dccgui.c:757 src/fe-gtk/plugingui.c:75
+msgid "File"
+msgstr "Файл"
+
+#: src/fe-gtk/dccgui.c:762
+msgid "ETA"
+msgstr "Прайшло часу"
+
+#: src/fe-gtk/dccgui.c:784 src/fe-gtk/menu.c:1386
+msgid "Both"
+msgstr "Абодва"
+
+#: src/fe-gtk/dccgui.c:790
+msgid "Uploads"
+msgstr "Запампоўкі"
+
+#: src/fe-gtk/dccgui.c:796
+msgid "Downloads"
+msgstr "Спампоўкі"
+
+#: src/fe-gtk/dccgui.c:801
+msgid "Details"
+msgstr "Падрабязнасці"
+
+#: src/fe-gtk/dccgui.c:812
+msgid "File:"
+msgstr "Файл:"
+
+#: src/fe-gtk/dccgui.c:813
+msgid "Address:"
+msgstr "Адрас:"
+
+#: src/fe-gtk/dccgui.c:819 src/fe-gtk/dccgui.c:1014
+msgid "Abort"
+msgstr "Перарваць"
+
+#: src/fe-gtk/dccgui.c:820 src/fe-gtk/dccgui.c:1015
+msgid "Accept"
+msgstr "Прыняць"
+
+#: src/fe-gtk/dccgui.c:821
+msgid "Resume"
+msgstr "Працягнуць"
+
+#: src/fe-gtk/dccgui.c:822
+msgid "Open Folder..."
+msgstr "Адкрыць тэчку..."
+
+#: src/fe-gtk/dccgui.c:982
+msgid "XChat: DCC Chat List"
+msgstr "XChat: Спіс DCC Chat"
+
+#: src/fe-gtk/dccgui.c:995
+msgid "Recv"
+msgstr "Прын"
+
+#: src/fe-gtk/dccgui.c:996
+msgid "Sent"
+msgstr "Дасл"
+
+#: src/fe-gtk/dccgui.c:997
+msgid "Start Time"
+msgstr "Час пачатку"
+
+#: src/fe-gtk/editlist.c:139
+msgid "*NEW*"
+msgstr "*НОВЫ"
+
+#: src/fe-gtk/editlist.c:140
+msgid "EDIT ME"
+msgstr "ЗМЯНІ МЯНЕ"
+
+#: src/fe-gtk/editlist.c:310 src/fe-gtk/plugingui.c:73
+msgid "Name"
+msgstr "Імя"
+
+#: src/fe-gtk/editlist.c:311
+msgid "Command"
+msgstr "Каманда"
+
+#: src/fe-gtk/editlist.c:339
+msgid "Move Up"
+msgstr "Вышэй"
+
+#: src/fe-gtk/editlist.c:343
+msgid "Move Dn"
+msgstr "Ніжэй"
+
+#: src/fe-gtk/editlist.c:351
+msgid "Cancel"
+msgstr "Адмяніць"
+
+#: src/fe-gtk/editlist.c:355
+msgid "Save"
+msgstr "Захаваць"
+
+#: src/fe-gtk/editlist.c:363 src/fe-gtk/fkeys.c:765
+msgid "Add New"
+msgstr "Дадаць"
+
+#: src/fe-gtk/editlist.c:367 src/fe-gtk/fkeys.c:770 src/fe-gtk/ignoregui.c:386
+msgid "Delete"
+msgstr "Выдаліць"
+
+#: src/fe-gtk/editlist.c:375
+msgid "Sort"
+msgstr "Сартаваць"
+
+#: src/fe-gtk/editlist.c:379
+msgid "Help"
+msgstr "Дапамога"
+
+#: src/fe-gtk/fe-gtk.c:122
+msgid "Don't auto connect to servers"
+msgstr "Не злучацца з серверамі аўтаматычна"
+
+#: src/fe-gtk/fe-gtk.c:123
+msgid "Use a different config directory"
+msgstr "Выкарыстоўваць іншую тэчку наладак"
+
+#: src/fe-gtk/fe-gtk.c:124
+msgid "Don't auto load any plugins"
+msgstr "Не загружаць плагіны аўтаматычна"
+
+#: src/fe-gtk/fe-gtk.c:125
+msgid "Show plugin auto-load directory"
+msgstr "Паказаць тэчку аўтазагрузкі плагінаў"
+
+#: src/fe-gtk/fe-gtk.c:126
+msgid "Show user config directory"
+msgstr "Паказаць тэчку карыстальніцкіх наладак"
+
+#: src/fe-gtk/fe-gtk.c:127
+msgid "Open an irc://server:port/channel URL"
+msgstr "Адкрыць URL, irc://server:port/channel"
+
+#: src/fe-gtk/fe-gtk.c:128
+msgid "Open URL in an existing XChat"
+msgstr "Адкрыць URL у існуючым XChat"
+
+#: src/fe-gtk/fe-gtk.c:129
+msgid "Show version information"
+msgstr "Паказаць звесткі аб версіі"
+
+#: src/fe-gtk/fe-gtk.c:249
+#, c-format
+msgid ""
+"Failed to open font:\n"
+"\n"
+"%s"
+msgstr ""
+"Памылка адкрыцця шрыфту:\n"
+"\n"
+"%s"
+
+#: src/fe-gtk/fe-gtk.c:621
+msgid "Search buffer is empty.\n"
+msgstr "Буфер пошуку пусты.\n"
+
+#: src/fe-gtk/fe-gtk.c:717
+#, c-format
+msgid "%d bytes"
+msgstr "%d байтаў"
+
+#: src/fe-gtk/fe-gtk.c:718
+#, c-format
+msgid "Network send queue: %d bytes"
+msgstr "Сеціўная чарга дасылкі: %d байтаў"
+
+#: src/fe-gtk/fkeys.c:159
+msgid "The Run Command action runs the data in Data 1 as if it has been typed into the entry box where you pressed the key sequence. Thus it can contain text (which will be sent to the channel/person), commands or user commands. When run all \\n characters in Data 1 are used to deliminate seperate commands so it is possible to run more than one command. If you want a \\ in the actual text run then enter \\\\"
+msgstr "Дзеянне Выканаць Каманду выконвае Данні 1 як каманду, быццам яна была ўведзена ў полі ўводу, у якім была націснута паслядоўнасць клавішаў. Можа змяшчаць тэкст (які будзе дасланы да канала ці асобы), каманды або каманды карыстальніка. Падчас выканання ўсе знакі \\n у Данніх 1 будуць скарыставаны для пазначэння падзелаў паміж камандамі, такім чынам, магчыма выканаць больш за адну каманду. Калі вы жадаеце ўжыць \\ у тэксце каманды, пішыце замест гэтага \\\\"
+
+#: src/fe-gtk/fkeys.c:161
+msgid "The Change Page command switches between pages in the notebook. Set Data 1 to the page you want to switch to. If Data 2 is set to anything then the switch will be relative to the current position"
+msgstr "Каманда Змяніць Старонку пераключае старонкі ў нататніку. Усталюйце Данні 1 на старонку, куды трэба пераключыцца. Калі Данні 2 ўсталяваны, то будзе лічыцца адносна бягучай пазіцыі."
+
+#: src/fe-gtk/fkeys.c:163
+msgid "The Insert in Buffer command will insert the contents of Data 1 into the entry where the key sequence was pressed at the current cursor position"
+msgstr "Каманда Ўставіць у буфер уставіць змест Данніх 1 у поле, дзе была націснута камбінацыя клавішаў, у бягучую пазіцыю курсора"
+
+#: src/fe-gtk/fkeys.c:165
+msgid "The Scroll Page command scrolls the text widget up or down one page or one line. Set Data 1 to either Up, Down, +1 or -1."
+msgstr "Каманда Пракрутка Старонкі пракручвае тэкставае аздабленне ўніз ці ўверх на адну старонку ці на адзін радок. Усталюйце Данні 1 як Up, Down, +1 ці -1."
+
+#: src/fe-gtk/fkeys.c:167
+msgid "The Set Buffer command sets the entry where the key sequence was entered to the contents of Data 1"
+msgstr "Каманда Усталяваць Буфер усталёўвае значэнне поля поля, дзе была націснута камбінацыя клавішаў, у значэнне Данніх 1"
+
+#: src/fe-gtk/fkeys.c:169
+msgid "The Last Command command sets the entry to contain the last command entered - the same as pressing up in a shell"
+msgstr "Каманда Апошняя Каманда вяртае ў поле апошнюю каманду, гэтаксама ж, як у каманднай абалонцы націсканне кнопкі Ўверх"
+
+#: src/fe-gtk/fkeys.c:171
+msgid "The Next Command command sets the entry to contain the next command entered - the same as pressing down in a shell"
+msgstr "Каманда Наступная Каманда вяртае ў поле наступную каманду, гэтаксама ж, як у каманднай абалонцы націсканне кнопкі Ўніз"
+
+#: src/fe-gtk/fkeys.c:173
+msgid "This command changes the text in the entry to finish an incomplete nickname or command. If Data 1 is set then double-tabbing in a string will select the last nick, not the next"
+msgstr "Гэта каманда змяняе тэкст у полі для дапаўнення нескончанай мянушкі ці каманы. Калі Данні 1 усталяваныя, двайны націск табуляцыі выбярэ не наступную, а апошнюю мянушку"
+
+#: src/fe-gtk/fkeys.c:175
+msgid "This command scrolls up and down through the list of nicks. If Data 1 is set to anything it will scroll up, else it scrolls down"
+msgstr "Гэта каманда пракручвае ўніз і ўверх спіс карыстальнікаў. Калі Данні 1 усталяваны, будзе пракрутка ўверх, інакш - уніз"
+
+#: src/fe-gtk/fkeys.c:177
+msgid "This command checks the last word entered in the entry against the replace list and replaces it if it finds a match"
+msgstr "Гэта каманда правярае апошняе ўведзенае слова ў спіс заменаў і замяняе ў выпадку знаходжання адпаведнасці"
+
+#: src/fe-gtk/fkeys.c:179
+msgid "This command moves the front tab left by one"
+msgstr "Гэта каманда перамяшчае пярэднюю ўкладку на адну пазіцыю ўлева"
+
+#: src/fe-gtk/fkeys.c:181
+msgid "This command moves the front tab right by one"
+msgstr "Гэта каманда перамяшчае пярэднюю ўкладку на адну пазіцыю ўправа"
+
+#: src/fe-gtk/fkeys.c:183
+msgid "This command moves the current tab family to the left"
+msgstr "Гэта каманда перамяшчае бягучую групу ўкладак на адну пазіцыю ўлева"
+
+#: src/fe-gtk/fkeys.c:185
+msgid "This command moves the current tab family to the right"
+msgstr "Гэта каманда перамяшчае бягучую групу ўкладак на адну пазіцыю ўправа"
+
+#: src/fe-gtk/fkeys.c:187
+msgid "Push input line into history but doesn't send to server"
+msgstr "Запісаць радок у журнал, але не дасылаць да сервера"
+
+#: src/fe-gtk/fkeys.c:198
+msgid "There was an error loading key bindings configuration"
+msgstr "Памылка загрузкі наладак камбінацыяў клавішаў"
+
+#: src/fe-gtk/fkeys.c:450 src/fe-gtk/fkeys.c:451 src/fe-gtk/fkeys.c:452
+#: src/fe-gtk/fkeys.c:453 src/fe-gtk/fkeys.c:743 src/fe-gtk/fkeys.c:749
+#: src/fe-gtk/fkeys.c:754 src/fe-gtk/maingui.c:1375 src/fe-gtk/maingui.c:1478
+#: src/fe-gtk/maingui.c:2938
+msgid "<none>"
+msgstr "<ніякі>"
+
+#: src/fe-gtk/fkeys.c:707
+msgid "Mod"
+msgstr "Мад"
+
+#: src/fe-gtk/fkeys.c:708 src/fe-gtk/fkeys.c:803
+msgid "Key"
+msgstr "Клавіша"
+
+#: src/fe-gtk/fkeys.c:709
+msgid "Action"
+msgstr "Дзеянне"
+
+#: src/fe-gtk/fkeys.c:718
+msgid "XChat: Keyboard Shortcuts"
+msgstr "XChat: Камбінацыі клавішаў"
+
+#: src/fe-gtk/fkeys.c:796
+msgid "Shift"
+msgstr "Shift"
+
+#: src/fe-gtk/fkeys.c:798
+msgid "Alt"
+msgstr "Alt"
+
+#: src/fe-gtk/fkeys.c:800
+msgid "Ctrl"
+msgstr "Ctrl"
+
+#: src/fe-gtk/fkeys.c:807
+msgid "Data 1"
+msgstr "Данні 1"
+
+#: src/fe-gtk/fkeys.c:810
+msgid "Data 2"
+msgstr "Данні 2"
+
+#: src/fe-gtk/fkeys.c:852
+msgid "Error opening keys config file\n"
+msgstr "Памылка адкрыцця файла наладак клавішаў\n"
+
+#: src/fe-gtk/fkeys.c:1019
+#, c-format
+msgid ""
+"Unknown keyname %s in key bindings config file\n"
+"Load aborted, please fix %s/keybindings.conf\n"
+msgstr ""
+"Невядомая назва клавішы %s у файле наладак клавішаў\n"
+"Загрузка перарвана, выпраўце %s/keybindings.conf\n"
+
+#: src/fe-gtk/fkeys.c:1057
+#, c-format
+msgid ""
+"Unknown action %s in key bindings config file\n"
+"Load aborted, Please fix %s/keybindings\n"
+msgstr ""
+"Невядомае дзеянне %s у файле наладак клавішаў\n"
+"Загрузка перарвана, выпраўце %s/keybindings\n"
+
+#: src/fe-gtk/fkeys.c:1078
+#, c-format
+msgid ""
+"Expecting Data line (beginning Dx{:|!}) but got:\n"
+"%s\n"
+"\n"
+"Load aborted, Please fix %s/keybindings\n"
+msgstr ""
+"Чакаўся радок данніх (пачатак Dx{:|!}) , але атрымана:\n"
+"%s\n"
+"\n"
+"Загрузка перарвана, выпраўце %s/keybindings\n"
+
+#: src/fe-gtk/fkeys.c:1147
+#, c-format
+msgid ""
+"Key bindings config file is corrupt, load aborted\n"
+"Please fix %s/keybindings.conf\n"
+msgstr ""
+"Файл наладак клавішаў пашкоджаны, загрузка перарвана\n"
+"Выпраўце %s/keybindings\n"
+
+#: src/fe-gtk/gtkutil.c:117
+msgid "Cannot write to that file."
+msgstr "Немагчыма запісаць у гэты файл"
+
+#: src/fe-gtk/gtkutil.c:119
+msgid "Cannot read that file."
+msgstr "Немагчыма прачытаць гэты файл"
+
+#: src/fe-gtk/ignoregui.c:117 src/fe-gtk/ignoregui.c:263
+msgid "That mask already exists."
+msgstr "Гэта маска ўжо існуе"
+
+#: src/fe-gtk/ignoregui.c:177 src/fe-gtk/maingui.c:1949
+msgid "Private"
+msgstr "Асабісты"
+
+#: src/fe-gtk/ignoregui.c:178
+msgid "Notice"
+msgstr "Абвяшчэнне"
+
+#: src/fe-gtk/ignoregui.c:179
+msgid "CTCP"
+msgstr "CTCP"
+
+#: src/fe-gtk/ignoregui.c:180
+msgid "DCC"
+msgstr "DCC"
+
+#: src/fe-gtk/ignoregui.c:181
+msgid "Invite"
+msgstr "Запрашэнне"
+
+#: src/fe-gtk/ignoregui.c:182
+msgid "Unignore"
+msgstr "Не ігнараваць"
+
+#: src/fe-gtk/ignoregui.c:307
+msgid "Enter mask to ignore:"
+msgstr "Увядзіце маску для ігнаравання:"
+
+#: src/fe-gtk/ignoregui.c:354
+msgid "XChat: Ignore list"
+msgstr "XChat: Спіс ігнараванняў"
+
+#: src/fe-gtk/ignoregui.c:361
+msgid "Ignore Stats:"
+msgstr "Статыстыка ігнараванняў:"
+
+#: src/fe-gtk/ignoregui.c:369
+msgid "Channel:"
+msgstr "Канал:"
+
+#: src/fe-gtk/ignoregui.c:370
+msgid "Private:"
+msgstr "Асабісты:"
+
+#: src/fe-gtk/ignoregui.c:371
+msgid "Notice:"
+msgstr "Абвяшчэнне:"
+
+#: src/fe-gtk/ignoregui.c:372
+msgid "CTCP:"
+msgstr "CTCP:"
+
+#: src/fe-gtk/ignoregui.c:373
+msgid "Invite:"
+msgstr "Запрашэнне:"
+
+#: src/fe-gtk/ignoregui.c:384 src/fe-gtk/notifygui.c:420
+msgid "Add..."
+msgstr "Дадаць..."
+
+#: src/fe-gtk/joind.c:83
+msgid "Channel name too short, try again."
+msgstr "Імя канала занадта кароткае, паспрабуйце зноў."
+
+#: src/fe-gtk/joind.c:125
+msgid "XChat: Connection Complete"
+msgstr "XChat: Злучэнне выканана"
+
+#: src/fe-gtk/joind.c:150
+#, c-format
+msgid "Connection to %s complete."
+msgstr "Злучэнне з %s выканана."
+
+#: src/fe-gtk/joind.c:159
+msgid "In the Server-List window, no channel (chat room) has been entered to be automatically joined for this network."
+msgstr "У акне спіса сервераў ніводнага канала (пакоя размовы) не было ўведзена для аўтаматычнага ўваходу для гэтага сеціва."
+
+#: src/fe-gtk/joind.c:165
+msgid "What would you like to do next?"
+msgstr "Што вы маеце рабіць наступным?"
+
+#: src/fe-gtk/joind.c:170
+msgid "_Nothing, I'll join a channel later."
+msgstr "_Нічога, Я ўвайду на канал пазней."
+
+#: src/fe-gtk/joind.c:179
+msgid "_Join this channel:"
+msgstr "_Увайсці на канал:"
+
+#: src/fe-gtk/joind.c:191
+msgid "If you know the name of the channel you want to join, enter it here."
+msgstr "Калі вы ведаеце імя канала для ўваходу, увядзіце яго тут."
+
+#: src/fe-gtk/joind.c:198
+msgid "O_pen the Channel-List window."
+msgstr "_Адкрыць акно спісу каналаў."
+
+#: src/fe-gtk/joind.c:205
+msgid "Retrieving the Channel-List may take a minute or two."
+msgstr "Атрыманне спісу каналаў патрабуе хвіліну ці дзве."
+
+#: src/fe-gtk/joind.c:212
+msgid "_Always show this dialog after connecting."
+msgstr "_Заўсёды паказваць гэты дыялог пасля злучэння."
+
+#: src/fe-gtk/maingui.c:483
+msgid "Dialog with"
+msgstr "Дыялог з"
+
+#: src/fe-gtk/maingui.c:768
+#, c-format
+msgid "Topic for %s is: %s"
+msgstr "Тэма для %s : %s"
+
+#: src/fe-gtk/maingui.c:773
+msgid "No topic is set"
+msgstr "Ніякай тэмы не ўсталявана"
+
+#: src/fe-gtk/maingui.c:1072
+#, c-format
+msgid "This server still has %d channels or dialogs associated with it. Close them all?"
+msgstr "Гэты сервер мае %d адкрытых каналаў ці дыялогаў. Ці закрыць іх усе?"
+
+#: src/fe-gtk/maingui.c:1151
+msgid "No other tabs open, quit xchat?"
+msgstr "Усе ўкладкі закрытыя, выйсці з xchat?"
+
+#: src/fe-gtk/maingui.c:1326
+msgid "Insert Attribute or Color Code"
+msgstr "Пакіньце ўласцівасць ці код колеру"
+
+#: src/fe-gtk/maingui.c:1328
+msgid "<b>Bold</b>"
+msgstr "<b>Тлусты</b>"
+
+#: src/fe-gtk/maingui.c:1329
+msgid "<u>Underline</u>"
+msgstr "<u>Падкрэслены</u>"
+
+#: src/fe-gtk/maingui.c:1331
+msgid "Normal"
+msgstr "Звычайны"
+
+#: src/fe-gtk/maingui.c:1333
+msgid "Colors 0-7"
+msgstr "Колеры 0-7"
+
+#: src/fe-gtk/maingui.c:1343
+msgid "Colors 8-15"
+msgstr "Колеры 8-15"
+
+#: src/fe-gtk/maingui.c:1388
+msgid "Beep on message"
+msgstr "Гукавы сігнал пры паведамлення"
+
+#: src/fe-gtk/maingui.c:1391
+msgid "Blink tray on message"
+msgstr "Мірганне ў сподку пры паведамленні"
+
+#: src/fe-gtk/maingui.c:1394
+msgid "Show join/part messages"
+msgstr "Паказваць паведамленні аб уваходзе/выхадзе"
+
+#: src/fe-gtk/maingui.c:1396
+msgid "Color paste"
+msgstr "Колер"
+
+#: src/fe-gtk/maingui.c:1406 src/fe-gtk/menu.c:1906
+msgid "_Close Tab"
+msgstr "Закрыць укладку"
+
+#: src/fe-gtk/maingui.c:1408 src/fe-gtk/menu.c:1905
+msgid "_Detach Tab"
+msgstr "Адлучыць укладку"
+
+#: src/fe-gtk/maingui.c:1649
+msgid "Some file transfers still active, quit xchat?"
+msgstr "Некаторыя перадачы файлаў актыўныя, выйсці з xchat?"
+
+#: src/fe-gtk/maingui.c:1817 src/fe-gtk/maingui.c:1923
+msgid "User limit must be a number!\n"
+msgstr "Абмежаванне карыстальніка павінна быць лічбай!\n"
+
+#: src/fe-gtk/maingui.c:1945
+msgid "Topic Protection"
+msgstr "Ахова тэмы"
+
+#: src/fe-gtk/maingui.c:1946
+msgid "No outside messages"
+msgstr "Няма вонкавых паведамленняў"
+
+#: src/fe-gtk/maingui.c:1947
+msgid "Secret"
+msgstr "Сакрэт"
+
+#: src/fe-gtk/maingui.c:1948
+msgid "Invite Only"
+msgstr "Толькі па запрашэннях"
+
+#: src/fe-gtk/maingui.c:1950
+msgid "Moderated"
+msgstr "Мадэраваны"
+
+#: src/fe-gtk/maingui.c:1951
+msgid "Ban List"
+msgstr "Спіс забарон"
+
+#: src/fe-gtk/maingui.c:1953
+msgid "Keyword"
+msgstr "Ключавое слова"
+
+#: src/fe-gtk/maingui.c:1965
+msgid "User Limit"
+msgstr "Абмежаванне карыстальніка"
+
+#: src/fe-gtk/maingui.c:2076
+msgid "Show/Hide userlist"
+msgstr "Паказаць/Схаваць спіс карыстальнікаў"
+
+#: src/fe-gtk/maingui.c:2201
+msgid ""
+"Unable to set transparent background!\n"
+"\n"
+"You may be using a non-compliant window\n"
+"manager that is not currently supported.\n"
+msgstr ""
+"Немагчыма ўсталяваць празрысты фон!\n"
+"\n"
+"Пэўна, выкарыстоўваецца несумяшчальны мэнэджэр акон\n"
+
+#: src/fe-gtk/maingui.c:2433
+msgid "Enter new nickname:"
+msgstr "Увядзіце новую мянушку:"
+
+#: src/fe-gtk/menu.c:124
+msgid "Host unknown"
+msgstr "Вузел невядомы"
+
+#: src/fe-gtk/menu.c:541
+#, c-format
+msgid "<tt><b>%-11s</b></tt> %s"
+msgstr "<tt><b>%-11s</b></tt> %s"
+
+#: src/fe-gtk/menu.c:546 src/fe-gtk/menu.c:550
+msgid "Real Name:"
+msgstr "Сапраўднае імя:"
+
+#: src/fe-gtk/menu.c:554
+msgid "User:"
+msgstr "Карыстальнік:"
+
+#: src/fe-gtk/menu.c:558
+msgid "Country:"
+msgstr "Краіна:"
+
+#: src/fe-gtk/menu.c:562
+msgid "Server:"
+msgstr "Сервер:"
+
+#: src/fe-gtk/menu.c:574
+msgid "Away Msg:"
+msgstr "Паведамленне адыходу:"
+
+#: src/fe-gtk/menu.c:584
+#, c-format
+msgid "%u minutes ago"
+msgstr "%u хвілін таму"
+
+#: src/fe-gtk/menu.c:586 src/fe-gtk/menu.c:589
+msgid "Last Msg:"
+msgstr "Апошняе паведамленне:"
+
+#: src/fe-gtk/menu.c:690
+msgid "The Menubar is now hidden. You can show it again by pressing F9 or right-clicking in a blank part of the main text area."
+msgstr "Меню зараз схована. Яно вернецца, калі націснеце F9 ці шчоўкнеце правай кнопкай мышы на свабоднай прасторы тэкставага акна."
+
+#: src/fe-gtk/menu.c:777
+msgid "Open Link in Browser"
+msgstr "Адкрыць спасылку ў браўзеры"
+
+#: src/fe-gtk/menu.c:778
+msgid "Copy Selected Link"
+msgstr "Капіяваць пазначаную спасылку"
+
+#: src/fe-gtk/menu.c:835 src/fe-gtk/menu.c:1066
+msgid "Join Channel"
+msgstr "Увайсці на канал"
+
+#: src/fe-gtk/menu.c:839
+msgid "Part Channel"
+msgstr "Выйсці з канала"
+
+#: src/fe-gtk/menu.c:841
+msgid "Cycle Channel"
+msgstr "Каналы па кругу"
+
+#: src/fe-gtk/menu.c:864
+msgid "XChat: User menu"
+msgstr "XChat: Меню карыстальніка"
+
+#: src/fe-gtk/menu.c:873
+msgid "Edit This Menu..."
+msgstr "Рэдагаваць гэтае меню..."
+
+#: src/fe-gtk/menu.c:1068
+msgid "Retrieve channel list..."
+msgstr "Атрымаць спіс каналаў..."
+
+#: src/fe-gtk/menu.c:1136
+msgid ""
+"User Commands - Special codes:\n"
+"\n"
+"%c  =  current channel\n"
+"%e  =  current network name\n"
+"%m  =  machine info\n"
+"%n  =  your nick\n"
+"%t  =  time/date\n"
+"%v  =  xchat version\n"
+"%2  =  word 2\n"
+"%3  =  word 3\n"
+"&2  =  word 2 to the end of line\n"
+"&3  =  word 3 to the end of line\n"
+"\n"
+"eg:\n"
+"/cmd john hello\n"
+"\n"
+"%2 would be \"john\"\n"
+"&2 would be \"john hello\"."
+msgstr ""
+"Каманды карыстальніка - Спецыянальныя кады:\n"
+"\n"
+"%c  =  бягучы канал\n"
+"%m  =  інфармацыя пра машыну\n"
+"%n  =  ваша мянушка\n"
+"%t  =  час/дата\n"
+"%v  =  версія xchat\n"
+"%2  =  слова 2\n"
+"%3  =  слова 3\n"
+"&2  =  слова 2 ад канцу радка\n"
+"&3  =  слова 3 ад канцу радка\n"
+"\n"
+"напрыклад:\n"
+"/cmd john hello\n"
+"\n"
+"%2 будзе \"john\"\n"
+"&2 будзе \"john hello\"."
+
+#: src/fe-gtk/menu.c:1152
+msgid ""
+"Userlist Buttons - Special codes:\n"
+"\n"
+"%a  =  all selected nicks\n"
+"%c  =  current channel\n"
+"%e  =  current network name\n"
+"%h  =  selected nick's hostname\n"
+"%m  =  machine info\n"
+"%n  =  your nick\n"
+"%s  =  selected nick\n"
+"%t  =  time/date\n"
+msgstr ""
+"Кнопкі спісу карыстальнікаў- Спецыяльныя кады:\n"
+"\n"
+"%a  =  усе пазначаныя мянушкі\n"
+"%c  =  бягучы канал\n"
+"%h  =  назва вузла пазначанай мянушкі\n"
+"%e  =  назва бягучага сеціва\n"
+"%m  =  інфармацыя пра машыну\n"
+"%n  =  ваша мянушка\n"
+"%s  =  пазначаная мянушка\n"
+"%t  =  час/дата\n"
+
+#: src/fe-gtk/menu.c:1162
+msgid ""
+"Dialog Buttons - Special codes:\n"
+"\n"
+"%a  =  all selected nicks\n"
+"%c  =  current channel\n"
+"%e  =  current network name\n"
+"%h  =  selected nick's hostname\n"
+"%m  =  machine info\n"
+"%n  =  your nick\n"
+"%s  =  selected nick\n"
+"%t  =  time/date\n"
+msgstr ""
+"Кнопкі дыялогу - Спецыяльныя кады:\n"
+"\n"
+"%a  =  усе пазначаныя мянушкі\n"
+"%c  =  бягучы канал\n"
+"%e  =  назва бягучага сеціва\n"
+"%h  =  назва вузла пазначанай мянушкі\n"
+"%m  =  інфармацыя пра машыну\n"
+"%n  =  ваша мянушка\n"
+"%s  =  пазначаная мянушка\n"
+"%t  =  час/дата\n"
+
+#: src/fe-gtk/menu.c:1172
+msgid ""
+"CTCP Replies - Special codes:\n"
+"\n"
+"%d  =  data (the whole ctcp)\n"
+"%e  =  current network name\n"
+"%m  =  machine info\n"
+"%s  =  nick who sent the ctcp\n"
+"%t  =  time/date\n"
+"%2  =  word 2\n"
+"%3  =  word 3\n"
+"&2  =  word 2 to the end of line\n"
+"&3  =  word 3 to the end of line\n"
+"\n"
+msgstr ""
+"Адказы CTCP - Спецыянальныя кады::\n"
+"\n"
+"%d  =  данні (ctcp цалкам)\n"
+"%e  =  назва бягучага сеціва\n"
+"%m  =  інфармацыя пра машыну\n"
+"%s  =  мянушка таго, хто даслаў ctcp\n"
+"%t  =  час/дата\n"
+"%2  =  слова 2\n"
+"%3  =  слова 3\n"
+"&2  =  слова 2 ад канцу радка\n"
+"&3  =  слова 3 ад канцу радка\n"
+"\n"
+
+#: src/fe-gtk/menu.c:1183
+#, c-format
+msgid ""
+"URL Handlers - Special codes:\n"
+"\n"
+"%s  =  the URL string\n"
+"\n"
+"Putting a ! infront of the command\n"
+"indicates it should be sent to a\n"
+"shell instead of XChat"
+msgstr ""
+"Апрацоўшчыкі URL - Спецыяльныя кады:\n"
+"\n"
+"%s  =  радок URL\n"
+"\n"
+"Змяшчэнне ! (клічніка) наперадзе каманды\n"
+"азначае, што яе будзе апрацоўваць камандная\n"
+"абалонка, а не XChat"
+
+#: src/fe-gtk/menu.c:1192
+msgid "XChat: User Defined Commands"
+msgstr "XChat: Вызначаныя карыстальнікам каманды"
+
+#: src/fe-gtk/menu.c:1199
+msgid "XChat: Userlist Popup menu"
+msgstr "XChat: Кантэкстнае меню спісу карыстальнікаў"
+
+#: src/fe-gtk/menu.c:1206
+msgid "Replace with"
+msgstr "Замяніць"
+
+#: src/fe-gtk/menu.c:1206
+msgid "XChat: Replace"
+msgstr "XChat: Замена"
+
+#: src/fe-gtk/menu.c:1213
+msgid "XChat: URL Handlers"
+msgstr "XChat: Апрацоўчыкі URL"
+
+#: src/fe-gtk/menu.c:1232
+msgid "XChat: Userlist buttons"
+msgstr "XChat: Кнопкі спісу карыстальнікаў"
+
+#: src/fe-gtk/menu.c:1239
+msgid "XChat: Dialog buttons"
+msgstr "XChat: Кнопкі дыялогу"
+
+#: src/fe-gtk/menu.c:1246
+msgid "XChat: CTCP Replies"
+msgstr "XChat: Адказы CTCP"
+
+#: src/fe-gtk/menu.c:1344
+msgid "_XChat"
+msgstr "_XChat"
+
+#: src/fe-gtk/menu.c:1345
+msgid "Network Li_st..."
+msgstr "Спіс _сеціў..."
+
+#: src/fe-gtk/menu.c:1348
+msgid "_New"
+msgstr "_Новы"
+
+#: src/fe-gtk/menu.c:1349
+msgid "Server Tab..."
+msgstr "Укладка сервера..."
+
+#: src/fe-gtk/menu.c:1350
+msgid "Channel Tab..."
+msgstr "Укладка канала..."
+
+#: src/fe-gtk/menu.c:1351
+msgid "Server Window..."
+msgstr "Акно сервера..."
+
+#: src/fe-gtk/menu.c:1352
+msgid "Channel Window..."
+msgstr "Акно канала..."
+
+#: src/fe-gtk/menu.c:1357 src/fe-gtk/menu.c:1359
+msgid "_Load Plugin or Script..."
+msgstr "Загрузіць плагін ці скрыпт..."
+
+#: src/fe-gtk/menu.c:1367
+msgid "_Quit"
+msgstr "_Выйсці"
+
+#: src/fe-gtk/menu.c:1369
+msgid "_View"
+msgstr "Пра_гляд"
+
+#: src/fe-gtk/menu.c:1371
+msgid "_Menubar"
+msgstr "Меню"
+
+#: src/fe-gtk/menu.c:1372
+msgid "_Topicbar"
+msgstr "Тэма"
+
+#: src/fe-gtk/menu.c:1373
+msgid "_Userlist Buttons"
+msgstr "Кнопкі спісу карыстальнікаў"
+
+#: src/fe-gtk/menu.c:1374
+msgid "M_ode Buttons"
+msgstr "Кнопкі рэжыму"
+
+#: src/fe-gtk/menu.c:1376
+msgid "_Layout"
+msgstr "Асяроддзе"
+
+#: src/fe-gtk/menu.c:1378
+msgid "_Tabs"
+msgstr "Укладкі"
+
+#: src/fe-gtk/menu.c:1379
+msgid "T_ree"
+msgstr "Дрэва"
+
+#: src/fe-gtk/menu.c:1381
+msgid "_Network Meters"
+msgstr "Вымярэнне сеціва"
+
+#: src/fe-gtk/menu.c:1383
+msgid "Off"
+msgstr "Выкл"
+
+#: src/fe-gtk/menu.c:1384
+msgid "Graph"
+msgstr "Графік"
+
+#: src/fe-gtk/menu.c:1389
+msgid "_Server"
+msgstr "_Сервер"
+
+#: src/fe-gtk/menu.c:1390
+msgid "_Disconnect"
+msgstr "_Разлучыцца"
+
+#: src/fe-gtk/menu.c:1391
+msgid "_Reconnect"
+msgstr "_Перадалучыцца"
+
+#: src/fe-gtk/menu.c:1395
+msgid "Marked Away"
+msgstr "Пазначыць як \"Адыйшоў\""
+
+#: src/fe-gtk/menu.c:1397
+msgid "_Usermenu"
+msgstr "_Меню карыстальніка"
+
+#: src/fe-gtk/menu.c:1399
+msgid "S_ettings"
+msgstr "Наладкі"
+
+#: src/fe-gtk/menu.c:1400
+msgid "_Preferences"
+msgstr "_Асаблівасці"
+
+#: src/fe-gtk/menu.c:1402
+msgid "Advanced"
+msgstr "Адмысловыя"
+
+#: src/fe-gtk/menu.c:1403
+msgid "Auto Replace..."
+msgstr "Аўтазамена..."
+
+#: src/fe-gtk/menu.c:1404
+msgid "CTCP Replies..."
+msgstr "Адказы CTCP..."
+
+#: src/fe-gtk/menu.c:1405
+msgid "Dialog Buttons..."
+msgstr "Кнопкі дыялогаў..."
+
+#: src/fe-gtk/menu.c:1406
+msgid "Keyboard Shortcuts..."
+msgstr "Камбінацыі клавішаў..."
+
+#: src/fe-gtk/menu.c:1407
+msgid "Text Events..."
+msgstr "Тэксты падзеяў..."
+
+#: src/fe-gtk/menu.c:1408
+msgid "URL Handlers..."
+msgstr "Апрацоўшчыкі URL..."
+
+#: src/fe-gtk/menu.c:1409
+msgid "User Commands..."
+msgstr "Каманды карыстальніка..."
+
+#: src/fe-gtk/menu.c:1410
+msgid "Userlist Buttons..."
+msgstr "Кнопкі спісу карыстальнікаў..."
+
+#: src/fe-gtk/menu.c:1411
+msgid "Userlist Popup..."
+msgstr "Меню спісу карыстальнікаў..."
+
+#: src/fe-gtk/menu.c:1414
+msgid "_Window"
+msgstr "Акно"
+
+#: src/fe-gtk/menu.c:1415
+msgid "Ban List..."
+msgstr "Спіс забароненых..."
+
+#: src/fe-gtk/menu.c:1416
+msgid "Channel List..."
+msgstr "Спіс каналаў..."
+
+#: src/fe-gtk/menu.c:1417
+msgid "Character Chart..."
+msgstr "Палітра літараў..."
+
+#: src/fe-gtk/menu.c:1418
+msgid "Direct Chat..."
+msgstr "Прамыя размовы..."
+
+#: src/fe-gtk/menu.c:1419
+msgid "File Transfers..."
+msgstr "Абмен файламі..."
+
+#: src/fe-gtk/menu.c:1420
+msgid "Ignore List..."
+msgstr "Спіс ігнараванняў.."
+
+#: src/fe-gtk/menu.c:1421
+msgid "Notify List..."
+msgstr "Спіс абвяшчэнняў..."
+
+#: src/fe-gtk/menu.c:1422
+msgid "Plugins and Scripts..."
+msgstr "Плагіны і скрыпты..."
+
+#: src/fe-gtk/menu.c:1423
+msgid "Raw Log..."
+msgstr "Журнал падзеяў..."
+
+#: src/fe-gtk/menu.c:1424
+msgid "URL Grabber..."
+msgstr "Зборшчык URL..."
+
+#: src/fe-gtk/menu.c:1426
+msgid "Reset Marker Line"
+msgstr "Скінуць маркер"
+
+#: src/fe-gtk/menu.c:1427
+msgid "C_lear Text"
+msgstr "А_чысціць тэкст"
+
+#: src/fe-gtk/menu.c:1428
+msgid "Search Text..."
+msgstr "Шукаць тэкст..."
+
+#: src/fe-gtk/menu.c:1429
+msgid "Save Text..."
+msgstr "Захаваць тэкст"
+
+#: src/fe-gtk/menu.c:1431 src/fe-gtk/menu.c:1897
+msgid "_Help"
+msgstr "_Дапамога"
+
+#: src/fe-gtk/menu.c:1432
+msgid "_Contents"
+msgstr "_Змест"
+
+#: src/fe-gtk/menu.c:1433
+msgid "_About"
+msgstr "Аб праграме"
+
+#: src/fe-gtk/menu.c:1910
+msgid "_Attach Window"
+msgstr "_Далучыць акно"
+
+#: src/fe-gtk/menu.c:1911
+msgid "_Close Window"
+msgstr "_Закрыць акно"
+
+#: src/fe-gtk/notifygui.c:137
+msgid "User"
+msgstr "Карыстальнік"
+
+#: src/fe-gtk/notifygui.c:140
+msgid "Last Seen"
+msgstr "Апошні прагляд"
+
+#: src/fe-gtk/notifygui.c:181
+msgid "Offline"
+msgstr "Разлучаны"
+
+#: src/fe-gtk/notifygui.c:201 src/fe-gtk/setup.c:216
+msgid "Never"
+msgstr "Ніколі"
+
+#: src/fe-gtk/notifygui.c:204 src/fe-gtk/notifygui.c:229
+#, c-format
+msgid "%d minutes ago"
+msgstr "%d хвілін таму"
+
+#: src/fe-gtk/notifygui.c:219
+msgid "Online"
+msgstr "Злучаны"
+
+#: src/fe-gtk/notifygui.c:348
+msgid "Enter nickname to add:"
+msgstr "Увядзіце мянушку:"
+
+#: src/fe-gtk/notifygui.c:376
+msgid "Notify on these networks:"
+msgstr "Абвяшчаць у гэтых сецівах:"
+
+#: src/fe-gtk/notifygui.c:387
+msgid "Comma separated list of networks is accepted."
+msgstr "Прымаецца спіс сеціваў, падзеленых коскамі."
+
+#: src/fe-gtk/notifygui.c:407
+msgid "XChat: Notify List"
+msgstr "XChat: спіс абвяшчэнняў"
+
+#: src/fe-gtk/notifygui.c:424
+msgid "Remove"
+msgstr "Выдаліць"
+
+#: src/fe-gtk/notifygui.c:428
+msgid "Open Dialog"
+msgstr "Пачаць дыялог"
+
+#: src/fe-gtk/plugin-tray.c:155
+msgid ""
+"Cannot find 'notify-send' to open balloon alerts.\n"
+"Please install libnotify."
+msgstr ""
+"Адсутнічае 'notify-send' для адкрыцця балёнікавых выплыўных паведамленняў.\n"
+"Калі ласка, устанавіце libnotify."
+
+#: src/fe-gtk/plugin-tray.c:206
+#, c-format
+msgid "XChat: Connected to %u networks and %u channels"
+msgstr "XChat: злучана з %u сецівамі і %u каналамі"
+
+#: src/fe-gtk/plugin-tray.c:400
+#, c-format
+msgid ""
+"You are connected to <b>%u</b> IRC networks.\n"
+"Are you sure you want to quit?"
+msgstr ""
+"Вы злучаны з <b>%u</b> сецівамі IRC.\n"
+"Ці ўпэўнены, што хочаце выйсці?"
+
+#: src/fe-gtk/plugin-tray.c:454
+msgid "_Restore"
+msgstr "_Вярнуць"
+
+#: src/fe-gtk/plugin-tray.c:456
+msgid "_Hide"
+msgstr "С_хаваць"
+
+#: src/fe-gtk/plugin-tray.c:459
+msgid "_Blink on"
+msgstr "_Міргаць пры"
+
+#: src/fe-gtk/plugin-tray.c:460 src/fe-gtk/setup.c:445
+msgid "Channel Message"
+msgstr "Канальным паведамленні"
+
+#: src/fe-gtk/plugin-tray.c:461 src/fe-gtk/setup.c:446
+msgid "Private Message"
+msgstr "Асабістым паведамленні"
+
+#: src/fe-gtk/plugin-tray.c:462 src/fe-gtk/setup.c:447
+msgid "Highlighted Message"
+msgstr "Падсвечаным паведамленні"
+
+#: src/fe-gtk/plugin-tray.c:466
+msgid "Quit..."
+msgstr "Выхад..."
+
+#: src/fe-gtk/plugin-tray.c:510 src/fe-gtk/plugin-tray.c:518
+#, c-format
+msgid "XChat: Highlighed message from: %s (%s)"
+msgstr "XChat: Падсвечанае паведамленне ад: %s (%s)"
+
+#: src/fe-gtk/plugin-tray.c:513
+#, c-format
+msgid "XChat: %u highlighted messages, latest from: %s (%s)"
+msgstr "XChat: %u падсвечаных паведамленняў, апошняе ад: %s (%s)"
+
+#: src/fe-gtk/plugin-tray.c:536 src/fe-gtk/plugin-tray.c:543
+#, c-format
+msgid "XChat: New public message from: %s (%s)"
+msgstr "XChat: Новае агульнае паведамленне ад: %s (%s)"
+
+#: src/fe-gtk/plugin-tray.c:539
+#, c-format
+msgid "XChat: %u new public messages."
+msgstr "XChat: %u новых агульных паведамленняў."
+
+#: src/fe-gtk/plugin-tray.c:562 src/fe-gtk/plugin-tray.c:569
+#, c-format
+msgid "XChat: Private message from: %s (%s)"
+msgstr "XChat: Асабістае паведамленне ад: %s (%s)"
+
+#: src/fe-gtk/plugin-tray.c:565
+#, c-format
+msgid "XChat: %u private messages, latest from: %s (%s)"
+msgstr "XChat: %u асабістых паведамленняў, апошняе ад: %s (%s)"
+
+#: src/fe-gtk/plugin-tray.c:615 src/fe-gtk/plugin-tray.c:623
+#, c-format
+msgid "XChat: File offer from: %s (%s)"
+msgstr "XChat: прапанова файла ад: %s (%s)"
+
+#: src/fe-gtk/plugin-tray.c:618
+#, c-format
+msgid "XChat: %u file offers, latest from: %s (%s)"
+msgstr "XChat: %u прапаноў файлаў, апошняя ад: %s (%s)"
+
+#: src/fe-gtk/plugingui.c:76 src/fe-gtk/textgui.c:421
+msgid "Description"
+msgstr "Апісанне"
+
+#: src/fe-gtk/plugingui.c:151
+msgid "Select a Plugin or Script to load"
+msgstr "Выберыце плагін ці скрыпт для загрузкі"
+
+#: src/fe-gtk/plugingui.c:223
+msgid "XChat: Plugins and Scripts"
+msgstr "XChat: плагіны і скрыпты"
+
+#: src/fe-gtk/plugingui.c:229
+msgid "_Load..."
+msgstr "_Загрузіць"
+
+#: src/fe-gtk/plugingui.c:232
+msgid "_UnLoad"
+msgstr "_Выгрузіць"
+
+#: src/fe-gtk/plugingui.c:236 src/fe-gtk/search.c:144
+msgid "_Close"
+msgstr "_Закрыць"
+
+#: src/fe-gtk/rawlog.c:81 src/fe-gtk/rawlog.c:130 src/fe-gtk/textgui.c:435
+#: src/fe-gtk/urlgrab.c:205
+msgid "Save As..."
+msgstr "Захаваць як..."
+
+#: src/fe-gtk/rawlog.c:97
+#, c-format
+msgid "XChat: Rawlog (%s)"
+msgstr "XChat: Журнал (%s)"
+
+#: src/fe-gtk/rawlog.c:127
+msgid "Clear rawlog"
+msgstr "Ачысціць журнал"
+
+#: src/fe-gtk/search.c:57
+msgid "The window you opened this Search for doesn't exist anymore."
+msgstr "Адкрытае вамі акно пошуку болей не існуе."
+
+#: src/fe-gtk/search.c:65
+msgid "Search hit end, not found."
+msgstr "Пошук дасягнуў канца, не знойдзена."
+
+#: src/fe-gtk/search.c:109
+msgid "XChat: Search"
+msgstr "XChat: Пошук"
+
+#: src/fe-gtk/search.c:127
+msgid "_Match case"
+msgstr "_Улічваць рэгістр"
+
+#: src/fe-gtk/search.c:133
+msgid "Search _backwards"
+msgstr "Пошук _назад"
+
+#: src/fe-gtk/search.c:146
+msgid "_Find"
+msgstr "_Знайсці"
+
+#: src/fe-gtk/servlistgui.c:170 src/fe-gtk/servlistgui.c:269
+msgid "New Network"
+msgstr "Новае сеціва"
+
+#: src/fe-gtk/servlistgui.c:554
+#, c-format
+msgid "Really remove network \"%s\" and all its servers?"
+msgstr "Сапраўды выдаліць сеціва \"%s\" і ўсе яго серверы?"
+
+#: src/fe-gtk/servlistgui.c:678
+msgid "User name and Real name cannot be left blank."
+msgstr "Імя карыстальніка і сапраўднае імя не могуць быць пустымі."
+
+#: src/fe-gtk/servlistgui.c:978
+#, c-format
+msgid "XChat: Edit %s"
+msgstr "XChat: Рэдагаваць %s"
+
+#: src/fe-gtk/servlistgui.c:997
+#, c-format
+msgid "Servers for %s"
+msgstr "Сервера для %s"
+
+#: src/fe-gtk/servlistgui.c:1008
+msgid "Connect to selected server only"
+msgstr "Злучацца толькі з абранымі серверамі"
+
+#: src/fe-gtk/servlistgui.c:1009
+msgid "Don't cycle through all the servers when the connection fails."
+msgstr "Не зацыклівацца на серверах, калі злучэнні абрываюцца"
+
+#: src/fe-gtk/servlistgui.c:1011
+msgid "Your Details"
+msgstr "Падрабязнасці"
+
+#: src/fe-gtk/servlistgui.c:1017
+msgid "Use global user information"
+msgstr "Выкарыстоўваць глабальная звесткі"
+
+#: src/fe-gtk/servlistgui.c:1020 src/fe-gtk/servlistgui.c:1252
+msgid "_Nick name:"
+msgstr "_Мянушка"
+
+#: src/fe-gtk/servlistgui.c:1024 src/fe-gtk/servlistgui.c:1259
+msgid "Second choice:"
+msgstr "Другі выбар"
+
+#: src/fe-gtk/servlistgui.c:1028 src/fe-gtk/servlistgui.c:1273
+msgid "_User name:"
+msgstr "_Імя карыстальніка"
+
+#: src/fe-gtk/servlistgui.c:1032 src/fe-gtk/servlistgui.c:1280
+msgid "Rea_l name:"
+msgstr "Сапраўднае _імя"
+
+#: src/fe-gtk/servlistgui.c:1035
+msgid "Connecting"
+msgstr "Злучэнне"
+
+#: src/fe-gtk/servlistgui.c:1041
+msgid "Auto connect to this network at startup"
+msgstr "Аўтаматычна злучацца з гэтым серверам пры старце"
+
+#: src/fe-gtk/servlistgui.c:1043
+msgid "Use a proxy server"
+msgstr "Выкарыстоўваць проксі"
+
+#: src/fe-gtk/servlistgui.c:1045
+msgid "Use SSL for all the servers on this network"
+msgstr "Ужываць SSL для ўсіх сервераў у гэтым сеціве"
+
+#: src/fe-gtk/servlistgui.c:1050
+msgid "Accept invalid SSL certificate"
+msgstr "Прымаць несапраўдны SSL-сертыфікат"
+
+#: src/fe-gtk/servlistgui.c:1056
+msgid "C_hannels to join:"
+msgstr "Каналы для ўваходу:"
+
+#: src/fe-gtk/servlistgui.c:1058
+msgid "Channels to join, separated by commas, but not spaces!"
+msgstr "Каналы для ўваходу, падзеленыя коскамі, але не прагаламі!"
+
+#: src/fe-gtk/servlistgui.c:1061
+msgid "Connect command:"
+msgstr "Каманда злучэння"
+
+#: src/fe-gtk/servlistgui.c:1063
+msgid "Extra command to execute after connecting. If you need more than one, set this to LOAD -e <filename>, where <filename> is a text-file full of commands to execute."
+msgstr "Дадатковыя каманды для выканання пасля злучэння. Калі патрэбна больш за адну,  прапішыце LOAD -e <файл>, дзе <файл> гэта тэкставы файл з камандамі."
+
+#: src/fe-gtk/servlistgui.c:1066
+msgid "Nickserv password:"
+msgstr "Пароль для Nickserv:"
+
+#: src/fe-gtk/servlistgui.c:1068
+msgid "If your nickname requires a password, enter it here. Not all IRC networks support this."
+msgstr "Калі ваша мянушка патрабуе пароль, вы можаце ўвесці яго тут. Не ўсе сецівы IRC падтрымліваюць гэта"
+
+#: src/fe-gtk/servlistgui.c:1072
+msgid "Server password:"
+msgstr "Пароль сервера:"
+
+#: src/fe-gtk/servlistgui.c:1074
+msgid "Password for the server, if in doubt, leave blank."
+msgstr "Пароль для сервера, калі сумняваецеся, пакіньце пустым."
+
+#: src/fe-gtk/servlistgui.c:1077
+msgid "Character set:"
+msgstr "Знаказбор:"
+
+#: src/fe-gtk/servlistgui.c:1147
+msgid "_Edit"
+msgstr "_Рэдагаваць"
+
+#: src/fe-gtk/servlistgui.c:1230
+msgid "XChat: Network List"
+msgstr "XChat: спіс абвяшчэнняў"
+
+#: src/fe-gtk/servlistgui.c:1242
+msgid "User Information"
+msgstr "Звесткі аб карыстальніку"
+
+#: src/fe-gtk/servlistgui.c:1266
+msgid "Third choice:"
+msgstr "Трэці выбар"
+
+#: src/fe-gtk/servlistgui.c:1326
+msgid "Networks"
+msgstr "Сецівы"
+
+#: src/fe-gtk/servlistgui.c:1367
+msgid "Skip network list on startup"
+msgstr "Не паказваць спіс сервераў пры старце"
+
+#: src/fe-gtk/servlistgui.c:1399
+msgid "_Edit..."
+msgstr "_Змяніць..."
+
+#: src/fe-gtk/servlistgui.c:1406
+msgid "_Sort"
+msgstr "_Упарадкаваць"
+
+#: src/fe-gtk/servlistgui.c:1407
+msgid "Sorts the network list in alphabetical order. Use SHIFT-UP and SHIFT-DOWN keys to move a row."
+msgstr "Упарадкоўвае спіс сеціў паводле алфавіту. Выкарыстоўвайце камбінацыі SHIFT-UP ды SHIFT-DOWN, каб зрушваць слупок."
+
+#: src/fe-gtk/servlistgui.c:1432
+msgid "C_onnect"
+msgstr "_Злучыцца"
+
+#: src/fe-gtk/setup.c:102
+msgid "Text Box Appearance"
+msgstr "Выгляд тэкставага акна"
+
+#: src/fe-gtk/setup.c:103
+msgid "Font:"
+msgstr "Шрыфт:"
+
+#: src/fe-gtk/setup.c:104
+msgid "Background image:"
+msgstr "Фонавая выява:"
+
+#: src/fe-gtk/setup.c:105
+msgid "Scrollback lines:"
+msgstr "Лініі пракруткі:"
+
+#: src/fe-gtk/setup.c:106
+msgid "Colored nick names"
+msgstr "Каляровыя мянушкі"
+
+#: src/fe-gtk/setup.c:107
+msgid "Give each person on IRC a different color"
+msgstr "Пазначыць кожнай персоне розны колер"
+
+#: src/fe-gtk/setup.c:108
+msgid "Indent nick names"
+msgstr "Рабіць водступ перад мянушкамі"
+
+#: src/fe-gtk/setup.c:109
+msgid "Make nick names right-justified"
+msgstr "Выраўняць мянушкі па правым краі"
+
+#: src/fe-gtk/setup.c:110
+msgid "Transparent background"
+msgstr "Празрысты фон"
+
+#: src/fe-gtk/setup.c:111
+msgid "Show marker line"
+msgstr "Паказваць маркер"
+
+#: src/fe-gtk/setup.c:112
+msgid "Insert a red line after the last read text."
+msgstr "Устаўляць чырвоную лінію пасля апошняга прагледжанага тэксту"
+
+#: src/fe-gtk/setup.c:113
+msgid "Transparency Settings"
+msgstr "Параметры празрыстасці"
+
+#: src/fe-gtk/setup.c:114
+msgid "Red:"
+msgstr "Чырвоны"
+
+#: src/fe-gtk/setup.c:115
+msgid "Green:"
+msgstr "Зялёны"
+
+#: src/fe-gtk/setup.c:116
+msgid "Blue:"
+msgstr "Блакітны"
+
+#: src/fe-gtk/setup.c:118 src/fe-gtk/setup.c:361
+msgid "Time Stamps"
+msgstr "Адзнакі часу"
+
+#: src/fe-gtk/setup.c:119
+msgid "Enable time stamps"
+msgstr "Ужываць адзнакі часу"
+
+#: src/fe-gtk/setup.c:120
+msgid "Time stamp format:"
+msgstr "Фармат адзнакаў часу"
+
+#: src/fe-gtk/setup.c:121 src/fe-gtk/setup.c:364
+msgid "See strftime manpage for details."
+msgstr "Глядзіце man strftime"
+
+#: src/fe-gtk/setup.c:128 src/fe-gtk/setup.c:168
+msgid "A-Z"
+msgstr "A-Z"
+
+#: src/fe-gtk/setup.c:129
+msgid "Last-spoke order"
+msgstr "Апошнесказаны парадак "
+
+#: src/fe-gtk/setup.c:135 src/fe-gtk/setup.c:1635
+msgid "Input box"
+msgstr "Акно ўводу"
+
+#: src/fe-gtk/setup.c:136 src/fe-gtk/setup.c:179
+msgid "Use the Text box font and colors"
+msgstr "Шрыфт і колер як у тэкставым акне"
+
+#: src/fe-gtk/setup.c:138
+msgid "Spell checking"
+msgstr "Праверка правапісу"
+
+#: src/fe-gtk/setup.c:141
+msgid "Nick Completion"
+msgstr "Дапаўненне мянушак"
+
+#: src/fe-gtk/setup.c:142
+msgid "Automatic nick completion (without TAB key)"
+msgstr "Аўтаматычнае дапаўненне мянушак (без клавішы TAB)"
+
+#: src/fe-gtk/setup.c:144
+msgid "Nick completion suffix:"
+msgstr "Суфікс дапаўнення мянушак"
+
+#: src/fe-gtk/setup.c:145
+msgid "Nick completion sorted:"
+msgstr "Дапаўненне сартавана"
+
+#: src/fe-gtk/setup.c:148
+msgid "Input Box Codes"
+msgstr "Коды ў полі ўводу"
+
+#: src/fe-gtk/setup.c:149
+#, c-format
+msgid "Interpret %nnn as an ASCII value"
+msgstr "Разумець %nnn як ASCII код"
+
+#: src/fe-gtk/setup.c:150
+msgid "Interpret %C, %B as Color, Bold etc"
+msgstr "Разумець %C, %B як Колер, Тлусты і г.д."
+
+#: src/fe-gtk/setup.c:167
+msgid "A-Z, Ops first"
+msgstr "A-Z, Аператары першыя"
+
+#: src/fe-gtk/setup.c:169
+msgid "Z-A, Ops last"
+msgstr "A-Z, Аператары апошнія"
+
+#: src/fe-gtk/setup.c:170
+msgid "Z-A"
+msgstr "Z-A"
+
+#: src/fe-gtk/setup.c:171
+msgid "Unsorted"
+msgstr "Не сартаваць"
+
+#: src/fe-gtk/setup.c:177
+msgid "User List"
+msgstr "Спіс карыстальнікаў"
+
+#: src/fe-gtk/setup.c:178
+msgid "Show hostnames in user list"
+msgstr "Паказваць імёны хастоў у спісе карыстальнікаў"
+
+#: src/fe-gtk/setup.c:180
+msgid "Resizable user list"
+msgstr "Змяняемая шырыня спіса карыстальнікаў"
+
+#: src/fe-gtk/setup.c:181
+msgid "User list sorted by:"
+msgstr "Сартаваць спіс карыстальнікаў па:"
+
+#: src/fe-gtk/setup.c:183
+msgid "Away tracking"
+msgstr "Сачыць за адышэдшымі"
+
+#: src/fe-gtk/setup.c:184
+msgid "Track the Away status of users and mark them in a different color"
+msgstr "Сачыць за адышэдшымі і маляваць іх іншым колерам"
+
+#: src/fe-gtk/setup.c:185
+msgid "On channels smaller than:"
+msgstr "На каналах менш за"
+
+#: src/fe-gtk/setup.c:187
+msgid "Action Upon Double Click"
+msgstr "Рэакцыя на падвоены націск мышы"
+
+#: src/fe-gtk/setup.c:188
+msgid "Execute command:"
+msgstr "Выканаць каманду:"
+
+#: src/fe-gtk/setup.c:199
+msgid "Windows"
+msgstr "Вокны"
+
+#: src/fe-gtk/setup.c:200 src/fe-gtk/setup.c:224 src/fe-gtk/setup.c:1637
+msgid "Tabs"
+msgstr "Укладкі"
+
+#: src/fe-gtk/setup.c:206
+msgid "Bottom"
+msgstr "Ніз"
+
+#: src/fe-gtk/setup.c:207
+msgid "Top"
+msgstr "Верх"
+
+#: src/fe-gtk/setup.c:208
+msgid "Left"
+msgstr "Лева"
+
+#: src/fe-gtk/setup.c:209
+msgid "Right"
+msgstr "Права"
+
+#: src/fe-gtk/setup.c:210
+msgid "Hidden"
+msgstr "Схаваць"
+
+#: src/fe-gtk/setup.c:217
+msgid "Always"
+msgstr "Заўсёды"
+
+#: src/fe-gtk/setup.c:218
+msgid "Only requested tabs"
+msgstr "Толькі запрошаныя ўкладкі"
+
+#: src/fe-gtk/setup.c:225
+msgid "Open an extra tab for server messages"
+msgstr "Адкрываць дадатковыя ўкладкі для паведамленняў сервера (message)"
+
+#: src/fe-gtk/setup.c:226
+msgid "Open an extra tab for server notices"
+msgstr "Адкрываць дадатковыя ўкладкі для заўваг сервера (notice)"
+
+#: src/fe-gtk/setup.c:227
+msgid "Open a new tab when you receive a private message"
+msgstr "Адкрываць новую ўкладку для атрымання асабістага паведамлення"
+
+#: src/fe-gtk/setup.c:228
+msgid "Sort tabs in alphabetical order"
+msgstr "Сартаваць укладкі ў алфавітным парадку"
+
+#: src/fe-gtk/setup.c:229
+msgid "Small tabs"
+msgstr "Маленькія ўкладкі"
+
+#: src/fe-gtk/setup.c:230
+msgid "Focus new tabs:"
+msgstr "Фокус на новыя ўкладкі:"
+
+#: src/fe-gtk/setup.c:231
+msgid "Show tabs at:"
+msgstr "Паказваць укладкі:"
+
+#: src/fe-gtk/setup.c:232
+msgid "Shorten tab labels to:"
+msgstr "Скарачаць укладкі да:"
+
+#: src/fe-gtk/setup.c:232
+msgid "letters."
+msgstr "знакаў"
+
+#: src/fe-gtk/setup.c:234
+msgid "Tabs or Windows"
+msgstr "Укладкі ці вокны:"
+
+#: src/fe-gtk/setup.c:235
+msgid "Open channels in:"
+msgstr "Адкрываць каналы ў:"
+
+#: src/fe-gtk/setup.c:236
+msgid "Open dialogs in:"
+msgstr "Адкрываць дыялогі ў:"
+
+#: src/fe-gtk/setup.c:237
+msgid "Open utilities in:"
+msgstr "Адкрываць сродкі ў:"
+
+#: src/fe-gtk/setup.c:237
+msgid "Open DCC, Ignore, Notify etc, in tabs or windows?"
+msgstr "Адкрываць DCC, Ігнараванне, Абвяшчэнні і г.д. ва ўкладках ці вокнах?"
+
+#: src/fe-gtk/setup.c:244
+msgid "No"
+msgstr "Не"
+
+#: src/fe-gtk/setup.c:245
+msgid "Yes"
+msgstr "Так"
+
+#: src/fe-gtk/setup.c:246
+msgid "Browse for save folder every time"
+msgstr "Выбіраць тэчку для захоўвання кожны раз"
+
+#: src/fe-gtk/setup.c:252
+msgid "Files and Directories"
+msgstr "Файлы і тэчкі"
+
+#: src/fe-gtk/setup.c:253
+msgid "Auto accept file offers:"
+msgstr "Аўтаматычна згаджацца з прапановамі файлаў"
+
+#: src/fe-gtk/setup.c:254
+msgid "Download files to:"
+msgstr "Спампоўваць файлы ў:"
+
+#: src/fe-gtk/setup.c:255
+msgid "Move completed files to:"
+msgstr "Перамяшчаць завершаныя файлы ў:"
+
+#: src/fe-gtk/setup.c:256
+msgid "Save nick name in filenames"
+msgstr "Захоўваць мянушкі ў імёнах файлаў"
+
+#: src/fe-gtk/setup.c:258
+msgid "Network Settings"
+msgstr "Сеціўныя наладкі"
+
+#: src/fe-gtk/setup.c:259
+msgid "Get my address from the IRC server"
+msgstr "Атрымаць мой адрас ад IRC-сервера"
+
+#: src/fe-gtk/setup.c:260
+msgid "Asks the IRC server for your real address. Use this if you have a 192.168.*.* address!"
+msgstr "Запытаць IRC-сервер аб вашым сапраўдным адрасе. Выкарыстоувайце, калі вы маеце адрас кшталту 192.168.*.*!"
+
+#: src/fe-gtk/setup.c:261
+msgid "DCC IP address:"
+msgstr "DCC IP адрас:"
+
+#: src/fe-gtk/setup.c:262
+msgid "Claim you are at this address when offering files."
+msgstr "Абвяшчаць аб гэтым адрасе пры прапанове файлаў."
+
+#: src/fe-gtk/setup.c:263
+msgid "First DCC send port:"
+msgstr "Першы порт для дасылкі DCC:"
+
+#: src/fe-gtk/setup.c:264
+msgid "Last DCC send port:"
+msgstr "Апошні порт для дасылкі DCC:"
+
+#: src/fe-gtk/setup.c:265
+msgid "!Leave ports at zero for full range."
+msgstr "!Пакіньце парты нулявымі для поўнага дыяпазону."
+
+#: src/fe-gtk/setup.c:267
+msgid "Maximum File Transfer Speeds (bytes per second)"
+msgstr "Найвялікшая хуткасць перадачы файлаў (байтаў у секунду)"
+
+#: src/fe-gtk/setup.c:268
+msgid "One upload:"
+msgstr "Адно запампоўванне:"
+
+#: src/fe-gtk/setup.c:269 src/fe-gtk/setup.c:271
+msgid "Maximum speed for one transfer"
+msgstr "Найвялікшая хуткасць для адной перадачы"
+
+#: src/fe-gtk/setup.c:270
+msgid "One download:"
+msgstr "Адно спампоўванне:"
+
+#: src/fe-gtk/setup.c:272
+msgid "All uploads combined:"
+msgstr "Усе запампоўванні:"
+
+#: src/fe-gtk/setup.c:273 src/fe-gtk/setup.c:275
+msgid "Maximum speed for all files"
+msgstr "Найвялікшая хуткасць"
+
+#: src/fe-gtk/setup.c:274
+msgid "All downloads combined:"
+msgstr "Усе спампоўванні:"
+
+#: src/fe-gtk/setup.c:302 src/fe-gtk/setup.c:1641
+msgid "Alerts"
+msgstr "Тэрміновыя паведамленні"
+
+#: src/fe-gtk/setup.c:305
+msgid "Show tray balloons on:"
+msgstr "Паказваць балёнікі ў сподку пры:"
+
+#: src/fe-gtk/setup.c:306
+msgid "Blink tray icon on:"
+msgstr "Міргаць сподкавай значкай пры:"
+
+#: src/fe-gtk/setup.c:307
+msgid "Blink task bar on:"
+msgstr "Міргаць сподкам пры:"
+
+#: src/fe-gtk/setup.c:308
+msgid "Make a beep sound on:"
+msgstr "Паведаміць піскам пры:"
+
+#: src/fe-gtk/setup.c:310
+msgid "Enable system tray icon"
+msgstr "Задзейнічаць значку ў сістэмным сподку"
+
+#: src/fe-gtk/setup.c:312
+msgid "Highlighted Messages"
+msgstr "Падсвечаныя паведамленні"
+
+#: src/fe-gtk/setup.c:313
+msgid "Highlighted messages are ones where your nickname is mentioned, but also:"
+msgstr "Падсвечваць паведамленні, дзе згадана ваша мянушка і:"
+
+#: src/fe-gtk/setup.c:315
+msgid "Extra words to highlight:"
+msgstr "Дадатковыя словы для падсветкі:"
+
+#: src/fe-gtk/setup.c:316
+msgid "Nick names not to highlight:"
+msgstr "Мянушкі, тэкст ад якіх не падсвечваць"
+
+#: src/fe-gtk/setup.c:317
+msgid "Nick names to always highlight:"
+msgstr "Мянушкі, тэкст ад якіх заўжды падсвечваць"
+
+#: src/fe-gtk/setup.c:318
+msgid "Separate multiple words with commas."
+msgstr "Некалькі словаў, падзеленых коскамі."
+
+#: src/fe-gtk/setup.c:324
+msgid "Default Messages"
+msgstr "Прадвызначаныя паведамленні"
+
+#: src/fe-gtk/setup.c:325
+msgid "Quit:"
+msgstr "Выхад:"
+
+#: src/fe-gtk/setup.c:326
+msgid "Leave channel:"
+msgstr "Выйсці з канала: "
+
+#: src/fe-gtk/setup.c:327
+msgid "Away:"
+msgstr "Адыйсці:"
+
+#: src/fe-gtk/setup.c:329
+msgid "Away"
+msgstr "Адыход"
+
+#: src/fe-gtk/setup.c:330
+msgid "Announce away messages"
+msgstr "Паведамляць аб адыходзе"
+
+#: src/fe-gtk/setup.c:331
+msgid "Announce your away messages to all channels"
+msgstr "Паведамляць аб вашым адыходзе на ўсіх каналах"
+
+#: src/fe-gtk/setup.c:332
+msgid "Show away once"
+msgstr "Паказваць \"Адышэдшы\" толькі адзін раз"
+
+#: src/fe-gtk/setup.c:332
+msgid "Show identical away messages only once"
+msgstr "Паказваць аднолькавыя паведамленні аб адыходзе толькі адзін раз"
+
+#: src/fe-gtk/setup.c:333
+msgid "Automatically unmark away"
+msgstr "Аўтаматычна здымаць статус \"Адышэдшы\""
+
+#: src/fe-gtk/setup.c:333
+msgid "Unmark yourself as away before sending messages"
+msgstr "Здымаць статус \"Адышэдшы\" перад дасылкай паведамленняў"
+
+#: src/fe-gtk/setup.c:340
+msgid "Advanced Settings"
+msgstr "Дадатковыя наладкі"
+
+#: src/fe-gtk/setup.c:341
+msgid "Auto reconnect delay:"
+msgstr "Затрымка паміж спробамі злучыцца"
+
+#: src/fe-gtk/setup.c:342
+msgid "Display MODEs in raw form"
+msgstr "Паказваць рэжымы ў чыстым выглядзе "
+
+#: src/fe-gtk/setup.c:343
+msgid "Whois on notify"
+msgstr "Whois пры абвяшчэнні"
+
+#: src/fe-gtk/setup.c:343
+msgid "Sends a /WHOIS when a user comes online in your notify list"
+msgstr "Дасылать /WHOIS, калі карыстальнік са спісу абвяшчэнняў злучаецца"
+
+#: src/fe-gtk/setup.c:344
+msgid "Hide join and part messages"
+msgstr "Схаваць паведамленні аб уваходзе і адыходзе"
+
+#: src/fe-gtk/setup.c:344
+msgid "Hide channel join/part messages by default"
+msgstr "Схаваць паведамленні аб уваходзе/адыходзе"
+
+#: src/fe-gtk/setup.c:345
+msgid "Auto Open DCC Windows"
+msgstr "Аўтаматычна адкрываць вокны DCC"
+
+#: src/fe-gtk/setup.c:346
+msgid "Send window"
+msgstr "Акно дасылкі"
+
+#: src/fe-gtk/setup.c:347
+msgid "Receive window"
+msgstr "Акно атрымання"
+
+#: src/fe-gtk/setup.c:348
+msgid "Chat window"
+msgstr "Акно размовы"
+
+#: src/fe-gtk/setup.c:356 src/fe-gtk/setup.c:1643
+msgid "Logging"
+msgstr "Журнал"
+
+#: src/fe-gtk/setup.c:357
+msgid "Enable logging of conversations"
+msgstr "Дазволіць журналяванне дыялогаў"
+
+#: src/fe-gtk/setup.c:358
+msgid "Log filename:"
+msgstr "Імя файла журналу:"
+
+#: src/fe-gtk/setup.c:359
+#, c-format
+msgid "%s=Server %c=Channel %n=Network."
+msgstr "(%s=Сервер %c=Канал %n=Сеціва)."
+
+#: src/fe-gtk/setup.c:362
+msgid "Insert timestamps in logs"
+msgstr "Устаўляць адзнакі часу ў журнал"
+
+#: src/fe-gtk/setup.c:363
+msgid "Log timestamp format:"
+msgstr "Фармат адзнакаў часу:"
+
+#: src/fe-gtk/setup.c:371
+msgid "(Disabled)"
+msgstr "(Адключана)"
+
+#: src/fe-gtk/setup.c:372
+msgid "Wingate"
+msgstr "Wingate"
+
+#: src/fe-gtk/setup.c:373
+msgid "Socks4"
+msgstr "Socks4"
+
+#: src/fe-gtk/setup.c:374
+msgid "Socks5"
+msgstr "Socks5"
+
+#: src/fe-gtk/setup.c:375
+msgid "HTTP"
+msgstr "HTTP"
+
+#: src/fe-gtk/setup.c:377
+msgid "MS Proxy (ISA)"
+msgstr "MS Proxy (ISA)"
+
+#: src/fe-gtk/setup.c:384
+msgid "All Connections"
+msgstr "Усе злучэнні"
+
+#: src/fe-gtk/setup.c:385
+msgid "IRC Server Only"
+msgstr "Толькі IRC-сервер"
+
+#: src/fe-gtk/setup.c:386
+msgid "DCC Get Only"
+msgstr "Толькі атрыманне DCC"
+
+#: src/fe-gtk/setup.c:392
+msgid "Your Address"
+msgstr "Ваш адрас"
+
+#: src/fe-gtk/setup.c:393
+msgid "Bind to:"
+msgstr "Ужываць адрас:"
+
+#: src/fe-gtk/setup.c:394
+msgid "Only useful for computers with multiple addresses."
+msgstr "Карысна толькі для кампутараў з некалькімі адрасамі."
+
+#: src/fe-gtk/setup.c:396
+msgid "Proxy Server"
+msgstr "Проксі-сервер"
+
+#: src/fe-gtk/setup.c:397
+msgid "Hostname:"
+msgstr "Хост:"
+
+#: src/fe-gtk/setup.c:398
+msgid "Port:"
+msgstr "Порт:"
+
+#: src/fe-gtk/setup.c:399
+msgid "Type:"
+msgstr "Тып:"
+
+#: src/fe-gtk/setup.c:400
+msgid "Use proxy for:"
+msgstr "Выкарыстоўваць проксі для:"
+
+#: src/fe-gtk/setup.c:402
+msgid "Proxy Authentication"
+msgstr "Спраўжванне на проксі"
+
+#: src/fe-gtk/setup.c:404
+msgid "Use Authentication (MS Proxy, HTTP or Socks5 only)"
+msgstr "Спраўжванне на проксі-серверы (толькі MS Proxy, HTTP ці Socks5)"
+
+#: src/fe-gtk/setup.c:406
+msgid "Use Authentication (HTTP or Socks5 only)"
+msgstr "Праверка на проксі-серверы (толькі HTTP ці Socks5)"
+
+#: src/fe-gtk/setup.c:408
+msgid "Username:"
+msgstr "Імя карыстальніка:"
+
+#: src/fe-gtk/setup.c:409
+msgid "Password:"
+msgstr "Пароль:"
+
+#: src/fe-gtk/setup.c:816
+msgid "Select an Image File"
+msgstr "Абярыце файл выявы"
+
+#: src/fe-gtk/setup.c:840
+msgid "Select Download Folder"
+msgstr "Абярыце тэчку для спамповак"
+
+#: src/fe-gtk/setup.c:849
+msgid "Select font"
+msgstr "Абярыце шрыфт"
+
+#: src/fe-gtk/setup.c:946
+msgid "Browse..."
+msgstr "Агляд.."
+
+#: src/fe-gtk/setup.c:1086
+msgid "Mark identified users with:"
+msgstr "Пазначаць ідэнтыфікаваных карыстальнікаў:"
+
+#: src/fe-gtk/setup.c:1088
+msgid "Mark not-identified users with:"
+msgstr "Пазначаць неідэнтыфікаваных карыстальнікаў:"
+
+#: src/fe-gtk/setup.c:1095
+msgid "Open Data Folder"
+msgstr "Адкрыць тэчку данніх"
+
+#: src/fe-gtk/setup.c:1149
+msgid "Select color"
+msgstr "Вылучце колер"
+
+#: src/fe-gtk/setup.c:1229
+msgid "Text Colors"
+msgstr "Колеры тэксту"
+
+#: src/fe-gtk/setup.c:1231
+msgid "mIRC colors:"
+msgstr "Колеры mIRC:"
+
+#: src/fe-gtk/setup.c:1239
+msgid "Local colors:"
+msgstr "Лакальныя колеры:"
+
+#: src/fe-gtk/setup.c:1247 src/fe-gtk/setup.c:1252
+msgid "Foreground:"
+msgstr "Колер літар:"
+
+#: src/fe-gtk/setup.c:1248 src/fe-gtk/setup.c:1253
+msgid "Background:"
+msgstr "Фон:"
+
+#: src/fe-gtk/setup.c:1250
+msgid "Marking Text"
+msgstr "Адзначэнне тэксту"
+
+#: src/fe-gtk/setup.c:1255
+msgid "Interface Colors"
+msgstr "Колеры інтэрфейсу"
+
+#: src/fe-gtk/setup.c:1257
+msgid "New data:"
+msgstr "Новыя дадзеныя:"
+
+#: src/fe-gtk/setup.c:1258
+msgid "Marker line:"
+msgstr "Лінія-адзнака:"
+
+#: src/fe-gtk/setup.c:1259
+msgid "New message:"
+msgstr "Новае паведамленне:"
+
+#: src/fe-gtk/setup.c:1260
+msgid "Away user:"
+msgstr "Адышэдшы карыстальнік:"
+
+#: src/fe-gtk/setup.c:1261
+msgid "Highlight:"
+msgstr "Падсветка:"
+
+#: src/fe-gtk/setup.c:1357 src/fe-gtk/textgui.c:386
+msgid "Event"
+msgstr "Падзея"
+
+#: src/fe-gtk/setup.c:1363
+msgid "Sound file"
+msgstr "Гукавы файл"
+
+#: src/fe-gtk/setup.c:1398
+msgid "Select a sound file"
+msgstr "Абярыце гукавы файл"
+
+#: src/fe-gtk/setup.c:1470
+msgid "Sound playing method:"
+msgstr "Спосаб граць гук:"
+
+#: src/fe-gtk/setup.c:1478
+msgid "External sound playing _program:"
+msgstr "Вонкавая праграма для _прайгравання гуку:"
+
+#: src/fe-gtk/setup.c:1496
+msgid "_External program"
+msgstr "_Вонкавая праграма"
+
+#: src/fe-gtk/setup.c:1506
+msgid "_Automatic"
+msgstr "_Аўтаматычна"
+
+#: src/fe-gtk/setup.c:1519
+msgid "Sound files _directory:"
+msgstr "Каталог з гукавымі файламі:"
+
+#: src/fe-gtk/setup.c:1558
+msgid "Sound file:"
+msgstr "Гукавы файл:"
+
+#: src/fe-gtk/setup.c:1573
+msgid "_Browse..."
+msgstr "_Знайсці..."
+
+#: src/fe-gtk/setup.c:1584
+msgid "_Play"
+msgstr "_Граць"
+
+#: src/fe-gtk/setup.c:1633
+msgid "Interface"
+msgstr "Інтэрфейс"
+
+#: src/fe-gtk/setup.c:1634
+msgid "Text box"
+msgstr "Тэкставае акно"
+
+#: src/fe-gtk/setup.c:1636
+msgid "User list"
+msgstr "Спіс карыстальнікаў"
+
+#: src/fe-gtk/setup.c:1638
+msgid "Colors"
+msgstr "Колеры"
+
+#: src/fe-gtk/setup.c:1640
+msgid "Chatting"
+msgstr "Размовы"
+
+#: src/fe-gtk/setup.c:1642
+msgid "General"
+msgstr "Агульнае"
+
+#: src/fe-gtk/setup.c:1644
+msgid "Sound"
+msgstr "Гук"
+
+#: src/fe-gtk/setup.c:1648
+msgid "Network setup"
+msgstr "Сеціўныя наладкі"
+
+#: src/fe-gtk/setup.c:1649
+msgid "File transfers"
+msgstr "Абмен файламі"
+
+#: src/fe-gtk/setup.c:1757
+msgid "Categories"
+msgstr "Катэгорыі"
+
+#: src/fe-gtk/setup.c:1938
+msgid ""
+"You cannot place the tree on the top or bottom!\n"
+"Please change to the <b>Tabs</b> layout in the <b>View</b> menu first."
+msgstr ""
+"Вы не можаце размясціць дрэва ўверсе ці ўнізе!\n"
+"Спачатку змяніце Асяроддзе на <b>Ўкладкі</b> ў меню <b>Прагляд</b>."
+
+#: src/fe-gtk/setup.c:1948
+msgid "Some settings were changed that require a restart to take full effect."
+msgstr "Некаторыя наладкі будуць зменены толькі пасля рэстарту."
+
+#: src/fe-gtk/setup.c:1956
+msgid ""
+"*WARNING*\n"
+"Auto accepting DCC to your home directory\n"
+"can be dangerous and is exploitable. Eg:\n"
+"Someone could send you a .bash_profile"
+msgstr ""
+"*УВАГА*\n"
+"Аўтапрыманне DCC у вашу хатнюю тэчку ёсць\n"
+"небяспечным і можа быць выкарыставана, напрыклад,\n"
+"нехта можа даслаць вам .bash_profile"
+
+#: src/fe-gtk/setup.c:1989
+msgid "XChat: Preferences"
+msgstr "XChat: Асаблівасці"
+
+#: src/fe-gtk/textgui.c:177
+msgid "There was an error parsing the string"
+msgstr "Узнікла памылка пры апрацоўцы радка"
+
+#: src/fe-gtk/textgui.c:185
+#, c-format
+msgid "This signal is only passed %d args, $%d is invalid"
+msgstr "Гэты сігнал прымае толькі %d аргументаў, $%d няправільны"
+
+#: src/fe-gtk/textgui.c:301 src/fe-gtk/textgui.c:324
+msgid "Print Texts File"
+msgstr "Друкаваць тэкставы файл"
+
+#: src/fe-gtk/textgui.c:369
+msgid "Edit Events"
+msgstr "Рэдагаваць падзеі"
+
+#: src/fe-gtk/textgui.c:420
+msgid "$ Number"
+msgstr "$ Лічба"
+
+#: src/fe-gtk/textgui.c:437
+msgid "Load From..."
+msgstr "Загрузіць з..."
+
+#: src/fe-gtk/textgui.c:438
+msgid "Test All"
+msgstr "Праверыць усё"
+
+#: src/fe-gtk/urlgrab.c:98
+msgid "URL"
+msgstr "URL"
+
+#: src/fe-gtk/urlgrab.c:188
+msgid "XChat: URL Grabber"
+msgstr "XChat: Зборшчык URL"
+
+#: src/fe-gtk/urlgrab.c:201
+msgid "Clear list"
+msgstr "Ачысціць спіс"
+
+#: src/fe-gtk/urlgrab.c:203
+msgid "Copy selected URL"
+msgstr "Капіяваць выбраны URL"
+
+#: src/fe-gtk/urlgrab.c:203
+msgid "Copy"
+msgstr "Капіяваць"
+
+#: src/fe-gtk/urlgrab.c:205
+msgid "Save list to a file"
+msgstr "Захаваць спіс у файл"
+
+#: src/fe-gtk/userlistgui.c:111
+#, c-format
+msgid "%d ops, %d total"
+msgstr "%d апер, %d усяго"

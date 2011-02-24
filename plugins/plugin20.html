@@ -1,0 +1,1002 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+<title>XChat 2.0 Plugin Interface</title>
+<style type="text/css">
+<!--
+body {
+font-family: sans-serif;
+background-color: #FFFBF0;
+}
+.cmd {
+background-color: #dddddd;
+color: #990066
+}
+.bbox {
+font-family: monospace;
+color: #fdfdfd;
+background-color: #000;
+border: 1px solid #00f;
+padding: 4px;
+text-align: left;
+margin-left: 32px;
+margin-right: 32px;
+}
+.box {
+background-color: #ddddee;
+border: 1px solid #000;
+padding: 4px;
+text-align: left;
+margin-left: 32px;
+margin-right: 32px;
+}
+-->
+</style>
+</head>
+<body bgcolor="#FFFBF0" text="#000" link="#607060" vlink="#607060" alink="#607060">
+
+<h1>XChat 2.0 Plugin Interface</h1>
+
+<small>
+<font size="-12">plugin20.html revision 2.86</font>
+<br>Latest version of this document is available at: <a href="http://xchat.org/docs/plugin20.html">http://xchat.org/docs/plugin20.html</a></small>
+
+<h2>1. Documentation:</h2>
+<blockquote>
+<a href="#intro">1.0 Introduction</a>
+<br><a href="#sample">1.1 Sample plugin</a>
+<br><a href="#word">1.2 What is word and word_eol?</a>
+<br><a href="#lists">1.3 Lists and fields</a>
+<br><a href="#win32">1.4 Plugins on Windows (Win32)</a>
+<br><a href="#gui">1.5 Controlling the GUI</a>
+<br>&nbsp; <a href="#gui">1.5.1 Basic Control</a>
+<br>&nbsp; <a href="#menu">1.5.2 Custom Menu Items</a>
+<br>&nbsp; <a href="#tray">1.5.3 System Tray</a>
+<br><a href="#unicode">1.6 Handling UTF-8/Unicode strings</a>
+</blockquote>
+
+<h2>2. Function reference:</h2>
+<blockquote>
+<a href="#xchat_hook_command">xchat_hook_command</a>
+<br><a href="#xchat_hook_fd">xchat_hook_fd</a>
+<br><a href="#xchat_hook_print">xchat_hook_print</a>
+<br><a href="#xchat_hook_server">xchat_hook_server</a>
+<br><a href="#xchat_hook_timer">xchat_hook_timer</a>
+<br><a href="#xchat_unhook">xchat_unhook</a>
+<br>
+<br><a href="#xchat_command">xchat_command</a>
+<br><a href="#xchat_commandf">xchat_commandf</a>
+<br><a href="#xchat_print">xchat_print</a>
+<br><a href="#xchat_printf">xchat_printf</a>
+<br><a href="#xchat_emit_print">xchat_emit_print</a>
+<br><a href="#xchat_send_modes">xchat_send_modes</a>
+<br>
+<br><a href="#xchat_find_context">xchat_find_context</a>
+<br><a href="#xchat_get_context">xchat_get_context</a>
+<br><a href="#xchat_get_info">xchat_get_info</a>
+<br><a href="#xchat_get_prefs">xchat_get_prefs</a>
+<br><a href="#xchat_set_context">xchat_set_context</a>
+<br>
+<br><a href="#xchat_nickcmp">xchat_nickcmp</a>
+<br><a href="#xchat_strip">xchat_strip</a>
+<br><a href="#xchat_free">xchat_free</a>
+<br>
+<br><a href="#lists">xchat_list_get</a>
+<br><a href="#lists">xchat_list_free</a>
+<br><a href="#lists">xchat_list_fields</a> (not documented yet)
+<br><a href="#lists">xchat_list_next</a>
+<br><a href="#lists">xchat_list_str</a>
+<br><a href="#lists">xchat_list_int</a>
+<br><a href="#lists">xchat_list_time</a>
+<br>
+<br><a href="#xchat_plugingui_add">xchat_plugingui_add</a> (not documented yet)
+<br><a href="#xchat_plugingui_remove">xchat_plugingui_remove</a> (not documented yet)
+</blockquote><br>
+
+<h3><a name=intro>Introduction</a></h3>
+Plugins for XChat are written in C. The interface aims to keep 100%
+binary compatability. This means that if you upgrade XChat, you will
+not need to recompile your plugins, they'll continue to work. The
+interface doesn't depend on any structures and offsets, so compiler
+versions shouldn't have an impact either. The only real requirement of
+an XChat plugin, is that it define a "xchat_plugin_init" symbol. This
+is your entry point function, see the example below. You should make
+all your global variables and functions <i>static</i>, so that a symbol
+is not exported. There is no harm in exporting these symbols, but they
+are not necessary and only pollute the name-space. Plugins are compiled as shared objects
+(.so files), for example:
+<br><br>
+Most UNIX systems:<pre>
+	gcc -Wl,--export-dynamic -Wall -O1 -shared -fPIC myplugin.c -o myplugin.so
+</pre>
+MacOSX:<pre>
+	gcc -no-cpp-precomp -g -O2 -Wall -bundle -flat_namespace -undefined suppress -o myplugin.so myplugin.c
+</pre>
+
+See the <a href="#win32">Windows section</a> on how to compile a plugin
+using visual studio.
+<p>
+All strings passed to and from plugins are encoded in UTF-8, regardless
+of locale. <a href="#unicode">What does this mean</a>?
+</p><br>
+
+<h3><a name=sample>Sample plugin</a></h3>
+This simple plugin autoOps anyone who joins a channel you're in. It also
+adds a new command /AUTOOPTOGGLE, which can be used to turn the feature ON
+or OFF. Every XChat plugin must define an xchat_plugin_init function, this
+is the normal entry point. xchat_plugin_deinit is optional.
+<br>
+<div style="color: #ffffff; background-color: #111199;">
+<pre>
+
+<font color="#00ff00">#include </font><font color="#00ffff">&quot;xchat-plugin.h&quot;</font>
+
+<font color="#00ff00">#define PNAME </font><font color="#00ffff">&quot;AutoOp&quot;</font>
+<font color="#00ff00">#define PDESC </font><font color="#00ffff">&quot;Auto Ops anyone that joins&quot;</font>
+<font color="#00ff00">#define PVERSION </font><font color="#00ffff">&quot;0.1&quot;</font>
+
+<font color="#ffa500"><b>static</b></font> xchat_plugin *ph;   <font color="#bebebe"><b>/*</b></font><font color="#bebebe"><b> plugin handle </b></font><font color="#bebebe"><b>*/</b></font>
+<font color="#ffa500"><b>static</b></font> <font color="#ffa500"><b>int</b></font> enable = <font color="#00ffff">1</font>;
+
+<font color="#ffa500"><b>static</b></font> <font color="#ffa500"><b>int</b></font> join_cb(<font color="#ffa500"><b>char</b></font> *word[], <font color="#ffa500"><b>void</b></font> *userdata)
+{
+   <font color="#ffff00">if</font> (enable)
+      <font color="#bebebe"><b>/*</b></font><font color="#bebebe"><b> Op ANYONE who joins </b></font><font color="#bebebe"><b>*/</b></font>
+      xchat_commandf(ph, <font color="#00ffff">&quot;OP </font><font color="#ff00ff">%s</font><font color="#00ffff">&quot;</font>, word[<font color="#00ffff">1</font>]);
+   <font color="#bebebe"><b>/*</b></font><font color="#bebebe"><b> word[1] is the nickname, as in the Settings-&gt;Advanced-&gt;TextEvents window in xchat </b></font><font color="#bebebe"><b>*/</b></font>
+
+   <font color="#ffff00">return</font> XCHAT_EAT_NONE;  <font color="#bebebe"><b>/*</b></font><font color="#bebebe"><b> don't eat this event, xchat needs to see it! </b></font><font color="#bebebe"><b>*/</b></font>
+}
+
+<font color="#ffa500"><b>static</b></font> <font color="#ffa500"><b>int</b></font> autooptoggle_cb(<font color="#ffa500"><b>char</b></font> *word[], <font color="#ffa500"><b>char</b></font> *word_eol[], <font color="#ffa500"><b>void</b></font> *userdata)
+{
+   <font color="#ffff00">if</font> (!enable)
+   {
+      enable = <font color="#00ffff">1</font>;
+      xchat_print(ph, <font color="#00ffff">&quot;AutoOping now enabled!</font><font color="#ff00ff">\n</font><font color="#00ffff">&quot;</font>);
+   } <font color="#ffff00">else</font>
+   {
+      enable = <font color="#00ffff">0</font>;
+      xchat_print(ph, <font color="#00ffff">&quot;AutoOping now disabled!</font><font color="#ff00ff">\n</font><font color="#00ffff">&quot;</font>);
+   }
+
+   <font color="#ffff00">return</font> XCHAT_EAT_ALL;   <font color="#bebebe"><b>/*</b></font><font color="#bebebe"><b> eat this command so xchat and other plugins can't process it </b></font><font color="#bebebe"><b>*/</b></font>
+}
+
+<font color="#ffa500"><b>void</b></font> xchat_plugin_get_info(<font color="#ffa500"><b>char</b></font> **name, <font color="#ffa500"><b>char</b></font> **desc, <font color="#ffa500"><b>char</b></font> **version, <font color="#ffa500"><b>void</b></font> **reserved)
+{
+   *name = PNAME;
+   *desc = PDESC;
+   *version = PVERSION;
+}
+
+<font color="#ffa500"><b>int</b></font> xchat_plugin_init(xchat_plugin *plugin_handle,
+                      <font color="#ffa500"><b>char</b></font> **plugin_name,
+                      <font color="#ffa500"><b>char</b></font> **plugin_desc,
+                      <font color="#ffa500"><b>char</b></font> **plugin_version,
+                      <font color="#ffa500"><b>char</b></font> *arg)
+{
+   <font color="#bebebe"><b>/*</b></font><font color="#bebebe"><b> we need to save this for use with any xchat_* functions </b></font><font color="#bebebe"><b>*/</b></font>
+   ph = plugin_handle;
+
+   <font color="#bebebe"><b>/*</b></font><font color="#bebebe"><b> tell xchat our info </b></font><font color="#bebebe"><b>*/</b></font>
+   *plugin_name = PNAME;
+   *plugin_desc = PDESC;
+   *plugin_version = PVERSION;
+
+   xchat_hook_command(ph, <font color="#00ffff">&quot;AutoOpToggle&quot;</font>, XCHAT_PRI_NORM, autooptoggle_cb, <font color="#00ffff">&quot;Usage: AUTOOPTOGGLE, Turns OFF/ON Auto Oping&quot;</font>, <font color="#00ffff">0</font>);
+   xchat_hook_print(ph, <font color="#00ffff">&quot;Join&quot;</font>, XCHAT_PRI_NORM, join_cb, <font color="#00ffff">0</font>);
+
+   xchat_print(ph, <font color="#00ffff">&quot;AutoOpPlugin loaded successfully!</font><font color="#ff00ff">\n</font><font color="#00ffff">&quot;</font>);
+
+   <font color="#ffff00">return</font> <font color="#00ffff">1</font>;       <font color="#bebebe"><b>/*</b></font><font color="#bebebe"><b> return 1 for success </b></font><font color="#bebebe"><b>*/</b></font>
+}
+
+</pre>
+</div>
+
+<h3><a name=word>What's word and word_eol?</a></h3>
+
+They are arrays of strings. They contain the parameters the user entered
+for the particular command. For example, if you executed:
+
+<pre>
+/command NICK hi there
+
+word[1] is command
+word[2] is NICK
+word[3] is hi
+word[4] is there
+
+word_eol[1] is command NICK hi there
+word_eol[2] is NICK hi there
+word_eol[3] is hi there
+word_eol[4] is there
+</pre>
+These arrays are simply provided for your convenience. You are NOT allowed
+to alter them. Both arrays are limited to 32 elements (index 31). word[0] and
+word_eol[0] are reserved and should not be read.
+<br><br><br>
+<h3><a name=lists>Lists and Fields</a></h3>
+Lists of information (DCCs, Channels, Userlist etc) can be retreived
+with xchat_list_get. All fields are READ ONLY and must be copied if
+needed for a long time after calling xchat_list_str. The types of lists and fields available are:
+<blockquote>
+
+"channels" - list of channels, querys and their servers.
+<blockquote><table border=1>
+<tr bgcolor="#dddddd"><td>Name</td><td>Description</td><td>Type</td></tr>
+<tr><td>channel</td><td>Channel or query name</td><td>string</td></tr>
+<tr><td>chantypes</td><td>Channel types e.g. "#!&amp;"<br><small>(Added in version 2.0.9. Older versions will return NULL)</small></td><td>string</td>
+<tr><td>context</td><td>(xchat_context *) pointer. Can be used with xchat_set_context</td><td>string</td></tr>
+<tr><td>flags</td><td>Server/Channel Bits:<br>
+<table>
+<tr><td>Bit #</td><td>Value</td><td>Description</td></tr>
+<tr><td>0</td><td>1</td><td>Connected</td></tr>
+<tr><td>1</td><td>2</td><td>Connecting in Progress</td></tr>
+<tr><td>2</td><td>4</td><td>You are away</td></tr>
+<tr><td>3</td><td>8</td><td>End of MOTD (Login complete)</td></tr>
+<tr><td>4</td><td>16</td><td>Has WHOX (ircu)</td></tr>
+<tr><td>5</td><td>32</td><td>Has IDMSG (FreeNode)</td></tr>
+<tr><td>6</td><td>64</td><td>Hide Join/Part Messages</td></tr>
+<tr><td>7</td><td>128</td><td>unused (was Color Paste in old versions)</td></tr>
+<tr><td>8</td><td>256</td><td>Beep on Message</td></tr>
+<tr><td>9</td><td>512</td><td>Blink Tray</td></tr>
+<tr><td>10</td><td>1024</td><td>Blink Task Bar</td></tr>
+</table>
+<br><small>(Bits 0-5 added in 2.0.9. Bits 6-8 added in 2.6.6. Bit 9 added in 2.8.0. Bit 10 in 2.8.6)</small></td><td>int</td></tr>
+<tr><td>id</td><td>Unique server ID<br><small>(Added in version 2.0.8. Older versions will return -1)</small></td><td>int</td></tr>
+<tr><td>lag</td><td>Lag in milliseconds<br><small>(Added in version 2.6.8. Older versions will return -1)</small></td><td>int</td>
+<tr><td>maxmodes</td><td>Maximum modes per line<br><small>(Added in version 2.0.9. Older versions will return -1)</small></td><td>int</td>
+<tr><td>network</td><td>Network name to which this channel belongs<br><small>(Added in version 2.0.2. Older versions will return NULL)</small></td><td>string</td></tr>
+<tr><td>nickprefixes</td><td>Nickname prefixes e.g. "@+"<br><small>(Added in version 2.0.9. Older versions will return NULL)</small></td><td>string</td>
+<tr><td>nickmodes</td><td>Nickname mode chars e.g. "ov"<br><small>(Added in version 2.0.9. Older versions will return NULL)</small></td><td>string</td>
+<tr><td>queue</td><td>Number of bytes in the send-queue<br><small>(Added in version 2.6.8. Older versions will return -1)</small></td><td>int</td>
+<tr><td>server</td><td>Server name to which this channel belongs</td><td>string</td></tr>
+<tr><td>type</td><td>Type of context this is: 1-Server 2-Channel 3-Dialog<br><small>(Added in version 2.0.2. Older versions will return -1)</small></td><td>int</td></tr>
+<tr><td>users</td><td>Number of users in this channel<br><small>(Added in version 2.0.8. Older versions will return -1)</small></td><td>int</td></tr>
+</table>
+</blockquote>
+
+"dcc" - list of DCC file transfers. Fields:
+<blockquote> <table border=1>
+<tr bgcolor="#dddddd"><td>Name</td><td>Description</td><td>Type</td></tr>
+<tr><td>address32</td><td>Address of the remote user (ipv4 address)</td><td>int</td></tr>
+<tr><td>cps</td><td>Bytes per second (speed)</td><td>int</td></tr>
+<tr><td>destfile</td><td>Destination full pathname</td><td>string</td></tr>
+<tr><td>file</td><td>File name</td><td>string</td></tr>
+<tr><td>nick</td><td>Nickname of person who the file is from/to</td><td>string</td></tr>
+<tr><td>port</td><td>TCP port number</td><td>int</td></tr>
+<tr><td>pos</td><td>Bytes sent/received</td><td>int</td></tr>
+<tr><td>poshigh</td><td>Bytes sent/received, high order 32 bits</td><td>int</td></tr>
+<tr><td>resume</td><td>Point at which this file was resumed (or zero if it was not resumed)</td><td>int</td></tr>
+<tr><td>resumehigh</td><td>Point at which this file was resumed, high order 32 bits</td><td>int</td></tr>
+<tr><td>size</td><td>File size in bytes, low order 32 bits (cast it to unsigned)</td><td>int</td></tr>
+<tr><td>sizehigh</td><td>File size in bytes, high order 32 bits</td><td>int</td></tr>
+<tr><td>status</td><td>DCC Status: 0-Queued 1-Active 2-Failed 3-Done 4-Connecting 5-Aborted</td><td>int</td></tr>
+<tr><td>type</td><td>DCC Type: 0-Send 1-Receive 2-ChatRecv 3-ChatSend</td><td>int</td></tr>
+</table>
+</blockquote>
+
+"ignore" - current ignore list.
+<blockquote> <table border=1>
+<tr bgcolor="#dddddd"><td>Name</td><td>Description</td><td>Type</td></tr>
+<tr><td>mask</td><td>Ignore mask. .e.g: *!*@*.aol.com</td><td>string</td></tr>
+<tr><td>flags</td><td>Bit field of flags. 0=Private 1=Notice 2=Channel 3=Ctcp<br>
+4=Invite 5=UnIgnore 6=NoSave 7=DCC</td><td>int</td></tr>
+</table>
+</blockquote>
+
+"notify" - list of people on notify.
+<blockquote> <table border=1>
+<tr bgcolor="#dddddd"><td>Name</td><td>Description</td><td>Type</td></tr>
+<tr><td>networks</td><td>Networks to which this nick applies. Comma separated. May be NULL.
+<br><small>(Added in version 2.6.8)</small></td><td>string</td></tr>
+<tr><td>nick</td><td>Nickname</td><td>string</td></tr>
+<tr><td>flags</td><td>Bit field of flags. 0=Is online.</td><td>int</td></tr>
+<tr><td>on</td><td>Time when user came online.</td><td>time_t</td></tr>
+<tr><td>off</td><td>Time when user went offline.</td><td>time_t</td></tr>
+<tr><td>seen</td><td>Time when user the user was last verified still online.</td><td>time_t</td></tr>
+</table>
+<small>The entire "notify" list was added in xchat 2.0.8. Fields are
+only valid for the context when xchat_list_get() was called
+(i.e. you get information about the user ON THAT ONE SERVER ONLY). You
+may cycle through the "channels" list to find notify information for every
+server.</small>
+</blockquote>
+
+"users" - list of users in the current channel.
+<blockquote> <table border=1>
+<tr bgcolor="#dddddd"><td>Name</td><td>Description</td><td>Type</td></tr>
+<tr><td>away</td><td>Away status (boolean)<br><small>(Added in version 2.0.6. Older versions will return -1)</small></td><td>int</td></tr>
+<tr><td>lasttalk</td><td>Last time the user was seen talking<br><small>(Added in version 2.4.2. Older versions will return -1)</small></td><td>time_t</td></tr>
+<tr><td>nick</td><td>Nick name</td><td>string</td></tr>
+<tr><td>host</td><td>Host name in the form: user@host (or NULL if not known).</td><td>string</td></tr>
+<tr><td>prefix</td><td>Prefix character, .e.g: @ or +. Points to a single char.</td><td>string</td></tr>
+<tr><td>realname</td><td>Real name or NULL<br><small>(Added in version 2.8.6)</small></td><td>string</td></tr>
+<tr><td>selected</td><td>Selected status in the user list, only works for retrieving the user list of the focused tab<br><small>(Added in version 2.6.1. Older versions will return -1)</small></td><td>int</td></tr>
+</table>
+</blockquote>
+
+</blockquote>
+
+Example:
+<br>
+<pre>
+   list = xchat_list_get(ph, <font color="#f800f8">&quot;dcc&quot;</font>);
+   <font color="#a02828"><b>if</b></font>(list)
+   {
+      xchat_print(ph, <font color="#f800f8">&quot;--- DCC LIST ------------------</font><font color="#6858c8">\n</font><font color="#f800f8">&quot;</font>
+                      <font color="#f800f8">&quot;File  To/From   KB/s   Position</font><font color="#6858c8">\n</font><font color="#f800f8">&quot;</font>);
+
+      <font color="#a02828"><b>while</b></font>(xchat_list_next(ph, list))
+      {
+         xchat_printf(ph, <font color="#f800f8">&quot;</font><font color="#6858c8">%6s</font><font color="#f800f8"> </font><font color="#6858c8">%10s</font><font color="#f800f8"> </font><font color="#6858c8">%.2f</font><font color="#f800f8">  </font><font color="#6858c8">%d</font><font color="#6858c8">\n</font><font color="#f800f8">&quot;</font>,
+             xchat_list_str(ph, list, <font color="#f800f8">&quot;file&quot;</font>),
+             xchat_list_str(ph, list, <font color="#f800f8">&quot;nick&quot;</font>),
+             xchat_list_int(ph, list, <font color="#f800f8">&quot;cps&quot;</font>) / <font color="#f800f8">1024</font>,
+             xchat_list_int(ph, list, <font color="#f800f8">&quot;pos&quot;</font>));
+      }
+
+      xchat_list_free(ph, list);
+   }
+</pre>
+
+<br>
+
+<h3><a name=win32>Plugins on Windows (Win32)</a></h3>
+Yes, it can be done. All you need is either
+<a href="http://msdn.microsoft.com/visualc/vctoolkit2003/">MSVC</a> (Visual Studio) or
+<a href="http://www.mingw.org">MINGW</a>, both these compilers are free to download.
+Simply compile your plugin as a DLL. You should have the following files:
+
+<ul>
+<li><a href="http://xchat.org/docs/xchat-plugin.h">xchat-plugin.h</a> - Main Plugin header</li>
+<li>plugin.c - Your plugin, you need to write this one :)</li>
+<li>plugin.def - A simple text file containing the following:</li>
+</ul>
+<div class=box>
+EXPORTS<br>
+&nbsp; xchat_plugin_init<br>
+&nbsp; xchat_plugin_deinit<br>
+&nbsp; xchat_plugin_get_info<br>
+</div>
+
+<br>Leave out <i>xchat_plugin_deinit</i> if you don't intend to define that
+function. Then, to compile, type this at your command prompt:<br><br>
+<div class=bbox>
+<font color="#00FF00">MSVC</font>
+<br>&nbsp;cl -O1 -MD -G5 -DWIN32 -c plugin.c<br>
+<br>&nbsp;link /DLL /out:plugin.dll /SUBSYSTEM:WINDOWS plugin.obj /def:plugin.def /base:0x00d40000
+<br><br>
+<font color="#00FF00">GCC (MINGW)</font>
+<br>&nbsp;gcc -Wall -Os -DWIN32 -c plugin.c<br>
+<br>&nbsp;dllwrap --def plugin.def --dllname plugin.dll plugin.o<br><br>
+</div>
+<br>For a complete example, have a look at the source code of the <a href="http://xchat.org/win32/testing/xcdns-src.zip">DNS Plugin</a>, which also contains a Makefile.
+<br><br>
+<font color=red>Caveat:</font> Plugins compiled on Win32 MUST have a
+global variable called <b>ph</b>, which is the plugin_handle, much like
+in the <a href="#sample">sample plugin</a> above.
+<br><br>
+
+<h3><a name=gui>Controlling the GUI</a></h3>
+<p>
+A simple way to perform basic GUI functions is to use the /GUI command.
+You can execute this command through the input-box, or by calling
+xchat_command(ph, "GUI .....");.
+</p>
+<blockquote>
+	<table border=0 cellpadding=4>
+	<tr><td>GUI ATTACH</td><td>Same function as "Attach Window" in the XChat menu (new for 2.6.2).</td></tr>
+	<tr><td>GUI DETACH</td><td>Same function as "Detach Tab" in the XChat menu (new for 2.6.2).</td></tr>
+	<tr><td>GUI APPLY</td><td>Similar to clicking OK in the settings window. Execute this after /SET to activate GUI changes (new for 2.8.0)</td></tr>
+	<tr><td>GUI COLOR <i>n</i></td><td>Change the tab color of the current context, where n is a number from 0 to 3.</td></tr>
+	<tr><td>GUI FOCUS</td><td>Focus the current window or tab.</td></tr>
+	<tr><td>GUI FLASH</td><td>Flash the taskbar button. It will flash only if the window isn't focused and will stop when it is focused by the user.</td></tr>
+	<tr><td>GUI HIDE</td><td>Hide the main xchat window completely (this is used by the Systray plugin).</td></tr>
+	<tr><td>GUI ICONIFY</td><td>Iconify (minimize to taskbar) the current xchat window.</td></tr>
+	<tr><td>GUI MSGBOX <i>text</i></td><td>Displays a asynchronous message box with your text (new for 2.4.5).</td></tr>
+	<tr><td>GUI SHOW</td><td>Show the main xchat window (if currently hidden).</td></tr>
+	</table>
+</blockquote>
+<p>
+Note, the FLASH, ICONIFY and COLOR args were added in xchat 2.0.8, they
+will not work with previous versions.
+</p>
+<a name=menu>Starting from 2.4.5 you can add your own items to the menu bar. The menu command has this syntax</a>:
+<pre>
+	MENU [-eX] [-i&lt;ICONFILE>] [-k&lt;mod>,&lt;key>] [-m] [-pX] [-rX,group] [-tX] {ADD|DEL} &lt;path> [command] [unselect command]</pre>
+For example:
+<pre>
+	MENU -p5 ADD FServe
+	MENU ADD "FServe/Show File List" "fs list"
+	MENU ADD FServe/-
+	MENU -k4,101 -t1 ADD "FServe/Enabled" "fs on" "fs off"
+	MENU -e0 ADD "FServe/Do Something" "fs action"
+</pre>
+In the example above, it would be recommended to execute "MENU DEL FServe" inside your xchat_plugin_deinit function. The special item with name "-" will add a separator line.
+<br><br>
+Parameters and flags:
+<blockquote>
+<table border=1 cellpadding=4 rules=all>
+<tr><td>-eX</td><td>Set enable flag to X. -e0 for disable, -e1 for enable. This lets you create a disabled (shaded) item.</td></tr>
+<tr><td>-iFILE</td><td>Use an icon filename FILE (new for 2.8.0). Not supported for toggles or radio items.</td></tr>
+<tr><td>-k&lt;mod>,&lt;key></td><td>Specify a keyboard shortcut. "mod" is the modifier which is a bitwise OR of: 1-SHIFT 4-CTRL 8-ALT in decimal. "key" is the key value in decimal, e.g. -k5,101 would specify SHIFT-CTRL-E.</td></tr>
+<tr><td>-m</td><td>Specify that this label should be treated as <a href="http://developer.gnome.org/doc/API/2.0/pango/PangoMarkupFormat.html">Pango Markup</a> language. Since forward slash ("/") is already used in menu paths, you should replace closing tags with an ASCII 003 instead e.g.: xchat_command(ph, "MENU -m ADD \"&lt;b>Bold Menu&lt;\003b>\""); (new for 2.6.6).</td></tr>
+<tr><td>-pX</td><td>Specify a menu item's position number. e.g. -p5 will cause the item to be inserted in the 5th place. New for 2.8.0: If the position is a negative number, it will be used as an offset from the bottom/right-most item.</td></tr>
+<tr><td>-rX,group</td><td>Specify a radio menu item, with initial state X and a group name (new for 2.8.0). The group name should be the exact label of another menu item (without the path) that this item will be grouped with. For radio items, only a select command will be executed (no unselect command).</td></tr>
+<tr><td>-tX</td><td>Specify a toggle menu item with an initial state. -t0 for an "unticked" item and -t1 for a "ticked" item.</td></tr>
+</table>
+</blockquote>
+
+If you want to change an item's toggle state or enabled flag,
+just ADD an item with exactly the same name and command and specify the -tX -eX parameters you need.
+<br><br>It's also possible to add items to XChat's existing menus, for example:<br>
+<pre>	MENU ADD "Settings/Sub Menu"
+	MENU -t0 ADD "Settings/Sub Menu/My Setting" myseton mysetoff
+</pre>
+However, internal names and layouts of XChat's menu may change in the future, so use at own risk.
+<br><br>
+Here is an example of Radio items:
+<pre>	MENU ADD "Language"
+	MENU -r1,"English" ADD "Language/English" cmd1
+	MENU -r0,"English" ADD "Language/Spanish" cmd2
+	MENU -r0,"English" ADD "Language/German" cmd3</pre>
+<br>
+From 2.8.0, you can also change menus other than the main one (i.e popup menus). Currently they are:
+<blockquote>
+<table border=1 cellpadding=4 rules=all>
+<tr bgcolor="#999999"><td>Root Name</td><td>Menu</td></tr>
+<tr><td>$TAB</td><td>Tab menu (right click a channel/query tab or treeview row)</td></tr>
+<tr><td>$TRAY</td><td>System Tray menu</td></tr>
+<tr><td>$URL</td><td>URL link menu</td></tr>
+<tr><td>$NICK</td><td>Userlist nick-name popup menu</td></tr>
+<tr><td>$CHAN</td><td>Menu when clicking a channel in the text area (since 2.8.4)</td></tr>
+
+</table>
+</blockquote>
+<pre>
+	Example: MENU -p0 ADD "$TAB/Cycle Channel" cycle
+</pre>
+
+<br>
+<a name=tray>Starting from 2.8.0 you can manipulate XChat's system tray icon using the /TRAY command</a>:
+<pre>
+ Usage: 
+ TRAY -f &lt;timeout> &lt;file1> [&lt;file2>] Flash tray between two icons. Leave off file2 to use default xchat icon.
+ TRAY -f &lt;filename>                  Set tray to a fixed icon.
+ TRAY -i &lt;number>                    Flash tray with an internal icon.
+                                     <small>2=Message 5=Highlight 8=Private 11=File</small>
+ TRAY -t &lt;text>                      Set the tray tooltip.
+ TRAY -b &lt;title> &lt;text>              Set the tray balloon.
+                                     <small>Supported on Windows from 2.8.1 and 2.8.2 on Linux (libnotify required on Linux).</small>
+</pre>
+Filenames can be ICO or PNG format. PNG format is supported on Linux/BSD and Windows XP (but requires installation of GDI+ on Windows 2000). Set a timeout of -1 to use XChat's default.
+<br><br>
+
+<h3><a name=unicode>Handling UTF-8/Unicode strings</a></h3>
+<p>
+The XChat plugin API specifies that strings passed to and from xchat must be encoded in UTF-8.
+<br><br>
+What does this mean for the plugin programmer? You just have to be a little careful when
+passing strings obtained from IRC to system calls. For example, if you're writing a file-server
+bot, someone might message you a filename. Can you pass this filename directly to open()? Maybe!
+If you're lazy... The correct thing to do is to convert the string to "system locale encoding",
+otherwise your plugin will fail on non-ascii characters.
+<br><br>
+Here are examples on how to do this conversion on Unix and Windows. In this example, someone will
+CTCP you the message "SHOWFILE &lt;filename&gt;".
+<br><br>
+</p>
+<pre>
+static int ctcp_cb(char *word[], char *word_eol[], void *userdata)
+{
+	if(strcmp(word[1], "SHOWFILE") == 0)
+	{
+		get_file_name(nick, word[2]);
+	}
+
+	return XCHAT_EAT_XCHAT;
+}
+
+static void get_file_name(char *nick, char *fname)
+{
+	char buf[256];
+	FILE *fp;
+
+<font color="#777777">	/* the fname is in UTF-8, because it came from the xchat API */</font>
+</pre><font color="#33aa44">#ifdef _WIN32</font><pre>
+	wchar_t wide_name[MAX_PATH];
+
+<font color="#777777">	/* convert UTF-8 to WIDECHARs (aka UTF-16LE) */</font>
+	if (MultiByteToWideChar(CP_UTF8, 0, fname, -1, wide_name, MAX_PATH) < 1)
+		return;
+
+<font color="#777777">	/* now we have WIDECHARs, so we can _wopen() or CreateFileW(). */
+	/* _wfopen actually requires NT4, Win2000, XP or newer. */</font>
+	fp = _wfopen(wide_name, "r");
+</pre><font color="#33aa44">#else</font><pre>
+	char *loc_name;
+
+<font color="#777777">	/* convert UTF-8 to System Encoding */</font>
+	loc_name = g_filename_from_utf8(fname, -1, 0, 0, 0);
+	if(!loc_name)
+		return;
+
+<font color="#777777">	/* now open using the system's encoding */</font>
+	fp = fopen(loc_name, "r");
+	g_free(loc_name);
+</pre><font color="#33aa44">#endif</font><pre>
+	if (fp)
+	{
+		while (fgets (buf, sizeof(buf), fp))
+		{
+<font color="#777777">			/* send every line to the user that requested it */</font>
+			xchat_commandf (ph, "QUOTE NOTICE %s :%s", nick, buf);
+		}
+		fclose (fp);
+	}
+}
+</pre>
+
+
+
+<br><br>
+
+<h1>Functions</h1>
+
+<h3><a class=cmd name="xchat_hook_command">&nbsp;xchat_hook_command()&nbsp;</a></h3>
+<b>Prototype:</b> xchat_hook *xchat_hook_command(xchat_plugin *ph, const char *name, int pri, xchat_cmd_cb *callb, const char *help_text, void *userdata);
+<br>
+<br><b>Description:</b> Adds a new /command. This allows your program to
+handle commands entered at the input box. To capture text without a "/" at 
+the start (non-commands), you may hook a special name of "". i.e xchat_hook_command(ph, "", ...);.
+<br>
+Starting from version 2.6.8, commands hooked that begin with a period ('.') will be hidden in /HELP and /HELP -l.
+<br>
+<br><b>Arguments:</b>
+<blockquote><b>ph:</b> Plugin handle (as given to xchat_plugin_init).
+<br><b>name:</b> Name of the command (without the forward slash).
+<br><b>pri:</b> Priority of this command. Use XCHAT_PRI_NORM.
+<br><b>callb:</b> Callback function. This will be called when the user executes the given command name.
+<br><b>help_text:</b> String of text to display when the user executes /help for this command. May be NULL if you're lazy.
+<br><b>userdata:</b> Pointer passed to the callback function.</blockquote>
+<b>Returns:</b> Pointer to the hook. Can be passed to xchat_unhook.
+<br>
+<br><b>Example:</b>
+<blockquote>
+<pre>
+static int onotice_cb(char *word[], char *word_eol[], void *userdata)
+{
+	if(word_eol[2][0] == 0)
+	{
+		xchat_printf(ph, "Second arg must be the message!\n");
+		return XCHAT_EAT_ALL;
+	}
+
+	xchat_commandf(ph, "NOTICE @%s :%s", xchat_get_info(ph, "channel"), word_eol[2]);
+	return XCHAT_EAT_ALL;
+}
+
+xchat_hook_command(ph, "ONOTICE", XCHAT_PRI_NORM, onotice_cb,
+                   "Usage: ONOTICE &lt;message> Sends a notice to all ops", NULL);
+</pre>
+</blockquote>
+<br>
+
+<h3><a class=cmd name="xchat_hook_fd">&nbsp;xchat_hook_fd()&nbsp;</a></h3>
+<b>Prototype:</b> xchat_hook *xchat_hook_fd(xchat_plugin *ph, int fd, int flags, xchat_fd_cb *callb, void *userdata);
+<br>
+<br><b>Description:</b> Hooks a socket or file descriptor. WIN32: Passing a pipe from MSVCR71, MSVCR80 or other variations is not supported at this time.
+<br>
+<br><b>Arguments:</b>
+<blockquote><b>ph:</b> Plugin handle (as given to xchat_plugin_init).
+<br><b>fd:</b> The file descriptor or socket.
+<br><b>flags:</b> One or more of XCHAT_FD_READ, XCHAT_FD_WRITE, XCHAT_FD_EXCEPTION, XCHAT_FD_NOTSOCKET. Use bitwise OR to combine them.
+XCHAT_FD_NOTSOCKET tells xchat that the provided <b>fd</b> is not a socket, but a "MSVCRT.DLL" pipe.
+<br><b>callb:</b> Callback function. This will be called when the socket is available for reading/writing or exception (depending on your chosen <b>flags</b>)
+<br><b>userdata:</b> Pointer passed to the callback function.</blockquote>
+<b>Returns:</b> Pointer to the hook. Can be passed to xchat_unhook.
+<br><br><br>
+
+<h3><a class=cmd name="xchat_hook_print">&nbsp;xchat_hook_print()&nbsp;</a></h3>
+<b>Prototype:</b> <font color="#f8a400"><b>xchat_hook</b></font> *xchat_hook_print(<font color="#f8a400"><b>xchat_plugin</b></font> *ph, <font color="#f8a400"><b>const char</b></font> *name, <font color="#f8a400"><b>int</b></font> pri, <font color="#f8a400"><b>xchat_print_cb</b></font> *callb, <font color="#f8a400"><b>void</b></font> *userdata);
+<br>
+<br><b>Description:</b> Registers a function to trap any print events.
+The event names may be any available in the "Advanced > Text Events" window.
+There are also some extra "special" events you may hook using this function.
+Currently they are:<blockquote>
+"Open Context" - Called when a new xchat_context is created.
+<br>"Close Context" - Called when a xchat_context pointer is closed.
+<br>"Focus Tab" - Called when a tab is brought to front.
+<br>"Focus Window" - Called a toplevel window is focused, or the main
+tab-window is focused by the window manager.
+<br>"DCC Chat Text" - Called when some text from a DCC Chat arrives. It provides these elements in the word[] array:<blockquote>word[1] Address
+<br>word[2] Port
+<br>word[3] Nick
+<br>word[4] The Message
+</blockquote>
+"Key Press" - Called when some keys are pressed in the input-box (since 2.4.2). It provides these elements in the word[] array:<blockquote>word[1] Key Value
+<br>word[2] State Bitfield (shift, capslock, alt)
+<br>word[3] String version of the key
+<br>word[4] Length of the string (may be 0 for unprintable keys)
+</blockquote>
+</blockquote>
+<br><b>Arguments:</b>
+<blockquote><b>ph:</b> Plugin handle (as given to xchat_plugin_init).
+<br><b>name:</b> Name of the print event (as in Edit Event Texts Window).
+<br><b>pri:</b> Priority of this command. Use XCHAT_PRI_NORM.
+<br><b>callb:</b> Callback function. This will be called when this event name is printed.
+<br><b>userdata:</b> Pointer passed to the callback function.</blockquote>
+<b>Returns:</b> Pointer to the hook. Can be passed to xchat_unhook.
+<br>
+<br><b>Example:</b>
+<blockquote>
+<pre>
+static int youpart_cb(char *word[], void *userdata)
+{
+	xchat_printf(ph, "You have left channel %s\n", word[3]);
+	return XCHAT_EAT_XCHAT;	/* dont let xchat do its normal printing */
+}
+
+xchat_hook_print(ph, "You Part", XCHAT_PRI_NORM, youpart_cb, NULL);
+</pre>
+</blockquote>
+<br>
+
+<h3><a class=cmd name="xchat_hook_server">&nbsp;xchat_hook_server()&nbsp;</a></h3>
+<b>Prototype:</b> xchat_hook *xchat_hook_server(xchat_plugin *ph, const char *name, int pri, xchat_serv_cb *callb, void *userdata);
+<br>
+<br><b>Description:</b> Registers a function to be called when a certain server event occurs. You can
+use this to trap PRIVMSG, NOTICE, PART, a server numeric etc... If you want to
+hook every line that comes from the IRC server, you may use the special name of "RAW LINE".
+<br>
+<br><b>Arguments:</b>
+<blockquote><b>ph:</b> Plugin handle (as given to xchat_plugin_init).
+<br><b>name:</b> Name of the server event.
+<br><b>pri:</b> Priority of this command. Use XCHAT_PRI_NORM.
+<br><b>callb:</b> Callback function. This will be called when this event is received from the server.
+<br><b>userdata:</b> Pointer passed to the callback function.</blockquote>
+<b>Returns:</b> Pointer to the hook. Can be passed to xchat_unhook.
+<br>
+<br><b>Example:</b>
+<blockquote>
+<pre>
+static int kick_cb(char *word[], char *word_eol[], void *userdata)
+{
+	xchat_printf(ph, "%s was kicked from %s (reason=%s)\n", word[4], word[3], word_eol[5]);
+	return XCHAT_EAT_NONE;	/* don't eat this event, let other plugins and xchat see it too */
+}
+
+xchat_hook_server(ph, "KICK", XCHAT_PRI_NORM, kick_cb, NULL);
+</pre>
+</blockquote>
+<br>
+
+<h3><a class=cmd name="xchat_hook_timer">&nbsp;xchat_hook_timer()&nbsp;</a></h3>
+<b>Prototype:</b> xchat_hook *xchat_hook_timer(xchat_plugin *ph, int timeout, xchat_timer_cb *callb, void *userdata);
+<br>
+<br><b>Description:</b> Registers a function to be called every "timeout" milliseconds.
+<br>
+<br><b>Arguments:</b>
+<blockquote><b>ph:</b> Plugin handle (as given to xchat_plugin_init).
+<br><b>timeout:</b> Timeout in milliseconds (1000 is 1 second).
+<br><b>callb:</b> Callback function. This will be called every "timeout" milliseconds.
+<br><b>userdata:</b> Pointer passed to the callback function.</blockquote>
+<b>Returns:</b> Pointer to the hook. Can be passed to xchat_unhook.
+<br>
+<br><b>Example:</b>
+<blockquote>
+<pre>
+static xchat_hook *myhook;
+
+static int stop_cb(char *word[], char *word_eol[], void *userdata)
+{
+	if(myhook != NULL)
+	{
+		xchat_unhook(ph, myhook);
+		myhook = NULL;
+		xchat_print(ph, "Timeout removed!\n");
+	}
+
+	return XCHAT_EAT_ALL;
+}
+
+static int timeout_cb(void *userdata)
+{
+	xchat_print(ph, "Annoying message every 5 seconds! Type /STOP to stop it.\n");
+	return 1;	/* return 1 to keep the timeout going */
+}
+
+myhook = xchat_hook_timer(ph, 5000, timeout_cb, NULL);
+xchat_hook_command(ph, "STOP", XCHAT_PRI_NORM, stop_cb, NULL, NULL);
+</pre><br>
+</blockquote>
+
+<h3><a class=cmd name="xchat_unhook">&nbsp;xchat_unhook()&nbsp;</a></h3>
+<b>Prototype:</b> void *xchat_unhook(xchat_plugin *ph, xchat_hook *hook);
+<br>
+<br><b>Description:</b> Unhooks any hook registered with xchat_hook_print/server/timer/command. When plugins are unloaded, all of its hooks are automatically
+removed, so you don't need to call this within your xchat_plugin_deinit() function.
+<br>
+<br><b>Arguments:</b>
+<blockquote><b>ph:</b> Plugin handle (as given to xchat_plugin_init).
+<br><b>hook:</b> Pointer to the hook, as returned by xchat_hook_*.
+<br></blockquote>
+<b>Returns:</b> The userdata you originally gave to xchat_hook_*.
+<br><br>
+
+<h3><a class=cmd name="xchat_command">&nbsp;xchat_command()&nbsp;</a></h3>
+<b>Prototype:</b> void xchat_command(xchat_plugin *ph, const char *command);
+<br>
+<br><b>Description:</b> Executes a command as if it were typed in xchat's input box.
+<br>
+<br><b>Arguments:</b>
+<blockquote><b>ph:</b> Plugin handle (as given to xchat_plugin_init).
+<br><b>command:</b> Command to execute, without the forward slash "/".
+<br><br>
+</blockquote>
+
+<h3><a class=cmd name="xchat_commandf">&nbsp;xchat_commandf()&nbsp;</a></h3>
+<b>Prototype:</b> void xchat_commandf(xchat_plugin *ph, const char *format, ...);
+<br>
+<br><b>Description:</b> Executes a command as if it were typed in xchat's input box and provides string formating like printf.
+<br>
+<br><b>Arguments:</b>
+<blockquote><b>ph:</b> Plugin handle (as given to xchat_plugin_init).
+<br><b>format:</b> The format string.
+<br><br>
+</blockquote>
+
+<h3><a class=cmd name="xchat_print">&nbsp;xchat_print()&nbsp;</a></h3>
+<b>Prototype:</b> void xchat_print(xchat_plugin *ph, const char *text);
+<br>
+<br><b>Description:</b> Prints some text to the current tab/window.
+<br>
+<br><b>Arguments:</b>
+<blockquote><b>ph:</b> Plugin handle (as given to xchat_plugin_init).
+<br><b>text:</b> Text to print. May contain mIRC color codes.
+<br><br>
+</blockquote>
+
+<h3><a class=cmd name="xchat_printf">&nbsp;xchat_printf()&nbsp;</a></h3>
+<b>Prototype:</b> void xchat_printf(xchat_plugin *ph, const char *format, ...);
+<br>
+<br><b>Description:</b> Prints some text to the current tab/window and provides formating like printf.
+<br>
+<br><b>Arguments:</b>
+<blockquote><b>ph:</b> Plugin handle (as given to xchat_plugin_init).
+<br><b>format:</b> The format string.
+<br><br>
+</blockquote>
+
+<h3><a class=cmd name="xchat_emit_print">&nbsp;xchat_emit_print()&nbsp;</a></h3>
+<b>Prototype:</b> int xchat_emit_print(xchat_plugin *ph, const char *event_name, ...);
+<br>
+<br><b>Description:</b> Generates a print event. This can be any
+event found in the Preferences > Advanced > Text Events window. The vararg parameter list
+MUST always be NULL terminated. Special care should be taken when calling this function
+inside a print callback (from xchat_hook_print), as not to cause endless recursion.
+<br>
+<br><b>Arguments:</b>
+<blockquote><b>ph:</b> Plugin handle (as given to xchat_plugin_init).
+<br><b>event_name:</b> Text event to print.
+<br><br>
+</blockquote>
+<b>Returns:</b> 1-Success 0-Failure.
+<br><br>
+<b>Example:</b>
+<pre>
+xchat_emit_print(ph, "Channel Message", "John", "Hi there", "@", NULL);
+</pre>
+<br><br>
+
+<h3><a class=cmd name="xchat_send_modes">&nbsp;xchat_send_modes()&nbsp;</a><small>(new for 2.0.9)</small></h3>
+<b>Prototype:</b> void xchat_send_modes (xchat_plugin *ph, const char *targets[], int ntargets, int modes_per_line, char sign, char mode)
+<br>
+<br><b>Description:</b> Sends a number of channel mode changes to the current channel. For example, you can Op a whole
+group of people in one go. It may send multiple MODE lines if the request doesn't fit on one. Pass 0 for
+<b>modes_per_line</b> to use the current server's maximum possible. This function should only be called while
+in a channel context.
+<br>
+<br><b>Arguments:</b>
+<blockquote><b>ph:</b> Plugin handle (as given to xchat_plugin_init).
+<br><b>targets:</b> Array of targets (strings). The names of people whom the action will be performed on.
+<br><b>ntargets:</b> Number of elements in the array given.
+<br><b>modes_per_line:</b> Maximum modes to send per line.
+<br><b>sign:</b> Mode sign, '-' or '+'.
+<br><b>mode:</b> Mode char, e.g. 'o' for Ops.<br>
+</blockquote>
+<b>Example:</b> (Ops the three names given)
+<pre>
+const char *names_to_Op[] = {"John", "Jack", "Jill"};
+xchat_send_modes(ph, names_to_Op, 3, 0, '+', 'o');
+</pre>
+<br><br>
+
+<h3><a class=cmd name="xchat_find_context">&nbsp;xchat_find_context()&nbsp;</a></h3>
+<b>Prototype:</b> xchat_context *xchat_find_context(xchat_plugin *ph, const char *servname, const char *channel);
+<br>
+<br><b>Description:</b> Finds a context based on a channel and servername. If servname is NULL, it finds any channel (or query) by the given name. If channel is NULL, it finds the front-most tab/window of the given servname. If NULL is given for both arguments, the currently focused tab/window will be returned.<br>
+Changed in 2.6.1. If servname is NULL, it finds the channel (or query) by the given name in the same server group as the current context. If that doesn't exists then find any by the given name.
+<br>
+<br><b>Arguments:</b>
+<blockquote><b>ph:</b> Plugin handle (as given to xchat_plugin_init).
+<br><b>servname:</b> Servername or NULL.
+<br><b>channel:</b> Channelname or NULL.
+<br>
+</blockquote>
+<b>Returns:</b> Context pointer (for use with xchat_set_context) or NULL.
+<br><br><br>
+
+<h3><a class=cmd name="xchat_get_context">&nbsp;xchat_get_context()&nbsp;</a></h3>
+<b>Prototype:</b> xchat_context *xchat_get_context(xchat_plugin *ph);
+<br>
+<br><b>Description:</b> Returns the current context for your plugin. You can use this later with xchat_set_context.
+<br>
+<br><b>Arguments:</b>
+<blockquote><b>ph:</b> Plugin handle (as given to xchat_plugin_init).
+<br>
+</blockquote>
+<b>Returns:</b> Context pointer (for use with xchat_set_context).
+<br><br><br>
+
+<h3><a class=cmd name="xchat_get_info">&nbsp;xchat_get_info()&nbsp;</a></h3>
+<b>Prototype:</b> const char *xchat_get_info(xchat_plugin *ph, const char *id);
+<br>
+<br><b>Description:</b> Returns information based on your current context.
+<br>
+<br><b>Arguments:</b>
+<blockquote><b>ph:</b> Plugin handle (as given to xchat_plugin_init).
+<br><b>id:</b> ID of the information you want. Currently supported IDs are (case sensitive):
+	<blockquote>
+	<table border=0>
+	<tr><td width="18%">away</td><td>away reason or NULL if you are not away.</td></tr>
+	<tr><td>channel</td><td>current channel name.</td></tr>
+	<tr><td>charset</td><td>character-set used in the current context (since 2.4.2).</td></tr>
+	<tr><td>event_text &lt;name></td><td>text event format string for <i>name</i> (since 2.8.2).</td></tr>
+	<tr><td>gtkwin_ptr</td><td>(GtkWindow *) (since 2.8.9).</td></tr>
+	<tr><td>host</td><td>real hostname of the server you connected to.</td></tr>
+	<tr><td>inputbox</td><td>the input-box contents, what the user has typed (since 2.4.1).</td></tr>
+	<tr><td>libdirfs</td><td>library directory. e.g. /usr/lib/xchat. The same directory used for auto-loading plugins (since 2.4.0).<small>This string isn't necessarily UTF-8, but local file system encoding.</small></td></tr>
+	<tr><td>modes</td><td>channel modes, if known, or NULL (since 2.8.1).</td></tr>
+	<tr><td>network</td><td>current network name or NULL.</td></tr>
+	<tr><td>nick</td><td>your current nick name.</td></tr>
+	<tr><td>nickserv</td><td>nickserv password for this network or NULL (since 2.4.3).</td></tr>
+	<tr><td>server</td><td>current server name (what the server claims to be). NULL if you are not connected.</td></tr>
+	<tr><td>topic</td><td>current channel topic.</td></tr>
+	<tr><td>version</td><td>xchat version number.</td></tr>
+	<tr><td>win_ptr</td><td>native window pointer. Unix: (GtkWindow *) Win32: HWND (since 2.6.0).</td></tr>
+	<tr><td>win_status</td><td>window status: "active", "hidden" or "normal" (since 2.0.9).</td>
+	<tr><td>xchatdir</td><td>xchat config directory, e.g.: /home/user/.xchat2 <small>This string is encoded in UTF-8, which means you _should_ convert it to "locale" encoding before using functions like open() or OpenFile(). For best <a href="#unicode">Unicode support</a> on Linux, convert this string using g_filename_from_utf8 and on Windows convert this string to UTF-16LE (wide) and use OpenFileW() etc.</small></td></tr>
+	<tr><td>xchatdirfs</td><td>xchat config directory, e.g.: /home/user/.xchat2 (since 2.0.9).<small>This string is encoded in local file system encoding, making it ideal for direct use with functions like open() or OpenFile(). For real Unicode support on Windows, it's best not to use xchatdirfs, but xchatdir instead.</small></td></tr>
+	</table>
+	</blockquote>
+</blockquote>
+<b>Returns:</b> A string of the requested information, or NULL. This string must
+not be freed and must be copied if needed after the call to xchat_get_info.
+<br><br><br>
+
+<h3><a class=cmd name="xchat_get_prefs">&nbsp;xchat_get_prefs()&nbsp;</a></h3>
+<b>Prototype:</b> int xchat_get_prefs(xchat_plugin *ph, const char *name, const char **string, int *integer);
+<br>
+<br><b>Description:</b> Provides xchat's setting information (that which is available through the /set command).
+A few extra bits of information are available that don't appear in the /set list, currently they are:
+<br>
+<blockquote>
+	<table border=0 cellpadding=5>
+	<tr><td width="18%">state_cursor</td><td>Current input-box cursor position (characters, not bytes). Since 2.4.2.</td></tr>
+	<tr><td width="18%">id</td><td>Unique server id. Since 2.6.1.</td></tr>
+	</table>
+</blockquote>
+<br><b>Arguments:</b>
+<blockquote><b>ph:</b> Plugin handle (as given to xchat_plugin_init).
+<br><b>name:</b> Setting name required.
+<br><b>string:</b> Pointer-pointer which to set.
+<br><b>integer:</b> Pointer to an integer to set, if setting is a Boolean or Integer type.
+</blockquote>
+<b>Returns:</b> 0-Failed 1-Returned a string 2-Returned an Integer 3-Returned a Boolean.
+<br><br><b>Example:</b>
+<blockquote>
+<pre>
+{
+	int i;
+	const char *str;
+
+	if (xchat_get_prefs (ph, "irc_nick1", &amp;str, &amp;i) == 1)
+	{
+		xchat_printf (ph, "Current nickname setting: %s\n", str);
+	}
+}</pre>
+</blockquote>
+<br><br>
+
+
+<h3><a class=cmd name="xchat_set_context">&nbsp;xchat_set_context()&nbsp;</a></h3>
+<b>Prototype:</b> int xchat_set_context(xchat_plugin *ph, xchat_context *ctx);
+<br>
+<br><b>Description:</b> Changes your current context to the one given.
+<br>
+<br><b>Arguments:</b>
+<blockquote><b>ph:</b> Plugin handle (as given to xchat_plugin_init).
+<br><b>ctx:</b> Context to change to (obtained with xchat_get_context or xchat_find_context).
+<br>
+</blockquote>
+<b>Returns:</b> 1 for success, 0 for failure.
+<br><br><br>
+
+<h3><a class=cmd name="xchat_nickcmp">&nbsp;xchat_nickcmp()&nbsp;</a></h3>
+<b>Prototype:</b> int xchat_nickcmp(xchat_plugin *ph, const char *s1, const char *s2);
+<br>
+<br><b>Description:</b> Performs a nick name comparision, based on the current server connection. This might be a RFC1459 compliant string compare, or
+plain ascii (in the case of DALNet). Use this to compare channels and nicknames. The function works the same way as strcasecmp.
+<br>
+<br><b>Arguments:</b>
+<blockquote><b>ph:</b> Plugin handle (as given to xchat_plugin_init).
+<br><b>s1:</b> String to compare.
+<br><b>s2:</b> String to compare s1 to.
+<br>
+</blockquote>
+<b>Quote from RFC1459:</b>
+<blockquote>
+  Because of IRC's scandanavian origin, the characters {}| are
+   considered to be the lower case equivalents of the characters []\,
+   respectively. This is a critical issue when determining the
+   equivalence of two nicknames.
+</blockquote>
+<b>Returns:</b>
+       An integer
+       less than, equal to, or greater than zero if s1 is found,
+       respectively, to be less than, to match, or be greater than s2.
+<br><br><br>
+
+<h3><a class=cmd name="xchat_strip">&nbsp;xchat_strip()&nbsp;</a><small>(new for 2.4.2)</small></h3>
+<b>Prototype:</b> char *xchat_strip(xchat_plugin *ph, const char *str, int len, int flags);
+<br>
+<br><b>Description:</b> Strips mIRC color codes and/or text attributes (bold, underlined etc) from the given string and returns a newly allocated string.
+<br>
+<br><b>Arguments:</b>
+<blockquote><b>ph:</b> Plugin handle (as given to xchat_plugin_init).
+<br><b>str:</b> String to strip.
+<br><b>len:</b> Length of the string (or -1 for NULL terminated).
+<br><b>flags:</b> Bit-field of flags: 0-Strip mIRC colors, 1-Strip text attributes.
+<br>
+</blockquote>
+<b>Returns:</b>
+A newly allocated string or NULL for failure. You must free this string with xchat_free.
+<br><br><b>Example:</b>
+<blockquote>
+<pre>
+{
+	char *new_text;
+
+	/* strip both colors and attributes by using the 0 and 1 bits (1 BITWISE-OR 2) */
+	new_text = xchat_strip(ph, "\00312Blue\003 \002Bold!\002", -1, 1 | 2);
+
+	if(new_text)
+	{
+		/* new_text should now contain only "Blue Bold!" */
+		xchat_printf(ph, "%s\n", new_text);
+		xchat_free(ph, new_text);
+	}
+}</pre>
+</blockquote>
+
+<br><br>
+
+<h3><a class=cmd name="xchat_free">&nbsp;xchat_free()&nbsp;</a><small>(new for 2.4.2)</small></h3>
+<b>Prototype:</b> void xchat_free(xchat_plugin *ph, void *ptr);
+<br>
+<br><b>Description:</b> Frees a string returned by xchat_* functions. Currently only used to free strings from xchat_strip.
+<br>
+<br><b>Arguments:</b>
+<blockquote><b>ph:</b> Plugin handle (as given to xchat_plugin_init).
+<br><b>ptr:</b> Pointer to free.
+<br>
+</blockquote>
+
+<br><br>
+
+</body>
+</html>
