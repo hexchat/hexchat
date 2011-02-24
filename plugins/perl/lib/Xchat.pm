@@ -212,19 +212,26 @@ sub hook_print {
 		my $cb = $callback;
 		$callback = sub {
 			my @args = @{$_[0]};
+			my $event_data = $_[1];
+			my $event_name = $event;
 			my $last_arg = @args - 1;
 
-			my @new = $cb->( \@args, $_[1], $event );
+			my @new = $cb->( \@args, $event_data, $event_name );
+
+			# allow changing event by returning the new value
+			if( @new > @args ) {
+				$event_name = pop @new;
+			}
 
 			# a filter can either return the new results or it can modify
 			# @_ in place. 
-			if( @new ) {
-				emit_print( $event, @new[ 0 .. $last_arg ] );
+			if( @new == @args ) {
+				emit_print( $event_name, @new[ 0 .. $last_arg ] );
 				return EAT_ALL;
 			} elsif(
 				join( "\0", @{$_[0]} ) ne join( "\0", @args[ 0 .. $last_arg ] )
 			) {
-				emit_print( $event, @args[ 0 .. $last_arg ] );
+				emit_print( $event_name, @args[ 0 .. $last_arg ] );
 				return EAT_ALL;
 			}
 
