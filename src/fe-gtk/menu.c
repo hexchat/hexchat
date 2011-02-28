@@ -20,7 +20,6 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <string.h>
-#include <unistd.h>
 
 #ifdef WIN32
 #include <windows.h>
@@ -1204,6 +1203,12 @@ menu_resetmarker (GtkWidget * wid, gpointer none)
 }
 
 static void
+menu_copy_selection (GtkWidget * wid, gpointer none)
+{
+	gtk_xtext_copy_selection (GTK_XTEXT (current_sess->gui->xtext));
+}
+
+static void
 menu_flushbuffer (GtkWidget * wid, gpointer none)
 {
 	fe_text_clear (current_sess, 0);
@@ -1645,6 +1650,7 @@ static struct mymenu mymenu[] = {
 	{N_("URL Grabber..."), url_opengui, 0, M_MENUITEM, 0, 0, 1},
 	{0, 0, 0, M_SEP, 0, 0, 0},
 	{N_("Reset Marker Line"), menu_resetmarker, 0, M_MENUITEM, 0, 0, 1, GDK_m},
+	{N_("_Copy Selection"), menu_copy_selection, 0, M_MENUITEM, 0, 0, 1, GDK_C},
 	{N_("C_lear Text"), menu_flushbuffer, GTK_STOCK_CLEAR, M_MENUSTOCK, 0, 0, 1, GDK_l},
 #define SEARCH_OFFSET 67
 	{N_("Search Text..."), menu_search, GTK_STOCK_FIND, M_MENUSTOCK, 0, 0, 1, GDK_f},
@@ -2188,7 +2194,9 @@ normalitem:
 										mymenu[i].key,
 										mymenu[i].key == GDK_F1 ? 0 :
 										mymenu[i].key == GDK_w ? close_mask :
-										GDK_CONTROL_MASK,
+										(g_ascii_isupper (mymenu[i].key)) ?
+											GDK_SHIFT_MASK | GDK_CONTROL_MASK :
+											GDK_CONTROL_MASK,
 										GTK_ACCEL_VISIBLE);
 			if (mymenu[i].callback)
 				g_signal_connect (G_OBJECT (item), "activate",

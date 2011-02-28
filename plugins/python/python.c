@@ -53,10 +53,10 @@
 
 #include <glib.h>
 #include <string.h>
-#include <unistd.h>
 #include <stdlib.h>
 #include <sys/types.h>
-#include <dirent.h>
+#include "../../src/common/dirent.h"
+#include "../../config.h"
 
 #include "xchat-plugin.h"
 #include "Python.h"
@@ -68,7 +68,7 @@
 
 #ifdef WIN32
 #undef WITH_THREAD /* Thread support locks up xchat on Win32. */
-#define VERSION "0.8/2.4"	/* Linked to python24.dll */
+#define VERSION "0.8/2.7"	/* Linked to python27.dll */
 #else
 #define VERSION "0.8"
 #endif

@@ -31,7 +31,6 @@
 #include <time.h>
 #include <errno.h>
 #include <sys/stat.h>
-#include <unistd.h>
 #include <fcntl.h>
 
 #define WANTSOCKET
@@ -57,6 +56,7 @@
 
 #ifdef USE_DCC64
 #define BIG_STR_TO_INT(x) strtoull(x,NULL,10)
+#define stat _stat64
 #else
 #define BIG_STR_TO_INT(x) strtoul(x,NULL,10)
 #endif
@@ -1983,9 +1983,7 @@ is_same_file (struct DCC *dcc, struct DCC *new_dcc)
 		return TRUE;
 
 	/* now handle case-insensitive Filesystems: HFS+, FAT */
-#ifdef WIN32
-#warning no win32 implementation - behaviour may be unreliable
-#else
+#ifndef WIN32
 	/* this fstat() shouldn't really fail */
 	if ((dcc->fp == -1 ? stat (dcc->destfile_fs, &st_a) : fstat (dcc->fp, &st_a)) == -1)
 		return FALSE;

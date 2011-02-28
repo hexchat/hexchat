@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <glib.h>
-#include "xchat-plugin.h"
+#include "../../plugins/xchat-plugin.h"
 
 #ifdef WIN32
 #define strcasecmp stricmp

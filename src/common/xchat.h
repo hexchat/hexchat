@@ -12,12 +12,14 @@
 
 #include "history.h"
 
+#ifndef ENABLE_NLS
 #ifndef HAVE_SNPRINTF
 #define snprintf g_snprintf
 #endif
 
 #ifndef HAVE_VSNPRINTF
-#define vsnprintf g_vsnprintf
+#define vsnprintf _vsnprintf
+#endif
 #endif
 
 #ifdef USE_DEBUG
@@ -58,7 +60,7 @@ void *xchat_realloc (char *old, int len, char *file, int line);
 
 #ifdef WIN32						/* for win32 */
 #define OFLAGS O_BINARY
-#define sleep(t) _sleep(t*1000)
+#define sleep(t) Sleep(t*1000)
 #include <direct.h>
 #define	F_OK	0
 #define	X_OK	1
@@ -209,6 +211,9 @@ struct xchatprefs
 	unsigned int wallops;
 	unsigned int skipmotd;
 	unsigned int autorejoin;
+	unsigned int autocopy_text;
+	unsigned int autocopy_stamp;
+	unsigned int autocopy_color;
 	unsigned int colorednicks;
 	unsigned int chanmodebuttons;
 	unsigned int userlistbuttons;
@@ -297,6 +302,9 @@ struct xchatprefs
 	unsigned int confmode;
 	unsigned int utf8_locale;
 	unsigned int identd;
+	unsigned int emoticons;
+	unsigned int tab_icons;
+	unsigned int tab_xp;
 
 	unsigned int ctcp_number_limit;	/*flood */
 	unsigned int ctcp_time_limit;	/*seconds of floods */
