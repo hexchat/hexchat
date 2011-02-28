@@ -13,6 +13,7 @@ sub get {
 			(!defined $last_modified || $last_modified != -M $server_file ) ) {
 		$last_modified = -M _;
 
+		@servers = ();
 		if( open my $fh, "<", $server_file ) {
 			local $/ = "\n\n";
 			while( my $record = <$fh> ) {
