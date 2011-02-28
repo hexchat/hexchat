@@ -153,7 +153,7 @@ search_open (session * sess)
 								_("_Find"));
 	g_object_set_data (G_OBJECT (wid), "e", entry);
 
-	g_signal_connect (G_OBJECT (win), "key-press-event", G_CALLBACK (search_key_cb), win);
+	g_signal_connect (G_OBJECT (win), "key_press_event", G_CALLBACK (search_key_cb), win);
 
 	gtk_widget_show (win);
 }

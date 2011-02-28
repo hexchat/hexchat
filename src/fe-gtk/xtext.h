@@ -270,6 +270,7 @@ void gtk_xtext_set_wordwrap (GtkXText *xtext, gboolean word_wrap);
 xtext_buffer *gtk_xtext_buffer_new (GtkXText *xtext);
 void gtk_xtext_buffer_free (xtext_buffer *buf);
 void gtk_xtext_buffer_show (GtkXText *xtext, xtext_buffer *buf, int render);
+void gtk_xtext_copy_selection (GtkXText *xtext);
 GType gtk_xtext_get_type (void);
 
 #endif
