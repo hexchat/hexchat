@@ -1,8 +1,8 @@
 AppName=XChat-WDK Spelling Dictionaries
-AppVerName=XChat-WDK Spelling Dictionaries 1.0
+AppVerName=XChat-WDK Spelling Dictionaries r1
 AppVersion=1.0
 VersionInfoVersion=1.0
-OutputBaseFilename=XChat-WDK Spelling Dictionaries
+OutputBaseFilename=XChat-WDK Spelling Dictionaries r1
 AppPublisher=XChat-WDK
 AppPublisherURL=http://code.google.com/p/xchat-wdk/
 AppCopyright=Copyright (C) 1998-2010 Peter Zelezny
