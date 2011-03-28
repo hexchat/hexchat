@@ -18,6 +18,7 @@
       copy $(SolutionDir)x86\ZlibDllRelease\zlibwapi.lib $(SolutionDir)x86\dist\lib
       copy $(SolutionDir)x86\ZlibStatRelease\zlibstat.lib $(SolutionDir)x86\dist\lib
       copy $(SolutionDir)zlibvc.def $(SolutionDir)x86\dist\lib
+	  copy $(SolutionDir)LICENSE.ZLIB $(SolutionDir)x86\dist
     </ZlibDoInstall32>
     <ZlibDoInstall64>
       mkdir $(SolutionDir)x64\dist
@@ -35,6 +36,7 @@
       copy $(SolutionDir)x64\ZlibDllRelease\zlibwapi.lib $(SolutionDir)x64\dist\lib
       copy $(SolutionDir)x64\ZlibStatRelease\zlibstat.lib $(SolutionDir)x64\dist\lib
       copy $(SolutionDir)zlibvc.def $(SolutionDir)x64\dist\lib
+	  copy $(SolutionDir)LICENSE.ZLIB $(SolutionDir)x86\dist
     </ZlibDoInstall64>
   </PropertyGroup>
   <ItemDefinitionGroup>
