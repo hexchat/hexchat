@@ -1,6 +1,6 @@
 CC = cl
 LINK = link
-CFLAGS = $(CFLAGS) /Ox /c /MD /MP2 /W0 /nologo
+CFLAGS = $(CFLAGS) /Ox /c /MD /MP /W0 /nologo
 CFLAGS = $(CFLAGS) /DWIN32 /DG_DISABLE_CAST_CHECKS /DG_DISABLE_DEPRECATED /DGDK_PIXBUF_DISABLE_DEPRECATED /DGDK_DISABLE_DEPRECATED /DUSE_IPV6 /DHAVE_STRTOULL /Dstrtoull=_strtoui64 /Dstrcasecmp=stricmp /Dstrncasecmp=strnicmp /DUSE_OPENSSL
 CFLAGS = $(CFLAGS) /I$(DEV)\include
 CPPFLAGS = /c /MD /W0 /nologo /DWIN32
