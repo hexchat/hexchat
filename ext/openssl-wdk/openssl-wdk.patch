@@ -1,6 +1,6 @@
 diff -ruN --strip-trailing-cr openssl-1.0.0d.orig/Configure openssl-1.0.0d/Configure
---- openssl-1.0.0d.orig/Configure	2010-11-30 23:19:26 +0100
-+++ openssl-1.0.0d/Configure	2011-02-10 23:57:56 +0100
+--- openssl-1.0.0d.orig/Configure	2010-11-30 22:19:26 +0100
++++ openssl-1.0.0d/Configure	2011-03-28 05:48:11 +0200
 @@ -491,12 +491,12 @@
  #
  # Win64 targets, WIN64I denotes IA-64 and WIN64A - AMD64
@@ -16,9 +16,25 @@ diff -ruN --strip-trailing-cr openssl-1.0.0d.orig/Configure openssl-1.0.0d/Confi
  # Unified CE target
  "debug-VC-WIN32","cl:-W3 -WX -Gs0 -GF -Gy -Zi -nologo -DOPENSSL_SYSNAME_WIN32 -DWIN32_LEAN_AND_MEAN -DL_ENDIAN -D_CRT_SECURE_NO_DEPRECATE:::WIN32::BN_LLONG RC4_INDEX EXPORT_VAR_AS_FN ${x86_gcc_opts}:${x86_asm}:win32n:win32",
  "VC-CE","cl::::WINCE::BN_LLONG RC4_INDEX EXPORT_VAR_AS_FN ${x86_gcc_opts}:${no_asm}:win32",
+diff -ruN --strip-trailing-cr openssl-1.0.0d.orig/crypto/comp/c_zlib.c openssl-1.0.0d/crypto/comp/c_zlib.c
+--- openssl-1.0.0d.orig/crypto/comp/c_zlib.c	2010-01-13 18:46:00 +0100
++++ openssl-1.0.0d/crypto/comp/c_zlib.c	2011-03-28 04:44:35 +0200
+@@ -346,8 +346,12 @@
+ 	if (!zlib_loaded)
+ 		{
+ #if defined(OPENSSL_SYS_WINDOWS) || defined(OPENSSL_SYS_WIN32)
++#ifdef ZLIB_DLL
+ 		zlib_dso = DSO_load(NULL, "ZLIB1", NULL, 0);
+ #else
++		zlib_dso = DSO_load(NULL, "ZLIBWAPI", NULL, 0);
++#endif
++#else
+ 		zlib_dso = DSO_load(NULL, "z", NULL, 0);
+ #endif
+ 		if (zlib_dso != NULL)
 diff -ruN --strip-trailing-cr openssl-1.0.0d.orig/engines/e_aep.c openssl-1.0.0d/engines/e_aep.c
---- openssl-1.0.0d.orig/engines/e_aep.c	2010-11-18 23:59:42 +0100
-+++ openssl-1.0.0d/engines/e_aep.c	2011-02-10 23:57:56 +0100
+--- openssl-1.0.0d.orig/engines/e_aep.c	2010-11-18 22:59:42 +0100
++++ openssl-1.0.0d/engines/e_aep.c	2011-03-28 05:48:11 +0200
 @@ -61,7 +61,12 @@
  #include <sys/types.h>
  #include <unistd.h>
@@ -33,9 +49,19 @@ diff -ruN --strip-trailing-cr openssl-1.0.0d.orig/engines/e_aep.c openssl-1.0.0d
  #endif
  
 diff -ruN --strip-trailing-cr openssl-1.0.0d.orig/util/pl/VC-32.pl openssl-1.0.0d/util/pl/VC-32.pl
---- openssl-1.0.0d.orig/util/pl/VC-32.pl	2010-09-13 19:28:34 +0200
-+++ openssl-1.0.0d/util/pl/VC-32.pl	2011-02-10 23:57:56 +0100
-@@ -37,7 +37,7 @@
+--- openssl-1.0.0d.orig/util/pl/VC-32.pl	2010-09-13 18:28:34 +0200
++++ openssl-1.0.0d/util/pl/VC-32.pl	2011-03-28 04:53:44 +0200
+@@ -11,7 +11,8 @@
+ $mkdir='$(PERL) util/mkdir-p.pl';
+ $rm='del /Q';
+ 
+-$zlib_lib="zlib1.lib";
++#$zlib_lib="zlib1.lib";
++$zlib_lib="zlibwapi.lib";
+ 
+ # Santize -L options for ms link
+ $l_flags =~ s/-L("\[^"]+")/\/libpath:$1/g;
+@@ -37,7 +38,7 @@
      $lib_cflag='/Zl' if (!$shlib);	# remove /DEFAULTLIBs from static lib
      $opt_cflags=$f.' /Ox';
      $dbg_cflags=$f.'d /Od -DDEBUG -D_DEBUG';
@@ -44,7 +70,7 @@ diff -ruN --strip-trailing-cr openssl-1.0.0d.orig/util/pl/VC-32.pl openssl-1.0.0
  
      *::perlasm_compile_target = sub {
  	my ($target,$source,$bname)=@_;
-@@ -118,7 +118,7 @@
+@@ -118,7 +119,7 @@
      $lib_cflag='/Zl' if (!$shlib);	# remove /DEFAULTLIBs from static lib
      $opt_cflags=$f.' /Ox /O2 /Ob2';
      $dbg_cflags=$f.'d /Od -DDEBUG -D_DEBUG';
@@ -53,7 +79,7 @@ diff -ruN --strip-trailing-cr openssl-1.0.0d.orig/util/pl/VC-32.pl openssl-1.0.0
      }
  $mlflags='';
  
-@@ -179,7 +179,7 @@
+@@ -179,7 +180,7 @@
  $lfile='/out:';
  
  $shlib_ex_obj="";

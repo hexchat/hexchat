@@ -25,7 +25,7 @@ move lib %OPENSSL_DEST%
 mkdir %OPENSSL_DEST%\share
 move openssl.cnf %OPENSSL_DEST%\share\openssl.cnf.example
 move include-orig include
-copy zlib-x86\bin\zlib1.dll %OPENSSL_DEST%\bin
+copy zlib-x86\bin\zlibwapi.dll %OPENSSL_DEST%\bin
 move cert.pem %OPENSSL_DEST%\bin
 echo.Finished!
 pause
