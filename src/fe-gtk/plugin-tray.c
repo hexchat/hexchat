@@ -15,7 +15,17 @@
 #include "menu.h"
 #include <gtk/gtk.h>
 
-#define LIBNOTIFY
+#ifdef USE_LIBNOTIFY
+#include <libnotify/notify.h>
+#ifndef NOTIFY_CHECK_VERSION
+#define NOTIFY_CHECK_VERSION(x,y,z) 0
+#endif
+#if NOTIFY_CHECK_VERSION(0,7,0)
+#define XC_NOTIFY_NEW(a,b,c,d) notify_notification_new(a,b,c)
+#else
+#define XC_NOTIFY_NEW(a,b,c,d) notify_notification_new(a,b,c,d)
+#endif
+#endif
 
 typedef enum	/* current icon status */
 {
@@ -117,80 +127,6 @@ fe_tray_set_tooltip (const char *text)
 		gtk_status_icon_set_tooltip (sticon, text);
 }
 
-#ifdef LIBNOTIFY
-
-/* dynamic access to libnotify.so */
-
-static void *nn_mod = NULL;
-/* prototypes */
-static gboolean (*nn_init) (char *);
-static void (*nn_uninit) (void);
-/* recent versions of libnotify don't take the fourth GtkWidget argument, but passing an
- * extra NULL argument will be fine */
-static void *(*nn_new) (const gchar *summary, const gchar *message, const gchar *icon, gpointer dummy);
-static gboolean (*nn_show) (void *noti, GError **error);
-static void (*nn_set_timeout) (void *noti, gint timeout);
-
-static void
-libnotify_cleanup (void)
-{
-	if (nn_mod)
-	{
-		nn_uninit ();
-		g_module_close (nn_mod);
-		nn_mod = NULL;
-	}
-}
-
-static gboolean
-libnotify_notify_new (const char *title, const char *text, GtkStatusIcon *icon)
-{
-	void *noti;
-
-	if (!nn_mod)
-	{
-		nn_mod = g_module_open ("libnotify", G_MODULE_BIND_LAZY);
-		if (!nn_mod)
-		{
-			nn_mod = g_module_open ("libnotify.so.1", G_MODULE_BIND_LAZY);
-			if (!nn_mod)
-				return FALSE;
-		}
-
-		if (!g_module_symbol (nn_mod, "notify_init", (gpointer)&nn_init))
-			goto bad;
-		if (!g_module_symbol (nn_mod, "notify_uninit", (gpointer)&nn_uninit))
-			goto bad;
-		if (!g_module_symbol (nn_mod, "notify_notification_new", (gpointer)&nn_new))
-			goto bad;
-		if (!g_module_symbol (nn_mod, "notify_notification_show", (gpointer)&nn_show))
-			goto bad;
-		if (!g_module_symbol (nn_mod, "notify_notification_set_timeout", (gpointer)&nn_set_timeout))
-			goto bad;
-		if (!nn_init (PACKAGE_NAME))
-			goto bad;
-	}
-
-	text = strip_color (text, -1, STRIP_ALL|STRIP_ESCMARKUP);
-	title = strip_color (title, -1, STRIP_ALL);
-	noti = nn_new (title, text, XCHATSHAREDIR"/pixmaps/xchat.png", NULL);
-	g_free ((char *)title);
-	g_free ((char *)text);
-
-	nn_set_timeout (noti, prefs.input_balloon_time*1000);
-	nn_show (noti, NULL);
-	g_object_unref (G_OBJECT (noti));
-
-	return TRUE;
-
-bad:
-	g_module_close (nn_mod);
-	nn_mod = NULL;
-	return FALSE;
-}
-
-#endif
-
 void
 fe_tray_set_balloon (const char *title, const char *text)
 {
@@ -213,42 +149,26 @@ fe_tray_set_balloon (const char *title, const char *text)
 	if (!text)
 		return;
 
-#ifdef LIBNOTIFY
-	/* try it via libnotify.so */
-	if (libnotify_notify_new (title, text, sticon))
-		return;	/* success */
-#endif
+#ifdef USE_LIBNOTIFY
+	NotifyNotification *notification;
+	char *notify_text, *notify_title;
 
-	/* try it the crude way */
-	path = g_find_program_in_path ("notify-send");
-	if (path)
-	{
-		sprintf(time, "%d000",prefs.input_balloon_time);
-		argv[0] = path;
-		argv[1] = "-i";
-		argv[2] = "gtk-dialog-info";
-		if (access (XCHATSHAREDIR"/pixmaps/xchat.png", R_OK) == 0)
-			argv[2] = XCHATSHAREDIR"/pixmaps/xchat.png";
-		argv[3] = "-t";
-		argv[4] = time;
-		argv[5] = title;
-		text = strip_color (text, -1, STRIP_ALL|STRIP_ESCMARKUP);
-		argv[6] = text;
-		argv[7] = NULL;
-		xchat_execv (argv);
-		g_free ((char *)path);
-		g_free ((char *)text);
-	}
-	else
-	{
-		/* show this error only once */
-		static unsigned char said_it = FALSE;
-		if (!said_it)
-		{
-			said_it = TRUE;
-			fe_message (_("Cannot find 'notify-send' to open balloon alerts.\nPlease install libnotify."), FE_MSG_ERROR);
-		}
-	}
+	if (!notify_is_initted())
+		notify_init(PACKAGE_NAME);
+
+	notify_text = strip_color (text, -1, STRIP_ALL|STRIP_ESCMARKUP);
+	notify_title = strip_color (title, -1, STRIP_ALL);
+
+	notification = XC_NOTIFY_NEW (notify_title, notify_text, XCHATSHAREDIR"/pixmaps/xchat.png", NULL);
+
+	g_free ((char *)notify_title);
+	g_free ((char *)notify_text);
+
+	notify_notification_set_timeout (notification, prefs.input_balloon_time*1000);
+	notify_notification_show (notification, NULL);
+
+	g_object_unref (notification);
+#endif
 #endif
 }
 
@@ -845,8 +765,8 @@ tray_plugin_deinit (xchat_plugin *plugin_handle)
 {
 #ifdef WIN32
 	tray_cleanup ();
-#elif defined(LIBNOTIFY)
-	libnotify_cleanup ();
+#elif defined(USE_LIBNOTIFY)
+	notify_uninit ();
 #endif
 	return 1;
 }
