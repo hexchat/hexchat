@@ -1558,8 +1558,9 @@ server_child (server * serv)
 
 			g_strfreev (proxy_list);
 			g_free (url);
+		}
 #endif
-		} else if (prefs.proxy_host[0] &&
+		else if (prefs.proxy_host[0] &&
 			   prefs.proxy_type > 0 &&
 			   prefs.proxy_use != 2) /* proxy is NOT dcc-only */
 		{
