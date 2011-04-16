@@ -1491,7 +1491,6 @@ server_child (server * serv)
 	if (!serv->dont_use_proxy) /* blocked in serverlist? */
 	{
 		if (FALSE)
-		{
 			;
 #ifdef USE_LIBPROXY
 		} else if (prefs.proxy_type == 5)
