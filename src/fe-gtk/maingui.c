@@ -53,6 +53,7 @@
 #include "../common/plugin.h"
 #include "../common/modes.h"
 #include "../common/url.h"
+#include "../common/wdkutil.h"
 #include "fe-gtk.h"
 #include "banlist.h"
 #include "gtkutil.h"
@@ -214,60 +215,10 @@ mg_create_tab_colors (void)
 	away_list = mg_attr_list_create (&colors[COL_AWAY], FALSE);
 }
 
-#ifdef WIN32
-#define WINVER 0x0501	/* needed for vc6? */
-#include <windows.h>
-#include <gdk/gdkwin32.h>
-
-/* Flash the taskbar button on Windows when there's a highlight event. */
-
-static void
-flash_window (GtkWidget *win)
-{
-	FLASHWINFO fi;
-	static HMODULE user = NULL;
-	static BOOL (*flash) (PFLASHWINFO) = NULL;
-
-	if (!user)
-	{
-		user = GetModuleHandleA ("USER32");
-		if (!user)
-			return;	/* this should never fail */
-	}
-
-	if (!flash)
-	{
-		flash = (void *)GetProcAddress (user, "FlashWindowEx");
-		if (!flash)
-			return;	/* this fails on NT4.0 and Win95 */
-	}
-
-	fi.cbSize = sizeof (fi);
-	fi.hwnd = GDK_WINDOW_HWND (win->window);
-	fi.dwFlags = FLASHW_ALL | FLASHW_TIMERNOFG;
-	fi.uCount = 0;
-	fi.dwTimeout = 500;
-	flash (&fi);
-	/*FlashWindowEx (&fi);*/
-}
-#else
-
-#ifdef USE_XLIB
-#include <gdk/gdkx.h>
-
 static void
 set_window_urgency (GtkWidget *win, gboolean set)
 {
-	XWMHints *hints;
-
-	hints = XGetWMHints(GDK_WINDOW_XDISPLAY(win->window), GDK_WINDOW_XWINDOW(win->window));
-	if (set)
-		hints->flags |= XUrgencyHint;
-	else
-		hints->flags &= ~XUrgencyHint;
-	XSetWMHints(GDK_WINDOW_XDISPLAY(win->window),
-	            GDK_WINDOW_XWINDOW(win->window), hints);
-	XFree(hints);
+	gtk_window_set_urgency_hint (GTK_WINDOW (win), set);
 }
 
 static void
@@ -281,18 +232,14 @@ unflash_window (GtkWidget *win)
 {
 	set_window_urgency (win, FALSE);
 }
-#endif
-#endif
 
 /* flash the taskbar button */
 
 void
 fe_flash_window (session *sess)
 {
-#if defined(WIN32) || defined(USE_XLIB)
 	if (fe_gui_info (sess, 0) != 1)	/* only do it if not focused */
 		flash_window (sess->gui->window);
-#endif
 }
 
 /* set a tab plain, red, light-red, or blue */
@@ -1334,7 +1281,7 @@ mg_open_quit_dialog (gboolean minimize_button)
 	gtk_button_box_set_layout (GTK_BUTTON_BOX (dialog_action_area1),
 										GTK_BUTTONBOX_END);
 
-	if (minimize_button)
+	if (minimize_button && !xtray_mode ())
 	{
 		button = gtk_button_new_with_mnemonic (_("_Minimize to Tray"));
 		gtk_widget_show (button);
@@ -2972,11 +2919,7 @@ mg_tabwin_focus_cb (GtkWindow * win, GdkEventFocus *event, gpointer userdata)
 		gtk_xtext_check_marker_visibility (GTK_XTEXT (current_sess->gui->xtext));
 		plugin_emit_dummy_print (current_sess, "Focus Window");
 	}
-#ifndef WIN32
-#ifdef USE_XLIB
 	unflash_window (GTK_WIDGET (win));
-#endif
-#endif
 	return FALSE;
 }
 
@@ -2987,11 +2930,7 @@ mg_topwin_focus_cb (GtkWindow * win, GdkEventFocus *event, session *sess)
 	if (!sess->server->server_session)
 		sess->server->server_session = sess;
 	gtk_xtext_check_marker_visibility(GTK_XTEXT (current_sess->gui->xtext));
-#ifndef WIN32
-#ifdef USE_XLIB
 	unflash_window (GTK_WIDGET (win));
-#endif
-#endif
 	plugin_emit_dummy_print (sess, "Focus Window");
 	return FALSE;
 }

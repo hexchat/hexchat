@@ -34,7 +34,7 @@
 #include "text.h"
 #define PLUGIN_C
 typedef struct session xchat_context;
-#include "xchat-plugin.h"
+#include "../../plugins/xchat-plugin.h"
 #include "plugin.h"
 
 
@@ -996,13 +996,16 @@ xchat_get_info (xchat_plugin *ph, const char *id)
 		return XCHATLIBDIR;
 
 	case 0x14f51cd8: /* version */
-		return PACKAGE_VERSION;
+		return XCHAT_RELEASE;
 
 	case 0xdd9b1abd:	/* xchatdir */
 		return get_xdir_utf8 ();
 
 	case 0xe33f6c4a:	/* xchatdirfs */
 		return get_xdir_fs ();
+
+	case 0x3d1e70d7:	/* wdk_version */
+		return PACKAGE_VERSION;
 	}
 
 	sess = ph->context;

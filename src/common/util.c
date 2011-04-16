@@ -16,11 +16,13 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
  */
 
+#define WANTSOCKET
+#include "inet.h"				/* make it first to avoid macro redefinitions */
+
 #define __APPLE_API_STRICT_CONFORMANCE
 
 #define _FILE_OFFSET_BITS 64
 #include <stdio.h>
-#include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
 #include <sys/types.h>
@@ -35,7 +37,7 @@
 #include <sys/utsname.h>
 #endif
 #include <fcntl.h>
-#include <dirent.h>
+#include "dirent.h"
 #include <errno.h>
 #include "xchat.h"
 #include "xchatc.h"
@@ -44,9 +46,6 @@
 #include "util.h"
 #include "../../config.h"
 
-#define WANTSOCKET
-#include "inet.h"
-
 #if defined (USING_FREEBSD) || defined (__APPLE__)
 #include <sys/sysctl.h>
 #endif
@@ -54,8 +53,10 @@
 #include <socks.h>
 #endif
 
+#ifndef ENABLE_NLS
 #ifndef HAVE_SNPRINTF
 #define snprintf g_snprintf
+#endif
 #endif
 
 #ifdef USE_DEBUG
@@ -383,6 +384,28 @@ waitline (int sok, char *buf, int bufsize, int use_recv)
 	}
 }
 
+#ifdef WIN32
+/* waitline2 using win32 file descriptor and glib instead of _read. win32 can't _read() sok! */
+int
+waitline2 (GIOChannel *source, char *buf, int bufsize)
+{
+	int i = 0;
+	int len;
+
+	while (1)
+	{
+		if (g_io_channel_read (source, &buf[i], 1, &len) != G_IO_ERROR_NONE)
+			return -1;
+		if (buf[i] == '\n' || bufsize == i + 1)
+		{
+			buf[i] = 0;
+			return i;
+		}
+		i++;
+	}
+}
+#endif
+
 /* checks for "~" in a file and expands */
 
 char *
@@ -628,26 +651,79 @@ char *
 get_cpu_str (void)
 {
 	static char verbuf[64];
-	OSVERSIONINFO osvi;
-	SYSTEM_INFO si;
+	static char winver[20];
+	OSVERSIONINFOEX osvi;
 	double mhz;
 
-	osvi.dwOSVersionInfoSize = sizeof (OSVERSIONINFO);
+	osvi.dwOSVersionInfoSize = sizeof (OSVERSIONINFOEX);
 	GetVersionEx (&osvi);
-	GetSystemInfo (&si);
+
+	switch (osvi.dwMajorVersion)
+	{
+		case 5:
+			switch (osvi.dwMinorVersion)
+			{
+				case 1:
+					strcpy (winver, "XP");
+					break;
+				case 2:
+					if (osvi.wProductType == VER_NT_WORKSTATION)
+					{
+						strcpy (winver, "XP x64 Edition");
+					}
+					else
+					{
+						if (GetSystemMetrics(SM_SERVERR2) == 0)
+						{
+							strcpy (winver, "Server 2003");
+						}
+						else
+						{
+							strcpy (winver, "Server 2003 R2");
+						}
+					}
+					break;
+			}
+			break;
+		case 6:
+			switch (osvi.dwMinorVersion)
+			{
+				case 0:
+					if (osvi.wProductType == VER_NT_WORKSTATION)
+					{
+						strcpy (winver, "Vista");
+					}
+					else
+					{
+						strcpy (winver, "Server 2008");
+					}
+					break;
+				case 1:
+					if (osvi.wProductType == VER_NT_WORKSTATION)
+					{
+						strcpy (winver, "7");
+					}
+					else
+					{
+						strcpy (winver, "Server 2008 R2");
+					}
+					break;
+			}
+			break;
+	}
 
 	mhz = get_mhz ();
 	if (mhz)
 	{
 		double cpuspeed = ( mhz > 1000 ) ? mhz / 1000 : mhz;
 		const char *cpuspeedstr = ( mhz > 1000 ) ? "GHz" : "MHz";
-		sprintf (verbuf, "Windows %ld.%ld [i%d86/%.2f%s]",
-					osvi.dwMajorVersion, osvi.dwMinorVersion, si.wProcessorLevel, 
-					cpuspeed, cpuspeedstr);
-	} else
-		sprintf (verbuf, "Windows %ld.%ld [i%d86]",
-			osvi.dwMajorVersion, osvi.dwMinorVersion, si.wProcessorLevel);
-
+		sprintf (verbuf, "Windows %s [%.2f%s]",	winver, cpuspeed, cpuspeedstr);
+	}
+	else
+	{
+		sprintf (verbuf, "Windows %s", winver);
+	}
+	
 	return verbuf;
 }
 

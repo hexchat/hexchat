@@ -1,0 +1,46 @@
+diff -ruN --strip-trailing-cr lua-5.1.4.orig/etc/luavs-x64.bat lua-5.1.4/etc/luavs-x64.bat
+--- lua-5.1.4.orig/etc/luavs-x64.bat	1970-01-01 01:00:00 +0100
++++ lua-5.1.4/etc/luavs-x64.bat	2010-08-16 13:02:08 +0200
+@@ -0,0 +1,28 @@
++@rem Script to build Lua under "Visual Studio .NET Command Prompt".
++@rem Do not run from this directory; run it from the toplevel: etc\luavs.bat .
++@rem It creates lua51.dll, lua51.lib, lua.exe, and luac.exe in src.
++@rem (contributed by David Manura and Mike Pall)
++
++@setlocal
++@set MYCOMPILE=cl /nologo /MD /O2 /W3 /c
++@set MYLINK=link /nologo msvcrt_win2003.obj
++@set MYMT=mt /nologo
++
++cd src
++%MYCOMPILE% /DLUA_BUILD_AS_DLL l*.c
++del lua.obj luac.obj
++%MYLINK% /DLL /out:lua51.dll l*.obj
++if exist lua51.dll.manifest^
++  %MYMT% -manifest lua51.dll.manifest -outputresource:lua51.dll;2
++%MYCOMPILE% /DLUA_BUILD_AS_DLL lua.c
++%MYLINK% /out:lua.exe lua.obj lua51.lib
++if exist lua.exe.manifest^
++  %MYMT% -manifest lua.exe.manifest -outputresource:lua.exe
++%MYCOMPILE% l*.c print.c
++del lua.obj linit.obj lbaselib.obj ldblib.obj liolib.obj lmathlib.obj^
++    loslib.obj ltablib.obj lstrlib.obj loadlib.obj
++%MYLINK% /out:luac.exe *.obj
++if exist luac.exe.manifest^
++  %MYMT% -manifest luac.exe.manifest -outputresource:luac.exe
++del *.obj *.manifest
++cd ..
+diff -ruN --strip-trailing-cr lua-5.1.4.orig/etc/luavs.bat lua-5.1.4/etc/luavs.bat
+--- lua-5.1.4.orig/etc/luavs.bat	2008-01-20 17:40:10 +0100
++++ lua-5.1.4/etc/luavs.bat	2010-08-16 13:02:18 +0200
+@@ -4,8 +4,8 @@
+ @rem (contributed by David Manura and Mike Pall)
+ 
+ @setlocal
+-@set MYCOMPILE=cl /nologo /MD /O2 /W3 /c /D_CRT_SECURE_NO_DEPRECATE
+-@set MYLINK=link /nologo
++@set MYCOMPILE=cl /nologo /MD /O2 /W3 /c
++@set MYLINK=link /nologo msvcrt_winxp.obj
+ @set MYMT=mt /nologo
+ 
+ cd src

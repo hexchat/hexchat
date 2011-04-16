@@ -18,7 +18,6 @@
 
 /* IRC RFC1459(+commonly used extensions) protocol implementation */
 
-#include <unistd.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>

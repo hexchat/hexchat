@@ -17,12 +17,12 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
  */
 
+#include "inet.h"				  /* make it first to avoid macro redefinitions */
 #include <openssl/ssl.h>		  /* SSL_() */
 #include <openssl/err.h>		  /* ERR_() */
 #include <time.h>					  /* asctime() */
 #include <string.h>				  /* strncpy() */
 #include "ssl.h"					  /* struct cert_info */
-#include "inet.h"
 #include "../../config.h"		  /* HAVE_SNPRINTF */
 
 #ifndef HAVE_SNPRINTF

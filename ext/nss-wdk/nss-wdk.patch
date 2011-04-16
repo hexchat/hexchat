@@ -1,0 +1,273 @@
+diff -ruN --strip-trailing-cr nss-3.12.9.orig/mozilla/dbm/include/mcom_db.h nss-3.12.9/mozilla/dbm/include/mcom_db.h
+--- nss-3.12.9.orig/mozilla/dbm/include/mcom_db.h	2009-06-05 01:18:50 +0200
++++ nss-3.12.9/mozilla/dbm/include/mcom_db.h	2011-02-11 00:03:42 +0100
+@@ -40,6 +40,15 @@
+ #define off_t long
+ #endif
+ 
++#ifdef WINDDK_BUILD
++#ifndef stat
++#define stat _stat
++#endif
++#ifndef getpid
++#define getpid GetCurrentProcessId
++#endif
++#endif
++
+ #ifndef macintosh
+ #include <sys/types.h>
+ #endif
+diff -ruN --strip-trailing-cr nss-3.12.9.orig/mozilla/dbm/src/mktemp.c nss-3.12.9/mozilla/dbm/src/mktemp.c
+--- nss-3.12.9.orig/mozilla/dbm/src/mktemp.c	2009-06-05 01:19:32 +0200
++++ nss-3.12.9/mozilla/dbm/src/mktemp.c	2011-02-11 00:03:42 +0100
+@@ -45,13 +45,13 @@
+ #include <ctype.h>
+ #include "mcom_db.h"
+ 
+-#ifndef _WINDOWS
+-#include <unistd.h>
+-#endif
+-
+ #ifdef _WINDOWS
++#ifndef WINDDK_BUILD
+ #include <process.h>
++#endif
+ #include "winfile.h"
++#else
++#include <unistd.h>
+ #endif
+ 
+ static int _gettemp(char *path, register int *doopen, int extraFlags);
+diff -ruN --strip-trailing-cr nss-3.12.9.orig/mozilla/nsprpub/config/config.mk nss-3.12.9/mozilla/nsprpub/config/config.mk
+--- nss-3.12.9.orig/mozilla/nsprpub/config/config.mk	2010-07-09 04:10:34 +0200
++++ nss-3.12.9/mozilla/nsprpub/config/config.mk	2011-02-11 00:03:42 +0100
+@@ -154,6 +154,15 @@
+ DEFINES += -DMOZ_UNICODE
+ endif
+ 
++ifdef WINDDK_BUILD
++OS_CFLAGS += -DWINDDK_BUILD
++ifdef USE_64
++OS_LIBS += msvcrt_win2003.obj
++else
++OS_LIBS += msvcrt_winxp.obj
++endif
++endif
++
+ ####################################################################
+ #
+ # Configuration for the release process
+diff -ruN --strip-trailing-cr nss-3.12.9.orig/mozilla/nsprpub/pr/src/Makefile.in nss-3.12.9/mozilla/nsprpub/pr/src/Makefile.in
+--- nss-3.12.9.orig/mozilla/nsprpub/pr/src/Makefile.in	2010-10-13 02:52:54 +0200
++++ nss-3.12.9/mozilla/nsprpub/pr/src/Makefile.in	2011-02-11 00:03:42 +0100
+@@ -197,9 +197,17 @@
+ ifdef NS_USE_GCC
+ OS_LIBS		= -ladvapi32 -lwsock32 -lwinmm
+ else
++ifdef WINDDK_BUILD
++ifdef USE_64
++OS_LIBS = advapi32.lib wsock32.lib winmm.lib msvcrt_win2003.obj
++else
++OS_LIBS = advapi32.lib wsock32.lib winmm.lib msvcrt_winxp.obj
++endif
++else
+ OS_LIBS		= advapi32.lib wsock32.lib winmm.lib
+ endif
+ endif
++endif
+ 
+ ifeq ($(OS_ARCH),WINCE)
+ OS_LIBS		= ws2.lib
+diff -ruN --strip-trailing-cr nss-3.12.9.orig/mozilla/nsprpub/pr/src/md/windows/ntmisc.c nss-3.12.9/mozilla/nsprpub/pr/src/md/windows/ntmisc.c
+--- nss-3.12.9.orig/mozilla/nsprpub/pr/src/md/windows/ntmisc.c	2010-08-15 22:59:14 +0200
++++ nss-3.12.9/mozilla/nsprpub/pr/src/md/windows/ntmisc.c	2011-02-11 00:03:42 +0100
+@@ -625,7 +625,11 @@
+      */
+     hasFdInheritBuffer = (attr && attr->fdInheritBuffer);
+     if ((envp == NULL) && hasFdInheritBuffer) {
++#ifdef WINDDK_BUILD
++        envp = getenv;
++#else
+         envp = environ;
++#endif
+     }
+ 
+     if (envp != NULL) {
+diff -ruN --strip-trailing-cr nss-3.12.9.orig/mozilla/security/coreconf/WIN32.mk nss-3.12.9/mozilla/security/coreconf/WIN32.mk
+--- nss-3.12.9.orig/mozilla/security/coreconf/WIN32.mk	2010-08-18 03:28:06 +0200
++++ nss-3.12.9/mozilla/security/coreconf/WIN32.mk	2011-02-11 00:03:42 +0100
+@@ -145,6 +145,14 @@
+ else # !NS_USE_GCC
+     OS_CFLAGS += -W3 -nologo -D_CRT_SECURE_NO_WARNINGS
+     OS_DLLFLAGS += -nologo -DLL -SUBSYSTEM:WINDOWS
++    ifdef WINDDK_BUILD
++        OS_CFLAGS += -DWINDDK_BUILD
++        ifdef USE_64
++            OS_LIBS += msvcrt_win2003.obj
++        else
++            OS_LIBS += msvcrt_winxp.obj
++        endif
++    endif
+     ifeq ($(_MSC_VER),$(_MSC_VER_6))
+     ifndef MOZ_DEBUG_SYMBOLS
+ 	OS_DLLFLAGS += -PDB:NONE
+diff -ruN --strip-trailing-cr nss-3.12.9.orig/mozilla/security/coreconf/arch.mk nss-3.12.9/mozilla/security/coreconf/arch.mk
+--- nss-3.12.9.orig/mozilla/security/coreconf/arch.mk	2009-06-05 04:14:50 +0200
++++ nss-3.12.9/mozilla/security/coreconf/arch.mk	2011-02-11 00:03:42 +0100
+@@ -268,7 +268,15 @@
+ # the uname.exe in the MSYS toolkit.
+ #
+ ifeq (MINGW32_NT,$(findstring MINGW32_NT,$(OS_ARCH)))
+-    OS_RELEASE := $(patsubst MINGW32_NT-%,%,$(OS_ARCH))
++    ifdef WINDDK_BUILD
++        ifdef USE_64
++            OS_RELEASE := 5.2
++        else
++            OS_RELEASE := 5.1
++        endif
++    else
++        OS_RELEASE := $(patsubst MINGW32_NT-%,%,$(OS_ARCH))
++    endif
+     OS_ARCH = WINNT
+     USE_MSYS = 1
+     ifndef CPU_ARCH
+diff -ruN --strip-trailing-cr nss-3.12.9.orig/mozilla/security/nss/cmd/platlibs.mk nss-3.12.9/mozilla/security/nss/cmd/platlibs.mk
+--- nss-3.12.9.orig/mozilla/security/nss/cmd/platlibs.mk	2010-06-12 02:58:34 +0200
++++ nss-3.12.9/mozilla/security/nss/cmd/platlibs.mk	2011-02-11 00:03:42 +0100
+@@ -249,3 +249,11 @@
+ endif
+ 
+ JAR_LIBS = $(DIST)/lib/$(LIB_PREFIX)jar.$(LIB_SUFFIX)
++
++ifdef WINDDK_BUILD
++ifdef USE_64
++OS_LIBS += msvcrt_win2003.obj
++else
++OS_LIBS += msvcrt_winxp.obj
++endif
++endif
+diff -ruN --strip-trailing-cr nss-3.12.9.orig/mozilla/security/nss/cmd/selfserv/selfserv.c nss-3.12.9/mozilla/security/nss/cmd/selfserv/selfserv.c
+--- nss-3.12.9.orig/mozilla/security/nss/cmd/selfserv/selfserv.c	2010-04-03 20:27:28 +0200
++++ nss-3.12.9/mozilla/security/nss/cmd/selfserv/selfserv.c	2011-02-11 00:03:42 +0100
+@@ -51,8 +51,13 @@
+ #endif
+ 
+ #if defined(_WINDOWS)
++#ifdef WINDDK_BUILD
++#include <windows.h>
++#define getpid GetCurrentProcessId
++#else
+ #include <process.h>	/* for getpid() */
+ #endif
++#endif
+ 
+ #include <signal.h>
+ #include <stdlib.h>
+diff -ruN --strip-trailing-cr nss-3.12.9.orig/mozilla/security/nss/lib/freebl/mpi/mpcpucache.c nss-3.12.9/mozilla/security/nss/lib/freebl/mpi/mpcpucache.c
+--- nss-3.12.9.orig/mozilla/security/nss/lib/freebl/mpi/mpcpucache.c	2009-03-10 22:18:08 +0100
++++ nss-3.12.9/mozilla/security/nss/lib/freebl/mpi/mpcpucache.c	2011-02-11 00:03:42 +0100
+@@ -80,7 +80,11 @@
+ 
+ #elif defined(_MSC_VER)
+ 
++#ifdef WINDDK_BUILD
++#include <ntddk.h>
++#else
+ #include <intrin.h>
++#endif
+ 
+ void freebl_cpuid(unsigned long op, unsigned long *eax, 
+            unsigned long *ebx, unsigned long *ecx, 
+diff -ruN --strip-trailing-cr nss-3.12.9.orig/mozilla/security/nss/lib/freebl/win_rand.c nss-3.12.9/mozilla/security/nss/lib/freebl/win_rand.c
+--- nss-3.12.9.orig/mozilla/security/nss/lib/freebl/win_rand.c	2011-01-06 20:05:58 +0100
++++ nss-3.12.9/mozilla/security/nss/lib/freebl/win_rand.c	2011-02-11 00:03:42 +0100
+@@ -50,6 +50,13 @@
+ #include <sys/types.h>
+ #include <sys/stat.h>
+ #endif
++
++#ifdef WINDDK_BUILD
++#ifndef stat
++#define stat _stat
++#endif
++#endif
++
+ #include <stdio.h>
+ #include "prio.h"
+ #include "prerror.h"
+diff -ruN --strip-trailing-cr nss-3.12.9.orig/mozilla/security/nss/lib/softoken/legacydb/config.mk nss-3.12.9/mozilla/security/nss/lib/softoken/legacydb/config.mk
+--- nss-3.12.9.orig/mozilla/security/nss/lib/softoken/legacydb/config.mk	2009-06-11 02:55:50 +0200
++++ nss-3.12.9/mozilla/security/nss/lib/softoken/legacydb/config.mk	2011-02-11 00:03:42 +0100
+@@ -96,3 +96,11 @@
+ ifeq ($(OS_TARGET),WINCE)
+ DEFINES += -DDBM_USING_NSPR
+ endif
++
++ifdef WINDDK_BUILD
++ifdef USE_64
++OS_LIBS += msvcrt_win2003.obj
++else
++OS_LIBS += msvcrt_winxp.obj
++endif
++endif
+diff -ruN --strip-trailing-cr nss-3.12.9.orig/mozilla/security/nss/lib/sqlite/sqlite3.c nss-3.12.9/mozilla/security/nss/lib/sqlite/sqlite3.c
+--- nss-3.12.9.orig/mozilla/security/nss/lib/sqlite/sqlite3.c	2010-01-08 06:42:38 +0100
++++ nss-3.12.9/mozilla/security/nss/lib/sqlite/sqlite3.c	2011-02-11 00:03:42 +0100
+@@ -10980,7 +10980,8 @@
+ ** localtime_s().
+ */
+ #if !defined(HAVE_LOCALTIME_R) && !defined(HAVE_LOCALTIME_S) && \
+-     defined(_MSC_VER) && defined(_CRT_INSECURE_DEPRECATE)
++     defined(_MSC_VER) && defined(_CRT_INSECURE_DEPRECATE) && \
++     !defined(WINDDK_BUILD)
+ #define HAVE_LOCALTIME_S 1
+ #endif
+ 
+diff -ruN --strip-trailing-cr nss-3.12.9.orig/mozilla/security/nss/lib/ssl/sslimpl.h nss-3.12.9/mozilla/security/nss/lib/ssl/sslimpl.h
+--- nss-3.12.9.orig/mozilla/security/nss/lib/ssl/sslimpl.h	2010-07-31 06:33:52 +0200
++++ nss-3.12.9/mozilla/security/nss/lib/ssl/sslimpl.h	2011-02-11 00:03:42 +0100
+@@ -1624,8 +1624,13 @@
+ #elif defined(_WIN32_WCE)
+ #define SSL_GETPID GetCurrentProcessId
+ #elif defined(WIN32)
++#ifdef WINDDK_BUILD
++#include <windows.h>
++#define SSL_GETPID GetCurrentProcessId
++#else
+ extern int __cdecl _getpid(void);
+ #define SSL_GETPID _getpid
++#endif
+ #else
+ #define SSL_GETPID() 0
+ #endif
+diff -ruN --strip-trailing-cr nss-3.12.9.orig/mozilla/security/nss/lib/zlib/config.mk nss-3.12.9/mozilla/security/nss/lib/zlib/config.mk
+--- nss-3.12.9.orig/mozilla/security/nss/lib/zlib/config.mk	2009-11-07 02:13:10 +0100
++++ nss-3.12.9/mozilla/security/nss/lib/zlib/config.mk	2011-02-11 00:03:42 +0100
+@@ -46,3 +46,11 @@
+ PROGRAM        =
+ 
+ EXTRA_LIBS     = $(LIBRARY)
++
++ifdef WINDDK_BUILD
++ifdef USE_64
++OS_LIBS += msvcrt_win2003.obj
++else
++OS_LIBS += msvcrt_winxp.obj
++endif
++endif
+diff -ruN --strip-trailing-cr nss-3.12.9.orig/mozilla/security/nss/lib/zlib/gzio.c nss-3.12.9/mozilla/security/nss/lib/zlib/gzio.c
+--- nss-3.12.9.orig/mozilla/security/nss/lib/zlib/gzio.c	2009-11-07 02:13:10 +0100
++++ nss-3.12.9/mozilla/security/nss/lib/zlib/gzio.c	2011-02-11 00:03:42 +0100
+@@ -11,6 +11,12 @@
+ 
+ #include "zutil.h"
+ 
++#ifdef WINDDK_BUILD
++#ifndef vsnprintf
++#define vsnprintf _vsnprintf
++#endif
++#endif
++
+ #ifdef NO_DEFLATE       /* for compatibility with old definition */
+ #  define NO_GZCOMPRESS
+ #endif

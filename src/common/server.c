@@ -26,7 +26,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <errno.h>
 #include <fcntl.h>
 
@@ -845,33 +844,6 @@ server_flush_queue (server *serv)
 	fe_set_throttle (serv);
 }
 
-#ifdef WIN32
-
-static int
-waitline2 (GIOChannel *source, char *buf, int bufsize)
-{
-	int i = 0;
-	int len;
-
-	while (1)
-	{
-		if (g_io_channel_read (source, &buf[i], 1, &len) != G_IO_ERROR_NONE)
-			return -1;
-		if (buf[i] == '\n' || bufsize == i + 1)
-		{
-			buf[i] = 0;
-			return i;
-		}
-		i++;
-	}
-}
-
-#else
-
-#define waitline2(source,buf,size) waitline(serv->childread,buf,size,0)
-
-#endif
-
 /* connect() successed */
 
 static void
@@ -1395,12 +1367,7 @@ base64_encode (char *to, char *from, unsigned int len)
 static int
 http_read_line (int print_fd, int sok, char *buf, int len)
 {
-#ifdef WIN32
-	/* make sure waitline() uses recv() or it'll fail on win32 */
-	len = waitline (sok, buf, len, FALSE);
-#else
 	len = waitline (sok, buf, len, TRUE);
-#endif
 	if (len >= 1)
 	{
 		/* print the message out (send it to the parent process) */
@@ -1524,9 +1491,10 @@ server_child (server * serv)
 	if (!serv->dont_use_proxy) /* blocked in serverlist? */
 	{
 		if (FALSE)
+		{
 			;
 #ifdef USE_LIBPROXY
-		else if (prefs.proxy_type == 5)
+		} else if (prefs.proxy_type == 5)
 		{
 			char **proxy_list;
 			char *url, *proxy;
@@ -1796,7 +1764,7 @@ server_connect (server *serv, char *hostname, int port, int no_login)
 	}
 #endif
 	serv->childpid = pid;
-	serv->iotag = fe_input_add (serv->childread, FIA_READ, server_read_child,
+	serv->iotag = fe_input_add (serv->childread, FIA_READ|FIA_FD, server_read_child,
 										 serv);
 }
 
