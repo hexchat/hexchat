@@ -326,12 +326,19 @@ int
 userlist_remove (struct session *sess, char *name)
 {
 	struct User *user;
-	int pos;
 
 	user = userlist_find (sess, name);
 	if (!user)
 		return FALSE;
 
+	userlist_remove_user (sess, user);
+	return TRUE;
+}
+
+void
+userlist_remove_user (struct session *sess, struct User *user)
+{
+	int pos;
 	if (user->voice)
 		sess->voices--;
 	if (user->op)
@@ -348,8 +355,6 @@ userlist_remove (struct session *sess, char *name)
 	tree_remove (sess->usertree, user, &pos);
 	tree_remove (sess->usertree_alpha, user, &pos);
 	free_user (user, NULL);
-
-	return TRUE;
 }
 
 void
