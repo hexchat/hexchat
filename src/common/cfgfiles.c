@@ -421,6 +421,7 @@ const struct prefs vars[] = {
 	{"flood_msg_num", P_OFFINT (msg_number_limit), TYPE_INT},
 	{"flood_msg_time", P_OFFINT (msg_time_limit), TYPE_INT},
 
+	{"gui_license", P_OFFSET (gui_license), TYPE_STR},
 	{"gui_auto_open_chat", P_OFFINT (autoopendccchatwindow), TYPE_BOOL},
 	{"gui_auto_open_dialog", P_OFFINT (autodialog), TYPE_BOOL},
 	{"gui_auto_open_recv", P_OFFINT (autoopendccrecvwindow), TYPE_BOOL},
@@ -696,6 +697,7 @@ load_config (void)
 #ifdef WIN32
 	prefs.identd = 1;
 #endif
+	strcpy (prefs.gui_license, "");
 	strcpy (prefs.stamp_format, "[%H:%M] ");
 	strcpy (prefs.timestamp_log_format, "%b %d %H:%M:%S ");
 	strcpy (prefs.logmask, "%n-%c.log");
