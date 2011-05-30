@@ -57,7 +57,7 @@ Name: x64; Description: "x64"; GroupDescription: "XChat-WDK version:"; Flags: ex
 
 Name: perl510; Description: "5.10"; GroupDescription: "Perl version:"; Flags: exclusive unchecked; Components: langs\perl
 Name: perl512; Description: "5.12"; GroupDescription: "Perl version:"; Flags: exclusive; Components: langs\perl
-Name: perl514; Description: "5.14"; GroupDescription: "Perl version:"; Flags: exclusive; Components: langs\perl
+Name: perl514; Description: "5.14"; GroupDescription: "Perl version:"; Flags: exclusive unchecked; Components: langs\perl
 
 Name: portable; Description: "Yes"; GroupDescription: "Portable Install (no Registry entries, no Start Menu icons, no uninstaller):"; Flags: unchecked
 
