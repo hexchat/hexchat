@@ -109,18 +109,31 @@ static const setting textbox_settings[] =
 					N_("Give each person on IRC a different color"),0,0},
 	{ST_TOGGLR, N_("Indent nick names"), P_OFFINTNL(indent_nicks),
 					N_("Make nick names right-justified"),0,0},
-	{ST_TOGGLE, N_("Transparent background"), P_OFFINTNL(transparent),0,0,0},
-	{ST_TOGGLR, N_("Show marker line"), P_OFFINTNL(show_marker),
+	/* {ST_TOGGLE, N_("Transparent background"), P_OFFINTNL(transparent),0,0,0}, */
+	{ST_TOGGLE, N_("Show marker line"), P_OFFINTNL(show_marker),
 					N_("Insert a red line after the last read text."),0,0},
-	{ST_HEADER, N_("Transparency Settings"), 0,0,0},
+	/* {ST_HEADER, N_("Transparency Settings"), 0,0,0},
 	{ST_HSCALE, N_("Red:"), P_OFFINTNL(tint_red),0,0,0},
 	{ST_HSCALE, N_("Green:"), P_OFFINTNL(tint_green),0,0,0},
-	{ST_HSCALE, N_("Blue:"), P_OFFINTNL(tint_blue),0,0,0},
+	{ST_HSCALE, N_("Blue:"), P_OFFINTNL(tint_blue),0,0,0}, */
 
 	{ST_HEADER,	N_("Time Stamps"),0,0,0},
 	{ST_TOGGLE, N_("Enable time stamps"), P_OFFINTNL(timestamp),0,0,2},
 	{ST_ENTRY,  N_("Time stamp format:"), P_OFFSETNL(stamp_format),
 					N_("See strftime manpage for details."),0,sizeof prefs.stamp_format},
+
+	{ST_HEADER,	N_("Auto-Copy Behavior"),0,0,0},
+	{ST_TOGGLE, N_("Automatically copy selected text"), P_OFFINTNL(autocopy_text),
+					N_("Copy selected text to clipboard when left mouse button is released. "
+						"Otherwise, CONTROL-SHIFT-C will copy the "
+						"selected text to the clipboard."), 0, 0},
+	{ST_TOGGLE, N_("Automatically include time stamps"), P_OFFINTNL(autocopy_stamp),
+					N_("Automatically include time stamps in copied lines of text. Otherwise, "
+						"include time stamps if the SHIFT key is held down while selecting."), 0, 0},
+	{ST_TOGGLE, N_("Automatically include color information"), P_OFFINTNL(autocopy_color),
+					N_("Automatically include color information in copied lines of text.  "
+						"Otherwise, include color information if the CONTROL key is held down "
+						"while selecting."), 0, 0},
 
 	{ST_END, 0, 0, 0, 0, 0}
 };
@@ -348,6 +361,24 @@ static const setting alert_settings[] =
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
+static const setting alert_settings_xtray[] =
+{
+	{ST_HEADER,	N_("Alerts"),0,0,0},
+
+	{ST_ALERTHEAD},
+	{ST_3OGGLE, N_("Blink task bar on:"), 0, 0, (void *)taskbarlist, 0},
+	{ST_3OGGLE, N_("Make a beep sound on:"), 0, 0, (void *)beeplist, 0},
+
+	{ST_HEADER,	N_("Highlighted Messages"),0,0,0},
+	{ST_LABEL,	N_("Highlighted messages are ones where your nickname is mentioned, but also:"), 0, 0, 0, 1},
+
+	{ST_ENTRY,	N_("Extra words to highlight:"), P_OFFSETNL(irc_extra_hilight), 0, 0, sizeof prefs.irc_extra_hilight},
+	{ST_ENTRY,	N_("Nick names not to highlight:"), P_OFFSETNL(irc_no_hilight), 0, 0, sizeof prefs.irc_no_hilight},
+	{ST_ENTRY,	N_("Nick names to always highlight:"), P_OFFSETNL(irc_nick_hilight), 0, 0, sizeof prefs.irc_nick_hilight},
+	{ST_LABEL,	N_("Separate multiple words with commas.\nWildcards are accepted.")},
+	{ST_END, 0, 0, 0, 0, 0}
+};
+
 static const setting general_settings[] =
 {
 	{ST_HEADER,	N_("Default Messages"),0,0,0},
@@ -363,7 +394,6 @@ static const setting general_settings[] =
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
-#if 0
 static const setting advanced_settings[] =
 {
 	{ST_HEADER,	N_("Advanced Settings"),0,0,0},
@@ -378,7 +408,6 @@ static const setting advanced_settings[] =
 
 	{ST_END, 0, 0, 0, 0, 0}
 };
-#endif
 
 static const setting logging_settings[] =
 {
@@ -1711,7 +1740,7 @@ static const char *const cata[] =
 		N_("General"),
 		N_("Logging"),
 		N_("Sound"),
-/*		N_("Advanced"),*/
+		N_("Advanced"),
 		NULL,
 	N_("Network"),
 		N_("Network setup"),
@@ -1732,10 +1761,19 @@ setup_create_pages (GtkWidget *box)
 	setup_add_page (cata[3], book, setup_create_page (userlist_settings));
 	setup_add_page (cata[4], book, setup_create_page (tabs_settings));
 	setup_add_page (cata[5], book, setup_create_color_page ());
-	setup_add_page (cata[8], book, setup_create_page (alert_settings));
+
+	if (xtray_mode ())
+	{
+		setup_add_page (cata[8], book, setup_create_page (alert_settings_xtray));
+	} else
+	{
+		setup_add_page (cata[8], book, setup_create_page (alert_settings));
+	}
+
 	setup_add_page (cata[9], book, setup_create_page (general_settings));
 	setup_add_page (cata[10], book, setup_create_page (logging_settings));
 	setup_add_page (cata[11], book, setup_create_sound_page ());
+	setup_add_page (cata[12], book, setup_create_page (advanced_settings));
 	setup_add_page (cata[14], book, setup_create_page (network_settings));
 	setup_add_page (cata[15], book, setup_create_page (filexfer_settings));
 

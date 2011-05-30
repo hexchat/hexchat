@@ -42,7 +42,6 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <time.h>
-#include <unistd.h>
 #include <gtk/gtkmain.h>
 #include <gtk/gtksignal.h>
 #include <gtk/gtkselection.h>
@@ -67,6 +66,8 @@
 #endif
 
 #include "xtext.h"
+#include "../common/xchat.h"
+#include "../common/xchatc.h"
 
 #define charlen(str) g_utf8_skip[*(guchar *)(str)]
 
@@ -1941,7 +1942,7 @@ gtk_xtext_check_mark_stamp (GtkXText *xtext, GdkModifierType mask)
 {
 	gboolean redraw = FALSE;
 
-	if ((mask & GDK_SHIFT_MASK))
+	if (mask & GDK_SHIFT_MASK || prefs.autocopy_stamp)
 	{
 		if (!xtext->mark_stamp)
 		{
@@ -2106,7 +2107,16 @@ gtk_xtext_set_clip_owner (GtkWidget * xtext, GdkEventButton * event)
 		free (str);
 	}
 
-	gtk_selection_owner_set (xtext, GDK_SELECTION_PRIMARY, event->time);
+	if (event)
+	{
+		gtk_selection_owner_set (xtext, GDK_SELECTION_PRIMARY, event->time);
+	}
+}
+
+void
+gtk_xtext_copy_selection (GtkXText *xtext)
+{
+	gtk_xtext_set_clip_owner (xtext, NULL);
 }
 
 static void
@@ -2182,9 +2192,12 @@ gtk_xtext_button_release (GtkWidget * widget, GdkEventButton * event)
 		if (xtext->buffer->last_ent_start)
 		{
 			xtext->color_paste = FALSE;
-			if (event->state & GDK_CONTROL_MASK)
+			if (event->state & GDK_CONTROL_MASK || prefs.autocopy_color)
 				xtext->color_paste = TRUE;
-			gtk_xtext_set_clip_owner (GTK_WIDGET (xtext), event);
+			if (prefs.autocopy_text)
+			{
+				gtk_xtext_set_clip_owner (GTK_WIDGET (xtext), event);
+			}
 		}
 
 		if (xtext->select_start_x == event->x &&
@@ -2249,7 +2262,10 @@ gtk_xtext_button_press (GtkWidget * widget, GdkEventButton * event)
 			ent->mark_end = offset + len;
 			gtk_xtext_selection_render (xtext, ent, offset, ent, offset + len);
 			xtext->word_or_line_select = TRUE;
-			gtk_xtext_set_clip_owner (GTK_WIDGET (xtext), event);
+			if (prefs.autocopy_text)
+			{
+				gtk_xtext_set_clip_owner (GTK_WIDGET (xtext), event);
+			}
 		}
 
 		return FALSE;
@@ -2265,7 +2281,10 @@ gtk_xtext_button_press (GtkWidget * widget, GdkEventButton * event)
 			ent->mark_end = ent->str_len;
 			gtk_xtext_selection_render (xtext, ent, 0, ent, ent->str_len);
 			xtext->word_or_line_select = TRUE;
-			gtk_xtext_set_clip_owner (GTK_WIDGET (xtext), event);
+			if (prefs.autocopy_text)
+			{
+				gtk_xtext_set_clip_owner (GTK_WIDGET (xtext), event);
+			}
 		}
 
 		return FALSE;
@@ -3836,7 +3855,7 @@ gtk_xtext_load_trans (GtkXText * xtext)
 	PaintDesktop (hdc);
 	ReleaseDC (hwnd, hdc);
 
-	gdk_window_get_size (GTK_WIDGET (xtext)->window, &width, &height);
+	gdk_drawable_get_size (GTK_WIDGET (xtext)->window, &width, &height);
 	img = gdk_image_get (GTK_WIDGET (xtext)->window, 0, 0, width+128, height);
 	xtext->pixmap = win32_tint (xtext, img, img->width, img->height);
 

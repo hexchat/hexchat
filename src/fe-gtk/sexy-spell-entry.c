@@ -31,6 +31,8 @@
 /*#include "gtkspell-iso-codes.h"
 #include "sexy-marshal.h"*/
 
+#include "typedef.h"
+
 /*
  * Bunch of poop to make enchant into a runtime dependency rather than a
  * compile-time dependency.  This makes it so I don't have to hear the
@@ -134,12 +136,10 @@ initialize_enchant ()
 	GModule *enchant;
 	gpointer funcptr;
 
-	enchant = g_module_open("libenchant", 0);
+	enchant = g_module_open("libenchant.dll", 0);
 	if (enchant == NULL)
 	{
-		enchant = g_module_open("libenchant.so.1", 0);
-		if (enchant == NULL)
-			return;
+		return;
 	}
 
 	have_enchant = TRUE;

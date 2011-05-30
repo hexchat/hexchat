@@ -22,7 +22,6 @@
 #include <time.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <unistd.h>
 
 #define WANTSOCKET
 #include "inet.h"
@@ -38,7 +37,7 @@
 #include "cfgfiles.h"
 #include "chanopt.h"
 #include "ignore.h"
-#include "xchat-plugin.h"
+#include "../../plugins/xchat-plugin.h"
 #include "plugin.h"
 #include "plugin-timer.h"
 #include "notify.h"
@@ -590,6 +589,7 @@ static char defaultconf_commands[] =
 	"NAME DMSG\n"			"CMD msg =%2 &3\n\n"\
 	"NAME EXIT\n"			"CMD quit\n\n"\
 	"NAME GREP\n"			"CMD lastlog -r &2\n\n"\
+	"NAME IGNALL\n"			"CMD ignore %2!*@* ALL\n\n"\
 	"NAME J\n"				"CMD join &2\n\n"\
 	"NAME KILL\n"			"CMD quote KILL %2 :&3\n\n"\
 	"NAME LEAVE\n"			"CMD part &2\n\n"\

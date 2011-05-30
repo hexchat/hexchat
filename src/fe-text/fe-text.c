@@ -22,60 +22,51 @@
 #ifdef HAVE_STRINGS_H
 #include <strings.h>
 #endif
-#include <sys/time.h>
-#include <sys/types.h>
+#ifdef WIN32
+#define STDIN_FILENO 0
+#define STDOUT_FILENO 1
+#else
 #include <unistd.h>
+#include <sys/time.h>
+#endif
+#include <sys/types.h>
 #include <ctype.h>
+#include <glib.h>
 #include "../common/xchat.h"
 #include "../common/xchatc.h"
+#include "../common/cfgfiles.h"
 #include "../common/outbound.h"
 #include "../common/util.h"
 #include "../common/fe.h"
 #include "fe-text.h"
 
 
-static GSList *tmr_list;		  /* timer list */
-static int tmr_list_count;
-static GSList *se_list;			  /* socket event list */
-static int se_list_count;
 static int done = FALSE;		  /* finished ? */
 
 
 static void
 send_command (char *cmd)
 {
-	handle_multiline (sess_list->data, cmd, TRUE, FALSE);
+	handle_multiline (current_tab, cmd, TRUE, FALSE);
 }
 
-static void
-read_stdin (void)
+static gboolean
+handle_line (GIOChannel *channel, GIOCondition cond, gpointer data)
 {
-	int len, i = 0;
-	static int pos = 0;
-	static char inbuf[1024];
-	char tmpbuf[512];
 
-	len = read (STDIN_FILENO, tmpbuf, sizeof tmpbuf - 1);
+	gchar *str_return;
+	gsize length, terminator_pos;
+	GError *error = NULL;
+	GIOStatus result;
 
-	while (i < len)
-	{
-		switch (tmpbuf[i])
-		{
-		case '\r':
-			break;
-
-		case '\n':
-			inbuf[pos] = 0;
-			pos = 0;
-			send_command (inbuf);
-			break;
-
-		default:
-			inbuf[pos] = tmpbuf[i];
-			if (pos < (sizeof inbuf - 2))
-				pos++;
-		}
-		i++;
+	result = g_io_channel_read_line(channel, &str_return, &length, &terminator_pos, &error);
+	if (result == G_IO_STATUS_ERROR) {
+		return FALSE;
+	}
+	else {
+		send_command(str_return);
+		g_free(str_return);
+		return TRUE;
 	}
 }
 
@@ -87,12 +78,13 @@ fe_new_window (struct session *sess, int focus)
 	char buf[512];
 
 	sess->gui = malloc (4);
+	current_sess = sess;
 
 	if (!sess->server->front_session)
 		sess->server->front_session = sess;
 	if (!sess->server->server_session)
 		sess->server->server_session = sess;
-	if (!current_tab)
+	if (!current_tab || focus)
 		current_tab = sess;
 
 	if (done_intro)
@@ -101,7 +93,7 @@ fe_new_window (struct session *sess, int focus)
 
 	snprintf (buf, sizeof (buf),
 				"\n"
-				" \017xchat \00310"PACKAGE_VERSION"\n"
+				" \017XChat-Text \00310"PACKAGE_VERSION"\n"
 				" \017Running on \00310%s \017glib \00310%d.%d.%d\n"
 				" \017This binary compiled \00310"__DATE__"\017\n",
 				get_cpu_str(),
@@ -133,15 +125,21 @@ get_stamp_str (time_t tim, char *dest, int size)
 }
 
 static int
-timecat (char *buf)
+timecat (char *buf, time_t stamp)
 {
 	char stampbuf[64];
 
-	get_stamp_str (time (0), stampbuf, sizeof (stampbuf));
+	/* set the stamp to the current time if not provided */
+	if (!stamp)
+		stamp = time (0);
+
+	get_stamp_str (stamp, stampbuf, sizeof (stampbuf));
 	strcat (buf, stampbuf);
 	return strlen (stampbuf);
 }
 
+/* Windows doesn't handle ANSI codes in cmd.exe, need to not display them */
+#ifndef WIN32
 /*                       0  1  2  3  4  5  6  7   8   9   10 11  12  13  14 15 */
 static const short colconv[] = { 0, 7, 4, 2, 1, 3, 5, 11, 13, 12, 6, 16, 14, 15, 10, 7 };
 
@@ -157,7 +155,7 @@ fe_print_text (struct session *sess, char *text, time_t stamp)
 	if (prefs.timestamp)
 	{
 		newtext[0] = 0;
-		j += timecat (newtext);
+		j += timecat (newtext, stamp);
 	}
 	while (i < len)
 	{
@@ -165,7 +163,7 @@ fe_print_text (struct session *sess, char *text, time_t stamp)
 		{
 			dotime = FALSE;
 			newtext[j] = 0;
-			j += timecat (newtext);
+			j += timecat (newtext, stamp);
 		}
 		switch (text[i])
 		{
@@ -179,8 +177,7 @@ fe_print_text (struct session *sess, char *text, time_t stamp)
 				j++;
 				newtext[j] = 'm';
 				j++;
-				i--;
-				goto jump2;
+				goto endloop;
 			}
 			k = 0;
 			comma = FALSE;
@@ -226,12 +223,15 @@ fe_print_text (struct session *sess, char *text, time_t stamp)
 						comma = TRUE;
 						break;
 					default:
-						goto jump;
+						goto endloop;
 					}
 					k = 0;
 				}
 				i++;
 			}
+			break;
+		/* don't actually want hidden text */
+		case '\010':				  /* hidden */
 			break;
 		case '\026':				  /* REVERSE */
 			if (reverse)
@@ -296,120 +296,246 @@ fe_print_text (struct session *sess, char *text, time_t stamp)
 			newtext[j] = text[i];
 			j++;
 		}
-	 jump2:
 		i++;
-	 jump:
-		i += 0;
+		endloop:
+			;
 	}
+
+	/* make sure last character is a new line */
+	if (text[i-1] != '\n')
+		newtext[j++] = '\n';
+
 	newtext[j] = 0;
 	write (STDOUT_FILENO, newtext, j);
 	free (newtext);
 }
+#else
+/* The win32 version for cmd.exe */
+void
+fe_print_text (struct session *sess, char *text, time_t stamp)
+{
+	int dotime = FALSE;
+	int comma, k, i = 0, j = 0, len = strlen (text);
+
+	unsigned char *newtext = malloc (len + 1024);
+
+	if (prefs.timestamp)
+	{
+		newtext[0] = 0;
+		j += timecat (newtext, stamp);
+	}
+	while (i < len)
+	{
+		if (dotime && text[i] != 0)
+		{
+			dotime = FALSE;
+			newtext[j] = 0;
+			j += timecat (newtext, stamp);
+		}
+		switch (text[i])
+		{
+		case 3:
+			i++;
+			if (!isdigit (text[i]))
+			{
+				goto endloop;
+			}
+			k = 0;
+			comma = FALSE;
+			while (i < len)
+			{
+				if (text[i] >= '0' && text[i] <= '9' && k < 2)
+				{
+					k++;
+				} else
+				{
+					switch (text[i])
+					{
+					case ',':
+						comma = TRUE;
+						break;
+					default:
+						goto endloop;
+					}
+					k = 0;
+
+				}
+				i++;
+			}
+			break;
+		/* don't actually want hidden text */
+		case '\010':				  /* hidden */
+		case '\026':				  /* REVERSE */
+		case '\037':				  /* underline */
+		case '\002':				  /* bold */
+		case '\017':				  /* reset all */
+			break;
+		case '\007':
+			if (!prefs.filterbeep)
+			{
+				newtext[j] = text[i];
+				j++;
+			}
+			break;
+		case '\t':
+			newtext[j] = ' ';
+			j++;
+			break;
+		case '\n':
+			newtext[j] = '\r';
+			j++;
+			if (prefs.timestamp)
+				dotime = TRUE;
+		default:
+			newtext[j] = text[i];
+			j++;
+		}
+		i++;
+		endloop:
+			;
+	}
+
+	/* make sure last character is a new line */
+	if (text[i-1] != '\n')
+		newtext[j++] = '\n';
+
+	newtext[j] = 0;
+	write (STDOUT_FILENO, newtext, j);
+	free (newtext);
+}
+#endif
 
 void
 fe_timeout_remove (int tag)
 {
-	timerevent *te;
-	GSList *list;
-
-	list = tmr_list;
-	while (list)
-	{
-		te = (timerevent *) list->data;
-		if (te->tag == tag)
-		{
-			tmr_list = g_slist_remove (tmr_list, te);
-			free (te);
-			return;
-		}
-		list = list->next;
-	}
+	g_source_remove (tag);
 }
 
 int
 fe_timeout_add (int interval, void *callback, void *userdata)
 {
-	struct timeval now;
-	timerevent *te = malloc (sizeof (timerevent));
-
-	tmr_list_count++;				  /* this overflows at 2.2Billion, who cares!! */
-
-	te->tag = tmr_list_count;
-	te->interval = interval;
-	te->callback = callback;
-	te->userdata = userdata;
-
-	gettimeofday (&now, NULL);
-	te->next_call = now.tv_sec * 1000 + (now.tv_usec / 1000) + te->interval;
-
-	tmr_list = g_slist_prepend (tmr_list, te);
-
-	return te->tag;
+	return g_timeout_add (interval, (GSourceFunc) callback, userdata);
 }
 
 void
 fe_input_remove (int tag)
 {
-	socketevent *se;
-	GSList *list;
-
-	list = se_list;
-	while (list)
-	{
-		se = (socketevent *) list->data;
-		if (se->tag == tag)
-		{
-			se_list = g_slist_remove (se_list, se);
-			free (se);
-			return;
-		}
-		list = list->next;
-	}
+	g_source_remove (tag);
 }
 
 int
 fe_input_add (int sok, int flags, void *func, void *data)
 {
-	socketevent *se = malloc (sizeof (socketevent));
+	int tag, type = 0;
+	GIOChannel *channel;
 
-	se_list_count++;				  /* this overflows at 2.2Billion, who cares!! */
+	channel = g_io_channel_unix_new (sok);
 
-	se->tag = se_list_count;
-	se->sok = sok;
-	se->rread = flags & FIA_READ;
-	se->wwrite = flags & FIA_WRITE;
-	se->eexcept = flags & FIA_EX;
-	se->callback = func;
-	se->userdata = data;
-	se_list = g_slist_prepend (se_list, se);
+	if (flags & FIA_READ)
+		type |= G_IO_IN | G_IO_HUP | G_IO_ERR;
+	if (flags & FIA_WRITE)
+		type |= G_IO_OUT | G_IO_ERR;
+	if (flags & FIA_EX)
+		type |= G_IO_PRI;
 
-	return se->tag;
+	tag = g_io_add_watch (channel, type, (GIOFunc) func, data);
+	g_io_channel_unref (channel);
+
+	return tag;
 }
+
+/* === command-line parameter parsing : requires glib 2.6 === */
+
+static char *arg_cfgdir = NULL;
+static gint arg_show_autoload = 0;
+static gint arg_show_config = 0;
+static gint arg_show_version = 0;
+
+static const GOptionEntry gopt_entries[] = 
+{
+ {"no-auto",	'a', 0, G_OPTION_ARG_NONE,	&arg_dont_autoconnect, N_("Don't auto connect to servers"), NULL},
+ {"cfgdir",	'd', 0, G_OPTION_ARG_STRING,	&arg_cfgdir, N_("Use a different config directory"), "PATH"},
+ {"no-plugins",	'n', 0, G_OPTION_ARG_NONE,	&arg_skip_plugins, N_("Don't auto load any plugins"), NULL},
+ {"plugindir",	'p', 0, G_OPTION_ARG_NONE,	&arg_show_autoload, N_("Show plugin auto-load directory"), NULL},
+ {"configdir",	'u', 0, G_OPTION_ARG_NONE,	&arg_show_config, N_("Show user config directory"), NULL},
+ {"url",	 0,  0, G_OPTION_ARG_STRING,	&arg_url, N_("Open an irc://server:port/channel URL"), "URL"},
+ {"version",	'v', 0, G_OPTION_ARG_NONE,	&arg_show_version, N_("Show version information"), NULL},
+ {NULL}
+};
 
 int
 fe_args (int argc, char *argv[])
 {
-	if (argc > 1)
+	GError *error = NULL;
+	GOptionContext *context;
+
+#ifdef ENABLE_NLS
+	bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
+	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
+	textdomain (GETTEXT_PACKAGE);
+#endif
+
+	context = g_option_context_new (NULL);
+	g_option_context_add_main_entries (context, gopt_entries, GETTEXT_PACKAGE);
+	g_option_context_parse (context, &argc, &argv, &error);
+
+	if (error)
 	{
-		if (!strcasecmp (argv[1], "--version") || !strcasecmp (argv[1], "-v"))
-		{
-			puts (PACKAGE_VERSION);
-			return 0;
-		}
+		if (error->message)
+			printf ("%s\n", error->message);
+		return 1;
 	}
+
+	g_option_context_free (context);
+
+	if (arg_show_version)
+	{
+		printf (PACKAGE_TARNAME" "PACKAGE_VERSION"\n");
+		return 0;
+	}
+
+	if (arg_show_autoload)
+	{
+#ifdef WIN32
+		/* see the chdir() below */
+		char *sl, *exe = strdup (argv[0]);
+		sl = strrchr (exe, '\\');
+		if (sl)
+		{
+			*sl = 0;
+			printf ("%s\\plugins\n", exe);
+		}
+#else
+		printf ("%s\n", XCHATLIBDIR"/plugins");
+#endif
+		return 0;
+	}
+
+	if (arg_show_config)
+	{
+		printf ("%s\n", get_xdir_fs ());
+		return 0;
+	}
+
+	if (arg_cfgdir)	/* we want filesystem encoding */
+	{
+		xdir_fs = strdup (arg_cfgdir);
+		if (xdir_fs[strlen (xdir_fs) - 1] == '/')
+			xdir_fs[strlen (xdir_fs) - 1] = 0;
+		g_free (arg_cfgdir);
+	}
+
 	return -1;
 }
 
 void
 fe_init (void)
 {
-	se_list = 0;
-	se_list_count = 0;
-	tmr_list = 0;
-	tmr_list_count = 0;
+	/* the following should be default generated, not enfoced in binary */
 	prefs.autosave = 0;
 	prefs.use_server_tab = 0;
 	prefs.autodialog = 0;
+	/* except for these, there is no lag meter, there is no server list */
 	prefs.lagometer = 0;
 	prefs.slist_skip = 1;
 }
@@ -417,129 +543,29 @@ fe_init (void)
 void
 fe_main (void)
 {
-	struct timeval timeout, now;
-	socketevent *se;
-	timerevent *te;
-	fd_set rd, wd, ex;
-	GSList *list;
-	guint64 shortest, delay;
+	GIOChannel *keyboard_input;
 
-	if (!sess_list)
-		new_ircwindow (NULL, NULL, SESS_SERVER, 0);
+	main_loop = g_main_loop_new(NULL, FALSE);
 
-#ifdef ENABLE_NLS
-	bindtextdomain (GETTEXT_PACKAGE, PREFIX"/share/locale");
-	bind_textdomain_codeset (GETTEXT_PACKAGE, "UTF-8");
-	textdomain (GETTEXT_PACKAGE);
+	/* Keyboard Entry Setup */
+#ifdef G_OS_WIN32
+	keyboard_input = g_io_channel_win32_new_fd(STDIN_FILENO);
+#else
+	keyboard_input = g_io_channel_unix_new(STDIN_FILENO);
 #endif
 
-	while (!done)
-	{
-		FD_ZERO (&rd);
-		FD_ZERO (&wd);
-		FD_ZERO (&ex);
+	g_io_add_watch(keyboard_input, G_IO_IN, handle_line, NULL);
 
-		list = se_list;
-		while (list)
-		{
-			se = (socketevent *) list->data;
-			if (se->rread)
-				FD_SET (se->sok, &rd);
-			if (se->wwrite)
-				FD_SET (se->sok, &wd);
-			if (se->eexcept)
-				FD_SET (se->sok, &ex);
-			list = list->next;
-		}
+	g_main_loop_run(main_loop);
 
-		FD_SET (STDIN_FILENO, &rd);	/* for reading keyboard */
-
-		/* find the shortest timeout event */
-		shortest = 0;
-		list = tmr_list;
-		while (list)
-		{
-			te = (timerevent *) list->data;
-			if (te->next_call < shortest || shortest == 0)
-				shortest = te->next_call;
-			list = list->next;
-		}
-		gettimeofday (&now, NULL);
-		delay = shortest - ((now.tv_sec * 1000) + (now.tv_usec / 1000));
-		timeout.tv_sec = delay / 1000;
-		timeout.tv_usec = (delay % 1000) * 1000;
-
-		select (FD_SETSIZE, &rd, &wd, &ex, &timeout);
-
-		if (FD_ISSET (STDIN_FILENO, &rd))
-			read_stdin ();
-
-		/* set all checked flags to false */
-		list = se_list;
-		while (list)
-		{
-			se = (socketevent *) list->data;
-			se->checked = 0;
-			list = list->next;
-		}
-
-		/* check all the socket callbacks */
-		list = se_list;
-		while (list)
-		{
-			se = (socketevent *) list->data;
-			se->checked = 1;
-			if (se->rread && FD_ISSET (se->sok, &rd))
-			{
-				se->callback (NULL, 1, se->userdata);
-			} else if (se->wwrite && FD_ISSET (se->sok, &wd))
-			{
-				se->callback (NULL, 2, se->userdata);
-			} else if (se->eexcept && FD_ISSET (se->sok, &ex))
-			{
-				se->callback (NULL, 4, se->userdata);
-			}
-			list = se_list;
-			if (list)
-			{
-				se = (socketevent *) list->data;
-				while (se->checked)
-				{
-					list = list->next;
-					if (!list)
-						break;
-					se = (socketevent *) list->data;
-				}
-			}
-		}
-
-		/* now check our list of timeout events, some might need to be called! */
-		gettimeofday (&now, NULL);
-		list = tmr_list;
-		while (list)
-		{
-			te = (timerevent *) list->data;
-			list = list->next;
-			if (now.tv_sec * 1000 + (now.tv_usec / 1000) >= te->next_call)
-			{
-				/* if the callback returns 0, it must be removed */
-				if (te->callback (te->userdata) == 0)
-				{
-					fe_timeout_remove (te->tag);
-				} else
-				{
-					te->next_call = now.tv_sec * 1000 + (now.tv_usec / 1000) + te->interval;
-				}
-			}
-		}
-
-	}
+	return;
 }
 
 void
 fe_exit (void)
 {
 	done = TRUE;
+	g_main_loop_quit(main_loop);
 }
 
 void
@@ -793,10 +819,23 @@ fe_get_int (char *prompt, int def, void *callback, void *ud)
 void
 fe_idle_add (void *func, void *data)
 {
+	g_idle_add (func, data);
 }
 void
 fe_ctrl_gui (session *sess, fe_gui_action action, int arg)
 {
+	/* only one action type handled for now, but could add more */
+	switch (action)
+	{
+	/* gui focus is really the only case xchat-text needs to wory about */
+	case FE_GUI_FOCUS:
+		current_sess = sess;
+		current_tab = sess;
+		sess->server->front_session = sess;
+		break;
+	default:
+		break;
+	}
 }
 int
 fe_gui_info (session *sess, int info_type)

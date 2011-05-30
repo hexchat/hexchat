@@ -35,7 +35,7 @@
 #include "../common/xchat.h"
 #define PLUGIN_C
 typedef struct session xchat_context;
-#include "../common/xchat-plugin.h"
+#include "../../plugins/xchat-plugin.h"
 #include "../common/plugin.h"
 #include "../common/util.h"
 #include "../common/outbound.h"
@@ -147,7 +147,9 @@ void
 plugingui_load (void)
 {
 	gtkutil_file_req (_("Select a Plugin or Script to load"), plugingui_load_cb,
-							current_sess, NULL, FRF_ADDFOLDER);
+							current_sess,
+							"Plugins and Scripts\0*.dll;*.lua;*.pl;*.py;*.tcl\0"
+							"All files\0*.*\0\0", 0);
 }
 
 static void

@@ -22,12 +22,15 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <dirent.h>
 #ifdef ENABLE_NLS
 #include <locale.h>
 #endif
 #ifdef WIN32
 #include <windows.h>
+#define  _INC_DIRENT
+#include "../../src/common/dirent.h"
+#else
+#include <dirent.h>
 #endif
 
 #undef PACKAGE
@@ -1342,7 +1345,11 @@ perl_load_file (char *filename)
 			if (GetLastError () == ERROR_BAD_EXE_FORMAT)
 				/* http://forum.xchat.org/viewtopic.php?t=3277 */
 				thread_mbox ("Cannot use this " PERL_DLL "\n\n"
+#ifdef _WIN64
+								 "64-bit ActivePerl is required.");
+#else
 								 "32-bit ActivePerl is required.");
+#endif
 			else {
 				/* a lot of people install this old version */
 				lib = LoadLibraryA ("perl56.dll");
@@ -1357,7 +1364,7 @@ perl_load_file (char *filename)
 					thread_mbox ("Cannot open " PERL_DLL "\n\n"
 									 "You must have ActivePerl " PERL_REQUIRED_VERSION " installed in order to\n"
 									 "run perl scripts.\n\n"
-									 "http://www.activestate.com/ActivePerl/\n\n"
+									 "http://www.activestate.com/activeperl/downloads\n\n"
 									 "Make sure perl's bin directory is in your PATH.");
 				}
 			}

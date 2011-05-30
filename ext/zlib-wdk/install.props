@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros">
+    <ZlibDoInstall32>
+      mkdir $(SolutionDir)x86\dist
+      mkdir $(SolutionDir)x86\dist\bin
+      copy $(SolutionDir)x86\MiniUnzipRelease\miniunz.exe $(SolutionDir)x86\dist\bin
+      copy $(SolutionDir)x86\MiniZipRelease\minizip.exe $(SolutionDir)x86\dist\bin
+      copy $(SolutionDir)x86\TestZlibDllRelease\testzlibdll.exe $(SolutionDir)x86\dist\bin
+      copy $(SolutionDir)x86\TestZlibRelease\testzlib.exe $(SolutionDir)x86\dist\bin
+      copy $(SolutionDir)x86\ZlibDllRelease\zlibwapi.dll $(SolutionDir)x86\dist\bin
+      mkdir $(SolutionDir)x86\dist\include
+      copy ..\..\..\zconf.h $(SolutionDir)x86\dist\include
+      copy ..\..\..\zlib.h $(SolutionDir)x86\dist\include
+      mkdir $(SolutionDir)x86\dist\lib
+      copy $(SolutionDir)x86\ZlibDllRelease\zlibwapi.exp $(SolutionDir)x86\dist\lib
+      copy $(SolutionDir)x86\ZlibDllRelease\zlibwapi.lib $(SolutionDir)x86\dist\lib
+      copy $(SolutionDir)x86\ZlibStatRelease\zlibstat.lib $(SolutionDir)x86\dist\lib
+      copy $(SolutionDir)zlibvc.def $(SolutionDir)x86\dist\lib
+      copy $(SolutionDir)LICENSE.ZLIB $(SolutionDir)x86\dist
+    </ZlibDoInstall32>
+    <ZlibDoInstall64>
+      mkdir $(SolutionDir)x64\dist
+      mkdir $(SolutionDir)x64\dist\bin
+      copy $(SolutionDir)x64\MiniUnzipRelease\miniunz.exe $(SolutionDir)x64\dist\bin
+      copy $(SolutionDir)x64\MiniZipRelease\minizip.exe $(SolutionDir)x64\dist\bin
+      copy $(SolutionDir)x64\TestZlibDllRelease\testzlibdll.exe $(SolutionDir)x64\dist\bin
+      copy $(SolutionDir)x64\TestZlibRelease\testzlib.exe $(SolutionDir)x64\dist\bin
+      copy $(SolutionDir)x64\ZlibDllRelease\zlibwapi.dll $(SolutionDir)x64\dist\bin
+      mkdir $(SolutionDir)x64\dist\include
+      copy ..\..\..\zconf.h $(SolutionDir)x64\dist\include
+      copy ..\..\..\zlib.h $(SolutionDir)x64\dist\include
+      mkdir $(SolutionDir)x64\dist\lib
+      copy $(SolutionDir)x64\ZlibDllRelease\zlibwapi.exp $(SolutionDir)x64\dist\lib
+      copy $(SolutionDir)x64\ZlibDllRelease\zlibwapi.lib $(SolutionDir)x64\dist\lib
+      copy $(SolutionDir)x64\ZlibStatRelease\zlibstat.lib $(SolutionDir)x64\dist\lib
+      copy $(SolutionDir)zlibvc.def $(SolutionDir)x64\dist\lib
+      copy $(SolutionDir)LICENSE.ZLIB $(SolutionDir)x64\dist
+    </ZlibDoInstall64>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>c:\WinDDK\7600.16385.1\inc\api;c:\WinDDK\7600.16385.1\inc\crt</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <WDK32Dependencies>msvcrt_winxp.obj</WDK32Dependencies>
+      <WDK64Dependencies>msvcrt_win2003.obj</WDK64Dependencies>
+      <WDK32LibraryDirectories>c:\WinDDK\7600.16385.1\lib\Crt\i386;c:\WinDDK\7600.16385.1\lib\wxp\i386</WDK32LibraryDirectories>
+      <WDK64LibraryDirectories>c:\WinDDK\7600.16385.1\lib\Crt\amd64;c:\WinDDK\7600.16385.1\lib\wnet\amd64</WDK64LibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+  </ItemGroup>
+</Project>
