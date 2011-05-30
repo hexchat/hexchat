@@ -1,6 +1,7 @@
 @echo off
 set PERL_510=c:\mozilla-build\perl-5.10-x64
 set PERL_512=c:\mozilla-build\perl-5.12-x64
+set PERL_514=c:\mozilla-build\perl-5.14-x64
 cd ..
 set DEV_64=%cd%\dep-x64
 cd src
@@ -30,6 +31,9 @@ nmake /nologo /s /f makefile-510.mak
 set PATH=%OOPATH%;%PERL_512%\bin
 nmake /nologo /s /f makefile-512.mak clean
 nmake /nologo /s /f makefile-512.mak
+set PATH=%OOPATH%;%PERL_514%\bin
+nmake /nologo /s /f makefile-514.mak clean
+nmake /nologo /s /f makefile-514.mak
 cd ..\..\build
 set PATH=%OPATH%
 call release-x64.bat

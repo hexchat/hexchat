@@ -48,6 +48,7 @@ copy ..\plugins\lua\xclua.dll %XCHAT_DEST%\plugins
 copy ..\plugins\mpcinfo\xcmpcinfo.dll %XCHAT_DEST%\plugins
 copy ..\plugins\perl\xcperl-510.dll %XCHAT_DEST%\plugins
 copy ..\plugins\perl\xcperl-512.dll %XCHAT_DEST%\plugins
+copy ..\plugins\perl\xcperl-514.dll %XCHAT_DEST%\plugins
 copy ..\plugins\python\xcpython.dll %XCHAT_DEST%\plugins
 copy ..\plugins\tcl\xctcl.dll %XCHAT_DEST%\plugins
 copy ..\plugins\upd\xcupd.dll %XCHAT_DEST%\plugins
