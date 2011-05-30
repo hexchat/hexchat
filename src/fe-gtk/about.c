@@ -88,19 +88,6 @@ menu_about (GtkWidget * wid, gpointer sess)
 	char buf[512];
 	const char *locale = NULL;
 	extern GtkWindow *parent_window;      /* maingui.c */
-	SYSTEM_INFO si;
-	unsigned short int cpu_arch;
-
-	GetSystemInfo (&si);
-
-	if (si.wProcessorArchitecture == 9)
-	{
-		cpu_arch = 64;
-	}
-	else
-	{
-		cpu_arch = 86;
-	}
 
 	if (about)
 	{
@@ -146,7 +133,7 @@ menu_about (GtkWidget * wid, gpointer sess)
 				gtk_minor_version,
 				gtk_micro_version,
 				(portable_mode () ? "Yes" : "No"),
-				cpu_arch
+				get_cpu_arch ()
 #else
 				"%s\n\n"
 				"%s\n"

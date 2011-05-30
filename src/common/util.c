@@ -647,6 +647,24 @@ get_mhz (void)
 	return 0;	/* fails on Win9x */
 }
 
+int
+get_cpu_arch (void)
+{
+	SYSTEM_INFO si;
+	unsigned short int cpu_arch;
+
+	GetSystemInfo (&si);
+
+	if (si.wProcessorArchitecture == 9)
+	{
+		return 64;
+	}
+	else
+	{
+		return 86;
+	}
+}
+
 char *
 get_cpu_str (void)
 {
