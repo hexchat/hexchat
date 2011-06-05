@@ -4,7 +4,7 @@
 #define USE_PLUGIN
 #define USE_LIBSEXY
 #define PACKAGE_NAME "xchat"
-#define PACKAGE_VERSION "1496"
+#define PACKAGE_VERSION "1496-2"
 #define XCHAT_RELEASE "2.8.8"
 #define XCHATLIBDIR "."
 #define XCHATSHAREDIR "."
