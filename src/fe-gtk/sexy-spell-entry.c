@@ -26,12 +26,16 @@
 #include <gtk/gtk.h>
 #include "sexy-spell-entry.h"
 #include <string.h>
+#include <fcntl.h>
 #include <glib/gi18n.h>
 #include <sys/types.h>
+#include <sys/stat.h>
 /*#include "gtkspell-iso-codes.h"
 #include "sexy-marshal.h"*/
 
 #include "typedef.h"
+
+#include "../common/cfgfiles.h"
 
 /*
  * Bunch of poop to make enchant into a runtime dependency rather than a
@@ -260,8 +264,42 @@ gtk_entry_find_position (GtkEntry *entry, gint x)
 static void
 insert_underline(SexySpellEntry *entry, guint start, guint end)
 {
-	PangoAttribute *ucolor = pango_attr_underline_color_new (65535, 0, 0);
-	PangoAttribute *unline = pango_attr_underline_new (PANGO_UNDERLINE_ERROR);
+	int fh, l;
+	int red, green, blue;
+	struct stat st;
+	char *cfg;
+	PangoAttribute *ucolor;
+	PangoAttribute *unline;
+
+	fh = xchat_open_file ("colors.conf", O_RDONLY, 0, 0);
+
+	if (fh != -1)
+	{
+		fstat (fh, &st);
+		cfg = malloc (st.st_size + 1);
+
+		if (cfg)
+		{
+			cfg[0] = '\0';
+			l = read (fh, cfg, st.st_size);
+			if (l >= 0)
+			{
+				cfg[l] = '\0';
+			}
+
+			cfg_get_color (cfg, "color_265", &red, &green, &blue);
+			free (cfg);
+		}
+
+		close (fh);
+	} else
+	{
+		red = 65535;
+		green = blue = 0;
+	}
+
+	ucolor = pango_attr_underline_color_new (red, green, blue);
+	unline = pango_attr_underline_new (PANGO_UNDERLINE_ERROR);
 
 	ucolor->start_index = start;
 	unline->start_index = start;

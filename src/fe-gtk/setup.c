@@ -1358,6 +1358,7 @@ setup_create_color_page (void)
 	setup_create_other_color (_("New message:"), COL_NEW_MSG, 10, tab);
 	setup_create_other_colorR (_("Away user:"), COL_AWAY, 10, tab);
 	setup_create_other_color (_("Highlight:"), COL_HILIGHT, 11, tab);
+	setup_create_other_colorR (_("Spell checker:"), COL_SPELL, 11, tab);
 
 	return box;
 }
