@@ -401,6 +401,7 @@ static const setting advanced_settings[] =
 	{ST_TOGGLE,	N_("Display MODEs in raw form"), P_OFFINTNL(raw_modes), 0, 0, 0},
 	{ST_TOGGLE,	N_("Whois on notify"), P_OFFINTNL(whois_on_notifyonline), N_("Sends a /WHOIS when a user comes online in your notify list"), 0, 0},
 	{ST_TOGGLE,	N_("Hide join and part messages"), P_OFFINTNL(confmode), N_("Hide channel join/part messages by default"), 0, 0},
+	{ST_ENTRY,	N_("License Text:"), P_OFFSETNL(gui_license), 0, 0, sizeof prefs.gui_license},
 	{ST_HEADER,	N_("Auto Open DCC Windows"),0,0,0},
 	{ST_TOGGLE, N_("Send window"), P_OFFINTNL(autoopendccsendwindow), 0, 0, 0},
 	{ST_TOGGLE, N_("Receive window"), P_OFFINTNL(autoopendccrecvwindow), 0, 0, 0},
