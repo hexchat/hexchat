@@ -726,6 +726,16 @@ get_cpu_str (void)
 						strcpy (winver, "Server 2008 R2");
 					}
 					break;
+				case 2:
+					if (osvi.wProductType == VER_NT_WORKSTATION)
+					{
+						strcpy (winver, "8");
+					}
+					else
+					{
+						strcpy (winver, "8 Server");
+					}
+					break;
 			}
 			break;
 	}
