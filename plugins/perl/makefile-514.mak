@@ -12,7 +12,7 @@ perl.def:
 	echo xchat_plugin_get_info >> perl.def
 
 perl.obj: perl.c
-	$(CC) $(CFLAGS) perl.c $(GLIB) /I$(PERL514PATH) /I.. /DPERL_DLL=\"$(PERL514LIB).dll\"
+	$(CC) $(CFLAGS) perl.c $(GLIB) /I$(PERL514PATH)\lib\CORE /I.. /DPERL_DLL=\"$(PERL514LIB).dll\"
 
 perl.c: xchat.pm.h
 

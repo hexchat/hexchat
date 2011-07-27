@@ -12,15 +12,22 @@ perl.def:
 	echo xchat_plugin_get_info >> perl.def
 
 perl.obj: perl.c
-	$(CC) $(CFLAGS) perl.c $(GLIB) /I$(PERL512PATH) /I.. /DPERL_DLL=\"$(PERL512LIB).dll\"
+	$(CC) $(CFLAGS) perl.c $(GLIB) /I$(PERL512PATH)\perl\lib\CORE /I.. /DPERL_DLL=\"$(PERL512LIB).dll\"
+
+$(PERL512LIB).lib: perl512.def
+!ifdef X64
+	lib /machine:x64 /def:perl512.def
+!else
+	lib /machine:x86 /def:perl512.def
+!endif
 
 perl.c: xchat.pm.h
 
 xchat.pm.h: lib/Xchat.pm lib/IRC.pm
 	perl.exe generate_header
 
-$(TARGET): perl.obj perl.def
-	$(LINK) /DLL /out:$(TARGET) perl.obj $(LDFLAGS) $(PERL512LIB).lib /libpath:$(PERL512PATH) /delayload:$(PERL512LIB).dll $(DIRENTLIB) delayimp.lib user32.lib shell32.lib advapi32.lib /def:perl.def
+$(TARGET): perl.obj perl.def $(PERL512LIB).lib
+	$(LINK) /DLL /out:$(TARGET) perl.obj $(LDFLAGS) $(PERL512LIB).lib /delayload:$(PERL512LIB).dll $(DIRENTLIB) delayimp.lib user32.lib shell32.lib advapi32.lib /def:perl.def
 
 clean:
 	@del $(TARGET)

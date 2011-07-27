@@ -30,8 +30,8 @@ CFLAGS = $(CFLAGS) /favor:AMD64 /D_WIN64
 CPPFLAGS = $(CPPFLAGS) /favor:AMD64 /D_WIN64
 LDFLAGS = $(LDFLAGS) msvcrt_win2003.obj
 
-PERL512PATH = c:\mozilla-build\perl-5.12-x64\perl\lib\CORE
-PERL514PATH = c:\mozilla-build\perl-5.14-x64\lib\CORE
+PERL512PATH = c:\mozilla-build\perl-5.12-x64
+PERL514PATH = c:\mozilla-build\perl-5.14-x64
 PYTHONPATH = c:\mozilla-build\python-2.7-x64
 TCLPATH = c:\mozilla-build\tcl-8.5-x64
 !else
