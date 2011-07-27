@@ -17,7 +17,6 @@
  */
 
 #include <fcntl.h>
-#include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -30,10 +29,9 @@
 #include "fe.h"
 #include "text.h"
 #include "xchatc.h"
+#include "wdkutil.h"
 
-#ifdef WIN32
-#define XCHAT_DIR "X-Chat 2"
-#else
+#ifndef WIN32
 #define XCHAT_DIR ".xchat2"
 #endif
 #define DEF_FONT "Monospace 9"
@@ -308,12 +306,19 @@ get_xdir_fs (void)
 {
 	if (!xdir_fs)
 	{
-		char out[256];
+		if (portable_mode ())
+		{
+			xdir_fs = ".\\config";
+		}
+		else
+		{
+			char out[256];
 
-		if (!get_reg_str ("Software\\Microsoft\\Windows\\CurrentVersion\\"
-				"Explorer\\Shell Folders", "AppData", out, sizeof (out)))
-			return "./config";
-		xdir_fs = g_strdup_printf ("%s\\" XCHAT_DIR, out);
+			if (!get_reg_str ("Software\\Microsoft\\Windows\\CurrentVersion\\"
+					"Explorer\\Shell Folders", "AppData", out, sizeof (out)))
+				return "./config";
+			xdir_fs = g_strdup_printf ("%s\\" "X-Chat 2", out);
+		}
 	}
 	return xdir_fs;
 }
@@ -393,7 +398,7 @@ const struct prefs vars[] = {
 	{"dcc_blocksize", P_OFFINT (dcc_blocksize), TYPE_INT},
 	{"dcc_completed_dir", P_OFFSET (dcc_completed_dir), TYPE_STR},
 	{"dcc_dir", P_OFFSET (dccdir), TYPE_STR},
-	{"dcc_fast_send", P_OFFINT (fastdccsend), TYPE_BOOL},
+	/* {"dcc_fast_send", P_OFFINT (fastdccsend), TYPE_BOOL}, */
 	{"dcc_global_max_get_cps", P_OFFINT (dcc_global_max_get_cps), TYPE_INT},
 	{"dcc_global_max_send_cps", P_OFFINT (dcc_global_max_send_cps), TYPE_INT},
 	{"dcc_ip", P_OFFSET (dcc_ip_str), TYPE_STR},
@@ -416,6 +421,7 @@ const struct prefs vars[] = {
 	{"flood_msg_num", P_OFFINT (msg_number_limit), TYPE_INT},
 	{"flood_msg_time", P_OFFINT (msg_time_limit), TYPE_INT},
 
+	{"gui_license", P_OFFSET (gui_license), TYPE_STR},
 	{"gui_auto_open_chat", P_OFFINT (autoopendccchatwindow), TYPE_BOOL},
 	{"gui_auto_open_dialog", P_OFFINT (autodialog), TYPE_BOOL},
 	{"gui_auto_open_recv", P_OFFINT (autoopendccrecvwindow), TYPE_BOOL},
@@ -536,6 +542,7 @@ const struct prefs vars[] = {
 
 	{"tab_chans", P_OFFINT (tabchannels), TYPE_BOOL},
 	{"tab_dialogs", P_OFFINT (privmsgtab), TYPE_BOOL},
+	{"tab_icons", P_OFFINT (tab_icons), TYPE_BOOL},
 	{"tab_layout", P_OFFINT (tab_layout), TYPE_INT},
 	{"tab_new_to_front", P_OFFINT (newtabstofront), TYPE_INT},
 	{"tab_notices", P_OFFINT (notices_tabs), TYPE_BOOL},
@@ -546,9 +553,14 @@ const struct prefs vars[] = {
 	{"tab_sort", P_OFFINT (tab_sort), TYPE_BOOL},
 	{"tab_trunc", P_OFFINT (truncchans), TYPE_INT},
 	{"tab_utils", P_OFFINT (windows_as_tabs), TYPE_BOOL},
+	{"tab_xp", P_OFFINT (tab_xp), TYPE_BOOL},
 
+	{"text_auto_copy_text", P_OFFINT (autocopy_text), TYPE_BOOL},
+	{"text_auto_copy_stamp", P_OFFINT (autocopy_stamp), TYPE_BOOL},
+	{"text_auto_copy_color", P_OFFINT (autocopy_color), TYPE_BOOL},
 	{"text_background", P_OFFSET (background), TYPE_STR},
 	{"text_color_nicks", P_OFFINT (colorednicks), TYPE_BOOL},
+	{"text_emoticons", P_OFFINT (emoticons), TYPE_BOOL},
 	{"text_font", P_OFFSET (font_normal), TYPE_STR},
 	{"text_indent", P_OFFINT (indent_nicks), TYPE_BOOL},
 	{"text_max_indent", P_OFFINT (max_auto_indent), TYPE_INT},
@@ -561,7 +573,7 @@ const struct prefs vars[] = {
 	{"text_tint_blue", P_OFFINT (tint_blue), TYPE_INT},
 	{"text_tint_green", P_OFFINT (tint_green), TYPE_INT},
 	{"text_tint_red", P_OFFINT (tint_red), TYPE_INT},
-	{"text_transparent", P_OFFINT (transparent), TYPE_BOOL},
+	/* {"text_transparent", P_OFFINT (transparent), TYPE_BOOL}, */
 	{"text_wordwrap", P_OFFINT (wordwrap), TYPE_BOOL},
 
 	{0, 0, 0},
@@ -624,13 +636,14 @@ load_config (void)
 	prefs.indent_nicks = 1;
 	prefs.thin_separator = 1;
 	prefs._tabs_position = 2; /* 2 = left */
-	prefs.fastdccsend = 1;
+	/* prefs.fastdccsend = 1; */
 	prefs.wordwrap = 1;
 	prefs.autosave = 1;
 	prefs.autodialog = 1;
 	prefs.gui_input_spell = 1;
 	prefs.autoreconnect = 1;
 	prefs.recon_delay = 10;
+	prefs.autocopy_text = 1;
 	prefs.text_replay = 1;
 	prefs.tabchannels = 1;
 	prefs.tab_layout = 2;	/* 0=Tabs 1=Reserved 2=Tree */
@@ -648,6 +661,7 @@ load_config (void)
 	prefs.dialog_height = 256;
 	prefs.gui_join_dialog = 1;
 	prefs.gui_quit_dialog = 1;
+	prefs.slist_skip = 1;
 	prefs.dcctimeout = 180;
 	prefs.dccstalltimeout = 60;
 	prefs.notify_timeout = 15;
@@ -683,6 +697,7 @@ load_config (void)
 #ifdef WIN32
 	prefs.identd = 1;
 #endif
+	strcpy (prefs.gui_license, "");
 	strcpy (prefs.stamp_format, "[%H:%M] ");
 	strcpy (prefs.timestamp_log_format, "%b %d %H:%M:%S ");
 	strcpy (prefs.logmask, "%n-%c.log");

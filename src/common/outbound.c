@@ -32,7 +32,6 @@
 #include <sys/wait.h>
 #endif
 
-#include <unistd.h>
 #include <time.h>
 #include <signal.h>
 #include <sys/stat.h>

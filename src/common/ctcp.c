@@ -18,7 +18,6 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <unistd.h>
 #include <stdlib.h>
 
 #include "xchat.h"
@@ -134,8 +133,8 @@ ctcp_handle (session *sess, char *to, char *nick, char *ip,
 
 	if (!strcasecmp (msg, "VERSION") && !prefs.hidever)
 	{
-		snprintf (outbuf, sizeof (outbuf), "VERSION xchat "PACKAGE_VERSION" %s",
-					 get_cpu_str ());
+		snprintf (outbuf, sizeof (outbuf), "VERSION XChat-WDK "PACKAGE_VERSION" [x%d] / %s",
+					 get_cpu_arch (), get_cpu_str ());
 		serv->p_nctcp (serv, nick, outbuf);
 	}
 
