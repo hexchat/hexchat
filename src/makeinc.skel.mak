@@ -37,8 +37,8 @@ TCLPATH = c:\mozilla-build\tcl-8.5-x64
 !else
 LDFLAGS = $(LDFLAGS) msvcrt_winxp.obj
 
-PERL512PATH = c:\mozilla-build\perl-5.12-x86\perl\lib\CORE
-PERL514PATH = c:\mozilla-build\perl-5.14-x86\lib\CORE
+PERL512PATH = c:\mozilla-build\perl-5.12-x86
+PERL514PATH = c:\mozilla-build\perl-5.14-x86
 PYTHONPATH = c:\mozilla-build\python-2.7-x86
 TCLPATH = c:\mozilla-build\tcl-8.5-x86
 !endif
