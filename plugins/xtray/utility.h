@@ -19,6 +19,9 @@
 #ifndef _H_UTILITY_H
 #define _H_UTILITY_H
 
+WORD					HotkeyfToMod	(WORD);
+WORD					ModToHotkeyf	(WORD);
+
 int						SetOption		(HWND, unsigned int, unsigned int);
 int						SetCheck		(HWND, unsigned int, unsigned int);
 int						SetToggle		(HWND, unsigned int, unsigned int, bool);

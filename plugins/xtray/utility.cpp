@@ -29,6 +29,49 @@
 TCHAR BACKUP_INI_FILE[] = _T(".\\plugins\\config\\xtray.conf");
 struct HOTKEY g_hHotKey;
 
+/* we need to convert ALT and SHIFT modifiers
+// from <winuser.h>
+#define MOD_ALT         0x0001
+#define MOD_CONTROL     0x0002
+#define MOD_SHIFT       0x0004
+// from <commctrl.h>
+#define HOTKEYF_SHIFT           0x01
+#define HOTKEYF_CONTROL         0x02
+#define HOTKEYF_ALT             0x04
+*/
+
+WORD HotkeyfToMod(WORD modifiers)
+{
+	WORD newmods = 0;
+
+	if (modifiers & HOTKEYF_SHIFT)
+		newmods |= MOD_SHIFT;
+
+	if (modifiers & HOTKEYF_CONTROL)
+		newmods |= MOD_CONTROL;
+
+	if (modifiers & HOTKEYF_ALT)
+		newmods |= MOD_ALT;
+
+	return newmods;
+}
+
+WORD ModToHotkeyf(WORD modifiers)
+{
+	WORD newmods = 0;
+
+	if (modifiers & MOD_SHIFT)
+		newmods |= HOTKEYF_SHIFT;
+
+	if (modifiers & MOD_CONTROL)
+		newmods |= HOTKEYF_CONTROL;
+
+	if (modifiers & MOD_ALT)
+		newmods |= HOTKEYF_ALT;
+
+	return newmods;
+}
+
 void SavePrefs(int iDlg)
 {
 	/**************************************************************************************************/
@@ -292,7 +335,7 @@ void CheckPrefs(HWND hwnd, int iDlg)
 			hHotkey = SendDlgItemMessage(hwnd, IDC_ALERT_HOTKEY, HKM_GETHOTKEY, 0, 0);
 			
 			g_hHotKey.key = LOBYTE(hHotkey);
-			g_hHotKey.mod = HIBYTE(hHotkey);
+			g_hHotKey.mod = HotkeyfToMod(HIBYTE(hHotkey));
 			
 			if(IsDlgButtonChecked(hwnd, PREF_UWIOB) == BST_CHECKED)
 			{
@@ -403,7 +446,7 @@ void SetDialog(HWND hwnd, int iDlg)
 			/**********************************************************/
 			TCHAR tTime[255];
 			SendDlgItemMessage(hwnd, IDC_ALERT_TIME,	WM_SETTEXT, 0, (LPARAM)_itot(g_iTime, tTime, 10));
-			SendDlgItemMessage(hwnd, IDC_ALERT_HOTKEY,	HKM_SETHOTKEY, MAKEWORD(g_hHotKey.key, g_hHotKey.mod), 0);
+			SendDlgItemMessage(hwnd, IDC_ALERT_HOTKEY,	HKM_SETHOTKEY, MAKEWORD(g_hHotKey.key, ModToHotkeyf(g_hHotKey.mod)), 0);
 		}
 		break;
 	}
