@@ -1,8 +1,8 @@
 AppName=XChat-WDK
-AppVerName=XChat-WDK 1496-3
-AppVersion=14.96.3
-VersionInfoVersion=14.96.3
-OutputBaseFilename=XChat-WDK 1496-3
+AppVerName=XChat-WDK 1496-4
+AppVersion=14.96.4
+VersionInfoVersion=14.96.4
+OutputBaseFilename=XChat-WDK 1496-4
 AppPublisher=XChat-WDK
 AppPublisherURL=http://code.google.com/p/xchat-wdk/
 AppCopyright=Copyright (C) 1998-2010 Peter Zelezny
