@@ -34,7 +34,6 @@ copy %DEPS_ROOT%\lib\enchant\libenchant_myspell.dll %XCHAT_DEST%\lib\enchant\lib
 copy ..\plugins\checksum\xcchecksum.dll %XCHAT_DEST%\plugins\xcchecksum.dll.x64
 copy ..\plugins\lua\xclua.dll %XCHAT_DEST%\plugins\xclua.dll.x64
 copy ..\plugins\mpcinfo\xcmpcinfo.dll %XCHAT_DEST%\plugins\xcmpcinfo.dll.x64
-copy ..\plugins\perl\xcperl-510.dll %XCHAT_DEST%\plugins\xcperl-510.dll.x64
 copy ..\plugins\perl\xcperl-512.dll %XCHAT_DEST%\plugins\xcperl-512.dll.x64
 copy ..\plugins\perl\xcperl-514.dll %XCHAT_DEST%\plugins\xcperl-514.dll.x64
 copy ..\plugins\python\xcpython.dll %XCHAT_DEST%\plugins\xcpython.dll.x64

@@ -1,6 +1,5 @@
 @echo off
-set PERL_510=c:\mozilla-build\perl-5.10-x86
-set PERL_512=c:\mozilla-build\perl-5.12-x86
+set PERL_512=c:\mozilla-build\perl-5.12-x86\perl
 set PERL_514=c:\mozilla-build\perl-5.14-x86
 echo [Setup] > xchat-wdk.iss
 echo WizardImageFile=%cd%\bitmaps\wizardimage.bmp >> xchat-wdk.iss
@@ -26,9 +25,6 @@ nmake /nologo /f makefile.mak clean
 nmake /nologo /f makefile.mak
 cd perl
 set OOPATH=%PATH%
-set PATH=%OOPATH%;%PERL_510%\bin
-nmake /nologo /s /f makefile-510.mak clean
-nmake /nologo /s /f makefile-510.mak
 set PATH=%OOPATH%;%PERL_512%\bin
 nmake /nologo /s /f makefile-512.mak clean
 nmake /nologo /s /f makefile-512.mak

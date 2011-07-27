@@ -14,8 +14,6 @@ LIBS = $(LIBS) /libpath:$(DEV)\lib gtk-win32-2.0.lib gdk-win32-2.0.lib atk-1.0.l
 LUALIB = lua51
 LUAOUTPUT = xclua.dll
 
-PERL510LIB = perl510
-PERL510OUTPUT = xcperl-510.dll
 PERL512LIB = perl512
 PERL512OUTPUT = xcperl-512.dll
 PERL514LIB = perl514
@@ -32,16 +30,14 @@ CFLAGS = $(CFLAGS) /favor:AMD64 /D_WIN64
 CPPFLAGS = $(CPPFLAGS) /favor:AMD64 /D_WIN64
 LDFLAGS = $(LDFLAGS) msvcrt_win2003.obj
 
-PERL510PATH = c:\mozilla-build\perl-5.10-x64\lib\CORE
-PERL512PATH = c:\mozilla-build\perl-5.12-x64\lib\CORE
+PERL512PATH = c:\mozilla-build\perl-5.12-x64\perl\lib\CORE
 PERL514PATH = c:\mozilla-build\perl-5.14-x64\lib\CORE
 PYTHONPATH = c:\mozilla-build\python-2.7-x64
 TCLPATH = c:\mozilla-build\tcl-8.5-x64
 !else
 LDFLAGS = $(LDFLAGS) msvcrt_winxp.obj
 
-PERL510PATH = c:\mozilla-build\perl-5.10-x86\lib\CORE
-PERL512PATH = c:\mozilla-build\perl-5.12-x86\lib\CORE
+PERL512PATH = c:\mozilla-build\perl-5.12-x86\perl\lib\CORE
 PERL514PATH = c:\mozilla-build\perl-5.14-x86\lib\CORE
 PYTHONPATH = c:\mozilla-build\python-2.7-x86
 TCLPATH = c:\mozilla-build\tcl-8.5-x86
