@@ -20,7 +20,7 @@ xchat.pm.h: lib/Xchat.pm lib/IRC.pm
 	perl.exe generate_header
 
 $(TARGET): perl.obj perl.def
-	$(LINK) /DLL /out:$(TARGET) perl.obj $(LDFLAGS) $(PERL514LIB).lib /libpath:$(PERL514PATH) /delayload:$(PERL514LIB).dll $(DIRENTLIB) delayimp.lib user32.lib shell32.lib advapi32.lib /def:perl.def
+	$(LINK) /DLL /out:$(TARGET) perl.obj $(LDFLAGS) $(PERL514LIB).lib /libpath:$(PERL514PATH)\lib\CORE /delayload:$(PERL514LIB).dll $(DIRENTLIB) delayimp.lib user32.lib shell32.lib advapi32.lib /def:perl.def
 
 clean:
 	@del $(TARGET)
