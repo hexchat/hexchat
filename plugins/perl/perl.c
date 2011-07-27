@@ -1346,9 +1346,9 @@ perl_load_file (char *filename)
 				/* http://forum.xchat.org/viewtopic.php?t=3277 */
 				thread_mbox ("Cannot use this " PERL_DLL "\n\n"
 #ifdef _WIN64
-								 "64-bit ActivePerl is required.");
+								 "64-bit Strawberry Perl is required.");
 #else
-								 "32-bit ActivePerl is required.");
+								 "32-bit Strawberry Perl is required.");
 #endif
 			else {
 				/* a lot of people install this old version */
@@ -1357,14 +1357,14 @@ perl_load_file (char *filename)
 					FreeLibrary (lib);
 					lib = NULL;
 					thread_mbox ("Cannot open " PERL_DLL "\n\n"
-									 "You must have ActivePerl " PERL_REQUIRED_VERSION " installed in order to\n"
+									 "You must have Strawberry Perl " PERL_REQUIRED_VERSION " installed in order to\n"
 									 "run perl scripts.\n\n"
 									 "I have found Perl 5.6, but that is too old.");
 				} else {
 					thread_mbox ("Cannot open " PERL_DLL "\n\n"
-									 "You must have ActivePerl " PERL_REQUIRED_VERSION " installed in order to\n"
+									 "You must have Strawberry Perl " PERL_REQUIRED_VERSION " installed in order to\n"
 									 "run perl scripts.\n\n"
-									 "http://www.activestate.com/activeperl/downloads\n\n"
+									 "http://strawberryperl.com\n\n"
 									 "Make sure perl's bin directory is in your PATH.");
 				}
 			}
