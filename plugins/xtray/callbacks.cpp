@@ -167,10 +167,9 @@ int event_cb(char *word[], void *userdata)
 		free(szTemp);
 	}
 
-	if(g_dwPrefs & (1<<PREF_BLINK))
+	if(g_dwPrefs & (1<<PREF_BLINK) && (g_dwPrefs & (1<<iEvent)))
 	{
 		BlinkIcon(g_hXchatWnd, 1, g_hIcons[0], g_hIcons[(iEvent+1)], 700, 5);
-		
 	}
 
 	/***********************************/
