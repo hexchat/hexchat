@@ -18,7 +18,6 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -78,8 +77,9 @@ GdkColor colors[] = {
 	{0, 0x0000, 0x0000, 0xffff}, /* 38 tab Nick Mentioned (blue) */
 	{0, 0xffff, 0x0000, 0x0000}, /* 39 tab New Message (red) */
 	{0, 0x9595, 0x9595, 0x9595}, /* 40 away user (grey) */
+	{0, 0xffff, 0x0000, 0x0000}, /* 41 spell checker color (red) */
 };
-#define MAX_COL 40
+#define MAX_COL 41
 
 
 void

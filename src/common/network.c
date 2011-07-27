@@ -21,7 +21,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include <unistd.h>
 #include <glib.h>
 
 #include "../../config.h"				  /* grab USE_IPV6 and LOOKUPD defines */
