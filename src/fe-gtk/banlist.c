@@ -133,11 +133,8 @@ banlist_do_refresh (struct session *sess)
 		gtk_list_store_clear (store);
 
 		handle_command (sess, "ban", FALSE);
-#ifdef WIN32
-		if (0)
-#else
+
 		if (supports_exempt (sess->server))
-#endif
 		{
 			snprintf (tbuf, sizeof (tbuf), "quote mode %s +e", sess->channel);
 			handle_command (sess, tbuf, FALSE);
