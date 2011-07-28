@@ -1585,7 +1585,7 @@ static struct mymenu mymenu[] = {
 #endif
 	{0, 0, 0, M_SEP, 0, 0, 0},	/* 11 */
 #define DETACH_OFFSET (12)
-	{0, menu_detach, GTK_STOCK_REDO, M_MENUSTOCK, 0, 0, 1, GDK_I},	/* 12 */
+	{0, menu_detach, GTK_STOCK_REDO, M_MENUSTOCK, 0, 0, 1, GDK_i},	/* 12 */
 #define CLOSE_OFFSET (13)
 	{0, menu_close, GTK_STOCK_CLOSE, M_MENUSTOCK, 0, 0, 1, GDK_w},
 	{0, 0, 0, M_SEP, 0, 0, 0},
