@@ -152,7 +152,7 @@ static const setting inputbox_settings[] =
 #if defined(USE_GTKSPELL) || defined(USE_LIBSEXY)
 	{ST_TOGGLE, N_("Spell checking"), P_OFFINTNL(gui_input_spell),0,0,0},
 	{ST_ENTRY,	N_("Dictionaries to use:"), P_OFFSETNL(spell_langs),0,0,sizeof prefs.spell_langs},
-	{ST_LABEL,	N_("Use language codes (as in \"share\\locale\"). Separate multiple entries with commas.\nUsing too many dictionaries may cause performance problems.")},
+	{ST_LABEL,	N_("Use language codes (as in \"share\\myspell\\dicts\").\nSeparate multiple entries with commas.")},
 #endif
 
 	{ST_HEADER, N_("Nick Completion"),0,0,0},
