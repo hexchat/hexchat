@@ -1,4 +1,5 @@
 @echo off
+set TARGET="LibXML-WDK 2.7.8 x86.7z"
 set WDK_ROOT=c:\WinDDK\7600.16385.1
 set INCLUDE=%WDK_ROOT%\inc\api;%WDK_ROOT%\inc\crt
 set LIB=%WDK_ROOT%\lib\wxp\i386;%WDK_ROOT%\lib\Crt\i386
@@ -12,5 +13,6 @@ rmdir /q /s lib
 nmake /nologo /f Makefile.msvc install
 move lib\libxml2.dll bin
 set PATH=%PATH%;%PROGRAMW6432%\7-Zip
-7z a "LibXML-WDK 2.7.8 x86.7z" bin include lib
+del %TARGET%
+7z a %TARGET% bin include lib
 pause
