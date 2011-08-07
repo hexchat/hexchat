@@ -11,7 +11,7 @@ rmdir /q /s bin
 rmdir /q /s include
 rmdir /q /s lib
 nmake /nologo /f Makefile.msvc install
-mv lib\libxml2.dll bin
+move lib\libxml2.dll bin
 set PATH=%PATH%;%PROGRAMW6432%\7-Zip
 7z a "LibXML-WDK 2.7.8-x64.7z" bin include lib
 pause
