@@ -421,7 +421,6 @@ const struct prefs vars[] = {
 	{"flood_msg_num", P_OFFINT (msg_number_limit), TYPE_INT},
 	{"flood_msg_time", P_OFFINT (msg_time_limit), TYPE_INT},
 
-	{"gui_license", P_OFFSET (gui_license), TYPE_STR},
 	{"gui_auto_open_chat", P_OFFINT (autoopendccchatwindow), TYPE_BOOL},
 	{"gui_auto_open_dialog", P_OFFINT (autodialog), TYPE_BOOL},
 	{"gui_auto_open_recv", P_OFFINT (autoopendccrecvwindow), TYPE_BOOL},
@@ -435,6 +434,7 @@ const struct prefs vars[] = {
 	{"gui_input_style", P_OFFINT (style_inputbox), TYPE_BOOL},
 	{"gui_join_dialog", P_OFFINT (gui_join_dialog), TYPE_BOOL},
 	{"gui_lagometer", P_OFFINT (lagometer), TYPE_INT},
+	{"gui_license", P_OFFSET (gui_license), TYPE_STR},
 	{"gui_mode_buttons", P_OFFINT (chanmodebuttons), TYPE_BOOL},
 	{"gui_pane_left_size", P_OFFINT (gui_pane_left_size), TYPE_INT},
 	{"gui_pane_right_size", P_OFFINT (gui_pane_right_size), TYPE_INT},
@@ -555,9 +555,9 @@ const struct prefs vars[] = {
 	{"tab_utils", P_OFFINT (windows_as_tabs), TYPE_BOOL},
 	{"tab_xp", P_OFFINT (tab_xp), TYPE_BOOL},
 
-	{"text_auto_copy_text", P_OFFINT (autocopy_text), TYPE_BOOL},
+	{"text_auto_copy_color", P_OFFINT (autocopy_color), TYPE_BOOL},	
 	{"text_auto_copy_stamp", P_OFFINT (autocopy_stamp), TYPE_BOOL},
-	{"text_auto_copy_color", P_OFFINT (autocopy_color), TYPE_BOOL},
+	{"text_auto_copy_text", P_OFFINT (autocopy_text), TYPE_BOOL},
 	{"text_background", P_OFFSET (background), TYPE_STR},
 	{"text_color_nicks", P_OFFINT (colorednicks), TYPE_BOOL},
 	{"text_emoticons", P_OFFINT (emoticons), TYPE_BOOL},
