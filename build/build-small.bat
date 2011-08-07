@@ -49,6 +49,7 @@ xcopy /q /s /i %DEPS_ROOT%\lib\gtk-2.0\2.10.0\engines\libpixmap.dll %XCHAT_DEST%
 copy %DEPS_ROOT%\lib\gtk-2.0\2.10.0\engines\libwimp.dll %XCHAT_DEST%\lib\gtk-2.0\2.10.0\engines
 xcopy /q /s /i %DEPS_ROOT%\lib\gtk-2.0\modules\libgail.dll %XCHAT_DEST%\lib\gtk-2.0\modules\
 xcopy /q /s /i etc %XCHAT_DEST%\etc
+xcopy /q /s /i share %XCHAT_DEST%\share
 copy %DEPS_ROOT%\bin\libeay32.dll %XCHAT_DEST%
 copy %DEPS_ROOT%\bin\ssleay32.dll %XCHAT_DEST%
 copy %DEPS_ROOT%\bin\zlib1.dll %XCHAT_DEST%

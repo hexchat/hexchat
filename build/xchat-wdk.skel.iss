@@ -80,8 +80,10 @@ Source: "LICENSE.GTK"; DestDir: "{app}"; Components: libs
 Source: "LICENSE.CAIRO"; DestDir: "{app}"; Components: libs
 Source: "LICENSE.LUA"; DestDir: "{app}"; Components: libs
 Source: "LICENSE.ENCHANT"; DestDir: "{app}"; Components: libs
+Source: "LICENSE.LIBXML"; DestDir: "{app}"; Components: libs
 Source: "portable-mode"; DestDir: "{app}"; Tasks: portable
 Source: "etc\*"; DestDir: "{app}\etc"; Flags: createallsubdirs recursesubdirs; Components: libs
+Source: "share\xml\*"; DestDir: "{app}\share\xml"; Flags: createallsubdirs recursesubdirs; Components: libs
 Source: "locale\*"; DestDir: "{app}\locale"; Flags: createallsubdirs recursesubdirs; Components: translations
 Source: "share\locale\*"; DestDir: "{app}\share\locale"; Flags: createallsubdirs recursesubdirs; Components: translations
 ;Source: "share\myspell\*"; DestDir: "{app}\share\myspell"; Flags: createallsubdirs recursesubdirs; Components: spelling
@@ -163,6 +165,9 @@ Source: "ssleay32.dll.x64"; DestDir: "{app}"; DestName: "ssleay32.dll"; Componen
 
 Source: "zlib1.dll"; DestDir: "{app}"; Components: libs; Tasks: x86
 Source: "zlib1.dll.x64"; DestDir: "{app}"; DestName: "zlib1.dll"; Components: libs; Tasks: x64
+
+Source: "libxml2.dll"; DestDir: "{app}"; Components: libs; Tasks: x86
+Source: "libxml2.dll.x64"; DestDir: "{app}"; DestName: "libxml2.dll"; Components: libs; Tasks: x64
 
 Source: "libenchant.dll"; DestDir: "{app}"; Components: libs; Tasks: x86
 Source: "libenchant.dll.x64"; DestDir: "{app}"; DestName: "libenchant.dll"; Components: libs; Tasks: x64
