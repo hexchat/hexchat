@@ -45,6 +45,7 @@ copy %DEPS_ROOT%\bin\libpangoft2-1.0-0.dll %XCHAT_DEST%
 copy %DEPS_ROOT%\bin\libpangowin32-1.0-0.dll %XCHAT_DEST%
 copy %DEPS_ROOT%\bin\libatk-1.0-0.dll %XCHAT_DEST%
 copy %DEPS_ROOT%\bin\intl.dll %XCHAT_DEST%
+copy %DEPS_ROOT%\bin\libxml2.dll %XCHAT_DEST%
 xcopy /q /s /i %DEPS_ROOT%\lib\gtk-2.0\2.10.0\engines\libpixmap.dll %XCHAT_DEST%\lib\gtk-2.0\2.10.0\engines\
 copy %DEPS_ROOT%\lib\gtk-2.0\2.10.0\engines\libwimp.dll %XCHAT_DEST%\lib\gtk-2.0\2.10.0\engines
 xcopy /q /s /i %DEPS_ROOT%\lib\gtk-2.0\modules\libgail.dll %XCHAT_DEST%\lib\gtk-2.0\modules\
