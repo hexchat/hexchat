@@ -9,7 +9,7 @@ LIBS = $(LIBS) gdi32.lib shell32.lib user32.lib advapi32.lib imm32.lib ole32.lib
 
 GLIB = /I$(DEV)\include\glib-2.0 /I$(DEV)\lib\glib-2.0\include
 GTK = /I$(DEV)\include\gtk-2.0 /I$(DEV)\lib\gtk-2.0\include /I$(DEV)\include\atk-1.0 /I$(DEV)\include\cairo /I$(DEV)\include\pango-1.0 /I$(DEV)\include\gdk-pixbuf-2.0
-LIBS = $(LIBS) /libpath:$(DEV)\lib gtk-win32-2.0.lib gdk-win32-2.0.lib atk-1.0.lib gio-2.0.lib gdk_pixbuf-2.0.lib pangowin32-1.0.lib pangocairo-1.0.lib pango-1.0.lib cairo.lib gobject-2.0.lib gmodule-2.0.lib glib-2.0.lib intl.lib
+LIBS = $(LIBS) /libpath:$(DEV)\lib gtk-win32-2.0.lib gdk-win32-2.0.lib atk-1.0.lib gio-2.0.lib gdk_pixbuf-2.0.lib pangowin32-1.0.lib pangocairo-1.0.lib pango-1.0.lib cairo.lib gobject-2.0.lib gmodule-2.0.lib glib-2.0.lib intl.lib libxml2.lib
 
 LUALIB = lua51
 LUAOUTPUT = xclua.dll

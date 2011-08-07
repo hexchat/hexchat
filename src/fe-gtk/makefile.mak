@@ -25,6 +25,8 @@ rawlog.obj \
 search.obj \
 servlistgui.obj \
 setup.obj \
+sexy-iso-codes.obj \
+sexy-marshal.obj \
 sexy-spell-entry.obj \
 textgui.obj \
 urlgrab.obj \

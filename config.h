@@ -3,6 +3,7 @@
 #define USE_GMODULE
 #define USE_PLUGIN
 #define USE_LIBSEXY
+#define HAVE_ISO_CODES
 #define PACKAGE_NAME "xchat"
 #define PACKAGE_VERSION "1496-4"
 #define XCHAT_RELEASE "2.8.8"

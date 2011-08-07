@@ -30,8 +30,8 @@
 #include <glib/gi18n.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-/*#include "gtkspell-iso-codes.h"
-#include "sexy-marshal.h"*/
+#include "sexy-iso-codes.h"
+#include "sexy-marshal.h"
 
 #include "typedef.h"
 
@@ -211,14 +211,14 @@ sexy_spell_entry_class_init(SexySpellEntryClass *klass)
 	 * Returns: %FALSE to indicate that the word should be marked as
 	 * correct.
 	 */
-/*	signals[WORD_CHECK] = g_signal_new("word_check",
+	signals[WORD_CHECK] = g_signal_new("word_check",
 					   G_TYPE_FROM_CLASS(object_class),
 					   G_SIGNAL_RUN_LAST,
 					   G_STRUCT_OFFSET(SexySpellEntryClass, word_check),
 					   (GSignalAccumulator) spell_accumulator, NULL,
 					   sexy_marshal_BOOLEAN__STRING,
 					   G_TYPE_BOOLEAN,
-					   1, G_TYPE_STRING);*/
+					   1, G_TYPE_STRING);
 }
 
 static void
@@ -495,10 +495,6 @@ build_spelling_menu(SexySpellEntry *entry, const gchar *word)
 	if (entry->priv->dict_list == NULL)
 		return topmenu;
 
-#if 1
-	dict = (struct EnchantDict *) entry->priv->dict_list->data;
-	build_suggestion_menu(entry, topmenu, dict, word);
-#else
 	/* Suggestions */
 	if (g_slist_length(entry->priv->dict_list) == 1) {
 		dict = (struct EnchantDict *) entry->priv->dict_list->data;
@@ -527,7 +523,6 @@ build_spelling_menu(SexySpellEntry *entry, const gchar *word)
 			build_suggestion_menu(entry, menu, dict, word);
 		}
 	}
-#endif
 
 	/* Separator */
 	mi = gtk_separator_menu_item_new ();
@@ -541,11 +536,6 @@ build_spelling_menu(SexySpellEntry *entry, const gchar *word)
 
 	gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(mi), gtk_image_new_from_stock(GTK_STOCK_ADD, GTK_ICON_SIZE_MENU));
 
-#if 1
-	dict = (struct EnchantDict *) entry->priv->dict_list->data;
-	g_object_set_data(G_OBJECT(mi), "enchant-dict", dict);
-	g_signal_connect(G_OBJECT(mi), "activate", G_CALLBACK(add_to_dictionary), entry);
-#else
 	if (g_slist_length(entry->priv->dict_list) == 1) {
 		dict = (struct EnchantDict *) entry->priv->dict_list->data;
 		g_object_set_data(G_OBJECT(mi), "enchant-dict", dict);
@@ -577,7 +567,6 @@ build_spelling_menu(SexySpellEntry *entry, const gchar *word)
 			gtk_menu_shell_append(GTK_MENU_SHELL(menu), submi);
 		}
 	}
-#endif
 
 	gtk_widget_show_all(mi);
 	gtk_menu_shell_append(GTK_MENU_SHELL(topmenu), mi);
@@ -759,11 +748,7 @@ word_misspelled(SexySpellEntry *entry, int start, int end)
 
 	g_strlcpy(word, text + start, end - start + 1);
 
-#if 0
 	g_signal_emit(entry, signals[WORD_CHECK], 0, word, &ret);
-#else
-	ret = default_word_check (entry, word);
-#endif
 
 	g_free(word);
 	return ret;
@@ -1121,8 +1106,8 @@ gchar *
 sexy_spell_entry_get_language_name(const SexySpellEntry *entry,
 								   const gchar *lang)
 {
-	/*if (have_enchant)
-		return gtkspell_iso_codes_lookup_name_for_code(lang);*/
+	if (have_enchant)
+		return gtkspell_iso_codes_lookup_name_for_code(lang);
 	return NULL;
 }
 
