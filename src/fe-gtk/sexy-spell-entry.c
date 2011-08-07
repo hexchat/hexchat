@@ -36,6 +36,7 @@
 #include "typedef.h"
 
 #include "../common/cfgfiles.h"
+#include "../common/xchatc.h"
 
 /*
  * Bunch of poop to make enchant into a runtime dependency rather than a
@@ -944,10 +945,10 @@ void
 sexy_spell_entry_activate_default_languages(SexySpellEntry *entry)
 {
 #if GLIB_CHECK_VERSION (2, 6, 0)
-	const gchar* const *langs;
+	/*const gchar* const *langs;
 	int i;
-	gchar *lastprefix = NULL;
-	GSList *enchant_langs;
+	gchar *lastprefix = NULL;*/
+	GSList *enchant_langs, *i;
 
 	if (!have_enchant)
 		return;
@@ -956,14 +957,14 @@ sexy_spell_entry_activate_default_languages(SexySpellEntry *entry)
 		entry->priv->broker = enchant_broker_init();
 
 
-	langs = g_get_language_names ();
+	/*langs = g_get_language_names ();
 
 	if (langs == NULL)
-		return;
+		return;*/
 
 	enchant_langs = sexy_spell_entry_get_languages(entry);
 
-	for (i = 0; langs[i]; i++) {
+	/*for (i = 0; langs[i]; i++) {
 		if ((g_strncasecmp(langs[i], "C", 1) != 0) &&
 		    (strlen(langs[i]) >= 2) &&
 		    enchant_has_lang(langs[i], enchant_langs)) {
@@ -975,10 +976,19 @@ sexy_spell_entry_activate_default_languages(SexySpellEntry *entry)
 		}
 	}
 	if (lastprefix != NULL)
-		g_free(lastprefix);
+		g_free(lastprefix);*/
+
+	for (i = enchant_langs; i; i = g_slist_next (i))
+	{
+		if (strstr (prefs.spell_langs, i->data) != NULL)
+		{
+			sexy_spell_entry_activate_language_internal (entry, i->data, NULL);
+		}
+	}
 
 	g_slist_foreach(enchant_langs, (GFunc) g_free, NULL);
 	g_slist_free(enchant_langs);
+	g_slist_free (i);
 
 	/* If we don't have any languages activated, use "en" */
 	if (entry->priv->dict_list == NULL)

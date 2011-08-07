@@ -568,6 +568,7 @@ const struct prefs vars[] = {
 	{"text_replay", P_OFFINT (text_replay), TYPE_BOOL},
 	{"text_show_marker", P_OFFINT (show_marker), TYPE_BOOL},
 	{"text_show_sep", P_OFFINT (show_separator), TYPE_BOOL},
+	{"text_spell_langs", P_OFFSET (spell_langs), TYPE_STR},
 	{"text_stripcolor", P_OFFINT (stripcolor), TYPE_BOOL},
 	{"text_thin_sep", P_OFFINT (thin_separator), TYPE_BOOL},
 	{"text_tint_blue", P_OFFINT (tint_blue), TYPE_INT},
@@ -698,6 +699,7 @@ load_config (void)
 	prefs.identd = 1;
 #endif
 	strcpy (prefs.gui_license, "");
+	strcpy (prefs.spell_langs, g_getenv ("LC_ALL") ? g_getenv ("LC_ALL") : "en_US");
 	strcpy (prefs.stamp_format, "[%H:%M] ");
 	strcpy (prefs.timestamp_log_format, "%b %d %H:%M:%S ");
 	strcpy (prefs.logmask, "%n-%c.log");
