@@ -13,7 +13,8 @@ rmdir /q /s include
 rmdir /q /s lib
 nmake /nologo /f Makefile.msvc install
 move lib\libxml2.dll bin
+copy /y ..\COPYING LICENSE.LIBXML
 set PATH=%PATH%;%PROGRAMW6432%\7-Zip
 del %TARGET%
-7z a %TARGET% bin include lib
+7z a %TARGET% bin include lib LICENSE.LIBXML
 pause
