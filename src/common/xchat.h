@@ -205,6 +205,7 @@ struct xchatprefs
 	unsigned int perc_ascii;
 	unsigned int autosave;
 	unsigned int autodialog;
+	unsigned int gui_auto_open_msg;
 	unsigned int autosave_url;
 	unsigned int autoreconnect;
 	unsigned int autoreconnectonfail;
