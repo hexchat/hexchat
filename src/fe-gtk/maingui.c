@@ -1591,7 +1591,12 @@ mg_create_alertmenu (session *sess, GtkWidget *menu)
 	submenu = menu_quick_sub (_("_Extra Alerts"), menu, NULL, XCMENU_MNEMONIC, -1);
 
 	mg_perchan_menu_item (_("Beep on _Message"), submenu, &sess->alert_beep, prefs.input_beep_chans);
-	mg_perchan_menu_item (_("Blink Tray _Icon"), submenu, &sess->alert_tray, prefs.input_tray_chans);
+
+	if (!xtray_mode ())		/*disable this context menu item when xtray is loaded */
+	{
+		mg_perchan_menu_item (_("Blink Tray _Icon"), submenu, &sess->alert_tray, prefs.input_tray_chans);
+	}
+
 	mg_perchan_menu_item (_("Blink Task _Bar"), submenu, &sess->alert_taskbar, prefs.input_flash_chans);
 }
 
