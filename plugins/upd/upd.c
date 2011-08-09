@@ -42,7 +42,7 @@ check_version ()
 		return "Unknown";
 	}
 
-	hFile = InternetOpenUrl (hINet, "http://xchat-wdk.googlecode.com/hg/version.txt?r=wdk", NULL, 0, 0, 0);
+	hFile = InternetOpenUrl (hINet, "http://xchat-wdk.googlecode.com/git/version.txt?r=wdk", NULL, 0, 0, 0);
 	
 	if (hFile)
 	{
@@ -91,7 +91,7 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 
 	*plugin_name = "Update Checker";
 	*plugin_desc = "Plugin for checking for XChat-WDK updates";
-	*plugin_version = "1.3";
+	*plugin_version = "1.4";
 
 	xchat_hook_command (ph, "UPDCHK", XCHAT_PRI_NORM, print_version, 0, 0);
 	xchat_command (ph, "MENU -ietc\\download.png ADD \"Help/Check for Updates\" \"UPDCHK\"");
