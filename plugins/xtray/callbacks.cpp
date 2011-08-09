@@ -89,12 +89,12 @@ int event_cb(char *word[], void *userdata)
 		{
 		case CHAN_HILIGHT:
 			_snprintf(szInfo, 512, "%s:\r\n%s", word[1], word[2]);
-			_snprintf(szName, 64, "Hilight");
+			_snprintf(szName, 64, "Highlight: %s", xchat_get_info (ph, "channel"));
 			dwInfoFlags = NIIF_INFO;
 			break;
 		case CHAN_MESSAGE:
 			_snprintf(szInfo, 512, "%s:\r\n%s", word[1], word[2]);
-			_snprintf(szName, 64, "Channel Message");
+			_snprintf(szName, 64, "Channel Message: %s", xchat_get_info (ph, "channel"));
 			dwInfoFlags = NIIF_INFO;
 			break;
 		case CHAN_TOPIC_CHANGE:
