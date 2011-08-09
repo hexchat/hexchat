@@ -42,7 +42,7 @@ check_version ()
 		return "Unknown";
 	}
 
-	hFile = InternetOpenUrl (hINet, "http://xchat-wdk.googlecode.com/git/version.txt?r=wdk", NULL, 0, 0, 0);
+	hFile = InternetOpenUrl (hINet, "http://xchat-wdk.googlecode.com/git/version.txt?r=wdk", NULL, 0, INTERNET_FLAG_NO_CACHE_WRITE | INTERNET_FLAG_RELOAD, 0);
 	
 	if (hFile)
 	{
