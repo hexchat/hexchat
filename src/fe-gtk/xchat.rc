@@ -1,11 +1,14 @@
 #include <winver.h>
 #include "../../config.h"
+#include "../../resource.h"
 
 1 24 "xchat.exe.manifest"
 
 XC_ICON ICON "../../xchat.ico" 
 
 VS_VERSION_INFO VERSIONINFO
+	FILEVERSION    COMMA_VERSION
+	PRODUCTVERSION COMMA_VERSION
 	BEGIN
 		BLOCK "StringFileInfo"
 		BEGIN
@@ -15,6 +18,7 @@ VS_VERSION_INFO VERSIONINFO
 				VALUE "FileDescription", "XChat-WDK IRC Client"
 				VALUE "ProductName", "XChat-WDK" 
 				VALUE "ProductVersion", PACKAGE_VERSION
+				VALUE "FileVersion", PACKAGE_VERSION
 			END
 		END
 		BLOCK "VarFileInfo"
