@@ -1,20 +1,27 @@
 @echo off
+set INCLUDE=%WDK_ROOT%\inc\api;%WDK_ROOT%\inc\crt;%WDK_ROOT%\inc\api\crt\stl70
+set LIB=%WDK_ROOT%\lib\wxp\i386;%WDK_ROOT%\lib\Crt\i386
+set OPATH=%PATH%
+set DEV_32=%cd%\..\dep-x86
+set PATH=%PROGRAMFILES(X86)%\Microsoft Visual Studio 10.0\VC\bin;%PROGRAMFILES(X86)%\Microsoft Visual Studio 10.0\Common7\IDE;%PROGRAMFILES(X86)%\Microsoft SDKs\Windows\v7.0A\Bin;%DEV_32%\bin
 set PERL_512=c:\mozilla-build\perl-5.12-x86\perl
 set PERL_514=c:\mozilla-build\perl-5.14-x86
 echo [Setup] > xchat-wdk.iss
 echo WizardImageFile=%cd%\bitmaps\wizardimage.bmp >> xchat-wdk.iss
 echo WizardSmallImageFile=%cd%\bitmaps\wizardsmallimage.bmp >> xchat-wdk.iss
+del version.exe
+cl /nologo version.c
+version -a >> xchat-wdk.iss
+version -v >> xchat-wdk.iss
+version -i >> xchat-wdk.iss
+version -o >> xchat-wdk.iss
 cd ..
+build\version -r > resource.h
 echo SetupIconFile=%cd%\xchat.ico >> build\xchat-wdk.iss
 type build\xchat-wdk.skel.iss >> build\xchat-wdk.iss
-set DEV_32=%cd%\dep-x86
 cd src
 echo DEV = %DEV_32% > makeinc.mak
 type makeinc.skel.mak >> makeinc.mak
-set INCLUDE=%WDK_ROOT%\inc\api;%WDK_ROOT%\inc\crt;%WDK_ROOT%\inc\api\crt\stl70
-set LIB=%WDK_ROOT%\lib\wxp\i386;%WDK_ROOT%\lib\Crt\i386
-set OPATH=%PATH%
-set PATH=%PROGRAMFILES(X86)%\Microsoft Visual Studio 10.0\VC\bin;%PROGRAMFILES(X86)%\Microsoft Visual Studio 10.0\Common7\IDE;%PROGRAMFILES(X86)%\Microsoft SDKs\Windows\v7.0A\Bin;%DEV_32%\bin
 nmake /nologo /f makefile.mak clean
 cd pixmaps
 nmake /nologo /f makefile.mak

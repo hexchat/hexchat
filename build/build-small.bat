@@ -1,14 +1,17 @@
 @echo off
 set WDK_ROOT=c:\WinDDK\7600.16385.1
-cd ..
-set DEV_32=%cd%\dep-x86
-cd src
-echo DEV = %DEV_32% > makeinc.mak
-type makeinc.skel.mak >> makeinc.mak
 set INCLUDE=%WDK_ROOT%\inc\api;%WDK_ROOT%\inc\crt;%WDK_ROOT%\inc\api\crt\stl70
 set LIB=%WDK_ROOT%\lib\wxp\i386;%WDK_ROOT%\lib\Crt\i386
 set OPATH=%PATH%
+set DEV_32=%cd%\..\dep-x86
 set PATH=%PROGRAMFILES(X86)%\Microsoft Visual Studio 10.0\VC\bin;%PROGRAMFILES(X86)%\Microsoft Visual Studio 10.0\Common7\IDE;%PROGRAMFILES(X86)%\Microsoft SDKs\Windows\v7.0A\Bin;%DEV_32%\bin
+del version.exe
+cl /nologo version.c
+cd ..
+build\version -r > resource.h
+cd src
+echo DEV = %DEV_32% > makeinc.mak
+type makeinc.skel.mak >> makeinc.mak
 nmake /nologo /f makefile.mak clean
 cd pixmaps
 nmake /nologo /f makefile.mak
