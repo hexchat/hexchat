@@ -1,7 +1,7 @@
 @echo off
 set WDK_ROOT=c:\WinDDK\7600.16385.1
-set INCLUDE=%WDK_ROOT%\inc\api;%WDK_ROOT%\inc\crt;%WDK_ROOT%\inc\api\crt\stl70
-set LIB=%WDK_ROOT%\lib\wxp\i386;%WDK_ROOT%\lib\Crt\i386
+set INCLUDE=%WDK_ROOT%\inc\api;%WDK_ROOT%\inc\crt;%WDK_ROOT%\inc\api\crt\stl70;%WDK_ROOT%\inc\mfc42;%WDK_ROOT%\inc\ddk;%WDK_ROOT%\inc\api\dao360
+set LIB=%WDK_ROOT%\lib\wxp\i386;%WDK_ROOT%\lib\Crt\i386;%WDK_ROOT%\lib\Mfc\i386;%WDK_ROOT%\lib\ATL\i386
 set OPATH=%PATH%
 set DEV_32=%cd%\..\dep-x86
 set PATH=%PROGRAMFILES(X86)%\Microsoft Visual Studio 10.0\VC\bin;%PROGRAMFILES(X86)%\Microsoft Visual Studio 10.0\Common7\IDE;%PROGRAMFILES(X86)%\Microsoft SDKs\Windows\v7.0A\Bin;%DEV_32%\bin
@@ -66,8 +66,8 @@ copy ..\plugins\mpcinfo\xcmpcinfo.dll %XCHAT_DEST%\plugins
 copy ..\plugins\python\xcpython.dll %XCHAT_DEST%\plugins
 copy ..\plugins\tcl\xctcl.dll %XCHAT_DEST%\plugins
 copy ..\plugins\upd\xcupd.dll %XCHAT_DEST%\plugins
-::copy ..\plugins\xdcc\xcxdcc.dll %XCHAT_DEST%\plugins
 copy ..\plugins\xtray\xtray.dll %XCHAT_DEST%\plugins
 copy ..\plugins\winamp\xcwinamp.dll %XCHAT_DEST%\plugins
+copy ..\plugins\winamp\xcwmpa.dll %XCHAT_DEST%\plugins
 copy %DEPS_ROOT%\bin\lua51.dll %XCHAT_DEST%
 pause

@@ -7,8 +7,7 @@ cd src
 echo X64 = YES > makeinc.mak
 echo DEV = %DEV_64% >> makeinc.mak
 type makeinc.skel.mak >> makeinc.mak
-set INCLUDE=%WDK_ROOT%\inc\api;%WDK_ROOT%\inc\crt;%WDK_ROOT%\inc\api\crt\stl70
-set LIB=%WDK_ROOT%\lib\wnet\amd64;%WDK_ROOT%\lib\Crt\amd64
+set LIB=%WDK_ROOT%\lib\wnet\amd64;%WDK_ROOT%\lib\Crt\amd64;%WDK_ROOT%\lib\Mfc\amd64;%WDK_ROOT%\lib\ATL\amd64
 set OPATH=%PATH%
 set PATH=%PROGRAMFILES(X86)%\Microsoft Visual Studio 10.0\VC\bin\amd64;%PROGRAMFILES(X86)%\Microsoft SDKs\Windows\v7.0A\Bin\x64;%DEV_64%\bin
 cd common

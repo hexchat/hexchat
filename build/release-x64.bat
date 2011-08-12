@@ -31,7 +31,6 @@ copy %DEPS_ROOT%\bin\ssleay32.dll %XCHAT_DEST%\ssleay32.dll.x64
 copy %DEPS_ROOT%\bin\zlib1.dll %XCHAT_DEST%\zlib1.dll.x64
 copy %DEPS_ROOT%\bin\libenchant.dll %XCHAT_DEST%\libenchant.dll.x64
 copy %DEPS_ROOT%\lib\enchant\libenchant_myspell.dll %XCHAT_DEST%\lib\enchant\libenchant_myspell.dll.x64
-::copy ..\plugins\ewc\xcewc.dll %XCHAT_DEST%\plugins\xcewc.dll.x64
 copy ..\plugins\checksum\xcchecksum.dll %XCHAT_DEST%\plugins\xcchecksum.dll.x64
 copy ..\plugins\lua\xclua.dll %XCHAT_DEST%\plugins\xclua.dll.x64
 copy ..\plugins\mpcinfo\xcmpcinfo.dll %XCHAT_DEST%\plugins\xcmpcinfo.dll.x64
@@ -40,7 +39,7 @@ copy ..\plugins\perl\xcperl-514.dll %XCHAT_DEST%\plugins\xcperl-514.dll.x64
 copy ..\plugins\python\xcpython.dll %XCHAT_DEST%\plugins\xcpython.dll.x64
 copy ..\plugins\tcl\xctcl.dll %XCHAT_DEST%\plugins\xctcl.dll.x64
 copy ..\plugins\upd\xcupd.dll %XCHAT_DEST%\plugins\xcupd.dll.x64
-::copy ..\plugins\xdcc\xcxdcc.dll %XCHAT_DEST%\plugins\xcxdcc.dll.x64
 copy ..\plugins\xtray\xtray.dll %XCHAT_DEST%\plugins\xtray.dll.x64
 copy ..\plugins\winamp\xcwinamp.dll %XCHAT_DEST%\plugins\xcwinamp.dll.x64
+copy ..\plugins\winamp\xcwmpa.dll %XCHAT_DEST%\plugins\xcwmpa.dll.x64
 copy %DEPS_ROOT%\bin\lua51.dll %XCHAT_DEST%\lua51.dll.x64

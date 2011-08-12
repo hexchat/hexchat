@@ -38,12 +38,12 @@ public:
 			= { 0x6bf52a52, 0x394a, 0x11d3, { 0xb1, 0x53, 0x0, 0xc0, 0x4f, 0x79, 0xfa, 0xa6 } };
 		return clsid;
 	}
-	virtual BOOL Create(LPCTSTR lpszClassName,
+	/*virtual BOOL Create(LPCTSTR lpszClassName,
 		LPCTSTR lpszWindowName, DWORD dwStyle,
 		const RECT& rect,
 		CWnd* pParentWnd, UINT nID,
 		CCreateContext* pContext = NULL)
-	{ return CreateControl(GetClsid(), lpszWindowName, dwStyle, rect, pParentWnd, nID); }
+	{ return CreateControl(GetClsid(), lpszWindowName, dwStyle, rect, pParentWnd, nID); }*/
 
     BOOL Create(LPCTSTR lpszWindowName, DWORD dwStyle,
 		const RECT& rect, CWnd* pParentWnd, UINT nID,

@@ -33,12 +33,11 @@ Name: "xctext"; Description: "XChat-Text"; Types: full custom; Flags: disablenou
 Name: "translations"; Description: "Translations"; Types: normal full custom; Flags: disablenouninstallwarning
 ;Name: "spelling"; Description: "Spelling Dictionaries"; Types: full custom; Flags: disablenouninstallwarning
 Name: "plugins"; Description: "Plugins"; Types: full custom; Flags: disablenouninstallwarning
-;Name: "plugins\ewc"; Description: "EasyWinampControl"; Types: full custom; Flags: disablenouninstallwarning
 Name: "plugins\checksum"; Description: "Checksum"; Types: full custom; Flags: disablenouninstallwarning
 Name: "plugins\mpcinfo"; Description: "mpcInfo"; Types: full custom; Flags: disablenouninstallwarning
 Name: "plugins\upd"; Description: "Update Checker"; Types: normal full custom; Flags: disablenouninstallwarning
 Name: "plugins\winamp"; Description: "Winamp"; Types: full custom; Flags: disablenouninstallwarning
-;Name: "plugins\xdcc"; Description: "XDCC"; Types: full custom; Flags: disablenouninstallwarning
+Name: "plugins\wmpa"; Description: "Windows Media Player Announcer"; Types: full custom; Flags: disablenouninstallwarning
 Name: "plugins\xtray"; Description: "X-Tray"; Types: full custom; Flags: disablenouninstallwarning
 Name: "langs"; Description: "Language Interfaces"; Types: full custom; Flags: disablenouninstallwarning
 Name: "langs\lua"; Description: "Lua"; Types: full custom; Flags: disablenouninstallwarning
@@ -189,9 +188,6 @@ Source: "xchat-text.exe.x64"; DestDir: "{app}"; DestName: "xchat-text.exe"; Comp
 
 
 
-;Source: "plugins\xcewc.dll"; DestDir: "{app}\plugins"; Components: plugins\ewc; Tasks: x86
-;Source: "plugins\xcewc.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcewc.dll"; Components: plugins\ewc; Tasks: x64
-
 Source: "plugins\xcchecksum.dll"; DestDir: "{app}\plugins"; Components: plugins\checksum; Tasks: x86
 Source: "plugins\xcchecksum.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcchecksum.dll"; Components: plugins\checksum; Tasks: x64
 
@@ -204,11 +200,11 @@ Source: "plugins\xcupd.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcupd.dll"
 Source: "plugins\xcwinamp.dll"; DestDir: "{app}\plugins"; Components: plugins\winamp; Tasks: x86
 Source: "plugins\xcwinamp.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcwinamp.dll"; Components: plugins\winamp; Tasks: x64
 
-;Source: "plugins\xcxdcc.dll"; DestDir: "{app}\plugins"; Components: plugins\xdcc; Tasks: x86
-;Source: "plugins\xcxdcc.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcxdcc.dll"; Components: plugins\xdcc; Tasks: x64
-
 Source: "plugins\xtray.dll"; DestDir: "{app}\plugins"; Components: plugins\xtray; Tasks: x86
 Source: "plugins\xtray.dll.x64"; DestDir: "{app}\plugins"; DestName: "xtray.dll"; Components: plugins\xtray; Tasks: x64
+
+Source: "plugins\xcwmpa.dll"; DestDir: "{app}\plugins"; Components: plugins\wmpa; Tasks: x86
+Source: "plugins\xcwmpa.dll.x64"; DestDir: "{app}\plugins"; DestName: "xcwmpa.dll"; Components: plugins\wmpa; Tasks: x64
 
 
 
