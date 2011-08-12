@@ -68,6 +68,6 @@ copy ..\plugins\tcl\xctcl.dll %XCHAT_DEST%\plugins
 copy ..\plugins\upd\xcupd.dll %XCHAT_DEST%\plugins
 copy ..\plugins\xtray\xtray.dll %XCHAT_DEST%\plugins
 copy ..\plugins\winamp\xcwinamp.dll %XCHAT_DEST%\plugins
-copy ..\plugins\winamp\xcwmpa.dll %XCHAT_DEST%\plugins
+copy ..\plugins\wmpa\xcwmpa.dll %XCHAT_DEST%\plugins
 copy %DEPS_ROOT%\bin\lua51.dll %XCHAT_DEST%
 pause
