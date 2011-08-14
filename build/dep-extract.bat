@@ -9,6 +9,10 @@ cd ..\dep-x86
 del *.cpio
 xcopy /q /s /i usr\i686-w64-mingw32\sys-root\mingw\* .
 rmdir /q /s usr
+set OPATH=%PATH%
+set PATH=%PATH%;c:\mozilla-build\python-2.7-x86
+python convert-lib.py
+set PATH=%OPATH%
 7z x *.zip
 7z x *.7z
 pause

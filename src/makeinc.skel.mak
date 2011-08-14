@@ -1,7 +1,7 @@
 CC = cl
 LINK = link
 CFLAGS = $(CFLAGS) /Ox /c /MD /MP /W0 /nologo
-CFLAGS = $(CFLAGS) /DWIN32 /DG_DISABLE_CAST_CHECKS /DG_DISABLE_DEPRECATED /DGDK_PIXBUF_DISABLE_DEPRECATED /DGDK_DISABLE_DEPRECATED /DUSE_IPV6 /DHAVE_STRTOULL /Dstrtoull=_strtoui64 /Dstrcasecmp=stricmp /Dstrncasecmp=strnicmp /DUSE_OPENSSL
+CFLAGS = $(CFLAGS) /DWIN32 /DG_DISABLE_CAST_CHECKS /DG_DISABLE_DEPRECATED /DGDK_PIXBUF_DISABLE_DEPRECATED /DGDK_DISABLE_DEPRECATED /DUSE_IPV6 /DHAVE_STRTOULL /Dstrtoull=_strtoui64 /Dstrcasecmp=stricmp /Dstrncasecmp=strnicmp
 CFLAGS = $(CFLAGS) /I$(DEV)\include
 CPPFLAGS = /c /MD /W0 /nologo /DWIN32
 LDFLAGS = /subsystem:windows /nologo
@@ -9,7 +9,7 @@ LIBS = $(LIBS) gdi32.lib shell32.lib user32.lib advapi32.lib imm32.lib ole32.lib
 
 GLIB = /I$(DEV)\include\glib-2.0 /I$(DEV)\lib\glib-2.0\include /I$(DEV)\include\libxml2
 GTK = /I$(DEV)\include\gtk-2.0 /I$(DEV)\lib\gtk-2.0\include /I$(DEV)\include\atk-1.0 /I$(DEV)\include\cairo /I$(DEV)\include\pango-1.0 /I$(DEV)\include\gdk-pixbuf-2.0
-LIBS = $(LIBS) /libpath:$(DEV)\lib libgtk-win32-2.0.dll.a libgdk-win32-2.0.dll.a libatk-1.0.dll.a libgio-2.0.dll.a libgdk_pixbuf-2.0.dll.a libpangowin32-1.0.dll.a libpangocairo-1.0.dll.a libpango-1.0.dll.a libcairo.dll.a libgobject-2.0.dll.a libgmodule-2.0.dll.a libglib-2.0.dll.a libintl.dll.a libxml2.dll.a
+LIBS = $(LIBS) /libpath:$(DEV)\lib gtk-win32-2.0.lib gdk-win32-2.0.lib atk-1.0.lib gio-2.0.lib gdk_pixbuf-2.0.lib pangowin32-1.0.lib pangocairo-1.0.lib pango-1.0.lib cairo.lib gobject-2.0.lib gmodule-2.0.lib glib-2.0.lib intl.lib xml2.lib
 
 LUALIB = lua51
 LUAOUTPUT = xclua.dll
