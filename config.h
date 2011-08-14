@@ -2,6 +2,7 @@
 #define ENABLE_NLS
 #define USE_GMODULE
 #define USE_PLUGIN
+#define USE_OPENSSL
 #define USE_LIBSEXY
 #define HAVE_ISO_CODES
 #define PACKAGE_NAME "xchat"

@@ -7,9 +7,9 @@ CPPFLAGS = /c /MD /W0 /nologo /DWIN32
 LDFLAGS = /subsystem:windows /nologo
 LIBS = $(LIBS) gdi32.lib shell32.lib user32.lib advapi32.lib imm32.lib ole32.lib winmm.lib ws2_32.lib wininet.lib comdlg32.lib libeay32.lib ssleay32.lib
 
-GLIB = /I$(DEV)\include\glib-2.0 /I$(DEV)\lib\glib-2.0\include
+GLIB = /I$(DEV)\include\glib-2.0 /I$(DEV)\lib\glib-2.0\include /I$(DEV)\include\libxml2
 GTK = /I$(DEV)\include\gtk-2.0 /I$(DEV)\lib\gtk-2.0\include /I$(DEV)\include\atk-1.0 /I$(DEV)\include\cairo /I$(DEV)\include\pango-1.0 /I$(DEV)\include\gdk-pixbuf-2.0
-LIBS = $(LIBS) /libpath:$(DEV)\lib gtk-win32-2.0.lib gdk-win32-2.0.lib atk-1.0.lib gio-2.0.lib gdk_pixbuf-2.0.lib pangowin32-1.0.lib pangocairo-1.0.lib pango-1.0.lib cairo.lib gobject-2.0.lib gmodule-2.0.lib glib-2.0.lib intl.lib libxml2.lib
+LIBS = $(LIBS) /libpath:$(DEV)\lib libgtk-win32-2.0.dll.a libgdk-win32-2.0.dll.a libatk-1.0.dll.a libgio-2.0.dll.a libgdk_pixbuf-2.0.dll.a libpangowin32-1.0.dll.a libpangocairo-1.0.dll.a libpango-1.0.dll.a libcairo.dll.a libgobject-2.0.dll.a libgmodule-2.0.dll.a libglib-2.0.dll.a libintl.dll.a libxml2.dll.a
 
 LUALIB = lua51
 LUAOUTPUT = xclua.dll
