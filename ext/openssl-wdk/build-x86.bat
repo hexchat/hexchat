@@ -1,6 +1,6 @@
 @echo off
 set WDK_ROOT=c:\WinDDK\7600.16385.1
-set PERL_PATH=c:\mozilla-build\perl-5.12-x86\bin
+set PERL_PATH=c:\mozilla-build\perl-5.12-x86\perl\bin
 set NASM_PATH=c:\mozilla-build\nasm
 set OPENSSL_DEST=..\openssl-wdk-1.0.0d-x86
 set INCLUDE=%WDK_ROOT%\inc\api;%WDK_ROOT%\inc\crt;%WDK_ROOT%\inc\ddk;ms;zlib-x86\include
@@ -25,7 +25,7 @@ move lib %OPENSSL_DEST%
 mkdir %OPENSSL_DEST%\share
 move openssl.cnf %OPENSSL_DEST%\share\openssl.cnf.example
 move include-orig include
-copy zlib-x86\bin\zlibwapi.dll %OPENSSL_DEST%\bin
+copy zlib-x86\bin\zlib1.dll %OPENSSL_DEST%\bin
 move cert.pem %OPENSSL_DEST%\bin
 echo.Finished!
 pause
