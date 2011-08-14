@@ -11,8 +11,8 @@ xcopy /q /s /i usr\i686-w64-mingw32\sys-root\mingw\* .
 rmdir /q /s usr
 set OPATH=%PATH%
 set PATH=%PATH%;c:\mozilla-build\python-2.7-x86
-python convert-lib.py
+python ..\build\convert-lib-x86.py
 set PATH=%OPATH%
-7z x *.zip
 7z x *.7z
+copy /y ..\build\glibconfig-x86.h lib\glib-2.0\include\glibconfig.h
 pause
