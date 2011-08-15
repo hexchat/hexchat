@@ -1,21 +1,32 @@
 @echo off
-set PERL_512=c:\mozilla-build\perl-5.12-x64\perl
-set PERL_514=c:\mozilla-build\perl-5.14-x64
-cd ..
-set DEV_64=%cd%\dep-x64
-cd src
-echo X64 = YES > makeinc.mak
-echo DEV = %DEV_64% >> makeinc.mak
-type makeinc.skel.mak >> makeinc.mak
+set WDK_ROOT=c:\WinDDK\7600.16385.1
+set INCLUDE=%WDK_ROOT%\inc\api;%WDK_ROOT%\inc\crt;%WDK_ROOT%\inc\api\crt\stl70;%WDK_ROOT%\inc\mfc42;%WDK_ROOT%\inc\ddk;%WDK_ROOT%\inc\api\dao360
 set LIB=%WDK_ROOT%\lib\wnet\amd64;%WDK_ROOT%\lib\Crt\amd64;%WDK_ROOT%\lib\Mfc\amd64;%WDK_ROOT%\lib\ATL\amd64
 set OPATH=%PATH%
+set DEV_64=%cd%\..\dep-x64
 set PATH=%PROGRAMFILES(X86)%\Microsoft Visual Studio 10.0\VC\bin\amd64;%PROGRAMFILES(X86)%\Microsoft SDKs\Windows\v7.0A\Bin\x64;%DEV_64%\bin
-cd common
+set PERL_512=c:\mozilla-build\perl-5.12-x64\perl
+set PERL_514=c:\mozilla-build\perl-5.14-x64
+echo [Setup] > xchat-wdk.iss
+echo WizardImageFile=%cd%\bitmaps\wizardimage.bmp >> xchat-wdk.iss
+echo WizardSmallImageFile=%cd%\bitmaps\wizardsmallimage.bmp >> xchat-wdk.iss
+del version.exe
+cl /nologo version.c
+version -a >> xchat-wdk.iss
+version -v >> xchat-wdk.iss
+version -i >> xchat-wdk.iss
+version -o >> xchat-wdk.iss
+cd ..
+build\version -r > resource.h
+echo SetupIconFile=%cd%\xchat.ico >> build\xchat-wdk.iss
+type build\xchat-wdk.skel.iss >> build\xchat-wdk.iss
+cd src
+echo DEV = %DEV_64% > makeinc.mak
+echo X64 = YES >> makeinc.mak
+type makeinc.skel.mak >> makeinc.mak
 nmake /nologo /f makefile.mak clean
-cd ..\fe-gtk
-nmake /nologo /f makefile.mak clean
-cd ..\fe-text
-nmake /nologo /f makefile.mak clean
+cd pixmaps
+nmake /nologo /f makefile.mak
 cd ..
 nmake /nologo /f makefile.mak
 cd ..\plugins
@@ -30,5 +41,6 @@ set PATH=%OOPATH%;%PERL_514%\bin
 nmake /nologo /s /f makefile-514.mak clean
 nmake /nologo /s /f makefile-514.mak
 cd ..\..\build
+call compile-po-files.bat
 set PATH=%OPATH%
 call release-x64.bat

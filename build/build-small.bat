@@ -23,25 +23,26 @@ nmake /nologo /f makefile.mak
 cd ..\build
 set PATH=%OPATH%
 set DEPS_ROOT=..\dep-x86
-set XCHAT_DEST=..\tmp
+set XCHAT_DEST=..\dist-x86
 rmdir /q /s %XCHAT_DEST%
 mkdir %XCHAT_DEST%
 echo 2> portable-mode
 move portable-mode %XCHAT_DEST%
 copy ..\src\fe-gtk\xchat.exe %XCHAT_DEST%
-copy %DEPS_ROOT%\bin\libgtk-win32-2.0-0.dll %XCHAT_DEST%
+copy %DEPS_ROOT%\bin\libatk-1.0-0.dll %XCHAT_DEST%
+copy %DEPS_ROOT%\bin\libcairo-2.dll %XCHAT_DEST%
+copy %DEPS_ROOT%\bin\libexpat-1.dll %XCHAT_DEST%
+copy %DEPS_ROOT%\bin\libfontconfig-1.dll %XCHAT_DEST%
+copy %DEPS_ROOT%\bin\libfreetype-6.dll %XCHAT_DEST%
 copy %DEPS_ROOT%\bin\libgdk_pixbuf-2.0-0.dll %XCHAT_DEST%
+copy %DEPS_ROOT%\bin\libgdk-win32-2.0-0.dll %XCHAT_DEST%
 copy %DEPS_ROOT%\bin\libgio-2.0-0.dll %XCHAT_DEST%
 copy %DEPS_ROOT%\bin\libglib-2.0-0.dll %XCHAT_DEST%
 copy %DEPS_ROOT%\bin\libgmodule-2.0-0.dll %XCHAT_DEST%
 copy %DEPS_ROOT%\bin\libgobject-2.0-0.dll %XCHAT_DEST%
 copy %DEPS_ROOT%\bin\libgthread-2.0-0.dll %XCHAT_DEST%
-copy %DEPS_ROOT%\bin\libpng15-15.dll %XCHAT_DEST%
-copy %DEPS_ROOT%\bin\libgdk-win32-2.0-0.dll %XCHAT_DEST%
-copy %DEPS_ROOT%\bin\libcairo-2.dll %XCHAT_DEST%
-copy %DEPS_ROOT%\bin\libfontconfig-1.dll %XCHAT_DEST%
-copy %DEPS_ROOT%\bin\libexpat-1.dll %XCHAT_DEST%
-copy %DEPS_ROOT%\bin\libfreetype-6.dll %XCHAT_DEST%
+copy %DEPS_ROOT%\bin\libgtk-win32-2.0-0.dll %XCHAT_DEST%
+copy %DEPS_ROOT%\bin\libintl-8.dll %XCHAT_DEST%
 copy %DEPS_ROOT%\bin\libjasper-1.dll %XCHAT_DEST%
 copy %DEPS_ROOT%\bin\libjpeg-8.dll %XCHAT_DEST%
 copy %DEPS_ROOT%\bin\libpango-1.0-0.dll %XCHAT_DEST%
@@ -49,8 +50,7 @@ copy %DEPS_ROOT%\bin\libpangocairo-1.0-0.dll %XCHAT_DEST%
 copy %DEPS_ROOT%\bin\libpangoft2-1.0-0.dll %XCHAT_DEST%
 copy %DEPS_ROOT%\bin\libpangowin32-1.0-0.dll %XCHAT_DEST%
 copy %DEPS_ROOT%\bin\libpixman-1-0.dll %XCHAT_DEST%
-copy %DEPS_ROOT%\bin\libatk-1.0-0.dll %XCHAT_DEST%
-copy %DEPS_ROOT%\bin\libintl-8.dll %XCHAT_DEST%
+copy %DEPS_ROOT%\bin\libpng15-15.dll %XCHAT_DEST%
 copy %DEPS_ROOT%\bin\libtiff-3.dll %XCHAT_DEST%
 copy %DEPS_ROOT%\bin\libxml2-2.dll %XCHAT_DEST%
 xcopy /q /s /i %DEPS_ROOT%\lib\gtk-2.0\2.10.0\engines\libpixmap.dll %XCHAT_DEST%\lib\gtk-2.0\2.10.0\engines\
