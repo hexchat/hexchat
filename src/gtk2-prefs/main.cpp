@@ -288,10 +288,15 @@ static void populate_with_themes(GtkWidget* w)
 static void redirect_to_file (const gchar* log_domain, GLogLevelFlags log_level,
 									const gchar* message, gpointer user_data)
 {
-	std::fstream f;
-		f.open("g_stdout.txt", std::ios::app);
+	/* only write logs if running in portable mode, otherwise
+	   we would get a permission error in program files */
+	if ((_access( "portable-mode", 0 )) != -1)
+	{
+		std::fstream f;
+		f.open("gtk2-prefs.log", std::ios::app);
 		f << message << "\n";
-	f.close();
+		f.close();
+	}
 }
 #endif
 
