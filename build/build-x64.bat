@@ -25,9 +25,6 @@ echo DEV = %DEV_64% > makeinc.mak
 echo X64 = YES >> makeinc.mak
 type makeinc.skel.mak >> makeinc.mak
 nmake /nologo /f makefile.mak clean
-cd pixmaps
-nmake /nologo /f makefile.mak
-cd ..
 nmake /nologo /f makefile.mak
 cd ..\plugins
 nmake /nologo /f makefile.mak clean
@@ -44,3 +41,4 @@ cd ..\..\build
 call compile-po-files.bat
 set PATH=%OPATH%
 call release-x64.bat
+pause

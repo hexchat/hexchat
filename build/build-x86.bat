@@ -24,9 +24,6 @@ cd src
 echo DEV = %DEV_32% > makeinc.mak
 type makeinc.skel.mak >> makeinc.mak
 nmake /nologo /f makefile.mak clean
-cd pixmaps
-nmake /nologo /f makefile.mak
-cd ..
 nmake /nologo /f makefile.mak
 cd ..\plugins
 nmake /nologo /f makefile.mak clean
@@ -43,3 +40,4 @@ cd ..\..\build
 call compile-po-files.bat
 set PATH=%OPATH%
 call release-x86.bat
+pause

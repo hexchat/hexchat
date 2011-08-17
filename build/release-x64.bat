@@ -7,6 +7,7 @@ echo 2> portable-mode
 move portable-mode %XCHAT_DEST%
 copy ..\src\fe-gtk\xchat.exe %XCHAT_DEST%
 copy ..\src\fe-text\xchat-text.exe %XCHAT_DEST%
+copy ..\src\gtk2-prefs\gtk2-prefs.exe %XCHAT_DEST%
 copy %DEPS_ROOT%\bin\libatk-1.0-0.dll %XCHAT_DEST%
 copy %DEPS_ROOT%\bin\libcairo-2.dll %XCHAT_DEST%
 copy %DEPS_ROOT%\bin\libexpat-1.dll %XCHAT_DEST%
