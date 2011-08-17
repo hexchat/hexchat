@@ -349,7 +349,7 @@ int main(int argc, char *argv[])
 	populate_with_themes(lookup_widget(g_main_window, "main_themelist"));
 
 
-	std::string about_text = std::string("Gtk2 Theme Selector v") + "\n\
+	std::string about_text = std::string("GTK+ Preference Tool") + "\n\
 \n\
 by Alex Shaduri <ashaduri@gmail.com>\n\
 \n\
@@ -506,10 +506,10 @@ bool save_current_theme()
 
 	std::string conf_file = "";
 
-	if (gtk_toggle_button_get_active(GTK_TOGGLE_BUTTON(lookup_widget(g_main_window, "main_use_system_config_checkbutton")))) {
+	if ((_access( "portable-mode", 0 )) != -1) {
 
 		char* themes_dir_c = gtk_rc_get_theme_dir();
-		char* conf_file_c = g_build_filename(themes_dir_c, "..", "..", "etc", "gtk-2.0", "gtkrc", NULL);
+		char* conf_file_c = g_build_filename("etc", "gtk-2.0", "gtkrc", NULL);
 
 		conf_file = (conf_file_c ? conf_file_c : "");
 

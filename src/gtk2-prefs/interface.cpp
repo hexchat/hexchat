@@ -138,7 +138,7 @@ create_main_window (void)
 
   main_window = gtk_window_new (GTK_WINDOW_TOPLEVEL);
   gtk_widget_set_name (main_window, "main_window");
-  gtk_window_set_title (GTK_WINDOW (main_window), "Gtk2 Theme Selector");
+  gtk_window_set_title (GTK_WINDOW (main_window), "GTK+ Preference Tool");
 
   main_hbox = gtk_hbox_new (FALSE, 0);
   gtk_widget_set_name (main_hbox, "main_hbox");
@@ -273,11 +273,11 @@ create_main_window (void)
   gtk_widget_show (hbox6666);
   gtk_box_pack_start (GTK_BOX (vbox13), hbox6666, TRUE, TRUE, 0);
 
-  main_use_system_config_checkbutton = gtk_check_button_new_with_mnemonic ("Apply for all users");
+  /* main_use_system_config_checkbutton = gtk_check_button_new_with_mnemonic ("Apply for all users");
   gtk_widget_set_name (main_use_system_config_checkbutton, "main_use_system_config_checkbutton");
   gtk_widget_show (main_use_system_config_checkbutton);
   gtk_box_pack_start (GTK_BOX (hbox6666), main_use_system_config_checkbutton, FALSE, FALSE, 12);
-  gtk_tooltips_set_tip (tooltips, main_use_system_config_checkbutton, "If this is enabled, the program will update the system-wide configuration file. NOT RECOMMENDED!", NULL);
+  gtk_tooltips_set_tip (tooltips, main_use_system_config_checkbutton, "If this is enabled, the program will update the system-wide configuration file. NOT RECOMMENDED!", NULL); */
 
   main_showpreviewtoggle = gtk_toggle_button_new_with_mnemonic ("Show preview >>");
   gtk_widget_set_name (main_showpreviewtoggle, "main_showpreviewtoggle");
@@ -755,7 +755,7 @@ create_main_window (void)
   GLADE_HOOKUP_OBJECT (main_window, label669, "label669");
   GLADE_HOOKUP_OBJECT (main_window, vbox13, "vbox13");
   GLADE_HOOKUP_OBJECT (main_window, hbox6666, "hbox6666");
-  GLADE_HOOKUP_OBJECT (main_window, main_use_system_config_checkbutton, "main_use_system_config_checkbutton");
+  /* GLADE_HOOKUP_OBJECT (main_window, main_use_system_config_checkbutton, "main_use_system_config_checkbutton"); */
   GLADE_HOOKUP_OBJECT (main_window, main_showpreviewtoggle, "main_showpreviewtoggle");
   GLADE_HOOKUP_OBJECT (main_window, hbuttonbox1, "hbuttonbox1");
   GLADE_HOOKUP_OBJECT (main_window, hbox7, "hbox7");
