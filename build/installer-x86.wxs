@@ -7,8 +7,8 @@
     lightArgs: "<projectname>.wixobj" -out "<projectname>.msi" -ext WixUIExtension -ext WixUtilExtension
 -->
 <Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
-    <Product Id="6327A50B-891F-4B29-8E13-DAC16751B8FF" Name="XChat-WDK (x86)" Language="1033" Version="14.96.7.0" Manufacturer="WixEdit" UpgradeCode="66437248-5687-4F16-BC05-B3119549BC90">
-        <Package Description="XChat-WDK (x86) Installer" Comments="XChat-WDK (x86) Installer" InstallerVersion="200" Compressed="yes" />
+    <Product Id="6327A50B-891F-4B29-8E13-DAC16751B8FF" Name="XChat-WDK (x86)" Language="1033" Version="14.96.7.0" Manufacturer="XChat-WDK" UpgradeCode="66437248-5687-4F16-BC05-B3119549BC90">
+        <Package Description="XChat-WDK (x86) Installer" Comments="XChat-WDK (x86) Installer" InstallerVersion="200" Compressed="yes" Platform="x86" />
         <Media Id="1" Cabinet="simple.cab" EmbedCab="yes" />
         <Directory Id="TARGETDIR" Name="SourceDir">
             <Directory Id="ProgramFilesFolder" Name="PFiles">
@@ -121,10 +121,10 @@
                     <Component Id="LUA51.DLL" DiskId="1" Guid="72B3991F-DCE3-4F2E-BCED-EEF36A902545">
                         <File Id="LUA51.DLL" Name="lua51.dll" Source="..\dist-x86\lua51.dll" />
                     </Component>
-                    <Component Id="PORTABLE_MODE" DiskId="1" Guid="A5408EB4-259D-4234-8C8C-C2C8BC5B139C">
+                    <!--Component Id="PORTABLE_MODE" DiskId="1" Guid="A5408EB4-259D-4234-8C8C-C2C8BC5B139C">
                         <File Id="PORTABLE_MODE" Name="portable-mode" Source="..\dist-x86\portable-mode" />
                         <Condition>Not ALLUSERS</Condition>
-                    </Component>
+                    </Component-->
                     <Component Id="SSLEAY32.DLL" DiskId="1" Guid="178574A3-380A-4FB8-AEF1-25B0164003FE">
                         <File Id="SSLEAY32.DLL" Name="ssleay32.dll" Source="..\dist-x86\ssleay32.dll" />
                     </Component>
@@ -1693,20 +1693,21 @@
                     </Directory>
                 </Directory>
             </Directory>
+            <!--pfiles-->
             <Directory Id="ProgramMenuFolder">
                 <Directory Id="ProgramMenuDir" Name="XChat-WDK">
                     <Component Id="StartMenuShortcuts" Guid="6E4CCAA9-D055-4ED3-AB10-E3EF15E901B8">
                         <RemoveFolder Id="ProgramMenuDir" On="uninstall" />
-                        <RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Type="string" Value="" />
+                        <!--RegistryValue Root="HKCU" Key="Software\[Manufacturer]\[ProductName]" Type="string" Value="" /-->
                         <Shortcut Id="UninstallProduct" Name="Uninstall XChat-WDK (x86)" Description="Uninstall XChat-WDK (x86) from your computer" Target="[System64Folder]msiexec.exe" Arguments="/x [ProductCode]" />
                         <Shortcut Id="XChatShortcut" Name="XChat-WDK (x86)" Target="[APPLICATIONFOLDER]xchat.exe" Description="XChat-WDK (x86)" WorkingDirectory="APPLICATIONFOLDER">
-                            <Icon Id="XchatIcon" SourceFile="..\dist-x86\xchat.exe" />
+                            <Icon Id="XChatIcon" SourceFile="..\dist-x86\xchat.exe" />
                         </Shortcut>
                     </Component>
                 </Directory>
             </Directory>
         </Directory>
-        <Feature Id="XCWDK" Title="XChat-WDK" Absent="disallow" Level="1">
+        <Feature Id="XCWDK" Title="XChat-WDK" Absent="disallow" Level="1" ConfigurableDirectory="APPLICATIONFOLDER">
             <ComponentRef Id="CERT.PEM" />
             <ComponentRef Id="COPYING" />
             <ComponentRef Id="GTK2_PREFS.EXE" />
@@ -1742,7 +1743,7 @@
             <ComponentRef Id="LICENSE.LUA" />
             <ComponentRef Id="LICENSE.OPENSSL" />
             <ComponentRef Id="LICENSE.ZLIB" />
-            <ComponentRef Id="PORTABLE_MODE" />
+            <!--ComponentRef Id="PORTABLE_MODE" /-->
             <ComponentRef Id="SSLEAY32.DLL" />
             <ComponentRef Id="XCHAT_TEXT.EXE" />
             <ComponentRef Id="XCHAT.EXE" />
@@ -2035,57 +2036,61 @@
             <ComponentRef Id="GTK20.MO_104" />
         </Feature>
         <Feature Id="Plugins" Level="1" Title="Plugins">
-            <Feature Id="Checksum" Level="2" Title="Checksum">
+            <Feature Id="Checksum" Level="5" Title="Checksum">
                 <ComponentRef Id="XCCHECKSUM.DLL" />
             </Feature>
-            <Feature Id="mpcInfo" Level="2" Title="mpcInfo">
+            <Feature Id="mpcInfo" Level="5" Title="mpcInfo">
                 <ComponentRef Id="XCMPCINFO.DLL" />
             </Feature>
             <Feature Id="UpdChk" Level="1" Title="Update Checker">
                 <ComponentRef Id="XCUPD.DLL" />
             </Feature>
-            <Feature Id="Winamp" Level="2" Title="Winamp">
+            <Feature Id="Winamp" Level="5" Title="Winamp">
                 <ComponentRef Id="XCWINAMP.DLL" />
             </Feature>
-            <Feature Id="WMPA" Level="2" Title="Windows Media Player Announcer">
+            <Feature Id="WMPA" Level="5" Title="Windows Media Player Announcer">
                 <ComponentRef Id="XCWMPA.DLL" />
             </Feature>
-            <Feature Id="XTray" Level="2" Title="X-Tray">
+            <Feature Id="XTray" Level="5" Title="X-Tray">
                 <ComponentRef Id="XTRAY.DLL" />
             </Feature>
         </Feature>
-        <Feature Id="LangInterface" Level="1" Title="Language Interfaces">
-            <Feature Id="Lua" Level="2" Title="Lua">
+        <Feature Id="LangInterface" Level="5" Title="Language Interfaces">
+            <Feature Id="Lua" Level="5" Title="Lua">
                 <ComponentRef Id="XCLUA.DLL" />
-                <Feature Id="LuaWDK" Level="2" Title="Lua-WDK">
+                <Feature Id="LuaWDK" Level="5" Title="Lua-WDK">
                     <ComponentRef Id="LUA51.DLL" />
                 </Feature>
             </Feature>
-            <Feature Id="Perl" Level="2" Title="Perl">
-                <Feature Id="Perl512" Level="2" Title="Perl 5.12">
+            <Feature Id="Perl" Level="5" Title="Perl">
+                <Feature Id="Perl512" Level="5" Title="Perl 5.12">
                     <ComponentRef Id="XCPERL_512.DLL" />
                 </Feature>
-                <Feature Id="Perl514" Level="2" Title="Perl 5.14">
+                <Feature Id="Perl514" Level="5" Title="Perl 5.14">
                     <ComponentRef Id="XCPERL_514.DLL" />
                 </Feature>
             </Feature>
-            <Feature Id="Python" Level="2" Title="Python">
+            <Feature Id="Python" Level="5" Title="Python">
                 <ComponentRef Id="XCPYTHON.DLL" />
             </Feature>
-            <Feature Id="Tcl" Level="2" Title="Tcl">
+            <Feature Id="Tcl" Level="5" Title="Tcl">
                 <ComponentRef Id="XCTCL.DLL" />
             </Feature>
         </Feature>
         <WixVariable Id="WixUILicenseRtf" Value="..\COPYING.rtf" />
         <WixVariable Id="WixUIDialogBmp" Value="bitmaps\wizardimage.bmp" />
         <WixVariable Id="WixUIBannerBmp" Value="bitmaps\wizardsmallimage.bmp" />
+        <!--WixVariable Id="WixUISupportPerUser" Value="0" /-->
         <Property Id="ApplicationFolderName" Value="XChat-WDK" />
         <Property Id="WixAppFolder" Value="WixPerMachineFolder" />
         <Property Id="WIXUI_EXITDIALOGOPTIONALCHECKBOXTEXT" Value="Run XChat-WDK after closing the Wizard" />
         <Property Id="WixShellExecTarget" Value="[#XCHAT.EXE]" />
+        <Property Id="ARPPRODUCTICON">XChatIcon</Property>
+        <!--Property Id="ALLUSERS" Value="2" /-->
+        <!--Property Id="MSIINSTALLPERUSER" Value="1" /-->
         <CustomAction Id="LaunchApplication" BinaryKey="WixCA" DllEntry="WixShellExec" Impersonate="yes" />
         <UI>
-            <UIRef Id="WixUI_Advanced" />
+            <UIRef Id="WixUI_Mondo" />
             <Publish Dialog="ExitDialog" Control="Finish" Event="DoAction" Value="LaunchApplication">
                 WIXUI_EXITDIALOGOPTIONALCHECKBOX = 1 and NOT Installed
             </Publish>
