@@ -61,8 +61,6 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 	xchat_hook_command (ph, "GTKPREF", XCHAT_PRI_NORM, launch_tool, 0, 0);
 	xchat_command (ph, "MENU -ietc\\gtkpref.png ADD \"Settings/GTK+ Preferences\" \"GTKPREF\"");
 
-	xchat_print (ph, "GTKPref plugin loaded\n");
-
 	return 1;       /* return 1 for success */
 }
 
@@ -70,6 +68,6 @@ int
 xchat_plugin_deinit (void)
 {
 	xchat_command (ph, "MENU DEL \"Settings/GTK+ Preferences\"");
-	xchat_print (ph, "GTKPref plugin unloaded\n");
+
 	return 1;
 }
