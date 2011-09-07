@@ -2887,6 +2887,14 @@ cmd_recv (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 }
 
 static int
+cmd_saveconf (struct session *sess, char *tbuf, char *word[], char *word_eol[])
+{
+	save_config ();
+
+	return TRUE;
+}
+
+static int
 cmd_say (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	char *speech = word_eol[2];
@@ -3638,6 +3646,7 @@ const struct commands xc_cmds[] = {
 #endif
 	{"RECV", cmd_recv, 1, 0, 1, N_("RECV <text>, send raw data to xchat, as if it was received from the irc server")},
 
+	{"SAVECONF", cmd_saveconf, 0, 0, 1, N_("SAVECONF, saves the current settings to disk")},
 	{"SAY", cmd_say, 0, 0, 1,
 	 N_("SAY <text>, sends the text to the object in the current window")},
 	{"SEND", cmd_send, 0, 0, 1, N_("SEND <nick> [<file>]")},
