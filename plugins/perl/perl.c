@@ -1350,14 +1350,18 @@ perl_load_file (char *filename)
 					FreeLibrary (lib);
 					lib = NULL;
 					thread_mbox ("Cannot open " PERL_DLL "\n\n"
-									 "You must have ActivePerl " PERL_REQUIRED_VERSION " installed in order to\n"
+									 "You must have either ActivePerl or Straberry Perl"
+									 PERL_REQUIRED_VERSION
+									 " installed in order to\n"
 									 "run perl scripts.\n\n"
 									 "I have found Perl 5.6, but that is too old.");
 				} else {
 					thread_mbox ("Cannot open " PERL_DLL "\n\n"
-									 "You must have ActivePerl " PERL_REQUIRED_VERSION " installed in order to\n"
+									 "You must have either ActivePerl or Strawberry Perl "
+									 PERL_REQUIRED_VERSION " installed in order to\n"
 									 "run perl scripts.\n\n"
-									 "http://www.activestate.com/ActivePerl/\n\n"
+									 "http://www.activestate.com/ActivePerl/\n"
+									 "http://strawberryperl.com/\n"
 									 "Make sure perl's bin directory is in your PATH.");
 				}
 			}
