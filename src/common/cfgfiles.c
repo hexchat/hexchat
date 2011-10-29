@@ -575,7 +575,7 @@ const struct prefs vars[] = {
 	{"text_tint_blue", P_OFFINT (tint_blue), TYPE_INT},
 	{"text_tint_green", P_OFFINT (tint_green), TYPE_INT},
 	{"text_tint_red", P_OFFINT (tint_red), TYPE_INT},
-	/* {"text_transparent", P_OFFINT (transparent), TYPE_BOOL}, */
+	{"text_transparent", P_OFFINT (transparent), TYPE_BOOL},
 	{"text_wordwrap", P_OFFINT (wordwrap), TYPE_BOOL},
 
 	{0, 0, 0},
