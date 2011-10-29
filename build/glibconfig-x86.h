@@ -96,8 +96,8 @@ typedef unsigned int guintptr;
 #define g_memmove(dest,src,len) G_STMT_START { memmove ((dest), (src), (len)); } G_STMT_END
 
 #define GLIB_MAJOR_VERSION 2
-#define GLIB_MINOR_VERSION 28
-#define GLIB_MICRO_VERSION 8
+#define GLIB_MINOR_VERSION 30
+#define GLIB_MICRO_VERSION 1
 
 #define G_OS_WIN32
 #define G_PLATFORM_WIN32
@@ -167,7 +167,7 @@ union _GSystemThread
   long   dummy_long;
 };
 
-#define G_ATOMIC_OP_MEMORY_BARRIER_NEEDED 1
+#define G_ATOMIC_OP_USE_GCC_BUILTINS 1
 
 #define GINT16_TO_LE(val)	((gint16) (val))
 #define GUINT16_TO_LE(val)	((guint16) (val))
