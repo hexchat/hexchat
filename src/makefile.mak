@@ -7,8 +7,8 @@ all:
 	@-$(MAKE) /nologo /s /f makefile.mak $@
 	@cd ..\fe-text
 	@-$(MAKE) /nologo /s /f makefile.mak $@
-	@cd ..\gtk2-prefs
-	@-$(MAKE) /nologo /s /f makefile.mak $@
+#	@cd ..\gtk2-prefs
+#	@-$(MAKE) /nologo /s /f makefile.mak $@
 
 clean:
 	@cd pixmaps
@@ -19,5 +19,5 @@ clean:
 	@-$(MAKE) /nologo /s /f makefile.mak clean $@
 	@cd ..\fe-text
 	@-$(MAKE) /nologo /s /f makefile.mak clean $@
-	@cd ..\gtk2-prefs
-	@-$(MAKE) /nologo /s /f makefile.mak clean $@
+#	@cd ..\gtk2-prefs
+#	@-$(MAKE) /nologo /s /f makefile.mak clean $@
