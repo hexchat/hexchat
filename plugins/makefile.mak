@@ -1,8 +1,8 @@
 all:
 	@cd checksum
 	@-$(MAKE) /nologo /s /f makefile.mak $@
-	@cd ..\gtkpref
-	@-$(MAKE) /nologo /s /f makefile.mak $@
+#	@cd ..\gtkpref
+#	@-$(MAKE) /nologo /s /f makefile.mak $@
 	@cd ..\lua
 	@-$(MAKE) /nologo /s /f makefile.mak $@
 	@cd ..\mpcinfo
@@ -23,8 +23,8 @@ all:
 clean:
 	@cd checksum
 	@-$(MAKE) /nologo /s /f makefile.mak clean $@
-	@cd ..\gtkpref
-	@-$(MAKE) /nologo /s /f makefile.mak clean $@
+#	@cd ..\gtkpref
+#	@-$(MAKE) /nologo /s /f makefile.mak clean $@
 	@cd ..\lua
 	@-$(MAKE) /nologo /s /f makefile.mak clean $@
 	@cd ..\mpcinfo
