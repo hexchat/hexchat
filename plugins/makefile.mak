@@ -3,6 +3,8 @@ all:
 	@-$(MAKE) /nologo /s /f makefile.mak $@
 #	@cd ..\gtkpref
 #	@-$(MAKE) /nologo /s /f makefile.mak $@
+	@cd ..\doat
+	@-$(MAKE) /nologo /s /f makefile.mak $@
 	@cd ..\lua
 	@-$(MAKE) /nologo /s /f makefile.mak $@
 	@cd ..\mpcinfo
@@ -25,6 +27,8 @@ clean:
 	@-$(MAKE) /nologo /s /f makefile.mak clean $@
 #	@cd ..\gtkpref
 #	@-$(MAKE) /nologo /s /f makefile.mak clean $@
+	@cd ..\doat
+	@-$(MAKE) /nologo /s /f makefile.mak clean $@
 	@cd ..\lua
 	@-$(MAKE) /nologo /s /f makefile.mak clean $@
 	@cd ..\mpcinfo
