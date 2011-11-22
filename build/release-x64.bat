@@ -32,7 +32,6 @@ xcopy /q /s /i %DEPS_ROOT%\lib\gtk-2.0\2.10.0\engines %XCHAT_DEST%\lib\gtk-2.0\2
 xcopy /q /s /i %DEPS_ROOT%\lib\gtk-2.0\modules\libgail.dll %XCHAT_DEST%\lib\gtk-2.0\modules\
 xcopy /q /s /i etc %XCHAT_DEST%\etc
 xcopy /q /s /i share %XCHAT_DEST%\share
-xcopy /q /s /i %DEPS_ROOT%\share\themes %XCHAT_DEST%\share\themes
 copy ..\COPYING %XCHAT_DEST%
 copy %DEPS_ROOT%\LICENSE.OPENSSL %XCHAT_DEST%
 copy %DEPS_ROOT%\LICENSE.ZLIB %XCHAT_DEST%
