@@ -651,7 +651,6 @@ int
 get_cpu_arch (void)
 {
 	SYSTEM_INFO si;
-	unsigned short int cpu_arch;
 
 	GetSystemInfo (&si);
 
