@@ -76,9 +76,13 @@ main (int argc, char *argv[])
 		{
 			printf ("#define COMMA_VERSION %s\n", comma ());
 		}
-		else if (!strcmp (argv[1], "-a"))	/* xchat-wdk.iss/AppVerName */
+		else if (!strcmp (argv[1], "-a32"))	/* xchat-wdk.iss/AppVerName */
 		{
-			printf ("AppVerName=XChat-WDK %s\n", PACKAGE_VERSION);
+			printf ("AppVerName=XChat-WDK %s (x86)\n", PACKAGE_VERSION);
+		}
+		else if (!strcmp (argv[1], "-a64"))	/* xchat-wdk.iss/AppVerName */
+		{
+			printf ("AppVerName=XChat-WDK %s (x64)\n", PACKAGE_VERSION);
 		}
 		else if (!strcmp (argv[1], "-v"))	/* xchat-wdk.iss/AppVersion */
 		{
@@ -88,9 +92,13 @@ main (int argc, char *argv[])
 		{
 			printf ("VersionInfoVersion=%s\n", point ());
 		}
-		else if (!strcmp (argv[1], "-o"))	/* xchat-wdk.iss/OutputBaseFilename */
+		else if (!strcmp (argv[1], "-o32"))	/* xchat-wdk.iss/OutputBaseFilename */
 		{
-			printf ("OutputBaseFilename=XChat-WDK %s\n", PACKAGE_VERSION);
+			printf ("OutputBaseFilename=XChat-WDK %s x86\n", PACKAGE_VERSION);
+		}
+		else if (!strcmp (argv[1], "-o64"))	/* xchat-wdk.iss/OutputBaseFilename */
+		{
+			printf ("OutputBaseFilename=XChat-WDK %s x64\n", PACKAGE_VERSION);
 		}
 		else if (!strcmp (argv[1], "-v"))	/* version.txt */
 		{

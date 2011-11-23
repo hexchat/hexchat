@@ -7,19 +7,19 @@ set DEV_32=%cd%\..\dep-x86
 set PATH=%PROGRAMFILES(X86)%\Microsoft Visual Studio 10.0\VC\bin;%PROGRAMFILES(X86)%\Microsoft Visual Studio 10.0\Common7\IDE;%PROGRAMFILES(X86)%\Microsoft SDKs\Windows\v7.0A\Bin;%DEV_32%\bin
 set PERL_512=c:\mozilla-build\perl-5.12-x86\perl
 set PERL_514=c:\mozilla-build\perl-5.14-x86
-echo [Setup] > xchat-wdk.iss
-echo WizardImageFile=%cd%\bitmaps\wizardimage.bmp >> xchat-wdk.iss
-echo WizardSmallImageFile=%cd%\bitmaps\wizardsmallimage.bmp >> xchat-wdk.iss
+echo [Setup] > xchat-wdk-x86.iss
+echo WizardImageFile=%cd%\bitmaps\wizardimage.bmp >> xchat-wdk-x86.iss
+echo WizardSmallImageFile=%cd%\bitmaps\wizardsmallimage.bmp >> xchat-wdk-x86.iss
 del version.exe
 cl /nologo version.c
-version -a >> xchat-wdk.iss
-version -v >> xchat-wdk.iss
-version -i >> xchat-wdk.iss
-version -o >> xchat-wdk.iss
+version -a32 >> xchat-wdk-x86.iss
+version -v >> xchat-wdk-x86.iss
+version -i >> xchat-wdk-x86.iss
+version -o32 >> xchat-wdk-x86.iss
 cd ..
 build\version -r > resource.h
-echo SetupIconFile=%cd%\xchat.ico >> build\xchat-wdk.iss
-type build\xchat-wdk.skel.iss >> build\xchat-wdk.iss
+echo SetupIconFile=%cd%\xchat.ico >> build\xchat-wdk-x86.iss
+type build\xchat-wdk-x86.skel.iss >> build\xchat-wdk-x86.iss
 cd src
 echo DEV = %DEV_32% > makeinc.mak
 type makeinc.skel.mak >> makeinc.mak
@@ -40,4 +40,6 @@ cd ..\..\build
 call compile-po-files.bat
 set PATH=%OPATH%
 call release-x86.bat
+set PATH=%PROGRAMFILES(X86)%\Inno Setup 5
+compil32 /cc xchat-wdk-x86.iss
 pause
