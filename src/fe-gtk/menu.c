@@ -1122,6 +1122,21 @@ usermenu_update (void)
 }
 
 static void
+menu_saveconf (void)
+{
+	session *sess = current_sess;
+
+	if (save_config ())
+	{
+		PrintText (sess, "Preferences have been saved successfully.\n");
+	}
+	else
+	{
+		PrintText (sess, "Error saving preferences.\n");
+	}
+}
+
+static void
 menu_newserver_window (GtkWidget * wid, gpointer none)
 {
 	int old = prefs.tabchannels;
@@ -1638,6 +1653,8 @@ static struct mymenu mymenu[] = {
 		{N_("Userlist Popup..."), menu_ulpopup, 0, M_MENUITEM, 0, 0, 1},
 		{0, 0, 0, M_END, 0, 0, 0},		/* 53 */
 
+	{N_("Save Settings to Disk"), menu_saveconf, GTK_STOCK_SAVE, M_MENUSTOCK, 0, 0, 1},
+
 	{N_("_Window"), 0, 0, M_NEWMENU, 0, 0, 1},
 	{N_("Ban List..."), menu_banlist, 0, M_MENUITEM, 0, 0, 1},
 	{N_("Character Chart..."), ascii_open, 0, M_MENUITEM, 0, 0, 1},
@@ -1652,11 +1669,11 @@ static struct mymenu mymenu[] = {
 	{N_("Reset Marker Line"), menu_resetmarker, 0, M_MENUITEM, 0, 0, 1, GDK_m},
 	{N_("_Copy Selection"), menu_copy_selection, 0, M_MENUITEM, 0, 0, 1, GDK_C},
 	{N_("C_lear Text"), menu_flushbuffer, GTK_STOCK_CLEAR, M_MENUSTOCK, 0, 0, 1, GDK_l},
-#define SEARCH_OFFSET 68
+#define SEARCH_OFFSET 69
 	{N_("Search Text..."), menu_search, GTK_STOCK_FIND, M_MENUSTOCK, 0, 0, 1, GDK_f},
 	{N_("Save Text..."), menu_savebuffer, GTK_STOCK_SAVE, M_MENUSTOCK, 0, 0, 1},
 
-	{N_("_Help"), 0, 0, M_NEWMENU, 0, 0, 1},	/* 70 */
+	{N_("_Help"), 0, 0, M_NEWMENU, 0, 0, 1},	/* 71 */
 	{N_("_Contents"), menu_docs, GTK_STOCK_HELP, M_MENUSTOCK, 0, 0, 1, GDK_F1},
 #if 0
 	{N_("Check for updates"), menu_update, 0, M_MENUITEM, 0, 1},
