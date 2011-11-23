@@ -2889,7 +2889,14 @@ cmd_recv (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 static int
 cmd_saveconf (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
-	save_config ();
+	if (save_config ())
+	{
+		PrintText (sess, "Preferences have been saved successfully.\n");
+	}
+	else
+	{
+		PrintText (sess, "Error saving preferences.\n");
+	}
 
 	return TRUE;
 }
