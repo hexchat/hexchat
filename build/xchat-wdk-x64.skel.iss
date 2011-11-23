@@ -18,7 +18,7 @@ PrivilegesRequired=none
 ShowComponentSizes=no
 CreateUninstallRegKey=not IsTaskSelected('portable')
 Uninstallable=not IsTaskSelected('portable')
-ArchitecturesAllowed=x86 x64
+ArchitecturesAllowed=x64
 ArchitecturesInstallIn64BitMode=x64
 
 [Types]
