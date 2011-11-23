@@ -2605,13 +2605,7 @@ cmd_msg (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			}
 			newsess = find_dialog (sess->server, nick);
 			if (!newsess)
-			{
 				newsess = find_channel (sess->server, nick);
-				if (!newsess && prefs.gui_auto_open_msg)
-				{
-					newsess = new_ircwindow (sess->server, nick, SESS_DIALOG, 0);
-				}
-			}
 			if (newsess)
 				inbound_chanmsg (newsess->server, NULL, newsess->channel,
 									  newsess->server->nick, msg, TRUE, FALSE);

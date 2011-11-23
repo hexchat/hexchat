@@ -423,7 +423,6 @@ const struct prefs vars[] = {
 
 	{"gui_auto_open_chat", P_OFFINT (autoopendccchatwindow), TYPE_BOOL},
 	{"gui_auto_open_dialog", P_OFFINT (autodialog), TYPE_BOOL},
-	{"gui_auto_open_msg", P_OFFINT (gui_auto_open_msg), TYPE_BOOL},
 	{"gui_auto_open_recv", P_OFFINT (autoopendccrecvwindow), TYPE_BOOL},
 	{"gui_auto_open_send", P_OFFINT (autoopendccsendwindow), TYPE_BOOL},
 	{"gui_dialog_height", P_OFFINT (dialog_height), TYPE_INT},
