@@ -2885,11 +2885,11 @@ cmd_saveconf (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
 	if (save_config ())
 	{
-		PrintText (sess, "Preferences have been saved successfully.\n");
+		PrintText (sess, "Settings have been saved successfully.\n");
 	}
 	else
 	{
-		PrintText (sess, "Error saving preferences.\n");
+		PrintText (sess, "Error saving settings.\n");
 	}
 
 	return TRUE;
