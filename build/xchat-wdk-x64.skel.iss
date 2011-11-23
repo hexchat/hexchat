@@ -1,6 +1,6 @@
 AppName=XChat-WDK (x64)
 AppPublisher=XChat-WDK
-AppPublisherURL=http://code.google.com/p/xchat-wdk/
+AppPublisherURL=http://www.xchat-wdk.org/
 AppCopyright=Copyright (C) 1998-2010 Peter Zelezny
 AppSupportURL=http://code.google.com/p/xchat-wdk/issues/list
 AppUpdatesURL=http://www.xchat-wdk.org/home/downloads
