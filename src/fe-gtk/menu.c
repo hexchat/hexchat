@@ -1652,11 +1652,11 @@ static struct mymenu mymenu[] = {
 	{N_("Reset Marker Line"), menu_resetmarker, 0, M_MENUITEM, 0, 0, 1, GDK_m},
 	{N_("_Copy Selection"), menu_copy_selection, 0, M_MENUITEM, 0, 0, 1, GDK_C},
 	{N_("C_lear Text"), menu_flushbuffer, GTK_STOCK_CLEAR, M_MENUSTOCK, 0, 0, 1, GDK_l},
-#define SEARCH_OFFSET 67
+#define SEARCH_OFFSET 68
 	{N_("Search Text..."), menu_search, GTK_STOCK_FIND, M_MENUSTOCK, 0, 0, 1, GDK_f},
 	{N_("Save Text..."), menu_savebuffer, GTK_STOCK_SAVE, M_MENUSTOCK, 0, 0, 1},
 
-	{N_("_Help"), 0, 0, M_NEWMENU, 0, 0, 1},	/* 69 */
+	{N_("_Help"), 0, 0, M_NEWMENU, 0, 0, 1},	/* 70 */
 	{N_("_Contents"), menu_docs, GTK_STOCK_HELP, M_MENUSTOCK, 0, 0, 1, GDK_F1},
 #if 0
 	{N_("Check for updates"), menu_update, 0, M_MENUITEM, 0, 1},
