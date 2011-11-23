@@ -65,6 +65,13 @@ Root: HKCR; Subkey: "irc\shell\open\command"; ValueType: string; ValueName: ""; 
 Filename: "{app}\xchat.exe"; Description: "Run XChat-WDK after closing the Wizard"; Flags: nowait postinstall skipifsilent
 
 [Files]
+; Add the ISSkin DLL used for skinning Inno Setup installations.
+Source: ISSkinU.dll; DestDir: {app}; Flags: dontcopy
+
+; Add the Visual Style resource contains resources used for skinning,
+; you can also use Microsoft Visual Styles (*.msstyles) resources.
+Source: watercolorlite-blue.cjstyles; DestDir: {tmp}; Flags: dontcopy
+
 Source: "portable-mode"; DestDir: "{app}"; Tasks: portable
 
 Source: "cert.pem"; DestDir: "{app}"; Components: libs
@@ -82,8 +89,8 @@ Source: "locale\*"; DestDir: "{app}\locale"; Flags: createallsubdirs recursesubd
 Source: "share\locale\*"; DestDir: "{app}\share\locale"; Flags: createallsubdirs recursesubdirs; Components: translations
 ;Source: "share\myspell\*"; DestDir: "{app}\share\myspell"; Flags: createallsubdirs recursesubdirs; Components: spelling
 
-Source: "freetype6.dll"; DestDir: "{app}"; Components: libs
-Source: "intl.dll"; DestDir: "{app}"; Components: libs
+Source: "libfreetype-6.dll"; DestDir: "{app}"; Components: libs
+Source: "libintl-8.dll"; DestDir: "{app}"; Components: libs
 
 Source: "libatk-1.0-0.dll"; DestDir: "{app}"; Components: libs
 Source: "libcairo-2.dll"; DestDir: "{app}"; Components: libs
@@ -204,4 +211,32 @@ begin
 			end;
 		end;
 	end;
+end;
+
+/////////////////////////////////////////////////////////////////////
+// Importing LoadSkin API from ISSkin.DLL
+procedure LoadSkin(lpszPath: String; lpszIniFileName: String);
+external 'LoadSkin@files:isskinu.dll stdcall';
+
+// Importing UnloadSkin API from ISSkin.DLL
+procedure UnloadSkin();
+external 'UnloadSkin@files:isskinu.dll stdcall';
+
+// Importing ShowWindow Windows API from User32.DLL
+function ShowWindow(hWnd: Integer; uType: Integer): Integer;
+external 'ShowWindow@user32.dll stdcall';
+
+function InitializeSetup(): Boolean;
+begin
+  ExtractTemporaryFile('watercolorlite-blue.cjstyles');
+  LoadSkin(ExpandConstant('{tmp}\watercolorlite-blue.cjstyles'), '');
+  Result := True;
+end;
+
+procedure DeinitializeSetup();
+begin
+  // Hide Window before unloading skin so user does not get
+  // a glimpse of an unskinned window before it is closed.
+  ShowWindow(StrToInt(ExpandConstant('{wizardhwnd}')), 0);
+  UnloadSkin();
 end;

@@ -19,7 +19,7 @@ version -o64 >> xchat-wdk-x64.iss
 cd ..
 build\version -r > resource.h
 echo SetupIconFile=%cd%\xchat.ico >> build\xchat-wdk-x64.iss
-type build\xchat-wdk.skel.iss >> build\xchat-wdk-x64.iss
+type build\xchat-wdk-x64.skel.iss >> build\xchat-wdk-x64.iss
 cd src
 echo DEV = %DEV_64% > makeinc.mak
 echo X64 = YES >> makeinc.mak

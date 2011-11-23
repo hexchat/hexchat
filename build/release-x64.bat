@@ -62,3 +62,5 @@ copy ..\plugins\wmpa\xcwmpa.dll %XCHAT_DEST%\plugins
 copy %DEPS_ROOT%\bin\lua51.dll %XCHAT_DEST%
 xcopy /q /s /i ..\po\locale %XCHAT_DEST%\locale
 xcopy /q /s /i %DEPS_ROOT%\share\locale %XCHAT_DEST%\share\locale
+copy "%PROGRAMFILES(X86)%\Codejock Software\ISSkin\ISSkinU.dll" %XCHAT_DEST%
+copy isskin\watercolorlite-blue.cjstyles %XCHAT_DEST%
