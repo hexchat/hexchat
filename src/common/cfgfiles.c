@@ -1084,7 +1084,13 @@ cmd_set (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	while (vars[i].name);
 
 	if (!finds && !quiet)
+	{
 		PrintText (sess, "No such variable.\n");
+	}
+	else if (prefs.autosave && !save_config ())
+	{
+		PrintText (sess, "Error saving changes to disk.\n");
+	}
 
 	return TRUE;
 }
