@@ -157,7 +157,7 @@ var
 	sUnInstPath: String;
 	sUnInstallString: String;
 begin
-	sUnInstPath := ExpandConstant('Software\Microsoft\Windows\CurrentVersion\Uninstall\XChat-WDK_is1');
+	sUnInstPath := ExpandConstant('Software\Microsoft\Windows\CurrentVersion\Uninstall\XChat-WDK (x64)_is1');
 	sUnInstallString := '';
 	if not RegQueryStringValue(HKLM, sUnInstPath, 'UninstallString', sUnInstallString) then
 		RegQueryStringValue(HKCU, sUnInstPath, 'UninstallString', sUnInstallString);
