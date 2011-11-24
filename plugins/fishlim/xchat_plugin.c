@@ -22,6 +22,7 @@
 
 */
 
+#include <glib.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -46,6 +47,13 @@ static const char usage_delkey[] = "Usage: DELKEY <nick or #channel>, deletes th
 
 static xchat_plugin *ph;
 
+
+/**
+ * Returns the path to the key store file.
+ */
+gchar *get_config_filename() {
+    return g_build_filename(xchat_get_info(ph, "xchatdirfs"), "blow.ini", NULL);
+}
 
 /**
  * Appends data to a string. Returns true if there was sufficient memory.

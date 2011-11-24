@@ -29,19 +29,11 @@
 #include "fish.h"
 #include "misc.h"
 #include "keystore.h"
+#include "xchat_plugin.h"
 
 
 static char *keystore_password = NULL;
 
-
-/**
- * Returns the path to the key store file.
- */
-static gchar *get_config_filename() {
-    // TODO use xchat_get_info(ph, "xchatdirfs")
-    const gchar *homedir = g_get_home_dir();
-    return g_build_filename(homedir, ".xchat2", "blow.ini", NULL);
-}
 
 /**
  * Opens the key store file: ~/.xchat2/blow.ini
