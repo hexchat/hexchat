@@ -58,14 +58,14 @@ static const signed char fish_unbase64[256] = {
 
 char *fish_encrypt(const char *key, size_t keylen, const char *message) {
     BF_KEY bfkey;
-	size_t messagelen;
-	size_t i;
-	int j;
-	char *encrypted;
-	char *end;
-	unsigned char bit;
-	unsigned char word;
-	unsigned char d;
+    size_t messagelen;
+    size_t i;
+    int j;
+    char *encrypted;
+    char *end;
+    unsigned char bit;
+    unsigned char word;
+    unsigned char d;
     BF_set_key(&bfkey, keylen, (const unsigned char*)key);
     
     messagelen = strlen(message);
@@ -111,12 +111,12 @@ char *fish_encrypt(const char *key, size_t keylen, const char *message) {
 
 char *fish_decrypt(const char *key, size_t keylen, const char *data) {
     BF_KEY bfkey;
-	size_t i;
-	char *decrypted;
-	char *end;
-	unsigned char bit;
-	unsigned char word;
-	unsigned char d;
+    size_t i;
+    char *decrypted;
+    char *end;
+    unsigned char bit;
+    unsigned char word;
+    unsigned char d;
     BF_set_key(&bfkey, keylen, (const unsigned char*)key);
     
     decrypted = malloc(strlen(data)+1);

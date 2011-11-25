@@ -27,7 +27,11 @@
 #include <string.h>
 
 // #pragma GCC visibility push(default)
+#ifdef _MSC_VER
 #include "xchat-plugin.h"
+#else
+#include <xchat/xchat-plugin.h>
+#endif
 #define XCHAT_MAX_WORDS 32
 // #pragma GCC visibility pop
 
@@ -40,7 +44,7 @@
 
 static const char plugin_name[] = "FiSHLiM";
 static const char plugin_desc[] = "Encryption plugin for the FiSH protocol. Less is More!";
-static const char plugin_version[] = "0.0.13";
+static const char plugin_version[] = "0.0.14";
 
 static const char usage_setkey[] = "Usage: SETKEY [<nick or #channel>] <password>, sets the key for a channel or nick";
 static const char usage_delkey[] = "Usage: DELKEY <nick or #channel>, deletes the key for a channel or nick";
@@ -112,7 +116,7 @@ static int handle_incoming(char *word[], char *word_eol[], void *userdata) {
     const char *recipient;
     const char *encrypted;
     const char *peice;
-	char *sender_nick;
+    char *sender_nick;
     char *decrypted;
     char *message;
     size_t w;
@@ -127,7 +131,6 @@ static int handle_incoming(char *word[], char *word_eol[], void *userdata) {
     if (!strcmp(command, "332")) w++;
     
     // Look for encrypted data
-    ew;
     for (ew = w+1; ew < XCHAT_MAX_WORDS-1; ew++) {
         const char *s = (ew == w+1 ? word[ew]+1 : word[ew]);
         if (strcmp(s, "+OK") == 0) goto has_encrypted_data;
@@ -242,7 +245,7 @@ static int handle_delkey(char *word[], char *word_eol[], void *userdata) {
  * Returns the plugin name version information.
  */
 void xchat_plugin_get_info(const char **name, const char **desc,
-                                  const char **version, void **reserved) {
+                           const char **version, void **reserved) {
     *name = plugin_name;
     *desc = plugin_desc;
     *version = plugin_version;
@@ -252,10 +255,10 @@ void xchat_plugin_get_info(const char **name, const char **desc,
  * Plugin entry point.
  */
 int xchat_plugin_init(xchat_plugin *plugin_handle,
-                             const char **name,
-                             const char **desc,
-                             const char **version,
-                             char *arg) {
+                      const char **name,
+                      const char **desc,
+                      const char **version,
+                      char *arg) {
     ph = plugin_handle;
     
     /* Send our info to XChat */
@@ -275,12 +278,13 @@ int xchat_plugin_init(xchat_plugin *plugin_handle,
     xchat_hook_server(ph, "TOPIC", XCHAT_PRI_NORM, handle_incoming, NULL);
     xchat_hook_server(ph, "332", XCHAT_PRI_NORM, handle_incoming, NULL);
     
-    xchat_printf (ph, "%s plugin loaded\n", plugin_name);
+    xchat_printf(ph, "%s plugin loaded\n", plugin_name);
     /* Return success */
     return 1;
 }
 
 int xchat_plugin_deinit(void) {
-    xchat_printf (ph, "%s plugin unloaded\n", plugin_name);
+    xchat_printf(ph, "%s plugin unloaded\n", plugin_name);
     return 1;
 }
+

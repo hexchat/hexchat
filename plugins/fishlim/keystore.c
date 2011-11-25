@@ -29,7 +29,7 @@
 #include "fish.h"
 #include "misc.h"
 #include "keystore.h"
-#include "xchat_plugin.h"
+#include "plugin_xchat.h"
 
 
 static char *keystore_password = NULL;

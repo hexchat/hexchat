@@ -4,17 +4,17 @@ OURCFLAGS = -Wall -Wextra -Wno-unused-parameter -std=c99 -pedantic `pkg-config -
 OURLINKFLAGS = `pkg-config --libs glib-2.0 libcrypto` $(CFLAGS) $(LDFLAGS)
 
 BASE_OBJECTS = irc.o fish.o keystore.o misc.o
-PLUGIN_OBJECTS = $(BASE_OBJECTS) xchat_plugin.o
+PLUGIN_OBJECTS = $(BASE_OBJECTS) plugin_xchat.o
 TEST_OBJECTS = $(BASE_OBJECTS) test.o
 
 all: fishlim.so test
 
 fish.o: fish.h keystore.h misc.h
 irc.o: irc.h
-keystore.o: keystore.h irc.h fish.h misc.h
+keystore.o: keystore.h irc.h fish.h misc.h plugin_xchat.h
 misc.o: misc.h
 test.o: fish.h
-xchat_plugin.o: fish.h irc.h keystore.h
+plugin_xchat.o: fish.h irc.h keystore.h plugin_xchat.h
 
 .c.o:
 	$(CC) $(OURCFLAGS) -c $< -o $@

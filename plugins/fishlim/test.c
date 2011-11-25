@@ -22,9 +22,17 @@
 
 */
 
+#include <glib.h>
 #include <stdio.h>
 #include <string.h>
 #include "fish.h"
+
+// We can't use the XChat plugin API from here...
+gchar *get_config_filename() {
+    const gchar *homedir = g_get_home_dir();
+    return g_build_filename(homedir, ".xchat2", "blow.ini", NULL);
+}
+
 
 static int decrypt(int nick_count, char *nicks[]) {
     char encrypted[8192];
