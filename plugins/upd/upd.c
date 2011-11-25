@@ -65,7 +65,7 @@ check_version ()
 	return "Unknown";
 }
 
-static void
+static int
 print_version ()
 {
 	char *version = check_version ();
@@ -73,10 +73,12 @@ print_version ()
 	if (strcmp (version, xchat_get_info (ph, "wdk_version")) == 0)
 	{
 		xchat_printf (ph, "You have the latest version of XChat-WDK installed!\n");
+		return 0;
 	}
 	else if (strcmp (version, "Unknown") == 0)
 	{
 		xchat_printf (ph, "Unable to check for XChat-WDK updates!\n");
+		return 0;
 	}
 	else
 	{
@@ -85,7 +87,28 @@ print_version ()
 #else
 		xchat_printf (ph, "An XChat-WDK update is available! You can download it from here:\nhttp://xchat-wdk.googlecode.com/files/XChat-WDK%%20%s%%20x86.exe\n", version);
 #endif
+		return 1;
 	}
+}
+
+static int
+print_version_quiet (void *userdata)
+{
+	char *version = check_version ();
+
+	/* if it's not the current version AND not network error */
+	if (!(strcmp (version, xchat_get_info (ph, "wdk_version")) == 0) && !(strcmp (version, "Unknown") == 0))
+	{
+#ifdef _WIN64 /* use this approach, the wProcessorArchitecture method always returns 0 (=x86) for plugins for some reason */
+		xchat_printf (ph, "An XChat-WDK update is available! You can download it from here:\nhttp://xchat-wdk.googlecode.com/files/XChat-WDK%%20%s%%20x64.exe\n", version);
+#else
+		xchat_printf (ph, "An XChat-WDK update is available! You can download it from here:\nhttp://xchat-wdk.googlecode.com/files/XChat-WDK%%20%s%%20x86.exe\n", version);
+#endif
+		/* print update url once, then stop the timer */
+		return 0;
+	}
+	/* keep checking */
+	return 1;
 }
 
 int
@@ -95,13 +118,19 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 
 	*plugin_name = "Update Checker";
 	*plugin_desc = "Plugin for checking for XChat-WDK updates";
-	*plugin_version = "1.5";
+	*plugin_version = "2.0";
 
 	xchat_hook_command (ph, "UPDCHK", XCHAT_PRI_NORM, print_version, 0, 0);
 	xchat_command (ph, "MENU -ietc\\download.png ADD \"Help/Check for Updates\" \"UPDCHK\"");
 
-	xchat_print (ph, "Update Checker plugin loaded\n");
-	print_version ();
+	xchat_printf (ph, "%s plugin loaded\n", *plugin_name);
+
+	/* only start the timer if there's no update available during startup */
+	if (!print_version ())
+	{
+		/* check for updates every 6 hours */
+		xchat_hook_timer (ph, 21600000, print_version_quiet, NULL);
+	}
 
 	return 1;       /* return 1 for success */
 }
