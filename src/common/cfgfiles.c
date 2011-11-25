@@ -436,6 +436,7 @@ const struct prefs vars[] = {
 	{"gui_lagometer", P_OFFINT (lagometer), TYPE_INT},
 	{"gui_license", P_OFFSET (gui_license), TYPE_STR},
 	{"gui_mode_buttons", P_OFFINT (chanmodebuttons), TYPE_BOOL},
+	{"gui_one_instance", P_OFFINT (gui_one_instance), TYPE_BOOL},
 	{"gui_pane_left_size", P_OFFINT (gui_pane_left_size), TYPE_INT},
 	{"gui_pane_right_size", P_OFFINT (gui_pane_right_size), TYPE_INT},
 	{"gui_quit_dialog", P_OFFINT (gui_quit_dialog), TYPE_BOOL},

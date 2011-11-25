@@ -26,7 +26,9 @@
 #define WANTSOCKET
 #include "inet.h"
 
-#ifndef WIN32
+#ifdef WIN32
+#include <windows.h>
+#else
 #include <sys/wait.h>
 #include <signal.h>
 #endif
@@ -903,7 +905,11 @@ int
 main (int argc, char *argv[])
 {
 	int ret;
-	
+
+#ifdef WIN32
+	HANDLE mutex;
+#endif
+
 	srand (time (0));	/* CL: do this only once! */
 
 #ifdef SOCKS
@@ -919,6 +925,21 @@ main (int argc, char *argv[])
 #endif
 
 	load_config ();
+
+#ifdef WIN32
+	if (prefs.gui_one_instance)
+	{
+		DWORD error;
+
+		mutex = CreateMutex (NULL, TRUE, "Local\xchat");
+		error = GetLastError ();
+
+		if (error == ERROR_ALREADY_EXISTS || mutex == NULL)
+		{
+			return 1;
+		}
+	}
+#endif
 
 #ifdef USE_LIBPROXY
 	libproxy_factory = px_proxy_factory_new();
@@ -945,6 +966,11 @@ main (int argc, char *argv[])
 
 #ifdef WIN32
 	WSACleanup ();
+
+	if (prefs.gui_one_instance)
+	{
+		CloseHandle (mutex);
+	}
 #endif
 
 	return 0;
