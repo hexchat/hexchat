@@ -116,9 +116,9 @@ menu_about (GtkWidget * wid, gpointer sess)
 	g_get_charset (&locale);
 	(snprintf) (buf, sizeof (buf),
 				"<span size=\"x-large\"><b>"DISPLAY_NAME" "PACKAGE_VERSION"</b></span>\n"
-				"<span size=\"x-large\">%s</span>\n\n"
 #ifdef WIN32
-				"<b>XChat Release</b>: "XCHAT_RELEASE"\n\n"
+				"%s%s%s"
+				"\n<b>XChat Release</b>: "XCHAT_RELEASE"\n\n"
 				"<b>OS</b>: %s\n"
 				"<b>Charset</b>: %s "
 				"<b>GTK+</b>: %i.%i.%i\n"
@@ -129,7 +129,9 @@ menu_about (GtkWidget * wid, gpointer sess)
 				"\302\251 1998-2010 Peter \305\275elezn\303\275 &lt;zed@xchat.org>"
 				/* "\n<a href=\"http://code.google.com/p/xchat-wdk/\">http://code.google.com/p/xchat-wdk/</a>" this is broken in gtk ATM */
 				"</small>",
-				prefs.gui_license,
+				(strcmp (prefs.gui_license, "") ? "<span size=\"x-large\">" : ""),
+				(strcmp (prefs.gui_license, "") ? prefs.gui_license : ""),
+				(strcmp (prefs.gui_license, "") ? "</span>\n" : ""),
 				get_cpu_str (),
 				locale,
 				gtk_major_version,
