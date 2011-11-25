@@ -49,6 +49,7 @@
 #include "text.h"
 #include "url.h"
 #include "xchatc.h"
+#include "wdkutil.h"
 
 #ifdef USE_OPENSSL
 #include <openssl/ssl.h>		  /* SSL_() */
@@ -927,7 +928,7 @@ main (int argc, char *argv[])
 	load_config ();
 
 #ifdef WIN32
-	if (prefs.gui_one_instance)
+	if (prefs.gui_one_instance && !portable_mode ())
 	{
 		DWORD error;
 
@@ -967,7 +968,7 @@ main (int argc, char *argv[])
 #ifdef WIN32
 	WSACleanup ();
 
-	if (prefs.gui_one_instance)
+	if (prefs.gui_one_instance && !portable_mode ())
 	{
 		CloseHandle (mutex);
 	}

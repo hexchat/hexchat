@@ -14,6 +14,7 @@
 #include "../common/text.h"
 #include "../common/userlist.h"
 #include "../common/util.h"
+#include "../common/wdkutil.h"
 #include "../common/xchatc.h"
 #include "fe-gtk.h"
 #include "gtkutil.h"
@@ -397,6 +398,22 @@ static const setting general_settings[] =
 };
 
 static const setting advanced_settings[] =
+{
+	{ST_HEADER,	N_("Advanced Settings"),0,0,0},
+	{ST_NUMBER,	N_("Auto reconnect delay:"), P_OFFINTNL(recon_delay), 0, 0, 9999},
+	{ST_TOGGLE,	N_("Display MODEs in raw form"), P_OFFINTNL(raw_modes), 0, 0, 0},
+	{ST_TOGGLE,	N_("Whois on notify"), P_OFFINTNL(whois_on_notifyonline), N_("Sends a /WHOIS when a user comes online in your notify list"), 0, 0},
+	{ST_TOGGLE,	N_("Hide join and part messages"), P_OFFINTNL(confmode), N_("Hide channel join/part messages by default"), 0, 0},
+	{ST_ENTRY,	N_("License Text:"), P_OFFSETNL(gui_license), 0, 0, sizeof prefs.gui_license},
+	{ST_HEADER,	N_("Auto Open DCC Windows"),0,0,0},
+	{ST_TOGGLE, N_("Send window"), P_OFFINTNL(autoopendccsendwindow), 0, 0, 0},
+	{ST_TOGGLE, N_("Receive window"), P_OFFINTNL(autoopendccrecvwindow), 0, 0, 0},
+	{ST_TOGGLE, N_("Chat window"), P_OFFINTNL(autoopendccchatwindow), 0, 0, 0},
+
+	{ST_END, 0, 0, 0, 0, 0}
+};
+
+static const setting advanced_settings_oneinstance[] =
 {
 	{ST_HEADER,	N_("Advanced Settings"),0,0,0},
 	{ST_NUMBER,	N_("Auto reconnect delay:"), P_OFFINTNL(recon_delay), 0, 0, 9999},
@@ -1770,7 +1787,8 @@ setup_create_pages (GtkWidget *box)
 	if (xtray_mode ())
 	{
 		setup_add_page (cata[8], book, setup_create_page (alert_settings_xtray));
-	} else
+	}
+	else
 	{
 		setup_add_page (cata[8], book, setup_create_page (alert_settings));
 	}
@@ -1778,7 +1796,16 @@ setup_create_pages (GtkWidget *box)
 	setup_add_page (cata[9], book, setup_create_page (general_settings));
 	setup_add_page (cata[10], book, setup_create_page (logging_settings));
 	setup_add_page (cata[11], book, setup_create_sound_page ());
-	setup_add_page (cata[12], book, setup_create_page (advanced_settings));
+
+	if (portable_mode ())
+	{
+		setup_add_page (cata[12], book, setup_create_page (advanced_settings));
+	}
+	else
+	{
+		setup_add_page (cata[12], book, setup_create_page (advanced_settings_oneinstance));
+	}
+
 	setup_add_page (cata[14], book, setup_create_page (network_settings));
 	setup_add_page (cata[15], book, setup_create_page (filexfer_settings));
 
