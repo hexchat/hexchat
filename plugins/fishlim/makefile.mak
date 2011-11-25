@@ -9,7 +9,7 @@ fish.obj \
 irc.obj \
 keystore.obj \
 misc.obj \
-xchat_plugin.obj
+plugin_xchat.obj
 
 all: $(FISHLIM_OBJECTS) fishlim.def
 	link $(LDFLAGS) $(LIBS) /dll /out:xcfishlim.dll /def:fishlim.def $(FISHLIM_OBJECTS)
