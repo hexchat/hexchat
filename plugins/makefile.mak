@@ -5,6 +5,8 @@ all:
 #	@-$(MAKE) /nologo /s /f makefile.mak $@
 	@cd ..\doat
 	@-$(MAKE) /nologo /s /f makefile.mak $@
+	@cd ..\exec
+	@-$(MAKE) /nologo /s /f makefile.mak $@
 	@cd ..\fishlim
 	@-$(MAKE) /nologo /s /f makefile.mak $@
 	@cd ..\lua
@@ -30,6 +32,8 @@ clean:
 #	@cd ..\gtkpref
 #	@-$(MAKE) /nologo /s /f makefile.mak clean $@
 	@cd ..\doat
+	@-$(MAKE) /nologo /s /f makefile.mak clean $@
+	@cd ..\exec
 	@-$(MAKE) /nologo /s /f makefile.mak clean $@
 	@cd ..\fishlim
 	@-$(MAKE) /nologo /s /f makefile.mak clean $@
