@@ -22,6 +22,8 @@ all:
 	@cd ..\xtray
 	@-$(MAKE) /nologo /s /f makefile.mak $@
 	@cd ..\winamp
+	@-$(MAKE) /nologo /s /f makefile.mak $@
+	@cd ..\winsys
 	@-$(MAKE) /nologo /s /f makefile.mak $@	
 	@cd ..\wmpa
 	@-$(MAKE) /nologo /s /f makefile.mak $@
@@ -50,6 +52,8 @@ clean:
 	@cd ..\xtray
 	@-$(MAKE) /nologo /s /f makefile.mak clean $@
 	@cd ..\winamp
+	@-$(MAKE) /nologo /s /f makefile.mak clean $@
+	@cd ..\winsys
 	@-$(MAKE) /nologo /s /f makefile.mak clean $@
 	@cd ..\wmpa
 	@-$(MAKE) /nologo /s /f makefile.mak clean $@
