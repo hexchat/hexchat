@@ -31,6 +31,9 @@
 
 static xchat_plugin *ph;   /* plugin handle */
 
+/* we need this to store the result of the initial update check since the return value is preserved for XCHAT_EAT */
+static int update_available;
+
 static char*
 check_version ()
 {
@@ -73,12 +76,12 @@ print_version ()
 	if (strcmp (version, xchat_get_info (ph, "wdk_version")) == 0)
 	{
 		xchat_printf (ph, "You have the latest version of XChat-WDK installed!\n");
-		return 0;
+		update_available = 0;
 	}
 	else if (strcmp (version, "Unknown") == 0)
 	{
 		xchat_printf (ph, "Unable to check for XChat-WDK updates!\n");
-		return 0;
+		update_available = 0;
 	}
 	else
 	{
@@ -87,8 +90,10 @@ print_version ()
 #else
 		xchat_printf (ph, "An XChat-WDK update is available! You can download it from here:\nhttp://xchat-wdk.googlecode.com/files/XChat-WDK%%20%s%%20x86.exe\n", version);
 #endif
-		return 1;
+		update_available = 1;
 	}
+
+	return XCHAT_EAT_XCHAT;
 }
 
 static int
@@ -126,7 +131,7 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 	xchat_printf (ph, "%s plugin loaded\n", *plugin_name);
 
 	/* only start the timer if there's no update available during startup */
-	if (!print_version ())
+	if (!update_available)
 	{
 		/* check for updates every 6 hours */
 		xchat_hook_timer (ph, 21600000, print_version_quiet, NULL);
