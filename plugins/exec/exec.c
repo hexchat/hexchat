@@ -57,7 +57,7 @@ run_command (char *word[], char *word_eol[], void *userdata)
 		strcpy (commandLine, "cmd.exe /c ");
 		strcat (commandLine, word_eol[2]);
 
-		CreatePipe (&readPipe, &writePipe, &secattr, 0);
+		CreatePipe (&readPipe, &writePipe, &secattr, 0); /* might be replaced with MyCreatePipeEx */
 
 		ZeroMemory (&sInfo, sizeof (sInfo));
 		ZeroMemory (&pInfo, sizeof (pInfo));
@@ -67,7 +67,7 @@ run_command (char *word[], char *word_eol[], void *userdata)
 		sInfo.hStdOutput = writePipe;
 		sInfo.hStdError = writePipe;
 
-		CreateProcess (0, commandLine, 0, 0, TRUE, NORMAL_PRIORITY_CLASS|CREATE_NO_WINDOW, 0, 0, &sInfo, &pInfo);
+		CreateProcess (0, commandLine, 0, 0, TRUE, NORMAL_PRIORITY_CLASS | CREATE_NO_WINDOW, 0, 0, &sInfo, &pInfo);
 		CloseHandle (writePipe);
 
 		start = time (0);
@@ -77,9 +77,15 @@ run_command (char *word[], char *word_eol[], void *userdata)
 			{
 				if (ReadFile (readPipe, buffer, sizeof (buffer) - 1, &dwRead, NULL) && dwRead != 0 )
 				{
+					/* avoid garbage */
 					buffer[dwRead] = '\0';
-					xchat_printf (ph, "%s\n", buffer);
+					xchat_printf (ph, "%s", buffer);
 				}
+			}
+			else
+			{
+				/* this way we'll more likely get full lines */
+				SleepEx (100, TRUE);
 			}
 			timeElapsed = difftime (time (0), start);
 		}
@@ -87,7 +93,7 @@ run_command (char *word[], char *word_eol[], void *userdata)
 	
 	if (timeElapsed >= 10)
 	{
-		xchat_printf (ph, "Execution took too long, aborting.\n");
+		xchat_printf (ph, "Command took too much time to run, execution aborted.\n");
 	}
 
 	CloseHandle (readPipe);
