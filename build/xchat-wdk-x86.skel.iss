@@ -34,6 +34,7 @@ Name: "translations"; Description: "Translations"; Types: normal full custom; Fl
 Name: "plugins"; Description: "Plugins"; Types: full custom; Flags: disablenouninstallwarning
 Name: "plugins\checksum"; Description: "Checksum"; Types: full custom; Flags: disablenouninstallwarning
 Name: "plugins\doat"; Description: "Do At"; Types: full custom; Flags: disablenouninstallwarning
+Name: "plugins\exec"; Description: "Exec"; Types: full custom; Flags: disablenouninstallwarning
 Name: "plugins\fishlim"; Description: "FiSHLiM"; Types: full custom; Flags: disablenouninstallwarning
 Name: "plugins\mpcinfo"; Description: "mpcInfo"; Types: full custom; Flags: disablenouninstallwarning
 Name: "plugins\upd"; Description: "Update Checker"; Types: normal full custom; Flags: disablenouninstallwarning
@@ -124,6 +125,7 @@ Source: "lib\gtk-2.0\modules\libgail.dll"; DestDir: "{app}\lib\gtk-2.0\modules";
 
 Source: "plugins\xcchecksum.dll"; DestDir: "{app}\plugins"; Components: plugins\checksum
 Source: "plugins\xcdoat.dll"; DestDir: "{app}\plugins"; Components: plugins\doat
+Source: "plugins\xcexec.dll"; DestDir: "{app}\plugins"; Components: plugins\exec
 Source: "plugins\xcfishlim.dll"; DestDir: "{app}\plugins"; Components: plugins\fishlim
 Source: "plugins\xcmpcinfo.dll"; DestDir: "{app}\plugins"; Components: plugins\mpcinfo
 Source: "plugins\xcupd.dll"; DestDir: "{app}\plugins"; Components: plugins\upd
