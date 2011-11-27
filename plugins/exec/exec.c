@@ -90,7 +90,10 @@ run_command (char *word[], char *word_eol[], void *userdata)
 			timeElapsed = difftime (time (0), start);
 		}
 	}
-	
+
+	/* display a newline to separate things */
+	xchat_printf (ph, "\n");
+
 	if (timeElapsed >= 10)
 	{
 		xchat_printf (ph, "Command took too much time to run, execution aborted.\n");
