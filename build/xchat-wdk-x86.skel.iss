@@ -40,7 +40,7 @@ Name: "plugins\fishlim"; Description: "FiSHLiM"; Types: full custom; Flags: disa
 Name: "plugins\mpcinfo"; Description: "mpcInfo"; Types: full custom; Flags: disablenouninstallwarning
 Name: "plugins\upd"; Description: "Update Checker"; Types: normal full custom; Flags: disablenouninstallwarning
 Name: "plugins\winamp"; Description: "Winamp"; Types: full custom; Flags: disablenouninstallwarning
-;Name: "plugins\winsys"; Description: "WinSys"; Types: full custom; Flags: disablenouninstallwarning
+Name: "plugins\winsys"; Description: "WinSys"; Types: full custom; Flags: disablenouninstallwarning
 Name: "plugins\wmpa"; Description: "Windows Media Player Announcer"; Types: full custom; Flags: disablenouninstallwarning
 Name: "plugins\xtray"; Description: "X-Tray"; Types: full custom; Flags: disablenouninstallwarning
 Name: "langs"; Description: "Language Interfaces"; Types: full custom; Flags: disablenouninstallwarning
@@ -151,7 +151,7 @@ Source: "plugins\xcfishlim.dll"; DestDir: "{app}\plugins"; Components: plugins\f
 Source: "plugins\xcmpcinfo.dll"; DestDir: "{app}\plugins"; Components: plugins\mpcinfo
 Source: "plugins\xcupd.dll"; DestDir: "{app}\plugins"; Components: plugins\upd
 Source: "plugins\xcwinamp.dll"; DestDir: "{app}\plugins"; Components: plugins\winamp
-;Source: "plugins\xcwinsys.dll"; DestDir: "{app}\plugins"; Components: plugins\winsys
+Source: "plugins\xcwinsys.dll"; DestDir: "{app}\plugins"; Components: plugins\winsys
 Source: "plugins\xtray.dll"; DestDir: "{app}\plugins"; Components: plugins\xtray
 Source: "plugins\xcwmpa.dll"; DestDir: "{app}\plugins"; Components: plugins\wmpa
 
