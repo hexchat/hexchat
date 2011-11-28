@@ -23,8 +23,8 @@ all:
 	@-$(MAKE) /nologo /s /f makefile.mak $@
 	@cd ..\winamp
 	@-$(MAKE) /nologo /s /f makefile.mak $@
-#	@cd ..\winsys
-#	@-$(MAKE) /nologo /s /f makefile.mak $@
+	@cd ..\winsys
+	@-$(MAKE) /nologo /s /f makefile.mak $@
 	@cd ..\wmpa
 	@-$(MAKE) /nologo /s /f makefile.mak $@
 
