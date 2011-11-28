@@ -20,14 +20,10 @@
  * THE SOFTWARE.
  */
 
-#define _WIN32_DCOM
 #include <stdio.h>
 #include <windows.h>
-/* use intrin.h for SDK builds
-#include <intrin.h> */
-#include <ntddk.h>
-#include <comdef.h>
-#include <Wbemidl.h>
+#include <comutil.h>
+#include <wbemidl.h>
 
 #include "xchat-plugin.h"
 
@@ -124,6 +120,7 @@ getOsName (void)
 	return winver;
 }
 
+#if 0
 static char*
 getCpuName (void)
 {
@@ -157,6 +154,7 @@ getCpuName (void)
 
 	return CPUBrandString;
 }
+#endif
 
 static char*
 getCpuMhz (void)
@@ -200,7 +198,7 @@ getMemoryInfo (void)
 }
 
 static char*
-getVgaName (void)
+getWmiInfo (int mode)
 {
 	/* for more details about this wonderful API, see 
 	http://msdn.microsoft.com/en-us/site/aa394138
@@ -261,7 +259,14 @@ getVgaName (void)
 		return buffer;
 	}
 
-	hres = pSvc->ExecQuery (bstr_t ("WQL"), bstr_t ("SELECT * FROM Win32_VideoController"), WBEM_FLAG_FORWARD_ONLY | WBEM_FLAG_RETURN_IMMEDIATELY, NULL, &pEnumerator);
+	if (mode)
+	{
+		hres = pSvc->ExecQuery (_bstr_t ("WQL"), _bstr_t ("SELECT * FROM Win32_VideoController"), WBEM_FLAG_FORWARD_ONLY | WBEM_FLAG_RETURN_IMMEDIATELY, NULL, &pEnumerator);
+	}
+	else
+	{
+		hres = pSvc->ExecQuery (_bstr_t ("WQL"), _bstr_t ("SELECT * FROM Win32_Processor"), WBEM_FLAG_FORWARD_ONLY | WBEM_FLAG_RETURN_IMMEDIATELY, NULL, &pEnumerator);
+	}
 
 	if (FAILED (hres))
 	{
@@ -279,7 +284,7 @@ getVgaName (void)
 			break;
 		}
 		VARIANT vtProp;
-		hr = pclsObj->Get (L"Caption", 0, &vtProp, 0, 0);
+		hr = pclsObj->Get (L"Name", 0, &vtProp, 0, 0);
 		WideCharToMultiByte (CP_ACP, 0, vtProp.bstrVal, -1, buffer, SysStringLen (vtProp.bstrVal)+1, NULL, NULL);
 		VariantClear (&vtProp);
     }
@@ -297,9 +302,9 @@ static int
 printInfo()
 {
 	xchat_printf (ph, "OS:\t%s\n", getOsName ());
-	xchat_printf (ph, "CPU:\t%s (%s)\n", getCpuName (), getCpuMhz ());
+	xchat_printf (ph, "CPU:\t%s (%s)\n", getWmiInfo (0), getCpuMhz ());
 	xchat_printf (ph, "RAM:\t%s\n", getMemoryInfo ());
-	xchat_printf (ph, "VGA:\t%s\n", getVgaName ());
+	xchat_printf (ph, "VGA:\t%s\n", getWmiInfo (1));
 	/* will work correctly for up to 50 days, should be enough */
 	xchat_printf (ph, "Uptime:\t%.2f Hours\n", (float) GetTickCount() / 1000 / 60 / 60);
 	return XCHAT_EAT_XCHAT;

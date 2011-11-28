@@ -9,7 +9,7 @@ winsys.def:
 	echo xchat_plugin_deinit >> winsys.def
 
 winsys.obj: winsys.c makefile.mak
-	cl $(CFLAGS) $(GLIB) /I.. winsys.c
+	cl $(CFLAGS) $(GLIB) /Zc:wchar_t- /I.. winsys.c
 
 clean:
 	del *.obj
