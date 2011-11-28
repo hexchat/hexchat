@@ -38,7 +38,7 @@ getOsName (void)
 	SYSTEM_INFO si;
 
 	osvi.dwOSVersionInfoSize = sizeof (OSVERSIONINFOEX);
-	GetVersionEx ((LPOSVERSIONINFOW)&osvi);
+	GetVersionEx ((LPOSVERSIONINFOW) &osvi);
 
 	GetSystemInfo (&si);
 
@@ -120,8 +120,8 @@ getOsName (void)
 	return winver;
 }
 
-#if 0
-static char*
+#if 0 /* x86-only, SDK-only, use WMI instead */
+static char *
 getCpuName (void)
 {
 	// Get extended ids.
@@ -156,7 +156,7 @@ getCpuName (void)
 }
 #endif
 
-static char*
+static char *
 getCpuMhz (void)
 {
 	HKEY hKey;
@@ -183,7 +183,7 @@ getCpuMhz (void)
 	return buffer;
 }
 
-static char*
+static char *
 getMemoryInfo (void)
 {
 	static char buffer[16];
@@ -192,12 +192,12 @@ getMemoryInfo (void)
 	meminfo.dwLength = sizeof (meminfo);
 	GlobalMemoryStatusEx (&meminfo);
 
-	sprintf (buffer, "%I64d MB Total (%I64d MB Free)", meminfo.ullTotalPhys/1024/1024, meminfo.ullAvailPhys/1024/1024);
+	sprintf (buffer, "%lld MB Total (%lld MB Free)", meminfo.ullTotalPhys / 1024 / 1024, meminfo.ullAvailPhys / 1024 / 1024);
 
 	return buffer;
 }
 
-static char*
+static char *
 getWmiInfo (int mode)
 {
 	/* for more details about this wonderful API, see 
@@ -207,7 +207,7 @@ getWmiInfo (int mode)
 	http://social.msdn.microsoft.com/forums/en-US/vcgeneral/thread/d6420012-e432-4964-8506-6f6b65e5a451
 	*/
 
-	char buffer[128];
+	static char buffer[128];
 	HRESULT hres;
 	HRESULT hr;
 	IWbemLocator *pLoc = NULL;
@@ -216,27 +216,30 @@ getWmiInfo (int mode)
 	IWbemClassObject *pclsObj;
 	ULONG uReturn = 0;
 
-	strcpy (buffer, "Unknown");
-	hres =  CoInitializeEx (0, COINIT_MULTITHREADED);
+	hres =  CoInitializeEx (0, COINIT_APARTMENTTHREADED | COINIT_SPEED_OVER_MEMORY);
 
 	if (FAILED (hres))
 	{
+		strcpy (buffer, "Error Code 0");
 		return buffer;
 	}
 
 	hres =  CoInitializeSecurity (NULL, -1, NULL, NULL, RPC_C_AUTHN_LEVEL_DEFAULT, RPC_C_IMP_LEVEL_IMPERSONATE, NULL, EOAC_NONE, NULL);
 
-	if (FAILED (hres))
+	/* mysteriously failing after the first execution, but only when used as a plugin, skip it */
+	/*if (FAILED (hres))
 	{
 		CoUninitialize ();
+		strcpy (buffer, "Error Code 1");
 		return buffer;
-	}
+	}*/
 
 	hres = CoCreateInstance (CLSID_WbemLocator, 0, CLSCTX_INPROC_SERVER, IID_IWbemLocator, (LPVOID *) &pLoc);
 
 	if (FAILED (hres))
 	{
 		CoUninitialize ();
+		strcpy (buffer, "Error Code 2");
 		return buffer;
 	}
 
@@ -246,6 +249,7 @@ getWmiInfo (int mode)
 	{
 		pLoc->Release ();
 		CoUninitialize ();
+		strcpy (buffer, "Error Code 3");
 		return buffer;
 	}
 
@@ -256,6 +260,7 @@ getWmiInfo (int mode)
 		pSvc->Release ();
 		pLoc->Release ();
 		CoUninitialize ();
+		strcpy (buffer, "Error Code 4");
 		return buffer;
 	}
 
@@ -273,6 +278,7 @@ getWmiInfo (int mode)
 		pSvc->Release ();
 		pLoc->Release ();
 		CoUninitialize ();
+		strcpy (buffer, "Error Code 5");
 		return buffer;
 	}
 
@@ -294,12 +300,11 @@ getWmiInfo (int mode)
 	pEnumerator->Release ();
 	pclsObj->Release ();
 	CoUninitialize ();
-
 	return buffer;
 }
 
 static int
-printInfo()
+printInfo (char *word[], char *word_eol[], void *user_data)
 {
 	xchat_printf (ph, "OS:\t%s\n", getOsName ());
 	xchat_printf (ph, "CPU:\t%s (%s)\n", getWmiInfo (0), getCpuMhz ());
@@ -319,13 +324,14 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 	*plugin_desc = "Display info about your hardware and OS";
 	*plugin_version = "1.0";
 
-	xchat_hook_command (ph, "WINSYS", XCHAT_PRI_NORM, printInfo, 0, 0);
+	xchat_hook_command (ph, "WINSYS", XCHAT_PRI_NORM, printInfo, NULL, NULL);
 	xchat_command (ph, "MENU -ietc\\download.png ADD \"Window/Display System Info\" \"WINSYS\"");
 
 	xchat_printf (ph, "%s plugin loaded\n", *plugin_name);
 
 	return 1;       /* return 1 for success */
 }
+
 
 int
 xchat_plugin_deinit (void)
