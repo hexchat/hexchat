@@ -74,7 +74,7 @@ Source: ISSkinU.dll; DestDir: {app}; Flags: dontcopy
 
 ; Add the Visual Style resource contains resources used for skinning,
 ; you can also use Microsoft Visual Styles (*.msstyles) resources.
-Source: watercolorlite-green.cjstyles; DestDir: {tmp}; Flags: dontcopy
+Source: watercolorlite-blue.cjstyles; DestDir: {tmp}; Flags: dontcopy
 
 Source: "portable-mode"; DestDir: "{app}"; Tasks: portable
 
