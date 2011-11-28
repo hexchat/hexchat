@@ -926,7 +926,11 @@ fe_gui_info_ptr (session *sess, int info_type)
 	{
 	case 0:	/* native window pointer (for plugins) */
 #ifdef WIN32
+#if GTK_CHECK_VERSION(2,24,8)
+		return gdk_win32_window_get_impl_hwnd (sess->gui->window->window);
+#else
 		return GDK_WINDOW_HWND (sess->gui->window->window);
+#endif
 #else
 		return sess->gui->window;
 #endif
