@@ -304,7 +304,7 @@ create_main_window (void)
   gtk_widget_show (image2);
   gtk_box_pack_start (GTK_BOX (hbox6665), image2, FALSE, FALSE, 0);
 
-  label2 = gtk_label_new ("You should restart your programs\nfor this change to take effect.");
+  label2 = gtk_label_new ("You should restart XChat-WDK\nfor this change to take effect.");
   gtk_widget_set_name (label2, "label2");
   gtk_widget_show (label2);
   gtk_box_pack_start (GTK_BOX (hbox6665), label2, FALSE, FALSE, 0);
