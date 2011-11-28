@@ -1,8 +1,8 @@
 all:
 	@cd checksum
 	@-$(MAKE) /nologo /s /f makefile.mak $@
-#	@cd ..\gtkpref
-#	@-$(MAKE) /nologo /s /f makefile.mak $@
+	@cd ..\gtkpref
+	@-$(MAKE) /nologo /s /f makefile.mak $@
 	@cd ..\doat
 	@-$(MAKE) /nologo /s /f makefile.mak $@
 	@cd ..\exec
@@ -23,16 +23,16 @@ all:
 	@-$(MAKE) /nologo /s /f makefile.mak $@
 	@cd ..\winamp
 	@-$(MAKE) /nologo /s /f makefile.mak $@
-	@cd ..\winsys
-	@-$(MAKE) /nologo /s /f makefile.mak $@	
+#	@cd ..\winsys
+#	@-$(MAKE) /nologo /s /f makefile.mak $@
 	@cd ..\wmpa
 	@-$(MAKE) /nologo /s /f makefile.mak $@
 
 clean:
 	@cd checksum
 	@-$(MAKE) /nologo /s /f makefile.mak clean $@
-#	@cd ..\gtkpref
-#	@-$(MAKE) /nologo /s /f makefile.mak clean $@
+	@cd ..\gtkpref
+	@-$(MAKE) /nologo /s /f makefile.mak clean $@
 	@cd ..\doat
 	@-$(MAKE) /nologo /s /f makefile.mak clean $@
 	@cd ..\exec
