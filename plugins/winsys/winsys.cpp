@@ -192,7 +192,7 @@ getMemoryInfo (void)
 	meminfo.dwLength = sizeof (meminfo);
 	GlobalMemoryStatusEx (&meminfo);
 
-	sprintf (buffer, "%lld MB Total (%lld MB Free)", meminfo.ullTotalPhys / 1024 / 1024, meminfo.ullAvailPhys / 1024 / 1024);
+	sprintf (buffer, "%I64d MB Total (%I64d MB Free)", meminfo.ullTotalPhys / 1024 / 1024, meminfo.ullAvailPhys / 1024 / 1024);
 
 	return buffer;
 }
