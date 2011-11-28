@@ -23,7 +23,9 @@
 #define _WIN32_DCOM
 #include <stdio.h>
 #include <windows.h>
-#include <intrin.h>
+/* use intrin.h for SDK builds
+#include <intrin.h> */
+#include <ntddk.h>
 #include <comdef.h>
 #include <Wbemidl.h>
 
