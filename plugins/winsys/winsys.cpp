@@ -186,7 +186,7 @@ getCpuMhz (void)
 static char *
 getMemoryInfo (void)
 {
-	static char buffer[16];
+	static char buffer[32];
 	MEMORYSTATUSEX meminfo;
 
 	meminfo.dwLength = sizeof (meminfo);
