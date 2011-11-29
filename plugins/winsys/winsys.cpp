@@ -29,6 +29,29 @@
 
 static xchat_plugin *ph;   /* plugin handle */
 
+static int
+getCpuArch (void)
+{
+	OSVERSIONINFOEX osvi;
+	SYSTEM_INFO si;
+
+	osvi.dwOSVersionInfoSize = sizeof (OSVERSIONINFOEX);
+	GetVersionEx ((LPOSVERSIONINFOW) &osvi);
+
+	GetSystemInfo (&si);
+
+	if (si.wProcessorArchitecture == 9)
+	{
+		return 64;
+	}
+	else
+	{
+		return 86;
+	}
+}
+
+#if 0
+/* use WMI instead, wProcessorArchitecture displays current binary arch instead OS arch anyway */
 static char *
 getOsName (void)
 {
@@ -120,7 +143,7 @@ getOsName (void)
 	return winver;
 }
 
-#if 0 /* x86-only, SDK-only, use WMI instead */
+/* x86-only, SDK-only, use WMI instead */
 static char *
 getCpuName (void)
 {
@@ -264,13 +287,18 @@ getWmiInfo (int mode)
 		return buffer;
 	}
 
-	if (mode)
+	switch (mode)
 	{
-		hres = pSvc->ExecQuery (_bstr_t ("WQL"), _bstr_t ("SELECT * FROM Win32_VideoController"), WBEM_FLAG_FORWARD_ONLY | WBEM_FLAG_RETURN_IMMEDIATELY, NULL, &pEnumerator);
-	}
-	else
-	{
-		hres = pSvc->ExecQuery (_bstr_t ("WQL"), _bstr_t ("SELECT * FROM Win32_Processor"), WBEM_FLAG_FORWARD_ONLY | WBEM_FLAG_RETURN_IMMEDIATELY, NULL, &pEnumerator);
+		case 0:
+			hres = pSvc->ExecQuery (_bstr_t ("WQL"), _bstr_t ("SELECT * FROM Win32_OperatingSystem"), WBEM_FLAG_FORWARD_ONLY | WBEM_FLAG_RETURN_IMMEDIATELY, NULL, &pEnumerator);
+			break;
+		case 1:
+			hres = pSvc->ExecQuery (_bstr_t ("WQL"), _bstr_t ("SELECT * FROM Win32_Processor"), WBEM_FLAG_FORWARD_ONLY | WBEM_FLAG_RETURN_IMMEDIATELY, NULL, &pEnumerator);
+			break;
+		case 2:
+			hres = pSvc->ExecQuery (_bstr_t ("WQL"), _bstr_t ("SELECT * FROM Win32_VideoController"), WBEM_FLAG_FORWARD_ONLY | WBEM_FLAG_RETURN_IMMEDIATELY, NULL, &pEnumerator);
+			break;
+
 	}
 
 	if (FAILED (hres))
@@ -290,7 +318,18 @@ getWmiInfo (int mode)
 			break;
 		}
 		VARIANT vtProp;
-		hr = pclsObj->Get (L"Name", 0, &vtProp, 0, 0);
+		switch (mode)
+		{
+			case 0:
+				hr = pclsObj->Get (L"Caption", 0, &vtProp, 0, 0);
+				break;
+			case 1:
+				hr = pclsObj->Get (L"Name", 0, &vtProp, 0, 0);
+				break;
+			case 2:
+				hr = pclsObj->Get (L"Name", 0, &vtProp, 0, 0);
+				break;
+		}
 		WideCharToMultiByte (CP_ACP, 0, vtProp.bstrVal, -1, buffer, SysStringLen (vtProp.bstrVal)+1, NULL, NULL);
 		VariantClear (&vtProp);
     }
@@ -306,12 +345,23 @@ getWmiInfo (int mode)
 static int
 printInfo (char *word[], char *word_eol[], void *user_data)
 {
-	xchat_printf (ph, "OS:\t%s\n", getOsName ());
-	xchat_printf (ph, "CPU:\t%s (%s)\n", getWmiInfo (0), getCpuMhz ());
-	xchat_printf (ph, "RAM:\t%s\n", getMemoryInfo ());
-	xchat_printf (ph, "VGA:\t%s\n", getWmiInfo (1));
-	/* will work correctly for up to 50 days, should be enough */
-	xchat_printf (ph, "Uptime:\t%.2f Hours\n", (float) GetTickCount() / 1000 / 60 / 60);
+	if (xchat_list_int (ph, NULL, "type") >= 2)
+	{
+		/* xchat_commandf (ph, "ME * WinSys - system details *");
+		xchat_commandf (ph, "ME ***************************"); */
+		xchat_commandf (ph, "ME * Client:  XChat-WDK %s (x%d)", xchat_get_info (ph, "wdk_version"), getCpuArch ());
+		xchat_commandf (ph, "ME * OS:      %s", getWmiInfo (0));
+		xchat_commandf (ph, "ME * CPU:     %s (%s)", getWmiInfo (1), getCpuMhz ());
+		xchat_commandf (ph, "ME * RAM:     %s", getMemoryInfo ());
+		xchat_commandf (ph, "ME * VGA:     %s", getWmiInfo (2));
+		/* will work correctly for up to 50 days, should be enough */
+		xchat_commandf (ph, "ME * Uptime:  %.2f Hours", (float) GetTickCount() / 1000 / 60 / 60);
+	}
+	else
+	{
+		/* print standard error message */
+		xchat_printf (ph, "No channel joined. Try /join #<channel>");
+	}
 	return XCHAT_EAT_XCHAT;
 }
 
