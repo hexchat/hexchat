@@ -375,7 +375,7 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 	*plugin_version = "1.0";
 
 	xchat_hook_command (ph, "WINSYS", XCHAT_PRI_NORM, printInfo, NULL, NULL);
-	xchat_command (ph, "MENU -ietc\\download.png ADD \"Window/Display System Info\" \"WINSYS\"");
+	xchat_command (ph, "MENU -ietc\\system.png ADD \"Window/Display System Info\" \"WINSYS\"");
 
 	xchat_printf (ph, "%s plugin loaded\n", *plugin_name);
 
