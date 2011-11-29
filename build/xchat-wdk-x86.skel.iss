@@ -87,8 +87,6 @@ Source: "LICENSE.LUA"; DestDir: "{app}"; Components: libs
 Source: "LICENSE.ENCHANT"; DestDir: "{app}"; Components: libs
 Source: "LICENSE.LIBXML"; DestDir: "{app}"; Components: libs
 ;Source: "etc\gtk-2.0\gtkrc"; DestDir: "{app}\etc\gtk-2.0"; Components: libs and not gtkengines
-Source: "etc\download.png"; DestDir: "{app}\etc"; Components: libs
-Source: "etc\music.png"; DestDir: "{app}\etc"; Components: libs
 Source: "share\xml\*"; DestDir: "{app}\share\xml"; Flags: createallsubdirs recursesubdirs; Components: libs
 Source: "locale\*"; DestDir: "{app}\locale"; Flags: createallsubdirs recursesubdirs; Components: translations
 Source: "share\locale\*"; DestDir: "{app}\share\locale"; Flags: createallsubdirs recursesubdirs; Components: translations
@@ -149,9 +147,12 @@ Source: "plugins\xcchecksum.dll"; DestDir: "{app}\plugins"; Components: plugins\
 Source: "plugins\xcdoat.dll"; DestDir: "{app}\plugins"; Components: plugins\doat
 Source: "plugins\xcexec.dll"; DestDir: "{app}\plugins"; Components: plugins\exec
 Source: "plugins\xcfishlim.dll"; DestDir: "{app}\plugins"; Components: plugins\fishlim
+Source: "etc\music.png"; DestDir: "{app}\etc"; Components: plugins\winamp or plugins\mpcinfo
 Source: "plugins\xcmpcinfo.dll"; DestDir: "{app}\plugins"; Components: plugins\mpcinfo
+Source: "etc\download.png"; DestDir: "{app}\etc"; Components: plugins\upd
 Source: "plugins\xcupd.dll"; DestDir: "{app}\plugins"; Components: plugins\upd
 Source: "plugins\xcwinamp.dll"; DestDir: "{app}\plugins"; Components: plugins\winamp
+Source: "etc\system.png"; DestDir: "{app}\etc"; Components: plugins\winsys
 Source: "plugins\xcwinsys.dll"; DestDir: "{app}\plugins"; Components: plugins\winsys
 Source: "plugins\xtray.dll"; DestDir: "{app}\plugins"; Components: plugins\xtray
 Source: "plugins\xcwmpa.dll"; DestDir: "{app}\plugins"; Components: plugins\wmpa
