@@ -359,9 +359,14 @@ printInfo (char *word[], char *word_eol[], void *user_data)
 	}
 	else
 	{
-		/* print standard error message */
-		xchat_printf (ph, "No channel joined. Try /join #<channel>");
+		xchat_printf (ph, " * Client:  XChat-WDK %s (x%d)\n", xchat_get_info (ph, "wdk_version"), getCpuArch ());
+		xchat_printf (ph, " * OS:      %s\n", getWmiInfo (0));
+		xchat_printf (ph, " * CPU:     %s (%s)\n", getWmiInfo (1), getCpuMhz ());
+		xchat_printf (ph, " * RAM:     %s\n", getMemoryInfo ());
+		xchat_printf (ph, " * VGA:     %s\n", getWmiInfo (2));
+		xchat_printf (ph, " * Uptime:  %.2f Hours\n", (float) GetTickCount() / 1000 / 60 / 60);
 	}
+
 	return XCHAT_EAT_XCHAT;
 }
 
