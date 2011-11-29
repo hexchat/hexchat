@@ -1830,3 +1830,21 @@ safe_strcpy (char *dest, const char *src, int bytes_left)
 		}
 	}
 }
+
+void
+canonalize_key (char *key)
+{
+	char *pos, token;
+
+	for (pos = key; (token = *pos) != 0; pos++)
+	{
+		if (token != '_' && (token < '0' || token > '9') && (token < 'A' || token > 'Z') && (token < 'a' || token > 'z'))
+		{
+			*pos = '_';
+		}
+		else
+		{
+			*pos = tolower(token);
+		}
+	}
+}

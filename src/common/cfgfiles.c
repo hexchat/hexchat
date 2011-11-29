@@ -197,7 +197,7 @@ cfg_get_str (char *cfg, char *var, char *dest, int dest_len)
 	}
 }
 
-static int
+int
 cfg_put_str (int fh, char *var, char *value)
 {
 	char buf[512];

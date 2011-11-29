@@ -98,6 +98,13 @@ struct _xchat_plugin
 	     int flags);
 	void (*xchat_free) (xchat_plugin *ph,
 	    void *ptr);
+	int (*xchat_set_plugin_pref) (xchat_plugin *ph,
+		char *var,
+		char *value);
+	int (*xchat_get_plugin_pref) (xchat_plugin *ph,
+		char *var,
+		char *dest,
+		int dest_len);
 	void *(*xchat_dummy4) (xchat_plugin *ph);
 	void *(*xchat_dummy3) (xchat_plugin *ph);
 	void *(*xchat_dummy2) (xchat_plugin *ph);

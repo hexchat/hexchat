@@ -20,6 +20,8 @@
 #include <string.h>
 #include <stdarg.h>
 #include <stdio.h>
+#include <fcntl.h>
+#include <sys/stat.h>
 
 #include "xchat.h"
 #include "fe.h"
@@ -262,6 +264,8 @@ plugin_add (session *sess, char *filename, void *handle, void *init_func,
 		pl->xchat_send_modes = xchat_send_modes;
 		pl->xchat_strip = xchat_strip;
 		pl->xchat_free = xchat_free;
+		pl->xchat_set_plugin_pref = xchat_set_plugin_pref;
+		pl->xchat_get_plugin_pref = xchat_get_plugin_pref;
 
 		/* incase new plugins are loaded on older xchat */
 		pl->xchat_dummy4 = xchat_dummy;
@@ -1569,4 +1573,89 @@ void
 xchat_free (xchat_plugin *ph, void *ptr)
 {
 	g_free (ptr);
+}
+
+int
+xchat_set_plugin_pref (xchat_plugin *pl, char *var, char *value)
+{
+	int fh;
+	char confname[32];
+	char *canon;
+
+	canon = g_strdup (pl->name);
+	canonalize_key (canon);
+	sprintf (confname, "plugin_%s.conf", canon);
+	g_free (canon);
+
+	/* partly borrowed from palette.c */
+	fh = xchat_open_file (confname, O_TRUNC | O_WRONLY | O_CREAT, 0600, XOF_DOMODE);
+	if (fh != -1)
+	{
+		cfg_put_str (fh, var, value);
+		close (fh);
+
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
+}
+
+int
+xchat_get_plugin_pref (xchat_plugin *pl, char *var, char *dest, int dest_len)
+{
+	//cfg_get_str (char *cfg, char *var, char *dest, int dest_len)
+	int fh;
+	int l;
+	char confname[32];
+	//char *buffer;
+	char *canon;
+	char *cfg;
+	struct stat st;
+
+	canon = g_strdup (pl->name);
+	canonalize_key (canon);
+	sprintf (confname, "plugin_%s.conf", canon);
+	g_free (canon);
+
+	//buffer = (char*) malloc (dest_len);
+
+	/* partly borrowed from palette.c */
+	fh = xchat_open_file (confname, O_RDONLY, 0, 0);
+
+	if (fh != -1)
+	{
+		fstat (fh, &st);
+		cfg = malloc (st.st_size + 1);
+
+		if (cfg)
+		{
+			cfg[0] = '\0';
+			l = read (fh, cfg, st.st_size);
+
+			if (l >= 0)
+			{
+				cfg[l] = '\0';
+			}
+
+			if (!cfg_get_str (cfg, var, dest, dest_len))
+			{
+				return 0;
+			}
+
+			free (cfg);
+		}
+		else
+		{
+			return 0;
+		}
+
+		close (fh);
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
 }
