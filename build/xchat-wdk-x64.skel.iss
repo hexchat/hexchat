@@ -43,7 +43,7 @@ Name: "plugins\upd"; Description: "Update Checker"; Types: normal full custom; F
 Name: "plugins\winamp"; Description: "Winamp"; Types: full custom; Flags: disablenouninstallwarning
 Name: "plugins\winsys"; Description: "WinSys"; Types: full custom; Flags: disablenouninstallwarning
 Name: "plugins\wmpa"; Description: "Windows Media Player Announcer"; Types: full custom; Flags: disablenouninstallwarning
-Name: "plugins\xtray"; Description: "X-Tray"; Types: full custom; Flags: disablenouninstallwarning
+;Name: "plugins\xtray"; Description: "X-Tray"; Types: full custom; Flags: disablenouninstallwarning
 Name: "langs"; Description: "Language Interfaces"; Types: full custom; Flags: disablenouninstallwarning
 Name: "langs\lua"; Description: "Lua"; Types: full custom; Flags: disablenouninstallwarning
 Name: "langs\lua\luawdk"; Description: "Lua-WDK"; Types: full custom; Flags: disablenouninstallwarning
@@ -155,7 +155,7 @@ Source: "plugins\xcupd.dll"; DestDir: "{app}\plugins"; Components: plugins\upd
 Source: "plugins\xcwinamp.dll"; DestDir: "{app}\plugins"; Components: plugins\winamp
 Source: "etc\system.png"; DestDir: "{app}\etc"; Components: plugins\winsys
 Source: "plugins\xcwinsys.dll"; DestDir: "{app}\plugins"; Components: plugins\winsys
-Source: "plugins\xtray.dll"; DestDir: "{app}\plugins"; Components: plugins\xtray
+;Source: "plugins\xtray.dll"; DestDir: "{app}\plugins"; Components: plugins\xtray
 Source: "plugins\xcwmpa.dll"; DestDir: "{app}\plugins"; Components: plugins\wmpa
 
 Source: "plugins\xclua.dll"; DestDir: "{app}\plugins"; Components: langs\lua
