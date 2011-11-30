@@ -9,7 +9,6 @@ extern char *xdir_fs;
 extern char *xdir_utf;
 
 char *cfg_get_str (char *cfg, char *var, char *dest, int dest_len);
-int cfg_put_str (int fh, char *var, char *value);
 int cfg_get_bool (char *var);
 int cfg_get_int_with_result (char *cfg, char *var, int *result);
 int cfg_get_int (char *cfg, char *var);
