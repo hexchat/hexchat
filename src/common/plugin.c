@@ -1735,6 +1735,7 @@ int
 xchat_set_plugin_pref_int (xchat_plugin *pl, char *var, int value)
 {
 	char buffer[12];
+
 	sprintf (buffer, "%d", value);
 	return xchat_set_plugin_pref_str (pl, var, buffer);
 }
@@ -1743,6 +1744,13 @@ int
 xchat_get_plugin_pref_int (xchat_plugin *pl, char *var)
 {
 	char buffer[12];
-	xchat_get_plugin_pref_str (pl, var, buffer);
-	return atoi (buffer);
+
+	if (xchat_get_plugin_pref_str (pl, var, buffer))
+	{
+		return atoi (buffer);
+	}
+	else
+	{
+		return -1;
+	}
 }
