@@ -1612,11 +1612,10 @@ xchat_set_plugin_pref (xchat_plugin *pl, char *var, char *value)
 		write (fhOut, buffer, strlen (buffer));
 		close (fhOut);
 
-#ifdef WIN32
 		sprintf (buffer, "%s/%s", get_xdir_fs (), confname);
+#ifdef WIN32
 		unlink (buffer);
 #endif
-
 		sprintf (buffer_tmp, "%s/%s", get_xdir_fs (), confname_tmp);
 		if (rename (buffer_tmp, buffer) == 0)
 		{
@@ -1658,11 +1657,10 @@ xchat_set_plugin_pref (xchat_plugin *pl, char *var, char *value)
 
 		close (fhOut);
 
-#ifdef WIN32
 		sprintf (buffer, "%s/%s", get_xdir_fs (), confname);
+#ifdef WIN32
 		unlink (buffer);
 #endif
-
 		sprintf (buffer_tmp, "%s/%s", get_xdir_fs (), confname_tmp);
 
 		if (rename (buffer_tmp, buffer) == 0)
