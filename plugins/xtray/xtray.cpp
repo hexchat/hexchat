@@ -22,14 +22,14 @@
 #include <list>
 #include <string>
 #include <shobjidl.h>
+
+#include "xchat-plugin.h"
 #include "resource.h"
 #include "callbacks.h"
-#include "plugin.h"
 #include "utility.h"
 #include "xtray.h"
 #include "sdTray.h"
 #include "sdAlerts.h"
-#include "plugin.h"
 
 /*****************************************************/
 /**** Don't want to pollute the namespace do we? *****/

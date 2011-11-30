@@ -21,7 +21,8 @@
 #include <algorithm>
 #include <stdio.h>
 #include <tchar.h>
-#include "plugin.h"
+
+#include "xchat-plugin.h"
 #include "xtray.h"
 #include "resource.h"
 #include "xchat.h"

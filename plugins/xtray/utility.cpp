@@ -20,8 +20,9 @@
 #include <stdio.h>
 #include <commctrl.h>
 #include <tchar.h>
+
+#include "xchat-plugin.h"
 #include "utility.h"
-#include "plugin.h"
 #include "xtray.h"
 #include "callbacks.h"
 #include "resource.h"

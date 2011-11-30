@@ -20,7 +20,7 @@ xtray.def:
 	echo xchat_plugin_deinit >> xtray.def
 
 .cpp.obj:
-	$(CC) $(CPPFLAGS) /c $<
+	$(CC) $(CPPFLAGS) /I.. /c $<
 
 res:
 	rc /nologo resource.rc
