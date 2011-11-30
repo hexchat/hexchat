@@ -1698,6 +1698,7 @@ xchat_get_plugin_pref (xchat_plugin *pl, char *var, char *dest)
 
 	if (!cfg)
 	{
+		close (fh);
 		return 0;
 	}
 
@@ -1711,6 +1712,8 @@ xchat_get_plugin_pref (xchat_plugin *pl, char *var, char *dest)
 
 	if (!cfg_get_str (cfg, var, dest, 512)) /* dest_len is the same as buffer size in set */
 	{
+		free (cfg);
+		close (fh);
 		return 0;
 	}
 
