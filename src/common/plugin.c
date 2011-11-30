@@ -23,6 +23,12 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 
+#ifdef WIN32
+#include <io.h>
+#else
+#include <unistd.h>
+#endif
+
 #include "xchat.h"
 #include "fe.h"
 #include "util.h"
@@ -1686,7 +1692,7 @@ xchat_get_plugin_pref (xchat_plugin *pl, char *var, char *dest)
 	g_free (canon);
 
 	/* partly borrowed from palette.c */
-	fh = xchat_open_file (confname, _O_RDONLY, 0, 0);
+	fh = xchat_open_file (confname, O_RDONLY, 0, 0);
 
 	if (fh == -1)
 	{
