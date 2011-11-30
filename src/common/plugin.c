@@ -273,7 +273,7 @@ plugin_add (session *sess, char *filename, void *handle, void *init_func,
 		pl->xchat_set_plugin_pref_str = xchat_set_plugin_pref_str;
 		pl->xchat_get_plugin_pref_str = xchat_get_plugin_pref_str;
 		pl->xchat_set_plugin_pref_int = xchat_set_plugin_pref_int;
-		pl->xchat_get_plugin_pref_int= xchat_get_plugin_pref_int;
+		pl->xchat_get_plugin_pref_int = xchat_get_plugin_pref_int;
 
 		/* incase new plugins are loaded on older xchat */
 		pl->xchat_dummy4 = xchat_dummy;
