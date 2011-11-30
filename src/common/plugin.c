@@ -270,10 +270,10 @@ plugin_add (session *sess, char *filename, void *handle, void *init_func,
 		pl->xchat_send_modes = xchat_send_modes;
 		pl->xchat_strip = xchat_strip;
 		pl->xchat_free = xchat_free;
-		pl->xchat_set_plugin_pref_str = xchat_set_plugin_pref_str;
-		pl->xchat_get_plugin_pref_str = xchat_get_plugin_pref_str;
-		pl->xchat_set_plugin_pref_int = xchat_set_plugin_pref_int;
-		pl->xchat_get_plugin_pref_int = xchat_get_plugin_pref_int;
+		pl->xchat_set_pluginpref_str = xchat_set_pluginpref_str;
+		pl->xchat_get_pluginpref_str = xchat_get_pluginpref_str;
+		pl->xchat_set_pluginpref_int = xchat_set_pluginpref_int;
+		pl->xchat_get_pluginpref_int = xchat_get_pluginpref_int;
 
 		/* incase new plugins are loaded on older xchat */
 		pl->xchat_dummy4 = xchat_dummy;
@@ -1584,7 +1584,7 @@ xchat_free (xchat_plugin *ph, void *ptr)
 }
 
 int
-xchat_set_plugin_pref_str (xchat_plugin *pl, char *var, char *value)
+xchat_set_pluginpref_str (xchat_plugin *pl, char *var, char *value)
 {
 	FILE *fpIn;
 	int fhOut;
@@ -1680,7 +1680,7 @@ xchat_set_plugin_pref_str (xchat_plugin *pl, char *var, char *value)
 }
 
 int
-xchat_get_plugin_pref_str (xchat_plugin *pl, char *var, char *dest)
+xchat_get_pluginpref_str (xchat_plugin *pl, char *var, char *dest)
 {
 	int fh;
 	int l;
@@ -1732,20 +1732,20 @@ xchat_get_plugin_pref_str (xchat_plugin *pl, char *var, char *dest)
 }
 
 int
-xchat_set_plugin_pref_int (xchat_plugin *pl, char *var, int value)
+xchat_set_pluginpref_int (xchat_plugin *pl, char *var, int value)
 {
 	char buffer[12];
 
 	sprintf (buffer, "%d", value);
-	return xchat_set_plugin_pref_str (pl, var, buffer);
+	return xchat_set_pluginpref_str (pl, var, buffer);
 }
 
 int
-xchat_get_plugin_pref_int (xchat_plugin *pl, char *var)
+xchat_get_pluginpref_int (xchat_plugin *pl, char *var)
 {
 	char buffer[12];
 
-	if (xchat_get_plugin_pref_str (pl, var, buffer))
+	if (xchat_get_pluginpref_str (pl, var, buffer))
 	{
 		return atoi (buffer);
 	}

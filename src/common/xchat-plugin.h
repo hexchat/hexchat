@@ -137,16 +137,16 @@ struct _xchat_plugin
 	     int flags);
 	void (*xchat_free) (xchat_plugin *ph,
 	    void *ptr);
-	int (*xchat_set_plugin_pref_str) (xchat_plugin *ph,
+	int (*xchat_set_pluginpref_str) (xchat_plugin *ph,
 		char *var,
 		char *value);
-	int (*xchat_get_plugin_pref_str) (xchat_plugin *ph,
+	int (*xchat_get_pluginpref_str) (xchat_plugin *ph,
 		char *var,
 		char *dest);
-	int (*xchat_set_plugin_pref_int) (xchat_plugin *ph,
+	int (*xchat_set_pluginpref_int) (xchat_plugin *ph,
 		char *var,
 		int value);
-	int (*xchat_get_plugin_pref_int) (xchat_plugin *ph,
+	int (*xchat_get_pluginpref_int) (xchat_plugin *ph,
 		char *var);
 };
 #endif
@@ -304,21 +304,21 @@ xchat_free (xchat_plugin *ph,
 	    void *ptr);
 
 int
-xchat_set_plugin_pref_str (xchat_plugin *ph,
+xchat_set_pluginpref_str (xchat_plugin *ph,
 		char *var,
 		char *value);
 
 int
-xchat_get_plugin_pref_str (xchat_plugin *ph,
+xchat_get_pluginpref_str (xchat_plugin *ph,
 		char *var,
 		char *dest);
 
 int
-xchat_set_plugin_pref_int (xchat_plugin *ph,
+xchat_set_pluginpref_int (xchat_plugin *ph,
 		char *var,
 		int value);
 int
-xchat_get_plugin_pref_int (xchat_plugin *ph,
+xchat_get_pluginpref_int (xchat_plugin *ph,
 		char *var);
 
 #if !defined(PLUGIN_C) && defined(WIN32)
@@ -355,10 +355,10 @@ xchat_get_plugin_pref_int (xchat_plugin *ph,
 #define xchat_send_modes ((XCHAT_PLUGIN_HANDLE)->xchat_send_modes)
 #define xchat_strip ((XCHAT_PLUGIN_HANDLE)->xchat_strip)
 #define xchat_free ((XCHAT_PLUGIN_HANDLE)->xchat_free)
-#define xchat_set_plugin_pref_str ((XCHAT_PLUGIN_HANDLE)->xchat_set_plugin_pref_str)
-#define xchat_get_plugin_pref_str ((XCHAT_PLUGIN_HANDLE)->xchat_get_plugin_pref_str)
-#define xchat_set_plugin_pref_int ((XCHAT_PLUGIN_HANDLE)->xchat_set_plugin_pref_int)
-#define xchat_get_plugin_pref_int ((XCHAT_PLUGIN_HANDLE)->xchat_get_plugin_pref_int)
+#define xchat_set_pluginpref_str ((XCHAT_PLUGIN_HANDLE)->xchat_set_pluginpref_str)
+#define xchat_get_pluginpref_str ((XCHAT_PLUGIN_HANDLE)->xchat_get_pluginpref_str)
+#define xchat_set_pluginpref_int ((XCHAT_PLUGIN_HANDLE)->xchat_set_pluginpref_int)
+#define xchat_get_pluginpref_int ((XCHAT_PLUGIN_HANDLE)->xchat_get_pluginpref_int)
 #endif
 
 #ifdef __cplusplus
