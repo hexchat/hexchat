@@ -142,8 +142,7 @@ struct _xchat_plugin
 		char *value);
 	int (*xchat_get_plugin_pref) (xchat_plugin *ph,
 		char *var,
-		char *dest,
-		int dest_len);
+		char *dest);
 };
 #endif
 
@@ -307,8 +306,7 @@ xchat_set_plugin_pref (xchat_plugin *ph,
 int
 xchat_get_plugin_pref (xchat_plugin *ph,
 		char *var,
-		char *dest,
-		int dest_len);
+		char *dest);
 
 #if !defined(PLUGIN_C) && defined(WIN32)
 #ifndef XCHAT_PLUGIN_HANDLE

@@ -1578,38 +1578,104 @@ xchat_free (xchat_plugin *ph, void *ptr)
 int
 xchat_set_plugin_pref (xchat_plugin *pl, char *var, char *value)
 {
-	int fh;
-	char confname[32];
+	FILE *fpIn;
+	int fhOut;
+	int prevConfig;
+	char confname[64];
+	char confname_tmp[69];
+	char buffer[512];		/* the same as in cfg_put_str */
+	char buffer_tmp[512];
 	char *canon;
 
 	canon = g_strdup (pl->name);
 	canonalize_key (canon);
 	sprintf (confname, "plugin_%s.conf", canon);
 	g_free (canon);
+	sprintf (confname_tmp, "%s.new", confname);
 
-	/* partly borrowed from palette.c */
-	fh = xchat_open_file (confname, O_TRUNC | O_WRONLY | O_CREAT, 0600, XOF_DOMODE);
-	if (fh != -1)
-	{
-		cfg_put_str (fh, var, value);
-		close (fh);
+	fhOut = xchat_open_file (confname_tmp, O_TRUNC | O_WRONLY | O_CREAT, 0600, XOF_DOMODE);
+	fpIn = xchat_fopen_file (confname, "r", 0);
 
-		return 1;
-	}
-	else
+	if (fhOut == -1)		/* unable to save, abort */
 	{
 		return 0;
+	}
+	else if (fpIn == NULL)	/* no previous config, no parsing */
+	{
+		sprintf (buffer, "%s = %s\n", var, value);
+		write (fhOut, buffer, strlen (buffer));
+		close (fhOut);
+
+#ifdef WIN32
+		sprintf (buffer, "%s/%s", get_xdir_fs (), confname);
+		unlink (buffer);
+#endif
+
+		sprintf (buffer_tmp, "%s/%s", get_xdir_fs (), confname_tmp);
+		if (rename (buffer_tmp, buffer) == 0)
+		{
+			return 1;
+		}
+		else
+		{
+			return 0;
+		}
+	}
+	else					/* existing config, preserve settings and find & replace current var value if any */
+	{
+		prevConfig = 0;
+
+		while (fscanf (fpIn, " %[^\n]", &buffer) != EOF)	/* read whole lines including whitespaces */
+		{
+			sprintf (buffer_tmp, "%s ", var);				/* add one space, this way it works against var - var2 checks too */
+
+			if (strncmp (buffer_tmp, buffer, strlen (var) + 1) == 0)	/* given setting already exists */
+			{
+				sprintf (buffer, "%s = %s\n", var, value);
+				prevConfig = 1;
+			}
+			else
+			{
+				strcat (buffer, "\n");
+			}
+
+			write (fhOut, buffer, strlen (buffer));
+		}
+
+		fclose (fpIn);
+
+		if (!prevConfig)
+		{
+			sprintf (buffer, "%s = %s\n", var, value);
+			write (fhOut, buffer, strlen (buffer));
+		}
+
+		close (fhOut);
+
+#ifdef WIN32
+		sprintf (buffer, "%s/%s", get_xdir_fs (), confname);
+		unlink (buffer);
+#endif
+
+		sprintf (buffer_tmp, "%s/%s", get_xdir_fs (), confname_tmp);
+
+		if (rename (buffer_tmp, buffer) == 0)
+		{
+			return 1;
+		}
+		else
+		{
+			return 0;
+		}
 	}
 }
 
 int
-xchat_get_plugin_pref (xchat_plugin *pl, char *var, char *dest, int dest_len)
+xchat_get_plugin_pref (xchat_plugin *pl, char *var, char *dest)
 {
-	//cfg_get_str (char *cfg, char *var, char *dest, int dest_len)
 	int fh;
 	int l;
-	char confname[32];
-	//char *buffer;
+	char confname[64];
 	char *canon;
 	char *cfg;
 	struct stat st;
@@ -1619,43 +1685,36 @@ xchat_get_plugin_pref (xchat_plugin *pl, char *var, char *dest, int dest_len)
 	sprintf (confname, "plugin_%s.conf", canon);
 	g_free (canon);
 
-	//buffer = (char*) malloc (dest_len);
-
 	/* partly borrowed from palette.c */
-	fh = xchat_open_file (confname, O_RDONLY, 0, 0);
+	fh = xchat_open_file (confname, _O_RDONLY, 0, 0);
 
-	if (fh != -1)
-	{
-		fstat (fh, &st);
-		cfg = malloc (st.st_size + 1);
-
-		if (cfg)
-		{
-			cfg[0] = '\0';
-			l = read (fh, cfg, st.st_size);
-
-			if (l >= 0)
-			{
-				cfg[l] = '\0';
-			}
-
-			if (!cfg_get_str (cfg, var, dest, dest_len))
-			{
-				return 0;
-			}
-
-			free (cfg);
-		}
-		else
-		{
-			return 0;
-		}
-
-		close (fh);
-		return 1;
-	}
-	else
+	if (fh == -1)
 	{
 		return 0;
 	}
+
+	fstat (fh, &st);
+	cfg = malloc (st.st_size + 1);
+
+	if (!cfg)
+	{
+		return 0;
+	}
+
+	cfg[0] = '\0';
+	l = read (fh, cfg, st.st_size);
+
+	if (l >= 0)
+	{
+		cfg[l] = '\0';
+	}
+
+	if (!cfg_get_str (cfg, var, dest, 512)) /* dest_len is the same as buffer size in set */
+	{
+		return 0;
+	}
+
+	free (cfg);
+	close (fh);
+	return 1;
 }
