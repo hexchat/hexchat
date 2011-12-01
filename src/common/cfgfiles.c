@@ -164,9 +164,13 @@ list_delentry (GSList ** list, char *name)
 char *
 cfg_get_str (char *cfg, char *var, char *dest, int dest_len)
 {
+	char buffer[128];	/* should be plenty for a variable name */
+
+	sprintf (buffer, "%s ", var);	/* add one space, this way it works against var - var2 checks too */
+
 	while (1)
 	{
-		if (!strncasecmp (var, cfg, strlen (var)))
+		if (!strncasecmp (buffer, cfg, strlen (var) + 1))
 		{
 			char *value, t;
 			cfg += strlen (var);
