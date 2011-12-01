@@ -1584,7 +1584,7 @@ xchat_free (xchat_plugin *ph, void *ptr)
 }
 
 int
-xchat_set_pluginpref_str (xchat_plugin *pl, char *var, char *value)
+xchat_set_pluginpref_str (xchat_plugin *pl, const char *var, const char *value)
 {
 	FILE *fpIn;
 	int fhOut;
@@ -1653,7 +1653,7 @@ xchat_set_pluginpref_str (xchat_plugin *pl, char *var, char *value)
 
 		fclose (fpIn);
 
-		if (!prevConfig)
+		if (!prevConfig)	/* var doesn't exist currently, append */
 		{
 			sprintf (buffer, "%s = %s\n", var, value);
 			write (fhOut, buffer, strlen (buffer));
@@ -1680,7 +1680,7 @@ xchat_set_pluginpref_str (xchat_plugin *pl, char *var, char *value)
 }
 
 int
-xchat_get_pluginpref_str (xchat_plugin *pl, char *var, char *dest)
+xchat_get_pluginpref_str (xchat_plugin *pl, const char *var, char *dest)
 {
 	int fh;
 	int l;
@@ -1732,7 +1732,7 @@ xchat_get_pluginpref_str (xchat_plugin *pl, char *var, char *dest)
 }
 
 int
-xchat_set_pluginpref_int (xchat_plugin *pl, char *var, int value)
+xchat_set_pluginpref_int (xchat_plugin *pl, const char *var, int value)
 {
 	char buffer[12];
 
@@ -1741,7 +1741,7 @@ xchat_set_pluginpref_int (xchat_plugin *pl, char *var, int value)
 }
 
 int
-xchat_get_pluginpref_int (xchat_plugin *pl, char *var)
+xchat_get_pluginpref_int (xchat_plugin *pl, const char *var)
 {
 	char buffer[12];
 
