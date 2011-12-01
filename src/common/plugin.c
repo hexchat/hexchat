@@ -42,7 +42,7 @@
 #include "text.h"
 #define PLUGIN_C
 typedef struct session xchat_context;
-#include "../../plugins/xchat-plugin.h"
+#include "xchat-plugin.h"
 #include "plugin.h"
 
 
