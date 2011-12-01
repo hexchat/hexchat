@@ -28,6 +28,10 @@
 #include "xchat-plugin.h"
 
 static xchat_plugin *ph;   /* plugin handle */
+static int firstRun;
+static char *wmiOs;
+static char *wmiCpu;
+static char *wmiVga;
 
 static int
 getCpuArch (void)
@@ -230,7 +234,7 @@ getWmiInfo (int mode)
 	http://social.msdn.microsoft.com/forums/en-US/vcgeneral/thread/d6420012-e432-4964-8506-6f6b65e5a451
 	*/
 
-	static char buffer[128];
+	char *buffer = (char *) malloc (128);
 	HRESULT hres;
 	HRESULT hr;
 	IWbemLocator *pLoc = NULL;
@@ -345,25 +349,34 @@ getWmiInfo (int mode)
 static int
 printInfo (char *word[], char *word_eol[], void *user_data)
 {
+	/* query WMI info only at the first time WinSys is called, then cache it to save time */
+	if (firstRun)
+	{
+		xchat_printf (ph, "WinSys first execution, querying and caching WMI info...\n");
+		wmiOs = getWmiInfo (0);
+		wmiCpu = getWmiInfo (1);
+		wmiVga = getWmiInfo (2);
+		firstRun = 0;
+	}
 	if (xchat_list_int (ph, NULL, "type") >= 2)
 	{
 		/* xchat_commandf (ph, "ME * WinSys - system details *");
 		xchat_commandf (ph, "ME ***************************"); */
 		xchat_commandf (ph, "ME * Client:  XChat-WDK %s (x%d)", xchat_get_info (ph, "wdk_version"), getCpuArch ());
-		xchat_commandf (ph, "ME * OS:      %s", getWmiInfo (0));
-		xchat_commandf (ph, "ME * CPU:     %s (%s)", getWmiInfo (1), getCpuMhz ());
+		xchat_commandf (ph, "ME * OS:      %s", wmiOs);
+		xchat_commandf (ph, "ME * CPU:     %s (%s)", wmiCpu, getCpuMhz ());
 		xchat_commandf (ph, "ME * RAM:     %s", getMemoryInfo ());
-		xchat_commandf (ph, "ME * VGA:     %s", getWmiInfo (2));
+		xchat_commandf (ph, "ME * VGA:     %s", wmiVga);
 		/* will work correctly for up to 50 days, should be enough */
 		xchat_commandf (ph, "ME * Uptime:  %.2f Hours", (float) GetTickCount() / 1000 / 60 / 60);
 	}
 	else
 	{
 		xchat_printf (ph, " * Client:  XChat-WDK %s (x%d)\n", xchat_get_info (ph, "wdk_version"), getCpuArch ());
-		xchat_printf (ph, " * OS:      %s\n", getWmiInfo (0));
-		xchat_printf (ph, " * CPU:     %s (%s)\n", getWmiInfo (1), getCpuMhz ());
+		xchat_printf (ph, " * OS:      %s\n", wmiOs);
+		xchat_printf (ph, " * CPU:     %s (%s)\n", wmiCpu, getCpuMhz ());
 		xchat_printf (ph, " * RAM:     %s\n", getMemoryInfo ());
-		xchat_printf (ph, " * VGA:     %s\n", getWmiInfo (2));
+		xchat_printf (ph, " * VGA:     %s\n", wmiVga);
 		xchat_printf (ph, " * Uptime:  %.2f Hours\n", (float) GetTickCount() / 1000 / 60 / 60);
 	}
 
@@ -378,6 +391,8 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 	*plugin_name = "WinSys";
 	*plugin_desc = "Display info about your hardware and OS";
 	*plugin_version = "1.0";
+
+	firstRun = 1;
 
 	xchat_hook_command (ph, "WINSYS", XCHAT_PRI_NORM, printInfo, NULL, NULL);
 	xchat_command (ph, "MENU -ietc\\system.png ADD \"Window/Display System Info\" \"WINSYS\"");
