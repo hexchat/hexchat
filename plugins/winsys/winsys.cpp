@@ -28,9 +28,9 @@
 #include "xchat-plugin.h"
 
 static xchat_plugin *ph;   /* plugin handle */
-static const char name[] = "WinSys";
-static const char desc[] = "Display info about your hardware and OS";
-static const char version[] = "1.0";
+static char name[] = "WinSys";
+static char desc[] = "Display info about your hardware and OS";
+static char version[] = "1.0";
 static int firstRun;
 static char *wmiOs;
 static char *wmiCpu;
