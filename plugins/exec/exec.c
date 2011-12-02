@@ -123,6 +123,6 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 int
 xchat_plugin_deinit (void)
 {
-	xchat_print (ph, "%s plugin unloaded\n", name);
+	xchat_printf (ph, "%s plugin unloaded\n", name);
 	return 1;
 }
