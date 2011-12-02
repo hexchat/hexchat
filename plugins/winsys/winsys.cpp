@@ -28,6 +28,9 @@
 #include "xchat-plugin.h"
 
 static xchat_plugin *ph;   /* plugin handle */
+static const char name[] = "WinSys";
+static const char desc[] = "Display info about your hardware and OS";
+static const char version[] = "1.0";
 static int firstRun;
 static char *wmiOs;
 static char *wmiCpu;
@@ -352,7 +355,7 @@ printInfo (char *word[], char *word_eol[], void *user_data)
 	/* query WMI info only at the first time WinSys is called, then cache it to save time */
 	if (firstRun)
 	{
-		xchat_printf (ph, "WinSys first execution, querying and caching WMI info...\n");
+		xchat_printf (ph, "%s first execution, querying and caching WMI info...\n", name);
 		wmiOs = getWmiInfo (0);
 		wmiCpu = getWmiInfo (1);
 		wmiVga = getWmiInfo (2);
@@ -388,16 +391,16 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 {
 	ph = plugin_handle;
 
-	*plugin_name = "WinSys";
-	*plugin_desc = "Display info about your hardware and OS";
-	*plugin_version = "1.0";
+	*plugin_name = name;
+	*plugin_desc = desc;
+	*plugin_version = version;
 
 	firstRun = 1;
 
 	xchat_hook_command (ph, "WINSYS", XCHAT_PRI_NORM, printInfo, NULL, NULL);
 	xchat_command (ph, "MENU -ietc\\system.png ADD \"Window/Display System Info\" \"WINSYS\"");
 
-	xchat_printf (ph, "%s plugin loaded\n", *plugin_name);
+	xchat_printf (ph, "%s plugin loaded\n", name);
 
 	return 1;       /* return 1 for success */
 }
@@ -407,6 +410,6 @@ int
 xchat_plugin_deinit (void)
 {
 	xchat_command (ph, "MENU DEL \"Window/Display System Info\"");
-	xchat_print (ph, "WinSys plugin unloaded\n");
+	xchat_printf (ph, "%s plugin unloaded\n", name);
 	return 1;
 }

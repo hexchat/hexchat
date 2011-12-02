@@ -26,6 +26,9 @@
 #include "xchat-plugin.h"
 
 static xchat_plugin *ph;   /* plugin handle */
+static const char name[] = "Update Checker";
+static const char desc[] = "Check for XChat-WDK updates automatically";
+static const char version[] = "2.0";
 
 /* we need this to store the result of the initial update check since the return value is preserved for XCHAT_EAT */
 static int update_available;
@@ -117,14 +120,14 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 {
 	ph = plugin_handle;
 
-	*plugin_name = "Update Checker";
-	*plugin_desc = "Plugin for checking for XChat-WDK updates";
-	*plugin_version = "2.0";
+	*plugin_name = name;
+	*plugin_desc = desc;
+	*plugin_version = version;
 
 	xchat_hook_command (ph, "UPDCHK", XCHAT_PRI_NORM, print_version, 0, 0);
 	xchat_command (ph, "MENU -ietc\\download.png ADD \"Help/Check for Updates\" \"UPDCHK\"");
 
-	xchat_printf (ph, "%s plugin loaded\n", *plugin_name);
+	xchat_printf (ph, "%s plugin loaded\n", name);
 
 	/* only start the timer if there's no update available during startup */
 	if (!update_available)
@@ -140,6 +143,6 @@ int
 xchat_plugin_deinit (void)
 {
 	xchat_command (ph, "MENU DEL \"Help/Check for updates\"");
-	xchat_print (ph, "Update Checker plugin unloaded\n");
+	xchat_printf (ph, "%s plugin unloaded\n", name);
 	return 1;
 }

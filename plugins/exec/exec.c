@@ -26,6 +26,9 @@
 #include "xchat-plugin.h"
 
 static xchat_plugin *ph;   /* plugin handle */
+static const char name[] = "Exec";
+static const char desc[] = "Execute commands inside XChat";
+static const char version[] = "1.0";
 
 static int
 run_command (char *word[], char *word_eol[], void *userdata)
@@ -107,12 +110,12 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 {
 	ph = plugin_handle;
 
-	*plugin_name = "Exec";
-	*plugin_desc = "Execute commands inside XChat";
-	*plugin_version = "1.0";
+	*plugin_name = name;
+	*plugin_desc = desc;
+	*plugin_version = version;
 
 	xchat_hook_command (ph, "EXEC", XCHAT_PRI_NORM, run_command, 0, 0);
-	xchat_printf (ph, "%s plugin loaded\n", *plugin_name);
+	xchat_printf (ph, "%s plugin loaded\n", name);
 
 	return 1;       /* return 1 for success */
 }
@@ -120,6 +123,6 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 int
 xchat_plugin_deinit (void)
 {
-	xchat_print (ph, "Exec plugin unloaded\n");
+	xchat_print (ph, "%s plugin unloaded\n", name);
 	return 1;
 }

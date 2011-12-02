@@ -42,6 +42,9 @@
 #endif
 
 static xchat_plugin *ph;									/* plugin handle */
+static const char name[] = "Checksum";
+static const char desc[] = "Calculate checksum for DCC file transfers";
+static const char version[] = "2.0";
 static int config_fail;										/* variable for config availability */
 
 /* Use of OpenSSL SHA256 interface: http://adamlamers.com/?p=5 */
@@ -324,9 +327,9 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 {
 	ph = plugin_handle;
 
-	*plugin_name = "Checksum";
-	*plugin_desc = "Calculate checksum for DCC file transfers";
-	*plugin_version = "2.0";
+	*plugin_name = name;
+	*plugin_desc = desc;
+	*plugin_version = version;
 
 	init ();
 
@@ -334,13 +337,13 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 	xchat_hook_print (ph, "DCC RECV Complete", XCHAT_PRI_NORM, dccrecv_cb, NULL);
 	xchat_hook_print (ph, "DCC Offer", XCHAT_PRI_NORM, dccoffer_cb, NULL);
 
-	xchat_print (ph, "Checksum plugin loaded\n");
+	xchat_printf (ph, "%s plugin loaded\n", name);
 	return 1;
 }
 
 int
 xchat_plugin_deinit (void)
 {
-	xchat_print (ph, "Checksum plugin unloaded\n");
+	xchat_printf (ph, "%s plugin unloaded\n", name);
 	return 1;
 }
