@@ -218,10 +218,7 @@ mg_create_tab_colors (void)
 static void
 set_window_urgency (GtkWidget *win, gboolean set)
 {
-#ifdef _WIN64
-	/* this is currently borked in OBS GTK+ 2.24.8 */
 	gtk_window_set_urgency_hint (GTK_WINDOW (win), set);
-#endif
 }
 
 static void

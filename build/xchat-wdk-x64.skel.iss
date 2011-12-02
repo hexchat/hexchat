@@ -31,7 +31,7 @@ Name: "custom"; Description: "Custom Installation"; Flags: iscustom
 Name: "libs"; Description: "XChat-WDK"; Types: normal full minimal custom; Flags: fixed
 Name: "xctext"; Description: "XChat-Text"; Types: full custom; Flags: disablenouninstallwarning
 Name: "translations"; Description: "Translations"; Types: normal full custom; Flags: disablenouninstallwarning
-Name: "gtkengines"; Description: "GTK+ Engines"; Types: full custom; Flags: disablenouninstallwarning
+;obs Name: "gtkengines"; Description: "GTK+ Engines"; Types: full custom; Flags: disablenouninstallwarning
 ;Name: "spelling"; Description: "Spelling Dictionaries"; Types: full custom; Flags: disablenouninstallwarning
 Name: "plugins"; Description: "Plugins"; Types: full custom; Flags: disablenouninstallwarning
 Name: "plugins\checksum"; Description: "Checksum"; Types: full custom; Flags: disablenouninstallwarning
@@ -43,7 +43,7 @@ Name: "plugins\upd"; Description: "Update Checker"; Types: normal full custom; F
 Name: "plugins\winamp"; Description: "Winamp"; Types: full custom; Flags: disablenouninstallwarning
 Name: "plugins\winsys"; Description: "WinSys"; Types: full custom; Flags: disablenouninstallwarning
 Name: "plugins\wmpa"; Description: "Windows Media Player Announcer"; Types: full custom; Flags: disablenouninstallwarning
-;Name: "plugins\xtray"; Description: "X-Tray"; Types: full custom; Flags: disablenouninstallwarning
+Name: "plugins\xtray"; Description: "X-Tray"; Types: full custom; Flags: disablenouninstallwarning
 Name: "langs"; Description: "Language Interfaces"; Types: full custom; Flags: disablenouninstallwarning
 Name: "langs\lua"; Description: "Lua"; Types: full custom; Flags: disablenouninstallwarning
 Name: "langs\lua\luawdk"; Description: "Lua-WDK"; Types: full custom; Flags: disablenouninstallwarning
@@ -87,6 +87,7 @@ Source: "LICENSE.CAIRO"; DestDir: "{app}"; Components: libs
 Source: "LICENSE.LUA"; DestDir: "{app}"; Components: libs
 Source: "LICENSE.ENCHANT"; DestDir: "{app}"; Components: libs
 Source: "LICENSE.LIBXML"; DestDir: "{app}"; Components: libs
+Source: "etc\gtk-2.0\gtkrc"; DestDir: "{app}\etc\gtk-2.0"; Components: libs
 ;Source: "etc\gtk-2.0\gtkrc"; DestDir: "{app}\etc\gtk-2.0"; Components: libs and not gtkengines
 Source: "share\xml\*"; DestDir: "{app}\share\xml"; Flags: createallsubdirs recursesubdirs; Components: libs
 Source: "locale\*"; DestDir: "{app}\locale"; Flags: createallsubdirs recursesubdirs; Components: translations
@@ -97,7 +98,7 @@ Source: "libatk-1.0-0.dll"; DestDir: "{app}"; Components: libs
 Source: "libcairo-2.dll"; DestDir: "{app}"; Components: libs
 Source: "libeay32.dll"; DestDir: "{app}"; Components: libs
 Source: "libexpat-1.dll"; DestDir: "{app}"; Components: libs
-Source: "libffi-5.dll"; DestDir: "{app}"; Components: libs
+;obs Source: "libffi-5.dll"; DestDir: "{app}"; Components: libs
 Source: "libfreetype-6.dll"; DestDir: "{app}"; Components: libs
 Source: "libfontconfig-1.dll"; DestDir: "{app}"; Components: libs
 Source: "libgdk_pixbuf-2.0-0.dll"; DestDir: "{app}"; Components: libs
@@ -109,19 +110,21 @@ Source: "libgobject-2.0-0.dll"; DestDir: "{app}"; Components: libs
 Source: "libgthread-2.0-0.dll"; DestDir: "{app}"; Components: libs
 Source: "libgtk-win32-2.0-0.dll"; DestDir: "{app}"; Components: libs
 Source: "libintl-8.dll"; DestDir: "{app}"; Components: libs
-Source: "libjasper-1.dll"; DestDir: "{app}"; Components: libs
-Source: "libjpeg-8.dll"; DestDir: "{app}"; Components: libs
+;obs Source: "libjasper-1.dll"; DestDir: "{app}"; Components: libs
+;obs Source: "libjpeg-8.dll"; DestDir: "{app}"; Components: libs
 Source: "libpango-1.0-0.dll"; DestDir: "{app}"; Components: libs
 Source: "libpangocairo-1.0-0.dll"; DestDir: "{app}"; Components: libs
 Source: "libpangoft2-1.0-0.dll"; DestDir: "{app}"; Components: libs
 Source: "libpangowin32-1.0-0.dll"; DestDir: "{app}"; Components: libs
-Source: "libpixman-1-0.dll"; DestDir: "{app}"; Components: libs
-Source: "libtiff-3.dll"; DestDir: "{app}"; Components: libs
-Source: "libpng15-15.dll"; DestDir: "{app}"; Components: libs
+;obs Source: "libpixman-1-0.dll"; DestDir: "{app}"; Components: libs
+;obs Source: "libtiff-3.dll"; DestDir: "{app}"; Components: libs
+Source: "libpng14-14.dll"; DestDir: "{app}"; Components: libs
+;obs Source: "libpng15-15.dll"; DestDir: "{app}"; Components: libs
 Source: "lua51.dll"; DestDir: "{app}"; Components: libs
 Source: "ssleay32.dll"; DestDir: "{app}"; Components: libs
 Source: "zlib1.dll"; DestDir: "{app}"; Components: libs
-Source: "libxml2-2.dll"; DestDir: "{app}"; Components: libs
+Source: "libxml2.dll"; DestDir: "{app}"; Components: libs
+;obs Source: "libxml2-2.dll"; DestDir: "{app}"; Components: libs
 Source: "libenchant.dll"; DestDir: "{app}"; Components: libs
 
 Source: "lib\enchant\libenchant_myspell.dll"; DestDir: "{app}\lib\enchant"; Components: libs
@@ -130,19 +133,19 @@ Source: "lib\gtk-2.0\2.10.0\engines\libpixmap.dll"; DestDir: "{app}\lib\gtk-2.0\
 Source: "lib\gtk-2.0\2.10.0\engines\libwimp.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Components: libs
 Source: "lib\gtk-2.0\modules\libgail.dll"; DestDir: "{app}\lib\gtk-2.0\modules"; Components: libs
 
-Source: "etc\gtkpref.png"; DestDir: "{app}\etc"; Components: gtkengines
-Source: "lib\gtk-2.0\2.10.0\engines\libclearlooks.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Components: gtkengines
-Source: "lib\gtk-2.0\2.10.0\engines\libcrux-engine.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Components: gtkengines
-Source: "lib\gtk-2.0\2.10.0\engines\libglide.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Components: gtkengines
-Source: "lib\gtk-2.0\2.10.0\engines\libhcengine.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Components: gtkengines
-Source: "lib\gtk-2.0\2.10.0\engines\libindustrial.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Components: gtkengines
-Source: "lib\gtk-2.0\2.10.0\engines\libmist.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Components: gtkengines
-Source: "lib\gtk-2.0\2.10.0\engines\libmurrine.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Components: gtkengines
-Source: "lib\gtk-2.0\2.10.0\engines\libredmond95.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Components: gtkengines
-Source: "lib\gtk-2.0\2.10.0\engines\libthinice.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Components: gtkengines
-Source: "plugins\xcgtkpref.dll"; DestDir: "{app}\plugins"; Components: gtkengines
-Source: "share\themes\*"; DestDir: "{app}\share\themes"; Flags: createallsubdirs recursesubdirs; Components: gtkengines
-Source: "gtk2-prefs.exe"; DestDir: "{app}"; Components: gtkengines
+;obs Source: "etc\gtkpref.png"; DestDir: "{app}\etc"; Components: gtkengines
+;obs Source: "lib\gtk-2.0\2.10.0\engines\libclearlooks.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Components: gtkengines
+;obs Source: "lib\gtk-2.0\2.10.0\engines\libcrux-engine.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Components: gtkengines
+;obs Source: "lib\gtk-2.0\2.10.0\engines\libglide.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Components: gtkengines
+;obs Source: "lib\gtk-2.0\2.10.0\engines\libhcengine.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Components: gtkengines
+;obs Source: "lib\gtk-2.0\2.10.0\engines\libindustrial.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Components: gtkengines
+;obs Source: "lib\gtk-2.0\2.10.0\engines\libmist.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Components: gtkengines
+;obs Source: "lib\gtk-2.0\2.10.0\engines\libmurrine.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Components: gtkengines
+;obs Source: "lib\gtk-2.0\2.10.0\engines\libredmond95.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Components: gtkengines
+;obs Source: "lib\gtk-2.0\2.10.0\engines\libthinice.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Components: gtkengines
+;obs Source: "plugins\xcgtkpref.dll"; DestDir: "{app}\plugins"; Components: gtkengines
+;obs Source: "share\themes\*"; DestDir: "{app}\share\themes"; Flags: createallsubdirs recursesubdirs; Components: gtkengines
+;obs Source: "gtk2-prefs.exe"; DestDir: "{app}"; Components: gtkengines
 
 Source: "plugins\xcchecksum.dll"; DestDir: "{app}\plugins"; Components: plugins\checksum
 Source: "plugins\xcdoat.dll"; DestDir: "{app}\plugins"; Components: plugins\doat
@@ -155,7 +158,7 @@ Source: "plugins\xcupd.dll"; DestDir: "{app}\plugins"; Components: plugins\upd
 Source: "plugins\xcwinamp.dll"; DestDir: "{app}\plugins"; Components: plugins\winamp
 Source: "etc\system.png"; DestDir: "{app}\etc"; Components: plugins\winsys
 Source: "plugins\xcwinsys.dll"; DestDir: "{app}\plugins"; Components: plugins\winsys
-;Source: "plugins\xtray.dll"; DestDir: "{app}\plugins"; Components: plugins\xtray
+Source: "plugins\xtray.dll"; DestDir: "{app}\plugins"; Components: plugins\xtray
 Source: "plugins\xcwmpa.dll"; DestDir: "{app}\plugins"; Components: plugins\wmpa
 
 Source: "plugins\xclua.dll"; DestDir: "{app}\plugins"; Components: langs\lua
