@@ -30,9 +30,6 @@ static const char name[] = "Update Checker";
 static const char desc[] = "Check for XChat-WDK updates automatically";
 static const char version[] = "2.0";
 
-/* we need this to store the result of the initial update check since the return value is preserved for XCHAT_EAT */
-static int update_available;
-
 static char*
 check_version ()
 {
@@ -75,12 +72,10 @@ print_version ()
 	if (strcmp (version, xchat_get_info (ph, "wdk_version")) == 0)
 	{
 		xchat_printf (ph, "You have the latest version of XChat-WDK installed!\n");
-		update_available = 0;
 	}
 	else if (strcmp (version, "Unknown") == 0)
 	{
 		xchat_printf (ph, "Unable to check for XChat-WDK updates!\n");
-		update_available = 0;
 	}
 	else
 	{
@@ -89,7 +84,6 @@ print_version ()
 #else
 		xchat_printf (ph, "An XChat-WDK update is available! You can download it from here:\nhttp://xchat-wdk.googlecode.com/files/XChat-WDK%%20%s%%20x86.exe\n", version);
 #endif
-		update_available = 1;
 	}
 
 	return XCHAT_EAT_XCHAT;
@@ -126,11 +120,10 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 
 	xchat_hook_command (ph, "UPDCHK", XCHAT_PRI_NORM, print_version, 0, 0);
 	xchat_command (ph, "MENU -ietc\\download.png ADD \"Help/Check for Updates\" \"UPDCHK\"");
-
 	xchat_printf (ph, "%s plugin loaded\n", name);
 
 	/* only start the timer if there's no update available during startup */
-	if (!update_available)
+	if (print_version_quiet (NULL))
 	{
 		/* check for updates every 6 hours */
 		xchat_hook_timer (ph, 21600000, print_version_quiet, NULL);
