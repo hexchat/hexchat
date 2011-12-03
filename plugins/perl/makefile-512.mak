@@ -19,9 +19,9 @@ perl512.def:
 
 $(PERL512LIB).lib: perl512.def
 !ifdef X64
-	lib /machine:x64 /def:perl512.def
+	lib /nologo /machine:x64 /def:perl512.def
 !else
-	lib /machine:x86 /def:perl512.def
+	lib /nologo /machine:x86 /def:perl512.def
 !endif
 
 perl.c: xchat.pm.h

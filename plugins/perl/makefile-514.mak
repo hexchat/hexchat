@@ -21,9 +21,9 @@ perl514.def:
 
 $(PERL514LIB).lib: perl514.def
 !ifdef X64
-	lib /machine:x64 /def:perl514.def
+	lib /nologo /machine:x64 /def:perl514.def
 !else
-	lib /machine:x86 /def:perl514.def
+	lib /nologo /machine:x86 /def:perl514.def
 !endif
 
 perl.c: xchat.pm.h
