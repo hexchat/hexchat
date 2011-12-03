@@ -363,15 +363,15 @@ printInfo (char *word[], char *word_eol[], void *user_data)
 	}
 	if (xchat_list_int (ph, NULL, "type") >= 2)
 	{
-		/* xchat_commandf (ph, "ME * WinSys - system details *");
-		xchat_commandf (ph, "ME ***************************"); */
-		xchat_commandf (ph, "ME * Client:  XChat-WDK %s (x%d)", xchat_get_info (ph, "wdk_version"), getCpuArch ());
-		xchat_commandf (ph, "ME * OS:      %s", wmiOs);
-		xchat_commandf (ph, "ME * CPU:     %s (%s)", wmiCpu, getCpuMhz ());
-		xchat_commandf (ph, "ME * RAM:     %s", getMemoryInfo ());
-		xchat_commandf (ph, "ME * VGA:     %s", wmiVga);
-		/* will work correctly for up to 50 days, should be enough */
-		xchat_commandf (ph, "ME * Uptime:  %.2f Hours", (float) GetTickCount() / 1000 / 60 / 60);
+		/* uptime will work correctly for up to 50 days, should be enough */
+		xchat_commandf (ph, "ME ** Client: XChat-WDK %s (x%d) ** OS: %s ** CPU: %s (%s) ** RAM: %s ** VGA: %s ** Uptime: %.2f Hours **",
+			xchat_get_info (ph, "wdk_version"),
+			getCpuArch (),
+			wmiOs,
+			wmiCpu,
+			getCpuMhz (),
+			getMemoryInfo (),
+			wmiVga, (float) GetTickCount() / 1000 / 60 / 60);
 	}
 	else
 	{
