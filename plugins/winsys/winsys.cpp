@@ -364,7 +364,7 @@ printInfo (char *word[], char *word_eol[], void *user_data)
 	if (xchat_list_int (ph, NULL, "type") >= 2)
 	{
 		/* uptime will work correctly for up to 50 days, should be enough */
-		xchat_commandf (ph, "ME ** Client: XChat-WDK %s (x%d) ** OS: %s ** CPU: %s (%s) ** RAM: %s ** VGA: %s ** Uptime: %.2f Hours **",
+		xchat_commandf (ph, "ME ** WinSys ** Client: XChat-WDK %s (x%d) ** OS: %s ** CPU: %s (%s) ** RAM: %s ** VGA: %s ** Uptime: %.2f Hours **",
 			xchat_get_info (ph, "wdk_version"),
 			getCpuArch (),
 			wmiOs,
