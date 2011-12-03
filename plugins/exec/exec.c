@@ -28,7 +28,7 @@
 static xchat_plugin *ph;   /* plugin handle */
 static const char name[] = "Exec";
 static const char desc[] = "Execute commands inside XChat";
-static const char version[] = "1.0";
+static const char version[] = "1.1";
 
 static int
 run_command (char *word[], char *word_eol[], void *userdata)
@@ -54,7 +54,17 @@ run_command (char *word[], char *word_eol[], void *userdata)
 	if (strlen (word[2]) > 0)
 	{
 		strcpy (commandLine, "cmd.exe /c ");
-		strcat (commandLine, word_eol[2]);
+
+		if (!stricmp("-O", word[2]))
+		{
+			/*strcat (commandLine, word_eol[3]);*/
+			xchat_printf (ph, "Printing Exec output to others is not supported yet.\n");
+			return XCHAT_EAT_XCHAT;
+		}
+		else
+		{
+			strcat (commandLine, word_eol[2]);
+		}
 
 		CreatePipe (&readPipe, &writePipe, &secattr, 0); /* might be replaced with MyCreatePipeEx */
 
@@ -114,7 +124,7 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 	*plugin_desc = desc;
 	*plugin_version = version;
 
-	xchat_hook_command (ph, "EXEC", XCHAT_PRI_NORM, run_command, 0, 0);
+	xchat_hook_command (ph, "EXEC", XCHAT_PRI_NORM, run_command, "Usage: /EXEC [-O] - execute commands inside XChat", 0);
 	xchat_printf (ph, "%s plugin loaded\n", name);
 
 	return 1;       /* return 1 for success */
