@@ -78,98 +78,98 @@ Source: watercolorlite-blue.cjstyles; DestDir: {tmp}; Flags: dontcopy
 
 Source: "portable-mode"; DestDir: "{app}"; Tasks: portable
 
-Source: "cert.pem"; DestDir: "{app}"; Components: libs
-Source: "COPYING"; DestDir: "{app}"; Components: libs
-Source: "LICENSE.OPENSSL"; DestDir: "{app}"; Components: libs
-Source: "LICENSE.ZLIB"; DestDir: "{app}"; Components: libs
-Source: "LICENSE.GTK"; DestDir: "{app}"; Components: libs
-Source: "LICENSE.CAIRO"; DestDir: "{app}"; Components: libs
-Source: "LICENSE.LUA"; DestDir: "{app}"; Components: libs
-Source: "LICENSE.ENCHANT"; DestDir: "{app}"; Components: libs
-Source: "LICENSE.LIBXML"; DestDir: "{app}"; Components: libs
-Source: "etc\gtk-2.0\gtkrc"; DestDir: "{app}\etc\gtk-2.0"; Components: libs
-;Source: "etc\gtk-2.0\gtkrc"; DestDir: "{app}\etc\gtk-2.0"; Components: libs and not gtkengines
-Source: "share\xml\*"; DestDir: "{app}\share\xml"; Flags: createallsubdirs recursesubdirs; Components: libs
-Source: "locale\*"; DestDir: "{app}\locale"; Flags: createallsubdirs recursesubdirs; Components: translations
-Source: "share\locale\*"; DestDir: "{app}\share\locale"; Flags: createallsubdirs recursesubdirs; Components: translations
-;Source: "share\myspell\*"; DestDir: "{app}\share\myspell"; Flags: createallsubdirs recursesubdirs; Components: spelling
+Source: "cert.pem"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "COPYING"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "LICENSE.OPENSSL"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "LICENSE.ZLIB"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "LICENSE.GTK"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "LICENSE.CAIRO"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "LICENSE.LUA"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "LICENSE.ENCHANT"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "LICENSE.LIBXML"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "etc\gtk-2.0\gtkrc"; DestDir: "{app}\etc\gtk-2.0"; Flags: ignoreversion; Components: libs
+;Source: "etc\gtk-2.0\gtkrc"; DestDir: "{app}\etc\gtk-2.0"; Flags: ignoreversion; Components: libs and not gtkengines
+Source: "share\xml\*"; DestDir: "{app}\share\xml"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: libs
+Source: "locale\*"; DestDir: "{app}\locale"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: translations
+Source: "share\locale\*"; DestDir: "{app}\share\locale"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: translations
+;Source: "share\myspell\*"; DestDir: "{app}\share\myspell"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: spelling
 
-Source: "libatk-1.0-0.dll"; DestDir: "{app}"; Components: libs
-Source: "libcairo-2.dll"; DestDir: "{app}"; Components: libs
-Source: "libeay32.dll"; DestDir: "{app}"; Components: libs
-Source: "libexpat-1.dll"; DestDir: "{app}"; Components: libs
-;obs Source: "libffi-5.dll"; DestDir: "{app}"; Components: libs
-Source: "libfreetype-6.dll"; DestDir: "{app}"; Components: libs
-Source: "libfontconfig-1.dll"; DestDir: "{app}"; Components: libs
-Source: "libgdk_pixbuf-2.0-0.dll"; DestDir: "{app}"; Components: libs
-Source: "libgdk-win32-2.0-0.dll"; DestDir: "{app}"; Components: libs
-Source: "libgio-2.0-0.dll"; DestDir: "{app}"; Components: libs
-Source: "libglib-2.0-0.dll"; DestDir: "{app}"; Components: libs
-Source: "libgmodule-2.0-0.dll"; DestDir: "{app}"; Components: libs
-Source: "libgobject-2.0-0.dll"; DestDir: "{app}"; Components: libs
-Source: "libgthread-2.0-0.dll"; DestDir: "{app}"; Components: libs
-Source: "libgtk-win32-2.0-0.dll"; DestDir: "{app}"; Components: libs
-Source: "libintl-8.dll"; DestDir: "{app}"; Components: libs
-;obs Source: "libjasper-1.dll"; DestDir: "{app}"; Components: libs
-;obs Source: "libjpeg-8.dll"; DestDir: "{app}"; Components: libs
-Source: "libpango-1.0-0.dll"; DestDir: "{app}"; Components: libs
-Source: "libpangocairo-1.0-0.dll"; DestDir: "{app}"; Components: libs
-Source: "libpangoft2-1.0-0.dll"; DestDir: "{app}"; Components: libs
-Source: "libpangowin32-1.0-0.dll"; DestDir: "{app}"; Components: libs
-;obs Source: "libpixman-1-0.dll"; DestDir: "{app}"; Components: libs
-;obs Source: "libtiff-3.dll"; DestDir: "{app}"; Components: libs
-Source: "libpng14-14.dll"; DestDir: "{app}"; Components: libs
-;obs Source: "libpng15-15.dll"; DestDir: "{app}"; Components: libs
-Source: "lua51.dll"; DestDir: "{app}"; Components: libs
-Source: "ssleay32.dll"; DestDir: "{app}"; Components: libs
-Source: "zlib1.dll"; DestDir: "{app}"; Components: libs
-Source: "libxml2.dll"; DestDir: "{app}"; Components: libs
-;obs Source: "libxml2-2.dll"; DestDir: "{app}"; Components: libs
-Source: "libenchant.dll"; DestDir: "{app}"; Components: libs
+Source: "libatk-1.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "libcairo-2.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "libeay32.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "libexpat-1.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+;obs Source: "libffi-5.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "libfreetype-6.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "libfontconfig-1.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "libgdk_pixbuf-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "libgdk-win32-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "libgio-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "libglib-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "libgmodule-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "libgobject-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "libgthread-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "libgtk-win32-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "libintl-8.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+;obs Source: "libjasper-1.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+;obs Source: "libjpeg-8.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "libpango-1.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "libpangocairo-1.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "libpangoft2-1.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "libpangowin32-1.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+;obs Source: "libpixman-1-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+;obs Source: "libtiff-3.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "libpng14-14.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+;obs Source: "libpng15-15.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "lua51.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "ssleay32.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "zlib1.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "libxml2.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+;obs Source: "libxml2-2.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "libenchant.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 
-Source: "lib\enchant\libenchant_myspell.dll"; DestDir: "{app}\lib\enchant"; Components: libs
+Source: "lib\enchant\libenchant_myspell.dll"; DestDir: "{app}\lib\enchant"; Flags: ignoreversion; Components: libs
 
-Source: "lib\gtk-2.0\2.10.0\engines\libpixmap.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Components: libs
-Source: "lib\gtk-2.0\2.10.0\engines\libwimp.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Components: libs
-Source: "lib\gtk-2.0\modules\libgail.dll"; DestDir: "{app}\lib\gtk-2.0\modules"; Components: libs
+Source: "lib\gtk-2.0\2.10.0\engines\libpixmap.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Flags: ignoreversion; Components: libs
+Source: "lib\gtk-2.0\2.10.0\engines\libwimp.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Flags: ignoreversion; Components: libs
+Source: "lib\gtk-2.0\modules\libgail.dll"; DestDir: "{app}\lib\gtk-2.0\modules"; Flags: ignoreversion; Components: libs
 
-;obs Source: "etc\gtkpref.png"; DestDir: "{app}\etc"; Components: gtkengines
-;obs Source: "lib\gtk-2.0\2.10.0\engines\libclearlooks.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Components: gtkengines
-;obs Source: "lib\gtk-2.0\2.10.0\engines\libcrux-engine.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Components: gtkengines
-;obs Source: "lib\gtk-2.0\2.10.0\engines\libglide.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Components: gtkengines
-;obs Source: "lib\gtk-2.0\2.10.0\engines\libhcengine.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Components: gtkengines
-;obs Source: "lib\gtk-2.0\2.10.0\engines\libindustrial.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Components: gtkengines
-;obs Source: "lib\gtk-2.0\2.10.0\engines\libmist.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Components: gtkengines
-;obs Source: "lib\gtk-2.0\2.10.0\engines\libmurrine.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Components: gtkengines
-;obs Source: "lib\gtk-2.0\2.10.0\engines\libredmond95.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Components: gtkengines
-;obs Source: "lib\gtk-2.0\2.10.0\engines\libthinice.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Components: gtkengines
-;obs Source: "plugins\xcgtkpref.dll"; DestDir: "{app}\plugins"; Components: gtkengines
-;obs Source: "share\themes\*"; DestDir: "{app}\share\themes"; Flags: createallsubdirs recursesubdirs; Components: gtkengines
-;obs Source: "gtk2-prefs.exe"; DestDir: "{app}"; Components: gtkengines
+;obs Source: "etc\gtkpref.png"; DestDir: "{app}\etc"; Flags: ignoreversion; Components: gtkengines
+;obs Source: "lib\gtk-2.0\2.10.0\engines\libclearlooks.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Flags: ignoreversion; Components: gtkengines
+;obs Source: "lib\gtk-2.0\2.10.0\engines\libcrux-engine.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Flags: ignoreversion; Components: gtkengines
+;obs Source: "lib\gtk-2.0\2.10.0\engines\libglide.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Flags: ignoreversion; Components: gtkengines
+;obs Source: "lib\gtk-2.0\2.10.0\engines\libhcengine.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Flags: ignoreversion; Components: gtkengines
+;obs Source: "lib\gtk-2.0\2.10.0\engines\libindustrial.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Flags: ignoreversion; Components: gtkengines
+;obs Source: "lib\gtk-2.0\2.10.0\engines\libmist.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Flags: ignoreversion; Components: gtkengines
+;obs Source: "lib\gtk-2.0\2.10.0\engines\libmurrine.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Flags: ignoreversion; Components: gtkengines
+;obs Source: "lib\gtk-2.0\2.10.0\engines\libredmond95.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Flags: ignoreversion; Components: gtkengines
+;obs Source: "lib\gtk-2.0\2.10.0\engines\libthinice.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Flags: ignoreversion; Components: gtkengines
+;obs Source: "plugins\xcgtkpref.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: gtkengines
+;obs Source: "share\themes\*"; DestDir: "{app}\share\themes"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: gtkengines
+;obs Source: "gtk2-prefs.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: gtkengines
 
-Source: "plugins\xcchecksum.dll"; DestDir: "{app}\plugins"; Components: plugins\checksum
-Source: "plugins\xcdoat.dll"; DestDir: "{app}\plugins"; Components: plugins\doat
-Source: "plugins\xcexec.dll"; DestDir: "{app}\plugins"; Components: plugins\exec
-Source: "plugins\xcfishlim.dll"; DestDir: "{app}\plugins"; Components: plugins\fishlim
-Source: "etc\music.png"; DestDir: "{app}\etc"; Components: plugins\winamp or plugins\mpcinfo
-Source: "plugins\xcmpcinfo.dll"; DestDir: "{app}\plugins"; Components: plugins\mpcinfo
-Source: "etc\download.png"; DestDir: "{app}\etc"; Components: plugins\upd
-Source: "plugins\xcupd.dll"; DestDir: "{app}\plugins"; Components: plugins\upd
-Source: "plugins\xcwinamp.dll"; DestDir: "{app}\plugins"; Components: plugins\winamp
-Source: "etc\system.png"; DestDir: "{app}\etc"; Components: plugins\winsys
-Source: "plugins\xcwinsys.dll"; DestDir: "{app}\plugins"; Components: plugins\winsys
-Source: "plugins\xtray.dll"; DestDir: "{app}\plugins"; Components: plugins\xtray
-Source: "plugins\xcwmpa.dll"; DestDir: "{app}\plugins"; Components: plugins\wmpa
+Source: "plugins\xcchecksum.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\checksum
+Source: "plugins\xcdoat.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\doat
+Source: "plugins\xcexec.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\exec
+Source: "plugins\xcfishlim.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\fishlim
+Source: "etc\music.png"; DestDir: "{app}\etc"; Flags: ignoreversion; Components: plugins\winamp or plugins\mpcinfo
+Source: "plugins\xcmpcinfo.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\mpcinfo
+Source: "etc\download.png"; DestDir: "{app}\etc"; Flags: ignoreversion; Components: plugins\upd
+Source: "plugins\xcupd.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\upd
+Source: "plugins\xcwinamp.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\winamp
+Source: "etc\system.png"; DestDir: "{app}\etc"; Flags: ignoreversion; Components: plugins\winsys
+Source: "plugins\xcwinsys.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\winsys
+Source: "plugins\xtray.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\xtray
+Source: "plugins\xcwmpa.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\wmpa
 
-Source: "plugins\xclua.dll"; DestDir: "{app}\plugins"; Components: langs\lua
-Source: "plugins\xcpython.dll"; DestDir: "{app}\plugins"; Components: langs\python
-Source: "plugins\xctcl.dll"; DestDir: "{app}\plugins"; Components: langs\tcl
+Source: "plugins\xclua.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: langs\lua
+Source: "plugins\xcpython.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: langs\python
+Source: "plugins\xctcl.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: langs\tcl
 
-Source: "plugins\xcperl-512.dll"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Components: langs\perl; Tasks: perl512
-Source: "plugins\xcperl-514.dll"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Components: langs\perl; Tasks: perl514
+Source: "plugins\xcperl-512.dll"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Flags: ignoreversion; Components: langs\perl; Tasks: perl512
+Source: "plugins\xcperl-514.dll"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Flags: ignoreversion; Components: langs\perl; Tasks: perl514
 
-Source: "xchat.exe"; DestDir: "{app}"; Components: libs
-Source: "xchat-text.exe"; DestDir: "{app}"; Components: xctext
+Source: "xchat.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "xchat-text.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: xctext
 
 [Icons]
 Name: "{group}\XChat-WDK (x64)"; Filename: "{app}\xchat.exe"; Tasks: not portable
