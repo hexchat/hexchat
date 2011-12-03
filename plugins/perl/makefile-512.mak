@@ -14,6 +14,9 @@ perl.def:
 perl.obj: perl.c
 	$(CC) $(CFLAGS) perl.c $(GLIB) /I$(PERL512PATH)\perl\lib\CORE /I.. /DPERL_DLL=\"$(PERL512LIB).dll\"
 
+perl512.def:
+	gendef $(PERL512PATH)\perl\bin\perl512.dll
+
 $(PERL512LIB).lib: perl512.def
 !ifdef X64
 	lib /machine:x64 /def:perl512.def
@@ -32,6 +35,6 @@ $(TARGET): perl.obj perl.def $(PERL512LIB).lib
 clean:
 	@del $(TARGET)
 	@del *.obj
-	@del perl.def
+	@del *.def
 	@del *.lib
 	@del *.exp

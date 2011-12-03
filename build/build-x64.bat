@@ -4,9 +4,9 @@ set INCLUDE=%WDK_ROOT%\inc\api;%WDK_ROOT%\inc\crt;%WDK_ROOT%\inc\api\crt\stl70;%
 set LIB=%WDK_ROOT%\lib\wnet\amd64;%WDK_ROOT%\lib\Crt\amd64;%WDK_ROOT%\lib\Mfc\amd64;%WDK_ROOT%\lib\ATL\amd64
 set OPATH=%PATH%
 set DEV_64=%cd%\..\dep-x64
-set PATH=%PROGRAMFILES(X86)%\Microsoft Visual Studio 10.0\VC\bin\amd64;%PROGRAMFILES(X86)%\Microsoft SDKs\Windows\v7.0A\Bin\x64;%DEV_64%\bin
+set PATH=%PROGRAMFILES(X86)%\Microsoft Visual Studio 10.0\VC\bin\amd64;%PROGRAMFILES(X86)%\Microsoft SDKs\Windows\v7.0A\Bin\x64;%DEV_64%\bin;c:\mozilla-build\gendef
 set PERL_512=c:\mozilla-build\perl-5.12-x64\perl
-set PERL_514=c:\mozilla-build\perl-5.14-x64
+set PERL_514=c:\mozilla-build\perl-5.14-x64\perl
 echo [Setup] > xchat-wdk-x64.iss
 echo WizardImageFile=%cd%\bitmaps\wizardimage.bmp >> xchat-wdk-x64.iss
 echo WizardSmallImageFile=%cd%\bitmaps\wizardsmallimage.bmp >> xchat-wdk-x64.iss
