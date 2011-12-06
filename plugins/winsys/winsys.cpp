@@ -30,7 +30,7 @@
 static xchat_plugin *ph;   /* plugin handle */
 static char name[] = "WinSys";
 static char desc[] = "Display info about your hardware and OS";
-static char version[] = "1.0";
+static char version[] = "1.1";
 static int firstRun;
 static char *wmiOs;
 static char *wmiCpu;
