@@ -58,7 +58,7 @@ getCpuArch (void)
 }
 
 #if 0
-/* use WMI instead, wProcessorArchitecture displays current binary arch instead OS arch anyway */
+/* use WMI instead, wProcessorArchitecture displays current binary arch instead of OS arch anyway */
 static char *
 getOsName (void)
 {
