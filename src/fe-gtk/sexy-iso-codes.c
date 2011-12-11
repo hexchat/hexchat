@@ -115,7 +115,11 @@ load_iso_entries (int iso,
 	char *filename;
 	int ret = -1;
 
+#ifdef WIN32
 	filename = g_strdup_printf (".\\share\\xml\\iso-codes\\iso_%d.xml", iso);
+#else
+	filename = g_strdup_printf ("/usr/share/xml/iso-codes/iso_%d.xml", iso);
+#endif
 	reader = xmlNewTextReaderFilename (filename);
 	if (reader == NULL) goto out;
 
