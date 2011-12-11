@@ -33,7 +33,9 @@
 #include "sexy-iso-codes.h"
 #include "sexy-marshal.h"
 
+#ifdef WIN32
 #include "typedef.h"
+#endif
 
 #include "../common/cfgfiles.h"
 #include "../common/xchatc.h"
@@ -141,9 +143,18 @@ initialize_enchant ()
 	GModule *enchant;
 	gpointer funcptr;
 
+#ifdef WIN32
 	enchant = g_module_open("libenchant.dll", 0);
+#else
+	enchant = g_module_open("libenchant", 0);
+#endif
 	if (enchant == NULL)
 	{
+#ifndef WIN32
+		enchant = g_module_open("libenchant.so.1", 0);
+				if (enchant == NULL)
+					return;
+#endif
 		return;
 	}
 

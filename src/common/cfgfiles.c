@@ -29,11 +29,12 @@
 #include "fe.h"
 #include "text.h"
 #include "xchatc.h"
-#include "wdkutil.h"
 
 #ifndef WIN32
+#include <unistd.h>
 #define XCHAT_DIR ".xchat2"
 #endif
+
 #define DEF_FONT "Monospace 9"
 
 void
@@ -402,7 +403,9 @@ const struct prefs vars[] = {
 	{"dcc_blocksize", P_OFFINT (dcc_blocksize), TYPE_INT},
 	{"dcc_completed_dir", P_OFFSET (dcc_completed_dir), TYPE_STR},
 	{"dcc_dir", P_OFFSET (dccdir), TYPE_STR},
-	/* {"dcc_fast_send", P_OFFINT (fastdccsend), TYPE_BOOL}, */
+#ifndef WIN32
+	{"dcc_fast_send", P_OFFINT (fastdccsend), TYPE_BOOL},
+#endif
 	{"dcc_global_max_get_cps", P_OFFINT (dcc_global_max_get_cps), TYPE_INT},
 	{"dcc_global_max_send_cps", P_OFFINT (dcc_global_max_send_cps), TYPE_INT},
 	{"dcc_ip", P_OFFSET (dcc_ip_str), TYPE_STR},
@@ -440,7 +443,9 @@ const struct prefs vars[] = {
 	{"gui_lagometer", P_OFFINT (lagometer), TYPE_INT},
 	{"gui_license", P_OFFSET (gui_license), TYPE_STR},
 	{"gui_mode_buttons", P_OFFINT (chanmodebuttons), TYPE_BOOL},
+#ifdef WIN32
 	{"gui_one_instance", P_OFFINT (gui_one_instance), TYPE_BOOL},
+#endif
 	{"gui_pane_left_size", P_OFFINT (gui_pane_left_size), TYPE_INT},
 	{"gui_pane_right_size", P_OFFINT (gui_pane_right_size), TYPE_INT},
 	{"gui_quit_dialog", P_OFFINT (gui_quit_dialog), TYPE_BOOL},
@@ -547,7 +552,9 @@ const struct prefs vars[] = {
 
 	{"tab_chans", P_OFFINT (tabchannels), TYPE_BOOL},
 	{"tab_dialogs", P_OFFINT (privmsgtab), TYPE_BOOL},
+#ifdef WIN32
 	{"tab_icons", P_OFFINT (tab_icons), TYPE_BOOL},
+#endif
 	{"tab_layout", P_OFFINT (tab_layout), TYPE_INT},
 	{"tab_new_to_front", P_OFFINT (newtabstofront), TYPE_INT},
 	{"tab_notices", P_OFFINT (notices_tabs), TYPE_BOOL},
@@ -558,14 +565,18 @@ const struct prefs vars[] = {
 	{"tab_sort", P_OFFINT (tab_sort), TYPE_BOOL},
 	{"tab_trunc", P_OFFINT (truncchans), TYPE_INT},
 	{"tab_utils", P_OFFINT (windows_as_tabs), TYPE_BOOL},
+#ifdef WIN32
 	{"tab_xp", P_OFFINT (tab_xp), TYPE_BOOL},
+#endif
 
 	{"text_auto_copy_color", P_OFFINT (autocopy_color), TYPE_BOOL},	
 	{"text_auto_copy_stamp", P_OFFINT (autocopy_stamp), TYPE_BOOL},
 	{"text_auto_copy_text", P_OFFINT (autocopy_text), TYPE_BOOL},
 	{"text_background", P_OFFSET (background), TYPE_STR},
 	{"text_color_nicks", P_OFFINT (colorednicks), TYPE_BOOL},
+#ifdef WIN32
 	{"text_emoticons", P_OFFINT (emoticons), TYPE_BOOL},
+#endif
 	{"text_font", P_OFFSET (font_normal), TYPE_STR},
 	{"text_indent", P_OFFINT (indent_nicks), TYPE_BOOL},
 	{"text_max_indent", P_OFFINT (max_auto_indent), TYPE_INT},
@@ -642,7 +653,9 @@ load_config (void)
 	prefs.indent_nicks = 1;
 	prefs.thin_separator = 1;
 	prefs._tabs_position = 2; /* 2 = left */
-	/* prefs.fastdccsend = 1; */
+#ifndef WIN32
+	prefs.fastdccsend = 1;
+#endif
 	prefs.wordwrap = 1;
 	prefs.autosave = 1;
 	prefs.autodialog = 1;
@@ -667,7 +680,6 @@ load_config (void)
 	prefs.dialog_height = 256;
 	prefs.gui_join_dialog = 1;
 	prefs.gui_quit_dialog = 1;
-	prefs.slist_skip = 1;
 	prefs.dcctimeout = 180;
 	prefs.dccstalltimeout = 60;
 	prefs.notify_timeout = 15;

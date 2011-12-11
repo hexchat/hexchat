@@ -14,7 +14,6 @@
 #include "../common/text.h"
 #include "../common/userlist.h"
 #include "../common/util.h"
-#include "../common/wdkutil.h"
 #include "../common/xchatc.h"
 #include "fe-gtk.h"
 #include "gtkutil.h"
@@ -111,7 +110,7 @@ static const setting textbox_settings[] =
 	{ST_TOGGLR, N_("Indent nick names"), P_OFFINTNL(indent_nicks),
 					N_("Make nick names right-justified"),0,0},
 	{ST_TOGGLE, N_("Transparent background"), P_OFFINTNL(transparent),0,0,0},
-	{ST_TOGGLE, N_("Show marker line"), P_OFFINTNL(show_marker),
+	{ST_TOGGLR, N_("Show marker line"), P_OFFINTNL(show_marker),
 					N_("Insert a red line after the last read text."),0,0},
 	{ST_HEADER, N_("Transparency Settings"), 0,0,0},
 	{ST_HSCALE, N_("Red:"), P_OFFINTNL(tint_red),0,0,0},
@@ -153,7 +152,11 @@ static const setting inputbox_settings[] =
 #if defined(USE_GTKSPELL) || defined(USE_LIBSEXY)
 	{ST_TOGGLE, N_("Spell checking"), P_OFFINTNL(gui_input_spell),0,0,0},
 	{ST_ENTRY,	N_("Dictionaries to use:"), P_OFFSETNL(spell_langs),0,0,sizeof prefs.spell_langs},
+#ifdef WIN32
 	{ST_LABEL,	N_("Use language codes (as in \"share\\myspell\\dicts\").\nSeparate multiple entries with commas.")},
+#else
+	{ST_LABEL,	N_("Use language codes. Separate multiple entries with commas.")},
+#endif
 #endif
 
 	{ST_HEADER, N_("Nick Completion"),0,0,0},
@@ -413,6 +416,7 @@ static const setting advanced_settings[] =
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
+#ifdef WIN32
 static const setting advanced_settings_oneinstance[] =
 {
 	{ST_HEADER,	N_("Advanced Settings"),0,0,0},
@@ -429,6 +433,7 @@ static const setting advanced_settings_oneinstance[] =
 
 	{ST_END, 0, 0, 0, 0, 0}
 };
+#endif
 
 static const setting logging_settings[] =
 {
@@ -1797,6 +1802,7 @@ setup_create_pages (GtkWidget *box)
 	setup_add_page (cata[10], book, setup_create_page (logging_settings));
 	setup_add_page (cata[11], book, setup_create_sound_page ());
 
+#ifdef WIN32
 	if (portable_mode ())
 	{
 		setup_add_page (cata[12], book, setup_create_page (advanced_settings));
@@ -1805,6 +1811,9 @@ setup_create_pages (GtkWidget *box)
 	{
 		setup_add_page (cata[12], book, setup_create_page (advanced_settings_oneinstance));
 	}
+#else
+	setup_add_page (cata[12], book, setup_create_page (advanced_settings));
+#endif
 
 	setup_add_page (cata[14], book, setup_create_page (network_settings));
 	setup_add_page (cata[15], book, setup_create_page (filexfer_settings));

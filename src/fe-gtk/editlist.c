@@ -22,6 +22,11 @@
 #include <fcntl.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+
+#ifndef WIN32
+#include <unistd.h>
+#endif
+
 #include "fe-gtk.h"
 
 #include <gtk/gtkstock.h>

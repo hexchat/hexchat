@@ -36,6 +36,7 @@
 #ifndef WIN32
 #include <signal.h>
 #include <sys/wait.h>
+#include <unistd.h>
 #else
 #include <winbase.h>
 #endif
@@ -1763,7 +1764,11 @@ server_connect (server *serv, char *hostname, int port, int no_login)
 	}
 #endif
 	serv->childpid = pid;
+#ifdef WIN32
 	serv->iotag = fe_input_add (serv->childread, FIA_READ|FIA_FD, server_read_child,
+#else
+	serv->iotag = fe_input_add (serv->childread, FIA_READ, server_read_child,
+#endif
 										 serv);
 }
 

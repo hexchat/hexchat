@@ -186,7 +186,9 @@ struct xchatprefs
 	int gui_usermenu;
 	int gui_join_dialog;
 	int gui_quit_dialog;
+#ifdef WIN32
 	int gui_one_instance;
+#endif
 	int dialog_left;
 	int dialog_top;
 	int dialog_width;
@@ -304,10 +306,12 @@ struct xchatprefs
 	unsigned int wait_on_exit;
 	unsigned int confmode;
 	unsigned int utf8_locale;
+#ifdef WIN32
 	unsigned int identd;
 	unsigned int emoticons;
 	unsigned int tab_icons;
 	unsigned int tab_xp;
+#endif
 
 	unsigned int ctcp_number_limit;	/*flood */
 	unsigned int ctcp_time_limit;	/*seconds of floods */

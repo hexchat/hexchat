@@ -25,6 +25,11 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 
+#ifndef WIN32
+#include <unistd.h>
+#include <sys/mman.h>
+#endif
+
 #include "xchat.h"
 #include <glib/ghash.h>
 #include "cfgfiles.h"
@@ -270,6 +275,12 @@ scrollback_load (session *sess)
 	time_t stamp;
 	int lines;
 
+#ifndef WIN32
+	char *map, *end_map;
+	struct stat statbuf;
+	const char *begin, *eol;
+#endif
+
 	if (sess->text_scrollback == SET_DEFAULT)
 	{
 		if (!prefs.text_replay)
@@ -288,6 +299,65 @@ scrollback_load (session *sess)
 	if (fh == -1)
 		return;
 
+#ifndef WIN32
+	if (fstat (fh, &statbuf) < 0)
+		return;
+
+	map = mmap (NULL, statbuf.st_size, PROT_READ, MAP_PRIVATE, fh, 0);
+	if (map == MAP_FAILED)
+		return;
+
+	end_map = map + statbuf.st_size;
+
+	lines = 0;
+	begin = map;
+	while (begin < end_map)
+	{
+		int n_bytes;
+
+		eol = memchr (begin, '\n', end_map - begin);
+
+		if (!eol)
+			eol = end_map;
+
+		n_bytes = MIN (eol - begin, sizeof (buf) - 1);
+
+		strncpy (buf, begin, n_bytes);
+
+		buf[n_bytes] = 0;
+
+		if (buf[0] == 'T')
+		{
+			if (sizeof (time_t) == 4)
+				stamp = strtoul (buf + 2, NULL, 10);
+			else
+				stamp = strtoull (buf + 2, NULL, 10); /* just incase time_t is 64 bits */
+			text = strchr (buf + 3, ' ');
+			if (text)
+			{
+				text = strip_color (text + 1, -1, STRIP_COLOR);
+				fe_print_text (sess, text, stamp);
+				g_free (text);
+			}
+			lines++;
+		}
+
+		begin = eol + 1;
+	}
+
+	sess->scrollwritten = lines;
+
+	if (lines)
+	{
+		text = ctime (&stamp);
+		text[24] = 0;	/* get rid of the \n */
+		snprintf (buf, sizeof (buf), "\n*\t%s %s\n\n", _("Loaded log from"), text);
+		fe_print_text (sess, buf, 0);
+		/*EMIT_SIGNAL (XP_TE_GENMSG, sess, "*", buf, NULL, NULL, NULL, 0);*/
+	}
+
+	munmap (map, statbuf.st_size);
+#else
 	lines = 0;
 	while (waitline (fh, buf, sizeof buf, FALSE) != -1)
 	{
@@ -318,6 +388,7 @@ scrollback_load (session *sess)
 		fe_print_text (sess, buf, 0);
 		/*EMIT_SIGNAL (XP_TE_GENMSG, sess, "*", buf, NULL, NULL, NULL, 0);*/
 	}
+#endif
 
 	close (fh);
 }

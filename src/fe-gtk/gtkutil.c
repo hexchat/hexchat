@@ -23,6 +23,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
+
 #include "fe-gtk.h"
 
 #include <gtk/gtkbutton.h>
@@ -50,9 +51,12 @@
 #include "../common/util.h"
 #include "gtkutil.h"
 #include "pixmaps.h"
+
 #ifdef WIN32
 #include "../common/fe.h"
 #include "../common/thread.h"
+#else
+#include <unistd.h>
 #endif
 
 /* gtkutil.c, just some gtk wrappers */

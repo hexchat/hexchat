@@ -53,7 +53,8 @@
 #include "../common/plugin.h"
 #include "../common/modes.h"
 #include "../common/url.h"
-#include "../common/wdkutil.h"
+#include "../common/util.h"
+
 #include "fe-gtk.h"
 #include "banlist.h"
 #include "gtkutil.h"

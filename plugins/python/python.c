@@ -55,8 +55,14 @@
 #include <string.h>
 #include <stdlib.h>
 #include <sys/types.h>
+
+#ifdef WIN32
 #include "../../src/common/dirent.h"
 #include "../../config.h"
+#else
+#include <unistd.h>
+#include <dirent.h>
+#endif
 
 #include "xchat-plugin.h"
 #include "Python.h"

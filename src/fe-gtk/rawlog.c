@@ -21,6 +21,10 @@
 #include <fcntl.h>
 #include <stdlib.h>
 
+#ifndef WIN32
+#include <unistd.h>
+#endif
+
 #include "fe-gtk.h"
 
 #include <gtk/gtkbutton.h>

@@ -27,17 +27,21 @@
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+
 #ifdef WIN32
 #include <sys/timeb.h>
 #include <process.h>
+#include <io.h>
+#include "dirent.h"
 #else
-#include <sys/types.h>
+#include <unistd.h>
 #include <pwd.h>
 #include <sys/time.h>
 #include <sys/utsname.h>
+#include <dirent.h>
 #endif
+
 #include <fcntl.h>
-#include "dirent.h"
 #include <errno.h>
 #include "xchat.h"
 #include "xchatc.h"
@@ -1847,4 +1851,38 @@ canonalize_key (char *key)
 			*pos = tolower(token);
 		}
 	}
+}
+
+int
+portable_mode ()
+{
+#ifdef WIN32
+	if ((_access( "portable-mode", 0 )) != -1)
+	{
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
+#else
+	return 0;
+#endif
+}
+
+int
+xtray_mode ()
+{
+#ifdef WIN32
+	if ((_access( "plugins/xtray.dll", 0 )) != -1)
+	{
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
+#else
+	return 0;
+#endif
 }

@@ -23,6 +23,8 @@
 
 #ifdef WIN32
 #include <windows.h>
+#else
+#include <unistd.h>
 #endif
 
 #include "fe-gtk.h"
@@ -1121,6 +1123,7 @@ usermenu_update (void)
 	}
 }
 
+#if 0
 static void
 menu_saveconf (void)
 {
@@ -1135,6 +1138,7 @@ menu_saveconf (void)
 		PrintText (sess, "Error saving settings.\n");
 	}
 }
+#endif
 
 static void
 menu_newserver_window (GtkWidget * wid, gpointer none)
@@ -1653,7 +1657,9 @@ static struct mymenu mymenu[] = {
 		{N_("Userlist Popup..."), menu_ulpopup, 0, M_MENUITEM, 0, 0, 1},
 		{0, 0, 0, M_END, 0, 0, 0},		/* 53 */
 
-	/* {N_("Save Settings to Disk"), menu_saveconf, GTK_STOCK_SAVE, M_MENUSTOCK, 0, 0, 1}, don't use this, a /set auto-save approach will be added instead */
+#if 0
+	{N_("Save Settings to Disk"), menu_saveconf, GTK_STOCK_SAVE, M_MENUSTOCK, 0, 0, 1}, /* don't use this, a /set auto-save approach will be added instead */
+#endif
 
 	{N_("_Window"), 0, 0, M_NEWMENU, 0, 0, 1},
 	{N_("Ban List..."), menu_banlist, 0, M_MENUITEM, 0, 0, 1},

@@ -24,6 +24,10 @@
 #include <ctype.h>
 #include <stdarg.h>
 
+#ifndef WIN32
+#include <unistd.h>
+#endif
+
 #include "xchat.h"
 #include "ctcp.h"
 #include "fe.h"

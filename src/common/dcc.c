@@ -40,6 +40,8 @@
 
 #ifdef WIN32
 #include <windows.h>
+#else
+#include <unistd.h>
 #endif
 
 #include "xchat.h"
@@ -56,7 +58,9 @@
 
 #ifdef USE_DCC64
 #define BIG_STR_TO_INT(x) strtoull(x,NULL,10)
+#ifdef WIN32
 #define stat _stat64
+#endif
 #else
 #define BIG_STR_TO_INT(x) strtoul(x,NULL,10)
 #endif
@@ -1983,7 +1987,9 @@ is_same_file (struct DCC *dcc, struct DCC *new_dcc)
 		return TRUE;
 
 	/* now handle case-insensitive Filesystems: HFS+, FAT */
-#ifndef WIN32
+#ifdef WIN32
+	/* warning no win32 implementation - behaviour may be unreliable */
+#else
 	/* this fstat() shouldn't really fail */
 	if ((dcc->fp == -1 ? stat (dcc->destfile_fs, &st_a) : fstat (dcc->fp, &st_a)) == -1)
 		return FALSE;

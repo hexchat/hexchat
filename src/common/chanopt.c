@@ -8,6 +8,10 @@
 #include <fcntl.h>
 #include <errno.h>
 
+#ifndef WIN32
+#include <unistd.h>
+#endif
+
 #include "xchat.h"
 
 #include "cfgfiles.h"

@@ -74,6 +74,8 @@
 #ifdef WIN32
 #include <windows.h>
 #include <gdk/gdkwin32.h>
+#else
+#include <unistd.h>
 #endif
 
 /* is delimiter */

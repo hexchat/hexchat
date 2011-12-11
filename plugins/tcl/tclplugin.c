@@ -32,6 +32,8 @@ static char RCSID[] = "$Id: tclplugin.c,v 1.64 2010/03/10 04:24:16 mooooooo Exp 
 #include <windows.h>
 #define bzero(mem, sz) memset((mem), 0, (sz))
 #define bcopy(src, dest, count) memmove((dest), (src), (count))
+#else
+#include <unistd.h>
 #endif
 
 #include "xchat-plugin.h"

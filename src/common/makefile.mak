@@ -25,7 +25,6 @@ tree.obj \
 url.obj \
 userlist.obj \
 util.obj \
-wdkutil.obj \
 xchat.obj
 
 all: $(COMMON_OBJECTS) xchatcommon.lib dirent.lib

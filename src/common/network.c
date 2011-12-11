@@ -23,6 +23,10 @@
 #include <stdio.h>
 #include <glib.h>
 
+#ifndef WIN32
+#include <unistd.h>
+#endif
+
 #include "../../config.h"				  /* grab USE_IPV6 and LOOKUPD defines */
 
 #define WANTSOCKET

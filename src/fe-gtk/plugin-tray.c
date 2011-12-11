@@ -1,19 +1,22 @@
 /* Copyright (C) 2006-2007 Peter Zelezny. */
 
 #include <string.h>
-#include "../../plugins/xchat-plugin.h"
+#include "../common/xchat-plugin.h"
 #include "../common/xchat.h"
 #include "../common/xchatc.h"
 #include "../common/inbound.h"
 #include "../common/server.h"
 #include "../common/fe.h"
 #include "../common/util.h"
-#include "../common/wdkutil.h"
 #include "fe-gtk.h"
 #include "pixmaps.h"
 #include "maingui.h"
 #include "menu.h"
 #include <gtk/gtk.h>
+
+#ifndef WIN32
+#include <unistd.h>
+#endif
 
 #ifdef USE_LIBNOTIFY
 #include <libnotify/notify.h>
@@ -510,7 +513,7 @@ tray_menu_cb (GtkWidget *widget, guint button, guint time, gpointer userdata)
 		tray_make_item (menu, _("_Hide Window"), tray_menu_restore_cb, NULL);
 	tray_make_item (menu, NULL, tray_menu_quit_cb, NULL);
 
-#if 0
+#ifndef WIN32 /* somehow this is broken on win32 */
 	submenu = mg_submenu (menu, _("_Blink on"));
 	blink_item (&prefs.input_tray_chans, submenu, _("Channel Message"));
 	blink_item (&prefs.input_tray_priv, submenu, _("Private Message"));
@@ -528,6 +531,7 @@ tray_menu_cb (GtkWidget *widget, guint button, guint time, gpointer userdata)
 
 	tray_make_item (menu, NULL, tray_menu_quit_cb, NULL);
 #endif
+
 	mg_create_icon_item (_("_Quit"), GTK_STOCK_QUIT, menu, tray_menu_quit_cb, NULL);
 
 	menu_add_plugin_items (menu, "\x5$TRAY", NULL);
@@ -553,8 +557,12 @@ tray_init (void)
 	sticon = gtk_status_icon_new_from_pixbuf (ICON_NORMAL);
 	if (!sticon)
 		return;
-	/* g_signal_connect (G_OBJECT (sticon), "popup-menu",
-							G_CALLBACK (tray_menu_cb), sticon); */
+
+#ifndef WIN32
+	g_signal_connect (G_OBJECT (sticon), "popup-menu",
+							G_CALLBACK (tray_menu_cb), sticon);
+#endif
+
 	g_signal_connect (G_OBJECT (sticon), "activate",
 							G_CALLBACK (tray_menu_restore_cb), NULL);
 }

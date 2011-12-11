@@ -31,7 +31,11 @@
 #include <gtk/gtkmessagedialog.h>
 #include <gtk/gtkversion.h>
 
+#ifdef WIN32
 #include <gdk/gdkwin32.h>
+#else
+#include <unistd.h>
+#endif
 
 #include "../common/xchat.h"
 #include "../common/fe.h"
@@ -411,7 +415,7 @@ log_handler (const gchar   *log_domain,
 {
 	session *sess;
 
-	/* if (getenv ("XCHAT_WARNING_IGNORE")) */
+	/* if (getenv ("XCHAT_WARNING_IGNORE")) this gets ignored sometimes, so simply just disable all warnings */
 		return;
 
 	sess = find_dialog (serv_list->data, "(warnings)");

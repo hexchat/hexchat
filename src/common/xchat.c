@@ -31,6 +31,7 @@
 #else
 #include <sys/wait.h>
 #include <signal.h>
+#include <unistd.h>
 #endif
 
 #include "xchat.h"
@@ -39,7 +40,7 @@
 #include "cfgfiles.h"
 #include "chanopt.h"
 #include "ignore.h"
-#include "../../plugins/xchat-plugin.h"
+#include "xchat-plugin.h"
 #include "plugin.h"
 #include "plugin-timer.h"
 #include "notify.h"
@@ -49,7 +50,6 @@
 #include "text.h"
 #include "url.h"
 #include "xchatc.h"
-#include "wdkutil.h"
 
 #ifdef USE_OPENSSL
 #include <openssl/ssl.h>		  /* SSL_() */

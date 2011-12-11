@@ -28,6 +28,10 @@
 #include <stdlib.h>
 #include <fcntl.h>
 
+#ifndef WIN32
+#include <unistd.h>
+#endif
+
 #define WANTSOCKET
 #define WANTARPA
 #include "inet.h"

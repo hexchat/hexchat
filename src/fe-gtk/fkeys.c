@@ -24,6 +24,10 @@
 #include <fcntl.h>
 #include <ctype.h>
 
+#ifndef WIN32
+#include <unistd.h>
+#endif
+
 #include "fe-gtk.h"
 
 #include <gtk/gtklabel.h>
@@ -314,7 +318,7 @@ key_handle_key_press (GtkWidget *wid, GdkEventKey *evt, session *sess)
 		key_action_tab_clean ();
 		break;
 
-#if defined(USE_GTKSPELL)/* && !defined(WIN32)
+#if defined(USE_GTKSPELL)/* && !defined(WIN32) */
 	/* gtktextview has no 'activate' event, so we trap ENTER here */
 	case GDK_Return:
 	case GDK_KP_Enter:

@@ -39,7 +39,6 @@
 
 #include "../common/xchat.h"
 #include "../common/util.h"
-#include "../common/wdkutil.h"
 #include "../common/xchatc.h"
 #include "palette.h"
 #include "pixmaps.h"
@@ -71,7 +70,7 @@ menu_about (GtkWidget * wid, gpointer sess)
 							"(C) 1998-2005 Peter Zelezny", author, buf, 0));
 }
 
-#else
+#endif
 
 static GtkWidget *about = 0;
 
@@ -171,4 +170,3 @@ menu_about (GtkWidget * wid, gpointer sess)
 
 	gtk_widget_show_all (about);
 }
-#endif

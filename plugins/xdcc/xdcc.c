@@ -5,6 +5,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#ifndef WIN32
+#include <unistd.h>
+#endif
+
 #include "xchat-plugin.h"
 #include "../../src/common/xchat.h"
 

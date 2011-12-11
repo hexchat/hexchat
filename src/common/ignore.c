@@ -23,6 +23,10 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
+#ifndef WIN32
+#include <unistd.h>
+#endif
+
 #include "xchat.h"
 #include "ignore.h"
 #include "cfgfiles.h"
