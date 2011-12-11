@@ -28,7 +28,7 @@
 #ifdef WIN32
 #include <windows.h>
 #define  _INC_DIRENT /* disable inclusion of perl's dirent.h, we use an own version for win32 */
-#include "../../src/common/dirent.h"
+#include "../../src/common/dirent-win32.h"
 #else
 #include <dirent.h>
 #endif

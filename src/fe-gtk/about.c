@@ -139,7 +139,7 @@ menu_about (GtkWidget * wid, gpointer sess)
 				(portable_mode () ? "Yes" : "No"),
 				get_cpu_arch ()
 #else
-				"%s\n\n"
+				"\n%s\n\n"
 				"%s\n"
 				"<b>Charset</b>: %s "
 				"<b>Renderer</b>: %s\n"

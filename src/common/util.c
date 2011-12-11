@@ -32,7 +32,7 @@
 #include <sys/timeb.h>
 #include <process.h>
 #include <io.h>
-#include "dirent.h"
+#include "dirent-win32.h"
 #else
 #include <unistd.h>
 #include <pwd.h>

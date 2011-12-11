@@ -1008,7 +1008,11 @@ xchat_get_info (xchat_plugin *ph, const char *id)
 		return XCHATLIBDIR;
 
 	case 0x14f51cd8: /* version */
+#ifdef WIN32
 		return XCHAT_RELEASE;
+#else
+		return PACKAGE_VERSION;
+#endif
 
 	case 0xdd9b1abd:	/* xchatdir */
 		return get_xdir_utf8 ();

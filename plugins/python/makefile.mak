@@ -1,6 +1,6 @@
 include "..\..\src\makeinc.mak"
 
-DIRENTLIB = ..\..\src\common\dirent.lib
+DIRENTLIB = ..\..\src\common\dirent-win32.lib
 TARGET = $(PYTHONOUTPUT)
 
 all: $(TARGET)

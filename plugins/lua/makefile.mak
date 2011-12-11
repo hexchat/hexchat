@@ -1,6 +1,6 @@
 include "..\..\src\makeinc.mak"
 
-DIRENTLIB = ..\..\src\common\dirent.lib
+DIRENTLIB = ..\..\src\common\dirent-win32.lib
 
 all: lua.obj lua.def
 	link $(LDFLAGS) $(LIBS) /dll /out:xclua.dll $(LUALIB).lib $(DIRENTLIB) /def:lua.def lua.obj 

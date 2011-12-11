@@ -5,7 +5,7 @@ cfgfiles.obj \
 chanopt.obj \
 ctcp.obj \
 dcc.obj \
-dirent.obj \
+dirent-win32.obj \
 history.obj \
 ignore.obj \
 inbound.obj \
@@ -27,13 +27,13 @@ userlist.obj \
 util.obj \
 xchat.obj
 
-all: $(COMMON_OBJECTS) xchatcommon.lib dirent.lib
+all: $(COMMON_OBJECTS) xchatcommon.lib dirent-win32.lib
 
 xchatcommon.lib: $(COMMON_OBJECTS)
 	lib /nologo /out:xchatcommon.lib $(COMMON_OBJECTS)
 
-dirent.lib: dirent.obj
-	lib /nologo /out:dirent.lib dirent.obj
+dirent-win32.lib: dirent-win32.obj
+	lib /nologo /out:dirent-win32.lib dirent-win32.obj
 
 .c.obj::
 	$(CC) $(CFLAGS) $(GLIB) $<
@@ -41,4 +41,4 @@ dirent.lib: dirent.obj
 clean:
 	@del *.obj
 	@del xchatcommon.lib
-	@del dirent.lib
+	@del dirent-win32.lib

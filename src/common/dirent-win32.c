@@ -56,7 +56,7 @@
  * First version.
  *****************************************************************************/
 
-#include "dirent.h"
+#include "dirent-win32.h"
 
 /* Use the new safe string functions introduced in Visual Studio 2005 */
 #if defined(_MSC_VER) && _MSC_VER >= 1400
