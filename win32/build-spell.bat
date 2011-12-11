@@ -1,6 +1,6 @@
 @echo off
-set DEPS_ROOT=..\dep-x86
-set XCHAT_DEST=..\tmp-spell
+set DEPS_ROOT=deps-x86
+set XCHAT_DEST=tmp-spell
 rmdir /q /s %XCHAT_DEST%
 mkdir %XCHAT_DEST%
 xcopy /q /s /i %DEPS_ROOT%\myspell %XCHAT_DEST%\share\myspell

@@ -1,4 +1,4 @@
-AppName=XChat-WDK (x64)
+AppName=XChat-WDK (x86)
 AppPublisher=XChat-WDK
 AppPublisherURL=http://www.xchat-wdk.org/
 AppCopyright=Copyright (C) 1998-2010 Peter Zelezny
@@ -6,20 +6,19 @@ AppSupportURL=http://code.google.com/p/xchat-wdk/issues/list
 AppUpdatesURL=http://www.xchat-wdk.org/home/downloads
 LicenseFile=COPYING
 UninstallDisplayIcon={app}\xchat.exe
-UninstallDisplayName=XChat-WDK (x64)
+UninstallDisplayName=XChat-WDK (x86)
 DefaultDirName={pf}\XChat-WDK
 DefaultGroupName=XChat-WDK
 DisableProgramGroupPage=yes
 SolidCompression=yes
-SourceDir=..\dist-x64
-OutputDir=..\build
+SourceDir=dist-x86
+OutputDir=..\
 FlatComponentsList=no
 PrivilegesRequired=none
 ShowComponentSizes=no
 CreateUninstallRegKey=not IsTaskSelected('portable')
 Uninstallable=not IsTaskSelected('portable')
-ArchitecturesAllowed=x64
-ArchitecturesInstallIn64BitMode=x64
+ArchitecturesAllowed=x86 x64
 
 [Types]
 Name: "normal"; Description: "Normal Installation"
@@ -74,7 +73,7 @@ Source: ISSkinU.dll; DestDir: {app}; Flags: dontcopy
 
 ; Add the Visual Style resource contains resources used for skinning,
 ; you can also use Microsoft Visual Styles (*.msstyles) resources.
-Source: watercolorlite-blue.cjstyles; DestDir: {tmp}; Flags: dontcopy
+Source: watercolorlite-green.cjstyles; DestDir: {tmp}; Flags: dontcopy
 
 Source: "portable-mode"; DestDir: "{app}"; Tasks: portable
 
@@ -99,7 +98,8 @@ Source: "libcairo-2.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: li
 Source: "libeay32.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "libexpat-1.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 ;obs Source: "libffi-5.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "libfreetype-6.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "freetype6.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+;obs Source: "libfreetype-6.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "libfontconfig-1.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "libgdk_pixbuf-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "libgdk-win32-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
@@ -109,7 +109,8 @@ Source: "libgmodule-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Componen
 Source: "libgobject-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "libgthread-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "libgtk-win32-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "libintl-8.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "intl.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+;obs Source: "libintl-8.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 ;obs Source: "libjasper-1.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 ;obs Source: "libjpeg-8.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "libpango-1.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
@@ -172,9 +173,9 @@ Source: "xchat.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "xchat-text.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: xctext
 
 [Icons]
-Name: "{group}\XChat-WDK (x64)"; Filename: "{app}\xchat.exe"; Tasks: not portable
-Name: "{group}\XChat-Text (x64)"; Filename: "{app}\xchat-text.exe"; Components: xctext; Tasks: not portable
-Name: "{group}\Uninstall XChat-WDK (x64)"; Filename: "{uninstallexe}"; Tasks: not portable
+Name: "{group}\XChat-WDK (x86)"; Filename: "{app}\xchat.exe"; Tasks: not portable
+Name: "{group}\XChat-Text (x86)"; Filename: "{app}\xchat-text.exe"; Components: xctext; Tasks: not portable
+Name: "{group}\Uninstall XChat-WDK (x86)"; Filename: "{uninstallexe}"; Tasks: not portable
 
 [Messages]
 BeveledLabel= XChat-WDK
@@ -188,7 +189,7 @@ var
 	sUnInstPath: String;
 	sUnInstallString: String;
 begin
-	sUnInstPath := ExpandConstant('Software\Microsoft\Windows\CurrentVersion\Uninstall\XChat-WDK (x64)_is1');
+	sUnInstPath := ExpandConstant('Software\Microsoft\Windows\CurrentVersion\Uninstall\XChat-WDK (x86)_is1');
 	sUnInstallString := '';
 	if not RegQueryStringValue(HKLM, sUnInstPath, 'UninstallString', sUnInstallString) then
 		RegQueryStringValue(HKCU, sUnInstPath, 'UninstallString', sUnInstallString);
@@ -259,8 +260,8 @@ external 'ShowWindow@user32.dll stdcall';
 
 function InitializeSetup(): Boolean;
 begin
-  ExtractTemporaryFile('watercolorlite-blue.cjstyles');
-  LoadSkin(ExpandConstant('{tmp}\watercolorlite-blue.cjstyles'), '');
+  ExtractTemporaryFile('watercolorlite-green.cjstyles');
+  LoadSkin(ExpandConstant('{tmp}\watercolorlite-green.cjstyles'), '');
   Result := True;
 end;
 

@@ -7,4 +7,4 @@ for %%A in (*.po) do (
 	mkdir locale\%%~nA\LC_MESSAGES
 	msgfmt -co locale\%%~nA\LC_MESSAGES\xchat.mo %%A
 )
-cd ..\build
+cd ..\win32

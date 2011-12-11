@@ -1,6 +1,6 @@
 @echo off
-set DEPS_ROOT=..\dep-x64
-set XCHAT_DEST=..\dist-x64
+set DEPS_ROOT=deps-x64
+set XCHAT_DEST=dist-x64
 rmdir /q /s %XCHAT_DEST%
 mkdir %XCHAT_DEST%
 echo 2> portable-mode
