@@ -164,8 +164,8 @@ bool keystore_store_key(const char *nick, const char *key) {
         encrypted = fish_encrypt(password, strlen(password), key);
         if (!encrypted) goto end;
         
-        // Prepend "OK+ "
-        wrapped = g_strconcat("OK+ ", encrypted, NULL);
+        // Prepend "+OK "
+        wrapped = g_strconcat("+OK ", encrypted, NULL);
         g_free(encrypted);
         
         // Store encrypted in file

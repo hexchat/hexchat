@@ -23,7 +23,7 @@ fishlim.so: $(PLUGIN_OBJECTS)
 	$(CC) -shared $(OURLINKFLAGS) $(PLUGIN_OBJECTS) -o $@
 
 test: $(TEST_OBJECTS)
-	$(CC) $(OURLINKFLAGS) $(TEST_OBJECTS) -o $@
+	$(CC) $(TEST_OBJECTS) -o $@ $(OURLINKFLAGS)
 
 
 .PHONY: all clean distclean install uninstall
