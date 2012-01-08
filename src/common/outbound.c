@@ -1716,7 +1716,7 @@ exec_data (GIOChannel *source, GIOCondition condition, struct nbexec *s)
 		rest = buf;
 	if (*rest) {
 		s->buffill = len - (rest - buf); /* = strlen(rest) */
-		s->linebuf = malloc(s->buffill);
+		s->linebuf = malloc(s->buffill + 1);
 		memcpy(s->linebuf, rest, s->buffill);
 		*rest = '\0';
 		len -= s->buffill; /* possibly 0 */

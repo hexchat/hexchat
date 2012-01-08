@@ -24,7 +24,7 @@
 #include <unistd.h>
 
 #include "xchat.h"
-#include <glib/ghash.h>
+#include <glib.h>
 
 #include "cfgfiles.h"
 #include "fe.h"
