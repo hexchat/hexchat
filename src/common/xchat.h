@@ -1,10 +1,6 @@
 #include "../../config.h"
 
-#include <glib/gslist.h>
-#include <glib/glist.h>
-#include <glib/gutils.h>
-#include <glib/giochannel.h>
-#include <glib/gstrfuncs.h>
+#include <glib.h>
 #include <time.h>			/* need time_t */
 
 #ifndef XCHAT_H
