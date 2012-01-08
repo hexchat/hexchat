@@ -7,7 +7,7 @@
 #define USE_IPV6
 #define HAVE_ISO_CODES
 #define PACKAGE_NAME "xchat"
-#define PACKAGE_VERSION "1498-4"
+#define PACKAGE_VERSION "1499"
 #define XCHAT_RELEASE "2.8.8"
 #define XCHATLIBDIR "."
 #define XCHATSHAREDIR "."
