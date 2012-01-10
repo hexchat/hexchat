@@ -180,7 +180,7 @@ sasl_cmd_cb (char *word[], char *word_eol[], void *userdata)
 
 	if (!login || !password || !network || !*login || !*password || !*network)
 	{
-		xchat_printf (ph, "Usage: SASL <login> <password> <network>, enable SASL authentication for given network\n");
+		xchat_printf (ph, "Usage: XSASL <login> <password> <network>, enable SASL authentication for given network\n");
 		return XCHAT_EAT_ALL;
 	}
 
@@ -213,7 +213,7 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 	*plugin_desc = desc;
 	*plugin_version = version;
 
-	xchat_hook_command (ph, "XSASL", XCHAT_PRI_NORM, sasl_cmd_cb, "Usage: SASL <login> <password> <network>, enable SASL authentication for given network", 0);
+	xchat_hook_command (ph, "XSASL", XCHAT_PRI_NORM, sasl_cmd_cb, "Usage: XSASL <login> <password> <network>, enable SASL authentication for given network", 0);
 	xchat_hook_print (ph, "Connected", XCHAT_PRI_NORM, connect_cb, NULL);
 	/* xchat_hook_print (ph, "Disconnected", XCHAT_PRI_NORM, disconnect_cb, NULL); */
 	xchat_hook_server (ph, "CAP", XCHAT_PRI_NORM, cap_cb, NULL);
