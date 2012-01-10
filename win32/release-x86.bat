@@ -69,6 +69,7 @@ copy ..\plugins\perl\xcperl-514.dll %XCHAT_DEST%\plugins
 copy ..\plugins\python\xcpython.dll %XCHAT_DEST%\plugins
 copy ..\plugins\tcl\xctcl.dll %XCHAT_DEST%\plugins
 copy ..\plugins\upd\xcupd.dll %XCHAT_DEST%\plugins
+copy ..\plugins\xsasl\xcxsasl.dll %XCHAT_DEST%\plugins
 copy ..\plugins\xtray\xtray.dll %XCHAT_DEST%\plugins
 copy ..\plugins\winamp\xcwinamp.dll %XCHAT_DEST%\plugins
 copy ..\plugins\winsys\xcwinsys.dll %XCHAT_DEST%\plugins

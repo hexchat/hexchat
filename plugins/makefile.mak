@@ -19,6 +19,8 @@ all:
 	@-$(MAKE) /nologo /s /f makefile.mak $@
 	@cd ..\upd
 	@-$(MAKE) /nologo /s /f makefile.mak $@
+	@cd ..\xsasl
+	@-$(MAKE) /nologo /s /f makefile.mak $@
 	@cd ..\xtray
 	@-$(MAKE) /nologo /s /f makefile.mak $@
 	@cd ..\winamp
@@ -48,6 +50,8 @@ clean:
 	@cd ..\tcl
 	@-$(MAKE) /nologo /s /f makefile.mak clean $@
 	@cd ..\upd
+	@-$(MAKE) /nologo /s /f makefile.mak clean $@
+	@cd ..\xsasl
 	@-$(MAKE) /nologo /s /f makefile.mak clean $@
 	@cd ..\xtray
 	@-$(MAKE) /nologo /s /f makefile.mak clean $@
