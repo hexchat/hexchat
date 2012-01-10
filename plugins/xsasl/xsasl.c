@@ -20,7 +20,7 @@
 
 #define PNAME "XSASL"
 #define PDESC "SASL authentication plugin";
-#define PVERSION "0.0.4"
+#define PVERSION "1.0"
 
 static xchat_plugin *ph;   /* plugin handle */
 
@@ -40,6 +40,7 @@ sasl_info* all_info = NULL;
 
 static void add_info(char const* login, char const* password, char const* network)
 {
+  char buffer[512];
   sasl_info* prev = all_info;
   sasl_info* info = (sasl_info*)malloc(sizeof(sasl_info));
 
@@ -49,16 +50,43 @@ static void add_info(char const* login, char const* password, char const* networ
   info->next = prev;
 
   all_info = info;
+
+  sprintf (buffer, "%s:%s", login, password);
+  xchat_set_pluginpref_str (ph, network, buffer);
 }
 
 static sasl_info* find_info(char const* network)
 {
-  sasl_info* cur = all_info;
+  //sasl_info* cur;
+  sasl_info* cur = (sasl_info*)malloc(sizeof(sasl_info));
+  char buffer[512];
+  char* pos;
+  char* token;
+
+  // DEBUG
+  if (xchat_get_pluginpref_str (ph, network, buffer))
+  {
+    cur->network = strdup (network);
+	//pos = strchr (buffer, ':');
+	//cur->login = g_strndup (buffer, pos-buffer);
+	token = strtok (buffer, ":");
+	cur->login = g_strdup (token);
+	token = strtok (NULL, ":");
+	cur->password = g_strdup (token);
+	//xchat_printf (ph, "network: %s\n", cur->network);
+	//xchat_printf (ph, "login: %s\n", cur->login);
+	//xchat_printf (ph, "password: %s\n", cur->password);
+	cur->next = NULL;
+	return cur;
+  }
+#if 0
+  cur = all_info;
   while (cur)
   {
     if (0 == strcmp(cur->network, network)) return cur;
     cur = cur->next;
   }
+#endif
   return NULL;
 }
 
@@ -142,7 +170,7 @@ static int sasl_cmd_cb(char *word[], char *word_eol[], void *userdata)
     sasl_info *cur = all_info;
     if (NULL == cur)
     {
-      xchat_printf(ph,"Nothing, see /help sasl");
+      xchat_printf(ph,"Nothing, see /HELP XSASL");
       return XCHAT_EAT_ALL;
     }
 
@@ -156,7 +184,7 @@ static int sasl_cmd_cb(char *word[], char *word_eol[], void *userdata)
 
   if (!login || !password || !network || !*login || !*password || !*network)
   {
-    xchat_printf(ph,"Wrong usage, try /help sasl");
+    xchat_printf(ph,"Wrong usage, try /HELP XSASL");
     return XCHAT_EAT_ALL;
   }
 
@@ -192,7 +220,7 @@ int xchat_plugin_init(xchat_plugin *plugin_handle,
   *plugin_desc = PDESC;
   *plugin_version = PVERSION;
 
-  xchat_hook_command(ph, "sasl", XCHAT_PRI_NORM, sasl_cmd_cb, 
+  xchat_hook_command(ph, "xsasl", XCHAT_PRI_NORM, sasl_cmd_cb,
     "Usage: SASL <login> <password> <network>, enable SASL authentication for given network", 0);
 
   xchat_hook_print(ph, "Connected", XCHAT_PRI_NORM, connect_cb, NULL);
