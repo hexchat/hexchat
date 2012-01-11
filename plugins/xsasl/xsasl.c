@@ -104,7 +104,8 @@ authend_cb (char *word[], char *word_eol[], void *userdata)
 {
 	if (get_info ())
 	{
-		xchat_printf (ph, "%s\t%s\n", name, word_eol[1]);
+		/* omit cryptic server message parts */
+		xchat_printf (ph, "%s\t%s\n", name, ++word_eol[4]);
 		xchat_commandf (ph, "QUOTE CAP END");
 	}
 
@@ -164,7 +165,8 @@ cap_cb (char *word[], char *word_eol[], void *userdata)
 	if (get_info ())
 	{
 		/* FIXME test sasl cap */
-		xchat_printf (ph, "%s\t%s\n", name, word_eol[1]);
+		/* this is visible in the rawlog in case someone needs it, otherwise it's just noise */
+		/* xchat_printf (ph, "%s\t%s\n", name, word_eol[1]); */
 		xchat_commandf (ph, "QUOTE AUTHENTICATE PLAIN");
 	}
 

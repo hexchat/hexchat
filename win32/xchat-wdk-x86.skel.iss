@@ -42,7 +42,7 @@ Name: "plugins\upd"; Description: "Update Checker"; Types: normal full custom; F
 Name: "plugins\winamp"; Description: "Winamp"; Types: full custom; Flags: disablenouninstallwarning
 Name: "plugins\winsys"; Description: "WinSys"; Types: full custom; Flags: disablenouninstallwarning
 Name: "plugins\wmpa"; Description: "Windows Media Player Announcer"; Types: full custom; Flags: disablenouninstallwarning
-Name: "plugins\xsasl"; Description: "XSASL"; Types: full custom; Flags: disablenouninstallwarning
+Name: "plugins\xsasl"; Description: "X-SASL"; Types: full custom; Flags: disablenouninstallwarning
 Name: "plugins\xtray"; Description: "X-Tray"; Types: full custom; Flags: disablenouninstallwarning
 Name: "langs"; Description: "Language Interfaces"; Types: full custom; Flags: disablenouninstallwarning
 Name: "langs\lua"; Description: "Lua"; Types: full custom; Flags: disablenouninstallwarning
