@@ -40,7 +40,7 @@
 #include "xchat-plugin.h"
 
 static xchat_plugin *ph;   /* plugin handle */
-static const char name[] = "XSASL";
+static const char name[] = "X-SASL";
 static const char desc[] = "SASL authentication plugin for XChat";
 static const char version[] = "1.0";
 
@@ -104,7 +104,7 @@ authend_cb (char *word[], char *word_eol[], void *userdata)
 {
 	if (get_info ())
 	{
-		xchat_printf (ph, "XSASL result: %s\n", word_eol[1]);
+		xchat_printf (ph, "%s\t %s\n", name, word_eol[1]);
 		xchat_commandf (ph, "QUOTE CAP END");
 	}
 
@@ -137,7 +137,7 @@ server_cb (char *word[], char *word_eol[], void *userdata)
 			return XCHAT_EAT_NONE;
 		}
 
-		xchat_printf (ph, "XSASL authenticating as %s\n", p->login);
+		xchat_printf (ph, "%s\tAuthenticating as %s\n", name, p->login);
 
 		len = strlen (p->login) * 2 + 2 + strlen (p->password);
 		buf = (char*) malloc (len + 1);
@@ -164,7 +164,7 @@ cap_cb (char *word[], char *word_eol[], void *userdata)
 	if (get_info ())
 	{
 		/* FIXME test sasl cap */
-		xchat_printf (ph, "XSASL info: %s\n", word_eol[1]);
+		xchat_printf (ph, "%s\t %s\n", name, word_eol[1]);
 		xchat_commandf (ph, "QUOTE AUTHENTICATE PLAIN");
 	}
 
@@ -185,7 +185,7 @@ sasl_cmd_cb (char *word[], char *word_eol[], void *userdata)
 	}
 
 	add_info (login, password, network);
-	xchat_printf (ph, "Enabled SASL authentication for the \"%s\" network\n", network);
+	xchat_printf (ph, "%s\tEnabled SASL authentication for the \"%s\" network\n", name, network);
 
 	return XCHAT_EAT_ALL;
 }
@@ -195,7 +195,7 @@ connect_cb (char *word[], void *userdata)
 {
 	if (get_info ())
 	{
-		xchat_printf (ph, "XSASL enabled\n");
+		xchat_printf (ph, "%s\tSASL enabled\n", name);
 		xchat_commandf (ph, "QUOTE CAP REQ :sasl");
 	}
 
