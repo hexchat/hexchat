@@ -104,7 +104,7 @@ authend_cb (char *word[], char *word_eol[], void *userdata)
 {
 	if (get_info ())
 	{
-		xchat_printf (ph, "%s\t %s\n", name, word_eol[1]);
+		xchat_printf (ph, "%s\t%s\n", name, word_eol[1]);
 		xchat_commandf (ph, "QUOTE CAP END");
 	}
 
@@ -164,7 +164,7 @@ cap_cb (char *word[], char *word_eol[], void *userdata)
 	if (get_info ())
 	{
 		/* FIXME test sasl cap */
-		xchat_printf (ph, "%s\t %s\n", name, word_eol[1]);
+		xchat_printf (ph, "%s\t%s\n", name, word_eol[1]);
 		xchat_commandf (ph, "QUOTE AUTHENTICATE PLAIN");
 	}
 
