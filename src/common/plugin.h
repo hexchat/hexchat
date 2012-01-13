@@ -109,6 +109,8 @@ struct _xchat_plugin
 		int value);
 	int (*xchat_get_pluginpref_int) (xchat_plugin *ph,
 		const char *var);
+	int (*xchat_del_pluginpref) (xchat_plugin *ph,
+		const char *var);
 	void *(*xchat_dummy4) (xchat_plugin *ph);
 	void *(*xchat_dummy3) (xchat_plugin *ph);
 	void *(*xchat_dummy2) (xchat_plugin *ph);
