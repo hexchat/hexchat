@@ -1589,13 +1589,11 @@ xchat_free (xchat_plugin *ph, void *ptr)
 }
 
 static int
-xchat_set_pluginpref_str_real (xchat_plugin *pl, const char *var, const char *value, int mode)
+xchat_set_pluginpref_str_real (xchat_plugin *pl, const char *var, const char *value, int mode) /* mode: 0 = delete, 1 = save */
 {
-	/* mode: 0 = delete, 1 = save */
-
 	FILE *fpIn;
 	int fhOut;
-	int prevConfig;
+	int prevSetting;
 	char confname[64];
 	char confname_tmp[69];
 	char buffer[512];		/* the same as in cfg_put_str */
@@ -1615,31 +1613,40 @@ xchat_set_pluginpref_str_real (xchat_plugin *pl, const char *var, const char *va
 	{
 		return 0;
 	}
-	else if (fpIn == NULL)	/* no previous config, no parsing */
+	else if (fpIn == NULL)	/* no previous config file, no parsing */
 	{
-		sprintf (buffer, "%s = %s\n", var, value);
-		write (fhOut, buffer, strlen (buffer));
-		close (fhOut);
+		if (mode)
+		{
+			sprintf (buffer, "%s = %s\n", var, value);
+			write (fhOut, buffer, strlen (buffer));
+			close (fhOut);
 
-		sprintf (buffer, "%s/%s", get_xdir_fs (), confname);
-		sprintf (buffer_tmp, "%s/%s", get_xdir_fs (), confname_tmp);
+			sprintf (buffer, "%s/%s", get_xdir_fs (), confname);
+			sprintf (buffer_tmp, "%s/%s", get_xdir_fs (), confname_tmp);
 
 #ifdef WIN32
-		unlink (buffer);
+			unlink (buffer);
 #endif
 
-		if (rename (buffer_tmp, buffer) == 0)
-		{
-			return 1;
+			if (rename (buffer_tmp, buffer) == 0)
+			{
+				return 1;
+			}
+			else
+			{
+				return 0;
+			}
 		}
 		else
 		{
-			return 0;
+			/* mode = 0, we want to delete but the config file and thus the given setting does not exist, we're ready */
+			close (fhOut);
+			return 1;
 		}
 	}
-	else					/* existing config, preserve settings and find & replace current var value if any */
+	else	/* existing config file, preserve settings and find & replace current var value if any */
 	{
-		prevConfig = 0;
+		prevSetting = 0;
 
 		while (fscanf (fpIn, " %[^\n]", &buffer) != EOF)	/* read whole lines including whitespaces */
 		{
@@ -1647,12 +1654,20 @@ xchat_set_pluginpref_str_real (xchat_plugin *pl, const char *var, const char *va
 
 			if (strncmp (buffer_tmp, buffer, strlen (var) + 1) == 0)	/* given setting already exists */
 			{
-				sprintf (buffer, "%s = %s\n", var, value);
-				prevConfig = 1;
+				if (mode)									/* overwrite the existing matching setting if we are in save mode */
+				{
+					sprintf (buffer, "%s = %s\n", var, value);
+				}
+				else										/* erase the setting in delete mode */
+				{
+					strcpy (buffer, "");
+				}
+
+				prevSetting = 1;
 			}
 			else
 			{
-				strcat (buffer, "\n");
+				strcat (buffer, "\n");						/* preserve the existing different settings */
 			}
 
 			write (fhOut, buffer, strlen (buffer));
@@ -1660,7 +1675,7 @@ xchat_set_pluginpref_str_real (xchat_plugin *pl, const char *var, const char *va
 
 		fclose (fpIn);
 
-		if (!prevConfig)	/* var doesn't exist currently, append */
+		if (!prevSetting && mode)	/* var doesn't exist currently, append if we're in save mode */
 		{
 			sprintf (buffer, "%s = %s\n", var, value);
 			write (fhOut, buffer, strlen (buffer));
@@ -1689,7 +1704,7 @@ xchat_set_pluginpref_str_real (xchat_plugin *pl, const char *var, const char *va
 int
 xchat_set_pluginpref_str (xchat_plugin *pl, const char *var, const char *value)
 {
-	return xchat_set_pluginpref_str (pl, var, value, 1);
+	return xchat_set_pluginpref_str_real (pl, var, value, 1);
 }
 
 int
@@ -1771,5 +1786,5 @@ xchat_get_pluginpref_int (xchat_plugin *pl, const char *var)
 int
 xchat_del_pluginpref (xchat_plugin *pl, const char *var)
 {
-	xchat_set_pluginpref_str_real (pl, var, 0, 0);
+	return xchat_set_pluginpref_str_real (pl, var, 0, 0);
 }
