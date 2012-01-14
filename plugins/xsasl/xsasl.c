@@ -42,7 +42,8 @@
 static xchat_plugin *ph;   /* plugin handle */
 static const char name[] = "X-SASL";
 static const char desc[] = "SASL authentication plugin for XChat";
-static const char version[] = "1.0";
+static const char version[] = "1.1";
+static const char xsasl_help[] = "X-SASL Usage:\n /XSASL ADD <login> <password> <network>, enable SASL authentication for given network\n /XSASL DEL <network>, disable SASL authentication for given network\n";
 
 struct sasl_info
 {
@@ -53,13 +54,19 @@ struct sasl_info
 
 typedef struct sasl_info sasl_info;
 
-static void
+static int
 add_info (char const* login, char const* password, char const* network)
 {
 	char buffer[512];
 
 	sprintf (buffer, "%s:%s", login, password);
-	xchat_set_pluginpref_str (ph, network, buffer);
+	return xchat_set_pluginpref_str (ph, network, buffer);
+}
+
+static int
+del_info (char const* network)
+{
+	return xchat_del_pluginpref (ph, network);
 }
 
 static sasl_info*
@@ -176,20 +183,60 @@ cap_cb (char *word[], char *word_eol[], void *userdata)
 static int
 sasl_cmd_cb (char *word[], char *word_eol[], void *userdata)
 {
-	const char* login = word[2];
-	const char* password = word[3];
-	const char* network = word_eol[4];
+	const char* login;
+	const char* password;
+	const char* network;
+	const char* mode = word[2];
 
-	if (!login || !password || !network || !*login || !*password || !*network)
+	if (!stricmp ("ADD", mode))
 	{
-		xchat_printf (ph, "Usage: XSASL <login> <password> <network>, enable SASL authentication for given network\n");
+		login = word[3];
+		password = word[4];
+		network = word_eol[5];
+
+		if (!network || !*network)	/* only check for the last word, if it's there, the previous ones will be there, too */
+		{
+			xchat_printf (ph, "%s", xsasl_help);
+			return XCHAT_EAT_ALL;
+		}
+
+		if (add_info (login, password, network))
+		{
+			xchat_printf (ph, "%s\tEnabled SASL authentication for the \"%s\" network\n", name, network);
+		}
+		else
+		{
+			xchat_printf (ph, "%s\tFailed to enable SASL authentication for the \"%s\" network\n", name, network);
+		}
+
 		return XCHAT_EAT_ALL;
 	}
+	else if (!stricmp ("DEL", mode))
+	{
+		network = word_eol[3];
 
-	add_info (login, password, network);
-	xchat_printf (ph, "%s\tEnabled SASL authentication for the \"%s\" network\n", name, network);
+		if (!network || !*network)
+		{
+			xchat_printf (ph, "%s", xsasl_help);
+			return XCHAT_EAT_ALL;
+		}
 
-	return XCHAT_EAT_ALL;
+		if (del_info (network))
+		{
+			xchat_printf (ph, "%s\tDisabled SASL authentication for the \"%s\" network\n", name, network);
+		}
+		else
+		{
+			xchat_printf (ph, "%s\tFailed to disable SASL authentication for the \"%s\" network\n", name, network);
+		}
+
+		return XCHAT_EAT_ALL;
+	}
+	else
+	{
+		xchat_printf (ph, "%s", xsasl_help);
+		return XCHAT_EAT_ALL;
+	}
 }
 
 static int
@@ -215,7 +262,7 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 	*plugin_desc = desc;
 	*plugin_version = version;
 
-	xchat_hook_command (ph, "XSASL", XCHAT_PRI_NORM, sasl_cmd_cb, "Usage: XSASL <login> <password> <network>, enable SASL authentication for given network", 0);
+	xchat_hook_command (ph, "XSASL", XCHAT_PRI_NORM, sasl_cmd_cb, xsasl_help, 0);
 	xchat_hook_print (ph, "Connected", XCHAT_PRI_NORM, connect_cb, NULL);
 	/* xchat_hook_print (ph, "Disconnected", XCHAT_PRI_NORM, disconnect_cb, NULL); */
 	xchat_hook_server (ph, "CAP", XCHAT_PRI_NORM, cap_cb, NULL);
