@@ -43,7 +43,7 @@ static xchat_plugin *ph;   /* plugin handle */
 static const char name[] = "X-SASL";
 static const char desc[] = "SASL authentication plugin for XChat";
 static const char version[] = "1.1";
-static const char xsasl_help[] = "X-SASL Usage:\n /XSASL ADD <login> <password> <network>, enable SASL authentication for given network\n /XSASL DEL <network>, disable SASL authentication for given network\n /XSASL LIST, get the list of SASL-enabled networks\n";
+static const char xsasl_help[] = "X-SASL Usage:\n /XSASL ADD <login> <password> <network>, enable/update SASL authentication for given network\n /XSASL DEL <network>, disable SASL authentication for given network\n /XSASL LIST, get the list of SASL-enabled networks\n";
 
 struct sasl_info
 {
