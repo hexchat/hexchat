@@ -1795,7 +1795,7 @@ xchat_pluginpref_list (xchat_plugin *pl, char* dest)
 {
 	FILE *fpIn;
 	char confname[64];
-	char buffer[512];		/* the same as in cfg_put_str */
+	char buffer[512];										/* the same as in cfg_put_str */
 	char buffer2[512];
 	char *token;
 
@@ -1806,12 +1806,13 @@ xchat_pluginpref_list (xchat_plugin *pl, char* dest)
 
 	fpIn = xchat_fopen_file (confname, "r", 0);
 
-	if (fpIn == NULL)	/* no existing config file, no parsing */
+	if (fpIn == NULL)										/* no existing config file, no parsing */
 	{
 		return 0;
 	}
-	else				/* existing config file, get list of settings */
+	else													/* existing config file, get list of settings */
 	{
+		strcpy (dest, "");									/* clean up garbage */
 		while (fscanf (fpIn, " %[^\n]", &buffer) != EOF)	/* read whole lines including whitespaces */
 		{
 			token = strtok (buffer, "=");
