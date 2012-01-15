@@ -30,10 +30,11 @@ EXPORTED {
 		xchat_send_modes;
 		xchat_strip;
 		xchat_free;
-		xchat_set_pluginpref_str;
-		xchat_get_pluginpref_str;
-		xchat_set_pluginpref_int;
-		xchat_get_pluginpref_int;
-		xchat_del_pluginpref;
+		xchat_pluginpref_set_str;
+		xchat_pluginpref_get_str;
+		xchat_pluginpref_set_int;
+		xchat_pluginpref_get_int;
+		xchat_pluginpref_delete;
+		xchat_pluginpref_list;
 	local: *;
 };

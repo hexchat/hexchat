@@ -137,19 +137,21 @@ struct _xchat_plugin
 	     int flags);
 	void (*xchat_free) (xchat_plugin *ph,
 	    void *ptr);
-	int (*xchat_set_pluginpref_str) (xchat_plugin *ph,
+	int (*xchat_pluginpref_set_str) (xchat_plugin *ph,
 		const char *var,
 		const char *value);
-	int (*xchat_get_pluginpref_str) (xchat_plugin *ph,
+	int (*xchat_pluginpref_get_str) (xchat_plugin *ph,
 		const char *var,
 		char *dest);
-	int (*xchat_set_pluginpref_int) (xchat_plugin *ph,
+	int (*xchat_pluginpref_set_int) (xchat_plugin *ph,
 		const char *var,
 		int value);
-	int (*xchat_get_pluginpref_int) (xchat_plugin *ph,
+	int (*xchat_pluginpref_get_int) (xchat_plugin *ph,
 		const char *var);
-	int (*xchat_del_pluginpref) (xchat_plugin *ph,
+	int (*xchat_pluginpref_delete) (xchat_plugin *ph,
 		const char *var);
+	int (*xchat_pluginpref_list) (xchat_plugin *ph,
+		char *dest);
 };
 #endif
 
@@ -306,26 +308,30 @@ xchat_free (xchat_plugin *ph,
 	    void *ptr);
 
 int
-xchat_set_pluginpref_str (xchat_plugin *ph,
+xchat_pluginpref_set_str (xchat_plugin *ph,
 		const char *var,
 		const char *value);
 
 int
-xchat_get_pluginpref_str (xchat_plugin *ph,
+xchat_pluginpref_get_str (xchat_plugin *ph,
 		const char *var,
 		char *dest);
 
 int
-xchat_set_pluginpref_int (xchat_plugin *ph,
+xchat_pluginpref_set_int (xchat_plugin *ph,
 		const char *var,
 		int value);
 int
-xchat_get_pluginpref_int (xchat_plugin *ph,
+xchat_pluginpref_get_int (xchat_plugin *ph,
 		const char *var);
 
 int
-xchat_del_pluginpref (xchat_plugin *ph,
+xchat_pluginpref_delete (xchat_plugin *ph,
 		const char *var);
+
+int
+xchat_pluginpref_list (xchat_plugin *ph,
+		char *dest);
 
 #if !defined(PLUGIN_C) && defined(WIN32)
 #ifndef XCHAT_PLUGIN_HANDLE
@@ -361,11 +367,12 @@ xchat_del_pluginpref (xchat_plugin *ph,
 #define xchat_send_modes ((XCHAT_PLUGIN_HANDLE)->xchat_send_modes)
 #define xchat_strip ((XCHAT_PLUGIN_HANDLE)->xchat_strip)
 #define xchat_free ((XCHAT_PLUGIN_HANDLE)->xchat_free)
-#define xchat_set_pluginpref_str ((XCHAT_PLUGIN_HANDLE)->xchat_set_pluginpref_str)
-#define xchat_get_pluginpref_str ((XCHAT_PLUGIN_HANDLE)->xchat_get_pluginpref_str)
-#define xchat_set_pluginpref_int ((XCHAT_PLUGIN_HANDLE)->xchat_set_pluginpref_int)
-#define xchat_get_pluginpref_int ((XCHAT_PLUGIN_HANDLE)->xchat_get_pluginpref_int)
-#define xchat_del_pluginpref ((XCHAT_PLUGIN_HANDLE)->xchat_del_pluginpref)
+#define xchat_pluginpref_set_str ((XCHAT_PLUGIN_HANDLE)->xchat_pluginpref_set_str)
+#define xchat_pluginpref_get_str ((XCHAT_PLUGIN_HANDLE)->xchat_pluginpref_get_str)
+#define xchat_pluginpref_set_int ((XCHAT_PLUGIN_HANDLE)->xchat_pluginpref_set_int)
+#define xchat_pluginpref_get_int ((XCHAT_PLUGIN_HANDLE)->xchat_pluginpref_get_int)
+#define xchat_pluginpref_delete ((XCHAT_PLUGIN_HANDLE)->xchat_pluginpref_delete)
+#define xchat_pluginpref_list ((XCHAT_PLUGIN_HANDLE)->xchat_pluginpref_list)
 #endif
 
 #ifdef __cplusplus
