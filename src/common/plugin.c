@@ -1796,7 +1796,6 @@ xchat_pluginpref_list (xchat_plugin *pl, char* dest)
 	FILE *fpIn;
 	char confname[64];
 	char buffer[512];										/* the same as in cfg_put_str */
-	char buffer2[512];
 	char *token;
 
 	token = g_strdup (pl->name);
