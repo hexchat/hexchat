@@ -60,13 +60,13 @@ add_info (char const* login, char const* password, char const* network)
 	char buffer[512];
 
 	sprintf (buffer, "%s:%s", login, password);
-	return xchat_set_pluginpref_str (ph, network, buffer);
+	return xchat_pluginpref_set_str (ph, network, buffer);
 }
 
 static int
 del_info (char const* network)
 {
-	return xchat_del_pluginpref (ph, network);
+	return xchat_pluginpref_delete (ph, network);
 }
 
 static sasl_info*
@@ -76,7 +76,7 @@ find_info (char const* network)
 	char* token;
 	sasl_info* cur = (sasl_info*) malloc (sizeof (sasl_info));
 
-	if (xchat_get_pluginpref_str (ph, network, buffer))
+	if (xchat_pluginpref_get_str (ph, network, buffer))
 	{
 		token = strtok (buffer, ":");
 		cur->login = g_strdup (token);
