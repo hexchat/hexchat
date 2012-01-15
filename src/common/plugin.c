@@ -1791,7 +1791,36 @@ xchat_pluginpref_delete (xchat_plugin *pl, const char *var)
 }
 
 int
-xchat_pluginpref_list (char* dest)
+xchat_pluginpref_list (xchat_plugin *pl, char* dest)
 {
-	return 0;
+	FILE *fpIn;
+	char confname[64];
+	char buffer[512];		/* the same as in cfg_put_str */
+	char buffer2[512];
+	char *token;
+
+	token = g_strdup (pl->name);
+	canonalize_key (token);
+	sprintf (confname, "plugin_%s.conf", token);
+	g_free (token);
+
+	fpIn = xchat_fopen_file (confname, "r", 0);
+
+	if (fpIn == NULL)	/* no existing config file, no parsing */
+	{
+		return 0;
+	}
+	else				/* existing config file, get list of settings */
+	{
+		while (fscanf (fpIn, " %[^\n]", &buffer) != EOF)	/* read whole lines including whitespaces */
+		{
+			token = strtok (buffer, "=");
+			strncat (dest, token, strlen (token) - 1);
+			strcat (dest, ",");
+		}
+
+		fclose (fpIn);
+	}
+
+	return 1;
 }
