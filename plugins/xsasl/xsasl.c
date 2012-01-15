@@ -43,7 +43,7 @@ static xchat_plugin *ph;   /* plugin handle */
 static const char name[] = "X-SASL";
 static const char desc[] = "SASL authentication plugin for XChat";
 static const char version[] = "1.1";
-static const char xsasl_help[] = "X-SASL Usage:\n /XSASL ADD <login> <password> <network>, enable SASL authentication for given network\n /XSASL DEL <network>, disable SASL authentication for given network\n";
+static const char xsasl_help[] = "X-SASL Usage:\n /XSASL ADD <login> <password> <network>, enable SASL authentication for given network\n /XSASL DEL <network>, disable SASL authentication for given network\n /XSASL LIST, get the list of SASL-enabled networks\n";
 
 struct sasl_info
 {
@@ -67,6 +67,29 @@ static int
 del_info (char const* network)
 {
 	return xchat_pluginpref_delete (ph, network);
+}
+
+static void
+print_info ()
+{
+	char list[512];
+	char* token;
+
+	if (xchat_pluginpref_list (ph, list))
+	{
+		xchat_printf (ph, "%s\tSASL-enabled networks:", name);
+		xchat_printf (ph, "%s\t----------------------", name);
+		token = strtok (list, ",");
+		while (token != NULL)
+		{
+			xchat_printf (ph, "%s\t%s", name, token);
+			token = strtok (NULL, ",");
+		}
+	}
+	else
+	{
+		xchat_printf (ph, "%s\tThere are no SASL-enabled networks currently", name);
+	}
 }
 
 static sasl_info*
@@ -230,6 +253,11 @@ sasl_cmd_cb (char *word[], char *word_eol[], void *userdata)
 			xchat_printf (ph, "%s\tFailed to disable SASL authentication for the \"%s\" network\n", name, network);
 		}
 
+		return XCHAT_EAT_ALL;
+	}
+	else if (!stricmp ("LIST", mode))
+	{
+		print_info ();
 		return XCHAT_EAT_ALL;
 	}
 	else
