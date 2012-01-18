@@ -6,7 +6,7 @@
 
 static xchat_plugin *ph;
 static const char name[] = "Non-BMP";
-static const char desc[] = "Replace non-BMP characters with replacment characters";
+static const char desc[] = "Replace non-BMP characters with replacement characters";
 static const char version[] = "1.0000";
 static int recursing = 0;
 
