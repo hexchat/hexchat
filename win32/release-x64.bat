@@ -62,6 +62,7 @@ copy ..\plugins\fishlim\xcfishlim.dll %XCHAT_DEST%\plugins
 copy ..\plugins\lua\xclua.dll %XCHAT_DEST%\plugins
 ::obs copy ..\plugins\gtkpref\xcgtkpref.dll %XCHAT_DEST%\plugins
 copy ..\plugins\mpcinfo\xcmpcinfo.dll %XCHAT_DEST%\plugins
+copy ..\plugins\nonbmp\xcnonbmp.dll %XCHAT_DEST%\plugins
 copy ..\plugins\perl\xcperl-512.dll %XCHAT_DEST%\plugins
 copy ..\plugins\perl\xcperl-514.dll %XCHAT_DEST%\plugins
 copy ..\plugins\python\xcpython.dll %XCHAT_DEST%\plugins
