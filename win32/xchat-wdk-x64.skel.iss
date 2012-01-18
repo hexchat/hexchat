@@ -39,7 +39,7 @@ Name: "plugins\doat"; Description: "Do At"; Types: full custom; Flags: disableno
 Name: "plugins\exec"; Description: "Exec"; Types: full custom; Flags: disablenouninstallwarning
 Name: "plugins\fishlim"; Description: "FiSHLiM"; Types: full custom; Flags: disablenouninstallwarning
 Name: "plugins\mpcinfo"; Description: "mpcInfo"; Types: full custom; Flags: disablenouninstallwarning
-Name: "plugins\nonbmp"; Description: "Non-BMP"; Types: full custom; Flags: disablenouninstallwarning
+Name: "plugins\nonbmp"; Description: "Non-BMP"; Types: normal full custom; Flags: disablenouninstallwarning
 Name: "plugins\upd"; Description: "Update Checker"; Types: normal full custom; Flags: disablenouninstallwarning
 Name: "plugins\winamp"; Description: "Winamp"; Types: full custom; Flags: disablenouninstallwarning
 Name: "plugins\winsys"; Description: "WinSys"; Types: full custom; Flags: disablenouninstallwarning
