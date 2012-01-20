@@ -2,7 +2,7 @@
 set WDK_ROOT=c:\WinDDK\7600.16385.1
 set PERL_PATH=c:\mozilla-build\perl-5.12-x64\perl\bin
 set NASM_PATH=c:\mozilla-build\nasm
-set OPENSSL_DEST=..\openssl-wdk-1.0.0f-x64
+set OPENSSL_DEST=..\openssl-wdk-1.0.0g-x64
 set INCLUDE=%WDK_ROOT%\inc\api;%WDK_ROOT%\inc\crt;%WDK_ROOT%\inc\ddk;ms;zlib-x64\include
 set LIB=%WDK_ROOT%\lib\wnet\amd64;%WDK_ROOT%\lib\Crt\amd64;zlib-x64\lib
 set PATH=%PROGRAMFILES(X86)%\Microsoft Visual Studio 10.0\VC\bin\amd64;%PROGRAMFILES(X86)%\Microsoft SDKs\Windows\v7.0A\Bin\x64;%PERL_PATH%;%NASM_PATH%;%SystemRoot%\System32;..\zlib-x64\bin
