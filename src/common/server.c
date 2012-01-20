@@ -402,13 +402,10 @@ server_inline (server *serv, char *line, int len)
 	}
 
 #ifdef WIN32
-	if (prefs.text_nonbmp)
-	{
-		cleaned_line = text_replace_non_bmp (line, len, &cleaned_len);
-		if (cleaned_line != NULL ) {
-			line = cleaned_line;
-			len = cleaned_len;
-		}
+	cleaned_line = text_replace_non_bmp (line, len, &cleaned_len);
+	if (cleaned_line != NULL ) {
+		line = cleaned_line;
+		len = cleaned_len;
 	}
 #endif
 
