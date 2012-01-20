@@ -581,6 +581,9 @@ const struct prefs vars[] = {
 	{"text_indent", P_OFFINT (indent_nicks), TYPE_BOOL},
 	{"text_max_indent", P_OFFINT (max_auto_indent), TYPE_INT},
 	{"text_max_lines", P_OFFINT (max_lines), TYPE_INT},
+#ifdef WIN32
+	{"text_nonbmp", P_OFFINT (text_nonbmp), TYPE_BOOL},
+#endif
 	{"text_replay", P_OFFINT (text_replay), TYPE_BOOL},
 	{"text_show_marker", P_OFFINT (show_marker), TYPE_BOOL},
 	{"text_show_sep", P_OFFINT (show_separator), TYPE_BOOL},
@@ -714,6 +717,7 @@ load_config (void)
 	prefs.autodccsend = 2;	/* browse mode */
 #ifdef WIN32
 	prefs.identd = 1;
+	prefs.text_nonbmp = 1;
 #endif
 	strcpy (prefs.gui_license, "");
 	strcpy (prefs.spell_langs, g_getenv ("LC_ALL") ? g_getenv ("LC_ALL") : "en_US");

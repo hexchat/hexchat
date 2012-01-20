@@ -374,11 +374,14 @@ scrollback_load (session *sess)
 			if (text)
 			{
 				text = strip_color (text + 1, -1, STRIP_COLOR);
-				cleaned_text = text_replace_non_bmp (text, -1, &cleaned_len);
-				if (cleaned_text != NULL)
+				if (prefs.text_nonbmp)
 				{
-					g_free (text);
-					text = cleaned_text;
+					cleaned_text = text_replace_non_bmp (text, -1, &cleaned_len);
+					if (cleaned_text != NULL)
+					{
+						g_free (text);
+						text = cleaned_text;
+					}
 				}
 				fe_print_text (sess, text, stamp);
 				g_free (text);
