@@ -1,5 +1,5 @@
 /* XChat-WDK
- * Copyright (c) 2010-2011 Berke Viktor.
+ * Copyright (c) 2010-2012 Berke Viktor.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -31,8 +31,7 @@
 #include "xchat-plugin.h"
 
 #define BUFSIZE 32768
-#define DEFAULT_MAX_HASH_SIZE 268435456						/* default size is 256 MB */
-#define FILE_BUF_SIZE 512
+#define DEFAULT_LIMIT 256									/* default size is 256 MiB */
 
 #ifndef snprintf
 #define snprintf _snprintf
@@ -44,8 +43,7 @@
 static xchat_plugin *ph;									/* plugin handle */
 static const char name[] = "Checksum";
 static const char desc[] = "Calculate checksum for DCC file transfers";
-static const char version[] = "2.0";
-static int config_fail;										/* variable for config availability */
+static const char version[] = "3.0";
 
 /* Use of OpenSSL SHA256 interface: http://adamlamers.com/?p=5 */
 static void
@@ -114,135 +112,46 @@ sha256_file (char *path, char outputBuffer[65])
 }
 
 static void
-init ()
+set_limit (char* size)
 {
-	/* check whether the config file exists, if it doesn't, try to create it */
-	FILE * file_in;
-	FILE * file_out;
-	char buffer[FILE_BUF_SIZE];
+	int buffer = atoi (size);
 
-	config_fail = 0;
-	snprintf (buffer, sizeof (buffer), "%s/checksum.conf", xchat_get_info (ph, "xchatdirfs"));
-
-	if ((file_in = fopen (buffer, "r")) == NULL)
+	if (buffer > 0 && buffer < INT_MAX)
 	{
-		if ((file_out = fopen (buffer, "w")) == NULL)
+		if (xchat_pluginpref_set_int (ph, "limit", buffer))
 		{
-			config_fail = 1;
-		} else
-		{
-			fprintf (file_out, "%llu\n", (unsigned long long) DEFAULT_MAX_HASH_SIZE);
-			fclose (file_out);
+			xchat_printf (ph, "File size limit has successfully been set to: %d MiB\n", buffer);
 		}
-	} else
-	{
-		fclose (file_in);
+		else
+		{
+			xchat_printf (ph, "File access error while saving!\n");
+		}
 	}
-
-	/* nasty easter egg: if FILE_BUF_SIZE is set to 1024 and you build for x86, you can do fclose ()
-	   at the end of init (), which is plain wrong as it will only work if fopen () != 0. */
+	else
+	{
+		xchat_printf (ph, "Invalid input!\n");
+	}
 }
 
-static unsigned long long
-get_max_hash_size ()
+static int
+get_limit ()
 {
-	FILE * file_in;
-	char buffer[FILE_BUF_SIZE];
-	unsigned long long max_hash_size;
+	int size = xchat_pluginpref_get_int (ph, "limit");
 
-	if (config_fail)
+	if (size <= -1 || size >= INT_MAX)
 	{
-		return (unsigned long long) DEFAULT_MAX_HASH_SIZE;
-	} else
+		return DEFAULT_LIMIT;
+	}
+	else
 	{
-		snprintf (buffer, sizeof (buffer), "%s/checksum.conf", xchat_get_info (ph, "xchatdirfs"));
-		file_in = fopen (buffer, "r");
-		fscanf (file_in, "%llu", &max_hash_size);
-
-		fclose (file_in);
-		return max_hash_size;
+		return size;
 	}
 }
 
 static void
-print_size ()
+print_limit ()
 {
-	unsigned long long size;
-	char suffix[3];
-	
-	size = get_max_hash_size ();
-	
-	if (size >= 1073741824)
-	{
-		size /= 1073741824;
-		snprintf (suffix, sizeof (suffix), "GB");
-	} else if (size >= 1048576)
-	{
-		size /= 1048576;
-		snprintf (suffix, sizeof (suffix), "MB");
-	} else if (size >= 1024)
-	{
-		size /= 1024;
-		snprintf (suffix, sizeof (suffix), "kB");
-	} else
-	{
-		snprintf (suffix, sizeof (suffix), "B");
-	}
-	xchat_printf (ph, "File size limit for checksums: %llu %s\n", size, suffix);
-}
-
-static void
-increase_max_hash_size ()
-{
-	unsigned long long size;
-	FILE * file_out;
-	char buffer[FILE_BUF_SIZE];
-
-	if (config_fail)
-	{
-		xchat_printf (ph, "Config file is unavailable, falling back to the default value\n");
-		print_size ();
-	} else
-	{
-		size = get_max_hash_size ();
-		if (size <= ULLONG_MAX/2)
-		{
-			size *= 2;
-		}
-		
-		snprintf (buffer, sizeof (buffer), "%s/checksum.conf", xchat_get_info (ph, "xchatdirfs"));
-		file_out = fopen (buffer, "w");
-		fprintf (file_out, "%llu\n", size);
-		fclose (file_out);
-		print_size ();
-	}
-}
-
-static void
-decrease_max_hash_size ()
-{
-	unsigned long long size;
-	FILE * file_out;
-	char buffer[FILE_BUF_SIZE];
-
-	if (config_fail)
-	{
-		xchat_printf (ph, "Config file is unavailable, falling back to the default value\n");
-		print_size ();
-	} else
-	{
-		size = get_max_hash_size ();
-		if (size >= 2)
-		{
-			size /= 2;
-		}
-		
-		snprintf (buffer, sizeof (buffer), "%s/checksum.conf", xchat_get_info (ph, "xchatdirfs"));
-		file_out = fopen (buffer, "w");
-		fprintf (file_out, "%llu\n", size);
-		fclose (file_out);
-		print_size ();
-	}
+	xchat_printf (ph, "File size limit for checksums: %d MiB", get_limit ());
 }
 
 static int
@@ -255,20 +164,22 @@ dccrecv_cb (char *word[], void *userdata)
 	result = stat64 (word[2], &buffer);
 	if (result == 0)										/* stat returns 0 on success */
 	{
-		if (buffer.st_size <= get_max_hash_size ())
+		if (buffer.st_size <= (unsigned long long) get_limit () * 1048576)
 		{
 			sha256_file (word[2], sum);						/* word[2] is the full filename */
 			/* try to print the checksum in the privmsg tab of the sender */
 			xchat_set_context (ph, xchat_find_context (ph, NULL, word[3]));
 			xchat_printf (ph, "SHA-256 checksum for %s (local):  %s\n", word[1], sum);
-		} else
+		}
+		else
 		{
 			xchat_set_context (ph, xchat_find_context (ph, NULL, word[3]));
 			xchat_printf (ph, "SHA-256 checksum for %s (local):  (size limit reached, no checksum calculated, you can increase it with /CHECKSUM INC)\n", word[1]);
 		}
-	} else
+	}
+	else
 	{
-		xchat_printf (ph, "File access error\n");
+		xchat_printf (ph, "File access error!\n");
 	}
 
 	return XCHAT_EAT_NONE;
@@ -284,18 +195,20 @@ dccoffer_cb (char *word[], void *userdata)
 	result = stat64 (word[3], &buffer);
 	if (result == 0)										/* stat returns 0 on success */
 	{
-		if (buffer.st_size <= get_max_hash_size ())
+		if (buffer.st_size <= (unsigned long long) get_limit () * 1048576)
 		{
 			sha256_file (word[3], sum);						/* word[3] is the full filename */
 			xchat_commandf (ph, "quote PRIVMSG %s :SHA-256 checksum for %s (remote): %s", word[2], word[1], sum);
-		} else
+		}
+		else
 		{
 			xchat_set_context (ph, xchat_find_context (ph, NULL, word[3]));
 			xchat_printf (ph, "quote PRIVMSG %s :SHA-256 checksum for %s (remote): (size limit reached, no checksum calculated)", word[2], word[1]);
 		}
-	} else
+	}
+	else
 	{
-		xchat_printf (ph, "File access error\n");
+		xchat_printf (ph, "File access error!\n");
 	}
 
 	return XCHAT_EAT_NONE;
@@ -306,19 +219,17 @@ checksum (char *word[], void *userdata)
 {
 	if (!stricmp ("GET", word[2]))
 	{
-		print_size ();
-	} else if (!stricmp ("INC", word[2]))
+		print_limit ();
+	}
+	else if (!stricmp ("SET", word[2]))
 	{
-		increase_max_hash_size ();
-	} else if (!stricmp ("DEC", word[2]))
-	{
-		decrease_max_hash_size ();
-	} else
+		set_limit (word[3]);
+	}
+	else
 	{
 		xchat_printf (ph, "Usage: /CHECKSUM GET|INC|DEC\n");
-		xchat_printf (ph, "  GET - print the maximum file size to be hashed\n");
-		xchat_printf (ph, "  INC - double the maximum file size to be hashed\n");
-		xchat_printf (ph, "  DEC - halve the maximum file size to be hashed\n");
+		xchat_printf (ph, "  GET - print the maximum file size (in MiB) to be hashed\n");
+		xchat_printf (ph, "  SET <filesize> - set the maximum file size (in MiB) to be hashed\n");
 	}
 }
 
@@ -331,9 +242,13 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 	*plugin_desc = desc;
 	*plugin_version = version;
 
-	init ();
+	/* this is required for the very first run */
+	if (xchat_pluginpref_get_int (ph, "limit") == -1)
+	{
+		xchat_pluginpref_set_int (ph, "limit", DEFAULT_LIMIT);
+	}
 
-	xchat_hook_command (ph, "CHECKSUM", XCHAT_PRI_NORM, checksum, "Usage: /CHECKSUM GET|INC|DEC", 0);
+	xchat_hook_command (ph, "CHECKSUM", XCHAT_PRI_NORM, checksum, "Usage: /CHECKSUM GET|SET", 0);
 	xchat_hook_print (ph, "DCC RECV Complete", XCHAT_PRI_NORM, dccrecv_cb, NULL);
 	xchat_hook_print (ph, "DCC Offer", XCHAT_PRI_NORM, dccoffer_cb, NULL);
 
