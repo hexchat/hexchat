@@ -13,8 +13,8 @@ all:
 	@-$(MAKE) /nologo /s /f makefile.mak $@
 	@cd ..\mpcinfo
 	@-$(MAKE) /nologo /s /f makefile.mak $@
-	@cd ..\nonbmp
-	@-$(MAKE) /nologo /s /f makefile.mak $@
+#	@cd ..\nonbmp
+#	@-$(MAKE) /nologo /s /f makefile.mak $@
 	@cd ..\python
 	@-$(MAKE) /nologo /s /f makefile.mak $@
 	@cd ..\tcl
@@ -47,8 +47,8 @@ clean:
 	@-$(MAKE) /nologo /s /f makefile.mak clean $@
 	@cd ..\mpcinfo
 	@-$(MAKE) /nologo /s /f makefile.mak clean $@
-	@cd ..\nonbmp
-	@-$(MAKE) /nologo /s /f makefile.mak clean $@
+#	@cd ..\nonbmp
+#	@-$(MAKE) /nologo /s /f makefile.mak clean $@
 	@cd ..\python
 	@-$(MAKE) /nologo /s /f makefile.mak clean $@
 	@cd ..\tcl
