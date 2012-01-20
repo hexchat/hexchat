@@ -58,6 +58,7 @@ copy %DEPS_ROOT%\bin\cert.pem %XCHAT_DEST%
 copy %DEPS_ROOT%\bin\libenchant.dll %XCHAT_DEST%
 xcopy /q /s /i %DEPS_ROOT%\lib\enchant\libenchant_myspell.dll %XCHAT_DEST%\lib\enchant\
 xcopy /q /s /i ..\plugins\checksum\xcchecksum.dll %XCHAT_DEST%\plugins\
+copy ..\plugins\dns\xcdns.dll %XCHAT_DEST%\plugins
 copy ..\plugins\doat\xcdoat.dll %XCHAT_DEST%\plugins
 copy ..\plugins\exec\xcexec.dll %XCHAT_DEST%\plugins
 copy ..\plugins\fishlim\xcfishlim.dll %XCHAT_DEST%\plugins

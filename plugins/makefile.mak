@@ -3,6 +3,8 @@ all:
 	@-$(MAKE) /nologo /s /f makefile.mak $@
 	@cd ..\gtkpref
 	@-$(MAKE) /nologo /s /f makefile.mak $@
+	@cd ..\dns
+	@-$(MAKE) /nologo /s /f makefile.mak $@
 	@cd ..\doat
 	@-$(MAKE) /nologo /s /f makefile.mak $@
 	@cd ..\exec
@@ -36,6 +38,8 @@ clean:
 	@cd checksum
 	@-$(MAKE) /nologo /s /f makefile.mak clean $@
 	@cd ..\gtkpref
+	@-$(MAKE) /nologo /s /f makefile.mak clean $@
+	@cd ..\dns
 	@-$(MAKE) /nologo /s /f makefile.mak clean $@
 	@cd ..\doat
 	@-$(MAKE) /nologo /s /f makefile.mak clean $@
