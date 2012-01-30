@@ -120,7 +120,11 @@ static const setting textbox_settings[] =
 	{ST_HEADER,	N_("Time Stamps"),0,0,0},
 	{ST_TOGGLE, N_("Enable time stamps"), P_OFFINTNL(timestamp),0,0,2},
 	{ST_ENTRY,  N_("Time stamp format:"), P_OFFSETNL(stamp_format),
-					N_("See strftime manpage for details."),0,sizeof prefs.stamp_format},
+#ifdef WIN32
+					N_("See the strftime MSDN article for details."),0,sizeof prefs.stamp_format},
+#else
+					N_("See the strftime manpage for details."),0,sizeof prefs.stamp_format},
+#endif
 
 	{ST_HEADER,	N_("Auto-Copy Behavior"),0,0,0},
 	{ST_TOGGLE, N_("Automatically copy selected text"), P_OFFINTNL(autocopy_text),
