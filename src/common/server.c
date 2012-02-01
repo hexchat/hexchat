@@ -67,7 +67,7 @@
 #endif
 
 #ifdef WIN32
-#include "identd.c"
+#include "identd.h"
 #endif
 
 #ifdef USE_LIBPROXY

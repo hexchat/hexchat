@@ -7,6 +7,7 @@ ctcp.obj \
 dcc.obj \
 dirent-win32.obj \
 history.obj \
+identd.obj \
 ignore.obj \
 inbound.obj \
 modes.obj \
