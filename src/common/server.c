@@ -1511,7 +1511,7 @@ server_child (server * serv)
 		if (FALSE)
 			;
 #ifdef USE_LIBPROXY
-		} else if (prefs.proxy_type == 5)
+		else if (prefs.proxy_type == 5)
 		{
 			char **proxy_list;
 			char *url, *proxy;
