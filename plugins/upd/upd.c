@@ -28,11 +28,21 @@
 static xchat_plugin *ph;   /* plugin handle */
 static const char name[] = "Update Checker";
 static const char desc[] = "Check for XChat-WDK updates automatically";
-static const char version[] = "2.0";
+static const char version[] = "2.1";
 
 static char*
 check_version ()
 {
+#if 0
+	/* Google Code's messing up with requests, use HTTP/1.0 as suggested. More info:
+
+	   http://code.google.com/p/support/issues/detail?id=6095
+
+	   Of course it would be still too simple, coz IE will override settings, so
+	   you have to disable HTTP/1.1 manually and globally. More info:
+
+	   http://support.microsoft.com/kb/258425
+	   */
 	HINTERNET hINet, hFile;
 	hINet = InternetOpen ("Update Checker", INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, 0);
 	
@@ -62,6 +72,68 @@ check_version ()
 	
 	InternetCloseHandle (hINet);
 	return "Unknown";
+#endif
+
+	static char buffer[1024];
+	DWORD dwRead;
+	HINTERNET hOpen, hConnect, hResource;
+
+	hOpen = InternetOpen (TEXT("Update Checker"),
+						INTERNET_OPEN_TYPE_PRECONFIG,
+						NULL,
+						NULL,
+						0);
+	if (!hOpen)
+	{
+		return "Unknown";
+	}
+
+	hConnect = InternetConnect (hOpen,
+								TEXT("xchat-wdk.googlecode.com"),
+								INTERNET_INVALID_PORT_NUMBER,
+								NULL,
+								NULL,
+								INTERNET_SERVICE_HTTP,
+								0,
+								0);
+	if (!hConnect)
+	{
+		InternetCloseHandle (hOpen);
+		return "Unknown";
+	}
+
+	hResource = HttpOpenRequest (hConnect,
+								TEXT("GET"),
+								TEXT("/git/version.txt?r=wdk"),
+								TEXT("HTTP/1.0"),
+								NULL,
+								NULL,
+								INTERNET_FLAG_NO_CACHE_WRITE | INTERNET_FLAG_RELOAD | INTERNET_FLAG_NO_AUTH,
+								0);
+	if (!hResource)
+	{
+		InternetCloseHandle (hConnect);
+		InternetCloseHandle (hOpen);
+		return "Unknown";
+	}
+	else
+	{
+		HttpSendRequest (hResource, NULL, 0, NULL, 0);
+
+		while (InternetReadFile (hResource, buffer, 1023, &dwRead))
+		{
+			if (dwRead == 0)
+			{
+				break;
+			}
+			buffer[dwRead] = 0;
+		}
+
+		InternetCloseHandle (hResource);
+		InternetCloseHandle (hConnect);
+		InternetCloseHandle (hOpen);
+		return buffer;
+	}
 }
 
 static int
