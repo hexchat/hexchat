@@ -33,26 +33,20 @@ static const char version[] = "2.1";
 static char*
 check_version ()
 {
-#if 0
-	/* Google Code's messing up with requests, use HTTP/1.0 as suggested. More info:
-
-	   http://code.google.com/p/support/issues/detail?id=6095
-
-	   Of course it would be still too simple, coz IE will override settings, so
-	   you have to disable HTTP/1.1 manually and globally. More info:
-
-	   http://support.microsoft.com/kb/258425
-	   */
 	HINTERNET hINet, hFile;
 	hINet = InternetOpen ("Update Checker", INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, 0);
-	
+
 	if (!hINet)
 	{
 		return "Unknown";
 	}
 
-	hFile = InternetOpenUrl (hINet, "http://xchat-wdk.googlecode.com/git/version.txt?r=wdk", NULL, 0, INTERNET_FLAG_NO_CACHE_WRITE | INTERNET_FLAG_RELOAD, 0);
-	
+	hFile = InternetOpenUrl (hINet,
+							"http://xchat-wdk.googlecode.com/git/version.txt?r=wdk",
+							NULL,
+							0,
+							INTERNET_FLAG_NO_CACHE_WRITE | INTERNET_FLAG_RELOAD,
+							0);
 	if (hFile)
 	{
 		static char buffer[1024];
@@ -67,12 +61,26 @@ check_version ()
 		}
 
 		InternetCloseHandle (hFile);
+		InternetCloseHandle (hINet);
 		return buffer;
 	}
-	
+
 	InternetCloseHandle (hINet);
 	return "Unknown";
-#endif
+
+#if 0
+	/* Google Code's messing up with requests, use HTTP/1.0 as suggested. More info:
+
+	   http://code.google.com/p/support/issues/detail?id=6095
+
+	   Of course it would be still too simple, coz IE will override settings, so
+	   you have to disable HTTP/1.1 manually and globally. More info:
+
+	   http://support.microsoft.com/kb/258425
+
+	   So this code's basically useless since disabling HTTP/1.1 will work with the
+	   above code too.
+	*/
 
 	static char buffer[1024];
 	DWORD dwRead;
@@ -134,6 +142,7 @@ check_version ()
 		InternetCloseHandle (hOpen);
 		return buffer;
 	}
+#endif
 }
 
 static int
