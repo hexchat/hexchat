@@ -33,6 +33,7 @@ static const char version[] = "2.1";
 static char*
 check_version ()
 {
+#if 0
 	HINTERNET hINet, hFile;
 	hINet = InternetOpen ("Update Checker", INTERNET_OPEN_TYPE_PRECONFIG, NULL, NULL, 0);
 
@@ -67,8 +68,8 @@ check_version ()
 
 	InternetCloseHandle (hINet);
 	return "Unknown";
+#endif
 
-#if 0
 	/* Google Code's messing up with requests, use HTTP/1.0 as suggested. More info:
 
 	   http://code.google.com/p/support/issues/detail?id=6095
@@ -80,13 +81,13 @@ check_version ()
 
 	   So this code's basically useless since disabling HTTP/1.1 will work with the
 	   above code too.
+
+	   Update: a Connection: close header seems to disable chunked encoding.
 	*/
 
-	static char buffer[1024];
-	DWORD dwRead;
 	HINTERNET hOpen, hConnect, hResource;
 
-	hOpen = InternetOpen (TEXT("Update Checker"),
+	hOpen = InternetOpen (TEXT ("Update Checker"),
 						INTERNET_OPEN_TYPE_PRECONFIG,
 						NULL,
 						NULL,
@@ -97,7 +98,7 @@ check_version ()
 	}
 
 	hConnect = InternetConnect (hOpen,
-								TEXT("xchat-wdk.googlecode.com"),
+								TEXT ("xchat-wdk.googlecode.com"),
 								INTERNET_INVALID_PORT_NUMBER,
 								NULL,
 								NULL,
@@ -111,9 +112,9 @@ check_version ()
 	}
 
 	hResource = HttpOpenRequest (hConnect,
-								TEXT("GET"),
-								TEXT("/git/version.txt?r=wdk"),
-								TEXT("HTTP/1.0"),
+								TEXT ("GET"),
+								TEXT ("/git/version.txt?r=wdk"),
+								TEXT ("HTTP/1.0"),
 								NULL,
 								NULL,
 								INTERNET_FLAG_NO_CACHE_WRITE | INTERNET_FLAG_RELOAD | INTERNET_FLAG_NO_AUTH,
@@ -126,6 +127,10 @@ check_version ()
 	}
 	else
 	{
+		static char buffer[1024];
+		DWORD dwRead;
+
+		HttpAddRequestHeaders (hResource, TEXT ("Connection: close\r\n"), -1L, HTTP_ADDREQ_FLAG_ADD);	/* workaround for GC bug */
 		HttpSendRequest (hResource, NULL, 0, NULL, 0);
 
 		while (InternetReadFile (hResource, buffer, 1023, &dwRead))
@@ -142,7 +147,6 @@ check_version ()
 		InternetCloseHandle (hOpen);
 		return buffer;
 	}
-#endif
 }
 
 static int
