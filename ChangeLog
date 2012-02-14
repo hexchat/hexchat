@@ -14,6 +14,8 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
 ------------------------------------------------------------------------------
  2.8.10 - dd/mm/yyyy
 ------------------------------------------------------------------------------
+ - Emit the Topic Change event before setting the topic internally so plugins
+   can access the old topic inside the callback.
  - Perl (Lian Wan Situ)
   * Added two new options to hook_print, run_after_event and filter. See
     documentation for details.
