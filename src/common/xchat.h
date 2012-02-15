@@ -115,7 +115,13 @@ struct xchatprefs
 	char awayreason[256];
 	char quitreason[256];
 	char partreason[256];
+#ifdef WIN32
+	char font_normal[4 * FONTNAMELEN + 1];
+	char font_main[FONTNAMELEN + 1];
+	char font_alternative[3 * FONTNAMELEN + 1];
+#else
 	char font_normal[FONTNAMELEN + 1];
+#endif
 	char doubleclickuser[256];
 	char gui_license[64];
 	char spell_langs[64];

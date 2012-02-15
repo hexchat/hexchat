@@ -36,6 +36,9 @@
 #endif
 
 #define DEF_FONT "Monospace 9"
+#ifdef WIN32
+#define DEF_FONT_ALTER "Arial Unicode MS,Lucida Sans Unicode"
+#endif
 
 void
 list_addentry (GSList ** list, char *cmd, char *name)
@@ -578,6 +581,10 @@ const struct prefs vars[] = {
 	{"text_emoticons", P_OFFINT (emoticons), TYPE_BOOL},
 #endif
 	{"text_font", P_OFFSET (font_normal), TYPE_STR},
+#ifdef WIN32
+	{"text_font_main", P_OFFSET (font_main), TYPE_STR},
+	{"text_font_alternative", P_OFFSET (font_alternative), TYPE_STR},
+#endif
 	{"text_indent", P_OFFINT (indent_nicks), TYPE_BOOL},
 	{"text_max_indent", P_OFFINT (max_auto_indent), TYPE_INT},
 	{"text_max_lines", P_OFFINT (max_lines), TYPE_INT},
@@ -749,6 +756,10 @@ load_config (void)
 	strcpy (prefs.quitreason, _("Leaving"));
 	strcpy (prefs.partreason, prefs.quitreason);
 	strcpy (prefs.font_normal, DEF_FONT);
+#ifdef WIN32
+	strcpy (prefs.font_main, DEF_FONT);
+	strcpy (prefs.font_alternative, DEF_FONT_ALTER);
+#endif
 	strcpy (prefs.dnsprogram, "host");
 	strcpy (prefs.irc_no_hilight, "NickServ,ChanServ");
 

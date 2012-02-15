@@ -102,7 +102,12 @@ typedef struct
 static const setting textbox_settings[] =
 {
 	{ST_HEADER,	N_("Text Box Appearance"),0,0,0},
+#ifdef WIN32
+	{ST_EFONT,  N_("Main font:"), P_OFFSETNL(font_main), 0, 0, sizeof prefs.font_main},
+	{ST_ENTRY,  N_("Alternative fonts:"), P_OFFSETNL(font_alternative), "Separate multiple entries with commas without spaces before or after.", 0, sizeof prefs.font_alternative},
+#else
 	{ST_EFONT,  N_("Font:"), P_OFFSETNL(font_normal), 0, 0, sizeof prefs.font_normal},
+#endif
 	{ST_EFILE,  N_("Background image:"), P_OFFSETNL(background), 0, 0, sizeof prefs.background},
 	{ST_NUMBER,	N_("Scrollback lines:"), P_OFFINTNL(max_lines),0,0,100000},
 	{ST_TOGGLE, N_("Colored nick names"), P_OFFINTNL(colorednicks),
@@ -2056,6 +2061,11 @@ setup_apply_real (int new_pix, int do_ulist, int do_layout)
 static void
 setup_apply (struct xchatprefs *pr)
 {
+#ifdef WIN32
+	PangoFontDescription *old_desc;
+	PangoFontDescription *new_desc;
+	char buffer[4 * FONTNAMELEN + 1];
+#endif
 	int new_pix = FALSE;
 	int noapply = FALSE;
 	int do_ulist = FALSE;
@@ -2098,6 +2108,19 @@ setup_apply (struct xchatprefs *pr)
 						FE_MSG_WARN | FE_MSG_MARKUP);
 
 	memcpy (&prefs, pr, sizeof (prefs));
+
+#ifdef WIN32	/* merge font_main and font_alternative into font_normal */
+	old_desc = pango_font_description_from_string (prefs.font_main);
+	sprintf (buffer, "%s,%s", pango_font_description_get_family (old_desc), prefs.font_alternative);
+	new_desc = pango_font_description_from_string (buffer);
+	pango_font_description_set_weight (new_desc, pango_font_description_get_weight (old_desc));
+	pango_font_description_set_style (new_desc, pango_font_description_get_style (old_desc));
+	pango_font_description_set_size (new_desc, pango_font_description_get_size (old_desc));
+	sprintf (prefs.font_normal, "%s", pango_font_description_to_string (new_desc));
+
+	g_free (old_desc);
+	g_free (new_desc);
+#endif
 
 	setup_apply_real (new_pix, do_ulist, do_layout);
 
