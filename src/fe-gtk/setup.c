@@ -2118,8 +2118,10 @@ setup_apply (struct xchatprefs *pr)
 	pango_font_description_set_size (new_desc, pango_font_description_get_size (old_desc));
 	sprintf (prefs.font_normal, "%s", pango_font_description_to_string (new_desc));
 
+	/* FIXME this is not required after pango_font_description_from_string()
 	g_free (old_desc);
 	g_free (new_desc);
+	*/
 #endif
 
 	setup_apply_real (new_pix, do_ulist, do_layout);
