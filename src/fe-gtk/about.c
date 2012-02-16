@@ -116,7 +116,6 @@ menu_about (GtkWidget * wid, gpointer sess)
 	(snprintf) (buf, sizeof (buf),
 				"<span size=\"x-large\"><b>"DISPLAY_NAME" "PACKAGE_VERSION"</b></span>\n"
 #ifdef WIN32
-				"<b>Anniversary Release</b>\n"
 				"%s%s%s"
 				"\n<b>XChat Release</b>: "XCHAT_RELEASE"\n\n"
 				"<b>OS</b>: %s\n"
