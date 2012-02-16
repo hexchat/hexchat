@@ -2131,7 +2131,8 @@ setup_apply (struct xchatprefs *pr)
 
 	/* workaround for strftime differences between POSIX and MSVC */
 	time (&rawtime);
-	if(!strftime (buffer, sizeof (buffer), prefs.stamp_format, localtime (&rawtime)) || !strftime (buffer, sizeof (buffer), prefs.timestamp_log_format, localtime (&rawtime)))
+
+	if (!strftime (buffer, sizeof (buffer), prefs.stamp_format, localtime (&rawtime)) || !strftime (buffer, sizeof (buffer), prefs.timestamp_log_format, localtime (&rawtime)))
 	{
 		fe_message (_("Invalid time stamp format! See the strftime MSDN article for details."), FE_MSG_ERROR);
 	}
