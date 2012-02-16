@@ -116,7 +116,7 @@ int xchat_plugin_init(xchat_plugin *plugin_handle, char **plugin_name, char **pl
 	/************************* Add our icon to the tray ************************************************************************/
 	/***************************************************************************************************************************/
 	char szVersion[64];
-	_snprintf(szVersion, 64, "XChat-WDK [%s]", xchat_get_info(ph, "version"));
+	_snprintf(szVersion, 64, "XChat-WDK %s", xchat_get_info(ph, "wdk_version"));
 	AddIcon(g_hXchatWnd, 1, g_hIcons[0], szVersion, (NIF_ICON | NIF_MESSAGE | NIF_TIP), WM_TRAYMSG);
 
 	/***************************************************************************************************************************/
