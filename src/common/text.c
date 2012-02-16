@@ -686,6 +686,13 @@ get_stamp_str (char *fmt, time_t tim, char **ret)
 	}
 
 	len = strftime (dest, sizeof (dest), fmt, localtime (&tim));
+#ifdef WIN32
+	if (!len)
+	{
+		/* use failsafe format until a correct one is specified */
+		len = strftime (dest, sizeof (dest), "[%H:%M]", localtime (&tim));
+	}
+#endif
 	if (len)
 	{
 		if (prefs.utf8_locale)

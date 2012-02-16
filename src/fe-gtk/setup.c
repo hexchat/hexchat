@@ -455,7 +455,11 @@ static const setting logging_settings[] =
 	{ST_HEADER,	N_("Time Stamps"),0,0,0},
 	{ST_TOGGLE,	N_("Insert timestamps in logs"), P_OFFINTNL(timestamp_logs), 0, 0, 2},
 	{ST_ENTRY,	N_("Log timestamp format:"), P_OFFSETNL(timestamp_log_format), 0, 0, sizeof prefs.timestamp_log_format},
-	{ST_LABEL,	N_("See strftime manpage for details.")},
+#ifdef WIN32
+	{ST_LABEL,	N_("See the strftime MSDN article for details.")},
+#else
+	{ST_LABEL,	N_("See the strftime manpage for details.")},
+#endif
 
 	{ST_END, 0, 0, 0, 0, 0}
 };
@@ -2065,6 +2069,7 @@ setup_apply (struct xchatprefs *pr)
 	PangoFontDescription *old_desc;
 	PangoFontDescription *new_desc;
 	char buffer[4 * FONTNAMELEN + 1];
+	time_t rawtime;
 #endif
 	int new_pix = FALSE;
 	int noapply = FALSE;
@@ -2109,7 +2114,8 @@ setup_apply (struct xchatprefs *pr)
 
 	memcpy (&prefs, pr, sizeof (prefs));
 
-#ifdef WIN32	/* merge font_main and font_alternative into font_normal */
+#ifdef WIN32
+	/* merge font_main and font_alternative into font_normal */
 	old_desc = pango_font_description_from_string (prefs.font_main);
 	sprintf (buffer, "%s,%s", pango_font_description_get_family (old_desc), prefs.font_alternative);
 	new_desc = pango_font_description_from_string (buffer);
@@ -2122,6 +2128,13 @@ setup_apply (struct xchatprefs *pr)
 	g_free (old_desc);
 	g_free (new_desc);
 	*/
+
+	/* workaround for strftime differences between POSIX and MSVC */
+	time (&rawtime);
+	if(!strftime (buffer, sizeof (buffer), prefs.stamp_format, localtime (&rawtime)) || !strftime (buffer, sizeof (buffer), prefs.timestamp_log_format, localtime (&rawtime)))
+	{
+		fe_message (_("Invalid time stamp format! See the strftime MSDN article for details."), FE_MSG_ERROR);
+	}
 #endif
 
 	setup_apply_real (new_pix, do_ulist, do_layout);
