@@ -683,10 +683,10 @@ inbound_topicnew (server *serv, char *nick, char *chan, char *topic)
 	sess = find_channel (serv, chan);
 	if (sess)
 	{
+		EMIT_SIGNAL (XP_TE_NEWTOPIC, sess, nick, topic, chan, NULL, 0);
 		stripped_topic = strip_color (topic, -1, STRIP_ALL);
 		set_topic (sess, topic, stripped_topic);
 		g_free (stripped_topic);
-		EMIT_SIGNAL (XP_TE_NEWTOPIC, sess, nick, topic, chan, NULL, 0);
 	}
 }
 

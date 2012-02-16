@@ -30,8 +30,11 @@ my $ignore_leading_non_alnum = 0;
 my $path_completion = 1;
 my $base_path = '';
 
+# ignore the completion_amount setting and always cycle through nicks with tab
+my $always_cycle = 0;
+
 Xchat::register(
-	"Tab Completion", "1.0401", "Alternative tab completion behavior"
+	"Tab Completion", "1.0500", "Alternative tab completion behavior"
 );
 Xchat::hook_print( "Key Press", \&complete );
 Xchat::hook_print( "Close Context", \&close_context );
@@ -203,8 +206,9 @@ sub complete {
 		# don't cycle if the number of possible completions is greater than
 		# completion_amount
 		if(
+			!$always_cycle && (
 			@{$completions->{matches}} > $completion_amount
-			&& @{$completions->{matches}} != 1
+			&& @{$completions->{matches}} != 1 )
 		) {
 			# don't print if we tabbed in the beginning and the list of possible
 			# completions includes all nicks in the channel
