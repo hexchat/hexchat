@@ -150,7 +150,7 @@ tree_find (tree *t, void *key, tree_cmp_func *cmp, void *data, int *pos)
 	return mybsearch (key, &t->array[0], t->elements, cmp, data, pos);
 }
 
-static void
+void
 tree_remove_at_pos (tree *t, int pos)
 {
 	int post_bytes;
@@ -191,14 +191,9 @@ tree_foreach (tree *t, tree_traverse_func *func, void *data)
 	}
 }
 
-int
-tree_insert (tree *t, void *key)
+static void
+tree_grow (tree *t)
 {
-	int pos, done;
-
-	if (!t)
-		return -1;
-
 	if (t->array_size < t->elements + 1)
 	{
 		int new_size = t->array_size + ARRAY_GROW;
@@ -207,9 +202,33 @@ tree_insert (tree *t, void *key)
 		t->array_size = new_size;
 	}
 
+}
+
+int
+tree_insert (tree *t, void *key)
+{
+	int pos, done;
+
+	if (!t)
+		return -1;
+
+	tree_grow (t);
 	pos = tree_find_insertion_pos (t, key, &done);
 	if (!done && pos != -1)
 		tree_insert_at_pos (t, key, pos);
 
 	return pos;
 }
+
+void
+tree_append (tree *t, void *key)
+{
+	tree_grow (t);
+	tree_insert_at_pos (t, key, t->elements);
+}
+
+int tree_size (tree *t)
+{
+	return t->elements;
+}
+

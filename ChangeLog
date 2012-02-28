@@ -16,6 +16,13 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
 ------------------------------------------------------------------------------
  - Emit the Topic Change event before setting the topic internally so plugins
    can access the old topic inside the callback.
+ - Add two options url_grabber and url_grabber_limit.
+   * url_grabber is a boolean for enabling/disabling the url grabber
+   * url_grabber_limit is an integer controlling the number of URLs the
+     URL Grabber will keep around. Setting it to 0 leaves it unlimited as in
+     previous versions.
+ - Fixed a bug with the URL Grabber where it fails to grab a URL if the URL
+   is the first thing in the message.
  - Perl (Lian Wan Situ)
   * Added two new options to hook_print, run_after_event and filter. See
     documentation for details.

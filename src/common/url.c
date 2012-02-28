@@ -21,6 +21,7 @@
 #include <string.h>
 #include <ctype.h>
 #include "xchat.h"
+#include "xchatc.h"
 #include "cfgfiles.h"
 #include "fe.h"
 #include "tree.h"
@@ -89,7 +90,13 @@ url_find (char *urltext)
 static void
 url_add (char *urltext, int len)
 {
-	char *data = malloc (len + 1);
+	char *data;
+	int size;
+
+	if (!prefs.url_grabber)
+		return;
+
+	data = malloc (len + 1);
 	if (!data)
 		return;
 	memcpy (data, urltext, len);
@@ -112,7 +119,18 @@ url_add (char *urltext, int len)
 	if (!url_tree)
 		url_tree = tree_new ((tree_cmp_func *)strcasecmp, NULL);
 
-	tree_insert (url_tree, data);
+	size = tree_size (url_tree);
+	/* 0 is unlimited */
+	if (prefs.url_grabber_limit > 0 && size >= prefs.url_grabber_limit)
+	{
+		/* the loop is necessary to handle having the limit lowered while
+		   xchat is running */
+		size -= prefs.url_grabber_limit;
+		for(; size > 0; size--)
+			tree_remove_at_pos (url_tree, 0);
+	}
+
+	tree_append (url_tree, data);
 	fe_url_add (data);
 }
 
@@ -259,10 +277,25 @@ url_check_line (char *buf, int len)
 		{
 		case 0:
 		case ' ':
+
 			wlen = po - start;
 			if (wlen > 2)
 			{
-				if (url_check_word (start, wlen) == WORD_URL)
+				/* HACK! :( */
+				/* This is to work around not being able to detect URLs that are at
+				   the start of messages. */
+				if (start[0] == ':')
+				{
+					start++;
+					wlen--;
+				}
+				if (start[0] == '+' || start[0] == '-')
+				{
+					start++;
+					wlen--;
+				}
+
+				if (wlen > 2 && url_check_word (start, wlen) == WORD_URL)
 				{
 					url_add (start, wlen);
 				}

@@ -300,6 +300,8 @@ struct xchatprefs
 	unsigned int msg_number_limit;	/*same deal */
 	unsigned int msg_time_limit;
 
+	unsigned int url_grabber;
+	unsigned int url_grabber_limit;
 	/* Tells us if we need to save, only when they've been edited.
 		This is so that we continue using internal defaults (which can
 		change in the next release) until the user edits them. */
