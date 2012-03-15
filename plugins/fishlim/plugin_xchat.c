@@ -133,7 +133,7 @@ static int handle_incoming(char *word[], char *word_eol[], void *userdata) {
     // Look for encrypted data
     for (ew = w+1; ew < XCHAT_MAX_WORDS-1; ew++) {
         const char *s = (ew == w+1 ? word[ew]+1 : word[ew]);
-        if (strcmp(s, "+OK") == 0) goto has_encrypted_data;
+        if (strcmp(s, "+OK") == 0 || strcmp(s, "mcps") == 0) goto has_encrypted_data;
     }
     return XCHAT_EAT_NONE;
   has_encrypted_data: ;
