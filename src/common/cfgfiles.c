@@ -564,6 +564,8 @@ const struct prefs vars[] = {
 	{"text_transparent", P_OFFINT (transparent), TYPE_BOOL},
 	{"text_wordwrap", P_OFFINT (wordwrap), TYPE_BOOL},
 
+	{"url_grabber", P_OFFINT (url_grabber), TYPE_BOOL},
+	{"url_grabber_limit", P_OFFINT (url_grabber_limit), TYPE_INT},
 	{0, 0, 0},
 };
 
@@ -680,6 +682,8 @@ load_config (void)
 	prefs.input_flash_priv = prefs.input_flash_hilight = 1;
 	prefs.input_tray_priv = prefs.input_tray_hilight = 1;
 	prefs.autodccsend = 2;	/* browse mode */
+	prefs.url_grabber = 1;
+	prefs.url_grabber_limit = 0; /* 0 means unlimited for backcompat */
 #ifdef WIN32
 	prefs.identd = 1;
 #endif

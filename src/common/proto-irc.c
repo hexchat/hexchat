@@ -1156,6 +1156,8 @@ irc_inline (server *serv, char *buf, int len)
 	char pdibuf_static[522]; /* 1 line can potentially be 512*6 in utf8 */
 	char *pdibuf = pdibuf_static;
 
+	url_check_line (buf, len);
+
 	/* need more than 522? fall back to malloc */
 	if (len >= sizeof (pdibuf_static))
 		pdibuf = malloc (len + 1);

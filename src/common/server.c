@@ -397,7 +397,6 @@ server_inline (server *serv, char *line, int len)
 	}
 
 	fe_add_rawlog (serv, line, len, FALSE);
-	url_check_line (line, len);
 
 	/* let proto-irc.c handle it */
 	serv->p_inline (serv, line, len);
