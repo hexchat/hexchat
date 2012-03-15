@@ -33,6 +33,7 @@
 #include <gtk/gtkcellrenderertext.h>
 
 #include "../common/xchat.h"
+#include "../common/xchatc.h"
 #include "../common/cfgfiles.h"
 #include "../common/fe.h"
 #include "../common/url.h"
@@ -152,6 +153,7 @@ fe_url_add (const char *urltext)
 {
 	GtkListStore *store;
 	GtkTreeIter iter;
+	gboolean valid;
 	
 	if (urlgrabberwindow)
 	{
@@ -161,6 +163,15 @@ fe_url_add (const char *urltext)
 		gtk_list_store_set (store, &iter,
 		                    URL_COLUMN, urltext,
 		                    -1);
+
+		/* remove any overflow */
+		if (prefs.url_grabber_limit > 0)
+		{
+			valid = gtk_tree_model_iter_nth_child (
+				GTK_TREE_MODEL (store), &iter, NULL, prefs.url_grabber_limit);
+			while (valid)
+				valid = gtk_list_store_remove (store, &iter);
+		}
 	}
 }
 
@@ -204,5 +215,11 @@ url_opengui ()
 
 	gtk_widget_show (urlgrabberwindow);
 
-	tree_foreach (url_tree, (tree_traverse_func *)populate_cb, NULL);
+	if (prefs.url_grabber)
+		tree_foreach (url_tree, (tree_traverse_func *)populate_cb, NULL);
+	else
+	{
+		gtk_list_store_clear (GTK_LIST_STORE (gtk_tree_view_get_model (GTK_TREE_VIEW (view))));
+		fe_url_add ("URL Grabber is disabled.");
+	}
 }
