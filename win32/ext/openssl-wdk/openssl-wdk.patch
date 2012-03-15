@@ -1,24 +1,24 @@
-diff -ruN --strip-trailing-cr openssl-1.0.0d.orig/Configure openssl-1.0.0d/Configure
---- openssl-1.0.0d.orig/Configure	2010-11-30 22:19:26 +0100
-+++ openssl-1.0.0d/Configure	2011-03-28 04:16:11 +0200
-@@ -491,12 +491,12 @@
+diff -ruN --strip-trailing-cr openssl-1.0.1.orig/Configure openssl-1.0.1/Configure
+--- openssl-1.0.1.orig/Configure	2012-03-03 14:18:06 +0100
++++ openssl-1.0.1/Configure	2012-03-14 20:34:29 +0100
+@@ -517,12 +517,12 @@
  #
  # Win64 targets, WIN64I denotes IA-64 and WIN64A - AMD64
- "VC-WIN64I","cl:-W3 -Gs0 -Gy -nologo -DOPENSSL_SYSNAME_WIN32 -DWIN32_LEAN_AND_MEAN -DL_ENDIAN -DUNICODE -D_UNICODE -D_CRT_SECURE_NO_DEPRECATE:::WIN64I::SIXTY_FOUR_BIT RC4_CHUNK_LL DES_INT EXPORT_VAR_AS_FN:ia64cpuid.o:ia64.o::aes_core.o aes_cbc.o aes-ia64.o::md5-ia64.o:sha1-ia64.o sha256-ia64.o sha512-ia64.o:::::::ias:win32",
--"VC-WIN64A","cl:-W3 -Gs0 -Gy -nologo -DOPENSSL_SYSNAME_WIN32 -DWIN32_LEAN_AND_MEAN -DL_ENDIAN -DUNICODE -D_UNICODE -D_CRT_SECURE_NO_DEPRECATE:::WIN64A::SIXTY_FOUR_BIT RC4_CHUNK_LL DES_INT EXPORT_VAR_AS_FN:x86_64cpuid.o:bn_asm.o x86_64-mont.o::aes-x86_64.o::md5-x86_64.o:sha1-x86_64.o sha256-x86_64.o sha512-x86_64.o::rc4-x86_64.o:::wp-x86_64.o:cmll-x86_64.o cmll_misc.o:auto:win32",
-+"VC-WIN64A","cl:-W3 -MP -Gs0 -Gy -nologo -DOPENSSL_SYSNAME_WIN32 -DWIN32_LEAN_AND_MEAN -DL_ENDIAN -DUNICODE -D_UNICODE:::WIN64A::SIXTY_FOUR_BIT RC4_CHUNK_LL DES_INT EXPORT_VAR_AS_FN:x86_64cpuid.o:bn_asm.o x86_64-mont.o::aes-x86_64.o::md5-x86_64.o:sha1-x86_64.o sha256-x86_64.o sha512-x86_64.o::rc4-x86_64.o:::wp-x86_64.o:cmll-x86_64.o cmll_misc.o:auto:win32",
- "debug-VC-WIN64I","cl:-W3 -Gs0 -Gy -Zi -nologo -DOPENSSL_SYSNAME_WIN32 -DWIN32_LEAN_AND_MEAN -DL_ENDIAN -DUNICODE -D_UNICODE -D_CRT_SECURE_NO_DEPRECATE:::WIN64I::SIXTY_FOUR_BIT RC4_CHUNK_LL DES_INT EXPORT_VAR_AS_FN:ia64cpuid.o:ia64.o::aes_core.o aes_cbc.o aes-ia64.o::md5-ia64.o:sha1-ia64.o sha256-ia64.o sha512-ia64.o:::::::ias:win32",
- "debug-VC-WIN64A","cl:-W3 -Gs0 -Gy -Zi -nologo -DOPENSSL_SYSNAME_WIN32 -DWIN32_LEAN_AND_MEAN -DL_ENDIAN -DUNICODE -D_UNICODE -D_CRT_SECURE_NO_DEPRECATE:::WIN64A::SIXTY_FOUR_BIT RC4_CHUNK_LL DES_INT EXPORT_VAR_AS_FN:x86_64cpuid.o:bn_asm.o x86_64-mont.o::aes-x86_64.o::md5-x86_64.o:sha1-x86_64.o sha256-x86_64.o sha512-x86_64.o::rc4-x86_64.o:::wp-x86_64.o:cmll-x86_64.o cmll_misc.o:auto:win32",
+ "VC-WIN64I","cl:-W3 -Gs0 -Gy -nologo -DOPENSSL_SYSNAME_WIN32 -DWIN32_LEAN_AND_MEAN -DL_ENDIAN -DUNICODE -D_UNICODE -D_CRT_SECURE_NO_DEPRECATE:::WIN64I::SIXTY_FOUR_BIT RC4_CHUNK_LL DES_INT EXPORT_VAR_AS_FN:ia64cpuid.o:ia64.o ia64-mont.o::aes_core.o aes_cbc.o aes-ia64.o::md5-ia64.o:sha1-ia64.o sha256-ia64.o sha512-ia64.o:::::::ghash-ia64.o::ias:win32",
+-"VC-WIN64A","cl:-W3 -Gs0 -Gy -nologo -DOPENSSL_SYSNAME_WIN32 -DWIN32_LEAN_AND_MEAN -DL_ENDIAN -DUNICODE -D_UNICODE -D_CRT_SECURE_NO_DEPRECATE:::WIN64A::SIXTY_FOUR_BIT RC4_CHUNK_LL DES_INT EXPORT_VAR_AS_FN:".eval{my $asm=$x86_64_asm;$asm=~s/x86_64-gcc\.o/bn_asm.o/;$asm}.":auto:win32",
++"VC-WIN64A","cl:-W3 -Gs0 -Gy -nologo -DOPENSSL_SYSNAME_WIN32 -DWIN32_LEAN_AND_MEAN -DL_ENDIAN -DUNICODE -D_UNICODE:::WIN64A::SIXTY_FOUR_BIT RC4_CHUNK_LL DES_INT EXPORT_VAR_AS_FN:".eval{my $asm=$x86_64_asm;$asm=~s/x86_64-gcc\.o/bn_asm.o/;$asm}.":auto:win32",
+ "debug-VC-WIN64I","cl:-W3 -Gs0 -Gy -Zi -nologo -DOPENSSL_SYSNAME_WIN32 -DWIN32_LEAN_AND_MEAN -DL_ENDIAN -DUNICODE -D_UNICODE -D_CRT_SECURE_NO_DEPRECATE:::WIN64I::SIXTY_FOUR_BIT RC4_CHUNK_LL DES_INT EXPORT_VAR_AS_FN:ia64cpuid.o:ia64.o::aes_core.o aes_cbc.o aes-ia64.o::md5-ia64.o:sha1-ia64.o sha256-ia64.o sha512-ia64.o:::::::ghash-ia64.o::ias:win32",
+ "debug-VC-WIN64A","cl:-W3 -Gs0 -Gy -Zi -nologo -DOPENSSL_SYSNAME_WIN32 -DWIN32_LEAN_AND_MEAN -DL_ENDIAN -DUNICODE -D_UNICODE -D_CRT_SECURE_NO_DEPRECATE:::WIN64A::SIXTY_FOUR_BIT RC4_CHUNK_LL DES_INT EXPORT_VAR_AS_FN:".eval{my $asm=$x86_64_asm;$asm=~s/x86_64-gcc\.o/bn_asm.o/;$asm}.":auto:win32",
  # x86 Win32 target defaults to ANSI API, if you want UNICODE, complement
  # 'perl Configure VC-WIN32' with '-DUNICODE -D_UNICODE'
--"VC-WIN32","cl:-W3 -WX -Gs0 -GF -Gy -nologo -DOPENSSL_SYSNAME_WIN32 -DWIN32_LEAN_AND_MEAN -DL_ENDIAN -D_CRT_SECURE_NO_DEPRECATE:::WIN32::BN_LLONG RC4_INDEX EXPORT_VAR_AS_FN ${x86_gcc_opts}:${x86_asm}:win32n:win32",
-+"VC-WIN32","cl:-W3 -WX -MP -Gs0 -GF -Gy -nologo -DOPENSSL_SYSNAME_WIN32 -DWIN32_LEAN_AND_MEAN -DL_ENDIAN:::WIN32::BN_LLONG RC4_INDEX EXPORT_VAR_AS_FN ${x86_gcc_opts}:${x86_asm}:win32n:win32",
+-"VC-WIN32","cl:-W3 -Gs0 -GF -Gy -nologo -DOPENSSL_SYSNAME_WIN32 -DWIN32_LEAN_AND_MEAN -DL_ENDIAN -D_CRT_SECURE_NO_DEPRECATE:::WIN32::BN_LLONG RC4_INDEX EXPORT_VAR_AS_FN ${x86_gcc_opts}:${x86_asm}:win32n:win32",
++"VC-WIN32","cl:-W3 -Gs0 -GF -Gy -nologo -DOPENSSL_SYSNAME_WIN32 -DWIN32_LEAN_AND_MEAN -DL_ENDIAN:::WIN32::BN_LLONG RC4_INDEX EXPORT_VAR_AS_FN ${x86_gcc_opts}:${x86_asm}:win32n:win32",
  # Unified CE target
  "debug-VC-WIN32","cl:-W3 -WX -Gs0 -GF -Gy -Zi -nologo -DOPENSSL_SYSNAME_WIN32 -DWIN32_LEAN_AND_MEAN -DL_ENDIAN -D_CRT_SECURE_NO_DEPRECATE:::WIN32::BN_LLONG RC4_INDEX EXPORT_VAR_AS_FN ${x86_gcc_opts}:${x86_asm}:win32n:win32",
  "VC-CE","cl::::WINCE::BN_LLONG RC4_INDEX EXPORT_VAR_AS_FN ${x86_gcc_opts}:${no_asm}:win32",
-diff -ruN --strip-trailing-cr openssl-1.0.0d.orig/engines/e_aep.c openssl-1.0.0d/engines/e_aep.c
---- openssl-1.0.0d.orig/engines/e_aep.c	2010-11-18 22:59:42 +0100
-+++ openssl-1.0.0d/engines/e_aep.c	2011-03-28 05:48:11 +0200
+diff -ruN --strip-trailing-cr openssl-1.0.1.orig/engines/e_aep.c openssl-1.0.1/engines/e_aep.c
+--- openssl-1.0.1.orig/engines/e_aep.c	2012-01-25 00:00:36 +0100
++++ openssl-1.0.1/engines/e_aep.c	2012-03-14 20:33:58 +0100
 @@ -61,7 +61,12 @@
  #include <sys/types.h>
  #include <unistd.h>
@@ -32,10 +32,10 @@ diff -ruN --strip-trailing-cr openssl-1.0.0d.orig/engines/e_aep.c openssl-1.0.0d
  typedef int pid_t;
  #endif
  
-diff -ruN --strip-trailing-cr openssl-1.0.0d.orig/util/pl/VC-32.pl openssl-1.0.0d/util/pl/VC-32.pl
---- openssl-1.0.0d.orig/util/pl/VC-32.pl	2010-09-13 18:28:34 +0200
-+++ openssl-1.0.0d/util/pl/VC-32.pl	2011-03-28 04:53:44 +0200
-@@ -37,7 +38,7 @@
+diff -ruN --strip-trailing-cr openssl-1.0.1.orig/util/pl/VC-32.pl openssl-1.0.1/util/pl/VC-32.pl
+--- openssl-1.0.1.orig/util/pl/VC-32.pl	2011-06-17 15:50:40 +0200
++++ openssl-1.0.1/util/pl/VC-32.pl	2012-03-14 20:33:58 +0100
+@@ -47,7 +47,7 @@
      $lib_cflag='/Zl' if (!$shlib);	# remove /DEFAULTLIBs from static lib
      $opt_cflags=$f.' /Ox';
      $dbg_cflags=$f.'d /Od -DDEBUG -D_DEBUG';
@@ -44,7 +44,7 @@ diff -ruN --strip-trailing-cr openssl-1.0.0d.orig/util/pl/VC-32.pl openssl-1.0.0
  
      *::perlasm_compile_target = sub {
  	my ($target,$source,$bname)=@_;
-@@ -118,7 +119,7 @@
+@@ -128,7 +128,7 @@
      $lib_cflag='/Zl' if (!$shlib);	# remove /DEFAULTLIBs from static lib
      $opt_cflags=$f.' /Ox /O2 /Ob2';
      $dbg_cflags=$f.'d /Od -DDEBUG -D_DEBUG';
@@ -53,7 +53,7 @@ diff -ruN --strip-trailing-cr openssl-1.0.0d.orig/util/pl/VC-32.pl openssl-1.0.0
      }
  $mlflags='';
  
-@@ -179,7 +180,7 @@
+@@ -189,7 +189,7 @@
  $lfile='/out:';
  
  $shlib_ex_obj="";
