@@ -317,7 +317,8 @@ fe_set_tab_color (struct session *sess, int col)
 			sess->nick_said = FALSE;
 			chan_set_color (sess->res->tab, newdata_list);
 
-			if (chan_is_collapsed (sess->res->tab))
+			if (chan_is_collapsed (sess->res->tab)
+				&& !(server_sess->msg_said || server_sess->nick_said))
 			{
 				server_sess->new_data = TRUE;
 				server_sess->msg_said = FALSE;
@@ -332,7 +333,7 @@ fe_set_tab_color (struct session *sess, int col)
 			sess->nick_said = FALSE;
 			chan_set_color (sess->res->tab, newmsg_list);
 			
-			if (chan_is_collapsed (sess->res->tab))
+			if (chan_is_collapsed (sess->res->tab) && !server_sess->nick_said)
 			{
 				server_sess->new_data = FALSE;
 				server_sess->msg_said = TRUE;
