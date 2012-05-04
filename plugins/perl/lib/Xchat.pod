@@ -556,86 +556,117 @@ C<$id>   -  one of the following case sensitive values
 <table border="1">
 
    <tr style="background-color: #dddddd">
-      <td>ID</td>          <td>Return value</td>
+      <td>ID</td>
+      <td>Return value</td>
+      <td>Associated Command(s)</td>
    </tr>
 
    <tr>
-      <td>away</td>  <td>away reason or undef if you are not away</td>
+      <td>away</td>
+      <td>away reason or undef if you are not away</td>
+      <td>AWAY, BACK</td>
    </tr>
 
    <tr>
-      <td>channel</td>  <td>current channel name</td>
+      <td>channel</td>
+      <td>current channel name</td>
+      <td>SETTAB</td>
    </tr>
 
    <tr>
-      <td>charset</td>  <td>character-set used in the current context</td>
+      <td>charset</td>
+      <td>character-set used in the current context</td>
+      <td>CHARSET</td>
    </tr>
 
    <tr>
       <td>event_text &lt;Event Name&gt;</td> <td>text event format string for &lt;Event name&gt;<br />
       Example:
-	<div class="example">
-		my $channel_msg_format = Xchat::get_info( "event_text Channel Message" );
-	</div>
-	</td>
+   <div class="example">
+      my $channel_msg_format = Xchat::get_info( "event_text Channel Message" );
+   </div>
+   </td>
+   <td></td>
 </tr>
 <tr>
-	<td>host</td>  <td>real hostname of the current server</td>
-</tr>
-
-<tr>
-	<td>id</td> <td>connection id</td>
-</tr>
-
-<tr>
-	<td>inputbox</td> <td>contents of the inputbox</td>
+   <td>host</td>
+   <td>real hostname of the current server</td>
+   <td></td>
 </tr>
 
 <tr>
-	<td>libdirfs</td>
-	<td>the system wide directory where xchat will look for plugins.
-	this string is in the same encoding as the local file system</td>
+   <td>id</td>
+   <td>connection id</td>
+   <td></td>
 </tr>
 
 <tr>
-	<td>modes</td> <td>the current channels modes or undef if not known</td>
+   <td>inputbox</td>
+   <td>contents of the inputbox</td>
+   <td>SETTEXT</td>
 </tr>
 
 <tr>
-	<td>network</td>  <td>current network name or undef</td>
+   <td>libdirfs</td>
+   <td>the system wide directory where xchat will look for plugins.
+   this string is in the same encoding as the local file system</td>
+   <td></td>
 </tr>
 
 <tr>
-	<td>nick</td>  <td>current nick</td>
+   <td>modes</td>
+   <td>the current channels modes or undef if not known</td>
+   <td>MODE</td>
 </tr>
 
 <tr>
-	<td>nickserv</td> <td>nickserv password for this network or undef</td>
+   <td>network</td>
+   <td>current network name or undef, this value is taken from the Network List</td>
+   <td></td>
 </tr>
 
 <tr>
-	<td>server</td>   <td>current server name <br />
-							(what the server claims to be) undef if not connected
-							</td>
+   <td>nick</td>
+   <td>current nick</td>
+   <td>NICK</td>
 </tr>
 
 <tr>
-	<td>state_cursor</td>
-	<td>current inputbox cursor position in characters</td>
+   <td>nickserv</td>
+   <td>nickserv password for this network or undef, this value is taken from the Network List</td>
+   <td></td>
 </tr>
 
 <tr>
-	<td>topic</td> <td>current channel topic</td>
+   <td>server</td>   <td>current server name <br />
+                     (what the server claims to be) undef if not connected
+                     </td>
+   <td></td>
 </tr>
 
 <tr>
-	<td>version</td>  <td>xchat version number</td>
+   <td>state_cursor</td>
+   <td>current inputbox cursor position in characters</td>
+   <td>SETCURSOR</td>
 </tr>
 
 <tr>
-	<td>win_status</td>
-	<td>status of the xchat window, possible values are "active", "hidden"
-	and "normal"</td>
+   <td>topic</td>
+   <td>current channel topic</td>
+   <td>TOPIC</td>
+</tr>
+
+<tr>
+   <td>version</td>
+   <td>xchat version number</td>
+   <td></td>
+</tr>
+
+<tr>
+   <td>win_status</td>
+   <td>status of the xchat window, possible values are "active", "hidden"
+   and "normal"</td>
+   <td>GUI</td>
 </tr>
 
 <tr>
@@ -644,22 +675,30 @@ C<$id>   -  one of the following case sensitive values
   Additionally when you have detached tabs, each of the windows will return a different win_ptr for the different Gtk2::Window objects.<br />
   See <a href="http://xchat.cvs.sourceforge.net/viewvc/xchat/xchat2/plugins/perl/char_count.pl?view=markup">char_count.pl</a> for a longer example of a script that uses this to show how many characters you currently have in your input box.
   </td>
+  <td></td>
 </tr>
 <tr>
-	<td>xchatdir</td> <td>xchat config directory encoded in UTF-8<br />
-							examples:<br />
-							/home/user/.xchat2<br />
-							C:\Documents and Settings\user\Application Data\X-Chat 2
-							</td>
+  <td>gtkwin_ptr</td>
+  <td>similar to win_ptr except it will always be a GtkWindow *</td>
+  <td></td>
+</tr>
+<tr>
+   <td>xchatdir</td> <td>xchat config directory encoded in UTF-8<br />
+                     examples:<br />
+                     /home/user/.xchat2<br />
+                     C:\Documents and Settings\user\Application Data\X-Chat 2
+                     </td>
+   <td></td>
 </tr>
 
 <tr>
-	<td>xchatdirfs</td>  <td>same as xchatdir except encoded in the locale file system encoding</td>
+   <td>xchatdirfs</td>  <td>same as xchatdir except encoded in the locale file system encoding</td>
+   <td></td>
 </tr>
 </table>
 
 <p>This function is used to retrieve certain information about the current
-context.</p>
+context. If there is an associated command then that command can be used to change the value for a particular ID.</p>
 
 =end html
 
