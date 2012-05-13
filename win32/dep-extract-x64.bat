@@ -17,9 +17,10 @@ cd deps-x64
 ::obs cd ..
 ::obs set PATH=%OPATH%
 7z x -y *.zip
-7z x *.7z
+7z x -y *.7z
 ::obs copy /y ..\build\glibconfig-x64.h lib\glib-2.0\include\glibconfig.h
 cd share\locale
+del /q /s atk10.mo
 del /q /s gettext-tools.mo
 del /q /s gettext-runtime.mo
 pause
