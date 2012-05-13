@@ -44,7 +44,7 @@
 
 static const char plugin_name[] = "FiSHLiM";
 static const char plugin_desc[] = "Encryption plugin for the FiSH protocol. Less is More!";
-static const char plugin_version[] = "0.0.15";
+static const char plugin_version[] = "0.0.16";
 
 static const char usage_setkey[] = "Usage: SETKEY [<nick or #channel>] <password>, sets the key for a channel or nick";
 static const char usage_delkey[] = "Usage: DELKEY <nick or #channel>, deletes the key for a channel or nick";
@@ -161,9 +161,15 @@ static int handle_incoming(char *word[], char *word_eol[], void *userdata) {
             // Add the encrypted data
             peice = decrypted;
             uw++; // Skip "OK+"
+            
+            if (ew == w+1) {
+                // Prefix with colon, which gets stripped out otherwise
+                if (!append(&message, &length, ":")) goto decrypt_error;
+            }
+            
         } else {
             // Add unencrypted data (for example, a prefix from a bouncer or bot)
-            peice = (uw == w+1 ? word[uw]+1 : word[uw]);
+            peice = word[uw];
         }
         
         if (!append(&message, &length, peice)) goto decrypt_error;
