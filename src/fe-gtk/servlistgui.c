@@ -61,7 +61,7 @@ static GtkWidget *entry_nick1;
 static GtkWidget *entry_nick2;
 static GtkWidget *entry_nick3;
 static GtkWidget *entry_guser;
-static GtkWidget *entry_greal;
+/* static GtkWidget *entry_greal; */
 
 /* edit area */
 static GtkWidget *edit_win;
@@ -649,8 +649,8 @@ servlist_savegui (void)
 	if (GTK_ENTRY (entry_guser)->text[0] == 0)
 		return 1;
 
-	if (GTK_ENTRY (entry_greal)->text[0] == 0)
-		return 1;
+	/* if (GTK_ENTRY (entry_greal)->text[0] == 0)
+		return 1; */
 
 	strcpy (prefs.nick1, GTK_ENTRY (entry_nick1)->text);
 	strcpy (prefs.nick2, GTK_ENTRY (entry_nick2)->text);
@@ -659,7 +659,7 @@ servlist_savegui (void)
 	sp = strchr (prefs.username, ' ');
 	if (sp)
 		sp[0] = 0;	/* spaces will break the login */
-	strcpy (prefs.realname, GTK_ENTRY (entry_greal)->text);
+	/* strcpy (prefs.realname, GTK_ENTRY (entry_greal)->text); */
 	servlist_save ();
 
 	return 0;
@@ -1624,12 +1624,12 @@ servlist_open_networks (void)
 	GtkWidget *label4;
 	GtkWidget *label5;
 	GtkWidget *label6;
-	GtkWidget *label7;
+	/* GtkWidget *label7; */
 	GtkWidget *entry1;
 	GtkWidget *entry2;
 	GtkWidget *entry3;
 	GtkWidget *entry4;
-	GtkWidget *entry5;
+	/* GtkWidget *entry5; */
 	GtkWidget *vbox2;
 	GtkWidget *label1;
 	GtkWidget *table4;
@@ -1703,12 +1703,12 @@ servlist_open_networks (void)
 							(GtkAttachOptions) (0), 0, 0);
 	gtk_misc_set_alignment (GTK_MISC (label6), 0, 0.5);
 
-	label7 = gtk_label_new_with_mnemonic (_("Rea_l name:"));
+	/* label7 = gtk_label_new_with_mnemonic (_("Rea_l name:"));
 	gtk_widget_show (label7);
 	gtk_table_attach (GTK_TABLE (table1), label7, 0, 1, 4, 5,
 							(GtkAttachOptions) (GTK_FILL),
 							(GtkAttachOptions) (0), 0, 0);
-	gtk_misc_set_alignment (GTK_MISC (label7), 0, 0.5);
+	gtk_misc_set_alignment (GTK_MISC (label7), 0, 0.5);*/
 
 	entry_nick1 = entry1 = gtk_entry_new ();
 	gtk_entry_set_text (GTK_ENTRY (entry1), prefs.nick1);
@@ -1738,12 +1738,12 @@ servlist_open_networks (void)
 							(GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
 							(GtkAttachOptions) (0), 0, 0);
 
-	entry_greal = entry5 = gtk_entry_new ();
+	/* entry_greal = entry5 = gtk_entry_new ();
 	gtk_entry_set_text (GTK_ENTRY (entry5), prefs.realname);
 	gtk_widget_show (entry5);
 	gtk_table_attach (GTK_TABLE (table1), entry5, 1, 2, 4, 5,
 							(GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
-							(GtkAttachOptions) (0), 0, 0);
+							(GtkAttachOptions) (0), 0, 0); */
 
 	vbox2 = gtk_vbox_new (FALSE, 0);
 	gtk_widget_show (vbox2);
@@ -1882,7 +1882,7 @@ servlist_open_networks (void)
 
 	gtk_label_set_mnemonic_widget (GTK_LABEL (label3), entry1);
 	gtk_label_set_mnemonic_widget (GTK_LABEL (label6), entry4);
-	gtk_label_set_mnemonic_widget (GTK_LABEL (label7), entry5);
+	/* gtk_label_set_mnemonic_widget (GTK_LABEL (label7), entry5); */
 
 	gtk_widget_grab_focus (networks_tree);
 	gtk_widget_grab_default (button_close);
