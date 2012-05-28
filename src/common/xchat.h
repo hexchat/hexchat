@@ -162,6 +162,7 @@ struct xchatprefs
 
 	int gui_pane_left_size;
 	int gui_pane_right_size;
+	int gui_pane_right_size_min;
 
 	int gui_ulist_pos;
 	int tab_pos;
@@ -327,6 +328,11 @@ struct xchatprefs
 		This is so that we continue using internal defaults (which can
 		change in the next release) until the user edits them. */
 	unsigned int save_pevents:1;
+	unsigned int text_search_case_match;
+	unsigned int text_search_backward;
+	unsigned int text_search_highlight_all;
+	unsigned int text_search_follow;
+	unsigned int text_search_regexp;
 };
 
 /* Session types */

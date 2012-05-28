@@ -451,6 +451,7 @@ const struct prefs vars[] = {
 #endif
 	{"gui_pane_left_size", P_OFFINT (gui_pane_left_size), TYPE_INT},
 	{"gui_pane_right_size", P_OFFINT (gui_pane_right_size), TYPE_INT},
+	{"gui_pane_right_size_min", P_OFFINT (gui_pane_right_size_min), TYPE_INT},
 	{"gui_quit_dialog", P_OFFINT (gui_quit_dialog), TYPE_BOOL},
 	{"gui_slist_fav", P_OFFINT (slist_fav), TYPE_INT},
 	{"gui_slist_select", P_OFFINT (slist_select), TYPE_INT},
@@ -589,6 +590,11 @@ const struct prefs vars[] = {
 	{"text_max_indent", P_OFFINT (max_auto_indent), TYPE_INT},
 	{"text_max_lines", P_OFFINT (max_lines), TYPE_INT},
 	{"text_replay", P_OFFINT (text_replay), TYPE_BOOL},
+	{"text_search_case_match", P_OFFINT (text_search_case_match), TYPE_BOOL},
+	{"text_search_backward", P_OFFINT (text_search_backward), TYPE_BOOL},
+	{"text_search_highlight_all", P_OFFINT (text_search_highlight_all), TYPE_BOOL},
+	{"text_search_follow", P_OFFINT (text_search_follow), TYPE_BOOL},
+	{"text_search_regexp", P_OFFINT (text_search_regexp), TYPE_BOOL},
 	{"text_show_marker", P_OFFINT (show_marker), TYPE_BOOL},
 	{"text_show_sep", P_OFFINT (show_separator), TYPE_BOOL},
 	{"text_spell_langs", P_OFFSET (spell_langs), TYPE_STR},
@@ -715,6 +721,7 @@ load_config (void)
 	prefs.gui_tray = 1;
 	prefs.gui_pane_left_size = 100;
 	prefs.gui_pane_right_size = 100;
+	prefs.gui_pane_right_size_min = 80;
 	prefs.mainwindow_save = 1;
 	prefs.bantype = 2;
 	prefs.input_balloon_time = 20;
@@ -723,6 +730,7 @@ load_config (void)
 	prefs.autodccsend = 2;	/* browse mode */
 	prefs.url_grabber = 1;
 	prefs.url_grabber_limit = 0; /* 0 means unlimited for backcompat */
+	prefs.text_search_follow = 1;
 #ifdef WIN32
 	prefs.identd = 1;
 #endif

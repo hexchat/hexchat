@@ -800,6 +800,9 @@ mg_userlist_showhide (session *sess, int show)
 {
 	session_gui *gui = sess->gui;
 	int handle_size;
+	int right_size;
+
+	right_size = MAX (prefs.gui_pane_right_size, prefs.gui_pane_right_size_min);
 
 	if (show)
 	{
@@ -807,7 +810,7 @@ mg_userlist_showhide (session *sess, int show)
 		gui->ul_hidden = 0;
 
 		gtk_widget_style_get (GTK_WIDGET (gui->hpane_right), "handle-size", &handle_size, NULL);
-		gtk_paned_set_position (GTK_PANED (gui->hpane_right), GTK_WIDGET (gui->hpane_right)->allocation.width - (prefs.gui_pane_right_size + handle_size));
+		gtk_paned_set_position (GTK_PANED (gui->hpane_right), GTK_WIDGET (gui->hpane_right)->allocation.width - (right_size + handle_size));
 	}
 	else
 	{
@@ -2848,7 +2851,7 @@ mg_create_entry (session *sess, GtkWidget *box)
 #else
 	gui->input_box = entry = gtk_entry_new ();
 #endif
-	gtk_entry_set_max_length (GTK_ENTRY (gui->input_box), 2048);
+	gtk_entry_set_max_length (GTK_ENTRY (gui->input_box), 0);
 	g_signal_connect (G_OBJECT (entry), "activate",
 							G_CALLBACK (mg_inputbox_cb), gui);
 	gtk_container_add (GTK_CONTAINER (hbox), entry);
