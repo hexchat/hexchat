@@ -71,8 +71,6 @@
 #include "../common/xchatc.h"
 #include "fe-gtk.h"
 #include "xtext.h"
-#include "../common/xchat.h"
-#include "../common/xchatc.h"
 
 #define charlen(str) g_utf8_skip[*(guchar *)(str)]
 
@@ -3015,7 +3013,7 @@ gtk_xtext_reset (GtkXText * xtext, int mark, int attribs)
  * Return one or more flags:
  * 	GTK_MATCH_MID if we are in a match
  * 	GTK_MATCH_START if we're at the first byte of it
- * 	GTK_MATCH_END if we at the first byte past it
+ * 	GTK_MATCH_END if we're at the first byte past it
  * 	GTK_MATCH_CUR if it is the current match
  */
 #define GTK_MATCH_START	1
