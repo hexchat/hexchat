@@ -902,6 +902,39 @@ xchat_execv (char * const argv[])
 #endif
 }
 
+#ifdef WIN32
+static void
+xchat_restore_window (HWND xchat_window)
+{
+	/* ShowWindow (xchat_window, SW_RESTORE); another way, but works worse */
+	SendMessage (xchat_window, WM_SYSCOMMAND, SC_RESTORE, 0);
+	SetForegroundWindow (xchat_window);
+}
+
+BOOL CALLBACK
+enum_windows_impl (HWND current_window, LPARAM lParam)
+{
+	TCHAR buffer[10];
+	ZeroMemory (&buffer, sizeof (buffer));
+
+	if (!current_window)
+	{
+		return TRUE;
+	}
+
+	GetWindowText (current_window, buffer, 10);
+	if (stricmp (buffer, "xchat-wdk") == 0)		/* We've found it, stop */
+	{
+		xchat_restore_window (current_window);
+		return FALSE;
+	}
+	else										/* Keep searching */
+	{
+		return TRUE;
+	}
+}
+#endif
+
 int
 main (int argc, char *argv[])
 {
@@ -937,7 +970,20 @@ main (int argc, char *argv[])
 
 		if (error == ERROR_ALREADY_EXISTS || mutex == NULL)
 		{
-			return 1;
+			/* restoring the XChat window from the tray via the taskbar icon
+			 * only works correctly when X-Tray is used, but it's not a big deal
+			 * since you can only minimize XChat to tray via the taskbar if you
+			 * use X-Tray*/
+			if (xtray_mode ())
+			{
+				/* FindWindow() doesn't support wildcards so we check all the open windows */
+				EnumWindows (enum_windows_impl, NULL);
+				return 0;
+			}
+			else
+			{
+				return 1;
+			}
 		}
 	}
 #endif
