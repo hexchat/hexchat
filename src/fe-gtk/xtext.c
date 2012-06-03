@@ -1131,7 +1131,6 @@ gtk_xtext_size_allocate (GtkWidget * widget, GtkAllocation * allocation)
 
 	xtext->avoid_trans = FALSE;
 
-	allocation->height = allocation->height / xtext->fontsize * xtext->fontsize;
 	widget->allocation = *allocation;
 	if (GTK_WIDGET_REALIZED (widget))
 	{
