@@ -914,24 +914,31 @@ xchat_restore_window (HWND xchat_window)
 BOOL CALLBACK
 enum_windows_impl (HWND current_window, LPARAM lParam)
 {
-	TCHAR buffer[10];
-	ZeroMemory (&buffer, sizeof (buffer));
+	TCHAR window_name[10];
+	TCHAR module_path[1024];
+	ZeroMemory (&window_name, sizeof (window_name));
 
 	if (!current_window)
 	{
 		return TRUE;
 	}
 
-	GetWindowText (current_window, buffer, 10);
-	if (stricmp (buffer, "xchat-wdk") == 0)		/* We've found it, stop */
+	GetWindowText (current_window, window_name, 10);
+	if (stricmp (window_name, "xchat-wdk") == 0)
 	{
-		xchat_restore_window (current_window);
-		return FALSE;
+		/* use a separate if block, this way we don't have to call GetWindowModuleFileName() for each hit */
+		ZeroMemory (&module_path, sizeof (module_path));
+		GetWindowModuleFileName (current_window, module_path, sizeof (module_path));
+
+		if (strstr (module_path, "xchat.exe"))	/* We've found it, stop */
+		{
+			xchat_restore_window (current_window);
+			return FALSE;
+		}
 	}
-	else										/* Keep searching */
-	{
-		return TRUE;
-	}
+
+	return TRUE;								/* Keep searching */
+
 }
 #endif
 
