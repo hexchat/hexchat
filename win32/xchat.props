@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros">
+    <OwnFlags>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;G_DISABLE_CAST_CHECKS;G_DISABLE_DEPRECATED;GDK_PIXBUF_DISABLE_DEPRECATED;GDK_DISABLE_DEPRECATED;HAVE_STRTOULL;strtoull=_strtoui64;strcasecmp=stricmp;strncasecmp=strnicmp</OwnFlags>
+    <DepsRoot>c:\mozilla-build\deps-root\$(PlatformName)</DepsRoot>
+	<Glib>$(DepsRoot)\include\glib-2.0;$(DepsRoot)\lib\glib-2.0\include;$(DepsRoot)\include\libxml2</Glib>
+	<Gtk>$(DepsRoot)\include\gtk-2.0;$(DepsRoot)\lib\gtk-2.0\include;$(DepsRoot)\include\atk-1.0;$(DepsRoot)\include\cairo;$(DepsRoot)\include\pango-1.0;$(DepsRoot)\include\gdk-pixbuf-2.0</Gtk>
+	<Pixmaps>bookpng "$(SolutionDir)\..\src\pixmaps\book.png" hoppng "$(SolutionDir)\..\src\pixmaps\hop.png" oppng "$(SolutionDir)\..\src\pixmaps\op.png" purplepng "$(SolutionDir)\..\src\pixmaps\purple.png" redpng "$(SolutionDir)\..\src\pixmaps\red.png" trayfilepng "$(SolutionDir)\..\src\pixmaps\fileoffer.png" trayhilightpng "$(SolutionDir)\..\src\pixmaps\highlight.png" traymsgpng "$(SolutionDir)\..\src\pixmaps\message.png" voicepng "$(SolutionDir)\..\src\pixmaps\voice.png" xchatpng "$(SolutionDir)\..\xchat.png"</Pixmaps>
+	<DepLibs>gtk-win32-2.0.lib;gdk-win32-2.0.lib;atk-1.0.lib;gio-2.0.lib;gdk_pixbuf-2.0.lib;pangowin32-1.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo.lib;gobject-2.0.lib;gmodule-2.0.lib;glib-2.0.lib;intl.lib;libxml2.lib;libeay32.lib;ssleay32.lib;wininet.lib;winmm.lib;ws2_32.lib</DepLibs>
+  </PropertyGroup>
+  <ItemDefinitionGroup />
+  <ItemGroup />
+</Project>

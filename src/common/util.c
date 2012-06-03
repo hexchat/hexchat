@@ -32,7 +32,7 @@
 #include <sys/timeb.h>
 #include <process.h>
 #include <io.h>
-#include "dirent-win32.h"
+#include "../dirent-win32/dirent-win32.h"
 #else
 #include <unistd.h>
 #include <pwd.h>
@@ -57,10 +57,8 @@
 #include <socks.h>
 #endif
 
-#ifndef ENABLE_NLS
 #ifndef HAVE_SNPRINTF
 #define snprintf g_snprintf
-#endif
 #endif
 
 #ifdef USE_DEBUG

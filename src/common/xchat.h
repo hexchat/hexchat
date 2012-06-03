@@ -8,14 +8,12 @@
 
 #include "history.h"
 
-#ifndef ENABLE_NLS
 #ifndef HAVE_SNPRINTF
 #define snprintf g_snprintf
 #endif
 
 #ifndef HAVE_VSNPRINTF
 #define vsnprintf _vsnprintf
-#endif
 #endif
 
 #ifdef USE_DEBUG
@@ -78,6 +76,10 @@ void *xchat_realloc (char *old, int len, char *file, int line);
 #define PDIWORDS		32
 #define USERNAMELEN 10
 #define HIDDEN_CHAR	8			/* invisible character for xtext */
+
+#ifdef __cplusplus
+#define asdfasdf
+#endif
 
 #if defined(ENABLE_NLS) && !defined(_)
 #  include <libintl.h>
