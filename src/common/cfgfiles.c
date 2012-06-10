@@ -643,9 +643,11 @@ load_config (void)
 	if (!username)
 		username = "root";
 
-	realname = g_get_real_name ();
+	/* We hid Real name from the Network List, so don't use the user's name unnoticeably */
+	/* realname = g_get_real_name ();
 	if ((realname && realname[0] == 0) || !realname)
-		realname = username;
+		realname = username; */
+	realname = "realname";
 
 	username = convert_with_fallback (username, "username");
 	realname = convert_with_fallback (realname, "realname");
