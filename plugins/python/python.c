@@ -57,7 +57,7 @@
 #include <sys/types.h>
 
 #ifdef WIN32
-#include "../../src/common/dirent-win32.h"
+#include "../../src/dirent/dirent-win32.h"
 #include "../../config.h"
 #else
 #include <unistd.h>

@@ -6,14 +6,24 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="printevents.h" />
+    <ClInclude Include="tclplugin.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="tclplugin.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="tcl.def" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{626DA61C-FA8B-474C-B2F5-72AD9DFEE642}</ProjectGuid>
+    <ProjectGuid>{2773666A-8CFC-4533-A043-EAD59F16A1C7}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>pixmaps</RootNamespace>
+    <RootNamespace>tcl</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
@@ -29,39 +39,30 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <TargetName>$(TclOutput)</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
-      <PrecompiledHeader>
-      </PrecompiledHeader>
+      <WarningLevel>Level1</WarningLevel>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;TCL_EXPORTS;TCL_DLL="$(TclLib).dll";$(OwnFlags);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(TclPath)\include;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(TclPath)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>"$(TclLib).lib";%(AdditionalDependencies)</AdditionalDependencies>
+      <ModuleDefinitionFile>tcl.def</ModuleDefinitionFile>
+      <DelayLoadDLLs>$(TclLib).dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
-    <PostBuildEvent>
-      <Command>"$(DepsRoot)\bin\gdk-pixbuf-csource" --build-list $(Pixmaps) > "$(SolutionDir)\..\src\pixmaps\inline_pngs.h"</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <None Include="..\..\xchat.png" />
-    <None Include="book.png" />
-    <None Include="fileoffer.png" />
-    <None Include="highlight.png" />
-    <None Include="hop.png" />
-    <None Include="message.png" />
-    <None Include="op.png" />
-    <None Include="purple.png" />
-    <None Include="red.png" />
-    <None Include="voice.png" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

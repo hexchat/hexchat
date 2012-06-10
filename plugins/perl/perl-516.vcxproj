@@ -7,13 +7,13 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{626DA61C-FA8B-474C-B2F5-72AD9DFEE642}</ProjectGuid>
+    <ProjectGuid>{58654438-F674-42F7-88FA-73EF90AD80B1}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>pixmaps</RootNamespace>
+    <RootNamespace>perl516</RootNamespace>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
@@ -29,38 +29,41 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <TargetName>$(Perl516Output)</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>Level1</WarningLevel>
       <PrecompiledHeader>
       </PrecompiledHeader>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;PERL516_EXPORTS;$(OwnFlags);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(Perl516Path)\perl\lib\CORE;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
+      <AdditionalLibraryDirectories>$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>$(Perl516Lib).lib;dirent-win32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ModuleDefinitionFile>perl.def</ModuleDefinitionFile>
+      <DelayLoadDLLs>$(Perl516Lib).dll;%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
-    <PostBuildEvent>
-      <Command>"$(DepsRoot)\bin\gdk-pixbuf-csource" --build-list $(Pixmaps) > "$(SolutionDir)\..\src\pixmaps\inline_pngs.h"</Command>
-    </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>"$(GendefPath)\gendef" "$(Perl516Path)\perl\bin\$(Perl516Lib).dll"
+lib /nologo /machine:x86 "/def:$(Perl516Lib).def" "/out:$(OutputPath)\$(Perl516Lib).lib"
+"$(Perl516Path)\perl\bin\perl.exe" generate_header</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="..\..\xchat.png" />
-    <None Include="book.png" />
-    <None Include="fileoffer.png" />
-    <None Include="highlight.png" />
-    <None Include="hop.png" />
-    <None Include="message.png" />
-    <None Include="op.png" />
-    <None Include="purple.png" />
-    <None Include="red.png" />
-    <None Include="voice.png" />
+    <None Include="perl.def" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="perl.c" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

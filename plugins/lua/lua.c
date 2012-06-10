@@ -48,7 +48,7 @@
 
 #ifdef _WIN32
 #include <direct.h>	/* for getcwd */
-#include "../../src/common/dirent-win32.h"
+#include "../../src/dirent/dirent-win32.h"
 #endif
 
 #if !( defined(_WIN32) || defined(LXC_XCHAT_GETTEXT) )
