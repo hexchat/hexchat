@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{5A0F4962-E670-4DA2-9E45-52CC47F26E2F}</ProjectGuid>
+    <RootNamespace>installer</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\xchat.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <PreBuildEvent>
+      <Command>echo [Setup] &gt; "$(SolutionDir)\xchat-wdk-x86.iss"
+echo WizardImageFile="$(SolutionDir)\bitmaps\wizardimage.bmp" &gt;&gt; "$(SolutionDir)\xchat-wdk-x86.iss"
+echo WizardSmallImageFile="$(SolutionDir)\bitmaps\wizardsmallimage.bmp" &gt;&gt; "$(SolutionDir)\xchat-wdk-x86.iss"
+"$(OutDir)\version" -a32 &gt;&gt; "$(SolutionDir)\xchat-wdk-x86.iss"
+"$(OutDir)\version" -v &gt;&gt; "$(SolutionDir)\xchat-wdk-x86.iss"
+"$(OutDir)\version" -i &gt;&gt; "$(SolutionDir)\xchat-wdk-x86.iss"
+"$(OutDir)\version" -o32 &gt;&gt; "$(SolutionDir)\xchat-wdk-x86.iss"
+echo SetupIconFile="$(SolutionDir)\..\xchat.ico" &gt;&gt; "$(SolutionDir)\xchat-wdk-x86.iss"
+type "$(SolutionDir)\xchat-wdk-x86.skel.iss" &gt;&gt; "$(SolutionDir)\xchat-wdk-x86.iss"
+"$(ProgramFiles)\Inno Setup 5\compil32" /cc "$(SolutionDir)\xchat-wdk-x86.iss"</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

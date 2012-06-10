@@ -11,7 +11,7 @@ DefaultDirName={pf}\XChat-WDK
 DefaultGroupName=XChat-WDK
 DisableProgramGroupPage=yes
 SolidCompression=yes
-SourceDir=dist-x86
+SourceDir=dist\Win32
 OutputDir=..\
 FlatComponentsList=no
 PrivilegesRequired=none
@@ -58,6 +58,7 @@ Name: portable; Description: "Yes"; GroupDescription: "Portable Install (no Regi
 
 Name: perl512; Description: "5.12"; GroupDescription: "Perl version:"; Flags: exclusive; Components: langs\perl
 Name: perl514; Description: "5.14"; GroupDescription: "Perl version:"; Flags: exclusive unchecked; Components: langs\perl
+Name: perl516; Description: "5.16"; GroupDescription: "Perl version:"; Flags: exclusive unchecked; Components: langs\perl
 
 [Registry]
 Root: HKCR; Subkey: "irc"; ValueType: none; ValueName: ""; ValueData: ""; Flags: deletekey uninsdeletekey; Tasks: not portable
@@ -174,6 +175,7 @@ Source: "plugins\xctcl.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Com
 
 Source: "plugins\xcperl-512.dll"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Flags: ignoreversion; Components: langs\perl; Tasks: perl512
 Source: "plugins\xcperl-514.dll"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Flags: ignoreversion; Components: langs\perl; Tasks: perl514
+Source: "plugins\xcperl-516.dll"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Flags: ignoreversion; Components: langs\perl; Tasks: perl516
 
 Source: "xchat.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "xchat-text.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: xctext
