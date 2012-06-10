@@ -2,16 +2,19 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Source Files">
-      <UniqueIdentifier>{3206fd00-efdb-4bca-9740-9708bd405701}</UniqueIdentifier>
-      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
     <Filter Include="Header Files">
-      <UniqueIdentifier>{17e13eb2-1243-4ff2-9532-1d6dab0bfef9}</UniqueIdentifier>
-      <Extensions>h;hpp;hxx;hm;inl</Extensions>
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
     </Filter>
     <Filter Include="Resource Files">
-      <UniqueIdentifier>{a1d9cf8c-f0bb-4a19-bfff-5223276e650a}</UniqueIdentifier>
-      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Resource Files\res">
+      <UniqueIdentifier>{c54ddc93-06ab-4a74-854a-9ec976b7bfd0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -21,7 +24,7 @@
     <ClCompile Include="wmpa.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="WMPADialog.cpp">
+    <ClCompile Include="wmpadialog.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="wmpcdrom.cpp">
@@ -80,17 +83,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Midl Include="wmpa.odl">
-      <Filter>Source Files</Filter>
-    </Midl>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="wmpa.rc">
-      <Filter>Source Files</Filter>
-    </ResourceCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="Resource.h">
+    <ClInclude Include="resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="StdAfx.h">
@@ -99,7 +92,7 @@
     <ClInclude Include="wmpa.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="WMPADIALOG.h">
+    <ClInclude Include="wmpadialog.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="wmpcdrom.h">
@@ -158,15 +151,30 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="wmpa.def">
-      <Filter>Source Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="res\wmpa.rc2">
+    <None Include="wmpa.aps">
       <Filter>Resource Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="wmpa.ico">
+    </None>
+    <None Include="wmpa.def">
       <Filter>Resource Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="ReadMe.txt" />
+    </None>
+    <None Include="wmpa.ico">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="ReadMe.txt">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="res\wmpa.rc2">
+      <Filter>Resource Files\res</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Midl Include="wmpa.odl">
+      <Filter>Resource Files</Filter>
+    </Midl>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="wmpa.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>
