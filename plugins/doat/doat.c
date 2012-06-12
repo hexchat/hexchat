@@ -31,15 +31,23 @@ parse_command( char *word[], char *word_eol[], void *userdata ) {
 				break;
 			}
 
-			channel = malloc( strlen( token ) + 1 );
-			strcpy( channel, token );
+			channel = strdup( token );
 				
 			delimiter = strchr( channel, '/' );
 
 			server = NULL;
 			if( delimiter != NULL ) {
 				*delimiter = '\0';
-				server = delimiter + 1;
+
+				if( strlen( delimiter + 1 ) > 0 ) {
+					server = strdup( delimiter + 1 );
+				}
+			}
+
+			/* /Network form */
+			if( strlen( channel ) == 0 ) {
+				free( channel );
+				channel = NULL;
 			}
 
 /*			printf( "channel[%s] server[%s]\n", channel, server );*/
@@ -50,7 +58,13 @@ parse_command( char *word[], char *word_eol[], void *userdata ) {
 				}
 			}
 
-			free( channel );
+			if( channel != NULL ) {
+				free( channel );
+			}
+
+			if( server != NULL ) {
+				free( server );
+			}
 		}
 	}
 	return XCHAT_EAT_XCHAT;
@@ -62,7 +76,7 @@ xchat_plugin_init( xchat_plugin * plugin_handle, char **plugin_name,
 
 	ph = plugin_handle;
 	*plugin_name = "Do At";
-	*plugin_version = "1.0";
+	*plugin_version = "1.0001";
 	*plugin_desc = "Perform an arbitrary command on multiple channels";
 
 	xchat_hook_command( ph, "doat", XCHAT_PRI_NORM, parse_command, "DOAT [channel,list,/network] [command], perform a command on multiple contexts", NULL );
