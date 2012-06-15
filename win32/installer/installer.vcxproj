@@ -16,6 +16,7 @@
     <UseDebugLibraries>false</UseDebugLibraries>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>WDK7</PlatformToolset>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -25,7 +26,10 @@
     <Import Project="..\xchat.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)build\$(PlatformName)\bin</OutDir>
+    <IntDir>$(SolutionDir)build\$(PlatformName)\obj\$(ProjectName)</IntDir>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -39,19 +43,25 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PreBuildEvent>
-      <Command>echo [Setup] &gt; "$(SolutionDir)\xchat-wdk-x86.iss"
-echo WizardImageFile="$(SolutionDir)\bitmaps\wizardimage.bmp" &gt;&gt; "$(SolutionDir)\xchat-wdk-x86.iss"
-echo WizardSmallImageFile="$(SolutionDir)\bitmaps\wizardsmallimage.bmp" &gt;&gt; "$(SolutionDir)\xchat-wdk-x86.iss"
-"$(OutDir)\version" -a32 &gt;&gt; "$(SolutionDir)\xchat-wdk-x86.iss"
-"$(OutDir)\version" -v &gt;&gt; "$(SolutionDir)\xchat-wdk-x86.iss"
-"$(OutDir)\version" -i &gt;&gt; "$(SolutionDir)\xchat-wdk-x86.iss"
-"$(OutDir)\version" -o32 &gt;&gt; "$(SolutionDir)\xchat-wdk-x86.iss"
-echo SetupIconFile="$(SolutionDir)\..\xchat.ico" &gt;&gt; "$(SolutionDir)\xchat-wdk-x86.iss"
-type "$(SolutionDir)\xchat-wdk-x86.skel.iss" &gt;&gt; "$(SolutionDir)\xchat-wdk-x86.iss"
-"$(ProgramFiles)\Inno Setup 5\compil32" /cc "$(SolutionDir)\xchat-wdk-x86.iss"</Command>
+      <Command>echo [Setup] &gt; "$(OutDir)\xchat-wdk-x86.iss"
+echo WizardImageFile="$(ProjectDir)\wizardimage.bmp" &gt;&gt; "$(OutDir)\xchat-wdk-x86.iss"
+echo WizardSmallImageFile="$(ProjectDir)\wizardsmallimage.bmp" &gt;&gt; "$(OutDir)\xchat-wdk-x86.iss"
+"$(OutDir)\version" -a &gt;&gt; "$(OutDir)\xchat-wdk-x86.iss"
+"$(OutDir)\version" -v &gt;&gt; "$(OutDir)\xchat-wdk-x86.iss"
+"$(OutDir)\version" -i &gt;&gt; "$(OutDir)\xchat-wdk-x86.iss"
+"$(OutDir)\version" -o &gt;&gt; "$(OutDir)\xchat-wdk-x86.iss"
+echo SetupIconFile="$(SolutionDir)\..\xchat.ico" &gt;&gt; "$(OutDir)\xchat-wdk-x86.iss"
+type xchat-wdk-x86.skel.iss &gt;&gt; "$(OutDir)\xchat-wdk-x86.iss"
+"$(ProgramFiles)\Inno Setup 5\compil32" /cc "$(OutDir)\xchat-wdk-x86.iss"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <None Include="watercolorlite-blue.cjstyles" />
+    <None Include="watercolorlite-green.cjstyles" />
+    <None Include="wizardimage.bmp" />
+    <None Include="wizardsmallimage.bmp" />
+    <None Include="xchat-wdk-x64.skel.iss" />
+    <None Include="xchat-wdk-x86.skel.iss" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

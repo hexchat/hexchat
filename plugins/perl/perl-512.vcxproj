@@ -30,6 +30,8 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <TargetName>$(Perl512Output)</TargetName>
+    <OutDir>$(SolutionDir)build\$(PlatformName)\bin</OutDir>
+    <IntDir>$(SolutionDir)build\$(PlatformName)\obj\$(ProjectName)</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -41,7 +43,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;PERL512_EXPORTS;$(OwnFlags);%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
-      <AdditionalIncludeDirectories>$(Perl512Path)\perl\lib\CORE;..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(Perl512Path)\perl\lib\CORE;$(IntDir);..;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -55,8 +57,11 @@
     </Link>
     <PreBuildEvent>
       <Command>"$(GendefPath)\gendef" "$(Perl512Path)\perl\bin\$(Perl512Lib).dll"
-lib /nologo /machine:x86 "/def:$(Perl512Lib).def" "/out:$(OutputPath)\$(Perl512Lib).lib"
-"$(Perl512Path)\perl\bin\perl.exe" generate_header</Command>
+move $(Perl512Lib).def "$(IntDir)"
+lib /nologo /machine:x86 "/def:$(IntDir)$(Perl512Lib).def" "/out:$(OutDir)\$(Perl512Lib).lib"
+"$(Perl512Path)\perl\bin\perl.exe" generate_header
+move irc.pm.h "$(IntDir)"
+move xchat.pm.h "$(IntDir)"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

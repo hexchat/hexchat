@@ -26,7 +26,10 @@
     <Import Project="..\xchat.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)build\$(PlatformName)\bin</OutDir>
+    <IntDir>$(SolutionDir)build\$(PlatformName)\obj\$(ProjectName)</IntDir>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -45,11 +48,11 @@
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>cd ..\..\po
-rmdir /q /s locale
-mkdir locale
+rmdir /q /s "$(OutDir)\locale"
+mkdir "$(OutDir)\locale"
 for %%A in (*.po) do (
-mkdir locale\%%~nA\LC_MESSAGES
-"$(DepsRoot)\bin\msgfmt" -co locale\%%~nA\LC_MESSAGES\xchat.mo %%A
+mkdir "$(OutDir)\locale\%%~nA\LC_MESSAGES"
+"$(DepsRoot)\bin\msgfmt" -co "$(OutDir)\locale\%%~nA\LC_MESSAGES\xchat.mo" %%A
 )</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>

@@ -29,6 +29,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <OutDir>$(SolutionDir)build\$(PlatformName)\bin</OutDir>
+    <IntDir>$(SolutionDir)build\$(PlatformName)\obj\$(ProjectName)</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -47,7 +49,7 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PostBuildEvent>
-      <Command>"$(DepsRoot)\bin\gdk-pixbuf-csource" --build-list $(Pixmaps) > "$(SolutionDir)\..\src\pixmaps\inline_pngs.h"</Command>
+      <Command>"$(DepsRoot)\bin\gdk-pixbuf-csource" --build-list $(Pixmaps) &gt; "$(SolutionDir)\..\src\pixmaps\inline_pngs.h"</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
