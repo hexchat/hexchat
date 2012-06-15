@@ -1,7 +1,7 @@
 @echo off
 set PATH=%PATH%;%PROGRAMW6432%\7-Zip;c:\mozilla-build\gendef
 
-cd deps-x64
+cd x64
 ::obs 7z x -y *.rpm
 ::obs 7z x *.cpio
 ::obs del *.cpio
