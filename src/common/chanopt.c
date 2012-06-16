@@ -84,9 +84,9 @@ chanopt_command (session *sess, char *tbuf, char *word[], char *word_eol[])
 
 	if (word[offset][0])
 	{
-		if (!strcasecmp (word[offset], "ON"))
+		if (!g_ascii_strcasecmp (word[offset], "ON"))
 			newval = 1;
-		else if (!strcasecmp (word[offset], "OFF"))
+		else if (!g_ascii_strcasecmp (word[offset], "OFF"))
 			newval = 0;
 		else if (word[offset][0] == 'u')
 			newval = SET_DEFAULT;
@@ -186,8 +186,8 @@ chanopt_find (char *network, char *channel, gboolean add_new)
 	for (list = chanopt_list; list; list = list->next)
 	{
 		co = list->data;
-		if (!strcasecmp (co->channel, channel) &&
-			 !strcasecmp (co->network, network))
+		if (!g_ascii_strcasecmp (co->channel, channel) &&
+			 !g_ascii_strcasecmp (co->network, network))
 			return co;
 	}
 

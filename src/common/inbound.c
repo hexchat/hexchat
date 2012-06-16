@@ -886,7 +886,7 @@ inbound_notice (server *serv, char *to, char *nick, char *msg, char *ip, int id)
 			if (msg[0] == '[' && (!serv->have_idmsg || id))
 			{
 				/* guess where chanserv meant to post this -sigh- */
-				if (!strcasecmp (nick, "ChanServ") && !find_dialog (serv, nick))
+				if (!g_ascii_strcasecmp (nick, "ChanServ") && !find_dialog (serv, nick))
 				{
 					char *dest = strdup (msg + 1);
 					char *end = strchr (dest, ']');

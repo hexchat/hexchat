@@ -198,7 +198,7 @@ nocasestrstr (const char *s, const char *tofind)
 
    if (len == 0)
      return (char *)s;
-   while (toupper(*s) != toupper(*tofind) || strncasecmp (s, tofind, len))
+   while (toupper(*s) != toupper(*tofind) || g_ascii_strncasecmp (s, tofind, len))
      if (*s++ == '\0')
        return (char *)NULL;
    return (char *)s;   

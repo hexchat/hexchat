@@ -976,7 +976,7 @@ sexy_spell_entry_activate_default_languages(SexySpellEntry *entry)
 	enchant_langs = sexy_spell_entry_get_languages(entry);
 
 	/*for (i = 0; langs[i]; i++) {
-		if ((g_strncasecmp(langs[i], "C", 1) != 0) &&
+		if ((g_ascii_strncasecmp(langs[i], "C", 1) != 0) &&
 		    (strlen(langs[i]) >= 2) &&
 		    enchant_has_lang(langs[i], enchant_langs)) {
 			if ((lastprefix == NULL) || (g_str_has_prefix(langs[i], lastprefix) == FALSE))
@@ -1013,7 +1013,7 @@ sexy_spell_entry_activate_default_languages(SexySpellEntry *entry)
 	lang = (gchar *) g_getenv("LANG");
 
 	if (lang != NULL) {
-		if (g_strncasecmp(lang, "C", 1) == 0)
+		if (g_ascii_strncasecmp(lang, "C", 1) == 0)
 			lang = NULL;
 		else if (lang[0] == '\0')
 			lang = NULL;

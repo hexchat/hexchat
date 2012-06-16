@@ -238,17 +238,17 @@ tcp_send_len (server *serv, char *buf, int len)
 	dbuf[len + 1] = 0;
 
 	/* privmsg and notice get a lower priority */
-	if (strncasecmp (dbuf + 1, "PRIVMSG", 7) == 0 ||
-		 strncasecmp (dbuf + 1, "NOTICE", 6) == 0)
+	if (g_ascii_strncasecmp (dbuf + 1, "PRIVMSG", 7) == 0 ||
+		 g_ascii_strncasecmp (dbuf + 1, "NOTICE", 6) == 0)
 	{
 		dbuf[0] = 1;
 	}
 	else
 	{
 		/* WHO/MODE get the lowest priority */
-		if (strncasecmp (dbuf + 1, "WHO ", 4) == 0 ||
+		if (g_ascii_strncasecmp (dbuf + 1, "WHO ", 4) == 0 ||
 		/* but only MODE queries, not changes */
-			(strncasecmp (dbuf + 1, "MODE", 4) == 0 &&
+			(g_ascii_strncasecmp (dbuf + 1, "MODE", 4) == 0 &&
 			 strchr (dbuf, '-') == NULL &&
 			 strchr (dbuf, '+') == NULL))
 			dbuf[0] = 0;
@@ -319,8 +319,8 @@ server_inline (server *serv, char *line, int len)
 	if (serv->using_irc ||				/* 1. using CP1252/UTF-8 Hybrid */
 		(serv->encoding == NULL && prefs.utf8_locale) || /* OR 2. using system default->UTF-8 */
 	    (serv->encoding != NULL &&				/* OR 3. explicitly set to UTF-8 */
-		 (strcasecmp (serv->encoding, "UTF8") == 0 ||
-		  strcasecmp (serv->encoding, "UTF-8") == 0)))
+		 (g_ascii_strcasecmp (serv->encoding, "UTF8") == 0 ||
+		  g_ascii_strcasecmp (serv->encoding, "UTF-8") == 0)))
 	{
 		/* The user has the UTF-8 charset set, either via /charset
 		command or from his UTF-8 locale. Thus, we first try the
@@ -1824,10 +1824,10 @@ server_set_encoding (server *serv, char *new_encoding)
 			space[0] = 0;
 
 		/* server_inline() uses these flags */
-		if (!strcasecmp (serv->encoding, "CP1255") ||
-			 !strcasecmp (serv->encoding, "WINDOWS-1255"))
+		if (!g_ascii_strcasecmp (serv->encoding, "CP1255") ||
+			 !g_ascii_strcasecmp (serv->encoding, "WINDOWS-1255"))
 			serv->using_cp1255 = TRUE;
-		else if (!strcasecmp (serv->encoding, "IRC"))
+		else if (!g_ascii_strcasecmp (serv->encoding, "IRC"))
 			serv->using_irc = TRUE;
 	}
 }

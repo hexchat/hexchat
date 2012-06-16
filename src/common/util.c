@@ -283,7 +283,7 @@ nocasestrstr (const char *s, const char *wanted)
 
 	if (len == 0)
 		return (char *)s;
-	while (rfc_tolower(*s) != rfc_tolower(*wanted) || strncasecmp (s, wanted, len))
+	while (rfc_tolower(*s) != rfc_tolower(*wanted) || g_ascii_strncasecmp (s, wanted, len))
 		if (*s++ == '\0')
 			return (char *)NULL;
 	return (char *)s;
@@ -945,7 +945,7 @@ typedef struct
 static int
 country_compare (const void *a, const void *b)
 {
-	return strcasecmp (a, ((domain_t *)b)->code);
+	return g_ascii_strcasecmp (a, ((domain_t *)b)->code);
 }
 
 static const domain_t domain[] =

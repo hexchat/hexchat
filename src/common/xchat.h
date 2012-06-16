@@ -41,8 +41,8 @@ void *xchat_realloc (char *old, int len, char *file, int line);
 
 #ifdef __EMX__						  /* for o/s 2 */
 #define OFLAGS O_BINARY
-#define strcasecmp stricmp
-#define strncasecmp strnicmp
+#define g_ascii_strcasecmp stricmp
+#define g_ascii_strncasecmp strnicmp
 #define PATH_MAX MAXPATHLEN
 #define FILEPATH_LEN_MAX MAXPATHLEN
 #endif

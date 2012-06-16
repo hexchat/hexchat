@@ -84,11 +84,11 @@ list_load_from_data (GSList ** list, char *ibuf, int size)
 	{
 		if (*buf != '#')
 		{
-			if (!strncasecmp (buf, "NAME ", 5))
+			if (!g_ascii_strncasecmp (buf, "NAME ", 5))
 			{
 				safe_strcpy (name, buf + 5, sizeof (name));
 			}
-			else if (!strncasecmp (buf, "CMD ", 4))
+			else if (!g_ascii_strncasecmp (buf, "CMD ", 4))
 			{
 				safe_strcpy (cmd, buf + 4, sizeof (cmd));
 				if (*name)
@@ -154,7 +154,7 @@ list_delentry (GSList ** list, char *name)
 	while (alist)
 	{
 		pop = (struct popup *) alist->data;
-		if (!strcasecmp (name, pop->name))
+		if (!g_ascii_strcasecmp (name, pop->name))
 		{
 			*list = g_slist_remove (*list, pop);
 			free (pop);
@@ -174,7 +174,7 @@ cfg_get_str (char *cfg, char *var, char *dest, int dest_len)
 
 	while (1)
 	{
-		if (!strncasecmp (buffer, cfg, strlen (var) + 1))
+		if (!g_ascii_strncasecmp (buffer, cfg, strlen (var) + 1))
 		{
 			char *value, t;
 			cfg += strlen (var);
@@ -1000,7 +1000,7 @@ cfg_get_bool (char *var)
 
 	do
 	{
-		if (!strcasecmp (var, vars[i].name))
+		if (!g_ascii_strcasecmp (var, vars[i].name))
 		{
 			return *((int *) &prefs + vars[i].offset);
 		}
@@ -1023,27 +1023,27 @@ cmd_set (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	int idx = 2;
 	char *var, *val;
 
-	if (strcasecmp (word[2], "-e") == 0)
+	if (g_ascii_strcasecmp (word[2], "-e") == 0)
 	{
 		idx++;
 		erase = TRUE;
 	}
 
 	/* turn a bit OFF */
-	if (strcasecmp (word[idx], "-off") == 0)
+	if (g_ascii_strcasecmp (word[idx], "-off") == 0)
 	{
 		idx++;
 		off = TRUE;
 	}
 
 	/* turn a bit ON */
-	if (strcasecmp (word[idx], "-or") == 0 || strcasecmp (word[idx], "-on") == 0)
+	if (g_ascii_strcasecmp (word[idx], "-or") == 0 || g_ascii_strcasecmp (word[idx], "-on") == 0)
 	{
 		idx++;
 		or = TRUE;
 	}
 
-	if (strcasecmp (word[idx], "-quiet") == 0)
+	if (g_ascii_strcasecmp (word[idx], "-quiet") == 0)
 	{
 		idx++;
 		quiet = TRUE;
@@ -1069,7 +1069,7 @@ cmd_set (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		if (wild)
 			found = !match (var, vars[i].name);
 		else
-			found = strcasecmp (var, vars[i].name);
+			found = g_ascii_strcasecmp (var, vars[i].name);
 
 		if (found == 0)
 		{
@@ -1098,9 +1098,9 @@ cmd_set (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 							*((int *) &prefs + vars[i].offset) = 1;
 						else
 							*((int *) &prefs + vars[i].offset) = 0;
-						if (!strcasecmp (val, "YES") || !strcasecmp (val, "ON"))
+						if (!g_ascii_strcasecmp (val, "YES") || !g_ascii_strcasecmp (val, "ON"))
 							*((int *) &prefs + vars[i].offset) = 1;
-						if (!strcasecmp (val, "NO") || !strcasecmp (val, "OFF"))
+						if (!g_ascii_strcasecmp (val, "NO") || !g_ascii_strcasecmp (val, "OFF"))
 							*((int *) &prefs + vars[i].offset) = 0;
 					} else
 					{

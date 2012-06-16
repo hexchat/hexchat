@@ -176,12 +176,12 @@ plugingui_unload (GtkWidget * wid, gpointer unused)
 
 	len = strlen (file);
 #ifdef WIN32
-	if (len > 4 && strcasecmp (file + len - 4, ".dll") == 0)
+	if (len > 4 && g_ascii_strcasecmp (file + len - 4, ".dll") == 0)
 #else
 #if defined(__hpux)
-	if (len > 3 && strcasecmp (file + len - 3, ".sl") == 0)
+	if (len > 3 && g_ascii_strcasecmp (file + len - 3, ".sl") == 0)
 #else
-	if (len > 3 && strcasecmp (file + len - 3, ".so") == 0)
+	if (len > 3 && g_ascii_strcasecmp (file + len - 3, ".so") == 0)
 #endif
 #endif
 	{

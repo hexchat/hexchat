@@ -309,9 +309,9 @@ plugin_kill (char *name, int by_filename)
 	{
 		pl = list->data;
 		/* static-plugins (plugin-timer.c) have a NULL filename */
-		if ((by_filename && pl->filename && strcasecmp (name, pl->filename) == 0) ||
-			 (by_filename && pl->filename && strcasecmp (name, file_part (pl->filename)) == 0) ||
-			(!by_filename && strcasecmp (name, pl->name) == 0))
+		if ((by_filename && pl->filename && g_ascii_strcasecmp (name, pl->filename) == 0) ||
+			 (by_filename && pl->filename && g_ascii_strcasecmp (name, file_part (pl->filename)) == 0) ||
+			(!by_filename && g_ascii_strcasecmp (name, pl->name) == 0))
 		{
 			/* statically linked plugins have a NULL filename */
 			if (pl->filename != NULL && !pl->fake)
@@ -472,12 +472,12 @@ plugin_hook_find (GSList *list, int type, char *name)
 		hook = list->data;
 		if (hook->type == type)
 		{
-			if (strcasecmp (hook->name, name) == 0)
+			if (g_ascii_strcasecmp (hook->name, name) == 0)
 				return list;
 
 			if (type == HOOK_SERVER)
 			{
-				if (strcasecmp (hook->name, "RAW LINE") == 0)
+				if (g_ascii_strcasecmp (hook->name, "RAW LINE") == 0)
 					return list;
 			}
 		}
@@ -947,8 +947,8 @@ xchat_find_context (xchat_plugin *ph, const char *servname, const char *channel)
 
 		if (servname == NULL ||
 			 rfc_casecmp (servname, serv->servername) == 0 ||
-			 strcasecmp (servname, serv->hostname) == 0 ||
-			 strcasecmp (servname, netname) == 0)
+			 g_ascii_strcasecmp (servname, serv->hostname) == 0 ||
+			 g_ascii_strcasecmp (servname, netname) == 0)
 		{
 			if (channel == NULL)
 				return serv->front_session;
@@ -1121,7 +1121,7 @@ xchat_get_prefs (xchat_plugin *ph, const char *name, const char **string, int *i
 	
 	do
 	{
-		if (!strcasecmp (name, vars[i].name))
+		if (!g_ascii_strcasecmp (name, vars[i].name))
 		{
 			switch (vars[i].type)
 			{

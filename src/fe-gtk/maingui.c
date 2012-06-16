@@ -1688,7 +1688,7 @@ mg_dnd_drop_file (session *sess, char *target, char *uri)
 	while (*p)
 	{
 		next = strchr (p, '\r');
-		if (strncasecmp ("file:", p, 5) == 0)
+		if (g_ascii_strncasecmp ("file:", p, 5) == 0)
 		{
 			if (next)
 				*next = 0;
@@ -2911,7 +2911,7 @@ mg_tabs_compare (session *a, session *b)
 	if (a->type != SESS_CHANNEL && b->type == SESS_CHANNEL)
 		return 1;
 
-	return strcasecmp (a->channel, b->channel);
+	return g_ascii_strcasecmp (a->channel, b->channel);
 }
 
 static void

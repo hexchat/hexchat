@@ -1260,11 +1260,11 @@ key_action_scroll_page (GtkWidget * wid, GdkEventKey * evt, char *d1,
 
 	if (d1)
 	{
-		if (!strcasecmp (d1, "up"))
+		if (!g_ascii_strcasecmp (d1, "up"))
 			type = PAGE_UP;
-		else if (!strcasecmp (d1, "+1"))
+		else if (!g_ascii_strcasecmp (d1, "+1"))
 			type = LINE_DOWN;
-		else if (!strcasecmp (d1, "-1"))
+		else if (!g_ascii_strcasecmp (d1, "-1"))
 			type = LINE_UP;
 	}
 
