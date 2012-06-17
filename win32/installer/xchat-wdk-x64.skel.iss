@@ -30,6 +30,7 @@ Name: "custom"; Description: "Custom Installation"; Flags: iscustom
 [Components]
 Name: "libs"; Description: "XChat-WDK"; Types: normal full minimal custom; Flags: fixed
 Name: "xctext"; Description: "XChat-Text"; Types: full custom; Flags: disablenouninstallwarning
+Name: "xtm"; Description: "XChat Theme Manager (Requires .NET 4.0)"; Types: full custom; Flags: disablenouninstallwarning
 Name: "translations"; Description: "Translations"; Types: normal full custom; Flags: disablenouninstallwarning
 ;obs Name: "gtkengines"; Description: "GTK+ Engines"; Types: full custom; Flags: disablenouninstallwarning
 ;Name: "spelling"; Description: "Spelling Dictionaries"; Types: full custom; Flags: disablenouninstallwarning
@@ -176,10 +177,12 @@ Source: "plugins\xcperl-514.dll"; DestDir: "{app}\plugins"; DestName: "xcperl.dl
 
 Source: "xchat.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "xchat-text.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: xctext
+Source: "thememan.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: xtm
 
 [Icons]
 Name: "{group}\XChat-WDK (x64)"; Filename: "{app}\xchat.exe"; Tasks: not portable
 Name: "{group}\XChat-Text (x64)"; Filename: "{app}\xchat-text.exe"; Components: xctext; Tasks: not portable
+Name: "{group}\XChat Theme Manager (x64)"; Filename: "{app}\thememan.exe"; Components: xtm; Tasks: not portable
 Name: "{group}\Uninstall XChat-WDK (x64)"; Filename: "{uninstallexe}"; Tasks: not portable
 
 [Messages]
