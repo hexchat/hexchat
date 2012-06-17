@@ -58,6 +58,13 @@ namespace thememan
 				Console.WriteLine("Install not found");
 
             ListThemes();
+
+            String[] arguments = Environment.GetCommandLineArgs();
+            if (arguments.Length > 1)
+            {
+                FileInfo fi = new FileInfo(arguments[1]);
+                attemptImport(fi);
+            }
         }
 
         private void ListThemes()
@@ -79,6 +86,7 @@ namespace thememan
             if (themelist.Items.Count == 0)
             {
                 applybutton.Enabled = false;
+                deleteButton.Enabled = false;
             }
             else
             {
@@ -155,6 +163,7 @@ namespace thememan
             {
                 ShowColors(ReadTheme(themelist.SelectedItem.ToString()));
                 applybutton.Enabled = true;
+                deleteButton.Enabled = true;
             }
         }
 
@@ -170,6 +179,11 @@ namespace thememan
         private void importdialog_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
         {
             FileInfo fi = new FileInfo(importDialog.FileName);
+            attemptImport(fi);
+        }
+
+        private void attemptImport(FileInfo fi)
+        {
             string themeName = fi.Name.Remove(fi.Name.Length - fi.Extension.Length);
             int result = extractTheme(fi);
             ListThemes();
@@ -178,16 +192,20 @@ namespace thememan
             {
                 case 0:
                     themelist.SetSelected(themelist.FindStringExact(themeName), true);
+                    /* required for command line invoking */
+                    ShowColors(ReadTheme(themeName));
                     break;
                 case 1:
-                    MessageBox.Show("This theme is already installed!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("This theme is already installed!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    themelist.SetSelected(themelist.FindStringExact(themeName), true);
+                    /* required for command line invoking */
+                    ShowColors(ReadTheme(themeName));
                     break;
                 case 2:
                     MessageBox.Show("Invalid theme file!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     break;
             }
         }
-
         /* gzip solution, not good enough coz we need multiple files
          * 
         public string extractTheme(FileInfo fi)
@@ -226,42 +244,51 @@ namespace thememan
             string themeName = zipFile.Name.Remove(zipFile.Name.Length - zipFile.Extension.Length);
             string destFolder = xchatdir + themedir + themeName;
 
-            using (Package zip = Package.Open(zipFile.FullName, FileMode.Open))
+            try
             {
-                PackagePartCollection parts = zip.GetParts();
-
-                if (Directory.Exists(destFolder))
+                using (Package zip = Package.Open(zipFile.FullName, FileMode.Open))
                 {
-                    return 1;
-                }
-                else
-                {
-                    Directory.CreateDirectory(destFolder);
-                }
+                    PackagePartCollection parts = zip.GetParts();
 
-                foreach (PackagePart part in parts)
-                {
-                    /* not sure what's this good for */
-                    /* String archive = part.Uri.ToString().Replace(@"/", @"\"); */
-                    String destFile = destFolder + part.Uri.ToString();
-
-                    using (FileStream outFileStream = new FileStream(destFile, FileMode.CreateNew, FileAccess.ReadWrite))
+                    if (Directory.Exists(destFolder))
                     {
-                        using (Stream inStream = part.GetStream())
-                        {
-                            long bufferSize = inStream.Length < BUFFER_SIZE ? inStream.Length : BUFFER_SIZE;
-                            byte[] buffer = new byte[bufferSize];
-                            int bytesRead = 0;
-                            long bytesWritten = 0;
+                        return 1;
+                    }
+                    else
+                    {
+                        Directory.CreateDirectory(destFolder);
+                    }
 
-                            while ((bytesRead = inStream.Read(buffer, 0, buffer.Length)) != 0)
+                    foreach (PackagePart part in parts)
+                    {
+                        /* not sure what's this good for */
+                        /* String archive = part.Uri.ToString().Replace(@"/", @"\"); */
+                        String destFile = destFolder + part.Uri.ToString();
+
+                            using (FileStream outFileStream = new FileStream(destFile, FileMode.CreateNew, FileAccess.ReadWrite))
                             {
-                                outFileStream.Write(buffer, 0, bytesRead);
-                                bytesWritten += bufferSize;
+                                using (Stream inStream = part.GetStream())
+                                {
+                                    long bufferSize = inStream.Length < BUFFER_SIZE ? inStream.Length : BUFFER_SIZE;
+                                    byte[] buffer = new byte[bufferSize];
+                                    int bytesRead = 0;
+                                    long bytesWritten = 0;
+
+                                    while ((bytesRead = inStream.Read(buffer, 0, buffer.Length)) != 0)
+                                    {
+                                        outFileStream.Write(buffer, 0, bytesRead);
+                                        bytesWritten += bufferSize;
+                                    }
+                                }
                             }
-                        }
+
+
                     }
                 }
+            }
+            catch (System.IO.FileFormatException)
+            {
+                return 2;
             }
 
             if (IsDirectoryEmpty(destFolder))
@@ -278,6 +305,20 @@ namespace thememan
         public bool IsDirectoryEmpty(string path)
         {
             return !Directory.EnumerateFileSystemEntries(path).Any();
+        }
+
+        private void deleteButton_Click(object sender, EventArgs e)
+        {
+            DialogResult result = MessageBox.Show("Are you sure you want to delete this theme from the theme repo?\n\nYour currently applied theme won't be affected.", "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+            if (result == DialogResult.OK)
+            {
+                Directory.Delete(xchatdir + themedir + themelist.SelectedItem.ToString(), true);
+                ListThemes();
+                if (themelist.Items.Count == 0)
+                {
+                    deleteButton.Enabled = false;
+                }
+            }
         }
 
 

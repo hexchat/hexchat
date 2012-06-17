@@ -69,6 +69,13 @@ Root: HKCR; Subkey: "irc\DefaultIcon"; ValueType: string; ValueName: ""; ValueDa
 Root: HKCR; Subkey: "irc\shell"; ValueType: string; ValueName: ""; ValueData: "open"; Flags: uninsdeletevalue; Tasks: not portable
 Root: HKCR; Subkey: "irc\shell\open\command"; ValueType: string; ValueName: ""; ValueData: "{app}\xchat.exe --url=""%1"""; Flags: uninsdeletevalue; Tasks: not portable
 
+Root: HKCR; Subkey: ".xct"; ValueType: none; ValueName: ""; ValueData: ""; Flags: deletekey uninsdeletekey; Components:xtm; Tasks: not portable
+Root: HKCR; Subkey: ".xct"; ValueType: string; ValueName: ""; ValueData: "XChat Theme File"; Flags: uninsdeletevalue; Components:xtm; Tasks: not portable
+Root: HKCR; Subkey: ".xct"; ValueType: string; ValueName: "XChat Theme File"; ValueData: ""; Flags: uninsdeletevalue; Components:xtm; Tasks: not portable
+Root: HKCR; Subkey: ".xct\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\thememan.exe,0"; Flags: uninsdeletevalue; Components:xtm; Tasks: not portable
+Root: HKCR; Subkey: ".xct\shell"; ValueType: string; ValueName: ""; ValueData: "open"; Flags: uninsdeletevalue; Components:xtm; Tasks: not portable
+Root: HKCR; Subkey: ".xct\shell\open\command"; ValueType: string; ValueName: ""; ValueData: "{app}\thememan.exe ""%1"""; Flags: uninsdeletevalue; Components:xtm; Tasks: not portable
+
 [Run]
 Filename: "{app}\xchat.exe"; Description: "Run XChat-WDK after closing the Wizard"; Flags: nowait postinstall skipifsilent
 

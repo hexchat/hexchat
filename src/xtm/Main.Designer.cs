@@ -51,6 +51,7 @@
             this.importbutton = new System.Windows.Forms.Button();
             this.applybutton = new System.Windows.Forms.Button();
             this.themecolorfgmarked = new System.Windows.Forms.Label();
+            this.deleteButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // themelist
@@ -58,7 +59,7 @@
             this.themelist.FormattingEnabled = true;
             this.themelist.Location = new System.Drawing.Point(12, 12);
             this.themelist.Name = "themelist";
-            this.themelist.Size = new System.Drawing.Size(154, 199);
+            this.themelist.Size = new System.Drawing.Size(160, 199);
             this.themelist.TabIndex = 0;
             this.themelist.SelectedIndexChanged += new System.EventHandler(this.theme_selected);
             // 
@@ -209,20 +210,20 @@
             // 
             // importbutton
             // 
-            this.importbutton.Location = new System.Drawing.Point(90, 220);
+            this.importbutton.Location = new System.Drawing.Point(12, 217);
             this.importbutton.Name = "importbutton";
-            this.importbutton.Size = new System.Drawing.Size(60, 23);
-            this.importbutton.TabIndex = 2;
-            this.importbutton.Text = "Import...";
+            this.importbutton.Size = new System.Drawing.Size(52, 23);
+            this.importbutton.TabIndex = 1;
+            this.importbutton.Text = "Add...";
             this.importbutton.UseVisualStyleBackColor = true;
             this.importbutton.Click += new System.EventHandler(this.importbutton_Click_1);
             // 
             // applybutton
             // 
-            this.applybutton.Location = new System.Drawing.Point(23, 220);
+            this.applybutton.Location = new System.Drawing.Point(120, 217);
             this.applybutton.Name = "applybutton";
-            this.applybutton.Size = new System.Drawing.Size(60, 23);
-            this.applybutton.TabIndex = 1;
+            this.applybutton.Size = new System.Drawing.Size(52, 23);
+            this.applybutton.TabIndex = 3;
             this.applybutton.Text = "Apply";
             this.applybutton.UseVisualStyleBackColor = true;
             this.applybutton.Click += new System.EventHandler(this.applybutton_Click_1);
@@ -236,11 +237,22 @@
             this.themecolorfgmarked.TabIndex = 22;
             this.themecolorfgmarked.Text = "Marked Text";
             // 
+            // deleteButton
+            // 
+            this.deleteButton.Location = new System.Drawing.Point(66, 217);
+            this.deleteButton.Name = "deleteButton";
+            this.deleteButton.Size = new System.Drawing.Size(52, 23);
+            this.deleteButton.TabIndex = 2;
+            this.deleteButton.Text = "Delete";
+            this.deleteButton.UseVisualStyleBackColor = true;
+            this.deleteButton.Click += new System.EventHandler(this.deleteButton_Click);
+            // 
             // XTM
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(397, 248);
+            this.Controls.Add(this.deleteButton);
             this.Controls.Add(this.themecolorfgmarked);
             this.Controls.Add(this.themecolorfg);
             this.Controls.Add(this.themecolorf);
@@ -298,6 +310,7 @@
         private System.Windows.Forms.Button importbutton;
         private System.Windows.Forms.Button applybutton;
         private System.Windows.Forms.Label themecolorfgmarked;
+        private System.Windows.Forms.Button deleteButton;
     }
 }
 
