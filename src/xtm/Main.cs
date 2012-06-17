@@ -170,9 +170,22 @@ namespace thememan
         private void importdialog_FileOk(object sender, System.ComponentModel.CancelEventArgs e)
         {
             FileInfo fi = new FileInfo(importDialog.FileName);
-            string newTheme = extractTheme(fi);
+            string themeName = fi.Name.Remove(fi.Name.Length - fi.Extension.Length);
+            int result = extractTheme(fi);
             ListThemes();
-            themelist.SetSelected(themelist.FindStringExact(newTheme), true);
+            /* although a check is added to ListThemes(), this would still fail if the theme file was invalid or the theme is already installed */
+            switch (result)
+            {
+                case 0:
+                    themelist.SetSelected(themelist.FindStringExact(themeName), true);
+                    break;
+                case 1:
+                    MessageBox.Show("This theme is already installed!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+                case 2:
+                    MessageBox.Show("Invalid theme file!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+            }
         }
 
         /* gzip solution, not good enough coz we need multiple files
@@ -208,7 +221,7 @@ namespace thememan
 
         private const long BUFFER_SIZE = 4096;
 
-        private string extractTheme(FileInfo zipFile)
+        private int extractTheme(FileInfo zipFile)
         {
             string themeName = zipFile.Name.Remove(zipFile.Name.Length - zipFile.Extension.Length);
             string destFolder = xchatdir + themedir + themeName;
@@ -217,7 +230,11 @@ namespace thememan
             {
                 PackagePartCollection parts = zip.GetParts();
 
-                if (!Directory.Exists(destFolder))
+                if (Directory.Exists(destFolder))
+                {
+                    return 1;
+                }
+                else
                 {
                     Directory.CreateDirectory(destFolder);
                 }
@@ -250,11 +267,11 @@ namespace thememan
             if (IsDirectoryEmpty(destFolder))
             {
                 Directory.Delete(destFolder);
-                return null;
+                return 2;
             }
             else
             {
-                return themeName;
+                return 0;
             }
         }
 

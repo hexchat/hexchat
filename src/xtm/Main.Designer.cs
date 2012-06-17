@@ -213,7 +213,7 @@
             this.importbutton.Name = "importbutton";
             this.importbutton.Size = new System.Drawing.Size(60, 23);
             this.importbutton.TabIndex = 2;
-            this.importbutton.Text = "Import";
+            this.importbutton.Text = "Import...";
             this.importbutton.UseVisualStyleBackColor = true;
             this.importbutton.Click += new System.EventHandler(this.importbutton_Click_1);
             // 
@@ -265,6 +265,7 @@
             this.Controls.Add(this.themecolortextbg);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.MaximizeBox = false;
             this.Name = "XTM";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "XChat Theme Manager";
