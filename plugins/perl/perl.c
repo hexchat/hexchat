@@ -69,6 +69,43 @@ thread_mbox (char *str)
 
 /* leave this before XSUB.h, to avoid readdir() being redefined */
 
+#ifdef WIN32
+static void
+perl_auto_load_from_path (const char *path)
+{
+	WIN32_FIND_DATA find_data;
+	HANDLE find_handle;
+	char *search_path;
+	int path_len = strlen (path);
+
+	/* +6 for \*.pl and \0 */
+	search_path = malloc(path_len + 6);
+	sprintf (search_path, "%s\\*.pl", path);
+
+	find_handle = FindFirstFile (search_path, &find_data);
+
+	if (find_handle != INVALID_HANDLE_VALUE)
+	{
+		do
+		{
+			if (!(find_data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY
+				||find_data.dwFileAttributes & FILE_ATTRIBUTE_HIDDEN))
+			{
+				char *full_path =
+					malloc (path_len + strlen (find_data.cFileName) + 2);
+				sprintf (full_path, "%s\\%s", path, find_data.cFileName);
+
+				perl_load_file (full_path);
+				free (full_path);
+			}
+		}
+		while (FindNextFile (find_handle, &find_data) != 0);
+		FindClose (find_handle);
+	}
+
+	free (search_path);
+}
+#else
 static void
 perl_auto_load_from_path (const char *path)
 {
@@ -89,6 +126,7 @@ perl_auto_load_from_path (const char *path)
 		closedir (dir);
 	}
 }
+#endif
 
 static int
 perl_auto_load (void *unused)
