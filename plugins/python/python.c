@@ -379,10 +379,20 @@ Util_Autoload_from (const char *dir_name)
 static void
 Util_Autoload()
 {
+	const char *xdir;
+	char *sub_dir;
 	/* we need local filesystem encoding for chdir, opendir etc */
 
 	/* auto-load from ~/.xchat2/ or %APPDATA%\X-Chat 2\ */
+	xdir = xchat_get_info(ph, "xchatdirfs");
 	Util_Autoload_from(xchat_get_info(ph, "xchatdirfs"));
+
+	/* auto-load from subdirectory plugins */
+	sub_dir = malloc (strlen (xdir) + 9);
+	strcpy (sub_dir, xdir);
+	strcat (sub_dir, "/plugins");
+	Util_Autoload_from(sub_dir);
+	free (sub_dir);
 
 #ifdef WIN32	/* also auto-load C:\Program Files\XChat\Plugins\*.py */
 	Util_Autoload_from(XCHATLIBDIR"/plugins");
