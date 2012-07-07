@@ -2227,8 +2227,7 @@ cmd_ignore (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 
 			mask = word[2];
 			if (strchr (mask, '?') == NULL &&
-			    strchr (mask, '*') == NULL &&
-			    userlist_find (sess, mask))
+			    strchr (mask, '*') == NULL)
 			{
 				mask = tbuf;
 				snprintf (tbuf, TBUFSIZE, "%s!*@*", word[2]);
