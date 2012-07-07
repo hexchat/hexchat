@@ -26,6 +26,9 @@ use warnings;
 #     script is unloaded.
 our %scripts;
 
+# This is a mapping of "inner package" => "containing script package"
+our %owner_package;
+
 # used to keep track of which package a hook belongs to, if the normal way of
 # checking which script is calling a hook function fails this will be used
 # instead. When a hook is created this will be copied to the HookData structure
@@ -61,6 +64,40 @@ sub load {
 		$scripts{$package}{filename} = $file;
 		$scripts{$package}{loaded_at} = Time::HiRes::time();
 
+		# this must be done before the error check so the unload will remove
+		# any inner packages defined by the script. if a script fails to load
+		# then any inner packages need to be removed as well.
+		my @inner_packages = $source =~
+			m/^\s*package \s+
+				((?:[^\W:]+(?:::)?)+)\s*? # package name
+				# strict version number
+				(?:\d+(?:[.]\d+) # positive integer or decimal-fraction
+					|v\d+(?:[.]\d+){2,})? # dotted-decimal v-string
+				[{;]
+			/mgx;
+
+		# check if any inner package defined in the to be loaded script has
+		# already been defined by another script
+		my @conflicts;
+		for my $inner ( @inner_packages ) {
+			if( exists $owner_package{ $inner } ) {
+				push @conflicts, $inner;
+			}
+		}
+
+		# report conflicts and bail out
+		if( @conflicts ) {
+			my $error_message =
+				"'$file' won't be loaded due to conflicting inner packages:\n";
+			for my $conflict_package ( @conflicts ) {
+				$error_message .= "   $conflict_package already defined in " .
+					pkg_info($owner_package{ $conflict_package })->{filename}."\n";
+			}
+			Xchat::print( $error_message );
+
+			return 2;
+		}
+
 		my $full_path = File::Spec->rel2abs( $file );
 		$source =~ s/^/#line 1 "$full_path"\n\x7Bpackage $package;/;
 
@@ -71,6 +108,8 @@ sub load {
 			$source =~ s/\Z/\x7D/;
 		}
 
+		$scripts{$package}{inner_packages} = [ @inner_packages ];
+		@owner_package{ @inner_packages } = ($package) x @inner_packages;
 		_do_eval( $source );
 
 		unless( exists $scripts{$package}{gui_entry} ) {
@@ -80,13 +119,6 @@ sub load {
 				);
 		}
 
-		# this must be done before the error check so the unload will remove
-		# any inner packages defined by the script. if a script fails to load
-		# then any inner packages need to be removed as well.
-		my @inner_packages = $source =~
-			m/^\s*package ((?:[^\W:]+(?:::)?)+)\s*?;/mg;
-		$scripts{$package}{inner_packages} = [ @inner_packages ];
-		
 		if( $@ ) {
 			# something went wrong
 			$@ =~ s/\(eval \d+\)/$file/g;
@@ -134,11 +166,11 @@ sub unload {
 			}
 		}
 
-
 		if( exists $pkg_info->{gui_entry} ) {
 			plugingui_remove( $pkg_info->{gui_entry} );
 		}
 		
+		delete @owner_package{ @{$pkg_info->{inner_packages}} };
 		for my $inner_package ( @{$pkg_info->{inner_packages}} ) {
 			Symbol::delete_package( $inner_package );
 		}
@@ -220,6 +252,16 @@ sub pkg_info {
 	return $scripts{$package};
 }
 
+sub find_external_pkg {
+	my $level = 1;
+
+	while( my @frame = caller( $level ) ) {
+		return @frame if $frame[0] !~ /(?:^IRC$|^Xchat)/;
+		$level++;
+	}
+
+}
+
 sub find_pkg {
 	my $level = 1;
 
@@ -228,17 +270,34 @@ sub find_pkg {
 		$level++;
 	}
 
-	return get_current_package();
+	my $current_package = get_current_package();
+	if( defined $current_package ) {
+		return $current_package;
+	}
+
+	my @frame = find_external_pkg();
+	my $location;
+
+	if( $frame[0] or $frame[1] ) {
+		my $calling_package = $frame[0];
+		if( defined( my $owner = $owner_package{ $calling_package } ) ) {
+			return $owner;
+		}
+
+		$location = $frame[1] ? $frame[1] : "package $frame[0]";
+		$location .= " line $frame[2]";
+	} else {
+		$location = "unknown location";
+	}
+
+	die "Unable to determine which script this hook belongs to. at $location\n";
+
 }
 
 sub fix_callback {
 	my ($package, $callback) = @_;
 	
 	unless( ref $callback ) {
-		# change the package to the correct one in case it was hardcoded
-		$callback =~ s/^.*:://;
-		$callback = qq[${package}::$callback];
-
 		no strict 'subs';
 		$callback = \&{$callback};
 	}

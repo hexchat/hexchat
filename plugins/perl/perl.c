@@ -319,7 +319,7 @@ static void
 set_current_package (SV *package)
 {
 	SV *current_package = get_sv ("Xchat::Embed::current_package", 1);
-	SvSetSV (current_package, package);
+	SvSetSV_nosteal (current_package, package);
 }
 
 static int
@@ -339,6 +339,7 @@ fd_cb (int fd, int flags, void *userdata)
 
 	set_current_package (data->package);
 	count = call_sv (data->callback, G_EVAL);
+	set_current_package (&PL_sv_undef);
 	SPAGAIN;
 
 	if (SvTRUE (ERRSV)) {
@@ -399,6 +400,7 @@ timer_cb (void *userdata)
 
 	set_current_package (data->package);
 	count = call_sv (data->callback, G_EVAL);
+	set_current_package (&PL_sv_undef);
 	SPAGAIN;
 
 	if (SvTRUE (ERRSV)) {
@@ -457,6 +459,7 @@ server_cb (char *word[], char *word_eol[], void *userdata)
 	data->depth++;
 	set_current_package (data->package);
 	count = call_sv (data->callback, G_EVAL);
+	set_current_package (&PL_sv_undef);
 	data->depth--;
 	SPAGAIN;
 	if (SvTRUE (ERRSV)) {
@@ -505,6 +508,7 @@ command_cb (char *word[], char *word_eol[], void *userdata)
 	data->depth++;
 	set_current_package (data->package);
 	count = call_sv (data->callback, G_EVAL);
+	set_current_package (&PL_sv_undef);
 	data->depth--;
 	SPAGAIN;
 	if (SvTRUE (ERRSV)) {
@@ -580,6 +584,7 @@ print_cb (char *word[], void *userdata)
 	data->depth++;
 	set_current_package (data->package);
 	count = call_sv (data->callback, G_EVAL);
+	set_current_package (&PL_sv_undef);
 	data->depth--;
 	SPAGAIN;
 	if (SvTRUE (ERRSV)) {

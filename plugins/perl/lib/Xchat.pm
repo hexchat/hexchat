@@ -272,7 +272,7 @@ sub hook_fd {
 	my $fileno = fileno $fd;
 	return undef unless defined $fileno; # no underlying fd for this handle
 	
-	my ($package) = Xchat::Embed::find_pkg();
+	my $package = Xchat::Embed::find_pkg();
 	$callback = Xchat::Embed::fix_callback( $package, $callback );
 	
 	my ($flags, $data) = (Xchat::FD_READ, undef);
