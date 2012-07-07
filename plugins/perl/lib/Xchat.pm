@@ -1,7 +1,3 @@
-BEGIN {
-	$INC{'Xchat.pm'} = 'DUMMY';
-}
-
 $SIG{__WARN__} = sub {
 	my $message = shift @_;
 	my ($package) = caller;
@@ -141,7 +137,7 @@ sub hook_server {
 	
 	my $pkg_info = Xchat::Embed::pkg_info( $package );
 	my $hook = Xchat::Internal::hook_server(
-		$message, $priority, $callback, $data
+		$message, $priority, $callback, $data, $package
 	);
 	push @{$pkg_info->{hooks}}, $hook if defined $hook;
 	return $hook;
@@ -165,7 +161,7 @@ sub hook_command {
 	
 	my $pkg_info = Xchat::Embed::pkg_info( $package );
 	my $hook = Xchat::Internal::hook_command(
-		$command, $priority, $callback, $help_text, $data
+		$command, $priority, $callback, $help_text, $data, $package
 	);
 	push @{$pkg_info->{hooks}}, $hook if defined $hook;
 	return $hook;
@@ -242,7 +238,7 @@ sub hook_print {
 
 	my $pkg_info = Xchat::Embed::pkg_info( $package );
 	my $hook = Xchat::Internal::hook_print(
-		$event, $priority, $callback, $data
+		$event, $priority, $callback, $data, $package
 	);
 	push @{$pkg_info->{hooks}}, $hook if defined $hook;
 	return $hook;
@@ -297,7 +293,8 @@ sub hook_fd {
 	my $hook = Xchat::Internal::hook_fd(
 		$fileno, $cb, $flags, {
 			DATA => $data, FD => $fd, CB => $callback, FLAGS => $flags,
-		}
+		},
+		$package
 	);
 	push @{$pkg_info->{hooks}}, $hook if defined $hook;
 	return $hook;

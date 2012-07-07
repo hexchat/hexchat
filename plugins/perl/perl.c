@@ -314,6 +314,14 @@ array2av (char *array[])
 	return av;
 }
 
+/* sets $Xchat::Embed::current_package */
+static void
+set_current_package (SV *package)
+{
+	SV *current_package = get_sv ("Xchat::Embed::current_package", 1);
+	SvSetSV (current_package, package);
+}
+
 static int
 fd_cb (int fd, int flags, void *userdata)
 {
@@ -329,6 +337,7 @@ fd_cb (int fd, int flags, void *userdata)
 	XPUSHs (data->userdata);
 	PUTBACK;
 
+	set_current_package (data->package);
 	count = call_sv (data->callback, G_EVAL);
 	SPAGAIN;
 
@@ -387,6 +396,8 @@ timer_cb (void *userdata)
 	if (data->ctx) {
 		xchat_set_context (ph, data->ctx);
 	}
+
+	set_current_package (data->package);
 	count = call_sv (data->callback, G_EVAL);
 	SPAGAIN;
 
@@ -444,6 +455,7 @@ server_cb (char *word[], char *word_eol[], void *userdata)
 	PUTBACK;
 
 	data->depth++;
+	set_current_package (data->package);
 	count = call_sv (data->callback, G_EVAL);
 	data->depth--;
 	SPAGAIN;
@@ -491,6 +503,7 @@ command_cb (char *word[], char *word_eol[], void *userdata)
 	PUTBACK;
 
 	data->depth++;
+	set_current_package (data->package);
 	count = call_sv (data->callback, G_EVAL);
 	data->depth--;
 	SPAGAIN;
@@ -565,6 +578,7 @@ print_cb (char *word[], void *userdata)
 	PUTBACK;
 
 	data->depth++;
+	set_current_package (data->package);
 	count = call_sv (data->callback, G_EVAL);
 	data->depth--;
 	SPAGAIN;
@@ -840,31 +854,32 @@ XS (XS_Xchat_hook_server)
 	int pri;
 	SV *callback;
 	SV *userdata;
+	SV *package;
 	xchat_hook *hook;
 	HookData *data;
 
 	dXSARGS;
 
-	if (items != 4) {
+	if (items != 5) {
 		xchat_print (ph,
-						 "Usage: Xchat::Internal::hook_server(name, priority, callback, userdata)");
+						 "Usage: Xchat::Internal::hook_server(name, priority, callback, userdata, package)");
 	} else {
 		name = SvPV_nolen (ST (0));
 		pri = (int) SvIV (ST (1));
 		callback = ST (2);
 		userdata = ST (3);
+		package = ST (4);
 		data = NULL;
 		data = malloc (sizeof (HookData));
 		if (data == NULL) {
 			XSRETURN_UNDEF;
 		}
 
-		data->callback = sv_mortalcopy (callback);
-		SvREFCNT_inc (data->callback);
-		data->userdata = sv_mortalcopy (userdata);
-		SvREFCNT_inc (data->userdata);
+		data->callback = newSVsv (callback);
+		data->userdata = newSVsv (userdata);
 		data->depth = 0;
-		data->package = NULL;
+		data->package = newSVsv (package);
+
 		hook = xchat_hook_server (ph, name, pri, server_cb, data);
 
 		XSRETURN_IV (PTR2IV (hook));
@@ -880,26 +895,28 @@ XS (XS_Xchat_hook_command)
 	SV *callback;
 	char *help_text = NULL;
 	SV *userdata;
+	SV *package;
 	xchat_hook *hook;
 	HookData *data;
 
 	dXSARGS;
 
-	if (items != 5) {
+	if (items != 6) {
 		xchat_print (ph,
-						 "Usage: Xchat::Internal::hook_command(name, priority, callback, help_text, userdata)");
+						 "Usage: Xchat::Internal::hook_command(name, priority, callback, help_text, userdata, package)");
 	} else {
 		name = SvPV_nolen (ST (0));
 		pri = (int) SvIV (ST (1));
 		callback = ST (2);
 
-		/* leave the help text has NULL if the help text is undefined to avoid
+		/* leave the help text as NULL if the help text is undefined to avoid
 		 * overriding the default help message for builtin commands */
 		if (SvOK(ST (3))) {
 			help_text = SvPV_nolen (ST (3));
 		}
 
 		userdata = ST (4);
+		package = ST (5);
 		data = NULL;
 
 		data = malloc (sizeof (HookData));
@@ -907,12 +924,10 @@ XS (XS_Xchat_hook_command)
 			XSRETURN_UNDEF;
 		}
 
-		data->callback = sv_mortalcopy (callback);
-		SvREFCNT_inc (data->callback);
-		data->userdata = sv_mortalcopy (userdata);
-		SvREFCNT_inc (data->userdata);
+		data->callback = newSVsv (callback);
+		data->userdata = newSVsv (userdata);
 		data->depth = 0;
-		data->package = NULL;
+		data->package = newSVsv (package);
 		hook = xchat_hook_command (ph, name, pri, command_cb, help_text, data);
 
 		XSRETURN_IV (PTR2IV (hook));
@@ -929,30 +944,30 @@ XS (XS_Xchat_hook_print)
 	int pri;
 	SV *callback;
 	SV *userdata;
+	SV *package;
 	xchat_hook *hook;
 	HookData *data;
 	dXSARGS;
-	if (items != 4) {
+	if (items != 5) {
 		xchat_print (ph,
-						 "Usage: Xchat::Internal::hook_print(name, priority, callback, userdata)");
+						 "Usage: Xchat::Internal::hook_print(name, priority, callback, userdata, package)");
 	} else {
 		name = SvPV_nolen (ST (0));
 		pri = (int) SvIV (ST (1));
 		callback = ST (2);
 		data = NULL;
 		userdata = ST (3);
+		package = ST (4);
 
 		data = malloc (sizeof (HookData));
 		if (data == NULL) {
 			XSRETURN_UNDEF;
 		}
 
-		data->callback = sv_mortalcopy (callback);
-		SvREFCNT_inc (data->callback);
-		data->userdata = sv_mortalcopy (userdata);
-		SvREFCNT_inc (data->userdata);
+		data->callback = newSVsv (callback);
+		data->userdata = newSVsv (userdata);
 		data->depth = 0;
-		data->package = NULL;
+		data->package = newSVsv (package);
 		hook = xchat_hook_print (ph, name, pri, print_cb, data);
 
 		XSRETURN_IV (PTR2IV (hook));
@@ -987,13 +1002,10 @@ XS (XS_Xchat_hook_timer)
 			XSRETURN_UNDEF;
 		}
 
-		data->callback = sv_mortalcopy (callback);
-		SvREFCNT_inc (data->callback);
-		data->userdata = sv_mortalcopy (userdata);
-		SvREFCNT_inc (data->userdata);
+		data->callback = newSVsv (callback);
+		data->userdata = newSVsv (userdata);
 		data->ctx = xchat_get_context (ph);
-		data->package = sv_mortalcopy (package);
-		SvREFCNT_inc (data->package);
+		data->package = newSVsv (package);
 		hook = xchat_hook_timer (ph, timeout, timer_cb, data);
 		data->hook = hook;
 
@@ -1009,6 +1021,7 @@ XS (XS_Xchat_hook_fd)
 	SV *callback;
 	int flags;
 	SV *userdata;
+	SV *package;
 	xchat_hook *hook;
 	HookData *data;
 
@@ -1022,6 +1035,7 @@ XS (XS_Xchat_hook_fd)
 		callback = ST (1);
 		flags = (int) SvIV (ST (2));
 		userdata = ST (3);
+		package = ST (4);
 		data = NULL;
 
 #ifdef WIN32
@@ -1042,11 +1056,10 @@ XS (XS_Xchat_hook_fd)
 			XSRETURN_UNDEF;
 		}
 
-		data->callback = sv_mortalcopy (callback);
-		SvREFCNT_inc (data->callback);
-		data->userdata = sv_mortalcopy (userdata);
-		SvREFCNT_inc (data->userdata);
-		data->package = NULL;
+		data->callback = newSVsv (callback);
+		data->userdata = newSVsv (userdata);
+		data->depth = 0;
+		data->package = newSVsv (package);
 		hook = xchat_hook_fd (ph, fd, flags, fd_cb, data);
 		data->hook = hook;
 
@@ -1081,6 +1094,7 @@ XS (XS_Xchat_unhook)
 			if (userdata->package != NULL) {
 				SvREFCNT_dec (userdata->package);
 			}
+
 			free (userdata);
 		}
 		XSRETURN (retCount);

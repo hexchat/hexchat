@@ -32,6 +32,10 @@ highlights. The full CVS log is available at www.xchat.org/cvslog/
   * Fixed a bug in the reinit handling code. The bug prevented the plugin from
     cleaning up properly. Which includes unloading scripts and removing
 	 their GUI entries.
+  * Remove the restriction on having only 1 package per script. Any inner
+    packages declared will also be unloaded when the script is unload. If
+    multiple script declare an inner package with the same name then unloading
+    or reloading one of those scripts will cause problems.
 
 ------------------------------------------------------------------------------
  2.8.8 - 30/May/2010
