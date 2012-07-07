@@ -40,6 +40,13 @@ for my $files (
 
 	open my $header, ">", $output or die "Couldn't open '$output': $!";
 
+	print $header qq["BEGIN {\\n"\n];
+	for my $input ( @inputs ) {
+		(my $trimmed = $input) =~ s{^lib/}{};
+		print $header qq["\$INC{'$trimmed'} = 'Compiled into the plugin.';\\n"\n];
+	}
+	print $header qq["}\\n"\n];
+
 	for my $input ( @inputs ) {
 		print $header qq["{\\n"\n];
 		print $header qq{"#line 1 \\"$input\\"\\n"\n};
