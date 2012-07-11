@@ -166,6 +166,29 @@ url_check_word (char *word, int len)
 		{ D(".html") },
 		{ D(".info") },
 		{ D(".name") },
+		/* Some extra common suffixes.
+		foo.blah/baz.php etc should work now, rather than
+		needing  http:// at the beginning. */
+		{ D(".php") },
+		{ D(".htm") },
+		{ D(".aero") },
+		{ D(".asia") },
+		{ D(".biz") },
+		{ D(".cat") },
+		{ D(".coop") },
+		{ D(".int") },
+		{ D(".jobs") },
+		{ D(".mobi") },
+		{ D(".museum") },
+		{ D(".name") },
+		{ D(".pro") },
+		{ D(".tel") },
+		{ D(".travel") },
+		{ D(".xxx") },
+		{ D(".asp") },
+		{ D(".aspx") },
+		{ D(".shtml") },
+		{ D(".xml") },
 	};
 #undef D
 	const char *at, *dot;
