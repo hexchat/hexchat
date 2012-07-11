@@ -923,7 +923,7 @@ enum_windows_impl (HWND current_window, LPARAM lParam)
 		return TRUE;
 	}
 
-	GetWindowText (current_window, window_name, 10);
+	GetWindowText (current_window, window_name, 8);		/* name length + 1 */
 	if (stricmp (window_name, "hexchat") == 0)
 	{
 		/* use a separate if block, this way we don't have to call GetWindowModuleFileName() for each hit */
