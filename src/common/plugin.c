@@ -20,6 +20,14 @@
 #include <string.h>
 #include <stdarg.h>
 #include <stdio.h>
+#include <fcntl.h>
+#include <sys/stat.h>
+
+#ifdef WIN32
+#include <io.h>
+#else
+#include <unistd.h>
+#endif
 
 #include "xchat.h"
 #include "fe.h"
@@ -262,6 +270,12 @@ plugin_add (session *sess, char *filename, void *handle, void *init_func,
 		pl->xchat_send_modes = xchat_send_modes;
 		pl->xchat_strip = xchat_strip;
 		pl->xchat_free = xchat_free;
+		pl->xchat_pluginpref_set_str = xchat_pluginpref_set_str;
+		pl->xchat_pluginpref_get_str = xchat_pluginpref_get_str;
+		pl->xchat_pluginpref_set_int = xchat_pluginpref_set_int;
+		pl->xchat_pluginpref_get_int = xchat_pluginpref_get_int;
+		pl->xchat_pluginpref_delete = xchat_pluginpref_delete;
+		pl->xchat_pluginpref_list = xchat_pluginpref_list;
 
 		/* incase new plugins are loaded on older xchat */
 		pl->xchat_dummy4 = xchat_dummy;
@@ -295,9 +309,9 @@ plugin_kill (char *name, int by_filename)
 	{
 		pl = list->data;
 		/* static-plugins (plugin-timer.c) have a NULL filename */
-		if ((by_filename && pl->filename && strcasecmp (name, pl->filename) == 0) ||
-			 (by_filename && pl->filename && strcasecmp (name, file_part (pl->filename)) == 0) ||
-			(!by_filename && strcasecmp (name, pl->name) == 0))
+		if ((by_filename && pl->filename && g_ascii_strcasecmp (name, pl->filename) == 0) ||
+			 (by_filename && pl->filename && g_ascii_strcasecmp (name, file_part (pl->filename)) == 0) ||
+			(!by_filename && g_ascii_strcasecmp (name, pl->name) == 0))
 		{
 			/* statically linked plugins have a NULL filename */
 			if (pl->filename != NULL && !pl->fake)
@@ -458,12 +472,12 @@ plugin_hook_find (GSList *list, int type, char *name)
 		hook = list->data;
 		if (hook->type == type)
 		{
-			if (strcasecmp (hook->name, name) == 0)
+			if (g_ascii_strcasecmp (hook->name, name) == 0)
 				return list;
 
 			if (type == HOOK_SERVER)
 			{
-				if (strcasecmp (hook->name, "RAW LINE") == 0)
+				if (g_ascii_strcasecmp (hook->name, "RAW LINE") == 0)
 					return list;
 			}
 		}
@@ -933,8 +947,8 @@ xchat_find_context (xchat_plugin *ph, const char *servname, const char *channel)
 
 		if (servname == NULL ||
 			 rfc_casecmp (servname, serv->servername) == 0 ||
-			 strcasecmp (servname, serv->hostname) == 0 ||
-			 strcasecmp (servname, netname) == 0)
+			 g_ascii_strcasecmp (servname, serv->hostname) == 0 ||
+			 g_ascii_strcasecmp (servname, netname) == 0)
 		{
 			if (channel == NULL)
 				return serv->front_session;
@@ -996,13 +1010,20 @@ xchat_get_info (xchat_plugin *ph, const char *id)
 		return XCHATLIBDIR;
 
 	case 0x14f51cd8: /* version */
+#ifdef WIN32
+		return XCHAT_RELEASE;
+#else
 		return PACKAGE_VERSION;
+#endif
 
 	case 0xdd9b1abd:	/* xchatdir */
 		return get_xdir_utf8 ();
 
 	case 0xe33f6c4a:	/* xchatdirfs */
 		return get_xdir_fs ();
+
+	case 0x3d1e70d7:	/* wdk_version */
+		return PACKAGE_VERSION;
 	}
 
 	sess = ph->context;
@@ -1100,7 +1121,7 @@ xchat_get_prefs (xchat_plugin *ph, const char *name, const char **string, int *i
 	
 	do
 	{
-		if (!strcasecmp (name, vars[i].name))
+		if (!g_ascii_strcasecmp (name, vars[i].name))
 		{
 			switch (vars[i].type)
 			{
@@ -1566,4 +1587,240 @@ void
 xchat_free (xchat_plugin *ph, void *ptr)
 {
 	g_free (ptr);
+}
+
+static int
+xchat_pluginpref_set_str_real (xchat_plugin *pl, const char *var, const char *value, int mode) /* mode: 0 = delete, 1 = save */
+{
+	FILE *fpIn;
+	int fhOut;
+	int prevSetting;
+	char confname[64];
+	char confname_tmp[69];
+	char buffer[512];		/* the same as in cfg_put_str */
+	char buffer_tmp[512];
+	char *canon;
+
+	canon = g_strdup (pl->name);
+	canonalize_key (canon);
+	sprintf (confname, "plugin_%s.conf", canon);
+	g_free (canon);
+	sprintf (confname_tmp, "%s.new", confname);
+
+	fhOut = xchat_open_file (confname_tmp, O_TRUNC | O_WRONLY | O_CREAT, 0600, XOF_DOMODE);
+	fpIn = xchat_fopen_file (confname, "r", 0);
+
+	if (fhOut == -1)		/* unable to save, abort */
+	{
+		return 0;
+	}
+	else if (fpIn == NULL)	/* no previous config file, no parsing */
+	{
+		if (mode)
+		{
+			sprintf (buffer, "%s = %s\n", var, value);
+			write (fhOut, buffer, strlen (buffer));
+			close (fhOut);
+
+			sprintf (buffer, "%s/%s", get_xdir_fs (), confname);
+			sprintf (buffer_tmp, "%s/%s", get_xdir_fs (), confname_tmp);
+
+#ifdef WIN32
+			unlink (buffer);
+#endif
+
+			if (rename (buffer_tmp, buffer) == 0)
+			{
+				return 1;
+			}
+			else
+			{
+				return 0;
+			}
+		}
+		else
+		{
+			/* mode = 0, we want to delete but the config file and thus the given setting does not exist, we're ready */
+			close (fhOut);
+			return 1;
+		}
+	}
+	else	/* existing config file, preserve settings and find & replace current var value if any */
+	{
+		prevSetting = 0;
+
+		while (fscanf (fpIn, " %[^\n]", &buffer) != EOF)	/* read whole lines including whitespaces */
+		{
+			sprintf (buffer_tmp, "%s ", var);				/* add one space, this way it works against var - var2 checks too */
+
+			if (strncmp (buffer_tmp, buffer, strlen (var) + 1) == 0)	/* given setting already exists */
+			{
+				if (mode)									/* overwrite the existing matching setting if we are in save mode */
+				{
+					sprintf (buffer, "%s = %s\n", var, value);
+				}
+				else										/* erase the setting in delete mode */
+				{
+					strcpy (buffer, "");
+				}
+
+				prevSetting = 1;
+			}
+			else
+			{
+				strcat (buffer, "\n");						/* preserve the existing different settings */
+			}
+
+			write (fhOut, buffer, strlen (buffer));
+		}
+
+		fclose (fpIn);
+
+		if (!prevSetting && mode)	/* var doesn't exist currently, append if we're in save mode */
+		{
+			sprintf (buffer, "%s = %s\n", var, value);
+			write (fhOut, buffer, strlen (buffer));
+		}
+
+		close (fhOut);
+
+		sprintf (buffer, "%s/%s", get_xdir_fs (), confname);
+		sprintf (buffer_tmp, "%s/%s", get_xdir_fs (), confname_tmp);
+
+#ifdef WIN32
+		unlink (buffer);
+#endif
+
+		if (rename (buffer_tmp, buffer) == 0)
+		{
+			return 1;
+		}
+		else
+		{
+			return 0;
+		}
+	}
+}
+
+int
+xchat_pluginpref_set_str (xchat_plugin *pl, const char *var, const char *value)
+{
+	return xchat_pluginpref_set_str_real (pl, var, value, 1);
+}
+
+int
+xchat_pluginpref_get_str (xchat_plugin *pl, const char *var, char *dest)
+{
+	int fh;
+	int l;
+	char confname[64];
+	char *canon;
+	char *cfg;
+	struct stat st;
+
+	canon = g_strdup (pl->name);
+	canonalize_key (canon);
+	sprintf (confname, "plugin_%s.conf", canon);
+	g_free (canon);
+
+	/* partly borrowed from palette.c */
+	fh = xchat_open_file (confname, O_RDONLY, 0, 0);
+
+	if (fh == -1)
+	{
+		return 0;
+	}
+
+	fstat (fh, &st);
+	cfg = malloc (st.st_size + 1);
+
+	if (!cfg)
+	{
+		close (fh);
+		return 0;
+	}
+
+	cfg[0] = '\0';
+	l = read (fh, cfg, st.st_size);
+
+	if (l >= 0)
+	{
+		cfg[l] = '\0';
+	}
+
+	if (!cfg_get_str (cfg, var, dest, 512)) /* dest_len is the same as buffer size in set */
+	{
+		free (cfg);
+		close (fh);
+		return 0;
+	}
+
+	free (cfg);
+	close (fh);
+	return 1;
+}
+
+int
+xchat_pluginpref_set_int (xchat_plugin *pl, const char *var, int value)
+{
+	char buffer[12];
+
+	sprintf (buffer, "%d", value);
+	return xchat_pluginpref_set_str_real (pl, var, buffer, 1);
+}
+
+int
+xchat_pluginpref_get_int (xchat_plugin *pl, const char *var)
+{
+	char buffer[12];
+
+	if (xchat_pluginpref_get_str (pl, var, buffer))
+	{
+		return atoi (buffer);
+	}
+	else
+	{
+		return -1;
+	}
+}
+
+int
+xchat_pluginpref_delete (xchat_plugin *pl, const char *var)
+{
+	return xchat_pluginpref_set_str_real (pl, var, 0, 0);
+}
+
+int
+xchat_pluginpref_list (xchat_plugin *pl, char* dest)
+{
+	FILE *fpIn;
+	char confname[64];
+	char buffer[512];										/* the same as in cfg_put_str */
+	char *token;
+
+	token = g_strdup (pl->name);
+	canonalize_key (token);
+	sprintf (confname, "plugin_%s.conf", token);
+	g_free (token);
+
+	fpIn = xchat_fopen_file (confname, "r", 0);
+
+	if (fpIn == NULL)										/* no existing config file, no parsing */
+	{
+		return 0;
+	}
+	else													/* existing config file, get list of settings */
+	{
+		strcpy (dest, "");									/* clean up garbage */
+		while (fscanf (fpIn, " %[^\n]", &buffer) != EOF)	/* read whole lines including whitespaces */
+		{
+			token = strtok (buffer, "=");
+			strncat (dest, token, strlen (token) - 1);
+			strcat (dest, ",");
+		}
+
+		fclose (fpIn);
+	}
+
+	return 1;
 }

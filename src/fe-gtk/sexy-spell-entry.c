@@ -26,10 +26,19 @@
 #include <gtk/gtk.h>
 #include "sexy-spell-entry.h"
 #include <string.h>
+#include <fcntl.h>
 #include <glib/gi18n.h>
 #include <sys/types.h>
-/*#include "gtkspell-iso-codes.h"
-#include "sexy-marshal.h"*/
+#include <sys/stat.h>
+#include "sexy-iso-codes.h"
+#include "sexy-marshal.h"
+
+#ifdef WIN32
+#include "typedef.h"
+#endif
+
+#include "../common/cfgfiles.h"
+#include "../common/xchatc.h"
 
 /*
  * Bunch of poop to make enchant into a runtime dependency rather than a
@@ -134,12 +143,19 @@ initialize_enchant ()
 	GModule *enchant;
 	gpointer funcptr;
 
+#ifdef WIN32
+	enchant = g_module_open("libenchant.dll", 0);
+#else
 	enchant = g_module_open("libenchant", 0);
+#endif
 	if (enchant == NULL)
 	{
+#ifndef WIN32
 		enchant = g_module_open("libenchant.so.1", 0);
-		if (enchant == NULL)
-			return;
+				if (enchant == NULL)
+					return;
+#endif
+		return;
 	}
 
 	have_enchant = TRUE;
@@ -207,14 +223,14 @@ sexy_spell_entry_class_init(SexySpellEntryClass *klass)
 	 * Returns: %FALSE to indicate that the word should be marked as
 	 * correct.
 	 */
-/*	signals[WORD_CHECK] = g_signal_new("word_check",
+	signals[WORD_CHECK] = g_signal_new("word_check",
 					   G_TYPE_FROM_CLASS(object_class),
 					   G_SIGNAL_RUN_LAST,
 					   G_STRUCT_OFFSET(SexySpellEntryClass, word_check),
 					   (GSignalAccumulator) spell_accumulator, NULL,
 					   sexy_marshal_BOOLEAN__STRING,
 					   G_TYPE_BOOLEAN,
-					   1, G_TYPE_STRING);*/
+					   1, G_TYPE_STRING);
 }
 
 static void
@@ -260,8 +276,42 @@ gtk_entry_find_position (GtkEntry *entry, gint x)
 static void
 insert_underline(SexySpellEntry *entry, guint start, guint end)
 {
-	PangoAttribute *ucolor = pango_attr_underline_color_new (65535, 0, 0);
-	PangoAttribute *unline = pango_attr_underline_new (PANGO_UNDERLINE_ERROR);
+	int fh, l;
+	int red, green, blue;
+	struct stat st;
+	char *cfg;
+	PangoAttribute *ucolor;
+	PangoAttribute *unline;
+
+	fh = xchat_open_file ("colors.conf", O_RDONLY, 0, 0);
+
+	if (fh != -1)
+	{
+		fstat (fh, &st);
+		cfg = malloc (st.st_size + 1);
+
+		if (cfg)
+		{
+			cfg[0] = '\0';
+			l = read (fh, cfg, st.st_size);
+			if (l >= 0)
+			{
+				cfg[l] = '\0';
+			}
+
+			cfg_get_color (cfg, "color_265", &red, &green, &blue);
+			free (cfg);
+		}
+
+		close (fh);
+	} else
+	{
+		red = 65535;
+		green = blue = 0;
+	}
+
+	ucolor = pango_attr_underline_color_new (red, green, blue);
+	unline = pango_attr_underline_new (PANGO_UNDERLINE_ERROR);
 
 	ucolor->start_index = start;
 	unline->start_index = start;
@@ -457,10 +507,6 @@ build_spelling_menu(SexySpellEntry *entry, const gchar *word)
 	if (entry->priv->dict_list == NULL)
 		return topmenu;
 
-#if 1
-	dict = (struct EnchantDict *) entry->priv->dict_list->data;
-	build_suggestion_menu(entry, topmenu, dict, word);
-#else
 	/* Suggestions */
 	if (g_slist_length(entry->priv->dict_list) == 1) {
 		dict = (struct EnchantDict *) entry->priv->dict_list->data;
@@ -489,7 +535,6 @@ build_spelling_menu(SexySpellEntry *entry, const gchar *word)
 			build_suggestion_menu(entry, menu, dict, word);
 		}
 	}
-#endif
 
 	/* Separator */
 	mi = gtk_separator_menu_item_new ();
@@ -503,11 +548,6 @@ build_spelling_menu(SexySpellEntry *entry, const gchar *word)
 
 	gtk_image_menu_item_set_image(GTK_IMAGE_MENU_ITEM(mi), gtk_image_new_from_stock(GTK_STOCK_ADD, GTK_ICON_SIZE_MENU));
 
-#if 1
-	dict = (struct EnchantDict *) entry->priv->dict_list->data;
-	g_object_set_data(G_OBJECT(mi), "enchant-dict", dict);
-	g_signal_connect(G_OBJECT(mi), "activate", G_CALLBACK(add_to_dictionary), entry);
-#else
 	if (g_slist_length(entry->priv->dict_list) == 1) {
 		dict = (struct EnchantDict *) entry->priv->dict_list->data;
 		g_object_set_data(G_OBJECT(mi), "enchant-dict", dict);
@@ -539,7 +579,6 @@ build_spelling_menu(SexySpellEntry *entry, const gchar *word)
 			gtk_menu_shell_append(GTK_MENU_SHELL(menu), submi);
 		}
 	}
-#endif
 
 	gtk_widget_show_all(mi);
 	gtk_menu_shell_append(GTK_MENU_SHELL(topmenu), mi);
@@ -721,11 +760,7 @@ word_misspelled(SexySpellEntry *entry, int start, int end)
 
 	g_strlcpy(word, text + start, end - start + 1);
 
-#if 0
 	g_signal_emit(entry, signals[WORD_CHECK], 0, word, &ret);
-#else
-	ret = default_word_check (entry, word);
-#endif
 
 	g_free(word);
 	return ret;
@@ -921,10 +956,10 @@ void
 sexy_spell_entry_activate_default_languages(SexySpellEntry *entry)
 {
 #if GLIB_CHECK_VERSION (2, 6, 0)
-	const gchar* const *langs;
+	/*const gchar* const *langs;
 	int i;
-	gchar *lastprefix = NULL;
-	GSList *enchant_langs;
+	gchar *lastprefix = NULL;*/
+	GSList *enchant_langs, *i;
 
 	if (!have_enchant)
 		return;
@@ -933,15 +968,15 @@ sexy_spell_entry_activate_default_languages(SexySpellEntry *entry)
 		entry->priv->broker = enchant_broker_init();
 
 
-	langs = g_get_language_names ();
+	/*langs = g_get_language_names ();
 
 	if (langs == NULL)
-		return;
+		return;*/
 
 	enchant_langs = sexy_spell_entry_get_languages(entry);
 
-	for (i = 0; langs[i]; i++) {
-		if ((g_strncasecmp(langs[i], "C", 1) != 0) &&
+	/*for (i = 0; langs[i]; i++) {
+		if ((g_ascii_strncasecmp(langs[i], "C", 1) != 0) &&
 		    (strlen(langs[i]) >= 2) &&
 		    enchant_has_lang(langs[i], enchant_langs)) {
 			if ((lastprefix == NULL) || (g_str_has_prefix(langs[i], lastprefix) == FALSE))
@@ -952,10 +987,19 @@ sexy_spell_entry_activate_default_languages(SexySpellEntry *entry)
 		}
 	}
 	if (lastprefix != NULL)
-		g_free(lastprefix);
+		g_free(lastprefix);*/
+
+	for (i = enchant_langs; i; i = g_slist_next (i))
+	{
+		if (strstr (prefs.spell_langs, i->data) != NULL)
+		{
+			sexy_spell_entry_activate_language_internal (entry, i->data, NULL);
+		}
+	}
 
 	g_slist_foreach(enchant_langs, (GFunc) g_free, NULL);
 	g_slist_free(enchant_langs);
+	g_slist_free (i);
 
 	/* If we don't have any languages activated, use "en" */
 	if (entry->priv->dict_list == NULL)
@@ -969,7 +1013,7 @@ sexy_spell_entry_activate_default_languages(SexySpellEntry *entry)
 	lang = (gchar *) g_getenv("LANG");
 
 	if (lang != NULL) {
-		if (g_strncasecmp(lang, "C", 1) == 0)
+		if (g_ascii_strncasecmp(lang, "C", 1) == 0)
 			lang = NULL;
 		else if (lang[0] == '\0')
 			lang = NULL;
@@ -1083,8 +1127,8 @@ gchar *
 sexy_spell_entry_get_language_name(const SexySpellEntry *entry,
 								   const gchar *lang)
 {
-	/*if (have_enchant)
-		return gtkspell_iso_codes_lookup_name_for_code(lang);*/
+	if (have_enchant)
+		return gtkspell_iso_codes_lookup_name_for_code(lang);
 	return NULL;
 }
 

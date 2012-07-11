@@ -106,7 +106,7 @@ custom_list_sortable_init (GtkTreeSortableIface * iface)
  *
  *****************************************************************************/
 
-static GType
+GType
 custom_list_get_type (void)
 {
 	static GType custom_list_type = 0;

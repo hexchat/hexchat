@@ -18,12 +18,15 @@
 
 /* IRC RFC1459(+commonly used extensions) protocol implementation */
 
-#include <unistd.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <ctype.h>
 #include <stdarg.h>
+
+#ifndef WIN32
+#include <unistd.h>
+#endif
 
 #include "xchat.h"
 #include "ctcp.h"
@@ -472,12 +475,12 @@ process_numeric (session * sess, int n,
 		}
 
 		/* use /NICKSERV */
-		if (strcasecmp (word[7], "DALnet") == 0 ||
-			 strcasecmp (word[7], "BRASnet") == 0)
+		if (g_ascii_strcasecmp (word[7], "DALnet") == 0 ||
+			 g_ascii_strcasecmp (word[7], "BRASnet") == 0)
 			serv->nickservtype = 1;
 
 		/* use /NS */
-		else if (strcasecmp (word[7], "FreeNode") == 0)
+		else if (g_ascii_strcasecmp (word[7], "FreeNode") == 0)
 			serv->nickservtype = 2;
 
 		goto def;
@@ -1072,9 +1075,9 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 					{
 						text[len - 1] = 0;
 						text++;
-						if (strncasecmp (text, "ACTION", 6) != 0)
+						if (g_ascii_strncasecmp (text, "ACTION", 6) != 0)
 							flood_check (nick, ip, serv, sess, 0);
-						if (strncasecmp (text, "DCC ", 4) == 0)
+						if (g_ascii_strncasecmp (text, "DCC ", 4) == 0)
 							/* redo this with handle_quotes TRUE */
 							process_data_init (word[1], word_eol[1], word, word_eol, TRUE, FALSE);
 						ctcp_handle (sess, to, nick, ip, text, word, word_eol, id);

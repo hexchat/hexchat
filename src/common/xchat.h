@@ -13,7 +13,7 @@
 #endif
 
 #ifndef HAVE_VSNPRINTF
-#define vsnprintf g_vsnprintf
+#define vsnprintf _vsnprintf
 #endif
 
 #ifdef USE_DEBUG
@@ -41,8 +41,8 @@ void *xchat_realloc (char *old, int len, char *file, int line);
 
 #ifdef __EMX__						  /* for o/s 2 */
 #define OFLAGS O_BINARY
-#define strcasecmp stricmp
-#define strncasecmp strnicmp
+#define g_ascii_strcasecmp stricmp
+#define g_ascii_strncasecmp strnicmp
 #define PATH_MAX MAXPATHLEN
 #define FILEPATH_LEN_MAX MAXPATHLEN
 #endif
@@ -54,7 +54,7 @@ void *xchat_realloc (char *old, int len, char *file, int line);
 
 #ifdef WIN32						/* for win32 */
 #define OFLAGS O_BINARY
-#define sleep(t) _sleep(t*1000)
+#define sleep(t) Sleep(t*1000)
 #include <direct.h>
 #define	F_OK	0
 #define	X_OK	1
@@ -113,8 +113,16 @@ struct xchatprefs
 	char awayreason[256];
 	char quitreason[256];
 	char partreason[256];
+#ifdef WIN32
+	char font_normal[4 * FONTNAMELEN + 1];
+	char font_main[FONTNAMELEN + 1];
+	char font_alternative[3 * FONTNAMELEN + 1];
+#else
 	char font_normal[FONTNAMELEN + 1];
+#endif
 	char doubleclickuser[256];
+	char gui_license[64];
+	char spell_langs[64];
 	char sounddir[PATHLEN + 1];
 	char soundcmd[PATHLEN + 1];
 	char background[PATHLEN + 1];
@@ -152,6 +160,7 @@ struct xchatprefs
 
 	int gui_pane_left_size;
 	int gui_pane_right_size;
+	int gui_pane_right_size_min;
 
 	int gui_ulist_pos;
 	int tab_pos;
@@ -178,6 +187,9 @@ struct xchatprefs
 	int gui_usermenu;
 	int gui_join_dialog;
 	int gui_quit_dialog;
+#ifdef WIN32
+	int gui_one_instance;
+#endif
 	int dialog_left;
 	int dialog_top;
 	int dialog_width;
@@ -205,6 +217,9 @@ struct xchatprefs
 	unsigned int wallops;
 	unsigned int skipmotd;
 	unsigned int autorejoin;
+	unsigned int autocopy_text;
+	unsigned int autocopy_stamp;
+	unsigned int autocopy_color;
 	unsigned int colorednicks;
 	unsigned int chanmodebuttons;
 	unsigned int userlistbuttons;
@@ -292,7 +307,12 @@ struct xchatprefs
 	unsigned int wait_on_exit;
 	unsigned int confmode;
 	unsigned int utf8_locale;
+#ifdef WIN32
 	unsigned int identd;
+	unsigned int emoticons;
+	unsigned int tab_icons;
+	unsigned int tab_xp;
+#endif
 
 	unsigned int ctcp_number_limit;	/*flood */
 	unsigned int ctcp_time_limit;	/*seconds of floods */
@@ -306,6 +326,11 @@ struct xchatprefs
 		This is so that we continue using internal defaults (which can
 		change in the next release) until the user edits them. */
 	unsigned int save_pevents:1;
+	unsigned int text_search_case_match;
+	unsigned int text_search_backward;
+	unsigned int text_search_highlight_all;
+	unsigned int text_search_follow;
+	unsigned int text_search_regexp;
 };
 
 /* Session types */

@@ -17,7 +17,6 @@
  */
 
 #include <fcntl.h>
-#include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
@@ -31,12 +30,15 @@
 #include "text.h"
 #include "xchatc.h"
 
-#ifdef WIN32
-#define XCHAT_DIR "X-Chat 2"
-#else
+#ifndef WIN32
+#include <unistd.h>
 #define XCHAT_DIR ".xchat2"
 #endif
+
 #define DEF_FONT "Monospace 9"
+#ifdef WIN32
+#define DEF_FONT_ALTER "Arial Unicode MS,Lucida Sans Unicode"
+#endif
 
 void
 list_addentry (GSList ** list, char *cmd, char *name)
@@ -82,11 +84,11 @@ list_load_from_data (GSList ** list, char *ibuf, int size)
 	{
 		if (*buf != '#')
 		{
-			if (!strncasecmp (buf, "NAME ", 5))
+			if (!g_ascii_strncasecmp (buf, "NAME ", 5))
 			{
 				safe_strcpy (name, buf + 5, sizeof (name));
 			}
-			else if (!strncasecmp (buf, "CMD ", 4))
+			else if (!g_ascii_strncasecmp (buf, "CMD ", 4))
 			{
 				safe_strcpy (cmd, buf + 4, sizeof (cmd));
 				if (*name)
@@ -152,7 +154,7 @@ list_delentry (GSList ** list, char *name)
 	while (alist)
 	{
 		pop = (struct popup *) alist->data;
-		if (!strcasecmp (name, pop->name))
+		if (!g_ascii_strcasecmp (name, pop->name))
 		{
 			*list = g_slist_remove (*list, pop);
 			free (pop);
@@ -166,9 +168,13 @@ list_delentry (GSList ** list, char *name)
 char *
 cfg_get_str (char *cfg, char *var, char *dest, int dest_len)
 {
+	char buffer[128];	/* should be plenty for a variable name */
+
+	sprintf (buffer, "%s ", var);	/* add one space, this way it works against var - var2 checks too */
+
 	while (1)
 	{
-		if (!strncasecmp (var, cfg, strlen (var)))
+		if (!g_ascii_strncasecmp (buffer, cfg, strlen (var) + 1))
 		{
 			char *value, t;
 			cfg += strlen (var);
@@ -308,12 +314,19 @@ get_xdir_fs (void)
 {
 	if (!xdir_fs)
 	{
-		char out[256];
+		if (portable_mode ())
+		{
+			xdir_fs = ".\\config";
+		}
+		else
+		{
+			char out[256];
 
-		if (!get_reg_str ("Software\\Microsoft\\Windows\\CurrentVersion\\"
-				"Explorer\\Shell Folders", "AppData", out, sizeof (out)))
-			return "./config";
-		xdir_fs = g_strdup_printf ("%s\\" XCHAT_DIR, out);
+			if (!get_reg_str ("Software\\Microsoft\\Windows\\CurrentVersion\\"
+					"Explorer\\Shell Folders", "AppData", out, sizeof (out)))
+				return "./config";
+			xdir_fs = g_strdup_printf ("%s\\" "X-Chat 2", out);
+		}
 	}
 	return xdir_fs;
 }
@@ -393,7 +406,9 @@ const struct prefs vars[] = {
 	{"dcc_blocksize", P_OFFINT (dcc_blocksize), TYPE_INT},
 	{"dcc_completed_dir", P_OFFSET (dcc_completed_dir), TYPE_STR},
 	{"dcc_dir", P_OFFSET (dccdir), TYPE_STR},
+#ifndef WIN32
 	{"dcc_fast_send", P_OFFINT (fastdccsend), TYPE_BOOL},
+#endif
 	{"dcc_global_max_get_cps", P_OFFINT (dcc_global_max_get_cps), TYPE_INT},
 	{"dcc_global_max_send_cps", P_OFFINT (dcc_global_max_send_cps), TYPE_INT},
 	{"dcc_ip", P_OFFSET (dcc_ip_str), TYPE_STR},
@@ -429,9 +444,14 @@ const struct prefs vars[] = {
 	{"gui_input_style", P_OFFINT (style_inputbox), TYPE_BOOL},
 	{"gui_join_dialog", P_OFFINT (gui_join_dialog), TYPE_BOOL},
 	{"gui_lagometer", P_OFFINT (lagometer), TYPE_INT},
+	{"gui_license", P_OFFSET (gui_license), TYPE_STR},
 	{"gui_mode_buttons", P_OFFINT (chanmodebuttons), TYPE_BOOL},
+#ifdef WIN32
+	{"gui_one_instance", P_OFFINT (gui_one_instance), TYPE_BOOL},
+#endif
 	{"gui_pane_left_size", P_OFFINT (gui_pane_left_size), TYPE_INT},
 	{"gui_pane_right_size", P_OFFINT (gui_pane_right_size), TYPE_INT},
+	{"gui_pane_right_size_min", P_OFFINT (gui_pane_right_size_min), TYPE_INT},
 	{"gui_quit_dialog", P_OFFINT (gui_quit_dialog), TYPE_BOOL},
 	{"gui_slist_fav", P_OFFINT (slist_fav), TYPE_INT},
 	{"gui_slist_select", P_OFFINT (slist_select), TYPE_INT},
@@ -536,6 +556,9 @@ const struct prefs vars[] = {
 
 	{"tab_chans", P_OFFINT (tabchannels), TYPE_BOOL},
 	{"tab_dialogs", P_OFFINT (privmsgtab), TYPE_BOOL},
+#ifdef WIN32
+	{"tab_icons", P_OFFINT (tab_icons), TYPE_BOOL},
+#endif
 	{"tab_layout", P_OFFINT (tab_layout), TYPE_INT},
 	{"tab_new_to_front", P_OFFINT (newtabstofront), TYPE_INT},
 	{"tab_notices", P_OFFINT (notices_tabs), TYPE_BOOL},
@@ -546,16 +569,35 @@ const struct prefs vars[] = {
 	{"tab_sort", P_OFFINT (tab_sort), TYPE_BOOL},
 	{"tab_trunc", P_OFFINT (truncchans), TYPE_INT},
 	{"tab_utils", P_OFFINT (windows_as_tabs), TYPE_BOOL},
+#ifdef WIN32
+	{"tab_xp", P_OFFINT (tab_xp), TYPE_BOOL},
+#endif
 
+	{"text_auto_copy_color", P_OFFINT (autocopy_color), TYPE_BOOL},	
+	{"text_auto_copy_stamp", P_OFFINT (autocopy_stamp), TYPE_BOOL},
+	{"text_auto_copy_text", P_OFFINT (autocopy_text), TYPE_BOOL},
 	{"text_background", P_OFFSET (background), TYPE_STR},
 	{"text_color_nicks", P_OFFINT (colorednicks), TYPE_BOOL},
+#ifdef WIN32
+	{"text_emoticons", P_OFFINT (emoticons), TYPE_BOOL},
+#endif
 	{"text_font", P_OFFSET (font_normal), TYPE_STR},
+#ifdef WIN32
+	{"text_font_main", P_OFFSET (font_main), TYPE_STR},
+	{"text_font_alternative", P_OFFSET (font_alternative), TYPE_STR},
+#endif
 	{"text_indent", P_OFFINT (indent_nicks), TYPE_BOOL},
 	{"text_max_indent", P_OFFINT (max_auto_indent), TYPE_INT},
 	{"text_max_lines", P_OFFINT (max_lines), TYPE_INT},
 	{"text_replay", P_OFFINT (text_replay), TYPE_BOOL},
+	{"text_search_case_match", P_OFFINT (text_search_case_match), TYPE_BOOL},
+	{"text_search_backward", P_OFFINT (text_search_backward), TYPE_BOOL},
+	{"text_search_highlight_all", P_OFFINT (text_search_highlight_all), TYPE_BOOL},
+	{"text_search_follow", P_OFFINT (text_search_follow), TYPE_BOOL},
+	{"text_search_regexp", P_OFFINT (text_search_regexp), TYPE_BOOL},
 	{"text_show_marker", P_OFFINT (show_marker), TYPE_BOOL},
 	{"text_show_sep", P_OFFINT (show_separator), TYPE_BOOL},
+	{"text_spell_langs", P_OFFSET (spell_langs), TYPE_STR},
 	{"text_stripcolor", P_OFFINT (stripcolor), TYPE_BOOL},
 	{"text_thin_sep", P_OFFINT (thin_separator), TYPE_BOOL},
 	{"text_tint_blue", P_OFFINT (tint_blue), TYPE_INT},
@@ -601,9 +643,11 @@ load_config (void)
 	if (!username)
 		username = "root";
 
-	realname = g_get_real_name ();
+	/* We hid Real name from the Network List, so don't use the user's name unnoticeably */
+	/* realname = g_get_real_name ();
 	if ((realname && realname[0] == 0) || !realname)
-		realname = username;
+		realname = username; */
+	realname = "realname";
 
 	username = convert_with_fallback (username, "username");
 	realname = convert_with_fallback (realname, "realname");
@@ -626,13 +670,16 @@ load_config (void)
 	prefs.indent_nicks = 1;
 	prefs.thin_separator = 1;
 	prefs._tabs_position = 2; /* 2 = left */
+#ifndef WIN32
 	prefs.fastdccsend = 1;
+#endif
 	prefs.wordwrap = 1;
 	prefs.autosave = 1;
 	prefs.autodialog = 1;
 	prefs.gui_input_spell = 1;
 	prefs.autoreconnect = 1;
 	prefs.recon_delay = 10;
+	prefs.autocopy_text = 1;
 	prefs.text_replay = 1;
 	prefs.tabchannels = 1;
 	prefs.tab_layout = 2;	/* 0=Tabs 1=Reserved 2=Tree */
@@ -676,6 +723,7 @@ load_config (void)
 	prefs.gui_tray = 1;
 	prefs.gui_pane_left_size = 100;
 	prefs.gui_pane_right_size = 100;
+	prefs.gui_pane_right_size_min = 80;
 	prefs.mainwindow_save = 1;
 	prefs.bantype = 2;
 	prefs.input_balloon_time = 20;
@@ -684,9 +732,12 @@ load_config (void)
 	prefs.autodccsend = 2;	/* browse mode */
 	prefs.url_grabber = 1;
 	prefs.url_grabber_limit = 0; /* 0 means unlimited for backcompat */
+	prefs.text_search_follow = 1;
 #ifdef WIN32
 	prefs.identd = 1;
 #endif
+	strcpy (prefs.gui_license, "");
+	strcpy (prefs.spell_langs, g_getenv ("LC_ALL") ? g_getenv ("LC_ALL") : "en_US");
 	strcpy (prefs.stamp_format, "[%H:%M] ");
 	strcpy (prefs.timestamp_log_format, "%b %d %H:%M:%S ");
 	strcpy (prefs.logmask, "%n-%c.log");
@@ -719,6 +770,10 @@ load_config (void)
 	strcpy (prefs.quitreason, _("Leaving"));
 	strcpy (prefs.partreason, prefs.quitreason);
 	strcpy (prefs.font_normal, DEF_FONT);
+#ifdef WIN32
+	strcpy (prefs.font_main, DEF_FONT);
+	strcpy (prefs.font_alternative, DEF_FONT_ALTER);
+#endif
 	strcpy (prefs.dnsprogram, "host");
 	strcpy (prefs.irc_no_hilight, "NickServ,ChanServ");
 
@@ -945,7 +1000,7 @@ cfg_get_bool (char *var)
 
 	do
 	{
-		if (!strcasecmp (var, vars[i].name))
+		if (!g_ascii_strcasecmp (var, vars[i].name))
 		{
 			return *((int *) &prefs + vars[i].offset);
 		}
@@ -968,27 +1023,27 @@ cmd_set (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	int idx = 2;
 	char *var, *val;
 
-	if (strcasecmp (word[2], "-e") == 0)
+	if (g_ascii_strcasecmp (word[2], "-e") == 0)
 	{
 		idx++;
 		erase = TRUE;
 	}
 
 	/* turn a bit OFF */
-	if (strcasecmp (word[idx], "-off") == 0)
+	if (g_ascii_strcasecmp (word[idx], "-off") == 0)
 	{
 		idx++;
 		off = TRUE;
 	}
 
 	/* turn a bit ON */
-	if (strcasecmp (word[idx], "-or") == 0 || strcasecmp (word[idx], "-on") == 0)
+	if (g_ascii_strcasecmp (word[idx], "-or") == 0 || g_ascii_strcasecmp (word[idx], "-on") == 0)
 	{
 		idx++;
 		or = TRUE;
 	}
 
-	if (strcasecmp (word[idx], "-quiet") == 0)
+	if (g_ascii_strcasecmp (word[idx], "-quiet") == 0)
 	{
 		idx++;
 		quiet = TRUE;
@@ -1014,7 +1069,7 @@ cmd_set (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		if (wild)
 			found = !match (var, vars[i].name);
 		else
-			found = strcasecmp (var, vars[i].name);
+			found = g_ascii_strcasecmp (var, vars[i].name);
 
 		if (found == 0)
 		{
@@ -1043,9 +1098,9 @@ cmd_set (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 							*((int *) &prefs + vars[i].offset) = 1;
 						else
 							*((int *) &prefs + vars[i].offset) = 0;
-						if (!strcasecmp (val, "YES") || !strcasecmp (val, "ON"))
+						if (!g_ascii_strcasecmp (val, "YES") || !g_ascii_strcasecmp (val, "ON"))
 							*((int *) &prefs + vars[i].offset) = 1;
-						if (!strcasecmp (val, "NO") || !strcasecmp (val, "OFF"))
+						if (!g_ascii_strcasecmp (val, "NO") || !g_ascii_strcasecmp (val, "OFF"))
 							*((int *) &prefs + vars[i].offset) = 0;
 					} else
 					{
@@ -1071,7 +1126,13 @@ cmd_set (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	while (vars[i].name);
 
 	if (!finds && !quiet)
+	{
 		PrintText (sess, "No such variable.\n");
+	}
+	else if (prefs.autosave && !save_config ())
+	{
+		PrintText (sess, "Error saving changes to disk.\n");
+	}
 
 	return TRUE;
 }

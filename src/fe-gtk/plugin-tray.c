@@ -1,7 +1,6 @@
 /* Copyright (C) 2006-2007 Peter Zelezny. */
 
 #include <string.h>
-#include <unistd.h>
 #include "../common/xchat-plugin.h"
 #include "../common/xchat.h"
 #include "../common/xchatc.h"
@@ -14,6 +13,10 @@
 #include "maingui.h"
 #include "menu.h"
 #include <gtk/gtk.h>
+
+#ifndef WIN32
+#include <unistd.h>
+#endif
 
 #ifdef USE_LIBNOTIFY
 #include <libnotify/notify.h>
@@ -217,10 +220,10 @@ tray_stop_flash (void)
 		nets = tray_count_networks ();
 		chans = tray_count_channels ();
 		if (nets)
-			tray_set_tipf (_("XChat: Connected to %u networks and %u channels"),
+			tray_set_tipf (_("XChat-WDK: Connected to %u networks and %u channels"),
 								nets, chans);
 		else
-			tray_set_tipf ("XChat: %s", _("Not connected."));
+			tray_set_tipf ("XChat-WDK: %s", _("Not connected."));
 	}
 
 	if (custom_icon1)
@@ -370,7 +373,7 @@ tray_toggle_visibility (gboolean force_hide)
 	/* ph may have an invalid context now */
 	xchat_set_context (ph, xchat_find_context (ph, NULL, NULL));
 
-	win = (GtkWindow *)xchat_get_info (ph, "win_ptr");
+	win = xchat_get_info (ph, "gtkwin_ptr");
 
 	tray_stop_flash ();
 	tray_reset_counts ();
@@ -505,11 +508,12 @@ tray_menu_cb (GtkWidget *widget, guint button, guint time, gpointer userdata)
 	/*gtk_menu_set_screen (GTK_MENU (menu), gtk_widget_get_screen (widget));*/
 
 	if (tray_get_window_status () == WS_HIDDEN)
-		tray_make_item (menu, _("_Restore"), tray_menu_restore_cb, NULL);
+		tray_make_item (menu, _("_Restore Window"), tray_menu_restore_cb, NULL);
 	else
-		tray_make_item (menu, _("_Hide"), tray_menu_restore_cb, NULL);
+		tray_make_item (menu, _("_Hide Window"), tray_menu_restore_cb, NULL);
 	tray_make_item (menu, NULL, tray_menu_quit_cb, NULL);
 
+#ifndef WIN32 /* somehow this is broken on win32 */
 	submenu = mg_submenu (menu, _("_Blink on"));
 	blink_item (&prefs.input_tray_chans, submenu, _("Channel Message"));
 	blink_item (&prefs.input_tray_priv, submenu, _("Private Message"));
@@ -526,6 +530,8 @@ tray_menu_cb (GtkWidget *widget, guint button, guint time, gpointer userdata)
 		gtk_widget_set_sensitive (item, FALSE);
 
 	tray_make_item (menu, NULL, tray_menu_quit_cb, NULL);
+#endif
+
 	mg_create_icon_item (_("_Quit"), GTK_STOCK_QUIT, menu, tray_menu_quit_cb, NULL);
 
 	menu_add_plugin_items (menu, "\x5$TRAY", NULL);
@@ -551,8 +557,12 @@ tray_init (void)
 	sticon = gtk_status_icon_new_from_pixbuf (ICON_NORMAL);
 	if (!sticon)
 		return;
+
+#ifndef WIN32
 	g_signal_connect (G_OBJECT (sticon), "popup-menu",
 							G_CALLBACK (tray_menu_cb), sticon);
+#endif
+
 	g_signal_connect (G_OBJECT (sticon), "activate",
 							G_CALLBACK (tray_menu_restore_cb), NULL);
 }
@@ -570,15 +580,15 @@ tray_hilight_cb (char *word[], void *userdata)
 		/* FIXME: hides any previous private messages */
 		tray_hilight_count++;
 		if (tray_hilight_count == 1)
-			tray_set_tipf (_("XChat: Highlighted message from: %s (%s)"),
+			tray_set_tipf (_("XChat-WDK: Highlighted message from: %s (%s)"),
 								word[1], xchat_get_info (ph, "channel"));
 		else
-			tray_set_tipf (_("XChat: %u highlighted messages, latest from: %s (%s)"),
+			tray_set_tipf (_("XChat-WDK: %u highlighted messages, latest from: %s (%s)"),
 								tray_hilight_count, word[1], xchat_get_info (ph, "channel"));
 	}
 
 	if (prefs.input_balloon_hilight)
-		tray_set_balloonf (word[2], _("XChat: Highlighted message from: %s (%s)"),
+		tray_set_balloonf (word[2], _("XChat-WDK: Highlighted message from: %s (%s)"),
 								 word[1], xchat_get_info (ph, "channel"));
 
 	return XCHAT_EAT_NONE;
@@ -596,14 +606,14 @@ tray_message_cb (char *word[], void *userdata)
 
 		tray_pub_count++;
 		if (tray_pub_count == 1)
-			tray_set_tipf (_("XChat: New public message from: %s (%s)"),
+			tray_set_tipf (_("XChat-WDK: New public message from: %s (%s)"),
 								word[1], xchat_get_info (ph, "channel"));
 		else
-			tray_set_tipf (_("XChat: %u new public messages."), tray_pub_count);
+			tray_set_tipf (_("XChat-WDK: %u new public messages."), tray_pub_count);
 	}
 
 	if (prefs.input_balloon_chans)
-		tray_set_balloonf (word[2], _("XChat: New public message from: %s (%s)"),
+		tray_set_balloonf (word[2], _("XChat-WDK: New public message from: %s (%s)"),
 								 word[1], xchat_get_info (ph, "channel"));
 
 	return XCHAT_EAT_NONE;
@@ -625,14 +635,14 @@ tray_priv (char *from, char *text)
 
 	tray_priv_count++;
 	if (tray_priv_count == 1)
-		tray_set_tipf (_("XChat: Private message from: %s (%s)"),
+		tray_set_tipf (_("XChat-WDK: Private message from: %s (%s)"),
 							from, network);
 	else
-		tray_set_tipf (_("XChat: %u private messages, latest from: %s (%s)"),
+		tray_set_tipf (_("XChat-WDK: %u private messages, latest from: %s (%s)"),
 							tray_priv_count, from, network);
 
 	if (prefs.input_balloon_priv)
-		tray_set_balloonf (text, _("XChat: Private message from: %s (%s)"),
+		tray_set_balloonf (text, _("XChat-WDK: Private message from: %s (%s)"),
 								 from, network);
 }
 
@@ -678,15 +688,15 @@ tray_dcc_cb (char *word[], void *userdata)
 
 		tray_file_count++;
 		if (tray_file_count == 1)
-			tray_set_tipf (_("XChat: File offer from: %s (%s)"),
+			tray_set_tipf (_("XChat-WDK: File offer from: %s (%s)"),
 								word[1], network);
 		else
-			tray_set_tipf (_("XChat: %u file offers, latest from: %s (%s)"),
+			tray_set_tipf (_("XChat-WDK: %u file offers, latest from: %s (%s)"),
 								tray_file_count, word[1], network);
 	}
 
 	if (prefs.input_balloon_priv)
-		tray_set_balloonf ("", _("XChat: File offer from: %s (%s)"),
+		tray_set_balloonf ("", _("XChat-WDK: File offer from: %s (%s)"),
 								word[1], network);
 
 	return XCHAT_EAT_NONE;
@@ -722,7 +732,7 @@ tray_apply_setup (void)
 	}
 	else
 	{
-		if (prefs.gui_tray)
+		if (prefs.gui_tray && !xtray_mode ())
 			tray_init ();
 	}
 }
@@ -754,7 +764,7 @@ tray_plugin_init (xchat_plugin *plugin_handle, char **plugin_name,
 
 	xchat_hook_print (ph, "Focus Window", -1, tray_focus_cb, NULL);
 
-	if (prefs.gui_tray)
+	if (prefs.gui_tray && !xtray_mode ())
 		tray_init ();
 
 	return 1;       /* return 1 for success */

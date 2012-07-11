@@ -26,8 +26,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <fcntl.h>
+
+#ifndef WIN32
+#include <unistd.h>
+#endif
 
 #define WANTSOCKET
 #define WANTARPA

@@ -1,0 +1,15 @@
+; wmpa.def : Declares the module parameters for the DLL.
+
+LIBRARY      "xcwmpa"
+
+EXPORTS
+    ; Explicit exports can go here
+    DllCanUnloadNow PRIVATE
+    DllGetClassObject PRIVATE
+    DllRegisterServer PRIVATE
+    xchat_plugin_init
+    xchat_plugin_deinit
+    xchat_plugin_get_info
+    StartWindowsMediaPlayer
+    GetWindowsMediaPlayer
+    GetWMPADialog

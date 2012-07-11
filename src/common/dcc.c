@@ -31,7 +31,6 @@
 #include <time.h>
 #include <errno.h>
 #include <sys/stat.h>
-#include <unistd.h>
 #include <fcntl.h>
 
 #define WANTSOCKET
@@ -41,6 +40,8 @@
 
 #ifdef WIN32
 #include <windows.h>
+#else
+#include <unistd.h>
 #endif
 
 #include "xchat.h"
@@ -57,6 +58,9 @@
 
 #ifdef USE_DCC64
 #define BIG_STR_TO_INT(x) strtoull(x,NULL,10)
+#ifdef WIN32
+#define stat _stat64
+#endif
 #else
 #define BIG_STR_TO_INT(x) strtoul(x,NULL,10)
 #endif
@@ -568,7 +572,7 @@ dcc_chat_line (struct DCC *dcc, char *line)
 
 	url_check_line (line, len);
 
-	if (line[0] == 1 && !strncasecmp (line + 1, "ACTION", 6))
+	if (line[0] == 1 && !g_ascii_strncasecmp (line + 1, "ACTION", 6))
 	{
 		po = strchr (line + 8, '\001');
 		if (po)
@@ -1936,9 +1940,9 @@ find_dcc (char *nick, char *file, int type)
 			{
 				if (!file[0])
 					return dcc;
-				if (!strcasecmp (file, file_part (dcc->file)))
+				if (!g_ascii_strcasecmp (file, file_part (dcc->file)))
 					return dcc;
-				if (!strcasecmp (file, dcc->file))
+				if (!g_ascii_strcasecmp (file, dcc->file))
 					return dcc;
 			}
 		}
@@ -1984,7 +1988,7 @@ is_same_file (struct DCC *dcc, struct DCC *new_dcc)
 
 	/* now handle case-insensitive Filesystems: HFS+, FAT */
 #ifdef WIN32
-#warning no win32 implementation - behaviour may be unreliable
+	/* warning no win32 implementation - behaviour may be unreliable */
 #else
 	/* this fstat() shouldn't really fail */
 	if ((dcc->fp == -1 ? stat (dcc->destfile_fs, &st_a) : fstat (dcc->fp, &st_a)) == -1)
@@ -2402,7 +2406,7 @@ handle_dcc (struct session *sess, char *nick, char *word[],
 	DCC_SIZE size;
 	int psend = 0;
 
-	if (!strcasecmp (type, "CHAT"))
+	if (!g_ascii_strcasecmp (type, "CHAT"))
 	{
 		port = atoi (word[8]);
 		addr = strtoul (word[7], NULL, 10);
@@ -2449,7 +2453,7 @@ handle_dcc (struct session *sess, char *nick, char *word[],
 		return;
 	}
 
-	if (!strcasecmp (type, "Resume"))
+	if (!g_ascii_strcasecmp (type, "Resume"))
 	{
 		port = atoi (word[7]);
 
@@ -2493,7 +2497,7 @@ handle_dcc (struct session *sess, char *nick, char *word[],
 		}
 		return;
 	}
-	if (!strcasecmp (type, "Accept"))
+	if (!g_ascii_strcasecmp (type, "Accept"))
 	{
 		port = atoi (word[7]);
 		dcc = find_dcc_from_port (port, TYPE_RECV);
@@ -2503,7 +2507,7 @@ handle_dcc (struct session *sess, char *nick, char *word[],
 		}
 		return;
 	}
-	if (!strcasecmp (type, "SEND"))
+	if (!g_ascii_strcasecmp (type, "SEND"))
 	{
 		char *file = file_part (word[6]);
 

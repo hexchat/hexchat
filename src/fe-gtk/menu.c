@@ -20,10 +20,11 @@
 #include <stdlib.h>
 #include <fcntl.h>
 #include <string.h>
-#include <unistd.h>
 
 #ifdef WIN32
 #include <windows.h>
+#else
+#include <unistd.h>
 #endif
 
 #include "fe-gtk.h"
@@ -483,18 +484,18 @@ menu_create (GtkWidget *menu, GSList *list, char *target, int check_path)
 	{
 		pop = (struct popup *) list->data;
 
-		if (!strncasecmp (pop->name, "SUB", 3))
+		if (!g_ascii_strncasecmp (pop->name, "SUB", 3))
 		{
 			childcount = 0;
 			tempmenu = menu_quick_sub (pop->cmd, tempmenu, &subitem, XCMENU_DOLIST|XCMENU_MNEMONIC, -1);
 
-		} else if (!strncasecmp (pop->name, "TOGGLE", 6))
+		} else if (!g_ascii_strncasecmp (pop->name, "TOGGLE", 6))
 		{
 			childcount++;
 			menu_toggle_item (pop->name + 7, tempmenu, toggle_cb, pop->cmd,
 									cfg_get_bool (pop->cmd));
 
-		} else if (!strncasecmp (pop->name, "ENDSUB", 6))
+		} else if (!g_ascii_strncasecmp (pop->name, "ENDSUB", 6))
 		{
 			/* empty sub menu due to no programs in PATH? */
 			if (check_path && childcount < 1)
@@ -505,7 +506,7 @@ menu_create (GtkWidget *menu, GSList *list, char *target, int check_path)
 				tempmenu = menu_quick_endsub ();
 			/* If we get here and tempmenu equals menu that means we havent got any submenus to exit from */
 
-		} else if (!strncasecmp (pop->name, "SEP", 3))
+		} else if (!g_ascii_strncasecmp (pop->name, "SEP", 3))
 		{
 			menu_quick_item (0, 0, tempmenu, XCMENU_SHADED, 0, 0);
 
@@ -1122,6 +1123,23 @@ usermenu_update (void)
 	}
 }
 
+#if 0
+static void
+menu_saveconf (void)
+{
+	session *sess = current_sess;
+
+	if (save_config ())
+	{
+		PrintText (sess, "Settings have been saved successfully.\n");
+	}
+	else
+	{
+		PrintText (sess, "Error saving settings.\n");
+	}
+}
+#endif
+
 static void
 menu_newserver_window (GtkWidget * wid, gpointer none)
 {
@@ -1198,9 +1216,50 @@ menu_search ()
 }
 
 static void
+menu_search_next ()
+{
+	GtkXText *xtext = GTK_XTEXT (current_sess->gui->xtext);
+	xtext_buffer *buf = xtext->buffer;
+
+	if (!gtk_xtext_search (xtext, buf->search_text,
+		(buf->search_flags & (case_match | follow | regexp)), NULL))
+	{
+		fe_message (_("Search hit end, not found."), FE_MSG_ERROR);
+	}
+}
+
+static void
+menu_search_prev ()
+{
+	GtkXText *xtext = GTK_XTEXT (current_sess->gui->xtext);
+	xtext_buffer *buf = xtext->buffer;
+
+	if (!gtk_xtext_search(xtext, buf->search_text,
+		(buf->search_flags & (case_match | follow | regexp) | backward), NULL))
+	{
+		fe_message (_("Search hit end, not found."), FE_MSG_ERROR);
+	}
+}
+
+static void
+menu_search_reset ()
+{
+	GtkXText *xtext = GTK_XTEXT (current_sess->gui->xtext);
+	xtext_buffer *buf = xtext->buffer;
+
+	gtk_xtext_search (xtext, "", 0, NULL);
+}
+
+static void
 menu_resetmarker (GtkWidget * wid, gpointer none)
 {
 	gtk_xtext_reset_marker_pos (GTK_XTEXT (current_sess->gui->xtext));
+}
+
+static void
+menu_copy_selection (GtkWidget * wid, gpointer none)
+{
+	gtk_xtext_copy_selection (GTK_XTEXT (current_sess->gui->xtext));
 }
 
 static void
@@ -1580,7 +1639,7 @@ static struct mymenu mymenu[] = {
 #endif
 	{0, 0, 0, M_SEP, 0, 0, 0},	/* 11 */
 #define DETACH_OFFSET (12)
-	{0, menu_detach, GTK_STOCK_REDO, M_MENUSTOCK, 0, 0, 1, GDK_I},	/* 12 */
+	{0, menu_detach, GTK_STOCK_REDO, M_MENUSTOCK, 0, 0, 1, GDK_i},	/* 12 */
 #define CLOSE_OFFSET (13)
 	{0, menu_close, GTK_STOCK_CLOSE, M_MENUSTOCK, 0, 0, 1, GDK_w},
 	{0, 0, 0, M_SEP, 0, 0, 0},
@@ -1633,6 +1692,10 @@ static struct mymenu mymenu[] = {
 		{N_("Userlist Popup..."), menu_ulpopup, 0, M_MENUITEM, 0, 0, 1},
 		{0, 0, 0, M_END, 0, 0, 0},		/* 53 */
 
+#if 0
+	{N_("Save Settings to Disk"), menu_saveconf, GTK_STOCK_SAVE, M_MENUSTOCK, 0, 0, 1}, /* don't use this, a /set auto-save approach will be added instead */
+#endif
+
 	{N_("_Window"), 0, 0, M_NEWMENU, 0, 0, 1},
 	{N_("Ban List..."), menu_banlist, 0, M_MENUITEM, 0, 0, 1},
 	{N_("Character Chart..."), ascii_open, 0, M_MENUITEM, 0, 0, 1},
@@ -1645,12 +1708,19 @@ static struct mymenu mymenu[] = {
 	{N_("URL Grabber..."), url_opengui, 0, M_MENUITEM, 0, 0, 1},
 	{0, 0, 0, M_SEP, 0, 0, 0},
 	{N_("Reset Marker Line"), menu_resetmarker, 0, M_MENUITEM, 0, 0, 1, GDK_m},
+	{N_("_Copy Selection"), menu_copy_selection, 0, M_MENUITEM, 0, 0, 1, GDK_C},
 	{N_("C_lear Text"), menu_flushbuffer, GTK_STOCK_CLEAR, M_MENUSTOCK, 0, 0, 1, GDK_l},
-#define SEARCH_OFFSET 67
-	{N_("Search Text..."), menu_search, GTK_STOCK_FIND, M_MENUSTOCK, 0, 0, 1, GDK_f},
 	{N_("Save Text..."), menu_savebuffer, GTK_STOCK_SAVE, M_MENUSTOCK, 0, 0, 1},
+#define SEARCH_OFFSET 70
+	{N_("Search"), 0, GTK_STOCK_JUSTIFY_LEFT, M_MENUSUB, 0, 0, 1},
+		{N_("Search Text..."), menu_search, GTK_STOCK_FIND, M_MENUSTOCK, 0, 0, 1, GDK_f},
+		{N_("Reset Search"), menu_search_reset, GTK_STOCK_FIND, M_MENUSTOCK, 0, 0, 1, GDK_F},
+		{N_("Search Next"   ), menu_search_next, GTK_STOCK_FIND, M_MENUSTOCK, 0, 0, 1, GDK_g},
+		{N_("Search Previous"   ), menu_search_prev, GTK_STOCK_FIND, M_MENUSTOCK, 0, 0, 1, GDK_G},
+		{0, 0, 0, M_END, 0, 0, 0},
 
-	{N_("_Help"), 0, 0, M_NEWMENU, 0, 0, 1},	/* 69 */
+	{N_("_Help"), 0, 0, M_NEWMENU, 0, 0, 1},	/* 74 */
+
 	{N_("_Contents"), menu_docs, GTK_STOCK_HELP, M_MENUSTOCK, 0, 0, 1, GDK_F1},
 #if 0
 	{N_("Check for updates"), menu_update, 0, M_MENUITEM, 0, 1},
@@ -2120,7 +2190,7 @@ menu_create_main (void *accel_group, int bar, int away, int toplevel,
 		g_object_get (settings, "gtk-key-theme-name", &key_theme, NULL);
 		if (key_theme)
 		{
-			if (!strcasecmp (key_theme, "Emacs"))
+			if (!g_ascii_strcasecmp (key_theme, "Emacs"))
 			{
 				close_mask = GDK_SHIFT_MASK | GDK_CONTROL_MASK;
 				mymenu[SEARCH_OFFSET].key = 0;
@@ -2188,7 +2258,9 @@ normalitem:
 										mymenu[i].key,
 										mymenu[i].key == GDK_F1 ? 0 :
 										mymenu[i].key == GDK_w ? close_mask :
-										GDK_CONTROL_MASK,
+										(g_ascii_isupper (mymenu[i].key)) ?
+											GDK_SHIFT_MASK | GDK_CONTROL_MASK :
+											GDK_CONTROL_MASK,
 										GTK_ACCEL_VISIBLE);
 			if (mymenu[i].callback)
 				g_signal_connect (G_OBJECT (item), "activate",

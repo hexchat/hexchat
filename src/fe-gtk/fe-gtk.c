@@ -19,7 +19,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <unistd.h>
 
 #include "fe-gtk.h"
 
@@ -32,6 +31,12 @@
 #include <gtk/gtkmessagedialog.h>
 #include <gtk/gtkversion.h>
 
+#ifdef WIN32
+#include <gdk/gdkwin32.h>
+#else
+#include <unistd.h>
+#endif
+
 #include "../common/xchat.h"
 #include "../common/fe.h"
 #include "../common/util.h"
@@ -39,6 +44,7 @@
 #include "../common/cfgfiles.h"
 #include "../common/xchatc.h"
 #include "../common/plugin.h"
+#include "../common/server.h"
 #include "gtkutil.h"
 #include "maingui.h"
 #include "pixmaps.h"
@@ -136,11 +142,26 @@ static const GOptionEntry gopt_entries[] =
  {NULL}
 };
 
+#ifdef WIN32
+static void
+create_msg_dialog (gchar *title, gchar *message)
+{
+	GtkWidget *dialog;
+	dialog = gtk_message_dialog_new (NULL, GTK_DIALOG_MODAL, GTK_MESSAGE_INFO, GTK_BUTTONS_CLOSE, message);
+	gtk_window_set_title (GTK_WINDOW (dialog), title);
+	gtk_dialog_run (GTK_DIALOG (dialog));
+	gtk_widget_destroy (dialog);
+}
+#endif
+
 int
 fe_args (int argc, char *argv[])
 {
 	GError *error = NULL;
 	GOptionContext *context;
+#ifdef WIN32
+	char *buffer[2048];
+#endif
 
 #ifdef ENABLE_NLS
 	bindtextdomain (GETTEXT_PACKAGE, LOCALEDIR);
@@ -149,22 +170,67 @@ fe_args (int argc, char *argv[])
 #endif
 
 	context = g_option_context_new (NULL);
+#ifdef WIN32
+	g_option_context_set_help_enabled (context, FALSE);	/* disable stdout help as stdout is unavailable for subsystem:windows */
+#endif
 	g_option_context_add_main_entries (context, gopt_entries, GETTEXT_PACKAGE);
 	g_option_context_add_group (context, gtk_get_option_group (FALSE));
 	g_option_context_parse (context, &argc, &argv, &error);
 
+#ifdef WIN32
+	if (error)											/* workaround for argv not being available when using subsystem:windows */
+	{
+		if (error->message)								/* the error message contains argv so search for patterns in that */
+		{
+			if (strstr (error->message, "--help-all") != NULL)
+			{
+				if (snprintf (buffer, 2048, g_option_context_get_help (context, FALSE, NULL)))
+				{
+					gtk_init (&argc, &argv);
+					create_msg_dialog ("Long Help", buffer);
+				}
+				return 0;
+			} else if (strstr (error->message, "--help") != NULL || strstr (error->message, "-?") != NULL)
+			{
+				if (snprintf (buffer, 2048, g_option_context_get_help (context, TRUE, NULL)))
+				{
+					gtk_init (&argc, &argv);
+					create_msg_dialog ("Help", buffer);
+				}
+				return 0;
+			} else 
+			{
+				if (snprintf (buffer, 2048, "%s\n", error->message))
+				{
+					gtk_init (&argc, &argv);
+					create_msg_dialog ("Error", buffer);
+				}
+				return 1;
+			}
+		}
+	}
+#else
 	if (error)
 	{
 		if (error->message)
 			printf ("%s\n", error->message);
 		return 1;
 	}
+#endif
 
 	g_option_context_free (context);
 
 	if (arg_show_version)
 	{
+#ifdef WIN32
+		if (snprintf (buffer, 2048, DISPLAY_NAME" "PACKAGE_VERSION"\n"))
+		{
+			gtk_init (&argc, &argv);
+			create_msg_dialog ("Version Information", buffer);
+		}
+#else
 		printf (PACKAGE_TARNAME" "PACKAGE_VERSION"\n");
+#endif
 		return 0;
 	}
 
@@ -177,7 +243,18 @@ fe_args (int argc, char *argv[])
 		if (sl)
 		{
 			*sl = 0;
-			printf ("%s\\plugins\n", exe);
+			if (snprintf (buffer, 2048, "%s\\plugins\n", exe))
+			{
+				gtk_init (&argc, &argv);
+				create_msg_dialog ("Plugin Auto-load Directory", buffer);
+			}
+		} else
+		{
+			if (snprintf (buffer, 2048, ".\\plugins\n"))
+			{
+				gtk_init (&argc, &argv);
+				create_msg_dialog ("Plugin Auto-load Directory", buffer);
+			}
 		}
 #else
 		printf ("%s\n", XCHATLIBDIR"/plugins");
@@ -187,7 +264,15 @@ fe_args (int argc, char *argv[])
 
 	if (arg_show_config)
 	{
+#ifdef WIN32
+		if (snprintf (buffer, 2048, "%s\n", get_xdir_fs ()))
+		{
+			gtk_init (&argc, &argv);
+			create_msg_dialog ("User Config Directory", buffer);
+		}
+#else
 		printf ("%s\n", get_xdir_fs ());
+#endif
 		return 0;
 	}
 
@@ -330,7 +415,7 @@ log_handler (const gchar   *log_domain,
 {
 	session *sess;
 
-	if (getenv ("XCHAT_WARNING_IGNORE"))
+	/* if (getenv ("XCHAT_WARNING_IGNORE")) this gets ignored sometimes, so simply just disable all warnings */
 		return;
 
 	sess = find_dialog (serv_list->data, "(warnings)");
@@ -845,7 +930,11 @@ fe_gui_info_ptr (session *sess, int info_type)
 	{
 	case 0:	/* native window pointer (for plugins) */
 #ifdef WIN32
+#if GTK_CHECK_VERSION(2,24,8)
+		return gdk_win32_window_get_impl_hwnd (sess->gui->window->window);
+#else
 		return GDK_WINDOW_HWND (sess->gui->window->window);
+#endif
 #else
 		return sess->gui->window;
 #endif

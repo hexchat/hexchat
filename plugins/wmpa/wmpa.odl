@@ -1,0 +1,44 @@
+// wmpa.odl : type library source for wmpa.dll
+
+// This file will be processed by the MIDL compiler to produce the
+// type library (wmpa.tlb).
+
+[ uuid(2D225385-EFD3-4DD8-9377-A7F244C522D0), version(1.0) ]
+library Wmpa
+{
+	importlib("stdole32.tlb");
+	importlib("stdole2.tlb");
+
+
+
+
+	//  Primary dispatch interface for CWMPADIALOG
+	
+	[ uuid(01C1B3AA-C7FC-4023-89A5-C814E1B62B9B) ]
+	dispinterface IWMPADIALOG
+	{
+		properties:
+			// NOTE - ClassWizard will maintain property information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_PROP(CWMPADIALOG)
+			//}}AFX_ODL_PROP
+			
+		methods:
+			// NOTE - ClassWizard will maintain method information here.
+			//    Use extreme caution when editing this section.
+			//{{AFX_ODL_METHOD(CWMPADIALOG)
+			//}}AFX_ODL_METHOD
+
+	};
+
+	//  Class information for CWMPADIALOG
+
+	[ uuid(9007B1B4-0006-453D-A799-DB8CBA1AE22A) ]
+	coclass WMPADIALOG
+	{
+		[default] dispinterface IWMPADIALOG;
+	};
+
+	//{{AFX_APPEND_ODL}}
+	//}}AFX_APPEND_ODL}}
+};

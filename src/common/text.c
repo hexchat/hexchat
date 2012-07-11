@@ -19,13 +19,16 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#include <unistd.h>
 #include <ctype.h>
 #include <time.h>
 #include <sys/types.h>
 #include <fcntl.h>
 #include <sys/stat.h>
+
+#ifndef WIN32
+#include <unistd.h>
 #include <sys/mman.h>
+#endif
 
 #include "xchat.h"
 #include <glib.h>
@@ -271,9 +274,15 @@ scrollback_load (session *sess)
 	char *text;
 	time_t stamp;
 	int lines;
+
+#ifdef WIN32
+	char *cleaned_text;
+	int cleaned_len;
+#else
 	char *map, *end_map;
 	struct stat statbuf;
 	const char *begin, *eol;
+#endif
 
 	if (sess->text_scrollback == SET_DEFAULT)
 	{
@@ -293,6 +302,7 @@ scrollback_load (session *sess)
 	if (fh == -1)
 		return;
 
+#ifndef WIN32
 	if (fstat (fh, &statbuf) < 0)
 		return;
 
@@ -301,7 +311,7 @@ scrollback_load (session *sess)
 		return;
 
 	end_map = map + statbuf.st_size;
-	
+
 	lines = 0;
 	begin = map;
 	while (begin < end_map)
@@ -314,11 +324,11 @@ scrollback_load (session *sess)
 			eol = end_map;
 
 		n_bytes = MIN (eol - begin, sizeof (buf) - 1);
-		
+
 		strncpy (buf, begin, n_bytes);
 
 		buf[n_bytes] = 0;
-		
+
 		if (buf[0] == 'T')
 		{
 			if (sizeof (time_t) == 4)
@@ -350,6 +360,45 @@ scrollback_load (session *sess)
 	}
 
 	munmap (map, statbuf.st_size);
+#else
+	lines = 0;
+	while (waitline (fh, buf, sizeof buf, FALSE) != -1)
+	{
+		if (buf[0] == 'T')
+		{
+			if (sizeof (time_t) == 4)
+				stamp = strtoul (buf + 2, NULL, 10);
+			else
+				stamp = strtoull (buf + 2, NULL, 10); /* just incase time_t is 64 bits */
+			text = strchr (buf + 3, ' ');
+			if (text)
+			{
+				text = strip_color (text + 1, -1, STRIP_COLOR);
+				cleaned_text = text_replace_non_bmp (text, -1, &cleaned_len);
+				if (cleaned_text != NULL)
+				{
+					g_free (text);
+					text = cleaned_text;
+				}
+				fe_print_text (sess, text, stamp);
+				g_free (text);
+			}
+			lines++;
+		}
+	}
+
+	sess->scrollwritten = lines;
+
+	if (lines)
+	{
+		text = ctime (&stamp);
+		text[24] = 0;	/* get rid of the \n */
+		snprintf (buf, sizeof (buf), "\n*\t%s %s\n\n", _("Loaded log from"), text);
+		fe_print_text (sess, buf, 0);
+		/*EMIT_SIGNAL (XP_TE_GENMSG, sess, "*", buf, NULL, NULL, NULL, 0);*/
+	}
+#endif
+
 	close (fh);
 }
 
@@ -637,6 +686,13 @@ get_stamp_str (char *fmt, time_t tim, char **ret)
 	}
 
 	len = strftime (dest, sizeof (dest), fmt, localtime (&tim));
+#ifdef WIN32
+	if (!len)
+	{
+		/* use failsafe format until a correct one is specified */
+		len = strftime (dest, sizeof (dest), "[%H:%M]", localtime (&tim));
+	}
+#endif
 	if (len)
 	{
 		if (prefs.utf8_locale)
@@ -811,6 +867,46 @@ iso_8859_1_to_utf8 (unsigned char *text, int len, gsize *bytes_written)
 
 	return res;
 }
+
+#ifdef WIN32
+/* replace characters outside of the Basic Multilingual Plane with
+ * replacement characters (0xFFFD) */
+char *
+text_replace_non_bmp (char *utf8_input, int input_length, glong *output_length)
+{
+	gunichar *ucs4_text;
+	gunichar suspect;
+	gchar *utf8_text;
+	glong ucs4_length;
+	glong index;
+
+	ucs4_text = g_utf8_to_ucs4_fast (utf8_input, input_length, &ucs4_length);
+
+	/* replace anything not in the Basic Multilingual Plane
+	 * (code points above 0xFFFF) with the replacement
+	 * character */
+	for (index = 0; index < ucs4_length; index++)
+	{
+		suspect = ucs4_text[index];
+		if ((suspect >= 0x1D173 && suspect <= 0x1D17A)
+			|| (suspect >= 0xE0001 && suspect <= 0xE007F))
+		{
+			ucs4_text[index] = 0xFFFD; /* replacement character */
+		}
+	}
+
+	utf8_text = g_ucs4_to_utf8 (
+		ucs4_text,
+		ucs4_length,
+		NULL,
+		output_length,
+		NULL
+	);
+	g_free (ucs4_text);
+
+	return utf8_text;
+}
+#endif
 
 char *
 text_validate (char **text, int *len)

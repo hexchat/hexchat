@@ -22,8 +22,11 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <unistd.h>
 #include <time.h>
+
+#ifndef WIN32
+#include <unistd.h>
+#endif
 
 #include "xchat.h"
 #include "notify.h"

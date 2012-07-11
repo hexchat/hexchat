@@ -19,8 +19,11 @@
 #include <stdio.h>
 #include <string.h>
 #include <fcntl.h>
-#include <unistd.h>
 #include <stdlib.h>
+
+#ifndef WIN32
+#include <unistd.h>
+#endif
 
 #include "fe-gtk.h"
 

@@ -1,0 +1,45 @@
+
+
+                                FiSHLiM
+
+                       http://fishlim.kodafritt.se/
+
+
+FiSHLiM is an XChat plugin for FiSH IRC encryption. It's my attempt at making
+a simple, lightweight and secure plugin for this encryption protocol.
+
+For installation instructions, see the INSTALL file.
+
+
+Features
+--------
+
+Working:
+  * Sending/receiving messages
+  * Topic decryption
+  * Using unecrypted keys / keys without a password from blow.ini
+  * Pure protocol-level filtering (works with highlighting, nick coloring etc)
+  * Partially encrypted messages (i.e. prefixed with nickname by a bouncer)
+
+Not working:
+  * Key exchange
+  * Password-protected key storage
+  * Topic encryption
+  * Remote exploitation (hopefully!)
+  * Plaintext content that contain +OK is decrypted twice
+
+
+Commands
+--------
+
+/setkey  [nick or #channel]  password
+
+    Sets the encryption key for the nick or channel to password. The keys
+    are stored in the configuration file in ~/.xchat2/blow.ini
+
+
+/delkey  nick-or-#channel
+
+    Deletes the given nick or channel from the configuration file.
+
+

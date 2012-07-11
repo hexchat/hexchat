@@ -18,8 +18,11 @@
 
 #include <stdio.h>
 #include <string.h>
-#include <unistd.h>
 #include <stdlib.h>
+
+#ifndef WIN32
+#include <unistd.h>
+#endif
 
 #include "xchat.h"
 #include "cfgfiles.h"
@@ -70,7 +73,7 @@ ctcp_check (session *sess, char *nick, char *word[], char *word_eol[],
 	while (list)
 	{
 		pop = (struct popup *) list->data;
-		if (!strcasecmp (ctcp, pop->name))
+		if (!g_ascii_strcasecmp (ctcp, pop->name))
 		{
 			ctcp_reply (sess, nick, word, word_eol, pop->cmd);
 			ret = 1;
@@ -94,7 +97,7 @@ ctcp_handle (session *sess, char *to, char *nick, char *ip,
 			ctcp_offset = 3;
 
 	/* consider DCC to be different from other CTCPs */
-	if (!strncasecmp (msg, "DCC", 3))
+	if (!g_ascii_strncasecmp (msg, "DCC", 3))
 	{
 		/* but still let CTCP replies override it */
 		if (!ctcp_check (sess, nick, word, word_eol, word[4] + ctcp_offset))
@@ -107,7 +110,7 @@ ctcp_handle (session *sess, char *to, char *nick, char *ip,
 
 	/* consider ACTION to be different from other CTCPs. Check
       ignore as if it was a PRIV/CHAN. */
-	if (!strncasecmp (msg, "ACTION ", 7))
+	if (!g_ascii_strncasecmp (msg, "ACTION ", 7))
 	{
 		if (is_channel (serv, to))
 		{
@@ -132,16 +135,21 @@ ctcp_handle (session *sess, char *to, char *nick, char *ip,
 	if (ignore_check (word[1], IG_CTCP))
 		return;
 
-	if (!strcasecmp (msg, "VERSION") && !prefs.hidever)
+	if (!g_ascii_strcasecmp (msg, "VERSION") && !prefs.hidever)
 	{
-		snprintf (outbuf, sizeof (outbuf), "VERSION xchat "PACKAGE_VERSION" %s",
+#ifdef WIN32
+		snprintf (outbuf, sizeof (outbuf), "VERSION XChat-WDK "PACKAGE_VERSION" [x%d] / %s",
+					 get_cpu_arch (), get_cpu_str ());
+#else
+		snprintf (outbuf, sizeof (outbuf), "VERSION XChat-WDK "PACKAGE_VERSION" %s",
 					 get_cpu_str ());
+#endif
 		serv->p_nctcp (serv, nick, outbuf);
 	}
 
 	if (!ctcp_check (sess, nick, word, word_eol, word[4] + ctcp_offset))
 	{
-		if (!strncasecmp (msg, "SOUND", 5))
+		if (!g_ascii_strncasecmp (msg, "SOUND", 5))
 		{
 			po = strchr (word[5], '\001');
 			if (po)

@@ -146,8 +146,13 @@ plugingui_load_cb (session *sess, char *file)
 void
 plugingui_load (void)
 {
-	gtkutil_file_req (_("Select a Plugin or Script to load"), plugingui_load_cb,
-							current_sess, NULL, FRF_ADDFOLDER);
+	gtkutil_file_req (_("Select a Plugin or Script to load"), plugingui_load_cb, current_sess,
+#ifdef WIN32
+							"Plugins and Scripts\0*.dll;*.lua;*.pl;*.py;*.tcl\0"
+							"All files\0*.*\0\0", 0);
+#else
+							NULL, FRF_ADDFOLDER);
+#endif
 }
 
 static void
@@ -171,12 +176,12 @@ plugingui_unload (GtkWidget * wid, gpointer unused)
 
 	len = strlen (file);
 #ifdef WIN32
-	if (len > 4 && strcasecmp (file + len - 4, ".dll") == 0)
+	if (len > 4 && g_ascii_strcasecmp (file + len - 4, ".dll") == 0)
 #else
 #if defined(__hpux)
-	if (len > 3 && strcasecmp (file + len - 3, ".sl") == 0)
+	if (len > 3 && g_ascii_strcasecmp (file + len - 3, ".sl") == 0)
 #else
-	if (len > 3 && strcasecmp (file + len - 3, ".so") == 0)
+	if (len > 3 && g_ascii_strcasecmp (file + len - 3, ".so") == 0)
 #endif
 #endif
 	{

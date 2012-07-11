@@ -4,7 +4,7 @@
 #include "xchat-plugin.h"
 
 #ifdef WIN32
-#define strcasecmp stricmp
+#define g_ascii_strcasecmp stricmp
 #endif
 
 static xchat_plugin *ph;	/* plugin handle */
@@ -151,25 +151,25 @@ timer_cb (char *word[], char *word_eol[], void *userdata)
 		return XCHAT_EAT_XCHAT;
 	}
 
-	if (strcasecmp (word[2], "-quiet") == 0)
+	if (g_ascii_strcasecmp (word[2], "-quiet") == 0)
 	{
 		quiet = TRUE;
 		offset++;
 	}
 
-	if (strcasecmp (word[2 + offset], "-delete") == 0)
+	if (g_ascii_strcasecmp (word[2 + offset], "-delete") == 0)
 	{
 		timer_del_ref (atoi (word[3 + offset]), quiet);
 		return XCHAT_EAT_XCHAT;
 	}
 
-	if (strcasecmp (word[2 + offset], "-refnum") == 0)
+	if (g_ascii_strcasecmp (word[2 + offset], "-refnum") == 0)
 	{
 		ref = atoi (word[3 + offset]);
 		offset += 2;
 	}
 
-	if (strcasecmp (word[2 + offset], "-repeat") == 0)
+	if (g_ascii_strcasecmp (word[2 + offset], "-repeat") == 0)
 	{
 		repeat = atoi (word[3 + offset]);
 		offset += 2;

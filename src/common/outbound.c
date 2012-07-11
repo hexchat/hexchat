@@ -30,9 +30,9 @@
 
 #ifndef WIN32
 #include <sys/wait.h>
+#include <unistd.h>
 #endif
 
-#include <unistd.h>
 #include <time.h>
 #include <signal.h>
 #include <sys/stat.h>
@@ -617,13 +617,13 @@ cmd_clear (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	GSList *list = sess_list;
 	char *reason = word_eol[2];
 
-	if (strcasecmp (reason, "HISTORY") == 0)
+	if (g_ascii_strcasecmp (reason, "HISTORY") == 0)
 	{
 		history_free (&sess->history);
 		return TRUE;
 	}
 
-	if (strncasecmp (reason, "all", 3) == 0)
+	if (g_ascii_strncasecmp (reason, "all", 3) == 0)
 	{
 		while (list)
 		{
@@ -750,26 +750,26 @@ cmd_dcc (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	char *type = word[2];
 	if (*type)
 	{
-		if (!strcasecmp (type, "HELP"))
+		if (!g_ascii_strcasecmp (type, "HELP"))
 			return FALSE;
-		if (!strcasecmp (type, "CLOSE"))
+		if (!g_ascii_strcasecmp (type, "CLOSE"))
 		{
 			if (*word[3] && *word[4])
 			{
 				goodtype = 0;
-				if (!strcasecmp (word[3], "SEND"))
+				if (!g_ascii_strcasecmp (word[3], "SEND"))
 				{
 					dcc = find_dcc (word[4], word[5], TYPE_SEND);
 					dcc_abort (sess, dcc);
 					goodtype = TRUE;
 				}
-				if (!strcasecmp (word[3], "GET"))
+				if (!g_ascii_strcasecmp (word[3], "GET"))
 				{
 					dcc = find_dcc (word[4], word[5], TYPE_RECV);
 					dcc_abort (sess, dcc);
 					goodtype = TRUE;
 				}
-				if (!strcasecmp (word[3], "CHAT"))
+				if (!g_ascii_strcasecmp (word[3], "CHAT"))
 				{
 					dcc = find_dcc (word[4], "", TYPE_CHATRECV);
 					if (!dcc)
@@ -789,20 +789,20 @@ cmd_dcc (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			}
 			return FALSE;
 		}
-		if ((!strcasecmp (type, "CHAT")) || (!strcasecmp (type, "PCHAT")))
+		if ((!g_ascii_strcasecmp (type, "CHAT")) || (!g_ascii_strcasecmp (type, "PCHAT")))
 		{
 			char *nick = word[3];
-			int passive = (!strcasecmp(type, "PCHAT")) ? 1 : 0;
+			int passive = (!g_ascii_strcasecmp(type, "PCHAT")) ? 1 : 0;
 			if (*nick)
 				dcc_chat (sess, nick, passive);
 			return TRUE;
 		}
-		if (!strcasecmp (type, "LIST"))
+		if (!g_ascii_strcasecmp (type, "LIST"))
 		{
 			dcc_show_list (sess);
 			return TRUE;
 		}
-		if (!strcasecmp (type, "GET"))
+		if (!g_ascii_strcasecmp (type, "GET"))
 		{
 			char *nick = word[3];
 			char *file = word[4];
@@ -820,18 +820,18 @@ cmd_dcc (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			}
 			return TRUE;
 		}
-		if ((!strcasecmp (type, "SEND")) || (!strcasecmp (type, "PSEND")))
+		if ((!g_ascii_strcasecmp (type, "SEND")) || (!g_ascii_strcasecmp (type, "PSEND")))
 		{
 			int i = 3, maxcps;
 			char *nick, *file;
-			int passive = (!strcasecmp(type, "PSEND")) ? 1 : 0;
+			int passive = (!g_ascii_strcasecmp(type, "PSEND")) ? 1 : 0;
 
 			nick = word[i];
 			if (!*nick)
 				return FALSE;
 
 			maxcps = prefs.dcc_max_send_cps;
-			if (!strncasecmp(nick, "-maxcps=", 8))
+			if (!g_ascii_strncasecmp(nick, "-maxcps=", 8))
 			{
 				maxcps = atoi(nick + 8);
 				i++;
@@ -1312,7 +1312,7 @@ cmd_menu (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 				*p = '/';
 	}
 
-	if (!strcasecmp (word[idx], "ADD"))
+	if (!g_ascii_strcasecmp (word[idx], "ADD"))
 	{
 		if (toggle)
 		{
@@ -1327,7 +1327,7 @@ cmd_menu (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		return TRUE;
 	}
 
-	if (!strcasecmp (word[idx], "DEL"))
+	if (!g_ascii_strcasecmp (word[idx], "DEL"))
 	{
 		menu_del (tbuf, label);
 		return TRUE;
@@ -2045,7 +2045,7 @@ cmd_gui (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	case 0xc0851aaa: fe_message (word[3], FE_MSG_INFO|FE_MSG_MARKUP); break; /* MSGBOX */
 	case 0x0035dafd: fe_ctrl_gui (sess, 1, 0); break; /* SHOW */
 	case 0x0033155f: /* MENU */
-		if (!strcasecmp (word[3], "TOGGLE"))
+		if (!g_ascii_strcasecmp (word[3], "TOGGLE"))
 			fe_ctrl_gui (sess, 6, 0);
 		else
 			return FALSE;
@@ -2247,25 +2247,25 @@ cmd_ignore (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			}
 			return TRUE;
 		}
-		if (!strcasecmp (word[i], "UNIGNORE"))
+		if (!g_ascii_strcasecmp (word[i], "UNIGNORE"))
 			type |= IG_UNIG;
-		else if (!strcasecmp (word[i], "ALL"))
+		else if (!g_ascii_strcasecmp (word[i], "ALL"))
 			type |= IG_PRIV | IG_NOTI | IG_CHAN | IG_CTCP | IG_INVI | IG_DCC;
-		else if (!strcasecmp (word[i], "PRIV"))
+		else if (!g_ascii_strcasecmp (word[i], "PRIV"))
 			type |= IG_PRIV;
-		else if (!strcasecmp (word[i], "NOTI"))
+		else if (!g_ascii_strcasecmp (word[i], "NOTI"))
 			type |= IG_NOTI;
-		else if (!strcasecmp (word[i], "CHAN"))
+		else if (!g_ascii_strcasecmp (word[i], "CHAN"))
 			type |= IG_CHAN;
-		else if (!strcasecmp (word[i], "CTCP"))
+		else if (!g_ascii_strcasecmp (word[i], "CTCP"))
 			type |= IG_CTCP;
-		else if (!strcasecmp (word[i], "INVI"))
+		else if (!g_ascii_strcasecmp (word[i], "INVI"))
 			type |= IG_INVI;
-		else if (!strcasecmp (word[i], "QUIET"))
+		else if (!g_ascii_strcasecmp (word[i], "QUIET"))
 			quiet = 1;
-		else if (!strcasecmp (word[i], "NOSAVE"))
+		else if (!g_ascii_strcasecmp (word[i], "NOSAVE"))
 			type |= IG_NOSAVE;
-		else if (!strcasecmp (word[i], "DCC"))
+		else if (!g_ascii_strcasecmp (word[i], "DCC"))
 			type |= IG_DCC;
 		else
 		{
@@ -2456,12 +2456,12 @@ cmd_load (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 #ifdef USE_PLUGIN
 	len = strlen (word[2]);
 #ifdef WIN32
-	if (len > 4 && strcasecmp (".dll", word[2] + len - 4) == 0)
+	if (len > 4 && g_ascii_strcasecmp (".dll", word[2] + len - 4) == 0)
 #else
 #if defined(__hpux)
-	if (len > 3 && strcasecmp (".sl", word[2] + len - 3) == 0)
+	if (len > 3 && g_ascii_strcasecmp (".sl", word[2] + len - 3) == 0)
 #else
-	if (len > 3 && strcasecmp (".so", word[2] + len - 3) == 0)
+	if (len > 3 && g_ascii_strcasecmp (".so", word[2] + len - 3) == 0)
 #endif
 #endif
 	{
@@ -2613,8 +2613,8 @@ cmd_msg (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			else
 			{
 				/* mask out passwords */
-				if (strcasecmp (nick, "nickserv") == 0 &&
-					 strncasecmp (msg, "identify ", 9) == 0)
+				if (g_ascii_strcasecmp (nick, "nickserv") == 0 &&
+					 g_ascii_strncasecmp (msg, "identify ", 9) == 0)
 					msg = "identify ****";
 				EMIT_SIGNAL (XP_TE_MSGSEND, sess, nick, msg, NULL, NULL, 0);
 			}
@@ -2825,7 +2825,7 @@ cmd_reconnect (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 
 	prefs.recon_delay = 0;
 
-	if (!strcasecmp (word[2], "ALL"))
+	if (!g_ascii_strcasecmp (word[2], "ALL"))
 	{
 		list = serv_list;
 		while (list)
@@ -2880,6 +2880,23 @@ cmd_recv (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 
 	return FALSE;
 }
+
+#if 0 /* manual command for flushing prefs to disk, but we use an autosave-upon-set approach instead */
+static int
+cmd_saveconf (struct session *sess, char *tbuf, char *word[], char *word_eol[])
+{
+	if (save_config ())
+	{
+		PrintText (sess, "Settings have been saved successfully.\n");
+	}
+	else
+	{
+		PrintText (sess, "Error saving settings.\n");
+	}
+
+	return TRUE;
+}
+#endif
 
 static int
 cmd_say (struct session *sess, char *tbuf, char *word[], char *word_eol[])
@@ -2980,7 +2997,7 @@ parse_irc_url (char *url, char *server_name[], char *port[], char *channel[], in
 {
 	char *co;
 #ifdef USE_OPENSSL
-	if (strncasecmp ("ircs://", url, 7) == 0)
+	if (g_ascii_strncasecmp ("ircs://", url, 7) == 0)
 	{
 		*use_ssl = TRUE;
 		*server_name = url + 7;
@@ -2988,7 +3005,7 @@ parse_irc_url (char *url, char *server_name[], char *port[], char *channel[], in
 	}
 #endif
 
-	if (strncasecmp ("irc://", url, 6) == 0)
+	if (g_ascii_strncasecmp ("irc://", url, 6) == 0)
 	{
 		*server_name = url + 6;
 #ifdef USE_OPENSSL
@@ -3059,7 +3076,7 @@ cmd_server (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	sess->server->network = NULL;
 
 	/* dont clear it for /servchan */
-	if (strncasecmp (word_eol[1], "SERVCHAN ", 9))
+	if (g_ascii_strncasecmp (word_eol[1], "SERVCHAN ", 9))
 		sess->willjoinchannel[0] = 0;
 
 	if (channel)
@@ -3189,7 +3206,7 @@ cmd_unignore (struct session *sess, char *tbuf, char *word[],
 	{
 		if (ignore_del (mask, NULL))
 		{
-			if (strcasecmp (arg, "QUIET"))
+			if (g_ascii_strcasecmp (arg, "QUIET"))
 				EMIT_SIGNAL (XP_TE_IGNOREREMOVE, sess, mask, NULL, NULL, NULL, 0);
 		}
 		return TRUE;
@@ -3205,12 +3222,12 @@ cmd_unload (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 
 	len = strlen (word[2]);
 #ifdef WIN32
-	if (len > 4 && strcasecmp (word[2] + len - 4, ".dll") == 0)
+	if (len > 4 && g_ascii_strcasecmp (word[2] + len - 4, ".dll") == 0)
 #else
 #if defined(__hpux)
-	if (len > 3 && strcasecmp (word[2] + len - 3, ".sl") == 0)
+	if (len > 3 && g_ascii_strcasecmp (word[2] + len - 3, ".sl") == 0)
 #else
-	if (len > 3 && strcasecmp (word[2] + len - 3, ".so") == 0)
+	if (len > 3 && g_ascii_strcasecmp (word[2] + len - 3, ".so") == 0)
 #endif
 #endif
 		by_file = TRUE;
@@ -3240,7 +3257,7 @@ find_server_from_hostname (char *hostname)
 	while (list)
 	{
 		serv = list->data;
-		if (!strcasecmp (hostname, serv->hostname) && serv->connected)
+		if (!g_ascii_strcasecmp (hostname, serv->hostname) && serv->connected)
 			return serv;
 		list = list->next;
 	}
@@ -3293,7 +3310,7 @@ cmd_url (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			/* maybe we're already connected to this net */
 
 			/* check for "FreeNode" */
-			net = servlist_net_find (server_name, NULL, strcasecmp);
+			net = servlist_net_find (server_name, NULL, g_ascii_strcasecmp);
 			/* check for "irc.eu.freenode.net" */
 			if (!net)
 				net = servlist_net_find_from_server (server_name);
@@ -3633,6 +3650,9 @@ const struct commands xc_cmds[] = {
 #endif
 	{"RECV", cmd_recv, 1, 0, 1, N_("RECV <text>, send raw data to xchat, as if it was received from the irc server")},
 
+#if 0
+	{"SAVECONF", cmd_saveconf, 0, 0, 1, N_("SAVECONF, saves the current settings to disk")},
+#endif
 	{"SAY", cmd_say, 0, 0, 1,
 	 N_("SAY <text>, sends the text to the object in the current window")},
 	{"SEND", cmd_send, 0, 0, 1, N_("SEND <nick> [<file>]")},
@@ -3685,7 +3705,7 @@ const struct commands xc_cmds[] = {
 static int
 command_compare (const void *a, const void *b)
 {
-	return strcasecmp (a, ((struct commands *)b)->name);
+	return g_ascii_strcasecmp (a, ((struct commands *)b)->name);
 }
 
 static struct commands *
@@ -4257,7 +4277,7 @@ handle_command (session *sess, char *cmd, int check_spch)
 	while (list)
 	{
 		pop = (struct popup *) list->data;
-		if (!strcasecmp (pop->name, word[1]))
+		if (!g_ascii_strcasecmp (pop->name, word[1]))
 		{
 			user_command (sess, tbuf, pop->cmd, word, word_eol);
 			user_cmd = TRUE;

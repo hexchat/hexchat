@@ -42,7 +42,6 @@
 #include <ctype.h>
 #include <stdlib.h>
 #include <time.h>
-#include <unistd.h>
 #include <gtk/gtkmain.h>
 #include <gtk/gtksignal.h>
 #include <gtk/gtkselection.h>
@@ -66,6 +65,11 @@
 #include "mmx_cmod.h"
 #endif
 
+#include "../common/xchat.h"
+#include "../common/fe.h"
+#include "../common/util.h"
+#include "../common/xchatc.h"
+#include "fe-gtk.h"
 #include "xtext.h"
 
 #define charlen(str) g_utf8_skip[*(guchar *)(str)]
@@ -73,6 +77,8 @@
 #ifdef WIN32
 #include <windows.h>
 #include <gdk/gdkwin32.h>
+#else
+#include <unistd.h>
 #endif
 
 /* is delimiter */
@@ -88,6 +94,20 @@
 #endif
 
 static GtkWidgetClass *parent_class = NULL;
+
+/*
+ * offsets_t is used for retaining search information.
+ * It is stored in the 'data' member of a GList,
+ * as chained from ent->marks.  It saves starting and
+ * ending+1 offset of a found occurrence.
+ */
+typedef union offsets_u {
+	struct offsets_s {
+		guint16	start;
+		guint16	end;
+	} o;
+	guint32 u;
+} offsets_t;
 
 struct textentry
 {
@@ -108,6 +128,7 @@ struct textentry
 	guchar tag;
 	guchar pad1;
 	guchar pad2;	/* 32-bit align : 44 bytes total */
+	GList *marks;	/* List of found strings */
 };
 
 enum
@@ -146,11 +167,25 @@ static void gtk_xtext_recalc_widths (xtext_buffer *buf, int);
 static void gtk_xtext_fix_indent (xtext_buffer *buf);
 static int gtk_xtext_find_subline (GtkXText *xtext, textentry *ent, int line);
 static char *gtk_xtext_conv_color (unsigned char *text, int len, int *newlen);
+/* For use by gtk_xtext_strip_color() and its callers -- */
+typedef union offlen_u {
+   struct offlen_s {
+      guint16  off;
+      guint16  len;
+   } o;
+   guint32 u;
+} offlen_t;
 static unsigned char *
 gtk_xtext_strip_color (unsigned char *text, int len, unsigned char *outbuf,
-							  int *newlen, int *mb_ret, int strip_hidden);
+							  int *newlen, int *mb_ret, GSList **slp, int strip_hidden);
 static gboolean gtk_xtext_check_ent_visibility (GtkXText * xtext, textentry *find_ent, int add);
 static int gtk_xtext_render_page_timeout (GtkXText * xtext);
+static int gtk_xtext_search_offset (xtext_buffer *buf, textentry *ent, unsigned int off);
+static void gtk_xtext_search_textentry (xtext_buffer *, textentry *, int);
+static void gtk_xtext_search_textentry_del (xtext_buffer *, textentry *);
+static void gtk_xtext_search_textentry_fini (gpointer, gpointer);
+static void gtk_xtext_search_fini (xtext_buffer *);
+static gboolean gtk_xtext_search_init (xtext_buffer *buf, const gchar *text, gtk_xtext_search_flags flags, GError **perr);
 
 /* some utility functions first */
 
@@ -163,7 +198,7 @@ nocasestrstr (const char *s, const char *tofind)
 
    if (len == 0)
      return (char *)s;
-   while (toupper(*s) != toupper(*tofind) || strncasecmp (s, tofind, len))
+   while (toupper(*s) != toupper(*tofind) || g_ascii_strncasecmp (s, tofind, len))
      if (*s++ == '\0')
        return (char *)NULL;
    return (char *)s;   
@@ -767,9 +802,8 @@ gtk_xtext_adjustment_set (xtext_buffer *buf, int fire_signal)
 		if (adj->upper == 0)
 			adj->upper = 1;
 
-		adj->page_size =
-			(GTK_WIDGET (buf->xtext)->allocation.height -
-			 buf->xtext->font->descent) / buf->xtext->fontsize;
+		adj->page_size = GTK_WIDGET (buf->xtext)->allocation.height /
+							  buf->xtext->fontsize;
 		adj->page_increment = adj->page_size;
 
 		if (adj->value > adj->upper - adj->page_size)
@@ -998,7 +1032,11 @@ gtk_xtext_realize (GtkWidget * widget)
 
 	gdk_window_set_user_data (widget->window, widget);
 
+#if GTK_CHECK_VERSION(2,24,0)
+	xtext->depth = gdk_window_get_visual (widget->window)->depth;
+#else
 	xtext->depth = gdk_drawable_get_visual (widget->window)->depth;
+#endif
 
 	val.subwindow_mode = GDK_INCLUDE_INFERIORS;
 	val.graphics_exposures = 0;
@@ -1119,18 +1157,6 @@ gtk_xtext_size_allocate (GtkWidget * widget, GtkAllocation * allocation)
 		if (xtext->buffer->scrollbar_down)
 			gtk_adjustment_set_value (xtext->adj, xtext->adj->upper -
 											  xtext->adj->page_size);
-	}
-}
-
-static void
-gtk_xtext_selection_clear_full (xtext_buffer *buf)
-{
-	textentry *ent = buf->text_first;
-	while (ent)
-	{
-		ent->mark_start = -1;
-		ent->mark_end = -1;
-		ent = ent->next;
 	}
 }
 
@@ -1717,13 +1743,6 @@ gtk_xtext_selection_draw (GtkXText * xtext, GdkEventMotion * event, gboolean ren
 		offset_end = tmp;
 	}
 
-	/* has the selection changed? Dont render unless necessary */
-	if (xtext->buffer->last_ent_start == ent_start &&
-		 xtext->buffer->last_ent_end == ent_end &&
-		 xtext->buffer->last_offset_start == offset_start &&
-		 xtext->buffer->last_offset_end == offset_end)
-		return;
-
 	/* set all the old mark_ fields to -1 */
 	gtk_xtext_selection_clear (xtext->buffer);
 
@@ -1753,10 +1772,24 @@ gtk_xtext_selection_draw (GtkXText * xtext, GdkEventMotion * event, gboolean ren
 		gtk_xtext_selection_render (xtext, ent_start, offset_start, ent_end, offset_end);
 }
 
+static int
+gtk_xtext_timeout_ms (GtkXText *xtext, int pixes)
+{
+	int apixes = abs(pixes);
+
+	if (apixes < 6) return 100;
+	if (apixes < 12) return 50;
+	if (apixes < 20) return 20;
+	return 10;
+}
+
 static gint
 gtk_xtext_scrolldown_timeout (GtkXText * xtext)
 {
 	int p_y, win_height;
+	xtext_buffer *buf = xtext->buffer;
+	GtkAdjustment *adj = xtext->adj;
+	textentry *ent;
 
 	gdk_window_get_pointer (GTK_WIDGET (xtext)->window, 0, &p_y, 0);
 	gdk_drawable_get_size (GTK_WIDGET (xtext)->window, 0, &win_height);
@@ -1764,13 +1797,30 @@ gtk_xtext_scrolldown_timeout (GtkXText * xtext)
 	if (p_y > win_height &&
 		 xtext->adj->value < (xtext->adj->upper - xtext->adj->page_size))
 	{
-		xtext->adj->value++;
-		gtk_adjustment_changed (xtext->adj);
-		gtk_xtext_render_page (xtext);
-		return 1;
+		xtext->adj->value += buf->pagetop_ent->lines_taken;
+		ent = buf->last_ent_end->next;
+		if (ent)
+		{
+			gtk_adjustment_value_changed (xtext->adj);
+		}
+		else
+		{
+			buf->scrollbar_down = TRUE;
+		}
+		xtext->scroll_tag = g_timeout_add (gtk_xtext_timeout_ms (xtext, p_y - win_height),
+														(GSourceFunc)
+														gtk_xtext_scrolldown_timeout,
+														xtext);
+		xtext->select_start_y -= (adj->value - xtext->select_start_adj) * xtext->fontsize;
+		xtext->select_start_adj = adj->value;
+		gtk_xtext_selection_draw (xtext, NULL, TRUE);
+		gtk_xtext_render_ents (xtext, ent, buf->last_ent_end);
+	}
+	else
+	{
+		xtext->scroll_tag = 0;
 	}
 
-	xtext->scroll_tag = 0;
 	return 0;
 }
 
@@ -1778,18 +1828,35 @@ static gint
 gtk_xtext_scrollup_timeout (GtkXText * xtext)
 {
 	int p_y;
+	xtext_buffer *buf = xtext->buffer;
+	GtkAdjustment *adj = xtext->adj;
+	textentry *ent;
 
 	gdk_window_get_pointer (GTK_WIDGET (xtext)->window, 0, &p_y, 0);
 
-	if (p_y < 0 && xtext->adj->value > 0.0)
+	if (p_y < 0 && adj->value >= 0)
 	{
-		xtext->adj->value--;
-		gtk_adjustment_changed (xtext->adj);
-		gtk_xtext_render_page (xtext);
-		return 1;
+		buf->scrollbar_down = FALSE;
+		ent = buf->last_ent_start->prev;
+		if (ent)
+		{
+			adj->value -= ent->lines_taken;
+			gtk_adjustment_value_changed (adj);
+		}
+		xtext->select_start_y -= (adj->value - xtext->select_start_adj) * xtext->fontsize;
+		xtext->select_start_adj = adj->value;
+		gtk_xtext_selection_draw (xtext, NULL, TRUE);
+		gtk_xtext_render_ents (xtext, ent, buf->last_ent_end);
+		xtext->scroll_tag = g_timeout_add (gtk_xtext_timeout_ms (xtext, p_y),
+														(GSourceFunc)
+														gtk_xtext_scrollup_timeout,
+														xtext);
+	}
+	else
+	{
+		xtext->scroll_tag = 0;
 	}
 
-	xtext->scroll_tag = 0;
 	return 0;
 }
 
@@ -1799,35 +1866,32 @@ gtk_xtext_selection_update (GtkXText * xtext, GdkEventMotion * event, int p_y, g
 	int win_height;
 	int moved;
 
+	if (xtext->scroll_tag)
+	{
+		return;
+	}
+
 	gdk_drawable_get_size (GTK_WIDGET (xtext)->window, 0, &win_height);
 
 	/* selecting past top of window, scroll up! */
 	if (p_y < 0 && xtext->adj->value >= 0)
 	{
-		if (!xtext->scroll_tag)
-			xtext->scroll_tag = g_timeout_add (100,
-															(GSourceFunc)
-														 	gtk_xtext_scrollup_timeout,
-															xtext);
-		return;
+		gtk_xtext_scrollup_timeout (xtext);
 	}
 
 	/* selecting past bottom of window, scroll down! */
-	if (p_y > win_height &&
+	else if (p_y > win_height &&
 		 xtext->adj->value < (xtext->adj->upper - xtext->adj->page_size))
 	{
-		if (!xtext->scroll_tag)
-			xtext->scroll_tag = g_timeout_add (100,
-															(GSourceFunc)
-															gtk_xtext_scrolldown_timeout,
-															xtext);
-		return;
+		gtk_xtext_scrolldown_timeout (xtext);
 	}
-
-	moved = (int)xtext->adj->value - xtext->select_start_adj;
-	xtext->select_start_y -= (moved * xtext->fontsize);
-	xtext->select_start_adj = xtext->adj->value;
-	gtk_xtext_selection_draw (xtext, event, render);
+	else
+	{
+		moved = (int)xtext->adj->value - xtext->select_start_adj;
+		xtext->select_start_y -= (moved * xtext->fontsize);
+		xtext->select_start_adj = xtext->adj->value;
+		gtk_xtext_selection_draw (xtext, event, render);
+	}
 }
 
 static char *
@@ -1883,7 +1947,7 @@ gtk_xtext_get_word (GtkXText * xtext, int x, int y, textentry ** ret_ent,
 	if (ret_len)
 		*ret_len = str - word;
 
-	return gtk_xtext_strip_color (word, len, xtext->scratch_buffer, NULL, NULL, FALSE);
+	return gtk_xtext_strip_color (word, len, xtext->scratch_buffer, NULL, NULL, NULL, FALSE);
 }
 
 #ifdef MOTION_MONITOR
@@ -1941,7 +2005,7 @@ gtk_xtext_check_mark_stamp (GtkXText *xtext, GdkModifierType mask)
 {
 	gboolean redraw = FALSE;
 
-	if ((mask & GDK_SHIFT_MASK))
+	if (mask & GDK_SHIFT_MASK || prefs.autocopy_stamp)
 	{
 		if (!xtext->mark_stamp)
 		{
@@ -2106,7 +2170,16 @@ gtk_xtext_set_clip_owner (GtkWidget * xtext, GdkEventButton * event)
 		free (str);
 	}
 
-	gtk_selection_owner_set (xtext, GDK_SELECTION_PRIMARY, event->time);
+	if (event)
+	{
+		gtk_selection_owner_set (xtext, GDK_SELECTION_PRIMARY, event->time);
+	}
+}
+
+void
+gtk_xtext_copy_selection (GtkXText *xtext)
+{
+	gtk_xtext_set_clip_owner (xtext, NULL);
 }
 
 static void
@@ -2174,6 +2247,11 @@ gtk_xtext_button_release (GtkWidget * widget, GdkEventButton * event)
 	if (event->button == 1)
 	{
 		xtext->button_down = FALSE;
+		if (xtext->scroll_tag)
+		{
+			g_source_remove (xtext->scroll_tag);
+			xtext->scroll_tag = 0;
+		}
 
 		gtk_grab_remove (widget);
 		/*gdk_pointer_ungrab (0);*/
@@ -2182,9 +2260,12 @@ gtk_xtext_button_release (GtkWidget * widget, GdkEventButton * event)
 		if (xtext->buffer->last_ent_start)
 		{
 			xtext->color_paste = FALSE;
-			if (event->state & GDK_CONTROL_MASK)
+			if (event->state & GDK_CONTROL_MASK || prefs.autocopy_color)
 				xtext->color_paste = TRUE;
-			gtk_xtext_set_clip_owner (GTK_WIDGET (xtext), event);
+			if (prefs.autocopy_text)
+			{
+				gtk_xtext_set_clip_owner (GTK_WIDGET (xtext), event);
+			}
 		}
 
 		if (xtext->select_start_x == event->x &&
@@ -2249,7 +2330,10 @@ gtk_xtext_button_press (GtkWidget * widget, GdkEventButton * event)
 			ent->mark_end = offset + len;
 			gtk_xtext_selection_render (xtext, ent, offset, ent, offset + len);
 			xtext->word_or_line_select = TRUE;
-			gtk_xtext_set_clip_owner (GTK_WIDGET (xtext), event);
+			if (prefs.autocopy_text)
+			{
+				gtk_xtext_set_clip_owner (GTK_WIDGET (xtext), event);
+			}
 		}
 
 		return FALSE;
@@ -2265,7 +2349,10 @@ gtk_xtext_button_press (GtkWidget * widget, GdkEventButton * event)
 			ent->mark_end = ent->str_len;
 			gtk_xtext_selection_render (xtext, ent, 0, ent, ent->str_len);
 			xtext->word_or_line_select = TRUE;
-			gtk_xtext_set_clip_owner (GTK_WIDGET (xtext), event);
+			if (prefs.autocopy_text)
+			{
+				gtk_xtext_set_clip_owner (GTK_WIDGET (xtext), event);
+			}
 		}
 
 		return FALSE;
@@ -2391,7 +2478,7 @@ gtk_xtext_selection_get_text (GtkXText *xtext, int *len_ret)
 		len = strlen (txt);
 	} else
 	{
-		stripped = gtk_xtext_strip_color (txt, strlen (txt), NULL, &len, 0, FALSE);
+		stripped = gtk_xtext_strip_color (txt, strlen (txt), NULL, &len, NULL, NULL, FALSE);
 		free (txt);
 	}
 
@@ -2431,12 +2518,14 @@ gtk_xtext_selection_get (GtkWidget * widget,
 
 #if (GTK_MAJOR_VERSION == 2) && (GTK_MINOR_VERSION == 0)
 			gdk_string_to_compound_text (
+												stripped, &encoding, &format, &new_text,
+												&new_length);
 #else
 			gdk_string_to_compound_text_for_display (
 												gdk_drawable_get_display (widget->window),
-#endif
 												stripped, &encoding, &format, &new_text,
 												&new_length);
+#endif
 			gtk_selection_data_set (selection_data_ptr, encoding, format,
 											new_text, new_length);
 			gdk_free_compound_text (new_text);
@@ -2551,19 +2640,26 @@ gtk_xtext_get_type (void)
 
 static unsigned char *
 gtk_xtext_strip_color (unsigned char *text, int len, unsigned char *outbuf,
-							  int *newlen, int *mb_ret, int strip_hidden)
+							  int *newlen, int *mb_ret, GSList **slp, int strip_hidden)
 {
 	int i = 0;
 	int rcol = 0, bgcol = 0;
 	int hidden = FALSE;
 	unsigned char *new_str;
 	int mb = FALSE;
+	GSList *sl = NULL;
+	unsigned char *text0 = text;
+	int off1, len1;
+	offlen_t data;
 
 	if (outbuf == NULL)
 		new_str = malloc (len + 2);
 	else
 		new_str = outbuf;
 
+	off1 = 0;
+	len1 = 0;
+	data.u = 0;
 	while (len > 0)
 	{
 		if (*text >= 128)
@@ -2597,11 +2693,31 @@ gtk_xtext_strip_color (unsigned char *text, int len, unsigned char *outbuf,
 				break;
 			default:
 				if (!(hidden && strip_hidden))
+				{
+					if (text - text0 - off1 != len1)
+					{
+						if (len1)
+						{
+							data.o.off = off1;
+							data.o.len = len1;
+							sl = g_slist_append (sl, GUINT_TO_POINTER (data.u));
+							len1 = 0;
+						}
+						off1 = text - text0;
+					}
+					len1++;
 					new_str[i++] = *text;
+				}
 			}
 		}
 		text++;
 		len--;
+	}
+	if (len1)
+	{
+		data.o.off = off1;
+		data.o.len = len1;
+		sl = g_slist_append (sl, GUINT_TO_POINTER (data.u));
 	}
 
 	new_str[i] = 0;
@@ -2612,8 +2728,14 @@ gtk_xtext_strip_color (unsigned char *text, int len, unsigned char *outbuf,
 	if (mb_ret != NULL)
 		*mb_ret = mb;
 
+	if (slp)
+		*slp = sl;
+	else
+		g_slist_free (sl);
+
 	return new_str;
 }
+
 
 /* GeEkMaN: converts mIRC control codes to literal control codes */
 
@@ -2718,7 +2840,7 @@ gtk_xtext_text_width (GtkXText *xtext, unsigned char *text, int len,
 	int new_len, mb;
 
 	new_buf = gtk_xtext_strip_color (text, len, xtext->scratch_buffer,
-												&new_len, &mb, !xtext->ignore_hidden);
+												&new_len, &mb, NULL, !xtext->ignore_hidden);
 
 	if (mb_ret)
 		*mb_ret = mb;
@@ -2884,6 +3006,63 @@ gtk_xtext_reset (GtkXText * xtext, int mark, int attribs)
 	xtext->nc = 0;
 }
 
+/*
+ * gtk_xtext_search_offset (buf, ent, off) --
+ * Look for arg offset in arg textentry
+ * Return one or more flags:
+ * 	GTK_MATCH_MID if we are in a match
+ * 	GTK_MATCH_START if we're at the first byte of it
+ * 	GTK_MATCH_END if we're at the first byte past it
+ * 	GTK_MATCH_CUR if it is the current match
+ */
+#define GTK_MATCH_START	1
+#define GTK_MATCH_MID	2
+#define GTK_MATCH_END	4
+#define GTK_MATCH_CUR	8
+static int
+gtk_xtext_search_offset (xtext_buffer *buf, textentry *ent, unsigned int off)
+{
+	GList *gl;
+	offsets_t o;
+	int flags = 0;
+
+	for (gl = g_list_first (ent->marks); gl; gl = g_list_next (gl))
+	{
+		o.u = GPOINTER_TO_UINT (gl->data);
+		if (off < o.o.start || off > o.o.end)
+			continue;
+		flags = GTK_MATCH_MID;
+		if (off == o.o.start)
+			flags |= GTK_MATCH_START;
+		if (off == o.o.end)
+		{
+			gl = g_list_next (gl);
+			if (gl)
+			{
+				o.u = GPOINTER_TO_UINT (gl->data);
+				if (off ==  o.o.start)	/* If subseq match is adjacent */
+				{
+					flags |= (gl == buf->curmark)? GTK_MATCH_CUR: 0;
+				}
+				else		/* If subseq match is not adjacent */
+				{
+					flags |= GTK_MATCH_END;
+				}
+			}
+			else		/* If there is no subseq match */
+			{
+				flags |= GTK_MATCH_END;
+			}
+		}
+		else if (gl == buf->curmark)	/* If not yet at the end of this match */
+		{
+			flags |= GTK_MATCH_CUR;
+		}
+		break;
+	}
+	return flags;
+}
+
 /* render a single line, which WONT wrap, and parse mIRC colors */
 
 static int
@@ -2898,6 +3077,9 @@ gtk_xtext_render_str (GtkXText * xtext, int y, textentry * ent,
 	int offset;
 	int mark = FALSE;
 	int ret = 1;
+	int k;
+	int srch_underline = FALSE;
+	int srch_mark = FALSE;
 
 	xtext->in_hilight = FALSE;
 
@@ -3046,6 +3228,50 @@ gtk_xtext_render_str (GtkXText * xtext, int y, textentry * ent,
 					pstr += j;
 					j = 0;
 					gtk_xtext_reset (xtext, mark, FALSE);
+				}
+			}
+
+			if (!left_only && !mark &&
+				 (k = gtk_xtext_search_offset (xtext->buffer, ent, offset + i)))
+			{
+				x += gtk_xtext_render_flush (xtext, x, y, pstr, j, gc, ent->mb);
+				pstr += j;
+				j = 0;
+				if (!(xtext->buffer->search_flags & highlight))
+				{
+					if (k & GTK_MATCH_CUR)
+					{
+						xtext_set_bg (xtext, gc, XTEXT_MARK_BG);
+						xtext_set_fg (xtext, gc, XTEXT_MARK_FG);
+						xtext->backcolor = TRUE;
+						srch_mark = TRUE;
+					} else
+					{
+						xtext_set_bg (xtext, gc, xtext->col_back);
+						xtext_set_fg (xtext, gc, xtext->col_fore);
+						xtext->backcolor = (xtext->col_back != XTEXT_BG)? TRUE: FALSE;
+						srch_mark = FALSE;
+					}
+				}
+				else
+				{
+					xtext->underline = (k & GTK_MATCH_CUR)? TRUE: FALSE;
+					if (k & (GTK_MATCH_START | GTK_MATCH_MID))
+					{
+						xtext_set_bg (xtext, gc, XTEXT_MARK_BG);
+						xtext_set_fg (xtext, gc, XTEXT_MARK_FG);
+						xtext->backcolor = TRUE;
+						srch_mark = TRUE;
+					}
+					if (k & GTK_MATCH_END)
+					{
+						xtext_set_bg (xtext, gc, xtext->col_back);
+						xtext_set_fg (xtext, gc, xtext->col_fore);
+						xtext->backcolor = (xtext->col_back != XTEXT_BG)? TRUE: FALSE;
+						srch_mark = FALSE;
+						xtext->underline = FALSE;
+					}
+					srch_underline = xtext->underline;
 				}
 			}
 
@@ -3198,6 +3424,11 @@ gtk_xtext_render_str (GtkXText * xtext, int y, textentry * ent,
 			xtext_set_bg (xtext, gc, XTEXT_MARK_BG);
 			xtext_set_fg (xtext, gc, XTEXT_MARK_FG);
 			xtext->backcolor = TRUE;
+			if (srch_underline)
+			{
+				xtext->underline = FALSE;
+				srch_underline = FALSE;
+			}
 			mark = TRUE;
 		}
 
@@ -3220,7 +3451,7 @@ gtk_xtext_render_str (GtkXText * xtext, int y, textentry * ent,
 	if (j)
 		x += gtk_xtext_render_flush (xtext, x, y, pstr, j, gc, ent->mb);
 
-	if (mark)
+	if (mark || srch_mark)
 	{
 		xtext_set_bg (xtext, gc, xtext->col_back);
 		xtext_set_fg (xtext, gc, xtext->col_fore);
@@ -3836,7 +4067,7 @@ gtk_xtext_load_trans (GtkXText * xtext)
 	PaintDesktop (hdc);
 	ReleaseDC (hwnd, hdc);
 
-	gdk_window_get_size (GTK_WIDGET (xtext)->window, &width, &height);
+	gdk_drawable_get_size (GTK_WIDGET (xtext)->window, &width, &height);
 	img = gdk_image_get (GTK_WIDGET (xtext)->window, 0, 0, width+128, height);
 	xtext->pixmap = win32_tint (xtext, img, img->width, img->height);
 
@@ -4388,7 +4619,7 @@ gtk_xtext_save (GtkXText * xtext, int fh)
 	while (ent)
 	{
 		buf = gtk_xtext_strip_color (ent->str, ent->str_len, NULL,
-											  &newlen, NULL, FALSE);
+											  &newlen, NULL, NULL, FALSE);
 		write (fh, buf, newlen);
 		write (fh, "\n", 1);
 		free (buf);
@@ -4775,6 +5006,11 @@ gtk_xtext_kill_ent (xtext_buffer *buffer, textentry *ent)
 
 	if (buffer->marker_pos == ent) buffer->marker_pos = NULL;
 
+	if (ent->marks)
+	{
+		gtk_xtext_search_textentry_del (buffer, ent);
+	}
+
 	free (ent);
 	return visible;
 }
@@ -4839,7 +5075,23 @@ gtk_xtext_remove_bottom (xtext_buffer *buffer)
 	else
 		buffer->text_first = NULL;
 
-	gtk_xtext_kill_ent (buffer, ent);
+	if (gtk_xtext_kill_ent (buffer, ent))
+	{
+		if (!buffer->xtext->add_io_tag)
+		{
+			/* remove scrolling events */
+			if (buffer->xtext->io_tag)
+			{
+				g_source_remove (buffer->xtext->io_tag);
+				buffer->xtext->io_tag = 0;
+			}
+			buffer->xtext->force_render = TRUE;
+			buffer->xtext->add_io_tag = g_timeout_add (REFRESH_TIMEOUT * 2,
+														(GSourceFunc)
+														gtk_xtext_render_page_timeout,
+														buffer->xtext);
+		}
+	}
 }
 
 /* If lines=0 => clear all */
@@ -4874,6 +5126,8 @@ gtk_xtext_clear (xtext_buffer *buf, int lines)
 	else
 	{
 		/* delete all */
+		if (buf->search_found)
+			gtk_xtext_search_fini (buf);
 		if (buf->xtext->auto_indent)
 			buf->indent = MARGIN;
 		buf->scrollbar_down = TRUE;
@@ -4905,21 +5159,37 @@ static gboolean
 gtk_xtext_check_ent_visibility (GtkXText * xtext, textentry *find_ent, int add)
 {
 	textentry *ent;
-	int lines_max;
-	int line = 0;
+	int lines;
+	xtext_buffer *buf = xtext->buffer;
 	int width;
 	int height;
 
+	if (find_ent == NULL)
+	{
+		return FALSE;
+	}
+
 	gdk_drawable_get_size (GTK_WIDGET (xtext)->window, &width, &height);
 
-	lines_max = ((height + xtext->pixel_offset) / xtext->fontsize) + add;
-	ent = xtext->buffer->pagetop_ent;
-
-	while (ent && line < lines_max)
+	ent = buf->pagetop_ent;
+	/* If top line not completely displayed return FALSE */
+	if (ent == find_ent && buf->pagetop_subline > 0)
 	{
-		if (find_ent == ent)
+		return FALSE;
+	}
+	/* Loop through line positions looking for find_ent */
+	lines = ((height + xtext->pixel_offset) / xtext->fontsize) + buf->pagetop_subline + add;
+	while (ent)	
+	{
+		lines -= ent->lines_taken;
+		if (lines <= 0)
+		{
+			return FALSE;
+		}
+		if (ent == find_ent)
+		{
 			return TRUE;
-		line += ent->lines_taken;
+		}
 		ent = ent->next;
 	}
 
@@ -4933,90 +5203,369 @@ gtk_xtext_check_marker_visibility (GtkXText * xtext)
 		xtext->buffer->marker_seen = TRUE;
 }
 
-textentry *
-gtk_xtext_search (GtkXText * xtext, const gchar *text, textentry *start, gboolean case_match, gboolean backward)
+static void
+gtk_xtext_unstrip_color (gint start, gint end, GSList *slp, GList **gl, gint maxo)
 {
-	textentry *ent, *fent;
-	int line;
-	gchar *str, *nee, *hay;	/* needle in haystack */
+	gint off1, off2, curlen;
+	GSList *cursl;
+	offsets_t marks;
 
-	gtk_xtext_selection_clear_full (xtext->buffer);
-	xtext->buffer->last_ent_start = NULL;
-	xtext->buffer->last_ent_end = NULL;
-
-	/* set up text comparand for Case Match or Ignore */
-	if (case_match)
-		nee = g_strdup (text);
-	else
-		nee = g_utf8_casefold (text, strlen (text));
-
-	/* Validate that start gives a currently valid ent pointer */
-	ent = xtext->buffer->text_first;
-	while (ent)
+	off1 = 0;
+	curlen = 0;
+	cursl = slp;
+	while (cursl)
 	{
-		if (ent == start)
-			break;
-		ent = ent->next;
-	}
-	if (!ent)
-		start = NULL;
-
-	/* Choose first ent to look at */
-	if (start)
-		ent = backward? start->prev: start->next;
-	else
-		ent = backward? xtext->buffer->text_last: xtext->buffer->text_first;
-
-	/* Search from there to one end or the other until found */
-	while (ent)
-	{
-		/* If Case Ignore, fold before & free after calling strstr */
-		if (case_match)
-			hay = g_strdup (ent->str);
-		else
-			hay = g_utf8_casefold (ent->str, strlen (ent->str));
-		/* Try to find the needle in this haystack */
-		str = g_strstr_len (hay, strlen (hay), nee);
-		g_free (hay);
-		if (str)
-			break;
-		ent = backward? ent->prev: ent->next;
-	}
-	fent = ent;
-
-	/* Save distance to start, end of found string */
-	if (ent)
-	{
-		ent->mark_start = str - hay;
-		ent->mark_end = ent->mark_start + strlen (nee);
-
-		/* is the match visible? Might need to scroll */
-		if (!gtk_xtext_check_ent_visibility (xtext, ent, 0))
+		offlen_t ol;
+		ol.u = GPOINTER_TO_UINT(cursl->data);
+		if (start < ol.o.len)
 		{
-			ent = xtext->buffer->text_first;
-			line = 0;
-			while (ent)
+			off1 = ol.o.off + start;
+			break;
+		}
+		curlen += ol.o.len;
+		start -= ol.o.len;
+		end -= ol.o.len;
+		cursl = g_slist_next (cursl);
+	}
+
+	off2 = off1;
+	while (cursl)
+	{
+		offlen_t ol;
+		ol.u = GPOINTER_TO_UINT(cursl->data);
+		if (end < ol.o.len)
+		{
+			off2 = ol.o.off + end;
+			break;
+		}
+		curlen += ol.o.len;
+		end -= ol.o.len;
+		cursl = g_slist_next (cursl);
+	}
+	if (!cursl)
+	{
+		off2 = maxo;
+	}
+
+	marks.o.start = off1;
+	marks.o.end = off2;
+	*gl = g_list_append (*gl, GUINT_TO_POINTER (marks.u));
+}
+
+/* Search a single textentry for occurrence(s) of search arg string */
+static void
+gtk_xtext_search_textentry (xtext_buffer *buf, textentry *ent, int pre)
+{
+	gchar *str;								/* text string to be searched */
+	GList *gl = NULL;
+	GSList *slp;
+	gint lstr;
+
+	if (buf->search_text == NULL)
+	{
+		return;
+	}
+
+	str = gtk_xtext_strip_color (ent->str, ent->str_len, buf->xtext->scratch_buffer,
+										  &lstr, NULL, &slp, !buf->xtext->ignore_hidden);
+
+	/* Regular-expression matching --- */
+	if (buf->search_flags & regexp)
+	{
+		GMatchInfo *gmi;
+		gint start, end;
+
+		if (buf->search_re == NULL)
+		{
+			return;
+		}
+		g_regex_match (buf->search_re, str, 0, &gmi);
+		while (g_match_info_matches (gmi))
+		{
+			g_match_info_fetch_pos (gmi, 0,  &start, &end);
+			gtk_xtext_unstrip_color (start, end, slp, &gl, ent->str_len);
+			g_match_info_next (gmi, NULL);
+		}
+		g_match_info_free (gmi);
+
+	/* Non-regular-expression matching --- */
+	} else {
+		gchar *hay, *pos;
+		gint lhay, off, len;
+		gint match = buf->search_flags & case_match;
+
+		hay = match? g_strdup (str): g_utf8_casefold (str, lstr);
+		lhay = strlen (hay);
+		off = 0;
+
+		for (pos = hay, len = lhay; len;
+			  off += buf->search_lnee, pos = hay + off, len = lhay - off)
+		{
+			str = g_strstr_len (pos, len, buf->search_nee);
+			if (str == NULL)
 			{
-				line += ent->lines_taken;
-				ent = ent->next;
-				if (ent == fent)
-					break;
+				break;
 			}
-			while (line > xtext->adj->upper - xtext->adj->page_size)
-				line--;
-			if (backward)
-				line -= xtext->adj->page_size - ent->lines_taken;
-			xtext->adj->value = line;
-			xtext->buffer->scrollbar_down = FALSE;
-			gtk_adjustment_changed (xtext->adj);
+			off = str - hay;
+			gtk_xtext_unstrip_color (off, off + buf->search_lnee,
+											 slp, &gl, ent->str_len);
+		}
+
+		g_free (hay);
+	}
+
+	/* Common processing --- */
+	g_slist_free (slp);
+	ent->marks = gl;
+	if (gl)
+	{
+		buf->search_found = (pre? g_list_prepend: g_list_append) (buf->search_found, ent);
+		if (pre == FALSE && buf->hintsearch == NULL)
+		{
+			buf->hintsearch = ent;
 		}
 	}
+	return;
+}
 
-	g_free (nee);
+/* Free all search information for a textentry */
+static void
+gtk_xtext_search_textentry_del (xtext_buffer *buf, textentry *ent)
+{
+	g_list_free (ent->marks);
+	ent->marks = NULL;
+	if (buf->cursearch && buf->cursearch->data == ent)
+	{
+		buf->cursearch = NULL;
+		buf->curmark = NULL;
+	}
+	if (buf->pagetop_ent == ent)
+	{
+		buf->pagetop_ent = NULL;
+	}
+	if (buf->hintsearch == ent)
+	{
+		buf->hintsearch = NULL;
+	}
+	buf->search_found = g_list_remove (buf->search_found, ent);
+}
+
+/* Used only by glist_foreach */
+static void
+gtk_xtext_search_textentry_fini (gpointer entp, gpointer dummy)
+{
+	textentry *ent = entp;
+
+	g_list_free (ent->marks);
+	ent->marks = NULL;
+}
+
+/* Free all search information for all textentrys and the xtext_buffer */
+static void
+gtk_xtext_search_fini (xtext_buffer *buf)
+{
+	g_list_foreach (buf->search_found, gtk_xtext_search_textentry_fini, 0);
+	g_list_free (buf->search_found);
+	buf->search_found = NULL;
+	g_free (buf->search_text);
+	buf->search_text = NULL;
+	g_free (buf->search_nee);
+	buf->search_nee = NULL;
+	buf->search_flags = 0;
+	buf->cursearch = NULL;
+	buf->curmark = NULL;
+	if (buf->search_re)
+	{
+		g_regex_unref (buf->search_re);
+		buf->search_re = NULL;
+	}
+}
+
+/* Returns TRUE if the base search information exists and is still okay to use */
+static gboolean
+gtk_xtext_search_init (xtext_buffer *buf, const gchar *text, gtk_xtext_search_flags flags, GError **perr)
+{
+	/* Of the five flags, backward and highlight_all do not need a new search */
+	if (buf->search_found &&
+		 strcmp (buf->search_text, text) == 0 &&
+		 (buf->search_flags & case_match) == (flags & case_match) &&
+		 (buf->search_flags & follow) == (flags & follow) &&
+		 (buf->search_flags & regexp) == (flags & regexp))
+	{
+		return TRUE;
+	}
+	buf->hintsearch = buf->cursearch? buf->cursearch->data: NULL;
+	gtk_xtext_search_fini (buf);
+	buf->search_text = g_strdup (text);
+	if (flags & regexp)
+	{
+		buf->search_re = g_regex_new (text, (flags & case_match)? 0: G_REGEX_CASELESS, 0, perr);
+		if (perr && *perr)
+		{
+			return FALSE;
+		}
+	}
+	else
+	{
+		if (flags & case_match)
+		{
+			buf->search_nee = g_strdup (text);
+		}
+		else
+		{
+			buf->search_nee = g_utf8_casefold (text, strlen (text));
+		}
+		buf->search_lnee = strlen (buf->search_nee);
+	}
+	buf->search_flags = flags;
+	buf->cursearch = NULL;
+	buf->curmark = NULL;
+	return FALSE;
+}
+
+#define BACKWARD (flags & backward)
+#define FIRSTLAST(lp)  (BACKWARD? g_list_last(lp): g_list_first(lp))
+#define NEXTPREVIOUS(lp) (BACKWARD? g_list_previous(lp): g_list_next(lp))
+textentry *
+gtk_xtext_search (GtkXText * xtext, const gchar *text, gtk_xtext_search_flags flags, GError **perr)
+{
+	textentry *ent = NULL;
+	xtext_buffer *buf = xtext->buffer;
+	GList *gl;
+
+	if (buf->text_first == NULL)
+	{
+		return NULL;
+	}
+
+	/* If the text arg is NULL, one of these has been toggled: highlight follow */
+	if (text == NULL)		/* Here on highlight or follow toggle */
+	{
+		gint oldfollow = buf->search_flags & follow;
+		gint newfollow = flags & follow;
+
+		/* If "Follow" has just been checked, search possible new textentries --- */
+		if (newfollow && (newfollow != oldfollow))
+		{
+			gl = g_list_last (buf->search_found);
+			ent = gl? gl->data: buf->text_first;
+			for (; ent; ent = ent->next)
+			{
+				gtk_xtext_search_textentry (buf, ent, FALSE);
+			}
+		}
+		buf->search_flags = flags;
+		ent = buf->pagetop_ent;
+	}
+
+	/* if the text arg is "", the reset button has been clicked or Control-Shift-F has been hit */
+	else if (text[0] == 0)		/* Let a null string do a reset. */
+	{
+		gtk_xtext_search_fini (buf);
+	}
+
+	/* If the text arg is neither NULL nor "", it's the search string */
+	else
+	{
+		if (gtk_xtext_search_init (buf, text, flags, perr) == FALSE)	/* If a new search: */
+		{
+			if (perr && *perr)
+			{
+				return NULL;
+			}
+			for (ent = buf->text_first; ent; ent = ent->next)
+			{
+				gtk_xtext_search_textentry (buf, ent, TRUE);
+			}
+			buf->search_found = g_list_reverse (buf->search_found);
+		}
+
+		/* Now base search results are in place. */
+
+		if (buf->search_found)
+		{
+			/* If we're in the midst of moving among found items */
+			if (buf->cursearch)
+			{
+				ent = buf->cursearch->data;
+				buf->curmark = NEXTPREVIOUS (buf->curmark);
+				if (buf->curmark == NULL)
+				{
+					/* We've returned all the matches for this textentry. */
+					buf->cursearch = NEXTPREVIOUS (buf->cursearch);
+					if (buf->cursearch)
+					{
+						ent = buf->cursearch->data;
+						buf->curmark = FIRSTLAST (ent->marks);
+					}
+					else	/* We've returned all the matches for all textentries */
+					{
+						ent = NULL;
+					}
+				}
+			}
+#if 0
+			/* If user changed the search, let's look starting where he was */
+			else if (buf->hintsearch)
+			{
+				for (ent = buf->hintsearch; ent; ent = BACKWARD? ent->prev: ent->next)
+					if (ent->marks)
+						break;
+				if (ent == NULL)
+					for (ent = buf->hintsearch; ent; ent = BACKWARD? ent->next: ent->prev)
+						if (ent->marks)
+							break;
+				if (ent)
+				{
+					buf->cursearch = g_list_find (buf->search_found, ent);
+					buf->curmark = FIRSTLAST (ent->marks);
+				}
+			}
+#endif
+			/* This is a fresh search */
+			else
+			{
+				buf->cursearch = FIRSTLAST (buf->search_found);
+				ent = buf->cursearch->data;
+				buf->curmark = FIRSTLAST (ent->marks);
+			}
+		}
+	}
+	buf->hintsearch = ent;
+
+	if (!gtk_xtext_check_ent_visibility (xtext, ent, 1))
+	{
+		GtkAdjustment *adj = xtext->adj;
+		float value;
+
+		buf->pagetop_ent = NULL;
+		for (value = 0, ent = buf->text_first;
+			  ent && ent != buf->hintsearch; ent = ent->next)
+		{
+			value += ent->lines_taken;
+		}
+		if (value > adj->upper - adj->page_size)
+		{
+			value = adj->upper - adj->page_size;
+		}
+		else if ((flags & backward)  && ent)
+		{
+			value -= adj->page_size - ent->lines_taken;
+			if (value < 0)
+			{
+				value = 0;
+			}
+		}
+		gtk_adjustment_set_value (adj, value);
+	}
+
 	gtk_widget_queue_draw (GTK_WIDGET (xtext));
 
-	return fent;
+	return buf->hintsearch;
 }
+#undef BACKWARD
+#undef FIRSTLAST
+#undef NEXTPREVIOUS
 
 static int
 gtk_xtext_render_page_timeout (GtkXText * xtext)
@@ -5079,6 +5628,7 @@ gtk_xtext_append_entry (xtext_buffer *buf, textentry * ent, time_t stamp)
 	ent->mark_start = -1;
 	ent->mark_end = -1;
 	ent->next = NULL;
+	ent->marks = NULL;
 
 	if (ent->indent < MARGIN)
 		ent->indent = MARGIN;	  /* 2 pixels is the left margin */
@@ -5097,10 +5647,11 @@ gtk_xtext_append_entry (xtext_buffer *buf, textentry * ent, time_t stamp)
 	if (buf->reset_marker_pos || 
 		((buf->marker_pos == NULL || buf->marker_seen) && (buf->xtext->buffer != buf || 
 #if GTK_CHECK_VERSION(2,4,0)
-		!gtk_window_has_toplevel_focus (GTK_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (buf->xtext)))))))
+		!gtk_window_has_toplevel_focus (GTK_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (buf->xtext))))
 #else
-		!(GTK_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (buf->xtext))))->has_focus)))
+		!(GTK_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (buf->xtext))))->has_focus
 #endif
+	   )))
 	{
 		buf->marker_pos = ent;
 		dontscroll (buf); /* force scrolling off */
@@ -5139,6 +5690,10 @@ gtk_xtext_append_entry (xtext_buffer *buf, textentry * ent, time_t stamp)
 		buf->old_value = buf->num_lines - buf->xtext->adj->page_size;
 		if (buf->old_value < 0)
 			buf->old_value = 0;
+	}
+	if (buf->search_flags & follow)
+	{
+		gtk_xtext_search_textentry (buf, ent, FALSE);
 	}
 }
 
@@ -5465,6 +6020,11 @@ gtk_xtext_buffer_free (xtext_buffer *buf)
 
 	if (buf->xtext->selection_buffer == buf)
 		buf->xtext->selection_buffer = NULL;
+
+	if (buf->search_found)
+	{
+		gtk_xtext_search_fini (buf);
+	}
 
 	ent = buf->text_first;
 	while (ent)

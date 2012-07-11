@@ -1,0 +1,230 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{C9B735E4-75BC-45AC-A5E3-39A6D076F912}</ProjectGuid>
+    <RootNamespace>copy</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>WDK7</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>WDK7</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\xchat.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\xchat.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)build\$(PlatformName)\bin</OutDir>
+    <IntDir>$(SolutionDir)build\$(PlatformName)\obj\$(ProjectName)</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)build\$(PlatformName)\bin</OutDir>
+    <IntDir>$(SolutionDir)build\$(PlatformName)\obj\$(ProjectName)</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <PreBuildEvent>
+      <Command>rmdir /q /s "$(XChatDest)"
+mkdir "$(XChatDest)"
+echo 2&gt; portable-mode
+move portable-mode "$(XChatDest)"
+copy "$(OutDir)\xchat.exe" "$(XChatDest)"
+copy "$(OutDir)\xchat-text.exe" "$(XChatDest)"
+copy "$(OutDir)\thememan.exe" "$(XChatDest)"
+copy "$(DepsRoot)\bin\libatk-1.0-0.dll" "$(XChatDest)"
+copy "$(DepsRoot)\bin\libcairo-2.dll" "$(XChatDest)"
+copy "$(DepsRoot)\bin\libexpat-1.dll" "$(XChatDest)"
+copy "$(DepsRoot)\bin\libfontconfig-1.dll" "$(XChatDest)"
+copy "$(DepsRoot)\bin\freetype6.dll" "$(XChatDest)"
+copy "$(DepsRoot)\bin\libgdk_pixbuf-2.0-0.dll" "$(XChatDest)"
+copy "$(DepsRoot)\bin\libgdk-win32-2.0-0.dll" "$(XChatDest)"
+copy "$(DepsRoot)\bin\libgio-2.0-0.dll" "$(XChatDest)"
+copy "$(DepsRoot)\bin\libglib-2.0-0.dll" "$(XChatDest)"
+copy "$(DepsRoot)\bin\libgmodule-2.0-0.dll" "$(XChatDest)"
+copy "$(DepsRoot)\bin\libgobject-2.0-0.dll" "$(XChatDest)
+copy "$(DepsRoot)\bin\libgthread-2.0-0.dll" "$(XChatDest)"
+copy "$(DepsRoot)\bin\libgtk-win32-2.0-0.dll" "$(XChatDest)"
+copy "$(DepsRoot)\bin\intl.dll" "$(XChatDest)"
+copy "$(DepsRoot)\bin\libpango-1.0-0.dll" "$(XChatDest)"
+copy "$(DepsRoot)\bin\libpangocairo-1.0-0.dll" "$(XChatDest)"
+copy "$(DepsRoot)\bin\libpangoft2-1.0-0.dll" "$(XChatDest)"
+copy "$(DepsRoot)\bin\libpangowin32-1.0-0.dll" "$(XChatDest)"
+copy "$(DepsRoot)\bin\libpng14-14.dll" "$(XChatDest)"
+copy "$(DepsRoot)\bin\libxml2.dll" "$(XChatDest)"
+xcopy /q /s /i "$(DepsRoot)\lib\gtk-2.0\2.10.0\engines" "$(XChatDest)\lib\gtk-2.0\2.10.0\engines"
+xcopy /q /s /i "$(DepsRoot)\lib\gtk-2.0\modules\libgail.dll" "$(XChatDest)\lib\gtk-2.0\modules\"
+xcopy /q /s /i etc "$(XChatDest)\etc"
+xcopy /q /s /i share "$(XChatDest)\share"
+copy "..\..\COPYING" "$(XChatDest)"
+copy "$(DepsRoot)\LICENSE.OPENSSL" "$(XChatDest)"
+copy "$(DepsRoot)\LICENSE.ZLIB" "$(XChatDest)"
+copy "$(DepsRoot)\share\gettext\intl\COPYING.LIB-2.0" "$(XChatDest)\LICENSE.GTK"
+copy "$(DepsRoot)\share\gettext\intl\COPYING.LIB-2.1" "$(XChatDest)\LICENSE.CAIRO"
+copy "$(DepsRoot)\LICENSE.LUA" "$(XChatDest)"
+copy "$(DepsRoot)\LICENSE.ENCHANT" "$(XChatDest)"
+copy "$(DepsRoot)\LICENSE.LIBXML" "$(XChatDest)"
+copy "$(DepsRoot)\bin\libeay32.dll" "$(XChatDest)"
+copy "$(DepsRoot)\bin\ssleay32.dll" "$(XChatDest)"
+copy "$(DepsRoot)\bin\zlib1.dll" "$(XChatDest)"
+copy "$(DepsRoot)\bin\cert.pem" "$(XChatDest)"
+copy "$(DepsRoot)\bin\libenchant.dll" "$(XChatDest)"
+xcopy /q /s /i "$(DepsRoot)\lib\enchant\libenchant_myspell.dll" "$(XChatDest)\lib\enchant\"
+xcopy /q /s /i "$(OutDir)xcchecksum.dll" "$(XChatDest)\plugins\"
+copy "$(OutDir)\xcdns.dll" "$(XChatDest)\plugins"
+copy "$(OutDir)\xcdoat.dll" "$(XChatDest)\plugins"
+copy "$(OutDir)\xcexec.dll" "$(XChatDest)\plugins"
+copy "$(OutDir)\xcfishlim.dll" "$(XChatDest)\plugins"
+copy "$(OutDir)\xclua.dll" "$(XChatDest)\plugins"
+copy "$(OutDir)\xcmpcinfo.dll" "$(XChatDest)\plugins"
+copy "$(OutDir)\xcperl-512.dll" "$(XChatDest)\plugins"
+copy "$(OutDir)\xcperl-514.dll" "$(XChatDest)\plugins"
+copy "$(OutDir)\xcperl-516.dll" "$(XChatDest)\plugins"
+copy "$(OutDir)\xcpython.dll" "$(XChatDest)\plugins"
+copy "$(OutDir)\xctcl.dll" "$(XChatDest)\plugins"
+copy "$(OutDir)\xcupd.dll" "$(XChatDest)\plugins"
+copy "$(OutDir)\xcxsasl.dll" "$(XChatDest)\plugins"
+copy "$(OutDir)\xtray.dll" "$(XChatDest)\plugins"
+copy "$(OutDir)\xcwinamp.dll" "$(XChatDest)\plugins"
+copy "$(OutDir)\xcwinsys.dll" "$(XChatDest)\plugins"
+copy "$(OutDir)\xcwmpa.dll" "$(XChatDest)\plugins"
+copy "$(DepsRoot)\bin\lua51.dll" "$(XChatDest)"
+xcopy /q /s /i "$(OutDir)\locale" "$(XChatDest)\locale"
+xcopy /q /s /i "$(DepsRoot)\share\locale" "$(XChatDest)\share\locale"
+copy "$(ProgramFiles)\Codejock Software\ISSkin\ISSkinU.dll" "$(XChatDest)"
+copy "..\installer\watercolorlite-green.cjstyles" "$(XChatDest)"</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+    <PreBuildEvent>
+      <Command>rmdir /q /s "$(XChatDest)"
+mkdir "$(XChatDest)"
+echo 2&gt; portable-mode
+move portable-mode "$(XChatDest)"
+copy "$(OutDir)\xchat.exe" "$(XChatDest)"
+copy "$(OutDir)\xchat-text.exe" "$(XChatDest)"
+copy "$(OutDir)\thememan.exe" "$(XChatDest)"
+copy "$(DepsRoot)\bin\libatk-1.0-0.dll" "$(XChatDest)"
+copy "$(DepsRoot)\bin\libcairo-2.dll" "$(XChatDest)"
+copy "$(DepsRoot)\bin\libexpat-1.dll" "$(XChatDest)"
+copy "$(DepsRoot)\bin\libfontconfig-1.dll" "$(XChatDest)"
+copy "$(DepsRoot)\bin\libfreetype-6.dll" "$(XChatDest)"
+copy "$(DepsRoot)\bin\libgdk_pixbuf-2.0-0.dll" "$(XChatDest)"
+copy "$(DepsRoot)\bin\libgdk-win32-2.0-0.dll" "$(XChatDest)"
+copy "$(DepsRoot)\bin\libgio-2.0-0.dll" "$(XChatDest)"
+copy "$(DepsRoot)\bin\libglib-2.0-0.dll" "$(XChatDest)"
+copy "$(DepsRoot)\bin\libgmodule-2.0-0.dll" "$(XChatDest)"
+copy "$(DepsRoot)\bin\libgobject-2.0-0.dll" "$(XChatDest)
+copy "$(DepsRoot)\bin\libgthread-2.0-0.dll" "$(XChatDest)"
+copy "$(DepsRoot)\bin\libgtk-win32-2.0-0.dll" "$(XChatDest)"
+copy "$(DepsRoot)\bin\libintl-8.dll" "$(XChatDest)"
+copy "$(DepsRoot)\bin\libpango-1.0-0.dll" "$(XChatDest)"
+copy "$(DepsRoot)\bin\libpangocairo-1.0-0.dll" "$(XChatDest)"
+copy "$(DepsRoot)\bin\libpangoft2-1.0-0.dll" "$(XChatDest)"
+copy "$(DepsRoot)\bin\libpangowin32-1.0-0.dll" "$(XChatDest)"
+copy "$(DepsRoot)\bin\libpng14-14.dll" "$(XChatDest)"
+copy "$(DepsRoot)\bin\libxml2.dll" "$(XChatDest)"
+xcopy /q /s /i "$(DepsRoot)\lib\gtk-2.0\2.10.0\engines" "$(XChatDest)\lib\gtk-2.0\2.10.0\engines"
+xcopy /q /s /i "$(DepsRoot)\lib\gtk-2.0\modules\libgail.dll" "$(XChatDest)\lib\gtk-2.0\modules\"
+xcopy /q /s /i etc "$(XChatDest)\etc"
+xcopy /q /s /i share "$(XChatDest)\share"
+copy "..\..\COPYING" "$(XChatDest)"
+copy "$(DepsRoot)\LICENSE.OPENSSL" "$(XChatDest)"
+copy "$(DepsRoot)\LICENSE.ZLIB" "$(XChatDest)"
+copy "$(DepsRoot)\share\gettext\intl\COPYING.LIB-2.0" "$(XChatDest)\LICENSE.GTK"
+copy "$(DepsRoot)\share\gettext\intl\COPYING.LIB-2.1" "$(XChatDest)\LICENSE.CAIRO"
+copy "$(DepsRoot)\LICENSE.LUA" "$(XChatDest)"
+copy "$(DepsRoot)\LICENSE.ENCHANT" "$(XChatDest)"
+copy "$(DepsRoot)\LICENSE.LIBXML" "$(XChatDest)"
+copy "$(DepsRoot)\bin\libeay32.dll" "$(XChatDest)"
+copy "$(DepsRoot)\bin\ssleay32.dll" "$(XChatDest)"
+copy "$(DepsRoot)\bin\zlib1.dll" "$(XChatDest)"
+copy "$(DepsRoot)\bin\cert.pem" "$(XChatDest)"
+copy "$(DepsRoot)\bin\libenchant.dll" "$(XChatDest)"
+xcopy /q /s /i "$(DepsRoot)\lib\enchant\libenchant_myspell.dll" "$(XChatDest)\lib\enchant\"
+xcopy /q /s /i "$(OutDir)xcchecksum.dll" "$(XChatDest)\plugins\"
+copy "$(OutDir)\xcdns.dll" "$(XChatDest)\plugins"
+copy "$(OutDir)\xcdoat.dll" "$(XChatDest)\plugins"
+copy "$(OutDir)\xcexec.dll" "$(XChatDest)\plugins"
+copy "$(OutDir)\xcfishlim.dll" "$(XChatDest)\plugins"
+copy "$(OutDir)\xclua.dll" "$(XChatDest)\plugins"
+copy "$(OutDir)\xcmpcinfo.dll" "$(XChatDest)\plugins"
+copy "$(OutDir)\xcperl-512.dll" "$(XChatDest)\plugins"
+copy "$(OutDir)\xcperl-514.dll" "$(XChatDest)\plugins"
+copy "$(OutDir)\xcperl-516.dll" "$(XChatDest)\plugins"
+copy "$(OutDir)\xcpython.dll" "$(XChatDest)\plugins"
+copy "$(OutDir)\xctcl.dll" "$(XChatDest)\plugins"
+copy "$(OutDir)\xcupd.dll" "$(XChatDest)\plugins"
+copy "$(OutDir)\xcxsasl.dll" "$(XChatDest)\plugins"
+copy "$(OutDir)\xtray.dll" "$(XChatDest)\plugins"
+copy "$(OutDir)\xcwinamp.dll" "$(XChatDest)\plugins"
+copy "$(OutDir)\xcwinsys.dll" "$(XChatDest)\plugins"
+copy "$(OutDir)\xcwmpa.dll" "$(XChatDest)\plugins"
+copy "$(DepsRoot)\bin\lua51.dll" "$(XChatDest)"
+xcopy /q /s /i "$(OutDir)\locale" "$(XChatDest)\locale"
+xcopy /q /s /i "$(DepsRoot)\share\locale" "$(XChatDest)\share\locale"
+copy "$(ProgramFiles)\Codejock Software\ISSkin\ISSkinU.dll" "$(XChatDest)"
+copy "..\installer\watercolorlite-blue.cjstyles" "$(XChatDest)"</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="etc\download.png" />
+    <None Include="etc\gtk-2.0\gtkrc" />
+    <None Include="etc\gtkpref.png" />
+    <None Include="etc\music.png" />
+    <None Include="etc\system.png" />
+    <None Include="share\xml\iso-codes\iso_3166.xml" />
+    <None Include="share\xml\iso-codes\iso_639.xml" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

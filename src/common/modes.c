@@ -789,20 +789,20 @@ inbound_005 (server * serv, char *word[])
 			}
 
 			/* use /NICKSERV */
-			if (strcasecmp (word[w] + 8, "RusNet") == 0)
+			if (g_ascii_strcasecmp (word[w] + 8, "RusNet") == 0)
 				serv->nickservtype = 1;
-			else if (strcasecmp (word[w] + 8, "UniBG") == 0)
+			else if (g_ascii_strcasecmp (word[w] + 8, "UniBG") == 0)
 				serv->nickservtype = 3;
-			else if (strcasecmp (word[w] + 8, "QuakeNet") == 0)
+			else if (g_ascii_strcasecmp (word[w] + 8, "QuakeNet") == 0)
 				serv->nickservtype = 4;
 
 		} else if (strncmp (word[w], "CASEMAPPING=", 12) == 0)
 		{
 			if (strcmp (word[w] + 12, "ascii") == 0)	/* bahamut */
-				serv->p_cmp = (void *)strcasecmp;
+				serv->p_cmp = (void *)g_ascii_strcasecmp;
 		} else if (strncmp (word[w], "CHARSET=", 8) == 0)
 		{
-			if (strcasecmp (word[w] + 8, "UTF-8") == 0)
+			if (g_ascii_strcasecmp (word[w] + 8, "UTF-8") == 0)
 			{
 				server_set_encoding (serv, "UTF-8");
 			}

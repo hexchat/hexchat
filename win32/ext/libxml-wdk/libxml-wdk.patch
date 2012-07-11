@@ -1,0 +1,57 @@
+diff -ruN --strip-trailing-cr libxml2-2.7.8.orig/libxml.h libxml2-2.7.8/libxml.h
+--- libxml2-2.7.8.orig/libxml.h	2010-10-12 08:25:32 +0200
++++ libxml2-2.7.8/libxml.h	2011-08-07 09:12:07 +0200
+@@ -94,3 +94,7 @@
+ #  define LIBXML_STATIC
+ #endif
+ #endif /* ! __XML_LIBXML_H__ */
++
++#ifndef vsnprintf
++#define vsnprintf _vsnprintf
++#endif
+diff -ruN --strip-trailing-cr libxml2-2.7.8.orig/win32/Makefile.msvc libxml2-2.7.8/win32/Makefile.msvc
+--- libxml2-2.7.8.orig/win32/Makefile.msvc	2010-11-04 14:58:44 +0100
++++ libxml2-2.7.8/win32/Makefile.msvc	2011-08-07 09:23:47 +0200
+@@ -58,12 +58,20 @@
+ !if "$(WITH_ZLIB)" == "1"
+ CFLAGS = $(CFLAGS) /D "HAVE_ZLIB_H"
+ !endif
+-CFLAGS = $(CFLAGS) /D_CRT_SECURE_NO_DEPRECATE /D_CRT_NONSTDC_NO_DEPRECATE
++CFLAGS = $(CFLAGS)
+ 
+ # The linker and its options.
+ LD = link.exe
+ LDFLAGS = /nologo /VERSION:$(LIBXML_MAJOR_VERSION).$(LIBXML_MINOR_VERSION)
+ LDFLAGS = $(LDFLAGS) /LIBPATH:$(BINDIR) /LIBPATH:$(LIBPREFIX)
++
++!ifdef X64
++CFLAGS = $(CFLAGS) /favor:AMD64
++LDFLAGS = $(LDFLAGS) msvcrt_win2003.obj
++!else
++LDFLAGS = $(LDFLAGS) msvcrt_winxp.obj
++!endif
++
+ LIBS =
+ !if "$(WITH_FTP)" == "1" || "$(WITH_HTTP)" == "1"
+ LIBS = $(LIBS) wsock32.lib ws2_32.lib
+@@ -71,9 +79,9 @@
+ !if "$(WITH_ICONV)" == "1"
+ LIBS = $(LIBS) iconv.lib
+ !endif 
+-+!if "$(WITH_ICU)" == "1"
++!if "$(WITH_ICU)" == "1"
+ +LIBS = $(LIBS) icu.lib
+-+!endif
++!endif
+ !if "$(WITH_ZLIB)" == "1"
+ LIBS = $(LIBS) zdll.lib
+ !endif
+@@ -94,7 +102,7 @@
+ LDFLAGS = $(LDFLAGS) /DEBUG
+ !else
+ CFLAGS = $(CFLAGS) /D "NDEBUG" /O2 
+-LDFLAGS = $(LDFLAGS) /OPT:NOWIN98
++LDFLAGS = $(LDFLAGS)
+ !endif
+ 
+ # Libxml object files.

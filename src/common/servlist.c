@@ -21,7 +21,10 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+
+#ifndef WIN32
 #include <unistd.h>
+#endif
 
 #include "xchat.h"
 #include <glib.h>
@@ -585,7 +588,7 @@ servlist_connect_by_netname (session *sess, char *network, gboolean join)
 	{
 		net = list->data;
 
-		if (strcasecmp (net->name, network) == 0)
+		if (g_ascii_strcasecmp (net->name, network) == 0)
 		{
 			servlist_connect (sess, net, join);
 			return 1;
@@ -730,7 +733,7 @@ servlist_net_find_from_server (char *server_name)
 		while (slist)
 		{
 			serv = slist->data;
-			if (strcasecmp (serv->hostname, server_name) == 0)
+			if (g_ascii_strcasecmp (serv->hostname, server_name) == 0)
 				return net;
 			slist = slist->next;
 		}
@@ -1015,7 +1018,7 @@ servlist_check_encoding (char *charset)
 	if (c)
 		c[0] = 0;
 
-	if (!strcasecmp (charset, "IRC")) /* special case */
+	if (!g_ascii_strcasecmp (charset, "IRC")) /* special case */
 	{
 		if (c)
 			c[0] = ' ';
@@ -1090,8 +1093,8 @@ servlist_save (void)
 			fprintf (fp, "J=%s\n", net->autojoin);
 		if (net->nickserv)
 			fprintf (fp, "B=%s\n", net->nickserv);
-		if (net->encoding && strcasecmp (net->encoding, "System") &&
-			 strcasecmp (net->encoding, "System default"))
+		if (net->encoding && g_ascii_strcasecmp (net->encoding, "System") &&
+			 g_ascii_strcasecmp (net->encoding, "System default"))
 		{
 			fprintf (fp, "E=%s\n", net->encoding);
 			if (!servlist_check_encoding (net->encoding))

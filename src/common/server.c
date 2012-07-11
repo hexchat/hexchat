@@ -26,7 +26,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <unistd.h>
 #include <errno.h>
 #include <fcntl.h>
 
@@ -37,6 +36,7 @@
 #ifndef WIN32
 #include <signal.h>
 #include <sys/wait.h>
+#include <unistd.h>
 #else
 #include <winbase.h>
 #endif
@@ -67,7 +67,7 @@
 #endif
 
 #ifdef WIN32
-#include "identd.c"
+#include "identd.h"
 #endif
 
 #ifdef USE_LIBPROXY
@@ -238,17 +238,17 @@ tcp_send_len (server *serv, char *buf, int len)
 	dbuf[len + 1] = 0;
 
 	/* privmsg and notice get a lower priority */
-	if (strncasecmp (dbuf + 1, "PRIVMSG", 7) == 0 ||
-		 strncasecmp (dbuf + 1, "NOTICE", 6) == 0)
+	if (g_ascii_strncasecmp (dbuf + 1, "PRIVMSG", 7) == 0 ||
+		 g_ascii_strncasecmp (dbuf + 1, "NOTICE", 6) == 0)
 	{
 		dbuf[0] = 1;
 	}
 	else
 	{
 		/* WHO/MODE get the lowest priority */
-		if (strncasecmp (dbuf + 1, "WHO ", 4) == 0 ||
+		if (g_ascii_strncasecmp (dbuf + 1, "WHO ", 4) == 0 ||
 		/* but only MODE queries, not changes */
-			(strncasecmp (dbuf + 1, "MODE", 4) == 0 &&
+			(g_ascii_strncasecmp (dbuf + 1, "MODE", 4) == 0 &&
 			 strchr (dbuf, '-') == NULL &&
 			 strchr (dbuf, '+') == NULL))
 			dbuf[0] = 0;
@@ -310,12 +310,17 @@ server_inline (server *serv, char *line, int len)
 {
 	char *utf_line_allocated = NULL;
 
+#ifdef WIN32
+	char *cleaned_line;
+	int cleaned_len;
+#endif
+
 	/* Checks whether we're set to use UTF-8 charset */
 	if (serv->using_irc ||				/* 1. using CP1252/UTF-8 Hybrid */
 		(serv->encoding == NULL && prefs.utf8_locale) || /* OR 2. using system default->UTF-8 */
 	    (serv->encoding != NULL &&				/* OR 3. explicitly set to UTF-8 */
-		 (strcasecmp (serv->encoding, "UTF8") == 0 ||
-		  strcasecmp (serv->encoding, "UTF-8") == 0)))
+		 (g_ascii_strcasecmp (serv->encoding, "UTF8") == 0 ||
+		  g_ascii_strcasecmp (serv->encoding, "UTF-8") == 0)))
 	{
 		/* The user has the UTF-8 charset set, either via /charset
 		command or from his UTF-8 locale. Thus, we first try the
@@ -396,10 +401,22 @@ server_inline (server *serv, char *line, int len)
 		}
 	}
 
+#ifdef WIN32
+	cleaned_line = text_replace_non_bmp (line, len, &cleaned_len);
+	if (cleaned_line != NULL ) {
+		line = cleaned_line;
+		len = cleaned_len;
+	}
+#endif
+
 	fe_add_rawlog (serv, line, len, FALSE);
 
 	/* let proto-irc.c handle it */
 	serv->p_inline (serv, line, len);
+
+#ifdef WIN32
+	g_free (cleaned_line);
+#endif
 
 	if (utf_line_allocated != NULL) /* only if a special copy was allocated */
 		g_free (utf_line_allocated);
@@ -843,33 +860,6 @@ server_flush_queue (server *serv)
 	serv->sendq_len = 0;
 	fe_set_throttle (serv);
 }
-
-#ifdef WIN32
-
-static int
-waitline2 (GIOChannel *source, char *buf, int bufsize)
-{
-	int i = 0;
-	int len;
-
-	while (1)
-	{
-		if (g_io_channel_read (source, &buf[i], 1, &len) != G_IO_ERROR_NONE)
-			return -1;
-		if (buf[i] == '\n' || bufsize == i + 1)
-		{
-			buf[i] = 0;
-			return i;
-		}
-		i++;
-	}
-}
-
-#else
-
-#define waitline2(source,buf,size) waitline(serv->childread,buf,size,0)
-
-#endif
 
 /* connect() successed */
 
@@ -1394,12 +1384,7 @@ base64_encode (char *to, char *from, unsigned int len)
 static int
 http_read_line (int print_fd, int sok, char *buf, int len)
 {
-#ifdef WIN32
-	/* make sure waitline() uses recv() or it'll fail on win32 */
-	len = waitline (sok, buf, len, FALSE);
-#else
 	len = waitline (sok, buf, len, TRUE);
-#endif
 	if (len >= 1)
 	{
 		/* print the message out (send it to the parent process) */
@@ -1795,7 +1780,11 @@ server_connect (server *serv, char *hostname, int port, int no_login)
 	}
 #endif
 	serv->childpid = pid;
+#ifdef WIN32
+	serv->iotag = fe_input_add (serv->childread, FIA_READ|FIA_FD, server_read_child,
+#else
 	serv->iotag = fe_input_add (serv->childread, FIA_READ, server_read_child,
+#endif
 										 serv);
 }
 
@@ -1835,10 +1824,10 @@ server_set_encoding (server *serv, char *new_encoding)
 			space[0] = 0;
 
 		/* server_inline() uses these flags */
-		if (!strcasecmp (serv->encoding, "CP1255") ||
-			 !strcasecmp (serv->encoding, "WINDOWS-1255"))
+		if (!g_ascii_strcasecmp (serv->encoding, "CP1255") ||
+			 !g_ascii_strcasecmp (serv->encoding, "WINDOWS-1255"))
 			serv->using_cp1255 = TRUE;
-		else if (!strcasecmp (serv->encoding, "IRC"))
+		else if (!g_ascii_strcasecmp (serv->encoding, "IRC"))
 			serv->using_irc = TRUE;
 	}
 }

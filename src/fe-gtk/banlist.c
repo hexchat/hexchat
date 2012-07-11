@@ -19,9 +19,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
 #include <fcntl.h>
 #include <time.h>
+
+#ifndef WIN32
+#include <unistd.h>
+#endif
 
 #include "fe-gtk.h"
 
@@ -134,11 +137,8 @@ banlist_do_refresh (struct session *sess)
 		gtk_list_store_clear (store);
 
 		handle_command (sess, "ban", FALSE);
-#ifdef WIN32
-		if (0)
-#else
+
 		if (supports_exempt (sess->server))
-#endif
 		{
 			snprintf (tbuf, sizeof (tbuf), "quote mode %s +e", sess->channel);
 			handle_command (sess, tbuf, FALSE);

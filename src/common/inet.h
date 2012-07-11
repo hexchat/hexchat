@@ -21,12 +21,12 @@
 
 #else
 
+#include "../../config.h"
 #ifdef USE_IPV6
 #include <winsock2.h>
 #include <ws2tcpip.h>
-#include <tpipv6.h>
 #else
-#include <winsock.h>
+#include <winsock2.h>
 #endif
 
 #define set_blocking(sok)	{ \

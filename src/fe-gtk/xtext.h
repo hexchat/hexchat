@@ -43,6 +43,13 @@
 typedef struct _GtkXText GtkXText;
 typedef struct _GtkXTextClass GtkXTextClass;
 typedef struct textentry textentry;
+typedef enum gtk_xtext_search_flags_e {
+	case_match = 1,
+	backward = 2,
+	highlight = 4,
+	follow = 8,
+	regexp = 16
+} gtk_xtext_search_flags;
 
 typedef struct {
 	GtkXText *xtext;					/* attached to this widget */
@@ -77,6 +84,16 @@ typedef struct {
 	unsigned int grid_dirty:1;
 	unsigned int marker_seen:1;
 	unsigned int reset_marker_pos:1;
+
+	GList *search_found;		/* list of textentries where search found strings */
+	gchar *search_text;		/* desired text to search for */
+	gchar *search_nee;		/* prepared needle to look in haystack for */
+	gint search_lnee;		/* its length */
+	gtk_xtext_search_flags search_flags;	/* match, bwd, highlight */
+	GList *cursearch;			/* GList whose 'data' pts to current textentry */
+	GList *curmark;			/* current item in ent->marks */
+	GRegex *search_re;		/* Compiled regular expression */
+	textentry *hintsearch;	/* textentry found for last search */
 } xtext_buffer;
 
 struct _GtkXText
@@ -247,7 +264,7 @@ void gtk_xtext_clear (xtext_buffer *buf, int lines);
 void gtk_xtext_save (GtkXText * xtext, int fh);
 void gtk_xtext_refresh (GtkXText * xtext, int do_trans);
 int gtk_xtext_lastlog (xtext_buffer *out, xtext_buffer *search_area, int (*cmp_func) (char *, void *userdata), void *userdata);
-textentry *gtk_xtext_search (GtkXText * xtext, const gchar *text, textentry *start, gboolean case_match, gboolean backward);
+textentry *gtk_xtext_search (GtkXText * xtext, const gchar *text, gtk_xtext_search_flags flags, GError **err);
 void gtk_xtext_reset_marker_pos (GtkXText *xtext);
 void gtk_xtext_check_marker_visibility(GtkXText *xtext);
 
@@ -270,6 +287,7 @@ void gtk_xtext_set_wordwrap (GtkXText *xtext, gboolean word_wrap);
 xtext_buffer *gtk_xtext_buffer_new (GtkXText *xtext);
 void gtk_xtext_buffer_free (xtext_buffer *buf);
 void gtk_xtext_buffer_show (GtkXText *xtext, xtext_buffer *buf, int render);
+void gtk_xtext_copy_selection (GtkXText *xtext);
 GType gtk_xtext_get_type (void);
 
 #endif

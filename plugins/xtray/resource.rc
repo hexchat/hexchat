@@ -1,0 +1,309 @@
+// Microsoft Visual C++ generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#define APSTUDIO_HIDDEN_SYMBOLS
+#include "windows.h"
+#undef APSTUDIO_HIDDEN_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#ifdef _WIN32
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_EVENTS DIALOGEX 8, 20, 216, 143
+STYLE DS_SETFONT | DS_SETFOREGROUND | WS_CHILD
+FONT 8, "Tahoma", 0, 0, 0x0
+BEGIN
+    GROUPBOX        "XChat Events",IDC_STATIC,5,5,205,77
+    CONTROL         "Banned",4,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,18,49,10
+    CONTROL         "Kicked",5,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,32,49,10
+    CONTROL         "Killed",8,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,46,49,10
+    CONTROL         "Disconnect",10,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,60,49,10
+    CONTROL         "Private Message",7,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,70,18,69,10
+    CONTROL         "Channel Message",21,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,70,32,69,10
+    CONTROL         "Highlight",1,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,70,46,69,10
+    CONTROL         "CTCP",6,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,70,60,69,10
+    CONTROL         "Topic Change",3,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,145,18,55,10
+    CONTROL         "Server Notice",9,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,145,32,55,10
+    CONTROL         "Invite",2,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,145,46,55,10
+END
+
+IDD_SETTINGS DIALOGEX 8, 20, 216, 143
+STYLE DS_SETFONT | WS_CHILD
+FONT 8, "Tahoma", 0, 0, 0x0
+BEGIN
+    GROUPBOX        "Options",IDC_STATIC,5,5,205,135
+    CONTROL         "Auto away on minimize",11,"Button",BS_AUTOCHECKBOX | 
+                    WS_TABSTOP,16,60,100,10
+    CONTROL         "Minimize XChat to the system tray",12,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,16,18,133,10
+    CONTROL         "Minimize to the tray instead of closing",17,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,16,32,174,9
+    EDITTEXT        IDC_AWAY_MSG,33,86,169,50,ES_AUTOHSCROLL
+    LTEXT           "Away Msg:",IDC_STATIC,27,72,35,8
+    CONTROL         "Remove XChat from the taskbar (only show in tray)",
+                    20,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,46,191,9
+END
+
+IDD_ALERT DIALOGEX 0, 0, 151, 28
+STYLE DS_LOCALEDIT | DS_SETFONT | DS_NOIDLEMSG | DS_CENTER | WS_CAPTION | 
+    WS_SYSMENU
+EXSTYLE WS_EX_NOPARENTNOTIFY | WS_EX_ACCEPTFILES | WS_EX_TOOLWINDOW
+CAPTION "Event Name"
+FONT 8, "Tahoma", 0, 0, 0x1
+BEGIN
+    LTEXT           "Event Text",IDC_ALERT_MSG,3,0,147,27
+END
+
+IDD_PREF DIALOGEX 0, 0, 233, 190
+STYLE DS_SETFONT | DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | 
+    WS_SYSMENU
+CAPTION "X-Tray Preferences"
+FONT 8, "Tahoma", 0, 0, 0x0
+BEGIN
+    DEFPUSHBUTTON   "Ok",IDC_PREF_OK,57,173,50,14
+    PUSHBUTTON      "Cancel",IDC_PREF_CANCEL,115,173,50,14
+    PUSHBUTTON      "Apply",IDC_PREF_APPLY,175,173,50,14
+    CONTROL         "Tab1",IDC_TAB_CONTROL,"SysTabControl32",0x0,7,7,218,159
+END
+
+IDD_ABOUT DIALOGEX 8, 20, 216, 143
+STYLE DS_SETFONT | WS_CHILD
+FONT 8, "Tahoma", 0, 0, 0x0
+BEGIN
+    CONTROL         119,IDC_STATIC,"Static",SS_BITMAP | SS_SUNKEN | 
+                    WS_BORDER,3,6,88,81
+    CTEXT           "X-Tray\r\nBy: Michael Hotaling\r\n www.SinisterDevelopments.com",
+                    IDC_STATIC,95,33,118,30
+    LTEXT           "Folken\r\nBasket\r\nDonatzsky\r\nDaemon404",IDC_STATIC,
+                    15,103,64,33
+    GROUPBOX        "Special Thanks To:",IDC_STATIC,3,91,89,50
+    GROUPBOX        "Version Information:",IDC_STATIC,101,92,109,49
+    LTEXT           "1.2.4",IDC_STATIC,170,105,33,8,0,WS_EX_RIGHT
+    LTEXT           "Compiled In: ",IDC_STATIC,110,117,54,8
+    LTEXT           "2012",IDC_STATIC,170,117,33,8,0,WS_EX_RIGHT
+    LTEXT           "Version Number:",IDC_STATIC,110,105,54,8
+END
+
+IDD_ALERTS DIALOGEX 8, 20, 216, 143
+STYLE DS_SETFONT | WS_CHILD
+FONT 8, "Tahoma", 0, 0, 0x0
+BEGIN
+    GROUPBOX        "Alerts",IDC_STATIC,5,5,205,117
+    CONTROL         "Only show alerts while minimized",14,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,27,46,117,10
+    CONTROL         "Use tray alerts to notify me about events",13,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,16,32,152,10
+    CONTROL         "Use window instead of balloons",15,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,27,60,141,11
+    EDITTEXT        IDC_ALERT_TIME,137,101,61,12,ES_AUTOHSCROLL | ES_NUMBER,
+                    WS_EX_RIGHT
+    LTEXT           "Show alert for x seconds:",IDC_ALERT_TIME_TEXT,40,103,
+                    83,9
+    CONTROL         "Alert Hotkey",IDC_ALERT_HOTKEY,"msctls_hotkey32",
+                    WS_BORDER | WS_TABSTOP,137,74,61,13
+    LTEXT           "Close all alerts hotkey:",IDC_ALERT_HOTKEY_TEXT,39,75,
+                    76,10
+    CONTROL         "Leave alerts open indefinately",16,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,27,88,115,11
+    CONTROL         "Blink Icon to alert me about events",18,"Button",
+                    BS_AUTOCHECKBOX | WS_TABSTOP,16,18,127,10
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO 
+BEGIN
+    IDD_EVENTS, DIALOG
+    BEGIN
+        BOTTOMMARGIN, 56
+    END
+
+    IDD_SETTINGS, DIALOG
+    BEGIN
+        BOTTOMMARGIN, 66
+    END
+
+    IDD_ALERT, DIALOG
+    BEGIN
+        RIGHTMARGIN, 150
+        BOTTOMMARGIN, 26
+    END
+
+    IDD_PREF, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 232
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 176
+    END
+
+    IDD_ABOUT, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 209
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 136
+    END
+
+    IDD_ALERTS, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 208
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 136
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE 
+BEGIN
+    "#define APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "#include ""windows.h""\r\n"
+    "#undef APSTUDIO_HIDDEN_SYMBOLS\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE 
+BEGIN
+    "xtray.h\0"
+END
+
+4 TEXTINCLUDE 
+BEGIN
+    "\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,2,4,0
+ PRODUCTVERSION 1,2,4,0
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x40004L
+ FILETYPE 0x2L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904b0"
+        BEGIN
+            VALUE "CompanyName", "SinisterDevelopments"
+            VALUE "FileDescription", "X-Tray"
+            VALUE "FileVersion", "1, 2, 4, 0"
+            VALUE "InternalName", "X-Tray"
+            VALUE "LegalCopyright", "Copyright © 2005"
+            VALUE "OriginalFilename", "xtray.dll"
+            VALUE "ProductName", "X-Tray - XChat Win32 System Tray Plugin"
+            VALUE "ProductVersion", "1, 2, 4, 0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Menu
+//
+
+IDR_TRAY_MENU MENU 
+BEGIN
+    POPUP "TRAY"
+    BEGIN
+        MENUITEM "Restore",                     ACT_RESTORE
+        MENUITEM SEPARATOR
+        MENUITEM "Away",                        65535
+        MENUITEM "Settings",                    ACT_SETTINGS
+        MENUITEM SEPARATOR
+        MENUITEM "Exit",                        ACT_EXIT
+    END
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+ICO_XCHAT               ICON                    "icons\\xchat.ico"
+ICO_BANNED              ICON                    "icons\\banned.ico"
+ICO_CHANMSG             ICON                    "icons\\chan_msg.ico"
+ICO_HIGHLIGHT           ICON                    "icons\\highlight.ico"
+ICO_KICKED              ICON                    "icons\\kicked.ico"
+ICO_PMSG                ICON                    "icons\\priv_msg-1-2-2.ico"
+ICO_SNOTICE             ICON                    "icons\\server_notice.ico"
+ICO_DISCONNECTED        ICON                    "icons\\disconnected.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Bitmap
+//
+
+IDB_SD_LOGO             BITMAP                  "bitmaps\\sd.bmp"
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+xtray.h
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+

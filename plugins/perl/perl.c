@@ -22,12 +22,15 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <dirent.h>
 #ifdef ENABLE_NLS
 #include <locale.h>
 #endif
 #ifdef WIN32
 #include <windows.h>
+#define  _INC_DIRENT /* disable inclusion of perl's dirent.h, we use an own version for win32 */
+#include "../../src/dirent/dirent-win32.h"
+#else
+#include <dirent.h>
 #endif
 
 #undef PACKAGE
@@ -1342,7 +1345,11 @@ perl_load_file (char *filename)
 			if (GetLastError () == ERROR_BAD_EXE_FORMAT)
 				/* http://forum.xchat.org/viewtopic.php?t=3277 */
 				thread_mbox ("Cannot use this " PERL_DLL "\n\n"
-								 "32-bit ActivePerl is required.");
+#ifdef _WIN64
+								 "64-bit Strawberry Perl is required.");
+#else
+								 "32-bit Strawberry Perl is required.");
+#endif
 			else {
 				/* a lot of people install this old version */
 				lib = LoadLibraryA ("perl56.dll");

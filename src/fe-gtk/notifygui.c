@@ -321,7 +321,7 @@ notifygui_add_cb (GtkDialog *dialog, gint response, gpointer entry)
 	if (text[0] && response == GTK_RESPONSE_ACCEPT)
 	{
 		networks = GTK_ENTRY (g_object_get_data (G_OBJECT (entry), "net"))->text;
-		if (strcasecmp (networks, "ALL") == 0 || networks[0] == 0)
+		if (g_ascii_strcasecmp (networks, "ALL") == 0 || networks[0] == 0)
 			notify_adduser (text, NULL);
 		else
 			notify_adduser (text, networks);

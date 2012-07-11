@@ -1,0 +1,26 @@
+#include <winver.h>
+#include "../../config.h"
+#include "../../resource.h"
+
+XC_ICON ICON "../../xchat.ico" 
+
+VS_VERSION_INFO VERSIONINFO
+	FILEVERSION    COMMA_VERSION
+	PRODUCTVERSION COMMA_VERSION
+	BEGIN
+		BLOCK "StringFileInfo"
+		BEGIN
+			BLOCK "040904B0"
+			BEGIN
+				
+				VALUE "FileDescription", "XChat-WDK IRC Client"
+				VALUE "ProductName", "XChat-WDK" 
+				VALUE "ProductVersion", PACKAGE_VERSION
+				VALUE "FileVersion", PACKAGE_VERSION
+			END
+		END
+		BLOCK "VarFileInfo"
+		BEGIN
+			VALUE "Translation", 0x0409, 0x04B0
+		END
+	END

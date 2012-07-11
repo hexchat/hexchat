@@ -1,0 +1,68 @@
+﻿<!--
+***********************************************************************************************
+Microsoft.Cpp.x64.v100.props
+
+WARNING:  DO NOT MODIFY this file unless you are knowledgeable about MSBuild and have
+          created a backup copy.  Incorrect changes to this file will make it
+          impossible to load or build your projects from the command-line or the IDE.
+
+Copyright (C) Microsoft Corporation. All rights reserved.
+***********************************************************************************************
+-->
+
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(VCTargetsPath)\Platforms\x64\PlatformToolsets\v100\ImportBefore\*.props" Condition="Exists('$(VCTargetsPath)\Platforms\x64\PlatformToolsets\v100\ImportBefore')" />
+
+  <PropertyGroup>
+    <PlatformToolsetVersion>100</PlatformToolsetVersion>
+
+    <WDKInstallDir>$(SystemDrive)\WinDDK\7600.16385.1</WDKInstallDir>
+
+	<VCInstallDir>$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\10.0\Setup\VC@ProductDir)</VCInstallDir>
+    <VCInstallDir Condition="'$(VCInstallDir)' == ''">$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\VisualStudio\10.0\Setup\VC@ProductDir)</VCInstallDir>
+    <VCInstallDir Condition="'$(VCInstallDir)' == ''">$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VCExpress\10.0\Setup\VC@ProductDir)</VCInstallDir>
+    <VCInstallDir Condition="'$(VCInstallDir)' == ''">$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\VCExpress\10.0\Setup\VC@ProductDir)</VCInstallDir>
+
+    <VSInstallDir>$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VisualStudio\10.0\Setup\VS@ProductDir)</VSInstallDir>
+    <VSInstallDir Condition="'$(VSInstallDir)' == ''">$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\VisualStudio\10.0\Setup\VS@ProductDir)</VSInstallDir>
+    <VSInstallDir Condition="'$(VSInstallDir)' == ''">$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\VCExpress\10.0\Setup\VS@ProductDir)</VSInstallDir>
+    <VSInstallDir Condition="'$(VSInstallDir)' == ''">$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\VCExpress\10.0\Setup\VS@ProductDir)</VSInstallDir>
+
+    <WindowsSdkDir Condition="'$(UseEnv)' != 'true'">$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v7.0A@InstallationFolder)</WindowsSdkDir>
+    <WindowsSdkDir Condition="'$(WindowsSdkDir)' == ''">$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Microsoft SDKs\Windows\v7.0A@InstallationFolder)</WindowsSdkDir>
+
+    <FrameworkDir Condition="'$(UseEnv)' != 'true'">$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\.NETFramework@InstallRoot)</FrameworkDir>
+    <FrameworkDir Condition="'$(FrameworkDir)' == ''">$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\.NETFramework@InstallRoot)</FrameworkDir>
+
+    <FrameworkSdkDir Condition="'$(UseEnv)' != 'true'">$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Microsoft SDKs\Windows\v7.0A@InstallationFolder)</FrameworkSdkDir>
+    <FrameworkSdkDir Condition="'$(FrameworkSdkDir)' == ''">$(Registry:HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\Microsoft\Microsoft SDKs\Windows\v7.0A@InstallationFolder)</FrameworkSdkDir>
+
+    <FrameworkVersion Condition="'$(UseEnv)' != 'true'">v4.0</FrameworkVersion>
+    <Framework35Version Condition="'$(UseEnv)' != 'true'">v3.5</Framework35Version>
+
+    <ExecutablePath Condition="'$(ExecutablePath)' == ''">$(VCInstallDir)bin\x86_amd64;$(VCInstallDir)bin;$(WindowsSdkDir)bin\NETFX 4.0 Tools;$(WindowsSdkDir)bin;$(VSInstallDir)Common7\Tools\bin;$(VSInstallDir)Common7\tools;$(VSInstallDir)Common7\ide;$(ProgramFiles)\HTML Help Workshop;$(FrameworkSDKDir)\bin;$(FrameworkSDKDir)\lib\win64;$(MSBuildToolsPath32);$(FxCopDir);$(PATH);</ExecutablePath>
+    <IncludePath>$(WDKInstallDir)\inc\api;$(WDKInstallDir)\inc\crt;$(WDKInstallDir)\inc\api\crt\stl70;$(WDKInstallDir)\inc\mfc42;$(WDKInstallDir)\inc\ddk;$(WDKInstallDir)\inc\api\dao360;</IncludePath>
+    <LibraryPath>$(WDKInstallDir)\lib\wnet\amd64;$(WDKInstallDir)\lib\Crt\amd64;$(WDKInstallDir)\lib\Mfc\amd64;$(WDKInstallDir)\lib\ATL\amd64;</LibraryPath>
+    <SourcePath Condition="'$(SourcePath)' == ''">$(VCInstallDir)atlmfc\src\mfc;$(VCInstallDir)atlmfc\src\mfcm;$(VCInstallDir)atlmfc\src\atl;$(VCInstallDir)crt\src;</SourcePath>
+    <NativeExecutablePath Condition="'$(NativeExecutablePath)' == ''">$(VCInstallDir)bin\AMD64;$(VCInstallDir)VCPackages;$(WindowsSdkDir)bin\NETFX 4.0 Tools\x64;$(WindowsSdkDir)bin\NETFX 4.0 Tools;$(WindowsSdkDir)bin\x64;$(WindowsSdkDir)bin\win64\x64;$(WindowsSdkDir)bin;$(MSBuildToolsPath);$(PATH);</NativeExecutablePath>
+  </PropertyGroup>
+
+  <ItemDefinitionGroup>
+    <Link>
+      <AdditionalDependencies>msvcrt_win2003.obj;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+    <ResourceCompile>
+      <SuppressStartupBanner Condition="'%(ResourceCompile.SuppressStartupBanner)' == ''">true</SuppressStartupBanner>
+    </ResourceCompile>
+    <ManifestResourceCompile>
+      <SuppressStartupBanner Condition="'%(ManifestResourceCompile.SuppressStartupBanner)'==''">true</SuppressStartupBanner>
+    </ManifestResourceCompile>
+    <Manifest>
+      <EnableDPIAwareness Condition="'$(EnableDPIAwareness)' == '' AND '$(UseOfMFC)' == 'static'">true</EnableDPIAwareness>
+      <EnableDPIAwareness Condition="'$(EnableDPIAwareness)' == '' AND '$(UseOfMFC)' == 'dynamic'">true</EnableDPIAwareness>
+      <EnableDPIAwareness Condition="'$(EnableDPIAwareness)' == '' AND '$(UseOfMFC)' != 'static' AND '$(UseOfMFC)' != 'dynamic'">false</EnableDPIAwareness>
+    </Manifest>
+  </ItemDefinitionGroup>
+
+  <Import Project="$(VCTargetsPath)\Platforms\x64\PlatformToolsets\v100\ImportAfter\*.props" Condition="Exists('$(VCTargetsPath)\Platforms\x64\PlatformToolsets\v100\ImportAfter')" />
+</Project>

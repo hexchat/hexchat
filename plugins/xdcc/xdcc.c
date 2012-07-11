@@ -2,11 +2,15 @@
 
 #include <glib.h>
 #include <string.h>
-#include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
 
+#ifndef WIN32
+#include <unistd.h>
+#endif
+
 #include "xchat-plugin.h"
+#include "../../src/common/xchat.h"
 
 static xchat_plugin *ph;	/* plugin handle */
 

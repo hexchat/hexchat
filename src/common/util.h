@@ -43,6 +43,12 @@ int strip_color2 (const char *src, int len, char *dst, int flags);
 int strip_hidden_attribute (char *src, char *dst);
 char *errorstring (int err);
 int waitline (int sok, char *buf, int bufsize, int);
+#ifdef WIN32
+int waitline2 (GIOChannel *source, char *buf, int bufsize);
+int get_cpu_arch (void);
+#else
+#define waitline2(source,buf,size) waitline(serv->childread,buf,size,0)
+#endif
 unsigned long make_ping_time (void);
 void move_file_utf8 (char *src_dir, char *dst_dir, char *fname, int dccpermissions);
 int mkdir_utf8 (char *dir);
@@ -50,5 +56,8 @@ int token_foreach (char *str, char sep, int (*callback) (char *str, void *ud), v
 guint32 str_hash (const char *key);
 guint32 str_ihash (const unsigned char *key);
 void safe_strcpy (char *dest, const char *src, int bytes_left);
+void canonalize_key (char *key);
+int portable_mode ();
+int xtray_mode ();
 
 #endif

@@ -22,8 +22,8 @@
 #include <stdarg.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <unistd.h>
 #include <fcntl.h>
+
 #include "fe-gtk.h"
 
 #include <gtk/gtkbutton.h>
@@ -52,6 +52,13 @@
 #include "gtkutil.h"
 #include "pixmaps.h"
 
+#ifdef WIN32
+#include "../common/fe.h"
+#include "../common/thread.h"
+#else
+#include <unistd.h>
+#endif
+
 /* gtkutil.c, just some gtk wrappers */
 
 extern void path_part (char *file, char *path, int pathlen);
@@ -63,6 +70,13 @@ struct file_req
 	void *userdata;
 	filereqcallback callback;
 	int flags;		/* FRF_* flags */
+
+#ifdef WIN32
+	int multiple;
+	thread *th;
+	char *title;	/* native locale */
+	char *filter;
+#endif
 };
 
 static char last_dir[256] = "";
@@ -164,6 +178,190 @@ gtkutil_file_req_response (GtkWidget *dialog, gint res, struct file_req *freq)
 	}
 }
 
+#ifdef WIN32
+static int
+win32_openfile (char *file_buf, int file_buf_len, char *title_text, char *filter,
+			   int multiple)
+{
+	OPENFILENAME o;
+
+	memset (&o, 0, sizeof (o));
+
+	o.lStructSize = sizeof (o);
+	o.lpstrFilter = filter;
+	o.lpstrFile = file_buf;
+	o.nMaxFile = file_buf_len;
+	o.lpstrTitle = title_text;
+	o.Flags = 0x02000000 | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY |
+				OFN_NOCHANGEDIR | OFN_EXPLORER | OFN_LONGNAMES | OFN_NONETWORKBUTTON;
+	if (multiple)
+	{
+		o.Flags |= OFN_ALLOWMULTISELECT;
+	}
+
+	return GetOpenFileName (&o);
+}
+
+static int
+win32_savefile (char *file_buf, int file_buf_len, char *title_text, char *filter,
+               int multiple)
+{
+	/* we need the filter to get the default filename. it is from fe-gtk.c (fe_confirm);
+	 * but that filter is actually the whole filename, so apply an empty filter and all good.
+	 * in win32_thread2 we copy the filter ( = the filename) after the last dir into our
+	 * LPTSTR file buffer to make it actually work. the docs for this amazingly retard api:
+	 *
+	 * http://msdn.microsoft.com/en-us/library/ms646839%28VS.85%29.aspx
+	 */
+
+	OPENFILENAME o;
+
+	memset (&o, 0, sizeof (o));
+
+	o.lStructSize = sizeof (o);
+	o.lpstrFilter = "All files\0*.*\0\0";
+	o.lpstrFile = file_buf;
+	o.nMaxFile = file_buf_len;
+	o.lpstrTitle = title_text;
+	o.Flags = 0x02000000 | OFN_FILEMUSTEXIST | OFN_HIDEREADONLY |
+				OFN_NOCHANGEDIR | OFN_EXPLORER | OFN_LONGNAMES | OFN_NONETWORKBUTTON;
+	if (multiple)
+	{
+		o.Flags |= OFN_ALLOWMULTISELECT;
+	}
+
+	return GetSaveFileName (&o);
+}
+
+static void *
+win32_thread (struct file_req *freq)
+{
+	char buf[1024 + 32];
+	char file[1024];
+
+	memset (file, 0, sizeof (file));
+	safe_strcpy (file, last_dir, sizeof (file));
+
+	if (win32_openfile (file, sizeof (file), freq->title, freq->filter, freq->multiple))
+	{
+		if (freq->multiple)
+		{
+			char *f = file;
+
+			if (f[strlen (f) + 1] == 0)	/* only selected one file */
+			{
+				snprintf (buf, sizeof (buf), "1\n%s\n", file);
+				write (freq->th->pipe_fd[1], buf, strlen (buf));
+			} else
+			{
+				f += strlen (f) + 1; /* skip first, it's only the dir */
+				while (f[0])
+				{
+					snprintf (buf, sizeof (buf), "1\n%s\\%s\n", /*dir!*/file, f);
+					write (freq->th->pipe_fd[1], buf, strlen (buf));
+					f += strlen (f) + 1;
+				}
+			}
+
+		} else
+		{
+			snprintf (buf, sizeof (buf), "1\n%s\n", file);
+			write (freq->th->pipe_fd[1], buf, strlen (buf));
+		}
+	}
+
+	write (freq->th->pipe_fd[1], "0\n", 2);
+	Sleep (2000);
+
+	return NULL;
+}
+
+static void *
+win32_thread2 (struct file_req *freq)
+{
+	char buf[1024 + 32];
+	char file[1024];
+
+	memset (file, 0, sizeof (file));
+	safe_strcpy (file, last_dir, sizeof (file));
+	safe_strcpy (file, freq->filter, sizeof (file));
+
+	if (win32_savefile (file, sizeof (file), freq->title, NULL, freq->multiple))
+	{
+		if (freq->multiple)
+		{
+			char *f = file;
+
+			if (f[strlen (f) + 1] == 0)    /* only selected one file */
+			{
+				snprintf (buf, sizeof (buf), "1\n%s\n", file);
+				write (freq->th->pipe_fd[1], buf, strlen (buf));
+			} else
+			{
+				f += strlen (f) + 1; /* skip first, it's only the dir */
+				while (f[0])
+				{
+					snprintf (buf, sizeof (buf), "1\n%s\\%s\n", /*dir!*/file, f);
+					write (freq->th->pipe_fd[1], buf, strlen (buf));
+					f += strlen (f) + 1;
+				}
+			}
+
+		} else
+		{
+			snprintf (buf, sizeof (buf), "1\n%s\n", file);
+			write (freq->th->pipe_fd[1], buf, strlen (buf));
+		}
+	}
+
+	write (freq->th->pipe_fd[1], "0\n", 2);
+	Sleep (2000);
+
+	return NULL;
+}
+
+static gboolean
+win32_close_pipe (int fd)
+{
+	close (fd);
+	return 0;
+}
+
+static gboolean
+win32_read_thread (GIOChannel *source, GIOCondition cond, struct file_req *freq)
+{
+	char buf[512];
+	char *file;
+
+	waitline2 (source, buf, sizeof buf);
+
+	switch (buf[0])
+	{
+	case '0':	/* filedialog has closed */
+		freq->callback (freq->userdata, NULL);
+		break;
+
+	case '1':	/* got a filename! */
+		waitline2 (source, buf, sizeof buf);
+		file = g_filename_to_utf8 (buf, -1, 0, 0, 0);
+		freq->callback (freq->userdata, file);
+		g_free (file);
+		return TRUE;
+	}
+
+	/* it doesn't work to close them here, because of the weird
+		way giowin32 works. We must _return_ before closing them */
+	g_timeout_add(3000, (GSourceFunc)win32_close_pipe, freq->th->pipe_fd[0]);
+	g_timeout_add(2000, (GSourceFunc)win32_close_pipe, freq->th->pipe_fd[1]);
+
+	g_free (freq->title);
+	free (freq->th);
+	free (freq);
+
+	return FALSE;
+}
+#endif
+
 void
 gtkutil_file_req (const char *title, void *callback, void *userdata, char *filter,
 						int flags)
@@ -171,6 +369,58 @@ gtkutil_file_req (const char *title, void *callback, void *userdata, char *filte
 	struct file_req *freq;
 	GtkWidget *dialog;
 	extern char *get_xdir_fs (void);
+
+#ifdef WIN32
+	if (!(flags & FRF_WRITE))
+	{
+		freq = malloc (sizeof (struct file_req));
+		freq->th = thread_new ();
+		freq->flags = 0;
+		freq->multiple = (flags & FRF_MULTIPLE);
+		freq->callback = callback;
+		freq->userdata = userdata;
+		freq->title = g_locale_from_utf8 (title, -1, 0, 0, 0);
+		if (!filter)
+		{
+			freq->filter =	"All files\0*.*\0"
+							"Executables\0*.exe\0"
+							"ZIP files\0*.zip\0\0";
+		}
+		else
+		{
+			freq->filter = filter;
+		}
+
+		thread_start (freq->th, win32_thread, freq);
+		fe_input_add (freq->th->pipe_fd[0], FIA_FD|FIA_READ, win32_read_thread, freq);
+
+		return;
+
+	}
+	
+	else {
+		freq = malloc (sizeof (struct file_req));
+		freq->th = thread_new ();
+		freq->flags = 0;
+		freq->multiple = (flags & FRF_MULTIPLE);
+		freq->callback = callback;
+		freq->userdata = userdata;
+		freq->title = g_locale_from_utf8 (title, -1, 0, 0, 0);
+		if (!filter)
+		{
+			freq->filter = "All files\0*.*\0\0";
+		}
+		else
+		{
+			freq->filter = filter;
+		}
+
+		thread_start (freq->th, win32_thread2, freq);
+		fe_input_add (freq->th->pipe_fd[0], FIA_FD|FIA_READ, win32_read_thread, freq);
+
+	return;
+	}
+#endif
 
 	if (flags & FRF_WRITE)
 	{

@@ -22,14 +22,16 @@
 #include <time.h>
 #include <sys/types.h>
 #include <sys/stat.h>
-#include <unistd.h>
 
 #define WANTSOCKET
 #include "inet.h"
 
-#ifndef WIN32
+#ifdef WIN32
+#include <windows.h>
+#else
 #include <sys/wait.h>
 #include <signal.h>
+#include <unistd.h>
 #endif
 
 #include "xchat.h"
@@ -590,6 +592,7 @@ static char defaultconf_commands[] =
 	"NAME DMSG\n"			"CMD msg =%2 &3\n\n"\
 	"NAME EXIT\n"			"CMD quit\n\n"\
 	"NAME GREP\n"			"CMD lastlog -r &2\n\n"\
+	"NAME IGNALL\n"			"CMD ignore %2!*@* ALL\n\n"\
 	"NAME J\n"				"CMD join &2\n\n"\
 	"NAME KILL\n"			"CMD quote KILL %2 :&3\n\n"\
 	"NAME LEAVE\n"			"CMD part &2\n\n"\
@@ -899,11 +902,55 @@ xchat_execv (char * const argv[])
 #endif
 }
 
+#ifdef WIN32
+static void
+xchat_restore_window (HWND xchat_window)
+{
+	/* ShowWindow (xchat_window, SW_RESTORE); another way, but works worse */
+	SendMessage (xchat_window, WM_SYSCOMMAND, SC_RESTORE, 0);
+	SetForegroundWindow (xchat_window);
+}
+
+BOOL CALLBACK
+enum_windows_impl (HWND current_window, LPARAM lParam)
+{
+	TCHAR window_name[10];
+	TCHAR module_path[1024];
+	ZeroMemory (&window_name, sizeof (window_name));
+
+	if (!current_window)
+	{
+		return TRUE;
+	}
+
+	GetWindowText (current_window, window_name, 10);
+	if (stricmp (window_name, "xchat-wdk") == 0)
+	{
+		/* use a separate if block, this way we don't have to call GetWindowModuleFileName() for each hit */
+		ZeroMemory (&module_path, sizeof (module_path));
+		GetWindowModuleFileName (current_window, module_path, sizeof (module_path));
+
+		if (strstr (module_path, "xchat.exe"))	/* We've found it, stop */
+		{
+			xchat_restore_window (current_window);
+			return FALSE;
+		}
+	}
+
+	return TRUE;								/* Keep searching */
+
+}
+#endif
+
 int
 main (int argc, char *argv[])
 {
 	int ret;
-	
+
+#ifdef WIN32
+	HANDLE mutex;
+#endif
+
 	srand (time (0));	/* CL: do this only once! */
 
 #ifdef SOCKS
@@ -919,6 +966,34 @@ main (int argc, char *argv[])
 #endif
 
 	load_config ();
+
+#ifdef WIN32
+	if (prefs.gui_one_instance && !portable_mode ())
+	{
+		DWORD error;
+
+		mutex = CreateMutex (NULL, TRUE, "Local\xchat");
+		error = GetLastError ();
+
+		if (error == ERROR_ALREADY_EXISTS || mutex == NULL)
+		{
+			/* restoring the XChat window from the tray via the taskbar icon
+			 * only works correctly when X-Tray is used, but it's not a big deal
+			 * since you can only minimize XChat to tray via the taskbar if you
+			 * use X-Tray*/
+			if (xtray_mode ())
+			{
+				/* FindWindow() doesn't support wildcards so we check all the open windows */
+				EnumWindows (enum_windows_impl, NULL);
+				return 0;
+			}
+			else
+			{
+				return 1;
+			}
+		}
+	}
+#endif
 
 #ifdef USE_LIBPROXY
 	libproxy_factory = px_proxy_factory_new();
@@ -945,6 +1020,11 @@ main (int argc, char *argv[])
 
 #ifdef WIN32
 	WSACleanup ();
+
+	if (prefs.gui_one_instance && !portable_mode ())
+	{
+		CloseHandle (mutex);
+	}
 #endif
 
 	return 0;

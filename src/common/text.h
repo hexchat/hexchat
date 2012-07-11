@@ -28,6 +28,9 @@ int pevent_load (char *filename);
 void pevent_make_pntevts (void);
 void text_emit (int index, session *sess, char *a, char *b, char *c, char *d);
 int text_emit_by_name (char *name, session *sess, char *a, char *b, char *c, char *d);
+#ifdef WIN32
+char *text_replace_non_bmp (char *utf8_input, int input_length, glong *output_length);
+#endif
 char *text_validate (char **text, int *len);
 int get_stamp_str (char *fmt, time_t tim, char **ret);
 void format_event (session *sess, int index, char **args, char *o, int sizeofo, unsigned int stripcolor_args);

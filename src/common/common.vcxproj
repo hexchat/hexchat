@@ -1,0 +1,157 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\config.h" />
+    <ClInclude Include="cfgfiles.h" />
+    <ClInclude Include="chanopt.h" />
+    <ClInclude Include="ctcp.h" />
+    <ClInclude Include="dcc.h" />
+    <ClInclude Include="fe.h" />
+    <ClInclude Include="history.h" />
+    <ClInclude Include="identd.h" />
+    <ClInclude Include="ignore.h" />
+    <ClInclude Include="inbound.h" />
+    <ClInclude Include="inet.h" />
+    <ClInclude Include="modes.h" />
+    <ClInclude Include="msproxy.h" />
+    <ClInclude Include="network.h" />
+    <ClInclude Include="notify.h" />
+    <ClInclude Include="outbound.h" />
+    <ClInclude Include="plugin-timer.h" />
+    <ClInclude Include="plugin.h" />
+    <ClInclude Include="proto-irc.h" />
+    <ClInclude Include="server.h" />
+    <ClInclude Include="servlist.h" />
+    <ClInclude Include="ssl.h" />
+    <ClInclude Include="text.h" />
+    <ClInclude Include="textenums.h" />
+    <ClInclude Include="textevents.h" />
+    <ClInclude Include="thread.h" />
+    <ClInclude Include="tree.h" />
+    <ClInclude Include="url.h" />
+    <ClInclude Include="userlist.h" />
+    <ClInclude Include="util.h" />
+    <ClInclude Include="xchat-plugin.h" />
+    <ClInclude Include="xchat.h" />
+    <ClInclude Include="xchatc.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="cfgfiles.c" />
+    <ClCompile Include="chanopt.c" />
+    <ClCompile Include="ctcp.c" />
+    <ClCompile Include="dcc.c" />
+    <ClCompile Include="history.c" />
+    <ClCompile Include="identd.c" />
+    <ClCompile Include="ignore.c" />
+    <ClCompile Include="inbound.c" />
+    <ClCompile Include="modes.c" />
+    <ClCompile Include="msproxy.c" />
+    <ClCompile Include="network.c" />
+    <ClCompile Include="notify.c" />
+    <ClCompile Include="outbound.c" />
+    <ClCompile Include="plugin-timer.c" />
+    <ClCompile Include="plugin.c" />
+    <ClCompile Include="proto-irc.c" />
+    <ClCompile Include="server.c" />
+    <ClCompile Include="servlist.c" />
+    <ClCompile Include="ssl.c" />
+    <ClCompile Include="text.c" />
+    <ClCompile Include="thread.c" />
+    <ClCompile Include="tree.c" />
+    <ClCompile Include="url.c" />
+    <ClCompile Include="userlist.c" />
+    <ClCompile Include="util.c" />
+    <ClCompile Include="xchat.c" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{87554B59-006C-4D94-9714-897B27067BA3}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>common</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>WDK7</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>WDK7</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\win32\xchat.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\win32\xchat.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>$(SolutionDir)build\$(PlatformName)\bin</OutDir>
+    <IntDir>$(SolutionDir)build\$(PlatformName)\obj\$(ProjectName)</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <OutDir>$(SolutionDir)build\$(PlatformName)\bin</OutDir>
+    <IntDir>$(SolutionDir)build\$(PlatformName)\obj\$(ProjectName)</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level1</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_LIB;$(OwnFlags);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(DepsRoot)\include;$(Glib);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level1</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;_WIN64;NDEBUG;_LIB;$(OwnFlags);%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(DepsRoot)\include;$(Glib);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

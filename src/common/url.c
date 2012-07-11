@@ -82,7 +82,7 @@ url_find (char *urltext)
 {
 	int pos;
 
-	if (tree_find (url_tree, urltext, (tree_cmp_func *)strcasecmp, NULL, &pos))
+	if (tree_find (url_tree, urltext, (tree_cmp_func *)g_ascii_strcasecmp, NULL, &pos))
 		return 1;
 	return 0;
 }
@@ -117,7 +117,7 @@ url_add (char *urltext, int len)
 	}
 
 	if (!url_tree)
-		url_tree = tree_new ((tree_cmp_func *)strcasecmp, NULL);
+		url_tree = tree_new ((tree_cmp_func *)g_ascii_strcasecmp, NULL);
 
 	size = tree_size (url_tree);
 	/* 0 is unlimited */
@@ -186,7 +186,7 @@ url_check_word (char *word, int len)
 		{
 			int j;
 
-			/* This is pretty much strncasecmp(). */
+			/* This is pretty much g_ascii_strncasecmp(). */
 			for (j = 0; j < l; j++)
 			{
 				unsigned char c = word[j];
@@ -238,7 +238,7 @@ url_check_word (char *word, int len)
 				const unsigned char *p = &word[len - l];
 				int j;
 
-				/* This is pretty much strncasecmp(). */
+				/* This is pretty much g_ascii_strncasecmp(). */
 				for (j = 0; j < l; j++)
 				{
 					if (tolower(p[j]) != suffix[i].s[j])

@@ -16,26 +16,32 @@
  * Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA
  */
 
+#define WANTSOCKET
+#include "inet.h"				/* make it first to avoid macro redefinitions */
+
 #define __APPLE_API_STRICT_CONFORMANCE
 
 #define _FILE_OFFSET_BITS 64
 #include <stdio.h>
-#include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/stat.h>
+
 #ifdef WIN32
 #include <sys/timeb.h>
 #include <process.h>
+#include <io.h>
+#include "../dirent/dirent-win32.h"
 #else
-#include <sys/types.h>
+#include <unistd.h>
 #include <pwd.h>
 #include <sys/time.h>
 #include <sys/utsname.h>
-#endif
-#include <fcntl.h>
 #include <dirent.h>
+#endif
+
+#include <fcntl.h>
 #include <errno.h>
 #include "xchat.h"
 #include "xchatc.h"
@@ -43,9 +49,6 @@
 #include <ctype.h>
 #include "util.h"
 #include "../../config.h"
-
-#define WANTSOCKET
-#include "inet.h"
 
 #if defined (USING_FREEBSD) || defined (__APPLE__)
 #include <sys/sysctl.h>
@@ -280,7 +283,7 @@ nocasestrstr (const char *s, const char *wanted)
 
 	if (len == 0)
 		return (char *)s;
-	while (rfc_tolower(*s) != rfc_tolower(*wanted) || strncasecmp (s, wanted, len))
+	while (rfc_tolower(*s) != rfc_tolower(*wanted) || g_ascii_strncasecmp (s, wanted, len))
 		if (*s++ == '\0')
 			return (char *)NULL;
 	return (char *)s;
@@ -382,6 +385,28 @@ waitline (int sok, char *buf, int bufsize, int use_recv)
 		i++;
 	}
 }
+
+#ifdef WIN32
+/* waitline2 using win32 file descriptor and glib instead of _read. win32 can't _read() sok! */
+int
+waitline2 (GIOChannel *source, char *buf, int bufsize)
+{
+	int i = 0;
+	int len;
+
+	while (1)
+	{
+		if (g_io_channel_read (source, &buf[i], 1, &len) != G_IO_ERROR_NONE)
+			return -1;
+		if (buf[i] == '\n' || bufsize == i + 1)
+		{
+			buf[i] = 0;
+			return i;
+		}
+		i++;
+	}
+}
+#endif
 
 /* checks for "~" in a file and expands */
 
@@ -624,30 +649,110 @@ get_mhz (void)
 	return 0;	/* fails on Win9x */
 }
 
+int
+get_cpu_arch (void)
+{
+	SYSTEM_INFO si;
+
+	GetSystemInfo (&si);
+
+	if (si.wProcessorArchitecture == 9)
+	{
+		return 64;
+	}
+	else
+	{
+		return 86;
+	}
+}
+
 char *
 get_cpu_str (void)
 {
 	static char verbuf[64];
-	OSVERSIONINFO osvi;
-	SYSTEM_INFO si;
+	static char winver[20];
+	OSVERSIONINFOEX osvi;
 	double mhz;
 
-	osvi.dwOSVersionInfoSize = sizeof (OSVERSIONINFO);
+	osvi.dwOSVersionInfoSize = sizeof (OSVERSIONINFOEX);
 	GetVersionEx (&osvi);
-	GetSystemInfo (&si);
+
+	switch (osvi.dwMajorVersion)
+	{
+		case 5:
+			switch (osvi.dwMinorVersion)
+			{
+				case 1:
+					strcpy (winver, "XP");
+					break;
+				case 2:
+					if (osvi.wProductType == VER_NT_WORKSTATION)
+					{
+						strcpy (winver, "XP x64 Edition");
+					}
+					else
+					{
+						if (GetSystemMetrics(SM_SERVERR2) == 0)
+						{
+							strcpy (winver, "Server 2003");
+						}
+						else
+						{
+							strcpy (winver, "Server 2003 R2");
+						}
+					}
+					break;
+			}
+			break;
+		case 6:
+			switch (osvi.dwMinorVersion)
+			{
+				case 0:
+					if (osvi.wProductType == VER_NT_WORKSTATION)
+					{
+						strcpy (winver, "Vista");
+					}
+					else
+					{
+						strcpy (winver, "Server 2008");
+					}
+					break;
+				case 1:
+					if (osvi.wProductType == VER_NT_WORKSTATION)
+					{
+						strcpy (winver, "7");
+					}
+					else
+					{
+						strcpy (winver, "Server 2008 R2");
+					}
+					break;
+				case 2:
+					if (osvi.wProductType == VER_NT_WORKSTATION)
+					{
+						strcpy (winver, "8");
+					}
+					else
+					{
+						strcpy (winver, "8 Server");
+					}
+					break;
+			}
+			break;
+	}
 
 	mhz = get_mhz ();
 	if (mhz)
 	{
 		double cpuspeed = ( mhz > 1000 ) ? mhz / 1000 : mhz;
 		const char *cpuspeedstr = ( mhz > 1000 ) ? "GHz" : "MHz";
-		sprintf (verbuf, "Windows %ld.%ld [i%d86/%.2f%s]",
-					osvi.dwMajorVersion, osvi.dwMinorVersion, si.wProcessorLevel, 
-					cpuspeed, cpuspeedstr);
-	} else
-		sprintf (verbuf, "Windows %ld.%ld [i%d86]",
-			osvi.dwMajorVersion, osvi.dwMinorVersion, si.wProcessorLevel);
-
+		sprintf (verbuf, "Windows %s [%.2f%s]",	winver, cpuspeed, cpuspeedstr);
+	}
+	else
+	{
+		sprintf (verbuf, "Windows %s", winver);
+	}
+	
 	return verbuf;
 }
 
@@ -840,7 +945,7 @@ typedef struct
 static int
 country_compare (const void *a, const void *b)
 {
-	return strcasecmp (a, ((domain_t *)b)->code);
+	return g_ascii_strcasecmp (a, ((domain_t *)b)->code);
 }
 
 static const domain_t domain[] =
@@ -1726,4 +1831,56 @@ safe_strcpy (char *dest, const char *src, int bytes_left)
 			bytes_left -= mbl;
 		}
 	}
+}
+
+void
+canonalize_key (char *key)
+{
+	char *pos, token;
+
+	for (pos = key; (token = *pos) != 0; pos++)
+	{
+		if (token != '_' && (token < '0' || token > '9') && (token < 'A' || token > 'Z') && (token < 'a' || token > 'z'))
+		{
+			*pos = '_';
+		}
+		else
+		{
+			*pos = tolower(token);
+		}
+	}
+}
+
+int
+portable_mode ()
+{
+#ifdef WIN32
+	if ((_access( "portable-mode", 0 )) != -1)
+	{
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
+#else
+	return 0;
+#endif
+}
+
+int
+xtray_mode ()
+{
+#ifdef WIN32
+	if ((_access( "plugins/xtray.dll", 0 )) != -1)
+	{
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
+#else
+	return 0;
+#endif
 }

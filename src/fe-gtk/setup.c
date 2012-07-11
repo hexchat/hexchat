@@ -102,7 +102,12 @@ typedef struct
 static const setting textbox_settings[] =
 {
 	{ST_HEADER,	N_("Text Box Appearance"),0,0,0},
+#ifdef WIN32
+	{ST_EFONT,  N_("Main font:"), P_OFFSETNL(font_main), 0, 0, sizeof prefs.font_main},
+	{ST_ENTRY,  N_("Alternative fonts:"), P_OFFSETNL(font_alternative), "Separate multiple entries with commas without spaces before or after.", 0, sizeof prefs.font_alternative},
+#else
 	{ST_EFONT,  N_("Font:"), P_OFFSETNL(font_normal), 0, 0, sizeof prefs.font_normal},
+#endif
 	{ST_EFILE,  N_("Background image:"), P_OFFSETNL(background), 0, 0, sizeof prefs.background},
 	{ST_NUMBER,	N_("Scrollback lines:"), P_OFFINTNL(max_lines),0,0,100000},
 	{ST_TOGGLE, N_("Colored nick names"), P_OFFINTNL(colorednicks),
@@ -120,7 +125,24 @@ static const setting textbox_settings[] =
 	{ST_HEADER,	N_("Time Stamps"),0,0,0},
 	{ST_TOGGLE, N_("Enable time stamps"), P_OFFINTNL(timestamp),0,0,2},
 	{ST_ENTRY,  N_("Time stamp format:"), P_OFFSETNL(stamp_format),
-					N_("See strftime manpage for details."),0,sizeof prefs.stamp_format},
+#ifdef WIN32
+					N_("See the strftime MSDN article for details."),0,sizeof prefs.stamp_format},
+#else
+					N_("See the strftime manpage for details."),0,sizeof prefs.stamp_format},
+#endif
+
+	{ST_HEADER,	N_("Auto-Copy Behavior"),0,0,0},
+	{ST_TOGGLE, N_("Automatically copy selected text"), P_OFFINTNL(autocopy_text),
+					N_("Copy selected text to clipboard when left mouse button is released. "
+						"Otherwise, CONTROL-SHIFT-C will copy the "
+						"selected text to the clipboard."), 0, 0},
+	{ST_TOGGLE, N_("Automatically include time stamps"), P_OFFINTNL(autocopy_stamp),
+					N_("Automatically include time stamps in copied lines of text. Otherwise, "
+						"include time stamps if the SHIFT key is held down while selecting."), 0, 0},
+	{ST_TOGGLE, N_("Automatically include color information"), P_OFFINTNL(autocopy_color),
+					N_("Automatically include color information in copied lines of text.  "
+						"Otherwise, include color information if the CONTROL key is held down "
+						"while selecting."), 0, 0},
 
 	{ST_END, 0, 0, 0, 0, 0}
 };
@@ -138,6 +160,12 @@ static const setting inputbox_settings[] =
 	{ST_TOGGLE, N_("Use the Text box font and colors"), P_OFFINTNL(style_inputbox),0,0,0},
 #if defined(USE_GTKSPELL) || defined(USE_LIBSEXY)
 	{ST_TOGGLE, N_("Spell checking"), P_OFFINTNL(gui_input_spell),0,0,0},
+	{ST_ENTRY,	N_("Dictionaries to use:"), P_OFFSETNL(spell_langs),0,0,sizeof prefs.spell_langs},
+#ifdef WIN32
+	{ST_LABEL,	N_("Use language codes (as in \"share\\myspell\\dicts\").\nSeparate multiple entries with commas.")},
+#else
+	{ST_LABEL,	N_("Use language codes. Separate multiple entries with commas.")},
+#endif
 #endif
 
 	{ST_HEADER, N_("Nick Completion"),0,0,0},
@@ -348,6 +376,24 @@ static const setting alert_settings[] =
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
+static const setting alert_settings_xtray[] =
+{
+	{ST_HEADER,	N_("Alerts"),0,0,0},
+
+	{ST_ALERTHEAD},
+	{ST_3OGGLE, N_("Blink task bar on:"), 0, 0, (void *)taskbarlist, 0},
+	{ST_3OGGLE, N_("Make a beep sound on:"), 0, 0, (void *)beeplist, 0},
+
+	{ST_HEADER,	N_("Highlighted Messages"),0,0,0},
+	{ST_LABEL,	N_("Highlighted messages are ones where your nickname is mentioned, but also:"), 0, 0, 0, 1},
+
+	{ST_ENTRY,	N_("Extra words to highlight:"), P_OFFSETNL(irc_extra_hilight), 0, 0, sizeof prefs.irc_extra_hilight},
+	{ST_ENTRY,	N_("Nick names not to highlight:"), P_OFFSETNL(irc_no_hilight), 0, 0, sizeof prefs.irc_no_hilight},
+	{ST_ENTRY,	N_("Nick names to always highlight:"), P_OFFSETNL(irc_nick_hilight), 0, 0, sizeof prefs.irc_nick_hilight},
+	{ST_LABEL,	N_("Separate multiple words with commas.\nWildcards are accepted.")},
+	{ST_END, 0, 0, 0, 0, 0}
+};
+
 static const setting general_settings[] =
 {
 	{ST_HEADER,	N_("Default Messages"),0,0,0},
@@ -363,7 +409,6 @@ static const setting general_settings[] =
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
-#if 0
 static const setting advanced_settings[] =
 {
 	{ST_HEADER,	N_("Advanced Settings"),0,0,0},
@@ -371,6 +416,25 @@ static const setting advanced_settings[] =
 	{ST_TOGGLE,	N_("Display MODEs in raw form"), P_OFFINTNL(raw_modes), 0, 0, 0},
 	{ST_TOGGLE,	N_("Whois on notify"), P_OFFINTNL(whois_on_notifyonline), N_("Sends a /WHOIS when a user comes online in your notify list"), 0, 0},
 	{ST_TOGGLE,	N_("Hide join and part messages"), P_OFFINTNL(confmode), N_("Hide channel join/part messages by default"), 0, 0},
+	{ST_ENTRY,	N_("License Text:"), P_OFFSETNL(gui_license), 0, 0, sizeof prefs.gui_license},
+	{ST_HEADER,	N_("Auto Open DCC Windows"),0,0,0},
+	{ST_TOGGLE, N_("Send window"), P_OFFINTNL(autoopendccsendwindow), 0, 0, 0},
+	{ST_TOGGLE, N_("Receive window"), P_OFFINTNL(autoopendccrecvwindow), 0, 0, 0},
+	{ST_TOGGLE, N_("Chat window"), P_OFFINTNL(autoopendccchatwindow), 0, 0, 0},
+
+	{ST_END, 0, 0, 0, 0, 0}
+};
+
+#ifdef WIN32
+static const setting advanced_settings_oneinstance[] =
+{
+	{ST_HEADER,	N_("Advanced Settings"),0,0,0},
+	{ST_NUMBER,	N_("Auto reconnect delay:"), P_OFFINTNL(recon_delay), 0, 0, 9999},
+	{ST_TOGGLE,	N_("Display MODEs in raw form"), P_OFFINTNL(raw_modes), 0, 0, 0},
+	{ST_TOGGLE,	N_("Whois on notify"), P_OFFINTNL(whois_on_notifyonline), N_("Sends a /WHOIS when a user comes online in your notify list"), 0, 0},
+	{ST_TOGGLE,	N_("Hide join and part messages"), P_OFFINTNL(confmode), N_("Hide channel join/part messages by default"), 0, 0},
+	{ST_TOGGLE,	N_("Allow only one instance of XChat to run"), P_OFFINTNL(gui_one_instance), 0, 0, 0},
+	{ST_ENTRY,	N_("License Text:"), P_OFFSETNL(gui_license), 0, 0, sizeof prefs.gui_license},
 	{ST_HEADER,	N_("Auto Open DCC Windows"),0,0,0},
 	{ST_TOGGLE, N_("Send window"), P_OFFINTNL(autoopendccsendwindow), 0, 0, 0},
 	{ST_TOGGLE, N_("Receive window"), P_OFFINTNL(autoopendccrecvwindow), 0, 0, 0},
@@ -391,7 +455,11 @@ static const setting logging_settings[] =
 	{ST_HEADER,	N_("Time Stamps"),0,0,0},
 	{ST_TOGGLE,	N_("Insert timestamps in logs"), P_OFFINTNL(timestamp_logs), 0, 0, 2},
 	{ST_ENTRY,	N_("Log timestamp format:"), P_OFFSETNL(timestamp_log_format), 0, 0, sizeof prefs.timestamp_log_format},
-	{ST_LABEL,	N_("See strftime manpage for details.")},
+#ifdef WIN32
+	{ST_LABEL,	N_("See the strftime MSDN article for details.")},
+#else
+	{ST_LABEL,	N_("See the strftime manpage for details.")},
+#endif
 
 	{ST_END, 0, 0, 0, 0, 0}
 };
@@ -1328,6 +1396,9 @@ setup_create_color_page (void)
 	setup_create_other_color (_("New message:"), COL_NEW_MSG, 10, tab);
 	setup_create_other_colorR (_("Away user:"), COL_AWAY, 10, tab);
 	setup_create_other_color (_("Highlight:"), COL_HILIGHT, 11, tab);
+#if defined(USE_GTKSPELL) || defined(USE_LIBSEXY)
+	setup_create_other_colorR (_("Spell checker:"), COL_SPELL, 11, tab);
+#endif
 
 	return box;
 }
@@ -1711,7 +1782,7 @@ static const char *const cata[] =
 		N_("General"),
 		N_("Logging"),
 		N_("Sound"),
-/*		N_("Advanced"),*/
+		N_("Advanced"),
 		NULL,
 	N_("Network"),
 		N_("Network setup"),
@@ -1732,10 +1803,33 @@ setup_create_pages (GtkWidget *box)
 	setup_add_page (cata[3], book, setup_create_page (userlist_settings));
 	setup_add_page (cata[4], book, setup_create_page (tabs_settings));
 	setup_add_page (cata[5], book, setup_create_color_page ());
-	setup_add_page (cata[8], book, setup_create_page (alert_settings));
+
+	if (xtray_mode ())
+	{
+		setup_add_page (cata[8], book, setup_create_page (alert_settings_xtray));
+	}
+	else
+	{
+		setup_add_page (cata[8], book, setup_create_page (alert_settings));
+	}
+
 	setup_add_page (cata[9], book, setup_create_page (general_settings));
 	setup_add_page (cata[10], book, setup_create_page (logging_settings));
 	setup_add_page (cata[11], book, setup_create_sound_page ());
+
+#ifdef WIN32
+	if (portable_mode ())
+	{
+		setup_add_page (cata[12], book, setup_create_page (advanced_settings));
+	}
+	else
+	{
+		setup_add_page (cata[12], book, setup_create_page (advanced_settings_oneinstance));
+	}
+#else
+	setup_add_page (cata[12], book, setup_create_page (advanced_settings));
+#endif
+
 	setup_add_page (cata[14], book, setup_create_page (network_settings));
 	setup_add_page (cata[15], book, setup_create_page (filexfer_settings));
 
@@ -1971,6 +2065,12 @@ setup_apply_real (int new_pix, int do_ulist, int do_layout)
 static void
 setup_apply (struct xchatprefs *pr)
 {
+#ifdef WIN32
+	PangoFontDescription *old_desc;
+	PangoFontDescription *new_desc;
+	char buffer[4 * FONTNAMELEN + 1];
+	time_t rawtime;
+#endif
 	int new_pix = FALSE;
 	int noapply = FALSE;
 	int do_ulist = FALSE;
@@ -2013,6 +2113,30 @@ setup_apply (struct xchatprefs *pr)
 						FE_MSG_WARN | FE_MSG_MARKUP);
 
 	memcpy (&prefs, pr, sizeof (prefs));
+
+#ifdef WIN32
+	/* merge font_main and font_alternative into font_normal */
+	old_desc = pango_font_description_from_string (prefs.font_main);
+	sprintf (buffer, "%s,%s", pango_font_description_get_family (old_desc), prefs.font_alternative);
+	new_desc = pango_font_description_from_string (buffer);
+	pango_font_description_set_weight (new_desc, pango_font_description_get_weight (old_desc));
+	pango_font_description_set_style (new_desc, pango_font_description_get_style (old_desc));
+	pango_font_description_set_size (new_desc, pango_font_description_get_size (old_desc));
+	sprintf (prefs.font_normal, "%s", pango_font_description_to_string (new_desc));
+
+	/* FIXME this is not required after pango_font_description_from_string()
+	g_free (old_desc);
+	g_free (new_desc);
+	*/
+
+	/* workaround for strftime differences between POSIX and MSVC */
+	time (&rawtime);
+
+	if (!strftime (buffer, sizeof (buffer), prefs.stamp_format, localtime (&rawtime)) || !strftime (buffer, sizeof (buffer), prefs.timestamp_log_format, localtime (&rawtime)))
+	{
+		fe_message (_("Invalid time stamp format! See the strftime MSDN article for details."), FE_MSG_ERROR);
+	}
+#endif
 
 	setup_apply_real (new_pix, do_ulist, do_layout);
 

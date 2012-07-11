@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros">
+    <!-- SPECIFY YOUR DEPENDENCY DIRECTORIES HERE -->
+    <YourDepsPath>c:\mozilla build\xchat-deps</YourDepsPath>
+    <YourGendefPath>c:\mozilla build\gendef</YourGendefPath>
+    <YourTclPath>c:\mozilla build\tcl-8.5</YourTclPath>
+    <YourPerl512Path>c:\mozilla build\perl-5.12</YourPerl512Path>
+    <YourPerl514Path>c:\mozilla build\perl-5.14</YourPerl514Path>
+    <YourPerl516Path>c:\mozilla build\perl-5.16</YourPerl516Path>
+    <YourPythonPath>c:\mozilla build\python-2.7</YourPythonPath>
+    <!-- YOU SHOULDN'T TOUCH ANYTHING BELOW -->
+    <OwnFlags>G_DISABLE_CAST_CHECKS;G_DISABLE_DEPRECATED;GDK_PIXBUF_DISABLE_DEPRECATED;GDK_DISABLE_DEPRECATED;HAVE_STRTOULL;strtoull=_strtoui64;strcasecmp=stricmp;strncasecmp=strnicmp;__inline__=__inline;</OwnFlags>
+    <DepsRoot>$(YourDepsPath)\$(PlatformName)</DepsRoot>
+    <GendefPath>$(YourGendefPath)</GendefPath>
+    <LuaLib>lua51</LuaLib>
+    <LuaOutput>xclua</LuaOutput>
+    <TclPath>$(YourTclPath)\$(PlatformName)</TclPath>
+    <TclLib>tcl85</TclLib>
+    <TclOutput>xctcl</TclOutput>
+    <Perl512Path>$(YourPerl512Path)\$(PlatformName)</Perl512Path>
+    <Perl512Lib>perl512</Perl512Lib>
+    <Perl512Output>xcperl-512</Perl512Output>
+    <Perl514Path>$(YourPerl514Path)\$(PlatformName)</Perl514Path>
+    <Perl514Lib>perl514</Perl514Lib>
+    <Perl514Output>xcperl-514</Perl514Output>
+    <Perl516Path>$(YourPerl516Path)\$(PlatformName)</Perl516Path>
+    <Perl516Lib>perl516</Perl516Lib>
+    <Perl516Output>xcperl-516</Perl516Output>
+    <PythonPath>$(YourPythonPath)\$(PlatformName)</PythonPath>
+    <PythonLib>python27</PythonLib>
+    <PythonOutput>xcpython</PythonOutput>
+    <Glib>$(DepsRoot)\include\glib-2.0;$(DepsRoot)\lib\glib-2.0\include;$(DepsRoot)\include\libxml2</Glib>
+    <Gtk>$(DepsRoot)\include\gtk-2.0;$(DepsRoot)\lib\gtk-2.0\include;$(DepsRoot)\include\atk-1.0;$(DepsRoot)\include\cairo;$(DepsRoot)\include\pango-1.0;$(DepsRoot)\include\gdk-pixbuf-2.0</Gtk>
+    <Pixmaps>bookpng "$(SolutionDir)\..\src\pixmaps\book.png" hoppng "$(SolutionDir)\..\src\pixmaps\hop.png" oppng "$(SolutionDir)\..\src\pixmaps\op.png" purplepng "$(SolutionDir)\..\src\pixmaps\purple.png" redpng "$(SolutionDir)\..\src\pixmaps\red.png" trayfilepng "$(SolutionDir)\..\src\pixmaps\fileoffer.png" trayhilightpng "$(SolutionDir)\..\src\pixmaps\highlight.png" traymsgpng "$(SolutionDir)\..\src\pixmaps\message.png" voicepng "$(SolutionDir)\..\src\pixmaps\voice.png" xchatpng "$(SolutionDir)\..\xchat.png"</Pixmaps>
+    <DepLibs>gtk-win32-2.0.lib;gdk-win32-2.0.lib;atk-1.0.lib;gio-2.0.lib;gdk_pixbuf-2.0.lib;pangowin32-1.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo.lib;gobject-2.0.lib;gmodule-2.0.lib;glib-2.0.lib;intl.lib;libxml2.lib;libeay32.lib;ssleay32.lib;wininet.lib;winmm.lib;ws2_32.lib</DepLibs>
+    <XChatDest>$(SolutionDir)build\$(PlatformName)\rel</XChatDest>
+  </PropertyGroup>
+  <ItemDefinitionGroup />
+  <ItemGroup />
+</Project>
