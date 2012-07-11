@@ -180,7 +180,6 @@ url_check_word (char *word, int len)
 		{ D(".jobs") },
 		{ D(".mobi") },
 		{ D(".museum") },
-		{ D(".name") },
 		{ D(".pro") },
 		{ D(".tel") },
 		{ D(".travel") },
