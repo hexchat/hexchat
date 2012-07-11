@@ -35,22 +35,22 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\win32\xchat.props" />
+    <Import Project="..\..\win32\hexchat.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\..\win32\xchat.props" />
+    <Import Project="..\..\win32\hexchat.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <TargetName>xchat</TargetName>
+    <TargetName>hexchat</TargetName>
     <OutDir>$(SolutionDir)build\$(PlatformName)\bin</OutDir>
     <IntDir>$(SolutionDir)build\$(PlatformName)\obj\$(ProjectName)</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <TargetName>xchat</TargetName>
+    <TargetName>hexchat</TargetName>
     <OutDir>$(SolutionDir)build\$(PlatformName)\bin</OutDir>
     <IntDir>$(SolutionDir)build\$(PlatformName)\obj\$(ProjectName)</IntDir>
   </PropertyGroup>
@@ -163,13 +163,13 @@
     <ClCompile Include="xtext.c" />
   </ItemGroup>
   <ItemGroup>
-    <Manifest Include="xchat.exe.manifest" />
+    <Manifest Include="hexchat.exe.manifest" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="xchat.rc" />
+    <ResourceCompile Include="hexchat.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\xchat.ico" />
+    <None Include="..\..\hexchat.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

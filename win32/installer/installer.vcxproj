@@ -34,11 +34,11 @@
   </ImportGroup>
   <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\xchat.props" />
+    <Import Project="..\hexchat.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\xchat.props" />
+    <Import Project="..\hexchat.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -62,16 +62,16 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PreBuildEvent>
-      <Command>echo [Setup] &gt; "$(OutDir)\xchat-wdk-x86.iss"
-echo WizardImageFile="$(ProjectDir)\wizardimage.bmp" &gt;&gt; "$(OutDir)\xchat-wdk-x86.iss"
-echo WizardSmallImageFile="$(ProjectDir)\wizardsmallimage.bmp" &gt;&gt; "$(OutDir)\xchat-wdk-x86.iss"
-"$(OutDir)\version" -a &gt;&gt; "$(OutDir)\xchat-wdk-x86.iss"
-"$(OutDir)\version" -v &gt;&gt; "$(OutDir)\xchat-wdk-x86.iss"
-"$(OutDir)\version" -i &gt;&gt; "$(OutDir)\xchat-wdk-x86.iss"
-"$(OutDir)\version" -o &gt;&gt; "$(OutDir)\xchat-wdk-x86.iss"
-echo SetupIconFile="$(SolutionDir)\..\xchat.ico" &gt;&gt; "$(OutDir)\xchat-wdk-x86.iss"
-type xchat-wdk-x86.skel.iss &gt;&gt; "$(OutDir)\xchat-wdk-x86.iss"
-"$(ProgramFiles)\Inno Setup 5\compil32" /cc "$(OutDir)\xchat-wdk-x86.iss"</Command>
+      <Command>echo [Setup] &gt; "$(OutDir)\hexchat-x86.iss"
+echo WizardImageFile="$(ProjectDir)\wizardimage.bmp" &gt;&gt; "$(OutDir)\hexchat-x86.iss"
+echo WizardSmallImageFile="$(ProjectDir)\wizardsmallimage.bmp" &gt;&gt; "$(OutDir)\hexchat-x86.iss"
+"$(OutDir)\version" -a &gt;&gt; "$(OutDir)\hexchat-x86.iss"
+"$(OutDir)\version" -v &gt;&gt; "$(OutDir)\hexchat-x86.iss"
+"$(OutDir)\version" -i &gt;&gt; "$(OutDir)\hexchat-x86.iss"
+"$(OutDir)\version" -o &gt;&gt; "$(OutDir)\hexchat-x86.iss"
+echo SetupIconFile="$(SolutionDir)\..\hexchat.ico" &gt;&gt; "$(OutDir)\hexchat-x86.iss"
+type hexchat-x86.skel.iss &gt;&gt; "$(OutDir)\hexchat-x86.iss"
+"$(ProgramFiles)\Inno Setup 5\compil32" /cc "$(OutDir)\hexchat-x86.iss"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -87,16 +87,16 @@ type xchat-wdk-x86.skel.iss &gt;&gt; "$(OutDir)\xchat-wdk-x86.iss"
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
     <PreBuildEvent>
-      <Command>echo [Setup] &gt; "$(OutDir)\xchat-wdk-x64.iss"
-echo WizardImageFile="$(ProjectDir)\wizardimage.bmp" &gt;&gt; "$(OutDir)\xchat-wdk-x64.iss"
-echo WizardSmallImageFile="$(ProjectDir)\wizardsmallimage.bmp" &gt;&gt; "$(OutDir)\xchat-wdk-x64.iss"
-"$(OutDir)\version" -a &gt;&gt; "$(OutDir)\xchat-wdk-x64.iss"
-"$(OutDir)\version" -v &gt;&gt; "$(OutDir)\xchat-wdk-x64.iss"
-"$(OutDir)\version" -i &gt;&gt; "$(OutDir)\xchat-wdk-x64.iss"
-"$(OutDir)\version" -o &gt;&gt; "$(OutDir)\xchat-wdk-x64.iss"
-echo SetupIconFile="$(SolutionDir)\..\xchat.ico" &gt;&gt; "$(OutDir)\xchat-wdk-x64.iss"
-type xchat-wdk-x64.skel.iss &gt;&gt; "$(OutDir)\xchat-wdk-x64.iss"
-"$(ProgramFiles)\Inno Setup 5\compil32" /cc "$(OutDir)\xchat-wdk-x64.iss"</Command>
+      <Command>echo [Setup] &gt; "$(OutDir)\hexchat-x64.iss"
+echo WizardImageFile="$(ProjectDir)\wizardimage.bmp" &gt;&gt; "$(OutDir)\hexchat-x64.iss"
+echo WizardSmallImageFile="$(ProjectDir)\wizardsmallimage.bmp" &gt;&gt; "$(OutDir)\hexchat-x64.iss"
+"$(OutDir)\version" -a &gt;&gt; "$(OutDir)\hexchat-x64.iss"
+"$(OutDir)\version" -v &gt;&gt; "$(OutDir)\hexchat-x64.iss"
+"$(OutDir)\version" -i &gt;&gt; "$(OutDir)\hexchat-x64.iss"
+"$(OutDir)\version" -o &gt;&gt; "$(OutDir)\hexchat-x64.iss"
+echo SetupIconFile="$(SolutionDir)\..\hexchat.ico" &gt;&gt; "$(OutDir)\hexchat-x64.iss"
+type hexchat-x64.skel.iss &gt;&gt; "$(OutDir)\hexchat-x64.iss"
+"$(ProgramFiles)\Inno Setup 5\compil32" /cc "$(OutDir)\hexchat-x64.iss"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -104,8 +104,8 @@ type xchat-wdk-x64.skel.iss &gt;&gt; "$(OutDir)\xchat-wdk-x64.iss"
     <None Include="watercolorlite-green.cjstyles" />
     <None Include="wizardimage.bmp" />
     <None Include="wizardsmallimage.bmp" />
-    <None Include="xchat-wdk-x64.skel.iss" />
-    <None Include="xchat-wdk-x86.skel.iss" />
+    <None Include="hexchat-x64.skel.iss" />
+    <None Include="hexchat-x86.skel.iss" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

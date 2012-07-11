@@ -1,14 +1,14 @@
-AppName=XChat-WDK (x64)
-AppPublisher=XChat-WDK
-AppPublisherURL=http://www.xchat-wdk.org/
+AppName=HexChat (x86)
+AppPublisher=HexChat
+AppPublisherURL=http://www.hexchat.org/
 AppCopyright=Copyright (C) 1998-2010 Peter Zelezny
-AppSupportURL=http://code.google.com/p/xchat-wdk/issues/list
-AppUpdatesURL=http://www.xchat-wdk.org/home/downloads
+AppSupportURL=https://github.com/hexchat/hexchat/issues
+AppUpdatesURL=http://www.hexchat.org/home/downloads
 LicenseFile=COPYING
-UninstallDisplayIcon={app}\xchat.exe
-UninstallDisplayName=XChat-WDK (x64)
-DefaultDirName={pf}\XChat-WDK
-DefaultGroupName=XChat-WDK
+UninstallDisplayIcon={app}\hexchat.exe
+UninstallDisplayName=HexChat (x86)
+DefaultDirName={pf}\HexChat
+DefaultGroupName=HexChat
 DisableProgramGroupPage=yes
 SolidCompression=yes
 SourceDir=..\rel
@@ -18,8 +18,7 @@ PrivilegesRequired=none
 ShowComponentSizes=no
 CreateUninstallRegKey=not IsTaskSelected('portable')
 Uninstallable=not IsTaskSelected('portable')
-ArchitecturesAllowed=x64
-ArchitecturesInstallIn64BitMode=x64
+ArchitecturesAllowed=x86 x64
 
 [Types]
 Name: "normal"; Description: "Normal Installation"
@@ -28,9 +27,9 @@ Name: "minimal"; Description: "Minimal Installation"
 Name: "custom"; Description: "Custom Installation"; Flags: iscustom
 
 [Components]
-Name: "libs"; Description: "XChat-WDK"; Types: normal full minimal custom; Flags: fixed
-Name: "xctext"; Description: "XChat-Text"; Types: full custom; Flags: disablenouninstallwarning
-Name: "xtm"; Description: "XChat Theme Manager (Requires .NET 4.0)"; Types: full custom; Flags: disablenouninstallwarning
+Name: "libs"; Description: "HexChat"; Types: normal full minimal custom; Flags: fixed
+Name: "xctext"; Description: "HexChat-Text"; Types: full custom; Flags: disablenouninstallwarning
+Name: "xtm"; Description: "HexChat Theme Manager (Requires .NET 4.0)"; Types: full custom; Flags: disablenouninstallwarning
 Name: "translations"; Description: "Translations"; Types: normal full custom; Flags: disablenouninstallwarning
 ;obs Name: "gtkengines"; Description: "GTK+ Engines"; Types: full custom; Flags: disablenouninstallwarning
 ;Name: "spelling"; Description: "Spelling Dictionaries"; Types: full custom; Flags: disablenouninstallwarning
@@ -66,19 +65,19 @@ Name: perl516; Description: "5.16"; GroupDescription: "Perl version:"; Flags: ex
 Root: HKCR; Subkey: "irc"; ValueType: none; ValueName: ""; ValueData: ""; Flags: deletekey uninsdeletekey; Tasks: not portable
 Root: HKCR; Subkey: "irc"; ValueType: string; ValueName: ""; ValueData: "URL:IRC Protocol"; Flags: uninsdeletevalue; Tasks: not portable
 Root: HKCR; Subkey: "irc"; ValueType: string; ValueName: "URL Protocol"; ValueData: ""; Flags: uninsdeletevalue; Tasks: not portable
-Root: HKCR; Subkey: "irc\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\xchat.exe,0"; Flags: uninsdeletevalue; Tasks: not portable
+Root: HKCR; Subkey: "irc\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\hexchat.exe,0"; Flags: uninsdeletevalue; Tasks: not portable
 Root: HKCR; Subkey: "irc\shell"; ValueType: string; ValueName: ""; ValueData: "open"; Flags: uninsdeletevalue; Tasks: not portable
-Root: HKCR; Subkey: "irc\shell\open\command"; ValueType: string; ValueName: ""; ValueData: "{app}\xchat.exe --url=""%1"""; Flags: uninsdeletevalue; Tasks: not portable
+Root: HKCR; Subkey: "irc\shell\open\command"; ValueType: string; ValueName: ""; ValueData: "{app}\hexchat.exe --url=""%1"""; Flags: uninsdeletevalue; Tasks: not portable
 
 Root: HKCR; Subkey: ".xct"; ValueType: none; ValueName: ""; ValueData: ""; Flags: deletekey uninsdeletekey; Components:xtm; Tasks: not portable
-Root: HKCR; Subkey: ".xct"; ValueType: string; ValueName: ""; ValueData: "XChat Theme File"; Flags: uninsdeletevalue; Components:xtm; Tasks: not portable
-Root: HKCR; Subkey: ".xct"; ValueType: string; ValueName: "XChat Theme File"; ValueData: ""; Flags: uninsdeletevalue; Components:xtm; Tasks: not portable
+Root: HKCR; Subkey: ".xct"; ValueType: string; ValueName: ""; ValueData: "HexChat Theme File"; Flags: uninsdeletevalue; Components:xtm; Tasks: not portable
+Root: HKCR; Subkey: ".xct"; ValueType: string; ValueName: "HexChat Theme File"; ValueData: ""; Flags: uninsdeletevalue; Components:xtm; Tasks: not portable
 Root: HKCR; Subkey: ".xct\DefaultIcon"; ValueType: string; ValueName: ""; ValueData: "{app}\thememan.exe,0"; Flags: uninsdeletevalue; Components:xtm; Tasks: not portable
 Root: HKCR; Subkey: ".xct\shell"; ValueType: string; ValueName: ""; ValueData: "open"; Flags: uninsdeletevalue; Components:xtm; Tasks: not portable
 Root: HKCR; Subkey: ".xct\shell\open\command"; ValueType: string; ValueName: ""; ValueData: "{app}\thememan.exe ""%1"""; Flags: uninsdeletevalue; Components:xtm; Tasks: not portable
 
 [Run]
-Filename: "{app}\xchat.exe"; Description: "Run XChat-WDK after closing the Wizard"; Flags: nowait postinstall skipifsilent
+Filename: "{app}\hexchat.exe"; Description: "Run HexChat after closing the Wizard"; Flags: nowait postinstall skipifsilent
 
 [Files]
 ; Add the ISSkin DLL used for skinning Inno Setup installations.
@@ -86,7 +85,7 @@ Source: ISSkinU.dll; DestDir: {app}; Flags: dontcopy
 
 ; Add the Visual Style resource contains resources used for skinning,
 ; you can also use Microsoft Visual Styles (*.msstyles) resources.
-Source: watercolorlite-blue.cjstyles; DestDir: {tmp}; Flags: dontcopy
+Source: watercolorlite-green.cjstyles; DestDir: {tmp}; Flags: dontcopy
 
 Source: "portable-mode"; DestDir: "{app}"; Tasks: portable
 
@@ -111,7 +110,8 @@ Source: "libcairo-2.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: li
 Source: "libeay32.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "libexpat-1.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 ;obs Source: "libffi-5.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "libfreetype-6.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "freetype6.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+;obs Source: "libfreetype-6.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "libfontconfig-1.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "libgdk_pixbuf-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "libgdk-win32-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
@@ -121,7 +121,8 @@ Source: "libgmodule-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Componen
 Source: "libgobject-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "libgthread-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "libgtk-win32-2.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "libintl-8.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "intl.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+;obs Source: "libintl-8.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 ;obs Source: "libjasper-1.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 ;obs Source: "libjpeg-8.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "libpango-1.0-0.dll"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
@@ -184,18 +185,18 @@ Source: "plugins\xcperl-512.dll"; DestDir: "{app}\plugins"; DestName: "xcperl.dl
 Source: "plugins\xcperl-514.dll"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Flags: ignoreversion; Components: langs\perl; Tasks: perl514
 Source: "plugins\xcperl-516.dll"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Flags: ignoreversion; Components: langs\perl; Tasks: perl516
 
-Source: "xchat.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "xchat-text.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: xctext
+Source: "hexchat.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
+Source: "hexchat-text.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: xctext
 Source: "thememan.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: xtm
 
 [Icons]
-Name: "{group}\XChat-WDK (x64)"; Filename: "{app}\xchat.exe"; Tasks: not portable
-Name: "{group}\XChat-Text (x64)"; Filename: "{app}\xchat-text.exe"; Components: xctext; Tasks: not portable
-Name: "{group}\XChat Theme Manager (x64)"; Filename: "{app}\thememan.exe"; Components: xtm; Tasks: not portable
-Name: "{group}\Uninstall XChat-WDK (x64)"; Filename: "{uninstallexe}"; Tasks: not portable
+Name: "{group}\HexChat (x86)"; Filename: "{app}\hexchat.exe"; Tasks: not portable
+Name: "{group}\HexChat-Text (x86)"; Filename: "{app}\hexchat-text.exe"; Components: xctext; Tasks: not portable
+Name: "{group}\HexChat Theme Manager (x86)"; Filename: "{app}\thememan.exe"; Components: xtm; Tasks: not portable
+Name: "{group}\Uninstall HexChat (x86)"; Filename: "{uninstallexe}"; Tasks: not portable
 
 [Messages]
-BeveledLabel= XChat-WDK
+BeveledLabel= HexChat
 
 [Code]
 /////////////////////////////////////////////////////////////////////
@@ -206,7 +207,7 @@ var
 	sUnInstPath: String;
 	sUnInstallString: String;
 begin
-	sUnInstPath := ExpandConstant('Software\Microsoft\Windows\CurrentVersion\Uninstall\XChat-WDK (x64)_is1');
+	sUnInstPath := ExpandConstant('Software\Microsoft\Windows\CurrentVersion\Uninstall\HexChat (x86)_is1');
 	sUnInstallString := '';
 	if not RegQueryStringValue(HKLM, sUnInstPath, 'UninstallString', sUnInstallString) then
 		RegQueryStringValue(HKCU, sUnInstPath, 'UninstallString', sUnInstallString);
@@ -277,8 +278,8 @@ external 'ShowWindow@user32.dll stdcall';
 
 function InitializeSetup(): Boolean;
 begin
-  ExtractTemporaryFile('watercolorlite-blue.cjstyles');
-  LoadSkin(ExpandConstant('{tmp}\watercolorlite-blue.cjstyles'), '');
+  ExtractTemporaryFile('watercolorlite-green.cjstyles');
+  LoadSkin(ExpandConstant('{tmp}\watercolorlite-green.cjstyles'), '');
   Result := True;
 end;
 

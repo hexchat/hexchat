@@ -72,32 +72,32 @@ main (int argc, char *argv[])
 {
 	if (argc > 1)
 	{
-		if (!strcmp (argv[1], "-r"))			/* xchat.rc/FILEVERSION, PRODUCTVERSION */
+		if (!strcmp (argv[1], "-r"))			/* hexchat.rc/FILEVERSION, PRODUCTVERSION */
 		{
 			printf ("#define COMMA_VERSION %s\n", comma ());
 		}
-		else if (!strcmp (argv[1], "-a"))	/* xchat-wdk.iss/AppVerName */
+		else if (!strcmp (argv[1], "-a"))	/* hexchat.iss/AppVerName */
 		{
 #ifdef _WIN64
-			printf ("AppVerName=XChat-WDK %s (x64)\n", PACKAGE_VERSION);
+			printf ("AppVerName=HexChat %s (x64)\n", PACKAGE_VERSION);
 #else
-			printf ("AppVerName=XChat-WDK %s (x86)\n", PACKAGE_VERSION);
+			printf ("AppVerName=HexChat %s (x86)\n", PACKAGE_VERSION);
 #endif
 		}
-		else if (!strcmp (argv[1], "-v"))	/* xchat-wdk.iss/AppVersion */
+		else if (!strcmp (argv[1], "-v"))	/* hexchat.iss/AppVersion */
 		{
 			printf ("AppVersion=%s\n", point ());
 		}
-		else if (!strcmp (argv[1], "-i"))	/* xchat-wdk.iss/VersionInfoVersion */
+		else if (!strcmp (argv[1], "-i"))	/* hexchat.iss/VersionInfoVersion */
 		{
 			printf ("VersionInfoVersion=%s\n", point ());
 		}
-		else if (!strcmp (argv[1], "-o"))	/* xchat-wdk.iss/OutputBaseFilename */
+		else if (!strcmp (argv[1], "-o"))	/* hexchat.iss/OutputBaseFilename */
 		{
 #ifdef _WIN64
-			printf ("OutputBaseFilename=XChat-WDK %s x64\n", PACKAGE_VERSION);
+			printf ("OutputBaseFilename=HexChat %s x64\n", PACKAGE_VERSION);
 #else
-			printf ("OutputBaseFilename=XChat-WDK %s x86\n", PACKAGE_VERSION);
+			printf ("OutputBaseFilename=HexChat %s x86\n", PACKAGE_VERSION);
 #endif
 		}
 		else if (!strcmp (argv[1], "-v"))	/* version.txt */
@@ -105,30 +105,30 @@ main (int argc, char *argv[])
 			printf ("%s", PACKAGE_VERSION);
 		} else
 		{
-			printf ("usage:\n\t-a\txchat-wdk.iss/AppVerName\n\t-i\txchat-wdk.iss/VersionInfoVersion\n\t-o\txchat-wdk.iss/OutputBaseFilename\n\t-r\txchat.rc/FILEVERSION, PRODUCTVERSION\n\t-v\txchat-wdk.iss/AppVersion\n");
+			printf ("usage:\n\t-a\thexchat.iss/AppVerName\n\t-i\thexchat.iss/VersionInfoVersion\n\t-o\thexchat.iss/OutputBaseFilename\n\t-r\thexchat.rc/FILEVERSION, PRODUCTVERSION\n\t-v\thexchat.iss/AppVersion\n");
 		}
 	} else
 	{
-		printf ("usage:\n\t-a\txchat-wdk.iss/AppVerName\n\t-i\txchat-wdk.iss/VersionInfoVersion\n\t-o\txchat-wdk.iss/OutputBaseFilename\n\t-r\txchat.rc/FILEVERSION, PRODUCTVERSION\n\t-v\txchat-wdk.iss/AppVersion\n");
+		printf ("usage:\n\t-a\thexchat.iss/AppVerName\n\t-i\thexchat.iss/VersionInfoVersion\n\t-o\thexchat.iss/OutputBaseFilename\n\t-r\thexchat.rc/FILEVERSION, PRODUCTVERSION\n\t-v\thexchat.iss/AppVersion\n");
 	}
 
 #if 0 /* ugly hack */
 	switch ((int) argv[1][0])
 	{
-		case 'r':	/* xchat.rc/FILEVERSION, PRODUCTVERSION*/
+		case 'r':	/* hexchat.rc/FILEVERSION, PRODUCTVERSION*/
 			printf ("#define COMMA_VERSION \"%s\"\n", comma ());
 			break;
-		case 'a':	/* xchat-wdk.iss/AppVerName */
-			printf ("AppVerName=XChat-WDK %s\n", PACKAGE_VERSION);
+		case 'a':	/* hexchat.iss/AppVerName */
+			printf ("AppVerName=HexChat %s\n", PACKAGE_VERSION);
 			break;
-		case 'v':	/* xchat-wdk.iss/AppVersion */
+		case 'v':	/* hexchat.iss/AppVersion */
 			printf ("AppVersion=%s\n", point ());
 			break;
-		case 'i':	/* xchat-wdk.iss/VersionInfoVersion */
+		case 'i':	/* hexchat.iss/VersionInfoVersion */
 			printf ("VersionInfoVersion=%s\n", point ());
 			break;
-		case 'o':	/* xchat-wdk.iss/OutputBaseFilename */
-			printf ("OutputBaseFilename=XChat-WDK %s\n", PACKAGE_VERSION);
+		case 'o':	/* hexchat.iss/OutputBaseFilename */
+			printf ("OutputBaseFilename=HexChat %s\n", PACKAGE_VERSION);
 			break;
 		case 'u':	/* version.txt */
 			printf ("%s", PACKAGE_VERSION);
