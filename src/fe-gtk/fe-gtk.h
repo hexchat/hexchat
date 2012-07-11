@@ -1,6 +1,6 @@
 #include "../../config.h"
 
-#define DISPLAY_NAME "XChat-WDK"
+#define DISPLAY_NAME "HexChat"
 
 #ifndef WIN32
 #include <sys/types.h>

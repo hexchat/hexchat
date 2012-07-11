@@ -138,10 +138,10 @@ ctcp_handle (session *sess, char *to, char *nick, char *ip,
 	if (!g_ascii_strcasecmp (msg, "VERSION") && !prefs.hidever)
 	{
 #ifdef WIN32
-		snprintf (outbuf, sizeof (outbuf), "VERSION XChat-WDK "PACKAGE_VERSION" [x%d] / %s",
+		snprintf (outbuf, sizeof (outbuf), "VERSION HexChat "PACKAGE_VERSION" [x%d] / %s",
 					 get_cpu_arch (), get_cpu_str ());
 #else
-		snprintf (outbuf, sizeof (outbuf), "VERSION XChat-WDK "PACKAGE_VERSION" %s",
+		snprintf (outbuf, sizeof (outbuf), "VERSION HexChat "PACKAGE_VERSION" %s",
 					 get_cpu_str ());
 #endif
 		serv->p_nctcp (serv, nick, outbuf);

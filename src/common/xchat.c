@@ -924,13 +924,13 @@ enum_windows_impl (HWND current_window, LPARAM lParam)
 	}
 
 	GetWindowText (current_window, window_name, 10);
-	if (stricmp (window_name, "xchat-wdk") == 0)
+	if (stricmp (window_name, "hexchat") == 0)
 	{
 		/* use a separate if block, this way we don't have to call GetWindowModuleFileName() for each hit */
 		ZeroMemory (&module_path, sizeof (module_path));
 		GetWindowModuleFileName (current_window, module_path, sizeof (module_path));
 
-		if (strstr (module_path, "xchat.exe"))	/* We've found it, stop */
+		if (strstr (module_path, "hexchat.exe"))	/* We've found it, stop */
 		{
 			xchat_restore_window (current_window);
 			return FALSE;
@@ -972,7 +972,7 @@ main (int argc, char *argv[])
 	{
 		DWORD error;
 
-		mutex = CreateMutex (NULL, TRUE, "Local\xchat");
+		mutex = CreateMutex (NULL, TRUE, "Local\hexchat");
 		error = GetLastError ();
 
 		if (error == ERROR_ALREADY_EXISTS || mutex == NULL)

@@ -344,7 +344,7 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT msg, WPARAM wparam, LPARAM lparam)
 			if(msg == RegisterWindowMessage(_T("TaskbarCreated")))
 			{
 				char szVersion[64];
-				_snprintf(szVersion, 64, "XChat-WDK [%s]", xchat_get_info(ph, "version"));
+				_snprintf(szVersion, 64, "HexChat [%s]", xchat_get_info(ph, "version"));
 				AddIcon(g_hXchatWnd, 1, g_hIcons[0], szVersion, (NIF_ICON | NIF_MESSAGE | NIF_TIP), WM_TRAYMSG);
 			}
 		}
