@@ -1005,7 +1005,7 @@ A newly allocated string or NULL for failure. You must free this string with xch
 
 <br><br>
 
-<h3><a class=cmd name="xchat_pluginpref_set_str">&nbsp;xchat_pluginpref_set_str()&nbsp;</a><small>(new for 2.8.10)</small></h3>
+<h3><a class=cmd name="xchat_pluginpref_set_str">&nbsp;xchat_pluginpref_set_str()&nbsp;</a><small>(new for 2.9.0)</small></h3>
 <b>Prototype:</b> int xchat_pluginpref_set_str (xchat_plugin *ph, const char *var, const char *value);
 <br>
 <br><b>Description:</b> Saves a plugin-specific setting with string value to a plugin-specific config file.
@@ -1044,7 +1044,7 @@ myvar2 = This is important, too.</pre>
 You should never need to edit this file manually.
 <br><br><br>
 
-<h3><a class=cmd name="xchat_pluginpref_get_str">&nbsp;xchat_pluginpref_get_str()&nbsp;</a><small>(new for 2.8.10)</small></h3>
+<h3><a class=cmd name="xchat_pluginpref_get_str">&nbsp;xchat_pluginpref_get_str()&nbsp;</a><small>(new for 2.9.0)</small></h3>
 <b>Prototype:</b> int xchat_pluginpref_get_str (xchat_plugin *ph, const char *var, char *dest);
 <br>
 <br><b>Description:</b> Loads a plugin-specific setting with string value from a plugin-specific config file.
@@ -1058,7 +1058,7 @@ You should never need to edit this file manually.
 <b>Returns:</b> 1 for success, 0 for failure.
 <br><br><br>
 
-<h3><a class=cmd name="xchat_pluginpref_set_int">&nbsp;xchat_pluginpref_set_int()&nbsp;</a><small>(new for 2.8.10)</small></h3>
+<h3><a class=cmd name="xchat_pluginpref_set_int">&nbsp;xchat_pluginpref_set_int()&nbsp;</a><small>(new for 2.9.0)</small></h3>
 <b>Prototype:</b> int xchat_pluginpref_set_int (xchat_plugin *ph, const char *var, int value);
 <br>
 <br><b>Description:</b> Saves a plugin-specific setting with decimal value to a plugin-specific config file.
@@ -1098,7 +1098,7 @@ You should never need to edit this file manually.
 You only need these kind of complex checks if you're saving user input, which can be non-numeric.
 <br><br><br>
 
-<h3><a class=cmd name="xchat_pluginpref_get_int">&nbsp;xchat_pluginpref_get_int()&nbsp;</a><small>(new for 2.8.10)</small></h3>
+<h3><a class=cmd name="xchat_pluginpref_get_int">&nbsp;xchat_pluginpref_get_int()&nbsp;</a><small>(new for 2.9.0)</small></h3>
 <b>Prototype:</b> int xchat_pluginpref_get_int (xchat_plugin *ph, const char *var);
 <br>
 <br><b>Description:</b> Loads a plugin-specific setting with decimal value from a plugin-specific config file.
@@ -1111,7 +1111,7 @@ You only need these kind of complex checks if you're saving user input, which ca
 <b>Returns:</b> The decimal value of the requested setting upon success, -1 for failure.
 <br><br><br>
 
-<h3><a class=cmd name="xchat_pluginpref_delete">&nbsp;xchat_pluginpref_delete()&nbsp;</a><small>(new for 2.8.10)</small></h3>
+<h3><a class=cmd name="xchat_pluginpref_delete">&nbsp;xchat_pluginpref_delete()&nbsp;</a><small>(new for 2.9.0)</small></h3>
 <b>Prototype:</b> int xchat_pluginpref_delete (xchat_plugin *ph, const char *var);
 <br>
 <br><b>Description:</b> Deletes a plugin-specific setting from a plugin-specific config file.
@@ -1124,7 +1124,7 @@ You only need these kind of complex checks if you're saving user input, which ca
 <b>Returns:</b> 1 for success, 0 for failure. If the given setting didn't exist, it also returns 1, so 1 only indicates that the setting won't exist after the call.
 <br><br><br>
 
-<h3><a class=cmd name="xchat_pluginpref_list">&nbsp;xchat_pluginpref_list()&nbsp;</a><small>(new for 2.8.10)</small></h3>
+<h3><a class=cmd name="xchat_pluginpref_list">&nbsp;xchat_pluginpref_list()&nbsp;</a><small>(new for 2.9.0)</small></h3>
 <b>Prototype:</b> int xchat_pluginpref_list (xchat_plugin *ph, char *dest);
 <br>
 <br><b>Description:</b> Builds a comma-separated list of the currently saved settings from a plugin-specific config file.
