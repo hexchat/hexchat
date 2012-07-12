@@ -1010,20 +1010,13 @@ xchat_get_info (xchat_plugin *ph, const char *id)
 		return XCHATLIBDIR;
 
 	case 0x14f51cd8: /* version */
-#ifdef WIN32
-		return XCHAT_RELEASE;
-#else
 		return PACKAGE_VERSION;
-#endif
 
 	case 0xdd9b1abd:	/* xchatdir */
 		return get_xdir_utf8 ();
 
 	case 0xe33f6c4a:	/* xchatdirfs */
 		return get_xdir_fs ();
-
-	case 0x3d1e70d7:	/* wdk_version */
-		return PACKAGE_VERSION;
 	}
 
 	sess = ph->context;

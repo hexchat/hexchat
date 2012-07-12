@@ -27,7 +27,7 @@
 
 static xchat_plugin *ph;   /* plugin handle */
 static const char name[] = "Update Checker";
-static const char desc[] = "Check for XChat-WDK updates automatically";
+static const char desc[] = "Check for HexChat updates automatically";
 static const char version[] = "2.1";
 
 static char*
@@ -43,7 +43,7 @@ check_version ()
 	}
 
 	hFile = InternetOpenUrl (hINet,
-							"http://xchat-wdk.googlecode.com/git/version.txt?r=wdk",
+							"https://raw.github.com/hexchat/hexchat/master/version.txt",
 							NULL,
 							0,
 							INTERNET_FLAG_NO_CACHE_WRITE | INTERNET_FLAG_RELOAD,
@@ -98,8 +98,8 @@ check_version ()
 	}
 
 	hConnect = InternetConnect (hOpen,
-								TEXT ("xchat-wdk.googlecode.com"),
-								INTERNET_INVALID_PORT_NUMBER,
+								TEXT ("raw.github.com"),
+								INTERNET_DEFAULT_HTTPS_PORT,
 								NULL,
 								NULL,
 								INTERNET_SERVICE_HTTP,
@@ -113,11 +113,11 @@ check_version ()
 
 	hResource = HttpOpenRequest (hConnect,
 								TEXT ("GET"),
-								TEXT ("/git/version.txt?r=wdk"),
+								TEXT ("/hexchat/hexchat/master/version.txt"),
 								TEXT ("HTTP/1.0"),
 								NULL,
 								NULL,
-								INTERNET_FLAG_NO_CACHE_WRITE | INTERNET_FLAG_RELOAD | INTERNET_FLAG_NO_AUTH,
+								INTERNET_FLAG_SECURE | INTERNET_FLAG_NO_CACHE_WRITE | INTERNET_FLAG_RELOAD | INTERNET_FLAG_NO_AUTH,
 								0);
 	if (!hResource)
 	{
@@ -154,20 +154,20 @@ print_version ()
 {
 	char *version = check_version ();
 
-	if (strcmp (version, xchat_get_info (ph, "wdk_version")) == 0)
+	if (strcmp (version, xchat_get_info (ph, "version")) == 0)
 	{
-		xchat_printf (ph, "You have the latest version of XChat-WDK installed!\n");
+		xchat_printf (ph, "You have the latest version of HexChat installed!\n");
 	}
 	else if (strcmp (version, "Unknown") == 0)
 	{
-		xchat_printf (ph, "Unable to check for XChat-WDK updates!\n");
+		xchat_printf (ph, "Unable to check for HexChat updates!\n");
 	}
 	else
 	{
 #ifdef _WIN64 /* use this approach, the wProcessorArchitecture method always returns 0 (=x86) for some reason */
-		xchat_printf (ph, "An XChat-WDK update is available! You can download it from here:\nhttp://xchat-wdk.googlecode.com/files/XChat-WDK%%20%s%%20x64.exe\n", version);
+		xchat_printf (ph, "A HexChat update is available! You can download it from here:\nhttp://xchat-wdk.googlecode.com/files/HexChat%%20%s%%20x64.exe\n", version);
 #else
-		xchat_printf (ph, "An XChat-WDK update is available! You can download it from here:\nhttp://xchat-wdk.googlecode.com/files/XChat-WDK%%20%s%%20x86.exe\n", version);
+		xchat_printf (ph, "A HexChat update is available! You can download it from here:\nhttp://xchat-wdk.googlecode.com/files/HexChat%%20%s%%20x86.exe\n", version);
 #endif
 	}
 
@@ -180,12 +180,12 @@ print_version_quiet (void *userdata)
 	char *version = check_version ();
 
 	/* if it's not the current version AND not network error */
-	if (!(strcmp (version, xchat_get_info (ph, "wdk_version")) == 0) && !(strcmp (version, "Unknown") == 0))
+	if (!(strcmp (version, xchat_get_info (ph, "version")) == 0) && !(strcmp (version, "Unknown") == 0))
 	{
 #ifdef _WIN64 /* use this approach, the wProcessorArchitecture method always returns 0 (=x86) for plugins for some reason */
-		xchat_printf (ph, "An XChat-WDK update is available! You can download it from here:\nhttp://xchat-wdk.googlecode.com/files/XChat-WDK%%20%s%%20x64.exe\n", version);
+		xchat_printf (ph, "A HexChat update is available! You can download it from here:\nhttp://xchat-wdk.googlecode.com/files/HexChat%%20%s%%20x64.exe\n", version);
 #else
-		xchat_printf (ph, "An XChat-WDK update is available! You can download it from here:\nhttp://xchat-wdk.googlecode.com/files/XChat-WDK%%20%s%%20x86.exe\n", version);
+		xchat_printf (ph, "A HexChat update is available! You can download it from here:\nhttp://xchat-wdk.googlecode.com/files/HexChat%%20%s%%20x86.exe\n", version);
 #endif
 		/* print update url once, then stop the timer */
 		return 0;

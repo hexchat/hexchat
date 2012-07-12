@@ -117,7 +117,7 @@ menu_about (GtkWidget * wid, gpointer sess)
 				"<span size=\"x-large\"><b>"DISPLAY_NAME" "PACKAGE_VERSION"</b></span>\n"
 #ifdef WIN32
 				"%s%s%s"
-				"\n<b>XChat Release</b>: "XCHAT_RELEASE"\n\n"
+				"\n<b>XChat Revision</b>: r"XCHAT_REVISION"\n\n"
 				"<b>OS</b>: %s\n"
 				"<b>Charset</b>: %s "
 				"<b>GTK+</b>: %i.%i.%i\n"

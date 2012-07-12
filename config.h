@@ -6,11 +6,11 @@
 #define USE_LIBSEXY
 #define USE_IPV6
 #define HAVE_ISO_CODES
-#define PACKAGE_NAME "xchat"
-#define PACKAGE_VERSION "1508-3"
-#define XCHAT_RELEASE "2.8.8"
+#define PACKAGE_NAME "hexchat"
+#define PACKAGE_VERSION "2.9.0"
+#define XCHAT_REVISION "1508"
 #define XCHATLIBDIR "."
 #define XCHATSHAREDIR "."
 #define OLD_PERL
-#define GETTEXT_PACKAGE "xchat"
-#define PACKAGE_TARNAME "xchat-2.8.8"
+#define GETTEXT_PACKAGE "hexchat"
+#define PACKAGE_TARNAME "hexchat-2.9.0"
