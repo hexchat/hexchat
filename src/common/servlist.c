@@ -215,7 +215,7 @@ static const struct defaultserver def[] =
 	{0,			"irc.ggn.net"},
 	{0,			"irc.vendetta.com"},
 
-	{"FreeNode",	0},
+	{"FreeNode",	0,	"#hexchat"},
 	{0,				"irc.freenode.net"},
 
 /*	{"Freeworld",	0},
@@ -908,7 +908,8 @@ servlist_load_defaults (void)
 				free (net->encoding);
 				net->encoding = strdup (def[i].charset);
 			}
-			if (g_str_hash (def[i].network) == 0x8e1b96f7)
+			/* 0x8e1b96f7 = ChatJunkies, 0xa82686ae = FreeNode */
+			if (g_str_hash (def[i].network) == 0xa82686ae)
 				prefs.slist_select = j;
 			j++;
 		} else
