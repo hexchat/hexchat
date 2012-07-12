@@ -129,7 +129,7 @@ banlist_do_refresh (struct session *sess)
 
 		gtk_widget_set_sensitive (sess->res->banlist_butRefresh, FALSE);
 
-		snprintf (tbuf, sizeof tbuf, "XChat: Ban List (%s, %s)",
+		snprintf (tbuf, sizeof tbuf, DISPLAY_NAME": Ban List (%s, %s)",
 						sess->channel, sess->server->servername);
 		mg_set_title (sess->res->banlist_window, tbuf);
 
@@ -388,7 +388,7 @@ banlist_opengui (struct session *sess)
 		return;
 	}
 
-	snprintf (tbuf, sizeof tbuf, _("XChat: Ban List (%s)"),
+	snprintf (tbuf, sizeof tbuf, _(DISPLAY_NAME": Ban List (%s)"),
 					sess->server->servername);
 
 	sess->res->banlist_window = mg_create_generic_tab ("BanList", tbuf, FALSE,

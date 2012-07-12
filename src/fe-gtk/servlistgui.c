@@ -841,7 +841,7 @@ servlist_autojoinedit (ircnet *net, char *channel, gboolean add)
 
 	win = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gtk_container_set_border_width (GTK_CONTAINER (win), 4);
-	gtk_window_set_title (GTK_WINDOW (win), _("XChat: Favorite Channels (Auto-Join List)"));
+	gtk_window_set_title (GTK_WINDOW (win), _(DISPLAY_NAME": Favorite Channels (Auto-Join List)"));
 	gtk_window_set_default_size (GTK_WINDOW (win), 354, 256);
 	gtk_window_set_position (GTK_WINDOW (win), GTK_WIN_POS_MOUSE);
 	if (edit_win)
@@ -1399,7 +1399,7 @@ servlist_open_edit (GtkWidget *parent, ircnet *net)
 
 	editwindow = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gtk_container_set_border_width (GTK_CONTAINER (editwindow), 4);
-	snprintf (buf, sizeof (buf), _("XChat: Edit %s"), net->name);
+	snprintf (buf, sizeof (buf), _(DISPLAY_NAME": Edit %s"), net->name);
 	gtk_window_set_title (GTK_WINDOW (editwindow), buf);
 	gtk_window_set_default_size (GTK_WINDOW (editwindow), 354, 0);
 	gtk_window_set_position (GTK_WINDOW (editwindow), GTK_WIN_POS_MOUSE);
@@ -1653,7 +1653,7 @@ servlist_open_networks (void)
 
 	servlist = gtk_window_new (GTK_WINDOW_TOPLEVEL);
 	gtk_container_set_border_width (GTK_CONTAINER (servlist), 4);
-	gtk_window_set_title (GTK_WINDOW (servlist), _("XChat: Network List"));
+	gtk_window_set_title (GTK_WINDOW (servlist), _(DISPLAY_NAME": Network List"));
 	gtk_window_set_default_size (GTK_WINDOW (servlist), win_width, win_height);
 	gtk_window_set_position (GTK_WINDOW (servlist), GTK_WIN_POS_MOUSE);
 	gtk_window_set_role (GTK_WINDOW (servlist), "servlist");

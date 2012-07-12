@@ -162,7 +162,7 @@ search_open (session * sess)
 		gtk_widget_destroy (searchwin);
 		searchwin = NULL;
 	}
-	win = mg_create_generic_tab ("search", _("XChat: Search"), TRUE, FALSE,
+	win = mg_create_generic_tab ("search", _(DISPLAY_NAME": Search"), TRUE, FALSE,
 								 search_cleanup_cb, NULL, 0, 0, &vbox, 0);
 	gtk_container_set_border_width (GTK_CONTAINER (win), 12);
 	gtk_box_set_spacing (GTK_BOX (vbox), 4);

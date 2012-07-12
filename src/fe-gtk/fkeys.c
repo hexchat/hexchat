@@ -718,7 +718,7 @@ key_dialog_show ()
 	}
 
 	key_dialog =
-			  mg_create_generic_tab ("editkeys", _("XChat: Keyboard Shortcuts"),
+			  mg_create_generic_tab ("editkeys", _(DISPLAY_NAME": Keyboard Shortcuts"),
 							TRUE, FALSE, key_dialog_close, NULL, 560, 330, &vbox, 0);
 
 	hbox = gtk_hbox_new (0, 2);

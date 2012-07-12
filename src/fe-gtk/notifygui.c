@@ -410,7 +410,7 @@ notify_opengui (void)
 	}
 
 	notify_window =
-		mg_create_generic_tab ("Notify", _("XChat: Friends List"), FALSE, TRUE,
+		mg_create_generic_tab ("Notify", _(DISPLAY_NAME": Friends List"), FALSE, TRUE,
 		                       notify_closegui, NULL, 400, 250, &vbox, 0);
 
 	view = notify_treeview_new (vbox);

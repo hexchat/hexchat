@@ -124,10 +124,8 @@ menu_about (GtkWidget * wid, gpointer sess)
 				"<b>Compiled</b>: "__DATE__"\n"
 				"<b>Portable Mode</b>: %s\n"
 				"<b>Build Type</b>: x%d\n\n"
-				"<small>This version is unofficial and comes with no support.\n"
-				"\302\251 1998-2010 Peter \305\275elezn\303\275 &lt;zed@xchat.org>"
-				/* "\n<a href=\"http://code.google.com/p/xchat-wdk/\">http://code.google.com/p/xchat-wdk/</a>" this is broken in gtk ATM */
-				"</small>",
+				"<small>\302\251 1998-2010 Peter \305\275elezn\303\275 &lt;zed@xchat.org>\n"
+				"\302\251 2009-2011 Berke Viktor &lt;bviktor@hexchat.org></small>",
 				(strcmp (prefs.gui_license, "") ? "<span size=\"x-large\">" : ""),
 				(strcmp (prefs.gui_license, "") ? prefs.gui_license : ""),
 				(strcmp (prefs.gui_license, "") ? "</span>\n" : ""),

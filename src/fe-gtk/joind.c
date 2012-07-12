@@ -125,7 +125,7 @@ joind_show_dialog (server *serv)
 	char buf2[256];
 
 	serv->gui->joind_win = dialog1 = gtk_dialog_new ();
-	gtk_window_set_title (GTK_WINDOW (dialog1), _("XChat: Connection Complete"));
+	gtk_window_set_title (GTK_WINDOW (dialog1), _(DISPLAY_NAME": Connection Complete"));
 	gtk_window_set_type_hint (GTK_WINDOW (dialog1), GDK_WINDOW_TYPE_HINT_DIALOG);
 	gtk_window_set_position (GTK_WINDOW (dialog1), GTK_WIN_POS_MOUSE);
 

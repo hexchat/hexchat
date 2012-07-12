@@ -194,7 +194,7 @@ url_opengui ()
 	}
 
 	urlgrabberwindow =
-		mg_create_generic_tab ("UrlGrabber", _("XChat: URL Grabber"), FALSE,
+		mg_create_generic_tab ("UrlGrabber", _(DISPLAY_NAME": URL Grabber"), FALSE,
 							 TRUE, url_closegui, NULL, 400, 256, &vbox, 0);
 	view = url_treeview_new (vbox);
 	g_object_set_data (G_OBJECT (urlgrabberwindow), "model",
