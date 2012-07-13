@@ -1,4 +1,4 @@
-/* XChat-WDK
+/* HexChat
  * Copyright (c) 2010 <ygrek@autistici.org>
  * Copyright (c) 2012 Berke Viktor.
  *

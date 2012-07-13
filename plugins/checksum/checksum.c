@@ -1,4 +1,4 @@
-/* XChat-WDK
+/* HexChat
  * Copyright (c) 2010-2012 Berke Viktor.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy

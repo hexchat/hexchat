@@ -1,5 +1,5 @@
-/* XChat-WDK
- * Copyright (c) 2010-2011 Berke Viktor.
+/* HexChat
+ * Copyright (c) 2010-2012 Berke Viktor.
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,7 +28,7 @@
 static xchat_plugin *ph;   /* plugin handle */
 static const char name[] = "Update Checker";
 static const char desc[] = "Check for HexChat updates automatically";
-static const char version[] = "2.1";
+static const char version[] = "3.0";
 
 static char*
 check_version ()
@@ -165,9 +165,9 @@ print_version ()
 	else
 	{
 #ifdef _WIN64 /* use this approach, the wProcessorArchitecture method always returns 0 (=x86) for some reason */
-		xchat_printf (ph, "A HexChat update is available! You can download it from here:\nhttp://xchat-wdk.googlecode.com/files/HexChat%%20%s%%20x64.exe\n", version);
+		xchat_printf (ph, "A HexChat update is available! You can download it from here:\nhttps://github.com/downloads/hexchat/hexchat/HexChat%%20%s%%20x64.exe\n", version);
 #else
-		xchat_printf (ph, "A HexChat update is available! You can download it from here:\nhttp://xchat-wdk.googlecode.com/files/HexChat%%20%s%%20x86.exe\n", version);
+		xchat_printf (ph, "A HexChat update is available! You can download it from here:\nhttps://github.com/downloads/hexchat/hexchat/HexChat%%20%s%%20x86.exe\n", version);
 #endif
 	}
 
@@ -183,9 +183,9 @@ print_version_quiet (void *userdata)
 	if (!(strcmp (version, xchat_get_info (ph, "version")) == 0) && !(strcmp (version, "Unknown") == 0))
 	{
 #ifdef _WIN64 /* use this approach, the wProcessorArchitecture method always returns 0 (=x86) for plugins for some reason */
-		xchat_printf (ph, "A HexChat update is available! You can download it from here:\nhttp://xchat-wdk.googlecode.com/files/HexChat%%20%s%%20x64.exe\n", version);
+		xchat_printf (ph, "A HexChat update is available! You can download it from here:\nhttps://github.com/downloads/hexchat/hexchat/HexChat%%20%s%%20x64.exe\n", version);
 #else
-		xchat_printf (ph, "A HexChat update is available! You can download it from here:\nhttp://xchat-wdk.googlecode.com/files/HexChat%%20%s%%20x86.exe\n", version);
+		xchat_printf (ph, "A HexChat update is available! You can download it from here:\nhttps://github.com/downloads/hexchat/hexchat/HexChat%%20%s%%20x86.exe\n", version);
 #endif
 		/* print update url once, then stop the timer */
 		return 0;

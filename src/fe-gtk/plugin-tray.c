@@ -220,10 +220,10 @@ tray_stop_flash (void)
 		nets = tray_count_networks ();
 		chans = tray_count_channels ();
 		if (nets)
-			tray_set_tipf (_("XChat-WDK: Connected to %u networks and %u channels"),
+			tray_set_tipf (_(DISPLAY_NAME": Connected to %u networks and %u channels"),
 								nets, chans);
 		else
-			tray_set_tipf ("XChat-WDK: %s", _("Not connected."));
+			tray_set_tipf (DISPLAY_NAME": %s", _("Not connected."));
 	}
 
 	if (custom_icon1)
@@ -580,15 +580,15 @@ tray_hilight_cb (char *word[], void *userdata)
 		/* FIXME: hides any previous private messages */
 		tray_hilight_count++;
 		if (tray_hilight_count == 1)
-			tray_set_tipf (_("XChat-WDK: Highlighted message from: %s (%s)"),
+			tray_set_tipf (_(DISPLAY_NAME": Highlighted message from: %s (%s)"),
 								word[1], xchat_get_info (ph, "channel"));
 		else
-			tray_set_tipf (_("XChat-WDK: %u highlighted messages, latest from: %s (%s)"),
+			tray_set_tipf (_(DISPLAY_NAME": %u highlighted messages, latest from: %s (%s)"),
 								tray_hilight_count, word[1], xchat_get_info (ph, "channel"));
 	}
 
 	if (prefs.input_balloon_hilight)
-		tray_set_balloonf (word[2], _("XChat-WDK: Highlighted message from: %s (%s)"),
+		tray_set_balloonf (word[2], _(DISPLAY_NAME": Highlighted message from: %s (%s)"),
 								 word[1], xchat_get_info (ph, "channel"));
 
 	return XCHAT_EAT_NONE;
@@ -606,14 +606,14 @@ tray_message_cb (char *word[], void *userdata)
 
 		tray_pub_count++;
 		if (tray_pub_count == 1)
-			tray_set_tipf (_("XChat-WDK: New public message from: %s (%s)"),
+			tray_set_tipf (_(DISPLAY_NAME": New public message from: %s (%s)"),
 								word[1], xchat_get_info (ph, "channel"));
 		else
-			tray_set_tipf (_("XChat-WDK: %u new public messages."), tray_pub_count);
+			tray_set_tipf (_(DISPLAY_NAME": %u new public messages."), tray_pub_count);
 	}
 
 	if (prefs.input_balloon_chans)
-		tray_set_balloonf (word[2], _("XChat-WDK: New public message from: %s (%s)"),
+		tray_set_balloonf (word[2], _(DISPLAY_NAME": New public message from: %s (%s)"),
 								 word[1], xchat_get_info (ph, "channel"));
 
 	return XCHAT_EAT_NONE;
@@ -635,14 +635,14 @@ tray_priv (char *from, char *text)
 
 	tray_priv_count++;
 	if (tray_priv_count == 1)
-		tray_set_tipf (_("XChat-WDK: Private message from: %s (%s)"),
+		tray_set_tipf (_(DISPLAY_NAME": Private message from: %s (%s)"),
 							from, network);
 	else
-		tray_set_tipf (_("XChat-WDK: %u private messages, latest from: %s (%s)"),
+		tray_set_tipf (_(DISPLAY_NAME": %u private messages, latest from: %s (%s)"),
 							tray_priv_count, from, network);
 
 	if (prefs.input_balloon_priv)
-		tray_set_balloonf (text, _("XChat-WDK: Private message from: %s (%s)"),
+		tray_set_balloonf (text, _(DISPLAY_NAME": Private message from: %s (%s)"),
 								 from, network);
 }
 
@@ -688,15 +688,15 @@ tray_dcc_cb (char *word[], void *userdata)
 
 		tray_file_count++;
 		if (tray_file_count == 1)
-			tray_set_tipf (_("XChat-WDK: File offer from: %s (%s)"),
+			tray_set_tipf (_(DISPLAY_NAME": File offer from: %s (%s)"),
 								word[1], network);
 		else
-			tray_set_tipf (_("XChat-WDK: %u file offers, latest from: %s (%s)"),
+			tray_set_tipf (_(DISPLAY_NAME": %u file offers, latest from: %s (%s)"),
 								tray_file_count, word[1], network);
 	}
 
 	if (prefs.input_balloon_priv)
-		tray_set_balloonf ("", _("XChat-WDK: File offer from: %s (%s)"),
+		tray_set_balloonf ("", _(DISPLAY_NAME": File offer from: %s (%s)"),
 								word[1], network);
 
 	return XCHAT_EAT_NONE;
