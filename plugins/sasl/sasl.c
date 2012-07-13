@@ -40,10 +40,10 @@
 #include "xchat-plugin.h"
 
 static xchat_plugin *ph;   /* plugin handle */
-static const char name[] = "X-SASL";
+static const char name[] = "SASL";
 static const char desc[] = "SASL authentication plugin for HexChat";
 static const char version[] = "1.1";
-static const char xsasl_help[] = "X-SASL Usage:\n /XSASL ADD <login> <password> <network>, enable/update SASL authentication for given network\n /XSASL DEL <network>, disable SASL authentication for given network\n /XSASL LIST, get the list of SASL-enabled networks\n";
+static const char sasl_help[] = "SASL Usage:\n /SASL ADD <login> <password> <network>, enable/update SASL authentication for given network\n /SASL DEL <network>, disable SASL authentication for given network\n /SASL LIST, get the list of SASL-enabled networks\n";
 
 struct sasl_info
 {
@@ -219,7 +219,7 @@ sasl_cmd_cb (char *word[], char *word_eol[], void *userdata)
 
 		if (!network || !*network)	/* only check for the last word, if it's there, the previous ones will be there, too */
 		{
-			xchat_printf (ph, "%s", xsasl_help);
+			xchat_printf (ph, "%s", sasl_help);
 			return XCHAT_EAT_ALL;
 		}
 
@@ -240,7 +240,7 @@ sasl_cmd_cb (char *word[], char *word_eol[], void *userdata)
 
 		if (!network || !*network)
 		{
-			xchat_printf (ph, "%s", xsasl_help);
+			xchat_printf (ph, "%s", sasl_help);
 			return XCHAT_EAT_ALL;
 		}
 
@@ -262,7 +262,7 @@ sasl_cmd_cb (char *word[], char *word_eol[], void *userdata)
 	}
 	else
 	{
-		xchat_printf (ph, "%s", xsasl_help);
+		xchat_printf (ph, "%s", sasl_help);
 		return XCHAT_EAT_ALL;
 	}
 }
@@ -290,7 +290,7 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 	*plugin_desc = desc;
 	*plugin_version = version;
 
-	xchat_hook_command (ph, "XSASL", XCHAT_PRI_NORM, sasl_cmd_cb, xsasl_help, 0);
+	xchat_hook_command (ph, "SASL", XCHAT_PRI_NORM, sasl_cmd_cb, sasl_help, 0);
 	xchat_hook_print (ph, "Connected", XCHAT_PRI_NORM, connect_cb, NULL);
 	/* xchat_hook_print (ph, "Disconnected", XCHAT_PRI_NORM, disconnect_cb, NULL); */
 	xchat_hook_server (ph, "CAP", XCHAT_PRI_NORM, cap_cb, NULL);

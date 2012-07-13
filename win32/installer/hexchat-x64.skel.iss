@@ -40,14 +40,14 @@ Name: "plugins\dns"; Description: "DNS"; Types: full custom; Flags: disablenouni
 Name: "plugins\doat"; Description: "Do At"; Types: full custom; Flags: disablenouninstallwarning
 Name: "plugins\exec"; Description: "Exec"; Types: full custom; Flags: disablenouninstallwarning
 Name: "plugins\fishlim"; Description: "FiSHLiM"; Types: full custom; Flags: disablenouninstallwarning
+Name: "plugins\hextray"; Description: "HexTray"; Types: full custom; Flags: disablenouninstallwarning
 Name: "plugins\mpcinfo"; Description: "mpcInfo"; Types: full custom; Flags: disablenouninstallwarning
 ;Name: "plugins\nonbmp"; Description: "Non-BMP"; Types: normal full custom; Flags: disablenouninstallwarning
+Name: "plugins\sasl"; Description: "SASL"; Types: full custom; Flags: disablenouninstallwarning
 Name: "plugins\upd"; Description: "Update Checker"; Types: normal full custom; Flags: disablenouninstallwarning
 Name: "plugins\winamp"; Description: "Winamp"; Types: full custom; Flags: disablenouninstallwarning
 Name: "plugins\winsys"; Description: "WinSys"; Types: full custom; Flags: disablenouninstallwarning
 Name: "plugins\wmpa"; Description: "Windows Media Player Announcer"; Types: full custom; Flags: disablenouninstallwarning
-Name: "plugins\xsasl"; Description: "X-SASL"; Types: full custom; Flags: disablenouninstallwarning
-Name: "plugins\hextray"; Description: "HexTray"; Types: full custom; Flags: disablenouninstallwarning
 Name: "langs"; Description: "Language Interfaces"; Types: full custom; Flags: disablenouninstallwarning
 Name: "langs\lua"; Description: "Lua"; Types: full custom; Flags: disablenouninstallwarning
 Name: "langs\lua\luawdk"; Description: "Lua-WDK"; Types: full custom; Flags: disablenouninstallwarning
@@ -155,34 +155,34 @@ Source: "lib\gtk-2.0\modules\libgail.dll"; DestDir: "{app}\lib\gtk-2.0\modules";
 ;obs Source: "lib\gtk-2.0\2.10.0\engines\libmurrine.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Flags: ignoreversion; Components: gtkengines
 ;obs Source: "lib\gtk-2.0\2.10.0\engines\libredmond95.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Flags: ignoreversion; Components: gtkengines
 ;obs Source: "lib\gtk-2.0\2.10.0\engines\libthinice.dll"; DestDir: "{app}\lib\gtk-2.0\2.10.0\engines"; Flags: ignoreversion; Components: gtkengines
-;obs Source: "plugins\xcgtkpref.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: gtkengines
+;obs Source: "plugins\hcgtkpref.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: gtkengines
 ;obs Source: "share\themes\*"; DestDir: "{app}\share\themes"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: gtkengines
 ;obs Source: "gtk2-prefs.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: gtkengines
 
-Source: "plugins\xcchecksum.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\checksum
-Source: "plugins\xcdns.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\dns
-Source: "plugins\xcdoat.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\doat
-Source: "plugins\xcexec.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\exec
-Source: "plugins\xcfishlim.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\fishlim
+Source: "plugins\hcchecksum.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\checksum
+Source: "plugins\hcdns.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\dns
+Source: "plugins\hcdoat.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\doat
+Source: "plugins\hcexec.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\exec
+Source: "plugins\hcfishlim.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\fishlim
 Source: "etc\music.png"; DestDir: "{app}\etc"; Flags: ignoreversion; Components: plugins\winamp or plugins\mpcinfo
-Source: "plugins\xcmpcinfo.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\mpcinfo
-;Source: "plugins\xcnonbmp.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\nonbmp
+Source: "plugins\hcmpcinfo.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\mpcinfo
+;Source: "plugins\hcnonbmp.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\nonbmp
 Source: "etc\download.png"; DestDir: "{app}\etc"; Flags: ignoreversion; Components: plugins\upd
-Source: "plugins\xcupd.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\upd
-Source: "plugins\xcwinamp.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\winamp
+Source: "plugins\hcupd.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\upd
+Source: "plugins\hcwinamp.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\winamp
 Source: "etc\system.png"; DestDir: "{app}\etc"; Flags: ignoreversion; Components: plugins\winsys
-Source: "plugins\xcwinsys.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\winsys
-Source: "plugins\xcxsasl.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\xsasl
+Source: "plugins\hcwinsys.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\winsys
+Source: "plugins\hcsasl.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\sasl
 Source: "plugins\hextray.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\hextray
-Source: "plugins\xcwmpa.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\wmpa
+Source: "plugins\hcwmpa.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\wmpa
 
-Source: "plugins\xclua.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: langs\lua
-Source: "plugins\xcpython.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: langs\python
-Source: "plugins\xctcl.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: langs\tcl
+Source: "plugins\hclua.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: langs\lua
+Source: "plugins\hcpython.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: langs\python
+Source: "plugins\hctcl.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: langs\tcl
 
-Source: "plugins\xcperl-512.dll"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Flags: ignoreversion; Components: langs\perl; Tasks: perl512
-Source: "plugins\xcperl-514.dll"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Flags: ignoreversion; Components: langs\perl; Tasks: perl514
-Source: "plugins\xcperl-516.dll"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Flags: ignoreversion; Components: langs\perl; Tasks: perl516
+Source: "plugins\hcperl-512.dll"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Flags: ignoreversion; Components: langs\perl; Tasks: perl512
+Source: "plugins\hcperl-514.dll"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Flags: ignoreversion; Components: langs\perl; Tasks: perl514
+Source: "plugins\hcperl-516.dll"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Flags: ignoreversion; Components: langs\perl; Tasks: perl516
 
 Source: "hexchat.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "hexchat-text.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: xctext
