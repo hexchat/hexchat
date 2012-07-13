@@ -59,7 +59,8 @@ point ()
 	if (sscanf (PACKAGE_VERSION, "%c%c%c%c-%d", &major1, &major2, &major3, &major4, &minor) > 4)
 	{
 		sprintf (version_string, "%c%c.%c%c.%d.0", major1, major2, major3, major4, minor);
-	} else
+	}
+	else
 	{
 		sprintf (version_string, "%c%c.%c%c.0.0", major1, major2, major3, major4);
 	}
@@ -86,11 +87,13 @@ main (int argc, char *argv[])
 		}
 		else if (!strcmp (argv[1], "-v"))	/* hexchat.iss/AppVersion */
 		{
-			printf ("AppVersion=%s\n", point ());
+			/* printf ("AppVersion=%s\n", point ()); this was required only for nnnn[-n] version numbers */
+			printf ("AppVersion=%s\n", PACKAGE_VERSION);
 		}
 		else if (!strcmp (argv[1], "-i"))	/* hexchat.iss/VersionInfoVersion */
 		{
-			printf ("VersionInfoVersion=%s\n", point ());
+			/* printf ("VersionInfoVersion=%s\n", point ()); this was required only for nnnn[-n] version numbers */
+			printf ("VersionInfoVersion=%s\n", PACKAGE_VERSION);
 		}
 		else if (!strcmp (argv[1], "-o"))	/* hexchat.iss/OutputBaseFilename */
 		{
