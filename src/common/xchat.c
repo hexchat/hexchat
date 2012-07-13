@@ -914,7 +914,7 @@ xchat_restore_window (HWND xchat_window)
 BOOL CALLBACK
 enum_windows_impl (HWND current_window, LPARAM lParam)
 {
-	TCHAR window_name[10];
+	TCHAR window_name[8];
 	TCHAR module_path[1024];
 	ZeroMemory (&window_name, sizeof (window_name));
 
@@ -1023,6 +1023,7 @@ main (int argc, char *argv[])
 
 	if (prefs.gui_one_instance && !portable_mode ())
 	{
+		ReleaseMutex (mutex);
 		CloseHandle (mutex);
 	}
 #endif
