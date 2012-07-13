@@ -116,7 +116,6 @@ menu_about (GtkWidget * wid, gpointer sess)
 	(snprintf) (buf, sizeof (buf),
 				"<span size=\"x-large\"><b>"DISPLAY_NAME" "PACKAGE_VERSION"</b></span>\n"
 				"\n%s\n\n"
-				"<b>XChat Revision</b>: r"XCHAT_REVISION"\n"
 				"<b>OS</b>: %s\n"
 				"<b>Charset</b>: %s "
 #ifdef WIN32
@@ -124,12 +123,13 @@ menu_about (GtkWidget * wid, gpointer sess)
 #else
 				"<b>Renderer</b>: %s\n"
 #endif
+				"<b>XChat Revision</b>: r"XCHAT_REVISION"\n"
 				"<b>Compiled</b>: "__DATE__"\n"
 #ifdef WIN32
 				"<b>Portable Mode</b>: %s\n"
-				"<b>Build Type</b>: x%d\n\n"
+				"<b>Build Type</b>: x%d\n"
 #endif
-				"<small>\302\251 1998-2010 Peter \305\275elezn\303\275 &lt;zed@xchat.org>\n"
+				"\n<small>\302\251 1998-2010 Peter \305\275elezn\303\275 &lt;zed@xchat.org>\n"
 				"\302\251 2009-2011 Berke Viktor &lt;bviktor@hexchat.org></small>",
 				_("A multiplatform IRC Client"),
 				get_cpu_str (),
