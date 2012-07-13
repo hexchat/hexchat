@@ -4,7 +4,7 @@ bin_PROGRAMS = hexchat
 
 INCLUDES = $(GUI_CFLAGS) -DG_DISABLE_CAST_CHECKS -DLOCALEDIR=\"$(localedir)\"
 
-xchat_LDADD = ../common/libxchatcommon.a $(GUI_LIBS)
+hexchat_LDADD = ../common/libxchatcommon.a $(GUI_LIBS)
 
 EXTRA_DIST = \
 	about.h ascii.h banlist.h chanlist.h chanview.h chanview-tabs.c \
@@ -26,7 +26,7 @@ sexy_spell = \
 	sexy-iso-codes.c sexy-marshal.c sexy-spell-entry.c
 endif
 
-xchat_SOURCES = about.c ascii.c banlist.c chanlist.c chanview.c custom-list.c \
+hexchat_SOURCES = about.c ascii.c banlist.c chanlist.c chanview.c custom-list.c \
 	dccgui.c editlist.c fe-gtk.c fkeys.c gtkutil.c ignoregui.c joind.c menu.c \
 	maingui.c $(mmx_cmod_S) notifygui.c palette.c pixmaps.c plugin-tray.c $(plugingui_c) \
 	rawlog.c search.c servlistgui.c setup.c $(sexy_spell) textgui.c \

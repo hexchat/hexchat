@@ -4,6 +4,6 @@ EXTRA_DIST = README
 
 INCLUDES = $(COMMON_CFLAGS)
 
-xchat_text_LDADD = ../common/libxchatcommon.a $(COMMON_LIBS)
-xchat_text_SOURCES = fe-text.c fe-text.h
+hexchat_text_LDADD = ../common/libxchatcommon.a $(COMMON_LIBS)
+hexchat_text_SOURCES = fe-text.c fe-text.h
 
