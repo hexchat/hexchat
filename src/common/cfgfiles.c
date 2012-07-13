@@ -32,7 +32,7 @@
 
 #ifndef WIN32
 #include <unistd.h>
-#define XCHAT_DIR ".xchat2"
+#define HEXCHAT_DIR "hexchat"
 #endif
 
 #define DEF_FONT "Monospace 9"
@@ -325,7 +325,7 @@ get_xdir_fs (void)
 			if (!get_reg_str ("Software\\Microsoft\\Windows\\CurrentVersion\\"
 					"Explorer\\Shell Folders", "AppData", out, sizeof (out)))
 				return "./config";
-			xdir_fs = g_strdup_printf ("%s\\" "X-Chat 2", out);
+			xdir_fs = g_strdup_printf ("%s\\" "HexChat", out);
 		}
 	}
 	return xdir_fs;
@@ -337,7 +337,7 @@ char *
 get_xdir_fs (void)
 {
 	if (!xdir_fs)
-		xdir_fs = g_strdup_printf ("%s/" XCHAT_DIR, g_get_home_dir ());
+		xdir_fs = g_strdup_printf ("%s/.config/" HEXCHAT_DIR, g_get_home_dir ());
 
 	return xdir_fs;
 }

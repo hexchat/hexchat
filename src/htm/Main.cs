@@ -36,8 +36,8 @@ namespace thememan
 {
     public partial class HTM : Form
     {
-        public string appdata = (Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\X-Chat 2\\");
-        public string home = (Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/.xchat2/");
+        public string appdata = (Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\HexChat\\");
+        public string home = (Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/.config/hexchat/");
 
         public string xchatdir;
         public string themedir = "themes\\";
@@ -146,7 +146,7 @@ namespace thememan
 
         private void applybutton_Click_1(object sender, EventArgs e)
         {
-            DialogResult result = MessageBox.Show("XChat must be closed and this will overwrite your current theme!\n\nDo you wish to continue?", "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
+            DialogResult result = MessageBox.Show("HexChat must be closed and this will overwrite your current theme!\n\nDo you wish to continue?", "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
             if (result == DialogResult.OK)
             {
                 File.Copy(xchatdir + themedir + themelist.SelectedItem.ToString() + "\\colors.conf", xchatdir + "colors.conf", true);
@@ -170,7 +170,7 @@ namespace thememan
         private void importbutton_Click_1(object sender, EventArgs e)
         {
             importDialog = new OpenFileDialog();
-            importDialog.Filter = "XChat Theme Files|*.xct";
+            importDialog.Filter = "HexChat Theme Files|*.hct";
             importDialog.FilterIndex = 1;
             importDialog.FileOk += new CancelEventHandler(importdialog_FileOk);
             importDialog.ShowDialog();
