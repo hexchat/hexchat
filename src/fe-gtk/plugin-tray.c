@@ -732,7 +732,7 @@ tray_apply_setup (void)
 	}
 	else
 	{
-		if (prefs.gui_tray && !xtray_mode ())
+		if (prefs.gui_tray && !hextray_mode ())
 			tray_init ();
 	}
 }
@@ -764,7 +764,7 @@ tray_plugin_init (xchat_plugin *plugin_handle, char **plugin_name,
 
 	xchat_hook_print (ph, "Focus Window", -1, tray_focus_cb, NULL);
 
-	if (prefs.gui_tray && !xtray_mode ())
+	if (prefs.gui_tray && !hextray_mode ())
 		tray_init ();
 
 	return 1;       /* return 1 for success */

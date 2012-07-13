@@ -376,7 +376,7 @@ static const setting alert_settings[] =
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
-static const setting alert_settings_xtray[] =
+static const setting alert_settings_hextray[] =
 {
 	{ST_HEADER,	N_("Alerts"),0,0,0},
 
@@ -1802,9 +1802,9 @@ setup_create_pages (GtkWidget *box)
 	setup_add_page (cata[4], book, setup_create_page (tabs_settings));
 	setup_add_page (cata[5], book, setup_create_color_page ());
 
-	if (xtray_mode ())
+	if (hextray_mode ())
 	{
-		setup_add_page (cata[8], book, setup_create_page (alert_settings_xtray));
+		setup_add_page (cata[8], book, setup_create_page (alert_settings_hextray));
 	}
 	else
 	{

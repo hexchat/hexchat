@@ -981,7 +981,7 @@ main (int argc, char *argv[])
 			 * only works correctly when X-Tray is used, but it's not a big deal
 			 * since you can only minimize XChat to tray via the taskbar if you
 			 * use X-Tray*/
-			if (xtray_mode ())
+			if (hextray_mode ())
 			{
 				/* FindWindow() doesn't support wildcards so we check all the open windows */
 				EnumWindows (enum_windows_impl, NULL);

@@ -1287,7 +1287,7 @@ mg_open_quit_dialog (gboolean minimize_button)
 	gtk_button_box_set_layout (GTK_BUTTON_BOX (dialog_action_area1),
 										GTK_BUTTONBOX_END);
 
-	if (minimize_button && !xtray_mode ())
+	if (minimize_button && !hextray_mode ())
 	{
 		button = gtk_button_new_with_mnemonic (_("_Minimize to Tray"));
 		gtk_widget_show (button);
@@ -1586,7 +1586,7 @@ mg_create_alertmenu (session *sess, GtkWidget *menu)
 
 	mg_perchan_menu_item (_("Beep on _Message"), submenu, &sess->alert_beep, prefs.input_beep_chans);
 
-	if (!xtray_mode ())		/*disable this context menu item when xtray is loaded */
+	if (!hextray_mode ())		/*disable this context menu item when HexTray is loaded */
 	{
 		mg_perchan_menu_item (_("Blink Tray _Icon"), submenu, &sess->alert_tray, prefs.input_tray_chans);
 	}

@@ -46,7 +46,7 @@ Name: "plugins\winamp"; Description: "Winamp"; Types: full custom; Flags: disabl
 Name: "plugins\winsys"; Description: "WinSys"; Types: full custom; Flags: disablenouninstallwarning
 Name: "plugins\wmpa"; Description: "Windows Media Player Announcer"; Types: full custom; Flags: disablenouninstallwarning
 Name: "plugins\xsasl"; Description: "X-SASL"; Types: full custom; Flags: disablenouninstallwarning
-Name: "plugins\xtray"; Description: "X-Tray"; Types: full custom; Flags: disablenouninstallwarning
+Name: "plugins\hextray"; Description: "HexTray"; Types: full custom; Flags: disablenouninstallwarning
 Name: "langs"; Description: "Language Interfaces"; Types: full custom; Flags: disablenouninstallwarning
 Name: "langs\lua"; Description: "Lua"; Types: full custom; Flags: disablenouninstallwarning
 Name: "langs\lua\luawdk"; Description: "Lua-WDK"; Types: full custom; Flags: disablenouninstallwarning
@@ -174,7 +174,7 @@ Source: "plugins\xcwinamp.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; 
 Source: "etc\system.png"; DestDir: "{app}\etc"; Flags: ignoreversion; Components: plugins\winsys
 Source: "plugins\xcwinsys.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\winsys
 Source: "plugins\xcxsasl.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\xsasl
-Source: "plugins\xtray.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\xtray
+Source: "plugins\hextray.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\hextray
 Source: "plugins\xcwmpa.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\wmpa
 
 Source: "plugins\xclua.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: langs\lua
