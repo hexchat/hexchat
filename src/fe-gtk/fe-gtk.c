@@ -257,7 +257,7 @@ fe_args (int argc, char *argv[])
 			}
 		}
 #else
-		printf ("%s\n", XCHATLIBDIR"/plugins");
+		printf ("%s\n", HEXCHATLIBDIR"/plugins");
 #endif
 		return 0;
 	}

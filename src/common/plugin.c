@@ -451,10 +451,10 @@ plugin_auto_load (session *sess)
 	for_files (get_xdir_fs (), "*.dll", plugin_auto_load_cb);
 #else
 #if defined(__hpux)
-	for_files (XCHATLIBDIR"/plugins", "*.sl", plugin_auto_load_cb);
+	for_files (HEXCHATLIBDIR"/plugins", "*.sl", plugin_auto_load_cb);
 	for_files (get_xdir_fs (), "*.sl", plugin_auto_load_cb);
 #else
-	for_files (XCHATLIBDIR"/plugins", "*.so", plugin_auto_load_cb);
+	for_files (HEXCHATLIBDIR"/plugins", "*.so", plugin_auto_load_cb);
 	for_files (get_xdir_fs (), "*.so", plugin_auto_load_cb);
 #endif
 #endif
@@ -1007,7 +1007,7 @@ xchat_get_info (xchat_plugin *ph, const char *id)
 	switch (hash)
 	{
 	case 0x325acab5:	/* libdirfs */
-		return XCHATLIBDIR;
+		return HEXCHATLIBDIR;
 
 	case 0x14f51cd8: /* version */
 		return PACKAGE_VERSION;

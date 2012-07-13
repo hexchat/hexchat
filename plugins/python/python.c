@@ -391,7 +391,7 @@ Util_Autoload()
 	Util_Autoload_from(xchat_get_info(ph, "xchatdirfs"));
 
 #ifdef WIN32	/* also auto-load C:\Program Files\XChat\Plugins\*.py */
-	Util_Autoload_from(XCHATLIBDIR"/plugins");
+	Util_Autoload_from(HEXCHATLIBDIR"/plugins");
 #endif
 }
 

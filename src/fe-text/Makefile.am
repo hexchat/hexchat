@@ -1,4 +1,4 @@
-bin_PROGRAMS = xchat-text
+bin_PROGRAMS = hexchat-text
 
 EXTRA_DIST = README 
 

@@ -506,7 +506,7 @@ fe_args (int argc, char *argv[])
 			printf ("%s\\plugins\n", exe);
 		}
 #else
-		printf ("%s\n", XCHATLIBDIR"/plugins");
+		printf ("%s\n", HEXCHATLIBDIR"/plugins");
 #endif
 		return 0;
 	}

@@ -2,14 +2,14 @@
 %define gconf_version 2.14
 
 Summary:   A popular and easy to use graphical IRC (chat) client
-Name:      xchat
+Name:      hexchat
 Version:   2.8.8
 Release:   0%{?dist}
 Epoch:     1
 Group:     Applications/Internet
 License:   GPLv2+
-URL:       http://www.xchat.org
-Source:    http://www.xchat.org/files/source/2.8/xchat-%{version}.tar.bz2
+URL:       http://www.hexchat.org
+Source:    https://github.com/downloads/hexchat/hexchat/hexchat-%{version}.tar.xz
 BuildRoot: %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 
 # Patches 0-9 reserved for official xchat.org patches
@@ -29,10 +29,10 @@ Requires(preun): GConf2 >= %{gconf_version}
 # Ensure that a compatible libperl is installed
 Requires: perl(:MODULE_COMPAT_%(eval "`%{__perl} -V:version`"; echo $version))
 
-Provides: xchat-perl = %{epoch}:%{version}-%{release}
-Obsoletes: xchat-perl < %{epoch}:%{version}-%{release}
-Provides: xchat-python = %{epoch}:%{version}-%{release}
-Obsoletes: xchat-python < %{epoch}:%{version}-%{release}
+Provides: hexchat-perl = %{epoch}:%{version}-%{release}
+Obsoletes: hexchat-perl < %{epoch}:%{version}-%{release}
+Provides: hexchat-python = %{epoch}:%{version}-%{release}
+Obsoletes: hexchat-python < %{epoch}:%{version}-%{release}
 
 %description
 X-Chat is an easy to use graphical IRC chat client for the X Window System.
@@ -78,14 +78,14 @@ make %{?_smp_mflags}
 %{__make} install DESTDIR=$RPM_BUILD_ROOT GCONF_DISABLE_MAKEFILE_SCHEMA_INSTALL=1
 
 # Get rid of libtool archives
-%{__rm} -f $RPM_BUILD_ROOT%{_libdir}/xchat/plugins/*.la
+%{__rm} -f $RPM_BUILD_ROOT%{_libdir}/hexchat/plugins/*.la
 
 # Install the .desktop file properly
-%{__rm} -f $RPM_BUILD_ROOT%{_datadir}/applications/xchat.desktop
+%{__rm} -f $RPM_BUILD_ROOT%{_datadir}/applications/hexchat.desktop
 desktop-file-install --vendor="" \
   --dir $RPM_BUILD_ROOT%{_datadir}/applications \
   --add-category=IRCClient \
-  --add-category=GTK xchat.desktop
+  --add-category=GTK hexchat.desktop
 
 %find_lang %{name}
 
@@ -124,18 +124,18 @@ fi
 %files -f %{name}.lang
 %defattr(-,root,root)
 %doc README ChangeLog
-%doc plugins/plugin20.html plugins/perl/xchat2-perl.html
-%{_bindir}/xchat
-%dir %{_libdir}/xchat
-%dir %{_libdir}/xchat/plugins
-%{_libdir}/xchat/plugins/perl.so
-%{_libdir}/xchat/plugins/python.so
-%{_datadir}/applications/xchat.desktop
+%doc plugins/plugin20.html plugins/perl/hexchat-perl.html
+%{_bindir}/hexchat
+%dir %{_libdir}/hexchat
+%dir %{_libdir}/hexchat/plugins
+%{_libdir}/hexchat/plugins/perl.so
+%{_libdir}/hexchat/plugins/python.so
+%{_datadir}/applications/hexchat.desktop
 %{_datadir}/pixmaps/*
 %{_sysconfdir}/gconf/schemas/apps_xchat_url_handler.schemas
-%{_datadir}/dbus-1/services/org.xchat.service.service
+%{_datadir}/dbus-1/services/org.hexchat.service.service
 
 %files tcl
 %defattr(-,root,root)
-%{_libdir}/xchat/plugins/tcl.so
+%{_libdir}/hexchat/plugins/tcl.so
 

@@ -1,6 +1,6 @@
 localedir = $(datadir)/locale
 
-bin_PROGRAMS = xchat
+bin_PROGRAMS = hexchat
 
 INCLUDES = $(GUI_CFLAGS) -DG_DISABLE_CAST_CHECKS -DLOCALEDIR=\"$(localedir)\"
 

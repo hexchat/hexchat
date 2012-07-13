@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head>
-<title>XCHAT FAQ</title>
+<title>HexChat FAQ</title>
 <style type="text/css">
 <!--
 body {
@@ -195,13 +195,13 @@ list at the top of the window.
 <p>
 <u>Unix/Linux</u>
 <br>The default icons are hard coded (compiled) in. You can override them by creating
-some PNG files in ${PREFIX}/share/xchat. ${PREFIX} is usually /usr, so that
-would translate to /usr/share/xchat. If you compiled from source tarball without
+some PNG files in ${PREFIX}/share/hexchat. ${PREFIX} is usually /usr, so that
+would translate to /usr/share/hexchat. If you compiled from source tarball without
 specifying a prefix, it will be /usr/local instead.
 <br>
 <br>
 <u>Windows</u>
-<br>Your own custom icons can be placed in C:\Program Files\XChat\Icons. Image format
+<br>Your own custom icons can be placed in C:\Program Files\HexChat\Icons. Image format
 may be PNG or ICO. PNG support on Windows 2000 may require installing GDI+, but it's
 standard on XP or newer.
 </p>
@@ -224,7 +224,7 @@ standard on XP or newer.
 <tr><td>highlight.png</td><td>Tray: Highlighted Message</td></tr>
 <tr><td>fileoffer.png</td><td>Tray: DCC</td></tr>
 <tr><td></td><td></td></tr>
-<tr><td>xchat.png</td><td>Main XChat icon</td></tr>
+<tr><td>hexchat.png</td><td>Main HexChat icon</td></tr>
 </table>
 </blockquote>
 
@@ -367,7 +367,7 @@ the plugin for running those scripts isn't loaded.
 <li>The Perl, Python and TCL plugins come with XChat in the same archive.</li>
 <li>During ./configure, it will check for Perl, Python and TCL libs and headers, you should check if it failed there.</li>
 <li>The plugins directory can be found by issuing the shell command
-	<pre>xchat -p</pre>
+	<pre>hexchat -p</pre>
 </li>
 <li>All *.so files are auto-loaded at startup (*.dll on Windows).</li>
 <li>If you downloaded a binary package, maybe the packager decided to exclude the Perl or Python plugins.</li>
@@ -395,12 +395,12 @@ It depends on your version of Windows and where it stores the
 C:\Documents and Settings\<i><b>username</b></i>\Application Data\X-Chat 2\
 <br><b>or simply:</b>
 <br>
-C:\Program Files\XChat\Plugins\
+C:\Program Files\HexChat\Plugins\
 <br><br><br>
 <u>UNIX</u>
 <br><br>
-~/.xchat2/
-Where "~" represents your home directory i.e.: $HOME/.xchat2/
+~/.config/hexchat/
+Where "~" represents your home directory i.e.: $HOME/.config/hexchat/
 </p>
 
 <br><h3><a name="q219">19. How do I minimize X-Chat to the System Tray (Notification Area)?</a></h3>
@@ -461,14 +461,14 @@ You can also add more items to the right-click menu in XChat: <b>Settings &gt; A
 <p>
 <u>UNIX</u>
 <br>
-<br>~/.xchat2/xchatlogs/
+<br>~/.hexchat/logs/
 <br>where ~ represents your home directory.
 <br>
 <br>
 <br><u>Windows</u>
 <br>
-<br><b>Windows XP/2000</b>: C:\Documents and Settings\<i><b>username</b></i>\Application Data\X-Chat 2\xchatlogs
-<br><b>Windows Vista/7</b>: C:\Users\<i><b>username</b></i>\AppData\Roaming\X-Chat 2\xchatlogs
+<br><b>Windows XP/2000</b>: C:\Documents and Settings\<i><b>username</b></i>\Application Data\HexChat\logs
+<br><b>Windows Vista/7</b>: C:\Users\<i><b>username</b></i>\AppData\Roaming\HexChat\logs
 </p>
 
 <br><h3><a name="q223">23. How do I rotate log files every so often?</a></h3>

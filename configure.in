@@ -1,6 +1,6 @@
 dnl Process this file with autoconf to produce a configure script.
 
-AC_INIT([XChat],[2.8.8],[http://www.xchat.org/],[xchat])
+AC_INIT([HexChat],[2.9.0],[http://www.hexchat.org/],[hexchat])
 
 AC_PREREQ([2.59])
 AC_COPYRIGHT([Copyright (C) 1998-2010 Peter Zelezny])
@@ -21,7 +21,7 @@ AC_PROG_LIBTOOL
 dnl -----------------------------------------------------------
 dnl Language Support
 dnl -----------------------------------------------------------
-GETTEXT_PACKAGE=xchat
+GETTEXT_PACKAGE=hexchat
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE",[Gettext package name])
 
@@ -31,8 +31,8 @@ AM_GNU_GETTEXT
 dnl displaced from acconfig.h
 AH_VERBATIM([OLD_PERL],[#undef OLD_PERL])
 AH_VERBATIM([PREFIX],[#undef PREFIX])
-AH_VERBATIM([XCHATLIBDIR],[#undef XCHATLIBDIR])
-AH_VERBATIM([XCHATSHAREDIR],[#undef XCHATSHAREDIR])
+AH_VERBATIM([HEXCHATLIBDIR],[#undef HEXCHATLIBDIR])
+AH_VERBATIM([HEXCHATSHAREDIR],[#undef HEXCHATSHAREDIR])
 AH_VERBATIM([SOCKS],[#undef SOCKS])
 AH_VERBATIM([USE_MSPROXY],[#undef USE_MSPROXY])
 AH_VERBATIM([USE_LIBPROXY],[#undef USE_LIBPROXY])
@@ -812,15 +812,15 @@ test "x$exec_prefix" = xNONE && exec_prefix="$prefix"
 
 AC_DEFINE_UNQUOTED(PREFIX, "${prefix}")
 
-XCHATLIBDIR=`eval echo ${libdir}/xchat`
-AC_DEFINE_UNQUOTED(XCHATLIBDIR, "$XCHATLIBDIR")
+HEXCHATLIBDIR=`eval echo ${libdir}/hexchat`
+AC_DEFINE_UNQUOTED(HEXCHATLIBDIR, "$HEXCHATLIBDIR")
 
-XCHATSHAREDIR=`eval echo ${datadir}`
-AC_DEFINE_UNQUOTED(XCHATSHAREDIR, "$XCHATSHAREDIR")
+HEXCHATSHAREDIR=`eval echo ${datadir}`
+AC_DEFINE_UNQUOTED(HEXCHATSHAREDIR, "$HEXCHATSHAREDIR")
 
 dnl for plugins/xxx/Makefile.am
-xchatlibdir=${libdir}/xchat
-AC_SUBST(xchatlibdir)
+hexchatlibdir=${libdir}/hexchat
+AC_SUBST(hexchatlibdir)
 
 AC_OUTPUT([
 Makefile
@@ -839,7 +839,7 @@ po/Makefile.in
 ])
 
 echo
-echo xchat $VERSION
+echo hexchat $VERSION
 echo
 echo Building GTK+ Interface .... : $gtkfe
 echo Building TEXT Interface .... : $textfe

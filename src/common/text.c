@@ -586,7 +586,7 @@ log_create_pathname (char *servname, char *channame, char *netname)
 #endif
 		snprintf (fname, sizeof (fname), "%s", fnametime);
 	else
-		snprintf (fname, sizeof (fname), "%s/xchatlogs/%s", get_xdir_utf8 (), fnametime);
+		snprintf (fname, sizeof (fname), "%s/logs/%s", get_xdir_utf8 (), fnametime);
 
 	/* now we need it in FileSystem encoding */
 	fs = xchat_filename_from_utf8 (fname, -1, 0, 0, 0);
@@ -641,7 +641,7 @@ log_open (session *sess)
 		char message[512];
 		snprintf (message, sizeof (message),
 					_("* Can't open log file(s) for writing. Check the\n" \
-					  "  permissions on %s/xchatlogs"), get_xdir_utf8 ());
+					  "  permissions on %s/logs"), get_xdir_utf8 ());
 		fe_message (message, FE_MSG_WAIT | FE_MSG_ERROR);
 
 		log_error = TRUE;
