@@ -115,37 +115,32 @@ menu_about (GtkWidget * wid, gpointer sess)
 	g_get_charset (&locale);
 	(snprintf) (buf, sizeof (buf),
 				"<span size=\"x-large\"><b>"DISPLAY_NAME" "PACKAGE_VERSION"</b></span>\n"
-#ifdef WIN32
-				"%s%s%s"
-				"\n<b>XChat Revision</b>: r"XCHAT_REVISION"\n\n"
+				"\n%s\n\n"
+				"<b>XChat Revision</b>: r"XCHAT_REVISION"\n"
 				"<b>OS</b>: %s\n"
 				"<b>Charset</b>: %s "
+#ifdef WIN32
 				"<b>GTK+</b>: %i.%i.%i\n"
+#else
+				"<b>Renderer</b>: %s\n"
+#endif
 				"<b>Compiled</b>: "__DATE__"\n"
+#ifdef WIN32
 				"<b>Portable Mode</b>: %s\n"
 				"<b>Build Type</b>: x%d\n\n"
+#endif
 				"<small>\302\251 1998-2010 Peter \305\275elezn\303\275 &lt;zed@xchat.org>\n"
 				"\302\251 2009-2011 Berke Viktor &lt;bviktor@hexchat.org></small>",
-				(strcmp (prefs.gui_license, "") ? "<span size=\"x-large\">" : ""),
-				(strcmp (prefs.gui_license, "") ? prefs.gui_license : ""),
-				(strcmp (prefs.gui_license, "") ? "</span>\n" : ""),
+				_("A multiplatform IRC Client"),
 				get_cpu_str (),
 				locale,
+#ifdef WIN32
 				gtk_major_version,
 				gtk_minor_version,
 				gtk_micro_version,
 				(portable_mode () ? "Yes" : "No"),
 				get_cpu_arch ()
 #else
-				"\n%s\n\n"
-				"%s\n"
-				"<b>Charset</b>: %s "
-				"<b>Renderer</b>: %s\n"
-				"<b>Compiled</b>: "__DATE__"\n\n"
-				"<small>\302\251 1998-2010 Peter \305\275elezn\303\275 &lt;zed@xchat.org></small>",
-				_("A multiplatform IRC Client"),
-				get_cpu_str (),
-				locale,
 #ifdef USE_XFT
 				"Xft"
 #else

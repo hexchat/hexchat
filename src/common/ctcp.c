@@ -141,7 +141,7 @@ ctcp_handle (session *sess, char *to, char *nick, char *ip,
 		snprintf (outbuf, sizeof (outbuf), "VERSION HexChat "PACKAGE_VERSION" [x%d] / %s",
 					 get_cpu_arch (), get_cpu_str ());
 #else
-		snprintf (outbuf, sizeof (outbuf), "VERSION HexChat "PACKAGE_VERSION" %s",
+		snprintf (outbuf, sizeof (outbuf), "VERSION HexChat "PACKAGE_VERSION" / %s",
 					 get_cpu_str ());
 #endif
 		serv->p_nctcp (serv, nick, outbuf);

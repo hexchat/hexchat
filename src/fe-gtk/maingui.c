@@ -479,19 +479,8 @@ fe_set_title (session *sess)
 	default:
 	def:
 		snprintf (tbuf, sizeof (tbuf), DISPLAY_NAME);
-		if (strcmp (prefs.gui_license, ""))		/* zero means gui_license is empty */
-		{
-			strcat (tbuf, " - ");
-			strcat (tbuf, prefs.gui_license);
-		}
 		gtk_window_set_title (GTK_WINDOW (sess->gui->window), tbuf);
 		return;
-	}
-
-	if (strcmp (prefs.gui_license, ""))			/* zero means gui_license is empty */
-	{
-		strcat (tbuf, " - ");
-		strcat (tbuf, prefs.gui_license);
 	}
 
 	gtk_window_set_title (GTK_WINDOW (sess->gui->window), tbuf);
