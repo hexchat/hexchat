@@ -73,8 +73,8 @@ int xchat_plugin_init(xchat_plugin *plugin_handle, char **plugin_name, char **pl
 {
 	ph = plugin_handle;
 
-	*plugin_name	= "X-Tray";
-	*plugin_desc	= "Minimize XChat to the Windows system tray";
+	*plugin_name	= "HexTray";
+	*plugin_desc	= "Minimize HexChat to the Windows system tray";
 	*plugin_version = "1.2.4";
 
 	/***************************************************************************************************************************/

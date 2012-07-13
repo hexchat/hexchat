@@ -27,7 +27,7 @@
 
 static xchat_plugin *ph;   /* plugin handle */
 static const char name[] = "Exec";
-static const char desc[] = "Execute commands inside XChat";
+static const char desc[] = "Execute commands inside HexChat";
 static const char version[] = "1.1";
 
 static int
