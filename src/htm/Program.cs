@@ -15,7 +15,7 @@ namespace thememan
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new XTM());
+            Application.Run(new HTM());
         }
     }
 }

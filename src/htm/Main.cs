@@ -34,7 +34,7 @@ using System.Net;
 
 namespace thememan
 {
-    public partial class XTM : Form
+    public partial class HTM : Form
     {
         public string appdata = (Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\X-Chat 2\\");
         public string home = (Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/.xchat2/");
@@ -44,7 +44,7 @@ namespace thememan
 
         OpenFileDialog importDialog;
 
-        public XTM ()
+        public HTM ()
 		{
 			InitializeComponent ();
             

@@ -1,6 +1,6 @@
 ﻿namespace thememan
 {
-    partial class XTM
+    partial class HTM
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(XTM));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HTM));
             this.themelist = new System.Windows.Forms.ListBox();
             this.themecolor0 = new System.Windows.Forms.Label();
             this.themecolor1 = new System.Windows.Forms.Label();
@@ -247,7 +247,7 @@
             this.deleteButton.UseVisualStyleBackColor = true;
             this.deleteButton.Click += new System.EventHandler(this.deleteButton_Click);
             // 
-            // XTM
+            // HTM
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -278,9 +278,9 @@
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
-            this.Name = "XTM";
+            this.Name = "HTM";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-            this.Text = "XChat Theme Manager";
+            this.Text = "HexChat Theme Manager";
             this.ResumeLayout(false);
             this.PerformLayout();
 
