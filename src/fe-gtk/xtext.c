@@ -1056,13 +1056,8 @@ gtk_xtext_realize (GtkWidget * widget)
 		gdk_gc_set_fill (xtext->bgc, GDK_TILED);
 	}
 
-#if (GTK_MAJOR_VERSION == 2) && (GTK_MINOR_VERSION == 0)
-	xtext->hand_cursor = gdk_cursor_new (GDK_HAND1);
-	xtext->resize_cursor = gdk_cursor_new (GDK_LEFT_SIDE);
-#else
 	xtext->hand_cursor = gdk_cursor_new_for_display (gdk_drawable_get_display (widget->window), GDK_HAND1);
 	xtext->resize_cursor = gdk_cursor_new_for_display (gdk_drawable_get_display (widget->window), GDK_LEFT_SIDE);
-#endif
 
 	gdk_window_set_back_pixmap (widget->window, NULL, FALSE);
 	widget->style = gtk_style_attach (widget->style, widget->window);
@@ -1342,11 +1337,7 @@ gtk_xtext_draw_marker (GtkXText * xtext, textentry * ent, int y)
 
 	gdk_draw_line (xtext->draw_buf, xtext->marker_gc, x, render_y, x + width, render_y);
 
-#if GTK_CHECK_VERSION(2,4,0)
 	if (gtk_window_has_toplevel_focus (GTK_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (xtext)))))
-#else
-	if (GTK_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (xtext)))->has_focus)
-#endif
 	{
 		xtext->buffer->marker_seen = TRUE;
 	}
@@ -2096,13 +2087,8 @@ gtk_xtext_set_clip_owner (GtkWidget * xtext, GdkEventButton * event)
 	str = gtk_xtext_selection_get_text (GTK_XTEXT (xtext), &len);
 	if (str)
 	{
-#if (GTK_MAJOR_VERSION == 2) && (GTK_MINOR_VERSION == 0)
-		gtk_clipboard_set_text (gtk_clipboard_get (GDK_SELECTION_CLIPBOARD),
-										str, len);
-#else
 		gtk_clipboard_set_text (gtk_widget_get_clipboard (xtext, GDK_SELECTION_CLIPBOARD),
 										str, len);
-#endif
 		free (str);
 	}
 
@@ -2429,12 +2415,8 @@ gtk_xtext_selection_get (GtkWidget * widget,
 			gint format;
 			gint new_length;
 
-#if (GTK_MAJOR_VERSION == 2) && (GTK_MINOR_VERSION == 0)
-			gdk_string_to_compound_text (
-#else
 			gdk_string_to_compound_text_for_display (
 												gdk_drawable_get_display (widget->window),
-#endif
 												stripped, &encoding, &format, &new_text,
 												&new_length);
 			gtk_selection_data_set (selection_data_ptr, encoding, format,
@@ -3645,14 +3627,9 @@ shade_pixmap (GtkXText * xtext, Pixmap p, int x, int y, int w, int h)
 #ifdef USE_SHM
 		if (xtext->shm && shm_pixmaps)
 		{
-#if (GTK_MAJOR_VERSION == 2) && (GTK_MINOR_VERSION == 0)
-			shaded_pix = gdk_pixmap_foreign_new (
-				XShmCreatePixmap (xdisplay, p, ximg->data, &xtext->shminfo, w, h, depth));
-#else
 			shaded_pix = gdk_pixmap_foreign_new_for_display (
 				gdk_drawable_get_display (xtext->draw_buf),
 				XShmCreatePixmap (xdisplay, p, ximg->data, &xtext->shminfo, w, h, depth));
-#endif
 		} else
 #endif
 		{
@@ -3873,11 +3850,7 @@ gtk_xtext_load_trans (GtkXText * xtext)
 	} else
 	{
 noshade:
-#if (GTK_MAJOR_VERSION == 2) && (GTK_MINOR_VERSION == 0)
-		xtext->pixmap = gdk_pixmap_foreign_new (rootpix);
-#else
 		xtext->pixmap = gdk_pixmap_foreign_new_for_display (gdk_drawable_get_display (GTK_WIDGET (xtext)->window), rootpix);
-#endif
 		gdk_gc_set_tile (xtext->bgc, xtext->pixmap);
 		gdk_gc_set_ts_origin (xtext->bgc, -x, -y);
 		xtext->ts_x = -x;
@@ -5096,11 +5069,7 @@ gtk_xtext_append_entry (xtext_buffer *buf, textentry * ent, time_t stamp)
 
 	if (buf->reset_marker_pos || 
 		((buf->marker_pos == NULL || buf->marker_seen) && (buf->xtext->buffer != buf || 
-#if GTK_CHECK_VERSION(2,4,0)
 		!gtk_window_has_toplevel_focus (GTK_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (buf->xtext)))))))
-#else
-		!(GTK_WINDOW (gtk_widget_get_toplevel (GTK_WIDGET (buf->xtext))))->has_focus)))
-#endif
 	{
 		buf->marker_pos = ent;
 		dontscroll (buf); /* force scrolling off */

@@ -1541,11 +1541,7 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 			comp = 0;
 		}
 	
-#if GLIB_CHECK_VERSION(2,4,0)
 		list = g_completion_complete_utf8 (gcomp, comp ? old_gcomp.data : ent, &result);
-#else
-		list = g_completion_complete (gcomp, comp ? old_gcomp.data : ent, &result);
-#endif
 		
 		if (result == NULL) /* No matches found */
 		{

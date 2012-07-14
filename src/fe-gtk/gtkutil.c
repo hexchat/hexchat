@@ -186,10 +186,9 @@ gtkutil_file_req (const char *title, void *callback, void *userdata, char *filte
 			gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), temp);
 			gtk_file_chooser_set_current_name (GTK_FILE_CHOOSER (dialog), file_part (filter));
 		}
-#if GTK_CHECK_VERSION(2,8,0)
+
 		if (!(flags & FRF_NOASKOVERWRITE))
 			gtk_file_chooser_set_do_overwrite_confirmation (GTK_FILE_CHOOSER (dialog), TRUE);
-#endif
 	}
 	else
 		dialog = gtk_file_chooser_dialog_new (title, NULL,
