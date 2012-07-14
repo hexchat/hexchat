@@ -1,7 +1,7 @@
 
 EXTRA_DIST=printevents.h tclplugin.h README
 
-libdir = $(xchatlibdir)/plugins
+libdir = $(hexchatlibdir)/plugins
 
 lib_LTLIBRARIES = tcl.la
 tcl_la_SOURCES = tclplugin.c
