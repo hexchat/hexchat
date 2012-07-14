@@ -61,10 +61,6 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
-    <PostBuildEvent>
-      <Command>
-      </Command>
-    </PostBuildEvent>
     <PreBuildEvent>
       <Command>cd ..\..\po
 rmdir /q /s "$(OutDir)\locale"
@@ -87,10 +83,6 @@ mkdir "$(OutDir)\locale\%%~nA\LC_MESSAGES"
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
-    <PostBuildEvent>
-      <Command>
-      </Command>
-    </PostBuildEvent>
     <PreBuildEvent>
       <Command>cd ..\..\po
 rmdir /q /s "$(OutDir)\locale"
