@@ -35,7 +35,7 @@ Provides: hexchat-python = %{epoch}:%{version}-%{release}
 Obsoletes: hexchat-python < %{epoch}:%{version}-%{release}
 
 %description
-X-Chat is an easy to use graphical IRC chat client for the X Window System.
+HexChat is an easy to use graphical IRC chat client for the X Window System.
 It allows you to join multiple IRC channels (chat rooms) at the same time, 
 talk publicly, private one-on-one conversations etc. Even file transfers
 are possible.
@@ -43,11 +43,11 @@ are possible.
 This includes the plugins to run the Perl and Python scripts.
 
 %package tcl
-Summary: Tcl script plugin for X-Chat
+Summary: Tcl script plugin for HexChat
 Group: Applications/Internet
 Requires: %{name} = %{epoch}:%{version}-%{release}
 %description tcl
-This package contains the X-Chat plugin providing the Tcl scripting interface.
+This package contains the HexChat plugin providing the Tcl scripting interface.
 
 %prep
 %setup -q
