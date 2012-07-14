@@ -32,7 +32,7 @@ IDD_EVENTS DIALOGEX 8, 20, 216, 143
 STYLE DS_SETFONT | DS_SETFOREGROUND | WS_CHILD
 FONT 8, "Tahoma", 0, 0, 0x0
 BEGIN
-    GROUPBOX        "XChat Events",IDC_STATIC,5,5,205,77
+    GROUPBOX        "HexChat Events",IDC_STATIC,5,5,205,77
     CONTROL         "Banned",4,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,18,49,10
     CONTROL         "Kicked",5,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,32,49,10
     CONTROL         "Killed",8,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,46,49,10
@@ -53,13 +53,13 @@ BEGIN
     GROUPBOX        "Options",IDC_STATIC,5,5,205,135
     CONTROL         "Auto away on minimize",11,"Button",BS_AUTOCHECKBOX | 
                     WS_TABSTOP,16,60,100,10
-    CONTROL         "Minimize XChat to the system tray",12,"Button",
+    CONTROL         "Minimize HexChat to the system tray",12,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,16,18,133,10
     CONTROL         "Minimize to the tray instead of closing",17,"Button",
                     BS_AUTOCHECKBOX | WS_TABSTOP,16,32,174,9
     EDITTEXT        IDC_AWAY_MSG,33,86,169,50,ES_AUTOHSCROLL
     LTEXT           "Away Msg:",IDC_STATIC,27,72,35,8
-    CONTROL         "Remove XChat from the taskbar (only show in tray)",
+    CONTROL         "Remove HexChat from the taskbar (only show in tray)",
                     20,"Button",BS_AUTOCHECKBOX | WS_TABSTOP,16,46,191,9
 END
 
