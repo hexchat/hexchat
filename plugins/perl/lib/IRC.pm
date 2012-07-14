@@ -3,7 +3,7 @@ package IRC;
 sub IRC::register {
   my ($script_name, $version, $callback) = @_;
   my $package = caller;
-  $callback = Xchat::Embed::fix_callback( $package, $callback) if $callback;
+  $callback = Xchat::Embed::fix_callback( $package, undef, $callback) if $callback;
   Xchat::register( $script_name, $version, undef, $callback );
 }
 
@@ -12,7 +12,7 @@ sub IRC::add_command_handler {
   my ($command, $callback) = @_;
   my $package = caller;
 
-  $callback = Xchat::Embed::fix_callback( $package, $callback );
+  $callback = Xchat::Embed::fix_callback( $package, undef, $callback );
 
   # starting index for word_eol array
   # this is for compatibility with '' as the command
@@ -30,7 +30,7 @@ sub IRC::add_command_handler {
 sub IRC::add_message_handler {
   my ($message, $callback) = @_;
   my $package = caller;
-  $callback = Xchat::Embed::fix_callback( $package, $callback );
+  $callback = Xchat::Embed::fix_callback( $package, undef, $callback );
 
   Xchat::hook_server( $message,
 		      sub {
@@ -44,7 +44,7 @@ sub IRC::add_message_handler {
 sub IRC::add_print_handler {
   my ($event, $callback) = @_;
   my $package = caller;
-  $callback = Xchat::Embed::fix_callback( $package, $callback );
+  $callback = Xchat::Embed::fix_callback( $package, undef, $callback );
   Xchat::hook_print( $event,
 		     sub {
 		       my @word = @{$_[0]};
@@ -58,7 +58,7 @@ sub IRC::add_print_handler {
 sub IRC::add_timeout_handler {
   my ($timeout, $callback) = @_;
   my $package = caller;
-  $callback = Xchat::Embed::fix_callback( $package, $callback );
+  $callback = Xchat::Embed::fix_callback( $package, undef, $callback );
   Xchat::hook_timer( $timeout,
 		     sub {
 		       no strict 'refs';
