@@ -565,10 +565,8 @@ menu_destroy (GtkWidget *menu, gpointer objtounref)
 static void
 menu_popup (GtkWidget *menu, GdkEventButton *event, gpointer objtounref)
 {
-#if (GTK_MAJOR_VERSION != 2) || (GTK_MINOR_VERSION != 0)
 	if (event && event->window)
 		gtk_menu_set_screen (GTK_MENU (menu), gdk_drawable_get_screen (event->window));
-#endif
 
 	g_object_ref (menu);
 	g_object_ref_sink (menu);
@@ -1746,8 +1744,6 @@ create_icon_menu (char *labeltext, void *stock_name, int is_stock)
 	return item;
 }
 
-#if GTK_CHECK_VERSION(2,4,0)
-
 /* Override the default GTK2.4 handler, which would make menu
    bindings not work when the menu-bar is hidden. */
 static gboolean
@@ -1760,9 +1756,6 @@ menu_canacaccel (GtkWidget *widget, guint signal_id, gpointer user_data)
 	return GTK_WIDGET_IS_SENSITIVE (widget);
 #endif
 }
-
-#endif
-
 
 /* === STUFF FOR /MENU === */
 
@@ -2139,10 +2132,8 @@ menu_create_main (void *accel_group, int bar, int away, int toplevel,
 	/* /MENU needs to know this later */
 	g_object_set_data (G_OBJECT (menu_bar), "accel", accel_group);
 
-#if GTK_CHECK_VERSION(2,4,0)
 	g_signal_connect (G_OBJECT (menu_bar), "can-activate-accel",
 							G_CALLBACK (menu_canacaccel), 0);
-#endif
 
 	/* set the initial state of toggles */
 	mymenu[MENUBAR_OFFSET].state = !prefs.hidemenu;
