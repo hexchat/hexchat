@@ -4,7 +4,7 @@ EXTRA_DIST=alt_completion.pl xchat2-perldocs.html xchat2-perl.html \
 	lib/Xchat/List/Network/Entry.pm lib/Xchat/List/Network/AutoJoin.pm \
 	lib/IRC.pm
 
-libdir = $(xchatlibdir)/plugins
+libdir = $(hexchatlibdir)/plugins
 
 lib_LTLIBRARIES = perl.la
 perl_la_SOURCES = perl.c

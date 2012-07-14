@@ -1,4 +1,3 @@
-
 AC_INIT(@PLUGIN@-config.h.in)
 AM_CONFIG_HEADER(@PLUGIN@-config.h)
 AM_INIT_AUTOMAKE(xchat-@PLUGIN@, @PLUGIN_VERSION@)
@@ -12,8 +11,8 @@ AC_ARG_WITH(plugin-includes,
 
 AC_SUBST(PLUGIN_INCLUDES)
 
-xchatlibdir=${libdir}/xchat
-AC_SUBST(xchatlibdir)
+hexchatlibdir=${libdir}/hexchat
+AC_SUBST(hexchatlibdir)
 
 AC_OUTPUT(
 Makefile
