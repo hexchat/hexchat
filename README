@@ -18,7 +18,8 @@ What is it?
 
 Requirements:
 ~~~~~~~~~~~~~
- * GTK+ 2.10 (this is available at http://www.gtk.org).
+ * GTK+ 2.10 (this is available at http://www.gtk.org)
+ * GLib 2.12 (GTK+ 2.10 requires GLib 2.12)
 
  X-Chat is known to work on, at least:
 
@@ -53,6 +54,7 @@ Python Scripts:
 
 Perl Scripts:
 ~~~~~~~~~~~~~
+ Perl 5.8 or newer is required.
  Scripts for 1.8.x are compatible with the following exceptions:
 
 * IRC::command will not interpret %C, %B, %U etc.
@@ -80,7 +82,9 @@ Autoloading Perl Scripts and Plugins
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  * X-Chat automatically loads, at startup:
 	~/.xchat2/*.pl Perl scripts
+	~/.xchat2/plugins/*.pl Perl scripts
 	~/.xchat2/*.py Python scripts
+	~/.xchat2/plugins/*.py Python scripts
 	~/.xchat2/*.so Plugins
 	$(libdir)/xchat/plugins/*.so plugins
 	(this usually translates to /usr/lib/xchat/plugins/*.so)
