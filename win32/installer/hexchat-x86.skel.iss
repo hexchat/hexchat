@@ -10,6 +10,7 @@ UninstallDisplayName=HexChat (x86)
 DefaultDirName={pf}\HexChat
 DefaultGroupName=HexChat
 DisableProgramGroupPage=yes
+Compression=lzma2/ultra
 SolidCompression=yes
 SourceDir=..\rel
 OutputDir=..

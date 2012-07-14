@@ -1,4 +1,4 @@
-Just some tips if you're going to help with xchat code (patches etc):
+Just some tips if you're going to help with HexChat code (patches etc):
 
 * Use tabs, not spaces, to indent code.
 
@@ -32,20 +32,20 @@ routine (void)
 
 * Please provide unified format diffs (run diff -u).
 
-* Call your patch something more meaningfull than xchat.diff (I get a
+* Call your patch something more meaningfull than hexchat.diff (I get a
   million of these files!).
 
 * To make a really nice and clean patch, do something like this:
 
 Have two directories, unpacked from the original archive:
-xchat-2.0.0/
-xchat-2.0.0p1/
-Then edit/compile the xchat-2.0.0p1 directory. When you're done, make
+hexchat-2.0.0/
+hexchat-2.0.0p1/
+Then edit/compile the hexchat-2.0.0p1 directory. When you're done, make
 a patch with:
 
-cd xchat-2.0.0p1
+cd hexchat-2.0.0p1
 make distclean
 cd ..
-diff -urN xchat-2.0.0 xchat-2.0.0p1 > xchat-something.diff
+diff -urN hexchat-2.0.0 hexchat-2.0.0p1 > hexchat-something.diff
 
 If using nmake (Windows) replace "make distclean" with "nmake -f makefile.msc clean"
