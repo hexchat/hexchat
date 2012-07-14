@@ -22,12 +22,13 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <dirent.h>
 #ifdef ENABLE_NLS
 #include <locale.h>
 #endif
 #ifdef WIN32
 #include <windows.h>
+#else
+#include <dirent.h>
 #endif
 
 #undef PACKAGE
