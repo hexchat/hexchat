@@ -36,11 +36,10 @@ namespace thememan
 {
     public partial class HTM : Form
     {
-        public string appdata = (Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData) + "\\HexChat\\");
-        public string home = (Environment.GetFolderPath(Environment.SpecialFolder.Personal) + "/.config/hexchat/");
+        public string hexchatdir = (Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "hexchat"));
 
         public string xchatdir;
-        public string themedir = "themes\\";
+        public string themedir;
 
         OpenFileDialog importDialog;
 
@@ -48,16 +47,16 @@ namespace thememan
 		{
 			InitializeComponent ();
             
-			if (File.Exists ("portable-mode"))
+			if (File.Exists ("portable-mode")) {
 				xchatdir = ("config\\");
-			else if (Directory.Exists (appdata))
-				xchatdir = (appdata);
-			else if (Directory.Exists (home)) {
-				xchatdir = (home); themedir = "themes/";
+				themedir = Path.Combine (xchatdir, "themes");
+			} else if (Directory.Exists (hexchatdir)) {
+				xchatdir = hexchatdir; 
+				themedir = Path.Combine(hexchatdir, "themes");
 			} else
-				Console.WriteLine("Install not found");
+				Console.WriteLine ("Install not found");
 
-            ListThemes();
+			ListThemes();
 
             String[] arguments = Environment.GetCommandLineArgs();
             if (arguments.Length > 1)
@@ -71,16 +70,16 @@ namespace thememan
         {
             themelist.Items.Clear();
 
-            if (Directory.Exists(xchatdir + themedir))
+            if (Directory.Exists(themedir))
             {
-                foreach (string theme in Directory.GetDirectories(xchatdir + themedir))
+                foreach (string theme in Directory.GetDirectories(themedir))
                 {
-                    themelist.Items.Add(theme.Remove(0, xchatdir.Length + themedir.Length));
+                    themelist.Items.Add(theme.Remove(0, themedir.Length + 1));
                 }
             }
             else
             {
-                Directory.CreateDirectory(xchatdir + themedir);
+                Directory.CreateDirectory(themedir);
             }
 
             if (themelist.Items.Count == 0)
@@ -119,40 +118,38 @@ namespace thememan
             }
         }
 
-        private List<List<string>> ReadTheme(string theme)
-        {
-            List<List<string>> themecolors = new List<List<string>>();
-            foreach (string line in File.ReadLines(xchatdir + themedir + theme + "/colors.conf"))
-            {
-                List<string> colors = new List<string>();
-                List<string> colorlist = new List<string>();
-                string[] possiblecolors = { "color_256", "color_257", "color_258", "color_259" };
+        private List<List<string>> ReadTheme (string theme)
+		{
+			List<List<string>> themecolors = new List<List<string>> ();
+			foreach (string line in File.ReadLines(Path.Combine(themedir, theme, "colors.conf"))) {
+				List<string> colors = new List<string> ();
+				List<string> colorlist = new List<string> ();
+				string[] possiblecolors = { "color_256", "color_257", "color_258", "color_259" };
 
-                for (byte num = 16; num <=31; num++)
-                    colorlist.Add("color_" + num);
-                colorlist.AddRange(possiblecolors);
+				for (byte num = 16; num <=31; num++)
+					colorlist.Add ("color_" + num);
+				colorlist.AddRange (possiblecolors);
 
-                string[] config = line.Split(new char[] { ' ' });
-                if(colorlist.Contains(config[0]) == true)
-                {
-                    colors.Add(config[2]);
-                    colors.Add(config[3]);
-                    colors.Add(config[4]);
-                    themecolors.Add(colors);
-                }
-            }
-            return themecolors;
-        }
+				string[] config = line.Split (new char[] { ' ' });
+				if (colorlist.Contains (config [0]) == true) {
+					colors.Add (config [2]);
+					colors.Add (config [3]);
+					colors.Add (config [4]);
+					themecolors.Add (colors);
+				}
+			}
+			return themecolors;
+		}
 
         private void applybutton_Click_1(object sender, EventArgs e)
         {
             DialogResult result = MessageBox.Show("HexChat must be closed and this will overwrite your current theme!\n\nDo you wish to continue?", "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
             if (result == DialogResult.OK)
             {
-                File.Copy(xchatdir + themedir + themelist.SelectedItem.ToString() + "\\colors.conf", xchatdir + "colors.conf", true);
-                if (File.Exists(xchatdir + themedir + themelist.SelectedItem.ToString() + "\\pevents.conf"))
+                File.Copy(Path.Combine(themedir, themelist.SelectedItem.ToString(), "colors.conf"), Path.Combine(xchatdir, "colors.conf"), true);
+                if (File.Exists(Path.Combine(themedir, themelist.SelectedItem.ToString(), "pevents.conf")))
                 {
-                    File.Copy(xchatdir + themedir + themelist.SelectedItem.ToString() + "\\pevents.conf", xchatdir + "pevents.conf", true);
+                    File.Copy(Path.Combine(themedir, themelist.SelectedItem.ToString(), "pevents.conf"), Path.Combine (xchatdir, "pevents.conf"), true);
                 }
             }
         }
@@ -182,30 +179,29 @@ namespace thememan
             attemptImport(fi);
         }
 
-        private void attemptImport(FileInfo fi)
-        {
-            string themeName = fi.Name.Remove(fi.Name.Length - fi.Extension.Length);
-            int result = extractTheme(fi);
-            ListThemes();
-            /* although a check is added to ListThemes(), this would still fail if the theme file was invalid or the theme is already installed */
-            switch (result)
-            {
-                case 0:
-                    themelist.SetSelected(themelist.FindStringExact(themeName), true);
+        private void attemptImport (FileInfo fi)
+		{
+			string themeName = fi.Name.Remove (fi.Name.Length - fi.Extension.Length);
+			int result = extractTheme (fi);
+			ListThemes ();
+			/* although a check is added to ListThemes(), this would still fail if the theme file was invalid or the theme is already installed */
+			switch (result) {
+			case 0:
+				themelist.SetSelected (themelist.FindStringExact (themeName), true);
                     /* required for command line invoking */
-                    ShowColors(ReadTheme(themeName));
-                    break;
-                case 1:
-                    MessageBox.Show("This theme is already installed!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    themelist.SetSelected(themelist.FindStringExact(themeName), true);
+				ShowColors (ReadTheme (themeName));
+				break;
+			case 1:
+				MessageBox.Show ("This theme is already installed!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				themelist.SetSelected (themelist.FindStringExact (themeName), true);
                     /* required for command line invoking */
-                    ShowColors(ReadTheme(themeName));
-                    break;
-                case 2:
-                    MessageBox.Show("Invalid theme file!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    break;
-            }
-        }
+				ShowColors (ReadTheme (themeName));
+				break;
+			case 2:
+				MessageBox.Show ("Invalid theme file!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+				break;
+			}
+		}
         /* gzip solution, not good enough coz we need multiple files
          * 
         public string extractTheme(FileInfo fi)
@@ -242,7 +238,8 @@ namespace thememan
         private int extractTheme(FileInfo zipFile)
         {
             string themeName = zipFile.Name.Remove(zipFile.Name.Length - zipFile.Extension.Length);
-            string destFolder = xchatdir + themedir + themeName;
+            string destFolder = Path.Combine(themedir, themeName);
+			Console.WriteLine(destFolder);
 
             try
             {
@@ -312,7 +309,7 @@ namespace thememan
             DialogResult result = MessageBox.Show("Are you sure you want to delete this theme from the theme repo?\n\nYour currently applied theme won't be affected.", "Warning", MessageBoxButtons.OKCancel, MessageBoxIcon.Warning);
             if (result == DialogResult.OK)
             {
-                Directory.Delete(xchatdir + themedir + themelist.SelectedItem.ToString(), true);
+                Directory.Delete(Path.Combine(themedir, themelist.SelectedItem.ToString()), true);
                 ListThemes();
                 if (themelist.Items.Count == 0)
                 {
