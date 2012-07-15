@@ -11,6 +11,7 @@ DefaultDirName={pf}\HexChat
 DefaultGroupName=HexChat
 DisableProgramGroupPage=yes
 SolidCompression=yes
+Compression=lzma2/ultra64
 SourceDir=..\rel
 OutputDir=..
 FlatComponentsList=no
