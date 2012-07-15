@@ -74,7 +74,7 @@ our @EXPORT = @{$EXPORT_TAGS{constants}};
 our @EXPORT_OK = @{$EXPORT_TAGS{all}};
 
 sub register {
-	my $package = Xchat::Embed::find_pkg();
+	my ($package, $calling_package) = Xchat::Embed::find_pkg();
 	my $pkg_info = Xchat::Embed::pkg_info( $package );
 	my $filename = $pkg_info->{filename};
 	my ($name, $version, $description, $callback) = @_;
@@ -86,6 +86,11 @@ sub register {
 	}
 	
 	$description = "" unless defined $description;
+	if( $callback ) {
+		$callback = Xchat::Embed::fix_callback(
+			$package, $calling_package, $callback
+		);
+	}
 	$pkg_info->{shutdown} = $callback;
 	unless( $name && $name =~ /[[:print:]\w]/ ) {
 		$name = "Not supplied";
@@ -124,9 +129,11 @@ sub hook_server {
 	my $message = shift;
 	my $callback = shift;
 	my $options = shift;
-	my $package = Xchat::Embed::find_pkg();
+	my ($package, $calling_package) = Xchat::Embed::find_pkg();
 	
-	$callback = Xchat::Embed::fix_callback( $package, $callback );
+	$callback = Xchat::Embed::fix_callback(
+		$package, $calling_package, $callback
+	);
 	
 	my ($priority, $data) = ( Xchat::PRI_NORM, undef );
 	_process_hook_options(
@@ -148,9 +155,11 @@ sub hook_command {
 	my $command = shift;
 	my $callback = shift;
 	my $options = shift;
-	my $package = Xchat::Embed::find_pkg();
+	my ($package, $calling_package) = Xchat::Embed::find_pkg();
 
-	$callback = Xchat::Embed::fix_callback( $package, $callback );
+	$callback = Xchat::Embed::fix_callback(
+		$package, $calling_package, $callback
+	);
 	
 	my ($priority, $help_text, $data) = ( Xchat::PRI_NORM, undef, undef );
 	_process_hook_options(
@@ -172,9 +181,11 @@ sub hook_print {
 	my $event = shift;
 	my $callback = shift;
 	my $options = shift;
-	my $package = Xchat::Embed::find_pkg();
+	my ($package, $calling_package) = Xchat::Embed::find_pkg();
 
-	$callback = Xchat::Embed::fix_callback( $package, $callback );
+	$callback = Xchat::Embed::fix_callback(
+		$package, $calling_package, $callback
+	);
 	
 	my ($priority, $run_after, $filter, $data) = ( Xchat::PRI_NORM, 0, 0, undef );
 	_process_hook_options(
@@ -247,9 +258,11 @@ sub hook_print {
 sub hook_timer {
 	return undef unless @_ >= 2;
 	my ($timeout, $callback, $data) = @_;
-	my $package = Xchat::Embed::find_pkg();
+	my ($package, $calling_package) = Xchat::Embed::find_pkg();
 
-	$callback = Xchat::Embed::fix_callback( $package, $callback );
+	$callback = Xchat::Embed::fix_callback(
+		$package, $calling_package, $callback
+	);
 
 	if(
 		ref( $data ) eq 'HASH' && exists( $data->{data} )
@@ -272,8 +285,10 @@ sub hook_fd {
 	my $fileno = fileno $fd;
 	return undef unless defined $fileno; # no underlying fd for this handle
 	
-	my $package = Xchat::Embed::find_pkg();
-	$callback = Xchat::Embed::fix_callback( $package, $callback );
+	my ($package, $calling_package) = Xchat::Embed::find_pkg();
+	$callback = Xchat::Embed::fix_callback(
+		$package, $calling_package, $callback
+	);
 	
 	my ($flags, $data) = (Xchat::FD_READ, undef);
 	_process_hook_options(

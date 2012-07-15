@@ -259,7 +259,7 @@ sub find_external_pkg {
 		return @frame if $frame[0] !~ /(?:^IRC$|^Xchat)/;
 		$level++;
 	}
-
+	return;
 }
 
 sub find_pkg {
@@ -281,7 +281,7 @@ sub find_pkg {
 	if( $frame[0] or $frame[1] ) {
 		my $calling_package = $frame[0];
 		if( defined( my $owner = $owner_package{ $calling_package } ) ) {
-			return $owner;
+			return ($owner, $calling_package);
 		}
 
 		$location = $frame[1] ? $frame[1] : "package $frame[0]";
@@ -294,10 +294,16 @@ sub find_pkg {
 
 }
 
+# convert function names into code references
 sub fix_callback {
-	my ($package, $callback) = @_;
+	my ($package, $calling_package, $callback) = @_;
 	
 	unless( ref $callback ) {
+		unless( $callback =~ /::/ ) {
+			my $prefix = defined $calling_package ? $calling_package : $package;
+			$callback =~ s/^/${prefix}::/;
+		}
+
 		no strict 'subs';
 		$callback = \&{$callback};
 	}

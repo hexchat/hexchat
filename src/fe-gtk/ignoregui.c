@@ -228,9 +228,6 @@ ignore_delete_entry_clicked (GtkWidget * wid, struct session *sess)
 	if (gtkutil_treeview_get_selected (view, &iter, 0, &mask, -1))
 	{
 		/* delete this row, select next one */
-#if (GTK_MAJOR_VERSION == 2) && (GTK_MINOR_VERSION == 0)
-		gtk_list_store_remove (store, &iter);
-#else
 		if (gtk_list_store_remove (store, &iter))
 		{
 			path = gtk_tree_model_get_path (GTK_TREE_MODEL (store), &iter);
@@ -238,7 +235,6 @@ ignore_delete_entry_clicked (GtkWidget * wid, struct session *sess)
 			gtk_tree_view_set_cursor (view, path, NULL, FALSE);
 			gtk_tree_path_free (path);
 		}
-#endif
 
 		ignore_del (mask, NULL);
 		g_free (mask);

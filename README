@@ -1,26 +1,28 @@
-X-Chat README
+HexChat README
 ~~~~~~~~~~~~~
  X-Chat ("xchat") Copyright (c) 1998-2010 By Peter Zelezny.
+ HexChat ("hexchat") Copyright (c) 2009-2012 By Berke Viktor.
 
  This program is released under the GPL v2 with the additional exemption
  that compiling, linking, and/or using OpenSSL is allowed. You may
  provide binary packages linked to the OpenSSL libraries, provided that
- all other requirements of the GPL are met. 
+ all other requirements of the GPL are met.
  See file COPYING for details.
 
 
 What is it?
 ~~~~~~~~~~~
- X-Chat is an IRC client for UNIX operating systems. I.R.C. is Internet
+ HexChat is an IRC client for UNIX operating systems. I.R.C. is Internet
  Relay Chat, see http://irchelp.org for more information about IRC in
- general. Xchat runs on most BSD and POSIX compliant operating systems.
+ general. HexChat runs on most BSD and POSIX compliant operating systems.
 
 
 Requirements:
 ~~~~~~~~~~~~~
- * GTK+ 2.10 (this is available at http://www.gtk.org).
+ * GTK+ 2.10 (this is available at http://www.gtk.org)
+ * GLib 2.12 (GTK+ 2.10 requires GLib 2.12)
 
- X-Chat is known to work on, at least:
+ HexChat is known to work on, at least:
 
 	* Linux
 	* FreeBSD
@@ -53,6 +55,7 @@ Python Scripts:
 
 Perl Scripts:
 ~~~~~~~~~~~~~
+ Perl 5.8 or newer is required.
  Scripts for 1.8.x are compatible with the following exceptions:
 
 * IRC::command will not interpret %C, %B, %U etc.
@@ -78,12 +81,14 @@ Perl Scripts:
 
 Autoloading Perl Scripts and Plugins
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- * X-Chat automatically loads, at startup:
-	~/.xchat2/*.pl Perl scripts
-	~/.xchat2/*.py Python scripts
-	~/.xchat2/*.so Plugins
-	$(libdir)/xchat/plugins/*.so plugins
-	(this usually translates to /usr/lib/xchat/plugins/*.so)
+ * HexChat automatically loads, at startup:
+	~/.config/hexchat/*.pl Perl scripts
+	~/.config/hexchat/plugins/*.pl Perl scripts
+	~/.config/hexchat/*.py Python scripts
+	~/.config/hexchat/plugins/*.py Python scripts
+	~/.config/hexchat/*.so Plugins
+	$(libdir)/hexchat/plugins/*.so plugins
+	(this usually translates to /usr/lib/hexchat/plugins/*.so)
 
 
 Control Codes:
