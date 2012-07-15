@@ -972,7 +972,7 @@ main (int argc, char *argv[])
 	{
 		DWORD error;
 
-		mutex = CreateMutex (NULL, TRUE, "Local\hexchat");
+		mutex = CreateMutex (NULL, TRUE, "Local\xchat");
 		error = GetLastError ();
 
 		if (error == ERROR_ALREADY_EXISTS || mutex == NULL)
