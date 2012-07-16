@@ -568,9 +568,6 @@ const struct prefs vars[] = {
 	{"tab_sort", P_OFFINT (tab_sort), TYPE_BOOL},
 	{"tab_trunc", P_OFFINT (truncchans), TYPE_INT},
 	{"tab_utils", P_OFFINT (windows_as_tabs), TYPE_BOOL},
-#ifdef WIN32
-	{"tab_xp", P_OFFINT (tab_xp), TYPE_BOOL},
-#endif
 
 	{"text_auto_copy_color", P_OFFINT (autocopy_color), TYPE_BOOL},	
 	{"text_auto_copy_stamp", P_OFFINT (autocopy_stamp), TYPE_BOOL},

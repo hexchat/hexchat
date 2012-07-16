@@ -310,7 +310,6 @@ struct xchatprefs
 	unsigned int identd;
 	unsigned int emoticons;
 	unsigned int tab_icons;
-	unsigned int tab_xp;
 #endif
 
 	unsigned int ctcp_number_limit;	/*flood */
