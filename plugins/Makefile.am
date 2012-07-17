@@ -21,5 +21,9 @@ if DO_SASL
 sasldir = sasl
 endif
 
+if DO_DOAT
+doatdir = doat
+endif
+
 #SUBDIRS = . $(pythondir) $(perldir) mailcheck xdcc
-SUBDIRS = . $(pythondir) $(perldir) $(tcldir) $(sasldir)
+SUBDIRS = . $(pythondir) $(perldir) $(tcldir) $(sasldir) $(doatdir)
