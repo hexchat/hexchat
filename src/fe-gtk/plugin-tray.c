@@ -332,10 +332,10 @@ fe_tray_set_icon (feicon icon)
 	case FE_ICON_NORMAL:
 		break;
 	case FE_ICON_MESSAGE:
+	case FE_ICON_PRIVMSG:
 		tray_set_flash (ICON_MSG);
 		break;
 	case FE_ICON_HIGHLIGHT:
-	case FE_ICON_PRIVMSG:
 		tray_set_flash (ICON_HILIGHT);
 		break;
 	case FE_ICON_FILEOFFER:
@@ -627,7 +627,7 @@ tray_priv (char *from, char *text)
 	if (alert_match_word (from, prefs.irc_no_hilight))
 		return;
 
-	tray_set_flash (ICON_HILIGHT);
+	tray_set_flash (ICON_MSG);
 
 	network = xchat_get_info (ph, "network");
 	if (!network)
