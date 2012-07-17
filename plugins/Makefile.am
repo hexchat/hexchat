@@ -17,5 +17,9 @@ if DO_TCL
 tcldir = tcl
 endif
 
+if DO_SASL
+sasldir = sasl
+endif
+
 #SUBDIRS = . $(pythondir) $(perldir) mailcheck xdcc
-SUBDIRS = . $(pythondir) $(perldir) $(tcldir)
+SUBDIRS = . $(pythondir) $(perldir) $(tcldir) $(sasldir)
