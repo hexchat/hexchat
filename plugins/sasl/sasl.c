@@ -32,17 +32,18 @@
  *  http://tools.ietf.org/html/rfc4422
  */
 
+#include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include <assert.h>
-#include <glib/gbase64.h>
+#include <glib.h>
 
 #include "xchat-plugin.h"
 
 static xchat_plugin *ph;   /* plugin handle */
 static const char name[] = "SASL";
 static const char desc[] = "SASL authentication plugin for HexChat";
-static const char version[] = "1.1";
+static const char version[] = "1.2";
 static const char sasl_help[] = "SASL Usage:\n /SASL ADD <login> <password> <network>, enable/update SASL authentication for given network\n /SASL DEL <network>, disable SASL authentication for given network\n /SASL LIST, get the list of SASL-enabled networks\n";
 
 struct sasl_info
@@ -211,7 +212,7 @@ sasl_cmd_cb (char *word[], char *word_eol[], void *userdata)
 	const char* network;
 	const char* mode = word[2];
 
-	if (!stricmp ("ADD", mode))
+	if (!g_ascii_strcasecmp ("ADD", mode))
 	{
 		login = word[3];
 		password = word[4];
@@ -234,7 +235,7 @@ sasl_cmd_cb (char *word[], char *word_eol[], void *userdata)
 
 		return XCHAT_EAT_ALL;
 	}
-	else if (!stricmp ("DEL", mode))
+	else if (!g_ascii_strcasecmp ("DEL", mode))
 	{
 		network = word_eol[3];
 
@@ -255,7 +256,7 @@ sasl_cmd_cb (char *word[], char *word_eol[], void *userdata)
 
 		return XCHAT_EAT_ALL;
 	}
-	else if (!stricmp ("LIST", mode))
+	else if (!g_ascii_strcasecmp ("LIST", mode))
 	{
 		print_info ();
 		return XCHAT_EAT_ALL;
