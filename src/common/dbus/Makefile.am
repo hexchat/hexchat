@@ -1,5 +1,5 @@
-noinst_LIBRARIES = libxchatdbus.a
-libxchatdbus_a_SOURCES =			\
+noinst_LIBRARIES = libhexchatdbus.a
+libhexchatdbus_a_SOURCES =			\
 	dbus-plugin.c				\
 	dbus-plugin.h				\
 	dbus-client.c				\
