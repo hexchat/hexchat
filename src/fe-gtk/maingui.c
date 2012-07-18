@@ -1240,7 +1240,7 @@ mg_open_quit_dialog (gboolean minimize_button)
 
 	dialog = gtk_dialog_new ();
 	gtk_container_set_border_width (GTK_CONTAINER (dialog), 6);
-	gtk_window_set_title (GTK_WINDOW (dialog), _("Quit "DISPLAY_NAME"?"));
+	gtk_window_set_title (GTK_WINDOW (dialog), _("Quit HexChat?"));
 	gtk_window_set_transient_for (GTK_WINDOW (dialog), GTK_WINDOW (parent_window));
 	gtk_window_set_resizable (GTK_WINDOW (dialog), FALSE);
 	gtk_dialog_set_has_separator (GTK_DIALOG (dialog), FALSE);
