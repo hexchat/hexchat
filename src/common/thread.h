@@ -1,3 +1,4 @@
+#if 0	/* native file dialogs */
 #include <windows.h>
 
 typedef struct
@@ -8,3 +9,4 @@ typedef struct
 
 thread *thread_new (void);
 int thread_start (thread *th, void *(*start_routine)(void *), void *arg);
+#endif

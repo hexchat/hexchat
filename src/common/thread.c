@@ -1,3 +1,4 @@
+#if 0	/* native file dialogs */
 #include <fcntl.h>
 #include "thread.h"
 
@@ -31,3 +32,4 @@ thread_start (thread *th, void *(*start_routine)(void *), void *arg)
 
 	return 1;
 }
+#endif

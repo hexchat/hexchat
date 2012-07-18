@@ -53,8 +53,10 @@
 #include "pixmaps.h"
 
 #ifdef WIN32
+#if 0	/* native file dialogs */
 #include "../common/fe.h"
 #include "../common/thread.h"
+#endif
 #else
 #include <unistd.h>
 #endif
@@ -71,11 +73,13 @@ struct file_req
 	filereqcallback callback;
 	int flags;		/* FRF_* flags */
 
+#if 0	/* native file dialogs */
 #ifdef WIN32
 	int multiple;
 	thread *th;
 	char *title;	/* native locale */
 	char *filter;
+#endif
 #endif
 };
 
@@ -178,6 +182,7 @@ gtkutil_file_req_response (GtkWidget *dialog, gint res, struct file_req *freq)
 	}
 }
 
+#if 0	/* native file dialogs */
 #ifdef WIN32
 static int
 win32_openfile (char *file_buf, int file_buf_len, char *title_text, char *filter,
@@ -361,6 +366,7 @@ win32_read_thread (GIOChannel *source, GIOCondition cond, struct file_req *freq)
 	return FALSE;
 }
 #endif
+#endif	/* native file dialogs */
 
 void
 gtkutil_file_req (const char *title, void *callback, void *userdata, char *filter,
@@ -370,6 +376,7 @@ gtkutil_file_req (const char *title, void *callback, void *userdata, char *filte
 	GtkWidget *dialog;
 	extern char *get_xdir_fs (void);
 
+#if 0	/* native file dialogs */
 #ifdef WIN32
 	if (!(flags & FRF_WRITE))
 	{
@@ -420,6 +427,7 @@ gtkutil_file_req (const char *title, void *callback, void *userdata, char *filte
 
 	return;
 	}
+#endif
 #endif
 
 	if (flags & FRF_WRITE)

@@ -147,12 +147,14 @@ void
 plugingui_load (void)
 {
 	gtkutil_file_req (_("Select a Plugin or Script to load"), plugingui_load_cb, current_sess,
+#if 0	/* native file dialogs */
 #ifdef WIN32
 							"Plugins and Scripts\0*.dll;*.lua;*.pl;*.py;*.tcl\0"
 							"All files\0*.*\0\0", 0);
 #else
-							NULL, FRF_ADDFOLDER);
 #endif
+#endif	/* native file dialogs */
+							NULL, FRF_ADDFOLDER);
 }
 
 static void
