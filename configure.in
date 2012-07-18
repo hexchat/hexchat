@@ -940,33 +940,33 @@ po/Makefile.in
 echo
 echo HexChat $VERSION
 echo
-echo GTK+ Interface ...... : $gtkfe
-echo Text Interface ...... : $textfe
+echo GTK+ interface ........ : $gtkfe
+echo Text interface ........ : $textfe
 echo
-echo MMX tinting ......... : $mmx
-echo XShm tinting ........ : $shm
+echo MMX tinting ........... : $mmx
+echo XShm tinting .......... : $shm
 if test "$xft" = no; then
-  echo text backend ........ : pango
+  echo Text backend .......... : Pango
 else
-  echo text backend ........ : xft
+  echo Text backend .......... : Xft
 fi
-echo openssl support ..... : $openssl
-echo dbus support ........ : $dbus
-echo libnotify support ... : $libnotify
-echo spelling ............ : $spell
-echo plugin interface .... : $plugin
-echo nls/gettext ......... : $USE_NLS
-echo ipv6 support ........ : $ipv6
-echo msproxy ntlm \(ISA\) .. : $have_ntlm
+echo OpenSSL support ....... : $openssl
+echo D-Bus support ......... : $dbus
+echo libnotify support ..... : $libnotify
+echo Spelling .............. : $spell
+echo Plugin interface ...... : $plugin
+echo NLS/gettext ........... : $USE_NLS
+echo IPv6 support .......... : $ipv6
+echo MS Proxy NTLM \(ISA\) ... : $have_ntlm
 echo
-echo Perl ................ : $perl
-echo Python .............. : $python
-echo Tcl ................. : $tcl
+echo Perl .................. : $perl
+echo Python ................ : $python
+echo Tcl ................... : $tcl
 echo
-echo Checksum ............ : $checksum
-echo Do At ............... : $doat
-echo FiSHLiM ............. : $fishlim
-echo SASL ................ : $sasl
+echo Checksum .............. : $checksum
+echo Do At ................. : $doat
+echo FiSHLiM ............... : $fishlim
+echo SASL .................. : $sasl
 echo
 echo The binary will be installed in $prefix/bin
 echo
