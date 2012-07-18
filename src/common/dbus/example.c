@@ -24,10 +24,10 @@
 #include <stdlib.h>
 #include "marshallers.h"
 
-#define DBUS_SERVICE "org.xchat.service"
-#define DBUS_REMOTE "/org/xchat/Remote"
-#define DBUS_REMOTE_CONNECTION_INTERFACE "org.xchat.connection"
-#define DBUS_REMOTE_PLUGIN_INTERFACE "org.xchat.plugin"
+#define DBUS_SERVICE "org.hexchat.service"
+#define DBUS_REMOTE "/org/hexchat/Remote"
+#define DBUS_REMOTE_CONNECTION_INTERFACE "org.hexchat.connection"
+#define DBUS_REMOTE_PLUGIN_INTERFACE "org.hexchat.plugin"
 
 guint command_id;
 guint server_id;

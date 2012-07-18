@@ -3,14 +3,14 @@
 import dbus
 
 bus = dbus.SessionBus()
-proxy = bus.get_object('org.xchat.service', '/org/xchat/Remote')
-remote = dbus.Interface(proxy, 'org.xchat.connection')
+proxy = bus.get_object('org.hexchat.service', '/org/hexchat/Remote')
+remote = dbus.Interface(proxy, 'org.hexchat.connection')
 path = remote.Connect ("example.py",
 		       "Python example",
 		       "Example of a D-Bus client written in python",
 		       "1.0")
-proxy = bus.get_object('org.xchat.service', path)
-xchat = dbus.Interface(proxy, 'org.xchat.plugin')
+proxy = bus.get_object('org.hexchat.service', path)
+xchat = dbus.Interface(proxy, 'org.hexchat.plugin')
 
 channels = xchat.ListGet ("channels")
 while xchat.ListNext (channels):

@@ -103,19 +103,19 @@ EOF
 %post
 # Install schema
 export GCONF_CONFIG_SOURCE=`gconftool-2 --get-default-source`
-gconftool-2 --makefile-install-rule /etc/gconf/schemas/apps_xchat_url_handler.schemas >& /dev/null || :
+gconftool-2 --makefile-install-rule /etc/gconf/schemas/apps_hexchat_url_handler.schemas >& /dev/null || :
 
 
 %pre
 if [ "$1" -gt 1 ]; then
   export GCONF_CONFIG_SOURCE=`gconftool-2 --get-default-source`
-  gconftool-2 --makefile-uninstall-rule /etc/gconf/schemas/apps_xchat_url_handler.schemas >& /dev/null || :
+  gconftool-2 --makefile-uninstall-rule /etc/gconf/schemas/apps_hexchat_url_handler.schemas >& /dev/null || :
 fi
 
 %preun
 if [ "$1" -eq 0 ]; then
   export GCONF_CONFIG_SOURCE=`gconftool-2 --get-default-source`
-  gconftool-2 --makefile-uninstall-rule /etc/gconf/schemas/apps_xchat_url_handler.schemas >& /dev/null || :
+  gconftool-2 --makefile-uninstall-rule /etc/gconf/schemas/apps_hexchat_url_handler.schemas >& /dev/null || :
 fi
 
 %clean
@@ -132,7 +132,7 @@ fi
 %{_libdir}/hexchat/plugins/python.so
 %{_datadir}/applications/hexchat.desktop
 %{_datadir}/pixmaps/*
-%{_sysconfdir}/gconf/schemas/apps_xchat_url_handler.schemas
+%{_sysconfdir}/gconf/schemas/apps_hexchat_url_handler.schemas
 %{_datadir}/dbus-1/services/org.hexchat.service.service
 
 %files tcl

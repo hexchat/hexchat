@@ -7,10 +7,10 @@ libxchatdbus_a_SOURCES =			\
 
 EXTRA_DIST =				\
 	remote-object.xml		\
-	apps_xchat_url_handler.schemas	\
+	apps_hexchat_url_handler.schemas	\
 	marshallers.list		\
 	example.py			\
-	org.xchat.service.service.in \
+	org.hexchat.service.service.in \
 	README
 
 BUILT_SOURCES =				\
@@ -33,7 +33,7 @@ marshallers.h: marshallers.list
 
 # Dbus service file
 servicedir = $(DBUS_SERVICES_DIR)
-service_in_files = org.xchat.service.service.in
+service_in_files = org.hexchat.service.service.in
 service_DATA = $(service_in_files:.service.in=.service)
 
 # Rule to make the service file with bindir expanded
@@ -44,7 +44,7 @@ if DO_GCONF
 GCONF_SCHEMA_CONFIG_SOURCE = `$(GCONFTOOL) --get-default-source`
 GCONF_SCHEMA_FILE_DIR = $(sysconfdir)/gconf/schemas
 schemadir = $(GCONF_SCHEMA_FILE_DIR)
-schema_DATA = apps_xchat_url_handler.schemas
+schema_DATA = apps_hexchat_url_handler.schemas
 install-data-local:
 	if test -z "$(DESTDIR)" ; then \
 		for p in $(schema_DATA) ; do \

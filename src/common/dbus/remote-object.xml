@@ -2,7 +2,7 @@
 
 <node name="/">
 
-  <interface name="org.xchat.connection">
+  <interface name="org.hexchat.connection">
     <method name="Connect">
       <annotation name="org.freedesktop.DBus.GLib.Async" value=""/>
       <arg type="s" name="filename" direction="in"/>
@@ -16,7 +16,7 @@
     </method>
   </interface>
 
-  <interface name="org.xchat.plugin">
+  <interface name="org.hexchat.plugin">
     <method name="Command">
       <arg type="s" name="command" direction="in"/>
     </method>
