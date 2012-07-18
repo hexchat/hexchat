@@ -25,5 +25,9 @@ if DO_DOAT
 doatdir = doat
 endif
 
+if DO_FISHLIM
+fishlimdir = fishlim
+endif
+
 #SUBDIRS = . $(pythondir) $(perldir) mailcheck xdcc
-SUBDIRS = . $(pythondir) $(perldir) $(tcldir) $(sasldir) $(doatdir)
+SUBDIRS = . $(pythondir) $(perldir) $(tcldir) $(sasldir) $(doatdir) $(fishlimdir)

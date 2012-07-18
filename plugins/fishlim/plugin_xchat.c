@@ -27,11 +27,7 @@
 #include <string.h>
 
 // #pragma GCC visibility push(default)
-#ifdef _MSC_VER
 #include "xchat-plugin.h"
-#else
-#include <xchat/xchat-plugin.h>
-#endif
 #define XCHAT_MAX_WORDS 32
 // #pragma GCC visibility pop
 
