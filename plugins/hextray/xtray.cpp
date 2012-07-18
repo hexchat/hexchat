@@ -49,7 +49,7 @@ HWND	g_hXchatWnd;
 HWND	g_hHotkeyWnd;
 HWND	g_hPrefDlg;
 HMENU	g_hTrayMenu;
-HICON	g_hIcons[11];
+HICON	g_hIcons[24];
 HANDLE	g_hInstance;
 /*****************************************************/
 /***************** Preferences ***********************/
@@ -104,13 +104,13 @@ int xchat_plugin_init(xchat_plugin *plugin_handle, char **plugin_name, char **pl
 	g_hPrefDlg		= CreateDialog((HINSTANCE)g_hInstance, MAKEINTRESOURCE(IDD_PREF),  g_hXchatWnd, (DLGPROC)PrefProc);
 
 	g_hIcons[0]	= (HICON)LoadImage((HINSTANCE)g_hInstance, MAKEINTRESOURCE(ICO_XCHAT),			IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
-	g_hIcons[1]	= (HICON)LoadImage((HINSTANCE)g_hInstance, MAKEINTRESOURCE(ICO_CHANMSG),		IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
 	g_hIcons[2]	= (HICON)LoadImage((HINSTANCE)g_hInstance, MAKEINTRESOURCE(ICO_HIGHLIGHT),		IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
 	g_hIcons[5]	= (HICON)LoadImage((HINSTANCE)g_hInstance, MAKEINTRESOURCE(ICO_BANNED),			IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
 	g_hIcons[6]	= (HICON)LoadImage((HINSTANCE)g_hInstance, MAKEINTRESOURCE(ICO_KICKED),			IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
 	g_hIcons[8]	= (HICON)LoadImage((HINSTANCE)g_hInstance, MAKEINTRESOURCE(ICO_PMSG),			IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
 	g_hIcons[10]= (HICON)LoadImage((HINSTANCE)g_hInstance, MAKEINTRESOURCE(ICO_SNOTICE),		IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
 	g_hIcons[11]= (HICON)LoadImage((HINSTANCE)g_hInstance, MAKEINTRESOURCE(ICO_DISCONNECTED),	IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
+	g_hIcons[22]	= (HICON)LoadImage((HINSTANCE)g_hInstance, MAKEINTRESOURCE(ICO_CHANMSG),		IMAGE_ICON, 16, 16, LR_DEFAULTCOLOR);
 
 	/***************************************************************************************************************************/
 	/************************* Add our icon to the tray ************************************************************************/

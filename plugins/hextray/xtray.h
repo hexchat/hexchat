@@ -24,7 +24,7 @@ extern HWND				g_hXchatWnd;
 extern HWND				g_hHotkeyWnd;
 extern HWND				g_hPrefDlg;
 extern HMENU			g_hTrayMenu;
-extern HICON			g_hIcons[11];
+extern HICON			g_hIcons[24];
 extern HANDLE			g_hInstance;
 extern unsigned int		g_dwPrefs;
 extern TCHAR			g_szAway[512];
