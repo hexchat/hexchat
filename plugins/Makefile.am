@@ -29,5 +29,9 @@ if DO_FISHLIM
 fishlimdir = fishlim
 endif
 
+if DO_CHECKSUM
+checksumdir = checksum
+endif
+
 #SUBDIRS = . $(pythondir) $(perldir) mailcheck xdcc
-SUBDIRS = . $(pythondir) $(perldir) $(tcldir) $(sasldir) $(doatdir) $(fishlimdir)
+SUBDIRS = . $(pythondir) $(perldir) $(tcldir) $(sasldir) $(doatdir) $(fishlimdir) $(checksumdir)

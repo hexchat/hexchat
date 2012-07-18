@@ -22,28 +22,39 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include <malloc.h>
 #include <errno.h>
 #include <sys/types.h>
-#include <sys/stat.h>
 #include <openssl/sha.h>
+#include <glib.h>
 
-#include "xchat-plugin.h"
-
-#define BUFSIZE 32768
-#define DEFAULT_LIMIT 256									/* default size is 256 MiB */
-
+#ifdef WIN32
 #ifndef snprintf
 #define snprintf _snprintf
 #endif
 #ifndef stat64
 #define stat64 _stat64
 #endif
+#else
+/* for INT_MAX */
+#include <limits.h>
+#define __USE_LARGEFILE64
+#define _LARGEFILE_SOURCE
+#define _LARGEFILE64_SOURCE
+#endif
+
+#include <sys/stat.h>
+
+#include "xchat-plugin.h"
+
+#define BUFSIZE 32768
+#define DEFAULT_LIMIT 256									/* default size is 256 MiB */
 
 static xchat_plugin *ph;									/* plugin handle */
 static const char name[] = "Checksum";
 static const char desc[] = "Calculate checksum for DCC file transfers";
-static const char version[] = "3.0";
+static const char version[] = "3.1";
 
 /* Use of OpenSSL SHA256 interface: http://adamlamers.com/?p=5 */
 static void
@@ -217,11 +228,11 @@ dccoffer_cb (char *word[], void *userdata)
 static void
 checksum (char *word[], void *userdata)
 {
-	if (!stricmp ("GET", word[2]))
+	if (!g_ascii_strcasecmp ("GET", word[2]))
 	{
 		print_limit ();
 	}
-	else if (!stricmp ("SET", word[2]))
+	else if (!g_ascii_strcasecmp ("SET", word[2]))
 	{
 		set_limit (word[3]);
 	}
