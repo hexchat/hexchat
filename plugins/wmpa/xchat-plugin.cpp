@@ -131,7 +131,7 @@ void wmpaCommands(void)
    xchat_printf(ph, "WMPA: /play            : Play the current song");
    xchat_printf(ph, "WMPA: /pause           : Pause the current song");
    xchat_printf(ph, "WMPA: /prev            : Play the previous song");
-   xchat_printf(ph, "WMPA: /song            : Announce the current song from Windows Media Player in xchat");
+   xchat_printf(ph, "WMPA: /song            : Announce the current song from Windows Media Player in HexChat");
    xchat_printf(ph, "WMPA: /stop            : Stop the current song");
    xchat_printf(ph, "WMPA: /volume [volume] : Set the volume (0 to 100) or display the current volume");
    xchat_printf(ph, "WMPA: /wmpahelp        : Display this help.");
