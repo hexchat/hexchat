@@ -13,7 +13,7 @@
 #define HEXCHATSHAREDIR "."
 #define OLD_PERL
 #define GETTEXT_PACKAGE "hexchat"
-#define PACKAGE_TARNAME "hexchat-2.9.0"
+#define PACKAGE_TARNAME "hexchat-2.9.1"
 #ifndef USE_IPV6
 #define socklen_t int
 #endif
