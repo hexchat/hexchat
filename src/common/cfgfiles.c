@@ -586,6 +586,7 @@ const struct prefs vars[] = {
 	{"text_max_indent", P_OFFINT (max_auto_indent), TYPE_INT},
 	{"text_max_lines", P_OFFINT (max_lines), TYPE_INT},
 	{"text_replay", P_OFFINT (text_replay), TYPE_BOOL},
+	{"text_replay_strip_color", P_OFFINT (text_replay_strip_color), TYPE_BOOL},
 	{"text_search_case_match", P_OFFINT (text_search_case_match), TYPE_BOOL},
 	{"text_search_backward", P_OFFINT (text_search_backward), TYPE_BOOL},
 	{"text_search_highlight_all", P_OFFINT (text_search_highlight_all), TYPE_BOOL},
@@ -677,6 +678,7 @@ load_config (void)
 	prefs.recon_delay = 10;
 	prefs.autocopy_text = 1;
 	prefs.text_replay = 1;
+	prefs.text_replay_strip_color = 1;
 	prefs.tabchannels = 1;
 	prefs.tab_layout = 2;	/* 0=Tabs 1=Reserved 2=Tree */
 	prefs.tab_sort = 1;

@@ -284,6 +284,7 @@ struct xchatprefs
 	unsigned int windows_as_tabs;
 	unsigned int indent_nicks;
 	unsigned int text_replay;
+	unsigned int text_replay_strip_color;
 	unsigned int show_marker;
 	unsigned int show_separator;
 	unsigned int thin_separator;
