@@ -343,7 +343,10 @@ scrollback_load (session *sess)
 					text = strip_color (text + 1, -1, STRIP_COLOR);
 				}
 				fe_print_text (sess, text, stamp);
-				g_free (text);
+				if (prefs.text_replay_strip_color)
+				{
+					g_free (text);
+				}
 			}
 			lines++;
 		}
@@ -387,7 +390,10 @@ scrollback_load (session *sess)
 					text = cleaned_text;
 				}
 				fe_print_text (sess, text, stamp);
-				g_free (text);
+				if (prefs.text_replay_strip_color)
+				{
+					g_free (text);
+				}
 			}
 			lines++;
 		}
