@@ -104,7 +104,6 @@ static const setting textbox_settings[] =
 	{ST_HEADER,	N_("Text Box Appearance"),0,0,0},
 #ifdef WIN32
 	{ST_EFONT,  N_("Main font:"), P_OFFSETNL(font_main), 0, 0, sizeof prefs.font_main},
-	{ST_ENTRY,  N_("Alternative fonts:"), P_OFFSETNL(font_alternative), "Separate multiple entries with commas without spaces before or after.", 0, sizeof prefs.font_alternative},
 #else
 	{ST_EFONT,  N_("Font:"), P_OFFSETNL(font_normal), 0, 0, sizeof prefs.font_normal},
 #endif
@@ -130,19 +129,6 @@ static const setting textbox_settings[] =
 #else
 					N_("See the strftime manpage for details."),0,sizeof prefs.stamp_format},
 #endif
-
-	{ST_HEADER,	N_("Auto-Copy Behavior"),0,0,0},
-	{ST_TOGGLE, N_("Automatically copy selected text"), P_OFFINTNL(autocopy_text),
-					N_("Copy selected text to clipboard when left mouse button is released. "
-						"Otherwise, CONTROL-SHIFT-C will copy the "
-						"selected text to the clipboard."), 0, 0},
-	{ST_TOGGLE, N_("Automatically include time stamps"), P_OFFINTNL(autocopy_stamp),
-					N_("Automatically include time stamps in copied lines of text. Otherwise, "
-						"include time stamps if the SHIFT key is held down while selecting."), 0, 0},
-	{ST_TOGGLE, N_("Automatically include color information"), P_OFFINTNL(autocopy_color),
-					N_("Automatically include color information in copied lines of text.  "
-						"Otherwise, include color information if the CONTROL key is held down "
-						"while selecting."), 0, 0},
 
 	{ST_END, 0, 0, 0, 0, 0}
 };
@@ -373,6 +359,7 @@ static const setting alert_settings[] =
 	{ST_ENTRY,	N_("Nick names not to highlight:"), P_OFFSETNL(irc_no_hilight), 0, 0, sizeof prefs.irc_no_hilight},
 	{ST_ENTRY,	N_("Nick names to always highlight:"), P_OFFSETNL(irc_nick_hilight), 0, 0, sizeof prefs.irc_nick_hilight},
 	{ST_LABEL,	N_("Separate multiple words with commas.\nWildcards are accepted.")},
+
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
@@ -391,6 +378,7 @@ static const setting alert_settings_hextray[] =
 	{ST_ENTRY,	N_("Nick names not to highlight:"), P_OFFSETNL(irc_no_hilight), 0, 0, sizeof prefs.irc_no_hilight},
 	{ST_ENTRY,	N_("Nick names to always highlight:"), P_OFFSETNL(irc_nick_hilight), 0, 0, sizeof prefs.irc_nick_hilight},
 	{ST_LABEL,	N_("Separate multiple words with commas.\nWildcards are accepted.")},
+
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
@@ -406,12 +394,16 @@ static const setting general_settings[] =
 					N_("Announce your away messages to all channels"), 0, 0},
 	{ST_TOGGLE,	N_("Show away once"), P_OFFINTNL(show_away_once), N_("Show identical away messages only once"), 0, 0},
 	{ST_TOGGLE,	N_("Automatically unmark away"), P_OFFINTNL(auto_unmark_away), N_("Unmark yourself as away before sending messages"), 0, 0},
+
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
 static const setting advanced_settings[] =
 {
 	{ST_HEADER,	N_("Advanced Settings"),0,0,0},
+#ifdef WIN32
+	{ST_ENTRY,  N_("Alternative fonts:"), P_OFFSETNL(font_alternative), "Separate multiple entries with commas without spaces before or after.", 0, sizeof prefs.font_alternative},
+#endif
 	{ST_NUMBER,	N_("Auto reconnect delay:"), P_OFFINTNL(recon_delay), 0, 0, 9999},
 	{ST_TOGGLE,	N_("Display MODEs in raw form"), P_OFFINTNL(raw_modes), 0, 0, 0},
 	{ST_TOGGLE,	N_("Whois on notify"), P_OFFINTNL(whois_on_notifyonline), N_("Sends a /WHOIS when a user comes online in your notify list"), 0, 0},
@@ -420,6 +412,18 @@ static const setting advanced_settings[] =
 	{ST_TOGGLE, N_("Send window"), P_OFFINTNL(autoopendccsendwindow), 0, 0, 0},
 	{ST_TOGGLE, N_("Receive window"), P_OFFINTNL(autoopendccrecvwindow), 0, 0, 0},
 	{ST_TOGGLE, N_("Chat window"), P_OFFINTNL(autoopendccchatwindow), 0, 0, 0},
+	{ST_HEADER,	N_("Auto-Copy Behavior"),0,0,0},
+	{ST_TOGGLE, N_("Automatically copy selected text"), P_OFFINTNL(autocopy_text),
+					N_("Copy selected text to clipboard when left mouse button is released. "
+						"Otherwise, CONTROL-SHIFT-C will copy the "
+						"selected text to the clipboard."), 0, 0},
+	{ST_TOGGLE, N_("Automatically include time stamps"), P_OFFINTNL(autocopy_stamp),
+					N_("Automatically include time stamps in copied lines of text. Otherwise, "
+						"include time stamps if the SHIFT key is held down while selecting."), 0, 0},
+	{ST_TOGGLE, N_("Automatically include color information"), P_OFFINTNL(autocopy_color),
+					N_("Automatically include color information in copied lines of text.  "
+						"Otherwise, include color information if the CONTROL key is held down "
+						"while selecting."), 0, 0},
 
 	{ST_END, 0, 0, 0, 0, 0}
 };
@@ -428,6 +432,7 @@ static const setting advanced_settings[] =
 static const setting advanced_settings_oneinstance[] =
 {
 	{ST_HEADER,	N_("Advanced Settings"),0,0,0},
+	{ST_ENTRY,  N_("Alternative fonts:"), P_OFFSETNL(font_alternative), "Separate multiple entries with commas without spaces before or after.", 0, sizeof prefs.font_alternative},
 	{ST_NUMBER,	N_("Auto reconnect delay:"), P_OFFINTNL(recon_delay), 0, 0, 9999},
 	{ST_TOGGLE,	N_("Display MODEs in raw form"), P_OFFINTNL(raw_modes), 0, 0, 0},
 	{ST_TOGGLE,	N_("Whois on notify"), P_OFFINTNL(whois_on_notifyonline), N_("Sends a /WHOIS when a user comes online in your notify list"), 0, 0},
@@ -437,6 +442,18 @@ static const setting advanced_settings_oneinstance[] =
 	{ST_TOGGLE, N_("Send window"), P_OFFINTNL(autoopendccsendwindow), 0, 0, 0},
 	{ST_TOGGLE, N_("Receive window"), P_OFFINTNL(autoopendccrecvwindow), 0, 0, 0},
 	{ST_TOGGLE, N_("Chat window"), P_OFFINTNL(autoopendccchatwindow), 0, 0, 0},
+	{ST_HEADER,	N_("Auto-Copy Behavior"),0,0,0},
+	{ST_TOGGLE, N_("Automatically copy selected text"), P_OFFINTNL(autocopy_text),
+					N_("Copy selected text to clipboard when left mouse button is released. "
+						"Otherwise, CONTROL-SHIFT-C will copy the "
+						"selected text to the clipboard."), 0, 0},
+	{ST_TOGGLE, N_("Automatically include time stamps"), P_OFFINTNL(autocopy_stamp),
+					N_("Automatically include time stamps in copied lines of text. Otherwise, "
+						"include time stamps if the SHIFT key is held down while selecting."), 0, 0},
+	{ST_TOGGLE, N_("Automatically include color information"), P_OFFINTNL(autocopy_color),
+					N_("Automatically include color information in copied lines of text.  "
+						"Otherwise, include color information if the CONTROL key is held down "
+						"while selecting."), 0, 0},
 
 	{ST_END, 0, 0, 0, 0, 0}
 };
