@@ -747,7 +747,7 @@ inbound_quit (server *serv, char *nick, char *ip, char *reason)
 {
 	GSList *list = sess_list;
 	session *sess;
-	struct User *user = NULL;
+	struct User *user;
 	int was_on_front_session = FALSE;
 
 	while (list)
@@ -757,7 +757,7 @@ inbound_quit (server *serv, char *nick, char *ip, char *reason)
 		{
  			if (sess == current_sess)
  				was_on_front_session = TRUE;
-			if (user == userlist_find (sess, nick))
+			if ((user = userlist_find (sess, nick)))
 			{
 				EMIT_SIGNAL (XP_TE_QUIT, sess, nick, reason, ip, NULL, 0);
 				userlist_remove_user (sess, user);
