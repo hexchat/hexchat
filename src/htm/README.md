@@ -1,4 +1,4 @@
-xchat-theme-manager
+HexChat-theme-manager
 ------------------
 
 - Shows previews of and can load/save themes

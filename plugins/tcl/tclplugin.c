@@ -2203,7 +2203,7 @@ static void Tcl_Plugin_DeInit()
 
 static void banner()
 {
-    xchat_printf(ph, "Tcl plugin for XChat - Version %s\n", VERSION);
+    xchat_printf(ph, "Tcl plugin for HexChat - Version %s\n", VERSION);
     xchat_print(ph, "Copyright 2002-2005 Daniel P. Stasinski\n");
     xchat_print(ph, "http://www.scriptkitties.com/tclplugin/\n");
 }
@@ -2282,7 +2282,7 @@ void xchat_plugin_get_info(char **name, char **desc, char **version, void **rese
 {
    strncpy(VERSION, &RCSID[19], 5);
    *name = "tclplugin";
-   *desc = "Tcl plugin for XChat";
+   *desc = "Tcl plugin for HexChat";
    *version = VERSION;
    if (reserved)
       *reserved = NULL;

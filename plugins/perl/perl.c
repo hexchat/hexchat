@@ -144,7 +144,7 @@ perl_auto_load (void *unused)
 	if (!xdir)			/* xchatdirfs is new for 2.0.9, will fail on older */
 		xdir = xchat_get_info (ph, "xchatdir");
 
-	/* autoload from ~/.xchat2/ or ${APPDATA}\X-Chat 2\ on win32 */
+	/* autoload from ~/.xchat2/ or ${APPDATA}\HexChat\ on win32 */
 	perl_auto_load_from_path (xdir);
 
 	sub_dir = malloc (strlen (xdir) + 9);
