@@ -45,6 +45,7 @@
 #include "../common/server.h"
 #include "../common/util.h"
 #include "../common/userlist.h"
+#include "../common/outbound.h"
 #include "gtkutil.h"
 #include "maingui.h"
 #include "palette.h"

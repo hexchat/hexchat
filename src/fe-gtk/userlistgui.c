@@ -40,6 +40,7 @@
 #include "../common/modes.h"
 #include "../common/notify.h"
 #include "../common/xchatc.h"
+#include "../common/fe.h"
 #include "gtkutil.h"
 #include "palette.h"
 #include "maingui.h"

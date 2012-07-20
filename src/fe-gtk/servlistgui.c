@@ -37,6 +37,7 @@
 #include "../common/servlist.h"
 #include "../common/cfgfiles.h"
 #include "../common/fe.h"
+#include "../common/util.h"
 
 #include "fe-gtk.h"
 #include "gtkutil.h"

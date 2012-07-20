@@ -41,6 +41,7 @@ int servlist_cycle (server *serv);
 void servlist_connect (session *sess, ircnet *net, gboolean join);
 int servlist_connect_by_netname (session *sess, char *network, gboolean join);
 int servlist_auto_connect (session *sess);
+void servlist_autojoinedit (ircnet *net, char *channel, gboolean add);
 int servlist_have_auto (void);
 int servlist_check_encoding (char *charset);
 void servlist_cleanup (void);
