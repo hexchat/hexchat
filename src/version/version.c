@@ -28,6 +28,7 @@
 char *
 comma ()
 {
+# if 0	/* for WDK version numbers */
 	int major, minor;
 	char *version_string; /* nnnn,n,n,n format */
 
@@ -36,10 +37,19 @@ comma ()
 	if (sscanf (PACKAGE_VERSION, "%d-%d", &major, &minor) > 1)
 	{
 		sprintf (version_string, "%d,%d,0,0", major, minor);
-	} else
+	}
+	else
 	{
 		sprintf (version_string, "%d,0,0,0", major);
 	}
+#endif
+	int major, minor, build;
+	char *version_string; /* n,n,n,n format */
+
+	version_string = (char*) malloc (8);
+
+	sscanf (PACKAGE_VERSION, "%d.%d.%d", &major, &minor, &build);
+	sprintf (version_string, "%d,%d,%d,0", major, minor, build);
 
 	return version_string;
 }
