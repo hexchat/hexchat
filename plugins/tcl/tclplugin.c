@@ -2203,9 +2203,11 @@ static void Tcl_Plugin_DeInit()
 
 static void banner()
 {
+#if 0
     xchat_printf(ph, "Tcl plugin for HexChat - Version %s\n", VERSION);
     xchat_print(ph, "Copyright 2002-2005 Daniel P. Stasinski\n");
     xchat_print(ph, "http://www.scriptkitties.com/tclplugin/\n");
+#endif
 }
 
 int xchat_plugin_init(xchat_plugin * plugin_handle, char **plugin_name, char **plugin_desc, char **plugin_version, char *arg)
@@ -2229,7 +2231,7 @@ int xchat_plugin_init(xchat_plugin * plugin_handle, char **plugin_name, char **p
 
     if (initialized != 0) {
         banner();
-        xchat_print(ph, "Tcl plugin already loaded");
+        xchat_print(ph, "Tcl interface already loaded");
         reinit_tried++;
         return 0;
     }
