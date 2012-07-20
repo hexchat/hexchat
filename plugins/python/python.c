@@ -389,7 +389,7 @@ Util_Autoload()
 	char *sub_dir;
 	/* we need local filesystem encoding for chdir, opendir etc */
 
-	/* auto-load from ~/.xchat2/ or %APPDATA%\X-Chat 2\ */
+	/* auto-load from ~/.xchat2/ or %APPDATA%\HexChat\ */
 	xdir = xchat_get_info(ph, "xchatdirfs");
 	Util_Autoload_from(xchat_get_info(ph, "xchatdirfs"));
 

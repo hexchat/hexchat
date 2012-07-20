@@ -97,9 +97,9 @@ void SavePrefs(int iDlg)
 
 	// ok this one is really ugly
 	// it checks to see if the file exists in two locations
-	// X-Chat default config dir, if that fails it trys xchat\plugins\config
+	// HexChat default config dir, if that fails it tries xchat\plugins\config
 	// if neither one exists it tries to create it in
-	// X-Chat default config dir, if that fails it trys xchat\plugins\config
+	// HexChat default config dir, if that fails it tries xchat\plugins\config
 	// In either case it writes \xFF\xFE to the file ( on creation )
 	// so that we can save unicode away messages WritePrivateProfile doesn't 
 	// do this for us, though I think it really should
