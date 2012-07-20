@@ -389,7 +389,7 @@ Util_Autoload()
 	char *sub_dir;
 	/* we need local filesystem encoding for chdir, opendir etc */
 
-	/* auto-load from ~/.xchat2/ or %APPDATA%\HexChat\ */
+	/* auto-load from ~/.config/hexchat/ or %APPDATA%\HexChat\ */
 	xdir = xchat_get_info(ph, "xchatdirfs");
 	Util_Autoload_from(xchat_get_info(ph, "xchatdirfs"));
 
@@ -400,7 +400,7 @@ Util_Autoload()
 	Util_Autoload_from(sub_dir);
 	free (sub_dir);
 
-#ifdef WIN32	/* also auto-load C:\Program Files\XChat\Plugins\*.py */
+#ifdef WIN32	/* also auto-load C:\Program Files\HexChat\Plugins\*.py */
 	Util_Autoload_from(HEXCHATLIBDIR"/plugins");
 #endif
 }
@@ -437,7 +437,7 @@ Util_Expand(char *filename)
 		return expanded;
 	g_free(expanded);
 
-	/* Check if ~/.xchat2/<filename> exists. */
+	/* Check if ~/.config/hexchat/<filename> exists. */
 	expanded = g_build_filename(xchat_get_info(ph, "xchatdir"),
 				    filename, NULL);
 	if (g_file_test(expanded, G_FILE_TEST_EXISTS))

@@ -144,7 +144,7 @@ perl_auto_load (void *unused)
 	if (!xdir)			/* xchatdirfs is new for 2.0.9, will fail on older */
 		xdir = xchat_get_info (ph, "xchatdir");
 
-	/* autoload from ~/.xchat2/ or ${APPDATA}\HexChat\ on win32 */
+	/* autoload from ~/.config/hexchat/ or %APPDATA%\HexChat\ on win32 */
 	perl_auto_load_from_path (xdir);
 
 	sub_dir = malloc (strlen (xdir) + 9);
@@ -154,7 +154,7 @@ perl_auto_load (void *unused)
 	free (sub_dir);
 
 #ifdef WIN32
-	/* autoload from  C:\program files\xchat\plugins\ */
+	/* autoload from  C:\Program Files\HexChat\plugins\ */
 	sub_dir = malloc (1025 + 9);
 	copied = GetModuleFileName( 0, sub_dir, 1024 );
 	sub_dir[copied] = '\0';
