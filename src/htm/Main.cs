@@ -44,19 +44,19 @@ namespace thememan
         OpenFileDialog importDialog;
 
         public HTM ()
-		{
-			InitializeComponent ();
+        {
+            InitializeComponent ();
             
-			if (File.Exists ("portable-mode")) {
-				xchatdir = ("config\\");
-				themedir = Path.Combine (xchatdir, "themes");
-			} else if (Directory.Exists (hexchatdir)) {
-				xchatdir = hexchatdir; 
-				themedir = Path.Combine(hexchatdir, "themes");
-			} else
-				Console.WriteLine ("Install not found");
+            if (File.Exists ("portable-mode")) {
+                xchatdir = ("config\\");
+                themedir = Path.Combine (xchatdir, "themes");
+            } else if (Directory.Exists (hexchatdir)) {
+                xchatdir = hexchatdir; 
+                themedir = Path.Combine(hexchatdir, "themes");
+            } else
+                Console.WriteLine ("Install not found");
 
-			ListThemes();
+            ListThemes();
 
             String[] arguments = Environment.GetCommandLineArgs();
             if (arguments.Length > 1)
@@ -119,27 +119,27 @@ namespace thememan
         }
 
         private List<List<string>> ReadTheme (string theme)
-		{
-			List<List<string>> themecolors = new List<List<string>> ();
-			foreach (string line in File.ReadLines(Path.Combine(themedir, theme, "colors.conf"))) {
-				List<string> colors = new List<string> ();
-				List<string> colorlist = new List<string> ();
-				string[] possiblecolors = { "color_256", "color_257", "color_258", "color_259" };
+        {
+            List<List<string>> themecolors = new List<List<string>> ();
+            foreach (string line in File.ReadLines(Path.Combine(themedir, theme, "colors.conf"))) {
+                List<string> colors = new List<string> ();
+                List<string> colorlist = new List<string> ();
+                string[] possiblecolors = { "color_256", "color_257", "color_258", "color_259" };
 
-				for (byte num = 16; num <=31; num++)
-					colorlist.Add ("color_" + num);
-				colorlist.AddRange (possiblecolors);
+                for (byte num = 16; num <=31; num++)
+                    colorlist.Add ("color_" + num);
+                colorlist.AddRange (possiblecolors);
 
-				string[] config = line.Split (new char[] { ' ' });
-				if (colorlist.Contains (config [0]) == true) {
-					colors.Add (config [2]);
-					colors.Add (config [3]);
-					colors.Add (config [4]);
-					themecolors.Add (colors);
-				}
-			}
-			return themecolors;
-		}
+                string[] config = line.Split (new char[] { ' ' });
+                if (colorlist.Contains (config [0]) == true) {
+                    colors.Add (config [2]);
+                    colors.Add (config [3]);
+                    colors.Add (config [4]);
+                    themecolors.Add (colors);
+                }
+            }
+            return themecolors;
+        }
 
         private void applybutton_Click_1(object sender, EventArgs e)
         {
@@ -180,28 +180,28 @@ namespace thememan
         }
 
         private void attemptImport (FileInfo fi)
-		{
-			string themeName = fi.Name.Remove (fi.Name.Length - fi.Extension.Length);
-			int result = extractTheme (fi);
-			ListThemes ();
-			/* although a check is added to ListThemes(), this would still fail if the theme file was invalid or the theme is already installed */
-			switch (result) {
-			case 0:
-				themelist.SetSelected (themelist.FindStringExact (themeName), true);
+        {
+            string themeName = fi.Name.Remove (fi.Name.Length - fi.Extension.Length);
+            int result = extractTheme (fi);
+            ListThemes ();
+            /* although a check is added to ListThemes(), this would still fail if the theme file was invalid or the theme is already installed */
+            switch (result) {
+            case 0:
+                themelist.SetSelected (themelist.FindStringExact (themeName), true);
                     /* required for command line invoking */
-				ShowColors (ReadTheme (themeName));
-				break;
-			case 1:
-				MessageBox.Show ("This theme is already installed!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-				themelist.SetSelected (themelist.FindStringExact (themeName), true);
+                ShowColors (ReadTheme (themeName));
+                break;
+            case 1:
+                MessageBox.Show ("This theme is already installed!", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                themelist.SetSelected (themelist.FindStringExact (themeName), true);
                     /* required for command line invoking */
-				ShowColors (ReadTheme (themeName));
-				break;
-			case 2:
-				MessageBox.Show ("Invalid theme file!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-				break;
-			}
-		}
+                ShowColors (ReadTheme (themeName));
+                break;
+            case 2:
+                MessageBox.Show ("Invalid theme file!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                break;
+            }
+        }
         /* gzip solution, not good enough coz we need multiple files
          * 
         public string extractTheme(FileInfo fi)
@@ -239,7 +239,7 @@ namespace thememan
         {
             string themeName = zipFile.Name.Remove(zipFile.Name.Length - zipFile.Extension.Length);
             string destFolder = Path.Combine(themedir, themeName);
-			Console.WriteLine(destFolder);
+            Console.WriteLine(destFolder);
 
             try
             {
