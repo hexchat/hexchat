@@ -386,7 +386,10 @@ scrollback_load (session *sess)
 				cleaned_text = text_replace_non_bmp (text, -1, &cleaned_len);
 				if (cleaned_text != NULL)
 				{
-					g_free (text);
+					if (prefs.text_replay_strip_color)
+					{
+						g_free (text);
+					}
 					text = cleaned_text;
 				}
 				fe_print_text (sess, text, stamp);
