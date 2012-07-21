@@ -363,10 +363,22 @@ check_prefs_dir (void)
 	{
 #ifdef WIN32
 		if (mkdir (dir) != 0)
+		{
+			if (portable_mode ())
+			{
+				fe_message (_("Cannot create .\\config"), FE_MSG_ERROR);
+			}
+			else
+			{
+				fe_message (_("Cannot create %APPDATA%\\HexChat"), FE_MSG_ERROR);
+			}
+		}
 #else
 		if (mkdir (dir, S_IRUSR | S_IWUSR | S_IXUSR) != 0)
+		{
+			fe_message (_("Cannot create ~/.config/hexchat"), FE_MSG_ERROR);
+		}
 #endif
-			fe_message (_("Cannot create ~/.xchat2"), FE_MSG_ERROR);
 	}
 }
 
