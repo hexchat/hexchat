@@ -389,19 +389,26 @@ Util_Autoload()
 	char *sub_dir;
 	/* we need local filesystem encoding for chdir, opendir etc */
 
-	/* auto-load from ~/.config/hexchat/ or %APPDATA%\HexChat\ */
 	xdir = xchat_get_info(ph, "xchatdirfs");
-	Util_Autoload_from(xchat_get_info(ph, "xchatdirfs"));
 
-	/* auto-load from subdirectory plugins */
+	/* don't pollute the filesystem with script files, this only causes misuse of the folders
+	 * only use ~/.config/hexchat/scripts/ and %APPDATA%\HexChat\scripts */
+#if 0
+	/* auto-load from ~/.config/hexchat/ or %APPDATA%\HexChat\ */
+	Util_Autoload_from(xchat_get_info(ph, "xchatdirfs"));
+#endif
+
+	/* auto-load from subdirectory scripts */
 	sub_dir = malloc (strlen (xdir) + 9);
 	strcpy (sub_dir, xdir);
-	strcat (sub_dir, "/plugins");
+	strcat (sub_dir, "/scripts");
 	Util_Autoload_from(sub_dir);
 	free (sub_dir);
 
+#if 0
 #ifdef WIN32	/* also auto-load C:\Program Files\HexChat\Plugins\*.py */
 	Util_Autoload_from(HEXCHATLIBDIR"/plugins");
+#endif
 #endif
 }
 
@@ -437,9 +444,9 @@ Util_Expand(char *filename)
 		return expanded;
 	g_free(expanded);
 
-	/* Check if ~/.config/hexchat/<filename> exists. */
+	/* Check if ~/.config/hexchat/scripts/<filename> exists. */
 	expanded = g_build_filename(xchat_get_info(ph, "xchatdir"),
-				    filename, NULL);
+				    "scripts", filename, NULL);
 	if (g_file_test(expanded, G_FILE_TEST_EXISTS))
 		return expanded;
 	g_free(expanded);

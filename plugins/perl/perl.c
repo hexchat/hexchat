@@ -144,15 +144,20 @@ perl_auto_load (void *unused)
 	if (!xdir)			/* xchatdirfs is new for 2.0.9, will fail on older */
 		xdir = xchat_get_info (ph, "xchatdir");
 
+	/* don't pollute the filesystem with script files, this only causes misuse of the folders
+	 * only use ~/.config/hexchat/scripts/ and %APPDATA%\HexChat\scripts */
+#if 0
 	/* autoload from ~/.config/hexchat/ or %APPDATA%\HexChat\ on win32 */
 	perl_auto_load_from_path (xdir);
+#endif
 
 	sub_dir = malloc (strlen (xdir) + 9);
 	strcpy (sub_dir, xdir);
-	strcat (sub_dir, "/plugins");
+	strcat (sub_dir, "/scripts");
 	perl_auto_load_from_path (sub_dir);
 	free (sub_dir);
 
+#if 0
 #ifdef WIN32
 	/* autoload from  C:\Program Files\HexChat\plugins\ */
 	sub_dir = malloc (1025 + 9);
@@ -164,6 +169,7 @@ perl_auto_load (void *unused)
 	}
 	perl_auto_load_from_path ( strncat (sub_dir, "\\plugins", 9));
 	free (sub_dir);
+#endif
 #endif
 	return 0;
 }

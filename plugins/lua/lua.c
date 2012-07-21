@@ -518,13 +518,15 @@ static int lxc_cb_load(char *word[], char *word_eol[], void *userdata)
 			strncpy(file, word[2], PATH_MAX);
 		else {
 			if (stat(word[2], st) == 0)
-				xdir = getcwd(buf, PATH_MAX);
-			else {
-				xdir = xchat_get_info(ph, "xchatdirfs");
-				if (!xdir) /* xchatdirfs is new for 2.0.9, will fail on older */
-					xdir = xchat_get_info (ph, "xchatdir");
+			{
+				xdir = getcwd (buf, PATH_MAX);
+				snprintf (file, PATH_MAX, "%s/%s", xdir, word[2]);
 			}
-			snprintf(file, PATH_MAX, "%s/%s", xdir, word[2]);
+			else
+			{
+				xdir = xchat_get_info (ph, "xchatdirfs");
+				snprintf (file, PATH_MAX, "%s/scripts/%s", xdir, word[2]);
+			}
 		}
 
 		if (lxc_load_file((const char *)file) == 0) {
@@ -663,6 +665,7 @@ int xchat_plugin_init(xchat_plugin *plugin_handle,
 	lua_State *L;
 	const char *xdir;
 	const char *name, *desc, *vers;
+	char *xsubdir;
    /* we need to save this for use with any xchat_* functions */
    ph = plugin_handle;
 
@@ -675,11 +678,13 @@ int xchat_plugin_init(xchat_plugin *plugin_handle,
 	xchat_hook_command(ph, "UNLOAD", XCHAT_PRI_NORM, lxc_cb_unload, NULL, NULL);
 	xchat_hook_command(ph, "LUA", XCHAT_PRI_NORM, lxc_cb_lua, "Usage: LUA <code>, executes <code> in a new lua state", NULL);
 
-	xdir = xchat_get_info(ph, "xchatdirfs");
-	if (!xdir) /* xchatdirfs is new for 2.0.9, will fail on older */
-		xdir = xchat_get_info (ph, "xchatdir");
-		
-	lxc_autoload_from_path(xdir);
+	xdir = xchat_get_info (ph, "xchatdirfs");
+	xsubdir = g_build_filename (xdir, "scripts", NULL);
+	lxc_autoload_from_path (xsubdir);
+	g_free (xsubdir);
+
+	/* put this here, otherwise it's only displayed when a script is autoloaded upon start */
+	xchat_printf(ph, "Lua interface loaded");
 
 	if (!lxc_states) /* no scripts loaded */
 		return 1;
@@ -716,7 +721,6 @@ int xchat_plugin_init(xchat_plugin *plugin_handle,
 		}
 		state = state->next;
 	}
-	xchat_printf(ph, "Lua interface (v%s) loaded", LXC_VERSION);
 	return 1; 
 }
 
@@ -732,7 +736,7 @@ int xchat_plugin_deinit(xchat_plugin *plug_handle)
 		state = state->next;
 		free(st);
 	}
-	xchat_printf(plug_handle, "Lua plugin v%s removed", LXC_VERSION);
+	xchat_printf(plug_handle, "Lua interface unloaded");
 	return 1;
 }
 
