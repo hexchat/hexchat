@@ -135,9 +135,11 @@ void
 fe_tray_set_balloon (const char *title, const char *text)
 {
 #ifndef WIN32
+#if 0
 	const char *argv[8];
 	const char *path;
 	char time[16];
+#endif
 	WinStatus ws;
 
 	/* no balloons if the window is focused */
