@@ -2280,6 +2280,10 @@ sound_play (const char *file, gboolean quiet)
 	char wavfile[512];
 	char *file_fs;
 	char *cmd;
+#if 0
+	LPSTR lpRes;
+	HANDLE hResInfo, hRes;
+#endif
 
 	/* the pevents GUI editor triggers this after removing a soundfile */
 	if (!file[0])
@@ -2314,6 +2318,27 @@ sound_play (const char *file, gboolean quiet)
 		if (cmd == NULL || strcmp (cmd, "esdplay") == 0)
 		{
 			PlaySound (file_fs, NULL, SND_NODEFAULT|SND_FILENAME|SND_ASYNC);
+#if 0			/* this would require the wav file to be added to the executable as resource */
+			hResInfo = FindResource (NULL, file_fs, "WAVE");
+			if (hResInfo != NULL)
+			{
+				/* load the WAVE resource */
+				hRes = LoadResource (NULL, hResInfo);
+				if (hRes != NULL)
+				{
+					/* lock the WAVE resource and play it */
+					lpRes = LockResource(hRes);
+					if (lpRes != NULL)
+					{
+						sndPlaySound (lpRes, SND_MEMORY | SND_NODEFAULT | SND_FILENAME | SND_ASYNC);
+						UnlockResource (hRes);
+					}
+
+					/* free the WAVE resource */
+					FreeResource (hRes);
+				}
+			}
+#endif
 		} else
 #endif
 		{
