@@ -893,7 +893,7 @@ fe_confirm (const char *message, void (*yesproc)(void *), void (*noproc)(void *)
 	struct DCC *dcc = ud;
 
 	if (dcc->file)
-		gtkutil_file_req (message, dcc_saveas_cb, ud, dcc->file,
+		gtkutil_file_req (message, dcc_saveas_cb, ud, dcc->file, NULL,
 								FRF_WRITE|FRF_FILTERISINITIAL|FRF_NOASKOVERWRITE);
 }
 
@@ -1144,5 +1144,5 @@ fe_get_file (const char *title, char *initial,
 {
 	/* OK: Call callback once per file, then once more with file=NULL. */
 	/* CANCEL: Call callback once with file=NULL. */
-	gtkutil_file_req (title, callback, userdata, initial, flags | FRF_FILTERISINITIAL);
+	gtkutil_file_req (title, callback, userdata, initial, NULL, flags | FRF_FILTERISINITIAL);
 }

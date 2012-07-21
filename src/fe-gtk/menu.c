@@ -1288,7 +1288,7 @@ static void
 menu_savebuffer (GtkWidget * wid, gpointer none)
 {
 	gtkutil_file_req (_("Select an output filename"), savebuffer_req_done,
-							current_sess, NULL, FRF_WRITE);
+							current_sess, NULL, NULL, FRF_WRITE);
 }
 
 static void

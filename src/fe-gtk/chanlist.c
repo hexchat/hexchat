@@ -530,7 +530,7 @@ chanlist_save (GtkWidget * wid, server *serv)
 
 	if (gtk_tree_model_get_iter_first (model, &iter))
 		gtkutil_file_req (_("Select an output filename"), chanlist_filereq_done,
-								serv, NULL, FRF_WRITE);
+								serv, NULL, NULL, FRF_WRITE);
 }
 
 static gboolean

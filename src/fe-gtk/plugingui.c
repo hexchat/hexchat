@@ -41,6 +41,7 @@ typedef struct session xchat_context;
 #include "../common/outbound.h"
 #include "../common/fe.h"
 #include "../common/xchatc.h"
+#include "../common/cfgfiles.h"
 #include "gtkutil.h"
 
 /* model for the plugin treeview */
@@ -154,7 +155,11 @@ plugingui_load (void)
 #else
 #endif
 #endif	/* native file dialogs */
-							NULL, FRF_ADDFOLDER);
+#ifdef WIN32
+							get_xdir_utf8 (), "*.dll;*.lua;*.pl;*.py;*.tcl", FRF_ADDFOLDER|FRF_FILTERISINITIAL|FRF_EXTENSIONS);
+#else
+							get_xdir_utf8 (), "*.so;*.lua;*.pl;*.py;*.tcl", FRF_ADDFOLDER|FRF_FILTERISINITIAL|FRF_EXTENSIONS);
+#endif
 }
 
 static void

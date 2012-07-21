@@ -10,7 +10,7 @@ typedef void (*filereqcallback) (void *, char *file);
 #define FRF_FILTERISINITIAL 16
 #define FRF_NOASKOVERWRITE 32
 
-void gtkutil_file_req (const char *title, void *callback, void *userdata, char *filter, int flags);
+void gtkutil_file_req (const char *title, void *callback, void *userdata, char *filter, char *extensions, int flags);
 void gtkutil_destroy (GtkWidget * igad, GtkWidget * dgad);
 GtkWidget *gtkutil_button (GtkWidget *box, char *stock, char *tip, void *callback,
 				 void *userdata, char *labeltext);

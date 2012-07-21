@@ -370,12 +370,15 @@ win32_read_thread (GIOChannel *source, GIOCondition cond, struct file_req *freq)
 #endif	/* native file dialogs */
 
 void
-gtkutil_file_req (const char *title, void *callback, void *userdata, char *filter,
+gtkutil_file_req (const char *title, void *callback, void *userdata, char *filter, char *extensions,
 						int flags)
 {
 	struct file_req *freq;
 	GtkWidget *dialog;
+	GtkFileFilter *filefilter;
 	extern char *get_xdir_fs (void);
+	char *token;
+	char *tokenbuffer;
 
 #if 0	/* native file dialogs */
 #ifdef WIN32
@@ -471,6 +474,23 @@ gtkutil_file_req (const char *title, void *callback, void *userdata, char *filte
 	{
 		if (filter && (flags & FRF_FILTERISINITIAL))
 			gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), filter);
+	}
+
+	if (flags & FRF_EXTENSIONS && extensions != NULL)
+	{
+		filefilter = gtk_file_filter_new ();
+		tokenbuffer = g_strdup (extensions);
+		token = strtok (tokenbuffer, ";");
+
+		while (token != NULL)
+		{
+			gtk_file_filter_add_pattern (filefilter, token);
+			token = strtok (NULL, ";");
+		}
+
+		g_free (tokenbuffer);
+		gtk_file_chooser_set_filter (GTK_FILE_CHOOSER (dialog), filefilter);
+		g_free (filefilter);
 	}
 
 	freq = malloc (sizeof (struct file_req));

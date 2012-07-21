@@ -81,7 +81,7 @@ rawlog_clearbutton (GtkWidget * wid, server *serv)
 static int
 rawlog_savebutton (GtkWidget * wid, server *serv)
 {
-	gtkutil_file_req (_("Save As..."), rawlog_save, serv, NULL, FRF_WRITE);
+	gtkutil_file_req (_("Save As..."), rawlog_save, serv, NULL, NULL, FRF_WRITE);
 	return FALSE;
 }
 
