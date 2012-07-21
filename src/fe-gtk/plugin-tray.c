@@ -5,6 +5,7 @@
 #include "../common/xchat.h"
 #include "../common/xchatc.h"
 #include "../common/inbound.h"
+#include "../common/outbound.h"
 #include "../common/server.h"
 #include "../common/fe.h"
 #include "../common/util.h"

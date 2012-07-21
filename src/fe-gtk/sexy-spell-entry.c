@@ -932,7 +932,7 @@ sexy_spell_entry_changed(GtkEditable *editable, gpointer data)
 	sexy_spell_entry_recheck_all(entry);
 }
 
-static gboolean
+/*static gboolean
 enchant_has_lang(const gchar *lang, GSList *langs) {
 	GSList *i;
 	for (i = langs; i; i = g_slist_next(i)) {
@@ -942,6 +942,7 @@ enchant_has_lang(const gchar *lang, GSList *langs) {
 	}
 	return FALSE;
 }
+*/
 
 /**
  * sexy_spell_entry_activate_default_languages:

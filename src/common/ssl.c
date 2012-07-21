@@ -26,7 +26,7 @@
 #include "../../config.h"		  /* HAVE_SNPRINTF */
 
 #ifndef HAVE_SNPRINTF
-#define snprintf g_snprintf
+#define snprintf __builtin_snprintf
 #endif
 
 /* globals */

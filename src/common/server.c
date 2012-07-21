@@ -907,7 +907,10 @@ server_read_child (GIOChannel *source, GIOCondition condition, server *serv)
 	char outbuf[512];
 	char host[100];
 	char ip[100];
+
+#ifdef USE_MSPROXY
 	char *p;
+#endif
 
 	waitline2 (source, tbuf, sizeof tbuf);
 

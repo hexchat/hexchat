@@ -41,6 +41,7 @@
 #include "outbound.h"
 #include "util.h"
 #include "xchatc.h"
+#include "url.h"
 
 
 static void

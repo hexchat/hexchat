@@ -166,7 +166,7 @@ static int gtk_xtext_render_ents (GtkXText * xtext, textentry *, textentry *);
 static void gtk_xtext_recalc_widths (xtext_buffer *buf, int);
 static void gtk_xtext_fix_indent (xtext_buffer *buf);
 static int gtk_xtext_find_subline (GtkXText *xtext, textentry *ent, int line);
-static char *gtk_xtext_conv_color (unsigned char *text, int len, int *newlen);
+/* static char *gtk_xtext_conv_color (unsigned char *text, int len, int *newlen); */
 /* For use by gtk_xtext_strip_color() and its callers -- */
 typedef union offlen_u {
    struct offlen_s {
@@ -2718,7 +2718,7 @@ gtk_xtext_strip_color (unsigned char *text, int len, unsigned char *outbuf,
 
 
 /* GeEkMaN: converts mIRC control codes to literal control codes */
-
+/* unused function
 static char *
 gtk_xtext_conv_color (unsigned char *text, int len, int *newlen)
 {
@@ -2787,7 +2787,7 @@ gtk_xtext_conv_color (unsigned char *text, int len, int *newlen)
 				i++;
 			} else
 			{
-				/* invalid utf8 safe guard */
+				// invalid utf8 safe guard
 				if (i + mbl > len)
 					mbl = len - i;
 				memcpy (new_str + j, text + i, mbl);
@@ -2809,6 +2809,7 @@ gtk_xtext_conv_color (unsigned char *text, int len, int *newlen)
 
 	return new_str;
 }
+*/
 
 /* gives width of a string, excluding the mIRC codes */
 

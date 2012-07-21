@@ -9,11 +9,11 @@
 #include "history.h"
 
 #ifndef HAVE_SNPRINTF
-#define snprintf g_snprintf
+#define snprintf __builtin_snprintf
 #endif
 
 #ifndef HAVE_VSNPRINTF
-#define vsnprintf _vsnprintf
+#define vsnprintf __builtin_vsnprintf
 #endif
 
 #ifdef USE_DEBUG
