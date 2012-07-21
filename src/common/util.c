@@ -392,11 +392,14 @@ int
 waitline2 (GIOChannel *source, char *buf, int bufsize)
 {
 	int i = 0;
-	int len;
+	gsize len;
+	GError *error = NULL;
 
 	while (1)
 	{
-		if (g_io_channel_read (source, &buf[i], 1, &len) != G_IO_ERROR_NONE)
+		g_io_channel_set_buffered (source, FALSE);
+		g_io_channel_set_encoding (source, NULL, &error);
+		if (g_io_channel_read_chars (source, &buf[i], 1, &len, &error) != G_IO_STATUS_NORMAL)
 			return -1;
 		if (buf[i] == '\n' || bufsize == i + 1)
 		{

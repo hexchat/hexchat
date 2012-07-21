@@ -212,7 +212,19 @@ xchat_dummy (xchat_plugin *ph)
 static int
 xchat_read_fd (xchat_plugin *ph, GIOChannel *source, char *buf, int *len)
 {
-	return g_io_channel_read (source, buf, *len, len);
+	GError *error = NULL;
+
+	g_io_channel_set_buffered (source, FALSE);
+	g_io_channel_set_encoding (source, NULL, &error);
+
+	if (g_io_channel_read_chars (source, buf, *len, (gsize*)len, &error) == G_IO_STATUS_NORMAL)
+	{
+		return 0;
+	}
+	else
+	{
+		return -1;
+	}
 }
 #endif
 
