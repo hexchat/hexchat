@@ -490,7 +490,6 @@ gtkutil_file_req (const char *title, void *callback, void *userdata, char *filte
 
 		g_free (tokenbuffer);
 		gtk_file_chooser_set_filter (GTK_FILE_CHOOSER (dialog), filefilter);
-		g_free (filefilter);
 	}
 
 	freq = malloc (sizeof (struct file_req));
