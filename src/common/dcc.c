@@ -40,6 +40,7 @@
 
 #ifdef WIN32
 #include <windows.h>
+#include <io.h>
 #else
 #include <unistd.h>
 #endif
@@ -803,7 +804,6 @@ static gboolean
 dcc_did_connect (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 {
 	int er;
-	struct sockaddr_in addr;
 	
 #ifdef WIN32
 	if (condition & G_IO_ERR)
@@ -822,6 +822,8 @@ dcc_did_connect (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 	}
 
 #else
+	struct sockaddr_in addr;
+
 	memset (&addr, 0, sizeof (addr));
 	addr.sin_port = htons (dcc->port);
 	addr.sin_family = AF_INET;
@@ -1980,7 +1982,9 @@ dcc_change_nick (struct server *serv, char *oldnick, char *newnick)
 static int
 is_same_file (struct DCC *dcc, struct DCC *new_dcc)
 {
+#ifndef WIN32
 	struct stat st_a, st_b;
+#endif
 
 	/* if it's the same filename, must be same */
 	if (strcmp (dcc->destfile, new_dcc->destfile) == 0)

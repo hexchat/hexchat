@@ -24,12 +24,15 @@
 #include <fcntl.h>
 #include <ctype.h>
 
-#ifndef WIN32
+#ifdef WIN32
+#include <io.h>
+#else
 #include <unistd.h>
 #endif
 
 #include "fe-gtk.h"
 
+#include <glib.h>
 #include <gtk/gtklabel.h>
 #include <gtk/gtkeditable.h>
 #include <gtk/gtkmenu.h>

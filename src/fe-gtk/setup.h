@@ -1,0 +1,1 @@
+void setup_apply_real (int new_pix, int do_ulist, int do_layout);

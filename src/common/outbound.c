@@ -54,7 +54,7 @@
 #include "server.h"
 #include "tree.h"
 #include "outbound.h"
-
+#include "chanopt.h"
 
 #ifdef USE_DEBUG
 extern int current_mem_usage;

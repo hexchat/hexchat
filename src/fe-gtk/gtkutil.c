@@ -53,6 +53,7 @@
 #include "pixmaps.h"
 
 #ifdef WIN32
+#include <io.h>
 #if 0	/* native file dialogs */
 #include "../common/fe.h"
 #include "../common/thread.h"

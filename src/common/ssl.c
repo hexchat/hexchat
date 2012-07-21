@@ -20,12 +20,17 @@
 #include "inet.h"				  /* make it first to avoid macro redefinitions */
 #include <openssl/ssl.h>		  /* SSL_() */
 #include <openssl/err.h>		  /* ERR_() */
-#include <time.h>					  /* asctime() */
+#ifdef WIN32
+#include <openssl/rand.h>		  /* RAND_seed() */
+#endif
+#include <time.h>				  /* asctime() */
 #include <string.h>				  /* strncpy() */
-#include "ssl.h"					  /* struct cert_info */
+#include "ssl.h"				  /* struct cert_info */
 #include "../../config.h"		  /* HAVE_SNPRINTF */
 
 #ifndef HAVE_SNPRINTF
+#include <glib.h>
+#include <glib/gprintf.h>
 #define snprintf g_snprintf
 #endif
 

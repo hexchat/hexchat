@@ -1365,10 +1365,12 @@ int my_poptParseArgvString(const char * s, int * argcPtr, char *** argvPtr) {
 int
 util_exec (const char *cmd)
 {
-	int pid;
 	char **argv;
 	int argc;
+#ifndef WIN32
+	int pid;
 	int fd;
+#endif
 
 	if (my_poptParseArgvString (cmd, &argc, &argv) != 0)
 		return -1;
@@ -1398,9 +1400,9 @@ util_exec (const char *cmd)
 int
 util_execv (char * const argv[])
 {
+#ifndef WIN32
 	int pid, fd;
 
-#ifndef WIN32
 	pid = fork ();
 	if (pid == -1)
 		return -1;

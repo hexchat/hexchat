@@ -76,6 +76,8 @@
 
 #ifdef WIN32
 #include <windows.h>
+#include <io.h>
+#include <gdk/gdk.h>
 #include <gdk/gdkwin32.h>
 #else
 #include <unistd.h>

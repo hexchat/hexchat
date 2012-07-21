@@ -21,7 +21,9 @@
 #include <fcntl.h>
 #include <stdlib.h>
 
-#ifndef WIN32
+#ifdef WIN32
+#include <io.h>
+#else
 #include <unistd.h>
 #endif
 

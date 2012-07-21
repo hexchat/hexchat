@@ -54,6 +54,7 @@
 #include "../common/modes.h"
 #include "../common/url.h"
 #include "../common/util.h"
+#include "../common/text.h"
 
 #include "fe-gtk.h"
 #include "banlist.h"
@@ -2801,7 +2802,10 @@ mg_inputbox_rightclick (GtkEntry *entry, GtkWidget *menu)
 static void
 mg_create_entry (session *sess, GtkWidget *box)
 {
-	GtkWidget *sw, *hbox, *but, *entry;
+	GtkWidget *hbox, *but, *entry;
+#ifdef USE_GTKSPELL
+	GtkWidget *sw;
+#endif
 	session_gui *gui = sess->gui;
 
 	hbox = gtk_hbox_new (FALSE, 0);
@@ -3695,7 +3699,9 @@ mg_drag_motion_cb (GtkWidget *widget, GdkDragContext *context, int x, int y, gui
 	GdkGCValues val;
 	int half, width, height;
 	int ox, oy;
+#if 0
 	GtkPaned *paned;
+#endif
 	GdkDrawable *draw;
 
 	/* ignore file drops */

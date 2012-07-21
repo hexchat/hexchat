@@ -30,7 +30,9 @@
 #include "text.h"
 #include "xchatc.h"
 
-#ifndef WIN32
+#ifdef WIN32
+#include <io.h>
+#else
 #include <unistd.h>
 #define HEXCHAT_DIR "hexchat"
 #endif

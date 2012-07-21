@@ -8,6 +8,7 @@
 #include "../common/server.h"
 #include "../common/fe.h"
 #include "../common/util.h"
+#include "../common/outbound.h"
 #include "fe-gtk.h"
 #include "pixmaps.h"
 #include "maingui.h"
@@ -497,9 +498,11 @@ static void
 tray_menu_cb (GtkWidget *widget, guint button, guint time, gpointer userdata)
 {
 	GtkWidget *menu;
+#ifndef WIN32
 	GtkWidget *submenu;
 	GtkWidget *item;
 	int away_status;
+#endif
 
 	/* ph may have an invalid context now */
 	xchat_set_context (ph, xchat_find_context (ph, NULL, NULL));

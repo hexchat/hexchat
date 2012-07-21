@@ -25,7 +25,9 @@
 #include <fcntl.h>
 #include <sys/stat.h>
 
-#ifndef WIN32
+#ifdef WIN32
+#include <io.h>
+#else
 #include <unistd.h>
 #include <sys/mman.h>
 #endif

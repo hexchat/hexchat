@@ -22,7 +22,9 @@
 #include <fcntl.h>
 #include <time.h>
 
-#ifndef WIN32
+#ifdef WIN32
+#include <io.h>
+#else
 #include <unistd.h>
 #endif
 
@@ -54,6 +56,7 @@
 #include "../common/server.h"
 #include "gtkutil.h"
 #include "maingui.h"
+#include "menu.h"
 
 
 #include "custom-list.h"

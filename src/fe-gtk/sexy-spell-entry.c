@@ -35,6 +35,7 @@
 
 #ifdef WIN32
 #include "typedef.h"
+#include <io.h>
 #endif
 
 #include "../common/cfgfiles.h"

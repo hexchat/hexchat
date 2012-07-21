@@ -3,6 +3,7 @@
 #include "inet.h"
 #include "xchat.h"
 #include "xchatc.h"
+#include "text.h"
 
 static int identd_is_running = FALSE;
 #ifdef USE_IPV6
