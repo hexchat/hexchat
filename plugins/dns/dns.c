@@ -67,9 +67,11 @@ waitline (void *source, char *buf, int bufsize)
 	{
 		len = 1;
 		/* we can't read() here, due to glib's giowin32 */
-		if(ph->xchat_read_fd(ph, source, buf + i, &len) != 0)
+		if (ph->xchat_read_fd (ph, source, buf + i, &len) != 0)
+		{
 			return -1;
-		if(buf[i] == '\n' || bufsize == i + 1)
+		}
+		if (buf[i] == '\n' || bufsize == i + 1)
 		{
 			buf[i] = 0;
 			return i;
