@@ -1,10 +1,44 @@
 # git ignore file
-*.user
+# Unix generated files
+.deps/
+.libs/
+Makefile
+Makefile.in
+aclocal.m4
+autom4te.cache/
+compile
+config.guess
+config.h.in
+config.log
+config.status
+config.sub
+configure
+depcomp
+install-sh
+intl/
+libtool
+ltmain.sh
+missing
+plugins/perl/irc.pm.h
+plugins/perl/xchat.pm.h
+po/Makefile.in.in
+po/POTFILES
+po/hexchat.pot
+po/remove-potcdate.sed
+po/stamp-po
+src/common/dbus/example
+src/common/dbus/marshallers.h
+src/common/dbus/org.hexchat.service.service
+src/common/dbus/remote-object-glue.h
+src/fe-gtk/hexchat
+stamp-h1
+*.a
 *.o
 *.la
 *.lo
 *.gmo
 *.po~
+# Win32 generated files
 plugins/wmpa/wmpa_h.h
 plugins/wmpa/wmpa_i.c
 src/pixmaps/inline_pngs.h
@@ -15,3 +49,4 @@ win32/hexchat.opensdf
 win32/hexchat.sdf
 win32/hexchat.suo
 resource.h
+*.user
