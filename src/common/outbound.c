@@ -3598,7 +3598,7 @@ const struct commands xc_cmds[] = {
 	{"LAGCHECK", cmd_lagcheck, 0, 0, 1,
 	 N_("LAGCHECK, forces a new lag check")},
 	{"LASTLOG", cmd_lastlog, 0, 0, 1,
-	 N_("LASTLOG <string>, searches for a string in the buffer")},
+	 N_("LASTLOG [-r] <string>, searches for a string in the buffer")},
 	{"LIST", cmd_list, 1, 0, 1, 0},
 	{"LOAD", cmd_load, 0, 0, 1, N_("LOAD [-e] <file>, loads a plugin or script")},
 
