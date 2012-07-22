@@ -2386,7 +2386,11 @@ cmd_lastlog (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	if (*word_eol[2])
 	{
 		if (!strcmp (word[2], "-r"))
+#ifdef WIN32
+			lastlog (sess, word_eol[3], FALSE);
+#else
 			lastlog (sess, word_eol[3], TRUE);
+#endif
 		else
 			lastlog (sess, word_eol[2], FALSE);
 		return TRUE;

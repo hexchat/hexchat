@@ -591,11 +591,7 @@ static char defaultconf_commands[] =
 	"NAME DIALOG\n"		"CMD query %2\n\n"\
 	"NAME DMSG\n"			"CMD msg =%2 &3\n\n"\
 	"NAME EXIT\n"			"CMD quit\n\n"\
-#ifdef WIN32	/* lastlog -r isn't implemented in fe_lastlog yet */
-	"NAME GREP\n"			"CMD lastlog &2\n\n"\
-#else
 	"NAME GREP\n"			"CMD lastlog -r &2\n\n"\
-#endif
 	"NAME IGNALL\n"			"CMD ignore %2!*@* ALL\n\n"\
 	"NAME J\n"				"CMD join &2\n\n"\
 	"NAME KILL\n"			"CMD quote KILL %2 :&3\n\n"\
