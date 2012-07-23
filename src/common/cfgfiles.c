@@ -449,6 +449,8 @@ const struct prefs vars[] = {
 	{"gui_auto_open_dialog", P_OFFINT (autodialog), TYPE_BOOL},
 	{"gui_auto_open_recv", P_OFFINT (autoopendccrecvwindow), TYPE_BOOL},
 	{"gui_auto_open_send", P_OFFINT (autoopendccsendwindow), TYPE_BOOL},
+	{"gui_chanlist_maxusers", P_OFFINT (gui_chanlist_maxusers), TYPE_INT},
+	{"gui_chanlist_minusers", P_OFFINT (gui_chanlist_minusers), TYPE_INT},
 	{"gui_dialog_height", P_OFFINT (dialog_height), TYPE_INT},
 	{"gui_dialog_left", P_OFFINT (dialog_left), TYPE_INT},
 	{"gui_dialog_top", P_OFFINT (dialog_top), TYPE_INT},
@@ -731,6 +733,8 @@ load_config (void)
 	prefs.autoopendccsendwindow = 1;
 	prefs.autoopendccchatwindow = 1;
 	prefs.userhost = 1;
+	prefs.gui_chanlist_maxusers = 9999;
+	prefs.gui_chanlist_minusers = 5;
 	prefs.gui_url_mod = 4;	/* ctrl */
 	prefs.gui_tray = 1;
 	prefs.gui_pane_left_size = 100;

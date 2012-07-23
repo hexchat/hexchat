@@ -548,6 +548,7 @@ static void
 chanlist_minusers (GtkSpinButton *wid, server *serv)
 {
 	serv->gui->chanlist_minusers = gtk_spin_button_get_value_as_int (wid);
+	prefs.gui_chanlist_minusers = serv->gui->chanlist_minusers;
 
 	if (serv->gui->chanlist_minusers < serv->gui->chanlist_minusers_downloaded)
 	{
@@ -568,6 +569,7 @@ static void
 chanlist_maxusers (GtkSpinButton *wid, server *serv)
 {
 	serv->gui->chanlist_maxusers = gtk_spin_button_get_value_as_int (wid);
+	prefs.gui_chanlist_maxusers = serv->gui->chanlist_maxusers;
 }
 
 static void
@@ -736,10 +738,24 @@ chanlist_opengui (server *serv, int do_refresh)
 	serv->gui->chanlist_data_stored_rows = NULL;
 
 	if (!serv->gui->chanlist_minusers)
-		serv->gui->chanlist_minusers = 5;
+	{
+		if (prefs.gui_chanlist_minusers < 1 || prefs.gui_chanlist_minusers > 999999)
+		{
+			prefs.gui_chanlist_minusers = 5;
+		}
+
+		serv->gui->chanlist_minusers = prefs.gui_chanlist_minusers;
+	}
 
 	if (!serv->gui->chanlist_maxusers)
-		serv->gui->chanlist_maxusers = 9999;
+	{
+		if (prefs.gui_chanlist_maxusers < 1 || prefs.gui_chanlist_maxusers > 999999)
+		{
+			prefs.gui_chanlist_maxusers = 9999;
+		}
+
+		serv->gui->chanlist_maxusers = prefs.gui_chanlist_maxusers;
+	}
 
 	serv->gui->chanlist_window =
 		mg_create_generic_tab ("ChanList", tbuf, FALSE, TRUE, chanlist_closegui,

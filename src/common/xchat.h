@@ -161,6 +161,8 @@ struct xchatprefs
 	int gui_pane_right_size;
 	int gui_pane_right_size_min;
 
+	int gui_chanlist_maxusers;
+	int gui_chanlist_minusers;
 	int gui_ulist_pos;
 	int tab_pos;
 
