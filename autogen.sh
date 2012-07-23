@@ -102,7 +102,7 @@ if test "$?" != "0"; then
 	exit 6
 fi
 
-echo if no errors occured, run ./configure --enable-maintainer-mode
+echo if no errors occured, run ./configure
 exit 0
 
 #autogen.sh generates:
