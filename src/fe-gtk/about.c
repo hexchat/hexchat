@@ -130,7 +130,7 @@ menu_about (GtkWidget * wid, gpointer sess)
 				"<b>Build Type</b>: x%d\n"
 #endif
 				"\n<small>\302\251 1998-2010 Peter \305\275elezn\303\275 &lt;zed@xchat.org>\n"
-				"\302\251 2009-2011 Berke Viktor &lt;bviktor@hexchat.org></small>",
+				"\302\251 2009-2012 Berke Viktor &lt;bviktor@hexchat.org></small>",
 				_("A multiplatform IRC Client"),
 				get_cpu_str (),
 				locale,
