@@ -700,20 +700,23 @@ fe_beep (void)
 	gdk_beep ();
 }
 
-#ifndef WIN32
 static int
-lastlog_regex_cmp (char *a, regex_t *reg)
+lastlog_regex_cmp (char *a, GRegex *reg)
 {
-	return !regexec (reg, a, 1, NULL, REG_NOTBOL);
+	GMatchInfo *gmi;
+	int ret;
+
+	g_regex_match (reg, a, 0, &gmi);
+	ret = (g_match_info_matches (gmi))? TRUE: FALSE;
+	g_match_info_free (gmi);
+	return ret;
 }
-#endif
 
 void
 fe_lastlog (session *sess, session *lastlog_sess, char *sstr, gboolean regexp)
 {
-#ifndef WIN32
-	regex_t reg;
-#endif
+	GRegex *search_re = NULL;
+	GError *err = NULL;
 
 	if (gtk_xtext_is_empty (sess->res->buffer))
 	{
@@ -728,14 +731,18 @@ fe_lastlog (session *sess, session *lastlog_sess, char *sstr, gboolean regexp)
 		return;
 	}
 
-#ifndef WIN32
-	if (regcomp (&reg, sstr, REG_ICASE | REG_EXTENDED | REG_NOSUB) == 0)
+	/* TODO:  add arg 'match' and if it's TRUE don't use G_REGEX_CASELESS
+	 * and for that matter don't use nocasesetrstr() above either */
+	search_re = g_regex_new (sstr, G_REGEX_CASELESS, 0, &err);
+	if (err)
 	{
-		gtk_xtext_lastlog (lastlog_sess->res->buffer, sess->res->buffer,
-								 (void *) lastlog_regex_cmp, &reg);
-		regfree (&reg);
+		PrintText (lastlog_sess, _(err->message));
+		return;
 	}
-#endif
+
+	gtk_xtext_lastlog (lastlog_sess->res->buffer, sess->res->buffer,
+							 (void *) lastlog_regex_cmp, search_re);
+	g_regex_unref (search_re);
 }
 
 void
