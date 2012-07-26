@@ -182,9 +182,9 @@ Source: "plugins\hclua.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Com
 Source: "plugins\hcpython.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: langs\python
 Source: "plugins\hctcl.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: langs\tcl
 
-Source: "plugins\hcperl-512.dll"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Flags: ignoreversion; Components: langs\perl; Tasks: perl512
-Source: "plugins\hcperl-514.dll"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Flags: ignoreversion; Components: langs\perl; Tasks: perl514
-Source: "plugins\hcperl-516.dll"; DestDir: "{app}\plugins"; DestName: "xcperl.dll"; Flags: ignoreversion; Components: langs\perl; Tasks: perl516
+Source: "plugins\hcperl-512.dll"; DestDir: "{app}\plugins"; DestName: "hcperl.dll"; Flags: ignoreversion; Components: langs\perl; Tasks: perl512
+Source: "plugins\hcperl-514.dll"; DestDir: "{app}\plugins"; DestName: "hcperl.dll"; Flags: ignoreversion; Components: langs\perl; Tasks: perl514
+Source: "plugins\hcperl-516.dll"; DestDir: "{app}\plugins"; DestName: "hcperl.dll"; Flags: ignoreversion; Components: langs\perl; Tasks: perl516
 
 Source: "hexchat.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "hexchat-text.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: xctext
