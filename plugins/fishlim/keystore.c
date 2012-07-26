@@ -36,7 +36,7 @@ static char *keystore_password = NULL;
 
 
 /**
- * Opens the key store file: ~/.config/hexchat/plugin_fishlim.conf
+ * Opens the key store file: ~/.config/hexchat/addon_fishlim.conf
  */
 static GKeyFile *getConfigFile() {
     gchar *filename = get_config_filename();
@@ -63,7 +63,7 @@ static const char *get_keystore_password() {
 
 
 /**
- * Gets a value for a nick/channel from plugin_fishlim.conf. Unlike
+ * Gets a value for a nick/channel from addon_fishlim.conf. Unlike
  * g_key_file_get_string, this function is case insensitive.
  */
 static gchar *get_nick_value(GKeyFile *keyfile, const char *nick, const char *item) {
