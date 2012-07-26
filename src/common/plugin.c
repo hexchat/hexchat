@@ -458,18 +458,30 @@ void
 plugin_auto_load (session *sess)
 {
 	ps = sess;
+
+	/* let's do it the Perl way */
+	const char *xdir;
+	char *sub_dir;
+
+	xdir = get_xdir_fs ();
+	sub_dir = malloc (strlen (xdir) + 9);
+	strcpy (sub_dir, xdir);
+	strcat (sub_dir, "/plugins");
+
 #ifdef WIN32
 	for_files ("./plugins", "*.dll", plugin_auto_load_cb);
-	for_files (get_xdir_fs (), "*.dll", plugin_auto_load_cb);
+	for_files (sub_dir, "*.dll", plugin_auto_load_cb);
 #else
 #if defined(__hpux)
 	for_files (HEXCHATLIBDIR"/plugins", "*.sl", plugin_auto_load_cb);
-	for_files (get_xdir_fs (), "*.sl", plugin_auto_load_cb);
+	for_files (sub_dir, "*.sl", plugin_auto_load_cb);
 #else
 	for_files (HEXCHATLIBDIR"/plugins", "*.so", plugin_auto_load_cb);
-	for_files (get_xdir_fs (), "*.so", plugin_auto_load_cb);
+	for_files (sub_dir, "*.so", plugin_auto_load_cb);
 #endif
 #endif
+
+	free (sub_dir);
 }
 
 #endif
