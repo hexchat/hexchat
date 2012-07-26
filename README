@@ -26,17 +26,17 @@ Requirements:
 
  HexChat is known to work on, at least:
 
-	* Windows XP/Vista/7/8
-	* Linux
-	* FreeBSD
-	* OpenBSD
-	* NetBSD
-	* Solaris
-	* AIX
-	* IRIX
-	* DEC/Compaq Tru64 UNIX
-	* HP-UX 10.20 and 11
-	* MacOS X
+ * Windows XP/Vista/7/8
+ * Linux
+ * FreeBSD
+ * OpenBSD
+ * NetBSD
+ * Solaris
+ * AIX
+ * IRIX
+ * DEC/Compaq Tru64 UNIX
+ * HP-UX 10.20 and 11
+ * MacOS X
 
 
 Notes for packagers:
@@ -60,38 +60,42 @@ Perl Scripts:
  Perl 5.8 or newer is required.
  Scripts for 1.8.x are compatible with the following exceptions:
 
-* IRC::command will not interpret %C, %B, %U etc.
+ * IRC::command will not interpret %C, %B, %U etc.
 
-* user_list and user_list_short:
+ * user_list and user_list_short:
   If a user has both op and voice, only the op flag will be 1.
 
-* add_user_list/sub_user_list/clear_user_list
+ * add_user_list/sub_user_list/clear_user_list
   These functions do nothing.
 
-* notify_list
+ * notify_list
   Not implemented. Always returns an empty list.
 
-* server_list
+ * server_list
   Lists servers that are not connected aswell.
 
-* Some print events may have new names and some were added.
+ * Some print events may have new names and some were added.
 
-* Text printed by scripts must now be UTF8.
+ * Text printed by scripts must now be UTF8.
 
-* Text passed to scripts (via add_message_handler) will be encoded in UTF8.
+ * Text passed to scripts (via add_message_handler) will be encoded in UTF8.
 
 
 Autoloading Scripts and Plugins
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- HexChat automatically loads, at startup:
+ The root of your HexChat config is:
 
-	~/.config/hexchat/scripts/*.lua Lua scripts
-	~/.config/hexchat/scripts/*.pl Perl scripts
-	~/.config/hexchat/scripts/*.py Python scripts
-	~/.config/hexchat/scripts/*.tcl Tcl scripts
-	~/.config/hexchat/*.so Plugins
-	$(libdir)/hexchat/plugins/*.so plugins
-	(this usually translates to /usr/lib/hexchat/plugins/*.so)
+ * Windows: %APPDATA%\HexChat
+ * Unix: ~/.config/hexchat
+
+ Referred to as <config> from now. HexChat automatically loads, at startup:
+
+ * <config>/addons/*.lua Lua scripts
+ * <config>/addons/*.pl Perl scripts
+ * <config>/addons/*.py Python scripts
+ * <config>/addons/*.tcl Tcl scripts
+ * <config>/addons/*.dll Plugins (Windows)
+ * <config>/addons/*.so Plugins (Unix)
 
 
 Control Codes:

@@ -392,16 +392,16 @@ Util_Autoload()
 	xdir = xchat_get_info(ph, "xchatdirfs");
 
 	/* don't pollute the filesystem with script files, this only causes misuse of the folders
-	 * only use ~/.config/hexchat/scripts/ and %APPDATA%\HexChat\scripts */
+	 * only use ~/.config/hexchat/addons/ and %APPDATA%\HexChat\addons */
 #if 0
 	/* auto-load from ~/.config/hexchat/ or %APPDATA%\HexChat\ */
 	Util_Autoload_from(xchat_get_info(ph, "xchatdirfs"));
 #endif
 
-	/* auto-load from subdirectory scripts */
-	sub_dir = malloc (strlen (xdir) + 9);
+	/* auto-load from subdirectory addons */
+	sub_dir = malloc (strlen (xdir) + 8);
 	strcpy (sub_dir, xdir);
-	strcat (sub_dir, "/scripts");
+	strcat (sub_dir, "/addons");
 	Util_Autoload_from(sub_dir);
 	free (sub_dir);
 
@@ -444,9 +444,9 @@ Util_Expand(char *filename)
 		return expanded;
 	g_free(expanded);
 
-	/* Check if ~/.config/hexchat/scripts/<filename> exists. */
+	/* Check if ~/.config/hexchat/addons/<filename> exists. */
 	expanded = g_build_filename(xchat_get_info(ph, "xchatdir"),
-				    "scripts", filename, NULL);
+				    "addons", filename, NULL);
 	if (g_file_test(expanded, G_FILE_TEST_EXISTS))
 		return expanded;
 	g_free(expanded);

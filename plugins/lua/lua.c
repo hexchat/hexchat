@@ -525,7 +525,7 @@ static int lxc_cb_load(char *word[], char *word_eol[], void *userdata)
 			else
 			{
 				xdir = xchat_get_info (ph, "xchatdirfs");
-				snprintf (file, PATH_MAX, "%s/scripts/%s", xdir, word[2]);
+				snprintf (file, PATH_MAX, "%s/addons/%s", xdir, word[2]);
 			}
 		}
 
@@ -679,7 +679,7 @@ int xchat_plugin_init(xchat_plugin *plugin_handle,
 	xchat_hook_command(ph, "LUA", XCHAT_PRI_NORM, lxc_cb_lua, "Usage: LUA <code>, executes <code> in a new lua state", NULL);
 
 	xdir = xchat_get_info (ph, "xchatdirfs");
-	xsubdir = g_build_filename (xdir, "scripts", NULL);
+	xsubdir = g_build_filename (xdir, "addons", NULL);
 	lxc_autoload_from_path (xsubdir);
 	g_free (xsubdir);
 

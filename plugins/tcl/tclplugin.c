@@ -90,9 +90,9 @@ static char unknown[] = {
 };
 
 /* don't pollute the filesystem with script files, this only causes misuse of the folders
- * only use ~/.config/hexchat/scripts/ and %APPDATA%\HexChat\scripts */
+ * only use ~/.config/hexchat/addons/ and %APPDATA%\HexChat\addons */
 static char sourcedirs[] = {
-    "set files [lsort [glob -nocomplain -directory [xchatdir] \"/scripts/*.tcl\"]]\n"
+    "set files [lsort [glob -nocomplain -directory [xchatdir] \"/addons/*.tcl\"]]\n"
         "set init [lsearch -glob $files \"*/init.tcl\"]\n"
         "if { $init > 0 } {\n"
         "set initfile [lindex $files $init]\n"
@@ -2039,7 +2039,7 @@ static int Command_Source(char *word[], char *word_eol[], void *userdata)
         } else {
             if (!strchr(word_eol[2], '/')) {
                 Tcl_DStringAppend(&ds, xchatdir, strlen(xchatdir));
-                Tcl_DStringAppend(&ds, "/scripts/", 9);
+                Tcl_DStringAppend(&ds, "/addons/", 8);
                 Tcl_DStringAppend(&ds, word_eol[2], strlen(word_eol[2]));
             }
         }

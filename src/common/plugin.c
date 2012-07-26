@@ -457,19 +457,38 @@ plugin_auto_load_cb (char *filename)
 void
 plugin_auto_load (session *sess)
 {
-	ps = sess;
-
 	/* let's do it the Perl way */
 	const char *xdir;
 	char *sub_dir;
+	ps = sess;
 
 	xdir = get_xdir_fs ();
-	sub_dir = malloc (strlen (xdir) + 9);
+	sub_dir = malloc (strlen (xdir) + 8);
 	strcpy (sub_dir, xdir);
-	strcat (sub_dir, "/plugins");
+	strcat (sub_dir, "/addons");
 
 #ifdef WIN32
-	for_files ("./plugins", "*.dll", plugin_auto_load_cb);
+	/* a long list of bundled plugins that should be loaded automatically,
+	 * user plugins should go to <config>, leave Program Files alone! */
+	for_files ("./plugins", "hcchecksum.dll", plugin_auto_load_cb);
+	for_files ("./plugins", "hcdns.dll", plugin_auto_load_cb);
+	for_files ("./plugins", "hcdoat.dll", plugin_auto_load_cb);
+	for_files ("./plugins", "hcexec.dll", plugin_auto_load_cb);
+	for_files ("./plugins", "hcfishlim.dll", plugin_auto_load_cb);
+	for_files ("./plugins", "hclua.dll", plugin_auto_load_cb);
+	for_files ("./plugins", "hcmpcinfo.dll", plugin_auto_load_cb);
+	for_files ("./plugins", "hcperl-512.dll", plugin_auto_load_cb);
+	for_files ("./plugins", "hcperl-514.dll", plugin_auto_load_cb);
+	for_files ("./plugins", "hcperl-516.dll", plugin_auto_load_cb);
+	for_files ("./plugins", "hcpython.dll", plugin_auto_load_cb);
+	for_files ("./plugins", "hcsasl.dll", plugin_auto_load_cb);
+	for_files ("./plugins", "hctcl.dll", plugin_auto_load_cb);
+	for_files ("./plugins", "hcupd.dll", plugin_auto_load_cb);
+	for_files ("./plugins", "hcwinamp.dll", plugin_auto_load_cb);
+	for_files ("./plugins", "hcwinsys.dll", plugin_auto_load_cb);
+	for_files ("./plugins", "hcwmpa.dll", plugin_auto_load_cb);
+	for_files ("./plugins", "hextray.dll", plugin_auto_load_cb);
+
 	for_files (sub_dir, "*.dll", plugin_auto_load_cb);
 #else
 #if defined(__hpux)
@@ -1620,7 +1639,7 @@ xchat_pluginpref_set_str_real (xchat_plugin *pl, const char *var, const char *va
 
 	canon = g_strdup (pl->name);
 	canonalize_key (canon);
-	sprintf (confname, "plugin_%s.conf", canon);
+	sprintf (confname, "addon_%s.conf", canon);
 	g_free (canon);
 	sprintf (confname_tmp, "%s.new", confname);
 
@@ -1737,7 +1756,7 @@ xchat_pluginpref_get_str (xchat_plugin *pl, const char *var, char *dest)
 
 	canon = g_strdup (pl->name);
 	canonalize_key (canon);
-	sprintf (confname, "plugin_%s.conf", canon);
+	sprintf (confname, "addon_%s.conf", canon);
 	g_free (canon);
 
 	/* partly borrowed from palette.c */
@@ -1817,7 +1836,7 @@ xchat_pluginpref_list (xchat_plugin *pl, char* dest)
 
 	token = g_strdup (pl->name);
 	canonalize_key (token);
-	sprintf (confname, "plugin_%s.conf", token);
+	sprintf (confname, "addon_%s.conf", token);
 	g_free (token);
 
 	fpIn = xchat_fopen_file (confname, "r", 0);
