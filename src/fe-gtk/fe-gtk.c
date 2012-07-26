@@ -737,6 +737,7 @@ fe_lastlog (session *sess, session *lastlog_sess, char *sstr, gboolean regexp)
 	if (err)
 	{
 		PrintText (lastlog_sess, _(err->message));
+		g_error_free (err);
 		return;
 	}
 
