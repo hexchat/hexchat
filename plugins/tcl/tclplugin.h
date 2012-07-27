@@ -2,8 +2,8 @@
                            tclplugin.h  -  TCL plugin header file
                            -------------------------------------------------
     begin                : Sat Nov  9 17:31:20 MST 2002
-    copyright            : Copyright 2002-2010 Daniel P. Stasinski
-    email                : daniel@avenues.org
+    copyright            : Copyright 2002-2012 Daniel P. Stasinski
+    email                : daniel@GenericInbox.com
  ***************************************************************************/
 
 /***************************************************************************

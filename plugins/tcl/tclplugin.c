@@ -2,8 +2,8 @@
                            tclplugin.c  -  Tcl plugin for xchat 1.9.x / 2.x.x
                            -------------------------------------------------s
     begin                : Sat Nov 19 17:31:20 MST 2002
-    copyright            : Copyright 2002-2010 Daniel P. Stasinski
-    email                : daniel@avenues.org
+    copyright            : Copyright 2002-2012 Daniel P. Stasinski
+    email                : daniel@GenericInbox.com
  ***************************************************************************/
 
 /***************************************************************************
@@ -15,7 +15,7 @@
  *                                                                         *
  ***************************************************************************/
 
-static char RCSID[] = "$Id: tclplugin.c,v 1.64 2010/03/10 04:24:16 mooooooo Exp $";
+static char RCSID[] = "$Id: tclplugin.c,v 1.65 2012/07/26 20:02:12 mooooooo Exp $";
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -2204,7 +2204,7 @@ static void Tcl_Plugin_DeInit()
 static void banner()
 {
     xchat_printf(ph, "Tcl plugin for XChat - Version %s\n", VERSION);
-    xchat_print(ph, "Copyright 2002-2005 Daniel P. Stasinski\n");
+    xchat_print(ph, "Copyright 2002-2012 Daniel P. Stasinski\n");
     xchat_print(ph, "http://www.scriptkitties.com/tclplugin/\n");
 }
 

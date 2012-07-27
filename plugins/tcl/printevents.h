@@ -3,8 +3,8 @@
                            -------------------------------------------------
     begin                : Sat Nov  9 17:31:20 MST 2002
     copyright            : Copyright 2002-2007 Daniel P. Stasinski
-    email                : mooooooo@avenues.org
-    generated            : Mon May 21 06:03:00 PM MST 2007
+    copyright            : Copyright 2002-2012 Daniel P. Stasinski
+    email                : daniel@GenericInbox.com
  ***************************************************************************/
 
 /***************************************************************************
