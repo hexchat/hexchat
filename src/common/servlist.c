@@ -359,10 +359,6 @@ static const struct defaultserver def[] =
 	{"PIRC.PL",	0},
 	{0,			"irc.pirc.pl"},
 
-	{"PTlink",	0},
-	{0,			"irc.PTlink.net"},
-	{0,			"aaia.PTlink.net"},
-
 	{"PTNet.org",   0},
 	{0,			"irc.PTNet.org"},
 	{0,			"world.PTnet.org"},
@@ -371,6 +367,7 @@ static const struct defaultserver def[] =
 	{0,			"vianetworks.PTnet.org"},
 	{0,			"uc.PTnet.org"},
 	{0,			"nfsi.ptnet.org"},
+	{0,			"fctunl.ptnet.org"},
 
 	{"QuakeNet",	0},
 	{0,			"irc.quakenet.org"},
