@@ -156,6 +156,7 @@ void
 search_open (session * sess)
 {
 	GtkWidget *win, *hbox, *vbox, *entry, *wid;
+	gchar *text;
 
 	if (searchwin)
 	{
@@ -173,6 +174,12 @@ search_open (session * sess)
 	gtk_widget_show (hbox);
 
 	entry = gtk_entry_new ();
+	text = GTK_XTEXT (sess->gui->xtext)->buffer->search_text;
+	if (text)
+	{
+		gtk_entry_set_text (GTK_ENTRY (entry), text);
+		gtk_editable_select_region (GTK_EDITABLE (entry), 0, -1);
+	}
 	g_signal_connect (G_OBJECT (entry), "activate",
 							G_CALLBACK (search_entry_cb), sess);
 	gtk_container_add (GTK_CONTAINER (hbox), entry);
