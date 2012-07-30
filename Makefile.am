@@ -10,3 +10,5 @@ icondir = $(datadir)/pixmaps
 
 util_DATA = hexchat.desktop
 utildir = $(datadir)/applications
+
+ACLOCAL_AMFLAGS = -I m4
