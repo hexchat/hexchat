@@ -16,6 +16,7 @@
 #include <unistd.h>
 #endif
 
+#include <gtk/gtk.h>
 #include <gtk/gtkbbox.h>
 #include <gtk/gtkbutton.h>
 #include <gtk/gtkdialog.h>
