@@ -198,12 +198,12 @@ static const struct defaultserver def[] =
 
 	{"EntropyNet",	0},
 #ifdef USE_OPENSSL
-	{0,			"irc.entropynet.net/+7000"},
+	{0,			"irc.entropynet.net/+6697"},
 #endif
 	{0,			"irc.entropynet.net"},
 #ifdef USE_IPV6
 #ifdef USE_OPENSSL
-	{0,			"irc6.entropynet.net/+7000"},
+	{0,			"irc6.entropynet.net/+6697"},
 #endif
 	{0,			"irc6.entropynet.net"},
 #endif
