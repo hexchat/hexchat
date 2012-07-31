@@ -500,6 +500,12 @@ static const struct defaultserver def[] =
 	{0,			"irc.worldnet.net"},
 	{0,			"irc.fr.worldnet.net"},
 
+	{"Windfyre",		0},
+#ifdef USE_OPENSSL
+	{0,			"irc.windfyre.net/+6697"},
+#endif
+	{0,			"irc.windfyre.net"},
+
 /*	{"Xentonix.net",	0},
 	{0,			"irc.xentonix.net"},*/
 
