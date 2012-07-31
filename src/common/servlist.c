@@ -84,6 +84,13 @@ static const struct defaultserver def[] =
 	{0,			"irc.5ci.net"},
 	{0,			"irc.kis.lt"},
 
+	{"AlphaChat",	0},
+	{0,			"irc.alphachat.net"},
+	{0,			"na.alphachat.net"},
+	{0,			"eu.alphachat.net"},
+	{0,			"au.alphachat.net"},
+	{0,			"za.alphachat.net"},
+
 	{"AmigaNet",	0},
 	{0,			"irc.amiganet.org"},
 	{0,			"us.amiganet.org"},
