@@ -52,8 +52,8 @@ static const struct defaultserver def[] =
 	{"2600net",	0},
 	{0,			"irc.2600.net"},
 
-	{"7-indonesia",	0},
-	{0,			"irc.7-indonesia.org"},
+/*	{"7-indonesia",	0},
+	{0,			"irc.7-indonesia.org"},*/
 
 	{"AccessIRC",	0},
 	{0,			"irc.accessirc.net"},
@@ -91,11 +91,11 @@ static const struct defaultserver def[] =
 	{0,			"au.alphachat.net"},
 	{0,			"za.alphachat.net"},
 
-	{"AmigaNet",	0},
+/*	{"AmigaNet",	0},
 	{0,			"irc.amiganet.org"},
 	{0,			"us.amiganet.org"},
 	{0,			"uk.amiganet.org"},
-/*	{0,			"no.amiganet.org"},
+	{0,			"no.amiganet.org"},
 	{0,			"au.amiganet.org"},*/
 
 	{"ARCNet",	0},
@@ -114,8 +114,8 @@ static const struct defaultserver def[] =
 /*	{0,			"uk3.arcnet.vapor.com"},*/
 	{0,			"fr1.arcnet.vapor.com"},
 
-	{"AstroLink",	0},
-	{0,			"irc.astrolink.org"},
+/*	{"AstroLink",	0},
+	{0,			"irc.astrolink.org"},*/
 
 	{"AustNet",	0},
 	{0,			"au.austnet.org"},
@@ -146,16 +146,16 @@ static const struct defaultserver def[] =
 	{0,			"US.ChatNet.Org"},
 	{0,			"EU.ChatNet.Org"},
 
-	{"ChatSociety", 0},
+/*	{"ChatSociety", 0},
 	{0,			"us.chatsociety.net"},
-	{0,			"eu.chatsociety.net"},
+	{0,			"eu.chatsociety.net"},*/
 
 	{"ChatSpike", 0},
 	{0,			"irc.chatspike.net"},
 
-	{"CoolChat",	0},
+/*	{"CoolChat",	0},
 	{0,			"irc.coolchat.net"},
-/*	{0,			"unix.coolchat.net"},
+	{0,			"unix.coolchat.net"},
 	{0,			"toronto.coolchat.net"},*/
 
 	{"Criten", 0},
@@ -210,8 +210,8 @@ static const struct defaultserver def[] =
 	{"EuropNet", 0},
 	{0,			"irc.europnet.org"},
 
-	{"EU-IRC",	0},
-	{0,			"irc.eu-irc.net"},
+/*	{"EU-IRC",	0},
+	{0,			"irc.eu-irc.net"},*/
 
 	{"FDFNet",	0},
 	{0,			"irc.fdfnet.net"},
@@ -222,7 +222,7 @@ static const struct defaultserver def[] =
 	{0,			"irc.ggn.net"},
 	{0,			"irc.vendetta.com"},
 
-	{"FreeNode",	0,	"#hexchat"},
+	{"freenode",	0,	"#hexchat"},
 	{0,				"irc.freenode.net"},
 
 /*	{"Freeworld",	0},
@@ -234,13 +234,13 @@ static const struct defaultserver def[] =
 /*	{0,			"sprynet.us.galaxynet.org"},
 	{0,			"atlanta.ga.us.galaxynet.org"},*/
 
-	{"GamesNET",	0},
+/*	{"GamesNET",	0},
 	{0,				"irc.gamesnet.net"},
-/*	{0,				"irc.us.gamesnet.net"},
+	{0,				"irc.us.gamesnet.net"},
 	{0,				"east.us.gamesnet.net"},
-	{0,				"west.us.gamesnet.net"},*/
+	{0,				"west.us.gamesnet.net"},
 	{0,				"irc.ca.gamesnet.net"},
-	{0,				"irc.eu.gamesnet.net"},
+	{0,				"irc.eu.gamesnet.net"},*/
 
 	{"GeekShed",	0},
 	{0,			"irc.geekshed.net"},
@@ -255,8 +255,8 @@ static const struct defaultserver def[] =
 /*	{0,			"irc.au.gimp.org"},*/
 	{0,			"irc.us.gimp.org"},
 
-	{"HabberNet",	0},
-	{0,			"irc.habber.net"},
+/*	{"HabberNet",	0},
+	{0,			"irc.habber.net"},*/
 
 	{"Hashmark",	0},
 	{0,			"irc.hashmark.net"},
@@ -305,25 +305,30 @@ static const struct defaultserver def[] =
 	{0,			"irc.librenet.net"},
 	{0,			"ielf.fr.librenet.net"},
 
+#ifdef USE_OPENSSL
 	{"LinkNet",	0},
-	{0,			"irc.link-net.org"},
-	{0,			"irc.no.link-net.org"},
-/*	{0,			"irc.gamesden.net.au"},*/
+	{0,			"irc.link-net.org/+7000"},
+	{0,			"as.link-net.org/+7000"},
+	{0,			"eu.link-net.org/+7000"},
+	{0,			"us.link-net.org/+7000"},
+#ifdef USE_IPV6
+	{0,			"irc6.link-net.org/+7000"},
+#endif
+/*	{0,			"irc.no.link-net.org"},
+	{0,			"irc.gamesden.net.au"},
 	{0,			"irc.bahnhof.se"},
-/*	{0,			"irc.kinexuseurope.co.uk"},
+	{0,			"irc.kinexuseurope.co.uk"},
 	{0,			"irc.gamiix.com"},*/
+#endif
 
-	{"MagicStar",	0},
-	{0,			"irc.magicstar.net"},
-
-	{"Majistic",	0},
-	{0,			"irc.majistic.net"},
+/*	{"Majistic",	0},
+	{0,			"irc.majistic.net"},*/
 
 	{"MindForge",	0},
 	{0,			"irc.mindforge.org"},
 
-	{"MintIRC",	0},
-	{0,			"irc.mintirc.net"},
+/*	{"MintIRC",	0},
+	{0,			"irc.mintirc.net"},*/
 
 	{"MIXXnet",		0},
 	{0,			"irc.mixxnet.net"},
@@ -348,8 +353,8 @@ static const struct defaultserver def[] =
 	{0,			"us.ca.nixhelp.org"},
 	{0,			"us.pa.nixhelp.org"},
 
-	{"NullusNet",	0},
-	{0,			"irc.nullus.net"},
+/*	{"NullusNet",	0},
+	{0,			"irc.nullus.net"},*/
 
 	{"Oceanius", 0},
 	{0,			"irc.oceanius.com"},
@@ -387,8 +392,8 @@ static const struct defaultserver def[] =
 	{0,			"irc.de.quakenet.org"},
 	{0,			"irc.it.quakenet.org"},
 
-	{"RebelChat",	0},
-	{0,			"irc.rebelchat.org"},
+/*	{"RebelChat",	0},
+	{0,			"irc.rebelchat.org"},*/
 
 /*	{"Recycled-IRC",  0},
 	{0,			"irc.recycled-irc.org"},
@@ -400,12 +405,12 @@ static const struct defaultserver def[] =
 	{0,			"garbage.recycled-irc.org"},
 	{0,			"dustbin.recycled-irc.org"},*/
 
-	{"RizeNET", 0},
+/*	{"RizeNET", 0},
 	{0,			"irc.rizenet.org"},
 	{0,			"omega.rizenet.org"},
 	{0,			"evelance.rizenet.org"},
 	{0,			"lisa.rizenet.org"},
-	{0,			"scott.rizenet.org"},
+	{0,			"scott.rizenet.org"},*/
 
 	{"Rizon", 0},
 	{0,			"irc.rizon.net"},
@@ -442,10 +447,10 @@ static const struct defaultserver def[] =
 	{0,			"irc.us.sorcery.net/9000"},
 	{0,			"irc.eu.sorcery.net/9000"},
 
-	{"Spidernet",	0},
+/*	{"Spidernet",	0},
 	{0,			"us.spidernet.org"},
 	{0,			"eu.spidernet.org"},
-	{0,			"irc.spidernet.org"},
+	{0,			"irc.spidernet.org"},*/
 
 	{"StarChat", 0},
 	{0,			"irc.starchat.net"},
@@ -456,8 +461,8 @@ static const struct defaultserver def[] =
 	{0,			"tahoma.starchat.net"},
 	{0,			"neo.starchat.net"},
 
-	{"TNI3",			0},
-	{0,			"irc.tni3.com"},
+/*	{"TNI3",			0},
+	{0,			"irc.tni3.com"},*/
 
 	{"TURLINet",			0},
 	{0,			"irc.turli.net"},
@@ -483,15 +488,15 @@ static const struct defaultserver def[] =
 	{0,			"irc.worldnet.net"},
 	{0,			"irc.fr.worldnet.net"},
 
-	{"Xentonix.net",	0},
-	{0,			"irc.xentonix.net"},
+/*	{"Xentonix.net",	0},
+	{0,			"irc.xentonix.net"},*/
 
-	{"XWorld",	0},
+/*	{"XWorld",	0},
 	{0,			"Buffalo.NY.US.XWorld.org"},
 	{0,			"Minneapolis.MN.US.Xworld.Org"},
 	{0,			"Rochester.NY.US.XWorld.org"},
 	{0,			"Bayern.DE.EU.XWorld.Org"},
-	{0,			"Chicago.IL.US.XWorld.Org"},
+	{0,			"Chicago.IL.US.XWorld.Org"},*/
 
 	{0,0}
 };
