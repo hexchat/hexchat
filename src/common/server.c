@@ -1689,7 +1689,7 @@ server_connect (server *serv, char *hostname, int port, int no_login)
 		port = 6667;
 #ifdef USE_OPENSSL
 		if (serv->use_ssl)
-			port = 9999;
+			port = 6697;
 #endif
 	}
 	port &= 0xffff;	/* wrap around */
