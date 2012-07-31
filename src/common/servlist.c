@@ -196,6 +196,18 @@ static const struct defaultserver def[] =
 	{"EnterTheGame",	0},
 	{0,			"IRC.EnterTheGame.Com"},
 
+	{"EntropyNet",	0},
+#ifdef USE_OPENSSL
+	{0,			"irc.entropynet.net/+7000"},
+#endif
+	{0,			"irc.entropynet.net"},
+#ifdef USE_IPV6
+#ifdef USE_OPENSSL
+	{0,			"irc6.entropynet.net/+7000"},
+#endif
+	{0,			"irc6.entropynet.net"},
+#endif
+
 	{"EUIrc",	0},
 	{0,			"irc.euirc.net"},
 	{0,			"irc.ham.de.euirc.net"},
