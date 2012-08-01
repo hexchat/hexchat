@@ -85,6 +85,7 @@ pixmap_load_from_file (char *filename)
 	return pix;
 }
 
+#if 0
 #define LOADPIX(vv,pp,ff) \
 	vv = gdk_pixbuf_new_from_file (HEXCHATSHAREDIR"/hexchat/"ff, 0); \
 	if (!vv) \
@@ -94,6 +95,26 @@ pixmap_load_from_file (char *filename)
 	vv = gdk_pixbuf_new_from_file (HEXCHATSHAREDIR"/hexchat/"ff, 0);
 
 #define EXT ".png"
+#endif
+
+/* load custom icons from <config>/icons, don't mess in system folders */
+static GdkPixbuf *
+load_pixmap (const char *filename, const char *name, int has_inline)
+{
+	gchar *path;
+	GdkPixbuf *pixbuf;
+
+	path = g_strdup_printf ("%s/icons/%s.png", get_xdir_utf8 (), filename);
+	pixbuf = gdk_pixbuf_new_from_file (path, 0);
+	g_free (path);
+
+	if (has_inline && !pixbuf && name)
+	{
+		pixbuf = gdk_pixbuf_new_from_inline (-1, name, FALSE, 0);
+	}
+
+	return pixbuf;
+}
 
 void
 pixmaps_init (void)
@@ -101,23 +122,23 @@ pixmaps_init (void)
 	pix_book = gdk_pixbuf_new_from_inline (-1, bookpng, FALSE, 0);
 
 	/* used in About window, tray icon and WindowManager icon. */
-	LOADPIX (pix_xchat, hexchatpng, "hexchat"EXT);
+	pix_xchat = load_pixmap ("hexchat", hexchatpng, 1);
 
 	/* userlist icons, with inlined defaults */
-	LOADPIX (pix_hop, hoppng, "hop"EXT);
-	LOADPIX (pix_purple, purplepng, "purple"EXT);
-	LOADPIX (pix_red, redpng, "red"EXT);
-	LOADPIX (pix_op, oppng, "op"EXT);
-	LOADPIX (pix_voice, voicepng, "voice"EXT);
+	pix_hop = load_pixmap ("hop", hoppng, 1);
+	pix_purple = load_pixmap ("purple", purplepng, 1);
+	pix_red = load_pixmap ("red", redpng, 1);
+	pix_op = load_pixmap ("op", oppng, 1);
+	pix_voice = load_pixmap ("voice", voicepng, 1);
 
 	/* tray icons, with inlined defaults */
-	LOADPIX (pix_tray_msg, traymsgpng, "message"EXT);
-	LOADPIX (pix_tray_hilight, trayhilightpng, "highlight"EXT);
-	LOADPIX (pix_tray_file, trayfilepng, "fileoffer"EXT);
+	pix_tray_msg = load_pixmap ("message", traymsgpng, 1);
+	pix_tray_hilight = load_pixmap ("highlight", trayhilightpng, 1);
+	pix_tray_file = load_pixmap ("fileoffer", trayfilepng, 1);
 
 	/* treeview icons, no defaults, load from disk only */
-	LOADPIX_DISKONLY (pix_channel,	"channel"EXT);
-	LOADPIX_DISKONLY (pix_dialog,		"dialog"EXT);
-	LOADPIX_DISKONLY (pix_server,		"server"EXT);
-	LOADPIX_DISKONLY (pix_util,		"util"EXT);
+	pix_channel = load_pixmap ("channel", NULL, 0);
+	pix_dialog = load_pixmap ("dialog", NULL, 0);
+	pix_server = load_pixmap ("server", NULL, 0);
+	pix_util = load_pixmap ("util", NULL, 0);
 }
