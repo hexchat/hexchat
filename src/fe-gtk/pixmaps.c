@@ -21,6 +21,7 @@
 #include <stdlib.h>
 
 #include "fe-gtk.h"
+#include "../common/cfgfiles.h"
 #include "../common/xchat.h"
 #include "../common/fe.h"
 
