@@ -114,7 +114,7 @@ int event_cb(char *word[], void *userdata)
 			dwInfoFlags = NIIF_WARNING;
 			break;
 		case CHAN_BANNED:
-			_snprintf(szInfo, 512, "Cannot join #%s You are banned.", word[1]);
+			_snprintf(szInfo, 512, "Cannot join %s You are banned.", word[1]);
 			_snprintf(szName, 64, "Banned");
 			dwInfoFlags = NIIF_WARNING;
 			break;
