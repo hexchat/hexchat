@@ -447,6 +447,9 @@ static const struct defaultserver def[] =
 	{0,			"area51.slashnet.org"},
 	{0,			"moo.slashnet.org"},
 	{0,			"radon.slashnet.org"},
+	
+	{"Snoonet",	0},
+	{0,			"irc.snoonet.com/+6697"},
 
 	{"Sohbet.Net", 0},
 	{0,			"irc.sohbet.net"},
