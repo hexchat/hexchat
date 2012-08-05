@@ -11,10 +11,10 @@
 #
 ###########################################################################
 
+echo2 () {
+	$ECHO2 "$*$ECHO2SUF"	# these are defined later
+}
 
-###########################################################################
-# Show the banner
-###########################################################################
 
 # Lets make it a function, we might want to ask it a few times to piss off users :P
 Show_Banner () {
@@ -46,12 +46,10 @@ Show_Banner () {
 	echo "............~~~~~~~~~~~~~~~~~~~~~~~:............"
 	echo "................................................"
 	echo ""
-	echo "Beginning HexChat configuration."
+	echo "HexChat configuration script."
 	echo "NOTE: press Return for the default, or enter a new value."
 	echo ""
 }
-
-Show_Banner
 
 
 ###########################################################################
@@ -208,10 +206,6 @@ Load_Cache () {
 }
 
 # We need this to know how to print new lines on different envs
-echo2 () {
-	$ECHO2 "$*$ECHO2SUF"	# these are defined later
-}
-
 ECHO2SUF=''
 if [ "`echo -n a ; echo -n b`" = "ab" ] ; then
 	ECHO2='echo -n'
@@ -243,6 +237,8 @@ GTK="yes"
 IPV6="no"
 NLS="yes"
 
+SHOW_INTRO="yes"
+
 
 ###########################################################################
 # Check out the options
@@ -254,12 +250,15 @@ while [ $# -ge 1 ] ; do
 		echo "Syntax:		./Config [options]"
 		echo "-advanced	Shows all available options"
 		echo "-nocache	Ignore settings saved in config.cache"
+		echo "-nointro	Skip intro logo"
 		echo "-quick		Skip questions, go straight to configure"
 		exit 0
 	elif [ $1 = "-advanced" ] ; then
 		ADVANCED="1"
 	elif [ $1 = "-nocache" ] ; then
 		NOCACHE="1"
+	elif [ $1 = "-nointro" ] ; then
+		SHOW_INTRO="no"
 	elif [ $1 = "-quick" -o $1 = "-q" ] ; then
 		Load_Cache
 		if [ $CAN_QUICK = "yes" ] ; then
@@ -272,6 +271,7 @@ while [ $# -ge 1 ] ; do
 	shift 1
 done
 
+
 ###########################################################################
 # Load the cache
 ###########################################################################
@@ -279,6 +279,15 @@ if [ ! "$NOCACHE" ] ; then
 	Load_Cache
 fi
 
+
+###########################################################################
+# Show the banner
+###########################################################################
+if [ $SHOW_INTRO = "yes" ] ; then
+	Show_Banner
+else
+	echo ""
+fi
 
 ###########################################################################
 # Ask the user anything we need to know ahead of time.
@@ -575,5 +584,6 @@ echo "done."
 # Let's call the configure script
 ###########################################################################
 Run_Config
+
 
 # EOF
