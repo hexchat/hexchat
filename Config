@@ -1,0 +1,589 @@
+#!/bin/sh
+#
+# Configuration script for HexChat.
+# For more info: http://hexchat.org/
+#
+# HexChat is developed by Berke Viktor (bviktor)
+# This Config script is developed by D. M. (Phr33d0m)
+#
+# Pieces of this code are from Anope by Anope Team and Thales by Lucas.
+# Thanks!
+#
+###########################################################################
+
+echo2 () {
+	$ECHO2 "$*$ECHO2SUF"	# these are defined later
+}
+
+
+# Lets make it a function, we might want to ask it a few times to piss off users :P
+Show_Banner () {
+	clear
+	echo "................................................"
+	echo "................,,,,,,,,,,,,,,,,................"
+	echo "...........=+++++++++++++++++++++++=............"
+	echo "..........~+++++++++++++++++++++++++=..........."
+	echo ".........=++++=.................=+++++,........."
+	echo ".......,++++++++~.:~===+++++=.~++++++++:........"
+	echo ".......=+++++++++~.~~===+++=.:++++++++++,......."
+	echo "......=++++++++++++:.,,,,,.,=++++++++++++:......"
+	echo ".....~====~=========:.....,===============......"
+	echo "....=====...==========,..==========.,.~====,...."
+	echo "...=====.,~~:.===================.,~=~.:====:..."
+	echo "..:====:.:~==:.=================,,~~==:.=====..."
+	echo ".,====:.:~~===+,,=============,,~~====+:.====~.."
+	echo ".~====..~~~===+=,:===========,,~~====++~.~====.."
+	echo ".,====:.:~:=====~.~=========~.:~~======.,====:.."
+	echo "..,====:.,.:==:.~=============~.,~~~.,.,====:..."
+	echo "...~====,...~:.~===============~.,~....~===~...."
+	echo "....:====,...~=======~...:========,...~===~....."
+	echo "...:.~===~..~=======~.:~~.,========:.:====,.,..."
+	echo "......~~~~~~~~~~~~~.:~~====,,~~~~~~~~~~~~......."
+	echo ".......,~~~~~~~~:.:~~~=======,.~~~~~~~~~........"
+	echo "......,.:~~~~~~:.,:~~~========..~~~~~~~........."
+	echo ".........,~~~~:................,:~~~~~.........."
+	echo "..........:~~~~~~~~~~~~~~~~~~~~~~~~~~..........."
+	echo "............~~~~~~~~~~~~~~~~~~~~~~~:............"
+	echo "................................................"
+	echo ""
+	echo "HexChat configuration script."
+	echo "NOTE: press Return for the default, or enter a new value."
+	echo ""
+}
+
+
+###########################################################################
+# Functions
+###########################################################################
+
+Run_Config () {
+	# Default options
+	WITH_DEFAULTS=" --enable-mmx --enable-shm --enable-xft"
+
+	WITH_PREFIX=""
+
+	WITH_PERL=""
+	WITH_PYTHON=""
+	WITH_SSL=""
+	WITH_TCL=""
+	WITH_PLUGINS=""
+
+	# Advanced options
+	WITH_DBUS=""
+	WITH_GTK=""
+	WITH_IPV6=""
+	WITH_NLS=""
+
+	
+
+
+	# We must have defaults --enable/--disable in case they change in the `configure` script in future
+	if [ "$PREFIXDEST" != "" ] ; then
+		WITH_PREFIX=" --prefix=$PREFIXDEST"
+	fi
+	
+	if [ "$PERL" == "yes" ] ; then
+		WITH_PERL=" --enable-perl"
+	else
+		WITH_PERL=" --disable-perl"
+	fi
+
+	if [ "$PYTHON" == "yes" ] ; then
+		WITH_PYTHON=" --enable-python"
+	else
+		WITH_PYTHON=" --disable-python"
+	fi
+
+	if [ "$SSL" == "yes" ] ; then
+		WITH_SSL=" --enable-openssl"
+	fi
+
+	if [ "$TCL" == "yes" ] ; then
+		WITH_TCL=" --enable-tcl"
+	else
+		WITH_TCL=" --disable-tcl"
+	fi
+
+	if [ "$PLUGINS" != "yes" ] ; then
+		WITH_PLUGINS=" --disable-checksum --disable-doat --disable-fishlim --disable-sasl"
+	fi
+
+	if [ "$DBUS" != "yes" ] ; then
+		WITH_DBUS=" --disable-dbus"
+	fi
+
+	if [ "$GTK" != "yes" ] ; then
+		WITH_GTK=" --disable-gtkfe"
+	fi
+
+	if [ "$IPV6" == "yes" ] ; then
+		WITH_IPV6=" --enable-ipv6"
+	fi
+
+	if [ "$NLS" != "yes" ] ; then
+		WITH_NLS=" --disable-nls"
+	fi
+
+	# Running autogen.sh
+	./autogen.sh
+
+	# Should we continue?
+	ok=0
+	DEF=yes
+	echo ""
+	echo "Continue? (Say 'no' if errors are present. You should fix them before re-running ./Config)"
+	while [ $ok -lt 1 ] ; do
+		echo2 "[$SSL] "
+		if read INPUT ; then : ; else echo "" ; exit 1 ; fi
+		if [ ! "$INPUT" ] ; then
+			INPUT=$DEF
+		fi
+		case $INPUT in
+			n*|N*)
+				echo "Aborted. See you when you've fixed them."
+				return 0
+				;;
+			y*|Y*)
+				echo "./configure $WITH_PREFIX $WITH_PERL $WITH_PYTHON $WITH_SSL $WITH_TCL $WITH_PLUGINS $WITH_DBUS $WITH_GTK $WITH_IPV6 $WITH_NLS $WITH_DEFAULTS"
+				./configure $WITH_PREFIX $WITH_PERL $WITH_PYTHON $WITH_SSL $WITH_TCL $WITH_PLUGINS $WITH_DBUS $WITH_GTK $WITH_IPV6 $WITH_NLS $WITH_DEFAULTS
+				ok=1
+				;;
+			*)
+				echo "Please enter 'yes' or 'no'."
+				;;
+		esac
+	done
+	echo ""
+
+}
+
+exists () {
+	if [ -f $1 -o -d $1 -o -p $1 -o -c $1 -o -b $1 ] ; then
+		return 0
+	else
+		return 1
+	fi
+}
+
+Load_Cache () {
+	if [ -f config.cache -a -r config.cache -a ! "$NOCACHE" ] ; then
+		echo "Using defaults from config.cache. To ignore, rm config.cache"
+		. ./config.cache
+		CAN_QUICK="yes"
+		if [ "$PREFIXDEST" = "" ] ; then
+			PREFIXDEST=/usr
+		fi
+		if [ "$PERL" = "" ] ; then
+			PERL="yes"
+		fi
+		if [ "$PYTHON" = "" ] ; then
+			PYTHON="yes"
+		fi
+		if [ "$SSL" = "" ] ; then
+			SSL="yes"
+		fi
+		if [ "$TCL" = "" ] ; then
+			TCL="no"
+		fi
+		if [ "$PLUGINS" = "" ] ; then
+			PLUGINS="yes"
+		fi
+		if [ "$DBUS" = "" ] ; then
+			DBUS="yes"
+		fi
+		if [ "$GTK" = "" ] ; then
+			GTK="yes"
+		fi
+		if [ "$IPV6" = "" ] ; then
+			IPV6="no"
+		fi
+		if [ "$NLS" = "" ] ; then
+			NLSh="yes"
+		fi
+	else
+		CAN_QUICK="no"
+	fi
+}
+
+# We need this to know how to print new lines on different envs
+ECHO2SUF=''
+if [ "`echo -n a ; echo -n b`" = "ab" ] ; then
+	ECHO2='echo -n'
+elif [ "`echo 'a\c' ; echo 'b\c'`" = "ab" ] ; then
+	ECHO2='echo' ; ECHO2SUF='\c'
+elif [ "`printf 'a' 2>&1 ; printf 'b' 2>&1`" = "ab" ] ; then
+	ECHO2='printf "%s"'
+else
+	# oh well...
+	ECHO2='echo'
+fi
+export ECHO2 ECHO2SUF
+
+###########################################################################
+# Init values
+###########################################################################
+
+PREFIXDEST=/usr
+
+PERL="yes"
+PYTHON="yes"
+SSL="yes"
+TCL="no"
+
+PLUGINS="yes"
+
+DBUS="yes"
+GTK="yes"
+IPV6="no"
+NLS="yes"
+
+SHOW_INTRO="yes"
+
+
+###########################################################################
+# Check out the options
+###########################################################################
+while [ $# -ge 1 ] ; do
+	if [ $1 = "--help" ] ; then
+		echo "Config utility for HexChat"
+		echo "-----------------------------"
+		echo "Syntax:		./Config [options]"
+		echo "-advanced	Shows all available options"
+		echo "-nocache	Ignore settings saved in config.cache"
+		echo "-nointro	Skip intro logo"
+		echo "-quick		Skip questions, go straight to configure"
+		exit 0
+	elif [ $1 = "-advanced" ] ; then
+		ADVANCED="1"
+	elif [ $1 = "-nocache" ] ; then
+		NOCACHE="1"
+	elif [ $1 = "-nointro" ] ; then
+		SHOW_INTRO="no"
+	elif [ $1 = "-quick" -o $1 = "-q" ] ; then
+		Load_Cache
+		if [ $CAN_QUICK = "yes" ] ; then
+			Run_Config
+		else
+			echo "Can't find cache file, aborting..."
+		fi
+		exit 0
+	fi
+	shift 1
+done
+
+
+###########################################################################
+# Load the cache
+###########################################################################
+if [ ! "$NOCACHE" ] ; then
+	Load_Cache
+fi
+
+
+###########################################################################
+# Show the banner
+###########################################################################
+if [ $SHOW_INTRO = "yes" ] ; then
+	Show_Banner
+else
+	echo ""
+fi
+
+###########################################################################
+# Ask the user anything we need to know ahead of time.
+###########################################################################
+export ok INPUT
+
+####
+
+ok=0
+echo "Where should HexChat be installed? (/usr here means the binary will be installed in /usr/bin)"
+while [ $ok -lt 1 ] ; do
+	echo2 "[$PREFIXDEST] "
+	if read INPUT ; then : ; else echo "" ; exit 1 ; fi
+	if [ ! "$INPUT" ] ; then
+		INPUT=$PREFIXDEST
+		ok=1
+	fi
+done
+PREFIXDEST=$INPUT
+echo ""
+
+
+####
+
+ok=0
+DEF=yes
+echo "Enable SSL? (Adds support for Secure Socket Layer connections)"
+while [ $ok -lt 1 ] ; do
+	echo2 "[$SSL] "
+	if read INPUT ; then : ; else echo "" ; exit 1 ; fi
+	if [ ! "$INPUT" ] ; then
+		INPUT=$DEF
+	fi
+	case $INPUT in
+		n*|N*)
+			SSL="no"
+			ok=1
+			;;
+		y*|Y*)
+			SSL="yes"
+			ok=1
+			;;
+		*)
+			echo "Please enter 'yes' or 'no'."
+			;;
+	esac
+done
+echo ""
+
+
+####
+
+ok=0
+DEF=yes
+echo "Enable Perl? (Adds optional support/bindings for the Perl language)"
+while [ $ok -lt 1 ] ; do
+	echo2 "[$PERL] "
+	if read INPUT ; then : ; else echo "" ; exit 1 ; fi
+	if [ ! "$INPUT" ] ; then
+		INPUT=$DEF
+	fi
+	case $INPUT in
+		n*|N*)
+			PERL="no"
+			ok=1
+			;;
+		y*|Y*)
+			PERL="yes"
+			ok=1
+			;;
+		*)
+			echo "Please enter 'yes' or 'no'."
+			;;
+	esac
+done
+echo ""
+
+
+####
+
+ok=0
+DEF=yes
+echo "Enable Python? (Adds optional support/bindings for the Python language)"
+while [ $ok -lt 1 ] ; do
+	echo2 "[$PYTHON] "
+	if read INPUT ; then : ; else echo "" ; exit 1 ; fi
+	if [ ! "$INPUT" ] ; then
+		INPUT=$DEF
+	fi
+	case $INPUT in
+		n*|N*)
+			PYTHON="no"
+			ok=1
+			;;
+		y*|Y*)
+			PYTHON="yes"
+			ok=1
+			;;
+		*)
+			echo "Please enter 'yes' or 'no'."
+			;;
+	esac
+done
+echo ""
+
+
+####
+
+ok=0
+DEF=no
+echo "Enable TCL? (Adds support the Tcl language)"
+while [ $ok -lt 1 ] ; do
+	echo2 "[$TCL] "
+	if read INPUT ; then : ; else echo "" ; exit 1 ; fi
+	if [ ! "$INPUT" ] ; then
+		INPUT=$DEF
+	fi
+	case $INPUT in
+		n*|N*)
+			TCL="no"
+			ok=1
+			;;
+		y*|Y*)
+			TCL="yes"
+			ok=1
+			;;
+		*)
+			echo "Please enter 'yes' or 'no'."
+			;;
+	esac
+done
+echo ""
+
+
+####
+
+if [[ $PERL = "yes" && $PYTHON = "yes" ]] ; then
+    ok=0
+    DEF=yes
+    echo "Enable additional plugins? This includes: Checksum, DoAt, FiSHLiM, SASL."
+    while [ $ok -lt 1 ] ; do
+	    echo2 "[$PLUGINS] "
+	    if read INPUT ; then : ; else echo "" ; exit 1 ; fi
+	    if [ ! "$INPUT" ] ; then
+		    INPUT=$DEF
+	    fi
+	    case $INPUT in
+		    n*|N*)
+			    PLUGINS="no"
+			    ok=1
+			    ;;
+		    y*|Y*)
+			    PLUGINS="yes"
+			    ok=1
+			    ;;
+		    *)
+			    echo "Please enter 'yes' or 'no'."
+			    ;;
+	    esac
+    done
+    echo ""
+fi
+
+
+
+###########################################################################
+# Ask some more questions
+###########################################################################
+if [ "$ADVANCED" ] ; then
+
+    ok=0
+    DEF=yes
+    echo "Enable GTK frontend? (recommended)"
+    while [ $ok -lt 1 ] ; do
+	    echo2 "[$GTK] "
+	    if read INPUT ; then : ; else echo "" ; exit 1 ; fi
+	    if [ ! "$INPUT" ] ; then
+		    INPUT=$DEF
+	    fi
+	    case $INPUT in
+		    n*|N*)
+			    GTK="no"
+			    ok=1
+			    ;;
+		    y*|Y*)
+			    GTK="yes"
+			    ok=1
+			    ;;
+		    *)
+			    echo "Please enter 'yes' or 'no'."
+			    ;;
+	    esac
+    done
+    echo ""
+
+    ok=0
+    DEF=yes
+    echo "With DBUS support? (recommended)"
+    while [ $ok -lt 1 ] ; do
+	    echo2 "[$DBUS] "
+	    if read INPUT ; then : ; else echo "" ; exit 1 ; fi
+	    if [ ! "$INPUT" ] ; then
+		    INPUT=$DEF
+	    fi
+	    case $INPUT in
+		    n*|N*)
+			    DBUS="no"
+			    ok=1
+			    ;;
+		    y*|Y*)
+			    DBUS="yes"
+			    ok=1
+			    ;;
+		    *)
+			    echo "Please enter 'yes' or 'no'."
+			    ;;
+	    esac
+    done
+    echo ""
+
+    ok=0
+    DEF=no
+    echo "Enable IPv6?"
+    while [ $ok -lt 1 ] ; do
+	    echo2 "[$IPV6] "
+	    if read INPUT ; then : ; else echo "" ; exit 1 ; fi
+	    if [ ! "$INPUT" ] ; then
+		    INPUT=$DEF
+	    fi
+	    case $INPUT in
+		    n*|N*)
+			    IPV6="no"
+			    ok=1
+			    ;;
+		    y*|Y*)
+			    IPV6="yes"
+			    ok=1
+			    ;;
+		    *)
+			    echo "Please enter 'yes' or 'no'."
+			    ;;
+	    esac
+    done
+    echo ""
+
+    ok=0
+    DEF=yes
+    echo "Enable NLS? (Adds Native Language Support (using gettext - GNU locale utilities))"
+    while [ $ok -lt 1 ] ; do
+	    echo2 "[$NLS] "
+	    if read INPUT ; then : ; else echo "" ; exit 1 ; fi
+	    if [ ! "$INPUT" ] ; then
+		    INPUT=$DEF
+	    fi
+	    case $INPUT in
+		    n*|N*)
+			    NLS="no"
+			    ok=1
+			    ;;
+		    y*|Y*)
+			    NLS="yes"
+			    ok=1
+			    ;;
+		    *)
+			    echo "Please enter 'yes' or 'no'."
+			    ;;
+	    esac
+    done
+    echo ""
+
+fi
+
+
+################################################################################
+# Store values
+################################################################################
+echo2 "Saving configuration results in config.cache... "
+
+cat <<EOT >config.cache
+PREFIXDEST="$PREFIXDEST"
+PERL="$PERL"
+PYTHON="$PYTHON"
+SSL="$SSL"
+TCL="$TCL"
+PLUGINS="$PLUGINS"
+DBUS="$DBUS"
+GTK="$GTK"
+IPV6="$IPV6"
+NLS="$NLS"
+EOT
+echo "done."
+
+###########################################################################
+# Let's call the configure script
+###########################################################################
+Run_Config
+
+
+# EOF
