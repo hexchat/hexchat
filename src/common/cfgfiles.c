@@ -563,6 +563,7 @@ const struct prefs vars[] = {
 	{"stamp_log_format", P_OFFSET (timestamp_log_format), TYPE_STR},
 	{"stamp_text", P_OFFINT (timestamp), TYPE_BOOL},
 	{"stamp_text_format", P_OFFSET (stamp_format), TYPE_STR},
+	{"strip_topic", P_OFFINT (strip_topic), TYPE_BOOL},
 
 	{"tab_chans", P_OFFINT (tabchannels), TYPE_BOOL},
 	{"tab_dialogs", P_OFFINT (privmsgtab), TYPE_BOOL},
@@ -663,6 +664,7 @@ load_config (void)
 	memset (&prefs, 0, sizeof (struct xchatprefs));
 
 	/* put in default values, anything left out is automatically zero */
+	prefs.strip_topic = 1;	
 	prefs.local_ip = 0xffffffff;
 	prefs.irc_join_delay = 3;
 	prefs.show_marker = 1;
