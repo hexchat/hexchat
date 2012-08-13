@@ -552,20 +552,20 @@ fe_set_topic (session *sess, char *topic, char *stripped_topic)
 {
 	if (!sess->gui->is_tab || sess == current_tab)
 	{
-		if(prefs.strip_topic)
-			gtk_entry_set_text(GTK_ENTRY(sess->gui->topic_entry), stripped_topic);
+		if (prefs.strip_topic)
+			gtk_entry_set_text (GTK_ENTRY (sess->gui->topic_entry), stripped_topic);
 		else
-			gtk_entry_set_text(GTK_ENTRY(sess->gui->topic_entry), topic); 
+			gtk_entry_set_text (GTK_ENTRY (sess->gui->topic_entry), topic); 
 		mg_set_topic_tip (sess);
 	} else
 	{
 		if (sess->res->topic_text)
 			free (sess->res->topic_text);
 
-		if(prefs.strip_topic)
-			sess->res->topic_text = strdup(stripped_topic);
+		if (prefs.strip_topic)
+			sess->res->topic_text = strdup (stripped_topic);
 		else
-			sess->res->topic_text = strdup(topic);
+			sess->res->topic_text = strdup (topic);
 	}
 }
 
