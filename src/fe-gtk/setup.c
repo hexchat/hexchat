@@ -1540,6 +1540,19 @@ setup_autotoggle_cb (GtkToggleButton *but, GtkToggleButton *ext)
 }
 
 static void
+setup_no_sound_away_cb (GtkToggleButton *but, GtkToggleButton *ext)
+{
+	if (but->active)
+	{
+		setup_prefs.no_sound_away = 1;
+	}
+	else
+	{
+		setup_prefs.no_sound_away = 0;
+	}
+}
+
+static void
 setup_snd_filereq_cb (GtkWidget *entry, char *file)
 {
 	if (file)
@@ -1609,6 +1622,7 @@ setup_create_sound_page (void)
 	GtkWidget *sound_browse;
 	GtkWidget *sound_play;
 	GtkTreeSelection *sel;
+	GtkWidget *no_sound_away;
 
 	vbox1 = gtk_vbox_new (FALSE, 0);
 	gtk_container_set_border_width (GTK_CONTAINER (vbox1), 6);
@@ -1686,6 +1700,15 @@ setup_create_sound_page (void)
 	gtk_table_attach (GTK_TABLE (table2), entry3, 1, 3, 3, 4,
 							(GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
 							(GtkAttachOptions) (0), 0, 0);
+	
+	no_sound_away = gtk_check_button_new_with_mnemonic(_("Do _not play sound when away"));
+	gtk_widget_show(no_sound_away);
+	gtk_table_attach(GTK_TABLE (table2), no_sound_away, 0, 3, 4, 5,
+							(GtkAttachOptions) (GTK_FILL),
+							(GtkAttachOptions) (0), 0, 0);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (no_sound_away), setup_prefs.no_sound_away == 1);
+	g_signal_connect (G_OBJECT (no_sound_away), "toggled",
+							G_CALLBACK (setup_no_sound_away_cb), no_sound_away);
 
 	scrolledwindow1 = gtk_scrolled_window_new (NULL, NULL);
 	gtk_widget_show (scrolledwindow1);

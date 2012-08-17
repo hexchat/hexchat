@@ -245,6 +245,7 @@ struct xchatprefs
 	unsigned int slist_skip;
 	unsigned int slist_select;
 	unsigned int filterbeep;
+	unsigned int no_sound_away;
 
 	unsigned int input_balloon_chans;
 	unsigned int input_balloon_hilight;

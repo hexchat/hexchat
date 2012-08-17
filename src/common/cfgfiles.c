@@ -563,6 +563,7 @@ const struct prefs vars[] = {
 	{"stamp_log_format", P_OFFSET (timestamp_log_format), TYPE_STR},
 	{"stamp_text", P_OFFINT (timestamp), TYPE_BOOL},
 	{"stamp_text_format", P_OFFSET (stamp_format), TYPE_STR},
+	{"no_sound_away", P_OFFINT (no_sound_away), TYPE_BOOL},
 
 	{"tab_chans", P_OFFINT (tabchannels), TYPE_BOOL},
 	{"tab_dialogs", P_OFFINT (privmsgtab), TYPE_BOOL},
