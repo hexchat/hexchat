@@ -4,7 +4,7 @@ bin_PROGRAMS = hexchat
 
 INCLUDES = $(GUI_CFLAGS) -DG_DISABLE_CAST_CHECKS -DLOCALEDIR=\"$(localedir)\"
 
-hexchat_LDADD = ../common/libxchatcommon.a $(GUI_LIBS)
+hexchat_LDADD = ../common/libxchatcommon.a $(GUI_LIBS) -lgmodule-2.0
 
 EXTRA_DIST = \
 	about.h ascii.h banlist.h chanlist.h chanview.h chanview-tabs.c \
