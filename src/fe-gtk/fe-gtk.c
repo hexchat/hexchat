@@ -700,50 +700,48 @@ fe_beep (void)
 	gdk_beep ();
 }
 
-static int
-lastlog_regex_cmp (char *a, GRegex *reg)
-{
-	GMatchInfo *gmi;
-	int ret;
-
-	g_regex_match (reg, a, 0, &gmi);
-	ret = (g_match_info_matches (gmi))? TRUE: FALSE;
-	g_match_info_free (gmi);
-	return ret;
-}
-
 void
-fe_lastlog (session *sess, session *lastlog_sess, char *sstr, gboolean regexp)
+fe_lastlog (session *sess, session *lastlog_sess, char *sstr, gtk_xtext_search_flags flags)
 {
-	GRegex *search_re = NULL;
 	GError *err = NULL;
+	xtext_buffer *buf, *lbuf;
 
-	if (gtk_xtext_is_empty (sess->res->buffer))
+	buf = sess->res->buffer;
+
+	if (gtk_xtext_is_empty (buf))
 	{
 		PrintText (lastlog_sess, _("Search buffer is empty.\n"));
 		return;
 	}
 
-	if (!regexp)
+	lbuf = lastlog_sess->res->buffer;
+	if (flags & regexp)
 	{
-		gtk_xtext_lastlog (lastlog_sess->res->buffer, sess->res->buffer,
-								 (void *) nocasestrstr, sstr);
-		return;
-	}
+		GRegexCompileFlags gcf = (flags & case_match)? 0: G_REGEX_CASELESS;
 
-	/* TODO:  add arg 'match' and if it's TRUE don't use G_REGEX_CASELESS
-	 * and for that matter don't use nocasesetrstr() above either */
-	search_re = g_regex_new (sstr, G_REGEX_CASELESS, 0, &err);
-	if (err)
+		lbuf->search_re = g_regex_new (sstr, gcf, 0, &err);
+		if (err)
+		{
+			PrintText (lastlog_sess, _(err->message));
+			g_error_free (err);
+			return;
+		}
+	}
+	else
 	{
-		PrintText (lastlog_sess, _(err->message));
-		g_error_free (err);
-		return;
+		if (flags & case_match)
+		{
+			lbuf->search_nee = g_strdup (sstr);
+		}
+		else
+		{
+			lbuf->search_nee = g_utf8_casefold (sstr, strlen (sstr));
+		}
+		lbuf->search_lnee = strlen (lbuf->search_nee);
 	}
-
-	gtk_xtext_lastlog (lastlog_sess->res->buffer, sess->res->buffer,
-							 (void *) lastlog_regex_cmp, search_re);
-	g_regex_unref (search_re);
+	lbuf->search_flags = flags;
+	lbuf->search_text = strdup (sstr);
+	gtk_xtext_lastlog (lbuf, buf);
 }
 
 void
