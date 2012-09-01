@@ -281,6 +281,15 @@ static const setting tabs_settings[] =
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
+static const setting color_settings[] =
+{
+	{ST_TOGGLE, N_("Messages"), P_OFFINTNL(text_stripcolor_msg), 0, 0, 0},
+	{ST_TOGGLE, N_("Scrollback"), P_OFFINTNL(text_stripcolor_replay), 0, 0, 0},
+	{ST_TOGGLE, N_("Topic"), P_OFFINTNL(text_stripcolor_topic), 0, 0, 0},
+
+	{ST_END, 0, 0, 0, 0, 0}
+};
+
 static const char *const dccaccept[] =
 {
 	N_("No"),
@@ -464,7 +473,9 @@ static const setting logging_settings[] =
 {
 	{ST_HEADER,	N_("Logging"),0,0,0},
 	{ST_TOGGLE,	N_("Display scrollback from previous session"), P_OFFINTNL(text_replay), 0, 0, 0},
-	{ST_TOGGLE,	N_("Strip colors when displaying scrollback"), P_OFFINTNL(text_replay_strip_color), 0, 0, 0},
+#if 0 /* Now it's done under Colors */
+	{ST_TOGGLE,	N_("Strip colors when displaying scrollback"), P_OFFINTNL(text_stripcolor_replay), 0, 0, 0},
+#endif
 	{ST_TOGGLE,	N_("Enable logging of conversations to disk"), P_OFFINTNL(logging), 0, 0, 2},
 	{ST_ENTRY,	N_("Log filename:"), P_OFFSETNL(logmask), 0, 0, sizeof prefs.logmask},
 	{ST_LABEL,	N_("%s=Server %c=Channel %n=Network.")},
@@ -1416,6 +1427,18 @@ setup_create_color_page (void)
 #if defined(USE_GTKSPELL) || defined(USE_LIBSEXY)
 	setup_create_other_colorR (_("Spell checker:"), COL_SPELL, 11, tab);
 #endif
+
+	setup_create_header (tab, 15, N_("Color Stripping"));
+
+	/* label = gtk_label_new (_("Strip colors from:"));
+	gtk_misc_set_alignment (GTK_MISC (label), 0.0, 0.5);
+	gtk_table_attach (GTK_TABLE (tab), label, 2, 3, 16, 17,
+							GTK_SHRINK | GTK_FILL, GTK_SHRINK | GTK_FILL, LABEL_INDENT, 0); */
+
+	for (i = 0; i < 3; i++)
+	{
+		setup_create_toggleL (tab, i + 16, &color_settings[i]);
+	}
 
 	return box;
 }

@@ -340,12 +340,12 @@ scrollback_load (session *sess)
 			text = strchr (buf + 3, ' ');
 			if (text)
 			{
-				if (prefs.text_replay_strip_color)
+				if (prefs.text_stripcolor_replay)
 				{
 					text = strip_color (text + 1, -1, STRIP_COLOR);
 				}
 				fe_print_text (sess, text, stamp);
-				if (prefs.text_replay_strip_color)
+				if (prefs.text_stripcolor_replay)
 				{
 					g_free (text);
 				}
@@ -381,21 +381,21 @@ scrollback_load (session *sess)
 			text = strchr (buf + 3, ' ');
 			if (text)
 			{
-				if (prefs.text_replay_strip_color)
+				if (prefs.text_stripcolor_replay)
 				{
 					text = strip_color (text + 1, -1, STRIP_COLOR);
 				}
 				cleaned_text = text_replace_non_bmp (text, -1, &cleaned_len);
 				if (cleaned_text != NULL)
 				{
-					if (prefs.text_replay_strip_color)
+					if (prefs.text_stripcolor_replay)
 					{
 						g_free (text);
 					}
 					text = cleaned_text;
 				}
 				fe_print_text (sess, text, stamp);
-				if (prefs.text_replay_strip_color)
+				if (prefs.text_stripcolor_replay)
 				{
 					g_free (text);
 				}
@@ -1799,7 +1799,7 @@ load_text_events ()
 
 /*
 	CL: format_event now handles filtering of arguments:
-	1) if prefs.stripcolor is set, filter all style control codes from arguments
+	1) if prefs.text_stripcolor_msg is set, filter all style control codes from arguments
 	2) always strip \010 (ATTR_HIDDEN) from arguments: it is only for use in the format string itself
 */
 #define ARG_FLAG(argn) (1 << (argn))
@@ -2095,7 +2095,7 @@ text_emit (int index, session *sess, char *a, char *b, char *c, char *d)
 {
 	char *word[PDIWORDS];
 	int i;
-	unsigned int stripcolor_args = (prefs.stripcolor ? 0xFFFFFFFF : 0);
+	unsigned int stripcolor_args = (prefs.text_stripcolor_msg ? 0xFFFFFFFF : 0);
 	char tbuf[NICKLEN + 4];
 
 	if (prefs.colorednicks && (index == XP_TE_CHANACTION || index == XP_TE_CHANMSG))

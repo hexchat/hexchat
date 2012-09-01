@@ -236,7 +236,9 @@ struct xchatprefs
 	unsigned int autoopendccrecvwindow;
 	unsigned int autoopendccchatwindow;
 	unsigned int transparent;
-	unsigned int stripcolor;
+	unsigned int text_stripcolor_msg;
+	unsigned int text_stripcolor_replay;
+	unsigned int text_stripcolor_topic;
 	unsigned int timestamp;
 	unsigned int fastdccsend;
 	unsigned int dcc_send_fillspaces;
@@ -286,7 +288,6 @@ struct xchatprefs
 	unsigned int windows_as_tabs;
 	unsigned int indent_nicks;
 	unsigned int text_replay;
-	unsigned int text_replay_strip_color;
 	unsigned int show_marker;
 	unsigned int show_separator;
 	unsigned int thin_separator;
