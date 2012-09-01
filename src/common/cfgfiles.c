@@ -580,9 +580,9 @@ const struct prefs vars[] = {
 	{"tab_trunc", P_OFFINT (truncchans), TYPE_INT},
 	{"tab_utils", P_OFFINT (windows_as_tabs), TYPE_BOOL},
 
-	{"text_auto_copy_color", P_OFFINT (autocopy_color), TYPE_BOOL},	
-	{"text_auto_copy_stamp", P_OFFINT (autocopy_stamp), TYPE_BOOL},
-	{"text_auto_copy_text", P_OFFINT (autocopy_text), TYPE_BOOL},
+	{"text_autocopy_color", P_OFFINT (autocopy_color), TYPE_BOOL},	
+	{"text_autocopy_stamp", P_OFFINT (autocopy_stamp), TYPE_BOOL},
+	{"text_autocopy_text", P_OFFINT (autocopy_text), TYPE_BOOL},
 	{"text_background", P_OFFSET (background), TYPE_STR},
 	{"text_color_nicks", P_OFFINT (colorednicks), TYPE_BOOL},
 #ifdef WIN32
