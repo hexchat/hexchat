@@ -143,7 +143,7 @@ static const char *const tabcompmenu[] =
 
 static const setting inputbox_settings[] =
 {
-	{ST_HEADER, N_("Input box"),0,0,0},
+	{ST_HEADER, N_("Input Box"),0,0,0},
 	{ST_TOGGLE, N_("Use the Text box font and colors"), P_OFFINTNL(style_inputbox),0,0,0},
 #if defined(USE_GTKSPELL) || defined(USE_LIBSEXY)
 	{ST_TOGGLE, N_("Spell checking"), P_OFFINTNL(gui_input_spell),0,0,0},
@@ -219,7 +219,7 @@ static const setting userlist_settings[] =
 	{ST_MENU,	N_("User list sorted by:"), P_OFFINTNL(userlist_sort), 0, ulmenutext, 0},
 	{ST_MENU,	N_("Show user list at:"), P_OFFINTNL(gui_ulist_pos), 0, ulpos, 1},
 
-	{ST_HEADER,	N_("Away tracking"),0,0,0},
+	{ST_HEADER,	N_("Away Tracking"),0,0,0},
 	{ST_TOGGLE,	N_("Track the Away status of users and mark them in a different color"), P_OFFINTNL(away_track),0,0,2},
 	{ST_NUMBER, N_("On channels smaller than:"), P_OFFINTNL(away_size_max),0,0,10000},
 
@@ -422,7 +422,7 @@ static const setting advanced_settings[] =
 	{ST_TOGGLE, N_("Send window"), P_OFFINTNL(autoopendccsendwindow), 0, 0, 0},
 	{ST_TOGGLE, N_("Receive window"), P_OFFINTNL(autoopendccrecvwindow), 0, 0, 0},
 	{ST_TOGGLE, N_("Chat window"), P_OFFINTNL(autoopendccchatwindow), 0, 0, 0},
-	{ST_HEADER,	N_("Auto-Copy Behavior"),0,0,0},
+	{ST_HEADER,	N_("Auto Copy Behavior"),0,0,0},
 	{ST_TOGGLE, N_("Automatically copy selected text"), P_OFFINTNL(autocopy_text),
 					N_("Copy selected text to clipboard when left mouse button is released. "
 						"Otherwise, CONTROL-SHIFT-C will copy the "
