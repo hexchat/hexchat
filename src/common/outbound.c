@@ -2362,7 +2362,7 @@ cmd_lagcheck (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 }
 
 static void
-lastlog (session *sess, char *search, gboolean regexp)
+lastlog (session *sess, char *search, gtk_xtext_search_flags flags)
 {
 	session *lastlog_sess;
 
@@ -2374,29 +2374,50 @@ lastlog (session *sess, char *search, gboolean regexp)
 		lastlog_sess = new_ircwindow (sess->server, "(lastlog)", SESS_DIALOG, 0);
 
 	lastlog_sess->lastlog_sess = sess;
-	lastlog_sess->lastlog_regexp = regexp;	/* remember the search type */
+	lastlog_sess->lastlog_flags = flags;
 
 	fe_text_clear (lastlog_sess, 0);
-	fe_lastlog (sess, lastlog_sess, search, regexp);
+	fe_lastlog (sess, lastlog_sess, search, flags);
 }
 
 static int
 cmd_lastlog (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
-	if (*word_eol[2])
+	int j = 2;
+	gtk_xtext_search_flags flags = 0;
+	gboolean doublehyphen = FALSE;
+
+	while (word_eol[j] != NULL && word_eol [j][0] == '-' && !doublehyphen)
 	{
-		if (!strcmp (word[2], "-r"))
+		switch (word_eol [j][1])
 		{
-			lastlog (sess, word_eol[3], TRUE);
+			case 'r':
+				flags |= regexp;
+				break;
+			case 'm':
+				flags |= case_match;
+				break;
+			case 'h':
+				flags |= highlight;
+				break;
+			case '-':
+				doublehyphen = TRUE;
+				break;
+			default:
+				break;
+				/* O dear whatever shall we do here? */
 		}
-		else
-		{
-			lastlog (sess, word_eol[2], FALSE);
-		}
+		j++;
+	}
+	if (*word_eol[j])
+	{
+		lastlog (sess, word_eol[j], flags);
 		return TRUE;
 	}
-
-	return FALSE;
+	else
+	{	
+		return FALSE;
+	}
 }
 
 static int
@@ -3602,7 +3623,11 @@ const struct commands xc_cmds[] = {
 	{"LAGCHECK", cmd_lagcheck, 0, 0, 1,
 	 N_("LAGCHECK, forces a new lag check")},
 	{"LASTLOG", cmd_lastlog, 0, 0, 1,
-	 N_("LASTLOG [-r] <string>, searches for a string in the buffer")},
+	 N_("LASTLOG [-h] [-m] [-r] [--] <string>, searches for a string in the buffer\n"
+	 "    Use -h to highlight the found string(s)\n"
+	 "    Use -m to match case\n"
+	 "    Use -r when string is a Regular Expression\n"
+	 "    Use -- (double hyphen) to end options when searching for, say, the string '-r'")},
 	{"LIST", cmd_list, 1, 0, 1, 0},
 	{"LOAD", cmd_load, 0, 0, 1, N_("LOAD [-e] <file>, loads a plugin or script")},
 
@@ -4099,7 +4124,7 @@ handle_say (session *sess, char *text, int check_spch)
 
 	if (strcmp (sess->channel, "(lastlog)") == 0)
 	{
-		lastlog (sess->lastlog_sess, text, sess->lastlog_regexp);
+		lastlog (sess->lastlog_sess, text, sess->lastlog_flags);
 		return;
 	}
 

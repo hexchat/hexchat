@@ -347,6 +347,15 @@ struct xchatprefs
 #define SET_ON 1
 #define SET_DEFAULT 2 /* use global setting */
 
+/* Moved from fe-gtk for use in outbound.c as well -- */
+typedef enum gtk_xtext_search_flags_e {
+	case_match = 1,
+	backward = 2,
+	highlight = 4,
+	follow = 8,
+	regexp = 16
+} gtk_xtext_search_flags;
+
 typedef struct session
 {
 	/* Per-Channel Alerts */
@@ -406,7 +415,7 @@ typedef struct session
 	int end_of_names:1;
 	int doing_who:1;		/* /who sent on this channel */
 	int done_away_check:1;	/* done checking for away status changes */
-	unsigned int lastlog_regexp:1;	/* this is a lastlog and using regexp */
+	gtk_xtext_search_flags lastlog_flags;
 } session;
 
 struct msproxy_state_t
