@@ -39,7 +39,7 @@
 
 #define DEF_FONT "Monospace 9"
 #ifdef WIN32
-#define DEF_FONT_ALTER "Arial Unicode MS,Lucida Sans Unicode,MS Gothic"
+#define DEF_FONT_ALTER "Arial Unicode MS,Lucida Sans Unicode,MS Gothic,Unifont"
 #endif
 
 void

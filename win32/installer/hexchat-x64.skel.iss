@@ -30,6 +30,7 @@ Name: "custom"; Description: "Custom Installation"; Flags: iscustom
 
 [Components]
 Name: "libs"; Description: "HexChat"; Types: normal full minimal custom; Flags: fixed
+Name: "gtktheme"; Description: "GTK+ Theme"; Types: normal full custom; Flags: disablenouninstallwarning
 Name: "xctext"; Description: "HexChat-Text"; Types: full custom; Flags: disablenouninstallwarning
 Name: "xtm"; Description: "HexChat Theme Manager (Requires .NET 4.0)"; Types: full custom; Flags: disablenouninstallwarning
 Name: "translations"; Description: "Translations"; Types: normal full custom; Flags: disablenouninstallwarning
@@ -100,7 +101,7 @@ Source: "LICENSE.CAIRO"; DestDir: "{app}"; Flags: ignoreversion; Components: lib
 Source: "LICENSE.LUA"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "LICENSE.ENCHANT"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "LICENSE.LIBXML"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
-Source: "etc\gtk-2.0\gtkrc"; DestDir: "{app}\etc\gtk-2.0"; Flags: ignoreversion; Components: libs
+Source: "etc\gtk-2.0\gtkrc"; DestDir: "{app}\etc\gtk-2.0"; Flags: ignoreversion; Components: gtktheme
 ;Source: "etc\gtk-2.0\gtkrc"; DestDir: "{app}\etc\gtk-2.0"; Flags: ignoreversion; Components: libs and not gtkengines
 Source: "share\xml\*"; DestDir: "{app}\share\xml"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: libs
 Source: "locale\*"; DestDir: "{app}\locale"; Flags: ignoreversion createallsubdirs recursesubdirs; Components: translations
@@ -259,6 +260,7 @@ begin
 			begin
 				UnInstallOldVersion();
 			end;
+			DeleteFile(ExpandConstant('{app}\portable-mode'));
 		end;
 	end;
 end;

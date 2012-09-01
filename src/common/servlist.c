@@ -135,6 +135,12 @@ static const struct defaultserver def[] =
 	{"Beirut", 0},
 	{0,			"irc.beirut.com"},
 
+	{"Chat4all", 0},
+#ifdef USE_OPENSSL
+	{0,			"irc.chat4all.org/+7001"},
+#endif
+	{0,			"irc.chat4all.org"},
+
 	{"ChattingAway", 0},
 	{0,			"irc.chattingaway.com"},
 
