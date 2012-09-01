@@ -260,6 +260,7 @@ begin
 			begin
 				UnInstallOldVersion();
 			end;
+			DeleteFile(ExpandConstant('{app}\portable-mode'));
 		end;
 	end;
 end;
