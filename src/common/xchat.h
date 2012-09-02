@@ -236,7 +236,9 @@ struct xchatprefs
 	unsigned int autoopendccrecvwindow;
 	unsigned int autoopendccchatwindow;
 	unsigned int transparent;
-	unsigned int stripcolor;
+	unsigned int text_stripcolor_msg;
+	unsigned int text_stripcolor_replay;
+	unsigned int text_stripcolor_topic;
 	unsigned int timestamp;
 	unsigned int fastdccsend;
 	unsigned int dcc_send_fillspaces;
@@ -286,7 +288,6 @@ struct xchatprefs
 	unsigned int windows_as_tabs;
 	unsigned int indent_nicks;
 	unsigned int text_replay;
-	unsigned int text_replay_strip_color;
 	unsigned int show_marker;
 	unsigned int show_separator;
 	unsigned int thin_separator;
@@ -345,6 +346,15 @@ struct xchatprefs
 #define SET_OFF 0
 #define SET_ON 1
 #define SET_DEFAULT 2 /* use global setting */
+
+/* Moved from fe-gtk for use in outbound.c as well -- */
+typedef enum gtk_xtext_search_flags_e {
+	case_match = 1,
+	backward = 2,
+	highlight = 4,
+	follow = 8,
+	regexp = 16
+} gtk_xtext_search_flags;
 
 typedef struct session
 {
@@ -405,7 +415,7 @@ typedef struct session
 	int end_of_names:1;
 	int doing_who:1;		/* /who sent on this channel */
 	int done_away_check:1;	/* done checking for away status changes */
-	unsigned int lastlog_regexp:1;	/* this is a lastlog and using regexp */
+	gtk_xtext_search_flags lastlog_flags;
 } session;
 
 struct msproxy_state_t

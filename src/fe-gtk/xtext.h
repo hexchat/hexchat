@@ -43,13 +43,6 @@
 typedef struct _GtkXText GtkXText;
 typedef struct _GtkXTextClass GtkXTextClass;
 typedef struct textentry textentry;
-typedef enum gtk_xtext_search_flags_e {
-	case_match = 1,
-	backward = 2,
-	highlight = 4,
-	follow = 8,
-	regexp = 16
-} gtk_xtext_search_flags;
 
 typedef struct {
 	GtkXText *xtext;					/* attached to this widget */
@@ -263,7 +256,7 @@ void gtk_xtext_set_palette (GtkXText * xtext, GdkColor palette[]);
 void gtk_xtext_clear (xtext_buffer *buf, int lines);
 void gtk_xtext_save (GtkXText * xtext, int fh);
 void gtk_xtext_refresh (GtkXText * xtext, int do_trans);
-int gtk_xtext_lastlog (xtext_buffer *out, xtext_buffer *search_area, int (*cmp_func) (char *, void *userdata), void *userdata);
+int gtk_xtext_lastlog (xtext_buffer *out, xtext_buffer *search_area);
 textentry *gtk_xtext_search (GtkXText * xtext, const gchar *text, gtk_xtext_search_flags flags, GError **err);
 void gtk_xtext_reset_marker_pos (GtkXText *xtext);
 void gtk_xtext_check_marker_visibility(GtkXText *xtext);

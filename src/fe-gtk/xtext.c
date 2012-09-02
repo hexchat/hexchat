@@ -183,7 +183,8 @@ gtk_xtext_strip_color (unsigned char *text, int len, unsigned char *outbuf,
 static gboolean gtk_xtext_check_ent_visibility (GtkXText * xtext, textentry *find_ent, int add);
 static int gtk_xtext_render_page_timeout (GtkXText * xtext);
 static int gtk_xtext_search_offset (xtext_buffer *buf, textentry *ent, unsigned int off);
-static void gtk_xtext_search_textentry (xtext_buffer *, textentry *, int);
+static GList * gtk_xtext_search_textentry (xtext_buffer *, textentry *);
+static void gtk_xtext_search_textentry_add (xtext_buffer *, textentry *, GList *, gboolean);
 static void gtk_xtext_search_textentry_del (xtext_buffer *, textentry *);
 static void gtk_xtext_search_textentry_fini (gpointer, gpointer);
 static void gtk_xtext_search_fini (xtext_buffer *);
@@ -5226,8 +5227,8 @@ gtk_xtext_unstrip_color (gint start, gint end, GSList *slp, GList **gl, gint max
 }
 
 /* Search a single textentry for occurrence(s) of search arg string */
-static void
-gtk_xtext_search_textentry (xtext_buffer *buf, textentry *ent, int pre)
+static GList *
+gtk_xtext_search_textentry (xtext_buffer *buf, textentry *ent)
 {
 	gchar *str;								/* text string to be searched */
 	GList *gl = NULL;
@@ -5236,7 +5237,7 @@ gtk_xtext_search_textentry (xtext_buffer *buf, textentry *ent, int pre)
 
 	if (buf->search_text == NULL)
 	{
-		return;
+		return gl;
 	}
 
 	str = gtk_xtext_strip_color (ent->str, ent->str_len, buf->xtext->scratch_buffer,
@@ -5250,7 +5251,7 @@ gtk_xtext_search_textentry (xtext_buffer *buf, textentry *ent, int pre)
 
 		if (buf->search_re == NULL)
 		{
-			return;
+			return gl;
 		}
 		g_regex_match (buf->search_re, str, 0, &gmi);
 		while (g_match_info_matches (gmi))
@@ -5289,6 +5290,13 @@ gtk_xtext_search_textentry (xtext_buffer *buf, textentry *ent, int pre)
 
 	/* Common processing --- */
 	g_slist_free (slp);
+	return gl;
+}
+
+/* Add a list of found search results to an entry, maybe NULL */
+static void
+gtk_xtext_search_textentry_add (xtext_buffer *buf, textentry *ent, GList *gl, gboolean pre)
+{
 	ent->marks = gl;
 	if (gl)
 	{
@@ -5298,7 +5306,6 @@ gtk_xtext_search_textentry (xtext_buffer *buf, textentry *ent, int pre)
 			buf->hintsearch = ent;
 		}
 	}
-	return;
 }
 
 /* Free all search information for a textentry */
@@ -5424,7 +5431,10 @@ gtk_xtext_search (GtkXText * xtext, const gchar *text, gtk_xtext_search_flags fl
 			ent = gl? gl->data: buf->text_first;
 			for (; ent; ent = ent->next)
 			{
-				gtk_xtext_search_textentry (buf, ent, FALSE);
+				GList *gl;
+
+				gl = gtk_xtext_search_textentry (buf, ent);
+				gtk_xtext_search_textentry_add (buf, ent, gl, FALSE);
 			}
 		}
 		buf->search_flags = flags;
@@ -5448,7 +5458,10 @@ gtk_xtext_search (GtkXText * xtext, const gchar *text, gtk_xtext_search_flags fl
 			}
 			for (ent = buf->text_first; ent; ent = ent->next)
 			{
-				gtk_xtext_search_textentry (buf, ent, TRUE);
+				GList *gl;
+
+				gl = gtk_xtext_search_textentry (buf, ent);
+				gtk_xtext_search_textentry_add (buf, ent, gl, TRUE);
 			}
 			buf->search_found = g_list_reverse (buf->search_found);
 		}
@@ -5661,7 +5674,10 @@ gtk_xtext_append_entry (xtext_buffer *buf, textentry * ent, time_t stamp)
 	}
 	if (buf->search_flags & follow)
 	{
-		gtk_xtext_search_textentry (buf, ent, FALSE);
+		GList *gl;
+
+		gl = gtk_xtext_search_textentry (buf, ent);
+		gtk_xtext_search_textentry_add (buf, ent, gl, FALSE);
 	}
 }
 
@@ -5764,30 +5780,41 @@ gtk_xtext_is_empty (xtext_buffer *buf)
 	return buf->text_first == NULL;
 }
 
+
 int
-gtk_xtext_lastlog (xtext_buffer *out, xtext_buffer *search_area,
-						 int (*cmp_func) (char *, void *), void *userdata)
+gtk_xtext_lastlog (xtext_buffer *out, xtext_buffer *search_area)
 {
-	textentry *ent = search_area->text_first;
-	int matches = 0;
+	textentry *ent;
+	int matches;
+	GList *gl;
+
+	ent = search_area->text_first;
+	matches = 0;
 
 	while (ent)
 	{
-		if (cmp_func (ent->str, userdata))
+		gl = gtk_xtext_search_textentry (out, ent);
+		if (gl)
 		{
 			matches++;
 			/* copy the text over */
 			if (search_area->xtext->auto_indent)
+			{
 				gtk_xtext_append_indent (out, ent->str, ent->left_len,
 												 ent->str + ent->left_len + 1,
 												 ent->str_len - ent->left_len - 1, 0);
+			}
 			else
+			{
 				gtk_xtext_append (out, ent->str, ent->str_len);
-			/* copy the timestamp over */
+			}
+
 			out->text_last->stamp = ent->stamp;
+			gtk_xtext_search_textentry_add (out, out->text_last, gl, TRUE);
 		}
 		ent = ent->next;
 	}
+	out->search_found = g_list_reverse (out->search_found);
 
 	return matches;
 }
