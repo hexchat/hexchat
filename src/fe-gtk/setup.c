@@ -452,7 +452,7 @@ static const setting advanced_settings_oneinstance[] =
 	{ST_TOGGLE, N_("Send window"), P_OFFINTNL(autoopendccsendwindow), 0, 0, 0},
 	{ST_TOGGLE, N_("Receive window"), P_OFFINTNL(autoopendccrecvwindow), 0, 0, 0},
 	{ST_TOGGLE, N_("Chat window"), P_OFFINTNL(autoopendccchatwindow), 0, 0, 0},
-	{ST_HEADER,	N_("Auto-Copy Behavior"),0,0,0},
+	{ST_HEADER,	N_("Auto Copy Behavior"),0,0,0},
 	{ST_TOGGLE, N_("Automatically copy selected text"), P_OFFINTNL(autocopy_text),
 					N_("Copy selected text to clipboard when left mouse button is released. "
 						"Otherwise, CONTROL-SHIFT-C will copy the "
