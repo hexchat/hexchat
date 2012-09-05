@@ -351,6 +351,10 @@ session_new (server *serv, char *from, int type, int focus)
 	session *sess;
 
 	sess = malloc (sizeof (struct session));
+	if (sess == NULL)
+	{
+		return NULL;
+	}
 	memset (sess, 0, sizeof (struct session));
 
 	sess->server = serv;
