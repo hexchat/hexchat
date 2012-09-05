@@ -598,7 +598,7 @@ log_create_pathname (char *servname, char *channame, char *netname)
 
 	/* create final path/filename */
 	xdir = get_xdir_utf8 ();
-	if (!strncmp(fnametime, xdir, strlen(xdir)))
+	if (!strncmp (fnametime, xdir, strlen (xdir)))
 		snprintf (fname, sizeof (fname), "%s", fnametime);
 	else
 		snprintf (fname, sizeof (fname), "%s/logs/%s", xdir, fnametime);
