@@ -214,6 +214,12 @@ static const struct defaultserver def[] =
 	{0,			"irc6.entropynet.net"},
 #endif
 
+	{"EsperNet",	0},
+#ifdef USE_OPENSSL
+	{0,			"irc.esper.net/+6697"},
+#endif
+	{0,			"irc.esper.net"},
+
 	{"EUIrc",	0},
 	{0,			"irc.euirc.net"},
 	{0,			"irc.ham.de.euirc.net"},
