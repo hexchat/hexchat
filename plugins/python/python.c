@@ -1610,9 +1610,10 @@ Module_xchat_pluginpref_get(PyObject *self, PyObject *args)
 	// This will always return numbers as integers.
 	retint = xchat_pluginpref_get_int(ph, var);
 	if (xchat_pluginpref_get_str(ph, var, retstr)) {
-		ret = PyInt_FromLong(retint);
 		if ((retint == 0) && (strcmp(retstr, "0") != 0))
 			ret = PyString_FromString(retstr);
+		else
+			ret = PyInt_FromLong(retint);
 	}
 	else
 		ret = Py_None;
