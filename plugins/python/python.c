@@ -74,9 +74,9 @@
 
 #ifdef WIN32
 #undef WITH_THREAD /* Thread support locks up xchat on Win32. */
-#define VERSION "0.8/2.7"	/* Linked to python27.dll */
+#define VERSION "0.9/2.7"	/* Linked to python27.dll */
 #else
-#define VERSION "0.8"
+#define VERSION "0.9"
 #endif
 
 #define NONE 0
