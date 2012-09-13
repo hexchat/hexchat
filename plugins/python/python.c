@@ -74,9 +74,9 @@
 
 #ifdef WIN32
 #undef WITH_THREAD /* Thread support locks up xchat on Win32. */
-#define VERSION "0.8/2.7"	/* Linked to python27.dll */
+#define VERSION "0.9/2.7"	/* Linked to python27.dll */
 #else
-#define VERSION "0.8"
+#define VERSION "0.9"
 #endif
 
 #define NONE 0
@@ -279,6 +279,10 @@ static PyObject *Module_xchat_get_list(PyObject *self, PyObject *args);
 static PyObject *Module_xchat_get_lists(PyObject *self, PyObject *args);
 static PyObject *Module_xchat_nickcmp(PyObject *self, PyObject *args);
 static PyObject *Module_xchat_strip(PyObject *self, PyObject *args);
+static PyObject *Module_xchat_pluginpref_set(PyObject *self, PyObject *args);
+static PyObject *Module_xchat_pluginpref_get(PyObject *self, PyObject *args);
+static PyObject *Module_xchat_pluginpref_delete(PyObject *self, PyObject *args);
+static PyObject *Module_xchat_pluginpref_list(PyObject *self, PyObject *args);
 
 static void IInterp_Exec(char *command);
 static int IInterp_Cmd(char *word[], char *word_eol[], void *userdata);
@@ -1574,6 +1578,77 @@ Module_xchat_find_context(PyObject *self, PyObject *args, PyObject *kwargs)
 }
 
 static PyObject *
+Module_xchat_pluginpref_set(PyObject *self, PyObject *args)
+{
+	PyObject *result;
+	char *var;
+	PyObject *value;
+	if (!PyArg_ParseTuple(args, "sO:set_pluginpref", &var, &value))
+		return NULL;
+	if (PyInt_Check(value)) {
+		int intvalue = PyInt_AsLong(value);
+		result = PyInt_FromLong(xchat_pluginpref_set_int(ph, var, intvalue));
+	}
+	else if (PyString_Check(value)) {
+		char *charvalue = PyString_AsString(value);
+		result = PyInt_FromLong(xchat_pluginpref_set_str(ph, var, charvalue));
+	}
+	else
+		result = PyInt_FromLong(0);
+	return result;
+}
+
+static PyObject *
+Module_xchat_pluginpref_get(PyObject *self, PyObject *args)
+{
+	PyObject *ret;
+	char *var;
+	char retstr[512];
+	int retint;
+	if (!PyArg_ParseTuple(args, "s:get_pluginpref", &var))
+		return NULL;
+	// This will always return numbers as integers.
+	retint = xchat_pluginpref_get_int(ph, var);
+	if (xchat_pluginpref_get_str(ph, var, retstr)) {
+		if ((retint == 0) && (strcmp(retstr, "0") != 0))
+			ret = PyString_FromString(retstr);
+		else
+			ret = PyInt_FromLong(retint);
+	}
+	else
+		ret = Py_None;
+	return ret;
+}
+
+static PyObject *
+Module_xchat_pluginpref_delete(PyObject *self, PyObject *args)
+{
+	char *var;
+	int result;
+	if (!PyArg_ParseTuple(args, "s:del_pluginpref", &var))
+		return NULL;
+	result = xchat_pluginpref_delete(ph, var);
+	return PyInt_FromLong(result);
+}
+
+static PyObject *
+Module_xchat_pluginpref_list(PyObject *self, PyObject *args)
+{
+	char list[512];
+	char* token;
+	PyObject *pylist;
+	pylist = PyList_New(0);
+	if (xchat_pluginpref_list(ph, list)) {
+		token = strtok(list, ",");
+		while (token != NULL) {
+			PyList_Append(pylist, PyString_FromString(token));
+			token = strtok (NULL, ",");
+		}
+	}
+	return pylist;
+}
+
+static PyObject *
 Module_xchat_hook_command(PyObject *self, PyObject *args, PyObject *kwargs)
 {
 	char *name;
@@ -1907,6 +1982,14 @@ static PyMethodDef Module_xchat_methods[] = {
 		METH_NOARGS},
 	{"find_context",	(PyCFunction)Module_xchat_find_context,
 		METH_VARARGS|METH_KEYWORDS},
+	{"set_pluginpref", Module_xchat_pluginpref_set,
+		METH_VARARGS},
+	{"get_pluginpref", Module_xchat_pluginpref_get,
+		METH_VARARGS},
+	{"del_pluginpref", Module_xchat_pluginpref_delete,
+		METH_VARARGS},
+	{"list_pluginpref", Module_xchat_pluginpref_list,
+		METH_VARARGS},
 	{"hook_command",	(PyCFunction)Module_xchat_hook_command,
 		METH_VARARGS|METH_KEYWORDS},
 	{"hook_server",		(PyCFunction)Module_xchat_hook_server,
