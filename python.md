@@ -19,29 +19,28 @@ Here are some of the features of the python plugin interface:
 Commands
 --------
 
-The following commands will be intercepted by the Python Plugin
-interface module, when it is loaded.
+The following commands will be intercepted by the Python Plugin interface module, when it is loaded.
 
-----------------------------------------------------------------------------------------------------------------------------------------------
-*Command*                               *Description*
------------------------------------     ------------------------------------------------------------------------------------------------------
-/py load <filename>                   Load module with given filename.
+---------------------------------------------------------------------------------------------------------------------------------------------
+*Command*                           *Description*
+----------------------------------  ---------------------------------------------------------------------------------------------------------
+/py load <filename>                 Load module with given filename.
 
-/py unload <filename|module name>     Unload module with given filename, or module name.
+/py unload <filename|module name>   Unload module with given filename, or module name.
 
-/py reload <filename|module name>     Reload module with given filename, or module name.
+/py reload <filename|module name>   Reload module with given filename, or module name.
 
-/py list                                List Python modules loaded.
+/py list                            List Python modules loaded.
 
-/py exec <command>                    Execute given Python command interactively. For example:
+/py exec <command>                  Execute given Python command interactively. For example:
                                             `/py exec import xchat`
                                             `/py exec print xchat.get_info('channel')`
 
-/py console                             Open the Python interactive console in a query (>>python<<).
+/py console                         Open the Python interactive console in a query (>>python<<).
                                         Every message sent will be intercepted by the Python plugin interface, and interpreted interactively.
                                         Notice that the console and /py exec commands live in the same interpreter state.
 
-/py about                               Show some information about the Python plugin interface.
+/py about                           Show some information about the Python plugin interface.
 ----------------------------------------------------------------------------------------------------------------------------------------------
 
 
@@ -228,9 +227,9 @@ Python plugin interface.
 The channels list type gives you access to the channels, queries and
 their servers. The folloing attributes are available in each list item:
 
-------------------------------------------------------------------
+-------------------------------------------------------------------
 *Type*      *Description*
--------     ------------------------------------------------------
+-------     -------------------------------------------------------
 channel     Channel or query name.
 
 context     A context object, giving access to that channel/server.
@@ -240,16 +239,16 @@ network     Network name to which this channel belongs.
 server      Server name to which this channel belongs.
 
 type        Type of context (1=Server, 2=Channel, 3=Dialog).
-------------------------------------------------------------------
+-------------------------------------------------------------------
 
 ##### dcc
 
 The dcc list type gives you access to a list of DCC file transfers. The
 following attributes are available in each list item:
 
---------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------
 *Type*      *Description*
----------   --------------------------------------------------------------------------
+---------   ---------------------------------------------------------------------------
 address32   Address of the remote user (ipv4 address, as an int).
 
 cps         Bytes per second (speed).
@@ -271,7 +270,7 @@ size        File size in bytes.
 status      DCC status (queued=0, active=1, failed=2, done=3, connecting=4, aborted=5).
 
 type        DCC type (send=0, receive=1, chatrecv=2, chatsend=3).
---------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------
 
 ##### users
 
@@ -297,6 +296,7 @@ following attributes are available in each list item:
 *Type*  *Description*
 -----   ---------------------------------------------------------------------------------------------------
 mask    Ignore mask (for example, "*!*@*.aol.com").
+
 flags   Bit field of flags (0=private, 1=notice, 2=channel, 3=ctcp, 4=invite, 5=unignore, 6=nosave, 7=dcc).
 -----------------------------------------------------------------------------------------------------------
 
@@ -341,9 +341,9 @@ When a callback is supposed to return one of the EAT_* macros, it is
 able control how xchat will proceed after the callback returns. These
 are the available constants, and their meanings:
 
-----------------------------------------------------------
+---------------------------------------------------------
 *Constant*  *Description*
------------ ----------------------------------------------
+----------- ---------------------------------------------
 EAT_PLUGIN Don't let any other plugin receive this event.
 
 EAT_XCHAT  Don't let xchat treat this event as usual.
@@ -351,7 +351,7 @@ EAT_XCHAT  Don't let xchat treat this event as usual.
 EAT_ALL    Eat the event completely.
 
 EAT_NONE   Let everything happen as usual.
------------------------------------------------------------
+---------------------------------------------------------
 
 Returning `None` is the same as returning `EAT_NONE`.
 
@@ -513,13 +513,13 @@ context.set()                               Changes the current context to be th
 
 context.prnt(string)                        Does the same as the xchat.prnt() function, but in the given context.
 
-context.emit_print(event_name, *args)    Does the same as the emit_print() function, but in the given context.
+context.emit_print(event_name, *args)       Does the same as the emit_print() function, but in the given context.
 
 context.command(string)                     Does the same as the xchat.command() function, but in the given context.
 
-context.get_info(type)                     Does the same as the xchat.get_info() function, but in the given context.
+context.get_info(type)                      Does the same as the xchat.get_info() function, but in the given context.
 
-context.get_list(type)                     Does the same as the xchat.get_list() function, but in the given context.
+context.get_list(type)                      Does the same as the xchat.get_list() function, but in the given context.
 -------------------------------------------------------------------------------------------------------------------------
 
 #### xchat.get_context()
@@ -541,3 +541,5 @@ example:
 * * * * *
 
 Original Author: Gustavo Niemeyer [gustavo@niemeyer.net](mailto:gustavo@niemeyer.net)
+
+For purty html: `pandoc --toc python.md -s --highlight-style haddock -o python.html`
