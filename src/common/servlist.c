@@ -345,7 +345,7 @@ static const struct defaultserver def[] =
 	{0,			"irc.gamiix.com"},*/
 #endif
 
-	{"mac-mini",    0},
+	{"mac-mini.org",    0},
 				"irc.mac-mini.org"},
 
 /*	{"Majistic",	0},
