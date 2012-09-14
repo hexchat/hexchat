@@ -729,7 +729,8 @@ load_config (void)
 	prefs.autoopendccrecvwindow = 1;
 	prefs.autoopendccsendwindow = 1;
 	prefs.autoopendccchatwindow = 1;
-	prefs.userhost = 1;
+	/* prevent kicks and bans caused by overwhelming who'ing after reconnects */
+	/* prefs.userhost = 1; */
 	prefs.gui_chanlist_maxusers = 9999;
 	prefs.gui_chanlist_minusers = 5;
 	prefs.gui_url_mod = 4;	/* ctrl */
