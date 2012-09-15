@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<DOCUMENT Type="Advanced Installer" CreateVersion="9.2" version="9.2" Modules="simple" RootPath="." Language="en" Id="{F800981F-A57B-40E4-91FE-3C228741E1AD}">
+<DOCUMENT Type="Advanced Installer" CreateVersion="9.2" version="9.5" Modules="simple" RootPath="." Language="en" Id="{F800981F-A57B-40E4-91FE-3C228741E1AD}">
   <COMPONENT cid="caphyon.advinst.msicomp.MsiValidationComponent">
     <ROW Table="File" Column="Sequence" MinValue="1" MaxValue="32767" Description="Sequence with respect to the media images; order must track cabinet order." Options="0" ColumnType="2" ColumnIndex="7" ColumnSize="2" MsiKey="File#Sequence"/>
     <ROW Table="Media" Column="LastSequence" MinValue="0" MaxValue="32767" Description="File sequence number for the last file for this media." Options="0" ColumnType="2" ColumnIndex="1" ColumnSize="2" MsiKey="Media#LastSequence"/>
@@ -13,7 +13,7 @@
     <ROW Property="Manufacturer" Value="HexChat" ValueLocId="*"/>
     <ROW Property="ProductCode" Value="1033:{FE3F5A4C-82A5-4ED9-969B-AECA6070A1A0} " Type="16"/>
     <ROW Property="ProductLanguage" Value="1033"/>
-    <ROW Property="ProductName" Value="Visual Studio 2010 Windows Driver Kit Platform Toolset" ValueLocId="*"/>
+    <ROW Property="ProductName" Value="Visual Studio 2012 Windows Driver Kit Platform Toolset" ValueLocId="*"/>
     <ROW Property="ProductVersion" Value="1.0" Type="32"/>
     <ROW Property="SecureCustomProperties" Value="OLDPRODUCTS;AI_NEWERPRODUCTFOUND"/>
     <ROW Property="UpgradeCode" Value="{1947FE78-21A1-4B81-99CE-E07AAEE6077D}"/>
@@ -26,9 +26,10 @@
     <ROW Directory="Microsoft.Cpp_Dir" Directory_Parent="MSBuild_Dir" DefaultDir="Micros~1.Cpp|Microsoft.Cpp"/>
     <ROW Directory="PlatformToolsets_1_Dir" Directory_Parent="x64_Dir" DefaultDir="Platfo~1|PlatformToolsets"/>
     <ROW Directory="PlatformToolsets_Dir" Directory_Parent="Win32_Dir" DefaultDir="Platfo~1|PlatformToolsets"/>
-    <ROW Directory="Platforms_Dir" Directory_Parent="v4.0_Dir" DefaultDir="Platfo~1|Platforms"/>
+    <ROW Directory="Platforms_Dir" Directory_Parent="V110_Dir" DefaultDir="Platfo~1|Platforms"/>
     <ROW Directory="ProgramFilesFolder" Directory_Parent="TARGETDIR" DefaultDir="Progra~1|ProgramFilesFolder" IsPseudoRoot="1"/>
     <ROW Directory="TARGETDIR" DefaultDir="SourceDir"/>
+    <ROW Directory="V110_Dir" Directory_Parent="v4.0_Dir" DefaultDir="V110"/>
     <ROW Directory="WDK7_1_Dir" Directory_Parent="PlatformToolsets_1_Dir" DefaultDir="WDK7"/>
     <ROW Directory="WDK7_Dir" Directory_Parent="PlatformToolsets_Dir" DefaultDir="WDK7"/>
     <ROW Directory="Win32_Dir" Directory_Parent="Platforms_Dir" DefaultDir="Win32"/>
