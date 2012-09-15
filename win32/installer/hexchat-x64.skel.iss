@@ -24,38 +24,37 @@ ArchitecturesInstallIn64BitMode=x64
 
 [Types]
 Name: "normal"; Description: "Normal Installation"
-Name: "full"; Description: "Full Installation"
 Name: "minimal"; Description: "Minimal Installation"
 Name: "custom"; Description: "Custom Installation"; Flags: iscustom
 
 [Components]
-Name: "libs"; Description: "HexChat"; Types: normal full minimal custom; Flags: fixed
-Name: "gtktheme"; Description: "GTK+ Theme"; Types: normal full custom; Flags: disablenouninstallwarning
-Name: "xctext"; Description: "HexChat-Text"; Types: full custom; Flags: disablenouninstallwarning
-Name: "xtm"; Description: "HexChat Theme Manager (Requires .NET 4.0)"; Types: full custom; Flags: disablenouninstallwarning
-Name: "translations"; Description: "Translations"; Types: normal full custom; Flags: disablenouninstallwarning
-;obs Name: "gtkengines"; Description: "GTK+ Engines"; Types: full custom; Flags: disablenouninstallwarning
-;Name: "spelling"; Description: "Spelling Dictionaries"; Types: full custom; Flags: disablenouninstallwarning
-Name: "plugins"; Description: "Plugins"; Types: full custom; Flags: disablenouninstallwarning
-Name: "plugins\checksum"; Description: "Checksum"; Types: full custom; Flags: disablenouninstallwarning
-Name: "plugins\dns"; Description: "DNS"; Types: full custom; Flags: disablenouninstallwarning
-Name: "plugins\doat"; Description: "Do At"; Types: full custom; Flags: disablenouninstallwarning
-Name: "plugins\exec"; Description: "Exec"; Types: full custom; Flags: disablenouninstallwarning
-Name: "plugins\fishlim"; Description: "FiSHLiM"; Types: full custom; Flags: disablenouninstallwarning
-Name: "plugins\hextray"; Description: "HexTray"; Types: full custom; Flags: disablenouninstallwarning
-;Name: "plugins\mpcinfo"; Description: "mpcInfo"; Types: full custom; Flags: disablenouninstallwarning
-;Name: "plugins\nonbmp"; Description: "Non-BMP"; Types: normal full custom; Flags: disablenouninstallwarning
-Name: "plugins\sasl"; Description: "SASL"; Types: full custom; Flags: disablenouninstallwarning
-Name: "plugins\upd"; Description: "Update Checker"; Types: normal full custom; Flags: disablenouninstallwarning
-Name: "plugins\winamp"; Description: "Winamp"; Types: full custom; Flags: disablenouninstallwarning
-Name: "plugins\winsys"; Description: "WinSys"; Types: full custom; Flags: disablenouninstallwarning
-Name: "plugins\wmpa"; Description: "Windows Media Player Announcer"; Types: full custom; Flags: disablenouninstallwarning
-Name: "langs"; Description: "Language Interfaces"; Types: full custom; Flags: disablenouninstallwarning
-Name: "langs\lua"; Description: "Lua"; Types: full custom; Flags: disablenouninstallwarning
-Name: "langs\lua\luawdk"; Description: "Lua-WDK"; Types: full custom; Flags: disablenouninstallwarning
-Name: "langs\perl"; Description: "Perl"; Types: full custom; Flags: disablenouninstallwarning
-Name: "langs\python"; Description: "Python"; Types: full custom; Flags: disablenouninstallwarning
-Name: "langs\tcl"; Description: "Tcl"; Types: full custom; Flags: disablenouninstallwarning
+Name: "libs"; Description: "HexChat"; Types: normal minimal custom; Flags: fixed
+Name: "gtktheme"; Description: "GTK+ Theme"; Types: normal custom; Flags: disablenouninstallwarning
+Name: "xctext"; Description: "HexChat-Text"; Types: custom; Flags: disablenouninstallwarning
+Name: "xtm"; Description: "HexChat Theme Manager (Requires .NET 4.0)"; Types: custom; Flags: disablenouninstallwarning
+Name: "translations"; Description: "Translations"; Types: normal custom; Flags: disablenouninstallwarning
+;obs Name: "gtkengines"; Description: "GTK+ Engines"; Types: custom; Flags: disablenouninstallwarning
+;Name: "spelling"; Description: "Spelling Dictionaries"; Types: custom; Flags: disablenouninstallwarning
+Name: "plugins"; Description: "Plugins"; Types: custom; Flags: disablenouninstallwarning
+Name: "plugins\checksum"; Description: "Checksum"; Types: custom; Flags: disablenouninstallwarning
+Name: "plugins\dns"; Description: "DNS"; Types: custom; Flags: disablenouninstallwarning
+Name: "plugins\doat"; Description: "Do At"; Types: custom; Flags: disablenouninstallwarning
+Name: "plugins\exec"; Description: "Exec"; Types: custom; Flags: disablenouninstallwarning
+Name: "plugins\fishlim"; Description: "FiSHLiM"; Types: custom; Flags: disablenouninstallwarning
+Name: "plugins\hextray"; Description: "HexTray"; Types: custom; Flags: disablenouninstallwarning
+;Name: "plugins\mpcinfo"; Description: "mpcInfo"; Types: custom; Flags: disablenouninstallwarning
+;Name: "plugins\nonbmp"; Description: "Non-BMP"; Types: normal custom; Flags: disablenouninstallwarning
+Name: "plugins\sasl"; Description: "SASL"; Types: custom; Flags: disablenouninstallwarning
+Name: "plugins\upd"; Description: "Update Checker"; Types: normal custom; Flags: disablenouninstallwarning
+Name: "plugins\winamp"; Description: "Winamp"; Types: custom; Flags: disablenouninstallwarning
+Name: "plugins\winsys"; Description: "WinSys"; Types: custom; Flags: disablenouninstallwarning
+Name: "plugins\wmpa"; Description: "Windows Media Player Announcer"; Types: custom; Flags: disablenouninstallwarning
+Name: "langs"; Description: "Language Interfaces"; Types: custom; Flags: disablenouninstallwarning
+Name: "langs\lua"; Description: "Lua"; Types: custom; Flags: disablenouninstallwarning
+Name: "langs\lua\luawdk"; Description: "Lua-WDK"; Types: custom; Flags: disablenouninstallwarning
+Name: "langs\perl"; Description: "Perl"; Types: custom; Flags: disablenouninstallwarning
+Name: "langs\python"; Description: "Python"; Types: custom; Flags: disablenouninstallwarning
+Name: "langs\tcl"; Description: "Tcl"; Types: custom; Flags: disablenouninstallwarning
 
 [Tasks]
 Name: portable; Description: "Yes"; GroupDescription: "Portable Install (no Registry entries, no Start Menu icons, no uninstaller):"; Flags: unchecked
