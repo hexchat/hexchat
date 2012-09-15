@@ -43,7 +43,7 @@ Name: "plugins\doat"; Description: "Do At"; Types: full custom; Flags: disableno
 Name: "plugins\exec"; Description: "Exec"; Types: full custom; Flags: disablenouninstallwarning
 Name: "plugins\fishlim"; Description: "FiSHLiM"; Types: full custom; Flags: disablenouninstallwarning
 Name: "plugins\hextray"; Description: "HexTray"; Types: full custom; Flags: disablenouninstallwarning
-Name: "plugins\mpcinfo"; Description: "mpcInfo"; Types: full custom; Flags: disablenouninstallwarning
+;Name: "plugins\mpcinfo"; Description: "mpcInfo"; Types: full custom; Flags: disablenouninstallwarning
 ;Name: "plugins\nonbmp"; Description: "Non-BMP"; Types: normal full custom; Flags: disablenouninstallwarning
 Name: "plugins\sasl"; Description: "SASL"; Types: full custom; Flags: disablenouninstallwarning
 Name: "plugins\upd"; Description: "Update Checker"; Types: normal full custom; Flags: disablenouninstallwarning
@@ -166,8 +166,9 @@ Source: "plugins\hcdns.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Com
 Source: "plugins\hcdoat.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\doat
 Source: "plugins\hcexec.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\exec
 Source: "plugins\hcfishlim.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\fishlim
-Source: "etc\music.png"; DestDir: "{app}\etc"; Flags: ignoreversion; Components: plugins\winamp or plugins\mpcinfo
-Source: "plugins\hcmpcinfo.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\mpcinfo
+Source: "etc\music.png"; DestDir: "{app}\etc"; Flags: ignoreversion; Components: plugins\winamp
+; or plugins\mpcinfo
+;Source: "plugins\hcmpcinfo.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\mpcinfo
 ;Source: "plugins\hcnonbmp.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\nonbmp
 Source: "etc\download.png"; DestDir: "{app}\etc"; Flags: ignoreversion; Components: plugins\upd
 Source: "plugins\hcupd.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\upd
