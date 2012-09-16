@@ -733,7 +733,6 @@ load_config (void)
 	/* prefs.userhost = 1; */
 	prefs.gui_chanlist_maxusers = 9999;
 	prefs.gui_chanlist_minusers = 5;
-	prefs.gui_url_mod = 4;	/* ctrl */
 	prefs.gui_tray = 1;
 	prefs.gui_pane_left_size = 100;
 	prefs.gui_pane_right_size = 100;
