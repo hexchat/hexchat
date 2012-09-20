@@ -1521,7 +1521,7 @@ menu_ctcpguiopen (void)
 static void
 menu_docs (GtkWidget *wid, gpointer none)
 {
-	fe_open_url ("http://xchat.org/docs/");
+	fe_open_url ("http://www.hexchat.org/");
 }
 
 /*static void
