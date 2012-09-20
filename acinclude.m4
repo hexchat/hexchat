@@ -26,7 +26,7 @@ AC_DEFUN([AS_AC_EXPAND],
   dnl loop until it doesn't change anymore
   while true; do
     new_full_var="`eval echo $full_var`"
-    if test "x$new_full_var"="x$full_var"; then break; fi
+    if test "x$new_full_var" = "x$full_var"; then break; fi
     full_var=$new_full_var
   done
 
