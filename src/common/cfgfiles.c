@@ -787,7 +787,7 @@ load_config (void)
 	strcpy (prefs.font_alternative, DEF_FONT_ALTER);
 #endif
 	strcpy (prefs.dnsprogram, "host");
-	strcpy (prefs.irc_no_hilight, "NickServ,ChanServ");
+	strcpy (prefs.irc_no_hilight, "NickServ,ChanServ,InfoServ,N,Q");
 
 	g_free ((char *)username);
 	g_free ((char *)realname);
