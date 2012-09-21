@@ -592,9 +592,8 @@ if test "x$dbus" = "xyes" ; then
 		COMMON_LIBS="$COMMON_LIBS $DBUS_LIBS"
 		COMMON_CFLAGS="$COMMON_CFLAGS $DBUS_CFLAGS"
 		AC_DEFINE(USE_DBUS)
-		AS_AC_EXPAND(DATADIR, $datadir)
 
-		DBUS_SERVICES_DIR="$DATADIR/dbus-1/services"
+		AS_AC_EXPAND(DBUS_SERVICES_DIR, "$datadir/dbus-1/services")
 		AC_SUBST(DBUS_SERVICES_DIR)
 		AC_DEFINE_UNQUOTED(DBUS_SERVICES_DIR, "$DBUS_SERVICES_DIR", [Where services dir for DBUS is])
 	fi
@@ -911,10 +910,10 @@ test "x$exec_prefix" = xNONE && exec_prefix="$prefix"
 
 AC_DEFINE_UNQUOTED(PREFIX, "${prefix}")
 
-HEXCHATLIBDIR=`eval echo ${libdir}/hexchat`
+AS_AC_EXPAND(HEXCHATLIBDIR, "${libdir}/hexchat")
 AC_DEFINE_UNQUOTED(HEXCHATLIBDIR, "$HEXCHATLIBDIR")
 
-HEXCHATSHAREDIR=`eval echo ${datadir}`
+AS_AC_EXPAND(HEXCHATSHAREDIR, "$datadir")
 AC_DEFINE_UNQUOTED(HEXCHATSHAREDIR, "$HEXCHATSHAREDIR")
 
 dnl for plugins/xxx/Makefile.am
