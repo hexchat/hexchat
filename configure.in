@@ -628,15 +628,15 @@ if test "$spell" = "gtkspell" ; then
 fi
 
 if test "$spell" = "libsexy" ; then
-	PKG_CHECK_MODULES([LIBSEXY], [libsexy >= 0.1.8], libsexy=yes, AC_MSG_RESULT(no))
-	if test "$libsexy" = "yes" ; then
+	PKG_CHECK_MODULES([LIBSEXY], [libsexy >= 0.1.8], [
+		libsexy=yes
 		GUI_LIBS="$GUI_LIBS $LIBSEXY_LIBS"
 		GUI_CFLAGS="$GUI_CFLAGS $LIBSEXY_CFLAGS"
 		AC_DEFINE(USE_LIBSEXY)
-	else
+	], [
 		dnl use builtin static one
 		spell="static"
-	fi
+	])
 fi
 
 if test "$spell" = "static" ; then
