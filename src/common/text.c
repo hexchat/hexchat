@@ -597,7 +597,7 @@ log_create_pathname (char *servname, char *channame, char *netname)
 
 	/* create final path/filename, check if it's absolute or relative */
 #ifdef WIN32
-	if ((fnametime[0] >= 'A' && fnametime[0] <= 'Z') || (fnametime[0] >= 'a' && fnametime[0] <= 'z')) && fnametime[1] == ':')
+	if ((fnametime[0] >= 'A' && fnametime[0] <= 'Z') || (fnametime[0] >= 'a' && fnametime[0] <= 'z') && fnametime[1] == ':')
 #else
 	/* If one uses log mask variables, such as "%c/...", %c will be empty upon
 	 * connecting since there's no channel name yet, so we have to make sure
