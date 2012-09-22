@@ -596,14 +596,7 @@ log_create_pathname (char *servname, char *channame, char *netname)
 	strftime (fnametime, sizeof (fnametime), fname, tm);
 
 	/* create final path/filename */
-#ifdef WIN32
-	if (fnametime[0] == '/' || (fnametime[0] >= 'A' && fnametime[1] == ':'))
-#else
-	if (fnametime[0] == '/')	/* is it fullpath already? */
-#endif
-		snprintf (fname, sizeof (fname), "%s", fnametime);
-	else
-		snprintf (fname, sizeof (fname), "%s/logs/%s", get_xdir_utf8 (), fnametime);
+	snprintf (fname, sizeof (fname), "%s/logs/%s", get_xdir_utf8 (), fnametime);
 
 	/* now we need it in FileSystem encoding */
 	fs = xchat_filename_from_utf8 (fname, -1, 0, 0, 0);
