@@ -595,30 +595,25 @@ log_create_pathname (char *servname, char *channame, char *netname)
 	tm = localtime (&now);
 	strftime (fnametime, sizeof (fnametime), fname, tm);
 
-	/* create final path/filename */
-#if 0
-	/* Don't check for absolute path, it's unreliable and you can use symlinks anyway.
-	 * For example, if you use "%c/...", %c will be empty upon connecting since there's
-	 * no channel name yet, so it will consider it as a full path, thus your logs will be
-	 * scattered all over the filesystem.
-	 * Also, drive letter's not checked correctly, Z should be the last letter, but this
-	 * code will consider anything with an ASCII value bigger than 'A' followed by a colon
-	 * as full path on Windows. On Unix, you simply can't determine reliably if a path is
-	 * full or relative, "/something" could be considered both as a relative or absolute
-	 * path.
-	 * Let's just force using the config folder as a starting point and allow relative
-	 * paths, although everyone should stay in their config folder. For absolute path you
-	 * can use ln -s (Unix) or mklink (Windows).
-	 */
+	/* create final path/filename, check if it's absolute or relative */
 #ifdef WIN32
-	if (fnametime[0] == '/' || (fnametime[0] >= 'A' && fnametime[1] == ':'))
+	if ((fnametime[0] >= 'A' && fnametime[0] <= 'Z') || (fnametime[0] >= 'a' && fnametime[0] <= 'z')) && fnametime[1] == ':')
 #else
-	if (fnametime[0] == '/')	/* is it fullpath already? */
+	/* If one uses log mask variables, such as "%c/...", %c will be empty upon
+	 * connecting since there's no channel name yet, so we have to make sure
+	 * we won't try to write to the FS root. On Windows we can be sure it's
+	 * full path if the 2nd character is a colon since Windows doesn't allow
+	 * colons in filenames.
+	 */
+	if (fnametime[0] == '/' && prefs.logmask[0] != '%')
 #endif
+	{
 		snprintf (fname, sizeof (fname), "%s", fnametime);
-	else
-#endif
-	snprintf (fname, sizeof (fname), "%s/logs/%s", get_xdir_utf8 (), fnametime);
+	}
+	else	/* relative path */
+	{
+		snprintf (fname, sizeof (fname), "%s/logs/%s", get_xdir_utf8 (), fnametime);
+	}
 
 	/* now we need it in FileSystem encoding */
 	fs = xchat_filename_from_utf8 (fname, -1, 0, 0, 0);
