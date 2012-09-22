@@ -463,7 +463,6 @@ dnl ** LIBPROXY *********************************************************
 dnl *********************************************************************
 
 PKG_CHECK_MODULES([LIBPROXY], [libproxy-1.0], [libproxy=yes], [
-	AC_MSG_RESULT(no)
 	libproxy=no
 ])
 if test "x$libproxy" = "xyes" ; then
@@ -605,7 +604,6 @@ dnl *********************************************************************
 
 if test "x$libnotify" = "xyes" ; then
 	PKG_CHECK_MODULES(LIBNOTIFY, libnotify >= 0.4, [], [
-		AC_MSG_RESULT(no)
 		libnotify=no
 	])
 	if test "$libnotify" != "no" ; then
