@@ -578,7 +578,6 @@ log_create_pathname (char *servname, char *channame, char *netname)
 	char *fs;
 	struct tm *tm;
 	time_t now;
-	char *xdir;
 
 	if (!netname)
 		netname = "NETWORK";
@@ -597,11 +596,7 @@ log_create_pathname (char *servname, char *channame, char *netname)
 	strftime (fnametime, sizeof (fnametime), fname, tm);
 
 	/* create final path/filename */
-	xdir = get_xdir_utf8 ();
-	if (!strncmp (fnametime, xdir, strlen (xdir)))
-		snprintf (fname, sizeof (fname), "%s", fnametime);
-	else
-		snprintf (fname, sizeof (fname), "%s/logs/%s", xdir, fnametime);
+	snprintf (fname, sizeof (fname), "%s/logs/%s", get_xdir_utf8 (), fnametime);
 
 	/* now we need it in FileSystem encoding */
 	fs = xchat_filename_from_utf8 (fname, -1, 0, 0, 0);
