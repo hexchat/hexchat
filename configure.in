@@ -580,7 +580,6 @@ dnl #######################################################################
 
 if test "x$dbus" = "xyes" ; then
 	PKG_CHECK_MODULES(DBUS, [dbus-1 >= 0.60 dbus-glib-1 >= 0.60 gthread-2.0], dbus=yes, [
-		AC_MSG_RESULT(no)
 		dbus=no
 	])
 	AC_PATH_PROG(DBUS_BINDING_TOOL, dbus-binding-tool, no)
@@ -619,7 +618,6 @@ dnl *********************************************************************
 
 if test "$spell" = "gtkspell" ; then
 	PKG_CHECK_MODULES(GTKSPELL, gtkspell-2.0 >= 2.0.2, [], [
-		AC_MSG_RESULT(no)
 		spell=no
 	])
 	if test "$spell" != "no" ; then
