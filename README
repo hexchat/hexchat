@@ -48,8 +48,11 @@ Notes for packagers:
 
 Python Scripts:
 ~~~~~~~~~~~~~~~
- Scripts for 1.8.x are not compatible, and a brand new interface has be
- written. Documentation can be found here: http://xchat.org/docs/.
+ Scripts for XChat 1.8.x are not compatible, a brand new interface has been
+ written. The documentation can be found here:
+
+ https://github.com/hexchat/hexchat/wiki/Python-Interface
+
  Consider using the Python interface for your scripts, it's a very nice
  API, allows for loading/unloading individual scripts, and gives you
  almost all the features of the C-Plugin API.
@@ -57,8 +60,11 @@ Python Scripts:
 
 Perl Scripts:
 ~~~~~~~~~~~~~
- Perl 5.8 or newer is required.
- Scripts for 1.8.x are compatible with the following exceptions:
+ Perl 5.8 or newer is required. The documentation can be found here:
+
+ https://github.com/hexchat/hexchat/wiki/Perl-Interface
+
+ Scripts for XChat 1.8.x are compatible with the following exceptions:
 
  * IRC::command will not interpret %C, %B, %U etc.
 
