@@ -288,16 +288,17 @@ static const struct defaultserver def[] =
 	{"IdleMonkeys", 0},
 	{0,			"irc.idlemonkeys.net"},
 
+	{"IndirectIRC", 0},
+#ifdef USE_OPENSSL
+	{0,			"irc.indirectirc.com/+6697"},
+#endif
+	{0,			"irc.indirectirc.com"},
+
 /*	{"Infinity-IRC",	0},
 	{0,			"Atlanta.GA.US.Infinity-IRC.Org"},
 	{0,			"Babylon.NY.US.Infinity-IRC.Org"},
 	{0,			"Sunshine.Ca.US.Infinity-IRC.Org"},
 	{0,			"IRC.Infinity-IRC.Org"},*/
-
-	{"iZ-smart.net",	0},
-	{0,			"irc.iZ-smart.net/6666"},
-	{0,			"irc.iZ-smart.net/6667"},
-	{0,			"irc.iZ-smart.net/6668"},
 
 	{"IrcLink",	0},
 	{0,			"irc.irclink.net"},
@@ -321,6 +322,17 @@ static const struct defaultserver def[] =
 
 	{"Irctoo.net",	0},
 	{0,			"irc.irctoo.net"},
+
+	{"IronDust", 0},
+#ifdef USE_OPENSSL
+	{0,			"irc.irondust.net/+6697"},
+#endif
+	{0,			"irc.irondust.net"},
+
+	{"iZ-smart.net",	0},
+	{0,			"irc.iZ-smart.net/6666"},
+	{0,			"irc.iZ-smart.net/6667"},
+	{0,			"irc.iZ-smart.net/6668"},
 
 	{"Krstarica", 0},
 	{0,			"irc.krstarica.com"},
