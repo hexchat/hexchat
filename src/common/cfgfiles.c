@@ -744,7 +744,8 @@ load_config (void)
 	prefs.input_tray_priv = prefs.input_tray_hilight = 1;
 	prefs.autodccsend = 2;	/* browse mode */
 	prefs.url_grabber = 1;
-	prefs.url_grabber_limit = 0; /* 0 means unlimited for backcompat */
+	//prefs.url_grabber_limit = 0; /* 0 means unlimited for backcompat */
+	prefs.url_grabber_limit = 1000;
 	prefs.text_search_follow = 1;
 #ifdef WIN32
 	prefs.identd = 1;
