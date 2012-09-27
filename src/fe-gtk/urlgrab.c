@@ -144,11 +144,8 @@ url_save_callback (void *arg1, char *file)
 static void
 url_button_save (void)
 {
-	const char *xdir;
-
-	xdir = get_xdir_utf8 ();
 	gtkutil_file_req (_("Select an output filename"),
-							url_save_callback, NULL, xdir, NULL, FRF_WRITE|FRF_FILTERISINITIAL);
+							url_save_callback, NULL, get_xdir_utf8 (), NULL, FRF_WRITE|FRF_FILTERISINITIAL);
 }
 
 void
