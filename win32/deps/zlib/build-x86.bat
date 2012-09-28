@@ -1,7 +1,8 @@
-:: run this from a VS command prompt
+:: run this from a VS x86 command prompt
 @echo off
 
 SET PACKAGE_NAME=zlib-1.2.7
+
 nmake -f win32\makefile.msc clean
 nmake -f win32\makefile.msc LOC="-DASMV -DASMINF" OBJA="inffas32.obj match686.obj"
 set ZLIB_SRC=%cd%
@@ -26,6 +27,7 @@ cd %ZLIB_DEST%
 set PATH=%PATH%;%ProgramFiles%\7-zip
 7z a ..\%PACKAGE_NAME%-x86.7z *
 cd %ZLIB_SRC%
+rmdir /q /s %ZLIB_DEST%
 
 echo.Finished!
 pause
