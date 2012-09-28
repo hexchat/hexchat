@@ -25,6 +25,7 @@ nmake -f win32\Makefile.msc clean
 
 cd %ZLIB_DEST%
 set PATH=%PATH%;%ProgramFiles%\7-zip
+del ..\%PACKAGE_NAME%-x86.7z
 7z a ..\%PACKAGE_NAME%-x86.7z *
 cd %ZLIB_SRC%
 rmdir /q /s %ZLIB_DEST%
