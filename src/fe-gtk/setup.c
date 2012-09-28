@@ -489,6 +489,10 @@ static const setting logging_settings[] =
 	{ST_LABEL,	N_("See the strftime manpage for details.")},
 #endif
 
+	{ST_HEADER,	N_("URL Grabber"),0,0,0},
+	{ST_TOGGLE,	N_("Enable URL grabber"), P_OFFINTNL(url_grabber), 0, 0, 2},
+	{ST_NUMBER,	N_("Maximum number of URLs:"), P_OFFINTNL(url_grabber_limit), 0, 0, 9999},
+
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
