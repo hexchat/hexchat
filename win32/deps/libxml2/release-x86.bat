@@ -25,7 +25,7 @@ copy win32\vc11\Release\libxml2.lib %LIBXML_DEST%\lib
 copy include\win32config.h %LIBXML_DEST%\include
 copy include\wsockcompat.h %LIBXML_DEST%\include
 xcopy /s include\libxml\*.h %LIBXML_DEST%\include\libxml\
-copy COPYING %EXPAT_DEST%\LICENSE.LIBXML2
+copy COPYING %LIBXML_DEST%\LICENSE.LIBXML2
 
 cd %LIBXML_DEST%
 set PATH=%PATH%;%ProgramFiles%\7-zip
