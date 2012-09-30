@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="UserMacros">
+    <GdkPixbufApiVersion>2.0</GdkPixbufApiVersion>
+    <GdkPixbufBinaryVersion>2.10.0</GdkPixbufBinaryVersion>
+    <GDIP_MACROS>INCLUDE_gdiplus</GDIP_MACROS>
+    <NOGDIP_MACROS>JAS_WIN_MSVC_BUILD;INCLUDE_bmp;INCLUDE_gif;INCLUDE_ico;INCLUDE_jasper;INCLUDE_jpeg;INCLUDE_tiff;</NOGDIP_MACROS>
+    <MODULAR_MACROS>INCLUDE_ani;INCLUDE_pcx;INCLUDE_tga;INCLUDE_xbm;INCLUDE_png;INCLUDE_qtif;INCLUDE_pnm;INCLUDE_icns;INCLUDE_ras;INCLUDE_wbmp;INCLUDE_xpm</MODULAR_MACROS>
+    <GdkPixbufDummyPrefix>\"/dummy\"</GdkPixbufDummyPrefix>
+    <GdkPixbufPrefixDefine>GDK_PIXBUF_PREFIX="\"$(GdkPixbufDummyPrefix)\""</GdkPixbufPrefixDefine>
+    <GdkPixbufLibdirDefine>PIXBUF_LIBDIR="\"$(GdkPixbufDummyPrefix)/lib/gdk-pixbuf-$(GdkPixbufApiVersion)/$(GdkPixbufBinaryVersion)/loaders\""</GdkPixbufLibdirDefine>
+    <GPBLibdirDefine>GDK_PIXBUF_LIBDIR="\"$(GdkPixbufDummyPrefix)/lib\""</GPBLibdirDefine>
+    <GdkPixbufBinVerDefine>GDK_PIXBUF_BINARY_VERSION="\"$(GdkPixbufBinaryVersion)\""</GdkPixbufBinVerDefine>
+    <GdkPixbufLocaleDir>GDK_PIXBUF_LOCALEDIR="\"./locale/\""</GdkPixbufLocaleDir>
+    <GdkPixbufDefines>HAVE_CONFIG_H;GDK_PIXBUF_COMPILATION;GDK_PIXBUF_ENABLE_BACKEND;$(GdkPixbufPrefixDefine);$(GdkPixbufBinVerDefine);$(MODULAR_MACROS);$(GPBLibdirDefine);$(GdkPixbufLocaleDir)</GdkPixbufDefines>
+    <GlibEtcInstallRoot>..\..\..\..\build\$(Platform)</GlibEtcInstallRoot>
+    <CopyDir>..\..\..\..\gdk-pixbuf-2.26.4-rel</CopyDir>
+	<DefDir>$(SolutionDir)$(Configuration)\$(PlatformName)\obj\$(ProjectName)\</DefDir>
+    <GdkPixbufDoInstall>
+echo on
+
+mkdir $(CopyDir)\bin
+
+copy $(Configuration)\$(Platform)\bin\*.dll $(CopyDir)\bin
+
+copy $(Configuration)\$(Platform)\bin\*.exe $(CopyDir)\bin
+
+
+mkdir $(CopyDir)\lib
+
+copy $(Configuration)\$(Platform)\bin\*-$(GdkPixbufApiVersion).lib $(CopyDir)\lib
+
+
+mkdir $(CopyDir)\include\gdk-pixbuf-$(GdkPixbufApiVersion)\gdk-pixbuf
+
+copy ..\..\..\gdk-pixbuf\gdk-pixbuf-animation.h $(CopyDir)\include\gdk-pixbuf-$(GdkPixbufApiVersion)\gdk-pixbuf
+
+copy ..\..\..\gdk-pixbuf\gdk-pixbuf-core.h $(CopyDir)\include\gdk-pixbuf-$(GdkPixbufApiVersion)\gdk-pixbuf
+
+copy ..\..\..\gdk-pixbuf\gdk-pixbuf-enum-types.h $(CopyDir)\include\gdk-pixbuf-$(GdkPixbufApiVersion)\gdk-pixbuf
+
+copy ..\..\..\gdk-pixbuf\gdk-pixbuf-features.h $(CopyDir)\include\gdk-pixbuf-$(GdkPixbufApiVersion)\gdk-pixbuf
+
+copy ..\..\..\gdk-pixbuf\gdk-pixbuf-io.h $(CopyDir)\include\gdk-pixbuf-$(GdkPixbufApiVersion)\gdk-pixbuf
+
+copy ..\..\..\gdk-pixbuf\gdk-pixbuf-loader.h $(CopyDir)\include\gdk-pixbuf-$(GdkPixbufApiVersion)\gdk-pixbuf
+
+copy ..\..\..\gdk-pixbuf\gdk-pixbuf-marshal.h $(CopyDir)\include\gdk-pixbuf-$(GdkPixbufApiVersion)\gdk-pixbuf
+
+copy ..\..\..\gdk-pixbuf\gdk-pixbuf-simple-anim.h $(CopyDir)\include\gdk-pixbuf-$(GdkPixbufApiVersion)\gdk-pixbuf
+
+copy ..\..\..\gdk-pixbuf\gdk-pixbuf-transform.h $(CopyDir)\include\gdk-pixbuf-$(GdkPixbufApiVersion)\gdk-pixbuf
+
+copy ..\..\..\gdk-pixbuf\gdk-pixbuf.h $(CopyDir)\include\gdk-pixbuf-$(GdkPixbufApiVersion)\gdk-pixbuf
+
+copy ..\..\..\gdk-pixbuf\gdk-pixdata.h $(CopyDir)\include\gdk-pixbuf-$(GdkPixbufApiVersion)\gdk-pixbuf
+
+
+copy $(Configuration)\$(Platform)\bin\*-$(GdkPixbufApiVersion).lib $(CopyDir)\\lib
+
+</GdkPixbufDoInstall>
+    <GdkPixbufGenerateGdkPixbufDef>echo EXPORTS &gt;$(DefDir)\gdk-pixbuf.def &amp;&amp; cl /EP -DG_OS_WIN32 -DINCLUDE_VARIABLES -DALL_FILES -DG_GNUC_CONST= -DG_GNUC_NULL_TERMINATED= ..\..\..\gdk-pixbuf\gdk-pixbuf.symbols &gt;&gt;$(DefDir)\gdk-pixbuf.def</GdkPixbufGenerateGdkPixbufDef>
+    <GdkPixbufLibtoolCompatibleDllPrefix>lib</GdkPixbufLibtoolCompatibleDllPrefix>
+    <GdkPixbufLibtoolCompatibleDllSuffix>-$(GdkPixbufApiVersion)-0</GdkPixbufLibtoolCompatibleDllSuffix>
+    <GdkPixbufSeparateVS10DllPrefix />
+    <GdkPixbufSeparateVS10DllSuffix>-2.0</GdkPixbufSeparateVS10DllSuffix>
+    <GdkPixbufDllPrefix>$(GdkPixbufSeparateVS10DllPrefix)</GdkPixbufDllPrefix>
+    <GdkPixbufDllSuffix>$(GdkPixbufSeparateVS10DllSuffix)</GdkPixbufDllSuffix>
+  </PropertyGroup>
+  <PropertyGroup>
+    <_PropertySheetDisplayName>gdk-pixbufprops</_PropertySheetDisplayName>
+    <OutDir>$(SolutionDir)$(Configuration)\$(PlatformName)\bin\</OutDir>
+    <IntDir>$(SolutionDir)$(Configuration)\$(PlatformName)\obj\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\..\..;..\..\..\gdk-pixbuf;$(GlibEtcInstallRoot)\lib\glib-2.0\include;$(GlibEtcInstallRoot)\include\glib-2.0;$(GlibEtcInstallRoot)\include;$(GlibEtcInstallRoot)\include\cairo;$(GlibEtcInstallRoot)\include\atk-1.0;$(GlibEtcInstallRoot)\include\pango-1.0;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>HAVE_CONFIG_H;G_DISABLE_SINGLE_INCLUDES;GDK_PIXBUF_DISABLE_SINGLE_INCLUDES;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ForcedIncludeFiles>msvc_recommended_pragmas.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>gio-2.0.lib;gmodule-2.0.lib;gobject-2.0.lib;glib-2.0.lib;gthread-2.0.lib;libintl.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(GlibEtcInstallRoot)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <PreBuildEvent>
+      <Command>
+if exist ..\..\..\config.h goto GEN_MARS_H
+
+copy ..\..\..\config.h.win32 ..\..\..\config.h
+
+:GEN_MARS_H
+
+if exist ..\..\..\gdk-pixbuf\gdk-pixbuf-marshal.h goto GEN_MARS_C
+
+glib-genmarshal.exe --prefix=_gdk_pixbuf_marshal ..\..\..\gdk-pixbuf\gdk-pixbuf-marshal.list --header &gt;..\..\..\gdk-pixbuf\gdk-pixbuf-marshal.h
+
+:GEN_MARS_C
+
+if exist ..\..\..\gdk-pixbuf\gdk-pixbuf-marshal.c goto END
+
+glib-genmarshal.exe --prefix=_gdk_pixbuf_marshal ..\..\..\gdk-pixbuf\gdk-pixbuf-marshal.list --body &gt;..\..\..\gdk-pixbuf\gdk-pixbuf-marshal.c
+
+:END
+
+</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <BuildMacro Include="GdkPixbufApiVersion">
+      <Value>$(GdkPixbufApiVersion)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GdkPixbufBinaryVersion">
+      <Value>$(GdkPixbufBinaryVersion)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GDIP_MACROS">
+      <Value>$(GDIP_MACROS)</Value>
+    </BuildMacro>
+    <BuildMacro Include="NOGDIP_MACROS">
+      <Value>$(NOGDIP_MACROS)</Value>
+    </BuildMacro>
+    <BuildMacro Include="MODULAR_MACROS">
+      <Value>$(MODULAR_MACROS)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GdkPixbufDummyPrefix">
+      <Value>$(GdkPixbufDummyPrefix)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GdkPixbufPrefixDefine">
+      <Value>$(GdkPixbufPrefixDefine)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GdkPixbufLibdirDefine">
+      <Value>$(GdkPixbufLibdirDefine)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GPBLibdirDefine">
+      <Value>$(GPBLibdirDefine)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GdkPixbufBinVerDefine">
+      <Value>$(GdkPixbufBinVerDefine)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GdkPixbufLocaleDir">
+      <Value>$(GdkPixbufLocaleDir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GdkPixbufDefines">
+      <Value>$(GdkPixbufDefines)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GdkPixbufDoInstall">
+      <Value>$(GdkPixbufDoInstall)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GdkPixbufGenerateGdkPixbufDef">
+      <Value>$(GdkPixbufGenerateGdkPixbufDef)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GdkPixbufLibtoolCompatibleDllPrefix">
+      <Value>$(GdkPixbufLibtoolCompatibleDllPrefix)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GdkPixbufLibtoolCompatibleDllSuffix">
+      <Value>$(GdkPixbufLibtoolCompatibleDllSuffix)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GdkPixbufSeparateVS10DllPrefix">
+      <Value>$(GdkPixbufSeparateVS10DllPrefix)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GdkPixbufSeparateVS10DllSuffix">
+      <Value>$(GdkPixbufSeparateVS10DllSuffix)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GdkPixbufDllPrefix">
+      <Value>$(GdkPixbufDllPrefix)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GdkPixbufDllSuffix">
+      <Value>$(GdkPixbufDllSuffix)</Value>
+    </BuildMacro>
+    <BuildMacro Include="GlibEtcInstallRoot">
+      <Value>$(GlibEtcInstallRoot)</Value>
+    </BuildMacro>
+    <BuildMacro Include="CopyDir">
+      <Value>$(CopyDir)</Value>
+    </BuildMacro>
+    <BuildMacro Include="DefDir">
+      <Value>$(DefDir)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>
