@@ -1,0 +1,231 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{DF6AE3B3-C0CA-4C8B-9F93-A183BF5005C9}</ProjectGuid>
+    <RootNamespace>fc-lang</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>11.0.50727.1</_ProjectFileVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <OutDir>Debug\</OutDir>
+    <IntDir>Debug\</IntDir>
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <OutDir>Release\</OutDir>
+    <IntDir>Release\</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>.\;.\fontconfig;.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;HAVE_CONFIG_H;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
+      <DisableSpecificWarnings>4244;4819;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <OutputFile>.\fc-lang\fc-lang.exe</OutputFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>$(OutDir)fc-lang.pdb</ProgramDatabaseFile>
+      <SubSystem>Console</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention />
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <PostBuildEvent>
+      <Command>if exist .\fc-lang\fclang.h goto END
+cd fc-lang
+fc-lang.exe -d . aa.orth ab.orth af.orth am.orth ar.orth as.orth ast.orth av.orth ay.orth az_az.orth az_ir.orth ba.orth bm.orth be.orth bg.orth bh.orth bho.orth bi.orth bin.orth bn.orth bo.orth br.orth bs.orth bua.orth ca.orth ce.orth ch.orth chm.orth chr.orth co.orth cs.orth cu.orth cv.orth cy.orth da.orth de.orth dz.orth el.orth en.orth eo.orth es.orth et.orth eu.orth fa.orth fi.orth fj.orth fo.orth fr.orth ff.orth fur.orth fy.orth ga.orth gd.orth gez.orth gl.orth gn.orth gu.orth gv.orth ha.orth haw.orth he.orth hi.orth ho.orth hr.orth hu.orth hy.orth ia.orth ig.orth id.orth ie.orth ik.orth io.orth is.orth it.orth iu.orth ja.orth ka.orth kaa.orth ki.orth kk.orth kl.orth km.orth kn.orth ko.orth kok.orth ks.orth ku_am.orth ku_ir.orth kum.orth kv.orth kw.orth ky.orth la.orth lb.orth lez.orth ln.orth lo.orth lt.orth lv.orth mg.orth mh.orth mi.orth mk.orth ml.orth mn_cn.orth mo.orth mr.orth mt.orth my.orth nb.orth nds.orth ne.orth nl.orth nn.orth no.orth nr.orth nso.orth ny.orth oc.orth om.orth or.orth os.orth pa.orth pl.orth ps_af.orth ps_pk.orth pt.orth rm.orth ro.orth ru.orth sa.orth sah.orth sco.orth se.orth sel.orth sh.orth shs.orth si.orth sk.orth sl.orth sm.orth sma.orth smj.orth smn.orth sms.orth so.orth sq.orth sr.orth ss.orth st.orth sv.orth sw.orth syr.orth ta.orth te.orth tg.orth th.orth ti_er.orth ti_et.orth tig.orth tk.orth tl.orth tn.orth to.orth tr.orth ts.orth tt.orth tw.orth tyv.orth ug.orth uk.orth ur.orth uz.orth ve.orth vi.orth vo.orth vot.orth wa.orth wen.orth wo.orth xh.orth yap.orth yi.orth yo.orth zh_cn.orth zh_hk.orth zh_mo.orth zh_sg.orth zh_tw.orth zu.orth ak.orth an.orth ber_dz.orth ber_ma.orth byn.orth crh.orth csb.orth dv.orth ee.orth fat.orth fil.orth hne.orth hsb.orth ht.orth hz.orth ii.orth jv.orth kab.orth kj.orth kr.orth ku_iq.orth ku_tr.orth kwm.orth lg.orth li.orth mai.orth mn_mn.orth ms.orth na.orth ng.orth nv.orth ota.orth pa_pk.orth pap_an.orth pap_aw.orth qu.orth rn.orth rw.orth sc.orth sd.orth sg.orth sid.orth sn.orth su.orth ty.orth wal.orth za.orth lah.orth &lt; fclang.tmpl.h &gt; fclang.h
+cd ..
+:END
+</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <ClCompile>
+      <Optimization>Disabled</Optimization>
+      <AdditionalIncludeDirectories>.\;.\fontconfig;.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_DEBUG;HAVE_CONFIG_H;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4244;4819;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <OutputFile>.\fc-lang\fc-lang.exe</OutputFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ProgramDatabaseFile>$(OutDir)fc-lang.pdb</ProgramDatabaseFile>
+      <SubSystem>Console</SubSystem>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+    </Link>
+    <PostBuildEvent>
+      <Command>if exist .\fc-lang\fclang.h goto END
+cd fc-lang
+fc-lang.exe -d . aa.orth ab.orth af.orth am.orth ar.orth as.orth ast.orth av.orth ay.orth az_az.orth az_ir.orth ba.orth bm.orth be.orth bg.orth bh.orth bho.orth bi.orth bin.orth bn.orth bo.orth br.orth bs.orth bua.orth ca.orth ce.orth ch.orth chm.orth chr.orth co.orth cs.orth cu.orth cv.orth cy.orth da.orth de.orth dz.orth el.orth en.orth eo.orth es.orth et.orth eu.orth fa.orth fi.orth fj.orth fo.orth fr.orth ff.orth fur.orth fy.orth ga.orth gd.orth gez.orth gl.orth gn.orth gu.orth gv.orth ha.orth haw.orth he.orth hi.orth ho.orth hr.orth hu.orth hy.orth ia.orth ig.orth id.orth ie.orth ik.orth io.orth is.orth it.orth iu.orth ja.orth ka.orth kaa.orth ki.orth kk.orth kl.orth km.orth kn.orth ko.orth kok.orth ks.orth ku_am.orth ku_ir.orth kum.orth kv.orth kw.orth ky.orth la.orth lb.orth lez.orth ln.orth lo.orth lt.orth lv.orth mg.orth mh.orth mi.orth mk.orth ml.orth mn_cn.orth mo.orth mr.orth mt.orth my.orth nb.orth nds.orth ne.orth nl.orth nn.orth no.orth nr.orth nso.orth ny.orth oc.orth om.orth or.orth os.orth pa.orth pl.orth ps_af.orth ps_pk.orth pt.orth rm.orth ro.orth ru.orth sa.orth sah.orth sco.orth se.orth sel.orth sh.orth shs.orth si.orth sk.orth sl.orth sm.orth sma.orth smj.orth smn.orth sms.orth so.orth sq.orth sr.orth ss.orth st.orth sv.orth sw.orth syr.orth ta.orth te.orth tg.orth th.orth ti_er.orth ti_et.orth tig.orth tk.orth tl.orth tn.orth to.orth tr.orth ts.orth tt.orth tw.orth tyv.orth ug.orth uk.orth ur.orth uz.orth ve.orth vi.orth vo.orth vot.orth wa.orth wen.orth wo.orth xh.orth yap.orth yi.orth yo.orth zh_cn.orth zh_hk.orth zh_mo.orth zh_sg.orth zh_tw.orth zu.orth ak.orth an.orth ber_dz.orth ber_ma.orth byn.orth crh.orth csb.orth dv.orth ee.orth fat.orth fil.orth hne.orth hsb.orth ht.orth hz.orth ii.orth jv.orth kab.orth kj.orth kr.orth ku_iq.orth ku_tr.orth kwm.orth lg.orth li.orth mai.orth mn_mn.orth ms.orth na.orth ng.orth nv.orth ota.orth pa_pk.orth pap_an.orth pap_aw.orth qu.orth rn.orth rw.orth sc.orth sd.orth sg.orth sid.orth sn.orth su.orth ty.orth wal.orth za.orth lah.orth &lt; fclang.tmpl.h &gt; fclang.h
+cd ..
+:END
+</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <ClCompile>
+      <AdditionalIncludeDirectories>.\;.\fontconfig;.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>HAVE_CONFIG_H;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PrecompiledHeader />
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4244;4819;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <OutputFile>.\fc-lang\fc-lang.exe</OutputFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention />
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+    <PostBuildEvent>
+      <Command>if exist .\fc-lang\fclang.h goto END
+cd fc-lang
+fc-lang.exe -d . aa.orth ab.orth af.orth am.orth ar.orth as.orth ast.orth av.orth ay.orth az_az.orth az_ir.orth ba.orth bm.orth be.orth bg.orth bh.orth bho.orth bi.orth bin.orth bn.orth bo.orth br.orth bs.orth bua.orth ca.orth ce.orth ch.orth chm.orth chr.orth co.orth cs.orth cu.orth cv.orth cy.orth da.orth de.orth dz.orth el.orth en.orth eo.orth es.orth et.orth eu.orth fa.orth fi.orth fj.orth fo.orth fr.orth ff.orth fur.orth fy.orth ga.orth gd.orth gez.orth gl.orth gn.orth gu.orth gv.orth ha.orth haw.orth he.orth hi.orth ho.orth hr.orth hu.orth hy.orth ia.orth ig.orth id.orth ie.orth ik.orth io.orth is.orth it.orth iu.orth ja.orth ka.orth kaa.orth ki.orth kk.orth kl.orth km.orth kn.orth ko.orth kok.orth ks.orth ku_am.orth ku_ir.orth kum.orth kv.orth kw.orth ky.orth la.orth lb.orth lez.orth ln.orth lo.orth lt.orth lv.orth mg.orth mh.orth mi.orth mk.orth ml.orth mn_cn.orth mo.orth mr.orth mt.orth my.orth nb.orth nds.orth ne.orth nl.orth nn.orth no.orth nr.orth nso.orth ny.orth oc.orth om.orth or.orth os.orth pa.orth pl.orth ps_af.orth ps_pk.orth pt.orth rm.orth ro.orth ru.orth sa.orth sah.orth sco.orth se.orth sel.orth sh.orth shs.orth si.orth sk.orth sl.orth sm.orth sma.orth smj.orth smn.orth sms.orth so.orth sq.orth sr.orth ss.orth st.orth sv.orth sw.orth syr.orth ta.orth te.orth tg.orth th.orth ti_er.orth ti_et.orth tig.orth tk.orth tl.orth tn.orth to.orth tr.orth ts.orth tt.orth tw.orth tyv.orth ug.orth uk.orth ur.orth uz.orth ve.orth vi.orth vo.orth vot.orth wa.orth wen.orth wo.orth xh.orth yap.orth yi.orth yo.orth zh_cn.orth zh_hk.orth zh_mo.orth zh_sg.orth zh_tw.orth zu.orth ak.orth an.orth ber_dz.orth ber_ma.orth byn.orth crh.orth csb.orth dv.orth ee.orth fat.orth fil.orth hne.orth hsb.orth ht.orth hz.orth ii.orth jv.orth kab.orth kj.orth kr.orth ku_iq.orth ku_tr.orth kwm.orth lg.orth li.orth mai.orth mn_mn.orth ms.orth na.orth ng.orth nv.orth ota.orth pa_pk.orth pap_an.orth pap_aw.orth qu.orth rn.orth rw.orth sc.orth sd.orth sg.orth sid.orth sn.orth su.orth ty.orth wal.orth za.orth lah.orth &lt; fclang.tmpl.h &gt; fclang.h
+cd ..
+:END
+</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <ClCompile>
+      <AdditionalIncludeDirectories>.\;.\fontconfig;.\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>HAVE_CONFIG_H;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4244;4819;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <OutputFile>.\fc-lang\fc-lang.exe</OutputFile>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <SubSystem>Console</SubSystem>
+      <OptimizeReferences>true</OptimizeReferences>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <RandomizedBaseAddress>false</RandomizedBaseAddress>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+    </Link>
+    <PostBuildEvent>
+      <Command>if exist .\fc-lang\fclang.h goto END
+cd fc-lang
+fc-lang.exe -d . aa.orth ab.orth af.orth am.orth ar.orth as.orth ast.orth av.orth ay.orth az_az.orth az_ir.orth ba.orth bm.orth be.orth bg.orth bh.orth bho.orth bi.orth bin.orth bn.orth bo.orth br.orth bs.orth bua.orth ca.orth ce.orth ch.orth chm.orth chr.orth co.orth cs.orth cu.orth cv.orth cy.orth da.orth de.orth dz.orth el.orth en.orth eo.orth es.orth et.orth eu.orth fa.orth fi.orth fj.orth fo.orth fr.orth ff.orth fur.orth fy.orth ga.orth gd.orth gez.orth gl.orth gn.orth gu.orth gv.orth ha.orth haw.orth he.orth hi.orth ho.orth hr.orth hu.orth hy.orth ia.orth ig.orth id.orth ie.orth ik.orth io.orth is.orth it.orth iu.orth ja.orth ka.orth kaa.orth ki.orth kk.orth kl.orth km.orth kn.orth ko.orth kok.orth ks.orth ku_am.orth ku_ir.orth kum.orth kv.orth kw.orth ky.orth la.orth lb.orth lez.orth ln.orth lo.orth lt.orth lv.orth mg.orth mh.orth mi.orth mk.orth ml.orth mn_cn.orth mo.orth mr.orth mt.orth my.orth nb.orth nds.orth ne.orth nl.orth nn.orth no.orth nr.orth nso.orth ny.orth oc.orth om.orth or.orth os.orth pa.orth pl.orth ps_af.orth ps_pk.orth pt.orth rm.orth ro.orth ru.orth sa.orth sah.orth sco.orth se.orth sel.orth sh.orth shs.orth si.orth sk.orth sl.orth sm.orth sma.orth smj.orth smn.orth sms.orth so.orth sq.orth sr.orth ss.orth st.orth sv.orth sw.orth syr.orth ta.orth te.orth tg.orth th.orth ti_er.orth ti_et.orth tig.orth tk.orth tl.orth tn.orth to.orth tr.orth ts.orth tt.orth tw.orth tyv.orth ug.orth uk.orth ur.orth uz.orth ve.orth vi.orth vo.orth vot.orth wa.orth wen.orth wo.orth xh.orth yap.orth yi.orth yo.orth zh_cn.orth zh_hk.orth zh_mo.orth zh_sg.orth zh_tw.orth zu.orth ak.orth an.orth ber_dz.orth ber_ma.orth byn.orth crh.orth csb.orth dv.orth ee.orth fat.orth fil.orth hne.orth hsb.orth ht.orth hz.orth ii.orth jv.orth kab.orth kj.orth kr.orth ku_iq.orth ku_tr.orth kwm.orth lg.orth li.orth mai.orth mn_mn.orth ms.orth na.orth ng.orth nv.orth ota.orth pa_pk.orth pap_an.orth pap_aw.orth qu.orth rn.orth rw.orth sc.orth sd.orth sg.orth sid.orth sn.orth su.orth ty.orth wal.orth za.orth lah.orth &lt; fclang.tmpl.h &gt; fclang.h
+cd ..
+:END
+</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="fc-lang\fc-lang.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="fc-case.vcxproj">
+      <Project>{1b4e62f7-3437-48d5-aab2-cbbe3de513ed}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
