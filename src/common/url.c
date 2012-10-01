@@ -129,7 +129,13 @@ url_add (char *urltext, int len)
 		   xchat is running */
 		size -= prefs.url_grabber_limit;
 		for(; size > 0; size--)
-			free (tree_remove_at_pos (url_tree, 0));
+		{
+			char *pos;
+
+			pos = tree_remove_at_pos (url_tree, 0);
+			g_tree_remove (url_btree, pos);
+			free (pos);
+		}
 	}
 
 	tree_append (url_tree, data);
