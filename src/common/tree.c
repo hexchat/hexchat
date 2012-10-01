@@ -150,10 +150,11 @@ tree_find (tree *t, void *key, tree_cmp_func *cmp, void *data, int *pos)
 	return mybsearch (key, &t->array[0], t->elements, cmp, data, pos);
 }
 
-void
+void *
 tree_remove_at_pos (tree *t, int pos)
 {
 	int post_bytes;
+	void *ret = t->array[pos];
 
 	t->elements--;
 	if (pos != t->elements)
@@ -161,6 +162,7 @@ tree_remove_at_pos (tree *t, int pos)
 		post_bytes = (t->elements - pos) * sizeof (void *);
 		memmove (&t->array[pos], &t->array[pos + 1], post_bytes);
 	}
+	return ret;
 }
 
 int

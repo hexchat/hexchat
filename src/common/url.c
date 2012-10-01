@@ -31,6 +31,7 @@
 #endif
 
 void *url_tree = NULL;
+GTree *url_btree = NULL;
 
 
 static int
@@ -46,6 +47,8 @@ url_clear (void)
 	tree_foreach (url_tree, (tree_traverse_func *)url_free, NULL);
 	tree_destroy (url_tree);
 	url_tree = NULL;
+	g_tree_destroy (url_btree);
+	url_btree = NULL;
 }
 
 static int
@@ -80,11 +83,7 @@ url_autosave (void)
 static int
 url_find (char *urltext)
 {
-	int pos;
-
-	if (tree_find (url_tree, urltext, (tree_cmp_func *)g_ascii_strcasecmp, NULL, &pos))
-		return 1;
-	return 0;
+	return (g_tree_lookup_extended (url_btree, urltext, NULL, NULL));
 }
 
 static void
@@ -110,14 +109,17 @@ url_add (char *urltext, int len)
 	if (data[len - 1] == ')')	/* chop trailing ) */
 		data[len - 1] = 0;
 
+	if (!url_tree)
+	{
+		url_tree = tree_new ((tree_cmp_func *)strcasecmp, NULL);
+		url_btree = g_tree_new ((GCompareFunc)strcasecmp);
+	}
+
 	if (url_find (data))
 	{
 		free (data);
 		return;
 	}
-
-	if (!url_tree)
-		url_tree = tree_new ((tree_cmp_func *)g_ascii_strcasecmp, NULL);
 
 	size = tree_size (url_tree);
 	/* 0 is unlimited */
@@ -127,10 +129,11 @@ url_add (char *urltext, int len)
 		   xchat is running */
 		size -= prefs.url_grabber_limit;
 		for(; size > 0; size--)
-			tree_remove_at_pos (url_tree, 0);
+			free (tree_remove_at_pos (url_tree, 0));
 	}
 
 	tree_append (url_tree, data);
+	g_tree_insert (url_btree, data, GINT_TO_POINTER (tree_size (url_tree) - 1));
 	fe_url_add (data);
 }
 
