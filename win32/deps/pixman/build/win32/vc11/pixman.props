@@ -1,0 +1,91 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="UserMacros">
+    <ApiVersion>1</ApiVersion>
+    <PixmanEtcInstallRoot>..\..\..\..\build\$(Platform)</PixmanEtcInstallRoot>
+    <CopyDir>..\..\..\..\pixman-0.26.2-rel</CopyDir>
+    <PixmanDoInstall>
+mkdir $(CopyDir)
+
+mkdir $(CopyDir)\bin
+
+copy $(SolutionDir)$(Configuration)\$(Platform)\bin\*.dll $(CopyDir)\bin
+
+copy $(SolutionDir)$(Configuration)\$(Platform)\bin\testpixman.exe $(CopyDir)\bin
+
+
+mkdir $(CopyDir)\include\pixman-$(ApiVersion)
+
+copy ..\..\..\pixman\pixman.h $(CopyDir)\include\pixman-$(ApiVersion)
+
+copy ..\..\..\pixman\pixman-version.h $(CopyDir)\include\pixman-$(ApiVersion)
+
+
+mkdir $(CopyDir)\lib
+
+copy $(SolutionDir)$(Configuration)\$(Platform)\bin\*-$(ApiVersion).lib $(CopyDir)\lib
+
+copy $(SolutionDir)$(Configuration)\$(Platform)\bin\*-$(ApiVersion).exp $(CopyDir)\lib
+
+</PixmanDoInstall>
+  </PropertyGroup>
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.40219.1</_ProjectFileVersion>
+    <_PropertySheetDisplayName>pixmanprops</_PropertySheetDisplayName>
+    <OutDir>$(SolutionDir)$(Configuration)\$(PlatformName)\bin\</OutDir>
+    <IntDir>$(SolutionDir)$(Configuration)\$(PlatformName)\obj\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\..\..;..\..\..\pixman;$(PixmanEtcInstallRoot)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_WARNINGS;HAVE_CONFIG_H;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <DisableSpecificWarnings>4244;4101;4819;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(PixmanEtcInstallRoot)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <PreBuildEvent>
+      <Command>
+
+if exist ..\..\..\pixman\pixman-combine32.h goto DONE_PIXMAN_COMBINE_32_H
+
+perl ..\..\..\pixman\make-combine.pl 8 &lt; ..\..\..\pixman\pixman-combine.h.template &gt; ..\..\..\pixman\pixman-combine32.h
+
+:DONE_PIXMAN_COMBINE_32_H
+
+
+if exist ..\..\..\pixman\pixman-combine32.c goto DONE_PIXMAN_COMBINE_32_C
+
+perl ..\..\..\pixman\make-combine.pl 8 &lt; ..\..\..\pixman\pixman-combine.c.template &gt; ..\..\..\pixman\pixman-combine32.c
+
+:DONE_PIXMAN_COMBINE_32_C
+
+
+if exist ..\..\..\pixman\pixman-combine64.h goto DONE_PIXMAN_COMBINE_64_H
+
+perl ..\..\..\pixman\make-combine.pl 16 &lt; ..\..\..\pixman\pixman-combine.h.template &gt; ..\..\..\pixman\pixman-combine64.h
+
+:DONE_PIXMAN_COMBINE_64_H
+
+
+if exist ..\..\..\pixman\pixman-combine64.c goto DONE_PIXMAN_COMBINE_64_C
+
+perl ..\..\..\pixman\make-combine.pl 16 &lt; ..\..\..\pixman\pixman-combine.c.template &gt; ..\..\..\pixman\pixman-combine64.c
+
+:DONE_PIXMAN_COMBINE_64_C
+
+</Command>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <BuildMacro Include="ApiVersion">
+      <Value>$(ApiVersion)</Value>
+    </BuildMacro>
+    <BuildMacro Include="PixmanEtcInstallRoot">
+      <Value>$(PixmanEtcInstallRoot)</Value>
+    </BuildMacro>
+    <BuildMacro Include="PixmanDoInstall">
+      <Value>$(PixmanDoInstall)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>
