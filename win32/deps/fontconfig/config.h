@@ -219,7 +219,7 @@
 #define STDC_HEADERS 1
 
 /* Use iconv. */
-/*#define USE_ICONV 1*/
+#define USE_ICONV 1
 
 /* Version number of package */
 #define VERSION "2.7.3"
