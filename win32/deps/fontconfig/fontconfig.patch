@@ -1,0 +1,130 @@
+diff -ruN --strip-trailing-cr fontconfig-2.8.0.orig/fc-cache/fc-cache.c fontconfig-2.8.0/fc-cache/fc-cache.c
+--- fontconfig-2.8.0.orig/fc-cache/fc-cache.c	2009-11-16 17:24:52 +0000
++++ fontconfig-2.8.0/fc-cache/fc-cache.c	2012-10-02 08:35:20 +0000
+@@ -36,7 +36,9 @@
+ #include <fontconfig/fontconfig.h>
+ #include <stdio.h>
+ #include <stdlib.h>
++#ifndef WIN32
+ #include <unistd.h>
++#endif
+ #include <sys/types.h>
+ #include <sys/stat.h>
+ #include <errno.h>
+diff -ruN --strip-trailing-cr fontconfig-2.8.0.orig/fc-cat/fc-cat.c fontconfig-2.8.0/fc-cat/fc-cat.c
+--- fontconfig-2.8.0.orig/fc-cat/fc-cat.c	2009-11-16 17:24:52 +0000
++++ fontconfig-2.8.0/fc-cat/fc-cat.c	2012-10-02 08:35:37 +0000
+@@ -36,7 +36,9 @@
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
++#ifndef WIN32
+ #include <unistd.h>
++#endif
+ #include <sys/types.h>
+ #include <sys/stat.h>
+ #include <errno.h>
+diff -ruN --strip-trailing-cr fontconfig-2.8.0.orig/fc-list/fc-list.c fontconfig-2.8.0/fc-list/fc-list.c
+--- fontconfig-2.8.0.orig/fc-list/fc-list.c	2009-11-16 17:24:52 +0000
++++ fontconfig-2.8.0/fc-list/fc-list.c	2012-10-02 08:35:52 +0000
+@@ -24,7 +24,9 @@
+ 
+ #include <fontconfig/fontconfig.h>
+ #include <stdio.h>
++#ifndef WIN32
+ #include <unistd.h>
++#endif
+ #include <stdlib.h>
+ #include <string.h>
+ #ifdef HAVE_CONFIG_H
+diff -ruN --strip-trailing-cr fontconfig-2.8.0.orig/fc-match/fc-match.c fontconfig-2.8.0/fc-match/fc-match.c
+--- fontconfig-2.8.0.orig/fc-match/fc-match.c	2009-11-16 17:24:52 +0000
++++ fontconfig-2.8.0/fc-match/fc-match.c	2012-10-02 08:36:04 +0000
+@@ -33,7 +33,9 @@
+ 
+ #include <fontconfig/fontconfig.h>
+ #include <stdio.h>
++#ifndef WIN32
+ #include <unistd.h>
++#endif
+ #include <stdlib.h>
+ #include <string.h>
+ 
+diff -ruN --strip-trailing-cr fontconfig-2.8.0.orig/fc-query/fc-query.c fontconfig-2.8.0/fc-query/fc-query.c
+--- fontconfig-2.8.0.orig/fc-query/fc-query.c	2009-11-16 17:24:52 +0000
++++ fontconfig-2.8.0/fc-query/fc-query.c	2012-10-02 08:36:09 +0000
+@@ -36,7 +36,9 @@
+ #include <fontconfig/fontconfig.h>
+ #include <fontconfig/fcfreetype.h>
+ #include <stdio.h>
++#ifndef WIN32
+ #include <unistd.h>
++#endif
+ #include <stdlib.h>
+ #include <string.h>
+ 
+diff -ruN --strip-trailing-cr fontconfig-2.8.0.orig/fc-scan/fc-scan.c fontconfig-2.8.0/fc-scan/fc-scan.c
+--- fontconfig-2.8.0.orig/fc-scan/fc-scan.c	2009-11-16 17:24:52 +0000
++++ fontconfig-2.8.0/fc-scan/fc-scan.c	2012-10-02 08:36:21 +0000
+@@ -36,7 +36,9 @@
+ #include <fontconfig/fontconfig.h>
+ #include <fontconfig/fcfreetype.h>
+ #include <stdio.h>
++#ifndef WIN32
+ #include <unistd.h>
++#endif
+ #include <stdlib.h>
+ #include <string.h>
+ 
+diff -ruN --strip-trailing-cr fontconfig-2.8.0.orig/fontconfig/fontconfig.h fontconfig-2.8.0/fontconfig/fontconfig.h
+--- fontconfig-2.8.0.orig/fontconfig/fontconfig.h	2009-11-18 23:49:23 +0000
++++ fontconfig-2.8.0/fontconfig/fontconfig.h	2012-10-02 08:36:37 +0000
+@@ -27,7 +27,9 @@
+ 
+ #include <sys/types.h>
+ #include <sys/stat.h>
++#ifndef WIN32
+ #include <unistd.h>
++#endif
+ #include <stdarg.h>
+ 
+ #if defined(__GNUC__) && (__GNUC__ >= 4)
+diff -ruN --strip-trailing-cr fontconfig-2.8.0.orig/src/fcatomic.c fontconfig-2.8.0/src/fcatomic.c
+--- fontconfig-2.8.0.orig/src/fcatomic.c	2009-11-16 17:24:52 +0000
++++ fontconfig-2.8.0/src/fcatomic.c	2012-10-02 08:36:59 +0000
+@@ -51,7 +51,9 @@
+ #include <sys/types.h>
+ #include <sys/stat.h>
+ #include <fcntl.h>
++#ifndef WIN32
+ #include <unistd.h>
++#endif
+ #include <stdlib.h>
+ #include <time.h>
+ 
+diff -ruN --strip-trailing-cr fontconfig-2.8.0.orig/src/fccache.c fontconfig-2.8.0/src/fccache.c
+--- fontconfig-2.8.0.orig/src/fccache.c	2009-11-16 17:24:52 +0000
++++ fontconfig-2.8.0/src/fccache.c	2012-10-02 08:39:46 +0000
+@@ -30,7 +30,9 @@
+ #include <sys/types.h>
+ #include <assert.h>
+ #if defined(HAVE_MMAP) || defined(__CYGWIN__)
++#ifndef WIN32
+ #  include <unistd.h>
++#endif
+ #  include <sys/mman.h>
+ #elif defined(_WIN32)
+ #  define _WIN32_WINNT 0x0500
+diff -ruN --strip-trailing-cr fontconfig-2.8.0.orig/src/fcint.h fontconfig-2.8.0/src/fcint.h
+--- fontconfig-2.8.0.orig/src/fcint.h	2009-11-16 22:46:18 +0000
++++ fontconfig-2.8.0/src/fcint.h	2012-10-02 08:38:33 +0000
+@@ -41,7 +41,9 @@
+ #include <string.h>
+ #include <ctype.h>
+ #include <errno.h>
++#ifndef WIN32
+ #include <unistd.h>
++#endif
+ #include <stddef.h>
+ #include <sys/types.h>
+ #include <sys/stat.h>
