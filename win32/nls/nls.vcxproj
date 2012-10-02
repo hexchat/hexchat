@@ -67,7 +67,7 @@ rmdir /q /s "$(OutDir)\locale"
 mkdir "$(OutDir)\locale"
 for %%A in (*.po) do (
 mkdir "$(OutDir)\locale\%%~nA\LC_MESSAGES"
-"$(DepsRoot)\bin\msgfmt" -co "$(OutDir)\locale\%%~nA\LC_MESSAGES\hexchat.mo" %%A
+"$(MsgfmtPath)\msgfmt" -co "$(OutDir)\locale\%%~nA\LC_MESSAGES\hexchat.mo" %%A
 )</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
@@ -89,7 +89,7 @@ rmdir /q /s "$(OutDir)\locale"
 mkdir "$(OutDir)\locale"
 for %%A in (*.po) do (
 mkdir "$(OutDir)\locale\%%~nA\LC_MESSAGES"
-"$(DepsRoot)\bin\msgfmt" -co "$(OutDir)\locale\%%~nA\LC_MESSAGES\hexchat.mo" %%A
+"$(MsgfmtPath)\msgfmt" -co "$(OutDir)\locale\%%~nA\LC_MESSAGES\hexchat.mo" %%A
 )</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
