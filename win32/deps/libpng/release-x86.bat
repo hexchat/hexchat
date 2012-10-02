@@ -22,6 +22,7 @@ copy projects\vstudio\Release\libpng15.lib %LIBPNG_DEST%\lib
 copy projects\vstudio\Release\libpng15.dll %LIBPNG_DEST%\bin
 copy projects\vstudio\Release\pngtest.exe %LIBPNG_DEST%\bin
 copy projects\vstudio\Release\pngvalid.exe %LIBPNG_DEST%\bin
+copy LICENSE %LIBPNG_DEST%\LICENSE.LIBPNG
 
 cd %LIBPNG_DEST%
 set PATH=%PATH%;%ProgramFiles%\7-zip
