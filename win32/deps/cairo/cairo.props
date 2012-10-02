@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="UserMacros">
+    <CairoEtcInstallRoot>..\build\$(Platform)</CairoEtcInstallRoot>
+    <CopyDir>..\cairo-1.10.2-rel</CopyDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories>.\;.\src;$(CairoEtcInstallRoot)\include;$(CairoEtcInstallRoot)\include\glib-2.0;$(CairoEtcInstallRoot)\lib\glib-2.0\include;$(CairoEtcInstallRoot)\include\pixman-1;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(CairoEtcInstallRoot)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <BuildMacro Include="ApiVersion">
+      <Value>$(ApiVersion)</Value>
+    </BuildMacro>
+    <BuildMacro Include="PixmanEtcInstallRoot">
+      <Value>$(PixmanEtcInstallRoot)</Value>
+    </BuildMacro>
+    <BuildMacro Include="PixmanDoInstall">
+      <Value>$(PixmanDoInstall)</Value>
+    </BuildMacro>
+  </ItemGroup>
+</Project>
