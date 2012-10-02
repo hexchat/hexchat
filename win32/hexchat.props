@@ -3,7 +3,7 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros">
     <!-- SPECIFY YOUR DEPENDENCY DIRECTORIES HERE -->
-    <YourDepsPath>c:\mozilla-build\hexchat\deps</YourDepsPath>
+    <YourDepsPath>c:\mozilla-build\hexchat\build</YourDepsPath>
     <YourGendefPath>c:\mozilla-build\gendef</YourGendefPath>
     <YourTclPath>c:\mozilla-build\tcl-8.5</YourTclPath>
     <YourPerl512Path>c:\mozilla-build\perl-5.12</YourPerl512Path>
@@ -34,7 +34,7 @@
     <Glib>$(DepsRoot)\include\glib-2.0;$(DepsRoot)\lib\glib-2.0\include;$(DepsRoot)\include\libxml2</Glib>
     <Gtk>$(DepsRoot)\include\gtk-2.0;$(DepsRoot)\lib\gtk-2.0\include;$(DepsRoot)\include\atk-1.0;$(DepsRoot)\include\cairo;$(DepsRoot)\include\pango-1.0;$(DepsRoot)\include\gdk-pixbuf-2.0</Gtk>
     <Pixmaps>bookpng "$(SolutionDir)\..\src\pixmaps\book.png" hoppng "$(SolutionDir)\..\src\pixmaps\hop.png" oppng "$(SolutionDir)\..\src\pixmaps\op.png" purplepng "$(SolutionDir)\..\src\pixmaps\purple.png" redpng "$(SolutionDir)\..\src\pixmaps\red.png" trayfilepng "$(SolutionDir)\..\src\pixmaps\fileoffer.png" trayhilightpng "$(SolutionDir)\..\src\pixmaps\highlight.png" traymsgpng "$(SolutionDir)\..\src\pixmaps\message.png" voicepng "$(SolutionDir)\..\src\pixmaps\voice.png" hexchatpng "$(SolutionDir)\..\hexchat.png"</Pixmaps>
-    <DepLibs>gtk-win32-2.0.lib;gdk-win32-2.0.lib;atk-1.0.lib;gio-2.0.lib;gdk_pixbuf-2.0.lib;pangowin32-1.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo.lib;gobject-2.0.lib;gmodule-2.0.lib;glib-2.0.lib;intl.lib;libxml2.lib;libeay32.lib;ssleay32.lib;wininet.lib;winmm.lib;ws2_32.lib</DepLibs>
+    <DepLibs>gtk-win32-2.0.lib;gdk-win32-2.0.lib;atk-1.0.lib;gio-2.0.lib;gdk_pixbuf-2.0.lib;pangowin32-1.0.lib;pangocairo-1.0.lib;pango-1.0.lib;cairo.lib;gobject-2.0.lib;gmodule-2.0.lib;glib-2.0.lib;libintl.lib;libxml2.lib;libeay32.lib;ssleay32.lib;wininet.lib;winmm.lib;ws2_32.lib</DepLibs>
     <HexChatDest>$(SolutionDir)build\$(PlatformName)\rel</HexChatDest>
   </PropertyGroup>
   <ItemDefinitionGroup />
