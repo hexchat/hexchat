@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx</Extensions>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\..\..\gdk\win32\rc\gdk.rc">
+      <Filter>Resource Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+   <ClCompile Include="..\..\..\gdk\gdk.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\gdk\gdkapplaunchcontext.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\gdk\gdkcairo.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\gdk\gdkcolor.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\gdk\gdkcursor.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\gdk\gdkdisplay.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\gdk\gdkdisplaymanager.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\gdk\gdkdnd.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\gdk\gdkdraw.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\gdk\gdkevents.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\gdk\gdkfont.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\gdk\gdkgc.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\gdk\gdkglobals.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\gdk\gdkimage.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\gdk\gdkkeys.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\gdk\gdkkeyuni.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\gdk\gdkoffscreenwindow.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\gdk\gdkpango.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\gdk\gdkpixbuf-drawable.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\gdk\gdkpixbuf-render.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\gdk\gdkpixmap.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\gdk\gdkpolyreg-generic.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\gdk\gdkrectangle.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\gdk\gdkregion-generic.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\gdk\gdkrgb.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\gdk\gdkscreen.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\gdk\gdkselection.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\gdk\gdkvisual.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\gdk\gdkwindow.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\gdk\gdkwindowimpl.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\gdk\gdkenumtypes.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\gdk\gdkmarshalers.c"><Filter>Source Files</Filter></ClCompile>
+   <ClCompile Include="..\..\..\gdk\gdkkeynames.c"><Filter>Source Files</Filter></ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\..\..\gdk\gdk.symbols">
+      <Filter>Resource Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>
