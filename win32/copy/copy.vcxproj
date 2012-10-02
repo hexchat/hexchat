@@ -63,7 +63,7 @@
     </Link>
     <PreBuildEvent>
       <Command>$(HexChatCopy)
-copy "..\installer\watercolorlite-green.cjstyles" "$(HexChatDest)"</Command>
+copy "..\installer\watercolorlite-green.cjstyles" "$(HexChatRel)"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -80,7 +80,7 @@ copy "..\installer\watercolorlite-green.cjstyles" "$(HexChatDest)"</Command>
     </Link>
     <PreBuildEvent>
       <Command>$(HexChatCopy)
-copy "..\installer\watercolorlite-blue.cjstyles" "$(HexChatDest)"</Command>
+copy "..\installer\watercolorlite-blue.cjstyles" "$(HexChatRel)"</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
