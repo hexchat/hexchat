@@ -5,6 +5,17 @@ SET PACKAGE_NAME=gtk-2.24.13
 
 set GTK_SRC=%cd%
 set GTK_DEST=%cd%-rel
+set MSGFMT_PATH=..\..\msgfmt
+:: we'll go 1 level deeper
+set PATH=%PATH%;..\%MSGFMT_PATH%
+rmdir /q /s "%GTK_DEST%\share\locale"
+mkdir "%GTK_DEST%\share\locale"
+cd po
+for %%A in (*.po) do (
+mkdir "%GTK_DEST%\share\locale\%%~nA\LC_MESSAGES"
+"msgfmt" -co "%GTK_DEST%\share\locale\%%~nA\LC_MESSAGES\gtk20.mo" %%A
+)
+cd ..
 echo.Press return when ready to install!
 pause
 
