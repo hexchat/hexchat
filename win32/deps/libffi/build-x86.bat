@@ -1,4 +1,4 @@
-#run this from mozilla-build\start-msvc11.bat
+#run this from mozilla-build\start-msvc10.bat
 #cd /c/mozilla-build/hexchat/libffi-3.0.11
 #TODO: use own zlib build instead of mozilla-build one
 
