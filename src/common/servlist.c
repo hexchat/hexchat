@@ -274,8 +274,9 @@ static const struct defaultserver def[] =
 	{0,			"komatu.german-elite.net"},
 /*	{0,			"liberty.german-elite.net"},*/
 
-	{"GimpNet",		0},
+	{"GIMPNet",		0},
 	{0,			"irc.gimp.org"},
+	{0,			"irc.gnome.org"},
 /*	{0,			"irc.au.gimp.org"},*/
 	{0,			"irc.us.gimp.org"},
 
