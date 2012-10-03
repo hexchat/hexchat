@@ -42,7 +42,7 @@ Name: "plugins\doat"; Description: "Do At"; Types: custom; Flags: disablenounins
 Name: "plugins\exec"; Description: "Exec"; Types: custom; Flags: disablenouninstallwarning
 Name: "plugins\fishlim"; Description: "FiSHLiM"; Types: custom; Flags: disablenouninstallwarning
 Name: "plugins\hextray"; Description: "HexTray"; Types: custom; Flags: disablenouninstallwarning
-;Name: "plugins\mpcinfo"; Description: "mpcInfo"; Types: custom; Flags: disablenouninstallwarning
+Name: "plugins\mpcinfo"; Description: "mpcInfo"; Types: custom; Flags: disablenouninstallwarning
 ;Name: "plugins\nonbmp"; Description: "Non-BMP"; Types: normal custom; Flags: disablenouninstallwarning
 Name: "plugins\sasl"; Description: "SASL"; Types: custom; Flags: disablenouninstallwarning
 Name: "plugins\upd"; Description: "Update Checker"; Types: normal custom; Flags: disablenouninstallwarning
@@ -165,9 +165,8 @@ Source: "plugins\hcdns.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Com
 Source: "plugins\hcdoat.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\doat
 Source: "plugins\hcexec.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\exec
 Source: "plugins\hcfishlim.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\fishlim
-Source: "etc\music.png"; DestDir: "{app}\etc"; Flags: ignoreversion; Components: plugins\winamp
-; or plugins\mpcinfo
-;Source: "plugins\hcmpcinfo.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\mpcinfo
+Source: "etc\music.png"; DestDir: "{app}\etc"; Flags: ignoreversion; Components: plugins\winamp or plugins\mpcinfo
+Source: "plugins\hcmpcinfo.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\mpcinfo
 ;Source: "plugins\hcnonbmp.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\nonbmp
 Source: "etc\download.png"; DestDir: "{app}\etc"; Flags: ignoreversion; Components: plugins\upd
 Source: "plugins\hcupd.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\upd
