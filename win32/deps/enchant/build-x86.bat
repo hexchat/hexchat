@@ -30,12 +30,9 @@ copy src\enchant.h %ENCHANT_DEST%\include\enchant
 copy "src\enchant++.h" %ENCHANT_DEST%\include\enchant
 copy src\enchant-provider.h %ENCHANT_DEST%\include\enchant
 copy %RELEASE_DIR%\libenchant_ispell.dll %ENCHANT_DEST%\lib\enchant
-copy %RELEASE_DIR%\libenchant_ispell.exp %ENCHANT_DEST%\lib\enchant
 copy %RELEASE_DIR%\libenchant_ispell.lib %ENCHANT_DEST%\lib\enchant
 copy %RELEASE_DIR%\libenchant_myspell.dll %ENCHANT_DEST%\lib\enchant
-copy %RELEASE_DIR%\libenchant_myspell.exp %ENCHANT_DEST%\lib\enchant
 copy %RELEASE_DIR%\libenchant_myspell.lib %ENCHANT_DEST%\lib\enchant
-copy %RELEASE_DIR%\libenchant.exp %ENCHANT_DEST%\lib
 copy %RELEASE_DIR%\libenchant.lib %ENCHANT_DEST%\lib
 copy COPYING.LIB %ENCHANT_DEST%\share\doc\enchant\COPYING
 cd src

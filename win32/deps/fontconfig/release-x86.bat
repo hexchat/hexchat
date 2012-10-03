@@ -31,7 +31,6 @@ copy fonts.dtd %FONTCONFIG_DEST%\etc\fonts
 copy fontconfig\fcfreetype.h %FONTCONFIG_DEST%\include\fontconfig
 copy fontconfig\fcprivate.h %FONTCONFIG_DEST%\include\fontconfig
 copy fontconfig\fontconfig.h %FONTCONFIG_DEST%\include\fontconfig
-copy Release\fontconfig.exp %FONTCONFIG_DEST%\lib
 copy Release\fontconfig.lib %FONTCONFIG_DEST%\lib
 copy COPYING %FONTCONFIG_DEST%\share\doc\fontconfig
 

@@ -20,7 +20,6 @@ copy png.h %LIBPNG_DEST%\include
 copy pngconf.h %LIBPNG_DEST%\include
 copy pnglibconf.h %LIBPNG_DEST%\include
 copy pngpriv.h %LIBPNG_DEST%\include
-copy projects\vstudio\x64\Release\libpng15.exp %LIBPNG_DEST%\lib
 copy projects\vstudio\x64\Release\libpng15.lib %LIBPNG_DEST%\lib
 copy projects\vstudio\x64\Release\libpng15.dll %LIBPNG_DEST%\bin
 copy projects\vstudio\x64\Release\pngtest.exe %LIBPNG_DEST%\bin

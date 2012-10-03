@@ -48,7 +48,6 @@ copy src\lua51.dll %LUA_DEST%\bin
 copy src\luac.exe %LUA_DEST%\bin
 :: library
 copy src\lua51.lib %LUA_DEST%\lib
-copy src\lua51.exp %LUA_DEST%\lib
 :: api
 copy src\lua.h %LUA_DEST%\include
 copy src\luaconf.h %LUA_DEST%\include

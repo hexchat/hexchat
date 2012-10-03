@@ -23,10 +23,8 @@ copy win32\bin\Release\outline.exe %EXPAT_DEST%\bin
 copy win32\bin\Release\xmlwf.exe %EXPAT_DEST%\bin
 copy lib\expat.h %EXPAT_DEST%\include
 copy lib\expat_external.h %EXPAT_DEST%\include
-copy win32\bin\Release\libexpat.exp %EXPAT_DEST%\lib
 copy win32\bin\Release\libexpat.lib %EXPAT_DEST%\lib
 copy win32\bin\Release\libexpatMT.lib %EXPAT_DEST%\lib
-copy win32\bin\Release\libexpatw.exp %EXPAT_DEST%\lib
 copy win32\bin\Release\libexpatw.lib %EXPAT_DEST%\lib
 copy win32\bin\Release\libexpatwMT.lib %EXPAT_DEST%\lib
 copy COPYING %EXPAT_DEST%\share\doc\expat
