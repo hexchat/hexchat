@@ -14,6 +14,10 @@ echo.Press return when ready to install!
 pause
 
 nmake install
+mkdir %ICONV_DEST%\share
+mkdir %ICONV_DEST%\share\doc
+mkdir %ICONV_DEST%\share\doc\win-iconv
+copy COPYING %ICONV_DEST%\share\doc\win-iconv
 nmake clean
 
 cd %ICONV_DEST%

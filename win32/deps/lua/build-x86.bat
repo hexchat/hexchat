@@ -36,9 +36,12 @@ pause
 rmdir /q /s %LUA_DEST%
 mkdir %LUA_DEST%
 mkdir %LUA_DEST%\bin
-mkdir %LUA_DEST%\lib
 mkdir %LUA_DEST%\include
-copy COPYRIGHT %LUA_DEST%\LICENSE.LUA
+mkdir %LUA_DEST%\lib
+mkdir %LUA_DEST%\share
+mkdir %LUA_DEST%\share\doc
+mkdir %LUA_DEST%\share\doc\lua
+copy COPYRIGHT %LUA_DEST%\share\doc\lua\COPYING
 :: binaries and libraries
 copy src\lua.exe %LUA_DEST%\bin
 copy src\lua51.dll %LUA_DEST%\bin

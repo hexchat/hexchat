@@ -16,11 +16,14 @@ mkdir %ZLIB_DEST%
 mkdir %ZLIB_DEST%\bin
 mkdir %ZLIB_DEST%\include
 mkdir %ZLIB_DEST%\lib
+mkdir %ZLIB_DEST%\share
+mkdir %ZLIB_DEST%\share\doc
+mkdir %ZLIB_DEST%\share\doc\zlib
 copy zlib.h %ZLIB_DEST%\include
 copy zconf.h %ZLIB_DEST%\include
 copy zdll.lib %ZLIB_DEST%\lib
 copy zlib1.dll %ZLIB_DEST%\bin
-copy README %ZLIB_DEST%\LICENSE.ZLIB
+copy README %ZLIB_DEST%\share\doc\zlib\COPYING
 nmake -f win32\Makefile.msc clean
 
 cd %ZLIB_DEST%

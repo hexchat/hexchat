@@ -8,7 +8,10 @@ set ATK_DEST=%cd%-rel
 echo.Press return when ready to install!
 pause
 
-copy COPYING %ATK_DEST%\LICENSE.ATK
+mkdir %ATK_DEST%\share
+mkdir %ATK_DEST%\share\doc
+mkdir %ATK_DEST%\share\doc\atk
+copy COPYING %ATK_DEST%\share\doc\atk
 
 cd %ATK_DEST%
 set PATH=%PATH%;%ProgramFiles%\7-zip

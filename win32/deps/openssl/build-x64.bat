@@ -29,10 +29,12 @@ move bin %OPENSSL_DEST%
 move include %OPENSSL_DEST%
 move lib %OPENSSL_DEST%
 mkdir %OPENSSL_DEST%\share
+mkdir %OPENSSL_DEST%\share\doc
+mkdir %OPENSSL_DEST%\share\doc\openssl
 move openssl.cnf %OPENSSL_DEST%\share\openssl.cnf.example
 move include-orig include
 move cert.pem %OPENSSL_DEST%\bin
-copy LICENSE %OPENSSL_DEST%\LICENSE.OPENSSL
+copy LICENSE %OPENSSL_DEST%\share\doc\openssl\COPYING
 
 cd %OPENSSL_DEST%
 set PATH=%PATH%;%ProgramFiles%\7-zip

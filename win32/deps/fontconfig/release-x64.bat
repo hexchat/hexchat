@@ -16,6 +16,9 @@ mkdir %FONTCONFIG_DEST%\etc\fonts
 mkdir %FONTCONFIG_DEST%\include
 mkdir %FONTCONFIG_DEST%\include\fontconfig
 mkdir %FONTCONFIG_DEST%\lib
+mkdir %FONTCONFIG_DEST%\share
+mkdir %FONTCONFIG_DEST%\share\doc
+mkdir %FONTCONFIG_DEST%\share\doc\fontconfig
 copy x64\Release\fontconfig.dll %FONTCONFIG_DEST%\bin
 copy x64\Release\fc-cache.exe %FONTCONFIG_DEST%\bin
 copy x64\Release\fc-cat.exe %FONTCONFIG_DEST%\bin
@@ -30,7 +33,7 @@ copy fontconfig\fcprivate.h %FONTCONFIG_DEST%\include\fontconfig
 copy fontconfig\fontconfig.h %FONTCONFIG_DEST%\include\fontconfig
 copy x64\Release\fontconfig.exp %FONTCONFIG_DEST%\lib
 copy x64\Release\fontconfig.lib %FONTCONFIG_DEST%\lib
-copy COPYING %FONTCONFIG_DEST%\LICENSE.FONTCONFIG
+copy COPYING %FONTCONFIG_DEST%\share\doc\fontconfig
 
 cd %FONTCONFIG_DEST%
 set PATH=%PATH%;%ProgramFiles%\7-zip

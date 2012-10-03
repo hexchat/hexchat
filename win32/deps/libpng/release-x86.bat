@@ -13,6 +13,9 @@ mkdir %LIBPNG_DEST%
 mkdir %LIBPNG_DEST%\bin
 mkdir %LIBPNG_DEST%\include
 mkdir %LIBPNG_DEST%\lib
+mkdir %LIBPNG_DEST%\share
+mkdir %LIBPNG_DEST%\share\doc
+mkdir %LIBPNG_DEST%\share\doc\libpng
 copy png.h %LIBPNG_DEST%\include
 copy pngconf.h %LIBPNG_DEST%\include
 copy pnglibconf.h %LIBPNG_DEST%\include
@@ -22,7 +25,7 @@ copy projects\vstudio\Release\libpng15.lib %LIBPNG_DEST%\lib
 copy projects\vstudio\Release\libpng15.dll %LIBPNG_DEST%\bin
 copy projects\vstudio\Release\pngtest.exe %LIBPNG_DEST%\bin
 copy projects\vstudio\Release\pngvalid.exe %LIBPNG_DEST%\bin
-copy LICENSE %LIBPNG_DEST%\LICENSE.LIBPNG
+copy LICENSE %LIBPNG_DEST%\share\doc\libpng\COPYING
 
 cd %LIBPNG_DEST%
 set PATH=%PATH%;%ProgramFiles%\7-zip

@@ -12,9 +12,12 @@ rmdir /q /s %FREETYPE_DEST%
 mkdir %FREETYPE_DEST%
 mkdir %FREETYPE_DEST%\include
 mkdir %FREETYPE_DEST%\lib
+mkdir %FREETYPE_DEST%\share
+mkdir %FREETYPE_DEST%\share\doc
+mkdir %FREETYPE_DEST%\share\doc\freetype
 xcopy /s include %FREETYPE_DEST%\include\
 copy objs\win32\vc2012\freetype2410.lib %FREETYPE_DEST%\lib\freetype.lib
-copy docs\LICENSE.TXT %FREETYPE_DEST%\LICENSE.FREETYPE
+copy docs\LICENSE.TXT %FREETYPE_DEST%\share\doc\freetype\COPYING
 
 cd %FREETYPE_DEST%
 set PATH=%PATH%;%ProgramFiles%\7-zip

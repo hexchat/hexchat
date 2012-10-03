@@ -8,7 +8,10 @@ set GDKPIXBUF_DEST=%cd%-rel
 echo.Press return when ready to install!
 pause
 
-copy COPYING %GDKPIXBUF_DEST%\LICENSE.GDKPIXBUF
+mkdir %GDKPIXBUF_DEST%\share
+mkdir %GDKPIXBUF_DEST%\share\doc
+mkdir %GDKPIXBUF_DEST%\share\doc\gdk-pixbuf
+copy COPYING %GDKPIXBUF_DEST%\share\doc\gdk-pixbuf
 
 cd %GDKPIXBUF_DEST%
 set PATH=%PATH%;%ProgramFiles%\7-zip

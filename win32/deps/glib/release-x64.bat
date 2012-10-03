@@ -8,7 +8,10 @@ set GLIB_DEST=%cd%-rel
 echo.Press return when ready to install!
 pause
 
-copy COPYING %GLIB_DEST%\LICENSE.GLIB
+mkdir %GLIB_DEST%\share
+mkdir %GLIB_DEST%\share\doc
+mkdir %GLIB_DEST%\share\doc\glib
+copy COPYING %GLIB_DEST%\share\doc\glib
 
 cd %GLIB_DEST%
 set PATH=%PATH%;%ProgramFiles%\7-zip

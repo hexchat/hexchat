@@ -8,7 +8,10 @@ set PIXMAN_DEST=%cd%-rel
 echo.Press return when ready to install!
 pause
 
-copy COPYING %PIXMAN_DEST%\LICENSE.PIXMAN
+mkdir %PIXMAN_DEST%\share
+mkdir %PIXMAN_DEST%\share\doc
+mkdir %PIXMAN_DEST%\share\doc\pixman
+copy COPYING %PIXMAN_DEST%\share\doc\pixman
 
 cd %PIXMAN_DEST%
 set PATH=%PATH%;%ProgramFiles%\7-zip

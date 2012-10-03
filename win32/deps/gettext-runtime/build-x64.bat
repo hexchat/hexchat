@@ -14,8 +14,11 @@ echo.Press return when ready to install!
 pause
 
 nmake install
+mkdir %GETTEXT_DEST%\share
+mkdir %GETTEXT_DEST%\share\doc
+mkdir %GETTEXT_DEST%\share\doc\gettext
+copy COPYING %GETTEXT_DEST%\share\doc\gettext
 nmake clean
-copy COPYING %GETTEXT_DEST%\LICENSE.GETTEXT
 
 cd %GETTEXT_DEST%
 set PATH=%PATH%;%ProgramFiles%\7-zip

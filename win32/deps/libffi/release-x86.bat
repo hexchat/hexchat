@@ -13,12 +13,15 @@ mkdir %LIBFFI_DEST%
 mkdir %LIBFFI_DEST%\bin
 mkdir %LIBFFI_DEST%\include
 mkdir %LIBFFI_DEST%\lib
+mkdir %LIBFFI_DEST%\share
+mkdir %LIBFFI_DEST%\share\doc
+mkdir %LIBFFI_DEST%\share\doc\libffi
 set OUTDIR=i686-pc-mingw32
 copy %OUTDIR%\include\ffi.h %LIBFFI_DEST%\include
 copy %OUTDIR%\include\ffitarget.h %LIBFFI_DEST%\include
 copy %OUTDIR%\.libs\libffi_convenience.lib %LIBFFI_DEST%\lib\libffi.lib
 copy %OUTDIR%\.libs\libffi-6.dll %LIBFFI_DEST%\bin
-copy LICENSE %LIBFFI_DEST%\LICENSE.LIBFFI
+copy LICENSE %LIBFFI_DEST%\share\doc\libffi\COPYING
 
 cd %LIBFFI_DEST%
 set PATH=%PATH%;%ProgramFiles%\7-zip

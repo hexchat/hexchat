@@ -20,6 +20,9 @@ mkdir %ENCHANT_DEST%\include
 mkdir %ENCHANT_DEST%\include\enchant
 mkdir %ENCHANT_DEST%\lib
 mkdir %ENCHANT_DEST%\lib\enchant
+mkdir %ENCHANT_DEST%\share
+mkdir %ENCHANT_DEST%\share\doc
+mkdir %ENCHANT_DEST%\share\doc\enchant
 copy %RELEASE_DIR%\enchant.exe %ENCHANT_DEST%\bin
 copy %RELEASE_DIR%\enchant-lsmod.exe %ENCHANT_DEST%\bin
 copy %RELEASE_DIR%\libenchant.dll %ENCHANT_DEST%\bin
@@ -34,7 +37,7 @@ copy %RELEASE_DIR%\libenchant_myspell.exp %ENCHANT_DEST%\lib\enchant
 copy %RELEASE_DIR%\libenchant_myspell.lib %ENCHANT_DEST%\lib\enchant
 copy %RELEASE_DIR%\libenchant.exp %ENCHANT_DEST%\lib
 copy %RELEASE_DIR%\libenchant.lib %ENCHANT_DEST%\lib
-copy COPYING.LIB %ENCHANT_DEST%\LICENSE.ENCHANT
+copy COPYING.LIB %ENCHANT_DEST%\share\doc\enchant\COPYING
 cd src
 nmake -f makefile.mak clean
 

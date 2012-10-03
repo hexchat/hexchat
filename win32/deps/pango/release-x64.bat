@@ -8,7 +8,10 @@ set PANGO_DEST=%cd%-rel
 echo.Press return when ready to install!
 pause
 
-copy COPYING %PANGO_DEST%\LICENSE.PANGO
+mkdir %PANGO_DEST%\share
+mkdir %PANGO_DEST%\share\doc
+mkdir %PANGO_DEST%\share\doc\pango
+copy COPYING %PANGO_DEST%\share\doc\pango
 
 cd %PANGO_DEST%
 set PATH=%PATH%;%ProgramFiles%\7-zip

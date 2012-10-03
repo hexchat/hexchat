@@ -8,7 +8,10 @@ set CAIRO_DEST=%cd%-rel
 echo.Press return when ready to install!
 pause
 
-copy COPYING %CAIRO_DEST%\LICENSE.CAIRO
+mkdir %CAIRO_DEST%\share
+mkdir %CAIRO_DEST%\share\doc
+mkdir %CAIRO_DEST%\share\doc\cairo
+copy COPYING %CAIRO_DEST%\share\doc\cairo
 
 cd %CAIRO_DEST%
 set PATH=%PATH%;%ProgramFiles%\7-zip

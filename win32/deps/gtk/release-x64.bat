@@ -15,11 +15,13 @@ for %%A in (*.po) do (
 mkdir "%GTK_DEST%\share\locale\%%~nA\LC_MESSAGES"
 "msgfmt" -co "%GTK_DEST%\share\locale\%%~nA\LC_MESSAGES\gtk20.mo" %%A
 )
+mkdir "%GTK_DEST%\share\doc
+mkdir "%GTK_DEST%\share\doc\gtk
 cd ..
 echo.Press return when ready to install!
 pause
 
-copy COPYING %GTK_DEST%\LICENSE.GTK
+copy COPYING %GTK_DEST%\share\doc\gtk
 
 cd %GTK_DEST%
 set PATH=%PATH%;%ProgramFiles%\7-zip
