@@ -570,6 +570,30 @@ log_insert_vars (char *buf, int bufsize, char *fmt, char *c, char *n, char *s)
 	}
 }
 
+static int
+logmask_is_fullpath ()
+{
+	/* Check if final path/filename is absolute or relative.
+	 * If one uses log mask variables, such as "%c/...", %c will be empty upon
+	 * connecting since there's no channel name yet, so we have to make sure
+	 * we won't try to write to the FS root. On Windows we can be sure it's
+	 * full path if the 2nd character is a colon since Windows doesn't allow
+	 * colons in filenames.
+	 */
+#ifdef WIN32
+	if ((prefs.logmask[0] >= 'A' && prefs.logmask[0] <= 'Z') || (prefs.logmask[0] >= 'a' && prefs.logmask[0] <= 'z') && prefs.logmask[1] == ':')
+#else
+	if (prefs.logmask[0] == '/')
+#endif
+	{
+		return 1;
+	}
+	else
+	{
+		return 0;
+	}
+}
+
 static char *
 log_create_pathname (char *servname, char *channame, char *netname)
 {
@@ -580,13 +604,20 @@ log_create_pathname (char *servname, char *channame, char *netname)
 	time_t now;
 
 	if (!netname)
+	{
 		netname = "NETWORK";
+	}
 
 	/* first, everything is in UTF-8 */
 	if (!rfc_casecmp (channame, servname))
+	{
 		channame = strdup ("server");
+	}
 	else
+	{
 		channame = log_create_filename (channame);
+	}
+
 	log_insert_vars (fname, sizeof (fname), prefs.logmask, channame, netname, servname);
 	free (channame);
 
@@ -595,18 +626,8 @@ log_create_pathname (char *servname, char *channame, char *netname)
 	tm = localtime (&now);
 	strftime (fnametime, sizeof (fnametime), fname, tm);
 
-	/* create final path/filename, check if it's absolute or relative */
-#ifdef WIN32
-	if ((fnametime[0] >= 'A' && fnametime[0] <= 'Z') || (fnametime[0] >= 'a' && fnametime[0] <= 'z') && fnametime[1] == ':')
-#else
-	/* If one uses log mask variables, such as "%c/...", %c will be empty upon
-	 * connecting since there's no channel name yet, so we have to make sure
-	 * we won't try to write to the FS root. On Windows we can be sure it's
-	 * full path if the 2nd character is a colon since Windows doesn't allow
-	 * colons in filenames.
-	 */
-	if (fnametime[0] == '/' && prefs.logmask[0] != '%')
-#endif
+	/* create final path/filename */
+	if (logmask_is_fullpath ())
 	{
 		snprintf (fname, sizeof (fname), "%s", fnametime);
 	}
@@ -620,7 +641,9 @@ log_create_pathname (char *servname, char *channame, char *netname)
 
 	/* create all the subdirectories */
 	if (fs)
+	{
 		mkdir_p (fs);
+	}
 
 	return fs;
 }
@@ -666,11 +689,11 @@ log_open (session *sess)
 	if (!log_error && sess->logfd == -1)
 	{
 		char message[512];
-		snprintf (message, sizeof (message),
-					_("* Can't open log file(s) for writing. Check the\n" \
-					  "  permissions on %s/logs"), get_xdir_utf8 ());
-		fe_message (message, FE_MSG_WAIT | FE_MSG_ERROR);
 
+		snprintf (message, sizeof (message), _("* Can't open log file(s) for writing. Check the\npermissions on %s"),
+			log_create_pathname (sess->server->servername, sess->channel, server_get_network (sess->server, FALSE)));
+
+		fe_message (message, FE_MSG_WAIT | FE_MSG_ERROR);
 		log_error = TRUE;
 	}
 }
