@@ -57,6 +57,11 @@ namespace thememan
             }
             else
             {
+                /* Environment.SpecialFolder.ApplicationData
+                 * Windows: %APPDATA%
+                 * Unix: ~/.config
+                 * Windows is case-insensitive so 'hexchat' should be fine for both
+                 */
                 hexchatdir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "hexchat");
 
                 if (!Directory.Exists(hexchatdir))
