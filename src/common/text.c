@@ -585,7 +585,7 @@ logmask_is_fullpath ()
 	 * - starts with '\' which denotes the root directory of the current drive letter
 	 * - starts with a drive letter and followed by ':'
 	 */
-	if (prefs.logmask[0] >= '\\' || ((prefs.logmask[0] >= 'A' && prefs.logmask[0] <= 'Z') || (prefs.logmask[0] >= 'a' && prefs.logmask[0] <= 'z') && prefs.logmask[1] == ':'))
+	if (prefs.logmask[0] == '\\' || ((prefs.logmask[0] >= 'A' && prefs.logmask[0] <= 'Z') || (prefs.logmask[0] >= 'a' && prefs.logmask[0] <= 'z') && prefs.logmask[1] == ':'))
 #else
 	if (prefs.logmask[0] == '/')
 #endif
