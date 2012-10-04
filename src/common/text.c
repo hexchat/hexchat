@@ -744,7 +744,7 @@ get_stamp_str (char *fmt, time_t tim, char **ret)
 	if (!len)
 	{
 		/* use failsafe format until a correct one is specified */
-		len = strftime (dest, sizeof (dest), "[%H:%M]", localtime (&tim));
+		len = strftime (dest, sizeof (dest), "[%H:%M:%S]", localtime (&tim));
 	}
 #endif
 	if (len)

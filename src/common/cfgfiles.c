@@ -746,11 +746,12 @@ load_config (void)
 	prefs.url_grabber = 1;
 	prefs.url_grabber_limit = 100; /* 0 means unlimited */
 	prefs.text_search_follow = 1;
+	prefs.timestamp = 1;
 #ifdef WIN32
 	prefs.identd = 1;
 #endif
 	strcpy (prefs.spell_langs, g_getenv ("LC_ALL") ? g_getenv ("LC_ALL") : "en_US");
-	strcpy (prefs.stamp_format, "[%H:%M] ");
+	strcpy (prefs.stamp_format, "[%H:%M:%S] ");
 	strcpy (prefs.timestamp_log_format, "%b %d %H:%M:%S ");
 	strcpy (prefs.logmask, "%n-%c.log");
 	strcpy (prefs.nick_suffix, ",");
