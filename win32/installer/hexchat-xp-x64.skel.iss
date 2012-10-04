@@ -43,7 +43,7 @@ Name: "plugins\exec"; Description: "Exec"; Types: custom; Flags: disablenouninst
 Name: "plugins\fishlim"; Description: "FiSHLiM"; Types: custom; Flags: disablenouninstallwarning
 Name: "plugins\hextray"; Description: "HexTray"; Types: custom; Flags: disablenouninstallwarning
 Name: "plugins\mpcinfo"; Description: "mpcInfo"; Types: custom; Flags: disablenouninstallwarning
-Name: "plugins\sasl"; Description: "SASL"; Types: custom; Flags: disablenouninstallwarning
+Name: "plugins\sasl"; Description: "SASL"; Types: normal custom; Flags: disablenouninstallwarning
 Name: "plugins\upd"; Description: "Update Checker"; Types: normal custom; Flags: disablenouninstallwarning
 Name: "plugins\winamp"; Description: "Winamp"; Types: custom; Flags: disablenouninstallwarning
 Name: "plugins\winsys"; Description: "WinSys"; Types: custom; Flags: disablenouninstallwarning
