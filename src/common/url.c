@@ -106,6 +106,11 @@ url_add (char *urltext, int len)
 		len--;
 		data[len] = 0;
 	}
+	if (data[len - 1] == ',')	/* chop trailing comma */
+	{
+		len--;
+		data[len] = 0;
+	}
 	if (data[len - 1] == ')')	/* chop trailing ) */
 		data[len - 1] = 0;
 
