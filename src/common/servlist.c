@@ -253,6 +253,9 @@ static const struct defaultserver def[] =
 	{0,			"kabel.freeworld.nu"},
 	{0,			"irc.freeworld.nu"},*/
 
+	{"Fusion Latina",	0},
+	{0,					"irc.fusionlatina.org/2012"},
+
 	{"GalaxyNet",	0},
 	{0,			"irc.galaxynet.org"},
 /*	{0,			"sprynet.us.galaxynet.org"},
@@ -300,6 +303,12 @@ static const struct defaultserver def[] =
 	{0,			"Babylon.NY.US.Infinity-IRC.Org"},
 	{0,			"Sunshine.Ca.US.Infinity-IRC.Org"},
 	{0,			"IRC.Infinity-IRC.Org"},*/
+
+	{"IRCHighWay",	0},
+#ifdef USE_OPENSSL
+	{0,				"irc.irchighway.net/+9999"},
+#endif
+	{0,				"irc.irchighway.net"},
 
 	{"IrcLink",	0},
 	{0,			"irc.irclink.net"},
