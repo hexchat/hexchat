@@ -106,7 +106,8 @@ url_add (char *urltext, int len)
 		len--;
 		data[len] = 0;
 	}
-	if (data[len - 1] == ')')	/* chop trailing ) */
+	/* chop trailing ) but only if there's no counterpart */
+	if (data[len - 1] == ')' && strchr (data, '(') == NULL)
 		data[len - 1] = 0;
 
 	if (!url_tree)
