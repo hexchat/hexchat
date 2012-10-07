@@ -1080,16 +1080,18 @@ fe_open_url_inner (const char *url)
 static void
 fe_open_url_locale (const char *url)
 {
-#ifndef WIN32
-	if (url[0] != '/' && strchr (url, ':') == NULL)
+	/* the http:// part's missing, prepend it, otherwise it won't always work */
+	if (strchr (url, ':') == NULL)
 	{
 		url = g_strdup_printf ("http://%s", url);
 		fe_open_url_inner (url);
 		g_free ((char *)url);
-		return;
 	}
-#endif
-	fe_open_url_inner (url);
+	/* we have a sane URL, send it to the browser untouched */
+	else
+	{
+		fe_open_url_inner (url);
+	}
 }
 
 void

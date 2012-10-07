@@ -2291,6 +2291,7 @@ mg_word_clicked (GtkWidget *xtext, char *word, GdkEventButton *even)
 	switch (mg_word_check (xtext, word, strlen (word)))
 	{
 	case 0:
+	case WORD_PATH:
 		menu_middlemenu (sess, even);
 		break;
 	case WORD_URL:
