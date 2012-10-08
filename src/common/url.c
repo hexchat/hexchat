@@ -207,7 +207,7 @@ url_check_word (char *word, int len)
 #ifdef WIN32
 	if ((len > 1 && word[0] == '\\') || (len > 2 && (((word[0] >= 'A' && word[0] <= 'Z') || (word[0] >= 'a' && word[0] <= 'z')) && word[1] == ':')))
 #else
-	if (len > 1 && word[0] != '/')
+	if (len > 1 && word[0] == '/')
 #endif
 	{
 		return WORD_PATH;
