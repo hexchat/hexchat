@@ -152,7 +152,7 @@ int event_cb(char *word[], void *userdata)
 
 		/**************************************************************************************/
 		/***** Use windows instead of balloons, and if its a window should we keep it open ****/
-		/***** indefinately?															   ****/
+		/***** indefinitely?															   ****/
 		/**************************************************************************************/
 		szTemp = xchat_strip_color(szInfo);
 

@@ -59,7 +59,7 @@ extern struct _xchat_plugin *ph;
 #define PREF_AMAE				13 // alert me about events
 #define PREF_OSBWM				14 // Only Show Balloon When Minimized
 #define PREF_UWIOB				15 // Use Window Instead of Balloon
-#define PREF_KAOI				16 // Keep alerts open indefinately
+#define PREF_KAOI				16 // Keep alerts open indefinitely
 #define PREF_MIOC				17 // Minimize instead of close
 #define PREF_BLINK				18 // blink icon
 #define PREF_CICO				19 // change icon - not implemented
