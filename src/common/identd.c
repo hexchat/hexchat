@@ -58,8 +58,8 @@ identd (char *username)
 
 	identd_is_running = FALSE;
 
-	snprintf (outbuf, sizeof (outbuf), "%%\tServicing ident request from %s\n",
-				 inet_ntoa (addr.sin_addr));
+	snprintf (outbuf, sizeof (outbuf), "%%\tServicing ident request from %s with user name \"%s\"\n",
+				 inet_ntoa (addr.sin_addr), username);
 	PrintText (current_sess, outbuf);
 
 	recv (read_sok, buf, sizeof (buf) - 1, 0);
@@ -139,7 +139,7 @@ identd_ipv6 (char *username)
 		snprintf (ipv6buf, sizeof (ipv6buf) - 1, "[SOCKET ERROR: 0x%X]", WSAGetLastError ());
 	}
 
-	snprintf (outbuf, sizeof (outbuf), "%%\tServicing ident request from %s\n", ipv6buf);
+	snprintf (outbuf, sizeof (outbuf), "%%\tServicing ident request from %s with user name \"%s\"\n", ipv6buf, username);
 	PrintText (current_sess, outbuf);
 
 	recv (read_sok, buf, sizeof (buf) - 1, 0);
