@@ -266,7 +266,7 @@ static const setting tabs_settings[] =
 	{ST_TOGGLE, N_("Open an extra tab for server notices"), P_OFFINTNL(notices_tabs), 0, 0, 0},
 	{ST_TOGGLE, N_("Open a new tab when you receive a private message"), P_OFFINTNL(autodialog), 0, 0, 0},
 	{ST_TOGGLE, N_("Sort tabs in alphabetical order"), P_OFFINTNL(tab_sort), 0, 0, 0},
-	{ST_TOGGLE, N_("Show icons in tree view"), P_OFFINTNL(tab_icons), 0, 0, 0},
+	{ST_TOGGLE, N_("Show icons in the channel tree"), P_OFFINTNL(tab_icons), 0, 0, 0},
 	{ST_TOGGLE, N_("Smaller text"), P_OFFINTNL(tab_small), 0, 0, 0},
 #if 0
 	{ST_MENU,	N_("Focus new tabs:"), P_OFFINTNL(newtabstofront), 0, focusnewtabsmenu, 0},
