@@ -156,6 +156,7 @@ struct xchatprefs
 
 	int away_timeout;
 	int away_size_max;
+	int away_omit_alerts;
 
 	int gui_pane_left_size;
 	int gui_pane_right_size;

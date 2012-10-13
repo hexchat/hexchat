@@ -392,6 +392,7 @@ default_file (void)
 
 const struct prefs vars[] = {
 	{"away_auto_unmark", P_OFFINT (auto_unmark_away), TYPE_BOOL},
+	{"away_omit_alerts", P_OFFINT (away_omit_alerts), TYPE_BOOL},
 	{"away_reason", P_OFFSET (awayreason), TYPE_STR},
 	{"away_show_message", P_OFFINT (show_away_message), TYPE_BOOL},
 	{"away_show_once", P_OFFINT (show_away_once), TYPE_BOOL},

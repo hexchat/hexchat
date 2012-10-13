@@ -578,7 +578,7 @@ tray_hilight_cb (char *word[], void *userdata)
 	/*if (tray_status == TS_HIGHLIGHT)
 		return XCHAT_EAT_NONE;*/
 
-	if (prefs.input_tray_hilight)
+	if (prefs.input_tray_hilight && !prefs.away_omit_alerts)
 	{
 		tray_set_flash (ICON_HILIGHT);
 
@@ -592,7 +592,7 @@ tray_hilight_cb (char *word[], void *userdata)
 								tray_hilight_count, word[1], xchat_get_info (ph, "channel"));
 	}
 
-	if (prefs.input_balloon_hilight)
+	if (prefs.input_balloon_hilight && !prefs.away_omit_alerts)
 		tray_set_balloonf (word[2], _(DISPLAY_NAME": Highlighted message from: %s (%s)"),
 								 word[1], xchat_get_info (ph, "channel"));
 
@@ -605,7 +605,7 @@ tray_message_cb (char *word[], void *userdata)
 	if (/*tray_status == TS_MESSAGE ||*/ tray_status == TS_HIGHLIGHT)
 		return XCHAT_EAT_NONE;
 
-	if (prefs.input_tray_chans)
+	if (prefs.input_tray_chans && !prefs.away_omit_alerts)
 	{
 		tray_set_flash (ICON_MSG);
 
@@ -617,7 +617,7 @@ tray_message_cb (char *word[], void *userdata)
 			tray_set_tipf (_(DISPLAY_NAME": %u new public messages."), tray_pub_count);
 	}
 
-	if (prefs.input_balloon_chans)
+	if (prefs.input_balloon_chans && !prefs.away_omit_alerts)
 		tray_set_balloonf (word[2], _(DISPLAY_NAME": New public message from: %s (%s)"),
 								 word[1], xchat_get_info (ph, "channel"));
 
@@ -646,7 +646,7 @@ tray_priv (char *from, char *text)
 		tray_set_tipf (_(DISPLAY_NAME": %u private messages, latest from: %s (%s)"),
 							tray_priv_count, from, network);
 
-	if (prefs.input_balloon_priv)
+	if (prefs.input_balloon_priv && !prefs.away_omit_alerts)
 		tray_set_balloonf (text, _(DISPLAY_NAME": Private message from: %s (%s)"),
 								 from, network);
 }
@@ -657,7 +657,7 @@ tray_priv_cb (char *word[], void *userdata)
 	/*if (tray_status == TS_HIGHLIGHT)
 		return XCHAT_EAT_NONE;*/
 
-	if (prefs.input_tray_priv)
+	if (prefs.input_tray_priv && !prefs.away_omit_alerts)
 		tray_priv (word[1], word[2]);
 
 	return XCHAT_EAT_NONE;
@@ -669,7 +669,7 @@ tray_invited_cb (char *word[], void *userdata)
 	/*if (tray_status == TS_HIGHLIGHT)
 		return XCHAT_EAT_NONE;*/
 
-	if (prefs.input_tray_priv)
+	if (prefs.input_tray_priv && !prefs.away_omit_alerts)
 		tray_priv (word[2], "Invited");
 
 	return XCHAT_EAT_NONE;
@@ -687,7 +687,7 @@ tray_dcc_cb (char *word[], void *userdata)
 	if (!network)
 		network = xchat_get_info (ph, "server");
 
-	if (prefs.input_tray_priv)
+	if (prefs.input_tray_priv && !prefs.away_omit_alerts)
 	{
 		tray_set_flash (ICON_FILE);
 
@@ -700,7 +700,7 @@ tray_dcc_cb (char *word[], void *userdata)
 								tray_file_count, word[1], network);
 	}
 
-	if (prefs.input_balloon_priv)
+	if (prefs.input_balloon_priv && !prefs.away_omit_alerts)
 		tray_set_balloonf ("", _(DISPLAY_NAME": File offer from: %s (%s)"),
 								word[1], network);
 
