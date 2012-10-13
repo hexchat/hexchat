@@ -393,7 +393,6 @@ default_file (void)
 /* Keep these sorted!! */
 
 const struct prefs vars[] = {
-	{"auto_save", P_OFFINT (autosave), TYPE_BOOL},
 	{"auto_save_url", P_OFFINT (autosave_url), TYPE_BOOL},
 
 	{"away_auto_unmark", P_OFFINT (auto_unmark_away), TYPE_BOOL},
@@ -683,7 +682,6 @@ load_config (void)
 	prefs.fastdccsend = 1;
 #endif
 	prefs.wordwrap = 1;
-	prefs.autosave = 1;
 	prefs.autodialog = 1;
 	prefs.gui_input_spell = 1;
 	prefs.autoreconnect = 1;
@@ -1142,7 +1140,7 @@ cmd_set (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	{
 		PrintText (sess, "No such variable.\n");
 	}
-	else if (prefs.autosave && !save_config ())
+	else if (!save_config ())
 	{
 		PrintText (sess, "Error saving changes to disk.\n");
 	}

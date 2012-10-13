@@ -847,14 +847,18 @@ xchat_exit (void)
 	in_xchat_exit = TRUE;
 	plugin_kill_all ();
 	fe_cleanup ();
-	if (prefs.autosave)
+
+	save_config ();
+	if (prefs.save_pevents)
 	{
-		save_config ();
-		if (prefs.save_pevents)
-			pevent_save (NULL);
+		pevent_save (NULL);
 	}
+
 	if (prefs.autosave_url)
+	{
 		url_autosave ();
+	}
+
 	sound_save ();
 	notify_save ();
 	ignore_save ();

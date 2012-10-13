@@ -532,7 +532,6 @@ void
 fe_init (void)
 {
 	/* the following should be default generated, not enfoced in binary */
-	prefs.autosave = 0;
 	prefs.use_server_tab = 0;
 	prefs.autodialog = 0;
 	/* except for these, there is no lag meter, there is no server list */
