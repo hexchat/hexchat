@@ -92,7 +92,7 @@ static GtkWidget *servlist_open_edit (GtkWidget *parent, ircnet *net);
 static const char *pages[]=
 {
 	"UTF-8 (Unicode)",
-	"IRC (Latin/Unicode Hybrid)",
+	IRC_DEFAULT_CHARSET,
 	"ISO-8859-15 (Western Europe)",
 	"ISO-8859-2 (Central Europe)",
 	"ISO-8859-7 (Greek)",
@@ -279,7 +279,7 @@ servlist_addnet_cb (GtkWidget *item, GtkTreeView *treeview)
 	ircnet *net;
 
 	net = servlist_net_add (_("New Network"), "", TRUE);
-	net->encoding = strdup ("IRC (Latin/Unicode Hybrid)");
+	net->encoding = strdup (IRC_DEFAULT_CHARSET);
 	servlist_server_add (net, "newserver/6667");
 
 	store = (GtkListStore *)gtk_tree_view_get_model (treeview);

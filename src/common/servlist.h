@@ -35,6 +35,9 @@ extern GSList *network_list;
 #define FLAG_FAVORITE			64
 #define FLAG_COUNT				7
 
+/* DEFAULT_CHARSET is already defined in wingdi.h */
+#define IRC_DEFAULT_CHARSET		"IRC (Latin/Unicode Hybrid)"
+
 void servlist_init (void);
 int servlist_save (void);
 int servlist_cycle (server *serv);

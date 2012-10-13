@@ -273,7 +273,7 @@ cmd_addserver (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 		if (!network)
 		{
 			network = servlist_net_add (word[2], "", TRUE);
-			network->encoding = strdup ("IRC (Latin/Unicode Hybrid)");
+			network->encoding = strdup (IRC_DEFAULT_CHARSET);
 		}
 		/* if we had the network already, check if the given server already exists */
 		else if (servlist_server_find (network, word_eol[3], NULL))
