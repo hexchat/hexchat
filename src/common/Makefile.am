@@ -2,7 +2,7 @@
 
 noinst_LIBRARIES = libxchatcommon.a
 
-INCLUDES = $(COMMON_CFLAGS)
+AM_CPPFLAGS = $(COMMON_CFLAGS)
 
 EXTRA_DIST = \
 	cfgfiles.h \
