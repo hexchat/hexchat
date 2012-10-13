@@ -278,8 +278,10 @@ scrollback_load (session *sess)
 	int lines;
 
 #ifdef WIN32
+#if 0
 	char *cleaned_text;
 	int cleaned_len;
+#endif
 #else
 	char *map, *end_map;
 	struct stat statbuf;
@@ -385,6 +387,7 @@ scrollback_load (session *sess)
 				{
 					text = strip_color (text + 1, -1, STRIP_COLOR);
 				}
+#if 0
 				cleaned_text = text_replace_non_bmp (text, -1, &cleaned_len);
 				if (cleaned_text != NULL)
 				{
@@ -394,6 +397,8 @@ scrollback_load (session *sess)
 					}
 					text = cleaned_text;
 				}
+#endif
+				text_replace_non_bmp2 (text);
 				fe_print_text (sess, text, stamp);
 				if (prefs.text_stripcolor_replay)
 				{
@@ -925,6 +930,7 @@ iso_8859_1_to_utf8 (unsigned char *text, int len, gsize *bytes_written)
 #ifdef WIN32
 /* replace characters outside of the Basic Multilingual Plane with
  * replacement characters (0xFFFD) */
+#if 0
 char *
 text_replace_non_bmp (char *utf8_input, int input_length, glong *output_length)
 {
@@ -959,6 +965,30 @@ text_replace_non_bmp (char *utf8_input, int input_length, glong *output_length)
 	g_free (ucs4_text);
 
 	return utf8_text;
+}
+#endif
+
+void
+text_replace_non_bmp2 (char *utf8_input)
+{
+	char *tmp = utf8_input, *next;
+	gunichar suspect;
+
+	while (tmp != NULL && *tmp)
+	{
+		next = g_utf8_next_char(tmp);
+		suspect = g_utf8_get_char_validated(tmp, next - tmp);
+		if ((suspect >= 0x1D173 && suspect <= 0x1D17A) || (suspect >= 0xE0001 && suspect <= 0xE007F))
+		{
+			/* 0xFFFD - replacement character */
+			*tmp = 0xEF;
+			*(++tmp) = 0xBF;
+			*(++tmp) = 0xBD;
+			*(++tmp) = 0x1A;	/* ASCII Sub to fill the 4th non-BMP byte */
+		}
+
+		tmp = next;
+	}
 }
 #endif
 

@@ -312,8 +312,10 @@ server_inline (server *serv, char *line, int len)
 	char *utf_line_allocated = NULL;
 
 #ifdef WIN32
+#if 0
 	char *cleaned_line;
 	int cleaned_len;
+#endif
 #endif
 
 	/* Checks whether we're set to use UTF-8 charset */
@@ -403,11 +405,14 @@ server_inline (server *serv, char *line, int len)
 	}
 
 #ifdef WIN32
+#if 0
 	cleaned_line = text_replace_non_bmp (line, len, &cleaned_len);
 	if (cleaned_line != NULL ) {
 		line = cleaned_line;
 		len = cleaned_len;
 	}
+#endif
+	text_replace_non_bmp2 (line);
 #endif
 
 	fe_add_rawlog (serv, line, len, FALSE);
@@ -416,7 +421,9 @@ server_inline (server *serv, char *line, int len)
 	serv->p_inline (serv, line, len);
 
 #ifdef WIN32
+#if 0
 	g_free (cleaned_line);
+#endif
 #endif
 
 	if (utf_line_allocated != NULL) /* only if a special copy was allocated */
