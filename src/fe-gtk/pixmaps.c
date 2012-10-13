@@ -137,9 +137,16 @@ pixmaps_init (void)
 	pix_tray_hilight = load_pixmap ("highlight", trayhilightpng, 1);
 	pix_tray_file = load_pixmap ("fileoffer", trayfilepng, 1);
 
+#if 0
 	/* treeview icons, no defaults, load from disk only */
 	pix_channel = load_pixmap ("channel", NULL, 0);
 	pix_dialog = load_pixmap ("dialog", NULL, 0);
 	pix_server = load_pixmap ("server", NULL, 0);
 	pix_util = load_pixmap ("util", NULL, 0);
+#endif
+	/* provide inline defaults for these coz they are nice! */
+	pix_channel = load_pixmap ("channel", channelpng, 1);
+	pix_dialog = load_pixmap ("dialog", dialogpng, 1);
+	pix_server = load_pixmap ("server", serverpng, 1);
+	pix_util = load_pixmap ("util", utilpng, 1);
 }

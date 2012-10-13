@@ -205,6 +205,7 @@ struct xchatprefs
 	char dcc_ip_str[DOMAINLEN + 1];
 
 	unsigned int tab_small;
+	unsigned int tab_icons;
 	unsigned int tab_sort;
 	unsigned int mainwindow_save;
 	unsigned int perc_color;
@@ -312,7 +313,6 @@ struct xchatprefs
 #ifdef WIN32
 	unsigned int identd;
 	unsigned int emoticons;
-	unsigned int tab_icons;
 #endif
 
 	unsigned int ctcp_number_limit;	/*flood */

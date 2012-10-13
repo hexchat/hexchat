@@ -2915,8 +2915,10 @@ mg_create_tabs (session_gui *gui)
 
 	/* if any one of these PNGs exist, the chanview will create
 	 * the extra column for icons. */
-	if (pix_channel || pix_dialog || pix_server || pix_util)
+	if (prefs.tab_icons && (pix_channel || pix_dialog || pix_server || pix_util))
+	{
 		use_icons = TRUE;
+	}
 
 	gui->chanview = chanview_new (prefs.tab_layout, prefs.truncchans,
 											prefs.tab_sort, use_icons,

@@ -562,9 +562,7 @@ const struct prefs vars[] = {
 
 	{"tab_chans", P_OFFINT (tabchannels), TYPE_BOOL},
 	{"tab_dialogs", P_OFFINT (privmsgtab), TYPE_BOOL},
-#ifdef WIN32
 	{"tab_icons", P_OFFINT (tab_icons), TYPE_BOOL},
-#endif
 	{"tab_layout", P_OFFINT (tab_layout), TYPE_INT},
 	{"tab_new_to_front", P_OFFINT (newtabstofront), TYPE_INT},
 	{"tab_notices", P_OFFINT (notices_tabs), TYPE_BOOL},
@@ -690,6 +688,7 @@ load_config (void)
 	prefs.text_stripcolor_topic = 1;
 	prefs.tabchannels = 1;
 	prefs.tab_layout = 2;	/* 0=Tabs 1=Reserved 2=Tree */
+	prefs.tab_icons = 1;
 	prefs.tab_sort = 1;
 	prefs.paned_userlist = 1;
 	prefs.newtabstofront = 2;
@@ -732,7 +731,7 @@ load_config (void)
 	prefs.gui_chanlist_maxusers = 9999;
 	prefs.gui_chanlist_minusers = 5;
 	prefs.gui_tray = 1;
-	prefs.gui_pane_left_size = 100;
+	prefs.gui_pane_left_size = 128;		/* with treeview icons we need a bit bigger space */
 	prefs.gui_pane_right_size = 100;
 	prefs.gui_pane_right_size_min = 80;
 	prefs.mainwindow_save = 1;

@@ -9,9 +9,13 @@ LIST =	traymsgpng $(srcdir)/message.png \
 			purplepng $(srcdir)/purple.png \
 			redpng $(srcdir)/red.png \
 			voicepng $(srcdir)/voice.png \
+			channelpng $(srcdir)/channel.png \
+			dialogpng $(srcdir)/dialog.png \
+			serverpng $(srcdir)/server.png \
+			utilpng $(srcdir)/util.png \
 			hexchatpng $(srcdir)/../../hexchat.png
 
-PNGS = message.png highlight.png fileoffer.png book.png hop.png op.png purple.png red.png voice.png
+PNGS = message.png highlight.png fileoffer.png book.png hop.png op.png purple.png red.png voice.png channel.png dialog.png server.png util.png
 noinst_HEADERS = inline_pngs.h
 CLEANFILES = $(noinst_HEADERS)
 EXTRA_DIST = $(PNGS)
