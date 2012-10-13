@@ -316,20 +316,18 @@ get_xdir_fs (void)
 {
 	if (!xdir_fs)
 	{
-		if (portable_mode ())
-		{
-			xdir_fs = ".\\config";
-		}
-		else
-		{
 			char out[256];
 
-			if (!get_reg_str ("Software\\Microsoft\\Windows\\CurrentVersion\\"
-					"Explorer\\Shell Folders", "AppData", out, sizeof (out)))
-				return "./config";
-			xdir_fs = g_strdup_printf ("%s\\" "HexChat", out);
-		}
+			if (portable_mode () || !get_reg_str ("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "AppData", out, sizeof (out)))
+			{
+				xdir_fs = ".\\config";
+			}
+			else
+			{
+				xdir_fs = g_strdup_printf ("%s\\" "HexChat", out);
+			}
 	}
+
 	return xdir_fs;
 }
 
