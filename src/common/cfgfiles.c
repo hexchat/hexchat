@@ -493,7 +493,7 @@ const struct prefs vars[] = {
 	{"input_balloon_time", P_OFFINT (input_balloon_time), TYPE_INT},
 	{"input_beep_chans", P_OFFINT (input_beep_chans), TYPE_BOOL},
 	{"input_beep_hilight", P_OFFINT (input_beep_hilight), TYPE_BOOL},
-	{"input_beep_msg", P_OFFINT (input_beep_priv), TYPE_BOOL},
+	{"input_beep_priv", P_OFFINT (input_beep_priv), TYPE_BOOL},
 	{"input_command_char", P_OFFSET (cmdchar), TYPE_STR},
 	{"input_filter_beep", P_OFFINT (filterbeep), TYPE_BOOL},
 	{"input_flash_chans", P_OFFINT (input_flash_chans), TYPE_BOOL},
