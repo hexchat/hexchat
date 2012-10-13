@@ -962,12 +962,14 @@ server_read_child (GIOChannel *source, GIOCondition condition, server *serv)
 #ifdef WIN32
 		if (prefs.identd)
 		{
-			if (serv->network)
-				identd_start ((((ircnet *)serv->network)->user) ?
-									(((ircnet *)serv->network)->user) :
-									prefs.username);
+			if (serv->network && ((ircnet *)serv->network)->user)
+			{
+				identd_start (((ircnet *)serv->network)->user);
+			}
 			else
+			{
 				identd_start (prefs.username);
+			}
 		}
 #else
 		snprintf (outbuf, sizeof (outbuf), "%s/auth/xchat_auth",
