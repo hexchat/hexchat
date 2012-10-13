@@ -695,7 +695,9 @@ load_config (void)
 	prefs.newtabstofront = 2;
 	prefs.use_server_tab = 1;
 	prefs.privmsgtab = 1;
-	/*prefs.style_inputbox = 1;*/
+	/* prefs.colorednicks = 1; */
+	prefs.style_inputbox = 1;
+	prefs.style_namelistgad = 1;
 	prefs.dccpermissions = 0600;
 	prefs.max_lines = 500;
 	prefs.mainwindow_width = 640;

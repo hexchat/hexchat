@@ -75,7 +75,10 @@ GdkColor colors[] = {
 	{0, 0xffff, 0xffff, 0xffff}, /* 32 marktext Fore (white) */
 	{0, 0x3535, 0x6e6e, 0xc1c1}, /* 33 marktext Back (blue) */
 	{0, 0x0000, 0x0000, 0x0000}, /* 34 foreground (black) */
+#if 0 /* old XChat 2.x default */
 	{0, 0xf0f0, 0xf0f0, 0xf0f0}, /* 35 background (white) */
+#endif
+	{0, 0xffff, 0xffff, 0xffff}, /* 35 background (white) */
 	{0, 0xcccc, 0x1010, 0x1010}, /* 36 marker line (red) */
 
 	/* colors for GUI */
