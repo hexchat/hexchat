@@ -45,6 +45,7 @@
 #include "../common/xchatc.h"
 #include "../common/plugin.h"
 #include "../common/server.h"
+#include "../common/url.h"
 #include "gtkutil.h"
 #include "maingui.h"
 #include "pixmaps.h"
@@ -1081,7 +1082,7 @@ static void
 fe_open_url_locale (const char *url)
 {
 	/* the http:// part's missing, prepend it, otherwise it won't always work */
-	if (strchr (url, ':') == NULL)
+	if (strchr (url, ':') == NULL && url_check_word (url, strlen (url)) != WORD_PATH)
 	{
 		url = g_strdup_printf ("http://%s", url);
 		fe_open_url_inner (url);
