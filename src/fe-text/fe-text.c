@@ -93,7 +93,7 @@ fe_new_window (struct session *sess, int focus)
 
 	snprintf (buf, sizeof (buf),
 				"\n"
-				" \017XChat-Text \00310"PACKAGE_VERSION"\n"
+				" \017HexChat-Text \00310"PACKAGE_VERSION"\n"
 				" \017Running on \00310%s \017glib \00310%d.%d.%d\n"
 				" \017This binary compiled \00310"__DATE__"\017\n",
 				get_cpu_str(),
@@ -826,7 +826,7 @@ fe_ctrl_gui (session *sess, fe_gui_action action, int arg)
 	/* only one action type handled for now, but could add more */
 	switch (action)
 	{
-	/* gui focus is really the only case xchat-text needs to wory about */
+	/* gui focus is really the only case hexchat-text needs to wory about */
 	case FE_GUI_FOCUS:
 		current_sess = sess;
 		current_tab = sess;
