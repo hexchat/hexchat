@@ -258,6 +258,41 @@ cmd_addbutton (struct session *sess, char *tbuf, char *word[],
 	return FALSE;
 }
 
+/* ADDSERVER <networkname> <serveraddress>, add a new network and server to the network list */
+static int
+cmd_addserver (struct session *sess, char *tbuf, char *word[], char *word_eol[])
+{
+	ircnet *network;
+
+	/* do we have enough arguments given? */
+	if (*word[2] && *word_eol[3])
+	{
+		network = servlist_net_find (word[2], NULL, strcmp);
+
+		/* if the given network doesn't exist yet, add it */
+		if (!network)
+		{
+			network = servlist_net_add (word[2], "", TRUE);
+			network->encoding = strdup ("IRC (Latin/Unicode Hybrid)");
+		}
+		/* if we had the network already, check if the given server already exists */
+		else if (servlist_server_find (network, word_eol[3], NULL))
+		{
+			PrintTextf (sess, _("Server %s already exists on network %s.\n"), word_eol[3], word[2]);
+			return TRUE;	/* unsuccessful, but the syntax was correct so we don't want to show the help */
+		}
+
+		/* server added to new or existing network, doesn't make any difference */
+		servlist_server_add (network, word_eol[3]);
+		PrintTextf (sess, _("Added server %s to network %s.\n"), word_eol[3], word[2]);
+		return TRUE;		/* success */
+	}
+	else
+	{
+		return FALSE;		/* print help */
+	}
+}
+
 static int
 cmd_allchannels (session *sess, char *tbuf, char *word[], char *word_eol[])
 {
@@ -3534,6 +3569,7 @@ cmd_voice (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 const struct commands xc_cmds[] = {
 	{"ADDBUTTON", cmd_addbutton, 0, 0, 1,
 	 N_("ADDBUTTON <name> <action>, adds a button under the user-list")},
+	{"ADDSERVER", cmd_addserver, 0, 0, 1, N_("ADDSERVER <New Network> <newserver/6667>, adds a new network with a new server to the network list")},
 	{"ALLCHAN", cmd_allchannels, 0, 0, 1,
 	 N_("ALLCHAN <cmd>, sends a command to all channels you're in")},
 	{"ALLCHANL", cmd_allchannelslocal, 0, 0, 1,
