@@ -59,7 +59,7 @@ url_save_cb (char *url, FILE *fd)
 }
 
 void
-url_save (const char *fname, const char *mode, gboolean fullpath)
+url_save_tree (const char *fname, const char *mode, gboolean fullpath)
 {
 	FILE *fd;
 
@@ -74,10 +74,20 @@ url_save (const char *fname, const char *mode, gboolean fullpath)
 	fclose (fd);
 }
 
-void
-url_autosave (void)
+static void
+url_save_node (char* url)
 {
-	url_save ("url.save", "a", FALSE);
+	FILE *fd;
+
+	/* open <config>/url.log in append mode */
+	fd = xchat_fopen_file ("url.log", "a", 0);
+	if (fd == NULL)
+	{
+		return;
+	}
+
+	fprintf (fd, "%s\n", url);
+	fclose (fd);	
 }
 
 static int
@@ -92,12 +102,17 @@ url_add (char *urltext, int len)
 	char *data;
 	int size;
 
-	if (!prefs.url_grabber)
+	/* we don't need any URLs if we have neither URL grabbing nor URL logging enabled */
+	if (!prefs.url_grabber && !prefs.url_logging)
+	{
 		return;
+	}
 
 	data = malloc (len + 1);
 	if (!data)
+	{
 		return;
+	}
 	memcpy (data, urltext, len);
 	data[len] = 0;
 
@@ -108,7 +123,21 @@ url_add (char *urltext, int len)
 	}
 	/* chop trailing ) but only if there's no counterpart */
 	if (data[len - 1] == ')' && strchr (data, '(') == NULL)
+	{
 		data[len - 1] = 0;
+	}
+
+	if (prefs.url_logging)
+	{
+		url_save_node (data);
+	}
+
+	/* the URL is saved already, only continue if we need the URL grabber too */
+	if (!prefs.url_grabber)
+	{
+		free (data);
+		return;
+	}
 
 	if (!url_tree)
 	{

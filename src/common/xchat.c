@@ -854,11 +854,6 @@ xchat_exit (void)
 		pevent_save (NULL);
 	}
 
-	if (prefs.autosave_url)
-	{
-		url_autosave ();
-	}
-
 	sound_save ();
 	notify_save ();
 	ignore_save ();

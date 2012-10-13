@@ -393,8 +393,6 @@ default_file (void)
 /* Keep these sorted!! */
 
 const struct prefs vars[] = {
-	{"auto_save_url", P_OFFINT (autosave_url), TYPE_BOOL},
-
 	{"away_auto_unmark", P_OFFINT (auto_unmark_away), TYPE_BOOL},
 	{"away_reason", P_OFFSET (awayreason), TYPE_STR},
 	{"away_show_message", P_OFFINT (show_away_message), TYPE_BOOL},
@@ -616,6 +614,7 @@ const struct prefs vars[] = {
 
 	{"url_grabber", P_OFFINT (url_grabber), TYPE_BOOL},
 	{"url_grabber_limit", P_OFFINT (url_grabber_limit), TYPE_INT},
+	{"url_logging", P_OFFINT (url_logging), TYPE_BOOL},
 	{0, 0, 0},
 };
 

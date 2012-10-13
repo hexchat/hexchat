@@ -13,8 +13,7 @@ extern void *url_tree;
 #define WORD_PATH    -2
 
 void url_clear (void);
-void url_save (const char *fname, const char *mode, gboolean fullpath);
-void url_autosave (void);
+void url_save_tree (const char *fname, const char *mode, gboolean fullpath);
 int url_check_word (char *word, int len);
 void url_check_line (char *buf, int len);
 

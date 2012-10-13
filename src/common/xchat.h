@@ -209,7 +209,6 @@ struct xchatprefs
 	unsigned int perc_color;
 	unsigned int perc_ascii;
 	unsigned int autodialog;
-	unsigned int autosave_url;
 	unsigned int autoreconnect;
 	unsigned int autoreconnectonfail;
 	unsigned int invisible;
@@ -323,6 +322,7 @@ struct xchatprefs
 
 	unsigned int url_grabber;
 	unsigned int url_grabber_limit;
+	unsigned int url_logging;
 	/* Tells us if we need to save, only when they've been edited.
 		This is so that we continue using internal defaults (which can
 		change in the next release) until the user edits them. */
