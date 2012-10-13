@@ -763,11 +763,14 @@ load_config (void)
 	{
 		char out[256];
 
-		if (get_reg_str ("Software\\Microsoft\\Windows\\CurrentVersion\\"
-						 "Explorer\\Shell Folders", "Personal", out, sizeof (out)))
-			snprintf (prefs.dccdir, sizeof (prefs.dccdir), "%s\\Downloads", out);
+		if (portable_mode () || !get_reg_str ("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "Personal", out, sizeof (out)))
+		{
+			snprintf (prefs.dccdir, sizeof (prefs.dccdir), "%s\\downloads", get_xdir_utf8 ());
+		}
 		else
-			snprintf (prefs.dccdir, sizeof (prefs.dccdir), "%s\\Downloads", get_xdir_utf8 ());
+		{
+			snprintf (prefs.dccdir, sizeof (prefs.dccdir), "%s\\Downloads", out);
+		}
 	}
 #else
 	snprintf (prefs.sounddir, sizeof (prefs.sounddir), "%s/sounds", get_xdir_utf8 ());

@@ -165,7 +165,7 @@ fe_dcc_send_filereq (struct session *sess, char *nick, int maxcps, int passive)
 	mdc->passive = passive;
 
 	snprintf (tbuf, sizeof tbuf, _("Send file to %s"), nick);
-	gtkutil_file_req (tbuf, dcc_send_filereq_file, mdc, NULL, NULL, FRF_MULTIPLE);
+	gtkutil_file_req (tbuf, dcc_send_filereq_file, mdc, prefs.dccdir, NULL, FRF_MULTIPLE|FRF_FILTERISINITIAL);
 }
 
 static void
