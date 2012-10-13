@@ -2310,12 +2310,14 @@ char *sound_files[NUM_XP];
 void
 sound_beep (session *sess)
 {
-	if (sound_files[XP_TE_BEEP] && sound_files[XP_TE_BEEP][0])
-		/* user defined beep _file_ */
-		sound_play_event (XP_TE_BEEP);
-	else
-		/* system beep */
-		fe_beep ();
+	if (!prefs.no_sound_away || !sess->server->is_away){
+		if (sound_files[XP_TE_BEEP] && sound_files[XP_TE_BEEP][0])
+			/* user defined beep _file_ */
+			sound_play_event (XP_TE_BEEP);
+		else
+			/* system beep */
+			fe_beep ();
+	}
 }
 
 static char *
