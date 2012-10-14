@@ -49,6 +49,7 @@ irc_login (server *serv, char *user, char *realname)
 {
 	if (serv->password[0])
 		tcp_sendf (serv, "PASS %s\r\n", serv->password);
+	tcp_sendf (serv, "CAP LS\r\n");
 
 	tcp_sendf (serv,
 				  "NICK %s\r\n"
@@ -1110,6 +1111,38 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 			if (*text == ':')
 				text++;
 			EMIT_SIGNAL (XP_TE_WALLOPS, sess, nick, text, NULL, NULL, 0);
+			return;
+		}
+	}
+
+	else if (len == 3)
+	{
+		guint32 t;
+
+		t = WORDL((guint8)type[0], (guint8)type[1], (guint8)type[2], (guint8)type[3]);
+		switch (t)
+		{
+		case WORDL('C','A','P','\0'):
+			if (strncasecmp(word[4], "ACK", 3) == 0)
+			{
+				if (strncasecmp(word[5][0]==':' ? word[5]+1 : word[5],
+					"identify-msg", 12) == 0)
+				{
+					serv->have_idmsg = TRUE;
+					tcp_send_len(serv, "CAP END\r\n", 9);
+				}
+			}
+			else if (strncasecmp(word[4], "LS", 2) == 0)
+			{
+				if (strstr(word_eol[5], "identify-msg") != 0)
+					tcp_send_len(serv, "CAP REQ :identify-msg\r\n", 23);
+				else
+					tcp_send_len(serv, "CAP END\r\n", 9);
+			}
+			else if (strncasecmp(word[4], "NAK",3) == 0)
+			{
+				tcp_send_len(serv, "CAP END\r\n", 9);
+			}
 			return;
 		}
 	}
