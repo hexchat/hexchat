@@ -187,7 +187,7 @@ struct xchatprefs
 	int gui_win_state;
 	int gui_url_mod;
 	int gui_usermenu;
-	int gui_ulist_statusicons;
+	int gui_ulist_texticons;
 	int gui_join_dialog;
 	int gui_quit_dialog;
 #ifdef WIN32
