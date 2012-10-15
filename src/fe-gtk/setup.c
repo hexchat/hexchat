@@ -2131,6 +2131,8 @@ setup_apply (struct xchatprefs *pr)
 
 #define DIFF(a) (pr->a != prefs.a)
 
+	if (DIFF (gui_ulist_texticons))
+		noapply = TRUE;
 	if (DIFF (paned_userlist))
 		noapply = TRUE;
 	if (DIFF (lagometer))
