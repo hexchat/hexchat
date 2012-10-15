@@ -516,6 +516,12 @@ static const struct defaultserver def[] =
 	{0,			"tahoma.starchat.net"},
 	{0,			"neo.starchat.net"},
 
+	{"SwiftIRC", 0},
+#ifdef USE_OPENSSL
+	{0,			"irc.swiftirc.net/+6697"},
+#endif
+	{0,			"irc.swiftirc.net/6667"},
+
 /*	{"TNI3",			0},
 	{0,			"irc.tni3.com"},*/
 
