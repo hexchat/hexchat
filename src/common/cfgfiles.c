@@ -1034,7 +1034,8 @@ cmd_set (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	int erase = FALSE;
 	int i = 0, finds = 0, found;
 	int idx = 2;
-	char *var, *val;
+	int prev_numeric;
+	char *var, *val, *prev_string;
 
 	if (g_ascii_strcasecmp (word[2], "-e") == 0)
 	{
@@ -1100,13 +1101,20 @@ cmd_set (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			case TYPE_STR:
 				if (erase || *val)
 				{
+					/* save the previous value until we print it out */
+					prev_string = (char*) malloc (vars[i].len + 1);
+					strncpy (prev_string, (char *) &prefs + vars[i].offset, vars[i].len);
+
+					/* update the variable */
 					strncpy ((char *) &prefs + vars[i].offset, val, vars[i].len);
 					((char *) &prefs)[vars[i].offset + vars[i].len - 1] = 0;
 
 					if (!quiet)
 					{
-						PrintTextf (sess, "%s set to: %s\n", var, (char *) &prefs + vars[i].offset);
+						PrintTextf (sess, "%s set to: %s (was: %s)\n", var, (char *) &prefs + vars[i].offset, prev_string);
 					}
+
+					free (prev_string);
 				}
 				else
 				{
@@ -1117,6 +1125,7 @@ cmd_set (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			case TYPE_BOOL:
 				if (*val)
 				{
+					prev_numeric = *((int *) &prefs + vars[i].offset);
 					if (vars[i].type == TYPE_BOOL)
 					{
 						if (atoi (val))
@@ -1153,8 +1162,7 @@ cmd_set (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 					}
 					if (!quiet)
 					{
-						PrintTextf (sess, "%s set to: %d\n", var,
-										*((int *) &prefs + vars[i].offset));
+						PrintTextf (sess, "%s set to: %d (was: %d)\n", var, *((int *) &prefs + vars[i].offset), prev_numeric);
 					}
 				}
 				else
