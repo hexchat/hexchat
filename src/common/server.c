@@ -497,7 +497,7 @@ server_read (GIOChannel *source, GIOCondition condition, server *serv)
 				serv->linebuf[serv->pos] = lbuf[i];
 				if (serv->pos >= (sizeof (serv->linebuf) - 1))
 					fprintf (stderr,
-								"*** XCHAT WARNING: Buffer overflow - shit server!\n");
+								"*** HEXCHAT WARNING: Buffer overflow - shit server!\n");
 				else
 					serv->pos++;
 			}
