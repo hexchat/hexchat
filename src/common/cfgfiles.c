@@ -1072,17 +1072,25 @@ cmd_set (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	}
 
 	if ((strchr (var, '*') || strchr (var, '?')) && !*val)
+	{
 		wild = TRUE;
+	}
 
 	if (*val == '=')
+	{
 		val++;
+	}
 
 	do
 	{
 		if (wild)
+		{
 			found = !match (var, vars[i].name);
+		}
 		else
+		{
 			found = g_ascii_strcasecmp (var, vars[i].name);
+		}
 
 		if (found == 0)
 		{
@@ -1094,9 +1102,13 @@ cmd_set (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 				{
 					strncpy ((char *) &prefs + vars[i].offset, val, vars[i].len);
 					((char *) &prefs)[vars[i].offset + vars[i].len - 1] = 0;
+
 					if (!quiet)
+					{
 						PrintTextf (sess, "%s set to: %s\n", var, (char *) &prefs + vars[i].offset);
-				} else
+					}
+				}
+				else
 				{
 					set_showval (sess, &vars[i], tbuf);
 				}
@@ -1108,26 +1120,44 @@ cmd_set (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 					if (vars[i].type == TYPE_BOOL)
 					{
 						if (atoi (val))
+						{
 							*((int *) &prefs + vars[i].offset) = 1;
+						}
 						else
+						{
 							*((int *) &prefs + vars[i].offset) = 0;
+						}
 						if (!g_ascii_strcasecmp (val, "YES") || !g_ascii_strcasecmp (val, "ON"))
+						{
 							*((int *) &prefs + vars[i].offset) = 1;
+						}
 						if (!g_ascii_strcasecmp (val, "NO") || !g_ascii_strcasecmp (val, "OFF"))
+						{
 							*((int *) &prefs + vars[i].offset) = 0;
-					} else
+						}
+					}
+					else
 					{
 						if (or)
+						{
 							*((int *) &prefs + vars[i].offset) |= atoi (val);
+						}
 						else if (off)
+						{
 							*((int *) &prefs + vars[i].offset) &= ~(atoi (val));
+						}
 						else
+						{
 							*((int *) &prefs + vars[i].offset) = atoi (val);
+						}
 					}
 					if (!quiet)
+					{
 						PrintTextf (sess, "%s set to: %d\n", var,
 										*((int *) &prefs + vars[i].offset));
-				} else
+					}
+				}
+				else
 				{
 					set_showval (sess, &vars[i], tbuf);
 				}
