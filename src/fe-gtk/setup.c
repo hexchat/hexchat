@@ -240,7 +240,6 @@ static const char *const tabwin[] =
 	NULL
 };
 
-#if 0
 static const char *const focusnewtabsmenu[] =
 {
 	N_("Never"),
@@ -248,7 +247,6 @@ static const char *const focusnewtabsmenu[] =
 	N_("Only requested tabs"),
 	NULL
 };
-#endif
 
 static const char *const swtype[] =
 {
@@ -268,9 +266,7 @@ static const setting tabs_settings[] =
 	{ST_TOGGLE, N_("Sort tabs in alphabetical order"), P_OFFINTNL(tab_sort), 0, 0, 0},
 	{ST_TOGGLE, N_("Show icons in the channel tree"), P_OFFINTNL(tab_icons), 0, 0, 0},
 	{ST_TOGGLE, N_("Smaller text"), P_OFFINTNL(tab_small), 0, 0, 0},
-#if 0
 	{ST_MENU,	N_("Focus new tabs:"), P_OFFINTNL(newtabstofront), 0, focusnewtabsmenu, 0},
-#endif
 	{ST_MENU,	N_("Show channel switcher at:"), P_OFFINTNL(tab_pos), 0, cspos, 1},
 	{ST_NUMBER,	N_("Shorten tab labels to:"), P_OFFINTNL(truncchans), 0, (const char **)N_("letters."), 99},
 
