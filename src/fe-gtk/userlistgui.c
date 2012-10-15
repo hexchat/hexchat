@@ -356,7 +356,7 @@ fe_userlist_insert (session *sess, struct User *newuser, int row, int sel)
 		do_away = FALSE;
 
 	nick = newuser->nick;
-	if (prefs.gui_tweaks & 64)
+	if (prefs.gui_ulist_statusicons)
 	{
 		nick = malloc (strlen (newuser->nick) + 2);
 		nick[0] = newuser->prefix[0];
@@ -377,7 +377,7 @@ fe_userlist_insert (session *sess, struct User *newuser, int row, int sel)
 										:	(NULL),
 								  -1);
 
-	if (prefs.gui_tweaks & 64)
+	if (prefs.gui_ulist_statusicons)
 		free (nick);
 
 	/* is it me? */
