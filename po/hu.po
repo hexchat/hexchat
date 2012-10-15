@@ -9,14 +9,14 @@ msgstr ""
 "Project-Id-Version: xchat 2.8.6\n"
 "Report-Msgid-Bugs-To: www.hexchat.org\n"
 "POT-Creation-Date: 2012-10-15 20:19+0200\n"
-"PO-Revision-Date: 2009-08-25 12:11+0100\n"
-"Last-Translator: rezso <rezso@rezso.net>\n"
+"PO-Revision-Date: 2012-10-15 21:24+0100\n"
+"Last-Translator: Berke Viktor <bviktor@hexchat.org>\n"
 "Language-Team: Hungarian <translation-team-hu@lists.sourceforge.net>\n"
 "Language: hu\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: KBabel 1.11.4\n"
+"X-Generator: Poedit 1.5.4\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/common/cfgfiles.c:782
@@ -123,12 +123,12 @@ msgstr "Nincs kapcsolat. Próbálja ezt: /server <host> [<port>]\n"
 #: src/common/outbound.c:281
 #, c-format
 msgid "Server %s already exists on network %s.\n"
-msgstr ""
+msgstr "A %s szerver már létezik a %s hálózaton.\n"
 
 #: src/common/outbound.c:287
 #, c-format
 msgid "Added server %s to network %s.\n"
-msgstr ""
+msgstr "A %s szerver a %s hálózathoz hozzáadva.\n"
 
 #: src/common/outbound.c:373
 #, c-format
@@ -182,15 +182,17 @@ msgid ""
 "ADDSERVER <New Network> <newserver/6667>, adds a new network with a new "
 "server to the network list"
 msgstr ""
+"ADDSERVER <Új hálózat> <újszerver/6667>, létrehoz egy új hálózatot szervert "
+"egy új szerverrel a hálózatlistában"
 
 #: src/common/outbound.c:3574
 msgid "ALLCHAN <cmd>, sends a command to all channels you're in"
 msgstr "ALLCHAN <parancs>, parancs küldése minden csatornára, ahol benn van"
 
 #: src/common/outbound.c:3576
-#, fuzzy
 msgid "ALLCHANL <cmd>, sends a command to all channels on the current server"
-msgstr "ALLCHANL <parancs>, parancs küldése minden csatornára, ahol benn van"
+msgstr ""
+"ALLCHANL <parancs>, parancs küldése minden csatornára az aktuális kiszolgálón"
 
 #: src/common/outbound.c:3578
 msgid "ALLSERV <cmd>, sends a command to all servers you're in"
@@ -222,6 +224,8 @@ msgstr "CHANOPT [-quiet] <változó> [<érték>]"
 msgid ""
 "CHARSET [<encoding>], get or set the encoding used for the current connection"
 msgstr ""
+"CHARSET [<kódolás>], a jelenlegi kapcsolat karakterkódolásának lekérdezése "
+"vagy beállítása"
 
 #: src/common/outbound.c:3585
 msgid "CLEAR [ALL|HISTORY], Clears the current text window or command history"
@@ -355,9 +359,8 @@ msgstr ""
 
 # FIXME
 #: src/common/outbound.c:3637
-#, fuzzy
 msgid "GHOST <nick> [password], Kills a ghosted nickname"
-msgstr "GHOST <becenév> <jelszó>: Egy ghost-olt becenév kilövése"
+msgstr "GHOST <becenév> <jelszó>, Egy ghost-olt becenév kilövése"
 
 #: src/common/outbound.c:3642
 msgid "HOP <nick>, gives chanhalf-op status to the nick (needs chanop)"
@@ -419,6 +422,12 @@ msgid ""
 "    Use -- (double hyphen) to end options when searching for, say, the "
 "string '-r'"
 msgstr ""
+"LASTLOG [-h] [-m] [-r] [--] <szöveg>, szöveg keresése a pufferben\n"
+"    Használd a -h kapcsolót a találat(ok) kiemeléséhez\n"
+"    Használd az -m kapcsolót a kis/nagybetű érzékenységhez\n"
+"    Használd az -r kapcsolót reguláris kifejezés használatához\n"
+"    Használd a -- (dupla kötőjel) kapcsolót az opciók lezárásához, például "
+"ha az '-r' szövegre keresel"
 
 #: src/common/outbound.c:3668
 msgid "LOAD [-e] <file>, loads a plugin or script"
@@ -552,7 +561,7 @@ msgstr ""
 
 #: src/common/outbound.c:3718
 msgid "SAVECONF, saves the current settings to disk"
-msgstr ""
+msgstr "SAVECONF, a jelenlegi beállítások lemezre mentése"
 
 #: src/common/outbound.c:3721
 msgid "SAY <text>, sends the text to the object in the current window"
@@ -574,13 +583,12 @@ msgstr ""
 "SERVCHAN <host> <port> <csatorna>, csatlakozik és belép az adott csatornára"
 
 #: src/common/outbound.c:3732
-#, fuzzy
 msgid ""
 "SERVER [-ssl] <host> [<port>] [<password>], connects to a server, the "
 "default port is 6667 for normal connections, and 6697 for ssl connections"
 msgstr ""
 "SERVER [-ssl] <host> [<port>] [<jelszó>], csatlakozik a kiszolgálóhoz, az "
-"alapértelmezett port 6667 normál kapcsolathoz, és 9999 SSL kapcsolathoz"
+"alapértelmezett port 6667 normál kapcsolathoz, és 6697 SSL kapcsolathoz"
 
 #: src/common/outbound.c:3735
 msgid ""
@@ -591,21 +599,22 @@ msgstr ""
 "alapértelmezett port a 6667"
 
 #: src/common/outbound.c:3737
-#, fuzzy
 msgid "SET [-e] [-off|-on] [-quiet] <variable> [<value>]"
-msgstr "SET [-e] [-or] [-quiet] <változó> [<érték>]"
+msgstr "SET [-e] [-off|-on] [-quiet] <változó> [<érték>]"
 
 #: src/common/outbound.c:3738
 msgid "SETCURSOR [-|+]<position>, reposition the cursor in the inputbox"
-msgstr ""
+msgstr "SETCURSOR [-|+]<pozíció>, a kurzor átmozgatása a beviteli mezőben"
 
 #: src/common/outbound.c:3739
 msgid "SETTAB <new name>, change a tab's name, tab_trunc limit still applies"
 msgstr ""
+"SETTAB <új név>, egy fül nevének megváltoztatása, a tab_trunc korlát "
+"továbbra is érvényes"
 
 #: src/common/outbound.c:3740
 msgid "SETTEXT <new text>, replace the text in the input box"
-msgstr ""
+msgstr "SETTEXT <új szöveg>, a beviteli mező szövegének cseréje"
 
 #: src/common/outbound.c:3743
 msgid ""
@@ -1231,13 +1240,13 @@ msgid "**** BEGIN LOGGING AT %s\n"
 msgstr "**** NAPLÓZÁS KEZDETE EKKOR: %s\n"
 
 #: src/common/text.c:702
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "* Can't open log file(s) for writing. Check the\n"
 "permissions on %s"
 msgstr ""
-"* Nem lehet írni a naplófájl(oka)t. Ellenőrizze a\n"
-"  jogosultságokat a(z) %s/xchatlogs fájlon"
+"* Nem lehet írni a naplófájl(oka)t. Ellenőrizd a\n"
+" jogokat a(z) %s fájlon"
 
 #: src/common/text.c:1141
 msgid "Left message"
@@ -1568,7 +1577,7 @@ msgstr "Kiszolgáló neve"
 
 #: src/common/text.c:1416
 msgid "Raw Numeric or Identifier"
-msgstr ""
+msgstr "Nyers szám vagy azonosító"
 
 #: src/common/text.c:1426
 msgid "Nick of person who invited you"
@@ -1746,7 +1755,7 @@ msgstr "Egyesült Arab Emirátusok"
 
 #: src/common/util.c:962
 msgid "Aviation-Related Fields"
-msgstr ""
+msgstr "Repüléssel kapcsolatos területek"
 
 #: src/common/util.c:963
 msgid "Afghanistan"
@@ -1794,7 +1803,7 @@ msgstr "Amerikai Szamoa"
 
 #: src/common/util.c:974
 msgid "Asia-Pacific Region"
-msgstr ""
+msgstr "Ázsia-Csendes-óceáni térség"
 
 #: src/common/util.c:975
 msgid "Austria"
@@ -1906,7 +1915,7 @@ msgstr "Kanada"
 
 #: src/common/util.c:1002
 msgid "Catalan"
-msgstr ""
+msgstr "Katalán"
 
 #: src/common/util.c:1003
 msgid "Cocos Islands"
@@ -1958,7 +1967,7 @@ msgstr "Internic kereskedelmi"
 
 #: src/common/util.c:1015
 msgid "Cooperatives"
-msgstr ""
+msgstr "Együttműködők"
 
 #: src/common/util.c:1016
 msgid "Costa Rica"
@@ -1989,9 +1998,8 @@ msgid "Czech Republic"
 msgstr "Cseh Köztársaság"
 
 #: src/common/util.c:1023
-#, fuzzy
 msgid "East Germany"
-msgstr "Németország"
+msgstr "Kelet-Németország"
 
 #: src/common/util.c:1024
 msgid "Germany"
@@ -2243,7 +2251,7 @@ msgstr "Jordánia"
 
 #: src/common/util.c:1086
 msgid "Company Jobs"
-msgstr ""
+msgstr "Céges állások"
 
 #: src/common/util.c:1087
 msgid "Japan"
@@ -2350,9 +2358,8 @@ msgid "Moldova"
 msgstr "Moldova"
 
 #: src/common/util.c:1113
-#, fuzzy
 msgid "Montenegro"
-msgstr "Szerbia és Montenegro"
+msgstr "Montenegró"
 
 #: src/common/util.c:1114
 msgid "United States Medical"
@@ -2392,7 +2399,7 @@ msgstr "Makaó"
 
 #: src/common/util.c:1123
 msgid "Mobile Devices"
-msgstr ""
+msgstr "Mobil eszközök"
 
 #: src/common/util.c:1124
 msgid "Northern Mariana Islands"
@@ -2420,7 +2427,7 @@ msgstr "Mauritius"
 
 #: src/common/util.c:1130
 msgid "Museums"
-msgstr ""
+msgstr "Múzeumok"
 
 #: src/common/util.c:1131
 msgid "Maldives"
@@ -2448,7 +2455,7 @@ msgstr "Namíbia"
 
 #: src/common/util.c:1137
 msgid "Individual's Names"
-msgstr ""
+msgstr "Magánszemélyek nevei"
 
 #: src/common/util.c:1138
 msgid "New Caledonia"
@@ -2548,7 +2555,7 @@ msgstr "Puerto Rico"
 
 #: src/common/util.c:1162
 msgid "Professions"
-msgstr ""
+msgstr "Mesterségek"
 
 #: src/common/util.c:1163
 msgid "Palestinian Territory"
@@ -2584,7 +2591,7 @@ msgstr "Régimódi ARPAnet"
 
 #: src/common/util.c:1171
 msgid "Serbia"
-msgstr ""
+msgstr "Szerbia"
 
 #: src/common/util.c:1172
 msgid "Russian Federation"
@@ -2655,9 +2662,8 @@ msgid "Suriname"
 msgstr "Suriname"
 
 #: src/common/util.c:1189
-#, fuzzy
 msgid "South Sudan"
-msgstr "Dél-Korea"
+msgstr "Dél-Szudán"
 
 #: src/common/util.c:1190
 msgid "Sao Tome and Principe"
@@ -2689,7 +2695,7 @@ msgstr "Csád"
 
 #: src/common/util.c:1197
 msgid "Internet Communication Services"
-msgstr ""
+msgstr "Internetes kommunikációs szolgáltatások"
 
 #: src/common/util.c:1198
 msgid "French Southern Territories"
@@ -2733,7 +2739,7 @@ msgstr "Törökország"
 
 #: src/common/util.c:1209
 msgid "Travel and Tourism"
-msgstr ""
+msgstr "Utazás és turizmus"
 
 #: src/common/util.c:1210
 msgid "Trinidad and Tobago"
@@ -2813,7 +2819,7 @@ msgstr "Szamoa"
 
 #: src/common/util.c:1229
 msgid "Adult Entertainment"
-msgstr ""
+msgstr "Felnőtt tartalmak"
 
 #: src/common/util.c:1230
 msgid "Yemen"
@@ -3712,9 +3718,8 @@ msgstr ""
 "összeset bezárja?"
 
 #: src/fe-gtk/maingui.c:1244
-#, fuzzy
 msgid "Quit HexChat?"
-msgstr "Kilép az XChatből?"
+msgstr "Kilépsz a HexChat-ből?"
 
 #: src/fe-gtk/maingui.c:1265
 msgid "Don't ask next time."
@@ -4122,9 +4127,8 @@ msgid ": CTCP Replies"
 msgstr "XChat: CTCP  válaszok"
 
 #: src/fe-gtk/menu.c:1623
-#, fuzzy
 msgid "He_xChat"
-msgstr "_XChat"
+msgstr "He_xChat"
 
 #: src/fe-gtk/menu.c:1624
 msgid "Network Li_st..."
@@ -4283,9 +4287,8 @@ msgid "Userlist Popup..."
 msgstr "Felhasználólista helyi menü..."
 
 #: src/fe-gtk/menu.c:1696
-#, fuzzy
 msgid "Save Settings to Disk"
-msgstr "Lista mentése fájlba"
+msgstr "Beállítások mentése lemezre"
 
 #: src/fe-gtk/menu.c:1699
 msgid "_Window"
@@ -4332,9 +4335,8 @@ msgid "Reset Marker Line"
 msgstr "Jelzővonal visszaállítása"
 
 #: src/fe-gtk/menu.c:1711
-#, fuzzy
 msgid "_Copy Selection"
-msgstr "Kijelölt hivatkozás másolása"
+msgstr "_Kijelölés másolása"
 
 #: src/fe-gtk/menu.c:1712
 msgid "C_lear Text"
@@ -4345,27 +4347,24 @@ msgid "Save Text..."
 msgstr "Szöveg mentése..."
 
 #: src/fe-gtk/menu.c:1715
-#, fuzzy
 msgid "Search"
-msgstr "_Keresés"
+msgstr "Keresés"
 
 #: src/fe-gtk/menu.c:1716
 msgid "Search Text..."
 msgstr "Szöveg keresése..."
 
 #: src/fe-gtk/menu.c:1717
-#, fuzzy
 msgid "Reset Search"
-msgstr "XChat: Keresés"
+msgstr "Keresés alaphelyzetbe állítása"
 
 #: src/fe-gtk/menu.c:1718
-#, fuzzy
 msgid "Search Next"
-msgstr "Szöveg keresése..."
+msgstr "Következő találat"
 
 #: src/fe-gtk/menu.c:1719
 msgid "Search Previous"
-msgstr ""
+msgstr "Előző keresése"
 
 #: src/fe-gtk/menu.c:1722 src/fe-gtk/menu.c:2197
 msgid "_Help"
@@ -4434,14 +4433,12 @@ msgid ": Connected to %u networks and %u channels"
 msgstr "XChat: Kapcsolódva %u hálózathoz és %u csatornához"
 
 #: src/fe-gtk/plugin-tray.c:516
-#, fuzzy
 msgid "_Restore Window"
-msgstr "Ablak _bezárása"
+msgstr "Ablak _helyreállítása"
 
 #: src/fe-gtk/plugin-tray.c:518
-#, fuzzy
 msgid "_Hide Window"
-msgstr "_Ablak"
+msgstr "Ablak _elrejtése"
 
 #: src/fe-gtk/plugin-tray.c:522
 msgid "_Blink on"
@@ -4570,18 +4567,16 @@ msgid "Search _backwards"
 msgstr "Keresés _visszafelé"
 
 #: src/fe-gtk/search.c:213
-#, fuzzy
 msgid "_Highlight all"
-msgstr "Kiemelés:"
+msgstr "_Mind kiemelése"
 
 #: src/fe-gtk/search.c:221
-#, fuzzy
 msgid "R_egular expression"
-msgstr "Reguláris kifejezés"
+msgstr "_Reguláris kifejezés"
 
 #: src/fe-gtk/search.c:237
 msgid "Close and _Reset"
-msgstr ""
+msgstr "Bezárás és _alaphelyzet"
 
 #: src/fe-gtk/servlistgui.c:172 src/fe-gtk/servlistgui.c:281
 msgid "New Network"
@@ -4758,9 +4753,8 @@ msgid "Skip network list on startup"
 msgstr "Ne jelenjen meg a hálózatlista indításkor"
 
 #: src/fe-gtk/servlistgui.c:1810
-#, fuzzy
 msgid "Show favorites only"
-msgstr "Megjelenítés:"
+msgstr "Csak a kedvencek mutatása"
 
 #: src/fe-gtk/servlistgui.c:1840
 msgid "_Edit..."
@@ -4780,11 +4774,11 @@ msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1856
 msgid "_Favor"
-msgstr ""
+msgstr "_Kedvenc"
 
 #: src/fe-gtk/servlistgui.c:1857
 msgid "Mark or unmark this network as a favorite."
-msgstr ""
+msgstr "A hálózat kedvencek közé vétele"
 
 #: src/fe-gtk/servlistgui.c:1881
 msgid "C_onnect"
@@ -4796,7 +4790,7 @@ msgstr "Szövegdoboz megjelenése"
 
 #: src/fe-gtk/setup.c:107
 msgid "Main font:"
-msgstr ""
+msgstr "Fő betűkészlet:"
 
 #: src/fe-gtk/setup.c:109
 msgid "Font:"
@@ -4867,12 +4861,10 @@ msgid "Time stamp format:"
 msgstr "Időbélyeg formátuma:"
 
 #: src/fe-gtk/setup.c:129 src/fe-gtk/setup.c:491
-#, fuzzy
 msgid "See the strftime MSDN article for details."
-msgstr "Lásd az strftime kézikönyvoldalát."
+msgstr "Részletekért lásd az MSDN cikket."
 
 #: src/fe-gtk/setup.c:131 src/fe-gtk/setup.c:493
-#, fuzzy
 msgid "See the strftime manpage for details."
 msgstr "Lásd az strftime kézikönyvoldalát."
 
@@ -4885,9 +4877,8 @@ msgid "Last-spoke order"
 msgstr "Utolsó hozzászólás sorrendjében"
 
 #: src/fe-gtk/setup.c:146
-#, fuzzy
 msgid "Input Box"
-msgstr "Beviteli doboz"
+msgstr "Beviteli mező"
 
 #: src/fe-gtk/setup.c:147 src/fe-gtk/setup.c:217
 msgid "Use the Text box font and colors"
@@ -4899,17 +4890,19 @@ msgstr "Helyesírás-ellenőrzés"
 
 #: src/fe-gtk/setup.c:150
 msgid "Dictionaries to use:"
-msgstr ""
+msgstr "Használandó szótárak:"
 
 #: src/fe-gtk/setup.c:152
 msgid ""
 "Use language codes (as in \"share\\myspell\\dicts\").\n"
 "Separate multiple entries with commas."
 msgstr ""
+"Használj nyelvi kódokat (ahogy a \"share\\myspell\\dicts\" alatt látható).\n"
+"Több értéket vesszővel válassz el."
 
 #: src/fe-gtk/setup.c:154
 msgid "Use language codes. Separate multiple entries with commas."
-msgstr ""
+msgstr "Használj nyelvi kódokat. Több értéket vesszővel válassz el."
 
 #: src/fe-gtk/setup.c:158
 msgid "Nick Completion"
@@ -5001,7 +4994,6 @@ msgid "Show user list at:"
 msgstr "Felhasználólista megjelenítése:"
 
 #: src/fe-gtk/setup.c:222
-#, fuzzy
 msgid "Away Tracking"
 msgstr "Távollét követés"
 
@@ -5060,7 +5052,7 @@ msgstr "Fülek rendezése betűrendbe"
 
 #: src/fe-gtk/setup.c:269
 msgid "Show icons in the channel tree"
-msgstr ""
+msgstr "Ikonok mutatása fa nézetben"
 
 #: src/fe-gtk/setup.c:270
 msgid "Smaller text"
@@ -5105,14 +5097,12 @@ msgstr ""
 "meg?"
 
 #: src/fe-gtk/setup.c:287
-#, fuzzy
 msgid "Messages"
-msgstr "Üzenet"
+msgstr "Üzenetek"
 
 #: src/fe-gtk/setup.c:288
-#, fuzzy
 msgid "Scrollback"
-msgstr "Visszagörgethető sorok:"
+msgstr "Visszatekintő"
 
 #: src/fe-gtk/setup.c:296
 msgid "No"
@@ -5236,7 +5226,7 @@ msgstr "Rendszertálcaikon engedélyezése"
 
 #: src/fe-gtk/setup.c:365 src/fe-gtk/setup.c:386
 msgid "Omit alerts when marked as being away"
-msgstr ""
+msgstr "Értesítések mellőzése távollét alatt"
 
 #: src/fe-gtk/setup.c:367 src/fe-gtk/setup.c:388
 msgid "Highlighted Messages"
@@ -5317,7 +5307,7 @@ msgstr "Haladó beállítások"
 
 #: src/fe-gtk/setup.c:419 src/fe-gtk/setup.c:449
 msgid "Alternative fonts:"
-msgstr ""
+msgstr "Alternatív betűkészletek:"
 
 #: src/fe-gtk/setup.c:421 src/fe-gtk/setup.c:450
 msgid "Auto reconnect delay:"
@@ -5363,42 +5353,47 @@ msgstr "Csevegésablak"
 
 #: src/fe-gtk/setup.c:429 src/fe-gtk/setup.c:459
 msgid "Auto Copy Behavior"
-msgstr ""
+msgstr "Automatikus másolás"
 
 #: src/fe-gtk/setup.c:430 src/fe-gtk/setup.c:460
 msgid "Automatically copy selected text"
-msgstr ""
+msgstr "Kijelölt szöveg automatikus másolása"
 
 #: src/fe-gtk/setup.c:431 src/fe-gtk/setup.c:461
 msgid ""
 "Copy selected text to clipboard when left mouse button is released. "
 "Otherwise, CONTROL-SHIFT-C will copy the selected text to the clipboard."
 msgstr ""
+"A kijelölt szöveg vágólapra másolása az egér bal gombjának elengedésekor. "
+"Különben CONTROL-SHIFT-C másolja a kijelölt szöveget a vágólapra."
 
 #: src/fe-gtk/setup.c:434 src/fe-gtk/setup.c:464
-#, fuzzy
 msgid "Automatically include time stamps"
-msgstr "Automatikusan vonja vissza a távol állapotot"
+msgstr "Időbélyegek automatikus másolása"
 
 #: src/fe-gtk/setup.c:435 src/fe-gtk/setup.c:465
 msgid ""
 "Automatically include time stamps in copied lines of text. Otherwise, "
 "include time stamps if the SHIFT key is held down while selecting."
 msgstr ""
+"Automatikusan másolja az időbélyegzőket is a másolt szöveggel. Különben az "
+"időbélyegzők másolása a SHIFT billentyű lenyomva tartásakor."
 
 #: src/fe-gtk/setup.c:437 src/fe-gtk/setup.c:467
 msgid "Automatically include color information"
-msgstr ""
+msgstr "Színkódok automatikus másolása"
 
 #: src/fe-gtk/setup.c:438 src/fe-gtk/setup.c:468
 msgid ""
 "Automatically include color information in copied lines of text.  Otherwise, "
 "include color information if the CONTROL key is held down while selecting."
 msgstr ""
+"Automatikusan másolja a színkódokat is a másolt szöveggel. Különben a "
+"színkódok másolása a CONTROL billentyű lenyomva tartásakor."
 
 #: src/fe-gtk/setup.c:454
 msgid "Allow only one instance of HexChat to run"
-msgstr ""
+msgstr "Egyetlen HexChat példány futtatásának engedélyezése"
 
 #: src/fe-gtk/setup.c:478 src/fe-gtk/setup.c:1832
 msgid "Logging"
@@ -5410,7 +5405,7 @@ msgstr "Visszatekintés megjelenítése az előző folyamatból"
 
 #: src/fe-gtk/setup.c:481
 msgid "Strip colors when displaying scrollback"
-msgstr ""
+msgstr "Színek eltávolítása a visszatekintőből"
 
 #: src/fe-gtk/setup.c:483
 msgid "Enable logging of conversations to disk"
@@ -5435,21 +5430,19 @@ msgstr "Napló időbélyegének formátuma:"
 
 #: src/fe-gtk/setup.c:496
 msgid "URLs"
-msgstr ""
+msgstr "URL-ek"
 
 #: src/fe-gtk/setup.c:497
-#, fuzzy
 msgid "Enable logging of URLs to disk"
-msgstr "Csevegések naplózásának engedélyezése"
+msgstr "URL-ek lemezre naplózásának engedélyezése"
 
 #: src/fe-gtk/setup.c:498
-#, fuzzy
 msgid "Enable URL grabber"
-msgstr "XChat: URL elfogó"
+msgstr "URL elfogó engedélyezése"
 
 #: src/fe-gtk/setup.c:499
 msgid "Maximum number of URLs to grab:"
-msgstr ""
+msgstr "Maximálisan elfogott URL-ek száma:"
 
 #: src/fe-gtk/setup.c:506
 msgid "(Disabled)"
@@ -5477,7 +5470,7 @@ msgstr "MS Proxy (ISA)"
 
 #: src/fe-gtk/setup.c:515
 msgid "Auto"
-msgstr ""
+msgstr "Auto"
 
 #: src/fe-gtk/setup.c:522
 msgid "All Connections"
@@ -5624,14 +5617,12 @@ msgid "Highlight:"
 msgstr "Kiemelés:"
 
 #: src/fe-gtk/setup.c:1437
-#, fuzzy
 msgid "Spell checker:"
-msgstr "Helyesírás-ellenőrzés"
+msgstr "Helyesírás-ellenőrző:"
 
 #: src/fe-gtk/setup.c:1440
-#, fuzzy
 msgid "Color Stripping"
-msgstr "DCC karakterlánc"
+msgstr "Színkódok eltávolítása"
 
 #: src/fe-gtk/setup.c:1546 src/fe-gtk/textgui.c:389
 msgid "Event"
@@ -5735,7 +5726,7 @@ msgstr ""
 
 #: src/fe-gtk/setup.c:2188
 msgid "Invalid time stamp format! See the strftime MSDN article for details."
-msgstr ""
+msgstr "Érvénytelen időbélyeg-formátum! Részletekért lásd az MSDN cikket."
 
 #: src/fe-gtk/setup.c:2195
 msgid "Some settings were changed that require a restart to take full effect."
