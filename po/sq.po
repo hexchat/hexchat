@@ -6,12 +6,12 @@ msgstr ""
 "Project-Id-Version: xchat 2.6.0\n"
 "Report-Msgid-Bugs-To: www.hexchat.org\n"
 "POT-Creation-Date: 2012-10-15 20:19+0200\n"
-"PO-Revision-Date: 2005-11-07 21:49+0200\n"
-"Last-Translator: Besnik Bleta <besnik@spymac.com>\n"
+"PO-Revision-Date: 2012-10-17 13:36+0200\n"
+"Last-Translator: Besnik Bleta <besnik@programeshqip.org>\n"
 "Language-Team: Albanian <translation-team-sq@lists.sourceforge.net>\n"
 "Language: sq\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=iso-8859-1\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
 #: src/common/cfgfiles.c:782
@@ -28,8 +28,7 @@ msgid ""
 "  create a User Account and use that to login.\n"
 msgstr ""
 "* Xhirimi i IRC-së si rrënjë është budallallëk! Duhet\n"
-"  të krijoni një Llogari Përdoruesi dhe të përdorni atë për t'u "
-"futur.\n"
+"  të krijoni një Llogari Përdoruesi dhe të përdorni atë për t'u futur.\n"
 
 #: src/common/dcc.c:72
 msgid "Waiting"
@@ -41,13 +40,14 @@ msgstr "Veprues"
 
 #: src/common/dcc.c:74
 msgid "Failed"
-msgstr "Dështova"
+msgstr "Dështoi"
 
 #: src/common/dcc.c:75
 msgid "Done"
 msgstr "Përmbushur"
 
-#: src/common/dcc.c:76 src/fe-gtk/menu.c:943
+#: src/common/dcc.c:76
+#: src/fe-gtk/menu.c:943
 msgid "Connect"
 msgstr "Lidhu"
 
@@ -55,34 +55,49 @@ msgstr "Lidhu"
 msgid "Aborted"
 msgstr "Ndërprerë"
 
-#: src/common/dcc.c:1892 src/common/outbound.c:2508
+#: src/common/dcc.c:1892
+#: src/common/outbound.c:2508
 #, c-format
 msgid "Cannot access %s\n"
 msgstr "S'mund të futem në %s\n"
 
-#: src/common/dcc.c:1893 src/common/text.c:1441 src/common/text.c:1479
-#: src/common/text.c:1490 src/common/text.c:1497 src/common/text.c:1510
-#: src/common/text.c:1527 src/common/text.c:1627 src/common/util.c:356
+#: src/common/dcc.c:1893
+#: src/common/text.c:1441
+#: src/common/text.c:1479
+#: src/common/text.c:1490
+#: src/common/text.c:1497
+#: src/common/text.c:1510
+#: src/common/text.c:1527
+#: src/common/text.c:1627
+#: src/common/util.c:356
 msgid "Error"
 msgstr "Gabim"
 
 #: src/common/dcc.c:2383
 #, c-format
 msgid "%s is offering \"%s\". Do you want to accept?"
-msgstr ""
+msgstr "%s po ju ofron \"%s\". Doni të pranohet?"
 
 #: src/common/dcc.c:2594
 msgid "No active DCCs\n"
 msgstr "S'ka DCC-ra vepruese\n"
 
-#: src/common/ignore.c:125 src/common/ignore.c:129 src/common/ignore.c:133
-#: src/common/ignore.c:137 src/common/ignore.c:141 src/common/ignore.c:145
+#: src/common/ignore.c:125
+#: src/common/ignore.c:129
+#: src/common/ignore.c:133
+#: src/common/ignore.c:137
+#: src/common/ignore.c:141
+#: src/common/ignore.c:145
 #: src/common/ignore.c:149
 msgid "YES  "
 msgstr "PO  "
 
-#: src/common/ignore.c:127 src/common/ignore.c:131 src/common/ignore.c:135
-#: src/common/ignore.c:139 src/common/ignore.c:143 src/common/ignore.c:147
+#: src/common/ignore.c:127
+#: src/common/ignore.c:131
+#: src/common/ignore.c:135
+#: src/common/ignore.c:139
+#: src/common/ignore.c:143
+#: src/common/ignore.c:147
 #: src/common/ignore.c:151
 msgid "NO   "
 msgstr "JO  "
@@ -118,21 +133,21 @@ msgstr "I palidhur. Provoni /server <strehë> [<portë>]\n"
 #: src/common/outbound.c:281
 #, c-format
 msgid "Server %s already exists on network %s.\n"
-msgstr ""
+msgstr "Shërbyesi %s gjendet tashmë në rrjetin %s.\n"
 
 #: src/common/outbound.c:287
 #, c-format
 msgid "Added server %s to network %s.\n"
-msgstr ""
+msgstr "U shtua shërbyesi %s te rrjeti %s.\n"
 
 #: src/common/outbound.c:373
 #, c-format
 msgid "Already marked away: %s\n"
-msgstr ""
+msgstr "I shënuar si i larguar tashmë: %s\n"
 
 #: src/common/outbound.c:446
 msgid "Already marked back.\n"
-msgstr ""
+msgstr "I shënuar njëherë si i kthyer.\n"
 
 #: src/common/outbound.c:1812
 msgid "I need /bin/sh to run!\n"
@@ -163,19 +178,17 @@ msgstr "Është shpërfillur arg i panjohur '%s'."
 msgid "No such plugin found.\n"
 msgstr "S'gjendet shtojcë e tillë.\n"
 
-#: src/common/outbound.c:3302 src/fe-gtk/plugingui.c:207
+#: src/common/outbound.c:3302
+#: src/fe-gtk/plugingui.c:207
 msgid "That plugin is refusing to unload.\n"
 msgstr "Ajo shtojcë nuk pranon të çngarkohet.\n"
 
 #: src/common/outbound.c:3571
 msgid "ADDBUTTON <name> <action>, adds a button under the user-list"
-msgstr ""
-"ADDBUTON <emër> <veprim>, shton një buton nën një listë përdoruesi"
+msgstr "ADDBUTON <emër> <veprim>, shton një buton nën një listë përdoruesi"
 
 #: src/common/outbound.c:3572
-msgid ""
-"ADDSERVER <New Network> <newserver/6667>, adds a new network with a new "
-"server to the network list"
+msgid "ADDSERVER <New Network> <newserver/6667>, adds a new network with a new server to the network list"
 msgstr ""
 
 #: src/common/outbound.c:3574
@@ -183,9 +196,8 @@ msgid "ALLCHAN <cmd>, sends a command to all channels you're in"
 msgstr "ALLCHAN <urd>,  u dërgon një urdhër tërë kanaleve ku keni hyrë"
 
 #: src/common/outbound.c:3576
-#, fuzzy
 msgid "ALLCHANL <cmd>, sends a command to all channels on the current server"
-msgstr "ALLCHAN <urd>,  u dërgon një urdhër tërë kanaleve ku keni hyrë"
+msgstr "ALLCHAN <urd>,  u dërgon një urdhër tërë kanaleve te shërbyesi i atëçastshëm"
 
 #: src/common/outbound.c:3578
 msgid "ALLSERV <cmd>, sends a command to all servers you're in"
@@ -197,32 +209,23 @@ msgstr "AWAY [<arsye>], ju tregon të larguar"
 
 #: src/common/outbound.c:3580
 msgid "BACK, sets you back (not away)"
-msgstr ""
+msgstr "BACK, ju tregon të kthyer (pra, jo më të larguar)"
 
 #: src/common/outbound.c:3582
-msgid ""
-"BAN <mask> [<bantype>], bans everyone matching the mask from the current "
-"channel. If they are already on the channel this doesn't kick them (needs "
-"chanop)"
-msgstr ""
-"BAN <maskë> [<tipndalimi>], i ndalon kanalin e çastit kujtdo që "
-"përputhet me maskën. Nëse tashmë janë në kanal kjo nuk i përzë (lyp "
-"kanop)"
+msgid "BAN <mask> [<bantype>], bans everyone matching the mask from the current channel. If they are already on the channel this doesn't kick them (needs chanop)"
+msgstr "BAN <maskë> [<llojndalimi>], i ndalon kanalin e çastit kujtdo që përputhet me maskën. Nëse tashmë janë në kanal kjo nuk i përzë (lyp kanop)"
 
 #: src/common/outbound.c:3583
-#, fuzzy
 msgid "CHANOPT [-quiet] <variable> [<value>]"
-msgstr "SET [-quiet] <ndryshore> [<vlerë>]"
+msgstr "CHANOPT [-quiet] <ndryshore> [<vlerë>]"
 
 #: src/common/outbound.c:3584
-msgid ""
-"CHARSET [<encoding>], get or set the encoding used for the current connection"
+msgid "CHARSET [<encoding>], get or set the encoding used for the current connection"
 msgstr ""
 
 #: src/common/outbound.c:3585
-#, fuzzy
 msgid "CLEAR [ALL|HISTORY], Clears the current text window or command history"
-msgstr "CLEAR, Pastron tekst në dritaren e çastit"
+msgstr "CLEAR [ALL|HISTORY], Pastron dritaren e atëçastshme të teksteve ose historikun e urdhërave"
 
 #: src/common/outbound.c:3586
 msgid "CLOSE, Closes the current window/tab"
@@ -230,22 +233,15 @@ msgstr "CLOSE, Mbyll dritaren/skedën e çastit"
 
 #: src/common/outbound.c:3589
 msgid "COUNTRY [-s] <code|wildcard>, finds a country code, eg: au = australia"
-msgstr ""
-"COUNTRY [-s] <code|wildcard>, gjen një kod vendi, p.sh.: sq = Shqipëri"
+msgstr "COUNTRY [-s] <code|wildcard>, gjen një kod vendi, p.sh.: sq = Shqipëri"
 
 #: src/common/outbound.c:3591
-msgid ""
-"CTCP <nick> <message>, send the CTCP message to nick, common messages are "
-"VERSION and USERINFO"
-msgstr ""
-"CTCP <nofkë> <mesazh>, i dërgon nofkës një mesazh CTCP, mesazhe të "
-"rëndomtë janë VERSION dhe USERINFO"
+msgid "CTCP <nick> <message>, send the CTCP message to nick, common messages are VERSION and USERINFO"
+msgstr "CTCP <nofkë> <mesazh>, i dërgon nofkës një mesazh CTCP, mesazhe të rëndomtë janë VERSION dhe USERINFO"
 
 #: src/common/outbound.c:3593
-#, fuzzy
-msgid ""
-"CYCLE [<channel>], parts the current or given channel and immediately rejoins"
-msgstr "CYCLE, del dhe menjëherë ribashkohet me kanalin e çastit"
+msgid "CYCLE [<channel>], parts the current or given channel and immediately rejoins"
+msgstr "CYCLE [<channel>], del dhe menjëherë ribashkohet me kanalin e atëçastshëm ose me atë që i jepet"
 
 #: src/common/outbound.c:3595
 msgid ""
@@ -262,42 +258,28 @@ msgstr ""
 "\n"
 "DCC GET <nofkë>                        - prano një kartelë të ofruar\n"
 "DCC SEND [-maxcps=#] <nofkë> [kartelë] - dërgo një kartelë te dikush\n"
-"DCC PSEND [-maxcps=#] <nick> [file]    - dërgo një kartelë duke përdorur "
-"mënyrën pasive\n"
+"DCC PSEND [-maxcps=#] <nick> [file]    - dërgo një kartelë duke përdorur mënyrën pasive\n"
 "DCC LIST                               - shfaq listë DCC\n"
 "DCC CHAT <nofkë>                       - ofro FJALOSJE DCC për dikë\n"
-"DCC PCHAT <nick>                       - ofro FJALOSJE DCC duke përdorur "
-"mënyrën pasive\n"
-"DCC CLOSE <tip> <nofkë> <kartelë>         shembull:\n"
+"DCC PCHAT <nick>                       - ofro FJALOSJE DCC duke përdorur mënyrën pasive\n"
+"DCC CLOSE <lloj> <nofkë> <kartelë>         shembull:\n"
 "         /dcc close send hasanqerja kartelë.tar.gz"
 
 #: src/common/outbound.c:3607
-msgid ""
-"DEHOP <nick>, removes chanhalf-op status from the nick on the current "
-"channel (needs chanop)"
-msgstr ""
-"DEOP <nofkë>, i heq nofkës gjendjen gjysëm-kanop për kanalin e çastit "
-"(lyp kanop)"
+msgid "DEHOP <nick>, removes chanhalf-op status from the nick on the current channel (needs chanop)"
+msgstr "DEOP <nofkë>, i heq nofkës gjendjen gjysëm-kanop për kanalin e çastit (lyp kanop)"
 
 #: src/common/outbound.c:3609
 msgid "DELBUTTON <name>, deletes a button from under the user-list"
-msgstr ""
-"DELBUTON <emër>, fshin një buton prej që poshtë liste përdoruesish"
+msgstr "DELBUTON <emër>, fshin një buton prej që poshtë liste përdoruesish"
 
 #: src/common/outbound.c:3611
-msgid ""
-"DEOP <nick>, removes chanop status from the nick on the current channel "
-"(needs chanop)"
-msgstr ""
-"DEOP <nofkë>, i heq nofkës gjendjen kanop në kanalin e çastit (lyp kanop)"
+msgid "DEOP <nick>, removes chanop status from the nick on the current channel (needs chanop)"
+msgstr "DEOP <nofkë>, i heq nofkës gjendjen kanop në kanalin e çastit (lyp kanop)"
 
 #: src/common/outbound.c:3613
-msgid ""
-"DEVOICE <nick>, removes voice status from the nick on the current channel "
-"(needs chanop)"
-msgstr ""
-"DEVOICE <nofkë>, i heq nofkës gjendjen i zëshëm në kanalin e çasti "
-"(lyp kanop)"
+msgid "DEVOICE <nick>, removes voice status from the nick on the current channel (needs chanop)"
+msgstr "DEVOICE <nofkë>, i heq nofkës gjendjen i zëshëm në kanalin e çasti (lyp kanop)"
 
 #: src/common/outbound.c:3614
 msgid "DISCON, Disconnects from server"
@@ -312,25 +294,16 @@ msgid "ECHO <text>, Prints text locally"
 msgstr "ECHO <text>, Shfaq tekst lokalisht"
 
 #: src/common/outbound.c:3619
-msgid ""
-"EXEC [-o] <command>, runs the command. If -o flag is used then output is "
-"sent to current channel, else is printed to current text box"
-msgstr ""
-"EXEC [-o] <urdhër>, përmbush urdhrin. Nëse përdoret flamurka -o "
-"atëherë përfundimi dërgohet në kanalin e çastit, në të kundërt "
-"jepet te kuti tekstesh të çastit"
+msgid "EXEC [-o] <command>, runs the command. If -o flag is used then output is sent to current channel, else is printed to current text box"
+msgstr "EXEC [-o] <urdhër>, përmbush urdhrin. Nëse përdoret flamurka -o atëherë përfundimi dërgohet në kanalin e çastit, në të kundërt jepet te kuti tekstesh të çastit"
 
 #: src/common/outbound.c:3621
 msgid "EXECCONT, sends the process SIGCONT"
 msgstr "EXECCONT, dërgon procesin SIGCONT"
 
 #: src/common/outbound.c:3624
-msgid ""
-"EXECKILL [-9], kills a running exec in the current session. If -9 is given "
-"the process is SIGKILL'ed"
-msgstr ""
-"EXECKILL [-9], asgjëson një përmbushje që po kryhet në kanalin e "
-"çastit. Nëse jepet -9 procesi është \"SIGKILL'ed\""
+msgid "EXECKILL [-9], kills a running exec in the current session. If -9 is given the process is SIGKILL'ed"
+msgstr "EXECKILL [-9], asgjëson një përmbushje që po kryhet në kanalin e çastit. Nëse jepet -9 procesi është \"SIGKILL'ed\""
 
 #: src/common/outbound.c:3626
 msgid "EXECSTOP, sends the process SIGSTOP"
@@ -346,12 +319,9 @@ msgstr "FLUSHQ, asgjëson mesazhe të çastit që prisnin të dërgoheshin"
 
 #: src/common/outbound.c:3633
 msgid "GATE <host> [<port>], proxies through a host, port defaults to 23"
-msgstr ""
-"GATE <strehë> [<portë>], ndërmjetëson te një strehë përmes një "
-"porte, me portë parazgjedhje 23"
+msgstr "GATE <strehë> [<portë>], ndërmjetëson te një strehë përmes një porte, me portë parazgjedhje 23"
 
 #: src/common/outbound.c:3637
-#, fuzzy
 msgid "GHOST <nick> [password], Kills a ghosted nickname"
 msgstr "GHOST <nofkë> <fjalëkalim>, Asgjëson një emër nofke fantazmë"
 
@@ -371,19 +341,15 @@ msgid ""
 "            PRIV, CHAN, NOTI, CTCP, DCC, INVI, ALL\n"
 "    options - NOSAVE, QUIET"
 msgstr ""
-"IGNORE <maskë> <tipe..> <mundësi..>\n"
+"IGNORE <maskë> <lloje..> <mundësi..>\n"
 "    maskë - maskë strehe për t'u shpërfillur, p.sh.: *!*@*.aol.com\n"
-"    tipe - tipe të dhënash për t'u shpërfillur, një ose tërë prej:\n"
+"    lloje - lloje të dhënash për t'u shpërfillur, një ose tërë prej:\n"
 "            PRIV, CHAN, NOTI, CTCP, DCC, INVI, ALL\n"
 "    mundësi - NOSAVE, QUIET"
 
 #: src/common/outbound.c:3652
-msgid ""
-"INVITE <nick> [<channel>], invites someone to a channel, by default the "
-"current channel (needs chanop)"
-msgstr ""
-"INVITE <nofkë> [<kanal>], fton dikë në një kanal, si parazgjedhje tek "
-"kanali i çastit (lyp chanop)"
+msgid "INVITE <nick> [<channel>], invites someone to a channel, by default the current channel (needs chanop)"
+msgstr "INVITE <nofkë> [<kanal>], fton dikë në një kanal, si parazgjedhje tek kanali i çastit (lyp chanop)"
 
 #: src/common/outbound.c:3653
 msgid "JOIN <channel>, joins the channel"
@@ -394,12 +360,8 @@ msgid "KICK <nick>, kicks the nick from the current channel (needs chanop)"
 msgstr "KICK <nofkë>, përzë nofkën prej kanalit të çastit (ly chanop)"
 
 #: src/common/outbound.c:3657
-msgid ""
-"KICKBAN <nick>, bans then kicks the nick from the current channel (needs "
-"chanop)"
-msgstr ""
-"KICKBAN <nofkë>, i ndalon hyrjen e mandej përzë nofkën prej kanalit të "
-"çastit (lyp chanop)"
+msgid "KICKBAN <nick>, bans then kicks the nick from the current channel (needs chanop)"
+msgstr "KICKBAN <nofkë>, i ndalon hyrjen e mandej përzë nofkën prej kanalit të çastit (lyp chanop)"
 
 #: src/common/outbound.c:3660
 msgid "LAGCHECK, forces a new lag check"
@@ -411,8 +373,7 @@ msgid ""
 "    Use -h to highlight the found string(s)\n"
 "    Use -m to match case\n"
 "    Use -r when string is a Regular Expression\n"
-"    Use -- (double hyphen) to end options when searching for, say, the "
-"string '-r'"
+"    Use -- (double hyphen) to end options when searching for, say, the string '-r'"
 msgstr ""
 
 #: src/common/outbound.c:3668
@@ -420,36 +381,24 @@ msgid "LOAD [-e] <file>, loads a plugin or script"
 msgstr "LOAD [e] <kartelë>, ngarkon një shtojcë ose një programth"
 
 #: src/common/outbound.c:3671
-msgid ""
-"MDEHOP, Mass deop's all chanhalf-ops in the current channel (needs chanop)"
-msgstr ""
-"MDEHOP, Heq gjendje operatori për tërë gjysmëoperatorët e kanalit në "
-"kanalin e çastit (lyp kanop)"
+msgid "MDEHOP, Mass deop's all chanhalf-ops in the current channel (needs chanop)"
+msgstr "MDEHOP, Heq gjendje operatori për tërë gjysmëoperatorët e kanalit në kanalin e çastit (lyp kanop)"
 
 #: src/common/outbound.c:3673
 msgid "MDEOP, Mass deop's all chanops in the current channel (needs chanop)"
-msgstr ""
-"MDEOP, Heq gjendje operatori për tërë kanop-ët në kanalin e çastit "
-"(lyp kanop)"
+msgstr "MDEOP, Heq gjendje operatori për tërë kanop-ët në kanalin e çastit (lyp kanop)"
 
 #: src/common/outbound.c:3675
-msgid ""
-"ME <action>, sends the action to the current channel (actions are written in "
-"the 3rd person, like /me jumps)"
-msgstr ""
-"ME <veprim>, dërgon veprimin te kanali i çastit (veprimet shprehen në "
-"vetën e tretë, si /unë hidhet)"
+msgid "ME <action>, sends the action to the current channel (actions are written in the 3rd person, like /me jumps)"
+msgstr "ME <veprim>, dërgon veprimin te kanali i çastit (veprimet shprehen në vetën e tretë, si /unë hidhet)"
 
 #: src/common/outbound.c:3679
-msgid ""
-"MKICK, Mass kicks everyone except you in the current channel (needs chanop)"
-msgstr ""
-"MKICK, Përzë në masë cilindon veç jush nga kanali i çastit (lyp chanop)"
+msgid "MKICK, Mass kicks everyone except you in the current channel (needs chanop)"
+msgstr "MKICK, Përzë në masë cilindon veç jush nga kanali i çastit (lyp chanop)"
 
 #: src/common/outbound.c:3682
 msgid "MOP, Mass op's all users in the current channel (needs chanop)"
-msgstr ""
-"MOP, Op-on në masë tërë përdoruesit në kanalin e çastit (lyp kanop)"
+msgstr "MOP, Op-on në masë tërë përdoruesit në kanalin e çastit (lyp kanop)"
 
 #: src/common/outbound.c:3683
 msgid "MSG <nick> <message>, sends a private message"
@@ -464,47 +413,36 @@ msgid "NCTCP <nick> <message>, Sends a CTCP notice"
 msgstr "NCTCP <nofkë> <mesazh>, Dërgon një njoftim CTCP"
 
 #: src/common/outbound.c:3689
-#, fuzzy
 msgid "NEWSERVER [-noconnect] <hostname> [<port>]"
-msgstr "NEWSERVER <strehëemër> [<portë>]"
+msgstr "NEWSERVER [-noconnect] <strehëemër> [<portë>]"
 
 #: src/common/outbound.c:3690
 msgid "NICK <nickname>, sets your nick"
 msgstr "NICK <nofkë>, cakton nofkën tuaj"
 
 #: src/common/outbound.c:3693
-msgid ""
-"NOTICE <nick/channel> <message>, sends a notice. Notices are a type of "
-"message that should be auto reacted to"
-msgstr ""
-"NOTICE <nofkë/kanal> <mesazh>, dërgon një njoftim. Njoftimet janë një "
-"tip mesazhi ndaj të cilëve vetëreagohet"
+msgid "NOTICE <nick/channel> <message>, sends a notice. Notices are a type of message that should be auto reacted to"
+msgstr "NOTICE <nofkë/kanal> <mesazh>, dërgon një njoftim. Njoftimet janë një lloj mesazhi ndaj të cilëve vetëreagohet"
 
 #: src/common/outbound.c:3695
-#, fuzzy
-msgid ""
-"NOTIFY [-n network1[,network2,...]] [<nick>], displays your notify list or "
-"adds someone to it"
-msgstr "NOTIFY [<nofkë>], shfaq listën tuaj njofto ose shton dikë në të"
+msgid "NOTIFY [-n network1[,network2,...]] [<nick>], displays your notify list or adds someone to it"
+msgstr "NOTIFY [-n rrjeti1[,rrjeti2,...]] [<nofkë>], shfaq listën tuaj të njoftimeve ose shton dikë në të"
 
 #: src/common/outbound.c:3697
 msgid "OP <nick>, gives chanop status to the nick (needs chanop)"
 msgstr "OP <nofkë>, ijep nofkës gjendje kanop (lyp kanop)"
 
 #: src/common/outbound.c:3699
-msgid ""
-"PART [<channel>] [<reason>], leaves the channel, by default the current one"
-msgstr ""
-"PART [<kanal>] [<arsye>], lë kanalin, si parazgjedhje atë të çastit"
+msgid "PART [<channel>] [<reason>], leaves the channel, by default the current one"
+msgstr "PART [<kanal>] [<arsye>], lë kanalin, si parazgjedhje atë të çastit"
 
 #: src/common/outbound.c:3701
 msgid "PING <nick | channel>, CTCP pings nick or channel"
 msgstr "PING <nofkë | kanal>, CTCP ping për nofkë ose kanal"
 
 #: src/common/outbound.c:3703
-#, fuzzy
 msgid "QUERY [-nofocus] <nick>, opens up a new privmsg window to someone"
-msgstr "QUERY <nofkë>, i hap dikujt një dritare të re mszvet"
+msgstr "QUERY [-nofocus] <nofkë>, i hap dikujt dritare mesazhesh vetjake"
 
 #: src/common/outbound.c:3705
 msgid "QUIT [<reason>], disconnects from the current server"
@@ -515,36 +453,20 @@ msgid "QUOTE <text>, sends the text in raw form to the server"
 msgstr "QUOTE <tekst>, dërgon te shërbyesi tekstin e patrajtuar"
 
 #: src/common/outbound.c:3710
-msgid ""
-"RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as /"
-"RECONNECT to reconnect to the current server or with /RECONNECT ALL to "
-"reconnect to all the open servers"
-msgstr ""
-"RECONNECT [-ssl] [<strehë>] [<portë>] [<fjalëkalim>], Mund të jepet "
-"thjesht si /RECONNECT për t'u rilidhur me shërbyesin e çastit ose si /"
-"RECONNECT ALL për t'u rilidhur me tërë shërbyesat e hapur"
+msgid "RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as /RECONNECT to reconnect to the current server or with /RECONNECT ALL to reconnect to all the open servers"
+msgstr "RECONNECT [-ssl] [<strehë>] [<portë>] [<fjalëkalim>], Mund të jepet thjesht si /RECONNECT për t'u rilidhur me shërbyesin e çastit ose si /RECONNECT ALL për t'u rilidhur me tërë shërbyesat e hapur"
 
 #: src/common/outbound.c:3713
-msgid ""
-"RECONNECT [<host>] [<port>] [<password>], Can be called just as /RECONNECT "
-"to reconnect to the current server or with /RECONNECT ALL to reconnect to "
-"all the open servers"
-msgstr ""
-"RECONNECT [<strehë>] [<portë>] [<fjalëkalim>], Mund të jepet thjesht si /"
-"RECONNECT për t'u rilidhur me shërbyesin e çastit ose si /RECONNECT ALL "
-"për t'u rilidhur me tërë shërbyesat e hapur"
+msgid "RECONNECT [<host>] [<port>] [<password>], Can be called just as /RECONNECT to reconnect to the current server or with /RECONNECT ALL to reconnect to all the open servers"
+msgstr "RECONNECT [<strehë>] [<portë>] [<fjalëkalim>], Mund të jepet thjesht si /RECONNECT për t'u rilidhur me shërbyesin e çastit ose si /RECONNECT ALL për t'u rilidhur me tërë shërbyesat e hapur"
 
 #: src/common/outbound.c:3715
-msgid ""
-"RECV <text>, send raw data to xchat, as if it was received from the irc "
-"server"
-msgstr ""
-"RECV <tekst>, i dërgon xchat-it të dhëna bruto, si të merreshin prej "
-"shërbyesit irc"
+msgid "RECV <text>, send raw data to xchat, as if it was received from the irc server"
+msgstr "RECV <tekst>, i dërgon xchat-it të dhëna bruto, si të merreshin prej shërbyesit irc"
 
 #: src/common/outbound.c:3718
 msgid "SAVECONF, saves the current settings to disk"
-msgstr ""
+msgstr "SAVECONF, ruan rregullimet e atëçastshme në disk"
 
 #: src/common/outbound.c:3721
 msgid "SAY <text>, sends the text to the object in the current window"
@@ -556,41 +478,27 @@ msgstr "SEND <nofkë [<kartelë>]"
 
 #: src/common/outbound.c:3725
 msgid "SERVCHAN [-ssl] <host> <port> <channel>, connects and joins a channel"
-msgstr ""
-"SERVCHAN [-ssl] <strehë> <portë> <kanal>, lidhet te dhe bashkohet me një "
-"kanal"
+msgstr "SERVCHAN [-ssl] <strehë> <portë> <kanal>, lidhet te dhe bashkohet me një kanal"
 
 #: src/common/outbound.c:3728
 msgid "SERVCHAN <host> <port> <channel>, connects and joins a channel"
-msgstr ""
-"SERVCHAN <strehë> <portë> <kanal>, lidhet te dhe bashkohet me një kanal"
+msgstr "SERVCHAN <strehë> <portë> <kanal>, lidhet te dhe bashkohet me një kanal"
 
 #: src/common/outbound.c:3732
-#, fuzzy
-msgid ""
-"SERVER [-ssl] <host> [<port>] [<password>], connects to a server, the "
-"default port is 6667 for normal connections, and 6697 for ssl connections"
-msgstr ""
-"SERVER [-ssl] <strehë> [<portë>] [<fjalëkalim>], lidhet me një "
-"shërbyes, porta parazgjedhje është 6667 për lidhje normale, dhe 9999 "
-"për lidhje ssl"
+msgid "SERVER [-ssl] <host> [<port>] [<password>], connects to a server, the default port is 6667 for normal connections, and 6697 for ssl connections"
+msgstr "SERVER [-ssl] <strehë> [<portë>] [<fjalëkalim>], lidhet me një shërbyes, porta parazgjedhje është 6667 për lidhje normale, dhe 9999 për lidhje ssl"
 
 #: src/common/outbound.c:3735
-msgid ""
-"SERVER <host> [<port>] [<password>], connects to a server, the default port "
-"is 6667"
-msgstr ""
-"SERVER <strehë> [<portë>] [<fjalëkalim>], lidhet me një shërbyes, porta "
-"parazgjedhje është 6667"
+msgid "SERVER <host> [<port>] [<password>], connects to a server, the default port is 6667"
+msgstr "SERVER <strehë> [<portë>] [<fjalëkalim>], lidhet me një shërbyes, porta parazgjedhje është 6667"
 
 #: src/common/outbound.c:3737
-#, fuzzy
 msgid "SET [-e] [-off|-on] [-quiet] <variable> [<value>]"
-msgstr "SET [-quiet] <ndryshore> [<vlerë>]"
+msgstr "SET [-e] [-off|-on] [-quiet] <ndryshore> [<vlerë>]"
 
 #: src/common/outbound.c:3738
 msgid "SETCURSOR [-|+]<position>, reposition the cursor in the inputbox"
-msgstr ""
+msgstr "SETCURSOR [-|+]<position>, ripozicionon kursorin te kutia e teksteve"
 
 #: src/common/outbound.c:3739
 msgid "SETTAB <new name>, change a tab's name, tab_trunc limit still applies"
@@ -598,14 +506,11 @@ msgstr ""
 
 #: src/common/outbound.c:3740
 msgid "SETTEXT <new text>, replace the text in the input box"
-msgstr ""
+msgstr "SETTEXT <tekst i ri>, zëvendësoni tekstin te kutia e teksteve"
 
 #: src/common/outbound.c:3743
-msgid ""
-"TOPIC [<topic>], sets the topic if one is given, else shows the current topic"
-msgstr ""
-"TOPIC [<temë>], e cakton si temë nëse jepet një, përndryshe shfaq "
-"temën e çastit"
+msgid "TOPIC [<topic>], sets the topic if one is given, else shows the current topic"
+msgstr "TOPIC [<temë>], e cakton si temë nëse jepet një, përndryshe shfaq temën e çastit"
 
 #: src/common/outbound.c:3745
 msgid ""
@@ -616,6 +521,12 @@ msgid ""
 "TRAY -t <text>                      Set the tray tooltip.\n"
 "TRAY -b <title> <text>              Set the tray balloon."
 msgstr ""
+"\n"
+"TRAY -f <skadencë> <kartelë1> [<kartelë2>] Xixëllo pjesën e panelit mes dy ikonave.\n"
+"TRAY -f <emër kartele>                  Caktoje panelin sa një ikonë fikse.\n"
+"TRAY -i <numër>                    Xixëllo panelin me një ikonë të brendshme.\n"
+"TRAY -t <tekst>                      Cakto ndihmëz rreth paneli.\n"
+"TRAY -b <titull> <tekst>              Cakto tullumbace paneli."
 
 #: src/common/outbound.c:3752
 msgid "UNBAN <mask> [<mask>...], unbans the specified masks."
@@ -634,11 +545,8 @@ msgid "URL <url>, opens a URL in your browser"
 msgstr "URL <url>, hap një URL në shfletuesin tuaj"
 
 #: src/common/outbound.c:3757
-msgid ""
-"USELECT [-a] [-s] <nick1> <nick2> etc, highlights nick(s) in channel userlist"
-msgstr ""
-"USELECT [-a] [-s] <nofka1> <nofka2> etj, thekson nofkën(at) në listën e "
-"përdoruesve të kanalit"
+msgid "USELECT [-a] [-s] <nick1> <nick2> etc, highlights nick(s) in channel userlist"
+msgstr "USELECT [-a] [-s] <nofka1> <nofka2> etj, thekson nofkën(at) në listën e përdoruesve të kanalit"
 
 #: src/common/outbound.c:3760
 msgid "VOICE <nick>, gives voice status to someone (needs chanop)"
@@ -649,10 +557,8 @@ msgid "WALLCHAN <message>, writes the message to all channels"
 msgstr "WALLCHAN <mesazh>, shkruan mesazhin te tërë kanalet"
 
 #: src/common/outbound.c:3764
-msgid ""
-"WALLCHOP <message>, sends the message to all chanops on the current channel"
-msgstr ""
-"WALLCHOP <mesazh>, dërgon mesazhin te tërë kanopët në kanalin e çastit"
+msgid "WALLCHOP <message>, sends the message to all chanops on the current channel"
+msgstr "WALLCHOP <mesazh>, dërgon mesazhin te tërë kanopët në kanalin e çastit"
 
 #: src/common/outbound.c:3797
 #, c-format
@@ -683,15 +589,14 @@ msgstr "Shumë urdhra përdoruesi ripërsëritës, po ndërpres."
 msgid "Unknown Command. Try /help\n"
 msgstr "Urdhër i Panjohur. Provoni /help\n"
 
-#: src/common/plugin.c:382 src/common/plugin.c:423
+#: src/common/plugin.c:382
+#: src/common/plugin.c:423
 msgid "No xchat_plugin_init symbol; is this really an xchat plugin?"
-msgstr ""
-"S'ka shenjë xchat_plugin_init; është kjo vërtet një shtojcë xchat-i?"
+msgstr "S'ka shenjë xchat_plugin_init; është kjo vërtet një shtojcë xchat-i?"
 
 #: src/common/server.c:665
 msgid "Are you sure this is a SSL capable server and port?\n"
-msgstr ""
-"Jeni të sigurtë se ky është një shërbyes dhe portë me mundësi SSL?\n"
+msgstr "Jeni të sigurtë se ky është një shërbyes dhe portë me mundësi SSL?\n"
 
 #: src/common/server.c:1033
 #, c-format
@@ -699,7 +604,7 @@ msgid ""
 "Cannot resolve hostname %s\n"
 "Check your IP Settings!\n"
 msgstr ""
-"Nuk ftilloj dot emërstrehën %s\n"
+"Nuk ftillohet dot strehëemri %s\n"
 "Kontrolloni Rregullimet tuaj IP!\n"
 
 #: src/common/server.c:1038
@@ -709,16 +614,12 @@ msgstr "\"Proxy traversal\" dështoi.\n"
 #: src/common/servlist.c:727
 #, c-format
 msgid "Cycling to next server in %s...\n"
-msgstr "Po cikloj te shërbyesi pasues në %s...\n"
+msgstr "Po ciklhet te shërbyesi pasues në %s...\n"
 
 #: src/common/servlist.c:1179
 #, c-format
-msgid ""
-"Warning: \"%s\" character set is unknown. No conversion will be applied for "
-"network %s."
-msgstr ""
-"Kujdes: Gërmat \"%s\" janë të panjohura. Nuk do të zbatohet ndonjë "
-"shndërrim për rrjetin %s."
+msgid "Warning: \"%s\" character set is unknown. No conversion will be applied for network %s."
+msgstr "Kujdes: Gërmat \"%s\" janë të panjohura. Nuk do të zbatohet ndonjë shndërrim për rrjetin %s."
 
 #: src/common/textevents.h:6
 msgid "%C22*%O$t$1 added to notify list."
@@ -866,7 +767,7 @@ msgstr "%C22*%O$tErdhi një ofertë FJALOSJEJE DCC prej $1"
 
 #: src/common/textevents.h:132
 msgid "%C22*%O$tOffering DCC CHAT to $1"
-msgstr "%C22*%O$tPo ofroj FJALOSJE DCC për $1"
+msgstr "%C22*%O$tPo ofrohet FJALOSJE DCC për $1"
 
 #: src/common/textevents.h:135
 msgid "%C22*%O$tAlready offering CHAT to $1"
@@ -883,16 +784,11 @@ msgstr "%C22*%O$tMora '$1%O' prej $2"
 #: src/common/textevents.h:144
 #, c-format
 msgid "%C24,18 Type  To/From    Status  Size    Pos     File         "
-msgstr ""
-"%C24,18 Tip  Prej/Për    Gjendje  Madhësi    Pos     Kartelë         "
+msgstr "%C24,18 Lloj  Prej/Për    Gjendje  Madhësi    Pos     Kartelë         "
 
 #: src/common/textevents.h:147
-msgid ""
-"%C22*%O$tReceived a malformed DCC request from %C26$1%O.%010%C22*%O"
-"$tContents of packet: $2"
-msgstr ""
-"%C22*%O$tErdhi prej %C26$1%O një kërkesë DCC e keqformuar.%010%C22*%O"
-"$tPërmbajtje pakete: $2"
+msgid "%C22*%O$tReceived a malformed DCC request from %C26$1%O.%010%C22*%O$tContents of packet: $2"
+msgstr "%C22*%O$tErdhi prej %C26$1%O një kërkesë DCC e keqformuar.%010%C22*%O$tPërmbajtje pakete: $2"
 
 #: src/common/textevents.h:150
 msgid "%C22*%O$tOffering%C26 $1%O to%C26 $2"
@@ -907,11 +803,8 @@ msgid "%C22*%O$tDCC RECV%C26 $2%O to%C26 $1%O aborted."
 msgstr "%C22*%O$tDCC RECV%C26 $2%O për%C26 $1%O dështoi."
 
 #: src/common/textevents.h:159
-msgid ""
-"%C22*%O$tDCC RECV%C26 $1%O from%C26 $3%O complete %C30[%C26$4%O cps%C30]%O."
-msgstr ""
-"%C22*%O$tDCC RECV%C26 $1%O prej%C26 $3%O e plotësuar %C30[%C26$4%O cps"
-"%C30]%O."
+msgid "%C22*%O$tDCC RECV%C26 $1%O from%C26 $3%O complete %C30[%C26$4%O cps%C30]%O."
+msgstr "%C22*%O$tDCC RECV%C26 $1%O prej%C26 $3%O e plotësuar %C30[%C26$4%O cps%C30]%O."
 
 #: src/common/textevents.h:162
 msgid "%C22*%O$tDCC RECV connection established to%C26 $1 %C30[%O$2%C30]"
@@ -926,11 +819,8 @@ msgid "%C22*%O$tDCC RECV: Cannot open $1 for writing ($2)."
 msgstr "%C22*%O$tDCC RECV: Nuk hap dot $1 për shkrim ($2)."
 
 #: src/common/textevents.h:171
-msgid ""
-"%C22*%O$tThe file%C26 $1%C already exists, saving it as%C26 $2%O instead."
-msgstr ""
-"%C22*%O$tKa tashmë një kartelë%C26 $1%C, ndaj po e ruaj te%C26 $2%O "
-"ndryshe."
+msgid "%C22*%O$tThe file%C26 $1%C already exists, saving it as%C26 $2%O instead."
+msgstr "%C22*%O$tKa tashmë një kartelë%C26 $1%C, ndaj po e ruaj te%C26 $2%O ndryshe."
 
 #: src/common/textevents.h:174
 msgid "%C22*%O$t%C26$1 %Ohas requested to resume%C26 $2 %Cfrom%C26 $3%C."
@@ -941,10 +831,8 @@ msgid "%C22*%O$tDCC SEND%C26 $2%O to%C26 $1%O aborted."
 msgstr "%C22*%O$tDCC SEND%C26 $2%O te%C26 $1%O u ndërpre."
 
 #: src/common/textevents.h:180
-msgid ""
-"%C22*%O$tDCC SEND%C26 $1%O to%C26 $2%O complete %C30[%C26$3%O cps%C30]%O."
-msgstr ""
-"%C22*%O$tDCC SEND%C26 $1%O te%C26 $2%O i plotësuar %C30[%C26$3%O cps%C30]%O."
+msgid "%C22*%O$tDCC SEND%C26 $1%O to%C26 $2%O complete %C30[%C26$3%O cps%C30]%O."
+msgstr "%C22*%O$tDCC SEND%C26 $1%O te%C26 $2%O i plotësuar %C30[%C26$3%O cps%C30]%O."
 
 #: src/common/textevents.h:183
 msgid "%C22*%O$tDCC SEND connection established to%C26 $1 %C30[%O$2%C30]"
@@ -994,8 +882,7 @@ msgstr "%C24,18                                                              "
 #: src/common/textevents.h:219
 #, c-format
 msgid "%C24,18 Hostmask                  PRIV NOTI CHAN CTCP DCC  INVI UNIG "
-msgstr ""
-"%C24,18 Strehëmaskë                  PRIV NOTI CHAN CTCP DCC  INVI UNIG "
+msgstr "%C24,18 Strehëmaskë                  PRIV NOTI CHAN CTCP DCC  INVI UNIG "
 
 #: src/common/textevents.h:222
 msgid "%O%C26$1%O removed from ignore list."
@@ -1007,9 +894,7 @@ msgstr "Lista shpërfill është e zbrazët."
 
 #: src/common/textevents.h:228
 msgid "%C22*%O$tCannot join%C26 %B$1 %O(Channel is invite only)."
-msgstr ""
-"%C22*%O$tnuk mund t'i bashkangjitet%C26 %B$1 %O(Kanali është vetëm me "
-"ftesa)."
+msgstr "%C22*%O$tnuk mund t'i bashkangjitet%C26 %B$1 %O(Kanali është vetëm me ftesa)."
 
 #: src/common/textevents.h:231
 msgid "%C22*%O$tYou have been invited to%C26 $1%O by%C26 $2%C (%C26$3%C)"
@@ -1037,13 +922,11 @@ msgstr "%C22*%O$t%C22MOTD Anashkaluar."
 
 #: src/common/textevents.h:255
 msgid "%C22*%O$t$1 already in use. Retrying with $2..."
-msgstr "%C22*%O$t$1 tashmë i përdorur. Po provoj me $2..."
+msgstr "%C22*%O$t$1 tashmë i përdorur. Po provohet $2..."
 
 #: src/common/textevents.h:258
 msgid "%C22*%O$tNickname already in use. Use /NICK to try another."
-msgstr ""
-"%C22*%O$tNofkë tashmë në përdorim. Përdorni /NICK për të provuar një "
-"tjetër."
+msgstr "%C22*%O$tNofkë tashmë në përdorim. Përdorni /NICK për të provuar një tjetër."
 
 #: src/common/textevents.h:261
 msgid "%C22*%O$tNo such DCC."
@@ -1066,14 +949,12 @@ msgid "%C22*%O$t$1 users in notify list."
 msgstr "%C22*%O$t$1 përdoruesë në listë njoftimesh."
 
 #: src/common/textevents.h:282
-#, fuzzy
 msgid "%C22*%O$tNotify: $1 is offline ($3)."
-msgstr "%C22*%O$tNjofto: $1 është i palidhur ($2)."
+msgstr "%C22*%O$tNotify: $1 është i palidhur ($3)."
 
 #: src/common/textevents.h:285
-#, fuzzy
 msgid "%C22*%O$tNotify: $1 is online ($3)."
-msgstr "%C22*%O$tNjofto: $1 është i lidhur ($2)."
+msgstr "%C22*%O$tNotify: $1 është i lidhur ($3)."
 
 #: src/common/textevents.h:291
 msgid "%C23*%O$t%C23$1 (%O%C23$2) has left $3"
@@ -1109,7 +990,7 @@ msgstr "%C28-%C29$1/Wallops%C28-%O$t$2"
 
 #: src/common/textevents.h:327
 msgid "%C22*%O$tLooking up IP number for%C26 $1%O..."
-msgstr "%C22*%O$tPo kërkoj numra IP për%C26 $1%O..."
+msgstr "%C22*%O$tPo kërkohen numra IP për%C26 $1%O..."
 
 #: src/common/textevents.h:330
 msgid "%C22*%O$t%C22Connected."
@@ -1117,7 +998,7 @@ msgstr "%C22*%O$t%C22I lidhur."
 
 #: src/common/textevents.h:336
 msgid "%C22*%O$t%C22Looking up $1"
-msgstr "%C22*%O$t%C22Po kërkoj $1"
+msgstr "%C22*%O$t%C22Po kërkohet $1"
 
 #: src/common/textevents.h:348
 msgid "%C22*%O$tStopped previous connection attempt (pid=$1)"
@@ -1141,9 +1022,7 @@ msgstr "%C22*%O$tStrehë e panjohur. Mundet e shkruajtët keq?"
 
 #: src/common/textevents.h:363
 msgid "%C22*%O$tCannot join%C26 %B$1 %O(User limit reached)."
-msgstr ""
-"%C22*%O$tNuk mund të bashkoheni me%C26 %B$1 %O(Është arritur kufi "
-"përdoruesish)."
+msgstr "%C22*%O$tNuk mund të bashkoheni me%C26 %B$1 %O(Është arritur kufi përdoruesish)."
 
 #: src/common/textevents.h:366
 msgid "%C22*%O$t%C26Users on $1:%C $2"
@@ -1157,8 +1036,10 @@ msgstr "%C22*%O$t%C28[%O$1%C28] %O$2%C27 $3"
 msgid "%C22*%O$t%C28[%O$1%C28] %Cis away %C30(%O$2%O%C30)"
 msgstr "%C22*%O$t%C28[%O$1%C28] %Cka dalë %C30(%O$2%O%C30)"
 
-#: src/common/textevents.h:375 src/common/textevents.h:381
-#: src/common/textevents.h:396 src/common/textevents.h:399
+#: src/common/textevents.h:375
+#: src/common/textevents.h:381
+#: src/common/textevents.h:396
+#: src/common/textevents.h:399
 msgid "%C22*%O$t%C28[%O$1%C28]%O $2"
 msgstr "%C22*%O$t%C28[%O$1%C28]%O $2"
 
@@ -1180,8 +1061,7 @@ msgstr "%C22*%O$t%C28[%O$1%C28] %C30(%O$2@$3%C30)%O: $4"
 
 #: src/common/textevents.h:393
 msgid "%C22*%O$t%C28[%O$1%C28] %Oreal user@host%C27 $2%O, real IP%C27 $3"
-msgstr ""
-"%C22*%O$t%C28[%O$1%C28] %Opërdorues real@host%C27 $2%O, IP reale%C27 $3"
+msgstr "%C22*%O$t%C28[%O$1%C28] %Opërdorues real@host%C27 $2%O, IP reale%C27 $3"
 
 #: src/common/textevents.h:402
 msgid "%C19*%O$t%C19Now talking on $2"
@@ -1208,28 +1088,29 @@ msgstr "%C22*%O$tKeni ftuar%C26 $1%O te%C26 $2%O (%C26$3%O)"
 msgid "%C22*%O$tYou are now known as $2"
 msgstr "%C22*%O$tTani njiheni si $2"
 
-#: src/common/text.c:367 src/common/text.c:418
+#: src/common/text.c:367
+#: src/common/text.c:418
 msgid "Loaded log from"
-msgstr ""
+msgstr "U ngarkua regjistrim prej"
 
 #: src/common/text.c:437
 #, c-format
 msgid "**** ENDING LOGGING AT %s\n"
-msgstr "**** PO PËRFUNDOJ REGJISTRIM NË %s\n"
+msgstr "**** PO PËRFUNDOHET REGJISTRIMI NË %s\n"
 
 #: src/common/text.c:683
 #, c-format
 msgid "**** BEGIN LOGGING AT %s\n"
-msgstr "**** PO FILLOJ REGJISTRIM NË %s\n"
+msgstr "**** PO FILLOHET REGJISTRIMI NË %s\n"
 
 #: src/common/text.c:702
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "* Can't open log file(s) for writing. Check the\n"
 "permissions on %s"
 msgstr ""
-"* S'hap dot kartelë(a) për të shkruajtur. Kontrolloni\n"
-"  lejet tek %s/xchatlogs"
+"* S'hapet dot kartelë(a) regjistrimi për shkrim.\n"
+"  Kontrolloni lejet tek %s"
 
 #: src/common/text.c:1141
 msgid "Left message"
@@ -1247,21 +1128,45 @@ msgstr "Nofka e personit që po hyn"
 msgid "The channel being joined"
 msgstr "Kanali ku po hyhet"
 
-#: src/common/text.c:1148 src/common/text.c:1196 src/common/text.c:1247
+#: src/common/text.c:1148
+#: src/common/text.c:1196
+#: src/common/text.c:1247
 msgid "The host of the person"
 msgstr "Streha e personit"
 
-#: src/common/text.c:1152 src/common/text.c:1159 src/common/text.c:1166
-#: src/common/text.c:1354 src/common/text.c:1361 src/common/text.c:1366
-#: src/common/text.c:1371 src/common/text.c:1376 src/common/text.c:1382
-#: src/common/text.c:1387 src/common/text.c:1391 src/common/text.c:1397
-#: src/common/text.c:1403 src/common/text.c:1455 src/common/text.c:1466
-#: src/common/text.c:1471 src/common/text.c:1476 src/common/text.c:1485
-#: src/common/text.c:1496 src/common/text.c:1503 src/common/text.c:1509
-#: src/common/text.c:1514 src/common/text.c:1519 src/common/text.c:1526
-#: src/common/text.c:1532 src/common/text.c:1538 src/common/text.c:1543
-#: src/common/text.c:1548 src/common/text.c:1552 src/common/text.c:1558
-#: src/common/text.c:1566 src/common/text.c:1600 src/common/text.c:1605
+#: src/common/text.c:1152
+#: src/common/text.c:1159
+#: src/common/text.c:1166
+#: src/common/text.c:1354
+#: src/common/text.c:1361
+#: src/common/text.c:1366
+#: src/common/text.c:1371
+#: src/common/text.c:1376
+#: src/common/text.c:1382
+#: src/common/text.c:1387
+#: src/common/text.c:1391
+#: src/common/text.c:1397
+#: src/common/text.c:1403
+#: src/common/text.c:1455
+#: src/common/text.c:1466
+#: src/common/text.c:1471
+#: src/common/text.c:1476
+#: src/common/text.c:1485
+#: src/common/text.c:1496
+#: src/common/text.c:1503
+#: src/common/text.c:1509
+#: src/common/text.c:1514
+#: src/common/text.c:1519
+#: src/common/text.c:1526
+#: src/common/text.c:1532
+#: src/common/text.c:1538
+#: src/common/text.c:1543
+#: src/common/text.c:1548
+#: src/common/text.c:1552
+#: src/common/text.c:1558
+#: src/common/text.c:1566
+#: src/common/text.c:1600
+#: src/common/text.c:1605
 msgid "Nickname"
 msgstr "Nofkë"
 
@@ -1269,11 +1174,14 @@ msgstr "Nofkë"
 msgid "The action"
 msgstr "Veprimi"
 
-#: src/common/text.c:1154 src/common/text.c:1161
+#: src/common/text.c:1154
+#: src/common/text.c:1161
 msgid "Mode char"
 msgstr "Gërma mënyre"
 
-#: src/common/text.c:1155 src/common/text.c:1162 src/common/text.c:1168
+#: src/common/text.c:1155
+#: src/common/text.c:1162
+#: src/common/text.c:1168
 msgid "Identified text"
 msgstr "Tekst i identifikuar"
 
@@ -1281,15 +1189,19 @@ msgstr "Tekst i identifikuar"
 msgid "The text"
 msgstr "Teksti"
 
-#: src/common/text.c:1167 src/common/text.c:1224 src/common/text.c:1230
+#: src/common/text.c:1167
+#: src/common/text.c:1224
+#: src/common/text.c:1230
 msgid "The message"
 msgstr "Mesazhi"
 
-#: src/common/text.c:1172 src/common/text.c:1234
+#: src/common/text.c:1172
+#: src/common/text.c:1234
 msgid "Old nickname"
 msgstr "Nofkë e vjetër"
 
-#: src/common/text.c:1173 src/common/text.c:1235
+#: src/common/text.c:1173
+#: src/common/text.c:1235
 msgid "New nickname"
 msgstr "Nofkë e re"
 
@@ -1297,40 +1209,56 @@ msgstr "Nofkë e re"
 msgid "Nick of person who changed the topic"
 msgstr "Nofkë e personit që ndryshoi temë"
 
-#: src/common/text.c:1178 src/common/text.c:1184 src/fe-gtk/chanlist.c:788
-#: src/fe-gtk/chanlist.c:891 src/fe-gtk/setup.c:289
+#: src/common/text.c:1178
+#: src/common/text.c:1184
+#: src/fe-gtk/chanlist.c:788
+#: src/fe-gtk/chanlist.c:891
+#: src/fe-gtk/setup.c:289
 msgid "Topic"
 msgstr "Temë"
 
-#: src/common/text.c:1179 src/common/text.c:1183 src/common/text.c:1620
-#: src/fe-gtk/chanlist.c:786 src/fe-gtk/ignoregui.c:174
+#: src/common/text.c:1179
+#: src/common/text.c:1183
+#: src/common/text.c:1620
+#: src/fe-gtk/chanlist.c:786
+#: src/fe-gtk/ignoregui.c:174
 #: src/fe-gtk/servlistgui.c:891
 msgid "Channel"
 msgstr "Kanal"
 
-#: src/common/text.c:1188 src/common/text.c:1241
+#: src/common/text.c:1188
+#: src/common/text.c:1241
 msgid "The nickname of the kicker"
 msgstr "Nofka e përzënësit"
 
-#: src/common/text.c:1189 src/common/text.c:1239
+#: src/common/text.c:1189
+#: src/common/text.c:1239
 msgid "The person being kicked"
 msgstr "Personi që po përzihet"
 
-#: src/common/text.c:1190 src/common/text.c:1197 src/common/text.c:1201
-#: src/common/text.c:1206 src/common/text.c:1240 src/common/text.c:1248
+#: src/common/text.c:1190
+#: src/common/text.c:1197
+#: src/common/text.c:1201
+#: src/common/text.c:1206
+#: src/common/text.c:1240
+#: src/common/text.c:1248
 #: src/common/text.c:1255
 msgid "The channel"
 msgstr "Kanali"
 
-#: src/common/text.c:1191 src/common/text.c:1242 src/common/text.c:1249
+#: src/common/text.c:1191
+#: src/common/text.c:1242
+#: src/common/text.c:1249
 msgid "The reason"
 msgstr "Arsyeja"
 
-#: src/common/text.c:1195 src/common/text.c:1246
+#: src/common/text.c:1195
+#: src/common/text.c:1246
 msgid "The nick of the person leaving"
 msgstr "Nofka e personit që po ikën"
 
-#: src/common/text.c:1202 src/common/text.c:1208
+#: src/common/text.c:1202
+#: src/common/text.c:1208
 msgid "The time"
 msgstr "Koha"
 
@@ -1338,19 +1266,26 @@ msgstr "Koha"
 msgid "The creator"
 msgstr "Krijuesi"
 
-#: src/common/text.c:1212 src/fe-gtk/dccgui.c:768 src/fe-gtk/dccgui.c:1001
+#: src/common/text.c:1212
+#: src/fe-gtk/dccgui.c:768
+#: src/fe-gtk/dccgui.c:1001
 msgid "Nick"
 msgstr "Nofkë"
 
-#: src/common/text.c:1213 src/common/text.c:1472
+#: src/common/text.c:1213
+#: src/common/text.c:1472
 msgid "Reason"
 msgstr "Arsye"
 
-#: src/common/text.c:1214 src/common/text.c:1356 src/common/text.c:1445
+#: src/common/text.c:1214
+#: src/common/text.c:1356
+#: src/common/text.c:1445
 msgid "Host"
 msgstr "Strehë"
 
-#: src/common/text.c:1218 src/common/text.c:1223 src/common/text.c:1228
+#: src/common/text.c:1218
+#: src/common/text.c:1223
+#: src/common/text.c:1228
 msgid "Who it's from"
 msgstr "Kush është prej"
 
@@ -1358,7 +1293,8 @@ msgstr "Kush është prej"
 msgid "The time in x.x format (see below)"
 msgstr "Koha në format x.x (shih më poshtë)"
 
-#: src/common/text.c:1229 src/common/text.c:1266
+#: src/common/text.c:1229
+#: src/common/text.c:1266
 msgid "The Channel it's going to"
 msgstr "Kanali ku po shkohet"
 
@@ -1366,11 +1302,14 @@ msgstr "Kanali ku po shkohet"
 msgid "The sound"
 msgstr "Tingulli"
 
-#: src/common/text.c:1254 src/common/text.c:1260 src/common/text.c:1265
+#: src/common/text.c:1254
+#: src/common/text.c:1260
+#: src/common/text.c:1265
 msgid "The nick of the person"
 msgstr "Nofka e personit"
 
-#: src/common/text.c:1259 src/common/text.c:1264
+#: src/common/text.c:1259
+#: src/common/text.c:1264
 msgid "The CTCP event"
 msgstr "Ngjarja CTCP"
 
@@ -1418,7 +1357,8 @@ msgstr "Nofka e personit që u bë i zëshëm"
 msgid "The nick of the person who did the banning"
 msgstr "Nofka e personit që bëri ndalimin"
 
-#: src/common/text.c:1296 src/common/text.c:1323
+#: src/common/text.c:1296
+#: src/common/text.c:1323
 msgid "The ban mask"
 msgstr "Maska e ndalimit"
 
@@ -1462,7 +1402,8 @@ msgstr "Nofka e personit që hoqi ndalimin"
 msgid "The nick of the person who did the exempt"
 msgstr "Nofka e personit që bëri përjashtimin"
 
-#: src/common/text.c:1328 src/common/text.c:1333
+#: src/common/text.c:1328
+#: src/common/text.c:1333
 msgid "The exempt mask"
 msgstr "Maska e përjashtimit"
 
@@ -1474,7 +1415,8 @@ msgstr "Nofka e personit që hoqi përjashtimin"
 msgid "The nick of the person who did the invite"
 msgstr "Nofka e personit që bëri ftesën"
 
-#: src/common/text.c:1338 src/common/text.c:1343
+#: src/common/text.c:1338
+#: src/common/text.c:1343
 msgid "The invite mask"
 msgstr "Maska e ftesës"
 
@@ -1514,7 +1456,8 @@ msgstr "Anëtarësi Kanali/\"është një operator IRC\""
 msgid "Server Information"
 msgstr "Të dhëna Shërbyesi"
 
-#: src/common/text.c:1372 src/common/text.c:1377
+#: src/common/text.c:1372
+#: src/common/text.c:1377
 msgid "Idle time"
 msgstr "Kohë bosh"
 
@@ -1526,7 +1469,9 @@ msgstr "Kohë nënshkrimi"
 msgid "Away reason"
 msgstr "Arsye largimi"
 
-#: src/common/text.c:1392 src/common/text.c:1398 src/common/text.c:1406
+#: src/common/text.c:1392
+#: src/common/text.c:1398
+#: src/common/text.c:1406
 #: src/common/text.c:1592
 msgid "Message"
 msgstr "Mesazh"
@@ -1543,18 +1488,29 @@ msgstr "përdorues@strehë e vërtetë"
 msgid "Real IP"
 msgstr "IP reale"
 
-#: src/common/text.c:1410 src/common/text.c:1425 src/common/text.c:1431
-#: src/common/text.c:1461 src/common/text.c:1615
+#: src/common/text.c:1410
+#: src/common/text.c:1425
+#: src/common/text.c:1431
+#: src/common/text.c:1461
+#: src/common/text.c:1615
 msgid "Channel Name"
 msgstr "Emër Kanali"
 
-#: src/common/text.c:1414 src/common/text.c:1420 src/common/text.c:1578
-#: src/fe-gtk/menu.c:1477 src/fe-gtk/menu.c:1665 src/fe-gtk/textgui.c:390
+#: src/common/text.c:1414
+#: src/common/text.c:1420
+#: src/common/text.c:1578
+#: src/fe-gtk/menu.c:1477
+#: src/fe-gtk/menu.c:1665
+#: src/fe-gtk/textgui.c:390
 msgid "Text"
 msgstr "Tekst"
 
-#: src/common/text.c:1415 src/common/text.c:1421 src/common/text.c:1427
-#: src/common/text.c:1456 src/common/text.c:1574 src/common/text.c:1616
+#: src/common/text.c:1415
+#: src/common/text.c:1421
+#: src/common/text.c:1427
+#: src/common/text.c:1456
+#: src/common/text.c:1574
+#: src/common/text.c:1616
 msgid "Server Name"
 msgstr "Emër Shërbyesi"
 
@@ -1566,7 +1522,8 @@ msgstr ""
 msgid "Nick of person who invited you"
 msgstr "Nofkë e personit që ju ftoi"
 
-#: src/common/text.c:1432 src/fe-gtk/chanlist.c:787
+#: src/common/text.c:1432
+#: src/fe-gtk/chanlist.c:787
 msgid "Users"
 msgstr "Përdoruesa"
 
@@ -1578,43 +1535,60 @@ msgstr "Nofkë në përdorim"
 msgid "Nick being tried"
 msgstr "Nofkë që po provohet"
 
-#: src/common/text.c:1446 src/common/text.c:1582
+#: src/common/text.c:1446
+#: src/common/text.c:1582
 msgid "IP"
 msgstr "IP"
 
-#: src/common/text.c:1447 src/common/text.c:1478
+#: src/common/text.c:1447
+#: src/common/text.c:1478
 msgid "Port"
 msgstr "Portë"
 
-#: src/common/text.c:1457 src/fe-gtk/notifygui.c:138 src/fe-gtk/setup.c:1836
+#: src/common/text.c:1457
+#: src/fe-gtk/notifygui.c:138
+#: src/fe-gtk/setup.c:1836
 msgid "Network"
 msgstr "Rrjet"
 
-#: src/common/text.c:1462 src/common/text.c:1467
+#: src/common/text.c:1462
+#: src/common/text.c:1467
 msgid "Modes string"
 msgstr "Varg mënyrash"
 
-#: src/common/text.c:1477 src/common/text.c:1515 src/common/text.c:1520
+#: src/common/text.c:1477
+#: src/common/text.c:1515
+#: src/common/text.c:1520
 #: src/common/text.c:1561
 msgid "IP address"
 msgstr "Vendndodhje IP"
 
-#: src/common/text.c:1483 src/common/text.c:1508
+#: src/common/text.c:1483
+#: src/common/text.c:1508
 msgid "DCC Type"
-msgstr "Tip DCC-je"
+msgstr "Lloj DCC-je"
 
-#: src/common/text.c:1484 src/common/text.c:1489 src/common/text.c:1494
-#: src/common/text.c:1501 src/common/text.c:1521 src/common/text.c:1525
-#: src/common/text.c:1531 src/common/text.c:1537 src/common/text.c:1544
-#: src/common/text.c:1553 src/common/text.c:1559
+#: src/common/text.c:1484
+#: src/common/text.c:1489
+#: src/common/text.c:1494
+#: src/common/text.c:1501
+#: src/common/text.c:1521
+#: src/common/text.c:1525
+#: src/common/text.c:1531
+#: src/common/text.c:1537
+#: src/common/text.c:1544
+#: src/common/text.c:1553
+#: src/common/text.c:1559
 msgid "Filename"
 msgstr "Emër kartele"
 
-#: src/common/text.c:1495 src/common/text.c:1502
+#: src/common/text.c:1495
+#: src/common/text.c:1502
 msgid "Destination filename"
 msgstr "Emër kartele vendmbrritjeje"
 
-#: src/common/text.c:1504 src/common/text.c:1533
+#: src/common/text.c:1504
+#: src/common/text.c:1533
 msgid "CPS"
 msgstr "CPS"
 
@@ -1622,11 +1596,13 @@ msgstr "CPS"
 msgid "Pathname"
 msgstr "Emër shtegu"
 
-#: src/common/text.c:1554 src/fe-gtk/dccgui.c:764
+#: src/common/text.c:1554
+#: src/fe-gtk/dccgui.c:764
 msgid "Position"
 msgstr "Vendndodhje"
 
-#: src/common/text.c:1560 src/fe-gtk/dccgui.c:763
+#: src/common/text.c:1560
+#: src/fe-gtk/dccgui.c:763
 msgid "Size"
 msgstr "Madhësi"
 
@@ -1656,7 +1632,7 @@ msgstr "Strehëmaskë"
 
 #: src/common/text.c:1601
 msgid "Hostname"
-msgstr "Emërstrehë"
+msgstr "Strehëemër"
 
 #: src/common/text.c:1606
 msgid "The Packet"
@@ -1689,7 +1665,7 @@ msgid ""
 "Loading default."
 msgstr ""
 "Gabim në trajtimin e ngjarjes %s.\n"
-"Po ngarkoj parazgjedhje."
+"Po ngarkohet parazgjedhja."
 
 #: src/common/text.c:2430
 #, c-format
@@ -1697,7 +1673,7 @@ msgid ""
 "Cannot read sound file:\n"
 "%s"
 msgstr ""
-"S'lexoj dot kartelë tingulli:\n"
+"S'lexohet dot kartelë tingulli:\n"
 "%s"
 
 #: src/common/util.c:300
@@ -1718,16 +1694,15 @@ msgstr "Mbaroi koha e ndërlidhjes"
 
 #: src/common/util.c:312
 msgid "Cannot assign that address"
-msgstr "Nuk mund të caktoj atë vendndodhje"
+msgstr "Nuk mund të caktohet ajo vendndodhje"
 
 #: src/common/util.c:314
 msgid "Connection reset by peer"
 msgstr "Lidhje e rivendosur nga tjetri"
 
 #: src/common/util.c:959
-#, fuzzy
 msgid "Ascension Island"
-msgstr "Ishujt Kokos"
+msgstr "Ishulli Ascension"
 
 #: src/common/util.c:960
 msgid "Andorra"
@@ -1739,7 +1714,7 @@ msgstr "Emiratet e Bashkuar Arabë"
 
 #: src/common/util.c:962
 msgid "Aviation-Related Fields"
-msgstr ""
+msgstr "Fusha të Lidhura me Aviacionin"
 
 #: src/common/util.c:963
 msgid "Afghanistan"
@@ -1787,7 +1762,7 @@ msgstr "Samoa Amerikane"
 
 #: src/common/util.c:974
 msgid "Asia-Pacific Region"
-msgstr ""
+msgstr "Azi-Paqësor"
 
 #: src/common/util.c:975
 msgid "Austria"
@@ -1806,9 +1781,8 @@ msgid "Aruba"
 msgstr "Aruba"
 
 #: src/common/util.c:979
-#, fuzzy
 msgid "Aland Islands"
-msgstr "Ishujt Falkland"
+msgstr "Ishujt Aland"
 
 #: src/common/util.c:980
 msgid "Azerbaijan"
@@ -1900,7 +1874,7 @@ msgstr "Kanada"
 
 #: src/common/util.c:1002
 msgid "Catalan"
-msgstr ""
+msgstr "Katalane"
 
 #: src/common/util.c:1003
 msgid "Cocos Islands"
@@ -1952,7 +1926,7 @@ msgstr "Tregtar Internic"
 
 #: src/common/util.c:1015
 msgid "Cooperatives"
-msgstr ""
+msgstr "Kooperativa"
 
 #: src/common/util.c:1016
 msgid "Costa Rica"
@@ -1983,9 +1957,8 @@ msgid "Czech Republic"
 msgstr "Republika Çeke"
 
 #: src/common/util.c:1023
-#, fuzzy
 msgid "East Germany"
-msgstr "Gjermani"
+msgstr "Gjermani Lindore"
 
 #: src/common/util.c:1024
 msgid "Germany"
@@ -2045,7 +2018,7 @@ msgstr "Etiopi"
 
 #: src/common/util.c:1038
 msgid "European Union"
-msgstr ""
+msgstr "Bashkimi Europian"
 
 #: src/common/util.c:1039
 msgid "Finland"
@@ -2189,7 +2162,7 @@ msgstr "Izrael"
 
 #: src/common/util.c:1074
 msgid "Isle of Man"
-msgstr ""
+msgstr "Ishulli i Robit"
 
 #: src/common/util.c:1075
 msgid "India"
@@ -2225,7 +2198,7 @@ msgstr "Itali"
 
 #: src/common/util.c:1083
 msgid "Jersey"
-msgstr ""
+msgstr "Xhersi"
 
 #: src/common/util.c:1084
 msgid "Jamaica"
@@ -2325,7 +2298,7 @@ msgstr "Luksemburg"
 
 #: src/common/util.c:1108
 msgid "Latvia"
-msgstr "Latvi"
+msgstr "Letoni"
 
 #: src/common/util.c:1109
 msgid "Libya"
@@ -2344,9 +2317,8 @@ msgid "Moldova"
 msgstr "Moldavi"
 
 #: src/common/util.c:1113
-#, fuzzy
 msgid "Montenegro"
-msgstr "Serbi dhe Mal i Zi"
+msgstr "Mal i Zi"
 
 #: src/common/util.c:1114
 msgid "United States Medical"
@@ -2386,7 +2358,7 @@ msgstr "Makau"
 
 #: src/common/util.c:1123
 msgid "Mobile Devices"
-msgstr ""
+msgstr "Pajisje Celulare"
 
 #: src/common/util.c:1124
 msgid "Northern Mariana Islands"
@@ -2414,7 +2386,7 @@ msgstr "Mauricius"
 
 #: src/common/util.c:1130
 msgid "Museums"
-msgstr ""
+msgstr "Muzeume"
 
 #: src/common/util.c:1131
 msgid "Maldives"
@@ -2442,7 +2414,7 @@ msgstr "Namibi"
 
 #: src/common/util.c:1137
 msgid "Individual's Names"
-msgstr ""
+msgstr "Emra Individësh"
 
 #: src/common/util.c:1138
 msgid "New Caledonia"
@@ -2542,7 +2514,7 @@ msgstr "Porto Riko"
 
 #: src/common/util.c:1162
 msgid "Professions"
-msgstr ""
+msgstr "Profesione"
 
 #: src/common/util.c:1163
 msgid "Palestinian Territory"
@@ -2578,7 +2550,7 @@ msgstr "Old School ARPAnet"
 
 #: src/common/util.c:1171
 msgid "Serbia"
-msgstr ""
+msgstr "Serbi"
 
 #: src/common/util.c:1172
 msgid "Russian Federation"
@@ -2649,9 +2621,8 @@ msgid "Suriname"
 msgstr "Surinam"
 
 #: src/common/util.c:1189
-#, fuzzy
 msgid "South Sudan"
-msgstr "Kore e Jugut"
+msgstr "Sudan i Jugut"
 
 #: src/common/util.c:1190
 msgid "Sao Tome and Principe"
@@ -2683,7 +2654,7 @@ msgstr "Çad"
 
 #: src/common/util.c:1197
 msgid "Internet Communication Services"
-msgstr ""
+msgstr "Shërbime Ndërlidhjesh në Internet"
 
 #: src/common/util.c:1198
 msgid "French Southern Territories"
@@ -2705,7 +2676,8 @@ msgstr "Taxhikistan"
 msgid "Tokelau"
 msgstr "Tokelau"
 
-#: src/common/util.c:1203 src/common/util.c:1207
+#: src/common/util.c:1203
+#: src/common/util.c:1207
 msgid "East Timor"
 msgstr "Timori Lindor"
 
@@ -2727,7 +2699,7 @@ msgstr "Turqi"
 
 #: src/common/util.c:1209
 msgid "Travel and Tourism"
-msgstr ""
+msgstr "Udhëtime dhe Turizëm"
 
 #: src/common/util.c:1210
 msgid "Trinidad and Tobago"
@@ -2807,7 +2779,7 @@ msgstr "Samoa"
 
 #: src/common/util.c:1229
 msgid "Adult Entertainment"
-msgstr ""
+msgstr "Dëfrim të Rriturish"
 
 #: src/common/util.c:1230
 msgid "Yemen"
@@ -2833,34 +2805,31 @@ msgstr "Zambia"
 msgid "Zimbabwe"
 msgstr "Zimbabve"
 
-#: src/common/util.c:1245 src/common/util.c:1255 src/fe-gtk/menu.c:617
+#: src/common/util.c:1245
+#: src/common/util.c:1255
+#: src/fe-gtk/menu.c:617
 msgid "Unknown"
 msgstr "I panjohur"
 
 #: src/common/xchat.c:740
-#, fuzzy
 msgid "_Open Dialog Window"
-msgstr "Hap Dritare Dialogu"
+msgstr "_Hap Dritare Dialogu"
 
 #: src/common/xchat.c:741
-#, fuzzy
 msgid "_Send a File"
-msgstr "Dërgo Kartelë"
+msgstr "_Dërgo Kartelë"
 
 #: src/common/xchat.c:742
-#, fuzzy
 msgid "_User Info (WhoIs)"
-msgstr "Të dhëna Përdoruesi (WHOIS)"
+msgstr "Të dhëna _Përdoruesi (WhoIs)"
 
 #: src/common/xchat.c:743
-#, fuzzy
 msgid "_Add to Friends List"
-msgstr "XChat: Listë Dërgimesh Kartelash"
+msgstr "_Shtoje te Listë Shokësh"
 
 #: src/common/xchat.c:744
-#, fuzzy
 msgid "O_perator Actions"
-msgstr "Veprime Operatori"
+msgstr "Veprime _Operatori"
 
 #: src/common/xchat.c:746
 msgid "Give Ops"
@@ -2882,16 +2851,23 @@ msgstr "Hiqi Zë"
 msgid "Kick/Ban"
 msgstr "Përzër/Ndalo"
 
-#: src/common/xchat.c:752 src/common/xchat.c:789
+#: src/common/xchat.c:752
+#: src/common/xchat.c:789
 msgid "Kick"
 msgstr "Përzër"
 
-#: src/common/xchat.c:753 src/common/xchat.c:754 src/common/xchat.c:755
-#: src/common/xchat.c:756 src/common/xchat.c:757 src/common/xchat.c:788
+#: src/common/xchat.c:753
+#: src/common/xchat.c:754
+#: src/common/xchat.c:755
+#: src/common/xchat.c:756
+#: src/common/xchat.c:757
+#: src/common/xchat.c:788
 msgid "Ban"
 msgstr "Ndalo"
 
-#: src/common/xchat.c:758 src/common/xchat.c:759 src/common/xchat.c:760
+#: src/common/xchat.c:758
+#: src/common/xchat.c:759
+#: src/common/xchat.c:760
 #: src/common/xchat.c:761
 msgid "KickBan"
 msgstr "Përzënie"
@@ -2904,7 +2880,8 @@ msgstr "Lër Kanal"
 msgid "Join Channel..."
 msgstr "Hyni në Kanal..."
 
-#: src/common/xchat.c:773 src/fe-gtk/menu.c:1354
+#: src/common/xchat.c:773
+#: src/fe-gtk/menu.c:1354
 msgid "Enter Channel to Join:"
 msgstr "Jepni Kanal ku të Hyhet:"
 
@@ -2926,7 +2903,7 @@ msgstr "Op"
 
 #: src/common/xchat.c:787
 msgid "DeOp"
-msgstr "Çop"
+msgstr "DeOp"
 
 #: src/common/xchat.c:790
 msgid "bye"
@@ -2957,7 +2934,9 @@ msgstr "Dërgo"
 msgid "Chat"
 msgstr "Fjalosje"
 
-#: src/common/xchat.c:805 src/fe-gtk/banlist.c:411 src/fe-gtk/ignoregui.c:383
+#: src/common/xchat.c:805
+#: src/fe-gtk/banlist.c:411
+#: src/fe-gtk/ignoregui.c:383
 #: src/fe-gtk/urlgrab.c:212
 msgid "Clear"
 msgstr "Pastro"
@@ -2971,38 +2950,34 @@ msgid "Couldn't connect to session bus"
 msgstr "S'u lidha dot me busin e sesionit"
 
 #: src/common/dbus/dbus-client.c:86
-#, fuzzy
 msgid "Failed to complete NameHasOwner"
-msgstr "Dështova në përmbushjen e urdhrit"
+msgstr "Përmbushja e urdhrit NameHasOwner dështoi"
 
 #: src/common/dbus/dbus-client.c:112
-#, fuzzy
 msgid "Failed to complete Command"
-msgstr "Dështova në përmbushjen e urdhrit"
+msgstr "Dështoi në përmbushjen e Urdhrit"
 
 #: src/common/dbus/dbus-plugin.c:30
-#, fuzzy
 msgid "remote access"
-msgstr "S'mund të futem në %s\n"
+msgstr "hyrje së largëti"
 
 #: src/common/dbus/dbus-plugin.c:31
 msgid "plugin for remote access using DBUS"
-msgstr ""
+msgstr "shtojcë për hyrje në largësi përmes përdorimit të DBUS-it"
 
 #: src/common/dbus/dbus-plugin.c:897
-#, fuzzy, c-format
+#, c-format
 msgid "Couldn't connect to session bus: %s\n"
-msgstr "Nuk u lidha dot me busin e sesionit : %s\n"
+msgstr "S'u lidh dot me busin e sesionit: %s\n"
 
 #: src/common/dbus/dbus-plugin.c:914
-#, fuzzy, c-format
+#, c-format
 msgid "Failed to acquire %s: %s\n"
-msgstr "Dështova në pasjen"
+msgstr "Dështoi në pasjen e %s: %s\n"
 
 #: src/fe-gtk/about.c:101
-#, fuzzy
 msgid "About "
-msgstr "_Rreth"
+msgstr "Rreth"
 
 #: src/fe-gtk/about.c:134
 msgid "A multiplatform IRC Client"
@@ -3012,21 +2987,24 @@ msgstr "Një Klient IRC shumëplatformësh"
 msgid "Character Chart"
 msgstr "Tabelë Gërmash"
 
-#: src/fe-gtk/banlist.c:149 src/fe-gtk/chanlist.c:311
+#: src/fe-gtk/banlist.c:149
+#: src/fe-gtk/chanlist.c:311
 #: src/fe-gtk/plugin-tray.c:229
 msgid "Not connected."
 msgstr "I palidhur"
 
-#: src/fe-gtk/banlist.c:247 src/fe-gtk/banlist.c:327
+#: src/fe-gtk/banlist.c:247
+#: src/fe-gtk/banlist.c:327
 msgid "You must select some bans."
 msgstr "Duhet të përzgjidhni disa ndalime."
 
 #: src/fe-gtk/banlist.c:276
 #, c-format
 msgid "Are you sure you want to remove all bans in %s?"
-msgstr ""
+msgstr "Jeni i sigurt se doni të hiqni tërë ndalimet te %s?"
 
-#: src/fe-gtk/banlist.c:342 src/fe-gtk/ignoregui.c:173
+#: src/fe-gtk/banlist.c:342
+#: src/fe-gtk/ignoregui.c:173
 msgid "Mask"
 msgstr "Maskë"
 
@@ -3040,49 +3018,49 @@ msgstr "Datë"
 
 #: src/fe-gtk/banlist.c:387
 msgid "You can only open the Ban List window while in a channel tab."
-msgstr ""
-"Mundeni të hapni dritaren e Listës së Ndalimeve vetëm kur jeni në një "
-"skedë kanali"
+msgstr "Mundeni të hapni dritaren e Listës së Ndalimeve vetëm kur jeni në një skedë kanali"
 
 #: src/fe-gtk/banlist.c:391
 #, c-format
 msgid ": Ban List (%s)"
 msgstr "XChat: Listë Ndalimesh (%s)"
 
-#: src/fe-gtk/banlist.c:407 src/fe-gtk/notifygui.c:431
+#: src/fe-gtk/banlist.c:407
+#: src/fe-gtk/notifygui.c:431
 msgid "Remove"
 msgstr "Hiq"
 
 #: src/fe-gtk/banlist.c:409
 msgid "Crop"
-msgstr ""
+msgstr "Qethe"
 
 #: src/fe-gtk/banlist.c:413
 msgid "Refresh"
 msgstr "Rifresko"
 
 #: src/fe-gtk/chanlist.c:117
-#, fuzzy, c-format
+#, c-format
 msgid "Displaying %d/%d users on %d/%d channels."
-msgstr "Statistika Përdoruesish dhe Kanali: %d/%d Përdorues në %d/%d Kanale"
+msgstr "Po shfaqen %d/%d përdoruesa në %d/%d kanale."
 
-#: src/fe-gtk/chanlist.c:532 src/fe-gtk/menu.c:1290 src/fe-gtk/urlgrab.c:149
+#: src/fe-gtk/chanlist.c:532
+#: src/fe-gtk/menu.c:1290
+#: src/fe-gtk/urlgrab.c:149
 msgid "Select an output filename"
 msgstr "Zgjidhni një emër kartele përfundim"
 
-#: src/fe-gtk/chanlist.c:639 src/fe-gtk/chanlist.c:821
-#, fuzzy
+#: src/fe-gtk/chanlist.c:639
+#: src/fe-gtk/chanlist.c:821
 msgid "_Join Channel"
-msgstr "Hyni në Kanal"
+msgstr "_Hyni në Kanal"
 
 #: src/fe-gtk/chanlist.c:641
-#, fuzzy
 msgid "_Copy Channel Name"
-msgstr "Emër Kanali"
+msgstr "_Kopjo Emër Kanali"
 
 #: src/fe-gtk/chanlist.c:643
 msgid "Copy _Topic Text"
-msgstr ""
+msgstr "Kopjo Tekst _Teme"
 
 #: src/fe-gtk/chanlist.c:732
 #, c-format
@@ -3090,65 +3068,56 @@ msgid ": Channel List (%s)"
 msgstr "XChat: Listë Kanalesh (%s)"
 
 #: src/fe-gtk/chanlist.c:803
-#, fuzzy
 msgid "_Search"
-msgstr "XChat: Kërko"
+msgstr "_Kërko"
 
 #: src/fe-gtk/chanlist.c:809
-#, fuzzy
 msgid "_Download List"
-msgstr "Shkarko kartela te:"
+msgstr "_Shkarko Listë"
 
 #: src/fe-gtk/chanlist.c:815
-#, fuzzy
 msgid "Save _List..."
-msgstr "Listë _Shërbyesish..."
+msgstr "Ruajeni _Listën..."
 
 #: src/fe-gtk/chanlist.c:828
 msgid "Show only:"
-msgstr ""
+msgstr "Shfaq vetëm:"
 
 #: src/fe-gtk/chanlist.c:840
-#, fuzzy
 msgid "channels with"
-msgstr "kanal"
+msgstr "kanale me"
 
 #: src/fe-gtk/chanlist.c:853
 msgid "to"
-msgstr ""
+msgstr "te"
 
 #: src/fe-gtk/chanlist.c:865
-#, fuzzy
 msgid "users."
-msgstr "Përdoruesa"
+msgstr "përdoruesa."
 
 #: src/fe-gtk/chanlist.c:871
 msgid "Look in:"
-msgstr ""
+msgstr "Shih në:"
 
 #: src/fe-gtk/chanlist.c:883
-#, fuzzy
 msgid "Channel name"
-msgstr "Emër Kanali"
+msgstr "Emër kanali"
 
 #: src/fe-gtk/chanlist.c:904
-#, fuzzy
 msgid "Search type:"
-msgstr "Kërko Tekst..."
+msgstr "Lloj kërkimi:"
 
 #: src/fe-gtk/chanlist.c:911
-#, fuzzy
 msgid "Simple Search"
-msgstr "XChat: Kërko"
+msgstr "Kërkim i Thjeshtë"
 
 #: src/fe-gtk/chanlist.c:912
-#, fuzzy
 msgid "Pattern Match (Wildcards)"
-msgstr "Përputhje \"Regex\":"
+msgstr "Përputhje Rregullsish (Shenja të Gjithëpushtetshme)"
 
 #: src/fe-gtk/chanlist.c:914
 msgid "Regular Expression"
-msgstr ""
+msgstr "Shprehje e Rregullt"
 
 #: src/fe-gtk/chanlist.c:925
 msgid "Find:"
@@ -3175,27 +3144,25 @@ msgstr ""
 "Rimarrje jo e mundur."
 
 #: src/fe-gtk/dccgui.c:508
-msgid ""
-"File in download directory is larger than file offered. Resuming not "
-"possible."
-msgstr ""
-"Kartela në drejtorinë e shkarkimit është më e madhe se kartela e "
-"ofruar. Rimarrje jo e mundur."
+msgid "File in download directory is larger than file offered. Resuming not possible."
+msgstr "Kartela në drejtorinë e shkarkimit është më e madhe se kartela e ofruar. Rimarrje jo e mundur."
 
 #: src/fe-gtk/dccgui.c:512
 msgid "Cannot resume the same file from two people."
 msgstr "Nuk mund të rimarr të njëjtën kartelë prej dy personash"
 
 #: src/fe-gtk/dccgui.c:745
-#, fuzzy
 msgid ": Uploads and Downloads"
-msgstr "XChat: Urdhra të Përcaktuar nga Përdoruesi"
+msgstr ": Ngarkime dhe Shkarkime"
 
-#: src/fe-gtk/dccgui.c:761 src/fe-gtk/dccgui.c:1000 src/fe-gtk/notifygui.c:137
+#: src/fe-gtk/dccgui.c:761
+#: src/fe-gtk/dccgui.c:1000
+#: src/fe-gtk/notifygui.c:137
 msgid "Status"
 msgstr "Gjendje"
 
-#: src/fe-gtk/dccgui.c:762 src/fe-gtk/plugingui.c:74
+#: src/fe-gtk/dccgui.c:762
+#: src/fe-gtk/plugingui.c:74
 msgid "File"
 msgstr "Kartelë"
 
@@ -3203,23 +3170,22 @@ msgstr "Kartelë"
 msgid "ETA"
 msgstr "ETA"
 
-#: src/fe-gtk/dccgui.c:792 src/fe-gtk/menu.c:1666
+#: src/fe-gtk/dccgui.c:792
+#: src/fe-gtk/menu.c:1666
 msgid "Both"
 msgstr "Të dyja"
 
 #: src/fe-gtk/dccgui.c:798
 msgid "Uploads"
-msgstr ""
+msgstr "Ngarkime"
 
 #: src/fe-gtk/dccgui.c:804
-#, fuzzy
 msgid "Downloads"
-msgstr "Shkarko kartela te:"
+msgstr "Shkarkime"
 
 #: src/fe-gtk/dccgui.c:809
-#, fuzzy
 msgid "Details"
-msgstr "Hollësi Tuajat"
+msgstr "Hollësi"
 
 #: src/fe-gtk/dccgui.c:820
 msgid "File:"
@@ -3229,11 +3195,13 @@ msgstr "Kartelë:"
 msgid "Address:"
 msgstr "Vendndodhje:"
 
-#: src/fe-gtk/dccgui.c:827 src/fe-gtk/dccgui.c:1024
+#: src/fe-gtk/dccgui.c:827
+#: src/fe-gtk/dccgui.c:1024
 msgid "Abort"
 msgstr "Ndërprit"
 
-#: src/fe-gtk/dccgui.c:828 src/fe-gtk/dccgui.c:1025
+#: src/fe-gtk/dccgui.c:828
+#: src/fe-gtk/dccgui.c:1025
 msgid "Accept"
 msgstr "Prano"
 
@@ -3243,7 +3211,7 @@ msgstr "Rimerr"
 
 #: src/fe-gtk/dccgui.c:830
 msgid "Open Folder..."
-msgstr ""
+msgstr "Hapni Dosje..."
 
 #: src/fe-gtk/dccgui.c:990
 msgid ": DCC Chat List"
@@ -3258,9 +3226,8 @@ msgid "Sent"
 msgstr "Dërguar"
 
 #: src/fe-gtk/dccgui.c:1004
-#, fuzzy
 msgid "Start Time"
-msgstr "KohëFillim"
+msgstr "Kohë Fillimi"
 
 #: src/fe-gtk/editlist.c:145
 msgid "*NEW*"
@@ -3270,7 +3237,8 @@ msgstr "*I RI*"
 msgid "EDIT ME"
 msgstr "PËRPUNOMË"
 
-#: src/fe-gtk/editlist.c:316 src/fe-gtk/notifygui.c:136
+#: src/fe-gtk/editlist.c:316
+#: src/fe-gtk/notifygui.c:136
 #: src/fe-gtk/plugingui.c:72
 msgid "Name"
 msgstr "Emër"
@@ -3295,11 +3263,14 @@ msgstr "Anulo"
 msgid "Save"
 msgstr "Ruaj"
 
-#: src/fe-gtk/editlist.c:369 src/fe-gtk/fkeys.c:771
+#: src/fe-gtk/editlist.c:369
+#: src/fe-gtk/fkeys.c:771
 msgid "Add New"
 msgstr "Shto të Ri"
 
-#: src/fe-gtk/editlist.c:373 src/fe-gtk/fkeys.c:776 src/fe-gtk/ignoregui.c:381
+#: src/fe-gtk/editlist.c:373
+#: src/fe-gtk/fkeys.c:776
+#: src/fe-gtk/ignoregui.c:381
 msgid "Delete"
 msgstr "Fshij"
 
@@ -3335,21 +3306,22 @@ msgstr "Përdor drejtori config të përdoruesit"
 msgid "Open an irc://server:port/channel URL"
 msgstr "Hap një URL irc://shërbyes:portë/kanal"
 
-#: src/fe-gtk/fe-gtk.c:139 src/fe-gtk/setup.c:227
+#: src/fe-gtk/fe-gtk.c:139
+#: src/fe-gtk/setup.c:227
 msgid "Execute command:"
 msgstr "Përmbush urdhër:"
 
 #: src/fe-gtk/fe-gtk.c:140
 msgid "Open URL or execute command in an existing XChat"
-msgstr ""
+msgstr "Hape URL-në ose përmbushe urdhrin në një XChat ekzistues"
 
 #: src/fe-gtk/fe-gtk.c:142
 msgid "Begin minimized. Level 0=Normal 1=Iconified 2=Tray"
-msgstr ""
+msgstr "Fillo i minimizuar. Nivele 0=Normal 1=I ikonizuar 2=Në shtyllë"
 
 #: src/fe-gtk/fe-gtk.c:142
 msgid "level"
-msgstr ""
+msgstr "nivel"
 
 #: src/fe-gtk/fe-gtk.c:143
 msgid "Show version information"
@@ -3362,7 +3334,7 @@ msgid ""
 "\n"
 "%s"
 msgstr ""
-"Dështova në hapje gërmash:\n"
+"Dështoi në hapje gërmash:\n"
 "\n"
 "%s"
 
@@ -3382,97 +3354,45 @@ msgstr "Radhë dërgimi rrjeti: %d bajte"
 
 #: src/fe-gtk/fkeys.c:165
 msgid ""
-"The Run Command action runs the data in Data 1 as if it has been typed into "
-"the entry box where you pressed the key sequence. Thus it can contain text "
-"(which will be sent to the channel/person), commands or user commands. When "
-"run all \\n characters in Data 1 are used to deliminate seperate commands so "
-"it is possible to run more than one command. If you want a \\ in the actual "
-"text run then enter \\\\"
-msgstr ""
-"Veprimi Run Command lëshon të dhënat në Të Dhëna 1 si të ishin "
-"shkruajtur në kuti dhënieje kur shtypët varg tastesh. Kështu që mund "
-"të përmbajë tekst (i cili do t'i dërgohet kanalit/personit), urdhra ose "
-"urdhra përdoruesi. Kur jepet tërë, shenjat \\ në Të Dhëna 1 përdoren "
-"për të ndarë urdhra të veçantë që kështu të mundet të jepen më "
-"shumë se një urdhër. Nëse doni një \\ në tekstin në fjalë jepni \\\\"
+"The Run Command action runs the data in Data 1 as if it has been typed into the entry box where you pressed the key sequence. Thus it can contain text (which will be sent to the channel/person), commands or user commands. When run all \\n"
+" characters in Data 1 are used to deliminate seperate commands so it is possible to run more than one command. If you want a \\ in the actual text run then enter \\\\"
+msgstr "Veprimi Run Command lëshon të dhënat në Të Dhëna 1 si të ishin shkruajtur në kuti dhënieje kur shtypët varg tastesh. Kështu që mund të përmbajë tekst (i cili do t'i dërgohet kanalit/personit), urdhra ose urdhra përdoruesi. Kur jepet tërë, shenjat \\ në Të Dhëna 1 përdoren për të ndarë urdhra të veçantë që kështu të mundet të jepen më shumë se një urdhër. Nëse doni një \\ në tekstin në fjalë jepni \\\\"
 
 #: src/fe-gtk/fkeys.c:167
-msgid ""
-"The Change Page command switches between pages in the notebook. Set Data 1 "
-"to the page you want to switch to. If Data 2 is set to anything then the "
-"switch will be relative to the current position"
-msgstr ""
-"Urdhri Change Page bën kalimin midis faqesh në bllok shënimesh. Cakton si "
-"Data 1 faqen ku doni të kalohet. Nëse si Data 2 është caktuar dicka "
-"tjetër atëherë kalimi do të bëhet duke ju referuar pozicionit të "
-"çastit"
+msgid "The Change Page command switches between pages in the notebook. Set Data 1 to the page you want to switch to. If Data 2 is set to anything then the switch will be relative to the current position"
+msgstr "Urdhri Change Page bën kalimin midis faqesh në bllok shënimesh. Cakton si Data 1 faqen ku doni të kalohet. Nëse si Data 2 është caktuar dicka tjetër atëherë kalimi do të bëhet duke ju referuar pozicionit të çastit"
 
 #: src/fe-gtk/fkeys.c:169
-msgid ""
-"The Insert in Buffer command will insert the contents of Data 1 into the "
-"entry where the key sequence was pressed at the current cursor position"
-msgstr ""
-"Urdhri Fut në Shtytëz do të fusë përmbajtjen e Data 1 te pjesa ku u "
-"shtyp vargu i tasteve te vendndodhje çasti e kursorit"
+msgid "The Insert in Buffer command will insert the contents of Data 1 into the entry where the key sequence was pressed at the current cursor position"
+msgstr "Urdhri Fut në Shtytëz do të fusë përmbajtjen e Data 1 te pjesa ku u shtyp vargu i tasteve te vendndodhje çasti e kursorit"
 
 #: src/fe-gtk/fkeys.c:171
-msgid ""
-"The Scroll Page command scrolls the text widget up or down one page or one "
-"line. Set Data 1 to either Up, Down, +1 or -1."
-msgstr ""
-"Urdhri Zhvendos Faqe rrëshqet pjesën e tekstit lart ose poshtë me një "
-"faqe ose një rresht. Caktojeni Data 1 si Up, Down, +1 ose -1."
+msgid "The Scroll Page command scrolls the text widget up or down one page or one line. Set Data 1 to either Up, Down, +1 or -1."
+msgstr "Urdhri Zhvendos Faqe rrëshqet pjesën e tekstit lart ose poshtë me një faqe ose një rresht. Caktojeni Data 1 si Up, Down, +1 ose -1."
 
 #: src/fe-gtk/fkeys.c:173
-msgid ""
-"The Set Buffer command sets the entry where the key sequence was entered to "
-"the contents of Data 1"
-msgstr ""
-"Urdhri Vendos Shtytëz vendos futjen atje ku u shtyp varg tastesh te "
-"përmbajtja e Data 1"
+msgid "The Set Buffer command sets the entry where the key sequence was entered to the contents of Data 1"
+msgstr "Urdhri Vendos Shtytëz vendos futjen atje ku u shtyp varg tastesh te përmbajtja e Data 1"
 
 #: src/fe-gtk/fkeys.c:175
-msgid ""
-"The Last Command command sets the entry to contain the last command entered "
-"- the same as pressing up in a shell"
-msgstr ""
-"Urdhri Urdhri i Fundit bën që si hyrje të jetë urdhri i fundit i dhënë "
-"- njësoj si shtypja e shigjetës sipër brenda një shelli"
+msgid "The Last Command command sets the entry to contain the last command entered - the same as pressing up in a shell"
+msgstr "Urdhri Urdhri i Fundit bën që si hyrje të jetë urdhri i fundit i dhënë - njësoj si shtypja e shigjetës sipër brenda një shelli"
 
 #: src/fe-gtk/fkeys.c:177
-msgid ""
-"The Next Command command sets the entry to contain the next command entered "
-"- the same as pressing down in a shell"
-msgstr ""
-"Urdhri Next Command e bën zërin në fjalë të përmbajë urdhrin pasues "
-"që jepet - njësoj si shtypja e shigjetës poshtë brenda një shelli"
+msgid "The Next Command command sets the entry to contain the next command entered - the same as pressing down in a shell"
+msgstr "Urdhri Next Command e bën zërin në fjalë të përmbajë urdhrin pasues që jepet - njësoj si shtypja e shigjetës poshtë brenda një shelli"
 
 #: src/fe-gtk/fkeys.c:179
-msgid ""
-"This command changes the text in the entry to finish an incomplete nickname "
-"or command. If Data 1 is set then double-tabbing in a string will select the "
-"last nick, not the next"
-msgstr ""
-"Ky urdhër ndryshon tekstin që jepet për të përfunduar një urdhër apo "
-"një nofkë ende jo të plotësuar. Nëse është rregulluar Të dhëna 1 "
-"atëherë shtypja dyshe e tastit tab në një varg do të zgjedhë nofkën e "
-"fundit, jo pasuesen"
+msgid "This command changes the text in the entry to finish an incomplete nickname or command. If Data 1 is set then double-tabbing in a string will select the last nick, not the next"
+msgstr "Ky urdhër ndryshon tekstin që jepet për të përfunduar një urdhër apo një nofkë ende jo të plotësuar. Nëse është rregulluar Të dhëna 1 atëherë shtypja dyshe e tastit tab në një varg do të zgjedhë nofkën e fundit, jo pasuesen"
 
 #: src/fe-gtk/fkeys.c:181
-msgid ""
-"This command scrolls up and down through the list of nicks. If Data 1 is set "
-"to anything it will scroll up, else it scrolls down"
-msgstr ""
-"Ky urdhër kryen lëvizjen lart e poshtë nëpër listë nofkash. Nëse "
-"është dhënë diçka si  Data 1shkohet sipër, ndryshe zbritet poshtë"
+msgid "This command scrolls up and down through the list of nicks. If Data 1 is set to anything it will scroll up, else it scrolls down"
+msgstr "Ky urdhër kryen lëvizjen lart e poshtë nëpër listë nofkash. Nëse është dhënë diçka si  Data 1shkohet sipër, ndryshe zbritet poshtë"
 
 #: src/fe-gtk/fkeys.c:183
-msgid ""
-"This command checks the last word entered in the entry against the replace "
-"list and replaces it if it finds a match"
-msgstr ""
-"Ky urdhër kontrollon fjalën e fundit të dhënë përkundër listës "
-"zëvendëso dhe bën zëvendësim nëse gjendet përputhje"
+msgid "This command checks the last word entered in the entry against the replace list and replaces it if it finds a match"
+msgstr "Ky urdhër kontrollon fjalën e fundit të dhënë përkundër listës zëvendëso dhe bën zëvendësim nëse gjendet përputhje"
 
 #: src/fe-gtk/fkeys.c:185
 msgid "This command moves the front tab left by one"
@@ -3496,12 +3416,17 @@ msgstr "I kalon historikut rresht dhënieje por nuk ja dërgon shërbyesit"
 
 #: src/fe-gtk/fkeys.c:204
 msgid "There was an error loading key bindings configuration"
-msgstr ""
-"Pati një gabimi gjatë ngarkimit të formësimit për funksione tastesh"
+msgstr "Pati një gabimi gjatë ngarkimit të formësimit për funksione tastesh"
 
-#: src/fe-gtk/fkeys.c:456 src/fe-gtk/fkeys.c:457 src/fe-gtk/fkeys.c:458
-#: src/fe-gtk/fkeys.c:459 src/fe-gtk/fkeys.c:749 src/fe-gtk/fkeys.c:755
-#: src/fe-gtk/fkeys.c:760 src/fe-gtk/maingui.c:1608 src/fe-gtk/maingui.c:1724
+#: src/fe-gtk/fkeys.c:456
+#: src/fe-gtk/fkeys.c:457
+#: src/fe-gtk/fkeys.c:458
+#: src/fe-gtk/fkeys.c:459
+#: src/fe-gtk/fkeys.c:749
+#: src/fe-gtk/fkeys.c:755
+#: src/fe-gtk/fkeys.c:760
+#: src/fe-gtk/maingui.c:1608
+#: src/fe-gtk/maingui.c:1724
 #: src/fe-gtk/maingui.c:3231
 msgid "<none>"
 msgstr "<asnjë>"
@@ -3510,7 +3435,8 @@ msgstr "<asnjë>"
 msgid "Mod"
 msgstr "Ndry"
 
-#: src/fe-gtk/fkeys.c:714 src/fe-gtk/fkeys.c:809
+#: src/fe-gtk/fkeys.c:714
+#: src/fe-gtk/fkeys.c:809
 msgid "Key"
 msgstr "Kyç"
 
@@ -3583,8 +3509,7 @@ msgid ""
 "Key bindings config file is corrupt, load aborted\n"
 "Please fix %s/keybindings.conf\n"
 msgstr ""
-"Kartela e formësimit të funksioneve të kyçeve është e dëmtuar, "
-"ngarkim i ndërprerë\n"
+"Kartela e formësimit të funksioneve të kyçeve është e dëmtuar, ngarkim i ndërprerë\n"
 "Ju lutem ndreqni %s/keybindings.conf\n"
 
 #: src/fe-gtk/gtkutil.c:136
@@ -3593,13 +3518,15 @@ msgstr "S'mund të shkruaj tek kjo kartelë."
 
 #: src/fe-gtk/gtkutil.c:138
 msgid "Cannot read that file."
-msgstr "S'mund të lexoj këtë kartelë."
+msgstr "S'mund të lexohet kjo kartelë."
 
-#: src/fe-gtk/ignoregui.c:115 src/fe-gtk/ignoregui.c:258
+#: src/fe-gtk/ignoregui.c:115
+#: src/fe-gtk/ignoregui.c:258
 msgid "That mask already exists."
 msgstr "Ka tashmë një maskë si kjo."
 
-#: src/fe-gtk/ignoregui.c:175 src/fe-gtk/maingui.c:2105
+#: src/fe-gtk/ignoregui.c:175
+#: src/fe-gtk/maingui.c:2105
 msgid "Private"
 msgstr "Vetiake"
 
@@ -3621,7 +3548,7 @@ msgstr "Fto"
 
 #: src/fe-gtk/ignoregui.c:180
 msgid "Unignore"
-msgstr "Çshpërfill"
+msgstr "Shpërfill"
 
 #: src/fe-gtk/ignoregui.c:302
 msgid "Enter mask to ignore:"
@@ -3655,59 +3582,55 @@ msgstr "CTCP:"
 msgid "Invite:"
 msgstr "Fto:"
 
-#: src/fe-gtk/ignoregui.c:379 src/fe-gtk/notifygui.c:427
+#: src/fe-gtk/ignoregui.c:379
+#: src/fe-gtk/notifygui.c:427
 msgid "Add..."
-msgstr ""
+msgstr "Shtoni..."
 
 #: src/fe-gtk/joind.c:87
 msgid "Channel name too short, try again."
-msgstr ""
+msgstr "Emër kanali shumë i shkurtër, provoni sërish."
 
 #: src/fe-gtk/joind.c:129
-#, fuzzy
 msgid ": Connection Complete"
-msgstr "Mbaroi koha e ndërlidhjes"
+msgstr ": Lidhje e Plotë"
 
 #: src/fe-gtk/joind.c:154
-#, fuzzy, c-format
+#, c-format
 msgid "Connection to %s complete."
-msgstr "Lidhje e rivendosur nga tjetri"
+msgstr "Lidhje e plotë te %s."
 
 #: src/fe-gtk/joind.c:163
-msgid ""
-"In the Server-List window, no channel (chat room) has been entered to be "
-"automatically joined for this network."
-msgstr ""
+msgid "In the Server-List window, no channel (chat room) has been entered to be automatically joined for this network."
+msgstr "Nuk është dhënë kanal (dhomë fjalosjeje) që do duhej përdorur për hyrje të vetvetishme në të prej këtij rrjeti, shihni dritaren Listë Shërbyesi."
 
 #: src/fe-gtk/joind.c:169
 msgid "What would you like to do next?"
-msgstr ""
+msgstr "Çfarë doni të bëni më pas?"
 
 #: src/fe-gtk/joind.c:174
 msgid "_Nothing, I'll join a channel later."
-msgstr ""
+msgstr "_Asgjë, do t'i bashkohem një kanali më vonë."
 
 #: src/fe-gtk/joind.c:183
-#, fuzzy
 msgid "_Join this channel:"
-msgstr "Hyni në Kanal"
+msgstr "_Bashkojuni këtij kanali:"
 
 #: src/fe-gtk/joind.c:195
 msgid "If you know the name of the channel you want to join, enter it here."
-msgstr ""
+msgstr "Nëse e dini emrin e kanalit ku doni të hyni, jepeni këtu."
 
 #: src/fe-gtk/joind.c:202
-#, fuzzy
 msgid "O_pen the Channel-List window."
-msgstr "Hap kanale në:"
+msgstr "_Hap dritare Liste Kanali."
 
 #: src/fe-gtk/joind.c:209
 msgid "Retrieving the Channel-List may take a minute or two."
-msgstr ""
+msgstr "Marrja e Listës së Kanaleve mund të hajë një a dy minuta."
 
 #: src/fe-gtk/joind.c:216
 msgid "_Always show this dialog after connecting."
-msgstr ""
+msgstr "Shfaq _përherë këtë dialog pas lidhjes."
 
 #: src/fe-gtk/maingui.c:454
 msgid "Dialog with"
@@ -3724,38 +3647,33 @@ msgstr "Nuk është caktuar temë"
 
 #: src/fe-gtk/maingui.c:1143
 #, c-format
-msgid ""
-"This server still has %d channels or dialogs associated with it. Close them "
-"all?"
-msgstr ""
-"Ky shërbyes ka ende %d kanale apo dialogje të lidhur me të. Ti mbyll të "
-"tërë?"
+msgid "This server still has %d channels or dialogs associated with it. Close them all?"
+msgstr "Ky shërbyes ka ende %d kanale apo dialogje të lidhur me të. Ti mbyll të tërë?"
 
 #: src/fe-gtk/maingui.c:1244
 msgid "Quit HexChat?"
-msgstr ""
+msgstr "Të dilet nga HexChat?"
 
 #: src/fe-gtk/maingui.c:1265
 msgid "Don't ask next time."
-msgstr ""
+msgstr "Mos pyet më herës tjetër."
 
 #: src/fe-gtk/maingui.c:1271
-#, fuzzy, c-format
+#, c-format
 msgid "You are connected to %i IRC networks."
-msgstr "Vetëlidhu me këtë rrjet gjatë nisjes"
+msgstr "Jeni i lidhur te rrjete %i IRC."
 
 #: src/fe-gtk/maingui.c:1273
 msgid "Are you sure you want to quit?"
-msgstr ""
+msgstr "Jeni i sigurt se doni të dilni?"
 
 #: src/fe-gtk/maingui.c:1275
-#, fuzzy
 msgid "Some file transfers are still active."
-msgstr "Shpërngulje kartelash në përmbushje e sipër, ta lë xchat-in?"
+msgstr "Disa shpërngulje kartelash janë ende në përmbushje e sipër."
 
 #: src/fe-gtk/maingui.c:1293
 msgid "_Minimize to Tray"
-msgstr ""
+msgstr "_Minimizoje sa Shtylla"
 
 #: src/fe-gtk/maingui.c:1513
 msgid "Insert Attribute or Color Code"
@@ -3782,52 +3700,52 @@ msgid "Colors 8-15"
 msgstr "Ngjyra 8-15"
 
 #: src/fe-gtk/maingui.c:1573
-#, fuzzy
 msgid "_Settings"
-msgstr "Rr_egullime"
+msgstr "_Rregullime"
 
 #: src/fe-gtk/maingui.c:1575
 msgid "_Log to Disk"
-msgstr ""
+msgstr "_Regjistro në Disk"
 
 #: src/fe-gtk/maingui.c:1576
 msgid "_Reload Scrollback"
-msgstr ""
+msgstr "_Ringarkoje Rrëshqitjen"
 
 #: src/fe-gtk/maingui.c:1578
-#, fuzzy
 msgid "_Hide Join/Part Messages"
-msgstr "Fshih mesazhe ardhjesh dhe ikjesh"
+msgstr "_Fshih Mesazhe Ardhjesh dhe Ikjesh"
 
 #: src/fe-gtk/maingui.c:1586
-#, fuzzy
 msgid "_Extra Alerts"
-msgstr "Ngjyra ekstra:"
+msgstr "Sinjalizime _Ekstra"
 
 #: src/fe-gtk/maingui.c:1588
-#, fuzzy
 msgid "Beep on _Message"
-msgstr "Bip në mesazhe"
+msgstr "Bip gjatë _Mesazhesh"
 
 #: src/fe-gtk/maingui.c:1592
 msgid "Blink Tray _Icon"
-msgstr ""
+msgstr "Xixëllo _Ikonë Shtyllash"
 
 #: src/fe-gtk/maingui.c:1595
 msgid "Blink Task _Bar"
-msgstr ""
+msgstr "Xixëllo _Shtyllë Veprimesh"
 
-#: src/fe-gtk/maingui.c:1633 src/fe-gtk/menu.c:2205
-#, fuzzy
+#: src/fe-gtk/maingui.c:1633
+#: src/fe-gtk/menu.c:2205
 msgid "_Detach"
-msgstr "_Shqit Skedë"
+msgstr "_Shqite"
 
-#: src/fe-gtk/maingui.c:1635 src/fe-gtk/menu.c:2206 src/fe-gtk/menu.c:2211
-#: src/fe-gtk/plugingui.c:257 src/fe-gtk/search.c:234
+#: src/fe-gtk/maingui.c:1635
+#: src/fe-gtk/menu.c:2206
+#: src/fe-gtk/menu.c:2211
+#: src/fe-gtk/plugingui.c:257
+#: src/fe-gtk/search.c:234
 msgid "_Close"
 msgstr "-Mbyll"
 
-#: src/fe-gtk/maingui.c:1973 src/fe-gtk/maingui.c:2079
+#: src/fe-gtk/maingui.c:1973
+#: src/fe-gtk/maingui.c:2079
 msgid "User limit must be a number!\n"
 msgstr "Kufi përdoruesish duhet të jetë një numër!\n"
 
@@ -3892,7 +3810,8 @@ msgstr "Strehë e panjohur"
 msgid "<tt><b>%-11s</b></tt> %s"
 msgstr "<tt><b>%-11s</b></tt> %s"
 
-#: src/fe-gtk/menu.c:622 src/fe-gtk/menu.c:626
+#: src/fe-gtk/menu.c:622
+#: src/fe-gtk/menu.c:626
 msgid "Real Name:"
 msgstr "Emër i Vërtetë:"
 
@@ -3913,7 +3832,8 @@ msgstr "Shërbyes:"
 msgid "%u minutes ago"
 msgstr "%u minuta më parë"
 
-#: src/fe-gtk/menu.c:660 src/fe-gtk/menu.c:663
+#: src/fe-gtk/menu.c:660
+#: src/fe-gtk/menu.c:663
 msgid "Last Msg:"
 msgstr "Msz i Fundit:"
 
@@ -3924,16 +3844,11 @@ msgstr "Mesazh Largimi:"
 #: src/fe-gtk/menu.c:731
 #, c-format
 msgid "%d nicks selected."
-msgstr ""
+msgstr "%d nofka të përzgjedhura."
 
 #: src/fe-gtk/menu.c:856
-msgid ""
-"The Menubar is now hidden. You can show it again by pressing F9 or right-"
-"clicking in a blank part of the main text area."
-msgstr ""
-"Paneli i menuve tashti është i fshehur. Mund ta shfaqni sërish duke "
-"shtypur F9 ose duke djathtasklikuar në një pjesë bosh të zonës kryesore "
-"për tekste"
+msgid "The Menubar is now hidden. You can show it again by pressing F9 or right-clicking in a blank part of the main text area."
+msgstr "Paneli i menuve tashti është i fshehur. Mund ta shfaqni sërish duke shtypur F9 ose duke djathtasklikuar në një pjesë bosh të zonës kryesore për tekste"
 
 #: src/fe-gtk/menu.c:945
 msgid "Open Link in Browser"
@@ -3943,7 +3858,8 @@ msgstr "Hap Lidhje në Shfletues"
 msgid "Copy Selected Link"
 msgstr "Kopjo Lidhjen e Përzgjedhur"
 
-#: src/fe-gtk/menu.c:1008 src/fe-gtk/menu.c:1337
+#: src/fe-gtk/menu.c:1008
+#: src/fe-gtk/menu.c:1337
 msgid "Join Channel"
 msgstr "Hyni në Kanal"
 
@@ -3957,11 +3873,11 @@ msgstr "Ciklo Kanal"
 
 #: src/fe-gtk/menu.c:1050
 msgid "_Remove from Favorites"
-msgstr ""
+msgstr "_Hiqe prej të Parapëlqyerish"
 
 #: src/fe-gtk/menu.c:1052
 msgid "_Add to Favorites"
-msgstr ""
+msgstr "_Shtoje te të Parapëlqyerit"
 
 #: src/fe-gtk/menu.c:1071
 msgid ": User menu"
@@ -3971,17 +3887,17 @@ msgstr "XChat: Menu përdoruesi"
 msgid "Edit This Menu..."
 msgstr "Përpuno Këtë Menu..."
 
-#: src/fe-gtk/menu.c:1227 src/fe-gtk/menu.c:1240 src/fe-gtk/search.c:78
+#: src/fe-gtk/menu.c:1227
+#: src/fe-gtk/menu.c:1240
+#: src/fe-gtk/search.c:78
 msgid "Search hit end, not found."
-msgstr ""
+msgstr "Kërkimi mbërriti në fund, nuk u gjet gjë."
 
 #: src/fe-gtk/menu.c:1339
-#, fuzzy
 msgid "Retrieve channel list..."
-msgstr "Listë Kanalesh..."
+msgstr "Merr listë kanalesh..."
 
 #: src/fe-gtk/menu.c:1407
-#, fuzzy
 msgid ""
 "User Commands - Special codes:\n"
 "\n"
@@ -4004,24 +3920,24 @@ msgid ""
 msgstr ""
 "Urdhra Përdoruesi - Kode specialë:\n"
 "\n"
-"%c  =  kanal i çastit\n"
+"%c  =  kanal i atëçastshëm\n"
+"%e  =  emër i rrjetit të atëçastshëm\n"
 "%m  =  të dhëna makine\n"
 "%n  =  nofka juaj\n"
 "%t  =  kohë/datë\n"
-"%v  =  version i xchat-it\n"
+"%v  =  version xchat-i\n"
 "%2  =  fjala 2\n"
 "%3  =  fjala 3\n"
-"&2  =  fjala 2 në fundin e një rreshti\n"
-"&3  =  fjala 3 në fundin e një rreshti\n"
+"&2  =  fjala 2 në fund të rreshtit\n"
+"&3  =  fjala 3 në fund të rreshtit\n"
 "\n"
 "p.sh.:\n"
-"/cmd gjon tungjatjeta\n"
+"/cmd gjon, tungjatjeta\n"
 "\n"
 "%2 mund të ishte \"gjon\"\n"
-"&2 mund të ishte \"gjon tungjatjeta\"."
+"&2 mund të ishte \"gjon, tungjatjeta\"."
 
 #: src/fe-gtk/menu.c:1423
-#, fuzzy
 msgid ""
 "Userlist Buttons - Special codes:\n"
 "\n"
@@ -4036,8 +3952,9 @@ msgid ""
 msgstr ""
 "Butona Liste Përdoruesish - Kode specialë:\n"
 "\n"
-"%a  =  tërë nofkat e përzgjedhura\n"
-"%c  =  kanali i çastit\n"
+"%a  =  krejt nofkat e përzgjedhura\n"
+"%c  =  kanali i atëçastshëm\n"
+"$e   =  emër i rrjetit të atëçastshëm\n"
 "%h  =  strehëemri për nofkën e përzgjedhur\n"
 "%m  =  të dhëna makine\n"
 "%n  =  nofka juaj\n"
@@ -4045,7 +3962,6 @@ msgstr ""
 "%t  =  kohë/datë\n"
 
 #: src/fe-gtk/menu.c:1433
-#, fuzzy
 msgid ""
 "Dialog Buttons - Special codes:\n"
 "\n"
@@ -4060,7 +3976,8 @@ msgid ""
 msgstr ""
 "Butona Dialogjesh - Kode specialë:\n"
 "\n"
-"%a  =  tërë nofkat e përzgjedhura\n"
+"%a  =  krejt nofkat e përzgjedhura\n"
+"%e  =  emër i rrjetit të atëçastshëm\n"
 "%c  =  kanali i çastit\n"
 "%h  =  strehëemri për nofkën e përzgjedhur\n"
 "%m  =  të dhëna makine\n"
@@ -4069,7 +3986,6 @@ msgstr ""
 "%t  =  kohë/datë\n"
 
 #: src/fe-gtk/menu.c:1443
-#, fuzzy
 msgid ""
 "CTCP Replies - Special codes:\n"
 "\n"
@@ -4087,13 +4003,14 @@ msgstr ""
 "Përgjigje CTCP - Kode specialë:\n"
 "\n"
 "%d  =  të dhëna (ctcp i plotë)\n"
+"%e  - emër i rrjetit të atëçastshëm\n"
 "%m  =  të dhëna makine\n"
 "%s  =  nofka që dërgoi ctcp\n"
 "%t  =  kohë/datë\n"
 "%2  =  fjala 2\n"
 "%3  =  fjala 3\n"
-"&2  =  fjala 2 në fundin e një rrjeshti\n"
-"&3  =  fjala 3 në fundin e një rrjeshti\n"
+"&2  =  fjala 2 në fund të një rrjeshti\n"
+"&3  =  fjala 3 në fund të një rrjeshti\n"
 "\n"
 
 #: src/fe-gtk/menu.c:1454
@@ -4148,14 +4065,12 @@ msgid ": CTCP Replies"
 msgstr "XChat: Përgjigjje CTCP"
 
 #: src/fe-gtk/menu.c:1623
-#, fuzzy
 msgid "He_xChat"
-msgstr "_XChat"
+msgstr "He_xChat"
 
 #: src/fe-gtk/menu.c:1624
-#, fuzzy
 msgid "Network Li_st..."
-msgstr "Rregullim rrjeti"
+msgstr "Li_stë Rrjetesh..."
 
 #: src/fe-gtk/menu.c:1627
 msgid "_New"
@@ -4177,11 +4092,13 @@ msgstr "Dritare Shërbyesi..."
 msgid "Channel Window..."
 msgstr "Dritare Kanali..."
 
-#: src/fe-gtk/menu.c:1636 src/fe-gtk/menu.c:1638
+#: src/fe-gtk/menu.c:1636
+#: src/fe-gtk/menu.c:1638
 msgid "_Load Plugin or Script..."
 msgstr "_Ngarko Shtojcë ose Programth..."
 
-#: src/fe-gtk/menu.c:1646 src/fe-gtk/plugin-tray.c:540
+#: src/fe-gtk/menu.c:1646
+#: src/fe-gtk/plugin-tray.c:540
 msgid "_Quit"
 msgstr "_Lër"
 
@@ -4190,33 +4107,28 @@ msgid "_View"
 msgstr "_Parje"
 
 #: src/fe-gtk/menu.c:1650
-#, fuzzy
 msgid "_Menu Bar"
-msgstr "_Shtyllë Menush"
+msgstr "Shtyllë _Menuje"
 
 #: src/fe-gtk/menu.c:1651
-#, fuzzy
 msgid "_Topic Bar"
-msgstr "_Shtyllë Temash"
+msgstr "Shtyllë _Teme"
 
 #: src/fe-gtk/menu.c:1652
-#, fuzzy
 msgid "_User List"
-msgstr "Listë Përdoruesish"
+msgstr "Listë _Përdoruesish"
 
 #: src/fe-gtk/menu.c:1653
-#, fuzzy
 msgid "U_serlist Buttons"
-msgstr "Butona _Liste përdoruesish"
+msgstr "Butona Liste _Përdoruesish"
 
 #: src/fe-gtk/menu.c:1654
 msgid "M_ode Buttons"
 msgstr "Butona Mën_yre"
 
 #: src/fe-gtk/menu.c:1656
-#, fuzzy
 msgid "_Channel Switcher"
-msgstr "Listë Kanalesh..."
+msgstr "Këmbyes _Kanali"
 
 #: src/fe-gtk/menu.c:1658
 msgid "_Tabs"
@@ -4251,14 +4163,12 @@ msgid "_Reconnect"
 msgstr "_Rilidhu"
 
 #: src/fe-gtk/menu.c:1672
-#, fuzzy
 msgid "Join a Channel..."
-msgstr "Hyni në Kanal..."
+msgstr "Hyni në një Kanal..."
 
 #: src/fe-gtk/menu.c:1673
-#, fuzzy
 msgid "List of Channels..."
-msgstr "Hyni në Kanal..."
+msgstr " Listë Kanalesh..."
 
 #: src/fe-gtk/menu.c:1676
 msgid "Marked Away"
@@ -4276,7 +4186,8 @@ msgstr "Rr_egullime"
 msgid "_Preferences"
 msgstr "Parapëlqime"
 
-#: src/fe-gtk/menu.c:1683 src/fe-gtk/setup.c:1834
+#: src/fe-gtk/menu.c:1683
+#: src/fe-gtk/setup.c:1834
 msgid "Advanced"
 msgstr "Të mëtejshme"
 
@@ -4317,9 +4228,8 @@ msgid "Userlist Popup..."
 msgstr "Flluckë Liste përdoruesish..."
 
 #: src/fe-gtk/menu.c:1696
-#, fuzzy
 msgid "Save Settings to Disk"
-msgstr "Ruaj listë si një kartelë"
+msgstr "Ruaji Rregullimet në Disk"
 
 #: src/fe-gtk/menu.c:1699
 msgid "_Window"
@@ -4342,9 +4252,8 @@ msgid "File Transfers..."
 msgstr "Shpërngulje Kartelash"
 
 #: src/fe-gtk/menu.c:1704
-#, fuzzy
 msgid "Friends List..."
-msgstr "Listë Ndalimesh..."
+msgstr "Listë Shokësh..."
 
 #: src/fe-gtk/menu.c:1705
 msgid "Ignore List..."
@@ -4367,9 +4276,8 @@ msgid "Reset Marker Line"
 msgstr "Ricakto Vijë Shënimi"
 
 #: src/fe-gtk/menu.c:1711
-#, fuzzy
 msgid "_Copy Selection"
-msgstr "Kopjo Lidhjen e Përzgjedhur"
+msgstr "_Kopjo Përzgjedhjen"
 
 #: src/fe-gtk/menu.c:1712
 msgid "C_lear Text"
@@ -4380,29 +4288,27 @@ msgid "Save Text..."
 msgstr "Ruaj Tekst..."
 
 #: src/fe-gtk/menu.c:1715
-#, fuzzy
 msgid "Search"
-msgstr "XChat: Kërko"
+msgstr "Kërkoni"
 
 #: src/fe-gtk/menu.c:1716
 msgid "Search Text..."
 msgstr "Kërko Tekst..."
 
 #: src/fe-gtk/menu.c:1717
-#, fuzzy
 msgid "Reset Search"
-msgstr "XChat: Kërko"
+msgstr "Kërkim Nga e Para"
 
 #: src/fe-gtk/menu.c:1718
-#, fuzzy
 msgid "Search Next"
-msgstr "Kërko Tekst..."
+msgstr "Kërko Pasuesin"
 
 #: src/fe-gtk/menu.c:1719
 msgid "Search Previous"
-msgstr ""
+msgstr "Kërko të Mëparshmin"
 
-#: src/fe-gtk/menu.c:1722 src/fe-gtk/menu.c:2197
+#: src/fe-gtk/menu.c:1722
+#: src/fe-gtk/menu.c:2197
 msgid "_Help"
 msgstr "_Ndihmë"
 
@@ -4412,16 +4318,15 @@ msgstr "_Përmbajtje"
 
 #: src/fe-gtk/menu.c:1726
 msgid "Check for updates"
-msgstr ""
+msgstr "Kontrollo për përditësime"
 
 #: src/fe-gtk/menu.c:1728
 msgid "_About"
 msgstr "_Rreth"
 
 #: src/fe-gtk/menu.c:2210
-#, fuzzy
 msgid "_Attach"
-msgstr "_Dritare Bashkangjitjesh"
+msgstr "_Bashkangjite"
 
 #: src/fe-gtk/notifygui.c:139
 msgid "Last Seen"
@@ -4431,14 +4336,16 @@ msgstr "Parë së Fundmi"
 msgid "Offline"
 msgstr "Jo i lidhur"
 
-#: src/fe-gtk/notifygui.c:201 src/fe-gtk/setup.c:246
+#: src/fe-gtk/notifygui.c:201
+#: src/fe-gtk/setup.c:246
 msgid "Never"
 msgstr "Kurrë"
 
-#: src/fe-gtk/notifygui.c:204 src/fe-gtk/notifygui.c:229
-#, fuzzy, c-format
+#: src/fe-gtk/notifygui.c:204
+#: src/fe-gtk/notifygui.c:229
+#, c-format
 msgid "%d minutes ago"
-msgstr "%u minuta më parë"
+msgstr "%d minuta më parë"
 
 #: src/fe-gtk/notifygui.c:219
 msgid "Online"
@@ -4450,114 +4357,114 @@ msgstr "Jepni nofkë për ta shtuar:"
 
 #: src/fe-gtk/notifygui.c:377
 msgid "Notify on these networks:"
-msgstr ""
+msgstr "Njofto në këta rrjete:"
 
 #: src/fe-gtk/notifygui.c:388
 msgid "Comma separated list of networks is accepted."
-msgstr ""
+msgstr "Pranohet listë rrjetesh ndarë me presje."
 
 #: src/fe-gtk/notifygui.c:414
-#, fuzzy
 msgid ": Friends List"
-msgstr "XChat: Listë Dërgimesh Kartelash"
+msgstr ": Listë Shokësh"
 
 #: src/fe-gtk/notifygui.c:435
-#, fuzzy
 msgid "Open Dialog"
-msgstr "Hap Dritare Dialogu"
+msgstr "Hap Dialog"
 
 #: src/fe-gtk/plugin-tray.c:226
 #, c-format
 msgid ": Connected to %u networks and %u channels"
-msgstr ""
+msgstr ": I lidhur me %u rrjete dhe %u kanale"
 
 #: src/fe-gtk/plugin-tray.c:516
-#, fuzzy
 msgid "_Restore Window"
-msgstr "_Mbyll Dritare"
+msgstr "_Riktheje Dritaren"
 
 #: src/fe-gtk/plugin-tray.c:518
-#, fuzzy
 msgid "_Hide Window"
-msgstr "_Dritare"
+msgstr "_Fshihe Dritaren"
 
 #: src/fe-gtk/plugin-tray.c:522
 msgid "_Blink on"
-msgstr ""
+msgstr "_Xixëllo"
 
-#: src/fe-gtk/plugin-tray.c:523 src/fe-gtk/setup.c:587
-#, fuzzy
+#: src/fe-gtk/plugin-tray.c:523
+#: src/fe-gtk/setup.c:587
 msgid "Channel Message"
-msgstr "Emër Kanali"
+msgstr "Mesazh Kanali"
 
-#: src/fe-gtk/plugin-tray.c:524 src/fe-gtk/setup.c:588
-#, fuzzy
+#: src/fe-gtk/plugin-tray.c:524
+#: src/fe-gtk/setup.c:588
 msgid "Private Message"
-msgstr "Bip në mesazhe vetiakë"
+msgstr "Mesazh Vetjak"
 
-#: src/fe-gtk/plugin-tray.c:525 src/fe-gtk/setup.c:589
-#, fuzzy
+#: src/fe-gtk/plugin-tray.c:525
+#: src/fe-gtk/setup.c:589
 msgid "Highlighted Message"
-msgstr "Bip në mesazhe të theksuar"
+msgstr "Mesazash i Theksuar"
 
 #: src/fe-gtk/plugin-tray.c:528
 msgid "_Change status"
-msgstr ""
+msgstr "_Ndryshoji gjendjen"
 
 #: src/fe-gtk/plugin-tray.c:530
-#, fuzzy
 msgid "_Away"
-msgstr "Larguar"
+msgstr "_Larguar"
 
 #: src/fe-gtk/plugin-tray.c:533
 msgid "_Back"
-msgstr ""
+msgstr "_I kthyer"
 
-#: src/fe-gtk/plugin-tray.c:588 src/fe-gtk/plugin-tray.c:596
-#, fuzzy, c-format
+#: src/fe-gtk/plugin-tray.c:588
+#: src/fe-gtk/plugin-tray.c:596
+#, c-format
 msgid ": Highlighted message from: %s (%s)"
-msgstr "Bip në mesazhe të theksuar"
+msgstr ": Mesazh i theksuar prej: %s (%s)"
 
 #: src/fe-gtk/plugin-tray.c:591
 #, c-format
 msgid ": %u highlighted messages, latest from: %s (%s)"
-msgstr ""
+msgstr ": %u mesazhe të theksuar, i fundit prej: %s (%s)"
 
-#: src/fe-gtk/plugin-tray.c:614 src/fe-gtk/plugin-tray.c:621
+#: src/fe-gtk/plugin-tray.c:614
+#: src/fe-gtk/plugin-tray.c:621
 #, c-format
 msgid ": New public message from: %s (%s)"
-msgstr ""
+msgstr ": Mesazh i ri publik prej: %s (%s)"
 
 #: src/fe-gtk/plugin-tray.c:617
 #, c-format
 msgid ": %u new public messages."
-msgstr ""
+msgstr ": %u mesazhe të rinj publikë."
 
-#: src/fe-gtk/plugin-tray.c:643 src/fe-gtk/plugin-tray.c:650
+#: src/fe-gtk/plugin-tray.c:643
+#: src/fe-gtk/plugin-tray.c:650
 #, c-format
 msgid ": Private message from: %s (%s)"
-msgstr ""
+msgstr ": Mesazh vetjak prej: %s (%s)"
 
 #: src/fe-gtk/plugin-tray.c:646
 #, c-format
 msgid ": %u private messages, latest from: %s (%s)"
-msgstr ""
+msgstr ": %u mesazhe vetjakë, i fundit prej: %s (%s)"
 
-#: src/fe-gtk/plugin-tray.c:696 src/fe-gtk/plugin-tray.c:704
+#: src/fe-gtk/plugin-tray.c:696
+#: src/fe-gtk/plugin-tray.c:704
 #, c-format
 msgid ": File offer from: %s (%s)"
-msgstr ""
+msgstr ": Ofertë kartele prej: %s (%s)"
 
 #: src/fe-gtk/plugin-tray.c:699
 #, c-format
 msgid ": %u file offers, latest from: %s (%s)"
-msgstr ""
+msgstr ": %u oferta kartelash, e fundit prej: %s (%s)"
 
 #: src/fe-gtk/plugingui.c:73
 msgid "Version"
 msgstr "Version"
 
-#: src/fe-gtk/plugingui.c:75 src/fe-gtk/textgui.c:424
+#: src/fe-gtk/plugingui.c:75
+#: src/fe-gtk/textgui.c:424
 msgid "Description"
 msgstr "Përshkrim"
 
@@ -4577,7 +4484,9 @@ msgstr "_Ngarko..."
 msgid "_UnLoad"
 msgstr "_Çngarko"
 
-#: src/fe-gtk/rawlog.c:84 src/fe-gtk/rawlog.c:133 src/fe-gtk/textgui.c:438
+#: src/fe-gtk/rawlog.c:84
+#: src/fe-gtk/rawlog.c:133
+#: src/fe-gtk/textgui.c:438
 #: src/fe-gtk/urlgrab.c:216
 msgid "Save As..."
 msgstr "Ruaj Si..."
@@ -4600,32 +4509,31 @@ msgid ": Search"
 msgstr "XChat: Kërko"
 
 #: src/fe-gtk/search.c:193
-#, fuzzy
 msgid "_Find"
-msgstr "Gjej"
+msgstr "_Gjej"
 
 #: src/fe-gtk/search.c:197
 msgid "_Match case"
-msgstr ""
+msgstr "Siç është _shkruajtur"
 
 #: src/fe-gtk/search.c:205
 msgid "Search _backwards"
-msgstr ""
+msgstr "Kërko së _prapthi"
 
 #: src/fe-gtk/search.c:213
-#, fuzzy
 msgid "_Highlight all"
-msgstr "Theksim:"
+msgstr "_Theksoje krejt"
 
 #: src/fe-gtk/search.c:221
 msgid "R_egular expression"
-msgstr ""
+msgstr "Shprehje e rr_egullt"
 
 #: src/fe-gtk/search.c:237
 msgid "Close and _Reset"
-msgstr ""
+msgstr "Mbylle dhe _Rimerre"
 
-#: src/fe-gtk/servlistgui.c:172 src/fe-gtk/servlistgui.c:281
+#: src/fe-gtk/servlistgui.c:172
+#: src/fe-gtk/servlistgui.c:281
 msgid "New Network"
 msgstr "Rrjet i Ri"
 
@@ -4635,37 +4543,36 @@ msgid "Really remove network \"%s\" and all its servers?"
 msgstr "Të heq vërtet rrjetin \"%s\" dhe tërë shërbyesit e tij?"
 
 #: src/fe-gtk/servlistgui.c:735
-#, fuzzy
 msgid "#channel"
-msgstr "kanal"
+msgstr "#kanal"
 
 #: src/fe-gtk/servlistgui.c:845
 msgid ": Favorite Channels (Auto-Join List)"
-msgstr ""
+msgstr ": Kanale të Parapëlqyer (Listë Vetëfutjesh)"
 
 #: src/fe-gtk/servlistgui.c:858
 #, c-format
 msgid "These channels will be joined whenever you connect to %s."
-msgstr ""
+msgstr "Te këta kanale do të hyhet kurdo që të lidheni te %s."
 
 #: src/fe-gtk/servlistgui.c:901
-#, fuzzy
 msgid "Key (Password)"
-msgstr "Fjalëkalim:"
+msgstr "Kyç (Fjalëkalim)"
 
-#: src/fe-gtk/servlistgui.c:932 src/fe-gtk/servlistgui.c:1572
+#: src/fe-gtk/servlistgui.c:932
+#: src/fe-gtk/servlistgui.c:1572
 msgid "_Edit"
 msgstr "_Përpuno"
 
 #: src/fe-gtk/servlistgui.c:968
 #, c-format
 msgid "%s has been removed."
-msgstr ""
+msgstr "%s u hoq."
 
 #: src/fe-gtk/servlistgui.c:988
 #, c-format
 msgid "%s has been added."
-msgstr ""
+msgstr "%s u shtua."
 
 #: src/fe-gtk/servlistgui.c:1012
 msgid "User name and Real name cannot be left blank."
@@ -4697,15 +4604,18 @@ msgstr "Hollësi Tuajat"
 msgid "Use global user information"
 msgstr "Përdor të dhëna të përgjithshme përdoruesi"
 
-#: src/fe-gtk/servlistgui.c:1445 src/fe-gtk/servlistgui.c:1679
+#: src/fe-gtk/servlistgui.c:1445
+#: src/fe-gtk/servlistgui.c:1679
 msgid "_Nick name:"
 msgstr "Nofkë:"
 
-#: src/fe-gtk/servlistgui.c:1449 src/fe-gtk/servlistgui.c:1686
+#: src/fe-gtk/servlistgui.c:1449
+#: src/fe-gtk/servlistgui.c:1686
 msgid "Second choice:"
 msgstr "Zgjedhje e dytë:"
 
-#: src/fe-gtk/servlistgui.c:1453 src/fe-gtk/servlistgui.c:1700
+#: src/fe-gtk/servlistgui.c:1453
+#: src/fe-gtk/servlistgui.c:1700
 msgid "_User name:"
 msgstr "_Emër përdorues:"
 
@@ -4722,9 +4632,8 @@ msgid "Auto connect to this network at startup"
 msgstr "Vetëlidhu me këtë rrjet gjatë nisjes"
 
 #: src/fe-gtk/servlistgui.c:1468
-#, fuzzy
 msgid "Bypass proxy server"
-msgstr "Shërbyes \"Proxy\""
+msgstr "Anashkalo shërbyes ndërmjetës"
 
 #: src/fe-gtk/servlistgui.c:1470
 msgid "Use SSL for all the servers on this network"
@@ -4735,9 +4644,8 @@ msgid "Accept invalid SSL certificate"
 msgstr "Prano dëshmi SSL të mangëta"
 
 #: src/fe-gtk/servlistgui.c:1481
-#, fuzzy
 msgid "_Favorite channels:"
-msgstr "Lër kanal:"
+msgstr "Kanale të _parapëlqyer:"
 
 #: src/fe-gtk/servlistgui.c:1483
 msgid "Channels to join, separated by commas, but not spaces!"
@@ -4748,26 +4656,16 @@ msgid "Connect command:"
 msgstr "Urdhër lidhjeje:"
 
 #: src/fe-gtk/servlistgui.c:1488
-msgid ""
-"Extra command to execute after connecting. If you need more than one, set "
-"this to LOAD -e <filename>, where <filename> is a text-file full of commands "
-"to execute."
-msgstr ""
-"Urdhër ekstra për t'u përmbushur pas lidhjes. Nëse ju duhet më tepër "
-"se një, vëreni këtë si  LOAD -e <emër kartele>, ku <emër kartele> "
-"është një kartelë tekst mbushur plot me urdhrapër t'u përmbushur."
+msgid "Extra command to execute after connecting. If you need more than one, set this to LOAD -e <filename>, where <filename> is a text-file full of commands to execute."
+msgstr "Urdhër ekstra për t'u përmbushur pas lidhjes. Nëse ju duhet më tepër se një, vëreni këtë si  LOAD -e <emër kartele>, ku <emër kartele> është një kartelë tekst mbushur plot me urdhrapër t'u përmbushur."
 
 #: src/fe-gtk/servlistgui.c:1491
 msgid "Nickserv password:"
 msgstr "Fjalëkalim nofke shërbyesi:"
 
 #: src/fe-gtk/servlistgui.c:1493
-msgid ""
-"If your nickname requires a password, enter it here. Not all IRC networks "
-"support this."
-msgstr ""
-"Nëse nofka juaj lyp fjalëkalim, jepeni atë këtu. Jo tërë rrjetet IRC e "
-"mbulojnë këtë."
+msgid "If your nickname requires a password, enter it here. Not all IRC networks support this."
+msgstr "Nëse nofka juaj lyp fjalëkalim, jepeni atë këtu. Jo tërë rrjetet IRC e mbulojnë këtë."
 
 #: src/fe-gtk/servlistgui.c:1497
 msgid "Server password:"
@@ -4782,9 +4680,8 @@ msgid "Character set:"
 msgstr "Gërma:"
 
 #: src/fe-gtk/servlistgui.c:1657
-#, fuzzy
 msgid ": Network List"
-msgstr "Rregullim rrjeti"
+msgstr ": Listë Rrjetesh"
 
 #: src/fe-gtk/servlistgui.c:1669
 msgid "User Information"
@@ -4799,13 +4696,12 @@ msgid "Networks"
 msgstr "Rrjete"
 
 #: src/fe-gtk/servlistgui.c:1801
-#, fuzzy
 msgid "Skip network list on startup"
-msgstr "Anashkalo listë shërbyesish gjatë nisjes"
+msgstr "Anashkalo listë rrjetesh gjatë nisjes"
 
 #: src/fe-gtk/servlistgui.c:1810
 msgid "Show favorites only"
-msgstr ""
+msgstr "Shfaq vetëm të parapëlqyerit"
 
 #: src/fe-gtk/servlistgui.c:1840
 msgid "_Edit..."
@@ -4816,10 +4712,8 @@ msgid "_Sort"
 msgstr "_Rendit"
 
 #: src/fe-gtk/servlistgui.c:1848
-msgid ""
-"Sorts the network list in alphabetical order. Use SHIFT-UP and SHIFT-DOWN "
-"keys to move a row."
-msgstr ""
+msgid "Sorts the network list in alphabetical order. Use SHIFT-UP and SHIFT-DOWN keys to move a row."
+msgstr "E rendit listën e rrjeteve sipas abc-së. Përdorni tastet SHIFT-UP dhe SHIFT-DOWN për të lëvizur një rresht."
 
 #: src/fe-gtk/servlistgui.c:1856
 msgid "_Favor"
@@ -4827,7 +4721,7 @@ msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1857
 msgid "Mark or unmark this network as a favorite."
-msgstr ""
+msgstr "I vini ose ia hiqni shenjën si i parapëlqyer këtij rrjeti."
 
 #: src/fe-gtk/servlistgui.c:1881
 msgid "C_onnect"
@@ -4839,7 +4733,7 @@ msgstr "Dukje Kutie Tekstesh"
 
 #: src/fe-gtk/setup.c:107
 msgid "Main font:"
-msgstr ""
+msgstr "Lloj kryesor i shkronjave:"
 
 #: src/fe-gtk/setup.c:109
 msgid "Font:"
@@ -4897,7 +4791,8 @@ msgstr "E gjelbër:"
 msgid "Blue:"
 msgstr "Blu:"
 
-#: src/fe-gtk/setup.c:125 src/fe-gtk/setup.c:487
+#: src/fe-gtk/setup.c:125
+#: src/fe-gtk/setup.c:487
 msgid "Time Stamps"
 msgstr "Vula Kohore"
 
@@ -4909,40 +4804,41 @@ msgstr "Aktivizo vula kohore"
 msgid "Time stamp format:"
 msgstr "Format vule kohore:"
 
-#: src/fe-gtk/setup.c:129 src/fe-gtk/setup.c:491
-#, fuzzy
+#: src/fe-gtk/setup.c:129
+#: src/fe-gtk/setup.c:491
 msgid "See the strftime MSDN article for details."
-msgstr "Për hollësira shihni faqe manuali (manpage) për strftime."
+msgstr "Për hollësi shihni artikullin strftime MSDN."
 
-#: src/fe-gtk/setup.c:131 src/fe-gtk/setup.c:493
-#, fuzzy
+#: src/fe-gtk/setup.c:131
+#: src/fe-gtk/setup.c:493
 msgid "See the strftime manpage for details."
-msgstr "Për hollësira shihni faqe manuali (manpage) për strftime."
+msgstr "Për hollësi shihni faqe manuali (manpage) për strftime."
 
-#: src/fe-gtk/setup.c:139 src/fe-gtk/setup.c:185
+#: src/fe-gtk/setup.c:139
+#: src/fe-gtk/setup.c:185
 msgid "A-Z"
 msgstr "A-Z"
 
 #: src/fe-gtk/setup.c:140
 msgid "Last-spoke order"
-msgstr ""
+msgstr "Fjala e shqiptuar së fundi"
 
 #: src/fe-gtk/setup.c:146
-#, fuzzy
 msgid "Input Box"
-msgstr "Kuti futjeje"
+msgstr "Kuti Futjesh"
 
-#: src/fe-gtk/setup.c:147 src/fe-gtk/setup.c:217
+#: src/fe-gtk/setup.c:147
+#: src/fe-gtk/setup.c:217
 msgid "Use the Text box font and colors"
 msgstr "Përdor gërma dhe ngjyra të kutisë së Teksteve"
 
 #: src/fe-gtk/setup.c:149
 msgid "Spell checking"
-msgstr ""
+msgstr "Kontroll drejtshkrimi"
 
 #: src/fe-gtk/setup.c:150
 msgid "Dictionaries to use:"
-msgstr ""
+msgstr "Fjalorë për t'u përdorur:"
 
 #: src/fe-gtk/setup.c:152
 msgid ""
@@ -4951,27 +4847,24 @@ msgid ""
 msgstr ""
 
 #: src/fe-gtk/setup.c:154
-#, fuzzy
 msgid "Use language codes. Separate multiple entries with commas."
-msgstr "(Ndaj fjalë të shumëfishta me presje]."
+msgstr "Përdor kode gjuhësh. Ndaji fjalët e shumëfishta me presje."
 
 #: src/fe-gtk/setup.c:158
 msgid "Nick Completion"
 msgstr "Plotësim Nofkash"
 
 #: src/fe-gtk/setup.c:159
-#, fuzzy
 msgid "Automatic nick completion (without TAB key)"
-msgstr "Plotësim nofkash vetvetiu"
+msgstr "Plotësim nofkash vetvetiu (pa tastin TAB)"
 
 #: src/fe-gtk/setup.c:161
 msgid "Nick completion suffix:"
 msgstr "Prapashtesë plotësimi nofkash:"
 
 #: src/fe-gtk/setup.c:162
-#, fuzzy
 msgid "Nick completion sorted:"
-msgstr "Prapashtesë plotësimi nofkash:"
+msgstr "Renditur sipas plotësim nofkash:"
 
 #: src/fe-gtk/setup.c:165
 msgid "Input Box Codes"
@@ -5002,21 +4895,25 @@ msgstr "Z-A"
 msgid "Unsorted"
 msgstr "E parenditur"
 
-#: src/fe-gtk/setup.c:194 src/fe-gtk/setup.c:206
+#: src/fe-gtk/setup.c:194
+#: src/fe-gtk/setup.c:206
 msgid "Left (Upper)"
-msgstr ""
+msgstr "Majtas (Sipër)"
 
-#: src/fe-gtk/setup.c:195 src/fe-gtk/setup.c:207
+#: src/fe-gtk/setup.c:195
+#: src/fe-gtk/setup.c:207
 msgid "Left (Lower)"
-msgstr ""
+msgstr "Majtas (Poshtë)"
 
-#: src/fe-gtk/setup.c:196 src/fe-gtk/setup.c:208
+#: src/fe-gtk/setup.c:196
+#: src/fe-gtk/setup.c:208
 msgid "Right (Upper)"
-msgstr ""
+msgstr "Djathtas (Sipër)"
 
-#: src/fe-gtk/setup.c:197 src/fe-gtk/setup.c:209
+#: src/fe-gtk/setup.c:197
+#: src/fe-gtk/setup.c:209
 msgid "Right (Lower)"
-msgstr ""
+msgstr "Djathtas (Poshtë)"
 
 #: src/fe-gtk/setup.c:198
 msgid "Top"
@@ -5043,20 +4940,16 @@ msgid "User list sorted by:"
 msgstr "Listë përdoruesish renditur sipas:"
 
 #: src/fe-gtk/setup.c:220
-#, fuzzy
 msgid "Show user list at:"
-msgstr "Shfaq/Fshih listë përdoruesish"
+msgstr "Shfaq listë përdoruesish te:"
 
 #: src/fe-gtk/setup.c:222
-#, fuzzy
 msgid "Away Tracking"
-msgstr "Gjurmim të larguarish"
+msgstr "Gjurmim të Larguarish"
 
 #: src/fe-gtk/setup.c:223
 msgid "Track the Away status of users and mark them in a different color"
-msgstr ""
-"Ndjek gjendjen i Larguar të përdoruesve dhe i shenjon ata me një ngjyrë "
-"tjetër"
+msgstr "Ndjek gjendjen i Larguar të përdoruesve dhe i shenjon ata me një ngjyrë tjetër"
 
 #: src/fe-gtk/setup.c:224
 msgid "On channels smaller than:"
@@ -5070,7 +4963,8 @@ msgstr "Veprim Kur Dyklikohet"
 msgid "Windows"
 msgstr "Dritare"
 
-#: src/fe-gtk/setup.c:239 src/fe-gtk/setup.c:255
+#: src/fe-gtk/setup.c:239
+#: src/fe-gtk/setup.c:255
 msgid "Tabs"
 msgstr "Skeda"
 
@@ -5084,11 +4978,11 @@ msgstr "Vetëm skedat e nevojshme"
 
 #: src/fe-gtk/setup.c:257
 msgid "Tree"
-msgstr ""
+msgstr "Pema"
 
 #: src/fe-gtk/setup.c:264
 msgid "Switcher type:"
-msgstr ""
+msgstr "Lloj këmbyesi:"
 
 #: src/fe-gtk/setup.c:265
 msgid "Open an extra tab for server messages"
@@ -5099,9 +4993,8 @@ msgid "Open an extra tab for server notices"
 msgstr "Hap një skedë ekstra për njoftime shërbyesi"
 
 #: src/fe-gtk/setup.c:267
-#, fuzzy
 msgid "Open a new tab when you receive a private message"
-msgstr "Hap një skedë ekstra për mesazhe shërbyesi"
+msgstr "Hap një skedë të re, kur merrni një mesazh vetjak"
 
 #: src/fe-gtk/setup.c:268
 msgid "Sort tabs in alphabetical order"
@@ -5109,21 +5002,19 @@ msgstr "Rendit skeda sipas abc-së"
 
 #: src/fe-gtk/setup.c:269
 msgid "Show icons in the channel tree"
-msgstr ""
+msgstr "Shfaqi ionat te pema e kanalit"
 
 #: src/fe-gtk/setup.c:270
-#, fuzzy
 msgid "Smaller text"
-msgstr "Skeda të vogla"
+msgstr "Tekst më i vogël"
 
 #: src/fe-gtk/setup.c:272
 msgid "Focus new tabs:"
 msgstr "Fokuso skeda të reja:"
 
 #: src/fe-gtk/setup.c:274
-#, fuzzy
 msgid "Show channel switcher at:"
-msgstr "Në kanale më të vegjël se:"
+msgstr "Shfaq këmbyes kanalesh tek:"
 
 #: src/fe-gtk/setup.c:275
 msgid "Shorten tab labels to:"
@@ -5154,27 +5045,24 @@ msgid "Open DCC, Ignore, Notify etc, in tabs or windows?"
 msgstr "DCC, Shpërfill, Njofto etj, t'i hap si skeda apo si dritare?"
 
 #: src/fe-gtk/setup.c:287
-#, fuzzy
 msgid "Messages"
-msgstr "Mesazh"
+msgstr "Mesazhe"
 
 #: src/fe-gtk/setup.c:288
-#, fuzzy
 msgid "Scrollback"
-msgstr "Rreshta rrëshqitjeje:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:296
-#, fuzzy
 msgid "No"
-msgstr "Asnjë"
+msgstr "Jo"
 
 #: src/fe-gtk/setup.c:297
 msgid "Yes"
-msgstr ""
+msgstr "Po"
 
 #: src/fe-gtk/setup.c:298
 msgid "Browse for save folder every time"
-msgstr ""
+msgstr "Shfleto çdo herë për dosje ruajtjesh"
 
 #: src/fe-gtk/setup.c:304
 msgid "Files and Directories"
@@ -5182,7 +5070,7 @@ msgstr "Kartela dhe Drejtori"
 
 #: src/fe-gtk/setup.c:305
 msgid "Auto accept file offers:"
-msgstr ""
+msgstr "Vetëprano oferta kartelash:"
 
 #: src/fe-gtk/setup.c:306
 msgid "Download files to:"
@@ -5205,12 +5093,8 @@ msgid "Get my address from the IRC server"
 msgstr "Kije vendndodhjen time prej serverit IRC"
 
 #: src/fe-gtk/setup.c:312
-msgid ""
-"Asks the IRC server for your real address. Use this if you have a 192.168.*."
-"* address!"
-msgstr ""
-"Pyet shërbyesin IRC për vendndodhjen tuaj të vërtetë. Përdoreni nëse "
-"keni një vendndodhje 192.168.*.* !"
+msgid "Asks the IRC server for your real address. Use this if you have a 192.168.*.* address!"
+msgstr "Pyet shërbyesin IRC për vendndodhjen tuaj të vërtetë. Përdoreni nëse keni një vendndodhje 192.168.*.* !"
 
 #: src/fe-gtk/setup.c:313
 msgid "DCC IP address:"
@@ -5229,9 +5113,8 @@ msgid "Last DCC send port:"
 msgstr "Porta e fundit DCC dërg:"
 
 #: src/fe-gtk/setup.c:317
-#, fuzzy
 msgid "!Leave ports at zero for full range."
-msgstr "(Lini portat në zero për interval të plotë)."
+msgstr "!Lini portat në zero për interval të plotë."
 
 #: src/fe-gtk/setup.c:319
 msgid "Maximum File Transfer Speeds (bytes per second)"
@@ -5241,7 +5124,8 @@ msgstr "Shpejtësi më e Madhe Shpërnguljesh Kartelash (bajt për sekondë)"
 msgid "One upload:"
 msgstr "Një ngarkim:"
 
-#: src/fe-gtk/setup.c:321 src/fe-gtk/setup.c:323
+#: src/fe-gtk/setup.c:321
+#: src/fe-gtk/setup.c:323
 msgid "Maximum speed for one transfer"
 msgstr "Shpejtësi më e madhe pë një shpërngulje"
 
@@ -5253,7 +5137,8 @@ msgstr "Një shkarkim:"
 msgid "All uploads combined:"
 msgstr "Tërë shkarkimet të ndërthurur:"
 
-#: src/fe-gtk/setup.c:325 src/fe-gtk/setup.c:327
+#: src/fe-gtk/setup.c:325
+#: src/fe-gtk/setup.c:327
 msgid "Maximum speed for all files"
 msgstr "Shpejtësi më e madhe për tërë kartelat"
 
@@ -5261,66 +5146,72 @@ msgstr "Shpejtësi më e madhe për tërë kartelat"
 msgid "All downloads combined:"
 msgstr "Tërë shkarkimet të ndërthurur:"
 
-#: src/fe-gtk/setup.c:354 src/fe-gtk/setup.c:380 src/fe-gtk/setup.c:1830
+#: src/fe-gtk/setup.c:354
+#: src/fe-gtk/setup.c:380
+#: src/fe-gtk/setup.c:1830
 msgid "Alerts"
 msgstr "Sinjalizime"
 
 #: src/fe-gtk/setup.c:358
-#, fuzzy
 msgid "Show tray balloons on:"
-msgstr "Shfaq skeda:"
+msgstr "Shfaq tullumbace shtylle gjatë:"
 
 #: src/fe-gtk/setup.c:360
 msgid "Blink tray icon on:"
-msgstr ""
+msgstr "Xixëllo ikonën e shtyllës gjatë:"
 
-#: src/fe-gtk/setup.c:361 src/fe-gtk/setup.c:383
+#: src/fe-gtk/setup.c:361
+#: src/fe-gtk/setup.c:383
 msgid "Blink task bar on:"
-msgstr ""
+msgstr "Xixëllo shtyllën e punëve gjatë:"
 
-#: src/fe-gtk/setup.c:362 src/fe-gtk/setup.c:384
+#: src/fe-gtk/setup.c:362
+#: src/fe-gtk/setup.c:384
 msgid "Make a beep sound on:"
-msgstr ""
+msgstr "Prodho një tingull beep gjatë:"
 
 #: src/fe-gtk/setup.c:364
 msgid "Enable system tray icon"
-msgstr ""
+msgstr "Aktivizo ikonë për shtyllë sistemi"
 
-#: src/fe-gtk/setup.c:365 src/fe-gtk/setup.c:386
+#: src/fe-gtk/setup.c:365
+#: src/fe-gtk/setup.c:386
 msgid "Omit alerts when marked as being away"
 msgstr ""
 
-#: src/fe-gtk/setup.c:367 src/fe-gtk/setup.c:388
-#, fuzzy
+#: src/fe-gtk/setup.c:367
+#: src/fe-gtk/setup.c:388
 msgid "Highlighted Messages"
-msgstr "Bip në mesazhe të theksuar"
+msgstr "Mesazhe të Theksuar"
 
-#: src/fe-gtk/setup.c:368 src/fe-gtk/setup.c:389
-msgid ""
-"Highlighted messages are ones where your nickname is mentioned, but also:"
-msgstr ""
+#: src/fe-gtk/setup.c:368
+#: src/fe-gtk/setup.c:389
+msgid "Highlighted messages are ones where your nickname is mentioned, but also:"
+msgstr "Mesazhet e theksuar janë ata ku përmendet nofka juaj, por edhe:"
 
-#: src/fe-gtk/setup.c:370 src/fe-gtk/setup.c:391
-#, fuzzy
+#: src/fe-gtk/setup.c:370
+#: src/fe-gtk/setup.c:391
 msgid "Extra words to highlight:"
 msgstr "Fjalë ekstra për t'u theksuar:"
 
-#: src/fe-gtk/setup.c:371 src/fe-gtk/setup.c:392
-#, fuzzy
+#: src/fe-gtk/setup.c:371
+#: src/fe-gtk/setup.c:392
 msgid "Nick names not to highlight:"
 msgstr "Nofka për t'u mos theksuar:"
 
-#: src/fe-gtk/setup.c:372 src/fe-gtk/setup.c:393
-#, fuzzy
+#: src/fe-gtk/setup.c:372
+#: src/fe-gtk/setup.c:393
 msgid "Nick names to always highlight:"
-msgstr "Nofka për t'u mos theksuar:"
+msgstr "Nofka për t'u theksuar përherë:"
 
-#: src/fe-gtk/setup.c:373 src/fe-gtk/setup.c:394
-#, fuzzy
+#: src/fe-gtk/setup.c:373
+#: src/fe-gtk/setup.c:394
 msgid ""
 "Separate multiple words with commas.\n"
 "Wildcards are accepted."
-msgstr "(Ndaj fjalë të shumëfishta me presje]."
+msgstr ""
+"Ndajini fjalët e shumëfishta me presje.\n"
+"Pranohen shenjat e plotfuqishme."
 
 #: src/fe-gtk/setup.c:401
 msgid "Default Messages"
@@ -5360,127 +5251,136 @@ msgstr "Shfaq mesazhe largimi identikë vetëm një herë"
 
 #: src/fe-gtk/setup.c:410
 msgid "Automatically unmark away"
-msgstr "Çshenjo automatikisht si të larguar"
+msgstr "Çshenjoje automatikisht si të larguar"
 
 #: src/fe-gtk/setup.c:410
 msgid "Unmark yourself as away before sending messages"
 msgstr "Çshenjoni vetveten si të larguar para dërgimit të mesazheve"
 
-#: src/fe-gtk/setup.c:417 src/fe-gtk/setup.c:448
+#: src/fe-gtk/setup.c:417
+#: src/fe-gtk/setup.c:448
 msgid "Advanced Settings"
 msgstr "Rregullime të Mëtejshëm"
 
-#: src/fe-gtk/setup.c:419 src/fe-gtk/setup.c:449
+#: src/fe-gtk/setup.c:419
+#: src/fe-gtk/setup.c:449
 msgid "Alternative fonts:"
-msgstr ""
+msgstr "Shkronja alternative:"
 
-#: src/fe-gtk/setup.c:421 src/fe-gtk/setup.c:450
+#: src/fe-gtk/setup.c:421
+#: src/fe-gtk/setup.c:450
 msgid "Auto reconnect delay:"
 msgstr "Vonesë vetërilidhjeje:"
 
-#: src/fe-gtk/setup.c:422 src/fe-gtk/setup.c:451
+#: src/fe-gtk/setup.c:422
+#: src/fe-gtk/setup.c:451
 msgid "Display MODEs in raw form"
 msgstr "Shfaq MËNYRA në formë bruto"
 
-#: src/fe-gtk/setup.c:423 src/fe-gtk/setup.c:452
+#: src/fe-gtk/setup.c:423
+#: src/fe-gtk/setup.c:452
 msgid "Whois on notify"
 msgstr "Whois në njoftime"
 
-#: src/fe-gtk/setup.c:423 src/fe-gtk/setup.c:452
+#: src/fe-gtk/setup.c:423
+#: src/fe-gtk/setup.c:452
 msgid "Sends a /WHOIS when a user comes online in your notify list"
-msgstr ""
-"Dërgon një /WHOIS kur një përdorues vjen \"online\" në listën tuaj të "
-"njoftimeve"
+msgstr "Dërgon një /WHOIS kur një përdorues vjen \"online\" në listën tuaj të njoftimeve"
 
-#: src/fe-gtk/setup.c:424 src/fe-gtk/setup.c:453
+#: src/fe-gtk/setup.c:424
+#: src/fe-gtk/setup.c:453
 msgid "Hide join and part messages"
 msgstr "Fshih mesazhe ardhjesh dhe ikjesh"
 
-#: src/fe-gtk/setup.c:424 src/fe-gtk/setup.c:453
+#: src/fe-gtk/setup.c:424
+#: src/fe-gtk/setup.c:453
 msgid "Hide channel join/part messages by default"
 msgstr "Fshih, si parazgjedhje, mesazhe ardhjeje/daljeje prej kanalit"
 
-#: src/fe-gtk/setup.c:425 src/fe-gtk/setup.c:455
+#: src/fe-gtk/setup.c:425
+#: src/fe-gtk/setup.c:455
 msgid "Auto Open DCC Windows"
 msgstr "Vetëhap Dritare DCC"
 
-#: src/fe-gtk/setup.c:426 src/fe-gtk/setup.c:456
+#: src/fe-gtk/setup.c:426
+#: src/fe-gtk/setup.c:456
 msgid "Send window"
 msgstr "Dritare dërgimesh"
 
-#: src/fe-gtk/setup.c:427 src/fe-gtk/setup.c:457
+#: src/fe-gtk/setup.c:427
+#: src/fe-gtk/setup.c:457
 msgid "Receive window"
 msgstr "Dritare marrjesh"
 
-#: src/fe-gtk/setup.c:428 src/fe-gtk/setup.c:458
+#: src/fe-gtk/setup.c:428
+#: src/fe-gtk/setup.c:458
 msgid "Chat window"
 msgstr "Dritare fjalosjeje"
 
-#: src/fe-gtk/setup.c:429 src/fe-gtk/setup.c:459
+#: src/fe-gtk/setup.c:429
+#: src/fe-gtk/setup.c:459
 msgid "Auto Copy Behavior"
-msgstr ""
+msgstr "Sjelljeje Kopjimesh Vetvetiu"
 
-#: src/fe-gtk/setup.c:430 src/fe-gtk/setup.c:460
+#: src/fe-gtk/setup.c:430
+#: src/fe-gtk/setup.c:460
 msgid "Automatically copy selected text"
+msgstr "Tekstin e përzgjedhur kopjoje vetvetiu"
+
+#: src/fe-gtk/setup.c:431
+#: src/fe-gtk/setup.c:461
+msgid "Copy selected text to clipboard when left mouse button is released. Otherwise, CONTROL-SHIFT-C will copy the selected text to the clipboard."
 msgstr ""
 
-#: src/fe-gtk/setup.c:431 src/fe-gtk/setup.c:461
-msgid ""
-"Copy selected text to clipboard when left mouse button is released. "
-"Otherwise, CONTROL-SHIFT-C will copy the selected text to the clipboard."
-msgstr ""
-
-#: src/fe-gtk/setup.c:434 src/fe-gtk/setup.c:464
-#, fuzzy
+#: src/fe-gtk/setup.c:434
+#: src/fe-gtk/setup.c:464
 msgid "Automatically include time stamps"
-msgstr "Çshenjo automatikisht si të larguar"
+msgstr "Përfshi vetvetiu vula kohore"
 
-#: src/fe-gtk/setup.c:435 src/fe-gtk/setup.c:465
-msgid ""
-"Automatically include time stamps in copied lines of text. Otherwise, "
-"include time stamps if the SHIFT key is held down while selecting."
+#: src/fe-gtk/setup.c:435
+#: src/fe-gtk/setup.c:465
+msgid "Automatically include time stamps in copied lines of text. Otherwise, include time stamps if the SHIFT key is held down while selecting."
 msgstr ""
 
-#: src/fe-gtk/setup.c:437 src/fe-gtk/setup.c:467
-#, fuzzy
+#: src/fe-gtk/setup.c:437
+#: src/fe-gtk/setup.c:467
 msgid "Automatically include color information"
-msgstr "Plotësim nofkash vetvetiu"
+msgstr "Përfshi vetvetiu të dhëna ngjyrash"
 
-#: src/fe-gtk/setup.c:438 src/fe-gtk/setup.c:468
-msgid ""
-"Automatically include color information in copied lines of text.  Otherwise, "
-"include color information if the CONTROL key is held down while selecting."
+#: src/fe-gtk/setup.c:438
+#: src/fe-gtk/setup.c:468
+msgid "Automatically include color information in copied lines of text.  Otherwise, include color information if the CONTROL key is held down while selecting."
 msgstr ""
 
 #: src/fe-gtk/setup.c:454
 msgid "Allow only one instance of HexChat to run"
-msgstr ""
+msgstr "Lejo të xhirojë vetëm një instancë HexChat"
 
-#: src/fe-gtk/setup.c:478 src/fe-gtk/setup.c:1832
+#: src/fe-gtk/setup.c:478
+#: src/fe-gtk/setup.c:1832
 msgid "Logging"
 msgstr "Hyrje"
 
 #: src/fe-gtk/setup.c:479
 msgid "Display scrollback from previous session"
-msgstr ""
+msgstr "Shfaq rrëshqitje prej sesionesh të mëparshëm"
 
 #: src/fe-gtk/setup.c:481
 msgid "Strip colors when displaying scrollback"
 msgstr ""
 
 #: src/fe-gtk/setup.c:483
-#, fuzzy
 msgid "Enable logging of conversations to disk"
-msgstr "Aktivizo regjistrim bashkëbisedimesh"
+msgstr "Aktivizo regjistrim bashkëbisedimesh në disk"
 
 #: src/fe-gtk/setup.c:484
 msgid "Log filename:"
 msgstr "Emër kartele regjistrimesh"
 
 #: src/fe-gtk/setup.c:485
-#, fuzzy, c-format
+#, c-format
 msgid "%s=Server %c=Channel %n=Network."
-msgstr "(%s=Server %c=Kanal %n=Rrjet)."
+msgstr "%s=Shërbyes %c=Kanal %n=Rrjet."
 
 #: src/fe-gtk/setup.c:488
 msgid "Insert timestamps in logs"
@@ -5492,21 +5392,19 @@ msgstr "Format vule kohore regjistri"
 
 #: src/fe-gtk/setup.c:496
 msgid "URLs"
-msgstr ""
+msgstr "URLra"
 
 #: src/fe-gtk/setup.c:497
-#, fuzzy
 msgid "Enable logging of URLs to disk"
-msgstr "Aktivizo regjistrim bashkëbisedimesh"
+msgstr "Aktivizo regjistrim URL-sh në disk"
 
 #: src/fe-gtk/setup.c:498
-#, fuzzy
 msgid "Enable URL grabber"
-msgstr "XChat: Kopjues URL-sh"
+msgstr "Aktivizo Kopjues URL-sh"
 
 #: src/fe-gtk/setup.c:499
 msgid "Maximum number of URLs to grab:"
-msgstr ""
+msgstr "Numër maksimum URL-sh që mund të merren:"
 
 #: src/fe-gtk/setup.c:506
 msgid "(Disabled)"
@@ -5530,25 +5428,23 @@ msgstr "HTTP"
 
 #: src/fe-gtk/setup.c:512
 msgid "MS Proxy (ISA)"
-msgstr ""
+msgstr "Ndërmjetës MS (ISA)"
 
 #: src/fe-gtk/setup.c:515
 msgid "Auto"
-msgstr ""
+msgstr "Auto"
 
 #: src/fe-gtk/setup.c:522
-#, fuzzy
 msgid "All Connections"
-msgstr "Lidhje"
+msgstr "Krejt Lidhjet"
 
 #: src/fe-gtk/setup.c:523
-#, fuzzy
 msgid "IRC Server Only"
-msgstr "Vetëm me Ftesa"
+msgstr "Vetëm Shërbyesa IRC"
 
 #: src/fe-gtk/setup.c:524
 msgid "DCC Get Only"
-msgstr ""
+msgstr "Vetëm DCC Get"
 
 #: src/fe-gtk/setup.c:530
 msgid "Your Address"
@@ -5559,9 +5455,8 @@ msgid "Bind to:"
 msgstr "Lidhe te"
 
 #: src/fe-gtk/setup.c:532
-#, fuzzy
 msgid "Only useful for computers with multiple addresses."
-msgstr "(I dobishëm vetëm për kompjutera me vendndodhje të shumëfishta)."
+msgstr "I dobishëm vetëm për kompjutera me adresa të shumëfishta."
 
 #: src/fe-gtk/setup.c:534
 msgid "Proxy Server"
@@ -5569,7 +5464,7 @@ msgstr "Shërbyes \"Proxy\""
 
 #: src/fe-gtk/setup.c:535
 msgid "Hostname:"
-msgstr "Emërstrehë:"
+msgstr "Strehëemër:"
 
 #: src/fe-gtk/setup.c:536
 msgid "Port:"
@@ -5580,23 +5475,20 @@ msgid "Type:"
 msgstr "Tip:"
 
 #: src/fe-gtk/setup.c:538
-#, fuzzy
 msgid "Use proxy for:"
-msgstr "Shërbyes \"Proxy\""
+msgstr "Përdor ndërmjetës për:"
 
 #: src/fe-gtk/setup.c:540
 msgid "Proxy Authentication"
-msgstr ""
+msgstr "Mirëfilltësim Ndërmjetësi"
 
 #: src/fe-gtk/setup.c:542
-#, fuzzy
 msgid "Use Authentication (MS Proxy, HTTP or Socks5 only)"
-msgstr "Mirëfilltëso te shërbyes \"proxy\" (HTTP dhe Socks5)"
+msgstr "Përdor Mirëfilltësim (Vetëm ndërmjetës MS, HTTP ose Socks5)"
 
 #: src/fe-gtk/setup.c:544
-#, fuzzy
 msgid "Use Authentication (HTTP or Socks5 only)"
-msgstr "Mirëfilltëso te shërbyes \"proxy\" (HTTP dhe Socks5)"
+msgstr "Përdor Mirëfilltësim (Vetëm HTTP ose Socks5)"
 
 #: src/fe-gtk/setup.c:546
 msgid "Username:"
@@ -5611,9 +5503,8 @@ msgid "Select an Image File"
 msgstr "Zgjidh një Kartelë Pamjeje"
 
 #: src/fe-gtk/setup.c:1013
-#, fuzzy
 msgid "Select Download Folder"
-msgstr "Përzgjidhni ngjyrë"
+msgstr "Përzgjidhni Dosje Shkarkimesh"
 
 #: src/fe-gtk/setup.c:1022
 msgid "Select font"
@@ -5633,7 +5524,7 @@ msgstr "Shenjo përdorues të paidentifikuar me:"
 
 #: src/fe-gtk/setup.c:1269
 msgid "Open Data Folder"
-msgstr ""
+msgstr "Hap Dosje të Dhënash"
 
 #: src/fe-gtk/setup.c:1323
 msgid "Select color"
@@ -5648,15 +5539,16 @@ msgid "mIRC colors:"
 msgstr "Ngjyra mIRC:"
 
 #: src/fe-gtk/setup.c:1413
-#, fuzzy
 msgid "Local colors:"
-msgstr "Ngjyra ekstra:"
+msgstr "Ngjyra vendore:"
 
-#: src/fe-gtk/setup.c:1421 src/fe-gtk/setup.c:1426
+#: src/fe-gtk/setup.c:1421
+#: src/fe-gtk/setup.c:1426
 msgid "Foreground:"
 msgstr "Përpara:"
 
-#: src/fe-gtk/setup.c:1422 src/fe-gtk/setup.c:1427
+#: src/fe-gtk/setup.c:1422
+#: src/fe-gtk/setup.c:1427
 msgid "Background:"
 msgstr "Sfond:"
 
@@ -5690,14 +5582,14 @@ msgstr "Theksim:"
 
 #: src/fe-gtk/setup.c:1437
 msgid "Spell checker:"
-msgstr ""
+msgstr "Kontroll drejtshkrimi:"
 
 #: src/fe-gtk/setup.c:1440
-#, fuzzy
 msgid "Color Stripping"
-msgstr "Varg DCC"
+msgstr ""
 
-#: src/fe-gtk/setup.c:1546 src/fe-gtk/textgui.c:389
+#: src/fe-gtk/setup.c:1546
+#: src/fe-gtk/textgui.c:389
 msgid "Event"
 msgstr "Ngjarje"
 
@@ -5758,9 +5650,8 @@ msgid "User list"
 msgstr "Listë përdoruesi"
 
 #: src/fe-gtk/setup.c:1826
-#, fuzzy
 msgid "Channel switcher"
-msgstr "Listë Kanalesh..."
+msgstr "Këmbyes kanali"
 
 #: src/fe-gtk/setup.c:1827
 msgid "Colors"
@@ -5795,6 +5686,8 @@ msgid ""
 "You cannot place the tree on the top or bottom!\n"
 "Please change to the <b>Tabs</b> layout in the <b>View</b> menu first."
 msgstr ""
+"Nuk mund ta vendosni dot pemën në krye ose në bisht!\n"
+"Ju lutem, kaloni së pari te skema <b>Skeda</b> te <b>Parja</b>."
 
 #: src/fe-gtk/setup.c:2188
 msgid "Invalid time stamp format! See the strftime MSDN article for details."
@@ -5802,8 +5695,7 @@ msgstr ""
 
 #: src/fe-gtk/setup.c:2195
 msgid "Some settings were changed that require a restart to take full effect."
-msgstr ""
-"Për disa nga ndryshimet lipset të rinisni programin pa të jenë vepruese."
+msgstr "Për disa nga ndryshimet lipset të rinisni programin pa të jenë vepruese."
 
 #: src/fe-gtk/setup.c:2203
 msgid ""
@@ -5830,13 +5722,14 @@ msgstr "Pati një gabim në përtypjen e vargut"
 msgid "This signal is only passed %d args, $%d is invalid"
 msgstr "This signal is only passed %d args, $%d is invalid"
 
-#: src/fe-gtk/textgui.c:304 src/fe-gtk/textgui.c:327
+#: src/fe-gtk/textgui.c:304
+#: src/fe-gtk/textgui.c:327
 msgid "Print Texts File"
 msgstr "Shtyp Kartelë Tekstesh"
 
 #: src/fe-gtk/textgui.c:372
 msgid "Edit Events"
-msgstr "Përpuno Ç'ndodh"
+msgstr "Përpuno Ngjarjet"
 
 #: src/fe-gtk/textgui.c:423
 msgid "$ Number"
@@ -5989,7 +5882,7 @@ msgstr "%d op, gjithsej %d"
 #~ msgstr "Shpërfill Përdorues"
 
 #~ msgid "UnIgnore User"
-#~ msgstr "Çshpërfill Përdorues"
+#~ msgstr "Ãshpërfill Përdorues"
 
 #~ msgid "Info"
 #~ msgstr "Të dhëna"
@@ -6019,7 +5912,7 @@ msgstr "%d op, gjithsej %d"
 #~ msgstr "Rreth X-Chat-it"
 
 #~ msgid "Unban"
-#~ msgstr "Çndalo"
+#~ msgstr "Ãndalo"
 
 #~ msgid "I can't save an empty list!"
 #~ msgstr "S'ruaj dot një listë të zbrazët!"
