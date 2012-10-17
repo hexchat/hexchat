@@ -1,19 +1,20 @@
 # French translation of XChat.
 # This file is put in the public domain.
-# Benjamin Sonntag <benjamin@alternc.org>, 2007
+# Benjamin Sonntag <benjamin@sonntag.fr>, 2007, 2012.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: xchat 2.8.4\n"
 "Report-Msgid-Bugs-To: www.hexchat.org\n"
 "POT-Creation-Date: 2012-10-15 20:19+0200\n"
-"PO-Revision-Date: 2006-09-08 12:26:43+0200\n"
-"Last-Translator: Benjamin Sonntag <benjamin@alternc.org>\n"
-"Language-Team: French <traduc@traduc.org>\n"
+"PO-Revision-Date: 2012-10-16 19:43+0200\n"
+"Last-Translator: Benjamin Sonntag <benjamin@sonntag.fr>\n"
+"Language-Team: français <team@alternc.org>\n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Transfer-Encoding: 8bits\n"
+"Plural-Forms: nplurals=2; plural=(n!=1);\n"
 
 #: src/common/cfgfiles.c:782
 msgid "I'm busy"
@@ -121,12 +122,12 @@ msgstr "Vous n'êtes pas encore connecté. Essayez /server <hôte> [<port>]\n"
 #: src/common/outbound.c:281
 #, c-format
 msgid "Server %s already exists on network %s.\n"
-msgstr ""
+msgstr "Le serveur %s existe déjà dans le réseau %s.\n"
 
 #: src/common/outbound.c:287
 #, c-format
 msgid "Added server %s to network %s.\n"
-msgstr ""
+msgstr "Serveur %s ajouté au réseau %s.\n"
 
 #: src/common/outbound.c:373
 #, c-format
@@ -181,6 +182,8 @@ msgid ""
 "ADDSERVER <New Network> <newserver/6667>, adds a new network with a new "
 "server to the network list"
 msgstr ""
+"ADDSERVER <Nouveau réseau> <nouveauserveur/6667>, ajoute un nouveau réseau "
+"et un nouveau serveur à la liste des réseaux"
 
 #: src/common/outbound.c:3574
 msgid "ALLCHAN <cmd>, sends a command to all channels you're in"
@@ -189,11 +192,9 @@ msgstr ""
 "présent"
 
 #: src/common/outbound.c:3576
-#, fuzzy
 msgid "ALLCHANL <cmd>, sends a command to all channels on the current server"
 msgstr ""
-"ALLCHANL <cmd>, envoyer une commande à tous les canaux sur lesquels vous "
-"êtes présent"
+"ALLCHANL <cmd>, envoyer une commande à tous les canaux sur le serveur courant"
 
 #: src/common/outbound.c:3578
 msgid "ALLSERV <cmd>, sends a command to all servers you're in"
@@ -220,14 +221,15 @@ msgstr ""
 "expulsés (nécessite d'être opérateur [chanop])"
 
 #: src/common/outbound.c:3583
-#, fuzzy
 msgid "CHANOPT [-quiet] <variable> [<value>]"
-msgstr "SET [-quiet] <variable> [<valeur>] (-quiet = silencieusement)"
+msgstr "CHANOPT [-quiet] <variable> [<valeur>]"
 
 #: src/common/outbound.c:3584
 msgid ""
 "CHARSET [<encoding>], get or set the encoding used for the current connection"
 msgstr ""
+"CHARSET [<encodage>], retourne ou modifie le jeu de caractère utilisé pour "
+"la connexion en cours"
 
 #: src/common/outbound.c:3585
 msgid "CLEAR [ALL|HISTORY], Clears the current text window or command history"
@@ -361,9 +363,8 @@ msgstr ""
 "port 23 est utilisé par défaut"
 
 #: src/common/outbound.c:3637
-#, fuzzy
 msgid "GHOST <nick> [password], Kills a ghosted nickname"
-msgstr "GHOST <pseudo> <mot-de-passe>, tuer un pseudonyme fantôme"
+msgstr "GHOST <pseudo> [<mot-de-passe>], tuer un pseudonyme fantôme"
 
 #: src/common/outbound.c:3642
 msgid "HOP <nick>, gives chanhalf-op status to the nick (needs chanop)"
@@ -429,6 +430,12 @@ msgid ""
 "    Use -- (double hyphen) to end options when searching for, say, the "
 "string '-r'"
 msgstr ""
+"LASTLOG [-h] [-m] [-r] [--] <chaîne>, cherche la chaîne dans le tampon\n"
+"    Utiliser -h pour mettre en surbrillance les chaînes trouvées\n"
+"    Utiliser -m pour respecter la casse\n"
+"    Utiliser -r si la chaîne est une Expression Rationnelle\n"
+"    Utiliser -- (double tiret) pour terminer les options, par exemple si "
+"vous cherchez '-r'"
 
 #: src/common/outbound.c:3668
 msgid "LOAD [-e] <file>, loads a plugin or script"
@@ -563,7 +570,7 @@ msgstr ""
 
 #: src/common/outbound.c:3718
 msgid "SAVECONF, saves the current settings to disk"
-msgstr ""
+msgstr "SAVECONF, sauve les paramètres actuels sur le disque"
 
 #: src/common/outbound.c:3721
 msgid "SAY <text>, sends the text to the object in the current window"
@@ -583,13 +590,12 @@ msgid "SERVCHAN <host> <port> <channel>, connects and joins a channel"
 msgstr "SERVCHAN <hôte> <port> <canal>, se connecter et rejoindre un canal"
 
 #: src/common/outbound.c:3732
-#, fuzzy
 msgid ""
 "SERVER [-ssl] <host> [<port>] [<password>], connects to a server, the "
 "default port is 6667 for normal connections, and 6697 for ssl connections"
 msgstr ""
-"SERVER [-ssl] <hôte> [<port>] [<mot_de_passe>], se connecter à un serveur, "
-"le port par défaut est 6667 pour les connexions normales, et 9999 pour les "
+"SERVER [-ssl] <hôte> [<port>] [<mot de passe>], se connecter à un serveur, "
+"le port par défaut est 6667 pour les connexions normales, et 6697 pour les "
 "connexions ssl"
 
 #: src/common/outbound.c:3735
@@ -601,21 +607,23 @@ msgstr ""
 "par défaut est 6667"
 
 #: src/common/outbound.c:3737
-#, fuzzy
 msgid "SET [-e] [-off|-on] [-quiet] <variable> [<value>]"
-msgstr "SET [-e] [-or] [-quiet] <variable> [<valeur>]"
+msgstr "SET [-e] [-off|-on] [-quiet] <variable> [<valeur>]"
 
 #: src/common/outbound.c:3738
 msgid "SETCURSOR [-|+]<position>, reposition the cursor in the inputbox"
 msgstr ""
+"SETCURSOR [-|+]<position>, repositionne le curseur dans la zone de saisie"
 
 #: src/common/outbound.c:3739
 msgid "SETTAB <new name>, change a tab's name, tab_trunc limit still applies"
 msgstr ""
+"SETTAB <nouveau nom>, change le nom d'un onglet, la limite tab_trunc "
+"s'applique toutefois."
 
 #: src/common/outbound.c:3740
 msgid "SETTEXT <new text>, replace the text in the input box"
-msgstr ""
+msgstr "SETTEXT <nouveau texte>, remplace le texte dans la zone de saisie"
 
 #: src/common/outbound.c:3743
 msgid ""
@@ -1249,13 +1257,13 @@ msgid "**** BEGIN LOGGING AT %s\n"
 msgstr "**** DÉBUT DU JOURNAL À %s\n"
 
 #: src/common/text.c:702
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "* Can't open log file(s) for writing. Check the\n"
 "permissions on %s"
 msgstr ""
 "* Impossible d'ouvrir le(s) fichier(s) journaux en écriture.\n"
-"  Veuillez vérifier les permissions de %s/xchatlogs"
+"Veuillez vérifier les permissions de %s"
 
 #: src/common/text.c:1141
 msgid "Left message"
@@ -1586,7 +1594,7 @@ msgstr "Nom du serveur"
 
 #: src/common/text.c:1416
 msgid "Raw Numeric or Identifier"
-msgstr ""
+msgstr "Nombre ou identifiant"
 
 #: src/common/text.c:1426
 msgid "Nick of person who invited you"
@@ -1764,7 +1772,7 @@ msgstr "Émirats Arabes Unis"
 
 #: src/common/util.c:962
 msgid "Aviation-Related Fields"
-msgstr ""
+msgstr "Domaine de l'aviation"
 
 #: src/common/util.c:963
 msgid "Afghanistan"
@@ -1812,7 +1820,7 @@ msgstr "Samoa américaines"
 
 #: src/common/util.c:974
 msgid "Asia-Pacific Region"
-msgstr ""
+msgstr "Région Asie-Pacifique"
 
 #: src/common/util.c:975
 msgid "Austria"
@@ -1924,7 +1932,7 @@ msgstr "Canada"
 
 #: src/common/util.c:1002
 msgid "Catalan"
-msgstr ""
+msgstr "Catalan"
 
 #: src/common/util.c:1003
 msgid "Cocos Islands"
@@ -1976,7 +1984,7 @@ msgstr "Internic commercial"
 
 #: src/common/util.c:1015
 msgid "Cooperatives"
-msgstr ""
+msgstr "Coopératives"
 
 #: src/common/util.c:1016
 msgid "Costa Rica"
@@ -2007,9 +2015,8 @@ msgid "Czech Republic"
 msgstr "Tchèque, république"
 
 #: src/common/util.c:1023
-#, fuzzy
 msgid "East Germany"
-msgstr "Allemagne"
+msgstr "Allemagne de l'Est"
 
 #: src/common/util.c:1024
 msgid "Germany"
@@ -2261,7 +2268,7 @@ msgstr "Jordanie"
 
 #: src/common/util.c:1086
 msgid "Company Jobs"
-msgstr ""
+msgstr "Relatif au travail"
 
 #: src/common/util.c:1087
 msgid "Japan"
@@ -2368,9 +2375,8 @@ msgid "Moldova"
 msgstr "Moldova, république de"
 
 #: src/common/util.c:1113
-#, fuzzy
 msgid "Montenegro"
-msgstr "Serbie Montenegro"
+msgstr "Montenegro"
 
 #: src/common/util.c:1114
 msgid "United States Medical"
@@ -2410,7 +2416,7 @@ msgstr "Macao"
 
 #: src/common/util.c:1123
 msgid "Mobile Devices"
-msgstr ""
+msgstr "Périphériques mobiles"
 
 #: src/common/util.c:1124
 msgid "Northern Mariana Islands"
@@ -2438,7 +2444,7 @@ msgstr "Maurice"
 
 #: src/common/util.c:1130
 msgid "Museums"
-msgstr ""
+msgstr "Musées"
 
 #: src/common/util.c:1131
 msgid "Maldives"
@@ -2466,7 +2472,7 @@ msgstr "Namibie"
 
 #: src/common/util.c:1137
 msgid "Individual's Names"
-msgstr ""
+msgstr "Noms propres"
 
 #: src/common/util.c:1138
 msgid "New Caledonia"
@@ -2566,7 +2572,7 @@ msgstr "Porto Rico"
 
 #: src/common/util.c:1162
 msgid "Professions"
-msgstr ""
+msgstr "Professions"
 
 #: src/common/util.c:1163
 msgid "Palestinian Territory"
@@ -2602,7 +2608,7 @@ msgstr "Ancien ARPAnet"
 
 #: src/common/util.c:1171
 msgid "Serbia"
-msgstr ""
+msgstr "Serbie"
 
 #: src/common/util.c:1172
 msgid "Russian Federation"
@@ -2673,9 +2679,8 @@ msgid "Suriname"
 msgstr "Suriname"
 
 #: src/common/util.c:1189
-#, fuzzy
 msgid "South Sudan"
-msgstr "Corée, république de"
+msgstr "Sud-Soudan"
 
 #: src/common/util.c:1190
 msgid "Sao Tome and Principe"
@@ -2707,7 +2712,7 @@ msgstr "Tchad"
 
 #: src/common/util.c:1197
 msgid "Internet Communication Services"
-msgstr ""
+msgstr "Services de communication téléphonique"
 
 #: src/common/util.c:1198
 msgid "French Southern Territories"
@@ -2751,7 +2756,7 @@ msgstr "Turquie"
 
 #: src/common/util.c:1209
 msgid "Travel and Tourism"
-msgstr ""
+msgstr "Voyage et tourisme"
 
 #: src/common/util.c:1210
 msgid "Trinidad and Tobago"
@@ -2831,7 +2836,7 @@ msgstr "Samoa"
 
 #: src/common/util.c:1229
 msgid "Adult Entertainment"
-msgstr ""
+msgstr "Divertissements pour adultes"
 
 #: src/common/util.c:1230
 msgid "Yemen"
@@ -2862,29 +2867,24 @@ msgid "Unknown"
 msgstr "Inconnu"
 
 #: src/common/xchat.c:740
-#, fuzzy
 msgid "_Open Dialog Window"
-msgstr "Ouvrir la fenêtre de dialogue"
+msgstr "_Ouvrir la fenêtre de dialogue"
 
 #: src/common/xchat.c:741
-#, fuzzy
 msgid "_Send a File"
-msgstr "Envoyer un fichier"
+msgstr "_Envoyer un fichier"
 
 #: src/common/xchat.c:742
-#, fuzzy
 msgid "_User Info (WhoIs)"
-msgstr "Informations de l'utilisateur (WHOIS)"
+msgstr "Informations de l'_utilisateur (WhoIs)"
 
 #: src/common/xchat.c:743
-#, fuzzy
 msgid "_Add to Friends List"
-msgstr "XChat : liste des fichiers envoyés"
+msgstr "_Ajouter à la liste d'amis"
 
 #: src/common/xchat.c:744
-#, fuzzy
 msgid "O_perator Actions"
-msgstr "Actions de l'opérateur"
+msgstr "Actions de l'o_pérateur"
 
 #: src/common/xchat.c:746
 msgid "Give Ops"
@@ -3026,9 +3026,8 @@ msgid "Failed to acquire %s: %s\n"
 msgstr "Échec de l'acquisition de %s : %s\n"
 
 #: src/fe-gtk/about.c:101
-#, fuzzy
 msgid "About "
-msgstr "À _propos"
+msgstr "À propos "
 
 #: src/fe-gtk/about.c:134
 msgid "A multiplatform IRC Client"
@@ -3353,9 +3352,8 @@ msgid "Execute command:"
 msgstr "Exécuter la commande :"
 
 #: src/fe-gtk/fe-gtk.c:140
-#, fuzzy
 msgid "Open URL or execute command in an existing XChat"
-msgstr "Ouvrir l'URL dans un XChat existant"
+msgstr "Ouvrir l'URL ou exécuter la commande dans un XChat existant"
 
 #: src/fe-gtk/fe-gtk.c:142
 msgid "Begin minimized. Level 0=Normal 1=Iconified 2=Tray"
@@ -3752,9 +3750,8 @@ msgstr ""
 "il tous les fermer ?"
 
 #: src/fe-gtk/maingui.c:1244
-#, fuzzy
 msgid "Quit HexChat?"
-msgstr "Quitter XChat ?"
+msgstr "Quitter HeXChat ?"
 
 #: src/fe-gtk/maingui.c:1265
 msgid "Don't ask next time."
@@ -3802,47 +3799,40 @@ msgid "Colors 8-15"
 msgstr "Couleurs 8-15"
 
 #: src/fe-gtk/maingui.c:1573
-#, fuzzy
 msgid "_Settings"
-msgstr "_Paramètres"
+msgstr "Paramètre_s"
 
 #: src/fe-gtk/maingui.c:1575
 msgid "_Log to Disk"
-msgstr ""
+msgstr "Journa_liser sur le disque"
 
 #: src/fe-gtk/maingui.c:1576
 msgid "_Reload Scrollback"
-msgstr ""
+msgstr "_Recharger le tampon"
 
 #: src/fe-gtk/maingui.c:1578
-#, fuzzy
 msgid "_Hide Join/Part Messages"
-msgstr "Cacher les messages join/part"
+msgstr "Cac_her les messages entrée/sortie"
 
 #: src/fe-gtk/maingui.c:1586
-#, fuzzy
 msgid "_Extra Alerts"
-msgstr "Alertes"
+msgstr "Al_ertes supplémentaires"
 
 #: src/fe-gtk/maingui.c:1588
-#, fuzzy
 msgid "Beep on _Message"
-msgstr "Biper sur les messages"
+msgstr "Biper sur les _messages"
 
 #: src/fe-gtk/maingui.c:1592
-#, fuzzy
 msgid "Blink Tray _Icon"
-msgstr "Clignoter l'icone de barre d'état"
+msgstr "Clignoter l'_icone de barre d'état"
 
 #: src/fe-gtk/maingui.c:1595
-#, fuzzy
 msgid "Blink Task _Bar"
-msgstr "Quand faire clignoter la barre d'état :"
+msgstr "Faire clignoter la _barre d'état"
 
 #: src/fe-gtk/maingui.c:1633 src/fe-gtk/menu.c:2205
-#, fuzzy
 msgid "_Detach"
-msgstr "_Détacher l'onglet"
+msgstr "_Détacher"
 
 #: src/fe-gtk/maingui.c:1635 src/fe-gtk/menu.c:2206 src/fe-gtk/menu.c:2211
 #: src/fe-gtk/plugingui.c:257 src/fe-gtk/search.c:234
@@ -3946,7 +3936,7 @@ msgstr "Message d'absence :"
 #: src/fe-gtk/menu.c:731
 #, c-format
 msgid "%d nicks selected."
-msgstr ""
+msgstr "%d pseudonymes sélectionnés."
 
 #: src/fe-gtk/menu.c:856
 msgid ""
@@ -3979,11 +3969,11 @@ msgstr "Cycler canal"
 
 #: src/fe-gtk/menu.c:1050
 msgid "_Remove from Favorites"
-msgstr ""
+msgstr "Enleve_r des favoris"
 
 #: src/fe-gtk/menu.c:1052
 msgid "_Add to Favorites"
-msgstr ""
+msgstr "_Ajouter aux favoris"
 
 #: src/fe-gtk/menu.c:1071
 msgid ": User menu"
@@ -4170,9 +4160,8 @@ msgid ": CTCP Replies"
 msgstr "XChat : réponses CTCP"
 
 #: src/fe-gtk/menu.c:1623
-#, fuzzy
 msgid "He_xChat"
-msgstr "_XChat"
+msgstr "He_xChat"
 
 #: src/fe-gtk/menu.c:1624
 msgid "Network Li_st..."
@@ -4267,14 +4256,12 @@ msgid "_Reconnect"
 msgstr "Se _reconnecter"
 
 #: src/fe-gtk/menu.c:1672
-#, fuzzy
 msgid "Join a Channel..."
 msgstr "Rejoindre un canal..."
 
 #: src/fe-gtk/menu.c:1673
-#, fuzzy
 msgid "List of Channels..."
-msgstr "Rejoindre un canal..."
+msgstr "Liste des canaux..."
 
 #: src/fe-gtk/menu.c:1676
 msgid "Marked Away"
@@ -4333,9 +4320,8 @@ msgid "Userlist Popup..."
 msgstr "Menu contextuel de la liste des utilisateurs..."
 
 #: src/fe-gtk/menu.c:1696
-#, fuzzy
 msgid "Save Settings to Disk"
-msgstr "Enregistrer la liste dans un fichier"
+msgstr "Enregistrer les paramètres sur le disque"
 
 #: src/fe-gtk/menu.c:1699
 msgid "_Window"
@@ -4358,9 +4344,8 @@ msgid "File Transfers..."
 msgstr "Transferts de fichiers..."
 
 #: src/fe-gtk/menu.c:1704
-#, fuzzy
 msgid "Friends List..."
-msgstr "Liste de bannissement..."
+msgstr "Liste d'amis..."
 
 #: src/fe-gtk/menu.c:1705
 msgid "Ignore List..."
@@ -4383,9 +4368,8 @@ msgid "Reset Marker Line"
 msgstr "Repositionner la ligne de repérage"
 
 #: src/fe-gtk/menu.c:1711
-#, fuzzy
 msgid "_Copy Selection"
-msgstr "Copier le lien sélectionné"
+msgstr "_Copier la sélection"
 
 #: src/fe-gtk/menu.c:1712
 msgid "C_lear Text"
@@ -4396,27 +4380,24 @@ msgid "Save Text..."
 msgstr "Enregistrer le texte..."
 
 #: src/fe-gtk/menu.c:1715
-#, fuzzy
 msgid "Search"
-msgstr "_Recherche"
+msgstr "Recherche"
 
 #: src/fe-gtk/menu.c:1716
 msgid "Search Text..."
 msgstr "Rechercher du texte..."
 
 #: src/fe-gtk/menu.c:1717
-#, fuzzy
 msgid "Reset Search"
-msgstr "XChat : chercher"
+msgstr "Réinitialiser la recherche"
 
 #: src/fe-gtk/menu.c:1718
-#, fuzzy
 msgid "Search Next"
-msgstr "Rechercher du texte..."
+msgstr "Chercher le suivant"
 
 #: src/fe-gtk/menu.c:1719
 msgid "Search Previous"
-msgstr ""
+msgstr "Chercher le précédent"
 
 #: src/fe-gtk/menu.c:1722 src/fe-gtk/menu.c:2197
 msgid "_Help"
@@ -4428,16 +4409,15 @@ msgstr "_Contenu"
 
 #: src/fe-gtk/menu.c:1726
 msgid "Check for updates"
-msgstr ""
+msgstr "Vérifier les mises à jour"
 
 #: src/fe-gtk/menu.c:1728
 msgid "_About"
 msgstr "À _propos"
 
 #: src/fe-gtk/menu.c:2210
-#, fuzzy
 msgid "_Attach"
-msgstr "_Attacher la fenêtre"
+msgstr "_Attacher"
 
 #: src/fe-gtk/notifygui.c:139
 msgid "Last Seen"
@@ -4473,9 +4453,8 @@ msgid "Comma separated list of networks is accepted."
 msgstr "Entrez les réseaux séparés par une virgule."
 
 #: src/fe-gtk/notifygui.c:414
-#, fuzzy
 msgid ": Friends List"
-msgstr "XChat : liste des fichiers envoyés"
+msgstr ": Liste d'amis"
 
 #: src/fe-gtk/notifygui.c:435
 msgid "Open Dialog"
@@ -4487,14 +4466,12 @@ msgid ": Connected to %u networks and %u channels"
 msgstr "XChat : Vous êtes connecté à %u réseaux et %u canaux"
 
 #: src/fe-gtk/plugin-tray.c:516
-#, fuzzy
 msgid "_Restore Window"
-msgstr "_Fermer la fenêtre"
+msgstr "_Restaurer la fenêtre"
 
 #: src/fe-gtk/plugin-tray.c:518
-#, fuzzy
 msgid "_Hide Window"
-msgstr "_Fenêtre"
+msgstr "Cac_her la Fenêtre"
 
 #: src/fe-gtk/plugin-tray.c:522
 msgid "_Blink on"
@@ -4514,16 +4491,15 @@ msgstr "Messages en surbrillance"
 
 #: src/fe-gtk/plugin-tray.c:528
 msgid "_Change status"
-msgstr ""
+msgstr "_Changer l'état"
 
 #: src/fe-gtk/plugin-tray.c:530
-#, fuzzy
 msgid "_Away"
-msgstr "Absent"
+msgstr "_Absent"
 
 #: src/fe-gtk/plugin-tray.c:533
 msgid "_Back"
-msgstr ""
+msgstr "_Retour"
 
 #: src/fe-gtk/plugin-tray.c:588 src/fe-gtk/plugin-tray.c:596
 #, c-format
@@ -4626,18 +4602,16 @@ msgid "Search _backwards"
 msgstr "Rechercher vers l'a_rrière"
 
 #: src/fe-gtk/search.c:213
-#, fuzzy
 msgid "_Highlight all"
-msgstr "Surbrillance :"
+msgstr "Mettre tout en _Surbrillance"
 
 #: src/fe-gtk/search.c:221
-#, fuzzy
 msgid "R_egular expression"
-msgstr "Expression rationnelle"
+msgstr "_Expression rationnelle"
 
 #: src/fe-gtk/search.c:237
 msgid "Close and _Reset"
-msgstr ""
+msgstr "Fermer et _réinitialiser"
 
 #: src/fe-gtk/servlistgui.c:172 src/fe-gtk/servlistgui.c:281
 msgid "New Network"
@@ -4649,23 +4623,23 @@ msgid "Really remove network \"%s\" and all its servers?"
 msgstr "Voulez-vous vraiment supprimer le réseau « %s » et tous ses serveurs ?"
 
 #: src/fe-gtk/servlistgui.c:735
-#, fuzzy
 msgid "#channel"
-msgstr "canal"
+msgstr "#canal"
 
 #: src/fe-gtk/servlistgui.c:845
 msgid ": Favorite Channels (Auto-Join List)"
-msgstr ""
+msgstr ": Canaux favoris (Liste automatique)"
 
 #: src/fe-gtk/servlistgui.c:858
 #, c-format
 msgid "These channels will be joined whenever you connect to %s."
 msgstr ""
+"Vous serez automatiquement connectés à ces canaux quand vous vous "
+"connecterez à %s."
 
 #: src/fe-gtk/servlistgui.c:901
-#, fuzzy
 msgid "Key (Password)"
-msgstr "Mot de passe :"
+msgstr "Clé (Mot de passe)"
 
 #: src/fe-gtk/servlistgui.c:932 src/fe-gtk/servlistgui.c:1572
 msgid "_Edit"
@@ -4674,12 +4648,12 @@ msgstr "_Éditer"
 #: src/fe-gtk/servlistgui.c:968
 #, c-format
 msgid "%s has been removed."
-msgstr ""
+msgstr "%s a été supprimé."
 
 #: src/fe-gtk/servlistgui.c:988
 #, c-format
 msgid "%s has been added."
-msgstr ""
+msgstr "%s a été ajouté."
 
 #: src/fe-gtk/servlistgui.c:1012
 msgid "User name and Real name cannot be left blank."
@@ -4688,7 +4662,7 @@ msgstr "Le nom d'utilisateur et le nom réel ne peuvent être laissés blancs."
 #: src/fe-gtk/servlistgui.c:1403
 #, c-format
 msgid ": Edit %s"
-msgstr "XChat : éditer %s"
+msgstr ": éditer %s"
 
 #: src/fe-gtk/servlistgui.c:1422
 #, c-format
@@ -4736,9 +4710,8 @@ msgid "Auto connect to this network at startup"
 msgstr "Connexion automatique à ce réseau au démarrage"
 
 #: src/fe-gtk/servlistgui.c:1468
-#, fuzzy
 msgid "Bypass proxy server"
-msgstr "Utiliser un serveur mandataire (proxy)"
+msgstr "Ne pas utiliser le serveur mandataire"
 
 #: src/fe-gtk/servlistgui.c:1470
 msgid "Use SSL for all the servers on this network"
@@ -4749,9 +4722,8 @@ msgid "Accept invalid SSL certificate"
 msgstr "Accepter un certificat SSL non valable"
 
 #: src/fe-gtk/servlistgui.c:1481
-#, fuzzy
 msgid "_Favorite channels:"
-msgstr "Quitter le canal :"
+msgstr "Canaux _favoris :"
 
 #: src/fe-gtk/servlistgui.c:1483
 msgid "Channels to join, separated by commas, but not spaces!"
@@ -4817,9 +4789,8 @@ msgid "Skip network list on startup"
 msgstr "Sauter la liste des réseaux au démarrage"
 
 #: src/fe-gtk/servlistgui.c:1810
-#, fuzzy
 msgid "Show favorites only"
-msgstr "Seuls les canaux "
+msgstr "Montrer uniquement les favoris"
 
 #: src/fe-gtk/servlistgui.c:1840
 msgid "_Edit..."
@@ -4839,11 +4810,11 @@ msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1856
 msgid "_Favor"
-msgstr ""
+msgstr "_Favori"
 
 #: src/fe-gtk/servlistgui.c:1857
 msgid "Mark or unmark this network as a favorite."
-msgstr ""
+msgstr "Mettre ou enlever ce réseau des favoris."
 
 #: src/fe-gtk/servlistgui.c:1881
 msgid "C_onnect"
@@ -4855,7 +4826,7 @@ msgstr "Apparence de la boîte de texte"
 
 #: src/fe-gtk/setup.c:107
 msgid "Main font:"
-msgstr ""
+msgstr "Police principale :"
 
 #: src/fe-gtk/setup.c:109
 msgid "Font:"
@@ -4926,12 +4897,10 @@ msgid "Time stamp format:"
 msgstr "Format de l'horodatage :"
 
 #: src/fe-gtk/setup.c:129 src/fe-gtk/setup.c:491
-#, fuzzy
 msgid "See the strftime MSDN article for details."
-msgstr "Voir la page de manuel de strftime pour plus de détails."
+msgstr "Voir l'article MSDN de strftime pour plus de détails."
 
 #: src/fe-gtk/setup.c:131 src/fe-gtk/setup.c:493
-#, fuzzy
 msgid "See the strftime manpage for details."
 msgstr "Voir la page de manuel de strftime pour plus de détails."
 
@@ -4944,7 +4913,6 @@ msgid "Last-spoke order"
 msgstr "Le dernier ayant parlé d'abord"
 
 #: src/fe-gtk/setup.c:146
-#, fuzzy
 msgid "Input Box"
 msgstr "Boîte de saisie"
 
@@ -4958,18 +4926,19 @@ msgstr "Vérification orthographique"
 
 #: src/fe-gtk/setup.c:150
 msgid "Dictionaries to use:"
-msgstr ""
+msgstr "Dictionnaire à utiliser : "
 
 #: src/fe-gtk/setup.c:152
 msgid ""
 "Use language codes (as in \"share\\myspell\\dicts\").\n"
 "Separate multiple entries with commas."
 msgstr ""
+"Entrez des codes de langue (comme dans \"share/myspell/dicts\").\n"
+"Séparer les par une virgule."
 
 #: src/fe-gtk/setup.c:154
-#, fuzzy
 msgid "Use language codes. Separate multiple entries with commas."
-msgstr "Séparer les mots avec des virgules."
+msgstr "Entrez des codes de langue Séparer les par une virgule."
 
 #: src/fe-gtk/setup.c:158
 msgid "Nick Completion"
@@ -5000,7 +4969,7 @@ msgstr "Interpréter %nnn comme une valeur ASCII"
 
 #: src/fe-gtk/setup.c:167
 msgid "Interpret %C, %B as Color, Bold etc"
-msgstr "Interpréter %C, %B comme Color, Bold, etc."
+msgstr "Interpréter %C, %B comme Couleur, Gras, etc."
 
 #: src/fe-gtk/setup.c:184
 msgid "A-Z, Ops first"
@@ -5048,7 +5017,7 @@ msgstr "Cachés"
 
 #: src/fe-gtk/setup.c:215
 msgid "User List"
-msgstr "Liste Utilisateur"
+msgstr "Liste d'Utilisateurs"
 
 #: src/fe-gtk/setup.c:216
 msgid "Show hostnames in user list"
@@ -5063,7 +5032,6 @@ msgid "Show user list at:"
 msgstr "Position de la liste des utilisateurs :"
 
 #: src/fe-gtk/setup.c:222
-#, fuzzy
 msgid "Away Tracking"
 msgstr "Suivi de l'absence"
 
@@ -5123,12 +5091,11 @@ msgstr "Trier les onglets par ordre alphabétique"
 
 #: src/fe-gtk/setup.c:269
 msgid "Show icons in the channel tree"
-msgstr ""
+msgstr "Montrer des icones dans l'arbre des canaux"
 
 #: src/fe-gtk/setup.c:270
-#, fuzzy
 msgid "Smaller text"
-msgstr "Petits onglets"
+msgstr "Texte plus petit"
 
 #: src/fe-gtk/setup.c:272
 msgid "Focus new tabs:"
@@ -5167,14 +5134,12 @@ msgid "Open DCC, Ignore, Notify etc, in tabs or windows?"
 msgstr "Faut-il DCC, Ignore, Notify, etc., dans des onglets ou des fenêtres ?"
 
 #: src/fe-gtk/setup.c:287
-#, fuzzy
 msgid "Messages"
-msgstr "Message"
+msgstr "Messages"
 
 #: src/fe-gtk/setup.c:288
-#, fuzzy
 msgid "Scrollback"
-msgstr "Lignes de défilement :"
+msgstr "Tampon"
 
 #: src/fe-gtk/setup.c:296
 msgid "No"
@@ -5206,7 +5171,7 @@ msgstr "Déplacer les fichiers terminés vers :"
 
 #: src/fe-gtk/setup.c:308
 msgid "Save nick name in filenames"
-msgstr "Enregistrer le pseudonyme dans des noms de fichiers"
+msgstr "Enregistrer le pseudonyme dans les noms de fichiers"
 
 #: src/fe-gtk/setup.c:310
 msgid "Network Settings"
@@ -5299,7 +5264,7 @@ msgstr "Activer l'icone de barre d'état"
 
 #: src/fe-gtk/setup.c:365 src/fe-gtk/setup.c:386
 msgid "Omit alerts when marked as being away"
-msgstr ""
+msgstr "Passer les alertes quand vous êtes absent"
 
 #: src/fe-gtk/setup.c:367 src/fe-gtk/setup.c:388
 msgid "Highlighted Messages"
@@ -5324,11 +5289,12 @@ msgid "Nick names to always highlight:"
 msgstr "Pseudos à toujours mettre en surbrillance :"
 
 #: src/fe-gtk/setup.c:373 src/fe-gtk/setup.c:394
-#, fuzzy
 msgid ""
 "Separate multiple words with commas.\n"
 "Wildcards are accepted."
-msgstr "Séparer les mots avec des virgules."
+msgstr ""
+"Séparer les mots avec une virgule.\n"
+"Les jokers sont acceptés."
 
 #: src/fe-gtk/setup.c:401
 msgid "Default Messages"
@@ -5382,7 +5348,7 @@ msgstr "Paramètres avancés"
 
 #: src/fe-gtk/setup.c:419 src/fe-gtk/setup.c:449
 msgid "Alternative fonts:"
-msgstr ""
+msgstr "Police alternative :"
 
 #: src/fe-gtk/setup.c:421 src/fe-gtk/setup.c:450
 msgid "Auto reconnect delay:"
@@ -5428,42 +5394,50 @@ msgstr "Fenêtre de bavardage"
 
 #: src/fe-gtk/setup.c:429 src/fe-gtk/setup.c:459
 msgid "Auto Copy Behavior"
-msgstr ""
+msgstr "Comportement de la copie automatique"
 
 #: src/fe-gtk/setup.c:430 src/fe-gtk/setup.c:460
 msgid "Automatically copy selected text"
-msgstr ""
+msgstr "Copie automatiquement le texte sélectionné"
 
 #: src/fe-gtk/setup.c:431 src/fe-gtk/setup.c:461
 msgid ""
 "Copy selected text to clipboard when left mouse button is released. "
 "Otherwise, CONTROL-SHIFT-C will copy the selected text to the clipboard."
 msgstr ""
+"Copie automatiquement le texte sélectionné dans le presse-papier quand le "
+"bouton gauche de la souris est relaché. Sinon, Control-Shift-C copiera le "
+"texte sélectionné dans le presse-papier."
 
 #: src/fe-gtk/setup.c:434 src/fe-gtk/setup.c:464
-#, fuzzy
 msgid "Automatically include time stamps"
-msgstr "Enlever la marque d'absence automatiquement"
+msgstr "Ajouter l'horodatage automatiquement"
 
 #: src/fe-gtk/setup.c:435 src/fe-gtk/setup.c:465
 msgid ""
 "Automatically include time stamps in copied lines of text. Otherwise, "
 "include time stamps if the SHIFT key is held down while selecting."
 msgstr ""
+"Ajouter l'horodatage automatiquement dans les lignes de texte copiées. "
+"Sinon, l'horodatage sera ajouté uniquement si la touche Shift est appuyée "
+"lors de la sélection."
 
 #: src/fe-gtk/setup.c:437 src/fe-gtk/setup.c:467
 msgid "Automatically include color information"
-msgstr ""
+msgstr "Ajouter automatiquement les informations de couleur"
 
 #: src/fe-gtk/setup.c:438 src/fe-gtk/setup.c:468
 msgid ""
 "Automatically include color information in copied lines of text.  Otherwise, "
 "include color information if the CONTROL key is held down while selecting."
 msgstr ""
+"Ajouter automatiquement les informations de couleurs dans les lignes de "
+"texte copiées. Sinon, la couleur sera ajouté uniquement si la touche Control "
+"est appuyée lors de la sélection."
 
 #: src/fe-gtk/setup.c:454
 msgid "Allow only one instance of HexChat to run"
-msgstr ""
+msgstr "Autoriser une seule instance de HexChat à la fois"
 
 #: src/fe-gtk/setup.c:478 src/fe-gtk/setup.c:1832
 msgid "Logging"
@@ -5471,14 +5445,13 @@ msgstr "Journalisation"
 
 #: src/fe-gtk/setup.c:479
 msgid "Display scrollback from previous session"
-msgstr ""
+msgstr "Afficher le tampon de la session précédente"
 
 #: src/fe-gtk/setup.c:481
 msgid "Strip colors when displaying scrollback"
-msgstr ""
+msgstr "Enlever les couleurs lors de l'affichage du tampon"
 
 #: src/fe-gtk/setup.c:483
-#, fuzzy
 msgid "Enable logging of conversations to disk"
 msgstr "Activer l'enregistrement des conversations"
 
@@ -5501,21 +5474,19 @@ msgstr "Format de l'horodatage du journal :"
 
 #: src/fe-gtk/setup.c:496
 msgid "URLs"
-msgstr ""
+msgstr "URLs"
 
 #: src/fe-gtk/setup.c:497
-#, fuzzy
 msgid "Enable logging of URLs to disk"
-msgstr "Activer l'enregistrement des conversations"
+msgstr "Activer l'enregistrement des URLs "
 
 #: src/fe-gtk/setup.c:498
-#, fuzzy
 msgid "Enable URL grabber"
-msgstr "XChat : récupération d'URL"
+msgstr "Activer la récupération d'URL"
 
 #: src/fe-gtk/setup.c:499
 msgid "Maximum number of URLs to grab:"
-msgstr ""
+msgstr "Nombre maximum d'URL à récupérer : "
 
 #: src/fe-gtk/setup.c:506
 msgid "(Disabled)"
@@ -5543,7 +5514,7 @@ msgstr "Proxy MS (ISA)"
 
 #: src/fe-gtk/setup.c:515
 msgid "Auto"
-msgstr ""
+msgstr "Auto"
 
 #: src/fe-gtk/setup.c:522
 msgid "All Connections"
@@ -5690,14 +5661,12 @@ msgid "Highlight:"
 msgstr "Surbrillance :"
 
 #: src/fe-gtk/setup.c:1437
-#, fuzzy
 msgid "Spell checker:"
-msgstr "Vérification orthographique"
+msgstr "Vérification orthographique : "
 
 #: src/fe-gtk/setup.c:1440
-#, fuzzy
 msgid "Color Stripping"
-msgstr "Chaîne DCC"
+msgstr "Enlever les couleurs"
 
 #: src/fe-gtk/setup.c:1546 src/fe-gtk/textgui.c:389
 msgid "Event"
@@ -5803,6 +5772,7 @@ msgstr ""
 #: src/fe-gtk/setup.c:2188
 msgid "Invalid time stamp format! See the strftime MSDN article for details."
 msgstr ""
+"Format d'heure invalide ! Lisez l'article MSDN sur strftime pour les détails."
 
 #: src/fe-gtk/setup.c:2195
 msgid "Some settings were changed that require a restart to take full effect."
