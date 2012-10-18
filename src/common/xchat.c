@@ -1056,45 +1056,48 @@ main (int argc, char *argv[])
 			strcat (hexchat_lang, "nb");
 			break;
 		case 30:
-			strcat (hexchat_lang, "pl");
+			strcat (hexchat_lang, "no");
 			break;
 		case 31:
-			strcat (hexchat_lang, "pt");
+			strcat (hexchat_lang, "pl");
 			break;
 		case 32:
-			strcat (hexchat_lang, "pt_BR");
+			strcat (hexchat_lang, "pt");
 			break;
 		case 33:
-			strcat (hexchat_lang, "pa");
+			strcat (hexchat_lang, "pt_BR");
 			break;
 		case 34:
-			strcat (hexchat_lang, "ru");
+			strcat (hexchat_lang, "pa");
 			break;
 		case 35:
-			strcat (hexchat_lang, "sr");
+			strcat (hexchat_lang, "ru");
 			break;
 		case 36:
-			strcat (hexchat_lang, "sk");
+			strcat (hexchat_lang, "sr");
 			break;
 		case 37:
-			strcat (hexchat_lang, "sl");
+			strcat (hexchat_lang, "sk");
 			break;
 		case 38:
-			strcat (hexchat_lang, "es");
+			strcat (hexchat_lang, "sl");
 			break;
 		case 39:
-			strcat (hexchat_lang, "sv");
+			strcat (hexchat_lang, "es");
 			break;
 		case 40:
-			strcat (hexchat_lang, "th");
+			strcat (hexchat_lang, "sv");
 			break;
 		case 41:
-			strcat (hexchat_lang, "uk");
+			strcat (hexchat_lang, "th");
 			break;
 		case 42:
-			strcat (hexchat_lang, "vi");
+			strcat (hexchat_lang, "uk");
 			break;
 		case 43:
+			strcat (hexchat_lang, "vi");
+			break;
+		case 44:
 			strcat (hexchat_lang, "wa");
 			break;
 		default:
