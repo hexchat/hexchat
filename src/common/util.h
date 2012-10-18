@@ -60,5 +60,6 @@ void safe_strcpy (char *dest, const char *src, int bytes_left);
 void canonalize_key (char *key);
 int portable_mode ();
 int hextray_mode ();
+GSList *get_subdirs (const char *path);
 
 #endif
