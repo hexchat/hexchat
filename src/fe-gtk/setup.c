@@ -99,6 +99,7 @@ typedef struct
 	int extra;
 } setting;
 
+#ifdef WIN32
 static const char *const langsmenu[] =
 {
 	N_("Albanian"),
@@ -147,6 +148,7 @@ static const char *const langsmenu[] =
 	N_("Walloon"),
 	NULL
 };
+#endif
 
 static const setting appearance_settings[] =
 {
