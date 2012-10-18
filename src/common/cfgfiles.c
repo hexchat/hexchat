@@ -451,6 +451,9 @@ const struct prefs vars[] = {
 	{"gui_input_style", P_OFFINT (style_inputbox), TYPE_BOOL},
 	{"gui_join_dialog", P_OFFINT (gui_join_dialog), TYPE_BOOL},
 	{"gui_lagometer", P_OFFINT (lagometer), TYPE_INT},
+#ifdef WIN32
+	{"gui_lang", P_OFFSET (gui_lang), TYPE_STR},
+#endif
 	{"gui_mode_buttons", P_OFFINT (chanmodebuttons), TYPE_BOOL},
 #ifdef WIN32
 	{"gui_one_instance", P_OFFINT (gui_one_instance), TYPE_BOOL},
@@ -746,6 +749,7 @@ load_config (void)
 	prefs.timestamp = 1;
 #ifdef WIN32
 	prefs.identd = 1;
+	strcpy (prefs.gui_lang, g_getenv ("LC_ALL") ? g_getenv ("LC_ALL") : "en_US");
 #endif
 	strcpy (prefs.spell_langs, g_getenv ("LC_ALL") ? g_getenv ("LC_ALL") : "en_US");
 	strcpy (prefs.stamp_format, "[%H:%M:%S] ");

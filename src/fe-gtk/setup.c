@@ -100,9 +100,13 @@ typedef struct
 } setting;
 
 
-static const setting textbox_settings[] =
+static const setting appearance_settings[] =
 {
-	{ST_HEADER,	N_("Text Box Appearance"),0,0,0},
+#ifdef WIN32
+	{ST_HEADER,	N_("Localization"),0,0,0},
+	{ST_ENTRY,  N_("HexChat language:"), P_OFFSETNL(gui_lang), 0, 0, sizeof prefs.gui_lang},
+#endif
+	{ST_HEADER,	N_("Text Box"),0,0,0},
 #ifdef WIN32
 	{ST_EFONT,  N_("Main font:"), P_OFFSETNL(font_main), 0, 0, sizeof prefs.font_main},
 #else
@@ -1820,7 +1824,7 @@ setup_add_page (const char *title, GtkWidget *book, GtkWidget *tab)
 static const char *const cata[] =
 {
 	N_("Interface"),
-		N_("Text box"),
+		N_("Appearance"),
 		N_("Input box"),
 		N_("User list"),
 		N_("Channel switcher"),
@@ -1847,7 +1851,7 @@ setup_create_pages (GtkWidget *box)
 
 	book = gtk_notebook_new ();
 
-	setup_add_page (cata[1], book, setup_create_page (textbox_settings));
+	setup_add_page (cata[1], book, setup_create_page (appearance_settings));
 	setup_add_page (cata[2], book, setup_create_page (inputbox_settings));
 	setup_add_page (cata[3], book, setup_create_page (userlist_settings));
 	setup_add_page (cata[4], book, setup_create_page (tabs_settings));
@@ -2130,6 +2134,10 @@ setup_apply (struct xchatprefs *pr)
 
 #define DIFF(a) (pr->a != prefs.a)
 
+#ifdef WIN32
+	if (DIFF (gui_lang))
+		noapply = TRUE;
+#endif
 	if (DIFF (paned_userlist))
 		noapply = TRUE;
 	if (DIFF (lagometer))

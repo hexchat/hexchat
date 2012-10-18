@@ -951,6 +951,7 @@ main (int argc, char *argv[])
 	int ret;
 
 #ifdef WIN32
+	char hexchat_lang[13];	/* LC_ALL= plus 5 chars of gui_lang and trailing \0 */
 	HANDLE mutex;
 #endif
 
@@ -971,6 +972,10 @@ main (int argc, char *argv[])
 	load_config ();
 
 #ifdef WIN32
+	/* we MUST do this after load_config () otherwise it would fail */
+	snprintf (hexchat_lang, 12, "LC_ALL=%s", prefs.gui_lang);
+	putenv (hexchat_lang);
+
 	if (prefs.gui_one_instance && !portable_mode ())
 	{
 		DWORD error;

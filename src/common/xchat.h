@@ -117,6 +117,7 @@ struct xchatprefs
 	char font_normal[4 * FONTNAMELEN + 1];
 	char font_main[FONTNAMELEN + 1];
 	char font_alternative[3 * FONTNAMELEN + 1];
+	char gui_lang[6];				/* Just enough for xx_YY plus trailing \0 */
 #else
 	char font_normal[FONTNAMELEN + 1];
 #endif
