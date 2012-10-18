@@ -960,8 +960,9 @@ main (int argc, char *argv[])
 	load_config ();
 
 #ifdef WIN32
-	/* we MUST do this after load_config () otherwise it would fail */
+	/* we MUST do this after load_config () AND before fe_init (thus gtk_init) otherwise it will fail */
 	strcpy (hexchat_lang, "LC_ALL=");
+
 	switch (prefs.gui_lang)
 	{
 		case 0:
