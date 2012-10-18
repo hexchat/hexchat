@@ -2940,23 +2940,6 @@ cmd_recv (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	return FALSE;
 }
 
-#if 0 /* manual command for flushing prefs to disk, but we use an autosave-upon-set approach instead */
-static int
-cmd_saveconf (struct session *sess, char *tbuf, char *word[], char *word_eol[])
-{
-	if (save_config ())
-	{
-		PrintText (sess, "Settings have been saved successfully.\n");
-	}
-	else
-	{
-		PrintText (sess, "Error saving settings.\n");
-	}
-
-	return TRUE;
-}
-#endif
-
 static int
 cmd_say (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
@@ -3714,9 +3697,6 @@ const struct commands xc_cmds[] = {
 #endif
 	{"RECV", cmd_recv, 1, 0, 1, N_("RECV <text>, send raw data to xchat, as if it was received from the irc server")},
 
-#if 0
-	{"SAVECONF", cmd_saveconf, 0, 0, 1, N_("SAVECONF, saves the current settings to disk")},
-#endif
 	{"SAY", cmd_say, 0, 0, 1,
 	 N_("SAY <text>, sends the text to the object in the current window")},
 	{"SEND", cmd_send, 0, 0, 1, N_("SEND <nick> [<file>]")},
