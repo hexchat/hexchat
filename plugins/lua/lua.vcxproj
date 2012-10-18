@@ -69,7 +69,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(DepsRoot)\lib;$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>"$(LuaLib).lib";;dirent-win32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>"$(LuaLib).lib";%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -89,17 +89,17 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(DepsRoot)\lib;$(OutDir);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>"$(LuaLib).lib";;dirent-win32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>"$(LuaLib).lib";%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <Link>
-      <AdditionalDependencies>"$(LuaLib).lib";$(DepLibs);dirent-win32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>"$(LuaLib).lib";$(DepLibs);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Link>
-      <AdditionalDependencies>"$(LuaLib).lib";$(DepLibs);dirent-win32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>"$(LuaLib).lib";$(DepLibs);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
