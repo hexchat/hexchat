@@ -957,23 +957,150 @@ main (int argc, char *argv[])
 
 	srand (time (0));	/* CL: do this only once! */
 
-#ifdef SOCKS
-	SOCKSinit (argv[0]);
-#endif
-
-	ret = fe_args (argc, argv);
-	if (ret != -1)
-		return ret;
-	
-#ifdef USE_DBUS
-	xchat_remote ();
-#endif
-
 	load_config ();
 
 #ifdef WIN32
 	/* we MUST do this after load_config () otherwise it would fail */
-	snprintf (hexchat_lang, 12, "LC_ALL=%s", prefs.gui_lang);
+	strcpy (hexchat_lang, "LC_ALL=");
+	switch (prefs.gui_lang)
+	{
+		case 0:
+			strcat (hexchat_lang, "sq");
+			break;
+		case 1:
+			strcat (hexchat_lang, "am");
+			break;
+		case 2:
+			strcat (hexchat_lang, "az");
+			break;
+		case 3:
+			strcat (hexchat_lang, "eu");
+			break;
+		case 4:
+			strcat (hexchat_lang, "be");
+			break;
+		case 5:
+			strcat (hexchat_lang, "bg");
+			break;
+		case 6:
+			strcat (hexchat_lang, "ca");
+			break;
+		case 7:
+			strcat (hexchat_lang, "zh_CN");
+			break;
+		case 8:
+			strcat (hexchat_lang, "zh_TW");
+			break;
+		case 9:
+			strcat (hexchat_lang, "cs");
+			break;
+		case 10:
+			strcat (hexchat_lang, "nl");
+			break;
+		case 11:
+			strcat (hexchat_lang, "en_GB");
+			break;
+		case 12:
+			strcat (hexchat_lang, "en_US");
+			break;
+		case 13:
+			strcat (hexchat_lang, "et");
+			break;
+		case 14:
+			strcat (hexchat_lang, "fi");
+			break;
+		case 15:
+			strcat (hexchat_lang, "fr");
+			break;
+		case 16:
+			strcat (hexchat_lang, "gl");
+			break;
+		case 17:
+			strcat (hexchat_lang, "de");
+			break;
+		case 18:
+			strcat (hexchat_lang, "el");
+			break;
+		case 19:
+			strcat (hexchat_lang, "hi");
+			break;
+		case 20:
+			strcat (hexchat_lang, "hu_HU");
+			break;
+		case 21:
+			strcat (hexchat_lang, "it");
+			break;
+		case 22:
+			strcat (hexchat_lang, "ja");
+			break;
+		case 23:
+			strcat (hexchat_lang, "kn");
+			break;
+		case 24:
+			strcat (hexchat_lang, "ko");
+			break;
+		case 25:
+			strcat (hexchat_lang, "lv");
+			break;
+		case 26:
+			strcat (hexchat_lang, "lt");
+			break;
+		case 27:
+			strcat (hexchat_lang, "mk");
+			break;
+		case 28:
+			strcat (hexchat_lang, "ms");
+			break;
+		case 29:
+			strcat (hexchat_lang, "nb");
+			break;
+		case 30:
+			strcat (hexchat_lang, "pl");
+			break;
+		case 31:
+			strcat (hexchat_lang, "pt");
+			break;
+		case 32:
+			strcat (hexchat_lang, "pt_BR");
+			break;
+		case 33:
+			strcat (hexchat_lang, "pa");
+			break;
+		case 34:
+			strcat (hexchat_lang, "ru");
+			break;
+		case 35:
+			strcat (hexchat_lang, "sr");
+			break;
+		case 36:
+			strcat (hexchat_lang, "sk");
+			break;
+		case 37:
+			strcat (hexchat_lang, "sl");
+			break;
+		case 38:
+			strcat (hexchat_lang, "es");
+			break;
+		case 39:
+			strcat (hexchat_lang, "sv");
+			break;
+		case 40:
+			strcat (hexchat_lang, "th");
+			break;
+		case 41:
+			strcat (hexchat_lang, "uk");
+			break;
+		case 42:
+			strcat (hexchat_lang, "vi");
+			break;
+		case 43:
+			strcat (hexchat_lang, "wa");
+			break;
+		default:
+			strcat (hexchat_lang, "en_US");
+			break;
+	}
+
 	putenv (hexchat_lang);
 
 	if (prefs.gui_one_instance && !portable_mode ())
@@ -1001,6 +1128,18 @@ main (int argc, char *argv[])
 			}
 		}
 	}
+#endif
+
+#ifdef SOCKS
+	SOCKSinit (argv[0]);
+#endif
+
+	ret = fe_args (argc, argv);
+	if (ret != -1)
+		return ret;
+	
+#ifdef USE_DBUS
+	xchat_remote ();
 #endif
 
 #ifdef USE_LIBPROXY

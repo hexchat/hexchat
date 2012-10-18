@@ -99,12 +99,60 @@ typedef struct
 	int extra;
 } setting;
 
+static const char *const langsmenu[] =
+{
+	N_("Albanian"),
+	N_("Amharic"),
+	N_("Azerbaijani"),
+	N_("Basque"),
+	N_("Belarusian"),
+	N_("Bulgarian"),
+	N_("Catalan"),
+	N_("Chinese (Simplified)"),
+	N_("Chinese (Traditional)"),
+	N_("Czech"),
+	N_("Dutch"),
+	N_("English (UK)"),
+	N_("English (US)"),
+	N_("Estonian"),
+	N_("Finnish"),
+	N_("French"),
+	N_("Galician"),
+	N_("German"),
+	N_("Greek"),
+	N_("Hindi"),
+	N_("Hungarian"),
+	N_("Italian"),
+	N_("Japanese"),
+	N_("Kannada"),
+	N_("Korean"),
+	N_("Latvian"),
+	N_("Lithuanian"),
+	N_("Macedonian"),
+	N_("Malay"),
+	N_("Norwegian"),
+	N_("Polish"),
+	N_("Portuguese"),
+	N_("Portuguese (Brazilian)"),
+	N_("Punjabi"),
+	N_("Russian"),
+	N_("Serbian"),
+	N_("Slovak"),
+	N_("Slovenian"),
+	N_("Spanish"),
+	N_("Swedish"),
+	N_("Thai"),
+	N_("Ukrainian"),
+	N_("Vietnamese"),
+	N_("Walloon"),
+	NULL
+};
 
 static const setting appearance_settings[] =
 {
 #ifdef WIN32
 	{ST_HEADER,	N_("Localization"),0,0,0},
-	{ST_ENTRY,  N_("HexChat language:"), P_OFFSETNL(gui_lang), 0, 0, sizeof prefs.gui_lang},
+	{ST_MENU,  N_("Interface language:"), P_OFFINTNL(gui_lang), 0, langsmenu, 0},
 #endif
 	{ST_HEADER,	N_("Text Box"),0,0,0},
 #ifdef WIN32

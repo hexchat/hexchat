@@ -452,7 +452,7 @@ const struct prefs vars[] = {
 	{"gui_join_dialog", P_OFFINT (gui_join_dialog), TYPE_BOOL},
 	{"gui_lagometer", P_OFFINT (lagometer), TYPE_INT},
 #ifdef WIN32
-	{"gui_lang", P_OFFSET (gui_lang), TYPE_STR},
+	{"gui_lang", P_OFFINT (gui_lang), TYPE_INT},
 #endif
 	{"gui_mode_buttons", P_OFFINT (chanmodebuttons), TYPE_BOOL},
 #ifdef WIN32
@@ -677,7 +677,10 @@ load_config (void)
 	prefs.indent_nicks = 1;
 	prefs.thin_separator = 1;
 	prefs._tabs_position = 2; /* 2 = left */
-#ifndef WIN32
+#ifdef WIN32
+	prefs.identd = 1;
+	prefs.gui_lang = 12;
+#else
 	prefs.fastdccsend = 1;
 #endif
 	prefs.wordwrap = 1;
@@ -747,10 +750,6 @@ load_config (void)
 	prefs.url_grabber_limit = 100; /* 0 means unlimited */
 	prefs.text_search_follow = 1;
 	prefs.timestamp = 1;
-#ifdef WIN32
-	prefs.identd = 1;
-	strcpy (prefs.gui_lang, g_getenv ("LC_ALL") ? g_getenv ("LC_ALL") : "en_US");
-#endif
 	strcpy (prefs.spell_langs, g_getenv ("LC_ALL") ? g_getenv ("LC_ALL") : "en_US");
 	strcpy (prefs.stamp_format, "[%H:%M:%S] ");
 	strcpy (prefs.timestamp_log_format, "%b %d %H:%M:%S ");
