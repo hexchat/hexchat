@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: xchat-2.8.4\n"
 "Report-Msgid-Bugs-To: www.hexchat.org\n"
-"POT-Creation-Date: 2012-10-15 20:19+0200\n"
+"POT-Creation-Date: 2012-10-18 23:59+0200\n"
 "PO-Revision-Date: 2007-06-27 20:53+0300\n"
 "Last-Translator: Mika Laari <laari@iki.fi>\n"
 "Language-Team: Finnish <translation-team-fi@lists.sourceforge.net>\n"
@@ -20,15 +20,15 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: KBabel 1.11.4\n"
 
-#: src/common/cfgfiles.c:782
+#: src/common/cfgfiles.c:785
 msgid "I'm busy"
 msgstr "Olen kiireinen"
 
-#: src/common/cfgfiles.c:783
+#: src/common/cfgfiles.c:786
 msgid "Leaving"
 msgstr "Lähdössä"
 
-#: src/common/cfgfiles.c:834
+#: src/common/cfgfiles.c:837
 msgid ""
 "* Running IRC as root is stupid! You should\n"
 "  create a User Account and use that to login.\n"
@@ -167,48 +167,48 @@ msgstr "Lisätietoja saat kirjoittamalla /HELP <komento> tai /HELP -l."
 msgid "Unknown arg '%s' ignored."
 msgstr "Tuntematonta argumenttia \"%s\" ei huomioida."
 
-#: src/common/outbound.c:3297
+#: src/common/outbound.c:3280
 msgid "No such plugin found.\n"
 msgstr "Liitännäistä ei löydy.\n"
 
-#: src/common/outbound.c:3302 src/fe-gtk/plugingui.c:207
+#: src/common/outbound.c:3285 src/fe-gtk/plugingui.c:207
 msgid "That plugin is refusing to unload.\n"
 msgstr "Liitännäinen ei suostu poistumaan käytöstä.\n"
 
-#: src/common/outbound.c:3571
+#: src/common/outbound.c:3554
 msgid "ADDBUTTON <name> <action>, adds a button under the user-list"
 msgstr ""
 "ADDBUTTON <nimi> <toiminto>, lisää painikkeen käyttäjäluettelon alapuolelle"
 
-#: src/common/outbound.c:3572
+#: src/common/outbound.c:3555
 msgid ""
 "ADDSERVER <New Network> <newserver/6667>, adds a new network with a new "
 "server to the network list"
 msgstr ""
 
-#: src/common/outbound.c:3574
+#: src/common/outbound.c:3557
 msgid "ALLCHAN <cmd>, sends a command to all channels you're in"
 msgstr "ALLCHAN <komento>, lähettää komennon kaikille kanaville, joilla ollaan"
 
-#: src/common/outbound.c:3576
+#: src/common/outbound.c:3559
 #, fuzzy
 msgid "ALLCHANL <cmd>, sends a command to all channels on the current server"
 msgstr "ALLCHANL <komento>, lähettää komennon kaikille kanaville, joilla olet."
 
-#: src/common/outbound.c:3578
+#: src/common/outbound.c:3561
 msgid "ALLSERV <cmd>, sends a command to all servers you're in"
 msgstr ""
 "ALLSERV <komento>, lähettää komennon kaikille palvelimille, joilla ollaan"
 
-#: src/common/outbound.c:3579
+#: src/common/outbound.c:3562
 msgid "AWAY [<reason>], sets you away"
 msgstr "AWAY [<syy>], merkitsee poissaolevaksi"
 
-#: src/common/outbound.c:3580
+#: src/common/outbound.c:3563
 msgid "BACK, sets you back (not away)"
 msgstr "BACK, merkitsee läsnäolevaksi"
 
-#: src/common/outbound.c:3582
+#: src/common/outbound.c:3565
 msgid ""
 "BAN <mask> [<bantype>], bans everyone matching the mask from the current "
 "channel. If they are already on the channel this doesn't kick them (needs "
@@ -218,30 +218,30 @@ msgstr ""
 "nykyiseltä kanavalta. Jos käyttäjät ovat jo kanavalla, tämä komento ei "
 "potkaise heitä (vaatii opit)"
 
-#: src/common/outbound.c:3583
+#: src/common/outbound.c:3566
 #, fuzzy
 msgid "CHANOPT [-quiet] <variable> [<value>]"
 msgstr "SET [-e] [-or] [-quiet] <muuttuja> [<arvo>], asettaa muuttujan arvon."
 
-#: src/common/outbound.c:3584
+#: src/common/outbound.c:3567
 msgid ""
 "CHARSET [<encoding>], get or set the encoding used for the current connection"
 msgstr ""
 
-#: src/common/outbound.c:3585
+#: src/common/outbound.c:3568
 msgid "CLEAR [ALL|HISTORY], Clears the current text window or command history"
 msgstr ""
 "CLEAR [ALL|HISTORY], tyhjentää nykyisen teksti-ikkunan tai komentohistorian"
 
-#: src/common/outbound.c:3586
+#: src/common/outbound.c:3569
 msgid "CLOSE, Closes the current window/tab"
 msgstr "CLOSE, sulkee nykyisen ikkunan/välilehden"
 
-#: src/common/outbound.c:3589
+#: src/common/outbound.c:3572
 msgid "COUNTRY [-s] <code|wildcard>, finds a country code, eg: au = australia"
 msgstr "COUNTRY [-s] <koodi|jokeri>, etsii maakoodin, esim. au = Australia."
 
-#: src/common/outbound.c:3591
+#: src/common/outbound.c:3574
 msgid ""
 "CTCP <nick> <message>, send the CTCP message to nick, common messages are "
 "VERSION and USERINFO"
@@ -249,12 +249,12 @@ msgstr ""
 "CTCP <käyttäjä> <viesti>, lähettää CTCP-viestin käyttäjälle, yleiset viestit "
 "ovat VERSION ja USERINFO"
 
-#: src/common/outbound.c:3593
+#: src/common/outbound.c:3576
 msgid ""
 "CYCLE [<channel>], parts the current or given channel and immediately rejoins"
 msgstr "CYCLE, poistuu nykyiseltä kanavalta ja palaa heti takaisin"
 
-#: src/common/outbound.c:3595
+#: src/common/outbound.c:3578
 msgid ""
 "\n"
 "DCC GET <nick>                      - accept an offered file\n"
@@ -280,7 +280,7 @@ msgstr ""
 "esimerkiksi:\n"
 "         /dcc close send jarkkoranta tiedosto.tar.gz"
 
-#: src/common/outbound.c:3607
+#: src/common/outbound.c:3590
 msgid ""
 "DEHOP <nick>, removes chanhalf-op status from the nick on the current "
 "channel (needs chanop)"
@@ -288,18 +288,18 @@ msgstr ""
 "DEHOP <käyttäjä>, poistaa puoliopit käyttäjältä nykyisellä kanavalla (vaatii "
 "opit)"
 
-#: src/common/outbound.c:3609
+#: src/common/outbound.c:3592
 msgid "DELBUTTON <name>, deletes a button from under the user-list"
 msgstr "DELBUTTON <nimi>, poistaa painikkeen käyttäjäluettelon alta"
 
-#: src/common/outbound.c:3611
+#: src/common/outbound.c:3594
 msgid ""
 "DEOP <nick>, removes chanop status from the nick on the current channel "
 "(needs chanop)"
 msgstr ""
 "DEOP <käyttäjä>, poistaa opit käyttäjältä nykyisellä kanavalla (vaatii opit)"
 
-#: src/common/outbound.c:3613
+#: src/common/outbound.c:3596
 msgid ""
 "DEVOICE <nick>, removes voice status from the nick on the current channel "
 "(needs chanop)"
@@ -307,19 +307,19 @@ msgstr ""
 "DEVOICE <käyttäjä>, poistaa puheoikeuden käyttäjältä nykyisellä kanavalla "
 "(vaatii opit)"
 
-#: src/common/outbound.c:3614
+#: src/common/outbound.c:3597
 msgid "DISCON, Disconnects from server"
 msgstr "DISCON, Katkaisee yhteyden palvelimelle"
 
-#: src/common/outbound.c:3615
+#: src/common/outbound.c:3598
 msgid "DNS <nick|host|ip>, Finds a users IP number"
 msgstr "DNS <käyttäjä|isäntä|ip>, etsii käyttäjän IP-osoitteen"
 
-#: src/common/outbound.c:3616
+#: src/common/outbound.c:3599
 msgid "ECHO <text>, Prints text locally"
 msgstr "ECHO <teksti>, tulostaa tekstiä paikallisesti"
 
-#: src/common/outbound.c:3619
+#: src/common/outbound.c:3602
 msgid ""
 "EXEC [-o] <command>, runs the command. If -o flag is used then output is "
 "sent to current channel, else is printed to current text box"
@@ -327,11 +327,11 @@ msgstr ""
 "EXEC [-o] <komento>, ajaa komennon. Käytettäessä valitsinta -o tuloste "
 "lähetetään nykyiselle kanavalle, muutoin nykyiseen ikkunaan"
 
-#: src/common/outbound.c:3621
+#: src/common/outbound.c:3604
 msgid "EXECCONT, sends the process SIGCONT"
 msgstr "EXECCONT, lähettää prosessille signaalin SIGCONT"
 
-#: src/common/outbound.c:3624
+#: src/common/outbound.c:3607
 msgid ""
 "EXECKILL [-9], kills a running exec in the current session. If -9 is given "
 "the process is SIGKILL'ed"
@@ -339,38 +339,38 @@ msgstr ""
 "EXECKILL [-9], tappaa nykyisestä istunnosta käynnistetyn ohjelman. "
 "Käytettäessä valitsinta -9, prosessille lähetetään signaali SIGKILL"
 
-#: src/common/outbound.c:3626
+#: src/common/outbound.c:3609
 msgid "EXECSTOP, sends the process SIGSTOP"
 msgstr "EXECSTOP, lähettää prosessille signaalin SIGSTOP"
 
-#: src/common/outbound.c:3627
+#: src/common/outbound.c:3610
 msgid "EXECWRITE, sends data to the processes stdin"
 msgstr "EXECWRITE, lähettää dataa prosessin vakiosyötteeseen"
 
-#: src/common/outbound.c:3631
+#: src/common/outbound.c:3614
 msgid "FLUSHQ, flushes the current server's send queue"
 msgstr "FLUSHQ, tyhjentää nykyisen palvelimen lähetysjonon"
 
-#: src/common/outbound.c:3633
+#: src/common/outbound.c:3616
 msgid "GATE <host> [<port>], proxies through a host, port defaults to 23"
 msgstr ""
 "GATE <isäntä> [<portti>], käyttää isäntää välipalvelimena, oletusportti 23"
 
-#: src/common/outbound.c:3637
+#: src/common/outbound.c:3620
 #, fuzzy
 msgid "GHOST <nick> [password], Kills a ghosted nickname"
 msgstr ""
 "GHOST <kutsumanimi> <salasana>, poistaa kummittelemaan jääneen kutsumanimen"
 
-#: src/common/outbound.c:3642
+#: src/common/outbound.c:3625
 msgid "HOP <nick>, gives chanhalf-op status to the nick (needs chanop)"
 msgstr "HOP <käyttäjä>, antaa puoliopit käyttäjälle (vaatii opit)"
 
-#: src/common/outbound.c:3643
+#: src/common/outbound.c:3626
 msgid "ID <password>, identifies yourself to nickserv"
 msgstr "ID <salasana>, tunnistautuu NickServ-palvelulle."
 
-#: src/common/outbound.c:3645
+#: src/common/outbound.c:3628
 msgid ""
 "IGNORE <mask> <types..> <options..>\n"
 "    mask - host mask to ignore, eg: *!*@*.aol.com\n"
@@ -384,7 +384,7 @@ msgstr ""
 "            PRIV, CHAN, NOTI, CTCP, DCC, INVI, ALL\n"
 "    valitsimet - NOSAVE, QUIET"
 
-#: src/common/outbound.c:3652
+#: src/common/outbound.c:3635
 msgid ""
 "INVITE <nick> [<channel>], invites someone to a channel, by default the "
 "current channel (needs chanop)"
@@ -392,16 +392,16 @@ msgstr ""
 "INVITE <käyttäjä> [<kanava>], kutsuu käyttäjän kanavalle, oletuksena "
 "nykyiselle (vaatii opit)"
 
-#: src/common/outbound.c:3653
+#: src/common/outbound.c:3636
 msgid "JOIN <channel>, joins the channel"
 msgstr "JOIN <kanava>, liittyy kanavalle"
 
-#: src/common/outbound.c:3655
+#: src/common/outbound.c:3638
 msgid "KICK <nick>, kicks the nick from the current channel (needs chanop)"
 msgstr ""
 "KICK <käyttäjä>, potkaisee käyttäjän nykyiseltä kanavalta (vaatii opit)"
 
-#: src/common/outbound.c:3657
+#: src/common/outbound.c:3640
 msgid ""
 "KICKBAN <nick>, bans then kicks the nick from the current channel (needs "
 "chanop)"
@@ -409,11 +409,11 @@ msgstr ""
 "KICKBAN <käyttäjä>, bannaa ja potkaisee käyttäjän nykyiseltä kanavalta "
 "(vaatii opit)"
 
-#: src/common/outbound.c:3660
+#: src/common/outbound.c:3643
 msgid "LAGCHECK, forces a new lag check"
 msgstr "LAGCHECK, pakottaa uuden viivetarkistuksen"
 
-#: src/common/outbound.c:3662
+#: src/common/outbound.c:3645
 msgid ""
 "LASTLOG [-h] [-m] [-r] [--] <string>, searches for a string in the buffer\n"
 "    Use -h to highlight the found string(s)\n"
@@ -423,21 +423,21 @@ msgid ""
 "string '-r'"
 msgstr ""
 
-#: src/common/outbound.c:3668
+#: src/common/outbound.c:3651
 msgid "LOAD [-e] <file>, loads a plugin or script"
 msgstr "LOAD [-e] <tiedosto>, lataa liitännäisen tai komentotiedoston."
 
-#: src/common/outbound.c:3671
+#: src/common/outbound.c:3654
 msgid ""
 "MDEHOP, Mass deop's all chanhalf-ops in the current channel (needs chanop)"
 msgstr ""
 "MDEHOP, poistaa opit kaikilta nykyisen kanavan puoliopeilta (vaatii opit)"
 
-#: src/common/outbound.c:3673
+#: src/common/outbound.c:3656
 msgid "MDEOP, Mass deop's all chanops in the current channel (needs chanop)"
 msgstr "MDEOP, poistaa opit kaikilta nykyisen kanavan opeilta (vaatii opit)"
 
-#: src/common/outbound.c:3675
+#: src/common/outbound.c:3658
 msgid ""
 "ME <action>, sends the action to the current channel (actions are written in "
 "the 3rd person, like /me jumps)"
@@ -445,38 +445,38 @@ msgstr ""
 "ME <toiminta>, lähettää toiminnan nykyiselle kanavalle (toiminnat "
 "kirjoitetaan kolmannessa persoonassa, kuten /me hyppää)"
 
-#: src/common/outbound.c:3679
+#: src/common/outbound.c:3662
 msgid ""
 "MKICK, Mass kicks everyone except you in the current channel (needs chanop)"
 msgstr "MKICK, potkaisee kaikki muut kanavalta (vaatii opit)"
 
-#: src/common/outbound.c:3682
+#: src/common/outbound.c:3665
 msgid "MOP, Mass op's all users in the current channel (needs chanop)"
 msgstr ""
 "MOP, antaa kanavaoperaattorin oikeudet kanavan kaikille käyttäjille (vaatii "
 "opit)"
 
-#: src/common/outbound.c:3683
+#: src/common/outbound.c:3666
 msgid "MSG <nick> <message>, sends a private message"
 msgstr "MSG <käyttäjä> <viesti>, lähettää yksityisviestin"
 
-#: src/common/outbound.c:3686
+#: src/common/outbound.c:3669
 msgid "NAMES, Lists the nicks on the current channel"
 msgstr "NAMES, luettelee nykyisellä kanavalla olevat käyttäjät"
 
-#: src/common/outbound.c:3688
+#: src/common/outbound.c:3671
 msgid "NCTCP <nick> <message>, Sends a CTCP notice"
 msgstr "NCTCP <käyttäjä> <viesti>, lähettää CTCP-tiedotteen"
 
-#: src/common/outbound.c:3689
+#: src/common/outbound.c:3672
 msgid "NEWSERVER [-noconnect] <hostname> [<port>]"
 msgstr "NEWSERVER [-noconnect] <isäntä> [<portti>]"
 
-#: src/common/outbound.c:3690
+#: src/common/outbound.c:3673
 msgid "NICK <nickname>, sets your nick"
 msgstr "NICK <kutsumanimi>, asettaa oman kutsumanimesi"
 
-#: src/common/outbound.c:3693
+#: src/common/outbound.c:3676
 msgid ""
 "NOTICE <nick/channel> <message>, sends a notice. Notices are a type of "
 "message that should be auto reacted to"
@@ -484,7 +484,7 @@ msgstr ""
 "NOTICE <käyttäjä/kanava> <viesti>, lähettää tiedotteen. Tiedotteet ovat "
 "viestejä, joihin tulee reagoida automaattisesti"
 
-#: src/common/outbound.c:3695
+#: src/common/outbound.c:3678
 msgid ""
 "NOTIFY [-n network1[,network2,...]] [<nick>], displays your notify list or "
 "adds someone to it"
@@ -492,35 +492,35 @@ msgstr ""
 "NOTIFY [-n verkko1[,verkko2]] [<kutsumanimi>], näyttää ilmoitusluettelon tai "
 "lisää siihen jonkun"
 
-#: src/common/outbound.c:3697
+#: src/common/outbound.c:3680
 msgid "OP <nick>, gives chanop status to the nick (needs chanop)"
 msgstr ""
 "OP <käyttäjä>, antaa kanavaoperaattorin oikeudet käyttäjälle (vaatii opit)"
 
-#: src/common/outbound.c:3699
+#: src/common/outbound.c:3682
 msgid ""
 "PART [<channel>] [<reason>], leaves the channel, by default the current one"
 msgstr "PART [<kanava>] [<syy>], poistuu kanavalta, oletuksena nykyiseltä"
 
-#: src/common/outbound.c:3701
+#: src/common/outbound.c:3684
 msgid "PING <nick | channel>, CTCP pings nick or channel"
 msgstr "PING <käyttäjä | kanava>, CTCP-pingaa käyttäjää tai kanavaa"
 
-#: src/common/outbound.c:3703
+#: src/common/outbound.c:3686
 msgid "QUERY [-nofocus] <nick>, opens up a new privmsg window to someone"
 msgstr ""
 "QUERY [-nofocus] <käyttäjä>, avaa uuden ikkunan kahdenkeskistä keskustelua "
 "varten"
 
-#: src/common/outbound.c:3705
+#: src/common/outbound.c:3688
 msgid "QUIT [<reason>], disconnects from the current server"
 msgstr "QUIT [<syy>], katkaisee yhteyden nykyiseen palvelimeen"
 
-#: src/common/outbound.c:3707
+#: src/common/outbound.c:3690
 msgid "QUOTE <text>, sends the text in raw form to the server"
 msgstr "QUOTE <teksti>, lähettää tekstin raa'assa muodossa palvelimelle"
 
-#: src/common/outbound.c:3710
+#: src/common/outbound.c:3693
 msgid ""
 "RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as /"
 "RECONNECT to reconnect to the current server or with /RECONNECT ALL to "
@@ -530,7 +530,7 @@ msgstr ""
 "RECONNECT nykyiseen palvelimeen uudelleen yhdistämiseksi, tai /RECONNECT ALL "
 "kaikkiin avoimiin palvelimiin uudelleen yhdistämiseksi"
 
-#: src/common/outbound.c:3713
+#: src/common/outbound.c:3696
 msgid ""
 "RECONNECT [<host>] [<port>] [<password>], Can be called just as /RECONNECT "
 "to reconnect to the current server or with /RECONNECT ALL to reconnect to "
@@ -540,7 +540,7 @@ msgstr ""
 "nykyiseen palvelimeen uudelleen yhdistämiseksi, tai /RECONNECT ALL kaikkiin "
 "avoimiin palvelimiin uudelleen yhdistämiseksi"
 
-#: src/common/outbound.c:3715
+#: src/common/outbound.c:3698
 msgid ""
 "RECV <text>, send raw data to xchat, as if it was received from the irc "
 "server"
@@ -548,28 +548,24 @@ msgstr ""
 "RECV <teksti>, lähetä raakaa dataa xchatille, aivan kuin se olisi "
 "vastaanotettu irc-palvelimelta"
 
-#: src/common/outbound.c:3718
-msgid "SAVECONF, saves the current settings to disk"
-msgstr ""
-
-#: src/common/outbound.c:3721
+#: src/common/outbound.c:3701
 msgid "SAY <text>, sends the text to the object in the current window"
 msgstr "SAY <teksti>, lähettää tekstin nykyisen ikkunan kanavalle/henkilölle"
 
-#: src/common/outbound.c:3722
+#: src/common/outbound.c:3702
 msgid "SEND <nick> [<file>]"
 msgstr "SEND <käyttäjä> [<tiedosto>], lähettää käyttäjälle tiedoston"
 
-#: src/common/outbound.c:3725
+#: src/common/outbound.c:3705
 msgid "SERVCHAN [-ssl] <host> <port> <channel>, connects and joins a channel"
 msgstr ""
 "SERVCHAN [-ssl] <isäntä> <portti> <kanava>, yhdistää ja liittyy kanavalle"
 
-#: src/common/outbound.c:3728
+#: src/common/outbound.c:3708
 msgid "SERVCHAN <host> <port> <channel>, connects and joins a channel"
 msgstr "SERVCHAN <isäntä> <portti> <kanava>, yhdistää ja liittyy kanavalle"
 
-#: src/common/outbound.c:3732
+#: src/common/outbound.c:3712
 #, fuzzy
 msgid ""
 "SERVER [-ssl] <host> [<port>] [<password>], connects to a server, the "
@@ -578,7 +574,7 @@ msgstr ""
 "SERVER [-ssl] <isäntä> [<portti>] [<salasana>], yhdistää palvelimelle, "
 "oletusportti on 6667 tavanomaisille yhteyksille, 9999 ssl-yhteyksille"
 
-#: src/common/outbound.c:3735
+#: src/common/outbound.c:3715
 msgid ""
 "SERVER <host> [<port>] [<password>], connects to a server, the default port "
 "is 6667"
@@ -586,31 +582,31 @@ msgstr ""
 "SERVER <isäntä> [<portti>] [<salasana>], yhdistää palvelimelle, oletusportti "
 "on 6667"
 
-#: src/common/outbound.c:3737
+#: src/common/outbound.c:3717
 #, fuzzy
 msgid "SET [-e] [-off|-on] [-quiet] <variable> [<value>]"
 msgstr "SET [-e] [-or] [-quiet] <muuttuja> [<arvo>], asettaa muuttujan arvon."
 
-#: src/common/outbound.c:3738
+#: src/common/outbound.c:3718
 msgid "SETCURSOR [-|+]<position>, reposition the cursor in the inputbox"
 msgstr ""
 
-#: src/common/outbound.c:3739
+#: src/common/outbound.c:3719
 msgid "SETTAB <new name>, change a tab's name, tab_trunc limit still applies"
 msgstr ""
 
-#: src/common/outbound.c:3740
+#: src/common/outbound.c:3720
 msgid "SETTEXT <new text>, replace the text in the input box"
 msgstr ""
 
-#: src/common/outbound.c:3743
+#: src/common/outbound.c:3723
 msgid ""
 "TOPIC [<topic>], sets the topic if one is given, else shows the current topic"
 msgstr ""
 "TOPIC [<aihe>], asettaa aiheen, jos se annetaan, muutoin näyttää nykyisen "
 "aiheen"
 
-#: src/common/outbound.c:3745
+#: src/common/outbound.c:3725
 msgid ""
 "\n"
 "TRAY -f <timeout> <file1> [<file2>] Blink tray between two icons.\n"
@@ -627,48 +623,48 @@ msgstr ""
 "TRAY -t <teksti>                 Asettaa ilmoitusalueen vihjetekstin.\n"
 "TRAY -b <otsikko> <teksti>       Asettaa ilmoitusalueen puhekuplan tekstin."
 
-#: src/common/outbound.c:3752
+#: src/common/outbound.c:3732
 msgid "UNBAN <mask> [<mask>...], unbans the specified masks."
 msgstr "UNBAN <peite> [<peite>...], poistaa annettujen peitteiden bannin."
 
-#: src/common/outbound.c:3753
+#: src/common/outbound.c:3733
 msgid "UNIGNORE <mask> [QUIET]"
 msgstr "UNIGNORE <peite> [QUIET]"
 
-#: src/common/outbound.c:3754
+#: src/common/outbound.c:3734
 msgid "UNLOAD <name>, unloads a plugin or script"
 msgstr "UNLOAD <nimi>, poistaa käytöstä liitännäisen tai skriptin"
 
-#: src/common/outbound.c:3755
+#: src/common/outbound.c:3735
 msgid "URL <url>, opens a URL in your browser"
 msgstr "URL <url>, avaa URLin selaimeen"
 
-#: src/common/outbound.c:3757
+#: src/common/outbound.c:3737
 msgid ""
 "USELECT [-a] [-s] <nick1> <nick2> etc, highlights nick(s) in channel userlist"
 msgstr ""
 "USELECT [-a] [-s] <nimi1> <nimi2> jne., valitsee nimet kanavan "
 "käyttäjäluettelosta"
 
-#: src/common/outbound.c:3760
+#: src/common/outbound.c:3740
 msgid "VOICE <nick>, gives voice status to someone (needs chanop)"
 msgstr "VOICE <käyttäjä>, antaa puheoikeuden käyttäjälle (vaatii opit)"
 
-#: src/common/outbound.c:3762
+#: src/common/outbound.c:3742
 msgid "WALLCHAN <message>, writes the message to all channels"
 msgstr "WALLCHAN <viesti>, kirjoittaa viestin kaikille kanaville"
 
-#: src/common/outbound.c:3764
+#: src/common/outbound.c:3744
 msgid ""
 "WALLCHOP <message>, sends the message to all chanops on the current channel"
 msgstr "WALLCHOP <viesti>, lähettää viestin kaikille nykyisen kanavan opeille"
 
-#: src/common/outbound.c:3797
+#: src/common/outbound.c:3777
 #, c-format
 msgid "Usage: %s\n"
 msgstr "Käyttö: %s\n"
 
-#: src/common/outbound.c:3802
+#: src/common/outbound.c:3782
 msgid ""
 "\n"
 "No help available on that command.\n"
@@ -676,19 +672,19 @@ msgstr ""
 "\n"
 "Komennolle ei ole saatavissa ohjetta.\n"
 
-#: src/common/outbound.c:3808
+#: src/common/outbound.c:3788
 msgid "No such command.\n"
 msgstr "Komentoa ei ole.\n"
 
-#: src/common/outbound.c:4139
+#: src/common/outbound.c:4119
 msgid "Bad arguments for user command.\n"
 msgstr "Virheelliset argumentit käyttäjäkomennolle.\n"
 
-#: src/common/outbound.c:4299
+#: src/common/outbound.c:4279
 msgid "Too many recursive usercommands, aborting."
 msgstr "Liian monta rekursiivista käyttäjäkomentoa, keskeytetään."
 
-#: src/common/outbound.c:4382
+#: src/common/outbound.c:4362
 msgid "Unknown Command. Try /help\n"
 msgstr "Tuntematon komento. Kokeile komentoa /help\n"
 
@@ -1313,7 +1309,7 @@ msgid "Nick of person who changed the topic"
 msgstr "Aihetta muuttaneen henkilön kutsumanimi"
 
 #: src/common/text.c:1178 src/common/text.c:1184 src/fe-gtk/chanlist.c:788
-#: src/fe-gtk/chanlist.c:891 src/fe-gtk/setup.c:289
+#: src/fe-gtk/chanlist.c:891 src/fe-gtk/setup.c:343
 msgid "Topic"
 msgstr "Aihe"
 
@@ -1564,7 +1560,7 @@ msgid "Channel Name"
 msgstr "Kanavanimi"
 
 #: src/common/text.c:1414 src/common/text.c:1420 src/common/text.c:1578
-#: src/fe-gtk/menu.c:1477 src/fe-gtk/menu.c:1665 src/fe-gtk/textgui.c:390
+#: src/fe-gtk/menu.c:1460 src/fe-gtk/menu.c:1648 src/fe-gtk/textgui.c:390
 msgid "Text"
 msgstr "Teksti"
 
@@ -1601,7 +1597,7 @@ msgstr "IP"
 msgid "Port"
 msgstr "Portti"
 
-#: src/common/text.c:1457 src/fe-gtk/notifygui.c:138 src/fe-gtk/setup.c:1836
+#: src/common/text.c:1457 src/fe-gtk/notifygui.c:138 src/fe-gtk/setup.c:1890
 msgid "Network"
 msgstr "Verkko"
 
@@ -1911,7 +1907,7 @@ msgstr "Belize"
 msgid "Canada"
 msgstr "Kanada"
 
-#: src/common/util.c:1002
+#: src/common/util.c:1002 src/fe-gtk/setup.c:111
 msgid "Catalan"
 msgstr ""
 
@@ -2916,7 +2912,7 @@ msgstr "Poistu kanavalta"
 msgid "Join Channel..."
 msgstr "Liity kanavalle..."
 
-#: src/common/xchat.c:773 src/fe-gtk/menu.c:1354
+#: src/common/xchat.c:773 src/fe-gtk/menu.c:1337
 msgid "Enter Channel to Join:"
 msgstr "Anna liityttävän kanavan nimi:"
 
@@ -3077,7 +3073,7 @@ msgstr "Päivitä"
 msgid "Displaying %d/%d users on %d/%d channels."
 msgstr "Näkyvillä on %d/%d käyttäjää %d/%d kanavalla."
 
-#: src/fe-gtk/chanlist.c:532 src/fe-gtk/menu.c:1290 src/fe-gtk/urlgrab.c:149
+#: src/fe-gtk/chanlist.c:532 src/fe-gtk/menu.c:1273 src/fe-gtk/urlgrab.c:149
 msgid "Select an output filename"
 msgstr "Valitse tulostiedoston nimi"
 
@@ -3205,7 +3201,7 @@ msgid "ETA"
 msgstr "Arvioitu aika"
 
 # Näkymää rajaava radionappula
-#: src/fe-gtk/dccgui.c:792 src/fe-gtk/menu.c:1666
+#: src/fe-gtk/dccgui.c:792 src/fe-gtk/menu.c:1649
 msgid "Both"
 msgstr "Molemmat"
 
@@ -3338,7 +3334,7 @@ msgstr "näyttää käyttäjän asetushakemiston"
 msgid "Open an irc://server:port/channel URL"
 msgstr "avaa URLin (irc://palvelin:portti/kanava)"
 
-#: src/fe-gtk/fe-gtk.c:139 src/fe-gtk/setup.c:227
+#: src/fe-gtk/fe-gtk.c:139 src/fe-gtk/setup.c:281
 msgid "Execute command:"
 msgstr "Suorita komento:"
 
@@ -3822,12 +3818,12 @@ msgstr "Välkytä ilmoitusalueella, kun tulee:"
 msgid "Blink Task _Bar"
 msgstr "Välkytä tehtäväpalkkia, kun tulee:"
 
-#: src/fe-gtk/maingui.c:1633 src/fe-gtk/menu.c:2205
+#: src/fe-gtk/maingui.c:1633 src/fe-gtk/menu.c:2184
 #, fuzzy
 msgid "_Detach"
 msgstr "_Irrota välilehti"
 
-#: src/fe-gtk/maingui.c:1635 src/fe-gtk/menu.c:2206 src/fe-gtk/menu.c:2211
+#: src/fe-gtk/maingui.c:1635 src/fe-gtk/menu.c:2185 src/fe-gtk/menu.c:2190
 #: src/fe-gtk/plugingui.c:257 src/fe-gtk/search.c:234
 msgid "_Close"
 msgstr "_Sulje"
@@ -3947,7 +3943,7 @@ msgstr "Avaa linkki selaimeen"
 msgid "Copy Selected Link"
 msgstr "Kopioi valittu linkki"
 
-#: src/fe-gtk/menu.c:1008 src/fe-gtk/menu.c:1337
+#: src/fe-gtk/menu.c:1008 src/fe-gtk/menu.c:1320
 msgid "Join Channel"
 msgstr "Liity kanavalle"
 
@@ -3975,15 +3971,15 @@ msgstr "XChat: Käyttäjän valikko"
 msgid "Edit This Menu..."
 msgstr "Muokkaa tätä valikkoa..."
 
-#: src/fe-gtk/menu.c:1227 src/fe-gtk/menu.c:1240 src/fe-gtk/search.c:78
+#: src/fe-gtk/menu.c:1210 src/fe-gtk/menu.c:1223 src/fe-gtk/search.c:78
 msgid "Search hit end, not found."
 msgstr "Hakutekstiä ei löytynyt"
 
-#: src/fe-gtk/menu.c:1339
+#: src/fe-gtk/menu.c:1322
 msgid "Retrieve channel list..."
 msgstr "Valitse kanavaluettelosta..."
 
-#: src/fe-gtk/menu.c:1407
+#: src/fe-gtk/menu.c:1390
 msgid ""
 "User Commands - Special codes:\n"
 "\n"
@@ -4023,7 +4019,7 @@ msgstr ""
 "%2 olisi \"jarkko\"\n"
 "&2 olisi \"jarkko terve\"."
 
-#: src/fe-gtk/menu.c:1423
+#: src/fe-gtk/menu.c:1406
 msgid ""
 "Userlist Buttons - Special codes:\n"
 "\n"
@@ -4047,7 +4043,7 @@ msgstr ""
 "%s  =  valittu kutsumanimi\n"
 "%t  =  aika/päiväys\n"
 
-#: src/fe-gtk/menu.c:1433
+#: src/fe-gtk/menu.c:1416
 msgid ""
 "Dialog Buttons - Special codes:\n"
 "\n"
@@ -4071,7 +4067,7 @@ msgstr ""
 "%s  =  valittu kutsumanimi\n"
 "%t  =  aika/päiväys\n"
 
-#: src/fe-gtk/menu.c:1443
+#: src/fe-gtk/menu.c:1426
 msgid ""
 "CTCP Replies - Special codes:\n"
 "\n"
@@ -4099,7 +4095,7 @@ msgstr ""
 "&3  =  3. sanasta rivin loppuun\n"
 "\n"
 
-#: src/fe-gtk/menu.c:1454
+#: src/fe-gtk/menu.c:1437
 #, c-format
 msgid ""
 "URL Handlers - Special codes:\n"
@@ -4118,305 +4114,300 @@ msgstr ""
 "että komento lähetetään XChatin sijaan\n"
 "kuorelle."
 
-#: src/fe-gtk/menu.c:1463
+#: src/fe-gtk/menu.c:1446
 msgid ": User Defined Commands"
 msgstr "XChat: Käyttäjän määrittelemät komennot"
 
-#: src/fe-gtk/menu.c:1470
+#: src/fe-gtk/menu.c:1453
 msgid ": Userlist Popup menu"
 msgstr "XChat: Käyttäjäluettelon ponnahdusvalikko"
 
-#: src/fe-gtk/menu.c:1477
+#: src/fe-gtk/menu.c:1460
 msgid "Replace with"
 msgstr "Korvaava teksti"
 
-#: src/fe-gtk/menu.c:1477
+#: src/fe-gtk/menu.c:1460
 msgid ": Replace"
 msgstr "XChat: Korvaaminen"
 
-#: src/fe-gtk/menu.c:1484
+#: src/fe-gtk/menu.c:1467
 msgid ": URL Handlers"
 msgstr "XChat: URL-käsittelimet"
 
-#: src/fe-gtk/menu.c:1503
+#: src/fe-gtk/menu.c:1486
 msgid ": Userlist buttons"
 msgstr "XChat: Käyttäjäluettelon painikkeet"
 
-#: src/fe-gtk/menu.c:1510
+#: src/fe-gtk/menu.c:1493
 msgid ": Dialog buttons"
 msgstr "XChat: Keskusteluikkunan painikkeet"
 
-#: src/fe-gtk/menu.c:1517
+#: src/fe-gtk/menu.c:1500
 msgid ": CTCP Replies"
 msgstr "XChat: CTCP-vastaukset"
 
-#: src/fe-gtk/menu.c:1623
+#: src/fe-gtk/menu.c:1606
 #, fuzzy
 msgid "He_xChat"
 msgstr "_XChat"
 
-#: src/fe-gtk/menu.c:1624
+#: src/fe-gtk/menu.c:1607
 msgid "Network Li_st..."
 msgstr "Verkkoluettelo..."
 
-#: src/fe-gtk/menu.c:1627
+#: src/fe-gtk/menu.c:1610
 msgid "_New"
 msgstr "Uusi"
 
-#: src/fe-gtk/menu.c:1628
+#: src/fe-gtk/menu.c:1611
 msgid "Server Tab..."
 msgstr "Palvelinvälilehti..."
 
-#: src/fe-gtk/menu.c:1629
+#: src/fe-gtk/menu.c:1612
 msgid "Channel Tab..."
 msgstr "Kanavavälilehti..."
 
-#: src/fe-gtk/menu.c:1630
+#: src/fe-gtk/menu.c:1613
 msgid "Server Window..."
 msgstr "Palvelinikkuna..."
 
-#: src/fe-gtk/menu.c:1631
+#: src/fe-gtk/menu.c:1614
 msgid "Channel Window..."
 msgstr "Kanavaikkuna..."
 
-#: src/fe-gtk/menu.c:1636 src/fe-gtk/menu.c:1638
+#: src/fe-gtk/menu.c:1619 src/fe-gtk/menu.c:1621
 msgid "_Load Plugin or Script..."
 msgstr "Lataa skripti tai liitännäinen..."
 
-#: src/fe-gtk/menu.c:1646 src/fe-gtk/plugin-tray.c:540
+#: src/fe-gtk/menu.c:1629 src/fe-gtk/plugin-tray.c:540
 msgid "_Quit"
 msgstr "Lopeta"
 
-#: src/fe-gtk/menu.c:1648
+#: src/fe-gtk/menu.c:1631
 msgid "_View"
 msgstr "Näytä"
 
-#: src/fe-gtk/menu.c:1650
+#: src/fe-gtk/menu.c:1633
 msgid "_Menu Bar"
 msgstr "Valikkopalkki"
 
-#: src/fe-gtk/menu.c:1651
+#: src/fe-gtk/menu.c:1634
 msgid "_Topic Bar"
 msgstr "Aihepalkki"
 
-#: src/fe-gtk/menu.c:1652
+#: src/fe-gtk/menu.c:1635
 msgid "_User List"
 msgstr "Käyttäjäluettelo"
 
-#: src/fe-gtk/menu.c:1653
+#: src/fe-gtk/menu.c:1636
 msgid "U_serlist Buttons"
 msgstr "Käyttäjäluettelon painikkeet"
 
-#: src/fe-gtk/menu.c:1654
+#: src/fe-gtk/menu.c:1637
 msgid "M_ode Buttons"
 msgstr "Tilapainikkeet"
 
-#: src/fe-gtk/menu.c:1656
+#: src/fe-gtk/menu.c:1639
 msgid "_Channel Switcher"
 msgstr "Kanavavalitsin"
 
-#: src/fe-gtk/menu.c:1658
+#: src/fe-gtk/menu.c:1641
 msgid "_Tabs"
 msgstr "Välilehtinä"
 
-#: src/fe-gtk/menu.c:1659
+#: src/fe-gtk/menu.c:1642
 msgid "T_ree"
 msgstr "Puuna"
 
-#: src/fe-gtk/menu.c:1661
+#: src/fe-gtk/menu.c:1644
 msgid "_Network Meters"
 msgstr "Verkkomittarit"
 
-#: src/fe-gtk/menu.c:1663
+#: src/fe-gtk/menu.c:1646
 msgid "Off"
 msgstr "Poissa"
 
-#: src/fe-gtk/menu.c:1664
+#: src/fe-gtk/menu.c:1647
 msgid "Graph"
 msgstr "Graafinen"
 
-#: src/fe-gtk/menu.c:1669
+#: src/fe-gtk/menu.c:1652
 msgid "_Server"
 msgstr "_Palvelin"
 
-#: src/fe-gtk/menu.c:1670
+#: src/fe-gtk/menu.c:1653
 msgid "_Disconnect"
 msgstr "Katkaise yhteys"
 
-#: src/fe-gtk/menu.c:1671
+#: src/fe-gtk/menu.c:1654
 msgid "_Reconnect"
 msgstr "Yhdistä uudelleen"
 
-#: src/fe-gtk/menu.c:1672
+#: src/fe-gtk/menu.c:1655
 #, fuzzy
 msgid "Join a Channel..."
 msgstr "Liity kanavalle..."
 
-#: src/fe-gtk/menu.c:1673
+#: src/fe-gtk/menu.c:1656
 #, fuzzy
 msgid "List of Channels..."
 msgstr "Liity kanavalle..."
 
-#: src/fe-gtk/menu.c:1676
+#: src/fe-gtk/menu.c:1659
 msgid "Marked Away"
 msgstr "Merkitty poissaolevaksi"
 
 # Missäköhän tämä näkyy?
-#: src/fe-gtk/menu.c:1678
+#: src/fe-gtk/menu.c:1661
 msgid "_Usermenu"
 msgstr "Käyttäjävalikko"
 
-#: src/fe-gtk/menu.c:1680
+#: src/fe-gtk/menu.c:1663
 msgid "S_ettings"
 msgstr "A_setukset"
 
-#: src/fe-gtk/menu.c:1681
+#: src/fe-gtk/menu.c:1664
 msgid "_Preferences"
 msgstr "Ominaisuudet"
 
-#: src/fe-gtk/menu.c:1683 src/fe-gtk/setup.c:1834
+#: src/fe-gtk/menu.c:1666 src/fe-gtk/setup.c:1888
 msgid "Advanced"
 msgstr "Lisäasetukset"
 
-#: src/fe-gtk/menu.c:1684
+#: src/fe-gtk/menu.c:1667
 msgid "Auto Replace..."
 msgstr "Automaattikorvaukset..."
 
-#: src/fe-gtk/menu.c:1685
+#: src/fe-gtk/menu.c:1668
 msgid "CTCP Replies..."
 msgstr "CTCP-vastaukset..."
 
-#: src/fe-gtk/menu.c:1686
+#: src/fe-gtk/menu.c:1669
 msgid "Dialog Buttons..."
 msgstr "Keskusteluikkunan painikkeet..."
 
-#: src/fe-gtk/menu.c:1687
+#: src/fe-gtk/menu.c:1670
 msgid "Keyboard Shortcuts..."
 msgstr "Pikanäppäimet..."
 
-#: src/fe-gtk/menu.c:1688
+#: src/fe-gtk/menu.c:1671
 msgid "Text Events..."
 msgstr "Tapahtumatekstit..."
 
-#: src/fe-gtk/menu.c:1689
+#: src/fe-gtk/menu.c:1672
 msgid "URL Handlers..."
 msgstr "URL-käsittelimet..."
 
-#: src/fe-gtk/menu.c:1690
+#: src/fe-gtk/menu.c:1673
 msgid "User Commands..."
 msgstr "Käyttäjän komennot..."
 
-#: src/fe-gtk/menu.c:1691
+#: src/fe-gtk/menu.c:1674
 msgid "Userlist Buttons..."
 msgstr "Käyttäjäluettelon painikkeet..."
 
-#: src/fe-gtk/menu.c:1692
+#: src/fe-gtk/menu.c:1675
 msgid "Userlist Popup..."
 msgstr "Käyttäjäluettelon pikavalikko..."
 
-#: src/fe-gtk/menu.c:1696
-#, fuzzy
-msgid "Save Settings to Disk"
-msgstr "Tallenna luettelo tiedostoon"
-
-#: src/fe-gtk/menu.c:1699
+#: src/fe-gtk/menu.c:1678
 msgid "_Window"
 msgstr "_Ikkuna"
 
-#: src/fe-gtk/menu.c:1700
+#: src/fe-gtk/menu.c:1679
 msgid "Ban List..."
 msgstr "Banniluettelo..."
 
-#: src/fe-gtk/menu.c:1701
+#: src/fe-gtk/menu.c:1680
 msgid "Character Chart..."
 msgstr "Merkistökartta..."
 
-#: src/fe-gtk/menu.c:1702
+#: src/fe-gtk/menu.c:1681
 msgid "Direct Chat..."
 msgstr "DCC-keskustelu..."
 
-#: src/fe-gtk/menu.c:1703
+#: src/fe-gtk/menu.c:1682
 msgid "File Transfers..."
 msgstr "Tiedostonsiirrot..."
 
-#: src/fe-gtk/menu.c:1704
+#: src/fe-gtk/menu.c:1683
 #, fuzzy
 msgid "Friends List..."
 msgstr "Banniluettelo..."
 
-#: src/fe-gtk/menu.c:1705
+#: src/fe-gtk/menu.c:1684
 msgid "Ignore List..."
 msgstr "Huomioimattomuusluettelo..."
 
-#: src/fe-gtk/menu.c:1706
+#: src/fe-gtk/menu.c:1685
 msgid "Plugins and Scripts..."
 msgstr "Skriptit ja liitännäiset..."
 
-#: src/fe-gtk/menu.c:1707
+#: src/fe-gtk/menu.c:1686
 msgid "Raw Log..."
 msgstr "Raakaloki..."
 
-#: src/fe-gtk/menu.c:1708
+#: src/fe-gtk/menu.c:1687
 msgid "URL Grabber..."
 msgstr "URL-kaappaaja..."
 
-#: src/fe-gtk/menu.c:1710
+#: src/fe-gtk/menu.c:1689
 msgid "Reset Marker Line"
 msgstr "Siirrä lukumerkki loppuun"
 
-#: src/fe-gtk/menu.c:1711
+#: src/fe-gtk/menu.c:1690
 #, fuzzy
 msgid "_Copy Selection"
 msgstr "Kopioi valittu linkki"
 
-#: src/fe-gtk/menu.c:1712
+#: src/fe-gtk/menu.c:1691
 msgid "C_lear Text"
 msgstr "P_yyhi teksti"
 
-#: src/fe-gtk/menu.c:1713
+#: src/fe-gtk/menu.c:1692
 msgid "Save Text..."
 msgstr "Tallenna teksti..."
 
-#: src/fe-gtk/menu.c:1715
+#: src/fe-gtk/menu.c:1694
 #, fuzzy
 msgid "Search"
 msgstr "Hae"
 
-#: src/fe-gtk/menu.c:1716
+#: src/fe-gtk/menu.c:1695
 msgid "Search Text..."
 msgstr "Hae tekstistä..."
 
-#: src/fe-gtk/menu.c:1717
+#: src/fe-gtk/menu.c:1696
 #, fuzzy
 msgid "Reset Search"
 msgstr "XChat: Haku"
 
-#: src/fe-gtk/menu.c:1718
+#: src/fe-gtk/menu.c:1697
 #, fuzzy
 msgid "Search Next"
 msgstr "Hae tekstistä..."
 
-#: src/fe-gtk/menu.c:1719
+#: src/fe-gtk/menu.c:1698
 msgid "Search Previous"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1722 src/fe-gtk/menu.c:2197
+#: src/fe-gtk/menu.c:1701 src/fe-gtk/menu.c:2176
 msgid "_Help"
 msgstr "_Ohje"
 
-#: src/fe-gtk/menu.c:1724
+#: src/fe-gtk/menu.c:1703
 msgid "_Contents"
 msgstr "_Sisältö"
 
-#: src/fe-gtk/menu.c:1726
+#: src/fe-gtk/menu.c:1705
 msgid "Check for updates"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1728
+#: src/fe-gtk/menu.c:1707
 msgid "_About"
 msgstr "_Tietoja"
 
-#: src/fe-gtk/menu.c:2210
+#: src/fe-gtk/menu.c:2189
 #, fuzzy
 msgid "_Attach"
 msgstr "Kiinnitä ikkuna"
@@ -4429,7 +4420,7 @@ msgstr "Nähty viimeksi"
 msgid "Offline"
 msgstr "Tavoittamattomissa"
 
-#: src/fe-gtk/notifygui.c:201 src/fe-gtk/setup.c:246
+#: src/fe-gtk/notifygui.c:201 src/fe-gtk/setup.c:300
 msgid "Never"
 msgstr "Ei koskaan"
 
@@ -4481,15 +4472,15 @@ msgstr "_Ikkuna"
 msgid "_Blink on"
 msgstr "Välkytä kun tulee"
 
-#: src/fe-gtk/plugin-tray.c:523 src/fe-gtk/setup.c:587
+#: src/fe-gtk/plugin-tray.c:523 src/fe-gtk/setup.c:641
 msgid "Channel Message"
 msgstr "Kanavaviesti"
 
-#: src/fe-gtk/plugin-tray.c:524 src/fe-gtk/setup.c:588
+#: src/fe-gtk/plugin-tray.c:524 src/fe-gtk/setup.c:642
 msgid "Private Message"
 msgstr "Yksityisviesti"
 
-#: src/fe-gtk/plugin-tray.c:525 src/fe-gtk/setup.c:589
+#: src/fe-gtk/plugin-tray.c:525 src/fe-gtk/setup.c:643
 msgid "Highlighted Message"
 msgstr "Korostettu viesti"
 
@@ -4832,370 +4823,577 @@ msgid "C_onnect"
 msgstr "_Yhdistä"
 
 #: src/fe-gtk/setup.c:105
-msgid "Text Box Appearance"
-msgstr "Tekstilaatikon ulkonäkö"
+#, fuzzy
+msgid "Albanian"
+msgstr "Albania"
+
+#: src/fe-gtk/setup.c:106
+msgid "Amharic"
+msgstr ""
 
 #: src/fe-gtk/setup.c:107
-msgid "Main font:"
+#, fuzzy
+msgid "Azerbaijani"
+msgstr "Azerbaidzan"
+
+#: src/fe-gtk/setup.c:108
+msgid "Basque"
 msgstr ""
 
 #: src/fe-gtk/setup.c:109
+#, fuzzy
+msgid "Belarusian"
+msgstr "Valko-Venäjä"
+
+#: src/fe-gtk/setup.c:110
+#, fuzzy
+msgid "Bulgarian"
+msgstr "Bulgaria"
+
+#: src/fe-gtk/setup.c:112
+msgid "Chinese (Simplified)"
+msgstr ""
+
+#: src/fe-gtk/setup.c:113
+msgid "Chinese (Traditional)"
+msgstr ""
+
+#: src/fe-gtk/setup.c:114
+msgid "Czech"
+msgstr ""
+
+#: src/fe-gtk/setup.c:115
+msgid "Dutch"
+msgstr ""
+
+#: src/fe-gtk/setup.c:116
+msgid "English (UK)"
+msgstr ""
+
+#: src/fe-gtk/setup.c:117
+msgid "English (US)"
+msgstr ""
+
+#: src/fe-gtk/setup.c:118
+#, fuzzy
+msgid "Estonian"
+msgstr "Viro"
+
+#: src/fe-gtk/setup.c:119
+msgid "Finnish"
+msgstr ""
+
+#: src/fe-gtk/setup.c:120
+#, fuzzy
+msgid "French"
+msgstr "Ranskan Guyana"
+
+#: src/fe-gtk/setup.c:121
+msgid "Galician"
+msgstr ""
+
+#: src/fe-gtk/setup.c:122
+#, fuzzy
+msgid "German"
+msgstr "Saksa"
+
+#: src/fe-gtk/setup.c:123
+#, fuzzy
+msgid "Greek"
+msgstr "Kreikka"
+
+#: src/fe-gtk/setup.c:124
+msgid "Hindi"
+msgstr ""
+
+#: src/fe-gtk/setup.c:125
+#, fuzzy
+msgid "Hungarian"
+msgstr "Unkari"
+
+#: src/fe-gtk/setup.c:126
+#, fuzzy
+msgid "Italian"
+msgstr "Italia"
+
+#: src/fe-gtk/setup.c:127
+#, fuzzy
+msgid "Japanese"
+msgstr "Japani"
+
+#: src/fe-gtk/setup.c:128
+#, fuzzy
+msgid "Kannada"
+msgstr "Kanada"
+
+#: src/fe-gtk/setup.c:129
+msgid "Korean"
+msgstr ""
+
+#: src/fe-gtk/setup.c:130
+#, fuzzy
+msgid "Latvian"
+msgstr "Latvia"
+
+#: src/fe-gtk/setup.c:131
+#, fuzzy
+msgid "Lithuanian"
+msgstr "Liettua"
+
+#: src/fe-gtk/setup.c:132
+#, fuzzy
+msgid "Macedonian"
+msgstr "Makedonia"
+
+#: src/fe-gtk/setup.c:133
+#, fuzzy
+msgid "Malay"
+msgstr "Malesia"
+
+#: src/fe-gtk/setup.c:134
+#, fuzzy
+msgid "Norwegian"
+msgstr "Norja"
+
+#: src/fe-gtk/setup.c:135
+msgid "Polish"
+msgstr ""
+
+#: src/fe-gtk/setup.c:136
+#, fuzzy
+msgid "Portuguese"
+msgstr "Portugali"
+
+#: src/fe-gtk/setup.c:137
+msgid "Portuguese (Brazilian)"
+msgstr ""
+
+#: src/fe-gtk/setup.c:138
+msgid "Punjabi"
+msgstr ""
+
+#: src/fe-gtk/setup.c:139
+msgid "Russian"
+msgstr ""
+
+#: src/fe-gtk/setup.c:140
+msgid "Serbian"
+msgstr ""
+
+#: src/fe-gtk/setup.c:141
+#, fuzzy
+msgid "Slovak"
+msgstr "Slovenia"
+
+#: src/fe-gtk/setup.c:142
+#, fuzzy
+msgid "Slovenian"
+msgstr "Slovenia"
+
+#: src/fe-gtk/setup.c:143
+msgid "Spanish"
+msgstr ""
+
+#: src/fe-gtk/setup.c:144
+#, fuzzy
+msgid "Swedish"
+msgstr "Ruotsi"
+
+#: src/fe-gtk/setup.c:145
+#, fuzzy
+msgid "Thai"
+msgstr "Thaimaa"
+
+#: src/fe-gtk/setup.c:146
+#, fuzzy
+msgid "Ukrainian"
+msgstr "Ukraina"
+
+#: src/fe-gtk/setup.c:147
+#, fuzzy
+msgid "Vietnamese"
+msgstr "Vietnam"
+
+#: src/fe-gtk/setup.c:148
+msgid "Walloon"
+msgstr ""
+
+#: src/fe-gtk/setup.c:156
+#, fuzzy
+msgid "Localization"
+msgstr "Sijainti"
+
+#: src/fe-gtk/setup.c:157
+#, fuzzy
+msgid "Interface language:"
+msgstr "Käyttöliittymä"
+
+#: src/fe-gtk/setup.c:159
+#, fuzzy
+msgid "Text Box"
+msgstr "Tekstilaatikko"
+
+#: src/fe-gtk/setup.c:161
+msgid "Main font:"
+msgstr ""
+
+#: src/fe-gtk/setup.c:163
 msgid "Font:"
 msgstr "Kirjasin:"
 
-#: src/fe-gtk/setup.c:111
+#: src/fe-gtk/setup.c:165
 msgid "Background image:"
 msgstr "Taustakuva:"
 
-#: src/fe-gtk/setup.c:112
+#: src/fe-gtk/setup.c:166
 msgid "Scrollback lines:"
 msgstr "Vieritettäviä rivejä:"
 
-#: src/fe-gtk/setup.c:113
+#: src/fe-gtk/setup.c:167
 msgid "Colored nick names"
 msgstr "Väritä kutsumanimet"
 
-#: src/fe-gtk/setup.c:114
+#: src/fe-gtk/setup.c:168
 msgid "Give each person on IRC a different color"
 msgstr "Anna kullekin käyttäjälle oma väri."
 
-#: src/fe-gtk/setup.c:115
+#: src/fe-gtk/setup.c:169
 msgid "Indent nick names"
 msgstr "Sisennä kutsumanimet"
 
-#: src/fe-gtk/setup.c:116
+#: src/fe-gtk/setup.c:170
 msgid "Make nick names right-justified"
 msgstr "Tasaa kutsumanimet oikealle."
 
-#: src/fe-gtk/setup.c:117
+#: src/fe-gtk/setup.c:171
 msgid "Transparent background"
 msgstr "Läpikuultava tausta"
 
-#: src/fe-gtk/setup.c:118
+#: src/fe-gtk/setup.c:172
 msgid "Show marker line"
 msgstr "Näytä lukumerkki"
 
-#: src/fe-gtk/setup.c:119
+#: src/fe-gtk/setup.c:173
 msgid "Insert a red line after the last read text."
 msgstr "Erottaa luetun ja lukemattoman tekstin punaisella viivalla."
 
-#: src/fe-gtk/setup.c:120
+#: src/fe-gtk/setup.c:174
 msgid "Transparency Settings"
 msgstr "Läpikuultavuuden säätö"
 
-#: src/fe-gtk/setup.c:121
+#: src/fe-gtk/setup.c:175
 msgid "Red:"
 msgstr "Punainen:"
 
-#: src/fe-gtk/setup.c:122
+#: src/fe-gtk/setup.c:176
 msgid "Green:"
 msgstr "Vihreä:"
 
-#: src/fe-gtk/setup.c:123
+#: src/fe-gtk/setup.c:177
 msgid "Blue:"
 msgstr "Sininen:"
 
-#: src/fe-gtk/setup.c:125 src/fe-gtk/setup.c:487
+#: src/fe-gtk/setup.c:179 src/fe-gtk/setup.c:541
 msgid "Time Stamps"
 msgstr "Aikaleimat"
 
-#: src/fe-gtk/setup.c:126
+#: src/fe-gtk/setup.c:180
 msgid "Enable time stamps"
 msgstr "Näytä aikaleimat"
 
-#: src/fe-gtk/setup.c:127
+#: src/fe-gtk/setup.c:181
 msgid "Time stamp format:"
 msgstr "Aikaleiman muoto:"
 
-#: src/fe-gtk/setup.c:129 src/fe-gtk/setup.c:491
+#: src/fe-gtk/setup.c:183 src/fe-gtk/setup.c:545
 #, fuzzy
 msgid "See the strftime MSDN article for details."
 msgstr "Katso yksityiskohtaiset ohjeet manuaalisivulta strftime(3)."
 
-#: src/fe-gtk/setup.c:131 src/fe-gtk/setup.c:493
+#: src/fe-gtk/setup.c:185 src/fe-gtk/setup.c:547
 #, fuzzy
 msgid "See the strftime manpage for details."
 msgstr "Katso yksityiskohtaiset ohjeet manuaalisivulta strftime(3)."
 
-#: src/fe-gtk/setup.c:139 src/fe-gtk/setup.c:185
+#: src/fe-gtk/setup.c:193 src/fe-gtk/setup.c:239
 msgid "A-Z"
 msgstr "A-Z"
 
-#: src/fe-gtk/setup.c:140
+#: src/fe-gtk/setup.c:194
 msgid "Last-spoke order"
 msgstr "Puhumisajankohdan mukaan"
 
-#: src/fe-gtk/setup.c:146
+#: src/fe-gtk/setup.c:200
 #, fuzzy
 msgid "Input Box"
 msgstr "Syötekenttä"
 
-#: src/fe-gtk/setup.c:147 src/fe-gtk/setup.c:217
+#: src/fe-gtk/setup.c:201 src/fe-gtk/setup.c:271
 msgid "Use the Text box font and colors"
 msgstr "Käytä tekstilaatikon kirjasinta ja värejä"
 
-#: src/fe-gtk/setup.c:149
+#: src/fe-gtk/setup.c:203
 msgid "Spell checking"
 msgstr "Oikoluku"
 
-#: src/fe-gtk/setup.c:150
+#: src/fe-gtk/setup.c:204
 msgid "Dictionaries to use:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:152
+#: src/fe-gtk/setup.c:206
 msgid ""
 "Use language codes (as in \"share\\myspell\\dicts\").\n"
 "Separate multiple entries with commas."
 msgstr ""
 
-#: src/fe-gtk/setup.c:154
+#: src/fe-gtk/setup.c:208
 #, fuzzy
 msgid "Use language codes. Separate multiple entries with commas."
 msgstr "Erota sanat toisistaan pilkuilla."
 
-#: src/fe-gtk/setup.c:158
+#: src/fe-gtk/setup.c:212
 msgid "Nick Completion"
 msgstr "Kutsumanimien täydennys"
 
-#: src/fe-gtk/setup.c:159
+#: src/fe-gtk/setup.c:213
 msgid "Automatic nick completion (without TAB key)"
 msgstr "Automaattinen kutsumanimien täydennys (ilman tabulaattoria)"
 
-#: src/fe-gtk/setup.c:161
+#: src/fe-gtk/setup.c:215
 msgid "Nick completion suffix:"
 msgstr "Täydennyksen jälkiliite:"
 
-#: src/fe-gtk/setup.c:162
+#: src/fe-gtk/setup.c:216
 msgid "Nick completion sorted:"
 msgstr "Kutsumanimitäydennys aakkosjärjestyksessä:"
 
-#: src/fe-gtk/setup.c:165
+#: src/fe-gtk/setup.c:219
 msgid "Input Box Codes"
 msgstr "Syötekentän koodit"
 
-#: src/fe-gtk/setup.c:166
+#: src/fe-gtk/setup.c:220
 #, c-format
 msgid "Interpret %nnn as an ASCII value"
 msgstr "Tulkitse %nnn ASCII-arvoksi"
 
-#: src/fe-gtk/setup.c:167
+#: src/fe-gtk/setup.c:221
 msgid "Interpret %C, %B as Color, Bold etc"
 msgstr "Tulkitse %C väriksi, %B lihavoinniksi, jne"
 
-#: src/fe-gtk/setup.c:184
+#: src/fe-gtk/setup.c:238
 msgid "A-Z, Ops first"
 msgstr "A-Z, opit ensimmäisinä"
 
-#: src/fe-gtk/setup.c:186
+#: src/fe-gtk/setup.c:240
 msgid "Z-A, Ops last"
 msgstr "Z-A, opit viimeisinä"
 
-#: src/fe-gtk/setup.c:187
+#: src/fe-gtk/setup.c:241
 msgid "Z-A"
 msgstr "Z-A"
 
-#: src/fe-gtk/setup.c:188
+#: src/fe-gtk/setup.c:242
 msgid "Unsorted"
 msgstr "Lajittelematon"
 
-#: src/fe-gtk/setup.c:194 src/fe-gtk/setup.c:206
+#: src/fe-gtk/setup.c:248 src/fe-gtk/setup.c:260
 msgid "Left (Upper)"
 msgstr "Vasemmalla (ylhäällä)"
 
-#: src/fe-gtk/setup.c:195 src/fe-gtk/setup.c:207
+#: src/fe-gtk/setup.c:249 src/fe-gtk/setup.c:261
 msgid "Left (Lower)"
 msgstr "Vasemmalla (alhaalla)"
 
-#: src/fe-gtk/setup.c:196 src/fe-gtk/setup.c:208
+#: src/fe-gtk/setup.c:250 src/fe-gtk/setup.c:262
 msgid "Right (Upper)"
 msgstr "Oikealla (ylhäällä)"
 
-#: src/fe-gtk/setup.c:197 src/fe-gtk/setup.c:209
+#: src/fe-gtk/setup.c:251 src/fe-gtk/setup.c:263
 msgid "Right (Lower)"
 msgstr "Oikealla (alhaalla)"
 
-#: src/fe-gtk/setup.c:198
+#: src/fe-gtk/setup.c:252
 msgid "Top"
 msgstr "Ylhäällä"
 
-#: src/fe-gtk/setup.c:199
+#: src/fe-gtk/setup.c:253
 msgid "Bottom"
 msgstr "Alhaalla"
 
-#: src/fe-gtk/setup.c:200
+#: src/fe-gtk/setup.c:254
 msgid "Hidden"
 msgstr "Piilotettu"
 
-#: src/fe-gtk/setup.c:215
+#: src/fe-gtk/setup.c:269
 msgid "User List"
 msgstr "Käyttäjäluettelo"
 
-#: src/fe-gtk/setup.c:216
+#: src/fe-gtk/setup.c:270
 msgid "Show hostnames in user list"
 msgstr "Näytä isäntänimet käyttäjäluettelossa"
 
-#: src/fe-gtk/setup.c:219
+#: src/fe-gtk/setup.c:273
 msgid "User list sorted by:"
 msgstr "Lajittelutapa:"
 
-#: src/fe-gtk/setup.c:220
+#: src/fe-gtk/setup.c:274
 msgid "Show user list at:"
 msgstr "Näytä käyttäjäluettelo:"
 
-#: src/fe-gtk/setup.c:222
+#: src/fe-gtk/setup.c:276
 #, fuzzy
 msgid "Away Tracking"
 msgstr "Poissaolojen seuranta"
 
-#: src/fe-gtk/setup.c:223
+#: src/fe-gtk/setup.c:277
 msgid "Track the Away status of users and mark them in a different color"
 msgstr "Seuraa poissaoloja ja näytä poissaolevat käyttäjät eri värillä,"
 
-#: src/fe-gtk/setup.c:224
+#: src/fe-gtk/setup.c:278
 msgid "On channels smaller than:"
 msgstr "kun kanavalla on käyttäjiä alle:"
 
-#: src/fe-gtk/setup.c:226
+#: src/fe-gtk/setup.c:280
 msgid "Action Upon Double Click"
 msgstr "Kaksoisnapsautuksen toiminto"
 
-#: src/fe-gtk/setup.c:238
+#: src/fe-gtk/setup.c:292
 msgid "Windows"
 msgstr "Ikkunat"
 
-#: src/fe-gtk/setup.c:239 src/fe-gtk/setup.c:255
+#: src/fe-gtk/setup.c:293 src/fe-gtk/setup.c:309
 msgid "Tabs"
 msgstr "Välilehdet"
 
-#: src/fe-gtk/setup.c:247
+#: src/fe-gtk/setup.c:301
 msgid "Always"
 msgstr "Aina"
 
-#: src/fe-gtk/setup.c:248
+#: src/fe-gtk/setup.c:302
 msgid "Only requested tabs"
 msgstr "Vain itse avatut"
 
-#: src/fe-gtk/setup.c:257
+#: src/fe-gtk/setup.c:311
 msgid "Tree"
 msgstr ""
 
-#: src/fe-gtk/setup.c:264
+#: src/fe-gtk/setup.c:318
 #, fuzzy
 msgid "Switcher type:"
 msgstr "Hakutapa:"
 
-#: src/fe-gtk/setup.c:265
+#: src/fe-gtk/setup.c:319
 msgid "Open an extra tab for server messages"
 msgstr "Palvelinviestit omaan välilehteensä"
 
-#: src/fe-gtk/setup.c:266
+#: src/fe-gtk/setup.c:320
 msgid "Open an extra tab for server notices"
 msgstr "Palvelintiedotteet omaan välilehteensä"
 
-#: src/fe-gtk/setup.c:267
+#: src/fe-gtk/setup.c:321
 msgid "Open a new tab when you receive a private message"
 msgstr "Avaa uusi välilehti yksityisviestin saapuessa"
 
-#: src/fe-gtk/setup.c:268
+#: src/fe-gtk/setup.c:322
 msgid "Sort tabs in alphabetical order"
 msgstr "Välilehdet aakkosjärjestykseen"
 
-#: src/fe-gtk/setup.c:269
+#: src/fe-gtk/setup.c:323
 msgid "Show icons in the channel tree"
 msgstr ""
 
-#: src/fe-gtk/setup.c:270
+#: src/fe-gtk/setup.c:324
 #, fuzzy
 msgid "Smaller text"
 msgstr "Pienet korvakkeet"
 
-#: src/fe-gtk/setup.c:272
+#: src/fe-gtk/setup.c:326
 msgid "Focus new tabs:"
 msgstr "Uudet välilehdet etualalle:"
 
-#: src/fe-gtk/setup.c:274
+#: src/fe-gtk/setup.c:328
 msgid "Show channel switcher at:"
 msgstr "Näytä kanavavalitsin:"
 
-#: src/fe-gtk/setup.c:275
+#: src/fe-gtk/setup.c:329
 msgid "Shorten tab labels to:"
 msgstr "Typistä välilehtien nimet:"
 
-#: src/fe-gtk/setup.c:275
+#: src/fe-gtk/setup.c:329
 msgid "letters."
 msgstr "merkin pituisiksi."
 
-#: src/fe-gtk/setup.c:277
+#: src/fe-gtk/setup.c:331
 msgid "Tabs or Windows"
 msgstr "Välilehti vai ikkuna"
 
-#: src/fe-gtk/setup.c:278
+#: src/fe-gtk/setup.c:332
 msgid "Open channels in:"
 msgstr "Kanavien avaamispaikka:"
 
-#: src/fe-gtk/setup.c:279
+#: src/fe-gtk/setup.c:333
 msgid "Open dialogs in:"
 msgstr "Keskusteluiden avaamispaikka:"
 
-#: src/fe-gtk/setup.c:280
+#: src/fe-gtk/setup.c:334
 msgid "Open utilities in:"
 msgstr "Apuvälineiden avaamispaikka:"
 
-#: src/fe-gtk/setup.c:280
+#: src/fe-gtk/setup.c:334
 msgid "Open DCC, Ignore, Notify etc, in tabs or windows?"
 msgstr "DCC:t, huomioimattomuudet, ilmoitukset jne."
 
-#: src/fe-gtk/setup.c:287
+#: src/fe-gtk/setup.c:341
 #, fuzzy
 msgid "Messages"
 msgstr "Viesti"
 
-#: src/fe-gtk/setup.c:288
+#: src/fe-gtk/setup.c:342
 #, fuzzy
 msgid "Scrollback"
 msgstr "Vieritettäviä rivejä:"
 
-#: src/fe-gtk/setup.c:296
+#: src/fe-gtk/setup.c:350
 msgid "No"
 msgstr "Ei"
 
-#: src/fe-gtk/setup.c:297
+#: src/fe-gtk/setup.c:351
 msgid "Yes"
 msgstr "Kyllä"
 
-#: src/fe-gtk/setup.c:298
+#: src/fe-gtk/setup.c:352
 msgid "Browse for save folder every time"
 msgstr "Valitse tallennushakemisto joka kerta"
 
-#: src/fe-gtk/setup.c:304
+#: src/fe-gtk/setup.c:358
 msgid "Files and Directories"
 msgstr "Tiedostot ja hakemistot"
 
-#: src/fe-gtk/setup.c:305
+#: src/fe-gtk/setup.c:359
 msgid "Auto accept file offers:"
 msgstr "Hyväksy tarjotut tiedostot automaattisesti:"
 
-#: src/fe-gtk/setup.c:306
+#: src/fe-gtk/setup.c:360
 msgid "Download files to:"
 msgstr "Lataa hakemistoon:"
 
-#: src/fe-gtk/setup.c:307
+#: src/fe-gtk/setup.c:361
 msgid "Move completed files to:"
 msgstr "Siirrä valmiit tiedostot hakemistoon:"
 
-#: src/fe-gtk/setup.c:308
+#: src/fe-gtk/setup.c:362
 msgid "Save nick name in filenames"
 msgstr "Liitä lähettäjän kutsumanimi tiedostonimiin"
 
-#: src/fe-gtk/setup.c:310
+#: src/fe-gtk/setup.c:364
 msgid "Network Settings"
 msgstr "Verkkoasetukset"
 
-#: src/fe-gtk/setup.c:311
+#: src/fe-gtk/setup.c:365
 msgid "Get my address from the IRC server"
 msgstr "Hae IP-osoite IRC-palvelimelta"
 
-#: src/fe-gtk/setup.c:312
+#: src/fe-gtk/setup.c:366
 msgid ""
 "Asks the IRC server for your real address. Use this if you have a 192.168.*."
 "* address!"
@@ -5203,571 +5401,572 @@ msgstr ""
 "Tiedustelee osoittettasi IRC-palvelimelta. Rastita, mikäli osoitteesi on "
 "esimerkiksi muotoa 192.168.*.*!"
 
-#: src/fe-gtk/setup.c:313
+#: src/fe-gtk/setup.c:367
 msgid "DCC IP address:"
 msgstr "DCC:n IP-osoite:"
 
-#: src/fe-gtk/setup.c:314
+#: src/fe-gtk/setup.c:368
 msgid "Claim you are at this address when offering files."
 msgstr "Tiedostoja väitetään lähetettävän tästä osoitteesta."
 
-#: src/fe-gtk/setup.c:315
+#: src/fe-gtk/setup.c:369
 msgid "First DCC send port:"
 msgstr "Ensimmäinen DCC-lähetysportti"
 
-#: src/fe-gtk/setup.c:316
+#: src/fe-gtk/setup.c:370
 msgid "Last DCC send port:"
 msgstr "Viimeinen DCC-lähetysportti"
 
-#: src/fe-gtk/setup.c:317
+#: src/fe-gtk/setup.c:371
 msgid "!Leave ports at zero for full range."
 msgstr "Jätä nolliksi, jos haluat käyttöön kaikki portit."
 
-#: src/fe-gtk/setup.c:319
+#: src/fe-gtk/setup.c:373
 msgid "Maximum File Transfer Speeds (bytes per second)"
 msgstr "Siirtonopeuksien ylärajat (tavua sekunnissa)"
 
-#: src/fe-gtk/setup.c:320
+#: src/fe-gtk/setup.c:374
 msgid "One upload:"
 msgstr "Yksittäinen lähetys:"
 
-#: src/fe-gtk/setup.c:321 src/fe-gtk/setup.c:323
+#: src/fe-gtk/setup.c:375 src/fe-gtk/setup.c:377
 msgid "Maximum speed for one transfer"
 msgstr "Yksittäisen siirron suurin sallittu nopeus."
 
-#: src/fe-gtk/setup.c:322
+#: src/fe-gtk/setup.c:376
 msgid "One download:"
 msgstr "Yksittäinen lataus:"
 
-#: src/fe-gtk/setup.c:324
+#: src/fe-gtk/setup.c:378
 msgid "All uploads combined:"
 msgstr "Kaikki lähetykset yhteensä:"
 
-#: src/fe-gtk/setup.c:325 src/fe-gtk/setup.c:327
+#: src/fe-gtk/setup.c:379 src/fe-gtk/setup.c:381
 msgid "Maximum speed for all files"
 msgstr "Yhteenlaskettujen siirtojen suurin sallittu nopeus."
 
-#: src/fe-gtk/setup.c:326
+#: src/fe-gtk/setup.c:380
 msgid "All downloads combined:"
 msgstr "Kaikki lataukset yhteensä:"
 
-#: src/fe-gtk/setup.c:354 src/fe-gtk/setup.c:380 src/fe-gtk/setup.c:1830
+#: src/fe-gtk/setup.c:408 src/fe-gtk/setup.c:434 src/fe-gtk/setup.c:1884
 msgid "Alerts"
 msgstr "Hälytykset"
 
-#: src/fe-gtk/setup.c:358
+#: src/fe-gtk/setup.c:412
 msgid "Show tray balloons on:"
 msgstr "Näytä puhekupla, kun tulee:"
 
-#: src/fe-gtk/setup.c:360
+#: src/fe-gtk/setup.c:414
 msgid "Blink tray icon on:"
 msgstr "Välkytä ilmoitusalueella, kun tulee:"
 
-#: src/fe-gtk/setup.c:361 src/fe-gtk/setup.c:383
+#: src/fe-gtk/setup.c:415 src/fe-gtk/setup.c:437
 msgid "Blink task bar on:"
 msgstr "Välkytä tehtäväpalkkia, kun tulee:"
 
-#: src/fe-gtk/setup.c:362 src/fe-gtk/setup.c:384
+#: src/fe-gtk/setup.c:416 src/fe-gtk/setup.c:438
 msgid "Make a beep sound on:"
 msgstr "Piipauta, kun tulee:"
 
 # Pilkku lopussa, koska lause jatkuu seuraavaan asetuskohtaan.
-#: src/fe-gtk/setup.c:364
+#: src/fe-gtk/setup.c:418
 msgid "Enable system tray icon"
 msgstr "Ota ilmoitusalueen kuvake käyttöön"
 
-#: src/fe-gtk/setup.c:365 src/fe-gtk/setup.c:386
+#: src/fe-gtk/setup.c:419 src/fe-gtk/setup.c:440
 msgid "Omit alerts when marked as being away"
 msgstr ""
 
-#: src/fe-gtk/setup.c:367 src/fe-gtk/setup.c:388
+#: src/fe-gtk/setup.c:421 src/fe-gtk/setup.c:442
 msgid "Highlighted Messages"
 msgstr "Korostettu viesti"
 
-#: src/fe-gtk/setup.c:368 src/fe-gtk/setup.c:389
+#: src/fe-gtk/setup.c:422 src/fe-gtk/setup.c:443
 msgid ""
 "Highlighted messages are ones where your nickname is mentioned, but also:"
 msgstr "Viesti korostetaan, kun siinä mainitaan kutsumanimesi tai:"
 
-#: src/fe-gtk/setup.c:370 src/fe-gtk/setup.c:391
+#: src/fe-gtk/setup.c:424 src/fe-gtk/setup.c:445
 msgid "Extra words to highlight:"
 msgstr "Muut korostettavat sanat:"
 
-#: src/fe-gtk/setup.c:371 src/fe-gtk/setup.c:392
+#: src/fe-gtk/setup.c:425 src/fe-gtk/setup.c:446
 msgid "Nick names not to highlight:"
 msgstr "Älä korosta viestejä käyttäjiltä:"
 
-#: src/fe-gtk/setup.c:372 src/fe-gtk/setup.c:393
+#: src/fe-gtk/setup.c:426 src/fe-gtk/setup.c:447
 msgid "Nick names to always highlight:"
 msgstr "Korosta aina viestit käyttäjiltä:"
 
-#: src/fe-gtk/setup.c:373 src/fe-gtk/setup.c:394
+#: src/fe-gtk/setup.c:427 src/fe-gtk/setup.c:448
 #, fuzzy
 msgid ""
 "Separate multiple words with commas.\n"
 "Wildcards are accepted."
 msgstr "Erota sanat toisistaan pilkuilla."
 
-#: src/fe-gtk/setup.c:401
+#: src/fe-gtk/setup.c:455
 msgid "Default Messages"
 msgstr "Oletusilmoitukset"
 
-#: src/fe-gtk/setup.c:402
+#: src/fe-gtk/setup.c:456
 msgid "Quit:"
 msgstr "Lopetus:"
 
-#: src/fe-gtk/setup.c:403
+#: src/fe-gtk/setup.c:457
 msgid "Leave channel:"
 msgstr "Kanavalta poistuminen:"
 
-#: src/fe-gtk/setup.c:404
+#: src/fe-gtk/setup.c:458
 msgid "Away:"
 msgstr "Poissaolo:"
 
-#: src/fe-gtk/setup.c:406
+#: src/fe-gtk/setup.c:460
 msgid "Away"
 msgstr "Poissaolo"
 
-#: src/fe-gtk/setup.c:407
+#: src/fe-gtk/setup.c:461
 msgid "Announce away messages"
 msgstr "Kuuluta poissaoloviestit"
 
-#: src/fe-gtk/setup.c:408
+#: src/fe-gtk/setup.c:462
 msgid "Announce your away messages to all channels"
 msgstr "Lähettää poissaoloviestit kaikille kanaville."
 
-#: src/fe-gtk/setup.c:409
+#: src/fe-gtk/setup.c:463
 msgid "Show away once"
 msgstr "Näytä poissaoloviestit kerran"
 
-#: src/fe-gtk/setup.c:409
+#: src/fe-gtk/setup.c:463
 msgid "Show identical away messages only once"
 msgstr "Näyttää identtiset poissaoloviestit vain kerran."
 
-#: src/fe-gtk/setup.c:410
+#: src/fe-gtk/setup.c:464
 msgid "Automatically unmark away"
 msgstr "Lopeta oma poissaolo automaattisesti"
 
-#: src/fe-gtk/setup.c:410
+#: src/fe-gtk/setup.c:464
 msgid "Unmark yourself as away before sending messages"
 msgstr "Merkitsee sinut läsnäolevaksi ennen viestien lähettämistä."
 
-#: src/fe-gtk/setup.c:417 src/fe-gtk/setup.c:448
+#: src/fe-gtk/setup.c:471 src/fe-gtk/setup.c:502
 msgid "Advanced Settings"
 msgstr "Lisäasetukset"
 
-#: src/fe-gtk/setup.c:419 src/fe-gtk/setup.c:449
+#: src/fe-gtk/setup.c:473 src/fe-gtk/setup.c:503
 msgid "Alternative fonts:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:421 src/fe-gtk/setup.c:450
+#: src/fe-gtk/setup.c:475 src/fe-gtk/setup.c:504
 msgid "Auto reconnect delay:"
 msgstr "Automaattisen yhdistämisen viive:"
 
-#: src/fe-gtk/setup.c:422 src/fe-gtk/setup.c:451
+#: src/fe-gtk/setup.c:476 src/fe-gtk/setup.c:505
 msgid "Display MODEs in raw form"
 msgstr "Näytä tilat raakamuodossa"
 
-#: src/fe-gtk/setup.c:423 src/fe-gtk/setup.c:452
+#: src/fe-gtk/setup.c:477 src/fe-gtk/setup.c:506
 msgid "Whois on notify"
 msgstr "Suorita whois ilmoituksen yhteydessä"
 
-#: src/fe-gtk/setup.c:423 src/fe-gtk/setup.c:452
+#: src/fe-gtk/setup.c:477 src/fe-gtk/setup.c:506
 msgid "Sends a /WHOIS when a user comes online in your notify list"
 msgstr ""
 "Lähettää /WHOIS-komennon, kun ilmoitusluettelossa oleva käyttäjä on "
 "tavoitettavissa"
 
-#: src/fe-gtk/setup.c:424 src/fe-gtk/setup.c:453
+#: src/fe-gtk/setup.c:478 src/fe-gtk/setup.c:507
 msgid "Hide join and part messages"
 msgstr "Piilota liittymis- ja poistumisviestit"
 
-#: src/fe-gtk/setup.c:424 src/fe-gtk/setup.c:453
+#: src/fe-gtk/setup.c:478 src/fe-gtk/setup.c:507
 msgid "Hide channel join/part messages by default"
 msgstr "Piilota liittymis- ja poistumisviestit oletuksena"
 
-#: src/fe-gtk/setup.c:425 src/fe-gtk/setup.c:455
+#: src/fe-gtk/setup.c:479 src/fe-gtk/setup.c:509
 msgid "Auto Open DCC Windows"
 msgstr "Avaa DCC-ikkunat automaattisesti"
 
-#: src/fe-gtk/setup.c:426 src/fe-gtk/setup.c:456
+#: src/fe-gtk/setup.c:480 src/fe-gtk/setup.c:510
 msgid "Send window"
 msgstr "Lähetysikkuna"
 
-#: src/fe-gtk/setup.c:427 src/fe-gtk/setup.c:457
+#: src/fe-gtk/setup.c:481 src/fe-gtk/setup.c:511
 msgid "Receive window"
 msgstr "Vastaanottoikkuna"
 
-#: src/fe-gtk/setup.c:428 src/fe-gtk/setup.c:458
+#: src/fe-gtk/setup.c:482 src/fe-gtk/setup.c:512
 msgid "Chat window"
 msgstr "Kanavaikkuna"
 
-#: src/fe-gtk/setup.c:429 src/fe-gtk/setup.c:459
+#: src/fe-gtk/setup.c:483 src/fe-gtk/setup.c:513
 msgid "Auto Copy Behavior"
 msgstr ""
 
-#: src/fe-gtk/setup.c:430 src/fe-gtk/setup.c:460
+#: src/fe-gtk/setup.c:484 src/fe-gtk/setup.c:514
 msgid "Automatically copy selected text"
 msgstr ""
 
-#: src/fe-gtk/setup.c:431 src/fe-gtk/setup.c:461
+#: src/fe-gtk/setup.c:485 src/fe-gtk/setup.c:515
 msgid ""
 "Copy selected text to clipboard when left mouse button is released. "
 "Otherwise, CONTROL-SHIFT-C will copy the selected text to the clipboard."
 msgstr ""
 
-#: src/fe-gtk/setup.c:434 src/fe-gtk/setup.c:464
+#: src/fe-gtk/setup.c:488 src/fe-gtk/setup.c:518
 #, fuzzy
 msgid "Automatically include time stamps"
 msgstr "Lopeta oma poissaolo automaattisesti"
 
-#: src/fe-gtk/setup.c:435 src/fe-gtk/setup.c:465
+#: src/fe-gtk/setup.c:489 src/fe-gtk/setup.c:519
 msgid ""
 "Automatically include time stamps in copied lines of text. Otherwise, "
 "include time stamps if the SHIFT key is held down while selecting."
 msgstr ""
 
-#: src/fe-gtk/setup.c:437 src/fe-gtk/setup.c:467
+#: src/fe-gtk/setup.c:491 src/fe-gtk/setup.c:521
 msgid "Automatically include color information"
 msgstr ""
 
-#: src/fe-gtk/setup.c:438 src/fe-gtk/setup.c:468
+#: src/fe-gtk/setup.c:492 src/fe-gtk/setup.c:522
 msgid ""
 "Automatically include color information in copied lines of text.  Otherwise, "
 "include color information if the CONTROL key is held down while selecting."
 msgstr ""
 
-#: src/fe-gtk/setup.c:454
+#: src/fe-gtk/setup.c:508
 msgid "Allow only one instance of HexChat to run"
 msgstr ""
 
-#: src/fe-gtk/setup.c:478 src/fe-gtk/setup.c:1832
+#: src/fe-gtk/setup.c:532 src/fe-gtk/setup.c:1886
 msgid "Logging"
 msgstr "Lokiasetukset"
 
-#: src/fe-gtk/setup.c:479
+#: src/fe-gtk/setup.c:533
 msgid "Display scrollback from previous session"
 msgstr ""
 
-#: src/fe-gtk/setup.c:481
+#: src/fe-gtk/setup.c:535
 msgid "Strip colors when displaying scrollback"
 msgstr ""
 
-#: src/fe-gtk/setup.c:483
+#: src/fe-gtk/setup.c:537
 #, fuzzy
 msgid "Enable logging of conversations to disk"
 msgstr "Pidä keskusteluista lokia"
 
-#: src/fe-gtk/setup.c:484
+#: src/fe-gtk/setup.c:538
 msgid "Log filename:"
 msgstr "Lokitiedoston nimi:"
 
-#: src/fe-gtk/setup.c:485
+#: src/fe-gtk/setup.c:539
 #, c-format
 msgid "%s=Server %c=Channel %n=Network."
 msgstr "%s=palvelin %c=kanava %n=verkko."
 
-#: src/fe-gtk/setup.c:488
+#: src/fe-gtk/setup.c:542
 msgid "Insert timestamps in logs"
 msgstr "Lisää lokeihin aikaleimat"
 
-#: src/fe-gtk/setup.c:489
+#: src/fe-gtk/setup.c:543
 msgid "Log timestamp format:"
 msgstr "Lokitiedoston aikaleiman muoto:"
 
-#: src/fe-gtk/setup.c:496
+#: src/fe-gtk/setup.c:550
 msgid "URLs"
 msgstr ""
 
-#: src/fe-gtk/setup.c:497
+#: src/fe-gtk/setup.c:551
 #, fuzzy
 msgid "Enable logging of URLs to disk"
 msgstr "Pidä keskusteluista lokia"
 
-#: src/fe-gtk/setup.c:498
+#: src/fe-gtk/setup.c:552
 #, fuzzy
 msgid "Enable URL grabber"
 msgstr "XChat: URL-kaappaaja"
 
-#: src/fe-gtk/setup.c:499
+#: src/fe-gtk/setup.c:553
 msgid "Maximum number of URLs to grab:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:506
+#: src/fe-gtk/setup.c:560
 msgid "(Disabled)"
 msgstr "(Pois käytöstä)"
 
-#: src/fe-gtk/setup.c:507
+#: src/fe-gtk/setup.c:561
 msgid "Wingate"
 msgstr "Wingate"
 
-#: src/fe-gtk/setup.c:508
+#: src/fe-gtk/setup.c:562
 msgid "Socks4"
 msgstr "Socks4"
 
-#: src/fe-gtk/setup.c:509
+#: src/fe-gtk/setup.c:563
 msgid "Socks5"
 msgstr "Socks5"
 
-#: src/fe-gtk/setup.c:510
+#: src/fe-gtk/setup.c:564
 msgid "HTTP"
 msgstr "HTTP"
 
-#: src/fe-gtk/setup.c:512
+#: src/fe-gtk/setup.c:566
 msgid "MS Proxy (ISA)"
 msgstr "MS Proxy (ISA)"
 
-#: src/fe-gtk/setup.c:515
+#: src/fe-gtk/setup.c:569
 msgid "Auto"
 msgstr ""
 
-#: src/fe-gtk/setup.c:522
+#: src/fe-gtk/setup.c:576
 msgid "All Connections"
 msgstr "Kaikille yhteyksille"
 
-#: src/fe-gtk/setup.c:523
+#: src/fe-gtk/setup.c:577
 msgid "IRC Server Only"
 msgstr "Vain IRC-palvelimille"
 
-#: src/fe-gtk/setup.c:524
+#: src/fe-gtk/setup.c:578
 msgid "DCC Get Only"
 msgstr "Vain DCC-siirroille"
 
-#: src/fe-gtk/setup.c:530
+#: src/fe-gtk/setup.c:584
 msgid "Your Address"
 msgstr "Oma IP-osoite"
 
-#: src/fe-gtk/setup.c:531
+#: src/fe-gtk/setup.c:585
 msgid "Bind to:"
 msgstr "Sido osoitteeseen:"
 
-#: src/fe-gtk/setup.c:532
+#: src/fe-gtk/setup.c:586
 msgid "Only useful for computers with multiple addresses."
 msgstr "Käyttökelpoinen vain, kun tietokoneessa on monta osoitetta."
 
-#: src/fe-gtk/setup.c:534
+#: src/fe-gtk/setup.c:588
 msgid "Proxy Server"
 msgstr "Välipalvelin"
 
-#: src/fe-gtk/setup.c:535
+#: src/fe-gtk/setup.c:589
 msgid "Hostname:"
 msgstr "Isäntänimi:"
 
-#: src/fe-gtk/setup.c:536
+#: src/fe-gtk/setup.c:590
 msgid "Port:"
 msgstr "Portti:"
 
-#: src/fe-gtk/setup.c:537
+#: src/fe-gtk/setup.c:591
 msgid "Type:"
 msgstr "Tyyppi:"
 
-#: src/fe-gtk/setup.c:538
+#: src/fe-gtk/setup.c:592
 msgid "Use proxy for:"
 msgstr "Käytä välipalvelinta:"
 
-#: src/fe-gtk/setup.c:540
+#: src/fe-gtk/setup.c:594
 msgid "Proxy Authentication"
 msgstr "Välipalvelimelle tunnistautuminen"
 
-#: src/fe-gtk/setup.c:542
+#: src/fe-gtk/setup.c:596
 msgid "Use Authentication (MS Proxy, HTTP or Socks5 only)"
 msgstr "Tunnistaudu välipalvelimelle (vain MS Proxy, HTTP ja Socks5)"
 
-#: src/fe-gtk/setup.c:544
+#: src/fe-gtk/setup.c:598
 msgid "Use Authentication (HTTP or Socks5 only)"
 msgstr "Tunnistaudu välipalvelimelle (vain HTTP ja Socks5)"
 
-#: src/fe-gtk/setup.c:546
+#: src/fe-gtk/setup.c:600
 msgid "Username:"
 msgstr "Käyttäjänimi:"
 
-#: src/fe-gtk/setup.c:547
+#: src/fe-gtk/setup.c:601
 msgid "Password:"
 msgstr "Salasana:"
 
-#: src/fe-gtk/setup.c:978
+#: src/fe-gtk/setup.c:1032
 msgid "Select an Image File"
 msgstr "Valitse kuvatiedosto"
 
-#: src/fe-gtk/setup.c:1013
+#: src/fe-gtk/setup.c:1067
 msgid "Select Download Folder"
 msgstr "Valitse latauskansio"
 
-#: src/fe-gtk/setup.c:1022
+#: src/fe-gtk/setup.c:1076
 msgid "Select font"
 msgstr "Valitse kirjasin"
 
-#: src/fe-gtk/setup.c:1122
+#: src/fe-gtk/setup.c:1176
 msgid "Browse..."
 msgstr "Selaa..."
 
-#: src/fe-gtk/setup.c:1260
+#: src/fe-gtk/setup.c:1314
 msgid "Mark identified users with:"
 msgstr "Merkitse tunnistetut käyttäjät seuraavasti:"
 
-#: src/fe-gtk/setup.c:1262
+#: src/fe-gtk/setup.c:1316
 msgid "Mark not-identified users with:"
 msgstr "Merkitse tuntemattomat käyttäjät seuraavasti:"
 
-#: src/fe-gtk/setup.c:1269
+#: src/fe-gtk/setup.c:1323
 msgid "Open Data Folder"
 msgstr "Avaa datakansio"
 
-#: src/fe-gtk/setup.c:1323
+#: src/fe-gtk/setup.c:1377
 msgid "Select color"
 msgstr "Valitse väri"
 
-#: src/fe-gtk/setup.c:1403
+#: src/fe-gtk/setup.c:1457
 msgid "Text Colors"
 msgstr "Tekstin värit"
 
-#: src/fe-gtk/setup.c:1405
+#: src/fe-gtk/setup.c:1459
 msgid "mIRC colors:"
 msgstr "mIRC-värit:"
 
-#: src/fe-gtk/setup.c:1413
+#: src/fe-gtk/setup.c:1467
 msgid "Local colors:"
 msgstr "Omat värit"
 
-#: src/fe-gtk/setup.c:1421 src/fe-gtk/setup.c:1426
+#: src/fe-gtk/setup.c:1475 src/fe-gtk/setup.c:1480
 msgid "Foreground:"
 msgstr "Edustaväri:"
 
-#: src/fe-gtk/setup.c:1422 src/fe-gtk/setup.c:1427
+#: src/fe-gtk/setup.c:1476 src/fe-gtk/setup.c:1481
 msgid "Background:"
 msgstr "Taustaväri:"
 
-#: src/fe-gtk/setup.c:1424
+#: src/fe-gtk/setup.c:1478
 msgid "Marking Text"
 msgstr "Tekstin maalaus"
 
-#: src/fe-gtk/setup.c:1429
+#: src/fe-gtk/setup.c:1483
 msgid "Interface Colors"
 msgstr "Käyttöliittymän värit"
 
-#: src/fe-gtk/setup.c:1431
+#: src/fe-gtk/setup.c:1485
 msgid "New data:"
 msgstr "Uusi data:"
 
-#: src/fe-gtk/setup.c:1432
+#: src/fe-gtk/setup.c:1486
 msgid "Marker line:"
 msgstr "Lukumerkkiviiva:"
 
-#: src/fe-gtk/setup.c:1433
+#: src/fe-gtk/setup.c:1487
 msgid "New message:"
 msgstr "Uusi viesti:"
 
-#: src/fe-gtk/setup.c:1434
+#: src/fe-gtk/setup.c:1488
 msgid "Away user:"
 msgstr "Poissaolijat:"
 
-#: src/fe-gtk/setup.c:1435
+#: src/fe-gtk/setup.c:1489
 msgid "Highlight:"
 msgstr "Korostus:"
 
-#: src/fe-gtk/setup.c:1437
+#: src/fe-gtk/setup.c:1491
 #, fuzzy
 msgid "Spell checker:"
 msgstr "Oikoluku"
 
-#: src/fe-gtk/setup.c:1440
+#: src/fe-gtk/setup.c:1494
 #, fuzzy
 msgid "Color Stripping"
 msgstr "DCC-merkkijono"
 
-#: src/fe-gtk/setup.c:1546 src/fe-gtk/textgui.c:389
+#: src/fe-gtk/setup.c:1600 src/fe-gtk/textgui.c:389
 msgid "Event"
 msgstr "Tapahtuma"
 
-#: src/fe-gtk/setup.c:1552
+#: src/fe-gtk/setup.c:1606
 msgid "Sound file"
 msgstr "Äänitiedosto"
 
-#: src/fe-gtk/setup.c:1587
+#: src/fe-gtk/setup.c:1641
 msgid "Select a sound file"
 msgstr "Valitse äänitiedosto"
 
-#: src/fe-gtk/setup.c:1659
+#: src/fe-gtk/setup.c:1713
 msgid "Sound playing method:"
 msgstr "Äänensoittotapa:"
 
-#: src/fe-gtk/setup.c:1667
+#: src/fe-gtk/setup.c:1721
 msgid "External sound playing _program:"
 msgstr "Ulkoinen soitto-ohjelma:"
 
-#: src/fe-gtk/setup.c:1685
+#: src/fe-gtk/setup.c:1739
 msgid "_External program"
 msgstr "Ulkoisella ohjelmalla"
 
-#: src/fe-gtk/setup.c:1695
+#: src/fe-gtk/setup.c:1749
 msgid "_Automatic"
 msgstr "Automaattinen"
 
-#: src/fe-gtk/setup.c:1708
+#: src/fe-gtk/setup.c:1762
 msgid "Sound files _directory:"
 msgstr "Äänitiedostojen hakemisto:"
 
-#: src/fe-gtk/setup.c:1747
+#: src/fe-gtk/setup.c:1801
 msgid "Sound file:"
 msgstr "Äänitiedosto: "
 
-#: src/fe-gtk/setup.c:1762
+#: src/fe-gtk/setup.c:1816
 msgid "_Browse..."
 msgstr "Selaa..."
 
-#: src/fe-gtk/setup.c:1773
+#: src/fe-gtk/setup.c:1827
 msgid "_Play"
 msgstr "Soita"
 
-#: src/fe-gtk/setup.c:1822
+#: src/fe-gtk/setup.c:1876
 msgid "Interface"
 msgstr "Käyttöliittymä"
 
-#: src/fe-gtk/setup.c:1823
-msgid "Text box"
-msgstr "Tekstilaatikko"
+#: src/fe-gtk/setup.c:1877
+#, fuzzy
+msgid "Appearance"
+msgstr "Tekstilaatikon ulkonäkö"
 
-#: src/fe-gtk/setup.c:1824
+#: src/fe-gtk/setup.c:1878
 msgid "Input box"
 msgstr "Syötekenttä"
 
-#: src/fe-gtk/setup.c:1825
+#: src/fe-gtk/setup.c:1879
 msgid "User list"
 msgstr "Käyttäjäluettelo"
 
-#: src/fe-gtk/setup.c:1826
+#: src/fe-gtk/setup.c:1880
 msgid "Channel switcher"
 msgstr "Kanavavalitsin"
 
-#: src/fe-gtk/setup.c:1827
+#: src/fe-gtk/setup.c:1881
 msgid "Colors"
 msgstr "Värit"
 
-#: src/fe-gtk/setup.c:1829
+#: src/fe-gtk/setup.c:1883
 msgid "Chatting"
 msgstr "Keskustelu"
 
-#: src/fe-gtk/setup.c:1831
+#: src/fe-gtk/setup.c:1885
 msgid "General"
 msgstr "Yleiset"
 
-#: src/fe-gtk/setup.c:1833
+#: src/fe-gtk/setup.c:1887
 msgid "Sound"
 msgstr "Ääni"
 
-#: src/fe-gtk/setup.c:1837
+#: src/fe-gtk/setup.c:1891
 msgid "Network setup"
 msgstr "Verkkoasetukset"
 
-#: src/fe-gtk/setup.c:1838
+#: src/fe-gtk/setup.c:1892
 msgid "File transfers"
 msgstr "Tiedostonsiirrot"
 
-#: src/fe-gtk/setup.c:1969
+#: src/fe-gtk/setup.c:2023
 msgid "Categories"
 msgstr "Asetusryhmät"
 
-#: src/fe-gtk/setup.c:2161
+#: src/fe-gtk/setup.c:2219
 msgid ""
 "You cannot place the tree on the top or bottom!\n"
 "Please change to the <b>Tabs</b> layout in the <b>View</b> menu first."
@@ -5775,16 +5974,16 @@ msgstr ""
 "Puuta ei voi laittaa ylös eikä alas!\n"
 "Muuta ensin välilehtiasettelua <b>Näytä</b>-valikosta."
 
-#: src/fe-gtk/setup.c:2188
+#: src/fe-gtk/setup.c:2246
 msgid "Invalid time stamp format! See the strftime MSDN article for details."
 msgstr ""
 
-#: src/fe-gtk/setup.c:2195
+#: src/fe-gtk/setup.c:2253
 msgid "Some settings were changed that require a restart to take full effect."
 msgstr ""
 "Osa muutoksista tulee voimaan vasta kun ohjelma käynnistetään uudestaan."
 
-#: src/fe-gtk/setup.c:2203
+#: src/fe-gtk/setup.c:2261
 msgid ""
 "*WARNING*\n"
 "Auto accepting DCC to your home directory\n"
@@ -5796,7 +5995,7 @@ msgstr ""
 "kotihakemistoon voi olla vaarallista. Esim:\n"
 "Joku voi lähettää tiedoston .bash_profile."
 
-#: src/fe-gtk/setup.c:2236
+#: src/fe-gtk/setup.c:2294
 msgid ": Preferences"
 msgstr "XChat: Ominaisuudet"
 
@@ -5857,6 +6056,10 @@ msgstr "Tallenna luettelo tiedostoon"
 #, c-format
 msgid "%d ops, %d total"
 msgstr "%d oppia, %d yhteensä"
+
+#, fuzzy
+#~ msgid "Save Settings to Disk"
+#~ msgstr "Tallenna luettelo tiedostoon"
 
 #~ msgid "Cannot create ~/.xchat2"
 #~ msgstr "Hakemiston ~/.xchat2 luominen epäonnistui"
