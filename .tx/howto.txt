@@ -1,0 +1,33 @@
+More info: http://help.transifex.com/features/client/index.html
+
+1) To initialize a new project on Transifex:
+
+# tx init
+# tx set --auto-local -r hexchat.main "po\<lang>.po" --source-lang en --source-file po\hexchat.pot --execute
+
+Append 'type = PO' to .tx\config without apostrophes
+
+Push the resources to Transifex
+# tx push -s -t
+
+
+
+2) To update online translations:
+
+Regenerate the source file (hexchat.pot) on a Unix machine
+# ./autogen.sh && ./configure --enable-nls && make
+
+Push the updated source file to Transifex (this automatically updates all translation files)
+# tx push --source
+
+
+
+3) To update repo with online translations:
+
+Update local copy with Transifex updates
+# tx pull
+
+Update GitHub repo
+# git add po/
+# git commit
+# git push
