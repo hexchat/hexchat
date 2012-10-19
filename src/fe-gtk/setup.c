@@ -153,16 +153,14 @@ static const char *const langsmenu[] =
 
 static const setting appearance_settings[] =
 {
+	{ST_HEADER,	N_("General"),0,0,0},
 #ifdef WIN32
-	{ST_HEADER,	N_("Localization"),0,0,0},
-	{ST_MENU,  N_("Interface language:"), P_OFFINTNL(gui_lang), 0, langsmenu, 0},
-#endif
-	{ST_HEADER,	N_("Text Box"),0,0,0},
-#ifdef WIN32
+	{ST_MENU,   N_("Language:"), P_OFFINTNL(gui_lang), 0, langsmenu, 0},
 	{ST_EFONT,  N_("Main font:"), P_OFFSETNL(font_main), 0, 0, sizeof prefs.font_main},
 #else
 	{ST_EFONT,  N_("Font:"), P_OFFSETNL(font_normal), 0, 0, sizeof prefs.font_normal},
 #endif
+	{ST_HEADER,	N_("Text Box"),0,0,0},
 	{ST_EFILE,  N_("Background image:"), P_OFFSETNL(background), 0, 0, sizeof prefs.background},
 	{ST_NUMBER,	N_("Scrollback lines:"), P_OFFINTNL(max_lines),0,0,100000},
 	{ST_TOGGLE, N_("Colored nick names"), P_OFFINTNL(colorednicks),
