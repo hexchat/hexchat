@@ -1,23 +1,23 @@
-# xchat for Japanese
-# Copyright (C) 1999-2002 Free Software Foundation, Inc.
-#
-# Yuusuke Tahara <tahara@gehenna.u-aizu.ac.jp>, 1999
-# Takuo KITAME <kitame@debian.org>, 2000
-# Yukihiro Nakai <nakai@gnome.gr.jp>, 2002
-# Tadashi Jokagi <elf2000@users.sourceforge.net>, 2005-2006.
-#
+# SOME DESCRIPTIVE TITLE.
+# This file is put in the public domain.
+# 
+# Translators:
+# Takuo KITAME <kitame@debian.org>, 2000.
+# Yukihiro Nakai <nakai@gnome.gr.jp>, 2002.
+# Yuusuke Tahara <tahara@gehenna.u-aizu.ac.jp>, 1999.
 msgid ""
 msgstr ""
-"Project-Id-Version: xchat 2.6.3\n"
+"Project-Id-Version: HexChat\n"
 "Report-Msgid-Bugs-To: www.hexchat.org\n"
 "POT-Creation-Date: 2012-10-19 20:07+0200\n"
-"PO-Revision-Date: 2006-08-07 19:04+0900\n"
-"Last-Translator: Tadashi Jokagi <elf2000@users.sourceforge.net>\n"
-"Language-Team: Japanese <translation-team-ja@lists.sourceforge.net>\n"
-"Language: ja\n"
+"PO-Revision-Date: 2012-10-19 18:34+0000\n"
+"Last-Translator: bviktor <bviktor@outlook.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: ja\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
 
 #: src/common/cfgfiles.c:785
 msgid "I'm busy"
@@ -31,11 +31,7 @@ msgstr "さようなら"
 msgid ""
 "* Running IRC as root is stupid! You should\n"
 "  create a User Account and use that to login.\n"
-msgstr ""
-"* IRC を root 権限で立ち上げるなんて愚かにも程があります!\n"
-"  きちんとユーザーアカウント作成してから そのユーザーで\n"
-"  ログインしなおしてください。\n"
-"\n"
+msgstr "* IRC を root 権限で立ち上げるなんて愚かにも程があります!\n  きちんとユーザーアカウント作成してから そのユーザーで\n  ログインしなおしてください。\n\n"
 
 #: src/common/dcc.c:72
 msgid "Waiting"
@@ -101,8 +97,7 @@ msgstr "%s から大量の CTCP が来ました。%s を無視します。\n"
 #: src/common/ignore.c:407
 #, c-format
 msgid "You are being MSG flooded from %s, setting gui_auto_open_dialog OFF.\n"
-msgstr ""
-"%s から大量の MSG が来ました。設定 gui_auto_open_dialog をオフにします。\n"
+msgstr "%s から大量の MSG が来ました。設定 gui_auto_open_dialog をオフにします。\n"
 
 #: src/common/notify.c:478
 #, c-format
@@ -116,14 +111,11 @@ msgstr "  %-20s オフライン\n"
 
 #: src/common/outbound.c:72
 msgid "No channel joined. Try /join #<channel>\n"
-msgstr ""
-"チャンネルに参加していません。「/join #<チャンネル>」を実行してください。\n"
+msgstr "チャンネルに参加していません。「/join #<チャンネル>」を実行してください。\n"
 
 #: src/common/outbound.c:78
 msgid "Not connected. Try /server <host> [<port>]\n"
-msgstr ""
-"サーバーと接続していません。「/server <ホスト> [<ポート>]」を実行してくださ"
-"い。\n"
+msgstr "サーバーと接続していません。「/server <ホスト> [<ポート>]」を実行してください。\n"
 
 #: src/common/outbound.c:281
 #, c-format
@@ -192,9 +184,8 @@ msgid "ALLCHAN <cmd>, sends a command to all channels you're in"
 msgstr "ALLCHAN <コマンド>, 参加している全チャンネルへコマンドを送信する"
 
 #: src/common/outbound.c:3559
-#, fuzzy
 msgid "ALLCHANL <cmd>, sends a command to all channels on the current server"
-msgstr "ALLCHANL <コマンド>, 参加している全チャンネルへコマンドを送信する"
+msgstr ""
 
 #: src/common/outbound.c:3561
 msgid "ALLSERV <cmd>, sends a command to all servers you're in"
@@ -213,47 +204,41 @@ msgid ""
 "BAN <mask> [<bantype>], bans everyone matching the mask from the current "
 "channel. If they are already on the channel this doesn't kick them (needs "
 "chanop)"
-msgstr ""
-"BAN <マスク> [<禁止タイプ>], 現在のチャンネルから, マスクに一致するニックをバ"
-"ンする. 既にチャンネルに参加しているニックに関しては効果がない (なるとが必要)"
+msgstr "BAN <マスク> [<禁止タイプ>], 現在のチャンネルから, マスクに一致するニックをバンする. 既にチャンネルに参加しているニックに関しては効果がない (なるとが必要)"
 
 #: src/common/outbound.c:3566
-#, fuzzy
 msgid "CHANOPT [-quiet] <variable> [<value>]"
-msgstr "SET [-quiet] <変数> [<値>]"
+msgstr ""
 
 #: src/common/outbound.c:3567
 msgid ""
-"CHARSET [<encoding>], get or set the encoding used for the current connection"
+"CHARSET [<encoding>], get or set the encoding used for the current "
+"connection"
 msgstr ""
 
 #: src/common/outbound.c:3568
-#, fuzzy
 msgid "CLEAR [ALL|HISTORY], Clears the current text window or command history"
-msgstr "CLEAR, 現在のテキストウィンドウの内容を消去する"
+msgstr ""
 
 #: src/common/outbound.c:3569
 msgid "CLOSE, Closes the current window/tab"
 msgstr "CLOSE, 現在のウィンドウ／タブを閉じる"
 
 #: src/common/outbound.c:3572
-#, fuzzy
 msgid "COUNTRY [-s] <code|wildcard>, finds a country code, eg: au = australia"
-msgstr "COUNTRY <コード>, 国コードを検出, 例: au = オーストラリア"
+msgstr ""
 
 #: src/common/outbound.c:3574
 msgid ""
 "CTCP <nick> <message>, send the CTCP message to nick, common messages are "
 "VERSION and USERINFO"
-msgstr ""
-"CTCP <ニック> <メッセージ>, CTCP メッセージを指定のニックへ送信する。メッセー"
-"ジは普通, VERSION や USERINFO を使う"
+msgstr "CTCP <ニック> <メッセージ>, CTCP メッセージを指定のニックへ送信する。メッセージは普通, VERSION や USERINFO を使う"
 
 #: src/common/outbound.c:3576
-#, fuzzy
 msgid ""
-"CYCLE [<channel>], parts the current or given channel and immediately rejoins"
-msgstr "CYCLE, 現在のチャンネルを離れ, 直後に再参加する"
+"CYCLE [<channel>], parts the current or given channel and immediately "
+"rejoins"
+msgstr ""
 
 #: src/common/outbound.c:3578
 msgid ""
@@ -266,26 +251,13 @@ msgid ""
 "DCC PCHAT <nick>                    - offer DCC CHAT using passive mode\n"
 "DCC CLOSE <type> <nick> <file>         example:\n"
 "         /dcc close send johnsmith file.tar.gz"
-msgstr ""
-"\n"
-"DCC GET <ニック>                         - 差し出されたファイルを受け取る\n"
-"DCC SEND [-maxcps=#] <ニック> <ファイル> - ファイルを送信する\n"
-"DCC PSEND [-maxcps=#] <nick> [file]      - パッシブモードでファイルを送信す"
-"る\n"
-"DCC LIST                                 - DCC 一覧を表示する\n"
-"DCC CHAT <ニック>                        - DCC CHAT を申し込む\n"
-"DCC PCHAT <ニック>                       - パッシブモードで DCC CHAT を申し込"
-"む\n"
-"DCC CLOSE <種類> <ニック> <ファイル>   例:\n"
-"         /dcc close send johnsmith file.tar.gz"
+msgstr "\nDCC GET <ニック>                         - 差し出されたファイルを受け取る\nDCC SEND [-maxcps=#] <ニック> <ファイル> - ファイルを送信する\nDCC PSEND [-maxcps=#] <nick> [file]      - パッシブモードでファイルを送信する\nDCC LIST                                 - DCC 一覧を表示する\nDCC CHAT <ニック>                        - DCC CHAT を申し込む\nDCC PCHAT <ニック>                       - パッシブモードで DCC CHAT を申し込む\nDCC CLOSE <種類> <ニック> <ファイル>   例:\n         /dcc close send johnsmith file.tar.gz"
 
 #: src/common/outbound.c:3590
 msgid ""
 "DEHOP <nick>, removes chanhalf-op status from the nick on the current "
 "channel (needs chanop)"
-msgstr ""
-"DEHOP <ニック>, 現在のチャンネルの指定ニックからハーフなるとを剥奪する (なる"
-"とが必要)"
+msgstr "DEHOP <ニック>, 現在のチャンネルの指定ニックからハーフなるとを剥奪する (なるとが必要)"
 
 #: src/common/outbound.c:3592
 msgid "DELBUTTON <name>, deletes a button from under the user-list"
@@ -295,17 +267,13 @@ msgstr "DELBUTTON <ボタン名>, ユーザーリストの下のボタンを削�
 msgid ""
 "DEOP <nick>, removes chanop status from the nick on the current channel "
 "(needs chanop)"
-msgstr ""
-"DEOP <ニック>, 現在のチャンネルの指定ニックからなるとを剥奪する (なるとが必"
-"要)"
+msgstr "DEOP <ニック>, 現在のチャンネルの指定ニックからなるとを剥奪する (なるとが必要)"
 
 #: src/common/outbound.c:3596
 msgid ""
 "DEVOICE <nick>, removes voice status from the nick on the current channel "
 "(needs chanop)"
-msgstr ""
-"DEVOICE <ニック>, 現在のチャンネルの指定ニックから, 発言権を削除する (なると"
-"が必要)"
+msgstr "DEVOICE <ニック>, 現在のチャンネルの指定ニックから, 発言権を削除する (なるとが必要)"
 
 #: src/common/outbound.c:3597
 msgid "DISCON, Disconnects from server"
@@ -323,9 +291,7 @@ msgstr "ECHO テキスト, テキストをローカル上に表示する"
 msgid ""
 "EXEC [-o] <command>, runs the command. If -o flag is used then output is "
 "sent to current channel, else is printed to current text box"
-msgstr ""
-"EXEC [-o] <コマンド>, コマンドを実行する. -o フラグを利用すると出力は現在の"
-"チャンネルへ送信する。それ以外は現在のテキスト・ボックスに表示する"
+msgstr "EXEC [-o] <コマンド>, コマンドを実行する. -o フラグを利用すると出力は現在のチャンネルへ送信する。それ以外は現在のテキスト・ボックスに表示する"
 
 #: src/common/outbound.c:3604
 msgid "EXECCONT, sends the process SIGCONT"
@@ -335,9 +301,7 @@ msgstr "EXECCONT, プロセスに対して SIGCONT を発行する"
 msgid ""
 "EXECKILL [-9], kills a running exec in the current session. If -9 is given "
 "the process is SIGKILL'ed"
-msgstr ""
-"EXECKILL [-9], 現在のプロセスに対してシグナルを発行する。-9 を指定した場合、"
-"プロセスは SIGKILL される"
+msgstr "EXECKILL [-9], 現在のプロセスに対してシグナルを発行する。-9 を指定した場合、プロセスは SIGKILL される"
 
 #: src/common/outbound.c:3609
 msgid "EXECSTOP, sends the process SIGSTOP"
@@ -356,9 +320,8 @@ msgid "GATE <host> [<port>], proxies through a host, port defaults to 23"
 msgstr "GATE <ホスト> [<ポート>], 指定ホストを通したプロキシ。標準ポートは 23"
 
 #: src/common/outbound.c:3620
-#, fuzzy
 msgid "GHOST <nick> [password], Kills a ghosted nickname"
-msgstr "GHOST <nick> <password>, ゴーストになってしまったニック名を削除する"
+msgstr ""
 
 #: src/common/outbound.c:3625
 msgid "HOP <nick>, gives chanhalf-op status to the nick (needs chanop)"
@@ -375,20 +338,13 @@ msgid ""
 "    types - types of data to ignore, one or all of:\n"
 "            PRIV, CHAN, NOTI, CTCP, DCC, INVI, ALL\n"
 "    options - NOSAVE, QUIET"
-msgstr ""
-"/IGNORE <マスク> <種類...> <オプション...>\n"
-"     マスク - 無視するホスト名のマスク, 例: *!*@*.ne.jp\n"
-"     種類   - 無視するデータの種類, 以下の一つもしくは全部:\n"
-"              PRIV, CHAN, NOTI, CTCP, INVI, ALL\n"
-"     オプション - NOSAVE, QUIET"
+msgstr "/IGNORE <マスク> <種類...> <オプション...>\n     マスク - 無視するホスト名のマスク, 例: *!*@*.ne.jp\n     種類   - 無視するデータの種類, 以下の一つもしくは全部:\n              PRIV, CHAN, NOTI, CTCP, INVI, ALL\n     オプション - NOSAVE, QUIET"
 
 #: src/common/outbound.c:3635
 msgid ""
 "INVITE <nick> [<channel>], invites someone to a channel, by default the "
 "current channel (needs chanop)"
-msgstr ""
-"INVITE <ニック> [<チャンネル>], 指定のチャンネルへ招待する。標準では現在の"
-"チャンネル名 (なるとが必要)"
+msgstr "INVITE <ニック> [<チャンネル>], 指定のチャンネルへ招待する。標準では現在のチャンネル名 (なるとが必要)"
 
 #: src/common/outbound.c:3636
 msgid "JOIN <channel>, joins the channel"
@@ -396,16 +352,13 @@ msgstr "JOIN <チャンネル>, チャンネルに参加する"
 
 #: src/common/outbound.c:3638
 msgid "KICK <nick>, kicks the nick from the current channel (needs chanop)"
-msgstr ""
-"KICK <ニック>, 現在のチャンネルから指定のニックをキックする (なるとが必要)"
+msgstr "KICK <ニック>, 現在のチャンネルから指定のニックをキックする (なるとが必要)"
 
 #: src/common/outbound.c:3640
 msgid ""
 "KICKBAN <nick>, bans then kicks the nick from the current channel (needs "
 "chanop)"
-msgstr ""
-"KICKBAN <ニック>, 現在のチャンネルから指定のニックをキックし、さらにバンする "
-"(なるとが必要)"
+msgstr "KICKBAN <ニック>, 現在のチャンネルから指定のニックをキックし、さらにバンする (なるとが必要)"
 
 #: src/common/outbound.c:3643
 msgid "LAGCHECK, forces a new lag check"
@@ -417,8 +370,7 @@ msgid ""
 "    Use -h to highlight the found string(s)\n"
 "    Use -m to match case\n"
 "    Use -r when string is a Regular Expression\n"
-"    Use -- (double hyphen) to end options when searching for, say, the "
-"string '-r'"
+"    Use -- (double hyphen) to end options when searching for, say, the string '-r'"
 msgstr ""
 
 #: src/common/outbound.c:3651
@@ -436,11 +388,9 @@ msgstr "MDEOP, 現在のチャンネルの全員のなるとを剥奪する (な
 
 #: src/common/outbound.c:3658
 msgid ""
-"ME <action>, sends the action to the current channel (actions are written in "
-"the 3rd person, like /me jumps)"
-msgstr ""
-"ME <行動>, 現在のチャンネルに対して, 指定の ACTION を送信する (行動は 『/me "
-"jumps』のように第3者側で書かれる)"
+"ME <action>, sends the action to the current channel (actions are written in"
+" the 3rd person, like /me jumps)"
+msgstr "ME <行動>, 現在のチャンネルに対して, 指定の ACTION を送信する (行動は 『/me jumps』のように第3者側で書かれる)"
 
 #: src/common/outbound.c:3662
 msgid ""
@@ -464,9 +414,8 @@ msgid "NCTCP <nick> <message>, Sends a CTCP notice"
 msgstr "NCTCP <ニック> <メッセージ>, CTCP NOTICE を送信する"
 
 #: src/common/outbound.c:3672
-#, fuzzy
 msgid "NEWSERVER [-noconnect] <hostname> [<port>]"
-msgstr "NEWSERVER <ホスト名> [<ポート>]"
+msgstr ""
 
 #: src/common/outbound.c:3673
 msgid "NICK <nickname>, sets your nick"
@@ -476,17 +425,13 @@ msgstr "NICK <ニック>, 自分のニックを設定する"
 msgid ""
 "NOTICE <nick/channel> <message>, sends a notice. Notices are a type of "
 "message that should be auto reacted to"
-msgstr ""
-"NOTICE <ニック/チャンネル> <メッセージ>, NOTICE を送信する。NOTICE は自動的に"
-"応答されるメッセージである"
+msgstr "NOTICE <ニック/チャンネル> <メッセージ>, NOTICE を送信する。NOTICE は自動的に応答されるメッセージである"
 
 #: src/common/outbound.c:3678
-#, fuzzy
 msgid ""
 "NOTIFY [-n network1[,network2,...]] [<nick>], displays your notify list or "
 "adds someone to it"
 msgstr ""
-"NOTIFY [<ニック>], 自分の通知リストを表示する、または誰かをそれに追加する"
 
 #: src/common/outbound.c:3680
 msgid "OP <nick>, gives chanop status to the nick (needs chanop)"
@@ -495,18 +440,15 @@ msgstr "OP <ニック>, 指定のニックになるとを与える (なるとが
 #: src/common/outbound.c:3682
 msgid ""
 "PART [<channel>] [<reason>], leaves the channel, by default the current one"
-msgstr ""
-"PART [<チャンネル>]  [<理由>], チャンネルを去る。デフォルトでは現在のチャンネ"
-"ル"
+msgstr "PART [<チャンネル>]  [<理由>], チャンネルを去る。デフォルトでは現在のチャンネル"
 
 #: src/common/outbound.c:3684
 msgid "PING <nick | channel>, CTCP pings nick or channel"
 msgstr "PING <ニック | チャンネル>, ニックかチャンネルへ CTCP PING をかける"
 
 #: src/common/outbound.c:3686
-#, fuzzy
 msgid "QUERY [-nofocus] <nick>, opens up a new privmsg window to someone"
-msgstr "QUERY <ニック>, 指定ニックとの新規ぷりぶウィンドウを開く"
+msgstr ""
 
 #: src/common/outbound.c:3688
 msgid "QUIT [<reason>], disconnects from the current server"
@@ -518,30 +460,23 @@ msgstr "QUOTE <テキスト>, サーバーへ生形式のテキストを送信�
 
 #: src/common/outbound.c:3693
 msgid ""
-"RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as /"
-"RECONNECT to reconnect to the current server or with /RECONNECT ALL to "
+"RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as "
+"/RECONNECT to reconnect to the current server or with /RECONNECT ALL to "
 "reconnect to all the open servers"
-msgstr ""
-"RECONNECT [-ssl] [<ホスト>] [<ポート>] [<パスワード>], /RECONNECTだけで現在の"
-"サーバーに接続しなおすこともできるし、/RECONNECT ALLで開いているサーバーすべ"
-"てに接続しなおすこともできる"
+msgstr "RECONNECT [-ssl] [<ホスト>] [<ポート>] [<パスワード>], /RECONNECTだけで現在のサーバーに接続しなおすこともできるし、/RECONNECT ALLで開いているサーバーすべてに接続しなおすこともできる"
 
 #: src/common/outbound.c:3696
 msgid ""
 "RECONNECT [<host>] [<port>] [<password>], Can be called just as /RECONNECT "
 "to reconnect to the current server or with /RECONNECT ALL to reconnect to "
 "all the open servers"
-msgstr ""
-"RECONNECT [<ホスト>] [<ポート>] [<パスワード>], /RECONNECTだけで現在のサー"
-"バーに接続しなおすこともできるし、/RECONNECT ALLで開いているサーバーすべてに"
-"接続しなおすこともできる"
+msgstr "RECONNECT [<ホスト>] [<ポート>] [<パスワード>], /RECONNECTだけで現在のサーバーに接続しなおすこともできるし、/RECONNECT ALLで開いているサーバーすべてに接続しなおすこともできる"
 
 #: src/common/outbound.c:3698
-#, fuzzy
 msgid ""
 "RECV <text>, send raw data to xchat, as if it was received from the irc "
 "server"
-msgstr "/QUOTE <テキスト>, サーバーへ生形式のテキストを送信する\n"
+msgstr ""
 
 #: src/common/outbound.c:3701
 msgid "SAY <text>, sends the text to the object in the current window"
@@ -553,36 +488,27 @@ msgstr "SEND <ニック> [<ファイル>]"
 
 #: src/common/outbound.c:3705
 msgid "SERVCHAN [-ssl] <host> <port> <channel>, connects and joins a channel"
-msgstr ""
-"SERVCHAN [-ssl] <ホスト> <ポート> <チャンネル>, 接続およびチャンネルへ参加す"
-"る"
+msgstr "SERVCHAN [-ssl] <ホスト> <ポート> <チャンネル>, 接続およびチャンネルへ参加する"
 
 #: src/common/outbound.c:3708
 msgid "SERVCHAN <host> <port> <channel>, connects and joins a channel"
-msgstr ""
-"SERVCHAN <ホスト> <ポート> <チャンネル>, 接続およびチャンネルへ参加する"
+msgstr "SERVCHAN <ホスト> <ポート> <チャンネル>, 接続およびチャンネルへ参加する"
 
 #: src/common/outbound.c:3712
-#, fuzzy
 msgid ""
 "SERVER [-ssl] <host> [<port>] [<password>], connects to a server, the "
 "default port is 6667 for normal connections, and 6697 for ssl connections"
 msgstr ""
-"SERVER [-ssl] <ホスト> [<ポート>] [<パスワード>], サーバーへ接続する。通常の"
-"接続では標準ポート番号は6667、ssl接続では994"
 
 #: src/common/outbound.c:3715
 msgid ""
 "SERVER <host> [<port>] [<password>], connects to a server, the default port "
 "is 6667"
-msgstr ""
-"SERVER <ホスト> [<ポート>] [<パスワード>], サーバーへ接続する。標準ポート番号"
-"は6667"
+msgstr "SERVER <ホスト> [<ポート>] [<パスワード>], サーバーへ接続する。標準ポート番号は6667"
 
 #: src/common/outbound.c:3717
-#, fuzzy
 msgid "SET [-e] [-off|-on] [-quiet] <variable> [<value>]"
-msgstr "SET [-quiet] <変数> [<値>]"
+msgstr ""
 
 #: src/common/outbound.c:3718
 msgid "SETCURSOR [-|+]<position>, reposition the cursor in the inputbox"
@@ -598,10 +524,9 @@ msgstr ""
 
 #: src/common/outbound.c:3723
 msgid ""
-"TOPIC [<topic>], sets the topic if one is given, else shows the current topic"
-msgstr ""
-"TOPIC [<トピック>], トピックを設定する。引数がなければ現在のトピックを表示す"
-"る"
+"TOPIC [<topic>], sets the topic if one is given, else shows the current "
+"topic"
+msgstr "TOPIC [<トピック>], トピックを設定する。引数がなければ現在のトピックを表示する"
 
 #: src/common/outbound.c:3725
 msgid ""
@@ -631,10 +556,9 @@ msgstr "URL <url>, ブラウザーで URL を開く"
 
 #: src/common/outbound.c:3737
 msgid ""
-"USELECT [-a] [-s] <nick1> <nick2> etc, highlights nick(s) in channel userlist"
-msgstr ""
-"USELECT [-a] [-s] <ニック1> <ニック2> など、チャンネルのユーザー一覧のニック"
-"をハイライトにします"
+"USELECT [-a] [-s] <nick1> <nick2> etc, highlights nick(s) in channel "
+"userlist"
+msgstr "USELECT [-a] [-s] <ニック1> <ニック2> など、チャンネルのユーザー一覧のニックをハイライトにします"
 
 #: src/common/outbound.c:3740
 msgid "VOICE <nick>, gives voice status to someone (needs chanop)"
@@ -647,9 +571,7 @@ msgstr "WALLCHAN <メッセージ>, 全チャンネルへメッセージを送�
 #: src/common/outbound.c:3744
 msgid ""
 "WALLCHOP <message>, sends the message to all chanops on the current channel"
-msgstr ""
-"WALLCHOP <メッセージ>, 現在のチャンネルのなると保持者全員へメッセージを送信す"
-"る"
+msgstr "WALLCHOP <メッセージ>, 現在のチャンネルのなると保持者全員へメッセージを送信する"
 
 #: src/common/outbound.c:3777
 #, c-format
@@ -660,9 +582,7 @@ msgstr "使い方: %s\n"
 msgid ""
 "\n"
 "No help available on that command.\n"
-msgstr ""
-"\n"
-"このコマンドのヘルプは利用できません.\n"
+msgstr "\nこのコマンドのヘルプは利用できません.\n"
 
 #: src/common/outbound.c:3788
 msgid "No such command.\n"
@@ -682,9 +602,7 @@ msgstr "不明なコマンドです. 『/help』を実行してください。\n
 
 #: src/common/plugin.c:382 src/common/plugin.c:423
 msgid "No xchat_plugin_init symbol; is this really an xchat plugin?"
-msgstr ""
-"シンボル「xchat_plugin_init」がありません。これは本当に xchat のプラグインで"
-"すか?"
+msgstr "シンボル「xchat_plugin_init」がありません。これは本当に xchat のプラグインですか?"
 
 #: src/common/server.c:665
 msgid "Are you sure this is a SSL capable server and port?\n"
@@ -695,9 +613,7 @@ msgstr ""
 msgid ""
 "Cannot resolve hostname %s\n"
 "Check your IP Settings!\n"
-msgstr ""
-"ホスト名「%s」を解決できません。\n"
-"IP 設定を確認してください!\n"
+msgstr "ホスト名「%s」を解決できません。\nIP 設定を確認してください!\n"
 
 #: src/common/server.c:1038
 msgid "Proxy traversal failed.\n"
@@ -724,9 +640,8 @@ msgid "%C22*%O$t$1 Banlist:%C19 $4%C20 $2%C21 $3"
 msgstr "%C22*%O$t$1 バン一覧:%C19 $4%C20 $2%C21 $3"
 
 #: src/common/textevents.h:12
-#, fuzzy
 msgid "%C22*%O$tCannot join%C26 %B$1 %O(You are banned)."
-msgstr "-%C10-%C11-%O$t Ban されているため %C11%B$1%O 参加できません。"
+msgstr ""
 
 #: src/common/textevents.h:18
 msgid "%C22*%O$t$1 is now known as $2"
@@ -749,24 +664,20 @@ msgid "%C22*%O$t%C26$1%O removes channel operator status from%C26 $2"
 msgstr "%C22*%O$t%C26$1%O は $2 からなるとを剥奪しました。"
 
 #: src/common/textevents.h:39
-#, fuzzy
 msgid "%C22*%O$t%C26$1%O removes voice from%C26 $2"
-msgstr "-%C10-%C11-%O$t$1 は $2 から発言権を剥奪しました。"
+msgstr ""
 
 #: src/common/textevents.h:42
-#, fuzzy
 msgid "%C22*%O$t$1 sets exempt on $2"
-msgstr "-%C10-%C11-%O$t$1 はチャンネル $2 への免除設定しました。"
+msgstr ""
 
 #: src/common/textevents.h:45
-#, fuzzy
 msgid "%C22*%O$t%C26$1%O gives channel half-operator status to%C26 $2"
-msgstr "-%C10-%C11-%O$t$1 は $2 にハーフなるとを与えました。"
+msgstr ""
 
 #: src/common/textevents.h:48
-#, fuzzy
 msgid "%C22*%O$t$1 sets invite on $2"
-msgstr "-%C10-%C11-%O$t$1 は INVITE マスクを設定しました.: $2"
+msgstr ""
 
 #: src/common/textevents.h:51
 msgid "%UChannel          Users   Topic"
@@ -781,14 +692,12 @@ msgid "%C22*%O$t%C22Channel $1 modes: $2"
 msgstr "%C22*%O$t%C22$t チャンネル $1 モード: $2"
 
 #: src/common/textevents.h:69
-#, fuzzy
 msgid "%C22*%O$t%C26$1%O gives channel operator status to%C26 $2"
-msgstr "-%C10-%C11-%O$t$1 は $2 になるとを与えました。"
+msgstr ""
 
 #: src/common/textevents.h:72
-#, fuzzy
 msgid "%C22*%O$t$1 removes exempt on $2"
-msgstr "-%C10-%C11-%O$t$1 は $2 への免除を削除しました。"
+msgstr ""
 
 #: src/common/textevents.h:75
 msgid "%C22*%O$t$1 removes invite on $2"
@@ -811,14 +720,12 @@ msgid "%C22*%O$t$1 sets channel limit to $2"
 msgstr "%C22*%O$t$1 はチャンネルを $2 に制限しました。"
 
 #: src/common/textevents.h:90
-#, fuzzy
 msgid "%C22*%O$t$1 removes ban on $2"
-msgstr "-%C10-%C11-%O$t$1 は $2 に対するバンを取り外しました。"
+msgstr ""
 
 #: src/common/textevents.h:93
-#, fuzzy
 msgid "%C22*%O$t%C26$1%O gives voice to%C26 $2"
-msgstr "-%C10-%C11-%O$t$1 は $2 に発言権を与えました。"
+msgstr ""
 
 #: src/common/textevents.h:96
 msgid "%C22*%O$t%C22Connected. Now logging in..."
@@ -829,19 +736,16 @@ msgid "%C22*%O$t%C22Connecting to $1 ($2) port $3%O..."
 msgstr "%C22*%O$t%C22サーバー $1($2) の、ポート$3 へ接続中%O..."
 
 #: src/common/textevents.h:102
-#, fuzzy
 msgid "%C21*%O$t%C21Connection failed. Error: $1"
-msgstr "-%C10-%C11-%O$t 接続に失敗しました. エラー: $1"
+msgstr ""
 
 #: src/common/textevents.h:105
-#, fuzzy
 msgid "%C22*%O$tReceived a CTCP $1 from $2"
-msgstr "-%C10-%C11-%O$tCTCP 一般 $1 を $2 から受け取りました。"
+msgstr ""
 
 #: src/common/textevents.h:108
-#, fuzzy
 msgid "%C22*%O$tReceived a CTCP $1 from $2 (to $3)"
-msgstr "-%C10-%C11-%O$t$2 から($3へ), CTCP $1 を受け取りました。"
+msgstr ""
 
 #: src/common/textevents.h:111
 msgid "%C19>%O$1%C19<%O$tCTCP $2"
@@ -852,20 +756,16 @@ msgid "%C22*%O$tReceived a CTCP Sound $1 from $2"
 msgstr "%C22*%O$tCTCP サウンド $1 を $2 から受け取りました。"
 
 #: src/common/textevents.h:117
-#, fuzzy
 msgid "%C22*%O$tReceived a CTCP Sound $1 from $2 (to $3)"
-msgstr "-%C10-%C11-%O$t$2 から($3へ), CTCP $1 を受け取りました。"
+msgstr ""
 
 #: src/common/textevents.h:120
-#, fuzzy
 msgid "%C22*%O$tDCC CHAT to %C26$1%O aborted."
-msgstr "-%C10-%C11-%O$tDCC $1 %C11$2 %Cto %C11$3 %C は中断しました。"
+msgstr ""
 
 #: src/common/textevents.h:123
-#, fuzzy
 msgid "%C22*%O$tDCC CHAT connection established to %C26$1 %C30[%O$2%C30]"
 msgstr ""
-"-%C10-%C11-%O$tDCC $1 の $4 %C11$2 %C14[%O$3%C14]%O への接続を確立しました。"
 
 #: src/common/textevents.h:126
 msgid "%C22*%O$tDCC CHAT to %C26$1%O lost ($4)."
@@ -876,18 +776,16 @@ msgid "%C22*%O$tReceived a DCC CHAT offer from $1"
 msgstr "%C22*%O$t$1 から DCC チャット提案を受け取りました。"
 
 #: src/common/textevents.h:132
-#, fuzzy
 msgid "%C22*%O$tOffering DCC CHAT to $1"
-msgstr "-%C10-%C11-%O$t$1 への DCC チャットを提案しています。"
+msgstr ""
 
 #: src/common/textevents.h:135
 msgid "%C22*%O$tAlready offering CHAT to $1"
 msgstr "%C22*%O$t既に $1 へのチャットは提案しています。"
 
 #: src/common/textevents.h:138
-#, fuzzy
 msgid "%C22*%O$tDCC $1 connect attempt to%C26 $2%O failed (err=$3)."
-msgstr "-%C10-%C11-%O$t%C11$2%O への DCC $1 の接続に失敗しました (エラー=$3)。"
+msgstr ""
 
 #: src/common/textevents.h:141
 msgid "%C22*%O$tReceived '$1%O' from $2"
@@ -899,96 +797,73 @@ msgid "%C24,18 Type  To/From    Status  Size    Pos     File         "
 msgstr "%C24,18 種類  To/From    状態    容量    Pos     ファイル       "
 
 #: src/common/textevents.h:147
-#, fuzzy
 msgid ""
-"%C22*%O$tReceived a malformed DCC request from %C26$1%O.%010%C22*%O"
-"$tContents of packet: $2"
-msgstr "-%C10-%C11-%O$t%C11$1%O から異常な DCC チャット要求を受け取りました。"
+"%C22*%O$tReceived a malformed DCC request from "
+"%C26$1%O.%010%C22*%O$tContents of packet: $2"
+msgstr ""
 
 #: src/common/textevents.h:150
-#, fuzzy
 msgid "%C22*%O$tOffering%C26 $1%O to%C26 $2"
-msgstr "-%C10-%C11-%O$t%C11$1 %C を %C11$2%Oへ提案しています...%O"
+msgstr ""
 
 #: src/common/textevents.h:153
-#, fuzzy
 msgid "%C22*%O$tNo such DCC offer."
-msgstr "-%C10-%C11-%O$t そのような DCC 提案はありません。"
+msgstr ""
 
 #: src/common/textevents.h:156
 msgid "%C22*%O$tDCC RECV%C26 $2%O to%C26 $1%O aborted."
 msgstr ""
 
 #: src/common/textevents.h:159
-#, fuzzy
 msgid ""
 "%C22*%O$tDCC RECV%C26 $1%O from%C26 $3%O complete %C30[%C26$4%O cps%C30]%O."
 msgstr ""
-"-%C10-%C11-%O$t%C11$1%Oの %C11$2%O への DCC 送信は %C14[%C11$3%O cps%C14]%O "
-"を完了。"
 
 #: src/common/textevents.h:162
-#, fuzzy
 msgid "%C22*%O$tDCC RECV connection established to%C26 $1 %C30[%O$2%C30]"
 msgstr ""
-"-%C10-%C11-%O$tDCC $1 の $4 %C11$2 %C14[%O$3%C14]%O への接続を確立しました。"
 
 #: src/common/textevents.h:165
 msgid "%C22*%O$tDCC RECV%C26 $1%O from%C26 $3%O failed ($4)."
 msgstr ""
 
 #: src/common/textevents.h:168
-#, fuzzy
 msgid "%C22*%O$tDCC RECV: Cannot open $1 for writing ($2)."
-msgstr "-%C10-%C11-%O$tDCC RECV: 出力ファイル $1 を開けません - 中断します。"
+msgstr ""
 
 #: src/common/textevents.h:171
-#, fuzzy
 msgid ""
 "%C22*%O$tThe file%C26 $1%C already exists, saving it as%C26 $2%O instead."
 msgstr ""
-"-%C10-%C11-%O$t ファイル %C11$1%C は既に存在します. かわりに, このファイルを "
-"%C11$2%O へ保存します。"
 
 #: src/common/textevents.h:174
-#, fuzzy
 msgid "%C22*%O$t%C26$1 %Ohas requested to resume%C26 $2 %Cfrom%C26 $3%C."
 msgstr ""
-"-%C10-%C11-%O$t%C11$1 %C は %C11$3%C から %C11$2 %C の再開を要求しました。"
 
 #: src/common/textevents.h:177
 msgid "%C22*%O$tDCC SEND%C26 $2%O to%C26 $1%O aborted."
 msgstr "%C22*%O$t $2%O から  $1%O への DCC を中断しました。"
 
 #: src/common/textevents.h:180
-#, fuzzy
 msgid ""
 "%C22*%O$tDCC SEND%C26 $1%O to%C26 $2%O complete %C30[%C26$3%O cps%C30]%O."
 msgstr ""
-"-%C10-%C11-%O$t%C11$1%O の %C11$2%O への DCC送信は %C14[%C11$3%O cps%C14]%O "
-"を完了。"
 
 #: src/common/textevents.h:183
-#, fuzzy
 msgid "%C22*%O$tDCC SEND connection established to%C26 $1 %C30[%O$2%C30]"
 msgstr ""
-"-%C10-%C11-%O$tDCC $1 の $4 %C11$2 %C14[%O$3%C14]%O への接続を確立しました。"
 
 #: src/common/textevents.h:186
 msgid "%C22*%O$tDCC SEND%C26 $1%O to%C26 $2%O failed. $3"
 msgstr "%C22*%O$tDCC SEND%C26 $1%O から %C26 $2%O への送信に失敗しました。 $3"
 
 #: src/common/textevents.h:189
-#, fuzzy
 msgid "%C22*%O$t%C26$1 %Ohas offered%C26 $2 %O(%C26$3 %Obytes)"
-msgstr "-%C10-%C11-%O$t%C11$1 %C は %C11$2 %C(%C11$3 %Cバイト)を提案しました。"
+msgstr ""
 
 #: src/common/textevents.h:192
-#, fuzzy
 msgid "%C22*%O$tDCC $1%C26 $2 %Oto%C26 $3 %Cstalled - aborting."
 msgstr ""
-"-%C10-%C11-%O$t%C11$3%C への %C11$2%C のDCC $1 は停滞しています - 中断しま"
-"す。"
 
 #: src/common/textevents.h:195
 msgid "%C22*%O$tDCC $1%C26 $2 %Oto%C26 $3 %Otimed out - aborting."
@@ -1033,35 +908,28 @@ msgid "  Ignore list is empty."
 msgstr "  無視リストの内容が空です。"
 
 #: src/common/textevents.h:228
-#, fuzzy
 msgid "%C22*%O$tCannot join%C26 %B$1 %O(Channel is invite only)."
 msgstr ""
-"-%C10-%C11-%O$t%C11%B$1 %O は招待のみのチャンネルなため参加できません。"
 
 #: src/common/textevents.h:231
-#, fuzzy
 msgid "%C22*%O$tYou have been invited to%C26 $1%O by%C26 $2%C (%C26$3%C)"
 msgstr ""
-"-%C10-%C11-%O$t %C11$2%C から チャンネル %C11$1%C へ招待されました.(%C11$3%C)"
 
 #: src/common/textevents.h:234
 msgid "%C19*%O$t%C19%B$1 %B($3) has joined $2"
 msgstr "%C19*%O$t%C19%B$1 %B($3) は $2 へ参加しました。"
 
 #: src/common/textevents.h:237
-#, fuzzy
 msgid "%C22*%O$tCannot join%C26 %B$1 %O(Requires keyword)."
-msgstr "-%C10-%C11-%O$t%C11%B$1%O へ参加できません(キーワードが必要です)。"
+msgstr ""
 
 #: src/common/textevents.h:240
-#, fuzzy
 msgid "%C21*%O$t%C21$1 has kicked $2 from $3 ($4%O%C21)"
-msgstr "<%C10-%C11-%O$t$1 は $3 から $2 をキックしました. ($4%O)"
+msgstr ""
 
 #: src/common/textevents.h:243
-#, fuzzy
 msgid "%C22*%O$tYou have been killed by $1 ($2%O%C22)"
-msgstr "-%C10-%C11-%O$t $1 によって殺されました. ($2%O)"
+msgstr ""
 
 #: src/common/textevents.h:252
 msgid "%C22*%O$t%C22MOTD Skipped."
@@ -1072,10 +940,8 @@ msgid "%C22*%O$t$1 already in use. Retrying with $2..."
 msgstr "%C22*%O$t$1 は既に使用されています。$2 で再試行します..."
 
 #: src/common/textevents.h:258
-#, fuzzy
 msgid "%C22*%O$tNickname already in use. Use /NICK to try another."
 msgstr ""
-"%C22*%O$tニックはすでに使用されています。他を「/NICK」で指定してください。"
 
 #: src/common/textevents.h:261
 msgid "%C22*%O$tNo such DCC."
@@ -1098,14 +964,12 @@ msgid "%C22*%O$t$1 users in notify list."
 msgstr "%C22*%O$t$1 ユーザーが通知リストにいます。"
 
 #: src/common/textevents.h:282
-#, fuzzy
 msgid "%C22*%O$tNotify: $1 is offline ($3)."
-msgstr "%C22*%O$t 通知: $1 はオフラインです ($2)"
+msgstr ""
 
 #: src/common/textevents.h:285
-#, fuzzy
 msgid "%C22*%O$tNotify: $1 is online ($3)."
-msgstr "C22*%O$t通知: $1 はオンラインです ($2)。"
+msgstr ""
 
 #: src/common/textevents.h:291
 msgid "%C23*%O$t%C23$1 (%O%C23$2) has left $3"
@@ -1113,8 +977,7 @@ msgstr "%C23*%O$t%C23$1 (%O%C23$2) は $3 から離れました。"
 
 #: src/common/textevents.h:294
 msgid "%C23*%O$t%C23$1 (%O%C23$2) has left $3 (%O%C23%B%B$4%O%C23)"
-msgstr ""
-"%C23*%O$t%C23$1 (%O%C23$2) はチャンネル $3 から離れました(%O%C23%B%B$4%O%C23)"
+msgstr "%C23*%O$t%C23$1 (%O%C23$2) はチャンネル $3 から離れました(%O%C23%B%B$4%O%C23)"
 
 #: src/common/textevents.h:297
 msgid "%C22*%O$tPing reply from $1: $2 second(s)"
@@ -1141,55 +1004,44 @@ msgid "%C28-%C29$1/Wallops%C28-%O$t$2"
 msgstr "%C28-%C29$1/Wallops%C28-%O$t$2"
 
 #: src/common/textevents.h:327
-#, fuzzy
 msgid "%C22*%O$tLooking up IP number for%C26 $1%O..."
-msgstr "-%C10-%C11-%O$t%C11$1%O のIPアドレスを探しています.."
+msgstr ""
 
 #: src/common/textevents.h:330
 msgid "%C22*%O$t%C22Connected."
 msgstr "%C22*%O$t%C22接続しました。"
 
 #: src/common/textevents.h:336
-#, fuzzy
 msgid "%C22*%O$t%C22Looking up $1"
-msgstr "-%C10-%C11-%O$t%C11$1%C を探しています.."
+msgstr ""
 
 #: src/common/textevents.h:348
-#, fuzzy
 msgid "%C22*%O$tStopped previous connection attempt (pid=$1)"
-msgstr "-%C10-%C11-%O$t 以前の接続試行が中止されました. (PID=$1)"
+msgstr ""
 
 #: src/common/textevents.h:351
-#, fuzzy
 msgid "%C29*%O$t%C29Topic for $1%C %C29is: $2"
-msgstr "-%C10-%C11-%O$t %C11$1%C のトピックは %C11$2%O です。"
+msgstr ""
 
 #: src/common/textevents.h:354
-#, fuzzy
 msgid "%C22*%O$t$1 has changed the topic to: $2"
-msgstr "-%C10-%C11-%O$t$1はトピックを変更しました: $2%O"
+msgstr ""
 
 #: src/common/textevents.h:357
-#, fuzzy
 msgid "%C29*%O$t%C29Topic for $1%C %C29set by $2%C %C29at $3"
 msgstr ""
-"-%C10-%C11-%O$t%C11$3%O に, %C11$1%C のトピックが %C11$2%C によって設定されま"
-"した。"
 
 #: src/common/textevents.h:360
 msgid "%C22*%O$tUnknown host. Maybe you misspelled it?"
 msgstr "%C22*%O$t不明なホストです。スペルミスしていませんか?"
 
 #: src/common/textevents.h:363
-#, fuzzy
 msgid "%C22*%O$tCannot join%C26 %B$1 %O(User limit reached)."
 msgstr ""
-"-%C10-%C11-%O$t%C11%B$1%O へ参加できません(ユーザー数が上限を越えました)。"
 
 #: src/common/textevents.h:366
-#, fuzzy
 msgid "%C22*%O$t%C26Users on $1:%C $2"
-msgstr "-%C10-%C11-%O$t%C11$1 のユーザー:%C $2"
+msgstr ""
 
 #: src/common/textevents.h:369
 msgid "%C22*%O$t%C28[%O$1%C28] %O$2%C27 $3"
@@ -1213,9 +1065,8 @@ msgid "%C22*%O$t%C28[%O$1%C28]%O idle%C26 $2"
 msgstr "%C22*%O$t%C28[%O$1%C28]%O アイドル%C26 $2"
 
 #: src/common/textevents.h:387
-#, fuzzy
 msgid "%C22*%O$t%C28[%O$1%C28]%O idle%C26 $2%O, signon:%C26 $3"
-msgstr "-%C10-%C11-%O$t%C12[%O$1%C12] %C アイドル %C11$2%C, signon: %C11$3%O"
+msgstr ""
 
 #: src/common/textevents.h:390
 msgid "%C22*%O$t%C28[%O$1%C28] %C30(%O$2@$3%C30)%O: $4"
@@ -1230,9 +1081,8 @@ msgid "%C19*%O$t%C19Now talking on $2"
 msgstr "%C19*%O$t%C19今 $2 で会話中です。"
 
 #: src/common/textevents.h:405
-#, fuzzy
 msgid "%C23*$tYou have been kicked from $2 by $3 ($4%O%C23)"
-msgstr "-%C10-%C11-%O$t $3 により チャンネル $2 からキックされました ($4%O)"
+msgstr ""
 
 #: src/common/textevents.h:408
 #, c-format
@@ -1240,15 +1090,12 @@ msgid "%C23*$tYou have left channel $3"
 msgstr "%C23*$t チャンネル $3 から離れました。"
 
 #: src/common/textevents.h:411
-#, fuzzy
 msgid "%C23*$tYou have left channel $3 (%O%C23%B%B$4%O%C23)"
 msgstr ""
-"-%C10-%C11-%O$t あなたはチャンネル $3 %C14(%O$4%C14)%O から離れました。"
 
 #: src/common/textevents.h:417
-#, fuzzy
 msgid "%C22*%O$tYou've invited%C26 $1%O to%C26 $2%O (%C26$3%O)"
-msgstr "-%C10-%C11-%O$t%C11$2%C に %C11$1%C を招待しています (%C11$3%C)"
+msgstr ""
 
 #: src/common/textevents.h:423
 msgid "%C22*%O$tYou are now known as $2"
@@ -1269,13 +1116,11 @@ msgid "**** BEGIN LOGGING AT %s\n"
 msgstr "**** %s からログ記録開始\n"
 
 #: src/common/text.c:702
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "* Can't open log file(s) for writing. Check the\n"
 "permissions on %s"
 msgstr ""
-"* ログファイルを書き込み用に開けません。 \n"
-"%s/xchatlogs のパーミッションを確認してください。"
 
 #: src/common/text.c:1141
 msgid "Left message"
@@ -1437,9 +1282,8 @@ msgid "The limit"
 msgstr "制限"
 
 #: src/common/text.c:1280
-#, fuzzy
 msgid "The nick of the person who did the op'ing"
-msgstr "なるとをくれたニック"
+msgstr ""
 
 #: src/common/text.c:1281
 msgid "The nick of the person who has been op'ed"
@@ -1450,14 +1294,12 @@ msgid "The nick of the person who has been halfop'ed"
 msgstr "ハーフなるとをもらったニック"
 
 #: src/common/text.c:1286
-#, fuzzy
 msgid "The nick of the person who did the halfop'ing"
-msgstr "ハーフなるとをくれたニック"
+msgstr ""
 
 #: src/common/text.c:1290
-#, fuzzy
 msgid "The nick of the person who did the voice'ing"
-msgstr "発言権をくれたニック"
+msgstr ""
 
 #: src/common/text.c:1291
 msgid "The nick of the person who has been voice'ed"
@@ -1736,18 +1578,14 @@ msgstr "バン時間"
 msgid ""
 "Error parsing event %s.\n"
 "Loading default."
-msgstr ""
-"イベント %s の解析エラーです。\n"
-"デフォルトを読み込み中です。"
+msgstr "イベント %s の解析エラーです。\nデフォルトを読み込み中です。"
 
 #: src/common/text.c:2430
 #, c-format
 msgid ""
 "Cannot read sound file:\n"
 "%s"
-msgstr ""
-"サウンドファイルの読み込みができません:\n"
-"%s"
+msgstr "サウンドファイルの読み込みができません:\n%s"
 
 #: src/common/util.c:300
 msgid "Remote host closed socket"
@@ -1774,9 +1612,8 @@ msgid "Connection reset by peer"
 msgstr "peerによって接続がリセットされました。"
 
 #: src/common/util.c:959
-#, fuzzy
 msgid "Ascension Island"
-msgstr "ココス諸島"
+msgstr ""
 
 #: src/common/util.c:960
 msgid "Andorra"
@@ -1855,9 +1692,8 @@ msgid "Aruba"
 msgstr "アルーバ"
 
 #: src/common/util.c:979
-#, fuzzy
 msgid "Aland Islands"
-msgstr "フォークランド諸島"
+msgstr ""
 
 #: src/common/util.c:980
 msgid "Azerbaijan"
@@ -1972,9 +1808,8 @@ msgid "Switzerland"
 msgstr "スイス"
 
 #: src/common/util.c:1008
-#, fuzzy
 msgid "Cote d'Ivoire"
-msgstr "コートジボアール"
+msgstr ""
 
 #: src/common/util.c:1009
 msgid "Cook Islands"
@@ -2033,9 +1868,8 @@ msgid "Czech Republic"
 msgstr "チェコ共和国"
 
 #: src/common/util.c:1023
-#, fuzzy
 msgid "East Germany"
-msgstr "ドイツ"
+msgstr ""
 
 #: src/common/util.c:1024
 msgid "Germany"
@@ -2182,9 +2016,8 @@ msgid "Greece"
 msgstr "ギリシャ"
 
 #: src/common/util.c:1060
-#, fuzzy
 msgid "S. Georgia and S. Sandwich Isles"
-msgstr "南ジョージア・南サンドイッチ諸島"
+msgstr ""
 
 #: src/common/util.c:1061
 msgid "Guatemala"
@@ -2247,9 +2080,8 @@ msgid "India"
 msgstr "インド"
 
 #: src/common/util.c:1076
-#, fuzzy
 msgid "Informational"
-msgstr "国際"
+msgstr ""
 
 #: src/common/util.c:1077
 msgid "International"
@@ -2396,9 +2228,8 @@ msgid "Moldova"
 msgstr "モルドバ"
 
 #: src/common/util.c:1113
-#, fuzzy
 msgid "Montenegro"
-msgstr "セルビアとモンテネグロ"
+msgstr ""
 
 #: src/common/util.c:1114
 msgid "United States Medical"
@@ -2597,9 +2428,8 @@ msgid "Professions"
 msgstr ""
 
 #: src/common/util.c:1163
-#, fuzzy
 msgid "Palestinian Territory"
-msgstr "英領インド洋領域"
+msgstr ""
 
 #: src/common/util.c:1164
 msgid "Portugal"
@@ -2702,9 +2532,8 @@ msgid "Suriname"
 msgstr "スリナム"
 
 #: src/common/util.c:1189
-#, fuzzy
 msgid "South Sudan"
-msgstr "韓国"
+msgstr ""
 
 #: src/common/util.c:1190
 msgid "Sao Tome and Principe"
@@ -2891,29 +2720,24 @@ msgid "Unknown"
 msgstr "不明"
 
 #: src/common/xchat.c:740
-#, fuzzy
 msgid "_Open Dialog Window"
-msgstr "ダイアログウィンドウを開く"
+msgstr ""
 
 #: src/common/xchat.c:741
-#, fuzzy
 msgid "_Send a File"
-msgstr "ファイル送信"
+msgstr ""
 
 #: src/common/xchat.c:742
-#, fuzzy
 msgid "_User Info (WhoIs)"
-msgstr "ユーザー情報 (WHOIS)"
+msgstr ""
 
 #: src/common/xchat.c:743
-#, fuzzy
 msgid "_Add to Friends List"
-msgstr "XChat: ファイル送信一覧"
+msgstr ""
 
 #: src/common/xchat.c:744
-#, fuzzy
 msgid "O_perator Actions"
-msgstr "オペレーター操作"
+msgstr ""
 
 #: src/common/xchat.c:746
 msgid "Give Ops"
@@ -3024,28 +2848,25 @@ msgid "Couldn't connect to session bus"
 msgstr "セッションバスに接続できません"
 
 #: src/common/dbus/dbus-client.c:86
-#, fuzzy
 msgid "Failed to complete NameHasOwner"
-msgstr "コマンドを完了していません"
+msgstr ""
 
 #: src/common/dbus/dbus-client.c:112
-#, fuzzy
 msgid "Failed to complete Command"
-msgstr "コマンドを完了していません"
+msgstr ""
 
 #: src/common/dbus/dbus-plugin.c:30
-#, fuzzy
 msgid "remote access"
-msgstr "xchat リモートアクセス"
+msgstr ""
 
 #: src/common/dbus/dbus-plugin.c:31
 msgid "plugin for remote access using DBUS"
 msgstr "DBUS を用いてリモートアクセスのプラグイン"
 
 #: src/common/dbus/dbus-plugin.c:897
-#, fuzzy, c-format
+#, c-format
 msgid "Couldn't connect to session bus: %s\n"
-msgstr "セッションバスに接続できません : %s\n"
+msgstr ""
 
 #: src/common/dbus/dbus-plugin.c:914
 #, c-format
@@ -3053,9 +2874,8 @@ msgid "Failed to acquire %s: %s\n"
 msgstr "%s の取得に失敗しました: %s\n"
 
 #: src/fe-gtk/about.c:101
-#, fuzzy
 msgid "About "
-msgstr "XChat について(_A)"
+msgstr ""
 
 #: src/fe-gtk/about.c:134
 msgid "A multiplatform IRC Client"
@@ -3113,24 +2933,21 @@ msgid "Refresh"
 msgstr "再描画"
 
 #: src/fe-gtk/chanlist.c:117
-#, fuzzy, c-format
+#, c-format
 msgid "Displaying %d/%d users on %d/%d channels."
 msgstr ""
-"ユーザーとチャンネルの統計: %d/%d ユーザーが %d/%d チャンネルにいます。"
 
 #: src/fe-gtk/chanlist.c:532 src/fe-gtk/menu.c:1273 src/fe-gtk/urlgrab.c:149
 msgid "Select an output filename"
 msgstr "出力ファイル名の選択"
 
 #: src/fe-gtk/chanlist.c:639 src/fe-gtk/chanlist.c:821
-#, fuzzy
 msgid "_Join Channel"
-msgstr "チャンネルへ参加"
+msgstr ""
 
 #: src/fe-gtk/chanlist.c:641
-#, fuzzy
 msgid "_Copy Channel Name"
-msgstr "チャンネル名"
+msgstr ""
 
 #: src/fe-gtk/chanlist.c:643
 msgid "Copy _Topic Text"
@@ -3142,38 +2959,32 @@ msgid ": Channel List (%s)"
 msgstr "XChat: チャンネル一覧 (%s)"
 
 #: src/fe-gtk/chanlist.c:803
-#, fuzzy
 msgid "_Search"
-msgstr "XChat: 検索"
+msgstr ""
 
 #: src/fe-gtk/chanlist.c:809
-#, fuzzy
 msgid "_Download List"
-msgstr "ダウンロード"
+msgstr ""
 
 #: src/fe-gtk/chanlist.c:815
-#, fuzzy
 msgid "Save _List..."
-msgstr "サーバー一覧(_S)..."
+msgstr ""
 
 #: src/fe-gtk/chanlist.c:828
-#, fuzzy
 msgid "Show only:"
-msgstr "チャンネルを表示"
+msgstr ""
 
 #: src/fe-gtk/chanlist.c:840
-#, fuzzy
 msgid "channels with"
-msgstr "チャンネル"
+msgstr ""
 
 #: src/fe-gtk/chanlist.c:853
 msgid "to"
 msgstr ""
 
 #: src/fe-gtk/chanlist.c:865
-#, fuzzy
 msgid "users."
-msgstr "ユーザー"
+msgstr ""
 
 #: src/fe-gtk/chanlist.c:871
 msgid "Look in:"
@@ -3184,19 +2995,16 @@ msgid "Channel name"
 msgstr "チャンネル名"
 
 #: src/fe-gtk/chanlist.c:904
-#, fuzzy
 msgid "Search type:"
-msgstr "テキスト検索..."
+msgstr ""
 
 #: src/fe-gtk/chanlist.c:911
-#, fuzzy
 msgid "Simple Search"
-msgstr "XChat: 検索"
+msgstr ""
 
 #: src/fe-gtk/chanlist.c:912
-#, fuzzy
 msgid "Pattern Match (Wildcards)"
-msgstr "パターンマッチ:"
+msgstr ""
 
 #: src/fe-gtk/chanlist.c:914
 msgid "Regular Expression"
@@ -3221,10 +3029,7 @@ msgid ""
 "Cannot access file: %s\n"
 "%s.\n"
 "Resuming not possible."
-msgstr ""
-"ファイルにアクセスできません: %s\n"
-"%s.\n"
-"おそらく継続できません。"
+msgstr "ファイルにアクセスできません: %s\n%s.\nおそらく継続できません。"
 
 #: src/fe-gtk/dccgui.c:508
 msgid ""
@@ -3237,9 +3042,8 @@ msgid "Cannot resume the same file from two people."
 msgstr "2 人から同じファイルを再開できません。"
 
 #: src/fe-gtk/dccgui.c:745
-#, fuzzy
 msgid ": Uploads and Downloads"
-msgstr "XChat: アップロードとダウンロード"
+msgstr ""
 
 #: src/fe-gtk/dccgui.c:761 src/fe-gtk/dccgui.c:1000 src/fe-gtk/notifygui.c:137
 msgid "Status"
@@ -3274,9 +3078,8 @@ msgid "File:"
 msgstr "ファイル:"
 
 #: src/fe-gtk/dccgui.c:821
-#, fuzzy
 msgid "Address:"
-msgstr "アドレス"
+msgstr ""
 
 #: src/fe-gtk/dccgui.c:827 src/fe-gtk/dccgui.c:1024
 msgid "Abort"
@@ -3409,10 +3212,7 @@ msgid ""
 "Failed to open font:\n"
 "\n"
 "%s"
-msgstr ""
-"フォントを開けません:\n"
-"\n"
-"%s"
+msgstr "フォントを開けません:\n\n%s"
 
 #: src/fe-gtk/fe-gtk.c:732
 msgid "Search buffer is empty.\n"
@@ -3430,98 +3230,69 @@ msgstr "ネットワーク送信キュー: %d バイト"
 
 #: src/fe-gtk/fkeys.c:165
 msgid ""
-"The Run Command action runs the data in Data 1 as if it has been typed into "
-"the entry box where you pressed the key sequence. Thus it can contain text "
-"(which will be sent to the channel/person), commands or user commands. When "
-"run all \\n characters in Data 1 are used to deliminate seperate commands so "
-"it is possible to run more than one command. If you want a \\ in the actual "
-"text run then enter \\\\"
-msgstr ""
-"コマンド実行 は, データ1の内容を入力行へ, キーを入力したエントリボックスに実"
-"際にタイプしたように 処理を実行します。(チャンネル／ニックへ送信する)コマン"
-"ド, もしくはユーザーコマンドを, この中に含めることも可能です。データ1中に, "
-"『\\n』文字が使われた場合, この文字は, コマンドの区切りとして解釈されるので, "
-"複数のコマンドを実行することも可能です。 実際に『\\』を打たせたいときは, 『\\"
-"\\』と入力して下さい"
+"The Run Command action runs the data in Data 1 as if it has been typed "
+"into the entry box where you pressed the key sequence. Thus it can contain "
+"text (which will be sent to the channel/person), commands or user commands. "
+"When run all \\n characters in Data 1 are used to deliminate seperate "
+"commands so it is possible to run more than one command. If you want a \\ "
+"in the actual text run then enter \\\\"
+msgstr "コマンド実行 は, データ1の内容を入力行へ, キーを入力したエントリボックスに実際にタイプしたように 処理を実行します。(チャンネル／ニックへ送信する)コマンド, もしくはユーザーコマンドを, この中に含めることも可能です。データ1中に, 『\\n』文字が使われた場合, この文字は, コマンドの区切りとして解釈されるので, 複数のコマンドを実行することも可能です。 実際に『\\』を打たせたいときは, 『\\\\』と入力して下さい"
 
 #: src/fe-gtk/fkeys.c:167
 msgid ""
-"The Change Page command switches between pages in the notebook. Set Data 1 "
-"to the page you want to switch to. If Data 2 is set to anything then the "
+"The Change Page command switches between pages in the notebook. Set Data 1"
+" to the page you want to switch to. If Data 2 is set to anything then the "
 "switch will be relative to the current position"
-msgstr ""
-"ページ変更コマンドは, ノートブックのページ間を切り替えます。切り替えたいペー"
-"ジ先を, データ1にセットします。また, データ2に 何かセットされていると, 切り替"
-"えが現在位置からの相対位置になります"
+msgstr "ページ変更コマンドは, ノートブックのページ間を切り替えます。切り替えたいページ先を, データ1にセットします。また, データ2に 何かセットされていると, 切り替えが現在位置からの相対位置になります"
 
 #: src/fe-gtk/fkeys.c:169
 msgid ""
 "The Insert in Buffer command will insert the contents of Data 1 into the "
 "entry where the key sequence was pressed at the current cursor position"
-msgstr ""
-"バッファへ挿入 コマンドはデータ1の内容を, 入力行中のカーソルの場所へ挿入しま"
-"す。"
+msgstr "バッファへ挿入 コマンドはデータ1の内容を, 入力行中のカーソルの場所へ挿入します。"
 
 #: src/fe-gtk/fkeys.c:171
-#, fuzzy
 msgid ""
-"The Scroll Page command scrolls the text widget up or down one page or one "
-"line. Set Data 1 to either Up, Down, +1 or -1."
+"The Scroll Page command scrolls the text widget up or down one page or one"
+" line. Set Data 1 to either Up, Down, +1 or -1."
 msgstr ""
-"ページ・スクロール コマンドは, テキスト・モニタ画面を一ページ分, 上下へスク"
-"ロールさせます. データ1に何か設定されていれば上へスクロールし, そうでなければ"
-"下へスクロールします。"
 
 #: src/fe-gtk/fkeys.c:173
 msgid ""
-"The Set Buffer command sets the entry where the key sequence was entered to "
-"the contents of Data 1"
-msgstr ""
-"バッファ設定コマンドは, テキスト入力行の内容を, データ1の内容として置き換えま"
-"す。"
+"The Set Buffer command sets the entry where the key sequence was entered "
+"to the contents of Data 1"
+msgstr "バッファ設定コマンドは, テキスト入力行の内容を, データ1の内容として置き換えます。"
 
 #: src/fe-gtk/fkeys.c:175
 msgid ""
-"The Last Command command sets the entry to contain the last command entered "
-"- the same as pressing up in a shell"
-msgstr ""
-"最後のコマンドはテキスト入力行に, 最後に入力されたコマンド内容を含ませます. "
-"シェル上で, コマンドを直接実行するのと同じです。"
+"The Last Command command sets the entry to contain the last command "
+"entered - the same as pressing up in a shell"
+msgstr "最後のコマンドはテキスト入力行に, 最後に入力されたコマンド内容を含ませます. シェル上で, コマンドを直接実行するのと同じです。"
 
 #: src/fe-gtk/fkeys.c:177
 msgid ""
-"The Next Command command sets the entry to contain the next command entered "
-"- the same as pressing down in a shell"
-msgstr ""
-"次のコマンドはテキスト入力行に, 次に入力されたコマンド内容を含ませます. シェ"
-"ル上で, コマンドを直接実行するのと同じです。"
+"The Next Command command sets the entry to contain the next command "
+"entered - the same as pressing down in a shell"
+msgstr "次のコマンドはテキスト入力行に, 次に入力されたコマンド内容を含ませます. シェル上で, コマンドを直接実行するのと同じです。"
 
 #: src/fe-gtk/fkeys.c:179
 msgid ""
 "This command changes the text in the entry to finish an incomplete nickname "
-"or command. If Data 1 is set then double-tabbing in a string will select the "
-"last nick, not the next"
-msgstr ""
-"このコマンドは, 入力行中の不完全なニックやコマンドを補完します. データ1が設定"
-"されていると, タブキーを2回押した場合に, 次の補完候補でなく, 最後に入力された"
-"ニックが補完されます。"
+"or command. If Data 1 is set then double-tabbing in a string will select the"
+" last nick, not the next"
+msgstr "このコマンドは, 入力行中の不完全なニックやコマンドを補完します. データ1が設定されていると, タブキーを2回押した場合に, 次の補完候補でなく, 最後に入力されたニックが補完されます。"
 
 #: src/fe-gtk/fkeys.c:181
 msgid ""
-"This command scrolls up and down through the list of nicks. If Data 1 is set "
-"to anything it will scroll up, else it scrolls down"
-msgstr ""
-"このコマンドは, ニックリストを上下へスクロールさせます. データ1に何か設定され"
-"ていれば上へスクロールし, そうでなければ下へスクロールします。"
+"This command scrolls up and down through the list of nicks. If Data 1 is set"
+" to anything it will scroll up, else it scrolls down"
+msgstr "このコマンドは, ニックリストを上下へスクロールさせます. データ1に何か設定されていれば上へスクロールし, そうでなければ下へスクロールします。"
 
 #: src/fe-gtk/fkeys.c:183
-#, fuzzy
 msgid ""
 "This command checks the last word entered in the entry against the replace "
 "list and replaces it if it finds a match"
 msgstr ""
-"このコマンドは, 最後に入力された動作内容を置換リストの内容と照らし合わせ, 一"
-"致した場合, それを置換します"
 
 #: src/fe-gtk/fkeys.c:185
 msgid "This command moves the front tab left by one"
@@ -3595,45 +3366,34 @@ msgid "Error opening keys config file\n"
 msgstr "キー設定ファイルのオープンにエラーが発生しました.\n"
 
 #: src/fe-gtk/fkeys.c:1025
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Unknown keyname %s in key bindings config file\n"
 "Load aborted, please fix %s/keybindings.conf\n"
 msgstr ""
-"キーバインド設定ファイルに不明なキー名 %s があります。\n"
-"読み込みを中断します, ~/.xchat/keybindings.conf を直してください。\n"
 
 #: src/fe-gtk/fkeys.c:1063
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Unknown action %s in key bindings config file\n"
 "Load aborted, Please fix %s/keybindings\n"
 msgstr ""
-"キーバインド設定ファイルに不明なアクション %s があります。\n"
-"読み込みを中断します, ~/.xchat/keybindings.conf を直してください。\n"
 
 #: src/fe-gtk/fkeys.c:1084
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Expecting Data line (beginning Dx{:|!}) but got:\n"
 "%s\n"
 "\n"
 "Load aborted, Please fix %s/keybindings\n"
 msgstr ""
-"期待すべきデータ行 (Dx{:|!} で開始) しかし読み込み行:\n"
-"%s\n"
-"\n"
-"\n"
-"読み込みを中断します, ~/.xchat/keybindings を直してください。\n"
 
 #: src/fe-gtk/fkeys.c:1153
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "Key bindings config file is corrupt, load aborted\n"
 "Please fix %s/keybindings.conf\n"
 msgstr ""
-"キーバインド設定ファイルに不明なキー名 %s があります。\n"
-"読み込みを中断します, ~/.xchat/keybindings.conf を直してください。\n"
 
 #: src/fe-gtk/gtkutil.c:136
 msgid "Cannot write to that file."
@@ -3740,8 +3500,7 @@ msgstr "チャンネルへ参加:"
 
 #: src/fe-gtk/joind.c:195
 msgid "If you know the name of the channel you want to join, enter it here."
-msgstr ""
-"参加したいチャンネルの名前を分かっている場合は、ここで入力してください。"
+msgstr "参加したいチャンネルの名前を分かっている場合は、ここで入力してください。"
 
 #: src/fe-gtk/joind.c:202
 msgid "O_pen the Channel-List window."
@@ -3756,9 +3515,8 @@ msgid "_Always show this dialog after connecting."
 msgstr "常にこのダイアログを接続後に表示します。(_A)"
 
 #: src/fe-gtk/maingui.c:454
-#, fuzzy
 msgid "Dialog with"
-msgstr "ダイアログ・ウィンドウ"
+msgstr ""
 
 #: src/fe-gtk/maingui.c:746
 #, c-format
@@ -3785,18 +3543,17 @@ msgid "Don't ask next time."
 msgstr ""
 
 #: src/fe-gtk/maingui.c:1271
-#, fuzzy, c-format
+#, c-format
 msgid "You are connected to %i IRC networks."
-msgstr "起動したらこのネットワークに自動接続"
+msgstr ""
 
 #: src/fe-gtk/maingui.c:1273
 msgid "Are you sure you want to quit?"
 msgstr ""
 
 #: src/fe-gtk/maingui.c:1275
-#, fuzzy
 msgid "Some file transfers are still active."
-msgstr "いくつかのファイル転送はまだ活動中です。xchat を終了しますか?"
+msgstr ""
 
 #: src/fe-gtk/maingui.c:1293
 msgid "_Minimize to Tray"
@@ -3839,19 +3596,16 @@ msgid "_Reload Scrollback"
 msgstr ""
 
 #: src/fe-gtk/maingui.c:1578
-#, fuzzy
 msgid "_Hide Join/Part Messages"
-msgstr "参加と退出メッセージを隠す"
+msgstr ""
 
 #: src/fe-gtk/maingui.c:1586
-#, fuzzy
 msgid "_Extra Alerts"
-msgstr "警告"
+msgstr ""
 
 #: src/fe-gtk/maingui.c:1588
-#, fuzzy
 msgid "Beep on _Message"
-msgstr "メッセージでビープ音を鳴らす"
+msgstr ""
 
 #: src/fe-gtk/maingui.c:1592
 msgid "Blink Tray _Icon"
@@ -3862,9 +3616,8 @@ msgid "Blink Task _Bar"
 msgstr ""
 
 #: src/fe-gtk/maingui.c:1633 src/fe-gtk/menu.c:2184
-#, fuzzy
 msgid "_Detach"
-msgstr "タブを外す(_D)"
+msgstr ""
 
 #: src/fe-gtk/maingui.c:1635 src/fe-gtk/menu.c:2185 src/fe-gtk/menu.c:2190
 #: src/fe-gtk/plugingui.c:257 src/fe-gtk/search.c:234
@@ -4017,7 +3770,6 @@ msgid "Retrieve channel list..."
 msgstr "チャンネルリストの取得..."
 
 #: src/fe-gtk/menu.c:1390
-#, fuzzy
 msgid ""
 "User Commands - Special codes:\n"
 "\n"
@@ -4038,26 +3790,8 @@ msgid ""
 "%2 would be \"john\"\n"
 "&2 would be \"john hello\"."
 msgstr ""
-"ユーザーコマンド - 特殊コード: \n"
-"\n"
-"%c  =  現在のチャンネル\n"
-"%m  =  マシン情報\n"
-"%n  =  あなたのニック\n"
-"%t  =  時間/日付\n"
-"%v  =  xchat のバージョン\n"
-"%2  =  単語 2\n"
-"%3  =  単語 3\n"
-"&2  =  単語 2 からファイルの最後まで\n"
-"&3  =  単語 3 からファイルの最後まで\n"
-"\n"
-"例:\n"
-"/cmd john hello\n"
-"\n"
-"%2 は「john」になるでしょう\n"
-"&2 は「こんにちは john」です。"
 
 #: src/fe-gtk/menu.c:1406
-#, fuzzy
 msgid ""
 "Userlist Buttons - Special codes:\n"
 "\n"
@@ -4070,19 +3804,8 @@ msgid ""
 "%s  =  selected nick\n"
 "%t  =  time/date\n"
 msgstr ""
-"ユーザー一覧ボタン - 特殊コード:\n"
-"\n"
-"%a  =  すべての選択済みニック\n"
-"%c  =  現在のチャンネル\n"
-"%h  =  選択済ニックのホスト名\n"
-"%m  =  マシン情報\n"
-"%n  =  あなたのニック\n"
-"%s  =  選択済ニック\n"
-"%t  =  日付/時間\n"
-"\n"
 
 #: src/fe-gtk/menu.c:1416
-#, fuzzy
 msgid ""
 "Dialog Buttons - Special codes:\n"
 "\n"
@@ -4095,18 +3818,8 @@ msgid ""
 "%s  =  selected nick\n"
 "%t  =  time/date\n"
 msgstr ""
-"ダイアログボタン - 特殊コード:\n"
-"\n"
-"%a  =  すべての選択済ニック\n"
-"%c  =  現在のチャンネル\n"
-"%h  =  選択済ニックのホスト名\n"
-"%m  =  マシン情報\n"
-"%n  =  あなたのニック\n"
-"%s  =  選択済ニック\n"
-"%t  =  時間/日付\n"
 
 #: src/fe-gtk/menu.c:1426
-#, fuzzy
 msgid ""
 "CTCP Replies - Special codes:\n"
 "\n"
@@ -4121,17 +3834,6 @@ msgid ""
 "&3  =  word 3 to the end of line\n"
 "\n"
 msgstr ""
-"CTCP 返信 - 特殊コード:\n"
-"\n"
-"%d  =  データ (the whole ctcp)\n"
-"%m  =  マシン情報\n"
-"%s  =  ctcp を送ったニック\n"
-"%t  =  時間/日付\n"
-"%2  =  単語 2\n"
-"%3  =  単語 3\n"
-"&2  =  単語 2 から行末\n"
-"&3  =  単語 3 から行末\n"
-"\n"
 
 #: src/fe-gtk/menu.c:1437
 #, c-format
@@ -4178,9 +3880,8 @@ msgid ": CTCP Replies"
 msgstr "XChat: CTCP 応答"
 
 #: src/fe-gtk/menu.c:1606
-#, fuzzy
 msgid "He_xChat"
-msgstr "_XChat"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1607
 msgid "Network Li_st..."
@@ -4219,33 +3920,28 @@ msgid "_View"
 msgstr "閲覧(_V)"
 
 #: src/fe-gtk/menu.c:1633
-#, fuzzy
 msgid "_Menu Bar"
-msgstr "メニューバー(_M)"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1634
-#, fuzzy
 msgid "_Topic Bar"
-msgstr "トピックバー(_T)"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1635
-#, fuzzy
 msgid "_User List"
-msgstr "ユーザーリスト"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1636
-#, fuzzy
 msgid "U_serlist Buttons"
-msgstr "ユーザー一覧のボタン"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1637
 msgid "M_ode Buttons"
 msgstr "モードボタン(_O)"
 
 #: src/fe-gtk/menu.c:1639
-#, fuzzy
 msgid "_Channel Switcher"
-msgstr "チャンネルリスト..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1641
 msgid "_Tabs"
@@ -4280,14 +3976,12 @@ msgid "_Reconnect"
 msgstr "再接続する(_R)"
 
 #: src/fe-gtk/menu.c:1655
-#, fuzzy
 msgid "Join a Channel..."
-msgstr "チャンネルへ参加..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1656
-#, fuzzy
 msgid "List of Channels..."
-msgstr "チャンネルへ参加..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1659
 msgid "Marked Away"
@@ -4366,9 +4060,8 @@ msgid "File Transfers..."
 msgstr "ファイル転送..."
 
 #: src/fe-gtk/menu.c:1683
-#, fuzzy
 msgid "Friends List..."
-msgstr "バンリスト..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1684
 msgid "Ignore List..."
@@ -4391,9 +4084,8 @@ msgid "Reset Marker Line"
 msgstr "マーカー行をリセット"
 
 #: src/fe-gtk/menu.c:1690
-#, fuzzy
 msgid "_Copy Selection"
-msgstr "選択したリンクをコピーする"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1691
 msgid "C_lear Text"
@@ -4404,23 +4096,20 @@ msgid "Save Text..."
 msgstr "テキスト保存..."
 
 #: src/fe-gtk/menu.c:1694
-#, fuzzy
 msgid "Search"
-msgstr "XChat: 検索"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1695
 msgid "Search Text..."
 msgstr "テキスト検索..."
 
 #: src/fe-gtk/menu.c:1696
-#, fuzzy
 msgid "Reset Search"
-msgstr "XChat: 検索"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1697
-#, fuzzy
 msgid "Search Next"
-msgstr "テキスト検索..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1698
 msgid "Search Previous"
@@ -4443,9 +4132,8 @@ msgid "_About"
 msgstr "XChat について(_A)"
 
 #: src/fe-gtk/menu.c:2189
-#, fuzzy
 msgid "_Attach"
-msgstr "タブをつける"
+msgstr ""
 
 #: src/fe-gtk/notifygui.c:139
 msgid "Last Seen"
@@ -4460,9 +4148,9 @@ msgid "Never"
 msgstr "一度もなし"
 
 #: src/fe-gtk/notifygui.c:204 src/fe-gtk/notifygui.c:229
-#, fuzzy, c-format
+#, c-format
 msgid "%d minutes ago"
-msgstr "%u 分前"
+msgstr ""
 
 #: src/fe-gtk/notifygui.c:219
 msgid "Online"
@@ -4481,9 +4169,8 @@ msgid "Comma separated list of networks is accepted."
 msgstr ""
 
 #: src/fe-gtk/notifygui.c:414
-#, fuzzy
 msgid ": Friends List"
-msgstr "XChat: ファイル送信一覧"
+msgstr ""
 
 #: src/fe-gtk/notifygui.c:435
 msgid "Open Dialog"
@@ -4495,52 +4182,45 @@ msgid ": Connected to %u networks and %u channels"
 msgstr ""
 
 #: src/fe-gtk/plugin-tray.c:516
-#, fuzzy
 msgid "_Restore Window"
-msgstr "ウィンドウを閉じる(_C)"
+msgstr ""
 
 #: src/fe-gtk/plugin-tray.c:518
-#, fuzzy
 msgid "_Hide Window"
-msgstr "ウィンドウ(_W)"
+msgstr ""
 
 #: src/fe-gtk/plugin-tray.c:522
 msgid "_Blink on"
 msgstr ""
 
 #: src/fe-gtk/plugin-tray.c:523 src/fe-gtk/setup.c:640
-#, fuzzy
 msgid "Channel Message"
-msgstr "チャンネル名"
+msgstr ""
 
 #: src/fe-gtk/plugin-tray.c:524 src/fe-gtk/setup.c:641
-#, fuzzy
 msgid "Private Message"
-msgstr "ぷりぶ をタブへ"
+msgstr ""
 
 #: src/fe-gtk/plugin-tray.c:525 src/fe-gtk/setup.c:642
-#, fuzzy
 msgid "Highlighted Message"
-msgstr "メッセージのハイライト時にビープを鳴らす"
+msgstr ""
 
 #: src/fe-gtk/plugin-tray.c:528
-#, fuzzy
 msgid "_Change status"
-msgstr "チャンネルをタブへ"
+msgstr ""
 
 #: src/fe-gtk/plugin-tray.c:530
-#, fuzzy
 msgid "_Away"
-msgstr "離席"
+msgstr ""
 
 #: src/fe-gtk/plugin-tray.c:533
 msgid "_Back"
 msgstr ""
 
 #: src/fe-gtk/plugin-tray.c:588 src/fe-gtk/plugin-tray.c:596
-#, fuzzy, c-format
+#, c-format
 msgid ": Highlighted message from: %s (%s)"
-msgstr "メッセージのハイライト時にビープを鳴らす"
+msgstr ""
 
 #: src/fe-gtk/plugin-tray.c:591
 #, c-format
@@ -4558,9 +4238,9 @@ msgid ": %u new public messages."
 msgstr ""
 
 #: src/fe-gtk/plugin-tray.c:643 src/fe-gtk/plugin-tray.c:650
-#, fuzzy, c-format
+#, c-format
 msgid ": Private message from: %s (%s)"
-msgstr "ぷりぶ をタブへ"
+msgstr ""
 
 #: src/fe-gtk/plugin-tray.c:646
 #, c-format
@@ -4636,18 +4316,16 @@ msgid "Search _backwards"
 msgstr "前を検索(_B)"
 
 #: src/fe-gtk/search.c:213
-#, fuzzy
 msgid "_Highlight all"
-msgstr "ハイライト:"
+msgstr ""
 
 #: src/fe-gtk/search.c:221
 msgid "R_egular expression"
 msgstr ""
 
 #: src/fe-gtk/search.c:237
-#, fuzzy
 msgid "Close and _Reset"
-msgstr "フォントセットを使用する"
+msgstr ""
 
 #: src/fe-gtk/servlistgui.c:172 src/fe-gtk/servlistgui.c:281
 msgid "New Network"
@@ -4659,9 +4337,8 @@ msgid "Really remove network \"%s\" and all its servers?"
 msgstr "本当にネットワーク \"%s\" とそのすべてのサーバーを削除しますか?"
 
 #: src/fe-gtk/servlistgui.c:735
-#, fuzzy
 msgid "#channel"
-msgstr "チャンネル"
+msgstr ""
 
 #: src/fe-gtk/servlistgui.c:845
 msgid ": Favorite Channels (Auto-Join List)"
@@ -4673,9 +4350,8 @@ msgid "These channels will be joined whenever you connect to %s."
 msgstr ""
 
 #: src/fe-gtk/servlistgui.c:901
-#, fuzzy
 msgid "Key (Password)"
-msgstr "パスワード:"
+msgstr ""
 
 #: src/fe-gtk/servlistgui.c:932 src/fe-gtk/servlistgui.c:1572
 msgid "_Edit"
@@ -4746,9 +4422,8 @@ msgid "Auto connect to this network at startup"
 msgstr "起動したらこのネットワークに自動接続"
 
 #: src/fe-gtk/servlistgui.c:1468
-#, fuzzy
 msgid "Bypass proxy server"
-msgstr "プロキシサーバーを使う"
+msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1470
 msgid "Use SSL for all the servers on this network"
@@ -4759,9 +4434,8 @@ msgid "Accept invalid SSL certificate"
 msgstr "不正な証明を受け入れる"
 
 #: src/fe-gtk/servlistgui.c:1481
-#, fuzzy
 msgid "_Favorite channels:"
-msgstr "チャンネルを離れる:"
+msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1483
 msgid "Channels to join, separated by commas, but not spaces!"
@@ -4774,8 +4448,8 @@ msgstr "接続コマンド:"
 #: src/fe-gtk/servlistgui.c:1488
 msgid ""
 "Extra command to execute after connecting. If you need more than one, set "
-"this to LOAD -e <filename>, where <filename> is a text-file full of commands "
-"to execute."
+"this to LOAD -e <filename>, where <filename> is a text-file full of commands"
+" to execute."
 msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1491
@@ -4786,9 +4460,7 @@ msgstr "Nickserv パスワード:"
 msgid ""
 "If your nickname requires a password, enter it here. Not all IRC networks "
 "support this."
-msgstr ""
-"ニックネームがパスワードを要求する場合、ここに入力します。すべての IRC ネット"
-"ワークがこれをサポートしているとは限りません。"
+msgstr "ニックネームがパスワードを要求する場合、ここに入力します。すべての IRC ネットワークがこれをサポートしているとは限りません。"
 
 #: src/fe-gtk/servlistgui.c:1497
 msgid "Server password:"
@@ -4853,37 +4525,32 @@ msgid "C_onnect"
 msgstr "接続(_O)"
 
 #: src/fe-gtk/setup.c:105
-#, fuzzy
 msgid "Albanian"
-msgstr "アルバニア"
+msgstr ""
 
 #: src/fe-gtk/setup.c:106
 msgid "Amharic"
 msgstr ""
 
 #: src/fe-gtk/setup.c:107
-#, fuzzy
 msgid "Azerbaijani"
-msgstr "アゼルバイジャン"
+msgstr ""
 
 #: src/fe-gtk/setup.c:108
 msgid "Basque"
 msgstr ""
 
 #: src/fe-gtk/setup.c:109
-#, fuzzy
 msgid "Belarusian"
-msgstr "ベラルーシ"
+msgstr ""
 
 #: src/fe-gtk/setup.c:110
-#, fuzzy
 msgid "Bulgarian"
-msgstr "ブルガリア"
+msgstr ""
 
 #: src/fe-gtk/setup.c:112
-#, fuzzy
 msgid "Chinese (Simplified)"
-msgstr "行数 (0=無制限)."
+msgstr ""
 
 #: src/fe-gtk/setup.c:113
 msgid "Chinese (Traditional)"
@@ -4906,99 +4573,84 @@ msgid "English (US)"
 msgstr ""
 
 #: src/fe-gtk/setup.c:118
-#, fuzzy
 msgid "Estonian"
-msgstr "ストニア"
+msgstr ""
 
 #: src/fe-gtk/setup.c:119
 msgid "Finnish"
 msgstr ""
 
 #: src/fe-gtk/setup.c:120
-#, fuzzy
 msgid "French"
-msgstr "仏領ギアナ"
+msgstr ""
 
 #: src/fe-gtk/setup.c:121
 msgid "Galician"
 msgstr ""
 
 #: src/fe-gtk/setup.c:122
-#, fuzzy
 msgid "German"
-msgstr "ドイツ"
+msgstr ""
 
 #: src/fe-gtk/setup.c:123
-#, fuzzy
 msgid "Greek"
-msgstr "ギリシャ"
+msgstr ""
 
 #: src/fe-gtk/setup.c:124
 msgid "Hindi"
 msgstr ""
 
 #: src/fe-gtk/setup.c:125
-#, fuzzy
 msgid "Hungarian"
-msgstr "ハンガリー"
+msgstr ""
 
 #: src/fe-gtk/setup.c:126
-#, fuzzy
 msgid "Italian"
-msgstr "イタリア"
+msgstr ""
 
 #: src/fe-gtk/setup.c:127
-#, fuzzy
 msgid "Japanese"
-msgstr "日本"
+msgstr ""
 
 #: src/fe-gtk/setup.c:128
-#, fuzzy
 msgid "Kannada"
-msgstr "カナダ"
+msgstr ""
 
 #: src/fe-gtk/setup.c:129
 msgid "Korean"
 msgstr ""
 
 #: src/fe-gtk/setup.c:130
-#, fuzzy
 msgid "Latvian"
-msgstr "ラトビア"
+msgstr ""
 
 #: src/fe-gtk/setup.c:131
-#, fuzzy
 msgid "Lithuanian"
-msgstr "リトアニア"
+msgstr ""
 
 #: src/fe-gtk/setup.c:132
-#, fuzzy
 msgid "Macedonian"
-msgstr "マケドニア"
+msgstr ""
 
 #: src/fe-gtk/setup.c:133
-#, fuzzy
 msgid "Malay"
-msgstr "マレーシア"
+msgstr ""
 
 #: src/fe-gtk/setup.c:134
-#, fuzzy
 msgid "Norwegian (Bokmal)"
-msgstr "ノルウェー"
+msgstr ""
 
 #: src/fe-gtk/setup.c:135
-#, fuzzy
 msgid "Norwegian (Nynorsk)"
-msgstr "ノルウェー"
+msgstr ""
 
 #: src/fe-gtk/setup.c:136
 msgid "Polish"
 msgstr ""
 
 #: src/fe-gtk/setup.c:137
-#, fuzzy
 msgid "Portuguese"
-msgstr "ポルトガル"
+msgstr ""
 
 #: src/fe-gtk/setup.c:138
 msgid "Portuguese (Brazilian)"
@@ -5017,38 +4669,32 @@ msgid "Serbian"
 msgstr ""
 
 #: src/fe-gtk/setup.c:142
-#, fuzzy
 msgid "Slovak"
-msgstr "スロベニア"
+msgstr ""
 
 #: src/fe-gtk/setup.c:143
-#, fuzzy
 msgid "Slovenian"
-msgstr "スロベニア"
+msgstr ""
 
 #: src/fe-gtk/setup.c:144
 msgid "Spanish"
 msgstr ""
 
 #: src/fe-gtk/setup.c:145
-#, fuzzy
 msgid "Swedish"
-msgstr "スウェーデン"
+msgstr ""
 
 #: src/fe-gtk/setup.c:146
-#, fuzzy
 msgid "Thai"
-msgstr "タイ"
+msgstr ""
 
 #: src/fe-gtk/setup.c:147
-#, fuzzy
 msgid "Ukrainian"
-msgstr "ウクライナ"
+msgstr ""
 
 #: src/fe-gtk/setup.c:148
-#, fuzzy
 msgid "Vietnamese"
-msgstr "ベトナム"
+msgstr ""
 
 #: src/fe-gtk/setup.c:149
 msgid "Walloon"
@@ -5071,9 +4717,8 @@ msgid "Font:"
 msgstr "フォント:"
 
 #: src/fe-gtk/setup.c:163
-#, fuzzy
 msgid "Text Box"
-msgstr "テキスト"
+msgstr ""
 
 #: src/fe-gtk/setup.c:164
 msgid "Background image:"
@@ -5140,14 +4785,12 @@ msgid "Time stamp format:"
 msgstr "タイムスタンプのフォーマット:"
 
 #: src/fe-gtk/setup.c:182 src/fe-gtk/setup.c:544
-#, fuzzy
 msgid "See the strftime MSDN article for details."
-msgstr "詳細は strftime の man ページを参照してください。"
+msgstr ""
 
 #: src/fe-gtk/setup.c:184 src/fe-gtk/setup.c:546
-#, fuzzy
 msgid "See the strftime manpage for details."
-msgstr "詳細は strftime の man ページを参照してください。"
+msgstr ""
 
 #: src/fe-gtk/setup.c:192 src/fe-gtk/setup.c:238
 msgid "A-Z"
@@ -5158,9 +4801,8 @@ msgid "Last-spoke order"
 msgstr ""
 
 #: src/fe-gtk/setup.c:199
-#, fuzzy
 msgid "Input Box"
-msgstr "入力ボックス"
+msgstr ""
 
 #: src/fe-gtk/setup.c:200 src/fe-gtk/setup.c:270
 msgid "Use the Text box font and colors"
@@ -5171,9 +4813,8 @@ msgid "Spell checking"
 msgstr "スペルの確認中"
 
 #: src/fe-gtk/setup.c:203
-#, fuzzy
 msgid "Dictionaries to use:"
-msgstr "保存するディレクトリ先:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:205
 msgid ""
@@ -5182,9 +4823,8 @@ msgid ""
 msgstr ""
 
 #: src/fe-gtk/setup.c:207
-#, fuzzy
 msgid "Use language codes. Separate multiple entries with commas."
-msgstr "コンマで複数単語を区切ります。"
+msgstr ""
 
 #: src/fe-gtk/setup.c:211
 msgid "Nick Completion"
@@ -5199,9 +4839,8 @@ msgid "Nick completion suffix:"
 msgstr "ニックの補完接頭語:"
 
 #: src/fe-gtk/setup.c:215
-#, fuzzy
 msgid "Nick completion sorted:"
-msgstr "ニックの補完接頭語:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:218
 msgid "Input Box Codes"
@@ -5273,23 +4912,20 @@ msgid "User list sorted by:"
 msgstr "ユーザーリストのソート基準:"
 
 #: src/fe-gtk/setup.c:273
-#, fuzzy
 msgid "Show user list at:"
-msgstr "ユーザーリストを表示/隠す"
+msgstr ""
 
 #: src/fe-gtk/setup.c:275
-#, fuzzy
 msgid "Away Tracking"
-msgstr "離席追跡"
+msgstr ""
 
 #: src/fe-gtk/setup.c:276
 msgid "Track the Away status of users and mark them in a different color"
 msgstr ""
 
 #: src/fe-gtk/setup.c:277
-#, fuzzy
 msgid "On channels smaller than:"
-msgstr "チャンネルトピック"
+msgstr ""
 
 #: src/fe-gtk/setup.c:279
 msgid "Action Upon Double Click"
@@ -5328,9 +4964,8 @@ msgid "Open an extra tab for server notices"
 msgstr "サーバーからの通知は別のタブを開く"
 
 #: src/fe-gtk/setup.c:320
-#, fuzzy
 msgid "Open a new tab when you receive a private message"
-msgstr "サーバーからのメッセージは別のタブを開く"
+msgstr ""
 
 #: src/fe-gtk/setup.c:321
 msgid "Sort tabs in alphabetical order"
@@ -5341,18 +4976,16 @@ msgid "Show icons in the channel tree"
 msgstr ""
 
 #: src/fe-gtk/setup.c:323
-#, fuzzy
 msgid "Smaller text"
-msgstr "小さなタブ"
+msgstr ""
 
 #: src/fe-gtk/setup.c:325
 msgid "Focus new tabs:"
 msgstr "新規タブにフォーカス:"
 
 #: src/fe-gtk/setup.c:327
-#, fuzzy
 msgid "Show channel switcher at:"
-msgstr "チャンネルを表示"
+msgstr ""
 
 #: src/fe-gtk/setup.c:328
 msgid "Shorten tab labels to:"
@@ -5379,19 +5012,16 @@ msgid "Open utilities in:"
 msgstr "ユーティリティの開き方:"
 
 #: src/fe-gtk/setup.c:333
-#, fuzzy
 msgid "Open DCC, Ignore, Notify etc, in tabs or windows?"
-msgstr "DCC, 無視, 通知やその他ウィンドウに対してタブを用いる"
+msgstr ""
 
 #: src/fe-gtk/setup.c:340
-#, fuzzy
 msgid "Messages"
-msgstr "メッセージ"
+msgstr ""
 
 #: src/fe-gtk/setup.c:341
-#, fuzzy
 msgid "Scrollback"
-msgstr "スクロール保存行:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:349
 msgid "No"
@@ -5435,8 +5065,8 @@ msgstr "IRC サーバーから自分の IP アドレスを取得する"
 
 #: src/fe-gtk/setup.c:365
 msgid ""
-"Asks the IRC server for your real address. Use this if you have a 192.168.*."
-"* address!"
+"Asks the IRC server for your real address. Use this if you have a "
+"192.168.*.* address!"
 msgstr ""
 
 #: src/fe-gtk/setup.c:366
@@ -5492,9 +5122,8 @@ msgid "Alerts"
 msgstr "警告"
 
 #: src/fe-gtk/setup.c:411
-#, fuzzy
 msgid "Show tray balloons on:"
-msgstr "タブの表示方法:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:413
 msgid "Blink tray icon on:"
@@ -5509,18 +5138,16 @@ msgid "Make a beep sound on:"
 msgstr ""
 
 #: src/fe-gtk/setup.c:417
-#, fuzzy
 msgid "Enable system tray icon"
-msgstr "離席追跡を有効にする"
+msgstr ""
 
 #: src/fe-gtk/setup.c:418 src/fe-gtk/setup.c:439
 msgid "Omit alerts when marked as being away"
 msgstr ""
 
 #: src/fe-gtk/setup.c:420 src/fe-gtk/setup.c:441
-#, fuzzy
 msgid "Highlighted Messages"
-msgstr "メッセージのハイライト時にビープを鳴らす"
+msgstr ""
 
 #: src/fe-gtk/setup.c:421 src/fe-gtk/setup.c:442
 msgid ""
@@ -5528,26 +5155,22 @@ msgid ""
 msgstr ""
 
 #: src/fe-gtk/setup.c:423 src/fe-gtk/setup.c:444
-#, fuzzy
 msgid "Extra words to highlight:"
-msgstr "ハイライトする特殊単語:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:424 src/fe-gtk/setup.c:445
-#, fuzzy
 msgid "Nick names not to highlight:"
-msgstr "次のニックをハイライトしない:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:425 src/fe-gtk/setup.c:446
-#, fuzzy
 msgid "Nick names to always highlight:"
-msgstr "次のニックをハイライトしない:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:426 src/fe-gtk/setup.c:447
-#, fuzzy
 msgid ""
 "Separate multiple words with commas.\n"
 "Wildcards are accepted."
-msgstr "コンマで複数単語を区切ります。"
+msgstr ""
 
 #: src/fe-gtk/setup.c:454
 msgid "Default Messages"
@@ -5646,9 +5269,8 @@ msgid "Auto Copy Behavior"
 msgstr ""
 
 #: src/fe-gtk/setup.c:483 src/fe-gtk/setup.c:513
-#, fuzzy
 msgid "Automatically copy selected text"
-msgstr "自動的に DCC 送信ウィンドウを開く"
+msgstr ""
 
 #: src/fe-gtk/setup.c:484 src/fe-gtk/setup.c:514
 msgid ""
@@ -5657,9 +5279,8 @@ msgid ""
 msgstr ""
 
 #: src/fe-gtk/setup.c:487 src/fe-gtk/setup.c:517
-#, fuzzy
 msgid "Automatically include time stamps"
-msgstr "自動離席解除"
+msgstr ""
 
 #: src/fe-gtk/setup.c:488 src/fe-gtk/setup.c:518
 msgid ""
@@ -5673,8 +5294,8 @@ msgstr ""
 
 #: src/fe-gtk/setup.c:491 src/fe-gtk/setup.c:521
 msgid ""
-"Automatically include color information in copied lines of text.  Otherwise, "
-"include color information if the CONTROL key is held down while selecting."
+"Automatically include color information in copied lines of text.  Otherwise,"
+" include color information if the CONTROL key is held down while selecting."
 msgstr ""
 
 #: src/fe-gtk/setup.c:507
@@ -5694,9 +5315,8 @@ msgid "Strip colors when displaying scrollback"
 msgstr ""
 
 #: src/fe-gtk/setup.c:536
-#, fuzzy
 msgid "Enable logging of conversations to disk"
-msgstr "会話のログ記録を有効にする"
+msgstr ""
 
 #: src/fe-gtk/setup.c:537
 msgid "Log filename:"
@@ -5720,14 +5340,12 @@ msgid "URLs"
 msgstr ""
 
 #: src/fe-gtk/setup.c:550
-#, fuzzy
 msgid "Enable logging of URLs to disk"
-msgstr "会話のログ記録を有効にする"
+msgstr ""
 
 #: src/fe-gtk/setup.c:551
-#, fuzzy
 msgid "Enable URL grabber"
-msgstr "XChat: URL 取り込み"
+msgstr ""
 
 #: src/fe-gtk/setup.c:552
 msgid "Maximum number of URLs to grab:"
@@ -5778,9 +5396,8 @@ msgid "Your Address"
 msgstr "あなたのアドレス"
 
 #: src/fe-gtk/setup.c:584
-#, fuzzy
 msgid "Bind to:"
-msgstr "検索語:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:585
 msgid "Only useful for computers with multiple addresses."
@@ -5851,9 +5468,8 @@ msgid "Mark not-identified users with:"
 msgstr "次の未識別ユーザーをマークする:"
 
 #: src/fe-gtk/setup.c:1322
-#, fuzzy
 msgid "Open Data Folder"
-msgstr "フォルダーを開く..."
+msgstr ""
 
 #: src/fe-gtk/setup.c:1376
 msgid "Select color"
@@ -5908,14 +5524,12 @@ msgid "Highlight:"
 msgstr "ハイライト:"
 
 #: src/fe-gtk/setup.c:1490
-#, fuzzy
 msgid "Spell checker:"
-msgstr "スペルの確認中"
+msgstr ""
 
 #: src/fe-gtk/setup.c:1493
-#, fuzzy
 msgid "Color Stripping"
-msgstr "エラー文字列"
+msgstr ""
 
 #: src/fe-gtk/setup.c:1599 src/fe-gtk/textgui.c:389
 msgid "Event"
@@ -5966,9 +5580,8 @@ msgid "Interface"
 msgstr "インタフェース"
 
 #: src/fe-gtk/setup.c:1876
-#, fuzzy
 msgid "Appearance"
-msgstr "テキストボックス外観"
+msgstr ""
 
 #: src/fe-gtk/setup.c:1877
 msgid "Input box"
@@ -5979,9 +5592,8 @@ msgid "User list"
 msgstr "ユーザーリスト"
 
 #: src/fe-gtk/setup.c:1879
-#, fuzzy
 msgid "Channel switcher"
-msgstr "チャンネルリスト..."
+msgstr ""
 
 #: src/fe-gtk/setup.c:1880
 msgid "Colors"
@@ -6027,12 +5639,7 @@ msgid ""
 "Auto accepting DCC to your home directory\n"
 "can be dangerous and is exploitable. Eg:\n"
 "Someone could send you a .bash_profile"
-msgstr ""
-"*警告*\n"
-"ホーム・ディレクトリへ自動DCC受け取りを有効にする\n"
-"ことは悪戯される危険があり, 勧められません. 例えば,\n"
-"誰からがあなたへ『.bash_profile』ファイルを転送す\n"
-"ると, 勝手にシェルの設定が上書きされてしまいます。"
+msgstr "*警告*\nホーム・ディレクトリへ自動DCC受け取りを有効にする\nことは悪戯される危険があり, 勧められません. 例えば,\n誰からがあなたへ『.bash_profile』ファイルを転送す\nると, 勝手にシェルの設定が上書きされてしまいます。"
 
 #: src/fe-gtk/setup.c:2293
 msgid ": Preferences"
@@ -6095,1507 +5702,3 @@ msgstr "ファイルにリストを保存"
 #, c-format
 msgid "%d ops, %d total"
 msgstr "%d 個のなると、合計 %d 個"
-
-#, fuzzy
-#~ msgid "Localization"
-#~ msgstr "タブの位置"
-
-#, fuzzy
-#~ msgid "Interface language:"
-#~ msgstr "インタフェース設定"
-
-#, fuzzy
-#~ msgid "Save Settings to Disk"
-#~ msgstr "現在の設定を保存する"
-
-#~ msgid "Cannot create ~/.xchat2"
-#~ msgstr "~/.xchat2 を作成できません。"
-
-#~ msgid "LASTLOG <string>, searches for a string in the buffer"
-#~ msgstr "LASTLOG <文字列>, バッファ中から文字列を検索する"
-
-#~ msgid "SETCURSOR [-|+]<position>"
-#~ msgstr "SETCURSOR [-|+]<位置>"
-
-#~ msgid "%C18*$t$1%O $2"
-#~ msgstr "%C18*$t$1%O $2"
-
-#~ msgid "%C21*%O$t%C21%B$1%O%C21 $2"
-#~ msgstr "%C21*%O$t%C21%B$1%O%C21 $2"
-
-#, fuzzy
-#~ msgid "%C18%H<%H$4$1%H>%H%O$t$2"
-#~ msgstr "%C18%B%B$4$1%O%C18%O$t$2"
-
-#, fuzzy
-#~ msgid "$4%C21%B%H<%H$1%H>%H%O%C21$t$2"
-#~ msgstr "$4%C21%B$1%O%C21$t$2"
-
-#~ msgid "%C28-%C29$1/$2%C28-%O$t$3"
-#~ msgstr "%C28-%C29$1/$2%C28-%O$t$3"
-
-#~ msgid "$1$t$2"
-#~ msgstr "$1$t$2"
-
-#~ msgid "%C19>%O$1%C19<%O$t$2"
-#~ msgstr "%C19>%O$1%C19<%O$t$2"
-
-#~ msgid "%C16*%O$t$1%O"
-#~ msgstr "%C16*%O$t$1%O"
-
-#~ msgid "%C28-%C29$1%C28-%O$t$2"
-#~ msgstr "%C28-%C29$1%C28-%O$t$2"
-
-#~ msgid "%C28*%C29$3$1%C28*$t%O$2"
-#~ msgstr "%C28*%C29$3$1%C28*$t%O$2"
-
-#~ msgid "%C18%H<%H$3$1%H>%H%O$t$2"
-#~ msgstr "%C18%H<%H$3$1%H>%H%O$t$2"
-
-#~ msgid "%C22*%O$t$1"
-#~ msgstr "%C22*%O$t$1"
-
-#~ msgid "%C31%H<%H$4$1%H>%H%O%C30$t$2"
-#~ msgstr "%C31%H<%H$4$1%H>%H%O%C30$t$2"
-
-#~ msgid "PID"
-#~ msgstr "PID"
-
-#~ msgid "US Minor Outlying Islands"
-#~ msgstr "米領マイナーアウトライイング諸島"
-
-#~ msgid "Direct client-to-client"
-#~ msgstr "ダイレクトにクライアントからクライアント"
-
-#~ msgid "Send File"
-#~ msgstr "ファイル送信"
-
-#~ msgid "Offer Chat"
-#~ msgstr "チャットの依頼"
-
-#~ msgid "Abort Chat"
-#~ msgstr "Chat について"
-
-#~ msgid "Userinfo"
-#~ msgstr "ユーザー情報"
-
-#~ msgid "Clientinfo"
-#~ msgstr "クライアント情報"
-
-#~ msgid "Time"
-#~ msgstr "時間"
-
-#~ msgid "Finger"
-#~ msgstr "Finger"
-
-#~ msgid "Oper"
-#~ msgstr "Oper"
-
-#~ msgid "Kill this user"
-#~ msgstr "このユーザーをkill"
-
-#~ msgid "Mode"
-#~ msgstr "モード"
-
-#~ msgid "Give Half-Ops"
-#~ msgstr "ハーフなるとを与える"
-
-#~ msgid "Take Half-Ops"
-#~ msgstr "ハーフなるとを奪う"
-
-#~ msgid "Ignore"
-#~ msgstr "無視"
-
-#~ msgid "Ignore User"
-#~ msgstr "無視するユーザー"
-
-#~ msgid "UnIgnore User"
-#~ msgstr "無視解除するユーザー"
-
-#~ msgid "Info"
-#~ msgstr "情報"
-
-#~ msgid "Who"
-#~ msgstr "Who"
-
-#~ msgid "DNS Lookup"
-#~ msgstr "DNS 検索"
-
-#~ msgid "Trace"
-#~ msgstr "トレース"
-
-#~ msgid "UserHost"
-#~ msgstr "ユーザーホスト"
-
-#~ msgid "External"
-#~ msgstr "外部"
-
-#~ msgid "Traceroute"
-#~ msgstr "Traceroute"
-
-#~ msgid "Telnet"
-#~ msgstr "Telnet"
-
-#~ msgid "About XChat"
-#~ msgstr "XChat について"
-
-#~ msgid "Unban"
-#~ msgstr "バン解除"
-
-#~ msgid "I can't save an empty list!"
-#~ msgstr "内容が空のリストは保存できません!"
-
-#~ msgid "List display options:"
-#~ msgstr "ディスプレイオプションを表示:"
-
-#~ msgid "Minimum Users:"
-#~ msgstr "最小ユーザー数:"
-
-#~ msgid "Maximum Users:"
-#~ msgstr "最大ユーザー数:"
-
-#~ msgid "Regex Match:"
-#~ msgstr "正規表現マッチ:"
-
-#~ msgid "Apply"
-#~ msgstr "適用"
-
-#~ msgid "Refresh the list"
-#~ msgstr "最新情報に更新"
-
-#~ msgid "Save the list"
-#~ msgstr "リストを保存"
-
-#~ msgid "None"
-#~ msgstr "なし"
-
-#~ msgid "To"
-#~ msgstr "宛先"
-
-#~ msgid "Started"
-#~ msgstr "開始時間"
-
-#~ msgid "Speed limit"
-#~ msgstr "速度制限"
-
-#~ msgid ": File Receive List"
-#~ msgstr "XChat: ファイル受信一覧"
-
-#~ msgid "Open"
-#~ msgstr "開く"
-
-#~ msgid "Ack"
-#~ msgstr "確認"
-
-#~ msgid "To/From"
-#~ msgstr "宛先/送信元"
-
-#~ msgid "No other tabs open, quit xchat?"
-#~ msgstr "その他のタブを開きません。xchat を終了しますか?"
-
-#~ msgid "Show join/part messages"
-#~ msgstr "参加/退出メッセージを表示"
-
-#~ msgid "Color paste"
-#~ msgstr "色貼り付け"
-
-#~ msgid "_Close Tab"
-#~ msgstr "タブを閉じる(_C)"
-
-#~ msgid "_Layout"
-#~ msgstr "レイアウト(_L)"
-
-#~ msgid "Notify List..."
-#~ msgstr "通知一覧..."
-
-#, fuzzy
-#~ msgid "_Attach Window"
-#~ msgstr "ウィンドウ(_W)"
-
-#~ msgid "User"
-#~ msgstr "ユーザー"
-
-#~ msgid "Server"
-#~ msgstr "サーバー"
-
-#~ msgid ": Notify List"
-#~ msgstr "XChat: 通知一覧"
-
-#~ msgid "C_hannels to join:"
-#~ msgstr "チャンネルに参加(_H):"
-
-#~ msgid "Resizable user list"
-#~ msgstr "ユーザーリストの幅を調節可能にする"
-
-#~ msgid "Left"
-#~ msgstr "左端"
-
-#~ msgid "Right"
-#~ msgstr "右端"
-
-#~ msgid "Flash taskbar on highlighted messages"
-#~ msgstr "メッセージのハイライト時にタスクバーをフラッシュする"
-
-#~ msgid "Beep on private messages"
-#~ msgstr "プライベートメッセージでビープを鳴らす"
-
-#~ msgid "Beep on channel messages"
-#~ msgstr "チャンネルメッセージでビープ音を鳴らす"
-
-#~ msgid "Open an irc:// url"
-#~ msgstr "irc:// URL を開く"
-
-#~ msgid "irc://server:port/channel"
-#~ msgstr "irc://server:port/channel"
-
-#~ msgid "Execute a xchat command"
-#~ msgstr "コマンド実行:"
-
-#~ msgid "\"Command to execute\""
-#~ msgstr "\"実行するコマンド\""
-
-#~ msgid "Prints some text to the current tab/window"
-#~ msgstr "いくつかのテキストを現在のタブ/ウィンドウに表示する"
-
-#~ msgid "\"Text to print\""
-#~ msgstr "\"テキストを表示する\""
-
-#~ msgid "Change the context to the channel"
-#~ msgstr "コンテキストをチャンネルに変更"
-
-#~ msgid "Change the context to the server"
-#~ msgstr "サーバーにコンテキストを変更する"
-
-#~ msgid "server"
-#~ msgstr "サーバー"
-
-#~ msgid "Get some informations from xchat"
-#~ msgstr "いくつかの情報を xchat から取得する"
-
-#~ msgid "id"
-#~ msgstr "ID"
-
-#~ msgid "Get settings from xchat"
-#~ msgstr "xchat から設定を取得する"
-
-#~ msgid "name"
-#~ msgstr "名前"
-
-#~ msgid ""
-#~ "xchat-remote: %s\n"
-#~ "Try `xchat-remote --help' for more information\n"
-#~ msgstr ""
-#~ "xchat-remote: %s\n"
-#~ "より多くの情報は「xchat-remote --help」を試してください\n"
-
-#~ msgid "Failed to complete SetContext"
-#~ msgstr "SetContext を完了していません"
-
-#~ msgid "Failed to complete print"
-#~ msgstr "印刷を完了していません"
-
-#~ msgid "Failed to complete GetInfo"
-#~ msgstr "GetInfo を完了していません"
-
-#~ msgid "Failed to complete GetPrefs"
-#~ msgstr "GetPrefs を完了していません"
-
-#~ msgid "%s doesn't exist\n"
-#~ msgstr "%s は存在しません\n"
-
-#~ msgid "%s loaded successfully!\n"
-#~ msgstr "%s の読み込みに成功しました!\n"
-
-#~ msgid "France, Metropolitan"
-#~ msgstr "フランス本国"
-
-#~ msgid "Neutral Zone"
-#~ msgstr "中立地帯"
-
-#~ msgid "Settings saved."
-#~ msgstr "設定を保存しました。"
-
-#~ msgid "Save rawlog"
-#~ msgstr "生ログの保存"
-
-#~ msgid "Save rawlog..."
-#~ msgstr "生ログの保存..."
-
-#~ msgid ": Server List"
-#~ msgstr "XChat: サーバー一覧"
-
-#~ msgid "Completes nick names without using the TAB key"
-#~ msgstr "タブキーを使わずにニックを補完"
-
-#~ msgid "Input Box Appearance"
-#~ msgstr "入力ボックス外観"
-
-#~ msgid "Convert spaces to underscore before sending"
-#~ msgstr "送信前にスペースをアンダースコアに変換する"
-
-#~ msgid "(See strftime manpage for details)."
-#~ msgstr "(詳細は strftime の manpage を参照)"
-
-#~ msgid "From:"
-#~ msgstr "送り元:"
-
-#~ msgid "To:"
-#~ msgstr "宛先:"
-
-#~ msgid "Size:"
-#~ msgstr "サイズ:"
-
-#~ msgid "MIME Type"
-#~ msgstr "MIME タイプ"
-
-#~ msgid "Close"
-#~ msgstr "閉じる"
-
-#~ msgid " : %s\n"
-#~ msgstr " : %s\n"
-
-#~ msgid "Error name"
-#~ msgstr "エラー名"
-
-#~ msgid "Error string"
-#~ msgstr "エラー文字列"
-
-#~ msgid "Servername"
-#~ msgstr "サーバー名"
-
-#~ msgid "Former Czechoslovakia"
-#~ msgstr "旧チェコスロバキア"
-
-#~ msgid "Zaire"
-#~ msgstr "ザイール"
-
-#~ msgid ""
-#~ "      File: %s\n"
-#~ "   To/From: %s\n"
-#~ "      Size: %u\n"
-#~ "      Port: %d\n"
-#~ " IP Number: %s\n"
-#~ "Start Time: %s   Max CPS: %d\n"
-#~ msgstr ""
-#~ "   ファイル: %s\n"
-#~ "宛先/送り元: %s\n"
-#~ "       容量: %d\n"
-#~ "     ポート: %d\n"
-#~ " IPアドレス: %s\n"
-#~ "   開始時刻: %s  最大 CPS: %d\n"
-
-#, fuzzy
-#~ msgid ""
-#~ "Options:\n"
-#~ "  -d,  --cfgdir DIRECTORY   use a different config dir\n"
-#~ "  -a,  --no-auto            don't auto connect\n"
-#~ "  -v,  --version            show version information\n"
-#~ "\n"
-#~ "URL:\n"
-#~ "  irc://server:port/channel\n"
-#~ "\n"
-#~ msgstr ""
-#~ "%s %s オプション:\n"
-#~ "\n"
-#~ "   --cfgdir <dir> -d\t : 指定の設定ディレクトリを利用する\n"
-#~ "   --noauto       -a\t : 自動接続しない\n"
-#~ "   --version      -v\t : バージョン情報の表示\n"
-
-#~ msgid "X-Chat: Edit Key Bindings"
-#~ msgstr "X-Chat: キー・バインドの編集"
-
-#~ msgid "Add new"
-#~ msgstr "新規追加"
-
-#~ msgid "new!new@new.com"
-#~ msgstr "new!new@new.co.jp"
-
-#~ msgid "Chan"
-#~ msgstr "チャンネル"
-
-#~ msgid "OK"
-#~ msgstr "了解"
-
-#, fuzzy
-#~ msgid "(%s) Channel settings"
-#~ msgstr "パネル設定"
-
-#, fuzzy
-#~ msgid "Channel Options"
-#~ msgstr "チャンネルをタブへ"
-
-#~ msgid "User: %s"
-#~ msgstr "ユーザー: %s"
-
-#~ msgid "Realname: %s"
-#~ msgstr "本名: %s"
-
-#~ msgid "New Shell Tab..."
-#~ msgstr "新規シェルタブ..."
-
-#~ msgid "_IRC"
-#~ msgstr "_IRC"
-
-#~ msgid "Invisible"
-#~ msgstr "見せない"
-
-#~ msgid "Receive Wallops"
-#~ msgstr "ウォール操作を受け取る"
-
-#~ msgid "Receive Server Notices"
-#~ msgstr "サーバーの通知を受け取る"
-
-#~ msgid "Auto Rejoin when Kicked"
-#~ msgstr "キックされたらに自動的に復帰する"
-
-#~ msgid "Never-give-up ReConnect"
-#~ msgstr "サーバー再接続をあきらめない"
-
-#~ msgid "Auto Accept Direct Chat"
-#~ msgstr "ダイレクトチャットを自動受理する"
-
-#, fuzzy
-#~ msgid "Lists"
-#~ msgstr "Banリスト"
-
-#, fuzzy
-#~ msgid "Key Bindings..."
-#~ msgstr "キー・バインドの編集..."
-
-#~ msgid "Reload Settings"
-#~ msgstr "設定を読み直す"
-
-#~ msgid "File Receive..."
-#~ msgstr "ファイル受信..."
-
-#~ msgid "File Send..."
-#~ msgstr "ファイル送信..."
-
-#, fuzzy
-#~ msgid "Settings for %s"
-#~ msgstr "設定"
-
-#, fuzzy
-#~ msgid "_Remove \"%s\""
-#~ msgstr "削除"
-
-#, fuzzy
-#~ msgid "_Add new server"
-#~ msgstr "新規サーバー"
-
-#, fuzzy
-#~ msgid "Move \"%s\" _up"
-#~ msgstr "削除"
-
-#, fuzzy
-#~ msgid "_Add new network"
-#~ msgstr "新規追加"
-
-#, fuzzy
-#~ msgid "Global User Info"
-#~ msgstr "ユーザ情報:"
-
-#, fuzzy
-#~ msgid "Nick Names:"
-#~ msgstr "ニック:"
-
-#, fuzzy
-#~ msgid "Connect in a _new tab"
-#~ msgstr "新規タブで接続"
-
-#, fuzzy
-#~ msgid "Servers"
-#~ msgstr "サーバ"
-
-#, fuzzy
-#~ msgid "Nick Name:"
-#~ msgstr "ニック:"
-
-#, fuzzy
-#~ msgid ""
-#~ "Command to execute after connecting. Can be used to authenticate to "
-#~ "NickServ"
-#~ msgstr "接続が完了したあとに実行するコマンド"
-
-#, fuzzy
-#~ msgid "Use secure SSL"
-#~ msgstr "SSL を使う"
-
-#, fuzzy
-#~ msgid "Edit mode"
-#~ msgstr "編集"
-
-#, fuzzy
-#~ msgid "Tint transparency"
-#~ msgstr "色合い(シェード)透明度"
-
-#, fuzzy
-#~ msgid "Strip mIRC color"
-#~ msgstr "MIRC カラーを無効にする"
-
-#, fuzzy
-#~ msgid "Tint green:"
-#~ msgstr "濃淡の詳細設定"
-
-#~ msgid "Lag meter:"
-#~ msgstr "ラグメータ:"
-
-#~ msgid "Throttle meter:"
-#~ msgstr "スロットルメータ:"
-
-#, fuzzy
-#~ msgid "Double-click command:"
-#~ msgstr "ダブルクリック・コマンド:"
-
-#, fuzzy
-#~ msgid "Userlist buttons enabled"
-#~ msgstr "ユーザーリストボタンを有効にする"
-
-#, fuzzy
-#~ msgid "Only highlight tabs on channel messages"
-#~ msgstr "メッセージとアクションのときだけ チャンネルタブをハイライトする"
-
-#, fuzzy
-#~ msgid "Pop new tabs to front"
-#~ msgstr "新規タブを前面へ"
-
-#, fuzzy
-#~ msgid "Auto open DCC send list"
-#~ msgstr "自動的に DCC 送信ウィンドウを開く"
-
-#, fuzzy
-#~ msgid "Auto open DCC chat list"
-#~ msgstr "自動的に DCC チャット・ウィンドウを開く"
-
-#, fuzzy
-#~ msgid "Auto open DCC receive list"
-#~ msgstr "自動的に DDC 受信ウィンドウを開く"
-
-#, fuzzy
-#~ msgid "Default part message:"
-#~ msgstr "退出メッセージ:"
-
-#, fuzzy
-#~ msgid "Default away message:"
-#~ msgstr "離席メッセージをアナウンスする"
-
-#, fuzzy
-#~ msgid "Proxy port:"
-#~ msgstr "プロキシタイプ:"
-
-#, fuzzy
-#~ msgid "Proxy type:"
-#~ msgstr "プロキシタイプ:"
-
-#, fuzzy
-#~ msgid "Mark back:"
-#~ msgstr "マーク背景色"
-
-#~ msgid "Select a file to save to"
-#~ msgstr "保存するファイル名の選択"
-
-#~ msgid "port"
-#~ msgstr "ポート"
-
-#, fuzzy
-#~ msgid "Load Plugin..."
-#~ msgstr "プラグイン(*.so)をロード..."
-
-#, fuzzy
-#~ msgid "Replace Popup..."
-#~ msgstr "置換ポップアップ・メニュー..."
-
-#, fuzzy
-#~ msgid "Load plugin..."
-#~ msgstr "プラグイン(*.so)をロード..."
-
-#, fuzzy
-#~ msgid "X-Chat Homepage..."
-#~ msgstr "X-Chat ホームページ..."
-
-#, fuzzy
-#~ msgid "Online Docs..."
-#~ msgstr "オンライン・ヘルプ..."
-
-#, fuzzy
-#~ msgid "About X-Chat..."
-#~ msgstr "X-Chatについて..."
-
-#~ msgid "Choose File"
-#~ msgstr "ファイル選択"
-
-#~ msgid "Skip MOTD"
-#~ msgstr "ログインメッセージを無視"
-
-#~ msgid "Don't display the message-of-the-day when logging in"
-#~ msgstr "ログインしたときに今日のメッセージを表示しない"
-
-#, fuzzy
-#~ msgid "No Server List on Startup"
-#~ msgstr "起動時にサーバーリストを表示しない"
-
-#~ msgid "Auto ReJoin on Kick"
-#~ msgstr "キックされたら自動復帰する"
-
-#~ msgid "Ascii Chart"
-#~ msgstr "ASCII 表"
-
-#, fuzzy
-#~ msgid "Server settings"
-#~ msgstr "設定"
-
-#, fuzzy
-#~ msgid "Ban List Window..."
-#~ msgstr "Banリストウィンドウ..."
-
-#, fuzzy
-#~ msgid "ASCII Window..."
-#~ msgstr "無視リストウィンドウ"
-
-#, fuzzy
-#~ msgid "F_lush Buffer"
-#~ msgstr "バッファをフラッシュ"
-
-#, fuzzy
-#~ msgid "Save Buffer..."
-#~ msgstr "バッファ保存..."
-
-#~ msgid "User Modes"
-#~ msgstr "状態"
-
-#, fuzzy
-#~ msgid "Plugins"
-#~ msgstr "プラグイン..."
-
-#~ msgid "Edit User Menu"
-#~ msgstr "ユーザメニューの編集"
-
-#, fuzzy
-#~ msgid "NewServer"
-#~ msgstr "サーバ"
-
-#, fuzzy
-#~ msgid "Open extra tab for each server"
-#~ msgstr "通知やサーバからの通知を別のウィンドウ内に表示"
-
-#, fuzzy
-#~ msgid "Server List 2..."
-#~ msgstr "サーバリスト.."
-
-#, fuzzy
-#~ msgid "Network Name:"
-#~ msgstr "ネットワーク"
-
-#~ msgid "Open ASCII Chart"
-#~ msgstr "ASCII コード表を開く"
-
-#, fuzzy
-#~ msgid "RMDLL <dll name>, unloads a plugin"
-#~ msgstr "/RMDLL <DLL名>, プラグインをアンロードする\n"
-
-#~ msgid "Error compiling script\n"
-#~ msgstr "スクリプトのコンパイルにエラーが発生しました.\n"
-
-#~ msgid "Error Loading file\n"
-#~ msgstr "ファイルの読み込みにエラーが発生しました.\n"
-
-#~ msgid "Perl scripting not available in this compilation.\n"
-#~ msgstr "この編集では Perl スクリプトは利用できません.\n"
-
-#, fuzzy
-#~ msgid "LOADDLL <file>, loads a plugin"
-#~ msgstr "/LOADDLL <ファイル>, プラグインをロード.\n"
-
-#, fuzzy
-#~ msgid "UNLOADALL, Unloads all perl scripts"
-#~ msgstr "/UNLOADALL, 読み込まれている全 Perl スクリプトをアンロードする\n"
-
-#~ msgid "Scripts & Plugins"
-#~ msgstr "スクリプト&プラグイン"
-
-#, fuzzy
-#~ msgid "PKILL <name>, kills the script of the given name"
-#~ msgstr "/PKILL <名前>, 指定名のスクリプトを kill する\n"
-
-#, fuzzy
-#~ msgid "PLIST, lists the current python scripts"
-#~ msgstr "/PLIST, 現在の Python スクリプトリストを表示する\n"
-
-#, fuzzy
-#~ msgid "PLOAD loads a python script"
-#~ msgstr "/PLOAD Python スクリプトをロードする\n"
-
-#~ msgid "Select a Perl script to load"
-#~ msgstr "組み込む Perl スクリプトの選択"
-
-#~ msgid "Select a Python script to load"
-#~ msgstr "組み込む Python スクリプトの選択"
-
-#~ msgid "Unload All Scripts"
-#~ msgstr "すべてのスクリプトをアンロード"
-
-#~ msgid "Perl List"
-#~ msgstr "Perl リスト"
-
-#, fuzzy
-#~ msgid "Load Python Script..."
-#~ msgstr "Perl スクリプトをロード..."
-
-#~ msgid "Python List"
-#~ msgstr "Python リスト"
-
-#~ msgid "gdk_font_load failed"
-#~ msgstr "gdk_font_load に失敗しました。"
-
-#~ msgid ""
-#~ "The default download directory is your\n"
-#~ "home dir, you should change this at some stage."
-#~ msgstr ""
-#~ "標準のダウンロードディレクトリがホームディレクトリ\n"
-#~ "となっています. そのうちいつか変更するべきです。"
-
-#~ msgid "Setup.."
-#~ msgstr "設定..."
-
-#~ msgid "Palette.."
-#~ msgstr "パレット..."
-
-#~ msgid "X-Chat: Palette"
-#~ msgstr "X-Chat: パレット"
-
-#~ msgid "Foreground"
-#~ msgstr "前景色"
-
-#~ msgid "Background"
-#~ msgstr "背景色"
-
-#~ msgid "Mark Background"
-#~ msgstr "マーク背景色"
-
-#~ msgid "Mark Foreground"
-#~ msgstr "マーク前景色"
-
-#~ msgid "Color %d"
-#~ msgstr "カラー %d"
-
-#~ msgid "About..."
-#~ msgstr "X-Chat について..."
-
-#~ msgid "No Channel"
-#~ msgstr "チャンネルなし"
-
-#~ msgid "No Server"
-#~ msgstr "サーバー無し"
-
-#~ msgid "Is Tab"
-#~ msgstr "タブ状態"
-
-#~ msgid "Is Not Tab"
-#~ msgstr "非タブ状態"
-
-#~ msgid "Show"
-#~ msgstr "表示"
-
-#~ msgid "Move Here"
-#~ msgstr "ここへ移動"
-
-#, fuzzy
-#~ msgid "X-Chat: Setup"
-#~ msgstr "X-Chat: 検索"
-
-#~ msgid "Edit entry:"
-#~ msgstr "入力事項の編集:"
-
-#~ msgid "Name:"
-#~ msgstr "題名:"
-
-#~ msgid "Channels:"
-#~ msgstr "チャンネル:"
-
-#~ msgid "Use proxy server if one is set in Setup->Proxy Server"
-#~ msgstr "[設定]-[プロキシサーバ]に何かセットされていたらプロキシサーバを使う"
-
-#~ msgid "New Group"
-#~ msgstr "新規グループ"
-
-#~ msgid ""
-#~ "Cannot use \"root\" as a nickname,\n"
-#~ "please change that first."
-#~ msgstr ""
-#~ "\"root\"というニックは利用できません,\n"
-#~ "変更してください."
-
-#~ msgid "Connect New"
-#~ msgstr "新規接続"
-
-#~ msgid "Failed to load translation table."
-#~ msgstr "変換テーブルの読み込みに失敗しました。"
-
-#~ msgid ""
-#~ "The following prefs do not take effect\n"
-#~ "immediately, you will have to close the\n"
-#~ "window and re-open it:\n"
-#~ "\n"
-#~ " - Channel Tabs\n"
-#~ " - Channel Mode Buttons\n"
-#~ " - Userlist Buttons\n"
-#~ " - Disable Paned Userlist\n"
-#~ " - Notify User color\n"
-#~ " - Layout for a vertical panel\n"
-#~ " - Auto Indent"
-#~ msgstr ""
-#~ "以下の設定の変更は直後には反映されません.\n"
-#~ "ウィンドウを一旦閉じて、開き直す必要が\n"
-#~ "あります:\n"
-#~ "\n"
-#~ " - チャンネル・タブ\n"
-#~ " - チャンネル・モードのボタン表示\n"
-#~ " - ユーザーリストボタン\n"
-#~ " - ユーザリストのパネル化の無効\n"
-#~ " - 通知ユーザ定義色\n"
-#~ " - 垂直パネルでのレイアウト\n"
-#~ " - 自動インデント"
-
-#~ msgid "Auto Indent"
-#~ msgstr "自動インデント"
-
-#~ msgid "Auto adjust the separator bar position as needed."
-#~ msgstr "必要ならセパレータの位置を自動的に調整する."
-
-#~ msgid "Draw Separator Bar"
-#~ msgstr "セパレートタを描写"
-
-#~ msgid "Make the separator an actual visible line."
-#~ msgstr "セパレータを実際に見えるようにする."
-
-#~ msgid "Word Wrap"
-#~ msgstr "単語を折り返す"
-
-#~ msgid "Don't split words from one line to the next"
-#~ msgstr "単語を1行から次の行へ分けない"
-
-#~ msgid "Tint the see-through text box to make it darker"
-#~ msgstr "テキストボックスを文字が見やすいように半透明にします"
-
-#~ msgid "Change in realtime"
-#~ msgstr "リアルタイムに変更"
-
-#~ msgid "Startup and Shutdown"
-#~ msgstr "起動と終了"
-
-#~ msgid "Don't display the server list on X-Chat startup"
-#~ msgstr "X-Chat 起動時にサーバーリストを表示しない"
-
-#~ msgid "Auto Save URL list"
-#~ msgstr "URL リストを自動的に保存"
-
-#~ msgid "Auto save your URL list when exiting from X-Chat"
-#~ msgstr "X-Chat を終了するとき, 自動的に URL リストを保存します"
-
-#~ msgid "Give the User List style"
-#~ msgstr "ユーザリストスタイルを与える"
-
-#~ msgid "Use paned user list instead of a fixed width one"
-#~ msgstr ""
-#~ "固定幅のユーザリストの代わりに, 幅が調節可能なユーザリストを使います."
-
-#~ msgid "Complete nicknames when a partial one is entered"
-#~ msgstr "不完全なニックの入力があれば、それを補完する"
-
-#~ msgid "Old-style Nickname Completion"
-#~ msgstr "旧スタイルのニック補完"
-
-#~ msgid "Nickname completion is old-style (instead of GNU-style)"
-#~ msgstr "ニックネームの補完は旧スタイル(GNU スタイルの代わり)です。"
-
-#~ msgid "Give the Input Box style"
-#~ msgstr "入力ボックススタイルを与える"
-
-#~ msgid "Input box gets same style as main text area"
-#~ msgstr "入力ボックスをメインのテキストエリアと同じスタイルにする"
-
-#~ msgid "Nickname Completion Character:"
-#~ msgstr "ニックを補完するときにつける文字"
-
-#~ msgid "Character to append to completed nicknames"
-#~ msgstr "ニックネームの補完のときに付加する文字"
-
-#~ msgid "Output Box"
-#~ msgstr "出力ボックス"
-
-#~ msgid "Strip MIRC color codes from text before displaying"
-#~ msgstr "テキストを表示する前に, MIRC の色情報を削除します."
-
-#~ msgid "Output nicknames in different colors"
-#~ msgstr "ニックネームにそれぞれ違った色を付けます."
-
-#~ msgid "Filter out BEEPs"
-#~ msgstr "ビープを抑制する"
-
-#~ msgid "Remove ^G BEEP codes from text before displaying"
-#~ msgstr "テキストを表示する前にビープコード(^G)を取り除きます"
-
-#~ msgid "Buffer Settings"
-#~ msgstr "バッファ設定"
-
-#~ msgid "Text Buffer Size:"
-#~ msgstr "バッファサイズ:"
-
-#~ msgid "Kanji locale <=> JIS translation"
-#~ msgstr "漢字の ロケール <=> JIS 変換"
-
-#~ msgid "Progress bar"
-#~ msgstr "プログレスバ−"
-
-#~ msgid "Buttons"
-#~ msgstr "ボタン"
-
-#~ msgid "Show the TNSIPMLK buttons"
-#~ msgstr "チャネルのモードを表す TNSIPMLK ボタンを表示します."
-
-#~ msgid "User List Buttons"
-#~ msgstr "ユーザーリストのボタン"
-
-#~ msgid "Show the buttons below the user list"
-#~ msgstr "ユーザーリストの下にボタンを表示します"
-
-#~ msgid "Use tabs for channels instead of separate windows"
-#~ msgstr ""
-#~ "チャネルを開くときに, 新規ウィンドウの代わりにウィンドウ内で開きます."
-
-#~ msgid "Limited Tab Highlighting"
-#~ msgstr "限定したタブのハイライト"
-
-#~ msgid "Bring new query/channel tabs to front"
-#~ msgstr "新規の ぷりぶ/チャンネル・タブを手間へ持ってくる"
-
-#~ msgid "Use tabs for /query instead of separate windows"
-#~ msgstr "ぷりぶ してる時に, 新規ウィンドウの代わりにウィンドウ内で開きます."
-
-#~ msgid "Window Position"
-#~ msgstr "ウィンドウ位置"
-
-#~ msgid ""
-#~ "If Left and Top are set to zero, X-Chat will use\n"
-#~ "your window manager defaults."
-#~ msgstr ""
-#~ "左と上からの値が 0 の場合は, X-Chat の位置はウィンドウマネージャーにまかせ"
-#~ "ます."
-
-#~ msgid "Left:"
-#~ msgstr "左端:"
-
-#~ msgid "Window Size"
-#~ msgstr "大きさ"
-
-#~ msgid "Width:"
-#~ msgstr "横幅:"
-
-#~ msgid "Height:"
-#~ msgstr "高さ:"
-
-#~ msgid "Show Session Tree View"
-#~ msgstr "セッション・ツリー・ビューを表示"
-
-#~ msgid "Hide Session on Panelize"
-#~ msgstr "パネル化時にウィンドウを隠す"
-
-#~ msgid "Hide X-Chat when window moved to the panel"
-#~ msgstr "パネルアプレット化の際に, X-Chat ウィンドウを隠します."
-
-#~ msgid "Panel Applet"
-#~ msgstr "パネル・アプレット"
-
-#~ msgid "Layout For a Vertical Panel"
-#~ msgstr "縦のパネルに適したレイアウト"
-
-#~ msgid "Layout the X-Chat panel applet for a vertical panel"
-#~ msgstr "パネルアプレット化の際に, 縦のパネルに適した表示を行います."
-
-#~ msgid "Raw Mode Display"
-#~ msgstr "生表示モード"
-
-#~ msgid "Display raw mode changes instead of interpretations"
-#~ msgstr "注釈したものではなく, モード変更を生データを表示します"
-
-#~ msgid "Beep when a private message for you is received"
-#~ msgstr "ぷりぶ メッセージを受け取ったときに, ビープを鳴らせて知らせます"
-
-#~ msgid "Beep when a channel message is received"
-#~ msgstr "チャンネルメッセージを受け取ったときに, ビープを鳴らせて知らせます"
-
-#~ msgid "Send /who #chan on join."
-#~ msgstr "チャンネル参加時に \"/who #チャンネル\" を送信する。"
-
-#~ msgid "Find user information when joining a channel."
-#~ msgstr "チャンネル参加時にユーザ情報を調べる."
-
-#~ msgid ""
-#~ "These can be a filename relative to ~/.xchat/ to be\n"
-#~ "used as a list of random quit or part reasons."
-#~ msgstr ""
-#~ "終了または退出理由のランダムリストとして使われるファイル名を\n"
-#~ "~/.xchat/ からの相対パスで指定できます."
-
-#~ msgid "seconds."
-#~ msgstr "(秒)"
-
-#~ msgid "Hostname / IP Number:"
-#~ msgstr "ホスト名 / IP アドレス:"
-
-#~ msgid ""
-#~ "Most people should leave this blank, it's only\n"
-#~ "usefull for machines with multiple addresses."
-#~ msgstr ""
-#~ "ほとんどの人は, これを空でかまわないはずです, これは\n"
-#~ "複数のアドレスをもつマシンに対してのみ役に立ちます。"
-
-#~ msgid "Public IP Address"
-#~ msgstr "パブリックIP アドレス"
-
-#~ msgid ""
-#~ "You may need to set the DCC IP Address if\n"
-#~ "you're behind a NAT router or proxy firewall."
-#~ msgstr ""
-#~ "NATルータやプロクシファイアウォールを使っている場合、\n"
-#~ "DCC IPアドレスの設定が必要になります。"
-
-#~ msgid "Get my IP from Server (for use in DCC Send only)"
-#~ msgstr "サーバから自分の IP アドレスを取得 (DCC 送信にのみ)"
-
-#~ msgid "For people using a 10.* or 192.168.* IP number."
-#~ msgstr "10.* もしくは 192.168.* の IP 番号を利用する人のためのもの."
-
-#~ msgid "Proxy Server Hostname:"
-#~ msgstr "プロキシサーバ名:"
-
-#~ msgid "Proxy Server Port:"
-#~ msgstr "プロキシサーバポート:"
-
-#~ msgid "Only show away messages the first time they're seen"
-#~ msgstr "最初の離席メッセージのみを表示する"
-
-#~ msgid "When typing is started, the away flag is unset"
-#~ msgstr "キー入力が開始されたら、離席フラグを解除する"
-
-#~ msgid "Your away settings"
-#~ msgstr "離席の設定"
-
-#, fuzzy
-#~ msgid "Apply a timestamp to disk logs"
-#~ msgstr "常にタイムスタンプをディスクログに適用"
-
-#~ msgid "Generic"
-#~ msgstr " 一般"
-
-#~ msgid "User List Notify Highlighting"
-#~ msgstr "ユーザリスト通知のハイライト"
-
-#~ msgid "Highlight Notifies"
-#~ msgstr "通知をハイライトする"
-
-#~ msgid "Highlight notified users in the user list"
-#~ msgstr "ユーザリスト中の通知ユーザをハイライトする"
-
-#~ msgid "Notified User Color:"
-#~ msgstr "通知ユーザの色:"
-
-#~ msgid "Notification Timeouts"
-#~ msgstr "通知タイムアウト"
-
-#~ msgid "Notify Check Interval:"
-#~ msgstr "通知チェック間隔:"
-
-#~ msgid "seconds (0=Disable)."
-#~ msgstr "秒 (0=無効)"
-
-#~ msgid "Enable Character Translation"
-#~ msgstr "文字の置き換えを有効にする"
-
-#~ msgid "Translation File:"
-#~ msgstr "変換ファイル:"
-
-#~ msgid "Use a ircII style translation file."
-#~ msgstr "ircII 形式の変換ファイルを指定してください."
-
-#~ msgid "Automatically open DCC Recv Window"
-#~ msgstr "自動的に DDC 受信ウィンドウを開く"
-
-#~ msgid "Automatically open DCC Chat Window"
-#~ msgstr "自動的に DCC チャット・ウィンドウを開く"
-
-#~ msgid "Resume on Auto Accept"
-#~ msgstr "自動受付を再開する"
-
-#~ msgid "When Auto-Accepting DCC, try to resume."
-#~ msgstr "DCC の自動受付のとき再開を試みます."
-
-#~ msgid "DCC Offers Timeout:"
-#~ msgstr "DCC 提案タイムアウト:"
-
-#~ msgid "DCC Stall Timeout:"
-#~ msgstr "DCC 停滞タイムアウト:"
-
-#~ msgid "File Permissions:"
-#~ msgstr "ファイル・アクセス権:"
-
-#~ msgid "(octal)"
-#~ msgstr "(8進数)"
-
-#~ msgid "Save file with Nickname"
-#~ msgstr "ニックネームでファイルを保存する"
-
-#~ msgid "Put the sender's nickname in incoming filenames"
-#~ msgstr "送信者のニックを incoming ファイル名に置く"
-
-#~ msgid "DCC Send Options"
-#~ msgstr "DCC 送信オプション"
-
-#~ msgid "Fast DCC Send"
-#~ msgstr "高速 DCC 送信"
-
-#~ msgid "Don't wait for ACKs to send more data"
-#~ msgstr "大量のデータを送信するため, いちいち確認を待たない"
-
-#~ msgid "Fill Spaces"
-#~ msgstr "スペースの埋め方"
-
-#~ msgid "File names with spaces will be filled with underscore"
-#~ msgstr "ファイル名のスペースをアンダースコアで埋める"
-
-#~ msgid "(0=Disabled)"
-#~ msgstr "(0=無効)"
-
-#~ msgid "Send Block Size:"
-#~ msgstr "送信ブロックサイズ:"
-
-#~ msgid "(1024=Normal)"
-#~ msgstr "(1024=通常)"
-
-#~ msgid "Built-in Replies"
-#~ msgstr "内部応答"
-
-#~ msgid "Do not reply to CTCP version"
-#~ msgstr "CTCP バージョンには応答しない"
-
-#~ msgid "Sound Dir:"
-#~ msgstr "サウンドディレクトリ:"
-
-#~ msgid "Play Command:"
-#~ msgstr "再生コマンド:"
-
-#~ msgid "IRC Input/Output Settings"
-#~ msgstr "IRC 入出力設定"
-
-#~ msgid "IRC Input/Output"
-#~ msgstr "IRC 入出力"
-
-#~ msgid "Window Layout Settings"
-#~ msgstr "ウィンドウ・レイアウト設定"
-
-#~ msgid "Window Layout"
-#~ msgstr "ウィンドウ・レイアウト"
-
-#~ msgid "Main Window Settings"
-#~ msgstr "メインウィンドウ設定"
-
-#~ msgid "Channel Window Settings"
-#~ msgstr "チャンネル・ウィンドウ設定"
-
-#~ msgid "Dialog Window Settings"
-#~ msgstr "ダイアログ・ウィンドウ設定"
-
-#~ msgid "Panel"
-#~ msgstr "パネル"
-
-#~ msgid "IRC Settings"
-#~ msgstr "IRC 設定"
-
-#~ msgid "IP Address Settings"
-#~ msgstr "IP アドレス設定"
-
-#, fuzzy
-#~ msgid "IP Address"
-#~ msgstr "IP アドレス"
-
-#~ msgid "Highlighting Settings"
-#~ msgstr "ハイライト設定"
-
-#~ msgid "Logging Settings"
-#~ msgstr "ログイン設定"
-
-#~ msgid "Notification Settings"
-#~ msgstr "通知設定"
-
-#~ msgid "Notification"
-#~ msgstr "通知"
-
-#~ msgid "Character Set (Translation Tables)"
-#~ msgstr "文字集合(変換テーブル)"
-
-#, fuzzy
-#~ msgid "CTCP Settings"
-#~ msgstr "DCC 設定"
-
-#~ msgid "DCC Settings"
-#~ msgstr "DCC 設定"
-
-#~ msgid "Input Box always in focus"
-#~ msgstr "入力ボックスをいつもフォーカスする"
-
-#~ msgid "/TIMER <seconds> <command>\n"
-#~ msgstr "/TIMER <秒> <コマンド>\n"
-
-#~ msgid "Userlist icons"
-#~ msgstr "ユーザリストアイコン"
-
-#~ msgid "Show nickname"
-#~ msgstr "ニックを表示"
-
-#~ msgid "Show nickname and op/voice icon before the input box"
-#~ msgstr "入力ボックスの前に自分のニックとop/voiceアイコンを表示"
-
-#~ msgid ""
-#~ "/MKICKB, Sets a ban of *@* and mass kicks everyone except you in the "
-#~ "current channel (needs chanop)\n"
-#~ msgstr ""
-#~ "/MKICKB, 現在のチャンネルで, 自分以外の全員を キックして, さらにバンする "
-#~ "(なるとが必要).\n"
-
-#~ msgid ""
-#~ "An IRC Client for UNIX.\n"
-#~ "\n"
-#~ "This binary was compiled on "
-#~ msgstr ""
-#~ "UNIXのIRCクライアント。\n"
-#~ "\n"
-#~ "このバイナリがコンパイルされたのは"
-
-#~ msgid ""
-#~ "(C) 1998-2001 Peter Zelezny <zed@linux.com>\n"
-#~ "\n"
-#~ "An IRC Client for UNIX.\n"
-#~ "\n"
-#~ "This binary was compiled on "
-#~ msgstr ""
-#~ "(C) 1998-2001 Peter Zelezny <zed@linux.com>\n"
-#~ "\n"
-#~ "UNIXのIRCクライアント。\n"
-#~ "\n"
-#~ "このバイナリがコンパイルされたのは"
-
-#~ msgid " Apply "
-#~ msgstr "適用"
-
-#~ msgid "Config dir"
-#~ msgstr "設定ディレクトリ"
-
-#~ msgid "Don't use GNOME Panel"
-#~ msgstr "GNOME パネルを利用しない"
-
-#~ msgid "Open Toolbox"
-#~ msgstr "ツールボックスを開く"
-
-#~ msgid "Beep"
-#~ msgstr "ビープ音"
-
-#~ msgid "Conf"
-#~ msgstr "会議"
-
-#~ msgid "Conference mode (no join/part msgs)"
-#~ msgstr "会議モード (参加/分断 メッセージなし)"
-
-#~ msgid "CP"
-#~ msgstr "色貼"
-
-#~ msgid "Ascii"
-#~ msgstr "アスキー"
-
-#~ msgid "Bold"
-#~ msgstr "太字"
-
-#~ msgid "Hide/Show Userlist"
-#~ msgstr "ユーザリストを隠す/表示"
-
-#~ msgid "K"
-#~ msgstr "鍵"
-
-#~ msgid "Perl Script.."
-#~ msgstr "Perl スクリプト..."
-
-#~ msgid "Python Script.."
-#~ msgstr "Python スクリプト..."
-
-#~ msgid "All Perl Scripts"
-#~ msgstr "すべての Perl スクリプト"
-
-#~ msgid "All Python Scripts"
-#~ msgstr "すべての Python スクリプト"
-
-#~ msgid "All Plugins"
-#~ msgstr "すべてのプラグイン"
-
-#~ msgid "Kill"
-#~ msgstr "殺す"
-
-#~ msgid "User _Modes"
-#~ msgstr "状態(_M)"
-
-#~ msgid "S_cripts & Plugins"
-#~ msgstr "拡張(_C)"
-
-#~ msgid "Use_r Menu"
-#~ msgstr "メニュー(_R)"
-
-#~ msgid "Use the /NOTIFY command to add people to your notify list."
-#~ msgstr "『/NOTIFY』コマンドで通知リストへニックを追加してください."
-
-#~ msgid "Show invites in active window"
-#~ msgstr "アクティブウィンドウに INVITE を表示"
-
-#~ msgid "Show notifies in active window"
-#~ msgstr "通知をアクティヴウィンドウに表示"
-
-#~ msgid "Priv Yes/No"
-#~ msgstr "ぷりぶ はい/いいえ"
-
-#~ msgid "Noti Yes/No"
-#~ msgstr "通知 はい/いいえ"
-
-#~ msgid "Chan Yes/No"
-#~ msgstr "チャンネル はい/いいえ"
-
-#~ msgid "Ctcp Yes/No"
-#~ msgstr "CTCP はい/いいえ"
-
-#~ msgid "Invi Yes/No"
-#~ msgstr "招待 はい/いいえ"
-
-#~ msgid "Unig Yes/No"
-#~ msgstr "無視解除 はい/いいえ"
-
-#~ msgid "Number of messages"
-#~ msgstr "メッセージ数"
-
-#~ msgid "Bytes in mailbox"
-#~ msgstr "メールボックス中のバイト数"
-
-#, fuzzy
-#~ msgid "%C2<%O$1%C2>%O$t$2%O"
-#~ msgstr "%C6<%O$1%C6>%O$t$2%O"
-
-#~ msgid "%C6<%O$1%C6>%O$t$2%O"
-#~ msgstr "%C6<%O$1%C6>%O$t$2%O"
-
-#~ msgid "-%C10-%C11-%O$t%C12[%O$1%C12]%C $2"
-#~ msgstr "-%C10-%C11-%O$t%C12[%O$1%C12]%O $2"
-
-#~ msgid "-%C10-%C11-%O$t$1%O"
-#~ msgstr "-%C10-%C11-%O$t$1%O"
-
-#~ msgid ""
-#~ "-%C10-%C11-%O$tDCC CHAT failed. Connection to $1 %C14[%O$2:$3%C14]%O lost."
-#~ msgstr ""
-#~ "-%C10-%C11-%O$tDCC チャットに失敗しました. $1 %C14[%O$2:$3%C14]%O への接続"
-#~ "を失いました。"
-
-#~ msgid "-%C10-%C11-%O$tDCC RECV $1 ($2) failed. Connection to $3 lost."
-#~ msgstr ""
-#~ "-%C10-%C11-%O$t$1 ($2)の DCC 受取リに失敗しました. $3 への接続を失いまし"
-#~ "た。"
-
-#~ msgid ""
-#~ "-%C10-%C11-%O$tDCC SEND %C11$1%O failed. Connection to %C11$2%O lost."
-#~ msgstr ""
-#~ "-%C10-%C11-%O$t%C11$1%O の DCC 送信に失敗しました. %C11$2%O への接続を失い"
-#~ "ました。"
-
-#~ msgid " $1 $2  $3  $4  $5  $6  $7"
-#~ msgstr " $1 $2  $3  $4  $5  $6  $7"
-
-#~ msgid "-%C10-%C11-%O$tContents of packet: \"$1%O\"."
-#~ msgstr "-%C10-%C11-%O$tパケット内容: \"$1%O\"。"
-
-#~ msgid "<%C10-%C11-%O$t$1 %C14(%O$2%C14)%C has left $3 %C14(%O$4%C14)%O"
-#~ msgstr ""
-#~ "<%C10-%C11-%O$t$1 %C14(%O$2%C14)%C はチャンネル $3 から離れました. %C14(%O"
-#~ "$4%C14)%O"
-
-#~ msgid "-%C3-%C9-%O$tYou have new mail ($1 messages, $2 bytes total)."
-#~ msgstr "-%C3-%C9-%O$t新しいメールがあります ($1 メッセージ, 全 $2 バイト)。"
-
-#~ msgid "%C08,02 %B-- Notify List --------------- %O"
-#~ msgstr "%C08,02 %B-- 通知リスト --------------- %O"
-
-#~ msgid ""
-#~ "%C8,2 Type  To/From    Status  Size    Pos     File    %O%010%B"
-#~ "%C9--------------------------------------------------%O"
-#~ msgstr ""
-#~ "%C8,2 タイプ  To/From  ステータス  サイズ    位置     ファイル    %O%010%B"
-#~ "%C9--------------------------------------------------%O"
-
-#~ msgid "Perform a periodic mail check."
-#~ msgstr "定期的にメールチェックを行う."
-
-#~ msgid "/SCPINFO, Lists some information about current Perl bindings\n"
-#~ msgstr "/SCPINFO, 現在の Perl バインドについての情報リストを表示する\n"
-
-#~ msgid "Registered Scripts:\n"
-#~ msgstr "登録されているスクリプト:\n"
-
-#~ msgid "Inbound Handlers:\n"
-#~ msgstr "Inbound ハンドラ:\n"
-
-#~ msgid "Command Handlers:\n"
-#~ msgstr "コマンド・ハンドラ:\n"
-
-#~ msgid "Print Handlers:\n"
-#~ msgstr "ハンドラの表示:\n"
-
-#~ msgid "/LISTDLL, Lists all currenly loaded plugins\n"
-#~ msgstr "/LISTDLL, 現在読み込まれているプラグインリストを表示する.\n"
-
-#~ msgid "{to|from}"
-#~ msgstr "{宛先|送り元}"
-
-#~ msgid "Ok"
-#~ msgstr "了解"
-
-#~ msgid "Unload All Plugins"
-#~ msgstr "すべてのプラグインをアンロード"
-
-#~ msgid "Background XPM:"
-#~ msgstr "背景の絵(XPM):"
-
-#~ msgid "DIRECTORY"
-#~ msgstr "ディレクトリ"
-
-#~ msgid "Close this tab/window"
-#~ msgstr "このタブ/ウィンドウを閉じる"
-
-#~ msgid "Auto Open Dialog Windows"
-#~ msgstr "ダイアログ・ウィンドウを自動的に開く"
-
-#~ msgid "Tint Settings"
-#~ msgstr "色合い設定"
-
-#~ msgid "Info text"
-#~ msgstr "情報テキスト"
-
-#~ msgid "(disabled)"
-#~ msgstr "(無効)"
-
-#~ msgid "%C19>%O$1%C19<%O$t$2%O"
-#~ msgstr "%C19>%O$1%C19<%O$t$2%O"
-
-#~ msgid "%C22*%O$t%C28[%O$1%C28] %O$2"
-#~ msgstr "%C22*%O$t%C28[%O$1%C28] %O$2"
-
-#~ msgid "Delete All"
-#~ msgstr "すべて削除"
-
-#~ msgid "Server: %s"
-#~ msgstr "サーバー: %s"
-
-#~ msgid "Real na_me:"
-#~ msgstr "本名(_M):"

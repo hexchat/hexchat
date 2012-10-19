@@ -1,30 +1,29 @@
-# X-Chat Simplified Chinese message translation file.
-# Copyright (C) 2010 Free Software Foundation, Inc.
-# This file is distributed under the same license as the xchat package.
-#
-# Zong Yaotang <zong@cosix.com.au>, 2002.
+# SOME DESCRIPTIVE TITLE.
+# This file is put in the public domain.
+# 
+# Translators:
+# Aron Xu <happyaron.xu@gmail.com>, 2010.
 # Dalin <ayi880@hotmail.com>, 2003.
+# Eleanor Chen <chenyueg@gmail.com>, 2010.
 # Minor revision by Walte <webmaster@www.linuxfans.org>, 2003.
-# Sarah Smith <sarahs@redhat.com>, 2003.
 # Rongjun Mu <elanmu@sina.com>, 2003.
 # Rongjun Mu <rongjunmu+i18n@gmail.com>, 2004.
-# Zhuyuan Liu <gtkdict@yahoo.com.cn>, 2005.
+# Sarah Smith <sarahs@redhat.com>, 2003.
 # SEPTEM <septeman@gmail.com>, 2006.
-# Aron Xu <happyaron.xu@gmail.com>, 2010.
-# Eleanor Chen <chenyueg@gmail.com>, 2010.
-#
+# Zhuyuan Liu <gtkdict@yahoo.com.cn>, 2005.
+# Zong Yaotang <zong@cosix.com.au>, 2002.
 msgid ""
 msgstr ""
-"Project-Id-Version: xchat 2.8.6\n"
+"Project-Id-Version: HexChat\n"
 "Report-Msgid-Bugs-To: www.hexchat.org\n"
 "POT-Creation-Date: 2012-10-19 20:07+0200\n"
-"PO-Revision-Date: 2010-02-14 23:17+0800\n"
-"Last-Translator: Eleanor Chen <chenyueg@gmail.com>\n"
-"Language-Team: Chinese (simplified) <i18n-zh@googlegroups.com>\n"
-"Language: zh_CN\n"
+"PO-Revision-Date: 2012-10-19 18:34+0000\n"
+"Last-Translator: bviktor <bviktor@outlook.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #: src/common/cfgfiles.c:785
@@ -39,9 +38,7 @@ msgstr "离开"
 msgid ""
 "* Running IRC as root is stupid! You should\n"
 "  create a User Account and use that to login.\n"
-msgstr ""
-"* 不要以 root 身份执行 IRC！您应该\n"
-"  使用普通用户帐号来登录。\n"
+msgstr "* 不要以 root 身份执行 IRC！您应该\n  使用普通用户帐号来登录。\n"
 
 #: src/common/dcc.c:72
 msgid "Waiting"
@@ -194,9 +191,8 @@ msgid "ALLCHAN <cmd>, sends a command to all channels you're in"
 msgstr "ALLCHAN <cmd>，向您所在的所有频道发送命令"
 
 #: src/common/outbound.c:3559
-#, fuzzy
 msgid "ALLCHANL <cmd>, sends a command to all channels on the current server"
-msgstr "ALLCHANL <cmd>，向您所在的所有频道发送命令"
+msgstr ""
 
 #: src/common/outbound.c:3561
 msgid "ALLSERV <cmd>, sends a command to all servers you're in"
@@ -215,9 +211,7 @@ msgid ""
 "BAN <mask> [<bantype>], bans everyone matching the mask from the current "
 "channel. If they are already on the channel this doesn't kick them (needs "
 "chanop)"
-msgstr ""
-"BAN <mask> [<bantype>]，禁止所有符合掩码 <mask> 的用户进入当前的频道。如果他"
-"们已在该频道，这个命令不会将其踢出(需要具有频道管理员身份)"
+msgstr "BAN <mask> [<bantype>]，禁止所有符合掩码 <mask> 的用户进入当前的频道。如果他们已在该频道，这个命令不会将其踢出(需要具有频道管理员身份)"
 
 #: src/common/outbound.c:3566
 msgid "CHANOPT [-quiet] <variable> [<value>]"
@@ -225,7 +219,8 @@ msgstr "CHANOPT [-quiet] <variable> [<value>]"
 
 #: src/common/outbound.c:3567
 msgid ""
-"CHARSET [<encoding>], get or set the encoding used for the current connection"
+"CHARSET [<encoding>], get or set the encoding used for the current "
+"connection"
 msgstr ""
 
 #: src/common/outbound.c:3568
@@ -238,20 +233,18 @@ msgstr "CLOSE，关闭当前窗口或标签页"
 
 #: src/common/outbound.c:3572
 msgid "COUNTRY [-s] <code|wildcard>, finds a country code, eg: au = australia"
-msgstr ""
-"COUNTRY [-s] <code|wildcard>，查看国家代码对应的国家名，比如 :cn = 中国"
+msgstr "COUNTRY [-s] <code|wildcard>，查看国家代码对应的国家名，比如 :cn = 中国"
 
 #: src/common/outbound.c:3574
 msgid ""
 "CTCP <nick> <message>, send the CTCP message to nick, common messages are "
 "VERSION and USERINFO"
-msgstr ""
-"CTCP <nick> <message>，给昵称为 <nick> 者发送 CTCP 信息，常用是 VERSION 和 "
-"USERINFO"
+msgstr "CTCP <nick> <message>，给昵称为 <nick> 者发送 CTCP 信息，常用是 VERSION 和 USERINFO"
 
 #: src/common/outbound.c:3576
 msgid ""
-"CYCLE [<channel>], parts the current or given channel and immediately rejoins"
+"CYCLE [<channel>], parts the current or given channel and immediately "
+"rejoins"
 msgstr "CYCLE [<channel>]，离开当前频道并立即重新进入"
 
 #: src/common/outbound.c:3578
@@ -265,25 +258,13 @@ msgid ""
 "DCC PCHAT <nick>                    - offer DCC CHAT using passive mode\n"
 "DCC CLOSE <type> <nick> <file>         example:\n"
 "         /dcc close send johnsmith file.tar.gz"
-msgstr ""
-"\n"
-"DCC GET <nick>                     - 接收昵称为 <nick> 者使用 DCC 发送给\n"
-"                                      您的文件\n"
-"DCC SEND [-maxcps=#] <nick> [file] - 使用 DCC 发送文件给 <nick>\n"
-"DCC PSEND [-maxcps=#] <nick> [file] - 使用被动模式 DCC 发送文件给某人\n"
-"DCC LIST                           - 显示 DCC 列表\n"
-"DCC CHAT <nick>                    - 与 <nick> 进行 DCC 直连聊天\n"
-"DCC PCHAT <nick>                    - 使用 DCC 被动模式与 <nick> 聊天\n"
-"DCC CLOSE <type> <nick> <file>         例如:\n"
-"         /dcc close send johnsmith file.tar.gz"
+msgstr "\nDCC GET <nick>                     - 接收昵称为 <nick> 者使用 DCC 发送给\n                                      您的文件\nDCC SEND [-maxcps=#] <nick> [file] - 使用 DCC 发送文件给 <nick>\nDCC PSEND [-maxcps=#] <nick> [file] - 使用被动模式 DCC 发送文件给某人\nDCC LIST                           - 显示 DCC 列表\nDCC CHAT <nick>                    - 与 <nick> 进行 DCC 直连聊天\nDCC PCHAT <nick>                    - 使用 DCC 被动模式与 <nick> 聊天\nDCC CLOSE <type> <nick> <file>         例如:\n         /dcc close send johnsmith file.tar.gz"
 
 #: src/common/outbound.c:3590
 msgid ""
 "DEHOP <nick>, removes chanhalf-op status from the nick on the current "
 "channel (needs chanop)"
-msgstr ""
-"DEHOP <nick>，取消当前频道内昵称为 <nick> 的副管理员身份(需要具有频道管理员身"
-"份)"
+msgstr "DEHOP <nick>，取消当前频道内昵称为 <nick> 的副管理员身份(需要具有频道管理员身份)"
 
 #: src/common/outbound.c:3592
 msgid "DELBUTTON <name>, deletes a button from under the user-list"
@@ -293,17 +274,13 @@ msgstr "DELBUTTON <name>，删除用户列表下的一个按钮"
 msgid ""
 "DEOP <nick>, removes chanop status from the nick on the current channel "
 "(needs chanop)"
-msgstr ""
-"DEOP <nick>，取消昵称为 <nick> 者在当前频道的管理员身份(需要具有频道管理员身"
-"份)"
+msgstr "DEOP <nick>，取消昵称为 <nick> 者在当前频道的管理员身份(需要具有频道管理员身份)"
 
 #: src/common/outbound.c:3596
 msgid ""
 "DEVOICE <nick>, removes voice status from the nick on the current channel "
 "(needs chanop)"
-msgstr ""
-"DEVOICE <nick>，取消昵称为 <nick> 者在当前频道的发言权(需要具有频道管理员身"
-"份)"
+msgstr "DEVOICE <nick>，取消昵称为 <nick> 者在当前频道的发言权(需要具有频道管理员身份)"
 
 #: src/common/outbound.c:3597
 msgid "DISCON, Disconnects from server"
@@ -321,9 +298,7 @@ msgstr "ECHO <text>，在本地显示文本"
 msgid ""
 "EXEC [-o] <command>, runs the command. If -o flag is used then output is "
 "sent to current channel, else is printed to current text box"
-msgstr ""
-"EXEC [-o] <command>，执行命令。如果使用了 -o 选项则输出到当前频道，否则输出到"
-"当前文本框"
+msgstr "EXEC [-o] <command>，执行命令。如果使用了 -o 选项则输出到当前频道，否则输出到当前文本框"
 
 #: src/common/outbound.c:3604
 msgid "EXECCONT, sends the process SIGCONT"
@@ -333,9 +308,7 @@ msgstr "EXECCONT，向进程发送 SIGCONT 信号"
 msgid ""
 "EXECKILL [-9], kills a running exec in the current session. If -9 is given "
 "the process is SIGKILL'ed"
-msgstr ""
-"EXECKILL [-9]，杀死当前会话中的某执行进程。如果使用 -9 选项，则用 SIGKILL 杀"
-"死该进程"
+msgstr "EXECKILL [-9]，杀死当前会话中的某执行进程。如果使用 -9 选项，则用 SIGKILL 杀死该进程"
 
 #: src/common/outbound.c:3609
 msgid "EXECSTOP, sends the process SIGSTOP"
@@ -354,9 +327,8 @@ msgid "GATE <host> [<port>], proxies through a host, port defaults to 23"
 msgstr "GATE <host> [<port>]，经由某主机来代理，默认端口为 23"
 
 #: src/common/outbound.c:3620
-#, fuzzy
 msgid "GHOST <nick> [password], Kills a ghosted nickname"
-msgstr "GHOST <nick> <password>，注销其他使用该昵称的登录"
+msgstr ""
 
 #: src/common/outbound.c:3625
 msgid "HOP <nick>, gives chanhalf-op status to the nick (needs chanop)"
@@ -373,20 +345,13 @@ msgid ""
 "    types - types of data to ignore, one or all of:\n"
 "            PRIV, CHAN, NOTI, CTCP, DCC, INVI, ALL\n"
 "    options - NOSAVE, QUIET"
-msgstr ""
-"IGNORE <mask> <types..> <options..>\n"
-"    mask - 要忽略的主机掩码，比如 *!*@*.aol.com\n"
-"    types - 要忽略数据的类型，应以下选项之一或全部：\n"
-"            PRIV，CHAN，NOTI，CTCP，INVI，ALL\n"
-"    options - 忽略选项：NOSAVE，QUIET"
+msgstr "IGNORE <mask> <types..> <options..>\n    mask - 要忽略的主机掩码，比如 *!*@*.aol.com\n    types - 要忽略数据的类型，应以下选项之一或全部：\n            PRIV，CHAN，NOTI，CTCP，INVI，ALL\n    options - 忽略选项：NOSAVE，QUIET"
 
 #: src/common/outbound.c:3635
 msgid ""
 "INVITE <nick> [<channel>], invites someone to a channel, by default the "
 "current channel (needs chanop)"
-msgstr ""
-"INVITE <nick> [<channel>]，邀请昵称为 <nick> 者进入频道，默认为当前的频道(需"
-"要具有频道管理员身份)"
+msgstr "INVITE <nick> [<channel>]，邀请昵称为 <nick> 者进入频道，默认为当前的频道(需要具有频道管理员身份)"
 
 #: src/common/outbound.c:3636
 msgid "JOIN <channel>, joins the channel"
@@ -400,9 +365,7 @@ msgstr "KICK <nick>，把昵称为 <nick> 者踢出当前频道(需要具有频�
 msgid ""
 "KICKBAN <nick>, bans then kicks the nick from the current channel (needs "
 "chanop)"
-msgstr ""
-"KICKBAN <nick>，把昵称为 <nick> 者踢出当前频道，并禁止再次进入(需要具有频道管"
-"理员身份)"
+msgstr "KICKBAN <nick>，把昵称为 <nick> 者踢出当前频道，并禁止再次进入(需要具有频道管理员身份)"
 
 #: src/common/outbound.c:3643
 msgid "LAGCHECK, forces a new lag check"
@@ -414,8 +377,7 @@ msgid ""
 "    Use -h to highlight the found string(s)\n"
 "    Use -m to match case\n"
 "    Use -r when string is a Regular Expression\n"
-"    Use -- (double hyphen) to end options when searching for, say, the "
-"string '-r'"
+"    Use -- (double hyphen) to end options when searching for, say, the string '-r'"
 msgstr ""
 
 #: src/common/outbound.c:3651
@@ -433,10 +395,9 @@ msgstr "MDEOP，撤销当前频道中所有管理员(需要具有频道管理员
 
 #: src/common/outbound.c:3658
 msgid ""
-"ME <action>, sends the action to the current channel (actions are written in "
-"the 3rd person, like /me jumps)"
-msgstr ""
-"ME <action>，向当前频道中发送一个动作(动作使用第三人称陈述，例如 /me 跳一下)"
+"ME <action>, sends the action to the current channel (actions are written in"
+" the 3rd person, like /me jumps)"
+msgstr "ME <action>，向当前频道中发送一个动作(动作使用第三人称陈述，例如 /me 跳一下)"
 
 #: src/common/outbound.c:3662
 msgid ""
@@ -471,16 +432,13 @@ msgstr "NICK <nickname>，设置您的昵称"
 msgid ""
 "NOTICE <nick/channel> <message>, sends a notice. Notices are a type of "
 "message that should be auto reacted to"
-msgstr ""
-"NOTICE <nick/channel> <message>，发送一则通知。通知是一种能被自动回应的信息"
+msgstr "NOTICE <nick/channel> <message>，发送一则通知。通知是一种能被自动回应的信息"
 
 #: src/common/outbound.c:3678
 msgid ""
 "NOTIFY [-n network1[,network2,...]] [<nick>], displays your notify list or "
 "adds someone to it"
-msgstr ""
-"NOTIFY [-n network1[,network2,...]] [<nick>]，列出您的通知列表，或在列表中添"
-"加某人"
+msgstr "NOTIFY [-n network1[,network2,...]] [<nick>]，列出您的通知列表，或在列表中添加某人"
 
 #: src/common/outbound.c:3680
 msgid "OP <nick>, gives chanop status to the nick (needs chanop)"
@@ -509,28 +467,23 @@ msgstr "QUOTE <text>，向服务器发送原始格式的文本"
 
 #: src/common/outbound.c:3693
 msgid ""
-"RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as /"
-"RECONNECT to reconnect to the current server or with /RECONNECT ALL to "
+"RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as "
+"/RECONNECT to reconnect to the current server or with /RECONNECT ALL to "
 "reconnect to all the open servers"
-msgstr ""
-"RECONNECT [-ssl] [<host>] [<port>] [<password>]，可用 /RECONNECT 重新连接当前"
-"的服务器或用 /RECONNECT ALL 重新连接所有服务器"
+msgstr "RECONNECT [-ssl] [<host>] [<port>] [<password>]，可用 /RECONNECT 重新连接当前的服务器或用 /RECONNECT ALL 重新连接所有服务器"
 
 #: src/common/outbound.c:3696
 msgid ""
 "RECONNECT [<host>] [<port>] [<password>], Can be called just as /RECONNECT "
 "to reconnect to the current server or with /RECONNECT ALL to reconnect to "
 "all the open servers"
-msgstr ""
-"RECONNECT [<host>] [<port>] [<password>]，可用 /RECONNECT 重新连接当前服务器"
-"或用 /RECONNECT ALL 重新连接所有服务器"
+msgstr "RECONNECT [<host>] [<port>] [<password>]，可用 /RECONNECT 重新连接当前服务器或用 /RECONNECT ALL 重新连接所有服务器"
 
 #: src/common/outbound.c:3698
 msgid ""
 "RECV <text>, send raw data to xchat, as if it was received from the irc "
 "server"
-msgstr ""
-"RECV <text>，向 xchat 发送原始数据，就好像它是从 irc 服务器上接收到的一样"
+msgstr "RECV <text>，向 xchat 发送原始数据，就好像它是从 irc 服务器上接收到的一样"
 
 #: src/common/outbound.c:3701
 msgid "SAY <text>, sends the text to the object in the current window"
@@ -549,13 +502,10 @@ msgid "SERVCHAN <host> <port> <channel>, connects and joins a channel"
 msgstr "SERVCHAN <host> <port> <channel>，连接服务器并进入某频道"
 
 #: src/common/outbound.c:3712
-#, fuzzy
 msgid ""
 "SERVER [-ssl] <host> [<port>] [<password>], connects to a server, the "
 "default port is 6667 for normal connections, and 6697 for ssl connections"
 msgstr ""
-"SERVER [-ssl] <host> [<port>] [<password>]，连接服务器。普通连接默认端口为 "
-"6667，SSL 加密连接默认端口为 9999"
 
 #: src/common/outbound.c:3715
 msgid ""
@@ -564,9 +514,8 @@ msgid ""
 msgstr "SERVER <host> [<port>] [<password>]，连接服务器。默认端口为 6667"
 
 #: src/common/outbound.c:3717
-#, fuzzy
 msgid "SET [-e] [-off|-on] [-quiet] <variable> [<value>]"
-msgstr "SET [-e] [-or] [-quiet] <variable> [<value>]"
+msgstr ""
 
 #: src/common/outbound.c:3718
 msgid "SETCURSOR [-|+]<position>, reposition the cursor in the inputbox"
@@ -582,7 +531,8 @@ msgstr ""
 
 #: src/common/outbound.c:3723
 msgid ""
-"TOPIC [<topic>], sets the topic if one is given, else shows the current topic"
+"TOPIC [<topic>], sets the topic if one is given, else shows the current "
+"topic"
 msgstr "TOPIC [<topic>]，设置频道主题，如果未指定内容则显示当前主题"
 
 #: src/common/outbound.c:3725
@@ -593,13 +543,7 @@ msgid ""
 "TRAY -i <number>                    Blink tray with an internal icon.\n"
 "TRAY -t <text>                      Set the tray tooltip.\n"
 "TRAY -b <title> <text>              Set the tray balloon."
-msgstr ""
-"\n"
-"TRAY -f <时间> <文件1> [<文件2>] 在托盘中使用两个图标进行闪烁。\n"
-"TRAY -f <文件名>                  设置托盘为固定图标。\n"
-"TRAY -i <数字>                    使用内部图标闪烁托盘。\n"
-"TRAY -t <文本>                      设置托盘工具提示。\n"
-"TRAY -b <标题> <文本>              设置托盘气泡通知。"
+msgstr "\nTRAY -f <时间> <文件1> [<文件2>] 在托盘中使用两个图标进行闪烁。\nTRAY -f <文件名>                  设置托盘为固定图标。\nTRAY -i <数字>                    使用内部图标闪烁托盘。\nTRAY -t <文本>                      设置托盘工具提示。\nTRAY -b <标题> <文本>              设置托盘气泡通知。"
 
 #: src/common/outbound.c:3732
 msgid "UNBAN <mask> [<mask>...], unbans the specified masks."
@@ -619,7 +563,8 @@ msgstr "URL <url>，在浏览器中打开 URL"
 
 #: src/common/outbound.c:3737
 msgid ""
-"USELECT [-a] [-s] <nick1> <nick2> etc, highlights nick(s) in channel userlist"
+"USELECT [-a] [-s] <nick1> <nick2> etc, highlights nick(s) in channel "
+"userlist"
 msgstr "USELECT [-a] [-s] <nick1> <nick2>...，在频道用户列表中以高亮度标示昵称"
 
 #: src/common/outbound.c:3740
@@ -644,9 +589,7 @@ msgstr "用法：%s\n"
 msgid ""
 "\n"
 "No help available on that command.\n"
-msgstr ""
-"\n"
-"没有关于该命令的帮助信息。\n"
+msgstr "\n没有关于该命令的帮助信息。\n"
 
 #: src/common/outbound.c:3788
 msgid "No such command.\n"
@@ -677,9 +620,7 @@ msgstr "您确信此服务器和端口支持 SSL？\n"
 msgid ""
 "Cannot resolve hostname %s\n"
 "Check your IP Settings!\n"
-msgstr ""
-"无法解析主机名 %s\n"
-"请检查您的 IP 设置！\n"
+msgstr "无法解析主机名 %s\n请检查您的 IP 设置！\n"
 
 #: src/common/server.c:1038
 msgid "Proxy traversal failed.\n"
@@ -864,10 +805,9 @@ msgstr "%C24,18 类型   到/来自       状态    大小    位置     文件 
 
 #: src/common/textevents.h:147
 msgid ""
-"%C22*%O$tReceived a malformed DCC request from %C26$1%O.%010%C22*%O"
-"$tContents of packet: $2"
-msgstr ""
-"%C22*%O$t收到来自 %C26$1%O 的有错的 DCC 请求。%010%C22*%O$t数据包内容:$2"
+"%C22*%O$tReceived a malformed DCC request from "
+"%C26$1%O.%010%C22*%O$tContents of packet: $2"
+msgstr "%C22*%O$t收到来自 %C26$1%O 的有错的 DCC 请求。%010%C22*%O$t数据包内容:$2"
 
 #: src/common/textevents.h:150
 msgid "%C22*%O$tOffering%C26 $1%O to%C26 $2"
@@ -884,8 +824,7 @@ msgstr "%C22*%O$t到%C26 $1%O 的 DCC RECV%C26 $2%O 中止。"
 #: src/common/textevents.h:159
 msgid ""
 "%C22*%O$tDCC RECV%C26 $1%O from%C26 $3%O complete %C30[%C26$4%O cps%C30]%O."
-msgstr ""
-"%C22*%O$t从%C26 $3%O DCC RECV%C26 $1%O 已完成 %C30[%C26$4%O cps%C30]%O。"
+msgstr "%C22*%O$t从%C26 $3%O DCC RECV%C26 $1%O 已完成 %C30[%C26$4%O cps%C30]%O。"
 
 #: src/common/textevents.h:162
 msgid "%C22*%O$tDCC RECV connection established to%C26 $1 %C30[%O$2%C30]"
@@ -915,8 +854,7 @@ msgstr "%C22*%O$t到%C26$1%O的 DCC SEND%C26$2%O 已中止。"
 #: src/common/textevents.h:180
 msgid ""
 "%C22*%O$tDCC SEND%C26 $1%O to%C26 $2%O complete %C30[%C26$3%O cps%C30]%O."
-msgstr ""
-"%C22*%O$t到%C26$2%O 的 DCC SEND%C26$1%O 已完成 %C30[%C26$3%O cps%C30]%O。"
+msgstr "%C22*%O$t到%C26$2%O 的 DCC SEND%C26$1%O 已完成 %C30[%C26$3%O cps%C30]%O。"
 
 #: src/common/textevents.h:183
 msgid "%C22*%O$tDCC SEND connection established to%C26 $1 %C30[%O$2%C30]"
@@ -1185,13 +1123,11 @@ msgid "**** BEGIN LOGGING AT %s\n"
 msgstr "**** 开始聊天记录记录于 %s\n"
 
 #: src/common/text.c:702
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "* Can't open log file(s) for writing. Check the\n"
 "permissions on %s"
 msgstr ""
-"不能打开聊天记录文件进行写入操作。请检查\n"
-"%s/xchatlogs 的权限设置"
 
 #: src/common/text.c:1141
 msgid "Left message"
@@ -1649,18 +1585,14 @@ msgstr "屏蔽时间"
 msgid ""
 "Error parsing event %s.\n"
 "Loading default."
-msgstr ""
-"解析事件 %s 出错。\n"
-"载入默认值。"
+msgstr "解析事件 %s 出错。\n载入默认值。"
 
 #: src/common/text.c:2430
 #, c-format
 msgid ""
 "Cannot read sound file:\n"
 "%s"
-msgstr ""
-"无法读取声音文件：\n"
-"%s"
+msgstr "无法读取声音文件：\n%s"
 
 #: src/common/util.c:300
 msgid "Remote host closed socket"
@@ -1943,9 +1875,8 @@ msgid "Czech Republic"
 msgstr "捷克共和国"
 
 #: src/common/util.c:1023
-#, fuzzy
 msgid "East Germany"
-msgstr "德国"
+msgstr ""
 
 #: src/common/util.c:1024
 msgid "Germany"
@@ -2304,9 +2235,8 @@ msgid "Moldova"
 msgstr "摩尔多瓦"
 
 #: src/common/util.c:1113
-#, fuzzy
 msgid "Montenegro"
-msgstr "塞尔维亚及蒙特尼哥罗"
+msgstr ""
 
 #: src/common/util.c:1114
 msgid "United States Medical"
@@ -2609,9 +2539,8 @@ msgid "Suriname"
 msgstr "苏利南"
 
 #: src/common/util.c:1189
-#, fuzzy
 msgid "South Sudan"
-msgstr "韩国"
+msgstr ""
 
 #: src/common/util.c:1190
 msgid "Sao Tome and Principe"
@@ -3107,10 +3036,7 @@ msgid ""
 "Cannot access file: %s\n"
 "%s.\n"
 "Resuming not possible."
-msgstr ""
-"不能访问文件：%s\n"
-"%s。\n"
-"无法续传。"
+msgstr "不能访问文件：%s\n%s。\n无法续传。"
 
 #: src/fe-gtk/dccgui.c:508
 msgid ""
@@ -3293,10 +3219,7 @@ msgid ""
 "Failed to open font:\n"
 "\n"
 "%s"
-msgstr ""
-"打开字体失败：\n"
-"\n"
-"%s"
+msgstr "打开字体失败：\n\n%s"
 
 #: src/fe-gtk/fe-gtk.c:732
 msgid "Search buffer is empty.\n"
@@ -3314,78 +3237,63 @@ msgstr "网络发送队列：%d 字节"
 
 #: src/fe-gtk/fkeys.c:165
 msgid ""
-"The Run Command action runs the data in Data 1 as if it has been typed into "
-"the entry box where you pressed the key sequence. Thus it can contain text "
-"(which will be sent to the channel/person), commands or user commands. When "
-"run all \\n characters in Data 1 are used to deliminate seperate commands so "
-"it is possible to run more than one command. If you want a \\ in the actual "
-"text run then enter \\\\"
-msgstr ""
-"“Run Command”会执行数据 1 中的数据，就如同您是在输入按键序列后出现的输入格中"
-"键入这些数据一样。这样，它就会包含文本 (这些文本会被发送给频道或某人)、命令或"
-"用户命令。执行时，数据 1 中所有“\\n”字符 被用来分隔命令，因此您可以执行不止一"
-"个命令。如果您想在执行的文本中包含字符“\\”，您应该输入“\\\\”"
+"The Run Command action runs the data in Data 1 as if it has been typed "
+"into the entry box where you pressed the key sequence. Thus it can contain "
+"text (which will be sent to the channel/person), commands or user commands. "
+"When run all \\n characters in Data 1 are used to deliminate seperate "
+"commands so it is possible to run more than one command. If you want a \\ "
+"in the actual text run then enter \\\\"
+msgstr "“Run Command”会执行数据 1 中的数据，就如同您是在输入按键序列后出现的输入格中键入这些数据一样。这样，它就会包含文本 (这些文本会被发送给频道或某人)、命令或用户命令。执行时，数据 1 中所有“\\n”字符 被用来分隔命令，因此您可以执行不止一个命令。如果您想在执行的文本中包含字符“\\”，您应该输入“\\\\”"
 
 #: src/fe-gtk/fkeys.c:167
 msgid ""
-"The Change Page command switches between pages in the notebook. Set Data 1 "
-"to the page you want to switch to. If Data 2 is set to anything then the "
+"The Change Page command switches between pages in the notebook. Set Data 1"
+" to the page you want to switch to. If Data 2 is set to anything then the "
 "switch will be relative to the current position"
-msgstr ""
-"“Change Page”命令在您的笔记本中的标签页间切换。将数据 1 设置成您要切换的标签"
-"页。如果数据 2 被设置成任意值，切换标签页数将相对于当前位置而言"
+msgstr "“Change Page”命令在您的笔记本中的标签页间切换。将数据 1 设置成您要切换的标签页。如果数据 2 被设置成任意值，切换标签页数将相对于当前位置而言"
 
 #: src/fe-gtk/fkeys.c:169
 msgid ""
 "The Insert in Buffer command will insert the contents of Data 1 into the "
 "entry where the key sequence was pressed at the current cursor position"
-msgstr ""
-"“Insert in Buffer”命令在当前游标处把数据 1 中的内容插入到接受按键序列的输入格"
-"中"
+msgstr "“Insert in Buffer”命令在当前游标处把数据 1 中的内容插入到接受按键序列的输入格中"
 
 #: src/fe-gtk/fkeys.c:171
 msgid ""
-"The Scroll Page command scrolls the text widget up or down one page or one "
-"line. Set Data 1 to either Up, Down, +1 or -1."
-msgstr ""
-"“Scroll Page”命令在文本窗口元件中上下滚动一页或一列。设置数据 1 为 Up、"
-"DOWN、+1 或 -1。"
+"The Scroll Page command scrolls the text widget up or down one page or one"
+" line. Set Data 1 to either Up, Down, +1 or -1."
+msgstr "“Scroll Page”命令在文本窗口元件中上下滚动一页或一列。设置数据 1 为 Up、DOWN、+1 或 -1。"
 
 #: src/fe-gtk/fkeys.c:173
 msgid ""
-"The Set Buffer command sets the entry where the key sequence was entered to "
-"the contents of Data 1"
+"The Set Buffer command sets the entry where the key sequence was entered "
+"to the contents of Data 1"
 msgstr "“Set Buffer”命令把接受按键序列后的输入格设置成数据 1 中的内容"
 
 #: src/fe-gtk/fkeys.c:175
 msgid ""
-"The Last Command command sets the entry to contain the last command entered "
-"- the same as pressing up in a shell"
-msgstr ""
-"“Last Command”命令把输入区域设为前一个命令 - 和在终端中按向上箭头效果相同"
+"The Last Command command sets the entry to contain the last command "
+"entered - the same as pressing up in a shell"
+msgstr "“Last Command”命令把输入区域设为前一个命令 - 和在终端中按向上箭头效果相同"
 
 #: src/fe-gtk/fkeys.c:177
 msgid ""
-"The Next Command command sets the entry to contain the next command entered "
-"- the same as pressing down in a shell"
-msgstr ""
-"“Next Command”命令把输入区域设为下一个命令 - 和在终端中按向下箭头效果相同"
+"The Next Command command sets the entry to contain the next command "
+"entered - the same as pressing down in a shell"
+msgstr "“Next Command”命令把输入区域设为下一个命令 - 和在终端中按向下箭头效果相同"
 
 #: src/fe-gtk/fkeys.c:179
 msgid ""
 "This command changes the text in the entry to finish an incomplete nickname "
-"or command. If Data 1 is set then double-tabbing in a string will select the "
-"last nick, not the next"
-msgstr ""
-"该命令改变输入格中文本，来完成未输入完毕的用户昵称或命令。如果数据 1 被设置，"
-"那么，双击 tab 键会选择最后一个昵称，而非下一个"
+"or command. If Data 1 is set then double-tabbing in a string will select the"
+" last nick, not the next"
+msgstr "该命令改变输入格中文本，来完成未输入完毕的用户昵称或命令。如果数据 1 被设置，那么，双击 tab 键会选择最后一个昵称，而非下一个"
 
 #: src/fe-gtk/fkeys.c:181
 msgid ""
-"This command scrolls up and down through the list of nicks. If Data 1 is set "
-"to anything it will scroll up, else it scrolls down"
-msgstr ""
-"该命令在昵称列表中上下移动。如果数据 1 被设置成任意值，它会上移，否则下移"
+"This command scrolls up and down through the list of nicks. If Data 1 is set"
+" to anything it will scroll up, else it scrolls down"
+msgstr "该命令在昵称列表中上下移动。如果数据 1 被设置成任意值，它会上移，否则下移"
 
 #: src/fe-gtk/fkeys.c:183
 msgid ""
@@ -3469,18 +3377,14 @@ msgstr "打开按键配置文件时出错\n"
 msgid ""
 "Unknown keyname %s in key bindings config file\n"
 "Load aborted, please fix %s/keybindings.conf\n"
-msgstr ""
-"键盘映射配置文件中没有键名 %s\n"
-"中止载入，请修复 %s/keybindings.conf\n"
+msgstr "键盘映射配置文件中没有键名 %s\n中止载入，请修复 %s/keybindings.conf\n"
 
 #: src/fe-gtk/fkeys.c:1063
 #, c-format
 msgid ""
 "Unknown action %s in key bindings config file\n"
 "Load aborted, Please fix %s/keybindings\n"
-msgstr ""
-"键盘映射配置文件中没有动作 %s\n"
-"中止载入，请修复 %s/keybindings.conf\n"
+msgstr "键盘映射配置文件中没有动作 %s\n中止载入，请修复 %s/keybindings.conf\n"
 
 #: src/fe-gtk/fkeys.c:1084
 #, c-format
@@ -3489,20 +3393,14 @@ msgid ""
 "%s\n"
 "\n"
 "Load aborted, Please fix %s/keybindings\n"
-msgstr ""
-"期待数据列(以 Dx{:|!} 开始)，却得到：\n"
-"%s\n"
-"\n"
-"中止载入。请修复 %s/keybindings.conf\n"
+msgstr "期待数据列(以 Dx{:|!} 开始)，却得到：\n%s\n\n中止载入。请修复 %s/keybindings.conf\n"
 
 #: src/fe-gtk/fkeys.c:1153
 #, c-format
 msgid ""
 "Key bindings config file is corrupt, load aborted\n"
 "Please fix %s/keybindings.conf\n"
-msgstr ""
-"键盘映射配置文件损坏，中止载入\n"
-"请修复 %s/keybindings.conf\n"
+msgstr "键盘映射配置文件损坏，中止载入\n请修复 %s/keybindings.conf\n"
 
 #: src/fe-gtk/gtkutil.c:136
 msgid "Cannot write to that file."
@@ -3644,9 +3542,8 @@ msgid ""
 msgstr "这台服务器仍然有 %d 个与它相关的频道或对话。要全部关闭吗？"
 
 #: src/fe-gtk/maingui.c:1244
-#, fuzzy
 msgid "Quit HexChat?"
-msgstr "确实要退出 XChat？"
+msgstr ""
 
 #: src/fe-gtk/maingui.c:1265
 msgid "Don't ask next time."
@@ -3780,11 +3677,7 @@ msgid ""
 "\n"
 "You may be using a non-compliant window\n"
 "manager that is not currently supported.\n"
-msgstr ""
-"无法设置透明背景！\n"
-"\n"
-"或许您正使用当前尚不被支持的\n"
-"窗口管理程序。\n"
+msgstr "无法设置透明背景！\n\n或许您正使用当前尚不被支持的\n窗口管理程序。\n"
 
 #: src/fe-gtk/maingui.c:2635
 msgid "Enter new nickname:"
@@ -3837,9 +3730,7 @@ msgstr "已选择 %d 个昵称。"
 msgid ""
 "The Menubar is now hidden. You can show it again by pressing F9 or right-"
 "clicking in a blank part of the main text area."
-msgstr ""
-"菜单栏当前已隐藏。您可以藉由按下 F9 或以鼠标右键点选主要文本区域的空白部份来"
-"重新显示它。"
+msgstr "菜单栏当前已隐藏。您可以藉由按下 F9 或以鼠标右键点选主要文本区域的空白部份来重新显示它。"
 
 #: src/fe-gtk/menu.c:945
 msgid "Open Link in Browser"
@@ -3905,25 +3796,7 @@ msgid ""
 "\n"
 "%2 would be \"john\"\n"
 "&2 would be \"john hello\"."
-msgstr ""
-"用户命令 - 特殊编码：\n"
-"\n"
-"%c  =  当前频道\n"
-"%e  =  当前网络名称\n"
-"%m  =  机器信息\n"
-"%n  =  昵称\n"
-"%t  =  时间/日期\n"
-"%v  =  xchat 版本\n"
-"%2  =  第 2 个词\n"
-"%3  =  第 3 个词\n"
-"&2  =  从第 2 个词到行末\n"
-"&3  =  从第 3 个词到行末\n"
-"\n"
-"如:\n"
-"/cmd john hello\n"
-"\n"
-"%2 是“john”\n"
-"&2 是“john hello”。"
+msgstr "用户命令 - 特殊编码：\n\n%c  =  当前频道\n%e  =  当前网络名称\n%m  =  机器信息\n%n  =  昵称\n%t  =  时间/日期\n%v  =  xchat 版本\n%2  =  第 2 个词\n%3  =  第 3 个词\n&2  =  从第 2 个词到行末\n&3  =  从第 3 个词到行末\n\n如:\n/cmd john hello\n\n%2 是“john”\n&2 是“john hello”。"
 
 #: src/fe-gtk/menu.c:1406
 msgid ""
@@ -3937,17 +3810,7 @@ msgid ""
 "%n  =  your nick\n"
 "%s  =  selected nick\n"
 "%t  =  time/date\n"
-msgstr ""
-"用户列表按钮 - 特殊编码：\n"
-"\n"
-"%a  =  所有选取的用户\n"
-"%c  =  当前频道\n"
-"%e  =  当前网络名称\n"
-"%h  =  选取的昵称的主机名\n"
-"%m  =  机器信息\n"
-"%n  =  您的昵称\n"
-"%s  =  选取的昵称\n"
-"%t  =  时间/日期\n"
+msgstr "用户列表按钮 - 特殊编码：\n\n%a  =  所有选取的用户\n%c  =  当前频道\n%e  =  当前网络名称\n%h  =  选取的昵称的主机名\n%m  =  机器信息\n%n  =  您的昵称\n%s  =  选取的昵称\n%t  =  时间/日期\n"
 
 #: src/fe-gtk/menu.c:1416
 msgid ""
@@ -3961,17 +3824,7 @@ msgid ""
 "%n  =  your nick\n"
 "%s  =  selected nick\n"
 "%t  =  time/date\n"
-msgstr ""
-"对话按钮 - 特殊编码:\n"
-"\n"
-"%a  =  所有选取的用户\n"
-"%c  =  当前频道\n"
-"%e  =  当前网络名称\n"
-"%h  =  选取的昵称的主机名\n"
-"%m  =  机器信息\n"
-"%n  =  您的昵称\n"
-"%s  =  选取的昵称\n"
-"%t  =  时间/日期\n"
+msgstr "对话按钮 - 特殊编码:\n\n%a  =  所有选取的用户\n%c  =  当前频道\n%e  =  当前网络名称\n%h  =  选取的昵称的主机名\n%m  =  机器信息\n%n  =  您的昵称\n%s  =  选取的昵称\n%t  =  时间/日期\n"
 
 #: src/fe-gtk/menu.c:1426
 msgid ""
@@ -3987,19 +3840,7 @@ msgid ""
 "&2  =  word 2 to the end of line\n"
 "&3  =  word 3 to the end of line\n"
 "\n"
-msgstr ""
-"CTCP 回应 - 特殊编码:\n"
-"\n"
-"%d  =  数据 (全部 ctcp)\n"
-"%e  =  当前网络名称\n"
-"%m  =  机器信息\n"
-"%s  =  发送 ctcp 的用户\n"
-"%t  =  时间/日期\n"
-"%2  =  第 2 个词\n"
-"%3  =  第 3 个词\n"
-"&2  =  从第 2 个词到行末\n"
-"&3  =  从第 3 个词到行末\n"
-"\n"
+msgstr "CTCP 回应 - 特殊编码:\n\n%d  =  数据 (全部 ctcp)\n%e  =  当前网络名称\n%m  =  机器信息\n%s  =  发送 ctcp 的用户\n%t  =  时间/日期\n%2  =  第 2 个词\n%3  =  第 3 个词\n&2  =  从第 2 个词到行末\n&3  =  从第 3 个词到行末\n\n"
 
 #: src/fe-gtk/menu.c:1437
 #, c-format
@@ -4011,14 +3852,7 @@ msgid ""
 "Putting a ! infront of the command\n"
 "indicates it should be sent to a\n"
 "shell instead of XChat"
-msgstr ""
-"URL 处理程序 - 特殊编码:\n"
-"\n"
-"%s  =  URL 字符串\n"
-"\n"
-"在命令前加一个“!”表示\n"
-"该命令应被发送到 shell 而\n"
-"非 XChat"
+msgstr "URL 处理程序 - 特殊编码:\n\n%s  =  URL 字符串\n\n在命令前加一个“!”表示\n该命令应被发送到 shell 而\n非 XChat"
 
 #: src/fe-gtk/menu.c:1446
 msgid ": User Defined Commands"
@@ -4053,9 +3887,8 @@ msgid ": CTCP Replies"
 msgstr "：CTCP 回应"
 
 #: src/fe-gtk/menu.c:1606
-#, fuzzy
 msgid "He_xChat"
-msgstr "_XChat"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1607
 msgid "Network Li_st..."
@@ -4258,9 +4091,8 @@ msgid "Reset Marker Line"
 msgstr "重置标记线"
 
 #: src/fe-gtk/menu.c:1690
-#, fuzzy
 msgid "_Copy Selection"
-msgstr "复制选取的链接"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1691
 msgid "C_lear Text"
@@ -4271,23 +4103,20 @@ msgid "Save Text..."
 msgstr "保存文本..."
 
 #: src/fe-gtk/menu.c:1694
-#, fuzzy
 msgid "Search"
-msgstr "搜索(_S)"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1695
 msgid "Search Text..."
 msgstr "搜索文本..."
 
 #: src/fe-gtk/menu.c:1696
-#, fuzzy
 msgid "Reset Search"
-msgstr "：搜索"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1697
-#, fuzzy
 msgid "Search Next"
-msgstr "搜索文本..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1698
 msgid "Search Previous"
@@ -4360,14 +4189,12 @@ msgid ": Connected to %u networks and %u channels"
 msgstr "：已连接到 %u 个网络和 %u 个频道"
 
 #: src/fe-gtk/plugin-tray.c:516
-#, fuzzy
 msgid "_Restore Window"
-msgstr "关闭窗口(_C)"
+msgstr ""
 
 #: src/fe-gtk/plugin-tray.c:518
-#, fuzzy
 msgid "_Hide Window"
-msgstr "窗口(_W)"
+msgstr ""
 
 #: src/fe-gtk/plugin-tray.c:522
 msgid "_Blink on"
@@ -4496,14 +4323,12 @@ msgid "Search _backwards"
 msgstr "反向搜索"
 
 #: src/fe-gtk/search.c:213
-#, fuzzy
 msgid "_Highlight all"
-msgstr "高亮显示："
+msgstr ""
 
 #: src/fe-gtk/search.c:221
-#, fuzzy
 msgid "R_egular expression"
-msgstr "正则表达式"
+msgstr ""
 
 #: src/fe-gtk/search.c:237
 msgid "Close and _Reset"
@@ -4630,11 +4455,9 @@ msgstr "连接命令："
 #: src/fe-gtk/servlistgui.c:1488
 msgid ""
 "Extra command to execute after connecting. If you need more than one, set "
-"this to LOAD -e <filename>, where <filename> is a text-file full of commands "
-"to execute."
-msgstr ""
-"连接后执行的额外的命令。如果您使用多个命令，请设置为 LOAD -e <文件名>，其中 <"
-"文件名> 是一个包含要执行的命令的文本文件。"
+"this to LOAD -e <filename>, where <filename> is a text-file full of commands"
+" to execute."
+msgstr "连接后执行的额外的命令。如果您使用多个命令，请设置为 LOAD -e <文件名>，其中 <文件名> 是一个包含要执行的命令的文本文件。"
 
 #: src/fe-gtk/servlistgui.c:1491
 msgid "Nickserv password:"
@@ -4644,8 +4467,7 @@ msgstr "昵称密码："
 msgid ""
 "If your nickname requires a password, enter it here. Not all IRC networks "
 "support this."
-msgstr ""
-"如果您的昵称需要密码，就在这里将它输入。并非所有的 IRC 网络都支持此一功能。"
+msgstr "如果您的昵称需要密码，就在这里将它输入。并非所有的 IRC 网络都支持此一功能。"
 
 #: src/fe-gtk/servlistgui.c:1497
 msgid "Server password:"
@@ -4680,9 +4502,8 @@ msgid "Skip network list on startup"
 msgstr "启动时不打开网络列表"
 
 #: src/fe-gtk/servlistgui.c:1810
-#, fuzzy
 msgid "Show favorites only"
-msgstr "只显示："
+msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1840
 msgid "_Edit..."
@@ -4711,32 +4532,28 @@ msgid "C_onnect"
 msgstr "连接(_O)"
 
 #: src/fe-gtk/setup.c:105
-#, fuzzy
 msgid "Albanian"
-msgstr "阿尔巴尼亚"
+msgstr ""
 
 #: src/fe-gtk/setup.c:106
 msgid "Amharic"
 msgstr ""
 
 #: src/fe-gtk/setup.c:107
-#, fuzzy
 msgid "Azerbaijani"
-msgstr "亚塞拜然"
+msgstr ""
 
 #: src/fe-gtk/setup.c:108
 msgid "Basque"
 msgstr ""
 
 #: src/fe-gtk/setup.c:109
-#, fuzzy
 msgid "Belarusian"
-msgstr "白俄"
+msgstr ""
 
 #: src/fe-gtk/setup.c:110
-#, fuzzy
 msgid "Bulgarian"
-msgstr "保加利亚"
+msgstr ""
 
 #: src/fe-gtk/setup.c:112
 msgid "Chinese (Simplified)"
@@ -4763,99 +4580,84 @@ msgid "English (US)"
 msgstr ""
 
 #: src/fe-gtk/setup.c:118
-#, fuzzy
 msgid "Estonian"
-msgstr "爱沙尼亚"
+msgstr ""
 
 #: src/fe-gtk/setup.c:119
 msgid "Finnish"
 msgstr ""
 
 #: src/fe-gtk/setup.c:120
-#, fuzzy
 msgid "French"
-msgstr "法属圭亚那"
+msgstr ""
 
 #: src/fe-gtk/setup.c:121
 msgid "Galician"
 msgstr ""
 
 #: src/fe-gtk/setup.c:122
-#, fuzzy
 msgid "German"
-msgstr "德国"
+msgstr ""
 
 #: src/fe-gtk/setup.c:123
-#, fuzzy
 msgid "Greek"
-msgstr "希腊"
+msgstr ""
 
 #: src/fe-gtk/setup.c:124
 msgid "Hindi"
 msgstr ""
 
 #: src/fe-gtk/setup.c:125
-#, fuzzy
 msgid "Hungarian"
-msgstr "匈牙利"
+msgstr ""
 
 #: src/fe-gtk/setup.c:126
-#, fuzzy
 msgid "Italian"
-msgstr "意大利"
+msgstr ""
 
 #: src/fe-gtk/setup.c:127
-#, fuzzy
 msgid "Japanese"
-msgstr "日本"
+msgstr ""
 
 #: src/fe-gtk/setup.c:128
-#, fuzzy
 msgid "Kannada"
-msgstr "加拿大"
+msgstr ""
 
 #: src/fe-gtk/setup.c:129
 msgid "Korean"
 msgstr ""
 
 #: src/fe-gtk/setup.c:130
-#, fuzzy
 msgid "Latvian"
-msgstr "拉脱维亚"
+msgstr ""
 
 #: src/fe-gtk/setup.c:131
-#, fuzzy
 msgid "Lithuanian"
-msgstr "立陶宛"
+msgstr ""
 
 #: src/fe-gtk/setup.c:132
-#, fuzzy
 msgid "Macedonian"
-msgstr "马其顿"
+msgstr ""
 
 #: src/fe-gtk/setup.c:133
-#, fuzzy
 msgid "Malay"
-msgstr "马来西亚"
+msgstr ""
 
 #: src/fe-gtk/setup.c:134
-#, fuzzy
 msgid "Norwegian (Bokmal)"
-msgstr "挪威"
+msgstr ""
 
 #: src/fe-gtk/setup.c:135
-#, fuzzy
 msgid "Norwegian (Nynorsk)"
-msgstr "挪威"
+msgstr ""
 
 #: src/fe-gtk/setup.c:136
 msgid "Polish"
 msgstr ""
 
 #: src/fe-gtk/setup.c:137
-#, fuzzy
 msgid "Portuguese"
-msgstr "葡萄牙"
+msgstr ""
 
 #: src/fe-gtk/setup.c:138
 msgid "Portuguese (Brazilian)"
@@ -4874,38 +4676,32 @@ msgid "Serbian"
 msgstr ""
 
 #: src/fe-gtk/setup.c:142
-#, fuzzy
 msgid "Slovak"
-msgstr "斯洛凡尼亚"
+msgstr ""
 
 #: src/fe-gtk/setup.c:143
-#, fuzzy
 msgid "Slovenian"
-msgstr "斯洛凡尼亚"
+msgstr ""
 
 #: src/fe-gtk/setup.c:144
 msgid "Spanish"
 msgstr ""
 
 #: src/fe-gtk/setup.c:145
-#, fuzzy
 msgid "Swedish"
-msgstr "瑞典"
+msgstr ""
 
 #: src/fe-gtk/setup.c:146
-#, fuzzy
 msgid "Thai"
-msgstr "泰国"
+msgstr ""
 
 #: src/fe-gtk/setup.c:147
-#, fuzzy
 msgid "Ukrainian"
-msgstr "乌克兰"
+msgstr ""
 
 #: src/fe-gtk/setup.c:148
-#, fuzzy
 msgid "Vietnamese"
-msgstr "越南"
+msgstr ""
 
 #: src/fe-gtk/setup.c:149
 msgid "Walloon"
@@ -4928,9 +4724,8 @@ msgid "Font:"
 msgstr "字体："
 
 #: src/fe-gtk/setup.c:163
-#, fuzzy
 msgid "Text Box"
-msgstr "文本框"
+msgstr ""
 
 #: src/fe-gtk/setup.c:164
 msgid "Background image:"
@@ -4997,14 +4792,12 @@ msgid "Time stamp format:"
 msgstr "时间戳格式："
 
 #: src/fe-gtk/setup.c:182 src/fe-gtk/setup.c:544
-#, fuzzy
 msgid "See the strftime MSDN article for details."
-msgstr "查看 strftime 的 man 手册页以获取详细信息。"
+msgstr ""
 
 #: src/fe-gtk/setup.c:184 src/fe-gtk/setup.c:546
-#, fuzzy
 msgid "See the strftime manpage for details."
-msgstr "查看 strftime 的 man 手册页以获取详细信息。"
+msgstr ""
 
 #: src/fe-gtk/setup.c:192 src/fe-gtk/setup.c:238
 msgid "A-Z"
@@ -5015,9 +4808,8 @@ msgid "Last-spoke order"
 msgstr "按最后发言时间"
 
 #: src/fe-gtk/setup.c:199
-#, fuzzy
 msgid "Input Box"
-msgstr "输入框"
+msgstr ""
 
 #: src/fe-gtk/setup.c:200 src/fe-gtk/setup.c:270
 msgid "Use the Text box font and colors"
@@ -5131,9 +4923,8 @@ msgid "Show user list at:"
 msgstr "显示用户列表于："
 
 #: src/fe-gtk/setup.c:275
-#, fuzzy
 msgid "Away Tracking"
-msgstr "记录离开信息"
+msgstr ""
 
 #: src/fe-gtk/setup.c:276
 msgid "Track the Away status of users and mark them in a different color"
@@ -5232,14 +5023,12 @@ msgid "Open DCC, Ignore, Notify etc, in tabs or windows?"
 msgstr "打开 DCC、忽略、通知等动作时使用标签页还是窗口？"
 
 #: src/fe-gtk/setup.c:340
-#, fuzzy
 msgid "Messages"
-msgstr "信息"
+msgstr ""
 
 #: src/fe-gtk/setup.c:341
-#, fuzzy
 msgid "Scrollback"
-msgstr "回滚行数："
+msgstr ""
 
 #: src/fe-gtk/setup.c:349
 msgid "No"
@@ -5283,11 +5072,9 @@ msgstr "从 IRC 服务器获取我的地址"
 
 #: src/fe-gtk/setup.c:365
 msgid ""
-"Asks the IRC server for your real address. Use this if you have a 192.168.*."
-"* address!"
-msgstr ""
-"向 IRC 服务器查询您的真实地址。如果您有 192.168.*.* 这样的地址时，请使用此命"
-"令。"
+"Asks the IRC server for your real address. Use this if you have a "
+"192.168.*.* address!"
+msgstr "向 IRC 服务器查询您的真实地址。如果您有 192.168.*.* 这样的地址时，请使用此命令。"
 
 #: src/fe-gtk/setup.c:366
 msgid "DCC IP address:"
@@ -5390,9 +5177,7 @@ msgstr "总是高亮显示的昵称："
 msgid ""
 "Separate multiple words with commas.\n"
 "Wildcards are accepted."
-msgstr ""
-"请用逗号分隔多个词组。\n"
-"可以使用通配符。"
+msgstr "请用逗号分隔多个词组。\n可以使用通配符。"
 
 #: src/fe-gtk/setup.c:454
 msgid "Default Messages"
@@ -5501,9 +5286,8 @@ msgid ""
 msgstr ""
 
 #: src/fe-gtk/setup.c:487 src/fe-gtk/setup.c:517
-#, fuzzy
 msgid "Automatically include time stamps"
-msgstr "自动取消离开状态"
+msgstr ""
 
 #: src/fe-gtk/setup.c:488 src/fe-gtk/setup.c:518
 msgid ""
@@ -5512,14 +5296,13 @@ msgid ""
 msgstr ""
 
 #: src/fe-gtk/setup.c:490 src/fe-gtk/setup.c:520
-#, fuzzy
 msgid "Automatically include color information"
-msgstr "自动补齐昵称"
+msgstr ""
 
 #: src/fe-gtk/setup.c:491 src/fe-gtk/setup.c:521
 msgid ""
-"Automatically include color information in copied lines of text.  Otherwise, "
-"include color information if the CONTROL key is held down while selecting."
+"Automatically include color information in copied lines of text.  Otherwise,"
+" include color information if the CONTROL key is held down while selecting."
 msgstr ""
 
 #: src/fe-gtk/setup.c:507
@@ -5564,14 +5347,12 @@ msgid "URLs"
 msgstr ""
 
 #: src/fe-gtk/setup.c:550
-#, fuzzy
 msgid "Enable logging of URLs to disk"
-msgstr "允许记录对话内容到磁盘"
+msgstr ""
 
 #: src/fe-gtk/setup.c:551
-#, fuzzy
 msgid "Enable URL grabber"
-msgstr "：URL 抓取程序"
+msgstr ""
 
 #: src/fe-gtk/setup.c:552
 msgid "Maximum number of URLs to grab:"
@@ -5750,14 +5531,12 @@ msgid "Highlight:"
 msgstr "高亮显示："
 
 #: src/fe-gtk/setup.c:1490
-#, fuzzy
 msgid "Spell checker:"
-msgstr "拼写检查"
+msgstr ""
 
 #: src/fe-gtk/setup.c:1493
-#, fuzzy
 msgid "Color Stripping"
-msgstr "DCC 字符串"
+msgstr ""
 
 #: src/fe-gtk/setup.c:1599 src/fe-gtk/textgui.c:389
 msgid "Event"
@@ -5808,9 +5587,8 @@ msgid "Interface"
 msgstr "界面"
 
 #: src/fe-gtk/setup.c:1876
-#, fuzzy
 msgid "Appearance"
-msgstr "文本框外观"
+msgstr ""
 
 #: src/fe-gtk/setup.c:1877
 msgid "Input box"
@@ -5852,9 +5630,7 @@ msgstr "类别"
 msgid ""
 "You cannot place the tree on the top or bottom!\n"
 "Please change to the <b>Tabs</b> layout in the <b>View</b> menu first."
-msgstr ""
-"您不能把树状图放置于顶部或底部！\n"
-"请在 <b>视图</b> 菜单中的 <b>标签页</b> 样式中进行调整。"
+msgstr "您不能把树状图放置于顶部或底部！\n请在 <b>视图</b> 菜单中的 <b>标签页</b> 样式中进行调整。"
 
 #: src/fe-gtk/setup.c:2245
 msgid "Invalid time stamp format! See the strftime MSDN article for details."
@@ -5870,11 +5646,7 @@ msgid ""
 "Auto accepting DCC to your home directory\n"
 "can be dangerous and is exploitable. Eg:\n"
 "Someone could send you a .bash_profile"
-msgstr ""
-"*警告*\n"
-"自动接收 DCC 到您的主目录中是危险之举，\n"
-"且有被盗用的可能性。例如：\n"
-"某人可能会给您发送一份 .bash_profile 文件"
+msgstr "*警告*\n自动接收 DCC 到您的主目录中是危险之举，\n且有被盗用的可能性。例如：\n某人可能会给您发送一份 .bash_profile 文件"
 
 #: src/fe-gtk/setup.c:2293
 msgid ": Preferences"
@@ -5937,403 +5709,3 @@ msgstr "保存列表到文件"
 #, c-format
 msgid "%d ops, %d total"
 msgstr "%d 位管理员，共 %d 人"
-
-#, fuzzy
-#~ msgid "Localization"
-#~ msgstr "标签页位置"
-
-#, fuzzy
-#~ msgid "Interface language:"
-#~ msgstr "界面"
-
-#, fuzzy
-#~ msgid "Save Settings to Disk"
-#~ msgstr "保存列表到文件"
-
-#~ msgid "Cannot create ~/.xchat2"
-#~ msgstr "无法创建 ~/.xchat2"
-
-#~ msgid "LASTLOG <string>, searches for a string in the buffer"
-#~ msgstr "LASTLOG <string>，在缓冲区中搜索字符串"
-
-#~ msgid "SETCURSOR [-|+]<position>"
-#~ msgstr "SETCURSOR [-|+]<position>"
-
-#~ msgid ""
-#~ "Cannot find 'notify-send' to open balloon alerts.\n"
-#~ "Please install libnotify."
-#~ msgstr ""
-#~ "不能找到 'notify-send' 以用于开启气泡提示。\n"
-#~ "请安装 libnotify 软件包。"
-
-#~ msgid "_Restore"
-#~ msgstr "恢复(_R)"
-
-#~ msgid "_Hide"
-#~ msgstr "隐藏(_H)"
-
-#~ msgid "About XChat"
-#~ msgstr "关于 XChat"
-
-#, fuzzy
-#~ msgid "Set _back"
-#~ msgstr "向后搜索"
-
-#~ msgid "C_hannels to join:"
-#~ msgstr "输入要进入的频道(_H):"
-
-#, fuzzy
-#~ msgid "Execute command"
-#~ msgstr "执行命令:"
-
-#~ msgid "Direct client-to-client"
-#~ msgstr "直接客户端到客户端"
-
-#~ msgid "Send File"
-#~ msgstr "发送文件"
-
-#~ msgid "Offer Chat"
-#~ msgstr "请求聊天"
-
-#~ msgid "Abort Chat"
-#~ msgstr "中止聊天"
-
-#~ msgid "Userinfo"
-#~ msgstr "个人信息"
-
-#~ msgid "Clientinfo"
-#~ msgstr "客户端信息"
-
-#~ msgid "Time"
-#~ msgstr "时间"
-
-#~ msgid "Finger"
-#~ msgstr "Finger"
-
-#~ msgid "Oper"
-#~ msgstr "操作"
-
-#~ msgid "Kill this user"
-#~ msgstr "杀死此用户"
-
-#~ msgid "Mode"
-#~ msgstr "模式"
-
-#~ msgid "Give Half-Ops"
-#~ msgstr "赋予副管理员权限"
-
-#~ msgid "Take Half-Ops"
-#~ msgstr "取消副管理员权限"
-
-#~ msgid "Ignore"
-#~ msgstr "忽略"
-
-#~ msgid "Ignore User"
-#~ msgstr "忽略用户"
-
-#~ msgid "UnIgnore User"
-#~ msgstr "取消忽略用户"
-
-#~ msgid "Info"
-#~ msgstr "信息"
-
-#~ msgid "Who"
-#~ msgstr "Who"
-
-#~ msgid "DNS Lookup"
-#~ msgstr "DNS 查询"
-
-#~ msgid "Trace"
-#~ msgstr "Trace"
-
-#~ msgid "UserHost"
-#~ msgstr "用户主机"
-
-#~ msgid "External"
-#~ msgstr "外部程序"
-
-#~ msgid "Traceroute"
-#~ msgstr "Traceroute"
-
-#~ msgid "Telnet"
-#~ msgstr "Telnet"
-
-#~ msgid "Blink tray on message"
-#~ msgstr "有信息时闪动提示"
-
-#~ msgid "Show join/part messages"
-#~ msgstr "显示进入/离开信息"
-
-#~ msgid "Color paste"
-#~ msgstr "彩色粘贴"
-
-#~ msgid "_Close Tab"
-#~ msgstr "关闭标签页(_C)"
-
-#~ msgid "Channel List..."
-#~ msgstr "频道列表..."
-
-#~ msgid "Notify List..."
-#~ msgstr "通知列表..."
-
-#~ msgid "User"
-#~ msgstr "用户"
-
-#~ msgid ": Notify List"
-#~ msgstr "XChat: 通知列表"
-
-#~ msgid "\"Command to execute\""
-#~ msgstr "\"要执行的命令\""
-
-#~ msgid "\"Text to print\""
-#~ msgstr "\"要印出的文本\""
-
-#~ msgid "$1$t$2"
-#~ msgstr "$1$t$2"
-
-#~ msgid "%C16*%O$t$1%O"
-#~ msgstr "%C16*%O$t$1%O"
-
-#~ msgid "%C18*$t$1%O $2"
-#~ msgstr "%C18*$t$1%O $2"
-
-#~ msgid "%C19>%O$1%C19<%O$t$2"
-#~ msgstr "%C19>%O$1%C19<%O$t$2"
-
-#~ msgid "%C21*%O$t%C21%B$1%O%C21 $2"
-#~ msgstr "%C21*%O$t%C21%B$1%O%C21 $2"
-
-#~ msgid "%C22*%O$t$1"
-#~ msgstr "%C22*%O$t$1"
-
-#~ msgid "%C28*%C29$3$1%C28*$t%O$2"
-#~ msgstr "%C28*%C29$3$1%C28*$t%O$2"
-
-#~ msgid "%C28-%C29$1%C28-%O$t$2"
-#~ msgstr "%C28-%C29$1%C28-%O$t$2"
-
-#~ msgid "%C28-%C29$1/$2%C28-%O$t$3"
-#~ msgstr "%C28-%C29$1/$2%C28-%O$t$3"
-
-#~ msgid "%s doesn't exist\n"
-#~ msgstr "%s 不存在\n"
-
-#~ msgid "(Can be a text file relative to config dir)."
-#~ msgstr "(可以是一个相对路径为配置目录的文本文件)。"
-
-#~ msgid "(Can be a text file relative to ~/.xchat2/)."
-#~ msgstr "(可以是一个相对路径为 ~/.xchat2/ 的文本文件)。"
-
-#~ msgid "(See strftime manpage for details)."
-#~ msgstr "(查看 strftime 手册以获取详细信息)。"
-
-#~ msgid "Ack"
-#~ msgstr "确认"
-
-#~ msgid "Add"
-#~ msgstr "添加"
-
-#~ msgid "Apply"
-#~ msgstr "套用"
-
-#~ msgid "Apply Match to:"
-#~ msgstr "套用符合到:"
-
-#~ msgid "Beep on channel messages"
-#~ msgstr "频道中出现新信息时响铃"
-
-#~ msgid "Beep on highlighted messages"
-#~ msgstr "高亮度显示信息时响铃提示"
-
-#~ msgid "Beep on private messages"
-#~ msgstr "有悄悄话时响铃提示"
-
-#~ msgid "Change the context to the channel"
-#~ msgstr "变更上下文至频道"
-
-#~ msgid "Change the context to the server"
-#~ msgstr "变更上下文至服务器"
-
-#~ msgid "Completes nick names without using the TAB key"
-#~ msgstr "不用 TAB 键而自动补齐昵称"
-
-#~ msgid "Convert spaces to underscore before sending"
-#~ msgstr "发送前把空格转换成底线"
-
-#~ msgid "Execute a xchat command"
-#~ msgstr "执行 xchat 命令:"
-
-#~ msgid "Extra colors:"
-#~ msgstr "额外的颜色:"
-
-#~ msgid "Extra words to highlight on:"
-#~ msgstr "需要高亮度显示的其它词组:"
-
-#~ msgid "Failed to complete GetInfo"
-#~ msgstr "完成撷取信息失败"
-
-#~ msgid "Failed to complete GetPrefs"
-#~ msgstr "完成撷取偏好失败"
-
-#~ msgid "Failed to complete SetContext"
-#~ msgstr "完成设置上下文失败"
-
-#~ msgid "Failed to complete print"
-#~ msgstr "完成打印失败"
-
-#~ msgid "Flash taskbar on highlighted messages"
-#~ msgstr "高亮度显示信息时闪动工作列"
-
-#~ msgid "France, Metropolitan"
-#~ msgstr "法属美特罗波利坦"
-
-#~ msgid "From:"
-#~ msgstr "从:"
-
-#~ msgid "Get settings from xchat"
-#~ msgstr "从 xchat 撷取设置"
-
-#~ msgid "Get some informations from xchat"
-#~ msgstr "从 xchat 撷取一些信息"
-
-#~ msgid "Go to"
-#~ msgstr "前往"
-
-#~ msgid "I can't save an empty list!"
-#~ msgstr "无法保存空列表！"
-
-#~ msgid "Input Box Appearance"
-#~ msgstr "输入框外观"
-
-#~ msgid "Left"
-#~ msgstr "左侧"
-
-#~ msgid "List display options:"
-#~ msgstr "列举显示选项:"
-
-#~ msgid "MIME Type"
-#~ msgstr "MIME 类型"
-
-#~ msgid "Maximum Users:"
-#~ msgstr "最多用户数:"
-
-#~ msgid "Minimum Users:"
-#~ msgstr "最少用户数:"
-
-#~ msgid "Neutral Zone"
-#~ msgstr "中立地区"
-
-#~ msgid "Nicks not to highlight on:"
-#~ msgstr "不要高亮度显示的昵称:"
-
-#~ msgid "No other tabs open, quit xchat?"
-#~ msgstr "没有其它打开的标签页，要离开 xchat 吗？"
-
-#~ msgid "None"
-#~ msgstr "无"
-
-#~ msgid "Open"
-#~ msgstr "打开"
-
-#~ msgid "Open an irc:// url"
-#~ msgstr "打开一个 irc:// URL"
-
-#~ msgid "PID"
-#~ msgstr "进程代号"
-
-#~ msgid "Preferences..."
-#~ msgstr "首选项..."
-
-#~ msgid "Prints some text to the current tab/window"
-#~ msgstr "印出一些文本到当前的标签页/窗口"
-
-#~ msgid "Refresh the list"
-#~ msgstr "刷新列表"
-
-#~ msgid "Regex Match:"
-#~ msgstr "Regex 符合:"
-
-#~ msgid "Resizable user list"
-#~ msgstr "用户列表可调整大小"
-
-#~ msgid "Right"
-#~ msgstr "右侧"
-
-#~ msgid "Save rawlog"
-#~ msgstr "保存原始聊天记录"
-
-#~ msgid "Save rawlog..."
-#~ msgstr "保存原始聊天记录..."
-
-#~ msgid "Save the list"
-#~ msgstr "保存列表"
-
-#~ msgid "Server"
-#~ msgstr "服务器"
-
-#~ msgid "Settings saved."
-#~ msgstr "设置已保存。"
-
-#~ msgid "Show tabs at:"
-#~ msgstr "显示标签页于:"
-
-#~ msgid "Size:"
-#~ msgstr "大小:"
-
-#~ msgid "Speed limit:"
-#~ msgstr "速度限制:"
-
-#~ msgid "StartTime"
-#~ msgstr "开始时间"
-
-#~ msgid "Started:"
-#~ msgstr "开始时间:"
-
-#~ msgid "To"
-#~ msgstr "到"
-
-#~ msgid "To/From"
-#~ msgstr "到/从"
-
-#~ msgid "To:"
-#~ msgstr "到:"
-
-#~ msgid "US Minor Outlying Islands"
-#~ msgstr "美国周边岛屿"
-
-#~ msgid "Unban"
-#~ msgstr "解禁"
-
-#~ msgid "User and Channel Statistics: %d/%d Users on %d/%d Channels"
-#~ msgstr "用户及频道统计:%d/%d 名用户在 %d/%d 个频道中"
-
-#~ msgid "_Layout"
-#~ msgstr "布局(_L)"
-
-#~ msgid "id"
-#~ msgstr "id"
-
-#~ msgid "irc://server:port/channel"
-#~ msgstr "irc://server:port/channel"
-
-#~ msgid "name"
-#~ msgstr "名称"
-
-#~ msgid "server"
-#~ msgstr "服务器"
-
-#~ msgid ""
-#~ "xchat-remote: %s\n"
-#~ "Try `xchat-remote --help' for more information\n"
-#~ msgstr ""
-#~ "xchat-remote: %s\n"
-#~ "试试 `xchat-remote --help' 以获得更多信息\n"
-
-#~ msgid "Flash taskbar on private messages"
-#~ msgstr "接收到私聊消息时闪动工作列"
-
-#~ msgid "File Offer"
-#~ msgstr "文件传输"
-
-#~ msgid "Quit..."
-#~ msgstr "退出..."

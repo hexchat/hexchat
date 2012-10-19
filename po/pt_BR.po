@@ -1,23 +1,22 @@
-# Brazilian Portuguese translation of X-Chat
-# Copyright (C) 2000 Free Software Foundation, Inc.
-# This file is distributed under the same license as the xchat package.
-# Frédéric L. W. Meunier <fredlwm@olympiquedemarseille.org>, 20, 2009.
+# SOME DESCRIPTIVE TITLE.
+# This file is put in the public domain.
+# 
+# Translators:
 # Flamarion Jorge <flamarilinux@yahoo.com.br>, 2009.
+# Frédéric L. W. Meunier <fredlwm@olympiquedemarseille.org>, 20, 2009.
 msgid ""
 msgstr ""
-"Project-Id-Version: xchat 2.8.6\n"
+"Project-Id-Version: HexChat\n"
 "Report-Msgid-Bugs-To: www.hexchat.org\n"
 "POT-Creation-Date: 2012-10-19 20:07+0200\n"
-"PO-Revision-Date: 2009-12-18 19:59-0200\n"
-"Last-Translator: Flamarion Jorge <flamarilinux@yahoo.com.br>\n"
-"Language-Team: Brazilian Portuguese <ldp-br@bazar.conectiva.com.br>\n"
-"Language: pt_BR\n"
+"PO-Revision-Date: 2012-10-19 18:33+0000\n"
+"Last-Translator: bviktor <bviktor@outlook.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Poedit-Language: Portuguese\n"
-"X-Poedit-Country: BRAZIL\n"
-"X-Poedit-SourceCharset: utf-8\n"
+"Language: pt_BR\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #: src/common/cfgfiles.c:785
 msgid "I'm busy"
@@ -31,9 +30,7 @@ msgstr "Sair"
 msgid ""
 "* Running IRC as root is stupid! You should\n"
 "  create a User Account and use that to login.\n"
-msgstr ""
-"* Executar IRC como root é estupido. Você pode\n"
-"  criar uma conta de usuá¡rio e usa-la para fazer o login\n"
+msgstr "* Executar IRC como root é estupido. Você pode\n  criar uma conta de usuá¡rio e usa-la para fazer o login\n"
 
 #: src/common/dcc.c:72
 msgid "Waiting"
@@ -214,7 +211,8 @@ msgstr ""
 
 #: src/common/outbound.c:3567
 msgid ""
-"CHARSET [<encoding>], get or set the encoding used for the current connection"
+"CHARSET [<encoding>], get or set the encoding used for the current "
+"connection"
 msgstr ""
 
 #: src/common/outbound.c:3568
@@ -237,7 +235,8 @@ msgstr ""
 
 #: src/common/outbound.c:3576
 msgid ""
-"CYCLE [<channel>], parts the current or given channel and immediately rejoins"
+"CYCLE [<channel>], parts the current or given channel and immediately "
+"rejoins"
 msgstr ""
 
 #: src/common/outbound.c:3578
@@ -370,8 +369,7 @@ msgid ""
 "    Use -h to highlight the found string(s)\n"
 "    Use -m to match case\n"
 "    Use -r when string is a Regular Expression\n"
-"    Use -- (double hyphen) to end options when searching for, say, the "
-"string '-r'"
+"    Use -- (double hyphen) to end options when searching for, say, the string '-r'"
 msgstr ""
 
 #: src/common/outbound.c:3651
@@ -389,8 +387,8 @@ msgstr ""
 
 #: src/common/outbound.c:3658
 msgid ""
-"ME <action>, sends the action to the current channel (actions are written in "
-"the 3rd person, like /me jumps)"
+"ME <action>, sends the action to the current channel (actions are written in"
+" the 3rd person, like /me jumps)"
 msgstr ""
 
 #: src/common/outbound.c:3662
@@ -461,8 +459,8 @@ msgstr ""
 
 #: src/common/outbound.c:3693
 msgid ""
-"RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as /"
-"RECONNECT to reconnect to the current server or with /RECONNECT ALL to "
+"RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as "
+"/RECONNECT to reconnect to the current server or with /RECONNECT ALL to "
 "reconnect to all the open servers"
 msgstr ""
 
@@ -525,7 +523,8 @@ msgstr ""
 
 #: src/common/outbound.c:3723
 msgid ""
-"TOPIC [<topic>], sets the topic if one is given, else shows the current topic"
+"TOPIC [<topic>], sets the topic if one is given, else shows the current "
+"topic"
 msgstr ""
 
 #: src/common/outbound.c:3725
@@ -556,7 +555,8 @@ msgstr ""
 
 #: src/common/outbound.c:3737
 msgid ""
-"USELECT [-a] [-s] <nick1> <nick2> etc, highlights nick(s) in channel userlist"
+"USELECT [-a] [-s] <nick1> <nick2> etc, highlights nick(s) in channel "
+"userlist"
 msgstr ""
 
 #: src/common/outbound.c:3740
@@ -797,8 +797,8 @@ msgstr ""
 
 #: src/common/textevents.h:147
 msgid ""
-"%C22*%O$tReceived a malformed DCC request from %C26$1%O.%010%C22*%O"
-"$tContents of packet: $2"
+"%C22*%O$tReceived a malformed DCC request from "
+"%C26$1%O.%010%C22*%O$tContents of packet: $2"
 msgstr ""
 
 #: src/common/textevents.h:150
@@ -2531,9 +2531,8 @@ msgid "Suriname"
 msgstr ""
 
 #: src/common/util.c:1189
-#, fuzzy
 msgid "South Sudan"
-msgstr "Sudão"
+msgstr ""
 
 #: src/common/util.c:1190
 msgid "Sao Tome and Principe"
@@ -3230,18 +3229,18 @@ msgstr ""
 
 #: src/fe-gtk/fkeys.c:165
 msgid ""
-"The Run Command action runs the data in Data 1 as if it has been typed into "
-"the entry box where you pressed the key sequence. Thus it can contain text "
-"(which will be sent to the channel/person), commands or user commands. When "
-"run all \\n characters in Data 1 are used to deliminate seperate commands so "
-"it is possible to run more than one command. If you want a \\ in the actual "
-"text run then enter \\\\"
+"The Run Command action runs the data in Data 1 as if it has been typed "
+"into the entry box where you pressed the key sequence. Thus it can contain "
+"text (which will be sent to the channel/person), commands or user commands. "
+"When run all \\n characters in Data 1 are used to deliminate seperate "
+"commands so it is possible to run more than one command. If you want a \\ "
+"in the actual text run then enter \\\\"
 msgstr ""
 
 #: src/fe-gtk/fkeys.c:167
 msgid ""
-"The Change Page command switches between pages in the notebook. Set Data 1 "
-"to the page you want to switch to. If Data 2 is set to anything then the "
+"The Change Page command switches between pages in the notebook. Set Data 1"
+" to the page you want to switch to. If Data 2 is set to anything then the "
 "switch will be relative to the current position"
 msgstr ""
 
@@ -3253,39 +3252,39 @@ msgstr ""
 
 #: src/fe-gtk/fkeys.c:171
 msgid ""
-"The Scroll Page command scrolls the text widget up or down one page or one "
-"line. Set Data 1 to either Up, Down, +1 or -1."
+"The Scroll Page command scrolls the text widget up or down one page or one"
+" line. Set Data 1 to either Up, Down, +1 or -1."
 msgstr ""
 
 #: src/fe-gtk/fkeys.c:173
 msgid ""
-"The Set Buffer command sets the entry where the key sequence was entered to "
-"the contents of Data 1"
+"The Set Buffer command sets the entry where the key sequence was entered "
+"to the contents of Data 1"
 msgstr ""
 
 #: src/fe-gtk/fkeys.c:175
 msgid ""
-"The Last Command command sets the entry to contain the last command entered "
-"- the same as pressing up in a shell"
+"The Last Command command sets the entry to contain the last command "
+"entered - the same as pressing up in a shell"
 msgstr ""
 
 #: src/fe-gtk/fkeys.c:177
 msgid ""
-"The Next Command command sets the entry to contain the next command entered "
-"- the same as pressing down in a shell"
+"The Next Command command sets the entry to contain the next command "
+"entered - the same as pressing down in a shell"
 msgstr ""
 
 #: src/fe-gtk/fkeys.c:179
 msgid ""
 "This command changes the text in the entry to finish an incomplete nickname "
-"or command. If Data 1 is set then double-tabbing in a string will select the "
-"last nick, not the next"
+"or command. If Data 1 is set then double-tabbing in a string will select the"
+" last nick, not the next"
 msgstr ""
 
 #: src/fe-gtk/fkeys.c:181
 msgid ""
-"This command scrolls up and down through the list of nicks. If Data 1 is set "
-"to anything it will scroll up, else it scrolls down"
+"This command scrolls up and down through the list of nicks. If Data 1 is set"
+" to anything it will scroll up, else it scrolls down"
 msgstr ""
 
 #: src/fe-gtk/fkeys.c:183
@@ -3535,9 +3534,8 @@ msgid ""
 msgstr ""
 
 #: src/fe-gtk/maingui.c:1244
-#, fuzzy
 msgid "Quit HexChat?"
-msgstr "Sair do Xchat?"
+msgstr ""
 
 #: src/fe-gtk/maingui.c:1265
 msgid "Don't ask next time."
@@ -3881,9 +3879,8 @@ msgid ": CTCP Replies"
 msgstr "Xchat: Respostas de CTCP.."
 
 #: src/fe-gtk/menu.c:1606
-#, fuzzy
 msgid "He_xChat"
-msgstr "_Xchat"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1607
 msgid "Network Li_st..."
@@ -4038,95 +4035,80 @@ msgid "Userlist Buttons..."
 msgstr "Botões da lista de usuários..."
 
 #: src/fe-gtk/menu.c:1675
-#, fuzzy
 msgid "Userlist Popup..."
-msgstr "Menu contextual da lista de usuários.."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1678
 msgid "_Window"
 msgstr "_Janelas"
 
 #: src/fe-gtk/menu.c:1679
-#, fuzzy
 msgid "Ban List..."
-msgstr "Janela da lista de canais.."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1680
 msgid "Character Chart..."
 msgstr ""
 
 #: src/fe-gtk/menu.c:1681
-#, fuzzy
 msgid "Direct Chat..."
-msgstr "Janela de DCC Chat.."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1682
 msgid "File Transfers..."
 msgstr "Transferência de arquivos..."
 
 #: src/fe-gtk/menu.c:1683
-#, fuzzy
 msgid "Friends List..."
-msgstr "Janela da lista de canais.."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1684
-#, fuzzy
 msgid "Ignore List..."
-msgstr "Janela de ignorância.."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1685
-#, fuzzy
 msgid "Plugins and Scripts..."
-msgstr "Lista de plugins"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1686
-#, fuzzy
 msgid "Raw Log..."
-msgstr "Janela de log cru.."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1687
-#, fuzzy
 msgid "URL Grabber..."
-msgstr "Janela de captura de URLs.."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1689
 msgid "Reset Marker Line"
 msgstr ""
 
 #: src/fe-gtk/menu.c:1690
-#, fuzzy
 msgid "_Copy Selection"
-msgstr "Selecionar fonte"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1691
-#, fuzzy
 msgid "C_lear Text"
-msgstr "Fechar"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1692
-#, fuzzy
 msgid "Save Text..."
-msgstr "Editar textos de eventos.."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1694
-#, fuzzy
 msgid "Search"
-msgstr "X-Chat: Preferências"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1695
-#, fuzzy
 msgid "Search Text..."
-msgstr "Procurar no buffer.."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1696
-#, fuzzy
 msgid "Reset Search"
-msgstr "X-Chat: Preferências"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1697
-#, fuzzy
 msgid "Search Next"
-msgstr "Procurar no buffer.."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1698
 msgid "Search Previous"
@@ -4137,27 +4119,24 @@ msgid "_Help"
 msgstr "_Ajuda"
 
 #: src/fe-gtk/menu.c:1703
-#, fuzzy
 msgid "_Contents"
-msgstr "Tempo esgotado para notificação"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1705
 msgid "Check for updates"
 msgstr ""
 
 #: src/fe-gtk/menu.c:1707
-#, fuzzy
 msgid "_About"
-msgstr "Sobre o X-Chat.."
+msgstr ""
 
 #: src/fe-gtk/menu.c:2189
 msgid "_Attach"
 msgstr ""
 
 #: src/fe-gtk/notifygui.c:139
-#, fuzzy
 msgid "Last Seen"
-msgstr "Rápido envio de arquivos"
+msgstr ""
 
 #: src/fe-gtk/notifygui.c:181
 msgid "Offline"
@@ -4173,9 +4152,8 @@ msgid "%d minutes ago"
 msgstr ""
 
 #: src/fe-gtk/notifygui.c:219
-#, fuzzy
 msgid "Online"
-msgstr "Documentação em linha.."
+msgstr ""
 
 #: src/fe-gtk/notifygui.c:348
 msgid "Enter nickname to add:"
@@ -4190,14 +4168,12 @@ msgid "Comma separated list of networks is accepted."
 msgstr ""
 
 #: src/fe-gtk/notifygui.c:414
-#, fuzzy
 msgid ": Friends List"
-msgstr "Rápido envio de arquivos"
+msgstr ""
 
 #: src/fe-gtk/notifygui.c:435
-#, fuzzy
 msgid "Open Dialog"
-msgstr "Automaticamente abrir janelas de diálogo"
+msgstr ""
 
 #: src/fe-gtk/plugin-tray.c:226
 #, c-format
@@ -4205,43 +4181,36 @@ msgid ": Connected to %u networks and %u channels"
 msgstr ""
 
 #: src/fe-gtk/plugin-tray.c:516
-#, fuzzy
 msgid "_Restore Window"
-msgstr "Janelas de diálogo"
+msgstr ""
 
 #: src/fe-gtk/plugin-tray.c:518
-#, fuzzy
 msgid "_Hide Window"
-msgstr "_Janelas"
+msgstr ""
 
 #: src/fe-gtk/plugin-tray.c:522
 msgid "_Blink on"
 msgstr ""
 
 #: src/fe-gtk/plugin-tray.c:523 src/fe-gtk/setup.c:640
-#, fuzzy
 msgid "Channel Message"
-msgstr "Abas de canal"
+msgstr ""
 
 #: src/fe-gtk/plugin-tray.c:524 src/fe-gtk/setup.c:641
-#, fuzzy
 msgid "Private Message"
-msgstr "Abas de mensagens privadas"
+msgstr ""
 
 #: src/fe-gtk/plugin-tray.c:525 src/fe-gtk/setup.c:642
-#, fuzzy
 msgid "Highlighted Message"
-msgstr "Destacar notificações"
+msgstr ""
 
 #: src/fe-gtk/plugin-tray.c:528
-#, fuzzy
 msgid "_Change status"
-msgstr "Abas de canal"
+msgstr ""
 
 #: src/fe-gtk/plugin-tray.c:530
-#, fuzzy
 msgid "_Away"
-msgstr "Ficar ausente"
+msgstr ""
 
 #: src/fe-gtk/plugin-tray.c:533
 msgid "_Back"
@@ -4288,9 +4257,8 @@ msgid ": %u file offers, latest from: %s (%s)"
 msgstr ""
 
 #: src/fe-gtk/plugingui.c:73
-#, fuzzy
 msgid "Version"
-msgstr "Esconder versão"
+msgstr ""
 
 #: src/fe-gtk/plugingui.c:75 src/fe-gtk/textgui.c:424
 msgid "Description"
@@ -4301,30 +4269,26 @@ msgid "Select a Plugin or Script to load"
 msgstr ""
 
 #: src/fe-gtk/plugingui.c:244
-#, fuzzy
 msgid ": Plugins and Scripts"
-msgstr "Todos os plugins"
+msgstr ""
 
 #: src/fe-gtk/plugingui.c:250
-#, fuzzy
 msgid "_Load..."
-msgstr "Carregar"
+msgstr ""
 
 #: src/fe-gtk/plugingui.c:253
-#, fuzzy
 msgid "_UnLoad"
-msgstr "Carregar"
+msgstr ""
 
 #: src/fe-gtk/rawlog.c:84 src/fe-gtk/rawlog.c:133 src/fe-gtk/textgui.c:438
 #: src/fe-gtk/urlgrab.c:216
-#, fuzzy
 msgid "Save As..."
-msgstr "Editar textos de eventos.."
+msgstr ""
 
 #: src/fe-gtk/rawlog.c:100
-#, fuzzy, c-format
+#, c-format
 msgid ": Rawlog (%s)"
-msgstr "Botões da lista de usuários.."
+msgstr ""
 
 #: src/fe-gtk/rawlog.c:130
 msgid "Clear rawlog"
@@ -4335,14 +4299,12 @@ msgid "The window you opened this Search for doesn't exist anymore."
 msgstr ""
 
 #: src/fe-gtk/search.c:166
-#, fuzzy
 msgid ": Search"
-msgstr "X-Chat: Preferências"
+msgstr ""
 
 #: src/fe-gtk/search.c:193
-#, fuzzy
 msgid "_Find"
-msgstr "Fonte:"
+msgstr ""
 
 #: src/fe-gtk/search.c:197
 msgid "_Match case"
@@ -4353,18 +4315,16 @@ msgid "Search _backwards"
 msgstr ""
 
 #: src/fe-gtk/search.c:213
-#, fuzzy
 msgid "_Highlight all"
-msgstr "Destaque"
+msgstr ""
 
 #: src/fe-gtk/search.c:221
 msgid "R_egular expression"
 msgstr ""
 
 #: src/fe-gtk/search.c:237
-#, fuzzy
 msgid "Close and _Reset"
-msgstr "Nova aba de canal.."
+msgstr ""
 
 #: src/fe-gtk/servlistgui.c:172 src/fe-gtk/servlistgui.c:281
 msgid "New Network"
@@ -4376,9 +4336,8 @@ msgid "Really remove network \"%s\" and all its servers?"
 msgstr ""
 
 #: src/fe-gtk/servlistgui.c:735
-#, fuzzy
 msgid "#channel"
-msgstr "Cancelar"
+msgstr ""
 
 #: src/fe-gtk/servlistgui.c:845
 msgid ": Favorite Channels (Auto-Join List)"
@@ -4390,9 +4349,8 @@ msgid "These channels will be joined whenever you connect to %s."
 msgstr ""
 
 #: src/fe-gtk/servlistgui.c:901
-#, fuzzy
 msgid "Key (Password)"
-msgstr "Lista de servidores.."
+msgstr ""
 
 #: src/fe-gtk/servlistgui.c:932 src/fe-gtk/servlistgui.c:1572
 msgid "_Edit"
@@ -4413,14 +4371,14 @@ msgid "User name and Real name cannot be left blank."
 msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1403
-#, fuzzy, c-format
+#, c-format
 msgid ": Edit %s"
-msgstr "Botões da lista de usuários.."
+msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1422
-#, fuzzy, c-format
+#, c-format
 msgid "Servers for %s"
-msgstr "Lista de servidores.."
+msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1433
 msgid "Connect to selected server only"
@@ -4431,49 +4389,40 @@ msgid "Don't cycle through all the servers when the connection fails."
 msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1436
-#, fuzzy
 msgid "Your Details"
-msgstr "Suas opções de IRC"
+msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1442
-#, fuzzy
 msgid "Use global user information"
-msgstr "Menu do usuário"
+msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1445 src/fe-gtk/servlistgui.c:1679
-#, fuzzy
 msgid "_Nick name:"
-msgstr "Completação de nickname"
+msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1449 src/fe-gtk/servlistgui.c:1686
-#, fuzzy
 msgid "Second choice:"
-msgstr "Diretório de sons:"
+msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1453 src/fe-gtk/servlistgui.c:1700
-#, fuzzy
 msgid "_User name:"
-msgstr "Menu do usuário"
+msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1457
-#, fuzzy
 msgid "Rea_l name:"
-msgstr "Abas de canal"
+msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1460
-#, fuzzy
 msgid "Connecting"
-msgstr "Tempo esgotado para notificação"
+msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1466
-#, fuzzy
 msgid "Auto connect to this network at startup"
-msgstr "Recortar automaticamente"
+msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1468
-#, fuzzy
 msgid "Bypass proxy server"
-msgstr "Nova aba de servidor.."
+msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1470
 msgid "Use SSL for all the servers on this network"
@@ -4484,30 +4433,27 @@ msgid "Accept invalid SSL certificate"
 msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1481
-#, fuzzy
 msgid "_Favorite channels:"
-msgstr "Nova aba de canal.."
+msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1483
 msgid "Channels to join, separated by commas, but not spaces!"
 msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1486
-#, fuzzy
 msgid "Connect command:"
-msgstr "Tempo esgotado para notificação"
+msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1488
 msgid ""
 "Extra command to execute after connecting. If you need more than one, set "
-"this to LOAD -e <filename>, where <filename> is a text-file full of commands "
-"to execute."
+"this to LOAD -e <filename>, where <filename> is a text-file full of commands"
+" to execute."
 msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1491
-#, fuzzy
 msgid "Nickserv password:"
-msgstr "Lista de servidores.."
+msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1493
 msgid ""
@@ -4516,9 +4462,8 @@ msgid ""
 msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1497
-#, fuzzy
 msgid "Server password:"
-msgstr "Lista de servidores.."
+msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1499
 msgid "Password for the server, if in doubt, leave blank."
@@ -4529,9 +4474,8 @@ msgid "Character set:"
 msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1657
-#, fuzzy
 msgid ": Network List"
-msgstr "Lista de servidores.."
+msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1669
 msgid "User Information"
@@ -4546,18 +4490,16 @@ msgid "Networks"
 msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1801
-#, fuzzy
 msgid "Skip network list on startup"
-msgstr "Sem lista de servidores ao iniciar"
+msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1810
 msgid "Show favorites only"
 msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1840
-#, fuzzy
 msgid "_Edit..."
-msgstr "Carregar"
+msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1847
 msgid "_Sort"
@@ -4578,9 +4520,8 @@ msgid "Mark or unmark this network as a favorite."
 msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1881
-#, fuzzy
 msgid "C_onnect"
-msgstr "Tempo esgotado para notificação"
+msgstr ""
 
 #: src/fe-gtk/setup.c:105
 msgid "Albanian"
@@ -4607,9 +4548,8 @@ msgid "Bulgarian"
 msgstr ""
 
 #: src/fe-gtk/setup.c:112
-#, fuzzy
 msgid "Chinese (Simplified)"
-msgstr "linhas (0=Ilimitado)."
+msgstr ""
 
 #: src/fe-gtk/setup.c:113
 msgid "Chinese (Traditional)"
@@ -4652,9 +4592,8 @@ msgid "German"
 msgstr ""
 
 #: src/fe-gtk/setup.c:123
-#, fuzzy
 msgid "Greek"
-msgstr "Grécia"
+msgstr ""
 
 #: src/fe-gtk/setup.c:124
 msgid "Hindi"
@@ -4697,14 +4636,12 @@ msgid "Malay"
 msgstr ""
 
 #: src/fe-gtk/setup.c:134
-#, fuzzy
 msgid "Norwegian (Bokmal)"
-msgstr "Noruega"
+msgstr ""
 
 #: src/fe-gtk/setup.c:135
-#, fuzzy
 msgid "Norwegian (Nynorsk)"
-msgstr "Noruega"
+msgstr ""
 
 #: src/fe-gtk/setup.c:136
 msgid "Polish"
@@ -4779,56 +4716,48 @@ msgid "Font:"
 msgstr "Fonte:"
 
 #: src/fe-gtk/setup.c:163
-#, fuzzy
 msgid "Text Box"
-msgstr "Fechar"
+msgstr ""
 
 #: src/fe-gtk/setup.c:164
-#, fuzzy
 msgid "Background image:"
-msgstr "Imagem de fundo:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:165
 msgid "Scrollback lines:"
 msgstr ""
 
 #: src/fe-gtk/setup.c:166
-#, fuzzy
 msgid "Colored nick names"
-msgstr "Nicks coloridos"
+msgstr ""
 
 #: src/fe-gtk/setup.c:167
 msgid "Give each person on IRC a different color"
 msgstr ""
 
 #: src/fe-gtk/setup.c:168
-#, fuzzy
 msgid "Indent nick names"
-msgstr "Recortar nicks"
+msgstr ""
 
 #: src/fe-gtk/setup.c:169
-#, fuzzy
 msgid "Make nick names right-justified"
-msgstr "Faz os nicknames serem justificados para a direita."
+msgstr ""
 
 #: src/fe-gtk/setup.c:170
-#, fuzzy
 msgid "Transparent background"
-msgstr "Fundo transparente"
+msgstr ""
 
 #: src/fe-gtk/setup.c:171
-#, fuzzy
 msgid "Show marker line"
-msgstr "Mostrar mensagem de ausência somente uma vez"
+msgstr ""
 
 #: src/fe-gtk/setup.c:172
 msgid "Insert a red line after the last read text."
 msgstr ""
 
 #: src/fe-gtk/setup.c:173
-#, fuzzy
 msgid "Transparency Settings"
-msgstr "Opções de transferência de arquivos"
+msgstr ""
 
 #: src/fe-gtk/setup.c:174
 msgid "Red:"
@@ -4843,19 +4772,16 @@ msgid "Blue:"
 msgstr "Azul:"
 
 #: src/fe-gtk/setup.c:178 src/fe-gtk/setup.c:540
-#, fuzzy
 msgid "Time Stamps"
-msgstr "Pôr a hora atual em todo o texto"
+msgstr ""
 
 #: src/fe-gtk/setup.c:179
-#, fuzzy
 msgid "Enable time stamps"
-msgstr "Pôr a hora atual em todo o texto"
+msgstr ""
 
 #: src/fe-gtk/setup.c:180
-#, fuzzy
 msgid "Time stamp format:"
-msgstr "Pôr a hora atual em todo o texto"
+msgstr ""
 
 #: src/fe-gtk/setup.c:182 src/fe-gtk/setup.c:544
 msgid "See the strftime MSDN article for details."
@@ -4874,9 +4800,8 @@ msgid "Last-spoke order"
 msgstr ""
 
 #: src/fe-gtk/setup.c:199
-#, fuzzy
 msgid "Input Box"
-msgstr "Caixa de digitação"
+msgstr ""
 
 #: src/fe-gtk/setup.c:200 src/fe-gtk/setup.c:270
 msgid "Use the Text box font and colors"
@@ -4887,9 +4812,8 @@ msgid "Spell checking"
 msgstr ""
 
 #: src/fe-gtk/setup.c:203
-#, fuzzy
 msgid "Dictionaries to use:"
-msgstr "Salvar em diretório:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:205
 msgid ""
@@ -4902,28 +4826,24 @@ msgid "Use language codes. Separate multiple entries with commas."
 msgstr ""
 
 #: src/fe-gtk/setup.c:211
-#, fuzzy
 msgid "Nick Completion"
-msgstr "Completação de nickname"
+msgstr ""
 
 #: src/fe-gtk/setup.c:212
 msgid "Automatic nick completion (without TAB key)"
 msgstr ""
 
 #: src/fe-gtk/setup.c:214
-#, fuzzy
 msgid "Nick completion suffix:"
-msgstr "Completação de nickname"
+msgstr ""
 
 #: src/fe-gtk/setup.c:215
-#, fuzzy
 msgid "Nick completion sorted:"
-msgstr "Completação de nickname"
+msgstr ""
 
 #: src/fe-gtk/setup.c:218
-#, fuzzy
 msgid "Input Box Codes"
-msgstr "Caixa de digitação"
+msgstr ""
 
 #: src/fe-gtk/setup.c:219
 #, c-format
@@ -4983,33 +4903,28 @@ msgid "User List"
 msgstr "Lista de usuários"
 
 #: src/fe-gtk/setup.c:269
-#, fuzzy
 msgid "Show hostnames in user list"
-msgstr "Destaca usuários notificados na lista de usuários"
+msgstr ""
 
 #: src/fe-gtk/setup.c:272
-#, fuzzy
 msgid "User list sorted by:"
-msgstr "Lista de usuários sortida por:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:273
-#, fuzzy
 msgid "Show user list at:"
-msgstr "Sem lista de servidores ao iniciar"
+msgstr ""
 
 #: src/fe-gtk/setup.c:275
-#, fuzzy
 msgid "Away Tracking"
-msgstr "Opções de ausência"
+msgstr ""
 
 #: src/fe-gtk/setup.c:276
 msgid "Track the Away status of users and mark them in a different color"
 msgstr ""
 
 #: src/fe-gtk/setup.c:277
-#, fuzzy
 msgid "On channels smaller than:"
-msgstr "Abas de canal"
+msgstr ""
 
 #: src/fe-gtk/setup.c:279
 msgid "Action Upon Double Click"
@@ -5024,32 +4939,28 @@ msgid "Tabs"
 msgstr "Abas"
 
 #: src/fe-gtk/setup.c:300
-#, fuzzy
 msgid "Always"
-msgstr "Ficar ausente"
+msgstr ""
 
 #: src/fe-gtk/setup.c:301
 msgid "Only requested tabs"
 msgstr ""
 
 #: src/fe-gtk/setup.c:310
-#, fuzzy
 msgid "Tree"
-msgstr "Verde:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:317
 msgid "Switcher type:"
 msgstr ""
 
 #: src/fe-gtk/setup.c:318
-#, fuzzy
 msgid "Open an extra tab for server messages"
-msgstr "Usar uma aba/janela separada para mensagens do servidor"
+msgstr ""
 
 #: src/fe-gtk/setup.c:319
-#, fuzzy
 msgid "Open an extra tab for server notices"
-msgstr "Usar uma aba/janela separada para mensagens do servidor"
+msgstr ""
 
 #: src/fe-gtk/setup.c:320
 msgid "Open a new tab when you receive a private message"
@@ -5064,9 +4975,8 @@ msgid "Show icons in the channel tree"
 msgstr ""
 
 #: src/fe-gtk/setup.c:323
-#, fuzzy
 msgid "Smaller text"
-msgstr "Fechar"
+msgstr ""
 
 #: src/fe-gtk/setup.c:325
 msgid "Focus new tabs:"
@@ -5081,38 +4991,32 @@ msgid "Shorten tab labels to:"
 msgstr ""
 
 #: src/fe-gtk/setup.c:328
-#, fuzzy
 msgid "letters."
-msgstr "Paleta.."
+msgstr ""
 
 #: src/fe-gtk/setup.c:330
-#, fuzzy
 msgid "Tabs or Windows"
-msgstr "Janelas de diálogo"
+msgstr ""
 
 #: src/fe-gtk/setup.c:331
-#, fuzzy
 msgid "Open channels in:"
-msgstr "Abas de canal"
+msgstr ""
 
 #: src/fe-gtk/setup.c:332
-#, fuzzy
 msgid "Open dialogs in:"
-msgstr "Automaticamente abrir janelas de diálogo"
+msgstr ""
 
 #: src/fe-gtk/setup.c:333
 msgid "Open utilities in:"
 msgstr ""
 
 #: src/fe-gtk/setup.c:333
-#, fuzzy
 msgid "Open DCC, Ignore, Notify etc, in tabs or windows?"
-msgstr "Usar abas para janelas de DCC, ignorância, notificação etc."
+msgstr ""
 
 #: src/fe-gtk/setup.c:340
-#, fuzzy
 msgid "Messages"
-msgstr "Mensagem"
+msgstr ""
 
 #: src/fe-gtk/setup.c:341
 msgid "Scrollback"
@@ -5135,29 +5039,24 @@ msgid "Files and Directories"
 msgstr ""
 
 #: src/fe-gtk/setup.c:358
-#, fuzzy
 msgid "Auto accept file offers:"
-msgstr "Automaticamente aceitar receber arquivos"
+msgstr ""
 
 #: src/fe-gtk/setup.c:359
-#, fuzzy
 msgid "Download files to:"
-msgstr "Diretório de sons:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:360
-#, fuzzy
 msgid "Move completed files to:"
-msgstr "Diretório de sons:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:361
-#, fuzzy
 msgid "Save nick name in filenames"
-msgstr "Põe o nickname de quem envia em nomes de arquivos recebidos"
+msgstr ""
 
 #: src/fe-gtk/setup.c:363
-#, fuzzy
 msgid "Network Settings"
-msgstr "Outras opções de disposição"
+msgstr ""
 
 #: src/fe-gtk/setup.c:364
 msgid "Get my address from the IRC server"
@@ -5165,28 +5064,25 @@ msgstr ""
 
 #: src/fe-gtk/setup.c:365
 msgid ""
-"Asks the IRC server for your real address. Use this if you have a 192.168.*."
-"* address!"
+"Asks the IRC server for your real address. Use this if you have a "
+"192.168.*.* address!"
 msgstr ""
 
 #: src/fe-gtk/setup.c:366
-#, fuzzy
 msgid "DCC IP address:"
-msgstr "Endereço IP"
+msgstr ""
 
 #: src/fe-gtk/setup.c:367
 msgid "Claim you are at this address when offering files."
 msgstr ""
 
 #: src/fe-gtk/setup.c:368
-#, fuzzy
 msgid "First DCC send port:"
-msgstr "Rápido envio de arquivos"
+msgstr ""
 
 #: src/fe-gtk/setup.c:369
-#, fuzzy
 msgid "Last DCC send port:"
-msgstr "Rápido envio de arquivos"
+msgstr ""
 
 #: src/fe-gtk/setup.c:370
 msgid "!Leave ports at zero for full range."
@@ -5249,9 +5145,8 @@ msgid "Omit alerts when marked as being away"
 msgstr ""
 
 #: src/fe-gtk/setup.c:420 src/fe-gtk/setup.c:441
-#, fuzzy
 msgid "Highlighted Messages"
-msgstr "Opções de destaque"
+msgstr ""
 
 #: src/fe-gtk/setup.c:421 src/fe-gtk/setup.c:442
 msgid ""
@@ -5259,59 +5154,50 @@ msgid ""
 msgstr ""
 
 #: src/fe-gtk/setup.c:423 src/fe-gtk/setup.c:444
-#, fuzzy
 msgid "Extra words to highlight:"
-msgstr "Palavras extras a serem destacadas:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:424 src/fe-gtk/setup.c:445
-#, fuzzy
 msgid "Nick names not to highlight:"
-msgstr "Palavras extras a serem destacadas:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:425 src/fe-gtk/setup.c:446
 msgid "Nick names to always highlight:"
 msgstr ""
 
 #: src/fe-gtk/setup.c:426 src/fe-gtk/setup.c:447
-#, fuzzy
 msgid ""
 "Separate multiple words with commas.\n"
 "Wildcards are accepted."
-msgstr "(separar com vírgulas)"
+msgstr ""
 
 #: src/fe-gtk/setup.c:454
-#, fuzzy
 msgid "Default Messages"
-msgstr "Mensagem de saída:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:455
-#, fuzzy
 msgid "Quit:"
-msgstr "Sair"
+msgstr ""
 
 #: src/fe-gtk/setup.c:456
-#, fuzzy
 msgid "Leave channel:"
-msgstr "Cancelar"
+msgstr ""
 
 #: src/fe-gtk/setup.c:457
-#, fuzzy
 msgid "Away:"
-msgstr "Ficar ausente"
+msgstr ""
 
 #: src/fe-gtk/setup.c:459
 msgid "Away"
 msgstr "Ficar ausente"
 
 #: src/fe-gtk/setup.c:460
-#, fuzzy
 msgid "Announce away messages"
-msgstr "Anunciar mensagens de ausência"
+msgstr ""
 
 #: src/fe-gtk/setup.c:461
-#, fuzzy
 msgid "Announce your away messages to all channels"
-msgstr "Anuncia sua mensagem de ausência para os canais nos quais você está"
+msgstr ""
 
 #: src/fe-gtk/setup.c:462
 msgid "Show away once"
@@ -5322,27 +5208,24 @@ msgid "Show identical away messages only once"
 msgstr ""
 
 #: src/fe-gtk/setup.c:463
-#, fuzzy
 msgid "Automatically unmark away"
-msgstr "Automaticamente abre janela de DCC Chat"
+msgstr ""
 
 #: src/fe-gtk/setup.c:463
 msgid "Unmark yourself as away before sending messages"
 msgstr ""
 
 #: src/fe-gtk/setup.c:470 src/fe-gtk/setup.c:501
-#, fuzzy
 msgid "Advanced Settings"
-msgstr "Opções de ausência"
+msgstr ""
 
 #: src/fe-gtk/setup.c:472 src/fe-gtk/setup.c:502
 msgid "Alternative fonts:"
 msgstr ""
 
 #: src/fe-gtk/setup.c:474 src/fe-gtk/setup.c:503
-#, fuzzy
 msgid "Auto reconnect delay:"
-msgstr "Intervalo para automaticamente reconectar:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:475 src/fe-gtk/setup.c:504
 msgid "Display MODEs in raw form"
@@ -5357,42 +5240,36 @@ msgid "Sends a /WHOIS when a user comes online in your notify list"
 msgstr ""
 
 #: src/fe-gtk/setup.c:477 src/fe-gtk/setup.c:506
-#, fuzzy
 msgid "Hide join and part messages"
-msgstr "Beepar em mensagens privadas"
+msgstr ""
 
 #: src/fe-gtk/setup.c:477 src/fe-gtk/setup.c:506
 msgid "Hide channel join/part messages by default"
 msgstr ""
 
 #: src/fe-gtk/setup.c:478 src/fe-gtk/setup.c:508
-#, fuzzy
 msgid "Auto Open DCC Windows"
-msgstr "Automaticamente abrir janelas de diálogo"
+msgstr ""
 
 #: src/fe-gtk/setup.c:479 src/fe-gtk/setup.c:509
-#, fuzzy
 msgid "Send window"
-msgstr "Janela principal"
+msgstr ""
 
 #: src/fe-gtk/setup.c:480 src/fe-gtk/setup.c:510
-#, fuzzy
 msgid "Receive window"
-msgstr "Arquivos recebidos"
+msgstr ""
 
 #: src/fe-gtk/setup.c:481 src/fe-gtk/setup.c:511
-#, fuzzy
 msgid "Chat window"
-msgstr "Janelas de canais"
+msgstr ""
 
 #: src/fe-gtk/setup.c:482 src/fe-gtk/setup.c:512
 msgid "Auto Copy Behavior"
 msgstr ""
 
 #: src/fe-gtk/setup.c:483 src/fe-gtk/setup.c:513
-#, fuzzy
 msgid "Automatically copy selected text"
-msgstr "Automaticamente abre janela de envio de arquivos"
+msgstr ""
 
 #: src/fe-gtk/setup.c:484 src/fe-gtk/setup.c:514
 msgid ""
@@ -5401,9 +5278,8 @@ msgid ""
 msgstr ""
 
 #: src/fe-gtk/setup.c:487 src/fe-gtk/setup.c:517
-#, fuzzy
 msgid "Automatically include time stamps"
-msgstr "Automaticamente abre janela de DCC Chat"
+msgstr ""
 
 #: src/fe-gtk/setup.c:488 src/fe-gtk/setup.c:518
 msgid ""
@@ -5417,8 +5293,8 @@ msgstr ""
 
 #: src/fe-gtk/setup.c:491 src/fe-gtk/setup.c:521
 msgid ""
-"Automatically include color information in copied lines of text.  Otherwise, "
-"include color information if the CONTROL key is held down while selecting."
+"Automatically include color information in copied lines of text.  Otherwise,"
+" include color information if the CONTROL key is held down while selecting."
 msgstr ""
 
 #: src/fe-gtk/setup.c:507
@@ -5438,14 +5314,12 @@ msgid "Strip colors when displaying scrollback"
 msgstr ""
 
 #: src/fe-gtk/setup.c:536
-#, fuzzy
 msgid "Enable logging of conversations to disk"
-msgstr "Habilita log de conversações no disco"
+msgstr ""
 
 #: src/fe-gtk/setup.c:537
-#, fuzzy
 msgid "Log filename:"
-msgstr "Máscara do arquivo de log:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:538
 #, c-format
@@ -5453,28 +5327,24 @@ msgid "%s=Server %c=Channel %n=Network."
 msgstr ""
 
 #: src/fe-gtk/setup.c:541
-#, fuzzy
 msgid "Insert timestamps in logs"
-msgstr "Pôr a hora atual em todo o texto"
+msgstr ""
 
 #: src/fe-gtk/setup.c:542
-#, fuzzy
 msgid "Log timestamp format:"
-msgstr "Pôr a hora atual em todo o texto"
+msgstr ""
 
 #: src/fe-gtk/setup.c:549
 msgid "URLs"
 msgstr ""
 
 #: src/fe-gtk/setup.c:550
-#, fuzzy
 msgid "Enable logging of URLs to disk"
-msgstr "Habilita log de conversações no disco"
+msgstr ""
 
 #: src/fe-gtk/setup.c:551
-#, fuzzy
 msgid "Enable URL grabber"
-msgstr "Programas a serem usados em URLs.."
+msgstr ""
 
 #: src/fe-gtk/setup.c:552
 msgid "Maximum number of URLs to grab:"
@@ -5509,9 +5379,8 @@ msgid "Auto"
 msgstr ""
 
 #: src/fe-gtk/setup.c:575
-#, fuzzy
 msgid "All Connections"
-msgstr "Tempo esgotado para notificação"
+msgstr ""
 
 #: src/fe-gtk/setup.c:576
 msgid "IRC Server Only"
@@ -5522,43 +5391,36 @@ msgid "DCC Get Only"
 msgstr ""
 
 #: src/fe-gtk/setup.c:583
-#, fuzzy
 msgid "Your Address"
-msgstr "Endereço"
+msgstr ""
 
 #: src/fe-gtk/setup.c:584
-#, fuzzy
 msgid "Bind to:"
-msgstr "Fonte:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:585
 msgid "Only useful for computers with multiple addresses."
 msgstr ""
 
 #: src/fe-gtk/setup.c:587
-#, fuzzy
 msgid "Proxy Server"
-msgstr "Nova aba de servidor.."
+msgstr ""
 
 #: src/fe-gtk/setup.c:588
-#, fuzzy
 msgid "Hostname:"
-msgstr "Hostname / Número do IP:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:589
-#, fuzzy
 msgid "Port:"
-msgstr "Fonte:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:590
-#, fuzzy
 msgid "Type:"
-msgstr "Alto:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:591
-#, fuzzy
 msgid "Use proxy for:"
-msgstr "Menu do usuário"
+msgstr ""
 
 #: src/fe-gtk/setup.c:593
 msgid "Proxy Authentication"
@@ -5573,28 +5435,24 @@ msgid "Use Authentication (HTTP or Socks5 only)"
 msgstr ""
 
 #: src/fe-gtk/setup.c:599
-#, fuzzy
 msgid "Username:"
-msgstr "Menu do usuário"
+msgstr ""
 
 #: src/fe-gtk/setup.c:600
-#, fuzzy
 msgid "Password:"
-msgstr "Lista de servidores.."
+msgstr ""
 
 #: src/fe-gtk/setup.c:1031
 msgid "Select an Image File"
 msgstr ""
 
 #: src/fe-gtk/setup.c:1066
-#, fuzzy
 msgid "Select Download Folder"
-msgstr "Selecionar fonte"
+msgstr ""
 
 #: src/fe-gtk/setup.c:1075
-#, fuzzy
 msgid "Select font"
-msgstr "Selecionar fonte"
+msgstr ""
 
 #: src/fe-gtk/setup.c:1175
 msgid "Browse..."
@@ -5613,14 +5471,12 @@ msgid "Open Data Folder"
 msgstr ""
 
 #: src/fe-gtk/setup.c:1376
-#, fuzzy
 msgid "Select color"
-msgstr "Selecionar fonte"
+msgstr ""
 
 #: src/fe-gtk/setup.c:1456
-#, fuzzy
 msgid "Text Colors"
-msgstr "Fechar"
+msgstr ""
 
 #: src/fe-gtk/setup.c:1458
 msgid "mIRC colors:"
@@ -5635,19 +5491,16 @@ msgid "Foreground:"
 msgstr ""
 
 #: src/fe-gtk/setup.c:1475 src/fe-gtk/setup.c:1480
-#, fuzzy
 msgid "Background:"
-msgstr "Pixmap (XPM) de fundo:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:1477
-#, fuzzy
 msgid "Marking Text"
-msgstr "Fechar"
+msgstr ""
 
 #: src/fe-gtk/setup.c:1482
-#, fuzzy
 msgid "Interface Colors"
-msgstr "Opções de interface"
+msgstr ""
 
 #: src/fe-gtk/setup.c:1484
 msgid "New data:"
@@ -5658,114 +5511,96 @@ msgid "Marker line:"
 msgstr ""
 
 #: src/fe-gtk/setup.c:1486
-#, fuzzy
 msgid "New message:"
-msgstr "Mensagem de saída:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:1487
-#, fuzzy
 msgid "Away user:"
-msgstr "Razão de ausência:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:1488
-#, fuzzy
 msgid "Highlight:"
-msgstr "Destaque"
+msgstr ""
 
 #: src/fe-gtk/setup.c:1490
 msgid "Spell checker:"
 msgstr ""
 
 #: src/fe-gtk/setup.c:1493
-#, fuzzy
 msgid "Color Stripping"
-msgstr "String de DCC"
+msgstr ""
 
 #: src/fe-gtk/setup.c:1599 src/fe-gtk/textgui.c:389
 msgid "Event"
 msgstr ""
 
 #: src/fe-gtk/setup.c:1605
-#, fuzzy
 msgid "Sound file"
-msgstr "Diretório de sons:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:1640
-#, fuzzy
 msgid "Select a sound file"
-msgstr "Diretório de sons:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:1712
 msgid "Sound playing method:"
 msgstr ""
 
 #: src/fe-gtk/setup.c:1720
-#, fuzzy
 msgid "External sound playing _program:"
-msgstr "Programas externos"
+msgstr ""
 
 #: src/fe-gtk/setup.c:1738
-#, fuzzy
 msgid "_External program"
-msgstr "Programas externos"
+msgstr ""
 
 #: src/fe-gtk/setup.c:1748
 msgid "_Automatic"
 msgstr ""
 
 #: src/fe-gtk/setup.c:1761
-#, fuzzy
 msgid "Sound files _directory:"
-msgstr "Diretório de sons:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:1800
-#, fuzzy
 msgid "Sound file:"
-msgstr "Diretório de sons:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:1815
-#, fuzzy
 msgid "_Browse..."
-msgstr "Navegar..."
+msgstr ""
 
 #: src/fe-gtk/setup.c:1826
-#, fuzzy
 msgid "_Play"
-msgstr "Painel"
+msgstr ""
 
 #: src/fe-gtk/setup.c:1875
 msgid "Interface"
 msgstr ""
 
 #: src/fe-gtk/setup.c:1876
-#, fuzzy
 msgid "Appearance"
-msgstr "Aparência"
+msgstr ""
 
 #: src/fe-gtk/setup.c:1877
-#, fuzzy
 msgid "Input box"
-msgstr "Caixa de digitação"
+msgstr ""
 
 #: src/fe-gtk/setup.c:1878
-#, fuzzy
 msgid "User list"
-msgstr "Lista de usuários"
+msgstr ""
 
 #: src/fe-gtk/setup.c:1879
-#, fuzzy
 msgid "Channel switcher"
-msgstr "Janela da lista de canais.."
+msgstr ""
 
 #: src/fe-gtk/setup.c:1880
-#, fuzzy
 msgid "Colors"
-msgstr "Fechar"
+msgstr ""
 
 #: src/fe-gtk/setup.c:1882
-#, fuzzy
 msgid "Chatting"
-msgstr "Cancelar"
+msgstr ""
 
 #: src/fe-gtk/setup.c:1886
 msgid "Sound"
@@ -5776,14 +5611,12 @@ msgid "Network setup"
 msgstr ""
 
 #: src/fe-gtk/setup.c:1891
-#, fuzzy
 msgid "File transfers"
-msgstr "Transferência de arquivos"
+msgstr ""
 
 #: src/fe-gtk/setup.c:2022
-#, fuzzy
 msgid "Categories"
-msgstr "Categorias"
+msgstr ""
 
 #: src/fe-gtk/setup.c:2218
 msgid ""
@@ -5808,9 +5641,8 @@ msgid ""
 msgstr ""
 
 #: src/fe-gtk/setup.c:2293
-#, fuzzy
 msgid ": Preferences"
-msgstr "X-Chat: Preferências"
+msgstr ""
 
 #: src/fe-gtk/textgui.c:180
 msgid "There was an error parsing the string"
@@ -5826,18 +5658,16 @@ msgid "Print Texts File"
 msgstr ""
 
 #: src/fe-gtk/textgui.c:372
-#, fuzzy
 msgid "Edit Events"
-msgstr "Editar textos de eventos.."
+msgstr ""
 
 #: src/fe-gtk/textgui.c:423
 msgid "$ Number"
 msgstr ""
 
 #: src/fe-gtk/textgui.c:440
-#, fuzzy
 msgid "Load From..."
-msgstr "Carregar"
+msgstr ""
 
 #: src/fe-gtk/textgui.c:441
 msgid "Test All"
@@ -5848,9 +5678,8 @@ msgid "URL"
 msgstr ""
 
 #: src/fe-gtk/urlgrab.c:199
-#, fuzzy
 msgid ": URL Grabber"
-msgstr "Programas a serem usados em URLs.."
+msgstr ""
 
 #: src/fe-gtk/urlgrab.c:212
 msgid "Clear list"
@@ -5872,772 +5701,3 @@ msgstr ""
 #, c-format
 msgid "%d ops, %d total"
 msgstr ""
-
-#, fuzzy
-#~ msgid "Localization"
-#~ msgstr "Posição"
-
-#, fuzzy
-#~ msgid "Interface language:"
-#~ msgstr "Opções de interface"
-
-#, fuzzy
-#~ msgid "Save Settings to Disk"
-#~ msgstr "Salvar opções quando sair"
-
-#~ msgid "Cannot create ~/.xchat2"
-#~ msgstr "Impossível criar ~/.xchat2"
-
-#, fuzzy
-#~ msgid "_Hide"
-#~ msgstr "Escondido"
-
-#, fuzzy
-#~ msgid "Client exiting"
-#~ msgstr "Opção de Tinta"
-
-#~ msgid "Apply"
-#~ msgstr "Aplicar"
-
-#, fuzzy
-#~ msgid "Save the list"
-#~ msgstr "Automaticamente salvar a lista de URLs"
-
-#, fuzzy
-#~ msgid "X-Chat: File Receive List"
-#~ msgstr "Lista de servidores.."
-
-#~ msgid "Info"
-#~ msgstr "Informação"
-
-#, fuzzy
-#~ msgid "To"
-#~ msgstr "Alto"
-
-#, fuzzy
-#~ msgid "X-Chat: Edit Key Bindings"
-#~ msgstr "Editar teclas de associações.."
-
-#, fuzzy
-#~ msgid "Ignore Mask:"
-#~ msgstr "Máscara do arquivo de log:"
-
-#, fuzzy
-#~ msgid "(%s) Channel settings"
-#~ msgstr "Opções do painel"
-
-#, fuzzy
-#~ msgid "Color paste"
-#~ msgstr "Fechar"
-
-#, fuzzy
-#~ msgid "Channel Options"
-#~ msgstr "Janelas de canais"
-
-#, fuzzy
-#~ msgid "User: %s"
-#~ msgstr "Lista de usuários"
-
-#, fuzzy
-#~ msgid "Settings saved."
-#~ msgstr "Opções"
-
-#, fuzzy
-#~ msgid "New Shell Tab..."
-#~ msgstr "Nova aba de shell.."
-
-#, fuzzy
-#~ msgid "Close Tab"
-#~ msgstr "Fechar"
-
-#~ msgid "Invisible"
-#~ msgstr "Invisível"
-
-#~ msgid "Receive Wallops"
-#~ msgstr "Receber Wallops"
-
-#~ msgid "Receive Server Notices"
-#~ msgstr "Receber notícias do servidor"
-
-#, fuzzy
-#~ msgid "Auto Rejoin when Kicked"
-#~ msgstr "Automaticamente entrar de novo no canal quando kickado"
-
-#~ msgid "Never-give-up ReConnect"
-#~ msgstr "Nunca desistir de reconectar"
-
-#, fuzzy
-#~ msgid "Auto Accept Direct Chat"
-#~ msgstr "Automaticamente aceitar DCC Chat"
-
-#, fuzzy
-#~ msgid "Lists"
-#~ msgstr "Janela da lista de canais.."
-
-#, fuzzy
-#~ msgid "Key Bindings..."
-#~ msgstr "Editar teclas de associações.."
-
-#~ msgid "Reload Settings"
-#~ msgstr "Recarregar opções"
-
-#~ msgid "Save Settings now"
-#~ msgstr "Salvar opções agora"
-
-#, fuzzy
-#~ msgid "File Receive..."
-#~ msgstr "Janela de arquivos recebidos.."
-
-#, fuzzy
-#~ msgid "File Send..."
-#~ msgstr "Janela de arquivos enviados.."
-
-#, fuzzy
-#~ msgid "Notify List..."
-#~ msgstr "Janela da lista de notificação.."
-
-#, fuzzy
-#~ msgid "Server"
-#~ msgstr "Lista de servidores.."
-
-#, fuzzy
-#~ msgid "Settings for %s"
-#~ msgstr "Opções"
-
-#, fuzzy
-#~ msgid "_Remove \"%s\""
-#~ msgstr "Lista de servidores.."
-
-#, fuzzy
-#~ msgid "_Add new server"
-#~ msgstr "Nova aba de servidor.."
-
-#, fuzzy
-#~ msgid "Move \"%s\" _up"
-#~ msgstr "Lista de servidores.."
-
-#, fuzzy
-#~ msgid "Global User Info"
-#~ msgstr "Menu do usuário"
-
-#, fuzzy
-#~ msgid "Nick Names:"
-#~ msgstr "Completação de nickname"
-
-#, fuzzy
-#~ msgid "Connect in a _new tab"
-#~ msgstr "Tempo esgotado para notificação"
-
-#, fuzzy
-#~ msgid "Servers"
-#~ msgstr "Lista de servidores.."
-
-#, fuzzy
-#~ msgid "Use secure SSL"
-#~ msgstr "Lista de usuários"
-
-#, fuzzy
-#~ msgid "Tint transparency"
-#~ msgstr "Tinta transparente"
-
-#, fuzzy
-#~ msgid "Strip mIRC color"
-#~ msgstr "Excluir cores do mIRC"
-
-#, fuzzy
-#~ msgid "Tint green:"
-#~ msgstr "Opção de Tinta"
-
-#, fuzzy
-#~ msgid "Double-click command:"
-#~ msgstr "Comando do duplo clique:"
-
-#, fuzzy
-#~ msgid "Userlist buttons enabled"
-#~ msgstr "Botões da lista de usuários.."
-
-#, fuzzy
-#~ msgid "Pop new tabs to front"
-#~ msgstr "Novas abas para a frente"
-
-#, fuzzy
-#~ msgid "Auto open DCC send list"
-#~ msgstr "Automaticamente abrir janela de envio de arquivos"
-
-#, fuzzy
-#~ msgid "Auto open DCC chat list"
-#~ msgstr "Automaticamente abrir janela de DCC Chat"
-
-#, fuzzy
-#~ msgid "Auto open DCC receive list"
-#~ msgstr "Automaticamente abrir janela de recebimento de arquivos"
-
-#, fuzzy
-#~ msgid "Default part message:"
-#~ msgstr "Mensagem de saída:"
-
-#, fuzzy
-#~ msgid "Default away message:"
-#~ msgstr "Anunciar mensagens de ausência"
-
-#, fuzzy
-#~ msgid "Beep on channel messages"
-#~ msgstr "Beepar em mensagens privadas"
-
-#, fuzzy
-#~ msgid "Mark back:"
-#~ msgstr "Fundo transparente"
-
-#, fuzzy
-#~ msgid "Select a file to save to"
-#~ msgstr "Salvar em diretório:"
-
-#, fuzzy
-#~ msgid "Load Plugin..."
-#~ msgstr "Carregar plugin (*.so).."
-
-#, fuzzy
-#~ msgid "Replace Popup..."
-#~ msgstr "Janela de substituição automática de palavras.."
-
-#, fuzzy
-#~ msgid "Load plugin..."
-#~ msgstr "Carregar plugin (*.so).."
-
-#, fuzzy
-#~ msgid "X-Chat Homepage..."
-#~ msgstr "Sítio do X-Chat.."
-
-#, fuzzy
-#~ msgid "Online Docs..."
-#~ msgstr "Documentação em linha.."
-
-#, fuzzy
-#~ msgid "About X-Chat..."
-#~ msgstr "Sobre o X-Chat.."
-
-#~ msgid "Choose File"
-#~ msgstr "Escolher arquivo"
-
-#, fuzzy
-#~ msgid "No Server List on Startup"
-#~ msgstr "Sem lista de servidores ao iniciar"
-
-#~ msgid "Auto ReJoin on Kick"
-#~ msgstr "Automaticamente entrar de novo no canal quando kickado"
-
-#, fuzzy
-#~ msgid "Server settings"
-#~ msgstr "Opções"
-
-#, fuzzy
-#~ msgid "Ban List Window..."
-#~ msgstr "Janela da lista de canais.."
-
-#, fuzzy
-#~ msgid "ASCII Window..."
-#~ msgstr "Janela de ignorância.."
-
-#, fuzzy
-#~ msgid "F_lush Buffer"
-#~ msgstr "Limpar buffer"
-
-#, fuzzy
-#~ msgid "Save Buffer..."
-#~ msgstr "Salvar buffer.."
-
-#~ msgid "User Modes"
-#~ msgstr "Modos do usuário"
-
-#, fuzzy
-#~ msgid "Plugins"
-#~ msgstr "Lista de plugins"
-
-#~ msgid "Edit User Menu"
-#~ msgstr "Editar menu do usuário"
-
-#~ msgid "Left"
-#~ msgstr "Direita"
-
-#~ msgid "Right"
-#~ msgstr "Esquerda"
-
-#, fuzzy
-#~ msgid "NewServer"
-#~ msgstr "Lista de servidores.."
-
-#, fuzzy
-#~ msgid "Open extra tab for each server"
-#~ msgstr "Usar uma aba/janela separada para mensagens do servidor"
-
-#, fuzzy
-#~ msgid "Server List 2..."
-#~ msgstr "Lista de servidores.."
-
-#, fuzzy
-#~ msgid "UNLOADALL, Unloads all perl scripts"
-#~ msgstr "Carregar script de Python.."
-
-#~ msgid "Scripts & Plugins"
-#~ msgstr "Scripts e Plugins"
-
-#, fuzzy
-#~ msgid "PLOAD loads a python script"
-#~ msgstr "Carregar script de Python.."
-
-#~ msgid "Unload All Scripts"
-#~ msgstr "Descarregar todos os scripts"
-
-#~ msgid "Perl List"
-#~ msgstr "Lista de Perl"
-
-#, fuzzy
-#~ msgid "Load Python Script..."
-#~ msgstr "Carregar script de Python.."
-
-#~ msgid "Python List"
-#~ msgstr "Lista de Python"
-
-#, fuzzy
-#~ msgid "gdk_font_load failed"
-#~ msgstr "Usar gdk_fontset_load ao invés de gdk_font_load"
-
-#~ msgid "Setup.."
-#~ msgstr "Configurar.."
-
-#, fuzzy
-#~ msgid "X-Chat: Palette"
-#~ msgstr "X-Chat: Preferências"
-
-#, fuzzy
-#~ msgid "Background"
-#~ msgstr "Pixmap (XPM) de fundo:"
-
-#, fuzzy
-#~ msgid "Mark Background"
-#~ msgstr "Fundo transparente"
-
-#, fuzzy
-#~ msgid "No Server"
-#~ msgstr "Nova aba de servidor.."
-
-#, fuzzy
-#~ msgid "Is Tab"
-#~ msgstr "Abas"
-
-#, fuzzy
-#~ msgid "X-Chat: Setup"
-#~ msgstr "X-Chat: Preferências"
-
-#, fuzzy
-#~ msgid "Failed to load translation table."
-#~ msgstr "Usar um arquivo de translação do estilo do ircII"
-
-#~ msgid "Auto Indent"
-#~ msgstr "Recortar automaticamente"
-
-#~ msgid "Auto adjust the separator bar position as needed."
-#~ msgstr "Automaticamente ajusta a barra de separação quando necessitado."
-
-#~ msgid "Draw Separator Bar"
-#~ msgstr "Usar barra de separação"
-
-#~ msgid "Make the separator an actual visible line."
-#~ msgstr "Faz a separação uma linha atual visível."
-
-#~ msgid "Word Wrap"
-#~ msgstr "Cortar palavras"
-
-#~ msgid "Don't split words from one line to the next"
-#~ msgstr "Não racha palavras de uma linha para a seguinte"
-
-#~ msgid "Make the text box seem see-through"
-#~ msgstr "Faz a caixa de texto parecer ser o fundo"
-
-#~ msgid "Tint the see-through text box to make it darker"
-#~ msgstr "Pinta a caixa de texto para deixá-la escura"
-
-#, fuzzy
-#~ msgid "Use a font set"
-#~ msgstr "Usar gdk_fontset_load ao invés de gdk_font_load"
-
-#~ msgid "Change in realtime"
-#~ msgstr "Mudar em tempo real"
-
-#~ msgid "Startup and Shutdown"
-#~ msgstr "Início e fim"
-
-#~ msgid "Don't display the server list on X-Chat startup"
-#~ msgstr "Não mostra a lista de servidores ao iniciar o X-Chat"
-
-#~ msgid "Auto Save URL list"
-#~ msgstr "Automaticamente salvar a lista de URLs"
-
-#~ msgid "Auto save your URL list when exiting from X-Chat"
-#~ msgstr "Automaticamente salva sua lista de URLs ao sair do X-Chat"
-
-#, fuzzy
-#~ msgid "Give the User List style"
-#~ msgstr "Dar o mesmo estilo à caixa de digitação"
-
-#, fuzzy
-#~ msgid "Enable Paned Userlist"
-#~ msgstr "Disabilitar painel regulável da lista de usuários"
-
-#, fuzzy
-#~ msgid "Use paned user list instead of a fixed width one"
-#~ msgstr ""
-#~ "Utiliza uma largura fixa para a lista de usuários ao invésde um painel "
-#~ "regulável"
-
-#~ msgid "Complete nicknames when a partial one is entered"
-#~ msgstr "<tab> completa os nicknames quando a parte de um é digitada"
-
-#, fuzzy
-#~ msgid "Old-style Nickname Completion"
-#~ msgstr "Completação de nickname"
-
-#~ msgid "Give the Input Box style"
-#~ msgstr "Dar o mesmo estilo à caixa de digitação"
-
-#~ msgid "Input box gets same style as main text area"
-#~ msgstr ""
-#~ "A caixa de digitação obtém o mesmo estilo da área de texto principal"
-
-#~ msgid "Output Box"
-#~ msgstr "Caixa do texto digitado"
-
-#~ msgid "Strip MIRC color codes from text before displaying"
-#~ msgstr "Exclui do texto códigos de cores do mIRC antes de mostrar"
-
-#~ msgid "Output nicknames in different colors"
-#~ msgstr "Mostra os nicknames em cores diferentes"
-
-#~ msgid "Prefix all text with the current time stamp"
-#~ msgstr "Prefixa todo o texto com a hora corrente"
-
-#~ msgid "Filter out BEEPs"
-#~ msgstr "Filtrar BEEPs"
-
-#~ msgid "Remove ^G BEEP codes from text before displaying"
-#~ msgstr "Remove códigos ^G BEEP do texto antes de mostrar"
-
-#~ msgid "Buffer Settings"
-#~ msgstr "Opções de buffer"
-
-#~ msgid "Text Buffer Size:"
-#~ msgstr "Tamanho do buffer de texto:"
-
-#~ msgid "Buttons"
-#~ msgstr "Botões"
-
-#~ msgid "Show the TNSIPMLK buttons"
-#~ msgstr "Mostra os botões TNSIPMLK"
-
-#~ msgid "User List Buttons"
-#~ msgstr "Botões da lista de usuários"
-
-#~ msgid "Show the buttons below the user list"
-#~ msgstr "Mostra os botões após a lista de usuários"
-
-#~ msgid "Use tabs for channels instead of separate windows"
-#~ msgstr "Usa abas para os canais ao invés de janelas separadas"
-
-#, fuzzy
-#~ msgid "Limited Tab Highlighting"
-#~ msgstr "Destaque"
-
-#~ msgid "Bring new query/channel tabs to front"
-#~ msgstr "Põe novas abas de conversação/canais na frente"
-
-#~ msgid "Use tabs for /query instead of separate windows"
-#~ msgstr "Usa abas para /query ao invés de janelas separadas"
-
-#~ msgid "Window Position"
-#~ msgstr "Posição da janela"
-
-#, fuzzy
-#~ msgid ""
-#~ "If Left and Top are set to zero, X-Chat will use\n"
-#~ "your window manager defaults."
-#~ msgstr ""
-#~ "Se Esquerda e Topo estiverem setados para zero, X-Chat usará os valores "
-#~ "padrões de seu gerenciador de janelas."
-
-#~ msgid "Left:"
-#~ msgstr "Esquerda:"
-
-#~ msgid "Window Size"
-#~ msgstr "Tamanho da janela"
-
-#~ msgid "Width:"
-#~ msgstr "Largura:"
-
-#~ msgid "Height:"
-#~ msgstr "Altura:"
-
-#~ msgid "Show Session Tree View"
-#~ msgstr "Mostra visão de árvore da sessão"
-
-#~ msgid "Hide Session on Panelize"
-#~ msgstr "Esconder sessão quando movido para o painel"
-
-#~ msgid "Hide X-Chat when window moved to the panel"
-#~ msgstr "Esconde o X-Chat quando a janela é movida para o painel"
-
-#~ msgid "Panel Applet"
-#~ msgstr "Applet do painel"
-
-#~ msgid "Layout For a Vertical Panel"
-#~ msgstr "Agenciar para um painel vertical"
-
-#~ msgid "Layout the X-Chat panel applet for a vertical panel"
-#~ msgstr "Agencia o applet de painel do X-Chat para um painel vertical"
-
-#~ msgid "Raw Mode Display"
-#~ msgstr "Mostrar em modo bruto"
-
-#~ msgid "Display raw mode changes instead of interpretations"
-#~ msgstr "Mostra mudanças em modo bruto ao invés de interpretações"
-
-#~ msgid "Beep when a private message for you is received"
-#~ msgstr "Beepa quando uma mensagem privada para você é recebida"
-
-#, fuzzy
-#~ msgid "Beep when a channel message is received"
-#~ msgstr "Beepa quando uma mensagem privada para você é recebida"
-
-#, fuzzy
-#~ msgid "Send /who #chan on join."
-#~ msgstr "Não enviar /who #chan ao entrar."
-
-#, fuzzy
-#~ msgid "Find user information when joining a channel."
-#~ msgstr "Não procura informações dos usuários ao entrar em um canal."
-
-#~ msgid "DNS Lookup Program:"
-#~ msgstr "Programa para procura de DNS:"
-
-#~ msgid "Timing"
-#~ msgstr "Sincronismo"
-
-#~ msgid "seconds."
-#~ msgstr "segundos."
-
-#~ msgid ""
-#~ "Most people should leave this blank, it's only\n"
-#~ "usefull for machines with multiple addresses."
-#~ msgstr ""
-#~ "A maioria das pessoas deve deixar em branco, isso so é\n"
-#~ "útil para máquinas com múltiplos endereços."
-
-#, fuzzy
-#~ msgid "Public IP Address"
-#~ msgstr "Endereço IP"
-
-#~ msgid "Get my IP from Server (for use in DCC Send only)"
-#~ msgstr "Pegar o meu IP do servidor (para uso somente em DCC Send)"
-
-#~ msgid "For people using a 10.* or 192.168.* IP number."
-#~ msgstr "Para pessoas usando um número de IP 10.* ou 192.168.*"
-
-#~ msgid "Only show away messages the first time they're seen"
-#~ msgstr ""
-#~ "Somente mostra mensagens de ausência na primeira vez que eles são vistas"
-
-#~ msgid "Your away settings"
-#~ msgstr "Suas opções de ausência"
-
-#, fuzzy
-#~ msgid "Generic"
-#~ msgstr "Geral"
-
-#~ msgid "Highlight notified users in the user list"
-#~ msgstr "Destaca usuários notificados na lista de usuários"
-
-#~ msgid "Notification Timeouts"
-#~ msgstr "Tempo esgotado para notificação"
-
-#~ msgid "Notify Check Interval:"
-#~ msgstr "Intervalo para checar notificação:"
-
-#, fuzzy
-#~ msgid "seconds (0=Disable)."
-#~ msgstr "segundos. (15=Normal, 0=Disabilitar)"
-
-#~ msgid "Enable Character Translation"
-#~ msgstr "Habilitar translação de caracteres"
-
-#~ msgid "Translation File:"
-#~ msgstr "Arquivo de translação:"
-
-#~ msgid "Use a ircII style translation file."
-#~ msgstr "Usar um arquivo de translação do estilo do ircII"
-
-#~ msgid "Automatically open DCC Recv Window"
-#~ msgstr "Automaticamente abre janela de recebimento de arquivos"
-
-#~ msgid "Resume on Auto Accept"
-#~ msgstr "Resumir quando aceitar automaticamente"
-
-#~ msgid "When Auto-Accepting DCC, try to resume."
-#~ msgstr "Tentar resumir quando aceitar DCC automaticamente"
-
-#~ msgid "Timeouts"
-#~ msgstr "Tempo esgotado"
-
-#~ msgid "DCC Offers Timeout:"
-#~ msgstr "Tempo esgotado para ofertas de DCC:"
-
-#~ msgid "DCC Stall Timeout:"
-#~ msgstr "Tempo esgotado para DCC travado:"
-
-#~ msgid "File Permissions:"
-#~ msgstr "Permissões de arquivo:"
-
-#~ msgid "Save file with Nickname"
-#~ msgstr "Salvar arquivo com Nickname"
-
-#~ msgid "DCC Send Options"
-#~ msgstr "Opções de envio de arquivos"
-
-#~ msgid "Fast DCC Send"
-#~ msgstr "Rápido envio de arquivos"
-
-#~ msgid "Don't wait for ACKs to send more data"
-#~ msgstr "Não espera por respostas para enviar mais dados"
-
-#~ msgid "Send Block Size:"
-#~ msgstr "Tamanho do bloco de envio:"
-
-#~ msgid "Built-in Replies"
-#~ msgstr "Respostas internas"
-
-#~ msgid "Do not reply to CTCP version"
-#~ msgstr "Não responde para CTCP version"
-
-#~ msgid "Sound Dir:"
-#~ msgstr "Diretório de sons:"
-
-#~ msgid "Play Command:"
-#~ msgstr "Comando para executar som:"
-
-#~ msgid "IRC Input/Output Settings"
-#~ msgstr "Opções de IRC de Entrada/Saída"
-
-#~ msgid "IRC Input/Output"
-#~ msgstr "IRC Entrada/Saída"
-
-#~ msgid "Window Layout Settings"
-#~ msgstr "Opções da disposição da janela"
-
-#~ msgid "Window Layout"
-#~ msgstr "Disposição da janela"
-
-#~ msgid "Main Window Settings"
-#~ msgstr "Opções da janela principal"
-
-#~ msgid "Channel Window Settings"
-#~ msgstr "Opções das janelas de canais"
-
-#~ msgid "Dialog Window Settings"
-#~ msgstr "Opções das janelas de diálogo"
-
-#~ msgid "Panel"
-#~ msgstr "Painel"
-
-#~ msgid "IRC Settings"
-#~ msgstr "Opções de IRC"
-
-#~ msgid "IP Address Settings"
-#~ msgstr "Opções de endereço IP"
-
-#~ msgid "IP Address"
-#~ msgstr "Endereço IP"
-
-#~ msgid "Logging Settings"
-#~ msgstr "Opções de log"
-
-#~ msgid "Notification Settings"
-#~ msgstr "Opções de notificação"
-
-#~ msgid "Notification"
-#~ msgstr "Notificação"
-
-#~ msgid "CTCP Settings"
-#~ msgstr "Opções de CTCP"
-
-#~ msgid "DCC Settings"
-#~ msgstr "Opções de DCC"
-
-#, fuzzy
-#~ msgid "Userlist icons"
-#~ msgstr "Botões da lista de usuários.."
-
-#, fuzzy
-#~ msgid " Apply "
-#~ msgstr "Aplicar"
-
-#~ msgid "Perl Script.."
-#~ msgstr "Script de Perl.."
-
-#~ msgid "Python Script.."
-#~ msgstr "Script de Python.."
-
-#~ msgid "All Perl Scripts"
-#~ msgstr "Todos os scripts de Perl"
-
-#~ msgid "All Python Scripts"
-#~ msgstr "Todos os scripts de Python"
-
-#~ msgid "All Plugins"
-#~ msgstr "Todos os plugins"
-
-#~ msgid "Kill"
-#~ msgstr "Matar"
-
-#~ msgid "User _Modes"
-#~ msgstr "_Modos do usuário"
-
-#~ msgid "S_cripts & Plugins"
-#~ msgstr "S_cripts e Plugins"
-
-#~ msgid "Use_r Menu"
-#~ msgstr "Menu do usuário"
-
-#~ msgid "Perform a periodic mail check."
-#~ msgstr "Performa uma checagem de e-mail periódica."
-
-#, fuzzy
-#~ msgid "Print Handlers:\n"
-#~ msgstr "Programas a serem usados em URLs.."
-
-#~ msgid "Unload All Plugins"
-#~ msgstr "Descarregar todos os plugins"
-
-#~ msgid "Background XPM:"
-#~ msgstr "Pixmap (XPM) de fundo:"
-
-#, fuzzy
-#~ msgid "Dialog Buttons"
-#~ msgstr "Botões"
-
-#, fuzzy
-#~ msgid "Show the buttons above the text area"
-#~ msgstr "Mostra os botões após a lista de usuários"
-
-#~ msgid "Help.."
-#~ msgstr "Ajuda.."
-
-#, fuzzy
-#~ msgid "Panelize"
-#~ msgstr "Painel"
-
-#~ msgid "Hilighted Nick Color:"
-#~ msgstr "Côr do nick em destaque:"
-
-#~ msgid "Output Filtering"
-#~ msgstr "Filtrar da saída"
-
-#~ msgid "Select theme.."
-#~ msgstr "Selecionar tema.."

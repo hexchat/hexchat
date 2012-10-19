@@ -1,25 +1,25 @@
-# Catalan messages for X-Chat
-# Copyright (C) 2001-2007
+# SOME DESCRIPTIVE TITLE.
+# This file is put in the public domain.
+# 
+# Translators:
+# Antoni Bella Perez <bella5@teleline.es>, 2002-2003.
+# David Planella Molas <david.planella@gmail.com>, 2007.
+# Ernest Adrogué Calveras <eadrogue@gmx.net>, 2004,2007.
 # Softcatalà <info@softcatala.org>, 2001.
 # Yannick Garcia <ygp@tinet.fut.es>, 2001.
-# Antoni Bella Perez <bella5@teleline.es>, 2002, 2003.
-# Ernest Adrogué Calveras <eadrogue@gmx.net>, 2004, 2007.
-# David Planella Molas <david.planella@gmail.com>, 2007.
-# This file is distributed under the same license as the xchat package.
-#
 msgid ""
 msgstr ""
-"Project-Id-Version: xchat 2.8.0\n"
+"Project-Id-Version: HexChat\n"
 "Report-Msgid-Bugs-To: www.hexchat.org\n"
 "POT-Creation-Date: 2012-10-19 20:07+0200\n"
-"PO-Revision-Date: 2007-01-26 13:24+0100\n"
-"Last-Translator: Ernest Adrogué <eadrogue@gmx.net>\n"
-"Language-Team: Catalan <ca@dodds.net>\n"
-"Language: ca\n"
+"PO-Revision-Date: 2012-10-19 18:30+0000\n"
+"Last-Translator: bviktor <bviktor@outlook.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1\n"
+"Language: ca\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: src/common/cfgfiles.c:785
 msgid "I'm busy"
@@ -33,9 +33,7 @@ msgstr "Me'n vaig"
 msgid ""
 "* Running IRC as root is stupid! You should\n"
 "  create a User Account and use that to login.\n"
-msgstr ""
-"* Connectar-se a l'IRC com a root és estúpid! Hauríeu\n"
-"  de crear un compte d'usuari i fer-ho des d'allí.\n"
+msgstr "* Connectar-se a l'IRC com a root és estúpid! Hauríeu\n  de crear un compte d'usuari i fer-ho des d'allí.\n"
 
 #: src/common/dcc.c:72
 msgid "Waiting"
@@ -101,9 +99,7 @@ msgstr "Esteu sent bombardejat amb peticions CTCP des de %s, s'ignorarà %s\n"
 #: src/common/ignore.c:407
 #, c-format
 msgid "You are being MSG flooded from %s, setting gui_auto_open_dialog OFF.\n"
-msgstr ""
-"Esteu sent atacat amb peticions MSG des de %s, s'ha desactivat l'opció "
-"gui_auto_open_dialog.\n"
+msgstr "Esteu sent atacat amb peticions MSG des de %s, s'ha desactivat l'opció gui_auto_open_dialog.\n"
 
 #: src/common/notify.c:478
 #, c-format
@@ -190,9 +186,8 @@ msgid "ALLCHAN <cmd>, sends a command to all channels you're in"
 msgstr "ALLCHAN <cmd>, envia una ordre a tots els canals on estigueu"
 
 #: src/common/outbound.c:3559
-#, fuzzy
 msgid "ALLCHANL <cmd>, sends a command to all channels on the current server"
-msgstr "ALLCHAN <cmd>, envia una ordre a tots els canals on estigueu"
+msgstr ""
 
 #: src/common/outbound.c:3561
 msgid "ALLSERV <cmd>, sends a command to all servers you're in"
@@ -211,26 +206,21 @@ msgid ""
 "BAN <mask> [<bantype>], bans everyone matching the mask from the current "
 "channel. If they are already on the channel this doesn't kick them (needs "
 "chanop)"
-msgstr ""
-"BAN <màscara> [<tipus>], bandeja tots els usuaris que coincideixin amb la "
-"màscara. Si ja es troben el canal amb això no els fareu fora (necessiteu ser "
-"operador del canal)"
+msgstr "BAN <màscara> [<tipus>], bandeja tots els usuaris que coincideixin amb la màscara. Si ja es troben el canal amb això no els fareu fora (necessiteu ser operador del canal)"
 
 #: src/common/outbound.c:3566
-#, fuzzy
 msgid "CHANOPT [-quiet] <variable> [<value>]"
-msgstr "SET [-quiet] <variable> [<valor>]"
+msgstr ""
 
 #: src/common/outbound.c:3567
 msgid ""
-"CHARSET [<encoding>], get or set the encoding used for the current connection"
+"CHARSET [<encoding>], get or set the encoding used for the current "
+"connection"
 msgstr ""
 
 #: src/common/outbound.c:3568
 msgid "CLEAR [ALL|HISTORY], Clears the current text window or command history"
-msgstr ""
-"CLEAR [ALL|HISTORY], Esborra la finestra de text actual o l'historial "
-"d'ordres"
+msgstr "CLEAR [ALL|HISTORY], Esborra la finestra de text actual o l'historial d'ordres"
 
 #: src/common/outbound.c:3569
 msgid "CLOSE, Closes the current window/tab"
@@ -244,18 +234,15 @@ msgstr "COUNTRY <codi>, cerca un codi de país, p.ex: au = Austràlia"
 msgid ""
 "CTCP <nick> <message>, send the CTCP message to nick, common messages are "
 "VERSION and USERINFO"
-msgstr ""
-"CTCP <sobrenom> <missatge>, envia el missatge CTCP a l'usuari indicat, els "
-"missatges més comuns són VERSION i USERINFO"
+msgstr "CTCP <sobrenom> <missatge>, envia el missatge CTCP a l'usuari indicat, els missatges més comuns són VERSION i USERINFO"
 
 #: src/common/outbound.c:3576
-#, fuzzy
 msgid ""
-"CYCLE [<channel>], parts the current or given channel and immediately rejoins"
-msgstr "CYCLE, surt i retorna immediatament al canal actual"
+"CYCLE [<channel>], parts the current or given channel and immediately "
+"rejoins"
+msgstr ""
 
 #: src/common/outbound.c:3578
-#, fuzzy
 msgid ""
 "\n"
 "DCC GET <nick>                      - accept an offered file\n"
@@ -267,23 +254,12 @@ msgid ""
 "DCC CLOSE <type> <nick> <file>         example:\n"
 "         /dcc close send johnsmith file.tar.gz"
 msgstr ""
-"\n"
-"DCC GET <sobrenom>                        - accepta un fitxer ofert\n"
-"DCC SEND [-maxcps=#] <sobrenom> [fitxer]  - envia un fitxer\n"
-"DCC PSEND [-maxcps=#] <sobrenom> [fitxer] - envia un fitxer en mode passiu\n"
-"DCC LIST                                  - mostra la llista de connexions "
-"DCC\n"
-"DCC CHAT <sobrenom>                       - proposa un XAT DCC a algú\n"
-"DCC CLOSE <tipus> <sobrenom> <fitxer>        exemple:\n"
-"         /dcc close send albanoguer fitxer.tar.gz"
 
 #: src/common/outbound.c:3590
 msgid ""
 "DEHOP <nick>, removes chanhalf-op status from the nick on the current "
 "channel (needs chanop)"
-msgstr ""
-"DEHOP <sobrenom>, treu l'estatus de semi-operador del canal al sobrenom "
-"indicat (necessiteu ser operador del canal)"
+msgstr "DEHOP <sobrenom>, treu l'estatus de semi-operador del canal al sobrenom indicat (necessiteu ser operador del canal)"
 
 #: src/common/outbound.c:3592
 msgid "DELBUTTON <name>, deletes a button from under the user-list"
@@ -293,17 +269,13 @@ msgstr "DELBUTTON <nom>, elimina un botó de sota la llista d'usuaris"
 msgid ""
 "DEOP <nick>, removes chanop status from the nick on the current channel "
 "(needs chanop)"
-msgstr ""
-"DEOP <sobrenom>, treu l'estatus d'operador del canal al sobrenom indicat "
-"(necessiteu ser operador del canal)"
+msgstr "DEOP <sobrenom>, treu l'estatus d'operador del canal al sobrenom indicat (necessiteu ser operador del canal)"
 
 #: src/common/outbound.c:3596
 msgid ""
 "DEVOICE <nick>, removes voice status from the nick on the current channel "
 "(needs chanop)"
-msgstr ""
-"DEVOICE <sobrenom>, treu l'estatus de veu al sobrenom indicat (necessiteu "
-"ser operador del canal)"
+msgstr "DEVOICE <sobrenom>, treu l'estatus de veu al sobrenom indicat (necessiteu ser operador del canal)"
 
 #: src/common/outbound.c:3597
 msgid "DISCON, Disconnects from server"
@@ -321,9 +293,7 @@ msgstr "ECHO <text>, Escriu el text localment"
 msgid ""
 "EXEC [-o] <command>, runs the command. If -o flag is used then output is "
 "sent to current channel, else is printed to current text box"
-msgstr ""
-"EXEC [-o] <ordre>, executa l'ordre. Si useu l'argument -o s'enviarà la "
-"sortida cap al canal actual, si no es mostrarà a la finestra de text actual"
+msgstr "EXEC [-o] <ordre>, executa l'ordre. Si useu l'argument -o s'enviarà la sortida cap al canal actual, si no es mostrarà a la finestra de text actual"
 
 #: src/common/outbound.c:3604
 msgid "EXECCONT, sends the process SIGCONT"
@@ -333,9 +303,7 @@ msgstr "EXECCONT, envia un senyal SIGCONT al procés"
 msgid ""
 "EXECKILL [-9], kills a running exec in the current session. If -9 is given "
 "the process is SIGKILL'ed"
-msgstr ""
-"EXECKILL [-9], mata un procés que s'estigui executant en la sessió actual. "
-"Si s'empreu -9 el senyal serà SIGKILL"
+msgstr "EXECKILL [-9], mata un procés que s'estigui executant en la sessió actual. Si s'empreu -9 el senyal serà SIGKILL"
 
 #: src/common/outbound.c:3609
 msgid "EXECSTOP, sends the process SIGSTOP"
@@ -351,22 +319,15 @@ msgstr "FLUSHQ, neteja la cua d'enviaments al servidor actual"
 
 #: src/common/outbound.c:3616
 msgid "GATE <host> [<port>], proxies through a host, port defaults to 23"
-msgstr ""
-"GATE <màquina> [<port>], usa el servidor intermedi indicat, el port per "
-"omissió és el 23"
+msgstr "GATE <màquina> [<port>], usa el servidor intermedi indicat, el port per omissió és el 23"
 
 #: src/common/outbound.c:3620
-#, fuzzy
 msgid "GHOST <nick> [password], Kills a ghosted nickname"
 msgstr ""
-"GHOST <sobrenom> <contrasenya>, termina una sessió fantasma per a aquest "
-"sobrenom"
 
 #: src/common/outbound.c:3625
 msgid "HOP <nick>, gives chanhalf-op status to the nick (needs chanop)"
-msgstr ""
-"HOP <sobrenom>, dóna l'estatus d'operador de canal a l'usuari indicat "
-"(necessiteu ser operador del canal)"
+msgstr "HOP <sobrenom>, dóna l'estatus d'operador de canal a l'usuari indicat (necessiteu ser operador del canal)"
 
 #: src/common/outbound.c:3626
 msgid "ID <password>, identifies yourself to nickserv"
@@ -379,22 +340,13 @@ msgid ""
 "    types - types of data to ignore, one or all of:\n"
 "            PRIV, CHAN, NOTI, CTCP, DCC, INVI, ALL\n"
 "    options - NOSAVE, QUIET"
-msgstr ""
-"IGNORE <màscara> <tipus..> <opcions..>\n"
-"    màscara - màscara de la màquina a ignorar, p.ex: *!*@*.pooles.rima-tde."
-"net\n"
-"    tipus   - tipus de les dades a ignorar, una de les següents o totes "
-"(«ALL»):\n"
-"              PRIV, CHAN, NOTI, CTCP, DCC, INVI\n"
-"    opcions - NOSAVE, QUIET"
+msgstr "IGNORE <màscara> <tipus..> <opcions..>\n    màscara - màscara de la màquina a ignorar, p.ex: *!*@*.pooles.rima-tde.net\n    tipus   - tipus de les dades a ignorar, una de les següents o totes («ALL»):\n              PRIV, CHAN, NOTI, CTCP, DCC, INVI\n    opcions - NOSAVE, QUIET"
 
 #: src/common/outbound.c:3635
 msgid ""
 "INVITE <nick> [<channel>], invites someone to a channel, by default the "
 "current channel (needs chanop)"
-msgstr ""
-"INVITE <sobrenom> [<canal>], convida l'usuari indicat a un canal, per "
-"omissió al canal actual (necessiteu ser operador del canal)"
+msgstr "INVITE <sobrenom> [<canal>], convida l'usuari indicat a un canal, per omissió al canal actual (necessiteu ser operador del canal)"
 
 #: src/common/outbound.c:3636
 msgid "JOIN <channel>, joins the channel"
@@ -402,17 +354,13 @@ msgstr "JOIN <canal>, entra al canal"
 
 #: src/common/outbound.c:3638
 msgid "KICK <nick>, kicks the nick from the current channel (needs chanop)"
-msgstr ""
-"KICK <sobrenom>, fa fora l'usuari indicat del canal actual (necessiteu ser "
-"operador del canal)"
+msgstr "KICK <sobrenom>, fa fora l'usuari indicat del canal actual (necessiteu ser operador del canal)"
 
 #: src/common/outbound.c:3640
 msgid ""
 "KICKBAN <nick>, bans then kicks the nick from the current channel (needs "
 "chanop)"
-msgstr ""
-"KICKBAN <sobrenom>, bandeja l'usuari indicat després de fer-lo fora del "
-"canal (necessiteu ser operador del canal)"
+msgstr "KICKBAN <sobrenom>, bandeja l'usuari indicat després de fer-lo fora del canal (necessiteu ser operador del canal)"
 
 #: src/common/outbound.c:3643
 msgid "LAGCHECK, forces a new lag check"
@@ -424,48 +372,36 @@ msgid ""
 "    Use -h to highlight the found string(s)\n"
 "    Use -m to match case\n"
 "    Use -r when string is a Regular Expression\n"
-"    Use -- (double hyphen) to end options when searching for, say, the "
-"string '-r'"
+"    Use -- (double hyphen) to end options when searching for, say, the string '-r'"
 msgstr ""
 
 #: src/common/outbound.c:3651
-#, fuzzy
 msgid "LOAD [-e] <file>, loads a plugin or script"
-msgstr "LOAD <fitxer>, carrega un connector o script"
+msgstr ""
 
 #: src/common/outbound.c:3654
 msgid ""
 "MDEHOP, Mass deop's all chanhalf-ops in the current channel (needs chanop)"
-msgstr ""
-"MDEHOP, Treu l'estatus a tots els semi-operadors del canal en el canal "
-"actual (necessiteu ser operador del canal)"
+msgstr "MDEHOP, Treu l'estatus a tots els semi-operadors del canal en el canal actual (necessiteu ser operador del canal)"
 
 #: src/common/outbound.c:3656
 msgid "MDEOP, Mass deop's all chanops in the current channel (needs chanop)"
-msgstr ""
-"MDEOP, Treu l'estatus a tots els operadors del canal en el canal actual "
-"(necessiteu ser operador del canal)"
+msgstr "MDEOP, Treu l'estatus a tots els operadors del canal en el canal actual (necessiteu ser operador del canal)"
 
 #: src/common/outbound.c:3658
 msgid ""
-"ME <action>, sends the action to the current channel (actions are written in "
-"the 3rd person, like /me jumps)"
-msgstr ""
-"ME <acció>, anuncia una acció al canal actual (les accions s'escriuen en "
-"tercera persona, com ara /me salta d'alegria)"
+"ME <action>, sends the action to the current channel (actions are written in"
+" the 3rd person, like /me jumps)"
+msgstr "ME <acció>, anuncia una acció al canal actual (les accions s'escriuen en tercera persona, com ara /me salta d'alegria)"
 
 #: src/common/outbound.c:3662
 msgid ""
 "MKICK, Mass kicks everyone except you in the current channel (needs chanop)"
-msgstr ""
-"MKICK, Fa fora tots els usuaris del canal actual (necessiteu ser operador "
-"del canal)"
+msgstr "MKICK, Fa fora tots els usuaris del canal actual (necessiteu ser operador del canal)"
 
 #: src/common/outbound.c:3665
 msgid "MOP, Mass op's all users in the current channel (needs chanop)"
-msgstr ""
-"MOP, Dóna l'estatus d'operador a tots els usuaris en el canal actual "
-"(necessiteu ser operador del canal)"
+msgstr "MOP, Dóna l'estatus d'operador a tots els usuaris en el canal actual (necessiteu ser operador del canal)"
 
 #: src/common/outbound.c:3666
 msgid "MSG <nick> <message>, sends a private message"
@@ -480,9 +416,8 @@ msgid "NCTCP <nick> <message>, Sends a CTCP notice"
 msgstr "NCTCP <sobrenom> <missatge>, Envia un avís per CTCP"
 
 #: src/common/outbound.c:3672
-#, fuzzy
 msgid "NEWSERVER [-noconnect] <hostname> [<port>]"
-msgstr "NEWSERVER <nom_màquina> [<port>]"
+msgstr ""
 
 #: src/common/outbound.c:3673
 msgid "NICK <nickname>, sets your nick"
@@ -492,23 +427,17 @@ msgstr "NICK <sobrenom>, canvia el vostre sobrenom"
 msgid ""
 "NOTICE <nick/channel> <message>, sends a notice. Notices are a type of "
 "message that should be auto reacted to"
-msgstr ""
-"NOTICE <sobrenom/canal> <missatge>, envia una avís. Els avisos són uns tipus "
-"de missatge que no haurien de generar respostes automàtiques"
+msgstr "NOTICE <sobrenom/canal> <missatge>, envia una avís. Els avisos són uns tipus de missatge que no haurien de generar respostes automàtiques"
 
 #: src/common/outbound.c:3678
-#, fuzzy
 msgid ""
 "NOTIFY [-n network1[,network2,...]] [<nick>], displays your notify list or "
 "adds someone to it"
 msgstr ""
-"NOTIFY [<sobrenom>], mostra la llista de notificacions o hi afegeix algú"
 
 #: src/common/outbound.c:3680
 msgid "OP <nick>, gives chanop status to the nick (needs chanop)"
-msgstr ""
-"OP <sobrenom>, dóna l'estatus d'operador del canal a l'usuari (necessiteu "
-"ser operador del canal)"
+msgstr "OP <sobrenom>, dóna l'estatus d'operador del canal a l'usuari (necessiteu ser operador del canal)"
 
 #: src/common/outbound.c:3682
 msgid ""
@@ -521,8 +450,7 @@ msgstr "PING <sobrenom | canal>, envia un ping CTCP a l'usuari o canal indicat"
 
 #: src/common/outbound.c:3686
 msgid "QUERY [-nofocus] <nick>, opens up a new privmsg window to someone"
-msgstr ""
-"QUERY [-nofocus] <sobrenom>, obre una finestra de xat privat amb <sobrenom>"
+msgstr "QUERY [-nofocus] <sobrenom>, obre una finestra de xat privat amb <sobrenom>"
 
 #: src/common/outbound.c:3688
 msgid "QUIT [<reason>], disconnects from the current server"
@@ -534,31 +462,23 @@ msgstr "QUOTE <text>, envia el text «en cru» cap al servidor"
 
 #: src/common/outbound.c:3693
 msgid ""
-"RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as /"
-"RECONNECT to reconnect to the current server or with /RECONNECT ALL to "
+"RECONNECT [-ssl] [<host>] [<port>] [<password>], Can be called just as "
+"/RECONNECT to reconnect to the current server or with /RECONNECT ALL to "
 "reconnect to all the open servers"
-msgstr ""
-"RECONENCT [-ssl] [<sistema>] [<port>] [<contrasenya>], Pot invocar-se sols "
-"amb /RECONNECT per així reconnectar-se al servidor actual o amb /RECONNECT "
-"ALL per a reconnectar-se a tots els servidors oberts"
+msgstr "RECONENCT [-ssl] [<sistema>] [<port>] [<contrasenya>], Pot invocar-se sols amb /RECONNECT per així reconnectar-se al servidor actual o amb /RECONNECT ALL per a reconnectar-se a tots els servidors oberts"
 
 #: src/common/outbound.c:3696
 msgid ""
 "RECONNECT [<host>] [<port>] [<password>], Can be called just as /RECONNECT "
 "to reconnect to the current server or with /RECONNECT ALL to reconnect to "
 "all the open servers"
-msgstr ""
-"RECONENCT [<sistema>] [<port>] [<contrasenya>], Pot invocar-se sols amb /"
-"RECONNECT per així reconnectar-se al servidor actual o amb /RECONNECT ALL "
-"per a reconnectar-se a tots els servidors oberts"
+msgstr "RECONENCT [<sistema>] [<port>] [<contrasenya>], Pot invocar-se sols amb /RECONNECT per així reconnectar-se al servidor actual o amb /RECONNECT ALL per a reconnectar-se a tots els servidors oberts"
 
 #: src/common/outbound.c:3698
 msgid ""
 "RECV <text>, send raw data to xchat, as if it was received from the irc "
 "server"
-msgstr ""
-"RECV <text>, envia dades «en brut» a l'X-Chat, com si foren rebudes des del "
-"servidor IRC"
+msgstr "RECV <text>, envia dades «en brut» a l'X-Chat, com si foren rebudes des del servidor IRC"
 
 #: src/common/outbound.c:3701
 msgid "SAY <text>, sends the text to the object in the current window"
@@ -577,27 +497,20 @@ msgid "SERVCHAN <host> <port> <channel>, connects and joins a channel"
 msgstr "SERVCHAN <màquina> <port> <canal>, connecta i entra en un canal"
 
 #: src/common/outbound.c:3712
-#, fuzzy
 msgid ""
 "SERVER [-ssl] <host> [<port>] [<password>], connects to a server, the "
 "default port is 6667 for normal connections, and 6697 for ssl connections"
 msgstr ""
-"SERVER [-ssl] <màquina> [<port>] [<contrasenya>], connecta amb un servidor, "
-"el port per omissió per a connexions normals és el 6667, i el 9999 per a "
-"connexions ssl"
 
 #: src/common/outbound.c:3715
 msgid ""
 "SERVER <host> [<port>] [<password>], connects to a server, the default port "
 "is 6667"
-msgstr ""
-"SERVER <màquina> [<port>] [<contrasenya>], connecta amb un servidor, el port "
-"per omissió és el 6667"
+msgstr "SERVER <màquina> [<port>] [<contrasenya>], connecta amb un servidor, el port per omissió és el 6667"
 
 #: src/common/outbound.c:3717
-#, fuzzy
 msgid "SET [-e] [-off|-on] [-quiet] <variable> [<value>]"
-msgstr "SET [-quiet] <variable> [<valor>]"
+msgstr ""
 
 #: src/common/outbound.c:3718
 msgid "SETCURSOR [-|+]<position>, reposition the cursor in the inputbox"
@@ -613,7 +526,8 @@ msgstr ""
 
 #: src/common/outbound.c:3723
 msgid ""
-"TOPIC [<topic>], sets the topic if one is given, else shows the current topic"
+"TOPIC [<topic>], sets the topic if one is given, else shows the current "
+"topic"
 msgstr "TOPIC [<tema>], estableix o mostra el tema del canal actual"
 
 #: src/common/outbound.c:3725
@@ -644,16 +558,13 @@ msgstr "URL <url>, obre una URL en el navegador"
 
 #: src/common/outbound.c:3737
 msgid ""
-"USELECT [-a] [-s] <nick1> <nick2> etc, highlights nick(s) in channel userlist"
-msgstr ""
-"USELECT [-a] [-s] <sobrenom1> <sobrenom2> etc, realça el(s) sobrenom(s) a la "
-"llista d'usuaris del canal"
+"USELECT [-a] [-s] <nick1> <nick2> etc, highlights nick(s) in channel "
+"userlist"
+msgstr "USELECT [-a] [-s] <sobrenom1> <sobrenom2> etc, realça el(s) sobrenom(s) a la llista d'usuaris del canal"
 
 #: src/common/outbound.c:3740
 msgid "VOICE <nick>, gives voice status to someone (needs chanop)"
-msgstr ""
-"VOICE <sobrenom>, dóna l'estatus de veu a algú (necessiteu ser operador del "
-"canal)"
+msgstr "VOICE <sobrenom>, dóna l'estatus de veu a algú (necessiteu ser operador del canal)"
 
 #: src/common/outbound.c:3742
 msgid "WALLCHAN <message>, writes the message to all channels"
@@ -662,8 +573,7 @@ msgstr "WALLCHAN <missatge>, escriu un missatge a tots els canals"
 #: src/common/outbound.c:3744
 msgid ""
 "WALLCHOP <message>, sends the message to all chanops on the current channel"
-msgstr ""
-"WALLCHOP <missatge>, envia un missatge a tots els operadors del canal actual"
+msgstr "WALLCHOP <missatge>, envia un missatge a tots els operadors del canal actual"
 
 #: src/common/outbound.c:3777
 #, c-format
@@ -674,9 +584,7 @@ msgstr "Sintaxi: %s\n"
 msgid ""
 "\n"
 "No help available on that command.\n"
-msgstr ""
-"\n"
-"No hi ha ajuda disponible per a aquesta ordre.\n"
+msgstr "\nNo hi ha ajuda disponible per a aquesta ordre.\n"
 
 #: src/common/outbound.c:3788
 msgid "No such command.\n"
@@ -696,23 +604,18 @@ msgstr "Ordre desconeguda. Proveu /help\n"
 
 #: src/common/plugin.c:382 src/common/plugin.c:423
 msgid "No xchat_plugin_init symbol; is this really an xchat plugin?"
-msgstr ""
-"No hi ha cap símbol xchat_plugin_init; esteu segur que aquest és un "
-"connector per a l'xchat?"
+msgstr "No hi ha cap símbol xchat_plugin_init; esteu segur que aquest és un connector per a l'xchat?"
 
 #: src/common/server.c:665
 msgid "Are you sure this is a SSL capable server and port?\n"
-msgstr ""
-"Esteu segur que aquest servidor permet l'ús d'SSL i el port és correcte?\n"
+msgstr "Esteu segur que aquest servidor permet l'ús d'SSL i el port és correcte?\n"
 
 #: src/common/server.c:1033
 #, c-format
 msgid ""
 "Cannot resolve hostname %s\n"
 "Check your IP Settings!\n"
-msgstr ""
-"No s'ha pogut resoldre el nom de la màquina %s\n"
-"Comproveu la vostra configuració IP\n"
+msgstr "No s'ha pogut resoldre el nom de la màquina %s\nComproveu la vostra configuració IP\n"
 
 #: src/common/server.c:1038
 msgid "Proxy traversal failed.\n"
@@ -728,9 +631,7 @@ msgstr "Passant al següent servidor de %s...\n"
 msgid ""
 "Warning: \"%s\" character set is unknown. No conversion will be applied for "
 "network %s."
-msgstr ""
-"Atenció: El joc de caràcters «%s» és desconegut. No es farà cap conversió "
-"per la xarxa %s."
+msgstr "Atenció: El joc de caràcters «%s» és desconegut. No es farà cap conversió per la xarxa %s."
 
 #: src/common/textevents.h:6
 msgid "%C22*%O$t$1 added to notify list."
@@ -866,8 +767,7 @@ msgstr "%C22*%O$tXat DCC amb %C26$1%O avortat."
 
 #: src/common/textevents.h:123
 msgid "%C22*%O$tDCC CHAT connection established to %C26$1 %C30[%O$2%C30]"
-msgstr ""
-"%C22*%O$tS'ha establert una connexió de xat DCC amb %C26$1 %C30[%O$2%C30]"
+msgstr "%C22*%O$tS'ha establert una connexió de xat DCC amb %C26$1 %C30[%O$2%C30]"
 
 #: src/common/textevents.h:126
 msgid "%C22*%O$tDCC CHAT to %C26$1%O lost ($4)."
@@ -887,8 +787,7 @@ msgstr "%C22*%O$tJa s'ha ofert un xat directe (DCC CHAT) a $1"
 
 #: src/common/textevents.h:138
 msgid "%C22*%O$tDCC $1 connect attempt to%C26 $2%O failed (err=$3)."
-msgstr ""
-"%C22*%O$tL'intent de connexió DCC $1 amb%C26 $2%O ha fallat (error=$3)."
+msgstr "%C22*%O$tL'intent de connexió DCC $1 amb%C26 $2%O ha fallat (error=$3)."
 
 #: src/common/textevents.h:141
 msgid "%C22*%O$tReceived '$1%O' from $2"
@@ -901,11 +800,9 @@ msgstr "%C24,18 Tipus Per a/De   Estat   Mida    Pos     Fitxer       "
 
 #: src/common/textevents.h:147
 msgid ""
-"%C22*%O$tReceived a malformed DCC request from %C26$1%O.%010%C22*%O"
-"$tContents of packet: $2"
-msgstr ""
-"%C22*%O$tS'ha rebut una petició DCC mal formada de %C26$1%O.%010%C22*%O"
-"$tContingut del paquet: $2"
+"%C22*%O$tReceived a malformed DCC request from "
+"%C26$1%O.%010%C22*%O$tContents of packet: $2"
+msgstr "%C22*%O$tS'ha rebut una petició DCC mal formada de %C26$1%O.%010%C22*%O$tContingut del paquet: $2"
 
 #: src/common/textevents.h:150
 msgid "%C22*%O$tOffering%C26 $1%O to%C26 $2"
@@ -922,9 +819,7 @@ msgstr "%C22*%O$tS'ha avortat la recepció del fitxer %C26 $2%O a %C26 $1%O."
 #: src/common/textevents.h:159
 msgid ""
 "%C22*%O$tDCC RECV%C26 $1%O from%C26 $3%O complete %C30[%C26$4%O cps%C30]%O."
-msgstr ""
-"%C22*%O$tS'ha completat la recepció del fitxer%C26 $1%O de%C26 $3%O %C30"
-"[%C26$4%O cps%C30]%O."
+msgstr "%C22*%O$tS'ha completat la recepció del fitxer%C26 $1%O de%C26 $3%O %C30[%C26$4%O cps%C30]%O."
 
 #: src/common/textevents.h:162
 msgid "%C22*%O$tDCC RECV connection established to%C26 $1 %C30[%O$2%C30]"
@@ -936,8 +831,7 @@ msgstr "%C22*%O$tLa recepció del fitxer%C26 $1%O de%C26 $3%O ha fallat ($4)."
 
 #: src/common/textevents.h:168
 msgid "%C22*%O$tDCC RECV: Cannot open $1 for writing ($2)."
-msgstr ""
-"%C22*%O$tRecepció DCC: No s'ha pogut obrir $1 amb permís d'escriptura ($2)."
+msgstr "%C22*%O$tRecepció DCC: No s'ha pogut obrir $1 amb permís d'escriptura ($2)."
 
 #: src/common/textevents.h:171
 msgid ""
@@ -946,9 +840,7 @@ msgstr "%C22*%O$tEl fitxer%C26 $1%C ja existeix, es desarà com a%C26 $2%O."
 
 #: src/common/textevents.h:174
 msgid "%C22*%O$t%C26$1 %Ohas requested to resume%C26 $2 %Cfrom%C26 $3%C."
-msgstr ""
-"%C22*%O$t%C26$1 %Oha demanat reprendre la recepció de%C26 $2 %Cdes de %C26 "
-"$3%C."
+msgstr "%C22*%O$t%C26$1 %Oha demanat reprendre la recepció de%C26 $2 %Cdes de %C26 $3%C."
 
 #: src/common/textevents.h:177
 msgid "%C22*%O$tDCC SEND%C26 $2%O to%C26 $1%O aborted."
@@ -957,14 +849,11 @@ msgstr "%C22*%O$tL'enviament DCC%C26 $2%O a%C26 $1%O ha estat avortat."
 #: src/common/textevents.h:180
 msgid ""
 "%C22*%O$tDCC SEND%C26 $1%O to%C26 $2%O complete %C30[%C26$3%O cps%C30]%O."
-msgstr ""
-"%C22*%O$tL'enviament DCC%C26 $1%O a%C26 $2%O s'ha completat %C30[%C26$3%O cps"
-"%C30]%O."
+msgstr "%C22*%O$tL'enviament DCC%C26 $1%O a%C26 $2%O s'ha completat %C30[%C26$3%O cps%C30]%O."
 
 #: src/common/textevents.h:183
 msgid "%C22*%O$tDCC SEND connection established to%C26 $1 %C30[%O$2%C30]"
-msgstr ""
-"%C22*%O$tS'ha establert una connexió DCC SEND amb%C26 $1 %C30[%O$2%C30]"
+msgstr "%C22*%O$tS'ha establert una connexió DCC SEND amb%C26 $1 %C30[%O$2%C30]"
 
 #: src/common/textevents.h:186
 msgid "%C22*%O$tDCC SEND%C26 $1%O to%C26 $2%O failed. $3"
@@ -980,8 +869,7 @@ msgstr "%C22*%O$tDCC $1%C26 $2 %Oto%C26 $3 %Cencallat - avortant."
 
 #: src/common/textevents.h:195
 msgid "%C22*%O$tDCC $1%C26 $2 %Oto%C26 $3 %Otimed out - aborting."
-msgstr ""
-"%C22*%O$tDCC $1%C26 $2 %Oto%C26 $3 %Oha excedit el temps d'espera - avortant."
+msgstr "%C22*%O$tDCC $1%C26 $2 %Oto%C26 $3 %Oha excedit el temps d'espera - avortant."
 
 #: src/common/textevents.h:198
 msgid "%C22*%O$t$1 deleted from notify list."
@@ -1023,8 +911,7 @@ msgstr "  La llista d'usuaris ignorats és buida."
 
 #: src/common/textevents.h:228
 msgid "%C22*%O$tCannot join%C26 %B$1 %O(Channel is invite only)."
-msgstr ""
-"%C22*%O$tNo podeu entrar a%C26 %B$1 %O(És un canal només per a convidats)."
+msgstr "%C22*%O$tNo podeu entrar a%C26 %B$1 %O(És un canal només per a convidats)."
 
 #: src/common/textevents.h:231
 msgid "%C22*%O$tYou have been invited to%C26 $1%O by%C26 $2%C (%C26$3%C)"
@@ -1056,9 +943,7 @@ msgstr "%C22*%O$t$1 ja està agafat. S'està reintentant amb $2..."
 
 #: src/common/textevents.h:258
 msgid "%C22*%O$tNickname already in use. Use /NICK to try another."
-msgstr ""
-"%C22*%O$tEl sobrenom ja està agafat. Useu l'ordre /NICK per a provar-ho amb "
-"un altre."
+msgstr "%C22*%O$tEl sobrenom ja està agafat. Useu l'ordre /NICK per a provar-ho amb un altre."
 
 #: src/common/textevents.h:261
 msgid "%C22*%O$tNo such DCC."
@@ -1081,23 +966,20 @@ msgid "%C22*%O$t$1 users in notify list."
 msgstr "%C22*%O$t$1 usuari(s) a la llista de notificació."
 
 #: src/common/textevents.h:282
-#, fuzzy
 msgid "%C22*%O$tNotify: $1 is offline ($3)."
-msgstr "%C22*%O$tNotificació: $1 no està connectat ($2)."
+msgstr ""
 
 #: src/common/textevents.h:285
-#, fuzzy
 msgid "%C22*%O$tNotify: $1 is online ($3)."
-msgstr "%C22*%O$tNotificació: $1 està en línia ($2)."
+msgstr ""
 
 #: src/common/textevents.h:291
 msgid "%C23*%O$t%C23$1 (%O%C23$2) has left $3"
 msgstr "%C23*%O$t%C23$1 (%O%C23$2) ha deixat $3"
 
 #: src/common/textevents.h:294
-#, fuzzy
 msgid "%C23*%O$t%C23$1 (%O%C23$2) has left $3 (%O%C23%B%B$4%O%C23)"
-msgstr "%C23*%O$t%C23$1 (%O%C23$2) ha deixat $3 (%O%C23$4)"
+msgstr ""
 
 #: src/common/textevents.h:297
 msgid "%C22*%O$tPing reply from $1: $2 second(s)"
@@ -1112,9 +994,8 @@ msgid "%C22*%O$tA process is already running"
 msgstr "%C22*%O$tJa hi ha un procés en execució"
 
 #: src/common/textevents.h:318
-#, fuzzy
 msgid "%C23*%O$t%C23$1 has quit (%O%C23%B%B$2%O%C23)"
-msgstr "%C23*%O$t%C23$1 s'ha desconectat (%O%C23$2)"
+msgstr ""
 
 #: src/common/textevents.h:321
 msgid "%C22*%O$t$1 sets modes%B %C30[%O$2%B%C30]"
@@ -1158,8 +1039,7 @@ msgstr "%C22*%O$tMàquina desconeguda. Potser l'heu escrita malament?"
 
 #: src/common/textevents.h:363
 msgid "%C22*%O$tCannot join%C26 %B$1 %O(User limit reached)."
-msgstr ""
-"%C22*%O$tNo podeu entrar a%C26 %B$1 %O(S'ha assolit el límit d'usuaris)."
+msgstr "%C22*%O$tNo podeu entrar a%C26 %B$1 %O(S'ha assolit el límit d'usuaris)."
 
 #: src/common/textevents.h:366
 msgid "%C22*%O$t%C26Users on $1:%C $2"
@@ -1196,8 +1076,7 @@ msgstr "%C22*%O$t%C28[%O$1%C28] %C30(%O$2@$3%C30)%O: $4"
 
 #: src/common/textevents.h:393
 msgid "%C22*%O$t%C28[%O$1%C28] %Oreal user@host%C27 $2%O, real IP%C27 $3"
-msgstr ""
-"%C22*%O$t%C28[%O$1%C28] %Ousuari@màquina real%C27 $2%O, IP real IP%C27 $3"
+msgstr "%C22*%O$t%C28[%O$1%C28] %Ousuari@màquina real%C27 $2%O, IP real IP%C27 $3"
 
 #: src/common/textevents.h:402
 msgid "%C19*%O$t%C19Now talking on $2"
@@ -1213,9 +1092,8 @@ msgid "%C23*$tYou have left channel $3"
 msgstr "%C23*$tHeu deixat el canal $3"
 
 #: src/common/textevents.h:411
-#, fuzzy
 msgid "%C23*$tYou have left channel $3 (%O%C23%B%B$4%O%C23)"
-msgstr "%C23*$tHeu deixat el canal $3 (%O%C23$4%O%C23)"
+msgstr ""
 
 #: src/common/textevents.h:417
 msgid "%C22*%O$tYou've invited%C26 $1%O to%C26 $2%O (%C26$3%O)"
@@ -1226,9 +1104,8 @@ msgid "%C22*%O$tYou are now known as $2"
 msgstr "%C22*%O$tAra sou conegut com a $2"
 
 #: src/common/text.c:367 src/common/text.c:418
-#, fuzzy
 msgid "Loaded log from"
-msgstr "Carrega des de"
+msgstr ""
 
 #: src/common/text.c:437
 #, c-format
@@ -1240,15 +1117,12 @@ msgstr "**** FINAL DEL REGISTRE A %s\n"
 msgid "**** BEGIN LOGGING AT %s\n"
 msgstr "**** INICI EL REGISTRE A %s\n"
 
-# ESTIC AQUÍ
 #: src/common/text.c:702
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "* Can't open log file(s) for writing. Check the\n"
 "permissions on %s"
 msgstr ""
-"* No s'ha(n) pogut obrir el(s) fitxer(s) de registre amb permís\n"
-"  d'escriptura. Reviseu els permisos de %s/xchatlogs"
 
 #: src/common/text.c:1141
 msgid "Left message"
@@ -1706,18 +1580,14 @@ msgstr "Duració del bandejament"
 msgid ""
 "Error parsing event %s.\n"
 "Loading default."
-msgstr ""
-"Error en analitzar l'esdeveniment %s.\n"
-"Es carrega el predeterminat."
+msgstr "Error en analitzar l'esdeveniment %s.\nEs carrega el predeterminat."
 
 #: src/common/text.c:2430
 #, c-format
 msgid ""
 "Cannot read sound file:\n"
 "%s"
-msgstr ""
-"No s'ha pogut llegir el fitxer de so:\n"
-"%s"
+msgstr "No s'ha pogut llegir el fitxer de so:\n%s"
 
 #: src/common/util.c:300
 msgid "Remote host closed socket"
@@ -2000,9 +1870,8 @@ msgid "Czech Republic"
 msgstr "República Txeca"
 
 #: src/common/util.c:1023
-#, fuzzy
 msgid "East Germany"
-msgstr "Alemanya"
+msgstr ""
 
 #: src/common/util.c:1024
 msgid "Germany"
@@ -2361,9 +2230,8 @@ msgid "Moldova"
 msgstr "Moldàvia"
 
 #: src/common/util.c:1113
-#, fuzzy
 msgid "Montenegro"
-msgstr "Sèrbia i Montenegro"
+msgstr ""
 
 #: src/common/util.c:1114
 msgid "United States Medical"
@@ -2458,9 +2326,8 @@ msgid "Namibia"
 msgstr "Namíbia"
 
 #: src/common/util.c:1137
-#, fuzzy
 msgid "Individual's Names"
-msgstr "KB/s de pujada in_dividuals:"
+msgstr ""
 
 #: src/common/util.c:1138
 msgid "New Caledonia"
@@ -2667,9 +2534,8 @@ msgid "Suriname"
 msgstr "Surinam"
 
 #: src/common/util.c:1189
-#, fuzzy
 msgid "South Sudan"
-msgstr "Corea del Sud"
+msgstr ""
 
 #: src/common/util.c:1190
 msgid "Sao Tome and Principe"
@@ -2856,14 +2722,12 @@ msgid "Unknown"
 msgstr "Desconegut"
 
 #: src/common/xchat.c:740
-#, fuzzy
 msgid "_Open Dialog Window"
-msgstr "Obre una finestra de diàleg"
+msgstr ""
 
 #: src/common/xchat.c:741
-#, fuzzy
 msgid "_Send a File"
-msgstr "Envia un fitxer"
+msgstr ""
 
 #: src/common/xchat.c:742
 msgid "_User Info (WhoIs)"
@@ -2982,25 +2846,16 @@ msgid "Ping"
 msgstr "Ping"
 
 #: src/common/dbus/dbus-client.c:72
-#, fuzzy
 msgid "Couldn't connect to session bus"
-msgstr "No s'ha pogut establir connexió amb el bus de la sessió: %s\n"
+msgstr ""
 
 #: src/common/dbus/dbus-client.c:86
-#, fuzzy
 msgid "Failed to complete NameHasOwner"
 msgstr ""
-"Error en obrir el tipus de lletra:\n"
-"\n"
-"%s"
 
 #: src/common/dbus/dbus-client.c:112
-#, fuzzy
 msgid "Failed to complete Command"
 msgstr ""
-"Error en obrir el tipus de lletra:\n"
-"\n"
-"%s"
 
 #: src/common/dbus/dbus-plugin.c:30
 msgid "remote access"
@@ -3021,9 +2876,8 @@ msgid "Failed to acquire %s: %s\n"
 msgstr "No s'ha pogut adquirir %s: %s\n"
 
 #: src/fe-gtk/about.c:101
-#, fuzzy
 msgid "About "
-msgstr "_Quant a"
+msgstr ""
 
 #: src/fe-gtk/about.c:134
 msgid "A multiplatform IRC Client"
@@ -3035,9 +2889,8 @@ msgstr "Taula de caràcters"
 
 #: src/fe-gtk/banlist.c:149 src/fe-gtk/chanlist.c:311
 #: src/fe-gtk/plugin-tray.c:229
-#, fuzzy
 msgid "Not connected."
-msgstr "Desconnecta"
+msgstr ""
 
 #: src/fe-gtk/banlist.c:247 src/fe-gtk/banlist.c:327
 msgid "You must select some bans."
@@ -3065,9 +2918,9 @@ msgid "You can only open the Ban List window while in a channel tab."
 msgstr ""
 
 #: src/fe-gtk/banlist.c:391
-#, fuzzy, c-format
+#, c-format
 msgid ": Ban List (%s)"
-msgstr "X-Chat: Llista d'usuaris bandejats (%s)"
+msgstr ""
 
 #: src/fe-gtk/banlist.c:407 src/fe-gtk/notifygui.c:431
 msgid "Remove"
@@ -3082,65 +2935,58 @@ msgid "Refresh"
 msgstr "Refresca"
 
 #: src/fe-gtk/chanlist.c:117
-#, fuzzy, c-format
+#, c-format
 msgid "Displaying %d/%d users on %d/%d channels."
-msgstr "Estadístiques d'usuaris i canals: %d/%d usuaris en %d/%d canals"
+msgstr ""
 
 #: src/fe-gtk/chanlist.c:532 src/fe-gtk/menu.c:1273 src/fe-gtk/urlgrab.c:149
 msgid "Select an output filename"
 msgstr "Seleccioneu un nom de fitxer"
 
 #: src/fe-gtk/chanlist.c:639 src/fe-gtk/chanlist.c:821
-#, fuzzy
 msgid "_Join Channel"
-msgstr "Entra al canal"
+msgstr ""
 
 #: src/fe-gtk/chanlist.c:641
-#, fuzzy
 msgid "_Copy Channel Name"
-msgstr "Nom del canal"
+msgstr ""
 
 #: src/fe-gtk/chanlist.c:643
 msgid "Copy _Topic Text"
 msgstr ""
 
 #: src/fe-gtk/chanlist.c:732
-#, fuzzy, c-format
+#, c-format
 msgid ": Channel List (%s)"
-msgstr "X-Chat: Llista de canals (%s)"
+msgstr ""
 
 #: src/fe-gtk/chanlist.c:803
 msgid "_Search"
 msgstr ""
 
 #: src/fe-gtk/chanlist.c:809
-#, fuzzy
 msgid "_Download List"
-msgstr "Desa els fitxers baixats a:"
+msgstr ""
 
 #: src/fe-gtk/chanlist.c:815
-#, fuzzy
 msgid "Save _List..."
-msgstr "Llista de servidors..."
+msgstr ""
 
 #: src/fe-gtk/chanlist.c:828
-#, fuzzy
 msgid "Show only:"
-msgstr "Mostra el_s colors"
+msgstr ""
 
 #: src/fe-gtk/chanlist.c:840
-#, fuzzy
 msgid "channels with"
-msgstr "Canal"
+msgstr ""
 
 #: src/fe-gtk/chanlist.c:853
 msgid "to"
 msgstr "a"
 
 #: src/fe-gtk/chanlist.c:865
-#, fuzzy
 msgid "users."
-msgstr "usuaris"
+msgstr ""
 
 #: src/fe-gtk/chanlist.c:871
 msgid "Look in:"
@@ -3151,9 +2997,8 @@ msgid "Channel name"
 msgstr "Nom del canal"
 
 #: src/fe-gtk/chanlist.c:904
-#, fuzzy
 msgid "Search type:"
-msgstr "Cerca el text..."
+msgstr ""
 
 #: src/fe-gtk/chanlist.c:911
 msgid "Simple Search"
@@ -3186,24 +3031,17 @@ msgid ""
 "Cannot access file: %s\n"
 "%s.\n"
 "Resuming not possible."
-msgstr ""
-"No s'ha pogut accedir al fitxer: %s\n"
-"%s.\n"
-"No es pot continuar."
+msgstr "No s'ha pogut accedir al fitxer: %s\n%s.\nNo es pot continuar."
 
 #: src/fe-gtk/dccgui.c:508
 msgid ""
 "File in download directory is larger than file offered. Resuming not "
 "possible."
-msgstr ""
-"El fitxer del directori de recepcions és més gran que el fitxer ofert. No es "
-"pot continuar."
+msgstr "El fitxer del directori de recepcions és més gran que el fitxer ofert. No es pot continuar."
 
 #: src/fe-gtk/dccgui.c:512
 msgid "Cannot resume the same file from two people."
-msgstr ""
-"No es pot reprendre la recepció del mateix fitxer des de dues persones "
-"diferents."
+msgstr "No es pot reprendre la recepció del mateix fitxer des de dues persones diferents."
 
 #: src/fe-gtk/dccgui.c:745
 msgid ": Uploads and Downloads"
@@ -3230,14 +3068,12 @@ msgid "Uploads"
 msgstr ""
 
 #: src/fe-gtk/dccgui.c:804
-#, fuzzy
 msgid "Downloads"
-msgstr "Desa els fitxers baixats a:"
+msgstr ""
 
 #: src/fe-gtk/dccgui.c:809
-#, fuzzy
 msgid "Details"
-msgstr "Les vostres dades"
+msgstr ""
 
 #: src/fe-gtk/dccgui.c:820
 msgid "File:"
@@ -3264,9 +3100,8 @@ msgid "Open Folder..."
 msgstr ""
 
 #: src/fe-gtk/dccgui.c:990
-#, fuzzy
 msgid ": DCC Chat List"
-msgstr "X-Chat: Llista de xats DCC"
+msgstr ""
 
 #: src/fe-gtk/dccgui.c:1002
 msgid "Recv"
@@ -3277,9 +3112,8 @@ msgid "Sent"
 msgstr "Enviat"
 
 #: src/fe-gtk/dccgui.c:1004
-#, fuzzy
 msgid "Start Time"
-msgstr "Hora d'inici"
+msgstr ""
 
 #: src/fe-gtk/editlist.c:145
 msgid "*NEW*"
@@ -3331,29 +3165,24 @@ msgid "Help"
 msgstr "Ajuda"
 
 #: src/fe-gtk/fe-gtk.c:132
-#, fuzzy
 msgid "Don't auto connect to servers"
-msgstr "Reconnexió automàtica al servidor"
+msgstr ""
 
 #: src/fe-gtk/fe-gtk.c:133
-#, fuzzy
 msgid "Use a different config directory"
-msgstr "useu un directori de configuració diferent"
+msgstr ""
 
 #: src/fe-gtk/fe-gtk.c:134
-#, fuzzy
 msgid "Don't auto load any plugins"
-msgstr "no carreguis automàticament els connectors"
+msgstr ""
 
 #: src/fe-gtk/fe-gtk.c:135
-#, fuzzy
 msgid "Show plugin auto-load directory"
-msgstr "mostra el directori de càrrega automàtica de connectors"
+msgstr ""
 
 #: src/fe-gtk/fe-gtk.c:136
-#, fuzzy
 msgid "Show user config directory"
-msgstr "mostra el directori de configuració de l'usuari"
+msgstr ""
 
 #: src/fe-gtk/fe-gtk.c:137
 msgid "Open an irc://server:port/channel URL"
@@ -3364,9 +3193,8 @@ msgid "Execute command:"
 msgstr "Executa l'ordre:"
 
 #: src/fe-gtk/fe-gtk.c:140
-#, fuzzy
 msgid "Open URL or execute command in an existing XChat"
-msgstr "Obre l'URL en una instància existent de l'XChat-GNOME"
+msgstr ""
 
 #: src/fe-gtk/fe-gtk.c:142
 msgid "Begin minimized. Level 0=Normal 1=Iconified 2=Tray"
@@ -3377,9 +3205,8 @@ msgid "level"
 msgstr ""
 
 #: src/fe-gtk/fe-gtk.c:143
-#, fuzzy
 msgid "Show version information"
-msgstr "mostra informació de la versió"
+msgstr ""
 
 #: src/fe-gtk/fe-gtk.c:342
 #, c-format
@@ -3387,10 +3214,7 @@ msgid ""
 "Failed to open font:\n"
 "\n"
 "%s"
-msgstr ""
-"No s'ha pogut obrir el tipus de lletra:\n"
-"\n"
-"%s"
+msgstr "No s'ha pogut obrir el tipus de lletra:\n\n%s"
 
 #: src/fe-gtk/fe-gtk.c:732
 msgid "Search buffer is empty.\n"
@@ -3408,95 +3232,69 @@ msgstr ""
 
 #: src/fe-gtk/fkeys.c:165
 msgid ""
-"The Run Command action runs the data in Data 1 as if it has been typed into "
-"the entry box where you pressed the key sequence. Thus it can contain text "
-"(which will be sent to the channel/person), commands or user commands. When "
-"run all \\n characters in Data 1 are used to deliminate seperate commands so "
-"it is possible to run more than one command. If you want a \\ in the actual "
-"text run then enter \\\\"
-msgstr ""
-"L'acció ^BRun Command^B executa les dades de Dades 1 com si les haguessiu "
-"escrit a la línia d'entrada on heu escrit la seqüència de tecles. Pot "
-"contenir text (que s'enviarà al canal/persona), ordres, o ordres d'usuari. "
-"Durant l'execució tots els caràcters ^B\\n^B de Dades 1 s'utilitzen per "
-"delimitar diferents ordres, de manera que se'n pot executar més d'una. Si "
-"voleu escriure un signe ^B\\^B en el text heu d'escriure ^B\\\\^B"
+"The Run Command action runs the data in Data 1 as if it has been typed "
+"into the entry box where you pressed the key sequence. Thus it can contain "
+"text (which will be sent to the channel/person), commands or user commands. "
+"When run all \\n characters in Data 1 are used to deliminate seperate "
+"commands so it is possible to run more than one command. If you want a \\ "
+"in the actual text run then enter \\\\"
+msgstr "L'acció ^BRun Command^B executa les dades de Dades 1 com si les haguessiu escrit a la línia d'entrada on heu escrit la seqüència de tecles. Pot contenir text (que s'enviarà al canal/persona), ordres, o ordres d'usuari. Durant l'execució tots els caràcters ^B\\n^B de Dades 1 s'utilitzen per delimitar diferents ordres, de manera que se'n pot executar més d'una. Si voleu escriure un signe ^B\\^B en el text heu d'escriure ^B\\\\^B"
 
 #: src/fe-gtk/fkeys.c:167
 msgid ""
-"The Change Page command switches between pages in the notebook. Set Data 1 "
-"to the page you want to switch to. If Data 2 is set to anything then the "
+"The Change Page command switches between pages in the notebook. Set Data 1"
+" to the page you want to switch to. If Data 2 is set to anything then the "
 "switch will be relative to the current position"
-msgstr ""
-"L'ordre ^BChange Page^B passa una pàgina a la llibreta. Poseu a Dades 1 la "
-"pàgina a la qual voleu anar. Si Dades 2 no està en blanc el canvi de pàgina "
-"serà relatiu a la posició actual"
+msgstr "L'ordre ^BChange Page^B passa una pàgina a la llibreta. Poseu a Dades 1 la pàgina a la qual voleu anar. Si Dades 2 no està en blanc el canvi de pàgina serà relatiu a la posició actual"
 
 #: src/fe-gtk/fkeys.c:169
 msgid ""
 "The Insert in Buffer command will insert the contents of Data 1 into the "
 "entry where the key sequence was pressed at the current cursor position"
-msgstr ""
-"L'ordre ^BInsert in Buffer^B insereix el contingut de Dades 1 en el lloc on "
-"hagueu escrit la seqüència de tecles a la posició del cursor"
+msgstr "L'ordre ^BInsert in Buffer^B insereix el contingut de Dades 1 en el lloc on hagueu escrit la seqüència de tecles a la posició del cursor"
 
 #: src/fe-gtk/fkeys.c:171
 msgid ""
-"The Scroll Page command scrolls the text widget up or down one page or one "
-"line. Set Data 1 to either Up, Down, +1 or -1."
-msgstr ""
-"L'ordre ^BScroll Page^B desplaça l'objecte de text una pàgina (o una línia) "
-"amunt o avall. Definiu Dades 1 com a «Up» (amunt), «Down» (avall), +1 o -1."
+"The Scroll Page command scrolls the text widget up or down one page or one"
+" line. Set Data 1 to either Up, Down, +1 or -1."
+msgstr "L'ordre ^BScroll Page^B desplaça l'objecte de text una pàgina (o una línia) amunt o avall. Definiu Dades 1 com a «Up» (amunt), «Down» (avall), +1 o -1."
 
 #: src/fe-gtk/fkeys.c:173
 msgid ""
-"The Set Buffer command sets the entry where the key sequence was entered to "
-"the contents of Data 1"
-msgstr ""
-"L'ordre ^BSet Buffer^B col·loca el contingut de Dades 1 a l'objecte on heu "
-"premut la seqüència de tecles"
+"The Set Buffer command sets the entry where the key sequence was entered "
+"to the contents of Data 1"
+msgstr "L'ordre ^BSet Buffer^B col·loca el contingut de Dades 1 a l'objecte on heu premut la seqüència de tecles"
 
 #: src/fe-gtk/fkeys.c:175
 msgid ""
-"The Last Command command sets the entry to contain the last command entered "
-"- the same as pressing up in a shell"
-msgstr ""
-"L'ordre ^BLast Command^B col·loca l'última ordre executada a la línia - "
-"igual que prémer la fletxa amunt a la shell"
+"The Last Command command sets the entry to contain the last command "
+"entered - the same as pressing up in a shell"
+msgstr "L'ordre ^BLast Command^B col·loca l'última ordre executada a la línia - igual que prémer la fletxa amunt a la shell"
 
 #: src/fe-gtk/fkeys.c:177
 msgid ""
-"The Next Command command sets the entry to contain the next command entered "
-"- the same as pressing down in a shell"
-msgstr ""
-"L'ordre ^BNext Command^B col·loca la següent ordre a la línia - igual que "
-"prémer la fletxa avall a la shell"
+"The Next Command command sets the entry to contain the next command "
+"entered - the same as pressing down in a shell"
+msgstr "L'ordre ^BNext Command^B col·loca la següent ordre a la línia - igual que prémer la fletxa avall a la shell"
 
 #: src/fe-gtk/fkeys.c:179
 msgid ""
 "This command changes the text in the entry to finish an incomplete nickname "
-"or command. If Data 1 is set then double-tabbing in a string will select the "
-"last nick, not the next"
-msgstr ""
-"Aquesta ordre canvia el text de la línia per a completar un sobrenom o ordre "
-"incompleta. Si Dades 1 no està en blanc una doble tabulació seleccionarà "
-"l'anterior sobrenom i no el següent"
+"or command. If Data 1 is set then double-tabbing in a string will select the"
+" last nick, not the next"
+msgstr "Aquesta ordre canvia el text de la línia per a completar un sobrenom o ordre incompleta. Si Dades 1 no està en blanc una doble tabulació seleccionarà l'anterior sobrenom i no el següent"
 
 #: src/fe-gtk/fkeys.c:181
 msgid ""
-"This command scrolls up and down through the list of nicks. If Data 1 is set "
-"to anything it will scroll up, else it scrolls down"
-msgstr ""
-"Aquesta ordre desplaça amunt o avall la llista de sobrenoms. Si Dades 1 està "
-"en blanc es desplaçarà avall, i en cas contrari, amunt"
+"This command scrolls up and down through the list of nicks. If Data 1 is set"
+" to anything it will scroll up, else it scrolls down"
+msgstr "Aquesta ordre desplaça amunt o avall la llista de sobrenoms. Si Dades 1 està en blanc es desplaçarà avall, i en cas contrari, amunt"
 
 #: src/fe-gtk/fkeys.c:183
 msgid ""
 "This command checks the last word entered in the entry against the replace "
 "list and replaces it if it finds a match"
-msgstr ""
-"Aquesta ordre cerca l'última paraula escrita a la llista de substitucions i "
-"la substitueix en cas de trobar-la"
+msgstr "Aquesta ordre cerca l'última paraula escrita a la llista de substitucions i la substitueix en cas de trobar-la"
 
 #: src/fe-gtk/fkeys.c:185
 msgid "This command moves the front tab left by one"
@@ -3533,8 +3331,6 @@ msgstr "<cap>"
 msgid "Mod"
 msgstr "Modificador"
 
-# Contrasenya per als canals protegits per contrasenya (dpm)
-# Aquí està parlant de tecles (eac)
 #: src/fe-gtk/fkeys.c:714 src/fe-gtk/fkeys.c:809
 msgid "Key"
 msgstr "Tecla"
@@ -3544,11 +3340,9 @@ msgid "Action"
 msgstr "Acció"
 
 #: src/fe-gtk/fkeys.c:724
-#, fuzzy
 msgid ": Keyboard Shortcuts"
-msgstr "Vincles de tecla..."
+msgstr ""
 
-# la paraula 'shift' va impresa a la tecla
 #: src/fe-gtk/fkeys.c:802
 msgid "Shift"
 msgstr "Shift"
@@ -3571,29 +3365,21 @@ msgstr "Dades 2"
 
 #: src/fe-gtk/fkeys.c:858
 msgid "Error opening keys config file\n"
-msgstr ""
-"Error en obrir el fitxer de configuració del teclat\n"
-"\n"
+msgstr "Error en obrir el fitxer de configuració del teclat\n\n"
 
 #: src/fe-gtk/fkeys.c:1025
 #, c-format
 msgid ""
 "Unknown keyname %s in key bindings config file\n"
 "Load aborted, please fix %s/keybindings.conf\n"
-msgstr ""
-"Nom de tecla «%s» desconegut en el fitxer de configuració\n"
-"de vincles de tecla. S'avorta la càrrega, si us plau\n"
-"reviseu %s/keybindings.conf\n"
+msgstr "Nom de tecla «%s» desconegut en el fitxer de configuració\nde vincles de tecla. S'avorta la càrrega, si us plau\nreviseu %s/keybindings.conf\n"
 
 #: src/fe-gtk/fkeys.c:1063
 #, c-format
 msgid ""
 "Unknown action %s in key bindings config file\n"
 "Load aborted, Please fix %s/keybindings\n"
-msgstr ""
-"Acció «%s» desconeguda en el fitxer de configuració\n"
-"de vincles de tecla. S'avorta la càrrega, si us plau\n"
-"reviseu %s/keybindings\n"
+msgstr "Acció «%s» desconeguda en el fitxer de configuració\nde vincles de tecla. S'avorta la càrrega, si us plau\nreviseu %s/keybindings\n"
 
 #: src/fe-gtk/fkeys.c:1084
 #, c-format
@@ -3602,21 +3388,14 @@ msgid ""
 "%s\n"
 "\n"
 "Load aborted, Please fix %s/keybindings\n"
-msgstr ""
-"S'esperava una línia de Dades (començada per Dx{:|!}) però s'ha obtingut:\n"
-"%s\n"
-"\n"
-"S'avorta la càrrega, si us plau, reviseu %s/keybindings\n"
+msgstr "S'esperava una línia de Dades (començada per Dx{:|!}) però s'ha obtingut:\n%s\n\nS'avorta la càrrega, si us plau, reviseu %s/keybindings\n"
 
 #: src/fe-gtk/fkeys.c:1153
 #, c-format
 msgid ""
 "Key bindings config file is corrupt, load aborted\n"
 "Please fix %s/keybindings.conf\n"
-msgstr ""
-"El fitxer de configuració de vincles de tecla està malmès.\n"
-"Si us plau, reviseu %s/keybindings.conf\n"
-"\n"
+msgstr "El fitxer de configuració de vincles de tecla està malmès.\nSi us plau, reviseu %s/keybindings.conf\n\n"
 
 #: src/fe-gtk/gtkutil.c:136
 msgid "Cannot write to that file."
@@ -3659,9 +3438,8 @@ msgid "Enter mask to ignore:"
 msgstr "Introduïu una màscara a ignorar:"
 
 #: src/fe-gtk/ignoregui.c:349
-#, fuzzy
 msgid ": Ignore list"
-msgstr "X-Chat: Llista d'usuaris ignorats"
+msgstr ""
 
 #: src/fe-gtk/ignoregui.c:356
 msgid "Ignore Stats:"
@@ -3696,14 +3474,13 @@ msgid "Channel name too short, try again."
 msgstr ""
 
 #: src/fe-gtk/joind.c:129
-#, fuzzy
 msgid ": Connection Complete"
-msgstr "S'ha excedit el temps d'espera"
+msgstr ""
 
 #: src/fe-gtk/joind.c:154
-#, fuzzy, c-format
+#, c-format
 msgid "Connection to %s complete."
-msgstr "Connexió reiniciada des de l'altre costat"
+msgstr ""
 
 #: src/fe-gtk/joind.c:163
 msgid ""
@@ -3720,18 +3497,16 @@ msgid "_Nothing, I'll join a channel later."
 msgstr ""
 
 #: src/fe-gtk/joind.c:183
-#, fuzzy
 msgid "_Join this channel:"
-msgstr "Entra al canal"
+msgstr ""
 
 #: src/fe-gtk/joind.c:195
 msgid "If you know the name of the channel you want to join, enter it here."
 msgstr ""
 
 #: src/fe-gtk/joind.c:202
-#, fuzzy
 msgid "O_pen the Channel-List window."
-msgstr "Obre els canals en:"
+msgstr ""
 
 #: src/fe-gtk/joind.c:209
 msgid "Retrieving the Channel-List may take a minute or two."
@@ -3770,56 +3545,49 @@ msgid "Don't ask next time."
 msgstr ""
 
 #: src/fe-gtk/maingui.c:1271
-#, fuzzy, c-format
+#, c-format
 msgid "You are connected to %i IRC networks."
-msgstr "Connecta-t'hi automàticament a l'inici"
+msgstr ""
 
 #: src/fe-gtk/maingui.c:1273
 msgid "Are you sure you want to quit?"
 msgstr ""
 
 #: src/fe-gtk/maingui.c:1275
-#, fuzzy
 msgid "Some file transfers are still active."
 msgstr ""
-"Encara hi ha transferències de fitxers actives, voleu sortir de l'X-Chat?"
 
 #: src/fe-gtk/maingui.c:1293
 msgid "_Minimize to Tray"
 msgstr ""
 
 #: src/fe-gtk/maingui.c:1513
-#, fuzzy
 msgid "Insert Attribute or Color Code"
-msgstr "Inseriu el codi de color"
+msgstr ""
 
 #: src/fe-gtk/maingui.c:1515
 msgid "<b>Bold</b>"
 msgstr ""
 
 #: src/fe-gtk/maingui.c:1516
-#, fuzzy
 msgid "<u>Underline</u>"
-msgstr "Subratllat"
+msgstr ""
 
 #: src/fe-gtk/maingui.c:1518
 msgid "Normal"
 msgstr ""
 
 #: src/fe-gtk/maingui.c:1520
-#, fuzzy
 msgid "Colors 0-7"
-msgstr "Colors"
+msgstr ""
 
 #: src/fe-gtk/maingui.c:1530
-#, fuzzy
 msgid "Colors 8-15"
-msgstr "Colors"
+msgstr ""
 
 #: src/fe-gtk/maingui.c:1573
-#, fuzzy
 msgid "_Settings"
-msgstr "Conf_iguració"
+msgstr ""
 
 #: src/fe-gtk/maingui.c:1575
 msgid "_Log to Disk"
@@ -3830,19 +3598,16 @@ msgid "_Reload Scrollback"
 msgstr ""
 
 #: src/fe-gtk/maingui.c:1578
-#, fuzzy
 msgid "_Hide Join/Part Messages"
-msgstr "Amaga els missatges d'entrades i sortides"
+msgstr ""
 
 #: src/fe-gtk/maingui.c:1586
-#, fuzzy
 msgid "_Extra Alerts"
-msgstr "Altres andròmines"
+msgstr ""
 
 #: src/fe-gtk/maingui.c:1588
-#, fuzzy
 msgid "Beep on _Message"
-msgstr "Avís sonor a cada missatge"
+msgstr ""
 
 #: src/fe-gtk/maingui.c:1592
 msgid "Blink Tray _Icon"
@@ -3853,9 +3618,8 @@ msgid "Blink Task _Bar"
 msgstr ""
 
 #: src/fe-gtk/maingui.c:1633 src/fe-gtk/menu.c:2184
-#, fuzzy
 msgid "_Detach"
-msgstr "Separa la pestanya"
+msgstr ""
 
 #: src/fe-gtk/maingui.c:1635 src/fe-gtk/menu.c:2185 src/fe-gtk/menu.c:2190
 #: src/fe-gtk/plugingui.c:257 src/fe-gtk/search.c:234
@@ -3890,7 +3654,6 @@ msgstr "Moderat"
 msgid "Ban List"
 msgstr "Llista de bandejats"
 
-# Contrasenya per als canals protegits per contrasenya (dpm)
 #: src/fe-gtk/maingui.c:2109
 msgid "Keyword"
 msgstr "Contrasenya"
@@ -3909,11 +3672,7 @@ msgid ""
 "\n"
 "You may be using a non-compliant window\n"
 "manager that is not currently supported.\n"
-msgstr ""
-"No s'ha pogut fer transparent el fons!\n"
-"\n"
-"Potser esteu utilitzant un gestor de finestres\n"
-"no compatible que no està soportat.\n"
+msgstr "No s'ha pogut fer transparent el fons!\n\nPotser esteu utilitzant un gestor de finestres\nno compatible que no està soportat.\n"
 
 #: src/fe-gtk/maingui.c:2635
 msgid "Enter new nickname:"
@@ -3969,14 +3728,12 @@ msgid ""
 msgstr ""
 
 #: src/fe-gtk/menu.c:945
-#, fuzzy
 msgid "Open Link in Browser"
-msgstr "_Obre l'enllaç en el navegador"
+msgstr ""
 
 #: src/fe-gtk/menu.c:946
-#, fuzzy
 msgid "Copy Selected Link"
-msgstr "Copia l'URL seleccionat"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1008 src/fe-gtk/menu.c:1320
 msgid "Join Channel"
@@ -3999,9 +3756,8 @@ msgid "_Add to Favorites"
 msgstr ""
 
 #: src/fe-gtk/menu.c:1071
-#, fuzzy
 msgid ": User menu"
-msgstr "X-Chat: Menú d'usuari"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1080
 msgid "Edit This Menu..."
@@ -4012,12 +3768,10 @@ msgid "Search hit end, not found."
 msgstr ""
 
 #: src/fe-gtk/menu.c:1322
-#, fuzzy
 msgid "Retrieve channel list..."
-msgstr "Llista de canals..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1390
-#, fuzzy
 msgid ""
 "User Commands - Special codes:\n"
 "\n"
@@ -4038,26 +3792,8 @@ msgid ""
 "%2 would be \"john\"\n"
 "&2 would be \"john hello\"."
 msgstr ""
-"Ordres d'usuari - Codis especials:\n"
-"\n"
-"%c  =  canal actual\n"
-"%m  =  informació de la màquina\n"
-"%n  =  el vostre sobrenom\n"
-"%t  =  hora i data\n"
-"%v  =  versió de l'xchat\n"
-"%2  =  paraula 2\n"
-"%3  =  paraula 3\n"
-"&2  =  paraula 2 fins a final de línia\n"
-"&3  =  paraula 3 fins a final de línia\n"
-"\n"
-"p.ex:\n"
-"/cmd john hello\n"
-"\n"
-"%2 seria \"john\"\n"
-"&2 seria \"john hello\"."
 
 #: src/fe-gtk/menu.c:1406
-#, fuzzy
 msgid ""
 "Userlist Buttons - Special codes:\n"
 "\n"
@@ -4070,18 +3806,8 @@ msgid ""
 "%s  =  selected nick\n"
 "%t  =  time/date\n"
 msgstr ""
-"Botons de la llista d'usuaris - Codis especials:\n"
-"\n"
-"%a  =  tots els sobrenoms seleccionats\n"
-"%c  =  canal actual\n"
-"%h  =  màquina del sobrenom seleccionat\n"
-"%m  =  informació de la màquina\n"
-"%n  =  el vostre sobrenom\n"
-"%s  =  sobrenom seleccionat\n"
-"%t  =  hora i data\n"
 
 #: src/fe-gtk/menu.c:1416
-#, fuzzy
 msgid ""
 "Dialog Buttons - Special codes:\n"
 "\n"
@@ -4094,18 +3820,8 @@ msgid ""
 "%s  =  selected nick\n"
 "%t  =  time/date\n"
 msgstr ""
-"Botons de diàleg - Codis especials:\n"
-"\n"
-"%a  =  tots els sobrenoms seleccionats\n"
-"%c  =  canal actual\n"
-"%h  =  màquina del sobrenom seleccionat\n"
-"%m  =  informació de la màquina\n"
-"%n  =  el vostre sobrenom\n"
-"%s  =  sobrenom seleccionat\n"
-"%t  =  hora i data\n"
 
 #: src/fe-gtk/menu.c:1426
-#, fuzzy
 msgid ""
 "CTCP Replies - Special codes:\n"
 "\n"
@@ -4120,20 +3836,9 @@ msgid ""
 "&3  =  word 3 to the end of line\n"
 "\n"
 msgstr ""
-"Respostes CTCP - Codis especials:\n"
-"\n"
-"%d  =  dades (el CTCP sencer)\n"
-"%m  =  informació de la màquina\n"
-"%s  =  sobrenom de qui envia el ctcp\n"
-"%t  =  hora i data\n"
-"%2  =  paraula 2\n"
-"%3  =  paraula 3\n"
-"&2  =  paraula 2 fins a final de línia\n"
-"&3  =  paraula 3 fins a final de línia\n"
-"\n"
 
 #: src/fe-gtk/menu.c:1437
-#, fuzzy, c-format
+#, c-format
 msgid ""
 "URL Handlers - Special codes:\n"
 "\n"
@@ -4143,61 +3848,46 @@ msgid ""
 "indicates it should be sent to a\n"
 "shell instead of XChat"
 msgstr ""
-"Gestió d'URLs - Codis especials:\n"
-"\n"
-"%s  = la cadena d'URL\n"
-"\n"
-"Poseu un ! al davant de l'ordre per\n"
-"indicar que l'ha executar la shell"
 
 #: src/fe-gtk/menu.c:1446
-#, fuzzy
 msgid ": User Defined Commands"
-msgstr "X-Chat: Ordres definides per l'usuari"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1453
-#, fuzzy
 msgid ": Userlist Popup menu"
-msgstr "X-Chat: Menú emergent de la llista d'usuaris"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1460
 msgid "Replace with"
 msgstr ""
 
 #: src/fe-gtk/menu.c:1460
-#, fuzzy
 msgid ": Replace"
-msgstr "X-Chat: Substitueix"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1467
-#, fuzzy
 msgid ": URL Handlers"
-msgstr "Gestió d'URLs..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1486
-#, fuzzy
 msgid ": Userlist buttons"
-msgstr "X-Chat: Botons de la llista d'usuaris"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1493
-#, fuzzy
 msgid ": Dialog buttons"
-msgstr "X-Chat: Botons de diàleg"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1500
-#, fuzzy
 msgid ": CTCP Replies"
-msgstr "Respostes CTCP..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1606
-#, fuzzy
 msgid "He_xChat"
-msgstr "Xat"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1607
-#, fuzzy
 msgid "Network Li_st..."
-msgstr "Configuració de la xarxa"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1610
 msgid "_New"
@@ -4220,62 +3910,52 @@ msgid "Channel Window..."
 msgstr "Finestra de canals..."
 
 #: src/fe-gtk/menu.c:1619 src/fe-gtk/menu.c:1621
-#, fuzzy
 msgid "_Load Plugin or Script..."
-msgstr "Carrega un connector o script..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1629 src/fe-gtk/plugin-tray.c:540
-#, fuzzy
 msgid "_Quit"
-msgstr "Surt"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1631
 msgid "_View"
 msgstr ""
 
 #: src/fe-gtk/menu.c:1633
-#, fuzzy
 msgid "_Menu Bar"
-msgstr "Barra de menú"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1634
-#, fuzzy
 msgid "_Topic Bar"
-msgstr "Barra del tema"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1635
-#, fuzzy
 msgid "_User List"
-msgstr "Llista d'usuaris"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1636
-#, fuzzy
 msgid "U_serlist Buttons"
-msgstr "Botons de la llista d'usuaris..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1637
-#, fuzzy
 msgid "M_ode Buttons"
-msgstr "Botons de mode"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1639
-#, fuzzy
 msgid "_Channel Switcher"
-msgstr "_Tema del canal"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1641
-#, fuzzy
 msgid "_Tabs"
-msgstr "Pestanyes"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1642
 msgid "T_ree"
 msgstr ""
 
 #: src/fe-gtk/menu.c:1644
-#, fuzzy
 msgid "_Network Meters"
-msgstr "Monitor de la xarxa"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1646
 msgid "Off"
@@ -4290,42 +3970,36 @@ msgid "_Server"
 msgstr "_Servidor"
 
 #: src/fe-gtk/menu.c:1653
-#, fuzzy
 msgid "_Disconnect"
-msgstr "Desconnecta"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1654
-#, fuzzy
 msgid "_Reconnect"
-msgstr "Torna a connectar"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1655
-#, fuzzy
 msgid "Join a Channel..."
-msgstr "Entra al canal..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1656
-#, fuzzy
 msgid "List of Channels..."
-msgstr "Entra al canal..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1659
 msgid "Marked Away"
 msgstr "Marca'm _absent"
 
 #: src/fe-gtk/menu.c:1661
-#, fuzzy
 msgid "_Usermenu"
-msgstr "Nom d'usuari"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1663
 msgid "S_ettings"
 msgstr "Conf_iguració"
 
 #: src/fe-gtk/menu.c:1664
-#, fuzzy
 msgid "_Preferences"
-msgstr "Preferè_ncies..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1666 src/fe-gtk/setup.c:1887
 msgid "Advanced"
@@ -4384,14 +4058,12 @@ msgid "Direct Chat..."
 msgstr "Xat directe..."
 
 #: src/fe-gtk/menu.c:1682
-#, fuzzy
 msgid "File Transfers..."
-msgstr "Transferències de _fitxers"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1683
-#, fuzzy
 msgid "Friends List..."
-msgstr "Llista d'usuaris bandejats..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1684
 msgid "Ignore List..."
@@ -4414,9 +4086,8 @@ msgid "Reset Marker Line"
 msgstr "Resitua la línia de separació"
 
 #: src/fe-gtk/menu.c:1690
-#, fuzzy
 msgid "_Copy Selection"
-msgstr "_Copia l'adreça de l'enllaç"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1691
 msgid "C_lear Text"
@@ -4427,28 +4098,24 @@ msgid "Save Text..."
 msgstr "Desa el text..."
 
 #: src/fe-gtk/menu.c:1694
-#, fuzzy
 msgid "Search"
-msgstr "Cerca el text..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1695
 msgid "Search Text..."
 msgstr "Cerca el text..."
 
 #: src/fe-gtk/menu.c:1696
-#, fuzzy
 msgid "Reset Search"
-msgstr "X-Chat: Cerca"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1697
-#, fuzzy
 msgid "Search Next"
-msgstr "Cerca el text..."
+msgstr ""
 
 #: src/fe-gtk/menu.c:1698
-#, fuzzy
 msgid "Search Previous"
-msgstr "_Anterior"
+msgstr ""
 
 #: src/fe-gtk/menu.c:1701 src/fe-gtk/menu.c:2176
 msgid "_Help"
@@ -4467,9 +4134,8 @@ msgid "_About"
 msgstr "_Quant a"
 
 #: src/fe-gtk/menu.c:2189
-#, fuzzy
 msgid "_Attach"
-msgstr "Adjunta una pestanya"
+msgstr ""
 
 #: src/fe-gtk/notifygui.c:139
 msgid "Last Seen"
@@ -4505,14 +4171,12 @@ msgid "Comma separated list of networks is accepted."
 msgstr ""
 
 #: src/fe-gtk/notifygui.c:414
-#, fuzzy
 msgid ": Friends List"
-msgstr "X-Chat: Llista de fitxers enviats"
+msgstr ""
 
 #: src/fe-gtk/notifygui.c:435
-#, fuzzy
 msgid "Open Dialog"
-msgstr "Obre una finestra de diàleg"
+msgstr ""
 
 #: src/fe-gtk/plugin-tray.c:226
 #, c-format
@@ -4520,51 +4184,45 @@ msgid ": Connected to %u networks and %u channels"
 msgstr ""
 
 #: src/fe-gtk/plugin-tray.c:516
-#, fuzzy
 msgid "_Restore Window"
-msgstr "Pestanyes o finestres"
+msgstr ""
 
 #: src/fe-gtk/plugin-tray.c:518
-#, fuzzy
 msgid "_Hide Window"
-msgstr "_Finestra"
+msgstr ""
 
 #: src/fe-gtk/plugin-tray.c:522
 msgid "_Blink on"
 msgstr ""
 
 #: src/fe-gtk/plugin-tray.c:523 src/fe-gtk/setup.c:640
-#, fuzzy
 msgid "Channel Message"
-msgstr "Nom del canal"
+msgstr ""
 
 #: src/fe-gtk/plugin-tray.c:524 src/fe-gtk/setup.c:641
-#, fuzzy
 msgid "Private Message"
-msgstr "Missatge privat de %s"
+msgstr ""
 
 #: src/fe-gtk/plugin-tray.c:525 src/fe-gtk/setup.c:642
-#, fuzzy
 msgid "Highlighted Message"
-msgstr "Avís sonor quan hi hagi missatges realçats"
+msgstr ""
 
 #: src/fe-gtk/plugin-tray.c:528
 msgid "_Change status"
 msgstr ""
 
 #: src/fe-gtk/plugin-tray.c:530
-#, fuzzy
 msgid "_Away"
-msgstr "Absència"
+msgstr ""
 
 #: src/fe-gtk/plugin-tray.c:533
 msgid "_Back"
 msgstr ""
 
 #: src/fe-gtk/plugin-tray.c:588 src/fe-gtk/plugin-tray.c:596
-#, fuzzy, c-format
+#, c-format
 msgid ": Highlighted message from: %s (%s)"
-msgstr "Avís sonor quan hi hagi missatges realçats"
+msgstr ""
 
 #: src/fe-gtk/plugin-tray.c:591
 #, c-format
@@ -4582,14 +4240,14 @@ msgid ": %u new public messages."
 msgstr ""
 
 #: src/fe-gtk/plugin-tray.c:643 src/fe-gtk/plugin-tray.c:650
-#, fuzzy, c-format
+#, c-format
 msgid ": Private message from: %s (%s)"
-msgstr "Missatge privat de %s"
+msgstr ""
 
 #: src/fe-gtk/plugin-tray.c:646
-#, fuzzy, c-format
+#, c-format
 msgid ": %u private messages, latest from: %s (%s)"
-msgstr "Missatge privat de %s"
+msgstr ""
 
 #: src/fe-gtk/plugin-tray.c:696 src/fe-gtk/plugin-tray.c:704
 #, c-format
@@ -4614,9 +4272,8 @@ msgid "Select a Plugin or Script to load"
 msgstr "Seleccioneu el connector o script a carregar"
 
 #: src/fe-gtk/plugingui.c:244
-#, fuzzy
 msgid ": Plugins and Scripts"
-msgstr "Connectors i scripts..."
+msgstr ""
 
 #: src/fe-gtk/plugingui.c:250
 msgid "_Load..."
@@ -4628,14 +4285,13 @@ msgstr "_Descarrega"
 
 #: src/fe-gtk/rawlog.c:84 src/fe-gtk/rawlog.c:133 src/fe-gtk/textgui.c:438
 #: src/fe-gtk/urlgrab.c:216
-#, fuzzy
 msgid "Save As..."
-msgstr "Desa com a"
+msgstr ""
 
 #: src/fe-gtk/rawlog.c:100
-#, fuzzy, c-format
+#, c-format
 msgid ": Rawlog (%s)"
-msgstr "X-Chat: Registre brut (%s)"
+msgstr ""
 
 #: src/fe-gtk/rawlog.c:130
 msgid "Clear rawlog"
@@ -4646,9 +4302,8 @@ msgid "The window you opened this Search for doesn't exist anymore."
 msgstr "La finestra que vàreu obrir per aquesta cerca ja no existeix."
 
 #: src/fe-gtk/search.c:166
-#, fuzzy
 msgid ": Search"
-msgstr "X-Chat: Cerca"
+msgstr ""
 
 #: src/fe-gtk/search.c:193
 msgid "_Find"
@@ -4663,9 +4318,8 @@ msgid "Search _backwards"
 msgstr ""
 
 #: src/fe-gtk/search.c:213
-#, fuzzy
 msgid "_Highlight all"
-msgstr "Text realçat:"
+msgstr ""
 
 #: src/fe-gtk/search.c:221
 msgid "R_egular expression"
@@ -4685,9 +4339,8 @@ msgid "Really remove network \"%s\" and all its servers?"
 msgstr "Voleu eliminar la xarxa \"%s\" i tots els seus servidors?"
 
 #: src/fe-gtk/servlistgui.c:735
-#, fuzzy
 msgid "#channel"
-msgstr "Canal"
+msgstr ""
 
 #: src/fe-gtk/servlistgui.c:845
 msgid ": Favorite Channels (Auto-Join List)"
@@ -4699,9 +4352,8 @@ msgid "These channels will be joined whenever you connect to %s."
 msgstr ""
 
 #: src/fe-gtk/servlistgui.c:901
-#, fuzzy
 msgid "Key (Password)"
-msgstr "Contrasenya:"
+msgstr ""
 
 #: src/fe-gtk/servlistgui.c:932 src/fe-gtk/servlistgui.c:1572
 msgid "_Edit"
@@ -4722,9 +4374,9 @@ msgid "User name and Real name cannot be left blank."
 msgstr "El nom d'usuari i el nom real no es poden deixar en blanc."
 
 #: src/fe-gtk/servlistgui.c:1403
-#, fuzzy, c-format
+#, c-format
 msgid ": Edit %s"
-msgstr "X-Chat: Detalls de %s"
+msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1422
 #, c-format
@@ -4772,9 +4424,8 @@ msgid "Auto connect to this network at startup"
 msgstr "Connecta-t'hi automàticament a l'inici"
 
 #: src/fe-gtk/servlistgui.c:1468
-#, fuzzy
 msgid "Bypass proxy server"
-msgstr "Utilitza un servidor intermedi"
+msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1470
 msgid "Use SSL for all the servers on this network"
@@ -4785,9 +4436,8 @@ msgid "Accept invalid SSL certificate"
 msgstr "Accepta certificats SSL invàlids"
 
 #: src/fe-gtk/servlistgui.c:1481
-#, fuzzy
 msgid "_Favorite channels:"
-msgstr "En deixar el canal:"
+msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1483
 msgid "Channels to join, separated by commas, but not spaces!"
@@ -4800,12 +4450,9 @@ msgstr "Ordre de connexió:"
 #: src/fe-gtk/servlistgui.c:1488
 msgid ""
 "Extra command to execute after connecting. If you need more than one, set "
-"this to LOAD -e <filename>, where <filename> is a text-file full of commands "
-"to execute."
-msgstr ""
-"Executa aquesta ordre un cop establerta la connexió. Si en necessiteu més "
-"d'una poseu LOAD -e <fitxer> on <fitxer> és un fitxer de text amb les ordres "
-"a executar."
+"this to LOAD -e <filename>, where <filename> is a text-file full of commands"
+" to execute."
+msgstr "Executa aquesta ordre un cop establerta la connexió. Si en necessiteu més d'una poseu LOAD -e <fitxer> on <fitxer> és un fitxer de text amb les ordres a executar."
 
 #: src/fe-gtk/servlistgui.c:1491
 msgid "Nickserv password:"
@@ -4830,9 +4477,8 @@ msgid "Character set:"
 msgstr "Joc de caràcters:"
 
 #: src/fe-gtk/servlistgui.c:1657
-#, fuzzy
 msgid ": Network List"
-msgstr "Configuració de la xarxa"
+msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1669
 msgid "User Information"
@@ -4847,9 +4493,8 @@ msgid "Networks"
 msgstr "Xarxes"
 
 #: src/fe-gtk/servlistgui.c:1801
-#, fuzzy
 msgid "Skip network list on startup"
-msgstr "Omet mostrar la llista de servidors a l'inici"
+msgstr ""
 
 #: src/fe-gtk/servlistgui.c:1810
 msgid "Show favorites only"
@@ -4882,32 +4527,28 @@ msgid "C_onnect"
 msgstr "Connecta"
 
 #: src/fe-gtk/setup.c:105
-#, fuzzy
 msgid "Albanian"
-msgstr "Albània"
+msgstr ""
 
 #: src/fe-gtk/setup.c:106
 msgid "Amharic"
 msgstr ""
 
 #: src/fe-gtk/setup.c:107
-#, fuzzy
 msgid "Azerbaijani"
-msgstr "Azerbaitjan"
+msgstr ""
 
 #: src/fe-gtk/setup.c:108
 msgid "Basque"
 msgstr ""
 
 #: src/fe-gtk/setup.c:109
-#, fuzzy
 msgid "Belarusian"
-msgstr "Bielorússia"
+msgstr ""
 
 #: src/fe-gtk/setup.c:110
-#, fuzzy
 msgid "Bulgarian"
-msgstr "Bulgària"
+msgstr ""
 
 #: src/fe-gtk/setup.c:112
 msgid "Chinese (Simplified)"
@@ -4934,100 +4575,84 @@ msgid "English (US)"
 msgstr ""
 
 #: src/fe-gtk/setup.c:118
-#, fuzzy
 msgid "Estonian"
-msgstr "Estònia"
+msgstr ""
 
 #: src/fe-gtk/setup.c:119
 msgid "Finnish"
 msgstr ""
 
 #: src/fe-gtk/setup.c:120
-#, fuzzy
 msgid "French"
-msgstr "Guaiana Francesa"
+msgstr ""
 
 #: src/fe-gtk/setup.c:121
 msgid "Galician"
 msgstr ""
 
 #: src/fe-gtk/setup.c:122
-#, fuzzy
 msgid "German"
-msgstr "Alemanya"
+msgstr ""
 
 #: src/fe-gtk/setup.c:123
-#, fuzzy
 msgid "Greek"
-msgstr "Grècia"
+msgstr ""
 
 #: src/fe-gtk/setup.c:124
 msgid "Hindi"
 msgstr ""
 
 #: src/fe-gtk/setup.c:125
-#, fuzzy
 msgid "Hungarian"
-msgstr "Hongria"
+msgstr ""
 
 #: src/fe-gtk/setup.c:126
-#, fuzzy
 msgid "Italian"
-msgstr "Itàlia"
+msgstr ""
 
 #: src/fe-gtk/setup.c:127
-#, fuzzy
 msgid "Japanese"
-msgstr "Japó"
+msgstr ""
 
 #: src/fe-gtk/setup.c:128
-#, fuzzy
 msgid "Kannada"
-msgstr "Canadà"
+msgstr ""
 
 #: src/fe-gtk/setup.c:129
-#, fuzzy
 msgid "Korean"
-msgstr "CP949 (coreà)"
+msgstr ""
 
 #: src/fe-gtk/setup.c:130
-#, fuzzy
 msgid "Latvian"
-msgstr "Letònia"
+msgstr ""
 
 #: src/fe-gtk/setup.c:131
-#, fuzzy
 msgid "Lithuanian"
-msgstr "Lituània"
+msgstr ""
 
 #: src/fe-gtk/setup.c:132
-#, fuzzy
 msgid "Macedonian"
-msgstr "Macedònia"
+msgstr ""
 
 #: src/fe-gtk/setup.c:133
-#, fuzzy
 msgid "Malay"
-msgstr "Malàisia"
+msgstr ""
 
 #: src/fe-gtk/setup.c:134
-#, fuzzy
 msgid "Norwegian (Bokmal)"
-msgstr "Noruega"
+msgstr ""
 
 #: src/fe-gtk/setup.c:135
-#, fuzzy
 msgid "Norwegian (Nynorsk)"
-msgstr "Noruega"
+msgstr ""
 
 #: src/fe-gtk/setup.c:136
 msgid "Polish"
 msgstr ""
 
 #: src/fe-gtk/setup.c:137
-#, fuzzy
 msgid "Portuguese"
-msgstr "Portugal"
+msgstr ""
 
 #: src/fe-gtk/setup.c:138
 msgid "Portuguese (Brazilian)"
@@ -5046,38 +4671,32 @@ msgid "Serbian"
 msgstr ""
 
 #: src/fe-gtk/setup.c:142
-#, fuzzy
 msgid "Slovak"
-msgstr "Eslovènia"
+msgstr ""
 
 #: src/fe-gtk/setup.c:143
-#, fuzzy
 msgid "Slovenian"
-msgstr "Eslovènia"
+msgstr ""
 
 #: src/fe-gtk/setup.c:144
 msgid "Spanish"
 msgstr ""
 
 #: src/fe-gtk/setup.c:145
-#, fuzzy
 msgid "Swedish"
-msgstr "Suècia"
+msgstr ""
 
 #: src/fe-gtk/setup.c:146
-#, fuzzy
 msgid "Thai"
-msgstr "Tailàndia"
+msgstr ""
 
 #: src/fe-gtk/setup.c:147
-#, fuzzy
 msgid "Ukrainian"
-msgstr "Ucraïna"
+msgstr ""
 
 #: src/fe-gtk/setup.c:148
-#, fuzzy
 msgid "Vietnamese"
-msgstr "Vietnam"
+msgstr ""
 
 #: src/fe-gtk/setup.c:149
 msgid "Walloon"
@@ -5088,9 +4707,8 @@ msgid "General"
 msgstr "General"
 
 #: src/fe-gtk/setup.c:158
-#, fuzzy
 msgid "Language:"
-msgstr "Idioma"
+msgstr ""
 
 #: src/fe-gtk/setup.c:159
 msgid "Main font:"
@@ -5101,9 +4719,8 @@ msgid "Font:"
 msgstr "Tipus de lletra:"
 
 #: src/fe-gtk/setup.c:163
-#, fuzzy
 msgid "Text Box"
-msgstr "Caixa de text"
+msgstr ""
 
 #: src/fe-gtk/setup.c:164
 msgid "Background image:"
@@ -5142,9 +4759,8 @@ msgid "Insert a red line after the last read text."
 msgstr "Insereix una línia vermella després de l'últim text llegit"
 
 #: src/fe-gtk/setup.c:173
-#, fuzzy
 msgid "Transparency Settings"
-msgstr "Valors del tint"
+msgstr ""
 
 #: src/fe-gtk/setup.c:174
 msgid "Red:"
@@ -5171,14 +4787,12 @@ msgid "Time stamp format:"
 msgstr "Format de la data i l'hora"
 
 #: src/fe-gtk/setup.c:182 src/fe-gtk/setup.c:544
-#, fuzzy
 msgid "See the strftime MSDN article for details."
-msgstr "Per a més detalls consulteu la pàgina del manual strftime (3)."
+msgstr ""
 
 #: src/fe-gtk/setup.c:184 src/fe-gtk/setup.c:546
-#, fuzzy
 msgid "See the strftime manpage for details."
-msgstr "Per a més detalls consulteu la pàgina del manual strftime (3)."
+msgstr ""
 
 #: src/fe-gtk/setup.c:192 src/fe-gtk/setup.c:238
 msgid "A-Z"
@@ -5189,9 +4803,8 @@ msgid "Last-spoke order"
 msgstr ""
 
 #: src/fe-gtk/setup.c:199
-#, fuzzy
 msgid "Input Box"
-msgstr "Línia d'entrada"
+msgstr ""
 
 #: src/fe-gtk/setup.c:200 src/fe-gtk/setup.c:270
 msgid "Use the Text box font and colors"
@@ -5212,27 +4825,24 @@ msgid ""
 msgstr ""
 
 #: src/fe-gtk/setup.c:207
-#, fuzzy
 msgid "Use language codes. Separate multiple entries with commas."
-msgstr "(Llista de paraules separades per comes)."
+msgstr ""
 
 #: src/fe-gtk/setup.c:211
 msgid "Nick Completion"
 msgstr "Compleció de sobrenoms"
 
 #: src/fe-gtk/setup.c:212
-#, fuzzy
 msgid "Automatic nick completion (without TAB key)"
-msgstr "Compleció automàtica de sobrenoms"
+msgstr ""
 
 #: src/fe-gtk/setup.c:214
 msgid "Nick completion suffix:"
 msgstr "Sufix de compleció de sobrenoms:"
 
 #: src/fe-gtk/setup.c:215
-#, fuzzy
 msgid "Nick completion sorted:"
-msgstr "Sufix de compleció de sobrenoms:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:218
 msgid "Input Box Codes"
@@ -5304,14 +4914,12 @@ msgid "User list sorted by:"
 msgstr "Ordena la llista d'usuaris amb:"
 
 #: src/fe-gtk/setup.c:273
-#, fuzzy
 msgid "Show user list at:"
-msgstr "Mostra/Oculta la llista d'usuaris"
+msgstr ""
 
 #: src/fe-gtk/setup.c:275
-#, fuzzy
 msgid "Away Tracking"
-msgstr "Seguiment d'absències"
+msgstr ""
 
 #: src/fe-gtk/setup.c:276
 msgid "Track the Away status of users and mark them in a different color"
@@ -5358,32 +4966,28 @@ msgid "Open an extra tab for server notices"
 msgstr "Obre una pestanya adicional per als avisos del servidor"
 
 #: src/fe-gtk/setup.c:320
-#, fuzzy
 msgid "Open a new tab when you receive a private message"
-msgstr "Obre una pestanya adicional per als missatges del servidor"
+msgstr ""
 
 #: src/fe-gtk/setup.c:321
 msgid "Sort tabs in alphabetical order"
 msgstr "Ordena les pestanyes per ordre alfabètic"
 
 #: src/fe-gtk/setup.c:322
-#, fuzzy
 msgid "Show icons in the channel tree"
-msgstr "Mostra colors a la pantalla principal"
+msgstr ""
 
 #: src/fe-gtk/setup.c:323
-#, fuzzy
 msgid "Smaller text"
-msgstr "Pestanyes petites"
+msgstr ""
 
 #: src/fe-gtk/setup.c:325
 msgid "Focus new tabs:"
 msgstr "Dóna el focus a les pestanyes noves:"
 
 #: src/fe-gtk/setup.c:327
-#, fuzzy
 msgid "Show channel switcher at:"
-msgstr "En canals més petits de:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:328
 msgid "Shorten tab labels to:"
@@ -5414,19 +5018,16 @@ msgid "Open DCC, Ignore, Notify etc, in tabs or windows?"
 msgstr "Voleu obrir DCCs, notificacions, etc. en pestanyes o finestres?"
 
 #: src/fe-gtk/setup.c:340
-#, fuzzy
 msgid "Messages"
-msgstr "Missatge"
+msgstr ""
 
 #: src/fe-gtk/setup.c:341
-#, fuzzy
 msgid "Scrollback"
-msgstr "Línies fora la finestra:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:349
-#, fuzzy
 msgid "No"
-msgstr "Cap"
+msgstr ""
 
 #: src/fe-gtk/setup.c:350
 msgid "Yes"
@@ -5441,9 +5042,8 @@ msgid "Files and Directories"
 msgstr "Fitxers i directoris"
 
 #: src/fe-gtk/setup.c:358
-#, fuzzy
 msgid "Auto accept file offers:"
-msgstr "Accepta automàticament fitxers"
+msgstr ""
 
 #: src/fe-gtk/setup.c:359
 msgid "Download files to:"
@@ -5467,11 +5067,9 @@ msgstr "Obtingues la meva adreça IP des del servidor"
 
 #: src/fe-gtk/setup.c:365
 msgid ""
-"Asks the IRC server for your real address. Use this if you have a 192.168.*."
-"* address!"
-msgstr ""
-"Pregunta al servidor per la vostra adreça real. Useu això si teniu una "
-"adreça 192.168.*.*"
+"Asks the IRC server for your real address. Use this if you have a "
+"192.168.*.* address!"
+msgstr "Pregunta al servidor per la vostra adreça real. Useu això si teniu una adreça 192.168.*.*"
 
 #: src/fe-gtk/setup.c:366
 msgid "DCC IP address:"
@@ -5490,9 +5088,8 @@ msgid "Last DCC send port:"
 msgstr "Últim port d'enviament DCC:"
 
 #: src/fe-gtk/setup.c:370
-#, fuzzy
 msgid "!Leave ports at zero for full range."
-msgstr "(Deixeu els ports a zero per usar tot l'interval)."
+msgstr ""
 
 #: src/fe-gtk/setup.c:372
 msgid "Maximum File Transfer Speeds (bytes per second)"
@@ -5527,9 +5124,8 @@ msgid "Alerts"
 msgstr "Alertes"
 
 #: src/fe-gtk/setup.c:411
-#, fuzzy
 msgid "Show tray balloons on:"
-msgstr "Mostra les pestanyes a:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:413
 msgid "Blink tray icon on:"
@@ -5544,18 +5140,16 @@ msgid "Make a beep sound on:"
 msgstr ""
 
 #: src/fe-gtk/setup.c:417
-#, fuzzy
 msgid "Enable system tray icon"
-msgstr "Activa el seguiment d'absències"
+msgstr ""
 
 #: src/fe-gtk/setup.c:418 src/fe-gtk/setup.c:439
 msgid "Omit alerts when marked as being away"
 msgstr ""
 
 #: src/fe-gtk/setup.c:420 src/fe-gtk/setup.c:441
-#, fuzzy
 msgid "Highlighted Messages"
-msgstr "Avís sonor quan hi hagi missatges realçats"
+msgstr ""
 
 #: src/fe-gtk/setup.c:421 src/fe-gtk/setup.c:442
 msgid ""
@@ -5563,26 +5157,22 @@ msgid ""
 msgstr ""
 
 #: src/fe-gtk/setup.c:423 src/fe-gtk/setup.c:444
-#, fuzzy
 msgid "Extra words to highlight:"
-msgstr "Altres paraules a realçar:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:424 src/fe-gtk/setup.c:445
-#, fuzzy
 msgid "Nick names not to highlight:"
-msgstr "Sobrenoms que no s'han de realçar:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:425 src/fe-gtk/setup.c:446
-#, fuzzy
 msgid "Nick names to always highlight:"
-msgstr "Sobrenoms que no s'han de realçar:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:426 src/fe-gtk/setup.c:447
-#, fuzzy
 msgid ""
 "Separate multiple words with commas.\n"
 "Wildcards are accepted."
-msgstr "(Llista de paraules separades per comes)."
+msgstr ""
 
 #: src/fe-gtk/setup.c:454
 msgid "Default Messages"
@@ -5650,8 +5240,7 @@ msgstr "Whois a cada notificació"
 
 #: src/fe-gtk/setup.c:476 src/fe-gtk/setup.c:505
 msgid "Sends a /WHOIS when a user comes online in your notify list"
-msgstr ""
-"Envia un /WHOIS a cada usuari de la llista de notificació quan es connecti"
+msgstr "Envia un /WHOIS a cada usuari de la llista de notificació quan es connecti"
 
 #: src/fe-gtk/setup.c:477 src/fe-gtk/setup.c:506
 msgid "Hide join and part messages"
@@ -5682,9 +5271,8 @@ msgid "Auto Copy Behavior"
 msgstr ""
 
 #: src/fe-gtk/setup.c:483 src/fe-gtk/setup.c:513
-#, fuzzy
 msgid "Automatically copy selected text"
-msgstr "Connecta a aquesta xarxa _automàticament a l'inici"
+msgstr ""
 
 #: src/fe-gtk/setup.c:484 src/fe-gtk/setup.c:514
 msgid ""
@@ -5693,9 +5281,8 @@ msgid ""
 msgstr ""
 
 #: src/fe-gtk/setup.c:487 src/fe-gtk/setup.c:517
-#, fuzzy
 msgid "Automatically include time stamps"
-msgstr "Treu l'estatus d'absent automàticament"
+msgstr ""
 
 #: src/fe-gtk/setup.c:488 src/fe-gtk/setup.c:518
 msgid ""
@@ -5704,14 +5291,13 @@ msgid ""
 msgstr ""
 
 #: src/fe-gtk/setup.c:490 src/fe-gtk/setup.c:520
-#, fuzzy
 msgid "Automatically include color information"
-msgstr "Compleció automàtica de sobrenoms"
+msgstr ""
 
 #: src/fe-gtk/setup.c:491 src/fe-gtk/setup.c:521
 msgid ""
-"Automatically include color information in copied lines of text.  Otherwise, "
-"include color information if the CONTROL key is held down while selecting."
+"Automatically include color information in copied lines of text.  Otherwise,"
+" include color information if the CONTROL key is held down while selecting."
 msgstr ""
 
 #: src/fe-gtk/setup.c:507
@@ -5731,19 +5317,17 @@ msgid "Strip colors when displaying scrollback"
 msgstr ""
 
 #: src/fe-gtk/setup.c:536
-#, fuzzy
 msgid "Enable logging of conversations to disk"
-msgstr "Enregistra les converses"
+msgstr ""
 
 #: src/fe-gtk/setup.c:537
-#, fuzzy
 msgid "Log filename:"
-msgstr "Màscara del fitxer:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:538
-#, fuzzy, c-format
+#, c-format
 msgid "%s=Server %c=Channel %n=Network."
-msgstr "(%s=Servidor %c=Canal %n=Xarxa)."
+msgstr ""
 
 #: src/fe-gtk/setup.c:541
 msgid "Insert timestamps in logs"
@@ -5758,14 +5342,12 @@ msgid "URLs"
 msgstr ""
 
 #: src/fe-gtk/setup.c:550
-#, fuzzy
 msgid "Enable logging of URLs to disk"
-msgstr "Enregistra les converses"
+msgstr ""
 
 #: src/fe-gtk/setup.c:551
-#, fuzzy
 msgid "Enable URL grabber"
-msgstr "X-Chat: capturador d'URLs"
+msgstr ""
 
 #: src/fe-gtk/setup.c:552
 msgid "Maximum number of URLs to grab:"
@@ -5800,14 +5382,12 @@ msgid "Auto"
 msgstr ""
 
 #: src/fe-gtk/setup.c:575
-#, fuzzy
 msgid "All Connections"
-msgstr "Connexió"
+msgstr ""
 
 #: src/fe-gtk/setup.c:576
-#, fuzzy
 msgid "IRC Server Only"
-msgstr "Només convidats"
+msgstr ""
 
 #: src/fe-gtk/setup.c:577
 msgid "DCC Get Only"
@@ -5822,9 +5402,8 @@ msgid "Bind to:"
 msgstr "Vincula a:"
 
 #: src/fe-gtk/setup.c:585
-#, fuzzy
 msgid "Only useful for computers with multiple addresses."
-msgstr "(Només és útil en ordinadors amb múltiples adreces)."
+msgstr ""
 
 #: src/fe-gtk/setup.c:587
 msgid "Proxy Server"
@@ -5843,23 +5422,20 @@ msgid "Type:"
 msgstr "Tipus:"
 
 #: src/fe-gtk/setup.c:591
-#, fuzzy
 msgid "Use proxy for:"
-msgstr "Utilitza un servidor intermedi"
+msgstr ""
 
 #: src/fe-gtk/setup.c:593
 msgid "Proxy Authentication"
 msgstr ""
 
 #: src/fe-gtk/setup.c:595
-#, fuzzy
 msgid "Use Authentication (MS Proxy, HTTP or Socks5 only)"
-msgstr "Usa un sistema d'autenticació pel servidor intermedi (HTTP i Socks5)"
+msgstr ""
 
 #: src/fe-gtk/setup.c:597
-#, fuzzy
 msgid "Use Authentication (HTTP or Socks5 only)"
-msgstr "Usa un sistema d'autenticació pel servidor intermedi (HTTP i Socks5)"
+msgstr ""
 
 #: src/fe-gtk/setup.c:599
 msgid "Username:"
@@ -5874,11 +5450,9 @@ msgid "Select an Image File"
 msgstr "Seleccioneu un fitxer d'imatge"
 
 #: src/fe-gtk/setup.c:1066
-#, fuzzy
 msgid "Select Download Folder"
-msgstr "Seleccioneu un color"
+msgstr ""
 
-# títol d'un diàleg.  eac
 #: src/fe-gtk/setup.c:1075
 msgid "Select font"
 msgstr "Seleccioneu un tipus de lletra"
@@ -5912,9 +5486,8 @@ msgid "mIRC colors:"
 msgstr "Colors del mIRC:"
 
 #: src/fe-gtk/setup.c:1466
-#, fuzzy
 msgid "Local colors:"
-msgstr "Colors adicionals:"
+msgstr ""
 
 #: src/fe-gtk/setup.c:1474 src/fe-gtk/setup.c:1479
 msgid "Foreground:"
@@ -5953,14 +5526,12 @@ msgid "Highlight:"
 msgstr "Text realçat:"
 
 #: src/fe-gtk/setup.c:1490
-#, fuzzy
 msgid "Spell checker:"
-msgstr "Comprovació de l'ortografia"
+msgstr ""
 
 #: src/fe-gtk/setup.c:1493
-#, fuzzy
 msgid "Color Stripping"
-msgstr "Cadena DCC"
+msgstr ""
 
 #: src/fe-gtk/setup.c:1599 src/fe-gtk/textgui.c:389
 msgid "Event"
@@ -6011,9 +5582,8 @@ msgid "Interface"
 msgstr "Interfície"
 
 #: src/fe-gtk/setup.c:1876
-#, fuzzy
 msgid "Appearance"
-msgstr "Aparença de la finestra de text"
+msgstr ""
 
 #: src/fe-gtk/setup.c:1877
 msgid "Input box"
@@ -6024,9 +5594,8 @@ msgid "User list"
 msgstr "Llista d'usuaris"
 
 #: src/fe-gtk/setup.c:1879
-#, fuzzy
 msgid "Channel switcher"
-msgstr "_Tema del canal"
+msgstr ""
 
 #: src/fe-gtk/setup.c:1880
 msgid "Colors"
@@ -6064,9 +5633,7 @@ msgstr ""
 
 #: src/fe-gtk/setup.c:2252
 msgid "Some settings were changed that require a restart to take full effect."
-msgstr ""
-"Algunes de les opcions que han canviat requereixen reiniciar l'X-Chat per a "
-"tenir efecte."
+msgstr "Algunes de les opcions que han canviat requereixen reiniciar l'X-Chat per a tenir efecte."
 
 #: src/fe-gtk/setup.c:2260
 msgid ""
@@ -6074,16 +5641,11 @@ msgid ""
 "Auto accepting DCC to your home directory\n"
 "can be dangerous and is exploitable. Eg:\n"
 "Someone could send you a .bash_profile"
-msgstr ""
-"*ATENCIÓ*\n"
-"Acceptar automàticament DCCs al vostre\n"
-"directori personal pot ser perillós. P.ex:\n"
-"Algú podria enviar-vos un .bash_profile"
+msgstr "*ATENCIÓ*\nAcceptar automàticament DCCs al vostre\ndirectori personal pot ser perillós. P.ex:\nAlgú podria enviar-vos un .bash_profile"
 
 #: src/fe-gtk/setup.c:2293
-#, fuzzy
 msgid ": Preferences"
-msgstr "Preferè_ncies..."
+msgstr ""
 
 #: src/fe-gtk/textgui.c:180
 msgid "There was an error parsing the string"
@@ -6107,9 +5669,8 @@ msgid "$ Number"
 msgstr "$ Número"
 
 #: src/fe-gtk/textgui.c:440
-#, fuzzy
 msgid "Load From..."
-msgstr "Carrega des de"
+msgstr ""
 
 #: src/fe-gtk/textgui.c:441
 msgid "Test All"
@@ -6120,9 +5681,8 @@ msgid "URL"
 msgstr "URL"
 
 #: src/fe-gtk/urlgrab.c:199
-#, fuzzy
 msgid ": URL Grabber"
-msgstr "Capturador d'URLs..."
+msgstr ""
 
 #: src/fe-gtk/urlgrab.c:212
 msgid "Clear list"
@@ -6144,1425 +5704,3 @@ msgstr "Desa la llista a un fitxer"
 #, c-format
 msgid "%d ops, %d total"
 msgstr "%d operadors, %d en total"
-
-#, fuzzy
-#~ msgid "Localization"
-#~ msgstr "Posició de les pestanyes"
-
-#, fuzzy
-#~ msgid "Interface language:"
-#~ msgstr "Interfície"
-
-#, fuzzy
-#~ msgid "Save Settings to Disk"
-#~ msgstr "Desa la configuració en sortir"
-
-#~ msgid "Cannot create ~/.xchat2"
-#~ msgstr "No s'ha pogut crear el directori ~/.xchat2"
-
-#~ msgid "CLEAR, Clears the current text window"
-#~ msgstr "CLEAR, Esborra el text de la finestra actual"
-
-#~ msgid "LASTLOG <string>, searches for a string in the buffer"
-#~ msgstr "LASTLOG <cadena>, cerca una cadena de text en el buffer"
-
-#~ msgid "QUERY <nick>, opens up a new privmsg window to someone"
-#~ msgstr ""
-#~ "QUERY <sobrenom>, obre una finestra nova de missatges privats per a algú"
-
-#~ msgid "SETCURSOR [-|+]<position>"
-#~ msgstr "SETCURSOR [-|+]<posició>"
-
-#~ msgid "%C18*$t$1%O $2"
-#~ msgstr "%C18*$t$1%O $2"
-
-#~ msgid "%C21*%O$t%C21%B$1%O%C21 $2"
-#~ msgstr "%C21*%O$t%C21%B$1%O%C21 $2"
-
-#~ msgid "%C18%B%B$4$1%O%C18%O$t$2"
-#~ msgstr "%C18%B%B$4$1%O%C18%O$t$2"
-
-#~ msgid "$4%C21%B$1%O$t%C21$2"
-#~ msgstr "$4%C21%B$1%O$t%C21$2"
-
-#~ msgid "%C28-%C29$1/$2%C28-%O$t$3"
-#~ msgstr "%C28-%C29$1/$2%C28-%O$t$3"
-
-#~ msgid "$1$t$2"
-#~ msgstr "$1$t$2"
-
-#~ msgid "%C19>%O$1%C19<%O$t$2%O"
-#~ msgstr "%C19>%O$1%C19<%O$t$2%O"
-
-#~ msgid "%C16*%O$t$1%O"
-#~ msgstr "%C16*%O$t$1%O"
-
-#~ msgid "%C28-%C29$1%C28-%O$t$2"
-#~ msgstr "%C28-%C29$1%C28-%O$t$2"
-
-#~ msgid "%C19>%O$1%C19<%O$t$2"
-#~ msgstr "%C19>%O$1%C19<%O$t$2"
-
-#~ msgid "%C28*%C29$3$1%C28*$t%O$2"
-#~ msgstr "%C28*%C29$3$1%C28*$t%O$2"
-
-#~ msgid "%C18%B%B$3$1%O$t$2"
-#~ msgstr "%C18%B%B$3$1%O$t$2"
-
-#~ msgid "%C22*%O$t$1"
-#~ msgstr "%C22*%O$t$1"
-
-#~ msgid "%C31%B%B$4$1%O%C30$t$2"
-#~ msgstr "%C31%B%B$4$1%O%C30$t$2"
-
-#~ msgid "PID"
-#~ msgstr "PID"
-
-#~ msgid "Servername"
-#~ msgstr "Nom del servidor"
-
-#~ msgid "France, Metropolitan"
-#~ msgstr "França, Metropolitana"
-
-#~ msgid "Neutral Zone"
-#~ msgstr "Zona neutral"
-
-#~ msgid "US Minor Outlying Islands"
-#~ msgstr "Illes Perifèriques Menors dels EUA"
-
-#~ msgid "Direct client-to-client"
-#~ msgstr "Directe Client-a-Client"
-
-#~ msgid "Send File"
-#~ msgstr "Envia un fitxer"
-
-#~ msgid "Offer Chat"
-#~ msgstr "Ofereix un xat"
-
-#~ msgid "Abort Chat"
-#~ msgstr "Avorta el xat"
-
-#~ msgid "Userinfo"
-#~ msgstr "Informació de l'usuari"
-
-#~ msgid "Clientinfo"
-#~ msgstr "Informació del client"
-
-#~ msgid "Time"
-#~ msgstr "Hora"
-
-#~ msgid "Finger"
-#~ msgstr "Finger"
-
-#~ msgid "Oper"
-#~ msgstr "Operador"
-
-#~ msgid "Kill this user"
-#~ msgstr "Mata aquest usuari"
-
-#~ msgid "Mode"
-#~ msgstr "Mode"
-
-#~ msgid "Give Half-Ops"
-#~ msgstr "Dóna l'estatus de semi-operador"
-
-#~ msgid "Take Half-Ops"
-#~ msgstr "Treu l'estatus de semi-operador"
-
-#~ msgid "Ignore"
-#~ msgstr "Ignora"
-
-#~ msgid "Ignore User"
-#~ msgstr "Ignora l'usuari"
-
-#~ msgid "UnIgnore User"
-#~ msgstr "Deixa d'ignorar l'usuari"
-
-#~ msgid "Info"
-#~ msgstr "Informació"
-
-#~ msgid "Who"
-#~ msgstr "Qui"
-
-#~ msgid "DNS Lookup"
-#~ msgstr "Consulta DNS"
-
-#~ msgid "Trace"
-#~ msgstr "Traça"
-
-#~ msgid "UserHost"
-#~ msgstr "UsuariMàquina"
-
-#~ msgid "External"
-#~ msgstr "Extern"
-
-#~ msgid "Traceroute"
-#~ msgstr "Traceroute"
-
-#~ msgid "Telnet"
-#~ msgstr "Telnet"
-
-#~ msgid "About X-Chat"
-#~ msgstr "Quant a l'X-Chat"
-
-#~ msgid "Unban"
-#~ msgstr "Readmet"
-
-#~ msgid "I can't save an empty list!"
-#~ msgstr "No podeu desar una llista buida!"
-
-#~ msgid "List display options:"
-#~ msgstr "Opcions de visualització:"
-
-#~ msgid "Minimum Users:"
-#~ msgstr "Mínim d'usuaris:"
-
-#~ msgid "Maximum Users:"
-#~ msgstr "Màxim d'usuaris:"
-
-#~ msgid "Regex Match:"
-#~ msgstr "Filtra amb l'expressió regular:"
-
-#~ msgid "Apply Match to:"
-#~ msgstr "Aplica la coincidència a:"
-
-#~ msgid "Apply"
-#~ msgstr "Aplica"
-
-#~ msgid "Refresh the list"
-#~ msgstr "Refresca la llista"
-
-#~ msgid "Save the list"
-#~ msgstr "Desa la llista"
-
-#~ msgid "From:"
-#~ msgstr "De:"
-
-#~ msgid "To:"
-#~ msgstr "A:"
-
-#~ msgid "Size:"
-#~ msgstr "Mida:"
-
-#~ msgid "Started:"
-#~ msgstr "Inici:"
-
-#~ msgid "Speed limit:"
-#~ msgstr "Limitació de velocitat:"
-
-#~ msgid "MIME Type"
-#~ msgstr "Tipus MIME"
-
-#~ msgid "X-Chat: File Receive List"
-#~ msgstr "X-Chat: Llista de fitxers rebuts"
-
-#~ msgid "Open"
-#~ msgstr "Obre"
-
-#~ msgid "Ack"
-#~ msgstr "Rebut"
-
-#~ msgid "To"
-#~ msgstr "A"
-
-#~ msgid "To/From"
-#~ msgstr "A/De"
-
-#~ msgid "Options"
-#~ msgstr "Opcions"
-
-#~ msgid "don't auto connect"
-#~ msgstr "no et connectis automàticament als servidors"
-
-#~ msgid "DIRECTORY"
-#~ msgstr "DIRECTORI"
-
-#~ msgid "X-Chat: Keyboard Shortcuts"
-#~ msgstr "X-Chat: Vincles de tecla"
-
-#~ msgid "Add new"
-#~ msgstr "Afegeix"
-
-#~ msgid "Add"
-#~ msgstr "Afegeix"
-
-#~ msgid "No other tabs open, quit xchat?"
-#~ msgstr "No hi ha més pestanyes obertes, voleu sortir de l'X-Chat?"
-
-#~ msgid "Show join/part messages"
-#~ msgstr "Mostra missatges d'entrada/sortida"
-
-#~ msgid "Color paste"
-#~ msgstr "Enganxa amb color"
-
-#~ msgid "Go to"
-#~ msgstr "Vés a"
-
-#~ msgid "Close Tab"
-#~ msgstr "Tanca la pestanya"
-
-#~ msgid "Close this tab/window"
-#~ msgstr "Tanca aquesta pestanya/finestra"
-
-#~ msgid "User List Buttons"
-#~ msgstr "Botons de la llista d'usuaris"
-
-#~ msgid "Settings saved."
-#~ msgstr "S'ha desat la configuració."
-
-#~ msgid "X-Chat: URL Handlers"
-#~ msgstr "X-Chat: Gestió d'URLs"
-
-#~ msgid "X-Chat: CTCP Replies"
-#~ msgstr "X-Chat: Respostes CTCP"
-
-#~ msgid "_X-Chat"
-#~ msgstr "_X-Chat"
-
-#~ msgid "New"
-#~ msgstr "Nou"
-
-#~ msgid "New Shell Tab..."
-#~ msgstr "Pestanya de shell nova..."
-
-#~ msgid "_IRC"
-#~ msgstr "_IRC"
-
-#~ msgid "Invisible"
-#~ msgstr "Invisible"
-
-#~ msgid "Receive Wallops"
-#~ msgstr "Rep wallops"
-
-#~ msgid "Receive Server Notices"
-#~ msgstr "Rep els avisos del servidor"
-
-#~ msgid "Auto Rejoin when Kicked"
-#~ msgstr "Reentra automàticament en cas d'expulsió"
-
-#~ msgid "Never-give-up ReConnect"
-#~ msgstr "Intents de reconnexió ad infinitum"
-
-#~ msgid "Auto Open Dialog Windows"
-#~ msgstr "Obre finestres de diàleg automàticament"
-
-#~ msgid "Auto Accept Direct Chat"
-#~ msgstr "Accepta automàticament xats DCC"
-
-#~ msgid "Preferences..."
-#~ msgstr "Preferències..."
-
-#~ msgid "Reload Settings"
-#~ msgstr "Rellegeix la configuració"
-
-#~ msgid "Save Settings now"
-#~ msgstr "Desa la configuració ara"
-
-#~ msgid "File Receive..."
-#~ msgstr "Fitxers rebuts..."
-
-#~ msgid "File Send..."
-#~ msgstr "Fitxer enviats..."
-
-#~ msgid "Notify List..."
-#~ msgstr "Llista de notificació..."
-
-#~ msgid "User"
-#~ msgstr "Usuari"
-
-#~ msgid "Server"
-#~ msgstr "Servidor"
-
-#~ msgid "X-Chat: Notify List"
-#~ msgstr "X-Chat: Llista de notificació"
-
-#~ msgid "X-Chat: Plugins and Scripts"
-#~ msgstr "X-Chat: Connectors i scripts"
-
-#~ msgid "Save rawlog"
-#~ msgstr "Desa un registre brut"
-
-#~ msgid "Save rawlog..."
-#~ msgstr "Desa el registra brut..."
-
-#~ msgid "Find"
-#~ msgstr "Cerca"
-
-#~ msgid "Close"
-#~ msgstr "Tanca"
-
-#~ msgid "Real na_me:"
-#~ msgstr "Nom real:"
-
-#~ msgid "C_hannels to join:"
-#~ msgstr "Canals on entrar:"
-
-#~ msgid "X-Chat: Server List"
-#~ msgstr "X-Chat: Llista de servidors"
-
-#~ msgid "Connect in new tab"
-#~ msgstr "Connecta en una pestanya nova"
-
-#~ msgid "Tint (shade) transparency"
-#~ msgstr "Transparència tintada"
-
-# què fa?.  eac
-#~ msgid "Strip mIRC colors"
-#~ msgstr "Treu els colors del mIRC"
-
-#~ msgid "Completes nick names without using the TAB key"
-#~ msgstr "Completa els sobrenoms sense haver d'usar la tecla TAB"
-
-#~ msgid "Input Box Appearance"
-#~ msgstr "Aparença de la línia d'entrada"
-
-#~ msgid "Info text"
-#~ msgstr "Text informatiu"
-
-#~ msgid "User list buttons enabled"
-#~ msgstr "Habilita els botons de la llista d'usuaris"
-
-#~ msgid "Resizable user list"
-#~ msgstr "Llista d'usuaris redimensionable"
-
-#~ msgid "Lag meter:"
-#~ msgstr "Mesurador de retard:"
-
-#~ msgid "Throttle meter:"
-#~ msgstr "Mesurador de velocitat:"
-
-#~ msgid "Left"
-#~ msgstr "A l'esquerra"
-
-#~ msgid "Right"
-#~ msgstr "A la dreta"
-
-#~ msgid "Convert spaces to underscore before sending"
-#~ msgstr "Converteix els espais en guions baixos abans d'enviar"
-
-#~ msgid "(Can be a text file relative to ~/.xchat2/)."
-#~ msgstr "(Pot ser un fitxer de text relatiu a ~/.xchat2/)."
-
-#~ msgid "(Can be a text file relative to config dir)."
-#~ msgstr "(Pot ser un fitxer de text relatiu al directori de configuració)."
-
-#~ msgid "Flash taskbar on highlighted messages"
-#~ msgstr "Il·lumina la barra de tasques quan hi hagi missatges realçats"
-
-#~ msgid "Beep on private messages"
-#~ msgstr "Avís sonor de missatges privats"
-
-#~ msgid "Beep on channel messages"
-#~ msgstr "Avís sonor de missatges al canal"
-
-#~ msgid "(See strftime manpage for details)."
-#~ msgstr "(Per a més detalls consulteu la pàgina del manual strftime (3))."
-
-#~ msgid "(disabled)"
-#~ msgstr "(inhabilitat)"
-
-#~ msgid "A star (*)"
-#~ msgstr "Un asterisc (*)"
-
-#~ msgid "A red star (*)"
-#~ msgstr "Un asterisc roig (*)"
-
-#~ msgid "X-Chat: Preferences"
-#~ msgstr "X-Chat: Preferències"
-
-#~ msgid "Select a file to save to"
-#~ msgstr "Seleccioneu un fitxer on desar-ho"
-
-#~ msgid ""
-#~ "      File: %s\n"
-#~ "   To/From: %s\n"
-#~ "      Size: %u\n"
-#~ "      Port: %d\n"
-#~ " IP Number: %s\n"
-#~ "Start Time: %s   Max CPS: %d\n"
-#~ msgstr ""
-#~ "    Fitxer: %s\n"
-#~ "      A/De: %s\n"
-#~ "      Mida: %u\n"
-#~ "      Port: %d\n"
-#~ " Adreça IP: %s\n"
-#~ "     Inici: %s   CPS màxim: %d\n"
-
-#~ msgid "User: %s"
-#~ msgstr "Usuari: %s"
-
-#~ msgid "Realname: %s"
-#~ msgstr "Nom real: %s"
-
-#~ msgid "Server: %s"
-#~ msgstr "Servidor: %s"
-
-#~ msgid "%C22*%O$t%C28[%O$1%C28] %O$2"
-#~ msgstr "%C22*%O$t%C28[%O$1%C28] %O$2"
-
-#~ msgid "Former Czechoslovakia"
-#~ msgstr "Antiga Txecoslovàquia"
-
-#~ msgid "Zaire"
-#~ msgstr "Zaire"
-
-#~ msgid "<span weight=\"bold\">List Filtering</span>"
-#~ msgstr "<span weight=\"bold\">Filtres de la llista</span>"
-
-#~ msgid "Channel _Name"
-#~ msgstr "_Nom del canal"
-
-#~ msgid "in:"
-#~ msgstr "a:"
-
-#~ msgid "<span weight=\"bold\">Automatically Join Channels</span>"
-#~ msgstr "<span weight=\"bold\">Entra automàticament als canals</span>"
-
-#~ msgid "<span weight=\"bold\">User Info</span>"
-#~ msgstr "<span weight=\"bold\">Informació de l'usuari</span>"
-
-#~ msgid "Cycle _until connected"
-#~ msgstr "S_urt i entra al canal fins a connectar-te"
-
-#~ msgid "Use _these user settings:"
-#~ msgstr "U_tilitza aquesta informació d'usuari:"
-
-#~ msgid "User and Channels"
-#~ msgstr "Usuaris i canals"
-
-#~ msgid "_Name:"
-#~ msgstr "_Nom:"
-
-#~ msgid "_Real Name:"
-#~ msgstr "Nom _real:"
-
-#~ msgid "_Use secure connection (SSL)"
-#~ msgstr "_Utilitza una connexió segura (SSL)"
-
-#~ msgid "<span size=\"small\" style=\"italic\">Opaque</span>"
-#~ msgstr "<span size=\"small\" style=\"italic\">Opac</span>"
-
-#~ msgid "<span size=\"small\" style=\"italic\">Transparent</span>"
-#~ msgstr "<span size=\"small\" style=\"italic\">Transparent</span>"
-
-#~ msgid "<span weight=\"bold\">Background</span>"
-#~ msgstr "<span weight=\"bold\">Fons</span>"
-
-#~ msgid "<span weight=\"bold\">DCC Settings</span>"
-#~ msgstr "<span weight=\"bold\">Paràmetres DCC</span>"
-
-#~ msgid "<span weight=\"bold\">Extra Colors</span>"
-#~ msgstr "<span weight=\"bold\">Colors addicionals</span>"
-
-#~ msgid "<span weight=\"bold\">File Transfers</span>"
-#~ msgstr "<span weight=\"bold\">Transferència de fitxers</span>"
-
-#~ msgid "<span weight=\"bold\">General</span>"
-#~ msgstr "<span weight=\"bold\">General</span>"
-
-#~ msgid "<span weight=\"bold\">Highlighting</span>"
-#~ msgstr "<span weight=\"bold\">Realçament</span>"
-
-#~ msgid "<span weight=\"bold\">Text Colors</span>"
-#~ msgstr "<span weight=\"bold\">Colors del text</span>"
-
-#~ msgid "<span weight=\"bold\">Throttling</span>"
-#~ msgstr "<span weight=\"bold\">Restricció d'entrada</span>"
-
-#~ msgid "<span weight=\"bold\">User Interface</span>"
-#~ msgstr "<span weight=\"bold\">Interfície d'usuari</span>"
-
-#~ msgid "<span weight=\"bold\">mIRC Colors</span>"
-#~ msgstr "<span weight=\"bold\">Colors del mIRC</span>"
-
-#~ msgid "Auto-accept DCC file tr_ansfers"
-#~ msgstr "Accepta _automàticament fitxers per DCC"
-
-#~ msgid "Buil_t-in schemes:"
-#~ msgstr "Esquemes in_tegrats:"
-
-#~ msgid "Glo_bal receive KB/s: "
-#~ msgstr "KB/s de baixada glo_bals:"
-
-#~ msgid "I_mage file:"
-#~ msgstr "Fitxer d'i_matge:"
-
-#~ msgid "Indi_vidual receive KB/s: "
-#~ msgstr "KB/s de baixada indi_viduals:"
-
-#~ msgid "Select Completed Files Directory"
-#~ msgstr "Seleccioneu el directori per als fitxers completats:"
-
-#~ msgid ""
-#~ "To edit a shortcut key, click on the corresponding row and type a new "
-#~ "accelerator, or press backspace to clear."
-#~ msgstr ""
-#~ "Per a editar una tecla de drecera cliqueu a la fila corresponent i "
-#~ "teclegeu una nova drecera, o bé premeu la tecla de retrocés per a "
-#~ "esborrar la drecera."
-
-#~ msgid "Use _system terminal font"
-#~ msgstr "Utilitza el tipus de lletra de terminal del _sistema"
-
-#~ msgid "Use t_his IP address:"
-#~ msgstr "Utilitza aquesta adreça I_P:"
-
-#~ msgid "Use this f_ont:"
-#~ msgstr "Utilitza aquest _tipus de lletra"
-
-#~ msgid "_Background color:"
-#~ msgstr "Color de _fons:"
-
-#~ msgid "_Foreground color:"
-#~ msgstr "Color de _primer pla:"
-
-#~ msgid "_Global send KB/s: "
-#~ msgstr "KB/s de pujada _globals:"
-
-#~ msgid "_Nickname:"
-#~ msgstr "Sobre_nom:"
-
-#~ msgid "_None (use solid color)"
-#~ msgstr "_Cap (utilitza color sòlid)"
-
-#~ msgid "_Part message:"
-#~ msgstr "Missatge de _sortida:"
-
-#~ msgid "_Quit message:"
-#~ msgstr "Missatge de _desconnexió:"
-
-#~ msgid "spell checking"
-#~ msgstr "comprovació ortogràfica"
-
-#~ msgid ""
-#~ "Welcome to XChat-GNOME! Since this is your first time using this "
-#~ "application, there are a couple things you'll need to configure before "
-#~ "you can get started.\n"
-#~ "\n"
-#~ "These are the names by which you'll be recognized on IRC. Your nick name "
-#~ "is the name by which you'll be known, whereas the real name is useful for "
-#~ "things such as registering with services. You do not have to use your "
-#~ "real name if you do not want to."
-#~ msgstr ""
-#~ "Benvingut a l'XChat-GNOME. Atès que és la primera vegada que feu servir "
-#~ "aquesta aplicació, haureu de configurar uns quants paràmetres abans de "
-#~ "començar.\n"
-#~ "\n"
-#~ "Aquests són els noms pels quals sereu reconegut en els xats IRC. En un "
-#~ "xat sereu reconegut pel sobrenom, mentre que el nom real s'utilitzarà per "
-#~ "a altres finalitats, com per exemple, per al registre a determinats "
-#~ "serveis. No cal que utilitzeu el vostre nom real si és que no ho desitgeu."
-
-#~ msgid "XChat-GNOME Setup"
-#~ msgstr "Configuració de l'XChat-GNOME"
-
-#~ msgid "_Real name:"
-#~ msgstr "Nom _real:"
-
-#~ msgid "Chat with people using IRC"
-#~ msgstr "Xerreu amb altres persones a través de l'IRC"
-
-#~ msgid "IRC Chat"
-#~ msgstr "Xat IRC"
-
-#~ msgid "XChat-GNOME IRC Chat"
-#~ msgstr "Xat IRC de l'XChat-GNOME"
-
-#~ msgid "Apply on all _servers"
-#~ msgstr "Aplica-ho per a tots els _servidors"
-
-#~ msgid "nickname"
-#~ msgstr "sobrenom"
-
-#~ msgid "Screensaver activated, going away."
-#~ msgstr ""
-#~ "S'ha activat l'estalvi de pantalla, es commutarà a l'estat d'absència"
-
-#~ msgid "Screensaver is off, welcome back"
-#~ msgstr "S'ha desactivat l'estalvi de pantalla, benvingut de nou"
-
-#~ msgid "NetworkManager connection monitor"
-#~ msgstr "Monitor de la connexió del NetworkManager"
-
-#~ msgid "%s loaded successfully\n"
-#~ msgstr "«%s» s'ha carregat satisfactòriament\n"
-
-#~ msgid "Notification"
-#~ msgstr "Notificació"
-
-#~ msgid "A notification area plugin."
-#~ msgstr "Un connector per a l'àrea de notificació."
-
-#~ msgid "Notification plugin loaded.\n"
-#~ msgstr "S'ha carregat el connector de notificació.\n"
-
-#~ msgid "Notification plugin unloaded.\n"
-#~ msgstr "S'ha descarregat el connector de notificació.\n"
-
-#~ msgid "Level of the messages that require a notification"
-#~ msgstr "Nivell dels missatges pels quals es requereix una notificació"
-
-#~ msgid ""
-#~ "Messages are classified according to their importance. Select level of "
-#~ "messages above which the notification icon will be displayed. Valid "
-#~ "values are: \"0\" (always displayed), \"1\" (all messages including "
-#~ "information), \"2\" (all channel messages), \"3\" (only private or "
-#~ "highlighted messages)."
-#~ msgstr ""
-#~ "Els missatges es classifiquen segons la seva importància. Seleccioneu el "
-#~ "nivell d'importància dels missatges per sobre del qual es mostrarà la "
-#~ "icona de notificació. Els valors següents són assignables: «0» (sempre "
-#~ "visible), «1» (tots els missatges, incloent-hi els d'informació), "
-#~ "«2» (tots els missatges dels canals), «3» (només els missatges privats o "
-#~ "realçats)."
-
-#~ msgid "<span weight=\"bold\">Notification level</span>"
-#~ msgstr "<span weight=\"bold\">Nivell de la notificació</span>"
-
-#~ msgid "Notify each _event"
-#~ msgstr "Notifica tots els _esdeveniments"
-
-#~ msgid "_Always display notification icon"
-#~ msgstr "Mostr_a sempre la icona de notificació"
-
-#~ msgid "On-screen display"
-#~ msgstr "Monitor a la pantalla (OSD)"
-
-# FIXME (dpm) és correcte «no tenir el focus»?
-#~ msgid ""
-#~ "Pops up notification of important messages when XChat-GNOME doesn't have "
-#~ "the focus"
-#~ msgstr ""
-#~ "Mostra la notificació de missatges importants quan l'XChat-GNOME no té el "
-#~ "focus"
-
-#~ msgid "Error closing notification: %s\n"
-#~ msgstr "S'ha produït un error en tancar la notificació: %s\n"
-
-#~ msgid "Message in %s"
-#~ msgstr "Missatge a %s"
-
-#~ msgid "Message from %s"
-#~ msgstr "Missatge de %s"
-
-#~ msgid "OSD loaded\n"
-#~ msgstr "S'ha carregat l'OSD\n"
-
-#~ msgid "OSD initialization failed\n"
-#~ msgstr "No s'ha pogut inicialitzar l'OSD\n"
-
-#~ msgid "Grabs URLs and puts them in a separate window for easy viewing."
-#~ msgstr ""
-#~ "Captura URLs i les posa en una altra finestra per a una visualització més "
-#~ "còmoda."
-
-#~ msgid "URL Scraper failed to load: couldn't compile URL regex.\n"
-#~ msgstr ""
-#~ "No s'ha pogut carregar el capturador d'URLs: no s'ha pogut compilar "
-#~ "l'expressió regular per a l'URL.\n"
-
-#~ msgid "URL Scraper failed to load: couldn't compile e-mail regex.\n"
-#~ msgstr ""
-#~ "No s'ha pogut carregar el capturador d'URLs: no s'ha pogut compilar "
-#~ "l'expressió regular per a l'adreça de correu electrònic.\n"
-
-#~ msgid "URL Scraper loaded.\n"
-#~ msgstr "S'ha carregat el capturador d'URLs.\n"
-
-#~ msgid "URL Scraper unloaded.\n"
-#~ msgstr "S'ha descarregat el capturador d'URLs.\n"
-
-#~ msgid "URL Scraper history length"
-#~ msgstr "Mida de l'historial del capturador d'URLs"
-
-#~ msgid "URL Scraper show timestamps"
-#~ msgstr "Mostra la data i hora de cada missatge"
-
-#~ msgid "Sound Notification"
-#~ msgstr "Notificació per àudio"
-
-#~ msgid ""
-#~ "Play a sound when you receive a private message or your nick is "
-#~ "highlighted."
-#~ msgstr ""
-#~ "Reprodueix un so en rebre un missatge privat o bé en ésser realçat el "
-#~ "vostre sobrenom."
-
-#~ msgid "Sound-notification plugin loaded.\n"
-#~ msgstr "S'ha carregat el connector de notificació per àudio.\n"
-
-#~ msgid "Sound-notification plugin unloaded.\n"
-#~ msgstr "S'ha descarregat el connector de notificació per àudio.\n"
-
-#~ msgid ""
-#~ "Set per channel options\n"
-#~ "CHANOPT CONFMODE ON|OFF - Toggle conf mode/showing of join and part "
-#~ "messages\n"
-#~ "CHANOPT COLORPASTE ON|OFF - Toggle color paste\n"
-#~ "CHANOPT BEEP ON|OFF - Toggle beep on message"
-#~ msgstr ""
-#~ "Estableix les opcions per a cada canal individual\n"
-#~ "CHANOPT CONFMODE ON|OFF - Mostra o oculta els missatges d'entrada i de "
-#~ "sortida\n"
-#~ "CHANOPT COLORPASTE ON|OFF - Commuta poder enganxar amb colors\n"
-#~ "CHANOPT BEEP ON|OFF - Commuta la reproducció del to del sistema en rebre "
-#~ "un missatge"
-
-#~ msgid "-%C10-%C11-%O$tReceived a CTCP $1 from $2 (to $3)"
-#~ msgstr "-%C10-%C11-%O$tS'ha rebut un CTCP $1 de $2 (per a $3)"
-
-#~ msgid "-%C10-%C11-%O$tReceived a CTCP Sound $1 from $2"
-#~ msgstr "-%C10-%C11-%O$tS'ha rebut un CTCP Sound $1 de $2"
-
-#~ msgid ""
-#~ "-%C10-%C11-%O$tDCC CHAT failed. Connection to $1 %C14[%O$2:$3%C14]%O lost."
-#~ msgstr ""
-#~ "-%C10-%C11-%O$tNo s'ha pogut establir la DCC. S'ha perdut la connexió amb "
-#~ "$1 %C14[%O$2:$3%C14]%O."
-
-#~ msgid "-%C10-%C11-%O$tDCC RECV $1 ($2) failed. Connection to $3 lost."
-#~ msgstr ""
-#~ "-%C10-%C11-%O$tNo s'ha pogut rebre el fitxer $1 ($2). S'ha perdut la "
-#~ "connexió amb $3."
-
-#~ msgid ""
-#~ "-%C10-%C11-%O$tDCC SEND %C11$1%O failed. Connection to %C11$2%O lost."
-#~ msgstr ""
-#~ "-%C10-%C11-%O$tLa conexió DCC SEND no s'ha pogut establir. S'ha perdut la "
-#~ "connexió amb %C11$2%O."
-
-#~ msgid "-%C10-%C11-%O$t$1%O"
-#~ msgstr "-%C10-%C11-%O$t$1%O"
-
-#~ msgid "-%C10-%C11-%O$t%C12[%O$1%C12]%C $2"
-#~ msgstr "-%C10-%C11-%O$t%C12[%O$1%C12]%C $2"
-
-#~ msgid "-%C10-%C11-%O$t%C12[%O$1%C12] %C$2"
-#~ msgstr "-%C10-%C11-%O$t%C12[%O$1%C12] %C$2"
-
-#~ msgid "-%C10-%C11-%O$t%C12[%O$1%C12]%O idle %C11$2%O"
-#~ msgstr "-%C10-%C11-%O$t%C12[%O$1%C12]%O inactiu %C11$2%O"
-
-#~ msgid "-%C10-%C11-%O$t%C12[%O$1%C12] %C14(%O$2@$3%C14) %O: $4%O"
-#~ msgstr "-%C10-%C11-%O$t%C12[%O$1%C12] %C14(%O$2@$3%C14) %O: $4%O"
-
-#~ msgid "-%C10-%C11-%O$t%C12[%O$1%C12]%O $2"
-#~ msgstr "-%C10-%C11-%O$t%C12[%O$1%C12]%O $2"
-
-#~ msgid "%C6<%O$1%C6>%O$t$2%O"
-#~ msgstr "%C6<%O$1%C6>%O$t$2%O"
-
-#~ msgid "%s loaded successfully!\n"
-#~ msgstr "S'ha carregat %s amb èxit\n"
-
-#~ msgid "Run XChat-GNOME in a terminal?"
-#~ msgstr "Voleu executar XChat-GNOME en un terminal?"
-
-#~ msgid "Set it at TRUE if you want it activated"
-#~ msgstr "Establiu-ho com a TRUE si ho voleu habilitar"
-
-#~ msgid "The handler for \"irc://\" URLs"
-#~ msgstr "El gestor per a URLs del tipus «irc://»"
-
-#~ msgid ""
-#~ "X-Chat GNOME is free software; you can redistribute it and/or modify it "
-#~ "under the terms of the GNU General Public License as published by the "
-#~ "Free Software Foundation; either version 2 of the License, or (at your "
-#~ "option) any later version."
-#~ msgstr ""
-#~ "L'X-Chat GNOME és programari lliure; podeu redistribuir-lo i/o modificar-"
-#~ "lo sota els termes de la Llicència Pública General GNU tal i com ha estat "
-#~ "publicada per la Free Software Foundation; la sigui la versió 2 de la "
-#~ "llicència o (si ho preferiu) qualsevol versió posterior. "
-
-#~ msgid ""
-#~ "X-Chat GNOME is distributed in the hope that it will be useful, but "
-#~ "WITHOUT ANY WARRANTY; without even the implied warranty of "
-#~ "MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General "
-#~ "Public License for more details."
-#~ msgstr ""
-#~ "L'X-Chat GNOME es distribueix amb l'expectativa que serà útil, però SENSE "
-#~ "CAP GARANTIA; fins i tot sense la garantia implícita de COMERCIABILITAT o "
-#~ "ADEQUACIÓ PER A UN PROPÒSIT PARTICULAR.  Vegeu la Llicència Pública "
-#~ "General GNU per a obtenir-ne més detalls."
-
-#~ msgid ""
-#~ "You should have received a copy of the GNU General Public License along "
-#~ "with X-Chat GNOME; if not, write to the Free Software Foundation, Inc., "
-#~ "59 Temple Place, Suite 330, Boston, MA  02111-1307  USA"
-#~ msgstr ""
-#~ "Hauríeu d'haver rebut una còpia de la Llicència Pública General GNU "
-#~ "juntament amb l'X-Chat GNOME; en cas contrari, escriviu a la Free "
-#~ "Software Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  "
-#~ "02111, USA."
-
-#~ msgid "Copyright © 2004-2006"
-#~ msgstr "Copyright © 2004-2006"
-
-# broma dolenta (eac)
-#~ msgid ""
-#~ "It has been well observed that a trombone is not a suitable instrument "
-#~ "for a gentleman"
-#~ msgstr "L'home descendeix del mono i el mono descendeix de l'arbre"
-
-#~ msgid "XChat-GNOME Web Site"
-#~ msgstr "Lloc web de l'XChat-GNOME"
-
-#~ msgid "translator-credits"
-#~ msgstr ""
-#~ "Softcatalà <info@softcatala.org>\n"
-#~ "Yannick Garcia <ygp@tinet.fut.es>\n"
-#~ "Antoni Bella Perez <bella5@teleline.es>\n"
-#~ "Ernest Adrogué Calveras <eadrogue@gmx.net>\n"
-#~ "David Planella Molas <david.planella@gmail.com>"
-
-#~ msgid "Automatically display the channel list dialog"
-#~ msgstr "Mostra el diàleg amb la llista de canals de manera automàtica"
-
-#~ msgid "Background image filename"
-#~ msgstr "Imatge de fons:"
-
-#~ msgid "Default nickname used by servers without special options set"
-#~ msgstr ""
-#~ "Sobrenom per defecte utilitzat pels servidors sense cap opció especial "
-#~ "habilitada"
-
-#~ msgid "Default real name used by servers without special options set"
-#~ msgstr ""
-#~ "Nom real per defecte utilitzat pels servidors sense cap opció especial "
-#~ "habilitada"
-
-# FIXME (dpm) Com es podria traduir «nickstamp»? 
-#~ msgid "Display redundant nickstamps"
-#~ msgstr "Mostra els nickstamps redundants"
-
-#~ msgid "Font for the main window"
-#~ msgstr "Tipus de lletra de la finestra principal"
-
-#~ msgid "Height of the channel list"
-#~ msgstr "Alçada de la llista de canals"
-
-#~ msgid "Height of the main window"
-#~ msgstr "Alçada de la finestra principal"
-
-#~ msgid ""
-#~ "If set to true, when you join a server without automatically joining a "
-#~ "channel, the channel list dialog will be displayed"
-#~ msgstr ""
-#~ "Si s'estableix a «true», en entrar a un servidor sense entrar "
-#~ "automàticament a cap canal, es mostrarà el diàleg amb la llista de canals"
-
-#~ msgid "Languages to use for spellchecking"
-#~ msgstr "Idiomes per als quals s'utilitzarà la comprovació ortogràfica"
-
-#~ msgid "List of enabled plugins"
-#~ msgstr "Llista dels connectors habilitats"
-
-#~ msgid "Message sent on away"
-#~ msgstr "Missatge que s'envia en commutar a absent"
-
-#~ msgid "Message sent on channel part"
-#~ msgstr "Missatge que s'envia en sortir d'un canal"
-
-#~ msgid "Message sent on quit"
-#~ msgstr "Missatge que s'envia en desconnectar-se"
-
-#~ msgid "Position of the horizontal pane in the main window"
-#~ msgstr "Posició de la subfinestra horitzontal dins de la finestra principal"
-
-#~ msgid "Selected background type"
-#~ msgstr "Tipus de fons seleccionat"
-
-#~ msgid "Show timestamps in the main window"
-#~ msgstr "Mostra la marca horària a la finestra principal"
-
-#~ msgid "Width of the channel list"
-#~ msgstr "Amplada de la llista de canals"
-
-#~ msgid "Width of the main window"
-#~ msgstr "Amplada de la finestra principal"
-
-#~ msgid "X position of the main window on the screen"
-#~ msgstr "Posició X de la finestra principal a la pantalla"
-
-#~ msgid "Y position of the main window on the screen"
-#~ msgstr "Posició Y de la finestra principal a la pantalla"
-
-#~ msgid "xchat configuration version"
-#~ msgstr "versió de la configuració de l'xchat"
-
-#~ msgid "Se_nd Message To..."
-#~ msgstr "E_nvia el missatge a..."
-
-#~ msgid "_Send File"
-#~ msgstr "_Envia un fitxer"
-
-#~ msgid "Paste File _Contents"
-#~ msgstr "Enganxa el _contingut del fitxer"
-
-#~ msgid "Paste File_name"
-#~ msgstr "Enganxa el _nom del fitxer"
-
-#~ msgid ""
-#~ "URI list dropped on XChat-GNOME had wrong format (%d) or length (%d)\n"
-#~ msgstr ""
-#~ "La llista d'URIs deixada anar a l'XChat-GNOME té un format (%d) o "
-#~ "llargada (%d) incorrectes\n"
-
-#~ msgid "Error reading file \"%s\": %s\n"
-#~ msgstr "S'ha produït un error en llegir el fitxer «%s»: %s\n"
-
-#~ msgid "Error converting URI \"%s\" into filename: %s\n"
-#~ msgstr ""
-#~ "S'ha produït un error en convertir l'URI «%s» en un nom de fitxer: %s\n"
-
-#~ msgid "Error retrieving file information for \"%s\": %s\n"
-#~ msgstr ""
-#~ "S'ha produït un error en obtenir la informació del fitxer «%s»: %s\n"
-
-#~ msgid "Save Transcript"
-#~ msgstr "Desa la transcripció"
-
-#~ msgid "Error saving %s"
-#~ msgstr "S'ha produït un error en desar %s"
-
-#~ msgid "%"
-#~ msgstr "%"
-
-#~ msgid "Remaining"
-#~ msgstr "Restant"
-
-#~ msgid "Incoming File Transfer"
-#~ msgstr "Transferència de fitxer d'entrada"
-
-#~ msgid ""
-#~ "%s is attempting to send you a file named \"%s\". Do you wish to accept "
-#~ "the transfer?"
-#~ msgstr "%s vol enviar-vos el fitxer «%s». Voleu acceptar la transferència?"
-
-#~ msgid ""
-#~ "<b>%s</b>\n"
-#~ "<small>from %s</small>\n"
-#~ "%s of %s"
-#~ msgstr ""
-#~ "<b>%s</b>\n"
-#~ "<small>de %s</small>\n"
-#~ "%s de %s"
-
-#~ msgid "starting"
-#~ msgstr "s'està iniciant"
-
-#~ msgid ""
-#~ "<b>%s</b>\n"
-#~ "<small>from %s</small>\n"
-#~ "%s of %s at %s/s"
-#~ msgstr ""
-#~ "<b>%s</b>\n"
-#~ "<small>de %s</small>\n"
-#~ "%s de %s a %s/s"
-
-#~ msgid "queued"
-#~ msgstr "s'ha posat a la cua"
-
-#~ msgid "Transfer of %s to %s failed"
-#~ msgstr "No s'ha pogut transferir %s a %s"
-
-#~ msgid "Transfer of %s from %s failed"
-#~ msgstr "No s'ha pogut transferir %s a %s"
-
-#~ msgid "Transfer failed"
-#~ msgstr "No s'ha pogut completar la transferència"
-
-#~ msgid "stalled"
-#~ msgstr "s'ha encallat"
-
-#~ msgid "%.2d:%.2d:%.2d"
-#~ msgstr "%.2d:%.2d:%.2d"
-
-#~ msgid "%.2d:%.2d"
-#~ msgstr "%.2d:%.2d"
-
-#~ msgid "Send File..."
-#~ msgstr "Envia un fitxer..."
-
-#~ msgid "Use directory instead of the default config dir"
-#~ msgstr "Utilitza aquest directori en comptes del directori per defecte"
-
-#~ msgid "Open an irc:// url"
-#~ msgstr "Obre una url de tipus irc://"
-
-#~ msgid ""
-#~ "xchat-gnome: %s\n"
-#~ "Try `xchat-gnome --help' for more information\n"
-#~ msgstr ""
-#~ "xchat-gnome: %s\n"
-#~ "Proveu `xchat-gnome --help' per a més informació\n"
-
-#~ msgid "Incoming DCC Chat"
-#~ msgstr "Xat DCC d'entrada"
-
-#~ msgid ""
-#~ "%s is attempting to create a direct chat. Do you wish to accept the "
-#~ "connection?"
-#~ msgstr "%s vol crear un xat directe. Voleu acceptar la connexió?"
-
-#~ msgid "Unable to show '%s'"
-#~ msgstr "No s'ha pogut mostrar «%s»"
-
-#~ msgid "_Next"
-#~ msgstr "_Següent"
-
-#~ msgid ""
-#~ "<span foreground=\"dark grey\">Reached end, continuing from top</span>"
-#~ msgstr ""
-#~ "<span foreground=\"dark grey\">S'ha arribat al capdavall, es continuarà "
-#~ "des del capdamunt</span>"
-
-#~ msgid ""
-#~ "<span foreground=\"dark grey\">Reached beginning, continuing from bottom</"
-#~ "span>"
-#~ msgstr ""
-#~ "<span foreground=\"dark grey\">S'ha arribat al capdamunt, es continuarà "
-#~ "des del capdavall</span>"
-
-#~ msgid "<span foreground=\"red\">Search string not found</span>"
-#~ msgstr "<span foreground=\"red\">No s'ha trobat la cadena de cerca</span>"
-
-#~ msgid "%s Network Properties"
-#~ msgstr "Propietats de la xarxa %s"
-
-#~ msgid "Invalid input"
-#~ msgstr "Entrada incorrecta"
-
-#~ msgid "You must enter a network name"
-#~ msgstr "Heu d'introduir un nom de xarxa"
-
-#~ msgid "You must enter a nick name"
-#~ msgstr "Heu d'introduir un sobrenom"
-
-#~ msgid "You must enter a real name"
-#~ msgstr "Heu d'introduir un nom real"
-
-#~ msgid "UTF-8 (Unicode)"
-#~ msgstr "UTF-8 (Unicode)"
-
-#~ msgid "ISO-8859-15 (Western Europe)"
-#~ msgstr "ISO-8859-15 (Europa occidental)"
-
-#~ msgid "ISO-8859-2 (Central Europe)"
-#~ msgstr "ISO-8859-2 (Europa central)"
-
-#~ msgid "ISO-8859-7 (Greek)"
-#~ msgstr "ISO-8859-7 (grec)"
-
-#~ msgid "ISO-8859-8 (Hebrew)"
-#~ msgstr "ISO-8859-8 (hebreu)"
-
-#~ msgid "ISO-8859-9 (Turkish)"
-#~ msgstr "ISO-8859-9 (turc)"
-
-#~ msgid "ISO-2022-JP (Japanese)"
-#~ msgstr "ISO-2022-JP (japonès)"
-
-#~ msgid "SJIS (Japanese)"
-#~ msgstr "SJIS (japonès)"
-
-#~ msgid "KOI8-R (Cyrillic)"
-#~ msgstr "KOI8-R (ciríl·lic)"
-
-#~ msgid "CP1251 (Cyrillic)"
-#~ msgstr "CP1251 (ciríl·lic)"
-
-#~ msgid "CP1256 (Arabic)"
-#~ msgstr "CP1256 (àrab)"
-
-#~ msgid "CP1257 (Baltic)"
-#~ msgstr "CP1257 (bàltic)"
-
-#~ msgid "GB18030 (Chinese)"
-#~ msgstr "GB18030 (xinès)"
-
-#~ msgid "TIS-620 (Thai)"
-#~ msgstr "TIS-620 (tailandès)"
-
-#~ msgid "In_sert"
-#~ msgstr "In_sereix"
-
-#~ msgid "_Network"
-#~ msgstr "Xarxa"
-
-#~ msgid "_Discussion"
-#~ msgstr "_Conversa"
-
-#~ msgid "_Go"
-#~ msgstr "_Vés a"
-
-#~ msgid "_Connect..."
-#~ msgstr "_Connecta..."
-
-#~ msgid "Cu_t"
-#~ msgstr "Re_talla"
-
-#~ msgid "_Save Transcript"
-#~ msgstr "_Desa la transcripció"
-
-#~ msgid "_Leave"
-#~ msgstr "_Surt"
-
-#~ msgid "Cl_ose"
-#~ msgstr "_Tanca"
-
-#~ msgid "Change _Topic"
-#~ msgstr "Canvia el _tema"
-
-#~ msgid "_Users"
-#~ msgstr "_Usuaris"
-
-#~ msgid "Ex-Chat"
-#~ msgstr "Xat"
-
-#~ msgid "Error showing help"
-#~ msgstr "S'ha produït un error en mostrar l'ajuda"
-
-#~ msgid ""
-#~ "The way the D-Bus plugin works has changed.\n"
-#~ "To avoid problems, you should remove the old plugin file.\n"
-#~ "\n"
-#~ "<b>Please delete %s</b>"
-#~ msgstr ""
-#~ "El funcionament del connector del D-Bus ha canviat.\n"
-#~ "És recomanable que suprimiu el fitxer del connector antic.\n"
-#~ "\n"
-#~ "<b>Si us plau, suprimiu %s</b>"
-
-#~ msgid "D-Bus plugin is still installed"
-#~ msgstr "El connector del D-Bus encara està instal·lat"
-
-#~ msgid "Pre_vious Network"
-#~ msgstr "Xarxa _anterior"
-
-#~ msgid "Nex_t Network"
-#~ msgstr "Xarxa _següent"
-
-#~ msgid "_Previous Discussion"
-#~ msgstr "Conversa a_nterior"
-
-#~ msgid "_Next Discussion"
-#~ msgstr "Conversa s_egüent"
-
-#~ msgid "_Join"
-#~ msgstr "_Entra-hi"
-
-#~ msgid "_Auto-join on connect"
-#~ msgstr "_Entra-hi en connectar"
-
-#~ msgid "Black on White"
-#~ msgstr "Negre sobre blanc"
-
-#~ msgid "White on Black"
-#~ msgstr "Blanc sobre negre"
-
-#~ msgid "Custom"
-#~ msgstr "Personalitzat"
-
-#~ msgid "System Theme Colors"
-#~ msgstr "Colors del sistema"
-
-#~ msgid "File Transfers & DCC"
-#~ msgstr "Transferències de fitxers"
-
-#~ msgid "Effects"
-#~ msgstr "Efectes"
-
-#~ msgid "An error occurred unloading %s"
-#~ msgstr "S'ha produït un error en descarregar %s"
-
-#~ msgid "Plugin Unload Failed"
-#~ msgstr "S'ha produït un error en descarregar el connector"
-
-#~ msgid "Plugin Load Failed"
-#~ msgstr "S'ha produït un error en carregar el connector"
-
-#~ msgid "Open Plugin"
-#~ msgstr "Obre un connector"
-
-#~ msgid "Scripts and Plugins"
-#~ msgstr "Scripts i connectors"
-
-#~ msgid "Enable"
-#~ msgstr "Habilita"
-
-#~ msgid "Plugin"
-#~ msgstr "Connector"
-
-#~ msgid "Error in language %s activation: %s\n"
-#~ msgstr "S'ha produït un error en activar l'idioma %s: %s\n"
-
-#~ msgid "Error in spell checking configuration: %s\n"
-#~ msgstr ""
-#~ "S'ha produït un error en la configuració de la comprovació ortogràfica: "
-#~ "%s\n"
-
-#~ msgid ""
-#~ "In order to get spell-checking, you need to have libenchant installed "
-#~ "with at least one dictionary."
-#~ msgstr ""
-#~ "Per a poder utilitzar la comprovació de l'ortografia heu de tenir la "
-#~ "llibrerialibenchant instal·lada amb un diccionari com a mínim."
-
-#~ msgid "_Check spelling"
-#~ msgstr "_Comprova l'ortografia"
-
-#~ msgid "Choose languages to use for spellcheck:"
-#~ msgstr "Seleccioneu els idiomes per als quals es comprovarà l'ortografia:"
-
-#~ msgid "%s%.1fs lag"
-#~ msgstr "%s%.1fs de retard"
-
-#~ msgid "Error in spellchecking configuration: %s\n"
-#~ msgstr ""
-#~ "S'ha produït un error a la configuració de la comprovació ortogràfica: "
-#~ "%s\n"
-
-#~ msgid "Black"
-#~ msgstr "Negre"
-
-#~ msgid "Dark Blue"
-#~ msgstr "Blau fosc"
-
-#~ msgid "Dark Green"
-#~ msgstr "Verd fosc"
-
-#~ msgid "Brown"
-#~ msgstr "Marró"
-
-#~ msgid "Purple"
-#~ msgstr "Porpra"
-
-#~ msgid "Orange"
-#~ msgstr "Taronja"
-
-#~ msgid "Yellow"
-#~ msgstr "Groc"
-
-#~ msgid "Aqua"
-#~ msgstr "Aigua marina"
-
-#~ msgid "Light Blue"
-#~ msgstr "Blau clar"
-
-#~ msgid "Violet"
-#~ msgstr "Violeta"
-
-#~ msgid "Grey"
-#~ msgstr "Gris"
-
-#~ msgid "Light Grey"
-#~ msgstr "Gris clar"
-
-#~ msgid "Changing topic for %s"
-#~ msgstr "S'ha canviat el tema de %s"
-
-#~ msgid "_Send File..."
-#~ msgstr "Envia un fitxer"
-
-#~ msgid "_Kick"
-#~ msgstr "_Fes fora"
-
-#~ msgid "_Ban"
-#~ msgstr "_Bandeja"
-
-# FIXME (dpm) Què fa op exactament? (menú contextual de la llista d'usuaris)
-# Crec que habilita el mode d'operador per a l'usuari seleccionat.
-#~ msgid "_Op"
-#~ msgstr "Fes-lo _operador"
-
-#~ msgid ""
-#~ "%s\n"
-#~ "<span weight=\"bold\">Name:</span> %s"
-#~ msgstr ""
-#~ "%s\n"
-#~ "<span weight=\"bold\">Nom:</span> %s"
-
-#~ msgid ""
-#~ "%s\n"
-#~ "<span weight=\"bold\">Country:</span> %s"
-#~ msgstr ""
-#~ "%s\n"
-#~ "<span weight=\"bold\">País:</span> %s"
-
-#~ msgid ""
-#~ "%s\n"
-#~ "<span weight=\"bold\">Last message:</span> %d minute ago"
-#~ msgid_plural ""
-#~ "%s\n"
-#~ "<span weight=\"bold\">Last message:</span> %d minutes ago"
-#~ msgstr[0] ""
-#~ "%s\n"
-#~ "<span weight=\"bold\">Últim missatge:</span> fa %d minut"
-#~ msgstr[1] ""
-#~ "%s\n"
-#~ "<span weight=\"bold\">Últim missatge:</span> fa %d minuts"
-
-#~ msgid ""
-#~ "%s\n"
-#~ "<span weight=\"bold\">Away message:</span> %s"
-#~ msgstr ""
-#~ "%s\n"
-#~ "<span weight=\"bold\">Missatge d'absència:</span> %s"
-
-#~ msgid "%d User"
-#~ msgid_plural "%d Users"
-#~ msgstr[0] "%d usuari"
-#~ msgstr[1] "%d usuaris"
-
-#~ msgid "_Information"
-#~ msgstr "Informatiu"
-
-#~ msgid "_Connect"
-#~ msgstr "Connecta"
-
-#~ msgid "Nick Name:"
-#~ msgstr "Sobrenom:"
-
-#~ msgid "Orientation"
-#~ msgstr "Argentina"
-
-#~ msgid "The orientation of the tray."
-#~ msgstr "Sobrenom de la persona"
-
-#~ msgid "server"
-#~ msgstr "Servidor"
-
-#~ msgid "id"
-#~ msgstr "Cerca"
-
-#~ msgid "name"
-#~ msgstr "Nom"
-
-#~ msgid "Failed to complete SetContext"
-#~ msgstr ""
-#~ "Error en obrir el tipus de lletra:\n"
-#~ "\n"
-#~ "%s"
-
-#~ msgid "Failed to complete print"
-#~ msgstr ""
-#~ "Error en obrir el tipus de lletra:\n"
-#~ "\n"
-#~ "%s"
-
-#~ msgid "Failed to complete GetInfo"
-#~ msgstr ""
-#~ "Error en obrir el tipus de lletra:\n"
-#~ "\n"
-#~ "%s"
-
-#~ msgid "Failed to complete GetPrefs"
-#~ msgstr ""
-#~ "Error en obrir el tipus de lletra:\n"
-#~ "\n"
-#~ "%s"
-
-#~ msgid "_Auto-join"
-#~ msgstr "_Automàtic"
