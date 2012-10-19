@@ -1966,8 +1966,3 @@ get_subdirs (const char *path)
 
 	return dirlist;
 }
-
-#if 0
-_("L10n test")
-#endif
-
