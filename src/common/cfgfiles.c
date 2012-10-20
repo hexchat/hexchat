@@ -679,7 +679,7 @@ load_config (void)
 	prefs._tabs_position = 2; /* 2 = left */
 #ifdef WIN32
 	prefs.identd = 1;
-	prefs.gui_lang = 12;
+	prefs.gui_lang = 15;
 #else
 	prefs.fastdccsend = 1;
 #endif
