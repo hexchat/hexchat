@@ -963,141 +963,163 @@ main (int argc, char *argv[])
 	/* we MUST do this after load_config () AND before fe_init (thus gtk_init) otherwise it will fail */
 	strcpy (hexchat_lang, "LC_ALL=");
 
+	/* this must be ordered EXACTLY as langsmenu[] */
 	switch (prefs.gui_lang)
 	{
 		case 0:
-			strcat (hexchat_lang, "sq");
+			strcat (hexchat_lang, "af");
 			break;
 		case 1:
-			strcat (hexchat_lang, "am");
+			strcat (hexchat_lang, "sq");
 			break;
 		case 2:
-			strcat (hexchat_lang, "az");
+			strcat (hexchat_lang, "am");
 			break;
 		case 3:
-			strcat (hexchat_lang, "eu");
+			strcat (hexchat_lang, "ast");
 			break;
 		case 4:
-			strcat (hexchat_lang, "be");
+			strcat (hexchat_lang, "az");
 			break;
 		case 5:
-			strcat (hexchat_lang, "bg");
+			strcat (hexchat_lang, "eu");
 			break;
 		case 6:
-			strcat (hexchat_lang, "ca");
+			strcat (hexchat_lang, "be");
 			break;
 		case 7:
-			strcat (hexchat_lang, "zh_CN");
+			strcat (hexchat_lang, "bg");
 			break;
 		case 8:
-			strcat (hexchat_lang, "zh_TW");
+			strcat (hexchat_lang, "ca");
 			break;
 		case 9:
-			strcat (hexchat_lang, "cs");
+			strcat (hexchat_lang, "zh_CN");
 			break;
 		case 10:
-			strcat (hexchat_lang, "nl");
+			strcat (hexchat_lang, "zh_TW");
 			break;
 		case 11:
-			strcat (hexchat_lang, "en_GB");
+			strcat (hexchat_lang, "cs");
 			break;
 		case 12:
-			strcat (hexchat_lang, "en_US");
+			strcat (hexchat_lang, "da");
 			break;
 		case 13:
-			strcat (hexchat_lang, "et");
+			strcat (hexchat_lang, "nl");
 			break;
 		case 14:
-			strcat (hexchat_lang, "fi");
+			strcat (hexchat_lang, "en_GB");
 			break;
 		case 15:
-			strcat (hexchat_lang, "fr");
+			strcat (hexchat_lang, "en_US");
 			break;
 		case 16:
-			strcat (hexchat_lang, "gl");
+			strcat (hexchat_lang, "et");
 			break;
 		case 17:
-			strcat (hexchat_lang, "de");
+			strcat (hexchat_lang, "fi");
 			break;
 		case 18:
-			strcat (hexchat_lang, "el");
+			strcat (hexchat_lang, "fr");
 			break;
 		case 19:
-			strcat (hexchat_lang, "hi");
+			strcat (hexchat_lang, "gl");
 			break;
 		case 20:
-			strcat (hexchat_lang, "hu_HU");
+			strcat (hexchat_lang, "de");
 			break;
 		case 21:
-			strcat (hexchat_lang, "it");
+			strcat (hexchat_lang, "el");
 			break;
 		case 22:
-			strcat (hexchat_lang, "ja");
+			strcat (hexchat_lang, "gu");
 			break;
 		case 23:
-			strcat (hexchat_lang, "kn");
+			strcat (hexchat_lang, "he");
 			break;
 		case 24:
-			strcat (hexchat_lang, "ko");
+			strcat (hexchat_lang, "hi");
 			break;
 		case 25:
-			strcat (hexchat_lang, "lv");
+			strcat (hexchat_lang, "hu_HU");
 			break;
 		case 26:
-			strcat (hexchat_lang, "lt");
+			strcat (hexchat_lang, "id");
 			break;
 		case 27:
-			strcat (hexchat_lang, "mk");
+			strcat (hexchat_lang, "it");
 			break;
 		case 28:
-			strcat (hexchat_lang, "ms");
+			strcat (hexchat_lang, "ja");
 			break;
 		case 29:
-			strcat (hexchat_lang, "nb");
+			strcat (hexchat_lang, "kn");
 			break;
 		case 30:
-			strcat (hexchat_lang, "no");
+			strcat (hexchat_lang, "rw");
 			break;
 		case 31:
-			strcat (hexchat_lang, "pl");
+			strcat (hexchat_lang, "ko");
 			break;
 		case 32:
-			strcat (hexchat_lang, "pt");
+			strcat (hexchat_lang, "lv");
 			break;
 		case 33:
-			strcat (hexchat_lang, "pt_BR");
+			strcat (hexchat_lang, "lt");
 			break;
 		case 34:
-			strcat (hexchat_lang, "pa");
+			strcat (hexchat_lang, "mk");
 			break;
 		case 35:
-			strcat (hexchat_lang, "ru");
+			strcat (hexchat_lang, "ms");
 			break;
 		case 36:
-			strcat (hexchat_lang, "sr");
+			strcat (hexchat_lang, "nb");
 			break;
 		case 37:
-			strcat (hexchat_lang, "sk");
+			strcat (hexchat_lang, "no");
 			break;
 		case 38:
-			strcat (hexchat_lang, "sl");
+			strcat (hexchat_lang, "pl");
 			break;
 		case 39:
-			strcat (hexchat_lang, "es");
+			strcat (hexchat_lang, "pt");
 			break;
 		case 40:
-			strcat (hexchat_lang, "sv");
+			strcat (hexchat_lang, "pt_BR");
 			break;
 		case 41:
-			strcat (hexchat_lang, "th");
+			strcat (hexchat_lang, "pa");
 			break;
 		case 42:
-			strcat (hexchat_lang, "uk");
+			strcat (hexchat_lang, "ru");
 			break;
 		case 43:
-			strcat (hexchat_lang, "vi");
+			strcat (hexchat_lang, "sr");
 			break;
 		case 44:
+			strcat (hexchat_lang, "sk");
+			break;
+		case 45:
+			strcat (hexchat_lang, "sl");
+			break;
+		case 46:
+			strcat (hexchat_lang, "es");
+			break;
+		case 47:
+			strcat (hexchat_lang, "sv");
+			break;
+		case 48:
+			strcat (hexchat_lang, "th");
+			break;
+		case 49:
+			strcat (hexchat_lang, "uk");
+			break;
+		case 50:
+			strcat (hexchat_lang, "vi");
+			break;
+		case 51:
 			strcat (hexchat_lang, "wa");
 			break;
 		default:
