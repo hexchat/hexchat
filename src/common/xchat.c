@@ -1012,7 +1012,7 @@ main (int argc, char *argv[])
 			strcat (hexchat_lang, "en_GB");
 			break;
 		case 15:
-			strcat (hexchat_lang, "en_US");
+			strcat (hexchat_lang, "en");
 			break;
 		case 16:
 			strcat (hexchat_lang, "et");
@@ -1042,7 +1042,7 @@ main (int argc, char *argv[])
 			strcat (hexchat_lang, "hi");
 			break;
 		case 25:
-			strcat (hexchat_lang, "hu_HU");
+			strcat (hexchat_lang, "hu");
 			break;
 		case 26:
 			strcat (hexchat_lang, "id");
@@ -1123,7 +1123,7 @@ main (int argc, char *argv[])
 			strcat (hexchat_lang, "wa");
 			break;
 		default:
-			strcat (hexchat_lang, "en_US");
+			strcat (hexchat_lang, "en");
 			break;
 	}
 
