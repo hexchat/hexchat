@@ -173,13 +173,16 @@ static const setting appearance_settings[] =
 					N_("Give each person on IRC a different color"),0,0},
 	{ST_TOGGLR, N_("Indent nick names"), P_OFFINTNL(indent_nicks),
 					N_("Make nick names right-justified"),0,0},
+#if defined(USE_XLIB) || defined(WIN32)
 	{ST_TOGGLE, N_("Transparent background"), P_OFFINTNL(transparent),0,0,0},
-	{ST_TOGGLR, N_("Show marker line"), P_OFFINTNL(show_marker),
-					N_("Insert a red line after the last read text."),0,0},
+	{ST_TOGGLR, N_("Show marker line"), P_OFFINTNL(show_marker), N_("Insert a red line after the last read text."),0,0},
 	{ST_HEADER, N_("Transparency Settings"), 0,0,0},
 	{ST_HSCALE, N_("Red:"), P_OFFINTNL(tint_red),0,0,0},
 	{ST_HSCALE, N_("Green:"), P_OFFINTNL(tint_green),0,0,0},
 	{ST_HSCALE, N_("Blue:"), P_OFFINTNL(tint_blue),0,0,0},
+#else
+	{ST_TOGGLE, N_("Show marker line"), P_OFFINTNL(show_marker), N_("Insert a red line after the last read text."),0,0},
+#endif
 
 	{ST_HEADER,	N_("Time Stamps"),0,0,0},
 	{ST_TOGGLE, N_("Enable time stamps"), P_OFFINTNL(timestamp),0,0,2},
