@@ -15,7 +15,7 @@ Push the resources to Transifex
 2) To update online translations:
 
 Regenerate the source file (hexchat.pot) on a Unix machine
-# ./autogen.sh && ./configure --enable-nls && make
+# rm po/hexchat.pot && ./autogen.sh && ./configure --enable-nls && make
 
 Push the updated source file to Transifex (this automatically updates all translation files)
 # tx push -s
