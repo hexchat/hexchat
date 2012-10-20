@@ -1480,7 +1480,7 @@ setup_create_color_page (void)
 	setup_create_other_color (_("Foreground:"), COL_FG, 3, tab);
 	setup_create_other_colorR (_("Background:"), COL_BG, 3, tab);
 
-	setup_create_header (tab, 5, N_("Marking Text"));
+	setup_create_header (tab, 5, N_("Selected Text"));
 
 	setup_create_other_color (_("Foreground:"), COL_MARK_FG, 6, tab);
 	setup_create_other_colorR (_("Background:"), COL_MARK_BG, 6, tab);
