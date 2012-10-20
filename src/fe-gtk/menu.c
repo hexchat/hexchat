@@ -1662,18 +1662,16 @@ static struct mymenu mymenu[] = {
 
 	{N_("S_ettings"), 0, 0, M_NEWMENU, 0, 0, 1},
 	{N_("_Preferences"), menu_settings, GTK_STOCK_PREFERENCES, M_MENUSTOCK, 0, 0, 1},
-
-	{N_("Advanced"), 0, GTK_STOCK_JUSTIFY_LEFT, M_MENUSUB, 0, 0, 1},
-		{N_("Auto Replace..."), menu_rpopup, 0, M_MENUITEM, 0, 0, 1},
-		{N_("CTCP Replies..."), menu_ctcpguiopen, 0, M_MENUITEM, 0, 0, 1},
-		{N_("Dialog Buttons..."), menu_dlgbuttons, 0, M_MENUITEM, 0, 0, 1},
-		{N_("Keyboard Shortcuts..."), menu_keypopup, 0, M_MENUITEM, 0, 0, 1},
-		{N_("Text Events..."), menu_evtpopup, 0, M_MENUITEM, 0, 0, 1},
-		{N_("URL Handlers..."), menu_urlhandlers, 0, M_MENUITEM, 0, 0, 1},
-		{N_("User Commands..."), menu_usercommands, 0, M_MENUITEM, 0, 0, 1},
-		{N_("Userlist Buttons..."), menu_ulbuttons, 0, M_MENUITEM, 0, 0, 1},
-		{N_("Userlist Popup..."), menu_ulpopup, 0, M_MENUITEM, 0, 0, 1},
-		{0, 0, 0, M_END, 0, 0, 0},		/* 53 */
+	{0, 0, 0, M_SEP, 0, 0, 0},
+	{N_("Auto Replace..."), menu_rpopup, 0, M_MENUITEM, 0, 0, 1},
+	{N_("CTCP Replies..."), menu_ctcpguiopen, 0, M_MENUITEM, 0, 0, 1},
+	{N_("Dialog Buttons..."), menu_dlgbuttons, 0, M_MENUITEM, 0, 0, 1},
+	{N_("Keyboard Shortcuts..."), menu_keypopup, 0, M_MENUITEM, 0, 0, 1},
+	{N_("Text Events..."), menu_evtpopup, 0, M_MENUITEM, 0, 0, 1},
+	{N_("URL Handlers..."), menu_urlhandlers, 0, M_MENUITEM, 0, 0, 1},
+	{N_("User Commands..."), menu_usercommands, 0, M_MENUITEM, 0, 0, 1},
+	{N_("Userlist Buttons..."), menu_ulbuttons, 0, M_MENUITEM, 0, 0, 1},
+	{N_("Userlist Popup..."), menu_ulpopup, 0, M_MENUITEM, 0, 0, 1},	/* 52 */
 
 	{N_("_Window"), 0, 0, M_NEWMENU, 0, 0, 1},
 	{N_("Ban List..."), menu_banlist, 0, M_MENUITEM, 0, 0, 1},
@@ -1683,14 +1681,14 @@ static struct mymenu mymenu[] = {
 	{N_("Friends List..."), notify_opengui, 0, M_MENUITEM, 0, 0, 1},
 	{N_("Ignore List..."), ignore_gui_open, 0, M_MENUITEM, 0, 0, 1},
 	{N_("Plugins and Scripts..."), menu_pluginlist, 0, M_MENUITEM, 0, 0, 1},
-	{N_("Raw Log..."), menu_rawlog, 0, M_MENUITEM, 0, 0, 1},	/* 62 */
+	{N_("Raw Log..."), menu_rawlog, 0, M_MENUITEM, 0, 0, 1},	/* 61 */
 	{N_("URL Grabber..."), url_opengui, 0, M_MENUITEM, 0, 0, 1},
 	{0, 0, 0, M_SEP, 0, 0, 0},
 	{N_("Reset Marker Line"), menu_resetmarker, 0, M_MENUITEM, 0, 0, 1, GDK_m},
 	{N_("_Copy Selection"), menu_copy_selection, 0, M_MENUITEM, 0, 0, 1, GDK_C},
 	{N_("C_lear Text"), menu_flushbuffer, GTK_STOCK_CLEAR, M_MENUSTOCK, 0, 0, 1, GDK_l},
 	{N_("Save Text..."), menu_savebuffer, GTK_STOCK_SAVE, M_MENUSTOCK, 0, 0, 1},
-#define SEARCH_OFFSET 70
+#define SEARCH_OFFSET 68
 	{N_("Search"), 0, GTK_STOCK_JUSTIFY_LEFT, M_MENUSUB, 0, 0, 1},
 		{N_("Search Text..."), menu_search, GTK_STOCK_FIND, M_MENUSTOCK, 0, 0, 1, GDK_f},
 		{N_("Reset Search"), menu_search_reset, GTK_STOCK_FIND, M_MENUSTOCK, 0, 0, 1, GDK_F},
