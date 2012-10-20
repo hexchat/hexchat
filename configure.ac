@@ -27,7 +27,7 @@ GETTEXT_PACKAGE=hexchat
 AC_SUBST(GETTEXT_PACKAGE)
 AC_DEFINE_UNQUOTED(GETTEXT_PACKAGE,"$GETTEXT_PACKAGE",[Gettext package name])
 
-ALL_LINGUAS="am az be bg ca cs de el en_GB es et fi fr gl hi hu it ja kn ko lt lv mk ms nb nl no pa pl pt pt_BR ru sk sl sq sr sv th uk vi wa zh_CN zh_TW"
+ALL_LINGUAS="am az be bg ca cs de el en_GB es et eu fi fr gl hi hu it ja kn ko lt lv mk ms nb nl no pa pl pt pt_BR ru sk sl sq sr sv th uk vi wa zh_CN zh_TW"
 AM_GNU_GETTEXT
 
 dnl displaced from acconfig.h
