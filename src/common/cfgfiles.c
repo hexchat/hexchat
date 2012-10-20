@@ -583,7 +583,7 @@ const struct prefs vars[] = {
 	{"text_background", P_OFFSET (background), TYPE_STR},
 	{"text_color_nicks", P_OFFINT (colorednicks), TYPE_BOOL},
 #ifdef WIN32
-	{"text_emoticons", P_OFFINT (emoticons), TYPE_BOOL},
+	{"text_emoticons", P_OFFINT (text_emoticons), TYPE_BOOL},
 #endif
 	{"text_font", P_OFFSET (font_normal), TYPE_STR},
 #ifdef WIN32

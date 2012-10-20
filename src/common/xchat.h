@@ -156,7 +156,6 @@ struct xchatprefs
 
 	int away_timeout;
 	int away_size_max;
-	int away_omit_alerts;
 
 	int gui_pane_left_size;
 	int gui_pane_right_size;
@@ -186,11 +185,7 @@ struct xchatprefs
 	int completion_sort;
 	int gui_win_state;
 	int gui_url_mod;
-	int gui_usermenu;
-	int gui_join_dialog;
-	int gui_quit_dialog;
 #ifdef WIN32
-	int gui_one_instance;
 	int gui_lang;
 #endif
 	int dialog_left;
@@ -280,12 +275,16 @@ struct xchatprefs
 	unsigned int show_away_message;
 	unsigned int auto_unmark_away;
 	unsigned int away_track;
+	unsigned int away_omit_alerts;
 	unsigned int userhost;
 	unsigned int irc_whois_front;
 	unsigned int use_server_tab;
 	unsigned int notices_tabs;
 	unsigned int style_namelistgad;
 	unsigned int style_inputbox;
+	unsigned int gui_join_dialog;
+	unsigned int gui_quit_dialog;
+	unsigned int gui_usermenu;
 	unsigned int windows_as_tabs;
 	unsigned int indent_nicks;
 	unsigned int text_replay;
@@ -313,7 +312,8 @@ struct xchatprefs
 	unsigned int utf8_locale;
 #ifdef WIN32
 	unsigned int identd;
-	unsigned int emoticons;
+	unsigned int text_emoticons;
+	unsigned int gui_one_instance;
 #endif
 
 	unsigned int ctcp_number_limit;	/*flood */
