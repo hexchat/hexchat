@@ -125,7 +125,6 @@ static const char *const langsmenu[] =
 	N_("German"),
 	N_("Greek"),
 	N_("Gujarati"),
-	N_("Hebrew"),
 	N_("Hindi"),
 	N_("Hungarian"),
 	N_("Indonesian"),

@@ -1036,90 +1036,87 @@ main (int argc, char *argv[])
 			strcat (hexchat_lang, "gu");
 			break;
 		case 23:
-			strcat (hexchat_lang, "he");
-			break;
-		case 24:
 			strcat (hexchat_lang, "hi");
 			break;
-		case 25:
+		case 24:
 			strcat (hexchat_lang, "hu");
 			break;
-		case 26:
+		case 25:
 			strcat (hexchat_lang, "id");
 			break;
-		case 27:
+		case 26:
 			strcat (hexchat_lang, "it");
 			break;
-		case 28:
+		case 27:
 			strcat (hexchat_lang, "ja");
 			break;
-		case 29:
+		case 28:
 			strcat (hexchat_lang, "kn");
 			break;
-		case 30:
+		case 29:
 			strcat (hexchat_lang, "rw");
 			break;
-		case 31:
+		case 30:
 			strcat (hexchat_lang, "ko");
 			break;
-		case 32:
+		case 31:
 			strcat (hexchat_lang, "lv");
 			break;
-		case 33:
+		case 32:
 			strcat (hexchat_lang, "lt");
 			break;
-		case 34:
+		case 33:
 			strcat (hexchat_lang, "mk");
 			break;
-		case 35:
+		case 34:
 			strcat (hexchat_lang, "ms");
 			break;
-		case 36:
+		case 35:
 			strcat (hexchat_lang, "nb");
 			break;
-		case 37:
+		case 36:
 			strcat (hexchat_lang, "no");
 			break;
-		case 38:
+		case 37:
 			strcat (hexchat_lang, "pl");
 			break;
-		case 39:
+		case 38:
 			strcat (hexchat_lang, "pt");
 			break;
-		case 40:
+		case 39:
 			strcat (hexchat_lang, "pt_BR");
 			break;
-		case 41:
+		case 40:
 			strcat (hexchat_lang, "pa");
 			break;
-		case 42:
+		case 41:
 			strcat (hexchat_lang, "ru");
 			break;
-		case 43:
+		case 42:
 			strcat (hexchat_lang, "sr");
 			break;
-		case 44:
+		case 43:
 			strcat (hexchat_lang, "sk");
 			break;
-		case 45:
+		case 44:
 			strcat (hexchat_lang, "sl");
 			break;
-		case 46:
+		case 45:
 			strcat (hexchat_lang, "es");
 			break;
-		case 47:
+		case 46:
 			strcat (hexchat_lang, "sv");
 			break;
-		case 48:
+		case 47:
 			strcat (hexchat_lang, "th");
 			break;
-		case 49:
+		case 48:
 			strcat (hexchat_lang, "uk");
 			break;
-		case 50:
+		case 49:
 			strcat (hexchat_lang, "vi");
 			break;
-		case 51:
+		case 50:
 			strcat (hexchat_lang, "wa");
 			break;
 		default:
