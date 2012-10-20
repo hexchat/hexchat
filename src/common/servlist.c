@@ -333,6 +333,9 @@ static const struct defaultserver def[] =
 /*	{0,				"irc.seed.net.tw"},*/
 	{0,				"irc.cs.hut.fi"},
 
+	{"IRC-Hispano",	0},
+	{0,			"irc.irc-hispano.org"},
+
 	{"Irctoo.net",	0},
 	{0,			"irc.irctoo.net"},
 
