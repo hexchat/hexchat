@@ -43,6 +43,7 @@
 #include "gtkutil.h"
 #include "menu.h"
 #include "pixmaps.h"
+#include "fkeys.h"
 
 
 /* servlistgui.c globals */
@@ -366,7 +367,7 @@ servlist_net_keypress_cb (GtkWidget *wid, GdkEventKey *evt, gpointer tree)
 	if (!selected_net)
 		return FALSE;
 
-	if (evt->state & GDK_SHIFT_MASK)
+	if (evt->state & STATE_SHIFT)
 	{
 		if (evt->keyval == GDK_Up)
 		{
@@ -387,7 +388,7 @@ servlist_serv_keypress_cb (GtkWidget *wid, GdkEventKey *evt, gpointer userdata)
 	if (!selected_net || !selected_serv)
 		return FALSE;
 
-	if (evt->state & GDK_SHIFT_MASK)
+	if (evt->state & STATE_SHIFT)
 	{
 		if (evt->keyval == GDK_Up)
 		{

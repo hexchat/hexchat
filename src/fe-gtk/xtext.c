@@ -71,6 +71,7 @@
 #include "../common/xchatc.h"
 #include "fe-gtk.h"
 #include "xtext.h"
+#include "fkeys.h"
 
 #define charlen(str) g_utf8_skip[*(guchar *)(str)]
 
@@ -2005,7 +2006,7 @@ gtk_xtext_check_mark_stamp (GtkXText *xtext, GdkModifierType mask)
 {
 	gboolean redraw = FALSE;
 
-	if (mask & GDK_SHIFT_MASK || prefs.autocopy_stamp)
+	if (mask & STATE_SHIFT || prefs.autocopy_stamp)
 	{
 		if (!xtext->mark_stamp)
 		{
@@ -2255,7 +2256,7 @@ gtk_xtext_button_release (GtkWidget * widget, GdkEventButton * event)
 		if (xtext->buffer->last_ent_start)
 		{
 			xtext->color_paste = FALSE;
-			if (event->state & GDK_CONTROL_MASK || prefs.autocopy_color)
+			if (event->state & STATE_CTRL || prefs.autocopy_color)
 				xtext->color_paste = TRUE;
 			if (prefs.autocopy_text)
 			{

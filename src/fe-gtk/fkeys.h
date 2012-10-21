@@ -1,3 +1,8 @@
+/* These are cp'ed from history.c --AGL */
+#define STATE_SHIFT		GDK_SHIFT_MASK
+#define	STATE_ALT		GDK_MOD1_MASK
+#define STATE_CTRL		GDK_CONTROL_MASK
+
 void key_init (void);
 void key_dialog_show (void);
 int key_handle_key_press (GtkWidget * wid, GdkEventKey * evt, session *sess);

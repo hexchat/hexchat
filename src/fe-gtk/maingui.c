@@ -1652,7 +1652,7 @@ static gboolean
 mg_tab_contextmenu_cb (chanview *cv, chan *ch, int tag, gpointer ud, GdkEventButton *event)
 {
 	/* shift-click to close a tab */
-	if ((event->state & GDK_SHIFT_MASK) && event->type == GDK_BUTTON_PRESS)
+	if ((event->state & STATE_SHIFT) && event->type == GDK_BUTTON_PRESS)
 	{
 		mg_xbutton_cb (cv, ch, tag, ud);
 		return FALSE;

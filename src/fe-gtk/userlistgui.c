@@ -47,6 +47,7 @@
 #include "menu.h"
 #include "pixmaps.h"
 #include "userlistgui.h"
+#include "fkeys.h"
 
 #ifdef USE_GTKSPELL
 #include <gtk/gtktextview.h>
@@ -518,7 +519,7 @@ userlist_click_cb (GtkWidget *widget, GdkEventButton *event, gpointer userdata)
 	if (!event)
 		return FALSE;
 
-	if (!(event->state & GDK_CONTROL_MASK) &&
+	if (!(event->state & STATE_CTRL) &&
 		event->type == GDK_2BUTTON_PRESS && prefs.doubleclickuser[0])
 	{
 		nicks = userlist_selection_list (widget, &i);

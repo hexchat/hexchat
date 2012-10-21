@@ -2097,8 +2097,8 @@ menu_create_main (void *accel_group, int bar, int away, int toplevel,
 	GtkWidget *menu_bar;
 	GtkWidget *usermenu = 0;
 	GtkWidget *submenu = 0;
-	int close_mask = GDK_CONTROL_MASK;
-	int away_mask = GDK_MOD1_MASK;
+	int close_mask = STATE_CTRL;
+	int away_mask = STATE_ALT;
 	char *key_theme = NULL;
 	GtkSettings *settings;
 	GSList *group = NULL;
@@ -2162,7 +2162,7 @@ menu_create_main (void *accel_group, int bar, int away, int toplevel,
 		{
 			if (!g_ascii_strcasecmp (key_theme, "Emacs"))
 			{
-				close_mask = GDK_SHIFT_MASK | GDK_CONTROL_MASK;
+				close_mask = STATE_SHIFT | STATE_CTRL;
 				mymenu[SEARCH_OFFSET].key = 0;
 			}
 			g_free (key_theme);
@@ -2174,7 +2174,7 @@ menu_create_main (void *accel_group, int bar, int away, int toplevel,
 		char *help = _("_Help");
 		char *under = strchr (help, '_');
 		if (under && (under[1] == 'a' || under[1] == 'A'))
-			away_mask = GDK_MOD1_MASK | GDK_CONTROL_MASK;
+			away_mask = STATE_ALT | STATE_CTRL;
 	}
 
 	if (!toplevel)
@@ -2229,8 +2229,8 @@ normalitem:
 										mymenu[i].key == GDK_F1 ? 0 :
 										mymenu[i].key == GDK_w ? close_mask :
 										(g_ascii_isupper (mymenu[i].key)) ?
-											GDK_SHIFT_MASK | GDK_CONTROL_MASK :
-											GDK_CONTROL_MASK,
+											STATE_SHIFT | STATE_CTRL :
+											STATE_CTRL,
 										GTK_ACCEL_VISIBLE);
 			if (mymenu[i].callback)
 				g_signal_connect (G_OBJECT (item), "activate",
@@ -2252,7 +2252,7 @@ togitem:
 			if (mymenu[i].key != 0)
 				gtk_widget_add_accelerator (item, "activate", accel_group,
 									mymenu[i].key, mymenu[i].id == MENU_ID_AWAY ?
-									away_mask : GDK_CONTROL_MASK, GTK_ACCEL_VISIBLE);
+									away_mask : STATE_CTRL, GTK_ACCEL_VISIBLE);
 			if (mymenu[i].callback)
 				g_signal_connect (G_OBJECT (item), "toggled",
 										G_CALLBACK (mymenu[i].callback), 0);

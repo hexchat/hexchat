@@ -87,10 +87,6 @@ void key_action_tab_clean (void);
 
 /* Remember that the *number* of actions is this *plus* 1 --AGL */
 #define KEY_MAX_ACTIONS 14
-/* These are cp'ed from history.c --AGL */
-#define STATE_SHIFT     GDK_SHIFT_MASK
-#define	STATE_ALT	GDK_MOD1_MASK
-#define STATE_CTRL	GDK_CONTROL_MASK
 
 struct key_binding
 {
@@ -325,7 +321,7 @@ key_handle_key_press (GtkWidget *wid, GdkEventKey *evt, session *sess)
 	/* gtktextview has no 'activate' event, so we trap ENTER here */
 	case GDK_Return:
 	case GDK_KP_Enter:
-		if (!(evt->state & GDK_CONTROL_MASK))
+		if (!(evt->state & STATE_CTRL))
 		{
 			g_signal_stop_emission_by_name (G_OBJECT (wid), "key_press_event");
 			mg_inputbox_cb (wid, sess->gui);
@@ -1737,11 +1733,6 @@ key_action_put_history (GtkWidget * wid, GdkEventKey * ent, char *d1,
 
 
 /* -------- */
-
-
-#define STATE_SHIFT	GDK_SHIFT_MASK
-#define STATE_ALT		GDK_MOD1_MASK
-#define STATE_CTRL	GDK_CONTROL_MASK
 
 static void
 replace_handle (GtkWidget *t)
