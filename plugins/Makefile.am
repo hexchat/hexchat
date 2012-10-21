@@ -33,5 +33,9 @@ if DO_CHECKSUM
 checksumdir = checksum
 endif
 
+if DO_SYSINFO
+sysinfodir = sysinfo
+endif
+
 #SUBDIRS = . $(pythondir) $(perldir) mailcheck xdcc
-SUBDIRS = . $(pythondir) $(perldir) $(tcldir) $(sasldir) $(doatdir) $(fishlimdir) $(checksumdir)
+SUBDIRS = . $(pythondir) $(perldir) $(tcldir) $(sasldir) $(doatdir) $(fishlimdir) $(checksumdir) $(sysinfodir)

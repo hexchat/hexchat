@@ -150,6 +150,10 @@ AC_ARG_ENABLE(sasl,
 [  --disable-sasl          disable the SASL plugin],
         sasl=$enableval, sasl=yes)
 
+AC_ARG_ENABLE(sysinfo,
+[  --disable-sysinfo      disable the SysInfo plugin],
+        sysinfo=$enableval, sysinfo=yes)
+
 AC_ARG_ENABLE(dbus,
 [  --disable-dbus          disable DBUS support],
         dbus=$enableval, dbus=yes)
@@ -586,6 +590,21 @@ if test "$sasl" != "no"; then
 	fi
 fi
 
+dnl *********************************************************************
+dnl ** SYSINFO **********************************************************
+dnl *********************************************************************
+
+if test "$sysinfo" != "no"; then
+	AC_MSG_CHECKING(for plugin interface used by SysInfo)
+	sysinfo=no
+	if test "$plugin" = yes; then
+		AC_MSG_RESULT([yes])
+		PKG_CHECK_MODULES(LIBPCI, libpci >= 3.0.0, [sysinfo=yes], [])
+	else
+		AC_MSG_RESULT([plugins are disabled, use the --enable-plugin option for SysInfo])
+	fi
+fi
+
 dnl #######################################################################
 dnl # Check for DBUS libraries
 dnl #######################################################################
@@ -679,6 +698,7 @@ AM_CONDITIONAL(DO_CHECKSUM, test "x$checksum" = "xyes")
 AM_CONDITIONAL(DO_DOAT, test "x$doat" = "xyes")
 AM_CONDITIONAL(DO_FISHLIM, test "x$fishlim" = "xyes")
 AM_CONDITIONAL(DO_SASL, test "x$sasl" = "xyes")
+AM_CONDITIONAL(DO_SYSINFO, test "x$sysinfo" = "xyes")
 AM_CONDITIONAL(USE_DBUS, test "x$dbus" = "xyes")
 AM_CONDITIONAL(DO_GCONF, test "x$GCONFTOOL" != "xno")
 
@@ -944,6 +964,7 @@ plugins/checksum/Makefile
 plugins/doat/Makefile
 plugins/fishlim/Makefile
 plugins/sasl/Makefile
+plugins/sysinfo/Makefile
 intl/Makefile
 po/Makefile.in
 ])
@@ -979,6 +1000,7 @@ echo Checksum .............. : $checksum
 echo Do At ................. : $doat
 echo FiSHLiM ............... : $fishlim
 echo SASL .................. : $sasl
+echo SysInfo ............... : $sysinfo
 echo
 echo The binary will be installed in $prefix/bin
 echo

@@ -27,6 +27,8 @@
 #include <pci/pci.h>
 #include "xsys.h"
 
+#define PCIIDS "/usr/share/misc/pci.ids"
+
 static struct pci_filter filter;       /* Device filter */
 static struct pci_access *pacc;
 int bus, dev, func; /* Location of the card */

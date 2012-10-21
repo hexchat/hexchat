@@ -33,6 +33,7 @@ static xchat_plugin *ph;
 
 static char name[] = "SysInfo";
 static char desc[] = "Display info about your hardware and OS";
+static char version[] = "2.2";
 static char format[bsize] = "%B%1%B[%2]";
 unsigned int percentages = 1;
 
@@ -64,7 +65,7 @@ int xchat_plugin_init(xchat_plugin *plugin_handle, char **plugin_name,
 	ph = plugin_handle;
 	*plugin_name    = name;
 	*plugin_desc    = desc;
-	*plugin_version = VER_STRING;
+	*plugin_version = version;
 
 	xchat_hook_command(ph, "XSYS2FORMAT",XCHAT_PRI_NORM, format_cb,    NULL, NULL);
 	xchat_hook_command(ph, "PERCENTAGES",XCHAT_PRI_NORM, percentages_cb,   NULL, NULL);
@@ -261,9 +262,9 @@ static int sysinfo_cb(char *word[], char *word_eol[], void *userdata)
 static int xsys_cb(char *word[], char *word_eol[], void *userdata)
 {
 	if((long)userdata)
-		xchat_printf(ph, "You are using %s v%s (http://dev.gentoo.org/~chainsaw/xsys)", name, VER_STRING);
+		xchat_printf(ph, "You are using %s v%s (http://dev.gentoo.org/~chainsaw/xsys)", name, version);
 	else
-		xchat_commandf(ph, "me is using %s v%s (http://dev.gentoo.org/~chainsaw/xsys)", name, VER_STRING);
+		xchat_commandf(ph, "me is using %s v%s (http://dev.gentoo.org/~chainsaw/xsys)", name, version);
 	
 	return XCHAT_EAT_ALL;
 }
