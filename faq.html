@@ -385,27 +385,20 @@ sound filename (or use the Browse button).
 </p>
 
 <br><h3><a name="q218">18. How do I auto-load scripts at startup?</a></h3>
-<p>
-You just have to place the scripts into HexChat's data directory. HexChat
-will auto-load scripts if they have the right extension .e.g If a filename
-ends in .pl, it will be loaded as a Perl script.
-This data directory is different on each platform:
-<br><br>
-<u>Windows</u>
-<br><br>
-It depends on your version of Windows and where it stores the
-<i><b>Application Data</b></i> folder. On Windows XP it is usually:
-<br><br>
-C:\Documents and Settings\<i><b>username</b></i>\Application Data\HexChat\
-<br><b>or simply:</b>
-<br>
-C:\Program Files\HexChat\Plugins\
-<br><br><br>
-<u>UNIX</u>
-<br><br>
-~/.config/hexchat/
-Where "~" represents your home directory i.e.: $HOME/.config/hexchat/
-</p>
+<p>The root of your HexChat config is:</p>
+<ul>
+<li>Windows: %APPDATA%\HexChat</li>
+<li>Unix: ~/.config/hexchat</li>
+</ul>
+<p>Referred to as &lt;config&gt; from now. HexChat automatically loads, at startup:</p>
+<ul>
+<li>&lt;config&gt;/addons/*.lua Lua scripts</li>
+<li>&lt;config&gt;/addons/*.pl Perl scripts</li>
+<li>&lt;config&gt;/addons/*.py Python scripts</li>
+<li>&lt;config&gt;/addons/*.tcl Tcl scripts</li>
+<li>&lt;config&gt;/addons/*.dll Plugins (Windows)</li>
+<li>&lt;config&gt;/addons/*.so Plugins (Unix)</li>
+</ul>
 
 <br><h3><a name="q219">19. How do I minimize HexChat to the System Tray (Notification Area)?</a></h3>
 <p>
