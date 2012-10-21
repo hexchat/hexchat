@@ -415,6 +415,8 @@ int xs_parse_distro(char *name)
 		fgets(buffer, bsize, fp);
 	else if((fp = fopen("/etc/turbolinux-release", "r")) != NULL)
 		fgets(buffer, bsize, fp);
+	else if((fp = fopen("/etc/arch-release", "r")) != NULL)
+		snprintf(buffer, bsize, "ArchLinux");
 	else
 		snprintf(buffer, bsize, "Unknown Distro");
 	if(fp != NULL) fclose(fp);

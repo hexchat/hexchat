@@ -33,7 +33,6 @@ int xs_parse_meminfo(unsigned long long *mem_tot, unsigned long long *mem_free, 
 int xs_parse_video(char *vid_card);
 int xs_parse_agpbridge(char *agp_bridge);
 int xs_parse_ether(char *ethernet_card);
-int xs_parse_xmms_info(char **title, unsigned int *songtime, unsigned int *playtime);
 int xs_parse_distro(char *name);
 int xs_parse_hwmon_chip(char *chip);
 int xs_parse_hwmon_temp(char *temp, unsigned int *sensor);

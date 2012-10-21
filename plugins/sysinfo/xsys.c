@@ -28,24 +28,19 @@
 #include "parse.h"
 #include "match.h"
 #include "xsys.h"
-#include <audacious/dbus.h>
-#include <audacious/audctrl.h>
 
 static xchat_plugin *ph;
 
+static char name[] = "SysInfo";
+static char desc[] = "Display info about your hardware and OS";
 static char format[bsize] = "%B%1%B[%2]";
-static char playing[42] = "now_playing";
 unsigned int percentages = 1;
-static unsigned int action = 0;
 
 static void load_config();
 static void save_config();
-static gboolean dbus_init(void);
 
 static int format_cb		(char *word[], char *word_eol[], void *userdata);
-static int playing_cb		(char *word[], char *word_eol[], void *userdata);
 static int percentages_cb	(char *word[], char *word_eol[], void *userdata);
-static int action_cb		(char *word[], char *word_eol[], void *userdata);
 static int sysinfo_cb		(char *word[], char *word_eol[], void *userdata);
 static int xsys_cb		(char *word[], char *word_eol[], void *userdata);
 static int cpuinfo_cb		(char *word[], char *word_eol[], void *userdata);
@@ -62,22 +57,17 @@ static int distro_cb		(char *word[], char *word_eol[], void *userdata);
 #if 0
 static int hwmon_cb		(char *word[], char *word_eol[], void *userdata);
 #endif
-static int np_cb		(char *word[], char *word_eol[], void *userdata);
-static DBusGProxy *dbus_proxy = NULL;
-static DBusGConnection *connection = NULL;
 
 int xchat_plugin_init(xchat_plugin *plugin_handle, char **plugin_name,
                       char **plugin_desc, char **plugin_version, char *arg)
 {
 	ph = plugin_handle;
-	*plugin_name    = "X-Sys_2";
-	*plugin_desc    = "A sysinfo/audacious plugin";
+	*plugin_name    = name;
+	*plugin_desc    = desc;
 	*plugin_version = VER_STRING;
 
 	xchat_hook_command(ph, "XSYS2FORMAT",XCHAT_PRI_NORM, format_cb,    NULL, NULL);
-	xchat_hook_command(ph, "PLAYING",    XCHAT_PRI_NORM, playing_cb,   NULL, NULL);
 	xchat_hook_command(ph, "PERCENTAGES",XCHAT_PRI_NORM, percentages_cb,   NULL, NULL);
-	xchat_hook_command(ph, "NPACTION",   XCHAT_PRI_NORM, action_cb,    NULL, NULL);
 	xchat_hook_command(ph, "SYSINFO",    XCHAT_PRI_NORM, sysinfo_cb,   NULL, (void *) 0);
 	xchat_hook_command(ph, "ESYSINFO",   XCHAT_PRI_NORM, sysinfo_cb,   NULL, (void *) 1);
 	xchat_hook_command(ph, "XSYS",       XCHAT_PRI_NORM, xsys_cb,      NULL, (void *) 0);
@@ -108,23 +98,11 @@ int xchat_plugin_init(xchat_plugin *plugin_handle, char **plugin_name,
 	xchat_hook_command(ph, "HWMON",      XCHAT_PRI_NORM, hwmon_cb,     NULL, (void *) 0);
 	xchat_hook_command(ph, "EHWMON",     XCHAT_PRI_NORM, hwmon_cb,     NULL, (void *) 1);
 #endif
-	if (dbus_init())
-	{
-		xchat_hook_command(ph, "NP",         XCHAT_PRI_NORM, np_cb,        NULL, (void *) 0);
-		xchat_hook_command(ph, "ENP",        XCHAT_PRI_NORM, np_cb,        NULL, (void *) 1);
-		xchat_printf(ph, "D-Bus MPRIS support initialized", VER_STRING);
-	}
-	
 	load_config();
 
-	xchat_printf(ph, "X-Sys %s Loaded Succesfully", VER_STRING);
+	xchat_printf (ph, "%s plugin loaded\n", name);
 	
 	return 1;
-}
-
-static void xchat_plugin_deinit()
-{
-	/* blahblahblah */
 }
 
 static void save_config()
@@ -139,9 +117,7 @@ static void save_config()
 		return;
 	}
 	fprintf(fp, "format: %s\n", format);
-	fprintf(fp, "playing: %s\n", playing);
 	fprintf(fp, "percentages: %i\n", percentages);
-	fprintf(fp, "action: %i\n", action);
 	fclose(fp);
 	return;
 }
@@ -158,28 +134,9 @@ static void load_config()
 	while(fgets(buffer, bsize, fp) != NULL)
 	{
 		find_match_char(buffer, "format", format);
-		find_match_char(buffer, "playing", playing);
 		find_match_int(buffer, "percentages", &percentages);
-		find_match_int(buffer, "action", &action);
 	}
 	fclose(fp);
-}
-
-static gboolean dbus_init(void)
-{
-        GError *error = NULL;
-
-        connection = dbus_g_bus_get(DBUS_BUS_SESSION, &error);
-        if (connection == NULL)
-                return FALSE;
-
-        dbus_proxy = dbus_g_proxy_new_for_name(connection, AUDACIOUS_DBUS_SERVICE,
-                                                           AUDACIOUS_DBUS_PATH,
-                                                           AUDACIOUS_DBUS_INTERFACE);
-        if (dbus_proxy == NULL)
-                return FALSE;
-
-        return TRUE;
 }
 
 static int format_cb(char *word[], char *word_eol[], void *userdata)
@@ -189,18 +146,6 @@ static int format_cb(char *word[], char *word_eol[], void *userdata)
 	else
 	{
 		strncpy(format, word_eol[2], bsize);
-		save_config();
-	}
-	return XCHAT_EAT_ALL;
-}
-
-static int playing_cb(char *word[], char *word_eol[], void *userdata)
-{
-	if(*(word[2]) == '\0')
-		xchat_printf(ph, "Current playing string:\n%s", playing);
-	else
-	{
-		strncpy(playing, word_eol[2], 42);
 		save_config();
 	}
 	return XCHAT_EAT_ALL;
@@ -216,21 +161,6 @@ static int percentages_cb(char *word[], char *word_eol[], void *userdata)
 	else
 	{
 		percentages = atoi(word[2]);
-		save_config();
-	}
-	return XCHAT_EAT_ALL;
-}
-
-static int action_cb(char *word[], char *word_eol[], void *userdata)
-{
-	if(*(word[2]) == '\0')
-		if (action != 0)
-			xchat_printf(ph, "Now playing action currently enabled");
-		else
-			xchat_printf(ph, "Now playing action currently disabled");		
-	else
-	{
-		action = atoi(word[2]);
 		save_config();
 	}
 	return XCHAT_EAT_ALL;
@@ -331,9 +261,9 @@ static int sysinfo_cb(char *word[], char *word_eol[], void *userdata)
 static int xsys_cb(char *word[], char *word_eol[], void *userdata)
 {
 	if((long)userdata)
-		xchat_printf(ph, "You are using X-Sys v%s (http://dev.gentoo.org/~chainsaw/xsys)", VER_STRING);
+		xchat_printf(ph, "You are using %s v%s (http://dev.gentoo.org/~chainsaw/xsys)", name, VER_STRING);
 	else
-		xchat_commandf(ph, "me is using X-Sys v%s (http://dev.gentoo.org/~chainsaw/xsys)", VER_STRING);
+		xchat_commandf(ph, "me is using %s v%s (http://dev.gentoo.org/~chainsaw/xsys)", name, VER_STRING);
 	
 	return XCHAT_EAT_ALL;
 }
@@ -683,52 +613,3 @@ static int hwmon_cb(char *word[], char *word_eol[], void *userdata)
 	return XCHAT_EAT_ALL;
 }
 #endif
-
-static int np_cb(char *word[], char *word_eol[], void *userdata)
-{
-	char *buffer = NULL, title[bsize], length[42];
-	int pos, len, p = audacious_remote_get_playlist_pos(dbus_proxy);
-
-	if (!audacious_remote_is_running(dbus_proxy))
-	{
-		xchat_printf(ph, "Audacious is not currently running");
-		return XCHAT_EAT_ALL;
-        }
-
-	pos = audacious_remote_get_output_time(dbus_proxy);
-	len = audacious_remote_get_playlist_time(dbus_proxy, p);
-	buffer = decruft_filename(audacious_remote_get_playlist_title(dbus_proxy, p));
-
-	strncpy(title, buffer, bsize);
-	
-	if (action != 0)
-		flat_format_output(playing, title, format);
-	else
-		format_output(playing, title, format);
-	strcat(title, "\017 ");
-
-	if(len == -1)
-		snprintf(length, 42, "%d:%02d/stream",
-		 ((pos/1000)-((pos/1000)%60))/60, (pos/1000)%60);
-	else 
-		snprintf(length, 42, "%d:%02d/%d:%02d",
-		 ((pos/1000)-((pos/1000)%60))/60, (pos/1000)%60,
-		 ((len/1000)-((len/1000)%60))/60, (len/1000)%60);
-	
-	if (action != 0)
-		flat_format_output("length", length, format);
-	else
-		format_output("length", length, format);
-	strncat(title, length, bsize);
-	
-	if ((action != 0) && (long)userdata)
-		xchat_printf(ph, "You are %s", title);
-	else if (action != 0)
-		xchat_commandf(ph, "me is %s", title);
-	else if ((long)userdata)
-		xchat_printf(ph, "%s", title);
-	else
-		xchat_commandf(ph, "say %s", title);
-	
-	return XCHAT_EAT_ALL;
-}
