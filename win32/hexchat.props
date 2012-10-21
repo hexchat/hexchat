@@ -120,6 +120,13 @@ xcopy /q /s /i "$(DepsRoot)\share\locale" "$(HexChatRel)\share\locale"
 copy "$(ProgramFiles)\Codejock Software\ISSkin\ISSkinU.dll" "$(HexChatRel)"
 	</HexChatCopy>
   </PropertyGroup>
+
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <WarningLevel>Level2</WarningLevel>
+    </ClCompile>
+  </ItemDefinitionGroup>
+
   <ItemDefinitionGroup />
   <ItemGroup />
 </Project>
