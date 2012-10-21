@@ -193,6 +193,7 @@ print_summary (int announce, char* format)
 	{
 		strncpy (buffer, "None found", bsize);
 	}
+
 	format_output ("Ethernet", buffer, format);
 	strcat (sysinfo, "\017 ");
 	strncat (sysinfo, buffer, bsize - strlen (buffer));
