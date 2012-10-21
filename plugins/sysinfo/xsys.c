@@ -578,13 +578,13 @@ netdata_cb (char *word[], char *word_eol[], void *userdata)
 	xchat_pluginpref_get_str (ph, "format", format);
 	format_output ("Netdata", netdata, format);
 
-	if ((long)userdata)
+	if (xchat_list_int (ph, NULL, "type") >= 2)
 	{
-		xchat_printf (ph, "%s", netdata);
+		xchat_commandf (ph, "ME %s", netdata);
 	}
 	else
 	{
-		xchat_commandf (ph, "say %s", netdata);
+		xchat_printf (ph, "%s", netdata);
 	}
 	
 	return XCHAT_EAT_ALL;
@@ -651,13 +651,13 @@ netstream_cb (char *word[], char *word_eol[], void *userdata)
 	xchat_pluginpref_get_str (ph, "format", format);
 	format_output ("Netstream", netstream, format);
 
-	if ((long)userdata)
+	if (xchat_list_int (ph, NULL, "type") >= 2)
 	{
-		xchat_printf (ph, "%s", netstream);
+		xchat_commandf (ph, "ME %s", netstream);
 	}
 	else
 	{
-		xchat_commandf (ph, "say %s", netstream);
+		xchat_printf (ph, "%s", netstream);
 	}
 
 	return XCHAT_EAT_ALL;
@@ -746,11 +746,9 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 	*plugin_version = version;
 	char buffer[bsize];
 
-	xchat_hook_command (ph, "SYSINFO",    XCHAT_PRI_NORM, sysinfo_cb,   "Usage: /SYSINFO [OS|DISTRO|CPU|RAM|DISK|VGA|SOUND|ETHERNET|UPTIME]", 0);
-	xchat_hook_command (ph, "NETDATA",    XCHAT_PRI_NORM, netdata_cb,   NULL, (void *) 0);
-	xchat_hook_command (ph, "ENETDATA",   XCHAT_PRI_NORM, netdata_cb,   NULL, (void *) 1);
-	xchat_hook_command (ph, "NETSTREAM",  XCHAT_PRI_NORM, netstream_cb, NULL, (void *) 0);
-	xchat_hook_command (ph, "ENETSTREAM", XCHAT_PRI_NORM, netstream_cb, NULL, (void *) 1);
+	xchat_hook_command (ph, "SYSINFO",	XCHAT_PRI_NORM,	sysinfo_cb,	"Usage: /SYSINFO [OS|DISTRO|CPU|RAM|DISK|VGA|SOUND|ETHERNET|UPTIME]", NULL);
+	xchat_hook_command (ph, "SYSNETDATA",	XCHAT_PRI_NORM,	netdata_cb,	NULL, NULL);
+	xchat_hook_command (ph, "SYSNETSTREAM",	XCHAT_PRI_NORM,	netstream_cb,	NULL, NULL);
 
 	/* this is required for the very first run */
 	if (xchat_pluginpref_get_str (ph, "pciids", buffer) == 0)
