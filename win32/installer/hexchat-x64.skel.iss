@@ -46,7 +46,7 @@ Name: "plugins\mpcinfo"; Description: "mpcInfo"; Types: custom; Flags: disableno
 Name: "plugins\sasl"; Description: "SASL"; Types: normal custom; Flags: disablenouninstallwarning
 Name: "plugins\upd"; Description: "Update Checker"; Types: normal custom; Flags: disablenouninstallwarning
 Name: "plugins\winamp"; Description: "Winamp"; Types: custom; Flags: disablenouninstallwarning
-Name: "plugins\winsys"; Description: "WinSys"; Types: custom; Flags: disablenouninstallwarning
+Name: "plugins\sysinfo"; Description: "SysInfo"; Types: custom; Flags: disablenouninstallwarning
 Name: "plugins\wmpa"; Description: "Windows Media Player Announcer"; Types: custom; Flags: disablenouninstallwarning
 Name: "langs"; Description: "Language Interfaces"; Types: custom; Flags: disablenouninstallwarning
 Name: "langs\lua"; Description: "Lua"; Types: custom; Flags: disablenouninstallwarning
@@ -169,8 +169,8 @@ Source: "plugins\hcmpcinfo.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion;
 Source: "etc\download.png"; DestDir: "{app}\etc"; Flags: ignoreversion; Components: plugins\upd
 Source: "plugins\hcupd.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\upd
 Source: "plugins\hcwinamp.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\winamp
-Source: "etc\system.png"; DestDir: "{app}\etc"; Flags: ignoreversion; Components: plugins\winsys
-Source: "plugins\hcwinsys.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\winsys
+Source: "etc\system.png"; DestDir: "{app}\etc"; Flags: ignoreversion; Components: plugins\sysinfo
+Source: "plugins\hcsysinfo.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\sysinfo
 Source: "plugins\hcsasl.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\sasl
 Source: "plugins\hextray.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\hextray
 Source: "plugins\hcwmpa.dll"; DestDir: "{app}\plugins"; Flags: ignoreversion; Components: plugins\wmpa

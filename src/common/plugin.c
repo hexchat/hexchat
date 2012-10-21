@@ -483,7 +483,7 @@ plugin_auto_load (session *sess)
 	for_files ("./plugins", "hctcl.dll", plugin_auto_load_cb);
 	for_files ("./plugins", "hcupd.dll", plugin_auto_load_cb);
 	for_files ("./plugins", "hcwinamp.dll", plugin_auto_load_cb);
-	for_files ("./plugins", "hcwinsys.dll", plugin_auto_load_cb);
+	for_files ("./plugins", "hcsysinfo.dll", plugin_auto_load_cb);
 	for_files ("./plugins", "hcwmpa.dll", plugin_auto_load_cb);
 	for_files ("./plugins", "hextray.dll", plugin_auto_load_cb);
 

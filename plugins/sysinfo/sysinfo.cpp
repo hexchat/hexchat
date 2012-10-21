@@ -28,7 +28,7 @@
 #include "xchat-plugin.h"
 
 static xchat_plugin *ph;   /* plugin handle */
-static char name[] = "WinSys";
+static char name[] = "SysInfo";
 static char desc[] = "Display info about your hardware and OS";
 static char version[] = "1.1";
 static int firstRun;
@@ -352,7 +352,7 @@ getWmiInfo (int mode)
 static int
 printInfo (char *word[], char *word_eol[], void *user_data)
 {
-	/* query WMI info only at the first time WinSys is called, then cache it to save time */
+	/* query WMI info only at the first time SysInfo is called, then cache it to save time */
 	if (firstRun)
 	{
 		xchat_printf (ph, "%s first execution, querying and caching WMI info...\n", name);
@@ -364,7 +364,7 @@ printInfo (char *word[], char *word_eol[], void *user_data)
 	if (xchat_list_int (ph, NULL, "type") >= 2)
 	{
 		/* uptime will work correctly for up to 50 days, should be enough */
-		xchat_commandf (ph, "ME ** WinSys ** Client: HexChat %s (x%d) ** OS: %s ** CPU: %s (%s) ** RAM: %s ** VGA: %s ** Uptime: %.2f Hours **",
+		xchat_commandf (ph, "ME ** SysInfo ** Client: HexChat %s (x%d) ** OS: %s ** CPU: %s (%s) ** RAM: %s ** VGA: %s ** Uptime: %.2f Hours **",
 			xchat_get_info (ph, "version"),
 			getCpuArch (),
 			wmiOs,
@@ -397,8 +397,8 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 
 	firstRun = 1;
 
-	xchat_hook_command (ph, "WINSYS", XCHAT_PRI_NORM, printInfo, NULL, NULL);
-	xchat_command (ph, "MENU -ietc\\system.png ADD \"Window/Display System Info\" \"WINSYS\"");
+	xchat_hook_command (ph, "SYSINFO", XCHAT_PRI_NORM, printInfo, NULL, NULL);
+	xchat_command (ph, "MENU -ietc\\system.png ADD \"Window/Display System Info\" \"SYSINFO\"");
 
 	xchat_printf (ph, "%s plugin loaded\n", name);
 
