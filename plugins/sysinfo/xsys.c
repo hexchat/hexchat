@@ -43,7 +43,7 @@ static int error_printed = 0;	/* semaphore, make sure not to print the same erro
 static char name[] = "SysInfo";
 static char desc[] = "Display info about your hardware and OS";
 static char version[] = "3.0";
-static char sysinfo_help[] = "SysInfo Usage:\n  /SYSINFO [OS|DISTRO|CPU|RAM|DISK|VGA|SOUND|ETHERNET|UPTIME], print various details about your system or print a summary without arguments\n  /SYSINFO LIST, print current settings\n  /SYSINFO SET <variable>, update given setting\n  /SYSINFO RESET, reset settings to defaults\n  /NETDATA <iface, show transmitted data on given interface\n  /NETSTREAM <iface0>, show current bandwidth on given interface\n";
+static char sysinfo_help[] = "SysInfo Usage:\n  /SYSINFO [OS|DISTRO|CPU|RAM|DISK|VGA|SOUND|ETHERNET|UPTIME], print various details about your system or print a summary without arguments\n  /SYSINFO LIST, print current settings\n  /SYSINFO SET <variable>, update given setting\n  /SYSINFO RESET, reset settings to defaults\n  /NETDATA <iface>, show transmitted data on given interface\n  /NETSTREAM <iface>, show current bandwidth on given interface\n";
 
 void
 sysinfo_get_pciids (char* dest)
