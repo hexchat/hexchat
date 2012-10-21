@@ -401,6 +401,8 @@ int xs_parse_distro(char *name)
 	}		
 	else if((fp = fopen("/etc/redhat-release", "r")) != NULL)
 		fgets(buffer, bsize, fp);
+	else if((fp = fopen("/etc/mageia-release", "r")) != NULL)
+		fgets(buffer, bsize, fp);
 	else if((fp = fopen("/etc/slackware-version", "r")) != NULL)
 		fgets(buffer, bsize, fp);
 	else if((fp = fopen("/etc/mandrake-release", "r")) != NULL)
