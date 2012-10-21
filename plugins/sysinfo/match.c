@@ -54,7 +54,7 @@ char *pretty_freespace(const char *desc, unsigned long long *free_k, unsigned lo
 		free_space = free_space / 1024;
 		total_space = total_space / 1024;
 	}
-	if (sysinfo_get_percentages () != 0)
+	if (sysinfo_get_percent () != 0)
 		snprintf(result, bsize, "%s: %.1f%s, %.1f%% free",
 		desc, total_space, bytesize,
 		percentage(free_k, total_k));
