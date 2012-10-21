@@ -34,7 +34,7 @@
 #include "sexy-marshal.h"
 
 #ifdef WIN32
-#include "typedef.h"
+#include "../common/typedef.h"
 #include <io.h>
 #else
 #include <unistd.h>
