@@ -2,7 +2,7 @@
 #define STATE_SHIFT		GDK_SHIFT_MASK
 #define	STATE_ALT		GDK_MOD1_MASK
 #ifdef __APPLE__
-#define STATE_CTRL		GDK_SUPER_MASK
+#define STATE_CTRL		GDK_META_MASK
 #else
 #define STATE_CTRL		GDK_CONTROL_MASK
 #endif
