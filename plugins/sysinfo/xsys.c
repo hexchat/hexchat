@@ -23,6 +23,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <glib.h>
 
 #include "xchat-plugin.h"
 #include "parse.h"
@@ -39,14 +40,256 @@ static char name[] = "SysInfo";
 static char desc[] = "Display info about your hardware and OS";
 static char version[] = "2.2";
 
+void
+sysinfo_get_pciids (char* dest)
+{
+	xchat_pluginpref_get_str (ph, "pciids", dest);
+}
+
+int
+sysinfo_get_percentages ()
+{
+	return xchat_pluginpref_get_int (ph, "percentages");
+}
+
 static int
-cpuinfo_cb (char *word[], char *word_eol[], void *userdata)
+print_summary (int announce, char* format)
+{
+	char sysinfo[bsize];
+	char buffer[bsize];
+	char cpu_model[bsize];
+	char cpu_cache[bsize];
+	char cpu_vendor[bsize];
+	char os_host[bsize];
+	char os_user[bsize];
+	char os_kernel[bsize];
+	unsigned long long mem_total;
+	unsigned long long mem_free;
+	unsigned int count;
+	double cpu_freq;
+	int giga = 0;
+	int weeks;
+	int days;
+	int hours;
+	int minutes;
+	int seconds;
+	sysinfo[0] = '\0';
+
+	snprintf (buffer, bsize, "%s", xchat_get_info (ph, "version"));
+	format_output ("HexChat", buffer, format);
+	strcat (sysinfo, "\017 ");
+	strncat (sysinfo, buffer, bsize - strlen (sysinfo));
+
+	/* BEGIN OS PARSING */
+	if (xs_parse_os (os_user, os_host, os_kernel) != 0)
+	{
+		xchat_printf (ph, "ERROR in parse_os()");
+		return XCHAT_EAT_ALL;
+	}
+
+	snprintf (buffer, bsize, "%s", os_kernel);
+	format_output ("OS", buffer, format);
+	strcat (sysinfo, "\017 ");
+	strncat (sysinfo, buffer, bsize - strlen (sysinfo));
+
+	/* BEGIN DISTRO PARSING */
+        if (xs_parse_distro (buffer) != 0)
+        {
+		strncpy (buffer, "Unknown", bsize);
+	}
+
+	format_output ("Distro", buffer, format);
+	strcat (sysinfo, "\017 ");
+	strncat (sysinfo, buffer, bsize - strlen (sysinfo));	
+
+	/* BEGIN CPU PARSING */
+	if (xs_parse_cpu (cpu_model, cpu_vendor, &cpu_freq, cpu_cache, &count) != 0)
+	{
+		xchat_printf (ph, "ERROR in parse_cpu()");
+		return XCHAT_EAT_ALL;
+	}
+
+	if (cpu_freq > 1000)
+	{
+		cpu_freq /= 1000;
+		giga = 1;
+	}
+
+	if (giga)
+	{
+		snprintf (buffer, bsize, "%d x %s (%s) @ %.2fGHz", count, cpu_model, cpu_vendor, cpu_freq);
+	}
+	else
+	{
+		snprintf (buffer, bsize, "%d x %s (%s) @ %.0fMHz", count, cpu_model, cpu_vendor, cpu_freq);
+	}
+
+	format_output ("CPU", buffer, format);
+	strcat (sysinfo, "\017 ");
+	strncat (sysinfo, buffer, bsize - strlen (sysinfo));
+
+	/* BEGIN MEMORY PARSING */
+	if (xs_parse_meminfo (&mem_total, &mem_free, 0) == 1)
+	{
+		xchat_printf (ph, "ERROR in parse_meminfo!");
+		return XCHAT_EAT_ALL;
+	}
+
+	snprintf (buffer, bsize, "%s", pretty_freespace ("Physical", &mem_free, &mem_total));
+	format_output ("RAM", buffer, format);	
+	strcat (sysinfo, "\017 ");
+	strncat (sysinfo, buffer, bsize - strlen (sysinfo));
+
+	/* BEGIN DISK PARSING */
+	if (xs_parse_df (NULL, buffer))
+	{
+		xchat_printf (ph, "ERROR in parse_df");
+		return XCHAT_EAT_ALL;
+	}
+
+	format_output ("Disk", buffer, format);
+	strcat (sysinfo, "\017 ");
+	strncat (sysinfo, buffer, bsize - strlen (buffer));
+
+	/* BEGIN VIDEO PARSING */
+	if (xs_parse_video (buffer))
+	{
+		xchat_printf (ph, "ERROR in parse_video");
+		return XCHAT_EAT_ALL;
+	}
+
+	format_output ("VGA", buffer, format);
+	strcat (sysinfo, "\017 ");
+	strncat (sysinfo, buffer, bsize - strlen (buffer));
+
+	/* BEGIN SOUND PARSING */
+	if (xs_parse_sound (buffer))
+	{
+		strncpy (buffer, "Not present", bsize);
+	}
+
+	format_output ("Sound", buffer, format);
+	strcat (sysinfo, "\017 ");
+	strncat (sysinfo, buffer, bsize - strlen (buffer));
+
+	/* BEGIN ETHERNET PARSING */
+	if (xs_parse_ether (buffer))
+	{
+		strncpy (buffer, "None found", bsize);
+	}
+	format_output ("Ethernet", buffer, format);
+	strcat (sysinfo, "\017 ");
+	strncat (sysinfo, buffer, bsize - strlen (buffer));
+
+	/* BEGIN UPTIME PARSING */
+	if (xs_parse_uptime (&weeks, &days, &hours, &minutes, &seconds))
+	{
+		xchat_printf (ph, "ERROR in parse_uptime()");
+		return XCHAT_EAT_ALL;
+	}
+
+	if (minutes != 0 || hours != 0 || days != 0 || weeks != 0)
+	{
+		if (hours != 0 || days != 0 || weeks != 0)
+		{
+			if (days  !=0 || weeks != 0)
+			{
+				if (weeks != 0)
+				{
+					snprintf (buffer, bsize, "%dw %dd %dh %dm %ds", weeks, days, hours, minutes, seconds);
+				}
+				else
+				{
+					snprintf (buffer, bsize, "%dd %dh %dm %ds", days, hours, minutes, seconds);
+				}
+			}
+			else
+			{
+				snprintf (buffer, bsize, "%dh %dm %ds", hours, minutes, seconds);
+			}
+		}
+		else
+		{
+			snprintf (buffer, bsize, "%dm %ds", minutes, seconds);
+		}
+	}
+
+        format_output ("Uptime", buffer, format);
+	strcat (sysinfo, "\017 ");
+	strncat (sysinfo, buffer, bsize - strlen (buffer));
+
+	if (announce)
+	{
+		xchat_commandf (ph, "ME %s", sysinfo);
+	}
+	else
+	{
+		xchat_printf (ph, "%s", sysinfo);
+	}
+
+	return XCHAT_EAT_ALL;
+}
+
+static int
+print_os (int announce, char* format)
+{
+	char buffer[bsize];
+	char user[bsize];
+	char host[bsize];
+	char kernel[bsize];
+
+	if (xs_parse_os (user, host, kernel) != 0)
+	{
+		xchat_printf (ph, "ERROR in parse_os()");
+		return XCHAT_EAT_ALL;
+	}
+
+	snprintf (buffer, bsize, "%s@%s, %s", user, host, kernel);
+	format_output ("OS", buffer, format);
+	
+	if (announce)
+	{
+		xchat_commandf (ph, "ME %s", buffer);
+	}
+	else
+	{
+		xchat_printf (ph, "%s", buffer);
+	}
+
+	return XCHAT_EAT_ALL;
+}
+
+static int
+print_distro (int announce, char* format)
+{
+	char name[bsize];
+
+	if (xs_parse_distro (name) != 0)
+	{
+		xchat_printf (ph, "ERROR in parse_distro()!");
+		return XCHAT_EAT_ALL;
+	}
+
+	format_output("Distro", name, format);
+
+	if (announce)
+	{
+		xchat_commandf (ph, "ME %s", name);
+	}
+	else
+	{
+		xchat_printf (ph, "%s", name);
+	}
+	return XCHAT_EAT_ALL;
+}
+
+static int
+print_cpu (int announce, char* format)
 {
 	char model[bsize];
 	char vendor[bsize];
 	char cache[bsize];
 	char buffer[bsize];
-	char format[bsize];
 	unsigned int count;
 	double freq;
 	int giga = 0;
@@ -72,26 +315,190 @@ cpuinfo_cb (char *word[], char *word_eol[], void *userdata)
 		snprintf (buffer, bsize, "%d x %s (%s) @ %.0fMHz w/ %s L2 Cache", count, model, vendor, freq, cache);
 	}
 
-	xchat_pluginpref_get_str (ph, "format", format);
 	format_output ("CPU", buffer, format);
 
-	if ((long)userdata)
+	if (announce)
 	{
-		xchat_printf (ph, "%s", buffer);
+		xchat_commandf (ph, "ME %s", buffer);
 	}
 	else
 	{
-		xchat_commandf (ph, "say %s", buffer);
+		xchat_printf (ph, "%s", buffer);
 	}
 
 	return XCHAT_EAT_ALL;
 }
 
 static int
-uptime_cb (char *word[], char *word_eol[], void *userdata)
+print_ram (int announce, char* format)
+{
+	unsigned long long mem_total;
+	unsigned long long mem_free;
+	unsigned long long swap_total;
+	unsigned long long swap_free;
+	char string[bsize];
+
+	if (xs_parse_meminfo (&mem_total, &mem_free, 0) == 1)
+	{
+		xchat_printf (ph, "ERROR in parse_meminfo!");
+		return XCHAT_EAT_ALL;
+	}
+	if (xs_parse_meminfo (&swap_total, &swap_free, 1) == 1)
+	{
+		xchat_printf (ph, "ERROR in parse_meminfo!");
+		return XCHAT_EAT_ALL;
+	}
+
+	snprintf (string, bsize, "%s - %s", pretty_freespace ("Physical", &mem_free, &mem_total), pretty_freespace ("Swap", &swap_free, &swap_total));
+	format_output ("RAM", string, format);
+	
+	if (announce)
+	{
+		xchat_commandf (ph, "ME %s", string);
+	}
+	else
+	{
+		xchat_printf (ph, "%s", string);
+	}
+	
+	return XCHAT_EAT_ALL;
+}
+
+static int
+print_disk (int announce, char* format)
+{
+	char string[bsize] = {0,};
+
+#if 0
+	if (*word == '\0')
+	{
+		if (xs_parse_df (NULL, string))
+		{
+			xchat_printf (ph, "ERROR in parse_df");
+			return XCHAT_EAT_ALL;
+		}
+	}
+	else
+	{
+		if (xs_parse_df (*word, string))
+		{
+			xchat_printf (ph, "ERROR in parse_df");
+			return XCHAT_EAT_ALL;
+		}
+	}
+#endif
+
+	if (xs_parse_df (NULL, string))
+	{
+		xchat_printf (ph, "ERROR in parse_df");
+		return XCHAT_EAT_ALL;
+	}
+
+	format_output ("Disk", string, format);
+
+	if (announce)
+	{
+		xchat_commandf (ph, "ME %s", string);
+	}
+	else
+	{
+		xchat_printf (ph, "%s", string);
+	}
+
+	return XCHAT_EAT_ALL;
+}
+
+static int
+print_vga (int announce, char* format)
+{
+	char vid_card[bsize];
+	char agp_bridge[bsize];
+	char buffer[bsize];
+	int ret;
+
+	if ((ret = xs_parse_video (vid_card)) != 0)
+	{
+		xchat_printf (ph, "ERROR in parse_video! %d", ret);
+		return XCHAT_EAT_ALL;
+	}
+
+	if (xs_parse_agpbridge (agp_bridge) != 0)
+	{
+		snprintf (buffer, bsize, "%s", vid_card);
+	}
+	else
+	{
+		snprintf (buffer, bsize, "%s @ %s", vid_card, agp_bridge);
+	}
+
+	format_output ("VGA", buffer, format);
+
+	if (announce)
+	{
+		xchat_commandf (ph, "ME %s", buffer);
+	}
+	else
+	{
+		xchat_printf (ph, "%s", buffer);
+	}
+
+	return XCHAT_EAT_ALL;
+}
+
+static int
+print_sound (int announce, char* format)
+{
+	char sound[bsize];
+
+	if (xs_parse_sound (sound) != 0)
+	{
+		xchat_printf (ph, "ERROR in parse_asound()!");
+		return XCHAT_EAT_ALL;
+	}
+
+	format_output ("Sound", sound, format);
+
+	if (announce)
+	{
+		xchat_commandf (ph, "ME %s", sound);
+	}
+	else
+	{
+		xchat_printf (ph, "%s", sound);
+	}
+
+	return XCHAT_EAT_ALL;
+}
+
+
+static int
+print_ethernet (int announce, char* format)
+{
+	char ethernet_card[bsize];
+
+	if (xs_parse_ether (ethernet_card))
+	{
+		strncpy (ethernet_card, "None found", bsize);
+	}
+
+	format_output ("Ethernet", ethernet_card, format);
+
+	if (announce)
+	{
+		xchat_commandf(ph, "ME %s", ethernet_card);
+	}
+	else
+	{
+		xchat_printf(ph, "%s", ethernet_card);
+	}
+
+	return XCHAT_EAT_ALL;
+}
+
+static int
+print_uptime (int announce, char* format)
 {
 	char buffer[bsize];
-	char format[bsize];
 	int weeks;
 	int days;
 	int hours;
@@ -110,123 +517,39 @@ uptime_cb (char *word[], char *word_eol[], void *userdata)
 		{
 			if (days  !=0 || weeks != 0)
 			{
-                                if (weeks != 0)
-                                {
-                                        snprintf (buffer, bsize, "%dw %dd %dh %dm %ds", weeks, days, hours, minutes, seconds);
-                                }
-                                else
-                                {
-                                        snprintf (buffer, bsize, "%dd %dh %dm %ds", days, hours, minutes, seconds);
-                                }
-                        }
-                        else
-                        {
-                                snprintf (buffer, bsize, "%dh %dm %ds", hours, minutes, seconds);
-                        }
-                }
-                else
-                {
-                        snprintf (buffer, bsize, "%dm %ds", minutes, seconds);
-                }
-        }
+				if (weeks != 0)
+				{
+					snprintf (buffer, bsize, "%dw %dd %dh %dm %ds", weeks, days, hours, minutes, seconds);
+				}
+				else
+				{
+					snprintf (buffer, bsize, "%dd %dh %dm %ds", days, hours, minutes, seconds);
+				}
+			}
+			else
+			{
+				snprintf (buffer, bsize, "%dh %dm %ds", hours, minutes, seconds);
+			}
+		}
+		else
+		{
+			snprintf (buffer, bsize, "%dm %ds", minutes, seconds);
+		}
+	}
 
 	format_output ("Uptime", buffer, format);
 
-	if ((long)userdata)
+	if (announce)
+	{
+		xchat_commandf (ph, "ME %s", buffer);
+	}
+	else
 	{
 		xchat_printf (ph, "%s", buffer);
 	}
-	else
-	{
-		xchat_commandf (ph, "say %s", buffer);
-	}
 
 	return XCHAT_EAT_ALL;
 }
-
-static int
-osinfo_cb (char *word[], char *word_eol[], void *userdata)
-{
-	char buffer[bsize];
-	char user[bsize];
-	char host[bsize];
-	char kernel[bsize];
-	char format[bsize];
-
-	if (xs_parse_os (user, host, kernel) != 0)
-	{
-		xchat_printf (ph, "ERROR in parse_os()");
-		return XCHAT_EAT_ALL;
-	}
-
-	snprintf (buffer, bsize, "%s@%s, %s", user, host, kernel);
-	xchat_pluginpref_get_str (ph, "format", format);
-	format_output ("OS", buffer, format);
-	
-	if ((long)userdata)
-	{
-		xchat_printf (ph, "%s", buffer);
-	}
-	else
-	{
-		xchat_commandf (ph, "say %s", buffer);
-	}
-
-	return XCHAT_EAT_ALL;
-}
-
-static int
-sound_cb (char *word[], char *world_eol[], void *userdata)
-{
-	char sound[bsize];
-	char format[bsize];
-
-	if (xs_parse_sound (sound) != 0)
-	{
-		xchat_printf (ph, "ERROR in parse_asound()!");
-		return XCHAT_EAT_ALL;
-	}
-
-	xchat_pluginpref_get_str (ph, "format", format);
-	format_output ("Sound", sound, format);
-
-	if ((long)userdata)
-	{
-		xchat_printf (ph, "%s", sound);
-	}
-	else
-	{
-		xchat_commandf (ph, "say %s", sound);
-	}
-
-	return XCHAT_EAT_ALL;
-}
-
-static int
-distro_cb (char *word[], char *word_eol[], void *userdata)
-{
-	char name[bsize];
-	char format[bsize];
-
-	if (xs_parse_distro (name) != 0)
-	{
-		xchat_printf (ph, "ERROR in parse_distro()!");
-		return XCHAT_EAT_ALL;
-	}
-
-	xchat_pluginpref_get_str (ph, "format", format);
-	format_output("Distro", name, format);
-
-	if ((long)userdata)
-	{
-		xchat_printf (ph, "%s", name);
-	}
-	else
-	{
-		xchat_commandf (ph, "say %s", name);
-	}
-	return XCHAT_EAT_ALL;
-}	
 
 static int
 netdata_cb (char *word[], char *word_eol[], void *userdata)
@@ -341,278 +664,77 @@ netstream_cb (char *word[], char *word_eol[], void *userdata)
 }
 
 static int
-disk_cb (char *word[], char *word_eol[], void *userdata)
-{
-	char string[bsize] = {0,};
-	char format[bsize];
-
-	if (*word[2] == '\0')
-	{
-		if (xs_parse_df(NULL, string))
-		{
-			xchat_printf (ph, "ERROR in parse_df");
-			return XCHAT_EAT_ALL;
-		}
-	}
-	else
-	{
-		if (xs_parse_df(word[2], string))
-		{
-			xchat_printf (ph, "ERROR in parse_df");
-			return XCHAT_EAT_ALL;
-		}
-	}
-
-	xchat_pluginpref_get_str (ph, "format", format);
-	format_output ("Disk", string, format);
-	
-	if ((long)userdata)
-	{
-		xchat_printf(ph, "%s", string);
-	}
-	else
-	{
-		xchat_commandf(ph, "say %s", string);
-	}
-
-	return XCHAT_EAT_ALL;
-}
-
-static int
-mem_cb (char *word[], char *word_eol[], void *userdata)
-{
-	unsigned long long mem_total;
-	unsigned long long mem_free;
-	unsigned long long swap_total;
-	unsigned long long swap_free;
-	char string[bsize];
-	char format[bsize];
-
-	if (xs_parse_meminfo (&mem_total, &mem_free, 0) == 1)
-	{
-		xchat_printf (ph, "ERROR in parse_meminfo!");
-		return XCHAT_EAT_ALL;
-	}
-	if (xs_parse_meminfo (&swap_total, &swap_free, 1) == 1)
-	{
-		xchat_printf (ph, "ERROR in parse_meminfo!");
-		return XCHAT_EAT_ALL;
-	}
-
-	snprintf (string, bsize, "%s - %s", pretty_freespace ("Physical", &mem_free, &mem_total), pretty_freespace ("Swap", &swap_free, &swap_total));
- 	xchat_pluginpref_get_str (ph, "format", format);
-	format_output ("RAM", string, format);
-	
-	if ((long)userdata)
-	{
-		xchat_printf (ph, "%s", string);
-	}
-	else
-	{
-		xchat_commandf (ph, "say %s", string);
-	}
-	
-	return XCHAT_EAT_ALL;
-}
-
-static int
-video_cb (char *word[], char *word_eol[], void *userdata)
-{
-	char vid_card[bsize];
-	char agp_bridge[bsize];
-	char buffer[bsize];
-	char format[bsize];
-	int ret;
-
-	if ((ret = xs_parse_video (vid_card)) != 0)
-	{
-		xchat_printf (ph, "ERROR in parse_video! %d", ret);
-		return XCHAT_EAT_ALL;
-	}
-
-	if (xs_parse_agpbridge (agp_bridge) != 0)
-	{
-		snprintf (buffer, bsize, "%s", vid_card);
-	}
-	else
-	{
-		snprintf (buffer, bsize, "%s @ %s", vid_card, agp_bridge);
-	}
-
-	xchat_pluginpref_get_str (ph, "format", format);
-	format_output ("VGA", buffer, format);
-	if ((long)userdata)
-	{
-		xchat_printf (ph, "%s", buffer);
-	}
-	else
-	{
-		xchat_commandf (ph, "say %s", buffer);
-	}
-
-	return XCHAT_EAT_ALL;
-}
-
-static int
-ether_cb (char *word[], char *word_eol[], void *userdata)
-{
-	char ethernet_card[bsize];
-	char format[bsize];
-
-	if (xs_parse_ether (ethernet_card))
-	{
-		strncpy (ethernet_card, "None found", bsize);
-	}
-
-	xchat_pluginpref_get_str (ph, "format", format);
-	format_output ("Ethernet", ethernet_card, format);
-
-	if ((long)userdata)
-	{
-		xchat_printf(ph, "%s", ethernet_card);
-	}
-	else
-	{
-		xchat_commandf(ph, "say %s", ethernet_card);
-	}
-
-	return XCHAT_EAT_ALL;
-}
-
-int
-sysinfo_get_percentages ()
-{
-	return xchat_pluginpref_get_int (ph, "percentages");
-}
-
-void
-sysinfo_get_pciids (char* dest)
-{
-	xchat_pluginpref_get_str (ph, "pciids", dest);
-}
-
-static int
 sysinfo_cb (char *word[], char *word_eol[], void *userdata)
 {
-	char sysinfo[bsize];
-	char buffer[bsize];
-	char cpu_model[bsize];
-	char cpu_cache[bsize];
-	char cpu_vendor[bsize];
-	char os_host[bsize];
-	char os_user[bsize];
-	char os_kernel[bsize];
+	int announce = 0;
 	char format[bsize];
-	unsigned long long mem_total;
-	unsigned long long mem_free;
-	unsigned int count;
-	double cpu_freq;
-	int giga = 0;
-	sysinfo[0] = '\0';
 
-	xchat_pluginpref_get_str (ph, "format", format);
-
-	/* BEGIN OS PARSING */
-	if (xs_parse_os (os_user, os_host, os_kernel) != 0)
+	if (!xchat_pluginpref_get_str (ph, "format", format))
 	{
-		xchat_printf (ph, "ERROR in parse_os()");
+		xchat_printf (ph, "Error reading config file!");
 		return XCHAT_EAT_ALL;
 	}
 
-	snprintf (buffer, bsize, "%s", os_kernel);
-	format_output ("OS", buffer, format);
-	strncat (sysinfo, buffer, bsize - strlen (sysinfo));
-
-	/* BEGIN DISTRO PARSING */
-        if (xs_parse_distro (buffer) != 0)
-        {
-		strncpy (buffer, "Unknown", bsize);
+	if (xchat_list_int (ph, NULL, "type") >= 2)
+	{
+		announce = 1;
 	}
 
-	format_output ("Distro", buffer, format);
-	strcat (sysinfo, "\017 ");
-	strncat (sysinfo, buffer, bsize - strlen (sysinfo));	
-
-	/* BEGIN CPU PARSING */
-	if (xs_parse_cpu (cpu_model, cpu_vendor, &cpu_freq, cpu_cache, &count) != 0)
+	if (!g_ascii_strcasecmp ("HELP", word[2]))
 	{
-		xchat_printf (ph, "ERROR in parse_cpu()");
+		xchat_printf (ph, "Usage: /SYSINFO [OS|DISTRO|CPU|RAM|DISK|VGA|SOUND|ETHERNET|UPTIME]\n");
 		return XCHAT_EAT_ALL;
 	}
-
-	if (cpu_freq > 1000)
+	else if (!g_ascii_strcasecmp ("OS", word[2]))
 	{
-		cpu_freq /= 1000;
-		giga = 1;
+		print_os (announce, format);
+		return XCHAT_EAT_ALL;
 	}
-
-	if (giga)
+	else if (!g_ascii_strcasecmp ("DISTRO", word[2]))
 	{
-		snprintf (buffer, bsize, "%d x %s (%s) @ %.2fGHz", count, cpu_model, cpu_vendor, cpu_freq);
+		print_distro (announce, format);
+		return XCHAT_EAT_ALL;
+	}
+	else if (!g_ascii_strcasecmp ("CPU", word[2]))
+	{
+		print_cpu (announce, format);
+		return XCHAT_EAT_ALL;
+	}
+	else if (!g_ascii_strcasecmp ("RAM", word[2]))
+	{
+		print_ram (announce, format);
+		return XCHAT_EAT_ALL;
+	}
+	else if (!g_ascii_strcasecmp ("DISK", word[2]))
+	{
+		print_disk (announce, format);
+		return XCHAT_EAT_ALL;
+	}
+	else if (!g_ascii_strcasecmp ("VGA", word[2]))
+	{
+		print_vga (announce, format);
+		return XCHAT_EAT_ALL;
+	}
+	else if (!g_ascii_strcasecmp ("SOUND", word[2]))
+	{
+		print_sound (announce, format);
+		return XCHAT_EAT_ALL;
+	}
+	else if (!g_ascii_strcasecmp ("ETHERNET", word[2]))
+	{
+		print_ethernet (announce, format);
+		return XCHAT_EAT_ALL;
+	}
+	else if (!g_ascii_strcasecmp ("UPTIME", word[2]))
+	{
+		print_uptime (announce, format);
+		return XCHAT_EAT_ALL;
 	}
 	else
 	{
-		snprintf (buffer, bsize, "%d x %s (%s) @ %.0fMHz", count, cpu_model, cpu_vendor, cpu_freq);
-	}
-
-	format_output ("CPU", buffer, format);
-	strcat (sysinfo, "\017 ");
-	strncat (sysinfo, buffer, bsize - strlen (sysinfo));
-
-	/* BEGIN MEMORY PARSING */
-	if (xs_parse_meminfo (&mem_total, &mem_free, 0) == 1)
-	{
-		xchat_printf (ph, "ERROR in parse_meminfo!");
+		print_summary (announce, format);
 		return XCHAT_EAT_ALL;
 	}
-
-	snprintf (buffer, bsize, "%s", pretty_freespace ("Physical", &mem_free, &mem_total));
-	format_output ("RAM", buffer, format);	
-	strcat (sysinfo, "\017 ");
-	strncat (sysinfo, buffer, bsize - strlen (sysinfo));
-
-	/* BEGIN DISK PARSING */
-	if (xs_parse_df (NULL, buffer))
-	{
-		xchat_printf (ph, "ERROR in parse_df");
-		return XCHAT_EAT_ALL;
-	}
-
-	format_output ("Disk", buffer, format);
-	strcat (sysinfo, "\017 ");
-	strncat (sysinfo, buffer, bsize - strlen (buffer));
-
-	/* BEGIN VIDEO PARSING */
-	if (xs_parse_video (buffer))
-	{
-		xchat_printf (ph, "ERROR in parse_video");
-		return XCHAT_EAT_ALL;
-	}
-
-	format_output ("VGA", buffer, format);
-	strcat (sysinfo, "\017 ");
-	strncat (sysinfo, buffer, bsize - strlen (buffer));
-
-	/* BEGIN SOUND PARSING */
-	if (xs_parse_sound (buffer))
-	{
-		strncpy (buffer, "Not present", bsize);
-	}
-
-	format_output ("Sound", buffer, format);
-	strcat (sysinfo, "\017 ");
-	strncat (sysinfo, buffer, bsize - strlen (buffer));
-
-	if ((long)userdata)
-	{
-		xchat_printf (ph, "%s", sysinfo);
-	}
-	else
-	{
-		xchat_commandf (ph, "say %s", sysinfo);	
-	}
-
-	return XCHAT_EAT_ALL;
 }
 
 int
@@ -624,30 +746,11 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 	*plugin_version = version;
 	char buffer[bsize];
 
-	xchat_hook_command (ph, "SYSINFO",    XCHAT_PRI_NORM, sysinfo_cb,   NULL, (void *) 0);
-	xchat_hook_command (ph, "ESYSINFO",   XCHAT_PRI_NORM, sysinfo_cb,   NULL, (void *) 1);
-	xchat_hook_command (ph, "CPUINFO",    XCHAT_PRI_NORM, cpuinfo_cb,   NULL, (void *) 0);
-	xchat_hook_command (ph, "ECPUINFO",   XCHAT_PRI_NORM, cpuinfo_cb,   NULL, (void *) 1);
-	xchat_hook_command (ph, "SYSUPTIME",  XCHAT_PRI_NORM, uptime_cb,    NULL, (void *) 0);
-	xchat_hook_command (ph, "ESYSUPTIME", XCHAT_PRI_NORM, uptime_cb,    NULL, (void *) 1);
-	xchat_hook_command (ph, "OSINFO",     XCHAT_PRI_NORM, osinfo_cb,    NULL, (void *) 0);
-	xchat_hook_command (ph, "EOSINFO",    XCHAT_PRI_NORM, osinfo_cb,    NULL, (void *) 1);
-	xchat_hook_command (ph, "SOUND",      XCHAT_PRI_NORM, sound_cb,     NULL, (void *) 0);
-	xchat_hook_command (ph, "ESOUND",     XCHAT_PRI_NORM, sound_cb,     NULL, (void *) 1);
+	xchat_hook_command (ph, "SYSINFO",    XCHAT_PRI_NORM, sysinfo_cb,   "Usage: /SYSINFO [OS|DISTRO|CPU|RAM|DISK|VGA|SOUND|ETHERNET|UPTIME]", 0);
 	xchat_hook_command (ph, "NETDATA",    XCHAT_PRI_NORM, netdata_cb,   NULL, (void *) 0);
 	xchat_hook_command (ph, "ENETDATA",   XCHAT_PRI_NORM, netdata_cb,   NULL, (void *) 1);
 	xchat_hook_command (ph, "NETSTREAM",  XCHAT_PRI_NORM, netstream_cb, NULL, (void *) 0);
 	xchat_hook_command (ph, "ENETSTREAM", XCHAT_PRI_NORM, netstream_cb, NULL, (void *) 1);
-	xchat_hook_command (ph, "DISKINFO",   XCHAT_PRI_NORM, disk_cb,      NULL, (void *) 0);
-	xchat_hook_command (ph, "EDISKINFO",  XCHAT_PRI_NORM, disk_cb,      NULL, (void *) 1);
-	xchat_hook_command (ph, "MEMINFO",    XCHAT_PRI_NORM, mem_cb,       NULL, (void *) 0);
-	xchat_hook_command (ph, "EMEMINFO",   XCHAT_PRI_NORM, mem_cb,       NULL, (void *) 1);
-	xchat_hook_command (ph, "VIDEO",      XCHAT_PRI_NORM, video_cb,     NULL, (void *) 0);
-	xchat_hook_command (ph, "EVIDEO",     XCHAT_PRI_NORM, video_cb,     NULL, (void *) 1);
-	xchat_hook_command (ph, "ETHER",      XCHAT_PRI_NORM, ether_cb,     NULL, (void *) 0);
-	xchat_hook_command (ph, "EETHER",     XCHAT_PRI_NORM, ether_cb,     NULL, (void *) 1);
-	xchat_hook_command (ph, "DISTRO",     XCHAT_PRI_NORM, distro_cb,    NULL, (void *) 0);
-	xchat_hook_command (ph, "EDISTRO",    XCHAT_PRI_NORM, distro_cb,    NULL, (void *) 1);
 
 	/* this is required for the very first run */
 	if (xchat_pluginpref_get_str (ph, "pciids", buffer) == 0)
@@ -665,6 +768,7 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 		xchat_pluginpref_set_int (ph, "percentages", DEFAULT_PERCENTAGES);
 	}
 
+	xchat_command (ph, "MENU ADD \"Window/Display System Info\" \"SYSINFO\"");
 	xchat_printf (ph, "%s plugin loaded\n", name);
 	return 1;
 }
@@ -672,6 +776,7 @@ xchat_plugin_init (xchat_plugin *plugin_handle, char **plugin_name, char **plugi
 int
 xchat_plugin_deinit (void)
 {
+	xchat_command (ph, "MENU DEL \"Window/Display System Info\"");
 	xchat_printf (ph, "%s plugin unloaded\n", name);
 	return 1;
 }
