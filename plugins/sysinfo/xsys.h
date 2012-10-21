@@ -25,4 +25,7 @@
 #define bsize 1024
 #define delims ":="
 
+int sysinfo_get_percentages ();
+void sysinfo_get_pciids (char *dest);
+
 #endif

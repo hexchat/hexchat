@@ -24,8 +24,6 @@
 #include <unistd.h>
 #include "xsys.h"
 
-extern int percentages;
-
 float percentage(unsigned long long *free, unsigned long long *total)
 {
         unsigned long long result = (*free) * (unsigned long long)1000 / (*total);
@@ -56,7 +54,7 @@ char *pretty_freespace(const char *desc, unsigned long long *free_k, unsigned lo
 		free_space = free_space / 1024;
 		total_space = total_space / 1024;
 	}
-	if (percentages != 0)
+	if (sysinfo_get_percentages () != 0)
 		snprintf(result, bsize, "%s: %.1f%s, %.1f%% free",
 		desc, total_space, bytesize,
 		percentage(free_k, total_k));

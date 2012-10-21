@@ -27,8 +27,6 @@
 #include <pci/pci.h>
 #include "xsys.h"
 
-#define PCIIDS "/usr/share/misc/pci.ids"
-
 static struct pci_filter filter;       /* Device filter */
 static struct pci_access *pacc;
 int bus, dev, func; /* Location of the card */
@@ -112,9 +110,15 @@ int pci_find_by_class(u16 *class, char *vendor, char *device)
 
 void pci_find_fullname(char *fullname, char *vendor, char *device)
 {
-	char buffer[bsize], vendorname[bsize/2] = "", devicename[bsize/2] = "", *position;
+	char buffer[bsize];
+	char vendorname[bsize/2] = "";
+	char devicename[bsize/2] = "";
+	char *position;
 	int cardfound = 0;
-	FILE *fp = fopen(PCIIDS, "r");
+
+	sysinfo_get_pciids (buffer);
+	FILE *fp = fopen (buffer, "r");
+
 	if(fp == NULL) {
 		snprintf(fullname, bsize, "%s:%s", vendor, device);	
 		return;
