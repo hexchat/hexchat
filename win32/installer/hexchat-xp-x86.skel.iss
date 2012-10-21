@@ -43,9 +43,9 @@ Name: "plugins\fishlim"; Description: "FiSHLiM"; Types: custom; Flags: disableno
 Name: "plugins\hextray"; Description: "HexTray"; Types: custom; Flags: disablenouninstallwarning
 Name: "plugins\mpcinfo"; Description: "mpcInfo"; Types: custom; Flags: disablenouninstallwarning
 Name: "plugins\sasl"; Description: "SASL"; Types: normal custom; Flags: disablenouninstallwarning
+Name: "plugins\sysinfo"; Description: "SysInfo"; Types: custom; Flags: disablenouninstallwarning
 Name: "plugins\upd"; Description: "Update Checker"; Types: normal custom; Flags: disablenouninstallwarning
 Name: "plugins\winamp"; Description: "Winamp"; Types: custom; Flags: disablenouninstallwarning
-Name: "plugins\sysinfo"; Description: "SysInfo"; Types: custom; Flags: disablenouninstallwarning
 Name: "plugins\wmpa"; Description: "Windows Media Player Announcer"; Types: custom; Flags: disablenouninstallwarning
 Name: "langs"; Description: "Language Interfaces"; Types: custom; Flags: disablenouninstallwarning
 Name: "langs\lua"; Description: "Lua"; Types: custom; Flags: disablenouninstallwarning
