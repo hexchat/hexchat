@@ -520,32 +520,32 @@ const struct prefs vars[] =
 	{"input_tray_hilight", P_OFFINT (hex_input_tray_hilight), TYPE_BOOL},
 	{"input_tray_priv", P_OFFINT (hex_input_tray_priv), TYPE_BOOL},
 
-	{"irc_auto_rejoin", P_OFFINT (autorejoin), TYPE_BOOL},
-	{"irc_ban_type", P_OFFINT (bantype), TYPE_INT},
-	{"irc_conf_mode", P_OFFINT (confmode), TYPE_BOOL},
-	{"irc_extra_hilight", P_OFFSET (irc_extra_hilight), TYPE_STR},
-	{"irc_hide_version", P_OFFINT (hidever), TYPE_BOOL},
-	{"irc_id_ntext", P_OFFSET (irc_id_ntext), TYPE_STR},
-	{"irc_id_ytext", P_OFFSET (irc_id_ytext), TYPE_STR},
-	{"irc_invisible", P_OFFINT (invisible), TYPE_BOOL},
-	{"irc_join_delay", P_OFFINT (irc_join_delay), TYPE_INT},
-	{"irc_logging", P_OFFINT (logging), TYPE_BOOL},
-	{"irc_logmask", P_OFFSET (logmask), TYPE_STR},
-	{"irc_nick1", P_OFFSET (nick1), TYPE_STR},
-	{"irc_nick2", P_OFFSET (nick2), TYPE_STR},
-	{"irc_nick3", P_OFFSET (nick3), TYPE_STR},
-	{"irc_nick_hilight", P_OFFSET (irc_nick_hilight), TYPE_STR},
-	{"irc_no_hilight", P_OFFSET (irc_no_hilight), TYPE_STR},
-	{"irc_part_reason", P_OFFSET (partreason), TYPE_STR},
-	{"irc_quit_reason", P_OFFSET (quitreason), TYPE_STR},
-	{"irc_raw_modes", P_OFFINT (raw_modes), TYPE_BOOL},
-	{"irc_real_name", P_OFFSET (realname), TYPE_STR},
-	{"irc_servernotice", P_OFFINT (servernotice), TYPE_BOOL},
-	{"irc_skip_motd", P_OFFINT (skipmotd), TYPE_BOOL},
-	{"irc_user_name", P_OFFSET (username), TYPE_STR},
-	{"irc_wallops", P_OFFINT (wallops), TYPE_BOOL},
-	{"irc_who_join", P_OFFINT (userhost), TYPE_BOOL},
-	{"irc_whois_front", P_OFFINT (irc_whois_front), TYPE_BOOL},
+	{"irc_auto_rejoin", P_OFFINT (hex_irc_auto_rejoin), TYPE_BOOL},
+	{"irc_ban_type", P_OFFINT (hex_irc_ban_type), TYPE_INT},
+	{"irc_conf_mode", P_OFFINT (hex_irc_conf_mode), TYPE_BOOL},
+	{"irc_extra_hilight", P_OFFSET (hex_irc_extra_hilight), TYPE_STR},
+	{"irc_hide_version", P_OFFINT (hex_irc_hide_version), TYPE_BOOL},
+	{"irc_id_ntext", P_OFFSET (hex_irc_id_ntext), TYPE_STR},
+	{"irc_id_ytext", P_OFFSET (hex_irc_id_ytext), TYPE_STR},
+	{"irc_invisible", P_OFFINT (hex_irc_invisible), TYPE_BOOL},
+	{"irc_join_delay", P_OFFINT (hex_irc_join_delay), TYPE_INT},
+	{"irc_logging", P_OFFINT (hex_irc_logging), TYPE_BOOL},
+	{"irc_logmask", P_OFFSET (hex_irc_logmask), TYPE_STR},
+	{"irc_nick1", P_OFFSET (hex_irc_nick1), TYPE_STR},
+	{"irc_nick2", P_OFFSET (hex_irc_nick2), TYPE_STR},
+	{"irc_nick3", P_OFFSET (hex_irc_nick3), TYPE_STR},
+	{"irc_nick_hilight", P_OFFSET (hex_irc_nick_hilight), TYPE_STR},
+	{"irc_no_hilight", P_OFFSET (hex_irc_no_hilight), TYPE_STR},
+	{"irc_part_reason", P_OFFSET (hex_irc_part_reason), TYPE_STR},
+	{"irc_quit_reason", P_OFFSET (hex_irc_quit_reason), TYPE_STR},
+	{"irc_raw_modes", P_OFFINT (hex_irc_raw_modes), TYPE_BOOL},
+	{"irc_real_name", P_OFFSET (hex_irc_real_name), TYPE_STR},
+	{"irc_servernotice", P_OFFINT (hex_irc_servernotice), TYPE_BOOL},
+	{"irc_skip_motd", P_OFFINT (hex_irc_skip_motd), TYPE_BOOL},
+	{"irc_user_name", P_OFFSET (hex_irc_user_name), TYPE_STR},
+	{"irc_wallops", P_OFFINT (hex_irc_wallops), TYPE_BOOL},
+	{"irc_who_join", P_OFFINT (hex_irc_who_join), TYPE_BOOL},
+	{"irc_whois_front", P_OFFINT (hex_irc_whois_front), TYPE_BOOL},
 
 	{"net_auto_reconnect", P_OFFINT (autoreconnect), TYPE_BOOL},
 	{"net_auto_reconnectonfail", P_OFFINT (autoreconnectonfail), TYPE_BOOL},
@@ -558,7 +558,6 @@ const struct prefs vars[] =
 	{"net_proxy_type", P_OFFINT (proxy_type), TYPE_INT},
 	{"net_proxy_use", P_OFFINT (proxy_use), TYPE_INT},
 	{"net_proxy_user", P_OFFSET (proxy_user), TYPE_STR},
-
 	{"net_reconnect_delay", P_OFFINT (recon_delay), TYPE_INT},
 	{"net_throttle", P_OFFINT (throttle), TYPE_BOOL},
 
@@ -655,7 +654,7 @@ load_config (void)
 
 	/* put in default values, anything left out is automatically zero */
 	prefs.local_ip = 0xffffffff;
-	prefs.irc_join_delay = 3;
+	prefs.hex_irc_join_delay = 3;
 	prefs.show_marker = 1;
 	prefs.hex_gui_tab_newtofront = 2;
 	prefs.hex_completion_amount = 5;
@@ -735,7 +734,7 @@ load_config (void)
 	prefs.hex_gui_ulist_icons = 1;
 	prefs.hex_gui_ulist_pos = 3;
 	prefs.hex_gui_win_save = 1;
-	prefs.bantype = 2;
+	prefs.hex_irc_ban_type = 2;
 	prefs.hex_input_balloon_time = 20;
 	prefs.hex_input_flash_priv = prefs.hex_input_flash_hilight = 1;
 	prefs.hex_input_tray_priv = prefs.hex_input_tray_hilight = 1;
@@ -747,16 +746,16 @@ load_config (void)
 	strcpy (prefs.spell_langs, g_getenv ("LC_ALL") ? g_getenv ("LC_ALL") : "en_US");
 	strcpy (prefs.stamp_format, "[%H:%M:%S] ");
 	strcpy (prefs.timestamp_log_format, "%b %d %H:%M:%S ");
-	strcpy (prefs.logmask, "%n-%c.log");
+	strcpy (prefs.hex_irc_logmask, "%n-%c.log");
 	strcpy (prefs.hex_completion_suffix, ",");
 	strcpy (prefs.hex_input_command_char, "/");
-	strcpy (prefs.nick1, username);
-	strcpy (prefs.nick2, username);
-	strcat (prefs.nick2, "_");
-	strcpy (prefs.nick3, username);
-	strcat (prefs.nick3, "__");
-	strcpy (prefs.realname, realname);
-	strcpy (prefs.username, username);
+	strcpy (prefs.hex_irc_nick1, username);
+	strcpy (prefs.hex_irc_nick2, username);
+	strcat (prefs.hex_irc_nick2, "_");
+	strcpy (prefs.hex_irc_nick3, username);
+	strcat (prefs.hex_irc_nick3, "__");
+	strcpy (prefs.hex_irc_real_name, realname);
+	strcpy (prefs.hex_irc_user_name, username);
 #ifdef WIN32
 	strcpy (prefs.sounddir, "./sounds");
 	{
@@ -777,13 +776,13 @@ load_config (void)
 #endif
 	strcpy (prefs.hex_gui_ulist_doubleclick, "QUOTE WHOIS %s %s");
 	strcpy (prefs.hex_away_reason, _("I'm busy"));
-	strcpy (prefs.quitreason, _("Leaving"));
-	strcpy (prefs.partreason, prefs.quitreason);
+	strcpy (prefs.hex_irc_quit_reason, _("Leaving"));
+	strcpy (prefs.hex_irc_part_reason, prefs.hex_irc_quit_reason);
 	strcpy (prefs.font_normal, DEF_FONT);
 	strcpy (prefs.font_main, DEF_FONT);
 	strcpy (prefs.font_alternative, DEF_FONT_ALTER);
 	strcpy (prefs.hex_dnsprogram, "host");
-	strcpy (prefs.irc_no_hilight, "NickServ,ChanServ,InfoServ,N,Q");
+	strcpy (prefs.hex_irc_no_hilight, "NickServ,ChanServ,InfoServ,N,Q");
 
 	g_free ((char *)username);
 	g_free ((char *)realname);
@@ -839,7 +838,7 @@ load_config (void)
 	if (prefs.hex_gui_win_width < 106)
 		prefs.hex_gui_win_width = 106;
 
-	sp = strchr (prefs.username, ' ');
+	sp = strchr (prefs.hex_irc_user_name, ' ');
 	if (sp)
 		sp[0] = 0;	/* spaces in username would break the login */
 }

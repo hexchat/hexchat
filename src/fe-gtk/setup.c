@@ -437,9 +437,9 @@ static const setting alert_settings[] =
 	{ST_HEADER,	N_("Highlighted Messages"),0,0,0},
 	{ST_LABEL,	N_("Highlighted messages are ones where your nickname is mentioned, but also:"), 0, 0, 0, 1},
 
-	{ST_ENTRY,	N_("Extra words to highlight:"), P_OFFSETNL(irc_extra_hilight), 0, 0, sizeof prefs.irc_extra_hilight},
-	{ST_ENTRY,	N_("Nick names not to highlight:"), P_OFFSETNL(irc_no_hilight), 0, 0, sizeof prefs.irc_no_hilight},
-	{ST_ENTRY,	N_("Nick names to always highlight:"), P_OFFSETNL(irc_nick_hilight), 0, 0, sizeof prefs.irc_nick_hilight},
+	{ST_ENTRY,	N_("Extra words to highlight:"), P_OFFSETNL(hex_irc_extra_hilight), 0, 0, sizeof prefs.hex_irc_extra_hilight},
+	{ST_ENTRY,	N_("Nick names not to highlight:"), P_OFFSETNL(hex_irc_no_hilight), 0, 0, sizeof prefs.hex_irc_no_hilight},
+	{ST_ENTRY,	N_("Nick names to always highlight:"), P_OFFSETNL(hex_irc_nick_hilight), 0, 0, sizeof prefs.hex_irc_nick_hilight},
 	{ST_LABEL,	N_("Separate multiple words with commas.\nWildcards are accepted.")},
 
 	{ST_END, 0, 0, 0, 0, 0}
@@ -458,9 +458,9 @@ static const setting alert_settings_hextray[] =
 	{ST_HEADER,	N_("Highlighted Messages"),0,0,0},
 	{ST_LABEL,	N_("Highlighted messages are ones where your nickname is mentioned, but also:"), 0, 0, 0, 1},
 
-	{ST_ENTRY,	N_("Extra words to highlight:"), P_OFFSETNL(irc_extra_hilight), 0, 0, sizeof prefs.irc_extra_hilight},
-	{ST_ENTRY,	N_("Nick names not to highlight:"), P_OFFSETNL(irc_no_hilight), 0, 0, sizeof prefs.irc_no_hilight},
-	{ST_ENTRY,	N_("Nick names to always highlight:"), P_OFFSETNL(irc_nick_hilight), 0, 0, sizeof prefs.irc_nick_hilight},
+	{ST_ENTRY,	N_("Extra words to highlight:"), P_OFFSETNL(hex_irc_extra_hilight), 0, 0, sizeof prefs.hex_irc_extra_hilight},
+	{ST_ENTRY,	N_("Nick names not to highlight:"), P_OFFSETNL(hex_irc_no_hilight), 0, 0, sizeof prefs.hex_irc_no_hilight},
+	{ST_ENTRY,	N_("Nick names to always highlight:"), P_OFFSETNL(hex_irc_nick_hilight), 0, 0, sizeof prefs.hex_irc_nick_hilight},
 	{ST_LABEL,	N_("Separate multiple words with commas.\nWildcards are accepted.")},
 
 	{ST_END, 0, 0, 0, 0, 0}
@@ -469,8 +469,8 @@ static const setting alert_settings_hextray[] =
 static const setting general_settings[] =
 {
 	{ST_HEADER,	N_("Default Messages"),0,0,0},
-	{ST_ENTRY,	N_("Quit:"), P_OFFSETNL(quitreason), 0, 0, sizeof prefs.quitreason},
-	{ST_ENTRY,	N_("Leave channel:"), P_OFFSETNL(partreason), 0, 0, sizeof prefs.partreason},
+	{ST_ENTRY,	N_("Quit:"), P_OFFSETNL(hex_irc_quit_reason), 0, 0, sizeof prefs.hex_irc_quit_reason},
+	{ST_ENTRY,	N_("Leave channel:"), P_OFFSETNL(hex_irc_part_reason), 0, 0, sizeof prefs.hex_irc_part_reason},
 	{ST_ENTRY,	N_("Away:"), P_OFFSETNL(hex_away_reason), 0, 0, sizeof prefs.hex_away_reason},
 
 	{ST_HEADER,	N_("Away"),0,0,0},
@@ -489,9 +489,9 @@ static const setting advanced_settings[] =
 	{ST_ENTRY,  N_("Alternative fonts:"), P_OFFSETNL(font_alternative), "Separate multiple entries with commas without spaces before or after.", 0, sizeof prefs.font_alternative},
 #endif
 	{ST_NUMBER,	N_("Auto reconnect delay:"), P_OFFINTNL(recon_delay), 0, 0, 9999},
-	{ST_TOGGLE,	N_("Display MODEs in raw form"), P_OFFINTNL(raw_modes), 0, 0, 0},
+	{ST_TOGGLE,	N_("Display MODEs in raw form"), P_OFFINTNL(hex_irc_raw_modes), 0, 0, 0},
 	{ST_TOGGLE,	N_("Whois on notify"), P_OFFINTNL(whois_on_notifyonline), N_("Sends a /WHOIS when a user comes online in your notify list"), 0, 0},
-	{ST_TOGGLE,	N_("Hide join and part messages"), P_OFFINTNL(confmode), N_("Hide channel join/part messages by default"), 0, 0},
+	{ST_TOGGLE,	N_("Hide join and part messages"), P_OFFINTNL(hex_irc_conf_mode), N_("Hide channel join/part messages by default"), 0, 0},
 	{ST_HEADER,	N_("Auto Open DCC Windows"),0,0,0},
 	{ST_TOGGLE, N_("Send window"), P_OFFINTNL(hex_gui_autoopen_send), 0, 0, 0},
 	{ST_TOGGLE, N_("Receive window"), P_OFFINTNL(hex_gui_autoopen_recv), 0, 0, 0},
@@ -518,9 +518,9 @@ static const setting advanced_settings_oneinstance[] =
 	{ST_HEADER,	N_("Advanced Settings"),0,0,0},
 	{ST_ENTRY,  N_("Alternative fonts:"), P_OFFSETNL(font_alternative), "Separate multiple entries with commas without spaces before or after.", 0, sizeof prefs.font_alternative},
 	{ST_NUMBER,	N_("Auto reconnect delay:"), P_OFFINTNL(recon_delay), 0, 0, 9999},
-	{ST_TOGGLE,	N_("Display MODEs in raw form"), P_OFFINTNL(raw_modes), 0, 0, 0},
+	{ST_TOGGLE,	N_("Display MODEs in raw form"), P_OFFINTNL(hex_irc_raw_modes), 0, 0, 0},
 	{ST_TOGGLE,	N_("Whois on notify"), P_OFFINTNL(whois_on_notifyonline), N_("Sends a /WHOIS when a user comes online in your notify list"), 0, 0},
-	{ST_TOGGLE,	N_("Hide join and part messages"), P_OFFINTNL(confmode), N_("Hide channel join/part messages by default"), 0, 0},
+	{ST_TOGGLE,	N_("Hide join and part messages"), P_OFFINTNL(hex_irc_conf_mode), N_("Hide channel join/part messages by default"), 0, 0},
 	{ST_TOGGLE,	N_("Allow only one instance of HexChat to run"), P_OFFINTNL(hex_gui_single), 0, 0, 0},
 	{ST_HEADER,	N_("Auto Open DCC Windows"),0,0,0},
 	{ST_TOGGLE, N_("Send window"), P_OFFINTNL(hex_gui_autoopen_send), 0, 0, 0},
@@ -550,8 +550,8 @@ static const setting logging_settings[] =
 #if 0 /* Now it's done under Colors */
 	{ST_TOGGLE,	N_("Strip colors when displaying scrollback"), P_OFFINTNL(text_stripcolor_replay), 0, 0, 0},
 #endif
-	{ST_TOGGLE,	N_("Enable logging of conversations to disk"), P_OFFINTNL(logging), 0, 0, 2},
-	{ST_ENTRY,	N_("Log filename:"), P_OFFSETNL(logmask), 0, 0, sizeof prefs.logmask},
+	{ST_TOGGLE,	N_("Enable logging of conversations to disk"), P_OFFINTNL(hex_irc_logging), 0, 0, 2},
+	{ST_ENTRY,	N_("Log filename:"), P_OFFSETNL(hex_irc_logmask), 0, 0, sizeof prefs.hex_irc_logmask},
 	{ST_LABEL,	N_("%s=Server %c=Channel %n=Network.")},
 
 	{ST_HEADER,	N_("Time Stamps"),0,0,0},
@@ -1328,9 +1328,9 @@ setup_create_page (const setting *set)
 	if (set == general_settings)
 	{
 		setup_create_id_menu (tab, _("Mark identified users with:"),	
-									 row, setup_prefs.irc_id_ytext);
+									 row, setup_prefs.hex_irc_id_ytext);
 		setup_create_id_menu (tab, _("Mark not-identified users with:"),	
-									 row + 1, setup_prefs.irc_id_ntext);
+									 row + 1, setup_prefs.hex_irc_id_ntext);
 	}
 #endif
 

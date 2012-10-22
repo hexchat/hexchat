@@ -135,7 +135,7 @@ ctcp_handle (session *sess, char *to, char *nick, char *ip,
 	if (ignore_check (word[1], IG_CTCP))
 		return;
 
-	if (!g_ascii_strcasecmp (msg, "VERSION") && !prefs.hidever)
+	if (!g_ascii_strcasecmp (msg, "VERSION") && !prefs.hex_irc_hide_version)
 	{
 #ifdef WIN32
 		snprintf (outbuf, sizeof (outbuf), "VERSION HexChat "PACKAGE_VERSION" [x%d] / %s",

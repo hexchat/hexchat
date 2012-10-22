@@ -123,7 +123,7 @@ server_sendpart (server * serv, char *channel, char *reason)
 {
 	if (!reason)
 	{
-		reason = random_line (prefs.partreason);
+		reason = random_line (prefs.hex_irc_part_reason);
 		serv->p_part (serv, channel, reason);
 		free (reason);
 	} else
@@ -140,7 +140,7 @@ server_sendquit (session * sess)
 
 	if (!sess->quitreason)
 	{
-		colrea = strdup (prefs.quitreason);
+		colrea = strdup (prefs.hex_irc_quit_reason);
 		check_special_chars (colrea, FALSE);
 		rea = random_line (colrea);
 		free (colrea);
@@ -513,7 +513,7 @@ ban (session * sess, char *tbuf, char *mask, char *bantypestr, int deop)
 		if (*bantypestr)
 			bantype = atoi (bantypestr);
 		else
-			bantype = prefs.bantype;
+			bantype = prefs.hex_irc_ban_type;
 
 		tbuf[0] = 0;
 		if (inet_addr (fullhost) != -1)	/* "fullhost" is really a IP number */

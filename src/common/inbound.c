@@ -142,10 +142,10 @@ inbound_make_idtext (server *serv, char *idtext, int max, int id)
 	{
 		if (id)
 		{
-			safe_strcpy (idtext, prefs.irc_id_ytext, max);
+			safe_strcpy (idtext, prefs.hex_irc_id_ytext, max);
 		} else
 		{
-			safe_strcpy (idtext, prefs.irc_id_ntext, max);
+			safe_strcpy (idtext, prefs.hex_irc_id_ntext, max);
 		}
 		/* convert codes like %C,%U to the proper ones */
 		check_special_chars (idtext, TRUE);
@@ -176,7 +176,7 @@ inbound_privmsg (server *serv, char *from, char *ip, char *text, int id)
 
 		if (ip && ip[0])
 		{
-			if (prefs.logging && sess->logfd != -1 &&
+			if (prefs.hex_irc_logging && sess->logfd != -1 &&
 				(!sess->topic || strcmp(sess->topic, ip)))
 			{
 				char tbuf[1024];
@@ -291,14 +291,14 @@ alert_match_text (char *text, char *masks)
 static int
 is_hilight (char *from, char *text, session *sess, server *serv)
 {
-	if (alert_match_word (from, prefs.irc_no_hilight))
+	if (alert_match_word (from, prefs.hex_irc_no_hilight))
 		return 0;
 
 	text = strip_color (text, -1, STRIP_ALL);
 
 	if (alert_match_text (text, serv->nick) ||
-		 alert_match_text (text, prefs.irc_extra_hilight) ||
-		 alert_match_word (from, prefs.irc_nick_hilight))
+		 alert_match_text (text, prefs.hex_irc_extra_hilight) ||
+		 alert_match_word (from, prefs.hex_irc_nick_hilight))
 	{
 		g_free (text);
 		if (sess != current_tab)
@@ -577,7 +577,7 @@ inbound_ujoin (server *serv, char *chan, char *nick, char *ip)
 
 	EMIT_SIGNAL (XP_TE_UJOIN, sess, nick, chan, ip, NULL, 0);
 
-	if (prefs.userhost)
+	if (prefs.hex_irc_who_join)
 	{
 		/* sends WHO #channel */
 		serv->p_user_list (sess->server, chan);
@@ -593,7 +593,7 @@ inbound_ukick (server *serv, char *chan, char *kicker, char *reason)
 	{
 		EMIT_SIGNAL (XP_TE_UKICK, sess, serv->nick, chan, kicker, reason, 0);
 		clear_channel (sess);
-		if (prefs.autorejoin)
+		if (prefs.hex_irc_auto_rejoin)
 		{
 			serv->p_join (serv, chan, sess->channelkey);
 			safe_strcpy (sess->waitchannel, chan, CHANLEN);
@@ -949,7 +949,7 @@ inbound_away (server *serv, char *nick, char *msg)
 		server_away_save_message (serv, nick, msg);
 	}
 
-	if (prefs.irc_whois_front)
+	if (prefs.hex_irc_whois_front)
 		sess = serv->front_session;
 	else
 	{
@@ -1080,7 +1080,7 @@ inbound_next_nick (session *sess, char *nick)
 	switch (serv->nickcount)
 	{
 	case 2:
-		newnick = prefs.nick2;
+		newnick = prefs.hex_irc_nick2;
 		net = serv->network;
 		/* use network specific "Second choice"? */
 		if (net && !(net->flags & FLAG_USE_GLOBAL) && net->nick2)
@@ -1090,8 +1090,8 @@ inbound_next_nick (session *sess, char *nick)
 		break;
 
 	case 3:
-		serv->p_change_nick (serv, prefs.nick3);
-		EMIT_SIGNAL (XP_TE_NICKCLASH, sess, nick, prefs.nick3, NULL, NULL, 0);
+		serv->p_change_nick (serv, prefs.hex_irc_nick3);
+		EMIT_SIGNAL (XP_TE_NICKCLASH, sess, nick, prefs.hex_irc_nick3, NULL, NULL, 0);
 		break;
 
 	default:
@@ -1121,11 +1121,11 @@ set_default_modes (server *serv)
 	modes[0] = '+';
 	modes[1] = '\0';
 
-	if (prefs.wallops)
+	if (prefs.hex_irc_wallops)
 		strcat (modes, "w");
-	if (prefs.servernotice)
+	if (prefs.hex_irc_servernotice)
 		strcat (modes, "s");
-	if (prefs.invisible)
+	if (prefs.hex_irc_invisible)
 		strcat (modes, "i");
 
 	if (modes[1] != '\0')
@@ -1322,8 +1322,8 @@ inbound_login_end (session *sess, char *text)
 
 		/* send JOIN now or wait? */
 		if (serv->network && ((ircnet *)serv->network)->nickserv &&
-			 prefs.irc_join_delay)
-			serv->joindelay_tag = fe_timeout_add (prefs.irc_join_delay * 1000,
+			 prefs.hex_irc_join_delay)
+			serv->joindelay_tag = fe_timeout_add (prefs.hex_irc_join_delay * 1000,
 															  check_autojoin_channels, serv);
 		else
 			check_autojoin_channels (serv);
@@ -1331,7 +1331,7 @@ inbound_login_end (session *sess, char *text)
 			notify_send_watches (serv);
 		serv->end_of_motd = TRUE;
 	}
-	if (prefs.skipmotd && !serv->motd_skipped)
+	if (prefs.hex_irc_skip_motd && !serv->motd_skipped)
 	{
 		serv->motd_skipped = TRUE;
 		EMIT_SIGNAL (XP_TE_MOTDSKIP, serv->server_session, NULL, NULL,

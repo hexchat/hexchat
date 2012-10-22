@@ -524,14 +524,14 @@ server_connected (server * serv)
 								(!(((ircnet *)serv->network)->flags & FLAG_USE_GLOBAL) &&
 								 (((ircnet *)serv->network)->user)) ?
 								(((ircnet *)serv->network)->user) :
-								prefs.username,
+								prefs.hex_irc_user_name,
 								(!(((ircnet *)serv->network)->flags & FLAG_USE_GLOBAL) &&
 								 (((ircnet *)serv->network)->real)) ?
 								(((ircnet *)serv->network)->real) :
-								prefs.realname);
+								prefs.hex_irc_real_name);
 		} else
 		{
-			serv->p_login (serv, prefs.username, prefs.realname);
+			serv->p_login (serv, prefs.hex_irc_user_name, prefs.hex_irc_real_name);
 		}
 	} else
 	{
@@ -975,7 +975,7 @@ server_read_child (GIOChannel *source, GIOCondition condition, server *serv)
 			}
 			else
 			{
-				identd_start (prefs.username);
+				identd_start (prefs.hex_irc_user_name);
 			}
 		}
 #else
@@ -984,7 +984,7 @@ server_read_child (GIOChannel *source, GIOCondition condition, server *serv)
 		if (access (outbuf, X_OK) == 0)
 		{
 			snprintf (outbuf, sizeof (outbuf), "exec -d %s/auth/xchat_auth %s",
-						 g_get_home_dir (), prefs.username);
+						 g_get_home_dir (), prefs.hex_irc_user_name);
 			handle_command (serv->server_session, outbuf, FALSE);
 		}
 #endif
@@ -1198,7 +1198,7 @@ traverse_socks (int print_fd, int sok, char *serverAddr, int port)
 	sc.type = 1;
 	sc.port = htons (port);
 	sc.address = inet_addr (serverAddr);
-	strncpy (sc.username, prefs.username, 9);
+	strncpy (sc.username, prefs.hex_irc_user_name, 9);
 
 	send (sok, (char *) &sc, 8 + strlen (sc.username) + 1, 0);
 	buf[1] = 0;
@@ -1858,7 +1858,7 @@ server_new (void)
 
 	serv->id = id++;
 	serv->sok = -1;
-	strcpy (serv->nick, prefs.nick1);
+	strcpy (serv->nick, prefs.hex_irc_nick1);
 	server_set_defaults (serv);
 
 	serv_list = g_slist_prepend (serv_list, serv);

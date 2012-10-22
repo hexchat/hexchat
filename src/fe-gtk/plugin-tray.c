@@ -629,7 +629,7 @@ tray_priv (char *from, char *text)
 {
 	const char *network;
 
-	if (alert_match_word (from, prefs.irc_no_hilight))
+	if (alert_match_word (from, prefs.hex_irc_no_hilight))
 		return;
 
 	tray_set_flash (ICON_MSG);

@@ -613,7 +613,7 @@ servlist_connect (session *sess, ircnet *net, gboolean join)
 
 	if (net->flags & FLAG_USE_GLOBAL)
 	{
-		strcpy (serv->nick, prefs.nick1);
+		strcpy (serv->nick, prefs.hex_irc_nick1);
 	} else
 	{
 		if (net->nick)

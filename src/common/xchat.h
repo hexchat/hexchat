@@ -114,6 +114,19 @@ struct hexchatprefs
 	char hex_dnsprogram[72];
 	char hex_gui_ulist_doubleclick[256];
 	char hex_input_command_char[4];
+	char hex_irc_extra_hilight[300];
+	char hex_irc_id_ntext[64];
+	char hex_irc_id_ytext[64];
+	char hex_irc_logmask[256];
+	char hex_irc_nick1[NICKLEN];
+	char hex_irc_nick2[NICKLEN];
+	char hex_irc_nick3[NICKLEN];
+	char hex_irc_nick_hilight[300];
+	char hex_irc_no_hilight[300];
+	char hex_irc_part_reason[256];
+	char hex_irc_quit_reason[256];
+	char hex_irc_real_name[127];
+	char hex_irc_user_name[127];
 
 	int hex_away_size_max;
 	int hex_away_timeout;
@@ -162,6 +175,8 @@ struct hexchatprefs
 	int hex_gui_win_top;
 	int hex_gui_win_width;
 	int hex_input_balloon_time;
+	int hex_irc_ban_type;
+	int hex_irc_join_delay;
 
 	unsigned int hex_away_auto_unmark;
 	unsigned int hex_away_omit_alerts;
@@ -228,17 +243,21 @@ struct hexchatprefs
 	unsigned int hex_input_tray_chans;
 	unsigned int hex_input_tray_hilight;
 	unsigned int hex_input_tray_priv;
+	unsigned int hex_irc_auto_rejoin;
+	unsigned int hex_irc_conf_mode;
+	unsigned int hex_irc_hide_version;
+	unsigned int hex_irc_invisible;
+	unsigned int hex_irc_logging;
+	unsigned int hex_irc_raw_modes;
+	unsigned int hex_irc_servernotice;
+	unsigned int hex_irc_skip_motd;
+	unsigned int hex_irc_wallops;
+	unsigned int hex_irc_who_join;
+	unsigned int hex_irc_whois_front;
 
 
 	/* these are the legacy variables */
 
-	char nick1[NICKLEN];
-	char nick2[NICKLEN];
-	char nick3[NICKLEN];
-	char realname[127];
-	char username[127];
-	char quitreason[256];
-	char partreason[256];
 	char font_normal[4 * FONTNAMELEN + 1];
 	char font_main[FONTNAMELEN + 1];
 	char font_alternative[3 * FONTNAMELEN + 1];
@@ -246,15 +265,9 @@ struct hexchatprefs
 	char sounddir[PATHLEN + 1];
 	char soundcmd[PATHLEN + 1];
 	char background[PATHLEN + 1];
-	char irc_extra_hilight[300];
-	char irc_no_hilight[300];
-	char irc_nick_hilight[300];
 	char hostname[127];
-	char logmask[256];
 	char stamp_format[64];
 	char timestamp_log_format[64];
-	char irc_id_ytext[64];
-	char irc_id_ntext[64];
 
 	char proxy_host[64];
 	int proxy_port;
@@ -272,17 +285,11 @@ struct hexchatprefs
 	int max_lines;
 	int notify_timeout;
 	int recon_delay;
-	int bantype;
 	guint32 local_ip;
 	guint32 dcc_ip;
 
 	unsigned int autoreconnect;
 	unsigned int autoreconnectonfail;
-	unsigned int invisible;
-	unsigned int servernotice;
-	unsigned int wallops;
-	unsigned int skipmotd;
-	unsigned int autorejoin;
 	unsigned int autocopy_text;
 	unsigned int autocopy_stamp;
 	unsigned int autocopy_color;
@@ -293,14 +300,9 @@ struct hexchatprefs
 	unsigned int text_stripcolor_topic;
 	unsigned int timestamp;
 
-	unsigned int irc_join_delay;
-	unsigned int logging;
 	unsigned int timestamp_logs;
 	unsigned int newtabstofront;
 	unsigned int hidever;
-	unsigned int raw_modes;
-	unsigned int userhost;
-	unsigned int irc_whois_front;
 	unsigned int indent_nicks;
 	unsigned int text_replay;
 	unsigned int show_marker;
@@ -313,7 +315,6 @@ struct hexchatprefs
 	unsigned int pingtimeout;
 	unsigned int whois_on_notifyonline;
 	unsigned int wait_on_exit;
-	unsigned int confmode;
 	unsigned int utf8_locale;
 
 	unsigned int url_grabber;

@@ -456,7 +456,7 @@ process_numeric (session * sess, int n,
 	session *whois_sess = serv->server_session;
 
 	/* unless this setting is on */
-	if (prefs.irc_whois_front)
+	if (prefs.hex_irc_whois_front)
 		whois_sess = serv->front_session;
 
 	switch (n)
@@ -825,7 +825,7 @@ process_numeric (session * sess, int n,
 
 	case 372:	/* motd text */
 	case 375:	/* motd start */
-		if (!prefs.skipmotd || serv->motd_skipped)
+		if (!prefs.hex_irc_skip_motd || serv->motd_skipped)
 			EMIT_SIGNAL (XP_TE_MOTD, serv->server_session, text, NULL, NULL,
 							 NULL, 0);
 		break;

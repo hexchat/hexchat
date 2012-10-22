@@ -1580,10 +1580,10 @@ mg_create_perchannelmenu (session *sess, GtkWidget *menu)
 
 	submenu = menu_quick_sub (_("_Settings"), menu, NULL, XCMENU_MNEMONIC, -1);
 
-	mg_perchan_menu_item (_("_Log to Disk"), submenu, &sess->text_logging, prefs.logging);
+	mg_perchan_menu_item (_("_Log to Disk"), submenu, &sess->text_logging, prefs.hex_irc_logging);
 	mg_perchan_menu_item (_("_Reload Scrollback"), submenu, &sess->text_scrollback, prefs.text_replay);
 	if (sess->type == SESS_CHANNEL)
-		mg_perchan_menu_item (_("_Hide Join/Part Messages"), submenu, &sess->text_hidejoinpart, prefs.confmode);
+		mg_perchan_menu_item (_("_Hide Join/Part Messages"), submenu, &sess->text_hidejoinpart, prefs.hex_irc_conf_mode);
 }
 
 static void

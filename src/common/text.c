@@ -590,9 +590,9 @@ logmask_is_fullpath ()
 	 * - starts with '\' which denotes the root directory of the current drive letter
 	 * - starts with a drive letter and followed by ':'
 	 */
-	if (prefs.logmask[0] == '\\' || (((prefs.logmask[0] >= 'A' && prefs.logmask[0] <= 'Z') || (prefs.logmask[0] >= 'a' && prefs.logmask[0] <= 'z')) && prefs.logmask[1] == ':'))
+	if (prefs.hex_irc_logmask[0] == '\\' || (((prefs.hex_irc_logmask[0] >= 'A' && prefs.hex_irc_logmask[0] <= 'Z') || (prefs.hex_irc_logmask[0] >= 'a' && prefs.hex_irc_logmask[0] <= 'z')) && prefs.hex_irc_logmask[1] == ':'))
 #else
-	if (prefs.logmask[0] == '/')
+	if (prefs.hex_irc_logmask[0] == '/')
 #endif
 	{
 		return 1;
@@ -627,7 +627,7 @@ log_create_pathname (char *servname, char *channame, char *netname)
 		channame = log_create_filename (channame);
 	}
 
-	log_insert_vars (fname, sizeof (fname), prefs.logmask, channame, netname, servname);
+	log_insert_vars (fname, sizeof (fname), prefs.hex_irc_logmask, channame, netname, servname);
 	free (channame);
 
 	/* insert time/date */
@@ -712,7 +712,7 @@ log_open_or_close (session *sess)
 {
 	if (sess->text_logging == SET_DEFAULT)
 	{
-		if (prefs.logging)
+		if (prefs.hex_irc_logging)
 			log_open (sess);
 		else
 			log_close (sess);
@@ -776,7 +776,7 @@ log_write (session *sess, char *text)
 
 	if (sess->text_logging == SET_DEFAULT)
 	{
-		if (!prefs.logging)
+		if (!prefs.hex_irc_logging)
 			return;
 	}
 	else
@@ -2194,7 +2194,7 @@ text_emit (int index, session *sess, char *a, char *b, char *c, char *d)
 	case XP_TE_PARTREASON:
 	case XP_TE_QUIT:
 		/* implement ConfMode / Hide Join and Part Messages */
-		if (chanopt_is_set (prefs.confmode, sess->text_hidejoinpart))
+		if (chanopt_is_set (prefs.hex_irc_conf_mode, sess->text_hidejoinpart))
 			return;
 		break;
 

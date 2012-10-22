@@ -654,14 +654,14 @@ servlist_savegui (void)
 	/* if (GTK_ENTRY (entry_greal)->text[0] == 0)
 		return 1; */
 
-	strcpy (prefs.nick1, GTK_ENTRY (entry_nick1)->text);
-	strcpy (prefs.nick2, GTK_ENTRY (entry_nick2)->text);
-	strcpy (prefs.nick3, GTK_ENTRY (entry_nick3)->text);
-	strcpy (prefs.username, GTK_ENTRY (entry_guser)->text);
-	sp = strchr (prefs.username, ' ');
+	strcpy (prefs.hex_irc_nick1, GTK_ENTRY (entry_nick1)->text);
+	strcpy (prefs.hex_irc_nick2, GTK_ENTRY (entry_nick2)->text);
+	strcpy (prefs.hex_irc_nick3, GTK_ENTRY (entry_nick3)->text);
+	strcpy (prefs.hex_irc_user_name, GTK_ENTRY (entry_guser)->text);
+	sp = strchr (prefs.hex_irc_user_name, ' ');
 	if (sp)
 		sp[0] = 0;	/* spaces will break the login */
-	/* strcpy (prefs.realname, GTK_ENTRY (entry_greal)->text); */
+	/* strcpy (prefs.hex_irc_real_name, GTK_ENTRY (entry_greal)->text); */
 	servlist_save ();
 
 	return 0;
@@ -1713,35 +1713,35 @@ servlist_open_networks (void)
 	gtk_misc_set_alignment (GTK_MISC (label7), 0, 0.5);*/
 
 	entry_nick1 = entry1 = gtk_entry_new ();
-	gtk_entry_set_text (GTK_ENTRY (entry1), prefs.nick1);
+	gtk_entry_set_text (GTK_ENTRY (entry1), prefs.hex_irc_nick1);
 	gtk_widget_show (entry1);
 	gtk_table_attach (GTK_TABLE (table1), entry1, 1, 2, 0, 1,
 							(GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
 							(GtkAttachOptions) (0), 0, 0);
 
 	entry_nick2 = entry2 = gtk_entry_new ();
-	gtk_entry_set_text (GTK_ENTRY (entry2), prefs.nick2);
+	gtk_entry_set_text (GTK_ENTRY (entry2), prefs.hex_irc_nick2);
 	gtk_widget_show (entry2);
 	gtk_table_attach (GTK_TABLE (table1), entry2, 1, 2, 1, 2,
 							(GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
 							(GtkAttachOptions) (0), 0, 0);
 
 	entry_nick3 = entry3 = gtk_entry_new ();
-	gtk_entry_set_text (GTK_ENTRY (entry3), prefs.nick3);
+	gtk_entry_set_text (GTK_ENTRY (entry3), prefs.hex_irc_nick3);
 	gtk_widget_show (entry3);
 	gtk_table_attach (GTK_TABLE (table1), entry3, 1, 2, 2, 3,
 							(GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
 							(GtkAttachOptions) (0), 0, 0);
 
 	entry_guser = entry4 = gtk_entry_new ();
-	gtk_entry_set_text (GTK_ENTRY (entry4), prefs.username);
+	gtk_entry_set_text (GTK_ENTRY (entry4), prefs.hex_irc_user_name);
 	gtk_widget_show (entry4);
 	gtk_table_attach (GTK_TABLE (table1), entry4, 1, 2, 3, 4,
 							(GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
 							(GtkAttachOptions) (0), 0, 0);
 
 	/* entry_greal = entry5 = gtk_entry_new ();
-	gtk_entry_set_text (GTK_ENTRY (entry5), prefs.realname);
+	gtk_entry_set_text (GTK_ENTRY (entry5), prefs.hex_irc_real_name);
 	gtk_widget_show (entry5);
 	gtk_table_attach (GTK_TABLE (table1), entry5, 1, 2, 4, 5,
 							(GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
