@@ -967,7 +967,7 @@ server_read_child (GIOChannel *source, GIOCondition condition, server *serv)
 		waitline2 (source, outbuf, sizeof outbuf);
 		EMIT_SIGNAL (XP_TE_CONNECT, sess, host, ip, outbuf, NULL, 0);
 #ifdef WIN32
-		if (prefs.identd)
+		if (prefs.hex_identd)
 		{
 			if (serv->network && ((ircnet *)serv->network)->user)
 			{

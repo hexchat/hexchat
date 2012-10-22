@@ -231,8 +231,8 @@ static const setting inputbox_settings[] =
 
 #if 0	/* obsolete */
 	{ST_HEADER, N_("Input Box Codes"),0,0,0},
-	{ST_TOGGLE, N_("Interpret %nnn as an ASCII value"), P_OFFINTNL(perc_ascii),0,0,0},
-	{ST_TOGGLE, N_("Interpret %C, %B as Color, Bold etc"), P_OFFINTNL(perc_color),0,0,0},
+	{ST_TOGGLE, N_("Interpret %nnn as an ASCII value"), P_OFFINTNL(hex_input_perc_ascii),0,0,0},
+	{ST_TOGGLE, N_("Interpret %C, %B as Color, Bold etc"), P_OFFINTNL(hex_input_perc_color),0,0,0},
 #endif
 
 	{ST_END, 0, 0, 0, 0, 0}
@@ -401,22 +401,22 @@ static const setting filexfer_settings[] =
 
 static const int balloonlist[3] =
 {
-	P_OFFINTNL(input_balloon_chans), P_OFFINTNL(input_balloon_priv), P_OFFINTNL(input_balloon_hilight)
+	P_OFFINTNL(hex_input_balloon_chans), P_OFFINTNL(hex_input_balloon_priv), P_OFFINTNL(hex_input_balloon_hilight)
 };
 
 static const int trayblinklist[3] =
 {
-	P_OFFINTNL(input_tray_chans), P_OFFINTNL(input_tray_priv), P_OFFINTNL(input_tray_hilight)
+	P_OFFINTNL(hex_input_tray_chans), P_OFFINTNL(hex_input_tray_priv), P_OFFINTNL(hex_input_tray_hilight)
 };
 
 static const int taskbarlist[3] =
 {
-	P_OFFINTNL(input_flash_chans), P_OFFINTNL(input_flash_priv), P_OFFINTNL(input_flash_hilight)
+	P_OFFINTNL(hex_input_flash_chans), P_OFFINTNL(hex_input_flash_priv), P_OFFINTNL(hex_input_flash_hilight)
 };
 
 static const int beeplist[3] =
 {
-	P_OFFINTNL(input_beep_chans), P_OFFINTNL(input_beep_priv), P_OFFINTNL(input_beep_hilight)
+	P_OFFINTNL(hex_input_beep_chans), P_OFFINTNL(hex_input_beep_priv), P_OFFINTNL(hex_input_beep_hilight)
 };
 
 static const setting alert_settings[] =

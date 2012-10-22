@@ -500,27 +500,25 @@ const struct prefs vars[] =
 	{"gui_win_ucount", P_OFFINT (hex_gui_win_ucount), TYPE_BOOL},
 	{"gui_win_width", P_OFFINT (hex_gui_win_width), TYPE_INT},
 
-#ifdef WIN32
-	{"identd", P_OFFINT (identd), TYPE_BOOL},
-#endif
+	{"identd", P_OFFINT (hex_identd), TYPE_BOOL},
 
-	{"input_balloon_chans", P_OFFINT (input_balloon_chans), TYPE_BOOL},
-	{"input_balloon_hilight", P_OFFINT (input_balloon_hilight), TYPE_BOOL},
-	{"input_balloon_priv", P_OFFINT (input_balloon_priv), TYPE_BOOL},
-	{"input_balloon_time", P_OFFINT (input_balloon_time), TYPE_INT},
-	{"input_beep_chans", P_OFFINT (input_beep_chans), TYPE_BOOL},
-	{"input_beep_hilight", P_OFFINT (input_beep_hilight), TYPE_BOOL},
-	{"input_beep_priv", P_OFFINT (input_beep_priv), TYPE_BOOL},
-	{"input_command_char", P_OFFSET (cmdchar), TYPE_STR},
-	{"input_filter_beep", P_OFFINT (filterbeep), TYPE_BOOL},
-	{"input_flash_chans", P_OFFINT (input_flash_chans), TYPE_BOOL},
-	{"input_flash_hilight", P_OFFINT (input_flash_hilight), TYPE_BOOL},
-	{"input_flash_priv", P_OFFINT (input_flash_priv), TYPE_BOOL},
-	{"input_perc_ascii", P_OFFINT (perc_ascii), TYPE_BOOL},
-	{"input_perc_color", P_OFFINT (perc_color), TYPE_BOOL},
-	{"input_tray_chans", P_OFFINT (input_tray_chans), TYPE_BOOL},
-	{"input_tray_hilight", P_OFFINT (input_tray_hilight), TYPE_BOOL},
-	{"input_tray_priv", P_OFFINT (input_tray_priv), TYPE_BOOL},
+	{"input_balloon_chans", P_OFFINT (hex_input_balloon_chans), TYPE_BOOL},
+	{"input_balloon_hilight", P_OFFINT (hex_input_balloon_hilight), TYPE_BOOL},
+	{"input_balloon_priv", P_OFFINT (hex_input_balloon_priv), TYPE_BOOL},
+	{"input_balloon_time", P_OFFINT (hex_input_balloon_time), TYPE_INT},
+	{"input_beep_chans", P_OFFINT (hex_input_beep_chans), TYPE_BOOL},
+	{"input_beep_hilight", P_OFFINT (hex_input_beep_hilight), TYPE_BOOL},
+	{"input_beep_priv", P_OFFINT (hex_input_beep_priv), TYPE_BOOL},
+	{"input_command_char", P_OFFSET (hex_input_command_char), TYPE_STR},
+	{"input_filter_beep", P_OFFINT (hex_input_filter_beep), TYPE_BOOL},
+	{"input_flash_chans", P_OFFINT (hex_input_flash_chans), TYPE_BOOL},
+	{"input_flash_hilight", P_OFFINT (hex_input_flash_hilight), TYPE_BOOL},
+	{"input_flash_priv", P_OFFINT (hex_input_flash_priv), TYPE_BOOL},
+	{"input_perc_ascii", P_OFFINT (hex_input_perc_ascii), TYPE_BOOL},
+	{"input_perc_color", P_OFFINT (hex_input_perc_color), TYPE_BOOL},
+	{"input_tray_chans", P_OFFINT (hex_input_tray_chans), TYPE_BOOL},
+	{"input_tray_hilight", P_OFFINT (hex_input_tray_hilight), TYPE_BOOL},
+	{"input_tray_priv", P_OFFINT (hex_input_tray_priv), TYPE_BOOL},
 
 	{"irc_auto_rejoin", P_OFFINT (autorejoin), TYPE_BOOL},
 	{"irc_ban_type", P_OFFINT (bantype), TYPE_INT},
@@ -670,7 +668,7 @@ load_config (void)
 	prefs.hex_away_show_once = 1;
 	prefs.indent_nicks = 1;
 	prefs.thin_separator = 1;
-	prefs.identd = 1;
+	prefs.hex_identd = 1;
 #ifndef WIN32
 	prefs.hex_dcc_fast_send = 1;
 #endif
@@ -738,9 +736,9 @@ load_config (void)
 	prefs.hex_gui_ulist_pos = 3;
 	prefs.hex_gui_win_save = 1;
 	prefs.bantype = 2;
-	prefs.input_balloon_time = 20;
-	prefs.input_flash_priv = prefs.input_flash_hilight = 1;
-	prefs.input_tray_priv = prefs.input_tray_hilight = 1;
+	prefs.hex_input_balloon_time = 20;
+	prefs.hex_input_flash_priv = prefs.hex_input_flash_hilight = 1;
+	prefs.hex_input_tray_priv = prefs.hex_input_tray_hilight = 1;
 	prefs.hex_dcc_auto_recv = 2;	/* browse mode */
 	prefs.url_grabber = 1;
 	prefs.url_grabber_limit = 100; /* 0 means unlimited */
@@ -751,7 +749,7 @@ load_config (void)
 	strcpy (prefs.timestamp_log_format, "%b %d %H:%M:%S ");
 	strcpy (prefs.logmask, "%n-%c.log");
 	strcpy (prefs.hex_completion_suffix, ",");
-	strcpy (prefs.cmdchar, "/");
+	strcpy (prefs.hex_input_command_char, "/");
 	strcpy (prefs.nick1, username);
 	strcpy (prefs.nick2, username);
 	strcat (prefs.nick2, "_");

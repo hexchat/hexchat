@@ -113,6 +113,7 @@ struct hexchatprefs
 	char hex_dcc_ip[DOMAINLEN + 1];
 	char hex_dnsprogram[72];
 	char hex_gui_ulist_doubleclick[256];
+	char hex_input_command_char[4];
 
 	int hex_away_size_max;
 	int hex_away_timeout;
@@ -160,6 +161,7 @@ struct hexchatprefs
 	int hex_gui_win_state;
 	int hex_gui_win_top;
 	int hex_gui_win_width;
+	int hex_input_balloon_time;
 
 	unsigned int hex_away_auto_unmark;
 	unsigned int hex_away_omit_alerts;
@@ -210,6 +212,23 @@ struct hexchatprefs
 	unsigned int hex_gui_win_save;
 	unsigned int hex_gui_win_swap;
 	unsigned int hex_gui_win_ucount;
+	unsigned int hex_identd;
+	unsigned int hex_input_balloon_chans;
+	unsigned int hex_input_balloon_hilight;
+	unsigned int hex_input_balloon_priv;
+	unsigned int hex_input_beep_chans;
+	unsigned int hex_input_beep_hilight;
+	unsigned int hex_input_beep_priv;
+	unsigned int hex_input_filter_beep;
+	unsigned int hex_input_flash_chans;
+	unsigned int hex_input_flash_hilight;
+	unsigned int hex_input_flash_priv;
+	unsigned int hex_input_perc_ascii;
+	unsigned int hex_input_perc_color;
+	unsigned int hex_input_tray_chans;
+	unsigned int hex_input_tray_hilight;
+	unsigned int hex_input_tray_priv;
+
 
 	/* these are the legacy variables */
 
@@ -231,7 +250,6 @@ struct hexchatprefs
 	char irc_no_hilight[300];
 	char irc_nick_hilight[300];
 	char hostname[127];
-	char cmdchar[4];
 	char logmask[256];
 	char stamp_format[64];
 	char timestamp_log_format[64];
@@ -258,8 +276,6 @@ struct hexchatprefs
 	guint32 local_ip;
 	guint32 dcc_ip;
 
-	unsigned int perc_color;
-	unsigned int perc_ascii;
 	unsigned int autoreconnect;
 	unsigned int autoreconnectonfail;
 	unsigned int invisible;
@@ -276,24 +292,6 @@ struct hexchatprefs
 	unsigned int text_stripcolor_replay;
 	unsigned int text_stripcolor_topic;
 	unsigned int timestamp;
-	unsigned int filterbeep;
-
-	unsigned int input_balloon_chans;
-	unsigned int input_balloon_hilight;
-	unsigned int input_balloon_priv;
-	unsigned int input_balloon_time;
-
-	unsigned int input_beep_chans;
-	unsigned int input_beep_hilight;
-	unsigned int input_beep_priv;
-
-	unsigned int input_flash_chans;
-	unsigned int input_flash_hilight;
-	unsigned int input_flash_priv;
-
-	unsigned int input_tray_chans;
-	unsigned int input_tray_hilight;
-	unsigned int input_tray_priv;
 
 	unsigned int irc_join_delay;
 	unsigned int logging;
@@ -317,7 +315,6 @@ struct hexchatprefs
 	unsigned int wait_on_exit;
 	unsigned int confmode;
 	unsigned int utf8_locale;
-	unsigned int identd;
 
 	unsigned int url_grabber;
 	unsigned int url_grabber_limit;

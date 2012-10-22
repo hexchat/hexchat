@@ -141,7 +141,7 @@ PrintTextRaw (void *xtbuf, unsigned char *text, int indent, time_t stamp)
 			if (!beep_done) /* beeps may be slow, so only do 1 per line */
 			{
 				beep_done = TRUE;
-				if (!prefs.filterbeep)
+				if (!prefs.hex_input_filter_beep)
 					gdk_beep ();
 			}
 		default:

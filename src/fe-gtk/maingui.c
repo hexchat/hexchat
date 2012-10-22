@@ -1593,14 +1593,14 @@ mg_create_alertmenu (session *sess, GtkWidget *menu)
 
 	submenu = menu_quick_sub (_("_Extra Alerts"), menu, NULL, XCMENU_MNEMONIC, -1);
 
-	mg_perchan_menu_item (_("Beep on _Message"), submenu, &sess->alert_beep, prefs.input_beep_chans);
+	mg_perchan_menu_item (_("Beep on _Message"), submenu, &sess->alert_beep, prefs.hex_input_beep_chans);
 
 	if (!hextray_mode ())		/*disable this context menu item when HexTray is loaded */
 	{
-		mg_perchan_menu_item (_("Blink Tray _Icon"), submenu, &sess->alert_tray, prefs.input_tray_chans);
+		mg_perchan_menu_item (_("Blink Tray _Icon"), submenu, &sess->alert_tray, prefs.hex_input_tray_chans);
 	}
 
-	mg_perchan_menu_item (_("Blink Task _Bar"), submenu, &sess->alert_taskbar, prefs.input_flash_chans);
+	mg_perchan_menu_item (_("Blink Task _Bar"), submenu, &sess->alert_taskbar, prefs.hex_input_flash_chans);
 }
 
 static void

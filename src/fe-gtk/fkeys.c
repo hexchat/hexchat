@@ -1481,7 +1481,7 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 			break;
 	}
 
-	if (ent_start == 0 && text[0] == prefs.cmdchar[0])
+	if (ent_start == 0 && text[0] == prefs.hex_input_command_char[0])
 	{
 		ent_start++;
 		is_cmd = 1;

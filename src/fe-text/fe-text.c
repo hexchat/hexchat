@@ -270,7 +270,7 @@ fe_print_text (struct session *sess, char *text, time_t stamp)
 			j = strlen (newtext);
 			break;
 		case '\007':
-			if (!prefs.filterbeep)
+			if (!prefs.hex_input_filter_beep)
 			{
 				newtext[j] = text[i];
 				j++;
@@ -371,7 +371,7 @@ fe_print_text (struct session *sess, char *text, time_t stamp)
 		case '\017':				  /* reset all */
 			break;
 		case '\007':
-			if (!prefs.filterbeep)
+			if (!prefs.hex_input_filter_beep)
 			{
 				newtext[j] = text[i];
 				j++;

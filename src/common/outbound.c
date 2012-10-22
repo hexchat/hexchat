@@ -2482,7 +2482,7 @@ load_perform_file (session *sess, char *file)
 			continue;
 		if (nl)
 			*nl = 0;
-		if (tbuf[0] == prefs.cmdchar[0])
+		if (tbuf[0] == prefs.hex_input_command_char[0])
 			handle_command (sess, tbuf + 1, TRUE);
 		else
 			handle_command (sess, tbuf, TRUE);
@@ -4123,7 +4123,7 @@ user_command (session * sess, char *tbuf, char *cmd, char *word[],
 	handle_command (sess, tbuf, TRUE);
 }
 
-/* handle text entered without a CMDchar prefix */
+/* handle text entered without a hex_input_command_char prefix */
 
 static void
 handle_say (session *sess, char *text, int check_spch)
@@ -4151,8 +4151,8 @@ handle_say (session *sess, char *text, int check_spch)
 	if (len + NICKLEN >= newcmdlen)
 		newcmd = malloc (newcmdlen = len + NICKLEN + 1);
 
-	if (check_spch && prefs.perc_color)
-		check_special_chars (text, prefs.perc_ascii);
+	if (check_spch && prefs.hex_input_perc_color)
+		check_special_chars (text, prefs.hex_input_perc_ascii);
 
 	/* Python relies on this */
 	word[PDIWORDS] = NULL;
@@ -4306,8 +4306,8 @@ handle_command (session *sess, char *cmd, int check_spch)
 	if (int_cmd && !int_cmd->handle_quotes)
 		process_data_init (pdibuf, cmd, word, word_eol, FALSE, FALSE);
 
-	if (check_spch && prefs.perc_color)
-		check_special_chars (cmd, prefs.perc_ascii);
+	if (check_spch && prefs.hex_input_perc_color)
+		check_special_chars (cmd, prefs.hex_input_perc_ascii);
 
 	if (plugin_emit_command (sess, word[1], word, word_eol))
 		goto xit;
@@ -4388,20 +4388,20 @@ handle_user_input (session *sess, char *text, int history, int nocommand)
 		history_add (&sess->history, text);
 
 	/* is it NOT a command, just text? */
-	if (nocommand || text[0] != prefs.cmdchar[0])
+	if (nocommand || text[0] != prefs.hex_input_command_char[0])
 	{
 		handle_say (sess, text, TRUE);
 		return 1;
 	}
 
 	/* check for // */
-	if (text[0] == prefs.cmdchar[0] && text[1] == prefs.cmdchar[0])
+	if (text[0] == prefs.hex_input_command_char[0] && text[1] == prefs.hex_input_command_char[0])
 	{
 		handle_say (sess, text + 1, TRUE);
 		return 1;
 	}
 
-	if (prefs.cmdchar[0] == '/')
+	if (prefs.hex_input_command_char[0] == '/')
 	{
 		int i;
 		const char *unix_dirs [] = {
