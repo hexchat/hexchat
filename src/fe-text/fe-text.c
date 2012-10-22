@@ -532,11 +532,11 @@ void
 fe_init (void)
 {
 	/* the following should be default generated, not enfoced in binary */
-	prefs.use_server_tab = 0;
-	prefs.autodialog = 0;
+	prefs.hex_gui_tab_server = 0;
+	prefs.hex_gui_autoopen_dialog = 0;
 	/* except for these, there is no lag meter, there is no server list */
-	prefs.lagometer = 0;
-	prefs.slist_skip = 1;
+	prefs.hex_gui_lagometer = 0;
+	prefs.hex_gui_slist_skip = 1;
 }
 
 void

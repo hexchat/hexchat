@@ -345,7 +345,7 @@ create_input_style (GtkStyle *style)
 		style->font_desc = pango_font_description_from_string ("sans 11");
 	}
 
-	if (prefs.style_inputbox && !done_rc)
+	if (prefs.hex_gui_input_style && !done_rc)
 	{
 		done_rc = TRUE;
 		sprintf (buf, cursor_color_rc, (colors[COL_FG].red >> 8),
@@ -455,11 +455,11 @@ fe_new_window (session *sess, int focus)
 
 	if (sess->type == SESS_DIALOG)
 	{
-		if (prefs.privmsgtab)
+		if (prefs.hex_gui_tab_dialogs)
 			tab = TRUE;
 	} else
 	{
-		if (prefs.tabchannels)
+		if (prefs.hex_gui_tab_chans)
 			tab = TRUE;
 	}
 

@@ -112,6 +112,7 @@ struct hexchatprefs
 	char hex_dcc_dir[PATHLEN + 1];
 	char hex_dcc_ip[DOMAINLEN + 1];
 	char hex_dnsprogram[72];
+	char hex_gui_ulist_doubleclick[256];
 
 	int hex_away_size_max;
 	int hex_away_timeout;
@@ -132,6 +133,33 @@ struct hexchatprefs
 	int hex_flood_ctcp_time;	/*seconds of floods */
 	int hex_flood_msg_num;		/*same deal */
 	int hex_flood_msg_time;
+	int hex_gui_chanlist_maxusers;
+	int hex_gui_chanlist_minusers;
+	int hex_gui_dialog_height;
+	int hex_gui_dialog_left;
+	int hex_gui_dialog_top;
+	int hex_gui_dialog_width;
+	int hex_gui_lagometer;
+	int hex_gui_lang;
+	int hex_gui_pane_left_size;
+	int hex_gui_pane_right_size;
+	int hex_gui_pane_right_size_min;
+	int hex_gui_slist_select;
+	int hex_gui_tab_layout;
+	int hex_gui_tab_newtofront;
+	int hex_gui_tab_pos;
+	int hex_gui_tab_small;
+	int hex_gui_tab_trunc;
+	int hex_gui_throttlemeter;
+	int hex_gui_tray_flags;
+	int hex_gui_ulist_pos;
+	int hex_gui_ulist_sort;
+	int hex_gui_url_mod;
+	int hex_gui_win_height;
+	int hex_gui_win_left;
+	int hex_gui_win_state;
+	int hex_gui_win_top;
+	int hex_gui_win_width;
 
 	unsigned int hex_away_auto_unmark;
 	unsigned int hex_away_omit_alerts;
@@ -146,6 +174,42 @@ struct hexchatprefs
 	unsigned int hex_dcc_remove;
 	unsigned int hex_dcc_save_nick;
 	unsigned int hex_dcc_send_fillspaces;
+	unsigned int hex_gui_autoopen_chat;
+	unsigned int hex_gui_autoopen_dialog;
+	unsigned int hex_gui_autoopen_recv;
+	unsigned int hex_gui_autoopen_send;
+	unsigned int hex_gui_compact;
+	unsigned int hex_gui_hide_menu;
+	unsigned int hex_gui_input_nick;
+	unsigned int hex_gui_input_spell;
+	unsigned int hex_gui_input_style;
+	unsigned int hex_gui_join_dialog;
+	unsigned int hex_gui_mode_buttons;
+	unsigned int hex_gui_quit_dialog;
+	unsigned int hex_gui_single;
+	unsigned int hex_gui_slist_fav;
+	unsigned int hex_gui_slist_skip;
+	unsigned int hex_gui_tab_chans;
+	unsigned int hex_gui_tab_dialogs;
+	unsigned int hex_gui_tab_dots;
+	unsigned int hex_gui_tab_icons;
+	unsigned int hex_gui_tab_notices;
+	unsigned int hex_gui_tab_server;
+	unsigned int hex_gui_tab_sort;
+	unsigned int hex_gui_tab_utils;
+	unsigned int hex_gui_topicbar;
+	unsigned int hex_gui_tray;
+	unsigned int hex_gui_ulist_buttons;
+	unsigned int hex_gui_ulist_hide;
+	unsigned int hex_gui_ulist_icons;
+	unsigned int hex_gui_ulist_resizable;
+	unsigned int hex_gui_ulist_show_hosts;
+	unsigned int hex_gui_ulist_style;
+	unsigned int hex_gui_usermenu;
+	unsigned int hex_gui_win_modes;
+	unsigned int hex_gui_win_save;
+	unsigned int hex_gui_win_swap;
+	unsigned int hex_gui_win_ucount;
 
 	/* these are the legacy variables */
 
@@ -159,7 +223,6 @@ struct hexchatprefs
 	char font_normal[4 * FONTNAMELEN + 1];
 	char font_main[FONTNAMELEN + 1];
 	char font_alternative[3 * FONTNAMELEN + 1];
-	char doubleclickuser[256];
 	char spell_langs[64];
 	char sounddir[PATHLEN + 1];
 	char soundcmd[PATHLEN + 1];
@@ -187,43 +250,16 @@ struct hexchatprefs
 	int tint_green;
 	int tint_blue;
 
-	int gui_pane_left_size;
-	int gui_pane_right_size;
-	int gui_pane_right_size_min;
-
-	int gui_chanlist_maxusers;
-	int gui_chanlist_minusers;
-	int gui_ulist_pos;
-	int tab_pos;
-
-	int tab_layout;
 	int max_auto_indent;
 	int max_lines;
 	int notify_timeout;
-	int mainwindow_left;
-	int mainwindow_top;
-	int mainwindow_width;
-	int mainwindow_height;
-	int gui_win_state;
-	int gui_url_mod;
-	int gui_lang;
-	int dialog_left;
-	int dialog_top;
-	int dialog_width;
-	int dialog_height;
 	int recon_delay;
 	int bantype;
-	int userlist_sort;
 	guint32 local_ip;
 	guint32 dcc_ip;
 
-	unsigned int tab_small;
-	unsigned int tab_icons;
-	unsigned int tab_sort;
-	unsigned int mainwindow_save;
 	unsigned int perc_color;
 	unsigned int perc_ascii;
-	unsigned int autodialog;
 	unsigned int autoreconnect;
 	unsigned int autoreconnectonfail;
 	unsigned int invisible;
@@ -235,22 +271,11 @@ struct hexchatprefs
 	unsigned int autocopy_stamp;
 	unsigned int autocopy_color;
 	unsigned int colorednicks;
-	unsigned int chanmodebuttons;
-	unsigned int userlistbuttons;
-	unsigned int showhostname_in_userlist;
-	unsigned int tabchannels;
-	unsigned int paned_userlist;
-	unsigned int autoopendccsendwindow;
-	unsigned int autoopendccrecvwindow;
-	unsigned int autoopendccchatwindow;
 	unsigned int transparent;
 	unsigned int text_stripcolor_msg;
 	unsigned int text_stripcolor_replay;
 	unsigned int text_stripcolor_topic;
 	unsigned int timestamp;
-	unsigned int slist_fav;
-	unsigned int slist_skip;
-	unsigned int slist_select;
 	unsigned int filterbeep;
 
 	unsigned int input_balloon_chans;
@@ -270,8 +295,6 @@ struct hexchatprefs
 	unsigned int input_tray_hilight;
 	unsigned int input_tray_priv;
 
-	unsigned int truncchans;
-	unsigned int privmsgtab;
 	unsigned int irc_join_delay;
 	unsigned int logging;
 	unsigned int timestamp_logs;
@@ -280,14 +303,6 @@ struct hexchatprefs
 	unsigned int raw_modes;
 	unsigned int userhost;
 	unsigned int irc_whois_front;
-	unsigned int use_server_tab;
-	unsigned int notices_tabs;
-	unsigned int style_namelistgad;
-	unsigned int style_inputbox;
-	unsigned int gui_join_dialog;
-	unsigned int gui_quit_dialog;
-	unsigned int gui_usermenu;
-	unsigned int windows_as_tabs;
 	unsigned int indent_nicks;
 	unsigned int text_replay;
 	unsigned int show_marker;
@@ -295,30 +310,14 @@ struct hexchatprefs
 	unsigned int thin_separator;
 	unsigned int auto_indent;
 	unsigned int wordwrap;
-	unsigned int gui_compact;
-	unsigned int gui_input_nick;
-	unsigned int gui_input_spell;
-	unsigned int gui_tab_dots;
-	unsigned int gui_tray;
-	unsigned int gui_tray_flags;
-	unsigned int gui_ulist_icons;
-	unsigned int gui_win_modes;
-	unsigned int gui_win_swap;
-	unsigned int gui_win_ucount;
 	unsigned int throttle;
-	unsigned int topicbar;
-	unsigned int hideuserlist;
-	unsigned int hidemenu;
 	unsigned int perlwarnings;
-	unsigned int lagometer;
-	unsigned int throttlemeter;
 	unsigned int pingtimeout;
 	unsigned int whois_on_notifyonline;
 	unsigned int wait_on_exit;
 	unsigned int confmode;
 	unsigned int utf8_locale;
 	unsigned int identd;
-	unsigned int gui_one_instance;
 
 	unsigned int url_grabber;
 	unsigned int url_grabber_limit;

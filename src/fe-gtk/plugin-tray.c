@@ -148,7 +148,7 @@ fe_tray_set_balloon (const char *title, const char *text)
 		return;
 
 	/* bit 1 of flags means "no balloons unless hidden/iconified" */
-	if (ws != WS_HIDDEN && (prefs.gui_tray_flags & 2))
+	if (ws != WS_HIDDEN && (prefs.hex_gui_tray_flags & 2))
 		return;
 
 	/* FIXME: this should close the current balloon */
@@ -732,12 +732,12 @@ tray_apply_setup (void)
 {
 	if (sticon)
 	{
-		if (!prefs.gui_tray)
+		if (!prefs.hex_gui_tray)
 			tray_cleanup ();
 	}
 	else
 	{
-		if (prefs.gui_tray && !hextray_mode ())
+		if (prefs.hex_gui_tray && !hextray_mode ())
 			tray_init ();
 	}
 }
@@ -769,7 +769,7 @@ tray_plugin_init (xchat_plugin *plugin_handle, char **plugin_name,
 
 	xchat_hook_print (ph, "Focus Window", -1, tray_focus_cb, NULL);
 
-	if (prefs.gui_tray && !hextray_mode ())
+	if (prefs.hex_gui_tray && !hextray_mode ())
 		tray_init ();
 
 	return 1;       /* return 1 for success */

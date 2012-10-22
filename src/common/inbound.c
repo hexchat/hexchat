@@ -160,9 +160,9 @@ inbound_privmsg (server *serv, char *from, char *ip, char *text, int id)
 
 	sess = find_dialog (serv, from);
 
-	if (sess || prefs.autodialog)
+	if (sess || prefs.hex_gui_autoopen_dialog)
 	{
-		/*0=ctcp  1=priv will set autodialog=0 here is flud detected */
+		/*0=ctcp  1=priv will set hex_gui_autoopen_dialog=0 here is flud detected */
 		if (!sess)
 		{
 			if (flood_check (from, ip, serv, current_sess, 1))
@@ -333,7 +333,7 @@ inbound_action (session *sess, char *chan, char *from, char *ip, char *text, int
 			/* find a dialog tab for it */
 			sess = find_dialog (serv, from);
 			/* if non found, open a new one */
-			if (!sess && prefs.autodialog)
+			if (!sess && prefs.hex_gui_autoopen_dialog)
 			{
 				/* but only if it wouldn't flood */
 				if (flood_check (from, ip, serv, current_sess, 1))
@@ -863,7 +863,7 @@ inbound_notice (server *serv, char *to, char *nick, char *msg, char *ip, int id)
 	if (!sess)
 	{
 		ptr = 0;
-		if (prefs.notices_tabs)
+		if (prefs.hex_gui_tab_notices)
 		{
 			int stype = server_notice ? SESS_SNOTICES : SESS_NOTICES;
 			sess = find_session_from_type (stype, serv);

@@ -335,7 +335,7 @@ ignore_save ()
 static gboolean
 flood_autodialog_timeout (gpointer data)
 {
-	prefs.autodialog = 1;
+	prefs.hex_gui_autoopen_dialog = 1;
 	return FALSE;
 }
 
@@ -412,10 +412,10 @@ flood_check (char *nick, char *ip, server *serv, session *sess, int what)	/*0=ct
 					/*ignore_add (char *mask, int priv, int noti, int chan,
 					   int ctcp, int invi, int unignore, int no_save) */
 
-					if (prefs.autodialog)
+					if (prefs.hex_gui_autoopen_dialog)
 					{
 						/*FIXME: only ignore ctcp or all?, its ignoring ctcps for now */
-						prefs.autodialog = 0;
+						prefs.hex_gui_autoopen_dialog = 0;
 						/* turn it back on in 30 secs */
 						fe_timeout_add (30000, flood_autodialog_timeout, NULL);
 					}

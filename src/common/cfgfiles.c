@@ -435,74 +435,75 @@ const struct prefs vars[] =
 	{"flood_msg_num", P_OFFINT (hex_flood_msg_time), TYPE_INT},
 	{"flood_msg_time", P_OFFINT (hex_flood_msg_time), TYPE_INT},
 
-	{"gui_auto_open_chat", P_OFFINT (autoopendccchatwindow), TYPE_BOOL},
-	{"gui_auto_open_dialog", P_OFFINT (autodialog), TYPE_BOOL},
-	{"gui_auto_open_recv", P_OFFINT (autoopendccrecvwindow), TYPE_BOOL},
-	{"gui_auto_open_send", P_OFFINT (autoopendccsendwindow), TYPE_BOOL},
-	{"gui_chanlist_maxusers", P_OFFINT (gui_chanlist_maxusers), TYPE_INT},
-	{"gui_chanlist_minusers", P_OFFINT (gui_chanlist_minusers), TYPE_INT},
-	{"gui_compact", P_OFFINT (gui_compact), TYPE_BOOL},
-	{"gui_dialog_height", P_OFFINT (dialog_height), TYPE_INT},
-	{"gui_dialog_left", P_OFFINT (dialog_left), TYPE_INT},
-	{"gui_dialog_top", P_OFFINT (dialog_top), TYPE_INT},
-	{"gui_dialog_width", P_OFFINT (dialog_width), TYPE_INT},
-	{"gui_hide_menu", P_OFFINT (hidemenu), TYPE_BOOL},
-	{"gui_input_nick", P_OFFINT (gui_input_nick), TYPE_BOOL},
-	{"gui_input_spell", P_OFFINT (gui_input_spell), TYPE_BOOL},
-	{"gui_input_style", P_OFFINT (style_inputbox), TYPE_BOOL},
-	{"gui_join_dialog", P_OFFINT (gui_join_dialog), TYPE_BOOL},
-	{"gui_lagometer", P_OFFINT (lagometer), TYPE_INT},
-	{"gui_lang", P_OFFINT (gui_lang), TYPE_INT},
-	{"gui_mode_buttons", P_OFFINT (chanmodebuttons), TYPE_BOOL},
-	{"gui_one_instance", P_OFFINT (gui_one_instance), TYPE_BOOL},
-	{"gui_pane_left_size", P_OFFINT (gui_pane_left_size), TYPE_INT},
-	{"gui_pane_right_size", P_OFFINT (gui_pane_right_size), TYPE_INT},
-	{"gui_pane_right_size_min", P_OFFINT (gui_pane_right_size_min), TYPE_INT},
-	{"gui_quit_dialog", P_OFFINT (gui_quit_dialog), TYPE_BOOL},
-	{"gui_slist_fav", P_OFFINT (slist_fav), TYPE_INT},
-	{"gui_slist_select", P_OFFINT (slist_select), TYPE_INT},
-	{"gui_slist_skip", P_OFFINT (slist_skip), TYPE_BOOL},
-	{"gui_tab_chans", P_OFFINT (tabchannels), TYPE_BOOL},
-	{"gui_tab_dialogs", P_OFFINT (privmsgtab), TYPE_BOOL},
-	{"gui_tab_dots", P_OFFINT (gui_tab_dots), TYPE_BOOL},
-	{"gui_tab_icons", P_OFFINT (tab_icons), TYPE_BOOL},
-	{"gui_tab_layout", P_OFFINT (tab_layout), TYPE_INT},
-	{"gui_tab_newtofront", P_OFFINT (newtabstofront), TYPE_INT},
-	{"gui_tab_notices", P_OFFINT (notices_tabs), TYPE_BOOL},
-	{"gui_tab_pos", P_OFFINT (tab_pos), TYPE_INT},
-	{"gui_tab_server", P_OFFINT (use_server_tab), TYPE_BOOL},
-	{"gui_tab_small", P_OFFINT (tab_small), TYPE_INT},
-	{"gui_tab_sort", P_OFFINT (tab_sort), TYPE_BOOL},
-	{"gui_tab_trunc", P_OFFINT (truncchans), TYPE_INT},
-	{"gui_tab_utils", P_OFFINT (windows_as_tabs), TYPE_BOOL},
-	{"gui_throttlemeter", P_OFFINT (throttlemeter), TYPE_INT},
-	{"gui_topicbar", P_OFFINT (topicbar), TYPE_BOOL},
-	{"gui_tray", P_OFFINT (gui_tray), TYPE_BOOL},
-	{"gui_tray_flags", P_OFFINT (gui_tray_flags), TYPE_INT},
-	{"gui_ulist_buttons", P_OFFINT (userlistbuttons), TYPE_BOOL},
-	{"gui_ulist_doubleclick", P_OFFSET (doubleclickuser), TYPE_STR},
-	{"gui_ulist_hide", P_OFFINT (hideuserlist), TYPE_BOOL},
-	{"gui_ulist_icons", P_OFFINT (gui_ulist_icons), TYPE_BOOL},
-	{"gui_ulist_pos", P_OFFINT (gui_ulist_pos), TYPE_INT},
-	{"gui_ulist_resizable", P_OFFINT (paned_userlist), TYPE_BOOL},
-	{"gui_ulist_show_hosts", P_OFFINT(showhostname_in_userlist), TYPE_BOOL},
-	{"gui_ulist_sort", P_OFFINT (userlist_sort), TYPE_INT},
-	{"gui_ulist_style", P_OFFINT (style_namelistgad), TYPE_BOOL},
-	{"gui_url_mod", P_OFFINT (gui_url_mod), TYPE_INT},
-	{"gui_usermenu", P_OFFINT (gui_usermenu), TYPE_BOOL},
-	{"gui_win_height", P_OFFINT (mainwindow_height), TYPE_INT},
-	{"gui_win_left", P_OFFINT (mainwindow_left), TYPE_INT},
-	{"gui_win_modes", P_OFFINT (gui_win_modes), TYPE_BOOL},
-	{"gui_win_save", P_OFFINT (mainwindow_save), TYPE_BOOL},
-	{"gui_win_state", P_OFFINT (gui_win_state), TYPE_INT},
-	{"gui_win_swap", P_OFFINT (gui_win_swap), TYPE_BOOL},
-	{"gui_win_top", P_OFFINT (mainwindow_top), TYPE_INT},
-	{"gui_win_ucount", P_OFFINT (gui_win_ucount), TYPE_BOOL},
-	{"gui_win_width", P_OFFINT (mainwindow_width), TYPE_INT},
+	{"gui_autoopen_chat", P_OFFINT (hex_gui_autoopen_chat), TYPE_BOOL},
+	{"gui_autoopen_dialog", P_OFFINT (hex_gui_autoopen_dialog), TYPE_BOOL},
+	{"gui_autoopen_recv", P_OFFINT (hex_gui_autoopen_recv), TYPE_BOOL},
+	{"gui_autoopen_send", P_OFFINT (hex_gui_autoopen_send), TYPE_BOOL},
+	{"gui_chanlist_maxusers", P_OFFINT (hex_gui_chanlist_maxusers), TYPE_INT},
+	{"gui_chanlist_minusers", P_OFFINT (hex_gui_chanlist_minusers), TYPE_INT},
+	{"gui_compact", P_OFFINT (hex_gui_compact), TYPE_BOOL},
+	{"gui_dialog_height", P_OFFINT (hex_gui_dialog_height), TYPE_INT},
+	{"gui_dialog_left", P_OFFINT (hex_gui_dialog_left), TYPE_INT},
+	{"gui_dialog_top", P_OFFINT (hex_gui_dialog_top), TYPE_INT},
+	{"gui_prefs.hex_gui_dialog_width", P_OFFINT (hex_gui_dialog_width), TYPE_INT},
+	{"gui_hide_menu", P_OFFINT (hex_gui_hide_menu), TYPE_BOOL},
+	{"gui_input_nick", P_OFFINT (hex_gui_input_nick), TYPE_BOOL},
+	{"gui_input_spell", P_OFFINT (hex_gui_input_spell), TYPE_BOOL},
+	{"gui_input_style", P_OFFINT (hex_gui_input_style), TYPE_BOOL},
+	{"gui_join_dialog", P_OFFINT (hex_gui_join_dialog), TYPE_BOOL},
+	{"gui_lagometer", P_OFFINT (hex_gui_lagometer), TYPE_INT},
+	{"gui_lang", P_OFFINT (hex_gui_lang), TYPE_INT},
+	{"gui_mode_buttons", P_OFFINT (hex_gui_mode_buttons), TYPE_BOOL},
+	{"gui_pane_left_size", P_OFFINT (hex_gui_pane_left_size), TYPE_INT},
+	{"gui_pane_right_size", P_OFFINT (hex_gui_pane_right_size), TYPE_INT},
+	{"gui_pane_right_size_min", P_OFFINT (hex_gui_pane_right_size_min), TYPE_INT},
+	{"gui_quit_dialog", P_OFFINT (hex_gui_quit_dialog), TYPE_BOOL},
+	{"gui_single", P_OFFINT (hex_gui_single), TYPE_BOOL},
+	{"gui_slist_fav", P_OFFINT (hex_gui_slist_fav), TYPE_BOOL},
+	{"gui_slist_select", P_OFFINT (hex_gui_slist_select), TYPE_INT},
+	{"gui_slist_skip", P_OFFINT (hex_gui_slist_skip), TYPE_BOOL},
+	{"gui_tab_chans", P_OFFINT (hex_gui_tab_chans), TYPE_BOOL},
+	{"gui_tab_dialogs", P_OFFINT (hex_gui_tab_dialogs), TYPE_BOOL},
+	{"gui_tab_dots", P_OFFINT (hex_gui_tab_dots), TYPE_BOOL},
+	{"gui_tab_icons", P_OFFINT (hex_gui_tab_icons), TYPE_BOOL},
+	{"gui_tab_layout", P_OFFINT (hex_gui_tab_layout), TYPE_INT},
+	{"gui_tab_newtofront", P_OFFINT (hex_gui_tab_newtofront), TYPE_INT},
+	{"gui_tab_notices", P_OFFINT (hex_gui_tab_notices), TYPE_BOOL},
+	{"gui_tab_pos", P_OFFINT (hex_gui_tab_pos), TYPE_INT},
+	{"gui_tab_server", P_OFFINT (hex_gui_tab_server), TYPE_BOOL},
+	{"gui_tab_small", P_OFFINT (hex_gui_tab_small), TYPE_INT},
+	{"gui_tab_sort", P_OFFINT (hex_gui_tab_sort), TYPE_BOOL},
+	{"gui_tab_trunc", P_OFFINT (hex_gui_tab_trunc), TYPE_INT},
+	{"gui_tab_utils", P_OFFINT (hex_gui_tab_utils), TYPE_BOOL},
+	{"gui_throttlemeter", P_OFFINT (hex_gui_throttlemeter), TYPE_INT},
+	{"gui_topicbar", P_OFFINT (hex_gui_topicbar), TYPE_BOOL},
+	{"gui_tray", P_OFFINT (hex_gui_tray), TYPE_BOOL},
+	{"gui_tray_flags", P_OFFINT (hex_gui_tray_flags), TYPE_INT},
+	{"gui_ulist_buttons", P_OFFINT (hex_gui_ulist_buttons), TYPE_BOOL},
+	{"gui_ulist_doubleclick", P_OFFSET (hex_gui_ulist_doubleclick), TYPE_STR},
+	{"gui_ulist_hide", P_OFFINT (hex_gui_ulist_hide), TYPE_BOOL},
+	{"gui_ulist_icons", P_OFFINT (hex_gui_ulist_icons), TYPE_BOOL},
+	{"gui_ulist_pos", P_OFFINT (hex_gui_ulist_pos), TYPE_INT},
+	{"gui_ulist_resizable", P_OFFINT (hex_gui_ulist_resizable), TYPE_BOOL},
+	{"gui_ulist_show_hosts", P_OFFINT(hex_gui_ulist_show_hosts), TYPE_BOOL},
+	{"gui_ulist_sort", P_OFFINT (hex_gui_ulist_sort), TYPE_INT},
+	{"gui_ulist_style", P_OFFINT (hex_gui_ulist_style), TYPE_BOOL},
+	{"gui_url_mod", P_OFFINT (hex_gui_url_mod), TYPE_INT},
+	{"gui_usermenu", P_OFFINT (hex_gui_usermenu), TYPE_BOOL},
+	{"gui_win_height", P_OFFINT (hex_gui_win_height), TYPE_INT},
+	{"gui_win_left", P_OFFINT (hex_gui_win_left), TYPE_INT},
+	{"gui_win_modes", P_OFFINT (hex_gui_win_modes), TYPE_BOOL},
+	{"gui_win_save", P_OFFINT (hex_gui_win_save), TYPE_BOOL},
+	{"gui_win_state", P_OFFINT (hex_gui_win_state), TYPE_INT},
+	{"gui_win_swap", P_OFFINT (hex_gui_win_swap), TYPE_BOOL},
+	{"gui_win_top", P_OFFINT (hex_gui_win_top), TYPE_INT},
+	{"gui_win_ucount", P_OFFINT (hex_gui_win_ucount), TYPE_BOOL},
+	{"gui_win_width", P_OFFINT (hex_gui_win_width), TYPE_INT},
 
 #ifdef WIN32
 	{"identd", P_OFFINT (identd), TYPE_BOOL},
 #endif
+
 	{"input_balloon_chans", P_OFFINT (input_balloon_chans), TYPE_BOOL},
 	{"input_balloon_hilight", P_OFFINT (input_balloon_hilight), TYPE_BOOL},
 	{"input_balloon_priv", P_OFFINT (input_balloon_priv), TYPE_BOOL},
@@ -658,13 +659,13 @@ load_config (void)
 	prefs.local_ip = 0xffffffff;
 	prefs.irc_join_delay = 3;
 	prefs.show_marker = 1;
-	prefs.newtabstofront = 2;
+	prefs.hex_gui_tab_newtofront = 2;
 	prefs.hex_completion_amount = 5;
 	prefs.hex_away_timeout = 60;
 	prefs.hex_away_size_max = 300;
 	prefs.hex_away_track = 1;
 	prefs.timestamp_logs = 1;
-	prefs.truncchans = 20;
+	prefs.hex_gui_tab_trunc = 20;
 	prefs.hex_dcc_auto_resume = 1;
 	prefs.hex_away_show_once = 1;
 	prefs.indent_nicks = 1;
@@ -674,34 +675,34 @@ load_config (void)
 	prefs.hex_dcc_fast_send = 1;
 #endif
 	prefs.wordwrap = 1;
-	prefs.autodialog = 1;
-	prefs.gui_input_spell = 1;
-	prefs.gui_lang = 15;
+	prefs.hex_gui_autoopen_dialog = 1;
+	prefs.hex_gui_input_spell = 1;
+	prefs.hex_gui_lang = 15;
 	prefs.autoreconnect = 1;
 	prefs.recon_delay = 10;
 	prefs.autocopy_text = 1;
 	prefs.text_replay = 1;
 	prefs.text_stripcolor_replay = 1;
 	prefs.text_stripcolor_topic = 1;
-	prefs.tabchannels = 1;
-	prefs.tab_layout = 2;	/* 0=Tabs 1=Reserved 2=Tree */
-	prefs.tab_icons = 1;
-	prefs.tab_sort = 1;
-	prefs.paned_userlist = 1;
-	prefs.newtabstofront = 2;
-	prefs.use_server_tab = 1;
-	prefs.privmsgtab = 1;
+	prefs.hex_gui_tab_chans = 1;
+	prefs.hex_gui_tab_layout = 2;	/* 0=Tabs 1=Reserved 2=Tree */
+	prefs.hex_gui_tab_icons = 1;
+	prefs.hex_gui_tab_sort = 1;
+	prefs.hex_gui_ulist_resizable = 1;
+	prefs.hex_gui_tab_newtofront = 2;
+	prefs.hex_gui_tab_server = 1;
+	prefs.hex_gui_tab_dialogs = 1;
 	/* prefs.colorednicks = 1; */
-	prefs.style_inputbox = 1;
-	prefs.style_namelistgad = 1;
+	prefs.hex_gui_input_style = 1;
+	prefs.hex_gui_ulist_style = 1;
 	prefs.hex_dcc_permissions = 0600;
 	prefs.max_lines = 500;
-	prefs.mainwindow_width = 640;
-	prefs.mainwindow_height = 400;
-	prefs.dialog_width = 500;
-	prefs.dialog_height = 256;
-	prefs.gui_join_dialog = 1;
-	prefs.gui_quit_dialog = 1;
+	prefs.hex_gui_win_width = 640;
+	prefs.hex_gui_win_height = 400;
+	prefs.hex_gui_dialog_width = 500;
+	prefs.hex_gui_dialog_height = 256;
+	prefs.hex_gui_join_dialog = 1;
+	prefs.hex_gui_quit_dialog = 1;
 	prefs.hex_dcc_timeout = 180;
 	prefs.hex_dcc_stall_timeout = 60;
 	prefs.notify_timeout = 15;
@@ -717,25 +718,25 @@ load_config (void)
 	prefs.hex_flood_msg_time = 5;
 	prefs.hex_flood_ctcp_time = 30;
 	prefs.hex_flood_ctcp_num = 5;
-	prefs.topicbar = 1;
-	prefs.lagometer = 1;
-	prefs.throttlemeter = 1;
-	prefs.autoopendccrecvwindow = 1;
-	prefs.autoopendccsendwindow = 1;
-	prefs.autoopendccchatwindow = 1;
+	prefs.hex_gui_topicbar = 1;
+	prefs.hex_gui_lagometer = 1;
+	prefs.hex_gui_throttlemeter = 1;
+	prefs.hex_gui_autoopen_recv = 1;
+	prefs.hex_gui_autoopen_send = 1;
+	prefs.hex_gui_autoopen_chat = 1;
 	/* prevent kicks and bans caused by overwhelming who'ing after reconnects */
 	/* prefs.userhost = 1; */
-	prefs.gui_chanlist_maxusers = 9999;
-	prefs.gui_chanlist_minusers = 5;
-	prefs.gui_tab_dots = 1;
-	prefs.gui_tray = 1;
-	prefs.gui_pane_left_size = 128;		/* with treeview icons we need a bit bigger space */
-	prefs.gui_pane_right_size = 100;
-	prefs.gui_pane_right_size_min = 80;
-	prefs.tab_pos = 1;
-	prefs.gui_ulist_icons = 1;
-	prefs.gui_ulist_pos = 3;
-	prefs.mainwindow_save = 1;
+	prefs.hex_gui_chanlist_maxusers = 9999;
+	prefs.hex_gui_chanlist_minusers = 5;
+	prefs.hex_gui_tab_dots = 1;
+	prefs.hex_gui_tray = 1;
+	prefs.hex_gui_pane_left_size = 128;		/* with treeview icons we need a bit bigger space */
+	prefs.hex_gui_pane_right_size = 100;
+	prefs.hex_gui_pane_right_size_min = 80;
+	prefs.hex_gui_tab_pos = 1;
+	prefs.hex_gui_ulist_icons = 1;
+	prefs.hex_gui_ulist_pos = 3;
+	prefs.hex_gui_win_save = 1;
 	prefs.bantype = 2;
 	prefs.input_balloon_time = 20;
 	prefs.input_flash_priv = prefs.input_flash_hilight = 1;
@@ -776,7 +777,7 @@ load_config (void)
 	snprintf (prefs.sounddir, sizeof (prefs.sounddir), "%s/sounds", get_xdir_utf8 ());
 	snprintf (prefs.hex_dcc_dir, sizeof (prefs.hex_dcc_dir), "%s/downloads", get_xdir_utf8 ());
 #endif
-	strcpy (prefs.doubleclickuser, "QUOTE WHOIS %s %s");
+	strcpy (prefs.hex_gui_ulist_doubleclick, "QUOTE WHOIS %s %s");
 	strcpy (prefs.hex_away_reason, _("I'm busy"));
 	strcpy (prefs.quitreason, _("Leaving"));
 	strcpy (prefs.partreason, prefs.quitreason);
@@ -835,10 +836,10 @@ load_config (void)
 		mkdir_utf8 (prefs.hex_dcc_dir);
 		mkdir_utf8 (prefs.hex_dcc_completed_dir);
 	}
-	if (prefs.mainwindow_height < 138)
-		prefs.mainwindow_height = 138;
-	if (prefs.mainwindow_width < 106)
-		prefs.mainwindow_width = 106;
+	if (prefs.hex_gui_win_height < 138)
+		prefs.hex_gui_win_height = 138;
+	if (prefs.hex_gui_win_width < 106)
+		prefs.hex_gui_win_width = 106;
 
 	sp = strchr (prefs.username, ' ');
 	if (sp)

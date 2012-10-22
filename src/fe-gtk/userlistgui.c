@@ -126,7 +126,7 @@ fe_userlist_numbers (session *sess)
 			gtk_label_set_text (GTK_LABEL (sess->gui->namelistinfo), NULL);
 		}
 
-		if (sess->type == SESS_CHANNEL && prefs.gui_win_ucount)
+		if (sess->type == SESS_CHANNEL && prefs.hex_gui_win_ucount)
 			fe_set_title (sess);
 	}
 }
@@ -357,7 +357,7 @@ fe_userlist_insert (session *sess, struct User *newuser, int row, int sel)
 		do_away = FALSE;
 
 	nick = newuser->nick;
-	if (!prefs.gui_ulist_icons)
+	if (!prefs.hex_gui_ulist_icons)
 	{
 		nick = malloc (strlen (newuser->nick) + 2);
 		nick[0] = newuser->prefix[0];
@@ -378,7 +378,7 @@ fe_userlist_insert (session *sess, struct User *newuser, int row, int sel)
 										:	(NULL),
 								  -1);
 
-	if (!prefs.gui_ulist_icons)
+	if (!prefs.hex_gui_ulist_icons)
 	{
 		free (nick);
 	}
@@ -482,7 +482,7 @@ userlist_add_columns (GtkTreeView * treeview)
 
 	/* icon column */
 	renderer = gtk_cell_renderer_pixbuf_new ();
-	if (prefs.gui_compact)
+	if (prefs.hex_gui_compact)
 		g_object_set (G_OBJECT (renderer), "ypad", 0, NULL);
 	gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (treeview),
 																-1, NULL, renderer,
@@ -490,18 +490,18 @@ userlist_add_columns (GtkTreeView * treeview)
 
 	/* nick column */
 	renderer = gtk_cell_renderer_text_new ();
-	if (prefs.gui_compact)
+	if (prefs.hex_gui_compact)
 		g_object_set (G_OBJECT (renderer), "ypad", 0, NULL);
 	gtk_cell_renderer_text_set_fixed_height_from_font (GTK_CELL_RENDERER_TEXT (renderer), 1);
 	gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (treeview),
 																-1, NULL, renderer,
 													"text", 1, "foreground-gdk", 4, NULL);
 
-	if (prefs.showhostname_in_userlist)
+	if (prefs.hex_gui_ulist_show_hosts)
 	{
 		/* hostname column */
 		renderer = gtk_cell_renderer_text_new ();
-		if (prefs.gui_compact)
+		if (prefs.hex_gui_compact)
 			g_object_set (G_OBJECT (renderer), "ypad", 0, NULL);
 		gtk_cell_renderer_text_set_fixed_height_from_font (GTK_CELL_RENDERER_TEXT (renderer), 1);
 		gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (treeview),
@@ -522,12 +522,12 @@ userlist_click_cb (GtkWidget *widget, GdkEventButton *event, gpointer userdata)
 		return FALSE;
 
 	if (!(event->state & STATE_CTRL) &&
-		event->type == GDK_2BUTTON_PRESS && prefs.doubleclickuser[0])
+		event->type == GDK_2BUTTON_PRESS && prefs.hex_gui_ulist_doubleclick[0])
 	{
 		nicks = userlist_selection_list (widget, &i);
 		if (nicks)
 		{
-			nick_command_parse (current_sess, prefs.doubleclickuser, nicks[0],
+			nick_command_parse (current_sess, prefs.hex_gui_ulist_doubleclick, nicks[0],
 									  nicks[0]);
 			while (i)
 			{
@@ -623,7 +623,7 @@ userlist_create (GtkWidget *box)
 	gtk_scrolled_window_set_shadow_type (GTK_SCROLLED_WINDOW (sw),
 													 GTK_SHADOW_ETCHED_IN);
 	gtk_scrolled_window_set_policy (GTK_SCROLLED_WINDOW (sw),
-											  prefs.showhostname_in_userlist ?
+											  prefs.hex_gui_ulist_show_hosts ?
 												GTK_POLICY_AUTOMATIC :
 												GTK_POLICY_NEVER,
 											  GTK_POLICY_AUTOMATIC);

@@ -101,7 +101,7 @@ cv_tree_init (chanview *cv)
 	GTK_WIDGET_UNSET_FLAGS (view, GTK_CAN_FOCUS);
 	gtk_tree_view_set_headers_visible (GTK_TREE_VIEW (view), FALSE);
 
-	if (prefs.gui_tab_dots)
+	if (prefs.hex_gui_tab_dots)
 	{
 		gtk_tree_view_set_enable_tree_lines (GTK_TREE_VIEW (view), TRUE);
 	}
@@ -112,7 +112,7 @@ cv_tree_init (chanview *cv)
 	if (cv->use_icons)
 	{
 		renderer = gtk_cell_renderer_pixbuf_new ();
-		if (prefs.gui_compact)
+		if (prefs.hex_gui_compact)
 			g_object_set (G_OBJECT (renderer), "ypad", 0, NULL);
 		gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (view),
 																	-1, NULL, renderer,
@@ -121,7 +121,7 @@ cv_tree_init (chanview *cv)
 
 	/* main column */
 	renderer = gtk_cell_renderer_text_new ();
-	if (prefs.gui_compact)
+	if (prefs.hex_gui_compact)
 		g_object_set (G_OBJECT (renderer), "ypad", 0, NULL);
 	gtk_cell_renderer_text_set_fixed_height_from_font (GTK_CELL_RENDERER_TEXT (renderer), 1);
 	gtk_tree_view_insert_column_with_attributes (GTK_TREE_VIEW (view),

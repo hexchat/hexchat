@@ -61,7 +61,7 @@ nick_cmp_alpha (struct User *user1, struct User *user2, server *serv)
 static int
 nick_cmp (struct User *user1, struct User *user2, server *serv)
 {
-	switch (prefs.userlist_sort)
+	switch (prefs.hex_gui_ulist_sort)
 	{
 	case 0:
 		return nick_cmp_az_ops (serv, user1, user2);
@@ -131,7 +131,7 @@ userlist_add_hostname (struct session *sess, char *nick, char *hostname,
 
 		if (away != 0xff)
 		{
-			if (prefs.showhostname_in_userlist || user->away != away)
+			if (prefs.hex_gui_ulist_show_hosts || user->away != away)
 			{
 				user->away = away;
 				fe_userlist_rehash (sess, user);

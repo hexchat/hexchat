@@ -152,7 +152,7 @@ lagcheck_update (void)
 	server *serv;
 	GSList *list = serv_list;
 	
-	if (!prefs.lagometer)
+	if (!prefs.hex_gui_lagometer)
 		return;
 
 	while (list)
@@ -280,7 +280,7 @@ xchat_misc_checks (void)		/* this gets called every 1/2 second */
 
 	if (count >= 60)				/* every 30 seconds */
 	{
-		if (prefs.lagometer)
+		if (prefs.hex_gui_lagometer)
 			lag_check ();
 		count = 0;
 	}
@@ -389,7 +389,7 @@ new_ircwindow (server *serv, char *name, int type, int focus)
 	{
 	case SESS_SERVER:
 		serv = server_new ();
-		if (prefs.use_server_tab)
+		if (prefs.hex_gui_tab_server)
 			sess = session_new (serv, name, SESS_SERVER, focus);
 		else
 			sess = session_new (serv, name, SESS_CHANNEL, focus);
@@ -818,7 +818,7 @@ xchat_init (void)
 	servlist_init ();							/* load server list */
 
 	/* if we got a URL, don't open the server list GUI */
-	if (!prefs.slist_skip && !arg_url)
+	if (!prefs.hex_gui_slist_skip && !arg_url)
 		fe_serverlist_open (NULL);
 
 	/* turned OFF via -a arg */
@@ -828,7 +828,7 @@ xchat_init (void)
 		if (!servlist_have_auto ())	/* if no new windows open .. */
 		{
 			/* and no serverlist gui ... */
-			if (prefs.slist_skip || arg_url)
+			if (prefs.hex_gui_slist_skip || arg_url)
 				/* we'll have to open one. */
 				new_ircwindow (NULL, NULL, SESS_SERVER, 0);
 		} else
@@ -837,7 +837,7 @@ xchat_init (void)
 		}
 	} else
 	{
-		if (prefs.slist_skip || arg_url)
+		if (prefs.hex_gui_slist_skip || arg_url)
 			new_ircwindow (NULL, NULL, SESS_SERVER, 0);
 	}
 }
@@ -953,7 +953,7 @@ main (int argc, char *argv[])
 	int ret;
 
 #ifdef WIN32
-	char hexchat_lang[13];	/* LC_ALL= plus 5 chars of gui_lang and trailing \0 */
+	char hexchat_lang[13];	/* LC_ALL= plus 5 chars of hex_gui_lang and trailing \0 */
 	HANDLE mutex;
 #endif
 
@@ -966,7 +966,7 @@ main (int argc, char *argv[])
 	strcpy (hexchat_lang, "LC_ALL=");
 
 	/* this must be ordered EXACTLY as langsmenu[] */
-	switch (prefs.gui_lang)
+	switch (prefs.hex_gui_lang)
 	{
 		case 0:
 			strcat (hexchat_lang, "af");
@@ -1128,7 +1128,7 @@ main (int argc, char *argv[])
 
 	putenv (hexchat_lang);
 
-	if (prefs.gui_one_instance && !portable_mode ())
+	if (prefs.hex_gui_single && !portable_mode ())
 	{
 		DWORD error;
 
@@ -1193,7 +1193,7 @@ main (int argc, char *argv[])
 #ifdef WIN32
 	WSACleanup ();
 
-	if (prefs.gui_one_instance && !portable_mode ())
+	if (prefs.hex_gui_single && !portable_mode ())
 	{
 		ReleaseMutex (mutex);
 		CloseHandle (mutex);

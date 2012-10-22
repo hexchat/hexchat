@@ -776,7 +776,7 @@ fe_dcc_open_recv_win (int passive)
 	view_mode = VIEW_BOTH;
 	gtk_tree_selection_set_mode (dccfwin.sel, GTK_SELECTION_MULTIPLE);
 
-	if (!prefs.windows_as_tabs)
+	if (!prefs.hex_gui_tab_utils)
 		g_signal_connect (G_OBJECT (dccfwin.window), "configure_event",
 								G_CALLBACK (dcc_configure_cb), 0);
 	g_signal_connect (G_OBJECT (dccfwin.sel), "changed",

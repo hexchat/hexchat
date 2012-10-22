@@ -769,7 +769,7 @@ menu_nickmenu (session *sess, GdkEventButton *event, char *nick, int num_sel)
 static void
 menu_showhide_cb (session *sess)
 {
-	if (prefs.hidemenu)
+	if (prefs.hex_gui_hide_menu)
 		gtk_widget_hide (sess->gui->menu);
 	else
 		gtk_widget_show (sess->gui->menu);
@@ -778,7 +778,7 @@ menu_showhide_cb (session *sess)
 static void
 menu_topic_showhide_cb (session *sess)
 {
-	if (prefs.topicbar)
+	if (prefs.hex_gui_topicbar)
 		gtk_widget_show (sess->gui->topic_bar);
 	else
 		gtk_widget_hide (sess->gui->topic_bar);
@@ -793,7 +793,7 @@ menu_userlist_showhide_cb (session *sess)
 static void
 menu_ulbuttons_showhide_cb (session *sess)
 {
-	if (prefs.userlistbuttons)
+	if (prefs.hex_gui_ulist_buttons)
 		gtk_widget_show (sess->gui->button_box);
 	else
 		gtk_widget_hide (sess->gui->button_box);
@@ -805,7 +805,7 @@ menu_cmbuttons_showhide_cb (session *sess)
 	switch (sess->type)
 	{
 	case SESS_CHANNEL:
-		if (prefs.chanmodebuttons)
+		if (prefs.hex_gui_mode_buttons)
 			gtk_widget_show (sess->gui->topicbutton_box);
 		else
 			gtk_widget_hide (sess->gui->topicbutton_box);
@@ -844,15 +844,15 @@ menu_setting_foreach (void (*callback) (session *), int id, guint state)
 void
 menu_bar_toggle (void)
 {
-	prefs.hidemenu = !prefs.hidemenu;
-	menu_setting_foreach (menu_showhide_cb, MENU_ID_MENUBAR, !prefs.hidemenu);
+	prefs.hex_gui_hide_menu = !prefs.hex_gui_hide_menu;
+	menu_setting_foreach (menu_showhide_cb, MENU_ID_MENUBAR, !prefs.hex_gui_hide_menu);
 }
 
 static void
 menu_bar_toggle_cb (void)
 {
 	menu_bar_toggle ();
-	if (prefs.hidemenu)
+	if (prefs.hex_gui_hide_menu)
 		fe_message (_("The Menubar is now hidden. You can show it again"
 						  " by pressing F9 or right-clicking in a blank part of"
 						  " the main text area."), FE_MSG_INFO);
@@ -861,33 +861,33 @@ menu_bar_toggle_cb (void)
 static void
 menu_topicbar_toggle (GtkWidget *wid, gpointer ud)
 {
-	prefs.topicbar = !prefs.topicbar;
+	prefs.hex_gui_topicbar = !prefs.hex_gui_topicbar;
 	menu_setting_foreach (menu_topic_showhide_cb, MENU_ID_TOPICBAR,
-								 prefs.topicbar);
+								 prefs.hex_gui_topicbar);
 }
 
 static void
 menu_userlist_toggle (GtkWidget *wid, gpointer ud)
 {
-	prefs.hideuserlist = !prefs.hideuserlist;
+	prefs.hex_gui_ulist_hide = !prefs.hex_gui_ulist_hide;
 	menu_setting_foreach (menu_userlist_showhide_cb, MENU_ID_USERLIST,
-								 !prefs.hideuserlist);
+								 !prefs.hex_gui_ulist_hide);
 }
 
 static void
 menu_ulbuttons_toggle (GtkWidget *wid, gpointer ud)
 {
-	prefs.userlistbuttons = !prefs.userlistbuttons;
+	prefs.hex_gui_ulist_buttons = !prefs.hex_gui_ulist_buttons;
 	menu_setting_foreach (menu_ulbuttons_showhide_cb, MENU_ID_ULBUTTONS,
-								 prefs.userlistbuttons);
+								 prefs.hex_gui_ulist_buttons);
 }
 
 static void
 menu_cmbuttons_toggle (GtkWidget *wid, gpointer ud)
 {
-	prefs.chanmodebuttons = !prefs.chanmodebuttons;
+	prefs.hex_gui_mode_buttons = !prefs.hex_gui_mode_buttons;
 	menu_setting_foreach (menu_cmbuttons_showhide_cb, MENU_ID_MODEBUTTONS,
-								 prefs.chanmodebuttons);
+								 prefs.hex_gui_mode_buttons);
 }
 
 void
@@ -1126,46 +1126,46 @@ usermenu_update (void)
 static void
 menu_newserver_window (GtkWidget * wid, gpointer none)
 {
-	int old = prefs.tabchannels;
+	int old = prefs.hex_gui_tab_chans;
 
-	prefs.tabchannels = 0;
+	prefs.hex_gui_tab_chans = 0;
 	new_ircwindow (NULL, NULL, SESS_SERVER, 0);
-	prefs.tabchannels = old;
+	prefs.hex_gui_tab_chans = old;
 }
 
 static void
 menu_newchannel_window (GtkWidget * wid, gpointer none)
 {
-	int old = prefs.tabchannels;
+	int old = prefs.hex_gui_tab_chans;
 
-	prefs.tabchannels = 0;
+	prefs.hex_gui_tab_chans = 0;
 	new_ircwindow (current_sess->server, NULL, SESS_CHANNEL, 0);
-	prefs.tabchannels = old;
+	prefs.hex_gui_tab_chans = old;
 }
 
 static void
 menu_newserver_tab (GtkWidget * wid, gpointer none)
 {
-	int old = prefs.tabchannels;
-	int oldf = prefs.newtabstofront;
+	int old = prefs.hex_gui_tab_chans;
+	int oldf = prefs.hex_gui_tab_newtofront;
 
-	prefs.tabchannels = 1;
+	prefs.hex_gui_tab_chans = 1;
 	/* force focus if setting is "only requested tabs" */
-	if (prefs.newtabstofront == 2)
-		prefs.newtabstofront = 1;
+	if (prefs.hex_gui_tab_newtofront == 2)
+		prefs.hex_gui_tab_newtofront = 1;
 	new_ircwindow (NULL, NULL, SESS_SERVER, 0);
-	prefs.tabchannels = old;
-	prefs.newtabstofront = oldf;
+	prefs.hex_gui_tab_chans = old;
+	prefs.hex_gui_tab_newtofront = oldf;
 }
 
 static void
 menu_newchannel_tab (GtkWidget * wid, gpointer none)
 {
-	int old = prefs.tabchannels;
+	int old = prefs.hex_gui_tab_chans;
 
-	prefs.tabchannels = 1;
+	prefs.hex_gui_tab_chans = 1;
 	new_ircwindow (current_sess->server, NULL, SESS_CHANNEL, 0);
-	prefs.tabchannels = old;
+	prefs.hex_gui_tab_chans = old;
 }
 
 static void
@@ -1529,7 +1529,7 @@ menu_dcc_chat_win (GtkWidget *wid, gpointer none)
 void
 menu_change_layout (void)
 {
-	if (prefs.tab_layout == 0)
+	if (prefs.hex_gui_tab_layout == 0)
 	{
 		menu_setting_foreach (NULL, MENU_ID_LAYOUT_TABS, 1);
 		menu_setting_foreach (NULL, MENU_ID_LAYOUT_TREE, 0);
@@ -1545,9 +1545,9 @@ menu_change_layout (void)
 static void
 menu_layout_cb (GtkWidget *item, gpointer none)
 {
-	prefs.tab_layout = 2;
+	prefs.hex_gui_tab_layout = 2;
 	if (GTK_CHECK_MENU_ITEM (item)->active)
-		prefs.tab_layout = 0;
+		prefs.hex_gui_tab_layout = 0;
 
 	menu_change_layout ();
 }
@@ -1563,8 +1563,8 @@ menu_metres_off (GtkWidget *item, gpointer none)
 {
 	if (GTK_CHECK_MENU_ITEM (item)->active)
 	{
-		prefs.lagometer = 0;
-		prefs.throttlemeter = 0;
+		prefs.hex_gui_lagometer = 0;
+		prefs.hex_gui_throttlemeter = 0;
 		menu_setting_foreach (menu_apply_metres_cb, -1, 0);
 	}
 }
@@ -1574,8 +1574,8 @@ menu_metres_text (GtkWidget *item, gpointer none)
 {
 	if (GTK_CHECK_MENU_ITEM (item)->active)
 	{
-		prefs.lagometer = 2;
-		prefs.throttlemeter = 2;
+		prefs.hex_gui_lagometer = 2;
+		prefs.hex_gui_throttlemeter = 2;
 		menu_setting_foreach (menu_apply_metres_cb, -1, 0);
 	}
 }
@@ -1585,8 +1585,8 @@ menu_metres_graph (GtkWidget *item, gpointer none)
 {
 	if (GTK_CHECK_MENU_ITEM (item)->active)
 	{
-		prefs.lagometer = 1;
-		prefs.throttlemeter = 1;
+		prefs.hex_gui_lagometer = 1;
+		prefs.hex_gui_throttlemeter = 1;
 		menu_setting_foreach (menu_apply_metres_cb, -1, 0);
 	}
 }
@@ -1596,8 +1596,8 @@ menu_metres_both (GtkWidget *item, gpointer none)
 {
 	if (GTK_CHECK_MENU_ITEM (item)->active)
 	{
-		prefs.lagometer = 3;
-		prefs.throttlemeter = 3;
+		prefs.hex_gui_lagometer = 3;
+		prefs.hex_gui_throttlemeter = 3;
 		menu_setting_foreach (menu_apply_metres_cb, -1, 0);
 	}
 }
@@ -2115,15 +2115,15 @@ menu_create_main (void *accel_group, int bar, int away, int toplevel,
 							G_CALLBACK (menu_canacaccel), 0);
 
 	/* set the initial state of toggles */
-	mymenu[MENUBAR_OFFSET].state = !prefs.hidemenu;
-	mymenu[MENUBAR_OFFSET+1].state = prefs.topicbar;
-	mymenu[MENUBAR_OFFSET+2].state = !prefs.hideuserlist;
-	mymenu[MENUBAR_OFFSET+3].state = prefs.userlistbuttons;
-	mymenu[MENUBAR_OFFSET+4].state = prefs.chanmodebuttons;
+	mymenu[MENUBAR_OFFSET].state = !prefs.hex_gui_hide_menu;
+	mymenu[MENUBAR_OFFSET+1].state = prefs.hex_gui_topicbar;
+	mymenu[MENUBAR_OFFSET+2].state = !prefs.hex_gui_ulist_hide;
+	mymenu[MENUBAR_OFFSET+3].state = prefs.hex_gui_ulist_buttons;
+	mymenu[MENUBAR_OFFSET+4].state = prefs.hex_gui_mode_buttons;
 
 	mymenu[AWAY_OFFSET].state = away;
 
-	switch (prefs.tab_layout)
+	switch (prefs.hex_gui_tab_layout)
 	{
 	case 0:
 		mymenu[TABS_OFFSET].state = 1;
@@ -2138,7 +2138,7 @@ menu_create_main (void *accel_group, int bar, int away, int toplevel,
 	mymenu[METRE_OFFSET+1].state = 0;
 	mymenu[METRE_OFFSET+2].state = 0;
 	mymenu[METRE_OFFSET+3].state = 0;
-	switch (prefs.lagometer)
+	switch (prefs.hex_gui_lagometer)
 	{
 	case 0:
 		mymenu[METRE_OFFSET].state = 1;
@@ -2191,7 +2191,7 @@ menu_create_main (void *accel_group, int bar, int away, int toplevel,
 	while (1)
 	{
 		item = NULL;
-		if (mymenu[i].id == MENU_ID_USERMENU && !prefs.gui_usermenu)
+		if (mymenu[i].id == MENU_ID_USERMENU && !prefs.hex_gui_usermenu)
 		{
 			i++;
 			continue;

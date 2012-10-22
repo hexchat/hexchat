@@ -796,7 +796,7 @@ dcc_read (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 static void
 dcc_open_query (server *serv, char *nick)
 {
-	if (prefs.autodialog)
+	if (prefs.hex_gui_autoopen_dialog)
 		open_query (serv, nick, FALSE);
 }
 
@@ -1855,7 +1855,7 @@ dcc_send (struct session *sess, char *to, char *file, int maxcps, int passive)
 					file++;
 				}
 				dcc->nick = strdup (to);
-				if (prefs.autoopendccsendwindow)
+				if (prefs.hex_gui_autoopen_send)
 				{
 					if (fe_dcc_open_send_win (TRUE))	/* already open? add */
 						fe_dcc_add (dcc);
@@ -2197,7 +2197,7 @@ dcc_chat (struct session *sess, char *nick, int passive)
 	dcc->nick = strdup (nick);
 	if (passive || dcc_listen_init (dcc, sess))
 	{
-		if (prefs.autoopendccchatwindow)
+		if (prefs.hex_gui_autoopen_chat)
 		{
 			if (fe_dcc_open_chat_win (TRUE))	/* already open? add only */
 				fe_dcc_add (dcc);
@@ -2300,7 +2300,7 @@ dcc_add_chat (session *sess, char *nick, int port, guint32 addr, int pasvid)
 		EMIT_SIGNAL (XP_TE_DCCCHATOFFER, sess->server->front_session, nick,
 						 NULL, NULL, NULL, 0);
 
-		if (prefs.autoopendccchatwindow)
+		if (prefs.hex_gui_autoopen_chat)
 		{
 			if (fe_dcc_open_chat_win (TRUE))	/* already open? add only */
 				fe_dcc_add (dcc);
@@ -2383,7 +2383,7 @@ dcc_add_file (session *sess, char *file, DCC_SIZE size, int port, char *nick, gu
 		{
 			dcc_get (dcc);
 		}
-		if (prefs.autoopendccrecvwindow)
+		if (prefs.hex_gui_autoopen_recv)
 		{
 			if (fe_dcc_open_recv_win (TRUE))	/* was already open? just add*/
 				fe_dcc_add (dcc);

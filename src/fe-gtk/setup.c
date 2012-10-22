@@ -161,15 +161,15 @@ static const setting appearance_settings[] =
 {
 	{ST_HEADER,	N_("General"),0,0,0},
 #ifdef WIN32
-	{ST_MENU,   N_("Language:"), P_OFFINTNL(gui_lang), 0, langsmenu, 0},
+	{ST_MENU,   N_("Language:"), P_OFFINTNL(hex_gui_lang), 0, langsmenu, 0},
 	{ST_EFONT,  N_("Main font:"), P_OFFSETNL(font_main), 0, 0, sizeof prefs.font_main},
 #else
 	{ST_EFONT,  N_("Font:"), P_OFFSETNL(font_normal), 0, 0, sizeof prefs.font_normal},
 #endif
 
 	{ST_HEADER,	N_("Title Bar"),0,0,0},
-	{ST_TOGGLE, N_("Show channel modes"), P_OFFINTNL(gui_win_modes),0,0,0},
-	{ST_TOGGLR, N_("Show number of users"), P_OFFINTNL(gui_win_ucount),0,0,0},
+	{ST_TOGGLE, N_("Show channel modes"), P_OFFINTNL(hex_gui_win_modes),0,0,0},
+	{ST_TOGGLR, N_("Show number of users"), P_OFFINTNL(hex_gui_win_ucount),0,0,0},
 
 	{ST_HEADER,	N_("Text Box"),0,0,0},
 	{ST_EFILE,  N_("Background image:"), P_OFFSETNL(background), 0, 0, sizeof prefs.background},
@@ -211,10 +211,10 @@ static const char *const tabcompmenu[] =
 static const setting inputbox_settings[] =
 {
 	{ST_HEADER, N_("Input Box"),0,0,0},
-	{ST_TOGGLE, N_("Use the Text box font and colors"), P_OFFINTNL(style_inputbox),0,0,0},
-	{ST_TOGGLE, N_("Show nick box"), P_OFFINTNL(gui_input_nick),0,0,0},
+	{ST_TOGGLE, N_("Use the Text box font and colors"), P_OFFINTNL(hex_gui_input_style),0,0,0},
+	{ST_TOGGLE, N_("Show nick box"), P_OFFINTNL(hex_gui_input_nick),0,0,0},
 #if defined(USE_GTKSPELL) || defined(USE_LIBSEXY)
-	{ST_TOGGLE, N_("Spell checking"), P_OFFINTNL(gui_input_spell),0,0,0},
+	{ST_TOGGLE, N_("Spell checking"), P_OFFINTNL(hex_gui_input_spell),0,0,0},
 	{ST_ENTRY,	N_("Dictionaries to use:"), P_OFFSETNL(spell_langs),0,0,sizeof prefs.spell_langs},
 #ifdef WIN32
 	{ST_LABEL,	N_("Use language codes (as in \"share\\myspell\\dicts\").\nSeparate multiple entries with commas.")},
@@ -238,14 +238,14 @@ static const setting inputbox_settings[] =
 	{ST_END, 0, 0, 0, 0, 0}
 };
 
-/*static const char *const lagmenutext[] = 
+static const char *const lagmenutext[] = 
 {
 	N_("Off"),
 	N_("Graph"),
 	N_("Info text"),
 	N_("Both"),
 	NULL
-};*/
+};
 
 static const char *const ulmenutext[] = 
 {
@@ -281,23 +281,23 @@ static const char *const ulpos[] =
 static const setting userlist_settings[] =
 {
 	{ST_HEADER,	N_("User List"),0,0,0},
-	{ST_TOGGLE, N_("Show hostnames in user list"), P_OFFINTNL(showhostname_in_userlist), 0, 0, 0},
-	{ST_TOGGLE, N_("Use the Text box font and colors"), P_OFFINTNL(style_namelistgad),0,0,0},
-	{ST_TOGGLE, N_("Show icons instead of text symbols"), P_OFFINTNL(gui_ulist_icons), 0, 0, 0},
-/*	{ST_TOGGLE, N_("Resizable user list"), P_OFFINTNL(paned_userlist),0,0,0},*/
-	{ST_MENU,	N_("User list sorted by:"), P_OFFINTNL(userlist_sort), 0, ulmenutext, 0},
-	{ST_MENU,	N_("Show user list at:"), P_OFFINTNL(gui_ulist_pos), 0, ulpos, 1},
+	{ST_TOGGLE, N_("Show hostnames in user list"), P_OFFINTNL(hex_gui_ulist_show_hosts), 0, 0, 0},
+	{ST_TOGGLE, N_("Use the Text box font and colors"), P_OFFINTNL(hex_gui_ulist_style),0,0,0},
+	{ST_TOGGLE, N_("Show icons instead of text symbols"), P_OFFINTNL(hex_gui_ulist_icons), 0, 0, 0},
+/*	{ST_TOGGLE, N_("Resizable user list"), P_OFFINTNL(hex_gui_ulist_resizable),0,0,0},*/
+	{ST_MENU,	N_("User list sorted by:"), P_OFFINTNL(hex_gui_ulist_sort), 0, ulmenutext, 0},
+	{ST_MENU,	N_("Show user list at:"), P_OFFINTNL(hex_gui_ulist_pos), 0, ulpos, 1},
 
 	{ST_HEADER,	N_("Away Tracking"),0,0,0},
 	{ST_TOGGLE,	N_("Track the Away status of users and mark them in a different color"), P_OFFINTNL(hex_away_track),0,0,2},
 	{ST_NUMBER, N_("On channels smaller than:"), P_OFFINTNL(hex_away_size_max),0,0,10000},
 
 	{ST_HEADER,	N_("Action Upon Double Click"),0,0,0},
-	{ST_ENTRY,	N_("Execute command:"), P_OFFSETNL(doubleclickuser), 0, 0, sizeof prefs.doubleclickuser},
+	{ST_ENTRY,	N_("Execute command:"), P_OFFSETNL(hex_gui_ulist_doubleclick), 0, 0, sizeof prefs.hex_gui_ulist_doubleclick},
 
-/*	{ST_HEADER,	N_("Extra Gadgets"),0,0,0},
-	{ST_MENU,	N_("Lag meter:"), P_OFFINTNL(lagometer), 0, lagmenutext, 0},
-	{ST_MENU,	N_("Throttle meter:"), P_OFFINTNL(throttlemeter), 0, lagmenutext, 0},*/
+	{ST_HEADER,	N_("Extra Gadgets"),0,0,0},
+	{ST_MENU,	N_("Lag meter:"), P_OFFINTNL(hex_gui_lagometer), 0, lagmenutext, 0},
+	{ST_MENU,	N_("Throttle meter:"), P_OFFINTNL(hex_gui_throttlemeter), 0, lagmenutext, 0},
 
 	{ST_END, 0, 0, 0, 0, 0}
 };
@@ -330,24 +330,24 @@ static const char *const swtype[] =
 static const setting tabs_settings[] =
 {
 	/*{ST_HEADER,	N_("Channel Switcher"),0,0,0},*/
-	{ST_RADIO,  N_("Switcher type:"),P_OFFINTNL(tab_layout), 0, swtype, 0},
-	{ST_TOGGLE, N_("Open an extra tab for server messages"), P_OFFINTNL(use_server_tab), 0, 0, 0},
-	{ST_TOGGLE, N_("Open an extra tab for server notices"), P_OFFINTNL(notices_tabs), 0, 0, 0},
-	{ST_TOGGLE, N_("Open a new tab when you receive a private message"), P_OFFINTNL(autodialog), 0, 0, 0},
-	{ST_TOGGLE, N_("Sort tabs in alphabetical order"), P_OFFINTNL(tab_sort), 0, 0, 0},
-	{ST_TOGGLE, N_("Show icons in the channel tree"), P_OFFINTNL(tab_icons), 0, 0, 0},
-	{ST_TOGGLE, N_("Show dotted lines in the channel tree"), P_OFFINTNL(gui_tab_dots), 0, 0, 0},
-	{ST_TOGGLE, N_("Smaller text"), P_OFFINTNL(tab_small), 0, 0, 0},
+	{ST_RADIO,  N_("Switcher type:"),P_OFFINTNL(hex_gui_tab_layout), 0, swtype, 0},
+	{ST_TOGGLE, N_("Open an extra tab for server messages"), P_OFFINTNL(hex_gui_tab_server), 0, 0, 0},
+	{ST_TOGGLE, N_("Open an extra tab for server notices"), P_OFFINTNL(hex_gui_tab_notices), 0, 0, 0},
+	{ST_TOGGLE, N_("Open a new tab when you receive a private message"), P_OFFINTNL(hex_gui_autoopen_dialog), 0, 0, 0},
+	{ST_TOGGLE, N_("Sort tabs in alphabetical order"), P_OFFINTNL(hex_gui_tab_sort), 0, 0, 0},
+	{ST_TOGGLE, N_("Show icons in the channel tree"), P_OFFINTNL(hex_gui_tab_icons), 0, 0, 0},
+	{ST_TOGGLE, N_("Show dotted lines in the channel tree"), P_OFFINTNL(hex_gui_tab_dots), 0, 0, 0},
+	{ST_TOGGLE, N_("Smaller text"), P_OFFINTNL(hex_gui_tab_small), 0, 0, 0},
 #if 0
 	{ST_MENU,	N_("Focus new tabs:"), P_OFFINTNL(newtabstofront), 0, focusnewtabsmenu, 0},
 #endif
-	{ST_MENU,	N_("Show channel switcher at:"), P_OFFINTNL(tab_pos), 0, cspos, 1},
-	{ST_NUMBER,	N_("Shorten tab labels to:"), P_OFFINTNL(truncchans), 0, (const char **)N_("letters."), 99},
+	{ST_MENU,	N_("Show channel switcher at:"), P_OFFINTNL(hex_gui_tab_pos), 0, cspos, 1},
+	{ST_NUMBER,	N_("Shorten tab labels to:"), P_OFFINTNL(hex_gui_tab_trunc), 0, (const char **)N_("letters."), 99},
 
 	{ST_HEADER,	N_("Tabs or Windows"),0,0,0},
-	{ST_MENU,	N_("Open channels in:"), P_OFFINTNL(tabchannels), 0, tabwin, 0},
-	{ST_MENU,	N_("Open dialogs in:"), P_OFFINTNL(privmsgtab), 0, tabwin, 0},
-	{ST_MENU,	N_("Open utilities in:"), P_OFFINTNL(windows_as_tabs), N_("Open DCC, Ignore, Notify etc, in tabs or windows?"), tabwin, 0},
+	{ST_MENU,	N_("Open channels in:"), P_OFFINTNL(hex_gui_tab_chans), 0, tabwin, 0},
+	{ST_MENU,	N_("Open dialogs in:"), P_OFFINTNL(hex_gui_tab_dialogs), 0, tabwin, 0},
+	{ST_MENU,	N_("Open utilities in:"), P_OFFINTNL(hex_gui_tab_utils), N_("Open DCC, Ignore, Notify etc, in tabs or windows?"), tabwin, 0},
 
 	{ST_END, 0, 0, 0, 0, 0}
 };
@@ -431,7 +431,7 @@ static const setting alert_settings[] =
 	{ST_3OGGLE, N_("Blink task bar on:"), 0, 0, (void *)taskbarlist, 0},
 	{ST_3OGGLE, N_("Make a beep sound on:"), 0, 0, (void *)beeplist, 0},
 
-	{ST_TOGGLE,	N_("Enable system tray icon"), P_OFFINTNL(gui_tray), 0, 0, 0},
+	{ST_TOGGLE,	N_("Enable system tray icon"), P_OFFINTNL(hex_gui_tray), 0, 0, 0},
 	{ST_TOGGLE,	N_("Omit alerts when marked as being away"), P_OFFINTNL(hex_away_omit_alerts), 0, 0, 0},
 
 	{ST_HEADER,	N_("Highlighted Messages"),0,0,0},
@@ -493,9 +493,9 @@ static const setting advanced_settings[] =
 	{ST_TOGGLE,	N_("Whois on notify"), P_OFFINTNL(whois_on_notifyonline), N_("Sends a /WHOIS when a user comes online in your notify list"), 0, 0},
 	{ST_TOGGLE,	N_("Hide join and part messages"), P_OFFINTNL(confmode), N_("Hide channel join/part messages by default"), 0, 0},
 	{ST_HEADER,	N_("Auto Open DCC Windows"),0,0,0},
-	{ST_TOGGLE, N_("Send window"), P_OFFINTNL(autoopendccsendwindow), 0, 0, 0},
-	{ST_TOGGLE, N_("Receive window"), P_OFFINTNL(autoopendccrecvwindow), 0, 0, 0},
-	{ST_TOGGLE, N_("Chat window"), P_OFFINTNL(autoopendccchatwindow), 0, 0, 0},
+	{ST_TOGGLE, N_("Send window"), P_OFFINTNL(hex_gui_autoopen_send), 0, 0, 0},
+	{ST_TOGGLE, N_("Receive window"), P_OFFINTNL(hex_gui_autoopen_recv), 0, 0, 0},
+	{ST_TOGGLE, N_("Chat window"), P_OFFINTNL(hex_gui_autoopen_chat), 0, 0, 0},
 	{ST_HEADER,	N_("Auto Copy Behavior"),0,0,0},
 	{ST_TOGGLE, N_("Automatically copy selected text"), P_OFFINTNL(autocopy_text),
 					N_("Copy selected text to clipboard when left mouse button is released. "
@@ -521,11 +521,11 @@ static const setting advanced_settings_oneinstance[] =
 	{ST_TOGGLE,	N_("Display MODEs in raw form"), P_OFFINTNL(raw_modes), 0, 0, 0},
 	{ST_TOGGLE,	N_("Whois on notify"), P_OFFINTNL(whois_on_notifyonline), N_("Sends a /WHOIS when a user comes online in your notify list"), 0, 0},
 	{ST_TOGGLE,	N_("Hide join and part messages"), P_OFFINTNL(confmode), N_("Hide channel join/part messages by default"), 0, 0},
-	{ST_TOGGLE,	N_("Allow only one instance of HexChat to run"), P_OFFINTNL(gui_one_instance), 0, 0, 0},
+	{ST_TOGGLE,	N_("Allow only one instance of HexChat to run"), P_OFFINTNL(hex_gui_single), 0, 0, 0},
 	{ST_HEADER,	N_("Auto Open DCC Windows"),0,0,0},
-	{ST_TOGGLE, N_("Send window"), P_OFFINTNL(autoopendccsendwindow), 0, 0, 0},
-	{ST_TOGGLE, N_("Receive window"), P_OFFINTNL(autoopendccrecvwindow), 0, 0, 0},
-	{ST_TOGGLE, N_("Chat window"), P_OFFINTNL(autoopendccchatwindow), 0, 0, 0},
+	{ST_TOGGLE, N_("Send window"), P_OFFINTNL(hex_gui_autoopen_send), 0, 0, 0},
+	{ST_TOGGLE, N_("Receive window"), P_OFFINTNL(hex_gui_autoopen_recv), 0, 0, 0},
+	{ST_TOGGLE, N_("Chat window"), P_OFFINTNL(hex_gui_autoopen_chat), 0, 0, 0},
 	{ST_HEADER,	N_("Auto Copy Behavior"),0,0,0},
 	{ST_TOGGLE, N_("Automatically copy selected text"), P_OFFINTNL(autocopy_text),
 					N_("Copy selected text to clipboard when left mouse button is released. "
@@ -2068,10 +2068,10 @@ setup_apply_to_sess (session_gui *gui)
 
 	mg_update_xtext (gui->xtext);
 
-	if (prefs.style_namelistgad)
+	if (prefs.hex_gui_ulist_style)
 		gtk_widget_set_style (gui->user_tree, input_style);
 
-	if (prefs.style_inputbox)
+	if (prefs.hex_gui_input_style)
 	{
 		extern char cursor_color_rc[];
 		char buf[256];
@@ -2087,14 +2087,14 @@ setup_apply_to_sess (session_gui *gui)
 		setup_apply_entry_style (gui->topic_entry);
 	}
 
-	if (prefs.userlistbuttons)
+	if (prefs.hex_gui_ulist_buttons)
 		gtk_widget_show (gui->button_box);
 	else
 		gtk_widget_hide (gui->button_box);
 
 #ifdef USE_GTKSPELL
 	spell = gtkspell_get_from_text_view (GTK_TEXT_VIEW (gui->input_box));
-	if (prefs.gui_input_spell)
+	if (prefs.hex_gui_input_spell)
 	{
 		if (!spell)
 			gtkspell_new_attach (GTK_TEXT_VIEW (gui->input_box), NULL, NULL);
@@ -2107,7 +2107,7 @@ setup_apply_to_sess (session_gui *gui)
 #endif
 
 #ifdef USE_LIBSEXY
-	sexy_spell_entry_set_checked ((SexySpellEntry *)gui->input_box, prefs.gui_input_spell);
+	sexy_spell_entry_set_checked ((SexySpellEntry *)gui->input_box, prefs.hex_gui_input_spell);
 #endif
 }
 
@@ -2201,44 +2201,44 @@ setup_apply (struct hexchatprefs *pr)
 #define DIFF(a) (pr->a != prefs.a)
 
 #ifdef WIN32
-	if (DIFF (gui_lang))
+	if (DIFF (hex_gui_lang))
 		noapply = TRUE;
 #endif
-	if (DIFF (paned_userlist))
+	if (DIFF (hex_gui_ulist_resizable))
 		noapply = TRUE;
-	if (DIFF (gui_input_nick))
+	if (DIFF (hex_gui_input_nick))
 		noapply = TRUE;
-	if (DIFF (lagometer))
+	if (DIFF (hex_gui_lagometer))
 		noapply = TRUE;
-	if (DIFF (throttlemeter))
+	if (DIFF (hex_gui_throttlemeter))
 		noapply = TRUE;
-	if (DIFF (showhostname_in_userlist))
+	if (DIFF (hex_gui_ulist_show_hosts))
 		noapply = TRUE;
-	if (DIFF (tab_small))
+	if (DIFF (hex_gui_tab_small))
 		noapply = TRUE;
-	if (DIFF (tab_sort))
+	if (DIFF (hex_gui_tab_sort))
 		noapply = TRUE;
-	if (DIFF (gui_ulist_icons))
+	if (DIFF (hex_gui_ulist_icons))
 		noapply = TRUE;
-	if (DIFF (use_server_tab))
+	if (DIFF (hex_gui_tab_server))
 		noapply = TRUE;
-	if (DIFF (style_namelistgad))
+	if (DIFF (hex_gui_ulist_style))
 		noapply = TRUE;
-	if (DIFF (truncchans))
+	if (DIFF (hex_gui_tab_trunc))
 		noapply = TRUE;
-	if (DIFF (tab_icons))
+	if (DIFF (hex_gui_tab_icons))
 		noapply = TRUE;
 
-	if (DIFF (gui_tab_dots))
+	if (DIFF (hex_gui_tab_dots))
 		do_layout = TRUE;
-	if (DIFF (tab_layout))
+	if (DIFF (hex_gui_tab_layout))
 		do_layout = TRUE;
 
 	if (color_change || (DIFF (hex_away_size_max)) || (DIFF (hex_away_track)))
 		do_ulist = TRUE;
 
-	if ((pr->tab_pos == 5 || pr->tab_pos == 6) &&
-		 pr->tab_layout == 2 && pr->tab_pos != prefs.tab_pos)
+	if ((pr->hex_gui_tab_pos == 5 || pr->hex_gui_tab_pos == 6) &&
+		 pr->hex_gui_tab_layout == 2 && pr->hex_gui_tab_pos != prefs.hex_gui_tab_pos)
 		fe_message (_("You cannot place the tree on the top or bottom!\n"
 						"Please change to the <b>Tabs</b> layout in the <b>View</b>"
 						" menu first."),
