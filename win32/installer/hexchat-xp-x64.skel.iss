@@ -21,6 +21,7 @@ CreateUninstallRegKey=not IsTaskSelected('portable')
 Uninstallable=not IsTaskSelected('portable')
 ArchitecturesAllowed=x64
 ArchitecturesInstallIn64BitMode=x64
+MinVersion=5.2
 
 [Types]
 Name: "normal"; Description: "Normal Installation"
