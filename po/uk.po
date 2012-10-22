@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HexChat\n"
 "Report-Msgid-Bugs-To: www.hexchat.org\n"
-"POT-Creation-Date: 2012-10-22 17:37+0200\n"
-"PO-Revision-Date: 2012-10-22 15:40+0000\n"
+"POT-Creation-Date: 2012-10-22 20:37+0200\n"
+"PO-Revision-Date: 2012-10-22 18:39+0000\n"
 "Last-Translator: bviktor <bviktor@hexchat.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -19,15 +19,15 @@ msgstr ""
 "Language: uk\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: src/common/cfgfiles.c:778
+#: src/common/cfgfiles.c:756
 msgid "I'm busy"
 msgstr "Я зайнятий"
 
-#: src/common/cfgfiles.c:779
+#: src/common/cfgfiles.c:780
 msgid "Leaving"
 msgstr "Залишаю"
 
-#: src/common/cfgfiles.c:828
+#: src/common/cfgfiles.c:840
 msgid ""
 "* Running IRC as root is stupid! You should\n"
 "  create a User Account and use that to login.\n"
@@ -1189,7 +1189,7 @@ msgid "Nick of person who changed the topic"
 msgstr "Нікнейм персони, що змінила тему"
 
 #: src/common/text.c:1178 src/common/text.c:1184 src/fe-gtk/chanlist.c:788
-#: src/fe-gtk/chanlist.c:891 src/fe-gtk/setup.c:360
+#: src/fe-gtk/chanlist.c:891 src/fe-gtk/setup.c:357
 msgid "Topic"
 msgstr "Тема"
 
@@ -1478,7 +1478,7 @@ msgstr "IP"
 msgid "Port"
 msgstr "Порт"
 
-#: src/common/text.c:1457 src/fe-gtk/notifygui.c:138 src/fe-gtk/setup.c:1904
+#: src/common/text.c:1457 src/fe-gtk/notifygui.c:138 src/fe-gtk/setup.c:1903
 msgid "Network"
 msgstr "Мережа"
 
@@ -3191,7 +3191,7 @@ msgstr "Показувати каталог конфігураційних фа�
 msgid "Open an irc://server:port/channel URL"
 msgstr "Відкрити irc://server:port/channel URL"
 
-#: src/fe-gtk/fe-gtk.c:139 src/fe-gtk/setup.c:297
+#: src/fe-gtk/fe-gtk.c:139 src/fe-gtk/setup.c:298
 msgid "Execute command:"
 msgstr "Виконати команду:"
 
@@ -4194,15 +4194,15 @@ msgstr ""
 msgid "_Blink on"
 msgstr "_Блимати на"
 
-#: src/fe-gtk/plugin-tray.c:523 src/fe-gtk/setup.c:655
+#: src/fe-gtk/plugin-tray.c:523 src/fe-gtk/setup.c:654
 msgid "Channel Message"
 msgstr "Повідомлення каналу"
 
-#: src/fe-gtk/plugin-tray.c:524 src/fe-gtk/setup.c:656
+#: src/fe-gtk/plugin-tray.c:524 src/fe-gtk/setup.c:655
 msgid "Private Message"
 msgstr "Приватне повідомлення"
 
-#: src/fe-gtk/plugin-tray.c:525 src/fe-gtk/setup.c:657
+#: src/fe-gtk/plugin-tray.c:525 src/fe-gtk/setup.c:656
 msgid "Highlighted Message"
 msgstr "Виділене повідомлення"
 
@@ -4729,7 +4729,7 @@ msgstr ""
 msgid "Walloon"
 msgstr ""
 
-#: src/fe-gtk/setup.c:163 src/fe-gtk/setup.c:1899
+#: src/fe-gtk/setup.c:163 src/fe-gtk/setup.c:1898
 msgid "General"
 msgstr "Загальне"
 
@@ -4813,7 +4813,7 @@ msgstr "Зелений:"
 msgid "Blue:"
 msgstr "Синій:"
 
-#: src/fe-gtk/setup.c:193 src/fe-gtk/setup.c:555
+#: src/fe-gtk/setup.c:193 src/fe-gtk/setup.c:554
 msgid "Time Stamps"
 msgstr "Відображати час"
 
@@ -4825,11 +4825,11 @@ msgstr "Вносити час події в журнал"
 msgid "Time stamp format:"
 msgstr "Формат відображення часу:"
 
-#: src/fe-gtk/setup.c:197 src/fe-gtk/setup.c:559
+#: src/fe-gtk/setup.c:197 src/fe-gtk/setup.c:558
 msgid "See the strftime MSDN article for details."
 msgstr ""
 
-#: src/fe-gtk/setup.c:199 src/fe-gtk/setup.c:561
+#: src/fe-gtk/setup.c:199 src/fe-gtk/setup.c:560
 msgid "See the strftime manpage for details."
 msgstr ""
 
@@ -4957,50 +4957,58 @@ msgid "Show hostnames in user list"
 msgstr "Показувати назви вузлів у списку користувачів"
 
 #: src/fe-gtk/setup.c:287
-msgid "Show icons instead of text symbols"
+msgid "Show icons for user modes"
 msgstr ""
 
-#: src/fe-gtk/setup.c:289
+#: src/fe-gtk/setup.c:287
+msgid "Use graphical icons instead of text symbols in the user list."
+msgstr ""
+
+#: src/fe-gtk/setup.c:288
+msgid "Show user count in channels"
+msgstr ""
+
+#: src/fe-gtk/setup.c:290
 msgid "User list sorted by:"
 msgstr "Сортування списку користувачів:"
 
-#: src/fe-gtk/setup.c:290
+#: src/fe-gtk/setup.c:291
 msgid "Show user list at:"
 msgstr "Показувати список користувачів:"
 
-#: src/fe-gtk/setup.c:292
+#: src/fe-gtk/setup.c:293
 msgid "Away Tracking"
 msgstr ""
 
-#: src/fe-gtk/setup.c:293
+#: src/fe-gtk/setup.c:294
 msgid "Track the Away status of users and mark them in a different color"
 msgstr "Слідкувати за статусом користувачів Відійшов та позначати їх іншим кольором"
 
-#: src/fe-gtk/setup.c:294
+#: src/fe-gtk/setup.c:295
 msgid "On channels smaller than:"
 msgstr "На каналах менших за:"
 
-#: src/fe-gtk/setup.c:296
+#: src/fe-gtk/setup.c:297
 msgid "Action Upon Double Click"
 msgstr "Реакція на подвійне клацання"
 
-#: src/fe-gtk/setup.c:299
+#: src/fe-gtk/setup.c:300
 msgid "Extra Gadgets"
 msgstr ""
 
-#: src/fe-gtk/setup.c:300
+#: src/fe-gtk/setup.c:301
 msgid "Lag meter:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:301
+#: src/fe-gtk/setup.c:302
 msgid "Throttle meter:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:308
+#: src/fe-gtk/setup.c:309
 msgid "Windows"
 msgstr "Вікнах"
 
-#: src/fe-gtk/setup.c:309 src/fe-gtk/setup.c:325
+#: src/fe-gtk/setup.c:310 src/fe-gtk/setup.c:324
 msgid "Tabs"
 msgstr "Вкладках"
 
@@ -5012,697 +5020,705 @@ msgstr "Завжди"
 msgid "Only requested tabs"
 msgstr "Лише зазначені вкладки"
 
-#: src/fe-gtk/setup.c:327
+#: src/fe-gtk/setup.c:326
 msgid "Tree"
 msgstr "Д_ерево"
 
-#: src/fe-gtk/setup.c:334
+#: src/fe-gtk/setup.c:333
 msgid "Switcher type:"
 msgstr "Тип перемикача:"
 
-#: src/fe-gtk/setup.c:335
+#: src/fe-gtk/setup.c:334
 msgid "Open an extra tab for server messages"
 msgstr "Відкривати вкладку для повідомлень сервера"
 
-#: src/fe-gtk/setup.c:336
+#: src/fe-gtk/setup.c:335
 msgid "Open an extra tab for server notices"
 msgstr "Відкривати вкладку для зауважень сервера"
 
-#: src/fe-gtk/setup.c:337
+#: src/fe-gtk/setup.c:336
 msgid "Open a new tab when you receive a private message"
 msgstr "Відкривати вкладку при отриманні приватних повідомлень"
 
-#: src/fe-gtk/setup.c:338
+#: src/fe-gtk/setup.c:337
 msgid "Sort tabs in alphabetical order"
 msgstr "Сортувати вкладки за алфавітом"
 
-#: src/fe-gtk/setup.c:339
+#: src/fe-gtk/setup.c:338
 msgid "Show icons in the channel tree"
 msgstr ""
 
-#: src/fe-gtk/setup.c:340
+#: src/fe-gtk/setup.c:339
 msgid "Show dotted lines in the channel tree"
 msgstr ""
 
-#: src/fe-gtk/setup.c:341
+#: src/fe-gtk/setup.c:340
 msgid "Smaller text"
 msgstr "Маленький текст"
 
-#: src/fe-gtk/setup.c:343
+#: src/fe-gtk/setup.c:341
 msgid "Focus new tabs:"
 msgstr "Фокус на нові вкладки:"
 
-#: src/fe-gtk/setup.c:345
+#: src/fe-gtk/setup.c:342
 msgid "Show channel switcher at:"
 msgstr "Показати перемикач каналів:"
 
-#: src/fe-gtk/setup.c:346
+#: src/fe-gtk/setup.c:343
 msgid "Shorten tab labels to:"
 msgstr "Скорочувати вкладки до:"
 
-#: src/fe-gtk/setup.c:346
+#: src/fe-gtk/setup.c:343
 msgid "letters."
 msgstr "симв."
 
-#: src/fe-gtk/setup.c:348
+#: src/fe-gtk/setup.c:345
 msgid "Tabs or Windows"
 msgstr "Вкладках або вікнах"
 
-#: src/fe-gtk/setup.c:349
+#: src/fe-gtk/setup.c:346
 msgid "Open channels in:"
 msgstr "Відкривати канали у:"
 
-#: src/fe-gtk/setup.c:350
+#: src/fe-gtk/setup.c:347
 msgid "Open dialogs in:"
 msgstr "Відкривати діалоги у:"
 
-#: src/fe-gtk/setup.c:351
+#: src/fe-gtk/setup.c:348
 msgid "Open utilities in:"
 msgstr "Відкривати утиліти у:"
 
-#: src/fe-gtk/setup.c:351
+#: src/fe-gtk/setup.c:348
 msgid "Open DCC, Ignore, Notify etc, in tabs or windows?"
 msgstr "Відкривати DCC, Ігнорування, Сповіщення, тощо у вкладках або вікнах?"
 
-#: src/fe-gtk/setup.c:358
+#: src/fe-gtk/setup.c:355
 msgid "Messages"
 msgstr ""
 
-#: src/fe-gtk/setup.c:359
+#: src/fe-gtk/setup.c:356
 msgid "Scrollback"
 msgstr ""
 
-#: src/fe-gtk/setup.c:367
+#: src/fe-gtk/setup.c:364
 msgid "Ask for confirmation"
 msgstr ""
 
-#: src/fe-gtk/setup.c:368
+#: src/fe-gtk/setup.c:365
 msgid "Ask for download folder"
 msgstr ""
 
-#: src/fe-gtk/setup.c:369
+#: src/fe-gtk/setup.c:366
 msgid "Save without interaction"
 msgstr ""
 
-#: src/fe-gtk/setup.c:375
+#: src/fe-gtk/setup.c:372
 msgid "Files and Directories"
 msgstr "Файли та каталоги"
 
-#: src/fe-gtk/setup.c:376
+#: src/fe-gtk/setup.c:373
 msgid "Auto accept file offers:"
 msgstr "Автоматично приймати файли:"
 
-#: src/fe-gtk/setup.c:377
+#: src/fe-gtk/setup.c:374
 msgid "Download files to:"
 msgstr "Завантажувати файли в:"
 
-#: src/fe-gtk/setup.c:378
+#: src/fe-gtk/setup.c:375
 msgid "Move completed files to:"
 msgstr "Переміщувати завершені файли в:"
 
-#: src/fe-gtk/setup.c:379
+#: src/fe-gtk/setup.c:376
 msgid "Save nick name in filenames"
 msgstr "Зберігати нікнейм в назвах файлів"
 
-#: src/fe-gtk/setup.c:381
+#: src/fe-gtk/setup.c:378
 msgid "Network Settings"
 msgstr "Параметри мережі"
 
-#: src/fe-gtk/setup.c:382
+#: src/fe-gtk/setup.c:379
 msgid "Get my address from the IRC server"
 msgstr "Отримувати власну IP адресу з IRC сервера"
 
-#: src/fe-gtk/setup.c:383
+#: src/fe-gtk/setup.c:380
 msgid ""
 "Asks the IRC server for your real address. Use this if you have a "
 "192.168.*.* address!"
 msgstr "Виконайте команду /WHOIS для свого нікнейму, щоб визначити сою реальну адресу. Використовуйте це, якщо ваша адреса 192.168.*.* !"
 
-#: src/fe-gtk/setup.c:384
+#: src/fe-gtk/setup.c:381
 msgid "DCC IP address:"
 msgstr "IP адреса DCC:"
 
-#: src/fe-gtk/setup.c:385
+#: src/fe-gtk/setup.c:382
 msgid "Claim you are at this address when offering files."
 msgstr "Заявляти цю адресу при пропонуванні файлів."
 
-#: src/fe-gtk/setup.c:386
+#: src/fe-gtk/setup.c:383
 msgid "First DCC send port:"
 msgstr "Початковий порт DCC:"
 
-#: src/fe-gtk/setup.c:387
+#: src/fe-gtk/setup.c:384
 msgid "Last DCC send port:"
 msgstr "Заключний порт DCC:"
 
-#: src/fe-gtk/setup.c:388
+#: src/fe-gtk/setup.c:385
 msgid "!Leave ports at zero for full range."
 msgstr "!Залиште порти нульовими для повного діапазону."
 
-#: src/fe-gtk/setup.c:390
+#: src/fe-gtk/setup.c:387
 msgid "Maximum File Transfer Speeds (bytes per second)"
 msgstr "Максимальна швидкість передачі файлів (байт на секунду)"
 
-#: src/fe-gtk/setup.c:391
+#: src/fe-gtk/setup.c:388
 msgid "One upload:"
 msgstr "Одне завантаження:"
 
-#: src/fe-gtk/setup.c:392 src/fe-gtk/setup.c:394
+#: src/fe-gtk/setup.c:389 src/fe-gtk/setup.c:391
 msgid "Maximum speed for one transfer"
 msgstr "Максимальна швидкість для однієї передачі"
 
-#: src/fe-gtk/setup.c:393
+#: src/fe-gtk/setup.c:390
 msgid "One download:"
 msgstr "Одне скачування:"
 
-#: src/fe-gtk/setup.c:395
+#: src/fe-gtk/setup.c:392
 msgid "All uploads combined:"
 msgstr "Всі завантаження:"
 
-#: src/fe-gtk/setup.c:396 src/fe-gtk/setup.c:398
+#: src/fe-gtk/setup.c:393 src/fe-gtk/setup.c:395
 msgid "Maximum speed for all files"
 msgstr "Максимальна швидкість для усього трафіка"
 
-#: src/fe-gtk/setup.c:397
+#: src/fe-gtk/setup.c:394
 msgid "All downloads combined:"
 msgstr "Всі скачування:"
 
-#: src/fe-gtk/setup.c:425 src/fe-gtk/setup.c:451 src/fe-gtk/setup.c:1898
+#: src/fe-gtk/setup.c:422 src/fe-gtk/setup.c:448 src/fe-gtk/setup.c:1897
 msgid "Alerts"
 msgstr "Увага!"
 
-#: src/fe-gtk/setup.c:429
+#: src/fe-gtk/setup.c:426
 msgid "Show tray balloons on:"
 msgstr "Показувати плаваючі повідомлення, коли:"
 
-#: src/fe-gtk/setup.c:431
+#: src/fe-gtk/setup.c:428
 msgid "Blink tray icon on:"
 msgstr "Блимати у треї, коли:"
 
-#: src/fe-gtk/setup.c:432 src/fe-gtk/setup.c:454
+#: src/fe-gtk/setup.c:429 src/fe-gtk/setup.c:451
 msgid "Blink task bar on:"
 msgstr "Блимати на панелі задач, коли:"
 
-#: src/fe-gtk/setup.c:433 src/fe-gtk/setup.c:455
+#: src/fe-gtk/setup.c:430 src/fe-gtk/setup.c:452
 msgid "Make a beep sound on:"
 msgstr "Видавати звук 'beep', коли"
 
-#: src/fe-gtk/setup.c:435
+#: src/fe-gtk/setup.c:432
 msgid "Enable system tray icon"
 msgstr "Увімкнути значок у області сповіщення"
 
-#: src/fe-gtk/setup.c:436 src/fe-gtk/setup.c:457
+#: src/fe-gtk/setup.c:433 src/fe-gtk/setup.c:454
 msgid "Omit alerts when marked as being away"
 msgstr ""
 
-#: src/fe-gtk/setup.c:438 src/fe-gtk/setup.c:459
+#: src/fe-gtk/setup.c:435 src/fe-gtk/setup.c:456
 msgid "Highlighted Messages"
 msgstr "Підсвічені повідомлення"
 
-#: src/fe-gtk/setup.c:439 src/fe-gtk/setup.c:460
+#: src/fe-gtk/setup.c:436 src/fe-gtk/setup.c:457
 msgid ""
 "Highlighted messages are ones where your nickname is mentioned, but also:"
 msgstr "Підсвічені повідомлення, це ті, де згадали ваш нікнейм, а також:"
 
-#: src/fe-gtk/setup.c:441 src/fe-gtk/setup.c:462
+#: src/fe-gtk/setup.c:438 src/fe-gtk/setup.c:459
 msgid "Extra words to highlight:"
 msgstr "Реагувати також на слова:"
 
-#: src/fe-gtk/setup.c:442 src/fe-gtk/setup.c:463
+#: src/fe-gtk/setup.c:439 src/fe-gtk/setup.c:460
 msgid "Nick names not to highlight:"
 msgstr "Не підсвічувати нікнейми:"
 
-#: src/fe-gtk/setup.c:443 src/fe-gtk/setup.c:464
+#: src/fe-gtk/setup.c:440 src/fe-gtk/setup.c:461
 msgid "Nick names to always highlight:"
 msgstr "Завжди підсвічувати нікнейми:"
 
-#: src/fe-gtk/setup.c:444 src/fe-gtk/setup.c:465
+#: src/fe-gtk/setup.c:441 src/fe-gtk/setup.c:462
 msgid ""
 "Separate multiple words with commas.\n"
 "Wildcards are accepted."
 msgstr "Відокремлюйте слова комами.\nШаблони також приймаються."
 
-#: src/fe-gtk/setup.c:472
+#: src/fe-gtk/setup.c:469
 msgid "Default Messages"
 msgstr "Типові повідомлення"
 
-#: src/fe-gtk/setup.c:473
+#: src/fe-gtk/setup.c:470
 msgid "Quit:"
 msgstr "Вихід:"
 
-#: src/fe-gtk/setup.c:474
+#: src/fe-gtk/setup.c:471
 msgid "Leave channel:"
 msgstr "Залишення каналу:"
 
-#: src/fe-gtk/setup.c:475
+#: src/fe-gtk/setup.c:472
 msgid "Away:"
 msgstr "Відсутній:"
 
-#: src/fe-gtk/setup.c:477
+#: src/fe-gtk/setup.c:474
 msgid "Away"
 msgstr "Відсутній"
 
-#: src/fe-gtk/setup.c:478
+#: src/fe-gtk/setup.c:475
 msgid "Announce away messages"
 msgstr "Оголошувати перехід у \"Відсутній\""
 
-#: src/fe-gtk/setup.c:479
-msgid "Announce your away messages to all channels"
-msgstr "Оголошувати перехід у \"Відсутній\" в усіх каналах"
+#: src/fe-gtk/setup.c:476
+msgid "Announce your away messages to all channels."
+msgstr ""
 
-#: src/fe-gtk/setup.c:480
+#: src/fe-gtk/setup.c:477
 msgid "Show away once"
 msgstr "Показувати \"Відсутній\" лише один раз"
 
-#: src/fe-gtk/setup.c:480
-msgid "Show identical away messages only once"
-msgstr "Показувати ідентичні повідомлення лише один раз"
+#: src/fe-gtk/setup.c:477
+msgid "Show identical away messages only once."
+msgstr ""
 
-#: src/fe-gtk/setup.c:481
+#: src/fe-gtk/setup.c:478
 msgid "Automatically unmark away"
 msgstr "Автоматично знімати \"Відсутній\""
 
-#: src/fe-gtk/setup.c:481
-msgid "Unmark yourself as away before sending messages"
-msgstr "Знімати стан \"Відсутній\" перед надсиланням повідомлень"
+#: src/fe-gtk/setup.c:478
+msgid "Unmark yourself as away before sending messages."
+msgstr ""
 
-#: src/fe-gtk/setup.c:488 src/fe-gtk/setup.c:519
+#: src/fe-gtk/setup.c:485 src/fe-gtk/setup.c:517
 msgid "Advanced Settings"
 msgstr "Розширені параметри"
 
-#: src/fe-gtk/setup.c:490 src/fe-gtk/setup.c:520
+#: src/fe-gtk/setup.c:487 src/fe-gtk/setup.c:518
 msgid "Alternative fonts:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:492 src/fe-gtk/setup.c:521
+#: src/fe-gtk/setup.c:489 src/fe-gtk/setup.c:519
 msgid "Auto reconnect delay:"
 msgstr "Затримка автоматичного відновлення з'єднання:"
 
-#: src/fe-gtk/setup.c:493 src/fe-gtk/setup.c:522
+#: src/fe-gtk/setup.c:490 src/fe-gtk/setup.c:520
 msgid "Display MODEs in raw form"
 msgstr "Відображати режими в чистому вигляді"
 
-#: src/fe-gtk/setup.c:494 src/fe-gtk/setup.c:523
+#: src/fe-gtk/setup.c:491 src/fe-gtk/setup.c:521
 msgid "Whois on notify"
 msgstr "Whois при сповіщенні"
 
-#: src/fe-gtk/setup.c:494 src/fe-gtk/setup.c:523
-msgid "Sends a /WHOIS when a user comes online in your notify list"
-msgstr "Надсилати /WHOIS коли користувач з вашого списку сповіщень підключається."
+#: src/fe-gtk/setup.c:491 src/fe-gtk/setup.c:521
+msgid "Sends a /WHOIS when a user comes online in your notify list."
+msgstr ""
 
-#: src/fe-gtk/setup.c:495 src/fe-gtk/setup.c:524
+#: src/fe-gtk/setup.c:492 src/fe-gtk/setup.c:522
 msgid "Hide join and part messages"
 msgstr "Приховувати сповіщення про вхід/вихід"
 
-#: src/fe-gtk/setup.c:495 src/fe-gtk/setup.c:524
-msgid "Hide channel join/part messages by default"
-msgstr "Приховувати типово повідомлення про вхід/вихід"
+#: src/fe-gtk/setup.c:492 src/fe-gtk/setup.c:522
+msgid "Hide channel join/part messages by default."
+msgstr ""
 
-#: src/fe-gtk/setup.c:496 src/fe-gtk/setup.c:526
+#: src/fe-gtk/setup.c:493 src/fe-gtk/setup.c:524
+msgid "Display lists in compact mode"
+msgstr ""
+
+#: src/fe-gtk/setup.c:493 src/fe-gtk/setup.c:524
+msgid "Use less spacing between user list/channel tree rows."
+msgstr ""
+
+#: src/fe-gtk/setup.c:494 src/fe-gtk/setup.c:525
 msgid "Auto Open DCC Windows"
 msgstr "Автоматично відкривати діалогові вікна"
 
-#: src/fe-gtk/setup.c:497 src/fe-gtk/setup.c:527
+#: src/fe-gtk/setup.c:495 src/fe-gtk/setup.c:526
 msgid "Send window"
 msgstr "Вікно відсилання"
 
-#: src/fe-gtk/setup.c:498 src/fe-gtk/setup.c:528
+#: src/fe-gtk/setup.c:496 src/fe-gtk/setup.c:527
 msgid "Receive window"
 msgstr "Вікно отримання"
 
-#: src/fe-gtk/setup.c:499 src/fe-gtk/setup.c:529
+#: src/fe-gtk/setup.c:497 src/fe-gtk/setup.c:528
 msgid "Chat window"
 msgstr "Вікно каналу"
 
-#: src/fe-gtk/setup.c:500 src/fe-gtk/setup.c:530
+#: src/fe-gtk/setup.c:498 src/fe-gtk/setup.c:529
 msgid "Auto Copy Behavior"
 msgstr ""
 
-#: src/fe-gtk/setup.c:501 src/fe-gtk/setup.c:531
+#: src/fe-gtk/setup.c:499 src/fe-gtk/setup.c:530
 msgid "Automatically copy selected text"
 msgstr ""
 
-#: src/fe-gtk/setup.c:502 src/fe-gtk/setup.c:532
+#: src/fe-gtk/setup.c:500 src/fe-gtk/setup.c:531
 msgid ""
 "Copy selected text to clipboard when left mouse button is released. "
 "Otherwise, CONTROL-SHIFT-C will copy the selected text to the clipboard."
 msgstr ""
 
-#: src/fe-gtk/setup.c:505 src/fe-gtk/setup.c:535
+#: src/fe-gtk/setup.c:503 src/fe-gtk/setup.c:534
 msgid "Automatically include time stamps"
 msgstr ""
 
-#: src/fe-gtk/setup.c:506 src/fe-gtk/setup.c:536
+#: src/fe-gtk/setup.c:504 src/fe-gtk/setup.c:535
 msgid ""
 "Automatically include time stamps in copied lines of text. Otherwise, "
 "include time stamps if the SHIFT key is held down while selecting."
 msgstr ""
 
-#: src/fe-gtk/setup.c:508 src/fe-gtk/setup.c:538
+#: src/fe-gtk/setup.c:506 src/fe-gtk/setup.c:537
 msgid "Automatically include color information"
 msgstr ""
 
-#: src/fe-gtk/setup.c:509 src/fe-gtk/setup.c:539
+#: src/fe-gtk/setup.c:507 src/fe-gtk/setup.c:538
 msgid ""
 "Automatically include color information in copied lines of text.  Otherwise,"
 " include color information if the CONTROL key is held down while selecting."
 msgstr ""
 
-#: src/fe-gtk/setup.c:525
+#: src/fe-gtk/setup.c:523
 msgid "Allow only one instance of HexChat to run"
 msgstr ""
 
-#: src/fe-gtk/setup.c:549 src/fe-gtk/setup.c:1900
+#: src/fe-gtk/setup.c:548 src/fe-gtk/setup.c:1899
 msgid "Logging"
 msgstr "Журнали"
 
-#: src/fe-gtk/setup.c:550
+#: src/fe-gtk/setup.c:549
 msgid "Display scrollback from previous session"
 msgstr "Показувати останні повідомлення з попередньої бесіди"
 
-#: src/fe-gtk/setup.c:551
+#: src/fe-gtk/setup.c:550
 msgid "Enable logging of conversations to disk"
 msgstr "Увімкнути запис журналу повідомлень"
 
-#: src/fe-gtk/setup.c:552
+#: src/fe-gtk/setup.c:551
 msgid "Log filename:"
 msgstr "Файл журналу:"
 
-#: src/fe-gtk/setup.c:553
+#: src/fe-gtk/setup.c:552
 #, c-format
 msgid "%s=Server %c=Channel %n=Network."
 msgstr "%s=Сервер %c=Канал %n=Мережа."
 
-#: src/fe-gtk/setup.c:556
+#: src/fe-gtk/setup.c:555
 msgid "Insert timestamps in logs"
 msgstr "Вносити час події в журнал"
 
-#: src/fe-gtk/setup.c:557
+#: src/fe-gtk/setup.c:556
 msgid "Log timestamp format:"
 msgstr "Формат запису часу в журнал:"
 
-#: src/fe-gtk/setup.c:564
+#: src/fe-gtk/setup.c:563
 msgid "URLs"
 msgstr ""
 
-#: src/fe-gtk/setup.c:565
+#: src/fe-gtk/setup.c:564
 msgid "Enable logging of URLs to disk"
 msgstr ""
 
-#: src/fe-gtk/setup.c:566
+#: src/fe-gtk/setup.c:565
 msgid "Enable URL grabber"
 msgstr ""
 
-#: src/fe-gtk/setup.c:567
+#: src/fe-gtk/setup.c:566
 msgid "Maximum number of URLs to grab:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:574
+#: src/fe-gtk/setup.c:573
 msgid "(Disabled)"
 msgstr "(вимкнено)"
 
-#: src/fe-gtk/setup.c:575
+#: src/fe-gtk/setup.c:574
 msgid "Wingate"
 msgstr "Wingate"
 
-#: src/fe-gtk/setup.c:576
+#: src/fe-gtk/setup.c:575
 msgid "Socks4"
 msgstr "Socks4"
 
-#: src/fe-gtk/setup.c:577
+#: src/fe-gtk/setup.c:576
 msgid "Socks5"
 msgstr "Socks5"
 
-#: src/fe-gtk/setup.c:578
+#: src/fe-gtk/setup.c:577
 msgid "HTTP"
 msgstr "HTTP"
 
-#: src/fe-gtk/setup.c:580
+#: src/fe-gtk/setup.c:579
 msgid "MS Proxy (ISA)"
 msgstr "MS Proxy (ISA)"
 
-#: src/fe-gtk/setup.c:583
+#: src/fe-gtk/setup.c:582
 msgid "Auto"
 msgstr ""
 
-#: src/fe-gtk/setup.c:590
+#: src/fe-gtk/setup.c:589
 msgid "All Connections"
 msgstr "Усі з'єднання"
 
-#: src/fe-gtk/setup.c:591
+#: src/fe-gtk/setup.c:590
 msgid "IRC Server Only"
 msgstr "Лише сервер IRC"
 
-#: src/fe-gtk/setup.c:592
+#: src/fe-gtk/setup.c:591
 msgid "DCC Get Only"
 msgstr "Лише DCC"
 
-#: src/fe-gtk/setup.c:598
+#: src/fe-gtk/setup.c:597
 msgid "Your Address"
 msgstr "IP адреса"
 
-#: src/fe-gtk/setup.c:599
+#: src/fe-gtk/setup.c:598
 msgid "Bind to:"
 msgstr "Зачепитися на:"
 
-#: src/fe-gtk/setup.c:600
+#: src/fe-gtk/setup.c:599
 msgid "Only useful for computers with multiple addresses."
 msgstr "Корисне, лише коли комп'ютер має декілька адрес."
 
-#: src/fe-gtk/setup.c:602
+#: src/fe-gtk/setup.c:601
 msgid "Proxy Server"
 msgstr "Проксі сервер"
 
-#: src/fe-gtk/setup.c:603
+#: src/fe-gtk/setup.c:602
 msgid "Hostname:"
 msgstr "Назва вузла:"
 
-#: src/fe-gtk/setup.c:604
+#: src/fe-gtk/setup.c:603
 msgid "Port:"
 msgstr "Порт:"
 
-#: src/fe-gtk/setup.c:605
+#: src/fe-gtk/setup.c:604
 msgid "Type:"
 msgstr "Тип:"
 
-#: src/fe-gtk/setup.c:606
+#: src/fe-gtk/setup.c:605
 msgid "Use proxy for:"
 msgstr "Використовувати проксі для:"
 
-#: src/fe-gtk/setup.c:608
+#: src/fe-gtk/setup.c:607
 msgid "Proxy Authentication"
 msgstr "Автентифікація проксі"
 
-#: src/fe-gtk/setup.c:610
+#: src/fe-gtk/setup.c:609
 msgid "Use Authentication (MS Proxy, HTTP or Socks5 only)"
 msgstr "Використовувати аутентифікацію (лише MS Proxy, HTTP та Socks5)"
 
-#: src/fe-gtk/setup.c:612
+#: src/fe-gtk/setup.c:611
 msgid "Use Authentication (HTTP or Socks5 only)"
 msgstr "Використовувати аутентифікацію (лише HTTP та Socks5)"
 
-#: src/fe-gtk/setup.c:614
+#: src/fe-gtk/setup.c:613
 msgid "Username:"
 msgstr "Ім'я користувача:"
 
-#: src/fe-gtk/setup.c:615
+#: src/fe-gtk/setup.c:614
 msgid "Password:"
 msgstr "Пароль:"
 
-#: src/fe-gtk/setup.c:1046
+#: src/fe-gtk/setup.c:1045
 msgid "Select an Image File"
 msgstr "Виберіть файл зображення"
 
-#: src/fe-gtk/setup.c:1081
+#: src/fe-gtk/setup.c:1080
 msgid "Select Download Folder"
 msgstr "Виберіть теку для завантажень"
 
-#: src/fe-gtk/setup.c:1090
+#: src/fe-gtk/setup.c:1089
 msgid "Select font"
 msgstr "Вибір шрифту"
 
-#: src/fe-gtk/setup.c:1190
+#: src/fe-gtk/setup.c:1189
 msgid "Browse..."
 msgstr "Вибрати..."
 
-#: src/fe-gtk/setup.c:1328
+#: src/fe-gtk/setup.c:1327
 msgid "Mark identified users with:"
 msgstr "Позначати ідентифікованих користувачів:"
 
-#: src/fe-gtk/setup.c:1330
+#: src/fe-gtk/setup.c:1329
 msgid "Mark not-identified users with:"
 msgstr "Позначати·не ідентифікованих·користувачів:"
 
-#: src/fe-gtk/setup.c:1337
+#: src/fe-gtk/setup.c:1336
 msgid "Open Data Folder"
 msgstr "Відкрити теку даних"
 
-#: src/fe-gtk/setup.c:1391
+#: src/fe-gtk/setup.c:1390
 msgid "Select color"
 msgstr "Вибір кольору"
 
-#: src/fe-gtk/setup.c:1471
+#: src/fe-gtk/setup.c:1470
 msgid "Text Colors"
 msgstr "Кольори"
 
-#: src/fe-gtk/setup.c:1473
+#: src/fe-gtk/setup.c:1472
 msgid "mIRC colors:"
 msgstr "Кольори mIRC:"
 
-#: src/fe-gtk/setup.c:1481
+#: src/fe-gtk/setup.c:1480
 msgid "Local colors:"
 msgstr "Локальні кольори:"
 
-#: src/fe-gtk/setup.c:1489 src/fe-gtk/setup.c:1494
+#: src/fe-gtk/setup.c:1488 src/fe-gtk/setup.c:1493
 msgid "Foreground:"
 msgstr "Передній план:"
 
-#: src/fe-gtk/setup.c:1490 src/fe-gtk/setup.c:1495
+#: src/fe-gtk/setup.c:1489 src/fe-gtk/setup.c:1494
 msgid "Background:"
 msgstr "Тло:"
 
-#: src/fe-gtk/setup.c:1492
+#: src/fe-gtk/setup.c:1491
 msgid "Selected Text"
 msgstr ""
 
-#: src/fe-gtk/setup.c:1497
+#: src/fe-gtk/setup.c:1496
 msgid "Interface Colors"
 msgstr "Інтерфейс"
 
-#: src/fe-gtk/setup.c:1499
+#: src/fe-gtk/setup.c:1498
 msgid "New data:"
 msgstr "Нові дані:"
 
-#: src/fe-gtk/setup.c:1500
+#: src/fe-gtk/setup.c:1499
 msgid "Marker line:"
 msgstr "Маркер:"
 
-#: src/fe-gtk/setup.c:1501
+#: src/fe-gtk/setup.c:1500
 msgid "New message:"
 msgstr "Нове повідомлення:"
 
-#: src/fe-gtk/setup.c:1502
+#: src/fe-gtk/setup.c:1501
 msgid "Away user:"
 msgstr "Користувач, що відсутній:"
 
-#: src/fe-gtk/setup.c:1503
+#: src/fe-gtk/setup.c:1502
 msgid "Highlight:"
 msgstr "Підсвічення:"
 
-#: src/fe-gtk/setup.c:1505
+#: src/fe-gtk/setup.c:1504
 msgid "Spell checker:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:1508
+#: src/fe-gtk/setup.c:1507
 msgid "Color Stripping"
 msgstr ""
 
-#: src/fe-gtk/setup.c:1614 src/fe-gtk/textgui.c:389
+#: src/fe-gtk/setup.c:1613 src/fe-gtk/textgui.c:389
 msgid "Event"
 msgstr "Подія"
 
-#: src/fe-gtk/setup.c:1620
+#: src/fe-gtk/setup.c:1619
 msgid "Sound file"
 msgstr "Звуковий файл"
 
-#: src/fe-gtk/setup.c:1655
+#: src/fe-gtk/setup.c:1654
 msgid "Select a sound file"
 msgstr "Виберіть звуковий файл"
 
-#: src/fe-gtk/setup.c:1727
+#: src/fe-gtk/setup.c:1726
 msgid "Sound playing method:"
 msgstr "Метод відтворення:"
 
-#: src/fe-gtk/setup.c:1735
+#: src/fe-gtk/setup.c:1734
 msgid "External sound playing _program:"
 msgstr "Зовнішня _програма для відтворення звуку:"
 
-#: src/fe-gtk/setup.c:1753
+#: src/fe-gtk/setup.c:1752
 msgid "_External program"
 msgstr "З_овнішня програми"
 
-#: src/fe-gtk/setup.c:1763
+#: src/fe-gtk/setup.c:1762
 msgid "_Automatic"
 msgstr "_Автоматично"
 
-#: src/fe-gtk/setup.c:1776
+#: src/fe-gtk/setup.c:1775
 msgid "Sound files _directory:"
 msgstr "_Каталог звукових файлів:"
 
-#: src/fe-gtk/setup.c:1815
+#: src/fe-gtk/setup.c:1814
 msgid "Sound file:"
 msgstr "Звуковий файл:"
 
-#: src/fe-gtk/setup.c:1830
+#: src/fe-gtk/setup.c:1829
 msgid "_Browse..."
 msgstr "В_ибрати..."
 
-#: src/fe-gtk/setup.c:1841
+#: src/fe-gtk/setup.c:1840
 msgid "_Play"
 msgstr "_Відтворити"
 
-#: src/fe-gtk/setup.c:1890
+#: src/fe-gtk/setup.c:1889
 msgid "Interface"
 msgstr "Інтерфейс"
 
-#: src/fe-gtk/setup.c:1891
+#: src/fe-gtk/setup.c:1890
 msgid "Appearance"
 msgstr ""
 
-#: src/fe-gtk/setup.c:1892
+#: src/fe-gtk/setup.c:1891
 msgid "Input box"
 msgstr "Поле вводу"
 
-#: src/fe-gtk/setup.c:1893
+#: src/fe-gtk/setup.c:1892
 msgid "User list"
 msgstr "Список користувачів"
 
-#: src/fe-gtk/setup.c:1894
+#: src/fe-gtk/setup.c:1893
 msgid "Channel switcher"
 msgstr "Перемикач каналів"
 
-#: src/fe-gtk/setup.c:1895
+#: src/fe-gtk/setup.c:1894
 msgid "Colors"
 msgstr "Кольори"
 
-#: src/fe-gtk/setup.c:1897
+#: src/fe-gtk/setup.c:1896
 msgid "Chatting"
 msgstr "Розмови"
 
-#: src/fe-gtk/setup.c:1901
+#: src/fe-gtk/setup.c:1900
 msgid "Sound"
 msgstr "Звук"
 
-#: src/fe-gtk/setup.c:1902
+#: src/fe-gtk/setup.c:1901
 msgid "Advanced"
 msgstr "Додатково"
 
-#: src/fe-gtk/setup.c:1905
+#: src/fe-gtk/setup.c:1904
 msgid "Network setup"
 msgstr "Параметри мережі"
 
-#: src/fe-gtk/setup.c:1906
+#: src/fe-gtk/setup.c:1905
 msgid "File transfers"
 msgstr "Передача файлів"
 
-#: src/fe-gtk/setup.c:2037
+#: src/fe-gtk/setup.c:2036
 msgid "Categories"
 msgstr "Категорії"
 
-#: src/fe-gtk/setup.c:2240
+#: src/fe-gtk/setup.c:2243
 msgid ""
 "You cannot place the tree on the top or bottom!\n"
 "Please change to the <b>Tabs</b> layout in the <b>View</b> menu first."
 msgstr "Не можна розміщувати дерево вгорі чи внизу!\nСпочатку змініть розташування пункту <b>Вкладки</b> у меню <b>Вигляд</b>."
 
-#: src/fe-gtk/setup.c:2267
+#: src/fe-gtk/setup.c:2270
 msgid "Invalid time stamp format! See the strftime MSDN article for details."
 msgstr ""
 
-#: src/fe-gtk/setup.c:2274
+#: src/fe-gtk/setup.c:2277
 msgid "Some settings were changed that require a restart to take full effect."
 msgstr "Для набуття сили змін у деяких параметрах потрібно перезапустити програму."
 
-#: src/fe-gtk/setup.c:2282
+#: src/fe-gtk/setup.c:2285
 msgid ""
 "*WARNING*\n"
 "Auto accepting DCC to your home directory\n"
@@ -5710,7 +5726,7 @@ msgid ""
 "Someone could send you a .bash_profile"
 msgstr "*ПОПЕРЕДЖЕННЯ*\nАвтоматичне приймання DCC до вашої домашньої теки\nможе бути небезпечним. Наприклад:\nхтось може надіслати вам .bash_profile"
 
-#: src/fe-gtk/setup.c:2315
+#: src/fe-gtk/setup.c:2318
 msgid ": Preferences"
 msgstr "XChat: Параметри"
 

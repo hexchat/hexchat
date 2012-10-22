@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HexChat\n"
 "Report-Msgid-Bugs-To: www.hexchat.org\n"
-"POT-Creation-Date: 2012-10-22 17:37+0200\n"
-"PO-Revision-Date: 2012-10-22 15:40+0000\n"
+"POT-Creation-Date: 2012-10-22 20:37+0200\n"
+"PO-Revision-Date: 2012-10-22 18:39+0000\n"
 "Last-Translator: bviktor <bviktor@hexchat.org>\n"
 "Language-Team: French (http://www.transifex.com/projects/p/hexchat/language/fr/)\n"
 "MIME-Version: 1.0\n"
@@ -17,15 +17,15 @@ msgstr ""
 "Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: src/common/cfgfiles.c:778
+#: src/common/cfgfiles.c:756
 msgid "I'm busy"
 msgstr "Je suis occupé"
 
-#: src/common/cfgfiles.c:779
+#: src/common/cfgfiles.c:780
 msgid "Leaving"
 msgstr "Quitte"
 
-#: src/common/cfgfiles.c:828
+#: src/common/cfgfiles.c:840
 msgid ""
 "* Running IRC as root is stupid! You should\n"
 "  create a User Account and use that to login.\n"
@@ -1187,7 +1187,7 @@ msgid "Nick of person who changed the topic"
 msgstr "Pseudonyme de la personne qui a changé le sujet"
 
 #: src/common/text.c:1178 src/common/text.c:1184 src/fe-gtk/chanlist.c:788
-#: src/fe-gtk/chanlist.c:891 src/fe-gtk/setup.c:360
+#: src/fe-gtk/chanlist.c:891 src/fe-gtk/setup.c:357
 msgid "Topic"
 msgstr "Sujet"
 
@@ -1476,7 +1476,7 @@ msgstr "IP"
 msgid "Port"
 msgstr "Port"
 
-#: src/common/text.c:1457 src/fe-gtk/notifygui.c:138 src/fe-gtk/setup.c:1904
+#: src/common/text.c:1457 src/fe-gtk/notifygui.c:138 src/fe-gtk/setup.c:1903
 msgid "Network"
 msgstr "Réseau"
 
@@ -3189,7 +3189,7 @@ msgstr "Afficher le répertoire de configuration de l'utilisateur"
 msgid "Open an irc://server:port/channel URL"
 msgstr "Ouvrir une URL irc://serveur:port/canal"
 
-#: src/fe-gtk/fe-gtk.c:139 src/fe-gtk/setup.c:297
+#: src/fe-gtk/fe-gtk.c:139 src/fe-gtk/setup.c:298
 msgid "Execute command:"
 msgstr "Exécuter la commande :"
 
@@ -4192,15 +4192,15 @@ msgstr "_Masquer la fenêtre"
 msgid "_Blink on"
 msgstr "_Clignoter lors des"
 
-#: src/fe-gtk/plugin-tray.c:523 src/fe-gtk/setup.c:655
+#: src/fe-gtk/plugin-tray.c:523 src/fe-gtk/setup.c:654
 msgid "Channel Message"
 msgstr "Messages de canaux"
 
-#: src/fe-gtk/plugin-tray.c:524 src/fe-gtk/setup.c:656
+#: src/fe-gtk/plugin-tray.c:524 src/fe-gtk/setup.c:655
 msgid "Private Message"
 msgstr "Messages privés"
 
-#: src/fe-gtk/plugin-tray.c:525 src/fe-gtk/setup.c:657
+#: src/fe-gtk/plugin-tray.c:525 src/fe-gtk/setup.c:656
 msgid "Highlighted Message"
 msgstr "Messages en surbrillance"
 
@@ -4727,7 +4727,7 @@ msgstr ""
 msgid "Walloon"
 msgstr ""
 
-#: src/fe-gtk/setup.c:163 src/fe-gtk/setup.c:1899
+#: src/fe-gtk/setup.c:163 src/fe-gtk/setup.c:1898
 msgid "General"
 msgstr "Général"
 
@@ -4811,7 +4811,7 @@ msgstr "Vert :"
 msgid "Blue:"
 msgstr "Bleu :"
 
-#: src/fe-gtk/setup.c:193 src/fe-gtk/setup.c:555
+#: src/fe-gtk/setup.c:193 src/fe-gtk/setup.c:554
 msgid "Time Stamps"
 msgstr "Horodatage"
 
@@ -4823,11 +4823,11 @@ msgstr "Activer l'horodatage"
 msgid "Time stamp format:"
 msgstr "Format de l'horodatage :"
 
-#: src/fe-gtk/setup.c:197 src/fe-gtk/setup.c:559
+#: src/fe-gtk/setup.c:197 src/fe-gtk/setup.c:558
 msgid "See the strftime MSDN article for details."
 msgstr "Voir l'article strftime MSDN pour plus de détails."
 
-#: src/fe-gtk/setup.c:199 src/fe-gtk/setup.c:561
+#: src/fe-gtk/setup.c:199 src/fe-gtk/setup.c:560
 msgid "See the strftime manpage for details."
 msgstr "Voir la page de manuel de strftime pour plus de détails."
 
@@ -4955,50 +4955,58 @@ msgid "Show hostnames in user list"
 msgstr "Afficher les noms d'hôtes dans la liste des utilisateurs"
 
 #: src/fe-gtk/setup.c:287
-msgid "Show icons instead of text symbols"
+msgid "Show icons for user modes"
 msgstr ""
 
-#: src/fe-gtk/setup.c:289
+#: src/fe-gtk/setup.c:287
+msgid "Use graphical icons instead of text symbols in the user list."
+msgstr ""
+
+#: src/fe-gtk/setup.c:288
+msgid "Show user count in channels"
+msgstr ""
+
+#: src/fe-gtk/setup.c:290
 msgid "User list sorted by:"
 msgstr "Liste des utilisateurs classée par :"
 
-#: src/fe-gtk/setup.c:290
+#: src/fe-gtk/setup.c:291
 msgid "Show user list at:"
 msgstr "Position de la liste des utilisateurs :"
 
-#: src/fe-gtk/setup.c:292
+#: src/fe-gtk/setup.c:293
 msgid "Away Tracking"
 msgstr "Suivi de l'absence"
 
-#: src/fe-gtk/setup.c:293
+#: src/fe-gtk/setup.c:294
 msgid "Track the Away status of users and mark them in a different color"
 msgstr "Suivre l'état d'absence des utilisateurs et les afficher dans une couleur différente"
 
-#: src/fe-gtk/setup.c:294
+#: src/fe-gtk/setup.c:295
 msgid "On channels smaller than:"
 msgstr "Sur les canaux plus petits que :"
 
-#: src/fe-gtk/setup.c:296
+#: src/fe-gtk/setup.c:297
 msgid "Action Upon Double Click"
 msgstr "Action sur un double clic"
 
-#: src/fe-gtk/setup.c:299
+#: src/fe-gtk/setup.c:300
 msgid "Extra Gadgets"
 msgstr ""
 
-#: src/fe-gtk/setup.c:300
+#: src/fe-gtk/setup.c:301
 msgid "Lag meter:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:301
+#: src/fe-gtk/setup.c:302
 msgid "Throttle meter:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:308
+#: src/fe-gtk/setup.c:309
 msgid "Windows"
 msgstr "Fenêtres"
 
-#: src/fe-gtk/setup.c:309 src/fe-gtk/setup.c:325
+#: src/fe-gtk/setup.c:310 src/fe-gtk/setup.c:324
 msgid "Tabs"
 msgstr "Onglets"
 
@@ -5010,697 +5018,705 @@ msgstr "Toujours"
 msgid "Only requested tabs"
 msgstr "Uniquement les onglets nécessaires"
 
-#: src/fe-gtk/setup.c:327
+#: src/fe-gtk/setup.c:326
 msgid "Tree"
 msgstr "Arbre"
 
-#: src/fe-gtk/setup.c:334
+#: src/fe-gtk/setup.c:333
 msgid "Switcher type:"
 msgstr "Type de liste des canaux :"
 
-#: src/fe-gtk/setup.c:335
+#: src/fe-gtk/setup.c:334
 msgid "Open an extra tab for server messages"
 msgstr "Ouvrir un onglet supplémentaire pour les messages du serveur"
 
-#: src/fe-gtk/setup.c:336
+#: src/fe-gtk/setup.c:335
 msgid "Open an extra tab for server notices"
 msgstr "Ouvrir un onglet supplémentaire pour les notifications du serveur"
 
-#: src/fe-gtk/setup.c:337
+#: src/fe-gtk/setup.c:336
 msgid "Open a new tab when you receive a private message"
 msgstr "Ouvrir un nouvel onglet lors de la réception de message privé"
 
-#: src/fe-gtk/setup.c:338
+#: src/fe-gtk/setup.c:337
 msgid "Sort tabs in alphabetical order"
 msgstr "Trier les onglets par ordre alphabétique"
 
-#: src/fe-gtk/setup.c:339
+#: src/fe-gtk/setup.c:338
 msgid "Show icons in the channel tree"
 msgstr "Afficher les icônes dans l'arborescence des canaux"
 
-#: src/fe-gtk/setup.c:340
+#: src/fe-gtk/setup.c:339
 msgid "Show dotted lines in the channel tree"
 msgstr ""
 
-#: src/fe-gtk/setup.c:341
+#: src/fe-gtk/setup.c:340
 msgid "Smaller text"
 msgstr "Texte plus petit"
 
-#: src/fe-gtk/setup.c:343
+#: src/fe-gtk/setup.c:341
 msgid "Focus new tabs:"
 msgstr "Focus sur les nouveaux onglets :"
 
-#: src/fe-gtk/setup.c:345
+#: src/fe-gtk/setup.c:342
 msgid "Show channel switcher at:"
 msgstr "Position de la liste des canaux :"
 
-#: src/fe-gtk/setup.c:346
+#: src/fe-gtk/setup.c:343
 msgid "Shorten tab labels to:"
 msgstr "Réduire les étiquettes des onglets à :"
 
-#: src/fe-gtk/setup.c:346
+#: src/fe-gtk/setup.c:343
 msgid "letters."
 msgstr "lettres."
 
-#: src/fe-gtk/setup.c:348
+#: src/fe-gtk/setup.c:345
 msgid "Tabs or Windows"
 msgstr "Onglets ou fenêtres"
 
-#: src/fe-gtk/setup.c:349
+#: src/fe-gtk/setup.c:346
 msgid "Open channels in:"
 msgstr "Ouvrir les canaux dans :"
 
-#: src/fe-gtk/setup.c:350
+#: src/fe-gtk/setup.c:347
 msgid "Open dialogs in:"
 msgstr "Ouvrir les boîtes de dialogue dans :"
 
-#: src/fe-gtk/setup.c:351
+#: src/fe-gtk/setup.c:348
 msgid "Open utilities in:"
 msgstr "Ouvrir les utilitaires dans :"
 
-#: src/fe-gtk/setup.c:351
+#: src/fe-gtk/setup.c:348
 msgid "Open DCC, Ignore, Notify etc, in tabs or windows?"
 msgstr "Faut-il DCC, Ignore, Notify, etc., dans des onglets ou des fenêtres ?"
 
-#: src/fe-gtk/setup.c:358
+#: src/fe-gtk/setup.c:355
 msgid "Messages"
 msgstr "Messages"
 
-#: src/fe-gtk/setup.c:359
+#: src/fe-gtk/setup.c:356
 msgid "Scrollback"
 msgstr "Historique"
 
-#: src/fe-gtk/setup.c:367
+#: src/fe-gtk/setup.c:364
 msgid "Ask for confirmation"
 msgstr ""
 
-#: src/fe-gtk/setup.c:368
+#: src/fe-gtk/setup.c:365
 msgid "Ask for download folder"
 msgstr ""
 
-#: src/fe-gtk/setup.c:369
+#: src/fe-gtk/setup.c:366
 msgid "Save without interaction"
 msgstr ""
 
-#: src/fe-gtk/setup.c:375
+#: src/fe-gtk/setup.c:372
 msgid "Files and Directories"
 msgstr "Fichiers et répertoires"
 
-#: src/fe-gtk/setup.c:376
+#: src/fe-gtk/setup.c:373
 msgid "Auto accept file offers:"
 msgstr "Accepter automatiquement les propositions de fichiers :"
 
-#: src/fe-gtk/setup.c:377
+#: src/fe-gtk/setup.c:374
 msgid "Download files to:"
 msgstr "Télécharger les fichiers vers :"
 
-#: src/fe-gtk/setup.c:378
+#: src/fe-gtk/setup.c:375
 msgid "Move completed files to:"
 msgstr "Déplacer les fichiers terminés vers :"
 
-#: src/fe-gtk/setup.c:379
+#: src/fe-gtk/setup.c:376
 msgid "Save nick name in filenames"
 msgstr "Enregistrer le pseudonyme dans des noms de fichiers"
 
-#: src/fe-gtk/setup.c:381
+#: src/fe-gtk/setup.c:378
 msgid "Network Settings"
 msgstr "Paramètres du réseau"
 
-#: src/fe-gtk/setup.c:382
+#: src/fe-gtk/setup.c:379
 msgid "Get my address from the IRC server"
 msgstr "Obtenir mon adresse depuis le serveur IRC"
 
-#: src/fe-gtk/setup.c:383
+#: src/fe-gtk/setup.c:380
 msgid ""
 "Asks the IRC server for your real address. Use this if you have a "
 "192.168.*.* address!"
 msgstr "Demander au serveur IRC votre adresse réelle. À utiliser si vous avez une adresse du style 192.168.*.* !"
 
-#: src/fe-gtk/setup.c:384
+#: src/fe-gtk/setup.c:381
 msgid "DCC IP address:"
 msgstr "Adresse IP DCC :"
 
-#: src/fe-gtk/setup.c:385
+#: src/fe-gtk/setup.c:382
 msgid "Claim you are at this address when offering files."
 msgstr "Prétendre que vous êtes à cette adresse quand vous proposez des fichiers."
 
-#: src/fe-gtk/setup.c:386
+#: src/fe-gtk/setup.c:383
 msgid "First DCC send port:"
 msgstr "Premier port DCC Send :"
 
-#: src/fe-gtk/setup.c:387
+#: src/fe-gtk/setup.c:384
 msgid "Last DCC send port:"
 msgstr "Dernier port DCC Send :"
 
-#: src/fe-gtk/setup.c:388
+#: src/fe-gtk/setup.c:385
 msgid "!Leave ports at zero for full range."
 msgstr "Laisser les ports à zéro pour la plage complète."
 
-#: src/fe-gtk/setup.c:390
+#: src/fe-gtk/setup.c:387
 msgid "Maximum File Transfer Speeds (bytes per second)"
 msgstr "Vitesse maximale des transferts de fichiers (octets par seconde)"
 
-#: src/fe-gtk/setup.c:391
+#: src/fe-gtk/setup.c:388
 msgid "One upload:"
 msgstr "Par envoi :"
 
-#: src/fe-gtk/setup.c:392 src/fe-gtk/setup.c:394
+#: src/fe-gtk/setup.c:389 src/fe-gtk/setup.c:391
 msgid "Maximum speed for one transfer"
 msgstr "Vitesse maximale pour un transfert"
 
-#: src/fe-gtk/setup.c:393
+#: src/fe-gtk/setup.c:390
 msgid "One download:"
 msgstr "Par téléchargement :"
 
-#: src/fe-gtk/setup.c:395
+#: src/fe-gtk/setup.c:392
 msgid "All uploads combined:"
 msgstr "Tous les transferts combinés :"
 
-#: src/fe-gtk/setup.c:396 src/fe-gtk/setup.c:398
+#: src/fe-gtk/setup.c:393 src/fe-gtk/setup.c:395
 msgid "Maximum speed for all files"
 msgstr "Vitesse maximale pour tous les fichiers"
 
-#: src/fe-gtk/setup.c:397
+#: src/fe-gtk/setup.c:394
 msgid "All downloads combined:"
 msgstr "Tous les téléchargements combinés :"
 
-#: src/fe-gtk/setup.c:425 src/fe-gtk/setup.c:451 src/fe-gtk/setup.c:1898
+#: src/fe-gtk/setup.c:422 src/fe-gtk/setup.c:448 src/fe-gtk/setup.c:1897
 msgid "Alerts"
 msgstr "Alertes"
 
-#: src/fe-gtk/setup.c:429
+#: src/fe-gtk/setup.c:426
 msgid "Show tray balloons on:"
 msgstr "Quand montrer une fenêtre de notification :"
 
-#: src/fe-gtk/setup.c:431
+#: src/fe-gtk/setup.c:428
 msgid "Blink tray icon on:"
 msgstr "Clignoter l'icone de barre d'état"
 
-#: src/fe-gtk/setup.c:432 src/fe-gtk/setup.c:454
+#: src/fe-gtk/setup.c:429 src/fe-gtk/setup.c:451
 msgid "Blink task bar on:"
 msgstr "Quand faire clignoter la barre d'état :"
 
-#: src/fe-gtk/setup.c:433 src/fe-gtk/setup.c:455
+#: src/fe-gtk/setup.c:430 src/fe-gtk/setup.c:452
 msgid "Make a beep sound on:"
 msgstr "Quand émettre un bip : "
 
-#: src/fe-gtk/setup.c:435
+#: src/fe-gtk/setup.c:432
 msgid "Enable system tray icon"
 msgstr "Activer l'icone de barre d'état"
 
-#: src/fe-gtk/setup.c:436 src/fe-gtk/setup.c:457
+#: src/fe-gtk/setup.c:433 src/fe-gtk/setup.c:454
 msgid "Omit alerts when marked as being away"
 msgstr "Supprimer les alertes lorsque marqué absent"
 
-#: src/fe-gtk/setup.c:438 src/fe-gtk/setup.c:459
+#: src/fe-gtk/setup.c:435 src/fe-gtk/setup.c:456
 msgid "Highlighted Messages"
 msgstr "Messages en surbrillance"
 
-#: src/fe-gtk/setup.c:439 src/fe-gtk/setup.c:460
+#: src/fe-gtk/setup.c:436 src/fe-gtk/setup.c:457
 msgid ""
 "Highlighted messages are ones where your nickname is mentioned, but also:"
 msgstr "Les messages en surbrillance sont ceux où apparait votre pseudo, mais aussi :"
 
-#: src/fe-gtk/setup.c:441 src/fe-gtk/setup.c:462
+#: src/fe-gtk/setup.c:438 src/fe-gtk/setup.c:459
 msgid "Extra words to highlight:"
 msgstr "Mots déclenchant une surbrillance :"
 
-#: src/fe-gtk/setup.c:442 src/fe-gtk/setup.c:463
+#: src/fe-gtk/setup.c:439 src/fe-gtk/setup.c:460
 msgid "Nick names not to highlight:"
 msgstr "Pseudo à ne pas mettre en surbrillance :"
 
-#: src/fe-gtk/setup.c:443 src/fe-gtk/setup.c:464
+#: src/fe-gtk/setup.c:440 src/fe-gtk/setup.c:461
 msgid "Nick names to always highlight:"
 msgstr "Pseudos à toujours mettre en surbrillance :"
 
-#: src/fe-gtk/setup.c:444 src/fe-gtk/setup.c:465
+#: src/fe-gtk/setup.c:441 src/fe-gtk/setup.c:462
 msgid ""
 "Separate multiple words with commas.\n"
 "Wildcards are accepted."
 msgstr "Séparer les mots avec des virgules.\nLes jokers sont acceptés."
 
-#: src/fe-gtk/setup.c:472
+#: src/fe-gtk/setup.c:469
 msgid "Default Messages"
 msgstr "Messages par défaut"
 
-#: src/fe-gtk/setup.c:473
+#: src/fe-gtk/setup.c:470
 msgid "Quit:"
 msgstr "Quitter :"
 
-#: src/fe-gtk/setup.c:474
+#: src/fe-gtk/setup.c:471
 msgid "Leave channel:"
 msgstr "Quitter le canal :"
 
-#: src/fe-gtk/setup.c:475
+#: src/fe-gtk/setup.c:472
 msgid "Away:"
 msgstr "Absent :"
 
-#: src/fe-gtk/setup.c:477
+#: src/fe-gtk/setup.c:474
 msgid "Away"
 msgstr "Absent"
 
-#: src/fe-gtk/setup.c:478
+#: src/fe-gtk/setup.c:475
 msgid "Announce away messages"
 msgstr "Annoncer les messages d'absence"
 
-#: src/fe-gtk/setup.c:479
-msgid "Announce your away messages to all channels"
-msgstr "Annoncer vos messages d'absence sur tous les canaux"
+#: src/fe-gtk/setup.c:476
+msgid "Announce your away messages to all channels."
+msgstr ""
 
-#: src/fe-gtk/setup.c:480
+#: src/fe-gtk/setup.c:477
 msgid "Show away once"
 msgstr "N'afficher qu'une seule fois le message d'absence"
 
-#: src/fe-gtk/setup.c:480
-msgid "Show identical away messages only once"
-msgstr "N'afficher qu'une seule fois les messages de départ identiques"
+#: src/fe-gtk/setup.c:477
+msgid "Show identical away messages only once."
+msgstr ""
 
-#: src/fe-gtk/setup.c:481
+#: src/fe-gtk/setup.c:478
 msgid "Automatically unmark away"
 msgstr "Enlever la marque d'absence automatiquement"
 
-#: src/fe-gtk/setup.c:481
-msgid "Unmark yourself as away before sending messages"
-msgstr "Enlever automatiquement la marque d'absence vous concernant avant d'envoyer des messages"
+#: src/fe-gtk/setup.c:478
+msgid "Unmark yourself as away before sending messages."
+msgstr ""
 
-#: src/fe-gtk/setup.c:488 src/fe-gtk/setup.c:519
+#: src/fe-gtk/setup.c:485 src/fe-gtk/setup.c:517
 msgid "Advanced Settings"
 msgstr "Paramètres avancés"
 
-#: src/fe-gtk/setup.c:490 src/fe-gtk/setup.c:520
+#: src/fe-gtk/setup.c:487 src/fe-gtk/setup.c:518
 msgid "Alternative fonts:"
 msgstr "Polices de remplacement :"
 
-#: src/fe-gtk/setup.c:492 src/fe-gtk/setup.c:521
+#: src/fe-gtk/setup.c:489 src/fe-gtk/setup.c:519
 msgid "Auto reconnect delay:"
 msgstr "Délai de reconnexion automatique :"
 
-#: src/fe-gtk/setup.c:493 src/fe-gtk/setup.c:522
+#: src/fe-gtk/setup.c:490 src/fe-gtk/setup.c:520
 msgid "Display MODEs in raw form"
 msgstr "Afficher les MODEs sous forme brute"
 
-#: src/fe-gtk/setup.c:494 src/fe-gtk/setup.c:523
+#: src/fe-gtk/setup.c:491 src/fe-gtk/setup.c:521
 msgid "Whois on notify"
 msgstr "Whois sur les notifications"
 
-#: src/fe-gtk/setup.c:494 src/fe-gtk/setup.c:523
-msgid "Sends a /WHOIS when a user comes online in your notify list"
-msgstr "Envoyer un /WHOIS quand un utilisateur arrive en ligne dans votre liste de notification"
+#: src/fe-gtk/setup.c:491 src/fe-gtk/setup.c:521
+msgid "Sends a /WHOIS when a user comes online in your notify list."
+msgstr ""
 
-#: src/fe-gtk/setup.c:495 src/fe-gtk/setup.c:524
+#: src/fe-gtk/setup.c:492 src/fe-gtk/setup.c:522
 msgid "Hide join and part messages"
 msgstr "Cacher les messages join/part"
 
-#: src/fe-gtk/setup.c:495 src/fe-gtk/setup.c:524
-msgid "Hide channel join/part messages by default"
-msgstr "Cacher par défaut les messages join/part du canal"
+#: src/fe-gtk/setup.c:492 src/fe-gtk/setup.c:522
+msgid "Hide channel join/part messages by default."
+msgstr ""
 
-#: src/fe-gtk/setup.c:496 src/fe-gtk/setup.c:526
+#: src/fe-gtk/setup.c:493 src/fe-gtk/setup.c:524
+msgid "Display lists in compact mode"
+msgstr ""
+
+#: src/fe-gtk/setup.c:493 src/fe-gtk/setup.c:524
+msgid "Use less spacing between user list/channel tree rows."
+msgstr ""
+
+#: src/fe-gtk/setup.c:494 src/fe-gtk/setup.c:525
 msgid "Auto Open DCC Windows"
 msgstr "Ouvrir automatiquement les fenêtres DCC"
 
-#: src/fe-gtk/setup.c:497 src/fe-gtk/setup.c:527
+#: src/fe-gtk/setup.c:495 src/fe-gtk/setup.c:526
 msgid "Send window"
 msgstr "Fenêtre d'envoi"
 
-#: src/fe-gtk/setup.c:498 src/fe-gtk/setup.c:528
+#: src/fe-gtk/setup.c:496 src/fe-gtk/setup.c:527
 msgid "Receive window"
 msgstr "Fenêtre de réception"
 
-#: src/fe-gtk/setup.c:499 src/fe-gtk/setup.c:529
+#: src/fe-gtk/setup.c:497 src/fe-gtk/setup.c:528
 msgid "Chat window"
 msgstr "Fenêtre de bavardage"
 
-#: src/fe-gtk/setup.c:500 src/fe-gtk/setup.c:530
+#: src/fe-gtk/setup.c:498 src/fe-gtk/setup.c:529
 msgid "Auto Copy Behavior"
 msgstr "Comportement de la copie automatique"
 
-#: src/fe-gtk/setup.c:501 src/fe-gtk/setup.c:531
+#: src/fe-gtk/setup.c:499 src/fe-gtk/setup.c:530
 msgid "Automatically copy selected text"
 msgstr "Copier automatiquement le texte sélectionné"
 
-#: src/fe-gtk/setup.c:502 src/fe-gtk/setup.c:532
+#: src/fe-gtk/setup.c:500 src/fe-gtk/setup.c:531
 msgid ""
 "Copy selected text to clipboard when left mouse button is released. "
 "Otherwise, CONTROL-SHIFT-C will copy the selected text to the clipboard."
 msgstr "Copier le texte sélectionné vers le presse-papiers lorsque le bouton gauche de la souris est relâché. Sinon, Ctrl-Maj-C effectuera la copie du texte sélectionné vers le presse-papiers."
 
-#: src/fe-gtk/setup.c:505 src/fe-gtk/setup.c:535
+#: src/fe-gtk/setup.c:503 src/fe-gtk/setup.c:534
 msgid "Automatically include time stamps"
 msgstr "Insérer automatiquement l'horodatage"
 
-#: src/fe-gtk/setup.c:506 src/fe-gtk/setup.c:536
+#: src/fe-gtk/setup.c:504 src/fe-gtk/setup.c:535
 msgid ""
 "Automatically include time stamps in copied lines of text. Otherwise, "
 "include time stamps if the SHIFT key is held down while selecting."
 msgstr "Inclure automatiquement l'horodatage dans les lignes de texte copiées. Sinon, inclure l'horodatage si la touche Majuscules est pressées lors de la sélection."
 
-#: src/fe-gtk/setup.c:508 src/fe-gtk/setup.c:538
+#: src/fe-gtk/setup.c:506 src/fe-gtk/setup.c:537
 msgid "Automatically include color information"
 msgstr "Inclure automatiquement les informations de couleur"
 
-#: src/fe-gtk/setup.c:509 src/fe-gtk/setup.c:539
+#: src/fe-gtk/setup.c:507 src/fe-gtk/setup.c:538
 msgid ""
 "Automatically include color information in copied lines of text.  Otherwise,"
 " include color information if the CONTROL key is held down while selecting."
 msgstr "Inclure automatiquement les informations de couleur dans les lignes de texte copiées. Sinon, inclure les information de couleurs dans la touche Ctrl est pressée lors de la sélection."
 
-#: src/fe-gtk/setup.c:525
+#: src/fe-gtk/setup.c:523
 msgid "Allow only one instance of HexChat to run"
 msgstr "N'autoriser qu'une seule instance de HexChat à tourner"
 
-#: src/fe-gtk/setup.c:549 src/fe-gtk/setup.c:1900
+#: src/fe-gtk/setup.c:548 src/fe-gtk/setup.c:1899
 msgid "Logging"
 msgstr "Journalisation"
 
-#: src/fe-gtk/setup.c:550
+#: src/fe-gtk/setup.c:549
 msgid "Display scrollback from previous session"
 msgstr "Afficher l'historique de la session précédente"
 
-#: src/fe-gtk/setup.c:551
+#: src/fe-gtk/setup.c:550
 msgid "Enable logging of conversations to disk"
 msgstr "Activer l'enregistrement des conversations sur disque"
 
-#: src/fe-gtk/setup.c:552
+#: src/fe-gtk/setup.c:551
 msgid "Log filename:"
 msgstr "Nom du fichier journal :"
 
-#: src/fe-gtk/setup.c:553
+#: src/fe-gtk/setup.c:552
 #, c-format
 msgid "%s=Server %c=Channel %n=Network."
 msgstr "%s=Serveur %c=Canal %n=Réseau."
 
-#: src/fe-gtk/setup.c:556
+#: src/fe-gtk/setup.c:555
 msgid "Insert timestamps in logs"
 msgstr "Insérer l'horodatage dans les journaux"
 
-#: src/fe-gtk/setup.c:557
+#: src/fe-gtk/setup.c:556
 msgid "Log timestamp format:"
 msgstr "Format de l'horodatage du journal :"
 
-#: src/fe-gtk/setup.c:564
+#: src/fe-gtk/setup.c:563
 msgid "URLs"
 msgstr "URLs"
 
-#: src/fe-gtk/setup.c:565
+#: src/fe-gtk/setup.c:564
 msgid "Enable logging of URLs to disk"
 msgstr "Activer la journalisation des URL sur le disque"
 
-#: src/fe-gtk/setup.c:566
+#: src/fe-gtk/setup.c:565
 msgid "Enable URL grabber"
 msgstr "Activer la récupération d'URL"
 
-#: src/fe-gtk/setup.c:567
+#: src/fe-gtk/setup.c:566
 msgid "Maximum number of URLs to grab:"
 msgstr "Nombre maximum d'URL à récupérer :"
 
-#: src/fe-gtk/setup.c:574
+#: src/fe-gtk/setup.c:573
 msgid "(Disabled)"
 msgstr "(Désactivé)"
 
-#: src/fe-gtk/setup.c:575
+#: src/fe-gtk/setup.c:574
 msgid "Wingate"
 msgstr "Wingate"
 
-#: src/fe-gtk/setup.c:576
+#: src/fe-gtk/setup.c:575
 msgid "Socks4"
 msgstr "Socks4"
 
-#: src/fe-gtk/setup.c:577
+#: src/fe-gtk/setup.c:576
 msgid "Socks5"
 msgstr "Socks5"
 
-#: src/fe-gtk/setup.c:578
+#: src/fe-gtk/setup.c:577
 msgid "HTTP"
 msgstr "HTTP"
 
-#: src/fe-gtk/setup.c:580
+#: src/fe-gtk/setup.c:579
 msgid "MS Proxy (ISA)"
 msgstr "Proxy MS (ISA)"
 
-#: src/fe-gtk/setup.c:583
+#: src/fe-gtk/setup.c:582
 msgid "Auto"
 msgstr "Auto"
 
-#: src/fe-gtk/setup.c:590
+#: src/fe-gtk/setup.c:589
 msgid "All Connections"
 msgstr "Toutes les connexions"
 
-#: src/fe-gtk/setup.c:591
+#: src/fe-gtk/setup.c:590
 msgid "IRC Server Only"
 msgstr "Serveur IRC uniquement"
 
-#: src/fe-gtk/setup.c:592
+#: src/fe-gtk/setup.c:591
 msgid "DCC Get Only"
 msgstr "« DCC Get » uniquement"
 
-#: src/fe-gtk/setup.c:598
+#: src/fe-gtk/setup.c:597
 msgid "Your Address"
 msgstr "Votre adresse"
 
-#: src/fe-gtk/setup.c:599
+#: src/fe-gtk/setup.c:598
 msgid "Bind to:"
 msgstr "Lier à :"
 
-#: src/fe-gtk/setup.c:600
+#: src/fe-gtk/setup.c:599
 msgid "Only useful for computers with multiple addresses."
 msgstr "N'est utile que pour les ordinateurs ayant plusieurs adresses."
 
-#: src/fe-gtk/setup.c:602
+#: src/fe-gtk/setup.c:601
 msgid "Proxy Server"
 msgstr "Serveur mandataire (proxy)"
 
-#: src/fe-gtk/setup.c:603
+#: src/fe-gtk/setup.c:602
 msgid "Hostname:"
 msgstr "Nom d'hôte :"
 
-#: src/fe-gtk/setup.c:604
+#: src/fe-gtk/setup.c:603
 msgid "Port:"
 msgstr "Port :"
 
-#: src/fe-gtk/setup.c:605
+#: src/fe-gtk/setup.c:604
 msgid "Type:"
 msgstr "Type :"
 
-#: src/fe-gtk/setup.c:606
+#: src/fe-gtk/setup.c:605
 msgid "Use proxy for:"
 msgstr "Utiliser le serveur mandataire (proxy) pour :"
 
-#: src/fe-gtk/setup.c:608
+#: src/fe-gtk/setup.c:607
 msgid "Proxy Authentication"
 msgstr "Authentification par le proxy"
 
-#: src/fe-gtk/setup.c:610
+#: src/fe-gtk/setup.c:609
 msgid "Use Authentication (MS Proxy, HTTP or Socks5 only)"
 msgstr "Utiliser l'authentification (Proxy MS, HTTP ou Socks5 uniquement)"
 
-#: src/fe-gtk/setup.c:612
+#: src/fe-gtk/setup.c:611
 msgid "Use Authentication (HTTP or Socks5 only)"
 msgstr "Utiliser l'authentification (HTTP ou Socks5 uniquement)"
 
-#: src/fe-gtk/setup.c:614
+#: src/fe-gtk/setup.c:613
 msgid "Username:"
 msgstr "Nom d'utilisateur :"
 
-#: src/fe-gtk/setup.c:615
+#: src/fe-gtk/setup.c:614
 msgid "Password:"
 msgstr "Mot de passe :"
 
-#: src/fe-gtk/setup.c:1046
+#: src/fe-gtk/setup.c:1045
 msgid "Select an Image File"
 msgstr "Sélectionner une image"
 
-#: src/fe-gtk/setup.c:1081
+#: src/fe-gtk/setup.c:1080
 msgid "Select Download Folder"
 msgstr "Choisir le dossier pour le réception de fichiers"
 
-#: src/fe-gtk/setup.c:1090
+#: src/fe-gtk/setup.c:1089
 msgid "Select font"
 msgstr "Choisir une police"
 
-#: src/fe-gtk/setup.c:1190
+#: src/fe-gtk/setup.c:1189
 msgid "Browse..."
 msgstr "Parcourir..."
 
-#: src/fe-gtk/setup.c:1328
+#: src/fe-gtk/setup.c:1327
 msgid "Mark identified users with:"
 msgstr "Marquer les utilisateurs identifiés par :"
 
-#: src/fe-gtk/setup.c:1330
+#: src/fe-gtk/setup.c:1329
 msgid "Mark not-identified users with:"
 msgstr "Marquer les utilisateurs non identifiés par :"
 
-#: src/fe-gtk/setup.c:1337
+#: src/fe-gtk/setup.c:1336
 msgid "Open Data Folder"
 msgstr "Ouvrir le dossier des données"
 
-#: src/fe-gtk/setup.c:1391
+#: src/fe-gtk/setup.c:1390
 msgid "Select color"
 msgstr "Choisir la couleur"
 
-#: src/fe-gtk/setup.c:1471
+#: src/fe-gtk/setup.c:1470
 msgid "Text Colors"
 msgstr "Couleurs du texte"
 
-#: src/fe-gtk/setup.c:1473
+#: src/fe-gtk/setup.c:1472
 msgid "mIRC colors:"
 msgstr "Couleurs mIRC :"
 
-#: src/fe-gtk/setup.c:1481
+#: src/fe-gtk/setup.c:1480
 msgid "Local colors:"
 msgstr "Couleurs locales :"
 
-#: src/fe-gtk/setup.c:1489 src/fe-gtk/setup.c:1494
+#: src/fe-gtk/setup.c:1488 src/fe-gtk/setup.c:1493
 msgid "Foreground:"
 msgstr "Premier plan :"
 
-#: src/fe-gtk/setup.c:1490 src/fe-gtk/setup.c:1495
+#: src/fe-gtk/setup.c:1489 src/fe-gtk/setup.c:1494
 msgid "Background:"
 msgstr "Arrière-plan :"
 
-#: src/fe-gtk/setup.c:1492
+#: src/fe-gtk/setup.c:1491
 msgid "Selected Text"
 msgstr ""
 
-#: src/fe-gtk/setup.c:1497
+#: src/fe-gtk/setup.c:1496
 msgid "Interface Colors"
 msgstr "Couleurs de l'interface"
 
-#: src/fe-gtk/setup.c:1499
+#: src/fe-gtk/setup.c:1498
 msgid "New data:"
 msgstr "Nouvelles données :"
 
-#: src/fe-gtk/setup.c:1500
+#: src/fe-gtk/setup.c:1499
 msgid "Marker line:"
 msgstr "Ligne de repérage :"
 
-#: src/fe-gtk/setup.c:1501
+#: src/fe-gtk/setup.c:1500
 msgid "New message:"
 msgstr "Nouveau message :"
 
-#: src/fe-gtk/setup.c:1502
+#: src/fe-gtk/setup.c:1501
 msgid "Away user:"
 msgstr "Utilisateur absent :"
 
-#: src/fe-gtk/setup.c:1503
+#: src/fe-gtk/setup.c:1502
 msgid "Highlight:"
 msgstr "Surbrillance :"
 
-#: src/fe-gtk/setup.c:1505
+#: src/fe-gtk/setup.c:1504
 msgid "Spell checker:"
 msgstr "Vérificateur orthographique :"
 
-#: src/fe-gtk/setup.c:1508
+#: src/fe-gtk/setup.c:1507
 msgid "Color Stripping"
 msgstr "Suppression de la colorisation"
 
-#: src/fe-gtk/setup.c:1614 src/fe-gtk/textgui.c:389
+#: src/fe-gtk/setup.c:1613 src/fe-gtk/textgui.c:389
 msgid "Event"
 msgstr "Événement"
 
-#: src/fe-gtk/setup.c:1620
+#: src/fe-gtk/setup.c:1619
 msgid "Sound file"
 msgstr "Fichier son"
 
-#: src/fe-gtk/setup.c:1655
+#: src/fe-gtk/setup.c:1654
 msgid "Select a sound file"
 msgstr "Sélectionner un fichier son"
 
-#: src/fe-gtk/setup.c:1727
+#: src/fe-gtk/setup.c:1726
 msgid "Sound playing method:"
 msgstr "Méthode pour reproduire les sons :"
 
-#: src/fe-gtk/setup.c:1735
+#: src/fe-gtk/setup.c:1734
 msgid "External sound playing _program:"
 msgstr "Programme de reproduction externe :"
 
-#: src/fe-gtk/setup.c:1753
+#: src/fe-gtk/setup.c:1752
 msgid "_External program"
 msgstr "Programme _externe"
 
-#: src/fe-gtk/setup.c:1763
+#: src/fe-gtk/setup.c:1762
 msgid "_Automatic"
 msgstr "_Automatique"
 
-#: src/fe-gtk/setup.c:1776
+#: src/fe-gtk/setup.c:1775
 msgid "Sound files _directory:"
 msgstr "_Répertoire des fichiers son :"
 
-#: src/fe-gtk/setup.c:1815
+#: src/fe-gtk/setup.c:1814
 msgid "Sound file:"
 msgstr "Fichier son :"
 
-#: src/fe-gtk/setup.c:1830
+#: src/fe-gtk/setup.c:1829
 msgid "_Browse..."
 msgstr "_Parcourir..."
 
-#: src/fe-gtk/setup.c:1841
+#: src/fe-gtk/setup.c:1840
 msgid "_Play"
 msgstr "_Jouer"
 
-#: src/fe-gtk/setup.c:1890
+#: src/fe-gtk/setup.c:1889
 msgid "Interface"
 msgstr "Interface"
 
-#: src/fe-gtk/setup.c:1891
+#: src/fe-gtk/setup.c:1890
 msgid "Appearance"
 msgstr ""
 
-#: src/fe-gtk/setup.c:1892
+#: src/fe-gtk/setup.c:1891
 msgid "Input box"
 msgstr "Boîte de saisie"
 
-#: src/fe-gtk/setup.c:1893
+#: src/fe-gtk/setup.c:1892
 msgid "User list"
 msgstr "Liste des utilisateurs"
 
-#: src/fe-gtk/setup.c:1894
+#: src/fe-gtk/setup.c:1893
 msgid "Channel switcher"
 msgstr "Liste des canaux"
 
-#: src/fe-gtk/setup.c:1895
+#: src/fe-gtk/setup.c:1894
 msgid "Colors"
 msgstr "Couleurs"
 
-#: src/fe-gtk/setup.c:1897
+#: src/fe-gtk/setup.c:1896
 msgid "Chatting"
 msgstr "Bavardage"
 
-#: src/fe-gtk/setup.c:1901
+#: src/fe-gtk/setup.c:1900
 msgid "Sound"
 msgstr "Son"
 
-#: src/fe-gtk/setup.c:1902
+#: src/fe-gtk/setup.c:1901
 msgid "Advanced"
 msgstr "Avancés"
 
-#: src/fe-gtk/setup.c:1905
+#: src/fe-gtk/setup.c:1904
 msgid "Network setup"
 msgstr "Réglages relatifs au réseau"
 
-#: src/fe-gtk/setup.c:1906
+#: src/fe-gtk/setup.c:1905
 msgid "File transfers"
 msgstr "Transferts de fichiers"
 
-#: src/fe-gtk/setup.c:2037
+#: src/fe-gtk/setup.c:2036
 msgid "Categories"
 msgstr "Catégories"
 
-#: src/fe-gtk/setup.c:2240
+#: src/fe-gtk/setup.c:2243
 msgid ""
 "You cannot place the tree on the top or bottom!\n"
 "Please change to the <b>Tabs</b> layout in the <b>View</b> menu first."
 msgstr "Vous ne pouvez pas placer l'arbre en haut ou en bas !\nMerci de passer en mode <b>Onglets</b> dans le menu <b>Vue</b> d'abord."
 
-#: src/fe-gtk/setup.c:2267
+#: src/fe-gtk/setup.c:2270
 msgid "Invalid time stamp format! See the strftime MSDN article for details."
 msgstr "Format de l'horodatage non valable ! Voir l'article strftime MSDN pour davantage d'informations."
 
-#: src/fe-gtk/setup.c:2274
+#: src/fe-gtk/setup.c:2277
 msgid "Some settings were changed that require a restart to take full effect."
 msgstr "Certains réglages qui ont été modifiés nécessitent un redémarrage afin d'être effectifs."
 
-#: src/fe-gtk/setup.c:2282
+#: src/fe-gtk/setup.c:2285
 msgid ""
 "*WARNING*\n"
 "Auto accepting DCC to your home directory\n"
@@ -5708,7 +5724,7 @@ msgid ""
 "Someone could send you a .bash_profile"
 msgstr "*ATTENTION*\nAccepter automatiquement les DCC dans votre répertoire personnel\npeut être dangereux et peut être exploité. Par exemple :\nquelqu'un pourrait vous envoyer un .bash_profile"
 
-#: src/fe-gtk/setup.c:2315
+#: src/fe-gtk/setup.c:2318
 msgid ": Preferences"
 msgstr "XChat : préférences"
 
