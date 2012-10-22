@@ -364,10 +364,10 @@ flood_check (char *nick, char *ip, server *serv, session *sess, int what)	/*0=ct
 			serv->ctcp_counter++;
 		} else
 		{
-			if (difftime (current_time, serv->ctcp_last_time) < prefs.ctcp_time_limit)	/*if we got the ctcp in the seconds limit */
+			if (difftime (current_time, serv->ctcp_last_time) < prefs.hex_flood_ctcp_time)	/*if we got the ctcp in the seconds limit */
 			{
 				serv->ctcp_counter++;
-				if (serv->ctcp_counter == prefs.ctcp_number_limit)	/*if we reached the maximun numbers of ctcp in the seconds limits */
+				if (serv->ctcp_counter == prefs.hex_flood_ctcp_num)	/*if we reached the maximun numbers of ctcp in the seconds limits */
 				{
 					serv->ctcp_last_time = current_time;	/*we got the flood, restore all the vars for next one */
 					serv->ctcp_counter = 0;
@@ -398,10 +398,10 @@ flood_check (char *nick, char *ip, server *serv, session *sess, int what)	/*0=ct
 		} else
 		{
 			if (difftime (current_time, serv->msg_last_time) <
-				 prefs.msg_time_limit)
+				 prefs.hex_flood_msg_time)
 			{
 				serv->msg_counter++;
-				if (serv->msg_counter == prefs.msg_number_limit)	/*if we reached the maximun numbers of ctcp in the seconds limits */
+				if (serv->msg_counter == prefs.hex_flood_msg_time)	/*if we reached the maximun numbers of ctcp in the seconds limits */
 				{
 					snprintf (buf, sizeof (buf),
 					 _("You are being MSG flooded from %s, setting gui_auto_open_dialog OFF.\n"),

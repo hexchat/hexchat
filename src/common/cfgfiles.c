@@ -430,10 +430,10 @@ const struct prefs vars[] =
 
 	{"dnsprogram", P_OFFSET (hex_dnsprogram), TYPE_STR},
 
-	{"flood_ctcp_num", P_OFFINT (ctcp_number_limit), TYPE_INT},
-	{"flood_ctcp_time", P_OFFINT (ctcp_time_limit), TYPE_INT},
-	{"flood_msg_num", P_OFFINT (msg_number_limit), TYPE_INT},
-	{"flood_msg_time", P_OFFINT (msg_time_limit), TYPE_INT},
+	{"flood_ctcp_num", P_OFFINT (hex_flood_ctcp_num), TYPE_INT},
+	{"flood_ctcp_time", P_OFFINT (hex_flood_ctcp_time), TYPE_INT},
+	{"flood_msg_num", P_OFFINT (hex_flood_msg_time), TYPE_INT},
+	{"flood_msg_time", P_OFFINT (hex_flood_msg_time), TYPE_INT},
 
 	{"gui_auto_open_chat", P_OFFINT (autoopendccchatwindow), TYPE_BOOL},
 	{"gui_auto_open_dialog", P_OFFINT (autodialog), TYPE_BOOL},
@@ -713,10 +713,10 @@ load_config (void)
 	prefs.show_separator = 1;
 	prefs.hex_dcc_blocksize = 1024;
 	prefs.throttle = 1;
-	 /*FIXME*/ prefs.msg_time_limit = 30;
-	prefs.msg_number_limit = 5;
-	prefs.ctcp_time_limit = 30;
-	prefs.ctcp_number_limit = 5;
+	 /*FIXME*/ prefs.hex_flood_msg_time = 30;
+	prefs.hex_flood_msg_time = 5;
+	prefs.hex_flood_ctcp_time = 30;
+	prefs.hex_flood_ctcp_num = 5;
 	prefs.topicbar = 1;
 	prefs.lagometer = 1;
 	prefs.throttlemeter = 1;

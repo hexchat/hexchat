@@ -128,6 +128,10 @@ struct hexchatprefs
 	int hex_dcc_port_last;
 	int hex_dcc_stall_timeout;
 	int hex_dcc_timeout;
+	int hex_flood_ctcp_num;		/*flood */
+	int hex_flood_ctcp_time;	/*seconds of floods */
+	int hex_flood_msg_num;		/*same deal */
+	int hex_flood_msg_time;
 
 	unsigned int hex_away_auto_unmark;
 	unsigned int hex_away_omit_alerts;
@@ -315,12 +319,6 @@ struct hexchatprefs
 	unsigned int utf8_locale;
 	unsigned int identd;
 	unsigned int gui_one_instance;
-
-	unsigned int ctcp_number_limit;	/*flood */
-	unsigned int ctcp_time_limit;	/*seconds of floods */
-
-	unsigned int msg_number_limit;	/*same deal */
-	unsigned int msg_time_limit;
 
 	unsigned int url_grabber;
 	unsigned int url_grabber_limit;
