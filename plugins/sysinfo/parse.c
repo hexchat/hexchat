@@ -375,7 +375,7 @@ int xs_parse_distro(char *name)
 	FILE *fp = NULL;
 	char buffer[bsize], *pos = NULL;
 	
-	if((fp = fopen("/etc/lsb_release", "r")) != NULL)
+	if((fp = fopen("/etc/lsb-release", "r")) != NULL)
 	{
 		char id[bsize], codename[bsize], release[bsize];
 		strcpy(id, "?");
