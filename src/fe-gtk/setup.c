@@ -524,6 +524,7 @@ static const setting advanced_settings_oneinstance[] =
 	{ST_TOGGLE,	N_("Whois on notify"), P_OFFINTNL(hex_notify_whois_online), N_("Sends a /WHOIS when a user comes online in your notify list"), 0, 0},
 	{ST_TOGGLE,	N_("Hide join and part messages"), P_OFFINTNL(hex_irc_conf_mode), N_("Hide channel join/part messages by default"), 0, 0},
 	{ST_TOGGLE,	N_("Allow only one instance of HexChat to run"), P_OFFINTNL(hex_gui_single), 0, 0, 0},
+	{ST_TOGGLE,	N_("Display lists in compact mode"), P_OFFINTNL(hex_gui_compact), N_("Use less spacing between user list/channel tree rows"), 0, 0},
 	{ST_HEADER,	N_("Auto Open DCC Windows"),0,0,0},
 	{ST_TOGGLE, N_("Send window"), P_OFFINTNL(hex_gui_autoopen_send), 0, 0, 0},
 	{ST_TOGGLE, N_("Receive window"), P_OFFINTNL(hex_gui_autoopen_recv), 0, 0, 0},
