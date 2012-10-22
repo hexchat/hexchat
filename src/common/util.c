@@ -254,10 +254,7 @@ file_part (char *file)
 		{
 		case 0:
 			return (filepart);
-		case '/':
-#ifdef WIN32
-		case '\\':
-#endif
+		case G_DIR_SEPARATOR:
 			filepart = file + 1;
 			break;
 		}
