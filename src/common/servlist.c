@@ -984,8 +984,8 @@ servlist_load_defaults (void)
 				free (net->encoding);
 				net->encoding = strdup (def[i].charset);
 			}
-			/* 0x8e1b96f7 = ChatJunkies, 0xa82686ae = FreeNode */
-			if (g_str_hash (def[i].network) == 0xa82686ae)
+			/* 0x8e1b96f7 = ChatJunkies, 0xa45aae6e = freenode */
+			if (g_str_hash (def[i].network) == 0xa45aae6e)
 				prefs.hex_gui_slist_select = j;
 			j++;
 		} else
