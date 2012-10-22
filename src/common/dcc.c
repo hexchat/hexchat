@@ -57,6 +57,8 @@
 #include "url.h"
 #include "xchatc.h"
 
+#include <glib/gstdio.h>
+
 #ifdef USE_DCC64
 #define BIG_STR_TO_INT(x) strtoull(x,NULL,10)
 #ifdef WIN32
@@ -691,12 +693,12 @@ dcc_read (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 
 		if (dcc->resumable)
 		{
-			dcc->fp = open (dcc->destfile_fs, O_WRONLY | O_APPEND | OFLAGS);
+			dcc->fp = g_open (dcc->destfile_fs, O_WRONLY | O_APPEND | OFLAGS, 0);
 			dcc->pos = dcc->resumable;
 			dcc->ack = dcc->resumable;
 		} else
 		{
-			if (access (dcc->destfile_fs, F_OK) == 0)
+			if (g_access (dcc->destfile_fs, F_OK) == 0)
 			{
 				n = 0;
 				do
@@ -717,7 +719,7 @@ dcc_read (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 				g_free (old);
 			}
 			dcc->fp =
-				open (dcc->destfile_fs, OFLAGS | O_TRUNC | O_WRONLY | O_CREAT,
+				g_open (dcc->destfile_fs, OFLAGS | O_TRUNC | O_WRONLY | O_CREAT,
 						prefs.hex_dcc_permissions);
 		}
 	}
@@ -1835,7 +1837,7 @@ dcc_send (struct session *sess, char *to, char *file, int maxcps, int passive)
 		dcc->dccstat = STAT_QUEUED;
 		dcc->size = st.st_size;
 		dcc->type = TYPE_SEND;
-		dcc->fp = open (file_fs, OFLAGS | O_RDONLY);
+		dcc->fp = g_open (file_fs, OFLAGS | O_RDONLY, 0);
 		if (dcc->fp != -1)
 		{
 			g_free (file_fs);
@@ -2015,11 +2017,11 @@ is_resumable (struct DCC *dcc)
 	dcc->resumable = 0;
 
 	/* Check the file size */
-	if (access (dcc->destfile_fs, W_OK) == 0)
+	if (g_access (dcc->destfile_fs, W_OK) == 0)
 	{
 		struct stat st;
 
-		if (stat (dcc->destfile_fs, &st) != -1)
+		if (g_stat (dcc->destfile_fs, &st) != -1)
 		{
 			if (st.st_size < dcc->size)
 			{
