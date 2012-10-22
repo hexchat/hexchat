@@ -2591,7 +2591,7 @@ mg_create_center (session *sess, session_gui *gui, GtkWidget *box)
 	/* sep between xtext and right side */
 	gui->hpane_right = gtk_hpaned_new ();
 
-	if (prefs.gui_tweaks & 4)
+	if (prefs.gui_win_swap)
 	{
 		gtk_paned_pack2 (GTK_PANED (gui->hpane_left), gui->vpane_left, FALSE, TRUE);
 		gtk_paned_pack1 (GTK_PANED (gui->hpane_left), gui->hpane_right, TRUE, TRUE);
