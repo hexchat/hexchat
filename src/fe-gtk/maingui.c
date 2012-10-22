@@ -3046,7 +3046,7 @@ mg_create_topwindow (session *sess)
 	if (!prefs.hex_gui_ulist_buttons)
 		gtk_widget_hide (sess->gui->button_box);
 
-	if (prefs.hex_gui_input_nick)
+	if (!prefs.hex_gui_input_nick)
 		gtk_widget_hide (sess->gui->nick_box);
 
 	mg_decide_userlist (sess, FALSE);
@@ -3149,7 +3149,7 @@ mg_create_tabwindow (session *sess)
 	if (!prefs.hex_gui_ulist_buttons)
 		gtk_widget_hide (sess->gui->button_box);
 
-	if (prefs.hex_gui_input_nick)
+	if (!prefs.hex_gui_input_nick)
 		gtk_widget_hide (sess->gui->nick_box);
 
 	mg_place_userlist_and_chanview (sess->gui);

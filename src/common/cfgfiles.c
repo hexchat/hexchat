@@ -715,6 +715,7 @@ load_config (void)
 	prefs.hex_flood_msg_time = 5;
 	prefs.hex_flood_ctcp_time = 30;
 	prefs.hex_flood_ctcp_num = 5;
+	prefs.hex_gui_input_nick = 1;
 	prefs.hex_gui_topicbar = 1;
 	prefs.hex_gui_lagometer = 1;
 	prefs.hex_gui_throttlemeter = 1;
