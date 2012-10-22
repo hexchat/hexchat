@@ -164,7 +164,7 @@ static const setting appearance_settings[] =
 	{ST_MENU,   N_("Language:"), P_OFFINTNL(hex_gui_lang), 0, langsmenu, 0},
 	{ST_EFONT,  N_("Main font:"), P_OFFSETNL(hex_text_font_main), 0, 0, sizeof prefs.hex_text_font_main},
 #else
-	{ST_EFONT,  N_("Font:"), P_OFFSETNL(font_normal), 0, 0, sizeof prefs.hex_text_font},
+	{ST_EFONT,  N_("Font:"), P_OFFSETNL(hex_text_font), 0, 0, sizeof prefs.hex_text_font},
 #endif
 
 	{ST_HEADER,	N_("Title Bar"),0,0,0},
