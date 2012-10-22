@@ -390,8 +390,7 @@ dcc_close (struct DCC *dcc, int dccstat, int destroy)
 			/* completed file to the completed directory */
 			if(dcc->type == TYPE_RECV)
 			{			
-				/* mgl: change this to use destfile_fs for correctness and to */
-				/* handle the case where hex_dcc_save_nick is set */
+				/* mgl: change this to handle the case where dccwithnick is set */
 				move_file_utf8 (prefs.hex_dcc_dir, prefs.hex_dcc_completed_dir, 
 									 file_part (dcc->destfile), prefs.hex_dcc_permissions);
 			}
@@ -416,8 +415,6 @@ dcc_close (struct DCC *dcc, int dccstat, int destroy)
 			free (dcc->file);
 		if (dcc->destfile)
 			g_free (dcc->destfile);
-		if (dcc->destfile_fs)
-			g_free (dcc->destfile_fs);
 		free (dcc->nick);
 		free (dcc);
 		return;
@@ -693,33 +690,30 @@ dcc_read (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 
 		if (dcc->resumable)
 		{
-			dcc->fp = g_open (dcc->destfile_fs, O_WRONLY | O_APPEND | OFLAGS, 0);
+			dcc->fp = g_open (dcc->destfile, O_WRONLY | O_APPEND | OFLAGS, 0);
 			dcc->pos = dcc->resumable;
 			dcc->ack = dcc->resumable;
 		} else
 		{
-			if (g_access (dcc->destfile_fs, F_OK) == 0)
+			if (g_access (dcc->destfile, F_OK) == 0)
 			{
 				n = 0;
 				do
 				{
 					n++;
-					snprintf (buf, sizeof (buf), "%s.%d", dcc->destfile_fs, n);
+					snprintf (buf, sizeof (buf), "%s.%d", dcc->destfile, n);
 				}
 				while (access (buf, F_OK) == 0);
 
-				g_free (dcc->destfile_fs);
-				dcc->destfile_fs = g_strdup (buf);
-
 				old = dcc->destfile;
-				dcc->destfile = xchat_filename_to_utf8 (buf, -1, 0, 0, 0);
+				dcc->destfile = g_strdup (buf);
 
 				EMIT_SIGNAL (XP_TE_DCCRENAME, dcc->serv->front_session,
 								 old, dcc->destfile, NULL, NULL, 0);
 				g_free (old);
 			}
 			dcc->fp =
-				g_open (dcc->destfile_fs, OFLAGS | O_TRUNC | O_WRONLY | O_CREAT,
+				g_open (dcc->destfile, OFLAGS | O_TRUNC | O_WRONLY | O_CREAT,
 						prefs.hex_dcc_permissions);
 		}
 	}
@@ -1985,7 +1979,7 @@ static int
 is_same_file (struct DCC *dcc, struct DCC *new_dcc)
 {
 #ifndef WIN32
-	struct stat st_a, st_b;
+	GStatBuf st_a, st_b;
 #endif
 
 	/* if it's the same filename, must be same */
@@ -1997,9 +1991,9 @@ is_same_file (struct DCC *dcc, struct DCC *new_dcc)
 	/* warning no win32 implementation - behaviour may be unreliable */
 #else
 	/* this fstat() shouldn't really fail */
-	if ((dcc->fp == -1 ? stat (dcc->destfile_fs, &st_a) : fstat (dcc->fp, &st_a)) == -1)
+	if ((dcc->fp == -1 ? g_stat (dcc->destfile, &st_a) : fstat (dcc->fp, &st_a)) == -1)
 		return FALSE;
-	if (stat (new_dcc->destfile_fs, &st_b) == -1)
+	if (g_stat (new_dcc->destfile, &st_b) == -1)
 		return FALSE;
 
 	/* same inode, same device, same file! */
@@ -2017,11 +2011,11 @@ is_resumable (struct DCC *dcc)
 	dcc->resumable = 0;
 
 	/* Check the file size */
-	if (g_access (dcc->destfile_fs, W_OK) == 0)
+	if (g_access (dcc->destfile, W_OK) == 0)
 	{
-		struct stat st;
+		GStatBuf st;
 
-		if (g_stat (dcc->destfile_fs, &st) != -1)
+		if (g_stat (dcc->destfile, &st) != -1)
 		{
 			if (st.st_size < dcc->size)
 			{
@@ -2103,10 +2097,6 @@ dcc_get_with_destfile (struct DCC *dcc, char *file)
 {
 	g_free (dcc->destfile);
 	dcc->destfile = g_strdup (file);	/* utf-8 */
-
-	/* get the local filesystem encoding */
-	g_free (dcc->destfile_fs);
-	dcc->destfile_fs = xchat_filename_from_utf8 (dcc->destfile, -1, 0, 0, 0);
 
 	/* since destfile changed, must check resumability again */
 	is_resumable (dcc);
@@ -2358,9 +2348,6 @@ dcc_add_file (session *sess, char *file, DCC_SIZE size, int port, char *nick, gu
 			strcat (dcc->destfile, ".");
 		}
 		strcat (dcc->destfile, file);
-
-		/* get the local filesystem encoding */
-		dcc->destfile_fs = xchat_filename_from_utf8 (dcc->destfile, -1, 0, 0, 0);
 
 		dcc->resumable = 0;
 		dcc->pos = 0;
