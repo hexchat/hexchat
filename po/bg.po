@@ -3,29 +3,30 @@
 # 
 # Translators:
 # Rostislav Raykov <zbrox@i-space.org>, 2005.
+#   <shibam@v-gz.cz.cc>, 2012.
 msgid ""
 msgstr ""
 "Project-Id-Version: HexChat\n"
 "Report-Msgid-Bugs-To: www.hexchat.org\n"
-"POT-Creation-Date: 2012-10-20 20:30+0200\n"
-"PO-Revision-Date: 2012-10-20 18:32+0000\n"
+"POT-Creation-Date: 2012-10-22 17:37+0200\n"
+"PO-Revision-Date: 2012-10-22 15:40+0000\n"
 "Last-Translator: bviktor <bviktor@hexchat.org>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language-Team: Bulgarian (http://www.transifex.com/projects/p/hexchat/language/bg/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: bg\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: src/common/cfgfiles.c:785
+#: src/common/cfgfiles.c:778
 msgid "I'm busy"
 msgstr "Зает съм"
 
-#: src/common/cfgfiles.c:786
+#: src/common/cfgfiles.c:779
 msgid "Leaving"
 msgstr "Напускам"
 
-#: src/common/cfgfiles.c:837
+#: src/common/cfgfiles.c:828
 msgid ""
 "* Running IRC as root is stupid! You should\n"
 "  create a User Account and use that to login.\n"
@@ -66,10 +67,10 @@ msgstr "Няма достъп до %s\n"
 msgid "Error"
 msgstr "Грешка"
 
-#: src/common/dcc.c:2383
+#: src/common/dcc.c:2379
 #, c-format
 msgid "%s is offering \"%s\". Do you want to accept?"
-msgstr ""
+msgstr "%s ви предлага \"%s\". Приемате ли?"
 
 #: src/common/dcc.c:2594
 msgid "No active DCCs\n"
@@ -118,21 +119,21 @@ msgstr "Не сте свързани. Опитайте с /server <хост> [<�
 #: src/common/outbound.c:281
 #, c-format
 msgid "Server %s already exists on network %s.\n"
-msgstr ""
+msgstr "Сървърът %s вече съществува в мрежата %s.\n"
 
 #: src/common/outbound.c:287
 #, c-format
 msgid "Added server %s to network %s.\n"
-msgstr ""
+msgstr "Добавен сървър %s към мрежа %s.\n"
 
 #: src/common/outbound.c:373
 #, c-format
 msgid "Already marked away: %s\n"
-msgstr ""
+msgstr "Вече сте маркиран като отсъстващ: %s\n"
 
 #: src/common/outbound.c:446
 msgid "Already marked back.\n"
-msgstr ""
+msgstr "Вече сте маркиран като завърнал.\n"
 
 #: src/common/outbound.c:1812
 msgid "I need /bin/sh to run!\n"
@@ -140,19 +141,19 @@ msgstr "Нужен е /bin/sh, за да се изпълни!\n"
 
 #: src/common/outbound.c:2181
 msgid "Commands Available:"
-msgstr ""
+msgstr "Налични команди:"
 
 #: src/common/outbound.c:2195
 msgid "User defined commands:"
-msgstr ""
+msgstr "Дефинирани команди от потребителя:"
 
 #: src/common/outbound.c:2211
 msgid "Plugin defined commands:"
-msgstr ""
+msgstr "Дефинирани команди от добавки:"
 
 #: src/common/outbound.c:2222
 msgid "Type /HELP <command> for more information, or /HELP -l"
-msgstr ""
+msgstr "Напишете /HELP <команда> за повече информация, или /HELP -l"
 
 #: src/common/outbound.c:2306
 #, c-format
@@ -195,7 +196,7 @@ msgstr "AWAY [<причина>], включва режим \"Отсъствам\
 
 #: src/common/outbound.c:3563
 msgid "BACK, sets you back (not away)"
-msgstr ""
+msgstr "BACK, маркира ви като завърнал (не отсъстващ)"
 
 #: src/common/outbound.c:3565
 msgid ""
@@ -283,7 +284,7 @@ msgstr ""
 
 #: src/common/outbound.c:3599
 msgid "ECHO <text>, Prints text locally"
-msgstr ""
+msgstr "ECHO <текст>, Принтира текст в прозореца"
 
 #: src/common/outbound.c:3602
 msgid ""
@@ -323,11 +324,11 @@ msgstr ""
 
 #: src/common/outbound.c:3625
 msgid "HOP <nick>, gives chanhalf-op status to the nick (needs chanop)"
-msgstr ""
+msgstr "HOP <ник>, давате half-op статус на ник (нужен е op статус)"
 
 #: src/common/outbound.c:3626
 msgid "ID <password>, identifies yourself to nickserv"
-msgstr ""
+msgstr "ID <парола>, идентифицира Ви към nickserv"
 
 #: src/common/outbound.c:3628
 msgid ""
@@ -413,7 +414,7 @@ msgstr ""
 
 #: src/common/outbound.c:3672
 msgid "NEWSERVER [-noconnect] <hostname> [<port>]"
-msgstr ""
+msgstr "NEWSERVER [-noconnect] <хост/IP> [<порт>]"
 
 #: src/common/outbound.c:3673
 msgid "NICK <nickname>, sets your nick"
@@ -446,7 +447,7 @@ msgstr "PING <прякор | стая>, CTCP пинг към прякор или
 
 #: src/common/outbound.c:3686
 msgid "QUERY [-nofocus] <nick>, opens up a new privmsg window to someone"
-msgstr ""
+msgstr "QUERY [-nofocus] <ник>, отваря прозорец за лични съобщения с някой."
 
 #: src/common/outbound.c:3688
 msgid "QUIT [<reason>], disconnects from the current server"
@@ -482,7 +483,7 @@ msgstr "SAY <текст>, праща текста към обекта в тек�
 
 #: src/common/outbound.c:3702
 msgid "SEND <nick> [<file>]"
-msgstr ""
+msgstr "SEND <ник> [<файл>]"
 
 #: src/common/outbound.c:3705
 msgid "SERVCHAN [-ssl] <host> <port> <channel>, connects and joins a channel"
@@ -1187,13 +1188,13 @@ msgid "Nick of person who changed the topic"
 msgstr "Прякорът на човека, който смени темата"
 
 #: src/common/text.c:1178 src/common/text.c:1184 src/fe-gtk/chanlist.c:788
-#: src/fe-gtk/chanlist.c:891 src/fe-gtk/setup.c:348
+#: src/fe-gtk/chanlist.c:891 src/fe-gtk/setup.c:360
 msgid "Topic"
 msgstr "Тема"
 
 #: src/common/text.c:1179 src/common/text.c:1183 src/common/text.c:1620
 #: src/fe-gtk/chanlist.c:786 src/fe-gtk/ignoregui.c:174
-#: src/fe-gtk/servlistgui.c:891
+#: src/fe-gtk/servlistgui.c:892
 msgid "Channel"
 msgstr "Стая"
 
@@ -1438,7 +1439,8 @@ msgid "Channel Name"
 msgstr "Име на стаята"
 
 #: src/common/text.c:1414 src/common/text.c:1420 src/common/text.c:1578
-#: src/fe-gtk/menu.c:1460 src/fe-gtk/menu.c:1648 src/fe-gtk/textgui.c:390
+#: src/fe-gtk/menu.c:1460 src/fe-gtk/menu.c:1648 src/fe-gtk/setup.c:246
+#: src/fe-gtk/textgui.c:390
 msgid "Text"
 msgstr "Текст"
 
@@ -1475,7 +1477,7 @@ msgstr "IP"
 msgid "Port"
 msgstr "Порт"
 
-#: src/common/text.c:1457 src/fe-gtk/notifygui.c:138 src/fe-gtk/setup.c:1895
+#: src/common/text.c:1457 src/fe-gtk/notifygui.c:138 src/fe-gtk/setup.c:1904
 msgid "Network"
 msgstr "Мрежа"
 
@@ -3059,7 +3061,7 @@ msgstr "Файл"
 msgid "ETA"
 msgstr ""
 
-#: src/fe-gtk/dccgui.c:792 src/fe-gtk/menu.c:1649
+#: src/fe-gtk/dccgui.c:792 src/fe-gtk/menu.c:1649 src/fe-gtk/setup.c:247
 msgid "Both"
 msgstr "И двете"
 
@@ -3148,11 +3150,11 @@ msgstr "Отмяна"
 msgid "Save"
 msgstr "Запазване"
 
-#: src/fe-gtk/editlist.c:369 src/fe-gtk/fkeys.c:771
+#: src/fe-gtk/editlist.c:369 src/fe-gtk/fkeys.c:767
 msgid "Add New"
 msgstr "Добавяне на ново"
 
-#: src/fe-gtk/editlist.c:373 src/fe-gtk/fkeys.c:776 src/fe-gtk/ignoregui.c:381
+#: src/fe-gtk/editlist.c:373 src/fe-gtk/fkeys.c:772 src/fe-gtk/ignoregui.c:381
 msgid "Delete"
 msgstr "Изтриване"
 
@@ -3188,7 +3190,7 @@ msgstr ""
 msgid "Open an irc://server:port/channel URL"
 msgstr ""
 
-#: src/fe-gtk/fe-gtk.c:139 src/fe-gtk/setup.c:286
+#: src/fe-gtk/fe-gtk.c:139 src/fe-gtk/setup.c:297
 msgid "Execute command:"
 msgstr "Изпълнение на команда:"
 
@@ -3230,7 +3232,7 @@ msgstr "%d байта"
 msgid "Network send queue: %d bytes"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:165
+#: src/fe-gtk/fkeys.c:161
 msgid ""
 "The Run Command action runs the data in Data 1 as if it has been typed "
 "into the entry box where you pressed the key sequence. Thus it can contain "
@@ -3240,148 +3242,148 @@ msgid ""
 "in the actual text run then enter \\\\"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:167
+#: src/fe-gtk/fkeys.c:163
 msgid ""
 "The Change Page command switches between pages in the notebook. Set Data 1"
 " to the page you want to switch to. If Data 2 is set to anything then the "
 "switch will be relative to the current position"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:169
+#: src/fe-gtk/fkeys.c:165
 msgid ""
 "The Insert in Buffer command will insert the contents of Data 1 into the "
 "entry where the key sequence was pressed at the current cursor position"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:171
+#: src/fe-gtk/fkeys.c:167
 msgid ""
 "The Scroll Page command scrolls the text widget up or down one page or one"
 " line. Set Data 1 to either Up, Down, +1 or -1."
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:173
+#: src/fe-gtk/fkeys.c:169
 msgid ""
 "The Set Buffer command sets the entry where the key sequence was entered "
 "to the contents of Data 1"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:175
+#: src/fe-gtk/fkeys.c:171
 msgid ""
 "The Last Command command sets the entry to contain the last command "
 "entered - the same as pressing up in a shell"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:177
+#: src/fe-gtk/fkeys.c:173
 msgid ""
 "The Next Command command sets the entry to contain the next command "
 "entered - the same as pressing down in a shell"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:179
+#: src/fe-gtk/fkeys.c:175
 msgid ""
 "This command changes the text in the entry to finish an incomplete nickname "
 "or command. If Data 1 is set then double-tabbing in a string will select the"
 " last nick, not the next"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:181
+#: src/fe-gtk/fkeys.c:177
 msgid ""
 "This command scrolls up and down through the list of nicks. If Data 1 is set"
 " to anything it will scroll up, else it scrolls down"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:183
+#: src/fe-gtk/fkeys.c:179
 msgid ""
 "This command checks the last word entered in the entry against the replace "
 "list and replaces it if it finds a match"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:185
+#: src/fe-gtk/fkeys.c:181
 msgid "This command moves the front tab left by one"
 msgstr "Тази команда премества избрания таб с една позиция на ляво"
 
-#: src/fe-gtk/fkeys.c:187
+#: src/fe-gtk/fkeys.c:183
 msgid "This command moves the front tab right by one"
 msgstr "Тази команда премества избрания таб с една позиция на дясно"
 
-#: src/fe-gtk/fkeys.c:189
+#: src/fe-gtk/fkeys.c:185
 msgid "This command moves the current tab family to the left"
 msgstr "Тази команда премества избраната група табове на ляво"
 
-#: src/fe-gtk/fkeys.c:191
+#: src/fe-gtk/fkeys.c:187
 msgid "This command moves the current tab family to the right"
 msgstr "Тази команда премества избраната група табове надясно"
 
-#: src/fe-gtk/fkeys.c:193
+#: src/fe-gtk/fkeys.c:189
 msgid "Push input line into history but doesn't send to server"
 msgstr "Внасяне на реда написан в полето за писане в историята, но без да се изпраща на сървъра"
 
-#: src/fe-gtk/fkeys.c:204
+#: src/fe-gtk/fkeys.c:200
 msgid "There was an error loading key bindings configuration"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:456 src/fe-gtk/fkeys.c:457 src/fe-gtk/fkeys.c:458
-#: src/fe-gtk/fkeys.c:459 src/fe-gtk/fkeys.c:749 src/fe-gtk/fkeys.c:755
-#: src/fe-gtk/fkeys.c:760 src/fe-gtk/maingui.c:1608 src/fe-gtk/maingui.c:1724
-#: src/fe-gtk/maingui.c:3231
+#: src/fe-gtk/fkeys.c:452 src/fe-gtk/fkeys.c:453 src/fe-gtk/fkeys.c:454
+#: src/fe-gtk/fkeys.c:455 src/fe-gtk/fkeys.c:745 src/fe-gtk/fkeys.c:751
+#: src/fe-gtk/fkeys.c:756 src/fe-gtk/maingui.c:1616 src/fe-gtk/maingui.c:1732
+#: src/fe-gtk/maingui.c:3239
 msgid "<none>"
 msgstr "<няма>"
 
-#: src/fe-gtk/fkeys.c:713
+#: src/fe-gtk/fkeys.c:709
 msgid "Mod"
 msgstr "Режим"
 
-#: src/fe-gtk/fkeys.c:714 src/fe-gtk/fkeys.c:809
+#: src/fe-gtk/fkeys.c:710 src/fe-gtk/fkeys.c:805
 msgid "Key"
 msgstr "Ключ"
 
-#: src/fe-gtk/fkeys.c:715
+#: src/fe-gtk/fkeys.c:711
 msgid "Action"
 msgstr "Действие"
 
-#: src/fe-gtk/fkeys.c:724
+#: src/fe-gtk/fkeys.c:720
 msgid ": Keyboard Shortcuts"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:802
+#: src/fe-gtk/fkeys.c:798
 msgid "Shift"
 msgstr "Shift"
 
-#: src/fe-gtk/fkeys.c:804
+#: src/fe-gtk/fkeys.c:800
 msgid "Alt"
 msgstr "Alt"
 
-#: src/fe-gtk/fkeys.c:806
+#: src/fe-gtk/fkeys.c:802
 msgid "Ctrl"
 msgstr "Ctrl"
 
-#: src/fe-gtk/fkeys.c:813
+#: src/fe-gtk/fkeys.c:809
 msgid "Data 1"
 msgstr "Данни 1"
 
-#: src/fe-gtk/fkeys.c:816
+#: src/fe-gtk/fkeys.c:812
 msgid "Data 2"
 msgstr "Данни 2"
 
-#: src/fe-gtk/fkeys.c:858
+#: src/fe-gtk/fkeys.c:854
 msgid "Error opening keys config file\n"
 msgstr "Грешка при отваряне на конфигурационния файл на клавишите\n"
 
-#: src/fe-gtk/fkeys.c:1025
+#: src/fe-gtk/fkeys.c:1021
 #, c-format
 msgid ""
 "Unknown keyname %s in key bindings config file\n"
 "Load aborted, please fix %s/keybindings.conf\n"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:1063
+#: src/fe-gtk/fkeys.c:1059
 #, c-format
 msgid ""
 "Unknown action %s in key bindings config file\n"
 "Load aborted, Please fix %s/keybindings\n"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:1084
+#: src/fe-gtk/fkeys.c:1080
 #, c-format
 msgid ""
 "Expecting Data line (beginning Dx{:|!}) but got:\n"
@@ -3390,18 +3392,18 @@ msgid ""
 "Load aborted, Please fix %s/keybindings\n"
 msgstr ""
 
-#: src/fe-gtk/fkeys.c:1153
+#: src/fe-gtk/fkeys.c:1149
 #, c-format
 msgid ""
 "Key bindings config file is corrupt, load aborted\n"
 "Please fix %s/keybindings.conf\n"
 msgstr ""
 
-#: src/fe-gtk/gtkutil.c:136
+#: src/fe-gtk/gtkutil.c:138
 msgid "Cannot write to that file."
 msgstr "Не може да се пише в този файл."
 
-#: src/fe-gtk/gtkutil.c:138
+#: src/fe-gtk/gtkutil.c:140
 msgid "Cannot read that file."
 msgstr "Не може да се чете от този файл."
 
@@ -3409,7 +3411,7 @@ msgstr "Не може да се чете от този файл."
 msgid "That mask already exists."
 msgstr "Тази маска вече съществува."
 
-#: src/fe-gtk/ignoregui.c:175 src/fe-gtk/maingui.c:2105
+#: src/fe-gtk/ignoregui.c:175 src/fe-gtk/maingui.c:2113
 msgid "Private"
 msgstr "Частен"
 
@@ -3516,157 +3518,157 @@ msgstr ""
 msgid "_Always show this dialog after connecting."
 msgstr ""
 
-#: src/fe-gtk/maingui.c:454
+#: src/fe-gtk/maingui.c:456
 msgid "Dialog with"
 msgstr "Разговор с"
 
-#: src/fe-gtk/maingui.c:746
+#: src/fe-gtk/maingui.c:754
 #, c-format
 msgid "Topic for %s is: %s"
 msgstr "Темата на %s е: %s"
 
-#: src/fe-gtk/maingui.c:751
+#: src/fe-gtk/maingui.c:759
 msgid "No topic is set"
 msgstr "Няма настроена тема"
 
-#: src/fe-gtk/maingui.c:1143
+#: src/fe-gtk/maingui.c:1151
 #, c-format
 msgid ""
 "This server still has %d channels or dialogs associated with it. Close them "
 "all?"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1244
+#: src/fe-gtk/maingui.c:1252
 msgid "Quit HexChat?"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1265
+#: src/fe-gtk/maingui.c:1273
 msgid "Don't ask next time."
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1271
+#: src/fe-gtk/maingui.c:1279
 #, c-format
 msgid "You are connected to %i IRC networks."
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1273
+#: src/fe-gtk/maingui.c:1281
 msgid "Are you sure you want to quit?"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1275
+#: src/fe-gtk/maingui.c:1283
 msgid "Some file transfers are still active."
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1293
+#: src/fe-gtk/maingui.c:1301
 msgid "_Minimize to Tray"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1513
+#: src/fe-gtk/maingui.c:1521
 msgid "Insert Attribute or Color Code"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1515
+#: src/fe-gtk/maingui.c:1523
 msgid "<b>Bold</b>"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1516
+#: src/fe-gtk/maingui.c:1524
 msgid "<u>Underline</u>"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1518
+#: src/fe-gtk/maingui.c:1526
 msgid "Normal"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1520
+#: src/fe-gtk/maingui.c:1528
 msgid "Colors 0-7"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1530
+#: src/fe-gtk/maingui.c:1538
 msgid "Colors 8-15"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1573
+#: src/fe-gtk/maingui.c:1581
 msgid "_Settings"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1575
+#: src/fe-gtk/maingui.c:1583
 msgid "_Log to Disk"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1576
+#: src/fe-gtk/maingui.c:1584
 msgid "_Reload Scrollback"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1578
+#: src/fe-gtk/maingui.c:1586
 msgid "_Hide Join/Part Messages"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1586
+#: src/fe-gtk/maingui.c:1594
 msgid "_Extra Alerts"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1588
+#: src/fe-gtk/maingui.c:1596
 msgid "Beep on _Message"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1592
+#: src/fe-gtk/maingui.c:1600
 msgid "Blink Tray _Icon"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1595
+#: src/fe-gtk/maingui.c:1603
 msgid "Blink Task _Bar"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1633 src/fe-gtk/menu.c:2182
+#: src/fe-gtk/maingui.c:1641 src/fe-gtk/menu.c:2182
 msgid "_Detach"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1635 src/fe-gtk/menu.c:2183 src/fe-gtk/menu.c:2188
+#: src/fe-gtk/maingui.c:1643 src/fe-gtk/menu.c:2183 src/fe-gtk/menu.c:2188
 #: src/fe-gtk/plugingui.c:257 src/fe-gtk/search.c:234
 msgid "_Close"
 msgstr "Затваряне"
 
-#: src/fe-gtk/maingui.c:1973 src/fe-gtk/maingui.c:2079
+#: src/fe-gtk/maingui.c:1981 src/fe-gtk/maingui.c:2087
 msgid "User limit must be a number!\n"
 msgstr "Лимита на потребители трябва да е номер!\n"
 
-#: src/fe-gtk/maingui.c:2101
+#: src/fe-gtk/maingui.c:2109
 msgid "Topic Protection"
 msgstr "Защита на темата"
 
-#: src/fe-gtk/maingui.c:2102
+#: src/fe-gtk/maingui.c:2110
 msgid "No outside messages"
 msgstr "Без външни съобщения"
 
-#: src/fe-gtk/maingui.c:2103
+#: src/fe-gtk/maingui.c:2111
 msgid "Secret"
 msgstr "Таен"
 
-#: src/fe-gtk/maingui.c:2104
+#: src/fe-gtk/maingui.c:2112
 msgid "Invite Only"
 msgstr "Само с покана"
 
-#: src/fe-gtk/maingui.c:2106
+#: src/fe-gtk/maingui.c:2114
 msgid "Moderated"
 msgstr "Модериран"
 
-#: src/fe-gtk/maingui.c:2107
+#: src/fe-gtk/maingui.c:2115
 msgid "Ban List"
 msgstr "Списък със забранени потребители/адреси"
 
-#: src/fe-gtk/maingui.c:2109
+#: src/fe-gtk/maingui.c:2117
 msgid "Keyword"
 msgstr "Ключова дума"
 
-#: src/fe-gtk/maingui.c:2121
+#: src/fe-gtk/maingui.c:2129
 msgid "User Limit"
 msgstr "Потребителски лимит"
 
-#: src/fe-gtk/maingui.c:2230
+#: src/fe-gtk/maingui.c:2238
 msgid "Show/Hide userlist"
 msgstr "Показва/скрива списъка с потребители"
 
-#: src/fe-gtk/maingui.c:2356
+#: src/fe-gtk/maingui.c:2364
 msgid ""
 "Unable to set transparent background!\n"
 "\n"
@@ -3674,7 +3676,7 @@ msgid ""
 "manager that is not currently supported.\n"
 msgstr "Не може да се използва прозрачен фон!\n\nМоже би използвате несъвместим дисплей\nмениджър, който не се поддържа.\n"
 
-#: src/fe-gtk/maingui.c:2635
+#: src/fe-gtk/maingui.c:2643
 msgid "Enter new nickname:"
 msgstr "Въведете нов прякор:"
 
@@ -3957,7 +3959,7 @@ msgstr ""
 msgid "_Network Meters"
 msgstr ""
 
-#: src/fe-gtk/menu.c:1646
+#: src/fe-gtk/menu.c:1646 src/fe-gtk/setup.c:244
 msgid "Off"
 msgstr "Изкл."
 
@@ -4141,7 +4143,7 @@ msgstr "Последно видян"
 msgid "Offline"
 msgstr "Не е на линия"
 
-#: src/fe-gtk/notifygui.c:201 src/fe-gtk/setup.c:305
+#: src/fe-gtk/notifygui.c:201 src/fe-gtk/setup.c:316
 msgid "Never"
 msgstr "Никога"
 
@@ -4191,15 +4193,15 @@ msgstr ""
 msgid "_Blink on"
 msgstr ""
 
-#: src/fe-gtk/plugin-tray.c:523 src/fe-gtk/setup.c:646
+#: src/fe-gtk/plugin-tray.c:523 src/fe-gtk/setup.c:655
 msgid "Channel Message"
 msgstr ""
 
-#: src/fe-gtk/plugin-tray.c:524 src/fe-gtk/setup.c:647
+#: src/fe-gtk/plugin-tray.c:524 src/fe-gtk/setup.c:656
 msgid "Private Message"
 msgstr ""
 
-#: src/fe-gtk/plugin-tray.c:525 src/fe-gtk/setup.c:648
+#: src/fe-gtk/plugin-tray.c:525 src/fe-gtk/setup.c:657
 msgid "Highlighted Message"
 msgstr ""
 
@@ -4325,200 +4327,200 @@ msgstr ""
 msgid "Close and _Reset"
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:172 src/fe-gtk/servlistgui.c:281
+#: src/fe-gtk/servlistgui.c:173 src/fe-gtk/servlistgui.c:282
 msgid "New Network"
 msgstr "Нова мрежа"
 
-#: src/fe-gtk/servlistgui.c:553
+#: src/fe-gtk/servlistgui.c:554
 #, c-format
 msgid "Really remove network \"%s\" and all its servers?"
 msgstr "Наистина ли да се изтрие мрежата \"%s\" и всичките и сървъри?"
 
-#: src/fe-gtk/servlistgui.c:735
+#: src/fe-gtk/servlistgui.c:736
 msgid "#channel"
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:845
+#: src/fe-gtk/servlistgui.c:846
 msgid ": Favorite Channels (Auto-Join List)"
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:858
+#: src/fe-gtk/servlistgui.c:859
 #, c-format
 msgid "These channels will be joined whenever you connect to %s."
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:901
+#: src/fe-gtk/servlistgui.c:902
 msgid "Key (Password)"
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:932 src/fe-gtk/servlistgui.c:1572
+#: src/fe-gtk/servlistgui.c:933 src/fe-gtk/servlistgui.c:1573
 msgid "_Edit"
 msgstr "_Редактиране"
 
-#: src/fe-gtk/servlistgui.c:968
+#: src/fe-gtk/servlistgui.c:969
 #, c-format
 msgid "%s has been removed."
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:988
+#: src/fe-gtk/servlistgui.c:989
 #, c-format
 msgid "%s has been added."
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:1012
+#: src/fe-gtk/servlistgui.c:1013
 msgid "User name and Real name cannot be left blank."
 msgstr "Потребителското име и истинското име на може да бъдат оставени празни."
 
-#: src/fe-gtk/servlistgui.c:1403
+#: src/fe-gtk/servlistgui.c:1404
 #, c-format
 msgid ": Edit %s"
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:1422
+#: src/fe-gtk/servlistgui.c:1423
 #, c-format
 msgid "Servers for %s"
 msgstr "Сървъри за %s"
 
-#: src/fe-gtk/servlistgui.c:1433
+#: src/fe-gtk/servlistgui.c:1434
 msgid "Connect to selected server only"
 msgstr "Свързване САМО към избрания сървър"
 
-#: src/fe-gtk/servlistgui.c:1434
+#: src/fe-gtk/servlistgui.c:1435
 msgid "Don't cycle through all the servers when the connection fails."
 msgstr "Да не се пробват един по един сървърите, ако връзката пропада."
 
-#: src/fe-gtk/servlistgui.c:1436
+#: src/fe-gtk/servlistgui.c:1437
 msgid "Your Details"
 msgstr "Вашите данни"
 
-#: src/fe-gtk/servlistgui.c:1442
+#: src/fe-gtk/servlistgui.c:1443
 msgid "Use global user information"
 msgstr "Използване на глобална потребителска информация"
 
-#: src/fe-gtk/servlistgui.c:1445 src/fe-gtk/servlistgui.c:1679
+#: src/fe-gtk/servlistgui.c:1446 src/fe-gtk/servlistgui.c:1680
 msgid "_Nick name:"
 msgstr "Прякор:"
 
-#: src/fe-gtk/servlistgui.c:1449 src/fe-gtk/servlistgui.c:1686
+#: src/fe-gtk/servlistgui.c:1450 src/fe-gtk/servlistgui.c:1687
 msgid "Second choice:"
 msgstr "Втори избор:"
 
-#: src/fe-gtk/servlistgui.c:1453 src/fe-gtk/servlistgui.c:1700
+#: src/fe-gtk/servlistgui.c:1454 src/fe-gtk/servlistgui.c:1701
 msgid "_User name:"
 msgstr "Потребител:"
 
-#: src/fe-gtk/servlistgui.c:1457
+#: src/fe-gtk/servlistgui.c:1458
 msgid "Rea_l name:"
 msgstr "Истинско име:"
 
-#: src/fe-gtk/servlistgui.c:1460
+#: src/fe-gtk/servlistgui.c:1461
 msgid "Connecting"
 msgstr "Свързва се"
 
-#: src/fe-gtk/servlistgui.c:1466
+#: src/fe-gtk/servlistgui.c:1467
 msgid "Auto connect to this network at startup"
 msgstr "Автоматично свързване към тази мрежа\nпри стартирането на X-Chat"
 
-#: src/fe-gtk/servlistgui.c:1468
+#: src/fe-gtk/servlistgui.c:1469
 msgid "Bypass proxy server"
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:1470
+#: src/fe-gtk/servlistgui.c:1471
 msgid "Use SSL for all the servers on this network"
 msgstr "Използване на SSL за всички сървъри от тази мрежа"
 
-#: src/fe-gtk/servlistgui.c:1475
+#: src/fe-gtk/servlistgui.c:1476
 msgid "Accept invalid SSL certificate"
 msgstr "Приемане на невалидния SSL сертификат"
 
-#: src/fe-gtk/servlistgui.c:1481
+#: src/fe-gtk/servlistgui.c:1482
 msgid "_Favorite channels:"
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:1483
+#: src/fe-gtk/servlistgui.c:1484
 msgid "Channels to join, separated by commas, but not spaces!"
 msgstr "Стаи, в които да се влиза, разделени със запетаи, не с празни места!!!"
 
-#: src/fe-gtk/servlistgui.c:1486
+#: src/fe-gtk/servlistgui.c:1487
 msgid "Connect command:"
 msgstr "Команда при свързване:"
 
-#: src/fe-gtk/servlistgui.c:1488
+#: src/fe-gtk/servlistgui.c:1489
 msgid ""
 "Extra command to execute after connecting. If you need more than one, set "
 "this to LOAD -e <filename>, where <filename> is a text-file full of commands"
 " to execute."
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:1491
+#: src/fe-gtk/servlistgui.c:1492
 msgid "Nickserv password:"
 msgstr "Парола за NickServ:"
 
-#: src/fe-gtk/servlistgui.c:1493
+#: src/fe-gtk/servlistgui.c:1494
 msgid ""
 "If your nickname requires a password, enter it here. Not all IRC networks "
 "support this."
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:1497
+#: src/fe-gtk/servlistgui.c:1498
 msgid "Server password:"
 msgstr "Парола за сървъра:"
 
-#: src/fe-gtk/servlistgui.c:1499
+#: src/fe-gtk/servlistgui.c:1500
 msgid "Password for the server, if in doubt, leave blank."
 msgstr "Парола за сървъра. Ако не сте сигурни, оставете полето празно."
 
-#: src/fe-gtk/servlistgui.c:1502
+#: src/fe-gtk/servlistgui.c:1503
 msgid "Character set:"
 msgstr "Кодиране:"
 
-#: src/fe-gtk/servlistgui.c:1657
+#: src/fe-gtk/servlistgui.c:1658
 msgid ": Network List"
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:1669
+#: src/fe-gtk/servlistgui.c:1670
 msgid "User Information"
 msgstr "Потребителска информация"
 
-#: src/fe-gtk/servlistgui.c:1693
+#: src/fe-gtk/servlistgui.c:1694
 msgid "Third choice:"
 msgstr "Трети избор:"
 
-#: src/fe-gtk/servlistgui.c:1753
+#: src/fe-gtk/servlistgui.c:1754
 msgid "Networks"
 msgstr "Мрежи"
 
-#: src/fe-gtk/servlistgui.c:1801
+#: src/fe-gtk/servlistgui.c:1802
 msgid "Skip network list on startup"
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:1810
+#: src/fe-gtk/servlistgui.c:1811
 msgid "Show favorites only"
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:1840
+#: src/fe-gtk/servlistgui.c:1841
 msgid "_Edit..."
 msgstr "_Редактиране..."
 
-#: src/fe-gtk/servlistgui.c:1847
+#: src/fe-gtk/servlistgui.c:1848
 msgid "_Sort"
 msgstr "_Подреждане"
 
-#: src/fe-gtk/servlistgui.c:1848
+#: src/fe-gtk/servlistgui.c:1849
 msgid ""
 "Sorts the network list in alphabetical order. Use SHIFT-UP and SHIFT-DOWN "
 "keys to move a row."
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:1856
+#: src/fe-gtk/servlistgui.c:1857
 msgid "_Favor"
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:1857
+#: src/fe-gtk/servlistgui.c:1858
 msgid "Mark or unmark this network as a favorite."
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:1881
+#: src/fe-gtk/servlistgui.c:1882
 msgid "C_onnect"
 msgstr "Свързване"
 
@@ -4659,1007 +4661,1047 @@ msgid "Malay"
 msgstr ""
 
 #: src/fe-gtk/setup.c:140
-msgid "Norwegian (Bokmal)"
+msgid "Malayalam"
 msgstr ""
 
 #: src/fe-gtk/setup.c:141
-msgid "Norwegian (Nynorsk)"
+msgid "Norwegian (Bokmal)"
 msgstr ""
 
 #: src/fe-gtk/setup.c:142
-msgid "Polish"
+msgid "Norwegian (Nynorsk)"
 msgstr ""
 
 #: src/fe-gtk/setup.c:143
-msgid "Portuguese"
+msgid "Polish"
 msgstr ""
 
 #: src/fe-gtk/setup.c:144
-msgid "Portuguese (Brazilian)"
+msgid "Portuguese"
 msgstr ""
 
 #: src/fe-gtk/setup.c:145
-msgid "Punjabi"
+msgid "Portuguese (Brazilian)"
 msgstr ""
 
 #: src/fe-gtk/setup.c:146
-msgid "Russian"
+msgid "Punjabi"
 msgstr ""
 
 #: src/fe-gtk/setup.c:147
-msgid "Serbian"
+msgid "Russian"
 msgstr ""
 
 #: src/fe-gtk/setup.c:148
-msgid "Slovak"
+msgid "Serbian"
 msgstr ""
 
 #: src/fe-gtk/setup.c:149
-msgid "Slovenian"
+msgid "Slovak"
 msgstr ""
 
 #: src/fe-gtk/setup.c:150
-msgid "Spanish"
+msgid "Slovenian"
 msgstr ""
 
 #: src/fe-gtk/setup.c:151
-msgid "Swedish"
+msgid "Spanish"
 msgstr ""
 
 #: src/fe-gtk/setup.c:152
-msgid "Thai"
+msgid "Swedish"
 msgstr ""
 
 #: src/fe-gtk/setup.c:153
-msgid "Ukrainian"
+msgid "Thai"
 msgstr ""
 
 #: src/fe-gtk/setup.c:154
-msgid "Vietnamese"
+msgid "Ukrainian"
 msgstr ""
 
 #: src/fe-gtk/setup.c:155
+msgid "Vietnamese"
+msgstr ""
+
+#: src/fe-gtk/setup.c:156
 msgid "Walloon"
 msgstr ""
 
-#: src/fe-gtk/setup.c:162 src/fe-gtk/setup.c:1890
+#: src/fe-gtk/setup.c:163 src/fe-gtk/setup.c:1899
 msgid "General"
 msgstr "Общи"
 
-#: src/fe-gtk/setup.c:164
+#: src/fe-gtk/setup.c:165
 msgid "Language:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:165
+#: src/fe-gtk/setup.c:166
 msgid "Main font:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:167
+#: src/fe-gtk/setup.c:168
 msgid "Font:"
 msgstr "Шрифт:"
 
-#: src/fe-gtk/setup.c:169
-msgid "Text Box"
+#: src/fe-gtk/setup.c:171
+msgid "Title Bar"
 msgstr ""
 
-#: src/fe-gtk/setup.c:170
-msgid "Background image:"
-msgstr "Изображение за фон:"
-
-#: src/fe-gtk/setup.c:171
-msgid "Scrollback lines:"
-msgstr "Запазени редове назад:"
-
 #: src/fe-gtk/setup.c:172
-msgid "Colored nick names"
-msgstr "Цветни прякори"
+msgid "Show channel modes"
+msgstr ""
 
 #: src/fe-gtk/setup.c:173
-msgid "Give each person on IRC a different color"
-msgstr "Всеки прякор да има назначен различен цвят"
-
-#: src/fe-gtk/setup.c:174
-msgid "Indent nick names"
+msgid "Show number of users"
 msgstr ""
 
 #: src/fe-gtk/setup.c:175
+msgid "Text Box"
+msgstr ""
+
+#: src/fe-gtk/setup.c:176
+msgid "Background image:"
+msgstr "Изображение за фон:"
+
+#: src/fe-gtk/setup.c:177
+msgid "Scrollback lines:"
+msgstr "Запазени редове назад:"
+
+#: src/fe-gtk/setup.c:178
+msgid "Colored nick names"
+msgstr "Цветни прякори"
+
+#: src/fe-gtk/setup.c:179
+msgid "Give each person on IRC a different color"
+msgstr "Всеки прякор да има назначен различен цвят"
+
+#: src/fe-gtk/setup.c:180
+msgid "Indent nick names"
+msgstr ""
+
+#: src/fe-gtk/setup.c:181
 msgid "Make nick names right-justified"
 msgstr "Прякорите да са подравнени в дясно"
 
-#: src/fe-gtk/setup.c:176
+#: src/fe-gtk/setup.c:183
 msgid "Transparent background"
 msgstr "Прозрачен фон"
 
-#: src/fe-gtk/setup.c:177
+#: src/fe-gtk/setup.c:184 src/fe-gtk/setup.c:190
 msgid "Show marker line"
 msgstr "Показва маркиращата линия"
 
-#: src/fe-gtk/setup.c:178
+#: src/fe-gtk/setup.c:184 src/fe-gtk/setup.c:190
 msgid "Insert a red line after the last read text."
 msgstr "Вмъкване на червена линия след последно прочетения текст"
 
-#: src/fe-gtk/setup.c:179
+#: src/fe-gtk/setup.c:185
 msgid "Transparency Settings"
 msgstr ""
 
-#: src/fe-gtk/setup.c:180
+#: src/fe-gtk/setup.c:186
 msgid "Red:"
 msgstr "Червено:"
 
-#: src/fe-gtk/setup.c:181
+#: src/fe-gtk/setup.c:187
 msgid "Green:"
 msgstr "Зелено:"
 
-#: src/fe-gtk/setup.c:182
+#: src/fe-gtk/setup.c:188
 msgid "Blue:"
 msgstr "Синьо:"
 
-#: src/fe-gtk/setup.c:184 src/fe-gtk/setup.c:546
+#: src/fe-gtk/setup.c:193 src/fe-gtk/setup.c:555
 msgid "Time Stamps"
 msgstr "Време срещу всяка реплика"
 
-#: src/fe-gtk/setup.c:185
+#: src/fe-gtk/setup.c:194
 msgid "Enable time stamps"
 msgstr "Вмъква времето на репликите"
 
-#: src/fe-gtk/setup.c:186
+#: src/fe-gtk/setup.c:195
 msgid "Time stamp format:"
 msgstr "Формат на отбелязване на времето:"
 
-#: src/fe-gtk/setup.c:188 src/fe-gtk/setup.c:550
+#: src/fe-gtk/setup.c:197 src/fe-gtk/setup.c:559
 msgid "See the strftime MSDN article for details."
 msgstr ""
 
-#: src/fe-gtk/setup.c:190 src/fe-gtk/setup.c:552
+#: src/fe-gtk/setup.c:199 src/fe-gtk/setup.c:561
 msgid "See the strftime manpage for details."
 msgstr ""
 
-#: src/fe-gtk/setup.c:198 src/fe-gtk/setup.c:244
+#: src/fe-gtk/setup.c:207 src/fe-gtk/setup.c:254
 msgid "A-Z"
 msgstr "A-Z"
 
-#: src/fe-gtk/setup.c:199
+#: src/fe-gtk/setup.c:208
 msgid "Last-spoke order"
 msgstr ""
 
-#: src/fe-gtk/setup.c:205
+#: src/fe-gtk/setup.c:214
 msgid "Input Box"
 msgstr ""
 
-#: src/fe-gtk/setup.c:206 src/fe-gtk/setup.c:276
+#: src/fe-gtk/setup.c:215 src/fe-gtk/setup.c:286
 msgid "Use the Text box font and colors"
 msgstr "Използване на шрифта и цветовете на полето за текста"
 
-#: src/fe-gtk/setup.c:208
+#: src/fe-gtk/setup.c:216
+msgid "Show nick box"
+msgstr ""
+
+#: src/fe-gtk/setup.c:218
 msgid "Spell checking"
 msgstr ""
 
-#: src/fe-gtk/setup.c:209
+#: src/fe-gtk/setup.c:219
 msgid "Dictionaries to use:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:211
+#: src/fe-gtk/setup.c:221
 msgid ""
 "Use language codes (as in \"share\\myspell\\dicts\").\n"
 "Separate multiple entries with commas."
 msgstr ""
 
-#: src/fe-gtk/setup.c:213
+#: src/fe-gtk/setup.c:223
 msgid "Use language codes. Separate multiple entries with commas."
 msgstr ""
 
-#: src/fe-gtk/setup.c:217
+#: src/fe-gtk/setup.c:227
 msgid "Nick Completion"
 msgstr "Довършване на прякорите"
 
-#: src/fe-gtk/setup.c:218
+#: src/fe-gtk/setup.c:228
 msgid "Automatic nick completion (without TAB key)"
 msgstr ""
 
-#: src/fe-gtk/setup.c:220
+#: src/fe-gtk/setup.c:230
 msgid "Nick completion suffix:"
 msgstr "Допълнение след довършените прякори:"
 
-#: src/fe-gtk/setup.c:221
+#: src/fe-gtk/setup.c:231
 msgid "Nick completion sorted:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:224
+#: src/fe-gtk/setup.c:234
 msgid "Input Box Codes"
 msgstr "Кодове за полето за писане"
 
-#: src/fe-gtk/setup.c:225
+#: src/fe-gtk/setup.c:235
 #, c-format
 msgid "Interpret %nnn as an ASCII value"
 msgstr "Интерпретиране на %nnn като ASCII стойност"
 
-#: src/fe-gtk/setup.c:226
+#: src/fe-gtk/setup.c:236
 msgid "Interpret %C, %B as Color, Bold etc"
 msgstr "Интерпретиране на %C, %B като Цвят, Удебелено и т.н."
 
-#: src/fe-gtk/setup.c:243
+#: src/fe-gtk/setup.c:245
+msgid "Graphical"
+msgstr ""
+
+#: src/fe-gtk/setup.c:253
 msgid "A-Z, Ops first"
 msgstr "A-Z, Операторите първо"
 
-#: src/fe-gtk/setup.c:245
+#: src/fe-gtk/setup.c:255
 msgid "Z-A, Ops last"
 msgstr "Z-A, Операторите последно"
 
-#: src/fe-gtk/setup.c:246
+#: src/fe-gtk/setup.c:256
 msgid "Z-A"
 msgstr "Z-A"
 
-#: src/fe-gtk/setup.c:247
+#: src/fe-gtk/setup.c:257
 msgid "Unsorted"
 msgstr "Неподреден"
 
-#: src/fe-gtk/setup.c:253 src/fe-gtk/setup.c:265
+#: src/fe-gtk/setup.c:263 src/fe-gtk/setup.c:275
 msgid "Left (Upper)"
 msgstr ""
 
-#: src/fe-gtk/setup.c:254 src/fe-gtk/setup.c:266
+#: src/fe-gtk/setup.c:264 src/fe-gtk/setup.c:276
 msgid "Left (Lower)"
 msgstr ""
 
-#: src/fe-gtk/setup.c:255 src/fe-gtk/setup.c:267
+#: src/fe-gtk/setup.c:265 src/fe-gtk/setup.c:277
 msgid "Right (Upper)"
 msgstr ""
 
-#: src/fe-gtk/setup.c:256 src/fe-gtk/setup.c:268
+#: src/fe-gtk/setup.c:266 src/fe-gtk/setup.c:278
 msgid "Right (Lower)"
 msgstr ""
 
-#: src/fe-gtk/setup.c:257
+#: src/fe-gtk/setup.c:267
 msgid "Top"
 msgstr "Горе"
 
-#: src/fe-gtk/setup.c:258
+#: src/fe-gtk/setup.c:268
 msgid "Bottom"
 msgstr "Долу"
 
-#: src/fe-gtk/setup.c:259
+#: src/fe-gtk/setup.c:269
 msgid "Hidden"
 msgstr "Скрит"
 
-#: src/fe-gtk/setup.c:274
+#: src/fe-gtk/setup.c:284
 msgid "User List"
 msgstr "Списък с потребители"
 
-#: src/fe-gtk/setup.c:275
+#: src/fe-gtk/setup.c:285
 msgid "Show hostnames in user list"
 msgstr "Показва хостовете в списъка с потребители"
 
-#: src/fe-gtk/setup.c:278
+#: src/fe-gtk/setup.c:287
+msgid "Show icons instead of text symbols"
+msgstr ""
+
+#: src/fe-gtk/setup.c:289
 msgid "User list sorted by:"
 msgstr "Списък с потребителите сортиран по:"
 
-#: src/fe-gtk/setup.c:279
+#: src/fe-gtk/setup.c:290
 msgid "Show user list at:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:281
+#: src/fe-gtk/setup.c:292
 msgid "Away Tracking"
 msgstr ""
 
-#: src/fe-gtk/setup.c:282
+#: src/fe-gtk/setup.c:293
 msgid "Track the Away status of users and mark them in a different color"
 msgstr ""
 
-#: src/fe-gtk/setup.c:283
+#: src/fe-gtk/setup.c:294
 msgid "On channels smaller than:"
 msgstr "В стаи по-малки от:"
 
-#: src/fe-gtk/setup.c:285
+#: src/fe-gtk/setup.c:296
 msgid "Action Upon Double Click"
 msgstr "Действие при двойно натискане"
 
-#: src/fe-gtk/setup.c:297
+#: src/fe-gtk/setup.c:299
+msgid "Extra Gadgets"
+msgstr ""
+
+#: src/fe-gtk/setup.c:300
+msgid "Lag meter:"
+msgstr ""
+
+#: src/fe-gtk/setup.c:301
+msgid "Throttle meter:"
+msgstr ""
+
+#: src/fe-gtk/setup.c:308
 msgid "Windows"
 msgstr "Прозорци"
 
-#: src/fe-gtk/setup.c:298 src/fe-gtk/setup.c:314
+#: src/fe-gtk/setup.c:309 src/fe-gtk/setup.c:325
 msgid "Tabs"
 msgstr "Табове"
 
-#: src/fe-gtk/setup.c:306
+#: src/fe-gtk/setup.c:317
 msgid "Always"
 msgstr "Винаги"
 
-#: src/fe-gtk/setup.c:307
+#: src/fe-gtk/setup.c:318
 msgid "Only requested tabs"
 msgstr "Само изискани табове"
 
-#: src/fe-gtk/setup.c:316
+#: src/fe-gtk/setup.c:327
 msgid "Tree"
 msgstr ""
 
-#: src/fe-gtk/setup.c:323
+#: src/fe-gtk/setup.c:334
 msgid "Switcher type:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:324
+#: src/fe-gtk/setup.c:335
 msgid "Open an extra tab for server messages"
 msgstr "Отваряне на допълнителен таб за сървърни съобщения"
 
-#: src/fe-gtk/setup.c:325
+#: src/fe-gtk/setup.c:336
 msgid "Open an extra tab for server notices"
 msgstr "Отваряне на нов таб за сървърните уведомявания"
 
-#: src/fe-gtk/setup.c:326
+#: src/fe-gtk/setup.c:337
 msgid "Open a new tab when you receive a private message"
 msgstr ""
 
-#: src/fe-gtk/setup.c:327
+#: src/fe-gtk/setup.c:338
 msgid "Sort tabs in alphabetical order"
 msgstr "Подрежда табовете по азбучен ред"
 
-#: src/fe-gtk/setup.c:328
+#: src/fe-gtk/setup.c:339
 msgid "Show icons in the channel tree"
 msgstr ""
 
-#: src/fe-gtk/setup.c:329
+#: src/fe-gtk/setup.c:340
+msgid "Show dotted lines in the channel tree"
+msgstr ""
+
+#: src/fe-gtk/setup.c:341
 msgid "Smaller text"
 msgstr ""
 
-#: src/fe-gtk/setup.c:331
+#: src/fe-gtk/setup.c:343
 msgid "Focus new tabs:"
 msgstr "Фокусиране на новите табове:"
 
-#: src/fe-gtk/setup.c:333
+#: src/fe-gtk/setup.c:345
 msgid "Show channel switcher at:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:334
+#: src/fe-gtk/setup.c:346
 msgid "Shorten tab labels to:"
 msgstr "Скъсява табовете до:"
 
-#: src/fe-gtk/setup.c:334
+#: src/fe-gtk/setup.c:346
 msgid "letters."
 msgstr "букви."
 
-#: src/fe-gtk/setup.c:336
+#: src/fe-gtk/setup.c:348
 msgid "Tabs or Windows"
 msgstr "Табове или Прозорци"
 
-#: src/fe-gtk/setup.c:337
+#: src/fe-gtk/setup.c:349
 msgid "Open channels in:"
 msgstr "Отваряне на стаи в:"
 
-#: src/fe-gtk/setup.c:338
+#: src/fe-gtk/setup.c:350
 msgid "Open dialogs in:"
 msgstr "Отваряне на разговори в:"
 
-#: src/fe-gtk/setup.c:339
+#: src/fe-gtk/setup.c:351
 msgid "Open utilities in:"
 msgstr "Отваряне на инструментите в:"
 
-#: src/fe-gtk/setup.c:339
+#: src/fe-gtk/setup.c:351
 msgid "Open DCC, Ignore, Notify etc, in tabs or windows?"
 msgstr "Отваряне на DCC, Игнориране, Списък с приятелчета и т.н. в отделни табове или прозорци?"
 
-#: src/fe-gtk/setup.c:346
+#: src/fe-gtk/setup.c:358
 msgid "Messages"
 msgstr ""
 
-#: src/fe-gtk/setup.c:347
+#: src/fe-gtk/setup.c:359
 msgid "Scrollback"
 msgstr ""
 
-#: src/fe-gtk/setup.c:355
-msgid "No"
+#: src/fe-gtk/setup.c:367
+msgid "Ask for confirmation"
 msgstr ""
 
-#: src/fe-gtk/setup.c:356
-msgid "Yes"
+#: src/fe-gtk/setup.c:368
+msgid "Ask for download folder"
 msgstr ""
 
-#: src/fe-gtk/setup.c:357
-msgid "Browse for save folder every time"
+#: src/fe-gtk/setup.c:369
+msgid "Save without interaction"
 msgstr ""
 
-#: src/fe-gtk/setup.c:363
+#: src/fe-gtk/setup.c:375
 msgid "Files and Directories"
 msgstr "Файлове и папки"
 
-#: src/fe-gtk/setup.c:364
+#: src/fe-gtk/setup.c:376
 msgid "Auto accept file offers:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:365
+#: src/fe-gtk/setup.c:377
 msgid "Download files to:"
 msgstr "Сваляне на файловете в:"
 
-#: src/fe-gtk/setup.c:366
+#: src/fe-gtk/setup.c:378
 msgid "Move completed files to:"
 msgstr "Преместване на завършените файлове в:"
 
-#: src/fe-gtk/setup.c:367
+#: src/fe-gtk/setup.c:379
 msgid "Save nick name in filenames"
 msgstr "Запазване на прякора в името на файла"
 
-#: src/fe-gtk/setup.c:369
+#: src/fe-gtk/setup.c:381
 msgid "Network Settings"
 msgstr "Настройки на мрежата"
 
-#: src/fe-gtk/setup.c:370
+#: src/fe-gtk/setup.c:382
 msgid "Get my address from the IRC server"
 msgstr "Взимане на собствения адрес от IRC сървъра"
 
-#: src/fe-gtk/setup.c:371
+#: src/fe-gtk/setup.c:383
 msgid ""
 "Asks the IRC server for your real address. Use this if you have a "
 "192.168.*.* address!"
 msgstr "Пита IRC сървъра за истинския ви адрес. Използвайте това ако имате адрес от вида 192.168.*.*!"
 
-#: src/fe-gtk/setup.c:372
+#: src/fe-gtk/setup.c:384
 msgid "DCC IP address:"
 msgstr "DCC IP адрес:"
 
-#: src/fe-gtk/setup.c:373
+#: src/fe-gtk/setup.c:385
 msgid "Claim you are at this address when offering files."
 msgstr "Заявяване, че сте на този адрес при изпращането на файлове"
 
-#: src/fe-gtk/setup.c:374
+#: src/fe-gtk/setup.c:386
 msgid "First DCC send port:"
 msgstr "Първи DCC порт за пращане:"
 
-#: src/fe-gtk/setup.c:375
+#: src/fe-gtk/setup.c:387
 msgid "Last DCC send port:"
 msgstr "Последен DCC порт за пращане:"
 
-#: src/fe-gtk/setup.c:376
+#: src/fe-gtk/setup.c:388
 msgid "!Leave ports at zero for full range."
 msgstr ""
 
-#: src/fe-gtk/setup.c:378
+#: src/fe-gtk/setup.c:390
 msgid "Maximum File Transfer Speeds (bytes per second)"
 msgstr "Максимална скорост за файловите трансфери (байтове в секунда)"
 
-#: src/fe-gtk/setup.c:379
+#: src/fe-gtk/setup.c:391
 msgid "One upload:"
 msgstr "Едно качване:"
 
-#: src/fe-gtk/setup.c:380 src/fe-gtk/setup.c:382
+#: src/fe-gtk/setup.c:392 src/fe-gtk/setup.c:394
 msgid "Maximum speed for one transfer"
 msgstr "Максимална скорост за един трансфер"
 
-#: src/fe-gtk/setup.c:381
+#: src/fe-gtk/setup.c:393
 msgid "One download:"
 msgstr "Едно сваляне:"
 
-#: src/fe-gtk/setup.c:383
+#: src/fe-gtk/setup.c:395
 msgid "All uploads combined:"
 msgstr "Всички качвания комбинирано:"
 
-#: src/fe-gtk/setup.c:384 src/fe-gtk/setup.c:386
+#: src/fe-gtk/setup.c:396 src/fe-gtk/setup.c:398
 msgid "Maximum speed for all files"
 msgstr "Маскимална скорост за всички файлове"
 
-#: src/fe-gtk/setup.c:385
+#: src/fe-gtk/setup.c:397
 msgid "All downloads combined:"
 msgstr "Всички сваляния комбинирано:"
 
-#: src/fe-gtk/setup.c:413 src/fe-gtk/setup.c:439 src/fe-gtk/setup.c:1889
+#: src/fe-gtk/setup.c:425 src/fe-gtk/setup.c:451 src/fe-gtk/setup.c:1898
 msgid "Alerts"
 msgstr "Звукови уведомявания"
 
-#: src/fe-gtk/setup.c:417
+#: src/fe-gtk/setup.c:429
 msgid "Show tray balloons on:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:419
+#: src/fe-gtk/setup.c:431
 msgid "Blink tray icon on:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:420 src/fe-gtk/setup.c:442
+#: src/fe-gtk/setup.c:432 src/fe-gtk/setup.c:454
 msgid "Blink task bar on:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:421 src/fe-gtk/setup.c:443
+#: src/fe-gtk/setup.c:433 src/fe-gtk/setup.c:455
 msgid "Make a beep sound on:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:423
+#: src/fe-gtk/setup.c:435
 msgid "Enable system tray icon"
 msgstr ""
 
-#: src/fe-gtk/setup.c:424 src/fe-gtk/setup.c:445
+#: src/fe-gtk/setup.c:436 src/fe-gtk/setup.c:457
 msgid "Omit alerts when marked as being away"
 msgstr ""
 
-#: src/fe-gtk/setup.c:426 src/fe-gtk/setup.c:447
+#: src/fe-gtk/setup.c:438 src/fe-gtk/setup.c:459
 msgid "Highlighted Messages"
 msgstr ""
 
-#: src/fe-gtk/setup.c:427 src/fe-gtk/setup.c:448
+#: src/fe-gtk/setup.c:439 src/fe-gtk/setup.c:460
 msgid ""
 "Highlighted messages are ones where your nickname is mentioned, but also:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:429 src/fe-gtk/setup.c:450
+#: src/fe-gtk/setup.c:441 src/fe-gtk/setup.c:462
 msgid "Extra words to highlight:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:430 src/fe-gtk/setup.c:451
+#: src/fe-gtk/setup.c:442 src/fe-gtk/setup.c:463
 msgid "Nick names not to highlight:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:431 src/fe-gtk/setup.c:452
+#: src/fe-gtk/setup.c:443 src/fe-gtk/setup.c:464
 msgid "Nick names to always highlight:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:432 src/fe-gtk/setup.c:453
+#: src/fe-gtk/setup.c:444 src/fe-gtk/setup.c:465
 msgid ""
 "Separate multiple words with commas.\n"
 "Wildcards are accepted."
 msgstr ""
 
-#: src/fe-gtk/setup.c:460
+#: src/fe-gtk/setup.c:472
 msgid "Default Messages"
 msgstr "Стандартни съобщения"
 
-#: src/fe-gtk/setup.c:461
+#: src/fe-gtk/setup.c:473
 msgid "Quit:"
 msgstr "Изход:"
 
-#: src/fe-gtk/setup.c:462
+#: src/fe-gtk/setup.c:474
 msgid "Leave channel:"
 msgstr "Напускане на стая"
 
-#: src/fe-gtk/setup.c:463
+#: src/fe-gtk/setup.c:475
 msgid "Away:"
 msgstr "Няма ме:"
 
-#: src/fe-gtk/setup.c:465
+#: src/fe-gtk/setup.c:477
 msgid "Away"
 msgstr "\"Няма ме\""
 
-#: src/fe-gtk/setup.c:466
+#: src/fe-gtk/setup.c:478
 msgid "Announce away messages"
 msgstr "Обявяване на съобщенията за статуса \"Няма ме\""
 
-#: src/fe-gtk/setup.c:467
+#: src/fe-gtk/setup.c:479
 msgid "Announce your away messages to all channels"
 msgstr "Обявяване на статуса \"Няма ме\" във всички стаи"
 
-#: src/fe-gtk/setup.c:468
+#: src/fe-gtk/setup.c:480
 msgid "Show away once"
 msgstr "Показване на съобщението за липса само веднъж"
 
-#: src/fe-gtk/setup.c:468
+#: src/fe-gtk/setup.c:480
 msgid "Show identical away messages only once"
 msgstr "Показване на еднаквите съобщения за липса само веднъж"
 
-#: src/fe-gtk/setup.c:469
+#: src/fe-gtk/setup.c:481
 msgid "Automatically unmark away"
 msgstr "Автоматично махане на статуса \"Няма ме\""
 
-#: src/fe-gtk/setup.c:469
+#: src/fe-gtk/setup.c:481
 msgid "Unmark yourself as away before sending messages"
 msgstr "Отбелязване, че вече не сте в режим \"Няма ме\" преди да избращате съобщения"
 
-#: src/fe-gtk/setup.c:476 src/fe-gtk/setup.c:507
+#: src/fe-gtk/setup.c:488 src/fe-gtk/setup.c:519
 msgid "Advanced Settings"
 msgstr "Подробни настройки"
 
-#: src/fe-gtk/setup.c:478 src/fe-gtk/setup.c:508
+#: src/fe-gtk/setup.c:490 src/fe-gtk/setup.c:520
 msgid "Alternative fonts:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:480 src/fe-gtk/setup.c:509
+#: src/fe-gtk/setup.c:492 src/fe-gtk/setup.c:521
 msgid "Auto reconnect delay:"
 msgstr "Изчакване преди автоматично свързване:"
 
-#: src/fe-gtk/setup.c:481 src/fe-gtk/setup.c:510
+#: src/fe-gtk/setup.c:493 src/fe-gtk/setup.c:522
 msgid "Display MODEs in raw form"
 msgstr "Показване на режимите в чиста форма"
 
-#: src/fe-gtk/setup.c:482 src/fe-gtk/setup.c:511
+#: src/fe-gtk/setup.c:494 src/fe-gtk/setup.c:523
 msgid "Whois on notify"
 msgstr "Пускане на \"Кой е ...?\" при появяване"
 
-#: src/fe-gtk/setup.c:482 src/fe-gtk/setup.c:511
+#: src/fe-gtk/setup.c:494 src/fe-gtk/setup.c:523
 msgid "Sends a /WHOIS when a user comes online in your notify list"
 msgstr "Изпращане на /WHOIS , когато потребител от списъка с приятелчета стане на линия"
 
-#: src/fe-gtk/setup.c:483 src/fe-gtk/setup.c:512
+#: src/fe-gtk/setup.c:495 src/fe-gtk/setup.c:524
 msgid "Hide join and part messages"
 msgstr "Скриване на кой влиза и излиза"
 
-#: src/fe-gtk/setup.c:483 src/fe-gtk/setup.c:512
+#: src/fe-gtk/setup.c:495 src/fe-gtk/setup.c:524
 msgid "Hide channel join/part messages by default"
 msgstr "По подразбиране да се скриват съобщенията за влизане и излизане от стаите"
 
-#: src/fe-gtk/setup.c:484 src/fe-gtk/setup.c:514
+#: src/fe-gtk/setup.c:496 src/fe-gtk/setup.c:526
 msgid "Auto Open DCC Windows"
 msgstr "Автоматично отваряне на DCC прозорци"
 
-#: src/fe-gtk/setup.c:485 src/fe-gtk/setup.c:515
+#: src/fe-gtk/setup.c:497 src/fe-gtk/setup.c:527
 msgid "Send window"
 msgstr "Прозореца за изпращане на файлове"
 
-#: src/fe-gtk/setup.c:486 src/fe-gtk/setup.c:516
+#: src/fe-gtk/setup.c:498 src/fe-gtk/setup.c:528
 msgid "Receive window"
 msgstr "Прозореца за получване на файлове"
 
-#: src/fe-gtk/setup.c:487 src/fe-gtk/setup.c:517
+#: src/fe-gtk/setup.c:499 src/fe-gtk/setup.c:529
 msgid "Chat window"
 msgstr "Прозореца за разговори"
 
-#: src/fe-gtk/setup.c:488 src/fe-gtk/setup.c:518
+#: src/fe-gtk/setup.c:500 src/fe-gtk/setup.c:530
 msgid "Auto Copy Behavior"
 msgstr ""
 
-#: src/fe-gtk/setup.c:489 src/fe-gtk/setup.c:519
+#: src/fe-gtk/setup.c:501 src/fe-gtk/setup.c:531
 msgid "Automatically copy selected text"
 msgstr ""
 
-#: src/fe-gtk/setup.c:490 src/fe-gtk/setup.c:520
+#: src/fe-gtk/setup.c:502 src/fe-gtk/setup.c:532
 msgid ""
 "Copy selected text to clipboard when left mouse button is released. "
 "Otherwise, CONTROL-SHIFT-C will copy the selected text to the clipboard."
 msgstr ""
 
-#: src/fe-gtk/setup.c:493 src/fe-gtk/setup.c:523
+#: src/fe-gtk/setup.c:505 src/fe-gtk/setup.c:535
 msgid "Automatically include time stamps"
 msgstr ""
 
-#: src/fe-gtk/setup.c:494 src/fe-gtk/setup.c:524
+#: src/fe-gtk/setup.c:506 src/fe-gtk/setup.c:536
 msgid ""
 "Automatically include time stamps in copied lines of text. Otherwise, "
 "include time stamps if the SHIFT key is held down while selecting."
 msgstr ""
 
-#: src/fe-gtk/setup.c:496 src/fe-gtk/setup.c:526
+#: src/fe-gtk/setup.c:508 src/fe-gtk/setup.c:538
 msgid "Automatically include color information"
 msgstr ""
 
-#: src/fe-gtk/setup.c:497 src/fe-gtk/setup.c:527
+#: src/fe-gtk/setup.c:509 src/fe-gtk/setup.c:539
 msgid ""
 "Automatically include color information in copied lines of text.  Otherwise,"
 " include color information if the CONTROL key is held down while selecting."
 msgstr ""
 
-#: src/fe-gtk/setup.c:513
+#: src/fe-gtk/setup.c:525
 msgid "Allow only one instance of HexChat to run"
 msgstr ""
 
-#: src/fe-gtk/setup.c:537 src/fe-gtk/setup.c:1891
+#: src/fe-gtk/setup.c:549 src/fe-gtk/setup.c:1900
 msgid "Logging"
 msgstr "Записване на разговори"
 
-#: src/fe-gtk/setup.c:538
+#: src/fe-gtk/setup.c:550
 msgid "Display scrollback from previous session"
 msgstr ""
 
-#: src/fe-gtk/setup.c:540
-msgid "Strip colors when displaying scrollback"
-msgstr ""
-
-#: src/fe-gtk/setup.c:542
+#: src/fe-gtk/setup.c:551
 msgid "Enable logging of conversations to disk"
 msgstr ""
 
-#: src/fe-gtk/setup.c:543
+#: src/fe-gtk/setup.c:552
 msgid "Log filename:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:544
+#: src/fe-gtk/setup.c:553
 #, c-format
 msgid "%s=Server %c=Channel %n=Network."
 msgstr ""
 
-#: src/fe-gtk/setup.c:547
+#: src/fe-gtk/setup.c:556
 msgid "Insert timestamps in logs"
 msgstr "Вмъква времето на репликите\nв записаните разговори(логовете)"
 
-#: src/fe-gtk/setup.c:548
+#: src/fe-gtk/setup.c:557
 msgid "Log timestamp format:"
 msgstr "Формат на отбелязване на времето:"
 
-#: src/fe-gtk/setup.c:555
+#: src/fe-gtk/setup.c:564
 msgid "URLs"
 msgstr ""
 
-#: src/fe-gtk/setup.c:556
+#: src/fe-gtk/setup.c:565
 msgid "Enable logging of URLs to disk"
 msgstr ""
 
-#: src/fe-gtk/setup.c:557
+#: src/fe-gtk/setup.c:566
 msgid "Enable URL grabber"
 msgstr ""
 
-#: src/fe-gtk/setup.c:558
+#: src/fe-gtk/setup.c:567
 msgid "Maximum number of URLs to grab:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:565
+#: src/fe-gtk/setup.c:574
 msgid "(Disabled)"
 msgstr "(изключено)"
 
-#: src/fe-gtk/setup.c:566
+#: src/fe-gtk/setup.c:575
 msgid "Wingate"
 msgstr "Wingate"
 
-#: src/fe-gtk/setup.c:567
+#: src/fe-gtk/setup.c:576
 msgid "Socks4"
 msgstr "Socks4"
 
-#: src/fe-gtk/setup.c:568
+#: src/fe-gtk/setup.c:577
 msgid "Socks5"
 msgstr "Socks5"
 
-#: src/fe-gtk/setup.c:569
+#: src/fe-gtk/setup.c:578
 msgid "HTTP"
 msgstr "HTTP"
 
-#: src/fe-gtk/setup.c:571
+#: src/fe-gtk/setup.c:580
 msgid "MS Proxy (ISA)"
 msgstr ""
 
-#: src/fe-gtk/setup.c:574
+#: src/fe-gtk/setup.c:583
 msgid "Auto"
 msgstr ""
 
-#: src/fe-gtk/setup.c:581
+#: src/fe-gtk/setup.c:590
 msgid "All Connections"
 msgstr ""
 
-#: src/fe-gtk/setup.c:582
+#: src/fe-gtk/setup.c:591
 msgid "IRC Server Only"
 msgstr ""
 
-#: src/fe-gtk/setup.c:583
+#: src/fe-gtk/setup.c:592
 msgid "DCC Get Only"
 msgstr ""
 
-#: src/fe-gtk/setup.c:589
+#: src/fe-gtk/setup.c:598
 msgid "Your Address"
 msgstr "Вашият адрес"
 
-#: src/fe-gtk/setup.c:590
+#: src/fe-gtk/setup.c:599
 msgid "Bind to:"
 msgstr "Вързване към:"
 
-#: src/fe-gtk/setup.c:591
+#: src/fe-gtk/setup.c:600
 msgid "Only useful for computers with multiple addresses."
 msgstr ""
 
-#: src/fe-gtk/setup.c:593
+#: src/fe-gtk/setup.c:602
 msgid "Proxy Server"
 msgstr "Прокси сървър"
 
-#: src/fe-gtk/setup.c:594
+#: src/fe-gtk/setup.c:603
 msgid "Hostname:"
 msgstr "Хост:"
 
-#: src/fe-gtk/setup.c:595
+#: src/fe-gtk/setup.c:604
 msgid "Port:"
 msgstr "Порт:"
 
-#: src/fe-gtk/setup.c:596
+#: src/fe-gtk/setup.c:605
 msgid "Type:"
 msgstr "Вид:"
 
-#: src/fe-gtk/setup.c:597
+#: src/fe-gtk/setup.c:606
 msgid "Use proxy for:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:599
+#: src/fe-gtk/setup.c:608
 msgid "Proxy Authentication"
 msgstr ""
 
-#: src/fe-gtk/setup.c:601
+#: src/fe-gtk/setup.c:610
 msgid "Use Authentication (MS Proxy, HTTP or Socks5 only)"
 msgstr ""
 
-#: src/fe-gtk/setup.c:603
+#: src/fe-gtk/setup.c:612
 msgid "Use Authentication (HTTP or Socks5 only)"
 msgstr ""
 
-#: src/fe-gtk/setup.c:605
+#: src/fe-gtk/setup.c:614
 msgid "Username:"
 msgstr "Потребител:"
 
-#: src/fe-gtk/setup.c:606
+#: src/fe-gtk/setup.c:615
 msgid "Password:"
 msgstr "Парола:"
 
-#: src/fe-gtk/setup.c:1037
+#: src/fe-gtk/setup.c:1046
 msgid "Select an Image File"
 msgstr "Избор на файл с Изображение"
 
-#: src/fe-gtk/setup.c:1072
+#: src/fe-gtk/setup.c:1081
 msgid "Select Download Folder"
 msgstr ""
 
-#: src/fe-gtk/setup.c:1081
+#: src/fe-gtk/setup.c:1090
 msgid "Select font"
 msgstr "Избор на шрифт"
 
-#: src/fe-gtk/setup.c:1181
+#: src/fe-gtk/setup.c:1190
 msgid "Browse..."
 msgstr "Разглеждане..."
 
-#: src/fe-gtk/setup.c:1319
+#: src/fe-gtk/setup.c:1328
 msgid "Mark identified users with:"
 msgstr "Маркиране на регистрираните потребители с:"
 
-#: src/fe-gtk/setup.c:1321
+#: src/fe-gtk/setup.c:1330
 msgid "Mark not-identified users with:"
 msgstr "Маркиране на нерегистрираните потребители с:"
 
-#: src/fe-gtk/setup.c:1328
+#: src/fe-gtk/setup.c:1337
 msgid "Open Data Folder"
 msgstr ""
 
-#: src/fe-gtk/setup.c:1382
+#: src/fe-gtk/setup.c:1391
 msgid "Select color"
 msgstr "Избор на цвят"
 
-#: src/fe-gtk/setup.c:1462
+#: src/fe-gtk/setup.c:1471
 msgid "Text Colors"
 msgstr "Цветове за текста"
 
-#: src/fe-gtk/setup.c:1464
+#: src/fe-gtk/setup.c:1473
 msgid "mIRC colors:"
 msgstr "Цветове на mIRC:"
 
-#: src/fe-gtk/setup.c:1472
+#: src/fe-gtk/setup.c:1481
 msgid "Local colors:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:1480 src/fe-gtk/setup.c:1485
+#: src/fe-gtk/setup.c:1489 src/fe-gtk/setup.c:1494
 msgid "Foreground:"
 msgstr "Цвят:"
 
-#: src/fe-gtk/setup.c:1481 src/fe-gtk/setup.c:1486
+#: src/fe-gtk/setup.c:1490 src/fe-gtk/setup.c:1495
 msgid "Background:"
 msgstr "Фон:"
 
-#: src/fe-gtk/setup.c:1483
+#: src/fe-gtk/setup.c:1492
 msgid "Selected Text"
 msgstr ""
 
-#: src/fe-gtk/setup.c:1488
+#: src/fe-gtk/setup.c:1497
 msgid "Interface Colors"
 msgstr "Цветовете на интерфейса"
 
-#: src/fe-gtk/setup.c:1490
+#: src/fe-gtk/setup.c:1499
 msgid "New data:"
 msgstr "Нови данни:"
 
-#: src/fe-gtk/setup.c:1491
+#: src/fe-gtk/setup.c:1500
 msgid "Marker line:"
 msgstr "Отбелязваща линия:"
 
-#: src/fe-gtk/setup.c:1492
+#: src/fe-gtk/setup.c:1501
 msgid "New message:"
 msgstr "Ново съобщение:"
 
-#: src/fe-gtk/setup.c:1493
+#: src/fe-gtk/setup.c:1502
 msgid "Away user:"
 msgstr "Липсващ потребител:"
 
-#: src/fe-gtk/setup.c:1494
+#: src/fe-gtk/setup.c:1503
 msgid "Highlight:"
 msgstr "Осветявания:"
 
-#: src/fe-gtk/setup.c:1496
+#: src/fe-gtk/setup.c:1505
 msgid "Spell checker:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:1499
+#: src/fe-gtk/setup.c:1508
 msgid "Color Stripping"
 msgstr ""
 
-#: src/fe-gtk/setup.c:1605 src/fe-gtk/textgui.c:389
+#: src/fe-gtk/setup.c:1614 src/fe-gtk/textgui.c:389
 msgid "Event"
 msgstr "Събитие"
 
-#: src/fe-gtk/setup.c:1611
+#: src/fe-gtk/setup.c:1620
 msgid "Sound file"
 msgstr "Звуков файл"
 
-#: src/fe-gtk/setup.c:1646
+#: src/fe-gtk/setup.c:1655
 msgid "Select a sound file"
 msgstr "Избор на звуков файл"
 
-#: src/fe-gtk/setup.c:1718
+#: src/fe-gtk/setup.c:1727
 msgid "Sound playing method:"
 msgstr "Метод за пускане на звуци:"
 
-#: src/fe-gtk/setup.c:1726
+#: src/fe-gtk/setup.c:1735
 msgid "External sound playing _program:"
 msgstr "Външна програма за пускане на звуци:"
 
-#: src/fe-gtk/setup.c:1744
+#: src/fe-gtk/setup.c:1753
 msgid "_External program"
 msgstr "_Външни програми"
 
-#: src/fe-gtk/setup.c:1754
+#: src/fe-gtk/setup.c:1763
 msgid "_Automatic"
 msgstr "_Автоматично"
 
-#: src/fe-gtk/setup.c:1767
+#: src/fe-gtk/setup.c:1776
 msgid "Sound files _directory:"
 msgstr "Папка със звуковите файлове:"
 
-#: src/fe-gtk/setup.c:1806
+#: src/fe-gtk/setup.c:1815
 msgid "Sound file:"
 msgstr "Звуков файл:"
 
-#: src/fe-gtk/setup.c:1821
+#: src/fe-gtk/setup.c:1830
 msgid "_Browse..."
 msgstr "_Разглеждане..."
 
-#: src/fe-gtk/setup.c:1832
+#: src/fe-gtk/setup.c:1841
 msgid "_Play"
 msgstr "_Изпълнение"
 
-#: src/fe-gtk/setup.c:1881
+#: src/fe-gtk/setup.c:1890
 msgid "Interface"
 msgstr "Интерфейс"
 
-#: src/fe-gtk/setup.c:1882
+#: src/fe-gtk/setup.c:1891
 msgid "Appearance"
 msgstr ""
 
-#: src/fe-gtk/setup.c:1883
+#: src/fe-gtk/setup.c:1892
 msgid "Input box"
 msgstr "Поле за писане"
 
-#: src/fe-gtk/setup.c:1884
+#: src/fe-gtk/setup.c:1893
 msgid "User list"
 msgstr "Списък с потребителите"
 
-#: src/fe-gtk/setup.c:1885
+#: src/fe-gtk/setup.c:1894
 msgid "Channel switcher"
 msgstr ""
 
-#: src/fe-gtk/setup.c:1886
+#: src/fe-gtk/setup.c:1895
 msgid "Colors"
 msgstr "Цветове"
 
-#: src/fe-gtk/setup.c:1888
+#: src/fe-gtk/setup.c:1897
 msgid "Chatting"
 msgstr "Разговаряне"
 
-#: src/fe-gtk/setup.c:1892
+#: src/fe-gtk/setup.c:1901
 msgid "Sound"
 msgstr "Звук"
 
-#: src/fe-gtk/setup.c:1893
+#: src/fe-gtk/setup.c:1902
 msgid "Advanced"
 msgstr "Допълнителни"
 
-#: src/fe-gtk/setup.c:1896
+#: src/fe-gtk/setup.c:1905
 msgid "Network setup"
 msgstr "Настройки на мрежата"
 
-#: src/fe-gtk/setup.c:1897
+#: src/fe-gtk/setup.c:1906
 msgid "File transfers"
 msgstr "Файлови трансфери"
 
-#: src/fe-gtk/setup.c:2028
+#: src/fe-gtk/setup.c:2037
 msgid "Categories"
 msgstr "Категории"
 
-#: src/fe-gtk/setup.c:2224
+#: src/fe-gtk/setup.c:2240
 msgid ""
 "You cannot place the tree on the top or bottom!\n"
 "Please change to the <b>Tabs</b> layout in the <b>View</b> menu first."
 msgstr ""
 
-#: src/fe-gtk/setup.c:2251
+#: src/fe-gtk/setup.c:2267
 msgid "Invalid time stamp format! See the strftime MSDN article for details."
 msgstr ""
 
-#: src/fe-gtk/setup.c:2258
+#: src/fe-gtk/setup.c:2274
 msgid "Some settings were changed that require a restart to take full effect."
 msgstr "Някои от променените настройки изискват рестартиране на програмата преди да влезнат в действие."
 
-#: src/fe-gtk/setup.c:2266
+#: src/fe-gtk/setup.c:2282
 msgid ""
 "*WARNING*\n"
 "Auto accepting DCC to your home directory\n"
@@ -5667,7 +5709,7 @@ msgid ""
 "Someone could send you a .bash_profile"
 msgstr "*ВНИМАНИЕ*\nАвтоматично приемане на DCC във вашата домашна папка\nможе да бъде опасно и използваемо от други. Пример:\nНякой може да ви прати .bash_profile"
 
-#: src/fe-gtk/setup.c:2299
+#: src/fe-gtk/setup.c:2315
 msgid ": Preferences"
 msgstr ""
 
@@ -5724,7 +5766,7 @@ msgstr "Копиране"
 msgid "Save list to a file"
 msgstr "Запазване на списък във файл"
 
-#: src/fe-gtk/userlistgui.c:120
+#: src/fe-gtk/userlistgui.c:121
 #, c-format
 msgid "%d ops, %d total"
 msgstr "%d оператора, %d общо"

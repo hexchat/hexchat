@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: HexChat\n"
 "Report-Msgid-Bugs-To: www.hexchat.org\n"
-"POT-Creation-Date: 2012-10-20 20:30+0200\n"
-"PO-Revision-Date: 2012-10-20 18:32+0000\n"
+"POT-Creation-Date: 2012-10-22 17:37+0200\n"
+"PO-Revision-Date: 2012-10-22 15:40+0000\n"
 "Last-Translator: bviktor <bviktor@hexchat.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -17,15 +17,15 @@ msgstr ""
 "Language: kn\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: src/common/cfgfiles.c:785
+#: src/common/cfgfiles.c:778
 msgid "I'm busy"
 msgstr "ನಾನು ಕಾರ್ಯನಿರತವಾಗಿದ್ದೇನೆ"
 
-#: src/common/cfgfiles.c:786
+#: src/common/cfgfiles.c:779
 msgid "Leaving"
 msgstr "ಹೊರಹೋಗಲಾಗುತ್ತಿದೆ"
 
-#: src/common/cfgfiles.c:837
+#: src/common/cfgfiles.c:828
 msgid ""
 "* Running IRC as root is stupid! You should\n"
 "  create a User Account and use that to login.\n"
@@ -66,7 +66,7 @@ msgstr "%s ಅನ್ನು ನಿಲುಕಿಸಕೊಳ್ಳಲು ಸಾಧ�
 msgid "Error"
 msgstr "ದೋಷ"
 
-#: src/common/dcc.c:2383
+#: src/common/dcc.c:2379
 #, c-format
 msgid "%s is offering \"%s\". Do you want to accept?"
 msgstr "%s ರವರು \"%s\" ಅನ್ನು ನೀಡುತ್ತಿದ್ದಾರೆ. ನೀವು ಸ್ವೀಕರಿಸಲು ಬಯಸುತ್ತೀರೆ?"
@@ -1187,13 +1187,13 @@ msgid "Nick of person who changed the topic"
 msgstr "ವಿಷಯವನ್ನು ಬದಲಾಯಿಸಿದ ವ್ಯಕ್ತಿಯ ಅಡ್ಡಹೆಸರು"
 
 #: src/common/text.c:1178 src/common/text.c:1184 src/fe-gtk/chanlist.c:788
-#: src/fe-gtk/chanlist.c:891 src/fe-gtk/setup.c:348
+#: src/fe-gtk/chanlist.c:891 src/fe-gtk/setup.c:360
 msgid "Topic"
 msgstr "ವಿಷಯ"
 
 #: src/common/text.c:1179 src/common/text.c:1183 src/common/text.c:1620
 #: src/fe-gtk/chanlist.c:786 src/fe-gtk/ignoregui.c:174
-#: src/fe-gtk/servlistgui.c:891
+#: src/fe-gtk/servlistgui.c:892
 msgid "Channel"
 msgstr "ಚಾನಲ್"
 
@@ -1438,7 +1438,8 @@ msgid "Channel Name"
 msgstr "ಚಾನಲ್ ಹೆಸರು"
 
 #: src/common/text.c:1414 src/common/text.c:1420 src/common/text.c:1578
-#: src/fe-gtk/menu.c:1460 src/fe-gtk/menu.c:1648 src/fe-gtk/textgui.c:390
+#: src/fe-gtk/menu.c:1460 src/fe-gtk/menu.c:1648 src/fe-gtk/setup.c:246
+#: src/fe-gtk/textgui.c:390
 msgid "Text"
 msgstr "ಪಠ್ಯ"
 
@@ -1475,7 +1476,7 @@ msgstr "IP"
 msgid "Port"
 msgstr "ಸಂಪರ್ಕಸ್ಥಾನ"
 
-#: src/common/text.c:1457 src/fe-gtk/notifygui.c:138 src/fe-gtk/setup.c:1895
+#: src/common/text.c:1457 src/fe-gtk/notifygui.c:138 src/fe-gtk/setup.c:1904
 msgid "Network"
 msgstr "ಜಾಲಬಂಧ"
 
@@ -3059,7 +3060,7 @@ msgstr "ಕಡತ"
 msgid "ETA"
 msgstr "ETA"
 
-#: src/fe-gtk/dccgui.c:792 src/fe-gtk/menu.c:1649
+#: src/fe-gtk/dccgui.c:792 src/fe-gtk/menu.c:1649 src/fe-gtk/setup.c:247
 msgid "Both"
 msgstr "ಎರಡೂ"
 
@@ -3148,11 +3149,11 @@ msgstr "ರದ್ದುಗೊಳಿಸಿ"
 msgid "Save"
 msgstr "ಉಳಿಸಿ"
 
-#: src/fe-gtk/editlist.c:369 src/fe-gtk/fkeys.c:771
+#: src/fe-gtk/editlist.c:369 src/fe-gtk/fkeys.c:767
 msgid "Add New"
 msgstr "ಹೊಸತನ್ನು ತೋರಿಸು"
 
-#: src/fe-gtk/editlist.c:373 src/fe-gtk/fkeys.c:776 src/fe-gtk/ignoregui.c:381
+#: src/fe-gtk/editlist.c:373 src/fe-gtk/fkeys.c:772 src/fe-gtk/ignoregui.c:381
 msgid "Delete"
 msgstr "ಅಳಿಸಿಹಾಕಿ"
 
@@ -3188,7 +3189,7 @@ msgstr "ಬಳಕೆದಾರ ಸಂರಚನಾ ಕೋಶವನ್ನು ತೋ
 msgid "Open an irc://server:port/channel URL"
 msgstr "ಒಂದು irc://server:port/channel URL ಅನ್ನು ತೆರೆ"
 
-#: src/fe-gtk/fe-gtk.c:139 src/fe-gtk/setup.c:286
+#: src/fe-gtk/fe-gtk.c:139 src/fe-gtk/setup.c:297
 msgid "Execute command:"
 msgstr "ಈ ಆಜ್ಞೆಯನ್ನು ಚಲಾಯಿಸು:"
 
@@ -3230,7 +3231,7 @@ msgstr "%d ಬೈಟ್‌ಗಳು"
 msgid "Network send queue: %d bytes"
 msgstr "ಜಾಲಬಂಧ ಕಳುಹಿಸುವ ಸರತಿ: %d ಬೈಟ್‌ಗಳು"
 
-#: src/fe-gtk/fkeys.c:165
+#: src/fe-gtk/fkeys.c:161
 msgid ""
 "The Run Command action runs the data in Data 1 as if it has been typed "
 "into the entry box where you pressed the key sequence. Thus it can contain "
@@ -3240,148 +3241,148 @@ msgid ""
 "in the actual text run then enter \\\\"
 msgstr "ಆಜ್ಞೆಯನ್ನು ಚಲಾಯಿಸು  ಕ್ರಿಯೆಯು ನೀವು ಕೀಲಿ ಅನುಕ್ರಮವನ್ನು ಒತ್ತಿದ ಜಾಗದಲ್ಲಿನ ನಮೂದು ಚೌಕದಲ್ಲಿ ಅದನ್ನು ನಮೂದಿಸಿದಂತೆ ದತ್ತಾಂಶವನ್ನು ದತ್ತಾಂಶ 1 ರಲ್ಲಿ ಚಲಾಯಿಸುತ್ತದೆ. ಹಾಗಾಗಿ ಅದು ಪಠ್ಯವನ್ನು (ಇದನ್ನು ಚಾನಲ್/ವ್ಯಕ್ತಿಗೆ ಕಳುಹಿಸಲಾಗುತ್ತದೆ), ಆಜ್ಞೆಗಳು ಅಥವ ಬಳಕೆದಾರ ಆಜ್ಞೆಗಳನ್ನು ಹೊಂದಿರುತ್ತದೆ. ದತ್ತಾಂಶ 1 ರಲ್ಲಿನ ಎಲ್ಲಾ \\n ಅಕ್ಷರಗಳನ್ನು ಒಂದಕ್ಕಿಂತ ಹೆಚ್ಚಿನ ಆಜ್ಞೆಗಳನ್ನು ಚಲಾಯಿಸುವಂತೆ ಪ್ರತ್ಯೇಕ ಆಜ್ಞೆಯನ್ನು deliminate ಮಾಡಲು ಬಳಸಲಾಗುತ್ತದೆ. ನಿಜವಾದ ಪಠ್ಯವನ್ನು ಚಲಾಯಿಸುವಲ್ಲಿ \\ ಬೇಕಿದ್ದಲ್ಲಿ \\\\ ಅನ್ನು ನಮೂದಿಸಿ"
 
-#: src/fe-gtk/fkeys.c:167
+#: src/fe-gtk/fkeys.c:163
 msgid ""
 "The Change Page command switches between pages in the notebook. Set Data 1"
 " to the page you want to switch to. If Data 2 is set to anything then the "
 "switch will be relative to the current position"
 msgstr "Change Page ಆಜ್ಞೆಯು ನೋಟ್‌ಬುಕ್‌ನಲ್ಲಿ ಪುಟಗಳ ನಡುವೆ ಬದಲಾಯಿಸುತ್ತದೆ. ನೀವು ಯಾವ ಪುಟಕ್ಕೆ ಬದಲಾಯಿಸಲು ಬಯಸುತ್ತೀರೊ ಅದಕ್ಕೆ  ದತ್ತಾಂಶ 1 ಅನ್ನು ಹೊಂದಿಸಿ. ದತ್ತಾಂಶ 2 ಅನ್ನು ಯಾವುದಕ್ಕಾದರೂ ಹೊಂದಿಸಿದಲ್ಲಿ ಬದಲಾವಣೆಯು ಪ್ರಸಕ್ತ ಸ್ಥಾನಕ್ಕೆ ಅನುಗುಣವಾಗಿ ಆಗುತ್ತದೆ."
 
-#: src/fe-gtk/fkeys.c:169
+#: src/fe-gtk/fkeys.c:165
 msgid ""
 "The Insert in Buffer command will insert the contents of Data 1 into the "
 "entry where the key sequence was pressed at the current cursor position"
 msgstr "Insert in Buffer ಆಜ್ಞೆಯು ದತ್ತಾಂಶ 1 ರಲ್ಲಿರುವುದನ್ನು ಪ್ರಸಕ್ತ ತೆರೆಸೂಚಕದ ಸ್ಥಳದಲ್ಲಿ ಒತ್ತಲಾದ ಕೀಲಿ ಅನುಕ್ರಮದ ನಮೂದಿಗೆ ಸೇರಿಸುತ್ತದೆ."
 
-#: src/fe-gtk/fkeys.c:171
+#: src/fe-gtk/fkeys.c:167
 msgid ""
 "The Scroll Page command scrolls the text widget up or down one page or one"
 " line. Set Data 1 to either Up, Down, +1 or -1."
 msgstr "Scroll Page ಆಜ್ಞೆಯು ಪಠ್ಯ ವಿಡ್ಗೆಟ್ ಅನ್ನು ಒಂದು ಪುಟದ ಅಥವ ಒಂದು ಸಾಲಿನಕ ಮೇಲಕ್ಕೆ ಅಥವ ಕೆಳಕ್ಕೆ ಚಲಿಸುವಂತೆ ಮಾಡುತ್ತದೆ. ದತ್ತಾಂಶ 1 ಅನ್ನು ಮೇಲಕ್ಕೆ, ಕೆಳಕ್ಕೆ +1 ಅಥವ -1 ಗೆ ಹೊಂದಿಸಿ."
 
-#: src/fe-gtk/fkeys.c:173
+#: src/fe-gtk/fkeys.c:169
 msgid ""
 "The Set Buffer command sets the entry where the key sequence was entered "
 "to the contents of Data 1"
 msgstr "Set Buffer ಆಜ್ಞೆಯು ದತ್ತಾಂಶ 1 ಕ್ಕೆ ನಮೂದಿಸಲಾದ ವಿಷಯಕ್ಕೆ ನಮೂದಿಸಲಾದ ಕೀಲಿ ಅನುಕ್ರಮಕ್ಕೆ ನಮೂದನ್ನು ಹೊಂದಿಸುತ್ತದೆ"
 
-#: src/fe-gtk/fkeys.c:175
+#: src/fe-gtk/fkeys.c:171
 msgid ""
 "The Last Command command sets the entry to contain the last command "
 "entered - the same as pressing up in a shell"
 msgstr "ಕೊನೆಯ ಆಜ್ಞೆ ಆಜ್ಞೆಯು ಕೊನೆಯ ಬಾರಿಗೆ ನಮೂದಿಸಲಾದ ಆಜ್ಞೆಯನ್ನು ನಮೂದಿನಲ್ಲಿ ಇರುವಂತೆ ಹೊಂದಿಸುತ್ತದೆ - ಶೆಲ್‌ನಲ್ಲಿ ಮಾಡುವ ರೀತಿಯಲ್ಲಿಯೆ"
 
-#: src/fe-gtk/fkeys.c:177
+#: src/fe-gtk/fkeys.c:173
 msgid ""
 "The Next Command command sets the entry to contain the next command "
 "entered - the same as pressing down in a shell"
 msgstr "ಕೊನೆಯ ಆಜ್ಞೆ ಆಜ್ಞೆಯು ಮುಂದಿನ ಆಜ್ಞೆಯನ್ನು ನಮೂದಿನಲ್ಲಿ ಇರುವಂತೆ ಹೊಂದಿಸುತ್ತದೆ - ಶೆಲ್‌ನಲ್ಲಿ ಮಾಡುವ ರೀತಿಯಲ್ಲಿಯೆ"
 
-#: src/fe-gtk/fkeys.c:179
+#: src/fe-gtk/fkeys.c:175
 msgid ""
 "This command changes the text in the entry to finish an incomplete nickname "
 "or command. If Data 1 is set then double-tabbing in a string will select the"
 " last nick, not the next"
 msgstr "ಈ ಆಜ್ಞೆಯು ಅಪೂರ್ಣಗೊಂಡ ಅಡ್ಡಹೆಸರು ಅಥವ ಆಜ್ಞೆಯನ್ನು ಪೂರ್ಣಗೊಳಿಸುವ ನಮೂದಿನ ಪಠ್ಯವನ್ನು ಬದಲಾಯಿಸುತ್ತದೆ. ದತ್ತಾಂಶ 1 ಅನ್ನು ಹೊಂದಿಸಲಾಗಿದ್ದಲ್ಲಿ, ಎರಡು ಬಾರಿ ಟ್ಯಾಬ್ ಅನ್ನು ಒತ್ತುವುದರಿಂದ ಕೊನೆಯ ಬಾರಿಯ ಅಡ್ಡಹೆಸರನ್ನು ಆರಿಸುತ್ತದೆಯೆ ಹೊರತು ಮುಂದಿನದ್ದಲ್ಲ"
 
-#: src/fe-gtk/fkeys.c:181
+#: src/fe-gtk/fkeys.c:177
 msgid ""
 "This command scrolls up and down through the list of nicks. If Data 1 is set"
 " to anything it will scroll up, else it scrolls down"
 msgstr "ಈ ಆಜ್ಞೆಯು ಅಡ್ಡಹೆಸರುಗಳ ಪಟ್ಟಿಯಲ್ಲಿ ಮೇಲಕ್ಕೆ ಹಾಗು ಕೆಳಕ್ಕೆ ಚಲಿಸುತ್ತದೆ. ದತ್ತಾಂಶ 1 ನ್ನು ಯಾವುದಕ್ಕಾದರೂ ಹೊಂದಿಸಿದಲ್ಲಿ ಇದು ಮೇಲಕ್ಕೆ ಚಲಿಸುತ್ತದೆ ಇಲ್ಲದೆ ಹೋದಲ್ಲಿ ಕೆಳಕ್ಕೆ ಚಲಿಸುತ್ತದೆ"
 
-#: src/fe-gtk/fkeys.c:183
+#: src/fe-gtk/fkeys.c:179
 msgid ""
 "This command checks the last word entered in the entry against the replace "
 "list and replaces it if it finds a match"
 msgstr "ಈ ಆಜ್ಞೆಯು ಬದಲಾಯಿಸುವ ಪಟ್ಟಿಯಲ್ಲಿನ ನಮೂದಿನಲ್ಲಿ ಕಡೆಯದಾಗಿ ನಮೂದಿಸಲಾದ ಹುಡುಕುತ್ತದೆ ಹಾಗು ತಾಳೆಯಾಗುವುದು ಕಂಡು ಬಂದಲ್ಲಿ ಬದಲಾಯಿಸುತ್ತದೆ"
 
-#: src/fe-gtk/fkeys.c:185
+#: src/fe-gtk/fkeys.c:181
 msgid "This command moves the front tab left by one"
 msgstr "ಈ ಆಜ್ಞೆಯು ಎದುರಿನ ಹಾಳೆಯನ್ನು ಎಡಕ್ಕೆ ಒಂದು ಹಂತ ಸ್ಥಳಾಂತರಿಸುತ್ತದೆ"
 
-#: src/fe-gtk/fkeys.c:187
+#: src/fe-gtk/fkeys.c:183
 msgid "This command moves the front tab right by one"
 msgstr "ಈ ಆಜ್ಞೆಯು ಎದುರಿನ ಹಾಳೆಯನ್ನು ಬಲಕ್ಕೆ ಒಂದು ಹಂತ ಸ್ಥಳಾಂತರಿಸುತ್ತದೆ"
 
-#: src/fe-gtk/fkeys.c:189
+#: src/fe-gtk/fkeys.c:185
 msgid "This command moves the current tab family to the left"
 msgstr "ಈ ಆಜ್ಞೆಯು ಪ್ರಸಕ್ತ ಹಾಳೆಯ ಸಂಕುಲವನ್ನು ಎಡಕ್ಕೆ ಒಂದು ಹಂತ ಸ್ಥಳಾಂತರಿಸುತ್ತದೆ"
 
-#: src/fe-gtk/fkeys.c:191
+#: src/fe-gtk/fkeys.c:187
 msgid "This command moves the current tab family to the right"
 msgstr "ಈ ಆಜ್ಞೆಯು ಪ್ರಸಕ್ತ ಹಾಳೆಯ ಸಂಕುಲವನ್ನು ಬಲಕ್ಕೆ ಒಂದು ಹಂತ ಸ್ಥಳಾಂತರಿಸುತ್ತದೆ"
 
-#: src/fe-gtk/fkeys.c:193
+#: src/fe-gtk/fkeys.c:189
 msgid "Push input line into history but doesn't send to server"
 msgstr "ಇನ್‌ಪುಟ್ ಸಾಲನ್ನು ಇತಿಹಾಸಕ್ಕೆ ತಳ್ಳುತ್ತದೆ ಆದರೆ ಪರಿಚಾರಕಕ್ಕೆ ಕಳುಹಿಸುವುದಿಲ್ಲ"
 
-#: src/fe-gtk/fkeys.c:204
+#: src/fe-gtk/fkeys.c:200
 msgid "There was an error loading key bindings configuration"
 msgstr "ಕೀಲಿ ಬೈಂಡಿಂಗ್‌ಗಳ ಸಂರಚನೆಯನ್ನು ಲೋಡ್ ಮಾಡುವಲ್ಲಿ ಒಂದು ದೋಷ ಉಂಟಾಗಿದೆ"
 
-#: src/fe-gtk/fkeys.c:456 src/fe-gtk/fkeys.c:457 src/fe-gtk/fkeys.c:458
-#: src/fe-gtk/fkeys.c:459 src/fe-gtk/fkeys.c:749 src/fe-gtk/fkeys.c:755
-#: src/fe-gtk/fkeys.c:760 src/fe-gtk/maingui.c:1608 src/fe-gtk/maingui.c:1724
-#: src/fe-gtk/maingui.c:3231
+#: src/fe-gtk/fkeys.c:452 src/fe-gtk/fkeys.c:453 src/fe-gtk/fkeys.c:454
+#: src/fe-gtk/fkeys.c:455 src/fe-gtk/fkeys.c:745 src/fe-gtk/fkeys.c:751
+#: src/fe-gtk/fkeys.c:756 src/fe-gtk/maingui.c:1616 src/fe-gtk/maingui.c:1732
+#: src/fe-gtk/maingui.c:3239
 msgid "<none>"
 msgstr "<ಏನೂ ಇಲ್ಲ>"
 
-#: src/fe-gtk/fkeys.c:713
+#: src/fe-gtk/fkeys.c:709
 msgid "Mod"
 msgstr "Mod"
 
-#: src/fe-gtk/fkeys.c:714 src/fe-gtk/fkeys.c:809
+#: src/fe-gtk/fkeys.c:710 src/fe-gtk/fkeys.c:805
 msgid "Key"
 msgstr "ಕೀಲಿ"
 
-#: src/fe-gtk/fkeys.c:715
+#: src/fe-gtk/fkeys.c:711
 msgid "Action"
 msgstr "ಕ್ರಿಯೆ"
 
-#: src/fe-gtk/fkeys.c:724
+#: src/fe-gtk/fkeys.c:720
 msgid ": Keyboard Shortcuts"
 msgstr ": ಕೀಲಿಮಣೆ ಶಾರ್ಟ್-ಕಟ್‌ಗಳು"
 
-#: src/fe-gtk/fkeys.c:802
+#: src/fe-gtk/fkeys.c:798
 msgid "Shift"
 msgstr "Shift"
 
-#: src/fe-gtk/fkeys.c:804
+#: src/fe-gtk/fkeys.c:800
 msgid "Alt"
 msgstr "Alt"
 
-#: src/fe-gtk/fkeys.c:806
+#: src/fe-gtk/fkeys.c:802
 msgid "Ctrl"
 msgstr "Ctrl"
 
-#: src/fe-gtk/fkeys.c:813
+#: src/fe-gtk/fkeys.c:809
 msgid "Data 1"
 msgstr "ದತ್ತ 1"
 
-#: src/fe-gtk/fkeys.c:816
+#: src/fe-gtk/fkeys.c:812
 msgid "Data 2"
 msgstr "ದತ್ತ 2"
 
-#: src/fe-gtk/fkeys.c:858
+#: src/fe-gtk/fkeys.c:854
 msgid "Error opening keys config file\n"
 msgstr "ಕೀಲಿಗಳ ಸಂರಚನಾ ಕಡತವನ್ನು ತೆರೆಯುವಾಗ ದೋಷವುಂಟಾಯಿತು\n"
 
-#: src/fe-gtk/fkeys.c:1025
+#: src/fe-gtk/fkeys.c:1021
 #, c-format
 msgid ""
 "Unknown keyname %s in key bindings config file\n"
 "Load aborted, please fix %s/keybindings.conf\n"
 msgstr "ಕೀಲಿ ಬೈಂಡಿಂಗ್ ಸಂರಚನೆಯ ಕಡತದಲ್ಲಿ ಗೊತ್ತಿರದ %s ಎಂಬ ಕೀಲಿಯ ಹೆಸರು\nಲೋಡ್ ಮಾಡುವಿಕೆಯನ್ನು ಸ್ಥಗಿತಗೊಳಿಸಲಾಗಿದೆ, ದಯವಿಟ್ಟು %s/keybindingsconf ಅನ್ನು ಸರಿಪಡಿಸಿ\n"
 
-#: src/fe-gtk/fkeys.c:1063
+#: src/fe-gtk/fkeys.c:1059
 #, c-format
 msgid ""
 "Unknown action %s in key bindings config file\n"
 "Load aborted, Please fix %s/keybindings\n"
 msgstr "ಕೀಲಿ ಬೈಂಡಿಂಗ್ ಸಂರಚನೆಯ ಕಡತದಲ್ಲಿ ಗೊತ್ತಿರದ %s ಎಂಬ ಕ್ರಿಯೆ\nಲೋಡ್ ಮಾಡುವಿಕೆಯನ್ನು ಸ್ಥಗಿತಗೊಳಿಸಲಾಗಿದೆ, ದಯವಿಟ್ಟು %s/keybindingsconf ಅನ್ನು ಸರಿಪಡಿಸಿ\n"
 
-#: src/fe-gtk/fkeys.c:1084
+#: src/fe-gtk/fkeys.c:1080
 #, c-format
 msgid ""
 "Expecting Data line (beginning Dx{:|!}) but got:\n"
@@ -3390,18 +3391,18 @@ msgid ""
 "Load aborted, Please fix %s/keybindings\n"
 msgstr "ದತ್ತಾಂಶದ ಸಾಲನ್ನು ನಿರೀಕ್ಷಿಸಲಾಗಿತ್ತು (Dx{:|!} ಇಂದ ಆರಂಭಗೊಳ್ಳುವ) ಆದರೆ ದೊರಕಿದ್ದು ಇದು:\n%s\n\nದಯವಿಟ್ಟು %s/keybindings.conf ಅನ್ನು ಸರಿಪಡಿಸಿ\n"
 
-#: src/fe-gtk/fkeys.c:1153
+#: src/fe-gtk/fkeys.c:1149
 #, c-format
 msgid ""
 "Key bindings config file is corrupt, load aborted\n"
 "Please fix %s/keybindings.conf\n"
 msgstr "ಕೀಲಿ ಬೈಂಡಿಂಗ್ ಸಂರಚನೆಯ ಕಡತವು ಹಾಳಾಗಿದೆ, ಲೋಡ್ ಮಾಡುವಿಕೆಯನ್ನು ಸ್ಥಗಿತಗೊಳಿಸಲಾಗಿದೆ\nದಯವಿಟ್ಟು %s/keybindings.conf ಅನ್ನು ಸರಿಪಡಿಸಿ\n"
 
-#: src/fe-gtk/gtkutil.c:136
+#: src/fe-gtk/gtkutil.c:138
 msgid "Cannot write to that file."
 msgstr "ಆ ಕಡತಕ್ಕೆ ಬರೆಯಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ."
 
-#: src/fe-gtk/gtkutil.c:138
+#: src/fe-gtk/gtkutil.c:140
 msgid "Cannot read that file."
 msgstr "ಆ ಕಡತವನ್ನು ಓದಲಾಗಿಲ್ಲ."
 
@@ -3409,7 +3410,7 @@ msgstr "ಆ ಕಡತವನ್ನು ಓದಲಾಗಿಲ್ಲ."
 msgid "That mask already exists."
 msgstr "ಆ ಮುಸುಕು ಈಗಾಗಲೇ ಇದೆ."
 
-#: src/fe-gtk/ignoregui.c:175 src/fe-gtk/maingui.c:2105
+#: src/fe-gtk/ignoregui.c:175 src/fe-gtk/maingui.c:2113
 msgid "Private"
 msgstr "ಖಾಸಗಿ"
 
@@ -3516,157 +3517,157 @@ msgstr "ಚಾನಲ್-ಪಟ್ಟಿಯನ್ನು ಪಡೆಯಲು ಒಂ
 msgid "_Always show this dialog after connecting."
 msgstr "ಯಾವಾಗಲೂ ಸಂಪರ್ಕಿತಗೊಂಡ ನಂತರ ಈ ಸಂವಾದವನ್ನು ತೋರಿಸು(_A)."
 
-#: src/fe-gtk/maingui.c:454
+#: src/fe-gtk/maingui.c:456
 msgid "Dialog with"
 msgstr "ಇದರೊಂದಿಗಿನ ಸಂವಾದ"
 
-#: src/fe-gtk/maingui.c:746
+#: src/fe-gtk/maingui.c:754
 #, c-format
 msgid "Topic for %s is: %s"
 msgstr "%s ಗಾಗಿನ ವಿಷಯ %s"
 
-#: src/fe-gtk/maingui.c:751
+#: src/fe-gtk/maingui.c:759
 msgid "No topic is set"
 msgstr "ವಿಷಯವನ್ನು ಗೊತ್ತುಪಡಿಸಿಲ್ಲ"
 
-#: src/fe-gtk/maingui.c:1143
+#: src/fe-gtk/maingui.c:1151
 #, c-format
 msgid ""
 "This server still has %d channels or dialogs associated with it. Close them "
 "all?"
 msgstr "ಈ ಪರಿಚಾರಕವು ಇನ್ನೂ ಸಹ %d ಚಾನಲ್‌ಗಳನ್ನು ಅಥವ ಸಂವಾದಗಳನ್ನು ಹೊಂದಿದೆ. ಎಲ್ಲವನ್ನೂ ಮುಚ್ಚಬೇಕೆ?"
 
-#: src/fe-gtk/maingui.c:1244
+#: src/fe-gtk/maingui.c:1252
 msgid "Quit HexChat?"
 msgstr ""
 
-#: src/fe-gtk/maingui.c:1265
+#: src/fe-gtk/maingui.c:1273
 msgid "Don't ask next time."
 msgstr "ಮುಂದಿನ ಬಾರಿ ಕೇಳಬೇಡ."
 
-#: src/fe-gtk/maingui.c:1271
+#: src/fe-gtk/maingui.c:1279
 #, c-format
 msgid "You are connected to %i IRC networks."
 msgstr "ನೀವು %i IRC ಜಾಲಬಂಧಗಳೊಂದಿಗೆ ಸಂಪರ್ಕಿತಗೊಂಡಿದ್ದೀರಿ."
 
-#: src/fe-gtk/maingui.c:1273
+#: src/fe-gtk/maingui.c:1281
 msgid "Are you sure you want to quit?"
 msgstr "ನೀವು ಖಚಿತಾವಾಗಿಯೂ ನಿರ್ಗಮಿಸಲು ಬಯಸುತ್ತೀರೆ?"
 
-#: src/fe-gtk/maingui.c:1275
+#: src/fe-gtk/maingui.c:1283
 msgid "Some file transfers are still active."
 msgstr "ಕೆಲವು ಕಡತ ವರ್ಗಾವಣೆಗಳು ಇನ್ನೂ ಸಹ ಸಕ್ರಿಯವಾಗಿದೆ."
 
-#: src/fe-gtk/maingui.c:1293
+#: src/fe-gtk/maingui.c:1301
 msgid "_Minimize to Tray"
 msgstr "ಟ್ರೇಗೆ ಕಿರಿದಾಗಿಸು(_M)"
 
-#: src/fe-gtk/maingui.c:1513
+#: src/fe-gtk/maingui.c:1521
 msgid "Insert Attribute or Color Code"
 msgstr "ವೈಶಿಷ್ಟ್ಯವನ್ನು ಅಥವ ಬಣ್ಣದ ಸಂಕೇತವನ್ನು ಸೇರಿಸು"
 
-#: src/fe-gtk/maingui.c:1515
+#: src/fe-gtk/maingui.c:1523
 msgid "<b>Bold</b>"
 msgstr "<b>ಬೋಲ್ಡ್</b>"
 
-#: src/fe-gtk/maingui.c:1516
+#: src/fe-gtk/maingui.c:1524
 msgid "<u>Underline</u>"
 msgstr "<u>ಅಡಿಗೆರೆ ಎಳೆ</u>"
 
-#: src/fe-gtk/maingui.c:1518
+#: src/fe-gtk/maingui.c:1526
 msgid "Normal"
 msgstr "ಸಾಮಾನ್ಯ"
 
-#: src/fe-gtk/maingui.c:1520
+#: src/fe-gtk/maingui.c:1528
 msgid "Colors 0-7"
 msgstr "ಬಣ್ಣಗಳು 0-7"
 
-#: src/fe-gtk/maingui.c:1530
+#: src/fe-gtk/maingui.c:1538
 msgid "Colors 8-15"
 msgstr "ಬಣ್ಣಗಳು 8-15"
 
-#: src/fe-gtk/maingui.c:1573
+#: src/fe-gtk/maingui.c:1581
 msgid "_Settings"
 msgstr "ಸಿದ್ಧತೆಗಳು(_S)"
 
-#: src/fe-gtk/maingui.c:1575
+#: src/fe-gtk/maingui.c:1583
 msgid "_Log to Disk"
 msgstr "ಡಿಸ್ಕಿಗೆ ದಾಖಲಿಸು(_L)"
 
-#: src/fe-gtk/maingui.c:1576
+#: src/fe-gtk/maingui.c:1584
 msgid "_Reload Scrollback"
 msgstr "ಸ್ಕ್ರಾಲ್‌ಬ್ಯಾಕನ್ನು ಮರಳಿ ಲೋಡ್ ಮಾಡು(_R)"
 
-#: src/fe-gtk/maingui.c:1578
+#: src/fe-gtk/maingui.c:1586
 msgid "_Hide Join/Part Messages"
 msgstr "ಸೇರ್ಪಡೆಗೊಂಡ/ಹೊರಕ್ಕೆ ತೆರಳಿದ ಸಂದೇಶಗಳನ್ನು ಅಡಗಿಸು(_H)"
 
-#: src/fe-gtk/maingui.c:1586
+#: src/fe-gtk/maingui.c:1594
 msgid "_Extra Alerts"
 msgstr "ಹೆಚ್ಚುವರಿ ಎಚ್ಚರಿಕೆಗಳು(_E)"
 
-#: src/fe-gtk/maingui.c:1588
+#: src/fe-gtk/maingui.c:1596
 msgid "Beep on _Message"
 msgstr "ಸಂದೇಶ ಬಂದಾಗ ಬೀಪ್ ಮಾಡು(_M)"
 
-#: src/fe-gtk/maingui.c:1592
+#: src/fe-gtk/maingui.c:1600
 msgid "Blink Tray _Icon"
 msgstr "ಟ್ರೇ ಚಿಹ್ನೆಯನ್ನು ಮಿನುಗಿಸು(_I)"
 
-#: src/fe-gtk/maingui.c:1595
+#: src/fe-gtk/maingui.c:1603
 msgid "Blink Task _Bar"
 msgstr "ಕಾರ್ಯ ಪಟ್ಟಿಯನ್ನು ಮಿನುಗಿಸು(_B)"
 
-#: src/fe-gtk/maingui.c:1633 src/fe-gtk/menu.c:2182
+#: src/fe-gtk/maingui.c:1641 src/fe-gtk/menu.c:2182
 msgid "_Detach"
 msgstr "ಕಳಚು(_D)"
 
-#: src/fe-gtk/maingui.c:1635 src/fe-gtk/menu.c:2183 src/fe-gtk/menu.c:2188
+#: src/fe-gtk/maingui.c:1643 src/fe-gtk/menu.c:2183 src/fe-gtk/menu.c:2188
 #: src/fe-gtk/plugingui.c:257 src/fe-gtk/search.c:234
 msgid "_Close"
 msgstr "ಮುಚ್ಚು(_C)"
 
-#: src/fe-gtk/maingui.c:1973 src/fe-gtk/maingui.c:2079
+#: src/fe-gtk/maingui.c:1981 src/fe-gtk/maingui.c:2087
 msgid "User limit must be a number!\n"
 msgstr "ಬಳಕೆದಾರರ ಮಿತಿಯು ಒಂದು ಸಂಖ್ಯೆಯಾಗಿರಬೇಕು!\n"
 
-#: src/fe-gtk/maingui.c:2101
+#: src/fe-gtk/maingui.c:2109
 msgid "Topic Protection"
 msgstr "ವಿಷಯದ ಸಂರಕ್ಷಣೆ"
 
-#: src/fe-gtk/maingui.c:2102
+#: src/fe-gtk/maingui.c:2110
 msgid "No outside messages"
 msgstr "ಯಾವುದೆ ಹೊರಗಿನ ಸಂದೇಶಗಳಿಲ್ಲ"
 
-#: src/fe-gtk/maingui.c:2103
+#: src/fe-gtk/maingui.c:2111
 msgid "Secret"
 msgstr "ರಹಸ್ಯ"
 
-#: src/fe-gtk/maingui.c:2104
+#: src/fe-gtk/maingui.c:2112
 msgid "Invite Only"
 msgstr "ಆಮಂತ್ರಣದ ಮೇರೆಗೆ ಮಾತ್ರ"
 
-#: src/fe-gtk/maingui.c:2106
+#: src/fe-gtk/maingui.c:2114
 msgid "Moderated"
 msgstr "ನಿರ್ಣಯಿಸಲಾದ"
 
-#: src/fe-gtk/maingui.c:2107
+#: src/fe-gtk/maingui.c:2115
 msgid "Ban List"
 msgstr "ನಿಷೇಧಪಟ್ಟಿ"
 
-#: src/fe-gtk/maingui.c:2109
+#: src/fe-gtk/maingui.c:2117
 msgid "Keyword"
 msgstr "ಕೀಲಿಪದ"
 
-#: src/fe-gtk/maingui.c:2121
+#: src/fe-gtk/maingui.c:2129
 msgid "User Limit"
 msgstr "ಬಳಕೆದಾರ ಮಿತಿ"
 
-#: src/fe-gtk/maingui.c:2230
+#: src/fe-gtk/maingui.c:2238
 msgid "Show/Hide userlist"
 msgstr "ಬಳಕೆದಾಪಟ್ಟಿಯನ್ನು ತೋರಿಸು/ಅಡಗಿಸು"
 
-#: src/fe-gtk/maingui.c:2356
+#: src/fe-gtk/maingui.c:2364
 msgid ""
 "Unable to set transparent background!\n"
 "\n"
@@ -3674,7 +3675,7 @@ msgid ""
 "manager that is not currently supported.\n"
 msgstr "ಪಾರದರ್ಶಕ ಹಿನ್ನಲೆಯನ್ನು ಹೊಂದಿಸಲು ಸಾಧ್ಯವಾಗಿಲ್ಲ!\n\nನೀವು ಬಹುಷಃ ಪ್ರಸಕ್ತ ಬೆಂಬಲವಿರದ ಹೊಂದಿಕೆಯಾಗದ \nವಿಂಡೊವನ್ನು ವ್ಯವಸ್ಥಾಪಕವನ್ನು ಬಳಸುತ್ತಿರಬಹುದು.\n"
 
-#: src/fe-gtk/maingui.c:2635
+#: src/fe-gtk/maingui.c:2643
 msgid "Enter new nickname:"
 msgstr "ಹೊಸ ಅಡ್ಡಹೆಸರನ್ನು ಸೇರಿಸಿ:"
 
@@ -3957,7 +3958,7 @@ msgstr "ವೃಕ್ಷ(_r)"
 msgid "_Network Meters"
 msgstr "ಜಾಲಬಂಧ ಮೀಟರುಗಳು(_N)"
 
-#: src/fe-gtk/menu.c:1646
+#: src/fe-gtk/menu.c:1646 src/fe-gtk/setup.c:244
 msgid "Off"
 msgstr "ಆಫ್"
 
@@ -4141,7 +4142,7 @@ msgstr "ಕೊನೆಯ ಬಾರಿಗೆ ಕಂಡಿದ್ದು"
 msgid "Offline"
 msgstr "ಆಫ್‍ಲೈನ್"
 
-#: src/fe-gtk/notifygui.c:201 src/fe-gtk/setup.c:305
+#: src/fe-gtk/notifygui.c:201 src/fe-gtk/setup.c:316
 msgid "Never"
 msgstr "ಎಂದಿಗೂ ಇಲ್ಲ"
 
@@ -4191,15 +4192,15 @@ msgstr ""
 msgid "_Blink on"
 msgstr "ಮಿನುಗಿಸು(_B)"
 
-#: src/fe-gtk/plugin-tray.c:523 src/fe-gtk/setup.c:646
+#: src/fe-gtk/plugin-tray.c:523 src/fe-gtk/setup.c:655
 msgid "Channel Message"
 msgstr "ಚಾನಲ್ ಸಂದೇಶ"
 
-#: src/fe-gtk/plugin-tray.c:524 src/fe-gtk/setup.c:647
+#: src/fe-gtk/plugin-tray.c:524 src/fe-gtk/setup.c:656
 msgid "Private Message"
 msgstr "ಖಾಸಗಿ ಸಂದೇಶ"
 
-#: src/fe-gtk/plugin-tray.c:525 src/fe-gtk/setup.c:648
+#: src/fe-gtk/plugin-tray.c:525 src/fe-gtk/setup.c:657
 msgid "Highlighted Message"
 msgstr "ಹೈಲೈಟ್ ಮಾಡಲಾದ ಸಂದೇಶ"
 
@@ -4325,200 +4326,200 @@ msgstr ""
 msgid "Close and _Reset"
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:172 src/fe-gtk/servlistgui.c:281
+#: src/fe-gtk/servlistgui.c:173 src/fe-gtk/servlistgui.c:282
 msgid "New Network"
 msgstr "ಹೊಸ ಜಾಲಬಂಧ"
 
-#: src/fe-gtk/servlistgui.c:553
+#: src/fe-gtk/servlistgui.c:554
 #, c-format
 msgid "Really remove network \"%s\" and all its servers?"
 msgstr "ಜಾಲಬಂಧ \"%s\" ಹಾಗು ಅದರ ಎಲ್ಲಾ ಪರಿಚಾರಕಗಳನ್ನು ನಿಜವಾಗಿಯೂ ತೆಗೆದುಹಾಕಬೇಕೆ?"
 
-#: src/fe-gtk/servlistgui.c:735
+#: src/fe-gtk/servlistgui.c:736
 msgid "#channel"
 msgstr "#channel"
 
-#: src/fe-gtk/servlistgui.c:845
+#: src/fe-gtk/servlistgui.c:846
 msgid ": Favorite Channels (Auto-Join List)"
 msgstr ": ಅಚ್ಚುಮೆಚ್ಚಿನ ಚಾನಲ್‌ಗಳು (ಸ್ವಯಂ-ಸೇರ್ಪಡೆ ಪಟ್ಟಿ)"
 
-#: src/fe-gtk/servlistgui.c:858
+#: src/fe-gtk/servlistgui.c:859
 #, c-format
 msgid "These channels will be joined whenever you connect to %s."
 msgstr "ನೀವು %s ದೊಂದಿಗೆ ಸಂಪರ್ಕ ಸಾಧಿಸಿದಾಗ ಈ ಚಾನಲ್‌ಗಳಿಗೆ ಸೇರಿಸಲಾಗುತ್ತದೆ."
 
-#: src/fe-gtk/servlistgui.c:901
+#: src/fe-gtk/servlistgui.c:902
 msgid "Key (Password)"
 msgstr "ಕೀಲಿ(ಗುಪ್ತಪದ)"
 
-#: src/fe-gtk/servlistgui.c:932 src/fe-gtk/servlistgui.c:1572
+#: src/fe-gtk/servlistgui.c:933 src/fe-gtk/servlistgui.c:1573
 msgid "_Edit"
 msgstr "ಸಂಪಾದನೆ(_E)"
 
-#: src/fe-gtk/servlistgui.c:968
+#: src/fe-gtk/servlistgui.c:969
 #, c-format
 msgid "%s has been removed."
 msgstr "%s ಅನ್ನು ತೆಗೆದುಹಾಕಲಾಗಿದೆ."
 
-#: src/fe-gtk/servlistgui.c:988
+#: src/fe-gtk/servlistgui.c:989
 #, c-format
 msgid "%s has been added."
 msgstr "%s ಅನ್ನು ಸೇರಿಸಲಾಗಿದೆ."
 
-#: src/fe-gtk/servlistgui.c:1012
+#: src/fe-gtk/servlistgui.c:1013
 msgid "User name and Real name cannot be left blank."
 msgstr "ಬಳಕೆದಾರ ಹೆಸರು ಹಾಗು ನಿಜವಾದ ಹೆಸರು ಇವುಗಳನ್ನು ಖಾಲಿ ಬಿಡುವಂತಿಲ್ಲ."
 
-#: src/fe-gtk/servlistgui.c:1403
+#: src/fe-gtk/servlistgui.c:1404
 #, c-format
 msgid ": Edit %s"
 msgstr ": %s ಅನ್ನು ಸಂಪಾದಿಸು"
 
-#: src/fe-gtk/servlistgui.c:1422
+#: src/fe-gtk/servlistgui.c:1423
 #, c-format
 msgid "Servers for %s"
 msgstr "%s ಗಾಗಿನ ಪರಿಚಾರಕಗಳು"
 
-#: src/fe-gtk/servlistgui.c:1433
+#: src/fe-gtk/servlistgui.c:1434
 msgid "Connect to selected server only"
 msgstr "ಆಯ್ದ ಪರಿಚಾರಕದೊಂದಿಗೆ(ಸರ್ವರ್‍) ಮಾತ್ರ ಸಂಪರ್ಕ ಜೋಡಿಸು"
 
-#: src/fe-gtk/servlistgui.c:1434
+#: src/fe-gtk/servlistgui.c:1435
 msgid "Don't cycle through all the servers when the connection fails."
 msgstr "ಸಂಪರ್ಕವು ವಿಫಲಗೊಂಡಲ್ಲಿ ಎಲ್ಲಾ ಪರಿಚಾರಕದಾದ್ಯಂತ ಆವರ್ತನಗೊಳಿಸಬೇಡ. "
 
-#: src/fe-gtk/servlistgui.c:1436
+#: src/fe-gtk/servlistgui.c:1437
 msgid "Your Details"
 msgstr "ನಿಮ್ಮ ವಿವರಗಳು"
 
-#: src/fe-gtk/servlistgui.c:1442
+#: src/fe-gtk/servlistgui.c:1443
 msgid "Use global user information"
 msgstr "ಜಾಗತಿಕ ಬಳಕೆದಾರ ಮಾಹಿತಿಯನ್ನು ಬಳಸು"
 
-#: src/fe-gtk/servlistgui.c:1445 src/fe-gtk/servlistgui.c:1679
+#: src/fe-gtk/servlistgui.c:1446 src/fe-gtk/servlistgui.c:1680
 msgid "_Nick name:"
 msgstr "ಅಡ್ಡ ಹೆಸರು(_N):"
 
-#: src/fe-gtk/servlistgui.c:1449 src/fe-gtk/servlistgui.c:1686
+#: src/fe-gtk/servlistgui.c:1450 src/fe-gtk/servlistgui.c:1687
 msgid "Second choice:"
 msgstr "ಎರಡನೆಯ ಆಯ್ಕೆ:"
 
-#: src/fe-gtk/servlistgui.c:1453 src/fe-gtk/servlistgui.c:1700
+#: src/fe-gtk/servlistgui.c:1454 src/fe-gtk/servlistgui.c:1701
 msgid "_User name:"
 msgstr "ಬಳಕೆದಾರ ಹೆಸರು(_U):"
 
-#: src/fe-gtk/servlistgui.c:1457
+#: src/fe-gtk/servlistgui.c:1458
 msgid "Rea_l name:"
 msgstr "ನಿಜವಾದ ಹೆಸರು(_l):"
 
-#: src/fe-gtk/servlistgui.c:1460
+#: src/fe-gtk/servlistgui.c:1461
 msgid "Connecting"
 msgstr "ಸಂಪರ್ಕಿಸುತ್ತಿದೆ"
 
-#: src/fe-gtk/servlistgui.c:1466
+#: src/fe-gtk/servlistgui.c:1467
 msgid "Auto connect to this network at startup"
 msgstr "ಆರಂಭಿಸಿದಾಗ ಈ ಜಾಲಬಂಧಕ್ಕೆ ತಾನಾಗಿಯೆ ಸಂಪರ್ಕಿತಗೊಳ್ಳು"
 
-#: src/fe-gtk/servlistgui.c:1468
+#: src/fe-gtk/servlistgui.c:1469
 msgid "Bypass proxy server"
 msgstr "ಪ್ರಾಕ್ಸಿ ಪರಿಚಾರಕವನ್ನು ಬೈಪಾಸ್ ಮಾಡು"
 
-#: src/fe-gtk/servlistgui.c:1470
+#: src/fe-gtk/servlistgui.c:1471
 msgid "Use SSL for all the servers on this network"
 msgstr "ಈ ಜಾಲಬಂಧದಲ್ಲಿರುವ ಎಲ್ಲಾ ಪರಿಚಾರಕಗಳಿಗಾಗಿಯೂ SSL ಅನ್ನು ಬಳಸು"
 
-#: src/fe-gtk/servlistgui.c:1475
+#: src/fe-gtk/servlistgui.c:1476
 msgid "Accept invalid SSL certificate"
 msgstr "ಅಮಾನ್ಯವಾದ SSL ಪ್ರಮಾಣಪತ್ರವನ್ನು ಅಂಗೀಕರಿಸು"
 
-#: src/fe-gtk/servlistgui.c:1481
+#: src/fe-gtk/servlistgui.c:1482
 msgid "_Favorite channels:"
 msgstr "ಅಚ್ಚುಮೆಚ್ಚಿನ ಚಾನಲ್‌ಗಳು(_F):"
 
-#: src/fe-gtk/servlistgui.c:1483
+#: src/fe-gtk/servlistgui.c:1484
 msgid "Channels to join, separated by commas, but not spaces!"
 msgstr "ಸೇರಬೇಕಿರುವ ಚಾನಲ್‌ಗಳ ನಡುವೆ ವಿರಾಮ ಚಿಹ್ನೆಗಳಿರಬೇಕು, ಆದರೆ ಖಾಲಿ ಜಾಗಗಳಿರುವಂತಿಲ್ಲ!"
 
-#: src/fe-gtk/servlistgui.c:1486
+#: src/fe-gtk/servlistgui.c:1487
 msgid "Connect command:"
 msgstr "ಸಂಪರ್ಕ ಸಾಧಿಸುವ ಆಜ್ಞೆ:"
 
-#: src/fe-gtk/servlistgui.c:1488
+#: src/fe-gtk/servlistgui.c:1489
 msgid ""
 "Extra command to execute after connecting. If you need more than one, set "
 "this to LOAD -e <filename>, where <filename> is a text-file full of commands"
 " to execute."
 msgstr "ಸಂಪರ್ಕಿತಗೊಂಡ ನಂತರ ಚಲಾಯಿಸಬೇಕಿರುವ ಹೆಚ್ಚುವರಿ ಆಜ್ಞೆ. ಒಂದಕ್ಕಿಂತ ಹೆಚ್ಚಿನದರ ಅಗತ್ಯವಿದ್ದಲ್ಲಿ, ಇದನ್ಲು LOAD -e <ಕಡತದಹೆಸರು> ಗೆ ಹೊಂದಿಸಿ, ಇಲ್ಲಿ <ಕಡತದಹೆಸರು> ಎನ್ನುವುದು ಆಜ್ಞೆಗಳಿಂದ ತುಂಬಿರುವ ಪಠ್ಯ ಕಡತವಾಗಿರುತ್ತದೆ."
 
-#: src/fe-gtk/servlistgui.c:1491
+#: src/fe-gtk/servlistgui.c:1492
 msgid "Nickserv password:"
 msgstr "Nickserv ಗುಪ್ತಪದ:"
 
-#: src/fe-gtk/servlistgui.c:1493
+#: src/fe-gtk/servlistgui.c:1494
 msgid ""
 "If your nickname requires a password, enter it here. Not all IRC networks "
 "support this."
 msgstr "ನಿಮ್ಮ ಅಡ್ಡಹೆಸರಿಗಾಗಿ ಗುಪ್ತಪದದ ಅಗತ್ಯವಿದ್ದಲ್ಲಿ, ಇಲ್ಲಿ ನಮೂದಿಸಿ. ಎಲ್ಲಾ IRC ಜಾಲಬಂಧಗಳು ಇದನ್ನು ಬೆಂಬಲಿಲಿಸುವುದಿಲ್ಲ."
 
-#: src/fe-gtk/servlistgui.c:1497
+#: src/fe-gtk/servlistgui.c:1498
 msgid "Server password:"
 msgstr "ಪರಿಚಾರಕದ ಗುಪ್ತಪದ:"
 
-#: src/fe-gtk/servlistgui.c:1499
+#: src/fe-gtk/servlistgui.c:1500
 msgid "Password for the server, if in doubt, leave blank."
 msgstr "ಪರಿಚಾರಕಕ್ಕಾಗಿನ ಗುಪ್ತಪದ, ಅನುಮಾವವಿದ್ದಲ್ಲಿ, ಖಾಲಿ ಬಿಡಿ."
 
-#: src/fe-gtk/servlistgui.c:1502
+#: src/fe-gtk/servlistgui.c:1503
 msgid "Character set:"
 msgstr "ಚಿಹ್ನೆಯ ನಕ್ಷೆ:"
 
-#: src/fe-gtk/servlistgui.c:1657
+#: src/fe-gtk/servlistgui.c:1658
 msgid ": Network List"
 msgstr ": ಜಾಲಬಂಧ ಪಟ್ಟಿ"
 
-#: src/fe-gtk/servlistgui.c:1669
+#: src/fe-gtk/servlistgui.c:1670
 msgid "User Information"
 msgstr "ಬಳಕೆದಾರ ಮಾಹಿತಿ"
 
-#: src/fe-gtk/servlistgui.c:1693
+#: src/fe-gtk/servlistgui.c:1694
 msgid "Third choice:"
 msgstr "ಮೂರನೆ ಆಯ್ಕೆ:"
 
-#: src/fe-gtk/servlistgui.c:1753
+#: src/fe-gtk/servlistgui.c:1754
 msgid "Networks"
 msgstr "ಜಾಲಬಂಧಗಳು"
 
-#: src/fe-gtk/servlistgui.c:1801
+#: src/fe-gtk/servlistgui.c:1802
 msgid "Skip network list on startup"
 msgstr "ಆರಂಭಿಸುವಾಗ ಜಾಲಬಂಧ ಪಟ್ಟಿಯನ್ನು ಬಿಟ್ಟುಬಿಡು"
 
-#: src/fe-gtk/servlistgui.c:1810
+#: src/fe-gtk/servlistgui.c:1811
 msgid "Show favorites only"
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:1840
+#: src/fe-gtk/servlistgui.c:1841
 msgid "_Edit..."
 msgstr "ಸಂಪಾದನೆ (_E)..."
 
-#: src/fe-gtk/servlistgui.c:1847
+#: src/fe-gtk/servlistgui.c:1848
 msgid "_Sort"
 msgstr "ವಿಂಗಡಣೆ(_S)"
 
-#: src/fe-gtk/servlistgui.c:1848
+#: src/fe-gtk/servlistgui.c:1849
 msgid ""
 "Sorts the network list in alphabetical order. Use SHIFT-UP and SHIFT-DOWN "
 "keys to move a row."
 msgstr "ಜಾಲಬಂಧದ ಪಟ್ಟಿಯನ್ನು ವರ್ಣಮಾಲೆಯ ಆಧಾರದಲ್ಲಿ ವಿಂಗಡಿಸು. ಸಾಲಿನಲ್ಲಿ ಚಲಿಸಲು SHIFT-UP ಹಾಗು SHIFT-DOWN ಅನ್ನು ಬಳಸಿ."
 
-#: src/fe-gtk/servlistgui.c:1856
+#: src/fe-gtk/servlistgui.c:1857
 msgid "_Favor"
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:1857
+#: src/fe-gtk/servlistgui.c:1858
 msgid "Mark or unmark this network as a favorite."
 msgstr ""
 
-#: src/fe-gtk/servlistgui.c:1881
+#: src/fe-gtk/servlistgui.c:1882
 msgid "C_onnect"
 msgstr "ಸಂಪರ್ಕ ಕಲ್ಪಿಸು (_o)"
 
@@ -4659,1007 +4660,1047 @@ msgid "Malay"
 msgstr ""
 
 #: src/fe-gtk/setup.c:140
-msgid "Norwegian (Bokmal)"
+msgid "Malayalam"
 msgstr ""
 
 #: src/fe-gtk/setup.c:141
-msgid "Norwegian (Nynorsk)"
+msgid "Norwegian (Bokmal)"
 msgstr ""
 
 #: src/fe-gtk/setup.c:142
-msgid "Polish"
+msgid "Norwegian (Nynorsk)"
 msgstr ""
 
 #: src/fe-gtk/setup.c:143
-msgid "Portuguese"
+msgid "Polish"
 msgstr ""
 
 #: src/fe-gtk/setup.c:144
-msgid "Portuguese (Brazilian)"
+msgid "Portuguese"
 msgstr ""
 
 #: src/fe-gtk/setup.c:145
-msgid "Punjabi"
+msgid "Portuguese (Brazilian)"
 msgstr ""
 
 #: src/fe-gtk/setup.c:146
-msgid "Russian"
+msgid "Punjabi"
 msgstr ""
 
 #: src/fe-gtk/setup.c:147
-msgid "Serbian"
+msgid "Russian"
 msgstr ""
 
 #: src/fe-gtk/setup.c:148
-msgid "Slovak"
+msgid "Serbian"
 msgstr ""
 
 #: src/fe-gtk/setup.c:149
-msgid "Slovenian"
+msgid "Slovak"
 msgstr ""
 
 #: src/fe-gtk/setup.c:150
-msgid "Spanish"
+msgid "Slovenian"
 msgstr ""
 
 #: src/fe-gtk/setup.c:151
-msgid "Swedish"
+msgid "Spanish"
 msgstr ""
 
 #: src/fe-gtk/setup.c:152
-msgid "Thai"
+msgid "Swedish"
 msgstr ""
 
 #: src/fe-gtk/setup.c:153
-msgid "Ukrainian"
+msgid "Thai"
 msgstr ""
 
 #: src/fe-gtk/setup.c:154
-msgid "Vietnamese"
+msgid "Ukrainian"
 msgstr ""
 
 #: src/fe-gtk/setup.c:155
+msgid "Vietnamese"
+msgstr ""
+
+#: src/fe-gtk/setup.c:156
 msgid "Walloon"
 msgstr ""
 
-#: src/fe-gtk/setup.c:162 src/fe-gtk/setup.c:1890
+#: src/fe-gtk/setup.c:163 src/fe-gtk/setup.c:1899
 msgid "General"
 msgstr "ಸಾಮಾನ್ಯ"
 
-#: src/fe-gtk/setup.c:164
+#: src/fe-gtk/setup.c:165
 msgid "Language:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:165
+#: src/fe-gtk/setup.c:166
 msgid "Main font:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:167
+#: src/fe-gtk/setup.c:168
 msgid "Font:"
 msgstr "ಅಕ್ಷರಶೈಲಿ:"
 
-#: src/fe-gtk/setup.c:169
+#: src/fe-gtk/setup.c:171
+msgid "Title Bar"
+msgstr ""
+
+#: src/fe-gtk/setup.c:172
+msgid "Show channel modes"
+msgstr ""
+
+#: src/fe-gtk/setup.c:173
+msgid "Show number of users"
+msgstr ""
+
+#: src/fe-gtk/setup.c:175
 msgid "Text Box"
 msgstr ""
 
-#: src/fe-gtk/setup.c:170
+#: src/fe-gtk/setup.c:176
 msgid "Background image:"
 msgstr "ಹಿನ್ನಲೆ ಚಿತ್ರ:"
 
-#: src/fe-gtk/setup.c:171
+#: src/fe-gtk/setup.c:177
 msgid "Scrollback lines:"
 msgstr "ಸ್ಕ್ರಾಲ್‌ಬ್ಯಾಕ್‌ ಸಾಲುಗಳು:"
 
-#: src/fe-gtk/setup.c:172
+#: src/fe-gtk/setup.c:178
 msgid "Colored nick names"
 msgstr "ಬಣ್ಣಯುಕ್ತ ಅಡ್ಡಹೆಸರುಗಳು"
 
-#: src/fe-gtk/setup.c:173
+#: src/fe-gtk/setup.c:179
 msgid "Give each person on IRC a different color"
 msgstr "IRC ಯಲ್ಲಿನ ಪ್ರತಿಯೊಬ್ಬರಿಗೂ ಪ್ರತ್ಯೇಕ ಬಣ್ಣವನ್ನು ನೀಡು"
 
-#: src/fe-gtk/setup.c:174
+#: src/fe-gtk/setup.c:180
 msgid "Indent nick names"
 msgstr "ಅಡ್ಡಹೆಸರುಗಳನ್ನು ಇಂಡೆಂಟ್ ಮಾಡು"
 
-#: src/fe-gtk/setup.c:175
+#: src/fe-gtk/setup.c:181
 msgid "Make nick names right-justified"
 msgstr "ಅಡ್ಡಹೆಸರುಗಳನ್ನು ಬಲಕ್ಕೆ ಜೋಡಿಸಿ ಇರಿಸು"
 
-#: src/fe-gtk/setup.c:176
+#: src/fe-gtk/setup.c:183
 msgid "Transparent background"
 msgstr "ಪಾರದರ್ಶ ಹಿನ್ನಲೆ"
 
-#: src/fe-gtk/setup.c:177
+#: src/fe-gtk/setup.c:184 src/fe-gtk/setup.c:190
 msgid "Show marker line"
 msgstr "ಗುರುತಿನ ಗೆರೆಯನ್ನು ತೋರಿಸು"
 
-#: src/fe-gtk/setup.c:178
+#: src/fe-gtk/setup.c:184 src/fe-gtk/setup.c:190
 msgid "Insert a red line after the last read text."
 msgstr "ಕೊನೆಯ ಬಾರಿಗೆ ಓದಲಾದ ಪಠ್ಯದ ಕೆಳಗೆ ಕೆಂಪು ಗೆರೆಯನ್ನು ಎಳೆ."
 
-#: src/fe-gtk/setup.c:179
+#: src/fe-gtk/setup.c:185
 msgid "Transparency Settings"
 msgstr "ಪಾರದರ್ಶಕತೆಯ ಸಿದ್ಧತೆಗಳು"
 
-#: src/fe-gtk/setup.c:180
+#: src/fe-gtk/setup.c:186
 msgid "Red:"
 msgstr "ಕೆಂಪು:"
 
-#: src/fe-gtk/setup.c:181
+#: src/fe-gtk/setup.c:187
 msgid "Green:"
 msgstr "ಹಸಿರು:"
 
-#: src/fe-gtk/setup.c:182
+#: src/fe-gtk/setup.c:188
 msgid "Blue:"
 msgstr "ನೀಲಿ:"
 
-#: src/fe-gtk/setup.c:184 src/fe-gtk/setup.c:546
+#: src/fe-gtk/setup.c:193 src/fe-gtk/setup.c:555
 msgid "Time Stamps"
 msgstr "ಸಮಯ ಸ್ವರೂಪಗಳು"
 
-#: src/fe-gtk/setup.c:185
+#: src/fe-gtk/setup.c:194
 msgid "Enable time stamps"
 msgstr "ಸಮಯ ಸ್ವರೂಪವನ್ನು ಶಕ್ತಗೊಳಿಸು"
 
-#: src/fe-gtk/setup.c:186
+#: src/fe-gtk/setup.c:195
 msgid "Time stamp format:"
 msgstr "ಸಮಯಸ್ವರೂಪದ ವಿನ್ಯಾಸ:"
 
-#: src/fe-gtk/setup.c:188 src/fe-gtk/setup.c:550
+#: src/fe-gtk/setup.c:197 src/fe-gtk/setup.c:559
 msgid "See the strftime MSDN article for details."
 msgstr ""
 
-#: src/fe-gtk/setup.c:190 src/fe-gtk/setup.c:552
+#: src/fe-gtk/setup.c:199 src/fe-gtk/setup.c:561
 msgid "See the strftime manpage for details."
 msgstr ""
 
-#: src/fe-gtk/setup.c:198 src/fe-gtk/setup.c:244
+#: src/fe-gtk/setup.c:207 src/fe-gtk/setup.c:254
 msgid "A-Z"
 msgstr "A-Z"
 
-#: src/fe-gtk/setup.c:199
+#: src/fe-gtk/setup.c:208
 msgid "Last-spoke order"
 msgstr "ಕೊನೆಯದಾಗಿ ಮಾತನಾಡಿದ ಕ್ರಮ"
 
-#: src/fe-gtk/setup.c:205
+#: src/fe-gtk/setup.c:214
 msgid "Input Box"
 msgstr ""
 
-#: src/fe-gtk/setup.c:206 src/fe-gtk/setup.c:276
+#: src/fe-gtk/setup.c:215 src/fe-gtk/setup.c:286
 msgid "Use the Text box font and colors"
 msgstr "ಪಠ್ಯ ಚೌಕದ ಅಕ್ಷರಗಳು ಹಾಗು ಬಣ್ಣಗಳನ್ನು ಬಳಸು"
 
-#: src/fe-gtk/setup.c:208
+#: src/fe-gtk/setup.c:216
+msgid "Show nick box"
+msgstr ""
+
+#: src/fe-gtk/setup.c:218
 msgid "Spell checking"
 msgstr "ಕಾಗುಣಿತ ಪರೀಕ್ಷೆ"
 
-#: src/fe-gtk/setup.c:209
+#: src/fe-gtk/setup.c:219
 msgid "Dictionaries to use:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:211
+#: src/fe-gtk/setup.c:221
 msgid ""
 "Use language codes (as in \"share\\myspell\\dicts\").\n"
 "Separate multiple entries with commas."
 msgstr ""
 
-#: src/fe-gtk/setup.c:213
+#: src/fe-gtk/setup.c:223
 msgid "Use language codes. Separate multiple entries with commas."
 msgstr ""
 
-#: src/fe-gtk/setup.c:217
+#: src/fe-gtk/setup.c:227
 msgid "Nick Completion"
 msgstr "ಅಡ್ಡಹೆಸರಿನ ಪೂರ್ಣಗೊಳಿಕೆ"
 
-#: src/fe-gtk/setup.c:218
+#: src/fe-gtk/setup.c:228
 msgid "Automatic nick completion (without TAB key)"
 msgstr "ತಾನಾಗಿಯೆ ಅಡ್ಡಹೆಸರಿನ ಪೂರ್ಣಗೊಳಿಕೆ (ಟ್ಯಾಬ್ ಕೀಲಿ ಬಳಸದೆ)"
 
-#: src/fe-gtk/setup.c:220
+#: src/fe-gtk/setup.c:230
 msgid "Nick completion suffix:"
 msgstr "ಅಡ್ಡಹೆಸರು ಪೂರ್ಣಗೊಳಿಕೆಯ ಸಂಜ್ಞೆ:"
 
-#: src/fe-gtk/setup.c:221
+#: src/fe-gtk/setup.c:231
 msgid "Nick completion sorted:"
 msgstr "ಅಡ್ಡಹೆಸರಿನ ಪೂರ್ಣಗೊಳಿಕೆಯ ವಿಂಗಡಣೆ:"
 
-#: src/fe-gtk/setup.c:224
+#: src/fe-gtk/setup.c:234
 msgid "Input Box Codes"
 msgstr "ಇನ್‌ಪುಟ್ ಪೆಟ್ಟಿಗೆ ಸಂಕೇತಗಳು"
 
-#: src/fe-gtk/setup.c:225
+#: src/fe-gtk/setup.c:235
 #, c-format
 msgid "Interpret %nnn as an ASCII value"
 msgstr "%nnn ಅನ್ನು ASCII ಮೌಲ್ಯವಾಗಿ ಅರ್ಥೈಸು"
 
-#: src/fe-gtk/setup.c:226
+#: src/fe-gtk/setup.c:236
 msgid "Interpret %C, %B as Color, Bold etc"
 msgstr "%C, %B ಅನ್ನು ಬಣ್ಣ, ಬೋಲ್ಡ್ ಇತ್ಯಾದಿಯಾಗಿ ಅರ್ಥೈಸು"
 
-#: src/fe-gtk/setup.c:243
+#: src/fe-gtk/setup.c:245
+msgid "Graphical"
+msgstr ""
+
+#: src/fe-gtk/setup.c:253
 msgid "A-Z, Ops first"
 msgstr "A-Z, Ops ಮೊದಲಿಗೆ"
 
-#: src/fe-gtk/setup.c:245
+#: src/fe-gtk/setup.c:255
 msgid "Z-A, Ops last"
 msgstr "Z-A, Ops ಕೊನೆಯಲ್ಲಿ"
 
-#: src/fe-gtk/setup.c:246
+#: src/fe-gtk/setup.c:256
 msgid "Z-A"
 msgstr "Z-A"
 
-#: src/fe-gtk/setup.c:247
+#: src/fe-gtk/setup.c:257
 msgid "Unsorted"
 msgstr "ವಿಂಗಡಿಸದೆ ಇರುವ"
 
-#: src/fe-gtk/setup.c:253 src/fe-gtk/setup.c:265
+#: src/fe-gtk/setup.c:263 src/fe-gtk/setup.c:275
 msgid "Left (Upper)"
 msgstr "ಎಡ (ಮೇಲಿನ)"
 
-#: src/fe-gtk/setup.c:254 src/fe-gtk/setup.c:266
+#: src/fe-gtk/setup.c:264 src/fe-gtk/setup.c:276
 msgid "Left (Lower)"
 msgstr "ಎಡ (ಕೆಳಗಿನ)"
 
-#: src/fe-gtk/setup.c:255 src/fe-gtk/setup.c:267
+#: src/fe-gtk/setup.c:265 src/fe-gtk/setup.c:277
 msgid "Right (Upper)"
 msgstr "ಬಲ (ಮೇಲಿನ)"
 
-#: src/fe-gtk/setup.c:256 src/fe-gtk/setup.c:268
+#: src/fe-gtk/setup.c:266 src/fe-gtk/setup.c:278
 msgid "Right (Lower)"
 msgstr "ಬಲ (ಕೆಳಗಿನ)"
 
-#: src/fe-gtk/setup.c:257
+#: src/fe-gtk/setup.c:267
 msgid "Top"
 msgstr "ಮೇಲೆ"
 
-#: src/fe-gtk/setup.c:258
+#: src/fe-gtk/setup.c:268
 msgid "Bottom"
 msgstr "ಕೆಳಗೆ"
 
-#: src/fe-gtk/setup.c:259
+#: src/fe-gtk/setup.c:269
 msgid "Hidden"
 msgstr "ಅಡಗಿಸಲಾದ"
 
-#: src/fe-gtk/setup.c:274
+#: src/fe-gtk/setup.c:284
 msgid "User List"
 msgstr "ಬಳಕೆದಾರರ ಪಟ್ಟಿ"
 
-#: src/fe-gtk/setup.c:275
+#: src/fe-gtk/setup.c:285
 msgid "Show hostnames in user list"
 msgstr "ಬಳಕೆದಾರರ ಪಟ್ಟಿಯಲ್ಲಿ ಆತಿಥೇಯ ಹೆಸರುಗಳನ್ನು ತೋರಿಸು"
 
-#: src/fe-gtk/setup.c:278
+#: src/fe-gtk/setup.c:287
+msgid "Show icons instead of text symbols"
+msgstr ""
+
+#: src/fe-gtk/setup.c:289
 msgid "User list sorted by:"
 msgstr "ಇದರ ಆಧಾರದಲ್ಲಿ ವಿಭಜಿಸಲಾದ ಬಳಕೆದಾರ ಪಟ್ಟಿ:"
 
-#: src/fe-gtk/setup.c:279
+#: src/fe-gtk/setup.c:290
 msgid "Show user list at:"
 msgstr "ಇಲ್ಲಿರುವ ಬಳಕೆದಾರರ ಪಟ್ಟಿಯನ್ನು ತೋರಿಸು:"
 
-#: src/fe-gtk/setup.c:281
+#: src/fe-gtk/setup.c:292
 msgid "Away Tracking"
 msgstr ""
 
-#: src/fe-gtk/setup.c:282
+#: src/fe-gtk/setup.c:293
 msgid "Track the Away status of users and mark them in a different color"
 msgstr "ಬಳಕೆದಾರರು ಆಚೆ ಹೋಗಿದ್ದರ ಜಾಡನ್ನು ಇರಿಸಿಕೊಳ್ಳಿ ಹಾಗು ಅವನ್ನು ಭಿನ್ನವಾದ ಬಣ್ಣದಲ್ಲಿ ಗುರುತು ಹಾಕಿ"
 
-#: src/fe-gtk/setup.c:283
+#: src/fe-gtk/setup.c:294
 msgid "On channels smaller than:"
 msgstr "ಇದಕ್ಕಿಂತ ಚಿಕ್ಕದಾದ ಚಾನಲ್‌ಗಳಲ್ಲಿ:"
 
-#: src/fe-gtk/setup.c:285
+#: src/fe-gtk/setup.c:296
 msgid "Action Upon Double Click"
 msgstr "ಎರಡು ಬಾರಿ ಕ್ಲಿಕ್ ಮಾಡಿದಾಗಿನ ಕ್ರಿಯೆ"
 
-#: src/fe-gtk/setup.c:297
+#: src/fe-gtk/setup.c:299
+msgid "Extra Gadgets"
+msgstr ""
+
+#: src/fe-gtk/setup.c:300
+msgid "Lag meter:"
+msgstr ""
+
+#: src/fe-gtk/setup.c:301
+msgid "Throttle meter:"
+msgstr ""
+
+#: src/fe-gtk/setup.c:308
 msgid "Windows"
 msgstr "ವಿಂಡೊಗಳು"
 
-#: src/fe-gtk/setup.c:298 src/fe-gtk/setup.c:314
+#: src/fe-gtk/setup.c:309 src/fe-gtk/setup.c:325
 msgid "Tabs"
 msgstr "ಹಾಳೆಗಳು"
 
-#: src/fe-gtk/setup.c:306
+#: src/fe-gtk/setup.c:317
 msgid "Always"
 msgstr "ಯಾವಾಗಲೂ"
 
-#: src/fe-gtk/setup.c:307
+#: src/fe-gtk/setup.c:318
 msgid "Only requested tabs"
 msgstr "ಮನವಿ ಸಲ್ಲಿಸಲಾದ ಹಾಳೆಗಳು ಮಾತ್ರ"
 
-#: src/fe-gtk/setup.c:316
+#: src/fe-gtk/setup.c:327
 msgid "Tree"
 msgstr "ವೃಕ್ಷ"
 
-#: src/fe-gtk/setup.c:323
+#: src/fe-gtk/setup.c:334
 msgid "Switcher type:"
 msgstr "ಸ್ವಿಚರ್ ಬಗೆ:"
 
-#: src/fe-gtk/setup.c:324
+#: src/fe-gtk/setup.c:335
 msgid "Open an extra tab for server messages"
 msgstr "ಪರಿಚಾರಕ ಸಂದೇಶಗಳಿಗಾಗಿ ಒಂದು ಹೊಸ ಹಾಳೆಯನ್ನು ತೆರೆ"
 
-#: src/fe-gtk/setup.c:325
+#: src/fe-gtk/setup.c:336
 msgid "Open an extra tab for server notices"
 msgstr "ಪರಿಚಾರಕ ಸೂಚನೆಗಳಿಗಾಗಿ ಒಂದು ಹೊಸ ಹಾಳೆಯನ್ನು ತೆರೆ"
 
-#: src/fe-gtk/setup.c:326
+#: src/fe-gtk/setup.c:337
 msgid "Open a new tab when you receive a private message"
 msgstr "ಖಾಸಗಿ ಸಂದೇಶವು ಬಂದಾಗ ಒಂದು ಹೊಸ ಹಾಳೆಯನ್ನು ತೆರೆ"
 
-#: src/fe-gtk/setup.c:327
+#: src/fe-gtk/setup.c:338
 msgid "Sort tabs in alphabetical order"
 msgstr "ಹಾಳೆಗಳನ್ನು ವರ್ಣಮಾಲೆ ಅಕ್ಷರದ ಆಧಾರದಲ್ಲಿ ವಿಂಗಡಿಸಿ"
 
-#: src/fe-gtk/setup.c:328
+#: src/fe-gtk/setup.c:339
 msgid "Show icons in the channel tree"
 msgstr ""
 
-#: src/fe-gtk/setup.c:329
+#: src/fe-gtk/setup.c:340
+msgid "Show dotted lines in the channel tree"
+msgstr ""
+
+#: src/fe-gtk/setup.c:341
 msgid "Smaller text"
 msgstr "ಸಣ್ಣ ಅಕ್ಷರಗಳು"
 
-#: src/fe-gtk/setup.c:331
+#: src/fe-gtk/setup.c:343
 msgid "Focus new tabs:"
 msgstr "ಹೊಸ ಹಾಳೆಗಳತ್ತ ಗಮನ ಹರಿಸು:"
 
-#: src/fe-gtk/setup.c:333
+#: src/fe-gtk/setup.c:345
 msgid "Show channel switcher at:"
 msgstr "ಇಲ್ಲಿ ಚಾನಲ್ ಬದಲಾವಣೆಗಾರನನ್ನು ತೋರಿಸು:"
 
-#: src/fe-gtk/setup.c:334
+#: src/fe-gtk/setup.c:346
 msgid "Shorten tab labels to:"
 msgstr "ಹಾಳೆಯ ಲೇಬಲ್‌ ಅನ್ನು ಇಷ್ಟು ಚಿಕ್ಕದಾಗಿಸಿ"
 
-#: src/fe-gtk/setup.c:334
+#: src/fe-gtk/setup.c:346
 msgid "letters."
 msgstr "ಅಕ್ಷರಗಳು."
 
-#: src/fe-gtk/setup.c:336
+#: src/fe-gtk/setup.c:348
 msgid "Tabs or Windows"
 msgstr "ಹಾಳೆಗಳು ಹಾಗು ವಿಂಡೊಗಳು"
 
-#: src/fe-gtk/setup.c:337
+#: src/fe-gtk/setup.c:349
 msgid "Open channels in:"
 msgstr "ಚಾನಲ್‌ಗಳನ್ನು ಇದರಲ್ಲಿ ತೆರೆ:"
 
-#: src/fe-gtk/setup.c:338
+#: src/fe-gtk/setup.c:350
 msgid "Open dialogs in:"
 msgstr "ಸಂವಾದ ಚೌಕಗಳನ್ನು ಇದರಲ್ಲಿ ತೆರೆ:"
 
-#: src/fe-gtk/setup.c:339
+#: src/fe-gtk/setup.c:351
 msgid "Open utilities in:"
 msgstr "ಸವಲತ್ತುಗಳನ್ನು ಇದರಲ್ಲಿ ತೆರೆ:"
 
-#: src/fe-gtk/setup.c:339
+#: src/fe-gtk/setup.c:351
 msgid "Open DCC, Ignore, Notify etc, in tabs or windows?"
 msgstr "DCC, ಕಡೆಗಣಿಸು, ಸೂಚಿಸು ಇತ್ಯಾದಿಗಳನ್ನು ಹೊಸ ಹಾಳೆಗಳಲ್ಲಿ ಅಥವ ವಿಂಡೊಗಳಲ್ಲಿ ತೆರೆಯಬೇಕೆ?"
 
-#: src/fe-gtk/setup.c:346
+#: src/fe-gtk/setup.c:358
 msgid "Messages"
 msgstr ""
 
-#: src/fe-gtk/setup.c:347
+#: src/fe-gtk/setup.c:359
 msgid "Scrollback"
 msgstr ""
 
-#: src/fe-gtk/setup.c:355
-msgid "No"
-msgstr "ಇಲ್ಲ"
+#: src/fe-gtk/setup.c:367
+msgid "Ask for confirmation"
+msgstr ""
 
-#: src/fe-gtk/setup.c:356
-msgid "Yes"
-msgstr "ಹೌದು"
+#: src/fe-gtk/setup.c:368
+msgid "Ask for download folder"
+msgstr ""
 
-#: src/fe-gtk/setup.c:357
-msgid "Browse for save folder every time"
-msgstr "ಉಳಿಸುವ ಕಡತಕೋಶಕ್ಕಾಗಿ ಪ್ರತೀಬಾರಿಯೂ ಹುಡುಕು"
+#: src/fe-gtk/setup.c:369
+msgid "Save without interaction"
+msgstr ""
 
-#: src/fe-gtk/setup.c:363
+#: src/fe-gtk/setup.c:375
 msgid "Files and Directories"
 msgstr "ಕಡತಗಳು ಹಾಗು ಕೋಶಗಳು"
 
-#: src/fe-gtk/setup.c:364
+#: src/fe-gtk/setup.c:376
 msgid "Auto accept file offers:"
 msgstr "ಕಡತವನ್ನು ನೀಡಿದಾಗ ತಾನಾಗಿಯೆ ಒಪ್ಪಿಕೊ:"
 
-#: src/fe-gtk/setup.c:365
+#: src/fe-gtk/setup.c:377
 msgid "Download files to:"
 msgstr "ಕಡತಗಳನ್ನು ಇಲ್ಲಿಗೆ ಡೌನ್‌ಲೋಡ್ ಮಾಡು:"
 
-#: src/fe-gtk/setup.c:366
+#: src/fe-gtk/setup.c:378
 msgid "Move completed files to:"
 msgstr "ಪೂರ್ಣಗೊಂಡ ಕಡತಗಳನ್ನು ಇಲ್ಲಿಗೆ ಸ್ಥಳಾಂತರಿಸು:"
 
-#: src/fe-gtk/setup.c:367
+#: src/fe-gtk/setup.c:379
 msgid "Save nick name in filenames"
 msgstr "ಅಡ್ಡಹೆಸರನ್ನು ಕಡತದ ಹೆಸರುಗಳಲ್ಲಿ ಉಳಿಸಿಕೊ"
 
-#: src/fe-gtk/setup.c:369
+#: src/fe-gtk/setup.c:381
 msgid "Network Settings"
 msgstr "ಜಾಲಬಂಧ ಸಿದ್ಧತೆಗಳು"
 
-#: src/fe-gtk/setup.c:370
+#: src/fe-gtk/setup.c:382
 msgid "Get my address from the IRC server"
 msgstr "IRC ಪರಿಚಾರಕದಿಂದ ನನ್ನ ವಿಳಾಸವನ್ನು ಪಡೆದುಕೊ"
 
-#: src/fe-gtk/setup.c:371
+#: src/fe-gtk/setup.c:383
 msgid ""
 "Asks the IRC server for your real address. Use this if you have a "
 "192.168.*.* address!"
 msgstr "IRC ಪರಿಚಾರಕವನ್ನು ನಿಜವಾದ ವಿಳಾಸಕ್ಕಾಗಿ ಕೇಳುತ್ತದೆ. ನಿಮ್ಮಲ್ಲಿ 192.168.*.* ವಿಳಾಸವಿದ್ದಲ್ಲಿ ಇದನ್ನು ಬಳಸಿ!"
 
-#: src/fe-gtk/setup.c:372
+#: src/fe-gtk/setup.c:384
 msgid "DCC IP address:"
 msgstr "DCC IP ವಿಳಾಸ:"
 
-#: src/fe-gtk/setup.c:373
+#: src/fe-gtk/setup.c:385
 msgid "Claim you are at this address when offering files."
 msgstr "ಕಡತಗಳನ್ನು ನೀಡುತ್ತಿರುವಾಗ ನೀವು ಈ ವಿಳಾಸದಲ್ಲಿ ಇದ್ದೀರೆಂದು ತಿಳಿಸಿ"
 
-#: src/fe-gtk/setup.c:374
+#: src/fe-gtk/setup.c:386
 msgid "First DCC send port:"
 msgstr "ಮೊದಲ DCC ಕಳುಹಿಸುವ ಸಂಪರ್ಕಸ್ಥಾನ:"
 
-#: src/fe-gtk/setup.c:375
+#: src/fe-gtk/setup.c:387
 msgid "Last DCC send port:"
 msgstr "ಕೊನೆಯ DCC ಕಳುಹಿಸುವ ಸಂಪರ್ಕಸ್ಥಾನ:"
 
-#: src/fe-gtk/setup.c:376
+#: src/fe-gtk/setup.c:388
 msgid "!Leave ports at zero for full range."
 msgstr "!Lಸಂಪೂರ್ಣ ವ್ಯಾಪ್ತಿಗಾಗಿ ಸೊನ್ನೆಯಲ್ಲಿಯೆ ಉಳಿಸಿ."
 
-#: src/fe-gtk/setup.c:378
+#: src/fe-gtk/setup.c:390
 msgid "Maximum File Transfer Speeds (bytes per second)"
 msgstr "ಗರಿಷ್ಟ ಕಡತ ವರ್ಗಾವಣೆ ವೇಗ (ಪ್ರತಿ ಸೆಕೆಂಡುಗಳಲ್ಲಿನ ಬೈಟ್‌ಗಳು)"
 
-#: src/fe-gtk/setup.c:379
+#: src/fe-gtk/setup.c:391
 msgid "One upload:"
 msgstr "ಒಂದು ಅಪ್‌ಲೋಡ್:"
 
-#: src/fe-gtk/setup.c:380 src/fe-gtk/setup.c:382
+#: src/fe-gtk/setup.c:392 src/fe-gtk/setup.c:394
 msgid "Maximum speed for one transfer"
 msgstr "ಒಂದು ವರ್ಗಾವಣೆಗಾಗಿನ ಗರಿಷ್ಟ ವೇಗ"
 
-#: src/fe-gtk/setup.c:381
+#: src/fe-gtk/setup.c:393
 msgid "One download:"
 msgstr "ಒಂದು ಡೌನ್‌ಲೋಡ್:"
 
-#: src/fe-gtk/setup.c:383
+#: src/fe-gtk/setup.c:395
 msgid "All uploads combined:"
 msgstr "ಎಲ್ಲಾ ಅಪ್‌ಲೋಡ್‌ಗಳೂ ಸೇರಿ:"
 
-#: src/fe-gtk/setup.c:384 src/fe-gtk/setup.c:386
+#: src/fe-gtk/setup.c:396 src/fe-gtk/setup.c:398
 msgid "Maximum speed for all files"
 msgstr "ಎಲ್ಲಾ ಕಡತಗಳುಗಾಗಿನ ಗರಿಷ್ಟ ವೇಗ"
 
-#: src/fe-gtk/setup.c:385
+#: src/fe-gtk/setup.c:397
 msgid "All downloads combined:"
 msgstr "ಎಲ್ಲಾ ಡೌನ್‌ಲೋಡ್‌ಗಳನ್ನು ಒಟ್ಟಿಗೆ ಸೇರಿಸಿ:"
 
-#: src/fe-gtk/setup.c:413 src/fe-gtk/setup.c:439 src/fe-gtk/setup.c:1889
+#: src/fe-gtk/setup.c:425 src/fe-gtk/setup.c:451 src/fe-gtk/setup.c:1898
 msgid "Alerts"
 msgstr "ಎಚ್ಚರಿಕೆಗಳು"
 
-#: src/fe-gtk/setup.c:417
+#: src/fe-gtk/setup.c:429
 msgid "Show tray balloons on:"
 msgstr "ಟ್ರೇ ಬಲೂನುಗಳನ್ನು ಇಲ್ಲಿ ತೋರಿಸು:"
 
-#: src/fe-gtk/setup.c:419
+#: src/fe-gtk/setup.c:431
 msgid "Blink tray icon on:"
 msgstr "ಈ ಸಮಯದಲ್ಲಿ ಟ್ರೇ ಚಿಹ್ನೆಯನ್ನು ಮಿನುಗಿಸು:"
 
-#: src/fe-gtk/setup.c:420 src/fe-gtk/setup.c:442
+#: src/fe-gtk/setup.c:432 src/fe-gtk/setup.c:454
 msgid "Blink task bar on:"
 msgstr "ಈ ಸಮಯದಲ್ಲಿ ಕಾರ್ಯಪಟ್ಟಿಯನ್ನು ಮಿನುಗಿಸು:"
 
-#: src/fe-gtk/setup.c:421 src/fe-gtk/setup.c:443
+#: src/fe-gtk/setup.c:433 src/fe-gtk/setup.c:455
 msgid "Make a beep sound on:"
 msgstr "ಈ ಸಮಯದಲ್ಲಿ ಬೀಪ್ ಸದ್ದೊಂದನ್ನು ಮಾಡು:"
 
-#: src/fe-gtk/setup.c:423
+#: src/fe-gtk/setup.c:435
 msgid "Enable system tray icon"
 msgstr "ವ್ಯವಸ್ಥೆಯ ಟ್ರೇ ಚಿಹ್ನೆಯನ್ನು ಶಕ್ತಗೊಳಿಸು"
 
-#: src/fe-gtk/setup.c:424 src/fe-gtk/setup.c:445
+#: src/fe-gtk/setup.c:436 src/fe-gtk/setup.c:457
 msgid "Omit alerts when marked as being away"
 msgstr ""
 
-#: src/fe-gtk/setup.c:426 src/fe-gtk/setup.c:447
+#: src/fe-gtk/setup.c:438 src/fe-gtk/setup.c:459
 msgid "Highlighted Messages"
 msgstr "ಹೈಲೈಟ್ ಮಾಡಲಾದ ಸಂದೇಶಗಳು"
 
-#: src/fe-gtk/setup.c:427 src/fe-gtk/setup.c:448
+#: src/fe-gtk/setup.c:439 src/fe-gtk/setup.c:460
 msgid ""
 "Highlighted messages are ones where your nickname is mentioned, but also:"
 msgstr "ಹೈಲೈಟ್ ಮಾಡಲಾದ ಸಂದೇಶಗಳು ನಿಮ್ಮ ಅಡ್ಡಹೆಸರನ್ನು ಉಲ್ಲೇಖಿಸಲಾದವುಗಳಾಗಿರುತ್ತವೆ, ಅದರ ಜೊತೆಗೆ:"
 
-#: src/fe-gtk/setup.c:429 src/fe-gtk/setup.c:450
+#: src/fe-gtk/setup.c:441 src/fe-gtk/setup.c:462
 msgid "Extra words to highlight:"
 msgstr "ಹೈಲೈಟ್ ಮಾಡಲು ಹೆಚ್ಚುವರಿ ಪದಗಳು:"
 
-#: src/fe-gtk/setup.c:430 src/fe-gtk/setup.c:451
+#: src/fe-gtk/setup.c:442 src/fe-gtk/setup.c:463
 msgid "Nick names not to highlight:"
 msgstr "ಹೈಲೈಟ್ ಮಾಡಬೇಕಿರುವ ಅಡ್ಡಹೆಸರುಗಳು:"
 
-#: src/fe-gtk/setup.c:431 src/fe-gtk/setup.c:452
+#: src/fe-gtk/setup.c:443 src/fe-gtk/setup.c:464
 msgid "Nick names to always highlight:"
 msgstr "ಯಾವಾಗಲೂ ಹೈಲೈಟ್ ಮಾಡಬೇಕಿರುವ ಅಡ್ಡಹೆಸರುಗಳು:"
 
-#: src/fe-gtk/setup.c:432 src/fe-gtk/setup.c:453
+#: src/fe-gtk/setup.c:444 src/fe-gtk/setup.c:465
 msgid ""
 "Separate multiple words with commas.\n"
 "Wildcards are accepted."
 msgstr "ಅನೇಕ ಪದಗಳನ್ನು ವಿರಾಮ ಚಿಹ್ನೆಗಳ ಮೂಲಕ ಪ್ರತ್ಯೇಕಿಸಿ.\nವೈಲ್ಡ್‌ಕಾರ್ಡುಗಳಿಗೆ ಬೆಂಬಲವಿರುತ್ತದೆ."
 
-#: src/fe-gtk/setup.c:460
+#: src/fe-gtk/setup.c:472
 msgid "Default Messages"
 msgstr "ಪೂರ್ವನಿಯೋಜಿತ ಸಂದೇಶಗಳು"
 
-#: src/fe-gtk/setup.c:461
+#: src/fe-gtk/setup.c:473
 msgid "Quit:"
 msgstr "ಹೊರನಡೆ:"
 
-#: src/fe-gtk/setup.c:462
+#: src/fe-gtk/setup.c:474
 msgid "Leave channel:"
 msgstr "ಚಾನಲ್‌ನಿಂದ ಹೊರನಡೆಯಿರಿ:"
 
-#: src/fe-gtk/setup.c:463
+#: src/fe-gtk/setup.c:475
 msgid "Away:"
 msgstr "ಆಚೆ ಹೋಗಲಾಗಿದೆ:"
 
-#: src/fe-gtk/setup.c:465
+#: src/fe-gtk/setup.c:477
 msgid "Away"
 msgstr "ಆಚೆ ಹೋಗಲಾಗಿದೆ"
 
-#: src/fe-gtk/setup.c:466
+#: src/fe-gtk/setup.c:478
 msgid "Announce away messages"
 msgstr "ಆಚೆ ಹೋಗುವ ಸಂದೇಶವನ್ನು ಪ್ರಕಟಿಸಿ"
 
-#: src/fe-gtk/setup.c:467
+#: src/fe-gtk/setup.c:479
 msgid "Announce your away messages to all channels"
 msgstr "ನಿಮ್ಮ ಆಚೆ ಹೋಗುವ ಸಂದೇಶಗಳನ್ನು ಎಲ್ಲಾ ಚಾನಲ್‌ಗಳಿಗೂ ಪ್ರಕಟಿಸಿ"
 
-#: src/fe-gtk/setup.c:468
+#: src/fe-gtk/setup.c:480
 msgid "Show away once"
 msgstr "ಒಮ್ಮೆ ಮಾತ್ರ ಆಚೆಹೋದುದನ್ನು ತೋರಿಸು"
 
-#: src/fe-gtk/setup.c:468
+#: src/fe-gtk/setup.c:480
 msgid "Show identical away messages only once"
 msgstr "ಒಂದೇ ರೀತಿಯ ಆಚೆ ಹೋಗುವ ಸಂದೇಶವನ್ನು ಒಮ್ಮೆ ಮಾತ್ರ ತೋರಿಸು"
 
-#: src/fe-gtk/setup.c:469
+#: src/fe-gtk/setup.c:481
 msgid "Automatically unmark away"
 msgstr "ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಆಚೆ ಹೋದುದನ್ನು ತೆಗೆದು ಹಾಕಿ"
 
-#: src/fe-gtk/setup.c:469
+#: src/fe-gtk/setup.c:481
 msgid "Unmark yourself as away before sending messages"
 msgstr "ಸಂದೇಶಗಳನ್ನು ಕಳುಹಿಸುವ ಮೊದಲೆ ಆಚೆ ಹೋಗಲಾಗಿದೆ ಎಂಬ ಗುರುತನ್ನು ನೀವೆ ತೆಗೆದು ಹಾಕಿ"
 
-#: src/fe-gtk/setup.c:476 src/fe-gtk/setup.c:507
+#: src/fe-gtk/setup.c:488 src/fe-gtk/setup.c:519
 msgid "Advanced Settings"
 msgstr "ಪ್ರೌಢ ಸಿದ್ಧತೆಗಳು"
 
-#: src/fe-gtk/setup.c:478 src/fe-gtk/setup.c:508
+#: src/fe-gtk/setup.c:490 src/fe-gtk/setup.c:520
 msgid "Alternative fonts:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:480 src/fe-gtk/setup.c:509
+#: src/fe-gtk/setup.c:492 src/fe-gtk/setup.c:521
 msgid "Auto reconnect delay:"
 msgstr "ಸ್ವಯಂಚಾಲಿತವಾಗಿ ಸಂಪರ್ಕಿತಗೊಳ್ಳುವುದರಲ್ಲಿನ ವಿಳಂಬ:"
 
-#: src/fe-gtk/setup.c:481 src/fe-gtk/setup.c:510
+#: src/fe-gtk/setup.c:493 src/fe-gtk/setup.c:522
 msgid "Display MODEs in raw form"
 msgstr "MODEಗಳನ್ನು ಕಚ್ಛಾ ರೂಪದಲ್ಲಿ ತೋರಿಸು"
 
-#: src/fe-gtk/setup.c:482 src/fe-gtk/setup.c:511
+#: src/fe-gtk/setup.c:494 src/fe-gtk/setup.c:523
 msgid "Whois on notify"
 msgstr "ಸೂಚನೆಯಲ್ಲಿನ Whois"
 
-#: src/fe-gtk/setup.c:482 src/fe-gtk/setup.c:511
+#: src/fe-gtk/setup.c:494 src/fe-gtk/setup.c:523
 msgid "Sends a /WHOIS when a user comes online in your notify list"
 msgstr "ನಿಮ್ಮ ಸೂಚನಾ ಪಟ್ಟಿಯಲ್ಲಿನ ಬಳಕೆದಾರರು ಆನ್‌ಲೈನ್ ಬಂದಾಗ /WHOIS ಸಂದೇಶವನ್ನು ಕಳುಹಿಸುತ್ತದೆ"
 
-#: src/fe-gtk/setup.c:483 src/fe-gtk/setup.c:512
+#: src/fe-gtk/setup.c:495 src/fe-gtk/setup.c:524
 msgid "Hide join and part messages"
 msgstr "ಸೇರ್ಪಡೆಗೊಂಡ/ಹೊರಕ್ಕೆ ತೆರಳುವ ಸಂದೇಶಗಳನ್ನು ಅಡಗಿಸು"
 
-#: src/fe-gtk/setup.c:483 src/fe-gtk/setup.c:512
+#: src/fe-gtk/setup.c:495 src/fe-gtk/setup.c:524
 msgid "Hide channel join/part messages by default"
 msgstr "ಚಾನಲ್‌ಗೆ ಸೇರ್ಪಡೆಗೊಂಡ/ಹೊರಕ್ಕೆ ತೆರಳುವ ಸಂದೇಶಗಳನ್ನು ಅಡಗಿಸು"
 
-#: src/fe-gtk/setup.c:484 src/fe-gtk/setup.c:514
+#: src/fe-gtk/setup.c:496 src/fe-gtk/setup.c:526
 msgid "Auto Open DCC Windows"
 msgstr "DCC ವಿಂಡೊಗಳನ್ನು ತಾನಾಗಿಯೆ ತೆರೆ"
 
-#: src/fe-gtk/setup.c:485 src/fe-gtk/setup.c:515
+#: src/fe-gtk/setup.c:497 src/fe-gtk/setup.c:527
 msgid "Send window"
 msgstr "ಕಳುಹಿಸುವ ವಿಂಡೊ"
 
-#: src/fe-gtk/setup.c:486 src/fe-gtk/setup.c:516
+#: src/fe-gtk/setup.c:498 src/fe-gtk/setup.c:528
 msgid "Receive window"
 msgstr "ಸ್ವೀಕರಿಸುವ ವಿಂಡೊ"
 
-#: src/fe-gtk/setup.c:487 src/fe-gtk/setup.c:517
+#: src/fe-gtk/setup.c:499 src/fe-gtk/setup.c:529
 msgid "Chat window"
 msgstr "ಮಾತುಕತೆಯ ವಿಂಡೊ"
 
-#: src/fe-gtk/setup.c:488 src/fe-gtk/setup.c:518
+#: src/fe-gtk/setup.c:500 src/fe-gtk/setup.c:530
 msgid "Auto Copy Behavior"
 msgstr ""
 
-#: src/fe-gtk/setup.c:489 src/fe-gtk/setup.c:519
+#: src/fe-gtk/setup.c:501 src/fe-gtk/setup.c:531
 msgid "Automatically copy selected text"
 msgstr ""
 
-#: src/fe-gtk/setup.c:490 src/fe-gtk/setup.c:520
+#: src/fe-gtk/setup.c:502 src/fe-gtk/setup.c:532
 msgid ""
 "Copy selected text to clipboard when left mouse button is released. "
 "Otherwise, CONTROL-SHIFT-C will copy the selected text to the clipboard."
 msgstr ""
 
-#: src/fe-gtk/setup.c:493 src/fe-gtk/setup.c:523
+#: src/fe-gtk/setup.c:505 src/fe-gtk/setup.c:535
 msgid "Automatically include time stamps"
 msgstr ""
 
-#: src/fe-gtk/setup.c:494 src/fe-gtk/setup.c:524
+#: src/fe-gtk/setup.c:506 src/fe-gtk/setup.c:536
 msgid ""
 "Automatically include time stamps in copied lines of text. Otherwise, "
 "include time stamps if the SHIFT key is held down while selecting."
 msgstr ""
 
-#: src/fe-gtk/setup.c:496 src/fe-gtk/setup.c:526
+#: src/fe-gtk/setup.c:508 src/fe-gtk/setup.c:538
 msgid "Automatically include color information"
 msgstr ""
 
-#: src/fe-gtk/setup.c:497 src/fe-gtk/setup.c:527
+#: src/fe-gtk/setup.c:509 src/fe-gtk/setup.c:539
 msgid ""
 "Automatically include color information in copied lines of text.  Otherwise,"
 " include color information if the CONTROL key is held down while selecting."
 msgstr ""
 
-#: src/fe-gtk/setup.c:513
+#: src/fe-gtk/setup.c:525
 msgid "Allow only one instance of HexChat to run"
 msgstr ""
 
-#: src/fe-gtk/setup.c:537 src/fe-gtk/setup.c:1891
+#: src/fe-gtk/setup.c:549 src/fe-gtk/setup.c:1900
 msgid "Logging"
 msgstr "ದಾಖಲಾತಿ"
 
-#: src/fe-gtk/setup.c:538
+#: src/fe-gtk/setup.c:550
 msgid "Display scrollback from previous session"
 msgstr "ಹಿಂದಿನ ಅಧಿವೇಶನದಿಂದ ಸ್ಕ್ರಾಲ್‌ಬ್ಯಾಕನ್ನು ತೋರಿಸು"
 
-#: src/fe-gtk/setup.c:540
-msgid "Strip colors when displaying scrollback"
-msgstr ""
-
-#: src/fe-gtk/setup.c:542
+#: src/fe-gtk/setup.c:551
 msgid "Enable logging of conversations to disk"
 msgstr "ಸಂಭಾಷಣೆಗಳನ್ನು ಡಿಸ್ಕಿಗೆ ಬರೆಯುವುದನ್ನು ಶಕ್ತಗೊಳಿಸು"
 
-#: src/fe-gtk/setup.c:543
+#: src/fe-gtk/setup.c:552
 msgid "Log filename:"
 msgstr "ದಾಖಲೆ ಕಡತದ ಹೆಸರು:"
 
-#: src/fe-gtk/setup.c:544
+#: src/fe-gtk/setup.c:553
 #, c-format
 msgid "%s=Server %c=Channel %n=Network."
 msgstr "%s=ಪರಿಚಾರಕ %c=ಚಾನಲ್ %n=ಜಾಲಬಂಧ."
 
-#: src/fe-gtk/setup.c:547
+#: src/fe-gtk/setup.c:556
 msgid "Insert timestamps in logs"
 msgstr "ಸಮಯಮುದ್ರೆಗಳನ್ನು ದಾಖಲೆಗಳಲ್ಲಿ ಸೇರಿಸು"
 
-#: src/fe-gtk/setup.c:548
+#: src/fe-gtk/setup.c:557
 msgid "Log timestamp format:"
 msgstr "ಸಮಯಮುದ್ರೆ ಸ್ವರೂಪವನ್ನು ದಾಖಲಿಸು:"
 
-#: src/fe-gtk/setup.c:555
+#: src/fe-gtk/setup.c:564
 msgid "URLs"
 msgstr ""
 
-#: src/fe-gtk/setup.c:556
+#: src/fe-gtk/setup.c:565
 msgid "Enable logging of URLs to disk"
 msgstr ""
 
-#: src/fe-gtk/setup.c:557
+#: src/fe-gtk/setup.c:566
 msgid "Enable URL grabber"
 msgstr ""
 
-#: src/fe-gtk/setup.c:558
+#: src/fe-gtk/setup.c:567
 msgid "Maximum number of URLs to grab:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:565
+#: src/fe-gtk/setup.c:574
 msgid "(Disabled)"
 msgstr "(ಅಶಕ್ತಗೊಳಿಸಲಾದ)"
 
-#: src/fe-gtk/setup.c:566
+#: src/fe-gtk/setup.c:575
 msgid "Wingate"
 msgstr "Wingate"
 
-#: src/fe-gtk/setup.c:567
+#: src/fe-gtk/setup.c:576
 msgid "Socks4"
 msgstr "Socks4"
 
-#: src/fe-gtk/setup.c:568
+#: src/fe-gtk/setup.c:577
 msgid "Socks5"
 msgstr "Socks5"
 
-#: src/fe-gtk/setup.c:569
+#: src/fe-gtk/setup.c:578
 msgid "HTTP"
 msgstr "HTTP"
 
-#: src/fe-gtk/setup.c:571
+#: src/fe-gtk/setup.c:580
 msgid "MS Proxy (ISA)"
 msgstr "MS ಪ್ರಾಕ್ಸಿ (ISA)"
 
-#: src/fe-gtk/setup.c:574
+#: src/fe-gtk/setup.c:583
 msgid "Auto"
 msgstr ""
 
-#: src/fe-gtk/setup.c:581
+#: src/fe-gtk/setup.c:590
 msgid "All Connections"
 msgstr "ಎಲ್ಲಾ ಸಂಪರ್ಕಗಳು"
 
-#: src/fe-gtk/setup.c:582
+#: src/fe-gtk/setup.c:591
 msgid "IRC Server Only"
 msgstr "IRC ಪರಿಚಾರಕ(ಸರ್ವರ್‍) ಮಾತ್ರ"
 
-#: src/fe-gtk/setup.c:583
+#: src/fe-gtk/setup.c:592
 msgid "DCC Get Only"
 msgstr "DCC ಸ್ವೀಕಾರ ಮಾತ್ರ"
 
-#: src/fe-gtk/setup.c:589
+#: src/fe-gtk/setup.c:598
 msgid "Your Address"
 msgstr "ನಿಮ್ಮ ವಿಳಾಸ"
 
-#: src/fe-gtk/setup.c:590
+#: src/fe-gtk/setup.c:599
 msgid "Bind to:"
 msgstr "ಇದಕ್ಕೆ ಬೈಂಡ್ ಮಾಡು:"
 
-#: src/fe-gtk/setup.c:591
+#: src/fe-gtk/setup.c:600
 msgid "Only useful for computers with multiple addresses."
 msgstr "ಅನೇಕ ವಿಳಾಸವನ್ನು ಹೊಂದಿರುವ ಗಣಕಗಳಲ್ಲಿ ಮಾತ್ರ ಸಹಾಯಕವಾಗುತ್ತದೆ."
 
-#: src/fe-gtk/setup.c:593
+#: src/fe-gtk/setup.c:602
 msgid "Proxy Server"
 msgstr "ಪ್ರಾಕ್ಸಿ ಪರಿಚಾರಕ"
 
-#: src/fe-gtk/setup.c:594
+#: src/fe-gtk/setup.c:603
 msgid "Hostname:"
 msgstr "ಆತಿಥೇಯಗಣಕ:"
 
-#: src/fe-gtk/setup.c:595
+#: src/fe-gtk/setup.c:604
 msgid "Port:"
 msgstr "ಸಂಪರ್ಕಸ್ಥಾನ:"
 
-#: src/fe-gtk/setup.c:596
+#: src/fe-gtk/setup.c:605
 msgid "Type:"
 msgstr "ಬಗೆ:"
 
-#: src/fe-gtk/setup.c:597
+#: src/fe-gtk/setup.c:606
 msgid "Use proxy for:"
 msgstr "ಇದಕ್ಕಾಗಿ ಪ್ರಾಕ್ಸಿ ಬಳಸಿ:"
 
-#: src/fe-gtk/setup.c:599
+#: src/fe-gtk/setup.c:608
 msgid "Proxy Authentication"
 msgstr "ಪ್ರಾಕ್ಸಿ ದೃಢೀಕರಣ"
 
-#: src/fe-gtk/setup.c:601
+#: src/fe-gtk/setup.c:610
 msgid "Use Authentication (MS Proxy, HTTP or Socks5 only)"
 msgstr "ದೃಢೀಕರಣವನ್ನು ಬಳಸಿ (MS Proxy, HTTP ಅಥವ Socks5 ಅನ್ನು ಮಾತ್ರ)"
 
-#: src/fe-gtk/setup.c:603
+#: src/fe-gtk/setup.c:612
 msgid "Use Authentication (HTTP or Socks5 only)"
 msgstr "ದೃಢೀಕರಣವನ್ನು ಬಳಸಿ (HTTP ಅಥವ Socks5 ಅನ್ನು ಮಾತ್ರ)"
 
-#: src/fe-gtk/setup.c:605
+#: src/fe-gtk/setup.c:614
 msgid "Username:"
 msgstr "ಬಳಕೆದಾರ ಹೆಸರು:"
 
-#: src/fe-gtk/setup.c:606
+#: src/fe-gtk/setup.c:615
 msgid "Password:"
 msgstr "ಗುಪ್ತಪದ:"
 
-#: src/fe-gtk/setup.c:1037
+#: src/fe-gtk/setup.c:1046
 msgid "Select an Image File"
 msgstr "ಒಂದು ಚಿತ್ರವನ್ನು ಆಯ್ದುಕೊಳ್ಳಿ"
 
-#: src/fe-gtk/setup.c:1072
+#: src/fe-gtk/setup.c:1081
 msgid "Select Download Folder"
 msgstr "ಡೌನ್‌ಲೋಡ್ ಕಡತಕೋಶವನ್ನು ಆಯ್ಕೆ ಮಾಡಿ"
 
-#: src/fe-gtk/setup.c:1081
+#: src/fe-gtk/setup.c:1090
 msgid "Select font"
 msgstr "ಅಕ್ಷರ ಶೈಲಿಯನ್ನು ಆಯ್ದುಕೊಳ್ಳಿ"
 
-#: src/fe-gtk/setup.c:1181
+#: src/fe-gtk/setup.c:1190
 msgid "Browse..."
 msgstr "ವೀಕ್ಷಿಸು..."
 
-#: src/fe-gtk/setup.c:1319
+#: src/fe-gtk/setup.c:1328
 msgid "Mark identified users with:"
 msgstr "ಗುರುತಿಸಲಾದ ಬಳಕೆದಾರರನ್ನು ಇದರೊಂದಿಗೆ ಗುರುತುಹಾಕಿ: "
 
-#: src/fe-gtk/setup.c:1321
+#: src/fe-gtk/setup.c:1330
 msgid "Mark not-identified users with:"
 msgstr "ಗುರುತಿಸದೆ ಇರುವ ಬಳಕೆದಾರರನ್ನು ಇದರೊಂದಿಗೆ ಗುರುತುಹಾಕಿ: "
 
-#: src/fe-gtk/setup.c:1328
+#: src/fe-gtk/setup.c:1337
 msgid "Open Data Folder"
 msgstr "ದತ್ತಾಂಶವನ್ನು ಹೊಂದಿರುವ ಕಡತಕೋಶವನ್ನು ತೆರೆ"
 
-#: src/fe-gtk/setup.c:1382
+#: src/fe-gtk/setup.c:1391
 msgid "Select color"
 msgstr "ಬಣ್ಣವನ್ನು ಆಯ್ಕೆಮಾಡಿ"
 
-#: src/fe-gtk/setup.c:1462
+#: src/fe-gtk/setup.c:1471
 msgid "Text Colors"
 msgstr "ಪಠ್ಯ ಬಣ್ಣಗಳು"
 
-#: src/fe-gtk/setup.c:1464
+#: src/fe-gtk/setup.c:1473
 msgid "mIRC colors:"
 msgstr "mIRC ಬಣ್ಣಗಳು:"
 
-#: src/fe-gtk/setup.c:1472
+#: src/fe-gtk/setup.c:1481
 msgid "Local colors:"
 msgstr "ಸ್ಥಳೀಯ ಬಣ್ಣಗಳು:"
 
-#: src/fe-gtk/setup.c:1480 src/fe-gtk/setup.c:1485
+#: src/fe-gtk/setup.c:1489 src/fe-gtk/setup.c:1494
 msgid "Foreground:"
 msgstr "ಮುನ್ನೆಲೆ:"
 
-#: src/fe-gtk/setup.c:1481 src/fe-gtk/setup.c:1486
+#: src/fe-gtk/setup.c:1490 src/fe-gtk/setup.c:1495
 msgid "Background:"
 msgstr "ಹಿನ್ನಲೆ:"
 
-#: src/fe-gtk/setup.c:1483
+#: src/fe-gtk/setup.c:1492
 msgid "Selected Text"
 msgstr ""
 
-#: src/fe-gtk/setup.c:1488
+#: src/fe-gtk/setup.c:1497
 msgid "Interface Colors"
 msgstr "ಸಂಪರ್ಕಸಾಧನದ ಬಣ್ಣಗಳು"
 
-#: src/fe-gtk/setup.c:1490
+#: src/fe-gtk/setup.c:1499
 msgid "New data:"
 msgstr "ಹೊಸ ದತ್ತಾಂಶ:"
 
-#: src/fe-gtk/setup.c:1491
+#: src/fe-gtk/setup.c:1500
 msgid "Marker line:"
 msgstr "ಗುರುತಿನ ಗೆರೆ:"
 
-#: src/fe-gtk/setup.c:1492
+#: src/fe-gtk/setup.c:1501
 msgid "New message:"
 msgstr "ಹೊಸ ಸಂದೇಶ"
 
-#: src/fe-gtk/setup.c:1493
+#: src/fe-gtk/setup.c:1502
 msgid "Away user:"
 msgstr "ಆಚೆ ಹೋದ ಬಳಕೆದಾರ:"
 
-#: src/fe-gtk/setup.c:1494
+#: src/fe-gtk/setup.c:1503
 msgid "Highlight:"
 msgstr "ಹೈಲೈಟ್:"
 
-#: src/fe-gtk/setup.c:1496
+#: src/fe-gtk/setup.c:1505
 msgid "Spell checker:"
 msgstr ""
 
-#: src/fe-gtk/setup.c:1499
+#: src/fe-gtk/setup.c:1508
 msgid "Color Stripping"
 msgstr ""
 
-#: src/fe-gtk/setup.c:1605 src/fe-gtk/textgui.c:389
+#: src/fe-gtk/setup.c:1614 src/fe-gtk/textgui.c:389
 msgid "Event"
 msgstr "ಘಟನೆ"
 
-#: src/fe-gtk/setup.c:1611
+#: src/fe-gtk/setup.c:1620
 msgid "Sound file"
 msgstr "ಧ್ವನಿ ಕಡತ"
 
-#: src/fe-gtk/setup.c:1646
+#: src/fe-gtk/setup.c:1655
 msgid "Select a sound file"
 msgstr "ಧ್ವನಿ ಕಡತವನ್ನು ಆಯ್ದುಕೊಳ್ಳಿ"
 
-#: src/fe-gtk/setup.c:1718
+#: src/fe-gtk/setup.c:1727
 msgid "Sound playing method:"
 msgstr "ಸದ್ದು ಮಾಡುವ ವಿಧಾನ:"
 
-#: src/fe-gtk/setup.c:1726
+#: src/fe-gtk/setup.c:1735
 msgid "External sound playing _program:"
 msgstr "ಸದ್ದು ಮಾಡುವ ಬಾಹ್ಯ ಪ್ರೊಗ್ರಾಮ್(_p):"
 
-#: src/fe-gtk/setup.c:1744
+#: src/fe-gtk/setup.c:1753
 msgid "_External program"
 msgstr "ಬಾಹ್ಯ ಪ್ರೊಗ್ರಾಮ್(_E)"
 
-#: src/fe-gtk/setup.c:1754
+#: src/fe-gtk/setup.c:1763
 msgid "_Automatic"
 msgstr "ಸ್ವಯಂಚಾಲಿತ(_A)"
 
-#: src/fe-gtk/setup.c:1767
+#: src/fe-gtk/setup.c:1776
 msgid "Sound files _directory:"
 msgstr "ಧ್ವನಿ ಕಡತಗಳ ಕೋಶ(_d):"
 
-#: src/fe-gtk/setup.c:1806
+#: src/fe-gtk/setup.c:1815
 msgid "Sound file:"
 msgstr "ಧ್ವನಿ ಕಡತ:"
 
-#: src/fe-gtk/setup.c:1821
+#: src/fe-gtk/setup.c:1830
 msgid "_Browse..."
 msgstr "ಜಾಲವೀಕ್ಷಣೆ(_B)..."
 
-#: src/fe-gtk/setup.c:1832
+#: src/fe-gtk/setup.c:1841
 msgid "_Play"
 msgstr "ಚಲಾಯಿಸು(_P)"
 
-#: src/fe-gtk/setup.c:1881
+#: src/fe-gtk/setup.c:1890
 msgid "Interface"
 msgstr "ಸಂಪರ್ಕಸಾಧನ"
 
-#: src/fe-gtk/setup.c:1882
+#: src/fe-gtk/setup.c:1891
 msgid "Appearance"
 msgstr ""
 
-#: src/fe-gtk/setup.c:1883
+#: src/fe-gtk/setup.c:1892
 msgid "Input box"
 msgstr "ಇನ್‌ಪುಟ್ ಚೌಕ"
 
-#: src/fe-gtk/setup.c:1884
+#: src/fe-gtk/setup.c:1893
 msgid "User list"
 msgstr "ಬಳಕೆದಾರರ ಪಟ್ಟಿ"
 
-#: src/fe-gtk/setup.c:1885
+#: src/fe-gtk/setup.c:1894
 msgid "Channel switcher"
 msgstr "ಚಾನಲ್ ಬದಲಾವಣೆಗಾರ"
 
-#: src/fe-gtk/setup.c:1886
+#: src/fe-gtk/setup.c:1895
 msgid "Colors"
 msgstr "ಬಣ್ಣಗಳು"
 
-#: src/fe-gtk/setup.c:1888
+#: src/fe-gtk/setup.c:1897
 msgid "Chatting"
 msgstr "ಮಾತುಕತೆ"
 
-#: src/fe-gtk/setup.c:1892
+#: src/fe-gtk/setup.c:1901
 msgid "Sound"
 msgstr "ಸದ್ದು"
 
-#: src/fe-gtk/setup.c:1893
+#: src/fe-gtk/setup.c:1902
 msgid "Advanced"
 msgstr "ಸುಧಾರಿತ"
 
-#: src/fe-gtk/setup.c:1896
+#: src/fe-gtk/setup.c:1905
 msgid "Network setup"
 msgstr "ಜಾಲಬಂಧ ಸಿದ್ಧತೆ"
 
-#: src/fe-gtk/setup.c:1897
+#: src/fe-gtk/setup.c:1906
 msgid "File transfers"
 msgstr "ಕಡತ ವರ್ಗಾವಣೆಗಳು"
 
-#: src/fe-gtk/setup.c:2028
+#: src/fe-gtk/setup.c:2037
 msgid "Categories"
 msgstr "ಪಂಗಡಗಳು"
 
-#: src/fe-gtk/setup.c:2224
+#: src/fe-gtk/setup.c:2240
 msgid ""
 "You cannot place the tree on the top or bottom!\n"
 "Please change to the <b>Tabs</b> layout in the <b>View</b> menu first."
 msgstr "ವೃಕ್ಷವನ್ನು ನೀವು ಮೇಲೆ ಅಥವ ಕೆಳಗೆ ಇರಿಸುವಂತಿಲ್ಲ!\nದಯವಿಟ್ಟು ಮೊದಲು <b>ನೋಟ</b>ದ ಮೆನುವಿನಲ್ಲಿ <b>ಹಾಳೆಗಳ</b> ವಿನ್ಯಾಸಕ್ಕೆ ಬದಲಾಯಿಸಿ."
 
-#: src/fe-gtk/setup.c:2251
+#: src/fe-gtk/setup.c:2267
 msgid "Invalid time stamp format! See the strftime MSDN article for details."
 msgstr ""
 
-#: src/fe-gtk/setup.c:2258
+#: src/fe-gtk/setup.c:2274
 msgid "Some settings were changed that require a restart to take full effect."
 msgstr "ಮಾಡಲಾದ ಕೆಲವು ಬದಲಾವಣೆಗಳು ಸಂಪೂರ್ಣವಾಗಿ ಕಾರ್ಯರೂಪಕ್ಕೆ ಬರಲು ಮರಳಿ ಆರಂಭಿಸುವ ಅಗತ್ಯವಿರುತ್ತದೆ."
 
-#: src/fe-gtk/setup.c:2266
+#: src/fe-gtk/setup.c:2282
 msgid ""
 "*WARNING*\n"
 "Auto accepting DCC to your home directory\n"
@@ -5667,7 +5708,7 @@ msgid ""
 "Someone could send you a .bash_profile"
 msgstr "*ಎಚ್ಚರಿಕೆ*\nDCC ಅನ್ನು ಸ್ವಯಂಚಾಲಿತವಾಗು ನಿಮ್ಮ ನೆಲೆ ಕೋಶಕ್ಕೆ ಒಪ್ಪಿಕೊಳ್ಳುವುದು\nಅಪಾಯಕಾರಿ ಹಾಗು ಮೋಸದ ಬಳಕೆಗೆ ಕಾರಣವಾಗಬಹುದು. ಉದಾ:\nಯಾರಾದರೂ ನಿಮಗೆ ಒಂದು .bash_profile ಅನ್ನು ಕಳುಹಿಸಬಹುದು"
 
-#: src/fe-gtk/setup.c:2299
+#: src/fe-gtk/setup.c:2315
 msgid ": Preferences"
 msgstr ": ಆದ್ಯತೆಗಳು"
 
@@ -5724,7 +5765,7 @@ msgstr "ಕಾಪಿ ಮಾಡು"
 msgid "Save list to a file"
 msgstr "ಪಟ್ಟಿಯನ್ನು ಕಡತಕ್ಕೆ ಉಳಿಸಿ"
 
-#: src/fe-gtk/userlistgui.c:120
+#: src/fe-gtk/userlistgui.c:121
 #, c-format
 msgid "%d ops, %d total"
 msgstr "%d ops, %d ಒಟ್ಟು"
