@@ -480,6 +480,7 @@ const struct prefs vars[] =
 	{"gui_tray", P_OFFINT (hex_gui_tray), TYPE_BOOL},
 	{"gui_tray_flags", P_OFFINT (hex_gui_tray_flags), TYPE_INT},
 	{"gui_ulist_buttons", P_OFFINT (hex_gui_ulist_buttons), TYPE_BOOL},
+	{"gui_ulist_count", P_OFFINT (hex_gui_ulist_count), TYPE_BOOL},
 	{"gui_ulist_doubleclick", P_OFFSET (hex_gui_ulist_doubleclick), TYPE_STR},
 	{"gui_ulist_hide", P_OFFINT (hex_gui_ulist_hide), TYPE_BOOL},
 	{"gui_ulist_icons", P_OFFINT (hex_gui_ulist_icons), TYPE_BOOL},
@@ -686,6 +687,7 @@ load_config (void)
 	prefs.hex_gui_tab_layout = 2;	/* 0=Tabs 1=Reserved 2=Tree */
 	prefs.hex_gui_tab_icons = 1;
 	prefs.hex_gui_tab_sort = 1;
+	prefs.hex_gui_ulist_count = 1;
 	prefs.hex_gui_ulist_resizable = 1;
 	prefs.hex_gui_tab_newtofront = 2;
 	prefs.hex_gui_tab_server = 1;

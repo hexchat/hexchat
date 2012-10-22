@@ -241,6 +241,7 @@ struct hexchatprefs
 	unsigned int hex_gui_topicbar;
 	unsigned int hex_gui_tray;
 	unsigned int hex_gui_ulist_buttons;
+	unsigned int hex_gui_ulist_count;
 	unsigned int hex_gui_ulist_hide;
 	unsigned int hex_gui_ulist_icons;
 	unsigned int hex_gui_ulist_resizable;

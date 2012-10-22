@@ -2522,7 +2522,7 @@ mg_create_userlist (session_gui *gui, GtkWidget *box)
 	gtk_container_add (GTK_CONTAINER (box), vbox);
 
 	frame = gtk_frame_new (NULL);
-	if (!(prefs.hex_gui_win_ucount))
+	if (prefs.hex_gui_ulist_count)
 		gtk_box_pack_start (GTK_BOX (vbox), frame, 0, 0, GUI_SPACING);
 
 	gui->namelistinfo = gtk_label_new (NULL);

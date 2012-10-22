@@ -284,7 +284,8 @@ static const setting userlist_settings[] =
 	{ST_HEADER,	N_("User List"),0,0,0},
 	{ST_TOGGLE, N_("Show hostnames in user list"), P_OFFINTNL(hex_gui_ulist_show_hosts), 0, 0, 0},
 	{ST_TOGGLE, N_("Use the Text box font and colors"), P_OFFINTNL(hex_gui_ulist_style),0,0,0},
-	{ST_TOGGLE, N_("Show icons instead of text symbols"), P_OFFINTNL(hex_gui_ulist_icons), 0, 0, 0},
+	{ST_TOGGLE, N_("Show icons instead for user modes"), P_OFFINTNL(hex_gui_ulist_icons), 0, 0, 0},
+	{ST_TOGGLE, N_("Show user count in channels"), P_OFFINTNL(hex_gui_ulist_count), 0, 0, 0},
 /*	{ST_TOGGLE, N_("Resizable user list"), P_OFFINTNL(hex_gui_ulist_resizable),0,0,0},*/
 	{ST_MENU,	N_("User list sorted by:"), P_OFFINTNL(hex_gui_ulist_sort), 0, ulmenutext, 0},
 	{ST_MENU,	N_("Show user list at:"), P_OFFINTNL(hex_gui_ulist_pos), 0, ulpos, 1},
@@ -2202,29 +2203,31 @@ setup_apply (struct hexchatprefs *pr)
 	if (DIFF (hex_gui_lang))
 		noapply = TRUE;
 #endif
-	if (DIFF (hex_gui_ulist_resizable))
-		noapply = TRUE;
 	if (DIFF (hex_gui_input_nick))
 		noapply = TRUE;
 	if (DIFF (hex_gui_lagometer))
 		noapply = TRUE;
-	if (DIFF (hex_gui_throttlemeter))
+	if (DIFF (hex_gui_tab_icons))
 		noapply = TRUE;
-	if (DIFF (hex_gui_ulist_show_hosts))
+	if (DIFF (hex_gui_tab_server))
 		noapply = TRUE;
 	if (DIFF (hex_gui_tab_small))
 		noapply = TRUE;
 	if (DIFF (hex_gui_tab_sort))
 		noapply = TRUE;
-	if (DIFF (hex_gui_ulist_icons))
-		noapply = TRUE;
-	if (DIFF (hex_gui_tab_server))
-		noapply = TRUE;
-	if (DIFF (hex_gui_ulist_style))
-		noapply = TRUE;
 	if (DIFF (hex_gui_tab_trunc))
 		noapply = TRUE;
-	if (DIFF (hex_gui_tab_icons))
+	if (DIFF (hex_gui_throttlemeter))
+		noapply = TRUE;
+	if (DIFF (hex_gui_ulist_count))
+		noapply = TRUE;
+	if (DIFF (hex_gui_ulist_icons))
+		noapply = TRUE;
+	if (DIFF (hex_gui_ulist_resizable))
+		noapply = TRUE;
+	if (DIFF (hex_gui_ulist_show_hosts))
+		noapply = TRUE;
+	if (DIFF (hex_gui_ulist_style))
 		noapply = TRUE;
 
 	if (DIFF (hex_gui_tab_dots))
