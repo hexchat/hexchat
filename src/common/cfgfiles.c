@@ -473,7 +473,6 @@ const struct prefs vars[] = {
 	{"gui_ulist_buttons", P_OFFINT (userlistbuttons), TYPE_BOOL},
 	{"gui_ulist_doubleclick", P_OFFSET (doubleclickuser), TYPE_STR},
 	{"gui_ulist_hide", P_OFFINT (hideuserlist), TYPE_BOOL},
-	{"gui_ulist_left", P_OFFINT (_gui_ulist_left), TYPE_BOOL},	/* obsolete */
 	{"gui_ulist_pos", P_OFFINT (gui_ulist_pos), TYPE_INT},
 	{"gui_ulist_resizable", P_OFFINT (paned_userlist), TYPE_BOOL},
 	{"gui_ulist_show_hosts", P_OFFINT(showhostname_in_userlist), TYPE_BOOL},
@@ -570,7 +569,6 @@ const struct prefs vars[] = {
 	{"tab_new_to_front", P_OFFINT (newtabstofront), TYPE_INT},
 	{"tab_notices", P_OFFINT (notices_tabs), TYPE_BOOL},
 	{"tab_pos", P_OFFINT (tab_pos), TYPE_INT},
-	{"tab_position", P_OFFINT (_tabs_position), TYPE_INT}, /* obsolete */
 	{"tab_server", P_OFFINT (use_server_tab), TYPE_BOOL},
 	{"tab_small", P_OFFINT (tab_small), TYPE_INT},
 	{"tab_sort", P_OFFINT (tab_sort), TYPE_BOOL},
@@ -676,7 +674,6 @@ load_config (void)
 	prefs.show_away_once = 1;
 	prefs.indent_nicks = 1;
 	prefs.thin_separator = 1;
-	prefs._tabs_position = 2; /* 2 = left */
 #ifdef WIN32
 	prefs.identd = 1;
 	prefs.gui_lang = 15;
@@ -740,6 +737,7 @@ load_config (void)
 	prefs.gui_pane_left_size = 128;		/* with treeview icons we need a bit bigger space */
 	prefs.gui_pane_right_size = 100;
 	prefs.gui_pane_right_size_min = 80;
+	prefs.gui_ulist_pos = 3;
 	prefs.mainwindow_save = 1;
 	prefs.bantype = 2;
 	prefs.input_balloon_time = 20;
@@ -850,45 +848,6 @@ load_config (void)
 	sp = strchr (prefs.username, ' ');
 	if (sp)
 		sp[0] = 0;	/* spaces in username would break the login */
-
-	/* try to make sense of old ulist/tree position settings */
-	if (prefs.gui_ulist_pos == 0)
-	{
-		prefs.gui_ulist_pos = 3;	/* top right */
-		if (prefs._gui_ulist_left)
-			prefs.gui_ulist_pos = 2;	/* bottom left */
-
-		switch (prefs._tabs_position)
-		{
-		case 0:
-			prefs.tab_pos = 6; /* bottom */
-			break;
-		case 1:
-			prefs.tab_pos = 5;	/* top */
-			break;
-		case 2:
-			prefs.tab_pos = 1; 	/* left */
-			break;
-		case 3:
-			prefs.tab_pos = 4; 	/* right */
-			break;
-		case 4:
-			prefs.tab_pos = 1;	/* (hidden)left */
-			break;
-		case 5:
-			if (prefs._gui_ulist_left)
-			{
-				prefs.tab_pos = 1; 	/* above ulist left */
-				prefs.gui_ulist_pos = 2;
-			}
-			else
-			{
-				prefs.tab_pos = 3; 	/* above ulist right */
-				prefs.gui_ulist_pos = 4;
-			}
-			break;
-		}
-	}
 }
 
 int

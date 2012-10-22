@@ -166,7 +166,6 @@ struct xchatprefs
 	int gui_ulist_pos;
 	int tab_pos;
 
-	int _tabs_position;
 	int tab_layout;
 	int max_auto_indent;
 	int dcc_blocksize;
@@ -297,7 +296,6 @@ struct xchatprefs
 	unsigned int gui_tray;
 	unsigned int gui_tray_flags;
 	unsigned int gui_tweaks;
-	unsigned int _gui_ulist_left;
 	unsigned int throttle;
 	unsigned int topicbar;
 	unsigned int hideuserlist;
