@@ -2335,8 +2335,8 @@ dcc_add_file (session *sess, char *file, DCC_SIZE size, int port, char *nick, gu
 										  strlen (file) + 4);
 
 		strcpy (dcc->destfile, prefs.dccdir);
-		if (prefs.dccdir[strlen (prefs.dccdir) - 1] != '/')
-			strcat (dcc->destfile, "/");
+		if (prefs.dccdir[strlen (prefs.dccdir) - 1] != G_DIR_SEPARATOR)
+			strcat (dcc->destfile, G_DIR_SEPARATOR_S);
 		if (prefs.dccwithnick)
 		{
 #ifdef WIN32
