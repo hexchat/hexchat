@@ -44,6 +44,7 @@ rmdir /q /s "$(HexChatRel)"
 mkdir "$(HexChatRel)"
 echo 2&gt; portable-mode
 move portable-mode "$(HexChatRel)"
+copy changelog.url "$(HexChatRel)"
 copy readme.url "$(HexChatRel)"
 copy "$(HexChatBin)hexchat.exe" "$(HexChatRel)"
 copy "$(HexChatBin)hexchat-text.exe" "$(HexChatRel)"

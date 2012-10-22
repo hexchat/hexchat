@@ -90,6 +90,7 @@ Source: watercolorlite-blue.cjstyles; DestDir: {tmp}; Flags: dontcopy
 
 Source: "portable-mode"; DestDir: "{app}"; Tasks: portable
 
+Source: "changelog.url"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "readme.url"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "cert.pem"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
 Source: "COPYING"; DestDir: "{app}"; Flags: ignoreversion; Components: libs
@@ -190,7 +191,8 @@ Source: "thememan.exe"; DestDir: "{app}"; Flags: ignoreversion; Components: xtm
 
 [Icons]
 Name: "{group}\HexChat (x64)"; Filename: "{app}\hexchat.exe"; Tasks: not portable
-Name: "{group}\HexChat (x64) ReadMe"; Filename: "{app}\readme.url"; IconFilename: "{win}\notepad.exe"; IconIndex: 0; Tasks: not portable
+Name: "{group}\HexChat (x64) ChangeLog"; Filename: "{app}\changelog.url"; IconFilename: "{sys}\shell32.dll"; IconIndex: 165; Tasks: not portable
+Name: "{group}\HexChat (x64) ReadMe"; Filename: "{app}\readme.url"; IconFilename: "{sys}\shell32.dll"; IconIndex: 23; Tasks: not portable
 Name: "{group}\HexChat-Text (x64)"; Filename: "{app}\hexchat-text.exe"; Components: xctext; Tasks: not portable
 Name: "{group}\HexChat Theme Manager (x64)"; Filename: "{app}\thememan.exe"; Components: xtm; Tasks: not portable
 Name: "{group}\Uninstall HexChat (x64)"; Filename: "{uninstallexe}"; Tasks: not portable
