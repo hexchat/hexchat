@@ -102,7 +102,7 @@ struct nbexec
 	struct session *sess;
 };
 
-struct xchatprefs
+struct hexchatprefs
 {
 	char nick1[NICKLEN];
 	char nick2[NICKLEN];

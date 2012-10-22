@@ -35,10 +35,10 @@ FILE *xchat_fopen_file (const char *file, const char *mode, int xof_flags);
 #define STRUCT_OFFSET_INT(type,field) \
 ( (unsigned int) (((int *) (&(((type *) NULL)->field)))- ((int *) NULL)) )
 
-#define P_OFFSET(field) STRUCT_OFFSET_STR(struct xchatprefs, field),sizeof(prefs.field)
-#define P_OFFSETNL(field) STRUCT_OFFSET_STR(struct xchatprefs, field)
-#define P_OFFINT(field) STRUCT_OFFSET_INT(struct xchatprefs, field),0
-#define P_OFFINTNL(field) STRUCT_OFFSET_INT(struct xchatprefs, field)
+#define P_OFFSET(field) STRUCT_OFFSET_STR(struct hexchatprefs, field),sizeof(prefs.field)
+#define P_OFFSETNL(field) STRUCT_OFFSET_STR(struct hexchatprefs, field)
+#define P_OFFINT(field) STRUCT_OFFSET_INT(struct hexchatprefs, field),0
+#define P_OFFINTNL(field) STRUCT_OFFSET_INT(struct hexchatprefs, field)
 
 struct prefs
 {

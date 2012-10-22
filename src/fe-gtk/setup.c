@@ -66,7 +66,7 @@ GtkStyle *create_input_style (GtkStyle *);
 static int last_selected_page = 0;
 static int last_selected_row = 0; /* sound row */
 static gboolean color_change;
-static struct xchatprefs setup_prefs;
+static struct hexchatprefs setup_prefs;
 static GtkWidget *cancel_button;
 static GtkWidget *font_dialog = NULL;
 
@@ -2182,7 +2182,7 @@ setup_apply_real (int new_pix, int do_ulist, int do_layout)
 }
 
 static void
-setup_apply (struct xchatprefs *pr)
+setup_apply (struct hexchatprefs *pr)
 {
 #ifdef WIN32
 	PangoFontDescription *old_desc;

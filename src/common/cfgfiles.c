@@ -651,7 +651,7 @@ load_config (void)
 	username = convert_with_fallback (username, "username");
 	realname = convert_with_fallback (realname, "realname");
 
-	memset (&prefs, 0, sizeof (struct xchatprefs));
+	memset (&prefs, 0, sizeof (struct hexchatprefs));
 
 	/* put in default values, anything left out is automatically zero */
 	prefs.local_ip = 0xffffffff;

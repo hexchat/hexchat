@@ -93,7 +93,7 @@ gint arg_existing = FALSE;
 
 struct session *current_tab;
 struct session *current_sess = 0;
-struct xchatprefs prefs;
+struct hexchatprefs prefs;
 
 #ifdef USE_OPENSSL
 SSL_CTX *ctx = NULL;

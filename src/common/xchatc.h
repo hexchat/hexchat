@@ -1,7 +1,7 @@
 #ifndef XCHAT_C_H
 #define XCHAT_C_H
 
-extern struct xchatprefs prefs;
+extern struct hexchatprefs prefs;
 
 extern int xchat_is_quitting;
 extern gint arg_skip_plugins;	/* command-line args */
