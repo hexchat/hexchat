@@ -1,5 +1,3 @@
-EXTRA_DIST = 
-
 libdir = $(hexchatlibdir)/plugins
 
 lib_LTLIBRARIES = sasl.la

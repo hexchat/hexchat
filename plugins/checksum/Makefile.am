@@ -1,5 +1,3 @@
-EXTRA_DIST = INSTALL LICENSE README
-
 libdir = $(hexchatlibdir)/plugins
 
 lib_LTLIBRARIES = checksum.la
