@@ -166,6 +166,11 @@ static const setting appearance_settings[] =
 #else
 	{ST_EFONT,  N_("Font:"), P_OFFSETNL(font_normal), 0, 0, sizeof prefs.font_normal},
 #endif
+
+	{ST_HEADER,	N_("Title Bar"),0,0,0},
+	{ST_TOGGLE, N_("Show channel modes"), P_OFFINTNL(gui_win_modes),0,0,0},
+	{ST_TOGGLR, N_("Show number of users"), P_OFFINTNL(gui_win_ucount),0,0,0},
+
 	{ST_HEADER,	N_("Text Box"),0,0,0},
 	{ST_EFILE,  N_("Background image:"), P_OFFSETNL(background), 0, 0, sizeof prefs.background},
 	{ST_NUMBER,	N_("Scrollback lines:"), P_OFFINTNL(max_lines),0,0,100000},

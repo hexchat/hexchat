@@ -496,9 +496,11 @@ const struct prefs vars[] = {
 	{"gui_usermenu", P_OFFINT (gui_usermenu), TYPE_BOOL},
 	{"gui_win_height", P_OFFINT (mainwindow_height), TYPE_INT},
 	{"gui_win_left", P_OFFINT (mainwindow_left), TYPE_INT},
+	{"gui_win_modes", P_OFFINT (gui_win_modes), TYPE_BOOL},
 	{"gui_win_save", P_OFFINT (mainwindow_save), TYPE_BOOL},
 	{"gui_win_state", P_OFFINT (gui_win_state), TYPE_INT},
 	{"gui_win_top", P_OFFINT (mainwindow_top), TYPE_INT},
+	{"gui_win_ucount", P_OFFINT (gui_win_ucount), TYPE_BOOL},
 	{"gui_win_width", P_OFFINT (mainwindow_width), TYPE_INT},
 
 #ifdef WIN32

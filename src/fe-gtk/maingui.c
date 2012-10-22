@@ -416,6 +416,7 @@ mg_inputbox_cb (GtkWidget *igad, session_gui *gui)
 	free (cmd);
 }
 
+#if 0
 static gboolean
 has_key (char *modes)
 {
@@ -432,6 +433,7 @@ has_key (char *modes)
 	}
 	return FALSE;
 }
+#endif
 
 void
 fe_set_title (session *sess)
@@ -459,18 +461,24 @@ fe_set_title (session *sess)
 		break;
 	case SESS_CHANNEL:
 		/* don't display keys in the titlebar */
-		if ((!(prefs.gui_tweaks & 16)) && has_key (sess->current_modes))
-			snprintf (tbuf, sizeof (tbuf),
-						 DISPLAY_NAME": %s @ %s / %s",
-						 sess->server->nick, server_get_network (sess->server, TRUE),
-						 sess->channel);
-		else
+		if (prefs.gui_win_modes)
+		{
 			snprintf (tbuf, sizeof (tbuf),
 						 DISPLAY_NAME": %s @ %s / %s (%s)",
 						 sess->server->nick, server_get_network (sess->server, TRUE),
 						 sess->channel, sess->current_modes ? sess->current_modes : "");
-		if (prefs.gui_tweaks & 1)
+		}
+		else
+		{
+			snprintf (tbuf, sizeof (tbuf),
+						 DISPLAY_NAME": %s @ %s / %s",
+						 sess->server->nick, server_get_network (sess->server, TRUE),
+						 sess->channel);
+		}
+		if (prefs.gui_win_ucount)
+		{
 			snprintf (tbuf + strlen (tbuf), 9, " (%d)", sess->total);
+		}
 		break;
 	case SESS_NOTICES:
 	case SESS_SNOTICES:
@@ -2514,7 +2522,7 @@ mg_create_userlist (session_gui *gui, GtkWidget *box)
 	gtk_container_add (GTK_CONTAINER (box), vbox);
 
 	frame = gtk_frame_new (NULL);
-	if (!(prefs.gui_tweaks & 1))
+	if (!(prefs.gui_win_ucount))
 		gtk_box_pack_start (GTK_BOX (vbox), frame, 0, 0, GUI_SPACING);
 
 	gui->namelistinfo = gtk_label_new (NULL);

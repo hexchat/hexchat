@@ -126,7 +126,7 @@ fe_userlist_numbers (session *sess)
 			gtk_label_set_text (GTK_LABEL (sess->gui->namelistinfo), NULL);
 		}
 
-		if (sess->type == SESS_CHANNEL && prefs.gui_tweaks & 1)
+		if (sess->type == SESS_CHANNEL && prefs.gui_win_ucount)
 			fe_set_title (sess);
 	}
 }
