@@ -1,3 +1,5 @@
+# HexChat ChangeLog
+
 ## 2.9.3 (2012-10-14)
 
 -   fix various URL detection bugs
