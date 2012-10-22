@@ -1,21 +1,3 @@
-## 2.9.4 (TBD)
-
--   fix alerts when omit alerts in away option is set
--   fix dialog icon in userlist popup
--   fix opening links on Mac
--   add support for the SysInfo plugin on Unix
--   add option to change GUI language on Windows
--   add Ignore entry to userlist popup
--   add Afrikaans, Asturian, Danish, Gujarati, Indonesian and Kinyarwanda translations
--   display previous value after /SET
--   reorganize the Settings menu
--   rebuild every dependency with Visual C++ on Windows
--   stop using the WDK on Windows and depend on the Visual C++ Redistributable
--   update GTK+ to 2.24 on Windows
--   update Albanian, French and Hungarian translations
--   update the network list
-
-
 ## 2.9.3 (2012-10-14)
 
 -   fix various URL detection bugs
