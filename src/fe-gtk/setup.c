@@ -212,6 +212,7 @@ static const setting inputbox_settings[] =
 {
 	{ST_HEADER, N_("Input Box"),0,0,0},
 	{ST_TOGGLE, N_("Use the Text box font and colors"), P_OFFINTNL(style_inputbox),0,0,0},
+	{ST_TOGGLE, N_("Show nick box"), P_OFFINTNL(gui_input_nick),0,0,0},
 #if defined(USE_GTKSPELL) || defined(USE_LIBSEXY)
 	{ST_TOGGLE, N_("Spell checking"), P_OFFINTNL(gui_input_spell),0,0,0},
 	{ST_ENTRY,	N_("Dictionaries to use:"), P_OFFSETNL(spell_langs),0,0,sizeof prefs.spell_langs},
@@ -2204,6 +2205,8 @@ setup_apply (struct xchatprefs *pr)
 		noapply = TRUE;
 #endif
 	if (DIFF (paned_userlist))
+		noapply = TRUE;
+	if (DIFF (gui_input_nick))
 		noapply = TRUE;
 	if (DIFF (lagometer))
 		noapply = TRUE;

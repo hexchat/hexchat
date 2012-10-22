@@ -293,11 +293,11 @@ struct xchatprefs
 	unsigned int auto_indent;
 	unsigned int wordwrap;
 	unsigned int gui_compact;
+	unsigned int gui_input_nick;
 	unsigned int gui_input_spell;
 	unsigned int gui_tab_dots;
 	unsigned int gui_tray;
 	unsigned int gui_tray_flags;
-	unsigned int gui_tweaks;
 	unsigned int gui_ulist_icons;
 	unsigned int gui_win_modes;
 	unsigned int gui_win_swap;
