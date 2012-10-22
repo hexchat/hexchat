@@ -241,8 +241,8 @@ static const setting inputbox_settings[] =
 static const char *const lagmenutext[] = 
 {
 	N_("Off"),
-	N_("Graph"),
-	N_("Info text"),
+	N_("Graphical"),
+	N_("Text"),
 	N_("Both"),
 	NULL
 };
