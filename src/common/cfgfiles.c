@@ -738,7 +738,7 @@ load_config (void)
 	prefs.hex_input_balloon_time = 20;
 	prefs.hex_input_flash_priv = prefs.hex_input_flash_hilight = 1;
 	prefs.hex_input_tray_priv = prefs.hex_input_tray_hilight = 1;
-	prefs.hex_dcc_auto_recv = 2;	/* browse mode */
+	prefs.hex_dcc_auto_recv = 1;	/* browse mode */
 	prefs.hex_url_grabber = 1;
 	prefs.hex_url_grabber_limit = 100; /* 0 means unlimited */
 	prefs.hex_text_search_follow = 1;
