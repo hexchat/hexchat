@@ -116,7 +116,6 @@ struct xchatprefs
 	char font_normal[4 * FONTNAMELEN + 1];
 	char font_main[FONTNAMELEN + 1];
 	char font_alternative[3 * FONTNAMELEN + 1];
-	char font_normal[FONTNAMELEN + 1];
 	char doubleclickuser[256];
 	char spell_langs[64];
 	char sounddir[PATHLEN + 1];
