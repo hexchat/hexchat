@@ -401,7 +401,7 @@ flood_check (char *nick, char *ip, server *serv, session *sess, int what)	/*0=ct
 				 prefs.hex_flood_msg_time)
 			{
 				serv->msg_counter++;
-				if (serv->msg_counter == prefs.hex_flood_msg_time)	/*if we reached the maximun numbers of ctcp in the seconds limits */
+				if (serv->msg_counter == prefs.hex_flood_msg_num)	/*if we reached the maximun numbers of ctcp in the seconds limits */
 				{
 					snprintf (buf, sizeof (buf),
 					 _("You are being MSG flooded from %s, setting gui_auto_open_dialog OFF.\n"),

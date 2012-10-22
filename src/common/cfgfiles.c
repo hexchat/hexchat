@@ -432,7 +432,7 @@ const struct prefs vars[] =
 
 	{"flood_ctcp_num", P_OFFINT (hex_flood_ctcp_num), TYPE_INT},
 	{"flood_ctcp_time", P_OFFINT (hex_flood_ctcp_time), TYPE_INT},
-	{"flood_msg_num", P_OFFINT (hex_flood_msg_time), TYPE_INT},
+	{"flood_msg_num", P_OFFINT (hex_flood_msg_num), TYPE_INT},
 	{"flood_msg_time", P_OFFINT (hex_flood_msg_time), TYPE_INT},
 
 	{"gui_autoopen_chat", P_OFFINT (hex_gui_autoopen_chat), TYPE_BOOL},
@@ -637,6 +637,9 @@ load_config (void)
 	char *cfg, *sp;
 	const char *username, *realname;
 	int res, val, i, fh;
+#ifdef WIN32
+	char out[256];
+#endif
 
 	check_prefs_dir ();
 	username = g_get_user_name ();
@@ -655,137 +658,143 @@ load_config (void)
 	memset (&prefs, 0, sizeof (struct hexchatprefs));
 
 	/* put in default values, anything left out is automatically zero */
-	prefs.local_ip = 0xffffffff;
-	prefs.hex_irc_join_delay = 3;
-	prefs.hex_text_show_marker = 1;
-	prefs.hex_gui_tab_newtofront = 2;
-	prefs.hex_completion_amount = 5;
-	prefs.hex_away_timeout = 60;
-	prefs.hex_away_size_max = 300;
-	prefs.hex_away_track = 1;
-	prefs.hex_stamp_log = 1;
-	prefs.hex_gui_tab_trunc = 20;
-	prefs.hex_dcc_auto_resume = 1;
+	
+	/* BOOLEANS */
 	prefs.hex_away_show_once = 1;
-	prefs.hex_text_indent = 1;
-	prefs.hex_text_thin_sep = 1;
-	prefs.hex_identd = 1;
+	prefs.hex_away_track = 1;
+	prefs.hex_dcc_auto_resume = 1;
 #ifndef WIN32
 	prefs.hex_dcc_fast_send = 1;
 #endif
-	prefs.hex_text_wordwrap = 1;
+	prefs.hex_gui_autoopen_chat = 1;
 	prefs.hex_gui_autoopen_dialog = 1;
-	prefs.hex_gui_input_spell = 1;
-	prefs.hex_gui_lang = 15;
-	prefs.hex_net_auto_reconnect = 1;
-	prefs.hex_net_reconnect_delay = 10;
-	prefs.hex_text_autocopy_text = 1;
-	prefs.hex_text_replay = 1;
-	prefs.hex_text_stripcolor_replay = 1;
-	prefs.hex_text_stripcolor_topic = 1;
-	prefs.hex_gui_tab_chans = 1;
-	prefs.hex_gui_tab_layout = 2;	/* 0=Tabs 1=Reserved 2=Tree */
-	prefs.hex_gui_tab_icons = 1;
-	prefs.hex_gui_tab_sort = 1;
-	prefs.hex_gui_ulist_count = 1;
-	prefs.hex_gui_ulist_resizable = 1;
-	prefs.hex_gui_tab_newtofront = 2;
-	prefs.hex_gui_tab_server = 1;
-	prefs.hex_gui_tab_dialogs = 1;
-	/* prefs.hex_text_color_nicks = 1; */
-	prefs.hex_gui_input_style = 1;
-	prefs.hex_gui_ulist_style = 1;
-	prefs.hex_dcc_permissions = 0600;
-	prefs.hex_text_max_lines = 500;
-	prefs.hex_gui_win_width = 640;
-	prefs.hex_gui_win_height = 400;
-	prefs.hex_gui_dialog_width = 500;
-	prefs.hex_gui_dialog_height = 256;
-	prefs.hex_gui_join_dialog = 1;
-	prefs.hex_gui_quit_dialog = 1;
-	prefs.hex_dcc_timeout = 180;
-	prefs.hex_dcc_stall_timeout = 60;
-	prefs.hex_notify_timeout = 15;
-	prefs.hex_text_tint_red =
-		prefs.hex_text_tint_green =
-		prefs.hex_text_tint_blue = 195;
-	prefs.hex_text_max_indent = 256;
-	prefs.hex_text_show_sep = 1;
-	prefs.hex_dcc_blocksize = 1024;
-	prefs.hex_net_throttle = 1;
-	 /*FIXME*/ prefs.hex_flood_msg_time = 30;
-	prefs.hex_flood_msg_time = 5;
-	prefs.hex_flood_ctcp_time = 30;
-	prefs.hex_flood_ctcp_num = 5;
-	prefs.hex_gui_input_nick = 1;
-	prefs.hex_gui_topicbar = 1;
-	prefs.hex_gui_lagometer = 1;
-	prefs.hex_gui_throttlemeter = 1;
 	prefs.hex_gui_autoopen_recv = 1;
 	prefs.hex_gui_autoopen_send = 1;
-	prefs.hex_gui_autoopen_chat = 1;
-	/* prevent kicks and bans caused by overwhelming who'ing after reconnects */
-	/* prefs.userhost = 1; */
+	prefs.hex_gui_input_nick = 1;
+	prefs.hex_gui_input_spell = 1;
+	prefs.hex_gui_input_style = 1;
+	prefs.hex_gui_join_dialog = 1;
+	prefs.hex_gui_quit_dialog = 1;
+	prefs.hex_gui_tab_chans = 1;
+	prefs.hex_gui_tab_dialogs = 1;
+	prefs.hex_gui_tab_dots = 1;
+	prefs.hex_gui_tab_icons = 1;
+	prefs.hex_gui_tab_server = 1;
+	prefs.hex_gui_tab_sort = 1;
+	prefs.hex_gui_topicbar = 1;
+	prefs.hex_gui_tray = 1;
+	prefs.hex_gui_ulist_count = 1;
+	prefs.hex_gui_ulist_icons = 1;
+	prefs.hex_gui_ulist_resizable = 1;
+	prefs.hex_gui_ulist_style = 1;
+	prefs.hex_gui_win_save = 1;
+	prefs.hex_identd = 1;
+	prefs.hex_input_flash_hilight = 1;
+	prefs.hex_input_flash_priv = 1;
+	prefs.hex_input_tray_hilight = 1;
+	prefs.hex_input_tray_priv = 1;
+	/* prefs.hex_irc_who_join = 1; prevent kicks and bans caused by overwhelming who'ing after reconnects */
+	prefs.hex_net_auto_reconnect = 1;
+	prefs.hex_net_throttle = 1;
+	prefs.hex_stamp_log = 1;
+	prefs.hex_stamp_text = 1;
+	prefs.hex_text_autocopy_text = 1;
+	prefs.hex_text_indent = 1;
+	prefs.hex_text_replay = 1;
+	prefs.hex_text_search_follow = 1;
+	prefs.hex_text_show_marker = 1;
+	prefs.hex_text_show_sep = 1;
+	prefs.hex_text_stripcolor_replay = 1;
+	prefs.hex_text_stripcolor_topic = 1;
+	prefs.hex_text_thin_sep = 1;
+	prefs.hex_text_wordwrap = 1;
+	prefs.hex_url_grabber = 1;
+
+	/* NUMBERS */
+	prefs.hex_away_size_max = 300;
+	prefs.hex_away_timeout = 60;
+	prefs.hex_completion_amount = 5;
+	prefs.hex_dcc_auto_recv = 1;			/* browse mode */
+	prefs.hex_dcc_blocksize = 1024;
+	prefs.hex_dcc_permissions = 0600;
+	prefs.hex_dcc_stall_timeout = 60;
+	prefs.hex_dcc_timeout = 180;
+	prefs.hex_flood_ctcp_num = 5;
+	prefs.hex_flood_ctcp_time = 30;
+	prefs.hex_flood_msg_num = 5;
+	/*FIXME*/ prefs.hex_flood_msg_time = 30;
 	prefs.hex_gui_chanlist_maxusers = 9999;
 	prefs.hex_gui_chanlist_minusers = 5;
-	prefs.hex_gui_tab_dots = 1;
-	prefs.hex_gui_tray = 1;
+	prefs.hex_gui_dialog_height = 256;
+	prefs.hex_gui_dialog_width = 500;
+	prefs.hex_gui_lagometer = 1;
+	prefs.hex_gui_lang = 15;
 	prefs.hex_gui_pane_left_size = 128;		/* with treeview icons we need a bit bigger space */
 	prefs.hex_gui_pane_right_size = 100;
 	prefs.hex_gui_pane_right_size_min = 80;
+	prefs.hex_gui_tab_layout = 2;			/* 0=Tabs 1=Reserved 2=Tree */
+	prefs.hex_gui_tab_newtofront = 2;
 	prefs.hex_gui_tab_pos = 1;
-	prefs.hex_gui_ulist_icons = 1;
+	prefs.hex_gui_tab_trunc = 20;
+	prefs.hex_gui_throttlemeter = 1;
 	prefs.hex_gui_ulist_pos = 3;
-	prefs.hex_gui_win_save = 1;
-	prefs.hex_irc_ban_type = 2;
+	prefs.hex_gui_win_height = 400;
+	prefs.hex_gui_win_width = 640;
 	prefs.hex_input_balloon_time = 20;
-	prefs.hex_input_flash_priv = prefs.hex_input_flash_hilight = 1;
-	prefs.hex_input_tray_priv = prefs.hex_input_tray_hilight = 1;
-	prefs.hex_dcc_auto_recv = 1;	/* browse mode */
-	prefs.hex_url_grabber = 1;
-	prefs.hex_url_grabber_limit = 100; /* 0 means unlimited */
-	prefs.hex_text_search_follow = 1;
-	prefs.hex_stamp_text = 1;
-	strcpy (prefs.hex_text_spell_langs, g_getenv ("LC_ALL") ? g_getenv ("LC_ALL") : "en_US");
-	strcpy (prefs.hex_stamp_text_format, "[%H:%M:%S] ");
-	strcpy (prefs.hex_stamp_log_format, "%b %d %H:%M:%S ");
-	strcpy (prefs.hex_irc_logmask, "%n-%c.log");
+	prefs.hex_irc_ban_type = 2;
+	prefs.hex_irc_join_delay = 3;
+	prefs.hex_net_reconnect_delay = 10;
+	prefs.hex_notify_timeout = 15;
+	prefs.hex_text_max_indent = 256;
+	prefs.hex_text_max_lines = 500;
+	prefs.hex_text_tint_blue = 195;
+	prefs.hex_text_tint_green = 195;
+	prefs.hex_text_tint_red = 195;
+	prefs.hex_url_grabber_limit = 100; 		/* 0 means unlimited */
+
+	/* STRINGS */
+	strcpy (prefs.hex_away_reason, _("I'm busy"));
 	strcpy (prefs.hex_completion_suffix, ",");
+#ifdef WIN32
+	if (portable_mode () || !get_reg_str ("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "Personal", out, sizeof (out)))
+	{
+		snprintf (prefs.hex_dcc_dir, sizeof (prefs.hex_dcc_dir), "%s\\downloads", get_xdir_utf8 ());
+	}
+	else
+	{
+		snprintf (prefs.hex_dcc_dir, sizeof (prefs.hex_dcc_dir), "%s\\Downloads", out);
+	}
+#else
+	snprintf (prefs.hex_dcc_dir, sizeof (prefs.hex_dcc_dir), "%s/downloads", get_xdir_utf8 ());
+#endif
+	strcpy (prefs.hex_dnsprogram, "host");
+	strcpy (prefs.hex_gui_ulist_doubleclick, "QUOTE WHOIS %s %s");
 	strcpy (prefs.hex_input_command_char, "/");
+	strcpy (prefs.hex_irc_logmask, "%n-%c.log");
 	strcpy (prefs.hex_irc_nick1, username);
 	strcpy (prefs.hex_irc_nick2, username);
 	strcat (prefs.hex_irc_nick2, "_");
 	strcpy (prefs.hex_irc_nick3, username);
 	strcat (prefs.hex_irc_nick3, "__");
+	strcpy (prefs.hex_irc_no_hilight, "NickServ,ChanServ,InfoServ,N,Q");
+	strcpy (prefs.hex_irc_part_reason, _("Leaving"));
+	strcpy (prefs.hex_irc_quit_reason, prefs.hex_irc_part_reason);
 	strcpy (prefs.hex_irc_real_name, realname);
 	strcpy (prefs.hex_irc_user_name, username);
 #ifdef WIN32
 	strcpy (prefs.hex_sound_dir, "./sounds");
-	{
-		char out[256];
-
-		if (portable_mode () || !get_reg_str ("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "Personal", out, sizeof (out)))
-		{
-			snprintf (prefs.hex_dcc_dir, sizeof (prefs.hex_dcc_dir), "%s\\downloads", get_xdir_utf8 ());
-		}
-		else
-		{
-			snprintf (prefs.hex_dcc_dir, sizeof (prefs.hex_dcc_dir), "%s\\Downloads", out);
-		}
-	}
 #else
 	snprintf (prefs.hex_sound_dir, sizeof (prefs.hex_sound_dir), "%s/sounds", get_xdir_utf8 ());
-	snprintf (prefs.hex_dcc_dir, sizeof (prefs.hex_dcc_dir), "%s/downloads", get_xdir_utf8 ());
 #endif
-	strcpy (prefs.hex_gui_ulist_doubleclick, "QUOTE WHOIS %s %s");
-	strcpy (prefs.hex_away_reason, _("I'm busy"));
-	strcpy (prefs.hex_irc_quit_reason, _("Leaving"));
-	strcpy (prefs.hex_irc_part_reason, prefs.hex_irc_quit_reason);
+	strcpy (prefs.hex_stamp_log_format, "%b %d %H:%M:%S ");
+	strcpy (prefs.hex_stamp_text_format, "[%H:%M:%S] ");
 	strcpy (prefs.hex_text_font, DEF_FONT);
 	strcpy (prefs.hex_text_font_main, DEF_FONT);
 	strcpy (prefs.hex_text_font_alternative, DEF_FONT_ALTER);
-	strcpy (prefs.hex_dnsprogram, "host");
-	strcpy (prefs.hex_irc_no_hilight, "NickServ,ChanServ,InfoServ,N,Q");
+	strcpy (prefs.hex_text_spell_langs, g_getenv ("LC_ALL") ? g_getenv ("LC_ALL") : "en_US");
+
+	/* private variables */
+	prefs.local_ip = 0xffffffff;
 
 	g_free ((char *)username);
 	g_free ((char *)realname);

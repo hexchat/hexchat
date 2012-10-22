@@ -105,103 +105,8 @@ struct nbexec
 struct hexchatprefs
 {
 	/* these are the rebranded, consistent, sorted hexchat variables */
-	char hex_away_reason[256];
-	char hex_completion_suffix[4];		/* Only ever holds a one-character string. */
-	char hex_dcc_completed_dir[PATHLEN + 1];
-	char hex_dcc_dir[PATHLEN + 1];
-	char hex_dcc_ip[DOMAINLEN + 1];
-	char hex_dnsprogram[72];
-	char hex_gui_ulist_doubleclick[256];
-	char hex_input_command_char[4];
-	char hex_irc_extra_hilight[300];
-	char hex_irc_id_ntext[64];
-	char hex_irc_id_ytext[64];
-	char hex_irc_logmask[256];
-	char hex_irc_nick1[NICKLEN];
-	char hex_irc_nick2[NICKLEN];
-	char hex_irc_nick3[NICKLEN];
-	char hex_irc_nick_hilight[300];
-	char hex_irc_no_hilight[300];
-	char hex_irc_part_reason[256];
-	char hex_irc_quit_reason[256];
-	char hex_irc_real_name[127];
-	char hex_irc_user_name[127];
-	char hex_net_bind_host[127];
-	char hex_net_proxy_host[64];
-	char hex_net_proxy_pass[32];
-	char hex_net_proxy_user[32];
-	char hex_sound_command[PATHLEN + 1];
-	char hex_sound_dir[PATHLEN + 1];
-	char hex_stamp_log_format[64];
-	char hex_stamp_text_format[64];
-	char hex_text_background[PATHLEN + 1];
-	char hex_text_font[4 * FONTNAMELEN + 1];
-	char hex_text_font_main[FONTNAMELEN + 1];
-	char hex_text_font_alternative[3 * FONTNAMELEN + 1];
-	char hex_text_spell_langs[64];
 
-	int hex_away_size_max;
-	int hex_away_timeout;
-	int hex_completion_amount;
-	int hex_completion_sort;
-	int hex_dcc_auto_recv;
-	int hex_dcc_blocksize;
-	int hex_dcc_global_max_get_cps;
-	int hex_dcc_global_max_send_cps;
-	int hex_dcc_max_get_cps;
-	int hex_dcc_max_send_cps;
-	int hex_dcc_permissions;
-	int hex_dcc_port_first;
-	int hex_dcc_port_last;
-	int hex_dcc_stall_timeout;
-	int hex_dcc_timeout;
-	int hex_flood_ctcp_num;				/*flood */
-	int hex_flood_ctcp_time;			/*seconds of floods */
-	int hex_flood_msg_num;				/*same deal */
-	int hex_flood_msg_time;
-	int hex_gui_chanlist_maxusers;
-	int hex_gui_chanlist_minusers;
-	int hex_gui_dialog_height;
-	int hex_gui_dialog_left;
-	int hex_gui_dialog_top;
-	int hex_gui_dialog_width;
-	int hex_gui_lagometer;
-	int hex_gui_lang;
-	int hex_gui_pane_left_size;
-	int hex_gui_pane_right_size;
-	int hex_gui_pane_right_size_min;
-	int hex_gui_slist_select;
-	int hex_gui_tab_layout;
-	int hex_gui_tab_newtofront;
-	int hex_gui_tab_pos;
-	int hex_gui_tab_small;
-	int hex_gui_tab_trunc;
-	int hex_gui_throttlemeter;
-	int hex_gui_tray_flags;
-	int hex_gui_ulist_pos;
-	int hex_gui_ulist_sort;
-	int hex_gui_url_mod;
-	int hex_gui_win_height;
-	int hex_gui_win_left;
-	int hex_gui_win_state;
-	int hex_gui_win_top;
-	int hex_gui_win_width;
-	int hex_input_balloon_time;
-	int hex_irc_ban_type;
-	int hex_irc_join_delay;
-	int hex_net_ping_timeout;
-	int hex_net_proxy_port;
-	int hex_net_proxy_type;				/* 0=disabled, 1=wingate 2=socks4, 3=socks5, 4=http */
-	int hex_net_proxy_use;				/* 0=all 1=IRC_ONLY 2=DCC_ONLY */
-	int hex_net_reconnect_delay;
-	int hex_notify_timeout;
-	int hex_text_max_indent;
-	int hex_text_max_lines;
-	int hex_text_tint_blue;
-	int hex_text_tint_green;
-	int hex_text_tint_red;
-	int hex_url_grabber_limit;
-
+	/* BOOLEANS */
 	unsigned int hex_away_auto_unmark;
 	unsigned int hex_away_omit_alerts;
 	unsigned int hex_away_show_message;
@@ -308,6 +213,105 @@ struct hexchatprefs
 	unsigned int hex_text_wordwrap;
 	unsigned int hex_url_grabber;
 	unsigned int hex_url_logging;
+
+	/* NUMBERS */
+	int hex_away_size_max;
+	int hex_away_timeout;
+	int hex_completion_amount;
+	int hex_completion_sort;
+	int hex_dcc_auto_recv;
+	int hex_dcc_blocksize;
+	int hex_dcc_global_max_get_cps;
+	int hex_dcc_global_max_send_cps;
+	int hex_dcc_max_get_cps;
+	int hex_dcc_max_send_cps;
+	int hex_dcc_permissions;
+	int hex_dcc_port_first;
+	int hex_dcc_port_last;
+	int hex_dcc_stall_timeout;
+	int hex_dcc_timeout;
+	int hex_flood_ctcp_num;				/* flood */
+	int hex_flood_ctcp_time;			/* seconds of floods */
+	int hex_flood_msg_num;				/* same deal */
+	int hex_flood_msg_time;
+	int hex_gui_chanlist_maxusers;
+	int hex_gui_chanlist_minusers;
+	int hex_gui_dialog_height;
+	int hex_gui_dialog_left;
+	int hex_gui_dialog_top;
+	int hex_gui_dialog_width;
+	int hex_gui_lagometer;
+	int hex_gui_lang;
+	int hex_gui_pane_left_size;
+	int hex_gui_pane_right_size;
+	int hex_gui_pane_right_size_min;
+	int hex_gui_slist_select;
+	int hex_gui_tab_layout;
+	int hex_gui_tab_newtofront;
+	int hex_gui_tab_pos;
+	int hex_gui_tab_small;
+	int hex_gui_tab_trunc;
+	int hex_gui_throttlemeter;
+	int hex_gui_tray_flags;
+	int hex_gui_ulist_pos;
+	int hex_gui_ulist_sort;
+	int hex_gui_url_mod;
+	int hex_gui_win_height;
+	int hex_gui_win_left;
+	int hex_gui_win_state;
+	int hex_gui_win_top;
+	int hex_gui_win_width;
+	int hex_input_balloon_time;
+	int hex_irc_ban_type;
+	int hex_irc_join_delay;
+	int hex_net_ping_timeout;
+	int hex_net_proxy_port;
+	int hex_net_proxy_type;				/* 0=disabled, 1=wingate 2=socks4, 3=socks5, 4=http */
+	int hex_net_proxy_use;				/* 0=all 1=IRC_ONLY 2=DCC_ONLY */
+	int hex_net_reconnect_delay;
+	int hex_notify_timeout;
+	int hex_text_max_indent;
+	int hex_text_max_lines;
+	int hex_text_tint_blue;
+	int hex_text_tint_green;
+	int hex_text_tint_red;
+	int hex_url_grabber_limit;
+
+	/* STRINGS */
+	char hex_away_reason[256];
+	char hex_completion_suffix[4];		/* Only ever holds a one-character string. */
+	char hex_dcc_completed_dir[PATHLEN + 1];
+	char hex_dcc_dir[PATHLEN + 1];
+	char hex_dcc_ip[DOMAINLEN + 1];
+	char hex_dnsprogram[72];
+	char hex_gui_ulist_doubleclick[256];
+	char hex_input_command_char[4];
+	char hex_irc_extra_hilight[300];
+	char hex_irc_id_ntext[64];
+	char hex_irc_id_ytext[64];
+	char hex_irc_logmask[256];
+	char hex_irc_nick1[NICKLEN];
+	char hex_irc_nick2[NICKLEN];
+	char hex_irc_nick3[NICKLEN];
+	char hex_irc_nick_hilight[300];
+	char hex_irc_no_hilight[300];
+	char hex_irc_part_reason[256];
+	char hex_irc_quit_reason[256];
+	char hex_irc_real_name[127];
+	char hex_irc_user_name[127];
+	char hex_net_bind_host[127];
+	char hex_net_proxy_host[64];
+	char hex_net_proxy_pass[32];
+	char hex_net_proxy_user[32];
+	char hex_sound_command[PATHLEN + 1];
+	char hex_sound_dir[PATHLEN + 1];
+	char hex_stamp_log_format[64];
+	char hex_stamp_text_format[64];
+	char hex_text_background[PATHLEN + 1];
+	char hex_text_font[4 * FONTNAMELEN + 1];
+	char hex_text_font_main[FONTNAMELEN + 1];
+	char hex_text_font_alternative[3 * FONTNAMELEN + 1];
+	char hex_text_spell_langs[64];
 
 	/* these are the private variables */
 	guint32 local_ip;
