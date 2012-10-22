@@ -453,13 +453,9 @@ const struct prefs vars[] = {
 	{"gui_input_style", P_OFFINT (style_inputbox), TYPE_BOOL},
 	{"gui_join_dialog", P_OFFINT (gui_join_dialog), TYPE_BOOL},
 	{"gui_lagometer", P_OFFINT (lagometer), TYPE_INT},
-#ifdef WIN32
 	{"gui_lang", P_OFFINT (gui_lang), TYPE_INT},
-#endif
 	{"gui_mode_buttons", P_OFFINT (chanmodebuttons), TYPE_BOOL},
-#ifdef WIN32
 	{"gui_one_instance", P_OFFINT (gui_one_instance), TYPE_BOOL},
-#endif
 	{"gui_pane_left_size", P_OFFINT (gui_pane_left_size), TYPE_INT},
 	{"gui_pane_right_size", P_OFFINT (gui_pane_right_size), TYPE_INT},
 	{"gui_pane_right_size_min", P_OFFINT (gui_pane_right_size_min), TYPE_INT},
@@ -585,14 +581,9 @@ const struct prefs vars[] = {
 	{"text_autocopy_text", P_OFFINT (autocopy_text), TYPE_BOOL},
 	{"text_background", P_OFFSET (background), TYPE_STR},
 	{"text_color_nicks", P_OFFINT (colorednicks), TYPE_BOOL},
-#ifdef WIN32
-	{"text_emoticons", P_OFFINT (text_emoticons), TYPE_BOOL},
-#endif
 	{"text_font", P_OFFSET (font_normal), TYPE_STR},
-#ifdef WIN32
 	{"text_font_main", P_OFFSET (font_main), TYPE_STR},
 	{"text_font_alternative", P_OFFSET (font_alternative), TYPE_STR},
-#endif
 	{"text_indent", P_OFFINT (indent_nicks), TYPE_BOOL},
 	{"text_max_indent", P_OFFINT (max_auto_indent), TYPE_INT},
 	{"text_max_lines", P_OFFINT (max_lines), TYPE_INT},
@@ -679,15 +670,14 @@ load_config (void)
 	prefs.show_away_once = 1;
 	prefs.indent_nicks = 1;
 	prefs.thin_separator = 1;
-#ifdef WIN32
 	prefs.identd = 1;
-	prefs.gui_lang = 15;
-#else
+#ifndef WIN32
 	prefs.fastdccsend = 1;
 #endif
 	prefs.wordwrap = 1;
 	prefs.autodialog = 1;
 	prefs.gui_input_spell = 1;
+	prefs.gui_lang = 15;
 	prefs.autoreconnect = 1;
 	prefs.recon_delay = 10;
 	prefs.autocopy_text = 1;
@@ -792,10 +782,8 @@ load_config (void)
 	strcpy (prefs.quitreason, _("Leaving"));
 	strcpy (prefs.partreason, prefs.quitreason);
 	strcpy (prefs.font_normal, DEF_FONT);
-#ifdef WIN32
 	strcpy (prefs.font_main, DEF_FONT);
 	strcpy (prefs.font_alternative, DEF_FONT_ALTER);
-#endif
 	strcpy (prefs.dnsprogram, "host");
 	strcpy (prefs.irc_no_hilight, "NickServ,ChanServ,InfoServ,N,Q");
 

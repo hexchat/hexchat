@@ -113,13 +113,10 @@ struct xchatprefs
 	char awayreason[256];
 	char quitreason[256];
 	char partreason[256];
-#ifdef WIN32
 	char font_normal[4 * FONTNAMELEN + 1];
 	char font_main[FONTNAMELEN + 1];
 	char font_alternative[3 * FONTNAMELEN + 1];
-#else
 	char font_normal[FONTNAMELEN + 1];
-#endif
 	char doubleclickuser[256];
 	char spell_langs[64];
 	char sounddir[PATHLEN + 1];
@@ -184,9 +181,7 @@ struct xchatprefs
 	int completion_sort;
 	int gui_win_state;
 	int gui_url_mod;
-#ifdef WIN32
 	int gui_lang;
-#endif
 	int dialog_left;
 	int dialog_top;
 	int dialog_width;
@@ -314,11 +309,8 @@ struct xchatprefs
 	unsigned int wait_on_exit;
 	unsigned int confmode;
 	unsigned int utf8_locale;
-#ifdef WIN32
 	unsigned int identd;
-	unsigned int text_emoticons;
 	unsigned int gui_one_instance;
-#endif
 
 	unsigned int ctcp_number_limit;	/*flood */
 	unsigned int ctcp_time_limit;	/*seconds of floods */
