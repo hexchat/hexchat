@@ -49,6 +49,8 @@
 #include "../common/xchat.h"
 #include "../common/fe.h"
 #include "../common/util.h"
+#include "../common/cfgfiles.h"
+#include "../common/xchatc.h"
 #include "gtkutil.h"
 #include "pixmaps.h"
 
@@ -473,7 +475,23 @@ gtkutil_file_req (const char *title, void *callback, void *userdata, char *filte
 	else
 	{
 		if (filter && (flags & FRF_FILTERISINITIAL))
+		{
 			gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), filter);
+		}
+		/* With DCC, we can't rely on filter as initial folder since filter already contains
+		 * the filename upon DCC RECV. Thus we have no better option than to check for the message
+		 * which will be the title of the window. For DCC it always contains the "offering" word.
+		 * This method is really ugly but it works so we'll stick with it for now.
+		 */
+		else if (strstr (title, "offering") != NULL)
+		{
+			gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), prefs.hex_dcc_dir);
+		}
+		/* by default, open the config folder */
+		else
+		{
+			gtk_file_chooser_set_current_folder (GTK_FILE_CHOOSER (dialog), get_xdir_fs ());
+		}
 	}
 
 	if (flags & FRF_EXTENSIONS && extensions != NULL)

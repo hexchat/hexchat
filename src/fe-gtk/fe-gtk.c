@@ -919,7 +919,7 @@ fe_confirm (const char *message, void (*yesproc)(void *), void (*noproc)(void *)
 
 	if (dcc->file)
 		gtkutil_file_req (message, dcc_saveas_cb, ud, dcc->file, NULL,
-								FRF_WRITE|FRF_FILTERISINITIAL|FRF_NOASKOVERWRITE);
+								FRF_WRITE|FRF_NOASKOVERWRITE);
 }
 
 int
