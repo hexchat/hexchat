@@ -485,6 +485,7 @@ const struct prefs vars[] = {
 	{"gui_ulist_buttons", P_OFFINT (userlistbuttons), TYPE_BOOL},
 	{"gui_ulist_doubleclick", P_OFFSET (doubleclickuser), TYPE_STR},
 	{"gui_ulist_hide", P_OFFINT (hideuserlist), TYPE_BOOL},
+	{"gui_ulist_icons", P_OFFINT (gui_ulist_icons), TYPE_BOOL},
 	{"gui_ulist_pos", P_OFFINT (gui_ulist_pos), TYPE_INT},
 	{"gui_ulist_resizable", P_OFFINT (paned_userlist), TYPE_BOOL},
 	{"gui_ulist_show_hosts", P_OFFINT(showhostname_in_userlist), TYPE_BOOL},
@@ -736,6 +737,8 @@ load_config (void)
 	prefs.gui_pane_left_size = 128;		/* with treeview icons we need a bit bigger space */
 	prefs.gui_pane_right_size = 100;
 	prefs.gui_pane_right_size_min = 80;
+	prefs.tab_pos = 1;
+	prefs.gui_ulist_icons = 1;
 	prefs.gui_ulist_pos = 3;
 	prefs.mainwindow_save = 1;
 	prefs.bantype = 2;

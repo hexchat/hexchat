@@ -296,6 +296,7 @@ struct xchatprefs
 	unsigned int gui_tray;
 	unsigned int gui_tray_flags;
 	unsigned int gui_tweaks;
+	unsigned int gui_ulist_icons;
 	unsigned int throttle;
 	unsigned int topicbar;
 	unsigned int hideuserlist;

@@ -277,6 +277,7 @@ static const setting userlist_settings[] =
 	{ST_HEADER,	N_("User List"),0,0,0},
 	{ST_TOGGLE, N_("Show hostnames in user list"), P_OFFINTNL(showhostname_in_userlist), 0, 0, 0},
 	{ST_TOGGLE, N_("Use the Text box font and colors"), P_OFFINTNL(style_namelistgad),0,0,0},
+	{ST_TOGGLE, N_("Show icons instead of text symbols"), P_OFFINTNL(gui_ulist_icons), 0, 0, 0},
 /*	{ST_TOGGLE, N_("Resizable user list"), P_OFFINTNL(paned_userlist),0,0,0},*/
 	{ST_MENU,	N_("User list sorted by:"), P_OFFINTNL(userlist_sort), 0, ulmenutext, 0},
 	{ST_MENU,	N_("Show user list at:"), P_OFFINTNL(gui_ulist_pos), 0, ulpos, 1},
@@ -2207,6 +2208,8 @@ setup_apply (struct xchatprefs *pr)
 	if (DIFF (tab_small))
 		noapply = TRUE;
 	if (DIFF (tab_sort))
+		noapply = TRUE;
+	if (DIFF (gui_ulist_icons))
 		noapply = TRUE;
 	if (DIFF (use_server_tab))
 		noapply = TRUE;
