@@ -137,6 +137,7 @@ static const char *const langsmenu[] =
 	N_("Lithuanian"),
 	N_("Macedonian"),
 	N_("Malay"),
+	N_("Malayalam"),
 	N_("Norwegian (Bokmal)"),
 	N_("Norwegian (Nynorsk)"),
 	N_("Polish"),
