@@ -106,15 +106,19 @@ struct hexchatprefs
 {
 	/* these are the rebranded, consistent, sorted hexchat variables */
 	char hex_away_reason[256];
+	char hex_completion_suffix[4];		/* Only ever holds a one-character string. */
 
 	int hex_away_size_max;
 	int hex_away_timeout;
+	int hex_completion_amount;
+	int hex_completion_sort;
 
 	unsigned int hex_away_auto_unmark;
 	unsigned int hex_away_omit_alerts;
 	unsigned int hex_away_show_message;
 	unsigned int hex_away_show_once;
 	unsigned int hex_away_track;
+	unsigned int hex_completion_auto;
 
 	/* these are the legacy variables */
 	char nick1[NICKLEN];
@@ -122,7 +126,6 @@ struct hexchatprefs
 	char nick3[NICKLEN];
 	char realname[127];
 	char username[127];
-	char nick_suffix[4];			/* Only ever holds a one-character string. */
 	char quitreason[256];
 	char partreason[256];
 	char font_normal[4 * FONTNAMELEN + 1];
@@ -186,7 +189,6 @@ struct hexchatprefs
 	int mainwindow_top;
 	int mainwindow_width;
 	int mainwindow_height;
-	int completion_sort;
 	int gui_win_state;
 	int gui_url_mod;
 	int gui_lang;
@@ -223,8 +225,6 @@ struct hexchatprefs
 	unsigned int chanmodebuttons;
 	unsigned int userlistbuttons;
 	unsigned int showhostname_in_userlist;
-	unsigned int nickcompletion;
-	unsigned int completion_amount;
 	unsigned int tabchannels;
 	unsigned int paned_userlist;
 	unsigned int autodccchat;

@@ -1458,7 +1458,7 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 		cursor_pos = g_utf8_pointer_to_offset(text, ch);
 		if (cursor_pos && (g_utf8_get_char_validated(ch, -1) == ':' || 
 					g_utf8_get_char_validated(ch, -1) == ',' ||
-					g_utf8_get_char_validated(ch, -1) == prefs.nick_suffix[0]))
+					g_utf8_get_char_validated(ch, -1) == prefs.hex_completion_suffix[0]))
 		{
 			skip_len++;
 		}
@@ -1511,7 +1511,7 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 		{
 			gcomp = g_completion_new((GCompletionFunc)gcomp_nick_func);
 			tmp_list = userlist_double_list(sess); /* create a temp list so we can free the memory */
-			if (prefs.completion_sort == 1)	/* sort in last-talk order? */
+			if (prefs.hex_completion_sort == 1)	/* sort in last-talk order? */
 				tmp_list = g_list_sort (tmp_list, (void *)talked_recent_cmp);
 		}
 		else
@@ -1595,7 +1595,7 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 			old_gcomp.elen = elen;
 
 			/* Get the first nick and put out the data for future nickcompletes */
-			if (prefs.completion_amount && g_list_length (list) <= prefs.completion_amount)
+			if (prefs.hex_completion_amount && g_list_length (list) <= prefs.hex_completion_amount)
 			{
 				g_free(result);
 				result = (char*)list->data;
@@ -1658,7 +1658,7 @@ key_action_tab_comp (GtkWidget *t, GdkEventKey *entry, char *d1, char *d2,
 			g_utf8_strncpy(buf, text, prefix_len);
 		strncat (buf, result, COMP_BUF - (prefix_len + 3)); /* make sure nicksuffix and space fits */
 		if(!prefix_len && is_nick)
-			strcat (buf, &prefs.nick_suffix[0]);
+			strcat (buf, &prefs.hex_completion_suffix[0]);
 		strcat (buf, " ");
 		cursor_pos = strlen (buf);
 		if (postfix)

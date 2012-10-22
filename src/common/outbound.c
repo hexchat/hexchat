@@ -1725,10 +1725,10 @@ exec_data (GIOChannel *source, GIOCondition condition, struct nbexec *s)
 			if (s->tochannel)
 			{
 				/* must turn off auto-completion temporarily */
-				unsigned int old = prefs.nickcompletion;
-				prefs.nickcompletion = 0;
+				unsigned int old = prefs.hex_completion_auto;
+				prefs.hex_completion_auto = 0;
 				handle_multiline (s->sess, buf, FALSE, TRUE);
-				prefs.nickcompletion = old;
+				prefs.hex_completion_auto = old;
 			}
 			else
 				PrintText (s->sess, buf);
@@ -4074,7 +4074,7 @@ perform_nick_completion (struct session *sess, char *cmd, char *tbuf)
 	char *space = strchr (cmd, ' ');
 	if (space && space != cmd)
 	{
-		if (space[-1] == prefs.nick_suffix[0] && space - 1 != cmd)
+		if (space[-1] == prefs.hex_completion_suffix[0] && space - 1 != cmd)
 		{
 			len = space - cmd - 1;
 			if (len < NICKLEN)
@@ -4175,7 +4175,7 @@ handle_say (session *sess, char *text, int check_spch)
 		goto xit;
 	}
 
-	if (prefs.nickcompletion)
+	if (prefs.hex_completion_auto)
 		perform_nick_completion (sess, text, newcmd);
 	else
 		safe_strcpy (newcmd, text, newcmdlen);

@@ -398,10 +398,10 @@ const struct prefs vars[] = {
 	{"away_timeout", P_OFFINT (hex_away_timeout), TYPE_INT},
 	{"away_track", P_OFFINT (hex_away_track), TYPE_BOOL},
 
-	{"completion_amount", P_OFFINT (completion_amount), TYPE_INT},
-	{"completion_auto", P_OFFINT (nickcompletion), TYPE_BOOL},
-	{"completion_sort", P_OFFINT (completion_sort), TYPE_INT},
-	{"completion_suffix", P_OFFSET (nick_suffix), TYPE_STR},
+	{"completion_amount", P_OFFINT (hex_completion_amount), TYPE_INT},
+	{"completion_auto", P_OFFINT (hex_completion_auto), TYPE_BOOL},
+	{"completion_sort", P_OFFINT (hex_completion_sort), TYPE_INT},
+	{"completion_suffix", P_OFFSET (hex_completion_suffix), TYPE_STR},
 
 	{"dcc_auto_chat", P_OFFINT (autodccchat), TYPE_INT},
 	{"dcc_auto_resume", P_OFFINT (autoresume), TYPE_BOOL},
@@ -658,7 +658,7 @@ load_config (void)
 	prefs.irc_join_delay = 3;
 	prefs.show_marker = 1;
 	prefs.newtabstofront = 2;
-	prefs.completion_amount = 5;
+	prefs.hex_completion_amount = 5;
 	prefs.hex_away_timeout = 60;
 	prefs.hex_away_size_max = 300;
 	prefs.hex_away_track = 1;
@@ -748,7 +748,7 @@ load_config (void)
 	strcpy (prefs.stamp_format, "[%H:%M:%S] ");
 	strcpy (prefs.timestamp_log_format, "%b %d %H:%M:%S ");
 	strcpy (prefs.logmask, "%n-%c.log");
-	strcpy (prefs.nick_suffix, ",");
+	strcpy (prefs.hex_completion_suffix, ",");
 	strcpy (prefs.cmdchar, "/");
 	strcpy (prefs.nick1, username);
 	strcpy (prefs.nick2, username);
