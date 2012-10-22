@@ -865,7 +865,7 @@ cmd_dcc (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			if (!*nick)
 				return FALSE;
 
-			maxcps = prefs.dcc_max_send_cps;
+			maxcps = prefs.hex_dcc_max_send_cps;
 			if (!g_ascii_strncasecmp(nick, "-maxcps=", 8))
 			{
 				maxcps = atoi(nick + 8);
@@ -1450,7 +1450,7 @@ cmd_dns (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			}
 		} else
 		{
-			snprintf (tbuf, TBUFSIZE, "exec -d %s %s", prefs.dnsprogram, nick);
+			snprintf (tbuf, TBUFSIZE, "exec -d %s %s", prefs.hex_dnsprogram, nick);
 			handle_command (sess, tbuf, FALSE);
 		}
 		return TRUE;

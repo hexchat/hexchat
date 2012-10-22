@@ -1697,7 +1697,7 @@ mg_dnd_drop_file (session *sess, char *target, char *uri)
 				p = xchat_filename_to_utf8 (fname, -1, 0, 0, 0);
 				if (p)
 				{
-					dcc_send (sess, target, p, prefs.dcc_max_send_cps, 0);
+					dcc_send (sess, target, p, prefs.hex_dcc_max_send_cps, 0);
 					g_free (p);
 				}
 				g_free (fname);

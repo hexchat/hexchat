@@ -471,7 +471,7 @@ process_numeric (session * sess, int n,
 			(strrchr(word[10], '@') != NULL))
 		{
 			serv->use_who = FALSE;
-			if (prefs.ip_from_server)
+			if (prefs.hex_dcc_ip_from_server)
 				inbound_foundip (sess, strrchr(word[10], '@')+1);
 		}
 

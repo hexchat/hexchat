@@ -363,37 +363,37 @@ static const setting color_settings[] =
 
 static const char *const dccaccept[] =
 {
-	N_("No"),
-	N_("Yes"),
-	N_("Browse for save folder every time"),
+	N_("Ask for confirmation"),
+	N_("Ask for download folder"),
+	N_("Save without interaction"),
 	NULL
 };
 
 static const setting filexfer_settings[] =
 {
 	{ST_HEADER, N_("Files and Directories"), 0, 0, 0},
-	{ST_MENU,	N_("Auto accept file offers:"), P_OFFINTNL(autodccsend), 0, dccaccept, 0},
-	{ST_EFOLDER,N_("Download files to:"), P_OFFSETNL(dccdir), 0, 0, sizeof prefs.dccdir},
-	{ST_EFOLDER,N_("Move completed files to:"), P_OFFSETNL(dcc_completed_dir), 0, 0, sizeof prefs.dcc_completed_dir},
-	{ST_TOGGLE, N_("Save nick name in filenames"), P_OFFINTNL(dccwithnick), 0, 0, 0},
+	{ST_MENU,	N_("Auto accept file offers:"), P_OFFINTNL(hex_dcc_auto_recv), 0, dccaccept, 0},
+	{ST_EFOLDER,N_("Download files to:"), P_OFFSETNL(hex_dcc_dir), 0, 0, sizeof prefs.hex_dcc_dir},
+	{ST_EFOLDER,N_("Move completed files to:"), P_OFFSETNL(hex_dcc_completed_dir), 0, 0, sizeof prefs.hex_dcc_completed_dir},
+	{ST_TOGGLE, N_("Save nick name in filenames"), P_OFFINTNL(hex_dcc_save_nick), 0, 0, 0},
 
 	{ST_HEADER, N_("Network Settings"), 0, 0, 0},
-	{ST_TOGGLE, N_("Get my address from the IRC server"), P_OFFINTNL(ip_from_server),
+	{ST_TOGGLE, N_("Get my address from the IRC server"), P_OFFINTNL(hex_dcc_ip_from_server),
 					N_("Asks the IRC server for your real address. Use this if you have a 192.168.*.* address!"), 0, 0},
-	{ST_ENTRY,	N_("DCC IP address:"), P_OFFSETNL(dcc_ip_str),
-					N_("Claim you are at this address when offering files."), 0, sizeof prefs.dcc_ip_str},
-	{ST_NUMBER,	N_("First DCC send port:"), P_OFFINTNL(first_dcc_send_port), 0, 0, 65535},
-	{ST_NUMBER,	N_("Last DCC send port:"), P_OFFINTNL(last_dcc_send_port), 0, 
+	{ST_ENTRY,	N_("DCC IP address:"), P_OFFSETNL(hex_dcc_ip),
+					N_("Claim you are at this address when offering files."), 0, sizeof prefs.hex_dcc_ip},
+	{ST_NUMBER,	N_("First DCC send port:"), P_OFFINTNL(hex_dcc_port_first), 0, 0, 65535},
+	{ST_NUMBER,	N_("Last DCC send port:"), P_OFFINTNL(hex_dcc_port_last), 0, 
 		(const char **)N_("!Leave ports at zero for full range."), 65535},
 
 	{ST_HEADER, N_("Maximum File Transfer Speeds (bytes per second)"), 0, 0, 0},
-	{ST_NUMBER,	N_("One upload:"), P_OFFINTNL(dcc_max_send_cps), 
+	{ST_NUMBER,	N_("One upload:"), P_OFFINTNL(hex_dcc_max_send_cps), 
 					N_("Maximum speed for one transfer"), 0, 1000000},
-	{ST_NUMBER,	N_("One download:"), P_OFFINTNL(dcc_max_get_cps),
+	{ST_NUMBER,	N_("One download:"), P_OFFINTNL(hex_dcc_max_get_cps),
 					N_("Maximum speed for one transfer"), 0, 1000000},
-	{ST_NUMBER,	N_("All uploads combined:"), P_OFFINTNL(dcc_global_max_send_cps),
+	{ST_NUMBER,	N_("All uploads combined:"), P_OFFINTNL(hex_dcc_global_max_send_cps),
 					N_("Maximum speed for all files"), 0, 1000000},
-	{ST_NUMBER,	N_("All downloads combined:"), P_OFFINTNL(dcc_global_max_get_cps),
+	{ST_NUMBER,	N_("All downloads combined:"), P_OFFINTNL(hex_dcc_global_max_get_cps),
 					N_("Maximum speed for all files"), 0, 1000000},
 
 	{ST_END, 0, 0, 0, 0, 0}
@@ -2134,11 +2134,11 @@ setup_apply_real (int new_pix, int do_ulist, int do_layout)
 	int done_main = FALSE;
 
 	/* remove trailing slashes */
-	unslash (prefs.dccdir);
-	unslash (prefs.dcc_completed_dir);
+	unslash (prefs.hex_dcc_dir);
+	unslash (prefs.hex_dcc_completed_dir);
 
-	mkdir_utf8 (prefs.dccdir);
-	mkdir_utf8 (prefs.dcc_completed_dir);
+	mkdir_utf8 (prefs.hex_dcc_dir);
+	mkdir_utf8 (prefs.hex_dcc_completed_dir);
 
 	if (new_pix)
 	{
@@ -2277,9 +2277,9 @@ setup_apply (struct hexchatprefs *pr)
 						" restart to take full effect."), FE_MSG_WARN);
 
 #ifndef WIN32
-	if (prefs.autodccsend == 1)
+	if (prefs.hex_dcc_auto_recv)
 	{
-		if (!strcmp ((char *)g_get_home_dir (), prefs.dccdir))
+		if (!strcmp ((char *)g_get_home_dir (), prefs.hex_dcc_dir))
 		{
 			fe_message (_("*WARNING*\n"
 							 "Auto accepting DCC to your home directory\n"

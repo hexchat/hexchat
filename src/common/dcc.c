@@ -143,14 +143,14 @@ dcc_calc_cps (struct DCC *dcc)
 		pos = dcc->pos - ((dcc->pos - dcc->ack) / 2);
 		glob_throttle_bit = 0x1;
 		cpssum = &dcc_sendcpssum;
-		glob_limit = prefs.dcc_global_max_send_cps;
+		glob_limit = prefs.hex_dcc_global_max_send_cps;
 	}
 	else
 	{
 		pos = dcc->pos;
 		glob_throttle_bit = 0x2;
 		cpssum = &dcc_getcpssum;
-		glob_limit = prefs.dcc_global_max_get_cps;
+		glob_limit = prefs.hex_dcc_global_max_get_cps;
 	}
 
 	if (!dcc->firstcpstv.tv_sec && !dcc->firstcpstv.tv_usec)
@@ -249,10 +249,10 @@ dcc_check_timeouts (void)
 
 			if (dcc->type == TYPE_SEND || dcc->type == TYPE_RECV)
 			{
-				if (prefs.dccstalltimeout > 0)
+				if (prefs.hex_dcc_stall_timeout > 0)
 				{
 					if (!dcc->throttled
-						&& tim - dcc->lasttime > prefs.dccstalltimeout)
+						&& tim - dcc->lasttime > prefs.hex_dcc_stall_timeout)
 					{
 						EMIT_SIGNAL (XP_TE_DCCSTALL, dcc->serv->front_session,
 										 dcctypes[dcc->type],
@@ -265,9 +265,9 @@ dcc_check_timeouts (void)
 		case STAT_QUEUED:
 			if (dcc->type == TYPE_SEND || dcc->type == TYPE_CHATSEND)
 			{
-				if (tim - dcc->offertime > prefs.dcctimeout)
+				if (tim - dcc->offertime > prefs.hex_dcc_timeout)
 				{
-					if (prefs.dcctimeout > 0)
+					if (prefs.hex_dcc_timeout > 0)
 					{
 						EMIT_SIGNAL (XP_TE_DCCTOUT, dcc->serv->front_session,
 										 dcctypes[dcc->type],
@@ -280,7 +280,7 @@ dcc_check_timeouts (void)
 		case STAT_DONE:
 		case STAT_FAILED:
 		case STAT_ABORTED:
-			if (prefs.dcc_remove)
+			if (prefs.hex_dcc_remove)
 				dcc_close (dcc, 0, TRUE);
 			break;
 		}
@@ -389,9 +389,9 @@ dcc_close (struct DCC *dcc, int dccstat, int destroy)
 			if(dcc->type == TYPE_RECV)
 			{			
 				/* mgl: change this to use destfile_fs for correctness and to */
-				/* handle the case where dccwithnick is set */
-				move_file_utf8 (prefs.dccdir, prefs.dcc_completed_dir, 
-									 file_part (dcc->destfile), prefs.dccpermissions);
+				/* handle the case where hex_dcc_save_nick is set */
+				move_file_utf8 (prefs.hex_dcc_dir, prefs.hex_dcc_completed_dir, 
+									 file_part (dcc->destfile), prefs.hex_dcc_permissions);
 			}
 
 		}
@@ -687,7 +687,7 @@ dcc_read (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 	{
 
 		/* try to create the download dir (even if it exists, no harm) */
-		mkdir_utf8 (prefs.dccdir);
+		mkdir_utf8 (prefs.hex_dcc_dir);
 
 		if (dcc->resumable)
 		{
@@ -718,7 +718,7 @@ dcc_read (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 			}
 			dcc->fp =
 				open (dcc->destfile_fs, OFLAGS | O_TRUNC | O_WRONLY | O_CREAT,
-						prefs.dccpermissions);
+						prefs.hex_dcc_permissions);
 		}
 	}
 	if (dcc->fp == -1)
@@ -874,7 +874,7 @@ dcc_connect_finished (GIOChannel *source, GIOCondition condition, struct DCC *dc
 		break;
 	case TYPE_SEND:
 		/* passive send */
-		dcc->fastsend = prefs.fastdccsend;
+		dcc->fastsend = prefs.hex_dcc_fast_send;
 		if (dcc->fastsend)
 			dcc->wiotag = fe_input_add (dcc->sok, FIA_WRITE, dcc_send_data, dcc);
 		dcc->iotag = fe_input_add (dcc->sok, FIA_READ|FIA_EX, dcc_read_ack, dcc);
@@ -1441,11 +1441,11 @@ dcc_send_data (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 	char *buf;
 	int len, sent, sok = dcc->sok;
 
-	if (prefs.dcc_blocksize < 1) /* this is too little! */
-		prefs.dcc_blocksize = 1024;
+	if (prefs.hex_dcc_blocksize < 1) /* this is too little! */
+		prefs.hex_dcc_blocksize = 1024;
 
-	if (prefs.dcc_blocksize > 102400)	/* this is too much! */
-		prefs.dcc_blocksize = 102400;
+	if (prefs.hex_dcc_blocksize > 102400)	/* this is too much! */
+		prefs.hex_dcc_blocksize = 102400;
 
 	if (dcc->throttled)
 	{
@@ -1462,12 +1462,12 @@ dcc_send_data (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 	else if (!dcc->wiotag)
 		dcc->wiotag = fe_input_add (sok, FIA_WRITE, dcc_send_data, dcc);
 
-	buf = malloc (prefs.dcc_blocksize);
+	buf = malloc (prefs.hex_dcc_blocksize);
 	if (!buf)
 		return TRUE;
 
 	lseek (dcc->fp, dcc->pos, SEEK_SET);
-	len = read (dcc->fp, buf, prefs.dcc_blocksize);
+	len = read (dcc->fp, buf, prefs.hex_dcc_blocksize);
 	if (len < 1)
 		goto abortit;
 	sent = send (sok, buf, len, 0);
@@ -1612,7 +1612,7 @@ dcc_accept (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 
 	dcc->dccstat = STAT_ACTIVE;
 	dcc->lasttime = dcc->starttime = time (0);
-	dcc->fastsend = prefs.fastdccsend;
+	dcc->fastsend = prefs.hex_dcc_fast_send;
 
 	snprintf (host, sizeof (host), "%s:%d", net_ip (dcc->addr), dcc->port);
 
@@ -1648,11 +1648,11 @@ dcc_get_my_address (void)	/* the address we'll tell the other person */
 	struct hostent *dns_query;
 	guint32 addr = 0;
 
-	if (prefs.ip_from_server && prefs.dcc_ip)
+	if (prefs.hex_dcc_ip_from_server && prefs.dcc_ip)
 		addr = prefs.dcc_ip;
-	else if (prefs.dcc_ip_str[0])
+	else if (prefs.hex_dcc_ip[0])
 	{
-	   dns_query = gethostbyname ((const char *) prefs.dcc_ip_str);
+	   dns_query = gethostbyname ((const char *) prefs.hex_dcc_ip);
 
 	   if (dns_query != NULL &&
 	       dns_query->h_length == 4 &&
@@ -1696,14 +1696,14 @@ dcc_listen_init (struct DCC *dcc, session *sess)
 		my_addr = SAddr.sin_addr.s_addr;
 
 	/*if we have a valid portrange try to use that*/
-	if (prefs.first_dcc_send_port > 0)
+	if (prefs.hex_dcc_port_first > 0)
 	{
 		SAddr.sin_port = 0;
 		i = 0;
-		while ((prefs.last_dcc_send_port > ntohs(SAddr.sin_port)) &&
+		while ((prefs.hex_dcc_port_last > ntohs(SAddr.sin_port)) &&
 				(bindretval == -1))
 		{
-			SAddr.sin_port = htons (prefs.first_dcc_send_port + i);
+			SAddr.sin_port = htons (prefs.hex_dcc_port_first + i);
 			i++;
 			/*printf("Trying to bind against port: %d\n",ntohs(SAddr.sin_port));*/
 			bindretval = bind (dcc->sok, (struct sockaddr *) &SAddr, sizeof (SAddr));
@@ -1733,7 +1733,7 @@ dcc_listen_init (struct DCC *dcc, session *sess)
 	dcc->port = ntohs (SAddr.sin_port);
 
 	/*if we have a dcc_ip, we use that, so the remote client can connect*/
-	/*else we try to take an address from dcc_ip_str*/
+	/*else we try to take an address from hex_dcc_ip*/
 	/*if something goes wrong we tell the client to connect to our LAN ip*/
 	dcc->addr = dcc_get_my_address ();
 
@@ -1847,7 +1847,7 @@ dcc_send (struct session *sess, char *to, char *file, int maxcps, int passive)
 				{
 					if (*file == ' ')
 					{
-						if (prefs.dcc_send_fillspaces)
+						if (prefs.hex_dcc_send_fillspaces)
 				    		*file = '_';
 					  	else
 					   	havespaces = 1;
@@ -2074,7 +2074,7 @@ dcc_get (struct DCC *dcc)
 	case STAT_QUEUED:
 		if (dcc->type != TYPE_CHATSEND)
 		{
-			if (dcc->type == TYPE_RECV && prefs.autoresume && dcc->resumable)
+			if (dcc->type == TYPE_RECV && prefs.hex_dcc_auto_resume && dcc->resumable)
 			{
 				dcc_resume (dcc);
 			}
@@ -2307,9 +2307,11 @@ dcc_add_chat (session *sess, char *nick, int port, guint32 addr, int pasvid)
 		} else
 			fe_dcc_add (dcc);
 
-		if (prefs.autodccchat == 1)
+		if (prefs.hex_dcc_auto_chat)
+		{
 			dcc_connect (dcc);
-		else if (prefs.autodccchat == 2)
+		}
+		else
 		{
 			char buff[128];
 			snprintf (buff, sizeof (buff), "%s is offering DCC Chat. Do you want to accept?", nick);
@@ -2331,13 +2333,13 @@ dcc_add_file (session *sess, char *file, DCC_SIZE size, int port, char *nick, gu
 	{
 		dcc->file = strdup (file);
 
-		dcc->destfile = g_malloc (strlen (prefs.dccdir) + strlen (nick) +
+		dcc->destfile = g_malloc (strlen (prefs.hex_dcc_dir) + strlen (nick) +
 										  strlen (file) + 4);
 
-		strcpy (dcc->destfile, prefs.dccdir);
-		if (prefs.dccdir[strlen (prefs.dccdir) - 1] != '/')
+		strcpy (dcc->destfile, prefs.hex_dcc_dir);
+		if (prefs.hex_dcc_dir[strlen (prefs.hex_dcc_dir) - 1] != '/')
 			strcat (dcc->destfile, "/");
-		if (prefs.dccwithnick)
+		if (prefs.hex_dcc_save_nick)
 		{
 #ifdef WIN32
 			char *t = strlen (dcc->destfile) + dcc->destfile;
@@ -2368,20 +2370,18 @@ dcc_add_file (session *sess, char *file, DCC_SIZE size, int port, char *nick, gu
 		dcc->pasvid = pasvid;
 		dcc->size = size;
 		dcc->nick = strdup (nick);
-		dcc->maxcps = prefs.dcc_max_get_cps;
+		dcc->maxcps = prefs.hex_dcc_max_get_cps;
 
 		is_resumable (dcc);
 
-		/* autodccsend is really autodccrecv.. right? */
-
-		if (prefs.autodccsend == 1)
-		{
-			dcc_get (dcc);
-		}
-		else if (prefs.autodccsend == 2)
+		if (prefs.hex_dcc_auto_recv == 1)
 		{
 			snprintf (tbuf, sizeof (tbuf), _("%s is offering \"%s\". Do you want to accept?"), nick, file);
 			fe_confirm (tbuf, dcc_confirm_send, dcc_deny_send, dcc);
+		}
+		else if (prefs.hex_dcc_auto_recv == 2)
+		{
+			dcc_get (dcc);
 		}
 		if (prefs.autoopendccrecvwindow)
 		{

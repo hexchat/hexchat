@@ -1109,7 +1109,7 @@ do_dns (session *sess, char *nick, char *host)
 	if (po)
 		host = po + 1;
 	EMIT_SIGNAL (XP_TE_RESOLVINGUSER, sess, nick, host, NULL, NULL, 0);
-	snprintf (tbuf, sizeof (tbuf), "exec -d %s %s", prefs.dnsprogram, host);
+	snprintf (tbuf, sizeof (tbuf), "exec -d %s %s", prefs.hex_dnsprogram, host);
 	handle_command (sess, tbuf, FALSE);
 }
 
@@ -1301,7 +1301,7 @@ inbound_login_end (session *sess, char *text)
 
 	if (!serv->end_of_motd)
 	{
-		if (prefs.ip_from_server && serv->use_who)
+		if (prefs.hex_dcc_ip_from_server && serv->use_who)
 		{
 			serv->skip_next_userhost = TRUE;
 			serv->p_get_ip_uh (serv, serv->nick);	/* sends USERHOST mynick */

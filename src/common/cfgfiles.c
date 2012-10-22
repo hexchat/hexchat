@@ -388,7 +388,8 @@ default_file (void)
 
 /* Keep these sorted!! */
 
-const struct prefs vars[] = {
+const struct prefs vars[] =
+{
 	{"away_auto_unmark", P_OFFINT (hex_away_auto_unmark), TYPE_BOOL},
 	{"away_omit_alerts", P_OFFINT (hex_away_omit_alerts), TYPE_BOOL},
 	{"away_reason", P_OFFSET (hex_away_reason), TYPE_STR},
@@ -403,31 +404,31 @@ const struct prefs vars[] = {
 	{"completion_sort", P_OFFINT (hex_completion_sort), TYPE_INT},
 	{"completion_suffix", P_OFFSET (hex_completion_suffix), TYPE_STR},
 
-	{"dcc_auto_chat", P_OFFINT (autodccchat), TYPE_INT},
-	{"dcc_auto_resume", P_OFFINT (autoresume), TYPE_BOOL},
-	{"dcc_auto_send", P_OFFINT (autodccsend), TYPE_INT},
-	{"dcc_blocksize", P_OFFINT (dcc_blocksize), TYPE_INT},
-	{"dcc_completed_dir", P_OFFSET (dcc_completed_dir), TYPE_STR},
-	{"dcc_dir", P_OFFSET (dccdir), TYPE_STR},
+	{"dcc_auto_chat", P_OFFINT (hex_dcc_auto_chat), TYPE_BOOL},
+	{"dcc_auto_recv", P_OFFINT (hex_dcc_auto_recv), TYPE_INT},
+	{"dcc_auto_resume", P_OFFINT (hex_dcc_auto_resume), TYPE_BOOL},
+	{"dcc_blocksize", P_OFFINT (hex_dcc_blocksize), TYPE_INT},
+	{"dcc_completed_dir", P_OFFSET (hex_dcc_completed_dir), TYPE_STR},
+	{"dcc_dir", P_OFFSET (hex_dcc_dir), TYPE_STR},
 #ifndef WIN32
-	{"dcc_fast_send", P_OFFINT (fastdccsend), TYPE_BOOL},
+	{"dcc_fast_send", P_OFFINT (hex_dcc_fast_send), TYPE_BOOL},
 #endif
-	{"dcc_global_max_get_cps", P_OFFINT (dcc_global_max_get_cps), TYPE_INT},
-	{"dcc_global_max_send_cps", P_OFFINT (dcc_global_max_send_cps), TYPE_INT},
-	{"dcc_ip", P_OFFSET (dcc_ip_str), TYPE_STR},
-	{"dcc_ip_from_server", P_OFFINT (ip_from_server), TYPE_BOOL},
-	{"dcc_max_get_cps", P_OFFINT (dcc_max_get_cps), TYPE_INT},
-	{"dcc_max_send_cps", P_OFFINT (dcc_max_send_cps), TYPE_INT},
-	{"dcc_permissions", P_OFFINT (dccpermissions), TYPE_INT},
-	{"dcc_port_first", P_OFFINT (first_dcc_send_port), TYPE_INT},
-	{"dcc_port_last", P_OFFINT (last_dcc_send_port), TYPE_INT},
-	{"dcc_remove", P_OFFINT (dcc_remove), TYPE_BOOL},
-	{"dcc_save_nick", P_OFFINT (dccwithnick), TYPE_BOOL},
-	{"dcc_send_fillspaces", P_OFFINT (dcc_send_fillspaces), TYPE_BOOL},
-	{"dcc_stall_timeout", P_OFFINT (dccstalltimeout), TYPE_INT},
-	{"dcc_timeout", P_OFFINT (dcctimeout), TYPE_INT},
+	{"dcc_global_max_get_cps", P_OFFINT (hex_dcc_global_max_get_cps), TYPE_INT},
+	{"dcc_global_max_send_cps", P_OFFINT (hex_dcc_global_max_send_cps), TYPE_INT},
+	{"dcc_ip", P_OFFSET (hex_dcc_ip), TYPE_STR},
+	{"dcc_ip_from_server", P_OFFINT (hex_dcc_ip_from_server), TYPE_BOOL},
+	{"dcc_max_get_cps", P_OFFINT (hex_dcc_max_get_cps), TYPE_INT},
+	{"dcc_max_send_cps", P_OFFINT (hex_dcc_max_send_cps), TYPE_INT},
+	{"dcc_permissions", P_OFFINT (hex_dcc_permissions), TYPE_INT},
+	{"dcc_port_first", P_OFFINT (hex_dcc_port_first), TYPE_INT},
+	{"dcc_port_last", P_OFFINT (hex_dcc_port_last), TYPE_INT},
+	{"dcc_remove", P_OFFINT (hex_dcc_remove), TYPE_BOOL},
+	{"dcc_save_nick", P_OFFINT (hex_dcc_save_nick), TYPE_BOOL},
+	{"dcc_send_fillspaces", P_OFFINT (hex_dcc_send_fillspaces), TYPE_BOOL},
+	{"dcc_stall_timeout", P_OFFINT (hex_dcc_stall_timeout), TYPE_INT},
+	{"dcc_timeout", P_OFFINT (hex_dcc_timeout), TYPE_INT},
 
-	{"dnsprogram", P_OFFSET (dnsprogram), TYPE_STR},
+	{"dnsprogram", P_OFFSET (hex_dnsprogram), TYPE_STR},
 
 	{"flood_ctcp_num", P_OFFINT (ctcp_number_limit), TYPE_INT},
 	{"flood_ctcp_time", P_OFFINT (ctcp_time_limit), TYPE_INT},
@@ -664,13 +665,13 @@ load_config (void)
 	prefs.hex_away_track = 1;
 	prefs.timestamp_logs = 1;
 	prefs.truncchans = 20;
-	prefs.autoresume = 1;
+	prefs.hex_dcc_auto_resume = 1;
 	prefs.hex_away_show_once = 1;
 	prefs.indent_nicks = 1;
 	prefs.thin_separator = 1;
 	prefs.identd = 1;
 #ifndef WIN32
-	prefs.fastdccsend = 1;
+	prefs.hex_dcc_fast_send = 1;
 #endif
 	prefs.wordwrap = 1;
 	prefs.autodialog = 1;
@@ -693,7 +694,7 @@ load_config (void)
 	/* prefs.colorednicks = 1; */
 	prefs.style_inputbox = 1;
 	prefs.style_namelistgad = 1;
-	prefs.dccpermissions = 0600;
+	prefs.hex_dcc_permissions = 0600;
 	prefs.max_lines = 500;
 	prefs.mainwindow_width = 640;
 	prefs.mainwindow_height = 400;
@@ -701,8 +702,8 @@ load_config (void)
 	prefs.dialog_height = 256;
 	prefs.gui_join_dialog = 1;
 	prefs.gui_quit_dialog = 1;
-	prefs.dcctimeout = 180;
-	prefs.dccstalltimeout = 60;
+	prefs.hex_dcc_timeout = 180;
+	prefs.hex_dcc_stall_timeout = 60;
 	prefs.notify_timeout = 15;
 	prefs.tint_red =
 		prefs.tint_green =
@@ -710,7 +711,7 @@ load_config (void)
 	prefs.auto_indent = 1;
 	prefs.max_auto_indent = 256;
 	prefs.show_separator = 1;
-	prefs.dcc_blocksize = 1024;
+	prefs.hex_dcc_blocksize = 1024;
 	prefs.throttle = 1;
 	 /*FIXME*/ prefs.msg_time_limit = 30;
 	prefs.msg_number_limit = 5;
@@ -739,7 +740,7 @@ load_config (void)
 	prefs.input_balloon_time = 20;
 	prefs.input_flash_priv = prefs.input_flash_hilight = 1;
 	prefs.input_tray_priv = prefs.input_tray_hilight = 1;
-	prefs.autodccsend = 2;	/* browse mode */
+	prefs.hex_dcc_auto_recv = 2;	/* browse mode */
 	prefs.url_grabber = 1;
 	prefs.url_grabber_limit = 100; /* 0 means unlimited */
 	prefs.text_search_follow = 1;
@@ -764,16 +765,16 @@ load_config (void)
 
 		if (portable_mode () || !get_reg_str ("Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders", "Personal", out, sizeof (out)))
 		{
-			snprintf (prefs.dccdir, sizeof (prefs.dccdir), "%s\\downloads", get_xdir_utf8 ());
+			snprintf (prefs.hex_dcc_dir, sizeof (prefs.hex_dcc_dir), "%s\\downloads", get_xdir_utf8 ());
 		}
 		else
 		{
-			snprintf (prefs.dccdir, sizeof (prefs.dccdir), "%s\\Downloads", out);
+			snprintf (prefs.hex_dcc_dir, sizeof (prefs.hex_dcc_dir), "%s\\Downloads", out);
 		}
 	}
 #else
 	snprintf (prefs.sounddir, sizeof (prefs.sounddir), "%s/sounds", get_xdir_utf8 ());
-	snprintf (prefs.dccdir, sizeof (prefs.dccdir), "%s/downloads", get_xdir_utf8 ());
+	snprintf (prefs.hex_dcc_dir, sizeof (prefs.hex_dcc_dir), "%s/downloads", get_xdir_utf8 ());
 #endif
 	strcpy (prefs.doubleclickuser, "QUOTE WHOIS %s %s");
 	strcpy (prefs.hex_away_reason, _("I'm busy"));
@@ -782,7 +783,7 @@ load_config (void)
 	strcpy (prefs.font_normal, DEF_FONT);
 	strcpy (prefs.font_main, DEF_FONT);
 	strcpy (prefs.font_alternative, DEF_FONT_ALTER);
-	strcpy (prefs.dnsprogram, "host");
+	strcpy (prefs.hex_dnsprogram, "host");
 	strcpy (prefs.irc_no_hilight, "NickServ,ChanServ,InfoServ,N,Q");
 
 	g_free ((char *)username);
@@ -831,8 +832,8 @@ load_config (void)
 #endif
 #endif /* !WIN32 */
 
-		mkdir_utf8 (prefs.dccdir);
-		mkdir_utf8 (prefs.dcc_completed_dir);
+		mkdir_utf8 (prefs.hex_dcc_dir);
+		mkdir_utf8 (prefs.hex_dcc_completed_dir);
 	}
 	if (prefs.mainwindow_height < 138)
 		prefs.mainwindow_height = 138;

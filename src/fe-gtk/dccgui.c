@@ -165,7 +165,7 @@ fe_dcc_send_filereq (struct session *sess, char *nick, int maxcps, int passive)
 	mdc->passive = passive;
 
 	snprintf (tbuf, sizeof tbuf, _("Send file to %s"), nick);
-	gtkutil_file_req (tbuf, dcc_send_filereq_file, mdc, prefs.dccdir, NULL, FRF_MULTIPLE|FRF_FILTERISINITIAL);
+	gtkutil_file_req (tbuf, dcc_send_filereq_file, mdc, prefs.hex_dcc_dir, NULL, FRF_MULTIPLE|FRF_FILTERISINITIAL);
 }
 
 static void
@@ -562,10 +562,10 @@ browse_folder (char *dir)
 static void
 browse_dcc_folder (void)
 {
-	if (prefs.dcc_completed_dir[0])
-		browse_folder (prefs.dcc_completed_dir);
+	if (prefs.hex_dcc_completed_dir[0])
+		browse_folder (prefs.hex_dcc_completed_dir);
 	else
-		browse_folder (prefs.dccdir);
+		browse_folder (prefs.hex_dcc_dir);
 }
 
 static void

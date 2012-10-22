@@ -105,13 +105,29 @@ struct nbexec
 struct hexchatprefs
 {
 	/* these are the rebranded, consistent, sorted hexchat variables */
+
 	char hex_away_reason[256];
 	char hex_completion_suffix[4];		/* Only ever holds a one-character string. */
+	char hex_dcc_completed_dir[PATHLEN + 1];
+	char hex_dcc_dir[PATHLEN + 1];
+	char hex_dcc_ip[DOMAINLEN + 1];
+	char hex_dnsprogram[72];
 
 	int hex_away_size_max;
 	int hex_away_timeout;
 	int hex_completion_amount;
 	int hex_completion_sort;
+	int hex_dcc_auto_recv;
+	int hex_dcc_blocksize;
+	int hex_dcc_global_max_get_cps;
+	int hex_dcc_global_max_send_cps;
+	int hex_dcc_max_get_cps;
+	int hex_dcc_max_send_cps;
+	int hex_dcc_permissions;
+	int hex_dcc_port_first;
+	int hex_dcc_port_last;
+	int hex_dcc_stall_timeout;
+	int hex_dcc_timeout;
 
 	unsigned int hex_away_auto_unmark;
 	unsigned int hex_away_omit_alerts;
@@ -119,8 +135,16 @@ struct hexchatprefs
 	unsigned int hex_away_show_once;
 	unsigned int hex_away_track;
 	unsigned int hex_completion_auto;
+	unsigned int hex_dcc_auto_chat;
+	unsigned int hex_dcc_auto_resume;
+	unsigned int hex_dcc_fast_send;
+	unsigned int hex_dcc_ip_from_server;
+	unsigned int hex_dcc_remove;
+	unsigned int hex_dcc_save_nick;
+	unsigned int hex_dcc_send_fillspaces;
 
 	/* these are the legacy variables */
+
 	char nick1[NICKLEN];
 	char nick2[NICKLEN];
 	char nick3[NICKLEN];
@@ -136,12 +160,9 @@ struct hexchatprefs
 	char sounddir[PATHLEN + 1];
 	char soundcmd[PATHLEN + 1];
 	char background[PATHLEN + 1];
-	char dccdir[PATHLEN + 1];
-	char dcc_completed_dir[PATHLEN + 1];
 	char irc_extra_hilight[300];
 	char irc_no_hilight[300];
 	char irc_nick_hilight[300];
-	char dnsprogram[72];
 	char hostname[127];
 	char cmdchar[4];
 	char logmask[256];
@@ -158,9 +179,6 @@ struct hexchatprefs
 	char proxy_user[32];
 	char proxy_pass[32];
 
-	int first_dcc_send_port;
-	int last_dcc_send_port;
-
 	int tint_red;
 	int tint_green;
 	int tint_blue;
@@ -176,15 +194,8 @@ struct hexchatprefs
 
 	int tab_layout;
 	int max_auto_indent;
-	int dcc_blocksize;
 	int max_lines;
 	int notify_timeout;
-	int dcctimeout;
-	int dccstalltimeout;
-	int dcc_global_max_get_cps;
-	int dcc_global_max_send_cps;
-	int dcc_max_get_cps;
-	int dcc_max_send_cps;
 	int mainwindow_left;
 	int mainwindow_top;
 	int mainwindow_width;
@@ -196,13 +207,11 @@ struct hexchatprefs
 	int dialog_top;
 	int dialog_width;
 	int dialog_height;
-	int dccpermissions;
 	int recon_delay;
 	int bantype;
 	int userlist_sort;
 	guint32 local_ip;
 	guint32 dcc_ip;
-	char dcc_ip_str[DOMAINLEN + 1];
 
 	unsigned int tab_small;
 	unsigned int tab_icons;
@@ -227,9 +236,6 @@ struct hexchatprefs
 	unsigned int showhostname_in_userlist;
 	unsigned int tabchannels;
 	unsigned int paned_userlist;
-	unsigned int autodccchat;
-	unsigned int autodccsend;
-	unsigned int autoresume;
 	unsigned int autoopendccsendwindow;
 	unsigned int autoopendccrecvwindow;
 	unsigned int autoopendccchatwindow;
@@ -238,9 +244,6 @@ struct hexchatprefs
 	unsigned int text_stripcolor_replay;
 	unsigned int text_stripcolor_topic;
 	unsigned int timestamp;
-	unsigned int fastdccsend;
-	unsigned int dcc_send_fillspaces;
-	unsigned int dcc_remove;
 	unsigned int slist_fav;
 	unsigned int slist_skip;
 	unsigned int slist_select;
@@ -269,9 +272,7 @@ struct hexchatprefs
 	unsigned int logging;
 	unsigned int timestamp_logs;
 	unsigned int newtabstofront;
-	unsigned int dccwithnick;
 	unsigned int hidever;
-	unsigned int ip_from_server;
 	unsigned int raw_modes;
 	unsigned int userhost;
 	unsigned int irc_whois_front;
