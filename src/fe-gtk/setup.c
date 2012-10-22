@@ -2225,6 +2225,9 @@ setup_apply (struct xchatprefs *pr)
 		noapply = TRUE;
 	if (DIFF (tab_icons))
 		noapply = TRUE;
+
+	if (DIFF (gui_tab_dots))
+		do_layout = TRUE;
 	if (DIFF (tab_layout))
 		do_layout = TRUE;
 
