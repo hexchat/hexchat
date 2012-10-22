@@ -294,6 +294,7 @@ struct xchatprefs
 	unsigned int wordwrap;
 	unsigned int gui_compact;
 	unsigned int gui_input_spell;
+	unsigned int gui_tab_dots;
 	unsigned int gui_tray;
 	unsigned int gui_tray_flags;
 	unsigned int gui_tweaks;

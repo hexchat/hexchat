@@ -468,6 +468,7 @@ const struct prefs vars[] = {
 	{"gui_slist_skip", P_OFFINT (slist_skip), TYPE_BOOL},
 	{"gui_tab_chans", P_OFFINT (tabchannels), TYPE_BOOL},
 	{"gui_tab_dialogs", P_OFFINT (privmsgtab), TYPE_BOOL},
+	{"gui_tab_dots", P_OFFINT (gui_tab_dots), TYPE_BOOL},
 	{"gui_tab_icons", P_OFFINT (tab_icons), TYPE_BOOL},
 	{"gui_tab_layout", P_OFFINT (tab_layout), TYPE_INT},
 	{"gui_tab_newtofront", P_OFFINT (newtabstofront), TYPE_INT},
@@ -736,6 +737,7 @@ load_config (void)
 	/* prefs.userhost = 1; */
 	prefs.gui_chanlist_maxusers = 9999;
 	prefs.gui_chanlist_minusers = 5;
+	prefs.gui_tab_dots = 1;
 	prefs.gui_tray = 1;
 	prefs.gui_pane_left_size = 128;		/* with treeview icons we need a bit bigger space */
 	prefs.gui_pane_right_size = 100;
