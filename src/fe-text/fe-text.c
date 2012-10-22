@@ -121,7 +121,7 @@ fe_new_window (struct session *sess, int focus)
 static int
 get_stamp_str (time_t tim, char *dest, int size)
 {
-	return strftime (dest, size, prefs.stamp_format, localtime (&tim));
+	return strftime (dest, size, prefs.hex_stamp_text_format, localtime (&tim));
 }
 
 static int
@@ -152,7 +152,7 @@ fe_print_text (struct session *sess, char *text, time_t stamp)
 		comma, k, i = 0, j = 0, len = strlen (text);
 	unsigned char *newtext = malloc (len + 1024);
 
-	if (prefs.timestamp)
+	if (prefs.hex_stamp_text)
 	{
 		newtext[0] = 0;
 		j += timecat (newtext, stamp);
@@ -290,7 +290,7 @@ fe_print_text (struct session *sess, char *text, time_t stamp)
 		case '\n':
 			newtext[j] = '\r';
 			j++;
-			if (prefs.timestamp)
+			if (prefs.hex_stamp_text)
 				dotime = TRUE;
 		default:
 			newtext[j] = text[i];
@@ -319,7 +319,7 @@ fe_print_text (struct session *sess, char *text, time_t stamp)
 
 	unsigned char *newtext = malloc (len + 1024);
 
-	if (prefs.timestamp)
+	if (prefs.hex_stamp_text)
 	{
 		newtext[0] = 0;
 		j += timecat (newtext, stamp);
@@ -384,7 +384,7 @@ fe_print_text (struct session *sess, char *text, time_t stamp)
 		case '\n':
 			newtext[j] = '\r';
 			j++;
-			if (prefs.timestamp)
+			if (prefs.hex_stamp_text)
 				dotime = TRUE;
 		default:
 			newtext[j] = text[i];

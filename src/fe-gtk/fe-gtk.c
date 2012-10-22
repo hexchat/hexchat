@@ -334,12 +334,12 @@ create_input_style (GtkStyle *style)
 	static int done_rc = FALSE;
 
 	pango_font_description_free (style->font_desc);
-	style->font_desc = pango_font_description_from_string (prefs.font_normal);
+	style->font_desc = pango_font_description_from_string (prefs.hex_text_font);
 
 	/* fall back */
 	if (pango_font_description_get_size (style->font_desc) == 0)
 	{
-		snprintf (buf, sizeof (buf), _("Failed to open font:\n\n%s"), prefs.font_normal);
+		snprintf (buf, sizeof (buf), _("Failed to open font:\n\n%s"), prefs.hex_text_font);
 		fe_message (buf, FE_MSG_ERROR);
 		pango_font_description_free (style->font_desc);
 		style->font_desc = pango_font_description_from_string ("sans 11");
@@ -367,7 +367,7 @@ fe_init (void)
 	key_init ();
 	pixmaps_init ();
 
-	channelwin_pix = pixmap_load_from_file (prefs.background);
+	channelwin_pix = pixmap_load_from_file (prefs.hex_text_background);
 	input_style = create_input_style (gtk_style_new ());
 }
 
@@ -553,7 +553,7 @@ fe_set_topic (session *sess, char *topic, char *stripped_topic)
 {
 	if (!sess->gui->is_tab || sess == current_tab)
 	{
-		if (prefs.text_stripcolor_topic)
+		if (prefs.hex_text_stripcolor_topic)
 		{
 			gtk_entry_set_text (GTK_ENTRY (sess->gui->topic_entry), stripped_topic);
 		}
@@ -570,7 +570,7 @@ fe_set_topic (session *sess, char *topic, char *stripped_topic)
 			free (sess->res->topic_text);
 		}
 
-		if (prefs.text_stripcolor_topic)
+		if (prefs.hex_text_stripcolor_topic)
 		{
 			sess->res->topic_text = strdup (stripped_topic);
 		}
@@ -700,7 +700,7 @@ fe_progressbar_end (server *serv)
 void
 fe_print_text (struct session *sess, char *text, time_t stamp)
 {
-	PrintTextRaw (sess->res->buffer, (unsigned char *)text, prefs.indent_nicks, stamp);
+	PrintTextRaw (sess->res->buffer, (unsigned char *)text, prefs.hex_text_indent, stamp);
 
 	if (!sess->new_data && sess != current_tab &&
 		 sess->gui->is_tab && !sess->nick_said && stamp == 0)

@@ -162,9 +162,9 @@ static const setting appearance_settings[] =
 	{ST_HEADER,	N_("General"),0,0,0},
 #ifdef WIN32
 	{ST_MENU,   N_("Language:"), P_OFFINTNL(hex_gui_lang), 0, langsmenu, 0},
-	{ST_EFONT,  N_("Main font:"), P_OFFSETNL(font_main), 0, 0, sizeof prefs.font_main},
+	{ST_EFONT,  N_("Main font:"), P_OFFSETNL(hex_text_font_main), 0, 0, sizeof prefs.hex_text_font_main},
 #else
-	{ST_EFONT,  N_("Font:"), P_OFFSETNL(font_normal), 0, 0, sizeof prefs.font_normal},
+	{ST_EFONT,  N_("Font:"), P_OFFSETNL(font_normal), 0, 0, sizeof prefs.hex_text_font},
 #endif
 
 	{ST_HEADER,	N_("Title Bar"),0,0,0},
@@ -172,30 +172,30 @@ static const setting appearance_settings[] =
 	{ST_TOGGLR, N_("Show number of users"), P_OFFINTNL(hex_gui_win_ucount),0,0,0},
 
 	{ST_HEADER,	N_("Text Box"),0,0,0},
-	{ST_EFILE,  N_("Background image:"), P_OFFSETNL(background), 0, 0, sizeof prefs.background},
-	{ST_NUMBER,	N_("Scrollback lines:"), P_OFFINTNL(max_lines),0,0,100000},
-	{ST_TOGGLE, N_("Colored nick names"), P_OFFINTNL(colorednicks),
+	{ST_EFILE,  N_("Background image:"), P_OFFSETNL(hex_text_background), 0, 0, sizeof prefs.hex_text_background},
+	{ST_NUMBER,	N_("Scrollback lines:"), P_OFFINTNL(hex_text_max_lines),0,0,100000},
+	{ST_TOGGLE, N_("Colored nick names"), P_OFFINTNL(hex_text_color_nicks),
 					N_("Give each person on IRC a different color"),0,0},
-	{ST_TOGGLR, N_("Indent nick names"), P_OFFINTNL(indent_nicks),
+	{ST_TOGGLR, N_("Indent nick names"), P_OFFINTNL(hex_text_indent),
 					N_("Make nick names right-justified"),0,0},
 #if defined(USE_XLIB) || defined(WIN32)
-	{ST_TOGGLE, N_("Transparent background"), P_OFFINTNL(transparent),0,0,0},
-	{ST_TOGGLR, N_("Show marker line"), P_OFFINTNL(show_marker), N_("Insert a red line after the last read text."),0,0},
+	{ST_TOGGLE, N_("Transparent background"), P_OFFINTNL(hex_text_transparent),0,0,0},
+	{ST_TOGGLR, N_("Show marker line"), P_OFFINTNL(hex_text_show_marker), N_("Insert a red line after the last read text."),0,0},
 	{ST_HEADER, N_("Transparency Settings"), 0,0,0},
-	{ST_HSCALE, N_("Red:"), P_OFFINTNL(tint_red),0,0,0},
-	{ST_HSCALE, N_("Green:"), P_OFFINTNL(tint_green),0,0,0},
-	{ST_HSCALE, N_("Blue:"), P_OFFINTNL(tint_blue),0,0,0},
+	{ST_HSCALE, N_("Red:"), P_OFFINTNL(hex_text_tint_red),0,0,0},
+	{ST_HSCALE, N_("Green:"), P_OFFINTNL(hex_text_tint_green),0,0,0},
+	{ST_HSCALE, N_("Blue:"), P_OFFINTNL(hex_text_tint_blue),0,0,0},
 #else
-	{ST_TOGGLE, N_("Show marker line"), P_OFFINTNL(show_marker), N_("Insert a red line after the last read text."),0,0},
+	{ST_TOGGLE, N_("Show marker line"), P_OFFINTNL(hex_text_show_marker), N_("Insert a red line after the last read text."),0,0},
 #endif
 
 	{ST_HEADER,	N_("Time Stamps"),0,0,0},
-	{ST_TOGGLE, N_("Enable time stamps"), P_OFFINTNL(timestamp),0,0,2},
-	{ST_ENTRY,  N_("Time stamp format:"), P_OFFSETNL(stamp_format),
+	{ST_TOGGLE, N_("Enable time stamps"), P_OFFINTNL(hex_stamp_text),0,0,2},
+	{ST_ENTRY,  N_("Time stamp format:"), P_OFFSETNL(hex_stamp_text_format),
 #ifdef WIN32
-					N_("See the strftime MSDN article for details."),0,sizeof prefs.stamp_format},
+					N_("See the strftime MSDN article for details."),0,sizeof prefs.hex_stamp_text_format},
 #else
-					N_("See the strftime manpage for details."),0,sizeof prefs.stamp_format},
+					N_("See the strftime manpage for details."),0,sizeof prefs.hex_stamp_text_format},
 #endif
 
 	{ST_END, 0, 0, 0, 0, 0}
@@ -215,7 +215,7 @@ static const setting inputbox_settings[] =
 	{ST_TOGGLE, N_("Show nick box"), P_OFFINTNL(hex_gui_input_nick),0,0,0},
 #if defined(USE_GTKSPELL) || defined(USE_LIBSEXY)
 	{ST_TOGGLE, N_("Spell checking"), P_OFFINTNL(hex_gui_input_spell),0,0,0},
-	{ST_ENTRY,	N_("Dictionaries to use:"), P_OFFSETNL(spell_langs),0,0,sizeof prefs.spell_langs},
+	{ST_ENTRY,	N_("Dictionaries to use:"), P_OFFSETNL(hex_text_spell_langs),0,0,sizeof prefs.hex_text_spell_langs},
 #ifdef WIN32
 	{ST_LABEL,	N_("Use language codes (as in \"share\\myspell\\dicts\").\nSeparate multiple entries with commas.")},
 #else
@@ -354,9 +354,9 @@ static const setting tabs_settings[] =
 
 static const setting color_settings[] =
 {
-	{ST_TOGGLE, N_("Messages"), P_OFFINTNL(text_stripcolor_msg), 0, 0, 0},
-	{ST_TOGGLE, N_("Scrollback"), P_OFFINTNL(text_stripcolor_replay), 0, 0, 0},
-	{ST_TOGGLE, N_("Topic"), P_OFFINTNL(text_stripcolor_topic), 0, 0, 0},
+	{ST_TOGGLE, N_("Messages"), P_OFFINTNL(hex_text_stripcolor_msg), 0, 0, 0},
+	{ST_TOGGLE, N_("Scrollback"), P_OFFINTNL(hex_text_stripcolor_replay), 0, 0, 0},
+	{ST_TOGGLE, N_("Topic"), P_OFFINTNL(hex_text_stripcolor_topic), 0, 0, 0},
 
 	{ST_END, 0, 0, 0, 0, 0}
 };
@@ -486,25 +486,25 @@ static const setting advanced_settings[] =
 {
 	{ST_HEADER,	N_("Advanced Settings"),0,0,0},
 #ifdef WIN32
-	{ST_ENTRY,  N_("Alternative fonts:"), P_OFFSETNL(font_alternative), "Separate multiple entries with commas without spaces before or after.", 0, sizeof prefs.font_alternative},
+	{ST_ENTRY,  N_("Alternative fonts:"), P_OFFSETNL(hex_text_font_alternative), "Separate multiple entries with commas without spaces before or after.", 0, sizeof prefs.hex_text_font_alternative},
 #endif
-	{ST_NUMBER,	N_("Auto reconnect delay:"), P_OFFINTNL(recon_delay), 0, 0, 9999},
+	{ST_NUMBER,	N_("Auto reconnect delay:"), P_OFFINTNL(hex_net_reconnect_delay), 0, 0, 9999},
 	{ST_TOGGLE,	N_("Display MODEs in raw form"), P_OFFINTNL(hex_irc_raw_modes), 0, 0, 0},
-	{ST_TOGGLE,	N_("Whois on notify"), P_OFFINTNL(whois_on_notifyonline), N_("Sends a /WHOIS when a user comes online in your notify list"), 0, 0},
+	{ST_TOGGLE,	N_("Whois on notify"), P_OFFINTNL(hex_notify_whois_online), N_("Sends a /WHOIS when a user comes online in your notify list"), 0, 0},
 	{ST_TOGGLE,	N_("Hide join and part messages"), P_OFFINTNL(hex_irc_conf_mode), N_("Hide channel join/part messages by default"), 0, 0},
 	{ST_HEADER,	N_("Auto Open DCC Windows"),0,0,0},
 	{ST_TOGGLE, N_("Send window"), P_OFFINTNL(hex_gui_autoopen_send), 0, 0, 0},
 	{ST_TOGGLE, N_("Receive window"), P_OFFINTNL(hex_gui_autoopen_recv), 0, 0, 0},
 	{ST_TOGGLE, N_("Chat window"), P_OFFINTNL(hex_gui_autoopen_chat), 0, 0, 0},
 	{ST_HEADER,	N_("Auto Copy Behavior"),0,0,0},
-	{ST_TOGGLE, N_("Automatically copy selected text"), P_OFFINTNL(autocopy_text),
+	{ST_TOGGLE, N_("Automatically copy selected text"), P_OFFINTNL(hex_text_autocopy_text),
 					N_("Copy selected text to clipboard when left mouse button is released. "
 						"Otherwise, CONTROL-SHIFT-C will copy the "
 						"selected text to the clipboard."), 0, 0},
-	{ST_TOGGLE, N_("Automatically include time stamps"), P_OFFINTNL(autocopy_stamp),
+	{ST_TOGGLE, N_("Automatically include time stamps"), P_OFFINTNL(hex_text_autocopy_stamp),
 					N_("Automatically include time stamps in copied lines of text. Otherwise, "
 						"include time stamps if the SHIFT key is held down while selecting."), 0, 0},
-	{ST_TOGGLE, N_("Automatically include color information"), P_OFFINTNL(autocopy_color),
+	{ST_TOGGLE, N_("Automatically include color information"), P_OFFINTNL(hex_text_autocopy_color),
 					N_("Automatically include color information in copied lines of text.  "
 						"Otherwise, include color information if the CONTROL key is held down "
 						"while selecting."), 0, 0},
@@ -516,10 +516,10 @@ static const setting advanced_settings[] =
 static const setting advanced_settings_oneinstance[] =
 {
 	{ST_HEADER,	N_("Advanced Settings"),0,0,0},
-	{ST_ENTRY,  N_("Alternative fonts:"), P_OFFSETNL(font_alternative), "Separate multiple entries with commas without spaces before or after.", 0, sizeof prefs.font_alternative},
-	{ST_NUMBER,	N_("Auto reconnect delay:"), P_OFFINTNL(recon_delay), 0, 0, 9999},
+	{ST_ENTRY,  N_("Alternative fonts:"), P_OFFSETNL(hex_text_font_alternative), "Separate multiple entries with commas without spaces before or after.", 0, sizeof prefs.hex_text_font_alternative},
+	{ST_NUMBER,	N_("Auto reconnect delay:"), P_OFFINTNL(hex_net_reconnect_delay), 0, 0, 9999},
 	{ST_TOGGLE,	N_("Display MODEs in raw form"), P_OFFINTNL(hex_irc_raw_modes), 0, 0, 0},
-	{ST_TOGGLE,	N_("Whois on notify"), P_OFFINTNL(whois_on_notifyonline), N_("Sends a /WHOIS when a user comes online in your notify list"), 0, 0},
+	{ST_TOGGLE,	N_("Whois on notify"), P_OFFINTNL(hex_notify_whois_online), N_("Sends a /WHOIS when a user comes online in your notify list"), 0, 0},
 	{ST_TOGGLE,	N_("Hide join and part messages"), P_OFFINTNL(hex_irc_conf_mode), N_("Hide channel join/part messages by default"), 0, 0},
 	{ST_TOGGLE,	N_("Allow only one instance of HexChat to run"), P_OFFINTNL(hex_gui_single), 0, 0, 0},
 	{ST_HEADER,	N_("Auto Open DCC Windows"),0,0,0},
@@ -527,14 +527,14 @@ static const setting advanced_settings_oneinstance[] =
 	{ST_TOGGLE, N_("Receive window"), P_OFFINTNL(hex_gui_autoopen_recv), 0, 0, 0},
 	{ST_TOGGLE, N_("Chat window"), P_OFFINTNL(hex_gui_autoopen_chat), 0, 0, 0},
 	{ST_HEADER,	N_("Auto Copy Behavior"),0,0,0},
-	{ST_TOGGLE, N_("Automatically copy selected text"), P_OFFINTNL(autocopy_text),
+	{ST_TOGGLE, N_("Automatically copy selected text"), P_OFFINTNL(hex_text_autocopy_text),
 					N_("Copy selected text to clipboard when left mouse button is released. "
 						"Otherwise, CONTROL-SHIFT-C will copy the "
 						"selected text to the clipboard."), 0, 0},
-	{ST_TOGGLE, N_("Automatically include time stamps"), P_OFFINTNL(autocopy_stamp),
+	{ST_TOGGLE, N_("Automatically include time stamps"), P_OFFINTNL(hex_text_autocopy_stamp),
 					N_("Automatically include time stamps in copied lines of text. Otherwise, "
 						"include time stamps if the SHIFT key is held down while selecting."), 0, 0},
-	{ST_TOGGLE, N_("Automatically include color information"), P_OFFINTNL(autocopy_color),
+	{ST_TOGGLE, N_("Automatically include color information"), P_OFFINTNL(hex_text_autocopy_color),
 					N_("Automatically include color information in copied lines of text.  "
 						"Otherwise, include color information if the CONTROL key is held down "
 						"while selecting."), 0, 0},
@@ -546,17 +546,14 @@ static const setting advanced_settings_oneinstance[] =
 static const setting logging_settings[] =
 {
 	{ST_HEADER,	N_("Logging"),0,0,0},
-	{ST_TOGGLE,	N_("Display scrollback from previous session"), P_OFFINTNL(text_replay), 0, 0, 0},
-#if 0 /* Now it's done under Colors */
-	{ST_TOGGLE,	N_("Strip colors when displaying scrollback"), P_OFFINTNL(text_stripcolor_replay), 0, 0, 0},
-#endif
+	{ST_TOGGLE,	N_("Display scrollback from previous session"), P_OFFINTNL(hex_text_replay), 0, 0, 0},
 	{ST_TOGGLE,	N_("Enable logging of conversations to disk"), P_OFFINTNL(hex_irc_logging), 0, 0, 2},
 	{ST_ENTRY,	N_("Log filename:"), P_OFFSETNL(hex_irc_logmask), 0, 0, sizeof prefs.hex_irc_logmask},
 	{ST_LABEL,	N_("%s=Server %c=Channel %n=Network.")},
 
 	{ST_HEADER,	N_("Time Stamps"),0,0,0},
-	{ST_TOGGLE,	N_("Insert timestamps in logs"), P_OFFINTNL(timestamp_logs), 0, 0, 2},
-	{ST_ENTRY,	N_("Log timestamp format:"), P_OFFSETNL(timestamp_log_format), 0, 0, sizeof prefs.timestamp_log_format},
+	{ST_TOGGLE,	N_("Insert timestamps in logs"), P_OFFINTNL(hex_stamp_log), 0, 0, 2},
+	{ST_ENTRY,	N_("Log timestamp format:"), P_OFFSETNL(hex_stamp_log_format), 0, 0, sizeof prefs.hex_stamp_log_format},
 #ifdef WIN32
 	{ST_LABEL,	N_("See the strftime MSDN article for details.")},
 #else
@@ -564,9 +561,9 @@ static const setting logging_settings[] =
 #endif
 
 	{ST_HEADER,	N_("URLs"),0,0,0},
-	{ST_TOGGLE,	N_("Enable logging of URLs to disk"), P_OFFINTNL(url_logging), 0, 0, 0},
-	{ST_TOGGLE,	N_("Enable URL grabber"), P_OFFINTNL(url_grabber), 0, 0, 2},
-	{ST_NUMBER,	N_("Maximum number of URLs to grab:"), P_OFFINTNL(url_grabber_limit), 0, 0, 9999},
+	{ST_TOGGLE,	N_("Enable logging of URLs to disk"), P_OFFINTNL(hex_url_logging), 0, 0, 0},
+	{ST_TOGGLE,	N_("Enable URL grabber"), P_OFFINTNL(hex_url_grabber), 0, 0, 2},
+	{ST_NUMBER,	N_("Maximum number of URLs to grab:"), P_OFFINTNL(hex_url_grabber_limit), 0, 0, 9999},
 
 	{ST_END, 0, 0, 0, 0, 0}
 };
@@ -598,23 +595,23 @@ static const char *const proxyuse[] =
 static const setting network_settings[] =
 {
 	{ST_HEADER,	N_("Your Address"), 0, 0, 0, 0},
-	{ST_ENTRY,	N_("Bind to:"), P_OFFSETNL(hostname), 0, 0, sizeof prefs.hostname},
+	{ST_ENTRY,	N_("Bind to:"), P_OFFSETNL(hex_net_bind_host), 0, 0, sizeof prefs.hex_net_bind_host},
 	{ST_LABEL,	N_("Only useful for computers with multiple addresses.")},
 
 	{ST_HEADER,	N_("Proxy Server"), 0, 0, 0, 0},
-	{ST_ENTRY,	N_("Hostname:"), P_OFFSETNL(proxy_host), 0, 0, sizeof prefs.proxy_host},
-	{ST_NUMBER,	N_("Port:"), P_OFFINTNL(proxy_port), 0, 0, 65535},
-	{ST_MENU,	N_("Type:"), P_OFFINTNL(proxy_type), 0, proxytypes, 0},
-	{ST_MENU,	N_("Use proxy for:"), P_OFFINTNL(proxy_use), 0, proxyuse, 0},
+	{ST_ENTRY,	N_("Hostname:"), P_OFFSETNL(hex_net_proxy_host), 0, 0, sizeof prefs.hex_net_proxy_host},
+	{ST_NUMBER,	N_("Port:"), P_OFFINTNL(hex_net_proxy_port), 0, 0, 65535},
+	{ST_MENU,	N_("Type:"), P_OFFINTNL(hex_net_proxy_type), 0, proxytypes, 0},
+	{ST_MENU,	N_("Use proxy for:"), P_OFFINTNL(hex_net_proxy_use), 0, proxyuse, 0},
 
 	{ST_HEADER,	N_("Proxy Authentication"), 0, 0, 0, 0},
 #ifdef USE_MSPROXY
-	{ST_TOGGLE,	N_("Use Authentication (MS Proxy, HTTP or Socks5 only)"), P_OFFINTNL(proxy_auth), 0, 0, 0},
+	{ST_TOGGLE,	N_("Use Authentication (MS Proxy, HTTP or Socks5 only)"), P_OFFINTNL(hex_net_proxy_auth), 0, 0, 0},
 #else
-	{ST_TOGGLE,	N_("Use Authentication (HTTP or Socks5 only)"), P_OFFINTNL(proxy_auth), 0, 0, 0},
+	{ST_TOGGLE,	N_("Use Authentication (HTTP or Socks5 only)"), P_OFFINTNL(hex_net_proxy_auth), 0, 0, 0},
 #endif
-	{ST_ENTRY,	N_("Username:"), P_OFFSETNL(proxy_user), 0, 0, sizeof prefs.proxy_user},
-	{ST_ENTRY,	N_("Password:"), P_OFFSETNL(proxy_pass), 0, GINT_TO_POINTER(1), sizeof prefs.proxy_pass},
+	{ST_ENTRY,	N_("Username:"), P_OFFSETNL(hex_net_proxy_user), 0, 0, sizeof prefs.hex_net_proxy_user},
+	{ST_ENTRY,	N_("Password:"), P_OFFSETNL(hex_net_proxy_pass), 0, GINT_TO_POINTER(1), sizeof prefs.hex_net_proxy_pass},
 
 	{ST_END, 0, 0, 0, 0, 0}
 };
@@ -826,9 +823,9 @@ setup_create_spin (GtkWidget *table, int row, const setting *set)
 static gint
 setup_apply_tint (int *tag)
 {
-	prefs.tint_red = setup_prefs.tint_red;
-	prefs.tint_green = setup_prefs.tint_green;
-	prefs.tint_blue = setup_prefs.tint_blue;
+	prefs.hex_text_tint_red = setup_prefs.hex_text_tint_red;
+	prefs.hex_text_tint_green = setup_prefs.hex_text_tint_green;
+	prefs.hex_text_tint_blue = setup_prefs.hex_text_tint_blue;
 	mg_update_xtext (current_sess->gui->xtext);
 	*tag = 0;
 	return 0;
@@ -1171,15 +1168,15 @@ setup_create_entry (GtkWidget *table, int row, const setting *set)
 	g_signal_connect (G_OBJECT (wid), "changed",
 							G_CALLBACK (setup_entry_cb), (gpointer)set);
 
-	if (set->offset == P_OFFSETNL(proxy_user))
+	if (set->offset == P_OFFSETNL(hex_net_proxy_user))
 		proxy_user = wid;
-	if (set->offset == P_OFFSETNL(proxy_pass))
+	if (set->offset == P_OFFSETNL(hex_net_proxy_pass))
 		proxy_pass = wid; 
 
 	/* only http and Socks5 can auth */
-	if ( (set->offset == P_OFFSETNL(proxy_pass) ||
-			set->offset == P_OFFSETNL(proxy_user)) &&
-	     (setup_prefs.proxy_type != 4 && setup_prefs.proxy_type != 3 && setup_prefs.proxy_type != 5) )
+	if ( (set->offset == P_OFFSETNL(hex_net_proxy_pass) ||
+			set->offset == P_OFFSETNL(hex_net_proxy_user)) &&
+	     (setup_prefs.hex_net_proxy_type != 4 && setup_prefs.hex_net_proxy_type != 3 && setup_prefs.hex_net_proxy_type != 5) )
 		gtk_widget_set_sensitive (wid, FALSE);
 
 	if (set->type == ST_ENTRY)
@@ -1535,8 +1532,8 @@ extern char *sound_files[];
 static void
 setup_snd_apply (void)
 {
-	strcpy (setup_prefs.sounddir, GTK_ENTRY (snddir_entry)->text);
-	strcpy (setup_prefs.soundcmd, GTK_ENTRY (sndprog_entry)->text);
+	strcpy (setup_prefs.hex_sound_dir, GTK_ENTRY (snddir_entry)->text);
+	strcpy (setup_prefs.hex_sound_command, GTK_ENTRY (sndprog_entry)->text);
 }
 
 static void
@@ -1632,7 +1629,7 @@ setup_autotoggle_cb (GtkToggleButton *but, GtkToggleButton *ext)
 {
 	if (but->active)
 	{
-		setup_prefs.soundcmd[0] = 0;
+		setup_prefs.hex_sound_command[0] = 0;
 		gtk_entry_set_text (GTK_ENTRY (sndprog_entry), "");
 		gtk_widget_set_sensitive (sndprog_entry, FALSE);
 	} else
@@ -1742,10 +1739,10 @@ setup_create_sound_page (void)
 	gtk_misc_set_alignment (GTK_MISC (label3), 0, 0.5);
 
 	sndprog_entry = gtk_entry_new ();
-	if (setup_prefs.soundcmd[0] == 0)
+	if (setup_prefs.hex_sound_command[0] == 0)
 		gtk_widget_set_sensitive (sndprog_entry, FALSE);
 	else
-		gtk_entry_set_text (GTK_ENTRY (sndprog_entry), setup_prefs.soundcmd);
+		gtk_entry_set_text (GTK_ENTRY (sndprog_entry), setup_prefs.hex_sound_command);
 	gtk_widget_show (sndprog_entry);
 	gtk_table_attach (GTK_TABLE (table2), sndprog_entry, 1, 3, 2, 3,
 							(GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
@@ -1773,7 +1770,7 @@ setup_create_sound_page (void)
 										 radio_group);
 	radio_group =
 		gtk_radio_button_get_group (GTK_RADIO_BUTTON (radio_auto));
-	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (radio_auto), setup_prefs.soundcmd[0] == 0);
+	gtk_toggle_button_set_active (GTK_TOGGLE_BUTTON (radio_auto), setup_prefs.hex_sound_command[0] == 0);
 
 	label4 = gtk_label_new_with_mnemonic (_("Sound files _directory:"));
 	gtk_widget_show (label4);
@@ -1783,7 +1780,7 @@ setup_create_sound_page (void)
 	gtk_misc_set_alignment (GTK_MISC (label4), 0, 0.5);
 
 	snddir_entry = entry3 = gtk_entry_new ();
-	gtk_entry_set_text (GTK_ENTRY (entry3), setup_prefs.sounddir);
+	gtk_entry_set_text (GTK_ENTRY (entry3), setup_prefs.hex_sound_dir);
 	gtk_widget_show (entry3);
 	gtk_table_attach (GTK_TABLE (table2), entry3, 1, 3, 3, 4,
 							(GtkAttachOptions) (GTK_EXPAND | GTK_FILL),
@@ -2144,7 +2141,7 @@ setup_apply_real (int new_pix, int do_ulist, int do_layout)
 	{
 		if (channelwin_pix)
 			g_object_unref (channelwin_pix);
-		channelwin_pix = pixmap_load_from_file (prefs.background);
+		channelwin_pix = pixmap_load_from_file (prefs.hex_text_background);
 	}
 
 	input_style = create_input_style (input_style);
@@ -2195,7 +2192,7 @@ setup_apply (struct hexchatprefs *pr)
 	int do_ulist = FALSE;
 	int do_layout = FALSE;
 
-	if (strcmp (pr->background, prefs.background) != 0)
+	if (strcmp (pr->hex_text_background, prefs.hex_text_background) != 0)
 		new_pix = TRUE;
 
 #define DIFF(a) (pr->a != prefs.a)
@@ -2247,14 +2244,14 @@ setup_apply (struct hexchatprefs *pr)
 	memcpy (&prefs, pr, sizeof (prefs));
 
 #ifdef WIN32
-	/* merge font_main and font_alternative into font_normal */
-	old_desc = pango_font_description_from_string (prefs.font_main);
-	sprintf (buffer, "%s,%s", pango_font_description_get_family (old_desc), prefs.font_alternative);
+	/* merge hex_font_main and hex_font_alternative into hex_font_normal */
+	old_desc = pango_font_description_from_string (prefs.hex_text_font_main);
+	sprintf (buffer, "%s,%s", pango_font_description_get_family (old_desc), prefs.hex_text_font_alternative);
 	new_desc = pango_font_description_from_string (buffer);
 	pango_font_description_set_weight (new_desc, pango_font_description_get_weight (old_desc));
 	pango_font_description_set_style (new_desc, pango_font_description_get_style (old_desc));
 	pango_font_description_set_size (new_desc, pango_font_description_get_size (old_desc));
-	sprintf (prefs.font_normal, "%s", pango_font_description_to_string (new_desc));
+	sprintf (prefs.hex_text_font, "%s", pango_font_description_to_string (new_desc));
 
 	/* FIXME this is not required after pango_font_description_from_string()
 	g_free (old_desc);
@@ -2264,7 +2261,7 @@ setup_apply (struct hexchatprefs *pr)
 	/* workaround for strftime differences between POSIX and MSVC */
 	time (&rawtime);
 
-	if (!strftime (buffer, sizeof (buffer), prefs.stamp_format, localtime (&rawtime)) || !strftime (buffer, sizeof (buffer), prefs.timestamp_log_format, localtime (&rawtime)))
+	if (!strftime (buffer, sizeof (buffer), prefs.hex_stamp_text_format, localtime (&rawtime)) || !strftime (buffer, sizeof (buffer), prefs.hex_stamp_log_format, localtime (&rawtime)))
 	{
 		fe_message (_("Invalid time stamp format! See the strftime MSDN article for details."), FE_MSG_ERROR);
 	}

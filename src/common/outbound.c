@@ -2878,11 +2878,11 @@ cmd_quote (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 static int
 cmd_reconnect (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 {
-	int tmp = prefs.recon_delay;
+	int tmp = prefs.hex_net_reconnect_delay;
 	GSList *list;
 	server *serv = sess->server;
 
-	prefs.recon_delay = 0;
+	prefs.hex_net_reconnect_delay = 0;
 
 	if (!g_ascii_strcasecmp (word[2], "ALL"))
 	{
@@ -2923,7 +2923,7 @@ cmd_reconnect (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	{
 		serv->auto_reconnect (serv, TRUE, -1);
 	}
-	prefs.recon_delay = tmp;
+	prefs.hex_net_reconnect_delay = tmp;
 
 	return TRUE;
 }

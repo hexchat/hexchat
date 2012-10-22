@@ -103,7 +103,7 @@ url_add (char *urltext, int len)
 	int size;
 
 	/* we don't need any URLs if we have neither URL grabbing nor URL logging enabled */
-	if (!prefs.url_grabber && !prefs.url_logging)
+	if (!prefs.hex_url_grabber && !prefs.hex_url_logging)
 	{
 		return;
 	}
@@ -127,13 +127,13 @@ url_add (char *urltext, int len)
 		data[len - 1] = 0;
 	}
 
-	if (prefs.url_logging)
+	if (prefs.hex_url_logging)
 	{
 		url_save_node (data);
 	}
 
 	/* the URL is saved already, only continue if we need the URL grabber too */
-	if (!prefs.url_grabber)
+	if (!prefs.hex_url_grabber)
 	{
 		free (data);
 		return;
@@ -153,11 +153,11 @@ url_add (char *urltext, int len)
 
 	size = tree_size (url_tree);
 	/* 0 is unlimited */
-	if (prefs.url_grabber_limit > 0 && size >= prefs.url_grabber_limit)
+	if (prefs.hex_url_grabber_limit > 0 && size >= prefs.hex_url_grabber_limit)
 	{
 		/* the loop is necessary to handle having the limit lowered while
 		   xchat is running */
-		size -= prefs.url_grabber_limit;
+		size -= prefs.hex_url_grabber_limit;
 		for(; size > 0; size--)
 		{
 			char *pos;

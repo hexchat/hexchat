@@ -994,7 +994,7 @@ sexy_spell_entry_activate_default_languages(SexySpellEntry *entry)
 
 	for (i = enchant_langs; i; i = g_slist_next (i))
 	{
-		if (strstr (prefs.spell_langs, i->data) != NULL)
+		if (strstr (prefs.hex_text_spell_langs, i->data) != NULL)
 		{
 			sexy_spell_entry_activate_language_internal (entry, i->data, NULL);
 		}

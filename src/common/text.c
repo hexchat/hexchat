@@ -157,7 +157,7 @@ file_to_buffer (char *file, int *len)
 	return buf;
 }
 
-/* shrink the file to roughly prefs.max_lines */
+/* shrink the file to roughly prefs.hex_text_max_lines */
 
 static void
 scrollback_shrink (session *sess)
@@ -204,7 +204,7 @@ scrollback_shrink (session *sess)
 		if (*p == '\n')
 		{
 			line++;
-			if (line >= lines - prefs.max_lines &&
+			if (line >= lines - prefs.hex_text_max_lines &&
 				 p + 1 != buf + len)
 			{
 				p++;
@@ -231,7 +231,7 @@ scrollback_save (session *sess, char *text)
 
 	if (sess->text_scrollback == SET_DEFAULT)
 	{
-		if (!prefs.text_replay)
+		if (!prefs.hex_text_replay)
 			return;
 	}
 	else
@@ -263,7 +263,7 @@ scrollback_save (session *sess, char *text)
 
 	sess->scrollwritten++;
 
-	if ((sess->scrollwritten * 2 > prefs.max_lines && prefs.max_lines > 0) ||
+	if ((sess->scrollwritten * 2 > prefs.hex_text_max_lines && prefs.hex_text_max_lines > 0) ||
        sess->scrollwritten > 32000)
 		scrollback_shrink (sess);
 }
@@ -290,7 +290,7 @@ scrollback_load (session *sess)
 
 	if (sess->text_scrollback == SET_DEFAULT)
 	{
-		if (!prefs.text_replay)
+		if (!prefs.hex_text_replay)
 			return;
 	}
 	else
@@ -342,12 +342,12 @@ scrollback_load (session *sess)
 			text = strchr (buf + 3, ' ');
 			if (text)
 			{
-				if (prefs.text_stripcolor_replay)
+				if (prefs.hex_text_stripcolor_replay)
 				{
 					text = strip_color (text + 1, -1, STRIP_COLOR);
 				}
 				fe_print_text (sess, text, stamp);
-				if (prefs.text_stripcolor_replay)
+				if (prefs.hex_text_stripcolor_replay)
 				{
 					g_free (text);
 				}
@@ -383,7 +383,7 @@ scrollback_load (session *sess)
 			text = strchr (buf + 3, ' ');
 			if (text)
 			{
-				if (prefs.text_stripcolor_replay)
+				if (prefs.hex_text_stripcolor_replay)
 				{
 					text = strip_color (text + 1, -1, STRIP_COLOR);
 				}
@@ -391,7 +391,7 @@ scrollback_load (session *sess)
 				cleaned_text = text_replace_non_bmp (text, -1, &cleaned_len);
 				if (cleaned_text != NULL)
 				{
-					if (prefs.text_stripcolor_replay)
+					if (prefs.hex_text_stripcolor_replay)
 					{
 						g_free (text);
 					}
@@ -400,7 +400,7 @@ scrollback_load (session *sess)
 #endif
 				text_replace_non_bmp2 (text);
 				fe_print_text (sess, text, stamp);
-				if (prefs.text_stripcolor_replay)
+				if (prefs.hex_text_stripcolor_replay)
 				{
 					g_free (text);
 				}
@@ -802,9 +802,9 @@ log_write (session *sess, char *text)
 		g_free (file);
 	}
 
-	if (prefs.timestamp_logs)
+	if (prefs.hex_stamp_log)
 	{
-		len = get_stamp_str (prefs.timestamp_log_format, time (0), &stamp);
+		len = get_stamp_str (prefs.hex_stamp_log_format, time (0), &stamp);
 		if (len)
 		{
 			write (sess->logfd, stamp, len);
@@ -1866,7 +1866,7 @@ load_text_events ()
 
 /*
 	CL: format_event now handles filtering of arguments:
-	1) if prefs.text_stripcolor_msg is set, filter all style control codes from arguments
+	1) if prefs.hex_text_stripcolor_msg is set, filter all style control codes from arguments
 	2) always strip \010 (ATTR_HIDDEN) from arguments: it is only for use in the format string itself
 */
 #define ARG_FLAG(argn) (1 << (argn))
@@ -1938,7 +1938,7 @@ format_event (session *sess, int index, char **args, char *o, int sizeofo, unsig
 					o[oi++] = ' ';
 			} else
 			{*/
-				if (prefs.indent_nicks)
+				if (prefs.hex_text_indent)
 					o[oi++] = '\t';
 				else
 					o[oi++] = ' ';
@@ -2162,10 +2162,10 @@ text_emit (int index, session *sess, char *a, char *b, char *c, char *d)
 {
 	char *word[PDIWORDS];
 	int i;
-	unsigned int stripcolor_args = (prefs.text_stripcolor_msg ? 0xFFFFFFFF : 0);
+	unsigned int stripcolor_args = (prefs.hex_text_stripcolor_msg ? 0xFFFFFFFF : 0);
 	char tbuf[NICKLEN + 4];
 
-	if (prefs.colorednicks && (index == XP_TE_CHANACTION || index == XP_TE_CHANMSG))
+	if (prefs.hex_text_color_nicks && (index == XP_TE_CHANACTION || index == XP_TE_CHANMSG))
 	{
 		snprintf (tbuf, sizeof (tbuf), "\003%d%s", color_of (a), a);
 		a = tbuf;
@@ -2326,8 +2326,8 @@ sound_find_command (void)
 	char *cmd;
 	int i = 0;
 
-	if (prefs.soundcmd[0])
-		return g_strdup (prefs.soundcmd);
+	if (prefs.hex_sound_command[0])
+		return g_strdup (prefs.hex_sound_command);
 
 	while (progs[i])
 	{
@@ -2366,7 +2366,7 @@ sound_play (const char *file, gboolean quiet)
 #endif
 	if (file[0] != '/')
 	{
-		snprintf (wavfile, sizeof (wavfile), "%s/%s", prefs.sounddir, file);
+		snprintf (wavfile, sizeof (wavfile), "%s/%s", prefs.hex_sound_dir, file);
 	} else
 	{
 		strncpy (wavfile, file, sizeof (wavfile));

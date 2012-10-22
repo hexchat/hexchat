@@ -319,7 +319,7 @@ dcc_lookup_proxy (char *host, struct sockaddr_in *addr)
 	return FALSE;
 }
 
-#define DCC_USE_PROXY() (prefs.proxy_host[0] && prefs.proxy_type>0 && prefs.proxy_type<5 && prefs.proxy_use!=1)
+#define DCC_USE_PROXY() (prefs.hex_net_proxy_host[0] && prefs.hex_net_proxy_type>0 && prefs.hex_net_proxy_type<5 && prefs.hex_net_proxy_use!=1)
 
 static int
 dcc_connect_sok (struct DCC *dcc)
@@ -335,12 +335,12 @@ dcc_connect_sok (struct DCC *dcc)
 	addr.sin_family = AF_INET;
 	if (DCC_USE_PROXY ())
 	{
-		if (!dcc_lookup_proxy (prefs.proxy_host, &addr))
+		if (!dcc_lookup_proxy (prefs.hex_net_proxy_host, &addr))
 		{
 			closesocket (sok);
 			return -1;
 		}
-		addr.sin_port = htons (prefs.proxy_port);
+		addr.sin_port = htons (prefs.hex_net_proxy_port);
 	}
 	else
 	{
@@ -1072,7 +1072,7 @@ static gboolean
 dcc_socks5_proxy_traverse (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 {
 	struct proxy_state *proxy = dcc->proxy;
-	int auth = prefs.proxy_auth && prefs.proxy_user[0] && prefs.proxy_pass[0];
+	int auth = prefs.hex_net_proxy_auth && prefs.hex_net_proxy_user[0] && prefs.hex_net_proxy_pass[0];
 
 	if (proxy->phase == 0)
 	{
@@ -1132,13 +1132,13 @@ dcc_socks5_proxy_traverse (GIOChannel *source, GIOCondition condition, struct DC
 			memset (proxy->buffer, 0, MAX_PROXY_BUFFER);
 
 			/* form the UPA request */
-			len_u = strlen (prefs.proxy_user);
-			len_p = strlen (prefs.proxy_pass);
+			len_u = strlen (prefs.hex_net_proxy_user);
+			len_p = strlen (prefs.hex_net_proxy_pass);
 			proxy->buffer[0] = 1;
 			proxy->buffer[1] = len_u;
-			memcpy (proxy->buffer + 2, prefs.proxy_user, len_u);
+			memcpy (proxy->buffer + 2, prefs.hex_net_proxy_user, len_u);
 			proxy->buffer[2 + len_u] = len_p;
-			memcpy (proxy->buffer + 3 + len_u, prefs.proxy_pass, len_p);
+			memcpy (proxy->buffer + 3 + len_u, prefs.hex_net_proxy_pass, len_p);
 
 			proxy->buffersize = 3 + len_u + len_p;
 			proxy->bufferused = 0;
@@ -1283,10 +1283,10 @@ dcc_http_proxy_traverse (GIOChannel *source, GIOCondition condition, struct DCC 
 
 		n = snprintf (buf, sizeof (buf), "CONNECT %s:%d HTTP/1.0\r\n",
                                           net_ip(dcc->addr), dcc->port);
-		if (prefs.proxy_auth)
+		if (prefs.hex_net_proxy_auth)
 		{
 			n2 = snprintf (auth_data2, sizeof (auth_data2), "%s:%s",
-							prefs.proxy_user, prefs.proxy_pass);
+							prefs.hex_net_proxy_user, prefs.hex_net_proxy_pass);
 			base64_encode (auth_data, auth_data2, n2);
 			n += snprintf (buf+n, sizeof (buf)-n, "Proxy-Authorization: Basic %s\r\n", auth_data);
 		}
@@ -1375,7 +1375,7 @@ dcc_proxy_connect (GIOChannel *source, GIOCondition condition, struct DCC *dcc)
 	}
 	memset (dcc->proxy, 0, sizeof (struct proxy_state));
 
-	switch (prefs.proxy_type)
+	switch (prefs.hex_net_proxy_type)
 	{
 		case 1: return dcc_wingate_proxy_traverse (source, condition, dcc);
 		case 2: return dcc_socks_proxy_traverse (source, condition, dcc);

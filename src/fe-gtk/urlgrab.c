@@ -167,10 +167,10 @@ fe_url_add (const char *urltext)
 		                    -1);
 
 		/* remove any overflow */
-		if (prefs.url_grabber_limit > 0)
+		if (prefs.hex_url_grabber_limit > 0)
 		{
 			valid = gtk_tree_model_iter_nth_child (
-				GTK_TREE_MODEL (store), &iter, NULL, prefs.url_grabber_limit);
+				GTK_TREE_MODEL (store), &iter, NULL, prefs.hex_url_grabber_limit);
 			while (valid)
 				valid = gtk_list_store_remove (store, &iter);
 		}
@@ -217,7 +217,7 @@ url_opengui ()
 
 	gtk_widget_show (urlgrabberwindow);
 
-	if (prefs.url_grabber)
+	if (prefs.hex_url_grabber)
 		tree_foreach (url_tree, (tree_traverse_func *)populate_cb, NULL);
 	else
 	{

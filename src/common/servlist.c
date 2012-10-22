@@ -751,7 +751,7 @@ servlist_cycle (server *serv)
 					net->selected = 0;
 			}
 
-			del = prefs.recon_delay * 1000;
+			del = prefs.hex_net_reconnect_delay * 1000;
 			if (del < 1000)
 				del = 500;				  /* so it doesn't block the gui */
 

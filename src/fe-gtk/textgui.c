@@ -69,7 +69,7 @@ enum
 int
 xtext_get_stamp_str (time_t tim, char **ret)
 {
-	return get_stamp_str (prefs.stamp_format, tim, ret);
+	return get_stamp_str (prefs.hex_stamp_text_format, tim, ret);
 }
 
 static void
@@ -83,7 +83,7 @@ PrintTextLine (xtext_buffer *xtbuf, unsigned char *text, int len, int indent, ti
 
 	if (!indent)
 	{
-		if (prefs.timestamp)
+		if (prefs.hex_stamp_text)
 		{
 			int stamp_size;
 			char *stamp;
@@ -91,7 +91,7 @@ PrintTextLine (xtext_buffer *xtbuf, unsigned char *text, int len, int indent, ti
 			if (timet == 0)
 				timet = time (0);
 
-			stamp_size = get_stamp_str (prefs.stamp_format, timet, &stamp);
+			stamp_size = get_stamp_str (prefs.hex_stamp_text_format, timet, &stamp);
 			new_text = malloc (len + stamp_size + 1);
 			memcpy (new_text, stamp, stamp_size);
 			g_free (stamp);
@@ -393,9 +393,9 @@ pevent_dialog_show ()
 							G_CALLBACK (pevent_dialog_select), store);
 
 	pevent_dialog_twid = gtk_xtext_new (colors, 0);
-	gtk_xtext_set_tint (GTK_XTEXT (pevent_dialog_twid), prefs.tint_red, prefs.tint_green, prefs.tint_blue);
+	gtk_xtext_set_tint (GTK_XTEXT (pevent_dialog_twid), prefs.hex_text_tint_red, prefs.hex_text_tint_green, prefs.hex_text_tint_blue);
 	gtk_xtext_set_background (GTK_XTEXT (pevent_dialog_twid),
-									  channelwin_pix, prefs.transparent);
+									  channelwin_pix, prefs.hex_text_transparent);
 
 	pevent_dialog_entry = gtk_entry_new_with_max_length (255);
 	g_signal_connect (G_OBJECT (pevent_dialog_entry), "activate",
@@ -409,7 +409,7 @@ pevent_dialog_show ()
 
 	gtk_widget_set_usize (pevent_dialog_twid, 150, 20);
 	gtk_container_add (GTK_CONTAINER (tbox), pevent_dialog_twid);
-	gtk_xtext_set_font (GTK_XTEXT (pevent_dialog_twid), prefs.font_normal);
+	gtk_xtext_set_font (GTK_XTEXT (pevent_dialog_twid), prefs.hex_text_font);
 
 	wid = gtk_vscrollbar_new (GTK_XTEXT (pevent_dialog_twid)->adj);
 	gtk_box_pack_start (GTK_BOX (tbox), wid, FALSE, FALSE, 0);

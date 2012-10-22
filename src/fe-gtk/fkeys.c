@@ -510,11 +510,11 @@ key_dialog_delete (GtkWidget * button, GtkCList * list)
 static void
 key_print_text (GtkXText *xtext, char *text)
 {
-	unsigned int old = prefs.timestamp;
-	prefs.timestamp = 0;	/* temporarily disable stamps */
+	unsigned int old = prefs.hex_stamp_text;
+	prefs.hex_stamp_text = 0;	/* temporarily disable stamps */
 	gtk_xtext_clear (GTK_XTEXT (xtext)->buffer, 0);
 	PrintTextRaw (GTK_XTEXT (xtext)->buffer, text, 0, 0);
-	prefs.timestamp = old;
+	prefs.hex_stamp_text = old;
 }
 
 static void
@@ -817,13 +817,13 @@ key_dialog_show ()
 	gtk_box_pack_end (GTK_BOX (vbox), hbox2, 0, 0, 1);
 
 	wid = gtk_xtext_new (colors, 0);
-	gtk_xtext_set_tint (GTK_XTEXT (wid), prefs.tint_red, prefs.tint_green, prefs.tint_blue);
+	gtk_xtext_set_tint (GTK_XTEXT (wid), prefs.hex_text_tint_red, prefs.hex_text_tint_green, prefs.hex_text_tint_blue);
 	gtk_xtext_set_background (GTK_XTEXT (wid),
 									  channelwin_pix,
-									  prefs.transparent);
+									  prefs.hex_text_transparent);
 	gtk_widget_set_usize (wid, 0, 75);
 	gtk_box_pack_start (GTK_BOX (hbox2), wid, 1, 1, 1);
-	gtk_xtext_set_font (GTK_XTEXT (wid), prefs.font_normal);
+	gtk_xtext_set_font (GTK_XTEXT (wid), prefs.hex_text_font);
 	gtk_widget_show (wid);
 
 	wid2 = gtk_vscrollbar_new (GTK_XTEXT (wid)->adj);

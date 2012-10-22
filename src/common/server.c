@@ -230,7 +230,7 @@ tcp_send_len (server *serv, char *buf, int len)
 	char *dbuf;
 	int noqueue = !serv->outbound_queue;
 
-	if (!prefs.throttle)
+	if (!prefs.hex_net_throttle)
 		return server_send_real (serv, buf, len);
 
 	dbuf = malloc (len + 2);	/* first byte is the priority */
@@ -463,12 +463,12 @@ server_read (GIOChannel *source, GIOCondition condition, server *serv)
 				server_disconnect (serv->server_session, FALSE, error);
 				if (!servlist_cycle (serv))
 				{
-					if (prefs.autoreconnect)
+					if (prefs.hex_net_auto_reconnect)
 						auto_reconnect (serv, FALSE, error);
 				}
 			} else
 			{
-				if (prefs.autoreconnect)
+				if (prefs.hex_net_auto_reconnect)
 					auto_reconnect (serv, FALSE, error);
 				else
 					server_disconnect (serv->server_session, FALSE, error);
@@ -666,7 +666,7 @@ ssl_do_connect (server * serv)
 
 			server_cleanup (serv);
 
-			if (prefs.autoreconnectonfail)
+			if (prefs.hex_net_auto_reconnectonfail)
 				auto_reconnect (serv, FALSE, -1);
 
 			return (0);				  /* remove it (0) */
@@ -789,7 +789,7 @@ ssl_do_connect (server * serv)
 							 NULL, NULL, 0);
 			server_cleanup (serv); /* ->connecting = FALSE */
 
-			if (prefs.autoreconnectonfail)
+			if (prefs.hex_net_auto_reconnectonfail)
 				auto_reconnect (serv, FALSE, -1);
 
 			return (0);				  /* remove it (0) */
@@ -839,7 +839,7 @@ auto_reconnect (server *serv, int send_quit, int err)
 	if (serv->connected)
 		server_disconnect (serv->server_session, send_quit, err);
 
-	del = prefs.recon_delay * 1000;
+	del = prefs.hex_net_reconnect_delay * 1000;
 	if (del < 1000)
 		del = 500;				  /* so it doesn't block the gui */
 
@@ -940,7 +940,7 @@ server_read_child (GIOChannel *source, GIOCondition condition, server *serv)
 #endif
 		EMIT_SIGNAL (XP_TE_UKNHOST, sess, NULL, NULL, NULL, NULL, 0);
 		if (!servlist_cycle (serv))
-			if (prefs.autoreconnectonfail)
+			if (prefs.hex_net_auto_reconnectonfail)
 				auto_reconnect (serv, FALSE, -1);
 		break;
 	case '2':						  /* connection failed */
@@ -958,7 +958,7 @@ server_read_child (GIOChannel *source, GIOCondition condition, server *serv)
 		EMIT_SIGNAL (XP_TE_CONNFAIL, sess, errorstring (atoi (tbuf)), NULL,
 						 NULL, NULL, 0);
 		if (!servlist_cycle (serv))
-			if (prefs.autoreconnectonfail)
+			if (prefs.hex_net_auto_reconnectonfail)
 				auto_reconnect (serv, FALSE, -1);
 		break;
 	case '3':						  /* gethostbyname finished */
@@ -1028,10 +1028,10 @@ server_read_child (GIOChannel *source, GIOCondition condition, server *serv)
 		waitline2 (source, tbuf, sizeof tbuf);
 		prefs.local_ip = inet_addr (tbuf);
 		break;
-	case '7':						  /* gethostbyname (prefs.hostname) failed */
+	case '7':						  /* gethostbyname (prefs.hex_net_bind_host) failed */
 		sprintf (outbuf,
 					_("Cannot resolve hostname %s\nCheck your IP Settings!\n"),
-					prefs.hostname);
+					prefs.hex_net_bind_host);
 		PrintText (sess, outbuf);
 		break;
 	case '8':
@@ -1225,7 +1225,7 @@ traverse_socks5 (int print_fd, int sok, char *serverAddr, int port)
 	unsigned char *sc2;
 	unsigned int packetlen, addrlen;
 	unsigned char buf[260];
-	int auth = prefs.proxy_auth && prefs.proxy_user[0] && prefs.proxy_pass[0];
+	int auth = prefs.hex_net_proxy_auth && prefs.hex_net_proxy_user[0] && prefs.hex_net_proxy_pass[0];
 
 	sc1.version = 5;
 	sc1.nmethods = 1;
@@ -1261,13 +1261,13 @@ traverse_socks5 (int print_fd, int sok, char *serverAddr, int port)
 		memset (buf, 0, sizeof(buf));
 
 		/* form the UPA request */
-		len_u = strlen (prefs.proxy_user);
-		len_p = strlen (prefs.proxy_pass);
+		len_u = strlen (prefs.hex_net_proxy_user);
+		len_p = strlen (prefs.hex_net_proxy_pass);
 		buf[0] = 1;
 		buf[1] = len_u;
-		memcpy (buf + 2, prefs.proxy_user, len_u);
+		memcpy (buf + 2, prefs.hex_net_proxy_user, len_u);
 		buf[2 + len_u] = len_p;
-		memcpy (buf + 3 + len_u, prefs.proxy_pass, len_p);
+		memcpy (buf + 3 + len_u, prefs.hex_net_proxy_pass, len_p);
 
 		send (sok, buf, 3 + len_u + len_p, 0);
 		if ( recv (sok, buf, 2, 0) != 2 )
@@ -1426,10 +1426,10 @@ traverse_http (int print_fd, int sok, char *serverAddr, int port)
 
 	n = snprintf (buf, sizeof (buf), "CONNECT %s:%d HTTP/1.0\r\n",
 					  serverAddr, port);
-	if (prefs.proxy_auth)
+	if (prefs.hex_net_proxy_auth)
 	{
 		n2 = snprintf (auth_data2, sizeof (auth_data2), "%s:%s",
-							prefs.proxy_user, prefs.proxy_pass);
+							prefs.hex_net_proxy_user, prefs.hex_net_proxy_pass);
 		base64_encode (auth_data, auth_data2, n2);
 		n += snprintf (buf+n, sizeof (buf)-n, "Proxy-Authorization: Basic %s\r\n", auth_data);
 	}
@@ -1500,10 +1500,10 @@ server_child (server * serv)
 	ns_server = net_store_new ();
 
 	/* is a hostname set? - bind to it */
-	if (prefs.hostname[0])
+	if (prefs.hex_net_bind_host[0])
 	{
 		ns_local = net_store_new ();
-		local_ip = net_resolve (ns_local, prefs.hostname, 0, &real_hostname);
+		local_ip = net_resolve (ns_local, prefs.hex_net_bind_host, 0, &real_hostname);
 		if (local_ip != NULL)
 		{
 			snprintf (buf, sizeof (buf), "5\n%s\n", local_ip);
@@ -1522,7 +1522,7 @@ server_child (server * serv)
 		if (FALSE)
 			;
 #ifdef USE_LIBPROXY
-		else if (prefs.proxy_type == 5)
+		else if (prefs.hex_net_proxy_type == 5)
 		{
 			char **proxy_list;
 			char *url, *proxy;
@@ -1556,13 +1556,13 @@ server_child (server * serv)
 			g_free (url);
 		}
 #endif
-		else if (prefs.proxy_host[0] &&
-			   prefs.proxy_type > 0 &&
-			   prefs.proxy_use != 2) /* proxy is NOT dcc-only */
+		else if (prefs.hex_net_proxy_host[0] &&
+			   prefs.hex_net_proxy_type > 0 &&
+			   prefs.hex_net_proxy_use != 2) /* proxy is NOT dcc-only */
 		{
-			proxy_type = prefs.proxy_type;
-			proxy_host = strdup (prefs.proxy_host);
-			proxy_port = prefs.proxy_port;
+			proxy_type = prefs.hex_net_proxy_type;
+			proxy_host = strdup (prefs.hex_net_proxy_host);
+			proxy_port = prefs.hex_net_proxy_port;
 		}
 	}
 

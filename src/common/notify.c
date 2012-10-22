@@ -239,7 +239,7 @@ notify_announce_online (server * serv, struct notify_per_server *servnot,
 	fe_notify_update (nick);
 	fe_notify_update (0);
 
-	if (prefs.whois_on_notifyonline)
+	if (prefs.hex_notify_whois_online)
 	{
 
 	    /* Let's do whois with idle time (like in /quote WHOIS %s %s) */

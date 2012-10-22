@@ -547,65 +547,66 @@ const struct prefs vars[] =
 	{"irc_who_join", P_OFFINT (hex_irc_who_join), TYPE_BOOL},
 	{"irc_whois_front", P_OFFINT (hex_irc_whois_front), TYPE_BOOL},
 
-	{"net_auto_reconnect", P_OFFINT (autoreconnect), TYPE_BOOL},
-	{"net_auto_reconnectonfail", P_OFFINT (autoreconnectonfail), TYPE_BOOL},
-	{"net_bind_host", P_OFFSET (hostname), TYPE_STR},
-	{"net_ping_timeout", P_OFFINT (pingtimeout), TYPE_INT},
-	{"net_proxy_auth", P_OFFINT (proxy_auth), TYPE_BOOL},
-	{"net_proxy_host", P_OFFSET (proxy_host), TYPE_STR},
-	{"net_proxy_pass", P_OFFSET (proxy_pass), TYPE_STR},
-	{"net_proxy_port", P_OFFINT (proxy_port), TYPE_INT},
-	{"net_proxy_type", P_OFFINT (proxy_type), TYPE_INT},
-	{"net_proxy_use", P_OFFINT (proxy_use), TYPE_INT},
-	{"net_proxy_user", P_OFFSET (proxy_user), TYPE_STR},
-	{"net_reconnect_delay", P_OFFINT (recon_delay), TYPE_INT},
-	{"net_throttle", P_OFFINT (throttle), TYPE_BOOL},
+	{"net_auto_reconnect", P_OFFINT (hex_net_auto_reconnect), TYPE_BOOL},
+	{"net_auto_reconnectonfail", P_OFFINT (hex_net_auto_reconnectonfail), TYPE_BOOL},
+	{"net_bind_host", P_OFFSET (hex_net_bind_host), TYPE_STR},
+	{"net_ping_timeout", P_OFFINT (hex_net_ping_timeout), TYPE_INT},
+	{"net_proxy_auth", P_OFFINT (hex_net_proxy_auth), TYPE_BOOL},
+	{"net_proxy_host", P_OFFSET (hex_net_proxy_host), TYPE_STR},
+	{"net_proxy_pass", P_OFFSET (hex_net_proxy_pass), TYPE_STR},
+	{"net_proxy_port", P_OFFINT (hex_net_proxy_port), TYPE_INT},
+	{"net_proxy_type", P_OFFINT (hex_net_proxy_type), TYPE_INT},
+	{"net_proxy_use", P_OFFINT (hex_net_proxy_use), TYPE_INT},
+	{"net_proxy_user", P_OFFSET (hex_net_proxy_user), TYPE_STR},
+	{"net_reconnect_delay", P_OFFINT (hex_net_reconnect_delay), TYPE_INT},
+	{"net_throttle", P_OFFINT (hex_net_throttle), TYPE_BOOL},
 
-	{"notify_timeout", P_OFFINT (notify_timeout), TYPE_INT},
-	{"notify_whois_online", P_OFFINT (whois_on_notifyonline), TYPE_BOOL},
+	{"notify_timeout", P_OFFINT (hex_notify_timeout), TYPE_INT},
+	{"notify_whois_online", P_OFFINT (hex_notify_whois_online), TYPE_BOOL},
 
-	{"perl_warnings", P_OFFINT (perlwarnings), TYPE_BOOL},
+	{"perl_warnings", P_OFFINT (hex_perl_warnings), TYPE_BOOL},
 
-	{"sound_command", P_OFFSET (soundcmd), TYPE_STR},
-	{"sound_dir", P_OFFSET (sounddir), TYPE_STR},
-	{"stamp_log", P_OFFINT (timestamp_logs), TYPE_BOOL},
-	{"stamp_log_format", P_OFFSET (timestamp_log_format), TYPE_STR},
-	{"stamp_text", P_OFFINT (timestamp), TYPE_BOOL},
-	{"stamp_text_format", P_OFFSET (stamp_format), TYPE_STR},
+	{"sound_command", P_OFFSET (hex_sound_command), TYPE_STR},
+	{"sound_dir", P_OFFSET (hex_sound_dir), TYPE_STR},
 
-	{"text_autocopy_color", P_OFFINT (autocopy_color), TYPE_BOOL},	
-	{"text_autocopy_stamp", P_OFFINT (autocopy_stamp), TYPE_BOOL},
-	{"text_autocopy_text", P_OFFINT (autocopy_text), TYPE_BOOL},
-	{"text_background", P_OFFSET (background), TYPE_STR},
-	{"text_color_nicks", P_OFFINT (colorednicks), TYPE_BOOL},
-	{"text_font", P_OFFSET (font_normal), TYPE_STR},
-	{"text_font_main", P_OFFSET (font_main), TYPE_STR},
-	{"text_font_alternative", P_OFFSET (font_alternative), TYPE_STR},
-	{"text_indent", P_OFFINT (indent_nicks), TYPE_BOOL},
-	{"text_max_indent", P_OFFINT (max_auto_indent), TYPE_INT},
-	{"text_max_lines", P_OFFINT (max_lines), TYPE_INT},
-	{"text_replay", P_OFFINT (text_replay), TYPE_BOOL},
-	{"text_search_case_match", P_OFFINT (text_search_case_match), TYPE_BOOL},
-	{"text_search_backward", P_OFFINT (text_search_backward), TYPE_BOOL},
-	{"text_search_highlight_all", P_OFFINT (text_search_highlight_all), TYPE_BOOL},
-	{"text_search_follow", P_OFFINT (text_search_follow), TYPE_BOOL},
-	{"text_search_regexp", P_OFFINT (text_search_regexp), TYPE_BOOL},
-	{"text_show_marker", P_OFFINT (show_marker), TYPE_BOOL},
-	{"text_show_sep", P_OFFINT (show_separator), TYPE_BOOL},
-	{"text_spell_langs", P_OFFSET (spell_langs), TYPE_STR},
-	{"text_stripcolor_msg", P_OFFINT (text_stripcolor_msg), TYPE_BOOL},
-	{"text_stripcolor_replay", P_OFFINT (text_stripcolor_replay), TYPE_BOOL},
-	{"text_stripcolor_topic", P_OFFINT (text_stripcolor_topic), TYPE_BOOL},
-	{"text_thin_sep", P_OFFINT (thin_separator), TYPE_BOOL},
-	{"text_tint_blue", P_OFFINT (tint_blue), TYPE_INT},
-	{"text_tint_green", P_OFFINT (tint_green), TYPE_INT},
-	{"text_tint_red", P_OFFINT (tint_red), TYPE_INT},
-	{"text_transparent", P_OFFINT (transparent), TYPE_BOOL},
-	{"text_wordwrap", P_OFFINT (wordwrap), TYPE_BOOL},
+	{"stamp_log", P_OFFINT (hex_stamp_log), TYPE_BOOL},
+	{"stamp_log_format", P_OFFSET (hex_stamp_log_format), TYPE_STR},
+	{"stamp_text", P_OFFINT (hex_stamp_text), TYPE_BOOL},
+	{"stamp_text_format", P_OFFSET (hex_stamp_text_format), TYPE_STR},
 
-	{"url_grabber", P_OFFINT (url_grabber), TYPE_BOOL},
-	{"url_grabber_limit", P_OFFINT (url_grabber_limit), TYPE_INT},
-	{"url_logging", P_OFFINT (url_logging), TYPE_BOOL},
+	{"text_autocopy_color", P_OFFINT (hex_text_autocopy_color), TYPE_BOOL},	
+	{"text_autocopy_stamp", P_OFFINT (hex_text_autocopy_stamp), TYPE_BOOL},
+	{"text_autocopy_text", P_OFFINT (hex_text_autocopy_text), TYPE_BOOL},
+	{"text_background", P_OFFSET (hex_text_background), TYPE_STR},
+	{"text_color_nicks", P_OFFINT (hex_text_color_nicks), TYPE_BOOL},
+	{"text_font", P_OFFSET (hex_text_font), TYPE_STR},
+	{"text_font_main", P_OFFSET (hex_text_font_main), TYPE_STR},
+	{"text_font_alternative", P_OFFSET (hex_text_font_alternative), TYPE_STR},
+	{"text_indent", P_OFFINT (hex_text_indent), TYPE_BOOL},
+	{"text_max_indent", P_OFFINT (hex_text_max_indent), TYPE_INT},
+	{"text_max_lines", P_OFFINT (hex_text_max_lines), TYPE_INT},
+	{"text_replay", P_OFFINT (hex_text_replay), TYPE_BOOL},
+	{"text_search_case_match", P_OFFINT (hex_text_search_case_match), TYPE_BOOL},
+	{"text_search_backward", P_OFFINT (hex_text_search_backward), TYPE_BOOL},
+	{"text_search_highlight_all", P_OFFINT (hex_text_search_highlight_all), TYPE_BOOL},
+	{"text_search_follow", P_OFFINT (hex_text_search_follow), TYPE_BOOL},
+	{"text_search_regexp", P_OFFINT (hex_text_search_regexp), TYPE_BOOL},
+	{"text_show_marker", P_OFFINT (hex_text_show_marker), TYPE_BOOL},
+	{"text_show_sep", P_OFFINT (hex_text_show_sep), TYPE_BOOL},
+	{"text_spell_langs", P_OFFSET (hex_text_spell_langs), TYPE_STR},
+	{"text_stripcolor_msg", P_OFFINT (hex_text_stripcolor_msg), TYPE_BOOL},
+	{"text_stripcolor_replay", P_OFFINT (hex_text_stripcolor_replay), TYPE_BOOL},
+	{"text_stripcolor_topic", P_OFFINT (hex_text_stripcolor_topic), TYPE_BOOL},
+	{"text_thin_sep", P_OFFINT (hex_text_thin_sep), TYPE_BOOL},
+	{"text_tint_blue", P_OFFINT (hex_text_tint_blue), TYPE_INT},
+	{"text_tint_green", P_OFFINT (hex_text_tint_green), TYPE_INT},
+	{"text_tint_red", P_OFFINT (hex_text_tint_red), TYPE_INT},
+	{"text_transparent", P_OFFINT (hex_text_transparent), TYPE_BOOL},
+	{"text_wordwrap", P_OFFINT (hex_text_wordwrap), TYPE_BOOL},
+
+	{"url_grabber", P_OFFINT (hex_url_grabber), TYPE_BOOL},
+	{"url_grabber_limit", P_OFFINT (hex_url_grabber_limit), TYPE_INT},
+	{"url_logging", P_OFFINT (hex_url_logging), TYPE_BOOL},
 	{0, 0, 0},
 };
 
@@ -655,32 +656,32 @@ load_config (void)
 	/* put in default values, anything left out is automatically zero */
 	prefs.local_ip = 0xffffffff;
 	prefs.hex_irc_join_delay = 3;
-	prefs.show_marker = 1;
+	prefs.hex_text_show_marker = 1;
 	prefs.hex_gui_tab_newtofront = 2;
 	prefs.hex_completion_amount = 5;
 	prefs.hex_away_timeout = 60;
 	prefs.hex_away_size_max = 300;
 	prefs.hex_away_track = 1;
-	prefs.timestamp_logs = 1;
+	prefs.hex_stamp_log = 1;
 	prefs.hex_gui_tab_trunc = 20;
 	prefs.hex_dcc_auto_resume = 1;
 	prefs.hex_away_show_once = 1;
-	prefs.indent_nicks = 1;
-	prefs.thin_separator = 1;
+	prefs.hex_text_indent = 1;
+	prefs.hex_text_thin_sep = 1;
 	prefs.hex_identd = 1;
 #ifndef WIN32
 	prefs.hex_dcc_fast_send = 1;
 #endif
-	prefs.wordwrap = 1;
+	prefs.hex_text_wordwrap = 1;
 	prefs.hex_gui_autoopen_dialog = 1;
 	prefs.hex_gui_input_spell = 1;
 	prefs.hex_gui_lang = 15;
-	prefs.autoreconnect = 1;
-	prefs.recon_delay = 10;
-	prefs.autocopy_text = 1;
-	prefs.text_replay = 1;
-	prefs.text_stripcolor_replay = 1;
-	prefs.text_stripcolor_topic = 1;
+	prefs.hex_net_auto_reconnect = 1;
+	prefs.hex_net_reconnect_delay = 10;
+	prefs.hex_text_autocopy_text = 1;
+	prefs.hex_text_replay = 1;
+	prefs.hex_text_stripcolor_replay = 1;
+	prefs.hex_text_stripcolor_topic = 1;
 	prefs.hex_gui_tab_chans = 1;
 	prefs.hex_gui_tab_layout = 2;	/* 0=Tabs 1=Reserved 2=Tree */
 	prefs.hex_gui_tab_icons = 1;
@@ -689,11 +690,11 @@ load_config (void)
 	prefs.hex_gui_tab_newtofront = 2;
 	prefs.hex_gui_tab_server = 1;
 	prefs.hex_gui_tab_dialogs = 1;
-	/* prefs.colorednicks = 1; */
+	/* prefs.hex_text_color_nicks = 1; */
 	prefs.hex_gui_input_style = 1;
 	prefs.hex_gui_ulist_style = 1;
 	prefs.hex_dcc_permissions = 0600;
-	prefs.max_lines = 500;
+	prefs.hex_text_max_lines = 500;
 	prefs.hex_gui_win_width = 640;
 	prefs.hex_gui_win_height = 400;
 	prefs.hex_gui_dialog_width = 500;
@@ -702,15 +703,15 @@ load_config (void)
 	prefs.hex_gui_quit_dialog = 1;
 	prefs.hex_dcc_timeout = 180;
 	prefs.hex_dcc_stall_timeout = 60;
-	prefs.notify_timeout = 15;
-	prefs.tint_red =
-		prefs.tint_green =
-		prefs.tint_blue = 195;
+	prefs.hex_notify_timeout = 15;
+	prefs.hex_text_tint_red =
+		prefs.hex_text_tint_green =
+		prefs.hex_text_tint_blue = 195;
 	prefs.auto_indent = 1;
-	prefs.max_auto_indent = 256;
-	prefs.show_separator = 1;
+	prefs.hex_text_max_indent = 256;
+	prefs.hex_text_show_sep = 1;
 	prefs.hex_dcc_blocksize = 1024;
-	prefs.throttle = 1;
+	prefs.hex_net_throttle = 1;
 	 /*FIXME*/ prefs.hex_flood_msg_time = 30;
 	prefs.hex_flood_msg_time = 5;
 	prefs.hex_flood_ctcp_time = 30;
@@ -739,13 +740,13 @@ load_config (void)
 	prefs.hex_input_flash_priv = prefs.hex_input_flash_hilight = 1;
 	prefs.hex_input_tray_priv = prefs.hex_input_tray_hilight = 1;
 	prefs.hex_dcc_auto_recv = 2;	/* browse mode */
-	prefs.url_grabber = 1;
-	prefs.url_grabber_limit = 100; /* 0 means unlimited */
-	prefs.text_search_follow = 1;
-	prefs.timestamp = 1;
-	strcpy (prefs.spell_langs, g_getenv ("LC_ALL") ? g_getenv ("LC_ALL") : "en_US");
-	strcpy (prefs.stamp_format, "[%H:%M:%S] ");
-	strcpy (prefs.timestamp_log_format, "%b %d %H:%M:%S ");
+	prefs.hex_url_grabber = 1;
+	prefs.hex_url_grabber_limit = 100; /* 0 means unlimited */
+	prefs.hex_text_search_follow = 1;
+	prefs.hex_stamp_text = 1;
+	strcpy (prefs.hex_text_spell_langs, g_getenv ("LC_ALL") ? g_getenv ("LC_ALL") : "en_US");
+	strcpy (prefs.hex_stamp_text_format, "[%H:%M:%S] ");
+	strcpy (prefs.hex_stamp_log_format, "%b %d %H:%M:%S ");
 	strcpy (prefs.hex_irc_logmask, "%n-%c.log");
 	strcpy (prefs.hex_completion_suffix, ",");
 	strcpy (prefs.hex_input_command_char, "/");
@@ -757,7 +758,7 @@ load_config (void)
 	strcpy (prefs.hex_irc_real_name, realname);
 	strcpy (prefs.hex_irc_user_name, username);
 #ifdef WIN32
-	strcpy (prefs.sounddir, "./sounds");
+	strcpy (prefs.hex_sound_dir, "./sounds");
 	{
 		char out[256];
 
@@ -771,16 +772,16 @@ load_config (void)
 		}
 	}
 #else
-	snprintf (prefs.sounddir, sizeof (prefs.sounddir), "%s/sounds", get_xdir_utf8 ());
+	snprintf (prefs.hex_sound_dir, sizeof (prefs.hex_sound_dir), "%s/sounds", get_xdir_utf8 ());
 	snprintf (prefs.hex_dcc_dir, sizeof (prefs.hex_dcc_dir), "%s/downloads", get_xdir_utf8 ());
 #endif
 	strcpy (prefs.hex_gui_ulist_doubleclick, "QUOTE WHOIS %s %s");
 	strcpy (prefs.hex_away_reason, _("I'm busy"));
 	strcpy (prefs.hex_irc_quit_reason, _("Leaving"));
 	strcpy (prefs.hex_irc_part_reason, prefs.hex_irc_quit_reason);
-	strcpy (prefs.font_normal, DEF_FONT);
-	strcpy (prefs.font_main, DEF_FONT);
-	strcpy (prefs.font_alternative, DEF_FONT_ALTER);
+	strcpy (prefs.hex_text_font, DEF_FONT);
+	strcpy (prefs.hex_text_font_main, DEF_FONT);
+	strcpy (prefs.hex_text_font_alternative, DEF_FONT_ALTER);
 	strcpy (prefs.hex_dnsprogram, "host");
 	strcpy (prefs.hex_irc_no_hilight, "NickServ,ChanServ,InfoServ,N,Q");
 

@@ -95,7 +95,7 @@ struct nbexec
 {
 	int myfd;
 	int childpid;
-	int tochannel;					  /* making this int keeps the struct 4-byte aligned */
+	int tochannel;						/* making this int keeps the struct 4-byte aligned */
 	int iotag;
 	char *linebuf;
 	int buffill;
@@ -105,7 +105,6 @@ struct nbexec
 struct hexchatprefs
 {
 	/* these are the rebranded, consistent, sorted hexchat variables */
-
 	char hex_away_reason[256];
 	char hex_completion_suffix[4];		/* Only ever holds a one-character string. */
 	char hex_dcc_completed_dir[PATHLEN + 1];
@@ -127,6 +126,19 @@ struct hexchatprefs
 	char hex_irc_quit_reason[256];
 	char hex_irc_real_name[127];
 	char hex_irc_user_name[127];
+	char hex_net_bind_host[127];
+	char hex_net_proxy_host[64];
+	char hex_net_proxy_pass[32];
+	char hex_net_proxy_user[32];
+	char hex_sound_command[PATHLEN + 1];
+	char hex_sound_dir[PATHLEN + 1];
+	char hex_stamp_log_format[64];
+	char hex_stamp_text_format[64];
+	char hex_text_background[PATHLEN + 1];
+	char hex_text_font[4 * FONTNAMELEN + 1];
+	char hex_text_font_main[FONTNAMELEN + 1];
+	char hex_text_font_alternative[3 * FONTNAMELEN + 1];
+	char hex_text_spell_langs[64];
 
 	int hex_away_size_max;
 	int hex_away_timeout;
@@ -143,9 +155,9 @@ struct hexchatprefs
 	int hex_dcc_port_last;
 	int hex_dcc_stall_timeout;
 	int hex_dcc_timeout;
-	int hex_flood_ctcp_num;		/*flood */
-	int hex_flood_ctcp_time;	/*seconds of floods */
-	int hex_flood_msg_num;		/*same deal */
+	int hex_flood_ctcp_num;				/*flood */
+	int hex_flood_ctcp_time;			/*seconds of floods */
+	int hex_flood_msg_num;				/*same deal */
 	int hex_flood_msg_time;
 	int hex_gui_chanlist_maxusers;
 	int hex_gui_chanlist_minusers;
@@ -177,6 +189,18 @@ struct hexchatprefs
 	int hex_input_balloon_time;
 	int hex_irc_ban_type;
 	int hex_irc_join_delay;
+	int hex_net_ping_timeout;
+	int hex_net_proxy_port;
+	int hex_net_proxy_type;				/* 0=disabled, 1=wingate 2=socks4, 3=socks5, 4=http */
+	int hex_net_proxy_use;				/* 0=all 1=IRC_ONLY 2=DCC_ONLY */
+	int hex_net_reconnect_delay;
+	int hex_notify_timeout;
+	int hex_text_max_indent;
+	int hex_text_max_lines;
+	int hex_text_tint_blue;
+	int hex_text_tint_green;
+	int hex_text_tint_red;
+	int hex_url_grabber_limit;
 
 	unsigned int hex_away_auto_unmark;
 	unsigned int hex_away_omit_alerts;
@@ -254,81 +278,48 @@ struct hexchatprefs
 	unsigned int hex_irc_wallops;
 	unsigned int hex_irc_who_join;
 	unsigned int hex_irc_whois_front;
-
+	unsigned int hex_net_auto_reconnect;
+	unsigned int hex_net_auto_reconnectonfail;
+	unsigned int hex_net_proxy_auth;
+	unsigned int hex_net_throttle;
+	unsigned int hex_notify_whois_online;
+	unsigned int hex_perl_warnings;
+	unsigned int hex_stamp_log;
+	unsigned int hex_stamp_text;
+	unsigned int hex_text_autocopy_color;
+	unsigned int hex_text_autocopy_stamp;
+	unsigned int hex_text_autocopy_text;
+	unsigned int hex_text_color_nicks;
+	unsigned int hex_text_indent;
+	unsigned int hex_text_replay;
+	unsigned int hex_text_search_case_match;
+	unsigned int hex_text_search_backward;
+	unsigned int hex_text_search_highlight_all;
+	unsigned int hex_text_search_follow;
+	unsigned int hex_text_search_regexp;
+	unsigned int hex_text_show_marker;
+	unsigned int hex_text_show_sep;
+	unsigned int hex_text_stripcolor_msg;
+	unsigned int hex_text_stripcolor_replay;
+	unsigned int hex_text_stripcolor_topic;
+	unsigned int hex_text_thin_sep;
+	unsigned int hex_text_transparent;
+	unsigned int hex_text_wordwrap;
+	unsigned int hex_url_grabber;
+	unsigned int hex_url_logging;
 
 	/* these are the legacy variables */
-
-	char font_normal[4 * FONTNAMELEN + 1];
-	char font_main[FONTNAMELEN + 1];
-	char font_alternative[3 * FONTNAMELEN + 1];
-	char spell_langs[64];
-	char sounddir[PATHLEN + 1];
-	char soundcmd[PATHLEN + 1];
-	char background[PATHLEN + 1];
-	char hostname[127];
-	char stamp_format[64];
-	char timestamp_log_format[64];
-
-	char proxy_host[64];
-	int proxy_port;
-	int proxy_type; /* 0=disabled, 1=wingate 2=socks4, 3=socks5, 4=http */
-	int proxy_use; /* 0=all 1=IRC_ONLY 2=DCC_ONLY */
-	unsigned int proxy_auth;
-	char proxy_user[32];
-	char proxy_pass[32];
-
-	int tint_red;
-	int tint_green;
-	int tint_blue;
-
-	int max_auto_indent;
-	int max_lines;
-	int notify_timeout;
-	int recon_delay;
 	guint32 local_ip;
 	guint32 dcc_ip;
 
-	unsigned int autoreconnect;
-	unsigned int autoreconnectonfail;
-	unsigned int autocopy_text;
-	unsigned int autocopy_stamp;
-	unsigned int autocopy_color;
-	unsigned int colorednicks;
-	unsigned int transparent;
-	unsigned int text_stripcolor_msg;
-	unsigned int text_stripcolor_replay;
-	unsigned int text_stripcolor_topic;
-	unsigned int timestamp;
-
-	unsigned int timestamp_logs;
-	unsigned int newtabstofront;
-	unsigned int hidever;
-	unsigned int indent_nicks;
-	unsigned int text_replay;
-	unsigned int show_marker;
-	unsigned int show_separator;
-	unsigned int thin_separator;
 	unsigned int auto_indent;
-	unsigned int wordwrap;
-	unsigned int throttle;
-	unsigned int perlwarnings;
-	unsigned int pingtimeout;
-	unsigned int whois_on_notifyonline;
 	unsigned int wait_on_exit;
 	unsigned int utf8_locale;
 
-	unsigned int url_grabber;
-	unsigned int url_grabber_limit;
-	unsigned int url_logging;
 	/* Tells us if we need to save, only when they've been edited.
 		This is so that we continue using internal defaults (which can
 		change in the next release) until the user edits them. */
 	unsigned int save_pevents:1;
-	unsigned int text_search_case_match;
-	unsigned int text_search_backward;
-	unsigned int text_search_highlight_all;
-	unsigned int text_search_follow;
-	unsigned int text_search_regexp;
 };
 
 /* Session types */

@@ -183,12 +183,12 @@ lag_check (void)
 		if (serv->connected && serv->end_of_motd)
 		{
 			lag = now - serv->ping_recv;
-			if (prefs.pingtimeout && lag > prefs.pingtimeout && lag > 0)
+			if (prefs.hex_net_ping_timeout && lag > prefs.hex_net_ping_timeout && lag > 0)
 			{
 				sprintf (tbuf, "%d", lag);
 				EMIT_SIGNAL (XP_TE_PINGTIMEOUT, serv->server_session, tbuf, NULL,
 								 NULL, NULL, 0);
-				if (prefs.autoreconnect)
+				if (prefs.hex_net_auto_reconnect)
 					serv->auto_reconnect (serv, FALSE, -1);
 			} else
 			{
@@ -321,8 +321,8 @@ irc_init (session *sess)
 	plugin_add (sess, NULL, NULL, dbus_plugin_init, NULL, NULL, FALSE);
 #endif
 
-	if (prefs.notify_timeout)
-		notify_tag = fe_timeout_add (prefs.notify_timeout * 1000,
+	if (prefs.hex_notify_timeout)
+		notify_tag = fe_timeout_add (prefs.hex_notify_timeout * 1000,
 											  notify_checklist, 0);
 
 	fe_timeout_add (prefs.hex_away_timeout * 1000, away_check, 0);

@@ -1581,7 +1581,7 @@ mg_create_perchannelmenu (session *sess, GtkWidget *menu)
 	submenu = menu_quick_sub (_("_Settings"), menu, NULL, XCMENU_MNEMONIC, -1);
 
 	mg_perchan_menu_item (_("_Log to Disk"), submenu, &sess->text_logging, prefs.hex_irc_logging);
-	mg_perchan_menu_item (_("_Reload Scrollback"), submenu, &sess->text_scrollback, prefs.text_replay);
+	mg_perchan_menu_item (_("_Reload Scrollback"), submenu, &sess->text_scrollback, prefs.hex_text_replay);
 	if (sess->type == SESS_CHANNEL)
 		mg_perchan_menu_item (_("_Hide Join/Part Messages"), submenu, &sess->text_hidejoinpart, prefs.hex_irc_conf_mode);
 }
@@ -1757,7 +1757,7 @@ mg_add_chan (session *sess)
 	if (sess->res->buffer == NULL)
 	{
 		sess->res->buffer = gtk_xtext_buffer_new (GTK_XTEXT (sess->gui->xtext));
-		gtk_xtext_set_time_stamp (sess->res->buffer, prefs.timestamp);
+		gtk_xtext_set_time_stamp (sess->res->buffer, prefs.hex_stamp_text);
 		sess->res->user_model = userlist_create_model ();
 	}
 }
@@ -2337,14 +2337,14 @@ mg_update_xtext (GtkWidget *wid)
 	GtkXText *xtext = GTK_XTEXT (wid);
 
 	gtk_xtext_set_palette (xtext, colors);
-	gtk_xtext_set_max_lines (xtext, prefs.max_lines);
-	gtk_xtext_set_tint (xtext, prefs.tint_red, prefs.tint_green, prefs.tint_blue);
-	gtk_xtext_set_background (xtext, channelwin_pix, prefs.transparent);
-	gtk_xtext_set_wordwrap (xtext, prefs.wordwrap);
-	gtk_xtext_set_show_marker (xtext, prefs.show_marker);
-	gtk_xtext_set_show_separator (xtext, prefs.indent_nicks ? prefs.show_separator : 0);
-	gtk_xtext_set_indent (xtext, prefs.indent_nicks);
-	if (!gtk_xtext_set_font (xtext, prefs.font_normal))
+	gtk_xtext_set_max_lines (xtext, prefs.hex_text_max_lines);
+	gtk_xtext_set_tint (xtext, prefs.hex_text_tint_red, prefs.hex_text_tint_green, prefs.hex_text_tint_blue);
+	gtk_xtext_set_background (xtext, channelwin_pix, prefs.hex_text_transparent);
+	gtk_xtext_set_wordwrap (xtext, prefs.hex_text_wordwrap);
+	gtk_xtext_set_show_marker (xtext, prefs.hex_text_show_marker);
+	gtk_xtext_set_show_separator (xtext, prefs.hex_text_indent ? prefs.hex_text_show_sep : 0);
+	gtk_xtext_set_indent (xtext, prefs.hex_text_indent);
+	if (!gtk_xtext_set_font (xtext, prefs.hex_text_font))
 	{
 		fe_message ("Failed to open any font. I'm out of here!", FE_MSG_WAIT | FE_MSG_ERROR);
 		exit (1);
@@ -2364,7 +2364,7 @@ mg_xtext_error (int type)
 		fe_message (_("Unable to set transparent background!\n\n"
 						"You may be using a non-compliant window\n"
 						"manager that is not currently supported.\n"), FE_MSG_WARN);
-		prefs.transparent = 0;
+		prefs.hex_text_transparent = 0;
 		/* no others exist yet */
 	}
 }
@@ -2397,11 +2397,11 @@ mg_create_textarea (session *sess, GtkWidget *box)
 
 	gui->xtext = gtk_xtext_new (colors, TRUE);
 	xtext = GTK_XTEXT (gui->xtext);
-	gtk_xtext_set_max_indent (xtext, prefs.max_auto_indent);
-	gtk_xtext_set_thin_separator (xtext, prefs.thin_separator);
+	gtk_xtext_set_max_indent (xtext, prefs.hex_text_max_indent);
+	gtk_xtext_set_thin_separator (xtext, prefs.hex_text_thin_sep);
 	gtk_xtext_set_error_function (xtext, mg_xtext_error);
 	gtk_xtext_set_urlcheck_function (xtext, mg_word_check);
-	gtk_xtext_set_max_lines (xtext, prefs.max_lines);
+	gtk_xtext_set_max_lines (xtext, prefs.hex_text_max_lines);
 	gtk_container_add (GTK_CONTAINER (frame), GTK_WIDGET (xtext));
 	mg_update_xtext (GTK_WIDGET (xtext));
 
@@ -3029,7 +3029,7 @@ mg_create_topwindow (session *sess)
 	{
 		sess->res->buffer = gtk_xtext_buffer_new (GTK_XTEXT (sess->gui->xtext));
 		gtk_xtext_buffer_show (GTK_XTEXT (sess->gui->xtext), sess->res->buffer, TRUE);
-		gtk_xtext_set_time_stamp (sess->res->buffer, prefs.timestamp);
+		gtk_xtext_set_time_stamp (sess->res->buffer, prefs.hex_stamp_text);
 		sess->res->user_model = userlist_create_model ();
 	}
 
@@ -3169,7 +3169,7 @@ mg_apply_setup (void)
 	while (list)
 	{
 		sess = list->data;
-		gtk_xtext_set_time_stamp (sess->res->buffer, prefs.timestamp);
+		gtk_xtext_set_time_stamp (sess->res->buffer, prefs.hex_stamp_text);
 		((xtext_buffer *)sess->res->buffer)->needs_recalc = TRUE;
 		if (!sess->gui->is_tab || !done_main)
 			mg_place_userlist_and_chanview (sess->gui);

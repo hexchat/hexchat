@@ -2006,7 +2006,7 @@ gtk_xtext_check_mark_stamp (GtkXText *xtext, GdkModifierType mask)
 {
 	gboolean redraw = FALSE;
 
-	if (mask & STATE_SHIFT || prefs.autocopy_stamp)
+	if (mask & STATE_SHIFT || prefs.hex_text_autocopy_stamp)
 	{
 		if (!xtext->mark_stamp)
 		{
@@ -2256,9 +2256,9 @@ gtk_xtext_button_release (GtkWidget * widget, GdkEventButton * event)
 		if (xtext->buffer->last_ent_start)
 		{
 			xtext->color_paste = FALSE;
-			if (event->state & STATE_CTRL || prefs.autocopy_color)
+			if (event->state & STATE_CTRL || prefs.hex_text_autocopy_color)
 				xtext->color_paste = TRUE;
-			if (prefs.autocopy_text)
+			if (prefs.hex_text_autocopy_text)
 			{
 				gtk_xtext_set_clip_owner (GTK_WIDGET (xtext), event);
 			}
@@ -2326,7 +2326,7 @@ gtk_xtext_button_press (GtkWidget * widget, GdkEventButton * event)
 			ent->mark_end = offset + len;
 			gtk_xtext_selection_render (xtext, ent, offset, ent, offset + len);
 			xtext->word_or_line_select = TRUE;
-			if (prefs.autocopy_text)
+			if (prefs.hex_text_autocopy_text)
 			{
 				gtk_xtext_set_clip_owner (GTK_WIDGET (xtext), event);
 			}
@@ -2345,7 +2345,7 @@ gtk_xtext_button_press (GtkWidget * widget, GdkEventButton * event)
 			ent->mark_end = ent->str_len;
 			gtk_xtext_selection_render (xtext, ent, 0, ent, ent->str_len);
 			xtext->word_or_line_select = TRUE;
-			if (prefs.autocopy_text)
+			if (prefs.hex_text_autocopy_text)
 			{
 				gtk_xtext_set_clip_owner (GTK_WIDGET (xtext), event);
 			}
