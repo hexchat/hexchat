@@ -587,7 +587,7 @@ fe_set_hilight (struct session *sess)
 	if (sess->gui->is_tab)
 		fe_set_tab_color (sess, 3);	/* set tab to blue */
 
-	if (prefs.input_flash_hilight && (!prefs.away_omit_alerts || !sess->server->is_away))
+	if (prefs.input_flash_hilight && (!prefs.hex_away_omit_alerts || !sess->server->is_away))
 		fe_flash_window (sess); /* taskbar flash */
 }
 

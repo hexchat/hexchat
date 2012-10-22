@@ -378,11 +378,11 @@ cmd_away (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 			reason = sess->server->last_away_reason;
 		else
 			/* must manage memory pointed to by random_line() */
-			reason = random_line (prefs.awayreason);
+			reason = random_line (prefs.hex_away_reason);
 	}
 	sess->server->p_set_away (sess->server, reason);
 
-	if (prefs.show_away_message)
+	if (prefs.hex_away_show_message)
 	{
 		snprintf (tbuf, TBUFSIZE, "me is away: %s", reason);
 		for (list = sess_list; list; list = list->next)
@@ -424,7 +424,7 @@ cmd_back (struct session *sess, char *tbuf, char *word[], char *word_eol[])
 	{
 		sess->server->p_set_back (sess->server);
 
-		if (prefs.show_away_message)
+		if (prefs.hex_away_show_message)
 		{
 			gone = time (NULL) - sess->server->away_time;
 			sprintf (tbuf, "me is back (gone %.2d:%.2d:%.2d)", gone / 3600,

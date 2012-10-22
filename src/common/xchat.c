@@ -209,7 +209,7 @@ away_check (void)
 	GSList *list;
 	int full, sent, loop = 0;
 
-	if (!prefs.away_track || prefs.away_size_max < 1)
+	if (!prefs.hex_away_track || prefs.hex_away_size_max < 1)
 		return 1;
 
 doover:
@@ -224,7 +224,7 @@ doover:
 		if (sess->server->connected &&
 			 sess->type == SESS_CHANNEL &&
 			 sess->channel[0] &&
-			 sess->total <= prefs.away_size_max)
+			 sess->total <= prefs.hex_away_size_max)
 		{
 			if (!sess->done_away_check)
 			{
@@ -325,7 +325,7 @@ irc_init (session *sess)
 		notify_tag = fe_timeout_add (prefs.notify_timeout * 1000,
 											  notify_checklist, 0);
 
-	fe_timeout_add (prefs.away_timeout * 1000, away_check, 0);
+	fe_timeout_add (prefs.hex_away_timeout * 1000, away_check, 0);
 	fe_timeout_add (500, xchat_misc_checks, 0);
 
 	if (arg_url != NULL)

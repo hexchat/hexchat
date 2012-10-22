@@ -104,13 +104,25 @@ struct nbexec
 
 struct hexchatprefs
 {
+	/* these are the rebranded, consistent, sorted hexchat variables */
+	char hex_away_reason[256];
+
+	int hex_away_size_max;
+	int hex_away_timeout;
+
+	unsigned int hex_away_auto_unmark;
+	unsigned int hex_away_omit_alerts;
+	unsigned int hex_away_show_message;
+	unsigned int hex_away_show_once;
+	unsigned int hex_away_track;
+
+	/* these are the legacy variables */
 	char nick1[NICKLEN];
 	char nick2[NICKLEN];
 	char nick3[NICKLEN];
 	char realname[127];
 	char username[127];
 	char nick_suffix[4];			/* Only ever holds a one-character string. */
-	char awayreason[256];
 	char quitreason[256];
 	char partreason[256];
 	char font_normal[4 * FONTNAMELEN + 1];
@@ -149,9 +161,6 @@ struct hexchatprefs
 	int tint_red;
 	int tint_green;
 	int tint_blue;
-
-	int away_timeout;
-	int away_size_max;
 
 	int gui_pane_left_size;
 	int gui_pane_right_size;
@@ -264,11 +273,6 @@ struct hexchatprefs
 	unsigned int hidever;
 	unsigned int ip_from_server;
 	unsigned int raw_modes;
-	unsigned int show_away_once;
-	unsigned int show_away_message;
-	unsigned int auto_unmark_away;
-	unsigned int away_track;
-	unsigned int away_omit_alerts;
 	unsigned int userhost;
 	unsigned int irc_whois_front;
 	unsigned int use_server_tab;

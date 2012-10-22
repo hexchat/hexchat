@@ -333,7 +333,7 @@ fe_userlist_rehash (session *sess, struct User *user)
 	if (!iter)
 		return;
 
-	if (prefs.away_size_max < 1 || !prefs.away_track)
+	if (prefs.hex_away_size_max < 1 || !prefs.hex_away_track)
 		do_away = FALSE;
 
 	gtk_list_store_set (GTK_LIST_STORE (sess->res->user_model), iter,
@@ -353,7 +353,7 @@ fe_userlist_insert (session *sess, struct User *newuser, int row, int sel)
 	int do_away = TRUE;
 	char *nick;
 
-	if (prefs.away_size_max < 1 || !prefs.away_track)
+	if (prefs.hex_away_size_max < 1 || !prefs.hex_away_track)
 		do_away = FALSE;
 
 	nick = newuser->nick;

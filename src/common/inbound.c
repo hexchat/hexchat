@@ -433,7 +433,7 @@ inbound_chanmsg (server *serv, session *sess, char *chan, char *from, char *text
 
 	if (fromme)
 	{
-  		if (prefs.auto_unmark_away && serv->is_away)
+  		if (prefs.hex_away_auto_unmark && serv->is_away)
 			sess->server->p_set_back (sess->server);
 		EMIT_SIGNAL (XP_TE_UCHANMSG, sess, from, text, nickchar, NULL, 0);
 		return;
@@ -942,7 +942,7 @@ inbound_away (server *serv, char *nick, char *msg)
 
 	if (away && !strcmp (msg, away->message))	/* Seen the msg before? */
 	{
-		if (prefs.show_away_once && !serv->inside_whois)
+		if (prefs.hex_away_show_once && !serv->inside_whois)
 			return;
 	} else
 	{

@@ -389,14 +389,14 @@ default_file (void)
 /* Keep these sorted!! */
 
 const struct prefs vars[] = {
-	{"away_auto_unmark", P_OFFINT (auto_unmark_away), TYPE_BOOL},
-	{"away_omit_alerts", P_OFFINT (away_omit_alerts), TYPE_BOOL},
-	{"away_reason", P_OFFSET (awayreason), TYPE_STR},
-	{"away_show_message", P_OFFINT (show_away_message), TYPE_BOOL},
-	{"away_show_once", P_OFFINT (show_away_once), TYPE_BOOL},
-	{"away_size_max", P_OFFINT (away_size_max), TYPE_INT},
-	{"away_timeout", P_OFFINT (away_timeout), TYPE_INT},
-	{"away_track", P_OFFINT (away_track), TYPE_BOOL},
+	{"away_auto_unmark", P_OFFINT (hex_away_auto_unmark), TYPE_BOOL},
+	{"away_omit_alerts", P_OFFINT (hex_away_omit_alerts), TYPE_BOOL},
+	{"away_reason", P_OFFSET (hex_away_reason), TYPE_STR},
+	{"away_show_message", P_OFFINT (hex_away_show_message), TYPE_BOOL},
+	{"away_show_once", P_OFFINT (hex_away_show_once), TYPE_BOOL},
+	{"away_size_max", P_OFFINT (hex_away_size_max), TYPE_INT},
+	{"away_timeout", P_OFFINT (hex_away_timeout), TYPE_INT},
+	{"away_track", P_OFFINT (hex_away_track), TYPE_BOOL},
 
 	{"completion_amount", P_OFFINT (completion_amount), TYPE_INT},
 	{"completion_auto", P_OFFINT (nickcompletion), TYPE_BOOL},
@@ -659,13 +659,13 @@ load_config (void)
 	prefs.show_marker = 1;
 	prefs.newtabstofront = 2;
 	prefs.completion_amount = 5;
-	prefs.away_timeout = 60;
-	prefs.away_size_max = 300;
-	prefs.away_track = 1;
+	prefs.hex_away_timeout = 60;
+	prefs.hex_away_size_max = 300;
+	prefs.hex_away_track = 1;
 	prefs.timestamp_logs = 1;
 	prefs.truncchans = 20;
 	prefs.autoresume = 1;
-	prefs.show_away_once = 1;
+	prefs.hex_away_show_once = 1;
 	prefs.indent_nicks = 1;
 	prefs.thin_separator = 1;
 	prefs.identd = 1;
@@ -776,7 +776,7 @@ load_config (void)
 	snprintf (prefs.dccdir, sizeof (prefs.dccdir), "%s/downloads", get_xdir_utf8 ());
 #endif
 	strcpy (prefs.doubleclickuser, "QUOTE WHOIS %s %s");
-	strcpy (prefs.awayreason, _("I'm busy"));
+	strcpy (prefs.hex_away_reason, _("I'm busy"));
 	strcpy (prefs.quitreason, _("Leaving"));
 	strcpy (prefs.partreason, prefs.quitreason);
 	strcpy (prefs.font_normal, DEF_FONT);

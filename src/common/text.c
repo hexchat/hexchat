@@ -2203,9 +2203,9 @@ text_emit (int index, session *sess, char *a, char *b, char *c, char *d)
 	case XP_TE_DPRIVMSG:
 	case XP_TE_PRIVACTION:
 	case XP_TE_DPRIVACTION:
-		if (chanopt_is_set_a (prefs.input_beep_priv, sess->alert_beep) && (!prefs.away_omit_alerts || !sess->server->is_away))
+		if (chanopt_is_set_a (prefs.input_beep_priv, sess->alert_beep) && (!prefs.hex_away_omit_alerts || !sess->server->is_away))
 			sound_beep (sess);
-		if (chanopt_is_set_a (prefs.input_flash_priv, sess->alert_taskbar) && (!prefs.away_omit_alerts || !sess->server->is_away))
+		if (chanopt_is_set_a (prefs.input_flash_priv, sess->alert_taskbar) && (!prefs.hex_away_omit_alerts || !sess->server->is_away))
 			fe_flash_window (sess);
 		/* why is this one different? because of plugin-tray.c's hooks! ugly */
 		if (sess->alert_tray == SET_ON)
@@ -2215,9 +2215,9 @@ text_emit (int index, session *sess, char *a, char *b, char *c, char *d)
 	/* ===Highlighted message=== */
 	case XP_TE_HCHANACTION:
 	case XP_TE_HCHANMSG:
-		if (chanopt_is_set_a (prefs.input_beep_hilight, sess->alert_beep) && (!prefs.away_omit_alerts || !sess->server->is_away))
+		if (chanopt_is_set_a (prefs.input_beep_hilight, sess->alert_beep) && (!prefs.hex_away_omit_alerts || !sess->server->is_away))
 			sound_beep (sess);
-		if (chanopt_is_set_a (prefs.input_flash_hilight, sess->alert_taskbar) && (!prefs.away_omit_alerts || !sess->server->is_away))
+		if (chanopt_is_set_a (prefs.input_flash_hilight, sess->alert_taskbar) && (!prefs.hex_away_omit_alerts || !sess->server->is_away))
 			fe_flash_window (sess);
 		if (sess->alert_tray == SET_ON)
 			fe_tray_set_icon (FE_ICON_MESSAGE);
@@ -2226,9 +2226,9 @@ text_emit (int index, session *sess, char *a, char *b, char *c, char *d)
 	/* ===Channel message=== */
 	case XP_TE_CHANACTION:
 	case XP_TE_CHANMSG:
-		if (chanopt_is_set_a (prefs.input_beep_chans, sess->alert_beep) && (!prefs.away_omit_alerts || !sess->server->is_away))
+		if (chanopt_is_set_a (prefs.input_beep_chans, sess->alert_beep) && (!prefs.hex_away_omit_alerts || !sess->server->is_away))
 			sound_beep (sess);
-		if (chanopt_is_set_a (prefs.input_flash_chans, sess->alert_taskbar) && (!prefs.away_omit_alerts || !sess->server->is_away))
+		if (chanopt_is_set_a (prefs.input_flash_chans, sess->alert_taskbar) && (!prefs.hex_away_omit_alerts || !sess->server->is_away))
 			fe_flash_window (sess);
 		if (sess->alert_tray == SET_ON)
 			fe_tray_set_icon (FE_ICON_MESSAGE);

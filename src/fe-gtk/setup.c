@@ -289,8 +289,8 @@ static const setting userlist_settings[] =
 	{ST_MENU,	N_("Show user list at:"), P_OFFINTNL(gui_ulist_pos), 0, ulpos, 1},
 
 	{ST_HEADER,	N_("Away Tracking"),0,0,0},
-	{ST_TOGGLE,	N_("Track the Away status of users and mark them in a different color"), P_OFFINTNL(away_track),0,0,2},
-	{ST_NUMBER, N_("On channels smaller than:"), P_OFFINTNL(away_size_max),0,0,10000},
+	{ST_TOGGLE,	N_("Track the Away status of users and mark them in a different color"), P_OFFINTNL(hex_away_track),0,0,2},
+	{ST_NUMBER, N_("On channels smaller than:"), P_OFFINTNL(hex_away_size_max),0,0,10000},
 
 	{ST_HEADER,	N_("Action Upon Double Click"),0,0,0},
 	{ST_ENTRY,	N_("Execute command:"), P_OFFSETNL(doubleclickuser), 0, 0, sizeof prefs.doubleclickuser},
@@ -432,7 +432,7 @@ static const setting alert_settings[] =
 	{ST_3OGGLE, N_("Make a beep sound on:"), 0, 0, (void *)beeplist, 0},
 
 	{ST_TOGGLE,	N_("Enable system tray icon"), P_OFFINTNL(gui_tray), 0, 0, 0},
-	{ST_TOGGLE,	N_("Omit alerts when marked as being away"), P_OFFINTNL(away_omit_alerts), 0, 0, 0},
+	{ST_TOGGLE,	N_("Omit alerts when marked as being away"), P_OFFINTNL(hex_away_omit_alerts), 0, 0, 0},
 
 	{ST_HEADER,	N_("Highlighted Messages"),0,0,0},
 	{ST_LABEL,	N_("Highlighted messages are ones where your nickname is mentioned, but also:"), 0, 0, 0, 1},
@@ -453,7 +453,7 @@ static const setting alert_settings_hextray[] =
 	{ST_3OGGLE, N_("Blink task bar on:"), 0, 0, (void *)taskbarlist, 0},
 	{ST_3OGGLE, N_("Make a beep sound on:"), 0, 0, (void *)beeplist, 0},
 
-	{ST_TOGGLE,	N_("Omit alerts when marked as being away"), P_OFFINTNL(away_omit_alerts), 0, 0, 0},
+	{ST_TOGGLE,	N_("Omit alerts when marked as being away"), P_OFFINTNL(hex_away_omit_alerts), 0, 0, 0},
 
 	{ST_HEADER,	N_("Highlighted Messages"),0,0,0},
 	{ST_LABEL,	N_("Highlighted messages are ones where your nickname is mentioned, but also:"), 0, 0, 0, 1},
@@ -471,13 +471,13 @@ static const setting general_settings[] =
 	{ST_HEADER,	N_("Default Messages"),0,0,0},
 	{ST_ENTRY,	N_("Quit:"), P_OFFSETNL(quitreason), 0, 0, sizeof prefs.quitreason},
 	{ST_ENTRY,	N_("Leave channel:"), P_OFFSETNL(partreason), 0, 0, sizeof prefs.partreason},
-	{ST_ENTRY,	N_("Away:"), P_OFFSETNL(awayreason), 0, 0, sizeof prefs.awayreason},
+	{ST_ENTRY,	N_("Away:"), P_OFFSETNL(hex_away_reason), 0, 0, sizeof prefs.hex_away_reason},
 
 	{ST_HEADER,	N_("Away"),0,0,0},
-	{ST_TOGGLE,	N_("Announce away messages"), P_OFFINTNL(show_away_message),
+	{ST_TOGGLE,	N_("Announce away messages"), P_OFFINTNL(hex_away_show_message),
 					N_("Announce your away messages to all channels"), 0, 0},
-	{ST_TOGGLE,	N_("Show away once"), P_OFFINTNL(show_away_once), N_("Show identical away messages only once"), 0, 0},
-	{ST_TOGGLE,	N_("Automatically unmark away"), P_OFFINTNL(auto_unmark_away), N_("Unmark yourself as away before sending messages"), 0, 0},
+	{ST_TOGGLE,	N_("Show away once"), P_OFFINTNL(hex_away_show_once), N_("Show identical away messages only once"), 0, 0},
+	{ST_TOGGLE,	N_("Automatically unmark away"), P_OFFINTNL(hex_away_auto_unmark), N_("Unmark yourself as away before sending messages"), 0, 0},
 
 	{ST_END, 0, 0, 0, 0, 0}
 };
@@ -2234,7 +2234,7 @@ setup_apply (struct hexchatprefs *pr)
 	if (DIFF (tab_layout))
 		do_layout = TRUE;
 
-	if (color_change || (DIFF (away_size_max)) || (DIFF (away_track)))
+	if (color_change || (DIFF (hex_away_size_max)) || (DIFF (hex_away_track)))
 		do_ulist = TRUE;
 
 	if ((pr->tab_pos == 5 || pr->tab_pos == 6) &&
