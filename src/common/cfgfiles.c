@@ -707,7 +707,6 @@ load_config (void)
 	prefs.hex_text_tint_red =
 		prefs.hex_text_tint_green =
 		prefs.hex_text_tint_blue = 195;
-	prefs.auto_indent = 1;
 	prefs.hex_text_max_indent = 256;
 	prefs.hex_text_show_sep = 1;
 	prefs.hex_dcc_blocksize = 1024;

@@ -308,12 +308,11 @@ struct hexchatprefs
 	unsigned int hex_url_grabber;
 	unsigned int hex_url_logging;
 
-	/* these are the legacy variables */
+	/* these are the private variables */
 	guint32 local_ip;
 	guint32 dcc_ip;
 
-	unsigned int auto_indent;
-	unsigned int wait_on_exit;
+	unsigned int wait_on_exit;	/* wait for logs to be flushed to disk IF we're connected */
 	unsigned int utf8_locale;
 
 	/* Tells us if we need to save, only when they've been edited.
