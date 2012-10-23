@@ -62,7 +62,6 @@ struct DCC
 	time_t lasttime;
 	char *file;					/* utf8 */
 	char *destfile;			/* utf8 */
-	char *destfile_fs;		/* local filesystem encoding */
 	char *nick;
 	unsigned char type;		  /* 0 = SEND  1 = RECV  2 = CHAT */
 	unsigned char dccstat;	  /* 0 = QUEUED  1 = ACTIVE  2 = FAILED  3 = DONE */
