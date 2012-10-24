@@ -45,6 +45,9 @@
 #include <unistd.h>
 #endif
 
+#include <glib.h>
+#include <glib/gstdio.h>
+
 #include "xchat.h"
 #include "util.h"
 #include "fe.h"
@@ -56,8 +59,6 @@
 #include "text.h"
 #include "url.h"
 #include "xchatc.h"
-
-#include <glib/gstdio.h>
 
 #ifdef USE_DCC64
 #define BIG_STR_TO_INT(x) strtoull(x,NULL,10)
