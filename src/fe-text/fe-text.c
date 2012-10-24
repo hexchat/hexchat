@@ -788,7 +788,7 @@ fe_userlist_hide (session * sess)
 {
 }
 void
-fe_lastlog (session * sess, session * lastlog_sess, char *sstr, gboolean regexp)
+fe_lastlog (session *sess, session *lastlog_sess, char *sstr, gtk_xtext_search_flags flags)
 {
 }
 void
