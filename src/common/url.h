@@ -1,5 +1,5 @@
-#ifndef XCHAT_URL_H
-#define XCHAT_URL_H
+#ifndef HEXCHAT_URL_H
+#define HEXCHAT_URL_H
 
 extern void *url_tree;
 

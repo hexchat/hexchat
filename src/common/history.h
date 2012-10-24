@@ -1,5 +1,5 @@
-#ifndef XCHAT_HISTORY_H
-#define XCHAT_HISTORY_H
+#ifndef HEXCHAT_HISTORY_H
+#define HEXCHAT_HISTORY_H
 
 #define HISTORY_SIZE 100
 

@@ -1,5 +1,5 @@
-#ifndef XCHAT_C_H
-#define XCHAT_C_H
+#ifndef HEXCHAT_C_H
+#define HEXCHAT_C_H
 
 extern struct hexchatprefs prefs;
 

@@ -1,7 +1,7 @@
 /* cfgfiles.h */
 
-#ifndef XCHAT_CFGFILES_H
-#define XCHAT_CFGFILES_H
+#ifndef HEXCHAT_CFGFILES_H
+#define HEXCHAT_CFGFILES_H
 
 #include "hexchat.h"
 

@@ -1,7 +1,7 @@
 #include <time.h>
 
-#ifndef XCHAT_USERLIST_H
-#define XCHAT_USERLIST_H
+#ifndef HEXCHAT_USERLIST_H
+#define HEXCHAT_USERLIST_H
 
 struct User
 {

@@ -1,5 +1,5 @@
-#ifndef XCHAT_TREE_H
-#define XCHAT_TREE_H
+#ifndef HEXCHAT_TREE_H
+#define HEXCHAT_TREE_H
 
 typedef struct _tree tree;
 

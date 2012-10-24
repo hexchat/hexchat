@@ -1,5 +1,5 @@
-#ifndef XCHAT_SERVLIST_H
-#define XCHAT_SERVLIST_H
+#ifndef HEXCHAT_SERVLIST_H
+#define HEXCHAT_SERVLIST_H
 
 typedef struct ircserver
 {

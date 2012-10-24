@@ -1,5 +1,5 @@
-#ifndef XCHAT_NETWORK_H
-#define XCHAT_NETWORK_H
+#ifndef HEXCHAT_NETWORK_H
+#define HEXCHAT_NETWORK_H
 
 typedef struct netstore_
 {

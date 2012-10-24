@@ -1,5 +1,5 @@
-#ifndef XCHAT_NOTIFY_H
-#define XCHAT_NOTIFY_H
+#ifndef HEXCHAT_NOTIFY_H
+#define HEXCHAT_NOTIFY_H
 
 struct notify
 {

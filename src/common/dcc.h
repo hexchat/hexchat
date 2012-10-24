@@ -2,8 +2,8 @@
 
 #include <time.h>						/* for time_t */
 
-#ifndef XCHAT_DCC_H
-#define XCHAT_DCC_H
+#ifndef HEXCHAT_DCC_H
+#define HEXCHAT_DCC_H
 
 #define STAT_QUEUED 0
 #define STAT_ACTIVE 1

@@ -1,5 +1,5 @@
-#ifndef XCHAT_SERVER_H
-#define XCHAT_SERVER_H
+#ifndef HEXCHAT_SERVER_H
+#define HEXCHAT_SERVER_H
 
 extern GSList *serv_list;
 

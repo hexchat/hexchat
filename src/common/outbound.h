@@ -1,5 +1,5 @@
-#ifndef XCHAT_OUTBOUND_H
-#define XCHAT_OUTBOUND_H
+#ifndef HEXCHAT_OUTBOUND_H
+#define HEXCHAT_OUTBOUND_H
 
 extern const struct commands xc_cmds[];
 extern GSList *menu_list;

@@ -1,5 +1,5 @@
-#ifndef XCHAT_IGNORE_H
-#define XCHAT_IGNORE_H
+#ifndef HEXCHAT_IGNORE_H
+#define HEXCHAT_IGNORE_H
 
 extern GSList *ignore_list;
 

@@ -1,8 +1,8 @@
 #include "userlist.h"
 #include "dcc.h"
 
-#ifndef XCHAT_FE_H
-#define XCHAT_FE_H
+#ifndef HEXCHAT_FE_H
+#define HEXCHAT_FE_H
 
 /* for storage of /menu entries */
 typedef struct

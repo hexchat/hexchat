@@ -1,5 +1,5 @@
-#ifndef XCHAT_COMMONPLUGIN_H
-#define XCHAT_COMMONPLUGIN_H
+#ifndef HEXCHAT_COMMONPLUGIN_H
+#define HEXCHAT_COMMONPLUGIN_H
 
 #ifdef PLUGIN_C
 struct _xchat_plugin

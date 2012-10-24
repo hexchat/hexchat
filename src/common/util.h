@@ -11,8 +11,8 @@
  *        --+ Dagmar d'Surreal
  */
 
-#ifndef XCHAT_UTIL_H
-#define XCHAT_UTIL_H
+#ifndef HEXCHAT_UTIL_H
+#define HEXCHAT_UTIL_H
 
 #include "strlutil.h"
 #define rfc_tolower(c) (rfc_tolowertab[(unsigned char)(c)])

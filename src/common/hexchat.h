@@ -3,8 +3,8 @@
 #include <glib.h>
 #include <time.h>			/* need time_t */
 
-#ifndef XCHAT_H
-#define XCHAT_H
+#ifndef HEXCHAT_H
+#define HEXCHAT_H
 
 #include "history.h"
 
