@@ -49,7 +49,9 @@ irc_login (server *serv, char *user, char *realname)
 {
 	if (serv->password[0])
 		tcp_sendf (serv, "PASS %s\r\n", serv->password);
+#if 0	/* breaks the SASL plugin */
 	tcp_sendf (serv, "CAP LS\r\n");
+#endif
 
 	tcp_sendf (serv,
 				  "NICK %s\r\n"
@@ -1115,6 +1117,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 		}
 	}
 
+#if 0	/* breaks the SASL plugin */
 	else if (len == 3)
 	{
 		guint32 t;
@@ -1149,6 +1152,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 				return;
 		}
 	}
+#endif
 
 garbage:
 	/* unknown message */
