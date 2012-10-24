@@ -21,8 +21,8 @@
 
 #include <dbus/dbus-glib.h>
 #include "dbus-client.h"
-#include "../xchat.h"
-#include "../xchatc.h"
+#include "../hexchat.h"
+#include "../hexchatc.h"
 
 #define DBUS_SERVICE "org.hexchat.service"
 #define DBUS_REMOTE "/org/hexchat/Remote"

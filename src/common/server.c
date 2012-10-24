@@ -76,7 +76,7 @@
 #endif
 
 #ifdef USE_OPENSSL
-extern SSL_CTX *ctx;				  /* xchat.c */
+extern SSL_CTX *ctx;				  /* hexchat.c */
 /* local variables */
 static struct session *g_sess = NULL;
 #endif

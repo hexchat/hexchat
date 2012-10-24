@@ -23,7 +23,7 @@
 
 #include "network.h"
 
-#define MSPROXY_EXECUTABLE 		"xchat.exe"	/* This probably can be used for access control on the server side */
+#define MSPROXY_EXECUTABLE 		"hexchat.exe"	/* This probably can be used for access control on the server side */
 
 #define MSPROXY_MINLENGTH		172		/* minimum length of packet.				*/
 #define NT_MAXNAMELEN			17		/* maximum name length (domain etc), comes from NetBIOS */

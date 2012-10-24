@@ -4,7 +4,7 @@
 #ifdef PLUGIN_C
 struct _xchat_plugin
 {
-	/* Keep these insync with xchat-plugin.h */
+	/* Keep these in sync with hexchat-plugin.h */
 	/* !!don't change the order, to keep binary compat!! */
 	xchat_hook *(*xchat_hook_command) (xchat_plugin *ph,
 		    const char *name,
