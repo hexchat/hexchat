@@ -14,13 +14,13 @@
 #include <unistd.h>
 #endif
 
-#include "xchat.h"
+#include "hexchat.h"
 
 #include "cfgfiles.h"
 #include "server.h"
 #include "text.h"
 #include "util.h"
-#include "xchatc.h"
+#include "hexchatc.h"
 
 
 static GSList *chanopt_list = NULL;

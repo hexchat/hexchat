@@ -21,9 +21,9 @@
 #include <commctrl.h>
 #include <tchar.h>
 
-#include "xchat-plugin.h"
+#include "hexchat-plugin.h"
 #include "utility.h"
-#include "xtray.h"
+#include "hextray.h"
 #include "callbacks.h"
 #include "resource.h"
 

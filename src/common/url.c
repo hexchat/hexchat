@@ -20,8 +20,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include "xchat.h"
-#include "xchatc.h"
+#include "hexchat.h"
+#include "hexchatc.h"
 #include "cfgfiles.h"
 #include "fe.h"
 #include "tree.h"

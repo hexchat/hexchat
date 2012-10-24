@@ -26,7 +26,7 @@
 #include <unistd.h>
 #endif
 
-#include "xchat.h"
+#include "hexchat.h"
 #include <glib.h>
 
 #include "cfgfiles.h"
@@ -34,7 +34,7 @@
 #include "server.h"
 #include "text.h"
 #include "util.h" /* token_foreach */
-#include "xchatc.h"
+#include "hexchatc.h"
 
 #include "servlist.h"
 

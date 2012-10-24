@@ -10,7 +10,7 @@
 #include "wmpa.h"
 #include "WMPADialog.h"
 #include "shellapi.h"
-#include "xchat-plugin.h"
+#include "hexchat-plugin.h"
 
 #ifdef _DEBUG
 #define new DEBUG_NEW

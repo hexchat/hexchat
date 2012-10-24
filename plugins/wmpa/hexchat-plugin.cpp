@@ -7,7 +7,7 @@
 *
 ******************************************************************/
 #include "stdafx.h"
-#include "xchat-plugin.h"
+#include "hexchat-plugin.h"
 #include <windows.h>
 #include <tchar.h>
 #include "wmpa.h"

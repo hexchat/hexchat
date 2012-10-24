@@ -3,7 +3,7 @@ EXTRA_DIST = plugin20.html Make.plugin plugin-conf.in \
 				xdcc/xdcc.c \
 				xdcc/Makefile.am
 
-noinst_HEADERS = xchat-plugin.h
+noinst_HEADERS = hexchat-plugin.h
 
 if DO_PYTHON
 pythondir = python

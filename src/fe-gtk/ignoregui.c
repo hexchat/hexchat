@@ -39,7 +39,7 @@
 #include <gtk/gtkcellrenderertext.h>
 #include <gtk/gtkcellrenderertoggle.h>
 
-#include "../common/xchat.h"
+#include "../common/hexchat.h"
 #include "../common/ignore.h"
 #include "../common/cfgfiles.h"
 #include "../common/fe.h"

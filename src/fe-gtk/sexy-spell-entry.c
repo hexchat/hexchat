@@ -41,7 +41,7 @@
 #endif
 
 #include "../common/cfgfiles.h"
-#include "../common/xchatc.h"
+#include "../common/hexchatc.h"
 
 /*
  * Bunch of poop to make enchant into a runtime dependency rather than a

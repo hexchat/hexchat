@@ -38,7 +38,7 @@
 #include <sys/stat.h>
 #include <fcntl.h>
 
-#include "xchat.h"
+#include "hexchat.h"
 #include "plugin.h"
 #include "ignore.h"
 #include "util.h"
@@ -49,7 +49,7 @@
 #include "notify.h"
 #include "inbound.h"
 #include "text.h"
-#include "xchatc.h"
+#include "hexchatc.h"
 #include "servlist.h"
 #include "server.h"
 #include "tree.h"

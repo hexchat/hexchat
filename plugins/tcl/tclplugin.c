@@ -36,7 +36,7 @@ static char RCSID[] = "$Id: tclplugin.c,v 1.65 2012/07/26 20:02:12 mooooooo Exp 
 #include <unistd.h>
 #endif
 
-#include "xchat-plugin.h"
+#include "hexchat-plugin.h"
 #include "tclplugin.h"
 #include "printevents.h"
 

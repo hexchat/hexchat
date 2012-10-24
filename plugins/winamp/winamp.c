@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "xchat-plugin.h"
+#include "hexchat-plugin.h"
 
 #define PLAYING 1
 #define PAUSED 3

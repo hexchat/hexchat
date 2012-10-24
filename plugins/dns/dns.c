@@ -43,7 +43,7 @@
 #include <sys/socket.h>
 #endif
 
-#include "xchat-plugin.h"
+#include "hexchat-plugin.h"
 #include "thread.h"
 
 #define HELP "Usage: DNS <nickname|hostname|numerical address>\n"

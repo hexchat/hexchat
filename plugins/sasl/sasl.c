@@ -38,7 +38,7 @@
 #include <assert.h>
 #include <glib.h>
 
-#include "xchat-plugin.h"
+#include "hexchat-plugin.h"
 
 static xchat_plugin *ph;   /* plugin handle */
 static const char name[] = "SASL";

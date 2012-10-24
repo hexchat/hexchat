@@ -28,8 +28,8 @@
 #include <gtk/gtklabel.h>
 #include <gtk/gtkbutton.h>
 
-#include "../common/xchat.h"
-#include "../common/xchatc.h"
+#include "../common/hexchat.h"
+#include "../common/hexchatc.h"
 #include "gtkutil.h"
 #include "ascii.h"
 #include "maingui.h"

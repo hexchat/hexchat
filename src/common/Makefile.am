@@ -10,6 +10,9 @@ EXTRA_DIST = \
 	ctcp.h \
 	dcc.h \
 	fe.h \
+	hexchat.h \
+	hexchatc.h \
+	hexchat-plugin.h \
 	history.h \
 	identd.c \
 	ignore.h \
@@ -36,10 +39,7 @@ EXTRA_DIST = \
 	tree.h \
 	url.h \
 	userlist.h \
-	util.h \
-	xchat.h \
-	xchatc.h \
-	xchat-plugin.h
+	util.h
 
 if USE_OPENSSL
 ssl_c = ssl.c
@@ -52,10 +52,10 @@ libhexchatcommon_a_LIBADD =				\
 endif
 SUBDIRS = $(dbusdir) .
 
-libhexchatcommon_a_SOURCES = cfgfiles.c chanopt.c ctcp.c dcc.c history.c ignore.c \
-	inbound.c modes.c msproxy.c network.c notify.c outbound.c \
-	plugin.c plugin-timer.c proto-irc.c server.c servlist.c $(ssl_c) \
-	strlutil.c text.c tree.c url.c userlist.c util.c xchat.c
+libhexchatcommon_a_SOURCES = cfgfiles.c chanopt.c ctcp.c dcc.c hexchat.c \
+	history.c ignore.c inbound.c modes.c msproxy.c network.c notify.c \
+	outbound.c plugin.c plugin-timer.c proto-irc.c server.c servlist.c \
+	$(ssl_c) strlutil.c text.c tree.c url.c userlist.c util.c
 libhexchatcommon_a_CFLAGS = $(LIBPROXY_CFLAGS)
 
 textevents: make-te

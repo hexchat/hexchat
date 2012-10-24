@@ -1,8 +1,8 @@
 /* simple identd server for xchat under win32 */
 
 #include "inet.h"
-#include "xchat.h"
-#include "xchatc.h"
+#include "hexchat.h"
+#include "hexchatc.h"
 #include "text.h"
 
 static int identd_is_running = FALSE;

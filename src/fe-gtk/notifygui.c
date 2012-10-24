@@ -38,7 +38,7 @@
 #include <gtk/gtktreeselection.h>
 #include <gtk/gtkcellrenderertext.h>
 
-#include "../common/xchat.h"
+#include "../common/hexchat.h"
 #include "../common/notify.h"
 #include "../common/cfgfiles.h"
 #include "../common/fe.h"

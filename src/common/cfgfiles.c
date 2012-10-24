@@ -23,12 +23,12 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 
-#include "xchat.h"
+#include "hexchat.h"
 #include "cfgfiles.h"
 #include "util.h"
 #include "fe.h"
 #include "text.h"
-#include "xchatc.h"
+#include "hexchatc.h"
 
 #ifdef WIN32
 #include <io.h>

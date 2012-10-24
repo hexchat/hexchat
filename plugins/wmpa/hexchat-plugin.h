@@ -1,6 +1,6 @@
 /* You can distribute this header with your plugins for easy compilation */
-#ifndef XCHAT_PLUGIN_H
-#define XCHAT_PLUGIN_H
+#ifndef HEXCHAT_PLUGIN_H
+#define HEXCHAT_PLUGIN_H
 
 #define VER_STRING _T("1.0.2 (BETA)")
 

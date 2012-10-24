@@ -34,13 +34,13 @@
 #include <unistd.h>
 #endif
 
-#include "xchat.h"
+#include "hexchat.h"
 #include "fe.h"
 #include "util.h"
 #include "cfgfiles.h"
 #include "chanopt.h"
 #include "ignore.h"
-#include "xchat-plugin.h"
+#include "hexchat-plugin.h"
 #include "plugin.h"
 #include "plugin-timer.h"
 #include "notify.h"
@@ -49,7 +49,7 @@
 #include "outbound.h"
 #include "text.h"
 #include "url.h"
-#include "xchatc.h"
+#include "hexchatc.h"
 
 #ifdef USE_OPENSSL
 #include <openssl/ssl.h>		  /* SSL_() */

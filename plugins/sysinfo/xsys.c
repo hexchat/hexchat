@@ -28,7 +28,7 @@
 #include <string.h>
 #include <glib.h>
 
-#include "xchat-plugin.h"
+#include "hexchat-plugin.h"
 #include "parse.h"
 #include "match.h"
 #include "xsys.h"

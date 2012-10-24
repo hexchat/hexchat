@@ -32,15 +32,15 @@
 #include <gtk/gtktreeselection.h>
 #include <gtk/gtkcellrenderertext.h>
 
-#include "../common/xchat.h"
+#include "../common/hexchat.h"
 #define PLUGIN_C
 typedef struct session xchat_context;
-#include "../common/xchat-plugin.h"
+#include "../common/hexchat-plugin.h"
 #include "../common/plugin.h"
 #include "../common/util.h"
 #include "../common/outbound.h"
 #include "../common/fe.h"
-#include "../common/xchatc.h"
+#include "../common/hexchatc.h"
 #include "../common/cfgfiles.h"
 #include "gtkutil.h"
 

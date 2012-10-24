@@ -29,13 +29,13 @@
 #include <unistd.h>
 #endif
 
-#include "xchat.h"
+#include "hexchat.h"
 #include "ignore.h"
 #include "cfgfiles.h"
 #include "fe.h"
 #include "text.h"
 #include "util.h"
-#include "xchatc.h"
+#include "hexchatc.h"
 
 
 int ignored_ctcp = 0;			  /* keep a count of all we ignore */

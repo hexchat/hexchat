@@ -1,9 +1,9 @@
 /* Copyright (C) 2006-2007 Peter Zelezny. */
 
 #include <string.h>
-#include "../common/xchat-plugin.h"
-#include "../common/xchat.h"
-#include "../common/xchatc.h"
+#include "../common/hexchat-plugin.h"
+#include "../common/hexchat.h"
+#include "../common/hexchatc.h"
 #include "../common/inbound.h"
 #include "../common/server.h"
 #include "../common/fe.h"

@@ -8,7 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdio.h>
-#include "xchat-plugin.h"
+#include "hexchat-plugin.h"
 
 static xchat_plugin *ph;
 

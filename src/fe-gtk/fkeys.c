@@ -46,8 +46,8 @@
 #include <gtk/gtkentry.h>
 #include <gtk/gtkvscrollbar.h>
 
-#include "../common/xchat.h"
-#include "../common/xchatc.h"
+#include "../common/hexchat.h"
+#include "../common/hexchatc.h"
 #include "../common/cfgfiles.h"
 #include "../common/fe.h"
 #include "../common/userlist.h"

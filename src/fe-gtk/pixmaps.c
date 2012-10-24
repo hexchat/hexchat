@@ -22,7 +22,7 @@
 
 #include "fe-gtk.h"
 #include "../common/cfgfiles.h"
-#include "../common/xchat.h"
+#include "../common/hexchat.h"
 #include "../common/fe.h"
 
 #include <gdk-pixbuf/gdk-pixbuf.h>

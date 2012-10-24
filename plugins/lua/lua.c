@@ -65,7 +65,7 @@
 
 #define lua_pop(L,n)  lua_settop(L, -(n)-1)
 
-#include "xchat-plugin.h"
+#include "hexchat-plugin.h"
 
 static xchat_plugin *ph; /* plugin handle */
 

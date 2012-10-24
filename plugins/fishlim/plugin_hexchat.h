@@ -22,8 +22,8 @@
 
 */
 
-#ifndef XCHAT_PLUGIN_H
-#define XCHAT_PLUGIN_H
+#ifndef PLUGIN_HEXCHAT_H
+#define PLUGIN_HEXCHAT_H
 
 gchar *get_config_filename();
 

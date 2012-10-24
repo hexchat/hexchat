@@ -32,8 +32,8 @@
 #include <gtk/gtkwindow.h>
 #include <gdk/gdkkeysyms.h>
 
-#include "../common/xchat.h"
-#include "../common/xchatc.h"
+#include "../common/hexchat.h"
+#include "../common/hexchatc.h"
 #include "../common/servlist.h"
 #include "../common/cfgfiles.h"
 #include "../common/fe.h"

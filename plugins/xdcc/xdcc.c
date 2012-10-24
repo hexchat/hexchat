@@ -9,8 +9,8 @@
 #include <unistd.h>
 #endif
 
-#include "xchat-plugin.h"
-#include "../../src/common/xchat.h"
+#include "hexchat-plugin.h"
+#include "../../src/common/hexchat.h"
 
 static xchat_plugin *ph;	/* plugin handle */
 

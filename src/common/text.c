@@ -32,7 +32,7 @@
 #include <sys/mman.h>
 #endif
 
-#include "xchat.h"
+#include "hexchat.h"
 #include <glib.h>
 #include "cfgfiles.h"
 #include "chanopt.h"
@@ -41,7 +41,7 @@
 #include "server.h"
 #include "util.h"
 #include "outbound.h"
-#include "xchatc.h"
+#include "hexchatc.h"
 #include "text.h"
 #ifdef WIN32
 #include <windows.h>

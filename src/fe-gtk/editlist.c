@@ -37,9 +37,9 @@
 #include <gtk/gtkhbox.h>
 #include <gtk/gtkvseparator.h>
 
-#include "../common/xchat.h"
+#include "../common/hexchat.h"
 #include "../common/cfgfiles.h"
-#include "../common/xchatc.h"
+#include "../common/hexchatc.h"
 #include "../common/fe.h"
 #include "menu.h"
 #include "gtkutil.h"

@@ -22,10 +22,10 @@
 #include <stdio.h>
 #include <tchar.h>
 
-#include "xchat-plugin.h"
-#include "xtray.h"
+#include "hexchat-plugin.h"
+#include "hextray.h"
 #include "resource.h"
-#include "xchat.h"
+#include "hexchat.h"
 #include "utility.h"
 
 // from util.c of xchat source code ( slightly modified to fit X-Tray Syntax )

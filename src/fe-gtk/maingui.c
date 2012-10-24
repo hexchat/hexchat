@@ -44,10 +44,10 @@
 #include <gtk/gtkbbox.h>
 #include <gtk/gtkvscrollbar.h>
 
-#include "../common/xchat.h"
+#include "../common/hexchat.h"
 #include "../common/fe.h"
 #include "../common/server.h"
-#include "../common/xchatc.h"
+#include "../common/hexchatc.h"
 #include "../common/outbound.h"
 #include "../common/inbound.h"
 #include "../common/plugin.h"

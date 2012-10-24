@@ -35,8 +35,8 @@
 #include <gtk/gtkvscrollbar.h>
 #include <gtk/gtkstock.h>
 
-#include "../common/xchat.h"
-#include "../common/xchatc.h"
+#include "../common/hexchat.h"
+#include "../common/hexchatc.h"
 #include "../common/cfgfiles.h"
 #include "../common/server.h"
 #include "gtkutil.h"

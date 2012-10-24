@@ -32,8 +32,8 @@
 #include <gtk/gtktreeselection.h>
 #include <gtk/gtkcellrenderertext.h>
 
-#include "../common/xchat.h"
-#include "../common/xchatc.h"
+#include "../common/hexchat.h"
+#include "../common/hexchatc.h"
 #include "../common/cfgfiles.h"
 #include "../common/fe.h"
 #include "../common/url.h"

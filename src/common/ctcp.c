@@ -24,7 +24,7 @@
 #include <unistd.h>
 #endif
 
-#include "xchat.h"
+#include "hexchat.h"
 #include "cfgfiles.h"
 #include "util.h"
 #include "modes.h"
@@ -35,7 +35,7 @@
 #include "text.h"
 #include "ctcp.h"
 #include "server.h"
-#include "xchatc.h"
+#include "hexchatc.h"
 
 
 static void

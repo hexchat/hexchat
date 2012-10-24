@@ -36,9 +36,9 @@
 #define WANTARPA
 #include "inet.h"
 
-#include "xchat.h"
+#include "hexchat.h"
 #include "network.h"
-#include "xchatc.h"
+#include "hexchatc.h"
 #include "server.h"
 #include "msproxy.h"
 

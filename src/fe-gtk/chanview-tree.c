@@ -6,8 +6,8 @@ typedef struct
 	GtkWidget *scrollw;	/* scrolledWindow */
 } treeview;
 
-#include "../common/xchat.h"
-#include "../common/xchatc.h"
+#include "../common/hexchat.h"
+#include "../common/hexchatc.h"
 #include "fe-gtk.h"
 #include "maingui.h"
 

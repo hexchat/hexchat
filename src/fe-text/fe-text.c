@@ -32,8 +32,8 @@
 #include <sys/types.h>
 #include <ctype.h>
 #include <glib.h>
-#include "../common/xchat.h"
-#include "../common/xchatc.h"
+#include "../common/hexchat.h"
+#include "../common/hexchatc.h"
 #include "../common/cfgfiles.h"
 #include "../common/outbound.h"
 #include "../common/util.h"

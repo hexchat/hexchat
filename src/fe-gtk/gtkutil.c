@@ -46,11 +46,11 @@
 #include <gtk/gtkversion.h>
 #include <gtk/gtkfilechooserdialog.h>
 
-#include "../common/xchat.h"
+#include "../common/hexchat.h"
 #include "../common/fe.h"
 #include "../common/util.h"
 #include "../common/cfgfiles.h"
-#include "../common/xchatc.h"
+#include "../common/hexchatc.h"
 #include "gtkutil.h"
 #include "pixmaps.h"
 

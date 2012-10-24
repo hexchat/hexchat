@@ -42,12 +42,12 @@
 #include <unistd.h>
 #endif
 
-#include "xchat.h"
+#include "hexchat.h"
 #include "fe.h"
 #include "cfgfiles.h"
 #include "network.h"
 #include "notify.h"
-#include "xchatc.h"
+#include "hexchatc.h"
 #include "inbound.h"
 #include "outbound.h"
 #include "text.h"

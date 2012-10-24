@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <glib.h>
-#include "xchat-plugin.h"
+#include "hexchat-plugin.h"
 
 #ifdef WIN32
 #define g_ascii_strcasecmp stricmp

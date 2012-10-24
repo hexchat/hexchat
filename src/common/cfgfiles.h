@@ -3,7 +3,7 @@
 #ifndef XCHAT_CFGFILES_H
 #define XCHAT_CFGFILES_H
 
-#include "xchat.h"
+#include "hexchat.h"
 
 extern char *xdir_fs;
 extern char *xdir_utf;

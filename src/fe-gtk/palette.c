@@ -31,7 +31,7 @@
 #include "fe-gtk.h"
 #include "palette.h"
 
-#include "../common/xchat.h"
+#include "../common/hexchat.h"
 #include "../common/util.h"
 #include "../common/cfgfiles.h"
 

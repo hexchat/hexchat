@@ -7,7 +7,7 @@
 #include <sys/stat.h>
 #include <unistd.h>
 
-#include "xchat-plugin.h"
+#include "hexchat-plugin.h"
 
 
 static xchat_plugin *ph;	/* plugin handle */

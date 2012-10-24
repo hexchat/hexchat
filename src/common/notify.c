@@ -30,14 +30,14 @@
 #include <unistd.h>
 #endif
 
-#include "xchat.h"
+#include "hexchat.h"
 #include "notify.h"
 #include "cfgfiles.h"
 #include "fe.h"
 #include "server.h"
 #include "text.h"
 #include "util.h"
-#include "xchatc.h"
+#include "hexchatc.h"
 
 
 GSList *notify_list = 0;

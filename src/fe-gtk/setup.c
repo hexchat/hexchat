@@ -8,13 +8,13 @@
 #include <sys/stat.h>
 #include <sys/types.h>
 
-#include "../common/xchat.h"
+#include "../common/hexchat.h"
 #include "../common/cfgfiles.h"
 #include "../common/fe.h"
 #include "../common/text.h"
 #include "../common/userlist.h"
 #include "../common/util.h"
-#include "../common/xchatc.h"
+#include "../common/hexchatc.h"
 #include "fe-gtk.h"
 #include "gtkutil.h"
 #include "maingui.h"

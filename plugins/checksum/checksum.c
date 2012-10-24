@@ -46,7 +46,7 @@
 
 #include <sys/stat.h>
 
-#include "xchat-plugin.h"
+#include "hexchat-plugin.h"
 
 #define BUFSIZE 32768
 #define DEFAULT_LIMIT 256									/* default size is 256 MiB */

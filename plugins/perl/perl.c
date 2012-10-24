@@ -33,7 +33,7 @@
 
 #undef PACKAGE
 #include "../../config.h"		  /* for #define OLD_PERL */
-#include "xchat-plugin.h"
+#include "hexchat-plugin.h"
 
 static xchat_plugin *ph;		  /* plugin handle */
 

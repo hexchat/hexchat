@@ -43,8 +43,8 @@
 
 #include <fcntl.h>
 #include <errno.h>
-#include "xchat.h"
-#include "xchatc.h"
+#include "hexchat.h"
+#include "hexchatc.h"
 #include <glib.h>
 #include <ctype.h>
 #include "util.h"

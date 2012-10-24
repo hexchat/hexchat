@@ -28,7 +28,7 @@
 #include <unistd.h>
 #endif
 
-#include "xchat.h"
+#include "hexchat.h"
 #include "ctcp.h"
 #include "fe.h"
 #include "ignore.h"
@@ -40,7 +40,7 @@
 #include "text.h"
 #include "outbound.h"
 #include "util.h"
-#include "xchatc.h"
+#include "hexchatc.h"
 #include "url.h"
 
 

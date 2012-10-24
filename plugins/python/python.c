@@ -64,7 +64,7 @@
 #include <dirent.h>
 #endif
 
-#include "xchat-plugin.h"
+#include "hexchat-plugin.h"
 #include "Python.h"
 #include "structmember.h"
 #include "pythread.h"

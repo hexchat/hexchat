@@ -44,8 +44,8 @@
 #include <gtk/gtkradiobutton.h>
 #include <gtk/gtkversion.h>
 
-#include "../common/xchat.h"
-#include "../common/xchatc.h"
+#include "../common/hexchat.h"
+#include "../common/hexchatc.h"
 #include "../common/fe.h"
 #include "../common/util.h"
 #include "../common/network.h"

@@ -48,7 +48,7 @@
 #include <glib.h>
 #include <glib/gstdio.h>
 
-#include "xchat.h"
+#include "hexchat.h"
 #include "util.h"
 #include "fe.h"
 #include "outbound.h"
@@ -58,7 +58,7 @@
 #include "server.h"
 #include "text.h"
 #include "url.h"
-#include "xchatc.h"
+#include "hexchatc.h"
 
 #ifdef USE_DCC64
 #define BIG_STR_TO_INT(x) strtoull(x,NULL,10)

@@ -29,7 +29,7 @@
 #include <unistd.h>
 #endif
 
-#include "xchat.h"
+#include "hexchat.h"
 #include "fe.h"
 #include "util.h"
 #include "outbound.h"
@@ -42,11 +42,11 @@
 #include "text.h"
 #define PLUGIN_C
 typedef struct session xchat_context;
-#include "xchat-plugin.h"
+#include "hexchat-plugin.h"
 #include "plugin.h"
 
 
-#include "xchatc.h"
+#include "hexchatc.h"
 
 /* the USE_PLUGIN define only removes libdl stuff */
 

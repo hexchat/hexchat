@@ -37,11 +37,11 @@
 #include <gtk/gtktreeview.h>
 #include <gtk/gtktreeselection.h>
 
-#include "../common/xchat.h"
+#include "../common/hexchat.h"
 #include "../common/fe.h"
 #include "../common/modes.h"
 #include "../common/outbound.h"
-#include "../common/xchatc.h"
+#include "../common/hexchatc.h"
 #include "gtkutil.h"
 #include "maingui.h"
 #include "banlist.h"

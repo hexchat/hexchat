@@ -22,8 +22,8 @@
 #include <glib.h>
 #include <glib/gprintf.h>
 
-#include "xchat.h"
-#include "xchatc.h"
+#include "hexchat.h"
+#include "hexchatc.h"
 #include "modes.h"
 #include "server.h"
 #include "text.h"

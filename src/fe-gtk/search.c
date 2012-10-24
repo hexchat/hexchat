@@ -34,10 +34,10 @@
 #include <gtk/gtktogglebutton.h>
 #include <gdk/gdkkeysyms.h>
 
-#include "../common/xchat.h"
+#include "../common/hexchat.h"
 #include "../common/fe.h"
 #include "../common/util.h"
-#include "../common/xchatc.h"
+#include "../common/hexchatc.h"
 #include "gtkutil.h"
 #include "xtext.h"
 #include "maingui.h"

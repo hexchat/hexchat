@@ -37,9 +37,9 @@
 #include <gdk/gdkx.h>
 #endif
 
-#include "../common/xchat.h"
+#include "../common/hexchat.h"
 #include "../common/util.h"
-#include "../common/xchatc.h"
+#include "../common/hexchatc.h"
 #include "palette.h"
 #include "pixmaps.h"
 #include "gtkutil.h"

@@ -23,7 +23,7 @@ static char *VERSION="0.0.6";
 #include <stdio.h>
 #include <ctype.h>
 #include <math.h>
-#include "xchat-plugin.h"
+#include "hexchat-plugin.h"
 static xchat_plugin *ph;
 
 #include "functions.c"

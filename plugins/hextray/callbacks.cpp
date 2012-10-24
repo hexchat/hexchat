@@ -23,10 +23,10 @@
 #include <commctrl.h>
 #include <tchar.h>
 
-#include "xchat-plugin.h"
+#include "hexchat-plugin.h"
 #include "utility.h"
-#include "xtray.h"
-#include "xchat.h"
+#include "hextray.h"
+#include "hexchat.h"
 #include "callbacks.h"
 #include "resource.h"
 #include "sdTray.h"
@@ -45,7 +45,7 @@ BOOL CALLBACK EnumWindowsProc(HWND hWnd, LPARAM lParam)
 	TCHAR szTitle[10];
 	GetWindowText(hWnd, szTitle, 9);
 
-	if(_tcsstr(szTitle, _T("XChat [")))
+	if(_tcsstr(szTitle, _T("HexChat [")))
 	{
 		g_hXchatWnd = hWnd;
 		return false;

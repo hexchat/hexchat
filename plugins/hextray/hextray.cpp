@@ -23,11 +23,11 @@
 #include <string>
 #include <shobjidl.h>
 
-#include "xchat-plugin.h"
+#include "hexchat-plugin.h"
 #include "resource.h"
 #include "callbacks.h"
 #include "utility.h"
-#include "xtray.h"
+#include "hextray.h"
 #include "sdTray.h"
 #include "sdAlerts.h"
 

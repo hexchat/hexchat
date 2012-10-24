@@ -44,8 +44,8 @@
 #include <gtk/gtkversion.h>
 #include <gdk/gdkkeysyms.h>
 
-#include "../common/xchat.h"
-#include "../common/xchatc.h"
+#include "../common/hexchat.h"
+#include "../common/hexchatc.h"
 #include "../common/cfgfiles.h"
 #include "../common/outbound.h"
 #include "../common/ignore.h"
