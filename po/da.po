@@ -14,8 +14,8 @@ msgstr ""
 "Project-Id-Version: HexChat\n"
 "Report-Msgid-Bugs-To: www.hexchat.org\n"
 "POT-Creation-Date: 2012-10-22 20:37+0200\n"
-"PO-Revision-Date: 2012-10-22 18:39+0000\n"
-"Last-Translator: bviktor <bviktor@hexchat.org>\n"
+"PO-Revision-Date: 2012-10-23 17:32+0000\n"
+"Last-Translator: Incendia <dennisskovhermannsen@gmail.com>\n"
 "Language-Team: Danish (http://www.transifex.com/projects/p/hexchat/language/da/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -115,11 +115,11 @@ msgstr "  %-20s offline\n"
 
 #: src/common/outbound.c:72
 msgid "No channel joined. Try /join #<channel>\n"
-msgstr "Ingen kanal joinet. Prřv /join #<kanal>\n"
+msgstr "Ingen kanal tilsluttet. Prøv /join #<kanal>\n"
 
 #: src/common/outbound.c:78
 msgid "Not connected. Try /server <host> [<port>]\n"
-msgstr "Ikke forbundet. Prřv /server <vćrtnavn> [<port>]\n"
+msgstr "Ikke forbundet. Prøv /server <værtsnavn> [<port>]\n"
 
 #: src/common/outbound.c:281
 #, c-format
@@ -134,7 +134,7 @@ msgstr "Tilføjede serveren %s til netværket %s.\n"
 #: src/common/outbound.c:373
 #, c-format
 msgid "Already marked away: %s\n"
-msgstr "Allerede markeret som fravćrende: %s\n"
+msgstr "Allerede markeret som fraværende: %s\n"
 
 #: src/common/outbound.c:446
 msgid "Already marked back.\n"
@@ -142,15 +142,15 @@ msgstr "Allerede markeret som tilbage.\n"
 
 #: src/common/outbound.c:1812
 msgid "I need /bin/sh to run!\n"
-msgstr "Jeg har brug for /bin/sh for at křre!\n"
+msgstr "Jeg har brug for /bin/sh for at køre!\n"
 
 #: src/common/outbound.c:2181
 msgid "Commands Available:"
-msgstr "Kommandoer tilgćngelige"
+msgstr "Kommandoer tilgængelige:"
 
 #: src/common/outbound.c:2195
 msgid "User defined commands:"
-msgstr "rugerdefinerede kommandoer."
+msgstr "Brugerdefinerede kommandoer:"
 
 #: src/common/outbound.c:2211
 msgid "Plugin defined commands:"
@@ -439,20 +439,20 @@ msgstr ""
 
 #: src/common/outbound.c:3680
 msgid "OP <nick>, gives chanop status to the nick (needs chanop)"
-msgstr ""
+msgstr "OP<nick>, giver chanop status til det skrevne nick (kræver chanop)"
 
 #: src/common/outbound.c:3682
 msgid ""
 "PART [<channel>] [<reason>], leaves the channel, by default the current one"
-msgstr ""
+msgstr "PART [<kanal>] [<begrundelse>], forlader kanalen, ved standard er det den nuværende kanal"
 
 #: src/common/outbound.c:3684
 msgid "PING <nick | channel>, CTCP pings nick or channel"
-msgstr ""
+msgstr "PING <nick | kanal>, CTCP pinger nick eller kanal"
 
 #: src/common/outbound.c:3686
 msgid "QUERY [-nofocus] <nick>, opens up a new privmsg window to someone"
-msgstr ""
+msgstr "QUERY [-nofocus] <nick>, åbner en ny privat chat med nogen"
 
 #: src/common/outbound.c:3688
 msgid "QUIT [<reason>], disconnects from the current server"
@@ -484,11 +484,11 @@ msgstr "RECV <text>, send rĺ data til xchat pĺ samme mĺde som det blev modtag
 
 #: src/common/outbound.c:3701
 msgid "SAY <text>, sends the text to the object in the current window"
-msgstr ""
+msgstr "SAY <text>, sender meddelelsen til det nuværende vindue"
 
 #: src/common/outbound.c:3702
 msgid "SEND <nick> [<file>]"
-msgstr ""
+msgstr "SEND <nick> [<fil>]"
 
 #: src/common/outbound.c:3705
 msgid "SERVCHAN [-ssl] <host> <port> <channel>, connects and joins a channel"
@@ -4863,13 +4863,13 @@ msgstr "Stavekontrol"
 
 #: src/fe-gtk/setup.c:219
 msgid "Dictionaries to use:"
-msgstr ""
+msgstr "Ordbøger, der skal bruges:"
 
 #: src/fe-gtk/setup.c:221
 msgid ""
 "Use language codes (as in \"share\\myspell\\dicts\").\n"
 "Separate multiple entries with commas."
-msgstr ""
+msgstr "Brug sprogkoder (som i \"share\\myspell\\dicts\").\nSeparer flere angivelser med komma."
 
 #: src/fe-gtk/setup.c:223
 msgid "Use language codes. Separate multiple entries with commas."
@@ -5098,7 +5098,7 @@ msgstr "Ĺbn DCC-, ignorerings-, notificeringsvindue osv. i faneblade eller vind
 
 #: src/fe-gtk/setup.c:355
 msgid "Messages"
-msgstr ""
+msgstr "Beskeder"
 
 #: src/fe-gtk/setup.c:356
 msgid "Scrollback"
@@ -5327,7 +5327,7 @@ msgstr "Skjul join/part-beskeder"
 
 #: src/fe-gtk/setup.c:492 src/fe-gtk/setup.c:522
 msgid "Hide channel join/part messages by default."
-msgstr ""
+msgstr "Skjul, når folk tilslutter/forlader en kanal som standard."
 
 #: src/fe-gtk/setup.c:493 src/fe-gtk/setup.c:524
 msgid "Display lists in compact mode"
@@ -5462,7 +5462,7 @@ msgstr "MS Proxy (ISA)"
 
 #: src/fe-gtk/setup.c:582
 msgid "Auto"
-msgstr ""
+msgstr "Auto"
 
 #: src/fe-gtk/setup.c:589
 msgid "All Connections"
@@ -5546,11 +5546,11 @@ msgstr "Gennemsé..."
 
 #: src/fe-gtk/setup.c:1327
 msgid "Mark identified users with:"
-msgstr ""
+msgstr "Marker identificerede brugere med:"
 
 #: src/fe-gtk/setup.c:1329
 msgid "Mark not-identified users with:"
-msgstr ""
+msgstr "Marker ikke-identificerede brugere med:"
 
 #: src/fe-gtk/setup.c:1336
 msgid "Open Data Folder"
@@ -5678,7 +5678,7 @@ msgstr "Brugerliste"
 
 #: src/fe-gtk/setup.c:1893
 msgid "Channel switcher"
-msgstr ""
+msgstr "Kanalskifter"
 
 #: src/fe-gtk/setup.c:1894
 msgid "Colors"
@@ -5698,7 +5698,7 @@ msgstr ""
 
 #: src/fe-gtk/setup.c:1904
 msgid "Network setup"
-msgstr ""
+msgstr "Netværksopsætning"
 
 #: src/fe-gtk/setup.c:1905
 msgid "File transfers"
