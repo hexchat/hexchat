@@ -681,7 +681,7 @@ get_cpu_str (void)
 	double mhz;
 
 	osvi.dwOSVersionInfoSize = sizeof (OSVERSIONINFOEX);
-	GetVersionEx (&osvi);
+	GetVersionEx ((OSVERSIONINFO*) &osvi);
 
 	switch (osvi.dwMajorVersion)
 	{
@@ -740,7 +740,7 @@ get_cpu_str (void)
 					}
 					else
 					{
-						strcpy (winver, "8 Server");
+						strcpy (winver, "Server 2012");
 					}
 					break;
 			}
