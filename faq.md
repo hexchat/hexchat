@@ -193,7 +193,7 @@ you want to make a sound on, then type in a sound filename (or use the
 Browse button).
 
 
-### 18. How do I auto-load scripts at startup?
+### How do I auto-load scripts at startup?
 
 The root of your HexChat config is:
 
