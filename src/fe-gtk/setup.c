@@ -168,10 +168,6 @@ static const setting appearance_settings[] =
 	{ST_EFONT,  N_("Font:"), P_OFFSETNL(hex_text_font), 0, 0, sizeof prefs.hex_text_font},
 #endif
 
-	{ST_HEADER,	N_("Title Bar"),0,0,0},
-	{ST_TOGGLE, N_("Show channel modes"), P_OFFINTNL(hex_gui_win_modes),0,0,0},
-	{ST_TOGGLR, N_("Show number of users"), P_OFFINTNL(hex_gui_win_ucount),0,0,0},
-
 	{ST_HEADER,	N_("Text Box"),0,0,0},
 	{ST_EFILE,  N_("Background image:"), P_OFFSETNL(hex_text_background), 0, 0, sizeof prefs.hex_text_background},
 	{ST_TOGGLE, N_("Colored nick names"), P_OFFINTNL(hex_text_color_nicks),
@@ -197,6 +193,10 @@ static const setting appearance_settings[] =
 #else
 					N_("See the strftime manpage for details."),0,sizeof prefs.hex_stamp_text_format},
 #endif
+
+	{ST_HEADER,	N_("Title Bar"),0,0,0},
+	{ST_TOGGLE, N_("Show channel modes"), P_OFFINTNL(hex_gui_win_modes),0,0,0},
+	{ST_TOGGLR, N_("Show number of users"), P_OFFINTNL(hex_gui_win_ucount),0,0,0},
 
 	{ST_END, 0, 0, 0, 0, 0}
 };
