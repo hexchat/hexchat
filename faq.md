@@ -83,10 +83,12 @@ the specified directory.
 You will need to create the directory.
 
 * Unix/Linux
+
 >   ~/.config/hexchat/icons
 
 * Windows
->   %APPDATA%\HexChat\icons\
+
+>   %APPDATA%\\HexChat\\icons
 
 You can hide either of them in Preferences.
 
@@ -199,7 +201,7 @@ Browse button).
 
 The root of your HexChat config is:
 
--   Windows: %APPDATA%\HexChat\
+-   Windows: %APPDATA%\\HexChat
 -   Unix/Linux: ~/.config/hexchat
 
 
@@ -218,6 +220,7 @@ The addons dir may need to be created.
 
 On both Unix and Windows there is an included tray plugin.
 To enable minimizing to tray on exit:
+
 >   /set gui\_tray\_flags -on 1
 
 For minimizing to tray on minimize:
@@ -233,10 +236,12 @@ Right click on the tray icon for its options.
 ### Where are the log files saved to?
 
 * Unix/Linux
+
 > ~/.config/hexchat/logs
 
 * Windows
-> %APPDATA%\HexChat\logs
+
+> %APPDATA%\\HexChat\\logs
 
 
 ### How do I rotate log files every so often?
@@ -274,18 +279,20 @@ to modify the global real name, just issue the following command:
 ### How do I migrate my settings from XChat?
 
 * UNIX/Linux
+
 >   1. Copy ~/.xchat2 to ~/.config/hexchat
 >   2. Rename ~/.config/hexchat/xchat.conf to ~/.config/hexchat/hexchat.conf
 >   3. Rename ~/.config/hexchat/xchatlogs to ~/.config/hexchat/logs
 >   4. Move all your 3rd party addons to ~/.config/hexchat/addons
->   5. Rename ~/.config/hexchat/plugin\_*.conf to ~/.config/hexchat/addon\_*.conf
+>   5. Rename ~/.config/hexchat/plugin\_\*.conf to ~/.config/hexchat/addon\_\*.conf
 
 * Windows
->   1. Copy *%APPDATA%\X-Chat 2\ to *%APPDATA%\HexChat\
->   2. Rename *%APPDATA%\HexChat\xchat.conf to %APPDATA%\HexChat\hexchat.conf
->   3. Rename *%APPDATA%\HexChat\xchatlogs\ to *%APPDATA%\HexChat\logs\
->   4. Move all your 3rd party addons to %APPDATA%\HexChat\addons\
->   5. Rename *%APPDATA%\HexChat\plugin\_*.conf to %APPDATA%\HexChat\addon\_*.conf
+
+>   1. Copy *%APPDATA%\\X-Chat 2 to %APPDATA%\\HexChat
+>   2. Rename *%APPDATA%\\HexChat\\xchat.conf to %APPDATA%\\HexChat\\hexchat.conf
+>   3. Rename *%APPDATA%\\HexChat\\xchatlogs to %APPDATA%\\HexChat\\logs
+>   4. Move all your 3rd party addons to %APPDATA%\\HexChat\\addons
+>   5. Rename *%APPDATA%\\HexChat\\plugin\_\*.conf to %APPDATA%\\HexChat\\addon\_\*.conf
 
 
 Contributions, Development and Bugs.
