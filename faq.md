@@ -200,7 +200,6 @@ The root of your HexChat config is:
 -   Windows: %APPDATA%\HexChat\
 -   Unix/Linux: ~/.config/hexchat
 
-This may need to be created.
 
 Referred to as config from now. HexChat automatically loads, at startup:
 
@@ -211,6 +210,7 @@ Referred to as config from now. HexChat automatically loads, at startup:
 >   - config/addons/*.dll Plugins (Windows)
 >   - config/addons/*.so Plugins (Unix)
 
+The addons dir may need to be created.
 
 ### How do I minimize HexChat to the System Tray (Notification Area)?
 
