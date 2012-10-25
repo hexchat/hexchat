@@ -28,8 +28,6 @@
 #include <unistd.h>
 #endif
 
-#include <glib.h>
-
 #include "hexchat.h"
 #include "ctcp.h"
 #include "fe.h"
@@ -1132,9 +1130,7 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 	else if (len == 3)
 	{
 		guint32 t;
-		int passlen;
-		char *encoded;
-		char *buffer;
+		char *pass;
 
 		t = WORDL((guint8)type[0], (guint8)type[1], (guint8)type[2], (guint8)type[3]);
 		switch (t)
@@ -1152,18 +1148,9 @@ process_named_msg (session *sess, char *type, char *word[], char *word_eol[])
 						PrintTextf (sess, "Authenticating via SASL as %s\n", sess->server->sasluser);
 						tcp_send_len (serv, "AUTHENTICATE PLAIN\r\n", 20);
 
-						/* passphrase generation, nicely copy-pasted from the SASL plugin */
-						passlen = strlen (sess->server->sasluser) * 2 + 2 + strlen (sess->server->saslpassword);
-						buffer = (char*) malloc (passlen + 1);
-						strcpy (buffer, sess->server->sasluser);
-						strcpy (buffer + strlen (sess->server->sasluser) + 1, sess->server->sasluser);
-						strcpy (buffer + strlen (sess->server->sasluser) * 2 + 2, sess->server->saslpassword);
-						encoded = g_base64_encode ((unsigned char*) buffer, passlen);
-
-						tcp_sendf (sess->server, "AUTHENTICATE %s\r\n", encoded);
-
-						free (encoded);
-						free (buffer);
+						pass = encode_sasl_pass (sess->server->sasluser, sess->server->saslpassword);
+						tcp_sendf (sess->server, "AUTHENTICATE %s\r\n", pass);
+						free (pass);
 					}
 				}
 				else if (strncasecmp (word[4], "LS", 2) == 0)
