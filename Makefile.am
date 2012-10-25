@@ -2,7 +2,7 @@
 
 SUBDIRS = po intl src plugins
 
-EXTRA_DIST = autogen.sh HACKING INSTALL.w32 faq.html hexchat.png \
+EXTRA_DIST = autogen.sh HACKING INSTALL.w32 faq.md hexchat.png \
 		hexchat.desktop hexchat.spec hexchat.ico
 
 icon_DATA = hexchat.png
