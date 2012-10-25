@@ -19,7 +19,7 @@ else
 		AUTOMAKE="automake-1.9"
 		ACLOCAL="aclocal-1.9"
 	else
-		echo "automake missing or too old. This requires atleast automake 1.9"
+		echo "automake missing or too old. This requires at least automake 1.9"
 		exit 1
 	fi
 fi
